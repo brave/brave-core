@@ -7,6 +7,7 @@
 
 #include <array>
 #include <cstddef>
+#include <map>
 #include <memory>
 #include <optional>
 #include <set>
@@ -43,6 +44,7 @@
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/engine/mock_engine_consumer.h"
+#include "brave/components/ai_chat/core/browser/learned_memory_data_source.h"
 #include "brave/components/ai_chat/core/browser/mock_conversation_handler_observer.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/browser/sync/ai_chat_sync_backend.h"
@@ -59,6 +61,7 @@
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/ai_chat/core/common/prefs.h"
+#include "brave/components/local_ai/buildflags/buildflags.h"
 #include "components/os_crypt/async/browser/os_crypt_async.h"
 #include "components/os_crypt/async/browser/test_utils.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
@@ -275,6 +278,9 @@ class MockAIChatServiceObserver : public AIChatService::Observer {
               (override));
   MOCK_METHOD(void, OnConversationDeleted, (const std::string&), (override));
   MOCK_METHOD(void, OnAllConversationsDeleted, (), (override));
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+  MOCK_METHOD(void, OnLearnedMemoriesChanged, (), (override));
+#endif
 };
 
 }  // namespace
@@ -1255,6 +1261,89 @@ TEST_P(AIChatServiceUnitTest, Observer_ReportsStorageReady) {
   run_loop.Run();
   EXPECT_TRUE(ai_chat_service_->IsStorageReady());
 }
+
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+TEST_P(AIChatServiceUnitTest, LearnedMemoryDataSource_NoStorageGivesNothing) {
+  if (IsAIChatHistoryEnabled()) {
+    return;
+  }
+  ASSERT_FALSE(ai_chat_service_->IsStorageReady());
+  LearnedMemoryDataSource& source = *ai_chat_service_;
+
+  // Each callback runs later, never inside the call.
+  bool memories_called = false;
+  source.GetLearnedMemories(
+      base::BindLambdaForTesting([&](std::vector<LearnedMemory> memories) {
+        memories_called = true;
+        EXPECT_TRUE(memories.empty());
+      }));
+  EXPECT_FALSE(memories_called);
+
+  base::test::TestFuture<bool> added;
+  source.AddOrUpdateLearnedMemory(LearnedMemory(), added.GetCallback());
+  EXPECT_FALSE(added.Get());
+  base::test::TestFuture<bool> deleted;
+  source.DeleteLearnedMemory("uuid", deleted.GetCallback());
+  EXPECT_FALSE(deleted.Get());
+  base::test::TestFuture<bool> watermark_set;
+  source.SetMemoryWatermark("chat", base::Time::Now(),
+                            watermark_set.GetCallback());
+  EXPECT_FALSE(watermark_set.Get());
+  base::test::TestFuture<std::map<std::string, base::Time>> watermarks;
+  source.GetMemoryWatermarks(watermarks.GetCallback());
+  EXPECT_TRUE(watermarks.Get().empty());
+  base::test::TestFuture<std::vector<mojom::ConversationPtr>> conversations;
+  source.GetStoredConversations(conversations.GetCallback());
+  EXPECT_TRUE(conversations.Get().empty());
+  base::test::TestFuture<mojom::ConversationArchivePtr> data;
+  source.GetStoredConversationData("chat", data.GetCallback());
+  EXPECT_FALSE(data.Get());
+  task_environment_.RunUntilIdle();
+  EXPECT_TRUE(memories_called);
+}
+
+TEST_P(AIChatServiceUnitTest, LearnedMemoryDataSource_WritesTellTheObservers) {
+  if (!IsAIChatHistoryEnabled()) {
+    return;
+  }
+  ASSERT_TRUE(base::test::RunUntil([&] { return HasDatabase(); }));
+  testing::StrictMock<MockAIChatServiceObserver> observer;
+  base::ScopedObservation<AIChatService, AIChatService::Observer> observation(
+      &observer);
+  observation.Observe(ai_chat_service_.get());
+  LearnedMemoryDataSource& source = *ai_chat_service_;
+
+  LearnedMemory memory;
+  memory.uuid = "memory-1";
+  memory.text = "Lives in Berlin.";
+  memory.vector = {0.5f, 0.5f};
+  EXPECT_CALL(observer, OnLearnedMemoriesChanged());
+  base::test::TestFuture<bool> added;
+  source.AddOrUpdateLearnedMemory(memory, added.GetCallback());
+  EXPECT_TRUE(added.Get());
+  testing::Mock::VerifyAndClearExpectations(&observer);
+
+  base::test::TestFuture<std::vector<LearnedMemory>> memories;
+  source.GetLearnedMemories(memories.GetCallback());
+  ASSERT_EQ(memories.Get().size(), 1u);
+  EXPECT_EQ(memories.Get()[0].text, "Lives in Berlin.");
+
+  EXPECT_CALL(observer, OnLearnedMemoriesChanged());
+  base::test::TestFuture<bool> deleted;
+  source.DeleteLearnedMemory("memory-1", deleted.GetCallback());
+  EXPECT_TRUE(deleted.Get());
+  testing::Mock::VerifyAndClearExpectations(&observer);
+
+  base::test::TestFuture<std::vector<LearnedMemory>> after;
+  source.GetLearnedMemories(after.GetCallback());
+  EXPECT_TRUE(after.Get().empty());
+
+  // A write that fails is not reported. A memory without a text is refused.
+  base::test::TestFuture<bool> refused;
+  source.AddOrUpdateLearnedMemory(LearnedMemory(), refused.GetCallback());
+  EXPECT_FALSE(refused.Get());
+}
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
 
 TEST_P(AIChatServiceUnitTest, GetAllConversationEntries) {
   if (IsAIChatHistoryEnabled()) {

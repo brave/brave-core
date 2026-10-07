@@ -18,11 +18,11 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/raw_ref.h"
 #include "base/memory/weak_ptr.h"
-#include "base/threading/sequence_bound.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
+#include "brave/components/ai_chat/core/browser/learned_memory_data_source.h"
 #include "brave/components/ai_chat/core/browser/learned_memory_types.h"
 #include "brave/components/ai_chat/core/browser/memory_decision_client.h"
 #include "brave/components/ai_chat/core/browser/memory_llm_prompts.h"
@@ -35,21 +35,19 @@ static_assert(BUILDFLAG(ENABLE_LOCAL_AI));
 
 namespace ai_chat {
 
-class AIChatDatabase;
-
 enum class DreamingStatus {
   // The run processed all new user turns.
   kCompleted,
   // The run stopped at the time limit. The next run continues.
   kTimedOut,
-  // A request to a local model or to the database failed, so the run
+  // A request to a local model or to chat storage failed, so the run
   // stopped. The next run continues.
   kFailed,
-  // The database went away during the run.
+  // The chats were deleted or storage was turned off during the run.
   kCanceled,
   // Another run is active.
   kBusy,
-  // Learned memory is not available, for example there is no database.
+  // Learned memory is not available, for example storage is off.
   kUnavailable,
 };
 
@@ -124,11 +122,11 @@ class DreamingRun {
   // Turns with more characters are usually pasted text, so the run skips them.
   static constexpr size_t kMaxTurnLength = 2000;
 
-  // |db|, |decision_client|, |llm_engine| and |embedder| must outlive the
-  // run. |llm_engine| is the engine of the local BYOM model. It can be null:
-  // then the run stores the user's sentences, and does not add a fact whose
-  // relation is not certain.
-  DreamingRun(base::SequenceBound<AIChatDatabase>& db,
+  // |data_source|, |decision_client|, |llm_engine| and |embedder| must outlive
+  // the run. |llm_engine| is the engine of the local BYOM model. It can be
+  // null: then the run stores the user's sentences, and does not add a fact
+  // whose relation is not certain.
+  DreamingRun(LearnedMemoryDataSource& data_source,
               MemoryDecisionClient& decision_client,
               EngineConsumer* llm_engine,
               passage_embeddings::Embedder& embedder,
@@ -140,7 +138,7 @@ class DreamingRun {
 
   void Start();
 
-  // Stops the run with kCanceled. The run does no more database calls.
+  // Stops the run with kCanceled. The run does no more storage calls.
   void Cancel();
 
   // Returns the typed text of |turn| when Dreaming can learn from it. Only
@@ -265,7 +263,7 @@ class DreamingRun {
   LearnedMemory& neighbor() { return memories_[neighbors_[next_relation_]]; }
   bool CanWrite() const;
 
-  const raw_ref<base::SequenceBound<AIChatDatabase>> db_;
+  const raw_ref<LearnedMemoryDataSource> data_source_;
   const raw_ref<MemoryDecisionClient> decision_client_;
   const raw_ptr<EngineConsumer> llm_engine_;
   const raw_ref<passage_embeddings::Embedder> embedder_;

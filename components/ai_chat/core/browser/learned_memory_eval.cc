@@ -19,7 +19,6 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/task/thread_pool.h"
 #include "base/values.h"
-#include "brave/components/ai_chat/core/browser/ai_chat_database.h"
 #include "brave/components/ai_chat/core/common/features.h"
 
 namespace ai_chat {
@@ -165,10 +164,10 @@ LearnedMemoryEval::LearnedMemoryEval(base::FilePath chats_path,
 
 LearnedMemoryEval::~LearnedMemoryEval() = default;
 
-void LearnedMemoryEval::Start(base::SequenceBound<AIChatDatabase>& db,
+void LearnedMemoryEval::Start(LearnedMemoryDataSource& data_source,
                               DreamingConfig config,
                               RunDreamingCallback run_dreaming) {
-  db_ = &db;
+  data_source_ = &data_source;
   config_ = config;
   run_dreaming_ = std::move(run_dreaming);
   LOG(WARNING) << "Learned memory eval: importing " << chats_path_;
@@ -186,22 +185,20 @@ void LearnedMemoryEval::OnChatsRead(std::optional<std::string> json) {
     return;
   }
   chat_count_ = chats->size();
-  // The database runs the calls in order, so GetAllConversations() runs
+  // The database runs the calls in order, so GetStoredConversations() runs
   // after all writes.
   for (auto& chat : *chats) {
     const std::string uuid = chat.conversation->uuid;
     auto first = std::move(chat.entries.front());
-    db_->AsyncCall(base::IgnoreResult(&AIChatDatabase::AddConversation))
-        .WithArgs(std::move(chat.conversation), std::vector<std::string>(),
-                  std::move(first));
+    data_source_->ImportConversationForEval(std::move(chat.conversation),
+                                            std::move(first));
     for (size_t i = 1; i < chat.entries.size(); ++i) {
-      db_->AsyncCall(base::IgnoreResult(&AIChatDatabase::AddConversationEntry))
-          .WithArgs(uuid, std::move(chat.entries[i]), std::nullopt);
+      data_source_->ImportConversationEntryForEval(uuid,
+                                                   std::move(chat.entries[i]));
     }
   }
-  db_->AsyncCall(&AIChatDatabase::GetAllConversations)
-      .Then(base::BindOnce(&LearnedMemoryEval::OnImported,
-                           weak_ptr_factory_.GetWeakPtr()));
+  data_source_->GetStoredConversations(base::BindOnce(
+      &LearnedMemoryEval::OnImported, weak_ptr_factory_.GetWeakPtr()));
 }
 
 void LearnedMemoryEval::OnImported(
@@ -215,9 +212,9 @@ void LearnedMemoryEval::OnImported(
 }
 
 void LearnedMemoryEval::OnDreamingDone(DreamingResult result) {
-  db_->AsyncCall(&AIChatDatabase::GetAllLearnedMemories)
-      .Then(base::BindOnce(&LearnedMemoryEval::OnMemories,
-                           weak_ptr_factory_.GetWeakPtr(), std::move(result)));
+  data_source_->GetLearnedMemories(
+      base::BindOnce(&LearnedMemoryEval::OnMemories,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(result)));
 }
 
 void LearnedMemoryEval::OnMemories(DreamingResult result,

@@ -115,7 +115,7 @@ void MemoryManagerDelegateImpl::GetLearnedMemories(
   AIChatService* service = AIChatServiceFactory::GetForBrowserContext(context_);
   UserMemoryManager* manager =
       service ? service->GetUserMemoryManager() : nullptr;
-  if (!manager || !manager->is_database_available()) {
+  if (!manager || !manager->is_storage_ready()) {
     std::move(callback).Run(false, {});
     return;
   }

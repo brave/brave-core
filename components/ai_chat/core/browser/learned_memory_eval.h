@@ -16,9 +16,9 @@
 #include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
-#include "base/threading/sequence_bound.h"
 #include "base/time/time.h"
 #include "brave/components/ai_chat/core/browser/dreaming_run.h"
+#include "brave/components/ai_chat/core/browser/learned_memory_data_source.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/local_ai/buildflags/buildflags.h"
@@ -26,8 +26,6 @@
 static_assert(BUILDFLAG(ENABLE_LOCAL_AI));
 
 namespace ai_chat {
-
-class AIChatDatabase;
 
 // Eval mode for learned memory, for the harness in
 // brave/tools/learned_memory_eval. Start the browser with both switches:
@@ -78,8 +76,8 @@ class LearnedMemoryEval {
   LearnedMemoryEval& operator=(const LearnedMemoryEval&) = delete;
   ~LearnedMemoryEval();
 
-  // |db| must outlive this object.
-  void Start(base::SequenceBound<AIChatDatabase>& db,
+  // |data_source| must outlive this object.
+  void Start(LearnedMemoryDataSource& data_source,
              DreamingConfig config,
              RunDreamingCallback run_dreaming);
 
@@ -92,7 +90,7 @@ class LearnedMemoryEval {
 
   const base::FilePath chats_path_;
   const base::FilePath output_path_;
-  raw_ptr<base::SequenceBound<AIChatDatabase>> db_ = nullptr;
+  raw_ptr<LearnedMemoryDataSource> data_source_ = nullptr;
   DreamingConfig config_;
   RunDreamingCallback run_dreaming_;
   size_t chat_count_ = 0;

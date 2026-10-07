@@ -42,6 +42,7 @@ UserMemoryManager::UserMemoryManager(
     LlmEngineFactory llm_engine_factory,
     passage_embeddings::Embedder* embedder,
     PrefService* prefs,
+    LearnedMemoryDataSource* data_source,
     DreamingConfig config,
     TurnMemoryConfig turn_config)
     : decision_client_(std::move(decision_client)),
@@ -49,23 +50,25 @@ UserMemoryManager::UserMemoryManager(
       embedder_(embedder),
       prefs_(prefs),
       config_(config),
+      data_source_(data_source),
       turn_config_(turn_config) {
   CHECK(decision_client_);
   CHECK(llm_engine_factory_);
   CHECK(embedder_);
   CHECK(prefs_);
+  CHECK(data_source_);
 }
 
 UserMemoryManager::~UserMemoryManager() = default;
 
-void UserMemoryManager::OnDatabaseAvailable(
-    base::SequenceBound<AIChatDatabase>* db) {
-  CHECK(db);
-  db_ = db;
+void UserMemoryManager::OnStorageReady() {
+  if (!data_source_->IsStorageReady()) {
+    return;
+  }
   if (LearnedMemoryEval::IsEnabled()) {
     if (!eval_) {
       eval_ = LearnedMemoryEval::CreateFromCommandLine();
-      eval_->Start(*db_, config_,
+      eval_->Start(*data_source_, config_,
                    base::BindOnce(&UserMemoryManager::LearnFromChats,
                                   base::Unretained(this)));
     }
@@ -74,16 +77,23 @@ void UserMemoryManager::OnDatabaseAvailable(
   ScheduleNextDailyDreaming();
 }
 
-void UserMemoryManager::OnDatabaseUnavailable() {
-  dreaming_timer_.Stop();
-  // The eval has a pointer to the database.
-  eval_.reset();
-  // Cancel first: the run does no database call after this, and the callback
-  // sees the end of the run.
+void UserMemoryManager::OnAllConversationsDeleted() {
+  // The chats and the memories are gone, so the run has nothing to continue.
+  // Cancel it first: its callback sees the end of the run.
   if (dreaming_run_) {
     dreaming_run_->Cancel();
   }
-  db_ = nullptr;
+  if (!data_source_->IsStorageReady()) {
+    // Storage is off. OnStorageReady() starts everything again.
+    dreaming_timer_.Stop();
+    eval_.reset();
+    return;
+  }
+  // Storage is on, and a new chat starts a new history. Dreaming goes on with
+  // its schedule.
+  if (!LearnedMemoryEval::IsEnabled() && !dreaming_timer_.IsRunning()) {
+    ScheduleNextDailyDreaming();
+  }
 }
 
 void UserMemoryManager::LearnFromChats(DreamingCallback callback) {
@@ -101,37 +111,27 @@ void UserMemoryManager::DreamNow(DreamingCallback callback) {
 }
 
 void UserMemoryManager::GetLearnedMemories(LearnedMemoriesCallback callback) {
-  if (!db_) {
-    std::move(callback).Run({});
-    return;
-  }
-  db_->AsyncCall(&AIChatDatabase::GetAllLearnedMemories)
-      .Then(std::move(callback));
+  data_source_->GetLearnedMemories(std::move(callback));
 }
 
 void UserMemoryManager::DeleteLearnedMemory(
     const std::string& uuid,
     base::OnceCallback<void(bool)> callback) {
-  if (!db_) {
-    std::move(callback).Run(false);
-    return;
-  }
-  db_->AsyncCall(&AIChatDatabase::DeleteLearnedMemory)
-      .WithArgs(uuid)
-      .Then(std::move(callback));
+  data_source_->DeleteLearnedMemory(uuid, std::move(callback));
 }
 
 void UserMemoryManager::GetMemoriesForTurn(
     std::vector<std::string> user_messages,
     TurnMemoriesCallback callback) {
-  if (!db_ || !prefs_->GetBoolean(prefs::kBraveAIChatUserMemoryEnabled) ||
+  if (!data_source_->IsStorageReady() ||
+      !prefs_->GetBoolean(prefs::kBraveAIChatUserMemoryEnabled) ||
       user_messages.empty()) {
     std::move(callback).Run({});
     return;
   }
   const uint64_t id = next_turn_lookup_id_++;
   auto lookup = std::make_unique<TurnMemoryLookup>(
-      *db_, *decision_client_, *embedder_, turn_config_,
+      *data_source_, *decision_client_, *embedder_, turn_config_,
       std::move(user_messages),
       base::BindOnce(&UserMemoryManager::OnTurnLookupDone,
                      weak_ptr_factory_.GetWeakPtr(), id, std::move(callback)));
@@ -161,7 +161,7 @@ void UserMemoryManager::StartRun(DreamingCallback callback,
     std::move(callback).Run(DreamingResult(DreamingStatus::kBusy));
     return;
   }
-  if (!db_) {
+  if (!data_source_->IsStorageReady()) {
     std::move(callback).Run(DreamingResult(DreamingStatus::kUnavailable));
     return;
   }
@@ -170,14 +170,15 @@ void UserMemoryManager::StartRun(DreamingCallback callback,
   run_llm_engine_ = llm_engine_factory_.Run();
   VLOG(1) << "Dreaming starts, local LLM: " << (run_llm_engine_ ? "yes" : "no");
   dreaming_run_ = std::make_unique<DreamingRun>(
-      *db_, *decision_client_, run_llm_engine_.get(), *embedder_, config,
+      *data_source_, *decision_client_, run_llm_engine_.get(), *embedder_,
+      config,
       base::BindOnce(&UserMemoryManager::OnDreamingDone,
                      base::Unretained(this)));
   dreaming_run_->Start();
 }
 
 void UserMemoryManager::ScheduleDreaming(base::TimeDelta delay) {
-  if (!db_) {
+  if (!data_source_->IsStorageReady()) {
     return;
   }
   VLOG(1) << "Next Dreaming run in " << delay;
@@ -232,7 +233,8 @@ void UserMemoryManager::OnDreamingDone(DreamingResult result) {
     case DreamingStatus::kCanceled:
     case DreamingStatus::kBusy:
     case DreamingStatus::kUnavailable:
-      // The database is gone. OnDatabaseAvailable() schedules again.
+      // Storage is gone or the chats were deleted. OnStorageReady() and
+      // OnAllConversationsDeleted() schedule again.
       break;
   }
   // Reset first, so the callback can start a new run.

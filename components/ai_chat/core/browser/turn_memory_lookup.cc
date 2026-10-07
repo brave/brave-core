@@ -14,7 +14,6 @@
 #include "base/logging.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
-#include "brave/components/ai_chat/core/browser/ai_chat_database.h"
 #include "brave/components/ai_chat/core/common/features.h"
 
 namespace ai_chat {
@@ -31,13 +30,13 @@ TurnMemoryConfig TurnMemoryConfig::FromFeatures() {
   return config;
 }
 
-TurnMemoryLookup::TurnMemoryLookup(base::SequenceBound<AIChatDatabase>& db,
+TurnMemoryLookup::TurnMemoryLookup(LearnedMemoryDataSource& data_source,
                                    MemoryDecisionClient& decision_client,
                                    passage_embeddings::Embedder& embedder,
                                    TurnMemoryConfig config,
                                    std::vector<std::string> user_messages,
                                    DoneCallback done)
-    : db_(db),
+    : data_source_(data_source),
       decision_client_(decision_client),
       embedder_(embedder),
       config_(config),
@@ -67,9 +66,8 @@ void TurnMemoryLookup::Start() {
   timeout_timer_.Start(FROM_HERE, config_.timeout,
                        base::BindOnce(&TurnMemoryLookup::Finish,
                                       weak_ptr_factory_.GetWeakPtr()));
-  db_->AsyncCall(&AIChatDatabase::GetAllLearnedMemories)
-      .Then(base::BindOnce(&TurnMemoryLookup::OnMemories,
-                           weak_ptr_factory_.GetWeakPtr()));
+  data_source_->GetLearnedMemories(base::BindOnce(
+      &TurnMemoryLookup::OnMemories, weak_ptr_factory_.GetWeakPtr()));
 }
 
 void TurnMemoryLookup::OnMemories(std::vector<LearnedMemory> memories) {

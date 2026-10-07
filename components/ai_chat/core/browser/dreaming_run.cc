@@ -15,7 +15,6 @@
 #include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/uuid.h"
-#include "brave/components/ai_chat/core/browser/ai_chat_database.h"
 #include "brave/components/ai_chat/core/browser/dreaming_text_utils.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
@@ -166,13 +165,13 @@ DreamingRun::Fact::Fact(Fact&&) = default;
 DreamingRun::Fact& DreamingRun::Fact::operator=(Fact&&) = default;
 DreamingRun::Fact::~Fact() = default;
 
-DreamingRun::DreamingRun(base::SequenceBound<AIChatDatabase>& db,
+DreamingRun::DreamingRun(LearnedMemoryDataSource& data_source,
                          MemoryDecisionClient& decision_client,
                          EngineConsumer* llm_engine,
                          passage_embeddings::Embedder& embedder,
                          DreamingConfig config,
                          DoneCallback done)
-    : db_(db),
+    : data_source_(data_source),
       decision_client_(decision_client),
       llm_engine_(llm_engine),
       embedder_(embedder),
@@ -205,9 +204,8 @@ void DreamingRun::Start() {
       FROM_HERE, config_.time_limit,
       base::BindOnce(&DreamingRun::Finish, base::Unretained(this),
                      DreamingStatus::kTimedOut));
-  db_->AsyncCall(&AIChatDatabase::GetAllMemoryWatermarks)
-      .Then(base::BindOnce(&DreamingRun::OnWatermarks,
-                           weak_ptr_factory_.GetWeakPtr()));
+  data_source_->GetMemoryWatermarks(base::BindOnce(
+      &DreamingRun::OnWatermarks, weak_ptr_factory_.GetWeakPtr()));
 }
 
 void DreamingRun::Cancel() {
@@ -216,9 +214,8 @@ void DreamingRun::Cancel() {
 
 void DreamingRun::OnWatermarks(std::map<std::string, base::Time> watermarks) {
   watermarks_ = std::move(watermarks);
-  db_->AsyncCall(&AIChatDatabase::GetAllLearnedMemories)
-      .Then(base::BindOnce(&DreamingRun::OnMemories,
-                           weak_ptr_factory_.GetWeakPtr()));
+  data_source_->GetLearnedMemories(
+      base::BindOnce(&DreamingRun::OnMemories, weak_ptr_factory_.GetWeakPtr()));
 }
 
 void DreamingRun::OnMemories(std::vector<LearnedMemory> memories) {
@@ -233,9 +230,8 @@ void DreamingRun::OnMemories(std::vector<LearnedMemory> memories) {
               .Set("memories", std::move(texts))
               .Set("watermarks", static_cast<int>(watermarks_.size())));
   }
-  db_->AsyncCall(&AIChatDatabase::GetAllConversations)
-      .Then(base::BindOnce(&DreamingRun::OnConversations,
-                           weak_ptr_factory_.GetWeakPtr()));
+  data_source_->GetStoredConversations(base::BindOnce(
+      &DreamingRun::OnConversations, weak_ptr_factory_.GetWeakPtr()));
 }
 
 void DreamingRun::OnConversations(
@@ -266,9 +262,8 @@ void DreamingRun::ReadNextConversation() {
   if (auto it = watermarks_.find(uuid); it != watermarks_.end()) {
     watermark = it->second;
   }
-  db_->AsyncCall(&AIChatDatabase::GetConversationData)
-      .WithArgs(uuid)
-      .Then(base::BindOnce(&DreamingRun::OnConversationData,
+  data_source_->GetStoredConversationData(
+      uuid, base::BindOnce(&DreamingRun::OnConversationData,
                            weak_ptr_factory_.GetWeakPtr(), uuid, watermark));
 }
 
@@ -557,10 +552,10 @@ void DreamingRun::OnFactEmbeddings(std::vector<std::vector<float>> vectors) {
 void DreamingRun::FinishTurn() {
   Trace("watermark",
         base::DictValue().Set("date", base::TimeFormatAsIso8601(turn().date)));
-  db_->AsyncCall(&AIChatDatabase::SetMemoryWatermark)
-      .WithArgs(turn().conversation_uuid, turn().date)
-      .Then(base::BindOnce(&DreamingRun::OnWatermarkSet,
-                           weak_ptr_factory_.GetWeakPtr()));
+  data_source_->SetMemoryWatermark(
+      turn().conversation_uuid, turn().date,
+      base::BindOnce(&DreamingRun::OnWatermarkSet,
+                     weak_ptr_factory_.GetWeakPtr()));
 }
 
 void DreamingRun::OnWatermarkSet(bool success) {
@@ -802,11 +797,10 @@ void DreamingRun::AddNewMemory() {
 
 void DreamingRun::Store(LearnedMemory memory, bool is_new) {
   LearnedMemory copy = memory;
-  db_->AsyncCall(&AIChatDatabase::AddOrUpdateLearnedMemory)
-      .WithArgs(std::move(copy))
-      .Then(base::BindOnce(&DreamingRun::OnStored,
-                           weak_ptr_factory_.GetWeakPtr(), std::move(memory),
-                           is_new));
+  data_source_->AddOrUpdateLearnedMemory(
+      std::move(copy),
+      base::BindOnce(&DreamingRun::OnStored, weak_ptr_factory_.GetWeakPtr(),
+                     std::move(memory), is_new));
 }
 
 void DreamingRun::OnStored(LearnedMemory memory, bool is_new, bool success) {

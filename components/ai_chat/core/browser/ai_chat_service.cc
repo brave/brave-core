@@ -241,8 +241,10 @@ void AIChatService::Shutdown() {
   receivers_.ClearWithReason(0, "Shutting down");
   weak_ptr_factory_.InvalidateWeakPtrs();
 #if BUILDFLAG(ENABLE_LOCAL_AI)
-  // It has a pointer to |ai_chat_db_|, which goes away below.
-  user_memory_manager_.reset();
+  if (user_memory_manager_) {
+    observers_.RemoveObserver(user_memory_manager_.get());
+    user_memory_manager_.reset();
+  }
 #endif
   // Tear down the sync bridge on the DB sequence BEFORE destroying the
   // database. The bridge holds a raw_ptr<AIChatDatabase>; if the database
@@ -620,11 +622,6 @@ void AIChatService::MaybeInitStorage() {
           .PostTask(FROM_HERE, base::BindOnce(&AIChatSyncBackend::ClearDatabase,
                                               sync_backend_));
     }
-#if BUILDFLAG(ENABLE_LOCAL_AI)
-    if (user_memory_manager_) {
-      user_memory_manager_->OnDatabaseUnavailable();
-    }
-#endif
     // Delete all stored data from database
     if (ai_chat_db_) {
       DVLOG(0) << "Unloading AI Chat database due to pref change";
@@ -661,11 +658,6 @@ void AIChatService::OnOsCryptAsyncReady(
         base::BindOnce(&AIChatSyncBackend::SetDatabase, sync_backend_));
   }
   observers_.Notify(&Observer::OnStorageReady);
-#if BUILDFLAG(ENABLE_LOCAL_AI)
-  if (user_memory_manager_) {
-    user_memory_manager_->OnDatabaseAvailable(&ai_chat_db_);
-  }
-#endif
 }
 
 void AIChatService::OnDataDeletedForDisabledStorage(bool success) {
@@ -1568,16 +1560,144 @@ void AIChatService::InitLearnedMemory(passage_embeddings::Embedder* embedder) {
   if (!decision_client) {
     return;
   }
-  // The service owns the manager, so Unretained is safe.
+  // The service owns the manager, so Unretained is safe, and the manager can
+  // keep a pointer to the service as its data source.
   user_memory_manager_ = std::make_unique<UserMemoryManager>(
       std::move(decision_client),
       base::BindRepeating(&AIChatService::CreateLearnedMemoryLlmEngine,
                           base::Unretained(this)),
-      embedder, profile_prefs_,
+      embedder, profile_prefs_, /*data_source=*/this,
       UserMemoryManager::GetDreamingConfigFromFeatures());
-  if (ai_chat_db_) {
-    user_memory_manager_->OnDatabaseAvailable(&ai_chat_db_);
+  observers_.AddObserver(user_memory_manager_.get());
+  if (IsStorageReady()) {
+    // Storage became ready before the manager existed.
+    user_memory_manager_->OnStorageReady();
   }
+}
+
+namespace {
+
+// Runs |callback| with |result| later, for a data source that has no storage.
+template <typename Result>
+void RunLater(base::OnceCallback<void(Result)> callback, Result result) {
+  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+      FROM_HERE, base::BindOnce(std::move(callback), std::move(result)));
+}
+
+}  // namespace
+
+void AIChatService::GetStoredConversations(
+    base::OnceCallback<void(std::vector<mojom::ConversationPtr>)> callback) {
+  if (!ai_chat_db_) {
+    RunLater(std::move(callback), std::vector<mojom::ConversationPtr>());
+    return;
+  }
+  ai_chat_db_.AsyncCall(&AIChatDatabase::GetAllConversations)
+      .Then(std::move(callback));
+}
+
+void AIChatService::GetStoredConversationData(
+    const std::string& conversation_uuid,
+    base::OnceCallback<void(mojom::ConversationArchivePtr)> callback) {
+  if (!ai_chat_db_) {
+    RunLater(std::move(callback), mojom::ConversationArchivePtr());
+    return;
+  }
+  ai_chat_db_.AsyncCall(&AIChatDatabase::GetConversationData)
+      .WithArgs(conversation_uuid)
+      .Then(std::move(callback));
+}
+
+void AIChatService::GetLearnedMemories(
+    base::OnceCallback<void(std::vector<LearnedMemory>)> callback) {
+  if (!ai_chat_db_) {
+    RunLater(std::move(callback), std::vector<LearnedMemory>());
+    return;
+  }
+  ai_chat_db_.AsyncCall(&AIChatDatabase::GetAllLearnedMemories)
+      .Then(std::move(callback));
+}
+
+void AIChatService::AddOrUpdateLearnedMemory(
+    LearnedMemory memory,
+    base::OnceCallback<void(bool)> callback) {
+  if (!ai_chat_db_) {
+    RunLater(std::move(callback), false);
+    return;
+  }
+  ai_chat_db_.AsyncCall(&AIChatDatabase::AddOrUpdateLearnedMemory)
+      .WithArgs(std::move(memory))
+      .Then(base::BindOnce(&AIChatService::OnLearnedMemoryWritten,
+                           weak_ptr_factory_.GetWeakPtr(),
+                           std::move(callback)));
+}
+
+void AIChatService::DeleteLearnedMemory(
+    const std::string& memory_uuid,
+    base::OnceCallback<void(bool)> callback) {
+  if (!ai_chat_db_) {
+    RunLater(std::move(callback), false);
+    return;
+  }
+  ai_chat_db_.AsyncCall(&AIChatDatabase::DeleteLearnedMemory)
+      .WithArgs(memory_uuid)
+      .Then(base::BindOnce(&AIChatService::OnLearnedMemoryWritten,
+                           weak_ptr_factory_.GetWeakPtr(),
+                           std::move(callback)));
+}
+
+void AIChatService::OnLearnedMemoryWritten(
+    base::OnceCallback<void(bool)> callback,
+    bool success) {
+  if (success) {
+    observers_.Notify(&Observer::OnLearnedMemoriesChanged);
+  }
+  std::move(callback).Run(success);
+}
+
+void AIChatService::GetMemoryWatermarks(
+    base::OnceCallback<void(std::map<std::string, base::Time>)> callback) {
+  if (!ai_chat_db_) {
+    RunLater(std::move(callback), std::map<std::string, base::Time>());
+    return;
+  }
+  ai_chat_db_.AsyncCall(&AIChatDatabase::GetAllMemoryWatermarks)
+      .Then(std::move(callback));
+}
+
+void AIChatService::SetMemoryWatermark(
+    const std::string& conversation_uuid,
+    base::Time last_processed_entry_date,
+    base::OnceCallback<void(bool)> callback) {
+  if (!ai_chat_db_) {
+    RunLater(std::move(callback), false);
+    return;
+  }
+  ai_chat_db_.AsyncCall(&AIChatDatabase::SetMemoryWatermark)
+      .WithArgs(conversation_uuid, last_processed_entry_date)
+      .Then(std::move(callback));
+}
+
+void AIChatService::ImportConversationForEval(
+    mojom::ConversationPtr conversation,
+    mojom::ConversationTurnPtr first_entry) {
+  if (!ai_chat_db_) {
+    return;
+  }
+  ai_chat_db_.AsyncCall(base::IgnoreResult(&AIChatDatabase::AddConversation))
+      .WithArgs(std::move(conversation), std::vector<std::string>(),
+                std::move(first_entry));
+}
+
+void AIChatService::ImportConversationEntryForEval(
+    const std::string& conversation_uuid,
+    mojom::ConversationTurnPtr entry) {
+  if (!ai_chat_db_) {
+    return;
+  }
+  ai_chat_db_
+      .AsyncCall(base::IgnoreResult(&AIChatDatabase::AddConversationEntry))
+      .WithArgs(conversation_uuid, std::move(entry), std::nullopt);
 }
 
 std::unique_ptr<EngineConsumer> AIChatService::CreateLearnedMemoryLlmEngine() {

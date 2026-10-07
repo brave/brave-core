@@ -26,6 +26,7 @@
 #include "base/observer_list.h"
 #include "base/scoped_multi_source_observation.h"
 #include "base/threading/sequence_bound.h"
+#include "base/time/time.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_database.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_feedback_api.h"
@@ -35,6 +36,7 @@
 #include "brave/components/ai_chat/core/browser/conversation_share_manager.h"
 #include "brave/components/ai_chat/core/browser/conversation_share_store.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
+#include "brave/components/ai_chat/core/browser/learned_memory_data_source.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_provider_factory.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom-forward.h"
@@ -89,6 +91,9 @@ class AIChatService : public KeyedService,
                       public mojom::Service,
                       public mojom::UntrustedService,
                       public ConversationHandler::Observer,
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+                      public LearnedMemoryDataSource,
+#endif
                       public mojom::TabDataObserver {
  public:
   using SkusServiceGetter =
@@ -122,6 +127,12 @@ class AIChatService : public KeyedService,
     // Every stored conversation was deleted, either on request or because
     // storage was turned off.
     virtual void OnAllConversationsDeleted() {}
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+    // A learned memory was added, changed or deleted through
+    // LearnedMemoryDataSource. Learned memories that the database deletes with
+    // a chat are reported by OnConversationDeleted() and its siblings.
+    virtual void OnLearnedMemoriesChanged() {}
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
   };
 
   AIChatService(
@@ -149,7 +160,11 @@ class AIChatService : public KeyedService,
   void RemoveObserver(Observer* observer);
 
   // Whether stored conversations can be read; see Observer::OnStorageReady().
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+  bool IsStorageReady() const override;
+#else
   bool IsStorageReady() const;
+#endif
 
   // KeyedService
   void Shutdown() override;
@@ -309,6 +324,34 @@ class AIChatService : public KeyedService,
   UserMemoryManager* GetUserMemoryManager() {
     return user_memory_manager_.get();
   }
+
+  // LearnedMemoryDataSource:
+  void GetStoredConversations(
+      base::OnceCallback<void(std::vector<mojom::ConversationPtr>)> callback)
+      override;
+  void GetStoredConversationData(
+      const std::string& conversation_uuid,
+      base::OnceCallback<void(mojom::ConversationArchivePtr)> callback)
+      override;
+  void GetLearnedMemories(
+      base::OnceCallback<void(std::vector<LearnedMemory>)> callback) override;
+  void AddOrUpdateLearnedMemory(
+      LearnedMemory memory,
+      base::OnceCallback<void(bool)> callback) override;
+  void DeleteLearnedMemory(const std::string& memory_uuid,
+                           base::OnceCallback<void(bool)> callback) override;
+  void GetMemoryWatermarks(
+      base::OnceCallback<void(std::map<std::string, base::Time>)> callback)
+      override;
+  void SetMemoryWatermark(const std::string& conversation_uuid,
+                          base::Time last_processed_entry_date,
+                          base::OnceCallback<void(bool)> callback) override;
+  void ImportConversationForEval(
+      mojom::ConversationPtr conversation,
+      mojom::ConversationTurnPtr first_entry) override;
+  void ImportConversationEntryForEval(
+      const std::string& conversation_uuid,
+      mojom::ConversationTurnPtr entry) override;
 #endif  // BUILDFLAG(ENABLE_LOCAL_AI)
 
   bool HasUserOptedIn();
@@ -487,6 +530,9 @@ class AIChatService : public KeyedService,
   // Makes the engine of the custom (BYOM) model whose request name is the
   // learned memory LLM param, or null when there is no such model.
   std::unique_ptr<EngineConsumer> CreateLearnedMemoryLlmEngine();
+  // Tells the observers about a successful write, then runs |callback|.
+  void OnLearnedMemoryWritten(base::OnceCallback<void(bool)> callback,
+                              bool success);
 #endif  // BUILDFLAG(ENABLE_LOCAL_AI)
 
   raw_ptr<ModelService> model_service_;

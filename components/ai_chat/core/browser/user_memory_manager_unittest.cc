@@ -18,6 +18,7 @@
 #include "base/functional/callback.h"
 #include "base/json/json_writer.h"
 #include "base/memory/raw_ptr.h"
+#include "base/memory/raw_ref.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
@@ -33,6 +34,7 @@
 #include "brave/components/ai_chat/core/browser/dreaming_run.h"
 #include "brave/components/ai_chat/core/browser/dreaming_text_utils.h"
 #include "brave/components/ai_chat/core/browser/engine/mock_engine_consumer.h"
+#include "brave/components/ai_chat/core/browser/learned_memory_data_source.h"
 #include "brave/components/ai_chat/core/browser/learned_memory_eval.h"
 #include "brave/components/ai_chat/core/browser/memory_decision_client.h"
 #include "brave/components/ai_chat/core/browser/turn_memory_lookup.h"
@@ -261,6 +263,114 @@ struct FakeLlm {
   size_t relation_requests = 0;
 };
 
+// A data source on a real database. |ready| tells if chat history storage is
+// on. While it is off, the methods give empty results, the same as
+// AIChatService.
+class TestDataSource : public LearnedMemoryDataSource {
+ public:
+  explicit TestDataSource(base::SequenceBound<AIChatDatabase>& db) : db_(db) {}
+
+  bool IsStorageReady() const override { return ready; }
+
+  void GetStoredConversations(
+      base::OnceCallback<void(std::vector<mojom::ConversationPtr>)> callback)
+      override {
+    if (!ready) {
+      RunLater(std::move(callback), std::vector<mojom::ConversationPtr>());
+      return;
+    }
+    db_->AsyncCall(&AIChatDatabase::GetAllConversations)
+        .Then(std::move(callback));
+  }
+
+  void GetStoredConversationData(
+      const std::string& conversation_uuid,
+      base::OnceCallback<void(mojom::ConversationArchivePtr)> callback)
+      override {
+    if (!ready) {
+      RunLater(std::move(callback), mojom::ConversationArchivePtr());
+      return;
+    }
+    db_->AsyncCall(&AIChatDatabase::GetConversationData)
+        .WithArgs(conversation_uuid)
+        .Then(std::move(callback));
+  }
+
+  void GetLearnedMemories(
+      base::OnceCallback<void(std::vector<LearnedMemory>)> callback) override {
+    if (!ready) {
+      RunLater(std::move(callback), std::vector<LearnedMemory>());
+      return;
+    }
+    db_->AsyncCall(&AIChatDatabase::GetAllLearnedMemories)
+        .Then(std::move(callback));
+  }
+
+  void AddOrUpdateLearnedMemory(
+      LearnedMemory memory,
+      base::OnceCallback<void(bool)> callback) override {
+    if (!ready) {
+      RunLater(std::move(callback), false);
+      return;
+    }
+    db_->AsyncCall(&AIChatDatabase::AddOrUpdateLearnedMemory)
+        .WithArgs(std::move(memory))
+        .Then(std::move(callback));
+  }
+
+  void DeleteLearnedMemory(const std::string& memory_uuid,
+                           base::OnceCallback<void(bool)> callback) override {
+    if (!ready) {
+      RunLater(std::move(callback), false);
+      return;
+    }
+    db_->AsyncCall(&AIChatDatabase::DeleteLearnedMemory)
+        .WithArgs(memory_uuid)
+        .Then(std::move(callback));
+  }
+
+  void GetMemoryWatermarks(
+      base::OnceCallback<void(std::map<std::string, base::Time>)> callback)
+      override {
+    if (!ready) {
+      RunLater(std::move(callback), std::map<std::string, base::Time>());
+      return;
+    }
+    db_->AsyncCall(&AIChatDatabase::GetAllMemoryWatermarks)
+        .Then(std::move(callback));
+  }
+
+  void SetMemoryWatermark(const std::string& conversation_uuid,
+                          base::Time last_processed_entry_date,
+                          base::OnceCallback<void(bool)> callback) override {
+    if (!ready) {
+      RunLater(std::move(callback), false);
+      return;
+    }
+    db_->AsyncCall(&AIChatDatabase::SetMemoryWatermark)
+        .WithArgs(conversation_uuid, last_processed_entry_date)
+        .Then(std::move(callback));
+  }
+
+  void ImportConversationForEval(
+      mojom::ConversationPtr conversation,
+      mojom::ConversationTurnPtr first_entry) override {}
+  void ImportConversationEntryForEval(
+      const std::string& conversation_uuid,
+      mojom::ConversationTurnPtr entry) override {}
+
+  bool ready = false;
+
+ private:
+  template <typename Result>
+  void RunLater(base::OnceCallback<void(Result)> callback, Result result) {
+    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+        FROM_HERE, base::BindOnce(std::move(callback), std::move(result)));
+  }
+
+  const raw_ref<base::SequenceBound<AIChatDatabase>> db_;
+};
+
 }  // namespace
 
 class UserMemoryManagerTest : public testing::Test {
@@ -301,7 +411,19 @@ class UserMemoryManagerTest : public testing::Test {
     config.record_trace = record_trace;
     manager_ = std::make_unique<UserMemoryManager>(
         std::move(client), std::move(llm_engine_factory), &embedder_, &prefs_,
-        config);
+        &data_source_, config);
+  }
+
+  // Chat history storage becomes ready.
+  void StorageReady() {
+    data_source_.ready = true;
+    manager_->OnStorageReady();
+  }
+
+  // Chat history storage is turned off.
+  void StorageGone() {
+    data_source_.ready = false;
+    manager_->OnAllConversationsDeleted();
   }
 
   std::map<std::string, LearnedMemory> MemoriesByText() {
@@ -402,14 +524,15 @@ class UserMemoryManagerTest : public testing::Test {
   std::unique_ptr<os_crypt_async::OSCryptAsync> os_crypt_;
   base::SequenceBound<AIChatDatabase> db_;
   TestingPrefServiceSimple prefs_;
+  TestDataSource data_source_{db_};
   FakeEmbedder embedder_;
   raw_ptr<FakeDecisionClient> client_ = nullptr;
   FakeLlm llm_;
   std::unique_ptr<UserMemoryManager> manager_;
 };
 
-TEST_F(UserMemoryManagerTest, UnavailableWithoutDatabase) {
-  EXPECT_FALSE(manager_->is_database_available());
+TEST_F(UserMemoryManagerTest, UnavailableWithoutStorage) {
+  EXPECT_FALSE(manager_->is_storage_ready());
   EXPECT_EQ(Dream().status, DreamingStatus::kUnavailable);
   EXPECT_THAT(client_->gate_requests, IsEmpty());
 }
@@ -425,7 +548,7 @@ class UserMemoryManagerTurnTest : public UserMemoryManagerTest {
     AddMemory("Writes TypeScript.");
     // The user message is close to the first two memories.
     MakeClose("Suggest a dinner.", "Is vegetarian.");
-    manager_->OnDatabaseAvailable(&db_);
+    StorageReady();
   }
 
   EngineConsumer::LearnedMemories GetMemoriesForTurn(
@@ -524,7 +647,7 @@ TEST_F(UserMemoryManagerTurnTest, MemorySettingOffGivesNothing) {
   EXPECT_THAT(client_->relevance_requests, IsEmpty());
 }
 
-TEST_F(UserMemoryManagerTest, TurnWithoutDatabaseGivesNothing) {
+TEST_F(UserMemoryManagerTest, TurnWithoutStorageGivesNothing) {
   base::test::TestFuture<EngineConsumer::LearnedMemories> future;
   manager_->GetMemoriesForTurn({"Suggest a dinner."}, future.GetCallback());
   EXPECT_TRUE(future.Take().empty());
@@ -544,7 +667,7 @@ TEST(TurnMemoryLookupTest, FormatsTheMemoryWithTheDateOfTheLastMention) {
 TEST_F(UserMemoryManagerTest, DreamNowLearnsFromChats) {
   AddChat("chat-1", {"I live in Berlin."});
   KeepSentence("I live in Berlin.", "I live in Berlin.");
-  manager_->OnDatabaseAvailable(&db_);
+  StorageReady();
 
   base::test::TestFuture<DreamingResult> future;
   manager_->DreamNow(future.GetCallback());
@@ -561,7 +684,7 @@ TEST_F(UserMemoryManagerTest, DreamNowLearnsFromChats) {
 TEST_F(UserMemoryManagerTest, DreamNowNeedsTheMemorySetting) {
   AddChat("chat-1", {"I live in Berlin."});
   KeepSentence("I live in Berlin.", "I live in Berlin.");
-  manager_->OnDatabaseAvailable(&db_);
+  StorageReady();
   prefs_.SetBoolean(prefs::kBraveAIChatUserMemoryEnabled, false);
 
   base::test::TestFuture<DreamingResult> future;
@@ -574,7 +697,7 @@ TEST_F(UserMemoryManagerTest, DreamNowNeedsTheMemorySetting) {
 TEST_F(UserMemoryManagerTest, DreamNowRunsLongerThanTheDailyRun) {
   AddChat("chat-1", {"I live in Berlin."});
   client_->hold_replies = true;
-  manager_->OnDatabaseAvailable(&db_);
+  StorageReady();
 
   base::test::TestFuture<void> gate_asked;
   client_->on_gate_asked = gate_asked.GetCallback();
@@ -598,7 +721,7 @@ TEST_F(UserMemoryManagerTest, DeleteLearnedMemoryDeletesItForGood) {
   AddChat("chat-1", {first_turn}, /*hours_ago=*/30);
   KeepSentence(first_turn, first_turn);
   llm_.rewrites[first_turn] = "Moved to Berlin";
-  manager_->OnDatabaseAvailable(&db_);
+  StorageReady();
   Dream();
   auto memories = GetMemories();
   ASSERT_EQ(memories.size(), 1u);
@@ -644,7 +767,7 @@ TEST_F(UserMemoryManagerTest, KeepsCertainFactsOnly) {
       {"I have asthma.", MakeDecisions(0.90, SafetyAnswer::kSensitive)},
       {"Work has been crazy lately.", MakeDecisions(0.58, SafetyAnswer::kOk)},
   };
-  manager_->OnDatabaseAvailable(&db_);
+  StorageReady();
 
   DreamingResult result = Dream();
 
@@ -670,7 +793,7 @@ TEST_F(UserMemoryManagerTest, DeniedPatternNeverReachesTheDecisionModel) {
   const std::string turn = "My SSN is 123-45-6789. I live in Berlin.";
   AddChat("chat-1", {turn});
   client_->gate_yes.insert(turn);
-  manager_->OnDatabaseAvailable(&db_);
+  StorageReady();
 
   Dream();
 
@@ -680,7 +803,7 @@ TEST_F(UserMemoryManagerTest, DeniedPatternNeverReachesTheDecisionModel) {
 TEST_F(UserMemoryManagerTest, GateBelowTheThresholdSkipsTheTurn) {
   AddChat("chat-1", {"Work has been crazy lately."});
   client_->gate_unsure.insert("Work has been crazy lately.");
-  manager_->OnDatabaseAvailable(&db_);
+  StorageReady();
 
   DreamingResult result = Dream();
 
@@ -697,7 +820,7 @@ TEST_F(UserMemoryManagerTest, TemporaryStateIsShortTerm) {
   client_->sentence_decisions = {
       {turn, MakeDecisions(0.9, SafetyAnswer::kOk,
                            LearnedMemoryCategory::kPersonalFact, 0.95)}};
-  manager_->OnDatabaseAvailable(&db_);
+  StorageReady();
 
   Dream();
 
@@ -715,7 +838,7 @@ TEST_F(UserMemoryManagerTest, LabelsThatAreNotCertainUseNeutralValues) {
                         {LearnedMemoryCategory::kTopic, 0.4}};
   decisions.temporary = {{true, 0.55}, {false, 0.45}};
   client_->sentence_decisions = {{turn, decisions}};
-  manager_->OnDatabaseAvailable(&db_);
+  StorageReady();
 
   Dream();
 
@@ -733,7 +856,7 @@ TEST_F(UserMemoryManagerTest, OnlyTurnsAfterTheWatermarkAreRead) {
       .WithArgs(std::string("chat-1"), base::Time::Now() - base::Hours(10))
       .Then(future.GetCallback());
   ASSERT_TRUE(future.Get());
-  manager_->OnDatabaseAvailable(&db_);
+  StorageReady();
 
   DreamingResult result = Dream();
 
@@ -748,7 +871,7 @@ TEST_F(UserMemoryManagerTest, TurnsOfAllChatsGoByDate) {
   // The chat ids sort the other way round: "chat-1" is newer than "chat-2".
   AddChat("chat-1", {"newer question"}, /*hours_ago=*/1);
   AddChat("chat-2", {"older question"}, /*hours_ago=*/5);
-  manager_->OnDatabaseAvailable(&db_);
+  StorageReady();
 
   Dream();
 
@@ -759,7 +882,7 @@ TEST_F(UserMemoryManagerTest, TurnsOfAllChatsGoByDate) {
 TEST_F(UserMemoryManagerTest, GateFailureFailsTheRun) {
   AddChat("chat-1", {"I live in Berlin."});
   client_->fail_gate = true;
-  manager_->OnDatabaseAvailable(&db_);
+  StorageReady();
 
   DreamingResult result = Dream();
 
@@ -771,7 +894,7 @@ TEST_F(UserMemoryManagerTest, GateFailureFailsTheRun) {
 TEST_F(UserMemoryManagerTest, OnlyOneRunAtATime) {
   AddChat("chat-1", {"I live in Berlin."});
   client_->hold_replies = true;
-  manager_->OnDatabaseAvailable(&db_);
+  StorageReady();
 
   base::test::TestFuture<DreamingResult> first;
   manager_->LearnFromChats(first.GetCallback());
@@ -780,14 +903,14 @@ TEST_F(UserMemoryManagerTest, OnlyOneRunAtATime) {
   EXPECT_EQ(Dream().status, DreamingStatus::kBusy);
   EXPECT_FALSE(first.IsReady());
 
-  manager_->OnDatabaseUnavailable();
+  StorageGone();
   EXPECT_EQ(first.Take().status, DreamingStatus::kCanceled);
 }
 
 TEST_F(UserMemoryManagerTest, RunStopsAtTheTimeLimit) {
   AddChat("chat-1", {"I live in Berlin."});
   client_->hold_replies = true;
-  manager_->OnDatabaseAvailable(&db_);
+  StorageReady();
 
   base::test::TestFuture<void> gate_asked;
   client_->on_gate_asked = gate_asked.GetCallback();
@@ -803,21 +926,21 @@ TEST_F(UserMemoryManagerTest, RunStopsAtTheTimeLimit) {
   EXPECT_FALSE(manager_->is_dreaming());
 }
 
-TEST_F(UserMemoryManagerTest, DatabaseGoneStopsTheRun) {
+TEST_F(UserMemoryManagerTest, StorageGoneStopsTheRun) {
   AddChat("chat-1", {"I live in Berlin."});
   client_->hold_replies = true;
-  manager_->OnDatabaseAvailable(&db_);
+  StorageReady();
 
   base::test::TestFuture<void> gate_asked;
   client_->on_gate_asked = gate_asked.GetCallback();
   base::test::TestFuture<DreamingResult> future;
   manager_->LearnFromChats(future.GetCallback());
   ASSERT_TRUE(gate_asked.Wait());
-  manager_->OnDatabaseUnavailable();
+  StorageGone();
 
   EXPECT_EQ(future.Take().status, DreamingStatus::kCanceled);
-  EXPECT_FALSE(manager_->is_database_available());
-  // A new run needs a database.
+  EXPECT_FALSE(manager_->is_storage_ready());
+  // A new run needs storage.
   EXPECT_EQ(Dream().status, DreamingStatus::kUnavailable);
 }
 
@@ -826,7 +949,7 @@ TEST_F(UserMemoryManagerTest, RewriteIsStored) {
   AddChat("chat-1", {turn});
   KeepSentence(turn, turn);
   llm_.rewrites[turn] = "Moved to Berlin";
-  manager_->OnDatabaseAvailable(&db_);
+  StorageReady();
 
   Dream();
 
@@ -840,7 +963,7 @@ TEST_F(UserMemoryManagerTest, RewriteThatIsTooLongUsesTheUserSentence) {
   AddChat("chat-1", {turn});
   KeepSentence(turn, turn);
   llm_.rewrites[turn] = std::string(kMaxMemoryTextLength + 1, 'a');
-  manager_->OnDatabaseAvailable(&db_);
+  StorageReady();
 
   Dream();
 
@@ -856,7 +979,7 @@ TEST_F(UserMemoryManagerTest, RewriteWithANewNameIsStored) {
   AddChat("chat-1", {turn});
   KeepSentence(turn, turn);
   llm_.rewrites[turn] = "Moved to Berlin from Paris";
-  manager_->OnDatabaseAvailable(&db_);
+  StorageReady();
 
   DreamingResult result = Dream();
 
@@ -879,7 +1002,7 @@ TEST_F(UserMemoryManagerTest, ReplaceKeepsTheOldText) {
   KeepSentence(turn, turn);
   client_->relations[{turn, "Lives in San Francisco"}] =
       RelationAnswer::kReplace;
-  manager_->OnDatabaseAvailable(&db_);
+  StorageReady();
 
   DreamingResult result = Dream();
 
@@ -902,7 +1025,7 @@ TEST_F(UserMemoryManagerTest, ShortTermNeverReplaces) {
   client_->sentence_decisions[turn] = MakeDecisions(
       0.95, SafetyAnswer::kOk, LearnedMemoryCategory::kPersonalFact, 0.95);
   client_->relations[{turn, "Lives in Berlin"}] = RelationAnswer::kReplace;
-  manager_->OnDatabaseAvailable(&db_);
+  StorageReady();
 
   Dream();
 
@@ -919,7 +1042,7 @@ TEST_F(UserMemoryManagerTest, NotCertainRelationAsksTheLlm) {
   KeepSentence(turn, turn);
   client_->unsure_relations.insert({turn, "Lives in Berlin"});
   llm_.relation = "different";
-  manager_->OnDatabaseAvailable(&db_);
+  StorageReady();
 
   Dream();
 
@@ -939,7 +1062,7 @@ TEST_F(UserMemoryManagerTest, LlmFallbackNeverReplacesOrMerges) {
   client_->unsure_relations.insert({turn, "Has a dog"});
   llm_.relation = "merge";
   llm_.merged = "Has two dogs";
-  manager_->OnDatabaseAvailable(&db_);
+  StorageReady();
 
   Dream();
 
@@ -957,7 +1080,7 @@ TEST_F(UserMemoryManagerTest, NotCertainRelationWithoutLlmIsNotAdded) {
   AddChat("chat-1", {turn});
   KeepSentence(turn, turn);
   client_->unsure_relations.insert({turn, "Lives in Berlin"});
-  manager_->OnDatabaseAvailable(&db_);
+  StorageReady();
 
   Dream();
 
@@ -977,7 +1100,7 @@ TEST_F(UserMemoryManagerTest, MergeWritesOneMemory) {
   // Close to both inputs.
   MakeClose("Has two dogs", "Has a dog");
   embedder_.vectors["Has two dogs"] = embedder_.vectors[turn];
-  manager_->OnDatabaseAvailable(&db_);
+  StorageReady();
 
   Dream();
 
@@ -990,7 +1113,7 @@ TEST_F(UserMemoryManagerTest, MergeWritesOneMemory) {
 
 TEST_F(UserMemoryManagerTest, TimerRunsDreamingEachDay) {
   AddChat("chat-1", {"I live in Berlin."});
-  manager_->OnDatabaseAvailable(&db_);
+  StorageReady();
   EXPECT_TRUE(manager_->is_dreaming_scheduled());
   EXPECT_TRUE(client_->gate_requests.empty());
 
@@ -1010,9 +1133,39 @@ TEST_F(UserMemoryManagerTest, TimerRunsDreamingEachDay) {
               ElementsAre("I live in Berlin.", "I have a dog."));
 }
 
-TEST_F(UserMemoryManagerTest, NoTimerWithoutDatabase) {
-  manager_->OnDatabaseAvailable(&db_);
-  manager_->OnDatabaseUnavailable();
+TEST_F(UserMemoryManagerTest, AllChatsDeletedKeepsTheScheduleWhileStorageIsOn) {
+  StorageReady();
+  ASSERT_TRUE(manager_->is_dreaming_scheduled());
+
+  // The user deleted all chats. Storage is on, so the daily schedule goes on.
+  manager_->OnAllConversationsDeleted();
+
+  EXPECT_TRUE(manager_->is_storage_ready());
+  EXPECT_TRUE(manager_->is_dreaming_scheduled());
+}
+
+TEST_F(UserMemoryManagerTest, AllChatsDeletedCancelsTheRun) {
+  AddChat("chat-1", {"I live in Berlin."});
+  client_->hold_replies = true;
+  StorageReady();
+  base::test::TestFuture<void> gate_asked;
+  client_->on_gate_asked = gate_asked.GetCallback();
+  base::test::TestFuture<DreamingResult> future;
+  manager_->LearnFromChats(future.GetCallback());
+  ASSERT_TRUE(gate_asked.Wait());
+
+  // Storage stays on. The chats and the memories are gone, so the run stops,
+  // and the next run is scheduled.
+  manager_->OnAllConversationsDeleted();
+
+  EXPECT_EQ(future.Take().status, DreamingStatus::kCanceled);
+  EXPECT_FALSE(manager_->is_dreaming());
+  EXPECT_TRUE(manager_->is_dreaming_scheduled());
+}
+
+TEST_F(UserMemoryManagerTest, NoTimerWithoutStorage) {
+  StorageReady();
+  StorageGone();
   EXPECT_FALSE(manager_->is_dreaming_scheduled());
 }
 
@@ -1023,7 +1176,7 @@ TEST_F(UserMemoryManagerTest, TraceRecordsEachStep) {
   KeepSentence(turn, turn);
   llm_.rewrites[turn] = "Moved to Berlin";
   embedder_.vectors["Moved to Berlin"] = embedder_.Vector(turn);
-  manager_->OnDatabaseAvailable(&db_);
+  StorageReady();
 
   DreamingResult result = Dream();
 
@@ -1038,7 +1191,7 @@ TEST_F(UserMemoryManagerTest, TraceRecordsEachStep) {
                   "fact", "neighbors", "store", "watermark", "done"));
   // Without the trace, the result has no steps.
   MakeManager(/*with_llm=*/true);
-  manager_->OnDatabaseAvailable(&db_);
+  StorageReady();
   EXPECT_TRUE(Dream().trace.empty());
 }
 

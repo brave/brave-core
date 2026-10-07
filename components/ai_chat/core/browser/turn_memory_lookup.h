@@ -15,10 +15,10 @@
 #include "base/functional/callback.h"
 #include "base/memory/raw_ref.h"
 #include "base/memory/weak_ptr.h"
-#include "base/threading/sequence_bound.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
+#include "brave/components/ai_chat/core/browser/learned_memory_data_source.h"
 #include "brave/components/ai_chat/core/browser/learned_memory_types.h"
 #include "brave/components/ai_chat/core/browser/memory_decision_client.h"
 #include "brave/components/local_ai/buildflags/buildflags.h"
@@ -27,8 +27,6 @@
 static_assert(BUILDFLAG(ENABLE_LOCAL_AI));
 
 namespace ai_chat {
-
-class AIChatDatabase;
 
 struct TurnMemoryConfig {
   // Reads the chat time settings from the learned memory feature params.
@@ -63,10 +61,10 @@ class TurnMemoryLookup {
   using DoneCallback =
       base::OnceCallback<void(EngineConsumer::LearnedMemories)>;
 
-  // |db|, |decision_client| and |embedder| must outlive the lookup.
+  // |data_source|, |decision_client| and |embedder| must outlive the lookup.
   // |user_messages| are the last user messages, the newest first. |done| runs
   // one time, unless the lookup is deleted before.
-  TurnMemoryLookup(base::SequenceBound<AIChatDatabase>& db,
+  TurnMemoryLookup(LearnedMemoryDataSource& data_source,
                    MemoryDecisionClient& decision_client,
                    passage_embeddings::Embedder& embedder,
                    TurnMemoryConfig config,
@@ -93,7 +91,7 @@ class TurnMemoryLookup {
   // after the relevance answer.
   void Finish();
 
-  const raw_ref<base::SequenceBound<AIChatDatabase>> db_;
+  const raw_ref<LearnedMemoryDataSource> data_source_;
   const raw_ref<MemoryDecisionClient> decision_client_;
   const raw_ref<passage_embeddings::Embedder> embedder_;
   const TurnMemoryConfig config_;
