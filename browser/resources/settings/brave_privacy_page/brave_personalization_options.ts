@@ -129,6 +129,13 @@ export class SettingsBravePersonalizationOptions extends SettingsBravePersonaliz
           return loadTimeData.getBoolean('isSemanticHistorySearchAvailable')
         },
       },
+      isOnDeviceSpeechModelAvailable_: {
+        readOnly: true,
+        type: Boolean,
+        value: function () {
+          return loadTimeData.getBoolean('isOnDeviceSpeechModelAvailable')
+        },
+      },
       // </if>
       requestOTRActions_: {
         readOnly: true,
@@ -166,6 +173,7 @@ export class SettingsBravePersonalizationOptions extends SettingsBravePersonaliz
   declare private isPsstFeatureEnabled_: boolean
   // <if expr="enable_local_ai">
   declare private isSemanticHistorySearchAvailable_: boolean
+  declare private isOnDeviceSpeechModelAvailable_: boolean
   // </if>
   declare private requestOTRActions_: Object[]
   declare private requestOTRAction_: String

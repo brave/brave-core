@@ -836,6 +836,13 @@
   <message name="IDS_SETTINGS_SEMANTIC_HISTORY_SEARCH_SUB_LABEL" desc="Description for the setting that turns on indexing of visited pages so they can be found by meaning">
     Index pages you visit so you can find them easily in history, open tabs and Leo.
   </message>
+  <!-- On-device speech recognition -->
+  <message name="IDS_SETTINGS_ON_DEVICE_SPEECH_MODEL_LABEL" desc="Label for the setting that downloads Brave's on-device speech recognition model, so that sites can process speech on this device">
+    On-device speech recognition
+  </message>
+  <message name="IDS_SETTINGS_ON_DEVICE_SPEECH_MODEL_SUB_LABEL" desc="Description for the setting that downloads Brave's on-device speech recognition model. Turning the setting off removes the model.">
+    Download a speech recognition model (<ph name="DOWNLOAD_SIZE">$1<ex>636 MB</ex></ph>) so sites can process your speech on this device. Turning this off removes the model.
+  </message>
   <!-- History retention -->
   <message name="IDS_SETTINGS_HISTORY_RETENTION_LABEL" desc="Label for the setting that controls how long browsing history is retained">
     Local history retention
