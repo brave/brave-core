@@ -49,6 +49,19 @@ bool HasCustomSystemPrompt(const mojom::ModelOptions& model_options) {
   return opts.model_system_prompt && !opts.model_system_prompt->empty();
 }
 
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+// True when a memory block in |messages| has learned memories.
+bool HasLearnedMemories(const std::vector<OAIMessage>& messages) {
+  return std::ranges::any_of(messages, [](const OAIMessage& message) {
+    return std::ranges::any_of(message.content, [](const auto& block) {
+      return block->is_memory_content_block() &&
+             block->get_memory_content_block()->memory.contains(
+                 "learned_memories");
+    });
+  });
+}
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
+
 }  // namespace
 
 EngineConsumerOAIRemote::EngineConsumerOAIRemote(
@@ -238,6 +251,43 @@ void EngineConsumerOAIRemote::GenerateAssistantResponse(
     const ConversationCapabilitySet& conversation_capabilities,
     GenerationDataCallback data_received_callback,
     GenerationCompletedCallback completed_callback) {
+  PerformAssistantResponse(
+      {}, std::move(page_contents), conversation_history, is_temporary_chat,
+      tools, std::move(data_received_callback), std::move(completed_callback));
+}
+
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+bool EngineConsumerOAIRemote::UsesLearnedMemories(
+    bool is_temporary_chat) const {
+  // The memory block is not sent in these cases (see PerformAssistantResponse).
+  return !is_temporary_chat && !HasCustomSystemPrompt(*model_options_);
+}
+
+void EngineConsumerOAIRemote::GenerateAssistantResponseWithMemories(
+    LearnedMemories learned_memories,
+    PageContentsMap&& page_contents,
+    const ConversationHistoryView& conversation_history,
+    bool is_temporary_chat,
+    const std::vector<base::WeakPtr<Tool>>& tools,
+    std::optional<std::string_view> preferred_tool_name,
+    const ConversationCapabilitySet& conversation_capabilities,
+    GenerationDataCallback data_received_callback,
+    GenerationCompletedCallback completed_callback) {
+  PerformAssistantResponse(learned_memories, std::move(page_contents),
+                           conversation_history, is_temporary_chat, tools,
+                           std::move(data_received_callback),
+                           std::move(completed_callback));
+}
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
+
+void EngineConsumerOAIRemote::PerformAssistantResponse(
+    const LearnedMemories& learned_memories,
+    PageContentsMap&& page_contents,
+    const ConversationHistoryView& conversation_history,
+    bool is_temporary_chat,
+    const std::vector<base::WeakPtr<Tool>>& tools,
+    GenerationDataCallback data_received_callback,
+    GenerationCompletedCallback completed_callback) {
   if (!CanPerformCompletionRequest(conversation_history)) {
     std::move(completed_callback).Run(base::unexpected(mojom::APIError::None));
     return;
@@ -245,10 +295,10 @@ void EngineConsumerOAIRemote::GenerateAssistantResponse(
 
   bool exclude_memory =
       is_temporary_chat || HasCustomSystemPrompt(*model_options_);
-  auto conversation_messages =
-      BuildOAIMessages(std::move(page_contents), conversation_history, prefs_,
-                       exclude_memory, max_associated_content_length_,
-                       [this](std::string& input) { SanitizeInput(input); });
+  auto conversation_messages = BuildOAIMessages(
+      std::move(page_contents), conversation_history, prefs_, exclude_memory,
+      max_associated_content_length_,
+      [this](std::string& input) { SanitizeInput(input); }, learned_memories);
 
   std::vector<OAIMessage> messages;
   messages.reserve(conversation_messages.size() + 1);
@@ -293,6 +343,14 @@ OAIMessage EngineConsumerOAIRemote::BuildSystemMessage(
           {l10n_util::GetStringUTF8(
               IDS_AI_CHAT_CUSTOM_MODEL_USER_MEMORY_SYSTEM_PROMPT_SEGMENT)});
     }
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+    if (HasLearnedMemories(conversation_messages)) {
+      base::StrAppend(
+          &system_text,
+          {l10n_util::GetStringUTF8(
+              IDS_AI_CHAT_CUSTOM_MODEL_LEARNED_MEMORY_SYSTEM_PROMPT_SEGMENT)});
+    }
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
   }
 
   system_message.content.push_back(mojom::ContentBlock::NewTextContentBlock(

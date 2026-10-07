@@ -56,6 +56,24 @@ class MockEngineConsumer : public EngineConsumer {
               (override));
 
 #if BUILDFLAG(ENABLE_LOCAL_AI)
+  MOCK_METHOD(bool,
+              UsesLearnedMemories,
+              (bool is_temporary_chat),
+              (const, override));
+
+  MOCK_METHOD(void,
+              GenerateAssistantResponseWithMemories,
+              (LearnedMemories learned_memories,
+               PageContentsMap&& page_contents,
+               const ConversationHistoryView& conversation_history,
+               bool is_temporary_chat,
+               const std::vector<base::WeakPtr<Tool>>& tools,
+               std::optional<std::string_view> preferred_tool_name,
+               const ConversationCapabilitySet& conversation_capabilities,
+               GenerationDataCallback data_received_callback,
+               GenerationCompletedCallback completed_callback),
+              (override));
+
   MOCK_METHOD(void,
               GenerateMemoryText,
               (const std::string& system_prompt,

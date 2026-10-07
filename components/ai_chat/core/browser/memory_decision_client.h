@@ -111,6 +111,10 @@ class MemoryDecisionClient {
   // request fails.
   using RelationsCallback = base::OnceCallback<void(
       std::optional<std::vector<AnswerProbabilities<RelationAnswer>>>)>;
+  // The probability that each memory is relevant to the message, in the order
+  // of the memories. std::nullopt when the request fails.
+  using RelevanceCallback =
+      base::OnceCallback<void(std::optional<std::vector<double>>)>;
 
   virtual ~MemoryDecisionClient() = default;
 
@@ -127,6 +131,15 @@ class MemoryDecisionClient {
   virtual void AskRelations(const std::string& new_memory,
                             std::vector<std::string> old_memories,
                             RelationsCallback callback) = 0;
+
+  // Chat time. Asks, for each memory, if it is relevant to the last user
+  // message of a chat. |previous_message| is the user message before it, or
+  // empty. This question comes before the Dreaming questions: while it is
+  // active, the client holds back the Dreaming questions that are not sent yet.
+  virtual void AskRelevance(const std::string& message,
+                            const std::string& previous_message,
+                            std::vector<std::string> memories,
+                            RelevanceCallback callback) = 0;
 };
 
 }  // namespace ai_chat

@@ -11,9 +11,9 @@
 #include <string>
 #include <vector>
 
-#include "base/functional/callback_forward.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
+#include "brave/components/ai_chat/core/browser/memory_manager_delegate.h"
 #include "brave/components/ai_chat/core/common/mojom/customization_settings.mojom.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "mojo/public/cpp/bindings/remote.h"
@@ -25,22 +25,11 @@ namespace ai_chat {
 class CustomizationSettingsHandler
     : public mojom::CustomizationSettingsHandler {
  public:
-  // Provides what the handler can't reach itself.
-  class Delegate {
-   public:
-    virtual ~Delegate() = default;
-
-    // Finds the memories related to `query` by meaning. `callback` gets null
-    // while semantic search is unavailable.
-    virtual void SearchMemories(
-        const std::string& query,
-        base::OnceCallback<void(const std::optional<std::vector<std::string>>&)>
-            callback) = 0;
-  };
-
-  // `delegate` can be null, which leaves semantic search unavailable.
-  explicit CustomizationSettingsHandler(PrefService* prefs,
-                                        std::unique_ptr<Delegate> delegate);
+  // `delegate` can be null, which leaves semantic search and learned memory
+  // unavailable.
+  explicit CustomizationSettingsHandler(
+      PrefService* prefs,
+      std::unique_ptr<MemoryManagerDelegate> delegate);
   ~CustomizationSettingsHandler() override;
 
   CustomizationSettingsHandler(const CustomizationSettingsHandler&) = delete;
@@ -67,6 +56,12 @@ class CustomizationSettingsHandler
   void SearchMemories(const std::string& query,
                       SearchMemoriesCallback callback) override;
 
+  // learned memories
+  void GetLearnedMemories(GetLearnedMemoriesCallback callback) override;
+  void ForgetLearnedMemory(const std::string& uuid,
+                           ForgetLearnedMemoryCallback callback) override;
+  void DreamNow(DreamNowCallback callback) override;
+
  private:
   // Called when customization preferences change
   void OnCustomizationsChanged();
@@ -77,7 +72,7 @@ class CustomizationSettingsHandler
   // Interface to communicate with the settings page in the renderer.
   mojo::Remote<mojom::CustomizationSettingsUI> ui_;
 
-  std::unique_ptr<Delegate> delegate_;
+  std::unique_ptr<MemoryManagerDelegate> delegate_;
 
   // Profile preferences service for customization and memory data persistence.
   raw_ptr<PrefService> prefs_ = nullptr;

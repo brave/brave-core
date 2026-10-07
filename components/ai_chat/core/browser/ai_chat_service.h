@@ -305,7 +305,8 @@ class AIChatService : public KeyedService,
   // The browser layer calls this after construction, because the embedder
   // comes from that layer. |embedder| must outlive this service.
   void InitLearnedMemory(passage_embeddings::Embedder* embedder);
-  UserMemoryManager* GetUserMemoryManagerForTesting() {
+  // Null when learned memory is off. The settings page uses it.
+  UserMemoryManager* GetUserMemoryManager() {
     return user_memory_manager_.get();
   }
 #endif  // BUILDFLAG(ENABLE_LOCAL_AI)

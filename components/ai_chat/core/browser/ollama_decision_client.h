@@ -53,6 +53,10 @@ class OllamaDecisionClient : public MemoryDecisionClient {
   void AskRelations(const std::string& new_memory,
                     std::vector<std::string> old_memories,
                     RelationsCallback callback) override;
+  void AskRelevance(const std::string& message,
+                    const std::string& previous_message,
+                    std::vector<std::string> memories,
+                    RelevanceCallback callback) override;
 
  private:
   // std::nullopt when the request fails or the response is not valid.
@@ -62,8 +66,19 @@ class OllamaDecisionClient : public MemoryDecisionClient {
   using AllAnswersCallback = base::OnceCallback<void(
       std::optional<std::vector<base::DictValue>> answers)>;
 
-  // |questions| is JSON text, in the order that the model must see.
-  void Ask(base::Value state, std::string questions, AnswersCallback callback);
+  // Chat time questions go before Dreaming questions.
+  enum class Priority { kDreaming, kChatTime };
+
+  // |questions| is JSON text, in the order that the model must see. A Dreaming
+  // question waits while a chat time question is active.
+  void Ask(base::Value state,
+           std::string questions,
+           AnswersCallback callback,
+           Priority priority = Priority::kDreaming);
+  void Send(base::Value state,
+            std::string questions,
+            AnswersCallback callback,
+            Priority priority);
   // Sends one request for each state at the same time. Gives the answers in
   // the order of |states|, or std::nullopt when one request fails.
   void AskEach(std::vector<base::Value> states,
@@ -71,11 +86,17 @@ class OllamaDecisionClient : public MemoryDecisionClient {
                AllAnswersCallback callback);
   void OnResponse(std::unique_ptr<network::SimpleURLLoader> loader,
                   AnswersCallback callback,
+                  Priority priority,
                   std::optional<std::string> body);
 
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   const GURL endpoint_;
   const std::string model_;
+
+  // The chat time questions that wait for an answer, and the Dreaming
+  // questions that wait for them.
+  int chat_time_requests_ = 0;
+  std::vector<base::OnceClosure> deferred_requests_;
 
   base::WeakPtrFactory<OllamaDecisionClient> weak_ptr_factory_{this};
 };

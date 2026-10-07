@@ -2007,6 +2007,49 @@
   <message name="IDS_SETTINGS_LEO_ASSISTANT_CLEAR_SEARCH" desc="The label for the link to clear search in memory search">
     Clear search
   </message>
+  <!-- Leo Assistant Learned Memory Section -->
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_LEARNED_MEMORIES_TITLE" desc="The title for the list of memories that Leo learned from the chats of the user">
+    Learned memories
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_LEARNED_MEMORIES_DESC" desc="The description for the list of memories that Leo learned from the chats of the user">
+    Leo reads your saved chats on this device and learns facts about you. Only models on your device do this work.
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_DREAM_NOW_BUTTON_LABEL" desc="The label for the button that starts learning from the saved chats now">
+    Dream now
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_DREAMING_LABEL" desc="The label for the button while Leo learns from the saved chats">
+    Dreaming...
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_LEARNED_MEMORIES_EMPTY_TITLE" desc="The title shown when Leo has not learned any memory yet">
+    No learned memories yet
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_LEARNED_MEMORIES_EMPTY_DESCRIPTION" desc="The description shown when Leo has not learned any memory yet">
+    Select "Dream now" to learn from your saved chats.
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_DREAM_RESULT_COMPLETED" desc="The result of a learning run that read all new messages">
+    Done. Leo read <ph name="TURNS_READ">$1<ex>12</ex></ph> new messages, kept <ph name="TURNS_KEPT">$2<ex>5</ex></ph>, added <ph name="MEMORIES_ADDED">$3<ex>4</ex></ph> memories and updated <ph name="MEMORIES_UPDATED">$4<ex>1</ex></ph>.
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_DREAM_RESULT_TIMED_OUT" desc="The result of a learning run that stopped at the time limit">
+    Stopped at the time limit. Leo read <ph name="TURNS_READ">$1<ex>12</ex></ph> messages, kept <ph name="TURNS_KEPT">$2<ex>5</ex></ph>, added <ph name="MEMORIES_ADDED">$3<ex>4</ex></ph> memories and updated <ph name="MEMORIES_UPDATED">$4<ex>1</ex></ph>. Select "Dream now" to continue.
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_DREAM_RESULT_FAILED" desc="The result of a learning run that failed">
+    Learning failed. Check that the models on your device run.
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_DREAM_RESULT_BUSY" desc="The result when a learning run is already active">
+    Leo already learns from your chats. Try again soon.
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_DREAM_RESULT_UNAVAILABLE" desc="The result when learning is not available">
+    Learning is not available now.
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_LEARNED_MEMORY_PERMANENT" desc="The label for a learned memory that Leo keeps forever">
+    Permanent
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_LEARNED_MEMORY_SHORT_TERM" desc="The label for a learned memory that is true for a short time">
+    Short term
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_LEARNED_MEMORY_PREVIOUS" desc="The text before a learned memory changed">
+    Before: <ph name="PREVIOUS_TEXT">$1<ex>Lives in San Francisco.</ex></ph>
+  </message>
   <message name="IDS_SETTINGS_LEO_ASSISTANT_SEARCH_MEMORIES_PLACEHOLDER" desc="The placeholder text for the memory search input field">
     Search for a memory
   </message>

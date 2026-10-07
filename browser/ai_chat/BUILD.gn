@@ -163,6 +163,8 @@ static_library("ai_chat") {
       "ai_chat_embeddings_service_factory.h",
       "ai_chat_ui_semantic_search.cc",
       "ai_chat_ui_semantic_search.h",
+      "memory_manager_delegate_impl.cc",
+      "memory_manager_delegate_impl.h",
       "tools/conversation_search_tool.cc",
       "tools/conversation_search_tool.h",
       "tools/memory_semantic_search_tool.cc",

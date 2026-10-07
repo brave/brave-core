@@ -199,6 +199,7 @@ if (enable_ai_chat) {
     "brave_leo_assistant_page/brave_leo_assistant_page.ts",
     "brave_leo_assistant_page/brave_leo_assistant_page_index.ts",
     "brave_leo_assistant_page/customization_subpage.ts",
+    "brave_leo_assistant_page/learned_memory_section.ts",
     "brave_leo_assistant_page/memory_section.ts",
     "brave_leo_assistant_page/model_list_section.ts",
     "brave_leo_assistant_page/model_config_subpage.ts",

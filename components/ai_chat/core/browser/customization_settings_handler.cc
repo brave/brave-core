@@ -31,7 +31,7 @@ bool IsValidMemoryLength(const std::string& value) {
 
 CustomizationSettingsHandler::CustomizationSettingsHandler(
     PrefService* prefs,
-    std::unique_ptr<Delegate> delegate)
+    std::unique_ptr<MemoryManagerDelegate> delegate)
     : delegate_(std::move(delegate)), prefs_(prefs) {
   DCHECK(prefs_);
   pref_change_registrar_.Init(prefs_);
@@ -123,6 +123,34 @@ void CustomizationSettingsHandler::DeleteMemory(const std::string& memory) {
 
 void CustomizationSettingsHandler::DeleteAllMemories() {
   prefs::DeleteAllMemoriesFromPrefs(*prefs_);
+}
+
+void CustomizationSettingsHandler::GetLearnedMemories(
+    GetLearnedMemoriesCallback callback) {
+  if (!delegate_) {
+    std::move(callback).Run(false, {});
+    return;
+  }
+  delegate_->GetLearnedMemories(std::move(callback));
+}
+
+void CustomizationSettingsHandler::ForgetLearnedMemory(
+    const std::string& uuid,
+    ForgetLearnedMemoryCallback callback) {
+  if (!delegate_) {
+    std::move(callback).Run(false);
+    return;
+  }
+  delegate_->ForgetLearnedMemory(uuid, std::move(callback));
+}
+
+void CustomizationSettingsHandler::DreamNow(DreamNowCallback callback) {
+  if (!delegate_) {
+    std::move(callback).Run(mojom::DreamNowResult::New(
+        mojom::DreamNowStatus::kUnavailable, 0, 0, 0, 0));
+    return;
+  }
+  delegate_->DreamNow(std::move(callback));
 }
 
 void CustomizationSettingsHandler::OnCustomizationsChanged() {

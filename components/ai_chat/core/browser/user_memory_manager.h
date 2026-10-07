@@ -6,16 +6,22 @@
 #ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_USER_MEMORY_MANAGER_H_
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_USER_MEMORY_MANAGER_H_
 
+#include <map>
 #include <memory>
+#include <string>
+#include <vector>
 
 #include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
+#include "base/memory/weak_ptr.h"
 #include "base/threading/sequence_bound.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
 #include "brave/components/ai_chat/core/browser/dreaming_run.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
+#include "brave/components/ai_chat/core/browser/learned_memory_types.h"
 #include "brave/components/ai_chat/core/browser/memory_decision_client.h"
+#include "brave/components/ai_chat/core/browser/turn_memory_lookup.h"
 #include "brave/components/local_ai/buildflags/buildflags.h"
 #include "components/passage_embeddings/core/passage_embeddings_types.h"
 
@@ -34,6 +40,10 @@ class LearnedMemoryEval;
 class UserMemoryManager {
  public:
   using DreamingCallback = base::OnceCallback<void(DreamingResult)>;
+  using LearnedMemoriesCallback =
+      base::OnceCallback<void(std::vector<LearnedMemory>)>;
+  using TurnMemoriesCallback =
+      base::OnceCallback<void(EngineConsumer::LearnedMemories)>;
   // Makes the engine of the local LLM for one run. Gives null when the LLM is
   // not available: then Dreaming stores the user's sentences.
   using LlmEngineFactory =
@@ -45,17 +55,23 @@ class UserMemoryManager {
   static constexpr base::TimeDelta kFirstRunDelay = base::Minutes(1);
   // After a failed run, for example when Ollama is not running.
   static constexpr base::TimeDelta kRetryDelay = base::Hours(1);
+  // The time limit of a run that the user starts ("Dream now"). The user waits
+  // for it, so it is longer than the limit of the daily run, unless the feature
+  // param is longer.
+  static constexpr base::TimeDelta kDreamNowTimeLimit = base::Minutes(5);
 
   // Reads the Dreaming settings from the learned memory feature params. In eval
   // mode (see learned_memory_eval.h), the run records a trace.
   static DreamingConfig GetDreamingConfigFromFeatures();
 
   // |embedder| and |prefs| must outlive the manager.
-  UserMemoryManager(std::unique_ptr<MemoryDecisionClient> decision_client,
-                    LlmEngineFactory llm_engine_factory,
-                    passage_embeddings::Embedder* embedder,
-                    PrefService* prefs,
-                    DreamingConfig config);
+  UserMemoryManager(
+      std::unique_ptr<MemoryDecisionClient> decision_client,
+      LlmEngineFactory llm_engine_factory,
+      passage_embeddings::Embedder* embedder,
+      PrefService* prefs,
+      DreamingConfig config,
+      TurnMemoryConfig turn_config = TurnMemoryConfig::FromFeatures());
   UserMemoryManager(const UserMemoryManager&) = delete;
   UserMemoryManager& operator=(const UserMemoryManager&) = delete;
   ~UserMemoryManager();
@@ -77,7 +93,39 @@ class UserMemoryManager {
   // with kBusy or kUnavailable.
   void LearnFromChats(DreamingCallback callback);
 
+  // Same as LearnFromChats(), for the "Dream now" button. The run has a longer
+  // time limit. When the memory setting is off, |callback| runs with
+  // kUnavailable.
+  void DreamNow(DreamingCallback callback);
+
+  // Gives all learned memories, oldest first. |callback| gets an empty list
+  // when the database is not available.
+  void GetLearnedMemories(LearnedMemoriesCallback callback);
+
+  // Deletes the memory and writes a tombstone, so that Dreaming does not learn
+  // it again. |callback| gets false when the database is not available or the
+  // delete failed.
+  void ForgetLearnedMemory(const std::string& uuid,
+                           base::OnceCallback<void(bool)> callback);
+
+  // Chat time. Finds the learned memories for a chat turn, and runs |callback|
+  // with them. |user_messages| are the last user messages, the newest first.
+  // |callback| runs at once with no memories when the memory setting is off or
+  // the database is not available. It runs later after the lookup, or after the
+  // time out (see TurnMemoryConfig) with only the permanent memories. A lookup
+  // that is still active when the manager is deleted does not run |callback|.
+  void GetMemoriesForTurn(std::vector<std::string> user_messages,
+                          TurnMemoriesCallback callback);
+
+  base::WeakPtr<UserMemoryManager> GetWeakPtr() {
+    return weak_ptr_factory_.GetWeakPtr();
+  }
+
  private:
+  void StartRun(DreamingCallback callback, const DreamingConfig& config);
+  void OnTurnLookupDone(uint64_t lookup_id,
+                        TurnMemoriesCallback callback,
+                        EngineConsumer::LearnedMemories memories);
   void ScheduleDreaming(base::TimeDelta delay);
   void ScheduleNextDailyDreaming();
   void OnDreamingTimer();
@@ -88,6 +136,7 @@ class UserMemoryManager {
   const raw_ptr<passage_embeddings::Embedder> embedder_;
   const raw_ptr<PrefService> prefs_;
   const DreamingConfig config_;
+  const TurnMemoryConfig turn_config_;
   raw_ptr<base::SequenceBound<AIChatDatabase>> db_ = nullptr;
 
   base::OneShotTimer dreaming_timer_;
@@ -96,6 +145,11 @@ class UserMemoryManager {
   std::unique_ptr<DreamingRun> dreaming_run_;
   DreamingCallback dreaming_callback_;
   std::unique_ptr<LearnedMemoryEval> eval_;
+  // The active lookups for chat turns.
+  std::map<uint64_t, std::unique_ptr<TurnMemoryLookup>> turn_lookups_;
+  uint64_t next_turn_lookup_id_ = 1;
+
+  base::WeakPtrFactory<UserMemoryManager> weak_ptr_factory_{this};
 };
 
 }  // namespace ai_chat

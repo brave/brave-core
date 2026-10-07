@@ -5,6 +5,7 @@
 
 module ai_chat.mojom;
 
+import "mojo/public/mojom/base/time.mojom";
 
 // Supported customization fields, each field can be empty as it might not be
 // set.
@@ -20,6 +21,57 @@ enum CustomizationOperationError {
   kInvalidLength,
   // When a memory is not found, could happen when editing.
   kNotFound,
+};
+
+// Learned memory (Dreaming). The browser builds the learned memory code only on
+// platforms with local AI. On other platforms the handler reports that learned
+// memory is not available.
+enum LearnedMemoryType {
+  kPermanent,
+  kLongTerm,
+  kShortTerm,
+};
+
+enum LearnedMemoryCategory {
+  kPreference,
+  kPersonalFact,
+  kTopic,
+};
+
+struct LearnedMemoryItem {
+  string uuid;
+  string text;
+  LearnedMemoryCategory category;
+  LearnedMemoryType type;
+  mojo_base.mojom.Time created_time;
+  mojo_base.mojom.Time updated_time;
+  // The text before the last replace or merge, if any.
+  string? previous_text;
+};
+
+enum DreamNowStatus {
+  // The run processed all new user turns.
+  kCompleted,
+  // The run stopped at the time limit. Another run continues.
+  kTimedOut,
+  // A local model or the database failed.
+  kFailed,
+  // The database went away during the run.
+  kCanceled,
+  // Another run is active.
+  kBusy,
+  // Learned memory is not available, or the memory setting is off.
+  kUnavailable,
+};
+
+struct DreamNowResult {
+  DreamNowStatus status;
+  // The user turns that the run read, and the turns that the gate kept.
+  uint32 turns_read;
+  uint32 turns_kept;
+  uint32 memories_added;
+  // Same, replace and merge.
+  uint32 memories_updated;
 };
 
 // Interface for settings UI -> browser communication. This interface allows
@@ -60,6 +112,18 @@ interface CustomizationSettingsHandler {
   // first. Empty when `query` is too short to search, and null while semantic
   // search is unavailable.
   SearchMemories(string query) => (array<string>? memories);
+
+  // Learned memories. |available| is false when learned memory is off or the
+  // chat database is not ready. Then |memories| is empty.
+  GetLearnedMemories() =>
+    (bool available, array<LearnedMemoryItem> memories);
+
+  // Deletes a learned memory, and remembers the deletion so that Dreaming does
+  // not learn the same memory again.
+  ForgetLearnedMemory(string uuid) => (bool success);
+
+  // Starts a Dreaming run now, and replies when the run ends.
+  DreamNow() => (DreamNowResult result);
 };
 
 // Interface for browser -> settings UI communication. This interface allows

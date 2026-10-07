@@ -294,7 +294,16 @@ const base::FeatureParam<base::TimeDelta> kLearnedMemoryRunTimeLimit{
     &kAIChatLearnedMemory, "run_time_limit", base::Seconds(30)};
 
 const base::FeatureParam<base::TimeDelta> kLearnedMemoryRelevanceTimeout{
-    &kAIChatLearnedMemory, "relevance_timeout", base::Seconds(1)};
+    &kAIChatLearnedMemory, "relevance_timeout", base::Seconds(3)};
+
+const base::FeatureParam<int> kLearnedMemoryMaxCandidates{&kAIChatLearnedMemory,
+                                                          "max_candidates", 12};
+
+const base::FeatureParam<double> kLearnedMemoryRelevanceThreshold{
+    &kAIChatLearnedMemory, "relevance_threshold", 0.3};
+
+const base::FeatureParam<int> kLearnedMemoryMaxTurnMemories{
+    &kAIChatLearnedMemory, "max_turn_memories", 5};
 #endif  // BUILDFLAG(ENABLE_LOCAL_AI)
 
 }  // namespace ai_chat::features

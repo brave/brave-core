@@ -9,13 +9,17 @@
 #include <initializer_list>
 #include <string_view>
 #include <utility>
+#include <vector>
 
 #include "base/barrier_callback.h"
+#include "base/containers/span.h"
 #include "base/functional/bind.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/json/string_escape.h"
 #include "base/strings/strcat.h"
+#include "base/strings/string_number_conversions.h"
+#include "base/strings/string_util.h"
 #include "base/task/sequenced_task_runner.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "net/base/load_flags.h"
@@ -51,8 +55,35 @@ constexpr net::NetworkTrafficAnnotationTag kDecisionAnnotation =
             "history and memory to be on."
         })");
 
+constexpr net::NetworkTrafficAnnotationTag kRelevanceAnnotation =
+    net::DefineNetworkTrafficAnnotation("brave_leo_assistant_memory_relevance",
+                                        R"(
+        semantics {
+          sender: "Brave Leo Assistant"
+          description:
+            "Asks a local decision model which learned memories are relevant "
+            "to the message that the user sends to Leo."
+          trigger:
+            "The user sends a message in a Leo chat."
+          data:
+            "The last user messages of the Leo chat, and the learned memories "
+            "of the user, sent to a decision model on localhost."
+          destination: LOCAL
+        }
+        policy {
+          cookies_allowed: NO
+          setting:
+            "This feature is behind a feature flag, and it needs Leo chat "
+            "history and memory to be on."
+        })");
+
 constexpr size_t kMaxResponseSize = 64 * 1024;
 constexpr base::TimeDelta kRequestTimeout = base::Minutes(2);
+// A chat turn does not wait for the answer for long, so a stuck request must
+// not hold back Dreaming for long either.
+constexpr base::TimeDelta kChatTimeRequestTimeout = base::Seconds(30);
+// The longest part of a message that the relevance question reads.
+constexpr size_t kMaxRelevanceMessageLength = 1000;
 
 constexpr char kGateQuestion[] = "gate";
 constexpr char kFactQuestion[] = "fact";
@@ -152,8 +183,8 @@ std::string ChoiceQuestion(std::string_view instructions,
 }
 
 // Joins named questions, in order.
-std::string Questions(
-    std::initializer_list<std::pair<std::string_view, std::string>> questions) {
+std::string JoinQuestions(
+    base::span<const std::pair<std::string, std::string>> questions) {
   std::string json = "{";
   for (const auto& [name, question] : questions) {
     base::StrAppend(&json,
@@ -161,6 +192,19 @@ std::string Questions(
   }
   json += "}";
   return json;
+}
+
+std::string Questions(
+    std::initializer_list<std::pair<std::string_view, std::string>> questions) {
+  std::vector<std::pair<std::string, std::string>> named;
+  for (const auto& [name, question] : questions) {
+    named.emplace_back(std::string(name), question);
+  }
+  return JoinQuestions(named);
+}
+
+std::string RelevanceQuestionName(size_t index) {
+  return base::StrCat({"m", base::NumberToString(index)});
 }
 
 std::optional<AnswerProbabilities<bool>> ParseNoul(
@@ -376,6 +420,60 @@ void OllamaDecisionClient::AskRelations(const std::string& new_memory,
           std::move(callback)));
 }
 
+void OllamaDecisionClient::AskRelevance(const std::string& message,
+                                        const std::string& previous_message,
+                                        std::vector<std::string> memories,
+                                        RelevanceCallback callback) {
+  if (memories.empty()) {
+    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+        FROM_HERE, base::BindOnce(std::move(callback), std::vector<double>()));
+    return;
+  }
+  base::DictValue state;
+  if (!previous_message.empty()) {
+    state.Set("previous_message",
+              std::string(base::TruncateUTF8ToByteSize(
+                  previous_message, kMaxRelevanceMessageLength)));
+  }
+  state.Set("user_message", std::string(base::TruncateUTF8ToByteSize(
+                                message, kMaxRelevanceMessageLength)));
+
+  // One request holds one question for each memory, because a request for each
+  // memory is much slower.
+  std::vector<std::pair<std::string, std::string>> named_questions;
+  for (size_t i = 0; i < memories.size(); ++i) {
+    named_questions.emplace_back(
+        RelevanceQuestionName(i),
+        NoulQuestion(
+            base::StrCat({"Memory: ", memories[i],
+                          "\nIs this memory relevant to the user's message?"}),
+            "The memory would change or improve the answer to the message",
+            "The memory has nothing to do with the message"));
+  }
+  const size_t count = memories.size();
+  Ask(base::Value(std::move(state)), JoinQuestions(named_questions),
+      base::BindOnce(
+          [](size_t count, RelevanceCallback callback,
+             std::optional<base::DictValue> answers) {
+            if (!answers) {
+              std::move(callback).Run(std::nullopt);
+              return;
+            }
+            std::vector<double> relevance;
+            for (size_t i = 0; i < count; ++i) {
+              auto yes = ParseNoul(*answers, RelevanceQuestionName(i));
+              if (!yes) {
+                std::move(callback).Run(std::nullopt);
+                return;
+              }
+              relevance.push_back(yes->at(true));
+            }
+            std::move(callback).Run(std::move(relevance));
+          },
+          count, std::move(callback)),
+      Priority::kChatTime);
+}
+
 void OllamaDecisionClient::AskEach(std::vector<base::Value> states,
                                    const std::string& questions,
                                    AllAnswersCallback callback) {
@@ -401,7 +499,25 @@ void OllamaDecisionClient::AskEach(std::vector<base::Value> states,
 
 void OllamaDecisionClient::Ask(base::Value state,
                                std::string questions,
-                               AnswersCallback callback) {
+                               AnswersCallback callback,
+                               Priority priority) {
+  if (priority == Priority::kDreaming && chat_time_requests_ > 0) {
+    // A chat turn is waiting for the decision model. Dreaming goes after it.
+    deferred_requests_.push_back(base::BindOnce(
+        &OllamaDecisionClient::Send, weak_ptr_factory_.GetWeakPtr(),
+        std::move(state), std::move(questions), std::move(callback), priority));
+    return;
+  }
+  Send(std::move(state), std::move(questions), std::move(callback), priority);
+}
+
+void OllamaDecisionClient::Send(base::Value state,
+                                std::string questions,
+                                AnswersCallback callback,
+                                Priority priority) {
+  if (priority == Priority::kChatTime) {
+    ++chat_time_requests_;
+  }
   std::optional<std::string> state_json = base::WriteJson(state);
   CHECK(state_json);
   const std::string json =
@@ -413,37 +529,51 @@ void OllamaDecisionClient::Ask(base::Value state,
   request->method = net::HttpRequestHeaders::kPostMethod;
   request->credentials_mode = network::mojom::CredentialsMode::kOmit;
   request->load_flags = net::LOAD_DISABLE_CACHE;
-  auto loader =
-      network::SimpleURLLoader::Create(std::move(request), kDecisionAnnotation);
+  auto loader = network::SimpleURLLoader::Create(std::move(request),
+                                                 priority == Priority::kChatTime
+                                                     ? kRelevanceAnnotation
+                                                     : kDecisionAnnotation);
   loader->AttachStringForUpload(json, "application/json");
-  loader->SetTimeoutDuration(kRequestTimeout);
+  loader->SetTimeoutDuration(priority == Priority::kChatTime
+                                 ? kChatTimeRequestTimeout
+                                 : kRequestTimeout);
   auto* loader_ptr = loader.get();
   loader_ptr->DownloadToString(
       url_loader_factory_.get(),
       base::BindOnce(&OllamaDecisionClient::OnResponse,
                      weak_ptr_factory_.GetWeakPtr(), std::move(loader),
-                     std::move(callback)),
+                     std::move(callback), priority),
       kMaxResponseSize);
 }
 
 void OllamaDecisionClient::OnResponse(
     std::unique_ptr<network::SimpleURLLoader> loader,
     AnswersCallback callback,
+    Priority priority,
     std::optional<std::string> body) {
+  std::optional<base::DictValue> answers;
   if (!body) {
     DVLOG(1) << "Decision model request failed: " << loader->NetError();
-    std::move(callback).Run(std::nullopt);
-    return;
+  } else {
+    std::optional<base::DictValue> response =
+        base::JSONReader::ReadDict(*body, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
+    base::DictValue* found = response ? response->FindDict("answers") : nullptr;
+    if (found) {
+      answers = std::move(*found);
+    } else {
+      DVLOG(1) << "Decision model response has no answers";
+    }
   }
-  std::optional<base::DictValue> response =
-      base::JSONReader::ReadDict(*body, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
-  base::DictValue* answers = response ? response->FindDict("answers") : nullptr;
-  if (!answers) {
-    DVLOG(1) << "Decision model response has no answers";
-    std::move(callback).Run(std::nullopt);
-    return;
+  std::move(callback).Run(std::move(answers));
+
+  if (priority == Priority::kChatTime && --chat_time_requests_ == 0) {
+    // The chat turn has its answer. Dreaming continues.
+    std::vector<base::OnceClosure> deferred = std::move(deferred_requests_);
+    deferred_requests_.clear();
+    for (auto& request : deferred) {
+      std::move(request).Run();
+    }
   }
-  std::move(callback).Run(std::move(*answers));
 }
 
 }  // namespace ai_chat

@@ -39,6 +39,7 @@
 #include "brave/components/ai_chat/core/common/mojom/common.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/untrusted_frame.mojom.h"
+#include "brave/components/local_ai/buildflags/buildflags.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #include "mojo/public/cpp/bindings/remote_set.h"
@@ -431,6 +432,17 @@ class ConversationHandler : public mojom::ConversationHandler,
   void PerformAssistantGenerationWithPossibleContent();
 
   void PerformAssistantGeneration();
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+  // The user messages for the lookup of learned memories, the newest first.
+  // Gives an empty list when the next request has no memory block: a chat that
+  // does not end with a user message (a tool loop), a temporary chat, or a
+  // model that does not use memories. Also gives an empty list without a
+  // manager.
+  std::vector<std::string> GetUserMessagesForLearnedMemories() const;
+  // Sends the request with the learned memories of the turn.
+  void PerformAssistantGenerationWithMemories(
+      EngineConsumer::LearnedMemories learned_memories);
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
   // Returns the entry list that entries for the given thread (or the root
   // conversation, if |thread_uuid| is nullopt) should be read from/appended
   // to.
@@ -612,6 +624,12 @@ class ConversationHandler : public mojom::ConversationHandler,
   mojo::RemoteSet<mojom::UntrustedConversationUI>
       untrusted_conversation_ui_handlers_;
 
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+  // For the lookup of learned memories. The factory is separate, so that
+  // stopping the generation cancels the lookup.
+  base::WeakPtrFactory<ConversationHandler> learned_memories_weak_ptr_factory_{
+      this};
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
   base::WeakPtrFactory<ConversationHandler> weak_ptr_factory_{this};
 };
 

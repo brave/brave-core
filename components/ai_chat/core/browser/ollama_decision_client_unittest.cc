@@ -13,9 +13,11 @@
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
+#include "base/values.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace ai_chat {
@@ -39,6 +41,18 @@ std::string SentenceResponse(double fact) {
       fact);
 }
 
+// A System One response for the relevance question. The first memory is
+// relevant (0.9), the others are not (0.1).
+std::string RelevanceResponse(const base::DictValue& request) {
+  std::string answers;
+  const size_t count = request.FindDict("questions")->size();
+  for (size_t i = 0; i < count; ++i) {
+    answers += base::StringPrintf(R"(%s"m%zu": {"type": "noul", "noul": %f})",
+                                  i ? "," : "", i, i == 0 ? 0.9 : 0.1);
+  }
+  return "{\"answers\": {" + answers + "}}";
+}
+
 }  // namespace
 
 class OllamaDecisionClientTest : public testing::Test {
@@ -59,6 +73,15 @@ class OllamaDecisionClientTest : public testing::Test {
               last_body_, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
           ASSERT_TRUE(body);
           EXPECT_EQ(*body->FindString("model"), "clef-flash:9b");
+          if (body->FindDict("state")) {
+            // The relevance question: the state is a dictionary.
+            ++relevance_requests_;
+            if (answer_relevance_) {
+              url_loader_factory_.AddResponse(kEndpoint,
+                                              RelevanceResponse(*body));
+            }
+            return;
+          }
           const std::string state = *body->FindString("state");
           states_.push_back(state);
           std::string response = state == "fail"    ? "not json"
@@ -73,6 +96,8 @@ class OllamaDecisionClientTest : public testing::Test {
   std::unique_ptr<OllamaDecisionClient> client_;
   std::vector<std::string> states_;
   std::string last_body_;
+  int relevance_requests_ = 0;
+  bool answer_relevance_ = true;
 };
 
 TEST_F(OllamaDecisionClientTest, SentenceDecisionsKeepTheOrder) {
@@ -121,6 +146,63 @@ TEST_F(OllamaDecisionClientTest, BadResponseFailsTheRequest) {
   base::test::TestFuture<std::optional<AnswerProbabilities<bool>>> gate;
   client_->AskGate("first", gate.GetCallback());
   EXPECT_FALSE(gate.Take());
+}
+
+TEST_F(OllamaDecisionClientTest, RelevanceAsksOneQuestionForEachMemory) {
+  base::test::TestFuture<std::optional<std::vector<double>>> future;
+  client_->AskRelevance("Suggest a dinner.", "Hello",
+                        {"Is vegetarian.", "Has a dog."}, future.GetCallback());
+  auto relevance = future.Take();
+
+  ASSERT_TRUE(relevance);
+  ASSERT_EQ(relevance->size(), 2u);
+  EXPECT_DOUBLE_EQ((*relevance)[0], 0.9);
+  EXPECT_DOUBLE_EQ((*relevance)[1], 0.1);
+  // One request for all memories, with the two messages and the memory texts.
+  EXPECT_EQ(relevance_requests_, 1);
+  auto body = base::JSONReader::ReadDict(last_body_,
+                                         base::JSON_PARSE_CHROMIUM_EXTENSIONS);
+  ASSERT_TRUE(body);
+  EXPECT_EQ(*body->FindDict("state")->FindString("user_message"),
+            "Suggest a dinner.");
+  EXPECT_EQ(*body->FindDict("state")->FindString("previous_message"), "Hello");
+  EXPECT_NE(last_body_.find("Is vegetarian."), std::string::npos);
+  EXPECT_LT(last_body_.find("\"m0\""), last_body_.find("\"m1\""));
+}
+
+TEST_F(OllamaDecisionClientTest, DreamingQuestionWaitsForChatTimeQuestion) {
+  answer_relevance_ = false;
+  base::test::TestFuture<std::optional<std::vector<double>>> relevance;
+  client_->AskRelevance("Suggest a dinner.", "", {"Is vegetarian."},
+                        relevance.GetCallback());
+  base::test::TestFuture<std::optional<AnswerProbabilities<bool>>> gate;
+  client_->AskGate("a turn", gate.GetCallback());
+  task_environment_.RunUntilIdle();
+
+  // The relevance request is on its way. The Dreaming request is not sent.
+  EXPECT_EQ(relevance_requests_, 1);
+  EXPECT_THAT(states_, testing::IsEmpty());
+  EXPECT_FALSE(gate.IsReady());
+
+  ASSERT_TRUE(url_loader_factory_.SimulateResponseForPendingRequest(
+      kEndpoint, R"({"answers": {"m0": {"type": "noul", "noul": 0.7}}})"));
+  ASSERT_TRUE(relevance.Wait());
+  // The Dreaming request goes after the answer.
+  task_environment_.RunUntilIdle();
+  EXPECT_THAT(states_, testing::ElementsAre("a turn"));
+  EXPECT_TRUE(gate.Wait());
+}
+
+TEST_F(OllamaDecisionClientTest, FailedRelevanceRequestGivesNothing) {
+  answer_relevance_ = false;
+  base::test::TestFuture<std::optional<std::vector<double>>> future;
+  client_->AskRelevance("Suggest a dinner.", "", {"Is vegetarian."},
+                        future.GetCallback());
+  task_environment_.RunUntilIdle();
+  ASSERT_TRUE(url_loader_factory_.SimulateResponseForPendingRequest(
+      kEndpoint, "not json"));
+
+  EXPECT_FALSE(future.Take());
 }
 
 }  // namespace ai_chat

@@ -24,6 +24,7 @@ import {
   BraveLeoAssistantBrowserProxyImpl
 } from './brave_leo_assistant_browser_proxy.js'
 import { getTemplate } from './customization_subpage.html.js'
+import './learned_memory_section.js'
 import './memory_section.js'
 
 const BraveLeoCustomizationSubpageBase =

@@ -28,6 +28,11 @@ namespace ai_chat {
 
 namespace {
 
+// The keys of the memory content block that learned memory uses. "memories" is
+// also the key of the memories that the user wrote.
+constexpr char kMemoriesKey[] = "memories";
+constexpr char kLearnedMemoriesKey[] = "learned_memories";
+
 // Strips page_content, extra_snippets, and rich_results from web sources
 // while keeping other metadata (title, url, favicon_url) and query.
 std::vector<mojom::ContentBlockPtr> GetStrippedWebSources(
@@ -116,30 +121,56 @@ mojom::ContentBlockPtr GetContentBlockFromAssociatedContent(
 }
 
 std::optional<mojom::MemoryContentBlockPtr> BuildMemoryContentBlock(
-    PrefService* prefs) {
+    PrefService* prefs,
+    const EngineConsumer::LearnedMemories& learned_memories) {
   if (!prefs) {
     return std::nullopt;
   }
 
   auto memories = prefs::GetUserMemoryDictFromPrefs(*prefs);
-  if (!memories) {
+  if (!memories && learned_memories.empty()) {
     return std::nullopt;
   }
 
   base::flat_map<std::string, mojom::MemoryValuePtr> result;
-  for (const auto [key, value] : *memories) {
-    if (value.is_string()) {
-      result[key] = mojom::MemoryValue::NewStringValue(
-          base::EscapeForHTML(value.GetString()));
-    } else if (value.is_list()) {
-      std::vector<std::string> escaped_list;
-      for (const auto& item : value.GetList()) {
-        if (item.is_string()) {
-          escaped_list.push_back(base::EscapeForHTML(item.GetString()));
+  if (memories) {
+    for (const auto [key, value] : *memories) {
+      if (value.is_string()) {
+        result[key] = mojom::MemoryValue::NewStringValue(
+            base::EscapeForHTML(value.GetString()));
+      } else if (value.is_list()) {
+        std::vector<std::string> escaped_list;
+        for (const auto& item : value.GetList()) {
+          if (item.is_string()) {
+            escaped_list.push_back(base::EscapeForHTML(item.GetString()));
+          }
         }
+        result[key] = mojom::MemoryValue::NewListValue(std::move(escaped_list));
       }
-      result[key] = mojom::MemoryValue::NewListValue(std::move(escaped_list));
     }
+  }
+
+  // Learned memories with "Keep forever" go with the memories that the user
+  // wrote. The relevant learned memories have their own list, so that the
+  // model knows that they come from past chats and can be out of date.
+  if (!learned_memories.permanent.empty()) {
+    std::vector<std::string> list;
+    auto it = result.find(kMemoriesKey);
+    if (it != result.end() && it->second->is_list_value()) {
+      list = std::move(it->second->get_list_value());
+    }
+    for (const auto& memory : learned_memories.permanent) {
+      list.push_back(base::EscapeForHTML(memory));
+    }
+    result[kMemoriesKey] = mojom::MemoryValue::NewListValue(std::move(list));
+  }
+  if (!learned_memories.relevant.empty()) {
+    std::vector<std::string> list;
+    for (const auto& memory : learned_memories.relevant) {
+      list.push_back(base::EscapeForHTML(memory));
+    }
+    result[kLearnedMemoriesKey] =
+        mojom::MemoryValue::NewListValue(std::move(list));
   }
 
   return mojom::MemoryContentBlock::New(std::move(result));
@@ -199,7 +230,8 @@ std::vector<OAIMessage> BuildOAIMessages(
     PrefService* prefs,
     bool exclude_memory,
     uint32_t remaining_length,
-    base::FunctionRef<void(std::string&)> sanitize_input) {
+    base::FunctionRef<void(std::string&)> sanitize_input,
+    const EngineConsumer::LearnedMemories& learned_memories) {
   std::vector<OAIMessage> oai_messages;
 
   // Key is conversation entry uuid, value is a list of content blocks for that
@@ -325,7 +357,7 @@ std::vector<OAIMessage> BuildOAIMessages(
     if (!exclude_memory &&
         message->character_type == mojom::CharacterType::HUMAN &&
         message_index == conversation_history.size() - 1) {
-      auto memory_block = BuildMemoryContentBlock(prefs);
+      auto memory_block = BuildMemoryContentBlock(prefs, learned_memories);
       if (memory_block) {
         oai_message.content.push_back(
             mojom::ContentBlock::NewMemoryContentBlock(

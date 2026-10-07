@@ -695,6 +695,63 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
   testing::Mock::VerifyAndClearExpectations(mock_api_client);
 }
 
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+TEST_F(EngineConsumerConversationAPIUnitTest,
+       GenerateAssistantResponseWithMemories_LearnedMemoriesInMemoriesList) {
+  // The server does not render `learned_memories` yet, so the learned memories
+  // go with the memories that the user wrote.
+  auto* mock_api_client = GetMockConversationAPIClient();
+  prefs_.SetBoolean(prefs::kBraveAIChatUserCustomizationEnabled, false);
+  prefs_.SetBoolean(prefs::kBraveAIChatUserMemoryEnabled, true);
+  base::ListValue memories;
+  memories.Append("I prefer concise explanations");
+  prefs_.SetList(prefs::kBraveAIChatUserMemories, std::move(memories));
+
+  EngineConsumer::LearnedMemories learned;
+  learned.permanent = {"Allergic to nuts."};
+  learned.relevant = {"Is vegetarian. (2026-08-22)"};
+
+  base::RunLoop run_loop;
+  EXPECT_CALL(*mock_api_client, PerformRequest)
+      .WillOnce([&](std::vector<OAIMessage> messages,
+                    std::optional<base::ListValue> oai_tool_definitions,
+                    const std::optional<std::string>& preferred_tool_name,
+                    const ConversationCapabilitySet& conversation_capabilities,
+                    EngineConsumer::GenerationDataCallback data_callback,
+                    EngineConsumer::GenerationCompletedCallback callback,
+                    const std::optional<std::string>& model_name) {
+        ASSERT_EQ(messages.size(), 1u);
+        ASSERT_EQ(messages[0].content.size(), 2u);
+        VerifyMemoryBlock(
+            FROM_HERE, messages[0].content[0],
+            BuildExpectedMemory(
+                {}, {{"memories",
+                      {"I prefer concise explanations", "Allergic to nuts.",
+                       "Is vegetarian. (2026-08-22)"}}}));
+        std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
+            mojom::ConversationEntryEvent::NewCompletionEvent(
+                mojom::CompletionEvent::New("Test response")),
+            std::nullopt)));
+      });
+
+  std::vector<mojom::ConversationTurnPtr> history;
+  mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New();
+  turn->uuid = "turn-1";
+  turn->character_type = mojom::CharacterType::HUMAN;
+  turn->text = "Suggest a dinner.";
+  history.push_back(std::move(turn));
+
+  EXPECT_TRUE(engine_->UsesLearnedMemories(/*is_temporary_chat=*/false));
+  EXPECT_FALSE(engine_->UsesLearnedMemories(/*is_temporary_chat=*/true));
+  engine_->GenerateAssistantResponseWithMemories(
+      std::move(learned), {}, EngineConsumer::ToHistoryView(history), false, {},
+      std::nullopt, {}, base::DoNothing(),
+      base::BindLambdaForTesting(
+          [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
+  run_loop.Run();
+}
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
+
 TEST_F(EngineConsumerConversationAPIUnitTest,
        GenerateAssistantResponse_WithMemoryBlock) {
   auto* mock_api_client = GetMockConversationAPIClient();

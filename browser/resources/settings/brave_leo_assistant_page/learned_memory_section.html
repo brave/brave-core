@@ -1,0 +1,164 @@
+<!-- Copyright (c) 2026 The Brave Authors. All rights reserved.
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this file,
+You can obtain one at https://mozilla.org/MPL/2.0/. -->
+
+<style include="cr-shared-style settings-shared">
+  .list {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    border: 1px solid var(--leo-color-divider-subtle);
+    border-radius: var(--leo-radius-m);
+  }
+
+  .memory {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--leo-spacing-l) var(--leo-spacing-xl);
+    border-bottom: 1px solid var(--leo-color-divider-subtle);
+  }
+
+  .memory:last-of-type {
+    border-bottom: none;
+  }
+
+  .memory-info {
+    flex: 1;
+  }
+
+  .memory-actions {
+    display: flex;
+    height: 36px;
+    justify-content: flex-end;
+    align-items: center;
+    gap: var(--leo-spacing-m);
+  }
+
+  .list-container {
+    padding: var(--leo-spacing-l) var(--leo-spacing-2xl);
+  }
+
+  .header {
+    padding: var(--leo-spacing-2xl) var(--leo-spacing-2xl) 0
+        var(--leo-spacing-2xl);
+  }
+
+  .main-header {
+    font: var(--leo-font-heading-h4);
+  }
+
+  .action-box {
+    display: flex;
+    align-items: center;
+    gap: var(--leo-spacing-xl);
+    padding: var(--leo-spacing-xl) var(--leo-spacing-2xl) var(--leo-spacing-m)
+        var(--leo-spacing-2xl);
+  }
+
+  /* Avoid stretching the button */
+  .action-box leo-button {
+    width: auto !important;
+    min-width: unset !important;
+    flex: 0 0 auto !important;
+  }
+
+  .dream-result {
+    font: var(--leo-font-small-regular);
+    color: var(--leo-color-text-secondary);
+  }
+
+  .details,
+  .previous {
+    font: var(--leo-font-small-regular);
+    color: var(--leo-color-text-tertiary);
+  }
+
+  .empty-memories-table {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-self: stretch;
+    border-radius: var(--leo-radius-m);
+    border: 1px solid var(--leo-color-divider-subtle);
+    width: 100%;
+    padding: var(--leo-spacing-4xl) 0px;
+    justify-content: center;
+  }
+
+  .empty-memories-title {
+    color: var(--leo-color-text-tertiary);
+    text-align: center;
+    font-weight: 600;
+  }
+
+  .empty-memories-desc {
+    color: var(--leo-color-text-tertiary);
+    text-align: center;
+    font-weight: 400;
+  }
+</style>
+
+<template is="dom-if"
+    if="[[shouldShow_(available_, prefs.brave.ai_chat.user_memory_enabled.value)]]"
+    restamp>
+  <div class="settings-box header">
+    <div class="flex">
+      <div class="main-header">$i18n{braveLeoAssistantLearnedMemoriesTitle}</div>
+      <div class="label secondary">
+        $i18n{braveLeoAssistantLearnedMemoriesDesc}
+      </div>
+    </div>
+  </div>
+
+  <div class="action-box">
+    <leo-button
+      id="dreamNowButton"
+      kind="outline"
+      on-click="onDreamNow_"
+      isDisabled$="[[isDreaming_]]">
+      [[getDreamButtonText_(isDreaming_)]]
+    </leo-button>
+    <template is="dom-if" if="[[hasDreamResult_(dreamResult_)]]">
+      <span class="dream-result">[[dreamResult_]]</span>
+    </template>
+  </div>
+
+  <div class="list-container">
+    <template is="dom-if" if="[[!hasLearnedMemories_(learnedMemories_)]]">
+      <div class="empty-memories-table">
+        <div class="empty-memories-title">
+          $i18n{braveLeoAssistantLearnedMemoriesEmptyTitle}
+        </div>
+        <div class="empty-memories-desc">
+          $i18n{braveLeoAssistantLearnedMemoriesEmptyDescription}
+        </div>
+      </div>
+    </template>
+
+    <template is="dom-if" if="[[hasLearnedMemories_(learnedMemories_)]]">
+      <div class="list">
+        <template is="dom-repeat" items="[[learnedMemories_]]">
+          <div class="memory">
+            <div class="memory-info">
+              <div class="label">[[item.text]]</div>
+              <div class="details">[[getDetails_(item)]]</div>
+              <template is="dom-if" if="[[hasPreviousText_(item)]]">
+                <div class="previous">[[getPreviousText_(item)]]</div>
+              </template>
+            </div>
+            <div class="memory-actions">
+              <leo-button
+                kind="plain-faint"
+                fab size="medium"
+                on-click="onForget_">
+                <leo-icon name="trash"></leo-icon>
+              </leo-button>
+            </div>
+          </div>
+        </template>
+      </div>
+    </template>
+  </div>
+</template>

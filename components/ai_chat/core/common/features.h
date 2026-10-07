@@ -265,10 +265,22 @@ extern const base::FeatureParam<size_t> kLearnedMemoryMaxRewriteRequests;
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 extern const base::FeatureParam<base::TimeDelta> kLearnedMemoryRunTimeLimit;
 
-// How long a chat turn waits for the relevance answer before it continues
-// without learned memories.
+// How long a chat turn waits for its learned memories (the embedding of the
+// last user messages and the relevance answer) before it continues without
+// them. The permanent memories still go.
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 extern const base::FeatureParam<base::TimeDelta> kLearnedMemoryRelevanceTimeout;
+
+// Chat time: the number of memories that the embedder finds and the decision
+// model checks, the "yes" probability that a memory needs, and the number of
+// memories that go in the request. The relevance question costs about 0.1 s
+// plus 0.08 s for each candidate.
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+extern const base::FeatureParam<int> kLearnedMemoryMaxCandidates;
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+extern const base::FeatureParam<double> kLearnedMemoryRelevanceThreshold;
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+extern const base::FeatureParam<int> kLearnedMemoryMaxTurnMemories;
 #endif  // BUILDFLAG(ENABLE_LOCAL_AI)
 
 }  // namespace ai_chat::features

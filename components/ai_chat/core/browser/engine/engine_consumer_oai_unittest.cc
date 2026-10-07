@@ -924,6 +924,130 @@ TEST_F(EngineConsumerOAIUnitTest,
   run_loop.Run();
 }
 
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+TEST_F(EngineConsumerOAIUnitTest,
+       GenerateAssistantResponseWithMemories_LearnedMemoriesAdded) {
+  auto options = mojom::CustomModelOptions::New();
+  options->endpoint = GURL("https://test.com/");
+  options->model_request_name = "request_name";
+  options->context_size = 5000;
+  options->max_associated_content_length = 17200;
+  options->model_system_prompt = std::nullopt;
+  model_->options =
+      mojom::ModelOptions::NewCustomModelOptions(std::move(options));
+  engine_->UpdateModelOptions(*model_->options);
+  EXPECT_TRUE(engine_->UsesLearnedMemories(/*is_temporary_chat=*/false));
+  EXPECT_FALSE(engine_->UsesLearnedMemories(/*is_temporary_chat=*/true));
+
+  auto* client = GetClient();
+  EngineConsumer::ConversationHistory history;
+  mojom::ConversationTurnPtr entry = mojom::ConversationTurn::New();
+  entry->uuid = "turn-1";
+  entry->character_type = mojom::CharacterType::HUMAN;
+  entry->text = "Suggest a dinner.";
+  history.push_back(std::move(entry));
+
+  prefs::AddMemoryToPrefs("I like to eat apple", pref_service_);
+
+  EngineConsumer::LearnedMemories learned;
+  learned.permanent = {"Allergic to nuts."};
+  learned.relevant = {"Is vegetarian. (2026-08-22)", "<b>Likes lentils.</b>"};
+
+  std::string date_and_time_string =
+      base::UTF16ToUTF8(TimeFormatFriendlyDateAndTime(base::Time::Now()));
+  std::string expected_system_message = base::ReplaceStringPlaceholders(
+      l10n_util::GetStringUTF8(IDS_AI_CHAT_DEFAULT_CUSTOM_MODEL_SYSTEM_PROMPT),
+      {date_and_time_string}, nullptr);
+  base::StrAppend(
+      &expected_system_message,
+      {l10n_util::GetStringUTF8(
+           IDS_AI_CHAT_CUSTOM_MODEL_USER_MEMORY_SYSTEM_PROMPT_SEGMENT),
+       l10n_util::GetStringUTF8(
+           IDS_AI_CHAT_CUSTOM_MODEL_LEARNED_MEMORY_SYSTEM_PROMPT_SEGMENT)});
+
+  base::RunLoop run_loop;
+  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _, _))
+      .WillOnce(
+          [&](const mojom::ModelOptions&, std::vector<OAIMessage> messages,
+              std::optional<base::ListValue>,
+              EngineConsumer::GenerationDataCallback,
+              EngineConsumer::GenerationCompletedCallback completed_callback,
+              const std::optional<std::vector<std::string>>&) {
+            ASSERT_EQ(messages.size(), 2u);
+            VerifyTextBlock(FROM_HERE, messages[0].content[0],
+                            expected_system_message);
+            ASSERT_EQ(messages[1].content.size(), 2u);
+            // The permanent memory joins the memories that the user wrote. The
+            // relevant memories have their own list.
+            VerifyMemoryBlock(
+                FROM_HERE, messages[1].content[0],
+                BuildExpectedMemory(
+                    {},
+                    {{"memories", {"I like to eat apple", "Allergic to nuts."}},
+                     {"learned_memories",
+                      {"Is vegetarian. (2026-08-22)",
+                       "&lt;b&gt;Likes lentils.&lt;/b&gt;"}}}));
+            std::move(completed_callback)
+                .Run(base::ok(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewCompletionEvent(
+                        mojom::CompletionEvent::New("")),
+                    std::nullopt /* model_key */)));
+          });
+
+  engine_->GenerateAssistantResponseWithMemories(
+      std::move(learned), {}, EngineConsumer::ToHistoryView(history), false, {},
+      std::nullopt, {}, base::DoNothing(),
+      base::BindLambdaForTesting(
+          [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
+
+  run_loop.Run();
+}
+
+TEST_F(
+    EngineConsumerOAIUnitTest,
+    GenerateAssistantResponseWithMemories_TemporaryChatHasNoLearnedMemories) {
+  auto* client = GetClient();
+  EngineConsumer::ConversationHistory history;
+  mojom::ConversationTurnPtr entry = mojom::ConversationTurn::New();
+  entry->uuid = "turn-1";
+  entry->character_type = mojom::CharacterType::HUMAN;
+  entry->text = "Suggest a dinner.";
+  history.push_back(std::move(entry));
+  prefs::AddMemoryToPrefs("I like to eat apple", pref_service_);
+
+  EngineConsumer::LearnedMemories learned;
+  learned.relevant = {"Is vegetarian. (2026-08-22)"};
+
+  base::RunLoop run_loop;
+  EXPECT_CALL(*client, PerformRequest(_, _, _, _, _, _))
+      .WillOnce(
+          [&](const mojom::ModelOptions&, std::vector<OAIMessage> messages,
+              std::optional<base::ListValue>,
+              EngineConsumer::GenerationDataCallback,
+              EngineConsumer::GenerationCompletedCallback completed_callback,
+              const std::optional<std::vector<std::string>>&) {
+            ASSERT_EQ(messages.size(), 2u);
+            // No memory block at all.
+            ASSERT_EQ(messages[1].content.size(), 1u);
+            VerifyTextBlock(FROM_HERE, messages[1].content[0],
+                            "Suggest a dinner.");
+            std::move(completed_callback)
+                .Run(base::ok(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewCompletionEvent(
+                        mojom::CompletionEvent::New("")),
+                    std::nullopt /* model_key */)));
+          });
+
+  engine_->GenerateAssistantResponseWithMemories(
+      std::move(learned), {}, EngineConsumer::ToHistoryView(history),
+      /*is_temporary_chat=*/true, {}, std::nullopt, {}, base::DoNothing(),
+      base::BindLambdaForTesting(
+          [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
+
+  run_loop.Run();
+}
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
+
 TEST_F(EngineConsumerOAIUnitTest,
        GenerateAssistantResponse_TemporaryChatExcludesMemory) {
   // Setup the model options to not have a custom system prompt

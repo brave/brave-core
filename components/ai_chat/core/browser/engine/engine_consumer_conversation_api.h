@@ -67,6 +67,19 @@ class EngineConsumerConversationAPI : public EngineConsumer {
       const ConversationCapabilitySet& conversation_capabilities,
       GenerationDataCallback data_received_callback,
       GenerationCompletedCallback completed_callback) override;
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+  bool UsesLearnedMemories(bool is_temporary_chat) const override;
+  void GenerateAssistantResponseWithMemories(
+      LearnedMemories learned_memories,
+      PageContentsMap&& page_contents,
+      const ConversationHistoryView& conversation_history,
+      bool is_temporary_chat,
+      const std::vector<base::WeakPtr<Tool>>& tools,
+      std::optional<std::string_view> preferred_tool_name,
+      const ConversationCapabilitySet& conversation_capabilities,
+      GenerationDataCallback data_received_callback,
+      GenerationCompletedCallback completed_callback) override;
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
   void GenerateRewriteSuggestion(
       const std::string& text,
       mojom::ActionType action_type,
@@ -97,6 +110,17 @@ class EngineConsumerConversationAPI : public EngineConsumer {
   ConversationAPIClient* GetAPIForTesting() { return api_.get(); }
 
  private:
+  // GenerateAssistantResponse() and its version with learned memories.
+  void PerformAssistantResponse(
+      const LearnedMemories& learned_memories,
+      PageContentsMap&& page_contents,
+      const ConversationHistoryView& conversation_history,
+      bool is_temporary_chat,
+      const std::vector<base::WeakPtr<Tool>>& tools,
+      const ConversationCapabilitySet& conversation_capabilities,
+      GenerationDataCallback data_received_callback,
+      GenerationCompletedCallback completed_callback);
+
   void OnGenerateQuestionSuggestionsResponse(
       SuggestedQuestionsCallback callback,
       GenerationResult result);

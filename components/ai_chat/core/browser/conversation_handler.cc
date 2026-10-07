@@ -19,6 +19,7 @@
 #include "base/barrier_closure.h"
 #include "base/check.h"
 #include "base/check_op.h"
+#include "base/containers/adapters.h"
 #include "base/containers/fixed_flat_set.h"
 #include "base/containers/map_util.h"
 #include "base/containers/span.h"
@@ -56,6 +57,7 @@
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/ai_chat/core/common/prefs.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
+#include "brave/components/local_ai/buildflags/buildflags.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
 #include "mojo/public/cpp/bindings/clone_traits.h"
@@ -65,6 +67,10 @@
 #include "mojo/public/cpp/bindings/struct_ptr.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "ui/base/l10n/l10n_util.h"
+
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+#include "brave/components/ai_chat/core/browser/user_memory_manager.h"
+#endif
 
 using api_request_helper::APIRequestResult;
 
@@ -429,6 +435,9 @@ void ConversationHandler::InitEngine() {
 
   if (is_request_in_progress_) {
     // Pending requests have been deleted along with the model engine
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+    learned_memories_weak_ptr_factory_.InvalidateWeakPtrs();
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
     is_request_in_progress_ = false;
     OnAPIRequestInProgressChanged();
   }
@@ -1153,6 +1162,10 @@ void ConversationHandler::StopGenerationAndMaybeGetHumanEntry(
   StopTask();
 
   is_request_in_progress_ = false;
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+  // A lookup of learned memories can be active. The request must not go.
+  learned_memories_weak_ptr_factory_.InvalidateWeakPtrs();
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
   engine_->ClearAllQueries();
   OnAPIRequestInProgressChanged();
 
@@ -1444,6 +1457,23 @@ void ConversationHandler::PerformAssistantGeneration() {
   // assistant entries in a row.
   needs_new_entry_ = true;
 
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+  // Learned memories: the manager finds the memories for this turn, then the
+  // request goes. The request goes at once when the manager has no memory.
+  if (UserMemoryManager* manager = ai_chat_service_->GetUserMemoryManager()) {
+    std::vector<std::string> user_messages =
+        GetUserMessagesForLearnedMemories();
+    if (!user_messages.empty()) {
+      manager->GetMemoriesForTurn(
+          std::move(user_messages),
+          base::BindOnce(
+              &ConversationHandler::PerformAssistantGenerationWithMemories,
+              learned_memories_weak_ptr_factory_.GetWeakPtr()));
+      return;
+    }
+  }
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
+
   engine_->GenerateAssistantResponse(
       associated_content_manager_->GetCachedContentsMap(),
       EngineConsumer::ToHistoryView(chat_history_), IsTemporaryChat(),
@@ -1454,6 +1484,46 @@ void ConversationHandler::PerformAssistantGeneration() {
       base::BindOnce(&ConversationHandler::OnEngineCompletionComplete,
                      weak_ptr_factory_.GetWeakPtr()));
 }
+
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+std::vector<std::string>
+ConversationHandler::GetUserMessagesForLearnedMemories() const {
+  // Only the request for a user message has a memory block (see
+  // BuildOAIMessages).
+  if (chat_history_.empty() ||
+      chat_history_.back()->character_type != mojom::CharacterType::HUMAN ||
+      !engine_->UsesLearnedMemories(IsTemporaryChat())) {
+    return {};
+  }
+  std::vector<std::string> user_messages;
+  for (const auto& entry : base::Reversed(chat_history_)) {
+    if (entry->character_type == mojom::CharacterType::HUMAN) {
+      user_messages.push_back(entry->text);
+      if (user_messages.size() == 2) {
+        break;
+      }
+    }
+  }
+  return user_messages;
+}
+
+void ConversationHandler::PerformAssistantGenerationWithMemories(
+    EngineConsumer::LearnedMemories learned_memories) {
+  if (chat_history_.empty()) {
+    return;
+  }
+  engine_->GenerateAssistantResponseWithMemories(
+      std::move(learned_memories),
+      associated_content_manager_->GetCachedContentsMap(),
+      EngineConsumer::ToHistoryView(chat_history_), IsTemporaryChat(),
+      GetTools(), std::nullopt /* preferred_tool_name */,
+      conversation_capabilities_,
+      base::BindRepeating(&ConversationHandler::OnEngineCompletionDataReceived,
+                          weak_ptr_factory_.GetWeakPtr()),
+      base::BindOnce(&ConversationHandler::OnEngineCompletionComplete,
+                     weak_ptr_factory_.GetWeakPtr()));
+}
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
 
 void ConversationHandler::PerformPostToolAssistantGeneration() {
   if (tool_use_task_state_ == mojom::TaskState::kPaused ||

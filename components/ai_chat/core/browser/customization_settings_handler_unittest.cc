@@ -16,12 +16,14 @@
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
+#include "brave/components/ai_chat/core/browser/memory_manager_delegate.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/customization_settings.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/ai_chat/core/common/prefs.h"
 #include "components/prefs/testing_pref_service.h"
+#include "mojo/public/cpp/bindings/clone_traits.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -43,11 +45,11 @@ class MockCustomizationSettingsUI : public mojom::CustomizationSettingsUI {
               (override));
 };
 
-// Finds the memories a test gives it, and records the queries it is asked.
-class FakeMemorySearchDelegate : public CustomizationSettingsHandler::Delegate {
+// Gives the memories a test sets, and records what the handler asks.
+class FakeMemoryManagerDelegate : public MemoryManagerDelegate {
  public:
-  FakeMemorySearchDelegate() = default;
-  ~FakeMemorySearchDelegate() override = default;
+  FakeMemoryManagerDelegate() = default;
+  ~FakeMemoryManagerDelegate() override = default;
 
   void SearchMemories(
       const std::string& query,
@@ -57,8 +59,28 @@ class FakeMemorySearchDelegate : public CustomizationSettingsHandler::Delegate {
     std::move(callback).Run(results);
   }
 
+  void GetLearnedMemories(GetLearnedMemoriesCallback callback) override {
+    std::move(callback).Run(learned_available, mojo::Clone(learned));
+  }
+
+  void ForgetLearnedMemory(const std::string& uuid,
+                           ForgetLearnedMemoryCallback callback) override {
+    forgotten.push_back(uuid);
+    std::move(callback).Run(true);
+  }
+
+  void DreamNow(DreamNowCallback callback) override {
+    ++dream_now_calls;
+    std::move(callback).Run(mojom::DreamNowResult::New(
+        mojom::DreamNowStatus::kCompleted, 3, 2, 1, 0));
+  }
+
   std::vector<std::string> queries;
   std::optional<std::vector<std::string>> results;
+  bool learned_available = true;
+  std::vector<mojom::LearnedMemoryItemPtr> learned;
+  std::vector<std::string> forgotten;
+  int dream_now_calls = 0;
 };
 
 std::optional<std::vector<std::string>> SearchMemories(
@@ -79,7 +101,7 @@ class CustomizationSettingsHandlerTest : public ::testing::Test {
     pref_service_ = std::make_unique<TestingPrefServiceSimple>();
     prefs::RegisterProfilePrefs(pref_service_->registry());
 
-    auto delegate = std::make_unique<FakeMemorySearchDelegate>();
+    auto delegate = std::make_unique<FakeMemoryManagerDelegate>();
     delegate_ = delegate.get();
     handler_ = std::make_unique<CustomizationSettingsHandler>(
         pref_service_.get(), std::move(delegate));
@@ -92,7 +114,7 @@ class CustomizationSettingsHandlerTest : public ::testing::Test {
 
  protected:
   std::unique_ptr<TestingPrefServiceSimple> pref_service_;
-  raw_ptr<FakeMemorySearchDelegate> delegate_ = nullptr;
+  raw_ptr<FakeMemoryManagerDelegate> delegate_ = nullptr;
   std::unique_ptr<CustomizationSettingsHandler> handler_;
   base::test::TaskEnvironment task_environment_;
 };
@@ -449,6 +471,52 @@ TEST(CustomizationSettingsHandlerNoDelegateTest, SearchMemories) {
   CustomizationSettingsHandler handler(&pref_service, nullptr);
 
   EXPECT_EQ(SearchMemories(handler, "pets at home"), std::nullopt);
+}
+
+TEST_F(CustomizationSettingsHandlerTest, LearnedMemoriesGoThroughTheDelegate) {
+  delegate_->learned.push_back(mojom::LearnedMemoryItem::New(
+      "uuid-1", "Lives in Berlin.", mojom::LearnedMemoryCategory::kPersonalFact,
+      mojom::LearnedMemoryType::kLongTerm, base::Time(), base::Time(),
+      std::nullopt));
+
+  base::test::TestFuture<bool, std::vector<mojom::LearnedMemoryItemPtr>>
+      memories;
+  handler_->GetLearnedMemories(memories.GetCallback());
+  EXPECT_TRUE(memories.Get<0>());
+  ASSERT_EQ(memories.Get<1>().size(), 1u);
+  EXPECT_EQ(memories.Get<1>()[0]->text, "Lives in Berlin.");
+
+  base::test::TestFuture<bool> forgotten;
+  handler_->ForgetLearnedMemory("uuid-1", forgotten.GetCallback());
+  EXPECT_TRUE(forgotten.Get());
+  EXPECT_EQ(delegate_->forgotten, std::vector<std::string>{"uuid-1"});
+
+  base::test::TestFuture<mojom::DreamNowResultPtr> dream;
+  handler_->DreamNow(dream.GetCallback());
+  EXPECT_EQ(dream.Get()->status, mojom::DreamNowStatus::kCompleted);
+  EXPECT_EQ(dream.Get()->memories_added, 1u);
+  EXPECT_EQ(delegate_->dream_now_calls, 1);
+}
+
+TEST(CustomizationSettingsHandlerNoDelegateTest, LearnedMemoryIsNotAvailable) {
+  base::test::TaskEnvironment task_environment;
+  TestingPrefServiceSimple pref_service;
+  prefs::RegisterProfilePrefs(pref_service.registry());
+  CustomizationSettingsHandler handler(&pref_service, nullptr);
+
+  base::test::TestFuture<bool, std::vector<mojom::LearnedMemoryItemPtr>>
+      memories;
+  handler.GetLearnedMemories(memories.GetCallback());
+  EXPECT_FALSE(memories.Get<0>());
+  EXPECT_TRUE(memories.Get<1>().empty());
+
+  base::test::TestFuture<bool> forgotten;
+  handler.ForgetLearnedMemory("uuid", forgotten.GetCallback());
+  EXPECT_FALSE(forgotten.Get());
+
+  base::test::TestFuture<mojom::DreamNowResultPtr> dream;
+  handler.DreamNow(dream.GetCallback());
+  EXPECT_EQ(dream.Get()->status, mojom::DreamNowStatus::kUnavailable);
 }
 
 }  // namespace ai_chat

@@ -42,12 +42,14 @@ UserMemoryManager::UserMemoryManager(
     LlmEngineFactory llm_engine_factory,
     passage_embeddings::Embedder* embedder,
     PrefService* prefs,
-    DreamingConfig config)
+    DreamingConfig config,
+    TurnMemoryConfig turn_config)
     : decision_client_(std::move(decision_client)),
       llm_engine_factory_(std::move(llm_engine_factory)),
       embedder_(embedder),
       prefs_(prefs),
-      config_(config) {
+      config_(config),
+      turn_config_(turn_config) {
   CHECK(decision_client_);
   CHECK(llm_engine_factory_);
   CHECK(embedder_);
@@ -85,6 +87,76 @@ void UserMemoryManager::OnDatabaseUnavailable() {
 }
 
 void UserMemoryManager::LearnFromChats(DreamingCallback callback) {
+  StartRun(std::move(callback), config_);
+}
+
+void UserMemoryManager::DreamNow(DreamingCallback callback) {
+  if (!prefs_->GetBoolean(prefs::kBraveAIChatUserMemoryEnabled)) {
+    std::move(callback).Run(DreamingResult(DreamingStatus::kUnavailable));
+    return;
+  }
+  DreamingConfig config = config_;
+  config.time_limit = std::max(config.time_limit, kDreamNowTimeLimit);
+  StartRun(std::move(callback), config);
+}
+
+void UserMemoryManager::GetLearnedMemories(LearnedMemoriesCallback callback) {
+  if (!db_) {
+    std::move(callback).Run({});
+    return;
+  }
+  db_->AsyncCall(&AIChatDatabase::GetAllLearnedMemories)
+      .Then(std::move(callback));
+}
+
+void UserMemoryManager::ForgetLearnedMemory(
+    const std::string& uuid,
+    base::OnceCallback<void(bool)> callback) {
+  if (!db_) {
+    std::move(callback).Run(false);
+    return;
+  }
+  db_->AsyncCall(&AIChatDatabase::ForgetLearnedMemory)
+      .WithArgs(uuid)
+      .Then(std::move(callback));
+}
+
+void UserMemoryManager::GetMemoriesForTurn(
+    std::vector<std::string> user_messages,
+    TurnMemoriesCallback callback) {
+  if (!db_ || !prefs_->GetBoolean(prefs::kBraveAIChatUserMemoryEnabled) ||
+      user_messages.empty()) {
+    std::move(callback).Run({});
+    return;
+  }
+  const uint64_t id = next_turn_lookup_id_++;
+  auto lookup = std::make_unique<TurnMemoryLookup>(
+      *db_, *decision_client_, *embedder_, turn_config_,
+      std::move(user_messages),
+      base::BindOnce(&UserMemoryManager::OnTurnLookupDone,
+                     weak_ptr_factory_.GetWeakPtr(), id, std::move(callback)));
+  TurnMemoryLookup* lookup_ptr = lookup.get();
+  turn_lookups_[id] = std::move(lookup);
+  lookup_ptr->Start();
+}
+
+void UserMemoryManager::OnTurnLookupDone(
+    uint64_t lookup_id,
+    TurnMemoriesCallback callback,
+    EngineConsumer::LearnedMemories memories) {
+  // The lookup calls this as its last step, and it is still on the stack.
+  // Delete it later.
+  auto it = turn_lookups_.find(lookup_id);
+  if (it != turn_lookups_.end()) {
+    base::SequencedTaskRunner::GetCurrentDefault()->DeleteSoon(
+        FROM_HERE, std::move(it->second));
+    turn_lookups_.erase(it);
+  }
+  std::move(callback).Run(std::move(memories));
+}
+
+void UserMemoryManager::StartRun(DreamingCallback callback,
+                                 const DreamingConfig& config) {
   if (dreaming_run_) {
     std::move(callback).Run(DreamingResult(DreamingStatus::kBusy));
     return;
@@ -98,7 +170,7 @@ void UserMemoryManager::LearnFromChats(DreamingCallback callback) {
   run_llm_engine_ = llm_engine_factory_.Run();
   VLOG(1) << "Dreaming starts, local LLM: " << (run_llm_engine_ ? "yes" : "no");
   dreaming_run_ = std::make_unique<DreamingRun>(
-      *db_, *decision_client_, run_llm_engine_.get(), *embedder_, config_,
+      *db_, *decision_client_, run_llm_engine_.get(), *embedder_, config,
       base::BindOnce(&UserMemoryManager::OnDreamingDone,
                      base::Unretained(this)));
   dreaming_run_->Start();

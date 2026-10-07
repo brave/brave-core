@@ -5,6 +5,9 @@
 
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer_conversation_api.h"
 
+#include <algorithm>
+#include <iterator>
+
 #include "base/barrier_callback.h"
 #include "base/check.h"
 #include "base/strings/string_split.h"
@@ -80,15 +83,63 @@ void EngineConsumerConversationAPI::GenerateAssistantResponse(
     const ConversationCapabilitySet& conversation_capabilities,
     GenerationDataCallback data_received_callback,
     GenerationCompletedCallback completed_callback) {
+  PerformAssistantResponse({}, std::move(page_contents), conversation_history,
+                           is_temporary_chat, tools, conversation_capabilities,
+                           std::move(data_received_callback),
+                           std::move(completed_callback));
+}
+
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+bool EngineConsumerConversationAPI::UsesLearnedMemories(
+    bool is_temporary_chat) const {
+  return !is_temporary_chat;
+}
+
+void EngineConsumerConversationAPI::GenerateAssistantResponseWithMemories(
+    LearnedMemories learned_memories,
+    PageContentsMap&& page_contents,
+    const ConversationHistoryView& conversation_history,
+    bool is_temporary_chat,
+    const std::vector<base::WeakPtr<Tool>>& tools,
+    std::optional<std::string_view> preferred_tool_name,
+    const ConversationCapabilitySet& conversation_capabilities,
+    GenerationDataCallback data_received_callback,
+    GenerationCompletedCallback completed_callback) {
+  PerformAssistantResponse(
+      learned_memories, std::move(page_contents), conversation_history,
+      is_temporary_chat, tools, conversation_capabilities,
+      std::move(data_received_callback), std::move(completed_callback));
+}
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
+
+void EngineConsumerConversationAPI::PerformAssistantResponse(
+    const LearnedMemories& learned_memories,
+    PageContentsMap&& page_contents,
+    const ConversationHistoryView& conversation_history,
+    bool is_temporary_chat,
+    const std::vector<base::WeakPtr<Tool>>& tools,
+    const ConversationCapabilitySet& conversation_capabilities,
+    GenerationDataCallback data_received_callback,
+    GenerationCompletedCallback completed_callback) {
   if (!CanPerformCompletionRequest(conversation_history)) {
     std::move(completed_callback).Run(base::unexpected(mojom::APIError::None));
     return;
   }
 
-  auto messages =
-      BuildOAIMessages(std::move(page_contents), conversation_history, prefs_,
-                       is_temporary_chat, max_associated_content_length_,
-                       [this](std::string& input) { SanitizeInput(input); });
+  // The server does not render the `learned_memories` key yet (B4 in the
+  // plan). Until it does, the relevant learned memories go in the `memories`
+  // list, next to the memories that the user wrote. Each has the date of its
+  // last mention.
+  LearnedMemories memories_for_server = learned_memories;
+  std::ranges::move(memories_for_server.relevant,
+                    std::back_inserter(memories_for_server.permanent));
+  memories_for_server.relevant.clear();
+
+  auto messages = BuildOAIMessages(
+      std::move(page_contents), conversation_history, prefs_, is_temporary_chat,
+      max_associated_content_length_,
+      [this](std::string& input) { SanitizeInput(input); },
+      memories_for_server);
 
   // Override model_name to be used if model_key existed for last human turn,
   // used when regenerating answer.

@@ -71,6 +71,7 @@ static_library("browser") {
     "engine/oblivious_http_config_manager.h",
     "history_ui_handler.cc",
     "history_ui_handler.h",
+    "memory_manager_delegate.h",
     "model_service.cc",
     "model_service.h",
     "model_validator.cc",
@@ -194,6 +195,8 @@ static_library("browser") {
       "memory_llm_prompts.h",
       "ollama_decision_client.cc",
       "ollama_decision_client.h",
+      "turn_memory_lookup.cc",
+      "turn_memory_lookup.h",
       "user_memory_manager.cc",
       "user_memory_manager.h",
     ]

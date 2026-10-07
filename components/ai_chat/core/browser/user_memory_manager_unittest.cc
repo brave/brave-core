@@ -35,6 +35,7 @@
 #include "brave/components/ai_chat/core/browser/engine/mock_engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/learned_memory_eval.h"
 #include "brave/components/ai_chat/core/browser/memory_decision_client.h"
+#include "brave/components/ai_chat/core/browser/turn_memory_lookup.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
@@ -121,6 +122,41 @@ class FakeDecisionClient : public MemoryDecisionClient {
     base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
         FROM_HERE, base::BindOnce(std::move(callback), std::move(answers)));
   }
+
+  void AskRelevance(const std::string& message,
+                    const std::string& previous_message,
+                    std::vector<std::string> memories,
+                    RelevanceCallback callback) override {
+    relevance_requests.push_back({message, previous_message, memories});
+    if (on_relevance_asked) {
+      std::move(on_relevance_asked).Run();
+    }
+    if (hold_relevance) {
+      return;
+    }
+    std::optional<std::vector<double>> answer;
+    if (!fail_relevance) {
+      answer = std::vector<double>();
+      for (const auto& memory : memories) {
+        auto it = relevance.find(memory);
+        answer->push_back(it != relevance.end() ? it->second : 0.05);
+      }
+    }
+    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+        FROM_HERE, base::BindOnce(std::move(callback), std::move(answer)));
+  }
+
+  struct RelevanceRequest {
+    std::string message;
+    std::string previous_message;
+    std::vector<std::string> memories;
+  };
+  // The probability that a memory is relevant, by memory text.
+  std::map<std::string, double> relevance;
+  bool hold_relevance = false;
+  bool fail_relevance = false;
+  base::OnceClosure on_relevance_asked;
+  std::vector<RelevanceRequest> relevance_requests;
 
   std::map<std::pair<std::string, std::string>, RelationAnswer> relations;
   std::set<std::pair<std::string, std::string>> unsure_relations;
@@ -376,6 +412,209 @@ TEST_F(UserMemoryManagerTest, UnavailableWithoutDatabase) {
   EXPECT_FALSE(manager_->is_database_available());
   EXPECT_EQ(Dream().status, DreamingStatus::kUnavailable);
   EXPECT_THAT(client_->gate_requests, IsEmpty());
+}
+
+// Chat time (Track B).
+
+class UserMemoryManagerTurnTest : public UserMemoryManagerTest {
+ public:
+  void SetUp() override {
+    UserMemoryManagerTest::SetUp();
+    AddMemory("Is vegetarian.");
+    AddMemory("Has a beagle named Luna.");
+    AddMemory("Writes TypeScript.");
+    // The user message is close to the first two memories.
+    MakeClose("Suggest a dinner.", "Is vegetarian.");
+    manager_->OnDatabaseAvailable(&db_);
+  }
+
+  EngineConsumer::LearnedMemories GetMemoriesForTurn(
+      std::vector<std::string> messages) {
+    base::test::TestFuture<EngineConsumer::LearnedMemories> future;
+    manager_->GetMemoriesForTurn(std::move(messages), future.GetCallback());
+    return future.Take();
+  }
+};
+
+TEST_F(UserMemoryManagerTurnTest, RelevantMemoriesGoWithTheirDate) {
+  client_->relevance = {{"Is vegetarian.", 0.9}, {"Writes TypeScript.", 0.1}};
+
+  EngineConsumer::LearnedMemories memories =
+      GetMemoriesForTurn({"Suggest a dinner."});
+
+  EXPECT_THAT(memories.permanent, IsEmpty());
+  ASSERT_EQ(memories.relevant.size(), 1u);
+  // AddMemory() leaves the dates empty, so the text has no date.
+  EXPECT_EQ(memories.relevant[0], "Is vegetarian.");
+  // The model sees the closest memory first, and the message.
+  ASSERT_EQ(client_->relevance_requests.size(), 1u);
+  EXPECT_EQ(client_->relevance_requests[0].message, "Suggest a dinner.");
+  EXPECT_EQ(client_->relevance_requests[0].memories.front(), "Is vegetarian.");
+}
+
+TEST_F(UserMemoryManagerTurnTest, BestMemoriesFirstAndOnlyAboveTheThreshold) {
+  client_->relevance = {{"Is vegetarian.", 0.5},
+                        {"Has a beagle named Luna.", 0.9},
+                        {"Writes TypeScript.", 0.29}};
+
+  EngineConsumer::LearnedMemories memories =
+      GetMemoriesForTurn({"Suggest a dinner."});
+
+  EXPECT_THAT(memories.relevant,
+              ElementsAre("Has a beagle named Luna.", "Is vegetarian."));
+}
+
+TEST_F(UserMemoryManagerTurnTest, PermanentMemoriesAlwaysGo) {
+  AddMemory("Allergic to nuts.", LearnedMemoryType::kPermanent);
+
+  EngineConsumer::LearnedMemories memories =
+      GetMemoriesForTurn({"Suggest a dinner."});
+
+  EXPECT_THAT(memories.permanent, ElementsAre("Allergic to nuts."));
+  // A permanent memory is not asked about.
+  for (const auto& memory : client_->relevance_requests[0].memories) {
+    EXPECT_NE(memory, "Allergic to nuts.");
+  }
+}
+
+TEST_F(UserMemoryManagerTurnTest, TwoUserMessagesAreSentToTheModel) {
+  GetMemoriesForTurn({"Yes, please.", "Suggest a dinner."});
+
+  ASSERT_EQ(client_->relevance_requests.size(), 1u);
+  EXPECT_EQ(client_->relevance_requests[0].message, "Yes, please.");
+  EXPECT_EQ(client_->relevance_requests[0].previous_message,
+            "Suggest a dinner.");
+}
+
+TEST_F(UserMemoryManagerTurnTest, TimeOutGivesOnlyPermanentMemories) {
+  AddMemory("Allergic to nuts.", LearnedMemoryType::kPermanent);
+  client_->hold_relevance = true;
+  client_->relevance = {{"Is vegetarian.", 0.9}};
+
+  base::test::TestFuture<void> asked;
+  client_->on_relevance_asked = asked.GetCallback();
+  base::test::TestFuture<EngineConsumer::LearnedMemories> future;
+  manager_->GetMemoriesForTurn({"Suggest a dinner."}, future.GetCallback());
+  // Wait until the model has the question, then let the time pass.
+  ASSERT_TRUE(asked.Wait());
+  EXPECT_FALSE(future.IsReady());
+  task_environment_.FastForwardBy(TurnMemoryConfig::FromFeatures().timeout);
+
+  EngineConsumer::LearnedMemories memories = future.Take();
+  EXPECT_THAT(memories.permanent, ElementsAre("Allergic to nuts."));
+  EXPECT_THAT(memories.relevant, IsEmpty());
+}
+
+TEST_F(UserMemoryManagerTurnTest, FailedModelGivesNoRelevantMemories) {
+  client_->fail_relevance = true;
+
+  EngineConsumer::LearnedMemories memories =
+      GetMemoriesForTurn({"Suggest a dinner."});
+
+  EXPECT_TRUE(memories.empty());
+}
+
+TEST_F(UserMemoryManagerTurnTest, MemorySettingOffGivesNothing) {
+  prefs_.SetBoolean(prefs::kBraveAIChatUserMemoryEnabled, false);
+
+  EngineConsumer::LearnedMemories memories =
+      GetMemoriesForTurn({"Suggest a dinner."});
+
+  EXPECT_TRUE(memories.empty());
+  EXPECT_THAT(client_->relevance_requests, IsEmpty());
+}
+
+TEST_F(UserMemoryManagerTest, TurnWithoutDatabaseGivesNothing) {
+  base::test::TestFuture<EngineConsumer::LearnedMemories> future;
+  manager_->GetMemoriesForTurn({"Suggest a dinner."}, future.GetCallback());
+  EXPECT_TRUE(future.Take().empty());
+}
+
+TEST(TurnMemoryLookupTest, FormatsTheMemoryWithTheDateOfTheLastMention) {
+  LearnedMemory memory;
+  memory.text = "Lives in Berlin.";
+  base::Time updated;
+  ASSERT_TRUE(base::Time::FromUTCString("2026-08-22 10:00:00", &updated));
+  memory.updated_date = updated;
+
+  EXPECT_EQ(TurnMemoryLookup::FormatForPrompt(memory),
+            "Lives in Berlin. (2026-08-22)");
+}
+
+TEST_F(UserMemoryManagerTest, DreamNowLearnsFromChats) {
+  AddChat("chat-1", {"I live in Berlin."});
+  KeepSentence("I live in Berlin.", "I live in Berlin.");
+  manager_->OnDatabaseAvailable(&db_);
+
+  base::test::TestFuture<DreamingResult> future;
+  manager_->DreamNow(future.GetCallback());
+  DreamingResult result = future.Take();
+
+  EXPECT_EQ(result.status, DreamingStatus::kCompleted);
+  EXPECT_EQ(result.memories_added, 1u);
+  base::test::TestFuture<std::vector<LearnedMemory>> memories;
+  manager_->GetLearnedMemories(memories.GetCallback());
+  ASSERT_EQ(memories.Get().size(), 1u);
+  EXPECT_EQ(memories.Get()[0].text, "I live in Berlin.");
+}
+
+TEST_F(UserMemoryManagerTest, DreamNowNeedsTheMemorySetting) {
+  AddChat("chat-1", {"I live in Berlin."});
+  KeepSentence("I live in Berlin.", "I live in Berlin.");
+  manager_->OnDatabaseAvailable(&db_);
+  prefs_.SetBoolean(prefs::kBraveAIChatUserMemoryEnabled, false);
+
+  base::test::TestFuture<DreamingResult> future;
+  manager_->DreamNow(future.GetCallback());
+
+  EXPECT_EQ(future.Take().status, DreamingStatus::kUnavailable);
+  EXPECT_THAT(client_->gate_requests, IsEmpty());
+}
+
+TEST_F(UserMemoryManagerTest, DreamNowRunsLongerThanTheDailyRun) {
+  AddChat("chat-1", {"I live in Berlin."});
+  client_->hold_replies = true;
+  manager_->OnDatabaseAvailable(&db_);
+
+  base::test::TestFuture<void> gate_asked;
+  client_->on_gate_asked = gate_asked.GetCallback();
+  base::test::TestFuture<DreamingResult> future;
+  manager_->DreamNow(future.GetCallback());
+  ASSERT_TRUE(gate_asked.Wait());
+  // The daily limit passes, and the run continues.
+  task_environment_.FastForwardBy(
+      UserMemoryManager::GetDreamingConfigFromFeatures().time_limit +
+      base::Seconds(1));
+  EXPECT_FALSE(future.IsReady());
+  task_environment_.FastForwardBy(UserMemoryManager::kDreamNowTimeLimit);
+
+  EXPECT_EQ(future.Take().status, DreamingStatus::kTimedOut);
+}
+
+TEST_F(UserMemoryManagerTest, ForgetLearnedMemoryWritesATombstone) {
+  AddMemory("Lives in Berlin.");
+  manager_->OnDatabaseAvailable(&db_);
+
+  base::test::TestFuture<bool> forgotten;
+  manager_->ForgetLearnedMemory("old-Lives in Berlin.",
+                                forgotten.GetCallback());
+
+  EXPECT_TRUE(forgotten.Get());
+  EXPECT_TRUE(GetMemories().empty());
+  base::test::TestFuture<std::vector<MemoryTombstone>> tombstones;
+  db_.AsyncCall(&AIChatDatabase::GetAllMemoryTombstones)
+      .Then(tombstones.GetCallback());
+  EXPECT_EQ(tombstones.Get().size(), 1u);
+}
+
+TEST_F(UserMemoryManagerTest, LearnedMemoriesNeedTheDatabase) {
+  base::test::TestFuture<std::vector<LearnedMemory>> memories;
+  manager_->GetLearnedMemories(memories.GetCallback());
+  EXPECT_TRUE(memories.Get().empty());
+
+  base::test::TestFuture<bool> forgotten;
+  manager_->ForgetLearnedMemory("any", forgotten.GetCallback());
+  EXPECT_FALSE(forgotten.Get());
 }
 
 TEST_F(UserMemoryManagerTest, KeepsCertainFactsOnly) {

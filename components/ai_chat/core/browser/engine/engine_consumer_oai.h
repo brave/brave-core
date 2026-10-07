@@ -73,6 +73,17 @@ class EngineConsumerOAIRemote : public EngineConsumer {
       const ConversationHistoryView& conversation_history,
       GenerationCompletedCallback completed_callback) override;
 #if BUILDFLAG(ENABLE_LOCAL_AI)
+  bool UsesLearnedMemories(bool is_temporary_chat) const override;
+  void GenerateAssistantResponseWithMemories(
+      LearnedMemories learned_memories,
+      PageContentsMap&& page_contents,
+      const ConversationHistoryView& conversation_history,
+      bool is_temporary_chat,
+      const std::vector<base::WeakPtr<Tool>>& tools,
+      std::optional<std::string_view> preferred_tool_name,
+      const ConversationCapabilitySet& conversation_capabilities,
+      GenerationDataCallback data_received_callback,
+      GenerationCompletedCallback completed_callback) override;
   void GenerateMemoryText(
       const std::string& system_prompt,
       const std::string& user_message,
@@ -95,6 +106,16 @@ class EngineConsumerOAIRemote : public EngineConsumer {
   void UpdateModelOptions(const mojom::ModelOptions& options) override;
 
  private:
+  // GenerateAssistantResponse() and its version with learned memories.
+  void PerformAssistantResponse(
+      const LearnedMemories& learned_memories,
+      PageContentsMap&& page_contents,
+      const ConversationHistoryView& conversation_history,
+      bool is_temporary_chat,
+      const std::vector<base::WeakPtr<Tool>>& tools,
+      GenerationDataCallback data_received_callback,
+      GenerationCompletedCallback completed_callback);
+
   OAIMessage BuildSystemMessage(
       const std::vector<OAIMessage>& conversation_messages);
   void OnGenerateQuestionSuggestionsResponse(

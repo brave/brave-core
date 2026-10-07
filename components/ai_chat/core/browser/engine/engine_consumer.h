@@ -115,6 +115,27 @@ class EngineConsumer {
       PageContents page_contents,
       SuggestedQuestionsCallback callback) = 0;
 
+  // The learned memories (see UserMemoryManager) that go in the memory block of
+  // one request, next to the memories that the user wrote.
+  struct LearnedMemories {
+    LearnedMemories();
+    LearnedMemories(const LearnedMemories&);
+    LearnedMemories& operator=(const LearnedMemories&);
+    LearnedMemories(LearnedMemories&&);
+    LearnedMemories& operator=(LearnedMemories&&);
+    ~LearnedMemories();
+
+    bool empty() const { return permanent.empty() && relevant.empty(); }
+
+    // Learned memories that the user keeps forever. They always go, in the
+    // `memories` list of the memory block.
+    std::vector<std::string> permanent;
+    // The learned memories that are relevant to the last user message, each
+    // with the date of its last mention. They go in the `learned_memories`
+    // list of the memory block.
+    std::vector<std::string> relevant;
+  };
+
   virtual void GenerateAssistantResponse(
       PageContentsMap&& page_contents,
       const ConversationHistoryView& conversation_history,
@@ -141,6 +162,24 @@ class EngineConsumer {
       GenerationCompletedCallback completed_callback) {}
 
 #if BUILDFLAG(ENABLE_LOCAL_AI)
+  // Returns true when GenerateAssistantResponseWithMemories() puts learned
+  // memories in the request of this chat. When it returns false, the caller
+  // does not look for learned memories. The default is false.
+  virtual bool UsesLearnedMemories(bool is_temporary_chat) const;
+
+  // Same as GenerateAssistantResponse(), and the memory block also has
+  // |learned_memories|. The default drops them.
+  virtual void GenerateAssistantResponseWithMemories(
+      LearnedMemories learned_memories,
+      PageContentsMap&& page_contents,
+      const ConversationHistoryView& conversation_history,
+      bool is_temporary_chat,
+      const std::vector<base::WeakPtr<Tool>>& tools,
+      std::optional<std::string_view> preferred_tool_name,
+      const ConversationCapabilitySet& conversation_capabilities,
+      GenerationDataCallback data_received_callback,
+      GenerationCompletedCallback completed_callback);
+
   // Sends one system prompt and one user message, and gives the full answer
   // in a completion event. Learned memory (Dreaming) uses this for short
   // fixed-format requests to a local BYOM model. The default gives an error.

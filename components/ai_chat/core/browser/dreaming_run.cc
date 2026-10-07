@@ -24,19 +24,6 @@ namespace ai_chat {
 
 namespace {
 
-// Embeddings are unit length, so the dot product is the cosine similarity.
-float Similarity(const std::vector<float>& a, const std::vector<float>& b) {
-  if (a.size() != b.size()) {
-    // A different model version: the vectors cannot be compared.
-    return 0.0f;
-  }
-  float sum = 0.0f;
-  for (size_t i = 0; i < a.size(); ++i) {
-    sum += a[i] * b[i];
-  }
-  return sum;
-}
-
 void AddLinks(std::vector<MemorySourceLink>& links,
               const std::vector<MemorySourceLink>& more) {
   for (const auto& link : more) {
@@ -604,7 +591,7 @@ void DreamingRun::ProcessNextFact() {
                     .Set("type", Name(fact().type))
                     .Set("links", LinksToList(fact().links)));
   for (const auto& tombstone : tombstones_) {
-    const float similarity = Similarity(fact().vector, tombstone.vector);
+    const float similarity = VectorSimilarity(fact().vector, tombstone.vector);
     if (similarity >= config_.tombstone_similarity) {
       // The user deleted a memory like this one.
       Trace("fact_dropped",
@@ -617,7 +604,7 @@ void DreamingRun::ProcessNextFact() {
   }
   std::vector<std::pair<float, size_t>> scored;
   for (size_t i = 0; i < memories_.size(); ++i) {
-    float score = Similarity(fact().vector, memories_[i].vector);
+    float score = VectorSimilarity(fact().vector, memories_[i].vector);
     if (score >= config_.min_neighbor_similarity) {
       scored.emplace_back(score, i);
     }
@@ -635,7 +622,7 @@ void DreamingRun::ProcessNextFact() {
     }
     float best = 0.0f;
     for (const auto& memory : memories_) {
-      best = std::max(best, Similarity(fact().vector, memory.vector));
+      best = std::max(best, VectorSimilarity(fact().vector, memory.vector));
     }
     Trace("neighbors", base::DictValue()
                            .Set("memories", static_cast<int>(memories_.size()))

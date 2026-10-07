@@ -19,6 +19,21 @@ static_assert(BUILDFLAG(ENABLE_LOCAL_AI));
 
 namespace ai_chat {
 
+// Embeddings are unit length, so the dot product is the cosine similarity.
+// Vectors of different sizes come from different model versions, and cannot be
+// compared: the similarity is 0.
+inline float VectorSimilarity(const std::vector<float>& a,
+                              const std::vector<float>& b) {
+  if (a.size() != b.size()) {
+    return 0.0f;
+  }
+  float sum = 0.0f;
+  for (size_t i = 0; i < a.size(); ++i) {
+    sum += a[i] * b[i];
+  }
+  return sum;
+}
+
 // The enum values are stored in the database. Do not reorder or reuse them.
 enum class LearnedMemoryType {
   kPermanent = 0,

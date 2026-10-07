@@ -58,11 +58,13 @@
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/ai_chat/core/common/prefs.h"
 #include "brave/components/ai_chat/core/common/test_utils.h"
+#include "brave/components/local_ai/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "build/buildflag.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/os_crypt/async/browser/os_crypt_async.h"
 #include "components/os_crypt/async/browser/test_utils.h"
+#include "components/passage_embeddings/core/passage_embeddings_types.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "services/network/public/cpp/network_context_getter.h"
@@ -417,6 +419,52 @@ class ConversationHandlerUnitTest_NoAssociatedContent
     has_associated_content_ = false;
   }
 };
+
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+// The tests with this fixture have no learned memories, so nothing calls the
+// embedder.
+class UnusedEmbedder : public passage_embeddings::Embedder {
+ public:
+  Job ComputePassagesEmbeddings(
+      passage_embeddings::PassagePriority priority,
+      std::vector<std::string> passages,
+      ComputePassagesEmbeddingsCallback callback) override {
+    ADD_FAILURE() << "The embedder is not used";
+    return Job(weak_ptr_factory_.GetWeakPtr(), 1);
+  }
+  base::WeakPtr<Embedder> GetWeakPtr() override {
+    return weak_ptr_factory_.GetWeakPtr();
+  }
+
+ protected:
+  void ReprioritizeJobs(passage_embeddings::PassagePriority priority,
+                        const std::set<uint64_t>& job_ids) override {}
+  bool TryCancel(uint64_t job_id) override { return false; }
+
+ private:
+  base::WeakPtrFactory<UnusedEmbedder> weak_ptr_factory_{this};
+};
+
+// A conversation in a profile with learned memory (Track B).
+class ConversationHandlerUnitTest_LearnedMemory
+    : public ConversationHandlerUnitTest {
+ public:
+  ConversationHandlerUnitTest_LearnedMemory() {
+    scoped_feature_list_.InitAndEnableFeature(features::kAIChatLearnedMemory);
+    has_associated_content_ = false;
+  }
+
+  void SetUp() override {
+    ConversationHandlerUnitTest::SetUp();
+    ai_chat_service_->InitLearnedMemory(&embedder_);
+    ASSERT_TRUE(ai_chat_service_->GetUserMemoryManager());
+  }
+
+ protected:
+  base::test::ScopedFeatureList scoped_feature_list_;
+  UnusedEmbedder embedder_;
+};
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
 
 MATCHER_P(ConversationEntriesStateIsGenerating, expected_is_generating, "") {
   return arg->is_generating == expected_is_generating;
@@ -7598,5 +7646,59 @@ TEST_F(ConversationHandlerUnitTest, GetCurrentModelFallsBackToAutomatic) {
   EXPECT_EQ(conversation_handler_->GetCurrentModel().key,
             kChatAutomaticModelKey);
 }
+
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+TEST_F(ConversationHandlerUnitTest_LearnedMemory,
+       RequestGoesWithLearnedMemories) {
+  MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+  EXPECT_CALL(*engine, UsesLearnedMemories(false))
+      .WillRepeatedly(testing::Return(true));
+  EXPECT_CALL(*engine, GenerateAssistantResponse).Times(0);
+
+  base::RunLoop run_loop;
+  EXPECT_CALL(*engine, GenerateAssistantResponseWithMemories)
+      .WillOnce(testing::WithArg<8>(
+          [&](EngineConsumer::GenerationCompletedCallback callback) {
+            std::move(callback).Run(
+                base::ok(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewCompletionEvent(
+                        mojom::CompletionEvent::New("Answer")),
+                    std::nullopt)));
+            run_loop.QuitWhenIdle();
+          }));
+
+  conversation_handler_->SubmitHumanConversationEntry("Test question",
+                                                      std::nullopt);
+  run_loop.Run();
+
+  EXPECT_EQ(conversation_handler_->GetConversationHistory().size(), 2u);
+}
+
+TEST_F(ConversationHandlerUnitTest_LearnedMemory,
+       EngineWithoutLearnedMemoriesGetsTheNormalRequest) {
+  MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+  EXPECT_CALL(*engine, UsesLearnedMemories(false))
+      .WillRepeatedly(testing::Return(false));
+  EXPECT_CALL(*engine, GenerateAssistantResponseWithMemories).Times(0);
+
+  base::RunLoop run_loop;
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .WillOnce(testing::WithArg<7>(
+          [&](EngineConsumer::GenerationCompletedCallback callback) {
+            std::move(callback).Run(
+                base::ok(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewCompletionEvent(
+                        mojom::CompletionEvent::New("Answer")),
+                    std::nullopt)));
+            run_loop.QuitWhenIdle();
+          }));
+
+  conversation_handler_->SubmitHumanConversationEntry("Test question",
+                                                      std::nullopt);
+  run_loop.Run();
+}
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
 
 }  // namespace ai_chat

@@ -45,7 +45,8 @@ std::vector<OAIMessage> BuildOAIMessages(
     PrefService* prefs,
     bool exclude_memory,
     uint32_t remaining_length,
-    base::FunctionRef<void(std::string&)> sanitize_input);
+    base::FunctionRef<void(std::string&)> sanitize_input,
+    const EngineConsumer::LearnedMemories& learned_memories = {});
 
 std::vector<OAIMessage> BuildOAIQuestionSuggestionsMessages(
     PageContents page_contents,
