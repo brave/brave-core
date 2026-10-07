@@ -10,13 +10,37 @@
 
 #include "brave/ios/browser/search_engines/template_url_bridge.h"
 
+class SearchTermsData;
 class TemplateURL;
+class TemplateURLRef;
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface TemplateURLBridge ()
 
-- (instancetype)initWithTemplateURL:(const TemplateURL*)templateURL;
+@property(readonly) const TemplateURL* templateURL;
+
+- (instancetype)initWithTemplateURL:(const TemplateURL*)templateURL
+    NS_DESIGNATED_INITIALIZER;
+
+@end
+
+@interface TemplateURLRefBridge ()
+
+/// `templateURLRef` is owned by a `TemplateURL` and has the same lifetime
+/// requirements as `TemplateURLBridge`.
+- (instancetype)initWithTemplateURLRef:(const TemplateURLRef*)templateURLRef
+    NS_DESIGNATED_INITIALIZER;
+
+@end
+
+@interface SearchTermsDataBridge ()
+
+@property(readonly) const SearchTermsData* searchTermsData;
+
+/// `searchTermsData` must outlive this object.
+- (instancetype)initWithSearchTermsData:(const SearchTermsData*)searchTermsData
+    NS_DESIGNATED_INITIALIZER;
 
 @end
 

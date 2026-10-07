@@ -8,9 +8,14 @@
 
 #import <Foundation/Foundation.h>
 
+#ifdef __cplusplus
+#include "brave/ios/browser/search_engines/template_url_bridge.h"
+#else
+#include "template_url_bridge.h"  // NOLINT
+#endif
+
 NS_ASSUME_NONNULL_BEGIN
 
-@class TemplateURLBridge;
 @protocol TemplateURLServiceScopedObservation;
 @protocol TemplateURLServiceObserverBridge;
 
@@ -31,9 +36,26 @@ NS_SWIFT_NAME(TemplateURLService)
 /// multiple times.
 - (void)load;
 
-/// Returns the list of all known `TemplateURL`s that would be shown in the
-/// default search provider list (prepopulated and user-added search engines).
+/// Returns the list of all known `TemplateURL`s (prepopulated and user-added
+/// search engines). Starter pack engines are excluded as they are not
+/// supported on iOS.
 @property(readonly, copy) NSArray<TemplateURLBridge*>* templateURLs;
+
+/// Whether `templateURL` should be shown in the list of engines most likely
+/// to be selected as the default search provider (i.e. it is the current
+/// default or is prepopulated).
+- (BOOL)showInDefaultList:(TemplateURLBridge*)templateURL
+    NS_SWIFT_NAME(showInDefaultList(_:));
+
+/// Returns the `TemplateURL` with the given GUID, or nil if none exists.
+- (nullable TemplateURLBridge*)templateURLForGUID:(NSString*)syncGUID
+    NS_SWIFT_NAME(templateURL(forGUID:));
+
+/// Returns the prepopulated `TemplateURL` with the given ID, or nil if none
+/// exists.
+- (nullable TemplateURLBridge*)templateURLForPrepopulateID:
+    (BravePrepopulatedEngineID)prepopulateID
+    NS_SWIFT_NAME(templateURL(forPrepopulateID:));
 
 /// Returns the default search provider, or nil if none is set (e.g. the
 /// service hasn't loaded yet).
@@ -43,11 +65,23 @@ NS_SWIFT_NAME(TemplateURLService)
 /// `defaultSearchProvider` when no private-specific default has been chosen.
 @property(readonly, nullable) TemplateURLBridge* defaultPrivateSearchProvider;
 
+/// Generates a search results page URL for the default search provider with
+/// the given search terms. Returns nil if the default search provider is not
+/// available.
+- (nullable NSURL*)generateSearchURLForDefaultSearchProvider:
+    (NSString*)searchTerms
+    NS_SWIFT_NAME(generateSearchURLForDefaultSearchProvider(_:));
+
+/// The data used to substitute placeholders in a `TemplateURLRef`.
+@property(readonly) SearchTermsDataBridge* searchTermsData;
+
 /// Sets the default search provider (by `syncGUID`).
-- (void)setUserSelectedDefaultSearchProviderWithGUID:(NSString*)syncGUID;
+- (void)setUserSelectedDefaultSearchProviderWithGUID:(NSString*)syncGUID
+    NS_SWIFT_NAME(setUserSelectedDefaultSearchProvider(withGUID:));
 
 /// Sets the default search provider (by `syncGUID`) for private browsing.
-- (void)setUserSelectedDefaultPrivateSearchProviderWithGUID:(NSString*)syncGUID;
+- (void)setUserSelectedDefaultPrivateSearchProviderWithGUID:(NSString*)syncGUID
+    NS_SWIFT_NAME(setUserSelectedDefaultPrivateSearchProvider(withGUID:));
 
 /// Adds a new `TemplateURL` to the model.
 ///
@@ -63,10 +97,23 @@ NS_SWIFT_NAME(TemplateURLService)
                         keyword:(NSString*)keyword
                             url:(NSString*)url
                  suggestionsURL:(nullable NSString*)suggestionsURL
-                     faviconURL:(nullable NSURL*)faviconURL;
+                     faviconURL:(nullable NSURL*)faviconURL
+    NS_SWIFT_NAME(addTemplateURL(shortName:keyword:url:suggestionsURL:faviconURL:));  // NOLINT
+
+/// Resets the title, keyword and search url of the `TemplateURL` with the
+/// given GUID. The `TemplateURL` is marked as not replaceable.
+///
+/// `searchURL` must contain the literal `{searchTerms}` where the query should
+/// be substituted.
+- (void)resetTemplateURLWithGUID:(NSString*)syncGUID
+                           title:(NSString*)title
+                         keyword:(NSString*)keyword
+                       searchURL:(NSString*)searchURL
+    NS_SWIFT_NAME(resetTemplateURL(withGUID:title:keyword:searchURL:));
 
 /// Removes the `TemplateURL` with the given GUID.
-- (void)removeTemplateURLWithGUID:(NSString*)syncGUID;
+- (void)removeTemplateURLWithGUID:(NSString*)syncGUID
+    NS_SWIFT_NAME(removeTemplateURL(withGUID:));
 
 /// Observes changes to the set of `TemplateURL`s. `observer` is held weakly.
 /// Retain the returned token for as long as updates are wanted.

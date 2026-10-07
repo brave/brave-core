@@ -33,6 +33,7 @@ source_set("search_engines") {
     "//ios/chrome/browser/search_engines/model",
     "//ios/chrome/browser/shared/model/profile",
     "//net",
+    "//url",
   ]
   frameworks = [ "Foundation.framework" ]
 }
