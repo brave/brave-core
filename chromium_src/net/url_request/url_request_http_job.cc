@@ -35,24 +35,7 @@ class BraveAcceptLanguageHttpHeaderReposition {
 }  // namespace
 }  // namespace net
 
-#define GetSSLUpgradeDecision(host, is_top_level_nav, net_log)                 \
-  GetSSLUpgradeDecision(request->isolation_info().network_anonymization_key(), \
-                        host, is_top_level_nav, net_log)
-#define ShouldSSLErrorsBeFatal(host) \
-  ShouldSSLErrorsBeFatal(            \
-      request_->isolation_info().network_anonymization_key(), host)
-#define AddHSTSHeader(host, value) \
-  AddHSTSHeader(request_->isolation_info(), host, value)
-
-#define BRAVE_URL_REQUEST_HTTP_JOB_ADD_EXTRA_HEADERS \
-  BraveAcceptLanguageHttpHeaderReposition(request_info_.extra_headers);
-
 #include <net/url_request/url_request_http_job.cc>
-
-#undef BRAVE_URL_REQUEST_HTTP_JOB_ADD_EXTRA_HEADERS
-#undef AddHSTSHeader
-#undef ShouldSSLErrorsBeFatal
-#undef GetSSLUpgradeDecision
 
 namespace net {
 
