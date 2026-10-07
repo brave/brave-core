@@ -362,11 +362,10 @@ TEST_F(EphemeralStorageServiceTest, IsScheduledForCleanupMatchesDictEntry) {
   {
     ScopedListPrefUpdate pref_update(profile_->GetPrefs(),
                                      kFirstPartyStorageOriginsToCleanup);
-    pref_update->Append(base::Value(
-        base::DictValue()
-            .Set("u", GURL("https://a.com").spec())
-            .Set("pd", "partition_domain")
-            .Set("pn", "partition_name")));
+    pref_update->Append(base::Value(base::DictValue()
+                                        .Set("u", GURL("https://a.com").spec())
+                                        .Set("pd", "partition_domain")
+                                        .Set("pn", "partition_name")));
   }
 
   EXPECT_TRUE(service_->IsScheduledForCleanup("a.com"));
