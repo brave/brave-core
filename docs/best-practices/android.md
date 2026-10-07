@@ -1174,19 +1174,50 @@ use `browser/<feature>/android/` rather than
 `android/java/org/chromium/chrome/browser/...` (paths relative to
 `brave-core`). This keeps Android code with the feature it implements.
 
-Illustrative paths for a new standalone feature class (not existing files):
+Illustrative GN configurations for a new standalone feature class (the
+`my_feature` files and target below are hypothetical). Assume the class uses
+`org.chromium.base` APIs, but no JNI or resources:
 
-```text
-# ❌ WRONG - new feature code in the legacy tree
-android/java/org/chromium/chrome/browser/my_feature/MyFeatureController.java
-
-# ✅ CORRECT - keep the class with its feature
-browser/my_feature/android/java/src/org/chromium/chrome/browser/my_feature/MyFeatureController.java
+```gn
+# ❌ WRONG - append standalone feature code to the legacy source list
+# android/brave_java_sources.gni (after the existing list definition)
+brave_java_sources += [
+  "../../brave/android/java/org/chromium/chrome/browser/my_feature/MyFeatureController.java",
+]
 ```
 
-For an existing feature-local example, Brave's `BraveOriginServiceFactory.java`
-lives under
-`browser/brave_origin/android/java/src/org/chromium/brave/browser/brave_origin/`.
+```gn
+# ✅ CORRECT - give the feature its own Android module
+# browser/my_feature/android/BUILD.gn
+import("//build/config/android/rules.gni")
+
+android_library("java") {
+  sources = [ "java/src/org/chromium/chrome/browser/my_feature/MyFeatureController.java" ]
+  deps = [ "//base:base_java" ]
+}
+```
+
+Consumers depend on the feature target instead of compiling its sources through
+`brave_java_sources`. For a caller compiled in `//chrome/android:chrome_java`,
+use the existing dependency hook:
+
+```gn
+# ✅ CORRECT - integrate the module as a dependency
+# build/android/config.gni (after the existing list definition)
+brave_chrome_java_deps += [ "//brave/browser/my_feature/android:java" ]
+```
+
+Keep the module's dependencies limited to the APIs it uses; do not add a reverse
+dependency on `//chrome/android:chrome_java`. If the caller is in another module,
+add the feature target to that caller's `deps` instead. Do not also add the
+feature's Java files to `brave_java_sources`.
+
+For an existing feature-local example, see
+[`browser/brave_origin/android/BUILD.gn`](../../browser/brave_origin/android/BUILD.gn),
+which defines `android_library("java")` for `BraveOriginServiceFactory.java`
+with its own dependencies and JNI generation. Its target is included in
+`brave_chrome_java_deps` in
+[`build/android/config.gni`](../../build/android/config.gni).
 
 `chrome/browser/android/` serves a different purpose: common browser-support
 code that feature-local Android code can depend on. It is not deprecated by
@@ -1207,13 +1238,12 @@ includes these legacy sources under
 membership in `brave_java_sources` alone does not determine a file's location.
 Use the default and subclass exception above to choose the directory.
 
-```java
-// ✅ CORRECT - existing upstream subclass in the corresponding legacy location
-// android/java/org/chromium/chrome/browser/app/bookmarks/BraveBookmarkActivity.java
-// Listed in brave_java_sources in android/brave_java_sources.gni.
-public class BraveBookmarkActivity extends BookmarkActivity {
-    // ...
-}
+```gn
+# ✅ CORRECT - existing upstream subclass in the corresponding legacy location
+# android/brave_java_sources.gni (excerpt; other entries omitted)
+brave_java_sources = [
+  "../../brave/android/java/org/chromium/chrome/browser/app/bookmarks/BraveBookmarkActivity.java",
+]
 ```
 
 ---
