@@ -37,6 +37,7 @@
 #include "components/omnibox/browser/autocomplete_provider.h"
 #include "components/omnibox/browser/remote_suggestions_service.h"
 #include "components/omnibox/browser/search_provider.h"
+#include "components/search_engines/template_url_id.h"
 #include "components/variations/scoped_variations_ids_provider.h"
 #include "content/public/test/browser_task_environment.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
@@ -136,7 +137,7 @@ class BraveSearchProviderTest : public testing::Test {
     default_t_url_ = turl_model->Add(std::make_unique<TemplateURL>(data));
     turl_model->SetUserSelectedDefaultSearchProvider(default_t_url_);
     TemplateURLID default_provider_id = default_t_url_->id();
-    ASSERT_NE(0, default_provider_id);
+    ASSERT_NE(kInvalidTemplateURLID, default_provider_id);
 
     // Keywords are updated by the InMemoryHistoryBackend only after the message
     // has been processed on the history thread. Block until history processes
