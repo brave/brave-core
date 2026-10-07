@@ -223,3 +223,36 @@ for default search engine promotions). When a request must be profile-scoped,
 use a `SimpleURLLoader` with the profile's `URLLoaderFactory` instead.
 
 ---
+
+<a id="UV-007"></a>
+
+## ✅ Mark Clipboard Writes from Off-the-Record Profiles as Off-the-Record
+
+**When browser UI code writes content derived from an off-the-record profile
+(Incognito, Private, Tor) to the clipboard, call
+`ScopedClipboardWriter::MarkAsOffTheRecord()`.** It sets
+`Clipboard::kNoLocalClipboardHistory | Clipboard::kNoCloudClipboard`, so
+OS-level clipboard history (e.g. Windows Win+V) and cloud clipboard sync to
+other devices do not retain the data. Without it, private-window content (such
+as screenshots) leaks outside the private session. Tor profiles are
+off-the-record, so `IsOffTheRecord()` covers them without a separate check.
+
+```cpp
+// ❌ WRONG - private-window content may land in clipboard history / cloud sync
+ui::ScopedClipboardWriter writer(ui::ClipboardBuffer::kCopyPaste);
+writer.WriteImage(bitmap);
+
+// ✅ CORRECT - mirrors content::ClipboardHostImpl and OmniboxViewViews
+ui::ScopedClipboardWriter writer(ui::ClipboardBuffer::kCopyPaste);
+writer.WriteImage(bitmap);
+if (profile->IsOffTheRecord()) {
+  writer.MarkAsOffTheRecord();
+}
+```
+
+Cover both branches in unit tests with a `ui::TestClipboard` subclass that
+records the `privacy_types` passed to
+`WritePortableAndPlatformRepresentations()` (including a regular-profile
+negative case).
+
+---
