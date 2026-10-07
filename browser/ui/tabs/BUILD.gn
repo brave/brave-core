@@ -82,7 +82,7 @@ if (!is_android) {
 
     if (enable_request_otr) {
       deps += [
-        "//brave/browser/request_otr:tab_helper",
+        "//brave/browser/request_otr",
         "//brave/components/request_otr/common",
       ]
     }

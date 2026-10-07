@@ -21,7 +21,6 @@ import("//brave/browser/perf/sources.gni")
 import("//brave/browser/permissions/sources.gni")
 import("//brave/browser/profiles/sources.gni")
 import("//brave/browser/renderer_context_menu/sources.gni")
-import("//brave/browser/request_otr/sources.gni")
 import("//brave/browser/search_engines/sources.gni")
 import("//brave/browser/sync/sources.gni")
 import("//brave/browser/themes/sources.gni")
@@ -50,6 +49,7 @@ import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/components/local_ai/buildflags/buildflags.gni")
 import("//brave/components/playlist/core/common/buildflags/buildflags.gni")
 import("//brave/components/psst/buildflags/buildflags.gni")
+import("//brave/components/request_otr/common/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//brave/components/traffic_control/buildflags/buildflags.gni")
 import("//brave/components/web_discovery/buildflags/buildflags.gni")
@@ -591,7 +591,11 @@ if (enable_speedreader) {
 }
 
 if (enable_request_otr) {
-  brave_chrome_browser_deps += [ "//brave/components/request_otr/common" ]
+  brave_chrome_browser_deps += [
+    "//brave/browser/request_otr:impl",
+    "//brave/components/request_otr/browser",
+    "//brave/components/request_otr/common",
+  ]
 }
 
 if (enable_web_discovery_native) {
@@ -821,7 +825,6 @@ brave_chrome_browser_sources += brave_browser_new_tab_sources
 brave_chrome_browser_sources += brave_browser_perf_sources
 brave_chrome_browser_sources += brave_browser_permissions_sources
 brave_chrome_browser_sources += brave_browser_renderer_context_menu_sources
-brave_chrome_browser_sources += brave_browser_request_otr_sources
 brave_chrome_browser_sources += brave_browser_search_engines_sources
 brave_chrome_browser_sources += brave_browser_sync_sources
 brave_chrome_browser_sources += brave_browser_themes_sources
@@ -844,7 +847,6 @@ brave_chrome_browser_deps += brave_browser_new_tab_deps
 brave_chrome_browser_deps += brave_browser_perf_deps
 brave_chrome_browser_deps += brave_browser_permissions_deps
 brave_chrome_browser_deps += brave_browser_renderer_context_menu_deps
-brave_chrome_browser_deps += brave_browser_request_otr_deps
 brave_chrome_browser_deps += brave_browser_search_engines_deps
 brave_chrome_browser_deps += brave_browser_sync_deps
 brave_chrome_browser_deps += brave_browser_themes_deps
