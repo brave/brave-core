@@ -31,6 +31,13 @@ class PrerenderManager : public content::WebContentsUserData<PrerenderManager> {
   // server's URL as a Finch parameter in the tests.
   void SetPrewarmUrlForTesting(const GURL& url);
 
+  // Returns the lifecycle observer for the prewarm task for testing, or
+  // nullptr if no prewarm task exists.
+  content::PrerenderHandle::Observer* GetPrewarmObserverForTesting();
+
+  // Returns true if `search_prewarm_task_` exists for testing.
+  bool HasSearchPrewarmTaskForTesting() const;
+
   // Calling this method will lead to the cancellation of the previous prerender
   // if the given `canonical_search_url` differs from the ongoing one's.
   void StartPrerenderSearchResult(
