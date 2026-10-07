@@ -140,7 +140,7 @@ void BraveSearchEnginesHandler::HandleSetDefaultPrivateSearchEngine(
   CHECK_EQ(1U, args.size());
   // Upstream identifies engines by |TemplateURLID| (the "id" property of the
   // dictionary built by CreateDictionaryForEngine())
-  const TemplateURLID id = args[0].GetInt();
+  const TemplateURLID id(args[0].GetInt());
   const auto* template_url = list_controller_.GetTemplateURL(id);
   if (!template_url) {
     return;
