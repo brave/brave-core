@@ -81,9 +81,7 @@ void WaybackMachineURLFetcher::Cancel() {
 
 void WaybackMachineURLFetcher::OnWaybackURLFetched(
     api_request_helper::APIRequestResult api_request_result) {
-  auto notify_not_found = [&]() {
-    client_->OnWaybackURLFetched(GURL::EmptyGURL(), base::Time());
-  };
+  auto notify_not_found = [&]() { client_->OnWaybackURLFetched(std::nullopt); };
 
   auto& value_body = api_request_result.value_body();
   if (!value_body.is_dict()) {
@@ -109,9 +107,10 @@ void WaybackMachineURLFetcher::OnWaybackURLFetched(
   }
 
   const std::string* timestamp = closest->FindString(kTimestampKey);
-  client_->OnWaybackURLFetched(
-      wayback_url,
-      timestamp ? ParseSnapshotTimestamp(*timestamp) : base::Time());
+  client_->OnWaybackURLFetched(WaybackSnapshotInfo{
+      .url = std::move(wayback_url),
+      .time = timestamp ? ParseSnapshotTimestamp(*timestamp) : base::Time(),
+  });
 }
 
 // static

@@ -133,7 +133,7 @@ WaybackMachineBubbleView::~WaybackMachineBubbleView() {
 
 bool WaybackMachineBubbleView::OnAccepted() {
   if (auto* tab_helper = GetTabHelper(web_contents())) {
-    tab_helper->FetchWaybackURL();
+    tab_helper->FetchSnapshotInfo();
     // Stay open while the lookup runs. UpdateFromState() closes the bubble if
     // a snapshot is found, or switches it to the "not available" message.
     return false;
@@ -156,11 +156,12 @@ void WaybackMachineBubbleView::UpdateFromState(WaybackState state) {
   switch (state) {
     case WaybackState::kNeedToCheck:
     case WaybackState::kFetching:
+    case WaybackState::kFound:
       SetTitle(l10n_util::GetStringUTF16(
           IDS_BRAVE_WAYBACK_MACHINE_BUBBLE_SORRY_HEADER_TEXT));
       body_->SetText(l10n_util::GetStringUTF16(
           IDS_BRAVE_WAYBACK_MACHINE_BUBBLE_ASK_ABOUT_CHECK_TEXT));
-      if (state == WaybackState::kFetching) {
+      if (state == WaybackState::kFetching || state == WaybackState::kFound) {
         ShowLoading();
         break;
       }

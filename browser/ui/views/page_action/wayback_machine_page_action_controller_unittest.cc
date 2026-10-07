@@ -28,6 +28,7 @@
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/actions/actions.h"
+#include "url/gurl.h"
 
 namespace page_actions {
 
@@ -139,6 +140,13 @@ TEST_F(WaybackMachinePageActionControllerTest, VisibleWhenNeedToCheck) {
 
 TEST_F(WaybackMachinePageActionControllerTest, VisibleWhenFetching) {
   tab_helper()->SetWaybackStateForTesting(WaybackState::kFetching);
+
+  EXPECT_TRUE(observer().visible());
+}
+
+TEST_F(WaybackMachinePageActionControllerTest, VisibleWhenFound) {
+  tab_helper()->SetFoundForTesting(
+      {.url = GURL("https://web.archive.org/web/2024/https://example.com/")});
 
   EXPECT_TRUE(observer().visible());
 }

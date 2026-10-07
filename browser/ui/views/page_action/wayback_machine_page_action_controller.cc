@@ -143,6 +143,19 @@ void WaybackMachinePageActionController::OnWaybackStateChanged(
   UpdatePageAction(tab_->GetContents());
   if (state == WaybackState::kNeedToCheck) {
     MaybeAutoShowBubble();
+  } else if (state == WaybackState::kFound) {
+    NavigateToSnapshot();
+  }
+}
+
+void WaybackMachinePageActionController::NavigateToSnapshot() {
+  content::WebContents* contents = tab_->GetContents();
+  if (!contents) {
+    return;
+  }
+  auto* tab_helper = BraveWaybackMachineTabHelper::FromWebContents(contents);
+  if (tab_helper && tab_helper->wayback_state() == WaybackState::kFound) {
+    tab_helper->NavigateToSnapshot();
   }
 }
 

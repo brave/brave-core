@@ -22,6 +22,7 @@ static_library("brave_wayback_machine") {
     "url_constants.h",
     "wayback_machine_url_fetcher.cc",
     "wayback_machine_url_fetcher.h",
+    "wayback_snapshot_info.h",
     "wayback_state.h",
   ]
 
