@@ -12,7 +12,6 @@ import("//brave/browser/cosmetic_filters/sources.gni")
 import("//brave/browser/debounce/sources.gni")
 import("//brave/browser/ephemeral_storage/sources.gni")
 import("//brave/browser/gcm_driver/sources.gni")
-import("//brave/browser/infobars/sources.gni")
 import("//brave/browser/misc_metrics/sources.gni")
 import("//brave/browser/net/sources.gni")
 import("//brave/browser/new_tab/sources.gni")
@@ -447,6 +446,7 @@ if (!is_android) {
   # Already included on android by upstream
 
   brave_chrome_browser_deps += [
+    "//brave/browser/infobars:impl",
     "//brave/browser/ui/split_view",
     "//brave/browser/ui/tabs:impl",
     "//brave/browser/ui/views/page_action:impl",
@@ -818,7 +818,6 @@ brave_chrome_browser_sources += brave_browser_cosmetic_filters_sources
 brave_chrome_browser_sources += brave_browser_debounce_sources
 brave_chrome_browser_sources += brave_browser_ephemeral_storage_sources
 brave_chrome_browser_sources += brave_browser_gcm_driver_sources
-brave_chrome_browser_sources += brave_browser_infobar_sources
 brave_chrome_browser_sources += brave_browser_misc_metrics_sources
 brave_chrome_browser_sources += brave_browser_net_sources
 brave_chrome_browser_sources += brave_browser_new_tab_sources
@@ -840,7 +839,6 @@ brave_chrome_browser_deps += brave_browser_cosmetic_filters_deps
 brave_chrome_browser_deps += brave_browser_debounce_deps
 brave_chrome_browser_deps += brave_browser_ephemeral_storage_deps
 brave_chrome_browser_deps += brave_browser_gcm_driver_deps
-brave_chrome_browser_deps += brave_browser_infobar_deps
 brave_chrome_browser_deps += brave_browser_misc_metrics_deps
 brave_chrome_browser_deps += brave_browser_net_deps
 brave_chrome_browser_deps += brave_browser_new_tab_deps
