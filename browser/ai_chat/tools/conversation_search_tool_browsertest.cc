@@ -147,6 +147,15 @@ IN_PROC_BROWSER_TEST_F(ConversationSearchToolBrowserTest,
   EXPECT_NE(json.find("Cats sleep for most of the day."), std::string::npos);
   // The conversation the search is made from is left out.
   EXPECT_EQ(json.find("What did we say about cats?"), std::string::npos);
+
+  // What was found is also shown to the user, as cards.
+  const Tool::ToolArtifacts& artifacts = result.Get<Tool::ToolArtifacts>();
+  ASSERT_EQ(artifacts.size(), 1u);
+  EXPECT_EQ(artifacts[0]->type, mojom::kConversationSearchResultsArtifactType);
+  EXPECT_NE(artifacts[0]->content_json.find("Tell me about my cat"),
+            std::string::npos);
+  EXPECT_EQ(artifacts[0]->content_json.find("What did we say about cats?"),
+            std::string::npos);
 }
 
 // Without the testing factory, the Semantic history search setting, which is

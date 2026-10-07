@@ -1,0 +1,57 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+.cards {
+  display: flex;
+  flex-direction: column;
+  gap: var(--leo-spacing-m);
+  list-style: none;
+  margin: var(--leo-spacing-xl) 0;
+  padding: 0;
+}
+
+.card {
+  background: var(--leo-color-container-background);
+  border: 1px solid var(--leo-color-divider-subtle);
+  border-radius: var(--leo-radius-l);
+  color: var(--leo-color-text-primary);
+  cursor: pointer;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--leo-spacing-s);
+  font: inherit;
+  padding: var(--leo-spacing-l) var(--leo-spacing-xl);
+  text-align: start;
+  text-decoration: none;
+  transition: all 0.2s ease-out allow-discrete;
+
+  &:hover {
+    background: var(--leo-color-container-highlight);
+    box-shadow: var(--leo-effect-elevation-01);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--leo-color-button-background);
+    outline-offset: 2px;
+  }
+}
+
+.title {
+  font: var(--leo-font-default-semibold);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.snippet {
+  font: var(--leo-font-small-regular);
+  color: var(--leo-color-text-secondary);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+}

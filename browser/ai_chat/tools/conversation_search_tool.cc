@@ -31,6 +31,9 @@ constexpr char kOutputKeyLastUpdated[] = "last_updated";
 constexpr char kOutputKeyPassages[] = "passages";
 constexpr char kOutputKeyText[] = "text";
 constexpr char kOutputKeyTime[] = "time";
+constexpr char kArtifactKeyConversationUuid[] = "conversation_uuid";
+constexpr char kArtifactKeyEntryUuid[] = "entry_uuid";
+constexpr char kArtifactKeySnippet[] = "snippet";
 
 constexpr int kDefaultResultCount = 5;
 constexpr int kMaxResultCount = 10;
@@ -73,6 +76,25 @@ std::string BuildConversationSearchResultJson(
   root.Set(kOutputKeyResults, std::move(conversations));
   std::string json;
   base::JSONWriter::Write(root, &json);
+  return json;
+}
+
+std::string BuildConversationSearchArtifactJson(
+    const std::vector<ConversationSearchResult>& results) {
+  base::ListValue cards;
+  for (const ConversationSearchResult& result : results) {
+    base::DictValue card;
+    card.Set(kArtifactKeyConversationUuid, result.conversation_uuid);
+    card.Set(kOutputKeyTitle, result.title);
+    if (!result.passages.empty()) {
+      const ConversationPassageMatch& best_passage = result.passages.front();
+      card.Set(kArtifactKeyEntryUuid, best_passage.entry_uuid);
+      card.Set(kArtifactKeySnippet, best_passage.text);
+    }
+    cards.Append(std::move(card));
+  }
+  std::string json;
+  base::JSONWriter::Write(cards, &json);
   return json;
 }
 
@@ -171,10 +193,17 @@ void ConversationSearchTool::OnSearchResults(
     UseToolCallback callback,
     const std::string& query,
     std::vector<ConversationSearchResult> results) {
+  // The user is shown what the model is sent as cards.
+  ToolArtifacts artifacts;
+  if (!results.empty()) {
+    artifacts.push_back(mojom::ToolArtifact::New(
+        /*id=*/std::nullopt, mojom::kConversationSearchResultsArtifactType,
+        internal::BuildConversationSearchArtifactJson(results)));
+  }
   std::move(callback).Run(
       CreateContentBlocksForText(
           internal::BuildConversationSearchResultJson(query, results)),
-      {});
+      std::move(artifacts));
 }
 
 }  // namespace ai_chat

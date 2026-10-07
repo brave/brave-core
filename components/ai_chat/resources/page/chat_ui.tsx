@@ -10,7 +10,7 @@ import { setIconBasePath } from '@brave/leo/react/icon'
 import '$web-common/defaultTrustedTypesPolicy'
 import * as Mojom from '../common/mojom'
 import { useLocation } from '$web-common/useRoute'
-import { parseEntryFragment } from '../common/entry_fragment'
+import { makeEntryFragment, parseEntryFragment } from '../common/entry_fragment'
 import bindWebUiServices from './api/bind_webui_services'
 import useUpdateDocumentTitle from './hooks/useUpdateDocumentTitle'
 import {
@@ -60,6 +60,16 @@ function App() {
     document.body.click()
   })
   // </if>
+
+  // When the iframe asks to open a conversation, for the user's click on a
+  // card in it, open it at the entry the card is for.
+  aiChat.api.useOpenConversation((conversationUuid, entryUuid) => {
+    window.history.pushState(
+      null,
+      '',
+      `/${conversationUuid}${entryUuid ? makeEntryFragment(entryUuid) : ''}`,
+    )
+  })
 
   React.useEffect(() => {
     document.getElementById('mountPoint')?.classList.add('loaded')

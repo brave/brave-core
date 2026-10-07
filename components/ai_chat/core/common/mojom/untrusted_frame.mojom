@@ -46,6 +46,10 @@ interface ParentUIFrame {
   // Request the parent frame to create a new conversation
   RequestNewConversation();
 
+  // Request the parent frame to open the conversation with `conversation_uuid`,
+  // at the entry with `entry_uuid` if there is one.
+  OpenConversation(string conversation_uuid, string? entry_uuid);
+
   // Request the parent frame to reset the current error and restore the
   // failed message to the input box.
   HandleResetError();

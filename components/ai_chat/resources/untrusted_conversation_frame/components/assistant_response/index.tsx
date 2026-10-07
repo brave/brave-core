@@ -11,6 +11,7 @@ import ToolEvent from './tool_event'
 import WebSourcesEvent from './web_sources_event'
 import MemoryToolEvent from './memory_tool_event'
 import Chart from './chart'
+import ConversationSearchCards from './conversation_search_cards'
 import DeepResearchEvent from './deep_research_event'
 import { extractDeepResearchEvents } from './deep_research_utils'
 import styles from './style.module.scss'
@@ -197,6 +198,17 @@ export default function AssistantResponse(props: AssistantResponseProps) {
           )
           .map((artifact, i) => (
             <Chart
+              key={i}
+              artifact={artifact}
+            />
+          ))}
+        {props.toolArtifacts
+          ?.filter(
+            (artifact) =>
+              artifact.type === Mojom.CONVERSATION_SEARCH_RESULTS_ARTIFACT_TYPE,
+          )
+          .map((artifact, i) => (
+            <ConversationSearchCards
               key={i}
               artifact={artifact}
             />

@@ -145,6 +145,7 @@ export function createMockParentUIFrame(
     showImageLightbox: () => {},
     showPremiumSuggestionForRegenerate: () => {},
     requestNewConversation: () => {},
+    openConversation: () => {},
     handleResetError: () => {},
 
     // Apply overrides

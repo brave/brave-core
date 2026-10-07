@@ -55,6 +55,13 @@ const string kLineChartArtifactType = "line_chart";
 // visually.
 const string kVisitedLinksArtifactType = "visited_links";
 
+// Carries a JSON array of the conversations the conversation_search tool
+// found, each as an object with its "conversation_uuid" and "title", and
+// optionally the "entry_uuid" and "snippet" of the passage that matched best.
+// The conversation UI shows them as cards that open the conversation.
+const string kConversationSearchResultsArtifactType =
+    "conversation_search_results";
+
 // Maximum length for memory and customization records.
 const int32 kMaxMemoryRecordLength = 512;
 

@@ -27,6 +27,11 @@ std::string BuildConversationSearchResultJson(
     const std::string& query,
     const std::vector<ConversationSearchResult>& results);
 
+// The JSON of the conversations the user is shown as cards, one for each
+// result.
+std::string BuildConversationSearchArtifactJson(
+    const std::vector<ConversationSearchResult>& results);
+
 }  // namespace internal
 
 // Lets the assistant search the user's past conversations semantically. The

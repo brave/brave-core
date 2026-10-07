@@ -242,6 +242,7 @@ export default function createAIChatApi(
           showSkillDialog(prompt) {},
           showImageLightbox(file) {},
           requestNewConversation() {},
+          openConversation(conversationUuid, entryUuid) {},
           handleResetError() {},
         },
         (observer) => {

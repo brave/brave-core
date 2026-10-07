@@ -128,6 +128,38 @@ TEST(ConversationSearchToolJsonTest, SerializesResults) {
   EXPECT_FALSE(conversation.contains("conversation_uuid"));
 }
 
+TEST(ConversationSearchToolJsonTest, SerializesCards) {
+  ConversationSearchResult matched;
+  matched.conversation_uuid = "uuid-1";
+  matched.title = "Rust lifetimes";
+  matched.passages.push_back(MakePassage("Best passage", base::Time()));
+  matched.passages.push_back(MakePassage("Another passage", base::Time()));
+  ConversationSearchResult title_only;
+  title_only.conversation_uuid = "uuid-2";
+  title_only.title = "Cats";
+  std::vector<ConversationSearchResult> results;
+  results.push_back(std::move(matched));
+  results.push_back(std::move(title_only));
+
+  std::optional<base::ListValue> cards = base::JSONReader::ReadList(
+      internal::BuildConversationSearchArtifactJson(results),
+      base::JSON_PARSE_CHROMIUM_EXTENSIONS);
+  ASSERT_TRUE(cards);
+  ASSERT_EQ(cards->size(), 2u);
+  const base::DictValue& first = (*cards)[0].GetDict();
+  EXPECT_EQ(*first.FindString("conversation_uuid"), "uuid-1");
+  EXPECT_EQ(*first.FindString("title"), "Rust lifetimes");
+  // The card shows the passage that matched best.
+  EXPECT_EQ(*first.FindString("entry_uuid"), "entry");
+  EXPECT_EQ(*first.FindString("snippet"), "Best passage");
+  // A conversation found by its title has no passage to open it at.
+  const base::DictValue& second = (*cards)[1].GetDict();
+  EXPECT_EQ(*second.FindString("conversation_uuid"), "uuid-2");
+  EXPECT_EQ(*second.FindString("title"), "Cats");
+  EXPECT_FALSE(second.contains("entry_uuid"));
+  EXPECT_FALSE(second.contains("snippet"));
+}
+
 TEST(ConversationSearchToolJsonTest, SerializesNoResults) {
   std::optional<base::DictValue> root = base::JSONReader::ReadDict(
       internal::BuildConversationSearchResultJson("anything", {}),
