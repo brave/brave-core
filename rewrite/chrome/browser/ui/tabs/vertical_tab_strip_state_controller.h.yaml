@@ -6,7 +6,10 @@
 substitutions:
   - description: |
       Add `VerticalTabStripStateController::ShouldHideCompletelyWhenCollapsed()`
+      and `VerticalTabStripStateController::IsVerticalTabOnRight()`
 
     add_to_public:
       class_name: 'VerticalTabStripStateController'
-      code: 'bool ShouldHideCompletelyWhenCollapsed() const;'
+      code: |-
+        bool ShouldHideCompletelyWhenCollapsed() const;
+        bool IsVerticalTabOnRight() const;

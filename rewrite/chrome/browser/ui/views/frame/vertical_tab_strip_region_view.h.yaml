@@ -12,10 +12,11 @@ substitutions:
       code: |-
         int GetCollapsedWidth() const;
         void HandleMouseMoveEvent(const gfx::PointF& point_int_screen);
+        bool IsVerticalTabStripLeading() const;
 
   - description: |-
       Add methods and member variables for "Hide completely when collapsed"
-      feature
+      and "Left/right positioning" features
 
     add_to_protected:
       class_name: 'VerticalTabStripRegionView'
@@ -24,3 +25,6 @@ substitutions:
         void OnHideCompletelyPrefChanged();
         bool IsMouseInHotCorner() const;
         PrefChangeRegistrar hide_completely_pref_registrar_;
+        void ObserveVerticalTabOnRightPref();
+        void OnVerticalTabOnRightPrefChanged();
+        PrefChangeRegistrar vertical_tab_on_right_pref_registrar_;

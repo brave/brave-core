@@ -23,7 +23,17 @@ substitutions:
     regex:
       re_pattern: '(const\ bool\ top_corner_visible =.*?);'
       re_flags: [DOTALL]
-      replace: '\1 && vertical_tab_strip_bounds.width() > 0;'
+      replace: >-
+        \1 && vertical_tab_strip_bounds.width() > 0 &&
+        vertical_tab_strip_leading;
+
+  - description: |-
+      The bottom corner is designed for the strip placed on the leading side,
+      so hide it when the strip is on the trailing side.
+    regex:
+      re_pattern: '(const\ bool\ bottom_corner_visible =.*?);'
+      re_flags: [DOTALL]
+      replace: '\1 && vertical_tab_strip_leading;'
 
   - description: |-
       Hide the vertical tab strip region when it has no width when adding
@@ -40,3 +50,108 @@ substitutions:
         (layout.AddChild\(views\(\)\.vertical_tab_strip_region_view,.*?)\)
       re_flags: [DOTALL]
       replace: '\1 && !vertical_tab_strip_bounds.IsEmpty());'
+
+  - description: |-
+      Determine which side the vertical tab strip is placed on. When it is on
+      the trailing side, the strip doesn't share the top row with the leading
+      caption buttons but with the trailing ones instead, so offset it by their
+      height.
+    regex:
+      pattern: 'gfx::Rect vertical_tab_strip_bounds;'
+      replace: |-
+        gfx::Rect vertical_tab_strip_bounds;
+          const bool vertical_tab_strip_leading =
+              !views().vertical_tab_strip_region_view ||
+              views().vertical_tab_strip_region_view->IsVerticalTabStripLeading();
+          const int vertical_tab_strip_top_offset =
+              vertical_tab_strip_leading
+                  ? vertical_tab_strip_animation.top_offset
+                  : base::ClampCeil(layout_data_->revised_params.trailing_exclusion
+                                        .ContentWithPadding()
+                                        .height());
+
+  - description: |-
+      Don't bump the top container's leading margin out to cover the collapsed
+      vertical tab strip when the strip is not on the leading side.
+    regex:
+      pattern: 'if (vertical_tab_strip_animation.top_offset > 0) {'
+      replace: |-
+        if (vertical_tab_strip_leading &&
+              vertical_tab_strip_animation.top_offset > 0) {
+
+  - description: Place the vertical tab strip on the left or right.
+    regex:
+      re_pattern: |-
+        gfx::Rect\(params\.visual_client_area\.x\(\),\s*params\.visual_client_area\.y\(\) \+\s*vertical_tab_strip_animation\.top_offset,\s*vertical_tab_strip_width,\s*params\.visual_client_area\.height\(\) -\s*vertical_tab_strip_animation\.top_offset\)
+      replace: |-
+        gfx::Rect(vertical_tab_strip_leading
+                            ? params.visual_client_area.x()
+                            : params.visual_client_area.right() -
+                                  vertical_tab_strip_width,
+                        params.visual_client_area.y() +
+                            vertical_tab_strip_top_offset,
+                        vertical_tab_strip_width,
+                        params.visual_client_area.height() -
+                            vertical_tab_strip_top_offset)
+
+  - description: Inset the content area from the side the strip is placed on.
+    regex:
+      pattern: 'params.InsetHorizontal(inset_amount, /*leading=*/true);'
+      replace: 'params.InsetHorizontal(inset_amount, vertical_tab_strip_leading);'
+
+  - description: Keep the content area unclipped on the side the strip is on.
+    count: 0
+    regex:
+      re_pattern: |-
+        unclipped_contents_region\.Inset\(gfx::Insets::TLBR\(\s*0, ([^,]+?), 0, 0\)\);
+      replace: |-
+        InsetHorizontal(unclipped_contents_region, \1,
+                              vertical_tab_strip_leading);
+
+  - description: |-
+      Mirror the window corners of the top container when the vertical tab strip
+      is on the trailing side. The strip abuts the top container's trailing
+      edge, so only the leading corner is the window's corner, unless the strip
+      is pushed down by the trailing caption buttons.
+    regex:
+      pattern: 'background->SetCorners(corners);'
+      replace: |-
+        if (layout_data_->tab_strip_type == TabStripType::kVertical &&
+              layout_data_->window_state == WindowState::kNormal &&
+              views().vertical_tab_strip_region_view &&
+              !views().vertical_tab_strip_region_view->IsVerticalTabStripLeading()) {
+            corners = CustomCornersBackground::Corners();
+            corners[CornerOrientation::kTopLeading] =
+                background->GetWindowCorner(/*upper=*/true);
+            if (!params.trailing_exclusion.IsEmpty()) {
+              corners[CornerOrientation::kTopTrailing] =
+                  background->GetWindowCorner(/*upper=*/true);
+            }
+          }
+          background->SetCorners(corners);
+
+  - description: |-
+      Mirror the window and concave corners of the vertical tab strip's own
+      background when it is on the trailing side.
+    regex:
+      pattern: 'vertical_tabs_background->SetCorners(vertical_tabs_corners);'
+      replace: |-
+        if (views().vertical_tab_strip_region_view &&
+              !views().vertical_tab_strip_region_view->IsVerticalTabStripLeading()) {
+            CustomCornersBackground::Corners mirrored_corners;
+            // The top corners are derived from the leading exclusion, which
+            // doesn't apply to the strip on the trailing side. The strip only
+            // has the window's top corner unless it's pushed down by the
+            // trailing caption buttons.
+            if (layout_data_->window_state == WindowState::kNormal &&
+                layout_data_->revised_params.trailing_exclusion.IsEmpty()) {
+              mirrored_corners[CornerOrientation::kTopTrailing] =
+                  vertical_tabs_background->GetWindowCorner(/*upper=*/true);
+            }
+            mirrored_corners[CornerOrientation::kBottomLeading] =
+                vertical_tabs_corners[CornerOrientation::kBottomTrailing];
+            mirrored_corners[CornerOrientation::kBottomTrailing] =
+                vertical_tabs_corners[CornerOrientation::kBottomLeading];
+            vertical_tabs_corners = mirrored_corners;
+          }
+          vertical_tabs_background->SetCorners(vertical_tabs_corners);

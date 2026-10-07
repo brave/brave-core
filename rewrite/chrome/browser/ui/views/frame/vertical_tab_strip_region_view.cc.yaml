@@ -4,10 +4,14 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
-  - description: 'Observe "Hide Completely When Collapsed" preference'
+  - description: |-
+      Observe "Hide Completely When Collapsed" and "Vertical tabs on right"
+      preferences
     after_function_impl:
       function_name: 'VerticalTabStripRegionView::VerticalTabStripRegionView'
-      code: 'ObserveHideCompletelyPref();'
+      code: |-
+        ObserveHideCompletelyPref();
+        ObserveVerticalTabOnRightPref();
 
   - description: Replace kCollapsedWidth with dynamic getter
     count: 0
@@ -34,3 +38,57 @@ substitutions:
     after_function_impl:
       function_name: 'VerticalTabStripRegionView::OnAnimationProgressed'
       code: 'MaybeUpdateVisibility(state_controller_, this);'
+
+  - description: |-
+      Put the resize area on the edge facing the contents, which depends on
+      which side the vertical tab strip is placed.
+    regex:
+      pattern: 'bounds().right() - resize_area_width_'
+      replace: |-
+        (IsVerticalTabStripLeading() ? bounds().right() - resize_area_width_ : 0)
+
+  - description: |-
+      Invert the resize direction when the resize area is on the leading edge of
+      the vertical tab strip, i.e. when the strip is placed on the right.
+    regex:
+      re_pattern: |-
+        (void VerticalTabStripRegionView::OnResize\(int resize_amount,\s*bool done_resizing\) \{)
+      replace: |-
+        \1
+          if (!IsVerticalTabStripLeading()) {
+            resize_amount = -resize_amount;
+          }
+
+  - description: |-
+      Keyboard resizing depends on which physical side the strip is placed,
+      regardless of the UI direction.
+    regex:
+      pattern: 'base::i18n::IsRTL() ? kKeyboardResizeWidth : -kKeyboardResizeWidth'
+      replace: |-
+        state_controller_->IsVerticalTabOnRight() ? kKeyboardResizeWidth
+                                                  : -kKeyboardResizeWidth
+
+  - description: |-
+      Keyboard resizing depends on which physical side the strip is placed,
+      regardless of the UI direction.
+    regex:
+      pattern: 'base::i18n::IsRTL() ? -kKeyboardResizeWidth : kKeyboardResizeWidth'
+      replace: |-
+        state_controller_->IsVerticalTabOnRight() ? -kKeyboardResizeWidth
+                                                  : kKeyboardResizeWidth
+
+  - description: |-
+      The link drop arrow points towards the strip from the outside, so its
+      direction depends on which physical side the strip is placed.
+    regex:
+      pattern: 'base::i18n::IsRTL() ? DropArrow::Direction::kLeft'
+      replace: 'state_controller_->IsVerticalTabOnRight() ? DropArrow::Direction::kLeft'
+
+  - description: |-
+      The inside edge is the opposite one when the strip is placed on the right.
+    regex:
+      pattern: 'std::abs(current_point.x() - GetContentsBounds().right())'
+      replace: |-
+        std::abs(current_point.x() - (IsVerticalTabStripLeading()
+                                          ? GetContentsBounds().right()
+                                          : GetContentsBounds().x()))

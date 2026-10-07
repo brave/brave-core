@@ -1,19 +1,23 @@
 diff --git a/chrome/browser/ui/views/frame/vertical_tab_strip_region_view.h b/chrome/browser/ui/views/frame/vertical_tab_strip_region_view.h
-index 76f8e997d61b2d606024eb72e6bcaf538265d290..11644a6a9c26030f03e9ece6dee53c35cb4090ff 100644
+index 76f8e997d61b2d606024eb72e6bcaf538265d290..144277b6f2b1c5b94e0d1adb77ed6a4a7759a1f3 100644
 --- a/chrome/browser/ui/views/frame/vertical_tab_strip_region_view.h
 +++ b/chrome/browser/ui/views/frame/vertical_tab_strip_region_view.h
-@@ -153,6 +153,15 @@ class VerticalTabStripRegionView final
+@@ -153,6 +153,19 @@ class VerticalTabStripRegionView final
      return focus_swipe_controller_.get();
    }
  
 +  int GetCollapsedWidth() const;
 +  void HandleMouseMoveEvent(const gfx::PointF& point_int_screen);
++  bool IsVerticalTabStripLeading() const;
 +
 + protected:
 +  void ObserveHideCompletelyPref();
 +  void OnHideCompletelyPrefChanged();
 +  bool IsMouseInHotCorner() const;
 +  PrefChangeRegistrar hide_completely_pref_registrar_;
++  void ObserveVerticalTabOnRightPref();
++  void OnVerticalTabOnRightPrefChanged();
++  PrefChangeRegistrar vertical_tab_on_right_pref_registrar_;
 +
   private:
    // Since VerticalTabStripRegionView inherits from AccessiblePaneView, which is

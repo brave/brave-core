@@ -1,12 +1,13 @@
 diff --git a/chrome/browser/ui/tabs/vertical_tab_strip_state_controller.h b/chrome/browser/ui/tabs/vertical_tab_strip_state_controller.h
-index f6ed0cbec397c92379a7ec9669226d99ab5f70e1..eb14dcd52a74a40a8c5d3da711f4b8989f4c9fe2 100644
+index f6ed0cbec397c92379a7ec9669226d99ab5f70e1..1b5f9d00fc41e81ceccbeeaf3d290b84ed481b78 100644
 --- a/chrome/browser/ui/tabs/vertical_tab_strip_state_controller.h
 +++ b/chrome/browser/ui/tabs/vertical_tab_strip_state_controller.h
-@@ -133,6 +133,8 @@ class VerticalTabStripStateController : public SessionServiceBaseObserver,
+@@ -133,6 +133,9 @@ class VerticalTabStripStateController : public SessionServiceBaseObserver,
    static constexpr char kUncollapsedWidthKey[] =
        "vertical_tab_strip_uncollapsed_width";
  
 +  bool ShouldHideCompletelyWhenCollapsed() const;
++  bool IsVerticalTabOnRight() const;
 +
   private:
    void NotifyCollapseChanged();

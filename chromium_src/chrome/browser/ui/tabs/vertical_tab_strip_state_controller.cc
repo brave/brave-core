@@ -13,6 +13,7 @@
 
 // Defined in //brave/browser/ui/views/tabs/vertical_tab_utils.cc.
 bool BraveShouldHideVerticalTabsCompletely(PrefService* prefs);
+bool BraveIsVeticalTabOnRight(PrefService* prefs);
 
 namespace tabs {
 
@@ -20,6 +21,10 @@ bool VerticalTabStripStateController::ShouldHideCompletelyWhenCollapsed()
     const {
   return base::FeatureList::IsEnabled(tabs::kBraveVerticalTabHideCompletely) &&
          BraveShouldHideVerticalTabsCompletely(pref_service_);
+}
+
+bool VerticalTabStripStateController::IsVerticalTabOnRight() const {
+  return BraveIsVeticalTabOnRight(pref_service_);
 }
 
 }  // namespace tabs

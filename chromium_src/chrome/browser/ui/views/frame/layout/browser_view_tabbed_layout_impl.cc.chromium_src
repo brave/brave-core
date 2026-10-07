@@ -1,0 +1,32 @@
+/* Copyright (c) 2026 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#include "chrome/browser/ui/views/frame/layout/browser_view_tabbed_layout_impl.h"
+
+#include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#include "components/prefs/pref_service.h"
+
+namespace {
+
+// Check if vertical tabs should be positioned on the right side.
+// When true, the tab strip is anchored to the right edge of the window,
+// the resize handle is on the left, and content insets are adjusted accordingly.
+bool IsVerticalTabStripOnRight(const BrowserViewTabbedLayoutImpl& layout_impl) {
+  auto* state_controller =
+      tabs::VerticalTabStripStateController::From(layout_impl.delegate().GetBrowserWindow());
+  if (!state_controller) {
+    return false;
+  }
+  return state_controller->IsVerticalTabOnRight();
+}
+
+}  // namespace
+
+// Hook for right-side vertical tab strip positioning support.
+// When Brave vertical tabs are enabled with kVerticalTabsOnRight,
+// this method returns true to position the tab strip on the right edge.
+bool BrowserViewTabbedLayoutImpl::IsVerticalTabOnRightForLayout() const {
+  return IsVerticalTabStripOnRight(*this);
+}

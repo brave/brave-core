@@ -291,6 +291,15 @@ the layout-leading edge.
 
 ### Reimplementation plan
 
+**Status (upstream backend):** steps 1-3 are implemented via
+`tabs::VerticalTabStripStateController::IsVerticalTabOnRight()` (chromium_src),
+`VerticalTabStripRegionView::IsVerticalTabStripLeading()` and the
+`BrowserViewTabbedLayoutImpl` plaster. Steps 4, 5 and 7 are not needed: upstream
+has no toggle button, the sidebar is not flipped (the layout is simply contents
+-> sidebar -> vertical tabs), and no coexistence gate is required. The existing
+settings radio (step 6) is kept as-is. Remaining: visual polish (corner
+rounding, etc.).
+
 1. Re-add `kVerticalTabsOnRight` pref (own namespace; no upstream collision).
 2. Re-implement layout/resize/hot-corner side logic against the new upstream
    `VerticalTabStripRegionView` / `BaseTabStripRegionView`.

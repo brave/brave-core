@@ -683,8 +683,24 @@ gfx::Rect BraveBrowserView::GetBoundingBoxInScreenForMouseOverHandling() const {
   gfx::Rect browser_bounds = GetBoundsInScreen();
   gfx::Rect top_container_bounds = top_container_->GetBoundsInScreen();
   int top = top_container_bounds.bottom();
-  return gfx::Rect(browser_bounds.x(), top, browser_bounds.width(),
+  gfx::Rect bounds(browser_bounds.x(), top, browser_bounds.width(),
                    browser_bounds.bottom() - top);
+
+  // Exclude upstream's vertical tab strip so that hovering over it isn't
+  // treated as hovering over the browser edge.
+  if (auto* region_view =
+          views::AsViewClass<VerticalTabStripRegionView>(tab_strip_view());
+      region_view && region_view->GetVisible()) {
+    const gfx::Rect region_bounds = region_view->GetBoundsInScreen();
+    if (region_bounds.CenterPoint().x() < browser_bounds.CenterPoint().x()) {
+      bounds.Inset(gfx::Insets::TLBR(
+          0, std::max(0, region_bounds.right() - bounds.x()), 0, 0));
+    } else {
+      bounds.Inset(gfx::Insets::TLBR(
+          0, 0, 0, std::max(0, bounds.right() - region_bounds.x())));
+    }
+  }
+  return bounds;
 }
 
 bool BraveBrowserView::HasSelectedURL() const {

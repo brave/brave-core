@@ -131,6 +131,12 @@ class BraveBrowserViewTabbedLayoutImpl : public BrowserViewTabbedLayoutImpl {
   // Whether the vertical tab strip / sidebar UI sits beside the contents area
   // rather than floating above it or being hidden.
   bool IsVerticalTabStripAtContentsEdge() const;
+
+  // Returns the width reserved for upstream's vertical tab strip, or 0 when it
+  // isn't laid out beside the contents (e.g. Brave's own vertical tabs are in
+  // use, or the strip is hidden). The strip's side is
+  // `IsVerticalTabStripLeading()`.
+  int GetUpstreamVerticalTabStripWidth() const;
   bool IsSidebarAtContentsEdge() const;
 
   // Returns the corner radii for the contents area, where a corner meeting the

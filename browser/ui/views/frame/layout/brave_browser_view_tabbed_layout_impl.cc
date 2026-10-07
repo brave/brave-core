@@ -26,6 +26,7 @@
 #include "chrome/browser/ui/views/frame/custom_corners_background.h"
 #include "chrome/browser/ui/views/frame/layout/browser_view_layout_delegate.h"
 #include "chrome/browser/ui/views/frame/multi_contents_view.h"
+#include "chrome/browser/ui/views/frame/vertical_tab_strip_region_view.h"
 #include "chrome/browser/ui/views/infobars/infobar_container_view.h"
 #include "chrome/browser/ui/views/side_panel/side_panel.h"
 #include "ui/views/border.h"
@@ -445,13 +446,22 @@ void BraveBrowserViewTabbedLayoutImpl::CalculateSideBarLayout(
   // lambda below.
 
   // Vertical tab is outermost when on the same side as the sidebar.
-  const bool vtab_on_same_side =
-      views().vertical_tab_strip_host && delegate().ShouldShowVerticalTabs() &&
-      (sidebar_leading == IsVerticalTabStripLeading());
-  const int vtab_width =
-      vtab_on_same_side
-          ? views().vertical_tab_strip_host->GetPreferredSize().width()
-          : 0;
+  const bool vtab_on_same_side_as_sidebar =
+      sidebar_leading == IsVerticalTabStripLeading();
+  int vtab_width = 0;
+  bool is_upstream_vtab_width = false;
+  if (vtab_on_same_side_as_sidebar) {
+    if (views().vertical_tab_strip_host &&
+        delegate().ShouldShowVerticalTabs()) {
+      vtab_width = views().vertical_tab_strip_host->GetPreferredSize().width();
+    } else {
+      // Upstream's vertical tab strip. Upstream's layout has already excluded
+      // it from the contents and the side panel's anchor, but the sidebar is
+      // positioned against the browser edges.
+      vtab_width = GetUpstreamVerticalTabStripWidth();
+      is_upstream_vtab_width = vtab_width > 0;
+    }
+  }
 
   // Outer available edges, inset for any vertical tab on the same side.
   const gfx::Rect browser_bounds = views().browser_view->GetLocalBounds();
@@ -480,9 +490,15 @@ void BraveBrowserViewTabbedLayoutImpl::CalculateSideBarLayout(
     if (!panel_layout) {
       return;
     }
+    // Upstream anchored the panel to the area excluding its vertical tab strip.
+    gfx::Rect anchor_area = params.visual_client_area;
+    if (is_upstream_vtab_width) {
+      anchor_area.Inset(sidebar_leading
+                            ? gfx::Insets::TLBR(0, vtab_width, 0, 0)
+                            : gfx::Insets::TLBR(0, 0, 0, vtab_width));
+    }
     panel_layout->bounds = ComputeAdjustedPanelBounds(
-        sidebar_leading, sidebar_bounds, panel_layout->bounds,
-        params.visual_client_area);
+        sidebar_leading, sidebar_bounds, panel_layout->bounds, anchor_area);
     // The upstream layout offsets the panel -1px above the contents to overlap
     // the toolbar separator. Brave doesn't need that overlap; align the panel's
     // vertical extent with the contents container instead.
@@ -671,9 +687,20 @@ bool BraveBrowserViewTabbedLayoutImpl::IsVerticalTabStripAtContentsEdge()
   // A vertical tab strip that reports no width floats above the contents
   // instead of sitting beside it. This is the same test used to decide whether
   // the contents are inset for it.
-  return delegate().ShouldShowVerticalTabs() &&
-         views().vertical_tab_strip_host &&
-         views().vertical_tab_strip_host->GetPreferredSize().width() != 0;
+  return (delegate().ShouldShowVerticalTabs() &&
+          views().vertical_tab_strip_host &&
+          views().vertical_tab_strip_host->GetPreferredSize().width() != 0) ||
+         GetUpstreamVerticalTabStripWidth() != 0;
+}
+
+int BraveBrowserViewTabbedLayoutImpl::GetUpstreamVerticalTabStripWidth() const {
+  if (delegate().ShouldShowVerticalTabs() ||
+      delegate().GetTabStripType() != TabStripType::kVertical ||
+      !IsParentedTo(views().vertical_tab_strip_region_view,
+                    views().browser_view)) {
+    return 0;
+  }
+  return views().vertical_tab_strip_region_view->GetPreferredSize().width();
 }
 
 bool BraveBrowserViewTabbedLayoutImpl::IsSidebarAtContentsEdge() const {
