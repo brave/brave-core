@@ -195,7 +195,7 @@ TEST_F(BraveSearchEnginesHandlerTest, SetDefaultPrivateEngineByDatabaseId) {
                 prefs::kSyncedDefaultPrivateSearchProviderGUID));
 
   base::ListValue args;
-  args.Append(static_cast<int>(engine_a_id_));
+  args.Append(static_cast<int>(engine_a_id_.value()));
   web_ui()->HandleReceivedMessage("setDefaultPrivateSearchEngine", args);
 
   EXPECT_EQ(engine_a_guid_,
@@ -223,7 +223,7 @@ TEST_F(BraveSearchEnginesHandlerTest, SetDefaultPrivateEngineUserAddedEngine) {
   ASSERT_TRUE(default_engine);
 
   base::ListValue args;
-  args.Append(static_cast<int>(default_engine->id()));
+  args.Append(static_cast<int>(default_engine->id().value()));
   web_ui()->HandleReceivedMessage("setDefaultPrivateSearchEngine", args);
 
   EXPECT_EQ(user_engine_guid,
