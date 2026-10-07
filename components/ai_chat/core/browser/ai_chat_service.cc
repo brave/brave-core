@@ -287,7 +287,8 @@ ConversationHandler* AIChatService::CreateConversation() {
       std::make_unique<ConversationHandler>(
           conversation, this, model_service_, credential_manager_.get(),
           feedback_api_.get(), profile_prefs_, url_loader_factory_,
-          CreateToolProvidersForNewConversation());
+          /*tool_providers=*/std::vector<std::unique_ptr<ToolProvider>>());
+  AddToolProvidersToConversation(conversation_handler.get());
   conversation_observations_.AddObservation(conversation_handler.get());
 
   // Own it
@@ -406,7 +407,9 @@ void AIChatService::OnConversationDataReceived(
       std::make_unique<ConversationHandler>(
           conversation, this, model_service_, credential_manager_.get(),
           feedback_api_.get(), profile_prefs_, url_loader_factory_,
-          CreateToolProvidersForNewConversation(), std::move(data));
+          /*tool_providers=*/std::vector<std::unique_ptr<ToolProvider>>(),
+          std::move(data));
+  AddToolProvidersToConversation(conversation_handler.get());
   conversation_observations_.AddObservation(conversation_handler.get());
   conversation_handlers_.insert_or_assign(conversation_uuid,
                                           std::move(conversation_handler));
@@ -1659,19 +1662,19 @@ void AIChatService::OnGetFocusTabs(
   std::move(callback).Run(std::move(result));
 }
 
-std::vector<std::unique_ptr<ToolProvider>>
-AIChatService::CreateToolProvidersForNewConversation() {
+void AIChatService::AddToolProvidersToConversation(
+    ConversationHandler* conversation) {
   std::vector<std::unique_ptr<ToolProvider>> tool_providers;
 
   for (const auto& factory : tool_provider_factories_) {
-    tool_providers.push_back(factory->CreateToolProvider());
+    tool_providers.push_back(factory->CreateToolProvider(conversation));
   }
 
   // Basic set of tools that we can provide
   tool_providers.push_back(std::make_unique<ConversationToolProvider>(
       memory_tool_ ? memory_tool_->GetWeakPtr() : nullptr));
 
-  return tool_providers;
+  conversation->AddToolProviders(std::move(tool_providers));
 }
 
 void AIChatService::CreateTabOrganizationEngineIfNeeded() {

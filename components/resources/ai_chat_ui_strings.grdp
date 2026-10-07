@@ -987,6 +987,9 @@
   <message name="IDS_CHAT_UI_TOOL_LABEL_SEMANTIC_HISTORY_SEARCH_GENERIC" desc="Label shown while the assistant is searching the user's local browsing history when the query is not yet known." formatter_data="webui=AiChat">
     Searching your browser history
   </message>
+  <message name="IDS_CHAT_UI_TOOL_LABEL_ATTACH_WORKSPACE" desc="Label shown when the assistant creates a new, empty workspace (a private folder of files it can work on) for the conversation." formatter_data="webui=AiChat">
+    Creating a workspace
+  </message>
   <message name="IDS_CHAT_UI_TOOL_SEMANTIC_HISTORY_SEARCH_PERMISSION_IMPLICATIONS" desc="Explanation shown in the permission prompt when the assistant wants to search the user's local browsing history. Calls out that the search itself is on-device and only the matched pages flow to Brave AI." formatter_data="webui=AiChat">
     Brave AI wants to search your browsing history. The search runs locally on your device, so your full history isn't sent anywhere. Only the matching pages' titles, URLs, and indexed text passages will be sent to Brave AI as part of this conversation.
   </message>

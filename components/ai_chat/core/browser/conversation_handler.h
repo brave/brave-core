@@ -310,6 +310,12 @@ class ConversationHandler : public mojom::ConversationHandler,
     model_key_ = std::move(model_key);
   }
 
+  // Adds tool providers for this conversation, for providers that need the
+  // conversation, so can't be passed to the constructor. They're listed before
+  // any that were (including the AssociatedContentManager), so built-in tools
+  // come before content tools.
+  void AddToolProviders(std::vector<std::unique_ptr<ToolProvider>> providers);
+
   ToolProvider* GetFirstToolProviderForTesting() {
     if (tool_providers_.empty()) {
       return nullptr;
