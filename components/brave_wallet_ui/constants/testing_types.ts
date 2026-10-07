@@ -8,6 +8,7 @@ import { TokenBalancesRegistry } from '../common/slices/entities/token-balance.e
 import { BraveWallet, RewardsExternalWallet } from './types'
 
 export interface WalletApiDataOverrides {
+  isWalletCreated?: boolean
   selectedCoin?: BraveWallet.CoinType
   selectedAccountId?: BraveWallet.AccountId
   chainIdsForCoins?: Record<BraveWallet.CoinType, string>

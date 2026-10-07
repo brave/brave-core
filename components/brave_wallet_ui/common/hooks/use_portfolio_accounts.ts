@@ -20,7 +20,11 @@ export const usePortfolioAccounts = () => {
   )
 
   // queries
-  const { accounts, isLoading: isLoadingAccounts } = useAccountsQuery()
+  const {
+    accounts,
+    isLoading: isLoadingAccounts,
+    hasData: hasAccountsData,
+  } = useAccountsQuery()
 
   // memos
   const usersFilteredAccounts = React.useMemo(() => {
@@ -31,5 +35,5 @@ export const usePortfolioAccounts = () => {
   }, [accounts, filteredOutPortfolioAccountIds])
 
   // render
-  return { usersFilteredAccounts, isLoadingAccounts }
+  return { usersFilteredAccounts, isLoadingAccounts, hasAccountsData }
 }
