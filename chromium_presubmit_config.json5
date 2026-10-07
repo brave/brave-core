@@ -231,5 +231,8 @@
     "StringFromGUID2": [
       "chromium_src/chrome/install_static/brave_install_util_unittest\\.cc",
     ],
+    "IS_DESKTOP_ANDROID": [
+      "chromium_src/chrome/browser/ui/webui/favicon_source\\.cc",
+    ],
   },
 }

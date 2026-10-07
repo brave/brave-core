@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/extensions/BUILD.gn b/chrome/browser/extensions/BUILD.gn
-index 563383fc71d7bc73f0af0fd2130879d0844ba2af..0a0361d87d3eecc5514f88940d423706e57f2796 100644
+index 563383fc71d7bc73f0af0fd2130879d0844ba2af..267c085c582d7b3c051bfb21dab99484d0756a16 100644
 --- a/chrome/browser/extensions/BUILD.gn
 +++ b/chrome/browser/extensions/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -27,3 +27,28 @@ index 563383fc71d7bc73f0af0fd2130879d0844ba2af..0a0361d87d3eecc5514f88940d423706
        sources += [
          # These files are temporary workarounds to allow for a lightweight
          # extensions runtime in desktop-android builds. They should be removed
+@@ -2188,7 +2190,7 @@ source_set("unit_tests") {
+       ]
+     }
+ 
+-    if (enable_service_discovery) {
++    if (enable_service_discovery && (!is_android || is_desktop_android)) {
+       sources += [ "api/mdns/mdns_api_unittest.cc" ]
+       deps += [ "//chrome/browser/extensions/api/mdns" ]
+     }
+@@ -2286,6 +2288,7 @@ source_set("unit_tests") {
+ }
+ 
+ # By default these tests run on Win, Mac, Linux, Chrome OS and desktop Android.
++if (!is_android || is_desktop_android) {
+ source_set("browser_tests") {
+   testonly = true
+ 
+@@ -3186,6 +3189,7 @@ source_set("browser_tests") {
+     deps += [ "//chrome/browser/ui/views/web_apps:launch_dialogs" ]
+   }
+ }
++}
+ 
+ source_set("interactive_ui_tests") {
+   testonly = true
