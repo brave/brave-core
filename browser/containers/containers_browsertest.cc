@@ -73,12 +73,15 @@
 #include "components/tabs/public/tab_interface.h"
 #include "components/webapps/common/web_app_id.h"
 #include "content/public/browser/browsing_data_remover.h"
+#include "content/public/browser/content_browser_client.h"
+#include "content/public/browser/hid_delegate.h"
 #include "content/public/browser/host_zoom_map.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/security_principal.h"
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/storage_partition_config.h"
+#include "content/public/common/content_client.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/browsing_data_remover_test_util.h"
@@ -3068,6 +3071,28 @@ IN_PROC_BROWSER_TEST_F(
   // exactly when the iterator is dereferenceable.
   EXPECT_TRUE(temporary_container == locally_used_containers.end())
       << "Unexpected temporary container: " << (*temporary_container)->id;
+}
+
+// Device grants are stored per profile and origin, so they would leak between
+// storage partitions. WebHID therefore stays unavailable in containers, as
+// upstream refuses it for any non-default partition (WebUSB and Web Serial
+// are blocked the same way).
+IN_PROC_BROWSER_TEST_F(ContainersBrowserTest, HidUnavailableInContainer) {
+  const GURL url("https://a.test/simple.html");
+  content::HidDelegate* hid_delegate =
+      content::GetContentClientForTesting()->browser()->GetHidDelegate();
+  ASSERT_TRUE(hid_delegate);
+
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  EXPECT_TRUE(hid_delegate->IsHidAllowedForFrame(browser()
+                                                     ->tab_strip_model()
+                                                     ->GetActiveWebContents()
+                                                     ->GetPrimaryMainFrame()));
+
+  content::WebContents* container_tab =
+      OpenUrlInContainerTab(url, kTestContainerId);
+  EXPECT_FALSE(
+      hid_delegate->IsHidAllowedForFrame(container_tab->GetPrimaryMainFrame()));
 }
 
 // Installing a web app with OS integration requires a blocking registration to
