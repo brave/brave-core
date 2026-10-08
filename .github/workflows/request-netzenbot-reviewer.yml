@@ -8,9 +8,13 @@ name: Request netzenbot-reviewer
 # and a fork's token cannot write. That trigger runs the workflow on the base branch with a write
 # token, so this job checks nothing out and runs nothing the pull request supplies: the only input
 # is the pull request number from the event.
+#
+# synchronize asks again after each push. A submitted review clears the request, and the review job
+# returns to a pull request it approved, or to a contributor's pull request, only while the request
+# is open, so without it commits pushed after the first review would go unreviewed.
 on:
   pull_request_target:
-    types: [opened, reopened]
+    types: [opened, reopened, synchronize]
 
 permissions:
   pull-requests: write
