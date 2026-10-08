@@ -336,7 +336,9 @@ class SettingsViewController: TableViewController, BraveAccountDialogOpenerBridg
                 attributionManager: attributionManager,
                 localState: localState
               ),
-              steps: [.addToDock],
+              steps: [
+                AddToDockOnboardingStep(ctaTitle: Strings.FocusOnboarding.gotItButtonTitle)
+              ],
               showSplashScreen: false,
               showDismissButton: false
             ).then {
