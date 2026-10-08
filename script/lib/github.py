@@ -405,7 +405,10 @@ def _rate_limit_wait_seconds(headers):
 
 
 def _is_secondary_rate_limit(code, body):
-    return code in (403, 429) and 'secondary rate' in body.lower()
+    # 429 is always a rate limit. A 403 is one only when the body says so.
+    if code == 429:
+        return True
+    return code == 403 and 'secondary rate' in body.lower()
 
 
 def _request_with_retry(action, description):
