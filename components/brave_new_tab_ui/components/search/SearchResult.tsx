@@ -103,16 +103,16 @@ function Image({ match, isAskLeo }: { match: AutocompleteMatch, isAskLeo: boolea
   // We have three separate cases here:
   // 1. A chromium generic search result icon:
   //    We display the icon as a mask-image, so we can change the color
-  // 2. An `imageUrl` with the chrome:// scheme, which we can load on the NTP:
+  // 2. A `suggestTemplate` image URL with the chrome:// scheme, which we can load on the NTP:
   //    We display the image as a background, as its safe on the NTP
   // 3. A web resource, which we need to load from the WebUI via the unpadded
   //    url machinery.
-  const isGeneric = !match.imageUrl
-  return isGeneric
+  const imageUrl = match.suggestTemplate.image?.url
+  return !imageUrl
     ? <SearchIcon url={match.iconUrl} />
-    : match.imageUrl.startsWith('chrome')
-      ? <FavIcon url={match.imageUrl} />
-      : <MaybeImage src={match.imageUrl} />
+    : imageUrl.startsWith('chrome')
+      ? <FavIcon url={imageUrl} />
+      : <MaybeImage src={imageUrl} />
 }
 
 export default function SearchResult({ match, selected, onClick }: Props) {
@@ -124,7 +124,7 @@ export default function SearchResult({ match, selected, onClick }: Props) {
     onClick(e)
   }}>
     <IconContainer>
-      <Image key={match.imageUrl ?? match.iconUrl} match={match} isAskLeo={isAskLeo} />
+      <Image key={match.suggestTemplate.image?.url ?? match.iconUrl} match={match} isAskLeo={isAskLeo} />
     </IconContainer>
     <Flex direction='column'>
       <Content>{contents}</Content>

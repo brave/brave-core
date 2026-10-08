@@ -3,7 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+import { SecondaryTextPlacement } from 'chrome://resources/mojo/components/omnibox/browser/suggest_template_info.mojom-webui.js'
 import { SearchActions, defaultSearchStore } from '../state/search_store'
+
+const suggestTemplate = {
+  secondaryTextPlacement: SecondaryTextPlacement.kUnspecified,
+  image: null,
+}
 
 export function createSearchStore() {
   const store = defaultSearchStore()
@@ -89,7 +95,7 @@ export function createSearchStore() {
             contents: 'contents 1',
             description: 'description 1',
             iconUrl: '',
-            imageUrl: '',
+            suggestTemplate,
             destinationUrl: '',
           },
           {
@@ -97,7 +103,7 @@ export function createSearchStore() {
             contents: 'contents 2',
             description: 'Ask Leo',
             iconUrl: '',
-            imageUrl: '',
+            suggestTemplate,
             destinationUrl: '',
           },
           {
@@ -105,7 +111,7 @@ export function createSearchStore() {
             contents: query,
             description: engine,
             iconUrl: '',
-            imageUrl: '',
+            suggestTemplate,
             destinationUrl: '',
           },
         ],
