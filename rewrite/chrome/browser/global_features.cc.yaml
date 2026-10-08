@@ -4,12 +4,11 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
-  - description: 'Replacing GlobalFeatures with BraveGlobalFeatures'
-    regex:
-      pattern: 'new GlobalFeatures()'
-      replace: 'CreateBraveGlobalFeatures()'
+  - description: |
+      Create BraveGlobalFeatures
 
-  - description: 'Forward declare CreateBraveGlobalFeatures'
-    regex:
-      re_pattern: '(namespace {)'
-      replace: 'GlobalFeatures* CreateBraveGlobalFeatures();\n\1'
+      `Init()` runs on every GlobalFeatures, including test fakes, so
+      `brave_global_features()` is always valid once it has run.
+    preempt_function_impl:
+      function_name: GlobalFeatures::Init
+      code: 'brave_global_features_ = std::make_unique<BraveGlobalFeatures>();'

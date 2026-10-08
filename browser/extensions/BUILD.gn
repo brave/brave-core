@@ -137,6 +137,7 @@ source_set("extensions") {
     "//brave/components/webcompat_reporter/common",
     "//chrome/browser:browser_process",
     "//chrome/browser:browser_public_dependencies",
+    "//chrome/browser:global_features",
     "//chrome/browser/extensions",
     "//chrome/browser/extensions:chrome_extensions_browser_client",
     "//chrome/browser/profiles:profile",

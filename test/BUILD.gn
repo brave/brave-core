@@ -1078,6 +1078,7 @@ test("brave_browser_tests") {
     "//brave/components/email_aliases/buildflags",
     "//brave/components/extension_malware_blocklist/browser",
     "//brave/components/extension_malware_blocklist/common",
+    "//chrome/browser:global_features",
     "//chrome/browser/new_tab_page/prefs",
     "//chrome/browser/profiles/keep_alive:test_support",
     "//chrome/browser/ui:incognito_allowed_url",
