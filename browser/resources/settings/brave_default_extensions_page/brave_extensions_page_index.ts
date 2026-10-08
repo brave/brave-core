@@ -4,7 +4,6 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import 'chrome://resources/cr_elements/cr_view_manager/cr_view_manager.js';
-import '/shared/settings/prefs/prefs.js';
 import './brave_default_extensions_page.js';
 import './brave_extensions_manifest_v2_subpage.js';
 import '../settings_shared.css.js';
@@ -39,14 +38,6 @@ export class SettingsBraveExtensionsPageIndexElement extends
   static get template() {
     return getTemplate();
   }
-
-  static get properties() {
-    return {
-      prefs: Object,
-    };
-  }
-
-  declare prefs: Record<string, unknown>;
 
   private showDefaultViews_() {
     this.$.viewManager.switchViews(
