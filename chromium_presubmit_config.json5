@@ -222,5 +222,8 @@
     "IS_DESKTOP_ANDROID": [
       "chromium_src/chrome/browser/ui/webui/favicon_source\\.cc",
     ],
+    "/(?i)is_desktop_android": [
+      "browser/sources\\.gni",
+    ],
   },
 }

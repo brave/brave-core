@@ -441,6 +441,13 @@ if (!is_android) {
   }
 }
 
+if (is_android && !is_desktop_android && enable_extensions_core) {
+  # Upstream only bundles this for desktop and desktop Android; chrome://
+  # extensions needs it on non-desktop Android too.
+  brave_chrome_browser_deps +=
+      [ "//ui/webui/resources/cr_components/color_change_listener:mojom" ]
+}
+
 if (!is_android) {
   # Already included on android by upstream
 
