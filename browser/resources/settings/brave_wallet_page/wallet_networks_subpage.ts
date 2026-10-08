@@ -7,7 +7,6 @@ import 'chrome://resources/cr_elements/cr_button/cr_button.js'
 import './add_wallet_network_dialog.js'
 import './wallet_networks_list.js'
 
-import {PrefsMixin} from '/shared/settings/prefs/prefs_mixin.js'
 import {SettingsViewMixin} from '../settings_page/settings_view_mixin.js'
 import {I18nMixin} from 'chrome://resources/cr_elements/i18n_mixin.js'
 import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
@@ -23,7 +22,7 @@ import {
 
 const SettingsWalletNetworksSubpageBase =
   SettingsViewMixin(
-    PrefsMixin(I18nMixin(BaseMixin(PolymerElement))))
+    I18nMixin(BaseMixin(PolymerElement)))
 
 class SettingsWalletNetworksSubpage extends SettingsWalletNetworksSubpageBase {
   static get is() {
