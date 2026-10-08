@@ -99,7 +99,7 @@
     class="cr-row ollama-toggle"
     label="$i18n{braveLeoAssistantOllamaSyncLabel}"
     icon="ollama"
-    pref="{{prefs.brave.ai_chat.ollama_fetch_enabled}}">
+    pref-key="brave.ai_chat.ollama_fetch_enabled">
   </settings-toggle-button>
 </template>
 
@@ -129,7 +129,7 @@
       >
         <div class="model">
           <div class="model-info">
-            <template is="dom-if" if="[[isOllamaManagedModel_(item, prefs.brave.ai_chat.ollama_fetch_enabled.value, isOllamaConnected_)]]">
+            <template is="dom-if" if="[[isOllamaManagedModel_(item, ollamaFetchEnabledPref_.value, isOllamaConnected_)]]">
               <cr-icon class="model-icon" icon="ollama"></cr-icon>
             </template>
             <div class="model-text">
@@ -145,7 +145,7 @@
               class="size-20"
               iron-icon="edit-pencil"
             ></cr-icon-button>
-            <template is="dom-if" if="[[!isOllamaManagedModel_(item, prefs.brave.ai_chat.ollama_fetch_enabled.value, isOllamaConnected_)]]">
+            <template is="dom-if" if="[[!isOllamaManagedModel_(item, ollamaFetchEnabledPref_.value, isOllamaConnected_)]]">
               <cr-icon-button
                 on-click="handleDelete_"
                 class="size-20"
