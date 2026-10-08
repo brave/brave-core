@@ -171,6 +171,28 @@ extra_deps = {
             },
         ],
     },
+    # Test builds of the above. updater_tests upgrade from them. They go next to
+    # upstream's Chromium equivalents, which come from CIPD.
+    'src/third_party/updater/chromium_mac_amd64/cipd/BraveUpdater_test.app': {
+        'bucket': 'https://brave-build-deps-public.s3.brave.com/omaha4/',
+        'objects': [
+            {
+                'object_name': 'BraveUpdater_test-143.1.87.74-mac-x64-7740576af934.zip',
+                'sha256sum': '7740576af9342e4dcc603d235473aeacaa12e0286bbe8c34b3828c970ba6379f',
+                'size_bytes': 6015107,
+            },
+        ],
+    },
+    'src/third_party/updater/chromium_mac_arm64/cipd/BraveUpdater_test.app': {
+        'bucket': 'https://brave-build-deps-public.s3.brave.com/omaha4/',
+        'objects': [
+            {
+                'object_name': 'BraveUpdater_test-143.1.87.74-mac-arm64-a348ed2e5f8d.zip',
+                'sha256sum': 'a348ed2e5f8d836c77897af019706f39f1eea2366cb81b2890cad9072c5363aa',
+                'size_bytes': 5304118,
+            },
+        ],
+    },
     'src/brave/third_party/brave-vpn-wireguard-nt-dlls': {
         'bucket': 'https://brave-build-deps-public.s3.brave.com/brave-vpn-wireguard-dlls/',
         'objects': [
