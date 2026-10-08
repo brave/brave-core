@@ -90,7 +90,9 @@ hooks = [
     'action': ['vpython3',
                'tools/cr/install_extra_deps.py',
                'sync',
-               'src/brave/third_party/updater/mac']
+               'src/brave/third_party/updater/mac',
+               'src/third_party/updater/chromium_mac_amd64/cipd/BraveUpdater_test.app',
+               'src/third_party/updater/chromium_mac_arm64/cipd/BraveUpdater_test.app']
   },
   {
     # Remove files and directories no longer needed, whose leftover copies
