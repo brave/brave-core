@@ -4,7 +4,6 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import 'chrome://resources/cr_elements/cr_view_manager/cr_view_manager.js';
-import '/shared/settings/prefs/prefs.js';
 
 import '../settings_shared.css.js';
 
@@ -45,8 +44,6 @@ SettingsBraveContentPageIndexElementBase implements SettingsPlugin {
 
   static get properties() {
     return {
-      prefs: Object,
-
       pageVisibility_: {
         type: Object,
         value() {
@@ -56,7 +53,6 @@ SettingsBraveContentPageIndexElementBase implements SettingsPlugin {
     };
   }
 
-  declare prefs: Record<string, unknown>;
   declare private pageVisibility_: PageVisibility;
 
   private showDefaultViews_() {
