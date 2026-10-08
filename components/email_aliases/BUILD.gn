@@ -112,6 +112,7 @@ source_set("unit_tests") {
     "//brave/components/brave_account",
     "//brave/components/brave_account:features",
     "//brave/components/brave_account:test_support",
+    "//brave/components/brave_account/mojom",
     "//brave/components/constants",
     "//brave/components/resources:strings_grit",
     "//components/os_crypt/async/browser:test_support",
