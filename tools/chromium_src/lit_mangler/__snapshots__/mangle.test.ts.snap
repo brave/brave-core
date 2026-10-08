@@ -50,7 +50,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 "===================================================================
 --- ../chrome/browser/resources/extensions/detail_view.html.ts
 +++ gen/chrome/browser/resources/extensions/preprocessed/detail_view.html.ts
-@@ -368,16 +368,13 @@
+@@ -365,16 +365,13 @@
              <span>$i18n{itemPinToToolbar}</span>
            </extensions-toggle-row>
          \` : ''}
@@ -116,7 +116,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
        </div>
        \${this.showSevereWarnings() ? html\`
          <div id="warnings">
-@@ -141,28 +139,22 @@
+@@ -140,28 +138,22 @@
              </div>
            </div>
          \` : ''}
@@ -149,7 +149,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
        </cr-button>
        \${this.shouldShowErrorsButton_() ? html\`
          <cr-button id="errors-button"
-@@ -200,20 +192,11 @@
+@@ -199,20 +191,11 @@
            aria-describedby="a11yAssociation" class="action-button">
          $i18n{itemReload}
        </cr-button>
@@ -232,7 +232,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
    <div id="history-sync-optin" class="history-sync-optin">
      \${this.isSignInState_(HistorySignInState.SIGNED_OUT) ||
              this.isSignInState_(HistorySignInState.WEB_ONLY_SIGNED_IN) ?
-@@ -124,12 +120,11 @@
+@@ -132,12 +128,11 @@
        </cr-button>
      \`}
    </div>
@@ -782,6 +782,147 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 "
 `;
 
+exports[`mangled files should have up to date snapshots ./chromium_src/chrome/browser/resources/settings/autofill_page/payments/payments_page.html.ts.lit_mangler.ts should match snapshot 1`] = `
+"===================================================================
+--- ../chrome/browser/resources/settings/autofill_page/payments/payments_page.html.ts
++++ gen/chrome/browser/resources/settings/preprocessed/autofill_page/payments/payments_page.html.ts
+@@ -3,21 +3,15 @@
+ import type {SettingsPaymentsPageElement} from './payments_page.js';
+ 
+ export function getHtml(this: SettingsPaymentsPageElement) {
+   return html\`<!--_html_template_start_-->
+-<settings-subpage page-title="$i18n{paymentsTitle}"
+-    learn-more-url="$i18n{addressesAndPaymentMethodsLearnMoreURL}"
+-    class="multi-card">
++<settings-subpage page-title="$i18n{paymentsTitle}" learn-more-url="$i18n{addressesAndPaymentMethodsLearnMoreURL}" class="multi-card">
+ 
+ <div class="card settings-card">
+ 
+ <!-- Toggle to enable/disable overall payments autofill. If disabled, almost all
+      below toggles are effectively disabled. -->
+-<settings-toggle-button id="autofillCreditCardToggle"
+-    no-extension-indicator label="$i18n{enableCreditCardsLabel}"
+-    sub-label="$i18n{enableCreditCardsSublabel}"
+-    .pref="\${this.creditCardEnabledSyntheticPref_}"
+-    @settings-boolean-control-change="\${
++<settings-toggle-button id="autofillCreditCardToggle" no-extension-indicator="" label="$i18n{enableCreditCardsLabel}" sub-label="$i18n{enableCreditCardsSublabel}" .pref="\${this.creditCardEnabledSyntheticPref_}" @settings-boolean-control-change="\${
+         this.onCreditCardToggleSettingsBooleanControlChange_}">
+ </settings-toggle-button>
+ 
+ <!-- Extension-override indicator for payments autofill enable/disable; this
+@@ -36,21 +30,10 @@
+ \` : ''}
+ 
+ <!-- Toggle to enable/disable mandatory re-authentication when user attempts to
+      view or autofill payment methods. -->
+-<if expr="is_win or is_macosx or is_chromeos">
+-\${this.mandatoryReauthFeatureFlagEnabled_ ? html\`
+-  <settings-toggle-button id="mandatoryAuthToggle"
+-      no-extension-indicator label="$i18n{enableMandatoryAuthToggleLabel}"
+-      sub-label="$i18n{enableMandatoryAuthToggleSublabel}"
+-      pref-key="autofill.payment_methods_mandatory_reauth" no-set-pref
+-      ?disabled="\${this.shouldDisableAuthToggle_()}"
+-      @settings-boolean-control-change="\${
+-          this.onMandatoryAuthToggleSettingsBooleanControlChange_}">
+-  </settings-toggle-button>
+-\` : ''}
+-</if>
+ 
++
+ <!-- Toggle to enable/disable CVC storage. -->
+ \${this.cvcStorageAvailable_ ? html\`
+   <settings-toggle-button id="cvcStorageToggle"
+       no-extension-indicator label="$i18n{enableCvcStorageLabel}"
+@@ -62,14 +45,9 @@
+   </settings-toggle-button>
+ \` : ''}
+ 
+ <!-- Toggle to enable/disable showing card benefits/rewards in autofill. -->
+-<settings-toggle-button id="cardBenefitsToggle"
+-    no-extension-indicator label="$i18n{cardBenefitsLabel}"
+-    sub-label-with-link="$i18n{cardBenefitsToggleSublabel}"
+-    @sub-label-link-clicked="\${this.onCardBenefitsSubLabelLinkClicked_}"
+-    ?disabled="\${!this.creditCardEnabledSyntheticPref_.value}"
+-    pref-key="autofill.payment_card_benefits">
++<settings-toggle-button id="cardBenefitsToggle" no-extension-indicator="" label="$i18n{cardBenefitsLabel}" sub-label-with-link="$i18n{cardBenefitsToggleSublabel}" @sub-label-link-clicked="\${this.onCardBenefitsSubLabelLinkClicked_}" ?disabled="\${!this.creditCardEnabledSyntheticPref_.value}" pref-key="autofill.payment_card_benefits" hidden="">
+ </settings-toggle-button>
+ 
+ <!-- Toggle to enable/disable Buy Now, Pay Later (BNPL) in autofill. -->
+ \${this.shouldShowPayOverTimeSettings_ ? html\`
+@@ -85,17 +63,13 @@
+ <!-- Toggle to allow/disallow certain behavior for the Payment Request API. Note
+      that this setting does *NOT* relate to payments autofill, but lives in
+      chrome://settings/payments for legacy reasons (and lack of a better place
+      to put it). -->
+-<settings-toggle-button id="canMakePaymentToggle"
+-    aria-label="$i18n{canMakePaymentToggleLabel}"
+-    label="$i18n{canMakePaymentToggleLabel}"
+-    pref-key="payments.can_make_payment_enabled"
+-    @settings-boolean-control-change="\${
++<settings-toggle-button id="canMakePaymentToggle" aria-label="$i18n{canMakePaymentToggleLabel}" label="$i18n{canMakePaymentToggleLabel}" pref-key="payments.can_make_payment_enabled" @settings-boolean-control-change="\${
+         this.onCanMakePaymentSettingsBooleanControlChange_}">
+ </settings-toggle-button>
+ 
+-<div id="manageLink" class="cr-row">
++<div id="manageLink" class="cr-row" hidden="">
+   <!-- This span lays out the link correctly, relative to the text. -->
+   <div class="cr-padded-text">$i18nRaw{manageCreditCardsLabel}</div>
+ </div>
+ 
+@@ -134,44 +108,27 @@
+         \`}">
+     </cr-lazy-render-lit>
+   \`}
+ </div>
+-<settings-payments-list id="paymentsList"
+-    class="list-frame payment-list-margin-start"
+-    .creditCards="\${this.creditCards}"
+-    .ibans="\${this.ibans}"
+-    .payOverTimeIssuers="\${this.payOverTimeIssuers}"
+-    @dots-iban-menu-click="\${this.onDotsIbanMenuClick_}"
+-    @remote-iban-menu-click="\${this.onRemoteIbanMenuClick_}"
+-    @dots-card-menu-click="\${this.onDotsCardMenuClick_}"
+-    @remote-card-menu-click="\${this.onRemoteCardMenuClick_}"
+-    aria-label="$i18n{paymentsMethodsTableAriaLabel}">
++<settings-payments-list id="paymentsList" class="list-frame payment-list-margin-start" .creditCards="\${this.creditCards}" .ibans="\${this.ibans}" .payOverTimeIssuers="\${this.payOverTimeIssuers}" @dots-iban-menu-click="\${this.onDotsIbanMenuClick_}" @remote-iban-menu-click="\${this.onRemoteIbanMenuClick_}" @dots-card-menu-click="\${this.onDotsCardMenuClick_}" @remote-card-menu-click="\${this.onRemoteCardMenuClick_}" aria-label="$i18n{paymentsMethodsTableAriaLabel}">
+ </settings-payments-list>
+ 
+ <cr-action-menu id="creditCardSharedMenu" role-description="$i18n{menu}">
+-  <button id="menuEditCreditCard" class="dropdown-item"
+-      @click="\${this.onMenuEditCreditCardClick_}">
++  <button id="menuEditCreditCard" class="dropdown-item" @click="\${this.onMenuEditCreditCardClick_}">
+     \${this.getMenuEditCardText_()}
+   </button>
+ 
+-  <button id="menuRemoveCreditCard" class="dropdown-item"
+-      ?hidden="\${!this.activeCreditCard_?.metadata?.isLocal}"
+-      @click="\${this.onMenuRemoveCreditCardClick_}">$i18n{delete}</button>
++  <button id="menuRemoveCreditCard" class="dropdown-item" ?hidden="\${!this.activeCreditCard_?.metadata?.isLocal}" @click="\${this.onMenuRemoveCreditCardClick_}">$i18n{delete}</button>
+ 
+-  <button id="menuAddVirtualCard" class="dropdown-item"
+-      @click="\${this.onMenuAddVirtualCardClick_}"
+-      ?hidden="\${!this.shouldShowAddVirtualCardButton_()}">
++  <button id="menuAddVirtualCard" class="dropdown-item" @click="\${this.onMenuAddVirtualCardClick_}" ?hidden="\${!this.shouldShowAddVirtualCardButton_()}">
+     $i18n{addVirtualCard}
+   </button>
+-  <button id="menuRemoveVirtualCard" class="dropdown-item"
+-      @click="\${this.onMenuRemoveVirtualCardClick_}"
+-      ?hidden="\${!this.shouldShowRemoveVirtualCardButton_()}">
++  <button id="menuRemoveVirtualCard" class="dropdown-item" @click="\${this.onMenuRemoveVirtualCardClick_}" ?hidden="\${!this.shouldShowRemoveVirtualCardButton_()}">
+     $i18n{removeVirtualCard}
+   </button>
+ </cr-action-menu>
+ 
+-<cr-lazy-render-lit id="ibanSharedActionMenu"
+-    .template="\${() => html\`
++<cr-lazy-render-lit id="ibanSharedActionMenu" .template="\${() => html\`
+       <cr-action-menu id="ibanSharedMenu" role-description="$i18n{menu}">
+         <button id="menuEditIban" class="dropdown-item"
+             @click="\${this.onMenuEditIbanClick_}">
+           $i18n{editIban}
+"
+`;
+
 exports[`mangled files should have up to date snapshots ./chromium_src/chrome/browser/resources/settings/clear_browsing_data_dialog/clear_browsing_data_dialog.html.ts.lit_mangler.ts should match snapshot 1`] = `
 "===================================================================
 --- ../chrome/browser/resources/settings/clear_browsing_data_dialog/clear_browsing_data_dialog.html.ts
@@ -1211,6 +1352,30 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 "
 `;
 
+exports[`mangled files should have up to date snapshots ./chromium_src/chrome/browser/resources/settings/privacy_page/do_not_track_toggle.html.ts.lit_mangler.ts should match snapshot 1`] = `
+"===================================================================
+--- ../chrome/browser/resources/settings/privacy_page/do_not_track_toggle.html.ts
++++ gen/chrome/browser/resources/settings/preprocessed/privacy_page/do_not_track_toggle.html.ts
+@@ -3,15 +3,9 @@
+ import type {SettingsDoNotTrackToggleElement} from './do_not_track_toggle.js';
+ 
+ export function getHtml(this: SettingsDoNotTrackToggleElement) {
+   return html\`<!--_html_template_start_-->
+-<settings-toggle-button id="toggle" class="toggle"
+-    label="$i18n{doNotTrack}"
+-    pref-key="enable_do_not_track"
+-    @settings-boolean-control-change="\${this.onSettingsBooleanControlChange_}"
+-    sub-label="\${this.doNotTrackSublabel_}"
+-    icon="settings:forward"
+-    no-set-pref>
++<settings-toggle-button id="toggle" class="toggle hr" label="$i18n{doNotTrack}" pref-key="enable_do_not_track" @settings-boolean-control-change="\${this.onSettingsBooleanControlChange_}" sub-label="\${this.doNotTrackSublabel_}" icon="settings:forward" no-set-pref="">
+ </settings-toggle-button>
+ \${this.showDialog_ ? html\`
+   <cr-dialog id="confirmDialog"
+       close-text="$i18n{close}" @cancel="\${this.onDialogCancel_}"
+"
+`;
+
 exports[`mangled files should have up to date snapshots ./chromium_src/chrome/browser/resources/settings/safety_hub/safety_hub_page.html.ts.lit_mangler.ts should match snapshot 1`] = `
 "===================================================================
 --- ../chrome/browser/resources/settings/safety_hub/safety_hub_page.html.ts
@@ -1470,7 +1635,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
  
  import {html} from '//resources/lit/v3_0/lit.rollup.js';
  
-@@ -9,101 +7,46 @@
+@@ -9,93 +7,39 @@
  export function getHtml(this: PowerBookmarksAppElement) {
    // clang-format off
    return html\`<!--_html_template_start_-->
@@ -1579,16 +1744,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
        </div>
      </cr-toolbar-selection-overlay>
    </sp-footer>
- </div>
- 
--<power-bookmarks-edit-dialog id="editDialog"
--    @save="\${this.onEditDialogSave_}">
-+<power-bookmarks-edit-dialog id="editDialog" @save="\${this.onEditDialogSave_}">
- </power-bookmarks-edit-dialog>
- 
- <cr-dialog id="disabledFeatureDialog">
-   <div slot="body" class="dialog-body">
-@@ -116,14 +59,9 @@
+@@ -112,14 +56,9 @@
      </cr-button>
    </div>
  </cr-dialog>
@@ -1611,7 +1767,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 "===================================================================
 --- ../chrome/browser/resources/side_panel/customize_chrome/app.html.ts
 +++ gen/chrome/browser/resources/side_panel/customize_chrome/preprocessed/app.html.ts
-@@ -4,31 +4,25 @@
+@@ -4,32 +4,26 @@
  
  export function getHtml(this: AppElement) {
    // clang-format off
@@ -1637,6 +1793,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 +    
 +      <brave-darker-theme-toggle></brave-darker-theme-toggle></div>
      <hr class="sp-cards-separator">
+     \${this.toolbarCustomizationEnabled_ ? html\`
 -    <cr-button id="toolbarButton" class="section sp-card"
 -        @click="\${this.onToolbarCustomizationButtonClick_}">
 -      <sp-heading hide-back-button id="toolbar-customization-heading">
@@ -1651,21 +1808,9 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 -      <cr-icon icon="cr:chevron-right" slot="suffix-icon"></cr-icon>
 +      <cr-icon icon="window-edit" slot="prefix-icon"></cr-icon>
      </cr-button>
+     \` : ''}
      \${this.ntpNextFeaturesEnabled_ && this.ntpNextDisablementEnabled_
        && this.aimPolicyEnabled_ && this.isSourceTabFirstPartyNtp_() ? html\`
-       <hr class="sp-cards-separator">
-@@ -108,10 +102,9 @@
-     <customize-chrome-wallpaper-search @back-click="\${this.onBackClick_}"
-         page-name="wallpaper-search" id="wallpaperSearchPage">
-     </customize-chrome-wallpaper-search>
-   \` : ''}
--  <customize-chrome-toolbar @back-click="\${this.onBackClick_}"
--      page-name="toolbar" id="toolbarPage"></customize-chrome-toolbar>
-+  <customize-chrome-toolbar @back-click="\${this.onBackClick_}" page-name="toolbar" id="toolbarPage"></customize-chrome-toolbar>
- </cr-page-selector>
- <!--_html_template_end_-->\`;
-   // clang-format on
- }
 "
 `;
 

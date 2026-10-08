@@ -1,8 +1,8 @@
 diff --git a/base/trace_event/memory_infra_background_allowlist.cc b/base/trace_event/memory_infra_background_allowlist.cc
-index 68679c327e6c248be689fdc9457da53b61f5bc81..dfe7b4f1b47be194177ffdf2641fea90fc84c28a 100644
+index cf7123aaa5590e291db57c7aae20f562089c3626..7dc3bcbe0793e0ea8d0449bc96ec32f7ebd16da1 100644
 --- a/base/trace_event/memory_infra_background_allowlist.cc
 +++ b/base/trace_event/memory_infra_background_allowlist.cc
-@@ -384,6 +384,9 @@ bool IsMemoryDumpProviderInAllowlist(const char* mdp_name) {
+@@ -385,6 +385,9 @@ bool IsMemoryDumpProviderInAllowlist(const char* mdp_name) {
  }
  
  bool IsMemoryAllocatorDumpNameInAllowlist(const std::string& name) {

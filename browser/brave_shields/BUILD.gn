@@ -139,6 +139,7 @@ source_set("unit_tests") {
     deps += [
       "//chrome/browser",
       "//chrome/browser/content_settings:content_settings_factory",
+      "//chrome/test/base:chrome_render_view_host_test_harness",
       "//components/favicon/content",
       "//components/favicon/core/test:test_support",
     ]

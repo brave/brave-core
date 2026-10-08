@@ -1,0 +1,34 @@
+diff --git a/chrome/browser/extensions/api/runtime/chrome_runtime_api_delegate_unittest.cc b/chrome/browser/extensions/api/runtime/chrome_runtime_api_delegate_unittest.cc
+index e508503548e762a958c4c900b77d4a6d45045afd..a1716cc0e6a7d3cfc7322995d0b4525b2eaa1c34 100644
+--- a/chrome/browser/extensions/api/runtime/chrome_runtime_api_delegate_unittest.cc
++++ b/chrome/browser/extensions/api/runtime/chrome_runtime_api_delegate_unittest.cc
+@@ -17,8 +17,10 @@
+ #include "base/scoped_observation.h"
+ #include "base/task/single_thread_task_runner.h"
+ #include "base/test/run_until.h"
++#include "base/test/scoped_feature_list.h"
+ #include "base/test/simple_test_tick_clock.h"
+ #include "base/threading/thread_restrictions.h"
++#include "brave/browser/extensions/updater/features.h"
+ #include "chrome/browser/extensions/chrome_test_extension_loader.h"
+ #include "chrome/browser/extensions/extension_service.h"
+ #include "chrome/browser/extensions/extension_service_test_with_install.h"
+@@ -213,6 +215,8 @@ class ChromeRuntimeAPIDelegateTest : public ExtensionServiceTestWithInstall {
+       delete;
+ 
+   void SetUp() override {
++    scoped_feature_list_.InitAndDisableFeature(
++        features::kBraveAutoUpdateExtensions);
+     ExtensionServiceTestWithInstall::SetUp();
+     ExtensionDownloader::set_test_delegate(&downloader_test_delegate_);
+     ChromeRuntimeAPIDelegate::set_tick_clock_for_tests(&clock_);
+@@ -264,6 +268,9 @@ class ChromeRuntimeAPIDelegateTest : public ExtensionServiceTestWithInstall {
+   }
+ 
+  protected:
++  // Disables the background extension-update schedule so it does not
++  // race the test's own choreographed update checks.
++  base::test::ScopedFeatureList scoped_feature_list_;
+   // A clock we pass to the code used for throttling, so that we can manually
+   // increment time to test various throttling scenarios.
+   base::SimpleTestTickClock clock_;

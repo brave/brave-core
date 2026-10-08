@@ -1,5 +1,5 @@
 diff --git a/components/safe_browsing/core/common/features.cc b/components/safe_browsing/core/common/features.cc
-index d0f214c6b73037acd3f3f17a9947a817b3bd2a9d..622bd3b2a87a7398ad99232e687d3810dce69024 100644
+index 0571d5dea2de59c58af6cb848049f2e37597b5f7..211c390eee8a6d179a3cee66662dd887f8d97ddc 100644
 --- a/components/safe_browsing/core/common/features.cc
 +++ b/components/safe_browsing/core/common/features.cc
 @@ -41,7 +41,7 @@ BASE_FEATURE(kAdSamplerTriggerFeature,
@@ -25,7 +25,7 @@ index d0f214c6b73037acd3f3f17a9947a817b3bd2a9d..622bd3b2a87a7398ad99232e687d3810
  constexpr base::FeatureParam<double> kCsdClipboardCopyApiHCAcceptanceRate{
      &kClientSideDetectionClipboardCopyApi, "HCAcceptanceRate",
      /*default_value=*/1.0};
-@@ -337,9 +334,9 @@ constexpr base::FeatureParam<double>
+@@ -346,9 +343,9 @@ constexpr base::FeatureParam<double>
  BASE_FEATURE(kGlobalCacheListForGatingNotificationProtections,
               base::FEATURE_ENABLED_BY_DEFAULT);
  
@@ -37,7 +37,7 @@ index d0f214c6b73037acd3f3f17a9947a817b3bd2a9d..622bd3b2a87a7398ad99232e687d3810
  
  BASE_FEATURE(kGooglePlayProtectReducesWarnings,
               "SafeBrowsingGooglePlayProtectReducesWarnings",
-@@ -428,7 +425,7 @@ BASE_FEATURE(kMovePasswordLeakDetectionToggleIos,
+@@ -441,7 +438,7 @@ BASE_FEATURE(kMovePasswordLeakDetectionToggleIos,
  
  BASE_FEATURE(kNoticeQueueForEsb, base::FEATURE_ENABLED_BY_DEFAULT);
  

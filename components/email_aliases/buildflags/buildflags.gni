@@ -5,6 +5,4 @@
 
 import("//brave/components/brave_origin/buildflags/buildflags.gni")
 
-declare_args() {
-  enable_email_aliases = !is_ios && !is_android && !is_brave_origin_branded
-}
+enable_email_aliases = !is_ios && !is_android && !is_brave_origin_branded

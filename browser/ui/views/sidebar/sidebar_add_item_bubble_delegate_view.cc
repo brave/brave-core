@@ -11,7 +11,6 @@
 #include "base/check.h"
 #include "base/memory/raw_ptr.h"
 #include "base/strings/utf_string_conversions.h"
-#include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
@@ -20,6 +19,7 @@
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
@@ -42,7 +42,7 @@ namespace {
 
 constexpr gfx::Size kAddItemBubbleEntrySize{242, 40};
 
-sidebar::SidebarService* GetSidebarService(Browser* browser) {
+sidebar::SidebarService* GetSidebarService(BrowserWindowInterface* browser) {
   return sidebar::SidebarServiceFactory::GetForProfile(browser->GetProfile());
 }
 
@@ -106,14 +106,11 @@ END_METADATA
 
 // static
 views::Widget* SidebarAddItemBubbleDelegateView::Create(
-    BraveBrowser* browser,
+    BrowserWindowInterface* browser,
     views::View* anchor_view) {
   auto* delegate = new SidebarAddItemBubbleDelegateView(browser, anchor_view);
   auto* bubble = views::BubbleDialogDelegateView::CreateBubble(delegate);
   auto* frame_view = delegate->GetBubbleFrameView();
-  frame_view->bubble_border()->set_md_shadow_elevation(
-      ChromeLayoutProvider::Get()->GetShadowElevationMetric(
-          views::Emphasis::kHigh));
   frame_view->SetDisplayVisibleArrow(true);
   delegate->SizeToContents();
   frame_view->SetRoundedCorners(gfx::RoundedCornersF(4));
@@ -122,14 +119,18 @@ views::Widget* SidebarAddItemBubbleDelegateView::Create(
 }
 
 SidebarAddItemBubbleDelegateView::SidebarAddItemBubbleDelegateView(
-    BraveBrowser* browser,
+    BrowserWindowInterface* browser,
     views::View* anchor_view)
     : BubbleDialogDelegateView(
           anchor_view,
-          sidebar::GetBubbleArrowForSidebar(browser->GetProfile()->GetPrefs()),
-          views::BubbleBorder::STANDARD_SHADOW),
+          sidebar::GetBubbleArrowForSidebar(browser->GetProfile()->GetPrefs())),
       browser_(browser) {
   DCHECK(browser_);
+  set_shadow_config({
+      .shadow_type = views::BubbleBorder::STANDARD_SHADOW,
+      .elevation = ChromeLayoutProvider::Get()->GetShadowElevationMetric(
+          views::Emphasis::kHigh),
+  });
 
   set_margins(gfx::Insets());
   set_title_margins(gfx::Insets());
@@ -192,8 +193,9 @@ void SidebarAddItemBubbleDelegateView::AddChildViews() {
 
   const auto hidden_default_items =
       GetSidebarService(browser_)->GetHiddenDefaultSidebarItems();
-  if (hidden_default_items.empty())
+  if (hidden_default_items.empty()) {
     return;
+  }
 
   auto* separator = AddChildView(std::make_unique<views::Separator>());
   if (color_provider) {

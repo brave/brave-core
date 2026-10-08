@@ -17,7 +17,7 @@
 #include "ui/views/context_menu_controller.h"
 #include "ui/views/view.h"
 
-class BraveBrowser;
+class BrowserWindowInterface;
 class SidebarItemAddButton;
 class SidebarItemsScrollView;
 class SidebarContainerView;
@@ -45,7 +45,7 @@ class SidebarControlView : public views::View,
    protected:
     ~Delegate() = default;
   };
-  SidebarControlView(Delegate* delegate, BraveBrowser* browser);
+  SidebarControlView(Delegate* delegate, BrowserWindowInterface* browser);
   ~SidebarControlView() override;
 
   SidebarControlView(const SidebarControlView&) = delete;
@@ -91,7 +91,7 @@ class SidebarControlView : public views::View,
 
   bool sidebar_on_left_ = true;
   raw_ptr<Delegate> delegate_ = nullptr;
-  raw_ptr<BraveBrowser> browser_ = nullptr;
+  raw_ptr<BrowserWindowInterface> browser_ = nullptr;
   raw_ptr<SidebarItemsScrollView> sidebar_items_view_ = nullptr;
   raw_ptr<SidebarItemAddButton> sidebar_item_add_view_ = nullptr;
   raw_ptr<SidebarButtonView> sidebar_settings_view_ = nullptr;

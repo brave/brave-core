@@ -1,0 +1,17 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Use old logic for GetVersionNumber on Android.
+
+      See rewrite/base/version_info/version_info_values.h.version.yaml
+      for details
+    preempt_function_impl:
+      function_name: GetVersionNumber
+      code: |-
+        if ((true)) {
+          return PRODUCT_VERSION;
+        }

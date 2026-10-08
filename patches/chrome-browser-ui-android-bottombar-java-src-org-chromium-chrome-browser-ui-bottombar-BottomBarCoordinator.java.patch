@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/android/bottombar/java/src/org/chromium/chrome/browser/ui/bottombar/BottomBarCoordinator.java b/chrome/browser/ui/android/bottombar/java/src/org/chromium/chrome/browser/ui/bottombar/BottomBarCoordinator.java
-index 319c6ada5017218ade55fb0d6109436cffde17be..fac30a4d6a88ad4ac93a7019fd07ad63122df851 100644
+index bc92e3a45ceb0dc895abce6afc14eeae7e15d152..fa909ba76f3da9f90a5ec2aa13cec0efd7a49fb3 100644
 --- a/chrome/browser/ui/android/bottombar/java/src/org/chromium/chrome/browser/ui/bottombar/BottomBarCoordinator.java
 +++ b/chrome/browser/ui/android/bottombar/java/src/org/chromium/chrome/browser/ui/bottombar/BottomBarCoordinator.java
 @@ -44,7 +44,7 @@ public class BottomBarCoordinator implements BottomBar, Destroyable {
@@ -11,7 +11,7 @@ index 319c6ada5017218ade55fb0d6109436cffde17be..fac30a4d6a88ad4ac93a7019fd07ad63
      private final BottomBarPromoDialogCoordinator mPromoDialogCoordinator;
      private final NullableObservableSupplier<Tab> mTabSupplier;
  
-@@ -84,7 +84,7 @@ public class BottomBarCoordinator implements BottomBar, Destroyable {
+@@ -90,7 +90,7 @@ public class BottomBarCoordinator implements BottomBar, Destroyable {
          mModel = new PropertyModel.Builder(BottomBarProperties.ALL_KEYS).build();
  
          mButtonManager =
@@ -20,7 +20,7 @@ index 319c6ada5017218ade55fb0d6109436cffde17be..fac30a4d6a88ad4ac93a7019fd07ad63
  
          mPromoDialogCoordinator =
                  new BottomBarPromoDialogCoordinator(
-@@ -112,7 +112,7 @@ public class BottomBarCoordinator implements BottomBar, Destroyable {
+@@ -118,7 +118,7 @@ public class BottomBarCoordinator implements BottomBar, Destroyable {
          mMcp = PropertyModelChangeProcessor.create(mModel, mView, BottomBarViewBinder::bind);
      }
  

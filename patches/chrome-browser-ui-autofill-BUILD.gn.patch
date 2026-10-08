@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/autofill/BUILD.gn b/chrome/browser/ui/autofill/BUILD.gn
-index ad7848f358f040edf7be2b6dfd18fd42917efc6e..b38f3116c829ceeebc5dff5e3b2220c9bcb09644 100644
+index 9708663b21d2091a5df7dd1852901855e1256822..15d3cfd4785b80027bec6bd86a9955548fbce594 100644
 --- a/chrome/browser/ui/autofill/BUILD.gn
 +++ b/chrome/browser/ui/autofill/BUILD.gn
 @@ -2,6 +2,8 @@

@@ -134,8 +134,11 @@ void AdBlockResourceObserver::OnResourcesLoaded(
         std::make_unique<brave_shields::AdBlockComponentServiceManager>(
             GetApplicationContext()->GetLocalState(),
             _filtersProviderManager.get(),
-            GetApplicationContext()->GetApplicationLocaleStorage()->Get(), _cus,
-            _catalogProvider.get(), _adblockListP3A.get());
+            std::string(GetApplicationContext()
+                            ->GetApplicationLocaleStorage()
+                            ->GetTag()
+                            .tag_string()),
+            _cus, _catalogProvider.get(), _adblockListP3A.get());
     _resourceProvider =
         std::make_unique<brave_shields::AdBlockDefaultResourceProvider>(_cus);
   }

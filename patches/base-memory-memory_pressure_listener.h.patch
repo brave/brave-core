@@ -1,8 +1,8 @@
 diff --git a/base/memory/memory_pressure_listener.h b/base/memory/memory_pressure_listener.h
-index 9a411c81b28fc7005f08bd4b5d2958d7a6361b67..832a3411ac0f120c119e6452dfcc6fbc7941f202 100644
+index 0c361d83fb4c0086ec30d2556a141baf493a7889..566e49d97657c4a3bfcb4120eaf02f3752294cbf 100644
 --- a/base/memory/memory_pressure_listener.h
 +++ b/base/memory/memory_pressure_listener.h
-@@ -101,6 +101,8 @@ enum class MemoryPressureListenerTag {
+@@ -102,6 +102,8 @@ enum class MemoryPressureListenerTag {
    kGrShaderCache = 68,
    kMemoryPressureListenerPolicy = 69,
    kLongScreenshotsTabService = 70,

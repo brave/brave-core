@@ -24,7 +24,6 @@ substitutions:
     preempt_function_impl:
       function_name: AutofillExternalDelegate::DidAcceptSuggestion
       code: |-
-        if (manager_->client().BraveHandleSuggestion(suggestion,
-                                                      last_query_.field_id)) {
+        if (manager_->client().BraveHandleSuggestion(suggestion, field_id)) {
           return;
         }

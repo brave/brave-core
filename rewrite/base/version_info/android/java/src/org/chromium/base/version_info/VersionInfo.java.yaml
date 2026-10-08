@@ -1,0 +1,19 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Use old logic for getProductVersion() on Android.
+
+      The Java counterpart of rewrite/base/version_info/version_info.cc.yaml:
+      Brave's crash uploader and sponsored rich media pass this value on, and
+      both expect the 4 segments version like `156.1.98.18` with the Chromium
+      major code, not the 3 segments Brave version stored at the manifest.
+    regex:
+      re_pattern: |-
+        (public static String getProductVersion\(\) \{)
+      replace: |-
+        \1
+                if (true) return VersionConstants.PRODUCT_VERSION;

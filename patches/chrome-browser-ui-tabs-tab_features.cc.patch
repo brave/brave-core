@@ -1,0 +1,26 @@
+diff --git a/chrome/browser/ui/tabs/tab_features.cc b/chrome/browser/ui/tabs/tab_features.cc
+index cdd4c62080fb19b145e427c1533ba082fc1cda8c..05b13c62020942970c59814a6ea5c86b4bbb52d2 100644
+--- a/chrome/browser/ui/tabs/tab_features.cc
++++ b/chrome/browser/ui/tabs/tab_features.cc
+@@ -701,8 +701,8 @@ void TabFeatures::Init(TabInterface& tab, Profile* profile) {
+   commit_limit_oom_recovery_tracker_ =
+       GetUserDataFactory().CreateInstance<CommitLimitOOMRecoveryTracker>(tab,
+                                                                          tab);
+-  font_prewarmer_tab_helper_ =
+-      std::make_unique<FontPrewarmerTabHelper>(tab.GetContents());
++  /* font_prewarmer_tab_helper_ =
++      std::make_unique<FontPrewarmerTabHelper>(tab.GetContents()); */
+ #endif
+ 
+   if (base::FeatureList::IsEnabled(net::features::kVerifyQWACs)) {
+@@ -1166,8 +1166,8 @@ void TabFeatures::WillDiscardContents(tabs::TabInterface* tab,
+ #endif
+ 
+ #if BUILDFLAG(IS_WIN)
+-  font_prewarmer_tab_helper_ =
+-      std::make_unique<FontPrewarmerTabHelper>(new_contents);
++  /* font_prewarmer_tab_helper_ =
++      std::make_unique<FontPrewarmerTabHelper>(new_contents); */
+ #endif
+ 
+ #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)

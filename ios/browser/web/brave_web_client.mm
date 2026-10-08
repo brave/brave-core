@@ -303,6 +303,15 @@ bool BraveWebClient::ShouldBlockUniversalLinks(web::WebState* webState,
   return false;
 }
 
+bool BraveWebClient::ShouldBlockUniversalLinksForURL(
+    web::BrowserState* browser_state,
+    const GURL& url) const {
+  // TODO(https://github.com/brave/brave-browser/issues/59555): Adopt this
+  // upstream hook (added in df474c52db32a) in place of our own
+  // ShouldBlockUniversalLinks override above.
+  return false;
+}
+
 NSString* BraveWebClient::GetUserAgentForRequest(
     web::WebState* webState,
     web::UserAgentType userAgentType,

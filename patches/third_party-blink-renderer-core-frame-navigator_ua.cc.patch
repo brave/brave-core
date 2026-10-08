@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/frame/navigator_ua.cc b/third_party/blink/renderer/core/frame/navigator_ua.cc
-index 22483bb57adf790867e081e5d32c1c726e94c3ef..2a4893d064fea9e0f335801223bb61db6b206d46 100644
+index d334ce3951aff6746fefdaa3857e9e99d6e7cb0b..b7dbea24865f5ff486751f7d3bc9aad19c3a49b7 100644
 --- a/third_party/blink/renderer/core/frame/navigator_ua.cc
 +++ b/third_party/blink/renderer/core/frame/navigator_ua.cc
-@@ -15,7 +15,8 @@ NavigatorUAData* NavigatorUA::userAgentData() {
+@@ -14,7 +14,8 @@ NavigatorUAData* NavigatorUA::userAgentData() {
    NavigatorUAData* ua_data =
        MakeGarbageCollected<NavigatorUAData>(GetUAExecutionContext());
  

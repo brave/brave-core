@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/browser_ui_controller/BUILD.gn b/chrome/browser/ui/browser_ui_controller/BUILD.gn
-index 1c4a56340d8764d929e640ae966af06ce4f06578..5fea3f3960d3adece3bd12aa23423856113cdd08 100644
+index 344499fdcf9facf2789c003ab60dfd2339ef654d..5a0684d641dd8144bf037ce42d583f64f2e77b6a 100644
 --- a/chrome/browser/ui/browser_ui_controller/BUILD.gn
 +++ b/chrome/browser/ui/browser_ui_controller/BUILD.gn
 @@ -27,6 +27,7 @@ source_set("impl") {
@@ -9,4 +9,4 @@ index 1c4a56340d8764d929e640ae966af06ce4f06578..5fea3f3960d3adece3bd12aa23423856
 +    "//brave/browser/ui/sidebar",
      "//chrome/browser/app_mode",
      "//chrome/browser/profiles:profile",
-     "//chrome/browser/ui:status_bubble",
+     "//chrome/browser/ui:browser_command_controller",
