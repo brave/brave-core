@@ -282,6 +282,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/tor/tor_profile_service_factory.h"
+#include "brave/components/tor/onion_domain_throttle.h"
 #include "brave/components/tor/onion_location_navigation_throttle.h"
 #include "brave/components/tor/pref_names.h"
 #include "brave/components/tor/tor_navigation_throttle.h"
@@ -546,16 +547,21 @@ bool IsJsBlockingEnforced(content::BrowserContext* browser_context,
   return settings_service->IsJsBlockingEnforced(url);
 }
 
+#if BUILDFLAG(ENABLE_TOR)
+bool IsOnionAllowed(content::BrowserContext* browser_context) {
+  if (!browser_context) {
+    return true;
+  }
+  return browser_context->IsTor() ||
+         !user_prefs::UserPrefs::Get(browser_context)
+              ->GetBoolean(tor::prefs::kOnionOnlyInTorWindows);
+}
+#endif  // BUILDFLAG(ENABLE_TOR)
+
 bool ShouldBlockOnionRequest(content::BrowserContext* browser_context,
                              const GURL& url) {
 #if BUILDFLAG(ENABLE_TOR)
-  if (!browser_context) {
-    return false;
-  }
-  if (!browser_context->IsTor() &&
-      user_prefs::UserPrefs::Get(browser_context)
-          ->GetBoolean(tor::prefs::kOnionOnlyInTorWindows) &&
-      net::IsOnion(url)) {
+  if (!IsOnionAllowed(browser_context) && net::IsOnion(url)) {
     return true;
   }
 #endif
@@ -1256,6 +1262,26 @@ BraveContentBrowserClient::CreateURLLoaderThrottles(
     }
   }
 
+  return result;
+}
+
+std::vector<std::unique_ptr<blink::URLLoaderThrottle>>
+BraveContentBrowserClient::CreateURLLoaderThrottlesForKeepAlive(
+    content::BrowserContext* browser_context,
+    content::FrameTreeNodeId frame_tree_node_id) {
+  auto result =
+      ChromeContentBrowserClient::CreateURLLoaderThrottlesForKeepAlive(
+          browser_context, frame_tree_node_id);
+#if BUILDFLAG(ENABLE_TOR)
+  // Keepalive requests, e.g. fetchLater(), can be sent or redirected after
+  // the initiating renderer is gone, so renderer-side throttles do not cover
+  // them.
+  if (auto onion_domain_throttle =
+          tor::OnionDomainThrottle::MaybeCreateThrottleForKeepAlive(
+              IsOnionAllowed(browser_context))) {
+    result.push_back(std::move(onion_domain_throttle));
+  }
+#endif  // BUILDFLAG(ENABLE_TOR)
   return result;
 }
 

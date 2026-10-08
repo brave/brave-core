@@ -729,6 +729,7 @@ if (enable_tor) {
     "//brave/browser/tor:impl",
     "//brave/components/tor",
     "//brave/components/tor:common",
+    "//brave/components/tor:onion_domain_throttle",
     "//brave/components/tor:pref_names",
   ]
 }
