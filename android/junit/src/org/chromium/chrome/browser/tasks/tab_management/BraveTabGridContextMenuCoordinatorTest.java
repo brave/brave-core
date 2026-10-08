@@ -108,8 +108,8 @@ public class BraveTabGridContextMenuCoordinatorTest {
         // GroupWindowChecker walks the sync service, so an unstubbed getAllGroupIds() would
         // return null and NPE before any menu item is built. A second group is needed because
         // the menu title depends on a group other than the tab's own existing.
-        when(mTabModel.tabGroupExists(mTabGroupId)).thenReturn(true);
-        when(mTabModel.tabGroupExists(otherGroupId)).thenReturn(true);
+        when(mTabModel.containsTabGroup(mTabGroupId)).thenReturn(true);
+        when(mTabModel.containsTabGroup(otherGroupId)).thenReturn(true);
         SavedTabGroup savedGroup = new SavedTabGroup();
         savedGroup.syncId = SYNC_GROUP_ID;
         savedGroup.localId = new LocalTabGroupId(mTabGroupId);
