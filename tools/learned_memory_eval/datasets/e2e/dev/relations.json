@@ -1,0 +1,1043 @@
+{
+  "name": "relations",
+  "description": "14 pairs of chats about the same subject, an old one and a new one, in random order. Tests: facts that share a word but are different must stay separate (5 pairs); a new fact must replace an old one (4); a new fact may merge with an old one (3); the same fact twice must be stored once (2). Replace and merge need a certain decision model. Facts that can both be true stay as two memories, also when they look like a conflict: the user works at Figma and as a nurse practitioner, and no text says that one job ended.",
+  "chats": [
+    {
+      "title": "Brother at Honda",
+      "days_ago": 12,
+      "turns": [
+        {
+          "user": "My brother works at Honda as an engineer. What should I get him for Christmas?",
+          "assistant": "OK."
+        }
+      ]
+    },
+    {
+      "title": "Learning Italian",
+      "days_ago": 16,
+      "turns": [
+        {
+          "user": "I'm learning Italian for my new job in Milan. What apps help with grammar?",
+          "assistant": "OK."
+        }
+      ]
+    },
+    {
+      "title": "English German",
+      "days_ago": 66,
+      "turns": [
+        {
+          "user": "I speak English and German. Can you proofread my cover letter?",
+          "assistant": "OK."
+        }
+      ]
+    },
+    {
+      "title": "Honda Civic",
+      "days_ago": 60,
+      "turns": [
+        {
+          "user": "I drive a Honda Civic. How often should I change the oil?",
+          "assistant": "OK."
+        }
+      ]
+    },
+    {
+      "title": "Denver triathlon",
+      "days_ago": 14,
+      "turns": [
+        {
+          "user": "I'm training for a triathlon in Denver this fall. How should I split my training week?",
+          "assistant": "OK."
+        }
+      ]
+    },
+    {
+      "title": "Standing desk 1",
+      "days_ago": 50,
+      "turns": [
+        {
+          "user": "I have a standing desk in my home office. Which monitor arm do you suggest?",
+          "assistant": "OK."
+        }
+      ]
+    },
+    {
+      "title": "Kindergarten",
+      "days_ago": 60,
+      "turns": [
+        {
+          "user": "My daughter is in kindergarten this year. What are good reading apps for her?",
+          "assistant": "OK."
+        }
+      ]
+    },
+    {
+      "title": "Second cat",
+      "days_ago": 28,
+      "turns": [
+        {
+          "user": "We got a second cat named Pepper last week. How do I introduce them?",
+          "assistant": "OK."
+        }
+      ]
+    },
+    {
+      "title": "Standing desk 2",
+      "days_ago": 9,
+      "turns": [
+        {
+          "user": "My standing desk is in my home office and I love it. What chair pairs well with it?",
+          "assistant": "OK."
+        }
+      ]
+    },
+    {
+      "title": "Vegetarian 1",
+      "days_ago": 68,
+      "turns": [
+        {
+          "user": "I'm vegetarian. Give me a quick lunch idea.",
+          "assistant": "OK."
+        }
+      ]
+    },
+    {
+      "title": "Light mode",
+      "days_ago": 30,
+      "turns": [
+        {
+          "user": "I switched to light mode in all my apps, it is easier on my eyes. Any theme tips?",
+          "assistant": "OK."
+        }
+      ]
+    },
+    {
+      "title": "Vegetarian 2",
+      "days_ago": 18,
+      "turns": [
+        {
+          "user": "I don't eat meat because I'm vegetarian. What protein sources do you suggest?",
+          "assistant": "OK."
+        }
+      ]
+    },
+    {
+      "title": "First grade",
+      "days_ago": 15,
+      "turns": [
+        {
+          "user": "My daughter just started first grade. How can I help her with homework?",
+          "assistant": "OK."
+        }
+      ]
+    },
+    {
+      "title": "Piano and drums",
+      "days_ago": 22,
+      "turns": [
+        {
+          "user": "I also play the piano and the drums. How do I schedule practice time?",
+          "assistant": "OK."
+        }
+      ]
+    },
+    {
+      "title": "Sister nurse",
+      "days_ago": 70,
+      "turns": [
+        {
+          "user": "My sister is a nurse at a hospital in Boston. Can you suggest a gift for her birthday?",
+          "assistant": "OK."
+        }
+      ]
+    },
+    {
+      "title": "Kids soccer",
+      "days_ago": 62,
+      "turns": [
+        {
+          "user": "My two kids play soccer on a youth team in Denver. Where can I buy cleats for them?",
+          "assistant": "OK."
+        }
+      ]
+    },
+    {
+      "title": "Portland",
+      "days_ago": 80,
+      "turns": [
+        {
+          "user": "I live in Portland. What are the best hiking trails nearby?",
+          "assistant": "OK."
+        }
+      ]
+    },
+    {
+      "title": "Japanese",
+      "days_ago": 12,
+      "turns": [
+        {
+          "user": "I'm also learning Japanese. Any good textbooks?",
+          "assistant": "OK."
+        }
+      ]
+    },
+    {
+      "title": "Cat Miso",
+      "days_ago": 75,
+      "turns": [
+        {
+          "user": "I have a cat named Miso. What is a good scratching post?",
+          "assistant": "OK."
+        }
+      ]
+    },
+    {
+      "title": "Figma job",
+      "days_ago": 25,
+      "turns": [
+        {
+          "user": "I just started a new job at Figma as a design engineer. How do I prepare for my first week?",
+          "assistant": "OK."
+        }
+      ]
+    },
+    {
+      "title": "Trip to Spain",
+      "days_ago": 18,
+      "turns": [
+        {
+          "user": "I'm planning a trip to Spain next summer. Which cities should I visit?",
+          "assistant": "OK."
+        }
+      ]
+    },
+    {
+      "title": "Moved to Seattle",
+      "days_ago": 10,
+      "turns": [
+        {
+          "user": "We moved from Portland to Seattle last month. Where do I register my car?",
+          "assistant": "OK."
+        }
+      ]
+    },
+    {
+      "title": "Spanish at home",
+      "days_ago": 66,
+      "turns": [
+        {
+          "user": "I speak Spanish at home with my family. What is a good podcast for practicing?",
+          "assistant": "OK."
+        }
+      ]
+    },
+    {
+      "title": "Nurse practitioner",
+      "days_ago": 20,
+      "turns": [
+        {
+          "user": "I work as a nurse practitioner. Any tips for managing night shifts?",
+          "assistant": "OK."
+        }
+      ]
+    },
+    {
+      "title": "Guitar",
+      "days_ago": 70,
+      "turns": [
+        {
+          "user": "I play the guitar. Can you recommend a beginner song list?",
+          "assistant": "OK."
+        }
+      ]
+    },
+    {
+      "title": "Dark mode",
+      "days_ago": 65,
+      "turns": [
+        {
+          "user": "I use dark mode in all my apps. Which code editor theme do you suggest?",
+          "assistant": "OK."
+        }
+      ]
+    },
+    {
+      "title": "Italian food",
+      "days_ago": 64,
+      "turns": [
+        {
+          "user": "I love Italian food, especially fresh pasta. Can you share a simple carbonara recipe?",
+          "assistant": "OK."
+        }
+      ]
+    },
+    {
+      "title": "Stripe job",
+      "days_ago": 70,
+      "turns": [
+        {
+          "user": "I work at Stripe as a backend engineer. Can you recommend a book on distributed systems?",
+          "assistant": "OK."
+        }
+      ]
+    }
+  ],
+  "expect": {
+    "memories": [
+      {
+        "label": "different: sister is a nurse",
+        "all": [
+          "sister",
+          "nurse"
+        ]
+      },
+      {
+        "label": "different: is a nurse practitioner",
+        "all": [
+          "practitioner"
+        ]
+      },
+      {
+        "label": "different: speaks Spanish",
+        "all": [
+          "spanish"
+        ]
+      },
+      {
+        "label": "different: trip to Spain",
+        "all": [
+          "spain"
+        ]
+      },
+      {
+        "label": "different: likes Italian food",
+        "all": [
+          "pasta"
+        ]
+      },
+      {
+        "label": "different: learns Italian",
+        "all": [
+          "learning",
+          "italian"
+        ]
+      },
+      {
+        "label": "different: kids play soccer",
+        "all": [
+          "soccer"
+        ]
+      },
+      {
+        "label": "different: triathlon",
+        "all": [
+          "triathlon"
+        ]
+      },
+      {
+        "label": "different: drives a Civic",
+        "all": [
+          "civic"
+        ]
+      },
+      {
+        "label": "different: brother works at Honda",
+        "all": [
+          "brother"
+        ]
+      },
+      {
+        "label": "replace: works at Figma",
+        "all": [
+          "figma"
+        ]
+      },
+      {
+        "label": "replace: light mode",
+        "all": [
+          "light mode"
+        ]
+      },
+      {
+        "label": "replace: first grade",
+        "all": [
+          "first grade"
+        ]
+      },
+      {
+        "label": "replace: in Seattle",
+        "all": [
+          "seattle"
+        ]
+      },
+      {
+        "label": "merge: has Miso",
+        "all": [
+          "miso"
+        ]
+      },
+      {
+        "label": "merge: has Pepper",
+        "all": [
+          "pepper"
+        ]
+      },
+      {
+        "label": "merge: plays guitar",
+        "all": [
+          "guitar"
+        ]
+      },
+      {
+        "label": "merge: plays piano",
+        "all": [
+          "piano"
+        ]
+      },
+      {
+        "label": "merge: speaks German",
+        "all": [
+          "german"
+        ]
+      },
+      {
+        "label": "merge: learns Japanese",
+        "all": [
+          "japanese"
+        ]
+      }
+    ],
+    "absent": [
+      {
+        "label": "not merged: sister and practitioner",
+        "all": [
+          "sister",
+          "practitioner"
+        ]
+      },
+      {
+        "label": "not merged: Spanish and Spain",
+        "all": [
+          "spanish",
+          "spain"
+        ]
+      },
+      {
+        "label": "not merged: pasta and learning Italian",
+        "all": [
+          "pasta",
+          "learning"
+        ]
+      },
+      {
+        "label": "not merged: kids and triathlon",
+        "all": [
+          "soccer",
+          "triathlon"
+        ]
+      },
+      {
+        "label": "not merged: Civic and brother",
+        "all": [
+          "civic",
+          "brother"
+        ]
+      },
+      {
+        "label": "replaced: no longer at Stripe",
+        "all": [
+          "stripe"
+        ]
+      },
+      {
+        "label": "replaced: no longer dark mode",
+        "all": [
+          "dark mode"
+        ]
+      },
+      {
+        "label": "replaced: no longer kindergarten",
+        "all": [
+          "kindergarten"
+        ]
+      },
+      {
+        "label": "replaced: no longer lives in Portland",
+        "all": [
+          "lives in portland"
+        ]
+      }
+    ],
+    "at_most_one": [
+      {
+        "label": "vegetarian stored once",
+        "all": [
+          "vegetarian"
+        ]
+      },
+      {
+        "label": "standing desk stored once",
+        "all": [
+          "standing desk"
+        ]
+      }
+    ],
+    "forbidden": [],
+    "max_memories": 24
+  },
+  "gold": {
+    "facts": [
+      {
+        "id": "brother_honda",
+        "canonical": "Brother works at Honda as an engineer",
+        "match": {
+          "all": [
+            "brother"
+          ],
+          "any": [
+            "honda",
+            "engineer"
+          ]
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": [
+          "c0t0"
+        ]
+      },
+      {
+        "id": "learns_italian",
+        "canonical": "Is learning Italian for a new job in Milan",
+        "match": {
+          "all": [
+            "italian"
+          ],
+          "any": [
+            "learn",
+            "stud"
+          ]
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": [
+          "c1t0"
+        ]
+      },
+      {
+        "id": "speaks_german",
+        "canonical": "Speaks English and German",
+        "match": {
+          "all": [
+            "german"
+          ]
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": [
+          "c2t0"
+        ]
+      },
+      {
+        "id": "drives_civic",
+        "canonical": "Drives a Honda Civic",
+        "match": {
+          "all": [
+            "civic"
+          ]
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": [
+          "c3t0"
+        ]
+      },
+      {
+        "id": "triathlon",
+        "canonical": "Trains for a triathlon in Denver this fall",
+        "match": {
+          "all": [
+            "triathlon"
+          ]
+        },
+        "required": true,
+        "type": null,
+        "category": "personal_fact",
+        "sources": [
+          "c4t0"
+        ]
+      },
+      {
+        "id": "standing_desk",
+        "canonical": "Has a standing desk in the home office",
+        "match": {
+          "all": [
+            "standing desk"
+          ]
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": [
+          "c5t0",
+          "c8t0"
+        ]
+      },
+      {
+        "id": "cat_pepper",
+        "canonical": "Got a second cat named Pepper",
+        "match": {
+          "all": [
+            "pepper"
+          ]
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": [
+          "c7t0"
+        ]
+      },
+      {
+        "id": "diet_vegetarian",
+        "canonical": "Is vegetarian",
+        "match": {
+          "all": [
+            "vegetarian"
+          ]
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": [
+          "c9t0",
+          "c11t0"
+        ]
+      },
+      {
+        "id": "theme_light",
+        "canonical": "Uses light mode in all apps",
+        "match": {
+          "all": [
+            "light mode"
+          ]
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "preference",
+        "sources": [
+          "c10t0"
+        ]
+      },
+      {
+        "id": "daughter_first_grade",
+        "canonical": "Daughter is in first grade",
+        "match": {
+          "all": [
+            "first grade"
+          ]
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": [
+          "c12t0"
+        ]
+      },
+      {
+        "id": "plays_piano",
+        "canonical": "Plays the piano and the drums",
+        "match": {
+          "all": [
+            "piano"
+          ]
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": [
+          "c13t0"
+        ]
+      },
+      {
+        "id": "sister_nurse",
+        "canonical": "Sister is a nurse at a hospital in Boston",
+        "match": {
+          "all": [
+            "sister",
+            "nurse"
+          ]
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": [
+          "c14t0"
+        ]
+      },
+      {
+        "id": "kids_soccer",
+        "canonical": "Two kids play soccer on a youth team in Denver",
+        "match": {
+          "all": [
+            "soccer"
+          ]
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": [
+          "c15t0"
+        ]
+      },
+      {
+        "id": "learns_japanese",
+        "canonical": "Is learning Japanese",
+        "match": {
+          "all": [
+            "japanese"
+          ]
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": [
+          "c17t0"
+        ]
+      },
+      {
+        "id": "cat_miso",
+        "canonical": "Has a cat named Miso",
+        "match": {
+          "all": [
+            "miso"
+          ]
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": [
+          "c18t0"
+        ]
+      },
+      {
+        "id": "job_figma",
+        "canonical": "Works at Figma as a design engineer",
+        "match": {
+          "all": [
+            "figma"
+          ]
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": [
+          "c19t0"
+        ],
+        "note": "c23 (nurse practitioner) is a second job, not a replace: no text says that the Figma job ended, so both stay. c1 (learning Italian for a new job in Milan) is about another subject, so it does not replace Figma either"
+      },
+      {
+        "id": "trip_spain",
+        "canonical": "Plans a trip to Spain next summer",
+        "match": {
+          "all": [
+            "spain"
+          ]
+        },
+        "required": true,
+        "type": null,
+        "category": "personal_fact",
+        "sources": [
+          "c20t0"
+        ]
+      },
+      {
+        "id": "home_seattle",
+        "canonical": "Lives in Seattle, moved from Portland",
+        "match": {
+          "all": [
+            "seattle"
+          ]
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": [
+          "c21t0"
+        ]
+      },
+      {
+        "id": "speaks_spanish",
+        "canonical": "Speaks Spanish at home with the family",
+        "match": {
+          "all": [
+            "spanish"
+          ]
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": [
+          "c22t0"
+        ]
+      },
+      {
+        "id": "job_np",
+        "canonical": "Works as a nurse practitioner",
+        "match": {
+          "all": [
+            "practitioner"
+          ]
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": [
+          "c23t0"
+        ]
+      },
+      {
+        "id": "plays_guitar",
+        "canonical": "Plays the guitar",
+        "match": {
+          "all": [
+            "guitar"
+          ]
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": [
+          "c24t0"
+        ]
+      },
+      {
+        "id": "likes_italian_food",
+        "canonical": "Loves Italian food, especially fresh pasta",
+        "match": {
+          "all": [
+            "pasta"
+          ]
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "preference",
+        "sources": [
+          "c26t0"
+        ]
+      },
+      {
+        "id": "plays_drums",
+        "canonical": "Plays the drums",
+        "match": {
+          "all": [
+            "drums"
+          ]
+        },
+        "required": false,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": [
+          "c13t0"
+        ],
+        "note": "A true part of another gold fact that the rewrite can split off. Optional (dataset version 4)"
+      }
+    ],
+    "stale": [
+      {
+        "id": "daughter_kindergarten",
+        "match": {
+          "all": [
+            "kindergarten"
+          ]
+        },
+        "replaced_by": "daughter_first_grade",
+        "sources": [
+          "c6t0"
+        ]
+      },
+      {
+        "id": "home_portland",
+        "match": {
+          "all": [
+            "lives in portland"
+          ]
+        },
+        "replaced_by": "home_seattle",
+        "sources": [
+          "c16t0"
+        ]
+      },
+      {
+        "id": "theme_dark",
+        "match": {
+          "all": [
+            "dark mode"
+          ]
+        },
+        "replaced_by": "theme_light",
+        "sources": [
+          "c25t0"
+        ]
+      },
+      {
+        "id": "job_stripe",
+        "match": {
+          "all": [
+            "stripe"
+          ]
+        },
+        "replaced_by": "job_figma",
+        "sources": [
+          "c27t0"
+        ]
+      }
+    ],
+    "forbidden": [],
+    "ops": [
+      {
+        "op": "replace",
+        "old": "job_stripe",
+        "new": "job_figma"
+      },
+      {
+        "op": "replace",
+        "old": "theme_dark",
+        "new": "theme_light"
+      },
+      {
+        "op": "replace",
+        "old": "daughter_kindergarten",
+        "new": "daughter_first_grade"
+      },
+      {
+        "op": "replace",
+        "old": "home_portland",
+        "new": "home_seattle"
+      },
+      {
+        "op": "merge",
+        "facts": [
+          "cat_miso",
+          "cat_pepper"
+        ],
+        "optional": true
+      },
+      {
+        "op": "merge",
+        "facts": [
+          "plays_guitar",
+          "plays_piano"
+        ],
+        "optional": true
+      },
+      {
+        "op": "merge",
+        "facts": [
+          "speaks_german",
+          "learns_japanese"
+        ],
+        "optional": true
+      },
+      {
+        "op": "merge",
+        "facts": [
+          "learns_italian",
+          "learns_japanese"
+        ],
+        "optional": true
+      }
+    ],
+    "turns": {
+      "c0t0": [
+        "brother_honda"
+      ],
+      "c1t0": [
+        "learns_italian"
+      ],
+      "c2t0": [
+        "speaks_german"
+      ],
+      "c3t0": [
+        "drives_civic"
+      ],
+      "c4t0": [
+        "triathlon"
+      ],
+      "c5t0": [
+        "standing_desk"
+      ],
+      "c6t0": [
+        "daughter_kindergarten"
+      ],
+      "c7t0": [
+        "cat_pepper"
+      ],
+      "c8t0": [
+        "standing_desk"
+      ],
+      "c9t0": [
+        "diet_vegetarian"
+      ],
+      "c10t0": [
+        "theme_light"
+      ],
+      "c11t0": [
+        "diet_vegetarian"
+      ],
+      "c12t0": [
+        "daughter_first_grade"
+      ],
+      "c13t0": [
+        "plays_piano",
+        "plays_drums"
+      ],
+      "c14t0": [
+        "sister_nurse"
+      ],
+      "c15t0": [
+        "kids_soccer"
+      ],
+      "c16t0": [
+        "home_portland"
+      ],
+      "c17t0": [
+        "learns_japanese"
+      ],
+      "c18t0": [
+        "cat_miso"
+      ],
+      "c19t0": [
+        "job_figma"
+      ],
+      "c20t0": [
+        "trip_spain"
+      ],
+      "c21t0": [
+        "home_seattle"
+      ],
+      "c22t0": [
+        "speaks_spanish"
+      ],
+      "c23t0": [
+        "job_np"
+      ],
+      "c24t0": [
+        "plays_guitar"
+      ],
+      "c25t0": [
+        "theme_dark"
+      ],
+      "c26t0": [
+        "likes_italian_food"
+      ],
+      "c27t0": [
+        "job_stripe"
+      ]
+    }
+  }
+}

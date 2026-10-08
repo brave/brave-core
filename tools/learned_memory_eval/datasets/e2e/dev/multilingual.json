@@ -1,0 +1,157 @@
+{
+  "name": "multilingual",
+  "description": "Facts in German and Spanish, and a normal English task. Tests: sentence split, decisions and rewrite on other languages.",
+  "chats": [
+    {
+      "title": "München",
+      "days_ago": 30,
+      "turns": [
+        {
+          "user": "Ich wohne in München und arbeite als Lehrerin. Kannst du mir einen Wanderweg empfehlen?"
+        }
+      ]
+    },
+    {
+      "title": "Perro",
+      "days_ago": 22,
+      "turns": [
+        {
+          "user": "Mi perro se llama Canela y tiene cinco años. ¿Qué juguetes recomiendas?"
+        }
+      ]
+    },
+    {
+      "title": "Essen",
+      "days_ago": 14,
+      "turns": [
+        {
+          "user": "Ich bin Vegetarierin. Hast du ein schnelles Rezept mit Kichererbsen?"
+        }
+      ]
+    },
+    {
+      "title": "Books",
+      "days_ago": 4,
+      "turns": [
+        {
+          "user": "Any good bookstores to visit in a new city?"
+        }
+      ]
+    }
+  ],
+  "expect": {
+    "memories": [
+      {
+        "label": "lives in Munich",
+        "any": [
+          "münchen",
+          "munich"
+        ]
+      },
+      {
+        "label": "dog named Canela",
+        "all": [
+          "canela"
+        ]
+      },
+      {
+        "label": "is vegetarian",
+        "any": [
+          "vegetari"
+        ]
+      },
+      {
+        "label": "is a teacher",
+        "any": [
+          "lehrerin",
+          "teacher"
+        ]
+      }
+    ],
+    "absent": [],
+    "forbidden": [],
+    "max_memories": 8
+  },
+  "gold": {
+    "facts": [
+      {
+        "id": "home_munich",
+        "canonical": "Lives in Munich",
+        "match": {
+          "any": [
+            "münchen",
+            "munich"
+          ]
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": [
+          "c0t0"
+        ]
+      },
+      {
+        "id": "job_teacher",
+        "canonical": "Works as a teacher",
+        "match": {
+          "any": [
+            "lehrerin",
+            "teacher"
+          ]
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": [
+          "c0t0"
+        ]
+      },
+      {
+        "id": "dog_canela",
+        "canonical": "Has a five-year-old dog named Canela",
+        "match": {
+          "all": [
+            "canela"
+          ]
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": [
+          "c1t0"
+        ]
+      },
+      {
+        "id": "diet_vegetarian",
+        "canonical": "Is vegetarian",
+        "match": {
+          "any": [
+            "vegetari"
+          ]
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": [
+          "c2t0"
+        ]
+      }
+    ],
+    "stale": [],
+    "forbidden": [],
+    "ops": [],
+    "turns": {
+      "c0t0": [
+        "home_munich",
+        "job_teacher"
+      ],
+      "c1t0": [
+        "dog_canela"
+      ],
+      "c2t0": [
+        "diet_vegetarian"
+      ],
+      "c3t0": []
+    }
+  }
+}

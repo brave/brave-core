@@ -1,0 +1,226 @@
+{
+  "name": "temporary_states",
+  "description": "Lasting facts mixed with states that end in days or weeks. Tests: short-lived safety answer, the type decision (short-term), and the rule that a short-term memory never replaces a lasting one.",
+  "chats": [
+    {
+      "title": "Home",
+      "days_ago": 40,
+      "turns": [
+        {
+          "user": "I live in Lisbon and work remotely as a data engineer. Can you suggest a standing desk?"
+        }
+      ]
+    },
+    {
+      "title": "Tokyo",
+      "days_ago": 14,
+      "turns": [
+        {
+          "user": "I'm in Tokyo this week for a conference. Any good ramen places near Shinjuku?"
+        }
+      ]
+    },
+    {
+      "title": "Dentist",
+      "days_ago": 12,
+      "turns": [
+        {
+          "user": "I have a dentist appointment on Friday at 3pm, can you help me draft a reschedule email?"
+        }
+      ]
+    },
+    {
+      "title": "Renovation",
+      "days_ago": 8,
+      "turns": [
+        {
+          "user": "I'm staying with my parents this month while my apartment is renovated. Any tips for working from their house?"
+        }
+      ]
+    },
+    {
+      "title": "Half marathon",
+      "days_ago": 5,
+      "turns": [
+        {
+          "user": "I'm training for a half marathon in March. What should my weekly plan look like?"
+        }
+      ]
+    },
+    {
+      "title": "Flight",
+      "days_ago": 2,
+      "turns": [
+        {
+          "user": "My flight is at 6pm tomorrow, how early should I get to the airport?"
+        }
+      ]
+    }
+  ],
+  "expect": {
+    "memories": [
+      {
+        "label": "lives in Lisbon",
+        "all": [
+          "lisbon"
+        ]
+      },
+      {
+        "label": "trains for a half marathon",
+        "all": [
+          "marathon"
+        ],
+        "type": "long_term"
+      }
+    ],
+    "absent": [
+      {
+        "label": "dentist appointment is not stored",
+        "all": [
+          "dentist"
+        ]
+      },
+      {
+        "label": "flight is not stored",
+        "all": [
+          "flight"
+        ]
+      }
+    ],
+    "types": [
+      {
+        "label": "Tokyo trip is short-term, if stored",
+        "all": [
+          "tokyo"
+        ],
+        "type": "short_term"
+      },
+      {
+        "label": "stay with parents is short-term, if stored",
+        "all": [
+          "parents"
+        ],
+        "type": "short_term"
+      }
+    ],
+    "forbidden": [],
+    "max_memories": 6
+  },
+  "gold": {
+    "facts": [
+      {
+        "id": "home_lisbon",
+        "canonical": "Lives in Lisbon",
+        "match": {
+          "all": [
+            "lisbon"
+          ]
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": [
+          "c0t0"
+        ]
+      },
+      {
+        "id": "job_data_engineer",
+        "canonical": "Works remotely as a data engineer",
+        "match": {
+          "all": [
+            "data engineer"
+          ]
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": [
+          "c0t0"
+        ]
+      },
+      {
+        "id": "trip_tokyo",
+        "canonical": "Is in Tokyo this week for a conference",
+        "match": {
+          "all": [
+            "tokyo"
+          ]
+        },
+        "required": false,
+        "type": "short_term",
+        "category": null,
+        "sources": [
+          "c1t0"
+        ],
+        "note": "short_lived in the sentence gold. Allowed only as short_term"
+      },
+      {
+        "id": "stay_parents",
+        "canonical": "Stays with parents this month during a renovation",
+        "match": {
+          "all": [
+            "parents"
+          ]
+        },
+        "required": true,
+        "type": "short_term",
+        "category": "personal_fact",
+        "sources": [
+          "c3t0"
+        ]
+      },
+      {
+        "id": "half_marathon",
+        "canonical": "Trains for a half marathon in March",
+        "match": {
+          "all": [
+            "marathon"
+          ]
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": [
+          "c4t0"
+        ]
+      },
+      {
+        "id": "works_remotely",
+        "canonical": "Works remotely",
+        "match": {
+          "all": [
+            "remote"
+          ]
+        },
+        "required": false,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": [
+          "c0t0"
+        ],
+        "note": "A true part of another gold fact that the rewrite can split off. Optional (dataset version 4)"
+      }
+    ],
+    "stale": [],
+    "forbidden": [],
+    "ops": [],
+    "turns": {
+      "c0t0": [
+        "home_lisbon",
+        "job_data_engineer",
+        "works_remotely"
+      ],
+      "c1t0": [
+        "trip_tokyo"
+      ],
+      "c2t0": [],
+      "c3t0": [
+        "stay_parents"
+      ],
+      "c4t0": [
+        "half_marathon"
+      ],
+      "c5t0": []
+    }
+  }
+}
