@@ -1287,9 +1287,18 @@ void ConversationHandler::SwitchToNonPremiumModel() {
 }
 
 void ConversationHandler::RespondToToolUseRequest(
+    const std::string& entry_uuid,
     const std::string& tool_use_id,
     std::vector<mojom::ContentBlockPtr> output,
     std::vector<mojom::ToolArtifactPtr> artifacts) {
+  // A later response may reuse this tool use ID, so an answer meant for a
+  // response that is no longer the latest must not land on it.
+  if (chat_history_.empty() || chat_history_.back()->uuid != entry_uuid) {
+    DVLOG(1) << "Dropping output for tool use " << tool_use_id
+             << " from a response that is no longer the latest";
+    return;
+  }
+
   auto* tool_use = GetToolUseEventForLastResponse(tool_use_id);
   if (!tool_use) {
     DLOG(ERROR) << "Tool use event not found: " << tool_use_id;
@@ -2621,7 +2630,8 @@ bool ConversationHandler::MaybeRespondToNextToolUseRequest() {
                 base::StrCat({"The ", tool_use_event->tool_name,
                               " tool is not available."}))));
 
-        RespondToToolUseRequest(tool_use_event->id, std::move(result), {});
+        RespondToToolUseRequest(last_entry->uuid.value(), tool_use_event->id,
+                                std::move(result), {});
         break;
       }
 
@@ -2661,7 +2671,8 @@ bool ConversationHandler::MaybeRespondToNextToolUseRequest() {
       tool_ptr->UseTool(
           tool_use_event->arguments_json,
           base::BindOnce(&ConversationHandler::RespondToToolUseRequest,
-                         weak_ptr_factory_.GetWeakPtr(), tool_use_event->id));
+                         weak_ptr_factory_.GetWeakPtr(),
+                         last_entry->uuid.value(), tool_use_event->id));
       break;
     }
   }

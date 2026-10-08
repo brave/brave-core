@@ -4340,8 +4340,9 @@ TEST_F(ConversationHandlerUnitTest,
   std::vector<mojom::ContentBlockPtr> output;
   output.push_back(mojom::ContentBlock::NewTextContentBlock(
       mojom::TextContentBlock::New("first choice")));
-  conversation_handler_->RespondToToolUseRequest("tool_id_1", std::move(output),
-                                                 {});
+  conversation_handler_->RespondToToolUseRequest(
+      conversation_handler_->GetConversationHistory().back()->uuid.value(),
+      "tool_id_1", std::move(output), {});
   second_generation_loop.Run();
 
   // The answer completed the loop, so the task is over.
@@ -6533,6 +6534,143 @@ TEST_F(ConversationHandlerUnitTest,
   manager->GetToolInfos(content.uuid(), infos.GetCallback());
   ASSERT_EQ(1u, infos.Get().size());
   EXPECT_EQ(mojom::ToolPermission::kAsk, infos.Get()[0]->permission);
+}
+
+// The same holds for an answer the user gives through the UI: it names the
+// response it was given for, and is dropped if that is no longer the latest.
+TEST_F(ConversationHandlerUnitTest,
+       ToolUse_UserAnswerForSupersededResponseIsDropped) {
+  conversation_handler_->associated_content_manager()->ClearContent();
+  MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+
+  auto tool = std::make_unique<NiceMock<MockTool>>("test_tool", "Test tool");
+  // The tool waits for the user to provide its output.
+  ON_CALL(*tool, RequiresUserInteractionBeforeHandling)
+      .WillByDefault([](const mojom::ToolUseEvent&) {
+        return std::variant<bool, mojom::PermissionChallengePtr>(true);
+      });
+  ON_CALL(*mock_tool_provider_, GetTools()).WillByDefault([&]() {
+    std::vector<base::WeakPtr<Tool>> tools;
+    tools.push_back(tool->GetWeakPtr());
+    return tools;
+  });
+
+  // Each response asks for the same tool use, with the same ID.
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .Times(2)
+      .WillRepeatedly(testing::DoAll(
+          testing::WithArg<6>(
+              [](EngineConsumer::GenerationDataCallback callback) {
+                callback.Run(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewToolUseEvent(
+                        mojom::ToolUseEvent::New("test_tool", "tool_id_1", "{}",
+                                                 std::nullopt, std::nullopt,
+                                                 nullptr, false)),
+                    std::nullopt));
+              }),
+          testing::WithArg<7>(
+              [](EngineConsumer::GenerationCompletedCallback callback) {
+                std::move(callback).Run(
+                    base::ok(EngineConsumer::GenerationResultData(
+                        mojom::ConversationEntryEvent::NewCompletionEvent(
+                            mojom::CompletionEvent::New("")),
+                        std::nullopt)));
+              })));
+
+  conversation_handler_->SubmitHumanConversationEntry("First", std::nullopt);
+  ASSERT_TRUE(base::test::RunUntil([&] {
+    const auto& history = conversation_handler_->GetConversationHistory();
+    return history.size() == 2u && history.back()->events.has_value() &&
+           !history.back()->events->empty();
+  }));
+  const std::string first_response_uuid =
+      conversation_handler_->GetConversationHistory().back()->uuid.value();
+
+  // The user stops the first response and sends another message.
+  conversation_handler_->StopGenerationAndMaybeGetHumanEntry(base::DoNothing());
+  conversation_handler_->SubmitHumanConversationEntry("Second", std::nullopt);
+  ASSERT_TRUE(base::test::RunUntil([&] {
+    const auto& history = conversation_handler_->GetConversationHistory();
+    return history.size() >= 3u &&
+           history.back()->uuid != first_response_uuid &&
+           history.back()->events.has_value() &&
+           !history.back()->events->empty();
+  }));
+
+  // An answer given for the first response arrives late.
+  std::vector<mojom::ContentBlockPtr> stale;
+  stale.push_back(mojom::ContentBlock::NewTextContentBlock(
+      mojom::TextContentBlock::New("stale")));
+  conversation_handler_->RespondToToolUseRequest(
+      first_response_uuid, "tool_id_1", std::move(stale), {});
+
+  const auto& events =
+      conversation_handler_->GetConversationHistory().back()->events.value();
+  ASSERT_EQ(events.size(), 1u);
+  EXPECT_FALSE(events[0]->get_tool_use_event()->output.has_value());
+}
+
+// A tool's output arriving after the user stopped its response and sent
+// another message belongs to the old response. A later response reusing the
+// same tool use ID must not receive it.
+TEST_F(ConversationHandlerUnitTest,
+       ToolUse_OutputAfterResponseSupersededIsDropped) {
+  conversation_handler_->associated_content_manager()->ClearContent();
+  MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+
+  auto tool = std::make_unique<NiceMock<MockTool>>("test_tool", "Test tool");
+  ON_CALL(*mock_tool_provider_, GetTools()).WillByDefault([&]() {
+    std::vector<base::WeakPtr<Tool>> tools;
+    tools.push_back(tool->GetWeakPtr());
+    return tools;
+  });
+
+  // Each response asks for the same tool use, with the same ID.
+  auto respond_with_tool_use =
+      [](EngineConsumer::GenerationDataCallback callback) {
+        callback.Run(EngineConsumer::GenerationResultData(
+            mojom::ConversationEntryEvent::NewToolUseEvent(
+                mojom::ToolUseEvent::New("test_tool", "tool_id_1", "{}",
+                                         std::nullopt, std::nullopt, nullptr,
+                                         false)),
+            std::nullopt));
+      };
+  auto complete = [](EngineConsumer::GenerationCompletedCallback callback) {
+    std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
+        mojom::ConversationEntryEvent::NewCompletionEvent(
+            mojom::CompletionEvent::New("")),
+        std::nullopt)));
+  };
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .Times(2)
+      .WillRepeatedly(testing::DoAll(testing::WithArg<6>(respond_with_tool_use),
+                                     testing::WithArg<7>(complete)));
+
+  // The tool holds on to each callback rather than answering.
+  std::vector<Tool::UseToolCallback> callbacks;
+  EXPECT_CALL(*tool, UseTool)
+      .Times(2)
+      .WillRepeatedly(testing::WithArg<1>([&](Tool::UseToolCallback callback) {
+        callbacks.push_back(std::move(callback));
+      }));
+
+  conversation_handler_->SubmitHumanConversationEntry("First", std::nullopt);
+  ASSERT_TRUE(base::test::RunUntil([&] { return callbacks.size() == 1u; }));
+
+  // The user stops the first response and sends another message.
+  conversation_handler_->StopGenerationAndMaybeGetHumanEntry(base::DoNothing());
+  conversation_handler_->SubmitHumanConversationEntry("Second", std::nullopt);
+  ASSERT_TRUE(base::test::RunUntil([&] { return callbacks.size() == 2u; }));
+
+  // The first response's output arrives late.
+  std::move(callbacks[0]).Run(CreateContentBlocksForText("stale"), {});
+
+  const auto& history = conversation_handler_->GetConversationHistory();
+  const auto& events = history.back()->events.value();
+  ASSERT_EQ(events.size(), 1u);
+  EXPECT_FALSE(events[0]->get_tool_use_event()->output.has_value());
 }
 
 TEST_F(ConversationHandlerUnitTest, PermissionChallenge_UserDeniesPermission) {

@@ -103,8 +103,11 @@ interface UntrustedConversationUserActions {
                      string? skill_shortcut);
 
   // Allows a client to provide an answer to a tool use request
-  // as a result of a user action.
-  RespondToToolUseRequest(string tool_id,
+  // as a result of a user action. `entry_uuid` is the response the tool use
+  // belongs to. The answer is dropped if that is no longer the latest
+  // response, since a later response may reuse the same `tool_id`.
+  RespondToToolUseRequest(string entry_uuid,
+                          string tool_id,
                           array<ContentBlock> output_json,
                           array<ToolArtifact> artifacts);
 

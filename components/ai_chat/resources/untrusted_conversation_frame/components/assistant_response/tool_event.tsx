@@ -24,6 +24,12 @@ interface Props {
   isEntryActive: boolean
 
   /**
+   * The response the tool use belongs to. An answer the user gives names it, so
+   * the browser can drop one that arrives after the response was replaced.
+   */
+  entryUuid?: string
+
+  /**
    * Whether the tool use request is currently being executed. This is usually
    * a short-lived state.
    */

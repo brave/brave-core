@@ -49,10 +49,11 @@ const ToolEventContentUserChoice: ToolComponent = (props) => {
     )
   } else if (props.toolInput?.choices?.length) {
     const handleChoice = (choice: string) => {
-      if (!props.isEntryActive) {
+      if (!props.isEntryActive || !props.entryUuid) {
         return
       }
       context.userActions?.respondToToolUseRequest(
+        props.entryUuid,
         props.toolUseEvent.id,
         [createTextContentBlock(choice)],
         [],

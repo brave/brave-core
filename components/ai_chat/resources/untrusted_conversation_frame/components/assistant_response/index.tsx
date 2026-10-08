@@ -110,6 +110,7 @@ function AssistantEvent(
     return (
       <ToolEvent
         toolUseEvent={props.event.toolUseEvent}
+        entryUuid={entryUuid}
         isEntryActive={props.isEntryInteractivityAllowed}
         isExecuting={context.isToolExecuting}
       />
