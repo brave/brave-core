@@ -284,6 +284,21 @@ const base::FeatureParam<double> kLearnedMemoryGateThreshold{
 const base::FeatureParam<double> kLearnedMemoryFactThreshold{
     &kAIChatLearnedMemory, "fact_threshold", 0.6};
 
+const base::FeatureParam<double> kLearnedMemoryMaxSensitive{
+    &kAIChatLearnedMemory, "max_sensitive", 0.3};
+
+const base::FeatureParam<double> kLearnedMemoryMaxInstruction{
+    &kAIChatLearnedMemory, "max_instruction", 0.3};
+
+const base::FeatureParam<double> kLearnedMemoryMaxShortLived{
+    &kAIChatLearnedMemory, "max_short_lived", 0.5};
+
+const base::FeatureParam<size_t> kLearnedMemoryMaxNeighbors{
+    &kAIChatLearnedMemory, "max_neighbors", 5};
+
+const base::FeatureParam<double> kLearnedMemoryMinNeighborSimilarity{
+    &kAIChatLearnedMemory, "min_neighbor_similarity", 0.5};
+
 const base::FeatureParam<size_t> kLearnedMemoryMaxRelationRequests{
     &kAIChatLearnedMemory, "max_relation_requests", 20};
 

@@ -42,6 +42,12 @@ DreamingConfig UserMemoryManager::GetDreamingConfigFromFeatures() {
   config.certain_margin = features::kLearnedMemoryCertainMargin.Get();
   config.gate_threshold = features::kLearnedMemoryGateThreshold.Get();
   config.fact_threshold = features::kLearnedMemoryFactThreshold.Get();
+  config.max_sensitive = features::kLearnedMemoryMaxSensitive.Get();
+  config.max_instruction = features::kLearnedMemoryMaxInstruction.Get();
+  config.max_short_lived = features::kLearnedMemoryMaxShortLived.Get();
+  config.max_neighbors = features::kLearnedMemoryMaxNeighbors.Get();
+  config.min_neighbor_similarity =
+      static_cast<float>(features::kLearnedMemoryMinNeighborSimilarity.Get());
   config.time_limit = features::kLearnedMemoryRunTimeLimit.Get();
   config.max_writing_requests =
       features::kLearnedMemoryMaxRewriteRequests.Get();

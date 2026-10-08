@@ -27,6 +27,7 @@
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/thread_pool.h"
 #include "base/test/bind.h"
+#include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
 #include "base/threading/sequence_bound.h"
@@ -41,6 +42,7 @@
 #include "brave/components/ai_chat/core/browser/learned_memory_search.h"
 #include "brave/components/ai_chat/core/browser/memory_decision_client.h"
 #include "brave/components/ai_chat/core/browser/turn_memory_lookup.h"
+#include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
@@ -1685,6 +1687,28 @@ TEST_F(UserMemoryManagerTest, TraceRecordsEachStep) {
   MakeManager(/*with_llm=*/true);
   StorageReady();
   EXPECT_TRUE(Dream().trace.empty());
+}
+
+// The eval harness sets these params. Each must reach the config.
+TEST(LearnedMemoryConfigTest, FeatureParamsReachTheConfig) {
+  base::test::ScopedFeatureList features;
+  features.InitAndEnableFeatureWithParameters(
+      features::kAIChatLearnedMemory, {{"gate_threshold", "0.11"},
+                                       {"fact_threshold", "0.66"},
+                                       {"max_sensitive", "0.21"},
+                                       {"max_instruction", "0.22"},
+                                       {"max_short_lived", "0.44"},
+                                       {"max_neighbors", "7"},
+                                       {"min_neighbor_similarity", "0.35"}});
+  const DreamingConfig config =
+      UserMemoryManager::GetDreamingConfigFromFeatures();
+  EXPECT_DOUBLE_EQ(config.gate_threshold, 0.11);
+  EXPECT_DOUBLE_EQ(config.fact_threshold, 0.66);
+  EXPECT_DOUBLE_EQ(config.max_sensitive, 0.21);
+  EXPECT_DOUBLE_EQ(config.max_instruction, 0.22);
+  EXPECT_DOUBLE_EQ(config.max_short_lived, 0.44);
+  EXPECT_EQ(config.max_neighbors, 7u);
+  EXPECT_FLOAT_EQ(config.min_neighbor_similarity, 0.35f);
 }
 
 TEST(LearnedMemoryEvalTest, ParseChatSet) {

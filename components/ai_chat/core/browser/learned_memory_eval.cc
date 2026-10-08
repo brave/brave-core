@@ -225,14 +225,31 @@ void LearnedMemoryEval::OnMemories(DreamingResult result,
   }
   base::DictValue report;
   report.Set("chats_path", chats_path_.AsUTF8Unsafe());
+  // All values, so that the harness can reproduce the run.
   report.Set(
       "config",
       base::DictValue()
           .Set("certain_threshold", config_.certain_threshold)
           .Set("certain_margin", config_.certain_margin)
+          .Set("gate_threshold", config_.gate_threshold)
+          .Set("fact_threshold", config_.fact_threshold)
+          .Set("max_sensitive", config_.max_sensitive)
+          .Set("max_instruction", config_.max_instruction)
+          .Set("max_short_lived", config_.max_short_lived)
           .Set("time_limit_s", static_cast<int>(config_.time_limit.InSeconds()))
+          .Set("index_wait_limit_s",
+               static_cast<int>(config_.index_wait_limit.InSeconds()))
+          .Set("max_writing_requests",
+               static_cast<int>(config_.max_writing_requests))
+          .Set("max_relation_requests",
+               static_cast<int>(config_.max_relation_requests))
+          .Set("max_neighbors", static_cast<int>(config_.max_neighbors))
+          .Set("min_neighbor_similarity",
+               static_cast<double>(config_.min_neighbor_similarity))
           .Set("decision_model",
                features::kLearnedMemoryDecisionModelName.Get())
+          .Set("decision_model_url",
+               features::kLearnedMemoryDecisionModelUrl.Get())
           .Set("local_llm_model",
                features::kLearnedMemoryLocalLlmModelName.Get()));
   report.Set(

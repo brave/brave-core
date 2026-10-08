@@ -255,6 +255,22 @@ extern const base::FeatureParam<double> kLearnedMemoryGateThreshold;
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 extern const base::FeatureParam<double> kLearnedMemoryFactThreshold;
 
+// A sentence is dropped when the safety answer "sensitive", "instruction" or
+// "short_lived" reaches its limit.
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+extern const base::FeatureParam<double> kLearnedMemoryMaxSensitive;
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+extern const base::FeatureParam<double> kLearnedMemoryMaxInstruction;
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+extern const base::FeatureParam<double> kLearnedMemoryMaxShortLived;
+
+// The relation question compares a new fact with at most this many old
+// memories, each with at least this similarity.
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+extern const base::FeatureParam<size_t> kLearnedMemoryMaxNeighbors;
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+extern const base::FeatureParam<double> kLearnedMemoryMinNeighborSimilarity;
+
 // Limits for the local LLM requests in one Dreaming run.
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 extern const base::FeatureParam<size_t> kLearnedMemoryMaxRelationRequests;
