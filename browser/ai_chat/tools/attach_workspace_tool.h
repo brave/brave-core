@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_AI_CHAT_TOOLS_ATTACH_WORKSPACE_TOOL_H_
 #define BRAVE_BROWSER_AI_CHAT_TOOLS_ATTACH_WORKSPACE_TOOL_H_
 
+#include <cstddef>
 #include <string>
 #include <string_view>
 
@@ -50,10 +51,9 @@ class AttachWorkspaceTool : public Tool {
  private:
   bool HasWorkspace() const;
 
-  // Adds the tools of the workspace with |content_uuid| to the current
-  // generation loop, then replies.
-  void OnWorkspaceReady(const std::string& content_uuid,
-                        UseToolCallback callback);
+  // Replies, once |tool_count| of the workspace's tools have been added to the
+  // current generation loop.
+  void OnWorkspaceToolsAdded(UseToolCallback callback, size_t tool_count);
 
   const raw_ref<content::BrowserContext> browser_context_;
   const raw_ref<ConversationHandler> conversation_;

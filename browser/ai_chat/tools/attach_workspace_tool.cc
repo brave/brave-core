@@ -13,7 +13,6 @@
 #include <utility>
 
 #include "base/functional/bind.h"
-#include "base/task/bind_post_task.h"
 #include "brave/browser/brave_tab_helpers.h"
 #include "brave/components/ai_chat/content/browser/workspace_associated_content.h"
 #include "brave/components/ai_chat/core/browser/associated_content_manager.h"
@@ -22,7 +21,6 @@
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "content/public/browser/browser_context.h"
-#include "mojo/public/cpp/bindings/callback_helpers.h"
 
 namespace ai_chat {
 
@@ -82,38 +80,30 @@ void AttachWorkspaceTool::UseTool(const std::string& input_json,
   auto workspace = std::make_unique<WorkspaceAssociatedContent>(
       /*folder_path=*/std::nullopt, &browser_context_.get(),
       base::BindOnce(&brave::AttachPrivacySensitiveTabHelpers));
-  WorkspaceAssociatedContent* workspace_ptr = workspace.get();
+  const std::string content_uuid = workspace->uuid();
 
   // A workspace's workspace:// URL isn't in |kAllowedContentSchemes|, so attach
   // it directly via the manager rather than
   // AIChatService::AssociateOwnedContent (which would reject the scheme).
-  conversation_->associated_content_manager()->AddOwnedContent(
-      std::move(workspace));
+  AssociatedContentManager* manager =
+      conversation_->associated_content_manager();
+  manager->AddOwnedContent(std::move(workspace));
 
-  // Content tools are otherwise only collected when a generation loop starts,
-  // so reply once the workspace's tools have been added to this loop, letting
-  // the model use them straight away. If the workspace is destroyed before its
-  // page is ready, this still runs, and replies without them. It's posted, as
-  // that happens while the manager is removing the workspace.
-  workspace_ptr->RunWhenPageReady(mojo::WrapCallbackWithDefaultInvokeIfNotRun(
-      base::BindPostTaskToCurrentDefault(
-          base::BindOnce(&AttachWorkspaceTool::OnWorkspaceReady,
-                         weak_ptr_factory_.GetWeakPtr(), workspace_ptr->uuid(),
-                         std::move(callback)))));
+  // The manager adds the workspace's tools to this generation loop once its
+  // page has loaded and attached them, so reply then, letting the model use
+  // them straight away.
+  manager->RunWhenContentToolsAdded(
+      content_uuid,
+      base::BindOnce(&AttachWorkspaceTool::OnWorkspaceToolsAdded,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
-void AttachWorkspaceTool::OnWorkspaceReady(const std::string& content_uuid,
-                                           UseToolCallback callback) {
-  conversation_->associated_content_manager()->AddContentToolsToGenerationLoop(
-      content_uuid,
-      base::BindOnce(
-          [](UseToolCallback callback, size_t tool_count) {
-            std::move(callback).Run(
-                CreateContentBlocksForText(tool_count > 0 ? kToolsAvailable
-                                                          : kToolsNextMessage),
-                {});
-          },
-          std::move(callback)));
+void AttachWorkspaceTool::OnWorkspaceToolsAdded(UseToolCallback callback,
+                                                size_t tool_count) {
+  std::move(callback).Run(
+      CreateContentBlocksForText(tool_count > 0 ? kToolsAvailable
+                                                : kToolsNextMessage),
+      {});
 }
 
 bool AttachWorkspaceTool::HasWorkspace() const {

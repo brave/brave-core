@@ -155,14 +155,6 @@ void WorkspaceAssociatedContent::GetContentTools(
           nullptr));
 }
 
-void WorkspaceAssociatedContent::RunWhenPageReady(base::OnceClosure callback) {
-  if (page_ready_) {
-    std::move(callback).Run();
-    return;
-  }
-  page_ready_callbacks_.push_back(std::move(callback));
-}
-
 void WorkspaceAssociatedContent::OnAssociatedWithConversation() {
   SubscribeToContentToolChanges();
 }
@@ -224,11 +216,6 @@ void WorkspaceAssociatedContent::DocumentOnLoadCompletedInPrimaryMainFrame() {
   SubscribeToContentToolChanges();
 
   set_tools_attached(true);
-
-  // Moved out first, as a callback may destroy |this|.
-  for (auto& callback : std::exchange(page_ready_callbacks_, {})) {
-    std::move(callback).Run();
-  }
 }
 
 void WorkspaceAssociatedContent::OnContentToolsChanged() {

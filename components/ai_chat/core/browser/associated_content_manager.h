@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_ASSOCIATED_CONTENT_MANAGER_H_
 
 #include <cstddef>
+#include <cstdint>
 #include <functional>
 #include <memory>
 #include <string>
@@ -146,14 +147,16 @@ class AssociatedContentManager : public ToolProvider,
   // The number of content delegates.
   size_t GetContentDelegateCount() const;
 
-  // Fetches the tools of the content with |content_uuid|, which must have been
-  // added since the current generation loop started, and adds them to the
-  // loop's, so they can be used without waiting for the next loop. Does nothing
-  // if the content's tools aren't attached. Runs |callback| with the number of
-  // tools added, but not if this is destroyed or the content doesn't reply.
-  void AddContentToolsToGenerationLoop(
-      std::string_view content_uuid,
-      base::OnceCallback<void(size_t)> callback);
+  // Runs |callback| once the tools of the content with |content_uuid| are in
+  // the current generation loop, with the number added. Content's tools are
+  // added as soon as they're attached, so content added after the loop started
+  // (e.g. by a tool) can be used without waiting for the next loop. Runs
+  // straight away if the content is already attached (with the number of its
+  // origin's tools in the loop), and with 0 if there's no such content, or it's
+  // removed first. Always posted, and not run if this is destroyed.
+  using ContentToolsAddedCallback = base::OnceCallback<void(size_t)>;
+  void RunWhenContentToolsAdded(std::string_view content_uuid,
+                                ContentToolsAddedCallback callback);
 
   // ToolProvider:
   void UpdateToolsForNewGenerationLoop(base::OnceClosure on_updated) override;
@@ -207,17 +210,27 @@ class AssociatedContentManager : public ToolProvider,
   // that attaching the site again starts from the kAsk default.
   void MaybeResetToolPermissionsForOrigin(const url::Origin& origin);
 
-  // Invoked with the result of GetContentTools() for
-  // AddContentToolsToGenerationLoop().
-  void OnContentToolsFetchedForGenerationLoop(
-      const url::Origin& origin,
-      base::OnceCallback<void(size_t)> callback,
+  // Invoked with the result of GetContentTools() for |delegate| having been
+  // attached during generation loop |generation_loop_id|.
+  void OnAttachedContentToolsFetched(
+      base::WeakPtr<AssociatedContentDelegate> delegate,
+      uint64_t generation_loop_id,
       std::vector<std::unique_ptr<Tool>> tools);
 
-  // Takes ownership of the tools |origin| exposes for the loop that's
-  // starting, dropping the ones the user has blocked.
-  void AddToolsForGenerationLoop(const url::Origin& origin,
+  // Takes ownership of the tools the content with |content_uuid| (and
+  // |origin|) exposes for the current loop, dropping the ones the user has
+  // blocked, then runs its RunWhenContentToolsAdded() callbacks.
+  void AddToolsForGenerationLoop(const std::string& content_uuid,
+                                 const url::Origin& origin,
                                  std::vector<std::unique_ptr<Tool>> tools);
+
+  // Posts the RunWhenContentToolsAdded() callbacks for |content_uuid| with
+  // |tool_count|. Run with 0 when the content is removed or archived.
+  void RunContentToolsAddedCallbacks(const std::string& content_uuid,
+                                     size_t tool_count);
+
+  // The number of tools from |origin| in the current generation loop.
+  size_t GetLoopToolCount(const url::Origin& origin) const;
 
   raw_ptr<ConversationHandler> conversation_;
 
@@ -228,6 +241,14 @@ class AssociatedContentManager : public ToolProvider,
     url::Origin origin;
   };
   std::vector<GenerationLoopTool> tools_;
+
+  // Incremented as each generation loop starts, so tools fetched for an
+  // earlier one aren't added to it.
+  uint64_t generation_loop_id_ = 0;
+
+  // uuid -> RunWhenContentToolsAdded() callbacks waiting on its tools.
+  base::flat_map<std::string, std::vector<ContentToolsAddedCallback>>
+      content_tools_added_callbacks_;
 
   // Content tools only (i.e. those a page exposes): origin -> tool name ->
   // choice, for anything moved off the kAsk default.
