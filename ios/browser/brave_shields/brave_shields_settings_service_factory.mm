@@ -41,7 +41,7 @@ BraveShieldsSettingsServiceFactory::~BraveShieldsSettingsServiceFactory() {}
 std::unique_ptr<KeyedService>
 BraveShieldsSettingsServiceFactory::BuildServiceInstanceFor(
     ProfileIOS* profile) const {
-  auto* map = ios::HostContentSettingsMapFactory::GetForProfile(profile);
+  auto* map = ios::HostContentSettingsMapFactory::GetForProfile(profile).get();
   CHECK(map);
   auto* local_state = GetApplicationContext()->GetLocalState();
 
