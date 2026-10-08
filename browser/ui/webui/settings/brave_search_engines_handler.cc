@@ -5,12 +5,16 @@
 
 #include "brave/browser/ui/webui/settings/brave_search_engines_handler.h"
 
+#include <optional>
 #include <string>
+#include <string_view>
 #include <utility>
 
 #include "base/check.h"
 #include "base/check_op.h"
 #include "base/functional/bind.h"
+#include "base/strings/string_number_conversions.h"
+#include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/values.h"
 #include "brave/browser/search_engines/search_engine_provider_util.h"
@@ -30,6 +34,19 @@ namespace settings {
 namespace {
 constexpr char kBraveSearchForTorKeyword[] =
     ":search.brave4u7jddbv7cyviptqjc7jusxh72uik7zt6adtckl5f4nwy2v72qd.onion";
+
+// Must match the prefix upstream uses in CreateDictionaryForEngine() for the
+// opaque engine IDs it sends to the WebUI.
+constexpr std::string_view kTemplateURLIdPrefix = "db:";
+
+TemplateURLID ParseTemplateURLId(std::string_view engine_id) {
+  std::optional<std::string_view> raw_id =
+      base::RemovePrefix(engine_id, kTemplateURLIdPrefix);
+  int64_t value = 0;
+  CHECK(raw_id.has_value() && base::StringToInt64(*raw_id, &value))
+      << "Malformed search engine ID: " << engine_id;
+  return TemplateURLID(value);
+}
 
 // Put yahoo at first place.
 void SortDefaultSearchEnginesListInJP(
@@ -138,9 +155,9 @@ base::ListValue BraveSearchEnginesHandler::GetPrivateSearchEnginesList() {
 void BraveSearchEnginesHandler::HandleSetDefaultPrivateSearchEngine(
     const base::ListValue& args) {
   CHECK_EQ(1U, args.size());
-  // Upstream identifies engines by |TemplateURLID| (the "id" property of the
-  // dictionary built by CreateDictionaryForEngine())
-  const TemplateURLID id(args[0].GetInt());
+  // Upstream identifies engines by an opaque string ID (the "id" property of
+  // the dictionary built by CreateDictionaryForEngine()).
+  const TemplateURLID id = ParseTemplateURLId(args[0].GetString());
   const auto* template_url = list_controller_.GetTemplateURL(id);
   if (!template_url) {
     return;
