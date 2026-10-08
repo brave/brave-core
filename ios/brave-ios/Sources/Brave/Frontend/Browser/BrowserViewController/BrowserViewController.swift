@@ -943,7 +943,8 @@ public class BrowserViewController: UIViewController {
     guard let scene = notification.object as? UIScene, scene == currentScene else {
       return
     }
-    guard Preferences.Privacy.privateBrowsingLock.value, tabManager.selectedTab?.isPrivate == true
+    guard Preferences.Privacy.privateBrowsingLock.value,
+      privateBrowsingManager.isPrivateBrowsing
     else {
       return
     }
@@ -960,14 +961,10 @@ public class BrowserViewController: UIViewController {
     // Let the activation transition finish so Face ID can present.
     DispatchQueue.main.async { [weak self] in
       guard let self, self.requiresPrivateBrowsingUnlock else { return }
-      self.askForLocalAuthentication(viewType: viewType) { [weak self] success, _ in
+      self.askForLocalAuthentication(viewType: viewType) { [weak self] success, error in
         guard let self else { return }
-        if success {
-          self.endPrivateBrowsingUnlock(switchToNormalTabs: false)
-        } else if !Preferences.Privacy.privateBrowsingOnly.value {
-          self.windowProtection?.dismissAuthentication()
-          self.endPrivateBrowsingUnlock(switchToNormalTabs: true)
-        }
+        guard success || error == .passcodeNotSet else { return }
+        self.endPrivateBrowsingUnlock(switchToNormalTabs: false)
       }
     }
   }
