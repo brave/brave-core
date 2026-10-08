@@ -24,7 +24,9 @@ substitutions:
       reference to `RegisterMenuShownCallbackForTesting` that resolves to the
       Chromium declaration rather than Brave's subclass.
     regex:
-      re_pattern: '(// static\n[^\n]*\bRenderViewContextMenu_Chromium::RegisterMenuShownCallbackForTesting\(.*?\{.*?\n\})'
+      re_pattern:
+        '(//
+        static\n[^\n]*\bRenderViewContextMenu_Chromium::RegisterMenuShownCallbackForTesting\(.*?\{.*?\n\})'
       re_flags: [DOTALL]
       replace: |-
         #if 0  // Brave's RenderViewContextMenu hides this static with its own.
