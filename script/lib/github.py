@@ -23,6 +23,8 @@ GITHUB_URL = 'https://api.github.com'
 GITHUB_UPLOAD_ASSET_URL = 'https://uploads.github.com'
 # GitHub uses 403 and 429 for rate limits. The rest are temporary outages.
 _TRANSIENT_HTTP_CODES = (403, 429, 500, 502, 503, 504)
+# Do not stall an uplift for a full primary rate-limit window.
+_MAX_RETRY_WAIT_SECONDS = 120
 
 
 class GitHub:
@@ -374,6 +376,31 @@ def _retry_http_error(code, body):
     )
 
 
+def _rate_limit_wait_seconds(headers):
+    """Seconds GitHub asked us to wait, or None when no header applies.
+
+    X-RateLimit-Reset is the primary quota window, so it applies only when
+    that quota is exhausted.
+    """
+    if not headers:
+        return None
+    retry_after = headers.get('Retry-After')
+    if retry_after is not None:
+        try:
+            return max(0, int(str(retry_after).strip()))
+        except ValueError:
+            pass
+    remaining = headers.get('X-RateLimit-Remaining')
+    reset = headers.get('X-RateLimit-Reset')
+    if remaining is None or str(remaining).strip() != '0' or reset is None:
+        return None
+    try:
+        reset_at = int(str(reset).strip())
+    except ValueError:
+        return None
+    return max(0, reset_at - int(time.time()))
+
+
 def _request_with_retry(action, description):
     delay_seconds = 2
     for attempt in range(3):
@@ -385,18 +412,27 @@ def _request_with_retry(action, description):
                 raise Exception(
                     'HTTP Error ' + str(e.code) + ': ' + body
                 ) from e
+            wait = _wait_seconds(delay_seconds, e.headers)
         except urllib.error.URLError:
             if attempt == 2:
                 raise
+            wait = delay_seconds
         print(
             '[WARNING] transient GitHub error '
             + description
             + ', retrying in '
-            + str(delay_seconds)
+            + str(wait)
             + 's'
         )
-        time.sleep(delay_seconds)
+        time.sleep(wait)
         delay_seconds *= 2
+
+
+def _wait_seconds(backoff, headers):
+    advised = _rate_limit_wait_seconds(headers)
+    if advised is None or advised <= backoff:
+        return backoff
+    return min(advised, _MAX_RETRY_WAIT_SECONDS)
 
 
 def _patch_issue(repo, issue_number, patch_data):
