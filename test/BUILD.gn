@@ -575,6 +575,7 @@ test("brave_unit_tests") {
       "//chrome/test/base:test_browser_window",
       "//chrome/test/base:testing_browser_process",
       "//components/favicon/content",
+      "//components/fcm/engine",
       "//components/push_messaging:test_support",
       "//components/user_data_importer/common",
     ]
