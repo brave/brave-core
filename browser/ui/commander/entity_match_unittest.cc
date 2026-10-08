@@ -29,8 +29,17 @@ class CommanderEntityMatchTest : public BrowserWithTestWindowTest {
  public:
   void SetUp() override {
     BrowserWithTestWindowTest::SetUp();
+    BrowserWindowCreateParams params(profile(), true);
+    browser_ = CreateBrowserWithTestWindowForParams(std::move(params));
     ui_test_utils::DeprecatedFakeActivateBrowser(browser());
   }
+
+  void TearDown() override {
+    browser_.reset();
+    BrowserWithTestWindowTest::TearDown();
+  }
+
+  BrowserWindowInterface* browser() { return browser_.get(); }
 
   // Creates and returns a browser with `title` as its user title.
   // If `profile` is provided, it is used, otherwise uses the profile of this
@@ -45,6 +54,9 @@ class CommanderEntityMatchTest : public BrowserWithTestWindowTest {
     ui_test_utils::DeprecatedFakeActivateBrowser(browser.get());
     return browser;
   }
+
+ private:
+  std::unique_ptr<BrowserWindowInterface> browser_;
 };
 
 TEST_F(CommanderEntityMatchTest, WindowExcludesCurrentBrowser) {

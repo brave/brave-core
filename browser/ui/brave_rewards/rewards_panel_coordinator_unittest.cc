@@ -11,7 +11,9 @@
 
 #include "base/check.h"
 #include "brave/components/l10n/common/test/scoped_default_locale.h"
+#include "chrome/browser/ui/browser_window/public/create_browser_window.h"
 #include "chrome/test/base/browser_with_test_window_test.h"
+#include "chrome/test/base/test_browser_window.h"
 
 namespace brave_rewards {
 
@@ -41,7 +43,9 @@ class RewardsPanelCoordinatorTest : public BrowserWithTestWindowTest {
   void SetUp() override {
     BrowserWithTestWindowTest::SetUp();
 
-    coordinator_ = RewardsPanelCoordinator::From(browser());
+    BrowserWindowCreateParams params(profile(), true);
+    browser_ = CreateBrowserWithTestWindowForParams(std::move(params));
+    coordinator_ = RewardsPanelCoordinator::From(browser_.get());
     DCHECK(coordinator_);
 
     observer_ = MakePanelObserver([this]() { called_ = true; });
@@ -52,6 +56,7 @@ class RewardsPanelCoordinatorTest : public BrowserWithTestWindowTest {
     // Clean up coordinator pointer, so it doesn't dangle during the browsers
     // destruction.
     coordinator_ = nullptr;
+    browser_.reset();
 
     BrowserWithTestWindowTest::TearDown();
   }
@@ -64,6 +69,7 @@ class RewardsPanelCoordinatorTest : public BrowserWithTestWindowTest {
  private:
   brave_l10n::test::ScopedDefaultLocale scoped_locale_{"en_US"};
   bool called_ = false;
+  std::unique_ptr<BrowserWindowInterface> browser_;
   std::unique_ptr<RewardsPanelCoordinator::Observer> observer_;
   raw_ptr<RewardsPanelCoordinator> coordinator_ = nullptr;
 };
