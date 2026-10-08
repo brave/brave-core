@@ -29,8 +29,8 @@ bool BraveIsScheduledForCleanup(const GURL& url, Profile* profile);
 namespace {
 
 void BraveNavigateStartupTab(const StartupTab& tab,
-                                           BrowserWindowInterface* browser,
-                                           NavigateParams& params) {
+                             BrowserWindowInterface* browser,
+                             NavigateParams& params) {
 #if BUILDFLAG(ENABLE_CONTAINERS)
   if (!params.storage_partition_config) {
     params.storage_partition_config =
