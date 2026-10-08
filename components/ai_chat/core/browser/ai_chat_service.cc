@@ -1502,12 +1502,20 @@ void AIChatService::BindUntrustedService(
   untrusted_service_receivers_.Add(this, std::move(receiver));
 }
 
-bool AIChatService::GetIsContentAgentAllowed() const {
-  return is_content_agent_allowed_;
+bool AIChatService::GetIsContentAgentToolsAllowed() const {
+  return is_content_agent_tools_allowed_;
 }
 
-void AIChatService::SetIsContentAgentAllowed(bool is_allowed) {
-  is_content_agent_allowed_ = is_allowed;
+void AIChatService::SetIsContentAgentToolsAllowed(bool is_allowed) {
+  is_content_agent_tools_allowed_ = is_allowed;
+}
+
+bool AIChatService::GetIsContentAgentUserSelectable() const {
+  return is_content_agent_user_selectable_;
+}
+
+void AIChatService::SetIsContentAgentUserSelectable(bool is_user_selectable) {
+  is_content_agent_user_selectable_ = is_user_selectable;
 }
 
 bool AIChatService::HasUserOptedIn() {

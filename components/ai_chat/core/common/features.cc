@@ -97,6 +97,9 @@ bool IsAIChatAgentProfileEnabled() {
 #endif
 }
 
+BASE_FEATURE(kAIChatContentAgentMainProfiles,
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
 BASE_FEATURE(kAIChatDetailedPageContentExtraction,
              base::FEATURE_DISABLED_BY_DEFAULT);
 
