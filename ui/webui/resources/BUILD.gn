@@ -54,15 +54,18 @@ if (include_lit) {
     # and not //ui/webui/resources which is the default for build_cr_component.
     ts_files = [ "lit_overriding.ts" ]
 
-    if (include_polymer) {
-      ts_files += [ "polymer_overriding.ts" ]
-    }
-
     # Whether settings runs as a WebUI (as opposed to native settings), e.g.
     # for the browser_commands mojom and the settings-specific css below.
     # Broader than include_polymer because desktop Android also has WebUI
     # settings.
     settings_webui = (!is_ios && !is_android) || is_desktop_android
+
+    # Settings still has polymer components, so it needs polymer_overriding
+    # too, even on platforms without the rest of the polymer+lit build.
+    if (include_polymer || settings_webui) {
+      ts_files += [ "polymer_overriding.ts" ]
+    }
+
     if (settings_webui) {
       ts_files += [ "js/brave_browser_command/brave_browser_command_proxy.ts" ]
 
@@ -93,7 +96,7 @@ if (include_lit) {
     grd_resource_path_prefix = "brave"
     ts_out_dir = "$root_gen_dir/brave/ui/webui/resources/tsc"
     ts_deps = [ "//third_party/lit/v3_0:build_ts" ]
-    if (include_polymer) {
+    if (include_polymer || settings_webui) {
       ts_deps += [
         "//third_party/polymer/v3_0:library",
         "//ui/webui/resources/js:build_ts",
