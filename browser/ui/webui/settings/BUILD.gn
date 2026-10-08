@@ -74,6 +74,7 @@ source_set("browser_tests") {
 
     sources = [
       "brave_manage_profile_browsertest.cc",
+      "brave_settings_toggle_browsertest.cc",
       "settings_secure_dns_handler_browsertest.cc",
     ]
 
@@ -87,7 +88,6 @@ source_set("browser_tests") {
 
     if (enable_brave_custom_profile_image_webui) {
       deps += [ "//brave/browser/ui/webui/custom_profile_image" ]
-      data_deps = [ "//chrome:browser_tests_pak" ]
     }
 
     if (enable_email_aliases) {
@@ -98,6 +98,8 @@ source_set("browser_tests") {
         "//chrome/browser/ui:chrome_pages",
       ]
     }
+
+    data_deps = [ "//chrome:browser_tests_pak" ]
 
     defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
   }
