@@ -38,6 +38,11 @@ class BraveGlobalFeatures : public GlobalFeatures {
   extension_malware_blocklist() {
     return extension_malware_blocklist_.get();
   }
+
+  // As above, but also null when no BraveGlobalFeatures exists, which is the
+  // case in tests that substitute their own GlobalFeatures.
+  static extension_malware_blocklist::ExtensionMalwareBlocklist*
+  GetExtensionMalwareBlocklist();
 #endif  // BUILDFLAG(ENABLE_EXTENSIONS)
 
  private:

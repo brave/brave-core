@@ -1,0 +1,15 @@
+diff --git a/extensions/browser/extensions_browser_client.h b/extensions/browser/extensions_browser_client.h
+index 06cecbc7c4b797fca58da2e4e32c8529c7f06d8c..2769cdce37d78b18c4461462afb68a421daa2622 100644
+--- a/extensions/browser/extensions_browser_client.h
++++ b/extensions/browser/extensions_browser_client.h
+@@ -723,6 +723,10 @@ class ExtensionsBrowserClient {
+   virtual gfx::NativeWindow GetNativeWindowForFunction(
+       ExtensionFunction& function);
+ 
++  // Returns true if the embedder's own blocklist considers
++  // `extension_id` to be malware. Consulted alongside Safe Browsing.
++  virtual bool IsMalwareBlocklisted(const ExtensionId& extension_id) const;
++
+  protected:
+   std::unique_ptr<ExtensionAssetsManager> assets_manager_;
+ 

@@ -1,0 +1,13 @@
+diff --git a/extensions/browser/blocklist.cc b/extensions/browser/blocklist.cc
+index 7dae85306825cc55e6b31ed2e32b3befbcbb502d..94a77b0f40a659f24a32f9038c91a064027c077d 100644
+--- a/extensions/browser/blocklist.cc
++++ b/extensions/browser/blocklist.cc
+@@ -191,6 +191,8 @@ Blocklist::~Blocklist() = default;
+ 
+ void Blocklist::GetBlocklistedIDs(const std::set<ExtensionId>& ids,
+                                   GetBlocklistedIDsCallback callback) {
++  callback = base::BindOnce(&AddEmbedderMalwareStates, ids,
++                            std::move(callback));
+   DCHECK_CURRENTLY_ON(BrowserThread::UI);
+ 
+   if (ids.empty() || !GetDatabaseManager().get()) {

@@ -1,0 +1,19 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+blank_macros_for_ast_parsing: true
+
+substitutions:
+  - description: |
+      Let the embedder contribute to the extension blocklist.
+
+      Brave ships its own list of malicious extensions via the component
+      updater; blocklist.cc.yaml folds the answer into Blocklist's results.
+    add_to_public:
+      class_name: ExtensionsBrowserClient
+      code: |-
+        // Returns true if the embedder's own blocklist considers
+        // `extension_id` to be malware. Consulted alongside Safe Browsing.
+        virtual bool IsMalwareBlocklisted(const ExtensionId& extension_id) const;
