@@ -15,7 +15,6 @@
   <settings-system-page
     id="system"
     slot="view"
-    prefs="{{prefs}}"
     in-search-mode="[[inSearchMode_]]">
   </settings-system-page>
 
@@ -23,17 +22,16 @@
   <template is="dom-if" if="[[showVPNPage_]]">
     <settings-brave-vpn-page
       id="vpn"
-      slot="view"
-      prefs="{{prefs}}">
+      slot="view">
     </settings-brave-vpn-page>
   </template>
   <!-- </if> -->
 
-  <settings-memory-page slot="view" id="memory" prefs="{{prefs}}" in-search-mode="[[inSearchMode_]]">
+  <settings-memory-page slot="view" id="memory" in-search-mode="[[inSearchMode_]]">
   </settings-memory-page>
 
   <template is="dom-if" if="[[showBatterySettings_]]">
-    <settings-battery-page slot="view" id="battery" prefs="{{prefs}}"
+    <settings-battery-page slot="view" id="battery"
       hidden="[[!showBatterySettings_]]"
       in-search-mode="[[inSearchMode_]]">
     </settings-battery-page>
@@ -43,7 +41,6 @@
     <settings-brave-shortcuts-page
       id="shortcuts"
       slot="view"
-      prefs="{{prefs}}"
       data-parent-view-id="system"
       in-search-mode="[[inSearchMode_]]">
     </settings-brave-shortcuts-page>
