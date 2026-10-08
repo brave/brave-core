@@ -4,8 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { assert, assertNotReached } from 'chrome://resources/js/assert.js'
-import { JSTime } from 'gen/mojo/public/mojom/base/time.mojom.m'
-
+import type { JSTime } from 'gen/mojo/public/mojom/base/time.mojom.m.js'
 import { EntityState } from '@reduxjs/toolkit'
 
 // types
