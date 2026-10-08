@@ -1,5 +1,5 @@
 diff --git a/components/permissions/request_type.cc b/components/permissions/request_type.cc
-index 0737b2e03ee7932eeb1257760ff1d8ac3f2348a8..7c6c3309beec211776e8748e87bb2dfdf596e7a9 100644
+index 0737b2e03ee7932eeb1257760ff1d8ac3f2348a8..0ebbdc1e3ca16c8e64197ed9a3d113afb2c2781a 100644
 --- a/components/permissions/request_type.cc
 +++ b/components/permissions/request_type.cc
 @@ -74,6 +74,14 @@ int GetIconIdAndroid(RequestType type) {
@@ -17,7 +17,7 @@ index 0737b2e03ee7932eeb1257760ff1d8ac3f2348a8..7c6c3309beec211776e8748e87bb2dfd
    }
    NOTREACHED();
  }
-@@ -205,6 +212,13 @@ const gfx::VectorIcon& GetIconIdDesktop(RequestType type) {
+@@ -205,6 +213,14 @@ const gfx::VectorIcon& GetIconIdDesktop(RequestType type) {
        return ::features::IsRoundedIconsEnabled()
                   ? vector_icons::kFolderFilledIcon
                   : vector_icons::kFolderOldIcon;
@@ -32,7 +32,7 @@ index 0737b2e03ee7932eeb1257760ff1d8ac3f2348a8..7c6c3309beec211776e8748e87bb2dfd
    }
    NOTREACHED();
  }
-@@ -369,6 +383,20 @@ std::optional<RequestType> ContentSettingsTypeToRequestTypeIfExists(
+@@ -369,6 +385,22 @@ std::optional<RequestType> ContentSettingsTypeToRequestTypeIfExists(
  #endif
      case ContentSettingsType::FEDERATED_IDENTITY_API:
        return RequestType::kIdentityProvider;
@@ -55,7 +55,7 @@ index 0737b2e03ee7932eeb1257760ff1d8ac3f2348a8..7c6c3309beec211776e8748e87bb2dfd
      default:
        return std::nullopt;
  #if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
-@@ -461,6 +489,18 @@ std::optional<ContentSettingsType> RequestTypeToContentSettingsType(
+@@ -461,6 +493,20 @@ std::optional<ContentSettingsType> RequestTypeToContentSettingsType(
      case RequestType::kWebAppInstallation:
        return ContentSettingsType::WEB_APP_INSTALLATION;
  #endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
@@ -76,7 +76,7 @@ index 0737b2e03ee7932eeb1257760ff1d8ac3f2348a8..7c6c3309beec211776e8748e87bb2dfd
        // Not associated with a ContentSettingsType.
  #if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
      case RequestType::kAmbientLogin:
-@@ -472,6 +512,12 @@ std::optional<ContentSettingsType> RequestTypeToContentSettingsType(
+@@ -472,6 +518,13 @@ std::optional<ContentSettingsType> RequestTypeToContentSettingsType(
  #if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
      case RequestType::kRegisterProtocolHandler:
  #endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
@@ -90,7 +90,7 @@ index 0737b2e03ee7932eeb1257760ff1d8ac3f2348a8..7c6c3309beec211776e8748e87bb2dfd
        return std::nullopt;
    }
  }
-@@ -602,6 +648,25 @@ const char* PermissionKeyForRequestType(permissions::RequestType request_type) {
+@@ -602,6 +655,28 @@ const char* PermissionKeyForRequestType(permissions::RequestType request_type) {
        return "window_management";
      case permissions::RequestType::kIdentityProvider:
        return "identity_provider";
@@ -117,5 +117,5 @@ index 0737b2e03ee7932eeb1257760ff1d8ac3f2348a8..7c6c3309beec211776e8748e87bb2dfd
 +    case permissions::RequestType::kBraveOpenAIChat:
 +      return "brave_ai_chat";
    }
-
+ 
    return nullptr;
