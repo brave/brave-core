@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/mini_installer/BUILD.gn b/chrome/installer/mini_installer/BUILD.gn
-index ce1f5a5711eeba1109bef0169a80cbe29373a843..71e9f0105edb30d649098325175f0f9928c298a3 100644
+index 39cbdeb5f067ba57b65bb903ff36b9f96c4d8631..3bc22190df4316ac4d20eb3aef94293d261cfa94 100644
 --- a/chrome/installer/mini_installer/BUILD.gn
 +++ b/chrome/installer/mini_installer/BUILD.gn
 @@ -143,7 +143,7 @@ if (enable_uncompressed_archive) {

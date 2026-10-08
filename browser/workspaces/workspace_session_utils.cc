@@ -13,7 +13,6 @@
 
 #include "brave/browser/workspaces/workspace_metadata.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_tabrestore.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
@@ -178,7 +177,7 @@ void RestoreBrowserSessionCommandsForWorkspace(
     }
 
     if (GetBrowserWindowCreationStatusForProfile(*profile) !=
-        Browser::CreationStatus::kOk) {
+        BrowserWindowInterface::CreationStatus::kOk) {
       continue;
     }
 

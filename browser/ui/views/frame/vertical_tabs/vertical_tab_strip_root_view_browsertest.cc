@@ -8,7 +8,6 @@
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_container_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/views/frame/browser_frame_view.h"
 #include "chrome/browser/ui/views/frame/browser_root_view.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"

@@ -1,8 +1,17 @@
 diff --git a/chrome/browser/flags/android/java/src/org/chromium/chrome/browser/flags/ChromeFeatureList.java b/chrome/browser/flags/android/java/src/org/chromium/chrome/browser/flags/ChromeFeatureList.java
-index 398ee8adeb7d231ee1b613f87552eaccb10251bf..b761164d6d1b8f3e6d84b78c979363314e7133ca 100644
+index 5704075c2302e188fd9bbf721dc9399391bc75ec..a3eb8769b82f480e6f045adaef94fb3c5fc111f6 100644
 --- a/chrome/browser/flags/android/java/src/org/chromium/chrome/browser/flags/ChromeFeatureList.java
 +++ b/chrome/browser/flags/android/java/src/org/chromium/chrome/browser/flags/ChromeFeatureList.java
-@@ -1972,7 +1972,7 @@ public abstract class ChromeFeatureList {
+@@ -1771,7 +1771,7 @@ public abstract class ChromeFeatureList {
+     public static final MutableFlagWithSafeDefault sAndroidTabDeclutterArchiveOnDesktop =
+             newMutableFlagWithSafeDefault(ANDROID_TAB_DECLUTTER_ARCHIVE_ON_DESKTOP, false);
+     public static final MutableFlagWithSafeDefault sAndroidTipsNotifications =
+-            newMutableFlagWithSafeDefault(ANDROID_TIPS_NOTIFICATIONS, true);
++            newMutableFlagWithSafeDefault(ANDROID_TIPS_NOTIFICATIONS, false);
+     public static final MutableFlagWithSafeDefault sAndroidTipsNotificationsV2 =
+             newMutableFlagWithSafeDefault(ANDROID_TIPS_NOTIFICATIONS_V2, false);
+     public static final MutableFlagWithSafeDefault sAndroidZoomImmersive =
+@@ -2025,7 +2025,7 @@ public abstract class ChromeFeatureList {
      public static final BooleanCachedFeatureParam sAndroidBottomBarBypassGlicGeofencing =
              newBooleanCachedFeatureParam(ANDROID_BOTTOM_BAR, "bypass_glic_geofencing", false);
      public static final BooleanCachedFeatureParam sAndroidBottomBarDisableOnNtp =

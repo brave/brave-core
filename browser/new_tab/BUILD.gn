@@ -14,6 +14,7 @@ source_set("browser_tests") {
       "//chrome/browser/profiles:profile",
       "//chrome/browser/themes",
       "//chrome/browser/ui",
+      "//chrome/browser/ui/views/frame:browser_view_header",
       "//chrome/test:test_support",
       "//chrome/test:test_support_ui",
     ]

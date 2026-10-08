@@ -1,9 +1,9 @@
 diff --git a/chrome/browser/ui/ui_features.cc b/chrome/browser/ui/ui_features.cc
-index 7a0e331dedf4563a6be3f5a9e4874d0293abce1c..65329703d66f487a0a24809314042b0d735a1ac5 100644
+index 562d8529586fa175ca3a790b5217669c638cadbe..0164dc213d60c0a6f66a7767bad54bf1180a1a0c 100644
 --- a/chrome/browser/ui/ui_features.cc
 +++ b/chrome/browser/ui/ui_features.cc
-@@ -139,7 +139,7 @@ bool ShouldUseActionsForBrowserCommands() {
- BASE_FEATURE(kDseIntegrity, base::FEATURE_ENABLED_BY_DEFAULT);
+@@ -140,7 +140,7 @@ BASE_FEATURE(kFeedbackDisabledDialog, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
  // Enables the feature to remove the last confirmation dialog when relaunching
  // to update Chrome.
 -BASE_FEATURE(kFewerUpdateConfirmations, base::FEATURE_ENABLED_BY_DEFAULT);
@@ -11,7 +11,7 @@ index 7a0e331dedf4563a6be3f5a9e4874d0293abce1c..65329703d66f487a0a24809314042b0d
  
  BASE_FEATURE(kLegacySearchIntegrityCheck, base::FEATURE_DISABLED_BY_DEFAULT);
  #endif
-@@ -157,7 +157,7 @@ BASE_FEATURE(kExtensionsPinnedByDefault, base::FEATURE_DISABLED_BY_DEFAULT);
+@@ -158,7 +158,7 @@ BASE_FEATURE(kExtensionsPinnedByDefault, base::FEATURE_DISABLED_BY_DEFAULT);
  #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
  // Shows an infobar on PDFs offering to become the default PDF viewer if Chrome
  // isn't the default already.
@@ -20,7 +20,7 @@ index 7a0e331dedf4563a6be3f5a9e4874d0293abce1c..65329703d66f487a0a24809314042b0d
  
  BASE_FEATURE(kSeparateDefaultAndPinPrompt,
  #if BUILDFLAG(IS_WIN)
-@@ -272,13 +272,8 @@ bool IsTabGroupHoverCardsEnabled() {
+@@ -266,13 +266,8 @@ BASE_FEATURE(kNewTabButtonContextMenu, base::FEATURE_ENABLED_BY_DEFAULT);
  
  // Enables preview images in tab-hover cards.
  // https://crbug.com/41439486
@@ -36,7 +36,7 @@ index 7a0e331dedf4563a6be3f5a9e4874d0293abce1c..65329703d66f487a0a24809314042b0d
  
  BASE_FEATURE(kTabModalUsesDesktopWidget, base::FEATURE_DISABLED_BY_DEFAULT);
  
-@@ -383,7 +378,7 @@ BASE_FEATURE(kNonMilestoneUpdateToast, base::FEATURE_ENABLED_BY_DEFAULT);
+@@ -377,7 +372,7 @@ BASE_FEATURE(kNonMilestoneUpdateToast, base::FEATURE_ENABLED_BY_DEFAULT);
  BASE_FEATURE(kRespectShouldTriggerSessionRestoreOnDesktop,
               base::FEATURE_ENABLED_BY_DEFAULT);
  

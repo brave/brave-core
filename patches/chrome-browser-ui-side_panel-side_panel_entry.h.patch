@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/side_panel/side_panel_entry.h b/chrome/browser/ui/side_panel/side_panel_entry.h
-index 0846458e42bede29f9cc39e25f181fbf6b6956cf..4a4012eb61098b95fc066fc1e4299f0c6eabe511 100644
+index ac8c0d36663e7c5b5a5171f875cf34844fd7ebad..e4a0063c57dd1fe467b13ff66c05afa23a4524e6 100644
 --- a/chrome/browser/ui/side_panel/side_panel_entry.h
 +++ b/chrome/browser/ui/side_panel/side_panel_entry.h
 @@ -33,7 +33,7 @@ enum class SidePanelEntryHideReason;

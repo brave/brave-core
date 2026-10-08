@@ -5,6 +5,7 @@
 
 #include "content/browser/renderer_host/clipboard_host_impl.h"
 
+#include <optional>
 #include <string>
 #include <utility>
 
@@ -13,35 +14,22 @@
 
 namespace {
 
-std::u16string Sanitize(content::ContentBrowserClient* client,
-                        content::RenderFrameHost* render_frame_host,
-                        std::u16string data) {
-  if (!client || !render_frame_host ||
-      !render_frame_host->GetBrowserContext() || data.size() < 6 ||
-      data.size() > 512u) {
-    return data;
+void MaybeSanitizeClipboardText(content::ClipboardHostImpl::Context& context,
+                                bool& sanitize_on_next_write_text,
+                                std::u16string& text) {
+  if (!std::exchange(sanitize_on_next_write_text, false) || text.size() < 6 ||
+      text.size() > 512u) {
+    return;
   }
 
-  const GURL url(data);
-  if (url.is_valid() && !url.is_empty() && url.SchemeIsHTTPOrHTTPS()) {
-    std::optional<GURL> sanitized_url =
-        client->SanitizeURL(render_frame_host, url);
-    if (!sanitized_url) {
-      return data;
-    }
-    return base::UTF8ToUTF16(sanitized_url->spec());
+  const GURL url(text);
+  if (!url.is_valid() || !url.SchemeIsHTTPOrHTTPS()) {
+    return;
   }
-  return data;
-}
 
-void MaybeSanitizeClipboardText(bool* sanitize_on_next_write_text,
-                                content::ContentBrowserClient* client,
-                                content::RenderFrameHost* render_frame_host,
-                                std::u16string* text) {
-  if (*sanitize_on_next_write_text) {
-    *text = Sanitize(client, render_frame_host, std::move(*text));
+  if (std::optional<GURL> sanitized_url = context.SanitizeURL(url)) {
+    text = base::UTF8ToUTF16(sanitized_url->spec());
   }
-  *sanitize_on_next_write_text = false;
 }
 
 }  // namespace
@@ -49,6 +37,19 @@ void MaybeSanitizeClipboardText(bool* sanitize_on_next_write_text,
 #include <content/browser/renderer_host/clipboard_host_impl.cc>
 
 namespace content {
+
+namespace {
+
+std::optional<GURL> FrameClipboardContext::SanitizeURL(const GURL& url) {
+  return GetContentClient()->browser()->SanitizeURL(
+      render_frame_host_->GetMainFrame(), url);
+}
+
+}  // namespace
+
+std::optional<GURL> ClipboardHostImpl::Context::SanitizeURL(const GURL& url) {
+  return std::nullopt;
+}
 
 void ClipboardHostImpl::SanitizeOnNextWriteText() {
   sanitize_on_next_write_text_ = true;

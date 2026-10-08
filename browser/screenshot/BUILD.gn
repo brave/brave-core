@@ -75,6 +75,7 @@ source_set("unit_tests") {
     "//chrome/browser/ui/webui/print_preview",
     "//chrome/services/printing/public/mojom",
     "//chrome/test:test_support",
+    "//chrome/test/base:chrome_render_view_host_test_harness",
     "//components/printing/browser",
     "//content/public/browser",
     "//content/test:test_support",

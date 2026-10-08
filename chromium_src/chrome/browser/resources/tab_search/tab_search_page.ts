@@ -5,7 +5,7 @@
 
 import { TabSearchPageElement } from './tab_search_page-chromium.js'
 
-import { setSemanticOpenTabsContext } from '/tab_search/shared/search.js'
+import { setSemanticOpenTabsContext } from '/tab_group_shared/search.js'
 import type { SplitViewData } from './tab_data.js'
 import { TabData } from './tab_data.js'
 import { BraveTabSearchApiProxyImpl } from './tab_search_api_proxy.js'

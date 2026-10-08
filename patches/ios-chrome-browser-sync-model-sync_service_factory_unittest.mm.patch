@@ -1,13 +1,13 @@
 diff --git a/ios/chrome/browser/sync/model/sync_service_factory_unittest.mm b/ios/chrome/browser/sync/model/sync_service_factory_unittest.mm
-index 1fbecaec5c07ef8fdeaa19599a598b4eb75e41e8..82fd62aaefe137b24da25e3d39573171a42695d6 100644
+index c2d433d20a2c57796a940f019bef97f54a3ea1ac..0944204404c6ced424b17e20d752dc8b16491680 100644
 --- a/ios/chrome/browser/sync/model/sync_service_factory_unittest.mm
 +++ b/ios/chrome/browser/sync/model/sync_service_factory_unittest.mm
 @@ -57,7 +57,7 @@ class SyncServiceFactoryTest : public PlatformTest {
   protected:
    // Returns the collection of default datatypes.
    syncer::DataTypeSet DefaultDatatypes() {
--    static_assert(65 == syncer::GetNumDataTypes(),
-+    static_assert(65 + 1 == syncer::GetNumDataTypes(),
+-    static_assert(64 == syncer::GetNumDataTypes(),
++    static_assert(64 + 1 == syncer::GetNumDataTypes(),
                    "When adding a new type, you probably want to add it here as "
                    "well (assuming it is already enabled).");
  

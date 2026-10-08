@@ -5,6 +5,8 @@
 
 #include "brave/browser/ui/views/omnibox/brave_omnibox_view_views.h"
 
+#include <memory>
+
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/test_future.h"
 #include "brave/browser/brave_browser_features.h"
@@ -55,6 +57,19 @@ testing::AssertionResult VerifyTemplateURLServiceLoad(
 
 class BraveOmniboxViewViewsTest : public InProcessBrowserTest {
  public:
+  void SetUpOnMainThread() override {
+    InProcessBrowserTest::SetUpOnMainThread();
+    // Use an isolated test clipboard instead of the real OS clipboard so
+    // these tests aren't flaky due to contention on the system pasteboard
+    // shared across CI processes.
+    clipboard_scope_ = std::make_unique<content::BrowserTestClipboardScope>();
+  }
+
+  void TearDownOnMainThread() override {
+    clipboard_scope_.reset();
+    InProcessBrowserTest::TearDownOnMainThread();
+  }
+
   LocationBarView* location_bar_view() {
     auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
     return browser_view->toolbar()->location_bar_view();
@@ -80,6 +95,9 @@ class BraveOmniboxViewViewsTest : public InProcessBrowserTest {
 
     loop.Run();
   }
+
+ private:
+  std::unique_ptr<content::BrowserTestClipboardScope> clipboard_scope_;
 };
 
 class BraveOmniboxViewViewsEnabledFeatureTest

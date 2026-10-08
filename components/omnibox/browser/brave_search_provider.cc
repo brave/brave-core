@@ -56,7 +56,7 @@ SearchSuggestionParser::SuggestResult MakeCalculatorSuggestResult(
   // The suggestion is the answer, so accepting the match searches the text the
   // user typed. See BaseSearchProvider::CreateSearchSuggestion.
   return SearchSuggestionParser::SuggestResult(
-      /*suggestion*/ answer, AutocompleteMatchType::CALCULATOR,
+      /*suggestion*/ answer, omnibox::AutocompleteMatchType::kCalculator,
       omnibox::TYPE_CALCULATOR,
       /*subtypes*/ {}, match_contents,
       /*match_contents_prefix*/ {},
@@ -129,7 +129,7 @@ void BraveSearchProvider::UpdateMatches() {
     // Upstream calls this from several places for one input, so replace rather
     // than append -- otherwise the answer would be listed once per call.
     std::erase_if(default_results_.suggest_results, [](const auto& result) {
-      return result.type() == AutocompleteMatchType::CALCULATOR;
+      return result.type() == omnibox::AutocompleteMatchType::kCalculator;
     });
     // Injected as a suggest result rather than a match so that the usual
     // conversion (BaseSearchProvider::CreateSearchSuggestion) fills in the

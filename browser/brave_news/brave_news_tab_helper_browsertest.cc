@@ -27,7 +27,6 @@
 #include "brave/components/brave_news/common/types.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/common/chrome_switches.h"
 #include "chrome/test/base/in_process_browser_test.h"

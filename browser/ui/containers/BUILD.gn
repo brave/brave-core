@@ -41,6 +41,7 @@ source_set("containers") {
     deps += [
       "//chrome/browser/ui:chrome_pages",
       "//chrome/browser/ui/views",
+      "//chrome/browser/ui/views/frame:browser_view_header",
       "//components/tabs:public",
     ]
   }

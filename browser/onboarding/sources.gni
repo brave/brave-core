@@ -12,6 +12,7 @@ brave_browser_onboarding_sources = [
 brave_browser_onboarding_deps = [
   "//base",
   "//brave/browser:browser_process",
+  "//chrome/browser/ui:browser_window_header",
   "//components/content_settings/core/browser",
   "//components/content_settings/core/common",
   "//components/permissions",

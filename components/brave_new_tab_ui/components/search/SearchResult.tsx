@@ -116,8 +116,7 @@ function Image({ match, isAskLeo }: { match: AutocompleteMatch, isAskLeo: boolea
 }
 
 export default function SearchResult({ match, selected, onClick }: Props) {
-  const contents = match.swapContentsAndDescription ? match.description : match.contents
-  const description = match.swapContentsAndDescription ? match.contents : match.description
+  const { contents, description } = match
   const isAskLeo = description === getLocale('searchAskLeo')
 
   const result = <Container href={match.destinationUrl} aria-selected={selected} onClick={e => {

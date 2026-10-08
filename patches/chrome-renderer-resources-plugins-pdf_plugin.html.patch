@@ -1,5 +1,5 @@
 diff --git a/chrome/renderer/resources/plugins/pdf_plugin.html b/chrome/renderer/resources/plugins/pdf_plugin.html
-index 877e3b32cedc7b5f9636821aa953cae38b311818..707f9ebcf6e1a093168907bb90a2891ca8e6f60b 100644
+index b3163d670aabda8d118aa73fa7c7fa6f9945a0c3..729db280b0eac6d7c33b0f62f9edb70188520892 100644
 --- a/chrome/renderer/resources/plugins/pdf_plugin.html
 +++ b/chrome/renderer/resources/plugins/pdf_plugin.html
 @@ -30,6 +30,7 @@

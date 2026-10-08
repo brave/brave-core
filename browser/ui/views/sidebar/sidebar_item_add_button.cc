@@ -14,6 +14,7 @@
 #include "brave/browser/ui/views/sidebar/sidebar_add_item_bubble_delegate_view.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "brave/grit/brave_theme_resources.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
@@ -22,7 +23,7 @@
 #include "ui/views/controls/button/menu_button_controller.h"
 
 SidebarItemAddButton::SidebarItemAddButton(
-    BraveBrowser* browser,
+    BrowserWindowInterface* browser,
     const std::u16string& accessible_name)
     : SidebarButtonView(accessible_name), browser_(browser) {
   UpdateButtonImages();

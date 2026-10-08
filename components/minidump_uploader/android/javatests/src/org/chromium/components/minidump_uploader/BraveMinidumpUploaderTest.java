@@ -5,8 +5,6 @@
 
 package org.chromium.components.minidump_uploader;
 
-import androidx.test.filters.SmallTest;
-
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -69,13 +67,11 @@ public class BraveMinidumpUploaderTest {
     }
 
     @Test
-    @SmallTest
     public void testCrashUrlStringIsBraveEndpoint() {
         Assert.assertEquals("https://cr.brave.com", MinidumpUploader.sCrashUrlString);
     }
 
     @Test
-    @SmallTest
     public void testUploadReachesHttpLayer() {
         // If sCrashUrlString is null/empty, or upstream adds a new gate inside upload(),
         // this will return isFailure() instead of isUploadError() and the test will fail.

@@ -26,16 +26,16 @@ export function getHtml(this: BraveAccountCredentialsDialogElement) {
       ?show-back-button=${!this.verification}
     >
       <div slot="inputs">
-        ${this.verification
-          ? nothing
-          : html`<brave-account-email-input
+        ${!this.verification
+          ? html`<brave-account-email-input
               block-brave-alias
               @email-input=${(e: CustomEvent<EmailInputEventDetail>) => {
                 this.email = e.detail.email
                 this.isEmailValid = e.detail.isValid
               }}
             >
-            </brave-account-email-input>`}
+            </brave-account-email-input>`
+          : nothing}
         <brave-account-password-input
           .config=${{
             mode: 'strength',

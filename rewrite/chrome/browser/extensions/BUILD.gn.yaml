@@ -13,3 +13,13 @@ substitutions:
       list_name: deps
       literal: brave_extensions_resources
       import: //brave/browser/extensions/resources.gni
+
+  - description: |-
+      Depend on `//brave/browser/extensions:extensions` for
+      updater/features.h, used to disable BraveAutoUpdateExtensions in
+      ChromeRuntimeAPIDelegateTest.
+    insert_into_list:
+      target: unit_tests
+      list_name: deps
+      values:
+        - //brave/browser/extensions:extensions

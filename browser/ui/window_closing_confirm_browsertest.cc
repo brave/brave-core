@@ -15,8 +15,8 @@
 #include "chrome/browser/download/download_prefs.h"
 #include "chrome/browser/lifetime/application_lifetime_desktop.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/webui/profile_helper.h"
@@ -96,7 +96,7 @@ class WindowClosingConfirmBrowserTest : public InProcessBrowserTest,
     content::PrepContentsForBeforeUnloadTest(web_contents);
   }
 
-  void PrepareForBeforeUnloadDialog(Browser* browser) {
+  void PrepareForBeforeUnloadDialog(BrowserWindowInterface* browser) {
     for (int i = 0; i < browser->tab_strip_model()->count(); i++)
       PrepareForBeforeUnloadDialog(
           browser->tab_strip_model()->GetWebContentsAt(i));
@@ -139,24 +139,26 @@ class WindowClosingConfirmBrowserTest : public InProcessBrowserTest,
 
   // Create a DownloadTestObserverInProgress that will wait for the
   // specified number of downloads to start.
-  content::DownloadTestObserver* CreateInProgressWaiter(Browser* browser,
-                                                        int num_downloads) {
+  content::DownloadTestObserver* CreateInProgressWaiter(
+      BrowserWindowInterface* browser,
+      int num_downloads) {
     content::DownloadManager* download_manager =
         DownloadManagerForBrowser(browser);
     return new content::DownloadTestObserverInProgress(download_manager,
                                                        num_downloads);
   }
 
-  content::DownloadManager* DownloadManagerForBrowser(Browser* browser) {
+  content::DownloadManager* DownloadManagerForBrowser(
+      BrowserWindowInterface* browser) {
     return browser->GetProfile()->GetDownloadManager();
   }
 
-  DownloadPrefs* GetDownloadPrefs(Browser* browser) {
+  DownloadPrefs* GetDownloadPrefs(BrowserWindowInterface* browser) {
     return DownloadPrefs::FromDownloadManager(
         DownloadManagerForBrowser(browser));
   }
 
-  base::FilePath GetDownloadDirectory(Browser* browser) {
+  base::FilePath GetDownloadDirectory(BrowserWindowInterface* browser) {
     return GetDownloadPrefs(browser)->DownloadPath();
   }
 

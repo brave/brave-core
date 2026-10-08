@@ -22,7 +22,6 @@
 #include "chrome/browser/extensions/webstore_install_with_prompt.h"
 #include "chrome/browser/media/router/media_router_feature.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/select_file_policy/chrome_select_file_policy.h"
 #include "chrome/common/chrome_switches.h"

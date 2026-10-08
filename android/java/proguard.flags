@@ -21,7 +21,6 @@
 -keep class org.chromium.chrome.browser.omnibox.suggestions.AutocompleteMediator {
     *** mContext;
     *** mDataProvider;
-    *** loadUrlForOmniboxMatch(...);
 }
 
 -keep class org.chromium.components.browser_ui.site_settings.ContentSettingsResources {

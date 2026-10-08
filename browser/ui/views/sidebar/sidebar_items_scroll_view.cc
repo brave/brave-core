@@ -10,9 +10,9 @@
 
 #include "base/check.h"
 #include "base/functional/bind.h"
+#include "base/pickle.h"
 #include "base/time/time.h"
 #include "brave/app/vector_icons/vector_icons.h"
-#include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
@@ -23,6 +23,7 @@
 #include "brave/grit/brave_generated_resources.h"
 #include "cc/paint/paint_flags.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "ui/base/clipboard/clipboard.h"
@@ -98,7 +99,7 @@ END_METADATA
 
 }  // namespace
 
-SidebarItemsScrollView::SidebarItemsScrollView(BraveBrowser* browser)
+SidebarItemsScrollView::SidebarItemsScrollView(BrowserWindowInterface* browser)
     : browser_(browser),
       drag_context_(std::make_unique<SidebarItemDragContext>()),
       scroll_animator_for_item_(std::make_unique<views::BoundsAnimator>(this)),

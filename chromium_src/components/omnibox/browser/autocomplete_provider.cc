@@ -8,9 +8,9 @@
 // This is a bit of a hack to just make COMMANDER use the same metrics/friendly
 // name as BOOKMARK. It's easier than patching things and we don't use the
 // metrics and the name is mostly useful for debugging.
-#define TYPE_BOOKMARK   \
-  TYPE_BRAVE_COMMANDER: \
-  case TYPE_BRAVE_LEO:  \
-  case TYPE_BOOKMARK
+#define kBookmark                             \
+  kBraveCommander:                            \
+  case AutocompleteProvider::Type::kBraveLeo: \
+  case AutocompleteProvider::Type::kBookmark
 #include <components/omnibox/browser/autocomplete_provider.cc>
-#undef TYPE_BOOKMARK
+#undef kBookmark

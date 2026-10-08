@@ -13,7 +13,6 @@
 #include "brave/browser/ui/views/frame/brave_browser_root_view.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/browser_widget.h"
@@ -24,7 +23,8 @@ BraveBrowserWidget::BraveBrowserWidget(BrowserView* browser_view)
     : BrowserWidget(browser_view), view_(browser_view) {
   if (view_->browser()->GetProfile()->IsIncognitoProfile() ||
       view_->browser()->GetProfile()->IsTor() ||
-      view_->browser()->GetProfile()->IsGuestSession()) {
+      view_->browser()->GetProfile()->IsGuestSession() ||
+      view_->browser()->GetProfile()->IsEnterpriseIsolatedModeProfile()) {
     theme_supplier_ = base::MakeRefCounted<BravePrivateWindowThemeSupplier>(
         !view_->browser()->GetProfile()->IsTor());
   }

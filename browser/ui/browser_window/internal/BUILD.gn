@@ -62,6 +62,7 @@ source_set("internal") {
       "//chrome/browser/ui/side_panel",
       "//chrome/browser/ui/side_panel:side_panel_views_dependent",
       "//chrome/browser/ui/tabs:features",
+      "//chrome/browser/ui/views/frame:browser_view_header",
     ]
   }
 

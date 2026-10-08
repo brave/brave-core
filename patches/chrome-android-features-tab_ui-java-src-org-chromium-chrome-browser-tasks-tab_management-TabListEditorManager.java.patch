@@ -1,9 +1,9 @@
 diff --git a/chrome/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/TabListEditorManager.java b/chrome/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/TabListEditorManager.java
-index c3197f25e0589911a57122d76436c16abbc0ab19..df5f43b10cbb6ed0fcf18cdaf6aa08ff6f23ea90 100644
+index 5a0d216ade8854fa7ca3faa59853ebe35270b473..4133fb6c3b0106f28c896a59f9524cc7c94a3504 100644
 --- a/chrome/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/TabListEditorManager.java
 +++ b/chrome/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/TabListEditorManager.java
-@@ -56,7 +56,7 @@ public class TabListEditorManager {
-     private final MonotonicObservableSupplier<EdgeToEdgeController> mEdgeToEdgeSupplier;
+@@ -59,7 +59,7 @@ public class TabListEditorManager {
+     private final Supplier<@Nullable TabGroupUiActionHandler> mTabGroupUiActionHandlerSupplier;
  
      private @Nullable TabListEditorCoordinator mTabListEditorCoordinator;
 -    private @Nullable List<TabListEditorAction> mTabListEditorActions;

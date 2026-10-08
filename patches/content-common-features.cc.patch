@@ -1,8 +1,8 @@
 diff --git a/content/common/features.cc b/content/common/features.cc
-index 7ac35b5a84b62f12df43761599b8d65fcbf3f95a..9768f89313d7f3e3fd83634c77aa91fb147b5ffe 100644
+index 27f7314ba2503e0adb0e9e2b573c65ef9aad400e..d7ddd6376c9bd241f278b1f385e8ccea70b1877c 100644
 --- a/content/common/features.cc
 +++ b/content/common/features.cc
-@@ -597,8 +597,8 @@ BASE_FEATURE(kPriorityOverridePendingViews, base::FEATURE_ENABLED_BY_DEFAULT);
+@@ -603,8 +603,8 @@ BASE_FEATURE(kPriorityOverridePendingViews, base::FEATURE_ENABLED_BY_DEFAULT);
  
  // Enables exposure of the core milestone 1 (M1) APIs in the renderer without an
  // origin trial token: Attribution Reporting, FLEDGE, Topics.

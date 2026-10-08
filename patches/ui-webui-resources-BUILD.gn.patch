@@ -1,5 +1,5 @@
 diff --git a/ui/webui/resources/BUILD.gn b/ui/webui/resources/BUILD.gn
-index 44b39cda6816b726d1414fb0c5490956f7a78909..7171d4ada39207f15906ddce1e72d5e5e759d6d3 100644
+index e044096934a47ae8abcc2723944b95fa1861320f..5f496170dbc016fc20204d3c502925b55e35c05b 100644
 --- a/ui/webui/resources/BUILD.gn
 +++ b/ui/webui/resources/BUILD.gn
 @@ -2,6 +2,7 @@

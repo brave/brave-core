@@ -1,0 +1,17 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Never show the upstream "learn more" footer.
+
+      Its "learn more" link points to Chrome's Google support page
+      (support.google.com/chrome), and its text describes saving across
+      signed-in devices, which doesn't match Brave Sync.
+
+      A limit of 0 makes `ShouldShowSavedFooter()` always false.
+    regex:
+      pattern: 'constexpr int kFooterDisplayLimit = 5;'
+      replace: 'constexpr int kFooterDisplayLimit = 0;'

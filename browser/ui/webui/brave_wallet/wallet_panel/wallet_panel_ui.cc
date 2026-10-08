@@ -22,7 +22,6 @@
 #include "brave/components/brave_wallet/common/web_ui_constants.h"
 #include "brave/components/brave_wallet_panel/resources/grit/brave_wallet_panel_generated_map.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
