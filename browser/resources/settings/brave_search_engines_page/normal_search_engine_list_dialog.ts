@@ -109,7 +109,7 @@ export class SettingsNormalSearchEngineListDialogElement extends
 
   private onSetAsDefaultClick_() {
     const searchEngine = this.searchEngines.find(
-      engine => engine.id === parseInt(this.selectedEngineId_))
+      engine => engine.id === this.selectedEngineId_)
     assert(searchEngine)
 
     this.browserProxy_.setDefaultSearchEngine(
@@ -138,7 +138,7 @@ export class SettingsNormalSearchEngineListDialogElement extends
     const defaultSearchEngine =
         this.searchEngines.find(searchEngine => searchEngine.default)
     assert(defaultSearchEngine)
-    this.selectedEngineId_ = defaultSearchEngine.id.toString()
+    this.selectedEngineId_ = defaultSearchEngine.id
   }
 
   private computeShowSaveGuestChoice_(saveGuestChoice: boolean|null): boolean {
