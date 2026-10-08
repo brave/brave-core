@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/sessions/session_restore.cc b/chrome/browser/sessions/session_restore.cc
-index 684340e2ae22a97ffcbb010bc31c9f7c9433492e..e5ab306a34d52fa3a34a22c44fd2562cef252410 100644
+index e21bf8de37e7c9ac9e3a3e6412e0e4949274114b..4a1f21c8cc0080085148573808c04db31275c93d 100644
 --- a/chrome/browser/sessions/session_restore.cc
 +++ b/chrome/browser/sessions/session_restore.cc
-@@ -1017,6 +1017,7 @@ class SessionRestoreImpl : public BrowserCollectionObserver {
+@@ -1020,6 +1020,7 @@ class SessionRestoreImpl : public BrowserCollectionObserver {
        base::flat_map<tab_groups::TabGroupId, tab_groups::TabGroupId>*
            new_group_ids,
        bool& did_show_browser) {
@@ -10,7 +10,7 @@ index 684340e2ae22a97ffcbb010bc31c9f7c9433492e..e5ab306a34d52fa3a34a22c44fd2562c
      DVLOG(1) << "RestoreTabsToBrowser " << window.tabs.size();
      // TODO(crbug.com/40662817): Change to DCHECK once we understand
      // why some browsers don't have an active tab on startup.
-@@ -1076,7 +1077,13 @@ class SessionRestoreImpl : public BrowserCollectionObserver {
+@@ -1091,7 +1092,13 @@ class SessionRestoreImpl : public BrowserCollectionObserver {
              split_id, tab_index_list, split_tabs::SplitTabVisualData());
        }
      }
@@ -24,7 +24,7 @@ index 684340e2ae22a97ffcbb010bc31c9f7c9433492e..e5ab306a34d52fa3a34a22c44fd2562c
  
    // |tab_index| is ignored for pinned tabs which will always be pushed behind
    // the last existing pinned tab. If |is_selected_tab| is true the tab will be
-@@ -1105,6 +1112,11 @@ class SessionRestoreImpl : public BrowserCollectionObserver {
+@@ -1120,6 +1127,11 @@ class SessionRestoreImpl : public BrowserCollectionObserver {
      SessionRestore::NotifySessionRestoreStartedLoadingTabs();
      int selected_index = GetNavigationIndexToSelect(tab);
  
@@ -36,7 +36,7 @@ index 684340e2ae22a97ffcbb010bc31c9f7c9433492e..e5ab306a34d52fa3a34a22c44fd2562c
      RecordAppLaunchForTab(browser, tab, selected_index);
  
      // Associate sessionStorage (if any) to the restored tab.
-@@ -1367,9 +1379,13 @@ class SessionRestoreImpl : public BrowserCollectionObserver {
+@@ -1382,9 +1394,13 @@ class SessionRestoreImpl : public BrowserCollectionObserver {
    // Appends the urls in |startup_tabs| to |browser|.
    void AppendURLsToBrowser(BrowserWindowInterface* browser,
                             const StartupTabs& startup_tabs) {
@@ -50,7 +50,7 @@ index 684340e2ae22a97ffcbb010bc31c9f7c9433492e..e5ab306a34d52fa3a34a22c44fd2562c
  #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
        if (url == whats_new::GetWebUIStartupURL()) {
          whats_new::StartWhatsNewFetch(browser);
-@@ -1386,9 +1402,11 @@ class SessionRestoreImpl : public BrowserCollectionObserver {
+@@ -1401,9 +1417,11 @@ class SessionRestoreImpl : public BrowserCollectionObserver {
                                 : WindowOpenDisposition::NEW_BACKGROUND_TAB;
        params.tabstrip_add_types = add_types;
        is_first_tab = false;
