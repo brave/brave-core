@@ -25,7 +25,9 @@ import './edit_dictionary_page.js'
 import './import_data_dialog.js'
 import './page_visibility.js'
 import './passwords_section.js'
-import './privacy_page.js'
+// Registers <settings-brave-personalization-options>, which the privacy page
+// lit_mangler inserts.
+import '../brave_privacy_page/brave_personalization_options.js'
 import './privacy_page_index.js'
 import './safety_hub_page.js'
 import './settings_manage_profile.js'
