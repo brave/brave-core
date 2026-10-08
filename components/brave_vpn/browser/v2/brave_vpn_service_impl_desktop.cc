@@ -68,6 +68,22 @@ void BraveVpnServiceImpl::GetConnectionState(
 }
 
 void BraveVpnServiceImpl::Connect() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+#if BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
+  if (!agent_client_) {
+    return;
+  }
+  // TODO(https://github.com/brave/brave-browser/issues/59013)
+  // Move this code to a dedicated Mojom API, so the UI "Retry" button in the
+  // "agent unavailable" state will unambiguously trigger a retry of the agent
+  // connection, not the VPN connection.
+  if (connection_state_ == mojom::ConnectionState::CONNECT_NO_AGENT) {
+    UpdateConnectionState(mojom::ConnectionState::DISCONNECTED, std::string());
+    agent_client_->Reset();
+    agent_client_->EnsureConnected();
+    return;
+  }
+#endif  // BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
   NOTIMPLEMENTED();
 }
 

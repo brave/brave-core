@@ -124,6 +124,7 @@ enum ConnectionState {
   DISCONNECTING,
   CONNECT_NOT_ALLOWED,
   CONNECT_FAILED,
+  CONNECT_NO_AGENT,
 };
 
 enum PurchasedState {

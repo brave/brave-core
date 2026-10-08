@@ -178,9 +178,7 @@ void BraveVpnServiceImpl::OnAgentSessionStable() {
   VLOG(1) << "Agent session is now stable";
 
   // Clears any leftover connection error.
-  // TODO(https://github.com/brave/brave-browser/issues/59013)
-  // Replace with a new agent-specific connection state.
-  if (connection_state_ == mojom::ConnectionState::CONNECT_NOT_ALLOWED) {
+  if (connection_state_ == mojom::ConnectionState::CONNECT_NO_AGENT) {
     UpdateConnectionState(mojom::ConnectionState::DISCONNECTED, std::string());
   }
 }
@@ -217,9 +215,7 @@ void BraveVpnServiceImpl::OnAgentConnectionFailed(AgentClient::Error error) {
   std::string connection_error_message{AgentClient::ErrorToString(error)};
   LOG(ERROR) << "Agent connection failed: " << connection_error_message;
 
-  // TODO(https://github.com/brave/brave-browser/issues/59013)
-  // Replace with a new agent-specific connection state.
-  UpdateConnectionState(mojom::ConnectionState::CONNECT_NOT_ALLOWED,
+  UpdateConnectionState(mojom::ConnectionState::CONNECT_NO_AGENT,
                         std::move(connection_error_message));
 }
 
@@ -247,9 +243,7 @@ void BraveVpnServiceImpl::OnAgentLaunchFailed(
   // user-initiated connect starts a fresh sequence.
   agent_client_->Reset();
 
-  // TODO(https://github.com/brave/brave-browser/issues/59013)
-  // Replace with a new agent-specific connection state.
-  UpdateConnectionState(mojom::ConnectionState::CONNECT_NOT_ALLOWED,
+  UpdateConnectionState(mojom::ConnectionState::CONNECT_NO_AGENT,
                         std::move(connection_error_message));
 }
 

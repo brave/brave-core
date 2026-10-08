@@ -65,6 +65,7 @@ int GetStatusIconTooltip(brave_vpn::mojom::ConnectionState state) {
       return IDS_BRAVE_VPN_WIREGUARD_TRAY_ICON_TOOLTIP_DISCONNECTED;
     case brave_vpn::mojom::ConnectionState::CONNECT_FAILED:
     case brave_vpn::mojom::ConnectionState::CONNECT_NOT_ALLOWED:
+    case brave_vpn::mojom::ConnectionState::CONNECT_NO_AGENT:
       return IDS_BRAVE_VPN_WIREGUARD_TRAY_ICON_TOOLTIP_ERROR;
   }
 
@@ -87,6 +88,7 @@ int GetStatusTrayIcon(brave_vpn::mojom::ConnectionState state) {
                         : IDR_BRAVE_VPN_TRAY_DARK_CONNECTING;
     case brave_vpn::mojom::ConnectionState::CONNECT_FAILED:
     case brave_vpn::mojom::ConnectionState::CONNECT_NOT_ALLOWED:
+    case brave_vpn::mojom::ConnectionState::CONNECT_NO_AGENT:
       return dark_theme ? IDR_BRAVE_VPN_TRAY_LIGHT_ERROR
                         : IDR_BRAVE_VPN_TRAY_DARK_ERROR;
   }

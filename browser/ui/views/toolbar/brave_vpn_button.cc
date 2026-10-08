@@ -358,6 +358,7 @@ ConnectionState BraveVPNButton::GetVpnConnectionState() const {
 bool BraveVPNButton::IsConnectError() const {
   const auto state = GetVpnConnectionState();
   return (state == ConnectionState::CONNECT_NOT_ALLOWED ||
+          state == ConnectionState::CONNECT_NO_AGENT ||
           state == ConnectionState::CONNECT_FAILED);
 }
 
