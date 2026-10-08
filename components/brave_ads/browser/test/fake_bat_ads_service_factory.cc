@@ -19,10 +19,6 @@ FakeBatAdsServiceFactory::FakeBatAdsServiceFactory() = default;
 
 FakeBatAdsServiceFactory::~FakeBatAdsServiceFactory() = default;
 
-void FakeBatAdsServiceFactory::Invalidate() {
-  ++invalidate_count_;
-}
-
 const FakeBatAdsClientNotifier*
 FakeBatAdsServiceFactory::bat_ads_client_notifier() const {
   return bat_ads_service_ ? bat_ads_service_->bat_ads_client_notifier()
@@ -49,7 +45,8 @@ bool FakeBatAdsServiceFactory::last_screen_was_locked() const {
   return notifier ? notifier->last_screen_was_locked() : false;
 }
 
-mojo::Remote<bat_ads::mojom::BatAdsService> FakeBatAdsServiceFactory::Launch() {
+mojo::Remote<bat_ads::mojom::BatAdsService> FakeBatAdsServiceFactory::Launch()
+    const {
   ++launch_count_;
 
   mojo::Remote<bat_ads::mojom::BatAdsService> bat_ads_service_remote;

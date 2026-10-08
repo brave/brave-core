@@ -11,10 +11,6 @@ source_set("services") {
   sources = [
     "bat_ads_service_factory_impl.cc",
     "bat_ads_service_factory_impl.h",
-    "bat_ads_service_feature.cc",
-    "bat_ads_service_feature.h",
-    "bat_ads_service_launch.cc",
-    "bat_ads_service_launch.h",
   ]
 
   deps = [
@@ -26,22 +22,5 @@ source_set("services") {
     "//content/public/browser",
     "//mojo/public/cpp/bindings",
     "//mojo/public/cpp/system",
-  ]
-}
-
-source_set("unit_tests") {
-  testonly = true
-  sources = [
-    "bat_ads_service_factory_impl_unittest.cc",
-    "bat_ads_service_launch_unittest.cc",
-  ]
-
-  deps = [
-    ":services",
-    "//base/test:test_support",
-    "//brave/components/services/bat_ads/public/interfaces",
-    "//content/test:test_support",
-    "//mojo/public/cpp/bindings",
-    "//testing/gtest",
   ]
 }
