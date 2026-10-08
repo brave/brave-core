@@ -69,7 +69,6 @@ import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.local_database.BraveStatsTable;
 import org.chromium.chrome.browser.local_database.DatabaseHelper;
 import org.chromium.chrome.browser.local_database.SavedBandwidthTable;
-import org.chromium.chrome.browser.media.PictureInPicture;
 import org.chromium.chrome.browser.ntp.NtpUtil;
 import org.chromium.chrome.browser.omnibox.BraveLocationBarCoordinator;
 import org.chromium.chrome.browser.omnibox.LocationBarCoordinator;
@@ -508,7 +507,8 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
 
                     @Override
                     public void onShown(Tab tab, @TabSelectionType int type) {
-                        if (!PictureInPicture.isEnabled(getContext())) {
+                        if (!BraveYouTubeScriptInjectorNativeHelper.isPictureInPictureEnabled(
+                                getContext())) {
                             hideYouTubePipIcon();
                         }
                         // Update shields button state when visible tab is changed.
@@ -636,7 +636,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
 
         // Return early if picture in picture is not supported
         // or disabled in the OS settings.
-        if (!PictureInPicture.isEnabled(getContext())) {
+        if (!BraveYouTubeScriptInjectorNativeHelper.isPictureInPictureEnabled(getContext())) {
             if (mYouTubePipLayout.getVisibility() != View.GONE) {
                 mYouTubePipLayout.setVisibility(View.GONE);
                 invalidateToolbarSnapshotOnTablet();
@@ -1127,7 +1127,8 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             if (currentTab != null
                     && BraveYouTubeScriptInjectorNativeHelper.isPictureInPictureAvailable(
                             currentTab.getWebContents())) {
-                if (!PictureInPicture.isEnabled(getContext())) {
+                if (!BraveYouTubeScriptInjectorNativeHelper.isPictureInPictureEnabled(
+                        getContext())) {
                     hideYouTubePipIcon();
                     return;
                 }
