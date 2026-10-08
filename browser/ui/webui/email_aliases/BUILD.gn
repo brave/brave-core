@@ -26,6 +26,8 @@ source_set("email_aliases") {
     "//base",
     "//brave/browser/brave_account",
     "//brave/browser/email_aliases",
+    "//brave/browser/resources/settings:resources",
+    "//brave/browser/resources/settings:resources_grit",
     "//brave/components/brave_account",
     "//brave/components/brave_account/mojom",
     "//brave/components/brave_account/resources",
