@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/flags/android/java/src/org/chromium/chrome/browser/flags/ChromeFeatureList.java b/chrome/browser/flags/android/java/src/org/chromium/chrome/browser/flags/ChromeFeatureList.java
-index f99abec878e8d7f93589495fa7590657cae0fce9..fcf972c87e8a134735aa161c220a7e975e70dd26 100644
+index 14a783a4dc372c48b14dbc4d6ee0e74caf8624bf..a1963f0fe48e07671f1ca22753c326e8279dd4f3 100644
 --- a/chrome/browser/flags/android/java/src/org/chromium/chrome/browser/flags/ChromeFeatureList.java
 +++ b/chrome/browser/flags/android/java/src/org/chromium/chrome/browser/flags/ChromeFeatureList.java
-@@ -1721,7 +1721,7 @@ public abstract class ChromeFeatureList {
+@@ -1733,7 +1733,7 @@ public abstract class ChromeFeatureList {
      public static final MutableFlagWithSafeDefault sAndroidTabDeclutterArchiveOnDesktop =
              newMutableFlagWithSafeDefault(ANDROID_TAB_DECLUTTER_ARCHIVE_ON_DESKTOP, false);
      public static final MutableFlagWithSafeDefault sAndroidTipsNotifications =
@@ -11,12 +11,3 @@ index f99abec878e8d7f93589495fa7590657cae0fce9..fcf972c87e8a134735aa161c220a7e97
      public static final MutableFlagWithSafeDefault sAndroidTipsNotificationsV2 =
              newMutableFlagWithSafeDefault(ANDROID_TIPS_NOTIFICATIONS_V2, false);
      public static final MutableFlagWithSafeDefault sAndroidUserEducationFramework =
-@@ -1978,7 +1978,7 @@ public abstract class ChromeFeatureList {
-     public static final BooleanCachedFeatureParam sAndroidBottomBarBypassGlicGeofencing =
-             newBooleanCachedFeatureParam(ANDROID_BOTTOM_BAR, "bypass_glic_geofencing", false);
-     public static final BooleanCachedFeatureParam sAndroidBottomBarDisableOnNtp =
--            newBooleanCachedFeatureParam(ANDROID_BOTTOM_BAR, "disable_on_ntp", true);
-+            newBooleanCachedFeatureParam(ANDROID_BOTTOM_BAR, "disable_on_ntp", false);
-     public static final BooleanCachedFeatureParam sAndroidBottomBarKeepAppMenuInToolbar =
-             newBooleanCachedFeatureParam(ANDROID_BOTTOM_BAR, "keep_app_menu_in_toolbar", false);
-     public static final BooleanCachedFeatureParam sAndroidBottomBarKeepHomeButtonInToolbar =
