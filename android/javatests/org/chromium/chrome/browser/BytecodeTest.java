@@ -1750,6 +1750,7 @@ public class BytecodeTest {
                         ModalDialogManager.class,
                         SnackbarManager.class,
                         Runnable.class,
+                        NonNullObservableSupplier.class,
                         boolean.class));
         Assert.assertTrue(
                 constructorsMatch(

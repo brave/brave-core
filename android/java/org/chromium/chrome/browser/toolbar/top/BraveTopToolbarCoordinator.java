@@ -120,6 +120,7 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
             ModalDialogManager modalDialogManager,
             SnackbarManager snackbarManager,
             Runnable onSigninTapped,
+            NonNullObservableSupplier<Boolean> downloadButtonShouldShowSupplier,
             boolean suppressTabStripAtStart) {
         super(
                 controlContainer,
@@ -167,6 +168,7 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
                 modalDialogManager,
                 snackbarManager,
                 onSigninTapped,
+                downloadButtonShouldShowSupplier,
                 suppressTabStripAtStart);
 
         mBraveToolbarLayout = toolbarLayout;
