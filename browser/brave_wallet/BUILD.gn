@@ -63,8 +63,10 @@ source_set("brave_wallet_delegate") {
     "//brave/components/brave_wallet/browser:constants",
     "//brave/components/brave_wallet/browser:permission_utils",
     "//brave/components/brave_wallet/browser:utils",
+    "//brave/components/brave_wallet/common",
     "//brave/components/brave_wallet/common:common_constants",
     "//brave/components/brave_wallet/common:mojom",
+    "//brave/components/brave_wallet/common/buildflags",
     "//brave/components/resources:strings_grit",
     "//chrome/browser/profiles:profile",
     "//components/content_settings/core/common",
@@ -99,6 +101,10 @@ source_set("brave_wallet_delegate") {
     if (enable_extensions) {
       deps += [ ":external_wallets_importer" ]
     }
+  }
+
+  if (enable_snap) {
+    deps += [ "//brave/components/brave_wallet/content/browser/snap" ]
   }
 }
 

@@ -39,15 +39,26 @@ export class SnapHostBridge {
   // Held so the receiver stays reachable for the lifetime of the bridge and
   // can be closed explicitly.
   private receiver?: BraveWallet.SnapHostBridgeReceiver
+  // Whether the browser ever sent a request over this pipe. Distinguishes "a
+  // working bridge was torn down" from "binding never took".
+  private servedRequest = false
 
   constructor(container?: HTMLElement) {
     this.container = container ?? document.body
   }
 
+  get didServeRequest(): boolean {
+    return this.servedRequest
+  }
+
   // Creates the SnapHostBridge pipe and returns the remote end for the
-  // browser. The receiver is retained so close() can drop it.
-  bind(): BraveWallet.SnapHostBridgeRemote {
+  // browser. The receiver is retained so close() can drop it. |onDisconnect|
+  // runs when the browser drops its remote, e.g. on wallet lock.
+  bind(onDisconnect?: () => void): BraveWallet.SnapHostBridgeRemote {
     this.receiver = new BraveWallet.SnapHostBridgeReceiver(this)
+    if (onDisconnect) {
+      this.receiver.onConnectionError.addListener(onDisconnect)
+    }
     return this.receiver.$.bindNewPipeAndPassRemote()
   }
 
@@ -71,6 +82,7 @@ export class SnapHostBridge {
     error: string | null
     result: string | null
   }> {
+    this.servedRequest = true
     try {
       let conn = this.connections.get(snapId)
       if (!conn) {

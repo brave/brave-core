@@ -43,8 +43,9 @@ class FakeSnapHostBridge : public mojom::SnapHostBridge {
   mojo::Receiver<mojom::SnapHostBridge> receiver_{this};
 };
 
-// SnapHostBridgeController stub for tests. Answers LoadSnap synchronously with
-// |load_snap_result| and records the call.
+// SnapHostBridgeController stub for SnapService tests. EnsureBridgeReady runs
+// |on_ready| immediately unless set_defer_ready(true); RunPendingReady()
+// releases a deferred callback.
 class FakeSnapHostBridgeController : public SnapHostBridgeController {
  public:
   FakeSnapHostBridgeController();
@@ -54,13 +55,20 @@ class FakeSnapHostBridgeController : public SnapHostBridgeController {
   void BindNewBridge(
       mojo::PendingRemote<mojom::SnapHostBridge> bridge) override;
   bool IsBound() const override;
+  void EnsureBridgeReady(base::OnceClosure on_ready) override;
   void LoadSnap(const std::string& snap_id,
                 const std::string& source_code,
                 LoadSnapCallback cb) override;
   void UnloadSnap(const std::string& snap_id) override;
+  void Shutdown() override;
+  std::string GetUnavailableError() const override;
 
+  void RunPendingReady();
+  void set_defer_ready(bool defer) { defer_ready_ = defer; }
   void set_bound(bool bound) { bound_ = bound; }
 
+  int ensure_bridge_ready_count = 0;
+  int shutdown_count = 0;
   int load_snap_count = 0;
   std::string last_snap_id;
   std::string last_source_code;
@@ -68,6 +76,8 @@ class FakeSnapHostBridgeController : public SnapHostBridgeController {
 
  private:
   bool bound_ = false;
+  bool defer_ready_ = false;
+  base::OnceClosure pending_ready_;
 };
 
 }  // namespace brave_wallet

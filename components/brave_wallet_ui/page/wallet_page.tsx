@@ -78,7 +78,7 @@ function initialize() {
   )
   store.dispatch(WalletActions.initialize())
 
-  if (loadTimeData.getBoolean('isSnapEnabled')) {
+  if (loadTimeData.getBoolean('walletPageHostsSnaps')) {
     ensureSnapHostFrame()
   }
 }
