@@ -323,7 +323,7 @@
 - (DefaultHostContentSettings*)defaultHostContentSettings {
   if (!_defaultHostContentSettings) {
     HostContentSettingsMap* map =
-        ios::HostContentSettingsMapFactory::GetForProfile(_profile);
+        ios::HostContentSettingsMapFactory::GetForProfile(_profile).get();
     _defaultHostContentSettings =
         [[DefaultHostContentSettings alloc] initWithSettingsMap:map];
   }
