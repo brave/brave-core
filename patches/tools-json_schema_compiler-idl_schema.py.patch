@@ -1,5 +1,5 @@
 diff --git a/tools/json_schema_compiler/idl_schema.py b/tools/json_schema_compiler/idl_schema.py
-index 3f33e43b4e3c12a77d85d86c37b9069d37339f74..a66896108dc81acb99560b6a665d17b989935985 100755
+index 4022def2970ff6df30defb97c19d40fe27e00f46..aa3d53394ad8d4f46dc958f3fbaadd676de88288 100755
 --- a/tools/json_schema_compiler/idl_schema.py
 +++ b/tools/json_schema_compiler/idl_schema.py
 @@ -603,6 +603,8 @@ class IDLSchema(object):

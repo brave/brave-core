@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/BUILD.gn b/chrome/browser/ui/BUILD.gn
-index 6e8a582a7af7892de583731c9411a65c79708521..5d54b09f19a92219b83df58bdd68b91a0909db3b 100644
+index 238f8625e42d8703c72c266c36e32bbfb2113095..771c7a084bd79a97e1820c0b2b65758db09b170a 100644
 --- a/chrome/browser/ui/BUILD.gn
 +++ b/chrome/browser/ui/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -10,7 +10,7 @@ index 6e8a582a7af7892de583731c9411a65c79708521..5d54b09f19a92219b83df58bdd68b91a
  import("//build/config/buildflags_paint_preview.gni")
  import("//build/config/chrome_build.gni")
  import("//build/config/compiler/compiler.gni")
-@@ -1190,6 +1191,7 @@ if (!is_android) {
+@@ -1512,6 +1513,7 @@ if (!is_android) {
        ":ui",
        "//chrome/browser/ui/browser_window/internal",
      ]
@@ -18,7 +18,7 @@ index 6e8a582a7af7892de583731c9411a65c79708521..5d54b09f19a92219b83df58bdd68b91a
      public_deps = [
        ":browser_window_deleter",
        "//base",
-@@ -1246,6 +1248,7 @@ static_library("ui") {
+@@ -1568,6 +1570,7 @@ static_library("ui") {
      ":simple_message_box_headers",
      ":tab_dialogs",
      ":tab_modal_confirm_dialog",
@@ -26,7 +26,7 @@ index 6e8a582a7af7892de583731c9411a65c79708521..5d54b09f19a92219b83df58bdd68b91a
      "//chrome/browser:browser_public_dependencies",
      "//chrome/browser/feedback",
      "//chrome/browser/headless",
-@@ -1524,6 +1527,8 @@ static_library("ui") {
+@@ -1845,6 +1848,8 @@ static_library("ui") {
      "//ui/strings",
      "//ui/webui",
    ]
@@ -35,7 +35,7 @@ index 6e8a582a7af7892de583731c9411a65c79708521..5d54b09f19a92219b83df58bdd68b91a
  
    allow_circular_includes_from = [
      # page_load_metrics's :impl includes headers from //chrome/browser/ui that
-@@ -1547,6 +1552,8 @@ static_library("ui") {
+@@ -1868,6 +1873,8 @@ static_library("ui") {
      # - c/b/ui/views/frame/browser_view.h
      "//chrome/browser/ui/views/file_system_access:impl",
    ]
@@ -44,7 +44,7 @@ index 6e8a582a7af7892de583731c9411a65c79708521..5d54b09f19a92219b83df58bdd68b91a
  
    # Desktop-Android-only dependencies.
    if (is_desktop_android) {
-@@ -4368,11 +4375,13 @@ static_library("ui") {
+@@ -4703,11 +4710,13 @@ static_library("ui") {
  group("ui_public_dependencies") {
    visibility = [ "//chrome/browser:browser_public_dependencies" ]
    public_deps = [

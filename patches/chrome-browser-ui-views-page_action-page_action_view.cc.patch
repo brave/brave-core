@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/page_action/page_action_view.cc b/chrome/browser/ui/views/page_action/page_action_view.cc
-index 9fc6fb3d16d419903a58619c9f43ea5b1de8df44..c67d9a328bb22785e754a93df84b1965969dd114 100644
+index 2ca2cf18c0d46a283b26cbb47deb9ce23a56f503..623dc0e5ed14f44ad795c7f2ef672f06ad8e1f40 100644
 --- a/chrome/browser/ui/views/page_action/page_action_view.cc
 +++ b/chrome/browser/ui/views/page_action/page_action_view.cc
 @@ -82,7 +82,7 @@ PageActionView::PageActionView(actions::ActionItem* action_item,
@@ -58,7 +58,7 @@ index 9fc6fb3d16d419903a58619c9f43ea5b1de8df44..c67d9a328bb22785e754a93df84b1965
      if (model.GetShouldAnimateChipIn()) {
        AnimateIn(/*string_id=*/std::nullopt);
      } else {
-@@ -338,6 +351,7 @@ void PageActionView::UpdateBorder() {
+@@ -334,6 +347,7 @@ void PageActionView::UpdateBorder() {
        !observation_.GetSource()->GetImage().IsVectorIcon()) {
      border_insets = GetInsetsForNonVectorIcon();
    }
@@ -66,7 +66,7 @@ index 9fc6fb3d16d419903a58619c9f43ea5b1de8df44..c67d9a328bb22785e754a93df84b1965
    SetBorder(views::CreateEmptyBorder(border_insets));
  }
  
-@@ -384,6 +398,9 @@ void PageActionView::NotifyClick(const ui::Event& event) {
+@@ -380,6 +394,9 @@ void PageActionView::NotifyClick(const ui::Event& event) {
      builder = std::move(builder).SetProperty(kSidePanelOpenTriggerKey,
                                               *side_panel_trigger);
    }
@@ -76,7 +76,7 @@ index 9fc6fb3d16d419903a58619c9f43ea5b1de8df44..c67d9a328bb22785e754a93df84b1965
    action_item_->InvokeAction(std::move(builder).Build());
  }
  
-@@ -492,6 +509,7 @@ void PageActionView::SetModel(PageActionModelInterface* model) {
+@@ -488,6 +505,7 @@ void PageActionView::SetModel(PageActionModelInterface* model) {
  }
  
  gfx::Size PageActionView::GetMinimumSize() const {
@@ -84,7 +84,7 @@ index 9fc6fb3d16d419903a58619c9f43ea5b1de8df44..c67d9a328bb22785e754a93df84b1965
    gfx::Size icon_preferred_size = image_container_view()->GetPreferredSize();
    if (observation_.IsObserving() &&
        !observation_.GetSource()->GetImage().IsVectorIcon()) {
-@@ -502,6 +520,15 @@ gfx::Size PageActionView::GetMinimumSize() const {
+@@ -498,6 +516,15 @@ gfx::Size PageActionView::GetMinimumSize() const {
    }
  
    return icon_preferred_size;
@@ -100,7 +100,7 @@ index 9fc6fb3d16d419903a58619c9f43ea5b1de8df44..c67d9a328bb22785e754a93df84b1965
  }
  
  bool PageActionView::IsBubbleShowing() const {
-@@ -712,6 +739,9 @@ void PageActionView::MaybeRecordCollapsedMetrics(int label_width) {
+@@ -708,6 +735,9 @@ void PageActionView::MaybeRecordCollapsedMetrics(int label_width) {
  }
  
  SkColor PageActionView::GetBackgroundColor() const {
@@ -110,7 +110,7 @@ index 9fc6fb3d16d419903a58619c9f43ea5b1de8df44..c67d9a328bb22785e754a93df84b1965
    if (observation_.IsObserving() &&
        observation_.GetSource()->GetOverrideBackgroundColorId().has_value() &&
        GetColorProvider()) {
-@@ -722,6 +752,9 @@ SkColor PageActionView::GetBackgroundColor() const {
+@@ -718,6 +748,9 @@ SkColor PageActionView::GetBackgroundColor() const {
  }
  
  SkColor PageActionView::GetForegroundColor() const {
