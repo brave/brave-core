@@ -72,7 +72,12 @@ const useUrlWhatYouTyped = (query: string) => React.useMemo(() => {
       destinationUrl: url.toString(),
       contents: url.toString(),
       description: '',
-      imageUrl: `chrome://favicon/size/64@1x/${q.toString()}`,
+      suggestTemplate: {
+        image: {
+          url: `chrome://favicon/size/64@1x/${q.toString()}`,
+          dominantColor: ''
+        }
+      },
       allowedToBeDefaultMatch: true
     } as AutocompleteMatch
   } catch {
