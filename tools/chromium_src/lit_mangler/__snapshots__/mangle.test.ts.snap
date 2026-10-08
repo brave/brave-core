@@ -1899,8 +1899,6 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 "
 `;
 
-exports[`mangled files should have up to date snapshots ./chromium_src/chrome/browser/resources/settings/reset_page/reset_profile_dialog.html.ts.lit_mangler.ts should match snapshot 1`] = `
-"===================================================================
 --- ../chrome/browser/resources/settings/reset_page/reset_profile_dialog.html.ts
 +++ gen/chrome/browser/resources/settings/preprocessed/reset_page/reset_profile_dialog.html.ts
 @@ -4,33 +4,28 @@
@@ -1943,7 +1941,49 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
      </cr-checkbox>
    </div>
  </cr-dialog>
-"
+=======
+exports[`mangled files should have up to date snapshots ./chromium_src/chrome/browser/resources/settings/performance_page/performance_page.html.ts.lit_mangler.ts should match snapshot 1`] = `
+"===================================================================
+--- ../chrome/browser/resources/settings/performance_page/performance_page.html.ts
++++ gen/chrome/browser/resources/settings/preprocessed/performance_page/performance_page.html.ts
+@@ -1,31 +1,13 @@
+ import {html} from '//resources/lit/v3_0/lit.rollup.js';
+ import type {PerformancePageElement} from './performance_page.js';
+ 
+ export function getHtml(this: PerformancePageElement) {
+-  return html\`<!--_html_template_start_--><settings-section
+-    ?show-send-feedback-button="\${this.showSendFeedbackButton_()}"
+-    @send-feedback="\${this.onSendFeedback_}"
+-    page-title="$i18n{generalPageTitle}">
+-  <settings-toggle-button id="performanceInterventionToggleButton"
+-      @change="\${this.onPerformanceInterventionToggleButtonChange_}"
+-      pref-key="performance_tuning.intervention_notification.enabled"
+-      label="$i18n{performanceInterventionEnabledLabel}"
+-      sub-label-with-link="$i18n{performanceInterventionEnabledDescription}"
+-      @sub-label-link-clicked="\${this.onPerformanceInterventionSubLabelLinkClicked_}">
++  return html\`<!--_html_template_start_--><settings-section ?show-send-feedback-button="\${this.showSendFeedbackButton_()}" @send-feedback="\${this.onSendFeedback_}" page-title="$i18n{generalPageTitle}">
++  <settings-toggle-button id="performanceInterventionToggleButton" @change="\${this.onPerformanceInterventionToggleButtonChange_}" pref-key="performance_tuning.intervention_notification.enabled" label="$i18n{performanceInterventionEnabledLabel}" sub-label-with-link="$i18n{performanceInterventionEnabledDescription}" @sub-label-link-clicked="\${this.onPerformanceInterventionSubLabelLinkClicked_}">
+   </settings-toggle-button>
+-  <settings-toggle-button id="discardRingTreatmentToggleButton"
+-      @change="\${this.onDiscardRingChange_}"
+-      pref-key="performance_tuning.discard_ring_treatment.enabled"
+-      label="$i18n{discardRingTreatmentEnabledLabel}"
+-      sub-label-with-link="
+-            $i18n{discardRingTreatmentEnabledDescriptionWithLearnLink}"
+-      @sub-label-link-clicked="\${this.onDiscardRingTreatmentSubLabelLinkClicked_}">
+-  </settings-toggle-button>
+-  <cr-link-row
+-      label="$i18n{tabHoverPreviewCardLinkTitle}"
+-      sub-label="$i18n{tabHoverPreviewCardLinkSubtitle}"
+-      @click="\${this.onTabHoverPreviewCardLinkClick_}" external>
++  
++  <cr-link-row label="$i18n{tabHoverPreviewCardLinkTitle}" sub-label="$i18n{tabHoverPreviewCardLinkSubtitle}" @click="\${this.onTabHoverPreviewCardLinkClick_}" external="">
+   </cr-link-row>
+   <tab-discard-exception-list id="exceptionList">
+   </tab-discard-exception-list>
+ </settings-section>
+exports[`mangled files should have up to date snapshots ./chromium_src/chrome/browser/resources/settings/reset_page/reset_profile_dialog.html.ts.lit_mangler.ts should match snapshot 1`] = `
+"============================================================"
 `;
 
 exports[`mangled files should have up to date snapshots ./chromium_src/chrome/browser/resources/settings/privacy_page/do_not_track_toggle.html.ts.lit_mangler.ts should match snapshot 1`] = `
