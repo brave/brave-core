@@ -1102,6 +1102,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 [[package]]
 name = "hashbrown"
 version = "0.16.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "allocator-api2",
  "equivalent",
