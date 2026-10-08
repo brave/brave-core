@@ -97,7 +97,7 @@ AutocompleteMatch GetAutocompleteMatchForText(Profile* profile,
                   AutocompleteClassifier::DefaultOmniboxProviders()}),
       std::make_unique<BraveAutocompleteSchemeClassifier>(profile));
   classifier.Classify(text, false, false,
-                      metrics::OmniboxEventProto::INVALID_SPEC, &match, NULL);
+                      metrics::OmniboxEventProto::INVALID_SPEC, &match, nullptr);
   classifier.Shutdown();
   return match;
 }
