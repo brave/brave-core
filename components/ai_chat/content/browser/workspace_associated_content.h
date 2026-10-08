@@ -9,7 +9,6 @@
 #include <memory>
 #include <optional>
 #include <string>
-#include <vector>
 
 #include "base/files/file_path.h"
 #include "base/functional/callback.h"
@@ -72,11 +71,6 @@ class WorkspaceAssociatedContent : public AssociatedContentDelegate,
   void OnAssociatedWithConversation() override;
   url::Origin GetOrigin() const override;
 
-  // Runs |callback| once the workspace page has loaded, and so registered its
-  // tools, or straight away if it already has. Never runs if this is destroyed
-  // first.
-  void RunWhenPageReady(base::OnceClosure callback);
-
   // The URL of the page hosting the workspace's tools:
   // chrome-untrusted://<uuid>.leo-workspace/.
   const GURL& page_url() const { return page_url_; }
@@ -127,9 +121,6 @@ class WorkspaceAssociatedContent : public AssociatedContentDelegate,
   // Until then GetContentTools reports no tools synchronously, so the manager's
   // add-time probe can't race with (and clobber) the attach we do on load.
   bool page_ready_ = false;
-
-  // Run, and cleared, once |page_ready_| is set. See RunWhenPageReady().
-  std::vector<base::OnceClosure> page_ready_callbacks_;
 
   // Mojo bindings for receiving WebMCP tool change notifications.
   mojo::Remote<mojom::PageContentExtractor> content_tools_extractor_;

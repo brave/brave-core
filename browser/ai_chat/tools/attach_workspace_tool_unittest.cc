@@ -99,9 +99,10 @@ TEST_F(AttachWorkspaceToolTest, AttachesAnEmptyWorkspace) {
   ToolFuture future;
   tool_->UseTool("{}", future.GetCallback());
 
-  // Attached straight away, but the tool waits for the workspace's page, and so
-  // its tools, before replying. That wait is covered by the RunWhenPageReady
-  // browser tests, as the page never loads here.
+  // Attached straight away, but the tool waits for the workspace's tools to be
+  // added to the generation loop, once its page has loaded, before replying.
+  // That wait is covered by the AssociatedContentManager tests, as the page
+  // never loads here.
   auto content = associated_content();
   ASSERT_EQ(1u, content.size());
   EXPECT_EQ(mojom::ContentType::Workspace, content[0]->content_type);

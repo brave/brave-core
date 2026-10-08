@@ -70,7 +70,7 @@ export async function registerTools(
   // Registered all at once, rather than one after another, so every tool is
   // registered synchronously, before the page finishes loading: the browser
   // reads the page's tools once it has loaded (see
-  // WorkspaceAssociatedContent::RunWhenPageReady), and registerTool() only
+  // AssociatedContentManager::OnToolsAttachedChanged), and registerTool() only
   // resolves after a round trip to the browser.
   const registrations: Array<Promise<void>> = []
   const reg = (

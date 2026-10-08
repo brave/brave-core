@@ -18,7 +18,6 @@
 #include "base/location.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
-#include "base/test/bind.h"
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/test_future.h"
@@ -578,9 +577,9 @@ IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentWebMcpBrowserTest,
 }
 
 // Content tools attached during a generation are read as soon as the page is
-// ready (see AttachWorkspaceTool), so all of the page's tools must have been
-// registered by then, even though each registration is a round trip to the
-// browser.
+// ready and attaches them (see AssociatedContentManager::
+// OnToolsAttachedChanged), so all of the page's tools must have been registered
+// by then, even though each registration is a round trip to the browser.
 IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentWebMcpBrowserTest,
                        RegistersAllToolsByThePageBeingReady) {
   // An empty workspace, as AttachWorkspaceTool creates. Owned here rather than
@@ -589,9 +588,7 @@ IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentWebMcpBrowserTest,
   auto content = std::make_unique<WorkspaceAssociatedContent>(
       /*folder_path=*/std::nullopt, browser()->GetProfile(), base::DoNothing());
 
-  base::test::TestFuture<void> ready;
-  content->RunWhenPageReady(ready.GetCallback());
-  ASSERT_TRUE(ready.Wait());
+  ASSERT_TRUE(base::test::RunUntil([&] { return content->tools_attached(); }));
 
   base::test::TestFuture<std::vector<std::unique_ptr<Tool>>> tools;
   content->GetContentTools(tools.GetCallback());
@@ -602,11 +599,6 @@ IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentWebMcpBrowserTest,
   EXPECT_THAT(names,
               ::testing::UnorderedElementsAre("str_replace_based_edit_tool",
                                               "grep", "glob", "append_file"));
-
-  // Once ready, callbacks run straight away.
-  bool ran = false;
-  content->RunWhenPageReady(base::BindLambdaForTesting([&] { ran = true; }));
-  EXPECT_TRUE(ran);
 }
 
 // The viewer has no tools of its own, so blink's WebMCP gate must not extend to

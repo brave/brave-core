@@ -86,7 +86,6 @@ static_library("ai_chat") {
     "//components/prefs",
     "//components/user_prefs",
     "//content/public/browser",
-    "//mojo/public/cpp/bindings",
     "//services/network/public/cpp",
     "//third_party/blink/public/common",
   ]
