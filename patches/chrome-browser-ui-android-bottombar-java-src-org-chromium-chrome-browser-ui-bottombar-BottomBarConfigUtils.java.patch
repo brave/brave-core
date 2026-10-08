@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/ui/android/bottombar/java/src/org/chromium/chrome/browser/ui/bottombar/BottomBarConfigUtils.java b/chrome/browser/ui/android/bottombar/java/src/org/chromium/chrome/browser/ui/bottombar/BottomBarConfigUtils.java
-index dde56c29df8278ee99efceb054a7c1c38b8c7906..05abdb82762ac153d52c5b40a1a51a893aea16ce 100644
+index dde56c29df8278ee99efceb054a7c1c38b8c7906..647bd2323e7bda1e3050dfbaffa2f20ff2fb02e6 100644
 --- a/chrome/browser/ui/android/bottombar/java/src/org/chromium/chrome/browser/ui/bottombar/BottomBarConfigUtils.java
 +++ b/chrome/browser/ui/android/bottombar/java/src/org/chromium/chrome/browser/ui/bottombar/BottomBarConfigUtils.java
-@@ -33,6 +33,7 @@ public class BottomBarConfigUtils {
-      * active should use this method.
+@@ -63,6 +63,7 @@ public class BottomBarConfigUtils {
+      * #isBottomBarEnabled(Context)} instead.
       */
-     public static boolean isBottomBarEnabled(Context context) {
+     public static boolean isBottomBarUserEnabled() {
 +        if (!BraveBottomBarUserPrefs.isBottomBarEnabled()) return false;
-         return isBottomBarEligible(context) && isBottomBarUserEnabled();
-     }
- 
+         return ChromeSharedPreferences.getInstance()
+                 .readBoolean(
+                         ChromePreferenceKeys.BOTTOM_BAR_ENABLED,

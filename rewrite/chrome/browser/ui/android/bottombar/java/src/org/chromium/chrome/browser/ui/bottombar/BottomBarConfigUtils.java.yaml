@@ -11,13 +11,15 @@ substitutions:
       patch only ever adds a line and survives upstream editing them.
 
       The bottom bar is the bottom navigation toolbar Brave has always had a
-      setting for, so it answers to the same switch. Kept in step with
-      ToolbarVariationUtils#isToolbarUiRefactorEnabled, which upstream pairs with
-      this by LINT.IfChange - the top toolbar has to keep the tab switcher and app
-      menu buttons whenever no bottom bar is there to carry them.
+      setting for, so it answers to the same switch. Applied to the user-pref
+      half of the enablement so every caller sees it, including
+      isBottomBarEnabled() and the top toolbar's refactor
+      (ToolbarVariationUtils#isToolbarUiRefactorEnabled), which keeps the tab
+      switcher and app menu buttons whenever no bottom bar is there to carry
+      them.
     regex:
       re_pattern: |-
-        (public static boolean isBottomBarEnabled\(Context context\) \{)
+        (public static boolean isBottomBarUserEnabled\(\) \{)
       replace: |-
         \1
                 if (!BraveBottomBarUserPrefs.isBottomBarEnabled()) return false;
