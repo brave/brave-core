@@ -49,14 +49,14 @@ AdsMediaReportingJavaScriptFeature::GetScriptMessageHandlerName() const {
 void AdsMediaReportingJavaScriptFeature::ScriptMessageReceived(
     web::WebState* web_state,
     const web::ScriptMessage& message) {
-  const base::DictValue* script_dict =
-      message.legacy_body() ? message.legacy_body()->GetIfDict() : nullptr;
-  if (!script_dict) {
+  const web::ScriptMessageValue& message_body = message.body();
+  if (message_body.type() != base::Value::Type::DICT) {
     return;
   }
+  const web::ScriptMessageDictValue& script_dict = message_body.GetDict();
 
-  std::optional<int> player_id = script_dict->FindInt(kMessagePlayerIdKey);
-  std::optional<bool> is_playing = script_dict->FindBool(kMessageIsPlayingKey);
+  std::optional<int> player_id = script_dict.FindInt(kMessagePlayerIdKey);
+  std::optional<bool> is_playing = script_dict.FindBool(kMessageIsPlayingKey);
   if (!player_id || !is_playing) {
     return;
   }
