@@ -18,10 +18,10 @@
 namespace brave_wallet {
 
 PolkadotApiImpl::PolkadotApiImpl(
-    BraveWalletService& brave_wallet_service,
+    KeyringService& keyring_service,
     std::unique_ptr<BraveWalletProviderDelegate> delegate,
     mojom::AccountIdPtr granted_account)
-    : brave_wallet_service_(brave_wallet_service),
+    : keyring_service_(keyring_service),
       delegate_(std::move(delegate)),
       granted_account_(std::move(granted_account)) {
   CHECK(delegate_);
@@ -49,8 +49,7 @@ void PolkadotApiImpl::GetAccounts(bool any_type, GetAccountsCallback callback) {
     return;
   }
 
-  auto* keyring_service = brave_wallet_service_->keyring_service();
-  if (keyring_service->IsLockedSync()) {
+  if (keyring_service_->IsLockedSync()) {
     std::move(callback).Run(
         std::nullopt,
         mojom::PolkadotProviderErrorBundle::New(
@@ -59,7 +58,7 @@ void PolkadotApiImpl::GetAccounts(bool any_type, GetAccountsCallback callback) {
     return;
   }
 
-  auto account = keyring_service->FindAccount(granted_account_);
+  auto account = keyring_service_->FindAccount(granted_account_);
   if (!account) {
     std::move(callback).Run(
         std::nullopt, mojom::PolkadotProviderErrorBundle::New(

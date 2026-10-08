@@ -189,9 +189,9 @@ void PolkadotProviderImpl::OnRequestPolkadotPermissions(
 
   mojo::PendingRemote<mojom::PolkadotApi> polkadot_api_remote;
   polkadot_api_receivers_.Add(
-      std::make_unique<PolkadotApiImpl>(brave_wallet_service_.get(),
-                                        delegate_factory_.Run(),
-                                        std::move(account_id)),
+      std::make_unique<PolkadotApiImpl>(
+          *brave_wallet_service_->keyring_service(), delegate_factory_.Run(),
+          std::move(account_id)),
       polkadot_api_remote.InitWithNewPipeAndPassReceiver());
 
   std::move(callback).Run(std::move(polkadot_api_remote), nullptr);

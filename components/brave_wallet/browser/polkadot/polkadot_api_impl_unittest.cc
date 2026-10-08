@@ -17,6 +17,7 @@
 #include "base/test/test_future.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_dapp_utils.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
@@ -87,9 +88,17 @@ class PolkadotApiImplUnitTest : public testing::Test {
     RegisterProfilePrefs(prefs_.registry());
     RegisterProfilePrefsForMigration(prefs_.registry());
 
-    brave_wallet_service_ = std::make_unique<BraveWalletService>(
-        url_loader_factory_.GetSafeWeakWrapper(),
-        TestBraveWalletServiceDelegate::Create(), &prefs_, &local_state_);
+    network_manager_ = std::make_unique<NetworkManager>(&prefs_);
+
+    json_rpc_service_ = std::make_unique<JsonRpcService>(
+        url_loader_factory_.GetSafeWeakWrapper(), network_manager_.get(),
+        &prefs_, &local_state_);
+
+    keyring_service_ = std::make_unique<KeyringService>(json_rpc_service_.get(),
+                                                        &prefs_, &local_state_);
+
+    service_delegate_ = TestBraveWalletServiceDelegate::Create();
+    keyring_service_->SetDelegate(service_delegate_.get());
   }
 
   void TearDown() override {
@@ -109,7 +118,7 @@ class PolkadotApiImplUnitTest : public testing::Test {
         .WillByDefault(testing::Return(true));
 
     api_ = std::make_unique<PolkadotApiImpl>(
-        *brave_wallet_service_, std::move(delegate), granted_account.Clone());
+        *keyring_service_, std::move(delegate), granted_account.Clone());
   }
 
   void CreateWallet() {
@@ -143,9 +152,7 @@ class PolkadotApiImplUnitTest : public testing::Test {
 
   MockBraveWalletProviderDelegate* delegate() { return delegate_; }
 
-  KeyringService* keyring_service() {
-    return brave_wallet_service_->keyring_service();
-  }
+  KeyringService* keyring_service() { return keyring_service_.get(); }
 
  private:
   base::test::TaskEnvironment task_environment_;
@@ -154,7 +161,10 @@ class PolkadotApiImplUnitTest : public testing::Test {
   sync_preferences::TestingPrefServiceSyncable prefs_;
   sync_preferences::TestingPrefServiceSyncable local_state_;
   network::TestURLLoaderFactory url_loader_factory_;
-  std::unique_ptr<BraveWalletService> brave_wallet_service_;
+  std::unique_ptr<BraveWalletServiceDelegate> service_delegate_;
+  std::unique_ptr<NetworkManager> network_manager_;
+  std::unique_ptr<JsonRpcService> json_rpc_service_;
+  std::unique_ptr<KeyringService> keyring_service_;
 
   raw_ptr<MockBraveWalletProviderDelegate> delegate_ = nullptr;
   std::unique_ptr<PolkadotApiImpl> api_;

@@ -19,7 +19,7 @@ namespace brave_wallet {
 // account the user granted, and only usable while that permission stands.
 class PolkadotApiImpl final : public mojom::PolkadotApi {
  public:
-  PolkadotApiImpl(BraveWalletService& brave_wallet_service,
+  PolkadotApiImpl(KeyringService& keyring_service,
                   std::unique_ptr<BraveWalletProviderDelegate> delegate,
                   mojom::AccountIdPtr granted_account);
   ~PolkadotApiImpl() override;
@@ -34,7 +34,7 @@ class PolkadotApiImpl final : public mojom::PolkadotApi {
   // permission can be revoked, or expire, while the dapp holds this object.
   bool IsGrantedAccountAllowed();
 
-  const raw_ref<BraveWalletService> brave_wallet_service_;
+  const raw_ref<KeyringService> keyring_service_;
   // Owns its own delegate, which knows the frame the dapp is in.
   std::unique_ptr<BraveWalletProviderDelegate> delegate_;
   const mojom::AccountIdPtr granted_account_;
