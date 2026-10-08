@@ -23,7 +23,7 @@ bool FakeAdsServiceDelegate::DoesSupportSystemNotifications() {
 }
 
 bool FakeAdsServiceDelegate::CanShowNotifications() {
-  return false;
+  return can_show_notifications_;
 }
 
 bool FakeAdsServiceDelegate::ShowOnboardingNotification() {
@@ -38,14 +38,21 @@ void FakeAdsServiceDelegate::ClearScheduledCaptcha() {}
 
 void FakeAdsServiceDelegate::SnoozeScheduledCaptcha() {}
 
-void FakeAdsServiceDelegate::ShowNotificationAd(
-    const std::string& /*id*/,
-    const std::u16string& /*title*/,
-    const std::u16string& /*body*/) {}
+void FakeAdsServiceDelegate::ShowNotificationAd(const std::string& id,
+                                                const std::u16string& title,
+                                                const std::u16string& body) {
+  last_shown_notification_ad_placement_id_ = id;
+  last_shown_notification_ad_title_ = title;
+  last_shown_notification_ad_body_ = body;
+}
 
-void FakeAdsServiceDelegate::CloseNotificationAd(const std::string& /*id*/) {}
+void FakeAdsServiceDelegate::CloseNotificationAd(const std::string& id) {
+  closed_notification_ad_ids_.push_back(id);
+}
 
-void FakeAdsServiceDelegate::OpenNewTabWithUrl(const GURL& /*url*/) {}
+void FakeAdsServiceDelegate::OpenNewTabWithUrl(const GURL& url) {
+  last_opened_url_ = url;
+}
 
 bool FakeAdsServiceDelegate::IsFullScreenMode() {
   return false;
