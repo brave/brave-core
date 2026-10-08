@@ -18,7 +18,6 @@ import './autofill_section.js'
 // autofill-page components this modifies.
 import './autofill_page.js'
 import './basic_page.js'
-import './add_site_dialog.js'
 import './cookies_page.js'
 // <if expr="not is_macosx and not is_chromeos">
 import './edit_dictionary_page.js'
