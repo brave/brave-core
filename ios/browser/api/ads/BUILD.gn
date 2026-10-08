@@ -44,7 +44,6 @@ source_set("ads") {
   frameworks = [
     "Foundation.framework",
     "UIKit.framework",
-    "Network.framework",
   ]
 }
 
