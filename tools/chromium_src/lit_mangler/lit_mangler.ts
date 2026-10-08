@@ -117,7 +117,9 @@ const getLiteralsFromFile = (filepath: string) => {
   }
   getTemplateLiterals(file, file, root)
 
-  if (root.children.length === 0) {
+  // Raw .html files are themselves a template, so they needn't contain any
+  // tagged templates.
+  if (!isHTML && root.children.length === 0) {
     throw new Error(`No templates found in ${filepath}`)
   }
 
