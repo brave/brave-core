@@ -77,6 +77,21 @@ public class BraveMainSettingsFragmentTest {
         DeveloperSettings.setIsEnabledForTests(true);
     }
 
+    @Test
+    @SmallTest
+    @EnableFeatures(BraveFeatureList.EMAIL_ALIASES)
+    public void testEmailAliasesPreferenceFollowsPasswords() {
+        startSettings();
+
+        Preference passwordsPreference = mMainSettings.findPreference("passwords");
+        Preference emailAliasesPreference = mMainSettings.findPreference("email_aliases");
+
+        assertNotNull(passwordsPreference);
+        assertNotNull(emailAliasesPreference);
+        assertTrue(emailAliasesPreference.isVisible());
+        assertEquals(passwordsPreference.getOrder() + 1, emailAliasesPreference.getOrder());
+    }
+
     @After
     public void tearDown() {
         // Undo the per-test PolicyService injection and Origin-active cache so they don't leak
@@ -112,6 +127,7 @@ public class BraveMainSettingsFragmentTest {
         "brave_languages",
         "autofill_section",
         "passwords",
+        "email_aliases",
         "autofill_options",
         "autofill_payment_methods",
         "autofill_addresses",
@@ -263,8 +279,8 @@ public class BraveMainSettingsFragmentTest {
         // settings screen in that case.
         int expectedCount =
                 ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_ANDROID_TAB_GROUPS_SETTINGS)
-                        ? 33
-                        : 34;
+                        ? 34
+                        : 35;
 
         assertEquals(
                 "Number of preferences has changed, please check and update preferenceCount"

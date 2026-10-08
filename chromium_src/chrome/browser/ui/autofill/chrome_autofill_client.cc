@@ -25,7 +25,7 @@
 #include "mojo/public/cpp/bindings/associated_receiver.h"
 #include "ui/base/l10n/l10n_util.h"
 
-#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES) && !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/email_aliases/email_aliases_service_factory.h"
 #include "brave/browser/ui/email_aliases/email_aliases_controller.h"
 #include "brave/components/email_aliases/email_aliases_service.h"
@@ -50,7 +50,7 @@ bool IsPrivateProfile(content::WebContents* web_contents) {
          profile->IsTor();
 }
 
-#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES) && !BUILDFLAG(IS_ANDROID)
 email_aliases::EmailAliasesController* GetEmailAliasesControllerFromWebContents(
     content::WebContents* web_contents) {
   tabs::TabInterface* tab =
@@ -107,14 +107,14 @@ class BraveChromeAutofillClient : public ChromeAutofillClient {
       const PasswordFormClassification& form_classification,
       const FormFieldData& field,
       std::vector<Suggestion>& chrome_suggestions) override {
-#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES) && !BUILDFLAG(IS_ANDROID)
     AddEmailAliasSuggestsion(form_classification, field, chrome_suggestions);
 #endif
   }
 
   bool BraveHandleSuggestion(const Suggestion& suggestion,
                              const autofill::FieldGlobalId& field) override {
-#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES) && !BUILDFLAG(IS_ANDROID)
     if (HandleEmailAliasSuggestsion(suggestion, field)) {
       return true;
     }
@@ -123,7 +123,7 @@ class BraveChromeAutofillClient : public ChromeAutofillClient {
   }
 
  private:
-#if BUILDFLAG(ENABLE_EMAIL_ALIASES)
+#if BUILDFLAG(ENABLE_EMAIL_ALIASES) && !BUILDFLAG(IS_ANDROID)
   std::optional<Suggestion> GetYourEmailAliasesSuggestions() {
     auto* profile =
         Profile::FromBrowserContext(web_contents()->GetBrowserContext());
