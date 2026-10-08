@@ -8,12 +8,16 @@
 #include <algorithm>
 #include <utility>
 
+#include "base/barrier_callback.h"
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
 #include "base/logging.h"
+#include "base/strings/string_util.h"
+#include "base/strings/utf_string_conversions.h"
 #include "base/task/sequenced_task_runner.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_database.h"
+#include "brave/components/ai_chat/core/browser/dreaming_text_utils.h"
 #include "brave/components/ai_chat/core/browser/learned_memory_eval.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
@@ -95,6 +99,7 @@ void UserMemoryManager::OnAllConversationsDeleted() {
   if (dreaming_run_) {
     dreaming_run_->Cancel();
   }
+  pending_review_.reset();
   if (!data_source_->IsStorageReady()) {
     // Storage is off. OnStorageReady() starts everything again.
     dreaming_timer_.Stop();
@@ -105,6 +110,36 @@ void UserMemoryManager::OnAllConversationsDeleted() {
   // its schedule.
   if (!LearnedMemoryEval::IsEnabled() && !dreaming_timer_.IsRunning()) {
     ScheduleNextDailyDreaming();
+  }
+}
+
+void UserMemoryManager::OnConversationDeleted(
+    const std::string& conversation_uuid) {
+  DropReviewWithSource([&](const MemorySourceLink& link) {
+    return link.conversation_uuid == conversation_uuid;
+  });
+}
+
+void UserMemoryManager::OnConversationEntryRemoved(
+    const std::string& conversation_uuid,
+    const std::string& entry_uuid) {
+  DropReviewWithSource([&](const MemorySourceLink& link) {
+    return link.entry_uuid == entry_uuid;
+  });
+}
+
+void UserMemoryManager::DropReviewWithSource(
+    base::FunctionRef<bool(const MemorySourceLink&)> matches) {
+  if (!pending_review_) {
+    return;
+  }
+  for (const DreamingProposal& proposal : pending_review_->proposals) {
+    if (std::ranges::any_of(proposal.memory.links, matches) ||
+        (proposal.memory.previous &&
+         std::ranges::any_of(proposal.memory.previous->links, matches))) {
+      pending_review_.reset();
+      return;
+    }
   }
 }
 
@@ -129,6 +164,17 @@ void UserMemoryManager::GetLearnedMemories(LearnedMemoriesCallback callback) {
 void UserMemoryManager::DeleteLearnedMemory(
     const std::string& uuid,
     base::OnceCallback<void(bool)> callback) {
+  if (pending_review_) {
+    std::erase_if(pending_review_->proposals,
+                  [&](const DreamingProposal& proposal) {
+                    return proposal.memory.uuid == uuid;
+                  });
+    if (pending_review_->proposals.empty()) {
+      // Nothing is left to review: the turns are done.
+      SetWatermarks(pending_review_->watermarks);
+      pending_review_.reset();
+    }
+  }
   data_source_->DeleteLearnedMemory(uuid, std::move(callback));
 }
 
@@ -141,7 +187,104 @@ void UserMemoryManager::DeleteAllLearnedMemories(
       ScheduleNextDailyDreaming();
     }
   }
+  if (pending_review_) {
+    // The watermarks move, so the discarded changes do not come back.
+    SetWatermarks(pending_review_->watermarks);
+    pending_review_.reset();
+  }
   data_source_->DeleteAllLearnedMemories(std::move(callback));
+}
+
+void UserMemoryManager::ApplyDreamingReview(
+    std::vector<DreamingReviewDecision> kept,
+    base::OnceCallback<void(bool)> callback) {
+  if (!pending_review_ || !data_source_->IsStorageReady()) {
+    std::move(callback).Run(false);
+    return;
+  }
+  std::vector<DreamingProposal> proposals;
+  for (const DreamingReviewDecision& decision : kept) {
+    auto it = std::ranges::find(
+        pending_review_->proposals, decision.uuid,
+        [](const DreamingProposal& proposal) { return proposal.memory.uuid; });
+    if (it == pending_review_->proposals.end()) {
+      continue;
+    }
+    DreamingProposal proposal = *it;
+    if (decision.text) {
+      std::string text(
+          base::TrimWhitespaceASCII(*decision.text, base::TRIM_ALL));
+      if (text.empty() ||
+          base::UTF8ToUTF16(text).size() > kMaxMemoryTextLength) {
+        std::move(callback).Run(false);
+        return;
+      }
+      if (text != proposal.memory.text) {
+        if (proposal.stored && !proposal.memory.previous) {
+          proposal.memory.previous =
+              PreviousMemoryText{proposal.stored->text, proposal.stored->links};
+        }
+        proposal.memory.text = std::move(text);
+      }
+    }
+    proposals.push_back(std::move(proposal));
+  }
+  std::map<std::string, base::Time> watermarks =
+      std::move(pending_review_->watermarks);
+  pending_review_.reset();
+  applying_review_ = true;
+  // A memory can change after the run, for example by a delete. Read the text
+  // versions before the writes.
+  data_source_->GetLearnedMemoryStamps(base::BindOnce(
+      &UserMemoryManager::OnStampsForReview, weak_ptr_factory_.GetWeakPtr(),
+      std::move(proposals), std::move(watermarks), std::move(callback)));
+}
+
+void UserMemoryManager::OnStampsForReview(
+    std::vector<DreamingProposal> kept,
+    std::map<std::string, base::Time> watermarks,
+    base::OnceCallback<void(bool)> callback,
+    std::vector<LearnedMemoryStamp> stamps) {
+  std::map<std::string, int> versions;
+  for (const LearnedMemoryStamp& stamp : stamps) {
+    versions[stamp.uuid] = stamp.text_version;
+  }
+  std::vector<LearnedMemory> writes;
+  for (DreamingProposal& proposal : kept) {
+    auto it = versions.find(proposal.memory.uuid);
+    const bool unchanged = proposal.stored
+                               ? it != versions.end() &&
+                                     it->second == proposal.stored->text_version
+                               : it == versions.end();
+    if (unchanged) {
+      writes.push_back(std::move(proposal.memory));
+    }
+  }
+  auto barrier = base::BarrierCallback<bool>(
+      writes.size() + watermarks.size(),
+      base::BindOnce(&UserMemoryManager::OnReviewApplied,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+  for (LearnedMemory& memory : writes) {
+    data_source_->AddOrUpdateLearnedMemory(std::move(memory), barrier);
+  }
+  for (const auto& [conversation_uuid, date] : watermarks) {
+    data_source_->SetMemoryWatermark(conversation_uuid, date, barrier);
+  }
+}
+
+void UserMemoryManager::OnReviewApplied(base::OnceCallback<void(bool)> callback,
+                                        std::vector<bool> results) {
+  applying_review_ = false;
+  std::move(callback).Run(
+      std::ranges::all_of(results, [](bool success) { return success; }));
+}
+
+void UserMemoryManager::SetWatermarks(
+    const std::map<std::string, base::Time>& watermarks) {
+  for (const auto& [conversation_uuid, date] : watermarks) {
+    data_source_->SetMemoryWatermark(conversation_uuid, date,
+                                     base::DoNothing());
+  }
 }
 
 void UserMemoryManager::GetMemoriesForTurn(
@@ -183,6 +326,10 @@ void UserMemoryManager::StartRun(DreamingCallback callback,
                                  const DreamingConfig& config) {
   if (dreaming_run_) {
     std::move(callback).Run(DreamingResult(DreamingStatus::kBusy));
+    return;
+  }
+  if (pending_review_ || applying_review_) {
+    std::move(callback).Run(DreamingResult(DreamingStatus::kReviewPending));
     return;
   }
   if (!data_source_->IsStorageReady() || !search_) {
@@ -227,8 +374,9 @@ void UserMemoryManager::OnDreamingTimer() {
     ScheduleDreaming(kRetryDelay);
     return;
   }
-  if (!search_) {
-    // The embeddings service is not there (yet). Check again later.
+  if (!search_ || pending_review_ || applying_review_) {
+    // The embeddings service is not there (yet), or the user did not review
+    // the last run. Check again later.
     ScheduleDreaming(kRetryDelay);
     return;
   }
@@ -247,6 +395,16 @@ void UserMemoryManager::OnDreamingDone(DreamingResult result) {
   task_runner->DeleteSoon(FROM_HERE, std::move(dreaming_run_));
   task_runner->DeleteSoon(FROM_HERE, std::move(run_llm_engine_));
 
+  if (result.review) {
+    if (result.review->proposals.empty()) {
+      // Nothing to review: the turns are done.
+      SetWatermarks(result.review->watermarks);
+    } else {
+      pending_review_ = std::move(result.review);
+    }
+    result.review.reset();
+  }
+
   // In eval mode, the eval reports the result, and no timer runs.
   const bool schedule = !LearnedMemoryEval::IsEnabled();
   switch (schedule ? result.status : DreamingStatus::kCanceled) {
@@ -262,6 +420,7 @@ void UserMemoryManager::OnDreamingDone(DreamingResult result) {
     case DreamingStatus::kCanceled:
     case DreamingStatus::kBusy:
     case DreamingStatus::kUnavailable:
+    case DreamingStatus::kReviewPending:
       // Storage is gone, or the chats or the memories were deleted.
       // OnStorageReady(), OnAllConversationsDeleted() and
       // DeleteAllLearnedMemories() schedule again.

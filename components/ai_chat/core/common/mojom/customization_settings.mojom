@@ -69,6 +69,8 @@ enum DreamNowStatus {
   kBusy,
   // Learned memory is not available, or the memory setting is off.
   kUnavailable,
+  // The changes of the last run wait for the user's review.
+  kReviewPending,
 };
 
 struct DreamNowResult {

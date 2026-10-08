@@ -64,6 +64,8 @@ mojom::DreamNowStatus ToMojom(DreamingStatus status) {
       return mojom::DreamNowStatus::kBusy;
     case DreamingStatus::kUnavailable:
       return mojom::DreamNowStatus::kUnavailable;
+    case DreamingStatus::kReviewPending:
+      return mojom::DreamNowStatus::kReviewPending;
   }
   NOTREACHED();
 }

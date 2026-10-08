@@ -8,10 +8,12 @@
 
 #include <map>
 #include <memory>
+#include <optional>
 #include <string>
 #include <vector>
 
 #include "base/functional/callback.h"
+#include "base/functional/function_ref.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/time/time.h"
@@ -35,9 +37,18 @@ namespace ai_chat {
 
 class LearnedMemoryEval;
 
+// A change of the review that the user keeps, and its text when the user
+// edited it.
+struct DreamingReviewDecision {
+  std::string uuid;
+  std::optional<std::string> text;
+};
+
 // Learns memories from past chats (Dreaming) and finds the memories that fit a
 // chat turn. AIChatService owns one instance, and registers it as an observer.
 // A timer starts Dreaming one time each day while chat history storage is on.
+// With DreamingConfig::review_changes, a run stores nothing: its changes wait
+// in memory for the user's review, and no run starts before the review ends.
 // All chat data comes from the LearnedMemoryDataSource, which is the
 // AIChatService, so the manager holds no database.
 class UserMemoryManager : public AIChatService::Observer {
@@ -95,6 +106,12 @@ class UserMemoryManager : public AIChatService::Observer {
   // or storage was turned off. Stops the current run, and the timer if storage
   // is off.
   void OnAllConversationsDeleted() override;
+  // The review is dropped when a change in it came from the deleted chat or
+  // turn: the change would bring the deleted source back. The watermarks did
+  // not move, so the next run learns again from the chats that are left.
+  void OnConversationDeleted(const std::string& conversation_uuid) override;
+  void OnConversationEntryRemoved(const std::string& conversation_uuid,
+                                  const std::string& entry_uuid) override;
 
   bool is_storage_ready() const { return data_source_->IsStorageReady(); }
   bool has_learned_memory_search() const { return !!search_; }
@@ -103,7 +120,8 @@ class UserMemoryManager : public AIChatService::Observer {
 
   // Starts a Dreaming run, and runs |callback| when the run ends. Only one run
   // can be active. When the manager cannot start a run (no storage or no
-  // search), |callback| runs with kBusy or kUnavailable.
+  // search), |callback| runs with kBusy or kUnavailable, and with
+  // kReviewPending while a review waits.
   void LearnFromChats(DreamingCallback callback);
 
   // Same as LearnFromChats(), for the "Dream now" button. The run has a longer
@@ -116,16 +134,30 @@ class UserMemoryManager : public AIChatService::Observer {
   void GetLearnedMemories(LearnedMemoriesCallback callback);
 
   // Deletes the memory for good. Nothing remembers it, so Dreaming can learn
-  // the same fact again from another chat. |callback| gets false when storage
-  // is not ready or the delete failed.
+  // the same fact again from another chat. Its change in the review goes too.
+  // |callback| gets false when storage is not ready or the delete failed.
   void DeleteLearnedMemory(const std::string& uuid,
                            base::OnceCallback<void(bool)> callback);
 
   // Deletes all learned memories, and cancels the current run first: the run
   // would write the memories that it loaded again. The watermarks stay, so
-  // Dreaming learns only from new turns. |callback| gets false when storage is
-  // not ready or the delete failed.
+  // Dreaming learns only from new turns. A review that waits is discarded, and
+  // its watermarks move. |callback| gets false when storage is not ready or
+  // the delete failed.
   void DeleteAllLearnedMemories(base::OnceCallback<void(bool)> callback);
+
+  // The changes of the last run that wait for the user's review, or null.
+  const DreamingReview* pending_review() const {
+    return pending_review_ ? &*pending_review_ : nullptr;
+  }
+
+  // Ends the review: stores the changes in |kept|, with the text that the user
+  // edited, discards the others, and moves the watermarks of the run. A change
+  // of a memory that changed after the run is not stored. |callback| gets
+  // false when no review waits, an edited text is empty or too long (then the
+  // review stays), or a write failed.
+  void ApplyDreamingReview(std::vector<DreamingReviewDecision> kept,
+                           base::OnceCallback<void(bool)> callback);
 
   // Chat time. Finds the learned memories for a chat turn, and runs |callback|
   // with them. |user_messages| are the last user messages, the newest first.
@@ -151,6 +183,17 @@ class UserMemoryManager : public AIChatService::Observer {
   void ScheduleNextDailyDreaming();
   void OnDreamingTimer();
   void OnDreamingDone(DreamingResult result);
+  void OnStampsForReview(std::vector<DreamingProposal> kept,
+                         std::map<std::string, base::Time> watermarks,
+                         base::OnceCallback<void(bool)> callback,
+                         std::vector<LearnedMemoryStamp> stamps);
+  void OnReviewApplied(base::OnceCallback<void(bool)> callback,
+                       std::vector<bool> results);
+  // Moves the watermarks, and ignores the results.
+  void SetWatermarks(const std::map<std::string, base::Time>& watermarks);
+  // Drops the review when a change in it has a source that |matches|.
+  void DropReviewWithSource(
+      base::FunctionRef<bool(const MemorySourceLink&)> matches);
 
   std::unique_ptr<MemoryDecisionClient> decision_client_;
   LlmEngineFactory llm_engine_factory_;
@@ -166,6 +209,9 @@ class UserMemoryManager : public AIChatService::Observer {
   std::unique_ptr<EngineConsumer> run_llm_engine_;
   std::unique_ptr<DreamingRun> dreaming_run_;
   DreamingCallback dreaming_callback_;
+  std::optional<DreamingReview> pending_review_;
+  // The writes of a review are on their way. No run starts before they land.
+  bool applying_review_ = false;
   std::unique_ptr<LearnedMemoryEval> eval_;
   // The active lookups for chat turns.
   std::map<uint64_t, std::unique_ptr<TurnMemoryLookup>> turn_lookups_;

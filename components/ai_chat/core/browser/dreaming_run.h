@@ -50,6 +50,50 @@ enum class DreamingStatus {
   kBusy,
   // Learned memory is not available, for example storage is off.
   kUnavailable,
+  // The changes of the last run wait for the user's review.
+  kReviewPending,
+};
+
+// A change that a run wants to make, for the user to review.
+struct DreamingProposal {
+  enum class Kind {
+    // A memory that the run learned.
+    kNew,
+    // A stored memory with a new text: a replace or a merge.
+    kChanged,
+    // A stored memory that the run saw again. Only its dates and sources move.
+    kSeenAgain,
+  };
+
+  DreamingProposal();
+  DreamingProposal(const DreamingProposal&);
+  DreamingProposal& operator=(const DreamingProposal&);
+  DreamingProposal(DreamingProposal&&);
+  DreamingProposal& operator=(DreamingProposal&&);
+  ~DreamingProposal();
+
+  Kind kind = Kind::kNew;
+  // The memory as the run would store it.
+  LearnedMemory memory;
+  // The stored memory at the start of the run. Null for kNew.
+  std::optional<LearnedMemory> stored;
+};
+
+// What a run learned, held until the user reviews it. Nothing is stored before
+// that, and the watermarks stay, so a review that is lost (for example at a
+// restart) is made again by the next run.
+struct DreamingReview {
+  DreamingReview();
+  DreamingReview(const DreamingReview&) = delete;
+  DreamingReview& operator=(const DreamingReview&) = delete;
+  DreamingReview(DreamingReview&&);
+  DreamingReview& operator=(DreamingReview&&);
+  ~DreamingReview();
+
+  // One for each memory, with all the changes of the run.
+  std::vector<DreamingProposal> proposals;
+  // The watermarks of the turns that the run read, set when the review ends.
+  std::map<std::string, base::Time> watermarks;
 };
 
 const char* DreamingStatusToString(DreamingStatus status);
@@ -75,6 +119,9 @@ struct DreamingResult {
   // Each step with its inputs, outputs and latency, when
   // DreamingConfig::record_trace is true. The eval harness reads it.
   base::ListValue trace;
+  // When DreamingConfig::review_changes is true: what the run learned, for the
+  // user to review. Null when the run was canceled.
+  std::optional<DreamingReview> review;
 };
 
 struct DreamingConfig {
@@ -106,6 +153,9 @@ struct DreamingConfig {
   float min_neighbor_similarity = 0.5f;
   // Records each step in DreamingResult::trace.
   bool record_trace = false;
+  // Stores nothing and moves no watermark: the run gives its changes in
+  // DreamingResult::review, for the user to review.
+  bool review_changes = false;
 };
 
 // One Dreaming run. UserMemoryManager makes it, and deletes it after |done|
@@ -123,6 +173,8 @@ struct DreamingConfig {
 //  6. asks the relation question, and the LLM when it is not certain
 //  7. merges with the LLM (the same guards)
 //  8. stores the memory, and moves the watermark of the chat
+// With DreamingConfig::review_changes, step 8 changes only the run's own copy
+// of the memories, and the run gives the changes for review when it ends.
 class DreamingRun {
  public:
   using DoneCallback = base::OnceCallback<void(DreamingResult)>;
@@ -259,6 +311,9 @@ class DreamingRun {
                   passage_embeddings::ComputeEmbeddingsStatus status);
 
   void Finish(DreamingStatus status);
+  // The changes of the turns that the run finished, against the memories at
+  // the start of the run.
+  DreamingReview MakeReview() const;
 
   // Adds a step to the trace when the config asks for it. The step gets the
   // time since the start of the run, and the current turn.
@@ -291,6 +346,12 @@ class DreamingRun {
 
   std::map<std::string, base::Time> watermarks_;
   std::vector<LearnedMemory> memories_;
+  // With review_changes: the memories at the start of the run and at the start
+  // of the current turn, and the watermarks of the finished turns. A turn that
+  // did not finish is not in the review: the next run reads it again.
+  std::vector<LearnedMemory> stored_memories_;
+  std::optional<std::vector<LearnedMemory>> turn_start_memories_;
+  std::map<std::string, base::Time> review_watermarks_;
   // The embeddings of the texts that this run wrote, by memory uuid. The index
   // gets them only after its next sync, so the neighbor search uses these.
   std::map<std::string, std::vector<float>> run_embeddings_;

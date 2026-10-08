@@ -526,7 +526,9 @@ class UserMemoryManagerTest : public testing::Test {
     MakeManager(/*with_llm=*/true);
   }
 
-  void MakeManager(bool with_llm, bool record_trace = false) {
+  void MakeManager(bool with_llm,
+                   bool record_trace = false,
+                   bool review = false) {
     auto client = std::make_unique<FakeDecisionClient>();
     client_ = client.get();
     // A new engine for each run, the same as AIChatService.
@@ -543,6 +545,7 @@ class UserMemoryManagerTest : public testing::Test {
     manager_.reset();
     DreamingConfig config = UserMemoryManager::GetDreamingConfigFromFeatures();
     config.record_trace = record_trace;
+    config.review_changes = review;
     manager_ = std::make_unique<UserMemoryManager>(
         std::move(client), std::move(llm_engine_factory), &embedder_, &prefs_,
         &data_source_, config);
@@ -1227,6 +1230,85 @@ TEST_F(UserMemoryManagerTest, ReplaceKeepsTheOldText) {
   EXPECT_EQ(memories[0].previous->text, "Lives in San Francisco");
   EXPECT_THAT(memories[0].links,
               ElementsAre(MemorySourceLink{"chat-1", "chat-1-entry-0", 0}));
+}
+
+TEST_F(UserMemoryManagerTest, ReviewStoresOnlyWhatTheUserKeeps) {
+  MakeManager(/*with_llm=*/true, /*record_trace=*/false, /*review=*/true);
+  const std::string move = "We just moved to Berlin.";
+  const std::string dog = "I have a dog.";
+  AddMemory("Lives in San Francisco");
+  MakeClose(move, "Lives in San Francisco");
+  AddChat("chat-1", {move, dog});
+  KeepSentence(move, move);
+  KeepSentence(dog, dog);
+  client_->relations[{move, "Lives in San Francisco"}] =
+      RelationAnswer::kReplace;
+  StorageReady();
+
+  DreamingResult result = Dream();
+
+  // Nothing is stored before the review.
+  EXPECT_EQ(result.status, DreamingStatus::kCompleted);
+  EXPECT_EQ(result.memories_added, 1u);
+  EXPECT_EQ(result.memories_updated, 1u);
+  EXPECT_THAT(GetMemories(),
+              ElementsAre(testing::Field(&LearnedMemory::text,
+                                         "Lives in San Francisco")));
+  const DreamingReview* review = manager_->pending_review();
+  ASSERT_TRUE(review);
+  ASSERT_EQ(review->proposals.size(), 2u);
+  const DreamingProposal& changed = review->proposals[0];
+  EXPECT_EQ(changed.kind, DreamingProposal::Kind::kChanged);
+  EXPECT_EQ(changed.memory.text, move);
+  ASSERT_TRUE(changed.stored);
+  EXPECT_EQ(changed.stored->text, "Lives in San Francisco");
+  EXPECT_EQ(review->proposals[1].kind, DreamingProposal::Kind::kNew);
+  EXPECT_EQ(review->proposals[1].memory.text, dog);
+  // No run starts before the review ends.
+  EXPECT_EQ(Dream().status, DreamingStatus::kReviewPending);
+
+  // The user keeps the change with a new text, and discards the new memory.
+  base::test::TestFuture<bool> applied;
+  manager_->ApplyDreamingReview({{changed.memory.uuid, "Lives in Berlin"}},
+                                applied.GetCallback());
+  EXPECT_TRUE(applied.Get());
+
+  EXPECT_FALSE(manager_->pending_review());
+  auto memories = GetMemories();
+  ASSERT_EQ(memories.size(), 1u);
+  EXPECT_EQ(memories[0].text, "Lives in Berlin");
+  ASSERT_TRUE(memories[0].previous);
+  EXPECT_EQ(memories[0].previous->text, "Lives in San Francisco");
+  // The watermarks moved, so the discarded memory does not come back.
+  EXPECT_EQ(Dream().turns_read, 0u);
+}
+
+TEST_F(UserMemoryManagerTest, ReviewDoesNotBringBackAMemoryGoneMeanwhile) {
+  MakeManager(/*with_llm=*/true, /*record_trace=*/false, /*review=*/true);
+  const std::string move = "We just moved to Berlin.";
+  AddMemory("Lives in San Francisco");
+  MakeClose(move, "Lives in San Francisco");
+  AddChat("chat-1", {move});
+  KeepSentence(move, move);
+  client_->relations[{move, "Lives in San Francisco"}] =
+      RelationAnswer::kReplace;
+  StorageReady();
+  Dream();
+  ASSERT_TRUE(manager_->pending_review());
+  const std::string uuid = manager_->pending_review()->proposals[0].memory.uuid;
+
+  // The memory goes without the manager, for example with the chat it came
+  // from.
+  base::test::TestFuture<bool> deleted;
+  db_.AsyncCall(&AIChatDatabase::DeleteLearnedMemory)
+      .WithArgs(uuid)
+      .Then(deleted.GetCallback());
+  ASSERT_TRUE(deleted.Get());
+
+  base::test::TestFuture<bool> applied;
+  manager_->ApplyDreamingReview({{uuid, std::nullopt}}, applied.GetCallback());
+  EXPECT_TRUE(applied.Get());
+  EXPECT_THAT(GetMemories(), IsEmpty());
 }
 
 TEST_F(UserMemoryManagerTest, ShortTermNeverReplaces) {

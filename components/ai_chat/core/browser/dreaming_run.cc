@@ -14,6 +14,7 @@
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
+#include "base/task/sequenced_task_runner.h"
 #include "base/uuid.h"
 #include "brave/components/ai_chat/core/browser/dreaming_text_utils.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
@@ -129,6 +130,8 @@ const char* DreamingStatusToString(DreamingStatus status) {
       return "busy";
     case DreamingStatus::kUnavailable:
       return "unavailable";
+    case DreamingStatus::kReviewPending:
+      return "review_pending";
   }
 }
 
@@ -159,6 +162,19 @@ DreamingResult::DreamingResult(DreamingStatus status) : status(status) {}
 DreamingResult::DreamingResult(DreamingResult&&) = default;
 DreamingResult& DreamingResult::operator=(DreamingResult&&) = default;
 DreamingResult::~DreamingResult() = default;
+
+DreamingProposal::DreamingProposal() = default;
+DreamingProposal::DreamingProposal(const DreamingProposal&) = default;
+DreamingProposal& DreamingProposal::operator=(const DreamingProposal&) =
+    default;
+DreamingProposal::DreamingProposal(DreamingProposal&&) = default;
+DreamingProposal& DreamingProposal::operator=(DreamingProposal&&) = default;
+DreamingProposal::~DreamingProposal() = default;
+
+DreamingReview::DreamingReview() = default;
+DreamingReview::DreamingReview(DreamingReview&&) = default;
+DreamingReview& DreamingReview::operator=(DreamingReview&&) = default;
+DreamingReview::~DreamingReview() = default;
 
 DreamingRun::Fact::Fact() = default;
 DreamingRun::Fact::Fact(Fact&&) = default;
@@ -239,6 +255,9 @@ void DreamingRun::OnWatermarks(std::map<std::string, base::Time> watermarks) {
 
 void DreamingRun::OnMemories(std::vector<LearnedMemory> memories) {
   memories_ = std::move(memories);
+  if (config_.review_changes) {
+    stored_memories_ = memories_;
+  }
   if (tracing()) {
     base::ListValue texts;
     for (const auto& memory : memories_) {
@@ -324,6 +343,9 @@ void DreamingRun::ProcessNextTurn() {
     return;
   }
   ++result_.turns_read;
+  if (config_.review_changes) {
+    turn_start_memories_ = memories_;
+  }
   candidates_.clear();
   facts_.clear();
   next_fact_ = 0;
@@ -571,6 +593,12 @@ void DreamingRun::OnFactEmbeddings(std::vector<std::vector<float>> vectors) {
 void DreamingRun::FinishTurn() {
   Trace("watermark",
         base::DictValue().Set("date", base::TimeFormatAsIso8601(turn().date)));
+  if (config_.review_changes) {
+    base::Time& watermark = review_watermarks_[turn().conversation_uuid];
+    watermark = std::max(watermark, turn().date);
+    OnWatermarkSet(true);
+    return;
+  }
   data_source_->SetMemoryWatermark(
       turn().conversation_uuid, turn().date,
       base::BindOnce(&DreamingRun::OnWatermarkSet,
@@ -583,6 +611,7 @@ void DreamingRun::OnWatermarkSet(bool success) {
     return;
   }
   turns_.pop_front();
+  turn_start_memories_.reset();
   ProcessNextTurn();
 }
 
@@ -843,6 +872,14 @@ void DreamingRun::AddNewMemory() {
 void DreamingRun::Store(LearnedMemory memory,
                         bool is_new,
                         std::optional<std::vector<float>> embedding) {
+  if (config_.review_changes) {
+    // Only the run's copy changes, for the facts that come next.
+    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+        FROM_HERE,
+        base::BindOnce(&DreamingRun::OnStored, weak_ptr_factory_.GetWeakPtr(),
+                       std::move(memory), is_new, std::move(embedding), true));
+    return;
+  }
   LearnedMemory copy = memory;
   data_source_->AddOrUpdateLearnedMemory(
       std::move(copy),
@@ -984,6 +1021,22 @@ void DreamingRun::Finish(DreamingStatus status) {
   weak_ptr_factory_.InvalidateWeakPtrs();
   embed_job_.reset();
   result_.status = status;
+  if (config_.review_changes && status != DreamingStatus::kCanceled) {
+    if (turn_start_memories_) {
+      memories_ = std::move(*turn_start_memories_);
+      turn_start_memories_.reset();
+    }
+    result_.review = MakeReview();
+    result_.memories_added = 0;
+    result_.memories_updated = 0;
+    for (const DreamingProposal& proposal : result_.review->proposals) {
+      if (proposal.kind == DreamingProposal::Kind::kNew) {
+        ++result_.memories_added;
+      } else {
+        ++result_.memories_updated;
+      }
+    }
+  }
   Trace("done",
         base::DictValue()
             .Set("status", DreamingStatusToString(status))
@@ -993,6 +1046,34 @@ void DreamingRun::Finish(DreamingStatus status) {
   // The owner can delete this object in |done_|, so this must be the last
   // use of the members.
   std::move(done_).Run(std::move(result_));
+}
+
+DreamingReview DreamingRun::MakeReview() const {
+  DreamingReview review;
+  review.watermarks = review_watermarks_;
+  for (const LearnedMemory& memory : memories_) {
+    auto stored =
+        std::ranges::find(stored_memories_, memory.uuid, &LearnedMemory::uuid);
+    DreamingProposal proposal;
+    proposal.memory = memory;
+    if (stored == stored_memories_.end()) {
+      proposal.kind = DreamingProposal::Kind::kNew;
+    } else if (*stored == memory) {
+      continue;
+    } else if (stored->text == memory.text) {
+      proposal.kind = DreamingProposal::Kind::kSeenAgain;
+      proposal.stored = *stored;
+    } else {
+      proposal.kind = DreamingProposal::Kind::kChanged;
+      // A run can change a memory twice. The text to go back to is the stored
+      // one.
+      proposal.memory.previous =
+          PreviousMemoryText{stored->text, stored->links};
+      proposal.stored = *stored;
+    }
+    review.proposals.push_back(std::move(proposal));
+  }
+  return review;
 }
 
 }  // namespace ai_chat
