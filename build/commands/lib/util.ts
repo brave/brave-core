@@ -4,7 +4,13 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import path from 'node:path'
-import { spawn, spawnSync } from 'node:child_process'
+import {
+  spawn,
+  spawnSync,
+  type ChildProcess,
+  type SpawnOptions,
+  type SpawnSyncOptions,
+} from 'node:child_process'
 import readline from 'node:readline'
 import os from 'node:os'
 import config from './config.ts'
@@ -22,10 +28,48 @@ import { isCI, isTeamcity } from './ciDetect.ts'
 import * as buildDiagnostics from './buildDiagnostics.ts'
 import * as processUtil from './processUtil.ts'
 
+export type RunOptions = SpawnSyncOptions & {
+  // Don't exit the process when the command fails.
+  continueOnFail?: boolean | undefined
+  // Don't log the command (and dump it on failure instead).
+  skipLogging?: boolean | undefined
+}
+
+type RunAsyncOptions = SpawnOptions & {
+  continueOnFail?: boolean | undefined
+  verbose?: boolean | undefined
+  onSpawn?: ((prog: ChildProcess) => void) | undefined
+  onStdErrLine?: ((line: string) => void) | undefined
+  onStdOutLine?: ((line: string) => void) | undefined
+}
+
+class RunAsyncError extends Error {
+  readonly stderr: string
+  readonly stdout: string
+  readonly statusCode: number | null
+
+  constructor(
+    message: string,
+    stderr: string,
+    stdout: string,
+    statusCode: number | null,
+  ) {
+    super(message)
+    this.stderr = stderr
+    this.stdout = stdout
+    this.statusCode = statusCode
+  }
+}
+
+interface GitExclusions {
+  add?: string[]
+  remove?: string[]
+}
+
 // Do not limit the number of listeners to avoid warnings from EventEmitter.
 process.setMaxListeners(0)
 
-async function generateInstrumentationFile(instrumentationFile) {
+async function generateInstrumentationFile(instrumentationFile: string) {
   const files = await Array.fromAsync(glob(`**/*.{cc,c,h,cpp,hpp,m,mm}`))
 
   const paths = files.map((x) => `../../brave/${x}`)
@@ -43,10 +87,13 @@ async function generateInstrumentationFile(instrumentationFile) {
  *
  * Exported for tests.
  *
- * @param {{path?: string}[]} patchStatus The statuses, prefixed in place.
- * @param {...string} prefix The path segments of the repo they came from.
+ * @param patchStatus The statuses, prefixed in place.
+ * @param prefix The path segments of the repo they came from.
  */
-export function prefixPatchPaths(patchStatus, ...prefix) {
+export function prefixPatchPaths(
+  patchStatus: { path?: string }[],
+  ...prefix: string[]
+) {
   for (const status of patchStatus) {
     if (status.path) {
       status.path = path.join(...prefix, status.path)
@@ -54,13 +101,13 @@ export function prefixPatchPaths(patchStatus, ...prefix) {
   }
 }
 
-async function applyPatches(printPatchFailuresInJson) {
+async function applyPatches(printPatchFailuresInJson?: boolean) {
   Log.progressStart('apply patches')
   // Always detect if we need to apply patches, since user may have modified
   // either chromium source files, or .patch files manually
   // Which repositories are patched, and where their patches and sources live,
   // comes from `patches/.repositories.cfg`, the same file plaster reads.
-  const allPatchStatus = []
+  const allPatchStatus: Awaited<ReturnType<GitPatcher['applyPatches']>> = []
   for (const repo of getPatchedRepositories()) {
     const patcher = new GitPatcher(repo.patchDir, repo.path)
     const patchStatus = await patcher.applyPatches()
@@ -104,11 +151,11 @@ async function applyPatches(printPatchFailuresInJson) {
   Log.progressFinish('apply patches')
 }
 
-const isOverrideNewer = (original, override) => {
+function isOverrideNewer(original: string, override: string) {
   return fs.statSync(override).mtimeMs - fs.statSync(original).mtimeMs > 0
 }
 
-const updateFileUTimesIfOverrideIsNewer = (original, override) => {
+function updateFileUTimesIfOverrideIsNewer(original: string, override: string) {
   if (isOverrideNewer(original, override)) {
     const date = new Date()
     fs.utimesSync(original, date, date)
@@ -118,7 +165,7 @@ const updateFileUTimesIfOverrideIsNewer = (original, override) => {
   return false
 }
 
-const deleteFileIfOverrideIsNewer = (original, override) => {
+function deleteFileIfOverrideIsNewer(original: string, override: string) {
   if (fs.existsSync(original) && isOverrideNewer(original, override)) {
     try {
       fs.unlinkSync(original)
@@ -132,7 +179,7 @@ const deleteFileIfOverrideIsNewer = (original, override) => {
   return false
 }
 
-const getAdditionalGenLocation = () => {
+function getAdditionalGenLocation() {
   if (config.targetOS === 'android') {
     if (config.targetArch === 'arm64') {
       return 'android_clang_arm'
@@ -148,8 +195,7 @@ const getAdditionalGenLocation = () => {
   return ''
 }
 
-/** @returns {[string, string[]]} */
-const normalizeCommand = (cmd, args) => {
+function normalizeCommand(cmd: string, args: string[]): [string, string[]] {
   if (process.platform === 'win32') {
     args = ['/c', cmd, ...args]
     cmd = 'cmd'
@@ -160,18 +206,18 @@ const normalizeCommand = (cmd, args) => {
 const util = {
   generateInstrumentationFile,
   runProcess: (
-    cmd,
-    args = [],
-    options = /** @type {Record<string, any>} */ ({}),
+    cmd: string,
+    args: string[] = [],
+    options: SpawnSyncOptions = {},
     skipLogging = false,
   ) => {
     if (!skipLogging) {
-      Log.command(options.cwd, cmd, args)
+      Log.command(options.cwd?.toString(), cmd, args)
     }
     return spawnSync(...normalizeCommand(cmd, args), options)
   },
 
-  run: (cmd, args = [], options = {}) => {
+  run: (cmd: string, args: string[] = [], options: RunOptions = {}) => {
     const { continueOnFail, skipLogging, ...cmdOptions } = options
     const prog = util.runProcess(cmd, args, cmdOptions, skipLogging)
     if (prog.status !== 0) {
@@ -188,8 +234,13 @@ const util = {
     return prog
   },
 
-  runGit: (repoPath, gitArgs, continueOnFail = false, options = {}) => {
-    let prog = util.run('git', gitArgs, {
+  runGit: (
+    repoPath: string,
+    gitArgs: string[],
+    continueOnFail = false,
+    options: RunOptions = {},
+  ) => {
+    const prog = util.run('git', gitArgs, {
       cwd: repoPath,
       continueOnFail,
       ...options,
@@ -203,11 +254,11 @@ const util = {
   },
 
   runAsync: (
-    cmd,
-    args = [],
-    options = /** @type {Record<string, any>} */ ({}),
-  ) => {
-    let {
+    cmd: string,
+    args: string[] = [],
+    options: RunAsyncOptions = {},
+  ): Promise<string> => {
+    const {
       continueOnFail,
       verbose,
       onSpawn,
@@ -216,7 +267,7 @@ const util = {
       ...cmdOptions
     } = options
     if (verbose !== false) {
-      Log.command(cmdOptions.cwd, cmd, args)
+      Log.command(cmdOptions.cwd?.toString(), cmd, args)
     }
     return new Promise((resolve, reject) => {
       const prog = spawn(...normalizeCommand(cmd, args), cmdOptions)
@@ -224,7 +275,7 @@ const util = {
         onSpawn(prog)
       }
       const signalsToForward = ['SIGINT', 'SIGTERM', 'SIGQUIT', 'SIGHUP']
-      const signalHandler = (s) => {
+      const signalHandler = (s: NodeJS.Signals) => {
         prog.kill(s)
       }
       signalsToForward.forEach((signal) => {
@@ -260,7 +311,10 @@ const util = {
           })
         }
       }
-      const closeHandler = (statusCode, signal) => {
+      const closeHandler = (
+        statusCode: number | null,
+        signal: NodeJS.Signals | null,
+      ) => {
         signalsToForward.forEach((signal) => {
           process.removeListener(signal, signalHandler)
         })
@@ -274,13 +328,12 @@ const util = {
           }
         }
         if (hasFailed) {
-          const err =
-            /** @type {Error & {stderr: string, stdout: string, statusCode: number}} */ (
-              new Error(`Program ${cmd} exited with error code ${statusCode}.`)
-            )
-          err.stderr = stderr
-          err.stdout = stdout
-          err.statusCode = statusCode
+          const err = new RunAsyncError(
+            `Program ${cmd} exited with error code ${statusCode}.`,
+            stderr,
+            stdout,
+            statusCode,
+          )
           reject(err)
           if (!continueOnFail) {
             console.error(err.message)
@@ -319,7 +372,12 @@ const util = {
     })
   },
 
-  runGitAsync: function (repoPath, gitArgs, verbose = false, logError = false) {
+  runGitAsync: function (
+    repoPath: string,
+    gitArgs: string[],
+    verbose = false,
+    logError = false,
+  ) {
     return util
       .runAsync('git', gitArgs, {
         cwd: repoPath,
@@ -337,7 +395,7 @@ const util = {
       })
   },
 
-  getGitReadableLocalRef: (repoDir) => {
+  getGitReadableLocalRef: (repoDir: string) => {
     return util.runGit(
       repoDir,
       ['log', '-n', '1', '--pretty=format:%h%d'],
@@ -345,31 +403,14 @@ const util = {
     )
   },
 
-  calculateFileChecksum: (filename) => {
-    // adapted from https://github.com/kodie/md5-file
-    const BUFFER_SIZE = 8192
-    const fd = fs.openSync(filename, 'r')
-    const buffer = Buffer.alloc(BUFFER_SIZE)
-    const md5 = crypto.createHash('md5')
-
-    try {
-      let bytesRead
-      do {
-        bytesRead = fs.readSync(fd, buffer, 0, BUFFER_SIZE)
-        md5.update(buffer.slice(0, bytesRead))
-      } while (bytesRead === BUFFER_SIZE)
-    } finally {
-      fs.closeSync(fd)
-    }
-
-    return md5.digest('hex')
-  },
+  calculateFileChecksum: (filename: string) =>
+    crypto.hash('md5', fs.readFileSync(filename), 'hex'),
 
   touchOverriddenFiles: () => {
     Log.progressStart('touch original files overridden by chromium_src')
 
     // Return true when original file of |file| should be touched.
-    const applyFileFilter = (file) => {
+    const applyFileFilter = (file: string) => {
       // Only include overridable files.
       const supportedExts = [
         '.cc',
@@ -389,7 +430,6 @@ const util = {
     }
 
     const chromiumSrcDir = path.join(config.srcDir, 'brave', 'chromium_src')
-    // @ts-ignore
     const sourceFiles = util.walkSync(chromiumSrcDir, applyFileFilter)
     const additionalGen = getAdditionalGenLocation()
 
@@ -449,10 +489,9 @@ const util = {
       // Cleanup Reproxy deps cache on chromium_src override change.
       const reproxyCacheDir = `${config.rootDir}/.reproxy_cache`
       if (fs.existsSync(reproxyCacheDir)) {
-        const cacheFileFilter = (file) => {
+        const cacheFileFilter = (file: string) => {
           return file.endsWith('.cache') || file.endsWith('.cache.sha256')
         }
-        // @ts-ignore
         for (const file of util.walkSync(reproxyCacheDir, cacheFileFilter)) {
           fs.rmSync(file)
         }
@@ -461,15 +500,15 @@ const util = {
     Log.progressFinish('touch original files overridden by chromium_src')
   },
 
-  mergeWithDefault: (options) => {
+  mergeWithDefault: (options: RunOptions) => {
     return Object.assign({}, config.defaultOptions, options)
   },
 
   runGnGen: (
-    outputDir,
-    buildArgs,
-    extraGnGenOpts = [],
-    options = config.defaultOptions,
+    outputDir: string,
+    buildArgs: Record<string, unknown>,
+    extraGnGenOpts: string[] = [],
+    options: RunOptions = config.defaultOptions,
   ) => {
     // Store extraGnGenOpts in buildArgs as a comment to rerun gn gen on change.
     assert(Array.isArray(extraGnGenOpts))
@@ -505,7 +544,7 @@ const util = {
     })
   },
 
-  writeGnBuildArgs: (outputDir, buildArgs) => {
+  writeGnBuildArgs: (outputDir: string, buildArgs: Record<string, unknown>) => {
     // Generate build arguments in .gni format to be imported into args.gn. This
     // approach enables customization of args.gn without the build scripts
     // resetting it during each execution.
@@ -567,7 +606,7 @@ const util = {
     return hasGeneratedArgsUpdated || !isArgsGnValid
   },
 
-  generateNinjaFiles: async (options = config.defaultOptions) => {
+  generateNinjaFiles: async (options: RunOptions = config.defaultOptions) => {
     await Log.progressScopeAsync('generate ninja files', async () => {
       const extraGnGenOpts = config.extraGnGenOpts
         ? [config.extraGnGenOpts]
@@ -582,8 +621,10 @@ const util = {
   },
 
   buildTargets: async (
-    targets = config.buildTargets,
-    options = config.defaultOptions,
+    targets: string[] = config.buildTargets,
+    options: RunAsyncOptions & {
+      env: NodeJS.ProcessEnv
+    } = config.defaultOptions,
   ) => {
     assert(Array.isArray(targets))
 
@@ -605,12 +646,12 @@ const util = {
     let numCompileFailure = 1
     if (config.ignore_compile_failure) numCompileFailure = 0
 
-    let ninjaOpts = [
+    const ninjaOpts: string[] = [
       '-C',
       outputDir,
       ...targets,
       '-k',
-      numCompileFailure,
+      String(numCompileFailure),
       ...config.extraNinjaOpts,
     ]
 
@@ -627,7 +668,7 @@ const util = {
     // Parse output to display the build progress on Teamcity.
     if (isTeamcity) {
       let lastStatusTime = Date.now()
-      options.onStdOutLine = (line) => {
+      options.onStdOutLine = (line: string) => {
         lastBuildLogTime = Date.now()
         if (
           buildStats
@@ -649,7 +690,7 @@ const util = {
       options.onStdErrLine = options.onStdOutLine
       options.stdio = 'pipe'
     } else if (isCI) {
-      const onLine = (line) => {
+      const onLine = (line: string) => {
         lastBuildLogTime = Date.now()
         console.log(line)
       }
@@ -667,7 +708,7 @@ const util = {
       fs.unlinkSync(sisoOutputFile)
     }
 
-    let buildIdleWatchdogInterval = null
+    let buildIdleWatchdogInterval: NodeJS.Timeout | null = null
     const clearBuildIdleWatchdog = () => {
       if (buildIdleWatchdogInterval) {
         clearInterval(buildIdleWatchdogInterval)
@@ -688,10 +729,10 @@ const util = {
       }
       buildGuard.markStarted()
 
-      let buildProcess = null
+      let buildProcess: ChildProcess | null = null
       const autoninjaOptions = {
         ...options,
-        onSpawn: (prog) => {
+        onSpawn: (prog: ChildProcess) => {
           buildProcess = prog
         },
       }
@@ -791,7 +832,7 @@ const util = {
   },
 
   // Get the files that have been changed in the current diff with base branch.
-  getChangedFiles: (repoDir, base, skipLogging = false) => {
+  getChangedFiles: (repoDir: string, base: string, skipLogging = false) => {
     const upstreamCommit = util
       .run('git', ['merge-base', 'HEAD', base], { cwd: repoDir, skipLogging })
       .stdout.toString()
@@ -808,7 +849,7 @@ const util = {
   },
 
   massRename: () => {
-    let cmdOptions = config.defaultOptions
+    const cmdOptions = config.defaultOptions
     cmdOptions.cwd = config.braveCoreDir
     util.run(
       'python3',
@@ -817,38 +858,45 @@ const util = {
     )
   },
 
-  runGclient: (args, options = {}, gclientFile = config.gclientFile) => {
+  runGclient: (
+    args: string[],
+    options: RunOptions = {},
+    gclientFile = config.gclientFile,
+  ) => {
     if (config.gclientVerbose) {
       args.push('--verbose')
     }
     options.cwd = options.cwd || config.rootDir
-    options = util.mergeWithDefault(options)
-    options.env.GCLIENT_FILE = gclientFile
-    util.run('gclient', args, options)
+    const mergedOptions = util.mergeWithDefault(options)
+    mergedOptions.env.GCLIENT_FILE = gclientFile
+    util.run('gclient', args, mergedOptions)
   },
 
-  applyPatches: (printPatchFailuresInJson) => {
+  applyPatches: (printPatchFailuresInJson?: boolean) => {
     return applyPatches(printPatchFailuresInJson)
   },
 
-  walkSync: (dir, filter = null, filelist = []) => {
+  walkSync: (
+    dir: string,
+    filter: ((file: string) => boolean) | null = null,
+    filelist: string[] = [],
+  ): string[] => {
     fs.readdirSync(dir).forEach((file) => {
       if (fs.statSync(path.join(dir, file)).isDirectory()) {
         filelist = util.walkSync(path.join(dir, file), filter, filelist)
-        // @ts-ignore
-      } else if (!filter || filter.call(null, file)) {
+      } else if (!filter || filter(file)) {
         filelist = filelist.concat(path.join(dir, file))
       }
     })
     return filelist
   },
 
-  appendExeIfWin32: (input) => {
+  appendExeIfWin32: (input: string) => {
     if (process.platform === 'win32') input += '.exe'
     return input
   },
 
-  readJSON: (file, defaultValue = undefined) => {
+  readJSON: (file: string, defaultValue: any = undefined) => {
     if (!fs.existsSync(file)) {
       return defaultValue
     }
@@ -859,11 +907,11 @@ const util = {
     }
   },
 
-  writeJSON: (file, value) => {
+  writeJSON: (file: string, value: unknown) => {
     return fs.writeJSONSync(file, value, { spaces: 2 })
   },
 
-  getGitDir: (repoDir) => {
+  getGitDir: (repoDir: string) => {
     const dotGitPath = path.join(repoDir, '.git')
     if (!fs.existsSync(dotGitPath)) {
       return null
@@ -886,7 +934,7 @@ const util = {
     return gitDir
   },
 
-  getGitInfoExcludeFileName: (repoDir, create) => {
+  getGitInfoExcludeFileName: (repoDir: string, create: boolean) => {
     const gitDir = util.getGitDir(repoDir)
     if (!gitDir) {
       assert(!create, `Can't create git exclude, .git not found in: ${repoDir}`)
@@ -906,21 +954,19 @@ const util = {
     return excludeFileName
   },
 
-  isGitExclusionExists: (repoDir, exclusion) => {
+  isGitExclusionExists: (repoDir: string, exclusion: string) => {
     const excludeFileName = util.getGitInfoExcludeFileName(repoDir, false)
     if (!excludeFileName) {
       return false
     }
-    const lines = fs.readFileSync(excludeFileName).toString().split(/\r?\n/)
-    for (const line of lines) {
-      if (line === exclusion) {
-        return true
-      }
-    }
-    return false
+    const lines = fs.readFileSync(excludeFileName, 'utf8').split(/\r?\n/)
+    return lines.includes(exclusion)
   },
 
-  modifyGitExclusions: (repoDir, { add = [], remove = [] }) => {
+  modifyGitExclusions: (
+    repoDir: string,
+    { add = [], remove = [] }: GitExclusions,
+  ) => {
     const excludeFileName = util.getGitInfoExcludeFileName(
       repoDir,
       add.length > 0,
@@ -928,7 +974,7 @@ const util = {
     if (!excludeFileName) {
       return
     }
-    let lines = fs.readFileSync(excludeFileName).toString().split(/\r?\n/)
+    let lines = fs.readFileSync(excludeFileName, 'utf8').split(/\r?\n/)
     lines = lines.filter((line) => !remove.includes(line))
     for (const exclusion of add) {
       if (!lines.includes(exclusion)) {
@@ -938,8 +984,8 @@ const util = {
     util.writeFileIfModified(excludeFileName, lines.join('\n'))
   },
 
-  fetchAndCheckoutRef: (repoDir, ref) => {
-    const options = { cwd: repoDir, stdio: 'inherit' }
+  fetchAndCheckoutRef: (repoDir: string, ref: string) => {
+    const options: RunOptions = { cwd: repoDir, stdio: 'inherit' }
     util.run('git', ['fetch', 'origin', ref.replace(/^origin\//, '')], options)
     util.run(
       'git',
@@ -948,7 +994,7 @@ const util = {
     )
   },
 
-  writeFileIfModified: (filePath, content) => {
+  writeFileIfModified: (filePath: string, content: string) => {
     if (
       !fs.existsSync(filePath)
       || fs.readFileSync(filePath, { encoding: 'utf-8' }) !== content
@@ -962,7 +1008,7 @@ const util = {
     return false
   },
 
-  readLines: async function* (filePath, maxLines) {
+  readLines: async function* (filePath: string, maxLines?: number) {
     const rl = readline.createInterface({
       input: fs.createReadStream(filePath),
       crlfDelay: Infinity,

@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 import { glob, rm } from 'node:fs/promises'
 import fs from 'fs-extra'
-import utils from '../lib/util.js'
+import utils from '../lib/util.ts'
 import config from '../lib/config.ts'
 import * as buildOptions from '../lib/buildOptions.ts'
 

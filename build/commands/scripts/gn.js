@@ -8,7 +8,7 @@ import '../lib/checkEnvironment.js'
 
 import { program } from 'commander'
 import config from '../lib/config.ts'
-import util from '../lib/util.js'
+import util from '../lib/util.ts'
 import * as buildOptions from '../lib/buildOptions.ts'
 
 program
