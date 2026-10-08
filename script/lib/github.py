@@ -233,7 +233,10 @@ def add_reviewers_to_pull_request(
             + ')`'
         )
         return
-    response = repo.pulls(pr_number).requested_reviewers.post(data=patch_data)
+    response = _request_with_retry(
+        lambda: repo.pulls(pr_number).requested_reviewers.post(data=patch_data),
+        'requesting reviewers for #' + str(pr_number),
+    )
     if verbose:
         print(
             'repo.pulls('
@@ -355,20 +358,27 @@ def _retry_http_error(code, body):
         return True
     if code != 422:
         return False
-    # GitHub also returns 422 when an endpoint has been spammed. A body that
-    # names field errors is a rejected value and is not retried.
+    # A 422 that names a rejected field is permanent. Other 422s are GitHub's
+    # generic failure, including "Could not add requested reviewers".
     try:
         parsed = json.loads(body)
     except ValueError:
         return True
-    return not isinstance(parsed, dict) or not parsed.get('errors')
+    if not isinstance(parsed, dict):
+        return True
+    errors = parsed.get('errors')
+    if not isinstance(errors, list):
+        return True
+    return not any(
+        isinstance(item, dict) and item.get('field') for item in errors
+    )
 
 
-def _patch_issue(repo, issue_number, patch_data):
+def _request_with_retry(action, description):
     delay_seconds = 2
     for attempt in range(3):
         try:
-            return repo.issues(issue_number).patch(data=patch_data)
+            return action()
         except urllib.error.HTTPError as e:
             body = e.read().decode('utf-8', errors='replace')
             if attempt == 2 or not _retry_http_error(e.code, body):
@@ -379,14 +389,21 @@ def _patch_issue(repo, issue_number, patch_data):
             if attempt == 2:
                 raise
         print(
-            '[WARNING] transient GitHub error updating '
-            + str(list(patch_data.keys()))
+            '[WARNING] transient GitHub error '
+            + description
             + ', retrying in '
             + str(delay_seconds)
             + 's'
         )
         time.sleep(delay_seconds)
         delay_seconds *= 2
+
+
+def _patch_issue(repo, issue_number, patch_data):
+    return _request_with_retry(
+        lambda: repo.issues(issue_number).patch(data=patch_data),
+        'updating ' + str(list(patch_data.keys())),
+    )
 
 
 def fetch_origin_check_staged(path):
