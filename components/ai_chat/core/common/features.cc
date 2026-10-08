@@ -241,6 +241,9 @@ bool IsBraveSyncAIChatEnabled() {
 
 BASE_FEATURE(kAIChatThreads, base::FEATURE_DISABLED_BY_DEFAULT);
 
+const base::FeatureParam<size_t> kMaxThreadsPerOriginEntry{
+    &kAIChatThreads, "max_threads_per_origin_entry", 1};
+
 BASE_FEATURE(kAIChatConversationShare, base::FEATURE_ENABLED_BY_DEFAULT);
 
 const base::FeatureParam<std::string> kAIChatConversationShareBaseUrl{
