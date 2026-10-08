@@ -24,7 +24,7 @@ GITHUB_UPLOAD_ASSET_URL = 'https://uploads.github.com'
 # GitHub uses 403 and 429 for rate limits. The rest are temporary outages.
 _TRANSIENT_HTTP_CODES = (403, 429, 500, 502, 503, 504)
 # Do not stall an uplift for a full primary rate-limit window.
-_MAX_RETRY_WAIT_SECONDS = 120
+_MAX_RETRY_WAIT_SECONDS = 600
 
 
 class GitHub:
@@ -432,7 +432,16 @@ def _wait_seconds(backoff, headers):
     advised = _rate_limit_wait_seconds(headers)
     if advised is None or advised <= backoff:
         return backoff
-    return min(advised, _MAX_RETRY_WAIT_SECONDS)
+    # Sleeping only up to the cap would retry while GitHub is still blocking.
+    if advised > _MAX_RETRY_WAIT_SECONDS:
+        raise Exception(
+            'GitHub asked us to wait '
+            + str(advised)
+            + 's, longer than the '
+            + str(_MAX_RETRY_WAIT_SECONDS)
+            + 's limit'
+        )
+    return advised
 
 
 def _patch_issue(repo, issue_number, patch_data):
