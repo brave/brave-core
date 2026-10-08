@@ -2236,6 +2236,41 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 "
 `;
 
+exports[`mangled files should have up to date snapshots ./chromium_src/chrome/browser/resources/settings/site_settings/add_site_dialog.html.lit_mangler.ts should match snapshot 1`] = `
+"===================================================================
+--- ../chrome/browser/resources/settings/site_settings/add_site_dialog.html
++++ gen/chrome/browser/resources/settings/preprocessed/site_settings/add_site_dialog.html
+@@ -1,23 +1,17 @@
+-    <cr-dialog id="dialog" close-text="$i18n{close}">
++<cr-dialog id="dialog" close-text="$i18n{close}">
+       <div slot="title">$i18n{addSiteTitle}</div>
+       <div slot="body">
+-        <cr-input id="site" label="$i18n{addSite}"
+-            placeholder="$i18n{addSiteExceptionPlaceholder}"
+-            .value="\${this.site_}" @input="\${this.onInput_}"
+-            error-message="\${this.errorMessage_}" spellcheck="false"
+-            autofocus></cr-input>
+-        <cr-checkbox id="incognito"
+-            ?hidden="\${!this.showIncognitoSessionOnly_()}">
++        <cr-input id="site" label="$i18n{addSite}" placeholder="\${this.category === 'braveShields' ? '$i18n{braveShieldsExampleTemplate}' : '$i18n{addSiteExceptionPlaceholder}'}" .value="\${this.site_}" @input="\${this.onInput_}" error-message="\${this.errorMessage_}" spellcheck="false" autofocus=""></cr-input>
++        <cr-checkbox id="incognito" ?hidden="\${!this.showIncognitoSessionOnly_()}">
+           $i18n{incognitoSiteOnly}
+         </cr-checkbox>
+       </div>
+       <div slot="button-container">
+         <cr-button class="cancel-button" @click="\${this.onCancelClick_}">
+           $i18n{cancel}
+         </cr-button>
+-        <cr-button class="action-button" id="add" @click="\${this.onSubmitClick_}"
+-            disabled>
++        <cr-button class="action-button" id="add" @click="\${this.onSubmitClick_}" disabled="">
+           $i18n{add}
+         </cr-button>
+       </div>
+     </cr-dialog>
+"
+`;
+
 exports[`mangled files should have up to date snapshots ./chromium_src/chrome/browser/resources/settings/system_page/system_page.html.ts.lit_mangler.ts should match snapshot 1`] = `
 "===================================================================
 --- ../chrome/browser/resources/settings/system_page/system_page.html.ts
