@@ -22,3 +22,14 @@ substitutions:
     regex:
       pattern: 'if (enable_desktop_android_extensions) {'
       replace: 'if (is_android && enable_extensions_core) {'
+
+  - description: |-
+      chrome://extensions needs color_change_listener too, but the existing
+      block also pulls in discards, which is unrelated; add this as its own
+      conditional instead of broadening/splitting that one.
+    add_literal_to_list:
+      target: browser
+      list_name: deps
+      literal:
+        '[ "//ui/webui/resources/cr_components/color_change_listener:mojom" ]'
+      conditional: is_android && !is_desktop_android && enable_extensions_core

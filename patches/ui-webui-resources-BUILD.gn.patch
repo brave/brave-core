@@ -1,16 +1,17 @@
 diff --git a/ui/webui/resources/BUILD.gn b/ui/webui/resources/BUILD.gn
-index e044096934a47ae8abcc2723944b95fa1861320f..5f496170dbc016fc20204d3c502925b55e35c05b 100644
+index e044096934a47ae8abcc2723944b95fa1861320f..2231bd85b3820c08900c29b3cde23875067d0845 100644
 --- a/ui/webui/resources/BUILD.gn
 +++ b/ui/webui/resources/BUILD.gn
-@@ -2,6 +2,7 @@
+@@ -2,6 +2,8 @@
  # Use of this source code is governed by a BSD-style license that can be
  # found in the LICENSE file.
  
++import("//extensions/buildflags/buildflags.gni")
 +import("//brave/ui/webui/resources/sources.gni")
  import("//components/signin/features.gni")
  import("//crypto/features.gni")
  import("//tools/grit/grit_rule.gni")
-@@ -41,6 +42,7 @@ generate_grd("build_grd") {
+@@ -41,6 +43,7 @@ generate_grd("build_grd") {
      "mojo:build_grdp",
      "//third_party/lit/v3_0:build_grdp",
    ]
@@ -18,7 +19,7 @@ index e044096934a47ae8abcc2723944b95fa1861320f..5f496170dbc016fc20204d3c502925b5
    grdp_files = [
      "$root_gen_dir/third_party/lit/v3_0/resources.grdp",
      "$target_gen_dir/cr_components/commerce/resources.grdp",
-@@ -50,6 +52,7 @@ generate_grd("build_grd") {
+@@ -50,6 +53,7 @@ generate_grd("build_grd") {
      "$target_gen_dir/js/resources.grdp",
      "$target_gen_dir/mojo/resources.grdp",
    ]
@@ -26,3 +27,22 @@ index e044096934a47ae8abcc2723944b95fa1861320f..5f496170dbc016fc20204d3c502925b5
  
    if ((!is_android && !is_ios) || is_desktop_android) {
      public_deps += [
+@@ -128,6 +132,18 @@ generate_grd("build_grd") {
+     public_deps += [ "cr_components/signin:build_grdp" ]
+     grdp_files += [ "$target_gen_dir/cr_components/signin/resources.grdp" ]
+   }
++  if (is_android && !is_desktop_android && enable_extensions_core) {
++    public_deps += [
++      "cr_components/color_change_listener:build_grdp",
++      "cr_components/cr_shortcut_input:build_grdp",
++      "cr_components/managed_footnote:build_grdp",
++    ]
++    grdp_files += [
++      "$root_gen_dir/ui/webui/resources/cr_components/color_change_listener/resources.grdp",
++      "$target_gen_dir/cr_components/cr_shortcut_input/resources.grdp",
++      "$target_gen_dir/cr_components/managed_footnote/resources.grdp",
++    ]
++  }
+ }
+ 
+ if (is_chromeos) {
