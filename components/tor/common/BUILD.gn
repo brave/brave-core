@@ -14,6 +14,7 @@ static_library("common") {
   ]
 
   deps = [
+    "//base",
     "//net",
     "//services/network/public/cpp",
     "//third_party/blink/public/common",
