@@ -10,8 +10,6 @@ import {
   PolymerElement
 } from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 
-import { PrefsMixin, PrefsMixinInterface } from
-  '/shared/settings/prefs/prefs_mixin.js'
 import { routes } from '../route.js'
 import {
   RouteObserverMixin,
@@ -30,8 +28,8 @@ import { getTemplate } from './model_config_subpage.html.js'
 import './model_config_ui.js'
 
 const ModelConfigSubpageBase =
-    SettingsViewMixin(PrefsMixin(I18nMixin(RouteObserverMixin(PolymerElement)))) as {
-      new (): PolymerElement & PrefsMixinInterface & I18nMixinInterface &
+    SettingsViewMixin(I18nMixin(RouteObserverMixin(PolymerElement))) as {
+      new (): PolymerElement & I18nMixinInterface &
         RouteObserverMixinInterface
     }
 
