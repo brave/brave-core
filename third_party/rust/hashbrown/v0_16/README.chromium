@@ -1,6 +1,7 @@
 Name: hashbrown
 URL: https://crates.io/crates/hashbrown
 Version: 0.16.1
+Revision: 1876e4f02708b93903d55ef598f68e82a826518f
 License: Apache-2.0
 License File:
 Shipped: yes
