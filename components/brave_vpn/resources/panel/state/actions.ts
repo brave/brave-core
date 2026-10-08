@@ -58,6 +58,8 @@ export const showLoadingView = createAction('showLoadingView')
 export const resetConnectionState = createAction('resetConnectionState')
 export const connectToNewRegionAutomatically =
   createAction('connectToNewRegionAutomatically')
+export const reconnectToAgent = createAction('reconnectToAgent')
+export const agentFailure = createAction('agentFailure')
 
 export const purchaseFailed =
   createAction<purchasedStatePayload>('purchaseFailed')

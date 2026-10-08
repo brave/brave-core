@@ -68,6 +68,7 @@ export function createVpnStore() {
     onSelectedRegionChanged: updateConnectionInfo,
     onPurchasedStateChanged: updateConnectionInfo,
     onSmartProxyRoutingStateChanged: (enabled: boolean) => {},
+    onAgentFailure: () => {},
   })
 
   vpnService.addObserver(vpnServiceObserver.$.bindNewPipeAndPassRemote())

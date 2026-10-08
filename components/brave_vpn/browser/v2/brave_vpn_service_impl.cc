@@ -217,6 +217,10 @@ void BraveVpnServiceImpl::OnAgentConnectionFailed(AgentClient::Error error) {
 
   UpdateConnectionState(mojom::ConnectionState::CONNECT_NO_AGENT,
                         std::move(connection_error_message));
+
+  // Sent after the state so observers see it first. A failure may leave the
+  // state unchanged, and the UI still needs it to finish a pending retry.
+  NotifyAgentFailure();
 }
 
 void BraveVpnServiceImpl::OnAgentLaunchFailed(
@@ -245,6 +249,10 @@ void BraveVpnServiceImpl::OnAgentLaunchFailed(
 
   UpdateConnectionState(mojom::ConnectionState::CONNECT_NO_AGENT,
                         std::move(connection_error_message));
+
+  // Sent after the state so observers see it first. A failure may leave the
+  // state unchanged, and the UI still needs it to finish a pending retry.
+  NotifyAgentFailure();
 }
 
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
