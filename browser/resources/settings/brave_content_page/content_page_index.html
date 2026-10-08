@@ -11,14 +11,13 @@
 
 <cr-view-manager id="viewManager" class="cr-centered-card-container"
     show-all$="[[shouldShowAll]]">
-  <settings-brave-content-content slot="view" id="parent" prefs="{{prefs}}">
+  <settings-brave-content-content slot="view" id="parent">
   </settings-brave-content-content>
 
   <template is="dom-if" if="[[showPage_(pageVisibility_.containers)]]">
     <settings-brave-content-containers
       id="containers"
       slot="view"
-      prefs="{{prefs}}"
       in-search-mode="[[inSearchMode_]]">
     </settings-brave-content-containers>
   </template>
@@ -27,7 +26,6 @@
     <settings-brave-content-traffic-control
       id="trafficControl"
       slot="view"
-      prefs="{{prefs}}"
       in-search-mode="[[inSearchMode_]]">
     </settings-brave-content-traffic-control>
   </template>
@@ -36,7 +34,6 @@
     <settings-brave-content-playlist
       id="playlist"
       slot="view"
-      prefs="{{prefs}}"
       in-search-mode="[[inSearchMode_]]">
     </settings-brave-content-playlist>
   </template>
@@ -46,13 +43,12 @@
       <settings-brave-content-speedreader
         id="speedreader"
         slot="view"
-        prefs="{{prefs}}"
-        in-search-mode="[[inSearchMode_]]">
+          in-search-mode="[[inSearchMode_]]">
       </settings-brave-content-speedreader>
     </template>
   </if>
 
   <settings-appearance-fonts-page slot="view" id="fonts"
-      data-parent-view-id="parent" prefs="{{prefs}}">
+      data-parent-view-id="parent">
   </settings-appearance-fonts-page>
 </cr-view-manager>
