@@ -9,7 +9,10 @@ import {
   RegisterPolymerTemplateModifications,
   RegisterStyleOverride
 } from 'chrome://resources/brave/polymer_overriding.js'
+import { injectStyle } from '//resources/brave/lit_overriding.js'
+import { css } from '//resources/lit/v3_0/lit.rollup.js'
 import { html as polymerHtml } from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
+import { CategoryReferenceCardElement } from '../autofill_page/category_reference_card.js'
 import { loadTimeData } from '../i18n_setup.js'
 import { routes } from '../route.js'
 import { Router } from '../router.js'
@@ -19,6 +22,15 @@ import type { Route } from '../router.js'
 import '../email_aliases_page/email_aliases_page.js'
 import { EmailAliasesStrings } from '../brave_components_webui_strings.js'
 // </if>
+
+// Each entry should act purely as a link, as it did before the "Your saved
+// info" redesign, so drop the chip grid and the separator above it.
+injectStyle(CategoryReferenceCardElement, css`
+  hr,
+  .chips-container {
+    display: none;
+  }
+`)
 
 // Make this page's section-header title style the same as the
 // settings-section's '#header .title' style, and stack the category cards into
@@ -176,19 +188,6 @@ RegisterPolymerTemplateModifications({
         sub-label="${loadTimeData.getString('autofillInPrivateSettingDesc')}"
         pref-key="brave.autofill_private_windows">
       </settings-toggle-button>
-    `)
-  },
-  'category-reference-card': (templateContent) => {
-    // Each entry should act purely as a link, as it did before the "Your saved
-    // info" redesign, so drop the chip grid and the separator above it. This
-    // style is appended after upstream's, so it wins without `!important`.
-    templateContent.appendChild(html`
-      <style>
-        hr,
-        .chips-container {
-          display: none;
-        }
-      </style>
     `)
   },
   // <if expr="enable_email_aliases">
