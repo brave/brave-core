@@ -22,6 +22,7 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsVisibilityManager;
 import org.chromium.chrome.browser.browser_controls.BrowserStateBrowserControlsVisibilityDelegate;
 import org.chromium.chrome.browser.browser_controls.TopControlsStacker;
+import org.chromium.chrome.browser.download.DownloadToolbarButtonState;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
 import org.chromium.chrome.browser.layouts.LayoutStateProvider;
 import org.chromium.chrome.browser.omnibox.OmniboxStub;
@@ -120,6 +121,8 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
             ModalDialogManager modalDialogManager,
             SnackbarManager snackbarManager,
             Runnable onSigninTapped,
+            NonNullObservableSupplier<DownloadToolbarButtonState> downloadButtonStateSupplier,
+            Runnable onDownloadButtonClicked,
             boolean suppressTabStripAtStart) {
         super(
                 controlContainer,
@@ -167,6 +170,8 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
                 modalDialogManager,
                 snackbarManager,
                 onSigninTapped,
+                downloadButtonStateSupplier,
+                onDownloadButtonClicked,
                 suppressTabStripAtStart);
 
         mBraveToolbarLayout = toolbarLayout;
