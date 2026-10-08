@@ -16,6 +16,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/solana_provider_impl.h"
+#include "brave/components/brave_wallet/common/solana_address.h"
 #include "brave/ios/browser/api/brave_wallet/brave_wallet_provider_delegate_ios+private.h"
 #include "brave/ios/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/ios/browser/brave_wallet/brave_wallet_utils.h"
@@ -51,6 +52,17 @@ constexpr char kSetPublicKeyPropertyScriptTemplate[] =
     "_braveSolanaWeb3.solanaWeb3) { window.solana.publicKey = "
     "window.__gSafeBuiltins.deepFreeze(new "
     "_braveSolanaWeb3.solanaWeb3.PublicKey('%s')) }";
+
+// Returns the canonical base58 encoding of `public_key` if it is a valid Solana
+// public key. The result only contains base58 characters, so it is safe to
+// embed in a JS string literal.
+std::optional<std::string> SanitizePublicKey(const std::string& public_key) {
+  std::optional<SolanaAddress> address = SolanaAddress::FromBase58(public_key);
+  if (!address) {
+    return std::nullopt;
+  }
+  return address->ToBase58();
+}
 
 void ExecuteJavaScript(web::WebState* web_state, const std::u16string& script) {
   if (!web_state) {
@@ -135,10 +147,13 @@ void SolanaProviderTabHelper::UpdateSolanaProperties() {
 }
 
 void SolanaProviderTabHelper::EmitConnectEvent(const std::string& public_key) {
-  // `public_key` is base58 encoded so it is safe to embed directly.
+  std::optional<std::string> sanitized_key = SanitizePublicKey(public_key);
+  if (!sanitized_key) {
+    return;
+  }
   ExecuteJavaScript(web_state_, base::UTF8ToUTF16(absl::StrFormat(
                                     kEmitPublicKeyEventScriptTemplate,
-                                    "connect", public_key)));
+                                    "connect", *sanitized_key)));
 }
 
 void SolanaProviderTabHelper::EmitDisconnectEvent() {
@@ -151,11 +166,12 @@ base::WeakPtr<SolanaProviderTabHelper> SolanaProviderTabHelper::GetWeakPtr() {
 
 void SolanaProviderTabHelper::AccountChangedEvent(
     const std::optional<std::string>& account) {
-  if (account) {
-    // `account` is base58 encoded so it is safe to embed directly.
+  std::optional<std::string> sanitized_account =
+      account ? SanitizePublicKey(*account) : std::nullopt;
+  if (sanitized_account) {
     ExecuteJavaScript(web_state_, base::UTF8ToUTF16(absl::StrFormat(
                                       kEmitPublicKeyEventScriptTemplate,
-                                      "accountChanged", *account)));
+                                      "accountChanged", *sanitized_account)));
   } else {
     ExecuteJavaScript(web_state_, u"window.solana.emit('accountChanged')");
   }
@@ -178,10 +194,13 @@ void SolanaProviderTabHelper::OnGetPublicKeyForProperties(
   if (public_key.empty()) {
     return;
   }
-  // `public_key` is base58 encoded so it is safe to embed directly.
+  std::optional<std::string> sanitized_key = SanitizePublicKey(public_key);
+  if (!sanitized_key) {
+    return;
+  }
   ExecuteJavaScript(web_state_,
                     base::UTF8ToUTF16(absl::StrFormat(
-                        kSetPublicKeyPropertyScriptTemplate, public_key)));
+                        kSetPublicKeyPropertyScriptTemplate, *sanitized_key)));
 }
 
 void SolanaProviderTabHelper::CreateProvider() {
