@@ -2118,7 +2118,7 @@ bool AIChatDatabase::ApplyRemoteEntry(
     return false;
   }
 
-  // Re-add the associated content the delete above removed, with the
+  // Re-add the associated content DeleteConversationEntry removed, with the
   // caller-supplied texts. The caller is responsible for filling in local
   // values for any field the remote sender omitted to fit the size budget.
   // An empty list means the remote entry has none, and the rows stay deleted.

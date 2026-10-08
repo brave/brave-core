@@ -1736,16 +1736,18 @@ TEST_F(AIChatDatabaseSyncTest, ApplyRemoteEntryReplacesChildRows) {
 
   EXPECT_TRUE(db_->ApplyRemoteEntry("conv", history[0]->Clone(), {}, {}));
   EXPECT_TRUE(db_->ApplyRemoteEntry("conv", history[1]->Clone(), {}, {}));
-  ExpectConversationHistoryEquals(
-      FROM_HERE, db_->GetConversationData("conv")->entries, history);
+  auto data = db_->GetConversationData("conv");
+  ASSERT_TRUE(data);
+  ExpectConversationHistoryEquals(FROM_HERE, data->entries, history);
 
   history[0]->uploaded_files->pop_back();
   history[1]->events->erase(history[1]->events->begin() + 1,
                             history[1]->events->end());
   EXPECT_TRUE(db_->ApplyRemoteEntry("conv", history[0]->Clone(), {}, {}));
   EXPECT_TRUE(db_->ApplyRemoteEntry("conv", history[1]->Clone(), {}, {}));
-  ExpectConversationHistoryEquals(
-      FROM_HERE, db_->GetConversationData("conv")->entries, history);
+  auto trimmed_data = db_->GetConversationData("conv");
+  ASSERT_TRUE(trimmed_data);
+  ExpectConversationHistoryEquals(FROM_HERE, trimmed_data->entries, history);
 }
 
 TEST_F(AIChatDatabaseSyncTest, ApplyRemoteEntryPersistsEdits) {
