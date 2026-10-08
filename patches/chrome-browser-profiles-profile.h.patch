@@ -1,0 +1,28 @@
+diff --git a/chrome/browser/profiles/profile.h b/chrome/browser/profiles/profile.h
+index c3f5e8f8e4bbeafef1741b7c8139737177fdb905..4fea4c56d5bedcdb000aa337969abc20e8646655 100644
+--- a/chrome/browser/profiles/profile.h
++++ b/chrome/browser/profiles/profile.h
+@@ -142,7 +142,13 @@ class Profile : public content::BrowserContext {
+     std::string Serialize() const;
+ #endif
+ 
++    static OTRProfileID CreateUniqueForSearchBackupResults();
++    static const OTRProfileID AIChatCodeExecutionID();
++    static const OTRProfileID TorID();
++    bool IsSearchBackupResults() const;
++
+    private:
++  friend class TorProfileManager;
+     friend std::ostream& operator<<(std::ostream& out,
+                                     const OTRProfileID& profile_id);
+ 
+@@ -522,6 +528,9 @@ class Profile : public content::BrowserContext {
+     lifecycle_state_ = lifecycle_state;
+   }
+ 
++  bool IsTor() const override;
++  bool IsAIChatAgent() const override;
++
+  protected:
+   // Creates an OffTheRecordProfile which points to this Profile.
+   static std::unique_ptr<Profile> CreateOffTheRecordProfile(
