@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/sessions/session_restore.cc b/chrome/browser/sessions/session_restore.cc
-index 684340e2ae22a97ffcbb010bc31c9f7c9433492e..c0de41f7635208fae61194250273c75c56485b07 100644
+index 684340e2ae22a97ffcbb010bc31c9f7c9433492e..6f80d38bd112e7f83d0b1367bfb722ec4d4f6d5a 100644
 --- a/chrome/browser/sessions/session_restore.cc
 +++ b/chrome/browser/sessions/session_restore.cc
 @@ -1017,6 +1017,7 @@ class SessionRestoreImpl : public BrowserCollectionObserver {
@@ -28,8 +28,8 @@ index 684340e2ae22a97ffcbb010bc31c9f7c9433492e..c0de41f7635208fae61194250273c75c
      SessionRestore::NotifySessionRestoreStartedLoadingTabs();
      int selected_index = GetNavigationIndexToSelect(tab);
  
-+    if (BraveIsScheduledForCleanup(tab.navigations[selected_index].virtual_url(),
-+                              profile_)) {
++    if (BraveIsScheduledForCleanup(
++            tab.navigations[selected_index].virtual_url(), profile_)) {
 +      return;
 +    }
 +
