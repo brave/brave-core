@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/sessions/session_restore.cc b/chrome/browser/sessions/session_restore.cc
-index 684340e2ae22a97ffcbb010bc31c9f7c9433492e..6f80d38bd112e7f83d0b1367bfb722ec4d4f6d5a 100644
+index 684340e2ae22a97ffcbb010bc31c9f7c9433492e..e5ab306a34d52fa3a34a22c44fd2562cef252410 100644
 --- a/chrome/browser/sessions/session_restore.cc
 +++ b/chrome/browser/sessions/session_restore.cc
 @@ -1017,6 +1017,7 @@ class SessionRestoreImpl : public BrowserCollectionObserver {
@@ -50,12 +50,12 @@ index 684340e2ae22a97ffcbb010bc31c9f7c9433492e..6f80d38bd112e7f83d0b1367bfb722ec
  #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
        if (url == whats_new::GetWebUIStartupURL()) {
          whats_new::StartWhatsNewFetch(browser);
-@@ -1386,9 +1402,12 @@ class SessionRestoreImpl : public BrowserCollectionObserver {
+@@ -1386,9 +1402,11 @@ class SessionRestoreImpl : public BrowserCollectionObserver {
                                 : WindowOpenDisposition::NEW_BACKGROUND_TAB;
        params.tabstrip_add_types = add_types;
        is_first_tab = false;
-+      BraveModifyStartupTabNavigationParams(startup_tab, browser, params);
-       Navigate(&params);
+-      Navigate(&params);
++      BraveNavigateStartupTab(startup_tab, browser, params);
      }
 -  }
 +    }();

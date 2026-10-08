@@ -9,6 +9,7 @@
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+#include "chrome/browser/ui/navigator/browser_navigator.h"
 #include "chrome/browser/ui/navigator/browser_navigator_params.h"
 #include "chrome/browser/ui/startup/startup_browser_creator.h"
 #include "chrome/browser/ui/startup/startup_tab_provider.h"
@@ -27,7 +28,7 @@ bool BraveIsScheduledForCleanup(const GURL& url, Profile* profile);
 
 namespace {
 
-void BraveModifyStartupTabNavigationParams(const StartupTab& tab,
+void BraveNavigateStartupTab(const StartupTab& tab,
                                            BrowserWindowInterface* browser,
                                            NavigateParams& params) {
 #if BUILDFLAG(ENABLE_CONTAINERS)
@@ -37,6 +38,7 @@ void BraveModifyStartupTabNavigationParams(const StartupTab& tab,
             browser->GetProfile(), tab.container);
   }
 #endif
+  Navigate(&params);
 }
 
 }  // namespace
