@@ -301,6 +301,24 @@ PolymerElement._prepareTemplate = function BravePolymer_PrepareTemplate() {
 
 const oldDefine = window.customElements.define
 
+// Overrides here only hook Polymer elements. When an element goes Lit, they
+// silently stop applying, so report any that are registered for one.
+function reportOverridesIgnoredForNonPolymer(name: string) {
+  const ignored = [
+    allBraveTemplateModificationsMap[name] && 'template modifications',
+    moduleNamesWithStyleOverrides[name] && 'style overrides',
+    allBehaviorsMap[name] && 'behaviors',
+    allPropertiesMap[name] && 'properties',
+    prototypeModifications[name] && 'prototype modifications',
+  ].filter(Boolean)
+  if (ignored.length) {
+    console.error(
+      `[Brave overrides] "${name}" is not a Polymer element, so its ` +
+      `${ignored.join(', ')} are ignored. Port them to a lit_mangler or ` +
+      'injectStyle.')
+  }
+}
+
 /**
  *
  * @param {string} name
@@ -329,6 +347,8 @@ function BraveDefineCustomElements(name, component, options, useIgnoreList = tru
       component = mixinBehaviors(allBehaviorsMap[name], component)
       delete allBehaviorsMap[name]
     }
+  } else {
+    reportOverridesIgnoredForNonPolymer(name)
   }
   oldDefine.call(this, name, component, options)
 }
