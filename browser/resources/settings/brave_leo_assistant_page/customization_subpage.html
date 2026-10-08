@@ -71,11 +71,11 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
 
   <settings-toggle-button
       icon="tune"
-      pref="{{prefs.brave.ai_chat.user_customization_enabled}}"
+      pref-key="brave.ai_chat.user_customization_enabled"
       label="$i18n{braveLeoAssistantCustomizationEnabledLabel}">
   </settings-toggle-button>
 
-  <template is="dom-if" if="[[prefs.brave.ai_chat.user_customization_enabled.value]]" restamp>
+  <template is="dom-if" if="[[userCustomizationEnabledPref_.value]]" restamp>
     <div class="leo-customization-form">
       <leo-input
         placeholder="$i18n{braveLeoAssistantCustomizationNamePlaceholder}"
@@ -134,6 +134,6 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
   </settings-section>
 
   <settings-section section="memories">
-    <memory-section prefs="{{prefs}}"></memory-section>
+    <memory-section></memory-section>
   </settings-section>
 </settings-subpage>
