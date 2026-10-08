@@ -6,8 +6,6 @@
 #ifndef BRAVE_COMPONENTS_SERVICES_BAT_ADS_BAT_ADS_SERVICE_IMPL_H_
 #define BRAVE_COMPONENTS_SERVICES_BAT_ADS_BAT_ADS_SERVICE_IMPL_H_
 
-#include <memory>
-
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "mojo/public/cpp/bindings/pending_associated_receiver.h"
 #include "mojo/public/cpp/bindings/pending_associated_remote.h"
@@ -45,9 +43,6 @@ class BatAdsServiceImpl final : public mojom::BatAdsService {
   mojo::Receiver<mojom::BatAdsService> bat_ads_service_receiver_{this};
   mojo::UniqueAssociatedReceiverSet<mojom::BatAds>
       bat_ads_associated_receivers_;
-
-  struct ScopedAllowSyncCall;
-  std::unique_ptr<ScopedAllowSyncCall> scoped_allow_sync_call_;
 };
 
 }  // namespace bat_ads
