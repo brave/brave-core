@@ -21,7 +21,8 @@ extension Strings {
       tableName: "FocusOnboarding",
       bundle: .module,
       value: "Got It",
-      comment: "The title of the button that dismisses the add-to-dock explainer opened from Settings"
+      comment:
+        "The title of the button that dismisses the add-to-dock explainer opened from Settings"
     )
 
     public static let noVideoAdsScreenTitle = NSLocalizedString(

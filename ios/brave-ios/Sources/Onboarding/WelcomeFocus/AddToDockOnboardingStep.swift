@@ -29,7 +29,7 @@ private struct AddToDockGraphicView: View {
 
 public struct AddToDockOnboardingStep: OnboardingStep {
   public var id: String = "add-to-dock"
-  /// Replaces the defailt (Continue) when set. Onboarding leaves this unset; 
+  /// Replaces the defailt (Continue) when set. Onboarding leaves this unset;
   public var ctaTitle: String?
 
   public init(ctaTitle: String? = nil) {
