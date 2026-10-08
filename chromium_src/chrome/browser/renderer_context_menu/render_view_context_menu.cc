@@ -14,6 +14,7 @@
 #include "base/feature_list.h"
 #include "base/logging.h"
 #include "base/notimplemented.h"
+#include "base/notreached.h"
 #include "base/strings/strcat.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/autocomplete/brave_autocomplete_scheme_classifier.h"
@@ -102,7 +103,15 @@ AutocompleteMatch GetAutocompleteMatchForText(Profile* profile,
   return match;
 }
 
-GURL GetSelectionNavigationURL(Profile* profile, const std::u16string& text) {
+// Upstream classifies the selection with AutocompleteClassifierFactory, which
+// has no service for off-the-record profiles, so classify with a temporary
+// classifier for those.
+GURL BraveResolveSelectionNavigationURL(Profile* profile,
+                                        const std::u16string& text,
+                                        const GURL& upstream_url) {
+  if (!profile->IsOffTheRecord()) {
+    return upstream_url;
+  }
   return GetAutocompleteMatchForText(profile, text).destination_url;
 }
 
@@ -123,33 +132,7 @@ base::OnceCallback<void(RenderViewContextMenu*)>* BraveGetMenuShownCallback() {
 
 }  // namespace
 
-void RenderViewContextMenu_Chromium::RegisterMenuShownCallbackForTesting(
-    base::OnceCallback<void(RenderViewContextMenu*)> cb) {
-  *BraveGetMenuShownCallback() = std::move(cb);
-}
-
-#define BRAVE_APPEND_SEARCH_PROVIDER                                     \
-  if (GetProfile()->IsOffTheRecord()) {                                  \
-    selection_navigation_url_ =                                          \
-        GetSelectionNavigationURL(GetProfile(), params_.selection_text); \
-    if (!selection_navigation_url_.is_valid())                           \
-      return;                                                            \
-  }
-
-// Use our subclass to initialize SpellingOptionsSubMenuObserver.
-#define SpellingOptionsSubMenuObserver BraveSpellingOptionsSubMenuObserver
-#define RegisterMenuShownCallbackForTesting \
-  RegisterMenuShownCallbackForTesting_unused
-#define RenderViewContextMenu RenderViewContextMenu_Chromium
-
 #include <chrome/browser/renderer_context_menu/render_view_context_menu.cc>
-
-#undef SpellingOptionsSubMenuObserver
-#undef RegisterMenuShownCallbackForTesting
-
-// Make it clear which class we mean here.
-#undef RenderViewContextMenu
-#undef BRAVE_APPEND_SEARCH_PROVIDER
 
 namespace {
 
@@ -929,6 +912,12 @@ void RenderViewContextMenu::InitMenu() {
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
   BuildEmailAliasesMenu();
 #endif
+}
+
+// static
+void RenderViewContextMenu::RegisterMenuShownCallbackForTesting(
+    base::OnceCallback<void(RenderViewContextMenu*)> cb) {
+  *BraveGetMenuShownCallback() = std::move(cb);
 }
 
 void RenderViewContextMenu::NotifyMenuShown() {
