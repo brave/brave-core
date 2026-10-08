@@ -13,6 +13,9 @@ substitutions:
       overrides of `DeviceInfoTracker`; `OnDeviceInfoDeleted` is the delayed
       continuation that `DeleteDeviceInfo` posts to re-check whether the
       deletion was ack'd by the sync server.
+      `PreserveDeviceDisplayLabel` would be private if the rewriter had a way
+      to add to that section; it is only called from the plaster inserted into
+      `SendLocalDataWithBatch`.
     add_to_public:
       class_name: DeviceInfoSyncBridge
       code: |-
@@ -21,3 +24,7 @@ substitutions:
         std::vector<DeviceInfo> GetAllBraveDeviceInfo() const override;
         void OnDeviceInfoDeleted(const std::string& client_id, const int attempt,
                                  base::OnceClosure callback);
+        void SetDeviceDisplayLabel(const std::string& client_id,
+                                   const std::string& display_label) override;
+        void PreserveDeviceDisplayLabel(
+            sync_pb::DeviceInfoSpecifics* specifics) const;

@@ -13,6 +13,7 @@
 #include "brave/components/brave_rewards/core/features.h"
 #include "brave/components/brave_search_conversion/features.h"
 #include "brave/components/brave_shields/core/common/features.h"
+#include "brave/components/brave_sync/features.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/debounce/core/common/features.h"
@@ -109,7 +110,8 @@
     &brave_shields::features::kBraveShredFeature,                              \
     &brave_origin::features::kBraveOrigin,                                     \
     &features::kBraveCustomSearchEngines,                                      \
-    &features::kBraveAndroidTabGroupsSettings
+    &features::kBraveAndroidTabGroupsSettings,                                 \
+    &brave_sync::features::kBraveSyncAllowRenameDeviceLabel
 
 // clang-format on
 

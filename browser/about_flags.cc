@@ -1660,6 +1660,15 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabMigrationChoices[] = {
               brave_sync::features::kBraveSyncDefaultPasswords),               \
       },                                                                       \
       {                                                                        \
+          "brave-sync-allow-rename-device-label",                              \
+          "Allow renaming devices in the sync chain",                          \
+          "Show a rename control for each device in the Brave Sync device "    \
+          "list, letting the user set a custom label for it.",                 \
+          kOsAll,                                                              \
+          FEATURE_VALUE_TYPE(                                                  \
+              brave_sync::features::kBraveSyncAllowRenameDeviceLabel),         \
+      },                                                                       \
+      {                                                                        \
           "brave-shred",                                                       \
           "Enable Brave 'Shred' Feature",                                      \
           "Enable the Brave 'Shred' feature which will allow a user to "       \

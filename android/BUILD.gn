@@ -538,6 +538,7 @@ android_resources("java_resources") {
     "java/brave-res/layout/brave_sync_device.xml",
     "java/brave-res/layout/brave_sync_done.xml",
     "java/brave-res/layout/brave_sync_layout.xml",
+    "java/brave-res/layout/brave_sync_rename_device.xml",
     "java/brave-res/layout/brave_toolbar.xml",
     "java/brave-res/layout/brave_trackers_ads_panel.xml",
     "java/brave-res/layout/brave_unified_panel_layout.xml",

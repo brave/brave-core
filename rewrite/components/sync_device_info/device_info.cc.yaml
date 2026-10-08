@@ -5,24 +5,28 @@
 
 substitutions:
   - description: |
-      Add `self_delete_support` to the ctor.
+      Add the Brave-only fields to the ctor.
 
-      This regex always adds the argument as the last one in the argument list. This
-      is used to initialise `self_delete_support_`.
+      This regex always adds the arguments as the last ones in the argument list.
+      They are used to initialise `self_delete_support_` and
+      `device_display_label_`.
     regex:
       re_pattern: '(DeviceInfo::DeviceInfo\(.*?)(\)\n\s+:)'
       re_flags: [DOTALL]
       replace: |-
         \1,
-            SelfDeleteSupport self_delete_support\2
+            SelfDeleteSupport self_delete_support,
+            std::string device_display_label\2
 
   - description: |
-      Initialize `self_delete_support_` in the constructor
+      Initialize the Brave-only members in the constructor
 
-      This always initialises `self_delete_support_` as the last field.
+      This always initialises `self_delete_support_` and
+      `device_display_label_` as the last fields.
     regex:
       re_pattern: '(DeviceInfo::DeviceInfo\(.*?)( \{\})'
       re_flags: [DOTALL]
       replace: |-
         \1,
-              self_delete_support_(self_delete_support)\2
+              self_delete_support_(self_delete_support),
+              device_display_label_(std::move(device_display_label))\2

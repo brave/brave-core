@@ -82,6 +82,7 @@ base::ListValue BraveSyncDevicesAndroid::GetSyncDeviceList() {
     device_value.Set(
         "supportsSelfDelete",
         device.self_delete_support() == syncer::SelfDeleteSupport::kSupported);
+    device_value.Set("displayLabel", device.device_display_label());
     device_list.Append(std::move(device_value));
   }
 
@@ -121,6 +122,23 @@ void BraveSyncDevicesAndroid::DeleteDevice(
 
   brave_sync::DeleteDevice(sync_service, device_info_sync_service,
                            str_device_guid);
+}
+
+void BraveSyncDevicesAndroid::SetDeviceDisplayLabel(
+    JNIEnv* env,
+    const base::android::JavaRef<jstring>& device_guid,
+    const base::android::JavaRef<jstring>& display_label) {
+  auto* sync_service = GetSyncService();
+  DCHECK(sync_service);
+
+  auto* device_info_sync_service =
+      DeviceInfoSyncServiceFactory::GetForProfile(profile_);
+  DCHECK(device_info_sync_service);
+
+  brave_sync::SetDeviceDisplayLabel(
+      sync_service, device_info_sync_service,
+      base::android::ConvertJavaStringToUTF8(device_guid),
+      base::android::ConvertJavaStringToUTF8(display_label));
 }
 
 static void JNI_BraveSyncDevices_Init(

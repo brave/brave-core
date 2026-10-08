@@ -27,8 +27,20 @@
         android:textColor="?attr/colorOnSurface"
         android:layout_centerVertical="true"
         android:layout_toEndOf="@+id/brave_sync_device_image"
-        android:layout_toStartOf="@+id/brave_sync_remove_device"
+        android:layout_toStartOf="@+id/brave_sync_rename_device"
         android:paddingStart="10dip" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/brave_sync_rename_device"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/ListItemEndIcon"
+        android:contentDescription="@string/brave_sync_rename_device_text"
+        android:src="@drawable/ic_edit_24dp"
+        app:tint="@color/default_icon_color_tint_list"
+        android:layout_centerVertical="true"
+        android:layout_toStartOf="@+id/brave_sync_remove_device" />
 
     <androidx.appcompat.widget.AppCompatImageView
         xmlns:app="http://schemas.android.com/apk/res-auto"

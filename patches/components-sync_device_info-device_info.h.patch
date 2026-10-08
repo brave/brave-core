@@ -1,19 +1,20 @@
 diff --git a/components/sync_device_info/device_info.h b/components/sync_device_info/device_info.h
-index 307e4c7293177fa372bc3bae20e54d73951e545a..64ac09bca1c9f9a44170c911915b4272cfa7d768 100644
+index 307e4c7293177fa372bc3bae20e54d73951e545a..694a2dd8384a7dfbd981e624365a6c3319816e8d 100644
 --- a/components/sync_device_info/device_info.h
 +++ b/components/sync_device_info/device_info.h
-@@ -222,7 +222,9 @@ class DeviceInfo {
+@@ -222,7 +222,10 @@ class DeviceInfo {
               GlicExperimentalTriggeringState glic_experimental_triggering_state,
               std::optional<int> glic_experimental_triggering_version,
               std::optional<std::string> android_os_build_fingerprint_prefix,
 -             std::optional<PersonalContextInfo> personal_context_info);
 +             std::optional<PersonalContextInfo> personal_context_info,
 +             SelfDeleteSupport self_delete_support =
-+                 SelfDeleteSupport::kNotSupported);
++                 SelfDeleteSupport::kNotSupported,
++             std::string device_display_label = std::string());
  
    DeviceInfo& operator=(const DeviceInfo&) = delete;
  
-@@ -364,6 +366,22 @@ class DeviceInfo {
+@@ -364,6 +367,28 @@ class DeviceInfo {
    // Glic. Pass std::nullopt if unavailable.
    void set_glic_experimental_triggering_version(std::optional<int> version);
  
@@ -24,6 +25,12 @@ index 307e4c7293177fa372bc3bae20e54d73951e545a..64ac09bca1c9f9a44170c911915b4272
 +  }
 +  void set_self_delete_support(SelfDeleteSupport self_delete_support) {
 +    self_delete_support_ = self_delete_support;
++  }
++  // User-chosen label for this device, empty when never renamed. Unlike
++  // `client_name()` it is not derived from the OS, so it survives having
++  // several channels of Brave installed under one machine name.
++  const std::string& device_display_label() const {
++    return device_display_label_;
 +  }
 +  // Gets the OS in string form.
 +  std::string GetOSString() const;
@@ -36,11 +43,12 @@ index 307e4c7293177fa372bc3bae20e54d73951e545a..64ac09bca1c9f9a44170c911915b4272
   private:
    // Used by DeepCopyForTesting().
    DeviceInfo(const DeviceInfo& other);
-@@ -445,6 +463,7 @@ class DeviceInfo {
+@@ -445,6 +470,8 @@ class DeviceInfo {
    // |IsStoredLocalDeviceInfoStillAccurate| in device_info_sync_bridge.cc or
    // else changes in that member might not trigger uploads of updated
    // DeviceInfos.
 +  SelfDeleteSupport self_delete_support_;
++  std::string device_display_label_;
  };
  
  }  // namespace syncer
