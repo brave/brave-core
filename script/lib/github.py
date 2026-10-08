@@ -25,6 +25,9 @@ GITHUB_UPLOAD_ASSET_URL = 'https://uploads.github.com'
 _TRANSIENT_HTTP_CODES = (403, 429, 500, 502, 503, 504)
 # Do not stall an uplift for a full primary rate-limit window.
 _MAX_RETRY_WAIT_SECONDS = 600
+# A secondary limit can omit Retry-After while the primary quota remains.
+# GitHub requires at least a minute before the next request.
+_SECONDARY_RATE_LIMIT_WAIT_SECONDS = 60
 
 
 class GitHub:
@@ -401,8 +404,13 @@ def _rate_limit_wait_seconds(headers):
     return max(0, reset_at - int(time.time()))
 
 
+def _is_secondary_rate_limit(code, body):
+    return code in (403, 429) and 'secondary rate' in body.lower()
+
+
 def _request_with_retry(action, description):
     delay_seconds = 2
+    secondary_delay = _SECONDARY_RATE_LIMIT_WAIT_SECONDS
     for attempt in range(3):
         try:
             return action()
@@ -412,11 +420,22 @@ def _request_with_retry(action, description):
                 raise Exception(
                     'HTTP Error ' + str(e.code) + ': ' + body
                 ) from e
-            wait = _wait_seconds(delay_seconds, e.headers)
+            # No Retry-After and a still-positive primary quota. The reset
+            # header is the wrong window, so back off from one minute.
+            if (
+                _is_secondary_rate_limit(e.code, body)
+                and _rate_limit_wait_seconds(e.headers) is None
+            ):
+                wait = secondary_delay
+                secondary_delay *= 2
+            else:
+                wait = _wait_seconds(delay_seconds, e.headers)
+                delay_seconds *= 2
         except urllib.error.URLError:
             if attempt == 2:
                 raise
             wait = delay_seconds
+            delay_seconds *= 2
         print(
             '[WARNING] transient GitHub error '
             + description
@@ -425,7 +444,6 @@ def _request_with_retry(action, description):
             + 's'
         )
         time.sleep(wait)
-        delay_seconds *= 2
 
 
 def _wait_seconds(backoff, headers):
