@@ -73,11 +73,6 @@ BrowserWindowFeatures::~BrowserWindowFeatures() = default;
 void BrowserWindowFeatures::Init(BrowserWindowInterface* browser) {
   auto* profile = browser->GetProfile();
 
-  // Initialize vertical tab controller first because WindowFeatureController
-  // needs it to determine whether immersive fullscreen is supported.
-  // The WindowFeatureController takes vertical tab controller via constructor
-  // and it's initialized in BrowserWindowFeatures_ChromiumImpl::Init().
-
   if (BrowserSupportsFocusMode(browser)) {
     focus_mode_controller_ =
         GetUserDataFactory().CreateInstance<FocusModeController>(

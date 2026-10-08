@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/browser_window/internal/browser_window_features.cc b/chrome/browser/ui/browser_window/internal/browser_window_features.cc
-index f51b0713750fb9775d39c252edc3f3caf4be7c52..52e8da229f99ad8685341ad6ceaed5e766436a25 100644
+index f51b0713750fb9775d39c252edc3f3caf4be7c52..4123c22e7ab2d382fa55e3bb10cb9b360de6a044 100644
 --- a/chrome/browser/ui/browser_window/internal/browser_window_features.cc
 +++ b/chrome/browser/ui/browser_window/internal/browser_window_features.cc
 @@ -243,10 +243,10 @@
@@ -16,15 +16,6 @@ index f51b0713750fb9775d39c252edc3f3caf4be7c52..52e8da229f99ad8685341ad6ceaed5e7
    // This is used only for the controllers which will be created on demand
    // later.
    browser_ = browser;
-@@ -323,7 +323,7 @@ void BrowserWindowFeatures::Init(BrowserWindowInterface* browser) {
-           BrowserInitState::From(browser)
-               ->browser_window_create_params()
-               .is_trusted_source,
--          browser->GetUnownedUserDataHost());
-+          browser->GetUnownedUserDataHost(), VerticalTabController::From(browser)->GetWeakPtr());
- 
-   side_panel_registry_ =
-       GetUserDataFactory().CreateInstance<SidePanelRegistry>(*browser, browser);
 @@ -333,11 +333,11 @@ void BrowserWindowFeatures::Init(BrowserWindowInterface* browser) {
    // initializes the default enabled states for UI commands
    // (InitCommandState). If BrowserActions is not built first, those initial
