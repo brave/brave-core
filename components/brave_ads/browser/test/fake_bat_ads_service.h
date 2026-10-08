@@ -44,8 +44,6 @@ class FakeBatAdsService : public bat_ads::mojom::BatAdsService {
     return &bat_ads_client_notifier_;
   }
 
-  const FakeBatAds& bat_ads() const { return bat_ads_; }
-
   // bat_ads::mojom::BatAdsService:
   void Create(const base::FilePath& /*service_path*/,
               mojo::PendingAssociatedRemote<bat_ads::mojom::BatAdsClient>
