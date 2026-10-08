@@ -16,10 +16,14 @@ struct ShortcutControlWidget: ControlWidget {
       return AppIntentControlConfiguration(
         kind: "ShortcutControlWidget",
         provider: ShortcutControlValueProvider()
-      ) { state in
-        ControlWidgetButton(action: OpenControlWidgetShortcutIntent(shortcut: state.actionShortcut))
-        {
-          Label(state.title, braveSystemImage: state.imageName)
+      ) { shortcut in
+        ControlWidgetButton(
+          action: OpenControlWidgetShortcutIntent(shortcut: shortcut ?? .search)
+        ) {
+          Label(
+            shortcut?.displayString ?? Strings.Widgets.shortcutControlWidgetTitle,
+            braveSystemImage: shortcut?.braveSystemImageName ?? "leo.brave.icon-monochrome"
+          )
         }
       }
       .displayName(
@@ -110,46 +114,30 @@ struct WidgetShortcutControlOptionsProvider: DynamicOptionsProvider {
 }
 
 @available(iOS 26.0, *)
-struct ShortcutControlState {
-  /// `nil` is the unconfigured control. It shows the lion and still opens Search.
-  var shortcut: WidgetShortcut?
-
-  var title: String {
-    shortcut?.displayString ?? Strings.Widgets.shortcutControlWidgetTitle
-  }
-
-  var imageName: String {
-    shortcut?.braveSystemImageName ?? "leo.brave.icon-monochrome"
-  }
-
-  var actionShortcut: WidgetShortcut {
-    shortcut ?? .search
-  }
-}
-
-@available(iOS 26.0, *)
 struct ShortcutControlValueProvider: AppIntentControlValueProvider {
-  func previewValue(configuration: ShortcutControlConfigurationIntent) -> ShortcutControlState {
-    state(for: configuration.shortcut?.widgetShortcut, disabledShortcuts: [])
+  func previewValue(configuration: ShortcutControlConfigurationIntent) -> WidgetShortcut? {
+    shortcut(for: configuration.shortcut?.widgetShortcut, disabledShortcuts: [])
   }
 
   func currentValue(
     configuration: ShortcutControlConfigurationIntent
-  ) async throws -> ShortcutControlState {
+  ) async throws -> WidgetShortcut? {
     let disabledShortcuts = await DisabledShortcutsWidgetData.loadDisabledShortcuts()
-    return state(for: configuration.shortcut?.widgetShortcut, disabledShortcuts: disabledShortcuts)
+    return shortcut(
+      for: configuration.shortcut?.widgetShortcut,
+      disabledShortcuts: disabledShortcuts
+    )
   }
 
-  private func state(
+  /// `nil` is the unconfigured control. It shows the lion and still opens Search.
+  private func shortcut(
     for shortcut: WidgetShortcut?,
     disabledShortcuts: Set<WidgetShortcut>
-  ) -> ShortcutControlState {
-    guard let shortcut else {
-      return ShortcutControlState(shortcut: nil)
-    }
+  ) -> WidgetShortcut? {
+    guard let shortcut else { return nil }
     if disabledShortcuts.contains(shortcut) {
-      return ShortcutControlState(shortcut: .search)
+      return .search
     }
-    return ShortcutControlState(shortcut: shortcut)
+    return shortcut
   }
 }
