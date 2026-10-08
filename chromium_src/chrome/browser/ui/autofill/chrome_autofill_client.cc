@@ -142,7 +142,7 @@ class BraveChromeAutofillClient : public ChromeAutofillClient {
       return std::nullopt;
     }
 
-    const auto& aliases = service->aliases();
+    const auto aliases = service->GetCachedAliases();
     if (aliases.empty()) {
       return std::nullopt;
     }
