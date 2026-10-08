@@ -6070,6 +6070,10 @@ TEST_F(ConversationHandlerUnitTest,
 
 TEST_F(ConversationHandlerUnitTest,
        SubmitHumanConversationEntry_AssistantResponseFailure) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeatureWithParameters(
+      features::kAIChat, {{"max_connection_issue_retries", "0"}});
+
   conversation_handler_->associated_content_manager()->ClearContent();
 
   MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
@@ -6105,6 +6109,121 @@ TEST_F(ConversationHandlerUnitTest,
   // Verify error is set and conversation has only human entry
   const auto& history = conversation_handler_->GetConversationHistory();
   EXPECT_EQ(history.size(), 1u);
+  EXPECT_EQ(history[0]->character_type, mojom::CharacterType::HUMAN);
+  EXPECT_EQ(conversation_handler_->current_error(),
+            mojom::APIError::ConnectionIssue);
+}
+
+TEST_F(ConversationHandlerUnitTest,
+       SubmitHumanConversationEntry_ConnectionIssueRetrySucceeds) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeatureWithParameters(
+      features::kAIChat, {{"max_connection_issue_retries", "1"}});
+
+  conversation_handler_->associated_content_manager()->ClearContent();
+
+  MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+  NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
+
+  EXPECT_CALL(*engine, RequiresClientSideTitleGeneration())
+      .WillRepeatedly(testing::Return(false));
+
+  base::RunLoop run_loop;
+
+  // The first attempt fails with a connection issue and is automatically
+  // retried, and the retry succeeds.
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .WillOnce(testing::WithArg<7>(
+          [](EngineConsumer::GenerationCompletedCallback callback) {
+            std::move(callback).Run(
+                base::unexpected(mojom::APIError::ConnectionIssue));
+          }))
+      .WillOnce(testing::DoAll(
+          testing::WithArg<6>(
+              [](EngineConsumer::GenerationDataCallback callback) {
+                std::move(callback).Run(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewCompletionEvent(
+                        mojom::CompletionEvent::New("Assistant response")),
+                    std::nullopt));
+              }),
+          testing::WithArg<7>(
+              [](EngineConsumer::GenerationCompletedCallback callback) {
+                std::move(callback).Run(
+                    base::ok(EngineConsumer::GenerationResultData(
+                        mojom::ConversationEntryEvent::NewCompletionEvent(
+                            mojom::CompletionEvent::New("")),
+                        std::nullopt)));
+              })));
+
+  EXPECT_CALL(client, OnAPIResponseError).Times(testing::AnyNumber());
+  EXPECT_CALL(client,
+              OnAPIResponseError(mojom::APIError::ConnectionIssue, testing::_))
+      .Times(0);
+
+  // One request-complete notification for the failed attempt, and one for the
+  // successful retry.
+  EXPECT_CALL(client, OnAPIRequestInProgress(true)).Times(2);
+  EXPECT_CALL(client, OnAPIRequestInProgress(false))
+      .Times(2)
+      .WillOnce(testing::Return())
+      .WillOnce(testing::InvokeWithoutArgs(&run_loop, &base::RunLoop::Quit));
+
+  conversation_handler_->SubmitHumanConversationEntry("Test question",
+                                                      std::nullopt);
+  run_loop.Run();
+
+  const auto& history = conversation_handler_->GetConversationHistory();
+  ASSERT_EQ(history.size(), 2u);
+  EXPECT_EQ(history[0]->character_type, mojom::CharacterType::HUMAN);
+  EXPECT_EQ(history[1]->character_type, mojom::CharacterType::ASSISTANT);
+  EXPECT_EQ(conversation_handler_->current_error(), mojom::APIError::None);
+}
+
+TEST_F(ConversationHandlerUnitTest,
+       SubmitHumanConversationEntry_ConnectionIssueRetryFailsAgain) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeatureWithParameters(
+      features::kAIChat, {{"max_connection_issue_retries", "1"}});
+
+  conversation_handler_->associated_content_manager()->ClearContent();
+
+  MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+  NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
+
+  EXPECT_CALL(*engine, RequiresClientSideTitleGeneration())
+      .WillRepeatedly(testing::Return(false));
+
+  base::RunLoop run_loop;
+
+  // Both the first attempt and the single automatic retry fail, so the error
+  // is surfaced.
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .Times(2)
+      .WillRepeatedly(testing::WithArg<7>(
+          [](EngineConsumer::GenerationCompletedCallback callback) {
+            std::move(callback).Run(
+                base::unexpected(mojom::APIError::ConnectionIssue));
+          }));
+
+  EXPECT_CALL(client, OnAPIResponseError).Times(testing::AnyNumber());
+  EXPECT_CALL(client,
+              OnAPIResponseError(mojom::APIError::ConnectionIssue, testing::_))
+      .Times(1);
+
+  EXPECT_CALL(client, OnAPIRequestInProgress(true)).Times(2);
+  EXPECT_CALL(client, OnAPIRequestInProgress(false))
+      .Times(2)
+      .WillOnce(testing::Return())
+      .WillOnce(testing::InvokeWithoutArgs(&run_loop, &base::RunLoop::Quit));
+
+  conversation_handler_->SubmitHumanConversationEntry("Test question",
+                                                      std::nullopt);
+  run_loop.Run();
+
+  const auto& history = conversation_handler_->GetConversationHistory();
+  ASSERT_EQ(history.size(), 1u);
   EXPECT_EQ(history[0]->character_type, mojom::CharacterType::HUMAN);
   EXPECT_EQ(conversation_handler_->current_error(),
             mojom::APIError::ConnectionIssue);

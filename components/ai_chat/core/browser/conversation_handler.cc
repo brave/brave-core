@@ -79,6 +79,8 @@ using ai_chat::mojom::ConversationTurn;
 
 constexpr size_t kDefaultSuggestionsCount = 4;
 
+constexpr base::TimeDelta kConnectionIssueRetryDelay = base::Seconds(5);
+
 // Determines whether a streamable event (e.g. completion) should be interrupted
 // by an event of type |event_tag| after which, if a new streamable chunk is
 // received, a new streamable event is created, or whether the previous
@@ -1193,6 +1195,8 @@ void ConversationHandler::StopGenerationAndMaybeGetHumanEntry(
 
   StopTask();
 
+  connection_issue_retry_timer_.Stop();
+  connection_issue_retry_count_ = 0;
   is_request_in_progress_ = false;
   thread_uuid_in_progress_ = std::nullopt;
   engine_->ClearAllQueries();
@@ -2109,6 +2113,17 @@ void ConversationHandler::OnEngineCompletionComplete(
     EngineConsumer::GenerationResult result) {
   // Handle failure
   if (!result.has_value()) {
+    if (result.error().api_error == mojom::APIError::ConnectionIssue &&
+        connection_issue_retry_count_ <
+            features::kMaxConnectionIssueRetries.Get()) {
+      ++connection_issue_retry_count_;
+      connection_issue_retry_timer_.Start(
+          FROM_HERE, kConnectionIssueRetryDelay,
+          base::BindOnce(&ConversationHandler::RetryAfterConnectionIssue,
+                         base::Unretained(this), thread_uuid));
+      return;
+    }
+    connection_issue_retry_count_ = 0;
     if (result.error().api_error != mojom::APIError::None) {
       DVLOG(2) << __func__ << ": With error";
       SetAPIError(std::move(result.error()));
@@ -2129,6 +2144,7 @@ void ConversationHandler::OnEngineCompletionComplete(
   // Handle success, which might mean do nothing much since all data was passed
   // in the streaming "received" callback.
   DVLOG(2) << __func__ << ": With value";
+  connection_issue_retry_count_ = 0;
   if ((result->event && result->event->is_completion_event() &&
        !result->event->get_completion_event()->completion.empty()) ||
       result->is_near_verified.has_value()) {
@@ -2202,6 +2218,12 @@ void ConversationHandler::CompleteGeneration(
     // we can't resume. User will have to resubmit.
     StopTask();
   }
+}
+
+void ConversationHandler::RetryAfterConnectionIssue(
+    const std::optional<std::string>& thread_uuid) {
+  CompleteGeneration(thread_uuid, false);
+  RetryAPIRequest();
 }
 
 void ConversationHandler::OnSuggestedQuestionsResponse(
