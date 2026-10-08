@@ -13,6 +13,7 @@
 #include "base/logging.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/types/expected.h"
+#include "base/values.h"
 #include "brave/components/brave_account/endpoint_client/client.h"
 #include "brave/components/constants/brave_services_key.h"
 #include "brave/components/constants/network_constants.h"
@@ -126,6 +127,7 @@ void EmailAliasesService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
 
   registry->RegisterBooleanPref(
       prefs::kEmailAliasesNewAliasAutofillSuggestionEnabled, true);
+  registry->RegisterListPref(prefs::kCachedAliases);
   EmailAliasesMetrics::RegisterProfilePrefs(registry);
   EmailAliasesNotes::RegisterProfilePrefs(registry);
 }
@@ -156,8 +158,26 @@ std::string EmailAliasesService::GetAuthEmail() const {
   return auth_->GetAuthEmail();
 }
 
+std::vector<mojom::AliasPtr> EmailAliasesService::GetCachedAliases() const {
+  EmailAliasesNotes notes(pref_service_.get(), GetAuthEmail());
+  std::vector<mojom::AliasPtr> aliases;
+  for (const auto& value : pref_service_->GetList(prefs::kCachedAliases)) {
+    const std::string* email = value.GetIfString();
+    if (!email) {
+      continue;
+    }
+    auto alias = mojom::Alias::New();
+    alias->email = *email;
+    alias->note = notes.GetNote(*email);
+    aliases.push_back(std::move(alias));
+  }
+  return aliases;
+}
+
 void EmailAliasesService::OnAuthChanged() {
-  if (IsAuthenticated() && ShouldShowPromo()) {
+  if (!IsAuthenticated()) {
+    pref_service_->ClearPref(prefs::kCachedAliases);
+  } else if (ShouldShowPromo()) {
     MarkPromoShown();
   }
   RefreshAliases();
@@ -240,7 +260,9 @@ void EmailAliasesService::OnEditAliasResponse(
 
 void EmailAliasesService::RefreshAliases() {
   CHECK(auth_);
-  aliases_.clear();
+  if (observers_.empty()) {
+    return;
+  }
   auth_->GetServiceToken(
       base::BindOnce(&EmailAliasesService::RefreshAliasesWithToken,
                      weak_factory_.GetWeakPtr()));
@@ -356,18 +378,20 @@ void EmailAliasesService::OnRefreshAliasesResponse(
   notes.RemoveNotesForDeletedAliases(response.body.value()->result);
 
   std::vector<email_aliases::mojom::AliasPtr> aliases;
+  base::ListValue cached_aliases;
   for (const auto& entry : response.body.value()->result) {
     auto alias_obj = email_aliases::mojom::Alias::New();
     alias_obj->email = entry.alias;
     alias_obj->note = notes.GetNote(entry.alias);
     aliases.push_back(std::move(alias_obj));
+    cached_aliases.Append(entry.alias);
   }
 
-  aliases_ = std::move(aliases);
+  pref_service_->SetList(prefs::kCachedAliases, std::move(cached_aliases));
 
   metrics_.ReportEmailAliasPresence(!aliases.empty());
   NotifyObserversAliasesUpdated(
-      observers_, mojom::AliasesUpdate::NewAliases(mojo::Clone(aliases_)));
+      observers_, mojom::AliasesUpdate::NewAliases(std::move(aliases)));
 }
 
 }  // namespace email_aliases
