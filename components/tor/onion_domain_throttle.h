@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_TOR_RENDERER_ONION_DOMAIN_THROTTLE_H_
-#define BRAVE_COMPONENTS_TOR_RENDERER_ONION_DOMAIN_THROTTLE_H_
+#ifndef BRAVE_COMPONENTS_TOR_ONION_DOMAIN_THROTTLE_H_
+#define BRAVE_COMPONENTS_TOR_ONION_DOMAIN_THROTTLE_H_
 
 #include <memory>
 
@@ -48,4 +48,4 @@ class OnionDomainThrottle : public blink::URLLoaderThrottle {
 
 }  // namespace tor
 
-#endif  // BRAVE_COMPONENTS_TOR_RENDERER_ONION_DOMAIN_THROTTLE_H_
+#endif  // BRAVE_COMPONENTS_TOR_ONION_DOMAIN_THROTTLE_H_

@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/tor/renderer/onion_domain_throttle.h"
+#include "brave/components/tor/onion_domain_throttle.h"
 
 #include "base/memory/ptr_util.h"
 #include "net/base/net_errors.h"

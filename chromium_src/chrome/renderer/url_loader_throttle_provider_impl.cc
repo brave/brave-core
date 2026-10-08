@@ -14,7 +14,7 @@
 #include "third_party/blink/public/web/web_local_frame.h"
 
 #if BUILDFLAG(ENABLE_TOR)
-#include "brave/components/tor/renderer/onion_domain_throttle.h"
+#include "brave/components/tor/onion_domain_throttle.h"
 #endif
 
 namespace {

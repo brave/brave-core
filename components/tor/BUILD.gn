@@ -102,6 +102,19 @@ source_set("pref_names") {
   sources = [ "pref_names.h" ]
 }
 
+static_library("onion_domain_throttle") {
+  sources = [
+    "onion_domain_throttle.cc",
+    "onion_domain_throttle.h",
+  ]
+
+  deps = [
+    "//net",
+    "//services/network/public/cpp",
+    "//third_party/blink/public/common",
+  ]
+}
+
 source_set("tor_unit_tests") {
   testonly = true
 
