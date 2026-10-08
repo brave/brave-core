@@ -12,11 +12,9 @@ substitutions:
   - description:
       'Skip opening a startup tab whose URL is scheduled for ephemeral storage
       cleanup'
+    count: 1
     regex:
-      re_pattern:
-        '(?s)(BrowserWindowInterface\*
-        StartupBrowserCreatorImpl::OpenTabsInBrowser\((?:(?!\n}\n).)*?\n  for
-        \(auto& tab : tabs\) \{\n)'
+      pattern: 'for (auto& tab : tabs) {'
       replace:
-        '\1    if (BraveIsScheduledForCleanup(tab.url, profile_))
-        {\n      continue;\n    }\n\n'
+        'for (auto& tab : tabs) {\n    if (BraveIsScheduledForCleanup(tab.url,
+        profile_)) {\n      continue;\n    }\n'
