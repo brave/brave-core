@@ -40,6 +40,7 @@ struct SponsoredImageBackground {
   string image_url;
   SponsoredImageLogo? logo;
   brave_ads.mojom.NewTabPageAdMetricType metric_type;
+  bool should_auto_display_new_tab_takeover_disclosure;
 };
 
 struct SearchEngineInfo {
@@ -146,6 +147,15 @@ interface NewTabPageHandler {
                                   string creative_instance_id,
                                   string destination_url,
                                   brave_ads.mojom.NewTabPageAdMetricType metric_type) => ();
+
+  // Notifies the browser that the user has clicked the New Tab Takeover
+  // disclosure tooltip's learn more link, permanently suppressing further
+  // auto-displays.
+  NotifyNewTabTakeoverDisclosureLearnMoreClicked() => ();
+
+  // Notifies the browser that the disclosure tooltip's auto-display timer
+  // completed and the tooltip actually became visible to the user.
+  NotifyNewTabTakeoverDisclosureTooltipAutoDisplayed() => ();
 
   // Gets or sets whether the search box is displayed on the NTP.
   GetShowSearchBox() => (bool show_search_box);

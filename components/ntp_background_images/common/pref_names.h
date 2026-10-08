@@ -14,6 +14,9 @@ inline constexpr char kNewTabPageShowBackgroundImage[] =
     "brave.new_tab_page.show_background_image";
 inline constexpr char kNewTabTakeoverInfobarRemainingDisplayCount[] =
     "brave.new_tab_page.new_tab_takeover_infobar_remaining_display_count";
+inline constexpr char kNewTabTakeoverDisclosureTooltipRemainingDisplayCount[] =
+    "brave.new_tab_page.new_tab_takeover_disclosure_tooltip_remaining_"
+    "display_count";
 
 }  // namespace ntp_background_images::prefs
 
