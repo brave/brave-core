@@ -241,6 +241,33 @@ class TabManager: NSObject {
     }
   }
 
+  /// The base domains with an open tab in any window, including windows whose
+  /// scene is dormant.
+  ///
+  /// In-memory tabs are authoritative for a connected window, but a dormant
+  /// window has none, so its persisted session is read instead (this can occur
+  /// when window was on a now disconnected external display).
+  /// - Parameter excluding: A tab to disregard, for callers asking whether a site
+  /// remains open elsewhere once this tab is gone.
+  @MainActor private static func openBaseDomainsInAllWindows(
+    isPrivate: Bool,
+    excluding excludedTab: (any TabState)? = nil
+  ) -> Set<String> {
+    let openURLs =
+      UIApplication.shared.connectedScenes
+      .compactMap { ($0 as? UIWindowScene)?.browserViewController }
+      .flatMap { $0.tabManager.tabs(isPrivate: isPrivate) }
+      .filter { $0 !== excludedTab }
+      .compactMap { $0.visibleURL }
+    let dormantWindowIds = UIApplication.shared.openSessions
+      .filter { $0.scene == nil }
+      .compactMap { BrowserState.getWindowId(from: $0).flatMap(UUID.init(uuidString:)) }
+    let dormantURLs =
+      dormantWindowIds.isEmpty
+      ? [] : SessionTab.allURLs(isPrivate: isPrivate, inWindows: dormantWindowIds)
+    return Set((openURLs + dormantURLs).compactMap { $0.urlToShred?.baseDomain })
+  }
+
   /// Function for adding local tabs as synced sessions
   /// This is used when open tabs toggle is enabled in sync settings and browser constructor
   func addRegularTabsToSyncChain() {
@@ -743,9 +770,7 @@ class TabManager: NSObject {
     Task { @MainActor in
       // Private tabs use a non-persistent data store, so only regular tabs can keep a website's
       // persistent data alive across launches.
-      let openBaseDomains = Set(
-        tabs(isPrivate: false).compactMap { $0.visibleURL?.urlToShred?.baseDomain }
-      )
+      let openBaseDomains = Self.openBaseDomainsInAllWindows(isPrivate: false)
       let isSiteClosed: (URL) -> Bool = { url in
         guard let baseDomain = url.urlToShred?.baseDomain else { return false }
         return !openBaseDomains.contains(baseDomain)
@@ -867,14 +892,12 @@ class TabManager: NSObject {
       // Will be Shred on startup at next launch in `forgetDataWithPendingShredOnStartup()`.
       return
     case .whenSiteClosed:
-      let tabs = tabs(isPrivate: tab.isPrivate).filter { existingTab in
-        existingTab !== tab
-      }
-      // Ensure that no othe tabs are open for this domain
-      guard !tabs.contains(where: { $0.visibleURL?.urlToShred?.baseDomain == baseDomain })
-      else {
-        return
-      }
+      // Ensure that no other tabs are open for this domain
+      let openBaseDomains = Self.openBaseDomainsInAllWindows(
+        isPrivate: tab.isPrivate,
+        excluding: tab
+      )
+      guard !openBaseDomains.contains(baseDomain) else { return }
       // If the app terminates before this delayed task runs, it is recovered on startup at the
       // next launch in `forgetDataWithPendingShredOnStartup()`.
       forgetDataDelayed(for: url, in: tab, delay: 30)

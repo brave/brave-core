@@ -125,6 +125,17 @@ extension SessionTab {
     return all(where: predicate, sortDescriptors: sortDescriptors) ?? []
   }
 
+  /// Returns the URLs of the persisted tabs belonging to the given windows
+  public static func allURLs(isPrivate: Bool, inWindows windowIds: [UUID]) -> [URL] {
+    let predicate = NSPredicate(
+      format:
+        "\(#keyPath(SessionTab.isPrivate)) == %@ AND \(#keyPath(SessionTab.url)) != nil AND \(#keyPath(SessionTab.sessionWindow)).windowId IN %@",
+      NSNumber(value: isPrivate),
+      windowIds
+    )
+    return all(where: predicate)?.compactMap { $0.url } ?? []
+  }
+
   public static func delete(tabId: UUID) {
     DataController.perform { context in
       guard let sessionTab = SessionTab.from(tabId: tabId, in: context) else {
