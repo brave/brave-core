@@ -22,6 +22,7 @@
 #include "brave/browser/ui/views/page_info/brave_shields_ui_contents_cache.h"
 #include "brave/browser/ui/views/toolbar/screenshot_preview_dialog.h"
 #include "brave/browser/ui/views/workspaces/workspaces_bubble_controller.h"
+#include "brave/browser/ui/window_closing_confirm/window_closing_confirm_controller.h"
 #include "brave/browser/workspaces/features.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
@@ -101,6 +102,10 @@ void BrowserWindowFeatures::Init(BrowserWindowInterface* browser) {
   brave_shields_ui_contents_cache_ =
       GetUserDataFactory().CreateInstance<BraveShieldsUIContentsCache>(
           *browser, browser->GetUnownedUserDataHost());
+
+  window_closing_confirm_controller_ =
+      GetUserDataFactory().CreateInstance<WindowClosingConfirmController>(
+          *browser, *browser);
 
   brave_non_client_hit_test_helper_ =
       GetUserDataFactory().CreateInstance<BraveNonClientHitTestHelper>(
