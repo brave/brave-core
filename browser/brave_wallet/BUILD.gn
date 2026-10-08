@@ -114,7 +114,7 @@ source_set("external_wallets_importer") {
     "//brave/third_party/argon2",
     "//components/value_store",
   ]
-  if (enable_extensions) {
+  if (enable_extensions_core) {
     deps += [
       "//extensions/browser",
       "//extensions/common",
