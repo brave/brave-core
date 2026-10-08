@@ -27,6 +27,7 @@
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
 #include "brave/components/ai_chat/core/common/constants.h"
 #include "brave/components/ai_chat/core/common/features.h"
+#include "build/build_config.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
@@ -254,7 +255,8 @@ IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentBrowserTest,
                        GrantsFileSystemAccessToWorkspaceOriginOnLoad) {
-  auto* content = CreateContent(CreateWorkspaceFolder());
+  const base::FilePath folder = CreateWorkspaceFolder();
+  auto* content = CreateContent(folder);
   const GURL workspace_url = content->page_url();
   ASSERT_EQ(
       CONTENT_SETTING_ASK,
@@ -276,7 +278,16 @@ IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentBrowserTest,
       GetSetting(workspace_url, ContentSettingsType::FILE_SYSTEM_WRITE_GUARD));
 
   // The handle the page received is for the folder this content was created
-  // with: read the test file through the handle the page saved to IndexedDB.
+  // with.
+#if BUILDFLAG(IS_WIN)
+  // %TEMP% is under %LOCALAPPDATA%, which the File System Access blocklist
+  // blocks child access to, so check the folder's unique name instead.
+  EXPECT_EQ(folder.BaseName().AsUTF8Unsafe(),
+            content::EvalJs(content->GetWebContentsForTesting(),
+                            base::StrCat({kGetStoredHandleJs,
+                                          ".then(handle => handle.name)"})));
+#else
+  // Read the test file through the handle the page saved to IndexedDB.
   EXPECT_EQ("hello world",
             content::EvalJs(content->GetWebContentsForTesting(),
                             base::StrCat({kGetStoredHandleJs, R"JS(
@@ -284,6 +295,7 @@ IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentBrowserTest,
           .then(file => file.getFile())
           .then(file => file.text())
       )JS"})));
+#endif
 
   // The grant is scoped to this workspace's own origin: it must not extend to
   // the workspace host itself, nor to any other workspace's subdomain.
