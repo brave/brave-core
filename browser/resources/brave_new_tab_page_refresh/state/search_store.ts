@@ -26,7 +26,7 @@ export type AutocompleteMatch = Pick<
   | 'contents'
   | 'description'
   | 'iconUrl'
-  | 'imageUrl'
+  | 'suggestTemplate'
   | 'destinationUrl'
 >
 
