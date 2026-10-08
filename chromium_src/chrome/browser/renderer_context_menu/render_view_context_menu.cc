@@ -14,7 +14,6 @@
 #include "base/feature_list.h"
 #include "base/logging.h"
 #include "base/notimplemented.h"
-#include "base/notreached.h"
 #include "base/strings/strcat.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/autocomplete/brave_autocomplete_scheme_classifier.h"

@@ -13,19 +13,23 @@ substitutions:
       rename: RenderViewContextMenu_Chromium
 
   - description: |
-      Trap use of the upstream RegisterMenuShownCallbackForTesting.
+      Disable the upstream RegisterMenuShownCallbackForTesting.
 
       Brave's `RenderViewContextMenu` hides this static with one that takes a
       Brave-typed callback and stores it separately. A callback registered here
-      would never run. Adding NOTREACHED() is a purely defense choice.
+      would never run, so the definition is removed to turn any stray reference
+      into a link error.
 
-      The only likely regression would be in Chromium introduces an unqualified
+      The only likely regression would be if Chromium introduces an unqualified
       reference to `RegisterMenuShownCallbackForTesting` that resolves to the
       Chromium declaration rather than Brave's subclass.
-    preempt_function_impl:
-      function_name: RenderViewContextMenu_Chromium::RegisterMenuShownCallbackForTesting
-      code: |-
-        NOTREACHED();
+    regex:
+      re_pattern: '(// static\n[^\n]*\bRenderViewContextMenu_Chromium::RegisterMenuShownCallbackForTesting\(.*?\{.*?\n\})'
+      re_flags: [DOTALL]
+      replace: |-
+        #if 0  // Brave's RenderViewContextMenu hides this static with its own.
+        \1
+        #endif
 
   - description: Use a Brave replacement for SpellingOptionsSubMenuObserver
     regex:
