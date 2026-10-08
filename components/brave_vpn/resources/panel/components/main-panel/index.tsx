@@ -166,6 +166,15 @@ function MainPanel() {
     )
   }
 
+  if (connectionStatus === ConnectionState.CONNECT_NO_AGENT) {
+    return (
+      <ErrorPanel
+        showContactSupport={showContactSupport}
+        isAgentUnavailable
+      />
+    )
+  }
+
   if (isSelectingRegion) {
     return <SelectRegionList />
   }
