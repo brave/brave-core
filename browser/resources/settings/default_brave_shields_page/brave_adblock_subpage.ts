@@ -7,7 +7,7 @@ import './components/brave_adblock_editor.js'
 import './components/brave_adblock_scriptlet_list.js'
 import './components/brave_adblock_subscribe_dropdown.js'
 
-import {PrefsMixin} from '/shared/settings/prefs/prefs_mixin.js'
+import {PrefServiceObserverMixin} from '/shared/settings/prefs2/pref_service_observer_mixin.js'
 import {I18nMixin} from 'chrome://resources/cr_elements/i18n_mixin.js'
 import type {
   DomRepeatEvent
@@ -33,7 +33,7 @@ import {getTemplate} from './brave_adblock_subpage.html.js'
 import {loadTimeData} from '../i18n_setup.js'
 
 const AdBlockSubpageBase = SettingsViewMixin(
-  PrefsMixin(I18nMixin(BaseMixin(PolymerElement))))
+  PrefServiceObserverMixin(I18nMixin(BaseMixin(PolymerElement))))
 
 class AdBlockSubpage extends AdBlockSubpageBase {
   static get is() {
@@ -57,13 +57,14 @@ class AdBlockSubpage extends AdBlockSubpageBase {
       },
       shouldShowCustomFilters_: Boolean,
       shouldShowCustomScriptlets_: Boolean,
-      customScriptlets_: Array
+      customScriptlets_: Array,
+      developerModePref_: Object
     }
   }
 
   static get observers() {
     return [
-      'updateState_(prefs.brave.ad_block.developer_mode.value, customFilters_, customScriptlets_)'
+      'updateState_(developerModePref_.value, customFilters_, customScriptlets_)'
     ]
   }
 
@@ -76,9 +77,16 @@ class AdBlockSubpage extends AdBlockSubpageBase {
   private declare shouldShowCustomFilters_: boolean
   private declare shouldShowCustomScriptlets_: boolean
   private declare customScriptlets_: Scriptlet[]
+  private declare developerModePref_: chrome.settingsPrivate.PrefObject<boolean>
 
   private browserProxy_: BraveAdblockBrowserProxy =
     BraveAdblockBrowserProxyImpl.getInstance()
+
+  override connectedCallback() {
+    super.connectedCallback()
+
+    this.mirrorPref('brave.ad_block.developer_mode', 'developerModePref_')
+  }
 
   override ready() {
     super.ready()
