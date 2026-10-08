@@ -4,13 +4,6 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
-  - description: 'Modify navigation params before Navigate call for startup tab'
-    regex:
-      re_pattern: |-
-        (.+)(Navigate\(&params\);)
-      replace: |-
-        \1BraveModifyStartupTabNavigationParams(startup_tab, browser, params);
-        \1\2
   - description: |-
       Select another tab when the active tab is skipped during restore
 
@@ -50,6 +43,10 @@ substitutions:
               if (BraveIsScheduledForCleanup(url, profile_)) {
                 continue;
               }
+  - description: 'Modify navigation params before Navigate call for startup tab'
+    regex:
+      pattern: 'Navigate(&params);'
+      replace: 'BraveNavigateStartupTab(startup_tab, browser, params);'
   - description: |-
       Add an empty fallback tab if all startup URLs were skipped
 
