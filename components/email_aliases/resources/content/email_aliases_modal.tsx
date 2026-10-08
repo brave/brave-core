@@ -24,7 +24,6 @@ import styled from 'styled-components'
 import {
   Alias,
   EmailAliasesServiceInterface,
-  MAX_ALIASES,
 } from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
 import { EmailAliasLimitReached } from './email_alias_limit_reached'
 import './strings'
@@ -236,7 +235,7 @@ export const EmailAliasModal = ({
   editAlias,
   mainEmail,
   aliases,
-  aliasLimit = MAX_ALIASES,
+  aliasLimit,
   emailAliasesService,
   bubble,
 }: {
@@ -246,9 +245,10 @@ export const EmailAliasModal = ({
   bubble?: boolean
   mainEmail: string
   aliases?: Alias[]
-  aliasLimit?: number
+  aliasLimit: number
   emailAliasesService: EmailAliasesServiceInterface
 }) => {
+  const hasStartedInitialAliasGeneration = React.useRef(false)
   const [limitReached, setLimitReached] = React.useState<boolean>(false)
   const [proposedNote, setProposedNote] = React.useState<string>(
     editAlias?.note ?? '',
@@ -311,9 +311,14 @@ export const EmailAliasModal = ({
   }, [aliases, aliasLimit])
 
   React.useEffect(() => {
-    if (editing || (aliases?.length ?? 0) >= aliasLimit) {
+    if (
+      editing
+      || hasStartedInitialAliasGeneration.current
+      || (aliases?.length ?? 0) >= aliasLimit
+    ) {
       return
     }
+    hasStartedInitialAliasGeneration.current = true
     regenerateAlias()
   }, [editing, aliases, aliasLimit])
   return (

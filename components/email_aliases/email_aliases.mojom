@@ -7,7 +7,7 @@ module email_aliases.mojom;
 
 import "mojo/public/mojom/base/empty.mojom";
 
-const uint8 kMaxAliases = 5;
+const uint8 kDefaultMaxAliases = 5;
 
 struct Alias {
   // The alias email address for this alias
@@ -32,11 +32,18 @@ union AliasesUpdate {
   string error;
 };
 
+struct AliasesAccountUpdate {
+  uint32 max_aliases_count;
+};
+
 // Observer for change in email aliases state
 interface EmailAliasesServiceObserver {
   // Called when aliases have been updated for the currently authenticated
   // account, or when loading them failed.
   OnAliasesUpdated(AliasesUpdate update);
+
+  // Called when the account's email aliases information has been updated.
+  OnAliasesAccountUpdated(AliasesAccountUpdate update);
 };
 
 // Interface for managing email aliases

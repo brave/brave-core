@@ -99,6 +99,14 @@ void NotifyObserversAliasesUpdated(
   }
 }
 
+void NotifyObserversAliasesAccountUpdated(
+    mojo::RemoteSet<mojom::EmailAliasesServiceObserver>& observers,
+    mojom::AliasesAccountUpdatePtr update) {
+  for (auto& observer : observers) {
+    observer->OnAliasesAccountUpdated(mojo::Clone(update));
+  }
+}
+
 }  // namespace
 
 EmailAliasesService::EmailAliasesService(
@@ -351,6 +359,13 @@ void EmailAliasesService::OnRefreshAliasesResponse(
                         base::UTF8ToUTF16(response.body->error().message))));
     return;
   }
+
+  const uint32_t max_aliases_count =
+      response.body.value()->info.max_aliases_count > 0
+          ? response.body.value()->info.max_aliases_count
+          : mojom::kDefaultMaxAliases;
+  NotifyObserversAliasesAccountUpdated(
+      observers_, mojom::AliasesAccountUpdate::New(max_aliases_count));
 
   EmailAliasesNotes notes(pref_service_.get(), GetAuthEmail());
   notes.RemoveNotesForDeletedAliases(response.body.value()->result);
