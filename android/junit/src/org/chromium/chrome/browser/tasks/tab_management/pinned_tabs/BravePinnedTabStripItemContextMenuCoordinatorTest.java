@@ -95,7 +95,7 @@ public class BravePinnedTabStripItemContextMenuCoordinatorTest {
         when(mTabModel.getTabGroupCount()).thenReturn(1);
         // GroupWindowChecker walks the sync service, so an unstubbed getAllGroupIds() would
         // return null and NPE before any menu item is built.
-        when(mTabModel.tabGroupExists(mTabGroupId)).thenReturn(true);
+        when(mTabModel.containsTabGroup(mTabGroupId)).thenReturn(true);
         SavedTabGroup savedGroup = new SavedTabGroup();
         savedGroup.syncId = SYNC_GROUP_ID;
         savedGroup.localId = new LocalTabGroupId(mTabGroupId);
