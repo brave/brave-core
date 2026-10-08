@@ -6,12 +6,24 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_REMINDER_REMINDER_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_REMINDER_REMINDER_UTIL_H_
 
-#include "brave/components/brave_ads/browser/reminder/reminder_info.h"
+#include <cstdint>
+#include <string>
+
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 
-namespace brave_ads {
+class GURL;
 
-ReminderInfo CreateReminder(mojom::ReminderType mojom_reminder_type);
+namespace brave_ads {
+namespace mojom {
+enum class ReminderType : int32_t;
+}  // namespace mojom
+
+mojom::NotificationAdInfoPtr BuildReminder(
+    mojom::ReminderType mojom_reminder_type);
+
+bool IsReminder(const std::string& placement_id);
+
+GURL GetReminderTargetUrl();
 
 }  // namespace brave_ads
 

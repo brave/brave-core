@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_TEST_FAKE_BAT_ADS_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_TEST_FAKE_BAT_ADS_H_
 
-#include <cstddef>
 #include <optional>
 #include <string>
 
@@ -44,10 +43,6 @@ class FakeBatAds : public bat_ads::mojom::BatAds {
 
   void BindReceiver(mojo::PendingAssociatedReceiver<bat_ads::mojom::BatAds>
                         bat_ads_pending_associated_receiver);
-
-  size_t trigger_notification_ad_event_count() const {
-    return trigger_notification_ad_event_count_;
-  }
 
   // bat_ads::mojom::BatAds:
   void AddBatAdsObserver(mojo::PendingRemote<bat_ads::mojom::BatAdsObserver>
@@ -121,8 +116,6 @@ class FakeBatAds : public bat_ads::mojom::BatAds {
 
   mojo::AssociatedReceiver<bat_ads::mojom::BatAds> bat_ads_associated_receiver_{
       this};
-
-  size_t trigger_notification_ad_event_count_ = 0;
 };
 
 }  // namespace brave_ads::test

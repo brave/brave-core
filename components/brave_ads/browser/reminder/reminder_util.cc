@@ -7,10 +7,13 @@
 
 #include <string_view>
 
+#include "base/check.h"
 #include "base/notreached.h"
+#include "base/strings/utf_string_conversions.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "components/grit/brave_components_strings.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "url/gurl.h"
 
 namespace brave_ads {
 
@@ -21,39 +24,52 @@ constexpr std::string_view kReminderNotificationAdPlacementId =
 constexpr std::string_view kReminderNotificationAdTargetUrl =
     "https://support.brave.app/hc/en-us/articles/14648356808845";
 
-ReminderInfo CreateClickedSameAdMultipleTimesReminder() {
-  return {std::string(kReminderNotificationAdPlacementId),
-          l10n_util::GetStringUTF16(
-              IDS_BRAVE_ADS_NOTIFICATION_CLICKED_SAME_AD_MULTIPLE_TIMES_TITLE),
-          l10n_util::GetStringUTF16(
-              IDS_BRAVE_ADS_NOTIFICATION_CLICKED_SAME_AD_MULTIPLE_TIMES_BODY),
-          std::string(kReminderNotificationAdTargetUrl)};
+mojom::NotificationAdInfoPtr BuildClickedSameAdMultipleTimesReminder() {
+  auto notification_ad = mojom::NotificationAdInfo::New();
+  notification_ad->placement_id = kReminderNotificationAdPlacementId;
+  notification_ad->title = base::UTF16ToUTF8(l10n_util::GetStringUTF16(
+      IDS_BRAVE_ADS_NOTIFICATION_CLICKED_SAME_AD_MULTIPLE_TIMES_TITLE));
+  notification_ad->body = base::UTF16ToUTF8(l10n_util::GetStringUTF16(
+      IDS_BRAVE_ADS_NOTIFICATION_CLICKED_SAME_AD_MULTIPLE_TIMES_BODY));
+  notification_ad->target_url = GURL(kReminderNotificationAdTargetUrl);
+  return notification_ad;
 }
 
-ReminderInfo CreateExternalWalletConnectedReminder() {
-  return {std::string(kReminderNotificationAdPlacementId),
-          l10n_util::GetStringUTF16(
-              IDS_BRAVE_ADS_NOTIFICATION_EXTERNAL_WALLET_CONNECTED_TITLE),
-          l10n_util::GetStringUTF16(
-              IDS_BRAVE_ADS_NOTIFICATION_EXTERNAL_WALLET_CONNECTED_BODY),
-          std::string(kReminderNotificationAdTargetUrl)};
+mojom::NotificationAdInfoPtr BuildExternalWalletConnectedReminder() {
+  auto notification_ad = mojom::NotificationAdInfo::New();
+  notification_ad->placement_id = kReminderNotificationAdPlacementId;
+  notification_ad->title = base::UTF16ToUTF8(l10n_util::GetStringUTF16(
+      IDS_BRAVE_ADS_NOTIFICATION_EXTERNAL_WALLET_CONNECTED_TITLE));
+  notification_ad->body = base::UTF16ToUTF8(l10n_util::GetStringUTF16(
+      IDS_BRAVE_ADS_NOTIFICATION_EXTERNAL_WALLET_CONNECTED_BODY));
+  notification_ad->target_url = GURL(kReminderNotificationAdTargetUrl);
+  return notification_ad;
 }
 
 }  // namespace
 
-ReminderInfo CreateReminder(mojom::ReminderType mojom_reminder_type) {
+mojom::NotificationAdInfoPtr BuildReminder(
+    mojom::ReminderType mojom_reminder_type) {
   switch (mojom_reminder_type) {
     case mojom::ReminderType::kClickedSameAdMultipleTimes: {
-      return CreateClickedSameAdMultipleTimesReminder();
+      return BuildClickedSameAdMultipleTimesReminder();
     }
 
     case mojom::ReminderType::kExternalWalletConnected: {
-      return CreateExternalWalletConnectedReminder();
+      return BuildExternalWalletConnectedReminder();
     }
   }
 
   NOTREACHED() << "Unexpected value for mojom::ReminderType: "
                << mojom_reminder_type;
+}
+
+bool IsReminder(const std::string& placement_id) {
+  return placement_id == kReminderNotificationAdPlacementId;
+}
+
+GURL GetReminderTargetUrl() {
+  return GURL(kReminderNotificationAdTargetUrl);
 }
 
 }  // namespace brave_ads
