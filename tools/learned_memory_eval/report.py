@@ -6,6 +6,9 @@ from __future__ import annotations
 
 import statistics
 
+from lib import gold as gold_lib
+from lib import scoring as sc
+
 
 def matches(item: dict, text: str) -> bool:
     """A memory matches when it has all words of "all" and one word of "any"."""
@@ -201,6 +204,12 @@ def render(chat_set: dict, report: dict, extra: dict | None = None) -> tuple:
         md.append(f'| {"PASS" if ok else "**FAIL**"} | {kind} | {label} | {detail} |')
     md.append("")
 
+    g = None
+    if chat_set.get("gold") is not None and "error" not in report:
+        g = gold_lib.score(chat_set["gold"], memories, trace)
+        g["attribution"] = gold_lib.attribute(chat_set["gold"], trace, g["missed"])
+        md += render_gold(g)
+
     titles = {}
     for c, chat in enumerate(chat_set["chats"]):
         titles[f"eval-{c}"] = chat["title"]
@@ -263,10 +272,112 @@ def render(chat_set: dict, report: dict, extra: dict | None = None) -> tuple:
         "checks_total": len(rows), "forbidden_hits": forbidden_hits,
         "seconds": round(total_ms / 1000, 1), **extra,
     }
+    if g is not None:
+        summary.update({
+            "gold_required": g["required"], "gold_found": len(g["found"]),
+            "recall": g["recall"], "precision": g["precision"],
+            "leaks": len(g["leaks"]), "stale_kept": len(g["stale_kept"]),
+            "wrong_ops": len(g["wrong_ops"]), "missed_ops": len(g["missed_ops"]),
+            "duplicates": len(g["duplicates"]), "label_accuracy": g["label_accuracy"],
+            "extras": len(g["extras"]),
+            "misses": {fid: a["detail"] for fid, a in g["attribution"].items()}})
     return "\n".join(md) + "\n", summary
 
 
+def _pct(x) -> str:
+    return "n/a" if x is None else f"{x:.2f}"
+
+
+def render_gold(g: dict) -> list:
+    """The gold section of report.md (plan 8.2)."""
+    md = ["## Gold", "",
+          "| Recall | Precision | Leaks | Stale kept | Wrong ops | Missed ops | Duplicates | Label accuracy | Extras |",
+          "|---|---|---|---|---|---|---|---|---|",
+          f'| {len(g["found"])}/{g["required"]} ({_pct(g["recall"])}) | '
+          f'{g["matched_memories"]}/{g["memories"]} ({_pct(g["precision"])}) | '
+          f'{len(g["leaks"])}{" **LEAK**" if g["leaks"] else ""} | {len(g["stale_kept"])} | '
+          f'{len(g["wrong_ops"])} | {len(g["missed_ops"])} | {len(g["duplicates"])} | '
+          f'{_pct(g["label_accuracy"])} | {len(g["extras"])} |', ""]
+    if g["attribution"]:
+        md += ["Missed facts, and the first step that lost each one:", "",
+               "| Fact | Source turn | Step | Detail |", "|---|---|---|---|"]
+        for fid, a in g["attribution"].items():
+            md.append(f'| {fid} | {a["turn"]} | {a["step"]} | {a["detail"]} |')
+        md.append("")
+    for title, items in (("Leaks", [f'{x["id"]}: "{x["text"]}"' for x in g["leaks"]]),
+                         ("Stale kept", [f'{x["id"]}: "{x["text"]}"' for x in g["stale_kept"]]),
+                         ("Wrong ops", [f'{o["op"]} in {o["turn"]}: "{o["old"]}" → "{o["new"]}" '
+                                        f'(gold {o["old_gold"]} → {o["new_gold"]})' for o in g["wrong_ops"]]),
+                         ("Missed ops", [str(o) for o in g["missed_ops"]]),
+                         ("Duplicates", [f'{k}: {v}' for k, v in g["duplicates"].items()]),
+                         ("Label errors", g["label_errors"]),
+                         ("Extras (no gold match)", [f'"{t}" from {", ".join(src) or "?"}'
+                                                     for t, src in zip(g["extras"], g["extra_sources"])])):
+        if items:
+            md += [f"{title}:", ""] + [f"- {i}" for i in items] + [""]
+    return md
+
+
+def _spread(values: list, digits: int = 2) -> str:
+    v = [x for x in values if x is not None]
+    if not v:
+        return "n/a"
+    mean = sum(v) / len(v)
+    if len(v) == 1:
+        return f"{mean:.{digits}f}"
+    return f"{mean:.{digits}f} [{min(v):.{digits}f}, {max(v):.{digits}f}]"
+
+
 def render_summary(summaries: list, meta: dict) -> str:
+    if any("recall" in s for s in summaries):
+        return render_gold_summary(summaries, meta)
+    return render_expect_summary(summaries, meta)
+
+
+def render_gold_summary(summaries: list, meta: dict) -> str:
+    """One row for each set: the mean and [min, max] over the repeats."""
+    by_set: dict = {}
+    for s in summaries:
+        by_set.setdefault(s["set"], []).append(s)
+    md = ["# Learned memory eval summary", "",
+          f'Time: {meta.get("time")}. Decision model `{meta.get("decision")}`, '
+          f'local LLM `{meta.get("llm")}`, threshold {meta.get("threshold")}, '
+          f'margin {meta.get("margin")}. Values are the mean [min, max] over the repeats.', "",
+          "| Set | Runs | Status | Memories | Checks | Recall | Precision | Leaks | Stale | "
+          "Wrong ops | Missed ops | Duplicates | Extras | Time (s) |",
+          "|---|---|---|---|---|---|---|---|---|---|---|---|---|---|"]
+    for name, runs in by_set.items():
+        statuses = sorted({r["status"] for r in runs})
+        link = runs[0].get("report", f"{name}/report.md")
+        col = lambda k, d=1: _spread([r.get(k) for r in runs], d)
+        md.append(f'| [{name}]({link}) | {len(runs)} | {", ".join(statuses)} | {col("memories")} | '
+                  f'{_spread([r["checks_passed"] / max(1, r["checks_total"]) for r in runs])} | '
+                  f'{col("recall", 2)} | {col("precision", 2)} | {col("leaks")} | {col("stale_kept")} | '
+                  f'{col("wrong_ops")} | {col("missed_ops")} | {col("duplicates")} | {col("extras")} | '
+                  f'{col("seconds", 0)} |')
+    gold_runs = [s for s in summaries if "recall" in s]
+    found = sum(s["gold_found"] for s in gold_runs)
+    required = sum(s["gold_required"] for s in gold_runs)
+    leaks = sum(s["leaks"] for s in gold_runs)
+    md += ["", f"Pooled recall over all runs: {sc.fmt_rate(sc.rate(found, required))}. "
+           f"Leaks: {leaks}{' (HARD GATE FAILS)' if leaks else ''}.", ""]
+    steps: dict = {}
+    for s in gold_runs:
+        for detail in s.get("misses", {}).values():
+            key = detail.split(" ")[0].split("(")[0]
+            steps[key] = steps.get(key, 0) + 1
+    if steps:
+        md += ["Missed facts by the step that lost them (all runs):", "",
+               "| Step | Misses |", "|---|---|"]
+        md += [f"| {k} | {v} |" for k, v in sorted(steps.items(), key=lambda kv: -kv[1])]
+        md += ["", "| Set | Run | Fact | Lost at |", "|---|---|---|---|"]
+        for s in gold_runs:
+            for fid, detail in s.get("misses", {}).items():
+                md.append(f'| {s["set"]} | r{s.get("repeat", 1)} | {fid} | {detail} |')
+    return "\n".join(md) + "\n"
+
+
+def render_expect_summary(summaries: list, meta: dict) -> str:
     md = ["# Learned memory eval summary", "",
           f'Time: {meta.get("time")}. Decision model `{meta.get("decision")}`, '
           f'local LLM `{meta.get("llm")}`, threshold {meta.get("threshold")}, '
