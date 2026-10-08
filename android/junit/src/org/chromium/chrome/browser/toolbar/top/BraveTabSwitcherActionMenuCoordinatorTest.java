@@ -76,7 +76,7 @@ public class BraveTabSwitcherActionMenuCoordinatorTest {
         when(mTabModelSelector.isTabStateInitialized()).thenReturn(true);
         when(mTabModelSelector.isIncognitoBrandedModelSelected()).thenReturn(false);
         when(mIncognitoTabModel.getCount()).thenReturn(0);
-        when(mNormalTabModel.isTabModelRestored()).thenReturn(true);
+        when(mNormalTabModel.isTabStateInitialized()).thenReturn(true);
 
         mCoordinator =
                 new BraveTabSwitcherActionMenuCoordinator(
