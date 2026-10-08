@@ -17,6 +17,7 @@
 #include "base/json/json_writer.h"
 #include "base/memory/ptr_util.h"
 #include "base/memory/weak_ptr.h"
+#include "base/numerics/safe_conversions.h"
 #include "base/strings/sys_string_conversions.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
@@ -175,6 +176,22 @@ NSString* BuildErrorJson(mojom::SolanaProviderError error,
   return base::SysUTF8ToNSString(json);
 }
 
+// Converts a `[UInt8]` list posted by the page into bytes. Returns
+// `std::nullopt` if any element is not an integer in the range [0, 255] so that
+// malformed input is rejected rather than silently coerced before signing.
+std::optional<std::vector<uint8_t>> ParseByteList(const base::ListValue& list) {
+  std::vector<uint8_t> bytes;
+  bytes.reserve(list.size());
+  for (const base::Value& value : list) {
+    std::optional<int> byte = value.GetIfInt();
+    if (!byte || !base::IsValueInRangeForNumericType<uint8_t>(*byte)) {
+      return std::nullopt;
+    }
+    bytes.push_back(base::checked_cast<uint8_t>(*byte));
+  }
+  return bytes;
+}
+
 // Builds a `SolanaSignTransactionParam` from the `{serializedMessage: [UInt8],
 // signatures: [{publicKey, signature: [UInt8]}]}` object posted by the page.
 mojom::SolanaSignTransactionParamPtr CreateSignTransactionParam(
@@ -185,13 +202,12 @@ mojom::SolanaSignTransactionParamPtr CreateSignTransactionParam(
   if (!serialized_message_list) {
     return nullptr;
   }
-  std::vector<uint8_t> serialized_message_bytes;
-  serialized_message_bytes.reserve(serialized_message_list->size());
-  for (const base::Value& byte : *serialized_message_list) {
-    serialized_message_bytes.push_back(
-        static_cast<uint8_t>(byte.GetIfInt().value_or(0)));
+  std::optional<std::vector<uint8_t>> serialized_message_bytes =
+      ParseByteList(*serialized_message_list);
+  if (!serialized_message_bytes) {
+    return nullptr;
   }
-  std::string encoded_serialized_msg = Base58Encode(serialized_message_bytes);
+  std::string encoded_serialized_msg = Base58Encode(*serialized_message_bytes);
 
   std::vector<mojom::SignaturePubkeyPairPtr> signature_pairs;
   if (const base::ListValue* signatures_list =
@@ -199,17 +215,18 @@ mojom::SolanaSignTransactionParamPtr CreateSignTransactionParam(
     for (const base::Value& signature_value : *signatures_list) {
       const base::DictValue* signature_dict = signature_value.GetIfDict();
       if (!signature_dict) {
-        continue;
+        return nullptr;
       }
       const std::string* public_key = signature_dict->FindString(kPublicKeyKey);
       std::vector<uint8_t> signature_bytes;
       if (const base::ListValue* bytes =
               signature_dict->FindList(kSignatureKey)) {
-        signature_bytes.reserve(bytes->size());
-        for (const base::Value& byte : *bytes) {
-          signature_bytes.push_back(
-              static_cast<uint8_t>(byte.GetIfInt().value_or(0)));
+        std::optional<std::vector<uint8_t>> parsed_bytes =
+            ParseByteList(*bytes);
+        if (!parsed_bytes) {
+          return nullptr;
         }
+        signature_bytes = std::move(*parsed_bytes);
       }
       signature_pairs.push_back(mojom::SignaturePubkeyPair::New(
           mojom::SolanaSignature::New(std::move(signature_bytes)),
@@ -487,21 +504,18 @@ void SolanaProviderJavaScriptFeature::ScriptMessageReceivedWithReply(
       base::ListValue* list = parsed_args ? parsed_args->GetIfList() : nullptr;
       const base::ListValue* blob =
           list && !list->empty() ? (*list)[0].GetIfList() : nullptr;
-      if (!blob) {
+      std::optional<std::vector<uint8_t>> blob_msg =
+          blob ? ParseByteList(*blob) : std::nullopt;
+      if (!blob_msg) {
         std::move(callback).Run(nullptr, @"Invalid args");
         return;
-      }
-      std::vector<uint8_t> blob_msg;
-      blob_msg.reserve(blob->size());
-      for (const base::Value& byte : *blob) {
-        blob_msg.push_back(static_cast<uint8_t>(byte.GetIfInt().value_or(0)));
       }
       std::optional<std::string> display_encoding;
       if (list->size() > 1 && (*list)[1].is_string()) {
         display_encoding = (*list)[1].GetString();
       }
       provider->SignMessage(
-          blob_msg, display_encoding,
+          *blob_msg, display_encoding,
           base::BindOnce(
               [](ScriptMessageReplyCallback callback,
                  mojom::SolanaProviderError error,
@@ -556,13 +570,15 @@ void SolanaProviderJavaScriptFeature::ScriptMessageReceivedWithReply(
       if (*request_method == "signMessage") {
         if (base::DictValue* params = arg->FindDict(kParamsKey)) {
           if (const base::ListValue* blob = params->FindList(kMessageKey)) {
-            std::vector<uint8_t> blob_msg;
-            blob_msg.reserve(blob->size());
-            for (const base::Value& byte : *blob) {
-              blob_msg.push_back(
-                  static_cast<uint8_t>(byte.GetIfInt().value_or(0)));
+            std::optional<std::vector<uint8_t>> blob_msg = ParseByteList(*blob);
+            if (!blob_msg) {
+              std::move(callback).Run(
+                  nullptr,
+                  BuildErrorJson(mojom::SolanaProviderError::kInvalidParams,
+                                 "Invalid args"));
+              return;
             }
-            params->Set(kMessageKey, base::Value(std::move(blob_msg)));
+            params->Set(kMessageKey, base::Value(std::move(*blob_msg)));
           }
         }
       }
