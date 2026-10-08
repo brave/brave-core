@@ -2041,6 +2041,39 @@
   <message name="IDS_SETTINGS_LEO_ASSISTANT_DREAM_RESULT_UNAVAILABLE" desc="The result when learning is not available">
     Learning is not available now.
   </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_DREAM_RESULT_REVIEW" desc="The result of a learning run whose changes wait for the user's review">
+    Done. Leo read <ph name="TURNS_READ">$1<ex>12</ex></ph> new messages. Review what it learned before Leo saves it.
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_DREAM_REVIEW_PENDING" desc="The notice that the changes of a learning run wait for the user's review">
+    Leo learned new things from your chats. It saves only what you keep.
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_DREAM_REVIEW_BUTTON" desc="The label for the button that opens the review of the changes of a learning run">
+    Review
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_DREAM_REVIEW_TITLE" desc="The title for the dialog where the user reviews what Leo learned from the saved chats">
+    Review what Leo learned
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_DREAM_REVIEW_DESCRIPTION" desc="The description in the dialog where the user reviews what Leo learned from the saved chats">
+    Leo saves only the changes that you keep. You can edit a text before you save it.
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_DREAM_REVIEW_NEW" desc="The label for a memory that Leo learned, in the review dialog">
+    New
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_DREAM_REVIEW_CHANGED" desc="The label for a memory that Leo wants to change, in the review dialog">
+    Changed
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_DREAM_REVIEW_SEEN_AGAIN" desc="The label for a memory that Leo saw again in a chat, in the review dialog. Only its date changes.">
+    Mentioned again
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_DREAM_REVIEW_SAVE" desc="The label for the button that saves the changes that the user keeps in the review dialog">
+    Save selected
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_DREAM_REVIEW_DISCARD" desc="The label for the button that discards all the changes in the review dialog">
+    Discard all
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_DREAM_REVIEW_ERROR" desc="The error in the review dialog when a text cannot be saved">
+    Leo could not save the changes. Each text needs 1 to 512 characters.
+  </message>
   <message name="IDS_SETTINGS_LEO_ASSISTANT_DELETE_ALL_LEARNED_MEMORIES_TITLE" desc="The title for the dialog that deletes all learned memories, and the label for the button that opens it">
     Delete all learned memories
   </message>

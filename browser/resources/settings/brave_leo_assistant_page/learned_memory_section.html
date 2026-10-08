@@ -146,6 +146,57 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
     text-align: center;
     font-weight: 400;
   }
+
+  .review-notice {
+    display: flex;
+    align-items: center;
+    gap: var(--leo-spacing-m);
+    font: var(--leo-font-small-semibold);
+    color: var(--leo-color-text-primary);
+  }
+
+  #dreamingReviewDialog {
+    --cr-dialog-width: 640px;
+  }
+
+  #dreamingReviewDialog [slot="body"] {
+    align-items: stretch;
+  }
+
+  .review-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--leo-spacing-l);
+  }
+
+  .review-item {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--leo-spacing-m);
+    padding-bottom: var(--leo-spacing-l);
+    border-bottom: 1px solid var(--leo-color-divider-subtle);
+  }
+
+  .review-item:last-of-type {
+    border-bottom: none;
+  }
+
+  .review-item-body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: var(--leo-spacing-s);
+  }
+
+  .review-change {
+    font: var(--leo-font-small-semibold);
+    color: var(--leo-color-text-secondary);
+  }
+
+  .review-error {
+    font: var(--leo-font-small-regular);
+    color: var(--leo-color-systemfeedback-error-text);
+  }
 </style>
 
 <template is="dom-if"
@@ -180,6 +231,16 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
       <span class="dream-result">[[dreamResult_]]</span>
     </template>
   </div>
+
+  <template is="dom-if" if="[[hasReview_(reviewItems_)]]">
+    <div class="action-box review-notice">
+      <span>$i18n{braveLeoAssistantDreamReviewPending}</span>
+      <leo-button id="reviewButton" kind="filled" size="small"
+          on-click="openReview_">
+        $i18n{braveLeoAssistantDreamReviewButton}
+      </leo-button>
+    </div>
+  </template>
 
   <div class="list-container">
     <template is="dom-if" if="[[!hasLearnedMemories_(learnedMemories_)]]">
@@ -264,6 +325,48 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
       <leo-button id="deleteAllLearnedConfirmButton" class="delete-button"
           on-click="onDeleteAllDialogConfirm_">
         $i18n{delete}
+      </leo-button>
+    </div>
+  </cr-dialog>
+</template>
+
+<template is="dom-if" if="[[showReviewDialog_]]" restamp>
+  <cr-dialog id="dreamingReviewDialog" show-on-attach show-close-button
+      on-close="onReviewDialogClose_">
+    <div slot="title">$i18n{braveLeoAssistantDreamReviewTitle}</div>
+    <div slot="body">
+      <div class="label secondary">
+        $i18n{braveLeoAssistantDreamReviewDescription}
+      </div>
+      <div class="review-list">
+        <template is="dom-repeat" items="[[reviewItems_]]">
+          <div class="review-item">
+            <cr-checkbox class="review-keep" checked="{{item.keep}}"
+                aria-label$="[[item.text]]">
+            </cr-checkbox>
+            <div class="review-item-body">
+              <div class="review-change">[[getChangeLabel_(item)]]</div>
+              <leo-textarea class="review-text" rows="2"
+                  value="[[item.text]]" on-input="onReviewTextInput_">
+              </leo-textarea>
+              <template is="dom-if" if="[[hasStoredText_(item)]]">
+                <div class="previous">[[getStoredText_(item)]]</div>
+              </template>
+            </div>
+          </div>
+        </template>
+      </div>
+      <template is="dom-if" if="[[reviewError_]]">
+        <div class="review-error">$i18n{braveLeoAssistantDreamReviewError}</div>
+      </template>
+    </div>
+    <div slot="button-container">
+      <leo-button id="reviewDiscardButton" kind="plain-faint"
+          on-click="onReviewDiscard_">
+        $i18n{braveLeoAssistantDreamReviewDiscard}
+      </leo-button>
+      <leo-button id="reviewSaveButton" on-click="onReviewSave_">
+        $i18n{braveLeoAssistantDreamReviewSave}
       </leo-button>
     </div>
   </cr-dialog>

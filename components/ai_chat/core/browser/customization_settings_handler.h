@@ -63,6 +63,10 @@ class CustomizationSettingsHandler
   void DeleteAllLearnedMemories(
       DeleteAllLearnedMemoriesCallback callback) override;
   void DreamNow(DreamNowCallback callback) override;
+  void GetDreamingReview(GetDreamingReviewCallback callback) override;
+  void ApplyDreamingReview(
+      std::vector<mojom::LearnedMemoryReviewDecisionPtr> kept,
+      ApplyDreamingReviewCallback callback) override;
 
  private:
   // Called when customization preferences change

@@ -33,6 +33,10 @@ class MemoryManagerDelegate {
       mojom::CustomizationSettingsHandler::DeleteAllLearnedMemoriesCallback;
   using DreamNowCallback =
       mojom::CustomizationSettingsHandler::DreamNowCallback;
+  using GetDreamingReviewCallback =
+      mojom::CustomizationSettingsHandler::GetDreamingReviewCallback;
+  using ApplyDreamingReviewCallback =
+      mojom::CustomizationSettingsHandler::ApplyDreamingReviewCallback;
 
   virtual ~MemoryManagerDelegate() = default;
 
@@ -56,6 +60,15 @@ class MemoryManagerDelegate {
 
   // Starts a Dreaming run now. `callback` gets the result when the run ends.
   virtual void DreamNow(DreamNowCallback callback) = 0;
+
+  // The changes of the last Dreaming run that wait for the user's review.
+  virtual void GetDreamingReview(GetDreamingReviewCallback callback) = 0;
+
+  // Stores the changes in `kept` and discards the others. `callback` gets
+  // false when it could not.
+  virtual void ApplyDreamingReview(
+      std::vector<mojom::LearnedMemoryReviewDecisionPtr> kept,
+      ApplyDreamingReviewCallback callback) = 0;
 };
 
 }  // namespace ai_chat

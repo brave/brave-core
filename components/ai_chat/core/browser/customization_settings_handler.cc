@@ -162,6 +162,25 @@ void CustomizationSettingsHandler::DreamNow(DreamNowCallback callback) {
   delegate_->DreamNow(std::move(callback));
 }
 
+void CustomizationSettingsHandler::GetDreamingReview(
+    GetDreamingReviewCallback callback) {
+  if (!delegate_) {
+    std::move(callback).Run({});
+    return;
+  }
+  delegate_->GetDreamingReview(std::move(callback));
+}
+
+void CustomizationSettingsHandler::ApplyDreamingReview(
+    std::vector<mojom::LearnedMemoryReviewDecisionPtr> kept,
+    ApplyDreamingReviewCallback callback) {
+  if (!delegate_) {
+    std::move(callback).Run(false);
+    return;
+  }
+  delegate_->ApplyDreamingReview(std::move(kept), std::move(callback));
+}
+
 void CustomizationSettingsHandler::OnCustomizationsChanged() {
   if (!ui_) {
     return;

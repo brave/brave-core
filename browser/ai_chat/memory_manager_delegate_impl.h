@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_AI_CHAT_MEMORY_MANAGER_DELEGATE_IMPL_H_
 
 #include <string>
+#include <vector>
 
 #include "base/memory/raw_ptr.h"
 #include "brave/components/ai_chat/core/browser/memory_manager_delegate.h"
@@ -41,6 +42,10 @@ class MemoryManagerDelegateImpl : public MemoryManagerDelegate {
   void DeleteAllLearnedMemories(
       DeleteAllLearnedMemoriesCallback callback) override;
   void DreamNow(DreamNowCallback callback) override;
+  void GetDreamingReview(GetDreamingReviewCallback callback) override;
+  void ApplyDreamingReview(
+      std::vector<mojom::LearnedMemoryReviewDecisionPtr> kept,
+      ApplyDreamingReviewCallback callback) override;
 
  private:
   raw_ptr<content::BrowserContext> context_;

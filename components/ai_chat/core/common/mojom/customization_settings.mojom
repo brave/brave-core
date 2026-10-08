@@ -49,6 +49,35 @@ struct LearnedMemoryItem {
   string? previous_text;
 };
 
+// A change that a Dreaming run wants to make. Nothing is stored before the
+// user reviews it.
+enum LearnedMemoryChange {
+  // A memory that the run learned.
+  kNew,
+  // A memory with a new text: a replace or a merge.
+  kChanged,
+  // A memory that the run saw again. Only its dates and sources move.
+  kSeenAgain,
+};
+
+struct LearnedMemoryProposal {
+  // The uuid of the memory, new or stored.
+  string uuid;
+  LearnedMemoryChange change;
+  string text;
+  // The stored text, for kChanged and kSeenAgain.
+  string? stored_text;
+  LearnedMemoryCategory category;
+  LearnedMemoryType type;
+};
+
+// A change of the review that the user keeps.
+struct LearnedMemoryReviewDecision {
+  string uuid;
+  // The text that the user edited, or null to keep the text of the change.
+  string? text;
+};
+
 // A memory that the semantic search found.
 struct MemorySearchResult {
   string text;
@@ -136,8 +165,20 @@ interface CustomizationSettingsHandler {
   // learns only from new messages.
   DeleteAllLearnedMemories() => (bool success);
 
-  // Starts a Dreaming run now, and replies when the run ends.
+  // Starts a Dreaming run now, and replies when the run ends. The changes of
+  // the run wait for the user's review (GetDreamingReview), and a new run does
+  // not start before the review ends.
   DreamNow() => (DreamNowResult result);
+
+  // The changes of the last Dreaming run that wait for the user's review.
+  // Empty when none waits.
+  GetDreamingReview() => (array<LearnedMemoryProposal> proposals);
+
+  // Ends the review: stores the changes in |kept|, with their edited text, and
+  // discards the others. |success| is false when no review waits, an edited
+  // text is empty or too long (then the review stays), or a write failed.
+  ApplyDreamingReview(array<LearnedMemoryReviewDecision> kept) =>
+    (bool success);
 };
 
 // Interface for browser -> settings UI communication. This interface allows

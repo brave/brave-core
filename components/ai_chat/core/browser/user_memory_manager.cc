@@ -38,6 +38,8 @@ DreamingConfig UserMemoryManager::GetDreamingConfigFromFeatures() {
   config.max_relation_requests =
       features::kLearnedMemoryMaxRelationRequests.Get();
   config.record_trace = LearnedMemoryEval::IsEnabled();
+  // The eval reads what the run stored, and has no user to review it.
+  config.review_changes = !LearnedMemoryEval::IsEnabled();
   return config;
 }
 

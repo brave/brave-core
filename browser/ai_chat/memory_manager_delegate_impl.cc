@@ -109,6 +109,18 @@ void OnMemoriesFound(MemoryManagerDelegate::SearchMemoriesCallback callback,
   std::move(callback).Run(std::move(items));
 }
 
+mojom::LearnedMemoryChange ToMojom(DreamingProposal::Kind kind) {
+  switch (kind) {
+    case DreamingProposal::Kind::kNew:
+      return mojom::LearnedMemoryChange::kNew;
+    case DreamingProposal::Kind::kChanged:
+      return mojom::LearnedMemoryChange::kChanged;
+    case DreamingProposal::Kind::kSeenAgain:
+      return mojom::LearnedMemoryChange::kSeenAgain;
+  }
+  NOTREACHED();
+}
+
 void OnDreamNowDone(MemoryManagerDelegate::DreamNowCallback callback,
                     DreamingResult result) {
   std::move(callback).Run(mojom::DreamNowResult::New(
@@ -181,6 +193,45 @@ void MemoryManagerDelegateImpl::DreamNow(DreamNowCallback callback) {
     return;
   }
   manager->DreamNow(base::BindOnce(&OnDreamNowDone, std::move(callback)));
+}
+
+void MemoryManagerDelegateImpl::GetDreamingReview(
+    GetDreamingReviewCallback callback) {
+  AIChatService* service = AIChatServiceFactory::GetForBrowserContext(context_);
+  UserMemoryManager* manager =
+      service ? service->GetUserMemoryManager() : nullptr;
+  const DreamingReview* review = manager ? manager->pending_review() : nullptr;
+  std::vector<mojom::LearnedMemoryProposalPtr> proposals;
+  if (review) {
+    for (const DreamingProposal& proposal : review->proposals) {
+      std::optional<std::string> stored_text;
+      if (proposal.stored) {
+        stored_text = proposal.stored->text;
+      }
+      proposals.push_back(mojom::LearnedMemoryProposal::New(
+          proposal.memory.uuid, ToMojom(proposal.kind), proposal.memory.text,
+          std::move(stored_text), ToMojom(proposal.memory.category),
+          ToMojom(proposal.memory.type)));
+    }
+  }
+  std::move(callback).Run(std::move(proposals));
+}
+
+void MemoryManagerDelegateImpl::ApplyDreamingReview(
+    std::vector<mojom::LearnedMemoryReviewDecisionPtr> kept,
+    ApplyDreamingReviewCallback callback) {
+  AIChatService* service = AIChatServiceFactory::GetForBrowserContext(context_);
+  UserMemoryManager* manager =
+      service ? service->GetUserMemoryManager() : nullptr;
+  if (!manager) {
+    std::move(callback).Run(false);
+    return;
+  }
+  std::vector<DreamingReviewDecision> decisions;
+  for (mojom::LearnedMemoryReviewDecisionPtr& decision : kept) {
+    decisions.push_back({std::move(decision->uuid), std::move(decision->text)});
+  }
+  manager->ApplyDreamingReview(std::move(decisions), std::move(callback));
 }
 
 }  // namespace ai_chat

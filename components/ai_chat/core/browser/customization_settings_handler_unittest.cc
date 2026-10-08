@@ -83,6 +83,16 @@ class FakeMemoryManagerDelegate : public MemoryManagerDelegate {
         mojom::DreamNowStatus::kCompleted, 3, 2, 1, 0));
   }
 
+  void GetDreamingReview(GetDreamingReviewCallback callback) override {
+    std::move(callback).Run({});
+  }
+
+  void ApplyDreamingReview(
+      std::vector<mojom::LearnedMemoryReviewDecisionPtr> kept,
+      ApplyDreamingReviewCallback callback) override {
+    std::move(callback).Run(false);
+  }
+
   std::vector<std::string> queries;
   bool search_available = true;
   std::vector<mojom::MemorySearchResultPtr> results;

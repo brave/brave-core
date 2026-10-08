@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import 'chrome://resources/cr_elements/cr_button/cr_button.js'
+import 'chrome://resources/cr_elements/cr_checkbox/cr_checkbox.js'
 import 'chrome://resources/cr_elements/cr_dialog/cr_dialog.js'
 
 import { I18nMixin, I18nMixinInterface } from
@@ -17,7 +18,10 @@ import { BaseMixin, BaseMixinInterface } from '../base_mixin.js'
 import {
   DreamNowResult,
   DreamNowStatus,
+  LearnedMemoryChange,
   LearnedMemoryItem,
+  LearnedMemoryProposal,
+  LearnedMemoryReviewDecision,
   LearnedMemoryType
 } from '../customization_settings.mojom-webui.js'
 import {
@@ -34,6 +38,15 @@ import {
 // Mojo times count microseconds since 1601-01-01 (Windows epoch).
 const WINDOWS_TO_UNIX_EPOCH_MS = 11644473600000
 
+// A change of the Dreaming review, as the user edits it.
+interface ReviewItem {
+  proposal: LearnedMemoryProposal
+  keep: boolean
+  text: string
+}
+
+type LeoInputEvent = { value: string, model: { index: number } }
+
 const LearnedMemorySectionBase =
   PrefsMixin(I18nMixin(BaseMixin(PolymerElement))) as {
     new (): PolymerElement & PrefsMixinInterface & I18nMixinInterface &
@@ -43,6 +56,11 @@ const LearnedMemorySectionBase =
 // Shows the memories that Leo learned from the saved chats (Dreaming), and the
 // "Dream now" button. The section is hidden when learned memory is not
 // available in the browser.
+//
+// Dreaming stores nothing by itself: the changes of a run wait for the user's
+// review. The review dialog opens when "Dream now" ends, and a notice offers
+// it for a run of the daily timer. The user keeps or drops each change, and
+// can edit its text first.
 //
 // The search box of the memory section searches this list too. This section
 // gets the text of the box and the learned memories that are related to it by
@@ -77,6 +95,18 @@ class LearnedMemorySection extends LearnedMemorySectionBase {
         value: ''
       },
       showDeleteAllDialog_: {
+        type: Boolean,
+        value: false
+      },
+      reviewItems_: {
+        type: Array,
+        value: () => []
+      },
+      showReviewDialog_: {
+        type: Boolean,
+        value: false
+      },
+      reviewError_: {
         type: Boolean,
         value: false
       },
@@ -137,6 +167,9 @@ class LearnedMemorySection extends LearnedMemorySectionBase {
   declare isDreaming_: boolean
   declare dreamResult_: string
   declare showDeleteAllDialog_: boolean
+  declare reviewItems_: ReviewItem[]
+  declare showReviewDialog_: boolean
+  declare reviewError_: boolean
   declare searchQuery: string
   declare relatedUuids: string[]
   declare isSearching_: boolean
@@ -148,6 +181,21 @@ class LearnedMemorySection extends LearnedMemorySectionBase {
   override ready() {
     super.ready()
     this.loadLearnedMemories_()
+    this.loadReview_()
+  }
+
+  // Resolves with the number of changes that wait for review.
+  loadReview_(): Promise<number> {
+    const handler = this.browserProxy_.getCustomizationSettingsHandler()
+    return handler.getDreamingReview().then(
+      (result: { proposals: LearnedMemoryProposal[] }) => {
+        this.reviewItems_ = result.proposals.map(proposal => ({
+          proposal,
+          keep: true,
+          text: proposal.text
+        }))
+        return this.reviewItems_.length
+      })
   }
 
   loadLearnedMemories_() {
@@ -163,21 +211,36 @@ class LearnedMemorySection extends LearnedMemorySectionBase {
     if (this.isDreaming_) {
       return
     }
+    // The changes of the last run come first.
+    if (this.reviewItems_.length > 0) {
+      this.openReview_()
+      return
+    }
     this.isDreaming_ = true
     this.dreamResult_ = ''
     const handler = this.browserProxy_.getCustomizationSettingsHandler()
     handler.dreamNow().then((response: { result: DreamNowResult }) => {
       this.isDreaming_ = false
-      this.dreamResult_ = this.getDreamResultText_(response.result)
       this.loadLearnedMemories_()
+      this.loadReview_().then(count => {
+        this.dreamResult_ = this.getDreamResultText_(response.result, count)
+        if (count > 0) {
+          this.openReview_()
+        }
+      })
     })
   }
 
-  getDreamResultText_(result: DreamNowResult): string {
+  getDreamResultText_(result: DreamNowResult, reviewCount: number): string {
     const counts = [
       result.turnsRead, result.turnsKept, result.memoriesAdded,
       result.memoriesUpdated
     ].map(String)
+    if (reviewCount > 0 && (result.status === DreamNowStatus.kCompleted ||
+                            result.status === DreamNowStatus.kTimedOut)) {
+      return this.i18n('braveLeoAssistantDreamResultReview',
+                       String(result.turnsRead))
+    }
     switch (result.status) {
       case DreamNowStatus.kCompleted:
         return this.i18n('braveLeoAssistantDreamResultCompleted', ...counts)
@@ -198,7 +261,79 @@ class LearnedMemorySection extends LearnedMemorySectionBase {
     const handler = this.browserProxy_.getCustomizationSettingsHandler()
     handler.deleteLearnedMemory(e.model.item.uuid).then(() => {
       this.loadLearnedMemories_()
+      // The change of the memory leaves the review.
+      this.loadReview_()
     })
+  }
+
+  openReview_() {
+    this.reviewError_ = false
+    this.showReviewDialog_ = true
+  }
+
+  onReviewDialogClose_() {
+    // The review stays for later.
+    this.showReviewDialog_ = false
+  }
+
+  onReviewTextInput_(e: LeoInputEvent) {
+    this.set(`reviewItems_.${e.model.index}.text`, e.value)
+  }
+
+  onReviewSave_() {
+    const kept: LearnedMemoryReviewDecision[] = this.reviewItems_
+      .filter(item => item.keep)
+      .map(item => ({
+        uuid: item.proposal.uuid,
+        text: item.text === item.proposal.text ? null : item.text
+      }))
+    this.applyReview_(kept)
+  }
+
+  onReviewDiscard_() {
+    this.applyReview_([])
+  }
+
+  applyReview_(kept: LearnedMemoryReviewDecision[]) {
+    const handler = this.browserProxy_.getCustomizationSettingsHandler()
+    handler.applyDreamingReview(kept).then(
+      (response: { success: boolean }) => {
+        this.loadLearnedMemories_()
+        this.loadReview_().then(count => {
+          // A text that is empty or too long keeps the review open.
+          this.reviewError_ = !response.success && count > 0
+          if (!this.reviewError_) {
+            this.showReviewDialog_ = false
+            this.dreamResult_ = ''
+          }
+        })
+      })
+  }
+
+  hasReview_(items: ReviewItem[]): boolean {
+    return items.length > 0
+  }
+
+  getChangeLabel_(item: ReviewItem): string {
+    switch (item.proposal.change) {
+      case LearnedMemoryChange.kNew:
+        return this.i18n('braveLeoAssistantDreamReviewNew')
+      case LearnedMemoryChange.kChanged:
+        return this.i18n('braveLeoAssistantDreamReviewChanged')
+      default:
+        return this.i18n('braveLeoAssistantDreamReviewSeenAgain')
+    }
+  }
+
+  // The stored text is shown when the change gives a new one.
+  hasStoredText_(item: ReviewItem): boolean {
+    return item.proposal.change === LearnedMemoryChange.kChanged &&
+      !!item.proposal.storedText
+  }
+
+  getStoredText_(item: ReviewItem): string {
+    return this.i18n('braveLeoAssistantLearnedMemoryPrevious',
+                     item.proposal.storedText ?? '')
   }
 
   onDeleteAll_() {
@@ -215,6 +350,8 @@ class LearnedMemorySection extends LearnedMemorySectionBase {
     handler.deleteAllLearnedMemories().then(() => {
       this.dreamResult_ = ''
       this.loadLearnedMemories_()
+      // A review that waits is discarded.
+      this.loadReview_()
     })
   }
 
