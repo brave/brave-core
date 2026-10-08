@@ -82,6 +82,7 @@
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/browsing_data_remover_test_util.h"
 #include "content/public/test/test_navigation_observer.h"
+#include "content/public/test/test_utils.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "services/network/public/cpp/network_switches.h"
@@ -2419,6 +2420,88 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
   // The storage directory should not be empty because the container was
   // recreated.
   EXPECT_FALSE(IsContainersStorageDirectoryEmpty());
+}
+
+IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
+                       MaybeDeleteTemporaryContainerWaitsForItsLastTab) {
+  const GURL url("https://a.test/simple.html");
+  auto* service = GetContainersService();
+  ASSERT_TRUE(service);
+
+  auto container = service->CreateAndPersistTemporaryContainer();
+  ASSERT_TRUE(container);
+  ASSERT_TRUE(IsTemporaryContainerId(container->id));
+
+  content::WebContents* container_tab =
+      OpenUrlInContainerTab(url, container->id);
+  ASSERT_TRUE(container_tab);
+  ASSERT_TRUE(content::WaitForLoadStop(container_tab));
+  ASSERT_TRUE(content::ExecJs(container_tab, SetIndexedDBJS("temp", "value")));
+  ASSERT_FALSE(IsContainersStorageDirectoryEmpty());
+
+  // Declined while a tab is still browsing in the container: clearing the
+  // partition and removing its directory underneath that tab would wipe its
+  // session mid-browse and leave a directory the partition then recreates.
+  {
+    base::test::TestFuture<bool> future;
+    service->MaybeDeleteTemporaryContainer(container->id, future.GetCallback());
+    EXPECT_FALSE(future.Get());
+  }
+  EXPECT_TRUE(service->GetRuntimeContainerById(container->id));
+  EXPECT_FALSE(IsContainersStorageDirectoryEmpty());
+  EXPECT_EQ("value", content::EvalJs(container_tab, GetIndexedDBJS("temp")));
+
+  // Destroying the last tab must take the container out of the open-tab set.
+  // Teardown callers depend on this ordering, so assert it rather than assume
+  // it: a tab still enumerated here would decline the delete with nothing to
+  // retry it.
+  content::WebContentsDestroyedWatcher destroyed_watcher(container_tab);
+  chrome::CloseTab(browser());
+  destroyed_watcher.Wait();
+
+  {
+    base::test::TestFuture<bool> future;
+    service->MaybeDeleteTemporaryContainer(container->id, future.GetCallback());
+    EXPECT_TRUE(future.Get());
+  }
+  EXPECT_FALSE(service->GetRuntimeContainerById(container->id));
+  EXPECT_TRUE(IsContainersStorageDirectoryEmpty());
+}
+
+IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
+                       MaybeDeleteTemporaryContainerKeepsOtherContainerTabs) {
+  const GURL url("https://a.test/simple.html");
+  auto* service = GetContainersService();
+  ASSERT_TRUE(service);
+
+  auto container = service->CreateAndPersistTemporaryContainer();
+  ASSERT_TRUE(container);
+
+  // Two tabs in the same container - the second stands in for a tab created by
+  // storage-partition inheritance, which a caller tracking a single tab handle
+  // would not know about.
+  content::WebContents* first_tab = OpenUrlInContainerTab(url, container->id);
+  ASSERT_TRUE(first_tab);
+  ASSERT_TRUE(content::WaitForLoadStop(first_tab));
+  ASSERT_TRUE(content::ExecJs(first_tab, SetIndexedDBJS("temp", "value")));
+
+  content::WebContents* second_tab = OpenUrlInContainerTab(url, container->id);
+  ASSERT_TRUE(second_tab);
+  ASSERT_TRUE(content::WaitForLoadStop(second_tab));
+
+  content::WebContentsDestroyedWatcher destroyed_watcher(second_tab);
+  chrome::CloseTab(browser());
+  destroyed_watcher.Wait();
+
+  // One tab left in the container, so the storage stays.
+  {
+    base::test::TestFuture<bool> future;
+    service->MaybeDeleteTemporaryContainer(container->id, future.GetCallback());
+    EXPECT_FALSE(future.Get());
+  }
+  EXPECT_TRUE(service->GetRuntimeContainerById(container->id));
+  EXPECT_FALSE(IsContainersStorageDirectoryEmpty());
+  EXPECT_EQ("value", content::EvalJs(first_tab, GetIndexedDBJS("temp")));
 }
 
 IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,

@@ -191,6 +191,13 @@ void ContainersServiceDelegate::GetReferencedContainerIds(
   RequestTabRestoreContainerReferences();
 }
 
+bool ContainersServiceDelegate::HasOpenTabInContainer(const std::string& id) {
+  base::flat_set<std::string> open_tab_container_ids;
+  AppendOpenTabReferencedContainerIds(base::to_address(profile_),
+                                      open_tab_container_ids);
+  return open_tab_container_ids.contains(id);
+}
+
 void ContainersServiceDelegate::DeleteContainerStorage(
     const std::string& id,
     DeleteContainerStorageCallback callback) {
