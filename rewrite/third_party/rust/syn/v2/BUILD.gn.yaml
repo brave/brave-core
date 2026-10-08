@@ -10,5 +10,6 @@ substitutions:
       list_name: features
       values:
         - extra-traits
+        - fold
         - visit
         - visit-mut
