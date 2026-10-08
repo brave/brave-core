@@ -18,7 +18,6 @@
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
-#include "services/network/public/cpp/simple_url_loader.h"
 #include "services/network/public/mojom/fetch_api.mojom-shared.h"
 #include "url/gurl.h"
 #include "url/url_constants.h"
@@ -64,19 +63,23 @@ WaybackMachineURLFetcher::WaybackMachineURLFetcher(
 WaybackMachineURLFetcher::~WaybackMachineURLFetcher() = default;
 
 void WaybackMachineURLFetcher::Fetch(const GURL& url) {
+  Cancel();
   const GURL wayback_fetch_url(std::string(kWaybackQueryURL) +
                                GetSanitizedInputURL(url).spec());
   api_request_helper_->Request(
       "GET", FixupWaybackQueryURL(wayback_fetch_url), std::string(),
       "application/json",
       base::BindOnce(&WaybackMachineURLFetcher::OnWaybackURLFetched,
-                     base::Unretained(this), url),
+                     base::Unretained(this)),
       {},
       {.auto_retry_on_network_change = true, .max_body_size = kMaxBodySize});
 }
 
+void WaybackMachineURLFetcher::Cancel() {
+  api_request_helper_->CancelAll();
+}
+
 void WaybackMachineURLFetcher::OnWaybackURLFetched(
-    const GURL& original_url,
     api_request_helper::APIRequestResult api_request_result) {
   auto notify_not_found = [&]() {
     client_->OnWaybackURLFetched(GURL::EmptyGURL(), base::Time());
