@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
 #include "ui/gfx/geometry/rect.h"
 
 // Provide a base implementation (important for `TestBrowserWindow ` in tests)
@@ -27,7 +28,9 @@ gfx::Rect BraveBrowserWindow::GetShieldsBubbleRect() {
 
 // static
 BraveBrowserWindow* BraveBrowserWindow::From(BrowserWindow* window) {
-  return static_cast<BraveBrowserWindow*>(window);
+  // BrowserView derives from BraveBrowserWindow, other BrowserWindow
+  // implementations do not.
+  return window ? window->AsBrowserView() : nullptr;
 }
 
 // static

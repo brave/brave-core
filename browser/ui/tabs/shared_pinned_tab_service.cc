@@ -945,5 +945,6 @@ SharedPinnedTabService::CreateDummyWebContents(
 bool SharedPinnedTabService::IsBrowserInTabDragging(
     BrowserWindowInterface* browser) const {
   CHECK(browser);
-  return BraveBrowserWindow::FromBrowser(browser)->IsInTabDragging();
+  auto* brave_browser_window = BraveBrowserWindow::FromBrowser(browser);
+  return brave_browser_window && brave_browser_window->IsInTabDragging();
 }

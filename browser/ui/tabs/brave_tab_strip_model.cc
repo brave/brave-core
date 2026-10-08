@@ -164,7 +164,9 @@ void BraveTabStripModel::SelectMRUTab(TabRelativeDirection direction,
               });
 
     // Tell the cycling controller that we start cycling to handle tabs keys
-    BraveBrowserWindow::From(browser_window)->StartTabCycling();
+    if (auto* brave_browser_window = BraveBrowserWindow::From(browser_window)) {
+      brave_browser_window->StartTabCycling();
+    }
   }
 
   if (direction == TabRelativeDirection::kNext) {

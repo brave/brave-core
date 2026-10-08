@@ -564,7 +564,9 @@ void ToggleCommander(BrowserWindowInterface* browser) {
 
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
 void ShowPlaylistBubble(BrowserWindowInterface* browser) {
-  BraveBrowserWindow::FromBrowser(browser)->ShowPlaylistBubble();
+  if (auto* brave_browser_window = BraveBrowserWindow::FromBrowser(browser)) {
+    brave_browser_window->ShowPlaylistBubble();
+  }
 }
 #endif
 

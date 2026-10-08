@@ -30,7 +30,6 @@
 #include "chrome/browser/ui/webui/new_tab_page/new_tab_page_ui.h"
 #include "chrome/browser/ui/webui/new_tab_page_third_party/new_tab_page_third_party_ui.h"
 #include "chrome/browser/ui/webui/ntp/new_tab_ui.h"
-#include "chrome/browser/ui/webui_browser/webui_browser.h"
 #include "components/bookmarks/common/bookmark_pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "components/tabs/public/tab_interface.h"
@@ -48,6 +47,12 @@ void BraveBrowser::SuppressBrowserWindowClosingDialogForTesting(bool suppress) {
 
 BraveBrowser::BraveBrowser(BrowserWindowCreateParams params)
     : Browser(std::move(params)) {
+  auto* brave_browser_window = BraveBrowserWindow::FromBrowser(this);
+  if (!brave_browser_window) {
+    // The window is not a BrowserView, e.g. a WebUIBrowserWindow.
+    return;
+  }
+
   if (auto* sidebar_controller = sidebar::SidebarController::From(this)) {
     // TODO(https://github.com/brave/brave-browser/issues/45633): Cleanup this.
     // Below call order is important.
@@ -56,22 +61,14 @@ BraveBrowser::BraveBrowser(BrowserWindowCreateParams params)
     // ready yet. BraveBrowserView is instantiated by the ctor of Browser.
     // So, initializing sidebar controller/model here and then ask to initialize
     // sidebar UI. After that, UI will be updated for model's change.
-    sidebar_controller->SetSidebar(
-        BraveBrowserWindow::FromBrowser(this)->InitSidebar());
-  }
-
-  if (webui_browser::IsWebUIBrowserEnabled() &&
-      GetType() == BrowserWindowInterface::Type::TYPE_NORMAL) {
-    // WebUIBrowserWindow was created in Browser's c'tor (in
-    // BrowserWindow::CreateBrowserWindow), not a BraveBrowserWindow.
-    return;
+    sidebar_controller->SetSidebar(brave_browser_window->InitSidebar());
   }
 
   // As browser window(BrowserView) is initialized before fullscreen controller
   // is ready, it's difficult to know when browsr window can listen.
   // Notify exact timing to do it.
   CHECK(ExclusiveAccessManager::From(this));
-  BraveBrowserWindow::FromBrowser(this)->ReadyToListenFullscreenChanges();
+  brave_browser_window->ReadyToListenFullscreenChanges();
 }
 
 BraveBrowser::~BraveBrowser() = default;
