@@ -80,7 +80,7 @@ export class SettingsPrivateSearchEngineListDialogElement extends
 
   private onSetAsDefaultClick_() {
     const searchEngine = this.searchEngines.find(
-      engine => engine.id === parseInt(this.selectedEngineId_))
+      engine => engine.id === this.selectedEngineId_)
     assert(searchEngine)
 
     this.browserProxy_.setDefaultPrivateSearchEngine(searchEngine.id)
@@ -107,7 +107,7 @@ export class SettingsPrivateSearchEngineListDialogElement extends
     const defaultSearchEngine =
         this.searchEngines.find(searchEngine => searchEngine.default)
     assert(defaultSearchEngine)
-    this.selectedEngineId_ = defaultSearchEngine.id.toString()
+    this.selectedEngineId_ = defaultSearchEngine.id
   }
 
   private isPromotedEngine_(engine: SearchEngine): boolean {
