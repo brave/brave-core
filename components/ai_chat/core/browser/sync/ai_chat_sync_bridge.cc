@@ -588,9 +588,9 @@ bool AIChatSyncBridge::ApplyRemoteRecord(
   std::vector<std::string> contents;
   contents.reserve(associated_content.size());
   for (const auto& ac : associated_content) {
-    auto it = associated_content_texts.find(ac->uuid);
-    contents.emplace_back(it != associated_content_texts.end() ? it->second
-                                                               : std::string());
+    const std::string* text =
+        base::FindOrNull(associated_content_texts, ac->uuid);
+    contents.emplace_back(text ? *text : std::string());
   }
   if (!database_->ApplyRemoteEntry(
           merged.entry().conversation_uuid(), std::move(entry),

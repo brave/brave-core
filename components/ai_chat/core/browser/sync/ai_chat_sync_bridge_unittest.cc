@@ -160,7 +160,7 @@ class AIChatSyncBridgeTest : public testing::Test {
     edit->created_time = base::Time::Now() + base::Minutes(1);
     entry->edits.emplace();
     entry->edits->push_back(std::move(edit));
-    CHECK(db_->AddConversation(std::move(conv), {}, std::move(entry)));
+    ASSERT_TRUE(db_->AddConversation(std::move(conv), {}, std::move(entry)));
   }
 
   // Delivers an update for |entry_uuid| carrying |text| as the collapsed
@@ -182,10 +182,9 @@ class AIChatSyncBridgeTest : public testing::Test {
         base::Time::Now().ToDeltaSinceWindowsEpoch().InMicroseconds());
     changes.push_back(
         syncer::EntityChange::CreateUpdate("e:" + entry_uuid, std::move(data)));
-    CHECK(!bridge_
-               ->ApplyIncrementalSyncChanges(
-                   bridge_->CreateMetadataChangeList(), std::move(changes))
-               .has_value());
+    auto error = bridge_->ApplyIncrementalSyncChanges(
+        bridge_->CreateMetadataChangeList(), std::move(changes));
+    ASSERT_FALSE(error.has_value());
   }
 
   // Replaces the database with one that fails every remote write after
@@ -685,9 +684,7 @@ TEST_F(AIChatSyncBridgeTest,
 
 // When the remote sender omits AC last_contents to fit the size budget, the
 // bridge must restore the local text (matched by content hash) rather than
-// overwriting it with empty. Regression: previously ApplyRemoteEntry passed an
-// empty-strings vector unconditionally, wiping locally-present page content on
-// every apply.
+// overwriting it with empty.
 TEST_F(AIChatSyncBridgeTest,
        ApplyRemoteEntryWithOmittedLastContentsRestoresLocal) {
   // Seed local DB with a conversation entry that has AC + content text.
@@ -829,10 +826,11 @@ TEST_F(AIChatSyncBridgeTest,
 // apply would destroy edit history this device may be the only holder of. The
 // incoming content has to land as one more revision behind the local head.
 TEST_F(AIChatSyncBridgeTest, ApplyRemoteEntryKeepsLocalEditHistory) {
-  SeedEditedEntry("conv-edits", "entry-edits");
+  ASSERT_NO_FATAL_FAILURE(SeedEditedEntry("conv-edits", "entry-edits"));
   CreateBridge();
 
-  ApplyRemoteRevision("conv-edits", "entry-edits", "Revised elsewhere");
+  ASSERT_NO_FATAL_FAILURE(
+      ApplyRemoteRevision("conv-edits", "entry-edits", "Revised elsewhere"));
 
   auto archive = db_->GetConversationData("conv-edits");
   ASSERT_TRUE(archive);
@@ -852,7 +850,7 @@ TEST_F(AIChatSyncBridgeTest, ApplyRemoteEntryKeepsLocalEditHistory) {
 // through MergeFullSyncData against a populated database. Each replayed record
 // is this device's own collapsed content, so nothing may be appended.
 TEST_F(AIChatSyncBridgeTest, MergeFullSyncDataDoesNotDuplicateLocalEdits) {
-  SeedEditedEntry("conv-edits", "entry-edits");
+  ASSERT_NO_FATAL_FAILURE(SeedEditedEntry("conv-edits", "entry-edits"));
   CreateBridge();
 
   auto local = db_->GetConversationEntryWithEdits("entry-edits");
