@@ -203,6 +203,7 @@
 -SegmentationPlatformTest.NullModelUpdateForUnknownModelShouldBeNoOp
 -SegmentationPlatformTest.ReceiveModelUpdateFromOptimizationGuide
 -SegmentationPlatformTest.ReceiveNullModelUpdateFromOptimizationGuide
+-SelectionOverlayPromptBrowserTest.*
 -TtcProtocolBrowserTest.*
 -ZeroStateSuggestionsBFCacheConfusionBrowserTest.BFCacheRegressionTest
 
@@ -1931,13 +1932,18 @@
 -SigninUiUtilTest*.*
 
 # These tests fail because we override ShouldEnablePageContentAnnotations to
-# return false (disables creation of PageContentAnnotationsService)
+# return false (disables creation of PageContentAnnotationsService and
+# PageContentExtractionService)
 -All/PageContentAnnotationsServiceContentExtraction*Test*.*/*
 -HistoryEmbeddingsBrowserTest.*
 -HistoryEmbeddingsWithLowAggregationBrowserTest.PassageContextSelectionLimitedByWordCount
 -HistoryEmbeddingsWithUrlFilterBrowserTest.DoesNotFilterUrlNotOnBlocklist
 -HistoryEmbeddingsWithUrlFilterBrowserTest.FilterUrlOnBlocklist
 -PageContentAnnotationsService*.*
+-PageContextMonitorBrowserTest.*
+-ToolControllerBrowserTest.*
+-ToolControllerTranslateBrowserTest.*
+-TtcSessionJournalBrowserTest.JournalFollowsTheSessionTask
 
 # These tests fail because we override prefs::kSearchSuggestEnabled to false.
 -All/SearchEnginePreconnectorEnabledOnlyBrowserTest.AllowedSearch/*
@@ -2597,11 +2603,11 @@
 
 # Brave's P3A consent infobar occupies infobars()[0] on tab 0, and the test
 # static_casts that infobar to TabSharingInfoBar.
--MultipleTabSharingUIViewsBrowserTest.*
--TabSharingMessageLinksBrowserTest.ClickingOn*
--TabSharingUIViewsBrowserTest.*
+-All/MultipleTabSharingUIViewsBrowserTest.*
+-All/TabSharingMessageLinksBrowserTest.ClickingOn*
+-All/TabSharingUIViewsBrowserTest.*
+-All/TabSharingUIViewsPreferCurrentTabBrowserTest.*
 -TabSharingUIViewsDataProtectionBrowserTest.*
--TabSharingUIViewsPreferCurrentTabBrowserTest.*
 
 # Looks like an upstream bug:
 # ../../chrome/browser/headless/test/headless_mode_command_browsertest.cc:577: Failure
@@ -2810,6 +2816,10 @@
 -DeviceBoundSessionBrowserTest.CrossSiteFetchWithSameSiteNoneTriggersRefresh
 -DeviceBoundSessionBrowserTest.CrossSiteIframeFetchTriggersRefresh
 -DeviceBoundSessionBrowserTest.CrossSiteIframeNavigationWithSameSiteNoneTriggersRefresh
+
+# These tests fail because we disable kTtc feature.
+-AppMenuModelTtcTest.TtcItem
+-TtcKeyedServiceBrowserTest.CreatedForRegularProfile
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -All/DeclarativeNetRequestBrowserTest.RendererCacheCleared/*

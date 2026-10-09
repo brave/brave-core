@@ -9,6 +9,7 @@
 # logs.
 -RustLogIntegrationTest.CheckAllSeverity
 -RustLogIntegrationTest.CheckVerboseSeverity
+-RustLogIntegrationTest.DynamicMinLogLevel
 
 # Pkey pool tests exhaust the 256MB ThreadIsolatedPool size. The test allocates
 # up to 250 random-sized blocks (up to 2MB each) simultaneously, which exceeds
