@@ -15,7 +15,7 @@ suite('BraveSettingsUI', () => {
   let ui: SettingsUiElement
 
   setup(async () => {
-    document.body.innerHTML = window.trustedTypes!.emptyHTML
+    document.body.replaceChildren()
     ui = document.createElement('settings-ui')
     document.body.appendChild(ui)
     await microtasksFinished()

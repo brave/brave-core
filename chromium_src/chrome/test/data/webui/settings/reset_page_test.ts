@@ -39,7 +39,7 @@ suite('BraveResetProfileDialog', () => {
     resetBrowserProxy = new RecordingResetBrowserProxy()
     ResetBrowserProxyImpl.setInstance(resetBrowserProxy)
 
-    document.body.innerHTML = window.trustedTypes!.emptyHTML
+    document.body.replaceChildren()
     dialog = document.createElement('settings-reset-profile-dialog')
     document.body.appendChild(dialog)
     await microtasksFinished()

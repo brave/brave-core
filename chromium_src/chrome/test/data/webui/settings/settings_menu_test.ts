@@ -26,7 +26,7 @@ suite('BraveSettingsMenu', () => {
 
   async function createMenu() {
     resetRouterForTesting()
-    document.body.innerHTML = window.trustedTypes!.emptyHTML
+    document.body.replaceChildren()
     menu = document.createElement('settings-menu')
     document.body.appendChild(menu)
     await microtasksFinished()

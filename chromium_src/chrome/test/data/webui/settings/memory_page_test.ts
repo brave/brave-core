@@ -5,8 +5,6 @@
 
 import './memory_page_test-chromium.js'
 
-import 'chrome://settings/settings.js'
-
 import type {SettingsMemoryPageElement} from 'chrome://settings/settings.js'
 import {
   MEMORY_SAVER_MODE_AGGRESSIVENESS_PREF,
@@ -55,7 +53,7 @@ suite('BraveMemoryPage', () => {
   let memoryPage: SettingsMemoryPageElement
 
   setup(async () => {
-    document.body.innerHTML = window.trustedTypes!.emptyHTML
+    document.body.replaceChildren()
 
     PerformanceMetricsProxyImpl.setInstance(new TestPerformanceMetricsProxy())
 

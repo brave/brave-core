@@ -5,8 +5,6 @@
 
 import './autofill_page_test-chromium.js'
 
-import 'chrome://settings/settings.js'
-
 import {
   AutofillManagerImpl,
   PaymentsManagerImpl,
@@ -71,7 +69,7 @@ suite('BraveAutofillPage', () => {
       overrides: {[key: string]: boolean|string} = {}) {
     loadTimeData.overrideValues(overrides)
     resetRouterForTesting()
-    document.body.innerHTML = window.trustedTypes!.emptyHTML
+    document.body.replaceChildren()
     autofillPage = document.createElement('settings-autofill-page')
     document.body.appendChild(autofillPage)
     await microtasksFinished()

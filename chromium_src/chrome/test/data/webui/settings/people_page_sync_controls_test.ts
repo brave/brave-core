@@ -82,7 +82,7 @@ suite('BraveSyncControls', () => {
     browserProxy = new TestSyncBrowserProxy()
     SyncBrowserProxyImpl.setInstance(browserProxy)
 
-    document.body.innerHTML = window.trustedTypes!.emptyHTML
+    document.body.replaceChildren()
     syncControls = document.createElement('settings-sync-controls')
     syncControls.syncStatus = {
       signedInState: SignedInState.SYNCING,
