@@ -6,7 +6,6 @@
 #include "brave/components/tabs/public/tree_tab_node_tab_collection.h"
 
 #include <algorithm>
-#include <limits>
 #include <memory>
 #include <ranges>
 #include <utility>
@@ -15,9 +14,6 @@
 #include "absl/functional/overload.h"
 #include "base/check_op.h"
 #include "base/containers/flat_set.h"
-#include "base/functional/bind.h"
-#include "base/logging.h"
-#include "base/types/to_address.h"
 #include "brave/components/tabs/public/tree_tab_node.h"
 #include "components/tabs/public/split_tab_collection.h"
 #include "components/tabs/public/tab_group_tab_collection.h"

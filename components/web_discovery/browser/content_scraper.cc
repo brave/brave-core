@@ -5,7 +5,6 @@
 
 #include "brave/components/web_discovery/browser/content_scraper.h"
 
-#include <algorithm>
 #include <utility>
 
 #include "base/json/json_reader.h"

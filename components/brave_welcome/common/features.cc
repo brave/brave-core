@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_welcome/common/features.h"
 
-#include "base/feature_list.h"
-
 namespace brave_welcome::features {
 
 BASE_FEATURE(kShowRewardsCard,

@@ -9,7 +9,6 @@
 
 #include "base/strings/string_util.h"
 #include "brave/components/l10n/common/locale_util.h"
-#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 

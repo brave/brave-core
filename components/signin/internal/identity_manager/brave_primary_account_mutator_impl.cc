@@ -5,8 +5,6 @@
 
 #include "brave/components/signin/internal/identity_manager/brave_primary_account_mutator_impl.h"
 
-#include "components/signin/public/base/account_consistency_method.h"
-
 class AccountTrackerService;
 class PrefService;
 class PrimaryAccountManager;

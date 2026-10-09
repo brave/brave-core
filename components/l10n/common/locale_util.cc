@@ -5,8 +5,6 @@
 
 #include "brave/components/l10n/common/locale_util.h"
 
-#include <optional>
-
 #include "brave/components/l10n/common/default_locale.h"
 #include "brave/components/l10n/common/locale_subtag_info.h"
 #include "brave/components/l10n/common/locale_subtag_parser_util.h"

@@ -5,9 +5,6 @@
 
 #include "brave/components/static_redirect_helper/static_redirect_helper.h"
 
-#include <algorithm>
-#include <memory>
-#include <string>
 #include <string_view>
 
 #include "base/no_destructor.h"

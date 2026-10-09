@@ -10,13 +10,10 @@
 #include "base/containers/flat_map.h"
 #include "base/no_destructor.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
-#include "brave/components/constants/url_constants.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
-#include "components/grit/components_resources.h"
-#include "ui/base/l10n/l10n_util.h"
 #include "ui/base/webui/resource_path.h"
 #include "ui/base/webui/web_ui_util.h"
 

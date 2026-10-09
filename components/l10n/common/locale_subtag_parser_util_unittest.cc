@@ -6,7 +6,6 @@
 #include "brave/components/l10n/common/locale_subtag_parser_util.h"
 
 #include "brave/components/l10n/common/locale_subtag_info.h"
-#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=LocaleParserUtilTest*
