@@ -23,6 +23,8 @@ substitutions:
               return RequestType::kBraveSolana;
             case ContentSettingsType::BRAVE_CARDANO:
               return RequestType::kBraveCardano;
+            case ContentSettingsType::BRAVE_POLKADOT:
+              return RequestType::kBravePolkadot;
         #endif
             case ContentSettingsType::BRAVE_GOOGLE_SIGN_IN:
               return RequestType::kBraveGoogleSignInPermission;
@@ -41,6 +43,7 @@ substitutions:
             case RequestType::kBraveEthereum:
             case RequestType::kBraveSolana:
             case RequestType::kBraveCardano:
+            case RequestType::kBravePolkadot:
             case RequestType::kBraveGoogleSignInPermission:
             case RequestType::kBraveOpenAIChat:
               return IDR_ANDROID_INFOBAR_PERMISSION_COOKIE;\2
@@ -55,6 +58,7 @@ substitutions:
             case RequestType::kBraveEthereum:
             case RequestType::kBraveSolana:
             case RequestType::kBraveCardano:
+            case RequestType::kBravePolkadot:
             case RequestType::kBraveGoogleSignInPermission:
             case RequestType::kBraveOpenAIChat:
               return vector_icons::kExtensionOldIcon;\2
@@ -77,6 +81,8 @@ substitutions:
               return ContentSettingsType::BRAVE_SOLANA;
             case RequestType::kBraveCardano:
               return ContentSettingsType::BRAVE_CARDANO;
+            case RequestType::kBravePolkadot:
+              return ContentSettingsType::BRAVE_POLKADOT;
         #endif
             case RequestType::kBraveOpenAIChat:
               return ContentSettingsType::BRAVE_OPEN_AI_CHAT;\2
@@ -85,6 +91,7 @@ substitutions:
             case RequestType::kBraveEthereum:
             case RequestType::kBraveSolana:
             case RequestType::kBraveCardano:
+            case RequestType::kBravePolkadot:
         #endif\3
 
   - description: 'Brave mappings for `RequestType` to permission key'
@@ -102,10 +109,13 @@ substitutions:
               return "brave_solana";
             case permissions::RequestType::kBraveCardano:
               return "brave_cardano";
+            case permissions::RequestType::kBravePolkadot:
+              return "brave_polkadot";
         #else
             case permissions::RequestType::kBraveEthereum:
             case permissions::RequestType::kBraveSolana:
             case permissions::RequestType::kBraveCardano:
+            case permissions::RequestType::kBravePolkadot:
               NOTREACHED();
         #endif
             case permissions::RequestType::kBraveGoogleSignInPermission:
