@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_wallet/browser/tx_manager.h"
 
-#include <algorithm>
 #include <optional>
 #include <utility>
 #include <vector>

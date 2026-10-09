@@ -10,9 +10,7 @@
 #include <utility>
 #include <vector>
 
-#include "base/test/gtest_util.h"
 #include "base/test/values_test_util.h"
-#include "brave/components/brave_wallet/browser/json_rpc_requests_helper.h"
 #include "brave/components/brave_wallet/browser/swap_response_parser.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/common_utils.h"

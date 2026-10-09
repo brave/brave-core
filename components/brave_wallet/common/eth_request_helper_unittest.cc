@@ -6,7 +6,6 @@
 #include "brave/components/brave_wallet/common/eth_request_helper.h"
 
 #include <array>
-#include <functional>
 #include <utility>
 #include <vector>
 

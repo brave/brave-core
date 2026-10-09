@@ -8,7 +8,6 @@
 #include <optional>
 
 #include "base/values.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/fil_tx_meta.h"
 #include "brave/components/brave_wallet/browser/tx_meta.h"
 

@@ -10,7 +10,6 @@
 #include <utility>
 
 #include "base/check_is_test.h"
-#include "base/memory/ptr_util.h"
 #include "brave/components/brave_wallet/browser/zcash/rust/lib.rs.h"
 #include "brave/components/brave_wallet/browser/zcash/rust/orchard_decoded_blocks_bundle_impl.h"
 

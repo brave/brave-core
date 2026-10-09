@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_wallet/browser/fil_nonce_tracker.h"
 
-#include <utility>
-
 #include "base/files/scoped_temp_dir.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/test/bind.h"

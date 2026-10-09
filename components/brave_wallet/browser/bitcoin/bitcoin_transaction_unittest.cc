@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_transaction.h"
 
-#include <memory>
 #include <string>
 #include <utility>
 

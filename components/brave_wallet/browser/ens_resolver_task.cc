@@ -5,14 +5,11 @@
 
 #include "brave/components/brave_wallet/browser/ens_resolver_task.h"
 
-#include <algorithm>
-#include <memory>
 #include <optional>
 #include <utility>
 
 #include "base/check.h"
 #include "base/check_op.h"
-#include "base/compiler_specific.h"
 #include "base/json/json_writer.h"
 #include "base/no_destructor.h"
 #include "base/strings/string_util.h"
@@ -25,7 +22,6 @@
 #include "brave/components/brave_wallet/browser/json_rpc_requests_helper.h"
 #include "brave/components/brave_wallet/browser/json_rpc_response_parser.h"
 #include "brave/components/brave_wallet/common/eth_abi_utils.h"
-#include "brave/components/brave_wallet/common/eth_request_helper.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "components/grit/brave_components_strings.h"

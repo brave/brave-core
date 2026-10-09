@@ -11,7 +11,6 @@
 
 #include "base/check.h"
 #include "brave/components/brave_wallet/common/cardano_address.h"
-#include "components/cbor/reader.h"
 #include "components/cbor/values.h"
 #include "components/cbor/writer.h"
 

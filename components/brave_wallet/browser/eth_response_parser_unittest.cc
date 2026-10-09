@@ -5,15 +5,11 @@
 
 #include "brave/components/brave_wallet/browser/eth_response_parser.h"
 
-#include <memory>
 #include <optional>
-#include <utility>
 #include <vector>
 
 #include "base/test/values_test_util.h"
-#include "components/grit/brave_components_strings.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "ui/base/l10n/l10n_util.h"
 
 using base::test::ParseJson;
 

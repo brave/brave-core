@@ -5,20 +5,16 @@
 
 #include "brave/components/brave_wallet/browser/swap_request_helper.h"
 
-#include <limits>
 #include <optional>
 #include <utility>
 #include <vector>
 
-#include "base/notreached.h"
-#include "base/strings/string_number_conversions.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/json_rpc_requests_helper.h"
 #include "brave/components/brave_wallet/browser/solana_keyring.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/encoding_utils.h"
-#include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/json/json_helper.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 

@@ -5,10 +5,8 @@
 
 #include "brave/components/brave_wallet/common/brave_wallet_response_helpers.h"
 
-#include <memory>
 #include <string>
 
-#include "base/json/json_writer.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/test/values_test_util.h"
 #include "base/values.h"

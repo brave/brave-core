@@ -5,14 +5,12 @@
 
 #include "brave/components/brave_wallet/browser/cardano/cardano_transaction.h"
 
-#include <algorithm>
 #include <array>
 #include <optional>
 #include <string_view>
 #include <utility>
 #include <vector>
 
-#include "base/check_op.h"
 #include "base/numerics/checked_math.h"
 #include "base/numerics/safe_conversions.h"
 #include "base/strings/string_number_conversions.h"

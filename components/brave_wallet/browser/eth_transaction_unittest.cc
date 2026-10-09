@@ -12,7 +12,6 @@
 #include <vector>
 
 #include "base/strings/string_number_conversions.h"
-#include "base/strings/string_util.h"
 #include "base/test/values_test_util.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/internal/hd_key.h"

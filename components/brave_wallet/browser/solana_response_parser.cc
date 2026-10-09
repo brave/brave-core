@@ -16,7 +16,6 @@
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/json_rpc_response_parser.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
-#include "brave/components/json/json_helper.h"
 
 namespace brave_wallet {
 

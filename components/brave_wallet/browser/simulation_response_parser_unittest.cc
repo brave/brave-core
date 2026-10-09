@@ -5,12 +5,9 @@
 
 #include "brave/components/brave_wallet/browser/simulation_response_parser.h"
 
-#include <memory>
 #include <optional>
-#include <utility>
 
 #include "base/test/values_test_util.h"
-#include "brave/components/brave_wallet/browser/json_rpc_requests_helper.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"

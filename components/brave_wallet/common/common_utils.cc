@@ -7,8 +7,6 @@
 
 #include <stddef.h>
 
-#include <ostream>
-#include <ranges>
 #include <utility>
 
 #include "base/check.h"

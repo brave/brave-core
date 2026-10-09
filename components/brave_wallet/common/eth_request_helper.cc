@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_wallet/common/eth_request_helper.h"
 
-#include <functional>
 #include <memory>
 #include <optional>
 #include <tuple>
