@@ -684,10 +684,12 @@
 -keep class org.chromium.chrome.browser.dom_distiller.ReaderModeManager {
     *** mTab;
     <init>(...);
+    *** shouldUseReaderModeMessages(...);
 }
 
 -keep class org.chromium.chrome.browser.dom_distiller.BraveReaderModeManager {
     <init>(...);
+    *** shouldUseReaderModeMessages(...);
 }
 
 -keep class org.chromium.chrome.browser.crash.ChromePureJavaExceptionReporter {
