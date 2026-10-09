@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import org.chromium.base.Callback;
 import org.chromium.base.supplier.NonNullObservableSupplier;
 import org.chromium.base.supplier.NullableObservableSupplier;
-import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.browser.layouts.LayoutStateProvider;
 import org.chromium.chrome.browser.profiles.Profile;
@@ -56,7 +55,6 @@ public class BraveBottomBarCoordinator extends BottomBarCoordinator {
             NonNullObservableSupplier<Boolean> homepageEnabledSupplier,
             BottomBarMediator.VisibilityDelegate visibilityDelegate,
             NullableObservableSupplier<Profile> profileSupplier,
-            OneshotSupplier<String> countrySupplier,
             NonNullObservableSupplier<Boolean> omniboxFocusStateSupplier,
             NonNullObservableSupplier<ModalDialogManager> modalDialogManagerSupplier,
             LayoutStateProvider layoutStateProvider) {
@@ -68,7 +66,6 @@ public class BraveBottomBarCoordinator extends BottomBarCoordinator {
                 homepageEnabledSupplier,
                 visibilityDelegate,
                 profileSupplier,
-                countrySupplier,
                 omniboxFocusStateSupplier,
                 modalDialogManagerSupplier,
                 layoutStateProvider);
