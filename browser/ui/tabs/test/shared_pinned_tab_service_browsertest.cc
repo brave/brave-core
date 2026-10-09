@@ -311,26 +311,26 @@ IN_PROC_BROWSER_TEST_F(SharedPinnedTabServiceBrowserTest,
   ASSERT_TRUE(tab_strip_model_2->IsTabPinned(0));
   auto* dummy_contents = tab_strip_model_2->GetWebContentsAt(0);
   ASSERT_TRUE(shared_pinned_tab_service->IsDummyContents(dummy_contents));
-  EXPECT_FALSE(shared_pinned_tab_service
-                   ->GetTabDataForDummyContents(0, dummy_contents)
-                   ->blocked);
+  EXPECT_FALSE(
+      shared_pinned_tab_service->GetTabDataForDummyContents(0, dummy_contents)
+          ->blocked);
 
   // When the shared pinned tab gets blocked, e.g. by a modal dialog,
   tab_strip_model_1->SetTabBlocked(0, /* blocked= */ true);
 
   // Then the dummy pinned tab should reflect it, so it shows the attention
   // icon.
-  EXPECT_TRUE(shared_pinned_tab_service
-                  ->GetTabDataForDummyContents(0, dummy_contents)
-                  ->blocked);
+  EXPECT_TRUE(
+      shared_pinned_tab_service->GetTabDataForDummyContents(0, dummy_contents)
+          ->blocked);
 
   // When the shared pinned tab gets unblocked,
   tab_strip_model_1->SetTabBlocked(0, /* blocked= */ false);
 
   // Then the dummy pinned tab should reflect it too.
-  EXPECT_FALSE(shared_pinned_tab_service
-                   ->GetTabDataForDummyContents(0, dummy_contents)
-                   ->blocked);
+  EXPECT_FALSE(
+      shared_pinned_tab_service->GetTabDataForDummyContents(0, dummy_contents)
+          ->blocked);
 }
 
 IN_PROC_BROWSER_TEST_F(SharedPinnedTabServiceBrowserTest,
