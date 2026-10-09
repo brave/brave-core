@@ -124,13 +124,14 @@ opening Settings throws a `NullPointerException`. The new
 `autofill_and_passwords` row keeps its XML order inside Brave's features
 section. Android-only.
 
-- [ ] Pin `kYourSavedInfoSettingsPageAndroid` disabled (a
+- [x] Pin `kYourSavedInfoSettingsPageAndroid` disabled (a
       `chrome_feature_list.cc` plaster, `base/compile_overridden_features.inc`
-      and `app/feature_defaults_unittest.cc`), or adopt it:
-- [ ] If adopting: order `MainSettings.PREF_AUTOFILL_AND_PASSWORDS` in
+      and `app/feature_defaults_unittest.cc`), or adopt it: adopted
+- [x] If adopting: order `MainSettings.PREF_AUTOFILL_AND_PASSWORDS` in
       `android/java/org/chromium/chrome/browser/settings/BraveMainPreferencesBase.java:417-421`
-      when the flag is on, and review what `AutofillAndPasswordsFragment` shows
-      (Google Wallet, Autofill AI, where passwords lead)
+      when the flag is on
+- [ ] Review what `AutofillAndPasswordsFragment` shows (Google Wallet,
+      Autofill AI, where passwords lead)
 
 ### Android: `countrySupplier` removed from toolbar and bottom bar constructors
 
@@ -161,11 +162,11 @@ then show, and both must be on, since Brave's plaster ANDs its pref into
 upstream's and doesn't drop the new entry, so settings search lists it even with
 the flag off.
 
-- [ ] `android/java/org/chromium/chrome/browser/settings/AppearancePreferences.java:99-104`:
+- [x] `android/java/org/chromium/chrome/browser/settings/AppearancePreferences.java:99-104`:
       remove `AppearanceSettingsFragment.PREF_BOTTOM_BAR_SWITCH`, or back
       Brave's switch with `BottomBarConfigUtils.setBottomBarUserEnabled()` and
       drop the plaster's AND
-- [ ] Same file, `updateDynamicPreferences`: remove `PREF_BOTTOM_BAR_SWITCH`
+- [x] Same file, `updateDynamicPreferences`: remove `PREF_BOTTOM_BAR_SWITCH`
       from the index
 
 ### Shared pinned tabs miss blocked-state changes
@@ -645,7 +646,7 @@ activity
 M153), so `BraveActivity.spoofCustomTab()` no longer affects
 `ReaderModeManager.shouldUseReaderModeMessages()`.
 
-- [ ] `android/java/org/chromium/chrome/browser/dom_distiller/BraveReaderModeManager.java:41`:
+- [x] `android/java/org/chromium/chrome/browser/dom_distiller/BraveReaderModeManager.java:41`:
       redirect `shouldUseReaderModeMessages()` with `changeMethodOwner`, or drop
       the feature and `BraveActivity.java:3060`
 
