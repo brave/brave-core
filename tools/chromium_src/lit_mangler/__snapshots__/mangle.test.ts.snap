@@ -883,7 +883,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 "===================================================================
 --- ../chrome/browser/resources/settings/autofill_page/autofill_page_index.html.ts
 +++ gen/chrome/browser/resources/settings/preprocessed/autofill_page/autofill_page_index.html.ts
-@@ -3,34 +3,25 @@
+@@ -3,34 +3,28 @@
  import type {SettingsAutofillPageIndexElement} from './autofill_page_index.js';
  
  export function getHtml(this: SettingsAutofillPageIndexElement) {
@@ -908,7 +908,9 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 -<if expr="is_win or is_macosx">
 -  <settings-passkeys-page slot="view" id="passkeys"
 -      data-parent-view-id="parent">
--  </settings-passkeys-page>
++
++  <settings-passkeys-page slot="view" id="passkeys" data-parent-view-id="parent">
+   </settings-passkeys-page>
 -</if>
  
 -  <settings-payments-page slot="view" id="payments"
@@ -924,7 +926,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
  
    \${this.isShoppingEnabled_ ? html\`
      <settings-shopping-page slot="view" id="shopping"
-@@ -43,7 +34,10 @@
+@@ -43,7 +37,10 @@
          id="suggestionsFromGemini" data-parent-view-id="parent">
      </settings-suggestions-from-gemini-page>
    \` : ''}
