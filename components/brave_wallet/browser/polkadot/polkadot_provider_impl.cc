@@ -38,13 +38,13 @@ mojom::PolkadotProviderErrorBundlePtr InternalError() {
 }  // namespace
 
 PolkadotProviderImpl::PolkadotProviderImpl(
-    BraveWalletService& brave_wallet_service,
+    KeyringService& keyring_service,
     BraveWalletProviderDelegateFactory delegate_factory,
     const url::Origin& origin)
-    : brave_wallet_service_(brave_wallet_service),
+    : keyring_service_(keyring_service),
       delegate_factory_(std::move(delegate_factory)),
       origin_(origin) {
-  brave_wallet_service_->keyring_service()->AddObserver(
+  keyring_service_->AddObserver(
       keyring_observer_receiver_.BindNewPipeAndPassRemote());
   delegate_ = delegate_factory_.Run();
   CHECK(delegate_);
@@ -99,7 +99,7 @@ void PolkadotProviderImpl::RequestPolkadotPermissions(
       pending_request_permissions_callback_ = std::move(callback);
       pending_request_permissions_origin_ = origin;
 
-      brave_wallet_service_->keyring_service()->RequestUnlock();
+      keyring_service()->RequestUnlock();
       delegate_->ShowPanel(origin_);
       return;
 
@@ -112,8 +112,8 @@ void PolkadotProviderImpl::RequestPolkadotPermissions(
                                           allowed_accounts);
 
     case PermissionCheckResult::kNeedsPermissionRequest:
-      auto polkadot_account_ids = GetPolkadotAccountPermissionIdentifiers(
-          brave_wallet_service_->keyring_service());
+      auto polkadot_account_ids =
+          GetPolkadotAccountPermissionIdentifiers(keyring_service());
       return delegate_->RequestPermissions(
           mojom::CoinType::DOT, polkadot_account_ids, origin,
           base::BindOnce(&PolkadotProviderImpl::OnRequestPolkadotPermissions,
@@ -132,18 +132,17 @@ PolkadotProviderImpl::EvaluatePermissionsState(
     return PermissionCheckResult::kDeniedGlobally;
   }
 
-  auto* keyring_service = brave_wallet_service_->keyring_service();
-  if (!keyring_service->IsWalletCreatedSync()) {
+  auto* keyring = keyring_service();
+  if (!keyring->IsWalletCreatedSync()) {
     return PermissionCheckResult::kWalletNotCreated;
   }
 
-  auto polkadot_account_ids =
-      GetPolkadotAccountPermissionIdentifiers(keyring_service);
+  auto polkadot_account_ids = GetPolkadotAccountPermissionIdentifiers(keyring);
   if (polkadot_account_ids.empty()) {
     return PermissionCheckResult::kNoAccounts;
   }
 
-  if (keyring_service->IsLockedSync()) {
+  if (keyring->IsLockedSync()) {
     return PermissionCheckResult::kWalletLocked;
   }
 
@@ -180,8 +179,8 @@ void PolkadotProviderImpl::OnRequestPolkadotPermissions(
   // `allowed_accounts` is fed straight into GetPolkadotPreferredDappAccount
   // instead of being queried again from the delegate: on iOS the front-end
   // database write may not have completed yet.
-  auto account_id = GetPolkadotPreferredDappAccount(
-      brave_wallet_service_->keyring_service(), allowed_accounts);
+  auto account_id =
+      GetPolkadotPreferredDappAccount(keyring_service(), allowed_accounts);
 
   if (!account_id) {
     return std::move(callback).Run(mojo::NullRemote(), RejectedError());
@@ -190,8 +189,7 @@ void PolkadotProviderImpl::OnRequestPolkadotPermissions(
   mojo::PendingRemote<mojom::PolkadotApi> polkadot_api_remote;
   polkadot_api_receivers_.Add(
       std::make_unique<PolkadotApiImpl>(
-          *brave_wallet_service_->keyring_service(), delegate_factory_.Run(),
-          std::move(account_id)),
+          *keyring_service(), delegate_factory_.Run(), std::move(account_id)),
       polkadot_api_remote.InitWithNewPipeAndPassReceiver());
 
   std::move(callback).Run(std::move(polkadot_api_remote), nullptr);
@@ -202,6 +200,9 @@ void PolkadotProviderImpl::Unlocked() {
     RequestPolkadotPermissions(std::move(pending_request_permissions_callback_),
                                std::move(pending_request_permissions_origin_));
   }
+}
+KeyringService* PolkadotProviderImpl::keyring_service() {
+  return &keyring_service_.get();
 }
 
 }  // namespace brave_wallet

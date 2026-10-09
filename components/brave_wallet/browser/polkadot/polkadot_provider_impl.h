@@ -33,7 +33,7 @@ class PolkadotProviderImpl final : public mojom::PolkadotProvider,
   using BraveWalletProviderDelegateFactory =
       base::RepeatingCallback<std::unique_ptr<BraveWalletProviderDelegate>()>;
 
-  PolkadotProviderImpl(BraveWalletService& brave_wallet_service,
+  PolkadotProviderImpl(KeyringService& keyring_service,
                        BraveWalletProviderDelegateFactory delegate_factory,
                        const url::Origin& origin);
   ~PolkadotProviderImpl() override;
@@ -69,7 +69,9 @@ class PolkadotProviderImpl final : public mojom::PolkadotProvider,
   // KeyringServiceObserverBase:
   void Unlocked() override;
 
-  raw_ref<BraveWalletService> brave_wallet_service_;
+  KeyringService* keyring_service();
+
+  raw_ref<KeyringService> keyring_service_;
   BraveWalletProviderDelegateFactory delegate_factory_;
   std::unique_ptr<BraveWalletProviderDelegate> delegate_;
   const url::Origin origin_;
