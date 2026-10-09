@@ -15,7 +15,6 @@
 #include "base/functional/callback_helpers.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
-#include "base/notreached.h"
 #include "brave/components/brave_rewards/core/engine/database/database.h"
 #include "brave/components/brave_rewards/core/engine/global_constants.h"
 #include "brave/components/brave_rewards/core/engine/initialization_manager.h"

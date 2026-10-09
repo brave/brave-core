@@ -10,7 +10,6 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/test/values_test_util.h"
 #include "base/values.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace ai_chat {

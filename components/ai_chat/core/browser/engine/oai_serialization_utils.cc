@@ -5,7 +5,6 @@
 
 #include "brave/components/ai_chat/core/browser/engine/oai_serialization_utils.h"
 
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 
 namespace ai_chat {

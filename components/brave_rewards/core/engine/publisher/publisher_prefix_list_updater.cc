@@ -12,7 +12,6 @@
 #include "brave/components/brave_rewards/core/engine/rewards_engine.h"
 #include "brave/components/brave_rewards/core/engine/util/rewards_prefs.h"
 #include "brave/components/brave_rewards/core/engine/util/time_util.h"
-#include "net/http/http_status_code.h"
 
 namespace {
 

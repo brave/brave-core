@@ -17,7 +17,6 @@
 #include "base/test/test_future.h"
 #include "base/test/values_test_util.h"
 #include "base/values.h"
-#include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 #include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/test_renderer_host.h"

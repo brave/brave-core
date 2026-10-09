@@ -10,8 +10,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/json/string_escape.h"
-#include "base/strings/string_number_conversions.h"
 #include "base/test/values_test_util.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
@@ -19,7 +17,6 @@
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_input_properties.h"
 #include "brave/components/ai_chat/core/common/constants.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/ai_chat/core/common/test_utils.h"
 #include "testing/gmock/include/gmock/gmock.h"

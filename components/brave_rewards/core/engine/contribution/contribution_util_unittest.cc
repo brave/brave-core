@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_rewards/core/engine/contribution/contribution_util.h"
 
-#include "brave/components/brave_rewards/core/engine/constants.h"
 #include "brave/components/brave_rewards/core/engine/global_constants.h"
 #include "testing/gtest/include/gtest/gtest.h"
 

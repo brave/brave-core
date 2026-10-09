@@ -16,12 +16,9 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/values.h"
 #include "brave/components/brave_rewards/core/engine/database/database.h"
-#include "brave/components/brave_rewards/core/engine/global_constants.h"
-#include "brave/components/brave_rewards/core/engine/logging/event_log_keys.h"
 #include "brave/components/brave_rewards/core/engine/rewards_engine.h"
 #include "brave/components/brave_rewards/core/engine/util/rewards_prefs.h"
 #include "brave/components/brave_rewards/core/engine/wallet/wallet_util.h"
-#include "wally_bip39.h"  // NOLINT
 
 namespace brave_rewards::internal::wallet {
 

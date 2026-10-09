@@ -14,11 +14,9 @@
 #include <vector>
 
 #include "base/check.h"
-#include "base/containers/flat_tree.h"
 #include "base/files/file_path.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/path_service.h"
-#include "base/run_loop.h"
 #include "base/strings/strcat.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"

@@ -10,7 +10,6 @@
 
 #include "base/files/scoped_temp_dir.h"
 #include "base/test/task_environment.h"
-#include "base/test/test_future.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_database.h"
 #include "brave/components/ai_chat/core/browser/sync/ai_chat_sync_conversions.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
