@@ -114,6 +114,13 @@ class MockConversationHandlerClient : public mojom::ConversationUI {
                std::vector<mojom::ToolInfoPtr> tools),
               (override));
 
+  MOCK_METHOD(
+      void,
+      OnContentAgentChanged,
+      (bool is_content_agent_chosen,
+       const std::vector<mojom::ConversationCapability>& capabilities_enabled),
+      (override));
+
   MOCK_METHOD(void, OnConversationDeleted, (), (override));
 
  private:

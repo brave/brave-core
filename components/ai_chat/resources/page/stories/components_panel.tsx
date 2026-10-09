@@ -345,6 +345,8 @@ type CustomArgs = {
   currentErrorState: keyof typeof Mojom.APIError
   toolUseTaskState: keyof typeof Mojom.TaskState
   capabilitiesEnabled: Array<keyof typeof Mojom.ConversationCapability>
+  isContentAgentUserSelectable: boolean
+  isContentAgentChosen: boolean
   model: string
   inputText: Content
   editingConversationId: string | null
@@ -394,6 +396,8 @@ const args: CustomArgs = {
     `Write a Star Trek poem about Data's life on board the Enterprise`,
   ],
   capabilitiesEnabled: [],
+  isContentAgentUserSelectable: false,
+  isContentAgentChosen: false,
   conversationListCount: CONVERSATIONS.length,
   hasSuggestedQuestions: true,
   hasAssociatedContent: true,
@@ -636,6 +640,7 @@ function StoryContext(
             isStoragePrefEnabled: args.isStoragePrefEnabled,
             isStorageNoticeDismissed: args.isStorageNoticeDismissed,
             canShowPremiumPrompt: args.canShowPremiumPrompt,
+            isContentAgentUserSelectable: args.isContentAgentUserSelectable,
           },
         }),
         [args],
@@ -660,6 +665,7 @@ function StoryContext(
               capabilitiesEnabled: argsRef.current.capabilitiesEnabled.map(
                 (value) => Mojom.ConversationCapability[value],
               ),
+              isContentAgentChosen: argsRef.current.isContentAgentChosen,
             },
           })
         },
@@ -751,6 +757,7 @@ function StoryContext(
               isStoragePrefEnabled: args.isStoragePrefEnabled,
               isStorageNoticeDismissed: args.isStorageNoticeDismissed,
               canShowPremiumPrompt: args.canShowPremiumPrompt,
+              isContentAgentUserSelectable: args.isContentAgentUserSelectable,
             },
           }}
           overrides={{

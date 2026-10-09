@@ -387,6 +387,12 @@ struct ConversationState {
 
   // Which of the available capabilities are enabled for this conversation
   array<ConversationCapability> capabilities_enabled;
+
+  // The user's choice, only meaningful when
+  // |ServiceState.is_content_agent_user_selectable|. Distinct from
+  // CONTENT_AGENT being in |capabilities_enabled|: the choice is recorded even
+  // where the content agent cannot yet take effect.
+  bool is_content_agent_chosen;
 };
 
 // Browser-side handler for a Conversation
@@ -472,6 +478,12 @@ interface ConversationHandler {
   // lifetime of this conversation.
   SetContentToolPermission(string content_uuid, string tool_name,
                            ToolPermission permission);
+
+  // Records whether the user wants the content agent for this conversation.
+  // A no-op unless |ServiceState.is_content_agent_user_selectable|. The
+  // choice lasts as long as the conversation is loaded and is not persisted,
+  // and takes effect from the next turn, not the one in progress.
+  SetContentAgentChosen(bool chosen);
 };
 
 interface ConversationUI {
@@ -509,6 +521,12 @@ interface ConversationUI {
   // Pushed rather than invalidated so every open UI for this conversation
   // settles on the same list without each one re-asking the page.
   OnContentToolsChanged(string content_uuid, array<ToolInfo> tools);
+
+  // The user's content agent choice changed, with the capability set it now
+  // amounts to. Pushed rather than invalidated so that every open UI for this
+  // conversation agrees on the choice.
+  OnContentAgentChanged(bool is_content_agent_chosen,
+                        array<ConversationCapability> capabilities_enabled);
 
   OnConversationDeleted();
 };

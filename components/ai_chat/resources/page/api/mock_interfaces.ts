@@ -33,6 +33,7 @@ export const defaultServiceState: Mojom.ServiceState = {
   isStoragePrefEnabled: false,
   isStorageNoticeDismissed: false,
   canShowPremiumPrompt: false,
+  isContentAgentUserSelectable: false,
 }
 
 export const defaultConversationState: Mojom.ConversationState & {
@@ -67,6 +68,7 @@ export const defaultConversationState: Mojom.ConversationState & {
   temporary: false,
   toolUseTaskState: Mojom.TaskState.kNone,
   capabilitiesEnabled: [],
+  isContentAgentChosen: false,
 }
 
 const emptyTurn: Mojom.ConversationTurn = {
@@ -138,6 +140,7 @@ export function createMockConversationHandler(
     stopTask: () => {},
     setToolsAttached: () => {},
     setContentToolPermission: () => {},
+    setContentAgentChosen: () => {},
 
     // Apply overrides - these will replace defaults
     ...overrides,

@@ -191,6 +191,13 @@ class ConversationHandler : public mojom::ConversationHandler,
   // Return if this is a temporary chat.
   bool IsTemporaryChat() const;
 
+  // Whether the user decides for this conversation that the content agent is
+  // used, as opposed to it being unavailable or unconditionally on.
+  bool IsContentAgentUserSelectable() const;
+
+  // Whether the content agent is in force for this conversation.
+  bool IsContentAgentEnabled() const;
+
   // mojom::ConversationHandler
   void GetState(GetStateCallback callback) override;
   void GetConversationHistory(
@@ -208,6 +215,7 @@ class ConversationHandler : public mojom::ConversationHandler,
   void SetContentToolPermission(const std::string& content_uuid,
                                 const std::string& tool_name,
                                 mojom::ToolPermission permission) override;
+  void SetContentAgentChosen(bool chosen) override;
   void RateMessage(bool is_liked,
                    const std::string& turn_uuid,
                    RateMessageCallback callback) override;
@@ -687,6 +695,12 @@ class ConversationHandler : public mojom::ConversationHandler,
   // or if we have some kind of dynamic ToolProvider-led user toggle choices.
   // If we keep it, should it be part of mojom::Conversation?
   absl::flat_hash_set<mojom::ConversationCapability> conversation_capabilities_;
+
+  // The user's content agent choice for this conversation. Deliberately not
+  // persisted: a reloaded conversation starts with the content agent off and
+  // the user chooses again. Only consulted where
+  // IsContentAgentUserSelectable().
+  bool content_agent_chosen_ = false;
 
   // Set of tab IDs that have been part of tasks whilst this conversation is
   // in-memory. Since conversations are finite (limited by context size) and not
