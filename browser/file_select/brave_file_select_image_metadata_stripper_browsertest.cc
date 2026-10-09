@@ -3,9 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/file_select/brave_file_select_image_metadata_stripper.h"
-
 #include <algorithm>
+#include <cstddef>
 #include <cstdint>
 #include <memory>
 #include <string>
@@ -13,22 +12,24 @@
 #include <vector>
 
 #include "base/base_paths.h"
+#include "base/files/file_enumerator.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/functional/bind.h"
-#include "base/functional/callback.h"
 #include "base/functional/callback_helpers.h"
 #include "base/path_service.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/synchronization/lock.h"
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
-#include "base/test/test_future.h"
 #include "base/thread_annotations.h"
 #include "base/threading/thread_restrictions.h"
+#include "brave/browser/image_metadata_stripper/file_upload_controller.h"
 #include "brave/components/image_metadata_stripper/common/features.h"
 #include "chrome/browser/ui/tabs/tab_enums.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "chrome/common/chrome_paths.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
@@ -60,14 +61,18 @@ constexpr char kUploadEndpointPath[] = "/upload";
 
 class FileSelectImageMetadataStripperBase : public InProcessBrowserTest {
  public:
+  bool SetUpUserDataDirectory() override {
+    // Startup deletes the whole stripper root, possibly after a test has
+    // already stripped into it. Plant a leftover so SetUpOnMainThread can wait
+    // for that deletion to finish.
+    return base::CreateDirectory(StripperRootDir().AppendASCII("stale"));
+  }
+
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
 
-    // Observe the temporary files the stripper creates, so cleanup can be
-    // verified against the exact paths.
-    strip_completed_callback_ = strip_completed_future_.GetCallback();
-    // Test-only production code.
-    SetStripCompletedCallbackForTesting(&strip_completed_callback_);
+    ASSERT_TRUE(
+        base::test::RunUntil([&]() { return !PathExists(StripperRootDir()); }));
 
     const base::FilePath test_data_dir =
         base::PathService::CheckedGet(base::DIR_SRC_TEST_DATA_ROOT)
@@ -85,8 +90,6 @@ class FileSelectImageMetadataStripperBase : public InProcessBrowserTest {
   }
 
   void TearDownOnMainThread() override {
-    SetStripCompletedCallbackForTesting(nullptr);
-
     ui::SelectFileDialog::SetFactory(nullptr);
     InProcessBrowserTest::TearDownOnMainThread();
   }
@@ -180,14 +183,6 @@ class FileSelectImageMetadataStripperBase : public InProcessBrowserTest {
     return web_contents;
   }
 
-  // Re-arms the one-shot strip observer so a subsequent pick can be awaited on
-  // |strip_completed_future_| again.
-  void ReArmOnStripCompleteObserver() {
-    strip_completed_future_.Clear();
-    strip_completed_callback_ = strip_completed_future_.GetCallback();
-    SetStripCompletedCallbackForTesting(&strip_completed_callback_);
-  }
-
   // Uploads every selected file via multipart/form-data and returns the body
   // the server received.
   std::string UploadFileAndInterceptContent(
@@ -213,14 +208,35 @@ class FileSelectImageMetadataStripperBase : public InProcessBrowserTest {
     return base::PathExists(path);
   }
 
-  // The stripper copies the first JPEG to |parent|/0/<original basename>.
-  base::FilePath StrippedCopyIn(const base::FilePath& parent) {
-    return parent.AppendASCII("0").AppendASCII(kUploadTestFileName);
+  base::FilePath StripperRootDir() {
+    return base::PathService::CheckedGet(chrome::DIR_USER_DATA)
+        .Append(image_metadata_stripper::kStripperRootDirName);
   }
 
-  bool DoesNotExists(const std::vector<base::FilePath>& paths) {
-    return std::ranges::none_of(
-        paths, [this](const base::FilePath& path) { return PathExists(path); });
+  // Every stripped copy on disk, sorted. Each copy lives at
+  // <stripper root>/<tab dir>/<index>/<original basename>.
+  std::vector<base::FilePath> StrippedCopies() {
+    base::ScopedAllowBlockingForTesting allow_blocking;
+    std::vector<base::FilePath> copies;
+    base::FileEnumerator enumerator(StripperRootDir(), /*recursive=*/true,
+                                    base::FileEnumerator::FILES);
+    for (base::FilePath path = enumerator.Next(); !path.empty();
+         path = enumerator.Next()) {
+      copies.push_back(path);
+    }
+    std::ranges::sort(copies);
+    return copies;
+  }
+
+  // The per-tab directory holding |copy|.
+  base::FilePath TabDirOf(const base::FilePath& copy) {
+    return copy.DirName().DirName();
+  }
+
+  // Where the tab's |index|th stripped image is copied to.
+  base::FilePath StrippedCopyIn(const base::FilePath& tab_dir, size_t index) {
+    return tab_dir.AppendASCII(base::NumberToString(index))
+        .AppendASCII(kUploadTestFileName);
   }
 
   std::string SelectedFileName(content::WebContents* web_contents) {
@@ -230,9 +246,6 @@ class FileSelectImageMetadataStripperBase : public InProcessBrowserTest {
   }
 
   base::FilePath fbmd_test_image_path_;
-  // Provides the callback for SetStripCompletedCallbackForTesting to intercept
-  // the temporary files to test clean-up behaviour.
-  base::test::TestFuture<std::vector<base::FilePath>> strip_completed_future_;
 
  private:
   // This intercepts the uploaded image and converts its contents to text to
@@ -254,10 +267,6 @@ class FileSelectImageMetadataStripperBase : public InProcessBrowserTest {
     response->set_content("ok");
     return response;
   }
-
-  // The callback is owned here so it outlives the async strip that runs it.
-  base::OnceCallback<void(std::vector<base::FilePath>)>
-      strip_completed_callback_;
 
   // This lock guard is used to prevent cases where |uploaded_body_| could be
   // mutated on the IO thread and gets read on UI thread at the same time.
@@ -285,22 +294,22 @@ IN_PROC_BROWSER_TEST_F(FileSelectImageMetadataStripperBrowserTest,
 
   EXPECT_EQ(kUploadTestFileName, SelectedFileName(web_contents));
 
-  // Only the parent temp directory is queued for cleanup.
-  const std::vector<base::FilePath> temp_paths = strip_completed_future_.Take();
-  ASSERT_EQ(1u, temp_paths.size());
-  EXPECT_TRUE(PathExists(StrippedCopyIn(temp_paths[0])));
+  // 1. Check a single stripped copy was made in the tab's directory.
+  const std::vector<base::FilePath> copies = StrippedCopies();
+  ASSERT_EQ(1u, copies.size());
+  const base::FilePath tab_dir = TabDirOf(copies[0]);
+  EXPECT_EQ(StrippedCopyIn(tab_dir, 0), copies[0]);
 
   // 2. Check the bytes the server received are the scrubbed bytes.
   EXPECT_FALSE(ContainsFbmd(UploadFileAndInterceptContent(web_contents)))
       << "FBMD metadata should have been stripped before upload";
 
-  // 3. Check Closing the tab tears down the file chooser, which schedules
-  // deletion of the temporary files. Nothing should be left behind after the
-  // upload flow.
+  // 3. Check closing the tab destroys its FileUploadController, which deletes
+  // the tab's directory. Nothing should be left behind after the upload flow.
   browser()->tab_strip_model()->CloseWebContentsAt(
       1, TabCloseTypes::CLOSE_USER_GESTURE);
-  EXPECT_TRUE(base::test::RunUntil([&]() { return DoesNotExists(temp_paths); }))
-      << "Temporary upload files should be deleted after the upload completes";
+  EXPECT_TRUE(base::test::RunUntil([&]() { return !PathExists(tab_dir); }))
+      << "Temporary upload files should be deleted after the tab closes";
 }
 
 IN_PROC_BROWSER_TEST_F(FileSelectImageMetadataStripperBrowserTest,
@@ -309,42 +318,30 @@ IN_PROC_BROWSER_TEST_F(FileSelectImageMetadataStripperBrowserTest,
   content::WebContents* web_contents =
       OpenTabAndSelectFiles({fbmd_test_image_path_});
 
-  // Keep track of the temporary paths which were created for this selection.
-  const std::vector<base::FilePath> first_temp_paths =
-      strip_completed_future_.Take();
-  ASSERT_EQ(1u, first_temp_paths.size());
-  EXPECT_TRUE(PathExists(StrippedCopyIn(first_temp_paths[0])));
+  // Keep track of the tab's directory the first pick was copied into.
+  const std::vector<base::FilePath> first_copies = StrippedCopies();
+  ASSERT_EQ(1u, first_copies.size());
+  const base::FilePath tab_dir = TabDirOf(first_copies[0]);
 
-  // Pick again.
-  // This resets the callback provided to the
-  // SetStripCompletedCallbackForTesting so as to intercept any new temporary
-  // files when picking again.
-  ReArmOnStripCompleteObserver();
-  // Pick the same file.
+  // Pick the same file again.
   SelectFilesInPicker(web_contents, {fbmd_test_image_path_});
 
-  const std::vector<base::FilePath> second_temp_paths =
-      strip_completed_future_.Take();
-  ASSERT_EQ(1u, second_temp_paths.size());
-
-  // 1. Check each pick creates a distinct temporary copy, and the earlier one
-  // is kept alive (by its own FileSelectHelper) until the tab goes away.
-  EXPECT_NE(first_temp_paths[0], second_temp_paths[0]);
-  EXPECT_TRUE(PathExists(StrippedCopyIn(first_temp_paths[0])));
-  EXPECT_TRUE(PathExists(StrippedCopyIn(second_temp_paths[0])));
+  // 1. Check each pick creates a distinct copy in the same tab directory, and
+  // the earlier one is kept alive until the tab goes away.
+  EXPECT_EQ(std::vector<base::FilePath>(
+                {StrippedCopyIn(tab_dir, 0), StrippedCopyIn(tab_dir, 1)}),
+            StrippedCopies());
   EXPECT_EQ(kUploadTestFileName, SelectedFileName(web_contents));
 
   // The most recently picked file is scrubbed and is what gets uploaded.
   EXPECT_FALSE(ContainsFbmd(UploadFileAndInterceptContent(web_contents)))
       << "FBMD metadata should have been stripped before upload";
 
-  // 2. Check Closing the tab tears down every FileSelectHelper, deleting all
-  // the temporary files the picks created.
+  // 2. Check closing the tab deletes all the copies the picks created.
   browser()->tab_strip_model()->CloseWebContentsAt(
       1, TabCloseTypes::CLOSE_USER_GESTURE);
-  EXPECT_TRUE(base::test::RunUntil([&]() {
-    return DoesNotExists(first_temp_paths) && DoesNotExists(second_temp_paths);
-  })) << "All temporary upload files should be deleted after the tab closes";
+  EXPECT_TRUE(base::test::RunUntil([&]() { return !PathExists(tab_dir); }))
+      << "All temporary upload files should be deleted after the tab closes";
 }
 
 IN_PROC_BROWSER_TEST_F(FileSelectImageMetadataStripperBrowserTest,
@@ -365,10 +362,10 @@ IN_PROC_BROWSER_TEST_F(FileSelectImageMetadataStripperBrowserTest,
   content::WebContents* web_contents =
       OpenTabAndSelectFiles({fbmd_test_image_path_, text_path});
 
-  // 1. Check since only the JPEG is strippable, exactly one parent temp
-  // directory is queued (holding the stripped copy).
-  const std::vector<base::FilePath> temp_paths = strip_completed_future_.Take();
-  ASSERT_EQ(1u, temp_paths.size());
+  // 1. Check since only the JPEG is strippable, exactly one copy was made.
+  const std::vector<base::FilePath> copies = StrippedCopies();
+  ASSERT_EQ(1u, copies.size());
+  EXPECT_EQ(StrippedCopyIn(TabDirOf(copies[0]), 0), copies[0]);
   EXPECT_EQ(kUploadTestFileName, SelectedFileName(web_contents));
 
   // 2. Check the uploaded payload carries both files: the image scrubbed of
@@ -410,7 +407,7 @@ IN_PROC_BROWSER_TEST_F(FileSelectImageMetadataStripperBrowserTest,
 
   // 1. Check the strip ran but found nothing to remove, so it retained no temp
   // file.
-  EXPECT_TRUE(strip_completed_future_.Take().empty());
+  EXPECT_TRUE(StrippedCopies().empty());
 
   // 2. Check the original bytes are uploaded unchanged: our marker survives and
   // no FBMD record was introduced.
@@ -429,7 +426,7 @@ IN_PROC_BROWSER_TEST_F(FileSelectImageMetadataStripperBrowserTest,
   content::WebContents* web_contents = OpenTabAndCancelPicker();
 
   // 1. Check the strip pipeline was never entered, so nothing was selected.
-  EXPECT_FALSE(strip_completed_future_.IsReady());
+  EXPECT_TRUE(StrippedCopies().empty());
   EXPECT_EQ(0,
             content::EvalJs(web_contents,
                             "document.getElementById('fileinput').files.length")
@@ -451,7 +448,7 @@ IN_PROC_BROWSER_TEST_F(
   content::WebContents* web_contents =
       OpenTabAndSelectFiles({fbmd_test_image_path_});
   // Stripping code shouldn't have been run.
-  EXPECT_FALSE(strip_completed_future_.IsReady());
+  EXPECT_TRUE(StrippedCopies().empty());
 
   EXPECT_TRUE(ContainsFbmd(UploadFileAndInterceptContent(web_contents)))
       << "FBMD metadata should be untouched when the feature is disabled";

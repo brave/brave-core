@@ -19,9 +19,12 @@
 #include "base/path_service.h"
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/test/scoped_path_override.h"
 #include "base/test/test_future.h"
 #include "base/threading/thread_restrictions.h"
+#include "brave/browser/image_metadata_stripper/file_upload_controller.h"
 #include "brave/components/image_metadata_stripper/common/features.h"
+#include "chrome/common/chrome_paths.h"
 #include "components/tabs/public/mock_tab_interface.h"
 #include "components/tabs/public/tab_interface.h"
 #include "content/public/common/drop_data.h"
@@ -49,9 +52,9 @@ class DragDropImageMetadataStripperTestBase
     base::ScopedAllowBlockingForTesting allow_blocking;
     ASSERT_TRUE(source_dir_.CreateUniqueTempDir());
 
-    // Production associates a tab with its WebContents and creates this
-    // feature from BraveTabFeatures. The harness contents are not a tab, so
-    // do that here. Copies are deleted when the feature is destroyed, which
+    // Production associates a tab with its WebContents and creates the
+    // controller from BraveTabFeatures. The harness contents are not a tab, so
+    // do that here. Copies are deleted when the controller is destroyed, which
     // is when the tab closes.
     tabs::TabLookupFromWebContents::CreateForWebContents(web_contents(), &tab_);
     ON_CALL(tab_, GetContents()).WillByDefault(testing::Return(web_contents()));
@@ -62,12 +65,13 @@ class DragDropImageMetadataStripperTestBase
               return base::CallbackListSubscription();
             });
     if (strip_metadata_) {
-      drop_strip_temp_dirs_ = std::make_unique<DropStripTempDirs>(tab_);
+      upload_controller_ =
+          image_metadata_stripper::FileUploadController::MaybeCreate(tab_);
     }
   }
 
   void TearDown() override {
-    drop_strip_temp_dirs_.reset();
+    upload_controller_.reset();
     will_discard_contents_.Reset();
     content::RenderViewHostTestHarness::TearDown();
   }
@@ -136,11 +140,20 @@ class DragDropImageMetadataStripperTestBase
     return stripped_copy.DirName().DirName();
   }
 
+  base::FilePath StripperRootDir() {
+    return base::PathService::CheckedGet(chrome::DIR_USER_DATA)
+        .Append(image_metadata_stripper::kStripperRootDirName);
+  }
+
   base::ScopedTempDir source_dir_;
+  // Stripped copies are written under the user data directory; keep them out
+  // of the real one.
+  base::ScopedPathOverride user_data_dir_override_{chrome::DIR_USER_DATA};
   base::test::ScopedFeatureList feature_list_;
   const bool strip_metadata_;
   tabs::MockTabInterface tab_;
-  std::unique_ptr<DropStripTempDirs> drop_strip_temp_dirs_;
+  std::unique_ptr<image_metadata_stripper::FileUploadController>
+      upload_controller_;
   tabs::TabInterface::WillDiscardContentsCallback will_discard_contents_;
 };
 
@@ -169,6 +182,7 @@ TEST_F(DragDropImageMetadataStripperTest, DropsAStrippedCopyOfTheImage) {
   const base::FilePath& stripped_copy = result->filenames[0].path;
 
   EXPECT_NE(dropped, stripped_copy);
+  EXPECT_TRUE(StripperRootDir().IsParent(stripped_copy));
   EXPECT_FALSE(ContainsFbmd(stripped_copy));
   // The page must still see the name of the file that was dropped.
   EXPECT_EQ(dropped.BaseName(), stripped_copy.BaseName());
@@ -186,7 +200,7 @@ TEST_F(DragDropImageMetadataStripperTest,
   const base::FilePath temp_root = TempRootOf(result->filenames[0].path);
   ASSERT_TRUE(PathExists(temp_root));
 
-  drop_strip_temp_dirs_.reset();
+  upload_controller_.reset();
   ASSERT_TRUE(base::test::RunUntil([&]() { return !PathExists(temp_root); }));
 }
 
