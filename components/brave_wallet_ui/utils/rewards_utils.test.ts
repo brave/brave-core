@@ -20,6 +20,7 @@ import {
   getRewardsProviderIcon,
   getRewardsProviderName,
   getRewardsTokenDescription,
+  formatBATBalance,
 } from './rewards_utils'
 
 const upholdRewardsAccount = getNormalizedExternalRewardsWallet('uphold')
@@ -118,6 +119,20 @@ describe('getRewardsProviderName', () => {
   })
   it('Should return empty string', () => {
     expect(getRewardsProviderName('')).toEqual('')
+  })
+})
+
+describe('formatBATBalance', () => {
+  it('formats missing and zero balances to three decimal places', () => {
+    expect(formatBATBalance()).toBe('0.000 BAT')
+    expect(formatBATBalance(0)).toBe('0.000 BAT')
+  })
+
+  it('keeps three decimal places for whole and fractional amounts', () => {
+    expect(formatBATBalance(80)).toBe('80.000 BAT')
+    expect(formatBATBalance(8)).toBe('8.000 BAT')
+    expect(formatBATBalance(12.3457)).toBe('12.346 BAT')
+    expect(formatBATBalance(1958.56)).toBe('1,958.560 BAT')
   })
 })
 

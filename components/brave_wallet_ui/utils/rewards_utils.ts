@@ -12,6 +12,7 @@ import {
 
 // Utils
 import { getLocale } from '../../common/locale'
+import Amount from './amount'
 
 // Types
 import { BraveWallet, externalWalletProviders } from '../constants/types'
@@ -182,6 +183,12 @@ export const getRewardsBATToken = (
     zcashTokenType: BraveWallet.ZCashTokenType.kNone,
     chainId: provider,
   }
+}
+
+/** Style guide: BAT balances use three decimal places (`80.000 BAT`). */
+export const formatBATBalance = (balance?: number) => {
+  const formatted = new Amount(balance ?? 0).formatFixed(3)
+  return formatted === '' ? '0.000 BAT' : `${formatted} BAT`
 }
 
 export const isRewardsAssetId = (assetId: string) => {
