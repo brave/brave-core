@@ -1,0 +1,87 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<grit-part>
+
+  <if expr="is_ios">
+    </if>
+  <if expr="is_chromeos">
+    </if>
+  <if expr="is_win">
+    </if>
+  <if expr="is_macosx">
+    </if>
+  <if expr="_google_chrome">
+    </if>
+  <if expr="not _google_chrome">
+    </if>
+  <if expr="not use_titlecase">
+    </if>
+  <if expr="use_titlecase">
+    </if>
+
+  <if expr="not is_android">
+    </if>
+
+  <if expr="is_android">
+    </if>
+
+  <if expr="is_android">
+    </if>
+
+  <if expr="is_android">
+    </if>
+
+  <if expr="is_android">
+    </if>
+  <if expr="is_ios">
+    </if>
+  <if expr="is_android or is_ios">
+    <message name="IDS_AUTOFILL_AND_PASSWORDS_PASSWORD_MANAGER_SUMMARY" desc="Summary for the Brave Password Manager entry in the Autofill and passwords settings." formatter_data="android_java">
+      Passwords
+    </message>
+    </if>
+
+  <if expr="not is_android and not is_ios">
+    </if>
+
+  <if expr="is_android">
+    </if>
+   <if expr="is_android or is_ios">
+    </if>
+
+  <if expr="is_android">
+  </if>
+
+  <if expr="not is_android">
+    </if>
+
+
+  <if expr="is_android">
+    </if>
+
+  <if expr="is_android">
+    </if>
+
+  <if expr="is_android">
+    </if>
+
+  <if expr="is_macosx">
+    </if>
+  <if expr="not is_macosx">
+    </if>
+  <if expr="_google_chrome">
+    </if>
+  <if expr="not _google_chrome">
+    </if>
+
+  <if expr="not is_android and not is_ios">
+    </if>
+
+  <if expr="not is_android and not is_ios">
+    </if>
+
+  <if expr="is_android">
+    </if>
+
+  <if expr="is_android">
+    </if>
+</grit-part>
