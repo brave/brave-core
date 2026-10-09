@@ -67,6 +67,14 @@ if (enable_playlist) {
   import("//brave/browser/playlist/sources.gni")
 }
 
+# Targets allowed to include headers from `brave_chrome_browser_sources`, which
+# are compiled into //brave/browser:core (a dep of //chrome/browser:browser).
+# Each entry must also be a dep of :core, and is a cycle: the target includes
+# :core's headers while :core depends on it. Do not add entries; give the
+# included header its own target instead. To remove one, use the
+# /remove-circular-includes skill. See
+# docs/best-practices/modularization.md and
+# https://github.com/brave/brave-browser/issues/59199.
 brave_chrome_browser_allow_circular_includes_from = []
 
 brave_chrome_browser_visibility = [
