@@ -13,9 +13,18 @@
 #include "url/gurl.h"
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
+#include "brave/browser/containers/container_specifier_utils.h"
+#include "brave/browser/containers/containers_service_factory.h"
 #include "brave/components/containers/content/browser/storage_partition_utils.h"
+#include "brave/components/containers/core/browser/container_specifier.h"
+#include "brave/components/containers/core/browser/containers_service.h"
 #include "brave/components/containers/core/common/features.h"
+#include "brave/components/containers/core/mojom/containers.mojom.h"
+#include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser_tabstrip.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "content/public/browser/security_principal.h"
+#include "ui/base/page_transition_types.h"
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
 namespace {
@@ -41,6 +50,43 @@ void UpdateParams(NavigateParams* params) {
 }
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
+// Blank new tabs (Ctrl+T, the new-tab button, "New tab to the right") are
+// the only navigations that reach CreateTargetContents with no source
+// SiteInstance, a new-tab disposition, a TYPED transition and the NTP URL;
+// see chrome::AddAndReturnTabAt. Those honour the Containers "open new tabs
+// in" setting. Pages, popups and window.open all carry a source
+// SiteInstance and are handled by the caller before this is consulted.
+std::optional<content::StoragePartitionConfig>
+GetNewTabDefaultStoragePartitionConfig(const NavigateParams& params) {
+  if (!params.browser ||
+      (params.disposition != WindowOpenDisposition::NEW_FOREGROUND_TAB &&
+       params.disposition != WindowOpenDisposition::NEW_BACKGROUND_TAB) ||
+      !ui::PageTransitionCoreTypeIs(params.transition,
+                                    ui::PAGE_TRANSITION_TYPED) ||
+      params.url != chrome::GetNewTabURL(params.browser)) {
+    return std::nullopt;
+  }
+
+  Profile* profile = params.browser->GetProfile();
+  auto* service = ContainersServiceFactory::GetForProfile(profile);
+  if (!service || !service->ShouldShowContainerControls()) {
+    return std::nullopt;
+  }
+
+  // For the temporary case a fresh container is minted here, so this must
+  // only run once per tab: CreateTargetContents evaluates it once.
+  const auto new_tab_default = service->GetNewTabDefault();
+  containers::ContainerSpecifier specifier;
+  if (new_tab_default->temporary_container) {
+    specifier = containers::ContainerId(
+        service->CreateAndPersistTemporaryContainer()->id);
+  } else if (!new_tab_default->container_id.empty()) {
+    specifier = containers::ContainerId(new_tab_default->container_id);
+  }
+  return containers::GetStoragePartitionConfigForContainerSpecifier(profile,
+                                                                    specifier);
+}
+
 std::optional<content::StoragePartitionConfig>
 GetStoragePartitionConfigToInherit(const NavigateParams& params) {
   if (!base::FeatureList::IsEnabled(containers::features::kContainers)) {
@@ -58,7 +104,7 @@ GetStoragePartitionConfigToInherit(const NavigateParams& params) {
             .GetStoragePartitionConfig());
   }
 
-  return std::nullopt;
+  return GetNewTabDefaultStoragePartitionConfig(params);
 }
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 

@@ -213,6 +213,36 @@ TEST(ContainersPrefsRegistrationTest,
   EXPECT_FALSE(prefs.GetBoolean(prefs::kContainersEnabled));
 }
 
+TEST_F(ContainersPrefsTest, NewTabDefault_DefaultsToNoContainer) {
+  auto new_tab_default = GetNewTabDefaultFromPrefs(prefs_);
+  ASSERT_TRUE(new_tab_default);
+  EXPECT_TRUE(new_tab_default->container_id.empty());
+  EXPECT_FALSE(new_tab_default->temporary_container);
+}
+
+TEST_F(ContainersPrefsTest, NewTabDefault_RoundTrip) {
+  SetNewTabDefaultToPrefs(
+      mojom::NewTabDefault::New("container-id", false, false), prefs_);
+  auto read = GetNewTabDefaultFromPrefs(prefs_);
+  EXPECT_EQ(read->container_id, "container-id");
+  EXPECT_FALSE(read->temporary_container);
+
+  SetNewTabDefaultToPrefs(mojom::NewTabDefault::New("", true, false), prefs_);
+  read = GetNewTabDefaultFromPrefs(prefs_);
+  EXPECT_TRUE(read->container_id.empty());
+  EXPECT_TRUE(read->temporary_container);
+
+  SetNewTabDefaultToPrefs(mojom::NewTabDefault::New("", false, true), prefs_);
+  read = GetNewTabDefaultFromPrefs(prefs_);
+  EXPECT_TRUE(read->container_id.empty());
+  EXPECT_FALSE(read->temporary_container);
+  EXPECT_TRUE(read->ask_each_time);
+
+  // The "no container" value leaves no keys behind.
+  SetNewTabDefaultToPrefs(mojom::NewTabDefault::New("", false, false), prefs_);
+  EXPECT_TRUE(prefs_.GetDict(prefs::kNewTabDefault).empty());
+}
+
 TEST(ContainersPrefsRegistrationTest,
      ContainersEnabledPrefDefaultFinchOverride) {
   base::test::ScopedFeatureList feature_list;

@@ -45,6 +45,7 @@
 #include "chrome/browser/ui/navigator/browser_navigator.h"
 #include "chrome/browser/ui/navigator/browser_navigator_params.h"
 #include "chrome/browser/ui/tabs/pinned_tab_codec.h"
+#include "chrome/browser/ui/tabs/tab_enums.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.h"
@@ -96,6 +97,7 @@
 #include "ui/gfx/animation/animation.h"
 #include "ui/gfx/animation/animation_test_api.h"
 #include "ui/gfx/geometry/point.h"
+#include "ui/gfx/geometry/point_f.h"
 #include "ui/views/controls/button/button.h"
 #include "ui/views/controls/button/label_button.h"
 #include "ui/views/controls/menu/menu_controller.h"
@@ -3173,6 +3175,125 @@ IN_PROC_BROWSER_TEST_F(ContainersPwaBrowserTest, LaunchPwaWithoutContainer) {
           base::CommandLine(base::CommandLine::NO_PROGRAM));
   ASSERT_TRUE(config.has_value());
   EXPECT_NE(kContainersStoragePartitionDomain, config->partition_domain());
+}
+
+IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
+                       NewTabDefault_OpensBlankNewTabInContainer) {
+  PrefService* prefs = browser()->GetProfile()->GetPrefs();
+  std::vector<mojom::ContainerPtr> synced;
+  synced.push_back(
+      MakeContainer(kTestContainerId, "Work", mojom::Icon::kWork, SK_ColorRED));
+  SetContainersToPrefs(synced, *prefs);
+  SetNewTabDefaultToPrefs(
+      mojom::NewTabDefault::New(kTestContainerId, false, false), *prefs);
+
+  // Ctrl+T.
+  content::WebContents& new_tab =
+      chrome::NewTab(browser(), NewTabTypes::kNewTabCommand);
+  ASSERT_TRUE(content::WaitForLoadStop(&new_tab));
+  EXPECT_EQ(kTestContainerId, GetContainerIdForWebContents(&new_tab));
+  EXPECT_EQ(&new_tab, browser()->tab_strip_model()->GetActiveWebContents());
+
+  // The same delegate path with a real URL is left to upstream.
+  const GURL url = https_server_.GetURL("a.test", "/simple.html");
+  browser()->tab_strip_model()->delegate()->AddTabAt(url, -1, true,
+                                                     std::nullopt, false);
+  content::WebContents* url_tab =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_NE(url_tab, &new_tab);
+  ASSERT_TRUE(content::WaitForLoadStop(url_tab));
+  EXPECT_EQ(url, url_tab->GetLastCommittedURL());
+  EXPECT_TRUE(GetContainerIdForWebContents(url_tab).empty());
+}
+
+IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
+                       NewTabDefault_TemporaryContainerPerNewTab) {
+  SetNewTabDefaultToPrefs(mojom::NewTabDefault::New("", true, false),
+                          *browser()->GetProfile()->GetPrefs());
+
+  content::WebContents& first =
+      chrome::NewTab(browser(), NewTabTypes::kNewTabCommand);
+  ASSERT_TRUE(content::WaitForLoadStop(&first));
+  content::WebContents& second =
+      chrome::NewTab(browser(), NewTabTypes::kNewTabButton);
+  ASSERT_TRUE(content::WaitForLoadStop(&second));
+
+  const std::string first_id = GetContainerIdForWebContents(&first);
+  const std::string second_id = GetContainerIdForWebContents(&second);
+  EXPECT_TRUE(IsTemporaryContainerId(first_id));
+  EXPECT_TRUE(IsTemporaryContainerId(second_id));
+  EXPECT_NE(first_id, second_id);
+
+  auto* service =
+      ContainersServiceFactory::GetForProfile(browser()->GetProfile());
+  ASSERT_TRUE(service);
+  const auto used_ids = service->GetUsedContainerIds();
+  EXPECT_NE(std::ranges::find(used_ids, first_id), used_ids.end());
+  EXPECT_NE(std::ranges::find(used_ids, second_id), used_ids.end());
+}
+
+IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
+                       NewTabDefault_UnsetOpensWithoutContainer) {
+  content::WebContents& new_tab =
+      chrome::NewTab(browser(), NewTabTypes::kNewTabCommand);
+  ASSERT_TRUE(content::WaitForLoadStop(&new_tab));
+  EXPECT_TRUE(GetContainerIdForWebContents(&new_tab).empty());
+}
+
+IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
+                       NewTabDefault_IgnoredWhenContainersDisabled) {
+  PrefService* prefs = browser()->GetProfile()->GetPrefs();
+  std::vector<mojom::ContainerPtr> synced;
+  synced.push_back(
+      MakeContainer(kTestContainerId, "Work", mojom::Icon::kWork, SK_ColorRED));
+  SetContainersToPrefs(synced, *prefs);
+  SetNewTabDefaultToPrefs(
+      mojom::NewTabDefault::New(kTestContainerId, false, false), *prefs);
+  SetContainersEnabled(false, prefs);
+
+  content::WebContents& new_tab =
+      chrome::NewTab(browser(), NewTabTypes::kNewTabCommand);
+  ASSERT_TRUE(content::WaitForLoadStop(&new_tab));
+  EXPECT_TRUE(GetContainerIdForWebContents(&new_tab).empty());
+}
+
+IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
+                       NewTabDefault_AskEachTime_NewTabButtonShowsMenu) {
+  BrowserView* const browser_view =
+      BrowserView::GetBrowserViewForBrowser(browser());
+  ASSERT_TRUE(browser_view);
+  auto* horizontal_tab_strip_region =
+      views::AsViewClass<HorizontalTabStripRegionView>(
+          browser_view->tab_strip_view());
+  ASSERT_TRUE(horizontal_tab_strip_region);
+  auto* new_tab = views::AsViewClass<BraveNewTabButton>(
+      horizontal_tab_strip_region->new_tab_button());
+  ASSERT_TRUE(new_tab);
+  SetBraveNewTabButtonSkipContainersContextMenuRunForTesting(new_tab, true);
+
+  const ui::MouseEvent click(ui::EventType::kMousePressed, gfx::PointF(),
+                             gfx::PointF(), ui::EventTimeForNow(),
+                             ui::EF_LEFT_MOUSE_BUTTON, 0);
+
+  // Without the setting a click still opens a tab through the upstream
+  // callback.
+  const int tab_count = browser()->tab_strip_model()->count();
+  views::test::ButtonTestApi(new_tab).NotifyClick(click);
+  EXPECT_EQ(tab_count + 1, browser()->tab_strip_model()->count());
+  EXPECT_FALSE(BraveNewTabButtonHasPreparedContainersContextMenu(new_tab));
+
+  // With "ask every time" a click prepares the container menu instead.
+  SetNewTabDefaultToPrefs(mojom::NewTabDefault::New("", false, true),
+                          *browser()->GetProfile()->GetPrefs());
+  views::test::ButtonTestApi(new_tab).NotifyClick(click);
+  EXPECT_EQ(tab_count + 1, browser()->tab_strip_model()->count());
+  EXPECT_TRUE(BraveNewTabButtonHasPreparedContainersContextMenu(new_tab));
+
+  // The keyboard shortcut is unaffected: a plain tab, no container.
+  content::WebContents& shortcut_tab =
+      chrome::NewTab(browser(), NewTabTypes::kNewTabCommand);
+  ASSERT_TRUE(content::WaitForLoadStop(&shortcut_tab));
+  EXPECT_TRUE(GetContainerIdForWebContents(&shortcut_tab).empty());
 }
 
 }  // namespace containers
