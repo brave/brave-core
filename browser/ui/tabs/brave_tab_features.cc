@@ -6,13 +6,9 @@
 #include "brave/browser/ui/tabs/public/brave_tab_features.h"
 
 #include <memory>
-#include <utility>
 
 #include "base/check.h"
 #include "base/feature_list.h"
-#include "base/memory/ptr_util.h"
-#include "base/no_destructor.h"
-#include "brave/browser/drag_drop/brave_drag_drop_image_metadata_stripper.h"
 #include "brave/browser/image_metadata_stripper/file_upload_controller.h"
 #include "brave/browser/misc_metrics/captcha_metrics.h"
 #include "brave/browser/misc_metrics/page_metrics_tab_helper.h"
@@ -208,10 +204,6 @@ void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
           image_metadata_stripper::features::kStripImageMetadataV1)) {
     stripper_upload_controller_ =
         image_metadata_stripper::FileUploadController::MaybeCreate(tab);
-    // TODO(https://github.com/brave/brave-browser/issues/58868): Get rid of the
-    // below call.
-    drop_strip_temp_dirs_ =
-        GetUserDataFactory().CreateInstance<brave::DropStripTempDirs>(tab, tab);
   }
 
   if (base::FeatureList::IsEnabled(
