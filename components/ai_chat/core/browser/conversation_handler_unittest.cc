@@ -142,6 +142,10 @@ class MockConversationHandlerClient : public mojom::ConversationUI {
     conversation_ui_receiver_.reset();
   }
 
+  // Round-trips the pipe so any event the browser has already sent has been
+  // dispatched - including when the point is that it sent nothing.
+  void FlushForTesting() { conversation_ui_receiver_.FlushForTesting(); }
+
   MOCK_METHOD(void,
               OnConversationHistoryUpdate,
               (const mojom::ConversationTurnPtr),
@@ -189,6 +193,13 @@ class MockConversationHandlerClient : public mojom::ConversationUI {
               OnVisionModelSwitchChanged,
               (const std::optional<std::string>& model_key),
               (override));
+
+  MOCK_METHOD(
+      void,
+      OnContentAgentChanged,
+      (bool is_content_agent_chosen,
+       const std::vector<mojom::ConversationCapability>& capabilities_enabled),
+      (override));
 
   MOCK_METHOD(void, OnConversationDeleted, (), (override));
 
@@ -332,6 +343,21 @@ class ConversationHandlerUnitTest : public testing::Test {
     } else {
       EmulateUserOptedOut();
     }
+  }
+
+  // Rebuilds the handler so it picks up AIChatService state the test has
+  // changed. The capability set is built in the constructor, which in
+  // production always runs after the service has been configured.
+  void RecreateConversationHandler() {
+    std::vector<std::unique_ptr<ToolProvider>> tool_providers;
+    tool_providers.push_back(std::make_unique<NiceMock<MockToolProvider>>());
+    conversation_handler_ = std::make_unique<ConversationHandler>(
+        conversation_.get(), ai_chat_service_.get(), model_service_.get(),
+        ai_chat_service_->GetCredentialManagerForTesting(),
+        mock_feedback_api_.get(), &prefs_, shared_url_loader_factory_,
+        std::move(tool_providers));
+    mock_tool_provider_ = static_cast<MockToolProvider*>(
+        conversation_handler_->GetFirstToolProviderForTesting());
   }
 
   void EmulateUserOptedIn() { ::ai_chat::SetUserOptedIn(&prefs_, true); }
@@ -8857,6 +8883,8 @@ TEST_F(ConversationHandlerUnitTest, ConversationCapabilities) {
   struct TestCase {
     std::string name;
     bool content_agent_tools_allowed;
+    bool is_content_agent_user_selectable;
+    bool content_agent_chosen;
     bool deep_research_enabled;
     bool math_rendering_enabled;
     ConversationCapabilitySet expected_capabilities;
@@ -8866,6 +8894,8 @@ TEST_F(ConversationHandlerUnitTest, ConversationCapabilities) {
       {
           "Chat",
           /*content_agent_tools_allowed=*/false,
+          /*is_content_agent_user_selectable=*/false,
+          /*content_agent_chosen=*/false,
           /*deep_research_enabled=*/false,
           /*math_rendering_enabled=*/true,
           {mojom::ConversationCapability::MATH_ML},
@@ -8873,6 +8903,8 @@ TEST_F(ConversationHandlerUnitTest, ConversationCapabilities) {
       {
           "ChatWithDeepResearch",
           /*content_agent_tools_allowed=*/false,
+          /*is_content_agent_user_selectable=*/false,
+          /*content_agent_chosen=*/false,
           /*deep_research_enabled=*/true,
           /*math_rendering_enabled=*/true,
           {mojom::ConversationCapability::DEEP_RESEARCH,
@@ -8881,6 +8913,8 @@ TEST_F(ConversationHandlerUnitTest, ConversationCapabilities) {
       {
           "ContentAgent",
           /*content_agent_tools_allowed=*/true,
+          /*is_content_agent_user_selectable=*/false,
+          /*content_agent_chosen=*/false,
           /*deep_research_enabled=*/false,
           /*math_rendering_enabled=*/true,
           {mojom::ConversationCapability::CONTENT_AGENT,
@@ -8889,6 +8923,8 @@ TEST_F(ConversationHandlerUnitTest, ConversationCapabilities) {
       {
           "ContentAgentWithDeepResearch",
           /*content_agent_tools_allowed=*/true,
+          /*is_content_agent_user_selectable=*/false,
+          /*content_agent_chosen=*/false,
           /*deep_research_enabled=*/true,
           /*math_rendering_enabled=*/true,
           {mojom::ConversationCapability::CONTENT_AGENT,
@@ -8900,9 +8936,44 @@ TEST_F(ConversationHandlerUnitTest, ConversationCapabilities) {
       {
           "MathRenderingDisabled",
           /*content_agent_tools_allowed=*/false,
+          /*is_content_agent_user_selectable=*/false,
+          /*content_agent_chosen=*/false,
           /*deep_research_enabled=*/false,
           /*math_rendering_enabled=*/false,
           {},
+      },
+      // Where the user chooses, not choosing withholds the capability even
+      // though the tools are registered for the profile.
+      {
+          "ContentAgentUserSelectableNotChosen",
+          /*is_content_agent_tools_allowed=*/true,
+          /*is_content_agent_user_selectable=*/true,
+          /*content_agent_chosen=*/false,
+          /*deep_research_enabled=*/false,
+          /*math_rendering_enabled=*/true,
+          {mojom::ConversationCapability::MATH_ML},
+      },
+      {
+          "ContentAgentUserSelectableChosen",
+          /*is_content_agent_tools_allowed=*/true,
+          /*is_content_agent_user_selectable=*/true,
+          /*content_agent_chosen=*/true,
+          /*deep_research_enabled=*/false,
+          /*math_rendering_enabled=*/true,
+          {mojom::ConversationCapability::CONTENT_AGENT,
+           mojom::ConversationCapability::MATH_ML},
+      },
+      // The intended intermediate state while the main profile can offer the
+      // choice but the tools are not registered there: the choice is recorded
+      // and the model sees no difference.
+      {
+          "ContentAgentChosenWithoutTools",
+          /*is_content_agent_tools_allowed=*/false,
+          /*is_content_agent_user_selectable=*/true,
+          /*content_agent_chosen=*/true,
+          /*deep_research_enabled=*/false,
+          /*math_rendering_enabled=*/true,
+          {mojom::ConversationCapability::MATH_ML},
       },
   };
 
@@ -8916,6 +8987,8 @@ TEST_F(ConversationHandlerUnitTest, ConversationCapabilities) {
 
     ai_chat_service_->set_content_agent_tools_allowed(
         test_params.content_agent_tools_allowed);
+    ai_chat_service_->SetIsContentAgentUserSelectable(
+        test_params.is_content_agent_user_selectable);
 
     mock_tool_provider_ = nullptr;
     std::vector<std::unique_ptr<ToolProvider>> tool_providers;
@@ -8925,6 +8998,8 @@ TEST_F(ConversationHandlerUnitTest, ConversationCapabilities) {
         ai_chat_service_->GetCredentialManagerForTesting(),
         mock_feedback_api_.get(), &prefs_, shared_url_loader_factory_,
         std::move(tool_providers));
+    conversation_handler_->SetContentAgentChosen(
+        test_params.content_agent_chosen);
     mock_tool_provider_ = static_cast<MockToolProvider*>(
         conversation_handler_->GetFirstToolProviderForTesting());
     ON_CALL(*mock_tool_provider_, GetTools()).WillByDefault([]() {
@@ -8959,6 +9034,68 @@ TEST_F(ConversationHandlerUnitTest, ConversationCapabilities) {
 
     testing::Mock::VerifyAndClearExpectations(engine);
   }
+}
+
+TEST_F(ConversationHandlerUnitTest, ContentAgentChoiceIgnoredWhenNotOffered) {
+  ai_chat_service_->SetIsContentAgentToolsAllowed(true);
+  ai_chat_service_->SetIsContentAgentUserSelectable(false);
+  RecreateConversationHandler();
+
+  NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
+  EXPECT_CALL(client, OnContentAgentChanged).Times(0);
+
+  conversation_handler_->SetContentAgentChosen(true);
+  client.FlushForTesting();
+
+  // The profile decides, so the choice is neither recorded nor needed: the
+  // content agent is already on.
+  auto state = GetState();
+  EXPECT_FALSE(state->is_content_agent_chosen);
+  EXPECT_THAT(state->capabilities_enabled,
+              testing::Contains(mojom::ConversationCapability::CONTENT_AGENT));
+}
+
+TEST_F(ConversationHandlerUnitTest, ContentAgentChoiceWithoutToolsIsInert) {
+  // The main profile before tool registration is permitted there: the choice
+  // round-trips but the model sees no difference.
+  ai_chat_service_->SetIsContentAgentToolsAllowed(false);
+  ai_chat_service_->SetIsContentAgentUserSelectable(true);
+  RecreateConversationHandler();
+
+  NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
+  EXPECT_CALL(client,
+              OnContentAgentChanged(
+                  true, testing::Not(testing::Contains(
+                            mojom::ConversationCapability::CONTENT_AGENT))));
+
+  conversation_handler_->SetContentAgentChosen(true);
+  client.FlushForTesting();
+
+  auto state = GetState();
+  EXPECT_TRUE(state->is_content_agent_chosen);
+  EXPECT_THAT(state->capabilities_enabled,
+              testing::Not(testing::Contains(
+                  mojom::ConversationCapability::CONTENT_AGENT)));
+}
+
+TEST_F(ConversationHandlerUnitTest, ContentAgentChoiceIsNotPersisted) {
+  ai_chat_service_->SetIsContentAgentToolsAllowed(true);
+  ai_chat_service_->SetIsContentAgentUserSelectable(true);
+  RecreateConversationHandler();
+
+  conversation_handler_->SetContentAgentChosen(true);
+  ASSERT_TRUE(GetState()->is_content_agent_chosen);
+
+  // Deliberately in-memory only: reloading the same conversation starts with
+  // the content agent off and the user chooses again. If this ever needs to
+  // survive, that is a product decision, not a bug to quietly fix.
+  RecreateConversationHandler();
+
+  auto state = GetState();
+  EXPECT_FALSE(state->is_content_agent_chosen);
+  EXPECT_THAT(state->capabilities_enabled,
+              testing::Not(testing::Contains(
+                  mojom::ConversationCapability::CONTENT_AGENT)));
 }
 
 TEST_F(ConversationHandlerUnitTest, FallsBackWhenModelKeyNoLongerExists) {
