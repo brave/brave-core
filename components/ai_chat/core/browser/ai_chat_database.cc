@@ -2054,7 +2054,12 @@ bool AIChatDatabase::ApplyRemoteConversationMetadata(
       GetDB().GetCachedStatement(SQL_FROM_HERE, kUpsertConversationQuery));
   CHECK(statement.is_valid());
   statement.BindString(0, conversation->uuid);
-  BindAndEncryptOptionalString(statement, 1, conversation->title);
+  // Fail on an encryption error rather than bind NULL over the stored title.
+  if (conversation->title.empty()) {
+    statement.BindNull(1);
+  } else if (!BindAndEncryptString(statement, 1, conversation->title)) {
+    return false;
+  }
   BindOptionalString(statement, 2, conversation->model_key);
   statement.BindInt64(3, conversation->total_tokens);
   statement.BindInt64(4, conversation->trimmed_tokens);
@@ -2108,9 +2113,9 @@ bool AIChatDatabase::ApplyRemoteEntry(
   }
 
   // Full-replace the entry: delete the existing row along with its event,
-  // uploaded file, associated content and edit rows, then re-insert.
-  // AddConversationEntry writes |entry->edits| back out, so a caller holding
-  // edit revisions sync does not carry must supply them here to keep them.
+  // uploaded file, associated content and edit rows, then re-insert. Sync does
+  // not carry edit revisions, so the only ones written back are those the
+  // caller passes in |entry->edits|.
   if (!DeleteConversationEntry(*entry->uuid)) {
     return false;
   }
@@ -2119,9 +2124,8 @@ bool AIChatDatabase::ApplyRemoteEntry(
   }
 
   // Re-add the associated content DeleteConversationEntry removed, with the
-  // caller-supplied texts. The caller is responsible for filling in local
-  // values for any field the remote sender omitted to fit the size budget.
-  // An empty list means the remote entry has none, and the rows stay deleted.
+  // caller-supplied texts. An empty list means the remote entry has none, and
+  // the rows stay deleted.
   if (!associated_content.empty() &&
       !AddOrUpdateAssociatedContent(conversation_uuid,
                                     std::move(associated_content),

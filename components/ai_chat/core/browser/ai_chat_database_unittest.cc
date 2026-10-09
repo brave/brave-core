@@ -1659,6 +1659,28 @@ TEST_F(AIChatDatabaseSyncTest,
   EXPECT_EQ(data->entries[0]->uuid, "entry-1");
 }
 
+TEST_F(AIChatDatabaseSyncTest,
+       ApplyRemoteConversationMetadataEncryptionFailureKeepsTitle) {
+  auto conversation = mojom::Conversation::New();
+  conversation->uuid = "conv";
+  conversation->title = "Original";
+  ASSERT_TRUE(db_->ApplyRemoteConversationMetadata(conversation->Clone()));
+
+  db_.reset();
+  db_ = std::make_unique<AIChatDatabase>(
+      db_file_path(), os_crypt_async::GetTestEncryptorWithoutKeysForTesting());
+  conversation->title = "Updated";
+  EXPECT_FALSE(db_->ApplyRemoteConversationMetadata(std::move(conversation)));
+
+  db_.reset();
+  base::test::TestFuture<scoped_refptr<os_crypt_async::Encryptor>> future;
+  os_crypt_->GetInstance(future.GetCallback());
+  db_ = std::make_unique<AIChatDatabase>(db_file_path(), future.Take());
+  auto conversations = db_->GetAllConversations();
+  ASSERT_EQ(conversations.size(), 1u);
+  EXPECT_EQ(conversations[0]->title, "Original");
+}
+
 TEST_F(AIChatDatabaseSyncTest, ApplyRemoteEntryCreatesStubConversation) {
   auto entry = mojom::ConversationTurn::New();
   entry->uuid = "entry-1";
@@ -1711,27 +1733,9 @@ TEST_F(AIChatDatabaseSyncTest, ApplyRemoteEntryReplacesChildRows) {
       CreateSampleChatHistory(1u, 0, /*num_uploaded_files_per_query=*/2u);
   ASSERT_EQ(history.size(), 2u);
   ASSERT_EQ(history[0]->uploaded_files->size(), 2u);
-  std::vector<mojom::WebSourcePtr> sources;
-  sources.emplace_back(mojom::WebSource::New(
-      "title", GURL("https://example.com/source"),
-      GURL("https://example.com/favicon"), std::nullopt, std::nullopt));
-  history[1]->events->emplace_back(
-      mojom::ConversationEntryEvent::NewSourcesEvent(
-          mojom::WebSourcesEvent::New(std::move(sources),
-                                      std::vector<std::string>())));
-  history[1]->events->emplace_back(
-      mojom::ConversationEntryEvent::NewInlineSearchEvent(
-          mojom::InlineSearchEvent::New(
-              "brave search",
-              R"([{"title":"Result 1","url":"https://example.com"}])")));
-  auto tool_use_event = mojom::ToolUseEvent::New(
-      "test_tool", "tool_id_123", R"({"param1": "value1"})",
-      std::vector<mojom::ContentBlockPtr>(), std::nullopt, nullptr, false);
-  tool_use_event->output->emplace_back(mojom::ContentBlock::NewTextContentBlock(
-      mojom::TextContentBlock::New("Tool output")));
-  history[1]->events->emplace_back(
-      mojom::ConversationEntryEvent::NewToolUseEvent(
-          std::move(tool_use_event)));
+  history[1]->events->push_back(CreateWebSourcesEvent());
+  history[1]->events->push_back(CreateInlineSearchEvent());
+  history[1]->events->push_back(CreateToolUseEvent());
   ASSERT_EQ(history[1]->events->size(), 6u);
 
   EXPECT_TRUE(db_->ApplyRemoteEntry("conv", history[0]->Clone(), {}, {}));
