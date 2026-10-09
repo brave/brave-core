@@ -1,5 +1,5 @@
 diff --git a/chrome/test/data/webui/settings/BUILD.gn b/chrome/test/data/webui/settings/BUILD.gn
-index 4587551771814db2267e71541f6d8f59536d6b47..04bc6154ef3bf51c72ca1cfa84f3da5977aae7d5 100644
+index 65daf233dc27544d662121cb69ec8ce6197148d5..7f2f8be11905a271d4d2f1cc66f01afcac15fe8a 100644
 --- a/chrome/test/data/webui/settings/BUILD.gn
 +++ b/chrome/test/data/webui/settings/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -10,7 +10,7 @@ index 4587551771814db2267e71541f6d8f59536d6b47..04bc6154ef3bf51c72ca1cfa84f3da59
  import("../build_webui_tests.gni")
  
  build_webui_tests("build") {
-@@ -306,6 +307,7 @@ build_webui_tests("build") {
+@@ -305,6 +306,7 @@ build_webui_tests("build") {
      "//tools/typescript/definitions/pending.d.ts",
      "//tools/typescript/definitions/settings_private.d.ts",
    ]
@@ -18,3 +18,9 @@ index 4587551771814db2267e71541f6d8f59536d6b47..04bc6154ef3bf51c72ca1cfa84f3da59
    if (is_chromeos) {
      ts_definitions +=
          [ "//tools/typescript/definitions/quick_unlock_private.d.ts" ]
+@@ -319,4 +321,5 @@ build_webui_tests("build") {
+     "//ui/webui/resources/cr_elements:build_ts",
+     "//ui/webui/resources/js:build_ts",
+   ]
++  preprocessor_defines = brave_settings_preprocessor_defines
+ }

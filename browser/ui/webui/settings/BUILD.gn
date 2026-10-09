@@ -74,6 +74,7 @@ source_set("browser_tests") {
 
     sources = [
       "brave_manage_profile_browsertest.cc",
+      "brave_settings_overrides_browsertest.cc",
       "brave_settings_toggle_browsertest.cc",
       "settings_secure_dns_handler_browsertest.cc",
     ]
