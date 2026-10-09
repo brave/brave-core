@@ -110,10 +110,17 @@ def table(runs: list) -> list:
     return md
 
 
+def _same_judge(a, b) -> bool:
+    return a is None or b is None or all(a.get(k) == b.get(k) for k in ("model", "thinking", "rubric_version"))
+
+
 def compare_l1(a: dict, b: dict, va: str | None, vb: str | None) -> list:
     ma, mb = a["metrics"], b["metrics"]
     if ma["step"] != mb["step"]:
         raise SystemExit(f"different steps: {ma['step']} and {mb['step']}")
+    if not _same_judge(ma.get("judge"), mb.get("judge")):
+        raise SystemExit("the two runs have judge metrics from different judges "
+                         f"({ma['judge']} and {mb['judge']}); judge it again with one judge (plan 7.5, note 10)")
     va = va or next(iter(ma["variants"]))
     vb = vb or next(iter(mb["variants"]))
     step = STEPS[ma["step"]]

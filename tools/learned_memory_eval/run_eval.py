@@ -263,6 +263,37 @@ def report_only(out_dir: Path, sets_dir: Path | None = None) -> None:
     log(f"Wrote reports for {len(summaries)} sets in {out_dir}")
 
 
+def judge_extras(args, out_dir: Path, sets_dir: Path | None = None) -> None:
+    """Sorts the extra memories of a run with a judge agent (plan 8.2, P2.7) and
+    adds a section to summary.md."""
+    from lib import judge as judge_lib
+    spec = judge_lib.judge_spec(args.judge, args.judge_model, args.judge_thinking)
+    inputs = judge_lib.e2e_extras(out_dir, sets_dir)
+    if not inputs:
+        log("judge: the run has no extra memories")
+        return
+    verdicts = judge_lib.judge("extras", inputs, spec, clients.results_root(args.results), log=log)
+    metrics = judge_lib.extras_metrics(verdicts)
+    (out_dir / "extras_judge.json").write_text(json.dumps(
+        {"judge": judge_lib.meta("extras", spec), "metrics": metrics,
+         "rows": [{"name": n, "input": inputs[n], "verdict": v} for n, v in verdicts.items()]},
+        indent=2, ensure_ascii=False))
+    j = judge_lib.meta("extras", spec)
+    md = ["", "## Extras sorted by a judge", "",
+          f"Judge: {j['role']} ({j['model']}, {j['thinking']}, rubric v{j['rubric_version']}). "
+          f"{metrics['n']} extra memories. `true_unlabeled` memories are true: add them to the gold as "
+          "optional facts. The other classes are errors.", "",
+          "| " + " | ".join(judge_lib.EXTRA_CLASSES) + " |", "|" + "---|" * len(judge_lib.EXTRA_CLASSES),
+          "| " + " | ".join(str(metrics["classes"][c]) for c in judge_lib.EXTRA_CLASSES) + " |", ""]
+    for name, v in verdicts.items():
+        md.append(f"- {name}: `{v['class']}`: \"{inputs[name]['memory']}\" ({v['reason']})")
+    summary = out_dir / "summary.md"
+    text = summary.read_text() if summary.exists() else ""
+    text = text.split("\n## Extras sorted by a judge")[0].rstrip("\n") + "\n"
+    summary.write_text(text + "\n".join(md) + "\n")
+    log(f"judge: extras {metrics['classes']}")
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--sets", nargs="*", help="names of chat sets (default: all)")
@@ -298,12 +329,18 @@ def main() -> None:
     parser.add_argument("--gold-from", metavar="DIR", default=None,
                         help="with --report-only: score with the chat sets of this folder "
                              "(for example datasets/e2e/dev), not the copy in the run")
+    parser.add_argument("--judge", choices=["fast", "final"], default=None,
+                        help="sort the extra memories with a judge agent (fast: Sonnet, final: Opus)")
+    parser.add_argument("--judge-model", default=None)
+    parser.add_argument("--judge-thinking", default=None)
     parser.add_argument("--repeats", type=int, default=1,
                         help="run each set this many times, each in a new profile")
     args = parser.parse_args()
 
     if args.report_only:
         report_only(Path(args.report_only), Path(args.gold_from) if args.gold_from else None)
+        if args.judge:
+            judge_extras(args, Path(args.report_only), Path(args.gold_from) if args.gold_from else None)
         return
     sets = load_sets(args.sets, args.chat_set, args.split)
     if args.list:
@@ -352,6 +389,8 @@ def main() -> None:
                 "threshold": args.threshold, "margin": args.margin}
         (out_dir / "summary.md").write_text(report_lib.render_summary(summaries, meta))
         (out_dir / "summary.json").write_text(json.dumps(summaries, indent=2))
+        if args.judge:
+            judge_extras(args, out_dir)
         print("\n" + (out_dir / "summary.md").read_text())
 
 

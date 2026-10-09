@@ -19,6 +19,9 @@ The tools at a glance:
    steps/{sentence,gate} ──► decision_eval.py    (decision model alone)  section 10
    steps/relevance ────────► relevance_eval.py   (relevance alone)       section 12
    steps/{sentence,rewrite} ► noise_check.py     (repeatability)         section 17
+ new labeled cases ──► label_panel.py · relevance_panel.py · e2e_panel.py   section 22
+   agents write and check them, review.py --quick samples them            section 22
+ outputs ──► lib/judge.py (separate agents; step_eval.py --judge)         section 23
  two runs ──► compare.py (deltas, paired flips)                         section 21
  lib/requests.py   the requests of the C++ code, all wordings            section 18
  lib/steps.py      the step evals  ·  lib/gold.py  e2e gold scoring
@@ -204,7 +207,9 @@ item when it has all words of `all`, and at least one word of `any`.
 The expectations are a guide, not a proof. A wrong word in a pass is possible,
 so read the memory table too.
 
-## 6. The chat sets in `datasets/e2e/dev/`
+## 6. The chat sets in `datasets/e2e/`
+
+Dev sets (`datasets/e2e/dev/`):
 
 | Set | Chats | What it tests |
 |---|---|---|
@@ -215,6 +220,20 @@ so read the memory table too.
 | `temporary_states` | 6 | Short-lived answer, short-term type, a trip must not replace a home |
 | `multilingual` | 4 | German and Spanish facts, sentence split, rewrite in other languages |
 | `relations` | 28 | 14 pairs of old and new chats in random order: facts that share a word but differ, replace, merge, and the same fact twice. Tests the relation step and the rule that a replace or merge needs a certain decision model |
+| `long_history` | 61 | One person, 100 turns over 6 months: 3 replaces, 2 merges, facts that come back, sensitive data, short-lived states, many task chats |
+| `noisy_style` | 27 | Typos, no capitals, run-on sentences, 'yes that one'. Facts hidden in messy text |
+| `injection` | 24 | Instructions to the assistant in many forms (direct, in a fact, in a pasted page, a fake system message, role play), next to real facts. Nothing in `forbidden` may reach a memory |
+| `near_duplicates` | 38 | The same fact in different words across many chats. At most one memory for each fact |
+
+Holdout sets (`datasets/e2e/holdout/`; run them only for a final candidate):
+`career_family_changes` (a move, a new job, a second child), `privacy_traps`
+(sensitive data in many forms next to safe look-alikes), `style_vs_tasks`
+(preferences that change, technical tasks, the instruction boundary) and
+`languages_and_short_states` (French, German and Portuguese facts, many
+short-lived states).
+
+The 8 sets of section 22 (`e2e_panel.py`) have `gold` and no `expect`. Run any
+split with `--split holdout`, one set with `--sets NAME`.
 
 ## 7. The output
 
@@ -335,8 +354,9 @@ change a question in `ollama_decision_client.cc`.
 ```
 
 - Cases: `datasets/steps/sentence/<split>.jsonl` and
-  `datasets/steps/gate/<split>.jsonl`. Dev: 69 sentences, 56 gate turns.
-  Holdout: 36 sentences, 46 gate turns. Each sentence has labels for fact,
+  `datasets/steps/gate/<split>.jsonl`. Dev: 303 sentences, 152 gate turns.
+  Holdout: 149 sentences, 59 gate turns (run `validate_datasets.py` for the
+  current counts). Each sentence has labels for fact,
   safety, category and temporary. Write new cases in the holdout before you
   look at results. `--cases FILE` still reads a file in the old format.
 - Variants: the wordings of each question, in `lib/requests.py`. `A` is the
@@ -401,7 +421,8 @@ It needs no browser. Use it before you change the question or the threshold
 ```
 
 - `datasets/steps/relevance/memories.jsonl` has 14 memories (what Dreaming
-  learned from `demo/demo_history.json`), and `dev.jsonl` has 9 messages. Each
+  learned from `demo/demo_history.json`), and `dev.jsonl` has 9 messages (the
+  label panel does not make relevance cases yet). Each
   message names, by memory id, the memories that must be relevant and the ones
   that must not be. The other memories (style wishes) are neutral.
 - The wordings are in `lib/requests.py`.
@@ -465,6 +486,8 @@ the formats, the label rules, the coverage tags and the changelog.
   in `gold.turns`).
 - Run it after every dataset change, and add a changelog line.
 - Never tune on a holdout. Read only its totals.
+- The label rules for the agents are in `datasets/rubrics/`. New cases come
+  from `label_panel.py` (section 22), and a person reviews a sample with `review.py`.
 
 ## 16. Record the requests and check parity
 
@@ -613,3 +636,181 @@ the result is exact for the keep decisions. No model runs.
 - Two L2 runs: the numbers of `summary.json` for each set.
 - It warns when the manifests differ in more than one variable (models,
   params, variants, datasets, code, serial or parallel).
+
+## 22. Make new labeled cases (`label_panel.py`, `agent_run.py`, `review.py`)
+
+New cases come from a panel of separate pi agents. Each agent is a new `pi`
+process with no session, no extensions, no skills and no context files, and
+only the `read` and `write` tools. It sees only its task folder. No script
+reads an API key: pi uses its own login.
+
+```
+ rubric (datasets/rubrics/<step>.md) + coverage slots (lib/panel.py)
+   │
+   ▼
+ agent G (Opus 5.5, OpenRouter, high) ── one case for each slot, with a label
+   ▼  the script copies the case text only
+ agent R (Sonnet 5.5, Bedrock, low) ──── a blind label (rewrite, merge: a check of the gold)
+   ▼
+ compare: agree + clear ──► dataset      agree, not clear ──► datasets/ambiguous/
+          privacy dispute ─► reviewer    disagree ─► agent J (Opus 5.5, high) ─► dataset or ambiguous
+   ▼
+ review queue: privacy disputes + 5 random accepted cases ──► ./review.py --quick (a sample)
+```
+
+```sh
+./label_panel.py run sentence --split dev --count 100      # G, R, compare (+ J), finish
+./label_panel.py run gate --split dev --count 20 --no-finish --results /tmp/pilot   # a pilot
+./label_panel.py status                                     # all batches
+./label_panel.py run gate --split holdout --count 5 --only pasted_text   # fill a coverage gap
+./review.py --quick                                         # a person: ONE short session (see below)
+./review.py --quick --list                                  # print the session only
+./review.py <batch>                                         # answer a whole queue (not needed)
+./review.py <batch> --list                                  # print the queue only
+./agent_run.py <task folder> --model bedrock:claude-sonnet-5-5 --thinking low
+```
+
+- Steps: `gate`, `sentence`, `relation`, `rewrite`, `merge`. Relevance and e2e
+  sets have their own scripts (below).
+- `--only TAG,TAG` limits the round robin to some slot tags, to fill a
+  coverage gap. `--audit N` sets the audit cases for each batch (default 5).
+- A batch is `<results root>/panel/<step>-<split>-b<n>/`. Its agent tasks are
+  in `<results root>/agent_tasks/<batch>-G1`, `-R1`, `-J1`, ... A pass that
+  has valid answers is not run again, so a stopped batch can continue.
+- `agent_run.py` checks every answer (each id one time, valid JSON, labels
+  in the allowed set), and starts the agent again with the error list, at
+  most 2 more times. It puts a `_meta` line first in `answers.jsonl`: the
+  task, the pass, the model, the thinking level, the time and the tries.
+- Models: `--model-generate`, `--model-review`, `--model-judge` and
+  `--thinking-<role>`, or the variables `LM_EVAL_GENERATE_MODEL`,
+  `LM_EVAL_REVIEW_MODEL`, `LM_EVAL_JUDGE_MODEL`. A value is
+  `openrouter/<id>`, `bedrock:<model id>` (the profile ARN comes from the
+  DynamoDB table of the Bedrock extension, so each person uses their own
+  profile) or `bedrock:<ARN>`. Bedrock needs a current AWS SSO login.
+- `finish` stops when the agreement is below 80%, or when there are more than
+  30 privacy disputes: then the rubric is not clear. Fix the rubric, raise
+  its version, and run the batch again.
+- The dev and the holdout use different persona lists, and different agent
+  runs. Write holdout cases before you look at any result for them.
+- `review.py` keys: privacy `1`/`2` (choose a label), `e` (enter a label),
+  `n` (drop), `s` (skip); audit `y` (right), `e` (fix), `n` (drop), `s`
+  (skip). When a whole queue is done, it checks the audit (at most 1 wrong of
+  20), and adds a changelog line with a new version to `datasets/DATASETS.md`.
+
+### Quick review (`review.py --quick`)
+
+A person does not answer whole queues. A quick session asks:
+
+- every privacy dispute (there are very few),
+- a stratified sample of the audit cases of all open batches: `--n` cases
+  (default 12), the same number for each step, dev and holdout mixed, the most
+  lenient checks (rewrite, merge) first,
+- the judge checks of the newest calibration (`--judge-n`, default 5; section 23).
+
+A wrong audit case is fixed or dropped in the dataset at once. The audit passes
+with at most 1 wrong case. A sample of 12 cannot show a small error rate (0 wrong
+of 12 still allows about 20% wrong): it finds a broken rubric. When a step has a
+wrong case, run a bigger sample for that step: `./review.py --quick --step
+rewrite --n 10`. The session adds one line and one version to `DATASETS.md`
+and marks the sampled batches as reviewed.
+
+### Relevance cases (`relevance_panel.py`)
+
+A relevance case needs a pool of memories, so it has its own script.
+
+```sh
+./relevance_panel.py run --split dev --count 31       # pool, messages, review, judge, finish
+./relevance_panel.py run --split holdout --count 15
+```
+
+Agent G writes 40 memories of an invented user, then one message for each
+slot (direct, indirect, short follow-up with a previous message, style wish,
+unrelated, tempting, several memories, and 5 other languages), with `must` and
+`forbidden` ids. Agent R labels each message blind: the memories to `use`, and
+the `maybe` ones. They agree when R has no extra `use` memory, every `must` of G
+is in `use` or `maybe`, and no `forbidden` is in `use`. The final `must` is
+G's `must` that R also put in `use`. The final `forbidden` is G's `forbidden`
+that R put in neither `use` nor `maybe`. A disagreement goes to agent J. The
+rubric is `datasets/rubrics/relevance.md`.
+
+### End-to-end sets (`e2e_panel.py`)
+
+```sh
+./e2e_panel.py list                 # the 4 dev sets and 4 holdout sets of plan 7.7 and P1.4
+./e2e_panel.py run                  # G, check, R, J, finish for every set that is not finished
+./e2e_panel.py run --sets noisy_style --redo-review    # run R and J again, keep the chats and the gold of G
+./e2e_panel.py status
+```
+
+Agent G (Opus, high) writes `chats.json` and `gold.json` for a set spec
+(`lib/e2e_panel.py`: persona, size, requirements). A script checks the set at
+once and sends the error list back to G: the validator of `validate_datasets.py`,
+the match words against the canonical text of each fact, forbidden words that
+are in their source turns, replace ops in the right time order, the minimum
+counts of the spec. Agent R (Sonnet, low) checks the gold turn by turn against
+the chats (`ok` or `fix`). Agent J (Opus, high) settles the complaints and writes
+the corrected gold. The set goes to `datasets/e2e/<split>/`. A set has `gold` but
+no `expect`. A person does not review the sets; R and J do (the number of
+complaints for each set is in `<results root>/panel/e2e-<name>/stats.json`).
+Rubric: `datasets/rubrics/e2e.md`.
+
+Agents may read the other files that `task.md` names in their folder (for
+example `set.json` or `memories.jsonl`), and no file outside the folder.
+
+## 23. Judge for text quality (`lib/judge.py`)
+
+The rewrite and merge steps make text, so word lists cannot score everything.
+A judge is a separate agent (section 22) with a rubric in
+`datasets/rubrics/judge_<kind>.md`. It sees the input and the output only. It
+does not see the variant, the model or the case id, and the order is shuffled
+(with a fixed seed).
+
+| Kind | Judges | Verdict |
+|---|---|---|
+| `rewrite` | The memories of a rewrite against the user sentences | `added_detail`, `lost_detail`, `wrong_subject` (faithful = none) |
+| `merge` | The merged memory against the old and the new memory | The same three flags |
+| `extras` | A memory of an e2e run that matches no gold item | `sensitive`, `hallucinated`, `not_about_user`, `short_lived`, `true_unlabeled` |
+
+```sh
+./step_eval.py rewrite --judge fast             # Sonnet 5.5 (low): fast loops
+./step_eval.py merge --judge final              # Opus 5.5 (high): final numbers
+./run_eval.py --report-only <run> --gold-from datasets/e2e/dev --judge fast    # sort the extras
+./judge_calibrate.py                             # fast against final on 100 outputs
+```
+
+- Roles and models are the same as in section 22: `--judge fast|final`,
+  `--judge-model`, `--judge-thinking`, or the variables `LM_EVAL_JUDGE_FAST_MODEL`
+  and `LM_EVAL_JUDGE_MODEL`.
+- Verdicts are cached in `<results root>/judge_cache/<kind>.jsonl`. The key has
+  the judge model, the thinking level, the rubric version and the input, so a
+  rerun starts agents only for new outputs.
+- A run records its judge in `metrics.json` (`judge`). `compare.py` refuses to
+  compare judge metrics from two different judges.
+- The judge metrics in `metrics.json` are `judge_faithful`, `judge_added_detail`,
+  `judge_lost_detail` and `judge_wrong_subject` (with Wilson intervals). The
+  judged outputs are in `judge.jsonl` of the run.
+- Calibration (`judge_calibrate.py`): the fast and the final judge sort the same
+  100 outputs. The fast judge is allowed at 90% agreement or more. It also writes
+  10 verdicts of the final judge for the reviewer (`./review.py --quick` asks 5 of
+  them). Until the reviewer agrees with at least 9 of 10, the judge is a hint only.
+- The judge sorts outputs for the quality of text. Do not use it for the primary
+  metrics. A judge can prefer its own style.
+
+### True extras into the gold (`extras_to_gold.py`)
+
+A memory that matches no gold item is an "extra". The judge (`run_eval.py --judge`)
+sorts the extras, and `true_unlabeled` means: true, safe, lasting, stated by the
+user, and only missing in the gold. This script turns them into optional facts:
+
+```sh
+./extras_to_gold.py <dev run folder> --split dev            # propose and check; changes nothing
+./extras_to_gold.py <dev run folder> --split dev --apply    # write datasets/e2e/dev/<set>.json
+```
+
+An agent (Opus, high) groups the memories into facts, writes the match words,
+and rejects what is not safe or not stated. The script checks that every match
+catches its memories from a source turn and matches no other fact, then scores
+the run again with the new gold. It stops when recall, leaks or ops change.
+Dev runs only: never use the extras of a holdout run (data rule 2). Add a
+changelog line to `datasets/DATASETS.md` afterwards.
+

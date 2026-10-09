@@ -28,6 +28,7 @@ from pathlib import Path
 
 import ollama_setup
 from lib import clients, manifest
+from lib import judge as judge_lib
 from lib import requests as rq
 from lib import scoring as sc
 from lib.steps import STEPS
@@ -65,6 +66,11 @@ def parse_args(argv=None):
     g.add_argument("--refresh", action="store_true",
                    help="send every request again, and write the new answers to the cache")
     g.add_argument("--cases", default=None, help="a JSONL case file instead of the dataset")
+    g.add_argument("--judge", choices=["fast", "final"], default=None,
+                   help="rewrite and merge: also judge the outputs with a separate agent "
+                        "(fast: Sonnet, final: Opus; plan 7.5). Verdicts are cached")
+    g.add_argument("--judge-model", default=None, help="agent model of the judge (default: the role's model)")
+    g.add_argument("--judge-thinking", default=None)
     g.add_argument("--results", default=None, help="results root")
     g.add_argument("--ollama", default=clients.DEFAULT_OLLAMA)
     g.add_argument("--keep-alive", default=ollama_setup.DEFAULT_KEEP_ALIVE)
@@ -89,6 +95,8 @@ def parse_args(argv=None):
 
 def main(argv=None) -> None:
     args = parse_args(argv)
+    if args.judge and args.step not in ("rewrite", "merge"):
+        sys.exit("--judge works for rewrite and merge only")
     step = STEPS[args.step](args)
     model = args.model or (ollama_setup.DEFAULT_DECISION if step.kind == "dm" else ollama_setup.DEFAULT_LLM)
     repeats = args.repeats or DEFAULT_REPEATS[step.kind]
@@ -151,6 +159,22 @@ def main(argv=None) -> None:
     by_variant = {v: [r for r in records if r["variant"] == v] for v in variants}
     for v in variants:
         metrics["variants"][v] = step.score(by_variant[v], by_id)
+    judged = {}
+    if args.judge:
+        spec = judge_lib.judge_spec(args.judge, args.judge_model, args.judge_thinking)
+        inputs = {v: judge_lib.step_inputs(args.step, v, by_variant[v], by_id) for v in variants}
+        all_inputs = {n: i for v in variants for n, i in inputs[v].items()}
+        verdicts = judge_lib.judge(args.step, all_inputs, spec, root, parallel=args.parallel,
+                                   log=lambda m: print(m, file=sys.stderr, flush=True))
+        for v in variants:
+            vs = [verdicts[n] for n in inputs[v] if n in verdicts]
+            judged[v] = judge_lib.flag_metrics(vs)
+            metrics["variants"][v].update(judged[v])
+        metrics["judge"] = judge_lib.meta(args.step, spec)
+        with open(run_dir / "judge.jsonl", "w", encoding="utf-8") as f:
+            for name, item in all_inputs.items():
+                f.write(json.dumps({"name": name, "input": item, "verdict": verdicts.get(name)},
+                                   ensure_ascii=False) + "\n")
     if len(variants) > 1:
         metrics["flips"] = {v: sc.flips(by_variant[variants[0]], by_variant[v]) for v in variants[1:]}
     (run_dir / "metrics.json").write_text(json.dumps(metrics, indent=2, ensure_ascii=False))
@@ -170,6 +194,10 @@ def main(argv=None) -> None:
     for v in variants:
         md += [f"## Variant {v}: {rq.VARIANTS[args.step][v].get('desc', '')}", ""]
         md += step.render(v, metrics["variants"][v]) + [""]
+        if v in judged:
+            j = metrics["judge"]
+            md += [f"Judge: {j['role']} ({j['model']}, {j['thinking']}, rubric v{j['rubric_version']}).", ""]
+            md += judge_lib.fmt_flag_metrics(judged[v]) + [""]
         fl = metrics.get("flips", {}).get(v)
         if fl and (fl["fixed"] or fl["broken"]):
             md += [f"Fixed vs {variants[0]}: {', '.join(fl['fixed']) or 'none'}.",
