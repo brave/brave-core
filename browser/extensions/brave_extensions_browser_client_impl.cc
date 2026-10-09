@@ -12,7 +12,9 @@
 #include "brave/browser/brave_global_features.h"
 #include "brave/browser/extensions/brave_extensions_browser_api_provider.h"
 #include "brave/components/extension_malware_blocklist/browser/extension_malware_blocklist.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/extensions/chrome_component_extension_resource_manager.h"
+#include "chrome/browser/global_features.h"
 
 namespace extensions {
 
@@ -22,7 +24,9 @@ BraveExtensionsBrowserClientImpl::BraveExtensionsBrowserClientImpl() {
 
 bool BraveExtensionsBrowserClientImpl::IsMalwareBlocklisted(
     const ExtensionId& extension_id) const {
-  auto* blocklist = BraveGlobalFeatures::GetExtensionMalwareBlocklist();
+  auto* blocklist = g_browser_process->GetFeatures()
+                        ->brave_global_features()
+                        ->extension_malware_blocklist();
   return blocklist && blocklist->IsMalware(extension_id);
 }
 

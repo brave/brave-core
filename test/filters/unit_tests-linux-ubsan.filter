@@ -52,8 +52,8 @@
 # chromium_src/services/device/geolocation/location_provider_linux_portal.cc
 # removes a session bus user by returning nullptr from
 # NewSystemLocationProvider(). patches/chrome-browser-global_features.cc.patch
-# does route GlobalFeatures::CreateGlobalFeatures() through BraveGlobalFeatures,
-# but that constructor only creates ExtensionMalwareBlocklist behind the
+# does make GlobalFeatures::Init() create a BraveGlobalFeatures, but that
+# constructor only creates ExtensionMalwareBlocklist behind the
 # disabled-by-default kExtensionMalwareBlocklist feature. Finally
 # patches/chrome-browser-ui-webui-settings-site_settings_helper.cc.patch, the
 # matching .h patch and
