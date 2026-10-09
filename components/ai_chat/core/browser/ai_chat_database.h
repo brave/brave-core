@@ -81,10 +81,11 @@ class AIChatDatabase : public syncer::SyncMetadataStore {
   virtual mojom::ConversationTurnPtr GetConversationEntryWithEdits(
       std::string_view conversation_entry_uuid);
 
-  // Returns the uuids of every entry that has edit revisions. Nothing is
-  // indexed on editing_entry_uuid, so callers that would otherwise ask per
-  // entry should ask once and test against the result.
-  virtual base::flat_set<std::string> GetEntryUuidsWithEditRevisions();
+  // Returns the uuids of every entry that has edit revisions, or nullopt if the
+  // read failed. Nothing is indexed on editing_entry_uuid, so callers that
+  // would otherwise ask per entry should ask once and test against the result.
+  virtual std::optional<base::flat_set<std::string>>
+  GetEntryUuidsWithEditRevisions();
 
   // Returns new ID for the provided entry and any provided associated content
   virtual bool AddConversation(mojom::ConversationPtr conversation,
@@ -197,9 +198,6 @@ class AIChatDatabase : public syncer::SyncMetadataStore {
  private:
   friend class AIChatDatabaseTest;
   friend class AIChatDatabaseMigrationTest;
-  // For GetArchiveContentsForConversation(), used to rebuild the local copy
-  // of an entry when restoring fields the remote sender omitted.
-  friend class AIChatSyncBridge;
   FRIEND_TEST_ALL_PREFIXES(AIChatDatabaseTest, ConversationThreadEntries);
 
   sql::Database& GetDB();

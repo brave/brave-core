@@ -348,7 +348,8 @@ std::vector<std::string> ReadCompressibleStrings(
 // Decodes a compressible field whose mojom counterpart is a non-optional
 // string. Collapsing to "" is only correct because
 // AIChatSyncBridge::RestoreOmittedFieldsFromLocal() has already rewritten every
-// field this sender omitted for which this device holds a byte-identical copy.
+// field this sender omitted for which this device holds a copy with a matching
+// hash.
 // A nullopt surviving to here therefore means "the sender omitted it to fit the
 // size budget and we have no matching local copy", and there is nothing to
 // write but the empty string.

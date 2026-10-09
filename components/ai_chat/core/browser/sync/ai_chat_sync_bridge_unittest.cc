@@ -6,11 +6,13 @@
 #include "brave/components/ai_chat/core/browser/sync/ai_chat_sync_bridge.h"
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <string_view>
 #include <utility>
 #include <vector>
 
+#include "base/containers/flat_set.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/functional/callback_helpers.h"
 #include "base/test/task_environment.h"
@@ -78,6 +80,47 @@ class FailingAIChatDatabase : public AIChatDatabase {
   int writes_remaining_;
 };
 
+// A database whose batch-wide read of entries with edit revisions fails.
+class EditRevisionsUnreadableAIChatDatabase : public AIChatDatabase {
+ public:
+  using AIChatDatabase::AIChatDatabase;
+
+  std::optional<base::flat_set<std::string>> GetEntryUuidsWithEditRevisions()
+      override {
+    return std::nullopt;
+  }
+};
+
+// A single remote conversation add.
+syncer::EntityChangeList MakeConversationAdd(const std::string& uuid) {
+  syncer::EntityChangeList changes;
+  syncer::EntityData data;
+  data.specifics.mutable_ai_chat_conversation()
+      ->mutable_conversation()
+      ->set_uuid(uuid);
+  changes.push_back(
+      syncer::EntityChange::CreateAdd("c:" + uuid, std::move(data)));
+  return changes;
+}
+
+// An entry record for a single turn, as another device would send it.
+syncer::EntityData MakeRemoteEntry(
+    const std::string& conv_uuid,
+    const std::string& entry_uuid,
+    const std::string& text,
+    mojom::CharacterType character_type = mojom::CharacterType::HUMAN) {
+  syncer::EntityData data;
+  auto* entry = data.specifics.mutable_ai_chat_conversation()->mutable_entry();
+  entry->set_uuid(entry_uuid);
+  entry->set_conversation_uuid(conv_uuid);
+  entry->set_entry_text(text);
+  entry->set_character_type(std::to_underlying(character_type));
+  entry->set_action_type(std::to_underlying(mojom::ActionType::QUERY));
+  entry->set_created_time_windows_epoch_micros(
+      base::Time::Now().ToDeltaSinceWindowsEpoch().InMicroseconds());
+  return data;
+}
+
 class AIChatSyncBridgeTest : public testing::Test {
  public:
   void SetUp() override {
@@ -117,9 +160,6 @@ class AIChatSyncBridgeTest : public testing::Test {
     ++remote_changes_applied_count_;
     last_affected_conversation_uuids_ = std::move(conversation_uuids);
   }
-
-  int remote_changes_applied_count_ = 0;
-  std::vector<std::string> last_affected_conversation_uuids_;
 
   // Adds a conversation with one entry to the database. Returns the entry
   // UUID for convenience.
@@ -168,22 +208,86 @@ class AIChatSyncBridgeTest : public testing::Test {
                            const std::string& entry_uuid,
                            const std::string& text) {
     syncer::EntityChangeList changes;
-    syncer::EntityData data;
-    auto* remote_entry =
-        data.specifics.mutable_ai_chat_conversation()->mutable_entry();
-    remote_entry->set_uuid(entry_uuid);
-    remote_entry->set_conversation_uuid(conv_uuid);
-    remote_entry->set_entry_text(text);
-    remote_entry->set_character_type(
-        static_cast<int>(mojom::CharacterType::HUMAN));
-    remote_entry->set_action_type(static_cast<int>(mojom::ActionType::QUERY));
-    remote_entry->set_created_time_windows_epoch_micros(
-        base::Time::Now().ToDeltaSinceWindowsEpoch().InMicroseconds());
-    changes.push_back(
-        syncer::EntityChange::CreateUpdate("e:" + entry_uuid, std::move(data)));
+    changes.push_back(syncer::EntityChange::CreateUpdate(
+        "e:" + entry_uuid, MakeRemoteEntry(conv_uuid, entry_uuid, text)));
     auto error = bridge_->ApplyIncrementalSyncChanges(
         bridge_->CreateMetadataChangeList(), std::move(changes));
     ASSERT_FALSE(error.has_value());
+  }
+
+  // Adds a conversation whose single entry is oversized by a field the size
+  // budget cannot omit, so it can never be committed, and gives the entry
+  // persisted sync metadata.
+  void AddEntryTooLargeToCommit(const std::string& conv_uuid,
+                                const std::string& entry_uuid) {
+    auto conv = mojom::Conversation::New();
+    conv->uuid = conv_uuid;
+    auto entry = mojom::ConversationTurn::New();
+    entry->uuid = entry_uuid;
+    entry->character_type = mojom::CharacterType::HUMAN;
+    entry->action_type = mojom::ActionType::QUERY;
+    entry->text = "Hello";
+    entry->selected_text = std::string(kSyncMaxRecordBytes + 1024, 'Z');
+    entry->created_time = base::Time::Now();
+    ASSERT_TRUE(db_->AddConversation(std::move(conv), {}, std::move(entry)));
+    ASSERT_TRUE(db_->UpdateEntityMetadata(syncer::AI_CHAT_CONVERSATION,
+                                          "e:" + entry_uuid,
+                                          sync_pb::EntityMetadata()));
+  }
+
+  // Adds a conversation whose single assistant entry carries |completion|.
+  void SeedCompletion(const std::string& conv_uuid,
+                      const std::string& entry_uuid,
+                      const std::string& completion) {
+    auto conv = mojom::Conversation::New();
+    conv->uuid = conv_uuid;
+    conv->title = "Local";
+    auto entry = mojom::ConversationTurn::New();
+    entry->uuid = entry_uuid;
+    entry->character_type = mojom::CharacterType::ASSISTANT;
+    entry->action_type = mojom::ActionType::QUERY;
+    entry->created_time = base::Time::Now();
+    entry->events.emplace();
+    entry->events->push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
+        mojom::CompletionEvent::New(completion)));
+    ASSERT_TRUE(db_->AddConversation(std::move(conv), {}, std::move(entry)));
+  }
+
+  // Delivers an update for |entry_uuid| whose completion the sender omitted to
+  // fit the size budget, leaving only the hash of |sender_completion|.
+  void ApplyRemoteOmittedCompletion(const std::string& conv_uuid,
+                                    const std::string& entry_uuid,
+                                    const std::string& sender_completion) {
+    syncer::EntityData data = MakeRemoteEntry(conv_uuid, entry_uuid, "",
+                                              mojom::CharacterType::ASSISTANT);
+    auto* event = data.specifics.mutable_ai_chat_conversation()
+                      ->mutable_entry()
+                      ->add_events();
+    WriteCompressibleString(sender_completion, event->mutable_completion());
+    OmitCompressibleString(event->mutable_completion());
+    ASSERT_TRUE(event->completion().has_omitted_content_hash());
+    syncer::EntityChangeList changes;
+    changes.push_back(
+        syncer::EntityChange::CreateAdd("e:" + entry_uuid, std::move(data)));
+    ASSERT_FALSE(
+        bridge_
+            ->ApplyIncrementalSyncChanges(bridge_->CreateMetadataChangeList(),
+                                          std::move(changes))
+            .has_value());
+  }
+
+  // Expects the single entry of |conv_uuid| to hold one completion event
+  // reading |expected|.
+  void ExpectCompletion(const std::string& conv_uuid,
+                        std::string_view expected) {
+    auto archive = db_->GetConversationData(conv_uuid);
+    ASSERT_TRUE(archive);
+    ASSERT_EQ(archive->entries.size(), 1u);
+    const auto& events = archive->entries[0]->events;
+    ASSERT_TRUE(events.has_value());
+    ASSERT_EQ(events->size(), 1u);
+    ASSERT_TRUE(events->front()->is_completion_event());
+    EXPECT_EQ(events->front()->get_completion_event()->completion, expected);
   }
 
   // Replaces the database with one that fails every remote write after
@@ -207,6 +311,8 @@ class AIChatSyncBridgeTest : public testing::Test {
   std::unique_ptr<AIChatDatabase> db_;
   std::unique_ptr<AIChatSyncBridge> bridge_;
   raw_ptr<syncer::MockDataTypeLocalChangeProcessor> mock_processor_ = nullptr;
+  int remote_changes_applied_count_ = 0;
+  std::vector<std::string> last_affected_conversation_uuids_;
 };
 
 TEST_F(AIChatSyncBridgeTest, SetDatabaseCallsModelReadyToSyncOnce) {
@@ -487,12 +593,12 @@ TEST_F(AIChatSyncBridgeTest, ApplyIncrementalSyncChangesDeleteConversation) {
   changes.push_back(syncer::EntityChange::CreateDelete("c:to-delete",
                                                        std::move(delete_data)));
 
-  bridge_->ApplyIncrementalSyncChanges(bridge_->CreateMetadataChangeList(),
-                                       std::move(changes));
+  ASSERT_FALSE(bridge_
+                   ->ApplyIncrementalSyncChanges(
+                       bridge_->CreateMetadataChangeList(), std::move(changes))
+                   .has_value());
 
-  for (const auto& conv : db_->GetAllConversations()) {
-    EXPECT_NE(conv->uuid, "to-delete");
-  }
+  EXPECT_TRUE(db_->GetAllConversations().empty());
 }
 
 TEST_F(AIChatSyncBridgeTest, ApplyIncrementalSyncChangesDeleteEntry) {
@@ -513,12 +619,14 @@ TEST_F(AIChatSyncBridgeTest, ApplyIncrementalSyncChangesDeleteEntry) {
   changes.push_back(syncer::EntityChange::CreateDelete("e:" + entry_uuid,
                                                        std::move(delete_data)));
 
-  bridge_->ApplyIncrementalSyncChanges(bridge_->CreateMetadataChangeList(),
-                                       std::move(changes));
+  ASSERT_FALSE(bridge_
+                   ->ApplyIncrementalSyncChanges(
+                       bridge_->CreateMetadataChangeList(), std::move(changes))
+                   .has_value());
 
   archive = db_->GetConversationData("conv-with-entry");
   ASSERT_TRUE(archive);
-  EXPECT_EQ(archive->entries.size(), 0u);
+  EXPECT_TRUE(archive->entries.empty());
 }
 
 TEST_F(AIChatSyncBridgeTest, ApplyIncrementalSyncChangesUpsertConversation) {
@@ -535,19 +643,17 @@ TEST_F(AIChatSyncBridgeTest, ApplyIncrementalSyncChangesUpsertConversation) {
   changes.push_back(
       syncer::EntityChange::CreateAdd("c:remote-conv", std::move(data)));
 
-  bridge_->ApplyIncrementalSyncChanges(bridge_->CreateMetadataChangeList(),
-                                       std::move(changes));
+  ASSERT_FALSE(bridge_
+                   ->ApplyIncrementalSyncChanges(
+                       bridge_->CreateMetadataChangeList(), std::move(changes))
+                   .has_value());
 
-  bool found = false;
-  for (const auto& c : db_->GetAllConversations()) {
-    if (c->uuid == "remote-conv") {
-      found = true;
-      EXPECT_EQ(c->title, "From remote");
-      EXPECT_EQ(c->total_tokens, 100u);
-      EXPECT_EQ(c->trimmed_tokens, 10u);
-    }
-  }
-  EXPECT_TRUE(found);
+  auto conversations = db_->GetAllConversations();
+  ASSERT_EQ(conversations.size(), 1u);
+  EXPECT_EQ(conversations[0]->uuid, "remote-conv");
+  EXPECT_EQ(conversations[0]->title, "From remote");
+  EXPECT_EQ(conversations[0]->total_tokens, 100u);
+  EXPECT_EQ(conversations[0]->trimmed_tokens, 10u);
 }
 
 TEST_F(AIChatSyncBridgeTest,
@@ -557,20 +663,14 @@ TEST_F(AIChatSyncBridgeTest,
   // Send an entry whose parent conversation does not exist locally yet;
   // ApplyRemoteEntry should create a stub conversation row.
   syncer::EntityChangeList changes;
-  syncer::EntityData data;
-  auto* entry = data.specifics.mutable_ai_chat_conversation()->mutable_entry();
-  entry->set_uuid("remote-entry");
-  entry->set_conversation_uuid("remote-conv-stub");
-  entry->set_entry_text("Hi from remote");
-  entry->set_character_type(static_cast<int>(mojom::CharacterType::HUMAN));
-  entry->set_action_type(static_cast<int>(mojom::ActionType::QUERY));
-  entry->set_created_time_windows_epoch_micros(
-      base::Time::Now().ToDeltaSinceWindowsEpoch().InMicroseconds());
-  changes.push_back(
-      syncer::EntityChange::CreateAdd("e:remote-entry", std::move(data)));
+  changes.push_back(syncer::EntityChange::CreateAdd(
+      "e:remote-entry",
+      MakeRemoteEntry("remote-conv-stub", "remote-entry", "Hi from remote")));
 
-  bridge_->ApplyIncrementalSyncChanges(bridge_->CreateMetadataChangeList(),
-                                       std::move(changes));
+  ASSERT_FALSE(bridge_
+                   ->ApplyIncrementalSyncChanges(
+                       bridge_->CreateMetadataChangeList(), std::move(changes))
+                   .has_value());
 
   auto archive = db_->GetConversationData("remote-conv-stub");
   ASSERT_TRUE(archive);
@@ -582,9 +682,9 @@ TEST_F(AIChatSyncBridgeTest,
 
 // When an entry arrives before its parent conversation a stub row is
 // created. A later metadata record must upgrade the stub in place without
-// dropping the entry rows that were attached during the stub phase. This
-// relies on `PRAGMA foreign_keys = OFF` so `INSERT OR REPLACE` on the
-// parent does not cascade-delete its children.
+// dropping the entry rows that were attached during the stub phase. Entries
+// hold conversation_uuid as a plain column rather than a foreign key, so
+// `INSERT OR REPLACE` on the parent has nothing to cascade into.
 TEST_F(AIChatSyncBridgeTest,
        ApplyIncrementalSyncChangesUpgradesStubConversation) {
   CreateBridge();
@@ -592,20 +692,14 @@ TEST_F(AIChatSyncBridgeTest,
   // Deliver an entry whose parent does not exist locally.
   {
     syncer::EntityChangeList changes;
-    syncer::EntityData data;
-    auto* entry =
-        data.specifics.mutable_ai_chat_conversation()->mutable_entry();
-    entry->set_uuid("orphan-entry");
-    entry->set_conversation_uuid("conv-to-upgrade");
-    entry->set_entry_text("Pre-metadata entry");
-    entry->set_character_type(static_cast<int>(mojom::CharacterType::HUMAN));
-    entry->set_action_type(static_cast<int>(mojom::ActionType::QUERY));
-    entry->set_created_time_windows_epoch_micros(
-        base::Time::Now().ToDeltaSinceWindowsEpoch().InMicroseconds());
-    changes.push_back(
-        syncer::EntityChange::CreateAdd("e:orphan-entry", std::move(data)));
-    bridge_->ApplyIncrementalSyncChanges(bridge_->CreateMetadataChangeList(),
-                                         std::move(changes));
+    changes.push_back(syncer::EntityChange::CreateAdd(
+        "e:orphan-entry", MakeRemoteEntry("conv-to-upgrade", "orphan-entry",
+                                          "Pre-metadata entry")));
+    ASSERT_FALSE(
+        bridge_
+            ->ApplyIncrementalSyncChanges(bridge_->CreateMetadataChangeList(),
+                                          std::move(changes))
+            .has_value());
   }
 
   // Stub exists with no title yet, entry is attached.
@@ -626,21 +720,20 @@ TEST_F(AIChatSyncBridgeTest,
     conv->set_trimmed_tokens(45);
     changes.push_back(
         syncer::EntityChange::CreateAdd("c:conv-to-upgrade", std::move(data)));
-    bridge_->ApplyIncrementalSyncChanges(bridge_->CreateMetadataChangeList(),
-                                         std::move(changes));
+    ASSERT_FALSE(
+        bridge_
+            ->ApplyIncrementalSyncChanges(bridge_->CreateMetadataChangeList(),
+                                          std::move(changes))
+            .has_value());
   }
 
   // Title is populated and the entry survived the REPLACE.
-  bool found = false;
-  for (const auto& c : db_->GetAllConversations()) {
-    if (c->uuid == "conv-to-upgrade") {
-      found = true;
-      EXPECT_EQ(c->title, "Real Title");
-      EXPECT_EQ(c->total_tokens, 123u);
-      EXPECT_EQ(c->trimmed_tokens, 45u);
-    }
-  }
-  EXPECT_TRUE(found);
+  auto conversations = db_->GetAllConversations();
+  ASSERT_EQ(conversations.size(), 1u);
+  EXPECT_EQ(conversations[0]->uuid, "conv-to-upgrade");
+  EXPECT_EQ(conversations[0]->title, "Real Title");
+  EXPECT_EQ(conversations[0]->total_tokens, 123u);
+  EXPECT_EQ(conversations[0]->trimmed_tokens, 45u);
 
   auto upgraded = db_->GetConversationData("conv-to-upgrade");
   ASSERT_TRUE(upgraded);
@@ -720,23 +813,16 @@ TEST_F(AIChatSyncBridgeTest,
 
   // Build a remote update with the AC last_contents marked truncated.
   syncer::EntityChangeList changes;
-  syncer::EntityData data;
-  auto* remote_entry =
-      data.specifics.mutable_ai_chat_conversation()->mutable_entry();
-  remote_entry->set_uuid("entry-preserve");
-  remote_entry->set_conversation_uuid("conv-preserve");
-  remote_entry->set_entry_text("Question?");
-  remote_entry->set_character_type(
-      static_cast<int>(mojom::CharacterType::HUMAN));
-  remote_entry->set_action_type(static_cast<int>(mojom::ActionType::QUERY));
-  remote_entry->set_created_time_windows_epoch_micros(
-      base::Time::Now().ToDeltaSinceWindowsEpoch().InMicroseconds());
-  auto* remote_ac = remote_entry->add_associated_content();
+  syncer::EntityData data =
+      MakeRemoteEntry("conv-preserve", "entry-preserve", "Question?");
+  auto* remote_ac = data.specifics.mutable_ai_chat_conversation()
+                        ->mutable_entry()
+                        ->add_associated_content();
   remote_ac->set_uuid("ac-preserve");
   remote_ac->set_title("Local page");
   remote_ac->set_url("https://example.com/local");
   remote_ac->set_content_type(
-      static_cast<int>(mojom::ContentType::PageContent));
+      std::to_underlying(mojom::ContentType::PageContent));
   remote_ac->set_content_used_percentage(80);
   // The sender omitted the AC text to fit the budget, leaving behind a hash of
   // the original content (identical to what the receiver holds locally).
@@ -746,8 +832,10 @@ TEST_F(AIChatSyncBridgeTest,
 
   changes.push_back(
       syncer::EntityChange::CreateAdd("e:entry-preserve", std::move(data)));
-  bridge_->ApplyIncrementalSyncChanges(bridge_->CreateMetadataChangeList(),
-                                       std::move(changes));
+  ASSERT_FALSE(bridge_
+                   ->ApplyIncrementalSyncChanges(
+                       bridge_->CreateMetadataChangeList(), std::move(changes))
+                   .has_value());
 
   // The local AC's content text must be preserved.
   auto archive = db_->GetConversationData("conv-preserve");
@@ -765,60 +853,28 @@ TEST_F(AIChatSyncBridgeTest,
        ApplyRemoteEntryWithOmittedCompletionRestoresLocal) {
   const std::string completion_text =
       "The assistant's long and detailed answer that was omitted for sync.";
-
-  // Seed local DB with an assistant entry carrying the completion.
-  auto conv = mojom::Conversation::New();
-  conv->uuid = "conv-completion";
-  conv->title = "Local";
-  auto entry = mojom::ConversationTurn::New();
-  entry->uuid = "entry-completion";
-  entry->character_type = mojom::CharacterType::ASSISTANT;
-  entry->action_type = mojom::ActionType::QUERY;
-  entry->text = "";
-  entry->created_time = base::Time::Now();
-  std::vector<mojom::ConversationEntryEventPtr> events;
-  auto completion = mojom::CompletionEvent::New();
-  completion->completion = completion_text;
-  events.push_back(
-      mojom::ConversationEntryEvent::NewCompletionEvent(std::move(completion)));
-  entry->events = std::move(events);
-  ASSERT_TRUE(db_->AddConversation(std::move(conv), {}, std::move(entry)));
-
+  ASSERT_NO_FATAL_FAILURE(
+      SeedCompletion("conv-completion", "entry-completion", completion_text));
   CreateBridge();
 
-  // Build a remote update whose completion was omitted, leaving a hash of the
-  // original text (identical to the local copy).
-  syncer::EntityChangeList changes;
-  syncer::EntityData data;
-  auto* remote_entry =
-      data.specifics.mutable_ai_chat_conversation()->mutable_entry();
-  remote_entry->set_uuid("entry-completion");
-  remote_entry->set_conversation_uuid("conv-completion");
-  remote_entry->set_character_type(
-      static_cast<int>(mojom::CharacterType::ASSISTANT));
-  remote_entry->set_action_type(static_cast<int>(mojom::ActionType::QUERY));
-  remote_entry->set_created_time_windows_epoch_micros(
-      base::Time::Now().ToDeltaSinceWindowsEpoch().InMicroseconds());
-  auto* event = remote_entry->add_events();
-  WriteCompressibleString(completion_text, event->mutable_completion());
-  OmitCompressibleString(event->mutable_completion());
-  ASSERT_TRUE(event->completion().has_omitted_content_hash());
+  ASSERT_NO_FATAL_FAILURE(ApplyRemoteOmittedCompletion(
+      "conv-completion", "entry-completion", completion_text));
 
-  changes.push_back(
-      syncer::EntityChange::CreateAdd("e:entry-completion", std::move(data)));
-  bridge_->ApplyIncrementalSyncChanges(bridge_->CreateMetadataChangeList(),
-                                       std::move(changes));
+  ExpectCompletion("conv-completion", completion_text);
+}
 
-  // The local completion text must be restored, not blanked.
-  auto archive = db_->GetConversationData("conv-completion");
-  ASSERT_TRUE(archive);
-  ASSERT_EQ(archive->entries.size(), 1u);
-  const auto& applied = archive->entries[0];
-  ASSERT_TRUE(applied->events.has_value());
-  ASSERT_EQ(applied->events->size(), 1u);
-  ASSERT_TRUE((*applied->events)[0]->is_completion_event());
-  EXPECT_EQ((*applied->events)[0]->get_completion_event()->completion,
-            completion_text);
+// Restoring requires the local copy to hash the same as what the sender
+// omitted, so a diverging local completion is not restored in its place.
+TEST_F(AIChatSyncBridgeTest,
+       ApplyRemoteEntryWithOmittedCompletionDoesNotRestoreMismatch) {
+  ASSERT_NO_FATAL_FAILURE(SeedCompletion("conv-completion", "entry-completion",
+                                         "This device's answer."));
+  CreateBridge();
+
+  ASSERT_NO_FATAL_FAILURE(ApplyRemoteOmittedCompletion(
+      "conv-completion", "entry-completion", "The sender's different answer."));
+
+  ExpectCompletion("conv-completion", "");
 }
 
 // Sync collapses an edited turn to its latest revision, so a full-replace on
@@ -876,6 +932,60 @@ TEST_F(AIChatSyncBridgeTest, MergeFullSyncDataDoesNotDuplicateLocalEdits) {
   EXPECT_EQ((*applied->edits)[0]->text, "Edited question");
 }
 
+// The sender hashes the file bytes of the revision it serialized, which for an
+// edited turn is the latest edit, so the restore must look there rather than at
+// the head's files.
+TEST_F(AIChatSyncBridgeTest, MergeFullSyncDataRestoresOmittedFileOfLatestEdit) {
+  auto conv = mojom::Conversation::New();
+  conv->uuid = "conv-files";
+  conv->title = "Local";
+  auto entry = mojom::ConversationTurn::New();
+  entry->uuid = "entry-files";
+  entry->character_type = mojom::CharacterType::HUMAN;
+  entry->action_type = mojom::ActionType::QUERY;
+  entry->text = "Original question";
+  entry->created_time = base::Time::Now();
+  entry->uploaded_files.emplace();
+  entry->uploaded_files->push_back(
+      mojom::UploadedFile::New("head.png", 3, std::vector<uint8_t>{1, 2, 3},
+                               mojom::UploadedFileType::kImage, std::nullopt));
+  auto edit = entry->Clone();
+  edit->uuid = "edit-1";
+  edit->text = "Edited question";
+  edit->created_time = base::Time::Now() + base::Minutes(1);
+  edit->uploaded_files->front() =
+      mojom::UploadedFile::New("edit.png", 3, std::vector<uint8_t>{4, 5, 6},
+                               mojom::UploadedFileType::kImage, std::nullopt);
+  entry->edits.emplace();
+  entry->edits->push_back(std::move(edit));
+  ASSERT_TRUE(db_->AddConversation(std::move(conv), {}, std::move(entry)));
+  CreateBridge();
+
+  auto local = db_->GetConversationEntryWithEdits("entry-files");
+  ASSERT_TRUE(local);
+  syncer::EntityData data;
+  auto* specifics = data.specifics.mutable_ai_chat_conversation();
+  *specifics = EntryToSpecifics("conv-files", *local, {});
+  ASSERT_EQ(specifics->entry().uploaded_files_size(), 1);
+  OmitUploadedFileData(specifics->mutable_entry()->mutable_uploaded_files(0));
+  syncer::EntityChangeList changes;
+  changes.push_back(
+      syncer::EntityChange::CreateAdd("e:entry-files", std::move(data)));
+  ASSERT_FALSE(bridge_
+                   ->MergeFullSyncData(bridge_->CreateMetadataChangeList(),
+                                       std::move(changes))
+                   .has_value());
+
+  auto applied = db_->GetConversationEntryWithEdits("entry-files");
+  ASSERT_TRUE(applied);
+  ASSERT_TRUE(applied->edits.has_value());
+  ASSERT_EQ(applied->edits->size(), 1u);
+  const auto& files = applied->edits->front()->uploaded_files;
+  ASSERT_TRUE(files.has_value());
+  ASSERT_EQ(files->size(), 1u);
+  EXPECT_EQ(files->front()->data, std::vector<uint8_t>({4, 5, 6}));
+}
+
 // Whenever a Merge/Apply batch actually changes the local DB, the bridge
 // must invoke the on-remote-changes-applied closure exactly once so the
 // service can refresh in-memory state and active conversation handlers.
@@ -883,15 +993,11 @@ TEST_F(AIChatSyncBridgeTest, NotifiesRemoteChangesAppliedOnAddBatch) {
   CreateBridge();
   ASSERT_EQ(remote_changes_applied_count_, 0);
 
-  syncer::EntityChangeList changes;
-  syncer::EntityData data;
-  data.specifics.mutable_ai_chat_conversation()
-      ->mutable_conversation()
-      ->set_uuid("remote-conv");
-  changes.push_back(
-      syncer::EntityChange::CreateAdd("c:remote-conv", std::move(data)));
-  bridge_->ApplyIncrementalSyncChanges(bridge_->CreateMetadataChangeList(),
-                                       std::move(changes));
+  ASSERT_FALSE(
+      bridge_
+          ->ApplyIncrementalSyncChanges(bridge_->CreateMetadataChangeList(),
+                                        MakeConversationAdd("remote-conv"))
+          .has_value());
 
   EXPECT_EQ(remote_changes_applied_count_, 1);
 }
@@ -899,9 +1005,11 @@ TEST_F(AIChatSyncBridgeTest, NotifiesRemoteChangesAppliedOnAddBatch) {
 TEST_F(AIChatSyncBridgeTest, DoesNotNotifyWhenNoRemoteChangesApplied) {
   CreateBridge();
 
-  syncer::EntityChangeList empty_changes;
-  bridge_->ApplyIncrementalSyncChanges(bridge_->CreateMetadataChangeList(),
-                                       std::move(empty_changes));
+  ASSERT_FALSE(
+      bridge_
+          ->ApplyIncrementalSyncChanges(bridge_->CreateMetadataChangeList(),
+                                        syncer::EntityChangeList())
+          .has_value());
 
   EXPECT_EQ(remote_changes_applied_count_, 0);
 }
@@ -913,23 +1021,10 @@ TEST_F(AIChatSyncBridgeTest, NotifiesOnlyTheConversationsTheBatchChanged) {
   CreateBridge();
   AddTestConversation("untouched-conv", "Untouched");
 
-  syncer::EntityChangeList changes;
-  syncer::EntityData metadata;
-  metadata.specifics.mutable_ai_chat_conversation()
-      ->mutable_conversation()
-      ->set_uuid("changed-conv");
-  changes.push_back(
-      syncer::EntityChange::CreateAdd("c:changed-conv", std::move(metadata)));
-
-  syncer::EntityData entry;
-  auto* entry_proto =
-      entry.specifics.mutable_ai_chat_conversation()->mutable_entry();
-  entry_proto->set_uuid("entry-in-other-conv");
-  entry_proto->set_conversation_uuid("other-conv");
-  entry_proto->set_created_time_windows_epoch_micros(
-      base::Time::Now().ToDeltaSinceWindowsEpoch().InMicroseconds());
-  changes.push_back(syncer::EntityChange::CreateAdd("e:entry-in-other-conv",
-                                                    std::move(entry)));
+  syncer::EntityChangeList changes = MakeConversationAdd("changed-conv");
+  changes.push_back(syncer::EntityChange::CreateAdd(
+      "e:entry-in-other-conv",
+      MakeRemoteEntry("other-conv", "entry-in-other-conv", "Hello")));
 
   ASSERT_FALSE(bridge_
                    ->ApplyIncrementalSyncChanges(
@@ -961,36 +1056,58 @@ TEST_F(AIChatSyncBridgeTest, EntryTombstoneNamesTheParentConversation) {
 
 // An entry oversized by a plain, un-omittable field can never be committed.
 // Leaving its key out of the batch silently is what Chromium records as
-// Sync.DataTypeOrphanMetadata.GetData, so the bridge untracks it explicitly.
+// Sync.DataTypeOrphanMetadata.GetData, so the bridge untracks it explicitly,
+// and clears the persisted metadata that untracking alone would leave behind.
 TEST_F(AIChatSyncBridgeTest, GetDataForCommitUntracksEntryTooLargeToCommit) {
   CreateBridge();
-
-  auto conv = mojom::Conversation::New();
-  conv->uuid = "conv";
-  auto entry = mojom::ConversationTurn::New();
-  entry->uuid = "entry-1";
-  entry->character_type = mojom::CharacterType::HUMAN;
-  entry->action_type = mojom::ActionType::QUERY;
-  entry->text = "Hello";
-  entry->selected_text = std::string(kSyncMaxRecordBytes + 1024, 'Z');
-  entry->created_time = base::Time::Now();
-  ASSERT_TRUE(db_->AddConversation(std::move(conv), {}, std::move(entry)));
+  ASSERT_NO_FATAL_FAILURE(AddEntryTooLargeToCommit("conv", "entry-1"));
 
   EXPECT_CALL(*mock_processor_, UntrackEntityForStorageKey("e:entry-1"));
   auto batch = bridge_->GetDataForCommit({"e:entry-1"});
   EXPECT_FALSE(batch->HasNext());
+
+  syncer::MetadataBatch metadata;
+  ASSERT_TRUE(db_->GetAllSyncMetadata(&metadata));
+  EXPECT_TRUE(metadata.GetAllMetadata().empty());
 }
 
-// Helper: a single remote conversation add.
-syncer::EntityChangeList MakeConversationAdd(const std::string& uuid) {
-  syncer::EntityChangeList changes;
-  syncer::EntityData data;
-  data.specifics.mutable_ai_chat_conversation()
-      ->mutable_conversation()
-      ->set_uuid(uuid);
-  changes.push_back(
-      syncer::EntityChange::CreateAdd("c:" + uuid, std::move(data)));
-  return changes;
+// An entry edited past the budget has nothing to Put, but stays tracked:
+// untracking one committed earlier would turn a later local delete into a
+// no-op and strand the server's copy.
+TEST_F(AIChatSyncBridgeTest, EntryModifiedLeavesTooLargeEntryTracked) {
+  CreateBridge();
+  ASSERT_NO_FATAL_FAILURE(AddEntryTooLargeToCommit("conv", "entry-1"));
+
+  EXPECT_CALL(*mock_processor_, Put).Times(0);
+  EXPECT_CALL(*mock_processor_, UntrackEntityForStorageKey).Times(0);
+  bridge_->OnConversationEntryModified("conv", "entry-1");
+
+  syncer::MetadataBatch metadata;
+  ASSERT_TRUE(db_->GetAllSyncMetadata(&metadata));
+  EXPECT_EQ(metadata.GetAllMetadata().size(), 1u);
+}
+
+// Without the snapshot, an entry's local edit revisions would look absent and
+// the full-replace apply would delete them, so the batch fails instead.
+TEST_F(AIChatSyncBridgeTest, ApplyFailsWhenEditRevisionsCannotBeRead) {
+  db_.reset();
+  db_ = std::make_unique<EditRevisionsUnreadableAIChatDatabase>(
+      db_file_path(), os_crypt_async::GetTestEncryptorForTesting());
+  CreateBridge();
+
+  auto merge_error = bridge_->MergeFullSyncData(
+      bridge_->CreateMetadataChangeList(), MakeConversationAdd("merged-conv"));
+  ASSERT_TRUE(merge_error.has_value());
+  EXPECT_EQ(merge_error->type(),
+            syncer::ModelError::Type::kAIChatFailedToApplyRemoteChange);
+
+  auto apply_error = bridge_->ApplyIncrementalSyncChanges(
+      bridge_->CreateMetadataChangeList(), MakeConversationAdd("applied-conv"));
+  ASSERT_TRUE(apply_error.has_value());
+  EXPECT_EQ(apply_error->type(),
+            syncer::ModelError::Type::kAIChatFailedToApplyRemoteChange);
+
+  EXPECT_TRUE(db_->GetAllConversations().empty());
 }
 
 TEST_F(AIChatSyncBridgeTest, MergeFullSyncDataReturnsErrorWhenApplyFails) {
@@ -1049,11 +1166,11 @@ TEST_F(AIChatSyncBridgeTest, NotifiesRemoteChangesAppliedBeforeReturningError) {
   // The first conversation is committed, so live conversations still need to
   // reload even though the data type is about to stop.
   EXPECT_EQ(remote_changes_applied_count_, 1);
-  bool found = false;
-  for (const auto& c : db_->GetAllConversations()) {
-    found |= c->uuid == "first-conv";
-  }
-  EXPECT_TRUE(found);
+  EXPECT_THAT(last_affected_conversation_uuids_,
+              testing::ElementsAre("first-conv"));
+  auto conversations = db_->GetAllConversations();
+  ASSERT_EQ(conversations.size(), 1u);
+  EXPECT_EQ(conversations[0]->uuid, "first-conv");
 }
 
 TEST_F(AIChatSyncBridgeTest,
