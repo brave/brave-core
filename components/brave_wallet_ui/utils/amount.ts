@@ -417,6 +417,46 @@ export default class Amount {
   }
 
   /**
+   * Hidden-balance placeholder that keeps the locale currency symbol and
+   * placement, while replacing the numeric value (including grouping and
+   * decimal separators) with bullets.
+   */
+  static formatHiddenAsFiat(currency?: string): string {
+    const options: Intl.NumberFormatOptions = {
+      style: 'decimal',
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }
+
+    const resolvedCurrency = Amount.resolveCurrency(currency)
+    if (resolvedCurrency) {
+      options.style = 'currency'
+      options.currency = resolvedCurrency
+      options.currencyDisplay = 'narrowSymbol'
+    }
+
+    let maskedNumber = false
+    return Intl.NumberFormat(navigator.language, options)
+      .formatToParts(0)
+      .map((part) => {
+        if (
+          part.type === 'integer'
+          || part.type === 'group'
+          || part.type === 'decimal'
+          || part.type === 'fraction'
+        ) {
+          if (maskedNumber) {
+            return ''
+          }
+          maskedNumber = true
+          return '••••'
+        }
+        return part.value
+      })
+      .join('')
+  }
+
+  /**
    * Compact display formatting for asset amounts. Abbreviates large values
    * (>= 1,000,000,000), uses subscript notation for tiny values (4+ leading
    * zeros), and falls back to formatAsAsset for everything else.

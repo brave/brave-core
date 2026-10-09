@@ -124,6 +124,7 @@ export class MockedWalletApiProxy {
   ]
 
   userAssets: BraveWallet.BlockchainToken[] = mockAccountAssetOptions
+  isWalletCreated: boolean = true
 
   /**
    * balance = [accountAddress][chainId]
@@ -246,6 +247,7 @@ export class MockedWalletApiProxy {
     this.signCardanoTransactionRequests =
       overrides.signCardanoTransactionRequests
       ?? this.signCardanoTransactionRequests
+    this.isWalletCreated = overrides.isWalletCreated ?? this.isWalletCreated
   }
 
   blockchainRegistry: Partial<
@@ -713,6 +715,21 @@ export class MockedWalletApiProxy {
           source: BraveWallet.AssetPriceSource.kCoingecko,
           price: '3873.78',
         })),
+      }
+    },
+    getPriceHistory: async (_asset, _vsAsset, _timeframe) => {
+      return {
+        success: true,
+        values: [
+          {
+            date: { microseconds: BigInt(0) },
+            price: '3500',
+          },
+          {
+            date: { microseconds: BigInt(1) },
+            price: '3873.78',
+          },
+        ],
       }
     },
     getCoinMarkets: async (vsAsset: string, limit: number) => {
@@ -1301,7 +1318,7 @@ export class MockedWalletApiProxy {
           isCardanoEnabled: true,
           isPolkadotEnabled: true,
           isWalletBackedUp: true,
-          isWalletCreated: true,
+          isWalletCreated: this.isWalletCreated,
           isWalletLocked: false,
           isAnkrBalancesFeatureEnabled: false,
           isTransactionSimulationsFeatureEnabled: true,

@@ -11,9 +11,35 @@ import {
   WalletPanelStory, //
 } from '$wallet/stories/wrappers/wallet-panel-story-wrapper'
 
+// Mocks
+import {
+  mockAccount,
+  mockNativeBalanceRegistry,
+  mockTokenBalanceRegistry,
+} from '$wallet/common/constants/mocks'
+
+type StorybookCardHubArgs = {
+  isWalletCreated: boolean
+}
+
 export const _CardHub = {
-  render: () => {
-    return <CardHub />
+  render: (args: StorybookCardHubArgs) => {
+    const { isWalletCreated } = args
+    return (
+      <WalletPanelStory
+        walletStateOverride={{
+          isWalletCreated,
+        }}
+        walletApiDataOverrides={{
+          isWalletCreated,
+          selectedAccountId: mockAccount.accountId,
+          nativeBalanceRegistry: mockNativeBalanceRegistry,
+          tokenBalanceRegistry: mockTokenBalanceRegistry,
+        }}
+      >
+        <CardHub />
+      </WalletPanelStory>
+    )
   },
 }
 
@@ -23,11 +49,10 @@ export default {
   parameters: {
     layout: 'centered',
   },
-  decorators: [
-    (Story: any) => (
-      <WalletPanelStory>
-        <Story />
-      </WalletPanelStory>
-    ),
-  ],
+  args: {
+    isWalletCreated: false,
+  },
+  argTypes: {
+    isWalletCreated: { control: { type: 'boolean' } },
+  },
 }

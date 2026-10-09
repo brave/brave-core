@@ -5,15 +5,27 @@
 
 import * as React from 'react'
 
+// Selectors
+import { WalletSelectors } from '$wallet/common/selectors'
+
+// Hooks
+import { useSafeWalletSelector } from '$wallet/common/hooks/use-safe-selector'
+import { usePortfolioAssets } from '$wallet/common/hooks/use_portfolio_assets'
+
 // Constants
 import { LOCAL_STORAGE_KEYS } from '$wallet/common/constants/local-storage-keys'
 
 // Utils
 import { getLocale } from '$web-common/locale'
 import { useSyncedLocalStorage } from '$wallet/common/hooks/use_local_storage'
+import Amount from '$wallet/utils/amount'
 
 // Components
 import { Card } from '../card'
+import {
+  PortfolioValueChange, //
+} from '$wallet/page/screens/portfolio_overview/components/portfolio_value_change/portfolio_value_change'
+import { LoadingSkeleton } from '$wallet/components/shared/loading-skeleton'
 
 // Styles
 import {
@@ -32,11 +44,34 @@ interface Props {
 export const Crypto = (props: Props) => {
   const { onClick, onHide, locked } = props
 
+  // Selectors
+  const isWalletCreated = useSafeWalletSelector(WalletSelectors.isWalletCreated)
+
+  // Hooks
+  const {
+    formattedFullPortfolioFiatBalance,
+    fullPortfolioFiatBalance,
+    defaultFiat,
+    visibleTokensForFilteredChains,
+    tokenBalancesRegistry,
+  } = usePortfolioAssets()
+
   // Local Storage
   const [hidePortfolioBalances] = useSyncedLocalStorage(
     LOCAL_STORAGE_KEYS.HIDE_PORTFOLIO_BALANCES,
     false,
   )
+
+  // Computed
+  const hasZeroBalance = fullPortfolioFiatBalance.isZero()
+  const zeroFiatBalance = Amount.zero().compactAsFiat(defaultFiat)
+  const visibleFiatBalance =
+    isWalletCreated && formattedFullPortfolioFiatBalance
+      ? formattedFullPortfolioFiatBalance
+      : zeroFiatBalance
+  const fiatBalance = hidePortfolioBalances
+    ? Amount.formatHiddenAsFiat(defaultFiat)
+    : visibleFiatBalance
 
   return (
     <Card
@@ -71,15 +106,33 @@ export const Crypto = (props: Props) => {
           alignItems='center'
           gap='8px'
         >
-          <Text
-            variant='heading.h3'
-            textColor='primary'
-          >
-            {hidePortfolioBalances ? '$••••' : '$0.00'}
-          </Text>
-          <CryptoTitle variant='small.semibold'>
-            {getLocale(S.BRAVE_WALLET_LETS_GET_STARTED)}
-          </CryptoTitle>
+          {isWalletCreated && formattedFullPortfolioFiatBalance === '' ? (
+            <LoadingSkeleton
+              width={100}
+              height={26}
+            />
+          ) : (
+            <Text
+              variant='heading.h3'
+              textColor='primary'
+            >
+              {fiatBalance}
+            </Text>
+          )}
+          {isWalletCreated && !hasZeroBalance ? (
+            <PortfolioValueChange
+              fullPortfolioFiatBalance={fullPortfolioFiatBalance}
+              defaultFiat={defaultFiat}
+              tokens={visibleTokensForFilteredChains}
+              tokenBalancesRegistry={tokenBalancesRegistry}
+            />
+          ) : (
+            !isWalletCreated && (
+              <CryptoTitle variant='small.semibold'>
+                {getLocale(S.BRAVE_WALLET_LETS_GET_STARTED)}
+              </CryptoTitle>
+            )
+          )}
         </Row>
       </Column>
     </Card>
