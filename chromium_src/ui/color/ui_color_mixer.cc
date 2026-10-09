@@ -72,6 +72,10 @@ void AddBraveUiColorMixer(ColorProvider* provider,
   // kColorId_FocusedBorderColor)
   mixer[kColorTableGroupingIndicator] = {gfx::kColorButtonBackground};
 
+  // Tree views (e.g. bookmark editor) use the same selection color as tables
+  mixer[kColorTreeNodeBackgroundSelectedFocused] = {
+      kColorTableBackgroundSelectedFocused};
+
   // --------------------------------------------------------------------------
   // Text colors
   // --------------------------------------------------------------------------
