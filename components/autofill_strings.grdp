@@ -244,10 +244,6 @@
     <message name="IDS_AUTOFILL_MANAGE_LOYALTY_CARDS" desc="The text displayed at the bottom of the Autofill popup to allow the user to manage loyalty cards that can be used by Brave Autofill. Imperative. When the user clicks on it, opens the Wallet page." meaning="Manage loyalty cards in the user wallet that can be used by Chrome Autofill.">
       Manage loyalty cards...
     </message>
-
-    <message name="IDS_AUTOFILL_MANAGE_ENHANCED_AUTOFILL" desc="Hyperlink text that redirects the user to the central Brave settings page where they can manage permissions, connected apps, and clear data features.">
-      Manage enhanced autofill
-    </message>
   </if>
   <if expr="use_titlecase">
     <message name="IDS_AUTOFILL_MANAGE_ADDRESSES" desc="In Title Case: The text displayed at the bottom of the Autofill popup to allow the user to manage their Autofill preferences for addresses. Imperative. When the user clicks on it, opens the Autofill settings page." meaning="Manage addresses in the user profile that can be used by Chrome Autofill.">
@@ -261,11 +257,11 @@
     <message name="IDS_AUTOFILL_MANAGE_LOYALTY_CARDS" desc="In Title Case: The text displayed at the bottom of the Autofill popup to allow the user to manage loyalty cards that can be used by Brave Autofill. Imperative. When the user clicks on it, opens the Wallet page." meaning="Manage loyalty cards in the user wallet that can be used by Chrome Autofill.">
       Manage Loyalty Cards...
     </message>
-
-    <message name="IDS_AUTOFILL_MANAGE_ENHANCED_AUTOFILL" desc="In Title Case: Hyperlink text that redirects the user to the central Brave settings page where they can manage permissions, connected apps, and clear data features.">
-      Manage Enhanced Autofill
-    </message>
   </if>
+
+  <message name="IDS_AUTOFILL_MANAGE_ENHANCED_AUTOFILL" desc="Hyperlink text that redirects the user to the central Brave settings page where they can manage permissions, connected apps, and clear data features.">
+    Manage enhanced autofill
+  </message>
 
   <message name="IDS_AUTOFILL_MANAGE_LOYALTY_CARDS_A11Y_HINT" desc="Voice over text that is read out when the manage loyalty cards at the bottom of the Autofill popup is selected.">
     Manage loyalty cards in Google Wallet
@@ -436,8 +432,11 @@
   <message name="IDS_AUTOFILL_GMAIL_OTP_FILLING_TOGGLE_TITLE" desc="Title for the toggle that enables autofilling verification codes from Gmail.">
     Autofill verification codes from Gmail
   </message>
+  <message name="IDS_AUTOFILL_GMAIL_OTP_OPT_IN_LEARN_MORE_A11Y_NAME" is_accessibility_with_no_ui="true" desc="Accessible label for the link to learn more about the Gmail OTP filling feature, providing context for screen reader users.">
+    Learn more about this feature - Autofill verification codes from Gmail
+  </message>
   <message name="IDS_AUTOFILL_GMAIL_OTP_FILLING_TOGGLE_DESCRIPTION" desc="Description for the toggle that enables autofilling verification codes from Gmail.">
-    Autofill verification codes sites use to improve your security. Brave can get these codes from your Gmail. <ph name="BEGIN_LINK">&lt;a href="$1" tabindex="0" aria-description="$2" target="_blank"&gt;</ph>Learn more about this feature<ph name="LINK_END">&lt;/a&gt;</ph>
+    Autofill verification codes sites use to improve your security. Brave can get these codes from your Gmail. <ph name="BEGIN_LINK">&lt;a href="$1" tabindex="0" aria-description="$2" aria-label="$3" target="_blank"&gt;</ph>Learn more about this feature<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_AUTOFILL_GMAIL_OTP_REQUIRED_TITLE" desc="Title of the dialog informing the user that smart features must be turned on in Gmail to use autofill for verification codes from Gmail.">
     To use this feature, first turn on smart features in Gmail
@@ -875,6 +874,12 @@
   <message name="IDS_AUTOFILL_AT_MEMORY_AI_DISCLOSURE_LINK" desc="Link text for the AI disclosure that points to a settings page." translateable="false">
     More about relevant data sent to Brave
   </message>
+  <message name="IDS_AUTOFILL_AT_MEMORY_SHORTCUT_SETTINGS_PROMO" desc="The text shown at the bottom of the AtMemory search popup to inform the user that the keyboard shortcut can be changed in settings. $1 is the link text." translateable="false">
+    You can change keyboard shortcut in <ph name="SETTINGS_LINK">$1</ph>
+  </message>
+  <message name="IDS_AUTOFILL_AT_MEMORY_SHORTCUT_SETTINGS_PROMO_LINK" desc="Link text for the AtMemory shortcut promo that points to a settings page." translateable="false">
+    settings
+  </message>
   <message name="IDS_AUTOFILL_AT_MEMORY_NO_CONNECTION" desc="Message shown when AtMemory search fails to connect to the server." translateable="false">
     Couldn't connect
   </message>
@@ -920,8 +925,8 @@
   <message name="IDS_AUTOFILL_AT_MEMORY_PREVIOUSLY_FILLED" desc="Title shown in the AtMemory suggestions above suggestions that was previously filled on this page." translateable="false">
     Previously filled
   </message>
-  <message name="IDS_AUTOFILL_AT_MEMORY_YOUR_SAVED_AUTOFILL_INFO" desc="Title shown in the AtMemory suggestions above Autofill-sourced suggestions." translateable="false">
-    Your saved autofill info
+  <message name="IDS_AUTOFILL_AT_MEMORY_YOUR_SAVED_INFO" desc="Title shown in the AtMemory suggestions above Autofill-sourced suggestions." translateable="false">
+    Your saved info
   </message>
   <message name="IDS_AT_MEMORY_NOTICE_TEXT" desc="Body text of an informational notice introducing a new enhanced autofill feature. 'Personal Intelligence' and 'Gemini' are proper branding names and should remain unlocalized and match standard guidelines across languages. 'Manage settings' is a hyperlink that navigates the user to the Brave settings page to adjust their preferences." formatter_data="android_java">
     Powered by Personal Intelligence with Gemini. Your requests, page titles, and URLs may be reviewed to improve enhanced autofill. <ph name="BEGIN_LINK">&lt;link&gt;</ph>Manage settings<ph name="END_LINK">&lt;/link&gt;</ph>
@@ -932,16 +937,16 @@
   <message name="IDS_AT_MEMORY_NOTICE_TITLE" desc="Headline of an informational notice introducing a new enhanced autofill feature. 'Gmail' is a proper branding name and should remain unlocalized and match standard guidelines across languages." formatter_data="android_java">
     Now you can find and fill info from Gmail and more
   </message>
-  <message name="IDS_AUTOFILL_AT_MEMORY_ZERO_STATE_SUBTITLE_ORDER_NUMBER" desc="Example search query shown in the AtMemory zero state for finding an order number." translateable="false">
+  <message name="IDS_AUTOFILL_AT_MEMORY_ZERO_STATE_SUBTITLE_ORDER_NUMBER" desc="Example search query shown in the AtMemory zero state for finding an order number." formatter_data="android_java" translateable="false">
     Try "running shoes order number"
   </message>
-  <message name="IDS_AUTOFILL_AT_MEMORY_ZERO_STATE_SUBTITLE_FLIGHT_CONFIRMATION_CODE" desc="Example search query shown in the AtMemory zero state for finding a flight confirmation code." translateable="false">
+  <message name="IDS_AUTOFILL_AT_MEMORY_ZERO_STATE_SUBTITLE_FLIGHT_CONFIRMATION_CODE" desc="Example search query shown in the AtMemory zero state for finding a flight confirmation code." formatter_data="android_java" translateable="false">
     Try "confirmation code for LAX flight"
   </message>
-  <message name="IDS_AUTOFILL_AT_MEMORY_ZERO_STATE_SUBTITLE_TRACKING_NUMBER" desc="Example search query shown in the AtMemory zero state for finding a shipment tracking number." translateable="false">
+  <message name="IDS_AUTOFILL_AT_MEMORY_ZERO_STATE_SUBTITLE_TRACKING_NUMBER" desc="Example search query shown in the AtMemory zero state for finding a shipment tracking number." formatter_data="android_java" translateable="false">
     Try "running shoes tracking number"
   </message>
-  <message name="IDS_AUTOFILL_AT_MEMORY_ZERO_STATE_SUBTITLE_HOTEL_ADDRESS" desc="Example search query shown in the AtMemory zero state for finding a hotel address." translateable="false">
+  <message name="IDS_AUTOFILL_AT_MEMORY_ZERO_STATE_SUBTITLE_HOTEL_ADDRESS" desc="Example search query shown in the AtMemory zero state for finding a hotel address." formatter_data="android_java" translateable="false">
     Try "address for my hotel in Tokyo"
   </message>
   <if expr="is_android">
@@ -949,16 +954,10 @@
       Find and fill
     </message>
     <message name="IDS_AT_MEMORY_OPEN_FLYOUT" desc="Content description for the button that opens the details page for a suggestion." formatter_data="android_java" translateable="false">
-      Show more
+      Show more for <ph name="DATA_TYPE">%1$s<ex>Flight</ex></ph> <ph name="PRIMARY_ATTRIBUTION">%2$s<ex>XYZ</ex></ph>
     </message>
     <message name="IDS_AUTOFILL_AT_MEMORY_ZERO_STATE_TITLE" desc="Title text shown in zero state when there are no autofill suggestions in the bottom sheet." formatter_data="android_java" translateable="false">
       You’ll find your autofill suggestions here
-    </message>
-    <message name="IDS_AT_MEMORY_NOTICE_OK_BUTTON" desc="Standard acknowledgment button label to dismiss the informational notice." formatter_data="android_java">
-      OK
-    </message>
-    <message name="IDS_AT_MEMORY_NOTICE_OK_BUTTON_A11Y_LABEL" translateable="false" is_accessibility_with_no_ui="true" desc="Accessibility label for a standard acknowledgment button label to dismiss the informational notice. Clicking the button will close only the notice row, but not the whole bottom sheet." formatter_data="android_java">
-      OK, close notice
     </message>
     <message name="IDS_AT_MEMORY_AI_DISCLOSURE" desc="The text shown at the bottom of the AtMemory bottom sheet to set user expectations regarding potential incorrect suggestions." formatter_data="android_java" translateable="false">
       Gemini is AI and can make mistakes. <ph name="BEGIN_LINK">&lt;link&gt;</ph>More about relevant data sent to Brave<ph name="END_LINK">&lt;/link&gt;</ph>
@@ -986,9 +985,15 @@
     Manage contact info
   </message>
   <if expr="is_android or is_ios">
-  <message name="IDS_AUTOFILL_AT_MEMORY_ZERO_STATE_SUBTITLE" desc="Subtitle text shown in zero state when there are no autofill suggestions in the bottom sheet." formatter_data="android_java" translateable="false">
-    Type what you need to find and fill info from your Connected Apps
-  </message>
+    <message name="IDS_AUTOFILL_AT_MEMORY_ZERO_STATE_SUBTITLE" desc="Subtitle text shown in zero state when there are no autofill suggestions in the bottom sheet." formatter_data="android_java" translateable="false">
+      Type what you need to find and fill info from your Connected Apps
+    </message>
+    <message name="IDS_AT_MEMORY_NOTICE_OK_BUTTON" desc="Standard acknowledgment button label to dismiss the informational notice." formatter_data="android_java">
+      OK
+    </message>
+    <message name="IDS_AT_MEMORY_NOTICE_OK_BUTTON_A11Y_LABEL" translateable="false" is_accessibility_with_no_ui="true" desc="Accessibility label for a standard acknowledgment button label to dismiss the informational notice. Clicking the button will close only the notice row, but not the whole bottom sheet." formatter_data="android_java">
+      OK, close notice
+    </message>
   </if>
 
   <!-- Autofill Address Edit Dialog -->
@@ -1450,9 +1455,6 @@
   <message name="IDS_AUTOFILL_AI_SAVE_ENTITY_TO_WALLET_DIALOG_SUBTITLE_NEW" desc="A description that appears beneath the Save title prompt asking users whether they want to save their data to Google Wallet. This sentence essentially defines Autofill in Brave. We prompt the user to save their information with Google Wallet with the promise that Brave can then help the user fill out forms across devices more quickly using their saved info.">
     Save your info in <ph name="GOOGLE_WALLET_TITLE_1">$1<ex>Google Wallet</ex></ph> and get things done faster, like filling forms across Brave products. You can <ph name="MANAGE_INFO_LINK">$2<ex>manage your info</ex></ph> in <ph name="GOOGLE_WALLET_TITLE_2">$3<ex>Google Wallet</ex></ph> for <ph name="ACCOUNT">$4<ex>alexpark@gmail.com</ex></ph>.
   </message>
-  <message name="IDS_AUTOFILL_AI_SAVE_ENTITY_TO_WALLET_DIALOG_SUBTITLE_BRANDED" desc="A description that appears beneath the Save title prompt asking users whether they want to save their data to Google Wallet, used when Google Wallet branding is already present in the title.">
-    Save your info and get things done faster, like filling forms across Brave products. You can <ph name="MANAGE_WALLET_SETTINGS_LINK">$1<ex>manage your Wallet settings</ex></ph> for <ph name="ACCOUNT">$2<ex>alexpark@gmail.com</ex></ph>.
-  </message>
   <!-- Prompt strings used on Desktop -->
   <if expr="not is_android">
     <message name="IDS_AUTOFILL_AI_SAVE_DRIVERS_LICENSE_ENTITY_DIALOG_TITLE" desc="The title of a dialog that prompts the user to save information they just filled in on a form. For example, the user is renting a car and just filled in info about their driver’s license. When they click Submit, we offer to save the data in Brave. Depending on the form and what Brave recognizes, there might be just one or several pieces of data saved at this moment. This is a similar moment to saving a password or credit card with Brave.">
@@ -1620,9 +1622,6 @@
     </message>
     <message name="IDS_AUTOFILL_MANAGE_YOUR_INFO_LINK" desc="Link text prompting users to manage their autofill information.">
       manage your info
-    </message>
-    <message name="IDS_AUTOFILL_MANAGE_YOUR_WALLET_SETTINGS_LINK" desc="Link text prompting users to manage their Google Wallet settings.">
-      manage your Wallet settings
     </message>
     <message name="IDS_AUTOFILL_AI_UPDATE_ENTITY_DIALOG_UPDATED_ATTRIBUTE_ACCESSIBLE_NAME" desc="Used in entity update dialogs, as the accessible names for rows with updated attributes">
       <ph name="ATTRIBUTE_NAME">$1<ex>Passport number</ex></ph> updated
@@ -2102,6 +2101,9 @@ You can remove this suggestion from Brave. Your original source won't be deleted
     <message name="IDS_AUTOFILL_POPUP_PERSONAL_CONTEXT_NOTICE_OK_BUTTON_A11Y_LABEL" translateable="false" is_accessibility_with_no_ui="true" desc="Accessibility label for a standard acknowledgment button label to dismiss the informational notice. Clicking the button will close only the notice row, but not the whole popup.">
       OK, close notice
     </message>
+    <message name="IDS_AUTOFILL_POPUP_NOTICE_A11Y_INSTRUCTIONS" translateable="false" is_accessibility_with_no_ui="true" desc="Accessibility instructions for navigating between the notice link and the acknowledgment button in the Autofill popup using left or right arrow keys.">
+      Use left or right arrow keys to navigate the notice.
+    </message>
     <message name="IDS_AUTOFILL_AI_PRIVATE_INFERENCE_NOTICE_LINK_TEXT" desc="Link text for the private inference notice in Autofill AI popup.">
       Manage settings
     </message>
@@ -2149,6 +2151,44 @@ You can remove this suggestion from Brave. Your original source won't be deleted
     </message>
     <message name="IDS_AUTOFILL_PERSONAL_CONTEXT_SETTINGS_MANAGE_CONNECTED_APPS_SUMMARY" desc="Subtext or description beneath the 'Manage Connected Apps' entry point, explaining its purpose. 'Gemini' is a proper product name and must remain unlocalized.">
       Choose which apps Gemini connects to
+    </message>
+  </if>
+
+  <!-- Private Inference Notice in Autofill Bottomsheet -->
+  <if expr="is_android">
+    <message name="IDS_AUTOFILL_AI_PRIVATE_INFERENCE_NOTICE_SHEET_TITLE" desc="Headline of an informational notice explaining that page content may be processed in a private space in the cloud to improve autofill." formatter_data="android_java">
+      Smarter autofill, kept private
+    </message>
+    <message name="IDS_AUTOFILL_AI_PRIVATE_INFERENCE_NOTICE_SHEET_DESCRIPTION" desc="Body text of an informational notice explaining that page content may be processed in a private space in the cloud to improve autofill. 'Brave' is a Brave product name and must remain unlocalized." formatter_data="android_java">
+      Brave can now detect and fill more forms with smarter form understanding. To do this, page content and URLs can be processed in a private space in the cloud. Manage in settings.
+    </message>
+    <message name="IDS_AUTOFILL_AI_PRIVATE_INFERENCE_NOTICE_SHEET_OK_BUTTON" desc="Acknowledgment button label to dismiss the informational notice." formatter_data="android_java">
+      Got it
+    </message>
+    <message name="IDS_AUTOFILL_AI_PRIVATE_INFERENCE_NOTICE_SHEET_SETTINGS_LINK" desc="Standard navigation button label to open the Brave settings menu." formatter_data="android_java">
+      Settings
+    </message>
+    <message name="IDS_AUTOFILL_AI_PRIVATE_INFERENCE_NOTICE_SHEET_FULL_HEIGHT" is_accessibility_with_no_ui="true" desc="Accessibility string read upon opening the autofill private inference notice sheet." formatter_data="android_java">
+      Smarter autofill, kept private notice opened at full height
+    </message>
+    <message name="IDS_AUTOFILL_AI_PRIVATE_INFERENCE_NOTICE_SHEET_CLOSED" is_accessibility_with_no_ui="true" desc="Accessibility string read upon closing the autofill private inference notice sheet." formatter_data="android_java">
+      Smarter autofill, kept private notice closed
+    </message>
+  </if>
+
+  <!-- TODO(crbug.com/561395976): Finalize tapjacking strings. -->
+  <if expr="is_android">
+    <message name="IDS_AUTOFILL_TAPJACKING_CREDIT_CARD_CONFIRMATION_DIALOG_TITLE" desc="The title shown in the confirmation dialog which asks the user to authorize filling a credit card. The dialog notifies the user that some UI surface is currently overlaying Brave." translateable="false">
+      Confirm action
+    </message>
+    <message name="IDS_AUTOFILL_TAPJACKING_CREDIT_CARD_CONFIRMATION_DIALOG_DESCRIPTION" desc="The description shown in the confirmation dialog which asks the user to authorize filling a credit card. The dialog notifies the user that some UI surface is currently overlaying Brave." translateable="false">
+      Your credit card data is about to be filled, please confirm the action. This additional confirmation is required because the Brave window is currently overlaid by another application.
+    </message>
+    <message name="IDS_AUTOFILL_TAPJACKING_CONFIRMATION_DIALOG_POSITIVE_BUTTON" desc="The positive button text shown in the confirmation dialog which asks the user to authorize filling some sensitive data. The dialog notifies the user that some UI surface is currently overlaying Brave." translateable="false">
+      Confirm
+    </message>
+    <message name="IDS_AUTOFILL_TAPJACKING_CONFIRMATION_DIALOG_NEGATIVE_BUTTON" desc="The negative button text shown in the confirmation dialog which asks the user to authorize filling some sensitive data. The dialog notifies the user that some UI surface is currently overlaying Brave." translateable="false">
+      Cancel
     </message>
   </if>
 </grit-part>

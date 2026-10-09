@@ -993,6 +993,19 @@ For more settings that use data to improve your Brave experience, go to <ph name
       <message name="IDS_TAB_POSITION_VERTICAL" desc="Label for the vertical tab position option.">
         Vertical
       </message>
+      <!-- TODO(crbug.com/542280452): Make translateable once the copy is final. -->
+      <message name="IDS_TAB_POSITION_EXPAND_TABS_ON_HOVER" desc="Title of the switch in the tab position settings page that turns on or off expanding the collapsed vertical tabs side panel when the mouse pointer hovers over it." translateable="false">
+        Auto expand tabs on hover
+      </message>
+      <!-- Bottom bar settings. -->
+      <!-- TODO(crbug.com/556961273): Make translateable once the copy is final. -->
+      <message name="IDS_BOTTOM_BAR_SETTING_TITLE" desc="Title of the switch in the Appearance settings page that shows or hides the bottom toolbar (a bar at the bottom of the screen with buttons such as new tab, tab switcher and menu). [CHAR_LIMIT=32]" translateable="false">
+        Show bottom toolbar
+      </message>
+      <!-- TODO(crbug.com/556961273): Make translateable once the copy is final. -->
+      <message name="IDS_BOTTOM_BAR_SETTING_SUMMARY" desc="Summary shown under the 'Show bottom toolbar' switch in the Appearance settings page. The bottom toolbar is a row of navigation and tool buttons (for example new tab, tab switcher and menu) anchored to the bottom of the screen so they are easier to reach with one hand. It is separate from the 'Address bar' setting, which only moves the address bar between the top and bottom of the screen." translateable="false">
+        Keep navigation and tools to the bottom for easy reach
+      </message>
       <if expr="enable_extensions_core">
         <message name="IDS_EXTENSIONS_PIN_TO_TOOLBAR_SETTING" desc="Title Text of the button that pins the extensions menu icon (the puzzle piece icon) to the toolbar.">
           Pin to toolbar
@@ -1824,6 +1837,9 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_HISTORY_FILTER_BY_HOST" desc="Text used in the host filter button and in the header of host filter sheet." translateable="false">
         Filter by host
       </message>
+      <message name="IDS_HISTORY_FILTER_BY_CLIENT" desc="Text used in the client filter button and in the header of client filter sheet." translateable="false">
+        Filter by device
+      </message>
       <message name="IDS_HISTORY_IPH_BUBBLE_TEXT" desc="The message on the text bubble shown to educate users about the app history filter.">
         Search by app, date, and more.
       </message>
@@ -2387,6 +2403,12 @@ Your Brave account may have other forms of browsing history like searches and ac
       </message>
       <message name="IDS_SYNC_ADDRESSES_CANCEL" desc="Button in a dialog to enable saving addresses to the Brave sync chain. This is shown to users who have chosen to encrypt their data with a custom passphrase. The dialog informs users that newly saved addresses will not be encrypted with their passphrase.">
         Cancel
+      </message>
+      <message name="IDS_ACCOUNT_SEARCH_AI_MODE_CONNECTED_APPS_TITLE" desc="Title for the preference in Account settings that opens a web page where the user can manage the connection between Brave Search AI Mode and Brave Workspace connected apps. 'Brave Search' and 'AI Mode' are product names.">
+        Brave Search AI Mode and connected apps
+      </message>
+      <message name="IDS_ACCOUNT_SEARCH_AI_MODE_CONNECTED_APPS_SUMMARY" desc="Summary for the preference in Account settings that opens a web page where the user can manage the connection between Brave Search services and their Brave Workspace apps (like Google Drive). 'Brave Workspace' and 'Google Drive' are product names.">
+        Manage the connection between search services and Brave Workspace apps, like Google Drive
       </message>
       <message name="IDS_ACCOUNT_DATA_DASHBOARD_TITLE" desc="Title for the cell to open 'Brave and ChromeOS data in your account' web page where the user can control all their data data from sync.">
         Brave data in your account
@@ -4209,6 +4231,19 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_MENU_UPDATE_UNSUPPORTED_SUMMARY_DEFAULT" desc="Summary string for update menu item explaining that the Android version on the device is unsupported. [CHAR_LIMIT=30]">
         Android version is unsupported
       </message>
+      <!-- In-app update flow snackbars -->
+      <message name="IDS_IN_APP_UPDATE_DISCOVERY_TITLE" desc="Snackbar text informing the user that an update is available.">
+        A new version of Brave is available
+      </message>
+      <message name="IDS_IN_APP_UPDATE_DISCOVERY_ACTION" desc="Action button text on snackbar to start updating. [CHAR_LIMIT=15]">
+        Update
+      </message>
+      <message name="IDS_IN_APP_UPDATE_RESTART_TITLE" desc="Snackbar text informing the user that an update has been downloaded and is ready to install.">
+        An update has been downloaded
+      </message>
+      <message name="IDS_IN_APP_UPDATE_RESTART_ACTION" desc="Action button text on snackbar to restart Brave and apply the update. [CHAR_LIMIT=15]">
+        Restart
+      </message>
       <message name="IDS_MENU_NEW_WINDOW" desc="Menu item for opening a new window. [CHAR_LIMIT=27]">
         New window
       </message>
@@ -4719,9 +4754,6 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_PRICE_HISTORY_MULTIPLE_CATALOGS_TITLE" desc="The title when a user see the price history graph for multiple catalog in the price insights bottom sheet.">
         Price history across the web for this option
       </message>
-      <message name="IDS_IPH_SHOPPING_LIST_SAVE_FLOW" desc="In-product help text that notifies a user that they can organize their saved products from a folder in bookmarks.">
-        Organize your tracked products in Bookmarks
-      </message>
       <message name="IDS_SORT_SUBMENU" desc="Sub-menu in the bookmarks manager for sort/view options. [CHAR_LIMIT=24]">
         Sort and view options
       </message>
@@ -5041,6 +5073,9 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_PDF_CANNOT_EDIT_PDF" desc="Toast message shown when a PDF document cannot be edited.">
         Cannot edit PDF
       </message>
+      <message name="IDS_PDF_FIND_IN_PAGE_DISABLED_UNSAVED_CHANGES" desc="Toast message shown when find in page is disabled because there are unsaved changes.">
+        Find in page disabled while there are unsaved changes.
+      </message>
       <message name="IDS_PDF_DRAW" is_accessibility_with_no_ui="true" desc="Accessibility label and content description for the draw button to annotate a PDF.">
         Draw
       </message>
@@ -5126,9 +5161,6 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_HOME" desc="Content description for the home button.">
         Open the home page
-      </message>
-      <message name="IDS_ACCESSIBILITY_BOTTOM_BAR_AI_MODE_BUTTON" desc="Content description for the AI search button in the bottom bar.">
-        Ask AI Mode
       </message>
       <message name="IDS_ACCESSIBILITY_BTN_REFRESH" desc="Content description for the refresh page button.">
         Reload this page
@@ -5836,6 +5868,9 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_HID_SYSTEM_PERMISSION_EXPLANATION_DIALOG_BODY" desc="Body of the dialog explaining that Brave needs system permission to access HID devices and how to navigate to Special app access settings.">
         <ph name="APP_NAME">%1$s<ex>Brave</ex></ph> needs permission to access human interface devices (HIDs) for this site. You can change this setting later in Settings &gt; Apps &gt; Special app access.
       </message>
+      <message name="IDS_HID_SYSTEM_PERMISSION_EXPLANATION_DIALOG_BODY_DIRECT" desc="Body of the dialog explaining that Brave needs system permission to access HID devices for this site.">
+        <ph name="APP_NAME">%1$s<ex>Brave</ex></ph> needs permission to access human interface devices (HIDs) for this site.
+      </message>
 
       <!-- Special locale UI strings -->
       <message name="IDS_SEARCH_WITH_SOGOU" desc="Text telling the user that the search engine will be switched to Sogou.">
@@ -6023,6 +6058,12 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_KEYBOARD_SHORTCUT_DEVELOPER_TOOLS" desc="A text label that appears next to the keyboard shortcut that will open Developer Tools. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
         Open Developer Tools
+      </message>
+      <message name="IDS_KEYBOARD_SHORTCUT_DEVELOPER_TOOLS_CONSOLE" desc="A text label that appears next to the keyboard shortcut that will open Developer Tools Console. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
+        Open Developer Tools Console
+      </message>
+      <message name="IDS_KEYBOARD_SHORTCUT_DEVELOPER_TOOLS_INSPECT" desc="A text label that appears next to the keyboard shortcut that will open Developer Tools in element inspection mode. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
+        Open Developer Tools Elements
       </message>
       <message name="IDS_KEYBOARD_SHORTCUT_TASK_MANAGER" desc="A text label that appears next to the keyboard shortcut that will open Task Manager. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
         Open Task Manager
@@ -6250,20 +6291,11 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_IPH_ANDROID_BOTTOM_BAR_NEW_TAB" desc="The in-product-help message for the New Tab button in the bottom bar.">
         Open a new tab
       </message>
-      <message name="IDS_IPH_ANDROID_BOTTOM_BAR_AIM" desc="The in-product-help message for the AI Mode button in the bottom bar.">
-        Search with AI Mode
-      </message>
       <message name="IDS_IPH_ANDROID_BOTTOM_BAR_DIALOG_TITLE" desc="Title for the in-product help dialog introducing Gemini in the bottom bar.">
         Introducing Gemini in Brave
       </message>
-      <message name="IDS_IPH_ANDROID_BOTTOM_BAR_AIM_DIALOG_TITLE" desc="Title for the in-product help dialog introducing AI Mode in the bottom bar.">
-        Introducing AI Mode in Brave
-      </message>
       <message name="IDS_IPH_ANDROID_BOTTOM_BAR_DIALOG_DESCRIPTION" desc="Description for the bottom bar Gemini introduction dialog.">
         Some tools have moved to give you easy access to Gemini while you browse
-      </message>
-      <message name="IDS_IPH_ANDROID_BOTTOM_BAR_AIM_DIALOG_DESCRIPTION" desc="Description for the bottom bar AI Mode introduction dialog.">
-        Some tools have moved to help you search with AI Mode
       </message>
       <message name="IDS_IPH_ANDROID_BOTTOM_BAR_TRIGGER_IPH" desc="Text on the button that triggers the in-product-help sequence.">
         Show me
@@ -6659,9 +6691,6 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
         New
       </message>
 
-      <message name="IDS_LINK_TOGGLE_IPH" desc="In product help for the Sharing Hub link toggle feature.">
-        Include a link to the page
-      </message>
 
       <message name="IDS_LINK_TOGGLE_INCLUDE_LINK" desc="Toast displayed when the toggle is clicked for a generic share and a link is included.">
         Include link
@@ -8024,6 +8053,21 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_ENTERPRISE_SIGNALS_DISCLAIMER_CANCEL_BUTTON_TEXT" desc="Cancel button text of the enterprise signals disclaimer dialog.">
         Sign out
+      </message>
+      <message name="IDS_ENTERPRISE_SIGNALS_DISCLAIMER_FRE_TITLE" desc="Title of the enterprise signals disclaimer shown during the First Run Experience, before the user signs in with a managed account.">
+        About this profile
+      </message>
+      <message name="IDS_ENTERPRISE_SIGNALS_DISCLAIMER_FRE_DESCRIPTION" desc="Description of the enterprise signals disclaimer shown during the First Run Experience, before the user signs in with a managed account.">
+        To secure your work on Brave, your organization will be able to view or manage certain information when you’re signed-in to Brave
+      </message>
+      <message name="IDS_ENTERPRISE_SIGNALS_DISCLAIMER_FRE_ACCEPT_BUTTON_TEXT" desc="Text of the button that accepts the enterprise signals disclaimer and continues signing in during the First Run Experience.">
+        Continue
+      </message>
+      <message name="IDS_ENTERPRISE_SIGNALS_DISCLAIMER_FRE_CANCEL_BUTTON_TEXT" desc="Text of the button that declines the enterprise signals disclaimer and cancels signing in during the First Run Experience.">
+        Cancel
+      </message>
+      <message name="IDS_ENTERPRISE_SIGNALS_DISCLAIMER_FRE_FOOTER" desc="Footer shown below the buttons of the enterprise signals disclaimer during the First Run Experience. The link opens a help center article.">
+        Learn more about <ph name="BEGIN_LINK">&lt;LINK&gt;</ph>information your organization can view or manage<ph name="END_LINK">&lt;/LINK&gt;</ph>
       </message>
       <message name="IDS_ENTERPRISE_SIGNALS_DISCLAIMER_SHEET_FULL_HEIGHT" desc="Accessibility string read when the Enterprise Signals Disclaimer bottom sheet is opened at full height.">
         Enterprise signals disclaimer bottom sheet opened at full height
