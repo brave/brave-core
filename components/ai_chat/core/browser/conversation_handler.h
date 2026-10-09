@@ -25,6 +25,7 @@
 #include "base/observer_list.h"
 #include "base/observer_list_types.h"
 #include "base/scoped_observation.h"
+#include "base/timer/timer.h"
 #include "base/types/expected.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
@@ -441,6 +442,10 @@ class ConversationHandler : public mojom::ConversationHandler,
   void OnEngineCompletionComplete(EngineConsumer::GenerationResult result);
   void OnTitleGenerated(EngineConsumer::GenerationResult result);
   void CompleteGeneration(bool success);
+  // Schedules a retry for a connection issue if eligible. Returns true if a
+  // retry was scheduled.
+  bool MaybeAutoRetry(mojom::APIError api_error);
+  void RetryAfterConnectionIssue();
   void OnSuggestedQuestionsResponse(
       EngineConsumer::SuggestedQuestionResult result);
 
@@ -497,6 +502,12 @@ class ConversationHandler : public mojom::ConversationHandler,
   // Is a conversation engine request in progress (does not include
   // non-conversation engine requests.
   bool is_request_in_progress_ = false;
+
+  // Number of automatic retries performed for the current request after
+  // receiving a connection issue error.
+  size_t connection_issue_retry_count_ = 0;
+  // Delays the automatic retry after a connection issue.
+  base::OneShotTimer connection_issue_retry_timer_;
 
   // Are we currently performing a loop of tool uses?
   bool is_tool_use_in_progress_ = false;
