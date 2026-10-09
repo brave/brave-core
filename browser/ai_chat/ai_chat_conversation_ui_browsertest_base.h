@@ -19,6 +19,7 @@
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "content/public/browser/render_frame_host.h"
+#include "content/public/test/browser_test_utils.h"
 
 class BrowserWindowInterface;
 
@@ -111,6 +112,12 @@ class AIChatConversationUIBrowserTestBase : public InProcessBrowserTest {
   // Create mock tool use event
   mojom::ToolUseEventPtr CreateToolUseEvent(const std::string& tool_name,
                                             const std::string& tool_id);
+
+  // Options for the content::EvalJs calls the element helpers above make.
+  // Fixtures that assert on user activation must set
+  // EXECUTE_SCRIPT_NO_USER_GESTURE: EvalJs otherwise hands the frame a
+  // transient activation that outlives the call.
+  int eval_js_options_ = content::EXECUTE_SCRIPT_DEFAULT_OPTIONS;
 
   raw_ptr<content::RenderFrameHost> conversation_rfh_ = nullptr;
   raw_ptr<AIChatService> service_ = nullptr;
