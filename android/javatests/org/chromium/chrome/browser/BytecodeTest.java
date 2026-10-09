@@ -634,6 +634,13 @@ public class BytecodeTest {
                         void.class));
         Assert.assertTrue(
                 methodExists(
+                        "org/chromium/chrome/browser/dom_distiller/ReaderModeManager",
+                        "shouldUseReaderModeMessages",
+                        MethodModifier.STATIC,
+                        boolean.class,
+                        Tab.class));
+        Assert.assertTrue(
+                methodExists(
                         "org/chromium/chrome/browser/ui/default_browser_promo/DefaultBrowserPromoUtils", // presubmit: ignore-long-line
                         "prepareLaunchPromoIfNeeded",
                         MethodModifier.REGULAR,
