@@ -274,7 +274,6 @@ public class BraveToolbarManager extends ToolbarManager
             @Nullable OmniboxChipManager omniboxChipManager,
             @Nullable BottomBarHostManager bottomBarHostManager,
             @Nullable ActionRegistry actionRegistry,
-            @Nullable OneshotSupplier<String> countrySupplier,
             GlicButtonDelegate toggleGlicCallback,
             boolean suppressTabStripAtStart,
             @Nullable OneshotSupplier<HubManager> hubManagerSupplier) {
@@ -338,7 +337,6 @@ public class BraveToolbarManager extends ToolbarManager
                 omniboxChipManager,
                 bottomBarHostManager,
                 actionRegistry,
-                countrySupplier,
                 toggleGlicCallback,
                 suppressTabStripAtStart,
                 hubManagerSupplier);
