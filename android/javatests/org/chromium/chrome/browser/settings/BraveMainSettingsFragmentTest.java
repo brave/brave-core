@@ -9,7 +9,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assume.assumeTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -30,26 +29,18 @@ import org.chromium.base.BraveFeatureList;
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.ThreadUtils;
-import org.chromium.base.test.util.CommandLineFlags;
 import org.chromium.base.test.util.CriteriaHelper;
 import org.chromium.base.test.util.DoNotBatch;
 import org.chromium.base.test.util.Features.DisableFeatures;
 import org.chromium.base.test.util.Features.EnableFeatures;
-import org.chromium.chrome.R;
-import org.chromium.chrome.browser.BraveRewardsNativeWorker;
-import org.chromium.chrome.browser.BraveRewardsPolicy;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
-import org.chromium.chrome.browser.flags.ChromeSwitches;
 import org.chromium.chrome.browser.policy.PolicyServiceFactory;
 import org.chromium.chrome.browser.preferences.ChromePreferenceKeys;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
-import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tasks.tab_management.TabsSettings;
 import org.chromium.chrome.browser.tracing.settings.DeveloperSettings;
 import org.chromium.chrome.test.ChromeJUnit4ClassRunner;
-import org.chromium.chrome.test.ChromeTabbedActivityTestRule;
 import org.chromium.components.policy.PolicyService;
-import org.chromium.url.GURL;
 
 import java.util.stream.IntStream;
 
@@ -58,11 +49,6 @@ import java.util.stream.IntStream;
 @DoNotBatch(reason = "Tests cannot run batched because they launch a Settings activity.")
 public class BraveMainSettingsFragmentTest {
     private static final String PREF_BRAVE_ORIGIN = "brave_origin";
-
-    // Only started by tests that need a tab to be opened from Settings.
-    @Rule
-    public final ChromeTabbedActivityTestRule mActivityTestRule =
-            new ChromeTabbedActivityTestRule();
 
     @Rule
     public final SettingsActivityTestRule<MainSettings> mSettingsActivityTestRule =
@@ -79,13 +65,10 @@ public class BraveMainSettingsFragmentTest {
         BraveMainPreferencesBase.PREF_BRAVE_LEO
     };
 
-    // VPN and Rewards rows are also policy-controlled, but only present when supported
-    // (build/device/region dependent), so they are asserted conditionally: when present they must
-    // follow the gate.
-    private static final String[] sSupportDependentPolicyControlledPrefKeys = {
-        BraveMainPreferencesBase.PREF_BRAVE_VPN,
-        BraveMainPreferencesBase.PREF_BRAVE_VPN_CALLOUT,
-        BraveMainPreferencesBase.PREF_BRAVE_REWARDS
+    // VPN rows are also policy-controlled, but only present when VPN is supported (build/device
+    // dependent), so they are asserted conditionally: when present they must follow the gate.
+    private static final String[] sVpnPolicyControlledPrefKeys = {
+        BraveMainPreferencesBase.PREF_BRAVE_VPN, BraveMainPreferencesBase.PREF_BRAVE_VPN_CALLOUT
     };
 
     @Before
@@ -109,7 +92,6 @@ public class BraveMainSettingsFragmentTest {
         "brave_shields_and_privacy",
         "brave_news_v2",
         "brave_wallet",
-        "brave_rewards",
         "brave_vpn",
         "brave_leo",
         "general_section",
@@ -264,16 +246,15 @@ public class BraveMainSettingsFragmentTest {
 
         final int preferenceCount = mMainSettings.getPreferenceScreen().getPreferenceCount();
 
-        // Rewards and VPN prefs (brave_rewards, brave_vpn, pref_vpn_callout) are only present when
-        // BraveRewards is supported (disabled on x86 official/Release builds). Exclude them so the
-        // assertion is stable across build types.
+        // VPN prefs (brave_vpn, pref_vpn_callout) are only present when VPN is supported,
+        // which depends on BraveRewards being enabled (disabled on x86 official/Release builds).
+        // Exclude them so the assertion is stable across build types.
         long nonVpnCount =
                 IntStream.range(0, preferenceCount)
                         .mapToObj(i -> mMainSettings.getPreferenceScreen().getPreference(i))
                         .filter(
                                 p ->
-                                        !p.getKey().equals("brave_rewards")
-                                                && !p.getKey().equals("brave_vpn")
+                                        !p.getKey().equals("brave_vpn")
                                                 && !p.getKey().equals("pref_vpn_callout"))
                         .count();
 
@@ -362,96 +343,6 @@ public class BraveMainSettingsFragmentTest {
                 100L);
     }
 
-    @Test
-    @SmallTest
-    public void testRewardsPrefRemovedWhenDisabledByPolicy() {
-        BraveRewardsPolicy.setDisabledByPolicyForTesting(true);
-
-        startSettings();
-
-        CriteriaHelper.pollUiThread(
-                () ->
-                        mMainSettings
-                                        .getPreferenceScreen()
-                                        .findPreference(BraveMainPreferencesBase.PREF_BRAVE_REWARDS)
-                                == null,
-                "Rewards pref should be removed when Rewards is disabled by policy",
-                5000L,
-                100L);
-    }
-
-    @Test
-    @SmallTest
-    public void testRewardsPrefShownWhenNotDisabledByPolicy() {
-        BraveRewardsPolicy.setDisabledByPolicyForTesting(false);
-
-        startSettings();
-        // Checked after startSettings() so that native is initialized.
-        assumeTrue("Rewards is not supported on this build/device", isRewardsSupported());
-
-        CriteriaHelper.pollUiThread(
-                () -> isPrefVisible(BraveMainPreferencesBase.PREF_BRAVE_REWARDS),
-                "Rewards pref should be shown when Rewards is not disabled by policy",
-                5000L,
-                100L);
-        Preference rewardsPref =
-                mMainSettings
-                        .getPreferenceScreen()
-                        .findPreference(BraveMainPreferencesBase.PREF_BRAVE_REWARDS);
-        assertNotNull(rewardsPref);
-        assertEquals(
-                mMainSettings.getString(R.string.settings_brave_rewards_title),
-                rewardsPref.getTitle().toString());
-    }
-
-    @Test
-    @SmallTest
-    @CommandLineFlags.Add({ChromeSwitches.DISABLE_FIRST_RUN_EXPERIENCE})
-    public void testRewardsPrefOpensAdsSettingsPage() {
-        BraveRewardsPolicy.setDisabledByPolicyForTesting(false);
-        mActivityTestRule.startMainActivityOnBlankPage();
-        assumeTrue("Rewards is not supported on this build/device", isRewardsSupported());
-
-        startSettings();
-
-        CriteriaHelper.pollUiThread(
-                () -> isPrefVisible(BraveMainPreferencesBase.PREF_BRAVE_REWARDS),
-                "Rewards pref should be shown",
-                5000L,
-                100L);
-        ThreadUtils.runOnUiThreadBlocking(
-                () -> {
-                    Preference rewardsPref =
-                            mMainSettings
-                                    .getPreferenceScreen()
-                                    .findPreference(BraveMainPreferencesBase.PREF_BRAVE_REWARDS);
-                    assertNotNull(rewardsPref);
-                    rewardsPref.performClick();
-                });
-
-        // brave:// URLs are internally rewritten to chrome://, so check host and path only.
-        CriteriaHelper.pollUiThread(
-                () -> {
-                    Tab tab = mActivityTestRule.getActivity().getActivityTab();
-                    if (tab == null) {
-                        return false;
-                    }
-                    GURL url = tab.getUrl();
-                    return url.getHost().equals("rewards") && url.getPath().equals("/ads-settings");
-                },
-                "Rewards ads settings page should be opened",
-                10000L,
-                100L);
-    }
-
-    private static boolean isRewardsSupported() {
-        return ThreadUtils.runOnUiThreadBlocking(
-                () -> {
-                    BraveRewardsNativeWorker worker = BraveRewardsNativeWorker.getInstance();
-                    return worker != null && worker.isSupported();
-                });
-    }
-
     private void markOriginSubscriberCached() {
         ChromeSharedPreferences.getInstance()
                 .writeBoolean(BravePreferenceKeys.BRAVE_ORIGIN_CREDENTIAL_SUMMARY_CACHED, true);
@@ -463,8 +354,8 @@ public class BraveMainSettingsFragmentTest {
                 return false;
             }
         }
-        // VPN/Rewards rows are support-dependent: when present they must be hidden too.
-        for (String key : sSupportDependentPolicyControlledPrefKeys) {
+        // VPN rows are build-dependent: when present they must be hidden too.
+        for (String key : sVpnPolicyControlledPrefKeys) {
             if (isPrefVisible(key)) {
                 return false;
             }
@@ -478,8 +369,8 @@ public class BraveMainSettingsFragmentTest {
                 return false;
             }
         }
-        // VPN/Rewards rows are support-dependent: when present they must be shown too.
-        for (String key : sSupportDependentPolicyControlledPrefKeys) {
+        // VPN rows are build-dependent: when present they must be shown too.
+        for (String key : sVpnPolicyControlledPrefKeys) {
             if (isPrefHidden(key)) {
                 return false;
             }

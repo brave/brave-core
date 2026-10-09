@@ -982,9 +982,6 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_BRAVE_UI_BRAVE_REWARDS" desc="Menu item and title for Brave Rewards Settings. [CHAR-LIMIT=27]">
         Brave Rewards
       </message>
-      <message name="IDS_SETTINGS_BRAVE_REWARDS_TITLE" desc="Title of the main Settings item that opens the Brave Rewards ads settings page. [CHAR-LIMIT=27]">
-        Rewards
-      </message>
       <message name="IDS_BRAVE_VPN" desc="Title for Brave vpn settings">
         Brave VPN
       </message>
