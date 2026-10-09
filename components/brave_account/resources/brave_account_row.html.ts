@@ -5,7 +5,7 @@
 
 import { html, nothing } from '//resources/lit/v3_0/lit.rollup.js'
 
-import './brave_account_logged_in_row.js'
+import './brave_account_details.js'
 import './brave_account_logged_out_row.js'
 import {
   AccountStateFieldTags,
@@ -17,12 +17,12 @@ export function getHtml(this: BraveAccountRowElement) {
   return html`${this.state === undefined
     ? nothing
     : whichAccountState(this.state) === AccountStateFieldTags.LOGGED_IN
-      ? html` <brave-account-logged-in-row
+      ? html` <brave-account-details
           .browserProxy=${this.browserProxy}
           .initiatingServiceName=${this.initiatingServiceName}
           .state=${this.state.loggedIn}
         >
-        </brave-account-logged-in-row>`
+        </brave-account-details>`
       : html` <brave-account-logged-out-row
           .browserProxy=${this.browserProxy}
           .initiatingServiceName=${this.initiatingServiceName}
