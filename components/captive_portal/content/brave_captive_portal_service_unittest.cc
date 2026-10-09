@@ -5,12 +5,10 @@
 
 #include <memory>
 
-#include "base/command_line.h"
 #include "base/functional/bind.h"
 #include "base/memory/raw_ptr.h"
 #include "base/run_loop.h"
 #include "base/test/simple_test_tick_clock.h"
-#include "base/test/test_timeouts.h"
 #include "base/time/time.h"
 #include "components/captive_portal/content/captive_portal_service.h"
 #include "components/captive_portal/core/captive_portal_testing_utils.h"

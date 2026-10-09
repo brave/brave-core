@@ -5,8 +5,6 @@
 
 #include "brave/components/debounce/core/common/features.h"
 
-#include "base/feature_list.h"
-
 namespace debounce::features {
 
 // When enabled, Brave will try to parse tracking URLs of the form

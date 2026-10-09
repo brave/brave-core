@@ -5,8 +5,6 @@
 
 #include "brave/components/query_filter/common/features.h"
 
-#include "base/feature_list.h"
-
 namespace query_filter {
 namespace features {
 

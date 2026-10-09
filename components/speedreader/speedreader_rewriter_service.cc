@@ -6,7 +6,6 @@
 #include "brave/components/speedreader/speedreader_rewriter_service.h"
 
 #include <string_view>
-#include <utility>
 
 #include "base/base64.h"
 #include "base/check_op.h"

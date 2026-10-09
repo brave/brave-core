@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_sync/features.h"
 
-#include "base/feature_list.h"
-
 namespace brave_sync::features {
 
 BASE_FEATURE(kBraveSync, base::FEATURE_ENABLED_BY_DEFAULT);

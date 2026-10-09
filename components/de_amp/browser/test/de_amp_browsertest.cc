@@ -7,7 +7,6 @@
 #include <memory>
 #include <string>
 
-#include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/memory/raw_ptr.h"
 #include "brave/components/de_amp/common/features.h"
