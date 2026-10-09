@@ -5,8 +5,6 @@
 
 import './settings_main_test-chromium.js'
 
-import 'chrome://settings/settings.js'
-
 import {loadTimeData} from 'chrome://settings/settings.js'
 import {
   assertDeepEquals,
@@ -70,7 +68,7 @@ suite('BraveOriginPage', () => {
   let handler: TestOriginHandler
 
   async function createPage() {
-    document.body.innerHTML = window.trustedTypes!.emptyHTML
+    document.body.replaceChildren()
     page = document.createElement('settings-brave-origin-page') as unknown as
         OriginPage
     // The element binds the real handler when it is constructed.
