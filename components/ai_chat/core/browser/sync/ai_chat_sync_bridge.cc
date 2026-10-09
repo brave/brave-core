@@ -20,7 +20,7 @@
 #include "base/functional/function_ref.h"
 #include "base/hash/hash.h"
 #include "base/strings/strcat.h"
-#include "base/strings/string_view_util.h"
+#include "base/strings/string_util.h"
 #include "base/time/time.h"
 #include "base/uuid.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_database.h"
@@ -82,11 +82,11 @@ bool IsSameRevisionContent(const mojom::ConversationTurn& a,
 // per-turn associated-content metadata).
 base::flat_map<std::string, std::string> ContentTextsFromArchive(
     const mojom::ConversationArchive& archive) {
-  base::flat_map<std::string, std::string> texts;
-  for (const auto& content : archive.associated_content) {
-    texts.emplace(content->content_uuid, content->content);
-  }
-  return texts;
+  return base::MakeFlatMap<std::string, std::string>(
+      archive.associated_content, {},
+      [](const mojom::ContentArchivePtr& content) {
+        return std::pair(content->content_uuid, content->content);
+      });
 }
 
 // Serializes |entry| (with its associated content and page texts) and omits
@@ -245,19 +245,24 @@ std::optional<syncer::ModelError> AIChatSyncBridge::MergeFullSyncData(
     return std::nullopt;
   }
 
+  const std::optional<base::flat_set<std::string>> entries_with_edit_revisions =
+      database_->GetEntryUuidsWithEditRevisions();
+  if (!entries_with_edit_revisions) {
+    return syncer::ModelError(
+        FROM_HERE, syncer::ModelError::Type::kAIChatFailedToApplyRemoteChange);
+  }
+
   // Track which storage keys we already have from remote so we don't
   // re-upload them.
   absl::flat_hash_set<std::string> remote_storage_keys;
   base::flat_set<std::string> affected_conversation_uuids;
-  const base::flat_set<std::string> entries_with_edit_revisions =
-      database_->GetEntryUuidsWithEditRevisions();
   for (const auto& change : entity_data) {
     if (change->type() == syncer::EntityChange::ACTION_DELETE) {
       continue;
     }
     remote_storage_keys.insert(change->storage_key());
     if (!ApplyRemoteRecord(change->data().specifics.ai_chat_conversation(),
-                           entries_with_edit_revisions,
+                           *entries_with_edit_revisions,
                            affected_conversation_uuids)) {
       NotifyRemoteChangesApplied(affected_conversation_uuids);
       return syncer::ModelError(
@@ -286,62 +291,30 @@ std::optional<syncer::ModelError> AIChatSyncBridge::ApplyIncrementalSyncChanges(
     std::unique_ptr<syncer::MetadataChangeList> metadata_change_list,
     syncer::EntityChangeList entity_changes) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  if (!database_) {
+  // The processor also calls this with metadata changes alone, e.g. after every
+  // commit, so skip the batch-wide snapshot read when there is nothing to
+  // apply.
+  if (!database_ || entity_changes.empty()) {
     return std::nullopt;
   }
 
-  base::flat_set<std::string> affected_conversation_uuids;
-  const base::flat_set<std::string> entries_with_edit_revisions =
+  const std::optional<base::flat_set<std::string>> entries_with_edit_revisions =
       database_->GetEntryUuidsWithEditRevisions();
+  if (!entries_with_edit_revisions) {
+    return syncer::ModelError(
+        FROM_HERE, syncer::ModelError::Type::kAIChatFailedToApplyRemoteChange);
+  }
+
+  base::flat_set<std::string> affected_conversation_uuids;
   for (const auto& change : entity_changes) {
-    const std::string& storage_key = change->storage_key();
-
-    if (change->type() == syncer::EntityChange::ACTION_DELETE) {
-      // Tombstones bypass IsEntityDataValid(), so the uuid carved out of the
-      // storage key is not validated for us. Skip an empty one rather than
-      // handing it to the database, which requires a non-empty uuid.
-      bool deleted = false;
-      std::optional<std::string> affected_conversation_uuid;
-      if (storage_key.starts_with(kConversationStorageKeyPrefix)) {
-        std::string_view uuid =
-            std::string_view(storage_key)
-                .substr(kConversationStorageKeyPrefix.size());
-        if (uuid.empty()) {
-          continue;
-        }
-        affected_conversation_uuid = std::string(uuid);
-        deleted = database_->DeleteConversation(uuid);
-      } else if (storage_key.starts_with(kEntryStorageKeyPrefix)) {
-        std::string_view uuid =
-            std::string_view(storage_key).substr(kEntryStorageKeyPrefix.size());
-        if (uuid.empty()) {
-          continue;
-        }
-        // Resolve the parent before deleting the row, while it is still
-        // readable — the listener needs it to know which conversation to
-        // refresh.
-        affected_conversation_uuid =
-            database_->GetConversationUuidForEntry(uuid);
-        deleted = database_->DeleteConversationEntry(uuid);
-      } else {
-        continue;
-      }
-      if (!deleted) {
-        NotifyRemoteChangesApplied(affected_conversation_uuids);
-        return syncer::ModelError(
-            FROM_HERE,
-            syncer::ModelError::Type::kAIChatFailedToApplyRemoteChange);
-      }
-      if (affected_conversation_uuid) {
-        affected_conversation_uuids.insert(
-            std::move(*affected_conversation_uuid));
-      }
-      continue;
-    }
-
-    if (!ApplyRemoteRecord(change->data().specifics.ai_chat_conversation(),
-                           entries_with_edit_revisions,
-                           affected_conversation_uuids)) {
+    const bool applied =
+        change->type() == syncer::EntityChange::ACTION_DELETE
+            ? ApplyRemoteTombstone(change->storage_key(),
+                                   affected_conversation_uuids)
+            : ApplyRemoteRecord(change->data().specifics.ai_chat_conversation(),
+                                *entries_with_edit_revisions,
+                                affected_conversation_uuids);
+    if (!applied) {
       NotifyRemoteChangesApplied(affected_conversation_uuids);
       return syncer::ModelError(
           FROM_HERE,
@@ -396,10 +369,11 @@ std::unique_ptr<syncer::DataBatch> AIChatSyncBridge::GetDataForCommit(
                                              ContentTextsFromArchive(*archive));
       if (!specifics) {
         // The entry cannot be made to fit the per-record budget, so there is
-        // nothing to commit. Say so explicitly: a key the processor asked for
-        // and the bridge silently leaves out of the batch is treated as a
-        // bridge bug (Sync.DataTypeOrphanMetadata.GetData) and untracked for
-        // us anyway.
+        // nothing to commit. Untrack it explicitly rather than leave it out of
+        // the batch, which the processor reports as a bridge bug
+        // (Sync.DataTypeOrphanMetadata.GetData). Untracking only forgets the
+        // entity in memory, so the persisted metadata is cleared too.
+        database_->ClearEntityMetadata(syncer::AI_CHAT_CONVERSATION, key);
         change_processor()->UntrackEntityForStorageKey(key);
         continue;
       }
@@ -548,11 +522,7 @@ bool AIChatSyncBridge::ApplyRemoteRecord(
     const sync_pb::AIChatConversationSpecifics& specifics,
     const base::flat_set<std::string>& entries_with_edit_revisions,
     base::flat_set<std::string>& affected_conversation_uuids) {
-  if (specifics.has_conversation()) {
-    auto conversation = SpecificsToConversationMetadata(specifics);
-    if (!conversation) {
-      return true;
-    }
+  if (auto conversation = SpecificsToConversationMetadata(specifics)) {
     std::string uuid = conversation->uuid;
     if (!database_->ApplyRemoteConversationMetadata(std::move(conversation))) {
       return false;
@@ -569,7 +539,7 @@ bool AIChatSyncBridge::ApplyRemoteRecord(
   // entry does not overwrite locally-present content (page text, uploaded
   // file data, extracted text, completions) with empty placeholders.
   sync_pb::AIChatConversationSpecifics merged = specifics;
-  RestoreOmittedFieldsFromLocal(merged.mutable_entry());
+  RestoreOmittedFieldsFromLocal(*merged.mutable_entry());
 
   std::vector<mojom::AssociatedContentPtr> associated_content;
   base::flat_map<std::string, std::string> associated_content_texts;
@@ -581,23 +551,56 @@ bool AIChatSyncBridge::ApplyRemoteRecord(
   PreserveLocalEditHistory(entries_with_edit_revisions, entry);
 
   // Build a parallel |contents| vector for ApplyRemoteEntry. A missing map
-  // entry means the sender omitted the text and no byte-identical local copy
-  // was found, so a diverging local text is dropped rather than preserved —
-  // tracked as a follow-up, see
+  // entry means the sender omitted the text and no local copy with a matching
+  // hash was found, so a diverging local text is dropped rather than
+  // preserved. Tracked as a follow-up in
   // https://github.com/brave/brave-browser/issues/53978.
-  std::vector<std::string> contents;
-  contents.reserve(associated_content.size());
-  for (const auto& ac : associated_content) {
-    const std::string* text =
-        base::FindOrNull(associated_content_texts, ac->uuid);
-    contents.emplace_back(text ? *text : std::string());
-  }
+  std::vector<std::string> contents = base::ToVector(
+      associated_content, [&](const mojom::AssociatedContentPtr& ac) {
+        const std::string* text =
+            base::FindOrNull(associated_content_texts, ac->uuid);
+        return text ? *text : std::string();
+      });
   if (!database_->ApplyRemoteEntry(
           merged.entry().conversation_uuid(), std::move(entry),
           std::move(associated_content), std::move(contents))) {
     return false;
   }
   affected_conversation_uuids.insert(merged.entry().conversation_uuid());
+  return true;
+}
+
+bool AIChatSyncBridge::ApplyRemoteTombstone(
+    std::string_view storage_key,
+    base::flat_set<std::string>& affected_conversation_uuids) {
+  // Tombstones bypass IsEntityDataValid(), so the uuid carved out of the
+  // storage key is not validated for us. Skip an empty one rather than handing
+  // it to the database, which requires a non-empty uuid.
+  if (auto uuid =
+          base::RemovePrefix(storage_key, kConversationStorageKeyPrefix)) {
+    if (uuid->empty()) {
+      return true;
+    }
+    if (!database_->DeleteConversation(*uuid)) {
+      return false;
+    }
+    affected_conversation_uuids.emplace(*uuid);
+    return true;
+  }
+  if (auto uuid = base::RemovePrefix(storage_key, kEntryStorageKeyPrefix)) {
+    if (uuid->empty()) {
+      return true;
+    }
+    // Resolve the parent before deleting the row, while it is still readable,
+    // so the listener knows which conversation to refresh.
+    auto conversation_uuid = database_->GetConversationUuidForEntry(*uuid);
+    if (!database_->DeleteConversationEntry(*uuid)) {
+      return false;
+    }
+    if (conversation_uuid) {
+      affected_conversation_uuids.insert(std::move(*conversation_uuid));
+    }
+  }
   return true;
 }
 
@@ -650,41 +653,38 @@ base::flat_map<uint32_t, std::string> AIChatSyncBridge::BuildLocalContentByHash(
     }
   };
 
-  if (auto archive = database_->GetConversationData(conversation_uuid)) {
-    for (const auto& local_entry : archive->entries) {
-      if (!local_entry->uuid || *local_entry->uuid != entry_uuid) {
-        continue;
-      }
-      // Re-serialize the local entry to reuse the proto walk over all of its
-      // compressible strings.
-      auto local_specifics =
-          EntryToSpecifics(conversation_uuid, *local_entry, {});
-      ForEachOmittableString(
-          local_specifics.mutable_entry(),
-          [&remember](sync_pb::AIChatCompressibleString& value) {
-            if (auto plaintext = ReadCompressibleString(value)) {
-              remember(*plaintext);
-            }
-          });
-      if (local_entry->uploaded_files) {
-        for (const auto& file : *local_entry->uploaded_files) {
-          remember(base::as_string_view(file->data));
-        }
-      }
-      break;
+  auto archive = database_->GetConversationData(conversation_uuid);
+  if (!archive) {
+    return content_by_hash;
+  }
+  auto local_entry = std::ranges::find(archive->entries, entry_uuid,
+                                       &mojom::ConversationTurn::uuid);
+  if (local_entry != archive->entries.end()) {
+    // Re-serialize the local entry so the values come from the same revision
+    // the sender serialized, the latest one for an edited turn.
+    auto local_specifics =
+        EntryToSpecifics(conversation_uuid, **local_entry, {});
+    ForEachOmittableString(
+        local_specifics.mutable_entry(),
+        [&remember](sync_pb::AIChatCompressibleString& value) {
+          if (auto plaintext = ReadCompressibleString(value)) {
+            remember(*plaintext);
+          }
+        });
+    for (const auto& file : local_specifics.entry().uploaded_files()) {
+      remember(file.data());
     }
   }
-  for (const auto& content :
-       database_->GetArchiveContentsForConversation(conversation_uuid)) {
+  for (const auto& content : archive->associated_content) {
     remember(content->content);
   }
   return content_by_hash;
 }
 
 void AIChatSyncBridge::RestoreOmittedFieldsFromLocal(
-    sync_pb::AIChatConversationSpecifics_Entry* remote_entry) {
-  const std::string& conversation_uuid = remote_entry->conversation_uuid();
-  const std::string& entry_uuid = remote_entry->uuid();
+    sync_pb::AIChatConversationSpecifics_Entry& remote_entry) {
+  const std::string& conversation_uuid = remote_entry.conversation_uuid();
+  const std::string& entry_uuid = remote_entry.uuid();
   if (conversation_uuid.empty() || entry_uuid.empty()) {
     return;
   }
@@ -692,24 +692,24 @@ void AIChatSyncBridge::RestoreOmittedFieldsFromLocal(
   // Skip the local lookup entirely unless the sender omitted something.
   bool needs_restore = false;
   ForEachOmittableString(
-      remote_entry, [&needs_restore](sync_pb::AIChatCompressibleString& value) {
+      &remote_entry,
+      [&needs_restore](sync_pb::AIChatCompressibleString& value) {
         needs_restore |= value.has_omitted_content_hash();
       });
-  for (const auto& file : remote_entry->uploaded_files()) {
+  for (const auto& file : remote_entry.uploaded_files()) {
     needs_restore |= file.has_omitted_data_hash();
   }
   if (!needs_restore) {
     return;
   }
 
-  // Matching by content hash restores a value only when the local copy is
-  // byte-identical to what the sender omitted, so it never fabricates
-  // divergent content.
+  // A value is restored only from a local copy whose hash matches the one the
+  // sender left in its place; otherwise the field stays omitted.
   const base::flat_map<uint32_t, std::string> content_by_hash =
       BuildLocalContentByHash(conversation_uuid, entry_uuid);
 
   ForEachOmittableString(
-      remote_entry, [&content_by_hash](sync_pb::AIChatCompressibleString& v) {
+      &remote_entry, [&content_by_hash](sync_pb::AIChatCompressibleString& v) {
         if (!v.has_omitted_content_hash()) {
           return;
         }
@@ -718,7 +718,7 @@ void AIChatSyncBridge::RestoreOmittedFieldsFromLocal(
           WriteCompressibleString(*local, &v);
         }
       });
-  for (auto& file : *remote_entry->mutable_uploaded_files()) {
+  for (auto& file : *remote_entry.mutable_uploaded_files()) {
     if (!file.has_omitted_data_hash()) {
       continue;
     }
@@ -765,17 +765,15 @@ void AIChatSyncBridge::PutEntry(const std::string& conversation_uuid,
   auto specifics = BuildCommittableEntry(conversation_uuid, **it,
                                          conversation->associated_content,
                                          ContentTextsFromArchive(*archive));
-  const std::string storage_key =
-      base::StrCat({kEntryStorageKeyPrefix, entry_uuid});
   if (!specifics) {
-    // Too large to commit even after omitting every omittable field. Drop it
-    // from sync explicitly rather than leaving metadata the bridge will never
-    // be able to satisfy in GetDataForCommit().
-    change_processor()->UntrackEntityForStorageKey(storage_key);
+    // Too large to commit even after omitting every omittable field, so there
+    // is nothing to Put. Leave the entity tracked: untracking one committed
+    // earlier would turn a later local delete into a no-op and strand the
+    // server's copy. GetDataForCommit() untracks it if a commit asks for it.
     return;
   }
   auto metadata_change_list = CreateMetadataChangeList();
-  change_processor()->Put(storage_key,
+  change_processor()->Put(base::StrCat({kEntryStorageKeyPrefix, entry_uuid}),
                           CreateEntityDataFromSpecifics(*specifics),
                           metadata_change_list.get());
 }

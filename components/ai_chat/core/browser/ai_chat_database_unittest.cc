@@ -2067,8 +2067,9 @@ TEST_F(AIChatDatabaseSyncTest, GetConversationEntryWithEditsAndUuidsWithEdits) {
       "conv", make_entry("plain-entry", "Never edited", now)));
 
   const auto uuids_with_edits = db_->GetEntryUuidsWithEditRevisions();
-  EXPECT_EQ(uuids_with_edits.size(), 1u);
-  EXPECT_TRUE(uuids_with_edits.contains("edited-entry"));
+  ASSERT_TRUE(uuids_with_edits);
+  EXPECT_EQ(uuids_with_edits->size(), 1u);
+  EXPECT_TRUE(uuids_with_edits->contains("edited-entry"));
 
   auto entry = db_->GetConversationEntryWithEdits("edited-entry");
   ASSERT_TRUE(entry);

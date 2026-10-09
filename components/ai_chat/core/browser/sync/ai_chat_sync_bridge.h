@@ -10,6 +10,7 @@
 #include <memory>
 #include <optional>
 #include <string>
+#include <string_view>
 #include <vector>
 
 #include "base/containers/flat_map.h"
@@ -23,6 +24,7 @@
 #include "components/sync/model/data_type_sync_bridge.h"
 
 namespace sync_pb {
+class AIChatConversationSpecifics;
 class AIChatConversationSpecifics_Entry;
 }  // namespace sync_pb
 
@@ -153,18 +155,26 @@ class AIChatSyncBridge : public syncer::DataTypeSyncBridge {
       const base::flat_set<std::string>& entries_with_edit_revisions,
       base::flat_set<std::string>& affected_conversation_uuids);
 
+  // Applies a remote DELETE for |storage_key|, inserting the conversation it
+  // changed into |affected_conversation_uuids|. Returns false only when a
+  // database write fails.
+  [[nodiscard]] bool ApplyRemoteTombstone(
+      std::string_view storage_key,
+      base::flat_set<std::string>& affected_conversation_uuids);
+
   // Runs |on_remote_changes_applied_| with |affected_conversation_uuids| when
   // that set is non-empty, so live conversations reload the rows sync just
   // wrote. Also called before bailing out with a ModelError, since the records
   // applied before the failure are already committed.
   void NotifyRemoteChangesApplied(
       const base::flat_set<std::string>& affected_conversation_uuids);
+
   // Restores local values into |remote_entry| for any field the remote sender
   // omitted to fit the size budget, matching each omitted field to a local
   // value by content hash. Operates in proto space so the downstream apply
   // path can stay full-replace without losing locally-present content.
   void RestoreOmittedFieldsFromLocal(
-      sync_pb::AIChatConversationSpecifics_Entry* remote_entry);
+      sync_pb::AIChatConversationSpecifics_Entry& remote_entry);
 
   // Rebuilds |remote_entry| around the local copy of the same entry when that
   // copy holds edit revisions, which sync does not carry and a full-replace
@@ -190,9 +200,6 @@ class AIChatSyncBridge : public syncer::DataTypeSyncBridge {
   // done only for the first attached database.
   bool model_ready_to_sync_ = false;
 
-  // Invoked once per Merge/Apply batch when any remote ADD, UPDATE, or
-  // DELETE was applied to the local DB. Usually a base::BindPostTask back
-  // to the UI thread so the listener can refresh in-memory state.
   RemoteChangesAppliedCallback on_remote_changes_applied_;
 
   SEQUENCE_CHECKER(sequence_checker_);

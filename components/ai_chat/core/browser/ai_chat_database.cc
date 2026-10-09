@@ -607,10 +607,11 @@ mojom::ConversationTurnPtr AIChatDatabase::GetConversationEntryWithEdits(
   return std::move(entries.front());
 }
 
-base::flat_set<std::string> AIChatDatabase::GetEntryUuidsWithEditRevisions() {
+std::optional<base::flat_set<std::string>>
+AIChatDatabase::GetEntryUuidsWithEditRevisions() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (!LazyInit()) {
-    return {};
+    return std::nullopt;
   }
 
   static constexpr char kQuery[] =
@@ -622,6 +623,9 @@ base::flat_set<std::string> AIChatDatabase::GetEntryUuidsWithEditRevisions() {
   std::vector<std::string> uuids;
   while (statement.Step()) {
     uuids.emplace_back(statement.ColumnString(0));
+  }
+  if (!statement.Succeeded()) {
+    return std::nullopt;
   }
   return base::flat_set<std::string>(std::move(uuids));
 }
