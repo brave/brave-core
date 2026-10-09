@@ -21,6 +21,10 @@ namespace content {
 class WebContents;
 }  // namespace content
 
+namespace image_metadata_stripper {
+class FileUploadController;
+}  // namespace image_metadata_stripper
+
 namespace tabs {
 
 class ContentsObservingTabFeature;
@@ -44,6 +48,9 @@ class BraveTabFeatures : public TabFeatures_Chromium {
 
   std::unique_ptr<ai_chat::TabDataWebContentsObserver> tab_data_observer_;
   std::unique_ptr<ai_chat::WebMcpInjector> web_mcp_injector_;
+
+  std::unique_ptr<image_metadata_stripper::FileUploadController>
+      stripper_upload_controller_;
 };
 
 }  // namespace tabs

@@ -20,6 +20,10 @@
 
 class Profile;
 
+namespace image_metadata_stripper {
+class FileUploadController;
+}  // namespace image_metadata_stripper
+
 #if BUILDFLAG(ENABLE_AI_CHAT)
 namespace ai_chat {
 class TabDataWebContentsObserver;
@@ -128,9 +132,8 @@ class BraveTabFeatures : public TabFeatures {
 #endif
 
  private:
-  // Holds stripped image copies dropped onto this tab. Null when metadata
-  // stripping is disabled.
-  std::unique_ptr<ContentsObservingTabFeature> drop_strip_temp_dirs_;
+  std::unique_ptr<image_metadata_stripper::FileUploadController>
+      stripper_upload_controller_;
 
   // Records Cloudflare javascript-detection script loads.
   std::unique_ptr<ContentsObservingTabFeature>
