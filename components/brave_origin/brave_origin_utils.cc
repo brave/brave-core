@@ -6,9 +6,7 @@
 #include "brave/components/brave_origin/brave_origin_utils.h"
 
 #include "base/feature_list.h"
-#include "base/logging.h"
 #include "base/strings/strcat.h"
-#include "brave/components/brave_origin/brave_origin_policy_info.h"
 #include "brave/components/brave_origin/brave_origin_policy_manager.h"
 #include "brave/components/brave_origin/features.h"
 

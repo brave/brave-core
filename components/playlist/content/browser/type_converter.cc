@@ -10,8 +10,6 @@
 #include <utility>
 
 #include "base/check.h"
-#include "base/json/values_util.h"
-#include "brave/components/playlist/content/browser/playlist_constants.h"
 
 static_assert(
     std::numeric_limits<

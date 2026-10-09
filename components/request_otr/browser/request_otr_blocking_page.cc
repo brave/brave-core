@@ -5,7 +5,6 @@
 
 #include "brave/components/request_otr/browser/request_otr_blocking_page.h"
 
-#include <ostream>
 #include <utility>
 
 #include "base/check.h"

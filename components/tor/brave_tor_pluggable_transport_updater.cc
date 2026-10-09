@@ -14,7 +14,6 @@
 #include "base/location.h"
 #include "base/logging.h"
 #include "base/path_service.h"
-#include "base/task/task_traits.h"
 #include "build/build_config.h"
 
 namespace tor {

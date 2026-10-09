@@ -17,7 +17,6 @@
 #include "base/strings/string_util.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
-#include "base/test/values_test_util.h"
 #include "base/time/time.h"
 #include "brave/components/p3a/features.h"
 #include "brave/components/p3a/metric_config.h"

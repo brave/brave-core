@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_policy/brave_profile_policy_provider.h"
 
-#include <memory>
-
 #include "base/test/task_environment.h"
 #include "brave/components/brave_origin/brave_origin_policy_manager.h"
 #include "brave/components/brave_origin/brave_origin_prefs.h"

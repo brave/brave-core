@@ -9,7 +9,6 @@
 #include <array>
 #include <cmath>
 #include <numeric>
-#include <utility>
 
 #include "base/containers/map_util.h"
 #include "base/logging.h"

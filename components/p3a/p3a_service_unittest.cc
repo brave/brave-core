@@ -8,7 +8,6 @@
 #include <memory>
 
 #include "base/metrics/histogram_functions.h"
-#include "base/test/values_test_util.h"
 #include "base/time/time.h"
 #include "brave/components/p3a/pref_names.h"
 #include "brave/components/p3a_utils/custom_attributes.h"

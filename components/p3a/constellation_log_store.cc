@@ -7,18 +7,15 @@
 
 #include <memory>
 #include <optional>
-#include <set>
 #include <string_view>
 
 #include "base/check.h"
 #include "base/logging.h"
-#include "base/metrics/histogram_macros.h"
 #include "base/notreached.h"
 #include "base/rand_util.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/p3a/metric_log_store.h"
 #include "brave/components/p3a/pref_names.h"
-#include "brave/components/p3a/uploader.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"

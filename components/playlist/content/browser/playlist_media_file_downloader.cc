@@ -6,7 +6,6 @@
 #include "brave/components/playlist/content/browser/playlist_media_file_downloader.h"
 
 #include <algorithm>
-#include <string_view>
 #include <utility>
 
 #include "base/check.h"
@@ -26,7 +25,6 @@
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/download_request_utils.h"
 #include "content/public/browser/storage_partition.h"
-#include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "url/gurl.h"
 
 namespace playlist {
