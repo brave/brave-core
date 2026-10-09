@@ -19,12 +19,6 @@ substitutions:
       pattern: 'VerticalTabStripRegionView::kCollapsedWidth'
       replace: 'views().vertical_tab_strip_region_view->GetCollapsedWidth()'
 
-  - description: Reveal top corner only when vertical tab has width
-    regex:
-      re_pattern: '(const\ bool\ top_corner_visible =.*?);'
-      re_flags: [DOTALL]
-      replace: '\1 && vertical_tab_strip_bounds.width() > 0;'
-
   - description: |-
       Hide the vertical tab strip region when it has no width when adding
       vertical tab strip region view
