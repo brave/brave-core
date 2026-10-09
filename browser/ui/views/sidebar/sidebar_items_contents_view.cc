@@ -151,10 +151,11 @@ void SidebarItemsContentsView::UpdateAllItemsViewState() {
   for (size_t item_index = 0; item_index < items_num; ++item_index) {
     const auto item = items[item_index];
 #if BUILDFLAG(ENABLE_BRAVE_TALK)
-    // If browser window has tab that loads brave talk, brave talk panel icon
+    // If browser window has tab that loads brave talk, brave talk item icon
     // will use colored one for normal state also.
-    if (item.built_in_item_type ==
-        sidebar::SidebarItem::BuiltInItemType::kBraveTalk) {
+    if (!item.opens_in_panel() &&
+        item.built_in_item_type ==
+            sidebar::SidebarItem::BuiltInItemType::kBraveTalk) {
       UpdateItemViewStateAt(item_index,
                             sidebar::SidebarController::From(browser_)
                                 ->DoesBrowserHaveOpenedTabForItem(item));
@@ -163,7 +164,7 @@ void SidebarItemsContentsView::UpdateAllItemsViewState() {
 #endif
 
     // Items that opens in panel can have active state.
-    if (item.open_in_panel) {
+    if (item.opens_in_panel()) {
       UpdateItemViewStateAt(item_index, item_index == active_index);
     }
   }
@@ -491,7 +492,7 @@ void SidebarItemsContentsView::UpdateItemViewStateAt(size_t index,
   const auto& item = sidebar_model_->GetAllSidebarItems()[index];
   SidebarItemView* item_view = GetItemViewAt(index);
 
-  if (item.open_in_panel) {
+  if (item.opens_in_panel()) {
     item_view->SetActiveState(active);
   }
 
