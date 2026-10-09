@@ -6,9 +6,15 @@
 import { SecondaryTextPlacement } from 'chrome://resources/mojo/components/omnibox/browser/suggest_template_info.mojom-webui.js'
 import { SearchActions, defaultSearchStore } from '../state/search_store'
 
-const suggestTemplate = {
-  secondaryTextPlacement: SecondaryTextPlacement.kUnspecified,
-  image: null,
+function suggestTemplate(primaryText: string, secondaryText: string) {
+  return {
+    primaryText,
+    primaryTextClass: [],
+    secondaryText,
+    secondaryTextClass: [],
+    secondaryTextPlacement: SecondaryTextPlacement.kUnspecified,
+    image: null,
+  }
 }
 
 export function createSearchStore() {
@@ -92,26 +98,20 @@ export function createSearchStore() {
         searchMatches: [
           {
             allowedToBeDefaultMatch: false,
-            contents: 'contents 1',
-            description: 'description 1',
             iconUrl: '',
-            suggestTemplate,
+            suggestTemplate: suggestTemplate('contents 1', 'description 1'),
             destinationUrl: '',
           },
           {
             allowedToBeDefaultMatch: true,
-            contents: 'contents 2',
-            description: 'Ask Leo',
             iconUrl: '',
-            suggestTemplate,
+            suggestTemplate: suggestTemplate('contents 2', 'Ask Leo'),
             destinationUrl: '',
           },
           {
             allowedToBeDefaultMatch: true,
-            contents: query,
-            description: engine,
             iconUrl: '',
-            suggestTemplate,
+            suggestTemplate: suggestTemplate(query, engine),
             destinationUrl: '',
           },
         ],
