@@ -130,8 +130,8 @@ section. Android-only.
 - [x] If adopting: order `MainSettings.PREF_AUTOFILL_AND_PASSWORDS` in
       `android/java/org/chromium/chrome/browser/settings/BraveMainPreferencesBase.java:417-421`
       when the flag is on
-- [ ] Review what `AutofillAndPasswordsFragment` shows (Google Wallet,
-      Autofill AI, where passwords lead)
+- [ ] Review what `AutofillAndPasswordsFragment` shows (Google Wallet, Autofill
+      AI, where passwords lead)
 
 ### Android: `countrySupplier` removed from toolbar and bottom bar constructors
 
