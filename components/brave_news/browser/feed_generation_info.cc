@@ -15,7 +15,6 @@
 #include "base/check.h"
 #include "base/check_op.h"
 #include "base/containers/map_util.h"
-#include "base/containers/span.h"
 #include "base/logging.h"
 #include "brave/components/brave_news/browser/channels_controller.h"
 #include "brave/components/brave_news/browser/feed_sampling.h"

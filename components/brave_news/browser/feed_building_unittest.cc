@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_news/browser/feed_building.h"
 
-#include <algorithm>
-#include <iterator>
 #include <memory>
 #include <optional>
 #include <string>
@@ -29,7 +27,6 @@
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/abseil-cpp/absl/container/flat_hash_map.h"
 #include "third_party/abseil-cpp/absl/container/flat_hash_set.h"
-#include "url/mojom/url.mojom.h"
 
 namespace brave_news {
 

@@ -6,7 +6,6 @@
 #include <optional>
 
 #include "brave/components/brave_shields/core/browser/ad_block_service_helper.h"
-#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_shields {

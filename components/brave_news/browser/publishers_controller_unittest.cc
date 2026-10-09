@@ -16,7 +16,6 @@
 #include "brave/components/brave_news/browser/test/wait_for_callback.h"
 #include "brave/components/brave_news/browser/urls.h"
 #include "brave/components/brave_news/common/brave_news.mojom-forward.h"
-#include "brave/components/brave_news/common/locales_helper.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_news/common/subscriptions_snapshot.h"
 #include "components/prefs/scoped_user_pref_update.h"
