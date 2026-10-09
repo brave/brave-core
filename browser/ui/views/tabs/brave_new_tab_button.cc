@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/check_deref.h"
+#include "base/functional/bind.h"
 #include "base/memory/raw_ref.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "chrome/browser/ui/tabs/features.h"
@@ -27,10 +28,12 @@
 #include "brave/browser/ui/containers/containers_menu_model.h"
 #include "brave/components/containers/core/browser/containers_service.h"
 #include "brave/components/containers/core/common/features.h"
+#include "brave/components/containers/core/mojom/containers.mojom.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "ui/base/mojom/menu_source_type.mojom.h"
 #include "ui/compositor/compositor.h"
 #include "ui/views/controls/menu/menu_runner.h"
 #include "ui/views/widget/widget.h"
@@ -157,11 +160,20 @@ BraveNewTabButton::BraveNewTabButton(
     Edge fixed_flat_edge,
     Edge animated_flat_edge,
     BrowserWindowInterface* browser_window_interface)
-    : NewTabButton(std::move(callback),
-                   kLeoPlusAddIcon,
-                   fixed_flat_edge,
-                   animated_flat_edge,
-                   browser_window_interface),
+    : NewTabButton(
+#if BUILDFLAG(ENABLE_CONTAINERS)
+          base::BindRepeating(&BraveNewTabButton::OnPressed,
+                              base::Unretained(this)),
+#else
+          std::move(callback),
+#endif
+          kLeoPlusAddIcon,
+          fixed_flat_edge,
+          animated_flat_edge,
+          browser_window_interface),
+#if BUILDFLAG(ENABLE_CONTAINERS)
+      original_pressed_callback_(std::move(callback)),
+#endif
       browser_window_interface_(CHECK_DEREF(browser_window_interface)) {
   views::HighlightPathGenerator::Install(
       this, std::make_unique<BraveNewTabButtonHighlightPathGenerator>(*this));
@@ -180,6 +192,25 @@ BraveNewTabButton::BraveNewTabButton(
 BraveNewTabButton::~BraveNewTabButton() = default;
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
+void BraveNewTabButton::OnPressed(const ui::Event& event) {
+  if (ShouldAskForContainer()) {
+    ShowContextMenuForViewImpl(this, GetBoundsInScreen().bottom_left(),
+                               ui::mojom::MenuSourceType::kMouse);
+    return;
+  }
+  original_pressed_callback_.Run(event);
+}
+
+bool BraveNewTabButton::ShouldAskForContainer() const {
+  if (!base::FeatureList::IsEnabled(containers::features::kContainers)) {
+    return false;
+  }
+  auto* service = ContainersServiceFactory::GetForProfile(
+      browser_window_interface_->GetProfile());
+  return service && service->ShouldShowContainerControls() &&
+         service->GetNewTabDefault()->ask_each_time;
+}
+
 void BraveNewTabButton::ShowContextMenuForViewImpl(
     views::View* source,
     const gfx::Point& point,

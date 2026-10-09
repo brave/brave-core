@@ -45,6 +45,21 @@ struct Container {
   skia.mojom.SkColor background_color;
 };
 
+// Where blank new tabs (Ctrl+T, the new-tab button) open by default. Shaped
+// like traffic_control.mojom.Target, except container_id is not nullable: for
+// a default there is no "unset" distinct from "no container".
+struct NewTabDefault {
+  // Container to open new tabs in. Empty means no container.
+  string container_id;
+  // When true, each new tab gets a fresh temporary container and
+  // container_id must be empty.
+  bool temporary_container;
+  // When true, the new-tab button shows the container menu instead of
+  // opening a tab; container_id must be empty and temporary_container
+  // false. Keyboard shortcuts open a plain tab in this mode.
+  bool ask_each_time;
+};
+
 // Represents an error that occurred during a container CRUD operation.
 enum ContainerOperationError {
   // The container ID is set, but the operation expects it to be empty.
@@ -59,6 +74,9 @@ enum ContainerOperationError {
   kInvalidBackgroundColor,
   // The container was not found.
   kNotFound,
+  // NewTabDefault sets more than one of container_id, temporary_container
+  // and ask_each_time.
+  kInvalidNewTabDefault,
 };
 
 // Interface for settings UI -> browser communication. This interface allows the
@@ -86,6 +104,14 @@ interface ContainersSettingsHandler {
   // must contain exactly the same set of ids as the current containers list.
   ReorderContainers(array<string> ordered_ids) =>
       (ContainerOperationError? error);
+
+  // Returns where blank new tabs currently open.
+  GetNewTabDefault() => (NewTabDefault new_tab_default);
+  // Sets where blank new tabs open. `container_id`, if set, must name a
+  // container in the list; at most one of `container_id`,
+  // `temporary_container` and `ask_each_time` may be set.
+  SetNewTabDefault(NewTabDefault new_tab_default) =>
+      (ContainerOperationError? error);
 };
 
 // Interface for browser -> settings UI communication. This interface allows the
@@ -96,4 +122,6 @@ interface ContainersSettingsUI {
   // the UI stays in sync with the browser-side container state.
   // - `containers`: Updated list of all containers.
   OnContainersChanged(array<Container> containers);
+  // Called when the new-tab default changes (from this window or others).
+  OnNewTabDefaultChanged(NewTabDefault new_tab_default);
 };
