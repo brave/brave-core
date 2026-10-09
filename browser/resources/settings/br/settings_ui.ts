@@ -112,12 +112,12 @@ const BraveClearSettingsMenuHighlightBehavior = {
     // Clear menu selection after scrolling away.
     // Chromium's menu is not persistant, so does not have
     // this issue.
-    const container = this.shadowRoot!.getElementById('container')
+    const container = this.shadowRoot.getElementById('container')
     if (!container) {
       console.error('Could not find #container in settings-ui module')
       return
     }
-    const menu = this.shadowRoot!.querySelector('settings-menu')
+    const menu = this.shadowRoot.querySelector('settings-menu')
     if (!menu) {
       console.error('Could not find settings-menu in settings-ui module')
       return
