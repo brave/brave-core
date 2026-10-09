@@ -9,8 +9,10 @@
 #include "brave/browser/ai_chat/ai_chat_utils.h"
 #include "brave/browser/ai_chat/tab_data_web_contents_observer.h"
 #include "brave/browser/ai_chat/web_mcp_injection/web_mcp_injector.h"
+#include "brave/browser/image_metadata_stripper/file_upload_controller.h"
 #include "brave/browser/misc_metrics/captcha_metrics.h"
 #include "brave/browser/misc_metrics/page_metrics_tab_helper.h"
+#include "brave/components/image_metadata_stripper/common/features.h"
 #include "brave/components/misc_metrics/features.h"
 #include "chrome/browser/android/tab_android.h"
 #include "chrome/browser/profiles/profile.h"
@@ -39,6 +41,13 @@ BraveTabFeatures::BraveTabFeatures(content::WebContents* web_contents,
           misc_metrics::features::kCaptchaMetricsCollection)) {
     cloudflare_js_detection_tab_helper_ = misc_metrics::CaptchaMetrics::
         CloudflareJsDetectionTabHelper::MaybeCreate(tab_interface);
+  }
+
+  if (base::FeatureList::IsEnabled(
+          image_metadata_stripper::features::kStripImageMetadataV1)) {
+    stripper_upload_controller_ =
+        image_metadata_stripper::FileUploadController::MaybeCreate(
+            tab_interface);
   }
 
   page_metrics_tab_helper_ =

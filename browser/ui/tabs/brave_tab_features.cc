@@ -13,6 +13,7 @@
 #include "base/memory/ptr_util.h"
 #include "base/no_destructor.h"
 #include "brave/browser/drag_drop/brave_drag_drop_image_metadata_stripper.h"
+#include "brave/browser/image_metadata_stripper/file_upload_controller.h"
 #include "brave/browser/misc_metrics/captcha_metrics.h"
 #include "brave/browser/misc_metrics/page_metrics_tab_helper.h"
 #include "brave/browser/ui/side_panel/brave_side_panel_utils.h"
@@ -205,6 +206,10 @@ void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
 
   if (base::FeatureList::IsEnabled(
           image_metadata_stripper::features::kStripImageMetadataV1)) {
+    stripper_upload_controller_ =
+        image_metadata_stripper::FileUploadController::MaybeCreate(tab);
+    // TODO(https://github.com/brave/brave-browser/issues/58868): Get rid of the
+    // below call.
     drop_strip_temp_dirs_ =
         GetUserDataFactory().CreateInstance<brave::DropStripTempDirs>(tab, tab);
   }
