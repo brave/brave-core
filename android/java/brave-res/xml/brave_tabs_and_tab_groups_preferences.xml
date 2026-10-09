@@ -13,7 +13,7 @@
     <Preference
         android:key="archive_settings_entrypoint"
         android:title="@string/archive_settings_section_title"
-        android:fragment="org.chromium.chrome.browser.tasks.tab_management.TabArchiveSettingsFragment"
+        android:fragment="org.chromium.chrome.browser.tasks.tab_management.archived_tabs.TabArchiveSettingsFragment"
         app:allowDividerBelow="true" />
     <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
         android:key="closing_all_tabs_closes_brave"

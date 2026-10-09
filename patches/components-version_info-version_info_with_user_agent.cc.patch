@@ -1,0 +1,13 @@
+diff --git a/components/version_info/version_info_with_user_agent.cc b/components/version_info/version_info_with_user_agent.cc
+index 49bdf4acbdee4ec08ad21ede91d4b84a8bed6704..0a35d799171df7aa0029076a927d8ba7f8c75c78 100644
+--- a/components/version_info/version_info_with_user_agent.cc
++++ b/components/version_info/version_info_with_user_agent.cc
+@@ -14,7 +14,7 @@ std::string GetProductNameAndVersionForReducedUserAgent() {
+ }
+ 
+ std::string GetProductNameAndVersionForUserAgent() {
+-  return base::StrCat({"Chrome/", GetVersionNumber()});
++  return base::StrCat({"Chrome/", BRAVE_CHROMIUM_VERSION});
+ }
+ 
+ }  // namespace version_info

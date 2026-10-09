@@ -16,3 +16,13 @@ substitutions:
         (newBooleanCachedFeatureParam\(ANDROID_BOTTOM_BAR, "disable_on_ntp", )true\)
       replace: |-
         \1false)
+
+  - description: |-
+      Ship the AndroidTipsNotifications safe default disabled.
+
+      Matches the C++ default Brave sets for kAndroidTipsNotifications, so the
+      tips opt-in promo stays off before native flags are cached.
+    regex:
+      pattern: 'newMutableFlagWithSafeDefault(ANDROID_TIPS_NOTIFICATIONS, true)'
+      replace:
+        'newMutableFlagWithSafeDefault(ANDROID_TIPS_NOTIFICATIONS, false)'

@@ -10,7 +10,6 @@
 #include "brave/components/constants/brave_paths.h"
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/incognito_allowed_url.h"
 #include "chrome/browser/ui/navigator/browser_navigator.h"
@@ -96,10 +95,9 @@ class BraveSchemeLoadBrowserTest : public InProcessBrowserTest,
                       ->GetController()
                       .GetLastCommittedEntry();
     EXPECT_EQ(entry->GetPageType(), content::PageType::PAGE_TYPE_ERROR);
-    EXPECT_EQ("about:blank", base::UTF16ToUTF8(browser()
-                                                   ->GetFeatures()
-                                                   .location_bar_model()
-                                                   ->GetFormattedFullURL()));
+    EXPECT_EQ("about:blank",
+              base::UTF16ToUTF8(
+                  LocationBarModel::From(browser())->GetFormattedFullURL()));
     EXPECT_EQ(1, browser()->tab_strip_model()->count());
   }
 
@@ -130,10 +128,8 @@ class BraveSchemeLoadBrowserTest : public InProcessBrowserTest,
 
     browser()->tab_strip_model()->RemoveObserver(this);
 
-    EXPECT_EQ(
-        url,
-        base::UTF16ToUTF8(
-            browser()->GetFeatures().location_bar_model()->GetURLForDisplay()));
+    EXPECT_EQ(url, base::UTF16ToUTF8(
+                       LocationBarModel::From(browser())->GetURLForDisplay()));
     EXPECT_EQ(2, browser()->tab_strip_model()->count());
     // Private window stays as initial state.
     EXPECT_EQ("about:blank",
@@ -160,10 +156,9 @@ class BraveSchemeLoadBrowserTest : public InProcessBrowserTest,
                       ->GetController()
                       .GetLastCommittedEntry();
     EXPECT_EQ(entry->GetPageType(), content::PageType::PAGE_TYPE_ERROR);
-    EXPECT_EQ(
-        "about:blank",
-        base::UTF16ToUTF8(
-            browser()->GetFeatures().location_bar_model()->GetURLForDisplay()));
+    EXPECT_EQ("about:blank",
+              base::UTF16ToUTF8(
+                  LocationBarModel::From(browser())->GetURLForDisplay()));
     EXPECT_EQ(1, browser()->tab_strip_model()->count());
   }
 

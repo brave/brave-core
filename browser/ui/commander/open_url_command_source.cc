@@ -17,7 +17,6 @@
 #include "base/i18n/case_conversion.h"
 #include "brave/browser/ui/commander/fuzzy_finder.h"
 #include "build/branding_buildflags.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/grit/locale_settings.h"
 #include "ui/base/l10n/l10n_util.h"

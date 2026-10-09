@@ -10,13 +10,13 @@
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/strings/utf_string_conversions.h"
-#include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/components/sidebar/browser/sidebar_service.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -29,7 +29,7 @@
 #include "ui/views/layout/box_layout.h"
 
 namespace {
-sidebar::SidebarService* GetSidebarService(Browser* browser) {
+sidebar::SidebarService* GetSidebarService(BrowserWindowInterface* browser) {
   return sidebar::SidebarServiceFactory::GetForProfile(browser->GetProfile());
 }
 
@@ -42,16 +42,13 @@ gfx::FontList GetFont(int font_size, gfx::Font::Weight weight) {
 
 // static
 views::Widget* SidebarEditItemBubbleDelegateView::Create(
-    BraveBrowser* browser,
+    BrowserWindowInterface* browser,
     const sidebar::SidebarItem& item,
     views::View* anchor_view) {
   auto* delegate =
       new SidebarEditItemBubbleDelegateView(browser, item, anchor_view);
   auto* bubble = views::BubbleDialogDelegateView::CreateBubble(delegate);
   auto* frame_view = delegate->GetBubbleFrameView();
-  frame_view->bubble_border()->set_md_shadow_elevation(
-      ChromeLayoutProvider::Get()->GetShadowElevationMetric(
-          views::Emphasis::kHigh));
   frame_view->SetDisplayVisibleArrow(true);
   delegate->SizeToContents();
   frame_view->SetRoundedCorners(gfx::RoundedCornersF(4));
@@ -60,15 +57,19 @@ views::Widget* SidebarEditItemBubbleDelegateView::Create(
 }
 
 SidebarEditItemBubbleDelegateView::SidebarEditItemBubbleDelegateView(
-    BraveBrowser* browser,
+    BrowserWindowInterface* browser,
     const sidebar::SidebarItem& item,
     views::View* anchor_view)
     : BubbleDialogDelegateView(
           anchor_view,
-          sidebar::GetBubbleArrowForSidebar(browser->GetProfile()->GetPrefs()),
-          views::BubbleBorder::STANDARD_SHADOW),
+          sidebar::GetBubbleArrowForSidebar(browser->GetProfile()->GetPrefs())),
       target_item_(item),
       browser_(browser) {
+  set_shadow_config({
+      .shadow_type = views::BubbleBorder::STANDARD_SHADOW,
+      .elevation = ChromeLayoutProvider::Get()->GetShadowElevationMetric(
+          views::Emphasis::kHigh),
+  });
   SetAcceptCallback(base::BindOnce(
       &SidebarEditItemBubbleDelegateView::UpdateItem, base::Unretained(this)));
 }
@@ -154,12 +155,14 @@ void SidebarEditItemBubbleDelegateView::ContentsChanged(
 
 void SidebarEditItemBubbleDelegateView::UpdateItem() {
   auto new_title = title_tf_->GetText();
-  if (new_title.empty())
+  if (new_title.empty()) {
     new_title = url_tf_->GetText();
+  }
 
   GURL new_url(url_tf_->GetText());
-  if (new_url.is_empty())
+  if (new_url.is_empty()) {
     new_url = target_item_.url;
+  }
 
   GetSidebarService(browser_)->UpdateItem(target_item_.url, new_url,
                                           target_item_.title, new_title);
@@ -170,8 +173,9 @@ void SidebarEditItemBubbleDelegateView::UpdateOKButtonEnabledState() {
 
   // Update item only when url or title is changed.
   GURL new_url(url_tf_->GetText());
-  if (new_url.is_empty())
+  if (new_url.is_empty()) {
     new_url = target_item_.url;
+  }
 
   const bool ok_button_enabled =
       target_item_.url != new_url || target_item_.title != title_tf_->GetText();

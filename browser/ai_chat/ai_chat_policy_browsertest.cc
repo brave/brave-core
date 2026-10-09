@@ -18,7 +18,6 @@
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/renderer_context_menu/render_view_context_menu_test_util.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_command_controller.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
@@ -150,7 +149,7 @@ IN_PROC_BROWSER_TEST_P(AIChatPolicyTest, Autocomplete) {
   const auto& providers = autocomplete_controller->providers();
   bool is_in_providers =
       std::ranges::any_of(providers, [](const auto& provider) {
-        return provider->type() == AutocompleteProvider::TYPE_BRAVE_LEO;
+        return provider->type() == AutocompleteProvider::Type::kBraveLeo;
       });
   if (IsAIChatEnabledTest()) {
     EXPECT_TRUE(is_in_providers);

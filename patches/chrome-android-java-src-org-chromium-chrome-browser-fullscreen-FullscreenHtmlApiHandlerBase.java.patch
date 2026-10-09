@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerBase.java b/chrome/android/java/src/org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerBase.java
-index be20dc89b83b33ef9fa5dcc7113b4fbacfc74b02..64410685ecda671cc2bb30f8d06edd1af3d3b664 100644
+index ce52881ac226d81e4763a39cbf5c6ec081be9403..dc4a9297f5abcec758f2eb2f9e8669778355174e 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerBase.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerBase.java
 @@ -320,6 +320,11 @@ public abstract class FullscreenHtmlApiHandlerBase
@@ -14,7 +14,7 @@ index be20dc89b83b33ef9fa5dcc7113b4fbacfc74b02..64410685ecda671cc2bb30f8d06edd1a
                          // Clean up any fullscreen state that might impact other tabs.
                          mFullscreenManagerDelegate.onExitFullscreen(null);
                      }
-@@ -879,6 +884,10 @@ public abstract class FullscreenHtmlApiHandlerBase
+@@ -882,6 +887,10 @@ public abstract class FullscreenHtmlApiHandlerBase
      @Override
      public void onActivityStateChange(Activity activity, int newState) {
          if (newState == ActivityState.STOPPED && mExitFullscreenOnStop) {

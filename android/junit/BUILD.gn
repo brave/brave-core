@@ -11,9 +11,15 @@ testonly = true
 
 if (is_android) {
   robolectric_library("brave_junit_tests_org.chromium.base") {
-    sources = [ "src/org/chromium/base/BraveCommandLineInitUtilTest.java" ]
+    sources = [
+      "src/org/chromium/base/BraveCommandLineInitUtilTest.java",
+      "src/org/chromium/base/version_info/BraveVersionInfoTest.java",
+    ]
 
-    deps = [ "//chrome/android/junit:chrome_junit_tests_helper" ]
+    deps = [
+      "//base/version_info/android:version_constants_java",
+      "//chrome/android/junit:chrome_junit_tests_helper",
+    ]
   }
 
   robolectric_library(
@@ -142,6 +148,7 @@ if (is_android) {
   robolectric_library(
       "brave_junit_tests_org.chromium.chrome.browser.settings") {
     sources = [
+      "src/org/chromium/chrome/browser/settings/BravePreferenceFragmentNamesTest.java",
       "src/org/chromium/chrome/browser/settings/BraveSearchEngineUtilsTest.java",
       "src/org/chromium/chrome/browser/settings/BraveSettingsLauncherImplTest.java",
       "src/org/chromium/components/browser_ui/settings/BraveSettingsIconTintUtilsTest.java",
@@ -152,6 +159,7 @@ if (is_android) {
       "//brave/components/browser_ui/settings/android:java",
       "//chrome/android/junit:chrome_junit_tests_helper",
       "//chrome/browser/safe_browsing/android:java",
+      "//components/browser_ui/site_settings/android:java",
     ]
   }
 

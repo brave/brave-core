@@ -1,0 +1,12 @@
+diff --git a/base/version_info/android/java/VersionConstants.java.version b/base/version_info/android/java/VersionConstants.java.version
+index 0d895fe2483099e2d240581f738a063d344aec91..3d3b870935eb5639de777823ef1083019d04ad76 100644
+--- a/base/version_info/android/java/VersionConstants.java.version
++++ b/base/version_info/android/java/VersionConstants.java.version
+@@ -11,6 +11,7 @@ import org.chromium.build.annotations.NullMarked;
+ // Note: PATCH, VERSION_NAME and VERSION_CODE should come from ApkInfo.
+ @NullMarked
+ public class VersionConstants {
++    public static final String PRODUCT_VERSION = "@MAJOR@.@MINOR@.@BUILD@.@PATCH@";
+     @SuppressWarnings({"ComplexBooleanConstant", "IdentityBinaryExpression"})
+     public static final boolean IS_OFFICIAL_BUILD = @OFFICIAL_BUILD@ == 1;
+ 

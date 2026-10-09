@@ -1,0 +1,31 @@
+diff --git a/chrome/browser/search_engines/android/java/src/org/chromium/chrome/browser/search_engines/settings/SearchEngineAdapter.java b/chrome/browser/search_engines/android/java/src/org/chromium/chrome/browser/search_engines/settings/SearchEngineAdapter.java
+index fa020af6dadadd6426708e13065eee3da8955654..4aebfd1fce6b8fd2b1f1673d51235156182255df 100644
+--- a/chrome/browser/search_engines/android/java/src/org/chromium/chrome/browser/search_engines/settings/SearchEngineAdapter.java
++++ b/chrome/browser/search_engines/android/java/src/org/chromium/chrome/browser/search_engines/settings/SearchEngineAdapter.java
+@@ -69,7 +69,7 @@ public class SearchEngineAdapter extends BaseAdapter
+                 TemplateUrlService.TemplateUrlServiceObserver,
+                 OnClickListener {
+ 
+-    private static final int MAX_RECENT_ENGINE_NUM = 3;
++    public static final int MAX_RECENT_ENGINE_NUM = 3;
+     @VisibleForTesting static final long MAX_DISPLAY_TIME_SPAN_MS = DateUtils.DAY_IN_MILLIS * 2;
+     private static final Runnable NO_OP = CallbackUtils.emptyRunnable();
+ 
+@@ -94,7 +94,7 @@ public class SearchEngineAdapter extends BaseAdapter
+         TemplateUrlSourceType.RECENT
+     })
+     @Retention(RetentionPolicy.SOURCE)
+-    private @interface TemplateUrlSourceType {
++    public @interface TemplateUrlSourceType {
+         int DEFAULT = 0;
+         int PREPOPULATED = 1;
+         int RECENT = 2;
+@@ -342,7 +342,7 @@ public class SearchEngineAdapter extends BaseAdapter
+     }
+ 
+     @VisibleForTesting
+-    static void sortAndFilterUnnecessaryTemplateUrl(
++    public static void sortAndFilterUnnecessaryTemplateUrl(
+             List<TemplateUrl> templateUrls,
+             @Nullable TemplateUrl defaultSearchEngine,
+             boolean isEeaChoiceCountry) {

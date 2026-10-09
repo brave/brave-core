@@ -11,6 +11,7 @@
 #include "content/public/common/url_constants.h"
 #include "third_party/blink/public/common/loader/url_loader_factory_bundle.h"
 #include "url/gurl.h"
+#include "url/origin.h"
 
 namespace content {
 
@@ -47,7 +48,8 @@ void MaybeAddUntrustedWebUIScriptFactory(
       .emplace(kChromeUIUntrustedScheme,
                CreateWebUIURLLoaderFactoryForWorker(
                    browser_context, kChromeUIUntrustedScheme,
-                   /*allowed_hosts=*/base::flat_set<std::string>()));
+                   /*allowed_hosts=*/base::flat_set<std::string>(),
+                   url::Origin::Create(scope)));
 }
 
 }  // namespace

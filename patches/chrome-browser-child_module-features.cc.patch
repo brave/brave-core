@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/child_module/features.cc b/chrome/browser/child_module/features.cc
+index c8009eec88f91c6f34801b1aa434eee03154d1e7..2978b1f4110d4a4e6b25bbedafc9f74a7df57498 100644
+--- a/chrome/browser/child_module/features.cc
++++ b/chrome/browser/child_module/features.cc
+@@ -6,6 +6,6 @@
+ 
+ namespace child_module::features {
+ 
+-BASE_FEATURE(kDynamicPatching, base::FEATURE_DISABLED_BY_DEFAULT);
++BASE_OVERRIDDEN_FEATURE(kDynamicPatching, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ }  // namespace child_module::features

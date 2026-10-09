@@ -22,6 +22,7 @@ import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.tab_ui.R;
 import org.chromium.components.collaboration.CollaborationService;
 import org.chromium.components.tab_group_sync.TabGroupSyncService;
+import org.chromium.components.tab_group_sync.TabGroupUiActionHandler;
 import org.chromium.ui.base.ActivityResultTracker;
 import org.chromium.ui.base.WindowAndroid;
 import org.chromium.ui.modaldialog.ModalDialogManager;
@@ -55,7 +56,9 @@ public class BraveTabContextMenuCoordinator extends TabContextMenuCoordinator {
             @Nullable ModalDialogManager modalDialogManager,
             @TabClosingSource int tabClosingSource,
             @Nullable BooleanSupplier canActivateTabLayoutToggleMenuSupplier,
-            @TabStripLayoutType int tabStripLayout) {
+            @TabStripLayoutType int tabStripLayout,
+            @Nullable TabGroupUiActionHandler tabGroupUiActionHandler,
+            @Nullable Runnable onMenuDismissedCallback) {
         super(
                 tabModelSupplier,
                 tabGroupListBottomSheetCoordinator,
@@ -73,7 +76,9 @@ public class BraveTabContextMenuCoordinator extends TabContextMenuCoordinator {
                 modalDialogManager,
                 tabClosingSource,
                 canActivateTabLayoutToggleMenuSupplier,
-                tabStripLayout);
+                tabStripLayout,
+                tabGroupUiActionHandler,
+                onMenuDismissedCallback);
     }
 
     @Override

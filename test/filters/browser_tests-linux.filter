@@ -42,8 +42,6 @@
 
 # These tests fail because in identity_test_utils.cc waiting for
 # identity_manager->AreRefreshTokensLoaded() times out.
--AvatarToolbarButtonPromoBrowserTest.*
--AvatarToolbarButtonPromoClickBrowserTest.*
 -AvatarToolbarButtonSignedOutPromoBrowserTest.SignedOutPromoTriggeredOnStartupAfterDelayExpired 
 
 # These tests fail because kPrerender2 feature is disabled.

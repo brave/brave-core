@@ -1,0 +1,13 @@
+diff --git a/chrome/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/TabSwitcherPaneFactory.java b/chrome/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/TabSwitcherPaneFactory.java
+index a3d965253b5b2963c199a7bf3837e41bdb918749..ee7c9a103f5b1fc0e77f22eb3d4db3206463ef50 100644
+--- a/chrome/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/TabSwitcherPaneFactory.java
++++ b/chrome/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/TabSwitcherPaneFactory.java
+@@ -201,7 +201,7 @@ public class TabSwitcherPaneFactory {
+         Supplier<TabModel> tabModelSupplier = () -> tabModelSelector.getModel(isIncognito);
+         TabSwitcherPaneBase pane =
+                 isIncognito
+-                        ? new IncognitoTabSwitcherPane(
++                        ? new BraveIncognitoTabSwitcherPane(
+                                 activity,
+                                 factory,
+                                 tabModelSupplier,
