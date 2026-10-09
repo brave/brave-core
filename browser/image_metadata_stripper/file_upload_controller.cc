@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 #include "brave/browser/image_metadata_stripper/file_upload_controller.h"
 
+#include "base/feature.h"
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/memory/ptr_util.h"
@@ -11,6 +12,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"
+#include "brave/components/image_metadata_stripper/common/features.h"
 #include "chrome/common/chrome_paths.h"
 #include "components/tabs/public/tab_interface.h"
 
@@ -171,6 +173,27 @@ void FileUploadController::Strip(std::vector<base::FilePath> srcs,
   delegate_.AsyncCall(&Delegate::StripAll)
       .WithArgs(std::move(srcs), client)
       .Then(std::move(callback));
+}
+
+// static
+void FileUploadController::CleanUpFromLastSession() {
+  if (!base::FeatureList::IsEnabled(
+          image_metadata_stripper::features::kStripImageMetadataV1)) {
+    return;
+  }
+
+  base::ThreadPool::PostTask(
+      FROM_HERE,
+      {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
+       base::TaskShutdownBehavior::CONTINUE_ON_SHUTDOWN},
+      base::BindOnce(
+          [](const base::FilePath& path) {
+            if (!base::DeletePathRecursively(path)) {
+              LOG(ERROR) << "Failed to delete image strip temp directory: "
+                         << path;
+            }
+          },
+          GetStripperRootDirectory()));
 }
 
 // static
