@@ -34,6 +34,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
       ConvertContainersToListValue(CreateDefaultContainersList()),
       user_prefs::PrefRegistrySyncable::SYNCABLE_PREF);
   registry->RegisterDictionaryPref(prefs::kLocallyUsedContainers);
+  registry->RegisterDictionaryPref(prefs::kNewTabDefault);
 }
 
 }  // namespace containers

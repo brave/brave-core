@@ -65,6 +65,14 @@ class BraveNewTabButton : public NewTabButton {
 
   class NewTabButtonContainersMenuDelegate;
 
+  // Left-click handler. When the Containers "open new tabs in" setting is
+  // "ask every time", shows the container menu anchored to the button
+  // instead of opening a tab; otherwise runs the upstream pressed callback.
+  void OnPressed(const ui::Event& event);
+  bool ShouldAskForContainer() const;
+
+  PressedCallback original_pressed_callback_;
+
   std::unique_ptr<NewTabButtonContainersMenuDelegate> containers_menu_delegate_;
   std::unique_ptr<containers::ContainersMenuModel> containers_menu_model_;
   std::unique_ptr<views::MenuRunner> containers_context_menu_runner_;
