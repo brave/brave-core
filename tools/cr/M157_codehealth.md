@@ -142,11 +142,11 @@ The regenerated patches call Brave's subclasses without it, but the subclasses
 still declare and forward it. Android-only, so the Linux build doesn't catch it.
 Glic stays off through Brave's `GlicEnabling` plaster.
 
-- [ ] `android/java/org/chromium/chrome/browser/toolbar/BraveToolbarManager.java:277`,
+- [x] `android/java/org/chromium/chrome/browser/toolbar/BraveToolbarManager.java:277`,
       `:341`
-- [ ] `browser/ui/android/bottombar/java/src/org/chromium/chrome/browser/ui/bottombar/BraveBottomBarCoordinator.java:59`,
+- [x] `browser/ui/android/bottombar/java/src/org/chromium/chrome/browser/ui/bottombar/BraveBottomBarCoordinator.java:59`,
       `:71`, and the `OneshotSupplier` import
-- [ ] `android/javatests/org/chromium/chrome/browser/BytecodeTest.java:1574`:
+- [x] `android/javatests/org/chromium/chrome/browser/BytecodeTest.java:1574`:
       drop the `OneshotSupplier.class` before `GlicButtonDelegate.class`
 
 ### Android: two "Show bottom toolbar" switches in Appearance
