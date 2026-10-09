@@ -453,6 +453,12 @@ void SharedPinnedTabService::OnTabChangedAt(tabs::TabInterface* tab,
   }
 }
 
+void SharedPinnedTabService::OnTabBlockedStateChanged(tabs::TabInterface* tab) {
+  // Blocked state used to be reported as a kind of tab change, so dummy tabs
+  // would pick it up. Propagate it the same way.
+  OnTabChangedAt(tab, TabChangeType::kAll);
+}
+
 void SharedPinnedTabService::OnProfileWillBeDestroyed(Profile* profile) {
   profile_will_be_destroyed_ = true;
 }
