@@ -9,7 +9,7 @@
 // origin, so no state is shared between workspaces. It receives a
 // FileSystemDirectoryHandle for the user-picked folder (delivered by the browser
 // via window.launchQueue), implements the file tools against it, and registers
-// them with Leo via WebMCP (navigator.modelContext). There is no visible UI.
+// them with Leo via WebMCP (document.modelContext). There is no visible UI.
 //
 // The handle is delivered via launchQueue; once captured, it's stored in
 // IndexedDB so the workspace can restore it on subsequent loads without

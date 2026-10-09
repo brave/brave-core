@@ -53,7 +53,7 @@ namespace {
 
 // Whether `document` is a Leo "workspace": a hidden
 // chrome-untrusted://<uuid>.leo-workspace page whose tools register themselves
-// via navigator.modelContext. Each workspace has its own subdomain, so this
+// via document.modelContext. Each workspace has its own subdomain, so this
 // tests the shape of the host rather than a fixed host, and excludes the
 // workspace's viewer document at chrome-untrusted://view.<uuid>.leo-workspace,
 // which has no tools of its own.
