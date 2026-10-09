@@ -414,11 +414,19 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         setPreferenceOrder(PREF_BRAVE_LANGUAGES, ++displaySectionOrder);
 
         int passwordsAndAutofillSectionOrder = displaySectionOrder;
-        setPreferenceOrder(MainSettings.PREF_AUTOFILL_SECTION, ++passwordsAndAutofillSectionOrder);
-        setPreferenceOrder(PREF_PASSWORDS, ++passwordsAndAutofillSectionOrder);
-        setPreferenceOrder(MainSettings.PREF_AUTOFILL_OPTIONS, ++passwordsAndAutofillSectionOrder);
-        setPreferenceOrder(PREF_PAYMENT_METHODS, ++passwordsAndAutofillSectionOrder);
-        setPreferenceOrder(PREF_ADDRESSES, ++passwordsAndAutofillSectionOrder);
+        // MainSettings removes the separate autofill rows when the flag is on.
+        if (ChromeFeatureList.isEnabled(ChromeFeatureList.YOUR_SAVED_INFO_SETTINGS_PAGE_ANDROID)) {
+            setPreferenceOrder(
+                    MainSettings.PREF_AUTOFILL_AND_PASSWORDS, ++passwordsAndAutofillSectionOrder);
+        } else {
+            setPreferenceOrder(
+                    MainSettings.PREF_AUTOFILL_SECTION, ++passwordsAndAutofillSectionOrder);
+            setPreferenceOrder(PREF_PASSWORDS, ++passwordsAndAutofillSectionOrder);
+            setPreferenceOrder(
+                    MainSettings.PREF_AUTOFILL_OPTIONS, ++passwordsAndAutofillSectionOrder);
+            setPreferenceOrder(PREF_PAYMENT_METHODS, ++passwordsAndAutofillSectionOrder);
+            setPreferenceOrder(PREF_ADDRESSES, ++passwordsAndAutofillSectionOrder);
+        }
 
         int supportSectionOrder = passwordsAndAutofillSectionOrder;
         setPreferenceOrder(PREF_SUPPORT_SECTION, ++supportSectionOrder);
