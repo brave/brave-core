@@ -393,6 +393,14 @@ export default class Amount {
     return result === '' ? '' : `${result} ${symbol}`
   }
 
+  /**
+   * Hidden-balance placeholder for asset amounts. Matches formatAsAsset
+   * suffix placement (`•••• BAT`).
+   */
+  static formatHiddenAsAsset(symbol?: string): string {
+    return symbol ? `•••• ${symbol}` : '••••'
+  }
+
   formatAsFiat(currency?: string, maxDecimals: number = 20): string {
     if (this.value === undefined || this.value.isNaN()) {
       return ''
