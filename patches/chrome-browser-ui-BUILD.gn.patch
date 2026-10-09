@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/BUILD.gn b/chrome/browser/ui/BUILD.gn
-index 238f8625e42d8703c72c266c36e32bbfb2113095..771c7a084bd79a97e1820c0b2b65758db09b170a 100644
+index 238f8625e42d8703c72c266c36e32bbfb2113095..d1564ebb7e55fe04900ba5d600983b848c6984ee 100644
 --- a/chrome/browser/ui/BUILD.gn
 +++ b/chrome/browser/ui/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -35,7 +35,7 @@ index 238f8625e42d8703c72c266c36e32bbfb2113095..771c7a084bd79a97e1820c0b2b65758d
  
    allow_circular_includes_from = [
      # page_load_metrics's :impl includes headers from //chrome/browser/ui that
-@@ -1868,6 +1873,8 @@ static_library("ui") {
+@@ -1868,9 +1873,11 @@ static_library("ui") {
      # - c/b/ui/views/frame/browser_view.h
      "//chrome/browser/ui/views/file_system_access:impl",
    ]
@@ -43,7 +43,11 @@ index 238f8625e42d8703c72c266c36e32bbfb2113095..771c7a084bd79a97e1820c0b2b65758d
 +      brave_chrome_browser_ui_allow_circular_includes_from
  
    # Desktop-Android-only dependencies.
-   if (is_desktop_android) {
+-  if (is_desktop_android) {
++  if (is_desktop_android || (is_android && enable_extensions_core)) {
+     deps += [
+       "//chrome/browser/ui/android/extensions/side_panel/internal",
+       "//chrome/browser/ui/android/extensions/windowing/internal",
 @@ -4703,11 +4710,13 @@ static_library("ui") {
  group("ui_public_dependencies") {
    visibility = [ "//chrome/browser:browser_public_dependencies" ]

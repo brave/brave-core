@@ -4,6 +4,17 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
+  - description: |-
+      side_panel/internal and windowing/internal only assert
+      enable_extensions_core themselves, with nothing specific to desktop;
+      build them for non-desktop Android too. enable_extensions_core alone
+      isn't enough here (it's also true on true desktop), so this still
+      needs is_android.
+    regex:
+      pattern: 'if (is_desktop_android) {'
+      replace:
+        'if (is_desktop_android || (is_android && enable_extensions_core)) {'
+
   - description: Depend on the Brave UI.
     insert_into_list:
       target: ui
