@@ -24,6 +24,18 @@
 
 namespace ai_chat {
 
+namespace {
+
+constexpr char kToolsAvailable[] =
+    "Attached an empty workspace to this conversation. Its file tools are now "
+    "available.";
+constexpr char kToolsNextMessage[] =
+    "Attached an empty workspace to this conversation, but its file tools "
+    "aren't available yet. They will be from the user's next message, so tell "
+    "the user the workspace is ready and ask them to continue.";
+
+}  // namespace
+
 AttachWorkspaceTool::AttachWorkspaceTool(
     content::BrowserContext& browser_context,
     ConversationHandler& conversation)
@@ -41,8 +53,7 @@ std::string_view AttachWorkspaceTool::Description() const {
          "create, view, edit and search with file tools. Use this when the "
          "user asks you to write or work on files (for example code or "
          "documents) and the conversation has no workspace yet. The file "
-         "tools become available from the user's next message, so tell the "
-         "user the workspace is ready and ask them to continue.";
+         "tools are available once this returns.";
 }
 
 bool AttachWorkspaceTool::SupportsConversation(
@@ -66,20 +77,32 @@ void AttachWorkspaceTool::UseTool(const std::string& input_json,
     return;
   }
 
+  auto workspace = std::make_unique<WorkspaceAssociatedContent>(
+      /*folder_path=*/std::nullopt, &browser_context_.get(),
+      base::BindOnce(&brave::AttachPrivacySensitiveTabHelpers));
+  const std::string content_uuid = workspace->uuid();
+
   // A workspace's workspace:// URL isn't in |kAllowedContentSchemes|, so attach
   // it directly via the manager rather than
   // AIChatService::AssociateOwnedContent (which would reject the scheme).
-  conversation_->associated_content_manager()->AddOwnedContent(
-      std::make_unique<WorkspaceAssociatedContent>(
-          /*folder_path=*/std::nullopt, &browser_context_.get(),
-          base::BindOnce(&brave::AttachPrivacySensitiveTabHelpers)));
+  AssociatedContentManager* manager =
+      conversation_->associated_content_manager();
+  manager->AddOwnedContent(std::move(workspace));
 
-  // TODO(https://github.com/brave/brave-browser/issues/59734): Refresh the
-  // conversation's content tools so the file tools can be used in this turn.
+  // The manager adds the workspace's tools to this generation loop once its
+  // page has loaded and attached them, so reply then, letting the model use
+  // them straight away.
+  manager->RunWhenContentToolsAdded(
+      content_uuid,
+      base::BindOnce(&AttachWorkspaceTool::OnWorkspaceToolsAdded,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void AttachWorkspaceTool::OnWorkspaceToolsAdded(UseToolCallback callback,
+                                                size_t tool_count) {
   std::move(callback).Run(
-      CreateContentBlocksForText(
-          "Attached an empty workspace to this conversation. Its file tools "
-          "will be available from the user's next message."),
+      CreateContentBlocksForText(tool_count > 0 ? kToolsAvailable
+                                                : kToolsNextMessage),
       {});
 }
 

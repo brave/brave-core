@@ -117,6 +117,22 @@ describe('registerTools', () => {
     ])
   })
 
+  it('registers every tool without waiting for earlier registrations', () => {
+    // The browser reads the page's tools once it has loaded, so they must all
+    // be registered synchronously rather than one round trip at a time.
+    registerTool.mockImplementation((tool: RegisteredTool) => {
+      registered.set(tool.name, tool)
+      return new Promise(() => {})
+    })
+    void registerTools(async () => createFakeWorkspace())
+    expect([...registered.keys()]).toEqual([
+      kEditTool,
+      'grep',
+      'glob',
+      'append_file',
+    ])
+  })
+
   it('resolves the root each time a tool runs, not at registration', async () => {
     const root = createFakeWorkspace({ 'a.txt': 'x' })
     const getRoot = jest.fn(async () => root)

@@ -67,6 +67,12 @@ export async function registerTools(
     return
   }
 
+  // Registered all at once, rather than one after another, so every tool is
+  // registered synchronously, before the page finishes loading: the browser
+  // reads the page's tools once it has loaded (see
+  // AssociatedContentManager::OnToolsAttachedChanged), and registerTool() only
+  // resolves after a round trip to the browser.
+  const registrations: Array<Promise<void>> = []
   const reg = (
     name: string,
     description: string,
@@ -76,22 +82,24 @@ export async function registerTools(
       input: Record<string, unknown>,
     ) => Promise<string>,
   ) =>
-    mc.registerTool({
-      name,
-      description,
-      inputSchema,
-      execute: async (input) => {
-        try {
-          return await run(await getRoot(), input ?? {})
-        } catch (e) {
-          return `Error: ${e instanceof Error ? e.message : String(e)}`
-        }
-      },
-    })
+    registrations.push(
+      mc.registerTool({
+        name,
+        description,
+        inputSchema,
+        execute: async (input) => {
+          try {
+            return await run(await getRoot(), input ?? {})
+          } catch (e) {
+            return `Error: ${e instanceof Error ? e.message : String(e)}`
+          }
+        },
+      }),
+    )
 
   // The text-editor tool: one tool, dispatched on `command`. Paths are relative
   // to the workspace root and confined to it by the File System Access API.
-  await reg(
+  reg(
     'str_replace_based_edit_tool',
     'Tool for viewing, creating and editing files in the workspace, modeled '
       + "on Anthropic's text editor tool. Commands:\n"
@@ -167,7 +175,7 @@ export async function registerTools(
   )
 
   // Auxiliary tools with no text-editor analog.
-  await reg(
+  reg(
     'grep',
     'Search file contents within the workspace for a regular expression.',
     schema(
@@ -193,7 +201,7 @@ export async function registerTools(
       ),
   )
 
-  await reg(
+  reg(
     'glob',
     'Find files in the workspace whose relative path matches a glob.',
     schema(
@@ -209,7 +217,7 @@ export async function registerTools(
     (root, i) => ops.glob(root, asString(i.path), asString(i.pattern)),
   )
 
-  await reg(
+  reg(
     'append_file',
     'Append `content` to the end of a workspace file, creating it if needed. '
       + 'Use this to build a file across several calls: create an empty file, '
@@ -226,5 +234,6 @@ export async function registerTools(
     (root, i) => ops.appendFile(root, asString(i.path), asString(i.content)),
   )
 
+  await Promise.all(registrations)
   console.log('[leo-workspace] registered WebMCP tools')
 }

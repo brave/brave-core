@@ -657,6 +657,140 @@ TEST_F(AssociatedContentManagerUnitTest,
   EXPECT_EQ("late_tool", std::string(manager->GetTools().front()->Name()));
 }
 
+namespace {
+
+// Has |content| expose a tool for each of |names|, whenever it's asked.
+void ExposeTools(MockAssociatedContent& content,
+                 std::vector<std::string> names) {
+  EXPECT_CALL(content, GetContentTools)
+      .WillRepeatedly(
+          [names](AssociatedContentDelegate::GetContentToolsCallback cb) {
+            std::vector<std::unique_ptr<Tool>> tools;
+            for (const auto& name : names) {
+              tools.push_back(std::make_unique<NiceMock<MockTool>>(name));
+            }
+            std::move(cb).Run(std::move(tools));
+          });
+}
+
+}  // namespace
+
+TEST_F(AssociatedContentManagerUnitTest,
+       OnToolsAttachedChanged_AddsToolsOfContentAttachedMidLoop) {
+  auto* manager = conversation_handler_->associated_content_manager();
+  base::test::TestFuture<void> loop_started;
+  manager->UpdateToolsForNewGenerationLoop(loop_started.GetCallback());
+  ASSERT_TRUE(loop_started.Wait());
+  ASSERT_TRUE(manager->GetTools().empty());
+
+  // Content added once the loop has started (e.g. by a tool) has its tools
+  // added to the loop as soon as they're attached.
+  NiceMock<MockAssociatedContent> content;
+  content.SetUrl(GURL("https://example.com"));
+  ExposeTools(content, {"first_tool", "second_tool"});
+  manager->AddContent(&content);
+  ASSERT_TRUE(content.tools_attached());
+  auto tools = manager->GetTools();
+  ASSERT_EQ(2u, tools.size());
+  EXPECT_EQ("first_tool", tools[0]->Name());
+  EXPECT_EQ("second_tool", tools[1]->Name());
+
+  // Reattaching doesn't add them again.
+  manager->SetToolsAttached(content.uuid(), /*tools_attached=*/false);
+  manager->SetToolsAttached(content.uuid(), /*tools_attached=*/true);
+  EXPECT_EQ(2u, manager->GetTools().size());
+
+  // Already added, so this replies (asynchronously) straight away.
+  base::test::TestFuture<size_t> added;
+  manager->RunWhenContentToolsAdded(content.uuid(), added.GetCallback());
+  EXPECT_FALSE(added.IsReady());
+  EXPECT_EQ(2u, added.Get());
+}
+
+TEST_F(AssociatedContentManagerUnitTest,
+       OnToolsAttachedChanged_DropsToolsFetchedForAPreviousLoop) {
+  auto* manager = conversation_handler_->associated_content_manager();
+  NiceMock<MockAssociatedContent> content;
+  content.SetUrl(GURL("https://example.com"));
+  manager->AddContent(&content);
+
+  // Attached while no tools fetch has replied yet.
+  AssociatedContentDelegate::GetContentToolsCallback stale_callback;
+  EXPECT_CALL(content, GetContentTools)
+      .WillOnce([&](AssociatedContentDelegate::GetContentToolsCallback cb) {
+        stale_callback = std::move(cb);
+      });
+  manager->SetToolsAttached(content.uuid(), /*tools_attached=*/true);
+  ASSERT_FALSE(stale_callback.is_null());
+
+  // A new loop fetches the content's tools itself.
+  ExposeTools(content, {"loop_tool"});
+  base::test::TestFuture<void> loop_started;
+  manager->UpdateToolsForNewGenerationLoop(loop_started.GetCallback());
+  ASSERT_TRUE(loop_started.Wait());
+  ASSERT_EQ(1u, manager->GetTools().size());
+
+  std::vector<std::unique_ptr<Tool>> stale_tools;
+  stale_tools.push_back(std::make_unique<NiceMock<MockTool>>("stale_tool"));
+  std::move(stale_callback).Run(std::move(stale_tools));
+  auto tools = manager->GetTools();
+  ASSERT_EQ(1u, tools.size());
+  EXPECT_EQ("loop_tool", tools[0]->Name());
+}
+
+TEST_F(AssociatedContentManagerUnitTest,
+       RunWhenContentToolsAdded_WaitsForTheContentToBeAttached) {
+  auto* manager = conversation_handler_->associated_content_manager();
+  base::test::TestFuture<void> loop_started;
+  manager->UpdateToolsForNewGenerationLoop(loop_started.GetCallback());
+  ASSERT_TRUE(loop_started.Wait());
+
+  // Exposes no tools yet (e.g. its page hasn't loaded), so isn't attached.
+  NiceMock<MockAssociatedContent> content;
+  content.SetUrl(GURL("https://example.com"));
+  ExposeTools(content, {});
+  manager->AddContent(&content);
+  ASSERT_FALSE(content.tools_attached());
+
+  base::test::TestFuture<size_t> added;
+  manager->RunWhenContentToolsAdded(content.uuid(), added.GetCallback());
+  // A reply would already have been posted, so would run before this.
+  base::test::TestFuture<void> flushed;
+  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+      FROM_HERE, flushed.GetCallback());
+  ASSERT_TRUE(flushed.Wait());
+  EXPECT_FALSE(added.IsReady());
+
+  ExposeTools(content, {"a_tool"});
+  content.set_tools_attached(true);
+  EXPECT_EQ(1u, added.Get());
+  ASSERT_EQ(1u, manager->GetTools().size());
+}
+
+TEST_F(AssociatedContentManagerUnitTest,
+       RunWhenContentToolsAdded_RepliesIfTheContentIsRemoved) {
+  auto* manager = conversation_handler_->associated_content_manager();
+  NiceMock<MockAssociatedContent> content;
+  content.SetUrl(GURL("https://example.com"));
+  ExposeTools(content, {});
+  manager->AddContent(&content);
+
+  base::test::TestFuture<size_t> added;
+  manager->RunWhenContentToolsAdded(content.uuid(), added.GetCallback());
+  manager->RemoveContent(&content);
+  EXPECT_FALSE(added.IsReady());
+  EXPECT_EQ(0u, added.Get());
+}
+
+TEST_F(AssociatedContentManagerUnitTest,
+       RunWhenContentToolsAdded_UnknownContent) {
+  base::test::TestFuture<size_t> added;
+  conversation_handler_->associated_content_manager()->RunWhenContentToolsAdded(
+      "not-content", added.GetCallback());
+  EXPECT_FALSE(added.IsReady());
+  EXPECT_EQ(0u, added.Get());
+}
+
 TEST_F(AssociatedContentManagerUnitTest,
        AddContent_AttachesContentExposingTools) {
   // When added content exposes tools, it should be attached so the tools pill
@@ -1326,12 +1460,17 @@ TEST_F(AssociatedContentManagerUnitTest,
   manager->AddContent(&content);
   ASSERT_EQ(1, page_tools.probe_count());
 
+  // Being attached fetches the tools again, to add them to the generation
+  // loop.
+  ASSERT_TRUE(base::test::RunUntil([&] { return content.tools_attached(); }));
+  ASSERT_EQ(2, page_tools.probe_count());
+
   content.NotifyContentToolsChanged();
   content.NotifyContentToolsChanged();
   content.NotifyContentToolsChanged();
 
   ASSERT_TRUE(
-      base::test::RunUntil([&] { return page_tools.probe_count() == 4; }));
+      base::test::RunUntil([&] { return page_tools.probe_count() == 5; }));
 }
 
 }  // namespace ai_chat
