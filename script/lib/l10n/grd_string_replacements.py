@@ -37,6 +37,8 @@ default_replacements = [
     (r'Incognito', r'Private'),
     (r'inco&gnito', r'&private'),
     (r'Inco&gnito', r'&Private'),
+    # Brave Password Manager has no passkeys.
+    (r'Passwords · Passkeys', r'Passwords'),
 ]
 
 
