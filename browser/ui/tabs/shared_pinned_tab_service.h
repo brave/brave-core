@@ -83,6 +83,7 @@ class SharedPinnedTabService : public KeyedService,
   void OnTabPinnedStateChanged(tabs::TabInterface* tab, int index) override;
   void OnTabChangedAt(tabs::TabInterface* tab,
                       TabChangeType change_type) override;
+  void OnTabBlockedStateChanged(tabs::TabInterface* tab) override;
 
   // ProfileWillBeDestroyed;
   void OnProfileWillBeDestroyed(Profile* profile) override;
