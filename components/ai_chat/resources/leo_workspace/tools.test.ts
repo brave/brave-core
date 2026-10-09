@@ -46,6 +46,7 @@ async function run(name: string, input: Record<string, unknown> = {}) {
   return String(await tool.execute(input))
 }
 
+const kViewTool = 'view'
 const kEditTool = 'str_replace_based_edit_tool'
 
 beforeEach(() => {
@@ -68,6 +69,7 @@ describe('registerTools', () => {
   it('registers the expected tools', async () => {
     await setUpWorkspace()
     expect([...registered.keys()]).toEqual([
+      kViewTool,
       kEditTool,
       'grep',
       'glob',
@@ -87,9 +89,10 @@ describe('registerTools', () => {
     await setUpWorkspace()
     const schema = registered.get(kEditTool)!.inputSchema!
     // These names are Anthropic's text editor tool contract, so the model has
-    // seen them in training. Changing them is not a refactor.
+    // seen them in training. Changing them is not a refactor. `view` is
+    // deliberately absent: it is its own tool so that permission to read
+    // doesn't imply permission to write.
     expect(schema.properties.command.enum).toEqual([
-      'view',
       'create',
       'str_replace',
       'insert',
@@ -103,8 +106,14 @@ describe('registerTools', () => {
       'new_str',
       'insert_line',
       'insert_text',
-      'view_range',
     ])
+  })
+
+  it('declares the view tool arguments', async () => {
+    await setUpWorkspace()
+    const schema = registered.get(kViewTool)!.inputSchema!
+    expect(schema.required).toEqual(['path'])
+    expect(Object.keys(schema.properties)).toEqual(['path', 'view_range'])
   })
 
   it('requires only a pattern for the search tools', async () => {
@@ -146,19 +155,16 @@ describe('registerTools', () => {
   })
 })
 
-describe('str_replace_based_edit_tool', () => {
+describe('view tool', () => {
   it('views a file with 1-indexed line numbers', async () => {
     await setUpWorkspace({ 'a.txt': 'one\ntwo' })
-    expect(await run(kEditTool, { command: 'view', path: 'a.txt' })).toBe(
-      '1\tone\n2\ttwo',
-    )
+    expect(await run(kViewTool, { path: 'a.txt' })).toBe('1\tone\n2\ttwo')
   })
 
   it('passes view_range through to the file view', async () => {
     await setUpWorkspace({ 'a.txt': 'one\ntwo\nthree' })
     expect(
-      await run(kEditTool, {
-        command: 'view',
+      await run(kViewTool, {
         path: 'a.txt',
         view_range: [2, -1],
       }),
@@ -168,8 +174,7 @@ describe('str_replace_based_edit_tool', () => {
   it('ignores a view_range that is not an array', async () => {
     await setUpWorkspace({ 'a.txt': 'one\ntwo' })
     expect(
-      await run(kEditTool, {
-        command: 'view',
+      await run(kViewTool, {
         path: 'a.txt',
         view_range: '2',
       }),
@@ -178,14 +183,33 @@ describe('str_replace_based_edit_tool', () => {
 
   it('lists a directory when the path is a directory', async () => {
     await setUpWorkspace({ 'src/a.ts': '', 'src/b.ts': '' })
-    expect(await run(kEditTool, { command: 'view', path: 'src' })).toBe(
-      'src/a.ts\nsrc/b.ts',
-    )
+    expect(await run(kViewTool, { path: 'src' })).toBe('src/a.ts\nsrc/b.ts')
   })
 
   it('lists the workspace root for an empty path', async () => {
     await setUpWorkspace({ 'a.txt': '' })
-    expect(await run(kEditTool, { command: 'view', path: '' })).toBe('a.txt')
+    expect(await run(kViewTool, { path: '' })).toBe('a.txt')
+  })
+
+  it('ignores edit arguments and never writes', async () => {
+    const root = await setUpWorkspace({ 'a.txt': 'one' })
+    expect(
+      await run(kViewTool, {
+        command: 'create',
+        path: 'a.txt',
+        file_text: 'overwritten',
+      }),
+    ).toBe('1\tone')
+    expect(snapshotFakeWorkspace(root)).toEqual({ 'a.txt': 'one' })
+  })
+})
+
+describe('str_replace_based_edit_tool', () => {
+  it('refuses the view command and points at the view tool', async () => {
+    await setUpWorkspace({ 'a.txt': 'one' })
+    expect(await run(kEditTool, { command: 'view', path: 'a.txt' })).toBe(
+      'Error: view is not a command of this tool; use the `view` tool instead',
+    )
   })
 
   it('creates a file', async () => {
@@ -344,7 +368,7 @@ describe('error handling', () => {
 
   it('reports a path that escapes the workspace', async () => {
     await setUpWorkspace({ 'a.txt': 'one' })
-    expect(await run(kEditTool, { command: 'view', path: '../a.txt' })).toMatch(
+    expect(await run(kViewTool, { path: '../a.txt' })).toMatch(
       /^Error: path escapes the workspace root/,
     )
     expect(
@@ -354,9 +378,7 @@ describe('error handling', () => {
 
   it('reports a missing file', async () => {
     await setUpWorkspace()
-    expect(await run(kEditTool, { command: 'view', path: 'nope.txt' })).toMatch(
-      /^Error: /,
-    )
+    expect(await run(kViewTool, { path: 'nope.txt' })).toMatch(/^Error: /)
   })
 
   it('reports an invalid regular expression', async () => {
