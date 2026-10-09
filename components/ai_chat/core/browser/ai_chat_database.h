@@ -145,9 +145,9 @@ class AIChatDatabase : public syncer::SyncMetadataStore {
   // content and edit rows. If the parent conversation does not exist yet a
   // stub row is created, which a later metadata record fills in.
   // |associated_content| is the per-entry content metadata and |contents| a
-  // parallel vector of texts for each row's last_contents column. The caller
-  // is responsible for substituting local values in place of any field the
-  // remote sender omitted to fit the size budget.
+  // parallel vector of texts for each row's last_contents column. Sync may omit
+  // data to fit its size budget, so the caller is responsible for fully
+  // reconstructing |entry| and |associated_content| before calling this.
   // Precondition: the caller has validated the record. Sync enforces this via
   // AIChatSyncBridge::IsEntityDataValid(), which rejects an empty entry or
   // conversation uuid before an entity reaches the bridge's apply path.
