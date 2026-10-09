@@ -30,21 +30,25 @@ const menuItem = (
     <cr-ripple></cr-ripple>
   </a>`
 
+// Mangling happens at build time, over the template shipped with the browser,
+// so there is no untrusted input to sanitize here.
+const insertAfter = (element: Element, html: string) =>
+  // eslint-disable-next-line no-unsanitized/method
+  element.insertAdjacentHTML('afterend', html)
+
 mangle((root) => {
   // Performance lives under System instead.
   getById(root, 'performance').remove()
 
   // Get Started and Origin follow People, then Appearance, Content, Shields and
   // Privacy.
-  getById(root, 'people').insertAdjacentHTML(
-    'afterend',
+  insertAfter(getById(root, 'people'),
     menuItem('getStarted', '/getStarted', 'rocket', 'braveGetStartedTitle')
     + menuItem('origin', '/origin', 'product-origin', 'braveOriginTitle'))
 
   const appearance = getById(root, 'appearance')
   getById(root, 'origin').after(appearance)
-  appearance.insertAdjacentHTML(
-    'afterend',
+  insertAfter(appearance,
     menuItem('content', '/braveContent', 'window-content',
              'contentSettingsContentSection')
     + menuItem('shields', '/shields', 'shield-done', 'braveShieldsTitle'))
@@ -54,8 +58,7 @@ mangle((root) => {
 
   // Web3 and Leo are hidden by `pageVisibility` when disallowed. The Leo string
   // isn't registered without AI Chat, so it is only rendered when visible.
-  getById(root, 'privacy').insertAdjacentHTML(
-    'afterend',
+  insertAfter(getById(root, 'privacy'),
     menuItem('braveWallet', '/web3', 'product-brave-wallet', 'braveWeb3')
     + `\${this.pageVisibility_?.leoAssistant ? html\`
       ${menuItem('leoAssistant', '/leo-ai', 'product-brave-leo',
@@ -65,8 +68,7 @@ mangle((root) => {
 
   // Search and Extensions follow Sync.
   getById(root, 'braveSync').after(getById(root, 'search'))
-  getById(root, 'search').insertAdjacentHTML(
-    'afterend',
+  insertAfter(getById(root, 'search'),
     menuItem('extensions', '/extensions', 'browser-extensions',
              'braveDefaultExtensions'))
 
