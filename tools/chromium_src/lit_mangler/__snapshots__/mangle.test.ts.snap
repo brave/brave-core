@@ -782,6 +782,163 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 "
 `;
 
+exports[`mangled files should have up to date snapshots ./chromium_src/chrome/browser/resources/settings/autofill_page/autofill_page.html.ts.lit_mangler.ts should match snapshot 1`] = `
+"===================================================================
+--- ../chrome/browser/resources/settings/autofill_page/autofill_page.html.ts
++++ gen/chrome/browser/resources/settings/preprocessed/autofill_page/autofill_page.html.ts
+@@ -3,41 +3,28 @@
+ import type {SettingsAutofillPageElement} from './autofill_page.js';
+ 
+ export function getHtml(this: SettingsAutofillPageElement) {
+   return html\`<!--_html_template_start_-->
+-<h1 id="title">$i18n{autofillPageTitle}</h1>
+-<div id="subtitle" class="secondary">$i18n{yourSavedInfoPageDescription}</div>
+-<settings-account-card></settings-account-card>
++<h1 id="title" hidden="">$i18n{autofillPageTitle}</h1>
++<div id="subtitle" class="secondary" hidden="">$i18n{yourSavedInfoPageDescription}</div>
++<settings-account-card hidden=""></settings-account-card>
+ 
+ <h2 id="autofillPageTitle" class="section-header">
+   $i18n{autofillPageTitle}
+ </h2>
+-<div class="card-container" @data-category-click="\${this.onDataCategoryClick_}"
+-    @data-chip-click="\${this.onDataChipClick_}">
+-  <category-reference-card card-title="$i18n{localPasswordManager}"
+-      is-external
+-      .categoryId="\${this.hierarchy_.passwordManager.id}"
+-      .chips="\${this.getVisibleChips_(this.hierarchy_.passwordManager.chips)}">
++<div class="card-container" @data-category-click="\${this.onDataCategoryClick_}" @data-chip-click="\${this.onDataChipClick_}">
++  <category-reference-card card-title="$i18n{localPasswordManager}" is-external="" .categoryId="\${this.hierarchy_.passwordManager.id}" .chips="\${this.getVisibleChips_(this.hierarchy_.passwordManager.chips)}">
+   </category-reference-card>
+-  <category-reference-card id="paymentManagerButton"
+-      card-title="$i18n{paymentsTitle}"
+-      .categoryId="\${this.hierarchy_.payments.id}"
+-      .chips="\${this.getVisibleChips_(this.hierarchy_.payments.chips)}">
++  \${this.isEmailAliasesEnabled_() ? html\`
++        <category-reference-card id="emailAliasesCard" card-title="\${this.i18n('SETTINGS_EMAIL_ALIASES_LABEL')}" @data-category-click="\${this.onEmailAliasesDataCategoryClick}">
++        </category-reference-card>
++      \` : ''}<category-reference-card id="paymentManagerButton" card-title="$i18n{paymentsTitle}" .categoryId="\${this.hierarchy_.payments.id}" .chips="\${this.getVisibleChips_(this.hierarchy_.payments.chips)}">
+   </category-reference-card>
+-  <category-reference-card id="addressesManagerButton"
+-      card-title="$i18n{contactInfoTitle}"
+-      .categoryId="\${this.hierarchy_.contactInfo.id}"
+-      .chips="\${this.getVisibleChips_(this.hierarchy_.contactInfo.chips)}">
++  <category-reference-card id="addressesManagerButton" card-title="$i18n{contactInfoTitle}" .categoryId="\${this.hierarchy_.contactInfo.id}" .chips="\${this.getVisibleChips_(this.hierarchy_.contactInfo.chips)}">
+   </category-reference-card>
+-  <category-reference-card id="identityManagerButton"
+-      card-title="$i18n{identityDocsCardTitle}"
+-      .categoryId="\${this.hierarchy_.identityDocs.id}"
+-      .chips="\${this.getVisibleChips_(this.hierarchy_.identityDocs.chips)}">
++  <category-reference-card id="identityManagerButton" card-title="$i18n{identityDocsCardTitle}" .categoryId="\${this.hierarchy_.identityDocs.id}" .chips="\${this.getVisibleChips_(this.hierarchy_.identityDocs.chips)}" hidden="">
+   </category-reference-card>
+-  <category-reference-card id="travelManagerButton"
+-      card-title="$i18n{travelCardTitle}"
+-      .categoryId="\${this.hierarchy_.travel.id}"
+-      .chips="\${this.getVisibleChips_(this.hierarchy_.travel.chips)}">
++  <category-reference-card id="travelManagerButton" card-title="$i18n{travelCardTitle}" .categoryId="\${this.hierarchy_.travel.id}" .chips="\${this.getVisibleChips_(this.hierarchy_.travel.chips)}" hidden="">
+   </category-reference-card>
+   \${this.isShoppingEnabled_ ? html\`
+     <category-reference-card id="shoppingManagerButton"
+         card-title="$i18n{shoppingCardTitle}"
+@@ -57,27 +44,22 @@
+         $i18n{autofillPersonalContextSettingsSummary}
+       </div>
+     </div>
+   \` : ''}
+-</div>
++<settings-toggle-button id="autofillPrivateWindowsToggle" label="$i18n{autofillInPrivateSettingLabel}" sub-label="$i18n{autofillInPrivateSettingDesc}" pref-key="brave.autofill_private_windows">
++      </settings-toggle-button></div>
+ 
+-<settings-section page-title="$i18n{yourSavedInfoAutofillSettingsLabel}">
+-  <collapsible-autofill-settings-card></collapsible-autofill-settings-card>
++<settings-section page-title="$i18n{yourSavedInfoAutofillSettingsLabel}" style="display: none">
++  <collapsible-autofill-settings-card hidden=""></collapsible-autofill-settings-card>
+ </settings-section>
+ 
+-<settings-section page-title="$i18n{yourSavedInfoRelatedServicesTitle}">
++<settings-section page-title="$i18n{yourSavedInfoRelatedServicesTitle}" style="display: none">
+   <div route-path="default">
+-    <cr-link-row id="passwordManagerButton" label="$i18n{localPasswordManager}"
+-        @click="\${this.onPasswordManagerRelatedServiceClick_}"
+-        start-icon="cr20:password-manager" external>
++    <cr-link-row id="passwordManagerButton" label="$i18n{localPasswordManager}" @click="\${this.onPasswordManagerRelatedServiceClick_}" start-icon="cr20:password-manager" external="">
+     </cr-link-row>
+-    <cr-link-row id="googleWalletButton" label="$i18n{googleWalletTitle}"
+-        @click="\${this.onGoogleWalletRelatedServiceClick_}"
+-        start-icon="settings20:wallet" external>
++    <cr-link-row id="googleWalletButton" label="$i18n{googleWalletTitle}" @click="\${this.onGoogleWalletRelatedServiceClick_}" start-icon="settings20:wallet" external="">
+     </cr-link-row>
+-    <cr-link-row id="googleAccountButton" label="$i18n{googleAccount}"
+-        @click="\${this.onGoogleAccountRelatedServiceClick_}"
+-        start-icon="settings20:google" external>
++    <cr-link-row id="googleAccountButton" label="$i18n{googleAccount}" @click="\${this.onGoogleAccountRelatedServiceClick_}" start-icon="settings20:google" external="">
+     </cr-link-row>
+   </div>
+ </settings-section>
+ <!--_html_template_end_-->\`;
+"
+`;
+
+exports[`mangled files should have up to date snapshots ./chromium_src/chrome/browser/resources/settings/autofill_page/autofill_page_index.html.ts.lit_mangler.ts should match snapshot 1`] = `
+"===================================================================
+--- ../chrome/browser/resources/settings/autofill_page/autofill_page_index.html.ts
++++ gen/chrome/browser/resources/settings/preprocessed/autofill_page/autofill_page_index.html.ts
+@@ -3,34 +3,25 @@
+ import type {SettingsAutofillPageIndexElement} from './autofill_page_index.js';
+ 
+ export function getHtml(this: SettingsAutofillPageIndexElement) {
+   return html\`<!--_html_template_start_-->
+-<cr-view-manager id="viewManager" class="cr-centered-card-container"
+-    ?show-all="\${this.shouldShowAll}">
++<cr-view-manager id="viewManager" class="cr-centered-card-container" ?show-all="\${this.shouldShowAll}">
+ 
+   <settings-autofill-page slot="view" id="parent">
+   </settings-autofill-page>
+ 
+-  <settings-contact-info-page slot="view" id="contactInfo"
+-      data-parent-view-id="parent">
++  <settings-contact-info-page slot="view" id="contactInfo" data-parent-view-id="parent">
+   </settings-contact-info-page>
+ 
+-  <settings-identity-docs-page slot="view" id="identityDocs"
+-      data-parent-view-id="parent">
++  <settings-identity-docs-page slot="view" id="identityDocs" data-parent-view-id="parent">
+   </settings-identity-docs-page>
+ 
+-<if expr="is_win or is_macosx">
+-  <settings-passkeys-page slot="view" id="passkeys"
+-      data-parent-view-id="parent">
+-  </settings-passkeys-page>
+-</if>
+ 
+-  <settings-payments-page slot="view" id="payments"
+-      data-parent-view-id="parent">
++
++  <settings-payments-page slot="view" id="payments" data-parent-view-id="parent">
+   </settings-payments-page>
+ 
+-  <settings-travel-page slot="view" id="travel"
+-      data-parent-view-id="parent">
++  <settings-travel-page slot="view" id="travel" data-parent-view-id="parent">
+   </settings-travel-page>
+ 
+   \${this.isShoppingEnabled_ ? html\`
+     <settings-shopping-page slot="view" id="shopping"
+@@ -43,7 +34,10 @@
+         id="suggestionsFromGemini" data-parent-view-id="parent">
+     </settings-suggestions-from-gemini-page>
+   \` : ''}
+ 
+-</cr-view-manager>
++\${this.isEmailAliasesEnabled_() ? html\`
++        <settings-email-aliases-page slot="view" id="email-aliases" data-parent-view-id="parent">
++        </settings-email-aliases-page>
++      \` : ''}</cr-view-manager>
+ <!--_html_template_end_-->\`;
+ }
+"
+`;
+
 exports[`mangled files should have up to date snapshots ./chromium_src/chrome/browser/resources/settings/autofill_page/contact_info/contact_info_page.html.ts.lit_mangler.ts should match snapshot 1`] = `
 "===================================================================
 --- ../chrome/browser/resources/settings/autofill_page/contact_info/contact_info_page.html.ts
@@ -1899,49 +2056,6 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 "
 `;
 
---- ../chrome/browser/resources/settings/reset_page/reset_profile_dialog.html.ts
-+++ gen/chrome/browser/resources/settings/preprocessed/reset_page/reset_profile_dialog.html.ts
-@@ -4,33 +4,28 @@
- 
- export function getHtml(this: SettingsResetProfileDialogElement) {
-   // clang-format off
-   return html\`<!--_html_template_start_-->
--<cr-dialog id="dialog" close-text="$i18n{close}"
--    ignore-popstate ignore-enter-key>
-+<cr-dialog id="dialog" close-text="$i18n{close}" ignore-popstate="" ignore-enter-key="">
-   <div slot="title">
-     \${this.getPageTitle_()}
-   </div>
-   <div id="dialog-body" slot="body">
-     <span .innerHTML="\${this.getExplanationText_()}">
-     </span>
--    <a href="$i18nRaw{resetPageLearnMoreUrl}"
--        aria-label="$i18n{resetLearnMoreAccessibilityText}"
--        target="_blank">$i18n{learnMore}</a>
-+    <a href="$i18nRaw{resetPageLearnMoreUrl}" aria-label="$i18n{resetLearnMoreAccessibilityText}" target="_blank">$i18n{learnMore}</a>
-   </div>
-   <div slot="button-container">
-     <div class="spinner" ?hidden="\${!this.clearingInProgress_}"></div>
--    <cr-button class="cancel-button" @click="\${this.onCancelClick_}"
--        id="cancel" ?disabled="\${this.clearingInProgress_}">
-+    <cr-button class="cancel-button" @click="\${this.onCancelClick_}" id="cancel" ?disabled="\${this.clearingInProgress_}">
-       $i18n{cancel}
-     </cr-button>
--    <cr-button class="action-button" @click="\${this.onResetClick_}"
--        id="reset" ?disabled="\${this.clearingInProgress_}">
-+    <cr-button class="action-button" @click="\${this.onResetClick_}" id="reset" ?disabled="\${this.clearingInProgress_}">
-       $i18n{resetDialogCommit}
-     </cr-button>
-   </div>
--  <div slot="footer">
--    <cr-checkbox id="sendSettings" checked>
-+  <div slot="footer" hidden="">
-+    <cr-checkbox id="sendSettings" disabled="">
-       $i18nRaw{resetPageFeedback}
-     </cr-checkbox>
-   </div>
- </cr-dialog>
-=======
 exports[`mangled files should have up to date snapshots ./chromium_src/chrome/browser/resources/settings/performance_page/performance_page.html.ts.lit_mangler.ts should match snapshot 1`] = `
 "===================================================================
 --- ../chrome/browser/resources/settings/performance_page/performance_page.html.ts
@@ -1982,8 +2096,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
    <tab-discard-exception-list id="exceptionList">
    </tab-discard-exception-list>
  </settings-section>
-exports[`mangled files should have up to date snapshots ./chromium_src/chrome/browser/resources/settings/reset_page/reset_profile_dialog.html.ts.lit_mangler.ts should match snapshot 1`] = `
-"============================================================"
+"
 `;
 
 exports[`mangled files should have up to date snapshots ./chromium_src/chrome/browser/resources/settings/privacy_page/do_not_track_toggle.html.ts.lit_mangler.ts should match snapshot 1`] = `
@@ -2231,6 +2344,53 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 "
 `;
 
+exports[`mangled files should have up to date snapshots ./chromium_src/chrome/browser/resources/settings/reset_page/reset_profile_dialog.html.ts.lit_mangler.ts should match snapshot 1`] = `
+"===================================================================
+--- ../chrome/browser/resources/settings/reset_page/reset_profile_dialog.html.ts
++++ gen/chrome/browser/resources/settings/preprocessed/reset_page/reset_profile_dialog.html.ts
+@@ -4,33 +4,28 @@
+ 
+ export function getHtml(this: SettingsResetProfileDialogElement) {
+   // clang-format off
+   return html\`<!--_html_template_start_-->
+-<cr-dialog id="dialog" close-text="$i18n{close}"
+-    ignore-popstate ignore-enter-key>
++<cr-dialog id="dialog" close-text="$i18n{close}" ignore-popstate="" ignore-enter-key="">
+   <div slot="title">
+     \${this.getPageTitle_()}
+   </div>
+   <div id="dialog-body" slot="body">
+     <span .innerHTML="\${this.getExplanationText_()}">
+     </span>
+-    <a href="$i18nRaw{resetPageLearnMoreUrl}"
+-        aria-label="$i18n{resetLearnMoreAccessibilityText}"
+-        target="_blank">$i18n{learnMore}</a>
++    <a href="$i18nRaw{resetPageLearnMoreUrl}" aria-label="$i18n{resetLearnMoreAccessibilityText}" target="_blank">$i18n{learnMore}</a>
+   </div>
+   <div slot="button-container">
+     <div class="spinner" ?hidden="\${!this.clearingInProgress_}"></div>
+-    <cr-button class="cancel-button" @click="\${this.onCancelClick_}"
+-        id="cancel" ?disabled="\${this.clearingInProgress_}">
++    <cr-button class="cancel-button" @click="\${this.onCancelClick_}" id="cancel" ?disabled="\${this.clearingInProgress_}">
+       $i18n{cancel}
+     </cr-button>
+-    <cr-button class="action-button" @click="\${this.onResetClick_}"
+-        id="reset" ?disabled="\${this.clearingInProgress_}">
++    <cr-button class="action-button" @click="\${this.onResetClick_}" id="reset" ?disabled="\${this.clearingInProgress_}">
+       $i18n{resetDialogCommit}
+     </cr-button>
+   </div>
+-  <div slot="footer">
+-    <cr-checkbox id="sendSettings" checked>
++  <div slot="footer" hidden="">
++    <cr-checkbox id="sendSettings" disabled="">
+       $i18nRaw{resetPageFeedback}
+     </cr-checkbox>
+   </div>
+ </cr-dialog>
+"
+`;
+
 exports[`mangled files should have up to date snapshots ./chromium_src/chrome/browser/resources/settings/safety_hub/safety_hub_page.html.ts.lit_mangler.ts should match snapshot 1`] = `
 "===================================================================
 --- ../chrome/browser/resources/settings/safety_hub/safety_hub_page.html.ts
@@ -2333,6 +2493,237 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
    </div>
  </settings-section>
  <!--_html_template_end_-->\`;
+"
+`;
+
+exports[`mangled files should have up to date snapshots ./chromium_src/chrome/browser/resources/settings/settings_menu/settings_menu.html.lit_mangler.ts should match snapshot 1`] = `
+"===================================================================
+--- ../chrome/browser/resources/settings/settings_menu/settings_menu.html
++++ gen/chrome/browser/resources/settings/preprocessed/settings_menu/settings_menu.html
+@@ -1,132 +1,135 @@
+-    <div role="navigation">
+-      <cr-menu-selector id="menu" selectable="a:not(#extensionsLink)"
+-          attr-for-selected="href" @iron-activate="\${this.onIronActivate_}"
+-          @click="\${this.onLinkClick_}" selected-attribute="selected">
+-        <a role="menuitem"
+-            id="people" href="/people"
+-            ?hidden="\${this.shouldHideMenuItem_(this.pageVisibility_?.people)}"
+-            class="cr-nav-menu-item">
+-<if expr="not _google_chrome">
++<div role="navigation">
++      <cr-menu-selector id="menu" selectable="a:not(#extensionsLink)" attr-for-selected="href" @iron-activate="\${this.onIronActivate_}" @click="\${this.onLinkClick_}" selected-attribute="selected">
++        <a role="menuitem" id="people" href="/people" ?hidden="\${this.shouldHideMenuItem_(this.pageVisibility_?.people)}" class="cr-nav-menu-item">
++
+           <cr-icon icon="settings:person"></cr-icon>
+-</if>
+-<if expr="_google_chrome">
+-          <cr-icon icon="settings-internal:google-g"></cr-icon>
+-</if>
++
++
+           <span class="menu-label">$i18n{peoplePageTitle}</span>
+           <cr-ripple></cr-ripple>
+-        </a>
+-        <a role="menuitem" id="autofill" href="/autofill"
+-            @click="\${this.onAutofillClick_}"
+-            class="cr-nav-menu-item"
+-            ?hidden="\${this.shouldHideMenuItem_(this.pageVisibility_?.yourSavedInfo)}">
+-          <cr-icon icon="settings:password-manager"></cr-icon>
+-          <span class="menu-label">$i18n{autofillPageTitle}</span>
++        </a><a role="menuitem" id="getStarted" href="/getStarted" class="cr-nav-menu-item" ?hidden="\${this.shouldHideMenuItem_(
++          this.pageVisibility_?.getStarted)}">
++    <cr-icon icon="rocket"></cr-icon>
++    <span class="menu-label">$i18n{braveGetStartedTitle}</span>
++    <cr-ripple></cr-ripple>
++  </a><a role="menuitem" id="origin" href="/origin" class="cr-nav-menu-item" ?hidden="\${this.shouldHideMenuItem_(
++          this.pageVisibility_?.origin)}">
++    <cr-icon icon="product-origin"></cr-icon>
++    <span class="menu-label">$i18n{braveOriginTitle}</span>
++    <cr-ripple></cr-ripple>
++  </a><a role="menuitem" id="appearance" href="/appearance" ?hidden="\${this.shouldHideMenuItem_(this.pageVisibility_?.appearance)}" class="cr-nav-menu-item">
++          <cr-icon icon="settings:palette"></cr-icon>
++          <span class="menu-label">$i18n{appearancePageTitle}</span>
+           <cr-ripple></cr-ripple>
+-        </a>
+-        <a role="menuitem" id="privacy" href="/privacy"
+-            ?hidden="\${this.shouldHideMenuItem_(this.pageVisibility_?.privacy)}"
+-            class="cr-nav-menu-item">
++        </a><a role="menuitem" id="content" href="/braveContent" class="cr-nav-menu-item" ?hidden="\${this.shouldHideMenuItem_(
++          this.pageVisibility_?.content)}">
++    <cr-icon icon="window-content"></cr-icon>
++    <span class="menu-label">$i18n{contentSettingsContentSection}</span>
++    <cr-ripple></cr-ripple>
++  </a><a role="menuitem" id="shields" href="/shields" class="cr-nav-menu-item" ?hidden="\${this.shouldHideMenuItem_(
++          this.pageVisibility_?.shields)}">
++    <cr-icon icon="shield-done"></cr-icon>
++    <span class="menu-label">$i18n{braveShieldsTitle}</span>
++    <cr-ripple></cr-ripple>
++  </a><a role="menuitem" id="privacy" href="/privacy" ?hidden="\${this.shouldHideMenuItem_(this.pageVisibility_?.privacy)}" class="cr-nav-menu-item">
+           <cr-icon icon="settings:security"></cr-icon>
+           <span class="menu-label">$i18n{privacyPageTitle}</span>
+           <cr-ripple></cr-ripple>
+-        </a>
+-        <a role="menuitem" id="performance" href="/performance"
+-            class="cr-nav-menu-item"
+-            ?hidden="\${this.shouldHideMenuItem_(this.pageVisibility_?.performance)}">
+-          <cr-icon icon="settings:speed"></cr-icon>
+-          <span class="menu-label">$i18n{performancePageTitle}</span>
++        </a><a role="menuitem" id="braveWallet" href="/web3" class="cr-nav-menu-item" ?hidden="\${this.shouldHideMenuItem_(
++          this.pageVisibility_?.braveWallet)}">
++    <cr-icon icon="product-brave-wallet"></cr-icon>
++    <span class="menu-label">$i18n{braveWeb3}</span>
++    <cr-ripple></cr-ripple>
++  </a>\${this.pageVisibility_?.leoAssistant ? html\`
++      <a role="menuitem" id="leoAssistant" href="/leo-ai" class="cr-nav-menu-item" ?hidden="\${this.shouldHideMenuItem_(
++          this.pageVisibility_?.leoAssistant)}">
++    <cr-icon icon="product-brave-leo"></cr-icon>
++    <span class="menu-label">$i18n{leoAssistant}</span>
++    <cr-ripple></cr-ripple>
++  </a>
++    \` : ''}<a role="menuitem" id="braveSync" href="/braveSync" class="cr-nav-menu-item" ?hidden="\${this.shouldHideMenuItem_(
++          this.pageVisibility_?.braveSync)}">
++    <cr-icon icon="product-sync"></cr-icon>
++    <span class="menu-label">$i18n{braveSync}</span>
++    <cr-ripple></cr-ripple>
++  </a><a role="menuitem" id="search" href="/search" class="cr-nav-menu-item">
++          <cr-icon icon="settings:search"></cr-icon>
++          <span class="menu-label">$i18n{searchPageTitle}</span>
+           <cr-ripple></cr-ripple>
+-        </a>
+-        <a role="menuitem" id="ai" href="/ai"
+-            ?hidden="\${!this.showAiPageMenuItem_()}"
+-            class="cr-nav-menu-item">
++        </a><a role="menuitem" id="extensions" href="/extensions" class="cr-nav-menu-item" ?hidden="\${this.shouldHideMenuItem_(
++          this.pageVisibility_?.extensions)}">
++    <cr-icon icon="browser-extensions"></cr-icon>
++    <span class="menu-label">$i18n{braveDefaultExtensions}</span>
++    <cr-ripple></cr-ripple>
++  </a>
++        
++        
++        
++        <a role="menuitem" id="ai" href="/ai" ?hidden="\${!this.showAiPageMenuItem_()}" class="cr-nav-menu-item">
+           <cr-icon icon="settings20:button-magic"></cr-icon>
+           <span class="menu-label">$i18n{aiPageTitle}</span>
+           <cr-ripple></cr-ripple>
+         </a>
+-        <a role="menuitem" id="appearance" href="/appearance"
+-            ?hidden="\${this.shouldHideMenuItem_(this.pageVisibility_?.appearance)}"
+-            class="cr-nav-menu-item">
+-          <cr-icon icon="settings:palette"></cr-icon>
+-          <span class="menu-label">$i18n{appearancePageTitle}</span>
+-          <cr-ripple></cr-ripple>
+-        </a>
+-        <a role="menuitem" id="search" href="/search" class="cr-nav-menu-item">
+-          <cr-icon icon="settings:search"></cr-icon>
+-          <span class="menu-label">$i18n{searchPageTitle}</span>
+-          <cr-ripple></cr-ripple>
+-        </a>
+-<if expr="not is_chromeos">
+-        <a role="menuitem" id="defaultBrowser" class="cr-nav-menu-item"
+-          href="/defaultBrowser"
+-          ?hidden="\${this.shouldHideMenuItem_(this.pageVisibility_?.defaultBrowser)}">
++        
++        
++
++        <a role="menuitem" id="defaultBrowser" class="cr-nav-menu-item" href="/defaultBrowser" ?hidden="\${this.shouldHideMenuItem_(this.pageVisibility_?.defaultBrowser)}">
+           <cr-icon icon="settings:web-asset"></cr-icon>
+           <span class="menu-label">$i18n{defaultBrowser}</span>
+           <cr-ripple></cr-ripple>
+         </a>
+-</if>
+-        <a role="menuitem" id="onStartup" href="/onStartup"
+-            class="cr-nav-menu-item"
+-            ?hidden="\${this.shouldHideMenuItem_(this.pageVisibility_?.onStartup)}">
++
++        <a role="menuitem" id="onStartup" href="/onStartup" class="cr-nav-menu-item" ?hidden="\${this.shouldHideMenuItem_(this.pageVisibility_?.onStartup)}">
+           <cr-icon icon="settings:power-settings-new"></cr-icon>
+           <span class="menu-label">$i18n{onStartup}</span>
+           <cr-ripple></cr-ripple>
+         </a>
+         <div class="menu-separator"></div>
+-        <a role="menuitem" id="languages" href="/languages"
+-            class="cr-nav-menu-item"
+-            ?hidden="\${this.shouldHideMenuItem_(this.pageVisibility_?.languages)}">
++        <a role="menuitem" id="autofill" href="/autofill" @click="\${this.onAutofillClick_}" class="cr-nav-menu-item" ?hidden="\${this.shouldHideMenuItem_(this.pageVisibility_?.yourSavedInfo)}">
++          <cr-icon icon="settings:password-manager"></cr-icon>
++          <span class="menu-label">$i18n{autofillPageTitle}</span>
++          <cr-ripple></cr-ripple>
++        </a><a role="menuitem" id="languages" href="/languages" class="cr-nav-menu-item" ?hidden="\${this.shouldHideMenuItem_(this.pageVisibility_?.languages)}">
+           <cr-icon icon="settings:translate"></cr-icon>
+           <span class="menu-label">$i18n{languagesPageTitle}</span>
+           <cr-ripple></cr-ripple>
+         </a>
+-        <a role="menuitem" id="downloads" href="/downloads"
+-            class="cr-nav-menu-item"
+-            ?hidden="\${this.shouldHideMenuItem_(this.pageVisibility_?.downloads)}">
++        <a role="menuitem" id="downloads" href="/downloads" class="cr-nav-menu-item" ?hidden="\${this.shouldHideMenuItem_(this.pageVisibility_?.downloads)}">
+           <cr-icon icon="settings:download"></cr-icon>
+           <span class="menu-label">$i18n{downloadsPageTitle}</span>
+           <cr-ripple></cr-ripple>
+         </a>
+-        <a role="menuitem" id="accessibility" href="/accessibility"
+-            class="cr-nav-menu-item"
+-            ?hidden="\${this.shouldHideMenuItem_(this.pageVisibility_?.a11y)}">
++        <a role="menuitem" id="accessibility" href="/accessibility" class="cr-nav-menu-item" ?hidden="\${this.shouldHideMenuItem_(this.pageVisibility_?.a11y)}">
+           <cr-icon icon="settings:accessibility"></cr-icon>
+           <span class="menu-label">$i18n{a11yPageTitle}</span>
+           <cr-ripple></cr-ripple>
+         </a>
+-<if expr="not is_chromeos">
+-        <a role="menuitem" id="system" href="/system" class="cr-nav-menu-item"
+-            ?hidden="\${this.shouldHideMenuItem_(this.pageVisibility_?.system)}">
++
++        <a role="menuitem" id="system" href="/system" class="cr-nav-menu-item" ?hidden="\${this.shouldHideMenuItem_(this.pageVisibility_?.system)}">
+           <cr-icon icon="settings:build"></cr-icon>
+           <span class="menu-label">$i18n{systemPageTitle}</span>
+           <cr-ripple></cr-ripple>
+         </a>
+-</if>
+-        <a role="menuitem" id="reset" href="/reset"
+-            ?hidden="\${this.shouldHideMenuItem_(this.pageVisibility_?.reset)}"
+-            class="cr-nav-menu-item">
++
++        <a role="menuitem" id="reset" href="/reset" ?hidden="\${this.shouldHideMenuItem_(this.pageVisibility_?.reset)}" class="cr-nav-menu-item">
+           <cr-icon icon="settings:restart-alt"></cr-icon>
+           <span class="menu-label">$i18n{resetPageTitle}</span>
+           <cr-ripple></cr-ripple>
+         </a>
+-        <div ?hidden="\${this.hideBottomMenuSeparator_()}"
+-            class="menu-separator"></div>
+-        <a role="menuitem" id="extensionsLink" class="cr-nav-menu-item"
+-            href="chrome://extensions" target="_blank"
+-            ?hidden="\${this.shouldHideMenuItem_(this.pageVisibility_?.extensions)}"
+-            @click="\${this.onExtensionsLinkClick_}"
+-            title="$i18n{extensionsLinkTooltip}">
+-          <cr-icon icon="settings:chrome-extension"></cr-icon>
+-          <span class="menu-label">$i18n{extensionsPageTitle}</span>
+-          <div class="cr-icon icon-external"></div>
+-          <cr-ripple></cr-ripple>
+-        </a>
+-        <a role="menuitem" id="about-menu" href="/help"
+-            class="cr-nav-menu-item">
+-          <cr-icon icon="cr:chrome-product"></cr-icon>
+-          <span class="menu-label">$i18n{aboutPageTitle}</span>
+-          <cr-ripple></cr-ripple>
+-        </a>
++        <div ?hidden="\${this.hideBottomMenuSeparator_()}" class="menu-separator"></div>
++        
++        <a role="menuitem" id="about-menu" href="/help">
++      <div class="brave-about-graphic">
++        <img srcset="chrome://theme/current-channel-logo@1x,
++                     chrome://theme/current-channel-logo@2x 2x" width="20px" height="20px">
++      </div>
++      <div class="brave-about-meta">
++        <span class="brave-about-item brave-about-menu-link-text">
++          $i18n{aboutPageTitle}</span>
++        <span class="brave-about-item brave-about-menu-version">
++          v $i18n{braveProductVersion}</span>
++      </div>
++    </a>
+       </cr-menu-selector>
+     </div>
+ 
 "
 `;
 
