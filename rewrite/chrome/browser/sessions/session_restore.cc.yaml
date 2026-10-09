@@ -4,10 +4,56 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
+  - description: |-
+      Select another tab when the active tab is skipped during restore
+
+      When the previously selected tab is skipped, another tab has to be
+      selected in its place. In that case, a different tab (for example,
+      the first one) is marked as active. If no other tab is available,
+      a new empty tab is added.
+    after_function_impl:
+      function_name: RestoreTabsToBrowser
+      code: |-
+        if (auto fallback_index = MaybeAddFallbackTabIfEmpty(browser);
+            fallback_index != TabStripModel::kNoTab && !did_show_browser) {
+          ShowBrowser(browser, fallback_index);
+          did_show_browser = true;
+        }
+  - description: |-
+      Skip restoring a tab scheduled for ephemeral storage cleanup.
+
+      Restoring it would reset the ephemeral storage pending cleanup timer and
+      as result brings back a page already marked to be forgotten.
+    add_after_line:
+      line: 'int selected_index = GetNavigationIndexToSelect(tab);'
+      code: |2-
+
+            if (BraveIsScheduledForCleanup(
+                    tab.navigations[selected_index].virtual_url(), profile_)) {
+              return;
+            }
+  - description: |-
+      Skip opening a tab scheduled for ephemeral storage cleanup.
+
+      Opening it would reset the ephemeral storage pending cleanup timer and
+      as result brings back a page already marked to be forgotten.
+    add_after_line:
+      line: 'const GURL& url = startup_tab.url;'
+      code: |2-
+              if (BraveIsScheduledForCleanup(url, profile_)) {
+                continue;
+              }
   - description: 'Modify navigation params before Navigate call for startup tab'
     regex:
-      re_pattern: |-
-        (.+)(Navigate\(&params\);)
-      replace: |-
-        \1BraveModifyStartupTabNavigationParams(startup_tab, browser, params);
-        \1\2
+      pattern: 'Navigate(&params);'
+      replace: 'BraveNavigateStartupTab(startup_tab, browser, params);'
+  - description: |-
+      Add an empty fallback tab if all startup URLs were skipped
+
+      When opening startup URLs, we only need to handle the case where all
+      of them are scheduled for ephemeral storage cleanup. In that case,
+      MaybeAddFallbackTabIfEmpty should open a new tab.
+    after_function_impl:
+      function_name: AppendURLsToBrowser
+      code: |-
+        MaybeAddFallbackTabIfEmpty(browser);
