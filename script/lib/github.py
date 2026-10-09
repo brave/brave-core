@@ -9,6 +9,8 @@ from builtins import str
 import json
 import base64
 import re
+import time
+import urllib.error
 import urllib.parse
 import urllib.request
 
@@ -19,6 +21,13 @@ except ImportError:
 
 GITHUB_URL = 'https://api.github.com'
 GITHUB_UPLOAD_ASSET_URL = 'https://uploads.github.com'
+# GitHub uses 403 and 429 for rate limits. The rest are temporary outages.
+_TRANSIENT_HTTP_CODES = (403, 429, 500, 502, 503, 504)
+# Do not stall an uplift for a full primary rate-limit window.
+_MAX_RETRY_WAIT_SECONDS = 600
+# A secondary limit can omit Retry-After while the primary quota remains.
+# GitHub requires at least a minute before the next request.
+_SECONDARY_RATE_LIMIT_WAIT_SECONDS = 60
 
 
 class GitHub:
@@ -229,7 +238,10 @@ def add_reviewers_to_pull_request(
             + ')`'
         )
         return
-    response = repo.pulls(pr_number).requested_reviewers.post(data=patch_data)
+    response = _request_with_retry(
+        lambda: repo.pulls(pr_number).requested_reviewers.post(data=patch_data),
+        'requesting reviewers for #' + str(pr_number),
+    )
     if verbose:
         print(
             'repo.pulls('
@@ -298,35 +310,166 @@ def set_issue_details(
     verbose=False,
     dryrun=False,
 ):
-    patch_data = {}
+    # One field per request. A combined PATCH hides which field GitHub
+    # rejected, and a 422 then leaves every field unset.
+    updates = []
     if milestone_number:
-        patch_data['milestone'] = milestone_number
+        updates.append(('milestone', {'milestone': milestone_number}))
     if len(assignees) > 0:
-        patch_data['assignees'] = assignees
+        updates.append(('assignees', {'assignees': assignees}))
     if len(labels) > 0:
-        patch_data['labels'] = labels
+        updates.append(('labels', {'labels': labels}))
     # TODO: error if no keys in patch_data
 
     # add milestone and assignee to issue / pull request
     # for more info see: https://developer.github.com/v3/issues/#edit-an-issue
     if dryrun:
-        print(
-            '[INFO] would call `repo.issues('
-            + str(issue_number)
-            + ').patch('
-            + str(patch_data)
-            + ')`'
-        )
+        for _name, patch_data in updates:
+            print(
+                '[INFO] would call `repo.issues('
+                + str(issue_number)
+                + ').patch('
+                + str(patch_data)
+                + ')`'
+            )
         return
     repo = GitHub(token).repos(repo_name)
-    response = repo.issues(issue_number).patch(data=patch_data)
-    if verbose:
-        print(
-            'repo.issues('
+    errors = []
+    for name, patch_data in updates:
+        try:
+            response = _patch_issue(repo, issue_number, patch_data)
+            if verbose:
+                print(
+                    'repo.issues('
+                    + str(issue_number)
+                    + ').patch('
+                    + name
+                    + ') response:\n'
+                    + str(response)
+                )
+        except Exception as e:
+            errors.append(name + ': ' + str(e))
+    if len(errors) > 0:
+        raise Exception(
+            'failed to update pull request #'
             + str(issue_number)
-            + ').patch(data) response:\n'
-            + str(response)
+            + ':\n'
+            + '\n'.join(errors)
         )
+
+
+def _retry_http_error(code, body):
+    if code in _TRANSIENT_HTTP_CODES:
+        return True
+    if code != 422:
+        return False
+    # A 422 that names a rejected field is permanent. Other 422s are GitHub's
+    # generic failure, including "Could not add requested reviewers".
+    try:
+        parsed = json.loads(body)
+    except ValueError:
+        return True
+    if not isinstance(parsed, dict):
+        return True
+    errors = parsed.get('errors')
+    if not isinstance(errors, list):
+        return True
+    return not any(
+        isinstance(item, dict) and item.get('field') for item in errors
+    )
+
+
+def _rate_limit_wait_seconds(headers):
+    """Seconds GitHub asked us to wait, or None when no header applies.
+
+    X-RateLimit-Reset is the primary quota window, so it applies only when
+    that quota is exhausted.
+    """
+    if not headers:
+        return None
+    retry_after = headers.get('Retry-After')
+    if retry_after is not None:
+        try:
+            return max(0, int(str(retry_after).strip()))
+        except ValueError:
+            pass
+    remaining = headers.get('X-RateLimit-Remaining')
+    reset = headers.get('X-RateLimit-Reset')
+    if remaining is None or str(remaining).strip() != '0' or reset is None:
+        return None
+    try:
+        reset_at = int(str(reset).strip())
+    except ValueError:
+        return None
+    return max(0, reset_at - int(time.time()))
+
+
+def _is_secondary_rate_limit(code, body):
+    # 429 is always a rate limit. A 403 is one only when the body says so.
+    if code == 429:
+        return True
+    return code == 403 and 'secondary rate' in body.lower()
+
+
+def _request_with_retry(action, description):
+    delay_seconds = 2
+    secondary_delay = _SECONDARY_RATE_LIMIT_WAIT_SECONDS
+    for attempt in range(3):
+        try:
+            return action()
+        except urllib.error.HTTPError as e:
+            body = e.read().decode('utf-8', errors='replace')
+            if attempt == 2 or not _retry_http_error(e.code, body):
+                raise Exception(
+                    'HTTP Error ' + str(e.code) + ': ' + body
+                ) from e
+            # No Retry-After and a still-positive primary quota. The reset
+            # header is the wrong window, so back off from one minute.
+            if (
+                _is_secondary_rate_limit(e.code, body)
+                and _rate_limit_wait_seconds(e.headers) is None
+            ):
+                wait = secondary_delay
+                secondary_delay *= 2
+            else:
+                wait = _wait_seconds(delay_seconds, e.headers)
+                delay_seconds *= 2
+        except urllib.error.URLError:
+            if attempt == 2:
+                raise
+            wait = delay_seconds
+            delay_seconds *= 2
+        print(
+            '[WARNING] transient GitHub error '
+            + description
+            + ', retrying in '
+            + str(wait)
+            + 's'
+        )
+        time.sleep(wait)
+
+
+def _wait_seconds(backoff, headers):
+    advised = _rate_limit_wait_seconds(headers)
+    if advised is None or advised <= backoff:
+        return backoff
+    # Sleeping only up to the cap would retry while GitHub is still blocking.
+    if advised > _MAX_RETRY_WAIT_SECONDS:
+        raise Exception(
+            'GitHub asked us to wait '
+            + str(advised)
+            + 's, longer than the '
+            + str(_MAX_RETRY_WAIT_SECONDS)
+            + 's limit'
+        )
+    return advised
+
+
+def _patch_issue(repo, issue_number, patch_data):
+    return _request_with_retry(
+        lambda: repo.issues(issue_number).patch(data=patch_data),
+        'updating ' + str(list(patch_data.keys())),
+    )
 
 
 def fetch_origin_check_staged(path):
