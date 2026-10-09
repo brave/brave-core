@@ -102,6 +102,8 @@ public class AppearancePreferences extends AppearanceSettingsFragment
         if (isTablet || !isAndroidBottomBarEnabled) {
             removePreferenceIfPresent(BravePreferenceKeys.BRAVE_ENABLE_BOTTOM_BAR);
         }
+        // BRAVE_ENABLE_BOTTOM_BAR already turns upstream's bottom bar off.
+        removePreferenceIfPresent(AppearanceSettingsFragment.PREF_BOTTOM_BAR_SWITCH);
 
         mBraveRewardsNativeWorker = BraveRewardsNativeWorker.getInstance();
         if (mBraveRewardsNativeWorker == null || !mBraveRewardsNativeWorker.isSupported()) {
@@ -515,6 +517,9 @@ public class AppearancePreferences extends AppearanceSettingsFragment
                         indexData.removeEntryForKey(
                                 frag, AppearanceSettingsFragment.PREF_BOOKMARK_BAR);
                     }
+
+                    indexData.removeEntryForKey(
+                            frag, AppearanceSettingsFragment.PREF_BOTTOM_BAR_SWITCH);
 
                     if (BraveRewardsPolicy.isDisabledByPolicy(profile)) {
                         indexData.removeEntryForKey(frag, PREF_SHOW_BRAVE_REWARDS_ICON);
