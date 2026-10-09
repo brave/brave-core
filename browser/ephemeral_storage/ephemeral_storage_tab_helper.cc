@@ -6,7 +6,6 @@
 #include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
 
 #include "base/feature_list.h"
-#include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/ephemeral_storage/ephemeral_storage_service.h"
 #include "chrome/browser/content_settings/cookie_settings_factory.h"
@@ -31,7 +30,6 @@ using content::NavigationHandle;
 using content::WebContents;
 
 namespace ephemeral_storage {
-
 
 #if BUILDFLAG(IS_ANDROID)
 namespace {
@@ -89,13 +87,16 @@ void RemoveTabModelObserver(TabModel* tab_model,
 // For more information about the design of ephemeral storage please see the
 // design document at:
 // https://github.com/brave/brave-browser/wiki/Ephemeral-Storage-Design
-EphemeralStorageTabHelper::EphemeralStorageTabHelper(WebContents* web_contents)
+EphemeralStorageTabHelper::EphemeralStorageTabHelper(
+    WebContents* web_contents,
+    EphemeralStorageService* ephemeral_storage_service)
     : WebContentsObserver(web_contents),
       content::WebContentsUserData<EphemeralStorageTabHelper>(*web_contents),
       host_content_settings_map_(HostContentSettingsMapFactory::GetForProfile(
           web_contents->GetBrowserContext())),
       cookie_settings_(CookieSettingsFactory::GetForProfile(
-          Profile::FromBrowserContext(web_contents->GetBrowserContext()))) {
+          Profile::FromBrowserContext(web_contents->GetBrowserContext()))),
+      ephemeral_storage_service_(ephemeral_storage_service) {
 #if BUILDFLAG(IS_ANDROID)
   registered_tab_model_ = AddTabModelObserver(web_contents, this);
 #endif
@@ -118,10 +119,8 @@ EphemeralStorageTabHelper::~EphemeralStorageTabHelper() {
 
 std::optional<base::UnguessableToken>
 EphemeralStorageTabHelper::GetEphemeralStorageToken(const url::Origin& origin) {
-  if (auto* ephemeral_storage_service =
-          EphemeralStorageServiceFactory::GetForContext(
-              web_contents()->GetBrowserContext())) {
-    return ephemeral_storage_service->Get1PESToken(origin);
+  if (ephemeral_storage_service_) {
+    return ephemeral_storage_service_->Get1PESToken(origin);
   }
   return std::nullopt;
 }
@@ -199,7 +198,8 @@ void EphemeralStorageTabHelper::CreateEphemeralStorageAreasForDomainAndURL(
 
   tld_ephemeral_lifetime_ = TLDEphemeralLifetime::GetOrCreate(
       {browser_context, new_domain,
-       site_instance->GetSecurityPrincipal().GetStoragePartitionConfig()});
+       site_instance->GetSecurityPrincipal().GetStoragePartitionConfig()},
+      ephemeral_storage_service_);
 }
 
 void EphemeralStorageTabHelper::CreateProvisionalTLDEphemeralLifetime(
@@ -222,10 +222,12 @@ void EphemeralStorageTabHelper::CreateProvisionalTLDEphemeralLifetime(
   auto* browser_context = web_contents()->GetBrowserContext();
   auto* site_instance = web_contents()->GetSiteInstance();
 
-  provisional_tld_ephemeral_lifetimes_.emplace(
-      TLDEphemeralLifetime::GetOrCreate(
+  if (auto lifetime = TLDEphemeralLifetime::GetOrCreate(
           {browser_context, new_domain,
-           site_instance->GetSecurityPrincipal().GetStoragePartitionConfig()}));
+           site_instance->GetSecurityPrincipal().GetStoragePartitionConfig()},
+          ephemeral_storage_service_)) {
+    provisional_tld_ephemeral_lifetimes_.emplace(std::move(lifetime));
+  }
 }
 
 void EphemeralStorageTabHelper::UpdateShieldsState(const GURL& url) {
