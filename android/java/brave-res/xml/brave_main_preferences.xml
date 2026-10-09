@@ -35,11 +35,6 @@
         android:order="3"
         android:title="@string/brave_ui_brave_wallet"/>
     <org.chromium.components.browser_ui.settings.ChromeBasePreference
-        android:key="brave_rewards"
-        android:icon="@drawable/ic_product_bat_outline"
-        android:order="3"
-        android:title="@string/settings_brave_rewards_title"/>
-    <org.chromium.components.browser_ui.settings.ChromeBasePreference
         android:fragment="org.chromium.chrome.browser.vpn.settings.BraveVpnPreferences"
         android:key="brave_vpn"
         android:icon="@drawable/ic_product_vpn"
