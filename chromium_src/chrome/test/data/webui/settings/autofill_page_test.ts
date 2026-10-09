@@ -20,10 +20,10 @@ import {
   PrefService,
   PrefsBrowserProxy,
   resetRouterForTesting,
+  // <if expr="enable_email_aliases">
+  Router,
+  // </if>
 } from 'chrome://settings/settings.js'
-// <if expr="enable_email_aliases">
-import {Router} from 'chrome://settings/settings.js'
-// </if>
 import {
   assertEquals,
   assertFalse,
