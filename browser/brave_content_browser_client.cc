@@ -177,6 +177,10 @@
 
 #if BUILDFLAG(ENABLE_LOCAL_AI)
 #include "brave/browser/speech/on_device_speech_recognition_controller.h"
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/browser/ui/webui/ai_chat/learned_memory_internals_ui.h"
+#include "brave/components/ai_chat/core/common/mojom/learned_memory_internals.mojom.h"
+#endif
 #include "brave/browser/ui/webui/local_ai/on_device_speech_recognition_worker_ui.h"
 #include "brave/components/local_ai/core/features.h"
 #include "brave/components/local_ai/core/on_device_speech_recognition.mojom.h"
@@ -734,6 +738,10 @@ void BraveContentBrowserClient::RegisterTrustedWebUIInterfaceBrokers(
     registry.ForWebUI<AIChatUntrustedConversationUI>()
         .Add<ai_chat::mojom::UntrustedUIHandler>()
         .Add<ai_chat::mojom::UntrustedService>();
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+    registry.ForWebUI<ai_chat::LearnedMemoryInternalsUI>()
+        .Add<ai_chat::mojom::LearnedMemoryInternals>();
+#endif
   }
 #endif
 

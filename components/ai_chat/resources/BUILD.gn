@@ -5,6 +5,7 @@
 
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/common/typescript.gni")
+import("//brave/components/local_ai/buildflags/buildflags.gni")
 import("//tools/grit/preprocess_if_expr.gni")
 
 assert(enable_ai_chat)
@@ -39,6 +40,13 @@ transpile_web_ui("ai_chat_ui") {
     ],
   ]
 
+  if (enable_local_ai) {
+    entry_points += [ [
+          "learned_memory_internals",
+          rebase_path("learned_memory_internals/index.tsx"),
+        ] ]
+  }
+
   imports_from = [ "//brave/components/ai_chat/resources/" ]
 
   deps = [
@@ -55,6 +63,7 @@ preprocess_if_expr("preprocess_html") {
     "code_sandbox/code_sandbox.html",
     "leo_workspace/leo_workspace.html",
     "leo_workspace/leo_workspace_view.html",
+    "learned_memory_internals/learned_memory_internals.html",
     "page/ai_chat_ui.html",
     "untrusted_conversation_frame/untrusted_conversation_frame.html",
   ]

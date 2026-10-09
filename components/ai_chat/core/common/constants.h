@@ -47,6 +47,10 @@ inline constexpr int kFaviconDataURLSizeInPixels = 64;
 // tree by checking the top-level frame's origin (see
 // chromium_src/third_party/blink/renderer/modules/peerconnection/
 // rtc_peer_connection.cc).
+// The internals page that shows what Dreaming asked the local models and what
+// they answered.
+inline constexpr char kLeoMemoryInternalsHost[] = "leo-memory-internals";
+
 inline constexpr char kAIChatCodeSandboxUIHost[] = "aichat-code-sandbox";
 inline constexpr char kAIChatCodeSandboxUIURL[] =
     "chrome-untrusted://aichat-code-sandbox/";

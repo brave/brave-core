@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+import("//brave/components/local_ai/buildflags/buildflags.gni")
 import("//mojo/public/tools/bindings/mojom.gni")
 
 mojom_component("mojom") {
@@ -26,6 +27,10 @@ mojom_component("mojom") {
     "tab_tracker.mojom",
     "untrusted_frame.mojom",
   ]
+
+  if (enable_local_ai) {
+    sources += [ "learned_memory_internals.mojom" ]
+  }
 
   enabled_features = []
 

@@ -93,6 +93,11 @@ source_set("ai_chat") {
   }
 
   if (enable_local_ai) {
+    sources += [
+      "learned_memory_internals_ui.cc",
+      "learned_memory_internals_ui.h",
+    ]
+
     # SearchForTabs ranks the user's open tabs with on-device history
     # embeddings; open_tab_search is desktop only.
     deps += [

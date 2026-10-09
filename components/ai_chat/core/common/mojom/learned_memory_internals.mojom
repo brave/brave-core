@@ -1,0 +1,33 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module ai_chat.mojom;
+
+import "mojo/public/mojom/base/time.mojom";
+
+// A Dreaming run, for brave://leo-memory-internals.
+struct DreamingRunRecord {
+  uint64 id;
+  // "timer", "dream_now" or "eval".
+  string trigger;
+  mojo_base.mojom.Time start_time;
+  // Null while the run is active.
+  mojo_base.mojom.Time? end_time;
+  // How the run ended ("completed", "timed_out", ...), or "running".
+  string status;
+  // The steps of the run as a JSON list. Each step has "step" (its name) and
+  // "t_ms" (the time since the start of the run). A step that asked the
+  // decision model has "decision_requests": each request as sent and its
+  // answer as received. An "llm_call" step has the prompts and the answer.
+  string trace_json;
+};
+
+// Debugging of learned memory: what Dreaming asked the local models and what
+// they answered. Nothing of it is stored on disk.
+interface LearnedMemoryInternals {
+  // The active run and the last runs, the newest first. |available| is false
+  // when learned memory does not run in this profile.
+  GetDreamingRuns() => (bool available, array<DreamingRunRecord> runs);
+};

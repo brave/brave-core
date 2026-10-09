@@ -13,6 +13,7 @@
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/email_aliases/buildflags/buildflags.h"
+#include "brave/components/local_ai/buildflags/buildflags.h"
 #include "brave/components/psst/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "content/public/browser/webui_config_map.h"
@@ -20,6 +21,10 @@
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
 #include "brave/components/ai_chat/core/common/features.h"
+#endif
+
+#if BUILDFLAG(ENABLE_AI_CHAT) && BUILDFLAG(ENABLE_LOCAL_AI)
+#include "brave/browser/ui/webui/ai_chat/learned_memory_internals_ui.h"
 #endif
 
 #define RegisterChromeWebUIConfigs RegisterChromeWebUIConfigs_ChromiumImpl
@@ -154,6 +159,10 @@ void RegisterChromeWebUIConfigs() {
 #if BUILDFLAG(ENABLE_AI_CHAT)
   if (ai_chat::features::IsAIChatEnabled()) {
     map.AddWebUIConfig(std::make_unique<AIChatUIConfig>());
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+    map.AddWebUIConfig(
+        std::make_unique<ai_chat::LearnedMemoryInternalsUIConfig>());
+#endif
   }
 #endif
 
