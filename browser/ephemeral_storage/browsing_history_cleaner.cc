@@ -25,8 +25,10 @@ BrowsingHistoryCleaner::BrowsingHistoryCleaner(
     : profile_(profile) {
   CHECK(history_service);
   CHECK(sync_service);
+  // No device tracker is needed as the service is not used to call
+  // `GetAllSyncedClientsGroupedByName`.
   browsing_history_service_ = std::make_unique<history::BrowsingHistoryService>(
-      this, history_service, sync_service);
+      this, history_service, sync_service, /*device_info_tracker=*/nullptr);
 }
 
 BrowsingHistoryCleaner::~BrowsingHistoryCleaner() = default;
