@@ -14,7 +14,6 @@ import("//brave/browser/ephemeral_storage/sources.gni")
 import("//brave/browser/gcm_driver/sources.gni")
 import("//brave/browser/misc_metrics/sources.gni")
 import("//brave/browser/net/sources.gni")
-import("//brave/browser/new_tab/sources.gni")
 import("//brave/browser/onboarding/sources.gni")
 import("//brave/browser/perf/sources.gni")
 import("//brave/browser/permissions/sources.gni")
@@ -447,6 +446,7 @@ if (!is_android) {
 
   brave_chrome_browser_deps += [
     "//brave/browser/infobars:impl",
+    "//brave/browser/new_tab:impl",
     "//brave/browser/ui/split_view",
     "//brave/browser/ui/tabs:impl",
     "//brave/browser/ui/views/page_action:impl",
@@ -821,7 +821,6 @@ brave_chrome_browser_sources += brave_browser_ephemeral_storage_sources
 brave_chrome_browser_sources += brave_browser_gcm_driver_sources
 brave_chrome_browser_sources += brave_browser_misc_metrics_sources
 brave_chrome_browser_sources += brave_browser_net_sources
-brave_chrome_browser_sources += brave_browser_new_tab_sources
 brave_chrome_browser_sources += brave_browser_perf_sources
 brave_chrome_browser_sources += brave_browser_permissions_sources
 brave_chrome_browser_sources += brave_browser_renderer_context_menu_sources
@@ -842,7 +841,6 @@ brave_chrome_browser_deps += brave_browser_ephemeral_storage_deps
 brave_chrome_browser_deps += brave_browser_gcm_driver_deps
 brave_chrome_browser_deps += brave_browser_misc_metrics_deps
 brave_chrome_browser_deps += brave_browser_net_deps
-brave_chrome_browser_deps += brave_browser_new_tab_deps
 brave_chrome_browser_deps += brave_browser_perf_deps
 brave_chrome_browser_deps += brave_browser_permissions_deps
 brave_chrome_browser_deps += brave_browser_renderer_context_menu_deps

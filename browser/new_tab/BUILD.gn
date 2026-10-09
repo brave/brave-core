@@ -3,18 +3,54 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-if (is_win) {
-  source_set("background_color_tab_helper") {
+if (!is_android) {
+  source_set("new_tab") {
     sources = [
-      "background_color_tab_helper.cc",
-      "background_color_tab_helper.h",
+      "new_tab_shows_navigation_throttle.h",
+      "new_tab_shows_options.h",
     ]
-    deps = [
-      "//chrome/browser/ui/color:color_headers",
-      "//chrome/browser/ui/tabs:tabs_public",
+    public_deps = [
+      "//base",
       "//content/public/browser",
-      "//ui/color",
+      "//url",
     ]
+
+    if (is_win) {
+      sources += [ "background_color_tab_helper.h" ]
+      public_deps += [ "//chrome/browser/ui/tabs:tabs_public" ]
+    }
+  }
+
+  source_set("impl") {
+    visibility = [ "//brave/browser:core" ]
+
+    sources = [
+      "new_tab_shows_navigation_throttle.cc",
+      "new_tab_shows_options.cc",
+    ]
+
+    public_deps = [ ":new_tab" ]
+
+    deps = [
+      "//base",
+      "//brave/app:brave_generated_resources_grit",
+      "//brave/components/constants",
+      "//chrome/browser/profiles:profile",
+      "//chrome/browser/ui/webui/ntp",
+      "//chrome/common",
+      "//components/prefs",
+      "//content/public/browser",
+      "//ui/base",
+      "//url",
+    ]
+
+    if (is_win) {
+      sources += [ "background_color_tab_helper.cc" ]
+      deps += [
+        "//chrome/browser/ui/color:color_headers",
+        "//ui/color",
+      ]
+    }
   }
 }
 
@@ -44,6 +80,7 @@ source_set("unittest") {
   if (!is_android) {
     sources = [ "new_tab_shows_options_unittest.cc" ]
     deps = [
+      ":new_tab",
       "//brave/browser",
       "//brave/common",
       "//brave/components/constants",
