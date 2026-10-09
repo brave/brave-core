@@ -41,6 +41,7 @@ static_library("psst") {
     "//chrome/browser/ui/tabs",
     "//chrome/browser/ui/webui",
     "//components/content_settings/core/browser",
+    "//components/crx_file",
     "//components/infobars/core",
     "//components/permissions",
     "//components/prefs",

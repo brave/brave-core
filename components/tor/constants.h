@@ -6,64 +6,52 @@
 #ifndef BRAVE_COMPONENTS_TOR_CONSTANTS_H_
 #define BRAVE_COMPONENTS_TOR_CONSTANTS_H_
 
+#include <cstdint>
+#include <iterator>
+
 #include "base/compiler_specific.h"
 #include "base/files/file_path.h"
 #include "base/files/safe_base_name.h"
 #include "build/build_config.h"
+#include "crypto/sha2.h"
 
 namespace tor {
 
 #if BUILDFLAG(IS_WIN)
 inline constexpr char kTorClientComponentName[] =
     "Brave Tor Client Updater (Windows)";
-inline constexpr char kTorClientComponentId[] =
-    "cpoalefficncklhjfpglfiplenlpccdb";
-inline constexpr char kTorClientComponentBase64PublicKey[] =
-    "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA1AYAsmR/VoRwkZCsjRpD"
-    "58xjrgngW5y17H6BqQ7/CeNSpmXlcMXy6bJs2D/yeS96rhZSrQSHTzS9h/ieo/NZ"
-    "F5PIwcv07YsG5sRd6zF5a6m92aWCQa1OkbL6jpcpL2Tbc4mCqNxhKMErT7EtIIWL"
-    "9cW+mtFUjUjvV3rJLQ3Vy9u6fEi77Y8b25kGnTJoVt3uETAIHBnyNpL7ac2f8Iq+"
-    "4Qa6VFmuoBhup54tTZvMv+ikoKKaQkHzkkjTa4hV5AzdnFDKO8C9qJb3T/Ef0+MO"
-    "IuZjyySVzGNcOfASeHkhxhlwMQSQuhCN5mdFW5YBnVZ/5QWx8WzbhqBny/ZynS4e"
-    "rQIDAQAB";
+inline constexpr uint8_t kTorClientComponentPublicKeySHA256[32] = {
+    0x2f, 0xe0, 0xb4, 0x55, 0x82, 0xd2, 0xab, 0x79, 0x5f, 0x6b, 0x58,
+    0xfb, 0x4d, 0xbf, 0x22, 0x31, 0xdd, 0x3b, 0xf4, 0xf6, 0x50, 0x9e,
+    0xdb, 0xd4, 0xec, 0xa7, 0xef, 0x63, 0xed, 0x9d, 0x0f, 0xc7};
+static_assert(std::size(kTorClientComponentPublicKeySHA256) ==
+              crypto::kSHA256Length);
 #elif BUILDFLAG(IS_MAC)
 inline constexpr char kTorClientComponentName[] =
     "Brave Tor Client Updater (Mac)";
-inline constexpr char kTorClientComponentId[] =
-    "cldoidikboihgcjfkhdeidbpclkineef";
-inline constexpr char kTorClientComponentBase64PublicKey[] =
-    "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAw2QUXSbVuRxYpItYApZ8"
-    "Ly/fGeUD3A+vb3J7Ot62CF32wTfWweANWyyB+EBGfbtNDAuRlAbNk0QYeCQEttuf"
-    "jLh3Kd5KR5fSyyNNd2cAzAckQ8p7JdiFYjvqZLGC5vlnHgqq4O8xACX5EPwHLNFD"
-    "iSpsthNmz3GCUrHrzPHjHVfy+IuucQXygnRv2fwIaAIxJmTbYm4fqsGKpfolWdMe"
-    "jKVAy1hc9mApZSyt4oGvUu4SJZnxlYMrY4Ze+OWbDesi2JGy+6dA1ddL9IdnwCb3"
-    "9CBOMNjaHeCVz0MKxdCWGPieQM0R7S1KvDCVqAkss6NAbLB6AVM0JulqxC9b+hr/"
-    "xwIDAQAB";
+inline constexpr uint8_t kTorClientComponentPublicKeySHA256[32] = {
+    0x2b, 0x3e, 0x83, 0x8a, 0x1e, 0x87, 0x62, 0x95, 0xa7, 0x34, 0x83,
+    0x1f, 0x2b, 0xa8, 0xd4, 0x45, 0x6c, 0x2b, 0xea, 0x12, 0x65, 0x2f,
+    0x2e, 0xce, 0xfa, 0x83, 0x65, 0xd5, 0x33, 0x2c, 0x13, 0xb2};
+static_assert(std::size(kTorClientComponentPublicKeySHA256) ==
+              crypto::kSHA256Length);
 #elif BUILDFLAG(IS_LINUX)
 inline constexpr char kTorClientComponentName[] =
     "Brave Tor Client Updater (Linux)";
 #if defined(ARCH_CPU_ARM64)
-inline constexpr char kTorClientComponentId[] =
-    "monolafkoghdlanndjfeebmdfkbklejg";
-inline constexpr char kTorClientComponentBase64PublicKey[] =
-    "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAzqb14fggDpbjZtv3HKmR"
-    "UTnvfDTcqVbVZo0DdCHQi6SwxDlRweGwsvsHuy9U37VBr41ha/neemQGf+5qkWgY"
-    "y+mzzAkb5ZtrHkBSOOsZdyO9WEj7GwXuAx9FvcxG2zPpA/CvagnC14VhMyUFLL8v"
-    "XdfHYPmQOtIVdW3eR0G/4JP/mTbnAEkipQfxrDMtDVpX+FDB+Zy5yEMGKWHRLcdH"
-    "bHUgb/VhB9ppt0LKRjM44KSpyPDlYquXNcn3WFmxHoVm7PZ3LTAn3eSNZrT4ptmo"
-    "KveT4LgWtObrHoZtrg+/LnHAi1GYf8PHrRc+o/FptobOWoUN5lt8NvhLjv85ERBt"
-    "rQIDAQAB";
+inline constexpr uint8_t kTorClientComponentPublicKeySHA256[32] = {
+    0xce, 0xde, 0xb0, 0x5a, 0xe6, 0x73, 0xb0, 0xdd, 0x39, 0x54, 0x41,
+    0xc3, 0x5a, 0x1a, 0xb4, 0x96, 0x79, 0x29, 0x31, 0x93, 0x09, 0x9c,
+    0xe0, 0x77, 0xb2, 0x76, 0x58, 0xe8, 0x51, 0x56, 0xfd, 0x32};
+static_assert(std::size(kTorClientComponentPublicKeySHA256) ==
+              crypto::kSHA256Length);
 #else  // #if defined(ARCH_CPU_ARM64)
-inline constexpr char kTorClientComponentId[] =
-    "biahpgbdmdkfgndcmfiipgcebobojjkp";
-inline constexpr char kTorClientComponentBase64PublicKey[] =
-    "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAseuq8dXKawkZC7RSE7xb"
-    "lRwh6DD+oPEGEjZWKh596/42IrWNQw60gRIR6s7x0YHh5geFnBRkx9bisEXOrFkq"
-    "oArVY7eD0gMkjpor9CneD5CnCxc9/2uIPajtXfAmmLAHtN6Wk7yW30SkRf/WvLWX"
-    "/H+PqskQBN7I5MO7sveYxSrRMSj7prrFHEiFmXTgG/DwjpzrA7KV6vmzz/ReD51o"
-    "+UuLHE7cxPhnsNd/52uY3Lod3GhxvDoXKYx9kWlzBjxB53A2eLBCDIwwCpqS4/Ib"
-    "RSJhvF33KQT8YM+7V1MitwB49klP4aEWPXwOlFHmn9Dkmlx2RbO7S0tRcH9UH4LK"
-    "2QIDAQAB";
+inline constexpr uint8_t kTorClientComponentPublicKeySHA256[32] = {
+    0x18, 0x07, 0xf6, 0x13, 0xc3, 0xa5, 0x6d, 0x32, 0xc5, 0x88, 0xf6,
+    0x24, 0x1e, 0x1e, 0x99, 0xaf, 0xb2, 0xde, 0x25, 0xc7, 0xd0, 0xbe,
+    0x15, 0x86, 0xe8, 0xba, 0xa6, 0xc5, 0x36, 0x65, 0x70, 0x02};
+static_assert(std::size(kTorClientComponentPublicKeySHA256) ==
+              crypto::kSHA256Length);
 #endif
 #endif
 

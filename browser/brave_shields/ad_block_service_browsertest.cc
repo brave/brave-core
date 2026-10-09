@@ -14,6 +14,7 @@
 
 #include "base/base64.h"
 #include "base/check.h"
+#include "base/containers/span.h"
 #include "base/files/file_util.h"
 #include "base/functional/callback_helpers.h"
 #include "base/memory/raw_ptr.h"
@@ -63,6 +64,7 @@
 #include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
+#include "crypto/sha2.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "net/test/embedded_test_server/install_default_websocket_handlers.h"
@@ -100,11 +102,6 @@ constexpr char kAdBlockTestPage[] = "/blocking.html";
 
 constexpr char kAdBlockEasyListFranceUUID[] =
     "9852EFC4-99E4-4F2D-A915-9C3196C7A1DE";
-
-constexpr char kDefaultAdBlockComponentTestId[] =
-    "naccapggpomhlhoifnlebfoocegenbol";
-constexpr char kRegionalAdBlockComponentTestId[] =
-    "dlpmaigjliompnelofkljgcmlenklieh";
 
 constexpr char kDefaultAdBlockComponentTest64PublicKey[] =
     "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtV7Vr69kkvSvu2lhcMDh"
@@ -388,10 +385,13 @@ void AdBlockServiceTest::InstallComponent(
 }
 
 void AdBlockServiceTest::InstallDefaultAdBlockComponent() {
+  const std::optional<std::vector<uint8_t>> decoded_public_key =
+      base::Base64Decode(kDefaultAdBlockComponentTest64PublicKey);
+  CHECK(decoded_public_key);
   auto catalog_entry = brave_shields::FilterListCatalogEntry(
       "default", "", "Brave Ad Block Updater", {}, "",
       "Default lists for Brave Browser", true, true, true, 0, {},
-      kDefaultAdBlockComponentTestId, kDefaultAdBlockComponentTest64PublicKey);
+      crypto::SHA256Hash(*decoded_public_key));
 
   InstallComponent(catalog_entry);
 }
@@ -399,12 +399,14 @@ void AdBlockServiceTest::InstallDefaultAdBlockComponent() {
 void AdBlockServiceTest::InstallRegionalAdBlockComponent(
     const std::string& uuid,
     bool enable_list) {
+  const std::optional<std::vector<uint8_t>> decoded_public_key =
+      base::Base64Decode(kRegionalAdBlockComponentTest64PublicKey);
+  CHECK(decoded_public_key);
   auto catalog_entry = brave_shields::FilterListCatalogEntry(
       uuid, "https://easylist-downloads.adblockplus.org/liste_fr.txt",
       "EasyList Liste FR", {"fr"}, "https://forums.lanik.us/viewforum.php?f=91",
       "Removes advertisements from French websites", false, enable_list, false,
-      0, {}, kRegionalAdBlockComponentTestId,
-      kRegionalAdBlockComponentTest64PublicKey);
+      0, {}, crypto::SHA256Hash(*decoded_public_key));
 
   InstallComponent(catalog_entry);
 }
@@ -2096,11 +2098,11 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, HiddenListsNotPresented) {
   filter_list_catalog.push_back(brave_shields::FilterListCatalogEntry(
       "uuid1", "https://example.com", "Hidden list", {},
       "https://support.example.com", "first list", true, false, false, 0, {},
-      "testid1", "pubkey1"));
+      crypto::SHA256Hash(base::as_byte_span(std::string_view("pubkey1")))));
   filter_list_catalog.push_back(brave_shields::FilterListCatalogEntry(
       "uuid2", "https://example.com", "Normal list", {},
       "https://support.example.com", "second list", false, false, false, 0, {},
-      "testid2", "pubkey2"));
+      crypto::SHA256Hash(base::as_byte_span(std::string_view("pubkey2")))));
   component_service_manager()->SetFilterListCatalog(filter_list_catalog);
 
   auto regional_lists = component_service_manager()->GetRegionalLists();

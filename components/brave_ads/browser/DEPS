@@ -2,11 +2,13 @@
 include_rules = [
   "+brave/components/constants",
   "+components/content_settings",
+  "+components/crx_file",
   "+components/metrics",
   "+components/history",
   "+components/prefs",
   "+components/variations",
   "+content/public/browser",
+  "+crypto",
   "+mojo/public/cpp/bindings",
   "+third_party/blink/public",
   "+ui/message_center/public",

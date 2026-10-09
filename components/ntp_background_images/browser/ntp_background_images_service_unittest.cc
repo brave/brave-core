@@ -33,6 +33,7 @@
 #include "brave/components/ntp_background_images/browser/url_constants.h"
 #include "build/build_config.h"
 #include "components/component_updater/mock_component_updater_service.h"
+#include "components/crx_file/id_util.h"
 #include "components/prefs/testing_pref_service.h"
 #include "components/update_client/update_client.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -377,10 +378,10 @@ constexpr char kTestBackgroundImages[] = R"(
     })";
 
 std::string GetComponentId(std::string_view country_code) {
-  std::optional<SponsoredImagesComponentInfo> component =
-      GetSponsoredImagesComponent(country_code);
-  CHECK(component);
-  return std::string(component->id);
+  std::optional<std::array<uint8_t, crypto::kSHA256Length>> public_key_sha256 =
+      GetComponentPublicKeySHA256(country_code);
+  CHECK(public_key_sha256);
+  return crx_file::id_util::GenerateIdFromHash(*public_key_sha256);
 }
 
 class ObserverMock : public NTPBackgroundImagesService::Observer {

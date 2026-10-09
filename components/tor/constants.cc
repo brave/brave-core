@@ -9,6 +9,7 @@
 #include "base/path_service.h"
 #include "build/build_config.h"
 #include "components/component_updater/component_updater_paths.h"
+#include "components/crx_file/id_util.h"
 
 #if BUILDFLAG(IS_WIN)
 #include "base/command_line.h"
@@ -41,7 +42,8 @@ base::FilePath GetUserDataDir() {
 }  // namespace
 
 base::FilePath GetTorClientDirectory() {
-  return GetUserDataDir().AppendASCII(kTorClientComponentId);
+  return GetUserDataDir().AppendASCII(crx_file::id_util::GenerateIdFromHash(
+      kTorClientComponentPublicKeySHA256));
 }
 
 base::FilePath GetClientExecutablePath(const base::SafeBaseName& install_dir,

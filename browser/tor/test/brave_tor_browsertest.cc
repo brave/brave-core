@@ -29,6 +29,7 @@
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/tor/brave_tor_client_updater.h"
 #include "brave/components/tor/brave_tor_pluggable_transport_updater.h"
+#include "brave/components/tor/constants.h"
 #include "brave/components/tor/tor_launcher_factory.h"
 #include "brave/components/tor/tor_launcher_observer.h"
 #include "brave/components/tor/tor_profile_service.h"
@@ -48,6 +49,7 @@
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/autofill/content/browser/content_autofill_driver.h"
 #include "components/autofill/core/browser/foundations/browser_autofill_manager.h"
+#include "components/crx_file/id_util.h"
 #include "components/policy/core/common/policy_pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/ssl_host_state_delegate.h"
@@ -157,11 +159,13 @@ class BraveTorBrowserTest : public InProcessBrowserTest {
   }
 
   void DownloadTorClient() const {
-    DownloadTorComponent(tor::kTorClientComponentId);
+    DownloadTorComponent(crx_file::id_util::GenerateIdFromHash(
+        tor::kTorClientComponentPublicKeySHA256));
   }
 
   void DownloadTorPluggableTransports() const {
-    DownloadTorComponent(tor::kTorPluggableTransportComponentId);
+    DownloadTorComponent(crx_file::id_util::GenerateIdFromHash(
+        tor::kTorPluggableTransportComponentPublicKeySHA256));
   }
 
   void SetUpDefaultCommandLine(base::CommandLine* command_line) override {
@@ -255,7 +259,8 @@ IN_PROC_BROWSER_TEST_F(BraveTorBrowserTest, OpenCloseDisableTorWindow) {
     WaitForUpdaterThread(g_brave_browser_process->tor_client_updater());
     content::RunAllTasksUntilIdle();
 
-    EXPECT_FALSE(CheckComponentExists(tor::kTorClientComponentId));
+    EXPECT_FALSE(CheckComponentExists(crx_file::id_util::GenerateIdFromHash(
+        tor::kTorClientComponentPublicKeySHA256)));
   }
 }
 
@@ -300,7 +305,8 @@ IN_PROC_BROWSER_TEST_F(BraveTorWithCustomProfileBrowserTest,
   EXPECT_TRUE(tor.tor_profile);
 
   // Pluggable transport component isn't installed.
-  EXPECT_FALSE(CheckComponentExists(tor::kTorPluggableTransportComponentId));
+  EXPECT_FALSE(CheckComponentExists(crx_file::id_util::GenerateIdFromHash(
+      tor::kTorPluggableTransportComponentPublicKeySHA256)));
   EXPECT_EQ(
       0, base::GetProcessCount(
              base::FilePath::FromASCII(tor::kSnowflakeExecutableName).value(),
@@ -318,7 +324,8 @@ IN_PROC_BROWSER_TEST_F(BraveTorWithCustomProfileBrowserTest,
   TorProfileServiceFactory::SetTorBridgesConfig(bridges_config);
 
   // Wait Snowflake executable is launched.
-  EXPECT_TRUE(CheckComponentExists(tor::kTorPluggableTransportComponentId));
+  EXPECT_TRUE(CheckComponentExists(crx_file::id_util::GenerateIdFromHash(
+      tor::kTorPluggableTransportComponentPublicKeySHA256)));
   WaitForProcess(tor::kSnowflakeExecutableName);
 
   EXPECT_TRUE(
@@ -351,7 +358,8 @@ IN_PROC_BROWSER_TEST_F(BraveTorWithCustomProfileBrowserTest,
 IN_PROC_BROWSER_TEST_F(BraveTorWithCustomProfileBrowserTest,
                        MAYBE_SetupBridges) {
   // Tor is disabled in PRE, check pluggable transports are removed.
-  EXPECT_FALSE(CheckComponentExists(tor::kTorPluggableTransportComponentId));
+  EXPECT_FALSE(CheckComponentExists(crx_file::id_util::GenerateIdFromHash(
+      tor::kTorPluggableTransportComponentPublicKeySHA256)));
 
   // Pluggable transport processes was terminated at exit.
   EXPECT_EQ(
@@ -479,7 +487,8 @@ IN_PROC_BROWSER_TEST_F(BraveTorBrowserTest, MAYBE_PRE_ResetBridges) {
   EXPECT_TRUE(tor.tor_profile);
 
   // Wait Snowflake executable is launched.
-  EXPECT_TRUE(CheckComponentExists(tor::kTorPluggableTransportComponentId));
+  EXPECT_TRUE(CheckComponentExists(crx_file::id_util::GenerateIdFromHash(
+      tor::kTorPluggableTransportComponentPublicKeySHA256)));
   WaitForProcess(tor::kSnowflakeExecutableName);
 
   // Reset bridges
@@ -498,8 +507,10 @@ IN_PROC_BROWSER_TEST_F(BraveTorBrowserTest, MAYBE_PRE_ResetBridges) {
 IN_PROC_BROWSER_TEST_F(BraveTorBrowserTest, MAYBE_ResetBridges) {
   // Tor is enabled and bridges are disabled check pluggable transports are
   // removed.
-  EXPECT_TRUE(CheckComponentExists(tor::kTorClientComponentId));
-  EXPECT_FALSE(CheckComponentExists(tor::kTorPluggableTransportComponentId));
+  EXPECT_TRUE(CheckComponentExists(crx_file::id_util::GenerateIdFromHash(
+      tor::kTorClientComponentPublicKeySHA256)));
+  EXPECT_FALSE(CheckComponentExists(crx_file::id_util::GenerateIdFromHash(
+      tor::kTorPluggableTransportComponentPublicKeySHA256)));
 }
 
 IN_PROC_BROWSER_TEST_F(BraveTorBrowserTest, HttpAllowlistIsolation) {

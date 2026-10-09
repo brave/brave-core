@@ -23,8 +23,8 @@ LocalDataFilesService::~LocalDataFilesService() {
 bool LocalDataFilesService::Start() {
   if (initialized_)
     return true;
-  Register(kLocalDataFilesComponentName, kLocalDataFilesComponentId,
-           kLocalDataFilesComponentBase64PublicKey);
+  Register(kLocalDataFilesComponentName,
+           kLocalDataFilesComponentPublicKeySHA256);
   initialized_ = true;
   return true;
 }

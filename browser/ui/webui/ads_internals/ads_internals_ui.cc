@@ -5,6 +5,8 @@
 
 #include "brave/browser/ui/webui/ads_internals/ads_internals_ui.h"
 
+#include <array>
+#include <cstdint>
 #include <optional>
 #include <string>
 #include <utility>
@@ -26,11 +28,13 @@
 #include "chrome/browser/new_tab_page/prefs/ntp_pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/component_updater/component_updater_service.h"
+#include "components/crx_file/id_util.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/prefs/pref_service.h"
 #include "components/variations/service/variations_service.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
+#include "crypto/sha2.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
 #include "base/feature_list.h"
@@ -82,12 +86,13 @@ GetCountryResourceComponentIdCallback() {
     // country, one per language) rather than having their own individual
     // component IDs. See `ResourceComponent::RegisterCountryComponent`/
     // `RegisterLanguageComponent`.
-    const std::optional<brave_ads::ComponentInfo> component =
-        brave_ads::GetComponent(brave_ads::CurrentCountryCode());
-    if (!component) {
+    const std::optional<std::array<uint8_t, crypto::kSHA256Length>>
+        public_key_sha256 = brave_ads::GetComponentPublicKeySHA256(
+            brave_ads::CurrentCountryCode());
+    if (!public_key_sha256) {
       return std::nullopt;
     }
-    return std::string(component->id);
+    return crx_file::id_util::GenerateIdFromHash(*public_key_sha256);
   });
 }
 
@@ -95,12 +100,13 @@ AdsInternalsHandler::GetComponentIdCallback
 GetLanguageResourceComponentIdCallback() {
   return base::BindRepeating([]() -> std::optional<std::string> {
     // Same rationale as `GetCountryResourceComponentIdCallback` above.
-    const std::optional<brave_ads::ComponentInfo> component =
-        brave_ads::GetComponent(brave_ads::CurrentLanguageCode());
-    if (!component) {
+    const std::optional<std::array<uint8_t, crypto::kSHA256Length>>
+        public_key_sha256 = brave_ads::GetComponentPublicKeySHA256(
+            brave_ads::CurrentLanguageCode());
+    if (!public_key_sha256) {
       return std::nullopt;
     }
-    return std::string(component->id);
+    return crx_file::id_util::GenerateIdFromHash(*public_key_sha256);
   });
 }
 

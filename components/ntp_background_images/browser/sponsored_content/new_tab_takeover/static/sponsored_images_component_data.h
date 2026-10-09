@@ -6,21 +6,21 @@
 #ifndef BRAVE_COMPONENTS_NTP_BACKGROUND_IMAGES_BROWSER_SPONSORED_CONTENT_NEW_TAB_TAKEOVER_STATIC_SPONSORED_IMAGES_COMPONENT_DATA_H_
 #define BRAVE_COMPONENTS_NTP_BACKGROUND_IMAGES_BROWSER_SPONSORED_CONTENT_NEW_TAB_TAKEOVER_STATIC_SPONSORED_IMAGES_COMPONENT_DATA_H_
 
+#include <array>
+#include <cstdint>
 #include <optional>
 #include <string_view>
 
+#include "crypto/sha2.h"
+
 namespace ntp_background_images {
 
-struct SponsoredImagesComponentInfo {
-  std::string_view public_key_base64;
-  std::string_view id;
-};
-
-// Returns sponsored images component info for the given country code (ISO
-// 3166-1 alpha-2). If no component is available for the specified country,
-// returns `std::nullopt`.
-std::optional<SponsoredImagesComponentInfo> GetSponsoredImagesComponent(
-    std::string_view country_code);
+// Returns the sponsored images component's public key SHA256 hash for the
+// given country code (ISO 3166-1 alpha-2). The component ID can be derived
+// from it via crx_file::id_util::GenerateIdFromHash(). If no component is
+// available for the specified country, returns `std::nullopt`.
+std::optional<std::array<uint8_t, crypto::kSHA256Length>>
+GetComponentPublicKeySHA256(std::string_view country_code);
 
 }  // namespace ntp_background_images
 
