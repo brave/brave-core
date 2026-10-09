@@ -5,11 +5,8 @@
 
 #include "brave/components/omnibox/browser/commander_provider.h"
 
-#include <utility>
-
 #include "base/check.h"
 #include "base/memory/scoped_refptr.h"
-#include "base/strings/strcat.h"
 #include "brave/components/commander/browser/commander_frontend_delegate.h"
 #include "brave/components/commander/common/constants.h"
 #include "brave/components/commander/common/features.h"

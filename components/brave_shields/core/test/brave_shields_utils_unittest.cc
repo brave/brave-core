@@ -33,7 +33,6 @@
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "content/public/test/browser_task_environment.h"
 #include "content/public/test/test_utils.h"
-#include "net/base/features.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 using brave_shields::ControlType;

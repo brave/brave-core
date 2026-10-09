@@ -18,7 +18,6 @@
 #include "base/json/json_value_converter.h"
 #include "base/logging.h"
 #include "base/numerics/safe_conversions.h"
-#include "base/strings/string_util.h"
 #include "base/values.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_locale_utils.h"
 #include "crypto/sha2.h"

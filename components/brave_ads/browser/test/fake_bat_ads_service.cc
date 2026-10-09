@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/browser/test/fake_bat_ads_service.h"
 
-#include <ostream>
 #include <utility>
 
 #include "base/functional/callback.h"

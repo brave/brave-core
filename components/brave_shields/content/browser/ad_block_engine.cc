@@ -6,7 +6,6 @@
 #include "brave/components/brave_shields/content/browser/ad_block_engine.h"
 
 #include <optional>
-#include <set>
 #include <string>
 #include <utility>
 #include <vector>

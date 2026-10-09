@@ -6,7 +6,6 @@
 #include "brave/components/brave_ads/browser/test/fake_bat_ads.h"
 
 #include <optional>
-#include <ostream>
 #include <utility>
 
 #include "base/time/time.h"

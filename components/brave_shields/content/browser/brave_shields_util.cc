@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 
-#include <utility>
-
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "content/public/common/referrer.h"
