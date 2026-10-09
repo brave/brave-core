@@ -924,13 +924,8 @@ source_set("history") {
 }
 ```
 
-Break circular dependencies using the interface/impl pattern (public headers in
-the direct dependency, implementation pulled into a higher-level target like
-`//brave/browser`), dependency inversion, or the templated-subclass technique.
-Only fall back to `brave_chrome_browser_ui_allow_circular_includes_from` /
-`sources.gni` as a temporary last resort, and never use `check_includes = false`
-to suppress circular include errors. See [`gni_sources.md`](../gni_sources.md)
-(Circular dependencies).
+To break the circular dependencies this causes, see
+[Modularization and Circular Dependencies](./modularization.md).
 
 ---
 
