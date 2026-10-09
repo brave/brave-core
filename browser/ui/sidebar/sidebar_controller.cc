@@ -86,6 +86,7 @@ SidebarController::SidebarController(BrowserWindowInterface* browser,
       sidebar_model_(new SidebarModel(profile_)),
       scoped_unowned_user_data_(browser->GetUnownedUserDataHost(), *this) {
   sidebar_service_observed_.Observe(GetSidebarService());
+  tab_strip_model_->AddObserver(this);
 }
 
 SidebarController::~SidebarController() = default;
@@ -261,6 +262,22 @@ void SidebarController::OnShowSidebarOptionChanged(
   CHECK(sidebar_);
   sidebar_pinned_ = false;
   sidebar_->SetSidebarShowOption(option);
+}
+
+void SidebarController::OnTabStripModelChanged(
+    TabStripModel* tab_strip_model,
+    const TabStripModelChange& change,
+    const TabStripSelectionChange& selection) {
+  if (!sidebar_) {
+    return;
+  }
+
+  // Item state depends on the tabs that are open and on the active tab.
+  if (change.type() == TabStripModelChange::Type::kInserted ||
+      change.type() == TabStripModelChange::Type::kRemoved ||
+      selection.active_tab_changed()) {
+    sidebar_->UpdateSidebarItemsState();
+  }
 }
 
 void SidebarController::AddItemWithCurrentTab() {

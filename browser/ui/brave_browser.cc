@@ -13,7 +13,6 @@
 #include "base/functional/callback_helpers.h"
 #include "brave/browser/brave_browser_features.h"
 #include "brave/browser/ui/brave_browser_window.h"
-#include "brave/browser/ui/sidebar/sidebar.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/components/constants/pref_names.h"
@@ -153,19 +152,6 @@ void BraveBrowser::OnTabStripModelChanged(
         break;
       }
     }
-  }
-
-  // sidebar() can return a nullptr in unit tests.
-  auto* sidebar_controller = sidebar::SidebarController::From(this);
-  if (!sidebar_controller || !sidebar_controller->sidebar()) {
-    return;
-  }
-  // We need to update sidebar UI whenever active tab is changed or
-  // inactive tab is added/removed.
-  if (change.type() == TabStripModelChange::Type::kInserted ||
-      change.type() == TabStripModelChange::Type::kRemoved ||
-      selection.active_tab_changed()) {
-    sidebar_controller->sidebar()->UpdateSidebarItemsState();
   }
 
   // Check if all tabs we set to ignore onbeforeunload handler are closed.
