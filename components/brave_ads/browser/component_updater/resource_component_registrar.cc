@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/browser/component_updater/resource_component_registrar.h"
 
-#include <ostream>
 #include <string_view>
 
 #include "base/check.h"

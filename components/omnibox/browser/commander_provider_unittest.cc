@@ -5,7 +5,6 @@
 
 #include "brave/components/omnibox/browser/commander_provider.h"
 
-#include <algorithm>
 #include <memory>
 #include <string>
 #include <utility>

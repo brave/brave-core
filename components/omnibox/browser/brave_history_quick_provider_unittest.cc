@@ -8,7 +8,6 @@
 #include <stddef.h>
 
 #include <algorithm>
-#include <functional>
 #include <memory>
 #include <set>
 #include <string>
@@ -19,8 +18,6 @@
 #include "base/run_loop.h"
 #include "base/test/task_environment.h"
 #include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
-#include "components/bookmarks/browser/bookmark_model.h"
-#include "components/bookmarks/test/bookmark_test_helpers.h"
 #include "components/bookmarks/test/test_bookmark_client.h"
 #include "components/history/core/browser/history_backend.h"
 #include "components/history/core/browser/history_database.h"
@@ -28,7 +25,6 @@
 #include "components/history/core/test/history_service_test_util.h"
 #include "components/omnibox/browser/fake_autocomplete_provider_client.h"
 #include "components/omnibox/browser/history_test_util.h"
-#include "components/prefs/testing_pref_service.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "testing/gtest/include/gtest/gtest.h"
 

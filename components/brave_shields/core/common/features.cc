@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_shields/core/common/features.h"
 
-#include "base/feature_list.h"
-
 namespace brave_shields::features {
 
 BASE_FEATURE(kAdBlockDefaultResourceUpdateInterval,

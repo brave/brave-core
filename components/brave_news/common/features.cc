@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_news/common/features.h"
 
-#include "base/feature_list.h"
 #include "base/metrics/field_trial_params.h"
 #include "build/buildflag.h"
 

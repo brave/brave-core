@@ -7,10 +7,8 @@
 
 #include <stddef.h>
 
-#include <algorithm>
 #include <memory>
 #include <string_view>
-#include <utility>
 
 #include "base/check.h"
 #include "base/run_loop.h"
@@ -27,11 +25,9 @@
 #include "components/omnibox/browser/history_quick_provider.h"
 #include "components/omnibox/browser/in_memory_url_index.h"
 #include "components/omnibox/browser/test_scheme_classifier.h"
-#include "components/prefs/testing_pref_service.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/metrics_proto/omnibox_event.pb.h"
-#include "third_party/metrics_proto/omnibox_input_type.pb.h"
 #include "url/gurl.h"
 
 class BraveHistoryURLProviderTest : public testing::Test,

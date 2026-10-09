@@ -5,13 +5,10 @@
 
 #include "brave/components/omnibox/browser/promotion_utils.h"
 
-#include <algorithm>
-
 #include "base/check.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_search_conversion/types.h"
 #include "brave/components/brave_search_conversion/utils.h"
-#include "components/omnibox/browser/autocomplete_input.h"
 #include "components/omnibox/browser/autocomplete_match.h"
 #include "components/omnibox/browser/autocomplete_result.h"
 

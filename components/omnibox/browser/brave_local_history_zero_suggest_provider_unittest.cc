@@ -5,11 +5,9 @@
 
 #include "brave/components/omnibox/browser/brave_local_history_zero_suggest_provider.h"
 
-#include <algorithm>
 #include <memory>
 #include <string>
 #include <string_view>
-#include <utility>
 
 #include "base/check.h"
 #include "base/run_loop.h"
@@ -22,11 +20,9 @@
 #include "components/omnibox/browser/autocomplete_provider.h"
 #include "components/omnibox/browser/autocomplete_provider_listener.h"
 #include "components/omnibox/browser/fake_autocomplete_provider_client.h"
-#include "components/omnibox/browser/history_quick_provider.h"
 #include "components/omnibox/browser/in_memory_url_index.h"
 #include "components/omnibox/browser/test_scheme_classifier.h"
 #include "components/prefs/pref_service.h"
-#include "components/prefs/testing_pref_service.h"
 #include "components/search_engines/template_url.h"
 #include "components/search_engines/template_url_data_util.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"

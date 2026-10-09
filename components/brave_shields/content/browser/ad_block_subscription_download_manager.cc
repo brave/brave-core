@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_shields/content/browser/ad_block_subscription_download_manager.h"
 
-#include <memory>
 #include <utility>
 
 #include "base/files/file_util.h"

@@ -9,7 +9,6 @@
 #include <vector>
 
 #include "base/task/single_thread_task_runner.h"
-#include "brave/components/brave_component_updater/browser/dat_file_util.h"
 
 namespace brave_shields {
 
