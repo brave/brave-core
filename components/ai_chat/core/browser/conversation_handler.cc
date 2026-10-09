@@ -79,6 +79,8 @@ using ai_chat::mojom::ConversationTurn;
 
 constexpr size_t kDefaultSuggestionsCount = 4;
 
+constexpr base::TimeDelta kConnectionIssueRetryDelay = base::Seconds(5);
+
 // Determines whether a streamable event (e.g. completion) should be interrupted
 // by an event of type |event_tag| after which, if a new streamable chunk is
 // received, a new streamable event is created, or whether the previous
@@ -1193,6 +1195,8 @@ void ConversationHandler::StopGenerationAndMaybeGetHumanEntry(
 
   StopTask();
 
+  connection_issue_retry_timer_.Stop();
+  connection_issue_retry_count_ = 0;
   is_request_in_progress_ = false;
   thread_uuid_in_progress_ = std::nullopt;
   engine_->ClearAllQueries();
@@ -2109,6 +2113,10 @@ void ConversationHandler::OnEngineCompletionComplete(
     EngineConsumer::GenerationResult result) {
   // Handle failure
   if (!result.has_value()) {
+    if (MaybeAutoRetry(thread_uuid, result.error().api_error)) {
+      return;
+    }
+    connection_issue_retry_count_ = 0;
     if (result.error().api_error != mojom::APIError::None) {
       DVLOG(2) << __func__ << ": With error";
       SetAPIError(std::move(result.error()));
@@ -2129,6 +2137,7 @@ void ConversationHandler::OnEngineCompletionComplete(
   // Handle success, which might mean do nothing much since all data was passed
   // in the streaming "received" callback.
   DVLOG(2) << __func__ << ": With value";
+  connection_issue_retry_count_ = 0;
   if ((result->event && result->event->is_completion_event() &&
        !result->event->get_completion_event()->completion.empty()) ||
       result->is_near_verified.has_value()) {
@@ -2202,6 +2211,50 @@ void ConversationHandler::CompleteGeneration(
     // we can't resume. User will have to resubmit.
     StopTask();
   }
+}
+
+bool ConversationHandler::MaybeAutoRetry(
+    const std::optional<std::string>& thread_uuid,
+    mojom::APIError api_error) {
+  if (api_error != mojom::APIError::ConnectionIssue ||
+      connection_issue_retry_count_ >=
+          features::kMaxConnectionIssueRetries.Get()) {
+    return false;
+  }
+
+  const auto& history = GetMutableConversationHistory(thread_uuid);
+  if (history.empty()) {
+    return false;
+  }
+  // TODO(https://github.com/brave/brave-browser/issues/59807): Remove this
+  // check once retries correctly handle tool calls.
+  for (const auto& entry : std::views::reverse(history)) {
+    if (entry->character_type == mojom::CharacterType::HUMAN) {
+      break;
+    }
+    // Don't auto retry after resolved tool calls, otherwise the retry may
+    // rerun tool calls without the user's consent.
+    if (entry->events.has_value() &&
+        std::ranges::any_of(entry->events.value(), [](const auto& event) {
+          return event->is_tool_use_event() &&
+                 event->get_tool_use_event()->output.has_value();
+        })) {
+      return false;
+    }
+  }
+
+  ++connection_issue_retry_count_;
+  connection_issue_retry_timer_.Start(
+      FROM_HERE, kConnectionIssueRetryDelay,
+      base::BindOnce(&ConversationHandler::RetryAfterConnectionIssue,
+                     base::Unretained(this), thread_uuid));
+  return true;
+}
+
+void ConversationHandler::RetryAfterConnectionIssue(
+    const std::optional<std::string>& thread_uuid) {
+  CompleteGeneration(thread_uuid, false);
+  RetryAPIRequest();
 }
 
 void ConversationHandler::OnSuggestedQuestionsResponse(
