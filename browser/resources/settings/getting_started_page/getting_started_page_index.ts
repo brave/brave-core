@@ -4,7 +4,6 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import 'chrome://resources/cr_elements/cr_view_manager/cr_view_manager.js';
-import '/shared/settings/prefs/prefs.js';
 import './getting_started.js';
 import '../people_page/manage_profile.js';
 import '../settings_shared.css.js';
@@ -39,14 +38,6 @@ export class SettingsGettingStartedPageIndexElement extends
   static get template() {
     return getTemplate();
   }
-
-  static get properties() {
-    return {
-      prefs: Object,
-    };
-  }
-
-  declare prefs: Record<string, unknown>;
 
   private showDefaultViews_() {
     this.$.viewManager.switchViews(

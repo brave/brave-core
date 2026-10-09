@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/BUILD.gn b/chrome/browser/ui/BUILD.gn
-index 238f8625e42d8703c72c266c36e32bbfb2113095..771c7a084bd79a97e1820c0b2b65758db09b170a 100644
+index ad12e432d3f0ea2767209d87e42dd339050c4bc3..b341ed6d716729e1de05b8e97d23c0592f8aa306 100644
 --- a/chrome/browser/ui/BUILD.gn
 +++ b/chrome/browser/ui/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -10,15 +10,24 @@ index 238f8625e42d8703c72c266c36e32bbfb2113095..771c7a084bd79a97e1820c0b2b65758d
  import("//build/config/buildflags_paint_preview.gni")
  import("//build/config/chrome_build.gni")
  import("//build/config/compiler/compiler.gni")
-@@ -1512,6 +1513,7 @@ if (!is_android) {
-       ":ui",
+@@ -1510,6 +1511,7 @@ if (!is_android) {
+       ":core",
        "//chrome/browser/ui/browser_window/internal",
      ]
 +    visibility += brave_chrome_browser_ui_browser_header_visibility
      public_deps = [
        ":browser_window_deleter",
        "//base",
-@@ -1568,6 +1570,7 @@ static_library("ui") {
+@@ -1667,6 +1669,8 @@ if (!is_android) {
+ # TODO(https://crbug.com/353332589): Once //chrome/browser is properly
+ # modularized, this target should be folded in with //chrome/browser:browser.
+ source_set("ui") {
++  allow_circular_includes_from =
++      brave_chrome_browser_ui_allow_circular_includes_from
+   public_deps = [
+     ":accelerator_utils_headers",
+     ":browser_live_tab_context",
+@@ -1677,6 +1681,7 @@ source_set("ui") {
      ":simple_message_box_headers",
      ":tab_dialogs",
      ":tab_modal_confirm_dialog",
@@ -26,25 +35,16 @@ index 238f8625e42d8703c72c266c36e32bbfb2113095..771c7a084bd79a97e1820c0b2b65758d
      "//chrome/browser:browser_public_dependencies",
      "//chrome/browser/feedback",
      "//chrome/browser/headless",
-@@ -1845,6 +1848,8 @@ static_library("ui") {
-     "//ui/strings",
-     "//ui/webui",
-   ]
+@@ -1778,6 +1783,8 @@ source_set("ui") {
+   # add any to it.
+   sources = []
+   deps = []
 +  deps += brave_chrome_browser_ui_allow_circular_includes_from
 +  deps += brave_chrome_browser_ui_deps
+ }
  
-   allow_circular_includes_from = [
-     # page_load_metrics's :impl includes headers from //chrome/browser/ui that
-@@ -1868,6 +1873,8 @@ static_library("ui") {
-     # - c/b/ui/views/frame/browser_view.h
-     "//chrome/browser/ui/views/file_system_access:impl",
-   ]
-+  allow_circular_includes_from +=
-+      brave_chrome_browser_ui_allow_circular_includes_from
- 
-   # Desktop-Android-only dependencies.
-   if (is_desktop_android) {
-@@ -4703,11 +4710,13 @@ static_library("ui") {
+ # These are the dependencies for the "ui" target that are outside of
+@@ -1787,11 +1794,13 @@ source_set("ui") {
  group("ui_public_dependencies") {
    visibility = [ "//chrome/browser:browser_public_dependencies" ]
    public_deps = [

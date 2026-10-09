@@ -23,6 +23,17 @@ substitutions:
       attribute: generate_legacy_js_bindings
       value: 'true'
 
+  - description: |
+      Enable legacy JS bindings generation for
+      `suggest_template_info_mojo_bindings`.
+
+      `mojo_bindings` depends on these bindings and we enabled legacy bindings
+      generation there, so they have to be enabled here too.
+    set_attribute:
+      target: suggest_template_info_mojo_bindings
+      attribute: generate_legacy_js_bindings
+      value: 'true'
+
   - description: Add the Brave sources to `static_library("browser")`.
     add_literal_to_list:
       target: browser

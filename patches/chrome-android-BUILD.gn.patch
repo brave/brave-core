@@ -1,8 +1,8 @@
 diff --git a/chrome/android/BUILD.gn b/chrome/android/BUILD.gn
-index 6ed792010ee90f07562ce80b34afe5fe722df299..7ee42eb66cf7922716e7790c92d1d312f2416714 100644
+index e0ed0783f729517a90355bc530feea93d17296ab..8d45ab8c186838589678b57da7199e2675f31c8c 100644
 --- a/chrome/android/BUILD.gn
 +++ b/chrome/android/BUILD.gn
-@@ -161,10 +161,12 @@ if (_is_default_toolchain) {
+@@ -162,10 +162,12 @@ if (_is_default_toolchain) {
        "java/res_chromium_base/mipmap-xxxhdpi/layered_app_icon_background.png",
        "java/res_chromium_base/values/channel_constants.xml",
      ]
@@ -15,7 +15,7 @@ index 6ed792010ee90f07562ce80b34afe5fe722df299..7ee42eb66cf7922716e7790c92d1d312
      sources += [
        "//chrome/android/java/res_app/layout/main.xml",
        "//chrome/android/java/res_app/layout/main_forked_with_secondary_ui_container.xml",
-@@ -252,6 +254,7 @@ if (_is_default_toolchain) {
+@@ -254,6 +256,7 @@ if (_is_default_toolchain) {
        "//third_party/androidx:androidx_gridlayout_gridlayout_java",
        "//third_party/androidx:androidx_preference_preference_java",
      ]
@@ -23,7 +23,7 @@ index 6ed792010ee90f07562ce80b34afe5fe722df299..7ee42eb66cf7922716e7790c92d1d312
  
      if (autofill_use_internal_android_resources) {
        deps += [ "//clank/components/autofill:java_resources" ]
-@@ -264,6 +267,7 @@ if (_is_default_toolchain) {
+@@ -266,6 +269,7 @@ if (_is_default_toolchain) {
      if (enable_extensions_core) {
        deps += [ "//chrome/browser/ui/android/extensions:java_resources" ]
      }
@@ -31,7 +31,7 @@ index 6ed792010ee90f07562ce80b34afe5fe722df299..7ee42eb66cf7922716e7790c92d1d312
    }
  
    android_resources("java_overlay_resources") {
-@@ -869,6 +873,7 @@ if (_is_default_toolchain) {
+@@ -882,6 +886,7 @@ if (_is_default_toolchain) {
        "//url/mojom:url_mojom_gurl_java",
        "//url/mojom:url_mojom_origin_java",
      ]
@@ -39,7 +39,7 @@ index 6ed792010ee90f07562ce80b34afe5fe722df299..7ee42eb66cf7922716e7790c92d1d312
  
      deps += feed_deps
  
-@@ -890,6 +895,7 @@ if (_is_default_toolchain) {
+@@ -902,6 +907,7 @@ if (_is_default_toolchain) {
        "//components/supervised_user/core/browser:supervised_user_utils_enum_javagen",
        "//components/touch_to_search/core/browser:quick_action_category_enum_javagen",
      ]
@@ -47,15 +47,15 @@ index 6ed792010ee90f07562ce80b34afe5fe722df299..7ee42eb66cf7922716e7790c92d1d312
  
      # From java_sources.gni.
      sources = chrome_java_sources
-@@ -1031,6 +1037,7 @@ if (_is_default_toolchain) {
+@@ -1041,6 +1047,7 @@ if (_is_default_toolchain) {
        "//components/segmentation_platform/internal:internal_java",
        "//components/visited_url_ranking/internal:internal_java",
      ]
 +    deps += brave_chrome_all_java_deps
  
-     if (is_desktop_android) {
+     if (enable_extensions_core) {
        deps += [
-@@ -1822,6 +1829,7 @@ if (_is_default_toolchain) {
+@@ -1840,6 +1847,7 @@ if (_is_default_toolchain) {
        "java/res_chromium_base/mipmap-xxxhdpi/layered_app_icon_background.png",
        "java/res_chromium_base/values/channel_constants.xml",
      ]
@@ -63,7 +63,7 @@ index 6ed792010ee90f07562ce80b34afe5fe722df299..7ee42eb66cf7922716e7790c92d1d312
  
      # Dep needed to ensure override works properly.
      deps = [ ":chrome_base_module_resources" ]
-@@ -1973,6 +1981,7 @@ if (_is_default_toolchain) {
+@@ -1976,6 +1984,7 @@ if (_is_default_toolchain) {
          ":${_variant}_locale_pak_assets",
          ":${_variant}_paks",
        ]
@@ -71,7 +71,7 @@ index 6ed792010ee90f07562ce80b34afe5fe722df299..7ee42eb66cf7922716e7790c92d1d312
      }
    }
  
-@@ -2208,6 +2217,7 @@ if (_is_default_toolchain) {
+@@ -2206,6 +2215,7 @@ if (_is_default_toolchain) {
        "java/src/org/chromium/chrome/browser/services/gcm/InvalidationGcmUpstreamSender.java",
        "java/src/org/chromium/chrome/browser/tracing/TracingNotificationService.java",
      ]
@@ -87,7 +87,7 @@ index 6ed792010ee90f07562ce80b34afe5fe722df299..7ee42eb66cf7922716e7790c92d1d312
  
      # More deps for DFMs.
      if (enable_chrome_android_internal) {
-@@ -3222,6 +3233,7 @@ if (_is_default_toolchain) {
+@@ -3162,6 +3173,7 @@ if (_is_default_toolchain) {
        "java/src/org/chromium/chrome/browser/webapps/WebappRegistry.java",
        "java/src/org/chromium/chrome/browser/xr/scenecore/XrModuleBridge.java",
      ]

@@ -25,6 +25,7 @@
 #include "base/functional/callback_helpers.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
+#include "base/memory/raw_ptr.h"
 #include "base/notreached.h"
 #include "base/numerics/byte_conversions.h"
 #include "base/strings/string_number_conversions.h"
@@ -698,7 +699,7 @@ class JsonRpcEndpointHandler {
     }
 
     auto hex_to = EthAddress::From0xHex(*to_param).value();
-    for (auto* handler : eth_call_handlers_) {
+    for (EthCallHandler* handler : eth_call_handlers_) {
       if (!handler->CallSupported(hex_to, *call_data)) {
         continue;
       }
@@ -712,7 +713,7 @@ class JsonRpcEndpointHandler {
   }
 
   std::optional<std::string> HandleSolRpcCall(const base::DictValue& dict) {
-    for (auto* handler : sol_rpc_call_handlers_) {
+    for (SolRpcCallHandler* handler : sol_rpc_call_handlers_) {
       if (!handler->CallSupported(dict)) {
         continue;
       }
@@ -727,8 +728,8 @@ class JsonRpcEndpointHandler {
 
  private:
   GURL endpoint_;
-  std::vector<EthCallHandler*> eth_call_handlers_;
-  std::vector<SolRpcCallHandler*> sol_rpc_call_handlers_;
+  std::vector<raw_ptr<EthCallHandler>> eth_call_handlers_;
+  std::vector<raw_ptr<SolRpcCallHandler>> sol_rpc_call_handlers_;
 };
 
 constexpr char kJsonRpcResponseTemplate[] = R"({
@@ -3216,13 +3217,15 @@ class UnstoppableDomainsUnitTest : public JsonRpcServiceUnitTest {
   }
 
  protected:
-  std::unique_ptr<JsonRpcEndpointHandler> eth_mainnet_endpoint_handler_;
-  std::unique_ptr<JsonRpcEndpointHandler> polygon_endpoint_handler_;
-  std::unique_ptr<JsonRpcEndpointHandler> base_endpoint_handler_;
-
   std::unique_ptr<UDGetManyCallHandler> eth_mainnet_getmany_call_handler_;
   std::unique_ptr<UDGetManyCallHandler> polygon_getmany_call_handler_;
   std::unique_ptr<UDGetManyCallHandler> base_getmany_call_handler_;
+
+  // Declared after the call handlers they point into so they are destroyed
+  // first.
+  std::unique_ptr<JsonRpcEndpointHandler> eth_mainnet_endpoint_handler_;
+  std::unique_ptr<JsonRpcEndpointHandler> polygon_endpoint_handler_;
+  std::unique_ptr<JsonRpcEndpointHandler> base_endpoint_handler_;
 
   void HandleRequest(const network::ResourceRequest& request) {
     url_loader_factory_.ClearResponses();

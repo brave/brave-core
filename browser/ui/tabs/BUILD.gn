@@ -255,6 +255,7 @@ source_set("browser_tests") {
     deps += [
       ":tab_menu",
       ":tab_model",
+      "//chrome/browser/ui:browser_tabstrip",
       "//chrome/browser/ui/tabs:tab_menu",
       "//chrome/browser/ui/views/frame:browser_view_header",
     ]

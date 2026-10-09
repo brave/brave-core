@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/common/features.cc b/third_party/blink/common/features.cc
-index b4d62dbec52ee0f9dfa0a905b9c780209e3c02dc..657706eb98155dab2e5fdd62dbe3cd9071e1844d 100644
+index 4bf38b463d8eb8dd97b1d1345c08254e8c64621d..8be9aac88b8f8cb14d8697aa3fcc022c381b4689 100644
 --- a/third_party/blink/common/features.cc
 +++ b/third_party/blink/common/features.cc
 @@ -128,7 +128,7 @@ BASE_FEATURE(kAllowDatapipeDrainedAsBytesConsumerInBFCache,
@@ -29,7 +29,7 @@ index b4d62dbec52ee0f9dfa0a905b9c780209e3c02dc..657706eb98155dab2e5fdd62dbe3cd90
  
  // Enable sending event-level reports through reportEvent() in cross-origin
  // subframes. This requires opt-in both from the cross-origin subframe that is
-@@ -1495,7 +1495,7 @@ BASE_FEATURE_PARAM(
+@@ -1498,7 +1498,7 @@ BASE_FEATURE_PARAM(
      "low_pri_async_exec_opt_out_high_fetch_priority_hint",
      true);
  
@@ -38,32 +38,27 @@ index b4d62dbec52ee0f9dfa0a905b9c780209e3c02dc..657706eb98155dab2e5fdd62dbe3cd90
               "AutoupgradeMixedContent",
               base::FEATURE_ENABLED_BY_DEFAULT);
  
-@@ -1811,13 +1811,8 @@ BASE_FEATURE_PARAM(base::TimeDelta,
+@@ -1815,8 +1815,8 @@ BASE_FEATURE_PARAM(base::TimeDelta,
                     &kPreloadingEagerHoverHeuristics,
                     "hover_dwell_time",
                     base::Milliseconds(10));
 -BASE_FEATURE(kPreloadingEagerViewportHeuristics,
--#if BUILDFLAG(IS_ANDROID)
--             base::FEATURE_ENABLED_BY_DEFAULT
--#else
--             base::FEATURE_DISABLED_BY_DEFAULT
--#endif
--);
+-             base::FEATURE_ENABLED_BY_DEFAULT);
 +BASE_OVERRIDDEN_FEATURE(kPreloadingEagerViewportHeuristics,
-+base::FEATURE_DISABLED_BY_DEFAULT);
- BASE_FEATURE_PARAM(base::TimeDelta,
-                    kPreloadingEagerViewportHeuristicsPresentTime,
++             base::FEATURE_DISABLED_BY_DEFAULT);
+ BASE_FEATURE_PARAM(bool,
+                    kPreloadingEagerViewportHeuristicsForDevToolsEmulation,
                     &kPreloadingEagerViewportHeuristics,
-@@ -1923,7 +1918,7 @@ BASE_FEATURE(kLocalCompileHints, base::FEATURE_ENABLED_BY_DEFAULT);
+@@ -1890,7 +1890,7 @@ BASE_FEATURE(kLocalCompileHints, base::FEATURE_ENABLED_BY_DEFAULT);
  
  // Reduce the amount of information in the default 'referer' header for
  // cross-origin requests.
 -BASE_FEATURE(kReducedReferrerGranularity, base::FEATURE_ENABLED_BY_DEFAULT);
 +BASE_OVERRIDDEN_FEATURE(kReducedReferrerGranularity, base::FEATURE_ENABLED_BY_DEFAULT);
  
- // Whether `blink::MemoryCache` and `blink::ResourceFetcher` release their
- // strong references to resources on memory pressure.
-@@ -2303,7 +2298,7 @@ BASE_FEATURE(kThrottleFullscreenVideoActiveTab,
+ // When disabled, cropTo() is rejected while other tracks share the source, as
+ // it was before per-track cropping was supported.
+@@ -2275,7 +2275,7 @@ BASE_FEATURE(kThrottleFullscreenVideoActiveTab,
  
  // Changes behavior of User-Agent Client Hints to send blank headers when the
  // User-Agent string is overridden, instead of disabling the headers altogether.

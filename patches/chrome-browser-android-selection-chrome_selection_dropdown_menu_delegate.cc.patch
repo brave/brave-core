@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/android/selection/chrome_selection_dropdown_menu_delegate.cc b/chrome/browser/android/selection/chrome_selection_dropdown_menu_delegate.cc
-index b2037eb4591780581ff4e7ee0f44fc22b286d5a0..9acab3c911a238436c6b5642af658130061fe587 100644
+index 1c14d2e860610ac5577a437b80ee87056bf95da3..850a4acf6e2062c2ff09f02f6eb1043008261919 100644
 --- a/chrome/browser/android/selection/chrome_selection_dropdown_menu_delegate.cc
 +++ b/chrome/browser/android/selection/chrome_selection_dropdown_menu_delegate.cc
-@@ -28,7 +28,7 @@
+@@ -29,7 +29,7 @@
  #include "third_party/blink/public/mojom/forms/form_control_type.mojom-shared.h"
  #endif
  
@@ -11,7 +11,7 @@ index b2037eb4591780581ff4e7ee0f44fc22b286d5a0..9acab3c911a238436c6b5642af658130
  #include "chrome/browser/extensions/extension_menu_model_android.h"
  #endif
  
-@@ -46,7 +46,7 @@ constexpr int kPrintMenuItemOrderReadOnly = 65;
+@@ -51,7 +51,7 @@ constexpr int kPrintMenuItemOrderReadOnly = 65;
  constexpr int kPrintMenuItemOrderEditable = 120;
  #endif
  
@@ -20,7 +20,7 @@ index b2037eb4591780581ff4e7ee0f44fc22b286d5a0..9acab3c911a238436c6b5642af658130
  // The display order for extension items in the selection dropdown menu.
  // Placed after alternative and Share items (order > Menu.CATEGORY_ALTERNATIVE +
  // 1).
-@@ -57,14 +57,14 @@ constexpr int kExtensionMenuItemOrder = 300000;
+@@ -62,14 +62,14 @@ constexpr int kExtensionMenuItemOrder = 300000;
  // menu. Positioned at the absolute end of the selection dropdown menu.
  constexpr int kInspectElementItemOrder = 1000000;
  
@@ -37,7 +37,7 @@ index b2037eb4591780581ff4e7ee0f44fc22b286d5a0..9acab3c911a238436c6b5642af658130
      ,
                                           public ui::SimpleMenuModel::Delegate
  #endif
-@@ -72,7 +72,7 @@ class ChromeSelectionDropdownMenuModel : public BaseSelectionDropdownMenuModel
+@@ -77,7 +77,7 @@ class ChromeSelectionDropdownMenuModel : public BaseSelectionDropdownMenuModel
   public:
    ChromeSelectionDropdownMenuModel(content::RenderFrameHost& render_frame_host,
                                     const content::ContextMenuParams& params)
@@ -46,25 +46,25 @@ index b2037eb4591780581ff4e7ee0f44fc22b286d5a0..9acab3c911a238436c6b5642af658130
        : BaseSelectionDropdownMenuModel(render_frame_host, params),
  #else
        : BaseSelectionDropdownMenuModel(this),
-@@ -104,7 +104,7 @@ class ChromeSelectionDropdownMenuModel : public BaseSelectionDropdownMenuModel
-     if (command_id == IDC_CONTENT_CONTEXT_INSPECTELEMENT) {
-       return kInspectElementItemOrder;
+@@ -117,7 +117,7 @@ class ChromeSelectionDropdownMenuModel : public BaseSelectionDropdownMenuModel
+     if (command_id == IDC_CONTENT_CONTEXT_AUTOFILL_FALLBACK_AT_MEMORY) {
+       return kAtMemoryMenuItemOrder;
      }
 -#if BUILDFLAG(ENABLE_DESKTOP_ANDROID_EXTENSIONS)
 +#if BUILDFLAG(ENABLE_EXTENSIONS_CORE)
      int base_order = BaseSelectionDropdownMenuModel::GetDisplayOrderAt(index);
      if (base_order >= 0) {
        return base_order;
-@@ -148,7 +148,7 @@ class ChromeSelectionDropdownMenuModel : public BaseSelectionDropdownMenuModel
+@@ -169,7 +169,7 @@ class ChromeSelectionDropdownMenuModel : public BaseSelectionDropdownMenuModel
+       return;
      }
- #endif
  
 -#if BUILDFLAG(ENABLE_DESKTOP_ANDROID_EXTENSIONS)
 +#if BUILDFLAG(ENABLE_EXTENSIONS_CORE)
      BaseSelectionDropdownMenuModel::ExecuteCommand(command_id, event_flags);
  #endif
    }
-@@ -170,7 +170,7 @@ class ChromeSelectionDropdownMenuModel : public BaseSelectionDropdownMenuModel
+@@ -194,7 +194,7 @@ class ChromeSelectionDropdownMenuModel : public BaseSelectionDropdownMenuModel
        return false;
      }
  
@@ -73,16 +73,16 @@ index b2037eb4591780581ff4e7ee0f44fc22b286d5a0..9acab3c911a238436c6b5642af658130
      return BaseSelectionDropdownMenuModel::IsCommandIdChecked(command_id);
  #else
      return false;
-@@ -198,7 +198,7 @@ class ChromeSelectionDropdownMenuModel : public BaseSelectionDropdownMenuModel
+@@ -225,7 +225,7 @@ class ChromeSelectionDropdownMenuModel : public BaseSelectionDropdownMenuModel
+       return true;
      }
- #endif
  
 -#if BUILDFLAG(ENABLE_DESKTOP_ANDROID_EXTENSIONS)
 +#if BUILDFLAG(ENABLE_EXTENSIONS_CORE)
      return BaseSelectionDropdownMenuModel::IsCommandIdEnabled(command_id);
  #else
      return false;
-@@ -209,7 +209,7 @@ class ChromeSelectionDropdownMenuModel : public BaseSelectionDropdownMenuModel
+@@ -236,7 +236,7 @@ class ChromeSelectionDropdownMenuModel : public BaseSelectionDropdownMenuModel
      if (IsChromeOwnedCommand(command_id)) {
        return true;
      }
@@ -91,7 +91,7 @@ index b2037eb4591780581ff4e7ee0f44fc22b286d5a0..9acab3c911a238436c6b5642af658130
      return BaseSelectionDropdownMenuModel::IsCommandIdVisible(command_id);
  #else
      return false;
-@@ -244,7 +244,7 @@ ChromeSelectionDropdownMenuDelegate::GetSelectionPopupExtraItems(
+@@ -271,7 +271,7 @@ ChromeSelectionDropdownMenuDelegate::GetSelectionPopupExtraItems(
    }
  #endif
  

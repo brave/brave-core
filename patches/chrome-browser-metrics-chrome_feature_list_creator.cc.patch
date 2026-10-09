@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/metrics/chrome_feature_list_creator.cc b/chrome/browser/metrics/chrome_feature_list_creator.cc
-index 90e572fe4efe1baa00ca8218dbcb3a5d0ad36ddb..526342e18e9ae40255cd50e566d0b17e3cb41f0a 100644
+index 2bb85926405715dffea09f2e29eedcff44e0925f..2f2203c7ff9fb448b71422e55f56d48f8a9ea4da 100644
 --- a/chrome/browser/metrics/chrome_feature_list_creator.cc
 +++ b/chrome/browser/metrics/chrome_feature_list_creator.cc
 @@ -298,5 +298,6 @@ void ChromeFeatureListCreator::SetupInitialPrefs() {

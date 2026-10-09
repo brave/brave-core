@@ -1,5 +1,5 @@
 diff --git a/extensions/common/BUILD.gn b/extensions/common/BUILD.gn
-index d36d73caa35cb84eae02abb0c2a6e45e8efdf5c6..a962961ef355e6ed67dddfc00c29e87b981f8bb3 100644
+index e5cddf6bf1c6b0847ab02fa8b81ad7e666222f0c..fd1620ced06b4cb959d875b975fb028718d7255a 100644
 --- a/extensions/common/BUILD.gn
 +++ b/extensions/common/BUILD.gn
 @@ -63,6 +63,7 @@ source_set("constants_impl") {

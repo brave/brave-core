@@ -26,7 +26,7 @@
 #include "components/component_updater/component_installer.h"
 #include "components/prefs/pref_service.h"
 #include "components/update_client/crx_update_item.h"
-#include "crypto/sha2.h"
+#include "crypto/hash.h"
 
 namespace brave_wallet {
 
@@ -45,7 +45,7 @@ const uint8_t kWalletDataFilesSha2Hash[] = {
 constexpr char kWalletDataFilesDisplayName[] = "Brave Wallet data files";
 constexpr char kComponentId[] = "bbckkcdiepaecefgfnibemejliemjnio";
 
-static_assert(std::size(kWalletDataFilesSha2Hash) == crypto::kSHA256Length,
+static_assert(std::size(kWalletDataFilesSha2Hash) == crypto::hash::kSha256Size,
               "Wrong hash length");
 
 // TODO(https://github.com/brave/brave-browser/issues/48713): This is a case of

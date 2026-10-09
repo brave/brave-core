@@ -1,0 +1,28 @@
+diff --git a/third_party/android_deps/BUILD.gn b/third_party/android_deps/BUILD.gn
+index 252001ea2452ee297c35bdfdb64693271029a3de..05d8c97ca67018c50c91af0fa14d0f040562da6e 100644
+--- a/third_party/android_deps/BUILD.gn
++++ b/third_party/android_deps/BUILD.gn
+@@ -2,6 +2,7 @@
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
+ 
++import("//brave/third_party/android_deps/sources.gni")
+ import("//build/config/android/rules.gni")
+ import("overrides.gni")
+ 
+@@ -1241,6 +1242,7 @@ if (!limit_android_deps) {
+         ":*",
+         "//third_party/androidx:*",
+       ]
++      visibility += brave_third_party_android_deps_visibility
+       deps = [
+         "$google_play_services_package:google_android_datatransport_transport_api_java",
+         "$google_play_services_package:google_android_datatransport_transport_runtime_java",
+@@ -1265,6 +1267,7 @@ if (!limit_android_deps) {
+         ":*",
+         "//third_party/androidx:*",
+       ]
++      visibility += brave_third_party_android_deps_visibility
+       deps = [
+         ":javax_inject_javax_inject_java",
+         "$google_play_services_package:google_android_datatransport_transport_api_java",

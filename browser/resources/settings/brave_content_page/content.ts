@@ -6,7 +6,8 @@
 import '../settings_shared.css.js'
 import '../settings_vars.css.js'
 
-import {PrefsMixin, PrefsMixinInterface} from '/shared/settings/prefs/prefs_mixin.js';
+import {PrefService} from '/shared/settings/prefs2/pref_service.js';
+import {PrefServiceObserverMixin} from '/shared/settings/prefs2/pref_service_observer_mixin.js';
 import {I18nMixin, I18nMixinInterface} from 'chrome://resources/cr_elements/i18n_mixin.js'
 import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 import {DropdownMenuOptionList, SettingsDropdownMenuElement} from '../controls/settings_dropdown_menu.js';
@@ -34,7 +35,7 @@ export interface SettingsBraveContentContentElement {
 }
 
 const SettingsBraveAppearanceContentElementBase =
-    I18nMixin(PrefsMixin(BaseMixin(SettingsViewMixin(PolymerElement))));
+    I18nMixin(PrefServiceObserverMixin(BaseMixin(SettingsViewMixin(PolymerElement))));
 
 export class SettingsBraveContentContentElement extends SettingsBraveAppearanceContentElementBase {
   static get is() {
@@ -48,6 +49,8 @@ export class SettingsBraveContentContentElement extends SettingsBraveAppearanceC
   static get properties() {
     return {
       defaultZoom_: Number,
+
+      waybackMachineEnabledPref_: Object,
 
       /**
        * List of options for the font size drop-down menu.
@@ -91,15 +94,11 @@ export class SettingsBraveContentContentElement extends SettingsBraveAppearanceC
     }
   }
 
-  static get observers() {
-    return [
-      'defaultFontSizeChanged_(prefs.webkit.webprefs.default_font_size.value)',
-    ];
-  }
-
   private declare fontSizeOptions_: DropdownMenuOptionList
   private declare pageZoomLevels_: number[]
   private declare defaultZoom_: number;
+  private declare waybackMachineEnabledPref_:
+      chrome.settingsPrivate.PrefObject<boolean>|undefined;
   private declare showSplitViewDragAndDropSetting_: boolean;
   private declare isWaybackMachineAutoCheckFeatureEnabled_: boolean;
   private appearanceBrowserProxy_: AppearanceBrowserProxy =
@@ -115,6 +114,15 @@ export class SettingsBraveContentContentElement extends SettingsBraveAppearanceC
 
     this.pageZoomLevels_ =
         JSON.parse(loadTimeData.getString('presetZoomFactors'));
+  }
+
+  override connectedCallback() {
+    super.connectedCallback();
+    this.addPrefObserver<number>(
+        'webkit.webprefs.default_font_size',
+        pref => this.defaultFontSizeChanged_(pref.value));
+    this.mirrorPref(
+        'brave.wayback_machine_enabled', 'waybackMachineEnabledPref_');
   }
 
   override getAssociatedControlFor(childViewId: string): HTMLElement {
@@ -147,8 +155,8 @@ export class SettingsBraveContentContentElement extends SettingsBraveAppearanceC
   private defaultFontSizeChanged_(value: number) {
     // This pref is handled separately in some extensions, but here it is tied
     // to default_font_size (to simplify the UI).
-    this.set(
-        'prefs.webkit.webprefs.default_fixed_font_size.value',
+    PrefService.getInstance().setPrefValue(
+        'webkit.webprefs.default_fixed_font_size',
         value - SIZE_DIFFERENCE_FIXED_STANDARD);
   }
 

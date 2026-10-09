@@ -1,8 +1,19 @@
 diff --git a/chrome/browser/ui/actions/chrome_action_id.h b/chrome/browser/ui/actions/chrome_action_id.h
-index ed9640601d9cd2484707e4f31f548ea7f7800a72..45150a42ed2e3a1048930e0f37c5e3fcf1db5d41 100644
+index b1ba8e8be0fa6e3a778db67354e8556c2f1db126..d7bdf1ca56de695a2c4fbb592b26a742bca949ff 100644
 --- a/chrome/browser/ui/actions/chrome_action_id.h
 +++ b/chrome/browser/ui/actions/chrome_action_id.h
-@@ -491,6 +491,10 @@
+@@ -18,6 +18,10 @@
+ 
+ // clang-format off
+ #define CHROME_COMMON_ACTION_IDS \
++  E(kActionToggleTabMute, IDC_TOGGLE_TAB_MUTE) \
++  E(kActionToggleSidebar, IDC_TOGGLE_SIDEBAR) \
++  E(kActionNewOffTheRecordWindowTor, IDC_NEW_OFFTHERECORD_WINDOW_TOR) \
++  E(kActionCommander, IDC_COMMANDER) \
+   /* Navigation commands */ \
+   E(kActionCut, IDC_CUT, actions) \
+   E(kActionCopy, IDC_COPY, actions) \
+@@ -499,6 +503,10 @@
  // Should be reinserted into CHROME_COMMON_ACTION_IDS when general solution to
  // add action id mappings is implemented.
  #define SIDE_PANEL_ACTION_IDS \
@@ -13,8 +24,8 @@ index ed9640601d9cd2484707e4f31f548ea7f7800a72..45150a42ed2e3a1048930e0f37c5e3fc
    /* Side Panel items */ \
    E(kActionSidePanelShowAboutThisSite) \
    E(kActionSidePanelShowAssistant) \
-@@ -520,6 +524,13 @@
-     IDC_SHOW_TABS_FROM_OTHER_DEVICES_SIDE_PANEL)
+@@ -526,6 +534,13 @@
+   E(kActionSidePanelShowMerchantTrust)
  
  #define TOOLBAR_PINNABLE_ACTION_IDS \
 +  E(kActionShowPartitionedStorage) \

@@ -33,7 +33,6 @@ import org.chromium.ui.modelutil.PropertyModel;
 public class BraveLocationBarFocusScrimHandlerUnitTest {
     @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
 
-    @Mock private View mScrimTarget;
     @Mock private Runnable mClickDelegate;
     @Mock private LocationBarDataProvider mLocationBarDataProvider;
     @Mock private ScrimManager mScrimManager;
@@ -54,7 +53,7 @@ public class BraveLocationBarFocusScrimHandlerUnitTest {
                         ContextUtils.getApplicationContext(),
                         mLocationBarDataProvider,
                         mClickDelegate,
-                        mScrimTarget,
+                        new View(ContextUtils.getApplicationContext()),
                         ObservableSuppliers.createNonNull(0),
                         mBottomControlsStacker);
         PropertyModel scrimModel = scrimHandler.getScrimModelForTesting();

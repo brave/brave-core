@@ -5,14 +5,6 @@
 
 #include "chrome/browser/lifetime/browser_close_manager.h"
 
-#define StartClosingBrowsers StartClosingBrowsers_ChromiumImpl
-#define CancelBrowserClose CancelBrowserClose_ChromiumImpl
-
-#include <chrome/browser/lifetime/browser_close_manager.cc>
-
-#undef CancelBrowserClose
-#undef StartClosingBrowsers
-
 namespace {
 
 // Whether the browser closing is in-progress or not.
@@ -23,17 +15,9 @@ bool g_browser_closing_started = false;
 
 }  // namespace
 
+#include <chrome/browser/lifetime/browser_close_manager.cc>
+
 // static
 bool BrowserCloseManager::BrowserClosingStarted() {
   return g_browser_closing_started;
-}
-
-void BrowserCloseManager::StartClosingBrowsers() {
-  g_browser_closing_started = true;
-  StartClosingBrowsers_ChromiumImpl();
-}
-
-void BrowserCloseManager::CancelBrowserClose() {
-  g_browser_closing_started = false;
-  CancelBrowserClose_ChromiumImpl();
 }

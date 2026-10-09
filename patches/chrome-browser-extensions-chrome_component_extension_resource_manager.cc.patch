@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/extensions/chrome_component_extension_resource_manager.cc b/chrome/browser/extensions/chrome_component_extension_resource_manager.cc
-index d39de6b12c1eec34033eacd5ab2dfc9032b09003..45cc16cd9a0255b7aed8189ea0967ee14552f06b 100644
+index 550492cd809e9ccef2dcb18b79dd011d97f15f4b..650b860c0e68a34ff3d1e37392f9d386830e4b83 100644
 --- a/chrome/browser/extensions/chrome_component_extension_resource_manager.cc
 +++ b/chrome/browser/extensions/chrome_component_extension_resource_manager.cc
 @@ -102,6 +102,8 @@ class ChromeComponentExtensionResourceManager::Data {
@@ -24,7 +24,7 @@ index d39de6b12c1eec34033eacd5ab2dfc9032b09003..45cc16cd9a0255b7aed8189ea0967ee1
    if (base::FeatureList::IsEnabled(
            omnibox::kAimEligibilityComponentExtension)) {
      AddComponentResourceEntries(kAimEligibilityExtensionResources);
-@@ -190,6 +195,11 @@ ChromeComponentExtensionResourceManager::Data::Data() {
+@@ -191,6 +196,11 @@ ChromeComponentExtensionResourceManager::Data::Data() {
          std::move(pdf_viewer_replacements);
    }
  #endif

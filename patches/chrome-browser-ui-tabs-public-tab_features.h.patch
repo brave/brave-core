@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/tabs/public/tab_features.h b/chrome/browser/ui/tabs/public/tab_features.h
-index 16d0fa2acbba929c79aea0ab7d37b0b63217c7e3..cf7f93dacf8edbc4edc374e4cd929526af24d13d 100644
+index b3f752b1df316bf19b76486fefa4693e7f63a6fd..f9b8ddf61a29ed8116d18b16373a22d1e6d518e4 100644
 --- a/chrome/browser/ui/tabs/public/tab_features.h
 +++ b/chrome/browser/ui/tabs/public/tab_features.h
-@@ -335,7 +335,7 @@ class TabInterface;
+@@ -407,7 +407,7 @@ class TabInterface;
  class TabFeatures {
   public:
    TabFeatures();
@@ -11,7 +11,7 @@ index 16d0fa2acbba929c79aea0ab7d37b0b63217c7e3..cf7f93dacf8edbc4edc374e4cd929526
  
    TabFeatures(const TabFeatures&) = delete;
    TabFeatures& operator=(const TabFeatures&) = delete;
-@@ -482,12 +482,13 @@ class TabFeatures {
+@@ -545,12 +545,13 @@ class TabFeatures {
    }
  
    // Called exactly once to initialize features.

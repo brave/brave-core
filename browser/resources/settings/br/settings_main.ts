@@ -65,7 +65,6 @@ RegisterPolymerTemplateModifications({
             <template is="dom-if" if="[[renderPlugin_(
           routes_.GET_STARTED, lastRoute_, inSearchMode_)]]">
               <settings-getting-started-page-index
-                prefs="{{prefs}}"
                 in-search-mode="[[inSearchMode_]]">
               </settings-getting-started-page-index>
             </template>
@@ -81,7 +80,6 @@ RegisterPolymerTemplateModifications({
             <template is="dom-if" if="[[renderPlugin_(
           routes_.ORIGIN, lastRoute_, inSearchMode_)]]">
               <settings-brave-origin-page class="cr-centered-card-container"
-                prefs="{{prefs}}"
                 in-search-mode="[[inSearchMode_]]">
               </settings-brave-origin-page>
             </template>
@@ -98,7 +96,6 @@ RegisterPolymerTemplateModifications({
             <template is="dom-if" if="[[renderPlugin_(
           routes_.BRAVE_CONTENT, lastRoute_, inSearchMode_)]]">
               <settings-brave-content-page-index
-                prefs="{{prefs}}"
                 in-search-mode="[[inSearchMode_]]">
               </settings-brave-content-page-index>
             </template>
@@ -114,7 +111,6 @@ RegisterPolymerTemplateModifications({
             <template is="dom-if" if="[[renderPlugin_(
           routes_.SHIELDS, lastRoute_, inSearchMode_)]]">
               <settings-shields-page-index
-                prefs="{{prefs}}"
                 in-search-mode="[[inSearchMode_]]">
               </settings-shields-page-index>
             </template>
@@ -133,7 +129,6 @@ RegisterPolymerTemplateModifications({
               <template is="dom-if" if="[[renderPlugin_(
           routes_.BRAVE_WEB3, lastRoute_, inSearchMode_)]]">
                 <settings-wallet-page-index
-                  prefs="{{prefs}}"
                   in-search-mode="[[inSearchMode_]]">
                 </settings-wallet-page-index>
               </template>
@@ -152,7 +147,6 @@ RegisterPolymerTemplateModifications({
             <template is="dom-if" if="[[renderPlugin_(
           routes_.BRAVE_LEO_ASSISTANT, lastRoute_, inSearchMode_)]]">
               <settings-brave-leo-assistant-page-index
-                prefs="{{prefs}}"
                 in-search-mode="[[inSearchMode_]]">
               </settings-brave-leo-assistant-page-index>
             </template>
@@ -169,7 +163,6 @@ RegisterPolymerTemplateModifications({
             <template is="dom-if" if="[[renderPlugin_(
               routes_.BRAVE_SYNC, lastRoute_, inSearchMode_)]]">
               <settings-brave-sync-page-index
-                prefs="{{prefs}}"
                 in-search-mode="[[inSearchMode_]]">
               </settings-brave-sync-page-index>
             </template>
@@ -184,7 +177,6 @@ RegisterPolymerTemplateModifications({
           <div slot="view" id="extensions">
             <template is="dom-if" if="true">
               <settings-brave-extensions-page-index
-                prefs="{{prefs}}"
                 in-search-mode="[[inSearchMode_]]">
               </settings-brave-extensions-page-index>
             </template>
@@ -201,7 +193,6 @@ RegisterPolymerTemplateModifications({
             <template is="dom-if" if="[[renderPlugin_(
           routes_.SYSTEM, lastRoute_, inSearchMode_)]]">
               <settings-brave-system-page-index
-                prefs="{{prefs}}"
                 in-search-mode="[[inSearchMode_]]">
               </settings-brave-system-page-index>
             </template>

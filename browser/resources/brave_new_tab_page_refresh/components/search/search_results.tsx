@@ -16,9 +16,12 @@ import { SafeImage } from '../common/safe_image'
 import { style } from './search_results.style'
 
 function MatchImage(props: { match: AutocompleteMatch }) {
-  const { imageUrl, iconUrl } = props.match
+  const { suggestTemplate, iconUrl } = props.match
+  const imageUrl = suggestTemplate.image?.url
 
-  if (props.match.description === getString(S.OMNIBOX_ASK_LEO_DESCRIPTION)) {
+  if (
+    suggestTemplate.secondaryText === getString(S.OMNIBOX_ASK_LEO_DESCRIPTION)
+  ) {
     return (
       <Icon
         name='product-brave-leo'
@@ -49,10 +52,11 @@ function MatchImage(props: { match: AutocompleteMatch }) {
 }
 
 function MatchText(props: { match: AutocompleteMatch }) {
+  const { primaryText, secondaryText } = props.match.suggestTemplate
   return (
     <>
-      {props.match.contents}
-      <span className='description'>{props.match.description}</span>
+      {primaryText}
+      <span className='description'>{secondaryText}</span>
     </>
   )
 }

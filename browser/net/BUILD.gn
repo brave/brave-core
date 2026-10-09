@@ -22,6 +22,7 @@ source_set("browser_tests") {
 
   sources = [
     "brave_accept_header_browsertest.cc",
+    "brave_net_error_tab_helper_browsertest.cc",
     "brave_network_delegate_browsertest.cc",
     "brave_network_delegate_hsts_fingerprinting_browsertest.cc",
     "brave_proxying_url_loader_factory_browsertest.cc",
@@ -51,7 +52,13 @@ source_set("browser_tests") {
     "//chrome/test/base:chrome_test_utils",
     "//components/content_settings/core/browser",
     "//components/content_settings/core/browser:cookie_settings",
+    "//components/embedder_support",
+    "//components/error_page/common",
     "//components/prefs",
+    "//components/tabs:public",
+    "//content/test:test_support",
+    "//net",
+    "//net:test_support",
     "//services/network/public/cpp",
     "//testing/gmock",
   ]
@@ -61,7 +68,6 @@ source_set("browser_tests") {
   if (is_android) {
     deps += [
       "//chrome/test:test_support_ui_android",
-      "//net:test_support",
       "//net/traffic_annotation:test_support",
     ]
   }
@@ -119,6 +125,7 @@ source_set("unit_tests") {
     "//chrome/browser/prefs",
     "//chrome/test:test_support",
     "//chrome/test/base:chrome_render_view_host_test_harness",
+    "//chrome/test/base:testing_browser_process",
     "//components/sync_preferences:test_support",
     "//content/test:test_support",
     "//net",

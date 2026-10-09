@@ -16,6 +16,7 @@
 #include "base/functional/bind.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "components/component_updater/component_updater_service.h"
+#include "crypto/hash.h"
 
 using brave_component_updater::BraveOnDemandUpdater;
 
@@ -49,7 +50,7 @@ NTPBackgroundImagesComponentInstallerPolicy::
   auto decoded_public_key =
       base::Base64Decode(kNTPBackgroundImagesComponentPublicKey);
   CHECK(decoded_public_key);
-  component_hash_ = crypto::SHA256Hash(*decoded_public_key);
+  component_hash_ = crypto::hash::Sha256(*decoded_public_key);
 }
 
 NTPBackgroundImagesComponentInstallerPolicy::

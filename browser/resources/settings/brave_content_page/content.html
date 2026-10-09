@@ -34,34 +34,34 @@
 <settings-toggle-button
     class="hr"
     id="mru-cycling"
-    pref="{{prefs.brave.mru_cycling_enabled}}"
+    pref-key="brave.mru_cycling_enabled"
     label="$i18n{mruCyclingSettingLabel}">
 </settings-toggle-button>
 <if expr="is_macosx">
     <settings-toggle-button class="hr"
-        pref="{{prefs.webkit.webprefs.tabs_to_links}}"
+        pref-key="webkit.webprefs.tabs_to_links"
         label="$i18n{tabsToLinks}">
     </settings-toggle-button>
 </if>
 <settings-toggle-button class="hr" id="splitViewDragAndDrop"
     hidden="[[!showSplitViewDragAndDropSetting_]]"
-    pref="{{prefs.browser.split_view_drag_and_drop_enabled}}"
+    pref-key="browser.split_view_drag_and_drop_enabled"
     label="$i18n{allowSplitViewDragAndDrop}">
 </settings-toggle-button>
 <if expr="enable_brave_wayback_machine">
   <settings-toggle-button
     class="cr-row"
-    pref="{{prefs.brave.wayback_machine_enabled}}"
+    pref-key="brave.wayback_machine_enabled"
     label="$i18n{braveWaybackMachineLabel}"
-    hidden="[[isWaybackMachineManaged_(prefs.brave.wayback_machine_enabled)]]">
+    hidden="[[isWaybackMachineManaged_(waybackMachineEnabledPref_)]]">
   </settings-toggle-button>
   <settings-toggle-button
     class="cr-row"
-    pref="{{prefs.brave.wayback_machine_auto_check_enabled}}"
+    pref-key="brave.wayback_machine_auto_check_enabled"
     label="$i18n{braveWaybackMachineAutoCheckLabel}"
     hidden="[[!shouldShowWaybackMachineAutoCheck_(
         isWaybackMachineAutoCheckFeatureEnabled_,
-        prefs.brave.wayback_machine_enabled.value)]]">
+        waybackMachineEnabledPref_.value)]]">
   </settings-toggle-button>
 </if>
 

@@ -65,6 +65,11 @@
   <message name="IDS_AI_MODE_ENTRYPOINT_ACC_FOCUSED" desc="Accessibility announcement when the omnibox AI Mode entrypoint gains focus.">
     <ph name="AI_ENGINE_NAME">$1<ex>AI Mode</ex></ph> button, press Enter to ask <ph name="AI_ENGINE_NAME">$1<ex>AI Mode</ex></ph>
   </message>
+  <if expr="is_ios">
+    <message name="IDS_AI_MODE_ENTRYPOINT_ACC_LABEL" desc="Accessibility label for the AI Mode entrypoint.">
+      Ask <ph name="AI_ENGINE_NAME">$1<ex>AI Mode</ex></ph>
+    </message>
+  </if>
   <if expr="use_titlecase">
     <message name="IDS_AI_MODE_ENTRYPOINT_CONTEXT_MENU_SHOW" desc="In Title Case: Text label for the omnibox context menu option to toggle showing the omnibox AI Mode entrypoint.">
       Always Show <ph name="AI_ENGINE_NAME">$1<ex>AI Mode</ex></ph>
@@ -77,9 +82,6 @@
   </if>
   <message name="IDS_AI_MODE_OMNIBOX_PLACEHOLDER" desc="The text shown and announced, prompting the user to use the omnibox AI mode entrypoint. conditionally displayed in the Omnibox when it is focused with no input and AI Mode is enabled.">
     Press tab then enter to ask <ph name="AI_ENGINE_NAME">$1<ex>AI Mode</ex></ph>
-  </message>
-  <message name="IDS_AI_MODE_OMNIBOX_PLACEHOLDER_ANDROID" desc="The text shown and announced, prompting the user to use the omnibox AI mode entrypoint. conditionally displayed in the Omnibox when it is focused with no input and AI Mode is enabled." formatter_data="android_java">
-    <ph name="TAB_KEY">&lt;tab_key&gt; &lt;/tab_key&gt;</ph> Press tab then enter to ask <ph name="AI_ENGINE_NAME">$1<ex>AI Mode</ex></ph>
   </message>
 
   <message name="IDS_EMPTY_KEYWORD_VALUE" desc="Shown in the location bar drop down when the user enters a string that matches a chrome keyword, but they haven't entered any text following the chrome keyword">
@@ -165,11 +167,8 @@
       <message name="IDS_OMNIBOX_NAVATTACH_DRIVE" desc="The text displayed in the omnibox attachments popup. When clicked - opens drive file picker." formatter_data="android_java">
         Drive
       </message>
-      <message name="IDS_FUSEBOX_ADD_CURRENT_TAB" desc="The text displayed in the omnibox attachments popup. When clicked - adds the curernt tab as context." formatter_data="android_java">
-        Add current tab
-      </message>
       <message name="IDS_FUSEBOX_ADD_TAB" desc="The text displayed in the omnibox attachments popup for the Current tab option." formatter_data="android_java">
-        Add tab
+        Ask about this page
       </message>
       <message name="IDS_FUSEBOX_UPLOAD_FAILED" desc="The text displayed in a snackbar when an attachment fails to upload" formatter_data="android_java">
         Unable to add attachments
@@ -439,13 +438,13 @@
     Add to your search
   </message>
   <message name="IDS_FUSEBOX_AI_MODE_SUBTEXT" desc="Subtext displayed under the AI Mode button in the Fusebox popup." formatter_data="android_java">
-    Smarter, faster answers
+    Brainstorm and summarize
   </message>
   <message name="IDS_FUSEBOX_CREATE_IMAGE_SUBTEXT" desc="Subtext displayed under the Create images button in the Fusebox popup." formatter_data="android_java">
     Visualize and edit
   </message>
   <message name="IDS_FUSEBOX_CANVAS_SUBTEXT" desc="Subtext displayed under the Canvas button in the Fusebox popup." formatter_data="android_java">
-    Code, write, or make slides
+    Build and code
   </message>
 
   <!-- Accessibility labels for autocomplete match types.
@@ -695,6 +694,10 @@
   </message>
   <message name="IDS_OMNIBOX_HUB_HISTORY_HEADER" desc="The header for the history suggestions section.">
     History
+  </message>
+  <!-- NTP Action Chips -->
+  <message name="IDS_NTP_ACTION_CHIP_CREATE_IMAGE" desc="Label of the create image merchandising chip on the NTP." formatter_data="android_java">
+    Create
   </message>
   <!-- NTP Action Chips Fallback Prompts -->
   <message name="IDS_NTP_ACTION_CHIP_BRAINSTORM_PROMPT_1" desc="Text shown on the composebox searchbox on click of the brainstorm chip on the NTP.">

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/color/material_tab_strip_color_mixer.cc b/chrome/browser/ui/color/material_tab_strip_color_mixer.cc
-index 0e2a40114d6765682768cee0d314b53cdf31d763..ac101591f19decba7ab4311ff42146c058faddf7 100644
+index 1f44b27bb47c3dfebc41da5ff522880b2e156472..bf390eb3fc24c242c888323b16b466e3e555d57d 100644
 --- a/chrome/browser/ui/color/material_tab_strip_color_mixer.cc
 +++ b/chrome/browser/ui/color/material_tab_strip_color_mixer.cc
 @@ -14,6 +14,7 @@

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/profiles/BUILD.gn b/chrome/browser/ui/views/profiles/BUILD.gn
-index 6d686c014c50e8a9c19239895ae357fe17ac4455..0b402abc8fce599f70391bb9a706d27d0fc27c5a 100644
+index 08608ebfec55014bf7b2b92913772e88839b97fd..a72f505d7a549d7f2114d61eb9c3ff456b3a7a7c 100644
 --- a/chrome/browser/ui/views/profiles/BUILD.gn
 +++ b/chrome/browser/ui/views/profiles/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -10,7 +10,7 @@ index 6d686c014c50e8a9c19239895ae357fe17ac4455..0b402abc8fce599f70391bb9a706d27d
  import("//build/config/ui.gni")
  import("//components/safe_browsing/buildflags.gni")
  import("//components/signin/features.gni")
-@@ -230,6 +231,13 @@ if (is_win || is_mac || is_linux || is_chromeos) {
+@@ -232,6 +233,13 @@ if (is_win || is_mac || is_linux || is_chromeos) {
      if (enable_dice_support) {
        deps += [ "//chrome/browser/ui/webui/signin/signout_confirmation" ]
      }

@@ -24,6 +24,7 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExternalResource;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
@@ -42,6 +43,7 @@ import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.brave_shields.FirstPartyStorageCleanerInterface;
 import org.chromium.chrome.browser.flags.ChromeSwitches;
+import org.chromium.chrome.browser.multiwindow.BraveMultiWindowTestUtils;
 import org.chromium.chrome.browser.ui.actions.button.FullButtonData;
 import org.chromium.ui.modelutil.PropertyModel;
 import org.chromium.ui.modelutil.PropertyModelChangeProcessor;
@@ -55,7 +57,21 @@ import java.util.List;
     ChromeSwitches.DISABLE_FIRST_RUN_EXPERIENCE,
     BaseSwitches.DISABLE_NATIVE_INITIALIZATION
 })
+// TODO(https://github.com/brave/brave-browser/issues/59632): Remove mocking of Views/Activities.
+// Tests spy BraveActivity to toggle isShredButtonVisible(), which really depends on a pending
+// incognito re-auth that the test activity can't be put into.
+@SuppressWarnings("DoNotMock")
 public class BraveHubToolbarViewUnitTest {
+    // Other tests in the sandbox may reset the store; the activity launch reads from it.
+    @Rule(order = Rule.DEFAULT_ORDER - 1)
+    public final ExternalResource mMultiInstanceStoreRule =
+            new ExternalResource() {
+                @Override
+                protected void before() {
+                    BraveMultiWindowTestUtils.ensureMultiInstanceStoreInitialized();
+                }
+            };
+
     @Rule
     public ActivityScenarioRule<ChromeTabbedActivity> mActivityScenarioRule =
             new ActivityScenarioRule<>(ChromeTabbedActivity.class);

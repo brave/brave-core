@@ -10,6 +10,8 @@
 
 #include "base/command_line.h"
 #include "base/memory/raw_ptr.h"
+#include "base/strings/strcat.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/values.h"
 #include "chrome/browser/regional_capabilities/regional_capabilities_service_factory.h"
@@ -195,7 +197,8 @@ TEST_F(BraveSearchEnginesHandlerTest, SetDefaultPrivateEngineByDatabaseId) {
                 prefs::kSyncedDefaultPrivateSearchProviderGUID));
 
   base::ListValue args;
-  args.Append(static_cast<int>(engine_a_id_));
+  args.Append(
+      base::StrCat({"db:", base::NumberToString(engine_a_id_.value())}));
   web_ui()->HandleReceivedMessage("setDefaultPrivateSearchEngine", args);
 
   EXPECT_EQ(engine_a_guid_,
@@ -223,7 +226,8 @@ TEST_F(BraveSearchEnginesHandlerTest, SetDefaultPrivateEngineUserAddedEngine) {
   ASSERT_TRUE(default_engine);
 
   base::ListValue args;
-  args.Append(static_cast<int>(default_engine->id()));
+  args.Append(base::StrCat(
+      {"db:", base::NumberToString(default_engine->id().value())}));
   web_ui()->HandleReceivedMessage("setDefaultPrivateSearchEngine", args);
 
   EXPECT_EQ(user_engine_guid,
@@ -238,7 +242,7 @@ TEST_F(BraveSearchEnginesHandlerTest, SetDefaultPrivateEngineUnknownIdIsNoop) {
       prefs::kSyncedDefaultPrivateSearchProviderGUID);
 
   base::ListValue args;
-  args.Append(999999);
+  args.Append("db:999999");
   web_ui()->HandleReceivedMessage("setDefaultPrivateSearchEngine", args);
 
   EXPECT_EQ(initial_guid, profile()->GetPrefs()->GetString(

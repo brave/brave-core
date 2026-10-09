@@ -347,7 +347,6 @@ public abstract class BraveActivity extends ChromeActivity
     private MiscAndroidMetricsConnectionErrorHandler mMiscAndroidMetricsConnectionErrorHandler;
     private AppUpdateManager mAppUpdateManager;
     private boolean mWalletBadgeVisible;
-    private boolean mSpoofCustomTab;
 
     // Owns YouTube Picture-in-Picture session state and lifecycle.
     // Lazily created the first time a hook needs it; never null after first access.
@@ -3073,23 +3072,6 @@ public abstract class BraveActivity extends ChromeActivity
                         .create();
         alertDialog.getDelegate().setHandleNativeActionModesEnabled(false);
         alertDialog.show();
-    }
-
-    /*
-     * Whether we want to pretend to be a custom tab. May be usefull to avoid certain patches,
-     * when we want to have the same behaviour as in custom tabs.
-     */
-    public void spoofCustomTab(boolean spoof) {
-        mSpoofCustomTab = spoof;
-    }
-
-    @Override
-    public boolean isCustomTab() {
-        if (mSpoofCustomTab) {
-            return true;
-        }
-
-        return super.isCustomTab();
     }
 
     public void showQuickActionSearchEnginesView(int keypadHeight) {

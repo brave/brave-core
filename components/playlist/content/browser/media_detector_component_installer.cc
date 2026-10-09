@@ -16,7 +16,7 @@
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "components/component_updater/component_installer.h"
 #include "components/component_updater/component_updater_service.h"
-#include "crypto/sha2.h"
+#include "crypto/hash.h"
 
 using brave_component_updater::BraveOnDemandUpdater;
 
@@ -58,7 +58,7 @@ class MediaDetectorComponentInstallerPolicy
 
  private:
   OnComponentReadyCallback ready_callback_;
-  std::array<uint8_t, crypto::kSHA256Length> component_hash_;
+  std::array<uint8_t, crypto::hash::kSha256Size> component_hash_;
 };
 
 MediaDetectorComponentInstallerPolicy::MediaDetectorComponentInstallerPolicy(
@@ -80,7 +80,7 @@ MediaDetectorComponentInstallerPolicy::MediaDetectorComponentInstallerPolicy(
 
   auto decoded_public_key = base::Base64Decode(kComponentPublicKey);
   CHECK(decoded_public_key);
-  component_hash_ = crypto::SHA256Hash(*decoded_public_key);
+  component_hash_ = crypto::hash::Sha256(*decoded_public_key);
 }
 
 MediaDetectorComponentInstallerPolicy::

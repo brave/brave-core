@@ -1,11 +1,11 @@
 diff --git a/content/public/browser/content_browser_client.h b/content/public/browser/content_browser_client.h
-index 6e730455c66df584a721a2b4720f25bf9844f16d..3281aae89c0deb05f91f56df773451fb0693cb8b 100644
+index 16eb7f7cf30ea2f2d787954333a1616eaffdfde0..2300fa50358174c95ace24799de39b510973eefd 100644
 --- a/content/public/browser/content_browser_client.h
 +++ b/content/public/browser/content_browser_client.h
-@@ -3382,6 +3382,20 @@ class CONTENT_EXPORT ContentBrowserClient {
-   virtual bool OriginSupportsConcreteCrossOriginIsolation(
-       content::BrowserContext* browser_context,
-       const url::Origin& origin);
+@@ -3422,6 +3422,20 @@ class CONTENT_EXPORT ContentBrowserClient {
+   // WebUI, DevTools, or an embedder-specific extension scheme) that should be
+   // exempt from top-level window size checks in `WebContentsBasedCanceller`.
+   virtual bool IsExemptFromWindowSizeCheck(const GURL& url);
 +
 +  // Same as `CreateWebSocket`, but also carries the initiator renderer's
 +  // process id and origin, for handshakes that have no `RenderFrameHost`.

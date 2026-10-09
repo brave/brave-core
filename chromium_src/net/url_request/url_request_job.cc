@@ -6,23 +6,22 @@
 #include "net/url_request/url_request_job.h"
 
 #include "base/strings/string_util.h"
+#include "url/gurl.h"
+#include "url/origin.h"
 
-// Strip referrer for cross-origin requests from a .onion hostname.
-// This also affects the Origin header outside of CORS requests.
-#define ComputeReferrerForPolicy                                              \
-  ComputeReferrerForPolicy(                                                   \
-      ReferrerPolicy policy, const GURL& original_referrer,                   \
-      const GURL& destination, bool* same_origin_out_for_metrics) {           \
-    if (base::EndsWith(original_referrer.host(), ".onion",                    \
-                       base::CompareCase::INSENSITIVE_ASCII) &&               \
-        !url::IsSameOriginWith(original_referrer, destination)) {             \
-      return GURL();                                                          \
-    }                                                                         \
-    return ComputeReferrerForPolicy_Chromium(                                 \
-        policy, original_referrer, destination, same_origin_out_for_metrics); \
-  }                                                                           \
-  GURL URLRequestJob::ComputeReferrerForPolicy_Chromium
+namespace net {
+
+namespace {
+
+bool IsCrossOriginOnionReferrer(const GURL& original_referrer,
+                                const GURL& destination) {
+  return base::EndsWith(original_referrer.host(), ".onion",
+                        base::CompareCase::INSENSITIVE_ASCII) &&
+         !url::IsSameOriginWith(original_referrer, destination);
+}
+
+}  // namespace
+
+}  // namespace net
 
 #include <net/url_request/url_request_job.cc>
-
-#undef ComputeReferrerForPolicy

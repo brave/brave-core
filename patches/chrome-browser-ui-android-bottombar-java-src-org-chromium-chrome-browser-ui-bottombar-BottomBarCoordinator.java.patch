@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/android/bottombar/java/src/org/chromium/chrome/browser/ui/bottombar/BottomBarCoordinator.java b/chrome/browser/ui/android/bottombar/java/src/org/chromium/chrome/browser/ui/bottombar/BottomBarCoordinator.java
-index bc92e3a45ceb0dc895abce6afc14eeae7e15d152..fa909ba76f3da9f90a5ec2aa13cec0efd7a49fb3 100644
+index abae5b65dc70d1631589709a7cefffad2f2bbdb7..aa8cd23abc5adf1b1d861e7938dcea926673315e 100644
 --- a/chrome/browser/ui/android/bottombar/java/src/org/chromium/chrome/browser/ui/bottombar/BottomBarCoordinator.java
 +++ b/chrome/browser/ui/android/bottombar/java/src/org/chromium/chrome/browser/ui/bottombar/BottomBarCoordinator.java
-@@ -44,7 +44,7 @@ public class BottomBarCoordinator implements BottomBar, Destroyable {
+@@ -42,7 +42,7 @@ public class BottomBarCoordinator implements BottomBar, Destroyable {
      private final BottomBarMediator mMediator;
      private final BottomBarView mView;
      private final PropertyModelChangeProcessor<PropertyModel, BottomBarView, PropertyKey> mMcp;
@@ -11,7 +11,7 @@ index bc92e3a45ceb0dc895abce6afc14eeae7e15d152..fa909ba76f3da9f90a5ec2aa13cec0ef
      private final BottomBarPromoDialogCoordinator mPromoDialogCoordinator;
      private final NullableObservableSupplier<Tab> mTabSupplier;
  
-@@ -90,7 +90,7 @@ public class BottomBarCoordinator implements BottomBar, Destroyable {
+@@ -85,7 +85,7 @@ public class BottomBarCoordinator implements BottomBar, Destroyable {
          mModel = new PropertyModel.Builder(BottomBarProperties.ALL_KEYS).build();
  
          mButtonManager =
@@ -19,13 +19,13 @@ index bc92e3a45ceb0dc895abce6afc14eeae7e15d152..fa909ba76f3da9f90a5ec2aa13cec0ef
 +                new BraveBottomBarButtonManager(configs, actionRegistry, mModel, ActionId.NEW_TAB);
  
          mPromoDialogCoordinator =
-                 new BottomBarPromoDialogCoordinator(
-@@ -118,7 +118,7 @@ public class BottomBarCoordinator implements BottomBar, Destroyable {
+                 new BottomBarPromoDialogCoordinator(context, modalDialogManagerSupplier);
+@@ -109,7 +109,7 @@ public class BottomBarCoordinator implements BottomBar, Destroyable {
          mMcp = PropertyModelChangeProcessor.create(mModel, mView, BottomBarViewBinder::bind);
      }
  
--    private List<ActionConfig> createActionConfigs(
-+    protected List<ActionConfig> createActionConfigs(
-             BottomBarView view, boolean shouldIncludeHomeButton) {
+-    private List<ActionConfig> createActionConfigs(BottomBarView view) {
++    protected List<ActionConfig> createActionConfigs(BottomBarView view) {
          List<ActionConfig> configs = new ArrayList<>();
  
+         BottomBarButtonContainer homeContainer = view.getContainerForAction(ActionId.HOME_BUTTON);

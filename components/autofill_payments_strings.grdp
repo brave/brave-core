@@ -86,6 +86,9 @@
       <message name="IDS_AUTOFILL_SAVE_CARD_BUBBLE_UPLOAD_SAVE_ACCEPT" desc="Text to show for the Autofill save credit card upload save bubble accept button.">
         Save
       </message>
+      <message name="IDS_AUTOFILL_SAVE_CARDHOLDER_NAME_BUBBLE_UPLOAD_SAVE_ACCEPT" desc="Text to show for the Autofill save cardholder name upload save bubble accept button.">
+        Confirm
+      </message>
     </else>
   </if>
   <if expr="is_android">
@@ -163,6 +166,11 @@
   <message name="IDS_AUTOFILL_SAVE_CVC_PROMPT_TITLE_TO_CLOUD" desc="Title text for the Autofill CVC upload prompt that offers to upload CVC to the Sync server for existing server cards. This prompt is shown if a CVC is detected for an existing server card on form submission.">
     Save security code?
   </message>
+  <if expr="not is_android and not is_ios">
+    <message name="IDS_AUTOFILL_SAVE_CARDHOLDER_NAME_PROMPT_UPLOAD_SAVE_TITLE" desc="Title text for the Autofill save cardholder name upload save prompt that offers to save the cardholder name to Google Wallet for an existing nameless server card.">
+      Save cardholder name?
+    </message>
+  </if>
   <message name="IDS_AUTOFILL_SAVE_CARD_PROMPT_CARD_DESCRIPTION" desc="Accessibility description for the credit card chip containing the network icon and card labels on the Autofill save card prompt when the card is to be saved (either locally or by uploading it to Google Payments).">
     <ph name="CARD_NETWORK_NAME">$1<ex>Visa</ex></ph>, <ph name="CARD_LAST_FOUR_DIGITS">$2<ex>4444</ex></ph>, expires <ph name="CARD_EXPIRATION">$3<ex>01/2025</ex></ph>
   </message>
@@ -200,6 +208,11 @@
   <message name="IDS_AUTOFILL_SAVE_CVC_TO_WALLET_PROMPT_EXPLANATION_UPLOAD" desc="Explanation text for the Autofill save CVC to Google Wallet prompt that offers to upload CVC to the Sync server for existing server cards. This prompt is shown if a CVC is detected for an existing server card on form submission.">
     This card's CVC will be encrypted and saved in Google Wallet for faster checkout
   </message>
+  <if expr="not is_android and not is_ios">
+    <message name="IDS_AUTOFILL_SAVE_CARDHOLDER_NAME_PROMPT_UPLOAD_SAVE_EXPLANATION" desc="Explanation text for the Autofill save cardholder name upload save prompt that offers to save the cardholder name to Google Wallet for an existing nameless server card.">
+      To have it filled automatically at checkout, save the cardholder name for this card in Google Wallet
+    </message>
+  </if>
   <message name="IDS_AUTOFILL_SAVE_CARD_PROMPT_UPLOAD_EXPLANATION_SECURITY" desc="Explanation of the benefit of credit card upload save on Desktop, using security-focused messaging. Became the new default for Desktop in Dec. 2024 and new default for Android and IOS (bottomsheet only) in H1 2025.">
     Pay faster when your card is saved. Card details are encrypted in your Brave sync chain.
   </message>
@@ -1453,10 +1466,10 @@
   </if>
 
   <!-- Payments churned users strings -->
-  <message name="IDS_AUTOFILL_CHURNED_USERS_BUBBLE_ACCEPT_BUTTON_LABEL" desc="Accept button label for the payments churned users bubble. On acceptance, payments autofill is turned on for a user and a confirmation bubble is shown.">
+  <message name="IDS_AUTOFILL_CHURNED_USERS_BUBBLE_ACCEPT_BUTTON_LABEL" desc="Accept button label for the payments churned users bubble. On acceptance, payments autofill is turned on for a user and a confirmation bubble is shown." formatter_data="android_java">
     Turn on
   </message>
-  <message name="IDS_AUTOFILL_CHURNED_USERS_BUBBLE_CANCEL_BUTTON_LABEL" desc="Cancel button label for the payments churned users bubble. On cancellation, the bubble is closed.">
+  <message name="IDS_AUTOFILL_CHURNED_USERS_BUBBLE_CANCEL_BUTTON_LABEL" desc="Cancel button label for the payments churned users bubble. On cancellation, the bubble is closed." formatter_data="android_java">
     No thanks
   </message>
   <message name="IDS_AUTOFILL_CHURNED_USERS_BUBBLE_SECURITY_TITLE" desc="Security title for the payments churned users bubble. On acceptance, payments autofill is turned on for a user and a confirmation bubble is shown." formatter_data="android_java">
@@ -1465,10 +1478,10 @@
   <message name="IDS_AUTOFILL_CHURNED_USERS_BUBBLE_CONVENIENCE_TITLE" desc="Convenience title for the payments churned users bubble. On acceptance, payments autofill is turned on for a user and a confirmation bubble is shown." formatter_data="android_java">
     Check out faster with autofill
   </message>
-  <message name="IDS_AUTOFILL_CHURNED_USERS_BUBBLE_SECURITY_DESCRIPTION" desc="Security description for the payments churned users bubble. On acceptance, payments autofill is turned on for a user and a confirmation bubble is shown.">
+  <message name="IDS_AUTOFILL_CHURNED_USERS_BUBBLE_SECURITY_DESCRIPTION" desc="Security description for the payments churned users bubble. On acceptance, payments autofill is turned on for a user and a confirmation bubble is shown." formatter_data="android_java">
     Turn on autofill to safely check out online. Your card details are encrypted in Google Wallet.
   </message>
-  <message name="IDS_AUTOFILL_CHURNED_USERS_BUBBLE_CONVENIENCE_DESCRIPTION" desc="Convenience description for the payments churned users bubble. On acceptance, payments autofill is turned on for a user and a confirmation bubble is shown.">
+  <message name="IDS_AUTOFILL_CHURNED_USERS_BUBBLE_CONVENIENCE_DESCRIPTION" desc="Convenience description for the payments churned users bubble. On acceptance, payments autofill is turned on for a user and a confirmation bubble is shown." formatter_data="android_java">
     Fill card details automatically when you check out online. Cards are saved in Google Wallet securely.
   </message>
   <message name="IDS_AUTOFILL_CHURNED_USERS_MESSAGE_TITLE" desc="Title for the payments churned users Android message banner. Prompts the user to turn on payment autofill.">
@@ -1476,6 +1489,9 @@
   </message>
   <message name="IDS_AUTOFILL_CHURNED_USERS_MESSAGE_DESCRIPTION" desc="Description for the payments churned users Android message banner. Prompts the user to turn on payment autofill.">
     Turn on autofill to make shopping easier
+  </message>
+  <message name="IDS_AUTOFILL_CHURNED_USERS_SNACKBAR_ACTION_TEXT" desc="Action button text in the confirmation snackbar shown after a churned user accepts the prompt to re-enable payment autofill. Clicking opens the payment methods settings page.">
+    View settings
   </message>
   <message name="IDS_AUTOFILL_CHURNED_USERS_CONFIRMATION_BUBBLE_TITLE" desc="Title for the churned users confirmation bubble, which comes after the user has accepted the churned users bubble, letting the user know that autofill is turned on.">
     Autofill turned on
@@ -1486,9 +1502,15 @@
   <message name="IDS_AUTOFILL_CHURNED_USERS_CONFIRMATION_BUBBLE_DESCRIPTION" desc="Description for the churned users confirmation bubble, which comes after the user has accepted the churned users bubble, letting the user know that autofill is turned on.">
     Now you can save payment methods to autofill at checkout in Brave. <ph name="LINK_TEXT">$1<ex>View autofill settings</ex></ph>
   </message>
-  <if expr="not is_android">
-    <message name="IDS_AUTOFILL_CHURNED_USERS_CONFIRMATION_BUBBLE_LOADING_THROBBER_ACCESSIBLE_NAME" desc="Accessible name announced by the screenreader for virtual card prompt in loading state showing a throbber." is_accessibility_with_no_ui="true" formatter_data="android_java">
-      Turning on autofill
+  <message name="IDS_AUTOFILL_CHURNED_USERS_CONFIRMATION_BUBBLE_LOADING_THROBBER_ACCESSIBLE_NAME" desc="Accessible name announced by the screenreader for virtual card prompt in loading state showing a throbber." is_accessibility_with_no_ui="true" formatter_data="android_java">
+    Turning on autofill
+  </message>
+  <if expr="is_android">
+    <message name="IDS_AUTOFILL_CHURNED_USERS_BOTTOM_SHEET_FULL_HEIGHT" desc="The accessibility announcement when the Autofill payments churned users bottom sheet is opened at full height." formatter_data="android_java">
+      Enable Payments Autofill opened at full height.
+    </message>
+    <message name="IDS_AUTOFILL_CHURNED_USERS_BOTTOM_SHEET_CLOSED" desc="The accessibility announcement when the Autofill payments churned users bottom sheet is closed." formatter_data="android_java">
+      Enable Payments Autofill closed.
     </message>
   </if>
 

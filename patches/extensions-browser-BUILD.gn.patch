@@ -1,5 +1,5 @@
 diff --git a/extensions/browser/BUILD.gn b/extensions/browser/BUILD.gn
-index 4bc6dc027159e0ec984622cfda5b2a0d37ea819f..81b20b2c99481b3bea8ba787f44815fc83bc3982 100644
+index e7c3057b0e907e5d881cdf8fd9fb7f28b3b4ca84..2e05237cc6873dcecbffb02a85b04ad6d7f4e897 100644
 --- a/extensions/browser/BUILD.gn
 +++ b/extensions/browser/BUILD.gn
 @@ -10,7 +10,7 @@ import("//rlz/buildflags/buildflags.gni")
@@ -11,8 +11,8 @@ index 4bc6dc027159e0ec984622cfda5b2a0d37ea819f..81b20b2c99481b3bea8ba787f44815fc
    import("//build/config/android/rules.gni")
  }
  
-@@ -1323,7 +1323,7 @@ source_set("unit_tests") {
-   configs += [ "//build/config/compiler:no_exit_time_destructors" ]
+@@ -1324,7 +1324,7 @@ source_set("unit_tests") {
+   ]
  }
  
 -if (enable_desktop_android_extensions) {

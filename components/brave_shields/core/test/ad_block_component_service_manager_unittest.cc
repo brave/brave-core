@@ -14,6 +14,7 @@
 #include "base/containers/fixed_flat_map.h"
 #include "base/containers/flat_set.h"
 #include "base/json/json_writer.h"
+#include "base/memory/raw_ptr.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "base/values.h"
@@ -36,8 +37,8 @@ namespace brave_shields {
 namespace {
 
 bool AllProvidersInitialized(
-    const base::flat_set<AdBlockFiltersProvider*>& providers) {
-  for (auto* provider : providers) {
+    const base::flat_set<raw_ptr<AdBlockFiltersProvider>>& providers) {
+  for (AdBlockFiltersProvider* provider : providers) {
     if (!provider->IsInitialized()) {
       return false;
     }

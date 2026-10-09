@@ -11,6 +11,7 @@
 
 #include "base/containers/flat_set.h"
 #include "base/functional/callback.h"
+#include "base/memory/raw_ptr.h"
 #include "base/task/cancelable_task_tracker.h"
 #include "base/timer/timer.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
@@ -64,7 +65,7 @@ class AdBlockFiltersProviderManager : public AdBlockFiltersProvider,
 
   std::string GetNameForDebugging() override;
 
-  const base::flat_set<AdBlockFiltersProvider*>& GetProviders(
+  const base::flat_set<raw_ptr<AdBlockFiltersProvider>>& GetProviders(
       bool is_for_default_engine) const;
 
  private:
@@ -78,8 +79,10 @@ class AdBlockFiltersProviderManager : public AdBlockFiltersProvider,
       std::vector<base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>>
           results);
 
-  base::flat_set<AdBlockFiltersProvider*> default_engine_filters_providers_;
-  base::flat_set<AdBlockFiltersProvider*> additional_engine_filters_providers_;
+  base::flat_set<raw_ptr<AdBlockFiltersProvider>>
+      default_engine_filters_providers_;
+  base::flat_set<raw_ptr<AdBlockFiltersProvider>>
+      additional_engine_filters_providers_;
 
   bool suppress_default_engine_startup_change_notification_ = false;
   bool suppress_additional_engine_startup_change_notification_ = false;

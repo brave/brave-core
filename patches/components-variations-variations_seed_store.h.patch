@@ -1,8 +1,8 @@
 diff --git a/components/variations/variations_seed_store.h b/components/variations/variations_seed_store.h
-index 1f5a41821ff5efef905b105909a48b77f131e33c..ddae7c9c1becda66ecf61cafc34ba0a66f124547 100644
+index ef87229854b8d711a54237c86ca30d18926ecc89..67e44bfa04a7010ad9c6a92d7ca505f1f14a8264 100644
 --- a/components/variations/variations_seed_store.h
 +++ b/components/variations/variations_seed_store.h
-@@ -302,6 +302,8 @@ class COMPONENT_EXPORT(VARIATIONS) VariationsSeedStore {
+@@ -301,6 +301,8 @@ class COMPONENT_EXPORT(VARIATIONS) VariationsSeedStore {
        base::OnceCallback<void(StoredSeedInfo)> done_callback,
        SeedType seed_type);
  

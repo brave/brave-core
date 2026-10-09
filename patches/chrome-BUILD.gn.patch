@@ -1,5 +1,5 @@
 diff --git a/chrome/BUILD.gn b/chrome/BUILD.gn
-index d98c86e5dace91937c62c5428084686c666ab0d4..08326ca7866274e404834b7666c643d953089eae 100644
+index 55aa36caddc7e777338114f42ed6959afd9baaf5..405b78e7a4319a192e22aecd27b3db1c15c0b057 100644
 --- a/chrome/BUILD.gn
 +++ b/chrome/BUILD.gn
 @@ -2,6 +2,10 @@
@@ -13,7 +13,7 @@ index d98c86e5dace91937c62c5428084686c666ab0d4..08326ca7866274e404834b7666c643d9
  import("//build/config/chrome_build.gni")
  import("//build/config/chromeos/args.gni")
  import("//build/config/compiler/compiler.gni")
-@@ -406,6 +410,13 @@ if (!is_android && !is_mac) {
+@@ -407,6 +411,13 @@ if (!is_android && !is_mac) {
      if (is_chrome_for_testing) {
        deps += [ "//chrome/browser/chrome_for_testing:browser" ]
      }
@@ -27,7 +27,7 @@ index d98c86e5dace91937c62c5428084686c666ab0d4..08326ca7866274e404834b7666c643d9
    }
  
    # TODO(crbug.com/40204298): Make this work on other platforms.
-@@ -535,6 +546,12 @@ if (is_win) {
+@@ -541,6 +552,12 @@ if (is_win) {
      }
    }
  
@@ -40,7 +40,7 @@ index d98c86e5dace91937c62c5428084686c666ab0d4..08326ca7866274e404834b7666c643d9
    mac_app_bundle("chrome_app") {
      output_name = chrome_product_full_name
  
-@@ -561,6 +578,7 @@ if (is_win) {
+@@ -567,6 +584,7 @@ if (is_win) {
        "//chrome/common:buildflags",
        "//chrome/common:version_header",
      ]
@@ -48,7 +48,7 @@ index d98c86e5dace91937c62c5428084686c666ab0d4..08326ca7866274e404834b7666c643d9
  
      bundle_deps = [
        ":chrome_app_strings_bundle_data",
-@@ -596,6 +614,7 @@ if (is_win) {
+@@ -602,6 +620,7 @@ if (is_win) {
        # for runtime_deps at create_bundle nodes (https://crbug.com/40101435).
        data_deps = [ ":chrome_framework" ]
      }
@@ -56,7 +56,7 @@ index d98c86e5dace91937c62c5428084686c666ab0d4..08326ca7866274e404834b7666c643d9
    }
  
    if (verify_dynamic_libraries) {
-@@ -714,6 +733,9 @@ if (is_win) {
+@@ -720,6 +739,9 @@ if (is_win) {
        # resources directory.
        public_deps += [ ":chrome_framework_widevine_signature" ]
      }
@@ -66,7 +66,7 @@ index d98c86e5dace91937c62c5428084686c666ab0d4..08326ca7866274e404834b7666c643d9
    }
  
    if (enable_updater) {
-@@ -757,8 +779,15 @@ if (is_win) {
+@@ -763,8 +785,15 @@ if (is_win) {
      ]
    }
  
@@ -82,7 +82,7 @@ index d98c86e5dace91937c62c5428084686c666ab0d4..08326ca7866274e404834b7666c643d9
      if (is_chrome_branded && include_branded_entitlements) {
        # These entitlements are bound to the official Google Chrome signing
        # certificate and will not necessarily work in any other build.
-@@ -783,6 +812,7 @@ if (is_win) {
+@@ -789,6 +818,7 @@ if (is_win) {
          info_plist_target = invoker.info_plist_target
        } else {
          info_plist_target = ":chrome_helper_plist"
@@ -90,7 +90,7 @@ index d98c86e5dace91937c62c5428084686c666ab0d4..08326ca7866274e404834b7666c643d9
        }
  
        extra_substitutions = [
-@@ -1066,6 +1096,11 @@ if (is_win) {
+@@ -1072,6 +1102,11 @@ if (is_win) {
      if (enable_updater) {
        if (is_chrome_branded) {
          sources += [ "//third_party/updater/chrome_mac_universal_prod/cipd/${updater_product_full_name}.app" ]
@@ -102,7 +102,7 @@ index d98c86e5dace91937c62c5428084686c666ab0d4..08326ca7866274e404834b7666c643d9
        } else {
          sources += [ "$root_out_dir/${updater_product_full_name}.app" ]
  
-@@ -1375,6 +1410,7 @@ if (is_win) {
+@@ -1381,6 +1416,7 @@ if (is_win) {
        "Libraries",
        "Resources",
      ]
@@ -110,7 +110,7 @@ index d98c86e5dace91937c62c5428084686c666ab0d4..08326ca7866274e404834b7666c643d9
  
      configs += [ "//build/config/compiler:wexit_time_destructors" ]
      configs -= [ "//build/config/compiler:thinlto_optimize_default" ]
-@@ -1387,6 +1423,7 @@ if (is_win) {
+@@ -1393,6 +1429,7 @@ if (is_win) {
      ]
  
      public_deps = [ ":chrome_dll" ]
@@ -118,7 +118,7 @@ index d98c86e5dace91937c62c5428084686c666ab0d4..08326ca7866274e404834b7666c643d9
  
      bundle_deps = [
        ":aperitif_library",
-@@ -1399,6 +1436,7 @@ if (is_win) {
+@@ -1405,6 +1442,7 @@ if (is_win) {
        "//chrome/browser/web_applications/isolated_web_apps/key_distribution/preload:component_bundle",
        "//components/privacy_sandbox/privacy_sandbox_attestations/preload:component_bundle",
      ]
@@ -126,7 +126,7 @@ index d98c86e5dace91937c62c5428084686c666ab0d4..08326ca7866274e404834b7666c643d9
  
      if (is_chrome_branded) {
        bundle_deps += [ ":chromecompaneros_bundle_data" ]
-@@ -1636,6 +1674,7 @@ if (is_win) {
+@@ -1642,6 +1680,7 @@ if (is_win) {
  
  group("dependencies") {
    public_deps = [
@@ -134,7 +134,7 @@ index d98c86e5dace91937c62c5428084686c666ab0d4..08326ca7866274e404834b7666c643d9
      "//build:branding_buildflags",
      "//build:chromeos_buildflags",
      "//chrome/browser",
-@@ -1682,7 +1721,7 @@ group("dependencies") {
+@@ -1688,7 +1727,7 @@ group("dependencies") {
  
  if (is_win) {
    process_version_rc_template("chrome_exe_version") {
@@ -143,7 +143,7 @@ index d98c86e5dace91937c62c5428084686c666ab0d4..08326ca7866274e404834b7666c643d9
      output = "$target_gen_dir/chrome_exe_version.rc"
    }
  
-@@ -1728,6 +1767,7 @@ copy("visual_elements_resources") {
+@@ -1734,6 +1773,7 @@ copy("visual_elements_resources") {
  
  group("resources") {
    public_deps = [
@@ -151,7 +151,7 @@ index d98c86e5dace91937c62c5428084686c666ab0d4..08326ca7866274e404834b7666c643d9
      "//chrome/browser:resources",
      "//chrome/common:resources",
      "//chrome/renderer:resources",
-@@ -1756,6 +1796,10 @@ if (!is_android) {
+@@ -1762,6 +1802,10 @@ if (!is_android) {
      if (enable_resource_allowlist_generation) {
        repack_allowlist = _chrome_resource_allowlist
        deps = [ ":resource_allowlist" ]

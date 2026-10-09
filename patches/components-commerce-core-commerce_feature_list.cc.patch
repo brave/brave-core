@@ -1,8 +1,8 @@
 diff --git a/components/commerce/core/commerce_feature_list.cc b/components/commerce/core/commerce_feature_list.cc
-index 20aff1a4459320c13fe4541bd0fc4eafc7af3f32..c9f0e8cf1ebee81e1a22779bf1dd54b32ac631f9 100644
+index 82daeb85e1755c4574d50d3756185584e9f5aadf..26214b4fc071933432b3e889dfa29947ba406ef7 100644
 --- a/components/commerce/core/commerce_feature_list.cc
 +++ b/components/commerce/core/commerce_feature_list.cc
-@@ -125,14 +125,14 @@ const re2::RE2& GetCouponPartnerMerchantPattern() {
+@@ -119,14 +119,14 @@ const re2::RE2& GetCouponPartnerMerchantPattern() {
  
  BASE_FEATURE(kCommerceAllowLocalImages, base::FEATURE_DISABLED_BY_DEFAULT);
  
@@ -21,7 +21,7 @@ index 20aff1a4459320c13fe4541bd0fc4eafc7af3f32..c9f0e8cf1ebee81e1a22779bf1dd54b3
  
  BASE_FEATURE(kPriceInsights, base::FEATURE_DISABLED_BY_DEFAULT);
  
-@@ -211,12 +211,12 @@ BASE_FEATURE(kDiscountsUiRefactor, base::FEATURE_DISABLED_BY_DEFAULT);
+@@ -205,12 +205,12 @@ BASE_FEATURE(kDiscountsUiRefactor, base::FEATURE_DISABLED_BY_DEFAULT);
  const base::FeatureParam<bool> kDeleteAllMerchantsOnClearBrowsingHistory{
      &kCommerceMerchantViewer, "delete_all_merchants_on_clear_history", false};
  
@@ -36,7 +36,7 @@ index 20aff1a4459320c13fe4541bd0fc4eafc7af3f32..c9f0e8cf1ebee81e1a22779bf1dd54b3
  
  BASE_FEATURE(kSubscriptionsApi, base::FEATURE_DISABLED_BY_DEFAULT);
  
-@@ -224,7 +224,7 @@ BASE_FEATURE(kInStockNotification, base::FEATURE_DISABLED_BY_DEFAULT);
+@@ -218,7 +218,7 @@ BASE_FEATURE(kInStockNotification, base::FEATURE_DISABLED_BY_DEFAULT);
  
  BASE_FEATURE(kShoppingPageTypes, base::FEATURE_DISABLED_BY_DEFAULT);
  

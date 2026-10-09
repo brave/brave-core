@@ -1,5 +1,5 @@
 diff --git a/chrome/common/BUILD.gn b/chrome/common/BUILD.gn
-index 582f9b21931b8bbb7a95d887a18036ba9609bacb..a50e89ed1c4af978f58e443942309fa1896aedc4 100644
+index cf9ffa48f05f4ec45dcda4590c3d619953d8fa29..a1af6f26b709c37a5d220e8d514b53a6c401cd60 100644
 --- a/chrome/common/BUILD.gn
 +++ b/chrome/common/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -10,7 +10,7 @@ index 582f9b21931b8bbb7a95d887a18036ba9609bacb..a50e89ed1c4af978f58e443942309fa1
  import("//build/buildflag_header.gni")
  import("//build/config/chrome_build.gni")
  import("//build/util/process_version.gni")
-@@ -88,6 +89,7 @@ source_set("channel_info") {
+@@ -89,6 +90,7 @@ source_set("channel_info") {
    deps = [ "//build:branding_buildflags" ]
    public_deps = [
      "//base",
@@ -18,7 +18,7 @@ index 582f9b21931b8bbb7a95d887a18036ba9609bacb..a50e89ed1c4af978f58e443942309fa1
      "//components/version_info",
      "//components/version_info:version_string",
    ]
-@@ -176,6 +178,7 @@ static_library("common_lib") {
+@@ -177,6 +179,7 @@ static_library("common_lib") {
      "webui_util.cc",
      "webui_util.h",
    ]
@@ -58,3 +58,10 @@ index 582f9b21931b8bbb7a95d887a18036ba9609bacb..a50e89ed1c4af978f58e443942309fa1
  
    if (is_android) {
      sources += [ "chrome_paths_android.cc" ]
+@@ -909,5 +916,6 @@ source_set("unit_tests") {
+     sources += [ "media/cdm_registration_unittest.cc" ]
+     deps += [ "//third_party/widevine/cdm:headers" ]
+     data_deps = [ "//third_party/widevine/cdm" ]
++    deps += [ "//third_party/widevine/cdm:headers" ]
+   }
+ }

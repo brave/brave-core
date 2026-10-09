@@ -9,11 +9,6 @@ import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 # the AI Chat code sandbox WebUI host constant.
 brave_blink_renderer_modules_peerconnection_ai_chat_deps = []
 
-# Deps for third_party/blink/renderer/core (script_tools): the model_context.cc
-# plaster patch calls IsAIChatLeoWorkspaceHost() to allow WebMCP only on the
-# workspace pages themselves.
-brave_blink_renderer_core_script_tools_ai_chat_deps = []
-
 # //brave/components/ai_chat/core/common:constants is a renderer-safe,
 # header-only target, so blink can depend on it without pulling in the rest of
 # the AI Chat common component.
@@ -24,7 +19,5 @@ brave_blink_renderer_core_script_tools_ai_chat_deps = []
 # flagged as missing-dependency errors.
 if (enable_ai_chat) {
   brave_blink_renderer_modules_peerconnection_ai_chat_deps +=
-      [ "//brave/components/ai_chat/core/common:constants" ]
-  brave_blink_renderer_core_script_tools_ai_chat_deps +=
       [ "//brave/components/ai_chat/core/common:constants" ]
 }

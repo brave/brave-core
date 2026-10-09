@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/BUILD.gn b/chrome/browser/BUILD.gn
-index 33a6696fd803af080bb0a7d71b66e06d6950f86d..6e18394265d0d1243fd5abb5522882631e0aff30 100644
+index a935c57e90311c5e02631cfd5148beee47bf9f0b..2126ed6f1ced334df94ab8d33be5b3f0ca84e4a8 100644
 --- a/chrome/browser/BUILD.gn
 +++ b/chrome/browser/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -10,7 +10,7 @@ index 33a6696fd803af080bb0a7d71b66e06d6950f86d..6e18394265d0d1243fd5abb552288263
  import("//base/allocator/allocator.gni")
  import("//build/buildflag_header.gni")
  import("//build/config/buildflags_paint_preview.gni")
-@@ -2043,6 +2044,7 @@ source_set("browser") {
+@@ -2233,6 +2234,7 @@ source_set("browser") {
      # should be added to browser_generated_files.
      ":browser_public_dependencies",
      ":core",
@@ -18,7 +18,7 @@ index 33a6696fd803af080bb0a7d71b66e06d6950f86d..6e18394265d0d1243fd5abb552288263
      "//chrome/browser/accessibility/accessibility_prefs",
      "//chrome/browser/browsing_data",
      "//chrome/browser/download",
-@@ -3284,7 +3286,7 @@ source_set("browser") {
+@@ -3587,7 +3589,7 @@ source_set("browser") {
  
    # TODO(https://crbug.com/356905053): Add more dependencies here and merge this
    # block with the `enable_extensions` block above.
@@ -27,7 +27,7 @@ index 33a6696fd803af080bb0a7d71b66e06d6950f86d..6e18394265d0d1243fd5abb552288263
      deps += [ "//chrome/browser/ui/android/extensions" ]
    }
  
-@@ -3471,6 +3473,7 @@ group("browser_public_dependencies") {
+@@ -5275,6 +5277,7 @@ group("browser_public_dependencies") {
      "//sql",
      "//ui/lottie",
    ]

@@ -26,6 +26,7 @@
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
 #include "brave/components/ai_chat/core/common/constants.h"
 #include "brave/components/ai_chat/core/common/features.h"
+#include "build/build_config.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
@@ -249,7 +250,8 @@ IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentBrowserTest,
                        GrantsFileSystemAccessToWorkspaceOriginOnLoad) {
-  auto* content = CreateContent(CreateWorkspaceFolder());
+  const base::FilePath folder = CreateWorkspaceFolder();
+  auto* content = CreateContent(folder);
   const GURL workspace_url = content->page_url();
   ASSERT_EQ(
       CONTENT_SETTING_ASK,
@@ -271,7 +273,16 @@ IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentBrowserTest,
       GetSetting(workspace_url, ContentSettingsType::FILE_SYSTEM_WRITE_GUARD));
 
   // The handle the page received is for the folder this content was created
-  // with: read the test file through the handle the page saved to IndexedDB.
+  // with.
+#if BUILDFLAG(IS_WIN)
+  // %TEMP% is under %LOCALAPPDATA%, which the File System Access blocklist
+  // blocks child access to, so check the folder's unique name instead.
+  EXPECT_EQ(folder.BaseName().AsUTF8Unsafe(),
+            content::EvalJs(content->GetWebContentsForTesting(),
+                            base::StrCat({kGetStoredHandleJs,
+                                          ".then(handle => handle.name)"})));
+#else
+  // Read the test file through the handle the page saved to IndexedDB.
   EXPECT_EQ("hello world",
             content::EvalJs(content->GetWebContentsForTesting(),
                             base::StrCat({kGetStoredHandleJs, R"JS(
@@ -279,6 +290,7 @@ IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentBrowserTest,
           .then(file => file.getFile())
           .then(file => file.text())
       )JS"})));
+#endif
 
   // The grant is scoped to this workspace's own origin: it must not extend to
   // the workspace host itself, nor to any other workspace's subdomain.
@@ -550,9 +562,8 @@ class WorkspaceAssociatedContentWebMcpBrowserTest
   base::test::ScopedFeatureList web_mcp_feature_list_;
 };
 
-// The workspace page registers its file tools via WebMCP, which blink only
-// permits for workspace documents. That check is on the host, so it has to
-// accept the per-workspace subdomain the page is actually served from.
+// The workspace page registers its file tools via WebMCP from the
+// per-workspace subdomain it is served from.
 IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentWebMcpBrowserTest,
                        PageCanRegisterToolsFromItsOwnSubdomain) {
   auto* content = CreateContent(CreateWorkspaceFolder());
@@ -560,8 +571,8 @@ IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentWebMcpBrowserTest,
   ASSERT_TRUE(content::WaitForLoadStop(web_contents));
   ASSERT_EQ(content->page_url(), web_contents->GetLastCommittedURL());
 
-  // registerTool() rejects with a SecurityError when WebMCP isn't allowed for
-  // the document's origin, so the promise resolving is the assertion here.
+  // registerTool() rejects when WebMCP isn't allowed for the document, so the
+  // promise resolving is the assertion here.
   EXPECT_EQ("registered", content::EvalJs(web_contents, R"JS(
       (async () => {
         await document.modelContext.registerTool({
@@ -574,8 +585,8 @@ IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentWebMcpBrowserTest,
   )JS"));
 }
 
-// The viewer has no tools of its own, so blink's WebMCP gate must not extend to
-// it just because its host ends with the workspace host.
+// The viewer has no tools of its own. It is a cross-origin iframe without
+// allow="tools", so the "tools" permissions policy must block it.
 IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentWebMcpBrowserTest,
                        ViewerCannotRegisterTools) {
   auto* content = CreateContent(CreateWorkspaceFolder());
@@ -586,7 +597,7 @@ IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentWebMcpBrowserTest,
   content::RenderFrameHost* viewer =
       content::ChildFrameAt(web_contents->GetPrimaryMainFrame(), 0);
   ASSERT_TRUE(viewer);
-  EXPECT_EQ("SecurityError", content::EvalJs(viewer, R"JS(
+  EXPECT_EQ("NotAllowedError", content::EvalJs(viewer, R"JS(
       (async () => {
         try {
           await document.modelContext.registerTool({

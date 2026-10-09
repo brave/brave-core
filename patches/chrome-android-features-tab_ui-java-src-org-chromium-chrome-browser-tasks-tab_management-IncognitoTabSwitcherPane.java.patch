@@ -1,5 +1,5 @@
 diff --git a/chrome/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/IncognitoTabSwitcherPane.java b/chrome/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/IncognitoTabSwitcherPane.java
-index 41ac76f9c25d5774d3461237ff8a68cd68e2dd5b..5067e6989eb7c44ff2851c04571b6d7d574a9f9a 100644
+index e270e5dbdc842abc1a7ba65780f463cec8caf9c2..fc03e1f1702e1a42b114f115c641f914508b9789 100644
 --- a/chrome/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/IncognitoTabSwitcherPane.java
 +++ b/chrome/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/IncognitoTabSwitcherPane.java
 @@ -124,7 +124,7 @@ public class IncognitoTabSwitcherPane extends TabSwitcherPaneBase {

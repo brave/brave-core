@@ -17,7 +17,7 @@
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "components/component_updater/component_installer.h"
 #include "components/component_updater/component_updater_service.h"
-#include "crypto/sha2.h"
+#include "crypto/hash.h"
 
 using brave_component_updater::BraveOnDemandUpdater;
 
@@ -62,7 +62,7 @@ class AdBlockComponentInstallerPolicy
   const std::string component_id_;
   const std::string component_name_;
   OnComponentReadyCallback ready_callback_;
-  std::array<uint8_t, crypto::kSHA256Length> component_hash_;
+  std::array<uint8_t, crypto::hash::kSha256Size> component_hash_;
 };
 
 AdBlockComponentInstallerPolicy::AdBlockComponentInstallerPolicy(
@@ -76,7 +76,7 @@ AdBlockComponentInstallerPolicy::AdBlockComponentInstallerPolicy(
   // Generate hash from public key.
   auto decoded_public_key = base::Base64Decode(component_public_key);
   CHECK(decoded_public_key);
-  component_hash_ = crypto::SHA256Hash(*decoded_public_key);
+  component_hash_ = crypto::hash::Sha256(*decoded_public_key);
 }
 
 AdBlockComponentInstallerPolicy::~AdBlockComponentInstallerPolicy() = default;

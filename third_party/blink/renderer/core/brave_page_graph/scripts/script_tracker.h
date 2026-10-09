@@ -6,6 +6,7 @@
 #ifndef BRAVE_THIRD_PARTY_BLINK_RENDERER_CORE_BRAVE_PAGE_GRAPH_SCRIPTS_SCRIPT_TRACKER_H_
 #define BRAVE_THIRD_PARTY_BLINK_RENDERER_CORE_BRAVE_PAGE_GRAPH_SCRIPTS_SCRIPT_TRACKER_H_
 
+#include "base/memory/raw_ptr.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/types.h"
 
 namespace v8 {
@@ -31,7 +32,7 @@ class ScriptTracker {
                                          ScriptId script_id) const;
 
  private:
-  PageGraphContext* page_graph_context_;
+  raw_ptr<PageGraphContext, UnprotectedInRelease> page_graph_context_;
 };
 
 }  // namespace brave_page_graph

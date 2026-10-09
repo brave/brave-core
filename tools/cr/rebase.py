@@ -38,6 +38,7 @@ Commit categories formalised here (see `EntryType`):
     - [cr*] IWYU fixes.
     - [cr*] Bump resource_ids.
     - [cr*] Update Lit mangler snapshot.
+    - [cr*] Version CodeHealth tracker.
     - [cr*] Disable failing upstream tests.
     - [cr*] Update lists for upstream flake tests.
 
@@ -137,7 +138,7 @@ def _match(subject: str, pattern: re.Pattern) -> bool:
 # squash priority order: when multiple pinned groups are present in the
 # same rebase plan, they're emitted top-to-bottom in this order
 # (version → plaster_reruns → conflict → gnrt → IWYU →
-# resource_ids → lit_mangler → disable_tests →
+# resource_ids → lit_mangler → codehealth_tracker → disable_tests →
 # dead_upstream_tests → flake_tests). The regexes are
 # anchored fullmatches applied to the `[crNNN]`-stripped subject, so each
 # pattern matches both the tagged and the untagged form of the same commit.
@@ -167,6 +168,7 @@ PINNED_GROUPS = [
     ('iwyu', re.compile(r'IWYU fixes\.?')),
     ('resource_ids', re.compile(r'Bump resource_ids\.?')),
     ('lit_mangler', re.compile(r'Update Lit mangler snapshot\.?')),
+    ('codehealth_tracker', re.compile(r'Version CodeHealth tracker\.?')),
     (
         'disable_tests',
         re.compile(

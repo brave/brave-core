@@ -233,6 +233,7 @@ if (enable_brave_ai_chat_agent_profile) {
       "//chrome/browser/profiles:profile",
       "//chrome/browser/profiles:profile_util",
       "//chrome/browser/ui",
+      "//chrome/browser/ui:browser_tabstrip",
       "//components/actor/core:task_id",
       "//components/optimization_guide/content/browser",
       "//components/policy/core/common:common_constants",
@@ -297,6 +298,7 @@ source_set("unit_tests") {
     "//chrome/common",
     "//chrome/test:test_support",
     "//chrome/test/base:chrome_render_view_host_test_harness",
+    "//chrome/test/base:testing_browser_process",
     "//components/history/core/browser",
     "//components/history_embeddings/content",
     "//components/history_embeddings/core",
@@ -348,6 +350,7 @@ source_set("unit_tests") {
       "//chrome/browser/actor",
       "//chrome/browser/actor:test_support",
       "//chrome/browser/actor/ui:test_support",
+      "//chrome/test/base:testing_browser_process",
       "//components/actor/core:task_id",
       "//components/optimization_guide/content/browser",
       "//components/optimization_guide/proto:optimization_guide_proto",
@@ -440,6 +443,7 @@ source_set("browser_tests") {
       sources += [ "tools/tab_management_tool_browsertest.cc" ]
       deps += [
         ":ai_chat_tab_management_tool_impl",
+        "//chrome/browser/ui:browser_tabstrip",
         "//chrome/browser/ui:browser_window_header",
         "//chrome/browser/ui/tabs:tabs_public",
         "//components/tab_groups",

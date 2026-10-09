@@ -28,6 +28,7 @@ source_set("browser_tests") {
 
     deps += [
       "//brave/browser/ui/sidebar",
+      "//chrome/browser/ui:browser_tabstrip",
       "//chrome/browser/ui/actions",
       "//chrome/browser/ui/views/frame:browser_view_header",
       "//chrome/browser/ui/views/frame:toolbar_button_provider",
@@ -93,6 +94,7 @@ source_set("unit_tests") {
     "//brave/components/playlist/core/common",
     "//chrome/browser/prefs",
     "//chrome/test:test_support",
+    "//chrome/test/base:testing_browser_process",
     "//components/pref_registry",
     "//content/test:test_support",
   ]

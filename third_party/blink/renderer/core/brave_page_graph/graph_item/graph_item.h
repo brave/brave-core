@@ -40,7 +40,7 @@ class GraphItem {
   GraphItemContext* GetContext() const { return context_; }
 
  private:
-  GraphItemContext* const context_;
+  const raw_ptr<GraphItemContext, UnprotectedInRelease> context_;
   const GraphItemId id_;
   const base::TimeTicks time_;
 };

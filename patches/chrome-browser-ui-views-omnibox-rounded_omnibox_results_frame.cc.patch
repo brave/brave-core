@@ -1,22 +1,22 @@
 diff --git a/chrome/browser/ui/views/omnibox/rounded_omnibox_results_frame.cc b/chrome/browser/ui/views/omnibox/rounded_omnibox_results_frame.cc
-index c54974b20093d0569aac53c90cddedbebe2efc1b..a735ddcc8f06df5030c39f46afadb3b7564b0493 100644
+index c0187113de146c0618e3756dbaa176a8a61d1ec3..d1ded410f90c6e821fde4f6c27f7a5b9a6250933 100644
 --- a/chrome/browser/ui/views/omnibox/rounded_omnibox_results_frame.cc
 +++ b/chrome/browser/ui/views/omnibox/rounded_omnibox_results_frame.cc
-@@ -235,7 +235,7 @@ RoundedOmniboxResultsFrame::RoundedOmniboxResultsFrame(
+@@ -236,7 +236,7 @@ RoundedOmniboxResultsFrame::RoundedOmniboxResultsFrame(
      bool forward_mouse_events)
      : contents_(contents), forward_mouse_events_(forward_mouse_events) {
    const int corner_radius = views::LayoutProvider::Get()->GetCornerRadiusMetric(
--      views::ShapeContextTokens::kOmniboxExpandedRadius);
-+      views::ShapeContextTokensOverride::kOmniboxExpandedRadius);
+-      ChromeShapeContextTokens::kOmniboxExpandedRadius);
++      ExtendedShapeContextTokens::kBraveOmniboxExpandedRadius);
    auto* webui_content = GetOmniboxPopupWebUIBaseContent();
    // When the page paints the popup's shadow, this frame must not paint a
    // background, rounded corners or a shadow: the renderer draws all of them,
-@@ -363,7 +363,7 @@ void RoundedOmniboxResultsFrame::SetCutoutVisibility(bool visible) {
+@@ -364,7 +364,7 @@ void RoundedOmniboxResultsFrame::SetCutoutVisibility(bool visible) {
  
  void RoundedOmniboxResultsFrame::SetElevation(int elevation) {
    const int corner_radius = views::LayoutProvider::Get()->GetCornerRadiusMetric(
--      views::ShapeContextTokens::kOmniboxExpandedRadius);
-+      views::ShapeContextTokensOverride::kOmniboxExpandedRadius);
+-      ChromeShapeContextTokens::kOmniboxExpandedRadius);
++      ExtendedShapeContextTokens::kBraveOmniboxExpandedRadius);
    auto border = std::make_unique<views::BubbleBorder>(
        views::BubbleBorder::Arrow::NONE,
        elevation == 0 ? views::BubbleBorder::Shadow::NO_SHADOW
