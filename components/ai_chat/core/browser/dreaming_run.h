@@ -202,6 +202,9 @@ class DreamingRun {
   // Stops the run with kCanceled. The run does no more storage calls.
   void Cancel();
 
+  // The steps so far, when DreamingConfig::record_trace is true.
+  const base::ListValue& trace() const { return result_.trace; }
+
   // Returns the typed text of |turn| when Dreaming can learn from it. Only
   // normal user questions qualify. For an edited turn, this is the text of
   // the last edit.
@@ -297,9 +300,12 @@ class DreamingRun {
               MemoryLlmRequest request,
               LlmCallback callback);
   void OnLlmAnswer(std::string purpose,
-                   std::string user_message,
+                   MemoryLlmRequest request,
                    LlmCallback callback,
                    EngineConsumer::GenerationResult result);
+  // A request to the decision model and its answer. It goes in the trace with
+  // the next step, which is the step that asked.
+  void OnDecisionExchange(MemoryDecisionClient::Exchange exchange);
   void Embed(std::string_view purpose,
              std::vector<std::string> passages,
              EmbeddingsCallback callback);
@@ -367,6 +373,7 @@ class DreamingRun {
   std::vector<AnswerProbabilities<RelationAnswer>> relations_;
   size_t next_relation_ = 0;
 
+  base::ListValue decision_exchanges_;
   size_t writing_requests_ = 0;
   size_t relation_requests_ = 0;
   std::optional<passage_embeddings::Embedder::Job> embed_job_;

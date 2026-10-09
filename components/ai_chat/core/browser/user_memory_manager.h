@@ -12,6 +12,7 @@
 #include <string>
 #include <vector>
 
+#include "base/containers/circular_deque.h"
 #include "base/functional/callback.h"
 #include "base/functional/function_ref.h"
 #include "base/memory/raw_ptr.h"
@@ -36,6 +37,30 @@ class PrefService;
 namespace ai_chat {
 
 class LearnedMemoryEval;
+
+// What started a Dreaming run.
+enum class DreamingTrigger { kTimer, kDreamNow, kEval };
+
+// A Dreaming run for brave://leo-memory-internals: when and why it ran, how it
+// ended, and its steps. Kept in memory only.
+struct DreamingRunRecord {
+  DreamingRunRecord();
+  DreamingRunRecord(const DreamingRunRecord&) = delete;
+  DreamingRunRecord& operator=(const DreamingRunRecord&) = delete;
+  DreamingRunRecord(DreamingRunRecord&&);
+  DreamingRunRecord& operator=(DreamingRunRecord&&);
+  ~DreamingRunRecord();
+
+  uint64_t id = 0;
+  DreamingTrigger trigger = DreamingTrigger::kTimer;
+  base::Time start_time;
+  // Null while the run is active.
+  std::optional<base::Time> end_time;
+  std::optional<DreamingStatus> status;
+  // The steps (DreamingResult::trace): the requests to the decision model and
+  // the LLM, their answers, and the decisions that the run made from them.
+  base::ListValue trace;
+};
 
 // A change of the review that the user keeps, and its text when the user
 // edited it.
@@ -74,8 +99,11 @@ class UserMemoryManager : public AIChatService::Observer {
   // param is longer.
   static constexpr base::TimeDelta kDreamNowTimeLimit = base::Minutes(5);
 
-  // Reads the Dreaming settings from the learned memory feature params. In eval
-  // mode (see learned_memory_eval.h), the run records a trace.
+  // The finished runs that the manager keeps for brave://leo-memory-internals.
+  static constexpr size_t kMaxDreamingRunRecords = 10;
+
+  // Reads the Dreaming settings from the learned memory feature params. Each
+  // run records a trace.
   static DreamingConfig GetDreamingConfigFromFeatures();
 
   // |embedder|, |prefs| and |data_source| must outlive the manager.
@@ -146,6 +174,10 @@ class UserMemoryManager : public AIChatService::Observer {
   // the delete failed.
   void DeleteAllLearnedMemories(base::OnceCallback<void(bool)> callback);
 
+  // The active run and the last kMaxDreamingRunRecords runs, the newest first,
+  // with a copy of their traces.
+  std::vector<DreamingRunRecord> GetDreamingRunRecords() const;
+
   // The changes of the last run that wait for the user's review, or null.
   const DreamingReview* pending_review() const {
     return pending_review_ ? &*pending_review_ : nullptr;
@@ -173,7 +205,9 @@ class UserMemoryManager : public AIChatService::Observer {
   }
 
  private:
-  void StartRun(DreamingCallback callback, const DreamingConfig& config);
+  void StartRun(DreamingCallback callback,
+                const DreamingConfig& config,
+                DreamingTrigger trigger);
   // The eval starts one time, when storage is ready and the search is set.
   void MaybeStartEval();
   void OnTurnLookupDone(uint64_t lookup_id,
@@ -210,6 +244,10 @@ class UserMemoryManager : public AIChatService::Observer {
   std::unique_ptr<DreamingRun> dreaming_run_;
   DreamingCallback dreaming_callback_;
   std::optional<DreamingReview> pending_review_;
+  // The record of the active run, without its trace, and the finished runs.
+  std::optional<DreamingRunRecord> active_run_record_;
+  base::circular_deque<DreamingRunRecord> run_records_;
+  uint64_t next_run_id_ = 1;
   // The writes of a review are on their way. No run starts before they land.
   bool applying_review_ = false;
   std::unique_ptr<LearnedMemoryEval> eval_;

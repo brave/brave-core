@@ -114,6 +114,17 @@ base::ListValue LinksToList(const std::vector<MemorySourceLink>& links) {
   return list;
 }
 
+const char* Name(DreamingProposal::Kind kind) {
+  switch (kind) {
+    case DreamingProposal::Kind::kNew:
+      return "new";
+    case DreamingProposal::Kind::kChanged:
+      return "changed";
+    case DreamingProposal::Kind::kSeenAgain:
+      return "seen_again";
+  }
+}
+
 }  // namespace
 
 const char* DreamingStatusToString(DreamingStatus status) {
@@ -218,6 +229,10 @@ std::optional<std::string> DreamingRun::GetLearnableText(
 
 void DreamingRun::Start() {
   run_start_ = base::TimeTicks::Now();
+  if (tracing()) {
+    decision_client_->SetDreamingExchangeObserver(base::BindRepeating(
+        &DreamingRun::OnDecisionExchange, weak_ptr_factory_.GetWeakPtr()));
+  }
   if (!search_) {
     Finish(DreamingStatus::kFailed);
     return;
@@ -329,6 +344,9 @@ void DreamingRun::Trace(std::string_view step, base::DictValue data) {
     return;
   }
   data.Set("step", step);
+  if (!decision_exchanges_.empty()) {
+    data.Set("decision_requests", std::exchange(decision_exchanges_, {}));
+  }
   data.Set("t_ms", static_cast<int>(
                        (base::TimeTicks::Now() - run_start_).InMilliseconds()));
   if (!turns_.empty()) {
@@ -934,16 +952,28 @@ void DreamingRun::AskLlm(std::string_view purpose,
                          MemoryLlmRequest request,
                          LlmCallback callback) {
   StartCall();
-  std::string user_message = request.user_message;
+  MemoryLlmRequest sent = request;
   llm_engine_->GenerateMemoryText(
       request.system_prompt, request.user_message,
       base::BindOnce(&DreamingRun::OnLlmAnswer, weak_ptr_factory_.GetWeakPtr(),
-                     std::string(purpose), std::move(user_message),
+                     std::string(purpose), std::move(sent),
                      std::move(callback)));
 }
 
+void DreamingRun::OnDecisionExchange(MemoryDecisionClient::Exchange exchange) {
+  decision_exchanges_.Append(
+      base::DictValue()
+          .Set("request", std::move(exchange.request))
+          .Set("response", exchange.response
+                               ? base::Value(std::move(*exchange.response))
+                               : base::Value())
+          .Set("error", std::move(exchange.error))
+          .Set("latency_ms",
+               static_cast<int>(exchange.latency.InMilliseconds())));
+}
+
 void DreamingRun::OnLlmAnswer(std::string purpose,
-                              std::string user_message,
+                              MemoryLlmRequest request,
                               LlmCallback callback,
                               EngineConsumer::GenerationResult result) {
   // A failed LLM request does not stop the run: the step uses its fallback.
@@ -956,7 +986,8 @@ void DreamingRun::OnLlmAnswer(std::string purpose,
         base::DictValue()
             .Set("purpose", purpose)
             .Set("latency_ms", static_cast<int>(CallMs()))
-            .Set("request", user_message)
+            .Set("system_prompt", std::move(request.system_prompt))
+            .Set("request", std::move(request.user_message))
             .Set("answer", answer ? base::Value(*answer) : base::Value())
             .Set("error",
                  answer ? base::Value()
@@ -1019,6 +1050,9 @@ void DreamingRun::Finish(DreamingStatus status) {
   index_wait_timer_.Stop();
   time_limit_timer_.Stop();
   weak_ptr_factory_.InvalidateWeakPtrs();
+  if (tracing()) {
+    decision_client_->SetDreamingExchangeObserver({});
+  }
   embed_job_.reset();
   result_.status = status;
   if (config_.review_changes && status != DreamingStatus::kCanceled) {
@@ -1029,13 +1063,22 @@ void DreamingRun::Finish(DreamingStatus status) {
     result_.review = MakeReview();
     result_.memories_added = 0;
     result_.memories_updated = 0;
+    base::ListValue proposals;
     for (const DreamingProposal& proposal : result_.review->proposals) {
       if (proposal.kind == DreamingProposal::Kind::kNew) {
         ++result_.memories_added;
       } else {
         ++result_.memories_updated;
       }
+      proposals.Append(
+          base::DictValue()
+              .Set("kind", Name(proposal.kind))
+              .Set("text", proposal.memory.text)
+              .Set("stored", proposal.stored
+                                 ? base::Value(proposal.stored->text)
+                                 : base::Value()));
     }
+    Trace("review", base::DictValue().Set("proposals", std::move(proposals)));
   }
   Trace("done",
         base::DictValue()

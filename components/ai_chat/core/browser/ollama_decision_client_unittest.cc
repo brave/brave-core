@@ -137,6 +137,28 @@ TEST_F(OllamaDecisionClientTest, RequestKeepsTheOrderOfQuestionsAndOptions) {
   EXPECT_TRUE(before("\"not_about_user\":", "\"ok\":"));
 }
 
+TEST_F(OllamaDecisionClientTest, ObserverGetsDreamingRequestsAndAnswers) {
+  std::vector<MemoryDecisionClient::Exchange> exchanges;
+  client_->SetDreamingExchangeObserver(
+      base::BindLambdaForTesting([&](MemoryDecisionClient::Exchange exchange) {
+        exchanges.push_back(std::move(exchange));
+      }));
+
+  base::test::TestFuture<std::optional<std::vector<SentenceDecisions>>> future;
+  client_->AskSentenceDecisions({"first"}, future.GetCallback());
+  ASSERT_TRUE(future.Take());
+  // A chat time question is not Dreaming.
+  base::test::TestFuture<std::optional<std::vector<double>>> relevance;
+  client_->AskRelevance("message", "", {"memory"}, relevance.GetCallback());
+  ASSERT_TRUE(relevance.Take());
+
+  ASSERT_EQ(exchanges.size(), 1u);
+  EXPECT_NE(exchanges[0].request.find("\"state\":\"first\""),
+            std::string::npos);
+  EXPECT_EQ(exchanges[0].response, SentenceResponse(0.9));
+  EXPECT_TRUE(exchanges[0].error.empty());
+}
+
 TEST_F(OllamaDecisionClientTest, BadResponseFailsTheRequest) {
   base::test::TestFuture<std::optional<std::vector<SentenceDecisions>>> future;
   client_->AskSentenceDecisions({"first", "fail"}, future.GetCallback());

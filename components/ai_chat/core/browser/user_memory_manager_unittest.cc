@@ -1232,6 +1232,44 @@ TEST_F(UserMemoryManagerTest, ReplaceKeepsTheOldText) {
               ElementsAre(MemorySourceLink{"chat-1", "chat-1-entry-0", 0}));
 }
 
+TEST_F(UserMemoryManagerTest, KeepsTheRunsWithTheirSteps) {
+  MakeManager(/*with_llm=*/true, /*record_trace=*/true);
+  AddChat("chat-1", {"I live in Berlin."});
+  KeepSentence("I live in Berlin.", "I live in Berlin.");
+  client_->hold_replies = true;
+  StorageReady();
+  base::test::TestFuture<void> gate_asked;
+  client_->on_gate_asked = gate_asked.GetCallback();
+  base::test::TestFuture<DreamingResult> run;
+  manager_->DreamNow(run.GetCallback());
+  ASSERT_TRUE(gate_asked.Wait());
+
+  // The active run shows the steps so far.
+  std::vector<DreamingRunRecord> records = manager_->GetDreamingRunRecords();
+  ASSERT_EQ(records.size(), 1u);
+  EXPECT_EQ(records[0].trigger, DreamingTrigger::kDreamNow);
+  EXPECT_FALSE(records[0].status);
+  ASSERT_FALSE(records[0].trace.empty());
+  EXPECT_EQ(*records[0].trace.back().GetDict().FindString("step"), "turn");
+
+  // The run ends at the time limit, and the next one learns the turn.
+  task_environment_.FastForwardBy(UserMemoryManager::kDreamNowTimeLimit);
+  ASSERT_EQ(run.Take().status, DreamingStatus::kTimedOut);
+  client_->hold_replies = false;
+  Dream();
+
+  // The newest run first, each with how it ended and its steps.
+  records = manager_->GetDreamingRunRecords();
+  ASSERT_EQ(records.size(), 2u);
+  EXPECT_EQ(records[0].trigger, DreamingTrigger::kTimer);
+  EXPECT_EQ(records[0].status, DreamingStatus::kCompleted);
+  EXPECT_TRUE(records[0].end_time);
+  EXPECT_TRUE(std::ranges::any_of(records[0].trace, [](const auto& step) {
+    return *step.GetDict().FindString("step") == "gate";
+  }));
+  EXPECT_EQ(records[1].status, DreamingStatus::kTimedOut);
+}
+
 TEST_F(UserMemoryManagerTest, ReviewStoresOnlyWhatTheUserKeeps) {
   MakeManager(/*with_llm=*/true, /*record_trace=*/false, /*review=*/true);
   const std::string move = "We just moved to Berlin.";

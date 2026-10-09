@@ -21,8 +21,10 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/task/sequenced_task_runner.h"
+#include "base/time/time.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "net/base/load_flags.h"
+#include "net/base/net_errors.h"
 #include "net/http/http_request_headers.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "services/network/public/cpp/resource_request.h"
@@ -474,6 +476,11 @@ void OllamaDecisionClient::AskRelevance(const std::string& message,
       Priority::kChatTime);
 }
 
+void OllamaDecisionClient::SetDreamingExchangeObserver(
+    ExchangeObserver observer) {
+  dreaming_exchange_observer_ = std::move(observer);
+}
+
 void OllamaDecisionClient::AskEach(std::vector<base::Value> states,
                                    const std::string& questions,
                                    AllAnswersCallback callback) {
@@ -540,9 +547,13 @@ void OllamaDecisionClient::Send(base::Value state,
   auto* loader_ptr = loader.get();
   loader_ptr->DownloadToString(
       url_loader_factory_.get(),
-      base::BindOnce(&OllamaDecisionClient::OnResponse,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(loader),
-                     std::move(callback), priority),
+      base::BindOnce(
+          &OllamaDecisionClient::OnResponse, weak_ptr_factory_.GetWeakPtr(),
+          std::move(loader), std::move(callback), priority,
+          dreaming_exchange_observer_ && priority == Priority::kDreaming
+              ? json
+              : std::string(),
+          base::TimeTicks::Now()),
       kMaxResponseSize);
 }
 
@@ -550,7 +561,15 @@ void OllamaDecisionClient::OnResponse(
     std::unique_ptr<network::SimpleURLLoader> loader,
     AnswersCallback callback,
     Priority priority,
+    std::string sent,
+    base::TimeTicks start,
     std::optional<std::string> body) {
+  if (priority == Priority::kDreaming && dreaming_exchange_observer_) {
+    dreaming_exchange_observer_.Run(
+        {std::move(sent), body,
+         body ? std::string() : net::ErrorToShortString(loader->NetError()),
+         base::TimeTicks::Now() - start});
+  }
   std::optional<base::DictValue> answers;
   if (!body) {
     DVLOG(1) << "Decision model request failed: " << loader->NetError();

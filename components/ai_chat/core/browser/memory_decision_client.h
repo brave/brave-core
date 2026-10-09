@@ -12,6 +12,7 @@
 
 #include "base/containers/flat_map.h"
 #include "base/functional/callback.h"
+#include "base/time/time.h"
 #include "brave/components/ai_chat/core/browser/learned_memory_types.h"
 #include "brave/components/local_ai/buildflags/buildflags.h"
 
@@ -116,7 +117,23 @@ class MemoryDecisionClient {
   using RelevanceCallback =
       base::OnceCallback<void(std::optional<std::vector<double>>)>;
 
+  // A Dreaming request to the decision model, as sent, and its answer as
+  // received. |response| is null when the request failed, and |error| says
+  // why.
+  struct Exchange {
+    std::string request;
+    std::optional<std::string> response;
+    std::string error;
+    base::TimeDelta latency;
+  };
+  using ExchangeObserver = base::RepeatingCallback<void(Exchange)>;
+
   virtual ~MemoryDecisionClient() = default;
+
+  // Gets each Dreaming request and its answer before the answer goes to the
+  // caller, so that the run can show them (brave://leo-memory-internals). Chat
+  // time requests are not given. A null |observer| stops it.
+  virtual void SetDreamingExchangeObserver(ExchangeObserver observer) {}
 
   // Asks the gate question: does this user turn hold something about the user
   // that can be useful later?

@@ -57,6 +57,7 @@ class OllamaDecisionClient : public MemoryDecisionClient {
                     const std::string& previous_message,
                     std::vector<std::string> memories,
                     RelevanceCallback callback) override;
+  void SetDreamingExchangeObserver(ExchangeObserver observer) override;
 
  private:
   // std::nullopt when the request fails or the response is not valid.
@@ -84,9 +85,12 @@ class OllamaDecisionClient : public MemoryDecisionClient {
   void AskEach(std::vector<base::Value> states,
                const std::string& questions,
                AllAnswersCallback callback);
+  // |sent| and |start| are for the exchange observer.
   void OnResponse(std::unique_ptr<network::SimpleURLLoader> loader,
                   AnswersCallback callback,
                   Priority priority,
+                  std::string sent,
+                  base::TimeTicks start,
                   std::optional<std::string> body);
 
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
@@ -97,6 +101,7 @@ class OllamaDecisionClient : public MemoryDecisionClient {
   // questions that wait for them.
   int chat_time_requests_ = 0;
   std::vector<base::OnceClosure> deferred_requests_;
+  ExchangeObserver dreaming_exchange_observer_;
 
   base::WeakPtrFactory<OllamaDecisionClient> weak_ptr_factory_{this};
 };

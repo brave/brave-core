@@ -25,6 +25,11 @@
 
 namespace ai_chat {
 
+DreamingRunRecord::DreamingRunRecord() = default;
+DreamingRunRecord::DreamingRunRecord(DreamingRunRecord&&) = default;
+DreamingRunRecord& DreamingRunRecord::operator=(DreamingRunRecord&&) = default;
+DreamingRunRecord::~DreamingRunRecord() = default;
+
 // static
 DreamingConfig UserMemoryManager::GetDreamingConfigFromFeatures() {
   DreamingConfig config;
@@ -37,7 +42,8 @@ DreamingConfig UserMemoryManager::GetDreamingConfigFromFeatures() {
       features::kLearnedMemoryMaxRewriteRequests.Get();
   config.max_relation_requests =
       features::kLearnedMemoryMaxRelationRequests.Get();
-  config.record_trace = LearnedMemoryEval::IsEnabled();
+  // brave://leo-memory-internals shows the trace of each run.
+  config.record_trace = true;
   // The eval reads what the run stored, and has no user to review it.
   config.review_changes = !LearnedMemoryEval::IsEnabled();
   return config;
@@ -146,7 +152,9 @@ void UserMemoryManager::DropReviewWithSource(
 }
 
 void UserMemoryManager::LearnFromChats(DreamingCallback callback) {
-  StartRun(std::move(callback), config_);
+  StartRun(std::move(callback), config_,
+           LearnedMemoryEval::IsEnabled() ? DreamingTrigger::kEval
+                                          : DreamingTrigger::kTimer);
 }
 
 void UserMemoryManager::DreamNow(DreamingCallback callback) {
@@ -156,7 +164,7 @@ void UserMemoryManager::DreamNow(DreamingCallback callback) {
   }
   DreamingConfig config = config_;
   config.time_limit = std::max(config.time_limit, kDreamNowTimeLimit);
-  StartRun(std::move(callback), config);
+  StartRun(std::move(callback), config, DreamingTrigger::kDreamNow);
 }
 
 void UserMemoryManager::GetLearnedMemories(LearnedMemoriesCallback callback) {
@@ -324,8 +332,32 @@ void UserMemoryManager::OnTurnLookupDone(
   std::move(callback).Run(std::move(memories));
 }
 
+std::vector<DreamingRunRecord> UserMemoryManager::GetDreamingRunRecords()
+    const {
+  std::vector<DreamingRunRecord> records;
+  auto copy = [](const DreamingRunRecord& record) {
+    DreamingRunRecord result;
+    result.id = record.id;
+    result.trigger = record.trigger;
+    result.start_time = record.start_time;
+    result.end_time = record.end_time;
+    result.status = record.status;
+    result.trace = record.trace.Clone();
+    return result;
+  };
+  if (active_run_record_ && dreaming_run_) {
+    records.push_back(copy(*active_run_record_));
+    records.back().trace = dreaming_run_->trace().Clone();
+  }
+  for (const DreamingRunRecord& record : run_records_) {
+    records.push_back(copy(record));
+  }
+  return records;
+}
+
 void UserMemoryManager::StartRun(DreamingCallback callback,
-                                 const DreamingConfig& config) {
+                                 const DreamingConfig& config,
+                                 DreamingTrigger trigger) {
   if (dreaming_run_) {
     std::move(callback).Run(DreamingResult(DreamingStatus::kBusy));
     return;
@@ -347,6 +379,10 @@ void UserMemoryManager::StartRun(DreamingCallback callback,
       *embedder_, config,
       base::BindOnce(&UserMemoryManager::OnDreamingDone,
                      base::Unretained(this)));
+  active_run_record_.emplace();
+  active_run_record_->id = next_run_id_++;
+  active_run_record_->trigger = trigger;
+  active_run_record_->start_time = base::Time::Now();
   dreaming_run_->Start();
 }
 
@@ -396,6 +432,18 @@ void UserMemoryManager::OnDreamingDone(DreamingResult result) {
   auto task_runner = base::SequencedTaskRunner::GetCurrentDefault();
   task_runner->DeleteSoon(FROM_HERE, std::move(dreaming_run_));
   task_runner->DeleteSoon(FROM_HERE, std::move(run_llm_engine_));
+
+  if (active_run_record_) {
+    DreamingRunRecord record = std::move(*active_run_record_);
+    active_run_record_.reset();
+    record.end_time = base::Time::Now();
+    record.status = result.status;
+    record.trace = result.trace.Clone();
+    run_records_.push_front(std::move(record));
+    if (run_records_.size() > kMaxDreamingRunRecords) {
+      run_records_.pop_back();
+    }
+  }
 
   if (result.review) {
     if (result.review->proposals.empty()) {
