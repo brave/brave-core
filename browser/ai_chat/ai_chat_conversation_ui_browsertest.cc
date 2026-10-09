@@ -146,7 +146,8 @@ class AIChatUserGestureBrowserTest
 
     // Submitting the suggestion starts a generation of its own. gmock matches
     // the most recently declared expectation first, so this absorbs that call
-    // instead of over-saturating the WillOnce above.
+    // instead of over-saturating the WillOnce expectation from
+    // SetupMockGenerateAssistantResponse().
     EXPECT_CALL(*mock_engine_, GenerateAssistantResponse)
         .Times(testing::AnyNumber());
 
