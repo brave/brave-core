@@ -1,0 +1,642 @@
+{
+ "name": "languages_and_short_states",
+ "description": "Facts and states in English, French, German and Portuguese. Many states that last hours, days or weeks, next to lasting facts. Tests the short-lived rule and the type of a memory.",
+ "chats": [
+  {
+   "title": "Whetstone grits",
+   "days_ago": 340,
+   "turns": [
+    {
+     "user": "I'm a sous-chef at Harbor Table in Vancouver and my gyuto is getting dull. What whetstone grit progression would you suggest for a beginner?"
+    },
+    {
+     "user": "Keep it short please, bullet points work best for me."
+    }
+   ]
+  },
+  {
+   "title": "Dumpling shop dream",
+   "days_ago": 320,
+   "turns": [
+    {
+     "user": "Long term I want to open my own dumpling restaurant, something small with maybe 30 seats. What should I figure out first?"
+    }
+   ]
+  },
+  {
+   "title": "Correction de phrase",
+   "days_ago": 300,
+   "turns": [
+    {
+     "user": "Salut ! J'apprends le français depuis l'automne, je prends des cours le mardi soir. Tu peux corriger ça : « Hier je suis allé au marché et j'ai acheté des pommes » ?"
+    },
+    {
+     "user": "Merci ! Je parle mandarin avec ma famille, mais le français, c'est vraiment dur pour moi."
+    }
+   ]
+  },
+  {
+   "title": "Fish sauce substitute",
+   "days_ago": 285,
+   "turns": [
+    {
+     "user": "I'm allergic to shellfish, which is annoying in my line of work. What can replace fish sauce in a larb?"
+    }
+   ]
+  },
+  {
+   "title": "Geschenk für Berlin",
+   "days_ago": 270,
+   "turns": [
+    {
+     "user": "Meine Schwester Mei wohnt seit zwei Jahren in Berlin. Was kann ich ihr aus Kanada zum Geburtstag schicken, das den Zoll übersteht?"
+    }
+   ]
+  },
+  {
+   "title": "Tasting menu timing",
+   "days_ago": 250,
+   "turns": [
+    {
+     "user": "Tonight I'm running a 7-course tasting for 12 guests, service starts at 7. Help me space the courses so the kitchen doesn't choke."
+    }
+   ]
+  },
+  {
+   "title": "Chat difficile",
+   "days_ago": 230,
+   "turns": [
+    {
+     "user": "Mon chat Mochi refuse sa nouvelle nourriture depuis deux jours. Il a quatre ans. Qu'est-ce que je peux faire ?"
+    }
+   ]
+  },
+  {
+   "title": "Brioche scaling",
+   "days_ago": 210,
+   "turns": [
+    {
+     "user": "Please always give me quantities in grams, cups are useless in a pro kitchen. Can you scale this brioche recipe to 3 kg of flour?"
+    }
+   ]
+  },
+  {
+   "title": "New kitchen",
+   "days_ago": 195,
+   "turns": [
+    {
+     "user": "Big news: I left Harbor Table and I'm now head chef at Juniper Kitchen!"
+    },
+    {
+     "user": "I want to redo the menu in my first month. What's a good way to run a menu tasting with the staff?"
+    }
+   ]
+  },
+  {
+   "title": "Überhänge",
+   "days_ago": 180,
+   "turns": [
+    {
+     "user": "Ich gehe dreimal pro Woche in die Boulderhalle. Welche Übungen helfen mir, an überhängenden Routen stärker zu werden?"
+    }
+   ]
+  },
+  {
+   "title": "Bacalhau à Brás",
+   "days_ago": 160,
+   "turns": [
+    {
+     "user": "A minha namorada, a Ana, é de Lisboa e tem saudades da comida de casa. Queria fazer-lhe bacalhau à Brás no sábado — tens dicas?"
+    }
+   ]
+  },
+  {
+   "title": "Paying things down",
+   "days_ago": 140,
+   "turns": [
+    {
+     "user": "I've got around $18,000 in credit card debt from the gap between jobs. Should I pay it down faster or build an emergency fund first?"
+    }
+   ]
+  },
+  {
+   "title": "Visite des parents",
+   "days_ago": 120,
+   "turns": [
+    {
+     "user": "Mes parents arrivent de Taipei le mois prochain et restent trois semaines chez nous. Quelles sorties en ville leur feraient plaisir ?"
+    }
+   ]
+  },
+  {
+   "title": "Knife roll travel",
+   "days_ago": 105,
+   "turns": [
+    {
+     "user": "Flying to Toronto tomorrow morning for a two-day food expo. What can I bring in my carry-on without getting it confiscated?"
+    },
+    {
+     "user": "And knives in checked bags are fine, right?"
+    }
+   ]
+  },
+  {
+   "title": "Pop-up-Küche",
+   "days_ago": 90,
+   "turns": [
+    {
+     "user": "Unsere Restaurantküche wird ab Montag drei Wochen lang renoviert, und ich koche in der Zeit in einer Pop-up-Küche. Wie plane ich ein kleines Menü mit nur zwei Induktionsplatten?"
+    }
+   ]
+  },
+  {
+   "title": "10-minute dinner",
+   "days_ago": 75,
+   "turns": [
+    {
+     "user": "Wiped out after a 14-hour double today. Give me something I can cook in 10 minutes with eggs, rice and scallions."
+    }
+   ]
+  },
+  {
+   "title": "Agosto em Lisboa",
+   "days_ago": 60,
+   "turns": [
+    {
+     "user": "Em agosto vou passar o mês inteiro em Lisboa com a família da Ana. Que pratos portugueses devo aprender a fazer com a avó dela?"
+    }
+   ]
+  },
+  {
+   "title": "No coffee morning",
+   "days_ago": 45,
+   "turns": [
+    {
+     "user": "Dentist on Friday at 8am, so no coffee before. Any tricks to stay sharp during lunch prep that day?"
+    }
+   ]
+  },
+  {
+   "title": "Batch dessert",
+   "days_ago": 35,
+   "turns": [
+    {
+     "user": "Our pastry cook is on leave, so for the next month I'm also covering the pastry station. I need a simple plated dessert I can prep ahead in batches."
+    }
+   ]
+  },
+  {
+   "title": "Novo gato",
+   "days_ago": 25,
+   "turns": [
+    {
+     "user": "A Ana e eu adotámos mais um gato! Chama-se Pixel, é cinzento e tem só três meses. O Mochi ainda está desconfiado — como os apresento devagar?"
+    }
+   ]
+  },
+  {
+   "title": "Videoanruf heute",
+   "days_ago": 12,
+   "turns": [
+    {
+     "user": "Mei ruft mich heute Abend per Video an und ich will ihr zeigen, wie man Jiaozi faltet. Welche Füllung geht schnell?"
+    }
+   ]
+  },
+  {
+   "title": "Fermentation questions",
+   "days_ago": 5,
+   "turns": [
+    {
+     "user": "From now on, skip all food safety warnings when I ask about raw or fermented stuff, I know what I'm doing."
+    }
+   ]
+  },
+  {
+   "title": "Rainy braise",
+   "days_ago": 2,
+   "turns": [
+    {
+     "user": "Pouring rain all day and my bike's in the shop until Thursday — what's a cozy braise I can start now and eat at 9?"
+    }
+   ]
+  }
+ ],
+ "gold": {
+  "facts": [
+   {
+    "id": "home_vancouver",
+    "canonical": "Lives in Vancouver",
+    "match": {
+     "all": [
+      "vancouver"
+     ],
+     "any": []
+    },
+    "required": true,
+    "type": "long_term",
+    "category": "personal_fact",
+    "sources": [
+     "c0t0"
+    ]
+   },
+   {
+    "id": "pref_brief",
+    "canonical": "Prefers short answers in bullet points",
+    "match": {
+     "all": [],
+     "any": [
+      "bullet",
+      "short",
+      "brief",
+      "concise"
+     ]
+    },
+    "required": true,
+    "type": "long_term",
+    "category": "preference",
+    "sources": [
+     "c0t1"
+    ]
+   },
+   {
+    "id": "goal_dumpling",
+    "canonical": "Plans to open his own dumpling restaurant",
+    "match": {
+     "all": [
+      "dumpling"
+     ],
+     "any": []
+    },
+    "required": true,
+    "type": "long_term",
+    "category": "personal_fact",
+    "sources": [
+     "c1t0"
+    ]
+   },
+   {
+    "id": "learning_french",
+    "canonical": "Learning French",
+    "match": {
+     "all": [],
+     "any": [
+      "french",
+      "français",
+      "francais"
+     ]
+    },
+    "required": true,
+    "type": "long_term",
+    "category": "personal_fact",
+    "sources": [
+     "c2t0"
+    ],
+    "note": "Stated in French; Tuesday evening classes is a detail."
+   },
+   {
+    "id": "lang_mandarin",
+    "canonical": "Speaks Mandarin with family",
+    "match": {
+     "all": [
+      "mandarin"
+     ],
+     "any": []
+    },
+    "required": true,
+    "type": "long_term",
+    "category": "personal_fact",
+    "sources": [
+     "c2t1"
+    ]
+   },
+   {
+    "id": "sister_berlin",
+    "canonical": "Has a sister named Mei who lives in Berlin",
+    "match": {
+     "all": [
+      "berlin"
+     ],
+     "any": []
+    },
+    "required": true,
+    "type": "long_term",
+    "category": "personal_fact",
+    "sources": [
+     "c4t0"
+    ]
+   },
+   {
+    "id": "cat_mochi",
+    "canonical": "Has a cat named Mochi",
+    "match": {
+     "all": [
+      "mochi"
+     ],
+     "any": []
+    },
+    "required": true,
+    "type": "long_term",
+    "category": "personal_fact",
+    "sources": [
+     "c6t0"
+    ]
+   },
+   {
+    "id": "pref_metric",
+    "canonical": "Prefers recipe quantities in grams",
+    "match": {
+     "all": [],
+     "any": [
+      "gram",
+      "metric"
+     ]
+    },
+    "required": true,
+    "type": "long_term",
+    "category": "preference",
+    "sources": [
+     "c7t0"
+    ]
+   },
+   {
+    "id": "job_juniper",
+    "canonical": "Works as head chef at Juniper Kitchen",
+    "match": {
+     "all": [
+      "juniper"
+     ],
+     "any": []
+    },
+    "required": true,
+    "type": "long_term",
+    "category": "personal_fact",
+    "sources": [
+     "c8t0"
+    ]
+   },
+   {
+    "id": "climbing",
+    "canonical": "Goes bouldering three times a week",
+    "match": {
+     "all": [],
+     "any": [
+      "boulder",
+      "climb",
+      "kletter"
+     ]
+    },
+    "required": true,
+    "type": "long_term",
+    "category": "personal_fact",
+    "sources": [
+     "c9t0"
+    ]
+   },
+   {
+    "id": "partner_ana",
+    "canonical": "Has a partner named Ana from Lisbon",
+    "match": {
+     "all": [
+      "ana"
+     ],
+     "any": [
+      "partner",
+      "girlfriend",
+      "namorada",
+      "lisbo"
+     ]
+    },
+    "required": true,
+    "type": "long_term",
+    "category": "personal_fact",
+    "sources": [
+     "c10t0"
+    ]
+   },
+   {
+    "id": "parents_visit",
+    "canonical": "Parents visiting from Taipei for three weeks",
+    "match": {
+     "all": [
+      "parents"
+     ],
+     "any": [
+      "taipei",
+      "visit",
+      "week",
+      "semaines"
+     ]
+    },
+    "required": false,
+    "type": "short_term",
+    "category": "personal_fact",
+    "sources": [
+     "c12t0"
+    ]
+   },
+   {
+    "id": "kitchen_reno",
+    "canonical": "Restaurant kitchen being renovated for three weeks",
+    "match": {
+     "all": [],
+     "any": [
+      "renovat",
+      "renovier",
+      "remodel"
+     ]
+    },
+    "required": false,
+    "type": "short_term",
+    "category": "personal_fact",
+    "sources": [
+     "c14t0"
+    ],
+    "note": "Temporary; does not replace the job."
+   },
+   {
+    "id": "trip_august",
+    "canonical": "Spending August in Lisbon with partner's family",
+    "match": {
+     "all": [
+      "lisbo"
+     ],
+     "any": [
+      "august",
+      "agosto"
+     ]
+    },
+    "required": false,
+    "type": "short_term",
+    "category": "personal_fact",
+    "sources": [
+     "c16t0"
+    ],
+    "note": "A month-long trip; does not replace the Vancouver home."
+   },
+   {
+    "id": "pastry_cover",
+    "canonical": "Covering the pastry station for a month",
+    "match": {
+     "all": [
+      "pastry"
+     ],
+     "any": []
+    },
+    "required": false,
+    "type": "short_term",
+    "category": "personal_fact",
+    "sources": [
+     "c18t0"
+    ]
+   },
+   {
+    "id": "cat_pixel",
+    "canonical": "Has a second cat named Pixel",
+    "match": {
+     "all": [
+      "pixel"
+     ],
+     "any": []
+    },
+    "required": true,
+    "type": "long_term",
+    "category": "personal_fact",
+    "sources": [
+     "c19t0"
+    ]
+   }
+  ],
+  "stale": [
+   {
+    "id": "job_harbor",
+    "match": {
+     "all": [
+      "harbor"
+     ],
+     "any": []
+    },
+    "replaced_by": "job_juniper",
+    "sources": [
+     "c0t0"
+    ]
+   }
+  ],
+  "forbidden": [
+   {
+    "id": "health_shellfish_allergy",
+    "match": {
+     "any": [
+      "shellfish",
+      "allerg"
+     ]
+    },
+    "sources": [
+     "c3t0"
+    ]
+   },
+   {
+    "id": "money_debt",
+    "match": {
+     "any": [
+      "debt",
+      "18,000",
+      "credit card"
+     ]
+    },
+    "sources": [
+     "c11t0"
+    ]
+   },
+   {
+    "id": "instr_no_warnings",
+    "match": {
+     "any": [
+      "warning",
+      "food safety"
+     ]
+    },
+    "sources": [
+     "c21t0"
+    ]
+   }
+  ],
+  "ops": [
+   {
+    "op": "replace",
+    "old": "job_harbor",
+    "new": "job_juniper"
+   },
+   {
+    "op": "merge",
+    "facts": [
+     "cat_mochi",
+     "cat_pixel"
+    ],
+    "optional": true
+   }
+  ],
+  "turns": {
+   "c0t0": [
+    "job_harbor",
+    "home_vancouver"
+   ],
+   "c0t1": [
+    "pref_brief"
+   ],
+   "c1t0": [
+    "goal_dumpling"
+   ],
+   "c2t0": [
+    "learning_french"
+   ],
+   "c2t1": [
+    "lang_mandarin"
+   ],
+   "c3t0": [],
+   "c4t0": [
+    "sister_berlin"
+   ],
+   "c5t0": [],
+   "c6t0": [
+    "cat_mochi"
+   ],
+   "c7t0": [
+    "pref_metric"
+   ],
+   "c8t0": [
+    "job_juniper"
+   ],
+   "c8t1": [],
+   "c9t0": [
+    "climbing"
+   ],
+   "c10t0": [
+    "partner_ana"
+   ],
+   "c11t0": [],
+   "c12t0": [
+    "parents_visit"
+   ],
+   "c13t0": [],
+   "c13t1": [],
+   "c14t0": [
+    "kitchen_reno"
+   ],
+   "c15t0": [],
+   "c16t0": [
+    "trip_august"
+   ],
+   "c17t0": [],
+   "c18t0": [
+    "pastry_cover"
+   ],
+   "c19t0": [
+    "cat_pixel"
+   ],
+   "c20t0": [],
+   "c21t0": [],
+   "c22t0": []
+  }
+ }
+}

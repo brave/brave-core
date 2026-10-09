@@ -12,3 +12,83 @@
 {"id": "mem-m012", "text": "Prefers bullet points over long paragraphs.", "origin": "migrated:relevance_cases.json", "tags": ["style_wish"]}
 {"id": "mem-m013", "text": "Prefers dry humor but no emojis.", "origin": "migrated:relevance_cases.json", "tags": ["style_wish"]}
 {"id": "mem-m014", "text": "Promoted to design lead in 2026-09-27", "origin": "migrated:relevance_cases.json", "tags": []}
+{"id": "mem-dev-g001", "text": "Lives in Utrecht.", "origin": "generated:relevance-dev-b1", "tags": ["home", "city"]}
+{"id": "mem-dev-g002", "text": "Works as a landscape architect at a small studio that designs public parks.", "origin": "generated:relevance-dev-b1", "tags": ["job"]}
+{"id": "mem-dev-g003", "text": "Has a 12-year-old son named Daan who plays field hockey.", "origin": "generated:relevance-dev-b1", "tags": ["family", "child"]}
+{"id": "mem-dev-g004", "text": "Is married to Pieter, who teaches history at a secondary school.", "origin": "generated:relevance-dev-b1", "tags": ["partner"]}
+{"id": "mem-dev-g005", "text": "Has a rescue greyhound named Fenne.", "origin": "generated:relevance-dev-b1", "tags": ["pet", "dog"]}
+{"id": "mem-dev-g006", "text": "Plays the cello in a community orchestra.", "origin": "generated:relevance-dev-b1", "tags": ["hobby", "music"]}
+{"id": "mem-dev-g007", "text": "Eats vegetarian on weekdays and eats fish only at weekends.", "origin": "generated:relevance-dev-b1", "tags": ["diet", "food"]}
+{"id": "mem-dev-g008", "text": "Prefers short answers of a few sentences.", "origin": "generated:relevance-dev-b1", "tags": ["style_wish", "length"]}
+{"id": "mem-dev-g009", "text": "Wants answers in bullet points rather than long paragraphs.", "origin": "generated:relevance-dev-b1", "tags": ["style_wish", "format"]}
+{"id": "mem-dev-g010", "text": "Wants metric units and temperatures in Celsius.", "origin": "generated:relevance-dev-b1", "tags": ["style_wish", "units"]}
+{"id": "mem-dev-g011", "text": "Writes Python with pandas and SQLite for a personal plant database.", "origin": "generated:relevance-dev-b1", "tags": ["code", "tool"]}
+{"id": "mem-dev-g012", "text": "Plans to start a three-month sabbatical in Japan on 2026-09-01.", "origin": "generated:relevance-dev-b1", "tags": ["plan", "travel"]}
+{"id": "mem-dev-g013", "text": "Won a design competition for a riverside park in Amersfoort on 2025-03-14.", "origin": "generated:relevance-dev-b1", "tags": ["event", "work"]}
+{"id": "mem-dev-g014", "text": "Owns a green cargo bike used to take the kids to school.", "origin": "generated:relevance-dev-b1", "tags": ["belonging", "bike"]}
+{"id": "mem-dev-g015", "text": "Wants to design a public botanical garden one day.", "origin": "generated:relevance-dev-b1", "tags": ["goal", "work"]}
+{"id": "mem-dev-g016", "text": "Is nine years old.", "origin": "generated:relevance-dev-b1", "tags": ["fragment"]}
+{"id": "mem-dev-g017", "text": "Often visits the Utrecht University Botanic Gardens at Fort Hoofddijk.", "origin": "generated:relevance-dev-b1", "tags": ["place", "garden"]}
+{"id": "mem-dev-g018", "text": "Bakes a sourdough loaf every Sunday morning.", "origin": "generated:relevance-dev-b1", "tags": ["habit", "baking"]}
+{"id": "mem-dev-g019", "text": "Dislikes crowded tourist spots.", "origin": "generated:relevance-dev-b1", "tags": ["dislike", "travel"]}
+{"id": "mem-dev-g020", "text": "Is renovating the back garden with native plants and a small pond.", "origin": "generated:relevance-dev-b1", "tags": ["project", "garden"]}
+{"id": "mem-dev-g021", "text": "Lives in the Lombok neighborhood, close to the Leidse Rijn canal.", "origin": "generated:relevance-dev-b1", "tags": ["home", "neighborhood"]}
+{"id": "mem-dev-g022", "text": "Leads a work project to turn a schoolyard in Overvecht into a green climate playground.", "origin": "generated:relevance-dev-b1", "tags": ["job", "work_project"]}
+{"id": "mem-dev-g023", "text": "Has a mother in Groningen who visits every other month.", "origin": "generated:relevance-dev-b1", "tags": ["family", "parent"]}
+{"id": "mem-dev-g024", "text": "Has a close friend, Sanne, who is a regular partner on weekend bike rides.", "origin": "generated:relevance-dev-b1", "tags": ["friend", "cycling"]}
+{"id": "mem-dev-g025", "text": "Keeps two chickens named Bep and Kees in the back garden.", "origin": "generated:relevance-dev-b1", "tags": ["pet", "chickens"]}
+{"id": "mem-dev-g026", "text": "Rides road routes of 60 to 100 km on weekends.", "origin": "generated:relevance-dev-b1", "tags": ["sport", "cycling"]}
+{"id": "mem-dev-g027", "text": "Loves spicy food, especially Indonesian dishes.", "origin": "generated:relevance-dev-b1", "tags": ["food", "taste"]}
+{"id": "mem-dev-g028", "text": "Wants code answers to show only the changed lines, not whole files.", "origin": "generated:relevance-dev-b1", "tags": ["style_wish", "length", "code"]}
+{"id": "mem-dev-g029", "text": "Prefers a dry, matter-of-fact tone without jokes.", "origin": "generated:relevance-dev-b1", "tags": ["style_wish", "tone"]}
+{"id": "mem-dev-g030", "text": "Wants messages for the kids' school written in Dutch.", "origin": "generated:relevance-dev-b1", "tags": ["style_wish", "language"]}
+{"id": "mem-dev-g031", "text": "Uses QGIS and AutoCAD for site plans at work.", "origin": "generated:relevance-dev-b1", "tags": ["tool", "work"]}
+{"id": "mem-dev-g032", "text": "Plans a family cycling trip along the Rhine starting on 2026-07-18.", "origin": "generated:relevance-dev-b1", "tags": ["plan", "travel", "cycling"]}
+{"id": "mem-dev-g033", "text": "Adopted Fenne from a greyhound rescue on 2023-05-06.", "origin": "generated:relevance-dev-b1", "tags": ["event", "pet"]}
+{"id": "mem-dev-g034", "text": "Owns an old German cello from around 1920.", "origin": "generated:relevance-dev-b1", "tags": ["belonging", "instrument"]}
+{"id": "mem-dev-g035", "text": "Aims to speak conversational Japanese by the end of 2027.", "origin": "generated:relevance-dev-b1", "tags": ["goal", "language_learning"]}
+{"id": "mem-dev-g036", "text": "Practices on Thursday evenings.", "origin": "generated:relevance-dev-b1", "tags": ["fragment"]}
+{"id": "mem-dev-g037", "text": "Often walks in the Amelisweerd forest east of the city.", "origin": "generated:relevance-dev-b1", "tags": ["place", "walks"]}
+{"id": "mem-dev-g038", "text": "Practices cello for 30 minutes before breakfast.", "origin": "generated:relevance-dev-b1", "tags": ["habit", "music"]}
+{"id": "mem-dev-g039", "text": "Dislikes Jupyter notebooks and prefers plain Python scripts.", "origin": "generated:relevance-dev-b1", "tags": ["dislike", "code"]}
+{"id": "mem-dev-g040", "text": "Is building a Flask web interface for the plant database.", "origin": "generated:relevance-dev-b1", "tags": ["project", "code"]}
+{"id": "mem-holdout-g041", "text": "Lives in Leeds.", "origin": "generated:relevance-holdout-b1", "tags": ["home", "city"]}
+{"id": "mem-holdout-g042", "text": "Works as a software tester at a Leeds logistics company.", "origin": "generated:relevance-holdout-b1", "tags": ["job"]}
+{"id": "mem-holdout-g043", "text": "Shares a flat with an older sister named Amina.", "origin": "generated:relevance-holdout-b1", "tags": ["family", "sister"]}
+{"id": "mem-holdout-g044", "text": "Has a close friend named Danny from his old ambulance crew.", "origin": "generated:relevance-holdout-b1", "tags": ["friend"]}
+{"id": "mem-holdout-g045", "text": "Has a green parrot named Kiwi.", "origin": "generated:relevance-holdout-b1", "tags": ["pet", "parrot"]}
+{"id": "mem-holdout-g046", "text": "Supports Leeds United.", "origin": "generated:relevance-holdout-b1", "tags": ["football", "hobby"]}
+{"id": "mem-holdout-g047", "text": "Loves spicy food and cooks a big lamb curry most Sundays.", "origin": "generated:relevance-holdout-b1", "tags": ["food", "cooking"]}
+{"id": "mem-holdout-g048", "text": "Prefers short answers.", "origin": "generated:relevance-holdout-b1", "tags": ["style_wish", "length"]}
+{"id": "mem-holdout-g049", "text": "Wants answers in plain language without jargon.", "origin": "generated:relevance-holdout-b1", "tags": ["style_wish", "tone"]}
+{"id": "mem-holdout-g050", "text": "Wants distances in miles.", "origin": "generated:relevance-holdout-b1", "tags": ["style_wish", "units"]}
+{"id": "mem-holdout-g051", "text": "Writes automated tests with Selenium and Python.", "origin": "generated:relevance-holdout-b1", "tags": ["tool", "code"]}
+{"id": "mem-holdout-g052", "text": "Has a practical driving test booked for 2026-08-28.", "origin": "generated:relevance-holdout-b1", "tags": ["plan", "driving"]}
+{"id": "mem-holdout-g053", "text": "Passed the ISTQB Foundation testing exam on 2025-03-14.", "origin": "generated:relevance-holdout-b1", "tags": ["event", "career"]}
+{"id": "mem-holdout-g054", "text": "Owns a second-hand manual Vauxhall Corsa for driving practice.", "origin": "generated:relevance-holdout-b1", "tags": ["car", "belonging"]}
+{"id": "mem-holdout-g055", "text": "Wants to become a test automation lead within five years.", "origin": "generated:relevance-holdout-b1", "tags": ["goal", "career"]}
+{"id": "mem-holdout-g056", "text": "Learned to say 'hello' last month.", "origin": "generated:relevance-holdout-b1", "tags": ["fragment"]}
+{"id": "mem-holdout-g057", "text": "Goes to Kirkgate Market most Saturdays.", "origin": "generated:relevance-holdout-b1", "tags": ["place", "shopping"]}
+{"id": "mem-holdout-g058", "text": "Takes a driving lesson every Tuesday evening.", "origin": "generated:relevance-holdout-b1", "tags": ["routine", "driving"]}
+{"id": "mem-holdout-g059", "text": "Dislikes long phone calls.", "origin": "generated:relevance-holdout-b1", "tags": ["dislike"]}
+{"id": "mem-holdout-g060", "text": "Is building a wooden play stand for the parrot.", "origin": "generated:relevance-holdout-b1", "tags": ["project", "pet", "diy"]}
+{"id": "mem-holdout-g061", "text": "Lives in Headingley, close to the cricket ground.", "origin": "generated:relevance-holdout-b1", "tags": ["home", "neighborhood"]}
+{"id": "mem-holdout-g062", "text": "Worked as a paramedic for eight years before moving into software testing.", "origin": "generated:relevance-holdout-b1", "tags": ["job", "past"]}
+{"id": "mem-holdout-g063", "text": "Has a seven-year-old niece named Sara.", "origin": "generated:relevance-holdout-b1", "tags": ["family", "niece"]}
+{"id": "mem-holdout-g064", "text": "Has a best friend named Owen who lives in Manchester.", "origin": "generated:relevance-holdout-b1", "tags": ["friend"]}
+{"id": "mem-holdout-g065", "text": "Shares the flat with his sister's cat, Pepper.", "origin": "generated:relevance-holdout-b1", "tags": ["pet", "cat"]}
+{"id": "mem-holdout-g066", "text": "Plays five-a-side football on Thursday nights.", "origin": "generated:relevance-holdout-b1", "tags": ["sport", "football"]}
+{"id": "mem-holdout-g067", "text": "Wants weekday recipes that take under 30 minutes.", "origin": "generated:relevance-holdout-b1", "tags": ["food", "cooking"]}
+{"id": "mem-holdout-g068", "text": "Likes a one-line summary at the top of longer answers.", "origin": "generated:relevance-holdout-b1", "tags": ["style_wish", "length"]}
+{"id": "mem-holdout-g069", "text": "Prefers bullet points over long paragraphs.", "origin": "generated:relevance-holdout-b1", "tags": ["style_wish", "format"]}
+{"id": "mem-holdout-g070", "text": "Wants cooking quantities in grams and millilitres.", "origin": "generated:relevance-holdout-b1", "tags": ["style_wish", "units"]}
+{"id": "mem-holdout-g071", "text": "Tracks bugs in Jira.", "origin": "generated:relevance-holdout-b1", "tags": ["tool", "work"]}
+{"id": "mem-holdout-g072", "text": "Plans a weekend trip to Lisbon with Owen on 2026-10-03.", "origin": "generated:relevance-holdout-b1", "tags": ["plan", "travel"]}
+{"id": "mem-holdout-g073", "text": "Adopted Kiwi from a bird rescue on 2021-06-12.", "origin": "generated:relevance-holdout-b1", "tags": ["event", "pet"]}
+{"id": "mem-holdout-g074", "text": "Tests mobile apps on a Google Pixel 8.", "origin": "generated:relevance-holdout-b1", "tags": ["device", "work"]}
+{"id": "mem-holdout-g075", "text": "Wants to see a Leeds United away game at every ground in the league.", "origin": "generated:relevance-holdout-b1", "tags": ["goal", "football"]}
+{"id": "mem-holdout-g076", "text": "Meets every other Wednesday.", "origin": "generated:relevance-holdout-b1", "tags": ["fragment"]}
+{"id": "mem-holdout-g077", "text": "Often works from a café on Otley Road.", "origin": "generated:relevance-holdout-b1", "tags": ["place", "work"]}
+{"id": "mem-holdout-g078", "text": "Walks to work along the canal towpath most mornings.", "origin": "generated:relevance-holdout-b1", "tags": ["routine", "commute"]}
+{"id": "mem-holdout-g079", "text": "Dislikes hill starts in the manual car.", "origin": "generated:relevance-holdout-b1", "tags": ["dislike", "driving"]}
+{"id": "mem-holdout-g080", "text": "Is teaching Kiwi to whistle 'Marching on Together'.", "origin": "generated:relevance-holdout-b1", "tags": ["project", "pet"]}

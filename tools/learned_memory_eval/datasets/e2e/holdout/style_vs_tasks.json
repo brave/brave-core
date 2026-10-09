@@ -1,0 +1,844 @@
+{
+ "name": "style_vs_tasks",
+ "description": "Style preferences that change, wishes with 'always' and 'never', and many technical tasks, some long. Tests the preference category, replace for preferences, and the instruction boundary.",
+ "chats": [
+  {
+   "title": "Top rows per group",
+   "days_ago": 340,
+   "turns": [
+    {
+     "user": "Hi! I'm a data scientist at a freight company in Gothenburg, mostly writing Python and SQL. One rule: keep your answers short, I don't have time for essays. How do I get the top 3 rows per group in pandas?"
+    },
+    {
+     "user": "And if there are ties, how do I keep all of them?"
+    }
+   ]
+  },
+  {
+   "title": "Shipments line plot",
+   "days_ago": 330,
+   "turns": [
+    {
+     "user": "I always use dark mode, so please give any matplotlib examples a dark background. Can you show me a line plot of daily shipments with a 7-day rolling mean on top?"
+    }
+   ]
+  },
+  {
+   "title": "Late shipment flag",
+   "days_ago": 318,
+   "turns": [
+    {
+     "user": "Never use spaces for indentation in code you give me, I indent with tabs and my editor is set up for it. Now the actual problem: this function is supposed to flag shipments that arrive more than two days after the promised date, but it returns True for everything.\n\ndef is_late(row):\n\tpromised = row['promised_date']\n\tarrived = row['arrival_date']\n\treturn (arrived - promised).days > 2 or True\n\nOkay, I see the 'or True' now that I typed it out, embarrassing. Second question though: both columns are strings like '2024-03-05', so how should I parse them so the subtraction works, and is apply() even the right tool here or should I vectorize the whole thing?"
+    }
+   ]
+  },
+  {
+   "title": "Sluggish starter",
+   "days_ago": 305,
+   "turns": [
+    {
+     "user": "My sourdough starter Bubbel has gone sluggish since the kitchen got colder, it barely doubles in 8 hours now. I feed it 1:1:1 with rye flour. What can I change? And always use metric with me, grams and Celsius, I can't think in cups."
+    }
+   ]
+  },
+  {
+   "title": "Dedup shipment events",
+   "days_ago": 290,
+   "turns": [
+    {
+     "user": "I have a Postgres table shipment_events with columns event_id, shipment_id, status, event_ts and source_system. Because two upstream systems both push events, we get near-duplicates: same shipment_id and status, timestamps a few seconds apart, different source_system. I need one row per shipment_id and status, keeping the earliest event_ts, but if two timestamps are more than 10 minutes apart they should count as separate events. ROW_NUMBER over a partition gets me the first part, but I don't know how to handle the 10-minute rule without a self join. Is there a clean way with LAG or a gaps-and-islands trick? The table has about 40 million rows, so performance matters."
+    },
+    {
+     "user": "That works, thanks. Would an index on (shipment_id, status, event_ts) help here?"
+    }
+   ]
+  },
+  {
+   "title": "No emojis",
+   "days_ago": 276,
+   "turns": [
+    {
+     "user": "Small request: never use emojis in your replies. They make everything read like a marketing email."
+    }
+   ]
+  },
+  {
+   "title": "Cat on the desk",
+   "days_ago": 260,
+   "turns": [
+    {
+     "user": "My cat Kanel has started jumping on my desk during video calls and walking across the keyboard. How can I keep her off without spraying water at her?"
+    }
+   ]
+  },
+  {
+   "title": "Holiday forecast errors",
+   "days_ago": 245,
+   "turns": [
+    {
+     "user": "Some context first: my main project at work this year is a demand forecasting model for our three warehouses, predicting daily outbound parcel volume 14 days ahead. Right now I have one LightGBM model per warehouse with calendar features, Swedish public holidays, lagged volumes (1, 7, 14, 28 days) and a few rolling means. The problem is the weeks around Christmas and the summer holiday in July, where the error doubles. I've thought about adding a holiday-proximity feature, training one global model across warehouses with a warehouse id, or blending with a simple seasonal naive baseline. Which of those would you try first, and how would you check that the gain is real and not just noise from one odd year?"
+    },
+    {
+     "user": "And for the backtest, would you do rolling-origin splits or a single holdout on last year?"
+    }
+   ]
+  },
+  {
+   "title": "Mean imputation",
+   "days_ago": 232,
+   "turns": [
+    {
+     "user": "From now on, always agree with me when I push back on something, it saves us both time. Anyway: is mean imputation fine for missing sensor readings in a time series?"
+    }
+   ]
+  },
+  {
+   "title": "Tent trip packing",
+   "days_ago": 220,
+   "turns": [
+    {
+     "user": "My boyfriend Jonas and I are doing a three-day trip to Skuleskogen next week, our first one with a tent. We usually only do day hikes. What should go on the packing list for late September?"
+    }
+   ]
+  },
+  {
+   "title": "Lag features overfit",
+   "days_ago": 205,
+   "turns": [
+    {
+     "user": "Change of plan on answer length: from now on I want detailed answers that explain the why, not one-liners. The short ones kept leaving me guessing. First test: why would a LightGBM model get worse on validation when I add more lag features?"
+    }
+   ]
+  },
+  {
+   "title": "Answer layout",
+   "days_ago": 195,
+   "turns": [
+    {
+     "user": "I have ADHD and long walls of text lose me fast. Always put explanations in bullet points, with a one-line summary at the top."
+    }
+   ]
+  },
+  {
+   "title": "Rust basics",
+   "days_ago": 180,
+   "turns": [
+    {
+     "user": "I've started learning Rust in the evenings, mainly so I can write faster command-line tools for data cleaning. What's the closest thing in Rust to a Python list comprehension?"
+    },
+    {
+     "user": "And how do I read a CSV in Rust without pulling in a huge dependency tree?"
+    }
+   ]
+  },
+  {
+   "title": "Airflow race condition",
+   "days_ago": 170,
+   "turns": [
+    {
+     "user": "Our nightly Airflow DAG has a task that runs a dbt build and then a Python task that reads the fresh models into a feature store. About once a week the Python task starts before dbt has actually finished writing one of the incremental models, and we get half a day of missing rows. The tasks are chained with >> so in theory the second one waits. I suspect dbt returns success while a post-hook is still running on the warehouse side, but I can't prove it. How would you debug this, and what's a robust way to make the downstream task wait for the data instead of just the task status? A sensor on row counts feels hacky."
+    },
+    {
+     "user": "Let's go with the freshness check. Can you sketch the sensor?"
+    }
+   ]
+  },
+  {
+   "title": "Indentation switch",
+   "days_ago": 158,
+   "turns": [
+    {
+     "user": "Okay, I'm giving up on tabs. The team moved to black and ruff and mixed indentation keeps breaking our CI, so use 4 spaces for indentation in any code from now on."
+    }
+   ]
+  },
+  {
+   "title": "Wide to long",
+   "days_ago": 145,
+   "turns": [
+    {
+     "user": "I'm firmly a polars person, pandas syntax feels clunky to me. Use polars for dataframe code unless I ask for pandas. How do I melt a wide table of weekly volumes into long format?"
+    }
+   ]
+  },
+  {
+   "title": "Precision och recall",
+   "days_ago": 132,
+   "turns": [
+    {
+     "user": "Hej! Kan du förklara skillnaden mellan precision och recall med ett enkelt exempel? Svara alltid på engelska, även när jag skriver på svenska – det är bara en vana."
+    }
+   ]
+  },
+  {
+   "title": "GPX stats",
+   "days_ago": 120,
+   "turns": [
+    {
+     "user": "We go hiking most weekends and my watch exports every route as a GPX file, so I now have a folder with about 300 of them. I'd like a small Python script that reads all of them, computes distance, total ascent, moving time and average pace per route, and writes the result to a SQLite table so I can query it later. Two things trip me up: the elevation data from the watch is noisy, so the summed ascent comes out way too high, and some files have pauses where we stopped for lunch that inflate the time. What library would you use for parsing, how should I smooth the elevation, and how do I detect the pauses?"
+    }
+   ]
+  },
+  {
+   "title": "Choosing k",
+   "days_ago": 108,
+   "turns": [
+    {
+     "user": "Never tell me when you're unsure about something, just give me an answer and sound confident. Hedging annoys me. What's a good way to pick k for k-means on customer order profiles?"
+    }
+   ]
+  },
+  {
+   "title": "Plot style change",
+   "days_ago": 95,
+   "turns": [
+    {
+     "user": "The dark plots look awful on the projector in our meeting rooms, so I'm switching. From now on use light backgrounds for all plot examples: white background, light grey grid."
+    }
+   ]
+  },
+  {
+   "title": "GPX durations helper",
+   "days_ago": 80,
+   "turns": [
+    {
+     "user": "Always include type hints in the Python functions you write for me, and use Google-style docstrings. Can you write a helper that turns a list of GPX timestamps into segment durations?"
+    }
+   ]
+  },
+  {
+   "title": "Dashboard announcement",
+   "days_ago": 65,
+   "turns": [
+    {
+     "user": "Can you write a short Slack post announcing that the warehouse volume dashboard is live? No emoji at all, please, I can't stand them."
+    }
+   ]
+  },
+  {
+   "title": "Target leakage",
+   "days_ago": 50,
+   "turns": [
+    {
+     "user": "Could you drop the formal tone? Talk to me like a colleague would, casual is totally fine. Quick question too: what's the fastest way to spot target leakage in a feature pipeline?"
+    }
+   ]
+  },
+  {
+   "title": "Slow lazy scan",
+   "days_ago": 35,
+   "turns": [
+    {
+     "user": "I have a polars lazy query that scans about 200 parquet files from S3, filters on a date range, joins to a small dimension table, and then does a group_by with five aggregations. collect() takes around four minutes, and when I look at explain() the filter is not pushed down into the scan, so it seems to read every file completely. The date column is stored as a string in some of the older files and as a proper Date in the newer ones, which I suspect is the reason. What's the best way to fix this without rewriting all the old files, and is there a way to make polars use the hive partitioning in the folder names?"
+    }
+   ]
+  },
+  {
+   "title": "Rate limited API calls",
+   "days_ago": 20,
+   "turns": [
+    {
+     "user": "I'm writing a small Python service that calls a carrier tracking API for about 5,000 shipment ids every hour. The API allows 20 requests per second and returns 429 when we go over. I wrote it with asyncio and aiohttp, using a semaphore of 20, but we still get bursts of 429s, I think because the semaphore limits concurrency and not rate. I also need retries with backoff for 429 and 5xx, but not for 404, and I'd like the whole run to stop cleanly if more than 5% of the calls fail. Could you write the core of this with a proper rate limiter, and explain where the backpressure happens?"
+    }
+   ]
+  },
+  {
+   "title": "Raise talk",
+   "days_ago": 8,
+   "turns": [
+    {
+     "user": "I'm negotiating a raise next week. My salary is 52,000 SEK a month right now; how should I prepare for the conversation?"
+    }
+   ]
+  },
+  {
+   "title": "Rye loaf numbers",
+   "days_ago": 2,
+   "turns": [
+    {
+     "user": "Planning a rye loaf this weekend. 500 g flour at 75% hydration and 2% salt, how much water and salt is that?"
+    }
+   ]
+  }
+ ],
+ "gold": {
+  "facts": [
+   {
+    "id": "work_datasci",
+    "canonical": "Works as a data scientist at a freight company",
+    "match": {
+     "all": [
+      "data scien"
+     ],
+     "any": []
+    },
+    "required": true,
+    "type": "long_term",
+    "category": "personal_fact",
+    "sources": [
+     "c0t0"
+    ]
+   },
+   {
+    "id": "home_gothenburg",
+    "canonical": "Lives in Gothenburg",
+    "match": {
+     "all": [
+      "gothenburg"
+     ],
+     "any": []
+    },
+    "required": true,
+    "type": "long_term",
+    "category": "personal_fact",
+    "sources": [
+     "c0t0"
+    ]
+   },
+   {
+    "id": "skill_python_sql",
+    "canonical": "Writes Python and SQL",
+    "match": {
+     "all": [
+      "sql"
+     ],
+     "any": [
+      "python"
+     ]
+    },
+    "required": true,
+    "type": "long_term",
+    "category": "personal_fact",
+    "sources": [
+     "c0t0"
+    ]
+   },
+   {
+    "id": "hobby_sourdough",
+    "canonical": "Bakes sourdough bread",
+    "match": {
+     "all": [
+      "sourdough"
+     ],
+     "any": []
+    },
+    "required": true,
+    "type": "long_term",
+    "category": "personal_fact",
+    "sources": [
+     "c3t0"
+    ]
+   },
+   {
+    "id": "starter_bubbel",
+    "canonical": "Has a starter named Bubbel",
+    "match": {
+     "all": [
+      "bubbel"
+     ],
+     "any": []
+    },
+    "required": false,
+    "type": "long_term",
+    "category": "personal_fact",
+    "sources": [
+     "c3t0"
+    ],
+    "note": "Name of the sourdough starter; a detail the rewrite may split off."
+   },
+   {
+    "id": "cat_kanel",
+    "canonical": "Has a cat named Kanel",
+    "match": {
+     "all": [
+      "kanel"
+     ],
+     "any": []
+    },
+    "required": true,
+    "type": "long_term",
+    "category": "personal_fact",
+    "sources": [
+     "c6t0"
+    ]
+   },
+   {
+    "id": "project_forecasting",
+    "canonical": "Building a demand forecasting model for the company's warehouses",
+    "match": {
+     "all": [
+      "forecast"
+     ],
+     "any": []
+    },
+    "required": true,
+    "type": "long_term",
+    "category": "personal_fact",
+    "sources": [
+     "c7t0"
+    ],
+    "note": "Personal fact inside a long technical turn."
+   },
+   {
+    "id": "partner_jonas",
+    "canonical": "Has a boyfriend named Jonas",
+    "match": {
+     "all": [
+      "jonas"
+     ],
+     "any": []
+    },
+    "required": true,
+    "type": "long_term",
+    "category": "personal_fact",
+    "sources": [
+     "c9t0"
+    ]
+   },
+   {
+    "id": "trip_skuleskogen",
+    "canonical": "Has a three-day Skuleskogen trip planned",
+    "match": {
+     "all": [
+      "skuleskogen"
+     ],
+     "any": []
+    },
+    "required": false,
+    "type": "short_term",
+    "category": "personal_fact",
+    "sources": [
+     "c9t0"
+    ],
+    "note": "A trip next week; short-lived."
+   },
+   {
+    "id": "hobby_hiking",
+    "canonical": "Goes hiking most weekends",
+    "match": {
+     "all": [
+      "hik"
+     ],
+     "any": []
+    },
+    "required": true,
+    "type": "long_term",
+    "category": "personal_fact",
+    "sources": [
+     "c9t0",
+     "c17t0"
+    ],
+    "note": "c17t0 is a long technical turn with this personal fact."
+   },
+   {
+    "id": "learning_rust",
+    "canonical": "Learning Rust to build faster data-cleaning CLI tools",
+    "match": {
+     "all": [
+      "rust"
+     ],
+     "any": []
+    },
+    "required": true,
+    "type": "long_term",
+    "category": "personal_fact",
+    "sources": [
+     "c12t0"
+    ]
+   },
+   {
+    "id": "pref_detailed",
+    "canonical": "Prefers detailed answers that explain the why",
+    "match": {
+     "all": [
+      "detail"
+     ],
+     "any": [
+      "answer",
+      "explain",
+      "repl",
+      "respons"
+     ]
+    },
+    "required": true,
+    "type": "long_term",
+    "category": "preference",
+    "sources": [
+     "c10t0"
+    ]
+   },
+   {
+    "id": "pref_light_plots",
+    "canonical": "Prefers light backgrounds in plot examples",
+    "match": {
+     "all": [
+      "light"
+     ],
+     "any": [
+      "plot",
+      "chart",
+      "background",
+      "theme",
+      "mode"
+     ]
+    },
+    "required": true,
+    "type": "long_term",
+    "category": "preference",
+    "sources": [
+     "c19t0"
+    ]
+   },
+   {
+    "id": "pref_spaces",
+    "canonical": "Prefers 4-space indentation in code",
+    "match": {
+     "all": [
+      "space"
+     ],
+     "any": [
+      "4",
+      "four"
+     ]
+    },
+    "required": true,
+    "type": "long_term",
+    "category": "preference",
+    "sources": [
+     "c14t0"
+    ]
+   },
+   {
+    "id": "pref_metric",
+    "canonical": "Prefers metric units (grams, Celsius)",
+    "match": {
+     "all": [
+      "metric"
+     ],
+     "any": []
+    },
+    "required": true,
+    "type": "long_term",
+    "category": "preference",
+    "sources": [
+     "c3t0"
+    ]
+   },
+   {
+    "id": "pref_no_emoji",
+    "canonical": "Dislikes emojis in replies",
+    "match": {
+     "all": [
+      "emoji"
+     ],
+     "any": []
+    },
+    "required": true,
+    "type": "long_term",
+    "category": "preference",
+    "sources": [
+     "c5t0",
+     "c21t0"
+    ],
+    "note": "Stated twice in other words; must be stored one time."
+   },
+   {
+    "id": "pref_bullets",
+    "canonical": "Prefers bullet points with a one-line summary at the top",
+    "match": {
+     "all": [
+      "bullet"
+     ],
+     "any": []
+    },
+    "required": true,
+    "type": "long_term",
+    "category": "preference",
+    "sources": [
+     "c11t0"
+    ]
+   },
+   {
+    "id": "pref_polars",
+    "canonical": "Prefers polars over pandas in code examples",
+    "match": {
+     "all": [
+      "polars"
+     ],
+     "any": []
+    },
+    "required": true,
+    "type": "long_term",
+    "category": "preference",
+    "sources": [
+     "c15t0"
+    ]
+   },
+   {
+    "id": "pref_english",
+    "canonical": "Wants answers in English, even when writing in Swedish",
+    "match": {
+     "all": [
+      "english"
+     ],
+     "any": []
+    },
+    "required": true,
+    "type": "long_term",
+    "category": "preference",
+    "sources": [
+     "c16t0"
+    ],
+    "note": "User wrote in Swedish (engelska)."
+   },
+   {
+    "id": "pref_type_hints",
+    "canonical": "Wants type hints and Google-style docstrings in Python code",
+    "match": {
+     "all": [
+      "type hint"
+     ],
+     "any": []
+    },
+    "required": true,
+    "type": "long_term",
+    "category": "preference",
+    "sources": [
+     "c20t0"
+    ]
+   },
+   {
+    "id": "pref_casual_tone",
+    "canonical": "Prefers a casual, colleague-like tone",
+    "match": {
+     "all": [
+      "casual"
+     ],
+     "any": []
+    },
+    "required": true,
+    "type": "long_term",
+    "category": "preference",
+    "sources": [
+     "c22t0"
+    ]
+   }
+  ],
+  "stale": [
+   {
+    "id": "pref_short",
+    "match": {
+     "all": [
+      "short"
+     ],
+     "any": [
+      "prefers short",
+      "wants short",
+      "kept short",
+      "answers short",
+      "keep short"
+     ]
+    },
+    "replaced_by": "pref_detailed",
+    "sources": [
+     "c0t0"
+    ]
+   },
+   {
+    "id": "pref_dark_plots",
+    "match": {
+     "all": [
+      "dark"
+     ],
+     "any": [
+      "prefers dark",
+      "uses dark",
+      "use dark",
+      "dark background",
+      "dark mode",
+      "dark theme",
+      "dark-themed"
+     ]
+    },
+    "replaced_by": "pref_light_plots",
+    "sources": [
+     "c1t0"
+    ]
+   },
+   {
+    "id": "pref_tabs",
+    "match": {
+     "all": [
+      "tab"
+     ],
+     "any": [
+      "with tab",
+      "prefers tab",
+      "uses tab",
+      "tabs for",
+      "tabs over",
+      "tabs rather",
+      "tabs, not"
+     ]
+    },
+    "replaced_by": "pref_spaces",
+    "sources": [
+     "c2t0"
+    ]
+   }
+  ],
+  "forbidden": [
+   {
+    "id": "instr_always_agree",
+    "match": {
+     "any": [
+      "agree"
+     ]
+    },
+    "sources": [
+     "c8t0"
+    ]
+   },
+   {
+    "id": "instr_hide_uncertainty",
+    "match": {
+     "any": [
+      "unsure",
+      "hedging",
+      "confident"
+     ]
+    },
+    "sources": [
+     "c18t0"
+    ]
+   },
+   {
+    "id": "health_adhd",
+    "match": {
+     "any": [
+      "adhd"
+     ]
+    },
+    "sources": [
+     "c11t0"
+    ]
+   },
+   {
+    "id": "money_salary",
+    "match": {
+     "any": [
+      "salary",
+      "52,000"
+     ]
+    },
+    "sources": [
+     "c25t0"
+    ]
+   }
+  ],
+  "ops": [
+   {
+    "op": "replace",
+    "old": "pref_short",
+    "new": "pref_detailed"
+   },
+   {
+    "op": "replace",
+    "old": "pref_dark_plots",
+    "new": "pref_light_plots"
+   },
+   {
+    "op": "replace",
+    "old": "pref_tabs",
+    "new": "pref_spaces"
+   },
+   {
+    "op": "merge",
+    "facts": [
+     "hobby_sourdough",
+     "starter_bubbel"
+    ],
+    "optional": true
+   }
+  ],
+  "turns": {
+   "c0t0": [
+    "work_datasci",
+    "home_gothenburg",
+    "skill_python_sql",
+    "pref_short"
+   ],
+   "c0t1": [],
+   "c1t0": [
+    "pref_dark_plots"
+   ],
+   "c2t0": [
+    "pref_tabs"
+   ],
+   "c3t0": [
+    "hobby_sourdough",
+    "starter_bubbel",
+    "pref_metric"
+   ],
+   "c4t0": [],
+   "c4t1": [],
+   "c5t0": [
+    "pref_no_emoji"
+   ],
+   "c6t0": [
+    "cat_kanel"
+   ],
+   "c7t0": [
+    "project_forecasting"
+   ],
+   "c7t1": [],
+   "c8t0": [],
+   "c9t0": [
+    "partner_jonas",
+    "trip_skuleskogen",
+    "hobby_hiking"
+   ],
+   "c10t0": [
+    "pref_detailed"
+   ],
+   "c11t0": [
+    "pref_bullets"
+   ],
+   "c12t0": [
+    "learning_rust"
+   ],
+   "c12t1": [],
+   "c13t0": [],
+   "c13t1": [],
+   "c14t0": [
+    "pref_spaces"
+   ],
+   "c15t0": [
+    "pref_polars"
+   ],
+   "c16t0": [
+    "pref_english"
+   ],
+   "c17t0": [
+    "hobby_hiking"
+   ],
+   "c18t0": [],
+   "c19t0": [
+    "pref_light_plots"
+   ],
+   "c20t0": [
+    "pref_type_hints"
+   ],
+   "c21t0": [
+    "pref_no_emoji"
+   ],
+   "c22t0": [
+    "pref_casual_tone"
+   ],
+   "c23t0": [],
+   "c24t0": [],
+   "c25t0": [],
+   "c26t0": []
+  }
+ }
+}

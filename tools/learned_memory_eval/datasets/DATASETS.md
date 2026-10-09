@@ -1,6 +1,6 @@
 # Learned memory eval datasets
 
-Version: 4
+Version: 9
 
 This folder has the labeled cases of the learned memory eval. All text is
 synthetic. It has no real user data and no personal data of the team.
@@ -15,6 +15,7 @@ synthetic. It has no real user data and no personal data of the team.
    e2e/holdout/<set>.json
    parity/parity.json           reaches each request kind (parity_check.py)
    ambiguous/<step>.jsonl       cases that the label panel could not settle (not scored)
+   rubrics/<step>.md            the label rules that the agents get (versioned)
 ```
 
 ## 1. Rules
@@ -26,6 +27,26 @@ synthetic. It has no real user data and no personal data of the team.
 4. A text must not be in both splits of a step.
 5. An `id` is stable and unique in all files. Do not use an id again for
    another case.
+
+### Rubrics and generated cases
+
+- `rubrics/<step>.md` has the label rules, the coverage tags and 3 solved
+  examples for a step (gate, sentence, relation, rewrite, merge, relevance). A
+  line `Rubric version: <n>` gives its version. `rubrics/e2e.md` has the rules
+  of the e2e gold. `rubrics/judge_<kind>.md` are the rubrics of the judge
+  agents (rewrite, merge, extras; `lib/judge.py`).
+- A case that `label_panel.py` made has `origin` `generated:<batch>` and an id
+  `<step>-<split>-g<NNN>`. A case that the second model could not agree on, but
+  that the judge settled, has the tag `adjudicated`. A privacy dispute that
+  Jocelyn decided has the tag `privacy_reviewed`. A case that Jocelyn fixed in
+  the audit has the tag `audit_fixed`.
+- The agents' labels are frozen in these files after the review. Running the
+  evals needs no agent.
+- `ambiguous/<step>.jsonl` keeps the cases that the panel could not settle: the
+  two models agreed but both said "not clear", or the judge said "not clear".
+  They are not scored. They can become rubric examples.
+- A batch is not final until Jocelyn has answered its review queue
+  (`review.py`, README section 22).
 
 ## 2. Fields of all step cases
 
@@ -96,7 +117,8 @@ memories by id, not by a part of the text.
 
 An e2e set has the `chats` and `expect` of `chat_sets/` (README, section 5),
 and a `gold` key. `report.py` scores `expect` as today, and `gold` when it is
-there.
+there. The sets that `e2e_panel.py` made have `gold` and no `expect`; their
+chats have only `user` text (no `assistant` text).
 
 ```json
 "gold": {
@@ -150,3 +172,8 @@ rules. `validate_datasets.py --coverage` prints the table for each split, and
 | 2 | 2026-10-08 | Added the relation label rule (section 3): a conflict without an end signal keeps both facts. Label fix, `relation-dev-m007` ("Works as a nurse" vs "Works as a teacher"): `replace` → `different`, costly `replace` and `merge`, tag `conflict_both_true`. Reason: two jobs can both be true, and no text says that the teaching job ended. The vault script had `replace`. `relations` e2e: the description no longer says "one home, one job", and the note of `job_figma` says why both jobs stay. No gold label of the e2e set changed. Jocelyn approved the rule |
 | 3 | 2026-10-08 | Match fix, `life_events` `home_berlin`: `any` gets "moving". Reason: "Moving to Berlin in September 2026." (from c2t0, a source turn of the fact) was not a match, because "moving" does not contain "move". Found in the first L2 baseline. Scoring change, same release: a memory matches a gold fact or stale item only when it comes from one of its source turns (`lib/gold.py`). Leaks still match by words only |
 | 4 | 2026-10-08 | Three optional facts, approved by Jocelyn: `life_events` `dog_beagle` (c1t0), `relations` `plays_drums` (c13t0), `temporary_states` `works_remotely` (c0t0). Reason: the rewrite split them off from a gold fact ("Owns a 3 year old beagle.", "Plays drums.", "Works remotely"). They are true, so they must not count as extras. Optional: no miss when they are not stored |
+| 5 | 2026-10-08 | Sentence rubric version 2: an instruction that changes the rules of the assistant is not a fact (fact false), as in the migrated cases. Label fix in the pilot batch `sentence-dev-b1`: sentence-dev-g008 ("Never correct my German again...") fact true → false. Rubric files: `datasets/rubrics/<step>.md` |
+| 6 | 2026-10-08 | 11 label panel batches added (rubric v1, sentence v2 from `sentence-dev-b2`): 797 cases (gate dev 96, holdout 13; sentence dev 234, holdout 113; rewrite dev 92, holdout 42; relation dev 107, holdout 46; merge dev 38, holdout 16) and 27 ambiguous cases. Agreement of the two models 95-100%. **Not reviewed by Jocelyn yet**: the audit of 189 cases and 1 privacy dispute (`sentence-dev-b2`) are open, and the dataset has these cases now. `review.py` adds one version and one line for each batch that it finishes. Coverage is complete except gate holdout `pasted_text` and relation holdout `same_topic`. Relevance is not grown (9 cases) |
+| 7 | 2026-10-08 | P1 and P2 close-out, **not reviewed by Jocelyn** (the quick review `review.py --quick` is ready and not run). (a) Coverage gaps filled by two small holdout batches: `gate-holdout-b2` (4 cases, `pasted_text`) and `relation-holdout-b2` (5 cases, `same_topic`); the audit for each batch is 5 cases now (it was 20). (b) Relevance: new rubric (`rubrics/relevance.md`, version 2 from the holdout batch; the dev batch used version 1, and the version 2 text only makes the use / maybe boundary stricter, as the judge had decided it). `relevance-dev-b1`: 29 cases, agreement 0.84; `relevance-holdout-b1`: 13 cases, agreement 0.87 (the first holdout run had 0.60 and was dropped, because the rubric did not say that `use` is strict; its cases were not kept). Memory pools: `mem-dev-g001..g040` (a landscape architect, 40 memories) and `mem-holdout-g001..g040` (a software tester, 40 memories); each case lists the 40 memories of its pool. 4 ambiguous relevance cases. Relevance dev now has 38 cases (target 40), holdout 13 (target 15). (c) E2E: 8 new sets from `e2e_panel.py` with `rubrics/e2e.md` version 1. Dev: `long_history` (61 chats, 100 turns), `noisy_style` (27 chats, 41 turns), `injection` (24 chats, 33 turns), `near_duplicates` (38 chats, 46 turns). Holdout: `career_family_changes`, `privacy_traps`, `style_vs_tasks`, `languages_and_short_states` (23 to 27 chats, 27 to 32 turns). Each set was written by agent G (Opus 5.5, high), checked by a script (match words, sources, ops, forbidden words, minimum counts), checked by agent R (Sonnet 5.5, low) for each turn, and corrected by agent J (Opus 5.5, high) for the R complaints (7 complaints in 4 sets were settled: 4 accepted, 3 rejected). R finds injected errors (proof: 3 of 3 errors in a changed copy of `noisy_style`). The first R and J pass of every set could not read `set.json` (a prompt limit in `agent_run.py`, fixed); all sets were checked again with `--redo-review`, and the first pass is not used. E2E sets have `gold` and no `expect`. |
+| 8 | 2026-10-08 | Quick review by Jocelyn (3 items) and an agent called main-agent (17 items; this part is NOT a human audit) of 15 open batches (a stratified sample, plan 7.4 had 20 cases for each batch): audit 0 wrong of 14 (pass; wrong by step: none), 1 privacy disputes decided, judge checks 4 of 5 agree. Wrong cases were fixed or dropped in the dataset |
+| 9 | 2026-10-08 | 19 optional facts added to 4 dev e2e sets (Jocelyn approved the rule: true extras become optional facts, as in version 4): `injection` 10, `long_history` 4, `noisy_style` 4, `near_duplicates` 1 (`relations` 0). Source: the 63 memories that the fast judge sorted as `true_unlabeled` in `baseline-e2e-v2` (dev). An agent (Opus 5.5, high) grouped them, wrote the match words, and rejected 18 (an instruction that the judge missed, too vague to match safely, a one-off request, already covered by another fact); `extras_to_gold.py` checked that every match catches its memories from a source turn and matches no other fact or forbidden item. Scoring the run again with the new gold: extras 119 → 74, matched memories 402 → 447, and recall, leaks, wrong ops, missed ops and stale are the same; duplicates 80 → 81 (a real one: two memories about the SD card). Holdout sets were not touched (data rule 2). Not done: the agent says that some extras belong to facts that exist already but do not match them (`relations` `likes_italian_food` needs "pasta"; `long_history` `job_tulpwerk`). Changing those match words is a label fix and needs its own change |
