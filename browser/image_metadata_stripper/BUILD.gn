@@ -16,5 +16,8 @@ source_set("image_metadata_stripper") {
     "//ui/base/unowned_user_data",
   ]
 
-  deps = [ "//components/tabs:public" ]
+  deps = [
+    "//chrome/common:constants",
+    "//components/tabs:public",
+  ]
 }

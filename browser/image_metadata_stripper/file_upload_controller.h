@@ -8,6 +8,7 @@
 
 #include <memory>
 
+#include "base/threading/sequence_bound.h"
 #include "brave/components/image_metadata_stripper/image_metadata_stripper.h"
 #include "chrome/browser/ui/tabs/contents_observing_tab_feature.h"
 #include "ui/base/unowned_user_data/scoped_unowned_user_data.h"
@@ -83,20 +84,36 @@ class FileUploadController : public tabs::ContentsObservingTabFeature {
 
   // Copies each of |srcs| that carries metadata to strip, and strips the copy.
   // |callback| runs on the calling sequence.
-  // TODO(https://github.com/brave/brave-browser/issues/58868): Implement this
-  // method.
   void Strip(std::vector<base::FilePath> srcs,
              StrippingClient client,
              StripCallback callback);
 
  private:
+  // This the brain behind dealing with the file operations. It owns the
+  // temporary root and all the copies under it, and take care of the cleanup.
+  // Only used on |task_runner_|; destroying it deletes the root.
+  class Delegate;
+
   explicit FileUploadController(tabs::TabInterface& tab);
   static FileUploadController* From(tabs::TabInterface* tab);
 
   // tabs::ContentsObservingTabFeature override.
+  // TODO(https://github.com/brave/brave-browser/issues/58868): Consider
+  // observing OnPrimaryPageChanged to reset the Delegate (therefore deleting
+  // the temp files) when the web contents are changed to a new URL.
   void OnDiscardContents(tabs::TabInterface* tab,
                          content::WebContents* old_contents,
                          content::WebContents* new_contents) override;
+
+  SEQUENCE_CHECKER(sequence_checker_);
+
+  // This helps to run I/O work in a separate blocking thread which is enforced
+  // when doing file operations.
+  scoped_refptr<base::SequencedTaskRunner> task_runner_;
+  // Created on the first strip. Resetting it deletes the copies after every
+  // strip already posted to |task_runner_| has finished.
+  // Delgate lives in the I/O sequence.
+  base::SequenceBound<Delegate> delegate_;
 
   // This helps to get the right FileUploadController instance for a given
   // WebContents.
