@@ -184,19 +184,8 @@ public class BraveSettingsSearchTest {
         clearAndTypeIntoSearch("Brave Password Manager");
         assertSearchResult("Brave Password Manager");
 
-        // Disabled — see https://github.com/brave/brave-browser/issues/57195
-        // clearAndTypeIntoSearch("Autofill services");
-        // assertSearchResult("Autofill services");
-
-        clearAndTypeIntoSearch("Payment methods");
-        assertSearchResult("Payment methods");
-
-        clearAndTypeIntoSearch("Addresses and more");
-        assertSearchResult("Addresses and more");
-
-        // Disabled — see https://github.com/brave/brave-browser/issues/57195
-        // clearAndTypeIntoSearch("Autofill in private tabs");
-        // assertSearchResult("Autofill in private tabs");
+        clearAndTypeIntoSearch("Autofill and passwords");
+        assertSearchResult("Autofill and passwords");
 
         // Support section
 
