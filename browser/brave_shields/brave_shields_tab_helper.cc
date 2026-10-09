@@ -22,6 +22,10 @@
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
+#if !BUILDFLAG(IS_ANDROID)
+#include "brave/browser/infobars/brave_shields_reload_infobar_delegate.h"
+#include "components/infobars/content/content_infobar_manager.h"
+#endif
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/cookie_settings_factory.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -275,7 +279,8 @@ bool BraveShieldsTabHelper::GetAllowElementBlockerInPrivateModeEnabled() {
       g_browser_process->local_state());
 }
 
-void BraveShieldsTabHelper::SetBraveShieldsEnabled(bool is_enabled) {
+void BraveShieldsTabHelper::SetBraveShieldsEnabled(bool is_enabled,
+                                                   bool reload_contents) {
   brave_shields_settings_->SetBraveShieldsEnabled(is_enabled,
                                                   GetCurrentSiteURL());
 
@@ -288,7 +293,16 @@ void BraveShieldsTabHelper::SetBraveShieldsEnabled(bool is_enabled) {
         prefs->GetInteger(brave_shields::prefs::kShieldsDisabledCount) + 1);
   }
 
-  ReloadWebContents();
+  if (reload_contents) {
+    ReloadWebContents();
+  } else {
+#if !BUILDFLAG(IS_ANDROID)
+    if (auto* infobar_manager =
+            infobars::ContentInfoBarManager::FromWebContents(web_contents())) {
+      BraveShieldsReloadInfoBarDelegate::Create(infobar_manager);
+    }
+#endif
+  }
 }
 
 bool BraveShieldsTabHelper::IsBraveShieldsAdBlockOnlyModeEnabled() {
