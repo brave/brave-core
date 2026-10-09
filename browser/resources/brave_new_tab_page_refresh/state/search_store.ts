@@ -22,12 +22,7 @@ export interface SearchEngineInfo {
 // require.
 export type AutocompleteMatch = Pick<
   mojom.AutocompleteMatch,
-  | 'allowedToBeDefaultMatch'
-  | 'contents'
-  | 'description'
-  | 'iconUrl'
-  | 'suggestTemplate'
-  | 'destinationUrl'
+  'allowedToBeDefaultMatch' | 'iconUrl' | 'suggestTemplate' | 'destinationUrl'
 >
 
 export interface SearchState {

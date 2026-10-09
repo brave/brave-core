@@ -70,9 +70,9 @@ const useUrlWhatYouTyped = (query: string) => React.useMemo(() => {
 
     return {
       destinationUrl: url.toString(),
-      contents: url.toString(),
-      description: '',
       suggestTemplate: {
+        primaryText: url.toString(),
+        secondaryText: '',
         image: {
           url: `chrome://favicon/size/64@1x/${q.toString()}`,
           dominantColor: ''
