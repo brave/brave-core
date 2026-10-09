@@ -104,7 +104,7 @@ bool SidebarController::DoesBrowserHaveOpenedTabForItem(
     const SidebarItem& item) const {
   // This method is only for builtin item's icon state updating.
   DCHECK(item.is_built_in_type());
-  DCHECK(!item.open_in_panel);
+  DCHECK(!item.opens_in_panel());
 
   bool result = false;
   ProfileBrowserCollection::GetForProfile(profile_)->ForEach(
@@ -144,9 +144,7 @@ void SidebarController::OnItemPressed(size_t index,
   }
 
   // Built-in panel items are handled by SidePanelCoordinator.
-  if (!item.is_web_type() && item.open_in_panel) {
-    CHECK_NE(item.built_in_item_type, SidebarItem::BuiltInItemType::kNone);
-
+  if (item.is_side_panel_type()) {
 #if BUILDFLAG(ENABLE_AI_CHAT)
     if (item.built_in_item_type == SidebarItem::BuiltInItemType::kChatUI) {
       RecordLeoOpenedViaSidebar(profile_);
@@ -291,7 +289,9 @@ void SidebarController::AddItemWithCurrentTab() {
   const std::u16string title = active_contents->GetTitle();
   GetSidebarService()->AddItem(SidebarItem::Create(
       url, title, SidebarItem::Type::kTypeWeb,
-      SidebarItem::BuiltInItemType::kNone, IsWebPanelFeatureEnabled()));
+      SidebarItem::BuiltInItemType::kNone,
+      IsWebPanelFeatureEnabled() ? SidebarItem::PanelType::kWebPanel
+                                 : SidebarItem::PanelType::kNone));
 }
 
 void SidebarController::HandleSidePanelOpened(SidePanelEntryId id) {

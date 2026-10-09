@@ -108,7 +108,8 @@ TEST_F(SidebarModelTest, ItemsChangedTest) {
   // We need at least 4 items to test all the move scenarios.
   SidebarItem new_item = SidebarItem::Create(
       GURL("https://www.brave.com/"), u"brave software",
-      SidebarItem::Type::kTypeWeb, SidebarItem::BuiltInItemType::kNone, false);
+      SidebarItem::Type::kTypeWeb, SidebarItem::BuiltInItemType::kNone,
+      SidebarItem::PanelType::kNone);
 
   service()->AddItem(new_item);
 
@@ -121,7 +122,7 @@ TEST_F(SidebarModelTest, ItemsChangedTest) {
         GURL("https://extra" + base::NumberToString(service()->items().size()) +
              ".com/"),
         u"extra item", SidebarItem::Type::kTypeWeb,
-        SidebarItem::BuiltInItemType::kNone, false);
+        SidebarItem::BuiltInItemType::kNone, SidebarItem::PanelType::kNone);
     service()->AddItem(extra_item);
   }
 
@@ -217,7 +218,8 @@ TEST_F(SidebarModelTest, ActiveIndexChangedAfterItemAdded) {
 
   SidebarItem item_1 = SidebarItem::Create(
       GURL("https://www.brave.com/"), u"brave software",
-      SidebarItem::Type::kTypeWeb, SidebarItem::BuiltInItemType::kNone, false);
+      SidebarItem::Type::kTypeWeb, SidebarItem::BuiltInItemType::kNone,
+      SidebarItem::PanelType::kNone);
 
   // Check active index is still 1 when new item is added at 2.
   model()->AddItem(item_1, 2, true);
@@ -225,7 +227,8 @@ TEST_F(SidebarModelTest, ActiveIndexChangedAfterItemAdded) {
 
   SidebarItem item_2 = SidebarItem::Create(
       GURL("https://www.braves.com/"), u"brave software",
-      SidebarItem::Type::kTypeWeb, SidebarItem::BuiltInItemType::kNone, false);
+      SidebarItem::Type::kTypeWeb, SidebarItem::BuiltInItemType::kNone,
+      SidebarItem::PanelType::kNone);
 
   // Check active index is changed to 2 when new item is added at 1.
   model()->AddItem(item_2, 1, true);

@@ -11,12 +11,12 @@ namespace sidebar {
 SidebarItem SidebarItem::Create(const std::u16string& title,
                                 Type type,
                                 BuiltInItemType built_in_item_type,
-                                bool open_in_panel) {
+                                PanelType panel_type) {
   SidebarItem item;
   item.title = title;
   item.type = type;
   item.built_in_item_type = built_in_item_type;
-  item.open_in_panel = open_in_panel;
+  item.panel_type = panel_type;
   return item;
 }
 
@@ -25,8 +25,8 @@ SidebarItem SidebarItem::Create(const GURL& url,
                                 const std::u16string& title,
                                 Type type,
                                 BuiltInItemType built_in_item_type,
-                                bool open_in_panel) {
-  SidebarItem item = Create(title, type, built_in_item_type, open_in_panel);
+                                PanelType panel_type) {
+  SidebarItem item = Create(title, type, built_in_item_type, panel_type);
   item.url = url;
   return item;
 }
@@ -42,7 +42,7 @@ SidebarItem::~SidebarItem() = default;
 bool SidebarItem::operator==(const SidebarItem& item) const {
   return url == item.url && title == item.title && type == item.type &&
          built_in_item_type == item.built_in_item_type &&
-         open_in_panel == item.open_in_panel;
+         panel_type == item.panel_type;
 }
 
 bool SidebarItem::IsValidItem() const {

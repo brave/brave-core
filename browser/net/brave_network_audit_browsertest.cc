@@ -172,7 +172,7 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkAuditTest, BasicTests) {
   auto* sidebar_model = sidebar::SidebarController::From(browser())->model();
   std::vector<SidePanelEntryId> panel_ids;
   for (const auto& item : sidebar_model->GetAllSidebarItems()) {
-    if (item.is_built_in_type() && item.open_in_panel) {
+    if (item.is_side_panel_type()) {
       panel_ids.push_back(sidebar::SidePanelIdFromSideBarItem(item));
     }
   }

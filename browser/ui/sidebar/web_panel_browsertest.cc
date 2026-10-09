@@ -144,7 +144,7 @@ IN_PROC_BROWSER_TEST_F(WebPanelBrowserTest, WebPanelItemActiveStateTest) {
     service->AddItem(SidebarItem::Create(url, u"title",
                                          SidebarItem::Type::kTypeWeb,
                                          SidebarItem::BuiltInItemType::kNone,
-                                         /*open_in_panel*/ true));
+                                         SidebarItem::PanelType::kWebPanel));
   }
   const size_t index_b = model()->GetAllSidebarItems().size() - 1;
   const size_t index_a = index_b - 1;
