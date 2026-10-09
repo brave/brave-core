@@ -1,22 +1,14 @@
 diff --git a/chrome/browser/file_select_helper.cc b/chrome/browser/file_select_helper.cc
-index 227ace408690fc9586b39692234902336a22cd1a..32bcb20179d3c63ebbeb321c01237bfc1c19030a 100644
+index 227ace408690fc9586b39692234902336a22cd1a..9878113b4a1bdd87b427fa7033a32db71311441b 100644
 --- a/chrome/browser/file_select_helper.cc
 +++ b/chrome/browser/file_select_helper.cc
-@@ -73,6 +73,7 @@ DEFINE_LOCAL_ELEMENT_IDENTIFIER_VALUE(kCancelButtonId);
- namespace {
- 
- void DeleteFiles(std::vector<base::FilePath> paths) {
-+  brave::MaybeDeleteImageMetadataStripperTemporaryDir(paths);
-   for (auto& file_path : paths)
-     base::DeleteFile(file_path);
- }
-@@ -465,6 +466,11 @@ void FileSelectHelper::ContentAnalysisCompletionCallback(
+@@ -465,6 +465,11 @@ void FileSelectHelper::ContentAnalysisCompletionCallback(
  
  void FileSelectHelper::NotifyListenerAndEnd(
      std::vector<blink::mojom::FileChooserFileInfoPtr> list) {
 +  if (brave::MaybeStripImageMetadataForUpload(
-+          image_metadata_processed_, temporary_files_, list,
-+          base::BindOnce(&FileSelectHelper::NotifyListenerAndEnd, this))) {
++      web_contents_, image_metadata_processed_, list,
++      base::BindOnce(&FileSelectHelper::NotifyListenerAndEnd, this))) {
 +    return;
 +  }
    listener_->FileSelected(std::move(list), base_dir_, dialog_mode_);
