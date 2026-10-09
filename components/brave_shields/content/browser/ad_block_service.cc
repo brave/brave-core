@@ -220,12 +220,12 @@ AdBlockService::AdBlockService(
           component_update_service_);
 
   const bool debug_mode = IsDebugMode();
-  if (debug_mode) {
-    LOG(WARNING) << "Adblock debug mode is enabled. DAT caching is disabled. "
-                    "Extra CPU and memory usage are expected.";
-  }
   use_dat_cache_ =
       base::FeatureList::IsEnabled(features::kAdblockDATCache) && !debug_mode;
+  if (!use_dat_cache_) {
+    LOG(WARNING) << "DAT caching is disabled. Debug mode" << debug_mode
+                 << "Extra CPU and memory usage are expected.";
+  }
 
   dat_cache_manager_ = std::make_unique<AdBlockDATCacheManager>(profile_dir_);
   if (use_dat_cache_) {

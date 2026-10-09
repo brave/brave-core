@@ -103,6 +103,8 @@ class DATLoadObserver : public AdBlockService::Observer {
   }
 
   bool BothLoaded() const { return default_loaded_ && additional_loaded_; }
+  bool default_loaded() const { return default_loaded_; }
+  bool additional_loaded() const { return additional_loaded_; }
   bool default_success() const { return default_success_; }
   bool additional_success() const { return additional_success_; }
 
@@ -505,6 +507,16 @@ TEST_F(AdBlockServiceTest, DebugModeDisablesDATCache) {
 
   auto service = CreateService();
 
+  DATLoadObserver dat_observer;
+  service->AddObserver(&dat_observer);
+  task_environment_.RunUntilIdle();
+  EXPECT_FALSE(dat_observer.default_loaded());
+  EXPECT_FALSE(dat_observer.additional_loaded());
+
+  auto result = ShouldStartRequest(service.get(), EngineType::kDefault,
+                                   "https://from-cache.com/script.js");
+  EXPECT_FALSE(result.matched);
+
   bool default_filter_list_loaded = false;
   FilterListObserver observer(
       base::BindLambdaForTesting([&](bool is_default, bool success) {
@@ -521,6 +533,9 @@ TEST_F(AdBlockServiceTest, DebugModeDisablesDATCache) {
   ASSERT_TRUE(base::test::RunUntil([&]() {
     return default_filter_list_loaded;
   })) << "Filter set should load when adblock debug mode disables DAT cache";
+
+  EXPECT_FALSE(dat_observer.default_loaded());
+  EXPECT_FALSE(dat_observer.additional_loaded());
 }
 
 TEST_F(AdBlockServiceDATCacheDisabledTest, CachedDATIgnoredWhenFlagDisabled) {
