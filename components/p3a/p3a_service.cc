@@ -14,7 +14,6 @@
 #include "base/logging.h"
 #include "base/metrics/histogram_samples.h"
 #include "base/metrics/statistics_recorder.h"
-#include "base/trace_event/trace_event.h"
 #include "brave/components/brave_origin/buildflags/buildflags.h"
 #include "brave/components/p3a/component_installer.h"
 #include "brave/components/p3a/message_manager.h"

@@ -14,7 +14,6 @@
 #include "base/test/task_environment.h"
 #include "base/time/time_override.h"
 #include "components/sync/engine/cancelation_signal.h"
-#include "components/sync/nigori/cryptographer_impl.h"
 #include "components/sync/protocol/sync.pb.h"
 #include "components/sync/test/fake_cryptographer.h"
 #include "components/sync/test/mock_data_type_processor.h"

@@ -4,7 +4,6 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include <memory>
-#include <utility>
 
 #include "base/base_paths.h"
 #include "base/path_service.h"

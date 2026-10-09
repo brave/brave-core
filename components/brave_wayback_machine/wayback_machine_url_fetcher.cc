@@ -7,18 +7,14 @@
 
 #include <algorithm>
 #include <string>
-#include <utility>
 
 #include "base/functional/bind.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_wayback_machine/brave_wayback_machine_utils.h"
 #include "brave/components/brave_wayback_machine/url_constants.h"
-#include "net/base/load_flags.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
-#include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
-#include "services/network/public/mojom/fetch_api.mojom-shared.h"
 #include "url/gurl.h"
 #include "url/url_constants.h"
 

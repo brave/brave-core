@@ -5,7 +5,6 @@
 
 #include "components/permissions/permissions_client.h"
 
-#include "base/compiler_specific.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "components/content_settings/core/common/content_settings_types.h"
 #include "testing/gtest/include/gtest/gtest.h"
