@@ -30,6 +30,7 @@ brave_settings_preprocessor_defines = [
   "enable_ai_chat=$enable_ai_chat",
   "enable_brave_ads=$enable_brave_ads",
   "enable_brave_rewards=$enable_brave_rewards",
+  "enable_email_aliases=$enable_email_aliases",
 ]
 
 brave_settings_web_component_files = [
