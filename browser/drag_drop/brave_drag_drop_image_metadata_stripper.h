@@ -12,10 +12,6 @@ namespace content {
 class WebContents;
 }  // namespace content
 
-namespace tabs {
-class TabInterface;
-}  // namespace tabs
-
 namespace brave {
 
 content::WebContentsViewDelegate::DropCompletionCallback
