@@ -6,8 +6,12 @@
 #include "chrome/browser/renderer_context_menu/render_view_context_menu.h"
 
 #include <optional>
+#include <string>
+#include <vector>
 
 #include "base/check.h"
+#include "base/strings/utf_string_conversions.h"
+#include "base/test/run_until.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/query_filter/browser/test_support/query_filter_test_helper.h"
@@ -16,16 +20,24 @@
 #include "chrome/browser/autocomplete/autocomplete_classifier_factory.h"
 #include "chrome/browser/autocomplete/chrome_autocomplete_provider_client.h"
 #include "chrome/browser/custom_handlers/protocol_handler_registry_factory.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "chrome/browser/ui/browser_window/public/create_browser_window.h"
+#include "chrome/test/base/search_test_utils.h"
 #include "chrome/test/base/test_browser_window.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/custom_handlers/protocol_handler_registry.h"
 #include "components/custom_handlers/test_protocol_handler_registry_delegate.h"
+#include "components/search_engines/default_search_manager.h"
+#include "components/search_engines/search_engines_pref_names.h"
+#include "components/search_engines/template_url.h"
+#include "components/search_engines/template_url_data.h"
 #include "components/search_engines/template_url_service.h"
+#include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "content/public/browser/context_menu_params.h"
 #include "content/public/browser/web_contents.h"
+#include "content/public/browser/web_contents_delegate.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -256,3 +268,217 @@ TEST_F(BraveRenderViewContextMenuTest, MenuForAIChat_PWA) {
   EXPECT_FALSE(ai_chat_index.has_value());
 }
 #endif
+
+namespace {
+
+// Records URLs that the context menu asks the web contents to open.
+class OpenedUrlRecorder : public content::WebContentsDelegate {
+ public:
+  content::WebContents* OpenURLFromTab(
+      content::WebContents* source,
+      const content::OpenURLParams& params,
+      base::OnceCallback<void(content::NavigationHandle&)>
+          navigation_handle_callback) override {
+    urls_.push_back(params.url);
+    return nullptr;
+  }
+
+  const std::vector<GURL>& urls() const { return urls_; }
+
+ private:
+  std::vector<GURL> urls_;
+};
+
+}  // namespace
+
+// Tests the "Search for" and "Go to" items for selected text, in regular and
+// off-the-record profiles, by checking the URL they open.
+class BraveRenderViewContextMenuSelectionTest : public testing::Test {
+ protected:
+  static constexpr char16_t kRegularName[] = u"Regular Search";
+  static constexpr char16_t kOtrName[] = u"Private Search";
+  static constexpr char kRegularSearchUrl[] =
+      "https://regular.example/search?q={searchTerms}";
+  static constexpr char kOtrSearchUrl[] =
+      "https://private.example/find?q={searchTerms}";
+
+  void SetUp() override {
+    TestingProfile::Builder builder;
+    builder.AddTestingFactory(
+        TemplateURLServiceFactory::GetInstance(),
+        base::BindRepeating(&TemplateURLServiceFactory::BuildInstanceFor));
+    profile_ = builder.Build();
+    // Brave gives OTR profiles their own TemplateURLService.
+    TestingProfile::Builder otr_builder;
+    otr_builder.AddTestingFactory(
+        TemplateURLServiceFactory::GetInstance(),
+        base::BindRepeating(&TemplateURLServiceFactory::BuildInstanceFor));
+    otr_profile_ = otr_builder.BuildOffTheRecord(
+        profile_.get(), Profile::OTRProfileID::CreateUniqueForTesting());
+    ASSERT_TRUE(otr_profile_->IsOffTheRecord());
+
+    // Upstream classifies with the regular profile's classifier for both
+    // profile types (the factory redirects OTR to the original).
+    AutocompleteClassifierFactory::GetInstance()->SetTestingFactoryAndUse(
+        profile_.get(),
+        base::BindRepeating(&AutocompleteClassifierFactory::BuildInstanceFor));
+    ProtocolHandlerRegistryFactory::GetInstance()->SetTestingFactory(
+        profile_.get(), base::BindRepeating(&BuildProtocolHandlerRegistry));
+    ProtocolHandlerRegistryFactory::GetInstance()->SetTestingFactory(
+        otr_profile_, base::BindRepeating(&BuildProtocolHandlerRegistry));
+
+    SetDefaultSearchProvider(profile_.get(), kRegularName, "regular.example",
+                             kRegularSearchUrl);
+    SetDefaultSearchProvider(otr_profile_, kOtrName, "private.example",
+                             kOtrSearchUrl);
+  }
+
+  void TearDown() override {
+    menus_.clear();
+    web_contentses_.clear();
+    otr_profile_ = nullptr;
+    profile_.reset();
+    ui::Clipboard::DestroyClipboardForCurrentThread();
+  }
+
+  static void SetDefaultSearchProvider(Profile* profile,
+                                       const std::u16string& name,
+                                       const std::string& keyword,
+                                       const std::string& url) {
+    auto* service = TemplateURLServiceFactory::GetForProfile(profile);
+    ASSERT_TRUE(service);
+    search_test_utils::WaitForTemplateURLServiceToLoad(service);
+    TemplateURLData data;
+    data.SetShortName(name);
+    data.SetKeyword(base::UTF8ToUTF16(keyword));
+    data.SetURL(url);
+    const TemplateURL* provider =
+        service->Add(std::make_unique<TemplateURL>(data));
+    ASSERT_TRUE(provider);
+    service->SetUserSelectedDefaultSearchProvider(
+        const_cast<TemplateURL*>(provider));
+    ASSERT_EQ(service->GetDefaultSearchProvider(), provider);
+  }
+
+  Profile* regular() { return profile_.get(); }
+  Profile* otr() { return otr_profile_; }
+
+  BraveRenderViewContextMenuMock* CreateMenu(Profile* profile,
+                                             const std::u16string& selection) {
+    web_contentses_.push_back(content::WebContents::Create(
+        content::WebContents::CreateParams(profile)));
+    content::WebContents* web_contents = web_contentses_.back().get();
+    recorders_.push_back(std::make_unique<OpenedUrlRecorder>());
+    web_contents->SetDelegate(recorders_.back().get());
+
+    content::ContextMenuParams params = CreateSelectedTextParams(selection);
+    params.properties[prefs::kDefaultSearchProviderContextMenuAccessAllowed] =
+        "";
+    auto menu = std::make_unique<BraveRenderViewContextMenuMock>(
+        *web_contents->GetPrimaryMainFrame(), params,
+        /*is_paste_enabled=*/false, /*is_paste_and_match_style_enabled=*/false);
+
+    menu->Init();
+    menus_.push_back(std::move(menu));
+    return menus_.back().get();
+  }
+
+  static bool HasCommand(BraveRenderViewContextMenuMock* menu, int command) {
+    return menu->menu_model().GetIndexOfCommandId(command).has_value();
+  }
+
+  static std::u16string LabelOf(BraveRenderViewContextMenuMock* menu,
+                                int command) {
+    return menu->menu_model().GetLabelAt(
+        *menu->menu_model().GetIndexOfCommandId(command));
+  }
+
+  // Executes `command` and returns the URLs the menu asked to open.
+  std::vector<GURL> Execute(BraveRenderViewContextMenuMock* menu, int command) {
+    menu->ExecuteCommand(command, /*event_flags=*/0);
+    for (size_t i = 0; i < menus_.size(); ++i) {
+      if (menus_[i].get() == menu) {
+        EXPECT_TRUE(base::test::RunUntil(
+            [&] { return !recorders_[i]->urls().empty(); }));
+        return recorders_[i]->urls();
+      }
+    }
+    NOTREACHED();
+  }
+
+ private:
+  content::BrowserTaskEnvironment browser_task_environment_;
+  std::unique_ptr<TestingProfile> profile_;
+  raw_ptr<TestingProfile> otr_profile_ = nullptr;
+  std::vector<std::unique_ptr<content::WebContents>> web_contentses_;
+  std::vector<std::unique_ptr<OpenedUrlRecorder>> recorders_;
+  std::vector<std::unique_ptr<BraveRenderViewContextMenuMock>> menus_;
+};
+
+TEST_F(BraveRenderViewContextMenuSelectionTest, RegularPlainText) {
+  auto* menu = CreateMenu(regular(), u"plain text");
+  ASSERT_TRUE(HasCommand(menu, IDC_CONTENT_CONTEXT_SEARCHWEBFOR));
+  EXPECT_FALSE(HasCommand(menu, IDC_CONTENT_CONTEXT_GOTOURL));
+  EXPECT_NE(LabelOf(menu, IDC_CONTENT_CONTEXT_SEARCHWEBFOR)
+                .find(std::u16string(kRegularName)),
+            std::u16string::npos);
+  EXPECT_THAT(Execute(menu, IDC_CONTENT_CONTEXT_SEARCHWEBFOR),
+              testing::ElementsAre(GURL("https://regular.example/search?q="
+                                        "plain+text")));
+}
+
+TEST_F(BraveRenderViewContextMenuSelectionTest, OtrPlainTextUsesOtrProvider) {
+  auto* menu = CreateMenu(otr(), u"plain text");
+  ASSERT_TRUE(HasCommand(menu, IDC_CONTENT_CONTEXT_SEARCHWEBFOR));
+  EXPECT_FALSE(HasCommand(menu, IDC_CONTENT_CONTEXT_GOTOURL));
+  EXPECT_NE(LabelOf(menu, IDC_CONTENT_CONTEXT_SEARCHWEBFOR)
+                .find(std::u16string(kOtrName)),
+            std::u16string::npos);
+  EXPECT_THAT(
+      Execute(menu, IDC_CONTENT_CONTEXT_SEARCHWEBFOR),
+      testing::ElementsAre(GURL("https://private.example/find?q=plain+text")));
+}
+
+TEST_F(BraveRenderViewContextMenuSelectionTest, RegularUrlLike) {
+  auto* menu = CreateMenu(regular(), u"example.com");
+  ASSERT_TRUE(HasCommand(menu, IDC_CONTENT_CONTEXT_GOTOURL));
+  EXPECT_FALSE(HasCommand(menu, IDC_CONTENT_CONTEXT_SEARCHWEBFOR));
+  EXPECT_THAT(Execute(menu, IDC_CONTENT_CONTEXT_GOTOURL),
+              testing::ElementsAre(GURL("http://example.com/")));
+}
+
+TEST_F(BraveRenderViewContextMenuSelectionTest, OtrUrlLike) {
+  auto* menu = CreateMenu(otr(), u"example.com");
+  ASSERT_TRUE(HasCommand(menu, IDC_CONTENT_CONTEXT_GOTOURL));
+  EXPECT_FALSE(HasCommand(menu, IDC_CONTENT_CONTEXT_SEARCHWEBFOR));
+  EXPECT_THAT(Execute(menu, IDC_CONTENT_CONTEXT_GOTOURL),
+              testing::ElementsAre(GURL("http://example.com/")));
+}
+
+TEST_F(BraveRenderViewContextMenuSelectionTest, EmptyAndWhitespaceSelection) {
+  for (Profile* profile : {regular(), otr()}) {
+    for (const char16_t* selection : {u"", u"   ", u" \t\n "}) {
+      auto* menu = CreateMenu(profile, selection);
+      EXPECT_FALSE(HasCommand(menu, IDC_CONTENT_CONTEXT_SEARCHWEBFOR));
+      EXPECT_FALSE(HasCommand(menu, IDC_CONTENT_CONTEXT_GOTOURL));
+    }
+  }
+}
+
+TEST_F(BraveRenderViewContextMenuSelectionTest, NoDefaultSearchProvider) {
+  // The OTR profile shares the regular profile's prefs.
+  base::DictValue disabled;
+  disabled.Set(DefaultSearchManager::kDisabledByPolicy, true);
+  static_cast<TestingProfile*>(regular())
+      ->GetTestingPrefService()
+      ->SetManagedPref(DefaultSearchManager::kDefaultSearchProviderDataPrefName,
+                       std::move(disabled));
+
+  for (Profile* profile : {regular(), otr()}) {
+    ASSERT_FALSE(TemplateURLServiceFactory::GetForProfile(profile)
+                     ->GetDefaultSearchProvider());
+    auto* menu = CreateMenu(profile, u"plain text");
+    EXPECT_FALSE(HasCommand(menu, IDC_CONTENT_CONTEXT_SEARCHWEBFOR));
+    EXPECT_FALSE(HasCommand(menu, IDC_CONTENT_CONTEXT_GOTOURL));
+  }
+}

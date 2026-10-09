@@ -1,0 +1,55 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Rename RenderViewContextMenu to allow a Brave subclass replacement
+
+      See matching plaster for header.
+    rename_class:
+      class_name: RenderViewContextMenu
+      rename: RenderViewContextMenu_Chromium
+
+  - description: |
+      Disable the upstream RegisterMenuShownCallbackForTesting.
+
+      Brave's `RenderViewContextMenu` hides this static with one that takes a
+      Brave-typed callback and stores it separately. A callback registered here
+      would never run, so the definition is removed to turn any stray reference
+      into a link error.
+
+      The only likely regression would be if Chromium introduces an unqualified
+      reference to `RegisterMenuShownCallbackForTesting` that resolves to the
+      Chromium declaration rather than Brave's subclass.
+    regex:
+      re_pattern:
+        '(//
+        static\n[^\n]*\bRenderViewContextMenu_Chromium::RegisterMenuShownCallbackForTesting\(.*?\{.*?\n\})'
+      re_flags: [DOTALL]
+      replace: |-
+        #if 0  // Brave's RenderViewContextMenu hides this static with its own.
+        \1
+        #endif
+
+  - description: Use a Brave replacement for SpellingOptionsSubMenuObserver
+    regex:
+      re_pattern: '\bSpellingOptionsSubMenuObserver\b'
+      replace: 'BraveSpellingOptionsSubMenuObserver'
+
+  - description: |
+      Let Brave resolve the selection navigation URL.
+
+      This makes it so that off-the-record profiles get a URL built based on
+      its own profile's settings, e.g. search engine selection. Brave offers
+      customization for off-the-record profiles, where Chromium just uses the
+      base profile's settings.
+
+      The edit occurs in `AppendSearchProvider()`, after the autocomplete
+      classifier runs and before the result is checked as valid (`is_valid()`)
+    regex:
+      pattern: 'selection_navigation_url_ = match.destination_url;'
+      replace: |-
+        selection_navigation_url_ = BraveResolveSelectionNavigationURL(
+            GetProfile(), params_.selection_text, match.destination_url);
