@@ -5,8 +5,6 @@
 
 import './privacy_page_test-chromium.js'
 
-import 'chrome://settings/lazy_load.js'
-
 import {ClearBrowsingDataBrowserProxyImpl} from 'chrome://settings/lazy_load.js'
 import type {SettingsPrivacyPageElement} from 'chrome://settings/settings.js'
 import {
@@ -54,7 +52,7 @@ suite('BravePrivacyPage', () => {
   let page: SettingsPrivacyPageElement
 
   async function createPage() {
-    document.body.innerHTML = window.trustedTypes!.emptyHTML
+    document.body.replaceChildren()
     page = document.createElement('settings-privacy-page')
     document.body.appendChild(page)
     await microtasksFinished()
