@@ -124,8 +124,18 @@ void FilterListService::UpdateCustomFilters(
 }
 
 void FilterListService::UpdateFilterLists(UpdateFilterListsCallback callback) {
+  for (const auto& sub :
+       ad_block_service_->subscription_service_manager()->GetSubscriptions()) {
+    if (sub.enabled) {
+      ad_block_service_->subscription_service_manager()->RefreshSubscription(
+          sub.subscription_url, true);
+    }
+  }
+
+  // Update default component filter lists
   ad_block_service_->component_service_manager()->UpdateFilterLists(
       std::move(callback));
 }
+
 
 }  // namespace brave_shields
