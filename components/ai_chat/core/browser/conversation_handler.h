@@ -528,6 +528,10 @@ class ConversationHandler : public mojom::ConversationHandler,
   void OnTitleGenerated(EngineConsumer::GenerationResult result);
   void CompleteGeneration(const std::optional<std::string>& thread_uuid,
                           bool success);
+  // Schedules a retry for a connection issue if eligible. Returns true if a
+  // retry was scheduled.
+  bool MaybeAutoRetry(const std::optional<std::string>& thread_uuid,
+                      mojom::APIError api_error);
   void RetryAfterConnectionIssue(const std::optional<std::string>& thread_uuid);
   void OnSuggestedQuestionsResponse(
       EngineConsumer::SuggestedQuestionResult result);

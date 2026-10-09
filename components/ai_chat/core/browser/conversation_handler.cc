@@ -2113,14 +2113,7 @@ void ConversationHandler::OnEngineCompletionComplete(
     EngineConsumer::GenerationResult result) {
   // Handle failure
   if (!result.has_value()) {
-    if (result.error().api_error == mojom::APIError::ConnectionIssue &&
-        connection_issue_retry_count_ <
-            features::kMaxConnectionIssueRetries.Get()) {
-      ++connection_issue_retry_count_;
-      connection_issue_retry_timer_.Start(
-          FROM_HERE, kConnectionIssueRetryDelay,
-          base::BindOnce(&ConversationHandler::RetryAfterConnectionIssue,
-                         base::Unretained(this), thread_uuid));
+    if (MaybeAutoRetry(thread_uuid, result.error().api_error)) {
       return;
     }
     connection_issue_retry_count_ = 0;
@@ -2218,6 +2211,44 @@ void ConversationHandler::CompleteGeneration(
     // we can't resume. User will have to resubmit.
     StopTask();
   }
+}
+
+bool ConversationHandler::MaybeAutoRetry(
+    const std::optional<std::string>& thread_uuid,
+    mojom::APIError api_error) {
+  if (api_error != mojom::APIError::ConnectionIssue ||
+      connection_issue_retry_count_ >=
+          features::kMaxConnectionIssueRetries.Get()) {
+    return false;
+  }
+
+  const auto& history = GetMutableConversationHistory(thread_uuid);
+  if (history.empty()) {
+    return false;
+  }
+  // TODO(https://github.com/brave/brave-browser/issues/59807): Remove this
+  // check once retries correctly handle tool calls.
+  for (const auto& entry : std::views::reverse(history)) {
+    if (entry->character_type == mojom::CharacterType::HUMAN) {
+      break;
+    }
+    // Don't auto retry after resolved tool calls, otherwise the retry may
+    // rerun tool calls without the user's consent.
+    if (entry->events.has_value() &&
+        std::ranges::any_of(entry->events.value(), [](const auto& event) {
+          return event->is_tool_use_event() &&
+                 event->get_tool_use_event()->output.has_value();
+        })) {
+      return false;
+    }
+  }
+
+  ++connection_issue_retry_count_;
+  connection_issue_retry_timer_.Start(
+      FROM_HERE, kConnectionIssueRetryDelay,
+      base::BindOnce(&ConversationHandler::RetryAfterConnectionIssue,
+                     base::Unretained(this), thread_uuid));
+  return true;
 }
 
 void ConversationHandler::RetryAfterConnectionIssue(
