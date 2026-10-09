@@ -9,5 +9,5 @@
 
 namespace topsites::features {
 
-BASE_FEATURE(kTopsitesEnabled, base::FEATURE_DISABLED_BY_DEFAULT);
+BASE_FEATURE(kTopsitesEnabled, base::FEATURE_ENABLED_BY_DEFAULT);
 }
