@@ -25,3 +25,29 @@ source_set("drag_drop") {
     "//ui/base/clipboard:file_info",
   ]
 }
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "brave_drag_drop_image_metadata_stripper_unittest.cc" ]
+
+  deps = [
+    ":drag_drop",
+    "//base",
+    "//base/test:test_support",
+    "//brave/browser/image_metadata_stripper",
+    "//brave/components/image_metadata_stripper/common",
+    "//chrome/browser/ui/tabs:tabs_public",
+    "//chrome/common:constants",
+    "//components/tabs:impl",
+    "//components/tabs:test_support",
+    "//content/public/browser",
+    "//content/public/common",
+    "//content/test:test_support",
+    "//testing/gmock",
+    "//testing/gtest",
+    "//ui/base/clipboard:file_info",
+  ]
+
+  data = [ "//brave/test/data/image_metadata_stripper/" ]
+}
