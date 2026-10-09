@@ -9,7 +9,7 @@
 #include "base/command_line.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/permission_utils.h"
-#include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
+#include "brave/browser/permissions/brave_wallet_permission_context.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/permissions/permission_util.h"
 #include "content/public/browser/browser_context.h"

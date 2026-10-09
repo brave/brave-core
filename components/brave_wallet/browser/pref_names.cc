@@ -5,10 +5,16 @@
 
 #include "brave/components/brave_wallet/browser/pref_names.h"
 
+#include <array>
+#include <string>
+#include <string_view>
 #include <utility>
+#include <vector>
 
 #include "base/check.h"
+#include "base/strings/strcat.h"
 #include "base/time/time.h"
+#include "components/content_settings/core/common/content_settings.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
@@ -67,6 +73,68 @@ inline constexpr char kBraveWalletP3ALastUnlockTimeDeprecated[] =
 // Deprecated 05/2026
 inline constexpr char kBraveWalletP3AUsedSecondDayDeprecated[] =
     "brave.wallet.p3a_used_second_day";
+
+// Site permissions used to be stored as plain ALLOW content settings against
+// synthetic "<origin><account>" origins of these types. Accounts now live in
+// the matching BRAVE_*_CHOOSER_DATA website settings and these types are
+// registered as ask/block guards only, so a stored ALLOW is rejected by
+// ContentSettingsPref::IsValueAllowedForType and would DCHECK as it is loaded.
+inline constexpr auto kWalletPermissionSettingNames =
+    std::to_array<std::string_view>(
+        {"brave_ethereum", "brave_solana", "brave_cardano"});
+
+// Matches ContentSettingsPref's stored schema:
+//   { "<primary>,<secondary>": { "setting": <int>, ... }, ... }
+inline constexpr char kContentSettingKey[] = "setting";
+
+void RemoveAllowEntries(PrefService* prefs, const std::string& pref_path) {
+  // Only ALLOW is obsolete. Block entries are the guard's remaining state and
+  // belong to the user, so they stay.
+  std::vector<std::string> obsolete_patterns;
+  for (const auto entry : prefs->GetDict(pref_path)) {
+    const auto* settings = entry.second.GetIfDict();
+    if (settings && settings->FindInt(kContentSettingKey) ==
+                        static_cast<int>(CONTENT_SETTING_ALLOW)) {
+      obsolete_patterns.emplace_back(entry.first);
+    }
+  }
+
+  if (obsolete_patterns.empty()) {
+    return;
+  }
+
+  ScopedDictPrefUpdate update(prefs, pref_path);
+  for (const auto& pattern : obsolete_patterns) {
+    update->Remove(pattern);
+  }
+}
+
+// Must run before HostContentSettingsMap exists, since its pref provider reads
+// and validates these during construction. MigrateObsoleteProfilePrefs runs
+// from ProfileImpl::OnLocaleReady, ahead of any keyed service, so a migration
+// here is early enough where a keyed-service one would not be.
+//
+// Deliberately not gated on a one-shot flag: dropping exactly the ALLOW
+// entries is idempotent and self-healing, so a downgrade that rewrites them
+// cannot leave a profile that crashes on the next upgrade.
+void ResetObsoleteWalletPermissions(PrefService* prefs) {
+  for (const auto name : kWalletPermissionSettingNames) {
+    RemoveAllowEntries(
+        prefs, base::StrCat({"profile.content_settings.exceptions.", name}));
+    RemoveAllowEntries(prefs,
+                       base::StrCat({"profile.content_settings."
+                                     "partitioned_exceptions.",
+                                     name}));
+
+    // The default is a bare int rather than a dict of exceptions.
+    const auto default_path =
+        base::StrCat({"profile.default_content_setting_values.", name});
+    if (prefs->GetInteger(default_path) ==
+        static_cast<int>(CONTENT_SETTING_ALLOW)) {
+      prefs->ClearPref(default_path);
+    }
+  }
+}
 
 base::DictValue GetDefaultSelectedNetworks() {
   base::DictValue selected_networks;
@@ -321,6 +389,9 @@ void MigrateObsoleteProfilePrefs(PrefService* prefs) {
 
   // Added 08/2026
   BraveWalletService::MaybeMigrateLocalhostNetworks(prefs);
+
+  // Added 10/2026
+  ResetObsoleteWalletPermissions(prefs);
 }
 
 }  // namespace brave_wallet

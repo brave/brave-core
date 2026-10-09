@@ -171,6 +171,15 @@ void BraveWalletTabHelper::BindCardanoProvider(
       std::move(receiver));
 }
 
+void BraveWalletTabHelper::SetPendingConnectAccounts(
+    std::vector<std::string> accounts) {
+  pending_connect_accounts_ = std::move(accounts);
+}
+
+void BraveWalletTabHelper::ClearPendingConnectAccounts() {
+  pending_connect_accounts_.clear();
+}
+
 void BraveWalletTabHelper::AddSolanaConnectedAccount(
     const content::GlobalRenderFrameHostId& id,
     const std::string& account) {
@@ -287,23 +296,17 @@ GURL BraveWalletTabHelper::GetBubbleURL() {
     return webui_url;
   }
 
-  // Handle ConnectWithSite (ethereum permission) request.
-  std::vector<std::string> accounts;
-  url::Origin requesting_origin;
-  for (const auto& request : manager->Requests()) {
-    std::string account;
-    if (!ParseRequestingOriginFromSubRequest(
-            request->request_type(),
-            url::Origin::Create(request->requesting_origin()),
-            &requesting_origin, &account)) {
-      continue;
-    }
-    accounts.push_back(account);
+  // Handle ConnectWithSite (ethereum permission) request. The accounts come
+  // from BraveWalletPermissionContext, which raises one origin-scoped request
+  // rather than one per account.
+  const auto requesting_origin =
+      url::Origin::Create(manager->Requests()[0]->requesting_origin());
+  if (pending_connect_accounts_.empty() || requesting_origin.opaque()) {
+    return webui_url;
   }
-  DCHECK(!accounts.empty());
 
-  webui_url =
-      GetConnectWithSiteWebUIURL(webui_url, accounts, requesting_origin);
+  webui_url = GetConnectWithSiteWebUIURL(
+      webui_url, pending_connect_accounts_, requesting_origin);
   DCHECK(webui_url.is_valid());
 
   return webui_url;

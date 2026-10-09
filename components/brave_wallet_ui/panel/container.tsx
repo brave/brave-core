@@ -186,9 +186,13 @@ function Container() {
       const accountsToConnect = accounts.filter((account) => {
         if (account.accountId.coin === BraveWallet.CoinType.ADA) {
           return connectingAccounts.includes(account.accountId.uniqueKey)
-        } else {
-          return connectingAccounts.includes(account.address.toLowerCase())
         }
+        if (account.accountId.coin === BraveWallet.CoinType.ETH) {
+          // ETH addresses are checksummed, so case carries no meaning.
+          const address = account.address.toLowerCase()
+          return connectingAccounts.some((a) => a.toLowerCase() === address)
+        }
+        return connectingAccounts.includes(account.address)
       })
       return (
         <PanelWrapper>

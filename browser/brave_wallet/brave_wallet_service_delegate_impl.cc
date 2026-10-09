@@ -15,7 +15,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/permission_utils.h"
 #include "brave/components/brave_wallet/common/web_ui_constants.h"
-#include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
+#include "brave/browser/permissions/brave_wallet_permission_context.h"
 #include "chrome/browser/notifications/notification_display_service.h"
 #include "chrome/browser/notifications/notification_display_service_factory.h"
 #include "chrome/browser/profiles/profile.h"

@@ -10,7 +10,7 @@
 #include "base/functional/callback.h"
 #include "brave/components/brave_wallet/browser/permission_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom-shared.h"
-#include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
+#include "brave/browser/permissions/brave_wallet_permission_context.h"
 #include "chrome/android/chrome_jni_headers/ConnectAccountFragment_jni.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"

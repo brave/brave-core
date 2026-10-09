@@ -9,6 +9,7 @@
 #include <memory>
 #include <string>
 #include <utility>
+#include <vector>
 
 #include "base/containers/flat_map.h"
 #include "base/containers/flat_set.h"
@@ -54,6 +55,12 @@ class BraveWalletTabHelper
       content::RenderFrameHost* const frame_host,
       mojo::PendingReceiver<mojom::CardanoProvider> receiver);
 
+  // The in-flight connect request is scoped to the origin and no longer
+  // encodes the accounts being asked for, so BraveWalletPermissionContext
+  // hands them over here for the panel URL to pick up.
+  void SetPendingConnectAccounts(std::vector<std::string> accounts);
+  void ClearPendingConnectAccounts();
+
   void AddSolanaConnectedAccount(const content::GlobalRenderFrameHostId& id,
                                  const std::string& account);
   void RemoveSolanaConnectedAccount(const content::GlobalRenderFrameHostId& id,
@@ -97,6 +104,9 @@ class BraveWalletTabHelper
   // Each RenderFrameHost has its own connection set.
   base::flat_map<content::GlobalRenderFrameHostId, base::flat_set<std::string>>
       solana_connected_accounts_;
+
+  // Accounts named by the connect request currently awaiting a decision.
+  std::vector<std::string> pending_connect_accounts_;
 
 #if !BUILDFLAG(IS_ANDROID)
   void ShowBubbleImpl(GURL url);

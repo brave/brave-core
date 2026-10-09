@@ -30,9 +30,16 @@ void BraveRemoveSiteSettingsData(
   }
 #endif
 
+  // Wallet account grants are website settings, so they are not covered by the
+  // permission registry sweep upstream performs. Unregistered types (wallet
+  // disabled) are skipped by the loop below.
   static constexpr ContentSettingsType kBraveWebSettings[] = {
       ContentSettingsType::BRAVE_COSMETIC_FILTERING,
-      ContentSettingsType::BRAVE_AUTO_SHRED, ContentSettingsType::BRAVE_PSST};
+      ContentSettingsType::BRAVE_AUTO_SHRED,
+      ContentSettingsType::BRAVE_PSST,
+      ContentSettingsType::BRAVE_ETHEREUM_CHOOSER_DATA,
+      ContentSettingsType::BRAVE_SOLANA_CHOOSER_DATA,
+      ContentSettingsType::BRAVE_CARDANO_CHOOSER_DATA};
 
   for (const auto type : kBraveWebSettings) {
     if (!content_settings::WebsiteSettingsRegistry::GetInstance()->Get(type)) {

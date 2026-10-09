@@ -8,9 +8,7 @@
 
 #include <cstdint>
 #include <optional>
-#include <queue>
 #include <string>
-#include <string_view>
 #include <vector>
 
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
@@ -33,28 +31,6 @@ namespace brave_wallet {
 namespace mojom {
 enum class CoinType : int32_t;
 }
-
-/**
- * Parse the overwritten requesting origins from wallet permission
- * sub-requests, validate its format and extract original requesting_origin
- * and account address of one sub-request.
- * Ex: Given input origin as https://origin0x123..., it will return
- * https://origin as the original requesting_origin and 0x123... as the account
- * address.
- */
-bool ParseRequestingOriginFromSubRequest(permissions::RequestType type,
-                                         const url::Origin& origin,
-                                         url::Origin* requesting_origin,
-                                         std::string* account);
-
-/**
- * Given old_origin, adding account info to its host part and return as
- * new_origin. If type != kBraveEthereum, there would be separator like
- * https://origin__BrG4...
- */
-std::optional<url::Origin> GetSubRequestOrigin(permissions::RequestType type,
-                                               const url::Origin& old_origin,
-                                               std::string_view account);
 
 /**
  * Given accounts, and origin, return the WebUI URL for connecting with site

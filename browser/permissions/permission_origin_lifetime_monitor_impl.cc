@@ -9,14 +9,8 @@
 
 #include "base/check.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
-#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/ephemeral_storage/ephemeral_storage_service.h"
-#include "components/permissions/request_type.h"
 #include "net/base/url_util.h"
-
-#if BUILDFLAG(ENABLE_BRAVE_WALLET)
-#include "brave/components/brave_wallet/browser/permission_utils.h"
-#endif
 
 namespace permissions {
 
@@ -44,24 +38,8 @@ PermissionOriginLifetimeMonitorImpl::SubscribeToPermissionOriginDestruction(
     ephemeral_storage_observation_.Observe(ephemeral_storage_service);
   }
 
-#if BUILDFLAG(ENABLE_BRAVE_WALLET)
-  url::Origin sub_request_origin;
-  bool is_sub_request_origin = false;
-  for (auto type : {RequestType::kBraveEthereum, RequestType::kBraveSolana,
-                    RequestType::kBraveCardano}) {
-    if (brave_wallet::ParseRequestingOriginFromSubRequest(
-            type, url::Origin::Create(requesting_origin), &sub_request_origin,
-            nullptr)) {
-      is_sub_request_origin = true;
-      break;
-    }
-  }
-  std::string storage_domain = net::URLToEphemeralStorageDomain(
-      is_sub_request_origin ? sub_request_origin.GetURL() : requesting_origin);
-#else
   std::string storage_domain =
       net::URLToEphemeralStorageDomain(requesting_origin);
-#endif
   if (!active_subscriptions_.contains(storage_domain)) {
     active_subscriptions_.insert(storage_domain);
   }

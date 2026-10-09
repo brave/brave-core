@@ -177,41 +177,42 @@ void ContentSettingsRegistry::BraveInit() {
            PermissionSettingsInfo::EXCEPTIONS_ON_SECURE_AND_INSECURE_ORIGINS);
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
-  // Register ethereum default value as Ask.
-  Register(ContentSettingsType::BRAVE_ETHEREUM, "brave_ethereum",
-           CONTENT_SETTING_ASK, WebsiteSettingsInfo::UNSYNCABLE,
-           /*allowlisted_schemes=*/{},
-           /*valid_settings=*/
-           {CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK, CONTENT_SETTING_ASK},
-           WebsiteSettingsInfo::TOP_ORIGIN_ONLY_SCOPE,
-           WebsiteSettingsRegistry::DESKTOP |
-               WebsiteSettingsRegistry::PLATFORM_ANDROID,
-           ContentSettingsInfo::INHERIT_IF_LESS_PERMISSIVE,
-           PermissionSettingsInfo::EXCEPTIONS_ON_SECURE_AND_INSECURE_ORIGINS);
+  // The wallet types are ask/block guards only, mirroring USB_GUARD. Account
+  // grants live in the matching *_CHOOSER_DATA types below, so there is no
+  // Allow state: ObjectPermissionContextBase treats anything other than Ask as
+  // "blocked" and hides every grant for the origin.
+  for (const auto& [guard_type, guard_name] :
+       {std::pair{ContentSettingsType::BRAVE_ETHEREUM, "brave_ethereum"},
+        std::pair{ContentSettingsType::BRAVE_SOLANA, "brave_solana"},
+        std::pair{ContentSettingsType::BRAVE_CARDANO, "brave_cardano"}}) {
+    Register(guard_type, guard_name, CONTENT_SETTING_ASK,
+             WebsiteSettingsInfo::UNSYNCABLE,
+             /*allowlisted_schemes=*/{},
+             /*valid_settings=*/{CONTENT_SETTING_ASK, CONTENT_SETTING_BLOCK},
+             WebsiteSettingsInfo::TOP_ORIGIN_ONLY_SCOPE,
+             WebsiteSettingsRegistry::DESKTOP |
+                 WebsiteSettingsRegistry::PLATFORM_ANDROID,
+             ContentSettingsInfo::INHERIT_IF_LESS_PERMISSIVE,
+             PermissionSettingsInfo::EXCEPTIONS_ON_SECURE_AND_INSECURE_ORIGINS);
+  }
 
-  // Register solana default value as Ask.
-  Register(ContentSettingsType::BRAVE_SOLANA, "brave_solana",
-           CONTENT_SETTING_ASK, WebsiteSettingsInfo::UNSYNCABLE,
-           /*allowlisted_schemes=*/{},
-           /*valid_settings=*/
-           {CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK, CONTENT_SETTING_ASK},
-           WebsiteSettingsInfo::TOP_ORIGIN_ONLY_SCOPE,
-           WebsiteSettingsRegistry::DESKTOP |
-               WebsiteSettingsRegistry::PLATFORM_ANDROID,
-           ContentSettingsInfo::INHERIT_IF_LESS_PERMISSIVE,
-           PermissionSettingsInfo::EXCEPTIONS_ON_SECURE_AND_INSECURE_ORIGINS);
-
-  // Register cardano default value as Ask.
-  Register(ContentSettingsType::BRAVE_CARDANO, "brave_cardano",
-           CONTENT_SETTING_ASK, WebsiteSettingsInfo::UNSYNCABLE,
-           /*allowlisted_schemes=*/{},
-           /*valid_settings=*/
-           {CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK, CONTENT_SETTING_ASK},
-           WebsiteSettingsInfo::TOP_ORIGIN_ONLY_SCOPE,
-           WebsiteSettingsRegistry::DESKTOP |
-               WebsiteSettingsRegistry::PLATFORM_ANDROID,
-           ContentSettingsInfo::INHERIT_IF_LESS_PERMISSIVE,
-           PermissionSettingsInfo::EXCEPTIONS_ON_SECURE_AND_INSECURE_ORIGINS);
+  // Account grants, keyed by origin. DONT_INHERIT_IN_INCOGNITO so a private
+  // window never inherits a regular-profile connection.
+  for (const auto& [data_type, data_name] :
+       {std::pair{ContentSettingsType::BRAVE_ETHEREUM_CHOOSER_DATA,
+                  "brave_ethereum_chooser_data"},
+        std::pair{ContentSettingsType::BRAVE_SOLANA_CHOOSER_DATA,
+                  "brave_solana_chooser_data"},
+        std::pair{ContentSettingsType::BRAVE_CARDANO_CHOOSER_DATA,
+                  "brave_cardano_chooser_data"}}) {
+    website_settings_registry_->Register(
+        data_type, data_name, base::Value(), WebsiteSettingsInfo::UNSYNCABLE,
+        WebsiteSettingsInfo::NOT_LOSSY,
+        WebsiteSettingsInfo::TOP_ORIGIN_ONLY_SCOPE,
+        WebsiteSettingsRegistry::DESKTOP |
+            WebsiteSettingsRegistry::PLATFORM_ANDROID,
+        WebsiteSettingsInfo::DONT_INHERIT_IN_INCOGNITO);
+  }
 #endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 
   // Register google sign in social media permission default value as Ask.

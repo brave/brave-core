@@ -15,7 +15,7 @@
 #include "components/permissions/permission_manager.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
-#include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
+#include "brave/browser/permissions/brave_wallet_permission_context.h"
 #endif
 
 #define GeolocationPermissionContextDelegate \

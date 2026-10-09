@@ -33,28 +33,20 @@
 
 #include "url/origin.h"
 
-#if BUILDFLAG(ENABLE_BRAVE_WALLET)
-#include "brave/components/brave_wallet/browser/permission_utils.h"
-#endif
-
 namespace permissions {
 
 bool PermissionRequestManager::ShouldGroupRequests(PermissionRequest* a,
                                                    PermissionRequest* b) const {
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
-  url::Origin origin_a;
-  url::Origin origin_b;
+  // Wallet connect requests are raised one per origin, so two of them only
+  // group when they are the same type for the same origin. They used to be
+  // raised one per account against synthetic per-account origins, which is why
+  // this needed to compare parsed-out origins.
   if (a->request_type() == RequestType::kBraveEthereum ||
       a->request_type() == RequestType::kBraveSolana ||
       a->request_type() == RequestType::kBraveCardano) {
     if (a->request_type() == b->request_type() &&
-        brave_wallet::ParseRequestingOriginFromSubRequest(
-            a->request_type(), url::Origin::Create(a->requesting_origin()),
-            &origin_a, nullptr) &&
-        brave_wallet::ParseRequestingOriginFromSubRequest(
-            b->request_type(), url::Origin::Create(b->requesting_origin()),
-            &origin_b, nullptr) &&
-        origin_a == origin_b) {
+        a->requesting_origin() == b->requesting_origin()) {
       return true;
     }
   }

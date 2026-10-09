@@ -54,4 +54,11 @@ enum ContentSettingsType {
 
   BRAVE_CARDANO,
   BRAVE_PSST,
+
+  // Per-origin lists of wallet accounts a site has been granted access to.
+  // These hold the grants themselves; the BRAVE_ETHEREUM/SOLANA/CARDANO types
+  // above are only ask/block guards. Modelled on USB_GUARD/USB_CHOOSER_DATA.
+  BRAVE_ETHEREUM_CHOOSER_DATA,
+  BRAVE_SOLANA_CHOOSER_DATA,
+  BRAVE_CARDANO_CHOOSER_DATA,
 };

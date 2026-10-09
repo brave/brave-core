@@ -20,6 +20,16 @@ brave_browser_permissions_deps = [
 ]
 
 if (enable_brave_wallet) {
-  brave_browser_permissions_deps +=
-      [ "//brave/components/brave_wallet/browser:permission_utils" ]
+  brave_browser_permissions_sources += [
+    "//brave/browser/permissions/brave_wallet_account_chooser_contexts.cc",
+    "//brave/browser/permissions/brave_wallet_account_chooser_contexts.h",
+    "//brave/browser/permissions/brave_wallet_account_chooser_contexts_factory.cc",
+    "//brave/browser/permissions/brave_wallet_account_chooser_contexts_factory.h",
+    "//brave/browser/permissions/brave_wallet_permission_context.cc",
+    "//brave/browser/permissions/brave_wallet_permission_context.h",
+  ]
+  brave_browser_permissions_deps += [
+    "//brave/components/brave_wallet/browser:permission_utils",
+    "//brave/components/brave_wallet/common:mojom",
+  ]
 }

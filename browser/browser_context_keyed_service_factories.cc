@@ -110,6 +110,7 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
+#include "brave/browser/permissions/brave_wallet_account_chooser_contexts_factory.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
@@ -175,6 +176,7 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
   brave_wallet::BraveWalletServiceFactory::GetInstance();
+  brave_wallet::BraveWalletAccountChooserContextsFactory::GetInstance();
 #endif
 
 #if !BUILDFLAG(IS_ANDROID)
