@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/file_select_helper.cc b/chrome/browser/file_select_helper.cc
-index 83c3ef797f3ecf74b8589cf40182e0cbf73710b2..8140d13a9a82ba7835eaddfd04cc58ad8c9c134b 100644
+index bcfed1898edb8eed02c9a44b93a9bbbea622304b..7d20bf62d2c2f045c765b6cb090061327f574118 100644
 --- a/chrome/browser/file_select_helper.cc
 +++ b/chrome/browser/file_select_helper.cc
-@@ -125,6 +125,7 @@ void LogFileChooserCancelledByWindowResize(content::WebContents* web_contents) {
+@@ -128,6 +128,7 @@ void LogFileChooserCancelledByWindowResize(content::WebContents* web_contents,
  #endif  // !BUILDFLAG(IS_ANDROID)
  
  void DeleteFiles(std::vector<base::FilePath> paths) {
@@ -10,7 +10,7 @@ index 83c3ef797f3ecf74b8589cf40182e0cbf73710b2..8140d13a9a82ba7835eaddfd04cc58ad
    for (auto& file_path : paths)
      base::DeleteFile(file_path);
  }
-@@ -516,6 +517,11 @@ void FileSelectHelper::ContentAnalysisCompletionCallback(
+@@ -519,6 +520,11 @@ void FileSelectHelper::ContentAnalysisCompletionCallback(
  
  void FileSelectHelper::NotifyListenerAndEnd(
      std::vector<blink::mojom::FileChooserFileInfoPtr> list) {

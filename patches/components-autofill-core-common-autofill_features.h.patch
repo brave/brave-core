@@ -1,8 +1,8 @@
 diff --git a/components/autofill/core/common/autofill_features.h b/components/autofill/core/common/autofill_features.h
-index 6466b49207d3233de95e62ecc61dde4e9dedd868..bd17b73ba7106b8a17edf79634bb86e8fab6bc1f 100644
+index 7e428ae60b68c38339d1d336fe87484bff56409a..968dd17c66cf24632099de8f2b31d3af9887be12 100644
 --- a/components/autofill/core/common/autofill_features.h
 +++ b/components/autofill/core/common/autofill_features.h
-@@ -110,7 +110,7 @@ COMPONENT_EXPORT(AUTOFILL)
+@@ -114,7 +114,7 @@ COMPONENT_EXPORT(AUTOFILL)
  BASE_DECLARE_FEATURE_PARAM(std::string,
                             kAutofillAiSavePromptSurveyDeclinedTriggerId);
  COMPONENT_EXPORT(AUTOFILL)
@@ -11,7 +11,7 @@ index 6466b49207d3233de95e62ecc61dde4e9dedd868..bd17b73ba7106b8a17edf79634bb86e8
  COMPONENT_EXPORT(AUTOFILL)
  BASE_DECLARE_FEATURE_PARAM(base::TimeDelta, kAutofillAiServerModelCacheAge);
  COMPONENT_EXPORT(AUTOFILL)
-@@ -164,7 +164,7 @@ COMPONENT_EXPORT(AUTOFILL)
+@@ -170,7 +170,7 @@ COMPONENT_EXPORT(AUTOFILL)
  DECLARE_FEATURE_WITH_MOBILE_COUNTRY_RESTRICTION(
      kAutofillAiWalletVehicleRegistration);
  COMPONENT_EXPORT(AUTOFILL)

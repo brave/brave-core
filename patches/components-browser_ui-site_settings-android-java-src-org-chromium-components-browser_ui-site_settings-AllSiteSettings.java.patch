@@ -1,5 +1,5 @@
 diff --git a/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/AllSiteSettings.java b/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/AllSiteSettings.java
-index b08c968e69e92b1e648c48d275ed861ca6624c98..104253bb44395ab7ba1d0f771d796a2e7ac460be 100644
+index a6b2197827cd8eb6d38795bf5fb555fb7be93067..dca7778a342da501dc0c4a7e1cf97cf616fe8380 100644
 --- a/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/AllSiteSettings.java
 +++ b/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/AllSiteSettings.java
 @@ -72,7 +72,7 @@ import java.util.Set;

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/extensions/component_extensions_allowlist/allowlist.cc b/chrome/browser/extensions/component_extensions_allowlist/allowlist.cc
-index 4fb8aaa6b8c071c2540b105f64f1a2435c094738..957c2d0318a3ce456b791ffcde5616a2eb4cbf39 100644
+index 242d73beec5e40450d53789ae7ea023843e805cd..580ffa574f819f56ef6a8d55d81740c3c6facb0c 100644
 --- a/chrome/browser/extensions/component_extensions_allowlist/allowlist.cc
 +++ b/chrome/browser/extensions/component_extensions_allowlist/allowlist.cc
 @@ -34,6 +34,12 @@ static_assert(BUILDFLAG(ENABLE_EXTENSIONS_CORE));
@@ -15,7 +15,7 @@ index 4fb8aaa6b8c071c2540b105f64f1a2435c094738..957c2d0318a3ce456b791ffcde5616a2
    constexpr auto kAllowed = base::MakeFixedFlatSet<std::string_view>({
        extension_misc::kAimEligibilityExtensionId,
        extension_misc::kContextualTasksExtensionId,
-@@ -87,6 +93,9 @@ bool IsComponentExtensionAllowlisted(const std::string& extension_id) {
+@@ -86,6 +92,9 @@ bool IsComponentExtensionAllowlisted(const std::string& extension_id) {
  }
  
  bool IsComponentExtensionAllowlisted(int manifest_resource_id) {

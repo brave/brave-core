@@ -1,5 +1,5 @@
 diff --git a/ios/web/web_state/ui/BUILD.gn b/ios/web/web_state/ui/BUILD.gn
-index 3837075dbafad7342973cdbce963fffd59044abb..830ebd57798056231a6629c4bf34e158f0eb0591 100644
+index d4cc932202f2b0081a1611f3aa9f34878b62b6bd..d6f74b0aca19e779dad6c957791533e3cfb46c09 100644
 --- a/ios/web/web_state/ui/BUILD.gn
 +++ b/ios/web/web_state/ui/BUILD.gn
 @@ -2,6 +2,7 @@

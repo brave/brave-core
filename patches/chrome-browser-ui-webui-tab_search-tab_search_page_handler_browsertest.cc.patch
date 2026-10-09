@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/webui/tab_search/tab_search_page_handler_browsertest.cc b/chrome/browser/ui/webui/tab_search/tab_search_page_handler_browsertest.cc
-index 403e25405ab54a8a6efe87fa8acb64689c670a8a..ba5e731a98b5750402444503e2fce0d540e6da5a 100644
+index d4eaf099a92df93f71148362a28509fa16d97460..5669129132aceed043f10650f990d9c696401174 100644
 --- a/chrome/browser/ui/webui/tab_search/tab_search_page_handler_browsertest.cc
 +++ b/chrome/browser/ui/webui/tab_search/tab_search_page_handler_browsertest.cc
-@@ -105,6 +105,8 @@ class MockPage : public tab_search::mojom::Page {
+@@ -106,6 +106,8 @@ class MockPage : public tab_search::mojom::Page {
    MOCK_METHOD(void, TabUpdated, (tab_search::mojom::TabUpdateInfoPtr));
    MOCK_METHOD(void, TabsRemoved, (tab_search::mojom::TabsRemovedInfoPtr));
    MOCK_METHOD(void, TabUnsplit, ());

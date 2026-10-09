@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/BUILD.gn b/chrome/browser/ui/BUILD.gn
-index bece0ce9912559b362fc0bdd8adac6a4b096025d..456e8e80ba53f9060fe04684aabb4bc306d874c7 100644
+index ad12e432d3f0ea2767209d87e42dd339050c4bc3..b341ed6d716729e1de05b8e97d23c0592f8aa306 100644
 --- a/chrome/browser/ui/BUILD.gn
 +++ b/chrome/browser/ui/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -10,7 +10,7 @@ index bece0ce9912559b362fc0bdd8adac6a4b096025d..456e8e80ba53f9060fe04684aabb4bc3
  import("//build/config/buildflags_paint_preview.gni")
  import("//build/config/chrome_build.gni")
  import("//build/config/compiler/compiler.gni")
-@@ -1511,6 +1512,7 @@ if (!is_android) {
+@@ -1510,6 +1511,7 @@ if (!is_android) {
        ":core",
        "//chrome/browser/ui/browser_window/internal",
      ]
@@ -18,7 +18,7 @@ index bece0ce9912559b362fc0bdd8adac6a4b096025d..456e8e80ba53f9060fe04684aabb4bc3
      public_deps = [
        ":browser_window_deleter",
        "//base",
-@@ -1668,6 +1670,8 @@ if (!is_android) {
+@@ -1667,6 +1669,8 @@ if (!is_android) {
  # TODO(https://crbug.com/353332589): Once //chrome/browser is properly
  # modularized, this target should be folded in with //chrome/browser:browser.
  source_set("ui") {
@@ -27,7 +27,7 @@ index bece0ce9912559b362fc0bdd8adac6a4b096025d..456e8e80ba53f9060fe04684aabb4bc3
    public_deps = [
      ":accelerator_utils_headers",
      ":browser_live_tab_context",
-@@ -1678,6 +1682,7 @@ source_set("ui") {
+@@ -1677,6 +1681,7 @@ source_set("ui") {
      ":simple_message_box_headers",
      ":tab_dialogs",
      ":tab_modal_confirm_dialog",
@@ -35,7 +35,7 @@ index bece0ce9912559b362fc0bdd8adac6a4b096025d..456e8e80ba53f9060fe04684aabb4bc3
      "//chrome/browser:browser_public_dependencies",
      "//chrome/browser/feedback",
      "//chrome/browser/headless",
-@@ -1779,6 +1784,8 @@ source_set("ui") {
+@@ -1778,6 +1783,8 @@ source_set("ui") {
    # add any to it.
    sources = []
    deps = []
@@ -44,7 +44,7 @@ index bece0ce9912559b362fc0bdd8adac6a4b096025d..456e8e80ba53f9060fe04684aabb4bc3
  }
  
  # These are the dependencies for the "ui" target that are outside of
-@@ -1788,11 +1795,13 @@ source_set("ui") {
+@@ -1787,11 +1794,13 @@ source_set("ui") {
  group("ui_public_dependencies") {
    visibility = [ "//chrome/browser:browser_public_dependencies" ]
    public_deps = [

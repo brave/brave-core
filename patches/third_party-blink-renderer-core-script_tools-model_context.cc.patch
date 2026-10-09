@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/script_tools/model_context.cc b/third_party/blink/renderer/core/script_tools/model_context.cc
-index ee5fd7eecba5c5b1a8123f39007d7b81fcb3e6da..c925ded6d3f348beeca4517cb6d9c640f45be60a 100644
+index ffa9b16dc6a3908a9fd3b4366b944e3941cf52cc..eeacc920b44d7e8cbdc738668433baba593ec786 100644
 --- a/third_party/blink/renderer/core/script_tools/model_context.cc
 +++ b/third_party/blink/renderer/core/script_tools/model_context.cc
-@@ -877,6 +877,9 @@ void ModelContext::PauseExecution() {
+@@ -893,6 +893,9 @@ void ModelContext::PauseExecution() {
  }
  
  void ModelContext::NotifyToolChange() {

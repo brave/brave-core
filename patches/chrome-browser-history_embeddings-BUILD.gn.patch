@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/history_embeddings/BUILD.gn b/chrome/browser/history_embeddings/BUILD.gn
-index ac768392d48010c724bab3de6b4b547df9ed1972..8696aeaad0f49dec38dac359e308bd0797748c4a 100644
+index 885641884b767dfaf708186bc33c4f34bc1099fe..24439eea5486539b0ae4e39b769fb4b527f3ad2c 100644
 --- a/chrome/browser/history_embeddings/BUILD.gn
 +++ b/chrome/browser/history_embeddings/BUILD.gn
 @@ -2,6 +2,7 @@

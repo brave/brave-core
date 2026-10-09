@@ -1,8 +1,8 @@
 diff --git a/content/public/browser/content_browser_client.h b/content/public/browser/content_browser_client.h
-index 848bdd25088ab9d817273e77af7d1a6494a3e74b..cf3d4fa8ff37c17bc13b03552595854117391fd0 100644
+index 16eb7f7cf30ea2f2d787954333a1616eaffdfde0..2300fa50358174c95ace24799de39b510973eefd 100644
 --- a/content/public/browser/content_browser_client.h
 +++ b/content/public/browser/content_browser_client.h
-@@ -3412,6 +3412,20 @@ class CONTENT_EXPORT ContentBrowserClient {
+@@ -3422,6 +3422,20 @@ class CONTENT_EXPORT ContentBrowserClient {
    // WebUI, DevTools, or an embedder-specific extension scheme) that should be
    // exempt from top-level window size checks in `WebContentsBasedCanceller`.
    virtual bool IsExemptFromWindowSizeCheck(const GURL& url);

@@ -1,8 +1,8 @@
 diff --git a/chrome/android/BUILD.gn b/chrome/android/BUILD.gn
-index abf7ff02b5ae6735428a14c8cfc771c078c668aa..63b1cef4b62040cab5f2285ad01ada15b689f844 100644
+index e0ed0783f729517a90355bc530feea93d17296ab..8d45ab8c186838589678b57da7199e2675f31c8c 100644
 --- a/chrome/android/BUILD.gn
 +++ b/chrome/android/BUILD.gn
-@@ -161,10 +161,12 @@ if (_is_default_toolchain) {
+@@ -162,10 +162,12 @@ if (_is_default_toolchain) {
        "java/res_chromium_base/mipmap-xxxhdpi/layered_app_icon_background.png",
        "java/res_chromium_base/values/channel_constants.xml",
      ]
@@ -15,7 +15,7 @@ index abf7ff02b5ae6735428a14c8cfc771c078c668aa..63b1cef4b62040cab5f2285ad01ada15
      sources += [
        "//chrome/android/java/res_app/layout/main.xml",
        "//chrome/android/java/res_app/layout/main_forked_with_secondary_ui_container.xml",
-@@ -253,6 +255,7 @@ if (_is_default_toolchain) {
+@@ -254,6 +256,7 @@ if (_is_default_toolchain) {
        "//third_party/androidx:androidx_gridlayout_gridlayout_java",
        "//third_party/androidx:androidx_preference_preference_java",
      ]
@@ -23,7 +23,7 @@ index abf7ff02b5ae6735428a14c8cfc771c078c668aa..63b1cef4b62040cab5f2285ad01ada15
  
      if (autofill_use_internal_android_resources) {
        deps += [ "//clank/components/autofill:java_resources" ]
-@@ -265,6 +268,7 @@ if (_is_default_toolchain) {
+@@ -266,6 +269,7 @@ if (_is_default_toolchain) {
      if (enable_extensions_core) {
        deps += [ "//chrome/browser/ui/android/extensions:java_resources" ]
      }
@@ -31,7 +31,7 @@ index abf7ff02b5ae6735428a14c8cfc771c078c668aa..63b1cef4b62040cab5f2285ad01ada15
    }
  
    android_resources("java_overlay_resources") {
-@@ -878,6 +882,7 @@ if (_is_default_toolchain) {
+@@ -882,6 +886,7 @@ if (_is_default_toolchain) {
        "//url/mojom:url_mojom_gurl_java",
        "//url/mojom:url_mojom_origin_java",
      ]
@@ -39,7 +39,7 @@ index abf7ff02b5ae6735428a14c8cfc771c078c668aa..63b1cef4b62040cab5f2285ad01ada15
  
      deps += feed_deps
  
-@@ -898,6 +903,7 @@ if (_is_default_toolchain) {
+@@ -902,6 +907,7 @@ if (_is_default_toolchain) {
        "//components/supervised_user/core/browser:supervised_user_utils_enum_javagen",
        "//components/touch_to_search/core/browser:quick_action_category_enum_javagen",
      ]
@@ -47,7 +47,7 @@ index abf7ff02b5ae6735428a14c8cfc771c078c668aa..63b1cef4b62040cab5f2285ad01ada15
  
      # From java_sources.gni.
      sources = chrome_java_sources
-@@ -1040,6 +1046,7 @@ if (_is_default_toolchain) {
+@@ -1041,6 +1047,7 @@ if (_is_default_toolchain) {
        "//components/segmentation_platform/internal:internal_java",
        "//components/visited_url_ranking/internal:internal_java",
      ]
@@ -55,7 +55,7 @@ index abf7ff02b5ae6735428a14c8cfc771c078c668aa..63b1cef4b62040cab5f2285ad01ada15
  
      if (enable_extensions_core) {
        deps += [
-@@ -1835,6 +1842,7 @@ if (_is_default_toolchain) {
+@@ -1840,6 +1847,7 @@ if (_is_default_toolchain) {
        "java/res_chromium_base/mipmap-xxxhdpi/layered_app_icon_background.png",
        "java/res_chromium_base/values/channel_constants.xml",
      ]
@@ -63,7 +63,7 @@ index abf7ff02b5ae6735428a14c8cfc771c078c668aa..63b1cef4b62040cab5f2285ad01ada15
  
      # Dep needed to ensure override works properly.
      deps = [ ":chrome_base_module_resources" ]
-@@ -1971,6 +1979,7 @@ if (_is_default_toolchain) {
+@@ -1976,6 +1984,7 @@ if (_is_default_toolchain) {
          ":${_variant}_locale_pak_assets",
          ":${_variant}_paks",
        ]
@@ -71,7 +71,7 @@ index abf7ff02b5ae6735428a14c8cfc771c078c668aa..63b1cef4b62040cab5f2285ad01ada15
      }
    }
  
-@@ -2202,6 +2211,7 @@ if (_is_default_toolchain) {
+@@ -2206,6 +2215,7 @@ if (_is_default_toolchain) {
        "java/src/org/chromium/chrome/browser/services/gcm/InvalidationGcmUpstreamSender.java",
        "java/src/org/chromium/chrome/browser/tracing/TracingNotificationService.java",
      ]
@@ -79,7 +79,7 @@ index abf7ff02b5ae6735428a14c8cfc771c078c668aa..63b1cef4b62040cab5f2285ad01ada15
      deps = [
        ":chrome_base_module_resources",
        "$google_play_services_package:google_firebase_firebase_messaging_java",
-@@ -2257,6 +2267,7 @@ if (_is_default_toolchain) {
+@@ -2261,6 +2271,7 @@ if (_is_default_toolchain) {
        "//third_party/androidx:androidx_annotation_annotation_experimental_java",
        "//third_party/androidx:androidx_browser_browser_java",
      ]
@@ -87,7 +87,7 @@ index abf7ff02b5ae6735428a14c8cfc771c078c668aa..63b1cef4b62040cab5f2285ad01ada15
  
      # More deps for DFMs.
      if (enable_chrome_android_internal) {
-@@ -3189,6 +3200,7 @@ if (_is_default_toolchain) {
+@@ -3162,6 +3173,7 @@ if (_is_default_toolchain) {
        "java/src/org/chromium/chrome/browser/webapps/WebappRegistry.java",
        "java/src/org/chromium/chrome/browser/xr/scenecore/XrModuleBridge.java",
      ]

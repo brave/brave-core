@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/BUILD.gn b/third_party/blink/renderer/core/BUILD.gn
-index d9310883704495adbe4fb54042543dce27433757..595937d3d87b84a4d2528916132da0eac0719d25 100644
+index 0da517e172ba0ffffb551173748312c35582b084..d37c7c2408b8e22bf4e1602f61e67836e6ec4843 100644
 --- a/third_party/blink/renderer/core/BUILD.gn
 +++ b/third_party/blink/renderer/core/BUILD.gn
 @@ -264,6 +264,7 @@ component("core") {
@@ -26,7 +26,7 @@ index d9310883704495adbe4fb54042543dce27433757..595937d3d87b84a4d2528916132da0ea
  
    if (is_mac) {
      deps += [ "//ui/base/mojom" ]
-@@ -478,6 +481,7 @@ component("core") {
+@@ -479,6 +482,7 @@ component("core") {
        "Carbon.framework",
      ]
    }

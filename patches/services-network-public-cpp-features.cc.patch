@@ -1,8 +1,8 @@
 diff --git a/services/network/public/cpp/features.cc b/services/network/public/cpp/features.cc
-index fbdd973c66d6a576489e8b300c1939cda267d49f..de77ddab2628f980f96c416b8e2ce7bc4164d826 100644
+index cee6e31f95efb591e98b909217e1b502f737e2e7..3b6128fc49634536b8b9ebdacd6030ba757fae54 100644
 --- a/services/network/public/cpp/features.cc
 +++ b/services/network/public/cpp/features.cc
-@@ -251,7 +251,7 @@ BASE_FEATURE_PARAM(bool,
+@@ -256,7 +256,7 @@ BASE_FEATURE_PARAM(bool,
  // of vulnerable local devices.
  //
  // Spec: https://wicg.github.io/local-network-access/
@@ -11,7 +11,7 @@ index fbdd973c66d6a576489e8b300c1939cda267d49f..de77ddab2628f980f96c416b8e2ce7bc
               base::FEATURE_ENABLED_BY_DEFAULT);
  
  // Enables Local Network Access checks for WebTransport.
-@@ -405,7 +405,7 @@ BASE_FEATURE(kAvoidCorsURLLoaderRestartOnRedirect,
+@@ -410,7 +410,7 @@ BASE_FEATURE(kAvoidCorsURLLoaderRestartOnRedirect,
  
  // https://github.com/patcg-individual-drafts/topics
  // Kill switch for the Topics API.

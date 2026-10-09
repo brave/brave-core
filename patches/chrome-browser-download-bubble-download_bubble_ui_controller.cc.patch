@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/download/bubble/download_bubble_ui_controller.cc b/chrome/browser/download/bubble/download_bubble_ui_controller.cc
-index 5feeec201c267014b43e71221b72775d730c2857..ee1aa3a2e12b5a24629fcb8cdaa6f04a423b8c60 100644
+index 1594c55744cc7276cbb969cc5d1e0594ef75a14d..3ca43381b9c9dd668080f073295e32c77e56b682 100644
 --- a/chrome/browser/download/bubble/download_bubble_ui_controller.cc
 +++ b/chrome/browser/download/bubble/download_bubble_ui_controller.cc
 @@ -269,7 +269,7 @@ void DownloadBubbleUIController::ProcessDownloadButtonPress(

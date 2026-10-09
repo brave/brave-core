@@ -1,5 +1,5 @@
 diff --git a/components/search/ntp_features.cc b/components/search/ntp_features.cc
-index 8d1904e34bd0bb7ad100cc0ed9559c3a1471a415..5e9a550910ab4aefedbf32a3a46433f691853218 100644
+index ae8c176a1c1da6f83cd9b4e8a2ea17b228313eb5..d8f51eff8a1ead228d1b7ee77fd099f7cbf9909e 100644
 --- a/components/search/ntp_features.cc
 +++ b/components/search/ntp_features.cc
 @@ -18,17 +18,13 @@ namespace ntp_features {
@@ -23,7 +23,7 @@ index 8d1904e34bd0bb7ad100cc0ed9559c3a1471a415..5e9a550910ab4aefedbf32a3a46433f6
  
  // If enabled, shows entry point on Customize Chrome Side Panel's Appearance
  // page for Wallpaper Search.";
-@@ -68,28 +64,20 @@ BASE_FEATURE(kRealboxCr23Theming,
+@@ -73,28 +69,20 @@ BASE_FEATURE(kRealboxVirtualFocusNavigation, base::FEATURE_DISABLED_BY_DEFAULT);
  
  // If enabled, alpha NTP backgrounds will show in Customize Chrome.
  // This is a development switch. Keep indefinitely.
@@ -58,7 +58,7 @@ index 8d1904e34bd0bb7ad100cc0ed9559c3a1471a415..5e9a550910ab4aefedbf32a3a46433f6
  
  // If enabled, customization of Chrome will be promoted on the NTP.
  BASE_FEATURE(kNtpCustomizeChromeAutoOpen, base::FEATURE_ENABLED_BY_DEFAULT);
-@@ -111,19 +99,15 @@ BASE_FEATURE(kNtpDummyModules, base::FEATURE_DISABLED_BY_DEFAULT);
+@@ -116,19 +104,15 @@ BASE_FEATURE(kNtpDummyModules, base::FEATURE_DISABLED_BY_DEFAULT);
  
  // If enabled, Google Drive module will be shown.
  // This is a kill switch. Keep indefinitely.
@@ -81,7 +81,7 @@ index 8d1904e34bd0bb7ad100cc0ed9559c3a1471a415..5e9a550910ab4aefedbf32a3a46433f6
  
  // If enabled, segmentation data will be collected to decide whether or not to
  // show the Drive module.
-@@ -151,7 +135,7 @@ BASE_FEATURE(kNtpModulesOrder, base::FEATURE_DISABLED_BY_DEFAULT);
+@@ -156,7 +140,7 @@ BASE_FEATURE(kNtpModulesOrder, base::FEATURE_DISABLED_BY_DEFAULT);
  
  // Dummy feature to set param "NtpModulesMaxColumnCountParam".
  // This is used for an emergency Finch param. Keep indefinitely.
@@ -90,7 +90,7 @@ index 8d1904e34bd0bb7ad100cc0ed9559c3a1471a415..5e9a550910ab4aefedbf32a3a46433f6
  
  // Dummy feature to set param "NtpModulesLoadedWithOtherModulesMaxInstanceCount"
  // This is used for an emergency Finch param. Keep indefinitely.
-@@ -320,7 +304,7 @@ BASE_FEATURE(kNtpShortcutsRedesign, base::FEATURE_DISABLED_BY_DEFAULT);
+@@ -329,7 +313,7 @@ BASE_FEATURE(kNtpShortcutsRedesign, base::FEATURE_DISABLED_BY_DEFAULT);
  
  // If enabled, the bookmark bar may be auto-removed on the NTP and new
  // visibility settings are added.

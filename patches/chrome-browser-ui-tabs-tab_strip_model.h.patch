@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/tabs/tab_strip_model.h b/chrome/browser/ui/tabs/tab_strip_model.h
-index 7b62abbf2803caf4d073a72940da83064d148bed..11ee17a1a9a171f139d7f600813fa5ad54af0a4c 100644
+index 479fe42eb677249ac431813ac60ee471a1bd35bc..6991d8e1f1acdfefc40319ba634499dc2dd5b3b4 100644
 --- a/chrome/browser/ui/tabs/tab_strip_model.h
 +++ b/chrome/browser/ui/tabs/tab_strip_model.h
 @@ -50,7 +50,7 @@
@@ -56,7 +56,7 @@ index 7b62abbf2803caf4d073a72940da83064d148bed..11ee17a1a9a171f139d7f600813fa5ad
                                     int destination_index);
  
    // Updates the layout for the tabs with `split_id` and notifies observers.
-@@ -922,7 +922,12 @@ class TabStripModel {
+@@ -925,7 +925,12 @@ class TabStripModel {
    tabs::TabInterface* GetTabForWebContents(
        const content::WebContents* contents) const;
  
@@ -69,7 +69,7 @@ index 7b62abbf2803caf4d073a72940da83064d148bed..11ee17a1a9a171f139d7f600813fa5ad
    FRIEND_TEST_ALL_PREFIXES(TabStripModelTest, HasIndicesClosedByCommand);
    // Temporary private API.
    FRIEND_TEST_ALL_PREFIXES(TabStripModelTest, FindGroupIdFor);
-@@ -1207,7 +1212,7 @@ class TabStripModel {
+@@ -1210,7 +1215,7 @@ class TabStripModel {
    };
  
    // Selects either the next tab (kNext), or the previous tab (kPrevious).

@@ -1,8 +1,8 @@
 diff --git a/extensions/common/api/schema.gni b/extensions/common/api/schema.gni
-index e9a514263a5bec4a42c1f68202c0c566414239e7..5ddc88cd2dcbabbb66ca3583e0bc05536764094c 100644
+index 2e2d9a1ff496538b548642a071519fe322fa45b5..db86120097460d629bc1fccd192135e22219a33c 100644
 --- a/extensions/common/api/schema.gni
 +++ b/extensions/common/api/schema.gni
-@@ -126,7 +126,7 @@ if (enable_extensions) {
+@@ -127,7 +127,7 @@ if (enable_extensions) {
  # the C++ types for certain APIs, since they are used from outside the
  # extensions layer. These should be removed as we add support for the full
  # API by moving these entries to the `extensions_api_schema_files_` above.

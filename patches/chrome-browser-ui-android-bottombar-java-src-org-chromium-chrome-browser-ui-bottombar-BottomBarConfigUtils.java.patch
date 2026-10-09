@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/android/bottombar/java/src/org/chromium/chrome/browser/ui/bottombar/BottomBarConfigUtils.java b/chrome/browser/ui/android/bottombar/java/src/org/chromium/chrome/browser/ui/bottombar/BottomBarConfigUtils.java
-index dde56c29df8278ee99efceb054a7c1c38b8c7906..647bd2323e7bda1e3050dfbaffa2f20ff2fb02e6 100644
+index 5acf5865717a7322a242c5d761913a9757d64362..64f80ab74958a64f29f148db1ab252e9b7955f43 100644
 --- a/chrome/browser/ui/android/bottombar/java/src/org/chromium/chrome/browser/ui/bottombar/BottomBarConfigUtils.java
 +++ b/chrome/browser/ui/android/bottombar/java/src/org/chromium/chrome/browser/ui/bottombar/BottomBarConfigUtils.java
 @@ -63,6 +63,7 @@ public class BottomBarConfigUtils {

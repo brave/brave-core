@@ -1,5 +1,5 @@
 diff --git a/chrome/common/webui_url_constants.h b/chrome/common/webui_url_constants.h
-index a462094cd3d23066539c26d202e2df0b6decf0f9..06d6207d344f6b5a0e18882846db7c3416dc17ce 100644
+index 456c22f4acd41bc51aed599566cb3771b1fa1399..4dcd3f93466211684afb9a72f6783ea3aa4a03fa 100644
 --- a/chrome/common/webui_url_constants.h
 +++ b/chrome/common/webui_url_constants.h
 @@ -581,7 +581,7 @@ inline constexpr char kIdentityDocsSubPage[] = "identityDocs";

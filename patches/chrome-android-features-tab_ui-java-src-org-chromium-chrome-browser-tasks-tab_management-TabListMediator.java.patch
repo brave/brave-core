@@ -1,5 +1,5 @@
 diff --git a/chrome/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/TabListMediator.java b/chrome/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/TabListMediator.java
-index ee588331562328f81b2b6b13023ce5cfd2c641b9..b005c06e43af1af40a93df8050081b7d61ba3e12 100644
+index 3088380d9c0eacceeb52cb804a23e3d892007d15..3405ad09db24302be5d9b741b056b92362eab41d 100644
 --- a/chrome/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/TabListMediator.java
 +++ b/chrome/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/TabListMediator.java
 @@ -861,7 +861,7 @@ public class TabListMediator implements TabListNotificationHandler {

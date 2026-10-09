@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/mini_installer/BUILD.gn b/chrome/installer/mini_installer/BUILD.gn
-index 39cbdeb5f067ba57b65bb903ff36b9f96c4d8631..0fa3f42feae0a93e5c02b9216d171f0ec37598e7 100644
+index df9408bb1666cce96dd4fa716205b446164641de..a97369fcf6d7a25a5df4857bb44e57758620bbe8 100644
 --- a/chrome/installer/mini_installer/BUILD.gn
 +++ b/chrome/installer/mini_installer/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -19,7 +19,7 @@ index 39cbdeb5f067ba57b65bb903ff36b9f96c4d8631..0fa3f42feae0a93e5c02b9216d171f0e
    script = "//chrome/tools/build/win/create_installer_archive.py"
  
    release_file = "chrome.release"
-@@ -307,6 +308,9 @@ template("generate_mini_installer") {
+@@ -310,6 +311,9 @@ template("generate_mini_installer") {
        ":version",
        "//build/win:default_exe_manifest",
      ]
@@ -29,7 +29,7 @@ index 39cbdeb5f067ba57b65bb903ff36b9f96c4d8631..0fa3f42feae0a93e5c02b9216d171f0e
  
      # In general, mini_installer tries to avoid depending on the C++ standard
      # library for size reasons. This is achieved by:
-@@ -329,6 +333,11 @@ template("generate_mini_installer") {
+@@ -332,6 +336,11 @@ template("generate_mini_installer") {
    }
  }
  

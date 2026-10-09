@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/android/bottombar/java/src/org/chromium/chrome/browser/ui/bottombar/BottomBarView.java b/chrome/browser/ui/android/bottombar/java/src/org/chromium/chrome/browser/ui/bottombar/BottomBarView.java
-index 0113230dea8ef133ec9aa3f10ee4db6bec703c08..0e531f9ab7a71cae958b5275338ebcd89a041321 100644
+index b2e020a7a54fb2fdffa661212afd2f9c7787b4d7..fd348b9f7feab532e59eb16375999599cb9464e4 100644
 --- a/chrome/browser/ui/android/bottombar/java/src/org/chromium/chrome/browser/ui/bottombar/BottomBarView.java
 +++ b/chrome/browser/ui/android/bottombar/java/src/org/chromium/chrome/browser/ui/bottombar/BottomBarView.java
 @@ -309,6 +309,7 @@ public class BottomBarView extends LinearLayout {
