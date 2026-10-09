@@ -5,10 +5,8 @@
 
 #include "brave/components/brave_rewards/core/engine/publisher/publisher.h"
 
-#include <algorithm>
 #include <cmath>
 #include <ctime>
-#include <memory>
 #include <utility>
 #include <vector>
 
@@ -20,9 +18,7 @@
 #include "brave/components/brave_rewards/core/engine/constants.h"
 #include "brave/components/brave_rewards/core/engine/contribution/contribution.h"
 #include "brave/components/brave_rewards/core/engine/database/database.h"
-#include "brave/components/brave_rewards/core/engine/global_constants.h"
 #include "brave/components/brave_rewards/core/engine/publisher/media/media.h"
-#include "brave/components/brave_rewards/core/engine/publisher/prefix_util.h"
 #include "brave/components/brave_rewards/core/engine/publisher/publisher_prefix_list_updater.h"
 #include "brave/components/brave_rewards/core/engine/publisher/server_publisher_fetcher.h"
 #include "brave/components/brave_rewards/core/engine/publisher/static_values.h"

@@ -6,7 +6,6 @@
 #include "brave/components/ai_chat/content/browser/content_tool.h"
 
 #include <string>
-#include <vector>
 
 #include "base/functional/callback_helpers.h"
 #include "base/test/test_future.h"

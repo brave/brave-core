@@ -8,11 +8,9 @@
 #include <algorithm>
 #include <array>
 #include <cstdint>
-#include <ios>
 #include <iterator>
 #include <memory>
 #include <optional>
-#include <ostream>
 #include <string>
 #include <string_view>
 #include <utility>
@@ -43,7 +41,6 @@
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/constants.h"
 #include "brave/components/ai_chat/core/common/features.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"

@@ -5,10 +5,8 @@
 
 #include "brave/components/brave_rewards/core/engine/credentials/credentials_common.h"
 
-#include <memory>
 #include <utility>
 
-#include "base/json/json_writer.h"
 #include "base/uuid.h"
 #include "brave/components/brave_rewards/core/engine/credentials/credentials_util.h"
 #include "brave/components/brave_rewards/core/engine/database/database.h"

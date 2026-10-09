@@ -8,7 +8,6 @@
 #include "base/base64url.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
-#include "brave/components/brave_rewards/core/engine/rewards_engine.h"
 #include "crypto/random.h"
 #include "crypto/sha2.h"
 

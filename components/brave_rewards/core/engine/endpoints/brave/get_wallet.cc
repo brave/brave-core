@@ -6,7 +6,6 @@
 #include "brave/components/brave_rewards/core/engine/endpoints/brave/get_wallet.h"
 
 #include <optional>
-#include <utility>
 
 #include "base/check.h"
 #include "base/json/json_reader.h"

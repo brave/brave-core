@@ -5,11 +5,8 @@
 
 #include "brave/components/ai_chat/core/common/test_mojom_printers.h"
 
-#include <utility>
-
 #include "base/base64.h"
 #include "base/i18n/time_formatting.h"
-#include "base/json/json_writer.h"
 #include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/utf_ostream_operators.h"

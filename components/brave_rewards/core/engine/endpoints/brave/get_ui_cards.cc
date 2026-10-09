@@ -11,7 +11,6 @@
 #include "base/json/json_reader.h"
 #include "brave/components/brave_rewards/core/engine/util/environment_config.h"
 #include "brave/components/brave_rewards/core/engine/util/url_loader.h"
-#include "net/http/http_status_code.h"
 
 namespace brave_rewards::internal::endpoints {
 

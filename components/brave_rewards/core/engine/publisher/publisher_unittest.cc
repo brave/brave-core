@@ -5,12 +5,10 @@
 
 #include "brave/components/brave_rewards/core/engine/publisher/publisher.h"
 
-#include <iostream>
 #include <utility>
 
 #include "base/containers/flat_map.h"
 #include "base/strings/string_number_conversions.h"
-#include "brave/components/brave_rewards/core/engine/rewards_callbacks.h"
 #include "brave/components/brave_rewards/core/engine/test/rewards_engine_test.h"
 #include "brave/components/brave_rewards/core/engine/util/rewards_prefs.h"
 

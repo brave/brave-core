@@ -6,7 +6,6 @@
 #include "brave/components/brave_rewards/core/engine/endpoints/uphold/post_commit_transaction_uphold.h"
 
 #include <optional>
-#include <utility>
 
 #include "base/json/json_reader.h"
 #include "base/strings/strcat.h"

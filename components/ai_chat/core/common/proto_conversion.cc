@@ -9,7 +9,6 @@
 #include <vector>
 
 #include "base/logging.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/ai_chat/core/proto/store.pb.h"
 #include "url/gurl.h"
