@@ -26,6 +26,8 @@ import org.chromium.brave.browser.customize_menu.CustomizeBraveMenu;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.BraveRewardsNativeWorker;
+import org.chromium.chrome.browser.BraveRewardsPolicy;
 import org.chromium.chrome.browser.accessibility.BraveAccessibilitySettings;
 import org.chromium.chrome.browser.autofill.settings.AutofillAndPasswordsFragment;
 import org.chromium.chrome.browser.autofill.settings.options.BraveAutofillOptionsSearchIndex;
@@ -51,6 +53,7 @@ import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 import org.chromium.chrome.browser.settings.search.ChromeBaseSearchIndexProvider;
 import org.chromium.chrome.browser.tasks.tab_management.BraveTabUiFeatureUtilities;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
+import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.chrome.browser.vpn.BraveVpnPolicy;
 import org.chromium.chrome.browser.vpn.settings.VpnCalloutPreference;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
@@ -109,6 +112,7 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
     private static final String PREF_ABOUT_CHROME = "about_chrome";
     private static final String PREF_BACKGROUND_IMAGES = "backgroud_images";
     @VisibleForTesting static final String PREF_BRAVE_WALLET = "brave_wallet";
+    @VisibleForTesting static final String PREF_BRAVE_REWARDS = "brave_rewards";
     @VisibleForTesting static final String PREF_BRAVE_VPN = "brave_vpn";
     @VisibleForTesting static final String PREF_BRAVE_LEO = "brave_leo";
     private static final String PREF_BRAVE_ORIGIN = "brave_origin";
@@ -120,6 +124,8 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
     private static final String PREF_HOME_SCREEN_WIDGET = "home_screen_widget";
     private static final String PREF_SAFETY_CHECK = "safety_check";
     private static final String PREF_TOOLBAR_SHORTCUT = "toolbar_shortcut";
+
+    private static final String BRAVE_REWARDS_ADS_SETTINGS_URL = "brave://rewards/ads-settings";
 
     private final HashMap<String, Preference> mRemovedPreferences = new HashMap<>();
     private @Nullable BraveAccountSectionController mAccountController;
@@ -340,6 +346,12 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         setPreferenceOrder(PREF_BRAVE_NEWS_V2, ++featuresSectionOrder);
 
         setPreferenceOrder(PREF_BRAVE_WALLET, ++featuresSectionOrder);
+
+        if (isRewardsSupported()) {
+            setPreferenceOrder(PREF_BRAVE_REWARDS, ++featuresSectionOrder);
+        } else {
+            removePreferenceIfPresent(PREF_BRAVE_REWARDS);
+        }
 
         if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_PLAYLIST)) {
             setPreferenceOrder(PREF_BRAVE_PLAYLIST, ++featuresSectionOrder);
@@ -573,6 +585,20 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
                         }
                     });
         }
+
+        Preference braveRewardsPreference = findPreference(PREF_BRAVE_REWARDS);
+        if (braveRewardsPreference != null) {
+            braveRewardsPreference.setOnPreferenceClickListener(
+                    preference -> {
+                        TabUtils.openURLWithBraveActivity(BRAVE_REWARDS_ADS_SETTINGS_URL);
+                        return true;
+                    });
+        }
+    }
+
+    private static boolean isRewardsSupported() {
+        BraveRewardsNativeWorker worker = BraveRewardsNativeWorker.getInstance();
+        return worker != null && worker.isSupported();
     }
 
     private void handleOriginPreferenceClick() {
@@ -678,6 +704,13 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         }
     }
 
+    /** Checks if Brave Rewards is disabled by policy and removes the preference if so. */
+    private void checkRewardsPolicyAndUpdatePreference() {
+        if (BraveRewardsPolicy.isDisabledByPolicy(getProfile())) {
+            removePreferenceIfPresent(PREF_BRAVE_REWARDS);
+        }
+    }
+
     /**
      * Hides the policy-controlled feature rows (VPN/Rewards-News/Wallet/Leo and the VPN promo
      * callout) for Brave Origin subscribers until the profile policy service has finished applying
@@ -744,6 +777,7 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         checkNewsPolicyAndUpdatePreference();
         checkVpnPolicyAndUpdatePreference();
         checkWalletPolicyAndUpdatePreference();
+        checkRewardsPolicyAndUpdatePreference();
     }
 
     /** Toggles visibility of every policy-controlled feature surface still on the screen. */
@@ -752,6 +786,7 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         setPreferenceVisibleIfPresent(PREF_BRAVE_NEWS_V2, visible);
         setPreferenceVisibleIfPresent(PREF_BRAVE_VPN, visible);
         setPreferenceVisibleIfPresent(PREF_BRAVE_WALLET, visible);
+        setPreferenceVisibleIfPresent(PREF_BRAVE_REWARDS, visible);
         setPreferenceVisibleIfPresent(PREF_BRAVE_VPN_CALLOUT, visible);
     }
 
@@ -786,6 +821,10 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
             // "pin widget" request. Keep the search state as is, like the other external-activity
             // results handled upstream.
             BraveSearchWidgetUtils.requestPinAppWidget();
+            return false;
+        }
+        if (PREF_BRAVE_REWARDS.equals(key)) {
+            TabUtils.openURLWithBraveActivity(BRAVE_REWARDS_ADS_SETTINGS_URL);
             return false;
         }
         return MainSettings.openSearchResult(
@@ -872,6 +911,9 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
                     }
                     if (BraveVpnPolicy.isDisabledByPolicy(profile)) {
                         indexData.removeEntry(getUniqueId(PREF_BRAVE_VPN));
+                    }
+                    if (!isRewardsSupported() || BraveRewardsPolicy.isDisabledByPolicy(profile)) {
+                        indexData.removeEntry(getUniqueId(PREF_BRAVE_REWARDS));
                     }
                     if (BraveWalletPolicy.isDisabledByPolicy(profile)) {
                         indexData.removeEntry(getUniqueId(PREF_BRAVE_WALLET));
