@@ -113,7 +113,7 @@ TEST_F(TabManagementToolUnitTest, UseTool_Permissions) {
               testing::HasSubstr("Unknown error"));
 
   // Grant permission and verify we proceed to JSON validation.
-  tool.UserPermissionGranted("");
+  tool.UserPermissionGranted("", *mojom::PermissionChallenge::New());
   EXPECT_THAT(RunTool(&tool, "{}"),
               testing::HasSubstr("Missing required 'action' field"));
 
@@ -126,7 +126,7 @@ TEST_F(TabManagementToolUnitTest, JsonAndArgumentValidationErrors) {
   TabManagementTool tool(&profile_);
 
   // Grant permission once.
-  tool.UserPermissionGranted("");
+  tool.UserPermissionGranted("", *mojom::PermissionChallenge::New());
 
   // Parse failure (not a dict)
   {
@@ -185,7 +185,7 @@ TEST_F(TabManagementToolUnitTest, MoveParameterValidationAndMutualExclusivity) {
   TabManagementTool tool(&profile_);
 
   // Grant permission once
-  tool.UserPermissionGranted("");
+  tool.UserPermissionGranted("", *mojom::PermissionChallenge::New());
 
   // move_tabs: empty tab_ids array should be treated as missing
   EXPECT_THAT(

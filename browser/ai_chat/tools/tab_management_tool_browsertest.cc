@@ -8,12 +8,19 @@
 #include <optional>
 #include <string>
 #include <utility>
+#include <variant>
 #include <vector>
 
+#include "base/functional/callback_helpers.h"
+#include "base/test/bind.h"
+#include "base/test/scoped_feature_list.h"
 #include "base/test/test_future.h"
 #include "base/test/values_test_util.h"
 #include "base/values.h"
+#include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
+#include "brave/components/local_ai/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
@@ -34,6 +41,12 @@
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "url/gurl.h"
+
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+#include "brave/components/local_ai/core/pref_names.h"
+#include "components/history_embeddings/core/history_embeddings_features.h"
+#include "components/prefs/pref_service.h"
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
 
 namespace ai_chat {
 
@@ -274,7 +287,7 @@ IN_PROC_BROWSER_TEST_F(TabManagementToolBrowserTest, TabManagementToolTest) {
   // of the Tool, such as pre-operation validation, should be unit tested.
   TabManagementTool tool(profile());
 
-  tool.UserPermissionGranted("");
+  tool.UserPermissionGranted("", *mojom::PermissionChallenge::New());
 
   // Setup: create tabs across two windows
   BrowserWindowInterface* b1 = browser();
@@ -780,7 +793,7 @@ IN_PROC_BROWSER_TEST_F(TabManagementToolBrowserTest, TabManagementToolTest) {
 IN_PROC_BROWSER_TEST_F(TabManagementToolBrowserTest,
                        MoveMultipleTabsPreservesOrder) {
   TabManagementTool tool(profile());
-  tool.UserPermissionGranted("");
+  tool.UserPermissionGranted("", *mojom::PermissionChallenge::New());
 
   BrowserWindowInterface* b1 = browser();
   TabStripModel* strip1 = b1->tab_strip_model();
@@ -841,7 +854,7 @@ IN_PROC_BROWSER_TEST_F(TabManagementToolBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(TabManagementToolBrowserTest, CloseTabsAcrossWindows) {
   TabManagementTool tool(profile());
-  tool.UserPermissionGranted("");
+  tool.UserPermissionGranted("", *mojom::PermissionChallenge::New());
 
   BrowserWindowInterface* b1 = browser();
   BrowserWindowInterface* b2 = CreateBrowser(profile());
@@ -874,5 +887,345 @@ IN_PROC_BROWSER_TEST_F(TabManagementToolBrowserTest, CloseTabsAcrossWindows) {
   EXPECT_EQ(GetTabCount(profile()), initial_tab_count - 2);
   ExpectOutputMatchesWindowSkeleton(FROM_HERE, response, profile());
 }
+
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+
+// Page excerpts come from the history embeddings index, so these tests turn
+// on everything `IsHistoryEmbeddingsEnabledForProfile` needs.
+class TabManagementToolPageContentBrowserTest
+    : public TabManagementToolBrowserTest {
+ public:
+  TabManagementToolPageContentBrowserTest() {
+    scoped_features_.InitAndEnableFeature(
+        history_embeddings::kHistoryEmbeddings);
+  }
+
+  void SetUpOnMainThread() override {
+    TabManagementToolBrowserTest::SetUpOnMainThread();
+    SetSemanticHistorySearchEnabled(true);
+  }
+
+  void SetSemanticHistorySearchEnabled(bool enabled) {
+    profile()->GetPrefs()->SetBoolean(
+        local_ai::prefs::kBraveHistoryEmbeddingsEnabled, enabled);
+  }
+
+  // Stands in for the embeddings database, which needs a downloaded model to
+  // hold anything. Every URL gets `passage`; `on_fetch` runs before replying.
+  void SetPassage(TabManagementTool& tool,
+                  const std::string& passage,
+                  base::RepeatingClosure on_fetch = base::DoNothing()) {
+    tool.SetTabPassagesFetcherForTesting(base::BindLambdaForTesting(
+        [passage, on_fetch](
+            const std::vector<GURL>& urls,
+            base::OnceCallback<void(std::vector<std::vector<std::string>>)>
+                callback) {
+          on_fetch.Run();
+          std::move(callback).Run(
+              std::vector<std::vector<std::string>>(urls.size(), {passage}));
+        }));
+  }
+
+  mojom::ToolUseEventPtr ToolUse(const std::string& id,
+                                 const std::string& input_json) {
+    return mojom::ToolUseEvent::New(mojom::kTabManagementToolName, id,
+                                    input_json, std::nullopt, std::nullopt,
+                                    nullptr, false);
+  }
+
+  mojom::PermissionChallengePtr GetChallenge(TabManagementTool& tool,
+                                             const mojom::ToolUseEvent& use) {
+    auto result = tool.RequiresUserInteractionBeforeHandling(use);
+    if (!std::holds_alternative<mojom::PermissionChallengePtr>(result)) {
+      return nullptr;
+    }
+    return std::move(std::get<mojom::PermissionChallengePtr>(result));
+  }
+
+  // Passages of the tab at `url` in a list result, or null if it has none.
+  const base::ListValue* FindPassages(const base::DictValue& output,
+                                      const GURL& url) {
+    for (const auto& window : *output.FindList("windows")) {
+      for (const auto& tab : *window.GetDict().FindList("tabs")) {
+        if (*tab.GetDict().FindString("url") == url.spec()) {
+          return tab.GetDict().FindList("passages");
+        }
+      }
+    }
+    return nullptr;
+  }
+
+  static constexpr char kListInput[] =
+      R"({"action":"list", "plan":"group by topic"})";
+  static constexpr char kPassage[] = "Lighthouses and lightships";
+
+ private:
+  base::test::ScopedFeatureList scoped_features_;
+};
+
+// When page content is readable, the one challenge a conversation starts with
+// says so, and answering it sends the excerpts.
+IN_PROC_BROWSER_TEST_F(TabManagementToolPageContentBrowserTest,
+                       CombinedChallengeSendsPassages) {
+  TabManagementTool tool(profile());
+  SetPassage(tool, kPassage);
+  const GURL url("https://a.test/");
+  AddTabAndGetHandle(browser(), url);
+
+  auto use = ToolUse("1", kListInput);
+  auto challenge = GetChallenge(tool, *use);
+  ASSERT_TRUE(challenge);
+  EXPECT_EQ(challenge->plan, "group by topic");
+  // The summary stays the tool's usual one; only what allowing it sends grows.
+  EXPECT_FALSE(challenge->description);
+  EXPECT_THAT(challenge->implications,
+              testing::Optional(testing::HasSubstr("page text")));
+
+  tool.UserPermissionGranted(use->id, *challenge);
+  EXPECT_FALSE(GetChallenge(tool, *ToolUse("2", kListInput)));
+
+  base::DictValue output = base::test::ParseJsonDict(
+      RunToolAndGetText(FROM_HERE, &tool, kListInput));
+  const base::ListValue* passages = FindPassages(output, url);
+  ASSERT_TRUE(passages);
+  EXPECT_EQ(*passages, base::ListValue().Append(kPassage));
+}
+
+// Without the index, the challenge only covers tabs and no excerpts are read,
+// even if the index turns up later in the conversation.
+IN_PROC_BROWSER_TEST_F(TabManagementToolPageContentBrowserTest,
+                       NoPassagesWithoutSemanticHistorySearch) {
+  SetSemanticHistorySearchEnabled(false);
+  TabManagementTool tool(profile());
+  bool fetched = false;
+  SetPassage(tool, kPassage,
+             base::BindLambdaForTesting([&] { fetched = true; }));
+  const GURL url("https://a.test/");
+  AddTabAndGetHandle(browser(), url);
+
+  auto use = ToolUse("1", kListInput);
+  auto challenge = GetChallenge(tool, *use);
+  ASSERT_TRUE(challenge);
+  EXPECT_FALSE(challenge->implications);
+  tool.UserPermissionGranted(use->id, *challenge);
+
+  base::DictValue output = base::test::ParseJsonDict(
+      RunToolAndGetText(FROM_HERE, &tool, kListInput));
+  EXPECT_FALSE(FindPassages(output, url));
+  EXPECT_FALSE(fetched);
+
+  // Tab access was granted without page content, so turning the index on asks
+  // again, and only for a list, which is the only action sending excerpts.
+  SetSemanticHistorySearchEnabled(true);
+  EXPECT_FALSE(GetChallenge(
+      tool, *ToolUse("2", R"({"action":"close", "tab_ids":[1]})")));
+  auto content_only = ToolUse("3", R"({"action":"list"})");
+  challenge = GetChallenge(tool, *content_only);
+  ASSERT_TRUE(challenge);
+  EXPECT_FALSE(challenge->plan);
+  EXPECT_TRUE(challenge->implications);
+
+  tool.UserPermissionGranted(content_only->id, *challenge);
+  output = base::test::ParseJsonDict(
+      RunToolAndGetText(FROM_HERE, &tool, R"({"action":"list"})"));
+  EXPECT_TRUE(FindPassages(output, url));
+}
+
+// A grant for a challenge that never disclosed page content doesn't extend to
+// it.
+IN_PROC_BROWSER_TEST_F(TabManagementToolPageContentBrowserTest,
+                       UnrelatedGrantDoesNotSendPassages) {
+  TabManagementTool tool(profile());
+  bool fetched = false;
+  SetPassage(tool, kPassage,
+             base::BindLambdaForTesting([&] { fetched = true; }));
+  const GURL url("https://a.test/");
+  AddTabAndGetHandle(browser(), url);
+
+  tool.UserPermissionGranted(
+      "server-challenge", *mojom::PermissionChallenge::New(
+                              "off-topic", std::nullopt, std::nullopt,
+                              std::nullopt, /*supports_allow_session=*/false));
+
+  base::DictValue output = base::test::ParseJsonDict(
+      RunToolAndGetText(FROM_HERE, &tool, kListInput));
+  EXPECT_FALSE(FindPassages(output, url));
+  EXPECT_FALSE(fetched);
+  auto challenge = GetChallenge(tool, *ToolUse("1", kListInput));
+  ASSERT_TRUE(challenge);
+  EXPECT_TRUE(challenge->implications);
+}
+
+// The server's alignment check shows this tool's implications, so answering
+// it grants page content and the list asks nothing more.
+IN_PROC_BROWSER_TEST_F(TabManagementToolPageContentBrowserTest,
+                       ServerChallengeWithImplicationsSendsPassages) {
+  TabManagementTool tool(profile());
+  SetPassage(tool, kPassage);
+  const GURL url("https://a.test/");
+  AddTabAndGetHandle(browser(), url);
+
+  auto use = ToolUse("1", kListInput);
+  auto implications = tool.GetPermissionChallengeImplications(*use);
+  ASSERT_TRUE(implications);
+  EXPECT_EQ(implications, GetChallenge(tool, *use)->implications);
+
+  tool.UserPermissionGranted(
+      use->id, *mojom::PermissionChallenge::New(
+                   "off-topic", std::nullopt, std::nullopt, implications,
+                   /*supports_allow_session=*/false));
+  EXPECT_FALSE(GetChallenge(tool, *ToolUse("2", kListInput)));
+
+  base::DictValue output = base::test::ParseJsonDict(
+      RunToolAndGetText(FROM_HERE, &tool, kListInput));
+  EXPECT_TRUE(FindPassages(output, url));
+
+  SetSemanticHistorySearchEnabled(false);
+  EXPECT_FALSE(tool.GetPermissionChallengeImplications(*use));
+}
+
+// A list is sent whole rather than in chunks, so it carries no more page
+// excerpts than one Tab Focus chunk; tabs past that get none, even ones whose
+// excerpts would still fit, so the tabs with excerpts lead the list.
+IN_PROC_BROWSER_TEST_F(TabManagementToolPageContentBrowserTest,
+                       PassagesStopAtTabListBudget) {
+  TabManagementTool tool(profile());
+  const GURL first("https://a.test/");
+  const GURL second("https://b.test/");
+  const GURL third("https://c.test/");
+  // The first two tabs' excerpts each take just over half the budget, so only
+  // the first fits. The third's are short enough to fit in what's left.
+  tool.SetTabPassagesFetcherForTesting(base::BindLambdaForTesting(
+      [third](const std::vector<GURL>& urls,
+              base::OnceCallback<void(std::vector<std::vector<std::string>>)>
+                  callback) {
+        std::vector<std::vector<std::string>> passages;
+        for (const GURL& url : urls) {
+          passages.push_back({std::string(
+              url == third ? 1 : kMaxPassageBytesPerTabList / 2 + 1, 'x')});
+        }
+        std::move(callback).Run(std::move(passages));
+      }));
+  AddTabAndGetHandle(browser(), first);
+  AddTabAndGetHandle(browser(), second);
+  AddTabAndGetHandle(browser(), third);
+
+  auto use = ToolUse("1", kListInput);
+  auto challenge = GetChallenge(tool, *use);
+  ASSERT_TRUE(challenge);
+  tool.UserPermissionGranted(use->id, *challenge);
+
+  base::DictValue output = base::test::ParseJsonDict(
+      RunToolAndGetText(FROM_HERE, &tool, kListInput));
+  EXPECT_TRUE(FindPassages(output, first));
+  EXPECT_FALSE(FindPassages(output, second));
+  EXPECT_FALSE(FindPassages(output, third));
+}
+
+// A challenge grants only what it showed. When a later challenge reuses the ID
+// of an unanswered one that disclosed page content, answering it grants tab
+// access alone.
+IN_PROC_BROWSER_TEST_F(TabManagementToolPageContentBrowserTest,
+                       ReusedIdGrantsOnlyWhatItsChallengeShowed) {
+  TabManagementTool tool(profile());
+  bool fetched = false;
+  SetPassage(tool, kPassage,
+             base::BindLambdaForTesting([&] { fetched = true; }));
+  const GURL url("https://a.test/");
+  AddTabAndGetHandle(browser(), url);
+
+  auto with_page_content = GetChallenge(tool, *ToolUse("1", kListInput));
+  ASSERT_TRUE(with_page_content);
+  ASSERT_TRUE(with_page_content->implications);
+
+  SetSemanticHistorySearchEnabled(false);
+  auto tabs_only = GetChallenge(tool, *ToolUse("1", kListInput));
+  ASSERT_TRUE(tabs_only);
+  EXPECT_FALSE(tabs_only->implications);
+  tool.UserPermissionGranted("1", *tabs_only);
+
+  // Page content is readable again, and still has to be asked for.
+  SetSemanticHistorySearchEnabled(true);
+  EXPECT_TRUE(GetChallenge(tool, *ToolUse("2", kListInput)));
+  base::DictValue output = base::test::ParseJsonDict(
+      RunToolAndGetText(FROM_HERE, &tool, kListInput));
+  EXPECT_FALSE(FindPassages(output, url));
+  EXPECT_FALSE(fetched);
+}
+
+// A page-content challenge left unanswered or denied can't be answered under
+// its ID by a challenge that didn't disclose page content.
+IN_PROC_BROWSER_TEST_F(TabManagementToolPageContentBrowserTest,
+                       ServerChallengeReusingIdGrantsNoPageContent) {
+  TabManagementTool tool(profile());
+  bool fetched = false;
+  SetPassage(tool, kPassage,
+             base::BindLambdaForTesting([&] { fetched = true; }));
+  const GURL url("https://a.test/");
+  AddTabAndGetHandle(browser(), url);
+
+  auto with_page_content = GetChallenge(tool, *ToolUse("1", kListInput));
+  ASSERT_TRUE(with_page_content);
+  ASSERT_TRUE(with_page_content->implications);
+
+  tool.UserPermissionGranted(
+      "1", *mojom::PermissionChallenge::New("off-topic", std::nullopt,
+                                            std::nullopt, std::nullopt,
+                                            /*supports_allow_session=*/false));
+
+  EXPECT_TRUE(GetChallenge(tool, *ToolUse("2", kListInput)));
+  base::DictValue output = base::test::ParseJsonDict(
+      RunToolAndGetText(FROM_HERE, &tool, kListInput));
+  EXPECT_FALSE(FindPassages(output, url));
+  EXPECT_FALSE(fetched);
+}
+
+// Turning the index off withdraws page content even from a conversation that
+// already allowed it: the next list reads nothing and asks nothing.
+IN_PROC_BROWSER_TEST_F(TabManagementToolPageContentBrowserTest,
+                       IndexTurnedOffAfterGrantStopsPassages) {
+  TabManagementTool tool(profile());
+  bool fetched = false;
+  SetPassage(tool, kPassage,
+             base::BindLambdaForTesting([&] { fetched = true; }));
+  const GURL url("https://a.test/");
+  AddTabAndGetHandle(browser(), url);
+
+  auto use = ToolUse("1", kListInput);
+  auto challenge = GetChallenge(tool, *use);
+  ASSERT_TRUE(challenge);
+  tool.UserPermissionGranted(use->id, *challenge);
+
+  SetSemanticHistorySearchEnabled(false);
+
+  EXPECT_FALSE(GetChallenge(tool, *ToolUse("2", kListInput)));
+  base::DictValue output = base::test::ParseJsonDict(
+      RunToolAndGetText(FROM_HERE, &tool, kListInput));
+  EXPECT_FALSE(FindPassages(output, url));
+  EXPECT_FALSE(fetched);
+}
+
+// The read is asynchronous, so the index going away while it is in flight
+// drops what it returned.
+IN_PROC_BROWSER_TEST_F(TabManagementToolPageContentBrowserTest,
+                       IndexTurnedOffDuringReadDropsPassages) {
+  TabManagementTool tool(profile());
+  SetPassage(tool, kPassage, base::BindLambdaForTesting([&] {
+               SetSemanticHistorySearchEnabled(false);
+             }));
+  const GURL url("https://a.test/");
+  AddTabAndGetHandle(browser(), url);
+
+  auto use = ToolUse("1", kListInput);
+  auto challenge = GetChallenge(tool, *use);
+  ASSERT_TRUE(challenge);
+  tool.UserPermissionGranted(use->id, *challenge);
+
+  base::DictValue output = base::test::ParseJsonDict(
+      RunToolAndGetText(FROM_HERE, &tool, kListInput));
+  EXPECT_FALSE(FindPassages(output, url));
+}
+
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
 
 }  // namespace ai_chat

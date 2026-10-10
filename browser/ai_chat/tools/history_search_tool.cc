@@ -164,10 +164,13 @@ HistorySearchTool::RequiresUserInteractionBeforeHandling(
   // C++ side only needs to surface a non-null challenge.
   return mojom::PermissionChallenge::New(
       /*assessment=*/std::nullopt, /*plan=*/std::nullopt,
-      /*description=*/std::nullopt, /*supports_allow_session=*/false);
+      /*description=*/std::nullopt, /*implications=*/std::nullopt,
+      /*supports_allow_session=*/false);
 }
 
-void HistorySearchTool::UserPermissionGranted(const std::string& tool_use_id) {
+void HistorySearchTool::UserPermissionGranted(
+    const std::string& tool_use_id,
+    const mojom::PermissionChallenge& challenge) {
   user_has_granted_permission_ = true;
 }
 

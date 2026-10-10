@@ -6648,7 +6648,7 @@ TEST_F(ConversationHandlerUnitTest, PermissionChallenge) {
                         "is off-topic",  // assessment
                         std::nullopt,    // plan
                         std::nullopt,    // description
-                        /*supports_allow_session=*/false),
+                        std::nullopt, /*supports_allow_session=*/false),
                     false);
                 callback.Run(EngineConsumer::GenerationResultData(
                     mojom::ConversationEntryEvent::NewToolUseEvent(
@@ -6723,6 +6723,16 @@ TEST_F(ConversationHandlerUnitTest, PermissionChallenge) {
       .WillOnce(
           testing::InvokeWithoutArgs([&second_loop]() { second_loop.Quit(); }));
 
+  // The tool is told which challenge the user answered, so it can tell the
+  // server's alignment check from one of its own.
+  EXPECT_CALL(*tool1,
+              UserPermissionGranted(
+                  StrEq("tool_id_1"),
+                  testing::Field(
+                      &mojom::PermissionChallenge::assessment,
+                      testing::Optional(StrEq("Server determined this tool use "
+                                              "is off-topic")))));
+
   // User approves permission
   conversation_handler_->ProcessPermissionChallenge(
       "tool_id_1", mojom::PermissionChallengeDecision::kAllowOnce);
@@ -6766,7 +6776,7 @@ TEST_F(ConversationHandlerUnitTest, PermissionChallenge_ToolReturnsChallenge) {
                 std::nullopt,                           // assessment
                 "This tool needs to manage your tabs",  // plan
                 std::nullopt,                           // description
-                /*supports_allow_session=*/false));
+                std::nullopt, /*supports_allow_session=*/false));
       });
 
   ON_CALL(*mock_tool_provider_, GetTools()).WillByDefault([&]() {
@@ -6856,10 +6866,10 @@ TEST_F(ConversationHandlerUnitTest, PermissionChallenge_UserAllowsForSession) {
   manager->UpdateToolsForNewGenerationLoop(loaded.GetCallback());
   ASSERT_TRUE(loaded.Wait());
 
-  StageHaltedToolUse(
-      conversation_handler_.get(), "cancel_cart",
-      mojom::PermissionChallenge::New(std::nullopt, std::nullopt, std::nullopt,
-                                      /*supports_allow_session=*/true));
+  StageHaltedToolUse(conversation_handler_.get(), "cancel_cart",
+                     mojom::PermissionChallenge::New(
+                         std::nullopt, std::nullopt, std::nullopt, std::nullopt,
+                         /*supports_allow_session=*/true));
 
   conversation_handler_->ProcessPermissionChallenge(
       "tool_id_1", mojom::PermissionChallengeDecision::kAllowSession);
@@ -6892,10 +6902,10 @@ TEST_F(ConversationHandlerUnitTest,
   manager->UpdateToolsForNewGenerationLoop(loaded.GetCallback());
   ASSERT_TRUE(loaded.Wait());
 
-  StageHaltedToolUse(
-      conversation_handler_.get(), "cancel_cart",
-      mojom::PermissionChallenge::New(std::nullopt, std::nullopt, std::nullopt,
-                                      /*supports_allow_session=*/true));
+  StageHaltedToolUse(conversation_handler_.get(), "cancel_cart",
+                     mojom::PermissionChallenge::New(
+                         std::nullopt, std::nullopt, std::nullopt, std::nullopt,
+                         /*supports_allow_session=*/true));
 
   conversation_handler_->ProcessPermissionChallenge(
       "tool_id_1", mojom::PermissionChallengeDecision::kDeny);
@@ -6936,10 +6946,10 @@ TEST_F(ConversationHandlerUnitTest,
   manager->UpdateToolsForNewGenerationLoop(loaded.GetCallback());
   ASSERT_TRUE(loaded.Wait());
 
-  StageHaltedToolUse(
-      conversation_handler_.get(), "cancel_cart",
-      mojom::PermissionChallenge::New("Off-topic", std::nullopt, std::nullopt,
-                                      /*supports_allow_session=*/false));
+  StageHaltedToolUse(conversation_handler_.get(), "cancel_cart",
+                     mojom::PermissionChallenge::New(
+                         "Off-topic", std::nullopt, std::nullopt, std::nullopt,
+                         /*supports_allow_session=*/false));
 
   conversation_handler_->ProcessPermissionChallenge(
       "tool_id_1", mojom::PermissionChallengeDecision::kAllowSession);
@@ -7129,7 +7139,7 @@ TEST_F(ConversationHandlerUnitTest, PermissionChallenge_UserDeniesPermission) {
                                 "is off-topic",  // assessment
                                 std::nullopt,    // plan
                                 std::nullopt,    // description
-                                /*supports_allow_session=*/false),
+                                std::nullopt, /*supports_allow_session=*/false),
                             false)),
                     std::nullopt));
                 // Second tool use
@@ -7215,7 +7225,7 @@ TEST_F(ConversationHandlerUnitTest,
                 std::nullopt,  // assessment
                 "Client-side: This tool needs to access your tabs",  // plan
                 std::nullopt,  // description
-                /*supports_allow_session=*/false));
+                std::nullopt, /*supports_allow_session=*/false));
       });
 
   ON_CALL(*mock_tool_provider_, GetTools()).WillByDefault([&]() {
@@ -7240,7 +7250,7 @@ TEST_F(ConversationHandlerUnitTest,
                     std::nullopt, std::nullopt,
                     mojom::PermissionChallenge::New(
                         "Server-side: This tool use needs alignment check",
-                        std::nullopt, std::nullopt,
+                        std::nullopt, std::nullopt, std::nullopt,
                         /*supports_allow_session=*/false),
                     false);
                 callback.Run(EngineConsumer::GenerationResultData(
@@ -7367,7 +7377,7 @@ TEST_F(ConversationHandlerUnitTest,
                     "test_tool", "tool_id_1", "{}", std::nullopt, std::nullopt,
                     mojom::PermissionChallenge::New(
                         "Server determined this tool use is off-topic",
-                        std::nullopt, std::nullopt,
+                        std::nullopt, std::nullopt, std::nullopt,
                         /*supports_allow_session=*/false),
                     false);
                 callback.Run(EngineConsumer::GenerationResultData(
@@ -7399,6 +7409,80 @@ TEST_F(ConversationHandlerUnitTest,
   EXPECT_EQ(
       tool_event->permission_challenge->description,
       "Brave AI would like to execute **thing** on **https://example.com**");
+}
+
+TEST_F(ConversationHandlerUnitTest,
+       PermissionChallenge_ServerChallengeDecoratedWithToolImplications) {
+  // Granting a challenge the server's alignment check raised also grants
+  // whatever the Tool's implications disclose. Verify that ConversationHandler
+  // shows the Tool's implications on that challenge, and that the Tool is
+  // told the user answered it with them.
+  conversation_handler_->associated_content_manager()->ClearContent();
+  MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+
+  auto tool1 = std::make_unique<NiceMock<MockTool>>("test_tool", "Test tool");
+  constexpr char kImplications[] = "Allowing this will send **page text**";
+  ON_CALL(*tool1, GetPermissionChallengeImplications)
+      .WillByDefault(
+          [&](const mojom::ToolUseEvent& tool_use) { return kImplications; });
+  EXPECT_CALL(*tool1, RequiresUserInteractionBeforeHandling).Times(0);
+
+  ON_CALL(*mock_tool_provider_, GetTools()).WillByDefault([&]() {
+    std::vector<base::WeakPtr<Tool>> tools;
+    tools.push_back(tool1->GetWeakPtr());
+    return tools;
+  });
+
+  NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
+
+  base::RunLoop loop;
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .WillOnce(testing::DoAll(
+          testing::WithArg<6>(
+              [](EngineConsumer::GenerationDataCallback callback) {
+                auto tool_use = mojom::ToolUseEvent::New(
+                    "test_tool", "tool_id_1", "{}", std::nullopt, std::nullopt,
+                    mojom::PermissionChallenge::New(
+                        "Server determined this tool use is off-topic",
+                        std::nullopt, std::nullopt, std::nullopt,
+                        /*supports_allow_session=*/false),
+                    false);
+                callback.Run(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewToolUseEvent(
+                        std::move(tool_use)),
+                    std::nullopt));
+              }),
+          testing::WithArg<7>(
+              [&](EngineConsumer::GenerationCompletedCallback callback) {
+                std::move(callback).Run(
+                    base::ok(EngineConsumer::GenerationResultData(
+                        mojom::ConversationEntryEvent::NewCompletionEvent(
+                            mojom::CompletionEvent::New("")),
+                        std::nullopt)));
+                loop.Quit();
+              })));
+
+  conversation_handler_->SubmitHumanConversationEntry("Test", std::nullopt);
+  loop.Run();
+
+  const auto& history = conversation_handler_->GetConversationHistory();
+  auto* tool_event =
+      history.back()->events.value()[0]->get_tool_use_event().get();
+  ASSERT_TRUE(tool_event->permission_challenge);
+  EXPECT_EQ(tool_event->permission_challenge->assessment,
+            "Server determined this tool use is off-topic");
+  EXPECT_EQ(tool_event->permission_challenge->implications, kImplications);
+
+  testing::Mock::VerifyAndClearExpectations(tool1.get());
+  EXPECT_CALL(*tool1, UserPermissionGranted(
+                          "tool_id_1",
+                          testing::Field(
+                              &mojom::PermissionChallenge::implications,
+                              testing::Optional(std::string(kImplications)))));
+  conversation_handler_->ProcessPermissionChallenge(
+      "tool_id_1", mojom::PermissionChallengeDecision::kAllowOnce);
+  testing::Mock::VerifyAndClearExpectations(tool1.get());
 }
 
 TEST_F(ConversationHandlerUnitTest, OnTaskStateChanged_Paused) {
