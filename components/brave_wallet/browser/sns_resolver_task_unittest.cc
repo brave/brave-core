@@ -6,9 +6,7 @@
 #include "brave/components/brave_wallet/browser/sns_resolver_task.h"
 
 #include <string>
-#include <utility>
 
-#include "base/test/gtest_util.h"
 #include "brave/components/brave_wallet/common/encoding_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
 

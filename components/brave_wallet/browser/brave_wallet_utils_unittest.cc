@@ -6,11 +6,9 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 
 #include <algorithm>
-#include <memory>
 #include <optional>
 #include <set>
 #include <string>
-#include <utility>
 #include <vector>
 
 #include "base/strings/string_util.h"

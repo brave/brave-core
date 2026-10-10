@@ -5,11 +5,8 @@
 
 #include "brave/components/brave_wallet/browser/fil_response_parser.h"
 
-#include <memory>
 #include <string>
-#include <utility>
 
-#include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/test/values_test_util.h"

@@ -8,7 +8,6 @@
 #include <optional>
 #include <utility>
 
-#include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/browser/fil_transaction.h"

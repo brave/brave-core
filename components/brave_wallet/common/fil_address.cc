@@ -8,7 +8,6 @@
 #include <stddef.h>
 
 #include <algorithm>
-#include <array>
 #include <optional>
 
 #include "base/check.h"

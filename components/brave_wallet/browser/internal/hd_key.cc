@@ -8,7 +8,6 @@
 #include <array>
 #include <memory>
 #include <optional>
-#include <utility>
 
 #include "base/check.h"
 #include "base/check_op.h"

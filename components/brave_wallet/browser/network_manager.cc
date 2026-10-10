@@ -7,7 +7,6 @@
 
 #include <algorithm>
 #include <optional>
-#include <ranges>
 #include <string_view>
 #include <utility>
 
@@ -30,7 +29,6 @@
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
-#include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/switches.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
 #include "components/prefs/pref_service.h"

@@ -5,14 +5,11 @@
 
 #include "brave/components/brave_wallet/browser/fil_response_parser.h"
 
-#include <memory>
 #include <optional>
-#include <utility>
 
 #include "base/strings/string_number_conversions.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/json_rpc_response_parser.h"
-#include "brave/components/json/json_helper.h"
 
 namespace brave_wallet {
 

@@ -9,7 +9,6 @@
 #include <utility>
 
 #include "base/values.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/solana_tx_meta.h"
 
 namespace brave_wallet {

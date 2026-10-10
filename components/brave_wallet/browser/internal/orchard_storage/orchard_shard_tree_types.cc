@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_wallet/browser/internal/orchard_storage/orchard_shard_tree_types.h"
 
-#include "brave/components/brave_wallet/browser/internal/orchard_storage/orchard_storage.h"
-
 namespace brave_wallet {
 
 OrchardTreeState::OrchardTreeState() = default;

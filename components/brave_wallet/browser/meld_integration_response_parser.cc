@@ -14,7 +14,6 @@
 #include "base/types/expected.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/meld_integration_responses.h"
-#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/meld_integration.mojom-forward.h"
 

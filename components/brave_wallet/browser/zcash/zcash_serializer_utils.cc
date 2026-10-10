@@ -8,7 +8,6 @@
 #include <array>
 #include <utility>
 
-#include "base/check.h"
 #include "base/check_op.h"
 #include "base/containers/span.h"
 #include "base/containers/span_writer.h"
