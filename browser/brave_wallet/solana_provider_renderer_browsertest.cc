@@ -1095,12 +1095,6 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, Iframe3P) {
   } solana_undefined_cases[] =
       {{// 3p iframe
         "true", secure_top_url, iframe_url_3p},
-       {// 1st party iframe with allow="solana 'none'"
-        R"(
-        document.querySelector('iframe').setAttribute('allow', 'solana \'none\'');
-        true
-        )",
-        secure_top_url, iframe_url_1p},
        {// 1st party iframe with sandbox="allow-scripts"
         R"(
         document.querySelector('iframe').removeAttribute('allow');
@@ -1120,6 +1114,29 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, Iframe3P) {
         R"(
         document.querySelector('iframe').removeAttribute('sandbox');
         document.querySelector('iframe').setAttribute('allow', 'ethereum');
+        true
+        )",
+        secure_top_url, iframe_url_3p},
+       {// 3p iframe with allow="solana", which is no longer honored
+        R"(
+        document.querySelector('iframe').removeAttribute('sandbox');
+        document.querySelector('iframe').setAttribute('allow', 'solana');
+        true
+        )",
+        secure_top_url, iframe_url_3p},
+       {// 3p iframe with allow="ethereum; solana", which is no longer honored
+        R"(
+        document.querySelector('iframe').removeAttribute('sandbox');
+        document.querySelector('iframe')
+          .setAttribute('allow', 'ethereum; solana');
+        true
+        )",
+        secure_top_url, iframe_url_3p},
+       {// 3p iframe with sandbox="allow-scripts" allow="solana"
+        R"(
+        document.querySelector('iframe').setAttribute('allow', 'solana');
+        document.querySelector('iframe')
+          .setAttribute('sandbox', 'allow-scripts');
         true
         )",
         secure_top_url, iframe_url_3p},
@@ -1170,27 +1187,14 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, Iframe3P) {
       true
       )",
          secure_top_url, iframe_url_1p},
-        {// 3p iframe with allow="solana"
+        {// 1st party iframe with allow="solana 'none'", which is no longer
+         // honored
          R"(
       document.querySelector('iframe').removeAttribute('sandbox');
-      document.querySelector('iframe').setAttribute('allow', 'solana');
+      document.querySelector('iframe').setAttribute('allow', 'solana \'none\'');
       true
       )",
-         secure_top_url, iframe_url_3p},
-        {// 3p iframe with allow="ethereum; solana"
-         R"(
-      document.querySelector('iframe').removeAttribute('sandbox');
-      document.querySelector('iframe').setAttribute('allow', 'ethereum; solana');
-      true
-      )",
-         secure_top_url, iframe_url_3p},
-        {// 3rd party iframe with sandbox="allow-scripts" allow="solana"
-         R"(
-      document.querySelector('iframe').setAttribute('allow', 'solana');
-      document.querySelector('iframe').setAttribute('sandbox', 'allow-scripts');
-      true
-      )",
-         secure_top_url, iframe_url_3p}};
+         secure_top_url, iframe_url_1p}};
 
   for (auto& c : solana_undefined_cases) {
     SCOPED_TRACE(testing::Message() << c.script << c.iframe_url);
