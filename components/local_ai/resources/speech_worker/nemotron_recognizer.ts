@@ -200,6 +200,11 @@ export class NemotronStreamSession {
       model.hann,
       initFftPower(config.N_FFT as FftSize),
     )
+    this.frontend.appendAudioSamples(
+      new Float32Array(
+        (config.TARGET_SAMPLE_RATE * config.LEADING_SILENCE_MS) / 1000,
+      ),
+    )
   }
 
   addAudio(samples: Float32Array): void {
