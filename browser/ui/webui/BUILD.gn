@@ -20,7 +20,6 @@ source_set("browser_tests") {
     "//base",
     "//chrome/browser/profiles",
     "//chrome/browser/search_engines",
-    "//chrome/browser/ui",
     "//chrome/browser/ui/navigator",
     "//chrome/test",
     "//chrome/test:test_support",
@@ -75,7 +74,7 @@ source_set("unit_tests") {
   deps = [
     "//base",
     "//base/test:test_support",
-    "//chrome/browser/ui",
+    "//brave/browser/ui",
     "//chrome/test:test_support",
     "//content/test:test_support",
     "//services/data_decoder/public/cpp:test_support",

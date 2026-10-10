@@ -13,11 +13,11 @@ source_set("browser_tests") {
 
   deps = [
     "//base",
+    "//brave/browser/ui",
     "//brave/components/commander/browser",
     "//brave/components/resources:strings_grit",
     "//chrome/browser/profiles",
     "//chrome/browser/profiles:profile",
-    "//chrome/browser/ui",
     "//chrome/browser/ui/location_bar",
     "//chrome/browser/ui/views/frame:browser_view_header",
     "//chrome/test:test_support_ui",
@@ -36,9 +36,9 @@ source_set("interactive_ui_tests") {
 
   deps = [
     "//base",
+    "//brave/browser/ui",
     "//brave/components/commander/browser",
     "//chrome/browser/profiles:profile",
-    "//chrome/browser/ui",
     "//chrome/browser/ui:browser_window_header",
     "//chrome/browser/ui/location_bar",
     "//chrome/test:test_support_ui",
@@ -59,8 +59,8 @@ source_set("unit_tests") {
   deps = [
     ":fuzzy_finder",
     "//base",
+    "//brave/browser/ui",
     "//brave/components/commander/browser",
-    "//chrome/browser/ui",
     "//chrome/browser/ui/window_metadata",
     "//chrome/test:test_support",
     "//chrome/test/base:browser_with_test_window_test",
