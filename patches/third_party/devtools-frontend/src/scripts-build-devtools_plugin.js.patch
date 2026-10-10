@@ -1,12 +1,20 @@
 diff --git a/scripts/build/devtools_plugin.js b/scripts/build/devtools_plugin.js
-index 740572e382e9cc25b699a89def1594176d63bb2d..e3b98d0620d21be6dc583ae0e3c95ad39630f4f4 100644
+index 740572e382e9cc25b699a89def1594176d63bb2d..ab2cafa8720538eee5a510154394b7859cca15fa 100644
 --- a/scripts/build/devtools_plugin.js
 +++ b/scripts/build/devtools_plugin.js
-@@ -168,6 +168,7 @@ export function esbuildPlugin(outdir, genRoot, rootDir, externalFiles, bundleAll
+@@ -6,6 +6,7 @@
+ 
+ import fs from 'node:fs';
+ import path from 'node:path';
++import {resolveOverride} from '../../../../../brave/chromium_src/third_party/devtools-frontend/src/scripts/build/devtools_plugin.js';
+ 
+ /**
+  * `path.dirname` does not include trailing slashes. If we would always
+@@ -168,6 +169,7 @@ export function esbuildPlugin(outdir, genRoot, rootDir, externalFiles, bundleAll
        }
      }
  
-+    if (res.id.endsWith('.patch.js')) { const p = path.join(root, 'brave', 'chromium_src', path.relative(root, res.id.slice(0, -9) + '.ts')); if (fs.existsSync(p)) { return {path: p}; } } if (res.id.includes(path.join('brave', 'chromium_src') + path.sep)) { const p = res.id.replace(path.join('brave', 'chromium_src') + path.sep, 'brave' + path.sep); const pTs = p.endsWith('.js') ? p.slice(0, -3) + '.ts' : p; if (fs.existsSync(p)) { return {path: p}; } if (fs.existsSync(pTs)) { return {path: pTs}; } }
++    const override = resolveOverride(root, res.id); if (override) { return {path: override}; }
      return {
        path: res.id,
      };
