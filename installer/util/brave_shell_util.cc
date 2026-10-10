@@ -34,4 +34,11 @@ bool ShouldUseFileTypeProgId(std::wstring_view ext) {
   return (ext == L".pdf" || ext == L".svg");
 }
 
+bool IsBrowserProgId(std::wstring_view prog_id) {
+  const wchar_t* browser_prefix = install_static::GetBrowserProgIdPrefix();
+  const wchar_t* pdf_prefix = install_static::GetPDFProgIdPrefix();
+  return (browser_prefix && prog_id.starts_with(browser_prefix)) ||
+         (pdf_prefix && prog_id.starts_with(pdf_prefix));
+}
+
 }  // namespace installer

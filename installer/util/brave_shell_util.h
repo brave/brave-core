@@ -13,6 +13,11 @@ namespace installer {
 std::wstring GetProgIdForFileType();
 bool ShouldUseFileTypeProgId(std::wstring_view ext);
 
+// Returns true if `prog_id` is one of Brave's main browser prog ids (the
+// HTML/PDF prog id for this install mode). PWA prog ids, which use the
+// `<base_app_id>.<hash>` format, never match.
+bool IsBrowserProgId(std::wstring_view prog_id);
+
 }  // namespace installer
 
 #endif  // BRAVE_INSTALLER_UTIL_BRAVE_SHELL_UTIL_H_
