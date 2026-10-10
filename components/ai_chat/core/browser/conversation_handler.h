@@ -270,7 +270,7 @@ class ConversationHandler : public mojom::ConversationHandler,
   void RegenerateAnswer(const std::string& turn_uuid,
                         const std::string& model_key) override;
   void GenerateQuestions() override;
-  void RetryAPIRequest() override;
+  void RetryAPIRequest(const std::optional<std::string>& thread_uuid) override;
   void CreateConversationThread(
       const std::string& origin_entry_uuid,
       CreateConversationThreadCallback callback) override;

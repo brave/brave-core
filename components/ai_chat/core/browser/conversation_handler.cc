@@ -1168,17 +1168,24 @@ void ConversationHandler::GetAssociatedContentInfo(
   std::move(callback).Run(associated_content_manager_->GetAssociatedContent());
 }
 
-void ConversationHandler::RetryAPIRequest() {
+void ConversationHandler::RetryAPIRequest(
+    const std::optional<std::string>& thread_uuid) {
+  if (thread_uuid && (!base::FeatureList::IsEnabled(features::kAIChatThreads) ||
+                      !threads_.contains(*thread_uuid))) {
+    return;
+  }
+
   SetAPIError(mojom::APIError::None);
-  DCHECK(!chat_history_.empty());
+  auto& history = GetMutableConversationHistory(thread_uuid);
+  DCHECK(!history.empty());
 
   // Find the latest human turn, or the latest assistant turn with resolved tool
   // calls. Retrying from the latter avoids re-running tools that already ran.
-  for (auto rit = chat_history_.rbegin(); rit != chat_history_.rend(); ++rit) {
+  for (auto rit = history.rbegin(); rit != history.rend(); ++rit) {
     if (rit->get()->character_type == CharacterType::HUMAN) {
       auto turn = *std::make_move_iterator(rit);
       auto human_turn_iter = rit.base() - 1;
-      chat_history_.erase(human_turn_iter, chat_history_.end());
+      history.erase(human_turn_iter, history.end());
       SubmitHumanConversationEntry(std::move(turn));
       return;
     }
@@ -1189,13 +1196,13 @@ void ConversationHandler::RetryAPIRequest() {
           return event->is_tool_use_event() &&
                  event->get_tool_use_event()->output.has_value();
         })) {
-      chat_history_.erase(rit.base(), chat_history_.end());
+      history.erase(rit.base(), history.end());
       OnHistoryUpdate(nullptr);
       // The failed generation stopped the task, which would otherwise prevent
       // the post-tool generation from running.
       tool_use_task_state_ = mojom::TaskState::kNone;
       OnToolUseTaskStateChanged();
-      PerformPostToolAssistantGeneration(std::nullopt);
+      PerformPostToolAssistantGeneration(thread_uuid);
       return;
     }
   }
@@ -2248,7 +2255,7 @@ bool ConversationHandler::MaybeAutoRetry(
 void ConversationHandler::RetryAfterConnectionIssue(
     const std::optional<std::string>& thread_uuid) {
   CompleteGeneration(thread_uuid, false);
-  RetryAPIRequest();
+  RetryAPIRequest(thread_uuid);
 }
 
 void ConversationHandler::OnSuggestedQuestionsResponse(
