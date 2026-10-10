@@ -22,6 +22,15 @@ class TabCWVNavigationHandler: NSObject, BraveWebViewNavigationDelegate {
 
   public func webView(
     _ webView: CWVWebView,
+    shouldEnableLockdownModeFor request: URLRequest,
+    defaultValue: Bool
+  ) -> Bool {
+    guard let tab, let delegate = tab.delegate else { return defaultValue }
+    return delegate.tab(tab, shouldEnableLockdownModeForRequest: request) ?? defaultValue
+  }
+
+  public func webView(
+    _ webView: CWVWebView,
     shouldBlockUniversalLinksFor request: URLRequest
   ) -> Bool {
     guard let tab, let delegate = tab.delegate else { return false }
