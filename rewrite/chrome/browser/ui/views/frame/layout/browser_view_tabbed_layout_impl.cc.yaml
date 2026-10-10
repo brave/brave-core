@@ -4,12 +4,33 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
-  - description: |
+  - description: |-
       Skip the leading-exclusion reservation when Brave vertical tabs are on.
 
       With Brave vertical tabs, the leading exclusion is owned by the
       vertical tab strip itself rather than by the horizontal layout, so
       the top container should not also reserve space for it.
     regex:
-      re_pattern: '(bool needs_exclusion = )true;'
-      replace: '\1!delegate().ShouldShowVerticalTabs();'
+      re_pattern: '(bool needs_exclusion =)\ true;'
+      replace: '\1 !delegate().ShouldShowVerticalTabs();'
+
+  - description: Get CollapsedWidth dynamically based on Brave vertical tabs
+    regex:
+      pattern: 'VerticalTabStripRegionView::kCollapsedWidth'
+      replace: 'views().vertical_tab_strip_region_view->GetCollapsedWidth()'
+
+  - description: |-
+      Hide the vertical tab strip region when it has no width when adding
+      vertical tab strip region view
+
+      The layout manager owns child visibility and re-applies it on every
+      layout, so a SetVisible(false) from the region view is overwritten. When
+      collapsed with "hide completely", the region is 0px wide but its
+      descendants (e.g. tab favicons) overflow the bounds and would paint over
+      the web contents unless the region is hidden here.
+
+    regex:
+      re_pattern: |-
+        (layout.AddChild\(views\(\)\.vertical_tab_strip_region_view,.*?)\)
+      re_flags: [DOTALL]
+      replace: '\1 && !vertical_tab_strip_bounds.IsEmpty());'

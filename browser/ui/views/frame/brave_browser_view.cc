@@ -83,6 +83,7 @@
 #include "chrome/browser/ui/views/frame/layout/browser_view_layout.h"
 #include "chrome/browser/ui/views/frame/multi_contents_view.h"
 #include "chrome/browser/ui/views/frame/top_container_view.h"
+#include "chrome/browser/ui/views/frame/vertical_tab_strip_region_view.h"
 #include "chrome/browser/ui/views/side_panel/side_panel.h"
 #include "chrome/browser/ui/views/tab_search_bubble_host.h"
 #include "chrome/browser/ui/views/tabs/shared/tab_strip_combo_button.h"
@@ -1337,6 +1338,13 @@ void BraveBrowserView::HandleBrowserWindowMouseEvent(
       VerticalTabController::From(browser())->ShouldShowBraveVerticalTabs()) {
     vertical_tab_strip_container_view_->vertical_tab_strip_region_view()
         ->HandleMouseEvent(point_in_screen);
+  }
+
+  if (auto* region_view =
+          views::AsViewClass<VerticalTabStripRegionView>(tab_strip_view())) {
+    // When "Hide completely when collapsed" is enabled, the region view should
+    // handle mouse move events accordingly.
+    region_view->HandleMouseMoveEvent(point_in_screen);
   }
 }
 

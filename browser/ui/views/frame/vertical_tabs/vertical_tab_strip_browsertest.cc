@@ -38,6 +38,8 @@
 #include "cc/paint/display_item_list.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/tab_group_sync/tab_group_sync_service_factory.h"
+#include "chrome/browser/ui/animation/browser_animation_controller.h"
+#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_command_controller.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
@@ -47,9 +49,12 @@
 #include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/tabs/tab_menu_model_delegate.h"
+#include "chrome/browser/ui/tabs/vertical_tab_strip_state_controller.h"
+#include "chrome/browser/ui/views/animations/tab_strip_animations.h"
 #include "chrome/browser/ui/views/frame/browser_frame_view.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.h"
+#include "chrome/browser/ui/views/frame/vertical_tab_strip_region_view.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_view.h"
 #include "chrome/browser/ui/views/tabs/new_tab_button.h"
 #include "chrome/browser/ui/views/tabs/tab/tab_context_menu_controller.h"
@@ -65,6 +70,7 @@
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/skia/include/core/SkPath.h"
 #include "ui/base/test/ui_controls.h"
+#include "ui/compositor/layer.h"
 #include "ui/compositor/paint_context.h"
 #include "ui/display/screen.h"
 #include "ui/display/test/test_screen.h"
@@ -2408,11 +2414,9 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, VerticalTabLayoutInRTL) {
   EXPECT_LE(contents_bounds_right.right(), vertical_tab_bounds_right.x());
 }
 
-// Regression test: When Chromium's upstream vertical tabs are active,
-// TabStrip::Initialize() is never called so tab_container_ remains null.
-// BraveTabStrip::UpdateOrientation() was crashing by accessing the null
-// tab_container_ via SetAvailableWidthCallback() during startup.
-class UpstreamVerticalTabsCrashTest : public InProcessBrowserTest {
+// Tests for Chromium's upstream vertical tabs, which are forced via the
+// migration switch.
+class UpstreamVerticalTabsTest : public InProcessBrowserTest {
  public:
   // InProcessBrowserTest:
   void SetUpOnMainThread() override {
@@ -2421,10 +2425,40 @@ class UpstreamVerticalTabsCrashTest : public InProcessBrowserTest {
     base::CommandLine::ForCurrentProcess()->AppendSwitchASCII(
         tabs::switches::kVerticalTabMigrationSwitch,
         tabs::switches::kVerticalTabMigrationForceUpstreamValue);
+
+    scoped_animation_ = gfx::AnimationTestApi::SetRichAnimationRenderMode(
+        gfx::Animation::RichAnimationRenderMode::FORCE_DISABLED);
   }
+
+  VerticalTabStripRegionView* region_view() {
+    return BrowserView::GetBrowserViewForBrowser(browser())
+        ->vertical_tab_strip_region_view_for_testing();
+  }
+
+  tabs::VerticalTabStripStateController* state_controller() {
+    return tabs::VerticalTabStripStateController::From(browser());
+  }
+
+  void SetHideCompletelyWhenCollapsed(bool hide) {
+    browser()->GetProfile()->GetPrefs()->SetBoolean(
+        brave_tabs::kVerticalTabsHideCompletelyWhenCollapsed, hide);
+  }
+
+  void RequestCollapseAndLayout(bool collapse) {
+    state_controller()->RequestCollapse(collapse);
+    views::test::RunScheduledLayout(
+        BrowserView::GetBrowserViewForBrowser(browser()));
+  }
+
+  std::unique_ptr<base::AutoReset<gfx::Animation::RichAnimationRenderMode>>
+      scoped_animation_;
 };
 
-IN_PROC_BROWSER_TEST_F(UpstreamVerticalTabsCrashTest, NoCrashOnStartup) {
+// Regression test: When Chromium's upstream vertical tabs are active,
+// TabStrip::Initialize() is never called so tab_container_ remains null.
+// BraveTabStrip::UpdateOrientation() was crashing by accessing the null
+// tab_container_ via SetAvailableWidthCallback() during startup.
+IN_PROC_BROWSER_TEST_F(UpstreamVerticalTabsTest, NoCrashOnStartup) {
   // Simulate the user choosing "Side" in Tab strip position settings,
   // then opening a new window. Verifies no crash when kVerticalTabsEnabled is
   // set, since tab_container_ may be null in that configuration.
@@ -2433,6 +2467,50 @@ IN_PROC_BROWSER_TEST_F(UpstreamVerticalTabsCrashTest, NoCrashOnStartup) {
   BrowserWindowInterface* new_browser = CreateBrowser(browser()->GetProfile());
   ASSERT_TRUE(new_browser);
   EXPECT_EQ(1, new_browser->tab_strip_model()->count());
+}
+
+// When "hide completely when collapsed" is on, the collapsed region view must
+// be hidden (otherwise its overflowing descendants, e.g. favicons, would paint
+// over the web contents) and must clip its descendants to its bounds so they
+// don't show outside of the shrinking region.
+IN_PROC_BROWSER_TEST_F(UpstreamVerticalTabsTest, HideCompletelyWhenCollapsed) {
+  state_controller()->SetVerticalTabsEnabled(true);
+  ASSERT_TRUE(state_controller()->ShouldDisplayVerticalTabs());
+  auto* region = region_view();
+  ASSERT_TRUE(region);
+  ASSERT_TRUE(region->layer());
+
+  // Without the setting, the collapsed strip is a visible, unclipped rail.
+  SetHideCompletelyWhenCollapsed(false);
+  RequestCollapseAndLayout(true);
+  EXPECT_TRUE(region->GetVisible());
+  EXPECT_GT(region->width(), 0);
+  EXPECT_FALSE(region->layer()->GetMasksToBounds());
+
+  // Turning the setting on while collapsed hides the region and clips children.
+  SetHideCompletelyWhenCollapsed(true);
+  views::test::RunScheduledLayout(
+      BrowserView::GetBrowserViewForBrowser(browser()));
+  EXPECT_FALSE(region->GetVisible());
+  EXPECT_TRUE(region->layer()->GetMasksToBounds());
+
+  // Expanding shows the region again; clipping stays on while the setting is
+  // on.
+  RequestCollapseAndLayout(false);
+  EXPECT_TRUE(region->GetVisible());
+  EXPECT_GT(region->width(), 0);
+  EXPECT_TRUE(region->layer()->GetMasksToBounds());
+
+  // Collapsing again hides the region.
+  RequestCollapseAndLayout(true);
+  EXPECT_FALSE(region->GetVisible());
+
+  // Turning the setting off restores the visible, unclipped collapsed rail.
+  SetHideCompletelyWhenCollapsed(false);
+  views::test::RunScheduledLayout(
+      BrowserView::GetBrowserViewForBrowser(browser()));
+  EXPECT_TRUE(region->GetVisible());
+  EXPECT_FALSE(region->layer()->GetMasksToBounds());
 }
 
 class VerticalTabStripFocusModeTest : public VerticalTabStripBrowserTest {
