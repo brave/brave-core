@@ -9,12 +9,17 @@
 
 #include "base/no_destructor.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "chrome/browser/autofill/personal_data_manager_factory.h"
 #include "chrome/browser/bookmarks/bookmark_model_factory.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/history/history_service_factory.h"
 #include "chrome/browser/profiles/profile_selections.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/browser/skus/skus_service_factory.h"
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "chrome/browser/themes/theme_service_factory.h"
@@ -49,6 +54,9 @@ ProfileMiscMetricsServiceFactory::ProfileMiscMetricsServiceFactory()
 #else
   DependsOn(SearchEngineTrackerFactory::GetInstance());
 #endif
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  DependsOn(skus::SkusServiceFactory::GetInstance());
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
   DependsOn(HistoryServiceFactory::GetInstance());
   DependsOn(HostContentSettingsMapFactory::GetInstance());
   DependsOn(autofill::PersonalDataManagerFactory::GetInstance());
