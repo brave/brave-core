@@ -259,13 +259,6 @@ IN_PROC_BROWSER_TEST_F(PolkadotProviderRendererTest, Iframe3P) {
   } polkadot_undefined_cases[] =
       {{// 3p iframe
         "true", secure_top_url, iframe_url_3p},
-       {// 1st party iframe with allow="polkadot 'none'"
-        R"(
-        document.querySelector('iframe').setAttribute(
-          'allow', 'polkadot \'none\'');
-        true
-        )",
-        secure_top_url, iframe_url_1p},
        {// 1st party iframe with sandbox="allow-scripts"
         R"(
         document.querySelector('iframe').removeAttribute('allow');
@@ -286,6 +279,30 @@ IN_PROC_BROWSER_TEST_F(PolkadotProviderRendererTest, Iframe3P) {
         R"(
         document.querySelector('iframe').removeAttribute('sandbox');
         document.querySelector('iframe').setAttribute('allow', 'ethereum');
+        true
+        )",
+        secure_top_url, iframe_url_3p},
+       {// 3p iframe with allow="polkadot", which is no longer honored
+        R"(
+        document.querySelector('iframe').removeAttribute('sandbox');
+        document.querySelector('iframe').setAttribute('allow', 'polkadot');
+        true
+        )",
+        secure_top_url, iframe_url_3p},
+       {// 3p iframe with allow="ethereum; polkadot", which is no longer
+        // honored
+        R"(
+        document.querySelector('iframe').removeAttribute('sandbox');
+        document.querySelector('iframe').setAttribute('allow',
+          'ethereum; polkadot');
+        true
+        )",
+        secure_top_url, iframe_url_3p},
+       {// 3p iframe with sandbox="allow-scripts" allow="polkadot"
+        R"(
+        document.querySelector('iframe').setAttribute('allow', 'polkadot');
+        document.querySelector('iframe').setAttribute(
+          'sandbox', 'allow-scripts');
         true
         )",
         secure_top_url, iframe_url_3p},
@@ -335,28 +352,15 @@ IN_PROC_BROWSER_TEST_F(PolkadotProviderRendererTest, Iframe3P) {
         true
         )",
          secure_top_url, iframe_url_1p},
-        {// 3p iframe with allow="polkadot"
+        {// 1st party iframe with allow="polkadot 'none'", which is no longer
+         // honored
          R"(
         document.querySelector('iframe').removeAttribute('sandbox');
-        document.querySelector('iframe').setAttribute('allow', 'polkadot');
+        document.querySelector('iframe').setAttribute(
+          'allow', 'polkadot \'none\'');
         true
         )",
-         secure_top_url, iframe_url_3p},
-        {// 3p iframe with allow="ethereum; polkadot"
-         R"(
-        document.querySelector('iframe').removeAttribute('sandbox');
-        document.querySelector('iframe').setAttribute('allow',
-          'ethereum; polkadot');
-        true
-        )",
-         secure_top_url, iframe_url_3p},
-        {// 3rd party iframe with sandbox="allow-scripts" allow="polkadot"
-         R"(
-        document.querySelector('iframe').setAttribute('allow', 'polkadot');
-        document.querySelector('iframe').setAttribute('sandbox', 'allow-scripts');
-        true
-        )",
-         secure_top_url, iframe_url_3p}};
+         secure_top_url, iframe_url_1p}};
 
   for (auto& c : polkadot_undefined_cases) {
     SCOPED_TRACE(testing::Message()
