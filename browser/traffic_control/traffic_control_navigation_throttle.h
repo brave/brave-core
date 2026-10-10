@@ -38,6 +38,7 @@ class TrafficControlNavigationThrottle : public content::NavigationThrottle {
   const char* GetNameForLogging() override;
 
  private:
+  bool IsSandboxedNavigationAllowed();
   ThrottleCheckResult MaybeReroute();
 
   const raw_ref<TrafficControlService> service_;

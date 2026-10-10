@@ -8,14 +8,18 @@
 #include "base/functional/bind.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/types/optional_ref.h"
-#include "brave/browser/traffic_control/traffic_control_apply.h"
+#include "brave/browser/traffic_control/traffic_control_applier.h"
 #include "brave/browser/traffic_control/traffic_control_tab_utils.h"
+#include "brave/browser/traffic_control/traffic_control_types.h"
 #include "brave/components/traffic_control/core/browser/traffic_control_service.h"
 #include "brave/components/traffic_control/core/mojom/traffic_control.mojom.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/navigation_throttle_registry.h"
 #include "content/public/browser/site_instance.h"
 #include "content/public/browser/web_contents.h"
+#include "net/http/http_request_headers.h"
+#include "services/network/public/cpp/web_sandbox_flags.h"
+#include "services/network/public/mojom/web_sandbox_flags.mojom.h"
 #include "url/gurl.h"
 #include "url/origin.h"
 
@@ -50,6 +54,30 @@ TrafficControlNavigationThrottle::WillRedirectRequest() {
   return MaybeReroute();
 }
 
+bool TrafficControlNavigationThrottle::IsSandboxedNavigationAllowed() {
+  using network::mojom::WebSandboxFlags;
+  const WebSandboxFlags initiator_sandbox_flags =
+      navigation_handle()->SandboxFlagsInitiator();
+  // Rerouting opens a new tab, so it must obey the initiator's popup ban.
+  if ((initiator_sandbox_flags & WebSandboxFlags::kPopups) !=
+      WebSandboxFlags::kNone) {
+    return false;
+  }
+  // Without the top-navigation restriction, no user gesture is required.
+  if ((initiator_sandbox_flags & WebSandboxFlags::kTopNavigation) ==
+      WebSandboxFlags::kNone) {
+    return true;
+  }
+  // Both top-navigation flags set means top navigation is always forbidden.
+  if ((initiator_sandbox_flags &
+       WebSandboxFlags::kTopNavigationByUserActivation) !=
+      WebSandboxFlags::kNone) {
+    return false;
+  }
+  // With only user-activation allowance, a gesture is required.
+  return navigation_handle()->HasUserGesture();
+}
+
 content::NavigationThrottle::ThrottleCheckResult
 TrafficControlNavigationThrottle::MaybeReroute() {
   content::NavigationHandle* handle = navigation_handle();
@@ -62,6 +90,27 @@ TrafficControlNavigationThrottle::MaybeReroute() {
   }
 
   const GURL& url = handle->GetURL();
+  // Partition rerouting only supports network navigations with an HTTP origin.
+  if (!url.SchemeIsHTTPOrHTTPS()) {
+    return PROCEED;
+  }
+  // Reopening non-GET requests would discard bodies or replay submissions.
+  if (handle->GetRequestMethod() != net::HttpRequestHeaders::kGetMethod ||
+      handle->IsPost() || handle->IsFormSubmission()) {
+    return PROCEED;
+  }
+  // Preserve user-controlled reload, restore, activation, and history flows.
+  if (handle->GetReloadType() != content::ReloadType::NONE ||
+      handle->GetRestoreType() != content::RestoreType::kNotRestored ||
+      handle->IsPageActivation() ||
+      (handle->GetPageTransition() & ui::PAGE_TRANSITION_FORWARD_BACK)) {
+    return PROCEED;
+  }
+  // Check if the navigation is allowed under the current sandbox flags.
+  if (!IsSandboxedNavigationAllowed()) {
+    return PROCEED;
+  }
+
   base::optional_ref<const mojom::TrafficRule> rule =
       service_->FindMatchingRule(url);
   if (!rule || !rule->target) {
@@ -88,8 +137,7 @@ TrafficControlNavigationThrottle::MaybeReroute() {
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
       FROM_HERE,
       base::BindOnce(&TrafficControlApplier::Apply, web_contents->GetWeakPtr(),
-                     url, rule->target->Clone(), handle->GetInitiatorOrigin(),
-                     handle->GetPageTransition()));
+                     NavigationIntent(*handle, rule->target->Clone())));
 
   return CANCEL;
 }
