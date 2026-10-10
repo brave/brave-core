@@ -22,6 +22,18 @@ struct SidebarItem {
     kTypeWeb,
   };
 
+  // How the item opens when its sidebar icon is clicked. Orthogonal to Type:
+  // a built-in item can open either kind of panel.
+  enum class PanelType {
+    // Opens in a tab.
+    kNone,
+    // Opens the SidePanelEntry registered for `built_in_item_type`. Only
+    // built-in items can have one.
+    kSidePanel,
+    // Loads `url` in the sidebar web panel.
+    kWebPanel,
+  };
+
   // Underlying values are used as id of items. Use explicit values so
   // conditionally compiled items don't shift others.
   enum class BuiltInItemType {
@@ -69,13 +81,13 @@ struct SidebarItem {
   static SidebarItem Create(const std::u16string& title,
                             Type type,
                             BuiltInItemType built_in_item_type,
-                            bool open_in_panel);
+                            PanelType panel_type);
 
   static SidebarItem Create(const GURL& url,
                             const std::u16string& title,
                             Type type,
                             BuiltInItemType built_in_item_type,
-                            bool open_in_panel);
+                            PanelType panel_type);
 
   SidebarItem();
   SidebarItem(const SidebarItem&);
@@ -88,9 +100,17 @@ struct SidebarItem {
     return type == SidebarItem::Type::kTypeBuiltIn;
   }
   bool is_web_type() const { return type == SidebarItem::Type::kTypeWeb; }
+  bool is_side_panel_type() const {
+    return panel_type == PanelType::kSidePanel;
+  }
+  // Web panel items open in a tab while the feature is off, so the gate has to
+  // apply to opens_in_panel() too.
   bool is_web_panel_type() const {
-    return base::FeatureList::IsEnabled(features::kSidebarWebPanel) &&
-           type == SidebarItem::Type::kTypeWeb && open_in_panel;
+    return panel_type == PanelType::kWebPanel &&
+           base::FeatureList::IsEnabled(features::kSidebarWebPanel);
+  }
+  bool opens_in_panel() const {
+    return is_side_panel_type() || is_web_panel_type();
   }
   bool IsValidItem() const;
 
@@ -100,8 +120,9 @@ struct SidebarItem {
   Type type = Type::kTypeBuiltIn;
   BuiltInItemType built_in_item_type = BuiltInItemType::kNone;
   std::u16string title;
-  // Set false to open this item in new tab.
-  bool open_in_panel = false;
+  // The item's declared open behavior, independent of whether the web panel
+  // feature is currently enabled.
+  PanelType panel_type = PanelType::kNone;
 };
 
 }  // namespace sidebar
