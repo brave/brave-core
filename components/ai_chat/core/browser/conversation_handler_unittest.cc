@@ -6230,6 +6230,131 @@ TEST_F(ConversationHandlerUnitTest,
 }
 
 TEST_F(ConversationHandlerUnitTest,
+       ConnectionIssueRetry_DoesNotRerunResolvedToolCalls) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeatureWithParameters(
+      features::kAIChat, {{"max_connection_issue_retries", "1"}});
+
+  conversation_handler_->associated_content_manager()->ClearContent();
+
+  MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+  EXPECT_CALL(*engine, RequiresClientSideTitleGeneration())
+      .WillRepeatedly(testing::Return(false));
+
+  auto tool =
+      std::make_unique<NiceMock<MockTool>>("weather_tool", "Get weather");
+  tool->set_requires_user_interaction_before_handling(false);
+  ON_CALL(*mock_tool_provider_, GetTools()).WillByDefault([&]() {
+    std::vector<base::WeakPtr<Tool>> tools;
+    tools.push_back(tool->GetWeakPtr());
+    return tools;
+  });
+
+  EXPECT_CALL(*tool, UseTool(StrEq("{\"location\":\"New York\"}"), _))
+      .WillOnce(testing::WithArg<1>([](Tool::UseToolCallback callback) {
+        std::vector<mojom::ContentBlockPtr> result;
+        result.push_back(mojom::ContentBlock::NewTextContentBlock(
+            mojom::TextContentBlock::New("Weather in New York: 72°F")));
+        std::move(callback).Run(std::move(result), {});
+      }));
+
+  base::RunLoop run_loop;
+  testing::Sequence seq;
+
+  // The first generation requests the tool.
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .InSequence(seq)
+      .WillOnce(testing::DoAll(
+          testing::WithArg<6>(
+              [](EngineConsumer::GenerationDataCallback callback) {
+                callback.Run(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewToolUseEvent(
+                        mojom::ToolUseEvent::New("weather_tool", "tool_id_1",
+                                                 "{\"location\":\"New York\"}",
+                                                 std::nullopt, std::nullopt,
+                                                 nullptr, false)),
+                    std::nullopt));
+              }),
+          testing::WithArg<7>(
+              [](EngineConsumer::GenerationCompletedCallback callback) {
+                std::move(callback).Run(
+                    base::ok(EngineConsumer::GenerationResultData(
+                        mojom::ConversationEntryEvent::NewCompletionEvent(
+                            mojom::CompletionEvent::New("")),
+                        std::nullopt)));
+              })));
+
+  // The post-tool generation partially streams and then fails.
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .InSequence(seq)
+      .WillOnce(testing::DoAll(
+          testing::WithArg<6>(
+              [](EngineConsumer::GenerationDataCallback callback) {
+                callback.Run(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewCompletionEvent(
+                        mojom::CompletionEvent::New("Partial")),
+                    std::nullopt));
+              }),
+          testing::WithArg<7>(
+              [](EngineConsumer::GenerationCompletedCallback callback) {
+                std::move(callback).Run(
+                    base::unexpected(mojom::APIError::ConnectionIssue));
+              })));
+
+  // The automatic retry resumes from the resolved tool call rather than
+  // resubmitting the human turn.
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .InSequence(seq)
+      .WillOnce(testing::DoAll(
+          testing::WithArg<1>(
+              [](const EngineConsumer::ConversationHistoryView& history) {
+                ASSERT_EQ(history.size(), 2u);
+                EXPECT_EQ(history[0]->character_type,
+                          mojom::CharacterType::HUMAN);
+                EXPECT_EQ(history[1]->character_type,
+                          mojom::CharacterType::ASSISTANT);
+                ASSERT_TRUE(history[1]->events.has_value());
+                ASSERT_EQ(history[1]->events->size(), 1u);
+                EXPECT_TRUE(history[1]
+                                ->events->at(0)
+                                ->get_tool_use_event()
+                                ->output.has_value());
+              }),
+          testing::WithArg<6>(
+              [](EngineConsumer::GenerationDataCallback callback) {
+                callback.Run(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewCompletionEvent(
+                        mojom::CompletionEvent::New("It is 72°F")),
+                    std::nullopt));
+              }),
+          testing::WithArg<7>(
+              [&](EngineConsumer::GenerationCompletedCallback callback) {
+                std::move(callback).Run(
+                    base::ok(EngineConsumer::GenerationResultData(
+                        mojom::ConversationEntryEvent::NewCompletionEvent(
+                            mojom::CompletionEvent::New("")),
+                        std::nullopt)));
+                run_loop.Quit();
+              })));
+
+  conversation_handler_->SubmitHumanConversationEntry("Test question",
+                                                      std::nullopt);
+  run_loop.Run();
+
+  const auto& history = conversation_handler_->GetConversationHistory();
+  ASSERT_EQ(history.size(), 3u);
+  EXPECT_EQ(history[0]->character_type, mojom::CharacterType::HUMAN);
+  EXPECT_EQ(history[1]->character_type, mojom::CharacterType::ASSISTANT);
+  EXPECT_EQ(history[2]->character_type, mojom::CharacterType::ASSISTANT);
+  ASSERT_TRUE(history[2]->events.has_value());
+  ASSERT_EQ(history[2]->events->size(), 1u);
+  EXPECT_EQ(history[2]->events->at(0)->get_completion_event()->completion,
+            "It is 72°F");
+  EXPECT_EQ(conversation_handler_->current_error(), mojom::APIError::None);
+}
+
+TEST_F(ConversationHandlerUnitTest,
        SubmitHumanConversationEntryWithSkill_ValidSkill) {
   conversation_handler_->associated_content_manager()->ClearContent();
 

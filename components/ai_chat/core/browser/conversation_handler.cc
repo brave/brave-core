@@ -1172,16 +1172,31 @@ void ConversationHandler::RetryAPIRequest() {
   SetAPIError(mojom::APIError::None);
   DCHECK(!chat_history_.empty());
 
-  // We're using a reverse iterator here to find the latest human turn
-  for (std::vector<mojom::ConversationTurnPtr>::reverse_iterator rit =
-           chat_history_.rbegin();
-       rit != chat_history_.rend(); ++rit) {
+  // Find the latest human turn, or the latest assistant turn with resolved tool
+  // calls. Retrying from the latter avoids re-running tools that already ran.
+  for (auto rit = chat_history_.rbegin(); rit != chat_history_.rend(); ++rit) {
     if (rit->get()->character_type == CharacterType::HUMAN) {
       auto turn = *std::make_move_iterator(rit);
       auto human_turn_iter = rit.base() - 1;
       chat_history_.erase(human_turn_iter, chat_history_.end());
       SubmitHumanConversationEntry(std::move(turn));
-      break;
+      return;
+    }
+
+    const auto& events = rit->get()->events;
+    if (events.has_value() &&
+        std::ranges::any_of(*events, [](const auto& event) {
+          return event->is_tool_use_event() &&
+                 event->get_tool_use_event()->output.has_value();
+        })) {
+      chat_history_.erase(rit.base(), chat_history_.end());
+      OnHistoryUpdate(nullptr);
+      // The failed generation stopped the task, which would otherwise prevent
+      // the post-tool generation from running.
+      tool_use_task_state_ = mojom::TaskState::kNone;
+      OnToolUseTaskStateChanged();
+      PerformPostToolAssistantGeneration(std::nullopt);
+      return;
     }
   }
 }
@@ -2220,27 +2235,6 @@ bool ConversationHandler::MaybeAutoRetry(
       connection_issue_retry_count_ >=
           features::kMaxConnectionIssueRetries.Get()) {
     return false;
-  }
-
-  const auto& history = GetMutableConversationHistory(thread_uuid);
-  if (history.empty()) {
-    return false;
-  }
-  // TODO(https://github.com/brave/brave-browser/issues/59807): Remove this
-  // check once retries correctly handle tool calls.
-  for (const auto& entry : std::views::reverse(history)) {
-    if (entry->character_type == mojom::CharacterType::HUMAN) {
-      break;
-    }
-    // Don't auto retry after resolved tool calls, otherwise the retry may
-    // rerun tool calls without the user's consent.
-    if (entry->events.has_value() &&
-        std::ranges::any_of(entry->events.value(), [](const auto& event) {
-          return event->is_tool_use_event() &&
-                 event->get_tool_use_event()->output.has_value();
-        })) {
-      return false;
-    }
   }
 
   ++connection_issue_retry_count_;
