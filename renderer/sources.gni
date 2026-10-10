@@ -54,7 +54,8 @@ if (enable_ai_chat) {
 }
 
 if (enable_tor) {
-  brave_chrome_renderer_deps += [ "//brave/components/tor/renderer" ]
+  brave_chrome_renderer_deps +=
+      [ "//brave/components/tor:onion_domain_throttle" ]
 }
 
 if (enable_speedreader) {
