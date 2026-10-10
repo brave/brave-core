@@ -3,11 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/ui/brave_browser.h"
+#include "brave/browser/ui/window_closing_confirm/window_closing_confirm_controller.h"
 #include "content/public/test/browser_test_base.h"
 
 #define SetUpCommandLine(COMMAND_LINE) \
   SetUpCommandLine(COMMAND_LINE);      \
-  BraveBrowser::SuppressBrowserWindowClosingDialogForTesting(true)
+  WindowClosingConfirmController::SuppressDialogForTesting(true)
 #include <chrome/test/base/in_process_browser_test.cc>
 #undef SetUpCommandLine

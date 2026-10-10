@@ -69,7 +69,6 @@ namespace views {
 class Widget;
 }  // namespace views
 
-class BraveBrowser;
 class BraveShieldsToolbarButton;
 class BraveHelpBubbleHostView;
 class BraveMultiContentsView;
@@ -305,8 +304,6 @@ class BraveBrowserView : public BrowserView,
   void StopTabCycling();
   void OnCompactModePrefChanged();
   void OnPreferenceChanged(const std::string& pref_name);
-  void OnWindowClosingConfirmResponse(bool allowed_to_close);
-  BraveBrowser* GetBraveBrowser() const;
   void UpdateFocusModeState();
   bool ShouldDisableFocusModeForActiveTab() const;
 
@@ -348,7 +345,6 @@ class BraveBrowserView : public BrowserView,
   std::unique_ptr<TabStripPlacementCoordinator> tab_strip_placement_;
   std::unique_ptr<views::Widget> vertical_tab_strip_widget_;
 
-  bool closing_confirm_dialog_activated_ = false;
   bool show_active_contents_domain_ = false;
   raw_ptr<BraveHelpBubbleHostView> brave_help_bubble_host_view_ = nullptr;
   raw_ptr<SidebarContainerView> sidebar_container_view_ = nullptr;

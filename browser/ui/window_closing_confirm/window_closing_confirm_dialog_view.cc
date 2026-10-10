@@ -1,13 +1,14 @@
-/* Copyright (c) 2022 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/browser/ui/views/window_closing_confirm_dialog_view.h"
+#include "brave/browser/ui/window_closing_confirm/window_closing_confirm_dialog_view.h"
 
 #include <memory>
 #include <utility>
 
+#include "base/check_is_test.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
 #include "base/no_destructor.h"
@@ -57,7 +58,6 @@ gfx::FontList GetFont(int font_size, gfx::Font::Weight weight) {
 class DontAskAgainCheckbox : public views::Checkbox {
   METADATA_HEADER(DontAskAgainCheckbox, views::Checkbox)
  public:
-
   using views::Checkbox::Checkbox;
   ~DontAskAgainCheckbox() override = default;
   DontAskAgainCheckbox(const DontAskAgainCheckbox&) = delete;
@@ -89,8 +89,10 @@ void WindowClosingConfirmDialogView::Show(
       delegate, BrowserWindow::FromBrowser(browser)->GetNativeWindow())
       ->Show();
 
-  if (GetCreationCallbackForTesting())
+  if (GetCreationCallbackForTesting()) {
+    CHECK_IS_TEST();
     GetCreationCallbackForTesting().Run(delegate);
+  }
 }
 
 // static
@@ -163,8 +165,9 @@ WindowClosingConfirmDialogView::WindowClosingConfirmDialogView(
   contents_label->AddStyleRange(
       gfx::Range(offset + tab_count_part.length(), contents_text.length()),
       default_style);
-  if (offset != 0)
+  if (offset != 0) {
     contents_label->AddStyleRange(gfx::Range(0, offset), default_style);
+  }
   constexpr int kMaxWidth = 389;
   contents_label->SizeToFit(kMaxWidth);
   contents_label->SetHorizontalAlignment(gfx::ALIGN_LEFT);

@@ -779,8 +779,6 @@ source_set("ui") {
       "views/toolbar/side_panel_button.h",
       "views/view_shadow.cc",
       "views/view_shadow.h",
-      "views/window_closing_confirm_dialog_view.cc",
-      "views/window_closing_confirm_dialog_view.h",
     ]
 
     deps += [
@@ -793,6 +791,7 @@ source_set("ui") {
       "//brave/browser/ui/views/page_action",
       "//brave/browser/ui/views/tabs/accent_color",
       "//brave/browser/ui/views/workspaces",
+      "//brave/browser/ui/window_closing_confirm",
       "//chrome/browser:shell_integration",
       "//chrome/browser/devtools",
       "//chrome/browser/enterprise/watermark:watermark_lib",
@@ -1692,8 +1691,8 @@ source_set("browser_tests") {
     ]
 
     deps = [
-      ":brave_browser_header",
       "//brave/app:command_ids",
+      "//brave/browser/ui/window_closing_confirm",
       "//brave/components/constants",
       "//chrome/browser",
       "//chrome/browser/devtools:test_support",

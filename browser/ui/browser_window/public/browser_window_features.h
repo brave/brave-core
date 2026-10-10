@@ -22,6 +22,7 @@ class FocusModeController;
 class PlaylistSidePanelCoordinator;
 class TreeTabSessionManager;
 class VerticalTabController;
+class WindowClosingConfirmController;
 class WorkspacesBubbleController;
 
 namespace brave_rewards {
@@ -85,6 +86,8 @@ class BrowserWindowFeatures : public BrowserWindowFeatures_ChromiumImpl {
   std::unique_ptr<screenshot::ScreenshotController> screenshot_controller_;
   std::unique_ptr<VerticalTabController> vertical_tab_controller_;
   std::unique_ptr<WorkspacesBubbleController> workspaces_bubble_controller_;
+  std::unique_ptr<WindowClosingConfirmController>
+      window_closing_confirm_controller_;
 };
 
 #endif  // BRAVE_BROWSER_UI_BROWSER_WINDOW_PUBLIC_BROWSER_WINDOW_FEATURES_H_
