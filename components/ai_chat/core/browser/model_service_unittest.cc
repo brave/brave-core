@@ -734,6 +734,41 @@ TEST_F(ModelServiceTest, GetCustomModels) {
   EXPECT_EQ(GetService()->GetModels().size(), initial_model_count + 1);
 }
 
+TEST_F(ModelServiceTest, GetCustomModelsCapabilities) {
+  // Tool-capable custom models must advertise CONTENT_AGENT (and
+  // DEEP_RESEARCH) so the agent-profile model picker shows them
+  // (conversation_context.tsx filters by CONTENT_AGENT capability).
+  const GURL endpoint = GURL("http://127.0.0.1:8000/v1/chat/completions");
+  {
+    mojom::ModelPtr model = mojom::Model::New();
+    model->display_name = "Tool Model";
+    model->supports_tools = true;
+    model->options = mojom::ModelOptions::NewCustomModelOptions(
+        mojom::CustomModelOptions::New("tool-model", 0, 0, 0, "", endpoint,
+                                       ""));
+    GetService()->AddCustomModel(std::move(model));
+  }
+  {
+    mojom::ModelPtr model = mojom::Model::New();
+    model->display_name = "Plain Model";
+    model->options = mojom::ModelOptions::NewCustomModelOptions(
+        mojom::CustomModelOptions::New("plain-model", 0, 0, 0, "", endpoint,
+                                       ""));
+    GetService()->AddCustomModel(std::move(model));
+  }
+
+  const auto custom_models = GetService()->GetCustomModels();
+  ASSERT_EQ(custom_models.size(), 2u);
+  EXPECT_TRUE(custom_models[0]->supports_tools);
+  EXPECT_FALSE(custom_models[1]->supports_tools);
+
+  EXPECT_THAT(custom_models[0]->supported_capabilities,
+              testing::UnorderedElementsAre(
+                  mojom::ConversationCapability::CONTENT_AGENT,
+                  mojom::ConversationCapability::DEEP_RESEARCH));
+  EXPECT_TRUE(custom_models[1]->supported_capabilities.empty());
+}
+
 // Fixture that exercises `ModelService` against an asynchronous test
 // `OSCryptAsync` (default `is_sync_for_unittests=false`), so the encryptor's
 // arrival is a real posted task observable from tests.
