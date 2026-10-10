@@ -15,22 +15,27 @@ import EventEmitter from 'events'
     on: {
       value: SolanaEventEmitter.on,
       writable: false,
+      configurable: true,
     },
     off: {
       value: SolanaEventEmitter.off,
       writable: false,
+      configurable: true,
     },
     emit: {
       value: SolanaEventEmitter.emit,
       writable: false,
+      configurable: true,
     },
     removeListener: {
       value: SolanaEventEmitter.removeListener,
       writable: false,
+      configurable: true,
     },
     removeAllListeners: {
       value: SolanaEventEmitter.removeAllListeners,
       writable: false,
+      configurable: true,
     },
   })
 })()

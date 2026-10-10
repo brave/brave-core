@@ -15,18 +15,22 @@ import EventEmitter from 'events'
     on: {
       value: BraveWeb3ProviderEventEmitter.on,
       writable: false,
+      configurable: true,
     },
     emit: {
       value: BraveWeb3ProviderEventEmitter.emit,
       writable: false,
+      configurable: true,
     },
     removeListener: {
       value: BraveWeb3ProviderEventEmitter.removeListener,
       writable: false,
+      configurable: true,
     },
     removeAllListeners: {
       value: BraveWeb3ProviderEventEmitter.removeAllListeners,
       writable: false,
+      configurable: true,
     },
   })
 })()
