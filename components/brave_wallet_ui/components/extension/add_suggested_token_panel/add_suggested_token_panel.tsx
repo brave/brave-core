@@ -9,9 +9,6 @@ import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 
 // Components
-import {
-  withPlaceholderIcon, //
-} from '../../shared/create-placeholder-icon/index'
 import { Tooltip } from '../../shared/tooltip/index'
 import { Skeleton } from '../../shared/loading-skeleton/styles'
 import { OriginInfoCard } from '../origin_info_card/origin_info_card'
@@ -35,18 +32,11 @@ import {
   Description,
   TokenName,
   ContractAddress,
-  AssetIcon,
   HeaderText,
   Card,
   TokenDescription,
 } from './add_suggested_token_panel.style'
 import { Column, Row, VerticalDivider } from '../../shared/style'
-
-const AssetIconWithPlaceholder = withPlaceholderIcon(AssetIcon, {
-  size: 'big',
-  marginLeft: 0,
-  marginRight: 0,
-})
 
 export function AddSuggestedTokenPanel() {
   // Queries
@@ -141,16 +131,6 @@ export function AddSuggestedTokenPanel() {
               {getLocale(S.BRAVE_WALLET_ADD_SUGGESTED_TOKEN_DESCRIPTION)}
             </Description>
             <Column>
-              {isFetching ? (
-                <Skeleton
-                  width={80}
-                  height={80}
-                  enableAnimation={true}
-                  circle={true}
-                />
-              ) : (
-                <AssetIconWithPlaceholder asset={token} />
-              )}
               {!isFetching && token ? (
                 <>
                   <TokenName textColor='tertiary'>{token.name ?? ''}</TokenName>
