@@ -5,6 +5,7 @@
 
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
+#include "brave/browser/ui/brave_browser_window.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/devtools/devtools_window_testing.h"
@@ -17,6 +18,7 @@
 #include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
 #include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #include "chrome/browser/ui/browser_window/public/profile_browser_collection.h"
+#include "chrome/browser/ui/omnibox/omnibox_next_features.h"
 #include "chrome/browser/ui/startup/launch_mode_recorder.h"
 #include "chrome/browser/ui/startup/startup_browser_creator.h"
 #include "chrome/browser/ui/startup/startup_browser_creator_impl.h"
@@ -25,6 +27,8 @@
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/webui/ntp/new_tab_ui.h"
+#include "chrome/browser/ui/webui_browser/webui_browser_window.h"
+#include "chrome/common/chrome_features.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/optimization_guide/optimization_guide_internals/webui/url_constants.h"
@@ -49,6 +53,42 @@ BrowserWindowInterface* OpenNewBrowser(Profile* profile) {
 }
 
 }  // namespace
+
+IN_PROC_BROWSER_TEST_F(BraveBrowserBrowserTest, BraveBrowserWindowFromBrowser) {
+  EXPECT_TRUE(BraveBrowserWindow::FromBrowser(browser()));
+}
+
+// Runs with the WebUI browser, whose window is a WebUIBrowserWindow rather
+// than a BrowserView.
+class BraveBrowserWebUIBrowserTest : public InProcessBrowserTest {
+ public:
+  void SetUp() override {
+    // Matches upstream's WebUIBrowserTest, which turns off the WebUI omnibox
+    // popups its tests do not support.
+    scoped_feature_list_.InitWithFeatures(
+        /*enabled_features=*/{features::kWebium},
+        /*disabled_features=*/{omnibox::internal::kWebUIOmniboxPopup,
+                               omnibox::internal::kWebUIOmniboxAimPopup});
+    InProcessBrowserTest::SetUp();
+  }
+
+ private:
+  base::test::ScopedFeatureList scoped_feature_list_;
+};
+
+IN_PROC_BROWSER_TEST_F(BraveBrowserWebUIBrowserTest,
+                       BraveBrowserWindowFromWebUIBrowserWindow) {
+  ASSERT_TRUE(WebUIBrowserWindow::FromBrowser(browser()));
+  EXPECT_FALSE(BraveBrowserWindow::FromBrowser(browser()));
+
+  // Commands that go through BraveBrowserWindow do nothing for this window.
+  EXPECT_FALSE(brave::HasSelectedURL(browser()));
+  brave::CleanAndCopySelectedURL(browser());
+  brave::ToggleSidebar(browser());
+#if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
+  brave::ShowPlaylistBubble(browser());
+#endif
+}
 
 IN_PROC_BROWSER_TEST_F(BraveBrowserBrowserTest, NTPFaviconTest) {
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL("brave://newtab/")));
