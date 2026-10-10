@@ -7,6 +7,8 @@
 
 #include <stdint.h>
 
+#include <array>
+#include <map>
 #include <memory>
 #include <optional>
 #include <string>
@@ -34,11 +36,57 @@
 #include "components/sync/protocol/entity_metadata.pb.h"
 #include "sql/init_status.h"
 #include "sql/meta_table.h"
+#include "sql/statement.h"
 #include "sql/test/test_helpers.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 
 namespace ai_chat {
+
+namespace {
+
+// Every table whose rows belong to a single conversation_entry row.
+constexpr auto kEntryChildTables = std::to_array<const char*>({
+    "associated_content",
+    "conversation_entry_event_completion",
+    "conversation_entry_event_search_queries",
+    "conversation_entry_event_web_sources",
+    "conversation_entry_event_inline_search",
+    "conversation_entry_event_tool_use",
+    "conversation_entry_uploaded_files",
+});
+
+mojom::ConversationEntryEventPtr CreateInlineSearchEvent() {
+  return mojom::ConversationEntryEvent::NewInlineSearchEvent(
+      mojom::InlineSearchEvent::New("inline query", R"({"results": []})"));
+}
+
+mojom::ConversationEntryEventPtr CreateToolUseEvent() {
+  return mojom::ConversationEntryEvent::NewToolUseEvent(
+      mojom::ToolUseEvent::New("test_tool", "tool_id_1", R"({"a": 1})",
+                               std::nullopt, std::nullopt, nullptr, false));
+}
+
+mojom::ConversationEntryEventPtr CreateWebSourcesEvent() {
+  std::vector<mojom::WebSourcePtr> sources;
+  sources.push_back(mojom::WebSource::New("source", GURL("https://a.com"),
+                                          GURL("https://a.com/favicon.ico"),
+                                          std::nullopt, std::nullopt));
+  return mojom::ConversationEntryEvent::NewSourcesEvent(
+      mojom::WebSourcesEvent::New(std::move(sources),
+                                  std::vector<std::string>{}));
+}
+
+std::vector<mojom::UploadedFilePtr> CreateUploadedFile() {
+  std::vector<mojom::UploadedFilePtr> files;
+  files.push_back(
+      mojom::UploadedFile::New("file.png", 3, std::vector<uint8_t>{1, 2, 3},
+                               mojom::UploadedFileType::kImage, std::nullopt));
+  return files;
+}
+
+}  // namespace
+
 class AIChatDatabaseTest : public testing::Test,
                            public testing::WithParamInterface<bool> {
  public:
@@ -74,6 +122,75 @@ class AIChatDatabaseTest : public testing::Test,
 
   base::FilePath db_file_path() {
     return temp_directory_.GetPath().AppendASCII("ai_chat");
+  }
+
+  // Row count of each child table, optionally restricted to the rows owned by
+  // |entry_uuid|. Counted directly because orphaned child rows cannot be
+  // reached through the read API.
+  std::map<std::string, int> CountChildRows(std::string_view entry_uuid = "") {
+    std::map<std::string, int> counts;
+    for (const char* table : kEntryChildTables) {
+      sql::Statement statement(db_->GetDB().GetUniqueStatement(absl::StrFormat(
+          "SELECT COUNT(*) FROM %s%s", table,
+          entry_uuid.empty() ? "" : " WHERE conversation_entry_uuid=?")));
+      CHECK(statement.is_valid());
+      if (!entry_uuid.empty()) {
+        statement.BindString(0, entry_uuid);
+      }
+      CHECK(statement.Step());
+      counts[table] = statement.ColumnInt(0);
+    }
+    return counts;
+  }
+
+  void ExpectNoChildRows(std::string_view entry_uuid = "") {
+    for (const auto& [table, count] : CountChildRows(entry_uuid)) {
+      EXPECT_EQ(count, 0) << table << " for entry '" << entry_uuid << "'";
+    }
+  }
+
+  // Persists a conversation with associated content, an uploaded file, one
+  // event of every persisted kind, and an edit of the response carrying a copy
+  // of those events plus its own uploaded file. Returns the persisted history.
+  std::vector<mojom::ConversationTurnPtr> AddConversationWithEveryChildRow(
+      const std::string& conversation_uuid,
+      const std::string& edit_uuid) {
+    auto history = CreateSampleChatHistory(1u, /*future_hours=*/0,
+                                           /*num_uploaded_files_per_query=*/1u);
+    auto& response = history[1];
+    response->events->push_back(CreateWebSourcesEvent());
+    response->events->push_back(CreateInlineSearchEvent());
+    response->events->push_back(CreateToolUseEvent());
+
+    // The assistant edit path clones the turn's events into the edit.
+    auto edit = response->Clone();
+    edit->uuid = edit_uuid;
+    edit->uploaded_files = CreateUploadedFile();
+    response->edits = std::vector<mojom::ConversationTurnPtr>{};
+    response->edits->push_back(std::move(edit));
+
+    std::vector<mojom::AssociatedContentPtr> associated_content;
+    associated_content.push_back(mojom::AssociatedContent::New(
+        "content", mojom::ContentType::PageContent, "page title", 1,
+        GURL("https://example.com/page"), 62, history[0]->uuid.value(), false));
+    auto metadata = mojom::Conversation::New(
+        conversation_uuid, "title", base::Time::Now(), true, std::nullopt, 0, 0,
+        false, std::move(associated_content));
+
+    CHECK(db_->AddConversation(std::move(metadata), {"Page contents"},
+                               history[0]->Clone()));
+    CHECK(db_->AddConversationEntry(conversation_uuid, response->Clone()));
+    return history;
+  }
+
+  void SetEditingEntryUuid(std::string_view entry_uuid,
+                           std::string_view edit_uuid) {
+    sql::Statement statement(db_->GetDB().GetUniqueStatement(
+        "UPDATE conversation_entry SET editing_entry_uuid=? WHERE uuid=?"));
+    CHECK(statement.is_valid());
+    statement.BindString(0, edit_uuid);
+    statement.BindString(1, entry_uuid);
+    CHECK(statement.Run());
   }
 
  protected:
@@ -271,6 +388,53 @@ TEST_P(AIChatDatabaseTest, AddAndGetConversationAndEntries) {
   EXPECT_TRUE(db_->DeleteConversation("first"));
   conversations = db_->GetAllConversations();
   EXPECT_EQ(conversations.size(), 0u);
+}
+
+// An edit is a conversation_entry row of its own which owns its own events and
+// uploaded files, so deleting the entry it edits has to delete those too.
+TEST_P(AIChatDatabaseTest, DeleteConversationEntryDeletesEditChildRows) {
+  const std::string conversation_uuid = "delete_entry";
+  const std::string edit_uuid = "edit-uuid";
+  auto history = AddConversationWithEveryChildRow(conversation_uuid, edit_uuid);
+
+  auto edit_rows = CountChildRows(edit_uuid);
+  EXPECT_EQ(edit_rows["conversation_entry_event_completion"], 2);
+  EXPECT_EQ(edit_rows["conversation_entry_event_search_queries"], 1);
+  EXPECT_EQ(edit_rows["conversation_entry_event_web_sources"], 1);
+  EXPECT_EQ(edit_rows["conversation_entry_event_inline_search"], 1);
+  EXPECT_EQ(edit_rows["conversation_entry_event_tool_use"], 1);
+  EXPECT_EQ(edit_rows["conversation_entry_uploaded_files"], 1);
+
+  ASSERT_TRUE(db_->DeleteConversationEntry(history[1]->uuid.value()));
+  ExpectNoChildRows(edit_uuid);
+  ExpectNoChildRows(history[1]->uuid.value());
+
+  // Deleting the only remaining entry should leave nothing behind.
+  ASSERT_TRUE(db_->DeleteConversationEntry(history[0]->uuid.value()));
+  ExpectNoChildRows();
+  EXPECT_EQ(db_->GetConversationData(conversation_uuid)->entries.size(), 0u);
+}
+
+// Entry uuids come from the caller, so a cycle of edit references can't be
+// ruled out. Deleting has to terminate rather than follow it forever.
+TEST_P(AIChatDatabaseTest, DeleteConversationEntryWithCyclicEdit) {
+  const std::string conversation_uuid = "cyclic_edit";
+  const std::string edit_uuid = "edit-uuid";
+  auto history = AddConversationWithEveryChildRow(conversation_uuid, edit_uuid);
+  SetEditingEntryUuid(history[1]->uuid.value(), edit_uuid);
+
+  ASSERT_TRUE(db_->DeleteConversationEntry(history[1]->uuid.value()));
+  ExpectNoChildRows(edit_uuid);
+  ExpectNoChildRows(history[1]->uuid.value());
+}
+
+TEST_P(AIChatDatabaseTest, DeleteConversationDeletesAllChildRows) {
+  const std::string conversation_uuid = "delete_conversation";
+  AddConversationWithEveryChildRow(conversation_uuid, "edit-uuid");
+
+  ASSERT_TRUE(db_->DeleteConversation(conversation_uuid));
+  ExpectNoChildRows();
+  EXPECT_EQ(db_->GetAllConversations().size(), 0u);
 }
 
 TEST_P(AIChatDatabaseTest, ConversationThreadEntries) {
@@ -1501,6 +1665,15 @@ class AIChatDatabaseMigrationTest : public testing::Test,
   // Returns the database version for the test.
   int version() const { return GetParam(); }
 
+  int CountRowsForEntry(std::string_view table, std::string_view entry_uuid) {
+    sql::Statement statement(db_->GetDB().GetUniqueStatement(absl::StrFormat(
+        "SELECT COUNT(*) FROM %s WHERE conversation_entry_uuid=?", table)));
+    CHECK(statement.is_valid());
+    statement.BindString(0, entry_uuid);
+    CHECK(statement.Step());
+    return statement.ColumnInt(0);
+  }
+
  protected:
   base::test::TaskEnvironment task_environment_{
       base::test::TaskEnvironment::TimeSource::MOCK_TIME};
@@ -1863,6 +2036,29 @@ TEST_P(AIChatDatabaseMigrationTest, Migration_Version7To8_SkillColumn) {
   ASSERT_TRUE(latest_entry->skill);
   EXPECT_EQ(latest_entry->skill->shortcut, "summarize");
   EXPECT_EQ(latest_entry->skill->prompt, "Please summarize this content");
+}
+
+TEST_P(AIChatDatabaseMigrationTest, Migration_Version11To12_OrphanedChildRows) {
+  // Triggers the migration, which happens on first use.
+  ASSERT_GT(db_->GetAllConversations().size(), 0u);
+
+  // Only the v11 dump carries rows left behind by the old delete paths.
+  if (version() != 11) {
+    return;
+  }
+
+  for (const char* table : kEntryChildTables) {
+    EXPECT_EQ(CountRowsForEntry(table, "orphan-edit-uuid"), 0) << table;
+  }
+
+  // Rows that still have their conversation entry are left alone.
+  auto conversation_data =
+      db_->GetConversationData("1ae484fe-ab33-4f42-8813-14080e4addc1");
+  ASSERT_EQ(conversation_data->entries.size(), 2u);
+  ASSERT_TRUE(conversation_data->entries[0]->uploaded_files);
+  EXPECT_EQ(conversation_data->entries[0]->uploaded_files->size(), 2u);
+  ASSERT_TRUE(conversation_data->entries[1]->events);
+  EXPECT_EQ(conversation_data->entries[1]->events->size(), 1u);
 }
 
 }  // namespace ai_chat
