@@ -5,7 +5,6 @@
 
 #include "brave/components/misc_metrics/features.h"
 
-#include "base/feature_list.h"
 #include "base/time/time.h"
 
 namespace misc_metrics::features {

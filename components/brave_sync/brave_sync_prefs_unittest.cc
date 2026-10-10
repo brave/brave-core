@@ -7,8 +7,6 @@
 
 #include <memory>
 
-#include "base/base64.h"
-#include "base/test/gtest_util.h"
 #include "base/test/task_environment.h"
 #include "build/build_config.h"
 #include "components/prefs/testing_pref_service.h"

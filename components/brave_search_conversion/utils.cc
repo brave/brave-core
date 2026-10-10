@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_search_conversion/utils.h"
 
-#include <algorithm>
-
 #include "base/check.h"
 #include "base/feature_list.h"
 #include "base/logging.h"
@@ -23,7 +21,6 @@
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
-#include "components/search_engines/template_url_data.h"
 #include "components/search_engines/template_url_service.h"
 #include "url/gurl.h"
 

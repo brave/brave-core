@@ -5,19 +5,13 @@
 
 #include "brave/components/url_sanitizer/core/browser/url_sanitizer_component_installer.h"
 
-#include <memory>
 #include <utility>
 
-#include "base/base_paths.h"
 #include "base/command_line.h"
-#include "base/containers/flat_set.h"
 #include "base/functional/bind.h"
-#include "base/json/json_reader.h"
 #include "base/task/thread_pool.h"
-#include "base/types/expected.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
-#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 
 using brave_component_updater::LocalDataFilesObserver;
 using brave_component_updater::LocalDataFilesService;

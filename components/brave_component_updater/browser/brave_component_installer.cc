@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_component_updater/browser/brave_component_installer.h"
 
-#include <memory>
 #include <utility>
 
 #include "base/files/file_path.h"
@@ -13,7 +12,6 @@
 #include "base/json/json_string_value_serializer.h"
 #include "base/values.h"
 #include "base/version.h"
-#include "components/component_updater/component_updater_service.h"
 #include "components/crx_file/id_util.h"
 #include "components/update_client/update_client.h"
 #include "components/update_client/update_client_errors.h"

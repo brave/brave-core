@@ -5,8 +5,6 @@
 
 #include "brave/components/speedreader/rust/ffi/speedreader.h"
 
-#include <iostream>
-
 #include "brave/components/speedreader/rust/ffi/speedreader_ffi.h"
 
 namespace speedreader {

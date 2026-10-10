@@ -12,7 +12,6 @@
 #include <vector>
 
 #include "base/functional/bind.h"
-#include "base/functional/callback_helpers.h"
 #include "base/test/bind.h"
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
@@ -20,7 +19,6 @@
 #include "base/test/test_future.h"
 #include "base/types/expected.h"
 #include "base/values.h"
-#include "brave/components/brave_account/brave_account_service.h"
 #include "brave/components/brave_account/features.h"
 #include "brave/components/brave_account/mock_brave_account_authentication.h"
 #include "brave/components/brave_account/mojom/get_service_token.mojom.h"

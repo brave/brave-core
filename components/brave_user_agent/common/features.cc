@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_user_agent/common/features.h"
 
-#include "base/feature_list.h"
-
 namespace brave_user_agent {
 namespace features {
 

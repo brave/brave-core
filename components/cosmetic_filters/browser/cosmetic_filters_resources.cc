@@ -9,11 +9,9 @@
 #include <optional>
 #include <utility>
 
-#include "base/check.h"
 #include "base/feature_list.h"
 #include "base/json/json_reader.h"
 #include "base/json/string_escape.h"
-#include "base/memory/scoped_refptr.h"
 #include "base/strings/string_util.h"
 #include "base/values.h"
 #include "brave/components/brave_shields/content/browser/ad_block_engine_wrapper.h"

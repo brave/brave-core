@@ -5,7 +5,6 @@
 
 #include "brave/components/google_sign_in_permission/features.h"
 
-#include "base/feature_list.h"
 #include "build/build_config.h"
 
 namespace google_sign_in_permission::features {

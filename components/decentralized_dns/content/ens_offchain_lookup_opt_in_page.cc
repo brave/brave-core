@@ -5,7 +5,6 @@
 
 #include "brave/components/decentralized_dns/content/ens_offchain_lookup_opt_in_page.h"
 
-#include <ostream>
 #include <utility>
 
 #include "base/check.h"

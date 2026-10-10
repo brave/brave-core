@@ -7,7 +7,6 @@
 
 #include "base/check.h"
 #include "brave/components/decentralized_dns/core/constants.h"
-#include "brave/components/decentralized_dns/core/pref_names.h"
 #include "brave/components/decentralized_dns/core/utils.h"
 #include "components/prefs/pref_service.h"
 #include "components/security_interstitials/content/settings_page_helper.h"
