@@ -6,6 +6,7 @@
 import '//resources/cr_elements/cr_icon_button/cr_icon_button.js'
 import '//resources/mojo/skia/public/mojom/skcolor.mojom-webui.js'
 import '//resources/brave/leo.bundle.js'
+import '../controls/settings_dropdown_menu.js'
 import '../controls/settings_toggle_button.js'
 
 import { I18nMixinLit } from '//resources/cr_elements/i18n_mixin_lit.js'
@@ -22,7 +23,12 @@ import {
   Container,
   ContainerOperationError,
   Icon,
+  NewTabDefault,
 } from '../containers.mojom-webui.js'
+import type {
+  DropdownMenuOptionList,
+  SettingsDropdownMenuElement,
+} from '../controls/settings_dropdown_menu.js'
 
 import backgroundColors from './background_colors.js'
 import { getCss } from './containers.css.js'
@@ -31,6 +37,12 @@ import type { ColorSelectedEvent } from './containers_background_chip.js'
 import { ContainersSettingsHandlerBrowserProxy } from './containers_browser_proxy.js'
 import type { IconSelectedEvent } from './containers_icon.js'
 import { DragReorderMixin, getDragReorderCss } from './drag_reorder_mixin.js'
+
+// Dropdown value for "new temporary container"; distinct from '' (no
+// container) and from any container id. Same sentinel traffic control uses.
+const kTemporaryContainerDropdownValue = '__temporary_container__'
+// Dropdown value for "ask every time" (the new-tab button shows the menu).
+const kAskEachTimeDropdownValue = '__ask_each_time__'
 
 const SettingsBraveContentContainersElementBase = DragReorderMixin(
   PrefServiceObserverMixinLit(I18nMixinLit(CrLitElement)),
@@ -60,6 +72,9 @@ export class SettingsBraveContentContainersElement extends SettingsBraveContentC
       containersList_: {
         type: Array,
       },
+      newTabDefault_: {
+        type: Object,
+      },
       editingContainer_: {
         type: Object,
       },
@@ -83,6 +98,11 @@ export class SettingsBraveContentContainersElement extends SettingsBraveContentC
     | chrome.settingsPrivate.PrefObject<boolean>
     | undefined
   accessor containersList_: Container[] = []
+  accessor newTabDefault_: NewTabDefault = {
+    containerId: '',
+    temporaryContainer: false,
+    askEachTime: false,
+  }
   accessor editingContainer_: Container | undefined
   accessor deletingContainer_: Container | undefined
   accessor isEditDialogNameInvalid_ = false
@@ -97,6 +117,14 @@ export class SettingsBraveContentContainersElement extends SettingsBraveContentC
     this.mirrorPref('brave.containers.enabled', 'containersEnabledPref_')
     this.browserProxy.callbackRouter.onContainersChanged.addListener(
       this.onContainersListUpdated_.bind(this),
+    )
+    this.browserProxy.handler.getNewTabDefault().then(({ newTabDefault }) => {
+      this.newTabDefault_ = newTabDefault
+    })
+    this.browserProxy.callbackRouter.onNewTabDefaultChanged.addListener(
+      (newTabDefault: NewTabDefault) => {
+        this.newTabDefault_ = newTabDefault
+      },
     )
   }
 
@@ -129,6 +157,54 @@ export class SettingsBraveContentContainersElement extends SettingsBraveContentC
         }
       })
       .catch(() => this.onReorderableItemsUpdated_())
+  }
+
+  newTabDefaultMenuOptions_(): DropdownMenuOptionList {
+    return [
+      {
+        name: this.i18n(ContainersStrings.CXMENU_NO_CONTAINER),
+        value: '',
+      },
+      ...this.containersList_.map((c) => ({ name: c.name, value: c.id })),
+      {
+        name: this.i18n(ContainersStrings.CXMENU_NEW_TEMPORARY_CONTAINER),
+        value: kTemporaryContainerDropdownValue,
+      },
+      {
+        name: this.i18n(
+          ContainersStrings.SETTINGS_CONTAINERS_NEW_TAB_DEFAULT_ASK_LABEL,
+        ),
+        value: kAskEachTimeDropdownValue,
+      },
+    ]
+  }
+
+  newTabDefaultDropdownValue_(): string {
+    if (this.newTabDefault_.temporaryContainer) {
+      return kTemporaryContainerDropdownValue
+    }
+    if (this.newTabDefault_.askEachTime) {
+      return kAskEachTimeDropdownValue
+    }
+    return this.newTabDefault_.containerId
+  }
+
+  async onNewTabDefaultSettingsControlChange_(e: Event) {
+    const selected =
+      (e.target as SettingsDropdownMenuElement).getSelectedValue() ?? ''
+    const newTabDefault: NewTabDefault = {
+      containerId: '',
+      temporaryContainer: selected === kTemporaryContainerDropdownValue,
+      askEachTime: selected === kAskEachTimeDropdownValue,
+    }
+    if (!newTabDefault.temporaryContainer && !newTabDefault.askEachTime) {
+      newTabDefault.containerId = selected
+    }
+    const { error } =
+      await this.browserProxy.handler.setNewTabDefault(newTabDefault)
+    if (!error) {
+      this.newTabDefault_ = newTabDefault
+    }
   }
 
   onAddContainerClick_() {

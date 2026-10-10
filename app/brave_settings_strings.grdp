@@ -107,6 +107,12 @@
     <message name="IDS_SETTINGS_CONTAINERS_ALWAYS_USE_MINI_ICON_LABEL" desc="Label for a settings toggle that makes container tabs always show only the mini container icon overlay instead of a larger container icon even when tab space allows." formatter_data="webui=Containers">
       Always use mini icon for containers
     </message>
+    <message name="IDS_SETTINGS_CONTAINERS_NEW_TAB_DEFAULT_LABEL" desc="Label for the dropdown that picks which container blank new tabs (Ctrl+T, the new tab button) open in" formatter_data="webui=Containers">
+      Open new tabs in
+    </message>
+    <message name="IDS_SETTINGS_CONTAINERS_NEW_TAB_DEFAULT_ASK_LABEL" desc="Option in the 'Open new tabs in' dropdown: clicking the new tab button shows the container menu every time instead of opening a tab" formatter_data="webui=Containers">
+      Ask every time
+    </message>
     <message name="IDS_SETTINGS_CONTAINERS_ADD_CONTAINER_LABEL" desc="The label for dialog title for adding a container" formatter_data="webui=Containers">
       Add new container
     </message>

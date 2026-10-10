@@ -45,6 +45,10 @@ ContainersSettingsHandler::ContainersSettingsHandler(PrefService* prefs)
       prefs::kContainersList,
       base::BindRepeating(&ContainersSettingsHandler::OnContainersChanged,
                           base::Unretained(this)));
+  pref_change_registrar_.Add(
+      prefs::kNewTabDefault,
+      base::BindRepeating(&ContainersSettingsHandler::OnNewTabDefaultChanged,
+                          base::Unretained(this)));
 }
 
 ContainersSettingsHandler::~ContainersSettingsHandler() {}
@@ -158,6 +162,31 @@ void ContainersSettingsHandler::ReorderContainers(
   std::move(callback).Run(std::nullopt);
 }
 
+void ContainersSettingsHandler::GetNewTabDefault(
+    GetNewTabDefaultCallback callback) {
+  std::move(callback).Run(GetNewTabDefaultFromPrefs(*prefs_));
+}
+
+void ContainersSettingsHandler::SetNewTabDefault(
+    mojom::NewTabDefaultPtr new_tab_default,
+    SetNewTabDefaultCallback callback) {
+  const int choices = (new_tab_default->temporary_container ? 1 : 0) +
+                      (new_tab_default->ask_each_time ? 1 : 0) +
+                      (new_tab_default->container_id.empty() ? 0 : 1);
+  if (choices > 1) {
+    std::move(callback).Run(
+        mojom::ContainerOperationError::kInvalidNewTabDefault);
+    return;
+  }
+  if (!new_tab_default->container_id.empty() &&
+      !GetContainerFromPrefs(*prefs_, new_tab_default->container_id)) {
+    std::move(callback).Run(mojom::ContainerOperationError::kNotFound);
+    return;
+  }
+  SetNewTabDefaultToPrefs(new_tab_default, *prefs_);
+  std::move(callback).Run(std::nullopt);
+}
+
 // static
 std::optional<mojom::ContainerOperationError>
 ContainersSettingsHandler::ValidateEditableContainerProperties(
@@ -181,6 +210,12 @@ void ContainersSettingsHandler::OnContainersChanged() {
   // Notify UI about container list changes (from this window or others).
   if (ui_) {
     ui_->OnContainersChanged(GetContainersFromPrefs(*prefs_));
+  }
+}
+
+void ContainersSettingsHandler::OnNewTabDefaultChanged() {
+  if (ui_) {
+    ui_->OnNewTabDefaultChanged(GetNewTabDefaultFromPrefs(*prefs_));
   }
 }
 
