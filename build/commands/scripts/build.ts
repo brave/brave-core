@@ -9,6 +9,7 @@ import '../lib/checkEnvironment.js'
 import { program } from 'commander'
 import * as buildOptions from '../lib/buildOptions.ts'
 import { build } from '../lib/build.ts'
+import { supportBuilder } from '../lib/builder.ts'
 
 program
   .apply(buildOptions.supportBuildConfigArg)
@@ -17,5 +18,8 @@ program
   .apply(buildOptions.supportGnArgs)
   .apply(buildOptions.supportGnGenOptions)
   .apply(buildOptions.supportNinjaOptions)
+  // TODO(http://brave.dev/b/56449): Experimental implementation for integration
+  // with our bots generator.
+  .apply(supportBuilder)
   .action(build)
   .parseAsync()
