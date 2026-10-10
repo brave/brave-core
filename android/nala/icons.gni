@@ -234,6 +234,28 @@ nala_chrome_app_icon_overrides = [
     source = "ic_phone_call_in.xml"
     dest = "ic_add_to_home_screen.xml"
   },
+  {
+    # Override the desktop device icon in the send tab to self device picker.
+    source = "ic_laptop.xml"
+    dest = "computer_black_24dp.xml"
+  },
+  {
+    # Override the phone device icon in the send tab to self device picker.
+    source = "ic_smartphone.xml"
+    dest = "smartphone_black_24dp.xml"
+  },
+  {
+    # Override the tablet device icon in the send tab to self device picker.
+    source = "ic_tablet.xml"
+    dest = "tablet_black_24dp.xml"
+  },
+  {
+    # Override the generic device icon, used both for a device of unknown form
+    # factor and as the icon of the cross-device UI itself, so it has to stay a
+    # multi-device glyph rather than match the three above.
+    source = "ic_smartphone_laptop.xml"
+    dest = "devices_black_24dp.xml"
+  },
 ]
 
 # Raster overrides: for upstream icons that ship ONLY as density-qualified PNGs
@@ -361,6 +383,7 @@ nala_icons = [
   "ic_idea.xml",
   "ic_info_outline.xml",
   "ic_key.xml",
+  "ic_laptop.xml",
   "ic_launch.xml",
   "ic_link_normal.xml",
   "ic_location_on.xml",
@@ -391,12 +414,15 @@ nala_icons = [
   "ic_share.xml",
   "ic_shield_done.xml",
   "ic_shred_data.xml",
+  "ic_smartphone.xml",
+  "ic_smartphone_laptop.xml",
   "ic_social_brave_carved_favicon_fullheight.xml",
   "ic_social_brave_monochrome_favicon_fullheight_color.xml",
   "ic_social_brave_outline_favicon_fullheight.xml",
   "ic_social_brave_release_favicon_fullheight_color.xml",
   "ic_star_circle.xml",
   "ic_star_outline.xml",
+  "ic_tablet.xml",
   "ic_theme_dark.xml",
   "ic_themes.xml",
   "ic_trash.xml",
