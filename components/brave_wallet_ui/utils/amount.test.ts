@@ -375,6 +375,11 @@ describe('Amount class', () => {
       },
     )
 
+    it('should mask hidden assets with a suffix symbol', () => {
+      expect(Amount.formatHiddenAsAsset('BAT')).toBe('•••• BAT')
+      expect(Amount.formatHiddenAsAsset()).toBe('••••')
+    })
+
     it('should mask hidden fiat without dropping the currency symbol', () => {
       expect(Amount.formatHiddenAsFiat('USD')).toBe('$••••')
       expect(Amount.formatHiddenAsFiat()).toBe('••••')

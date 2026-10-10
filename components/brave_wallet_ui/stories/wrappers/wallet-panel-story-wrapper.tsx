@@ -23,7 +23,10 @@ import walletLightTheme from '../../theme/wallet-light'
 
 // Mocks
 import { createMockStore } from '../../utils/test-utils'
-import { WalletApiDataOverrides } from '../../constants/testing_types'
+import {
+  BraveRewardsProxyOverrides,
+  WalletApiDataOverrides,
+} from '../../constants/testing_types'
 import '../locale'
 
 // Styles
@@ -34,6 +37,7 @@ export interface WalletPanelStoryProps {
   panelStateOverride?: Partial<PanelState>
   uiStateOverride?: Partial<UIState>
   walletApiDataOverrides?: WalletApiDataOverrides
+  rewardsApiOverrides?: BraveRewardsProxyOverrides
   dontWrapInPanelFrame?: boolean
 }
 
@@ -45,6 +49,7 @@ export const WalletPanelStory: React.FC<
   walletStateOverride,
   uiStateOverride,
   walletApiDataOverrides,
+  rewardsApiOverrides,
   dontWrapInPanelFrame,
 }) => {
   // redux
@@ -56,11 +61,13 @@ export const WalletPanelStory: React.FC<
         uiStateOverride: uiStateOverride,
       },
       walletApiDataOverrides,
+      rewardsApiOverrides,
     )
   }, [
     walletStateOverride,
     panelStateOverride,
     walletApiDataOverrides,
+    rewardsApiOverrides,
     uiStateOverride,
   ])
 

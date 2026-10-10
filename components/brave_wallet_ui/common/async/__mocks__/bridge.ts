@@ -705,29 +705,37 @@ export class MockedWalletApiProxy {
     getPrice: async (requests, vsCurrency) => {
       return {
         success: true,
-        values: requests.map((request) => ({
-          percentageChange24h: '1',
-          coin: request.coin,
-          chainId: request.chainId,
-          address: request.address || '',
-          vsCurrency: vsCurrency,
-          cacheStatus: BraveWallet.Gate3CacheStatus.kHit,
-          source: BraveWallet.AssetPriceSource.kCoingecko,
-          price: '3873.78',
-        })),
+        values: requests.map((request) => {
+          const isBat =
+            (request.address || '').toLowerCase()
+            === mockBasicAttentionToken.contractAddress.toLowerCase()
+          return {
+            percentageChange24h: '1',
+            coin: request.coin,
+            chainId: request.chainId,
+            address: request.address || '',
+            vsCurrency,
+            cacheStatus: BraveWallet.Gate3CacheStatus.kHit,
+            source: BraveWallet.AssetPriceSource.kCoingecko,
+            price: isBat ? '0.10' : '3873.78',
+          }
+        }),
       }
     },
     getPriceHistory: async (_asset, _vsAsset, _timeframe) => {
+      const isBat =
+        (_asset || '').toLowerCase()
+        === mockBasicAttentionToken.contractAddress.toLowerCase()
       return {
         success: true,
         values: [
           {
             date: { microseconds: BigInt(0) },
-            price: '3500',
+            price: isBat ? '0.09' : '3500',
           },
           {
             date: { microseconds: BigInt(1) },
-            price: '3873.78',
+            price: isBat ? '0.10' : '3873.78',
           },
         ],
       }
