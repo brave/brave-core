@@ -12,7 +12,6 @@
 #include <utility>
 
 #include "base/strings/string_number_conversions.h"
-#include "brave/components/brave_wallet/browser/zcash/zcash_serializer.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
 

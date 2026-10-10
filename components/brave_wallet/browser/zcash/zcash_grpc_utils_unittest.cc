@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_wallet/browser/zcash/zcash_grpc_utils.h"
 
-#include <memory>
 #include <optional>
 #include <string>
 #include <utility>

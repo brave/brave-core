@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_hd_keyring.h"
 
-#include <memory>
-#include <utility>
 #include <vector>
 
 #include "base/strings/string_number_conversions.h"

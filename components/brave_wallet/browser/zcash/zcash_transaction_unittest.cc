@@ -7,12 +7,10 @@
 
 #include <array>
 #include <limits>
-#include <memory>
 #include <utility>
 
 #include "base/strings/string_number_conversions.h"
 #include "base/test/values_test_util.h"
-#include "brave/components/brave_wallet/browser/zcash/zcash_serializer.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"

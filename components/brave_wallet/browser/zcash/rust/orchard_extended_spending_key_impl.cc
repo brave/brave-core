@@ -8,8 +8,6 @@
 #include <utility>
 #include <variant>
 
-#include "base/memory/ptr_util.h"
-
 namespace brave_wallet::orchard {
 
 OrchardExtendedSpendingKeyImpl::OrchardExtendedSpendingKeyImpl(

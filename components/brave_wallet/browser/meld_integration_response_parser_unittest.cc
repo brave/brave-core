@@ -7,13 +7,9 @@
 
 #include <algorithm>
 #include <cstddef>
-#include <memory>
 #include <string>
-#include <utility>
 
 #include "base/test/values_test_util.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
-#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 using base::test::ParseJson;

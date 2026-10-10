@@ -7,7 +7,6 @@
 
 #include <memory>
 #include <optional>
-#include <utility>
 
 #include "base/functional/bind.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_rpc.h"

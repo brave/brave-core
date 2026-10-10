@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_wallet/browser/blockchain_list_parser.h"
 
-#include <memory>
 #include <optional>
 #include <utility>
 #include <vector>

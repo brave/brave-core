@@ -12,7 +12,6 @@
 #include <utility>
 
 #include "base/base64.h"
-#include "base/check.h"
 #include "base/command_line.h"
 #include "base/containers/span.h"
 #include "base/containers/span_writer.h"
@@ -40,7 +39,6 @@
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_service_delegate.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/ethereum_keyring.h"
 #include "brave/components/brave_wallet/browser/fil_transaction.h"
@@ -60,7 +58,6 @@
 #include "brave/components/brave_wallet/common/encoding_utils.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
-#include "brave/components/brave_wallet/common/switches.h"
 #include "brave/components/brave_wallet/common/test_utils.h"  // IWYU pragma: keep
 #include "build/build_config.h"
 #include "components/grit/brave_components_strings.h"
