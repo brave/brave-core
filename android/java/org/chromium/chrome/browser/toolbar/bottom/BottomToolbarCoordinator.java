@@ -60,6 +60,8 @@ import org.chromium.components.omnibox.OmniboxFocusReason;
 class BottomToolbarCoordinator implements View.OnLongClickListener {
     private static final String TAG = "BottomToolbar";
 
+    private static final long SEARCH_ACCELERATOR_FOCUS_DELAY_MS = 200;
+
     /** The browsing mode bottom toolbar component */
     protected final BrowsingModeBottomToolbarCoordinator mBrowsingModeCoordinator;
 
@@ -116,9 +118,12 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
                 };
 
         final OnClickListener searchAcceleratorListener =
-                v -> {
-                    setUrlBarFocusAction.onResult(OmniboxFocusReason.ACCELERATOR_TAP);
-                };
+                v ->
+                        v.postDelayed(
+                                () ->
+                                        setUrlBarFocusAction.onResult(
+                                                OmniboxFocusReason.ACCELERATOR_TAP),
+                                SEARCH_ACCELERATOR_FOCUS_DELAY_MS);
 
         mHomepageManager = HomepageManager.getInstance();
 
