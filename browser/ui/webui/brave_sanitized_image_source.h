@@ -35,7 +35,6 @@ class SimpleURLLoader;
 // * supporting target_size. Resized images take less CPU to encode and
 //   less memory to store;
 // * using different encoding method: PNG FastEncodeBGRASkBitmap.
-// * disabling caching (saving renderer memory);
 // * USER_VISIBLE_PRIORITY.
 //
 // When `serve_untrusted` is true the source is served from
