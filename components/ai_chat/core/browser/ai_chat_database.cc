@@ -546,6 +546,68 @@ mojom::ConversationArchivePtr AIChatDatabase::GetConversationData(
       GetArchiveContentsForConversation(conversation_uuid));
 }
 
+std::optional<std::string> AIChatDatabase::GetConversationUuidForEntry(
+    std::string_view conversation_entry_uuid) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (!LazyInit()) {
+    return std::nullopt;
+  }
+
+  static constexpr char kQuery[] =
+      "SELECT conversation_uuid FROM conversation_entry WHERE uuid=?";
+  sql::Statement statement(GetDB().GetCachedStatement(SQL_FROM_HERE, kQuery));
+  CHECK(statement.is_valid());
+  statement.BindString(0, conversation_entry_uuid);
+  if (!statement.Step()) {
+    return std::nullopt;
+  }
+  return statement.ColumnString(0);
+}
+
+mojom::ConversationTurnPtr AIChatDatabase::GetConversationEntryWithEdits(
+    std::string_view conversation_entry_uuid) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (!LazyInit()) {
+    return nullptr;
+  }
+
+  // Selecting the entry together with its edit rows lets GetConversationEntries
+  // reassemble them: only the entry itself has a null editing_entry_uuid, so it
+  // is the single element of the returned history and the edits are attached to
+  // it.
+  sql::Statement statement(GetDB().GetCachedStatement(
+      SQL_FROM_HERE, absl::StrFormat(kConversationEntriesQueryTemplate,
+                                     "uuid=? OR editing_entry_uuid=?")));
+  CHECK(statement.is_valid());
+  statement.BindString(0, conversation_entry_uuid);
+  statement.BindString(1, conversation_entry_uuid);
+
+  auto entries = GetConversationEntries(statement);
+  if (entries.empty()) {
+    return nullptr;
+  }
+  return std::move(entries.front());
+}
+
+base::flat_set<std::string> AIChatDatabase::GetEntryUuidsWithEditRevisions() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (!LazyInit()) {
+    return {};
+  }
+
+  static constexpr char kQuery[] =
+      "SELECT DISTINCT editing_entry_uuid FROM conversation_entry"
+      " WHERE editing_entry_uuid IS NOT NULL";
+  sql::Statement statement(GetDB().GetCachedStatement(SQL_FROM_HERE, kQuery));
+  CHECK(statement.is_valid());
+
+  std::vector<std::string> uuids;
+  while (statement.Step()) {
+    uuids.emplace_back(statement.ColumnString(0));
+  }
+  return base::flat_set<std::string>(std::move(uuids));
+}
+
 std::vector<mojom::ConversationTurnPtr>
 AIChatDatabase::GetConversationThreadEntries(std::string_view thread_uuid) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
