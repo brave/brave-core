@@ -205,6 +205,11 @@ void PsstUiDesktopPresenter::HideInfoBar() {
 }
 
 void PsstUiDesktopPresenter::ShowConsentDialog() {
+  // Prevents dialogs from stacking on top of each other.
+  if (IsDialogShown()) {
+    return;
+  }
+
   if (psst_action_controller_) {
     psst_action_controller_->SetShowBadge(false);
   }
