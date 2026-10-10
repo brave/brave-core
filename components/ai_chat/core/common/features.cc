@@ -53,6 +53,9 @@ const base::FeatureParam<bool> kAutomaticModelSupportsTools{
 const base::FeatureParam<bool> kShouldIndentPageContentBlocks{
     &kAIChat, "should_indent_page_content_blocks", true};
 
+const base::FeatureParam<size_t> kMaxConnectionIssueRetries{
+    &kAIChat, "max_connection_issue_retries", 1};
+
 // Enable remote model fetching from server endpoint
 BASE_FEATURE(kAIChatRemoteModelsConfig, base::FEATURE_DISABLED_BY_DEFAULT);
 
