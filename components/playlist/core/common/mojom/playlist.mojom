@@ -213,4 +213,5 @@ interface PlaylistStreamingObserver {
 interface PlaylistRenderFrameObserverConfigurator {
   AddMediaSourceAPISuppressor(string media_source_api_suppressor);
   AddMediaDetector(string media_detector);
+  ClearMediaScripts();
 };

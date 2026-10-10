@@ -10,12 +10,15 @@
 
 #include "base/check.h"
 #include "base/check_op.h"
+#include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/logging.h"
 #include "brave/components/playlist/content/browser/playlist_constants.h"
 #include "brave/components/playlist/content/browser/playlist_media_handler.h"
+#include "brave/components/playlist/content/browser/playlist_network_media_detector.h"
 #include "brave/components/playlist/content/browser/playlist_service.h"
 #include "brave/components/playlist/content/browser/playlist_tab_helper_observer.h"
+#include "brave/components/playlist/core/common/features.h"
 #include "brave/components/playlist/core/common/pref_names.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/user_prefs/user_prefs.h"
@@ -36,6 +39,14 @@ void PlaylistTabHelper::CreateForWebContents(content::WebContents* web_contents,
   PlaylistMediaHandler::CreateForWebContents(
       web_contents, base::BindRepeating(&PlaylistService::OnMediaDetected,
                                         service->GetWeakPtr()));
+
+  if (base::FeatureList::IsEnabled(features::kPlaylistServiceV2)) {
+    // YouTube remains on the legacy detector while it uses SABR. All other
+    // sites are handled by this network-based detector.
+    PlaylistNetworkMediaDetector::CreateForWebContents(
+        web_contents, base::BindRepeating(&PlaylistService::OnMediaDetected,
+                                          service->GetWeakPtr()));
+  }
 }
 
 PlaylistTabHelper::PlaylistTabHelper(content::WebContents* contents,
@@ -140,8 +151,15 @@ void PlaylistTabHelper::ReadyToCommitNavigation(
   navigation_handle->GetRenderFrameHost()
       ->GetRemoteAssociatedInterfaces()
       ->GetInterface(&frame_observer_config);
-  frame_observer_config->AddMediaDetector(
-      service_->GetMediaDetectorScript(url));
+  if (!base::FeatureList::IsEnabled(features::kPlaylistServiceV2) ||
+      IsYoutubeLegacyPlaylistSite(url)) {
+    frame_observer_config->AddMediaDetector(
+        service_->GetMediaDetectorScript(url));
+  } else {
+    // RenderFrameObservers survive same-site navigations. Clear any scripts
+    // configured by a preceding YouTube page before this V2 page commits.
+    frame_observer_config->ClearMediaScripts();
+  }
 }
 
 void PlaylistTabHelper::DidFinishNavigation(

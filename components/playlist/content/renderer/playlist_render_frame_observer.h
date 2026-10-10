@@ -67,6 +67,7 @@ class PlaylistRenderFrameObserver final
   void AddMediaSourceAPISuppressor(
       const std::string& media_source_api_suppressor) override;
   void AddMediaDetector(const std::string& media_detector) override;
+  void ClearMediaScripts() override;
 
   void BindConfigurator(
       mojo::PendingAssociatedReceiver<

@@ -24,6 +24,7 @@
 #include "base/strings/string_split.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/playlist/content/browser/media_detector_component_manager.h"
+#include "brave/components/playlist/content/browser/media_stream_classifier.h"
 #include "brave/components/playlist/content/browser/playlist_background_web_contentses.h"
 #include "brave/components/playlist/content/browser/playlist_constants.h"
 #include "brave/components/playlist/content/browser/playlist_tab_helper.h"
@@ -1089,6 +1090,11 @@ void PlaylistService::OnMediaFileDownloadFinished(
   item->cached = !media_file_path.empty();
   if (item->cached) {
     item->media_path = GURL("file://" + media_file_path);
+    // A stream was saved as segments plus a local manifest rather than as one
+    // file. `hls_media_path` is what tells consumers to play the manifest.
+    if (IsHlsManifestUrl(item->media_path)) {
+      item->hls_media_path = item->media_path;
+    }
     if (received_bytes) {
       item->media_file_bytes = received_bytes;
     }
