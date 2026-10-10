@@ -19,13 +19,16 @@ interface Props {
 function ErrorPanel(props: Props) {
   const dispatch = useDispatch()
   const currentRegion = useSelector((state) => state.currentRegion)
+  const isReconnecting = useSelector((state) => state.isReconnectingToAgent)
 
   const handleShowMainView = () => {
     dispatch(Actions.resetConnectionState())
   }
 
   const handleTryAgain = () => {
-    dispatch(Actions.connect())
+    dispatch(props.isAgentUnavailable
+      ? Actions.reconnectToAgent()
+      : Actions.connect())
   }
 
   const handleChooseServer = () => {
@@ -70,6 +73,8 @@ function ErrorPanel(props: Props) {
             slot='actions'
             kind='filled'
             onClick={handleTryAgain}
+            isLoading={isReconnecting}
+            isDisabled={isReconnecting}
           >
             {getLocale(S.BRAVE_VPN_TRY_AGAIN)}
           </Styles.StyledActionButton>

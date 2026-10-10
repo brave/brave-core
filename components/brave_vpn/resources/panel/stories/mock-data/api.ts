@@ -61,6 +61,7 @@ BraveVPN.setPanelBrowserApiForTesting({
       available: true,
       enabled: false
     }),
-    enableOnDemand: (enable: boolean) => {}
+    enableOnDemand: (enable: boolean) => {},
+    reconnectToAgent: doNothing
   }
 })
