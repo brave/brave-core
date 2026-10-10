@@ -7,13 +7,7 @@ import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css/variables'
 
 // Shared Styles
-import {
-  Column,
-  AssetIconProps,
-  AssetIconFactory,
-  WalletButton,
-  Text,
-} from '../../shared/style'
+import { Column, WalletButton, Text } from '../../shared/style'
 
 export const StyledWrapper = styled(Column)`
   background-color: ${leo.color.page.background};
@@ -57,9 +51,3 @@ export const ContractAddress = styled(WalletButton)`
   margin: 0px;
   padding: 0px;
 `
-
-export const AssetIcon = AssetIconFactory<AssetIconProps>({
-  width: '80px',
-  height: 'auto',
-  marginBottom: '8px',
-})

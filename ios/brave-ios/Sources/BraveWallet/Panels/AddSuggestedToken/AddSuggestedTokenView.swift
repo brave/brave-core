@@ -35,11 +35,6 @@ struct AddSuggestedTokenView: View {
         .padding(.top)
         VStack {
           VStack {
-            AssetIconView(
-              token: token,
-              network: tokenNetwork ?? cryptoStore.networkStore.defaultSelectedChain,
-              length: 64
-            )
             Text(token.symbol)
               .font(.headline)
               .foregroundColor(Color(braveSystemName: .textPrimary))
