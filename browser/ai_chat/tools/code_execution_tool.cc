@@ -350,9 +350,9 @@ void CodeExecutionTool::UseTool(const std::string& input_json,
                          execution_time_limit_);
 
   auto request_it = std::prev(requests_.end());
-  request_it->SetResolveCallback(
-      base::BindOnce(&CodeExecutionTool::ResolveRequest, base::Unretained(this),
-                     request_it, std::move(callback)));
+  request_it->SetResolveCallback(base::BindOnce(
+      &CodeExecutionTool::ResolveRequest, weak_ptr_factory_.GetWeakPtr(),
+      request_it, std::move(callback)));
 }
 
 }  // namespace ai_chat
