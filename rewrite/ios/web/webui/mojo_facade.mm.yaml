@@ -60,46 +60,6 @@ substitutions:
           }
 
   - description: |-
-      Stop discarding live pipes when the page finishes loading.
-
-      PageLoaded means "done loading", not "new JS context". The document's
-      scripts have already run by then, so this throws away pipes the very
-      much alive JS context is still holding handles for, while nothing
-      resets its Mojo.nextAvailableHandleId counter (mojo_api.js keeps it
-      deliberately, via `Mojo.nextAvailableHandleId || 1`). The handle a
-      WebUI binds first and keeps longest is exactly the one that goes
-      stale, and writing to it later hits CHECK(pipe.is_valid()).
-
-      The correctly timed reset already exists in WebFrameBecameUnavailable,
-      which fires when the served frame goes away, i.e. when the JS context
-      that minted those ids is actually gone.
-    regex:
-      re_pattern:
-        'pipes_\.clear\(\);\n    watchers_\.clear\(\);\n    last_watch_id_ =
-        0;\n    '
-      replace: ''
-
-  - description: |-
-      Don't restart a poll that is already in flight, it loses a message.
-
-      fetchNextMessageFromJS() shifts the message off the JS queue as it
-      hands it over, so a poll that never completes takes that message with
-      it, permanently. Invalidating the weak pointers here drops the
-      in-flight poll's completion silently, and the replacement poll
-      overwrites sendNextMessagePromiseResolver in JS.
-
-      AwaitNextMessage() already no-ops when a poll is running, so calling
-      it unguarded is all this needs to do. A frame that genuinely went away
-      is reset by WebFrameBecameUnavailable, which is where the state reset
-      belongs.
-    regex:
-      re_pattern:
-        'is_awaiting_message_ =
-        false;\n    weak_ptr_factory_\.InvalidateWeakPtrs\(\);\n
-        \   AwaitNextMessage\(\);'
-      replace: 'AwaitNextMessage();'
-
-  - description: |-
       Keep polling a frame that hands back nothing.
 
       A completion with neither a value nor an error ends the poll loop for
