@@ -70,6 +70,7 @@ if (toolkit_views) {
     deps = [
       ":email_aliases",
       "//brave/browser/brave_account",
+      "//brave/browser/ui",
       "//brave/browser/ui/email_aliases",
       "//brave/components/brave_account",
       "//brave/components/brave_account:features",

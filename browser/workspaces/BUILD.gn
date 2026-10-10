@@ -20,7 +20,6 @@ source_set("impl") {
   deps = [
     ":workspaces",
     "//base",
-    "//chrome/browser/ui",
     "//chrome/browser/ui:browser_tabrestore",
     "//chrome/browser/ui:browser_window_header",
     "//chrome/browser/ui/browser_window:create_browser_window",

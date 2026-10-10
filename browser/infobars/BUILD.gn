@@ -41,6 +41,7 @@ if (!is_android) {
     deps = [
       "//base",
       "//brave/app:brave_generated_resources_grit",
+      "//brave/browser/ui",
       "//brave/common",
       "//brave/components/brave_sync:features",
       "//brave/components/brave_sync:prefs",
@@ -50,7 +51,6 @@ if (!is_android) {
       "//chrome/browser/infobars",
       "//chrome/browser/profiles",
       "//chrome/browser/sync",
-      "//chrome/browser/ui",
       "//chrome/browser/ui:chrome_pages",
       "//components/infobars/content",
       "//components/prefs",
