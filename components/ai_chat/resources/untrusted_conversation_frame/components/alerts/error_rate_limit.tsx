@@ -80,7 +80,7 @@ function ErrorRateLimit(props: Props) {
           <Button
             slot='actions'
             kind='filled'
-            onClick={() => context.conversationHandler.retryAPIRequest()}
+            onClick={() => context.conversationHandler.retryAPIRequest(null)}
           >
             {getLocale(S.CHAT_UI_RETRY_BUTTON_LABEL)}
           </Button>
@@ -126,7 +126,7 @@ function ErrorRateLimit(props: Props) {
           <Button
             slot='actions'
             kind='filled'
-            onClick={() => context.conversationHandler.retryAPIRequest()}
+            onClick={() => context.conversationHandler.retryAPIRequest(null)}
           >
             {getLocale(S.CHAT_UI_RETRY_BUTTON_LABEL)}
           </Button>
