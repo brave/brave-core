@@ -11,6 +11,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/barrier_closure.h"
 #include "base/functional/bind.h"
 #include "base/json/values_util.h"
 #include "base/memory/scoped_refptr.h"
@@ -424,6 +425,61 @@ TEST_F(AIChatCredentialManagerUnitTest, FetchPremiumCredential) {
   ai_chat_credential_manager_->PutCredentialInCache(entry5);
   TestFetchPremiumCredential(entry5);
   EXPECT_EQ(cached_creds_list4.size(), 0u);
+}
+
+TEST_F(AIChatCredentialManagerUnitTest, GetPremiumStatusConcurrentCalls) {
+  CredentialCacheEntry entry;
+  entry.credential = "credential";
+  entry.expires_at = base::Time::Now() + base::Hours(1);
+  ai_chat_credential_manager_->PutCredentialInCache(entry);
+
+  base::RunLoop run_loop;
+  auto barrier = base::BarrierClosure(2, run_loop.QuitClosure());
+  auto expect_active = base::BindLambdaForTesting(
+      [&](mojom::PremiumStatus status, mojom::PremiumInfoPtr info) {
+        EXPECT_EQ(status, mojom::PremiumStatus::Active);
+        ASSERT_TRUE(info);
+        EXPECT_EQ(info->remaining_credential_count, 1u);
+        barrier.Run();
+      });
+  ai_chat_credential_manager_->GetPremiumStatus(expect_active);
+  ai_chat_credential_manager_->GetPremiumStatus(expect_active);
+  run_loop.Run();
+}
+
+TEST_F(AIChatCredentialManagerUnitTest, FetchPremiumCredentialConcurrentCalls) {
+  std::vector<std::optional<std::string>> received;
+  base::RunLoop run_loop;
+  auto barrier = base::BarrierClosure(3, run_loop.QuitClosure());
+  auto record_credential = base::BindLambdaForTesting(
+      [&](std::optional<CredentialCacheEntry> credential) {
+        received.push_back(
+            credential ? std::optional<std::string>(credential->credential)
+                       : std::nullopt);
+        barrier.Run();
+      });
+
+  // The cache is empty, so this request goes to the SKUs SDK asynchronously.
+  ai_chat_credential_manager_->FetchPremiumCredential(record_credential);
+
+  // While the first request is in flight, add credentials to the cache and
+  // issue two more requests. They should queue behind the first one, then each
+  // receive a distinct credential, soonest-expiring first.
+  CredentialCacheEntry entry;
+  entry.credential = "credential";
+  entry.expires_at = base::Time::Now() + base::Hours(2);
+  CredentialCacheEntry entry2;
+  entry2.credential = "credential2";
+  entry2.expires_at = base::Time::Now() + base::Hours(1);
+  ai_chat_credential_manager_->PutCredentialInCache(entry);
+  ai_chat_credential_manager_->PutCredentialInCache(entry2);
+  ai_chat_credential_manager_->FetchPremiumCredential(record_credential);
+  ai_chat_credential_manager_->FetchPremiumCredential(record_credential);
+  EXPECT_TRUE(received.empty());
+
+  run_loop.Run();
+  EXPECT_EQ(received, (std::vector<std::optional<std::string>>{
+                          std::nullopt, "credential2", "credential"}));
 }
 
 }  // namespace ai_chat
