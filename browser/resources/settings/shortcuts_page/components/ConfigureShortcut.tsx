@@ -14,7 +14,7 @@ import { useCommands } from '../commands'
 import Dialog from '@brave/leo/react/dialog'
 import { formatLocale, getLocale } from '$web-common/locale'
 import { Accelerator } from 'gen/brave/components/commands/common/commands.mojom.m'
-import { commandsCache } from '../commands'
+import { commandsApi } from '../commands'
 
 const StyledDialog = styled(Dialog)`
   --leo-dialog-width: 402px;
@@ -61,7 +61,7 @@ const getKeyFromCode = (code: string) => {
   if (modifiers.includes(code)) return code
   if (keyCodeCache[code]) return keyCodeCache[code]
 
-  return commandsCache.getKeyFromCode(code).then(key => keyCodeCache[code] = key)
+  return commandsApi.getKeyFromCode.fetch(code).then((key: string) => keyCodeCache[code] = key)
 }
 export const useKeys = (codes: string[]) => {
   const [keys, setKeys] = React.useState<string[]>([])
