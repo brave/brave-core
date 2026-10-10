@@ -878,6 +878,23 @@ TEST(CommonUtils, CoinSupportsDapps) {
       EXPECT_FALSE(CoinSupportsDapps(coin));
     }
   }
+
+  {
+    base::test::ScopedFeatureList feature_list;
+    feature_list.InitWithFeaturesAndParameters(
+        {{features::kBraveWalletPolkadotFeature,
+          {{"polkadot_dapp_support", "true"}}}},
+        {});
+
+    for (auto coin : kAllCoins) {
+      if (coin == mojom::CoinType::ETH || coin == mojom::CoinType::SOL ||
+          coin == mojom::CoinType::ADA || coin == mojom::CoinType::DOT) {
+        EXPECT_TRUE(CoinSupportsDapps(coin));
+      } else {
+        EXPECT_FALSE(CoinSupportsDapps(coin));
+      }
+    }
+  }
 }
 
 TEST(CommonUtils, IsDeprecatedAddressBasedCoin) {
