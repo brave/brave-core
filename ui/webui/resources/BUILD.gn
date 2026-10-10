@@ -339,6 +339,7 @@ leo_icons_sources = [
   "hand-raised.svg",
   "hearts.svg",
   "help-outline.svg",
+  "hierarchy-structure.svg",
   "history.svg",
   "idea.svg",
   "image-off.svg",
