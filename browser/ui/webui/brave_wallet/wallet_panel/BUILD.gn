@@ -77,6 +77,7 @@ source_set("browser_tests") {
     "//base/test:test_support",
     "//brave/browser/brave_wallet",
     "//brave/browser/brave_wallet:tab_helper",
+    "//brave/browser/ui",
     "//brave/components/brave_wallet/browser",
     "//brave/components/brave_wallet/browser:utils",
     "//brave/components/brave_wallet/common",
