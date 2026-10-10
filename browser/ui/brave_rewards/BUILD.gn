@@ -10,9 +10,9 @@ source_set("unit_tests") {
     sources = [ "rewards_panel_coordinator_unittest.cc" ]
     deps = [
       "//base",
+      "//brave/browser/ui",
       "//brave/components/brave_rewards/core:features",
       "//brave/components/l10n/common:test_support",
-      "//chrome/browser/ui",
       "//chrome/browser/ui/browser_window",
       "//chrome/test:test_support",
       "//chrome/test/base:browser_with_test_window_test",

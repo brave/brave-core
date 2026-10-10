@@ -15,7 +15,6 @@ source_set("browser_tests") {
     "//chrome/browser",
     "//chrome/browser/download",
     "//chrome/browser/download/bubble",
-    "//chrome/browser/ui",
     "//chrome/browser/ui/download",
     "//chrome/browser/ui/views/download",
     "//chrome/browser/ui/views/frame:browser_view_header",
