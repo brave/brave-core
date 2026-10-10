@@ -26,7 +26,6 @@ template("ios_objc_mojom_wrappers") {
       get_path_info("${mojom_target_path}:${mojom_target_name}__parser",
                     "abspath")
   mojom_output_dir = target_gen_dir
-  dep_target_gen = get_label_info(mojom_target, "target_gen_dir")
 
   if (defined(invoker.output_dir)) {
     mojom_output_dir = invoker.output_dir
@@ -61,7 +60,7 @@ template("ios_objc_mojom_wrappers") {
       "$mojom_output_dir/{{source_file_part}}.objc+private.h",
       "$mojom_output_dir/{{source_file_part}}.objc.mm",
     ]
-    _module_path = rebase_path("$dep_target_gen/{{source_file_part}}-module")
+    _module_path = "{{source_gen_dir}}/{{source_file_part}}-module"
     bytecode_path = rebase_path("$root_gen_dir/brave/build/ios/mojom")
     args = [
       "--mojom-module=$_module_path",

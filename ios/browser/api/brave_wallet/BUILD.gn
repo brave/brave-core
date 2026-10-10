@@ -74,11 +74,13 @@ ios_objc_mojom_wrappers("wallet_mojom_wrappers") {
   sources = [
     "//brave/components/brave_wallet/common/brave_wallet.mojom",
     "//brave/components/brave_wallet/common/meld_integration.mojom",
+    "//brave/components/brave_wallet/common/mojom/brave_wallet_common.mojom",
   ]
   generate_namespace = false
   exclude_types = [
     "PageHandlerFactory",
     "PanelHandlerFactory",
+
     # Desktop WebUI-only; `enable_snap` is false on iOS.
     "SnapService",
     "SnapHostBridge",
