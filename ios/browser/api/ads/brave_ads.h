@@ -82,6 +82,11 @@ OBJC_EXPORT
 @property(nonatomic, assign, getter=isNotificationsEnabled)
     BOOL notificationsEnabled NS_SWIFT_NAME(isNotificationsEnabled);
 
+/// Whether or not the user has joined Brave Rewards and has notification ads
+/// enabled. Distinct from `isEnabled`, which only reflects Rewards enablement.
+@property(nonatomic, readonly, getter=isNotificationAdsEnabled)
+    BOOL notificationAdsEnabled NS_SWIFT_NAME(isNotificationAdsEnabled);
+
 #pragma mark - Initialization / Shutdown
 
 - (void)initServiceWithSysInfo:(BraveAdsSysInfo*)sysInfo
