@@ -7,6 +7,7 @@
 
 #include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/common/infobar_constants.h"
+#include "brave/components/ntp_background_images/common/new_tab_takeover_disclosure_constants.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/ntp_background_images/common/view_counter_pref_names.h"
 #include "components/pref_registry/pref_registry_syncable.h"
@@ -60,6 +61,9 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterIntegerPref(
       prefs::kNewTabTakeoverInfobarRemainingDisplayCount,
       kNewTabTakeoverInfobarRemainingDisplayCountThreshold);
+  registry->RegisterIntegerPref(
+      prefs::kNewTabTakeoverDisclosureTooltipRemainingDisplayCount,
+      kNewTabTakeoverDisclosureTooltipRemainingDisplayCountThreshold);
   registry->RegisterListPref(prefs::kNewTabsCreatedDaily);
 }
 
