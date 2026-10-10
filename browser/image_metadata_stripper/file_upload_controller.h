@@ -42,10 +42,8 @@ namespace image_metadata_stripper {
 // stripped image gets a numbered subdirectory (0, 1, 2, ...) so that the copy
 // can keep the basename of its original without colliding with copies of
 // identically named images. A tab's directory is deleted when the tab closes
-// or its contents are discarded.
-//
-// TODO(https://github.com/brave/brave-browser/issues/58868): Whatever is left
-// over, e.g. after a crash, should be removed at the next startup.
+// or its contents are discarded. Whatever is left over, e.g. after a crash,
+// is removed at the next startup via CleanUpFromLastSession method.
 inline constexpr base::FilePath::CharType kStripperRootDirName[] =
     FILE_PATH_LITERAL("ImageMetadataStripperTemp");
 
@@ -87,6 +85,11 @@ class FileUploadController : public tabs::ContentsObservingTabFeature {
   void Strip(std::vector<base::FilePath> srcs,
              StrippingClient client,
              StripCallback callback);
+
+  // This deletes any stale files which may have left over from earlier sessions
+  // which couldn't be deleted, e.g. because the browser crashed or shut down
+  // before the deletion ran. This is called during browser startup.
+  static void CleanUpFromLastSession();
 
  private:
   // This the brain behind dealing with the file operations. It owns the
