@@ -15,7 +15,6 @@ source_set("browser_tests") {
     "//base",
     "//base/test:test_support",
     "//brave/browser/ui/webui/custom_profile_image",
-    "//chrome/browser/ui",
     "//chrome/browser/ui/signin",
     "//chrome/browser/ui/webui/signin:signin_utils",
     "//chrome/common",

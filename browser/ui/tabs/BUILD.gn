@@ -259,10 +259,10 @@ source_set("browser_tests") {
   sources = [ "brave_tab_menu_browsertest.cc" ]
 
   deps = [
+    "//brave/browser/ui",
     "//brave/browser/ui/tabs:tabs_public",
     "//brave/components/containers/buildflags",
     "//brave/components/resources:strings_grit",
-    "//chrome/browser/ui",
     "//chrome/test:test_support",
     "//content/public/browser",
     "//content/test:test_support",

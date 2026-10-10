@@ -80,7 +80,6 @@ source_set("brave_wallet_delegate") {
     ]
     deps += [
       "//brave/build/android:jni_headers",
-      "//chrome/browser/ui",
       "//chrome/browser/ui/android/tab_model",
       "//chrome/browser/ui/android/tab_model:enums_java",
     ]
@@ -91,8 +90,8 @@ source_set("brave_wallet_delegate") {
       "brave_wallet_service_delegate_impl.h",
     ]
     deps += [
+      "//brave/browser/ui",
       "//chrome/browser/notifications",
-      "//chrome/browser/ui",
       "//chrome/browser/ui:browser_tab_strip",
       "//chrome/browser/ui/tabs:tab_strip",
     ]
@@ -252,6 +251,7 @@ source_set("browser_tests") {
       "//base/test:test_support",
       "//brave/app:command_ids",
       "//brave/browser",
+      "//brave/browser/ui",
       "//brave/browser/ui/sidebar",
       "//brave/browser/ui/sidebar:sidebar_impl",
       "//brave/components/brave_wallet/browser",
@@ -264,7 +264,6 @@ source_set("browser_tests") {
       "//brave/components/sidebar/browser",
       "//brave/components/tor/buildflags",
       "//chrome/browser/hid",
-      "//chrome/browser/ui",
       "//chrome/browser/ui/browser_window",
       "//chrome/browser/ui/views/frame:browser_view_header",
       "//chrome/test:test_support",
