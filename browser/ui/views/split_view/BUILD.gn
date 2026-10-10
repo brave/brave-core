@@ -11,12 +11,12 @@ source_set("browser_tests") {
 
   deps = [
     "//base",
+    "//brave/browser/ui",
     "//brave/browser/ui/split_view",
     "//brave/browser/ui/tabs:tab_model",
     "//brave/browser/ui/views/frame",
     "//brave/browser/ui/views/frame/split_view",
     "//brave/components/resources:strings_grit",
-    "//chrome/browser/ui",
     "//chrome/browser/ui:browser_tabstrip",
     "//chrome/browser/ui:browser_window_header",
     "//chrome/browser/ui:ui_features",

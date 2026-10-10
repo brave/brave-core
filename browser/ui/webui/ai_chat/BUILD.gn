@@ -151,7 +151,6 @@ source_set("browser_tests") {
     "//brave/components/ai_chat/core/common/mojom",
     "//brave/components/constants",
     "//chrome/browser/profiles:profile",
-    "//chrome/browser/ui",
     "//chrome/test",
     "//chrome/test:test_support",
     "//chrome/test/base:chrome_test_utils",

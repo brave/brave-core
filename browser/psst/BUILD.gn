@@ -89,6 +89,7 @@ source_set("browser_tests") {
 
   deps = [
     "//base",
+    "//brave/browser/ui",
     "//brave/browser/ui/tabs:tabs_public",
     "//brave/browser/ui/webui/psst",
     "//brave/components/brave_shields/content/browser",
@@ -113,7 +114,6 @@ source_set("browser_tests") {
     deps += [
       "//brave/app:command_ids",
       "//brave/browser/ui:brave_browser_window_header",
-      "//chrome/browser/ui",
       "//chrome/browser/ui/views/page_action:page_action_test_support",
       "//chrome/test:test_support_ui",
       "//ui/actions",
