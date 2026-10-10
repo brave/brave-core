@@ -239,11 +239,6 @@ public class BrowserViewController: UIViewController {
     return toolbar ?? topToolbar
   }
 
-  // Keep track of allowed `URLRequest`s from `webView(_:decidePolicyFor:decisionHandler:)` so
-  // that we can obtain the originating `URLRequest` when a `URLResponse` is received. This will
-  // allow us to re-trigger the `URLRequest` if the user requests a file to be downloaded.
-  var pendingRequests = [String: URLRequest]()
-
   let downloadQueue = DownloadQueue()
 
   private var cancellables: Set<AnyCancellable> = []

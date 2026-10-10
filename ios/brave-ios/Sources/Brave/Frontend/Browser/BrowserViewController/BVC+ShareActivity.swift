@@ -11,7 +11,8 @@ extension BrowserViewController {
   func presentActivityViewController(
     _ url: URL,
     tab: (any TabState)? = nil,
-    source: SharePopoverSource
+    source: SharePopoverSource,
+    onDismiss: (() -> Void)? = nil
   ) {
     presentShareActivity(
       url: url,
@@ -33,7 +34,10 @@ extension BrowserViewController {
         },
         onDisplayCertificate: { [weak self] in self?.displayPageCertificateInfo() },
         onShowSubmitReport: { [weak self] url in self?.showSubmitReportView(for: url) },
-        onCleanUp: { [weak self] in self?.showQueuedAlertIfAvailable() }
+        onCleanUp: { [weak self] in
+          onDismiss?()
+          self?.showQueuedAlertIfAvailable()
+        }
       )
     )
   }
