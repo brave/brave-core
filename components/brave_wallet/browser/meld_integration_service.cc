@@ -5,9 +5,11 @@
 
 #include "brave/components/brave_wallet/browser/meld_integration_service.h"
 
+#include <algorithm>
 #include <memory>
 #include <optional>
 #include <string>
+#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -15,6 +17,7 @@
 #include "base/containers/flat_map.h"
 #include "base/functional/bind.h"
 #include "base/json/json_writer.h"
+#include "base/strings/string_split.h"
 #include "base/task/thread_pool.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
@@ -36,6 +39,26 @@ constexpr char kMeldSupportedChains[] =
     "BTC,FIL,ZEC,ETH,SOLANA,FTM,BSC,POLYGON,OPTIMISM,AURORA,CELO,ARBITRUM,"
     "AVAXC,ADA";
 constexpr char kMeldSupportedChainPolkadotSuffix[] = ",ASSETHUB";
+
+// Only the buy (on-ramp) flow calls the discovery endpoints today, so the
+// category is fixed rather than threaded through the mojom interface.
+constexpr char kMeldOnRampCategory[] = "CRYPTO_ONRAMP";
+
+// The Network Partner currencies endpoint doesn't support filtering by a
+// list of chains server-side (unlike the old `cryptoChains` query param), so
+// the chain allowlist is applied to the parsed response instead.
+bool IsSupportedCryptoChain(const std::string& chain_code) {
+  std::string supported_chains = kMeldSupportedChains;
+  if (brave_wallet::IsPolkadotEnabled()) {
+    supported_chains += kMeldSupportedChainPolkadotSuffix;
+  }
+
+  std::vector<std::string_view> chains = base::SplitStringPiece(
+      supported_chains, ",", base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
+  return std::ranges::any_of(chains, [&chain_code](std::string_view chain) {
+    return chain == chain_code;
+  });
+}
 
 net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
   return net::DefineNetworkTrafficAnnotation("meld_integration_service", R"(
@@ -445,14 +468,12 @@ void MeldIntegrationService::OnParseCryptoQuotes(
 GURL MeldIntegrationService::GetPaymentMethodsURL(
     const std::string& country,
     const std::string& source_currency_code) {
-  return AppendFilterParams(
-      GURL(kMeldRpcEndpoint)
-          .Resolve("/service-providers/properties/payment-methods"),
-      base::flat_map<std::string, std::string>{
-          {"countries", country},
-          {"fiatCurrencies", source_currency_code},
-          {"includeServiceProviderDetails", "false"},
-          {"accountFilter", "false"}});
+  auto url = GURL(kMeldRpcEndpoint)
+                 .Resolve("/network-partner/supported/payment-methods");
+  url = net::AppendQueryParameter(url, "category", kMeldOnRampCategory);
+  url = net::AppendQueryParameter(url, "country", country);
+  url = net::AppendQueryParameter(url, "currencyCode", source_currency_code);
+  return url;
 }
 
 void MeldIntegrationService::GetPaymentMethods(
@@ -509,16 +530,18 @@ void MeldIntegrationService::OnParsePaymentMethods(
 }
 
 // static
-GURL MeldIntegrationService::GetFiatCurrenciesURL() {
-  return AppendFilterParams(
-      GURL(kMeldRpcEndpoint)
-          .Resolve("/service-providers/properties/fiat-currencies"),
-      base::flat_map<std::string, std::string>{
-          {"includeServiceProviderDetails", "false"},
-          {"accountFilter", "false"}});
+GURL MeldIntegrationService::GetFiatCurrenciesURL(
+    const std::string& country) {
+  auto url =
+      GURL(kMeldRpcEndpoint).Resolve("/network-partner/supported/currencies");
+  url = net::AppendQueryParameter(url, "category", kMeldOnRampCategory);
+  url = net::AppendQueryParameter(url, "country", country);
+  url = net::AppendQueryParameter(url, "type", "FIAT");
+  return url;
 }
 
 void MeldIntegrationService::GetFiatCurrencies(
+    const std::string& country,
     GetFiatCurrenciesCallback callback) {
   auto internal_callback =
       base::BindOnce(&MeldIntegrationService::OnGetFiatCurrencies,
@@ -526,9 +549,9 @@ void MeldIntegrationService::GetFiatCurrencies(
 
   auto conversion_callback = base::BindOnce(&SanitizeJson);
   api_request_helper_->Request(
-      "GET", GetFiatCurrenciesURL(), "", "", std::move(internal_callback),
-      MakeMeldApiHeaders(), {.auto_retry_on_network_change = true},
-      std::move(conversion_callback));
+      "GET", GetFiatCurrenciesURL(country), "", "",
+      std::move(internal_callback), MakeMeldApiHeaders(),
+      {.auto_retry_on_network_change = true}, std::move(conversion_callback));
 }
 
 void MeldIntegrationService::OnGetFiatCurrencies(
@@ -570,22 +593,18 @@ void MeldIntegrationService::OnParseFiatCurrencies(
 }
 
 // static
-GURL MeldIntegrationService::GetCryptoCurrenciesURL() {
-  std::string supported_chains = kMeldSupportedChains;
-  if (IsPolkadotEnabled()) {
-    supported_chains += kMeldSupportedChainPolkadotSuffix;
-  }
-
-  return AppendFilterParams(
-      GURL(kMeldRpcEndpoint)
-          .Resolve("/service-providers/properties/crypto-currencies"),
-      base::flat_map<std::string, std::string>{
-          {"cryptoChains", supported_chains},
-          {"includeServiceProviderDetails", "false"},
-          {"accountFilter", "false"}});
+GURL MeldIntegrationService::GetCryptoCurrenciesURL(
+    const std::string& country) {
+  auto url =
+      GURL(kMeldRpcEndpoint).Resolve("/network-partner/supported/currencies");
+  url = net::AppendQueryParameter(url, "category", kMeldOnRampCategory);
+  url = net::AppendQueryParameter(url, "country", country);
+  url = net::AppendQueryParameter(url, "type", "CRYPTO");
+  return url;
 }
 
 void MeldIntegrationService::GetCryptoCurrencies(
+    const std::string& country,
     GetCryptoCurrenciesCallback callback) {
   auto internal_callback =
       base::BindOnce(&MeldIntegrationService::OnGetCryptoCurrencies,
@@ -593,9 +612,9 @@ void MeldIntegrationService::GetCryptoCurrencies(
 
   auto conversion_callback = base::BindOnce(&SanitizeJson);
   api_request_helper_->Request(
-      "GET", GetCryptoCurrenciesURL(), "", "", std::move(internal_callback),
-      MakeMeldApiHeaders(), {.auto_retry_on_network_change = true},
-      std::move(conversion_callback));
+      "GET", GetCryptoCurrenciesURL(country), "", "",
+      std::move(internal_callback), MakeMeldApiHeaders(),
+      {.auto_retry_on_network_change = true}, std::move(conversion_callback));
 }
 
 void MeldIntegrationService::OnGetCryptoCurrencies(
@@ -633,16 +652,21 @@ void MeldIntegrationService::OnParseCryptoCurrencies(
                           l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)});
     return;
   }
+
+  std::erase_if(*crypto_currencies, [](const auto& currency) {
+    return !currency->chain_code ||
+           !IsSupportedCryptoChain(*currency->chain_code);
+  });
+
   std::move(callback).Run(std::move(crypto_currencies), std::nullopt);
 }
 
 // static
 GURL MeldIntegrationService::GetCountriesURL() {
-  return AppendFilterParams(
-      GURL(kMeldRpcEndpoint).Resolve("/service-providers/properties/countries"),
-      base::flat_map<std::string, std::string>{
-          {"includeServiceProviderDetails", "false"},
-          {"accountFilter", "false"}});
+  auto url =
+      GURL(kMeldRpcEndpoint).Resolve("/network-partner/supported/countries");
+  url = net::AppendQueryParameter(url, "category", kMeldOnRampCategory);
+  return url;
 }
 
 void MeldIntegrationService::GetCountries(GetCountriesCallback callback) {

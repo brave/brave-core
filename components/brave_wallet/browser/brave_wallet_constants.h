@@ -110,7 +110,7 @@ inline constexpr char kBitcoinTestnetRpcEndpoint[] =
 
 inline constexpr char kMeldRpcEndpoint[] = "https://api-meld.wallet.brave.com";
 inline constexpr char kMeldRpcVersionHeader[] = "Meld-Version";
-inline constexpr char kMeldRpcVersion[] = "2023-05-26";
+inline constexpr char kMeldRpcVersion[] = "2026-02-03";
 
 inline constexpr auto kEthBalanceScannerContractAddresses =
     base::MakeFixedFlatMap<std::string_view, std::string_view>(

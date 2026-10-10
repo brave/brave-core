@@ -64,7 +64,7 @@ export const CurrencyListItem = ({
       >
         <CurrencyImage
           src={`chrome://image?url=${encodeURIComponent(
-            currency.symbolImageUrl ?? '',
+            currency.symbol ?? '',
           )}&staticEncode=true`}
         />
         <CurrencyName>{currency.name}</CurrencyName>
