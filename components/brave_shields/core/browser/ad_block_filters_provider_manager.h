@@ -34,6 +34,7 @@ class AdBlockFiltersProviderManager : public AdBlockFiltersProvider,
                                       public AdBlockFiltersProvider::Observer {
  public:
   AdBlockFiltersProviderManager();
+  explicit AdBlockFiltersProviderManager(bool use_dat_cache);
   ~AdBlockFiltersProviderManager() override;
   AdBlockFiltersProviderManager(const AdBlockFiltersProviderManager&) = delete;
   AdBlockFiltersProviderManager& operator=(

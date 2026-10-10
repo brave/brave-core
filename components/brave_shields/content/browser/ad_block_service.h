@@ -257,6 +257,7 @@ class AdBlockService {
       GUARDED_BY_CONTEXT(sequence_checker_);
   std::unique_ptr<AdBlockDATCacheManager> dat_cache_manager_
       GUARDED_BY_CONTEXT(sequence_checker_);
+  bool use_dat_cache_ GUARDED_BY_CONTEXT(sequence_checker_);
   std::unique_ptr<AdBlockResourceProvider> resource_provider_
       GUARDED_BY_CONTEXT(sequence_checker_);
   raw_ptr<AdBlockDefaultResourceProvider> default_resource_provider_

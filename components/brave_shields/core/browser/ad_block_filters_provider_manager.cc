@@ -24,11 +24,14 @@
 
 namespace brave_shields {
 
-AdBlockFiltersProviderManager::AdBlockFiltersProviderManager() {
-  suppress_default_engine_startup_change_notification_ =
-      base::FeatureList::IsEnabled(features::kAdblockDATCache);
-  suppress_additional_engine_startup_change_notification_ =
-      base::FeatureList::IsEnabled(features::kAdblockDATCache);
+AdBlockFiltersProviderManager::AdBlockFiltersProviderManager()
+    : AdBlockFiltersProviderManager(
+          base::FeatureList::IsEnabled(features::kAdblockDATCache)) {}
+
+AdBlockFiltersProviderManager::AdBlockFiltersProviderManager(
+    bool use_dat_cache) {
+  suppress_default_engine_startup_change_notification_ = use_dat_cache;
+  suppress_additional_engine_startup_change_notification_ = use_dat_cache;
 }
 
 AdBlockFiltersProviderManager::~AdBlockFiltersProviderManager() = default;
