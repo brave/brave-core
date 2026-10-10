@@ -1,0 +1,19 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Remove histogramming call.
+
+      The original code calls base::UmaHistogramEnumeration to record download
+      command executions. Brave-specific commands (COPY_DOWNLOAD_LINK) are not
+      defined in upstream's DownloadCommands enum, which would cause a crash
+      when converting them to an enum index. This substitution replaces the
+      histogramming call with base::DoNothing() to safely bypass recording for
+      commands that may be outside the expected enum range.
+    regex:
+      re_pattern: base::UmaHistogramEnumeration\(.*?\);
+      re_flags: [DOTALL]
+      replace: ''

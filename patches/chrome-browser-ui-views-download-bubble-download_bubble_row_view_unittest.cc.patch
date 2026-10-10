@@ -1,0 +1,32 @@
+diff --git a/chrome/browser/ui/views/download/bubble/download_bubble_row_view_unittest.cc b/chrome/browser/ui/views/download/bubble/download_bubble_row_view_unittest.cc
+index 9b191dfdc8a1c3229dbb11b344c1aa29361dcba1..5f79efd795d1ac973ab012d2d9127ae0b3b923e2 100644
+--- a/chrome/browser/ui/views/download/bubble/download_bubble_row_view_unittest.cc
++++ b/chrome/browser/ui/views/download/bubble/download_bubble_row_view_unittest.cc
+@@ -74,6 +74,7 @@ class DownloadBubbleRowViewTest : public ChromeViewsTestBase {
+       delete;
+ 
+   void SetUp() override {
++  [&]() -> void {
+     ChromeViewsTestBase::SetUp();
+     ASSERT_TRUE(testing_profile_manager_.SetUp());
+     profile_ = testing_profile_manager_.CreateTestingProfile("testing_profile");
+@@ -105,7 +106,9 @@ class DownloadBubbleRowViewTest : public ChromeViewsTestBase {
+     ON_CALL(*input_protector_, IsPossiblyUnintendedInteraction(_, _, _))
+         .WillByDefault(Return(false));
+     row_view_->SetInputProtectorForTesting(std::move(input_protector));
+-  }
++    }();
++  ON_CALL(download_item_, GetFullPath()).WillByDefault(ReturnRef(kTestFilePath));
++}
+ 
+   void FastForward(base::TimeDelta time) {
+     task_environment()->FastForwardBy(time);
+@@ -191,7 +194,7 @@ TEST_F(DownloadBubbleRowViewTest, OnlyEnabledQuickActionsVisible) {
+         &(features::IsRoundedIconsEnabled() ? vector_icons::kFolderFilledIcon
+                                             : vector_icons::kFolderOldIcon)}});
+   download_item()->NotifyObserversDownloadUpdated();
+-  ASSERT_EQ(row_view()->info().quick_actions().size(), 2u);
++  ASSERT_EQ(row_view()->info().quick_actions().size(), 3u);
+ 
+   // Should not be available because they are not present in the ui_info.
+   EXPECT_FALSE(row_view()->IsQuickActionButtonVisibleForTesting(
