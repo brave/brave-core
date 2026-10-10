@@ -6,10 +6,7 @@
 #include "brave/components/ai_chat/core/common/yt_util.h"
 
 #include <algorithm>
-#include <functional>
-#include <ios>
 #include <optional>
-#include <ostream>
 #include <string>
 
 #include "base/containers/checked_iterators.h"

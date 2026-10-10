@@ -7,7 +7,6 @@
 
 #include <memory>
 
-#include "base/strings/string_util.h"
 #include "brave/components/ai_chat/content/browser/associated_web_contents_content.h"
 #include "brave/components/ai_chat/content/browser/page_content_fetcher.h"
 #include "content/public/browser/browser_accessibility_state.h"

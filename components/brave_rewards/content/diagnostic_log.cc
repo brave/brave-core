@@ -6,7 +6,6 @@
 #include "brave/components/brave_rewards/content/diagnostic_log.h"
 
 #include <array>
-#include <memory>
 #include <utility>
 
 #include "base/check.h"

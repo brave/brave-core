@@ -6,7 +6,6 @@
 #include "brave/components/brave_rewards/core/engine/wallet_provider/solana/solana_wallet_provider.h"
 
 #include <string>
-#include <tuple>
 #include <utility>
 
 #include "brave/components/brave_rewards/core/engine/test/rewards_engine_test.h"

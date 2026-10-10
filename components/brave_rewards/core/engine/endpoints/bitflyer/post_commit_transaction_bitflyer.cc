@@ -6,7 +6,6 @@
 #include "brave/components/brave_rewards/core/engine/endpoints/bitflyer/post_commit_transaction_bitflyer.h"
 
 #include <optional>
-#include <utility>
 
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"

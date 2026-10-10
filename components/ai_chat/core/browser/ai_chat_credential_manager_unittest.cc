@@ -14,7 +14,6 @@
 #include "base/functional/bind.h"
 #include "base/json/values_util.h"
 #include "base/memory/scoped_refptr.h"
-#include "base/numerics/clamped_math.h"
 #include "base/run_loop.h"
 #include "base/strings/string_util.h"
 #include "base/test/bind.h"
