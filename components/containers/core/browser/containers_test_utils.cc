@@ -23,6 +23,10 @@ MockContainersServiceDelegate::MockContainersServiceDelegate() {
         }
         std::move(callback).Run(referenced_container_ids_);
       });
+  ON_CALL(*this, HasOpenTabInContainer(testing::_))
+      .WillByDefault([this](const std::string& id) {
+        return open_tab_container_ids_.contains(id);
+      });
   ON_CALL(*this, DeleteContainerStorage(testing::_, testing::_))
       .WillByDefault([this](const std::string& id,
                             DeleteContainerStorageCallback callback) {
