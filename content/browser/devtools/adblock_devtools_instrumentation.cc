@@ -20,11 +20,15 @@ namespace {
 std::unique_ptr<content::protocol::Network::AdblockFilterRuleInfo>
 ToProtocolAdblockFilterRuleInfo(
     const content::devtools_instrumentation::AdblockFilterRuleInfo& info) {
-  return content::protocol::Network::AdblockFilterRuleInfo::Create()
-      .SetRawLine(info.raw_line)
-      .SetSourceIndex(info.source_index)
-      .SetLineNumber(info.line_number)
-      .Build();
+  auto rule_info = content::protocol::Network::AdblockFilterRuleInfo::Create()
+                       .SetRawLine(info.raw_line)
+                       .SetSourceIndex(info.source_index)
+                       .SetLineNumber(info.line_number)
+                       .Build();
+  if (!info.source_title.empty()) {
+    rule_info->SetSourceTitle(info.source_title);
+  }
+  return rule_info;
 }
 
 void SendAdblockInfoInternal(

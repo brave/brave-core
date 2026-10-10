@@ -89,6 +89,8 @@ IN_PROC_BROWSER_TEST_F(AdblockDevtoolsDebugModeTest, DomainBlock) {
   ASSERT_TRUE(filter);
   EXPECT_EQ(rule, *filter->FindString("rawLine"));
   EXPECT_EQ(0, *filter->FindInt("lineNumber"));
+  // The test list declares no `! Title:` line.
+  EXPECT_FALSE(filter->FindString("sourceTitle"));
   EXPECT_FALSE(info->FindDict("exception"));
 }
 
@@ -120,6 +122,7 @@ IN_PROC_BROWSER_TEST_F(AdblockDevtoolsDebugModeTest, ResourceBlock) {
   EXPECT_EQ(rule, *filter->FindString("rawLine"));
   // Custom filters are prefixed with a title comment line.
   EXPECT_EQ(1, *filter->FindInt("lineNumber"));
+  EXPECT_EQ("User-defined custom filters", *filter->FindString("sourceTitle"));
   EXPECT_FALSE(info->FindDict("exception"));
 }
 
@@ -130,7 +133,8 @@ IN_PROC_BROWSER_TEST_F(AdblockDevtoolsDebugModeTest, Exception) {
   const GURL& url = embedded_test_server()->GetURL("/blocking.html");
   const std::string filter_rule = "*ad_banner.png";
   const std::string exception_rule = "@@ad_banner.png";
-  UpdateAdBlockInstanceWithRules(filter_rule);
+  UpdateAdBlockInstanceWithRules(
+      base::StrCat({"! Title: Test default filters\n", filter_rule}));
   UpdateCustomAdBlockInstanceWithRules(exception_rule);
   NavigateToURL(url);
 
@@ -152,13 +156,16 @@ IN_PROC_BROWSER_TEST_F(AdblockDevtoolsDebugModeTest, Exception) {
   const auto* filter = info->FindDict("filter");
   ASSERT_TRUE(filter);
   EXPECT_EQ(filter_rule, *filter->FindString("rawLine"));
-  EXPECT_EQ(0, *filter->FindInt("lineNumber"));
+  EXPECT_EQ(1, *filter->FindInt("lineNumber"));
+  EXPECT_EQ("Test default filters", *filter->FindString("sourceTitle"));
 
   const auto* exception = info->FindDict("exception");
   ASSERT_TRUE(exception);
   EXPECT_EQ(exception_rule, *exception->FindString("rawLine"));
   // Custom filters are prefixed with a title comment line.
   EXPECT_EQ(1, *exception->FindInt("lineNumber"));
+  EXPECT_EQ("User-defined custom filters",
+            *exception->FindString("sourceTitle"));
 }
 
 IN_PROC_BROWSER_TEST_F(AdblockDevtoolsDebugModeTest, TwoClientsNoCrash) {
