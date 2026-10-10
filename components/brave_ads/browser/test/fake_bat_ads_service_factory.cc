@@ -8,6 +8,7 @@
 #include <memory>
 
 #include "base/functional/bind.h"
+#include "brave/components/brave_ads/browser/test/fake_bat_ads.h"
 #include "brave/components/brave_ads/browser/test/fake_bat_ads_client_notifier.h"
 #include "brave/components/brave_ads/browser/test/fake_bat_ads_service.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
@@ -19,10 +20,18 @@ FakeBatAdsServiceFactory::FakeBatAdsServiceFactory() = default;
 
 FakeBatAdsServiceFactory::~FakeBatAdsServiceFactory() = default;
 
+void FakeBatAdsServiceFactory::Invalidate() {
+  ++invalidate_count_;
+}
+
 const FakeBatAdsClientNotifier*
 FakeBatAdsServiceFactory::bat_ads_client_notifier() const {
   return bat_ads_service_ ? bat_ads_service_->bat_ads_client_notifier()
                           : nullptr;
+}
+
+const FakeBatAds* FakeBatAdsServiceFactory::bat_ads() const {
+  return bat_ads_service_ ? &bat_ads_service_->bat_ads() : nullptr;
 }
 
 size_t FakeBatAdsServiceFactory::become_idle_count() const {
@@ -45,8 +54,12 @@ bool FakeBatAdsServiceFactory::last_screen_was_locked() const {
   return notifier ? notifier->last_screen_was_locked() : false;
 }
 
-mojo::Remote<bat_ads::mojom::BatAdsService> FakeBatAdsServiceFactory::Launch()
-    const {
+size_t FakeBatAdsServiceFactory::trigger_notification_ad_event_count() const {
+  const FakeBatAds* const bat_ads = this->bat_ads();
+  return bat_ads ? bat_ads->trigger_notification_ad_event_count() : 0U;
+}
+
+mojo::Remote<bat_ads::mojom::BatAdsService> FakeBatAdsServiceFactory::Launch() {
   ++launch_count_;
 
   mojo::Remote<bat_ads::mojom::BatAdsService> bat_ads_service_remote;
