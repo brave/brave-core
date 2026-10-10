@@ -6,12 +6,16 @@
 #include "brave/browser/misc_metrics/captcha_metrics.h"
 
 #include <memory>
+#include <optional>
 
 #include "base/test/metrics/histogram_tester.h"
+#include "base/test/scoped_command_line.h"
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/misc_metrics/pref_names.h"
+#include "brave/components/p3a_utils/test_event_relay_observer.h"
 #include "components/prefs/testing_pref_service.h"
+#include "content/public/common/content_switches.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
@@ -73,6 +77,8 @@ class CaptchaMetricsTest : public testing::Test {
   TestingPrefServiceSimple pref_service_;
   std::unique_ptr<CaptchaMetrics> metrics_;
   base::HistogramTester histogram_tester_;
+  base::test::ScopedCommandLine scoped_command_line_;
+  p3a_utils::TestEventRelayObserver event_relay_observer_;
 };
 
 TEST_F(CaptchaMetricsTest, DoesNotReportOnConstruction) {
@@ -222,6 +228,37 @@ TEST_F(CaptchaMetricsTest, ExpiresAfterOneDay) {
   task_environment_.FastForwardBy(base::Days(1));
   histogram_tester_.ExpectTotalCount(kCaptchaTotalCountHistogramName, 1);
   histogram_tester_.ExpectTotalCount(kCaptchaGoogleCountHistogramName, 1);
+}
+
+TEST_F(CaptchaMetricsTest, SetsBotAttributeWhenNotAutomated) {
+  MaybeRecordCaptchaForUrl(GoogleCaptchaUrl());
+  task_environment_.FastForwardBy(base::Days(1));
+
+  EXPECT_EQ(
+      event_relay_observer_.GetCustomAttribute(kCaptchaCustomAttributeBotName),
+      "false");
+}
+
+TEST_F(CaptchaMetricsTest, SetsBotAttributeInAutomationMode) {
+  scoped_command_line_.GetProcessCommandLine()->AppendSwitch(
+      switches::kEnableAutomation);
+
+  MaybeRecordCaptchaForUrl(GoogleCaptchaUrl());
+  task_environment_.FastForwardBy(base::Days(1));
+
+  EXPECT_EQ(
+      event_relay_observer_.GetCustomAttribute(kCaptchaCustomAttributeBotName),
+      "true");
+}
+
+TEST_F(CaptchaMetricsTest, DoesNotSetBotAttributeWithoutCaptchas) {
+  scoped_command_line_.GetProcessCommandLine()->AppendSwitch(
+      switches::kEnableAutomation);
+  task_environment_.FastForwardBy(base::Days(1));
+
+  EXPECT_EQ(
+      event_relay_observer_.GetCustomAttribute(kCaptchaCustomAttributeBotName),
+      std::nullopt);
 }
 
 }  // namespace misc_metrics
