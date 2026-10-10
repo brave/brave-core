@@ -6,13 +6,11 @@
 #include "brave/components/tor/onion_location_navigation_throttle.h"
 
 #include <string>
-#include <utility>
 
 #include "base/check.h"
 #include "brave/components/tor/onion_location_tab_helper.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_handle.h"
-#include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "net/base/url_util.h"
 #include "net/http/http_response_headers.h"

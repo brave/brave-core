@@ -5,8 +5,6 @@
 
 #include "brave/components/sync/engine/brave_data_type_worker.h"
 
-#include <utility>
-
 #include "base/feature_list.h"
 #include "base/logging.h"
 #include "base/metrics/histogram_functions.h"

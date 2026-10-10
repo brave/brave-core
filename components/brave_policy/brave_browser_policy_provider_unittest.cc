@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_policy/brave_browser_policy_provider.h"
 
-#include <memory>
-
 #include "base/test/task_environment.h"
 #include "components/policy/core/common/policy_bundle.h"
 #include "components/policy/core/common/policy_namespace.h"

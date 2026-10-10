@@ -8,7 +8,6 @@
 #include <utility>
 
 #include "base/base64.h"
-#include "base/check.h"
 #include "base/functional/callback_helpers.h"
 #include "base/memory/raw_ptr.h"
 #include "base/notreached.h"
@@ -45,7 +44,6 @@
 #include "components/sync/test/fake_data_type_controller.h"
 #include "components/sync/test/fake_sync_engine.h"
 #include "components/sync/test/fake_sync_engine_factory.h"
-#include "components/sync/test/fake_sync_manager.h"
 #include "components/sync/test/sync_service_impl_bundle.h"
 #include "components/sync/test/test_data_type_store_service.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"

@@ -9,7 +9,6 @@
 #include <utility>
 
 #include "base/logging.h"
-#include "brave/components/brave_search/browser/brave_search_fallback_host.h"
 #include "brave/components/brave_search/browser/prefs.h"
 #include "brave/components/brave_search/common/features.h"
 #include "brave/components/brave_search_conversion/types.h"

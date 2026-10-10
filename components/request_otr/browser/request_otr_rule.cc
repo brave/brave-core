@@ -15,12 +15,10 @@
 #include "base/logging.h"
 #include "base/types/expected.h"
 #include "base/values.h"
-#include "components/prefs/pref_service.h"
 #include "extensions/common/url_pattern.h"
 #include "net/base/url_util.h"
 #include "url/gurl.h"
 #include "url/origin.h"
-#include "url/url_constants.h"
 
 namespace {
 
