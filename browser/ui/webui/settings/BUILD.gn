@@ -21,12 +21,12 @@ source_set("unit_tests") {
 
     deps = [
       "//base/test:test_support",
+      "//brave/browser/ui",
       "//brave/components/brave_shields/core/common",
       "//brave/components/resources:strings_grit",
       "//chrome/browser",
       "//chrome/browser/regional_capabilities",
       "//chrome/browser/search_engines",
-      "//chrome/browser/ui",
       "//chrome/browser/ui/navigator",
       "//chrome/browser/ui/webui/settings",
       "//chrome/test:test_support",
@@ -81,7 +81,6 @@ source_set("browser_tests") {
 
     deps = [
       "//brave/ui/webui/custom_profile_image/buildflags",
-      "//chrome/browser/ui/",
       "//chrome/browser/ui/webui/settings",
       "//chrome/test:test_support",
       "//chrome/test:test_support_ui",

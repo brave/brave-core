@@ -75,7 +75,6 @@ static_library("misc_metrics_impl") {
     "//chrome/browser/page_load_metrics",
     "//chrome/browser/profiles",
     "//chrome/browser/search_engines",
-    "//chrome/browser/ui",
     "//chrome/browser/ui/browser_window",
     "//chrome/browser/ui/tabs:tabs_public",
     "//chrome/common:constants",
