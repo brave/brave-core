@@ -1,0 +1,12 @@
+diff --git a/content/browser/service_worker/service_worker_register_job.cc b/content/browser/service_worker/service_worker_register_job.cc
+index 26d2122503dc49a32af39e9d8c92387795cc1094..0221afb05d821bb5c7fda3bff7fb51b5482382c5 100644
+--- a/content/browser/service_worker/service_worker_register_job.cc
++++ b/content/browser/service_worker/service_worker_register_job.cc
+@@ -371,6 +371,7 @@ void ServiceWorkerRegisterJob::OnUpdateCheckFinished(
+   // Update check failed.
+   if (result == ServiceWorkerSingleScriptUpdateChecker::Result::kFailed) {
+     DCHECK(failure_info);
++    if (failure_info->network_status.should_collapse_initiator) { should_uninstall_on_failure_ = true; }
+     ResolvePromise(failure_info->status, failure_info->error_message, nullptr);
+     // This terminates the current job (|this|).
+     Complete(failure_info->status, failure_info->error_message);
