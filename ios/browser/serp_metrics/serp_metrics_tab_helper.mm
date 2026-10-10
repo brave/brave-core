@@ -9,12 +9,10 @@
 #include "base/check_deref.h"
 #include "base/feature_list.h"
 #include "brave/components/constants/pref_names.h"
-#include "brave/components/serp_metrics/serp_classifier.h"
-#include "brave/components/serp_metrics/serp_classifier_utils.h"
-#include "brave/components/serp_metrics/serp_metric_type.h"
 #include "brave/components/serp_metrics/serp_metrics.h"
 #include "brave/components/serp_metrics/serp_metrics_feature.h"
 #include "brave/components/serp_metrics/serp_metrics_service.h"
+#include "brave/components/serp_metrics/navigation_tracker/navigation_tracker.h"
 #include "brave/ios/browser/serp_metrics/serp_metrics_service_factory_ios.h"
 #include "components/prefs/pref_service.h"
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
@@ -31,13 +29,6 @@ namespace {
 bool IsAllowedToSendUsagePings() {
   return GetApplicationContext()->GetLocalState()->GetBoolean(
       kStatsReportingEnabled);
-}
-
-bool ShouldRecordSearchEngine(SearchEngineType search_engine_type,
-                              const GURL& url) {
-  // Only Google web searches count. Vertical searches (`tbm` for images, news,
-  // video, etc. or a non-zero `udm` for shopping etc.) are excluded.
-  return search_engine_type != SEARCH_ENGINE_GOOGLE || IsGoogleWebSearch(url);
 }
 
 }  // namespace
@@ -69,54 +60,12 @@ void SerpMetricsTabHelper::MaybeCreateForWebState(web::WebState* web_state) {
 
 SerpMetricsTabHelper::SerpMetricsTabHelper(web::WebState* web_state,
                                            SerpMetrics& serp_metrics)
-    : web_state_(web_state), serp_metrics_(serp_metrics) {
+    : web_state_(web_state),
+      serp_metrics_(serp_metrics),
+      navigation_tracker_(
+          std::make_unique<SerpMetricsNavigationTracker>(serp_metrics)) {
   CHECK(web_state_);
   web_state_->AddObserver(this);
-}
-
-bool SerpMetricsTabHelper::IsSameSerpAsLastRecorded(const GURL& url) const {
-  return last_recorded_serp_url_ &&
-         IsSameSearchQuery(url, *last_recorded_serp_url_);
-}
-
-void SerpMetricsTabHelper::MaybeClassifyAndRecordSearchEngineForUrl(
-    const GURL& url) {
-  if (IsSameSerpAsLastRecorded(url)) {
-    return;
-  }
-
-  std::optional<SearchEngineType> search_engine_type =
-      MaybeClassifySearchEngine(url);
-  if (!search_engine_type) {
-    return;
-  }
-
-  if (search_engine_type &&
-      ShouldRecordSearchEngine(*search_engine_type, url)) {
-    RecordSearchEngine(*search_engine_type);
-    last_recorded_serp_url_ = url;
-  }
-}
-
-void SerpMetricsTabHelper::RecordSearchEngine(
-    SearchEngineType search_engine_type) {
-  switch (search_engine_type) {
-    case SEARCH_ENGINE_BRAVE: {
-      serp_metrics_->RecordSearch(SerpMetricType::kBrave);
-      break;
-    }
-
-    case SEARCH_ENGINE_GOOGLE: {
-      serp_metrics_->RecordSearch(SerpMetricType::kGoogle);
-      break;
-    }
-
-    default: {
-      // All other search engines are intentionally grouped together.
-      serp_metrics_->RecordSearch(SerpMetricType::kOther);
-      break;
-    }
-  }
 }
 
 void SerpMetricsTabHelper::DidFinishNavigation(
@@ -134,16 +83,8 @@ void SerpMetricsTabHelper::DidFinishNavigation(
   const bool is_new_navigation = ui::PageTransitionIsNewNavigation(
       navigation_context->GetPageTransition());
 
-  const GURL& url = navigation_context->GetUrl();
-
-  if (!is_new_navigation || !IsSameSerpAsLastRecorded(url)) {
-    // If this isn't a new navigation or it doesn't go to the same SERP as the
-    // last recorded one, clear the last recorded SERP URL so the next visit to
-    // that SERP can be recorded again.
-    last_recorded_serp_url_.reset();
-  }
-
-  MaybeClassifyAndRecordSearchEngineForUrl(url);
+  navigation_tracker_->OnNavigationFinished(navigation_context->GetUrl(),
+                                            is_new_navigation);
 }
 
 void SerpMetricsTabHelper::WebStateDestroyed(web::WebState* web_state) {
