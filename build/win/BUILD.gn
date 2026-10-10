@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
+import("//components/crx_file/crx3.gni")
 import("sign.gni")
 
 group("brave") {
@@ -45,4 +46,14 @@ sign("signed_delta_installer") {
   sources = [ "$root_out_dir/delta_installer_unsigned.exe" ]
   outputs = [ "$root_out_dir/delta_installer.exe" ]
   deps = [ "//chrome/installer/mini_installer:delta_installer_unsigned" ]
+}
+
+if (crx_private_key != "") {
+  crx3("crx") {
+    inputs = [ "$root_out_dir/$brave_installer_exe" ]
+    base_dir = root_out_dir
+    key = crx_private_key
+    output = "$root_out_dir/brave_installer.crx3"
+    deps = [ ":create_signed_installer" ]
+  }
 }

@@ -1,0 +1,28 @@
+diff --git a/chrome/updater/util/win_util.cc b/chrome/updater/util/win_util.cc
+index 907a6aaab5410ad81e3f0fb8feacb14d7ceea3ea..0ae19824865fac378ec241c7869274576f329141 100644
+--- a/chrome/updater/util/win_util.cc
++++ b/chrome/updater/util/win_util.cc
+@@ -954,6 +954,7 @@ std::optional<base::ScopedTempDir> CreateSecureTempDir() {
+ 
+ base::ScopedClosureRunner SignalShutdownEvent(UpdaterScope scope) {
+   NamedObjectAttributes attr = GetNamedObjectAttributes(kShutdownEvent, scope);
++  attr.name = GetLegacyShutdownEventName(scope);
+ 
+   base::win::ScopedHandle shutdown_event_handle(
+       ::CreateEvent(&attr.sa, true, false, attr.name.c_str()));
+@@ -971,6 +972,7 @@ base::ScopedClosureRunner SignalShutdownEvent(UpdaterScope scope) {
+ 
+ bool IsShutdownEventSignaled(UpdaterScope scope) {
+   NamedObjectAttributes attr = GetNamedObjectAttributes(kShutdownEvent, scope);
++  attr.name = GetLegacyShutdownEventName(scope);
+ 
+   base::win::ScopedHandle event_handle(
+       ::OpenEvent(EVENT_ALL_ACCESS, false, attr.name.c_str()));
+@@ -1370,6 +1372,7 @@ bool MigrateLegacyUpdaters(
+         }
+       }
+ 
++      MigrateApToCohort(registration);
+       register_callback.Run(registration);
+     }
+   }

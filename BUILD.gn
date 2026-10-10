@@ -497,6 +497,10 @@ group("create_dist") {
     if (last_chrome_installer != "") {
       deps += [ "//brave/build/win:signed_delta_installer" ]
     }
+
+    if (crx_private_key != "") {
+      deps += [ "//brave/build/win:crx" ]
+    }
   }
   if (is_mac) {
     deps += [ "//brave/build/mac:create_dist_mac" ]
