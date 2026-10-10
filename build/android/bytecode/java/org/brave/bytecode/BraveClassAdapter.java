@@ -75,7 +75,9 @@ public class BraveClassAdapter {
         chain = new BraveHttpURLConnectionFactoryImplClassAdapter(chain);
         chain = new BraveHubManagerImplClassAdapter(chain);
         chain = new BraveIdentityDiscControllerClassAdapter(chain);
+        chain = new BraveIncognitoCustomTabSnapshotControllerClassAdapter(chain);
         chain = new BraveIncognitoNewTabPageClassAdapter(chain);
+        chain = new BraveIncognitoTabbedSnapshotControllerClassAdapter(chain);
         chain = new BraveIntentHandlerClassAdapter(chain);
         chain = new BraveLauncherActivityClassAdapter(chain);
         chain = new BraveLaunchIntentDispatcherClassAdapter(chain);
@@ -118,6 +120,7 @@ public class BraveClassAdapter {
         chain = new BravePureJavaExceptionReporterClassAdapter(chain);
         chain = new BraveReaderModeManagerClassAdapter(chain);
         chain = new BraveReturnToChromeUtilClassAdapter(chain);
+        chain = new BraveScreenshotProtectionControllerClassAdapter(chain);
         chain = new BraveSearchBarCoordinatorClassAdapter(chain);
         chain = new BraveSearchEngineAdapterClassAdapter(chain);
         chain = new BraveSearchEnginePreferenceClassAdapter(chain);

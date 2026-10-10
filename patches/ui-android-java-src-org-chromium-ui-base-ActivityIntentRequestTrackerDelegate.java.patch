@@ -1,0 +1,28 @@
+diff --git a/ui/android/java/src/org/chromium/ui/base/ActivityIntentRequestTrackerDelegate.java b/ui/android/java/src/org/chromium/ui/base/ActivityIntentRequestTrackerDelegate.java
+index 0cbe7023779b8d834f7cc75b40735e42f664facb..82c9d627a93eb11da8699f6adaa36af92efc594b 100644
+--- a/ui/android/java/src/org/chromium/ui/base/ActivityIntentRequestTrackerDelegate.java
++++ b/ui/android/java/src/org/chromium/ui/base/ActivityIntentRequestTrackerDelegate.java
+@@ -10,6 +10,7 @@ import android.content.Intent;
+ import android.content.IntentSender;
+ import android.content.IntentSender.SendIntentException;
+ 
++import org.chromium.base.BraveExternalActivityLaunchTracker;
+ import org.chromium.build.annotations.NullMarked;
+ import org.chromium.build.annotations.Nullable;
+ import org.chromium.ui.base.IntentRequestTracker.Delegate;
+@@ -36,6 +37,7 @@ public class ActivityIntentRequestTrackerDelegate implements Delegate {
+         Activity activity = mActivityWeakRefHolder.get();
+         if (activity == null) return false;
+         try {
++            BraveExternalActivityLaunchTracker.notifyLaunchingExternalActivity();
+             activity.startActivityForResult(intent, requestCode);
+         } catch (ActivityNotFoundException e) {
+             return false;
+@@ -48,6 +50,7 @@ public class ActivityIntentRequestTrackerDelegate implements Delegate {
+         Activity activity = mActivityWeakRefHolder.get();
+         if (activity == null) return false;
+         try {
++            BraveExternalActivityLaunchTracker.notifyLaunchingExternalActivity();
+             activity.startIntentSenderForResult(intentSender, requestCode, new Intent(), 0, 0, 0);
+         } catch (SendIntentException e) {
+             return false;

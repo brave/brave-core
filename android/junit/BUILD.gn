@@ -14,6 +14,7 @@ if (is_android) {
     sources = [
       "src/org/chromium/base/BraveCommandLineInitUtilTest.java",
       "src/org/chromium/base/version_info/BraveVersionInfoTest.java",
+      "src/org/chromium/base/BraveExternalActivityLaunchTrackerTest.java",
     ]
 
     deps = [
@@ -250,6 +251,30 @@ if (is_android) {
       "//components/browser_ui/media/android:java",
       "//services/media_session/public/cpp/android:media_session_java",
     ]
+  }
+
+  robolectric_library("brave_junit_tests_org.chromium.chrome.browser.privacy") {
+    sources = [ "src/org/chromium/chrome/browser/privacy/BraveBrowserLockManagerTest.java" ]
+
+    deps = [ "//chrome/android/junit:chrome_junit_tests_helper" ]
+  }
+
+  robolectric_library(
+      "brave_junit_tests_org.chromium.chrome.browser.privacy.settings") {
+    resources_package = "org.chromium.chrome.browser.privacy.settings"
+    sources = [ "src/org/chromium/chrome/browser/privacy/settings/BraveBrowserLockSettingsFragmentTest.java" ]
+
+    deps = [
+      "//chrome/android/junit:chrome_junit_tests_helper",
+      "//chrome/browser/settings:java",
+    ]
+  }
+
+  robolectric_library(
+      "brave_junit_tests_org.chromium.chrome.browser.incognito.reauth") {
+    sources = [ "src/org/chromium/chrome/browser/incognito/reauth/BraveIncognitoReauthManagerTest.java" ]
+
+    deps = [ "//chrome/android/junit:chrome_junit_tests_helper" ]
   }
 
   robolectric_library("brave_junit_tests_org.chromium.chrome.browser.ui") {

@@ -204,7 +204,6 @@ android_resources("java_resources") {
     "java/brave-res/drawable/brave_news_settings_search_bg.xml",
     "java/brave-res/drawable/brave_news_settings_unfollow_bg.xml",
     "java/brave-res/drawable/brave_notification_permission_rationale_dialog_header.xml",
-    "java/brave-res/drawable/brave_privacy_tabs_unlock_image.xml",
     "java/brave-res/drawable/brave_rating_dont_show_again_bg.xml",
     "java/brave-res/drawable/brave_rating_emoji_happy_bg.xml",
     "java/brave-res/drawable/brave_rating_emoji_sad_bg.xml",
@@ -273,6 +272,7 @@ android_resources("java_resources") {
     "java/brave-res/drawable/ic_brave_news_no_source.xml",
     "java/brave-res/drawable/ic_brave_notification.xml",
     "java/brave-res/drawable/ic_brave_vpn_graphic.xml",
+    "java/brave-res/drawable/ic_brave_wordmark.xml",
     "java/brave-res/drawable/ic_btc_color.xml",
     "java/brave-res/drawable/ic_cancel_filled.xml",
     "java/brave-res/drawable/ic_carat_down.xml",
@@ -565,6 +565,7 @@ android_resources("java_resources") {
     "java/brave-res/layout/fragment_add_token.xml",
     "java/brave-res/layout/fragment_backup_wallet.xml",
     "java/brave-res/layout/fragment_brave_bookmark_import_export_dialog.xml",
+    "java/brave-res/layout/fragment_brave_browser_lock_settings.xml",
     "java/brave-res/layout/fragment_brave_location_bar_qr_dialog.xml",
     "java/brave-res/layout/fragment_brave_multiwindow_dialog.xml",
     "java/brave-res/layout/fragment_brave_vpn_always_on_error_dialog.xml",
@@ -718,4 +719,10 @@ android_resources("java_resources") {
     "java/brave-res/xml/sns_preferences.xml",
     "java/brave-res/xml/unstoppable_domains_preferences.xml",
   ]
+}
+
+android_resources("incognito_reauth_overlay_resources") {
+  resource_overlay = true
+  sources = [ "java/res_overlay/layout/incognito_reauth_view.xml" ]
+  deps = [ "//chrome/browser/incognito:java_resources" ]
 }
