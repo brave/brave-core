@@ -189,6 +189,7 @@ fn append_extra(
             | SignedExtension::EthSetOrigin
             | SignedExtension::WeightReclaim
             | SignedExtension::StorageWeightReclaim
+            | SignedExtension::UnitTransactionExtension
             | SignedExtension::UnusedLast => continue,
         }
     }
@@ -253,6 +254,7 @@ fn append_implicit(
             | SignedExtension::StorageWeightReclaim
             | SignedExtension::ChargeTransactionPayment
             | SignedExtension::WeightReclaim
+            | SignedExtension::UnitTransactionExtension
             | SignedExtension::UnusedLast => continue,
         }
     }

@@ -973,11 +973,11 @@ TEST_F(PolkadotWalletServiceUnitTest, SignAndSendTransaction_PaseoAssetHub) {
       url_loader_factory_.GetSafeWeakWrapper());
 
   static constexpr char kExpectedExtrinsic[] =
-      "5d0284000e161e17289c260a07020cc2a23192e882d5bee006b1390deed844b881b7e71e"
-      "01089e090162275c31ee169bfbd0522f4b6d1eb5713e960e898ec984968e592354c98bf2"
-      "ba35d8b870fe27d2b9a2fd7180456a33e95fdc6274bdd7fed1856e77830000000000a502"
-      "080000000a0300ae70948d0c015b6c2b1ac46b8931ad6301f2c648f3f0adf71d08a68fe7"
-      "45561e0700c12a9b64";
+      "550284000e161e17289c260a07020cc2a23192e882d5bee006b1390deed844b881b7e71e"
+      "01d0a53aa71904eb08dbb852010fff06fabbf5e626d8354ae5d2ec01b338a8d367d562a6"
+      "1d6cc7d899d8cc834e9ec0d6cf44fc7e0014d78c36abcdc0b2a7ef688c000000a5020800"
+      "00000a0300ae70948d0c015b6c2b1ac46b8931ad6301f2c648f3f0adf71d08a68fe74556"
+      "1e0700c12a9b64";
 
   polkadot_mock_rpc->SetSenderPubKey(sender_pubkey);
   polkadot_mock_rpc->SetExpectedExtrinsic(kExpectedExtrinsic);
@@ -1048,14 +1048,14 @@ TEST_F(PolkadotWalletServiceUnitTest,
       url_loader_factory_.GetSafeWeakWrapper());
 
   static constexpr char kExpectedExtrinsic[] =
-      "6d02"
+      "6502"
       "84"
       "00"
       "0e161e17289c260a07020cc2a23192e882d5bee006b1390deed844b881b7e71e"
       "01"
-      "e66681108e1e6f2911c3e2cd1c33f6ddf56bab8bbadbf2a329759b4fd068f609"
-      "9134af059cbd72cf3851afd6991a73a539bda79eaff836bcf78c1be7b78e5182"
-      "0000000000"
+      "6c7f158faa77360586536f301683257be6a015ddcfc31181d84823b8b82aa520"
+      "8e0953394e62171a400259dd9f8d6968d0fbaa976e964e67fd66019a51f5538d"
+      "000000"
       "a502"
       "08"
       "00"
@@ -1138,14 +1138,14 @@ TEST_F(PolkadotWalletServiceUnitTest,
       url_loader_factory_.GetSafeWeakWrapper());
 
   static constexpr char kExpectedExtrinsic[] =
-      "5902"
+      "5102"
       "84"
       "00"
       "0e161e17289c260a07020cc2a23192e882d5bee006b1390deed844b881b7e71e"
       "01"
-      "44c88f2a63f3cf78623a6137ed805586c4063716f09f5318375a2d20431d8423"
-      "6263dbe82040e6c7460bf3ded8cd28a6c5c0504cad5e13eba7284dd4e01d5a80"
-      "0000000000"
+      "f67e42d1596283c61479cb9559a356d0c2e01dac318bd648a119940fe67a505c"
+      "a3ad78d31cf6a6c1871433694413e16ca504373bc0c51842747d80c7dda3ae81"
+      "000000"
       "a502"
       "08"
       "00"
