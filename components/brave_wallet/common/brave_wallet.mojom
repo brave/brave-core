@@ -495,7 +495,7 @@ enum AssetPriceTimeframe {
 };
 
 struct AssetTimePrice {
-  mojo_base.mojom.TimeDelta date;
+  mojo_base.mojom.JSTime date;
   string price;
 };
 
@@ -2507,9 +2507,9 @@ struct TransactionInfo {
   TransactionType tx_type;
   array<string> tx_params;
   array<string> tx_args;
-  mojo_base.mojom.TimeDelta created_time;
-  mojo_base.mojom.TimeDelta submitted_time;
-  mojo_base.mojom.TimeDelta confirmed_time;
+  mojo_base.mojom.JSTime created_time;
+  mojo_base.mojom.JSTime submitted_time;
+  mojo_base.mojom.JSTime confirmed_time;
   OriginInfo? origin_info;
   string chain_id;
   // Currently only available for ETH and FIL

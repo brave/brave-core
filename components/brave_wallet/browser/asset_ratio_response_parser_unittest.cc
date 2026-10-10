@@ -3,12 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_wallet/browser/asset_ratio_response_parser.h"
+
 #include <memory>
 #include <utility>
 #include <vector>
 
 #include "base/test/values_test_util.h"
-#include "brave/components/brave_wallet/browser/asset_ratio_response_parser.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -199,18 +200,14 @@ TEST(AssetRatioResponseParserUnitTest, ParseAssetPriceHistory) {
   ASSERT_TRUE(ParseAssetPriceHistory(ParseJson(json), &values));
   ASSERT_EQ(values.size(), 2UL);
   EXPECT_EQ(values[0]->price, "0.8201346624954003");
-  base::Time date = base::Time::FromMillisecondsSinceUnixEpoch(
-      values[0]->date.InMilliseconds());
   base::Time::Exploded exploded_time;
-  date.UTCExplode(&exploded_time);
+  values[0]->date.UTCExplode(&exploded_time);
   EXPECT_EQ(exploded_time.year, 2021);
   EXPECT_EQ(exploded_time.month, 6);
   EXPECT_EQ(exploded_time.day_of_month, 3);
 
   EXPECT_EQ(values[1]->price, "0.8096978545029869");
-  base::Time date1 = base::Time::FromMillisecondsSinceUnixEpoch(
-      values[1]->date.InMilliseconds());
-  date1.UTCExplode(&exploded_time);
+  values[1]->date.UTCExplode(&exploded_time);
   EXPECT_EQ(exploded_time.year, 2021);
   EXPECT_EQ(exploded_time.month, 6);
   EXPECT_EQ(exploded_time.day_of_month, 3);

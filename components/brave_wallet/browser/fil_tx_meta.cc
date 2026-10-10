@@ -41,12 +41,9 @@ mojom::TransactionInfoPtr FilTxMeta::ToTransactionInfo() const {
       id_, from_.Clone(), tx_hash_,
       mojom::TxDataUnion::NewFilTxData(tx_->ToFilTxData()), status_,
       mojom::TransactionType::Other, std::vector<std::string>() /* tx_params */,
-      std::vector<std::string>() /* tx_args */,
-      base::Milliseconds(created_time_.InMillisecondsSinceUnixEpoch()),
-      base::Milliseconds(submitted_time_.InMillisecondsSinceUnixEpoch()),
-      base::Milliseconds(confirmed_time_.InMillisecondsSinceUnixEpoch()),
-      origin_.has_value() ? MakeOriginInfo(*origin_) : nullptr, chain_id_,
-      tx_->ToFilTxData()->to, false, swap_info_.Clone(), nullptr);
+      std::vector<std::string>() /* tx_args */, created_time_, submitted_time_,
+      confirmed_time_, origin_.has_value() ? MakeOriginInfo(*origin_) : nullptr,
+      chain_id_, tx_->ToFilTxData()->to, false, swap_info_.Clone(), nullptr);
 }
 
 mojom::CoinType FilTxMeta::GetCoinType() const {
