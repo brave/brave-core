@@ -1,0 +1,14 @@
+diff --git a/ios/web/web_state/web_state_impl.h b/ios/web/web_state/web_state_impl.h
+index 04923133dc6ebafbc0ef5135dee8489f33d7d918..5f5d076d2ca4c831b09032e537c0108cbd42f670 100644
+--- a/ios/web/web_state/web_state_impl.h
++++ b/ios/web/web_state/web_state_impl.h
+@@ -403,6 +403,9 @@ class WebStateImpl final : public WebState {
+   UIColor* GetThemeColor() final;
+   UIColor* GetUnderPageBackgroundColor() final;
+ 
++  WebUIIOS* GetMainFrameWebUI();
++  size_t GetWebUICountForTesting();
++
+  protected:
+   // WebState:
+   void AddPolicyDecider(WebStatePolicyDecider* decider) final;

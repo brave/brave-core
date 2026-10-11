@@ -6,19 +6,11 @@
 #ifndef BRAVE_CHROMIUM_SRC_IOS_WEB_WEB_STATE_WEB_STATE_IMPL_H_
 #define BRAVE_CHROMIUM_SRC_IOS_WEB_WEB_STATE_WEB_STATE_IMPL_H_
 
+// For the main frame WebUI accessor added by the web_state_impl.h plaster.
 namespace web {
 class WebUIIOS;
 }
 
-// Exposes an API to obtain the main frame WebUI which is required for some
-// Brave WebUI implementations
-#define ClearWebUI                    \
-  ClearWebUI();                       \
-  web::WebUIIOS* GetMainFrameWebUI(); \
-  size_t GetWebUICountForTesting
-
 #include <ios/web/web_state/web_state_impl.h>  // IWYU pragma: export
-
-#undef ClearWebUI
 
 #endif  // BRAVE_CHROMIUM_SRC_IOS_WEB_WEB_STATE_WEB_STATE_IMPL_H_
