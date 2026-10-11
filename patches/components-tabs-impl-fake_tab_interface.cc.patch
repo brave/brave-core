@@ -1,0 +1,15 @@
+diff --git a/components/tabs/impl/fake_tab_interface.cc b/components/tabs/impl/fake_tab_interface.cc
+index e8f8916bc9a2e6327c19660071d6afb8e5b5ce42..c2723cdcffb7cdf6e0817734faafc3ea09ef441e 100644
+--- a/components/tabs/impl/fake_tab_interface.cc
++++ b/components/tabs/impl/fake_tab_interface.cc
+@@ -46,6 +46,10 @@ void FakeTabInterface::UpdateProperties() {
+   for (const TabCollection* ancestor = parent_collection_; ancestor;
+        ancestor = ancestor->GetParentCollection()) {
+     switch (ancestor->type()) {
++#if !BUILDFLAG(IS_ANDROID)
++      case TabCollection::Type::TREE_NODE:
++        break;
++#endif  // !BUILDFLAG(IS_ANDROID)
+       case TabCollection::Type::PINNED:
+         pinned_ = true;
+         break;
