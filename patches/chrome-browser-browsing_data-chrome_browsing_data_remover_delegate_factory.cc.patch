@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate_factory.cc b/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate_factory.cc
-index 4a1b60e20906fc8a39aac28ac11f5e2c552d9a2b..3fda7dd5b7e0e2dc74f6a821a2479c45caab32ca 100644
+index ef8629f2c6144cb50ea433fd5d517561eb8b3d8e..6c0c6247b1fc5c871835e154a89694ab9381bbb4 100644
 --- a/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate_factory.cc
 +++ b/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate_factory.cc
-@@ -44,9 +44,9 @@ ChromeBrowsingDataRemoverDelegateFactory::GetInstance() {
+@@ -69,9 +69,9 @@ ChromeBrowsingDataRemoverDelegateFactory::GetInstance() {
  }
  
  // static
@@ -14,7 +14,18 @@ index 4a1b60e20906fc8a39aac28ac11f5e2c552d9a2b..3fda7dd5b7e0e2dc74f6a821a2479c45
        GetInstance()->GetServiceForBrowserContext(profile, true));
  }
  
-@@ -100,5 +100,5 @@ ChromeBrowsingDataRemoverDelegateFactory::BuildServiceInstanceForBrowserContext(
+@@ -122,6 +122,10 @@ ChromeBrowsingDataRemoverDelegateFactory::
+   DependsOn(WebDataServiceFactory::GetInstance());
+   DependsOn(WebHistoryServiceFactory::GetInstance());
+   DependsOn(ZeroSuggestCacheServiceFactory::GetInstance());
++  for (auto* factory :
++       BraveBrowsingDataRemoverDelegate::GetServiceFactoryDependencies()) {
++    DependsOn(factory);
++  }
+ 
+ #if BUILDFLAG(ENABLE_EXTENSIONS_CORE)
+   DependsOn(extensions::ActivityLog::GetFactoryInstance());
+@@ -153,5 +157,5 @@ ChromeBrowsingDataRemoverDelegateFactory::BuildServiceInstanceForBrowserContext(
    Profile* profile = static_cast<Profile*>(context);
    CHECK(!profile->IsGuestSession() || profile->IsOffTheRecord(),
          base::NotFatalUntil::M161);
