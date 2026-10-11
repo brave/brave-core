@@ -675,6 +675,7 @@ void PageGraph::DidFinishLoading(uint64_t identifier,
                                  blink::DocumentLoader* loader,
                                  base::TimeTicks finish_time,
                                  int64_t encoded_data_length,
+                                 uint64_t encoded_body_length,
                                  int64_t decoded_body_length) {
   const FrameId frame_id = GetFrameId(loader);
   if (request_tracker_.GetTrackingRecord(identifier)) {
