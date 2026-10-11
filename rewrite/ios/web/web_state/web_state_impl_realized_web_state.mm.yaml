@@ -14,3 +14,20 @@ substitutions:
     regex:
       re_pattern: 'std::make_unique<WebUIIOSImpl>\(owner_\)'
       replace: 'std::make_unique<WebUIIOSImpl>(owner_, url.GetHost())'
+  - description: |-
+      Clear the WebUIs on a failed or non-WebUI navigation.
+
+      Upstream only clears `web_ui_`, which Brave never sets because it keeps
+      its WebUIs in `web_uis_`, so they were never cleared. The `ClearWebUI()`
+      call can't be reused here: in this file it is renamed to
+      `ClearWebUI_ChromiumImpl()`, which also only resets `web_ui_`.
+    regex:
+      re_pattern: >-
+        if \(web_ui_ && \(!context->HasCommitted\(\)
+        \|\|\s+!web::GetWebClient\(\)->IsAppSpecificURL\(context->GetUrl\(\)\)\)\)
+        \{\s+ClearWebUI\(\);
+      replace: |-
+        if (!web_uis_.empty() && (!context->HasCommitted() ||
+                                  !web::GetWebClient()->IsAppSpecificURL(
+                                      context->GetUrl()))) {
+            web_uis_.clear();
