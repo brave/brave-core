@@ -45,6 +45,12 @@ IN_PROC_BROWSER_TEST_F(BraveSettingsOverridesWebUITest, PrivacyPage) {
   RunTest("settings/privacy_page_test.js", "runMochaSuite('BravePrivacyPage')");
 }
 
+IN_PROC_BROWSER_TEST_F(BraveSettingsOverridesWebUITest,
+                       ClearBrowsingDataOnExitPage) {
+  RunTest("settings/clear_browsing_data_dialog_test.js",
+          "runMochaSuite('BraveClearBrowsingDataOnExitPage')");
+}
+
 IN_PROC_BROWSER_TEST_F(BraveSettingsOverridesWebUITest, MemoryPage) {
   RunTest("settings/memory_page_test.js", "runMochaSuite('BraveMemoryPage')");
 }
