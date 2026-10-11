@@ -1,0 +1,23 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Handle TREE_NODE in FakeTabInterface::UpdateProperties().
+
+      Like in TabModel::UpdateProperties(), a tree-tab node carries no
+      pinned/group/split state of its own. TREE_NODE only exists outside
+      Android, while this test support also builds on Android.
+    regex:
+      re_pattern:
+        '(void FakeTabInterface::UpdateProperties\(\)\s*\{.*?switch
+        \(ancestor->type\(\)\)\s*\{)'
+      re_flags: [DOTALL]
+      replace: |-
+        \1
+        #if !BUILDFLAG(IS_ANDROID)
+              case TabCollection::Type::TREE_NODE:
+                break;
+        #endif  // !BUILDFLAG(IS_ANDROID)
