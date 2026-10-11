@@ -568,4 +568,12 @@ bool IsHTTPSOrLocalhostURL(const std::string& url_string) {
   return net::IsHTTPSOrLocalhostURL(GURL(url_string));
 }
 
+bool IsValidDappOrigin(const url::Origin& origin) {
+  if (origin.opaque()) {
+    return false;
+  }
+  return origin.scheme() == url::kHttpsScheme ||
+         origin.scheme() == url::kHttpScheme;
+}
+
 }  // namespace brave_wallet
