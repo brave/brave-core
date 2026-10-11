@@ -126,6 +126,12 @@ void SidebarController::TearDownPreBrowserWindowDestruction() {
   sidebar_ = nullptr;
 }
 
+void SidebarController::CloseWebPanel() {
+  if (web_panel_controller_) {
+    web_panel_controller_->CloseWebPanel();
+  }
+}
+
 void SidebarController::OnItemPressed(size_t index,
                                       WindowOpenDisposition disposition) {
   CHECK_LT(index, sidebar_model_->GetAllSidebarItems().size());

@@ -49,6 +49,18 @@ substitutions:
       replace: |
         \1  confirmed_to_close_ = false;
   - description: |
+      Close the sidebar web panel before the window is snapshotted
+
+      The panel is a pinned tab. Once `SessionServiceBase::WindowClosing()` has
+      run, the tab's close is no longer recorded, so the panel would be
+      restored as a regular pinned tab.
+    regex:
+      re_pattern:
+        '(void UnloadController::OnWindowClosing\(\) \{[\s\S]+?if
+        \(!HandleBeforeClose\(\)\) \{\n    return;\n  \}\n)'
+      replace: |
+        \1  sidebar::MaybeCloseWebPanel(browser_);
+  - description: |
       Let SharedPinnedTabService detach shared pinned tabs before they close
 
       Its `BrowserClosing()` must run before `TabStripModel::CloseAllTabs()`,

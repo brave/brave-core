@@ -67,6 +67,16 @@ SidebarService::ShowSidebarOption GetDefaultShowSidebarOption(
 // Returns RIGHT_TOP if sidebar is on right.
 views::BubbleBorder::Arrow GetBubbleArrowForSidebar(PrefService* prefs);
 
+// Closes the open web panel of every browser window, across all profiles.
+// Called on shutdown, before session services are shut down, so that panels
+// aren't restored as ordinary pinned tabs on the next launch.
+void CloseAllWebPanels();
+
+// Closes `browser`'s web panel. No-op when `browser` has no sidebar controller
+// or no open web panel. Called when a single window is closing, before the
+// session and tab restore services snapshot it.
+void MaybeCloseWebPanel(BrowserWindowInterface* browser);
+
 }  // namespace sidebar
 
 #endif  // BRAVE_BROWSER_UI_SIDEBAR_SIDEBAR_UTILS_H_
