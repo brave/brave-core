@@ -41,6 +41,7 @@ if (enable_ffmpeg_hevc_support) {
     brave_third_party_ffmpeg_c_sources += [
       "libavcodec/x86/h26x/h2656dsp.c",
       "libavcodec/x86/hevc/dsp_init.c",
+      "libavcodec/x86/hevc/pred_init.c",
     ]
     brave_third_party_ffmpeg_asm_sources += [
       "libavcodec/x86/h26x/h2656_inter.asm",
@@ -49,6 +50,7 @@ if (enable_ffmpeg_hevc_support) {
       "libavcodec/x86/hevc/dequant.asm",
       "libavcodec/x86/hevc/idct.asm",
       "libavcodec/x86/hevc/mc.asm",
+      "libavcodec/x86/hevc/pred.asm",
       "libavcodec/x86/hevc/sao.asm",
       "libavcodec/x86/hevc/sao_10bit.asm",
     ]
