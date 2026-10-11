@@ -19,15 +19,20 @@
 #include "brave/components/tor/tor_launcher_observer.h"
 #include "brave/components/tor/tor_profile_service.h"
 #include "brave/components/tor/tor_profile_service_impl.h"
+#include "build/build_config.h"
+#include "build/config/linux/dbus/buildflags.h"
 #include "chrome/browser/bookmarks/bookmark_model_factory.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
+#include "chrome/browser/net/profile_network_context_service.h"
+#include "chrome/browser/net/profile_network_context_service_factory.h"
 #include "chrome/browser/net/profile_network_context_service_test_utils.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #include "chrome/browser/ui/browser_window/public/profile_browser_collection.h"
+#include "chrome/common/chrome_switches.h"
 #include "chrome/test/base/chrome_test_path_utils.h"
 #include "chrome/test/base/chrome_test_utils.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -43,7 +48,9 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "extensions/buildflags/buildflags.h"
+#include "services/cert_verifier/public/mojom/cert_verifier_service_factory.mojom.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
+#include "services/network/public/mojom/network_context.mojom.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "third_party/blink/public/common/web_preferences/web_preferences.h"
 
@@ -633,6 +640,46 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerTest, NoBuiltInBridgesRequest) {
     TorProfileServiceFactory::SetTorBridgesConfig(bridges_config);
     EXPECT_EQ(0u, test_url_loader_factory_.total_requests());
   }
+}
+
+// The system proxy resolver ignores the ProxyConfigService where Tor's proxy is
+// set, so Tor profiles must not get one.
+class TorProfileManagerSystemProxyResolverTest : public TorProfileManagerTest {
+ public:
+  void SetUpCommandLine(base::CommandLine* command_line) override {
+    TorProfileManagerTest::SetUpCommandLine(command_line);
+    command_line->AppendSwitch(switches::kUseSystemProxyResolver);
+  }
+
+ protected:
+  network::mojom::NetworkContextParamsPtr ConfigureNetworkContextParams(
+      Profile* profile) {
+    auto params = network::mojom::NetworkContextParams::New();
+    auto cert_verifier_params =
+        cert_verifier::mojom::CertVerifierCreationParams::New();
+    ProfileNetworkContextServiceFactory::GetForContext(profile)
+        ->ConfigureNetworkContextParams(
+            /*in_memory=*/true, base::FilePath(), params.get(),
+            cert_verifier_params.get());
+    return params;
+  }
+};
+
+IN_PROC_BROWSER_TEST_F(TorProfileManagerSystemProxyResolverTest,
+                       TorProfileHasNoSystemProxyResolver) {
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || \
+    (BUILDFLAG(IS_LINUX) && BUILDFLAG(USE_DBUS))
+  // Other profiles get it, which also shows that the switch took effect.
+  EXPECT_TRUE(ConfigureNetworkContextParams(browser()->GetProfile())
+                  ->system_proxy_resolver.is_valid());
+#endif
+
+  Profile* tor_profile =
+      SwitchToTorProfile(browser()->GetProfile(), GetTorLauncherFactory())
+          ->GetProfile();
+  ASSERT_TRUE(tor_profile->IsTor());
+  EXPECT_FALSE(ConfigureNetworkContextParams(tor_profile)
+                   ->system_proxy_resolver.is_valid());
 }
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
