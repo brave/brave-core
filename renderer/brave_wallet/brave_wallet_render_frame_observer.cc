@@ -9,6 +9,7 @@
 
 #include "base/check.h"
 #include "base/notreached.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/renderer/js_cardano_provider.h"
 #include "brave/components/brave_wallet/renderer/js_ethereum_provider.h"
 #include "brave/components/brave_wallet/renderer/js_polkadot_provider.h"
@@ -16,7 +17,9 @@
 #include "brave/components/brave_wallet/renderer/v8_helper.h"
 #include "content/public/renderer/render_frame.h"
 #include "third_party/blink/public/platform/scheduler/web_agent_group_scheduler.h"
+#include "third_party/blink/public/web/web_document.h"
 #include "third_party/blink/public/web/web_local_frame.h"
+#include "url/origin.h"
 #include "v8/include/v8-microtask-queue.h"
 
 namespace brave_wallet {
@@ -32,7 +35,10 @@ BraveWalletRenderFrameObserver::~BraveWalletRenderFrameObserver() = default;
 bool BraveWalletRenderFrameObserver::CanCreateProvider() {
   auto* web_frame = render_frame()->GetWebFrame();
 
-  if (!GURL(web_frame->GetDocument().Url()).SchemeIsHTTPOrHTTPS()) {
+  // Rejects opaque origins, which includes sandboxed frames without
+  // allow-same-origin.
+  const url::Origin origin = web_frame->GetDocument().GetSecurityOrigin();
+  if (!IsValidDappOrigin(origin)) {
     return false;
   }
 
