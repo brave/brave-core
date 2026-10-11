@@ -53,17 +53,3 @@ bool ComputeHistoryEmbeddingsEnabledForProfile(Profile* profile) {
 }  // namespace history_embeddings
 
 #include <chrome/browser/history_embeddings/history_embeddings_utils.cc>
-
-namespace history_embeddings {
-
-namespace {
-
-// kEnabledByDefaultForDesktopOnly is left unused because we disable
-// `kLaunchedHistoryEmbeddings` with a plaster, so we suppress the unused
-// variable warning with this.
-[[maybe_unused]] constexpr auto& kUnusedEnabledByDefaultForDesktopOnly =
-    kEnabledByDefaultForDesktopOnly;
-
-}  // namespace
-
-}  // namespace history_embeddings
