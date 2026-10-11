@@ -16,7 +16,6 @@
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/components/constants/pref_names.h"
-#include "chrome/browser/lifetime/browser_close_manager.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
@@ -33,17 +32,6 @@
 #include "components/bookmarks/common/bookmark_pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "components/tabs/public/tab_interface.h"
-
-namespace {
-
-bool g_suppress_dialog_for_testing = false;
-
-}  // namespace
-
-// static
-void BraveBrowser::SuppressBrowserWindowClosingDialogForTesting(bool suppress) {
-  g_suppress_dialog_for_testing = suppress;
-}
 
 BraveBrowser::BraveBrowser(BrowserWindowCreateParams params)
     : Browser(std::move(params)) {
@@ -159,29 +147,6 @@ void BraveBrowser::OnTabStripModelChanged(
           removed_tab.tab->GetHandle());
     }
   }
-}
-
-bool BraveBrowser::ShouldAskForBrowserClosingBeforeHandlers() {
-  if (g_suppress_dialog_for_testing) {
-    return false;
-  }
-
-  // Don't need to ask when application closing is in-progress.
-  if (BrowserCloseManager::BrowserClosingStarted()) {
-    return false;
-  }
-
-  if (UnloadController::From(this)->confirmed_to_close()) {
-    return false;
-  }
-
-  PrefService* prefs = GetProfile()->GetPrefs();
-  if (!prefs->GetBoolean(kEnableWindowClosingConfirm)) {
-    return false;
-  }
-
-  // Only launch confirm dialog while closing when browser has multiple tabs.
-  return tab_strip_model()->count() > 1;
 }
 
 bool BraveBrowser::AreAllTabsSharedPinnedTabs() {

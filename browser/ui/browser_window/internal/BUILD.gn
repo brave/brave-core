@@ -59,6 +59,7 @@ source_set("internal") {
       "//brave/browser/ui/views/page_info",
       "//brave/browser/ui/views/toolbar:screenshot",
       "//brave/browser/ui/views/workspaces",
+      "//brave/browser/ui/window_closing_confirm",
       "//chrome/browser/ui/side_panel",
       "//chrome/browser/ui/side_panel:side_panel_views_dependent",
       "//chrome/browser/ui/tabs:features",

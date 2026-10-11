@@ -1,10 +1,10 @@
-/* Copyright (c) 2022 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_BROWSER_UI_VIEWS_WINDOW_CLOSING_CONFIRM_DIALOG_VIEW_H_
-#define BRAVE_BROWSER_UI_VIEWS_WINDOW_CLOSING_CONFIRM_DIALOG_VIEW_H_
+#ifndef BRAVE_BROWSER_UI_WINDOW_CLOSING_CONFIRM_WINDOW_CLOSING_CONFIRM_DIALOG_VIEW_H_
+#define BRAVE_BROWSER_UI_WINDOW_CLOSING_CONFIRM_WINDOW_CLOSING_CONFIRM_DIALOG_VIEW_H_
 
 #include "base/functional/callback_forward.h"
 #include "base/memory/raw_ptr.h"
@@ -54,4 +54,4 @@ class WindowClosingConfirmDialogView : public views::DialogDelegateView {
   raw_ptr<DontAskAgainCheckbox> dont_ask_again_checkbox_ = nullptr;
 };
 
-#endif  // BRAVE_BROWSER_UI_VIEWS_WINDOW_CLOSING_CONFIRM_DIALOG_VIEW_H_
+#endif  // BRAVE_BROWSER_UI_WINDOW_CLOSING_CONFIRM_WINDOW_CLOSING_CONFIRM_DIALOG_VIEW_H_

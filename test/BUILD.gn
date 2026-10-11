@@ -812,7 +812,7 @@ static_library("browser_test_support") {
   ]
 
   if (!is_android) {
-    deps += [ "//brave/browser/ui:brave_browser_header" ]
+    deps += [ "//brave/browser/ui/window_closing_confirm" ]
   }
 }
 

@@ -7,9 +7,9 @@
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/run_loop.h"
-#include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
-#include "brave/browser/ui/views/window_closing_confirm_dialog_view.h"
+#include "brave/browser/ui/window_closing_confirm/window_closing_confirm_controller.h"
+#include "brave/browser/ui/window_closing_confirm/window_closing_confirm_dialog_view.h"
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/download/download_manager_utils.h"
 #include "chrome/browser/download/download_prefs.h"
@@ -57,7 +57,7 @@ class WindowClosingConfirmBrowserTest : public InProcessBrowserTest,
                                         public views::WidgetObserver {
  public:
   void SetUpOnMainThread() override {
-    BraveBrowser::SuppressBrowserWindowClosingDialogForTesting(false);
+    WindowClosingConfirmController::SuppressDialogForTesting(false);
 
     InProcessBrowserTest::SetUpOnMainThread();
 
@@ -69,9 +69,14 @@ class WindowClosingConfirmBrowserTest : public InProcessBrowserTest,
   }
 
   void TearDownOnMainThread() override {
-    BraveBrowser::SuppressBrowserWindowClosingDialogForTesting(true);
+    WindowClosingConfirmController::SuppressDialogForTesting(true);
 
     InProcessBrowserTest::TearDownOnMainThread();
+  }
+
+  bool ShouldAskBeforeClosing(BrowserWindowInterface* browser) {
+    return WindowClosingConfirmController::From(browser)
+        ->ShouldAskBeforeClosing();
   }
 
   void SetDialogCreationCallback() {
@@ -177,16 +182,16 @@ class WindowClosingConfirmBrowserTest : public InProcessBrowserTest,
 };
 
 IN_PROC_BROWSER_TEST_F(WindowClosingConfirmBrowserTest, TestWithTwoNTPTabs) {
-  BraveBrowser* brave_browser = static_cast<BraveBrowser*>(browser());
+  BrowserWindowInterface* browser_window = browser();
   // One tab. Doesn't need to ask.
-  EXPECT_FALSE(brave_browser->ShouldAskForBrowserClosingBeforeHandlers());
+  EXPECT_FALSE(ShouldAskBeforeClosing(browser_window));
 
   // Two tabs. Need to ask browser closing.
   ui_test_utils::NavigateToURLWithDisposition(
-      brave_browser, GURL(url::kAboutBlankURL),
+      browser_window, GURL(url::kAboutBlankURL),
       WindowOpenDisposition::NEW_FOREGROUND_TAB,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
-  EXPECT_TRUE(brave_browser->ShouldAskForBrowserClosingBeforeHandlers());
+  EXPECT_TRUE(ShouldAskBeforeClosing(browser_window));
 
   closing_confirm_dialog_created_ = false;
   allow_to_close_ = true;
@@ -194,20 +199,20 @@ IN_PROC_BROWSER_TEST_F(WindowClosingConfirmBrowserTest, TestWithTwoNTPTabs) {
   // Do quit request twice and check second quit request doesn't make
   // another dialog. If it's created, DCHECK() in
   // OnWindowClosingConfirmDialogCreated() can detect.
-  chrome::CloseWindow(brave_browser);
-  chrome::CloseWindow(brave_browser);
-  ui_test_utils::WaitForBrowserToClose(brave_browser);
+  chrome::CloseWindow(browser_window);
+  chrome::CloseWindow(browser_window);
+  ui_test_utils::WaitForBrowserToClose(browser_window);
   EXPECT_TRUE(closing_confirm_dialog_created_);
 }
 
 IN_PROC_BROWSER_TEST_F(WindowClosingConfirmBrowserTest, TestWithQuit) {
-  BraveBrowser* brave_browser = static_cast<BraveBrowser*>(browser());
+  BrowserWindowInterface* browser_window = browser();
   ui_test_utils::NavigateToURLWithDisposition(
-      brave_browser, GURL(url::kAboutBlankURL),
+      browser_window, GURL(url::kAboutBlankURL),
       WindowOpenDisposition::NEW_FOREGROUND_TAB,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
   // Should ask closing.
-  EXPECT_TRUE(brave_browser->ShouldAskForBrowserClosingBeforeHandlers());
+  EXPECT_TRUE(ShouldAskBeforeClosing(browser_window));
 
   // Should not ask for quit command.
   closing_confirm_dialog_created_ = false;
@@ -224,8 +229,7 @@ IN_PROC_BROWSER_TEST_F(WindowClosingConfirmBrowserTest,
       WindowOpenDisposition::NEW_FOREGROUND_TAB,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
   // Should ask closing for this browser window as this has more than one tab.
-  EXPECT_TRUE(static_cast<BraveBrowser*>(browser())
-                  ->ShouldAskForBrowserClosingBeforeHandlers());
+  EXPECT_TRUE(ShouldAskBeforeClosing(browser()));
 
   // However, should not ask for profile deletion.
   closing_confirm_dialog_created_ = false;
@@ -239,34 +243,34 @@ IN_PROC_BROWSER_TEST_F(WindowClosingConfirmBrowserTest,
                        TestWithOnBeforeUnload) {
   ASSERT_TRUE(embedded_test_server()->Start());
 
-  BraveBrowser* brave_browser = static_cast<BraveBrowser*>(browser());
+  BrowserWindowInterface* browser_window = browser();
   ASSERT_NO_FATAL_FAILURE(ASSERT_TRUE(ui_test_utils::NavigateToURL(
-      brave_browser, embedded_test_server()->GetURL("/beforeunload.html"))));
+      browser_window, embedded_test_server()->GetURL("/beforeunload.html"))));
   ui_test_utils::NavigateToURLWithDisposition(
-      brave_browser, GURL(url::kAboutBlankURL),
+      browser_window, GURL(url::kAboutBlankURL),
       WindowOpenDisposition::NEW_FOREGROUND_TAB,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
-  PrepareForBeforeUnloadDialog(brave_browser);
+  PrepareForBeforeUnloadDialog(browser_window);
 
   // Check beforeunload dialog is launched after allowed to close window.
   allow_to_close_ = true;
-  chrome::CloseWindow(brave_browser);
+  chrome::CloseWindow(browser_window);
   EXPECT_TRUE(closing_confirm_dialog_created_);
   ASSERT_NO_FATAL_FAILURE(CancelClose());
   SetClosingBrowserCallbackAndWait();
-  EXPECT_TRUE(brave_browser->ShouldAskForBrowserClosingBeforeHandlers());
+  EXPECT_TRUE(ShouldAskBeforeClosing(browser_window));
 
   // Check window closing dialog is launched again after cancelling
   // beforeunlaod handler.
   closing_confirm_dialog_created_ = false;
   allow_to_close_ = true;
-  chrome::CloseWindow(brave_browser);
+  chrome::CloseWindow(browser_window);
   EXPECT_TRUE(closing_confirm_dialog_created_);
 
   // Close browser
   ASSERT_NO_FATAL_FAILURE(AcceptClose());
-  ui_test_utils::WaitForBrowserToClose(brave_browser);
+  ui_test_utils::WaitForBrowserToClose(browser_window);
 }
 
 // Disabling on Mac due to excessive flakiness
@@ -283,12 +287,12 @@ IN_PROC_BROWSER_TEST_F(WindowClosingConfirmBrowserTest,
 // However, private profile window works like normal window of other platforms.
 // So, test with private profile window on macOS.
 #if BUILDFLAG(IS_MAC)
-  auto* brave_browser = static_cast<BraveBrowser*>(CreateIncognitoBrowser());
+  BrowserWindowInterface* browser_window = CreateIncognitoBrowser();
 #else
-  auto* brave_browser = static_cast<BraveBrowser*>(browser());
+  BrowserWindowInterface* browser_window = browser();
 #endif
-  brave_browser->GetProfile()->GetPrefs()->SetBoolean(prefs::kPromptForDownload,
-                                                      false);
+  browser_window->GetProfile()->GetPrefs()->SetBoolean(
+      prefs::kPromptForDownload, false);
 
   test_response_handler()->RegisterToTestServer(embedded_test_server());
   ASSERT_TRUE(embedded_test_server()->Start());
@@ -302,7 +306,7 @@ IN_PROC_BROWSER_TEST_F(WindowClosingConfirmBrowserTest,
   {
     base::ScopedAllowBlockingForTesting allow_blocking;
     std::optional<int64_t> free_space = base::SysInfo::AmountOfFreeDiskSpace(
-        GetDownloadDirectory(brave_browser));
+        GetDownloadDirectory(browser_window));
     ASSERT_TRUE(free_space.has_value());
     ASSERT_LE(parameters.size, *free_space)
         << "Not enough disk space to download. Got " << *free_space;
@@ -310,16 +314,16 @@ IN_PROC_BROWSER_TEST_F(WindowClosingConfirmBrowserTest,
 
   // Make browser has two tabs.
   ui_test_utils::NavigateToURLWithDisposition(
-      brave_browser, GURL(url::kAboutBlankURL),
+      browser_window, GURL(url::kAboutBlankURL),
       WindowOpenDisposition::NEW_FOREGROUND_TAB,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
   std::unique_ptr<content::DownloadTestObserver> progress_waiter(
-      CreateInProgressWaiter(brave_browser, 1));
+      CreateInProgressWaiter(browser_window, 1));
 
   // Start downloading a file, wait for it to be created.
   ui_test_utils::NavigateToURLWithDisposition(
-      brave_browser, url, WindowOpenDisposition::CURRENT_TAB,
+      browser_window, url, WindowOpenDisposition::CURRENT_TAB,
       ui_test_utils::BROWSER_TEST_NO_WAIT);
   progress_waiter->WaitForFinished();
 
@@ -330,9 +334,9 @@ IN_PROC_BROWSER_TEST_F(WindowClosingConfirmBrowserTest,
   allow_to_close_ = false;
   closing_confirm_dialog_created_ = false;
   SetDownloadConfirmReturn(false);
-  chrome::CloseWindow(brave_browser);
+  chrome::CloseWindow(browser_window);
   EXPECT_TRUE(closing_confirm_dialog_created_);
-  EXPECT_TRUE(brave_browser->ShouldAskForBrowserClosingBeforeHandlers());
+  EXPECT_TRUE(ShouldAskBeforeClosing(browser_window));
   WaitTillConfirmDialogClosed();
 
   // Allow window closing while downloading and don't cancel downloading.
@@ -340,17 +344,17 @@ IN_PROC_BROWSER_TEST_F(WindowClosingConfirmBrowserTest,
   allow_to_close_ = true;
   closing_confirm_dialog_created_ = false;
   SetDownloadConfirmReturn(false);
-  chrome::CloseWindow(brave_browser);
+  chrome::CloseWindow(browser_window);
   EXPECT_TRUE(closing_confirm_dialog_created_);
   WaitTillConfirmDialogClosed();
   SetClosingBrowserCallbackAndWait();
-  EXPECT_TRUE(brave_browser->ShouldAskForBrowserClosingBeforeHandlers());
+  EXPECT_TRUE(ShouldAskBeforeClosing(browser_window));
 
   // Close window again by cancelling download to terminate test.
   allow_to_close_ = true;
   closing_confirm_dialog_created_ = false;
   SetDownloadConfirmReturn(true);
-  chrome::CloseWindow(brave_browser);
+  chrome::CloseWindow(browser_window);
   EXPECT_TRUE(closing_confirm_dialog_created_);
   WaitTillConfirmDialogClosed();
 }
