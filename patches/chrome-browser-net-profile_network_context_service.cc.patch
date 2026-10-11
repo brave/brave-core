@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/net/profile_network_context_service.cc b/chrome/browser/net/profile_network_context_service.cc
-index 028fe9924cdbfe586c8a0029ac27d53746f995ff..1d3b26208f7c83f0b57f7d806e4f0da34e01b493 100644
+index 62ff3787b22a1227e47ea85ad4cfbda8707e1534..69dfccf1ca09ad39a94b81620ef2dc1185ac260a 100644
 --- a/chrome/browser/net/profile_network_context_service.cc
 +++ b/chrome/browser/net/profile_network_context_service.cc
-@@ -737,6 +737,7 @@ network::mojom::CTPolicyPtr ProfileNetworkContextService::GetCTPolicy() {
+@@ -740,6 +740,7 @@ network::mojom::CTPolicyPtr ProfileNetworkContextService::GetCTPolicy() {
    std::vector<std::string> excluded_spkis(
        TranslateStringArray(ct_excluded_spkis));
  
@@ -10,3 +10,16 @@ index 028fe9924cdbfe586c8a0029ac27d53746f995ff..1d3b26208f7c83f0b57f7d806e4f0da3
    return network::mojom::CTPolicy::New(std::move(excluded),
                                         std::move(excluded_spkis));
  }
+@@ -1354,6 +1355,12 @@ void ProfileNetworkContextService::ConfigureNetworkContextParamsInternal(
+   g_browser_process->system_network_context_manager()
+       ->ConfigureDefaultNetworkContextParams(network_context_params);
+ 
++#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
++  if (profile_->IsTor()) {
++    network_context_params->system_proxy_resolver.reset();
++  }
++#endif
++
+   network_context_params->accept_language = ComputeAcceptLanguage();
+   network_context_params->enable_referrers = enable_referrers_.GetValue();
+ 
