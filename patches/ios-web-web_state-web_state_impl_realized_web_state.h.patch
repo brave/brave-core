@@ -1,0 +1,24 @@
+diff --git a/ios/web/web_state/web_state_impl_realized_web_state.h b/ios/web/web_state/web_state_impl_realized_web_state.h
+index 0b2513d2ebc9cc4989c94afaa112431d14143ce0..d1499717fe9b9c9d7a74c26c8077f5abe9502308 100644
+--- a/ios/web/web_state/web_state_impl_realized_web_state.h
++++ b/ios/web/web_state/web_state_impl_realized_web_state.h
+@@ -254,6 +254,9 @@ class WebStateImpl::RealizedWebState final : public NavigationManagerDelegate {
+   void UpdateSSLStatusForCurrentNavigationItem() override;
+   GURL GetCurrentURL() const override;
+ 
++  WebUIIOS* GetMainFrameWebUI();
++  size_t GetWebUICountForTesting();
++
+  private:
+   // Class storing metadata needed while the navigation history restoration
+   // is in progress. The instance is deleted when the restoration completes.
+@@ -306,7 +309,8 @@ class WebStateImpl::RealizedWebState final : public NavigationManagerDelegate {
+ 
+   // `WebUIIOS` object for the current page if it is a WebUI page that
+   // uses the web-based WebUI framework, or nullptr otherwise.
+-  std::unique_ptr<WebUIIOS> web_ui_;
++  // There is one per host.
++  std::map<std::string, std::unique_ptr<WebUIIOS>, std::less<>> web_uis_;
+ 
+   // The current page MIME type.
+   std::string mime_type_;
