@@ -10,7 +10,7 @@
 
 #include "base/auto_reset.h"
 #include "base/functional/callback.h"
-#include "brave/components/brave_wallet/common/mojom/common.mojom-forward.h"
+#include "brave/components/brave_wallet/common/mojom/brave_wallet_common.mojom-forward.h"
 #include "build/build_config.h"
 
 namespace content {
