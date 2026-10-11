@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate_factory.cc b/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate_factory.cc
-index 4a1b60e20906fc8a39aac28ac11f5e2c552d9a2b..3fda7dd5b7e0e2dc74f6a821a2479c45caab32ca 100644
+index d3fb3f97b67ff4ea319ba95a35f6904163dd44b8..60fd9941d4aa818dd45275b4ed126d5a4be2ff12 100644
 --- a/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate_factory.cc
 +++ b/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate_factory.cc
-@@ -44,9 +44,9 @@ ChromeBrowsingDataRemoverDelegateFactory::GetInstance() {
+@@ -68,9 +68,9 @@ ChromeBrowsingDataRemoverDelegateFactory::GetInstance() {
  }
  
  // static
@@ -14,7 +14,22 @@ index 4a1b60e20906fc8a39aac28ac11f5e2c552d9a2b..3fda7dd5b7e0e2dc74f6a821a2479c45
        GetInstance()->GetServiceForBrowserContext(profile, true));
  }
  
-@@ -100,5 +100,5 @@ ChromeBrowsingDataRemoverDelegateFactory::BuildServiceInstanceForBrowserContext(
+@@ -120,6 +120,14 @@ ChromeBrowsingDataRemoverDelegateFactory::
+   DependsOn(WebDataServiceFactory::GetInstance());
+   DependsOn(WebHistoryServiceFactory::GetInstance());
+   DependsOn(ZeroSuggestCacheServiceFactory::GetInstance());
++  DependsOn(misc_metrics::ProfileMiscMetricsServiceFactory::GetInstance());
++  DependsOn(serp_metrics::SerpMetricsServiceFactory::GetInstance());
++#if BUILDFLAG(ENABLE_AI_CHAT)
++  DependsOn(ai_chat::AIChatServiceFactory::GetInstance());
++#endif
++#if BUILDFLAG(ENABLE_BRAVE_NEWS)
++  DependsOn(brave_news::BraveNewsControllerFactory::GetInstance());
++#endif
+ 
+ #if BUILDFLAG(ENABLE_EXTENSIONS_CORE)
+   DependsOn(extensions::ActivityLog::GetFactoryInstance());
+@@ -151,5 +159,5 @@ ChromeBrowsingDataRemoverDelegateFactory::BuildServiceInstanceForBrowserContext(
    Profile* profile = static_cast<Profile*>(context);
    CHECK(!profile->IsGuestSession() || profile->IsOffTheRecord(),
          base::NotFatalUntil::M161);

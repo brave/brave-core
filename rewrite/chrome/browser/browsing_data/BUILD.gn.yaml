@@ -10,3 +10,10 @@ substitutions:
       list_name: public_deps
       values:
         - //brave/components/ai_chat/core/common/buildflags
+
+  - description: Expose the Brave News buildflags to the browsing data impl.
+    insert_into_list:
+      target: impl
+      list_name: deps
+      values:
+        - //brave/components/brave_news/common/buildflags
