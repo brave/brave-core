@@ -990,6 +990,9 @@
   <message name="IDS_CHAT_UI_TOOL_LABEL_ATTACH_WORKSPACE" desc="Label shown when the assistant creates a new, empty workspace (a private folder of files it can work on) for the conversation." formatter_data="webui=AiChat">
     Creating a workspace
   </message>
+  <message name="IDS_CHAT_UI_WORKSPACE_FILE_LOCATION" desc="Subtitle shown under a file name in the conversation, indicating the file lives in the conversation's workspace (a private folder of files the assistant can work on). Clicking it opens the file." formatter_data="webui=AiChat">
+    Workspace
+  </message>
   <message name="IDS_CHAT_UI_TOOL_SEMANTIC_HISTORY_SEARCH_PERMISSION_IMPLICATIONS" desc="Explanation shown in the permission prompt when the assistant wants to search the user's local browsing history. Calls out that the search itself is on-device and only the matched pages flow to Brave AI." formatter_data="webui=AiChat">
     Brave AI wants to search your browsing history. The search runs locally on your device, so your full history isn't sent anywhere. Only the matching pages' titles, URLs, and indexed text passages will be sent to Brave AI as part of this conversation.
   </message>
