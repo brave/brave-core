@@ -12,6 +12,7 @@
 #include "brave/ios/web/test/grit/test_resources.h"
 #include "brave/ios/web/webui/brave_web_ui_ios_data_source.h"
 #include "ios/components/webui/web_ui_url_constants.h"
+#include "ios/web/navigation/navigation_context_impl.h"
 #include "ios/web/public/navigation/navigation_manager.h"
 #include "ios/web/public/test/fakes/fake_web_client.h"
 #include "ios/web/public/test/navigation_test_util.h"
@@ -24,6 +25,7 @@
 #include "ios/web/test/test_url_constants.h"
 #include "ios/web/web_state/web_state_impl.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
+#include "ui/base/page_transition_types.h"
 #include "url/gurl.h"
 #include "url/scheme_host_port.h"
 
@@ -163,6 +165,66 @@ TEST_F(WebUITest, LoadWebUIPageWithWebUIChildFrame) {
       WaitForWebViewContainingTextInFrame(web_state(), kWebUIPage2Text));
   size_t expected_web_ui_count = 2;
   ASSERT_EQ(web_state_impl->GetWebUICountForTesting(), expected_web_ui_count);
+}
+
+// Tests that every WebUI, including the ones in child frames, is cleared when a
+// navigation fails before committing.
+TEST_F(WebUITest, WebUIsClearedOnFailedNavigation) {
+  auto* web_state_impl = WebStateImpl::FromWebState(web_state());
+  ASSERT_TRUE(
+      WaitForWebViewContainingTextInFrame(web_state(), kWebUIPage2Text));
+  ASSERT_EQ(2u, web_state_impl->GetWebUICountForTesting());
+
+  std::unique_ptr<NavigationContextImpl> context =
+      NavigationContextImpl::CreateNavigationContext(
+          web_state(), GURL("testwebui://testwebui2"),
+          /*has_user_gesture=*/true, ui::PAGE_TRANSITION_TYPED,
+          /*is_renderer_initiated=*/false);
+  context->SetHasCommitted(false);
+  web_state_impl->OnNavigationFinished(context.get());
+
+  EXPECT_FALSE(web_state_impl->HasWebUI());
+  EXPECT_EQ(0u, web_state_impl->GetWebUICountForTesting());
+}
+
+// Tests that every WebUI is cleared when a navigation commits to a page that
+// isn't WebUI.
+TEST_F(WebUITest, WebUIsClearedOnNavigatingToNonWebUIPage) {
+  auto* web_state_impl = WebStateImpl::FromWebState(web_state());
+  ASSERT_TRUE(
+      WaitForWebViewContainingTextInFrame(web_state(), kWebUIPage2Text));
+  ASSERT_EQ(2u, web_state_impl->GetWebUICountForTesting());
+
+  std::unique_ptr<NavigationContextImpl> context =
+      NavigationContextImpl::CreateNavigationContext(
+          web_state(), GURL("https://example.com"),
+          /*has_user_gesture=*/true, ui::PAGE_TRANSITION_LINK,
+          /*is_renderer_initiated=*/false);
+  context->SetHasCommitted(true);
+  web_state_impl->OnNavigationFinished(context.get());
+
+  EXPECT_FALSE(web_state_impl->HasWebUI());
+  EXPECT_EQ(0u, web_state_impl->GetWebUICountForTesting());
+}
+
+// Tests that the WebUIs are kept when a navigation commits to another WebUI
+// page.
+TEST_F(WebUITest, WebUIsKeptOnNavigatingToWebUIPage) {
+  auto* web_state_impl = WebStateImpl::FromWebState(web_state());
+  ASSERT_TRUE(
+      WaitForWebViewContainingTextInFrame(web_state(), kWebUIPage2Text));
+  ASSERT_EQ(2u, web_state_impl->GetWebUICountForTesting());
+
+  std::unique_ptr<NavigationContextImpl> context =
+      NavigationContextImpl::CreateNavigationContext(
+          web_state(), GURL("testwebui://testwebui2"),
+          /*has_user_gesture=*/true, ui::PAGE_TRANSITION_LINK,
+          /*is_renderer_initiated=*/false);
+  context->SetHasCommitted(true);
+  web_state_impl->OnNavigationFinished(context.get());
+
+  EXPECT_TRUE(web_state_impl->HasWebUI());
+  EXPECT_EQ(2u, web_state_impl->GetWebUICountForTesting());
 }
 
 }  // namespace web

@@ -1,8 +1,22 @@
 diff --git a/ios/web/web_state/web_state_impl_realized_web_state.mm b/ios/web/web_state/web_state_impl_realized_web_state.mm
-index 1880d96d50f2edfc166bf1b2952506b54ba66cb1..1bc971c6232e651c72019f82df0241cfff0a9d49 100644
+index 1880d96d50f2edfc166bf1b2952506b54ba66cb1..b147c3ddf788bcc4b26b2c19d13b48e226d74266 100644
 --- a/ios/web/web_state/web_state_impl_realized_web_state.mm
 +++ b/ios/web/web_state/web_state_impl_realized_web_state.mm
-@@ -1136,7 +1136,7 @@ std::unique_ptr<WebUIIOS> WebStateImpl::RealizedWebState::CreateWebUIIOS(
+@@ -336,9 +336,10 @@ void WebStateImpl::RealizedWebState::OnNavigationFinished(
+ 
+   // Clear provisional WebUI if the navigation was cancelled/failed, or if it
+   // committed to a non-WebUI page.
+-  if (web_ui_ && (!context->HasCommitted() ||
+-                  !web::GetWebClient()->IsAppSpecificURL(context->GetUrl()))) {
+-    ClearWebUI();
++  if (!web_uis_.empty() && (!context->HasCommitted() ||
++                          !web::GetWebClient()->IsAppSpecificURL(
++                              context->GetUrl()))) {
++    web_uis_.clear();
+   }
+ 
+   const bool same_document = context->IsSameDocument();
+@@ -1136,7 +1137,7 @@ std::unique_ptr<WebUIIOS> WebStateImpl::RealizedWebState::CreateWebUIIOS(
    if (!factory) {
      return nullptr;
    }
