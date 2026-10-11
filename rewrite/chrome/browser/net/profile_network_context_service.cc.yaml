@@ -1,0 +1,32 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Exclude Brave's own hosts from the CT policy
+
+      The hook is defined in the chromium_src override of this file.
+    regex:
+      re_pattern:
+        '^( *)(return network::mojom::CTPolicy::New\(std::move\(excluded\),)'
+      re_flags: [MULTILINE]
+      replace: |-
+        \1BRAVE_PROFILE_NETWORK_CONTEXT_SERVICE_GET_CT_POLICY
+        \1\2
+  - description: |
+      Don't give Tor profiles the system proxy resolver
+
+      With --use-system-proxy-resolver the network service resolves proxies
+      through the OS, ignoring the Tor ProxyConfigService and its circuit
+      isolation.
+    regex:
+      re_pattern: '(->ConfigureDefaultNetworkContextParams\(network_context_params\);\n)'
+      replace: |
+        \1
+        #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
+          if (profile_->IsTor()) {
+            network_context_params->system_proxy_resolver.reset();
+          }
+        #endif
