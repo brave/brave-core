@@ -10,6 +10,7 @@
 #include <memory>
 #include <ranges>
 #include <string>
+#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -22,6 +23,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
+#include "base/task/sequenced_task_runner.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/associated_archive_content.h"
 #include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
@@ -109,6 +111,7 @@ void AssociatedContentManager::CreateArchiveContent(
 
   auto* delegate = *it;
   content_observations_.RemoveObservation(delegate);
+  RunContentToolsAddedCallbacks(content_uuid, 0);
 
   // Construct a "content archive" implementation of AssociatedContentDelegate
   // with a duplicate of the article text.
@@ -204,6 +207,7 @@ void AssociatedContentManager::RemoveContent(
     content_observations_.RemoveObservation(delegate);
     content_delegates_.erase(it);
     tools_attachment_overridden_.erase(delegate->uuid());
+    RunContentToolsAddedCallbacks(delegate->uuid(), 0);
   }
 
   // If this is owned content, delete it.
@@ -683,12 +687,24 @@ void AssociatedContentManager::OnTitleChanged(
 
 void AssociatedContentManager::OnToolsAttachedChanged(
     AssociatedContentDelegate* delegate) {
+  // Content attached after the generation loop started (e.g. added by a tool)
+  // has its tools added to that loop too, rather than waiting for the next.
+  if (delegate->tools_attached() &&
+      GetLoopToolCount(delegate->GetOrigin()) == 0) {
+    delegate->GetContentTools(
+        base::BindOnce(&AssociatedContentManager::OnAttachedContentToolsFetched,
+                       weak_ptr_factory_.GetWeakPtr(), delegate->GetWeakPtr(),
+                       generation_loop_id_));
+  }
+
   conversation_->OnAssociatedContentUpdated();
 }
 
 void AssociatedContentManager::UpdateToolsForNewGenerationLoop(
     base::OnceClosure on_updated) {
   tools_.clear();
+  ++generation_loop_id_;
+
   // Only load tools from content the user has attached.
   std::vector<AssociatedContentDelegate*> attached_delegates;
   for (auto* content : content_delegates_) {
@@ -706,21 +722,68 @@ void AssociatedContentManager::UpdateToolsForNewGenerationLoop(
       base::BarrierClosure(attached_delegates.size(), std::move(on_updated));
   for (auto* content : attached_delegates) {
     content->GetContentTools(base::BindOnce(
-        [](base::WeakPtr<AssociatedContentManager> self, url::Origin origin,
-           base::RepeatingClosure done,
+        [](base::WeakPtr<AssociatedContentManager> self,
+           uint64_t generation_loop_id, std::string content_uuid,
+           url::Origin origin, base::RepeatingClosure done,
            std::vector<std::unique_ptr<Tool>> tools) {
-          if (self) {
-            self->AddToolsForGenerationLoop(origin, std::move(tools));
+          if (self && self->generation_loop_id_ == generation_loop_id) {
+            self->AddToolsForGenerationLoop(content_uuid, origin,
+                                            std::move(tools));
           }
           done.Run();
         },
-        weak_ptr_factory_.GetWeakPtr(), content->GetOrigin(), barrier));
+        weak_ptr_factory_.GetWeakPtr(), generation_loop_id_, content->uuid(),
+        content->GetOrigin(), barrier));
   }
 }
 
+void AssociatedContentManager::RunWhenContentToolsAdded(
+    std::string_view content_uuid,
+    ContentToolsAddedCallback callback) {
+  auto it = std::ranges::find_if(content_delegates_,
+                                 [&content_uuid](const auto& delegate) {
+                                   return delegate->uuid() == content_uuid;
+                                 });
+  // Attached content's tools are already in the loop (or being fetched for it),
+  // so there's nothing to wait for.
+  if (it == content_delegates_.end() || (*it)->tools_attached()) {
+    const size_t tool_count = it == content_delegates_.end()
+                                  ? 0
+                                  : GetLoopToolCount((*it)->GetOrigin());
+    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+        FROM_HERE, base::BindOnce(std::move(callback), tool_count));
+    return;
+  }
+
+  content_tools_added_callbacks_[std::string(content_uuid)].push_back(
+      std::move(callback));
+}
+
+void AssociatedContentManager::OnAttachedContentToolsFetched(
+    base::WeakPtr<AssociatedContentDelegate> delegate,
+    uint64_t generation_loop_id,
+    std::vector<std::unique_ptr<Tool>> tools) {
+  // Dropped if a loop has started since, as it fetched the content's tools
+  // itself, or if its origin's tools have been added already (e.g. the content
+  // was detached and reattached while fetching), or the content has gone or
+  // been detached.
+  if (!delegate || generation_loop_id != generation_loop_id_ ||
+      GetLoopToolCount(delegate->GetOrigin()) > 0 ||
+      !delegate->tools_attached() ||
+      std::ranges::find(content_delegates_, delegate.get()) ==
+          content_delegates_.end()) {
+    return;
+  }
+  AddToolsForGenerationLoop(delegate->uuid(), delegate->GetOrigin(),
+                            std::move(tools));
+}
+
 void AssociatedContentManager::AddToolsForGenerationLoop(
+    const std::string& content_uuid,
     const url::Origin& origin,
     std::vector<std::unique_ptr<Tool>> tools) {
+  const size_t initial_tool_count = tools_.size();
+
   // Cap before filtering so the list the model sees is a subset of the one the
   // website tools dialog shows, which caps the same way.
   tools.resize(std::min(tools.size(), kMaxToolsPerContent));
@@ -734,6 +797,30 @@ void AssociatedContentManager::AddToolsForGenerationLoop(
     }
     tool->SetUserPermissionStrategy(permission);
     tools_.push_back({std::move(tool), origin});
+  }
+
+  RunContentToolsAddedCallbacks(content_uuid,
+                                tools_.size() - initial_tool_count);
+}
+
+size_t AssociatedContentManager::GetLoopToolCount(
+    const url::Origin& origin) const {
+  return static_cast<size_t>(
+      std::ranges::count(tools_, origin, &GenerationLoopTool::origin));
+}
+
+void AssociatedContentManager::RunContentToolsAddedCallbacks(
+    const std::string& content_uuid,
+    size_t tool_count) {
+  auto it = content_tools_added_callbacks_.find(content_uuid);
+  if (it == content_tools_added_callbacks_.end()) {
+    return;
+  }
+  std::vector<ContentToolsAddedCallback> callbacks = std::move(it->second);
+  content_tools_added_callbacks_.erase(it);
+  for (auto& callback : callbacks) {
+    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+        FROM_HERE, base::BindOnce(std::move(callback), tool_count));
   }
 }
 
@@ -750,6 +837,9 @@ void AssociatedContentManager::DetachContent() {
   DVLOG(1) << __func__;
 
   content_observations_.RemoveAllObservations();
+  for (auto* delegate : content_delegates_) {
+    RunContentToolsAddedCallbacks(delegate->uuid(), 0);
+  }
   content_delegates_.clear();
   owned_content_.clear();
   tools_attachment_overridden_.clear();
