@@ -481,6 +481,11 @@ std::string GenerateContentStructure(const ContentNode& node,
       base::StrAppend(&attributes, {BuildAttributes(attrs, detail)});
       break;
 
+    case ContentAttributeType::CONTENT_ATTRIBUTE_MATH:
+      tag_name = "math";
+      attributes = BuildAttributes(attrs, detail);
+      break;
+
     case ContentAttributeType::CONTENT_ATTRIBUTE_UNKNOWN:
     case ContentAttributeType::
         ContentAttributeType_INT_MIN_SENTINEL_DO_NOT_USE_:
