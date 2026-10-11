@@ -5,6 +5,7 @@ include_rules = [
   "+ios/chrome/browser/shared/model/profile",
   "+ios/chrome/browser/shared/model/url",
   "+ios/components/webui",
+  "+ios/web/navigation",
   "+ios/web/webui",
   "+ios/web/web_state",
   "+ios/web/test",
