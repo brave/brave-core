@@ -10,11 +10,18 @@ import { loadTimeData } from '//resources/js/load_time_data.js'
 declare module './item-chromium.js' {
   interface ExtensionsItemElement {
     isBraveHosted_: (extensionId: string) => boolean
+    isFlaggedBySocket_: (blocklistText?: string) => boolean
   }
 }
 
 ExtensionsItemElement.prototype.isBraveHosted_ = (extensionId: string) => {
   return loadTimeData.getString('braveHostedExtensions').includes(extensionId)
+}
+
+ExtensionsItemElement.prototype.isFlaggedBySocket_ = (
+  blocklistText?: string,
+) => {
+  return blocklistText === loadTimeData.getString('braveBlocklistedMalwareSocket')
 }
 
 export * from './item-chromium.js'

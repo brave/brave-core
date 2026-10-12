@@ -1,0 +1,23 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: Fill in Brave's is_split_mode field.
+    regex:
+      pattern: "info.incognito_access_pending_change = false;\n#endif\n"
+      replace:
+        "info.incognito_access_pending_change =
+        false;\n#endif\n  info.is_split_mode =
+        IncognitoInfo::IsSplitMode(&extension);\n"
+
+  - description: Hide MV2 deprecation for extensions Brave hosts.
+    add_after_line:
+      line: 'mv2_handler->IsExtensionAffected(extension);'
+      code: '  ProcessKnownMV2Extensions(info);'
+
+  - description: Credit Socket for verdicts from Brave's malware list.
+    regex:
+      pattern: 'blocklist_text = IDS_EXTENSIONS_BLOCKLISTED_MALWARE;'
+      replace: 'blocklist_text = BraveGetMalwareBlocklistText(extension.id());'
