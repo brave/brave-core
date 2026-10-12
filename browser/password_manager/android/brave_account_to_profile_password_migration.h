@@ -22,6 +22,12 @@ namespace brave_password_manager {
 // `on_complete` always runs asynchronously, including in the no-op cases, where
 // it does not wait for an already-running migration. It does not run at all if
 // a password store shuts down mid-migration and drops the step in flight.
+// Known limitation: an edit that had not reached the server by the restart
+// where the flag first turns on can be reverted. The account store stops
+// syncing before it commits, and if the migration wins the race against the
+// profile store's initial sync, PasswordSyncBridge::MergeFullSyncData ranks the
+// two copies by date_created alone, which an edit leaves untouched, so the
+// server's older copy overwrites the migrated one.
 void MaybeMigrateAccountPasswordsToProfileStore(
     Profile* profile,
     base::OnceClosure on_complete = base::DoNothing());
