@@ -55,7 +55,8 @@ class BraveBottomControlsMediator extends BottomControlsMediator {
             NonNullObservableSupplier<@PanelState Integer> overlayPanelStateSupplier,
             MonotonicObservableSupplier<EdgeToEdgeController> edgeToEdgeControllerSupplier,
             NullableObservableSupplier<Tab> tabSupplier,
-            Supplier<Boolean> readAloudRestoringSupplier) {
+            Supplier<Boolean> readAloudRestoringSupplier,
+            Runnable requestRenderRunnable) {
         super(
                 windowAndroid,
                 model,
@@ -70,7 +71,8 @@ class BraveBottomControlsMediator extends BottomControlsMediator {
                 overlayPanelStateSupplier,
                 edgeToEdgeControllerSupplier,
                 tabSupplier,
-                readAloudRestoringSupplier);
+                readAloudRestoringSupplier,
+                requestRenderRunnable);
 
         mBottomControlsHeightSingle = bottomControlsHeight;
         mBottomControlsHeightDouble = bottomControlsHeight * 2;
