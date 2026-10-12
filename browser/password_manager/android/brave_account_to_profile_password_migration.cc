@@ -83,7 +83,10 @@ bool ProfileCopyIsUpToDate(const StoredCredential& profile_credential,
 // username/password of blocklisted ("never save") entries. The profile store
 // CHECKs that blocklisted credentials have empty username and password
 // (PasswordStore::AddLogins / UpdateLogins), so a malformed synced entry could
-// otherwise trip that CHECK during migration.
+// otherwise trip that CHECK during migration. Clearing the username changes the
+// unique key, so every lookup of the profile-store copy has to match on this
+// form rather than on the account one, or a malformed entry never drains from
+// the account store and is re-added on every launch.
 StoredCredential ToProfileStoreCredential(const StoredCredential& credential) {
   StoredCredential sanitized =
       password_manager::CloneStoredCredential(credential);
@@ -236,16 +239,18 @@ class AccountToProfilePasswordMigrator : public base::SupportsUserData::Data {
     std::vector<StoredCredential> to_add;
     std::vector<StoredCredential> to_update;
     for (const StoredCredential& account_credential : account_credentials_) {
+      StoredCredential profile_form =
+          ToProfileStoreCredential(account_credential);
       auto it = std::ranges::find_if(
           profile_credentials,
-          [&account_credential](const StoredCredential& profile_credential) {
+          [&profile_form](const StoredCredential& profile_credential) {
             return password_manager::AreStoredCredentialUniqueKeysEqual(
-                profile_credential, account_credential);
+                profile_credential, profile_form);
           });
       if (it == profile_credentials.end()) {
-        to_add.push_back(ToProfileStoreCredential(account_credential));
-      } else if (!ProfileCopyIsUpToDate(*it, account_credential)) {
-        to_update.push_back(ToProfileStoreCredential(account_credential));
+        to_add.push_back(std::move(profile_form));
+      } else if (!ProfileCopyIsUpToDate(*it, profile_form)) {
+        to_update.push_back(std::move(profile_form));
       }
       // Otherwise the profile copy already wins; it will still be drained from
       // the account store in the verify step below.
@@ -290,13 +295,14 @@ class AccountToProfilePasswordMigrator : public base::SupportsUserData::Data {
     // profile copy stale, in which case the account copy is kept for the next
     // launch to retry.
     for (const StoredCredential& account_credential : account_credentials_) {
+      const StoredCredential profile_form =
+          ToProfileStoreCredential(account_credential);
       const bool up_to_date_in_profile = std::ranges::any_of(
           profile_credentials,
-          [&account_credential](const StoredCredential& profile_credential) {
+          [&profile_form](const StoredCredential& profile_credential) {
             return password_manager::AreStoredCredentialUniqueKeysEqual(
-                       profile_credential, account_credential) &&
-                   ProfileCopyIsUpToDate(profile_credential,
-                                         account_credential);
+                       profile_credential, profile_form) &&
+                   ProfileCopyIsUpToDate(profile_credential, profile_form);
           });
       if (up_to_date_in_profile) {
         account_store_->RemoveLogin(FROM_HERE, account_credential);

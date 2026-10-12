@@ -33,6 +33,7 @@
 #include "components/password_manager/core/browser/password_store/password_store_backend_error.h"
 #include "components/password_manager/core/browser/password_store/password_store_consumer.h"
 #include "components/password_manager/core/browser/password_store/password_store_interface.h"
+#include "components/password_manager/core/browser/password_store/stored_credential.h"
 #include "components/password_manager/core/browser/password_store/test_password_store.h"
 #include "components/password_manager/core/browser/password_string.h"
 #include "content/public/test/browser_task_environment.h"
@@ -140,6 +141,53 @@ class FailingPasswordStore : public TestPasswordStore {
   bool fail_reads_ = false;
   bool fail_writes_ = false;
   bool fail_reads_after_write_ = false;
+};
+
+// An account store holding credentials that PasswordStore::AddLogins would
+// CHECK against, namely blocklisted entries that still carry a username and a
+// password. The Android backend can hand those out, which is what the migrator
+// sanitizes for, but they cannot be seeded through the store itself, so reads
+// and removals are served from a list instead of the real backend.
+class MalformedCredentialAccountStore : public TestPasswordStore {
+ public:
+  MalformedCredentialAccountStore()
+      : TestPasswordStore(password_manager::IsAccountStore(true)) {}
+
+  void SeedMalformed(const PasswordForm& form) {
+    credentials_.push_back(password_manager::FromPasswordForm(form));
+  }
+
+  void GetAllLogins(base::WeakPtr<PasswordStoreConsumer> consumer) override {
+    std::vector<StoredCredential> results;
+    for (const StoredCredential& credential : credentials_) {
+      results.push_back(password_manager::CloneStoredCredential(credential));
+    }
+    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+        FROM_HERE, base::BindOnce(&MalformedCredentialAccountStore::Reply,
+                                  base::WrapRefCounted(this),
+                                  std::move(consumer), std::move(results)));
+  }
+
+  void RemoveLogin(const base::Location& location,
+                   const StoredCredential& form) override {
+    std::erase_if(credentials_, [&form](const StoredCredential& credential) {
+      return password_manager::AreStoredCredentialUniqueKeysEqual(credential,
+                                                                  form);
+    });
+  }
+
+ protected:
+  ~MalformedCredentialAccountStore() override = default;
+
+ private:
+  void Reply(base::WeakPtr<PasswordStoreConsumer> consumer,
+             std::vector<StoredCredential> results) {
+    if (consumer) {
+      consumer->OnGetPasswordStoreResultsOrErrorFrom(this, std::move(results));
+    }
+  }
+
+  std::vector<StoredCredential> credentials_;
 };
 
 }  // namespace
@@ -503,6 +551,44 @@ TEST_F(BraveAccountToProfilePasswordMigrationStoreErrorTest,
   std::vector<PasswordForm> account_logins = GetLogins(account_store_.get());
   ASSERT_EQ(1u, account_logins.size());
   EXPECT_EQ(u"accountnew", account_logins[0].password_value);
+}
+
+class BraveAccountToProfilePasswordMigrationMalformedTest
+    : public BraveAccountToProfilePasswordMigrationTest {
+ protected:
+  scoped_refptr<TestPasswordStore> CreateAccountStore() override {
+    malformed_account_store_ =
+        base::WrapRefCounted(static_cast<MalformedCredentialAccountStore*>(
+            AccountPasswordStoreFactory::GetInstance()
+                ->SetTestingFactoryAndUse(
+                    profile_,
+                    base::BindRepeating(&password_manager::BuildPasswordStore<
+                                        content::BrowserContext,
+                                        MalformedCredentialAccountStore>))
+                .get()));
+    return malformed_account_store_;
+  }
+
+  scoped_refptr<MalformedCredentialAccountStore> malformed_account_store_;
+};
+
+TEST_F(BraveAccountToProfilePasswordMigrationMalformedTest,
+       MigratesBlocklistEntryWithUsername) {
+  EnableFeature();
+  malformed_account_store_->SeedMalformed(
+      MakeForm("https://blocked.com/", "u", "p", /*blocked=*/true));
+
+  RunMigration();
+
+  // The entry reaches the profile store sanitized, which gives it a different
+  // unique key than the account copy it came from.
+  std::vector<PasswordForm> profile_logins = GetLogins(profile_store_.get());
+  ASSERT_EQ(1u, profile_logins.size());
+  EXPECT_TRUE(profile_logins[0].blocked_by_user);
+  EXPECT_TRUE(profile_logins[0].username_value.empty());
+  // Looking that copy up by the account key would fail, leaving the account
+  // entry to be migrated again on every launch.
+  EXPECT_EQ(0u, GetLogins(account_store_.get()).size());
 }
 
 TEST_F(BraveAccountToProfilePasswordMigrationTest,
