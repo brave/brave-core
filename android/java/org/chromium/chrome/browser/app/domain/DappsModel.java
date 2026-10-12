@@ -51,8 +51,8 @@ public class DappsModel implements KeyringServiceObserver {
     private final MutableLiveData<Boolean> mMutableWalletIconNotificationVisible =
             new MutableLiveData<>(false);
     private final Object mLock = new Object();
-    private final MutableLiveData<ActivityType>
-            mMutableProcessNextDAppsRequest = new MutableLiveData<>();
+    private final MutableLiveData<ActivityType> mMutableProcessNextDAppsRequest =
+            new MutableLiveData<>();
     private final MutableLiveData<List<SignSolTransactionsRequest>>
             mMutableSignSolTransactionsRequests;
     private final LiveData<List<SignSolTransactionsRequest>> mSignSolTransactionsRequests;
@@ -62,8 +62,7 @@ public class DappsModel implements KeyringServiceObserver {
     public LiveData<WalletAccountCreationRequest> mPendingWalletAccountCreationRequest;
     public final LiveData<Boolean> mWalletIconNotificationVisible =
             mMutableWalletIconNotificationVisible;
-    public final LiveData<ActivityType> mProcessNextDAppsRequest =
-            mMutableProcessNextDAppsRequest;
+    public final LiveData<ActivityType> mProcessNextDAppsRequest = mMutableProcessNextDAppsRequest;
 
     // The providers ask for a panel once per request they queue (see
     // EthereumProviderImpl::SignMessageInternal), which focuses the single panel on desktop but
@@ -122,8 +121,7 @@ public class DappsModel implements KeyringServiceObserver {
         mBraveWalletService.getPendingSignSolTransactionsRequests(
                 requests -> {
                     if (requests.length == 0) {
-                        mMutableProcessNextDAppsRequest.postValue(
-                                ActivityType.FINISH);
+                        mMutableProcessNextDAppsRequest.postValue(ActivityType.FINISH);
                     } else {
                         mMutableSignSolTransactionsRequests.postValue(
                                 new ArrayList<>(Arrays.asList(requests)));
@@ -173,11 +171,9 @@ public class DappsModel implements KeyringServiceObserver {
                     requests -> {
                         if (requests != null && requests.length > 0) {
                             mMutableProcessNextDAppsRequest.postValue(
-                                    ActivityType
-                                            .GET_ENCRYPTION_PUBLIC_KEY_REQUEST);
+                                    ActivityType.GET_ENCRYPTION_PUBLIC_KEY_REQUEST);
                         } else {
-                            mMutableProcessNextDAppsRequest.postValue(
-                                    ActivityType.FINISH);
+                            mMutableProcessNextDAppsRequest.postValue(ActivityType.FINISH);
                         }
                     });
         }
@@ -192,11 +188,9 @@ public class DappsModel implements KeyringServiceObserver {
             mBraveWalletService.getPendingDecryptRequests(
                     requests -> {
                         if (requests != null && requests.length > 0) {
-                            mMutableProcessNextDAppsRequest.postValue(
-                                    ActivityType.DECRYPT_REQUEST);
+                            mMutableProcessNextDAppsRequest.postValue(ActivityType.DECRYPT_REQUEST);
                         } else {
-                            mMutableProcessNextDAppsRequest.postValue(
-                                    ActivityType.FINISH);
+                            mMutableProcessNextDAppsRequest.postValue(ActivityType.FINISH);
                         }
                     });
         }
@@ -258,8 +252,7 @@ public class DappsModel implements KeyringServiceObserver {
      * always processes the request at the head of the queue, see
      * BraveWalletService::NotifySignMessageRequestProcessed.
      */
-    public static ActivityType getSignMessagePanel(
-            final SignMessageRequest request) {
+    public static ActivityType getSignMessagePanel(final SignMessageRequest request) {
         return request.signData.which() == SignDataUnion.Tag.EthSiweData
                 ? ActivityType.SIWE_MESSAGE
                 : ActivityType.SIGN_MESSAGE;
