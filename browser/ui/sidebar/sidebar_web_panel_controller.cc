@@ -77,10 +77,6 @@ void SidebarWebPanelController::ClearPanelState() {
   web_panel_state_changed_.Run();
 }
 
-bool SidebarWebPanelController::IsShowingWebPanel() const {
-  return GetMultiContentsView()->IsWebPanelVisible();
-}
-
 BraveMultiContentsView* SidebarWebPanelController::GetMultiContentsView() {
   return const_cast<BraveMultiContentsView*>(
       std::as_const(*this).GetMultiContentsView());
