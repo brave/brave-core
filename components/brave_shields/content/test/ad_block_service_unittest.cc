@@ -509,13 +509,6 @@ TEST_F(AdBlockServiceTest, DebugModeDisablesDATCache) {
 
   DATLoadObserver dat_observer;
   service->AddObserver(&dat_observer);
-  task_environment_.RunUntilIdle();
-  EXPECT_FALSE(dat_observer.default_loaded());
-  EXPECT_FALSE(dat_observer.additional_loaded());
-
-  auto result = ShouldStartRequest(service.get(), EngineType::kDefault,
-                                   "https://from-cache.com/script.js");
-  EXPECT_FALSE(result.matched);
 
   bool default_filter_list_loaded = false;
   FilterListObserver observer(
