@@ -191,12 +191,6 @@ const flags_ui::FeatureEntry::FeatureVariation kZCashFeatureVariations[] = {
     {"- Shielded support enabled", kZCashShieldedTransactionsEnabled, nullptr},
     {"- Ironwood support enabled", kZCashIronwoodEnabled, nullptr}};
 
-const flags_ui::FeatureEntry::FeatureParam kPolkadotAssetDiscoveryDisabled[] = {
-    {"polkadot_asset_discovery", "false"}};
-
-const flags_ui::FeatureEntry::FeatureParam kPolkadotAssetDiscoveryEnabled[] = {
-    {"polkadot_asset_discovery", "true"}};
-
 const flags_ui::FeatureEntry::FeatureParam kPolkadotDappSupportDisabled[] = {
     {"polkadot_dapp_support", "false"}};
 
@@ -204,8 +198,6 @@ const flags_ui::FeatureEntry::FeatureParam kPolkadotDappSupportEnabled[] = {
     {"polkadot_dapp_support", "true"}};
 
 const flags_ui::FeatureEntry::FeatureVariation kPolkadotFeatureVariations[] = {
-    {"- Asset discovery disabled", kPolkadotAssetDiscoveryDisabled, nullptr},
-    {"- Asset discovery enabled", kPolkadotAssetDiscoveryEnabled, nullptr},
     {"- dApp support disabled", kPolkadotDappSupportDisabled, nullptr},
     {"- dApp support enabled", kPolkadotDappSupportEnabled, nullptr},
 };
