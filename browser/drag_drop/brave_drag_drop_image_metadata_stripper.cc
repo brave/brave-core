@@ -13,6 +13,7 @@
 
 #include "base/check.h"
 #include "base/check_op.h"
+#include "base/containers/to_vector.h"
 #include "base/feature_list.h"
 #include "base/files/file_path.h"
 #include "base/functional/bind.h"
@@ -20,6 +21,7 @@
 #include "brave/browser/image_metadata_stripper/file_upload_controller.h"
 #include "brave/components/image_metadata_stripper/common/features.h"
 #include "brave/components/image_metadata_stripper/image_metadata_stripper.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/common/drop_data.h"
@@ -60,9 +62,9 @@ void MaybeStripDropData(base::WeakPtr<content::WebContents> web_contents,
                         std::optional<content::DropData> drop_data) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
-  auto* controller =
-      image_metadata_stripper::FileUploadController::FromWebContents(
-          web_contents.get());
+  tabs::TabInterface* tab =
+      tabs::TabInterface::MaybeGetFromContents(web_contents.get());
+  auto* controller = image_metadata_stripper::FileUploadController::From(tab);
 
   // Nothing to do when the drop was blocked upstream, when the tab it targets
   // is gone, or when no dropped file could carry the metadata we strip.
@@ -72,11 +74,8 @@ void MaybeStripDropData(base::WeakPtr<content::WebContents> web_contents,
   }
 
   // Stripping begins.
-  std::vector<base::FilePath> paths;
-  paths.reserve(drop_data->filenames.size());
-  for (const ui::FileInfo& file : drop_data->filenames) {
-    paths.push_back(file.path);
-  }
+  std::vector<base::FilePath> paths =
+      base::ToVector(drop_data->filenames, &ui::FileInfo::path);
   controller->Strip(std::move(paths),
                     image_metadata_stripper::StrippingClient::kDragDrop,
                     base::BindOnce(&OnStripComplete, std::move(callback),

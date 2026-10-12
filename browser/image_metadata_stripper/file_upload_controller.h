@@ -7,7 +7,11 @@
 #define BRAVE_BROWSER_IMAGE_METADATA_STRIPPER_FILE_UPLOAD_CONTROLLER_H_
 
 #include <memory>
+#include <optional>
+#include <vector>
 
+#include "base/files/file_path.h"
+#include "base/functional/callback.h"
 #include "brave/components/image_metadata_stripper/image_metadata_stripper.h"
 #include "chrome/browser/ui/tabs/contents_observing_tab_feature.h"
 #include "ui/base/unowned_user_data/scoped_unowned_user_data.h"
@@ -71,8 +75,7 @@ class FileUploadController : public tabs::ContentsObservingTabFeature {
 
   // The ownership of this controller is handled by BraveTabFeatures. Clients
   // must never assume ownership themselves.
-  static FileUploadController* FromWebContents(
-      content::WebContents* web_contents);
+  static FileUploadController* From(tabs::TabInterface* tab);
 
   // This will throw an error if |tab| already has a valid instance of
   // FileUploadController already present. This must never be called by any
@@ -91,15 +94,12 @@ class FileUploadController : public tabs::ContentsObservingTabFeature {
 
  private:
   explicit FileUploadController(tabs::TabInterface& tab);
-  static FileUploadController* From(tabs::TabInterface* tab);
 
   // tabs::ContentsObservingTabFeature override.
   void OnDiscardContents(tabs::TabInterface* tab,
                          content::WebContents* old_contents,
                          content::WebContents* new_contents) override;
 
-  // This helps to get the right FileUploadController instance for a given
-  // WebContents.
   ui::ScopedUnownedUserData<FileUploadController> scoped_unowned_user_data_;
 };
 }  // namespace image_metadata_stripper
