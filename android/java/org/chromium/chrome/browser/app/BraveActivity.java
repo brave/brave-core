@@ -94,7 +94,6 @@ import org.chromium.brave_wallet.mojom.EthTxManagerProxy;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
-import org.chromium.brave_wallet.mojom.SignDataUnion;
 import org.chromium.brave_wallet.mojom.SolanaTxManagerProxy;
 import org.chromium.brave_wallet.mojom.TxService;
 import org.chromium.build.annotations.MonotonicNonNull;
@@ -112,6 +111,7 @@ import org.chromium.chrome.browser.IntentHandler;
 import org.chromium.chrome.browser.InternetConnection;
 import org.chromium.chrome.browser.LaunchIntentDispatcher;
 import org.chromium.chrome.browser.OpenYtInBraveDialogFragment;
+import org.chromium.chrome.browser.app.domain.DappsModel;
 import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.app.tabwindow.TabWindowManagerSingleton;
 import org.chromium.chrome.browser.billing.InAppPurchaseWrapper;
@@ -783,11 +783,7 @@ public abstract class BraveActivity extends ChromeActivity
         mBraveWalletService.getPendingSignMessageRequests(
                 requests -> {
                     if (requests != null && requests.length != 0) {
-                        BraveWalletDAppsActivity.ActivityType activityType =
-                                (requests[0].signData.which() == SignDataUnion.Tag.EthSiweData)
-                                        ? BraveWalletDAppsActivity.ActivityType.SIWE_MESSAGE
-                                        : BraveWalletDAppsActivity.ActivityType.SIGN_MESSAGE;
-                        openBraveWalletDAppsActivity(activityType);
+                        openBraveWalletDAppsActivity(DappsModel.getSignMessagePanel(requests[0]));
                         return;
                     }
                     maybeShowChainRequestLayout(openWalletPanelRunnable);
@@ -1952,6 +1948,16 @@ public abstract class BraveActivity extends ChromeActivity
 
     public void openBraveWalletDAppsActivity(
             final BraveWalletDAppsActivity.ActivityType activityType) {
+        final DappsModel dappsModel = mWalletModel == null ? null : mWalletModel.getDappsModel();
+        if (dappsModel != null) {
+            if (dappsModel.isPanelLaunched(activityType)) {
+                // A panel of this type is already on its way, so it will pick up the new request
+                // from the queue itself.
+                // Starting another one leaves a stale panel behind the live one.
+                return;
+            }
+            dappsModel.setLaunchedPanel(activityType);
+        }
         final Intent braveWalletIntent = BraveWalletDAppsActivity.getIntent(this, activityType);
         startActivity(braveWalletIntent);
     }

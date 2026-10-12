@@ -14,12 +14,14 @@ import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.KeyringServiceObserver;
+import org.chromium.brave_wallet.mojom.SignDataUnion;
 import org.chromium.brave_wallet.mojom.SignMessageRequest;
 import org.chromium.brave_wallet.mojom.SignSolTransactionsRequest;
 import org.chromium.brave_wallet.mojom.SolanaSignature;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TransactionStatus;
-import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletDAppsActivity;
+import org.chromium.build.annotations.Nullable;
+import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletDAppsActivity.ActivityType;
 import org.chromium.chrome.browser.crypto_wallet.model.WalletAccountCreationRequest;
 import org.chromium.chrome.browser.crypto_wallet.util.PendingTxHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
@@ -49,7 +51,7 @@ public class DappsModel implements KeyringServiceObserver {
     private final MutableLiveData<Boolean> mMutableWalletIconNotificationVisible =
             new MutableLiveData<>(false);
     private final Object mLock = new Object();
-    private final MutableLiveData<BraveWalletDAppsActivity.ActivityType>
+    private final MutableLiveData<ActivityType>
             mMutableProcessNextDAppsRequest = new MutableLiveData<>();
     private final MutableLiveData<List<SignSolTransactionsRequest>>
             mMutableSignSolTransactionsRequests;
@@ -60,8 +62,16 @@ public class DappsModel implements KeyringServiceObserver {
     public LiveData<WalletAccountCreationRequest> mPendingWalletAccountCreationRequest;
     public final LiveData<Boolean> mWalletIconNotificationVisible =
             mMutableWalletIconNotificationVisible;
-    public final LiveData<BraveWalletDAppsActivity.ActivityType> mProcessNextDAppsRequest =
+    public final LiveData<ActivityType> mProcessNextDAppsRequest =
             mMutableProcessNextDAppsRequest;
+
+    // The providers ask for a panel once per request they queue (see
+    // EthereumProviderImpl::SignMessageInternal), which focuses the single panel on desktop but
+    // starts an activity on Android. The launched panel is remembered here so the second ask does
+    // not stack a duplicate. It is recorded when the panel is launched rather than discovered by
+    // looking for a running activity, because the asks arrive milliseconds apart, before the first
+    // activity exists.
+    @Nullable private ActivityType mLaunchedPanel;
 
     public DappsModel(
             JsonRpcService jsonRpcService,
@@ -113,7 +123,7 @@ public class DappsModel implements KeyringServiceObserver {
                 requests -> {
                     if (requests.length == 0) {
                         mMutableProcessNextDAppsRequest.postValue(
-                                BraveWalletDAppsActivity.ActivityType.FINISH);
+                                ActivityType.FINISH);
                     } else {
                         mMutableSignSolTransactionsRequests.postValue(
                                 new ArrayList<>(Arrays.asList(requests)));
@@ -139,7 +149,18 @@ public class DappsModel implements KeyringServiceObserver {
     }
 
     public void clearDappsState() {
+        mLaunchedPanel = null;
         mMutableProcessNextDAppsRequest.postValue(null);
+    }
+
+    /** Records that a DApps panel of {@code activityType} has been launched. */
+    public void setLaunchedPanel(final ActivityType activityType) {
+        mLaunchedPanel = activityType;
+    }
+
+    /** Returns whether a DApps panel of {@code activityType} is launched and not closed yet. */
+    public boolean isPanelLaunched(final ActivityType activityType) {
+        return mLaunchedPanel == activityType;
     }
 
     public void processPublicEncryptionKey(String requestId, boolean isApproved) {
@@ -152,11 +173,11 @@ public class DappsModel implements KeyringServiceObserver {
                     requests -> {
                         if (requests != null && requests.length > 0) {
                             mMutableProcessNextDAppsRequest.postValue(
-                                    BraveWalletDAppsActivity.ActivityType
+                                    ActivityType
                                             .GET_ENCRYPTION_PUBLIC_KEY_REQUEST);
                         } else {
                             mMutableProcessNextDAppsRequest.postValue(
-                                    BraveWalletDAppsActivity.ActivityType.FINISH);
+                                    ActivityType.FINISH);
                         }
                     });
         }
@@ -172,10 +193,10 @@ public class DappsModel implements KeyringServiceObserver {
                     requests -> {
                         if (requests != null && requests.length > 0) {
                             mMutableProcessNextDAppsRequest.postValue(
-                                    BraveWalletDAppsActivity.ActivityType.DECRYPT_REQUEST);
+                                    ActivityType.DECRYPT_REQUEST);
                         } else {
                             mMutableProcessNextDAppsRequest.postValue(
-                                    BraveWalletDAppsActivity.ActivityType.FINISH);
+                                    ActivityType.FINISH);
                         }
                     });
         }
@@ -225,6 +246,31 @@ public class DappsModel implements KeyringServiceObserver {
 
     public void getPendingSignMessageRequests(Callback1<SignMessageRequest[]> callback) {
         mBraveWalletService.getPendingSignMessageRequests(callback::call);
+    }
+
+    /**
+     * Returns the panel that can display {@code request}. Sign-in messages have their own panel,
+     * which shows the parsed SIWE fields, while every other kind of sign request is shown by the
+     * generic sign message panel together with the risk warning it needs.
+     *
+     * <p>This is the only place that decides the mapping. A panel that displays one kind of request
+     * while the queue head is another would approve a message it never showed, because the browser
+     * always processes the request at the head of the queue, see
+     * BraveWalletService::NotifySignMessageRequestProcessed.
+     */
+    public static ActivityType getSignMessagePanel(
+            final SignMessageRequest request) {
+        return request.signData.which() == SignDataUnion.Tag.EthSiweData
+                ? ActivityType.SIWE_MESSAGE
+                : ActivityType.SIGN_MESSAGE;
+    }
+
+    /**
+     * Moves the DApps activity to the panel that can display {@code request}. Called by a sign
+     * message panel that finds a request it cannot display at the head of the queue.
+     */
+    public void showSignMessagePanel(final SignMessageRequest request) {
+        mMutableProcessNextDAppsRequest.postValue(getSignMessagePanel(request));
     }
 
     private void updateWalletBadgeVisibilityInternal() {
