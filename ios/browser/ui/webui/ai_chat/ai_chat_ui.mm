@@ -77,8 +77,9 @@ AIChatUI::AIChatUI(web::WebUIIOS* web_ui, const GURL& url)
       "isAIChatExportJSONEnabled",
       base::FeatureList::IsEnabled(ai_chat::features::kAIChatExportJSON));
   source->AddBoolean(
-      "isWorkspaceToolsEnabled",
-      base::FeatureList::IsEnabled(ai_chat::features::kAIChatWorkspaceTools));
+      "isWorkspaceNativeDirectoriesEnabled",
+      base::FeatureList::IsEnabled(ai_chat::features::kAIChatWorkspaceTools) &&
+          ai_chat::features::kWorkspaceNativeDirectories.Get());
   // Brave client version, used to tag serialized conversations for sharing.
   source->AddString("braveVersion",
                     version_info::GetBraveVersionWithoutChromiumMajorVersion());
