@@ -200,6 +200,9 @@
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_TABS_SHOW_VERTICAL_TABS" desc="The label for showing tabs vertically">
     Use vertical tabs
   </message>
+  <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_TABS_SHOW_VERTICAL_TABS_DISABLED_IN_FULLSCREEN" desc="The sub-label under the 'Use vertical tabs' toggle, shown while the toggle is disabled because the browser window is in full screen" formatter_data="webui=BraveSettings">
+    Exit full screen to change this setting
+  </message>
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_TABS_USE_TREE_TABS" desc="The label for using tree tabs" formatter_data="webui=BraveSettings">
     Use tree tabs
   </message>
