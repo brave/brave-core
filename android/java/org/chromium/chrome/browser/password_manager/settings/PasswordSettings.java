@@ -11,7 +11,6 @@ package org.chromium.chrome.browser.password_manager.settings;
 
 import static org.chromium.build.NullUtil.assertNonNull;
 import static org.chromium.build.NullUtil.assumeNonNull;
-import static org.chromium.chrome.browser.password_manager.PasswordMetricsUtil.PASSWORD_SETTINGS_EXPORT_METRICS_ID;
 
 import android.app.Activity;
 import android.content.Context;
@@ -34,7 +33,6 @@ import androidx.preference.PreferenceGroupAdapter;
 import androidx.preference.PreferenceScreen;
 
 import org.chromium.base.DeviceInfo;
-import org.chromium.base.metrics.RecordHistogram;
 import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.base.supplier.ObservableSuppliers;
 import org.chromium.base.supplier.SettableMonotonicObservableSupplier;
@@ -202,8 +200,7 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
                     public Profile getProfile() {
                         return PasswordSettings.this.getProfile();
                     }
-                },
-                PASSWORD_SETTINGS_EXPORT_METRICS_ID);
+                });
 
         mImportFlow.onCreate(
                 savedInstanceState,
@@ -765,10 +762,6 @@ public class PasswordSettings extends ChromeBaseSettingsFragment
             return true;
         } else if (PREF_EXPORT_PASSWORDS.equals(key)) {
             // Moved from menu item - export passwords functionality
-            RecordHistogram.recordEnumeratedHistogram(
-                    mExportFlow.getExportEventHistogramName(),
-                    ExportFlow.PasswordExportEvent.EXPORT_OPTION_SELECTED,
-                    ExportFlow.PasswordExportEvent.COUNT);
             mExportFlow.startExporting();
             return true;
         } else if (preference == mLinkPref) {

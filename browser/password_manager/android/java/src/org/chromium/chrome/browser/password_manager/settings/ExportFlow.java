@@ -10,7 +10,6 @@
 package org.chromium.chrome.browser.password_manager.settings;
 
 import static org.chromium.build.NullUtil.assumeNonNull;
-import static org.chromium.chrome.browser.password_manager.PasswordMetricsUtil.logPasswordsExportResult;
 
 import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
@@ -26,13 +25,10 @@ import org.chromium.base.CallbackUtils;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.FileProviderUtils;
 import org.chromium.base.FileUtils;
-import org.chromium.base.metrics.RecordHistogram;
 import org.chromium.base.task.AsyncTask;
 import org.chromium.build.annotations.Initializer;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
-import org.chromium.chrome.browser.password_manager.PasswordMetricsUtil;
-import org.chromium.chrome.browser.password_manager.PasswordMetricsUtil.HistogramExportResult;
 import org.chromium.chrome.browser.password_manager.R;
 import org.chromium.ui.widget.Toast;
 
@@ -103,21 +99,6 @@ public class ExportFlow implements ExportFlowInterface {
     /** The delay after which the progress bar will be displayed. */
     private static final int PROGRESS_BAR_DELAY_MS = 500;
 
-    // Values of the histogram recording password export related events.
-    @IntDef({
-        PasswordExportEvent.EXPORT_OPTION_SELECTED,
-        PasswordExportEvent.EXPORT_DISMISSED,
-        PasswordExportEvent.EXPORT_CONFIRMED,
-        PasswordExportEvent.COUNT
-    })
-    @Retention(RetentionPolicy.SOURCE)
-    public @interface PasswordExportEvent {
-        int EXPORT_OPTION_SELECTED = 0;
-        int EXPORT_DISMISSED = 1;
-        int EXPORT_CONFIRMED = 2;
-        int COUNT = 3;
-    }
-
     /**
      * When the user requests that passwords are exported and once the passwords are sent over from
      * native code and stored in a cache file, this variable contains the content:// URI for that
@@ -157,27 +138,14 @@ public class ExportFlow implements ExportFlowInterface {
     /** The concrete delegate instance. It is (re)set in {@link #onCreate}. */
     private Delegate mDelegate;
 
-    /** Histogram names for metrics logging. */
-    private String mCallerMetricsId;
-
     private boolean mPasswordSerializationStarted;
 
     public ExportFlow() {}
 
-    public String getExportEventHistogramName() {
-        return mCallerMetricsId + ".Event";
-    }
-
-    public String getExportResultHistogramName2ForTesting() {
-        return mCallerMetricsId + PasswordMetricsUtil.EXPORT_RESULT_HISTOGRAM_SUFFIX;
-    }
-
     @Initializer
     @Override
-    public void onCreate(
-            @Nullable Bundle savedInstanceState, Delegate delegate, String callerMetricsId) {
+    public void onCreate(@Nullable Bundle savedInstanceState, Delegate delegate) {
         mDelegate = delegate;
-        mCallerMetricsId = callerMetricsId;
 
         if (savedInstanceState == null) return;
 
@@ -233,8 +201,7 @@ public class ExportFlow implements ExportFlowInterface {
             showExportErrorAndAbort(
                     R.string.password_settings_export_tips,
                     e.getMessage(),
-                    getPositiveButtonLabelId(),
-                    HistogramExportResult.WRITE_FAILED);
+                    getPositiveButtonLabelId());
             return;
         }
 
@@ -308,8 +275,7 @@ public class ExportFlow implements ExportFlowInterface {
                     showExportErrorAndAbort(
                             R.string.password_settings_export_tips,
                             errorMessage,
-                            getPositiveButtonLabelId(),
-                            HistogramExportResult.WRITE_FAILED);
+                            getPositiveButtonLabelId());
                 });
     }
 
@@ -327,10 +293,6 @@ public class ExportFlow implements ExportFlowInterface {
      * a consumer app for the data.
      */
     private void exportAfterReauth() {
-        RecordHistogram.recordEnumeratedHistogram(
-                getExportEventHistogramName(),
-                PasswordExportEvent.EXPORT_CONFIRMED,
-                PasswordExportEvent.COUNT);
         mExportState = ExportState.CONFIRMED;
         // If the error dialog has been waiting (e. g. because password serialization failed while
         // the user was authenticating), display it now, otherwise continue the export flow.
@@ -380,27 +342,18 @@ public class ExportFlow implements ExportFlowInterface {
      */
     @VisibleForTesting
     void showExportErrorAndAbort(
-            int descriptionId,
-            @Nullable String detailedDescription,
-            int positiveButtonLabelId,
-            @HistogramExportResult int histogramExportResult) {
+            int descriptionId, @Nullable String detailedDescription, int positiveButtonLabelId) {
         assert mErrorDialogParams == null;
         mDelegate.onExportFlowFailed();
         mProgressBarManager.hide(
                 () -> {
                     showExportErrorAndAbortImmediately(
-                            descriptionId,
-                            detailedDescription,
-                            positiveButtonLabelId,
-                            histogramExportResult);
+                            descriptionId, detailedDescription, positiveButtonLabelId);
                 });
     }
 
     public void showExportErrorAndAbortImmediately(
-            int descriptionId,
-            @Nullable String detailedDescription,
-            int positiveButtonLabelId,
-            @HistogramExportResult int histogramExportResult) {
+            int descriptionId, @Nullable String detailedDescription, int positiveButtonLabelId) {
         mErrorDialogParams = new ExportErrorDialogFragment.ErrorDialogParams();
         mErrorDialogParams.positiveButtonLabelId = positiveButtonLabelId;
         mErrorDialogParams.description =
@@ -497,8 +450,7 @@ public class ExportFlow implements ExportFlowInterface {
             showExportErrorAndAbort(
                     R.string.password_settings_export_no_app,
                     e.getMessage(),
-                    getPositiveButtonLabelId(),
-                    HistogramExportResult.NO_CONSUMER);
+                    getPositiveButtonLabelId());
         }
     }
 
@@ -508,8 +460,7 @@ public class ExportFlow implements ExportFlowInterface {
             showExportErrorAndAbort(
                     R.string.password_settings_export_tips,
                     "Could not create file.",
-                    getPositiveButtonLabelId(),
-                    HistogramExportResult.WRITE_FAILED);
+                    getPositiveButtonLabelId());
             return;
         }
         new AsyncTask<@Nullable String>() {
@@ -532,13 +483,10 @@ public class ExportFlow implements ExportFlowInterface {
                                 showExportErrorAndAbort(
                                         R.string.password_settings_export_tips,
                                         exceptionMessage,
-                                        getPositiveButtonLabelId(),
-                                        HistogramExportResult.WRITE_FAILED);
+                                        getPositiveButtonLabelId());
                             } else {
                                 mDelegate.onExportFlowSucceeded();
                                 mExportFileUri = null;
-                                logPasswordsExportResult(
-                                        mCallerMetricsId, HistogramExportResult.SUCCESS);
                             }
                         });
             }
