@@ -1,0 +1,19 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Set the variations country from the locale for the first run seed
+
+      Lets studies filtered by country apply to the installer seed, before the
+      first seed fetch reports a country.
+    regex:
+      re_pattern:
+        '(ChromeFeatureListCreator::SetupInitialPrefs\(\)
+        \{.*?)(\n#endif[^\n]*\n\})'
+      re_flags: [DOTALL]
+      replace: |-
+        \1
+          MaybeSetVariationsCountry(compressed_variations_seed, *local_state_);\2
