@@ -38,6 +38,8 @@ import org.chromium.build.annotations.MonotonicNonNull;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.app.domain.DappsModel;
+import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletDAppsActivity;
 import org.chromium.chrome.browser.crypto_wallet.fragments.WalletBottomSheetDialogFragment;
 import org.chromium.chrome.browser.crypto_wallet.util.AndroidUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
@@ -143,6 +145,14 @@ public class SignMessageFragment extends WalletBottomSheetDialogFragment {
             Intent intent = new Intent();
             getActivity().setResult(Activity.RESULT_OK, intent);
             getActivity().finish();
+            return;
+        }
+
+        if (DappsModel.getSignMessagePanel(requests[0])
+                != BraveWalletDAppsActivity.ActivityType.SIGN_MESSAGE) {
+            // The request now at the head of the queue needs the sign-in panel, which shows the
+            // parsed SIWE fields. Hand it over rather than displaying it here.
+            getWalletModel().getDappsModel().showSignMessagePanel(requests[0]);
             return;
         }
 

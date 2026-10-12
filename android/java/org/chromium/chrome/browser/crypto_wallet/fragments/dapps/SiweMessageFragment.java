@@ -39,8 +39,10 @@ import org.chromium.brave_wallet.mojom.SiweMessage;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.app.domain.DappsModel;
 import org.chromium.chrome.browser.app.helpers.ImageLoader;
 import org.chromium.chrome.browser.crypto_wallet.BlockchainRegistryFactory;
+import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletDAppsActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.TwoLineItemRecyclerViewAdapter;
 import org.chromium.chrome.browser.crypto_wallet.fragments.TwoLineItemBottomSheetFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.WalletBottomSheetDialogFragment;
@@ -115,6 +117,10 @@ public class SiweMessageFragment extends WalletBottomSheetDialogFragment {
         getWalletModel()
                 .getDappsModel()
                 .notifySignMessageRequestProcessed(isApproved, mCurrentSignMessageRequest.id);
+        // Nothing on screen belongs to a pending request until the next one is bound, so the
+        // buttons must not act on the request that was just processed.
+        mCurrentSignMessageRequest = null;
+        mSiweMessageData = null;
         fillSignMessageInfo(false);
     }
 
@@ -133,12 +139,18 @@ public class SiweMessageFragment extends WalletBottomSheetDialogFragment {
                                 return;
                             }
 
-                            mCurrentSignMessageRequest = requests[0];
-                            if (mCurrentSignMessageRequest.signData.which()
-                                    == SignDataUnion.Tag.EthSiweData) {
-                                mSiweMessageData =
-                                        mCurrentSignMessageRequest.signData.getEthSiweData();
+                            final SignMessageRequest request = requests[0];
+                            if (DappsModel.getSignMessagePanel(request)
+                                    != BraveWalletDAppsActivity.ActivityType.SIWE_MESSAGE) {
+                                // The request now at the head of the queue is not a sign-in
+                                // message and this panel cannot display it. Hand it to the panel
+                                // that can instead of leaving the sign-in message on screen while
+                                // the buttons act on this request.
+                                getWalletModel().getDappsModel().showSignMessagePanel(request);
+                                return;
                             }
+                            mCurrentSignMessageRequest = request;
+                            mSiweMessageData = request.signData.getEthSiweData();
                             if (init) {
                                 mBtCancel.setOnClickListener(
                                         v -> notifySignMessageRequestProcessed(false));
@@ -153,6 +165,10 @@ public class SiweMessageFragment extends WalletBottomSheetDialogFragment {
                                 mTvUrl.setText(
                                         Utils.geteTldSpanned(
                                                 mCurrentSignMessageRequest.originInfo));
+                            } else {
+                                // Remove the previous request's origin.
+                                mTvOrigin.setText("");
+                                mTvUrl.setText("");
                             }
                             updateDetails(
                                     mCurrentSignMessageRequest.chainId,
@@ -165,6 +181,9 @@ public class SiweMessageFragment extends WalletBottomSheetDialogFragment {
     }
 
     private void updateDetails(String chainId, AccountId accountId) {
+        // Any early return below leaves the list empty rather than describing the request that
+        // was just processed.
+        setDetails(Collections.emptyList());
         if (TextUtils.isEmpty(chainId)) {
             return;
         }
@@ -223,8 +242,15 @@ public class SiweMessageFragment extends WalletBottomSheetDialogFragment {
             }
         }
         mTwoLineAdapter.mDividerMargin = 12;
+        setDetails(items);
+    }
+
+    /** Replaces the whole detail list, which has no stable item identity to diff against. */
+    private void setDetails(final List<TwoLineItemRecyclerViewAdapter.TwoLineItem> items) {
+        final int previousCount = mTwoLineAdapter.getItemCount();
         mTwoLineAdapter.setValues(items);
-        mTwoLineAdapter.notifyItemRangeChanged(0, items.size());
+        mTwoLineAdapter.notifyItemRangeRemoved(0, previousCount);
+        mTwoLineAdapter.notifyItemRangeInserted(0, items.size());
     }
 
     @SuppressWarnings("NoStreams")
@@ -253,11 +279,17 @@ public class SiweMessageFragment extends WalletBottomSheetDialogFragment {
     }
 
     private void updateNetwork(String chainId) {
-        if (TextUtils.isEmpty(chainId)) {
+        NetworkInfo network =
+                TextUtils.isEmpty(chainId)
+                        ? null
+                        : getWalletModel().getNetworkModel().getNetwork(chainId);
+        if (network == null) {
+            // Leave no network on screen rather than the one of the request that was just
+            // processed.
+            mIvFavNetworkContainer.setVisibility(View.GONE);
+            mNetworkName.setText("");
             return;
         }
-        NetworkInfo network = getWalletModel().getNetworkModel().getNetwork(chainId);
-        if (network == null) return;
         String tokensPath = BlockchainRegistryFactory.getInstance().getTokensIconsLocation();
         String logo = Utils.getNetworkIconName(network);
         if (TextUtils.isEmpty(logo)) return;

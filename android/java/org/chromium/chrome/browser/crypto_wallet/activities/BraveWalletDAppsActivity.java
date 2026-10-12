@@ -132,6 +132,14 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
                             activityType -> {
                                 if (activityType == null) return;
                                 switch (activityType) {
+                                    case SIGN_MESSAGE:
+                                    case SIWE_MESSAGE:
+                                        // The next queued sign request needs a different panel
+                                        // than the one on screen, so the activity type changes
+                                        // with it.
+                                        mActivityType = activityType;
+                                        processPendingDappsRequest();
+                                        break;
                                     case GET_ENCRYPTION_PUBLIC_KEY_REQUEST:
                                     case DECRYPT_REQUEST:
                                         processPendingDappsRequest();
