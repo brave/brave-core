@@ -1598,7 +1598,8 @@ public class BytecodeTest {
                         NonNullObservableSupplier.class,
                         MonotonicObservableSupplier.class,
                         NullableObservableSupplier.class,
-                        Supplier.class));
+                        Supplier.class,
+                        Runnable.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/settings/SettingsNavigationImpl",
