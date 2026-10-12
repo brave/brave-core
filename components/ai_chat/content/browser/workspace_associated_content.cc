@@ -15,6 +15,7 @@
 #include "base/functional/bind.h"
 #include "base/logging.h"
 #include "base/memory/ptr_util.h"
+#include "base/strings/escape.h"
 #include "base/strings/strcat.h"
 #include "base/time/time.h"
 #include "base/uuid.h"
@@ -118,6 +119,23 @@ WorkspaceAssociatedContent::CreateFromUrl(
       base::WrapUnique(new WorkspaceAssociatedContent(std::move(*uuid)));
   content->AttachWebContents(browser_context, std::move(attach_tab_helpers));
   return content;
+}
+
+// static
+std::optional<GURL> WorkspaceAssociatedContent::GetFileUrl(
+    const GURL& workspace_url,
+    std::string_view file_path) {
+  std::optional<std::string> uuid = ParseWorkspaceUrl(workspace_url);
+  if (!uuid || file_path.empty()) {
+    return std::nullopt;
+  }
+  // The page reads the fragment with URLSearchParams, so the path is escaped
+  // as a parameter value.
+  GURL::Replacements replacements;
+  const std::string ref =
+      base::StrCat({"file=", base::EscapeAllExceptUnreserved(file_path)});
+  replacements.SetRefStr(ref);
+  return BuildPageUrl(*uuid).ReplaceComponents(replacements);
 }
 
 void WorkspaceAssociatedContent::GetContent(GetPageContentCallback callback) {

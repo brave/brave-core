@@ -813,6 +813,9 @@
   <message name="IDS_CHAT_UI_IMAGE_LIGHTBOX_DOWNLOAD_BUTTON_LABEL" desc="Button label to download an attached image from the lightbox" formatter_data="webui=AiChat">
     Download image
   </message>
+  <message name="IDS_CHAT_UI_WORKSPACE_FILE_LIGHTBOX_OPEN_BUTTON_LABEL" desc="Button label in the workspace file viewer to open the file being previewed in the current browser tab" formatter_data="webui=AiChat">
+    Open in tab
+  </message>
   <message name="IDS_AI_CHAT_CURRENT_TAB_CONTENTS_BUTTON_LABEL" desc="The button label for current tab contents" formatter_data="webui=AiChat">
     Current tab contents
   </message>

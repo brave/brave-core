@@ -437,6 +437,26 @@ IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentBrowserTest,
   }
 }
 
+// A workspace file opens in the workspace's page, which shows the file named by
+// its #file= fragment. The path is escaped so it can't add other parameters.
+IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentBrowserTest, GetFileUrl) {
+  const std::string uuid = base::Uuid::GenerateRandomV4().AsLowercaseString();
+  const GURL workspace(base::StrCat(
+      {kAIChatWorkspaceScheme, url::kStandardSchemeSeparator, uuid}));
+  const std::string page = base::StrCat({content::kChromeUIUntrustedScheme,
+                                         url::kStandardSchemeSeparator, uuid,
+                                         kAIChatLeoWorkspaceUIHostSuffix, "/"});
+
+  EXPECT_EQ(WorkspaceAssociatedContent::GetFileUrl(workspace, "src/a b&c=d+e"),
+            GURL(base::StrCat({page, "#file=src%2Fa%20b%26c%3Dd%2Be"})));
+
+  EXPECT_FALSE(WorkspaceAssociatedContent::GetFileUrl(workspace, ""));
+  EXPECT_FALSE(
+      WorkspaceAssociatedContent::GetFileUrl(GURL(page), "src/app.tsx"));
+  EXPECT_FALSE(WorkspaceAssociatedContent::GetFileUrl(
+      GURL(base::StrCat({workspace.spec(), "/path"})), "src/app.tsx"));
+}
+
 // A workspace displays its contents in an iframe served from a further
 // subdomain of its own host, so the viewer is a separate origin holding none of
 // the workspace's File System Access grants and none of its storage.

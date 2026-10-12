@@ -242,6 +242,12 @@ void AIChatUIPageHandler::ShowWorkspaceFolderPicker(
   std::move(callback).Run(std::nullopt);
 }
 
+void AIChatUIPageHandler::OpenWorkspaceFile(const GURL& workspace_url,
+                                            const std::string& file_path) {
+  // Workspaces aren't available on iOS (see ShowWorkspaceFolderPicker).
+  NOTIMPLEMENTED();
+}
+
 void AIChatUIPageHandler::OpenAIChatSettings() {
   id<AIChatUIHandlerBridge> bridge =
       UIHandlerBridgeHolder::FromWebState(owner_web_state_)->bridge();

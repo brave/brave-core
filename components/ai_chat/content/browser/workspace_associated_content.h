@@ -9,6 +9,7 @@
 #include <memory>
 #include <optional>
 #include <string>
+#include <string_view>
 
 #include "base/files/file_path.h"
 #include "base/functional/callback.h"
@@ -64,6 +65,14 @@ class WorkspaceAssociatedContent : public AssociatedContentDelegate,
       GURL url,
       content::BrowserContext* browser_context,
       base::OnceCallback<void(content::WebContents*)> attach_tab_helpers);
+
+  // Returns the URL of the workspace page showing |file_path| from the
+  // workspace identified by |workspace_url| (workspace://<uuid>):
+  // chrome-untrusted://<uuid>.leo-workspace/#file=<file_path>. Returns
+  // std::nullopt if |workspace_url| is not a valid workspace URL or
+  // |file_path| is empty.
+  static std::optional<GURL> GetFileUrl(const GURL& workspace_url,
+                                        std::string_view file_path);
 
   // AssociatedContentDelegate:
   void GetContent(GetPageContentCallback callback) override;
