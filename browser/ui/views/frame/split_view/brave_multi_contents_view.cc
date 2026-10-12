@@ -16,7 +16,6 @@
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/contents_web_view.h"
 #include "chrome/browser/ui/views/frame/multi_contents_background_view.h"
-#include "chrome/browser/ui/views/frame/multi_contents_resize_area.h"
 #include "chrome/browser/ui/views/frame/multi_contents_view_delegate.h"
 #include "components/tabs/public/tab_interface.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
@@ -64,15 +63,6 @@ gfx::RoundedCornersF GetSplitContentsCornerRadii(
 BraveMultiContentsView* BraveMultiContentsView::From(MultiContentsView* view) {
   CHECK(view);
   return static_cast<BraveMultiContentsView*>(view);
-}
-
-BraveMultiContentsView::BraveMultiContentsView(
-    BrowserView* browser_view,
-    std::unique_ptr<MultiContentsViewDelegate> delegate)
-    : MultiContentsView(browser_view, std::move(delegate)) {
-  // Use rounded corners margin as resize area's width.
-  resize_area_->SetPreferredSize(
-      gfx::Size(kRoundedCornersContentsViewMargin, 0));
 }
 
 BraveMultiContentsView::~BraveMultiContentsView() = default;
