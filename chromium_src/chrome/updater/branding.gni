@@ -108,5 +108,8 @@ brave_updater_branding = {
     # Omaha 4 update server:
     update_check_url =
         "https://updates.bravesoftware.com/prod/service/update2/json"
+
+    # The Windows install UI fetches application logos from here.
+    app_logo_url = "https://updates.bravesoftware.com/prod/icons/"
   }
 }
