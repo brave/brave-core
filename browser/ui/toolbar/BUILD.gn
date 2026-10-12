@@ -31,6 +31,7 @@ source_set("brave_app_menu_unit_test") {
     sources = [ "//brave/browser/ui/toolbar/brave_vpn_menu_model_unittest.cc" ]
     deps += [
       "//base",
+      "//brave/browser/ui",
       "//brave/components/brave_vpn/common",
       "//chrome/test/base:testing_browser_process",
     ]

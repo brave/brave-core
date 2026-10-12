@@ -108,6 +108,7 @@ source_set("ui") {
     "//brave/browser/ui/tabs:browser_tests",
     "//brave/browser/ui/tabs:impl",
     "//brave/browser/ui/tabs/test:browser_tests",
+    "//brave/browser/ui/toolbar:brave_app_menu_unit_test",
     "//brave/browser/ui/views/frame:browser_tests",
     "//brave/browser/ui/views/frame/vertical_tabs:browser_tests",
     "//brave/browser/ui/views/frame/vertical_tabs:interactive_ui_tests",
