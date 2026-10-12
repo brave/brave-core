@@ -17,6 +17,7 @@
 #include <variant>
 #include <vector>
 
+#include "base/containers/span.h"
 #include "base/functional/callback.h"
 #include "base/functional/callback_forward.h"
 #include "base/gtest_prod_util.h"
@@ -256,6 +257,14 @@ class ConversationHandler : public mojom::ConversationHandler,
   void OnAssociatedContentUpdated();
   void OnContentToolsChanged(const std::string& content_uuid,
                              std::vector<mojom::ToolInfoPtr> tools);
+
+  // Associates the content with |content_uuid|, which a tool has added, with
+  // the assistant entry whose tool use is in progress, so it's persisted with
+  // the answer (rather than the user's next message), and removed along with
+  // that entry (e.g. when the answer is regenerated). Does nothing if no tool
+  // use is in progress, in which case the content will remain associated with
+  // the next human entry, like any other staged content.
+  void AssociateContentWithToolUseEntry(std::string_view content_uuid);
 
   void OnUserOptedIn();
   size_t GetConversationHistorySize() override;
@@ -548,6 +557,13 @@ class ConversationHandler : public mojom::ConversationHandler,
                             mojom::ToolUseEvent* tool_use);
   void OnConversationEntryAdded(mojom::ConversationTurnPtr& entry);
   void OnConversationEntryRemoved(std::optional<std::string> turn_id);
+  // Removes content associated with any of the assistant entries in |turns|,
+  // which are about to be removed. Only content a tool added during an
+  // assistant entry is associated with one, so it goes with the entry, letting
+  // a regenerated answer add it again. Content associated with human entries is
+  // kept, as those entries are resubmitted.
+  void RemoveContentAssociatedWithAssistantEntries(
+      base::span<const mojom::ConversationTurnPtr> turns);
   void OnSuggestedQuestionsChanged();
   void OnClientConnectionChanged();
   void OnConversationTitleChanged(std::string_view title);

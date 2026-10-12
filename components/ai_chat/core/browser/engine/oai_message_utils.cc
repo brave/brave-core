@@ -249,9 +249,12 @@ std::vector<OAIMessage> BuildOAIMessages(
     }
 
     // If we have page contents for this turn, generate a content block for
-    // each.
+    // each. Only human turns carry content: the only content associated with
+    // an assistant turn is content a tool added (e.g. a workspace), which has
+    // no text, and is known to the model via that tool's result instead.
     auto page_content_it = page_contents.find(message->uuid.value());
-    if (page_content_it != page_contents.end() && remaining_length != 0) {
+    if (message->character_type == mojom::CharacterType::HUMAN &&
+        page_content_it != page_contents.end() && remaining_length != 0) {
       page_contents_blocks[message->uuid.value()] = BuildOAIPageContentBlocks(
           page_content_it->second, remaining_length, sanitize_input);
     }

@@ -7,6 +7,7 @@
 
 #include <algorithm>
 #include <cstdint>
+#include <map>
 #include <memory>
 #include <optional>
 #include <string>
@@ -4053,6 +4054,193 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_ArtifactStoredInHistory) {
   EXPECT_EQ(tool_event->artifacts->at(0)->id, kArtifactId);
   EXPECT_EQ(tool_event->artifacts->at(0)->type, kArtifactType);
   EXPECT_EQ(tool_event->artifacts->at(0)->content_json, kArtifactContentJson);
+}
+
+// Content a tool adds (e.g. a workspace) is associated with the assistant entry
+// whose tool use added it, so it's persisted with that answer rather than with
+// the user's next message, and is removed when that answer is regenerated,
+// letting the regenerated answer add it again.
+TEST_F(ConversationHandlerUnitTest,
+       ToolUseEvents_ContentAddedByToolIsAssociatedWithAssistantEntry) {
+  AssociatedContentManager* manager =
+      conversation_handler_->associated_content_manager();
+  MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+  // Sent with the human entry, so content is next persisted only once it has
+  // changed. Non-empty, so no screenshots are taken in place of its text.
+  associated_content_->SetTextContent("page content");
+
+  NiceMock<MockConversationHandlerObserver> observer;
+  observer.Observe(conversation_handler_.get());
+
+  auto tool1 =
+      std::make_unique<NiceMock<MockTool>>("content_tool", "Adds content");
+  tool1->set_requires_user_interaction_before_handling(false);
+  ON_CALL(*mock_tool_provider_, GetTools()).WillByDefault([&]() {
+    std::vector<base::WeakPtr<Tool>> tools;
+    tools.push_back(tool1->GetWeakPtr());
+    return tools;
+  });
+
+  auto respond_with_tool_use =
+      [](EngineConsumer::GenerationDataCallback callback) {
+        callback.Run(EngineConsumer::GenerationResultData(
+            mojom::ConversationEntryEvent::NewToolUseEvent(
+                mojom::ToolUseEvent::New("content_tool", "tool_id_1", "{}",
+                                         std::nullopt, std::nullopt, nullptr,
+                                         false)),
+            std::nullopt));
+      };
+  auto complete = [](EngineConsumer::GenerationCompletedCallback callback) {
+    std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
+        mojom::ConversationEntryEvent::NewCompletionEvent(
+            mojom::CompletionEvent::New("")),
+        std::nullopt)));
+  };
+  auto respond_with_text = [](EngineConsumer::GenerationDataCallback callback) {
+    callback.Run(EngineConsumer::GenerationResultData(
+        mojom::ConversationEntryEvent::NewCompletionEvent(
+            mojom::CompletionEvent::New("Done")),
+        std::nullopt));
+  };
+
+  std::string content_uuid;
+  base::RunLoop run_loop;
+  testing::Sequence seq;
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .InSequence(seq)
+      .WillOnce(testing::DoAll(testing::WithArg<6>(respond_with_tool_use),
+                               testing::WithArg<7>(complete)));
+  EXPECT_CALL(*tool1, UseTool(StrEq("{}"), _))
+      .InSequence(seq)
+      .WillOnce(testing::WithArg<1>([&](Tool::UseToolCallback callback) {
+        auto content = std::make_unique<NiceMock<MockAssociatedContent>>();
+        content->SetTextContent("tool content");
+        content_uuid = content->uuid();
+        manager->AddOwnedContent(std::move(content));
+        conversation_handler_->AssociateContentWithToolUseEntry(content_uuid);
+        std::move(callback).Run(CreateContentBlocksForText("Added"), {});
+      }));
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .InSequence(seq)
+      .WillOnce(testing::DoAll(
+          testing::WithArg<6>(respond_with_text),
+          testing::WithArg<7>(
+              [&](EngineConsumer::GenerationCompletedCallback callback) {
+                complete(std::move(callback));
+                run_loop.QuitWhenIdle();
+              })));
+
+  // The number of contents each entry is persisted with, by entry uuid.
+  std::map<std::string, size_t> persisted_content_counts;
+  EXPECT_CALL(observer,
+              OnConversationEntryAdded(conversation_handler_.get(), _, _))
+      .WillRepeatedly([&](ConversationHandler*,
+                          mojom::ConversationTurnPtr& entry,
+                          std::optional<PageContents> contents) {
+        persisted_content_counts[entry->uuid.value()] =
+            contents ? contents->size() : 0;
+      });
+
+  conversation_handler_->SubmitHumanConversationEntry("Add content",
+                                                      std::nullopt);
+  run_loop.Run();
+  testing::Mock::VerifyAndClearExpectations(&observer);
+  testing::Mock::VerifyAndClearExpectations(engine);
+
+  // Human entry, the assistant entry with the tool use, then its answer.
+  const auto& history = conversation_handler_->GetConversationHistory();
+  ASSERT_EQ(history.size(), 3u);
+  EXPECT_EQ(history[1]->character_type, mojom::CharacterType::ASSISTANT);
+  const std::string tool_use_entry_uuid = history[1]->uuid.value();
+
+  auto associated_content = manager->GetAssociatedContent();
+  ASSERT_EQ(associated_content.size(), 2u);
+  EXPECT_EQ(associated_content[0]->conversation_turn_uuid, history[0]->uuid);
+  EXPECT_EQ(associated_content[1]->uuid, content_uuid);
+  EXPECT_EQ(associated_content[1]->conversation_turn_uuid, tool_use_entry_uuid);
+
+  // The tool use entry was persisted (with the page content) before the tool
+  // ran, so the tool's content is persisted with the answer that follows it.
+  EXPECT_EQ(persisted_content_counts[tool_use_entry_uuid], 1u);
+  EXPECT_EQ(persisted_content_counts[history[2]->uuid.value()], 2u);
+
+  // Regenerating the answer removes the tool's content along with the entry,
+  // keeping the content sent with the human entry, which is resubmitted.
+  base::RunLoop regenerate_run_loop;
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .WillOnce(testing::DoAll(
+          testing::WithArg<6>(respond_with_text),
+          testing::WithArg<7>(
+              [&](EngineConsumer::GenerationCompletedCallback callback) {
+                complete(std::move(callback));
+                regenerate_run_loop.QuitWhenIdle();
+              })));
+  conversation_handler_->RegenerateAnswer(tool_use_entry_uuid, "");
+  regenerate_run_loop.Run();
+
+  associated_content = manager->GetAssociatedContent();
+  ASSERT_EQ(associated_content.size(), 1u);
+  EXPECT_EQ(associated_content[0]->uuid, associated_content_->uuid());
+}
+
+// Content added outside of a tool use isn't associated with an assistant entry,
+// so it stays staged for the user's next message.
+TEST_F(ConversationHandlerUnitTest,
+       AssociateContentWithToolUseEntry_NoToolUseInProgress) {
+  AssociatedContentManager* manager =
+      conversation_handler_->associated_content_manager();
+  manager->ClearContent();
+  SetupHistory({{"question", false}, {"answer", false}});
+
+  auto content = std::make_unique<NiceMock<MockAssociatedContent>>();
+  const std::string content_uuid = content->uuid();
+  manager->AddOwnedContent(std::move(content));
+  conversation_handler_->AssociateContentWithToolUseEntry(content_uuid);
+
+  auto associated_content = manager->GetAssociatedContent();
+  ASSERT_EQ(associated_content.size(), 1u);
+  EXPECT_FALSE(associated_content[0]->conversation_turn_uuid.has_value());
+}
+
+// Content associated with a human entry is kept when an answer is regenerated,
+// as the human entry is resubmitted.
+TEST_F(ConversationHandlerUnitTest,
+       RegenerateAnswer_KeepsContentAssociatedWithHumanEntry) {
+  AssociatedContentManager* manager =
+      conversation_handler_->associated_content_manager();
+  MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+  associated_content_->SetTextContent("content");
+
+  // Associates the fixture's content with the human entry.
+  auto history = SetupHistory({{"question", false}, {"answer", false}});
+  auto associated_content = manager->GetAssociatedContent();
+  ASSERT_EQ(associated_content.size(), 1u);
+  ASSERT_EQ(associated_content[0]->conversation_turn_uuid, history[0]->uuid);
+
+  base::RunLoop run_loop;
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .WillOnce(testing::DoAll(
+          base::test::RunOnceCallback<6>(EngineConsumer::GenerationResultData(
+              mojom::ConversationEntryEvent::NewCompletionEvent(
+                  mojom::CompletionEvent::New("regenerated answer")),
+              std::nullopt)),
+          testing::WithArg<7>(
+              [&](EngineConsumer::GenerationCompletedCallback callback) {
+                std::move(callback).Run(
+                    base::ok(EngineConsumer::GenerationResultData(
+                        mojom::ConversationEntryEvent::NewCompletionEvent(
+                            mojom::CompletionEvent::New("")),
+                        std::nullopt)));
+                run_loop.QuitWhenIdle();
+              })));
+  conversation_handler_->RegenerateAnswer(history[1]->uuid.value(), "");
+  run_loop.Run();
+
+  associated_content = manager->GetAssociatedContent();
+  ASSERT_EQ(associated_content.size(), 1u);
+  EXPECT_EQ(associated_content[0]->conversation_turn_uuid, history[0]->uuid);
 }
 
 TEST_F(ConversationHandlerUnitTest, ToolUseEvents_HandleErrorResponse) {
