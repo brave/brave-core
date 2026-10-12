@@ -51,9 +51,13 @@ class AttachWorkspaceTool : public Tool {
  private:
   bool HasWorkspace() const;
 
-  // Replies, once |tool_count| of the workspace's tools have been added to the
-  // current generation loop.
-  void OnWorkspaceToolsAdded(UseToolCallback callback, size_t tool_count);
+  // Associates the workspace with |content_uuid| with the assistant entry this
+  // tool is being used in, so it's persisted with it, then replies, once
+  // |tool_count| of the workspace's tools have been added to the current
+  // generation loop.
+  void OnWorkspaceToolsAdded(const std::string& content_uuid,
+                             UseToolCallback callback,
+                             size_t tool_count);
 
   const raw_ref<content::BrowserContext> browser_context_;
   const raw_ref<ConversationHandler> conversation_;

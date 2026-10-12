@@ -213,6 +213,65 @@ TEST_F(AssociatedContentManagerUnitTest,
   EXPECT_TRUE(contents_map.contains("test-turn-uuid"));
 }
 
+TEST_F(AssociatedContentManagerUnitTest, AssociateContentWithTurn) {
+  auto* manager = conversation_handler_->associated_content_manager();
+  NiceMock<MockAssociatedContent> first_content;
+  NiceMock<MockAssociatedContent> second_content;
+  manager->AddContent(&first_content);
+  manager->AddContent(&second_content);
+
+  // Only the named content is associated, not all staged content.
+  EXPECT_TRUE(manager->AssociateContentWithTurn(first_content.uuid(),
+                                                "assistant-turn-uuid"));
+  auto content = manager->GetAssociatedContent();
+  ASSERT_EQ(2u, content.size());
+  EXPECT_EQ("assistant-turn-uuid", content[0]->conversation_turn_uuid);
+  EXPECT_FALSE(content[1]->conversation_turn_uuid.has_value());
+
+  // Content already associated with a turn keeps it.
+  EXPECT_FALSE(
+      manager->AssociateContentWithTurn(first_content.uuid(), "other-turn"));
+  EXPECT_EQ("assistant-turn-uuid",
+            manager->GetAssociatedContent()[0]->conversation_turn_uuid);
+
+  // Unknown content can't be associated.
+  EXPECT_FALSE(manager->AssociateContentWithTurn("unknown", "other-turn"));
+}
+
+TEST_F(AssociatedContentManagerUnitTest, RemoveContentAssociatedWithTurns) {
+  auto* manager = conversation_handler_->associated_content_manager();
+  NiceMock<MockAssociatedContent> human_content;
+  manager->AddContent(&human_content);
+  manager->AssociateUnsentContentWithTurn(mojom::ConversationTurn::New(
+      "human-turn-uuid", std::nullopt /* thread_uuid */,
+      mojom::CharacterType::HUMAN, mojom::ActionType::QUERY, "Question",
+      std::nullopt, std::nullopt, std::nullopt, base::Time::Now(), std::nullopt,
+      std::nullopt, nullptr /* skill */, false, std::nullopt, nullptr,
+      std::vector<std::string>{} /* child_thread_uuids */));
+
+  auto tool_content = std::make_unique<NiceMock<MockAssociatedContent>>();
+  const std::string tool_content_uuid = tool_content->uuid();
+  manager->AddOwnedContent(std::move(tool_content));
+  ASSERT_TRUE(manager->AssociateContentWithTurn(tool_content_uuid,
+                                                "assistant-turn-uuid"));
+
+  NiceMock<MockAssociatedContent> staged_content;
+  manager->AddContent(&staged_content);
+  ASSERT_EQ(3u, manager->GetAssociatedContent().size());
+
+  // Removing an unrelated turn removes nothing.
+  manager->RemoveContentAssociatedWithTurns({"other-turn-uuid"});
+  EXPECT_EQ(3u, manager->GetAssociatedContent().size());
+
+  manager->RemoveContentAssociatedWithTurns({"assistant-turn-uuid"});
+  auto content = manager->GetAssociatedContent();
+  ASSERT_EQ(2u, content.size());
+  EXPECT_EQ(human_content.uuid(), content[0]->uuid);
+  EXPECT_EQ("human-turn-uuid", content[0]->conversation_turn_uuid);
+  EXPECT_EQ(staged_content.uuid(), content[1]->uuid);
+  EXPECT_FALSE(content[1]->conversation_turn_uuid.has_value());
+}
+
 TEST_F(AssociatedContentManagerUnitTest,
        AssociateUnsentContentWithTurn_MultipleContent) {
   NiceMock<MockAssociatedContent> first_content;

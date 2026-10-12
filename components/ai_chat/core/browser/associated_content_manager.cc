@@ -430,6 +430,50 @@ void AssociatedContentManager::AssociateUnsentContentWithTurn(
   }
 }
 
+bool AssociatedContentManager::AssociateContentWithTurn(
+    std::string_view content_uuid,
+    std::string_view turn_uuid) {
+  DVLOG(1) << __func__;
+
+  auto it = std::ranges::find(content_delegates_, content_uuid,
+                              [](const auto& ptr) { return ptr->uuid(); });
+  if (it == content_delegates_.end()) {
+    return false;
+  }
+  const bool inserted =
+      content_uuid_to_conversation_turns_
+          .try_emplace(std::string(content_uuid), std::string(turn_uuid))
+          .second;
+  if (!inserted) {
+    return false;
+  }
+
+  conversation_->OnAssociatedContentUpdated();
+  return true;
+}
+
+void AssociatedContentManager::RemoveContentAssociatedWithTurns(
+    const base::flat_set<std::string>& turn_uuids) {
+  DVLOG(1) << __func__;
+
+  std::vector<std::string> to_remove;
+  for (const auto& [content_uuid, turn_uuid] :
+       content_uuid_to_conversation_turns_) {
+    if (turn_uuids.contains(turn_uuid)) {
+      to_remove.push_back(content_uuid);
+    }
+  }
+  if (to_remove.empty()) {
+    return;
+  }
+
+  for (const auto& content_uuid : to_remove) {
+    content_uuid_to_conversation_turns_.erase(content_uuid);
+    RemoveContent(content_uuid, /*notify_updated=*/false);
+  }
+  conversation_->OnAssociatedContentUpdated();
+}
+
 std::vector<mojom::AssociatedContentPtr>
 AssociatedContentManager::GetAssociatedContent() const {
   DVLOG(1) << __func__;

@@ -93,13 +93,19 @@ void AttachWorkspaceTool::UseTool(const std::string& input_json,
   // page has loaded and attached them, so reply then, letting the model use
   // them straight away.
   manager->RunWhenContentToolsAdded(
-      content_uuid,
-      base::BindOnce(&AttachWorkspaceTool::OnWorkspaceToolsAdded,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+      content_uuid, base::BindOnce(&AttachWorkspaceTool::OnWorkspaceToolsAdded,
+                                   weak_ptr_factory_.GetWeakPtr(), content_uuid,
+                                   std::move(callback)));
 }
 
-void AttachWorkspaceTool::OnWorkspaceToolsAdded(UseToolCallback callback,
+void AttachWorkspaceTool::OnWorkspaceToolsAdded(const std::string& content_uuid,
+                                                UseToolCallback callback,
                                                 size_t tool_count) {
+  // Associated once its tools have been added, as associated content's tools
+  // are no longer detected automatically. Without this, the workspace would
+  // only be associated with (and persisted with) the user's next message.
+  conversation_->AssociateContentWithToolUseEntry(content_uuid);
+
   std::move(callback).Run(
       CreateContentBlocksForText(tool_count > 0 ? kToolsAvailable
                                                 : kToolsNextMessage),

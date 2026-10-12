@@ -115,6 +115,18 @@ class AssociatedContentManager : public ToolProvider,
   // |turn|. Note: |turn| must have a non-empty |uuid| field.
   void AssociateUnsentContentWithTurn(const mojom::ConversationTurnPtr& turn);
 
+  // Associates the content with |content_uuid| with the turn with |turn_uuid|,
+  // e.g. content a tool added during an assistant turn. Returns false (and does
+  // nothing) if there's no such content, or it's already associated with a
+  // turn.
+  bool AssociateContentWithTurn(std::string_view content_uuid,
+                                std::string_view turn_uuid);
+
+  // Removes all content associated with any of |turn_uuids|, e.g. because
+  // those turns are being removed from the conversation.
+  void RemoveContentAssociatedWithTurns(
+      const base::flat_set<std::string>& turn_uuids);
+
   // Checks if the content has changed from what is stored in the cache.
   void HasContentUpdated(base::OnceCallback<void(bool)> callback);
 
