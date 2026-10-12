@@ -1,11 +1,11 @@
 diff --git a/chrome/browser/metrics/chrome_feature_list_creator.cc b/chrome/browser/metrics/chrome_feature_list_creator.cc
-index f45f66f62c3a0bf6dfd27ae06269e08b2713fb36..9990a01adecc1e5ad945d33fb20f3b32e9cb9f49 100644
+index f45f66f62c3a0bf6dfd27ae06269e08b2713fb36..cec00428ad5e913f6765b381ce66c00c658f03d2 100644
 --- a/chrome/browser/metrics/chrome_feature_list_creator.cc
 +++ b/chrome/browser/metrics/chrome_feature_list_creator.cc
 @@ -315,5 +315,6 @@ void ChromeFeatureListCreator::SetupInitialPrefs() {
      initial_seed_->date = base::Time::Now();
      initial_seed_->is_gzip_compressed = true;
    }
-+  BRAVE_CHROME_FEATURE_LIST_CREATOR_SETUP_INITIAL_PREFS
++  MaybeSetVariationsCountry(compressed_variations_seed, *local_state_);
  #endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_CHROMEOS)
  }
