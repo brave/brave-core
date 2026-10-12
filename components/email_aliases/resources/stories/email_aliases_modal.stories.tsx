@@ -9,9 +9,12 @@ import {
   EmailAliasModal,
 } from '../content/email_aliases_modal'
 import { StubEmailAliasesService, demoData } from './utils/stubs'
-import { Alias } from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
+import {
+  Alias,
+  DEFAULT_MAX_ALIASES,
+} from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
 
-const MAX_ALIASES = 5
+const MAX_ALIASES = DEFAULT_MAX_ALIASES
 
 const stubEmailAliasesServiceAccountReadyInstance =
   new StubEmailAliasesService()

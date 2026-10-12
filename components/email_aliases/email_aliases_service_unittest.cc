@@ -49,7 +49,8 @@ using ::testing::_;
 
 namespace {
 
-std::string MakeRefreshBody(const std::vector<std::string>& aliases) {
+std::string MakeRefreshBody(const std::vector<std::string>& aliases,
+                            int max_aliases_count = mojom::kDefaultMaxAliases) {
   base::ListValue aliases_list;
   for (const auto& alias : aliases) {
     aliases_list.Append(base::DictValue()
@@ -59,7 +60,14 @@ std::string MakeRefreshBody(const std::vector<std::string>& aliases) {
                             .Set("created_at", "2025-01-01T00:00:00Z")
                             .Set("last_used", ""));
   }
-  return base::DictValue().Set("result", std::move(aliases_list)).DebugString();
+
+  base::DictValue info;
+  info.Set("max_aliases_count", max_aliases_count);
+
+  return base::DictValue()
+      .Set("result", std::move(aliases_list))
+      .Set("info", std::move(info))
+      .DebugString();
 }
 
 }  // namespace
@@ -436,6 +444,23 @@ TEST_F(EmailAliasesAPITest, RefreshAliases_Notifies_OnValidResponse) {
   ASSERT_FALSE(aliases.empty());
   EXPECT_EQ(aliases[0]->email, alias_email);
   EXPECT_EQ(aliases[0]->note, "note");
+}
+
+TEST_F(EmailAliasesAPITest, RefreshAliases_Notifies_OnNegativeMaxResponse) {
+  const std::string alias_email = "alias@example.com";
+  auto result_out = CallUpdateAliasWith(
+      alias_email,
+      /*put_body=*/R"({"message":"updated"})",
+      /*refresh_body=*/
+      MakeRefreshBody(
+          /*aliases=*/{{"dest@example.com", alias_email, "2025-01-01T00:00:00Z",
+                        "", "active"}},
+          /*max_aliases_count=*/-10),
+      "note");
+  ASSERT_TRUE(result_out.has_value());
+  ASSERT_TRUE(observer_.last_account_update());
+  EXPECT_EQ(observer_.last_account_update()->max_aliases_count,
+            mojom::kDefaultMaxAliases);
 }
 
 TEST_F(EmailAliasesAPITest,

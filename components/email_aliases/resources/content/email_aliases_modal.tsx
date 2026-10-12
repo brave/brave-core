@@ -248,7 +248,6 @@ export const EmailAliasModal = ({
   aliasLimit: number
   emailAliasesService: EmailAliasesServiceInterface
 }) => {
-  const hasStartedInitialAliasGeneration = React.useRef(false)
   const [limitReached, setLimitReached] = React.useState<boolean>(false)
   const [proposedNote, setProposedNote] = React.useState<string>(
     editAlias?.note ?? '',
@@ -311,14 +310,9 @@ export const EmailAliasModal = ({
   }, [aliases, aliasLimit])
 
   React.useEffect(() => {
-    if (
-      editing
-      || hasStartedInitialAliasGeneration.current
-      || (aliases?.length ?? 0) >= aliasLimit
-    ) {
+    if (editing || (aliases?.length ?? 0) >= aliasLimit) {
       return
     }
-    hasStartedInitialAliasGeneration.current = true
     regenerateAlias()
   }, [editing, aliases, aliasLimit])
   return (

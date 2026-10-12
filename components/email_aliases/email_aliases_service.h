@@ -146,7 +146,6 @@ class EmailAliasesService : public KeyedService,
 
   EmailAliasesMetrics metrics_;
 
-
   // WeakPtrFactory to safely bind callbacks across async network operations.
   base::WeakPtrFactory<EmailAliasesService> weak_factory_{this};
 };

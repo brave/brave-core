@@ -9,10 +9,11 @@ import { AliasList } from '../content/email_aliases_list'
 import {
   Alias,
   EmailAliasesServiceInterface,
+  DEFAULT_MAX_ALIASES,
 } from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
 import { clickLeoButton } from './test_utils'
 
-const MAX_ALIASES = 5
+const MAX_ALIASES = DEFAULT_MAX_ALIASES
 
 // Mock the clipboard API
 Object.assign(navigator, {

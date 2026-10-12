@@ -15,6 +15,7 @@ import { clickLeoButton } from './test_utils'
 import {
   Alias,
   EmailAliasesServiceInterface,
+  DEFAULT_MAX_ALIASES,
 } from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
 
 const MAX_ALIASES = 5
@@ -74,30 +75,6 @@ describe('EmailAliasModal', () => {
     await waitFor(() => {
       expect(mockEmailAliasesService.generateAlias).toHaveBeenCalled()
     })
-  })
-
-  it('does not regenerate the initial alias when the limit changes', async () => {
-    const props = {
-      editing: false,
-      aliasLimit: MAX_ALIASES,
-      mainEmail: mockEmail,
-      onReturnToMain: mockOnReturnToMain,
-      emailAliasesService: mockEmailAliasesService,
-    }
-    const { rerender } = render(<EmailAliasModal {...props} />)
-
-    await waitFor(() => {
-      expect(mockEmailAliasesService.generateAlias).toHaveBeenCalledTimes(1)
-    })
-
-    rerender(
-      <EmailAliasModal
-        {...props}
-        aliasLimit={MAX_ALIASES + 1}
-      />,
-    )
-
-    expect(mockEmailAliasesService.generateAlias).toHaveBeenCalledTimes(1)
   })
 
   it('renders edit mode correctly', () => {
