@@ -7,19 +7,17 @@
 
 #include <algorithm>
 #include <optional>
-#include <ranges>
 #include <utility>
 
 #include "base/containers/flat_set.h"
-#include "base/containers/map_util.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
+#include "base/functional/bind.h"
 #include "base/no_destructor.h"
 #include "base/strings/string_util.h"
+#include "base/task/thread_pool.h"
 #include "brave/components/brave_wallet/browser/network_manager.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "brave/components/json/json_helper.h"
-#include "third_party/abseil-cpp/absl/container/flat_hash_set.h"
 
 namespace brave_wallet {
 
@@ -29,48 +27,8 @@ struct ParseListsResult {
   CoingeckoIdsMap coingecko_ids_map;
   TokenListMap token_list_map;
   ChainList chain_list;
-  DappListMap dapp_lists;
-  OnRampTokensListMap on_ramp_token_lists;
-  OffRampTokensListMap off_ramp_token_lists;
-  std::vector<mojom::OnRampCurrency> on_ramp_currencies_list;
   std::vector<std::string> restricted_addresses;
 };
-
-void HandleRampTokenLists(const std::optional<std::string>& result,
-                          ParseListsResult& out) {
-  if (!result.has_value()) {
-    return;
-  }
-  auto parsedRampTokensListMaps = ParseRampTokenListMaps(*result);
-  if (!parsedRampTokensListMaps) {
-    return;
-  }
-
-  if (parsedRampTokensListMaps->first.empty()) {
-  } else {
-    out.on_ramp_token_lists = std::move(parsedRampTokensListMaps->first);
-  }
-
-  if (parsedRampTokensListMaps->second.empty()) {
-  } else {
-    out.off_ramp_token_lists = std::move(parsedRampTokensListMaps->second);
-  }
-}
-
-void HandleOnRampCurrenciesLists(const std::optional<std::string>& result,
-                                 ParseListsResult& out) {
-  if (!result.has_value()) {
-    return;
-  }
-
-  std::optional<std::vector<mojom::OnRampCurrency>> lists =
-      ParseOnRampCurrencyLists(*result);
-  if (!lists) {
-    return;
-  }
-
-  out.on_ramp_currencies_list = std::move(*lists);
-}
 
 base::FilePath ResolveAbsolutePath(const base::FilePath& input_path) {
   // On some platforms (e.g. Mac) we use symlinks for paths. Convert paths to
@@ -139,33 +97,6 @@ void DoParseChainList(const base::FilePath& dir, ParseListsResult& out) {
   out.chain_list = std::move(chains);
 }
 
-void DoParseDappLists(const base::FilePath& dir, ParseListsResult& out) {
-  auto result = ParseJsonFile(dir, "dapp-lists.json");
-  if (!result) {
-    return;
-  }
-
-  auto converted_json = json::convert_all_numbers_to_string(*result, "");
-  if (converted_json.empty()) {
-    return;
-  }
-
-  std::optional<DappListMap> lists = ParseDappLists(converted_json);
-  if (!lists) {
-    return;
-  }
-
-  out.dapp_lists = std::move(*lists);
-}
-
-void DoParseOnRampLists(const base::FilePath& dir, ParseListsResult& out) {
-  auto result = ParseJsonFile(dir, "ramp-tokens.json");
-  HandleRampTokenLists(result, out);
-
-  result = ParseJsonFile(dir, "on-ramp-currency-lists.json");
-  HandleOnRampCurrenciesLists(result, out);
-}
-
 void DoParseRestrictedAddressesLists(const base::FilePath& dir,
                                      ParseListsResult& out) {
   auto result =
@@ -188,11 +119,6 @@ void UpdateRegistry(base::OnceClosure callback, ParseListsResult result) {
   registry->UpdateCoingeckoIdsMap(std::move(result.coingecko_ids_map));
   registry->UpdateTokenList(std::move(result.token_list_map));
   registry->UpdateChainList(std::move(result.chain_list));
-  registry->UpdateDappList(std::move(result.dapp_lists));
-  registry->UpdateOnRampTokenLists(std::move(result.on_ramp_token_lists));
-  registry->UpdateOffRampTokenLists(std::move(result.off_ramp_token_lists));
-  registry->UpdateOnRampCurrenciesLists(
-      std::move(result.on_ramp_currencies_list));
   registry->UpdateRestrictedAddressesList(
       std::move(result.restricted_addresses));
   std::move(callback).Run();
@@ -208,8 +134,6 @@ ParseListsResult DoParseLists(const base::FilePath& install_dir) {
   DoParseCoingeckoIdsMap(absolute_install_dir, result);
   DoParseTokenList(absolute_install_dir, result);
   DoParseChainList(absolute_install_dir, result);
-  DoParseDappLists(absolute_install_dir, result);
-  DoParseOnRampLists(absolute_install_dir, result);
   DoParseRestrictedAddressesLists(absolute_install_dir, result);
   return result;
 }
@@ -255,25 +179,6 @@ void BlockchainRegistry::UpdateTokenList(
 
 void BlockchainRegistry::UpdateChainList(ChainList chains) {
   chain_list_ = std::move(chains);
-}
-
-void BlockchainRegistry::UpdateDappList(DappListMap dapp_lists) {
-  dapp_lists_ = std::move(dapp_lists);
-}
-
-void BlockchainRegistry::UpdateOnRampTokenLists(
-    OnRampTokensListMap on_ramp_lists) {
-  on_ramp_token_lists_ = std::move(on_ramp_lists);
-}
-
-void BlockchainRegistry::UpdateOffRampTokenLists(
-    OffRampTokensListMap on_ramp_lists) {
-  off_ramp_token_lists_ = std::move(on_ramp_lists);
-}
-
-void BlockchainRegistry::UpdateOnRampCurrenciesLists(
-    std::vector<mojom::OnRampCurrency> on_ramp_currencies_list) {
-  on_ramp_currencies_list_ = std::move(on_ramp_currencies_list);
 }
 
 void BlockchainRegistry::UpdateRestrictedAddressesList(
@@ -346,29 +251,6 @@ void BlockchainRegistry::GetAllTokens(const std::string& chain_id,
   std::move(callback).Run(std::move(tokens_copy));
 }
 
-std::vector<mojom::BlockchainTokenPtr> BlockchainRegistry::GetBuyTokens(
-    const std::vector<mojom::OnRampProvider>& providers,
-    const std::string& chain_id) {
-  std::vector<mojom::BlockchainTokenPtr> blockchain_buy_tokens;
-  base::flat_set<mojom::OnRampProvider> provider_set(providers.begin(),
-                                                     providers.end());
-
-  for (const auto& provider : provider_set) {
-    if (!on_ramp_token_lists_.contains(provider)) {
-      continue;
-    }
-    const std::vector<mojom::BlockchainTokenPtr>& buy_tokens =
-        on_ramp_token_lists_[provider];
-    for (const auto& token : buy_tokens) {
-      if (token->chain_id == chain_id) {
-        blockchain_buy_tokens.push_back(token.Clone());
-      }
-    }
-  }
-
-  return blockchain_buy_tokens;
-}
-
 TokenListMap BlockchainRegistry::GetEthTokenListMap(
     const std::vector<std::string>& chain_ids) {
   // Create a copy of token_list_map with only the chain_ids we want
@@ -396,57 +278,6 @@ TokenListMap BlockchainRegistry::GetEthTokenListMap(
   return token_list_map_copy;
 }
 
-void BlockchainRegistry::GetBuyTokens(mojom::OnRampProvider provider,
-                                      const std::string& chain_id,
-                                      GetBuyTokensCallback callback) {
-  std::move(callback).Run(GetBuyTokens({provider}, chain_id));
-}
-
-void BlockchainRegistry::GetProvidersBuyTokens(
-    const std::vector<mojom::OnRampProvider>& providers,
-    const std::string& chain_id,
-    GetProvidersBuyTokensCallback callback) {
-  std::move(callback).Run(GetBuyTokens(providers, chain_id));
-}
-
-void BlockchainRegistry::GetSellTokens(
-    mojom::OffRampProvider provider,
-    const std::vector<std::string>& chain_ids,
-    GetSellTokensCallback callback) {
-  std::vector<mojom::BlockchainTokenPtr> blockchain_sell_tokens;
-
-  absl::flat_hash_set<std::string> chain_id_set(std::from_range, chain_ids);
-
-  auto* sell_tokens = base::FindOrNull(off_ramp_token_lists_, provider);
-
-  // Check if the provider is found in the map
-  if (!sell_tokens) {
-    std::move(callback).Run(std::move(blockchain_sell_tokens));
-    return;
-  }
-
-  // Filter out tokens that do not belong to the specified chain_id
-  for (const auto& token : *sell_tokens) {
-    if (!chain_id_set.contains(token->chain_id)) {
-      continue;
-    }
-
-    blockchain_sell_tokens.push_back(token->Clone());
-  }
-
-  std::move(callback).Run(std::move(blockchain_sell_tokens));
-}
-
-void BlockchainRegistry::GetOnRampCurrencies(
-    GetOnRampCurrenciesCallback callback) {
-  std::vector<mojom::OnRampCurrencyPtr> currencies;
-
-  for (const auto& currency : on_ramp_currencies_list_) {
-    currencies.push_back(currency.Clone());
-  }
-  std::move(callback).Run(std::move(currencies));
-}
-
 std::vector<mojom::NetworkInfoPtr>
 BlockchainRegistry::GetPrepopulatedNetworks() {
   std::vector<mojom::NetworkInfoPtr> result;
@@ -464,24 +295,6 @@ BlockchainRegistry::GetPrepopulatedNetworks() {
 void BlockchainRegistry::GetPrepopulatedNetworks(
     GetPrepopulatedNetworksCallback callback) {
   std::move(callback).Run(GetPrepopulatedNetworks());
-}
-
-void BlockchainRegistry::GetTopDapps(const std::string& chain_id,
-                                     mojom::CoinType coin,
-                                     GetTopDappsCallback callback) {
-  const auto key = GetTokenListKey(coin, chain_id);
-  if (!dapp_lists_.contains(key)) {
-    std::move(callback).Run(std::vector<mojom::DappPtr>());
-    return;
-  }
-  const auto& dapps = dapp_lists_[key];
-
-  std::vector<mojom::DappPtr> dapps_copy(dapps.size());
-  std::transform(dapps.begin(), dapps.end(), dapps_copy.begin(),
-                 [](const mojom::DappPtr& current_token) -> mojom::DappPtr {
-                   return current_token.Clone();
-                 });
-  std::move(callback).Run(std::move(dapps_copy));
 }
 
 std::optional<std::string> BlockchainRegistry::GetCoingeckoId(
@@ -538,18 +351,12 @@ BlockchainRegistry::ScopedRestrictedAddressesForTesting::
 
 bool BlockchainRegistry::IsEmptyForTesting() {
   return coingecko_ids_map_.empty() && token_list_map_.empty() &&
-         chain_list_.empty() && dapp_lists_.empty() &&
-         on_ramp_token_lists_.empty() && off_ramp_token_lists_.empty() &&
-         on_ramp_currencies_list_.empty() && restricted_addresses_.empty();
+         chain_list_.empty() && restricted_addresses_.empty();
 }
 
 void BlockchainRegistry::ResetForTesting() {
   coingecko_ids_map_.clear();
   token_list_map_.clear();
-  dapp_lists_.clear();
-  on_ramp_token_lists_.clear();
-  off_ramp_token_lists_.clear();
-  on_ramp_currencies_list_.clear();
   restricted_addresses_.clear();
   receivers_.Clear();
 }

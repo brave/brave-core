@@ -107,26 +107,6 @@ class AssetRatioServiceUnitTest : public testing::Test {
         }));
   }
 
-  void TestGetSellUrl(mojom::OffRampProvider off_ramp_provider,
-                      const std::string& chain_id,
-                      const std::string& symbol,
-                      const std::string& amount,
-                      const std::string& currency_code,
-                      const std::string& expected_url,
-                      std::optional<std::string> expected_error) {
-    base::RunLoop run_loop;
-    asset_ratio_service_->GetSellUrl(
-        off_ramp_provider, chain_id, symbol, amount, currency_code,
-        base::BindLambdaForTesting(
-            [&](const std::string& url,
-                const std::optional<std::string>& error) {
-              EXPECT_EQ(url, expected_url);
-              EXPECT_EQ(error, expected_error);
-              run_loop.Quit();
-            }));
-    run_loop.Run();
-  }
-
  protected:
   std::unique_ptr<AssetRatioService> asset_ratio_service_;
   base::test::TaskEnvironment task_environment_;

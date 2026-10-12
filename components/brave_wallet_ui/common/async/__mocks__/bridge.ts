@@ -757,7 +757,6 @@ export class MockedWalletApiProxy {
           hiddenChainIds: [],
           ankrChainIds: [],
           swapChainIds: [],
-          offRampChainIds: [],
         },
       }
     },
