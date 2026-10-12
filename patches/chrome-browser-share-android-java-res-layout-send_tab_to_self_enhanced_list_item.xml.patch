@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/share/android/java/res/layout/send_tab_to_self_enhanced_list_item.xml b/chrome/browser/share/android/java/res/layout/send_tab_to_self_enhanced_list_item.xml
+index 1ba935a4844b1e651203f76485856bf8247c45d7..1182cd278b7d4a19998cf81fc31b617275188a78 100644
+--- a/chrome/browser/share/android/java/res/layout/send_tab_to_self_enhanced_list_item.xml
++++ b/chrome/browser/share/android/java/res/layout/send_tab_to_self_enhanced_list_item.xml
+@@ -56,6 +56,7 @@ found in the LICENSE file.
+       android:layout_height="24dp"
+       android:layout_marginEnd="16dp"
+       android:importantForAccessibility="no"
+-      android:src="@drawable/ic_check_googblue_24dp"
++      android:src="@drawable/ic_check_normal"
++      android:tint="?attr/colorPrimary"
+       android:visibility="invisible" />
+ </LinearLayout>
