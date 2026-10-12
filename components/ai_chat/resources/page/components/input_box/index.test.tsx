@@ -162,13 +162,15 @@ describe('input box', () => {
     ).not.toBeInTheDocument()
   })
 
-  it('send button is disabled when the input text is empty', async () => {
+  it('send button is disabled and does not submit when the input text is empty', async () => {
+    const submitInputTextToAPI = jest.fn()
     const { container } = await renderInputBox(
       <MockContext>
         <InputBox
           context={{
             ...testContext,
             inputText: [''],
+            submitInputTextToAPI,
           }}
           conversationStarted={false}
         />
@@ -178,15 +180,64 @@ describe('input box', () => {
     const sendButton = container.querySelector('.sendButtonDisabled')
     expect(sendButton).toBeInTheDocument()
     expect(sendButton).toHaveClass('sendButtonDisabled')
+
+    fireEvent.click(screen.getByTestId('leo-submit-button'))
+    expect(submitInputTextToAPI).not.toHaveBeenCalled()
   })
 
-  it('send button is enabled when the input text is not empty', async () => {
+  it('send button is disabled and does not submit when the input text is whitespace only', async () => {
+    const submitInputTextToAPI = jest.fn()
+    const { container } = await renderInputBox(
+      <MockContext>
+        <InputBox
+          context={{
+            ...testContext,
+            inputText: ['   \n  \t '],
+            submitInputTextToAPI,
+          }}
+          conversationStarted={false}
+        />
+      </MockContext>,
+    )
+
+    const sendButton = container.querySelector('.sendButtonDisabled')
+    expect(sendButton).toBeInTheDocument()
+    expect(sendButton).toHaveClass('sendButtonDisabled')
+
+    fireEvent.click(screen.getByTestId('leo-submit-button'))
+    expect(submitInputTextToAPI).not.toHaveBeenCalled()
+  })
+
+  it('does not submit on Enter key press when the input text is empty or whitespace only', async () => {
+    const submitInputTextToAPI = jest.fn()
+    const { container } = await renderInputBox(
+      <MockContext>
+        <InputBox
+          context={{
+            ...testContext,
+            inputText: ['   '],
+            submitInputTextToAPI,
+          }}
+          conversationStarted={false}
+        />
+      </MockContext>,
+    )
+
+    const form = container.querySelector('form')
+    expect(form).toBeInTheDocument()
+    fireEvent.keyDown(form!, { key: 'Enter', code: 'Enter' })
+    expect(submitInputTextToAPI).not.toHaveBeenCalled()
+  })
+
+  it('send button is enabled and submits when the input text is not empty', async () => {
+    const submitInputTextToAPI = jest.fn()
     const { container } = await renderInputBox(
       <MockContext>
         <InputBox
           context={{
             ...testContext,
             inputText: ['test'],
+            submitInputTextToAPI,
           }}
           conversationStarted={false}
         />
@@ -196,6 +247,9 @@ describe('input box', () => {
     const sendButton = container.querySelector('.button')
     expect(sendButton).toBeInTheDocument()
     expect(sendButton).not.toHaveClass('sendButtonDisabled')
+
+    fireEvent.click(screen.getByTestId('leo-submit-button'))
+    expect(submitInputTextToAPI).toHaveBeenCalledTimes(1)
   })
 
   it('streaming button is shown while generating', async () => {
