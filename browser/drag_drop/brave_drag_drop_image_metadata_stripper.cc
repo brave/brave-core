@@ -46,6 +46,8 @@ void OnStripComplete(DropCompletionCallback callback,
   CHECK_EQ(drop_data.filenames.size(), copies.size());
 
   for (size_t i = 0; i < copies.size(); ++i) {
+    // nullopt entries leave the original path untouched which are the files the
+    // stripper didn't strip.
     if (copies[i]) {
       drop_data.filenames[i].path = *std::move(copies[i]);
     }
@@ -58,8 +60,6 @@ void MaybeStripDropData(base::WeakPtr<content::WebContents> web_contents,
                         std::optional<content::DropData> drop_data) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
-  // The controller is looked up only now, since the tab may have closed while
-  // the drop was pending.
   auto* controller =
       image_metadata_stripper::FileUploadController::FromWebContents(
           web_contents.get());
