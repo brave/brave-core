@@ -4,7 +4,10 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
+import Button from '@brave/leo/react/button'
 import Dialog from '@brave/leo/react/dialog'
+import Icon from '@brave/leo/react/icon'
+import { getLocale } from '$web-common/locale'
 import styles from './style.module.scss'
 
 export interface WorkspaceFileInfo {
@@ -15,6 +18,8 @@ export interface WorkspaceFileInfo {
 interface Props {
   file: WorkspaceFileInfo | null
   onClose: () => void
+  // Opens the file in the current tab.
+  onOpen: (file: WorkspaceFileInfo) => void
   // Replaces the workspace viewer iframe, e.g. so storybook can render
   // placeholder content instead of loading a chrome-untrusted:// page.
   renderViewer?: (file: WorkspaceFileInfo) => React.ReactNode
@@ -81,12 +86,29 @@ export default function WorkspaceFileLightbox(props: Props) {
       {file && viewerUrl && (
         <div className={styles.card}>
           <div className={styles.header}>
-            <span
-              className={styles.title}
-              title={file.filePath}
-            >
-              {filename}
-            </span>
+            <div className={styles.titleRow}>
+              <span
+                className={styles.title}
+                title={file.filePath}
+              >
+                {filename}
+              </span>
+              <Button
+                fab
+                kind='plain-faint'
+                size='small'
+                className={styles.openButton}
+                title={getLocale(
+                  S.CHAT_UI_WORKSPACE_FILE_LIGHTBOX_OPEN_BUTTON_LABEL,
+                )}
+                aria-label={getLocale(
+                  S.CHAT_UI_WORKSPACE_FILE_LIGHTBOX_OPEN_BUTTON_LABEL,
+                )}
+                onClick={() => props.onOpen(file)}
+              >
+                <Icon name='launch' />
+              </Button>
+            </div>
             <span className={styles.subtitle}>{file.filePath}</span>
           </div>
           <div

@@ -273,6 +273,13 @@ function Main() {
       <WorkspaceFileLightbox
         file={conversationContext.previewWorkspaceFile}
         onClose={() => conversationContext.setPreviewWorkspaceFile(null)}
+        onOpen={(file) => {
+          aiChatContext.api.uiHandler.openWorkspaceFile(
+            { url: file.workspaceUrl },
+            file.filePath,
+          )
+          conversationContext.setPreviewWorkspaceFile(null)
+        }}
       />
       <RateMessagePrivacyModal />
       <FeedbackForm />

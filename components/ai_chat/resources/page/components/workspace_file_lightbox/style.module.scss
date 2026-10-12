@@ -37,9 +37,26 @@
   flex-direction: column;
   gap: var(--leo-spacing-xs);
   padding: var(--leo-spacing-xl);
+  // The dialog's close button is pinned over the card's top-right corner, so
+  // leave room for it rather than running the title row underneath it.
+  padding-inline-end: calc(var(--leo-spacing-xl) * 2 + 36px);
   border-bottom: 1px solid var(--leo-color-divider-subtle);
   min-width: 0;
   overflow: hidden;
+}
+
+.titleRow {
+  display: flex;
+  align-items: center;
+  gap: var(--leo-spacing-xs);
+  min-width: 0;
+}
+
+.openButton {
+  flex-shrink: 0;
+  // Cancel out the button's vertical padding so it doesn't make the title row
+  // taller than the title.
+  margin-block: calc(-1 * var(--leo-spacing-m));
 }
 
 .title {
