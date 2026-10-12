@@ -14,16 +14,24 @@
 #include "base/trace_event/trace_event.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/containers/buildflags/buildflags.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/browsing_data/chrome_browsing_data_remover_constants.h"
 #include "chrome/browser/lifetime/browser_shutdown.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
-#include "chrome/common/pref_names.h"
 #include "components/browsing_data/core/pref_names.h"
 #include "components/history/core/common/pref_names.h"
 #include "components/prefs/pref_service.h"
+#include "content/public/browser/browsing_data_filter_builder.h"
 #include "content/public/browser/browsing_data_remover.h"
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+#include "base/feature_list.h"
+#include "brave/browser/containers/used_container_storage_partitions.h"
+#include "brave/components/containers/core/common/features.h"
+#include "content/public/browser/storage_partition_config.h"
+#endif
 
 namespace content {
 
@@ -45,7 +53,7 @@ class BrowsingDataRemovalWatcher
  private:
   void Wait();
 
-  int num_profiles_to_clear_ = 0;
+  int num_pending_removals_ = 0;
   base::RunLoop run_loop_;
   // Keep track of the set of BrowsingDataRemover instances this object has
   // attached itself to as an observer. When ScopedMultiSourceObservation is
@@ -145,7 +153,7 @@ void BrowsingDataRemovalWatcher::ClearBrowsingDataForLoadedProfiles(
                                             &origin_mask)) {
       continue;
     }
-    ++num_profiles_to_clear_;
+    ++num_pending_removals_;
     content::BrowsingDataRemover* remover = profile->GetBrowsingDataRemover();
     observer_.AddObservation(remover);
     if (testing_callback) {
@@ -154,21 +162,42 @@ void BrowsingDataRemovalWatcher::ClearBrowsingDataForLoadedProfiles(
     }
     remover->RemoveAndReply(base::Time(), base::Time::Max(), remove_mask,
                             origin_mask, this);
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+    // The delegate's own container removals are not awaited, so schedule them
+    // here too. The remover merges identical tasks.
+    const uint64_t container_remove_mask =
+        content::BrowsingDataRemover::DATA_TYPE_ON_STORAGE_PARTITION &
+        remove_mask;
+    if (container_remove_mask &&
+        base::FeatureList::IsEnabled(containers::features::kContainers)) {
+      for (const content::StoragePartitionConfig& config :
+           containers::GetUsedContainerStoragePartitionConfigs(profile)) {
+        auto partition_filter = content::BrowsingDataFilterBuilder::Create(
+            content::BrowsingDataFilterBuilder::Mode::kPreserve);
+        partition_filter->SetStoragePartitionConfig(config);
+        ++num_pending_removals_;
+        remover->RemoveWithFilterAndReply(base::Time(), base::Time::Max(),
+                                          container_remove_mask, origin_mask,
+                                          std::move(partition_filter), this);
+      }
+    }
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
   }
 
   Wait();
 }
 
 void BrowsingDataRemovalWatcher::Wait() {
-  if (num_profiles_to_clear_ > 0) {
+  if (num_pending_removals_ > 0) {
     run_loop_.Run();
   }
 }
 
 void BrowsingDataRemovalWatcher::OnBrowsingDataRemoverDone(
     uint64_t failed_data_types) {
-  --num_profiles_to_clear_;
-  if (num_profiles_to_clear_ > 0) {
+  --num_pending_removals_;
+  if (num_pending_removals_ > 0) {
     return;
   }
 
