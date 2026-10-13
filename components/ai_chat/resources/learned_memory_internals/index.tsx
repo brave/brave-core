@@ -8,13 +8,16 @@ import { createRoot } from 'react-dom/client'
 import {
   DreamingRunRecord,
   LearnedMemoryInternals,
+  MemoryEventRecord,
   TurnLookupRecord,
 } from 'gen/brave/components/ai_chat/core/common/mojom/learned_memory_internals.mojom.m.js'
 
 // brave://leo-memory-internals: the Dreaming runs and the chat turn lookups of
 // the profile, with each request to the decision model and the LLM, the
 // answers, and the decisions made from them. The page reads them again every
-// few seconds, so an active run shows its steps as they come.
+// few seconds, so an active run shows its steps as they come. A third list has
+// the memory events: what the user, the memory tool and the clean-up did to
+// the memories outside a run.
 
 const REFRESH_MS = 2000
 // Mojo times count microseconds since 1601-01-01 (Windows epoch).
@@ -58,6 +61,11 @@ interface DecisionRequest {
 interface Run {
   record: DreamingRunRecord
   steps: Step[]
+}
+
+interface MemoryEvent {
+  record: MemoryEventRecord
+  details: { [key: string]: Json }
 }
 
 interface Lookup {
@@ -220,14 +228,50 @@ function LlmCall(props: { step: Step }) {
   )
 }
 
+// A short sentence for the steps that the user's choice to keep a memory as it
+// is changes, or null. The fields of the step have the details.
+function stepNote(step: Step): string | null {
+  switch (step.step) {
+    case 'relation_applied':
+      // A replace or a merge that left the old text as it was.
+      return typeof step.text_change_blocked_by === 'string'
+        ? `Old text not changed: ${step.text_change_blocked_by}.`
+        : null
+    case 'keep_forever':
+      return step.pending_change_dropped
+        ? 'The user keeps this memory as it is. Its pending change left the review.'
+        : 'The user keeps this memory as it is. Dreaming does not change it.'
+    case 'release_keep_forever':
+      return 'The user lets Dreaming change this memory again.'
+    case 'review_applied': {
+      const skipped = step.skipped_changed_since_run
+      return Array.isArray(skipped) && skipped.length > 0
+        ? `${skipped.length} change(s) not written: the memory changed after the run.`
+        : null
+    }
+    case 'edited_by_user':
+      return 'The user edited this memory. Its pending change left the review.'
+    case 'permanent':
+      return 'Memories that the user keeps as they are. They go with every request.'
+    default:
+      return null
+  }
+}
+
 function StepView(props: { step: Step }) {
   const { step } = props
   const fields = Object.entries(step).filter(([key]) => !HIDDEN_FIELDS.has(key))
   const requests = step.decision_requests as unknown as
     | DecisionRequest[]
     | undefined
+  const note = stepNote(step)
+  const blocked =
+    step.step === 'relation_applied'
+    && typeof step.text_change_blocked_by === 'string'
   return (
-    <div className={`step step-${asString(step.step)}`}>
+    <div
+      className={`step step-${asString(step.step)}${blocked ? ' step-blocked' : ''}`}
+    >
       <div className='step-header'>
         <span className='step-name'>{asString(step.step)}</span>
         <span className='muted'>
@@ -237,6 +281,7 @@ function StepView(props: { step: Step }) {
             && ` · took ${asString(step.latency_ms)} ms`}
         </span>
       </div>
+      {note && <div className='note'>{note}</div>}
       {fields.length > 0 && (
         <pre className='fields'>
           {JSON.stringify(Object.fromEntries(fields), null, 2)}
@@ -322,6 +367,68 @@ async function loadLookups(): Promise<Lookup[] | null> {
   }))
 }
 
+async function loadEvents(): Promise<MemoryEvent[] | null> {
+  const result = await api.getMemoryEvents()
+  if (!result.available) {
+    return null
+  }
+  return result.events.map((record) => ({
+    record,
+    details: JSON.parse(record.detailsJson) as { [key: string]: Json },
+  }))
+}
+
+// What each memory event tells, for the list.
+const EVENT_LABELS: { [action: string]: string } = {
+  keep_forever: 'The user keeps the memory as it is',
+  release_keep_forever: 'The user lets Dreaming change the memory again',
+  edited: 'The user edited the memory',
+  deleted: 'The user deleted the memory',
+  deleted_all: 'The user deleted all learned memories',
+  expired: 'The memory expired: Leo did not use it for too long',
+  tool_saved: 'The memory tool saved a memory',
+  tool_duplicate: 'The memory tool found the memory saved already',
+}
+
+function EventsTab() {
+  const [available, events] = usePolling(loadEvents)
+  return (
+    <>
+      <p className='muted'>
+        The memory events, the newest first: the choices of the user, the saves
+        of the memory tool, and the memories that expired. A Dreaming run and
+        its review are in the first tab.
+      </p>
+      {!available && <p>Learned memory does not run in this profile.</p>}
+      {available && events.length === 0 && (
+        <p>No memory event yet since the browser started.</p>
+      )}
+      {events.map((event) => (
+        <div
+          key={String(event.record.id)}
+          className={`step step-event-${event.record.action}`}
+        >
+          <div className='step-header'>
+            <span className='step-name'>{event.record.action}</span>
+            <span className='muted'>
+              {toDate(event.record.time).toLocaleString()}
+            </span>
+          </div>
+          <div className='note'>
+            {EVENT_LABELS[event.record.action] ?? event.record.action}
+            {event.record.text && `: ${event.record.text}`}
+          </div>
+          {Object.keys(event.details).length > 0 && (
+            <pre className='fields'>
+              {JSON.stringify(event.details, null, 2)}
+            </pre>
+          )}
+        </div>
+      ))}
+    </>
+  )
+}
+
 function DreamingTab() {
   const [available, runs] = usePolling(loadRuns)
   const [selectedId, setSelectedId] = React.useState<bigint | null>(null)
@@ -345,7 +452,7 @@ function DreamingTab() {
       </label>
       {!available && <p>Learned memory does not run in this profile.</p>}
       {available && runs.length === 0 && (
-        <p>No Dreaming run yet. Select "Dream now" in Leo settings.</p>
+        <p>No Dreaming run yet. Select "Learn from chats" in Leo settings.</p>
       )}
       {runs.length > 0 && (
         <div className='layout'>
@@ -476,7 +583,9 @@ function TurnsTab() {
 }
 
 function App() {
-  const [tab, setTab] = React.useState<'dreaming' | 'turns'>('dreaming')
+  const [tab, setTab] = React.useState<'dreaming' | 'turns' | 'events'>(
+    'dreaming',
+  )
   return (
     <div className='page'>
       <style>{CSS}</style>
@@ -496,9 +605,17 @@ function App() {
           >
             Chat turns
           </button>
+          <button
+            className={tab === 'events' ? 'selected' : ''}
+            onClick={() => setTab('events')}
+          >
+            Memory events
+          </button>
         </div>
       </header>
-      {tab === 'dreaming' ? <DreamingTab /> : <TurnsTab />}
+      {tab === 'dreaming' && <DreamingTab />}
+      {tab === 'turns' && <TurnsTab />}
+      {tab === 'events' && <EventsTab />}
     </div>
   )
 }
@@ -547,8 +664,20 @@ const CSS = `
     border-left-color: #c80;
   }
   .step-llm_call, .step-llm_relation { border-left-color: #66f; }
-  .step-review, .step-store { border-left-color: #2a7; }
+  .step-review, .step-store, .step-review_applied { border-left-color: #2a7; }
   .step-fact_dropped { border-left-color: #d33; }
+  .step-keep_forever, .step-release_keep_forever, .step-permanent,
+  .step-blocked, .step-event-keep_forever, .step-event-release_keep_forever {
+    border-left-color: #0aa;
+  }
+  .step-event-edited, .step-event-tool_saved { border-left-color: #2a7; }
+  .step-event-deleted, .step-event-deleted_all, .step-event-expired {
+    border-left-color: #d33;
+  }
+  .step-event-tool_duplicate, .step-edited_by_user {
+    border-left-color: #c80;
+  }
+  .note { margin: 2px 0; font-size: 12px; }
   .step-header { display: flex; gap: 8px; align-items: baseline; }
   .step-name { font-weight: 600; font-family: monospace; }
   pre {

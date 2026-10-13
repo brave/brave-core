@@ -186,6 +186,12 @@ void AIChatEmbeddingsService::SearchConversations(
                         excluded_conversation_uuid, std::move(callback)));
 }
 
+void AIChatEmbeddingsService::NotifyLearnedMemoriesUsed(
+    std::vector<std::string> uuids) {
+  ai_chat_service_->OnLearnedMemoriesUsed(std::move(uuids),
+                                          "memory_search_tool");
+}
+
 void AIChatEmbeddingsService::SearchMemories(const std::string& query,
                                              size_t count,
                                              SearchMemoriesCallback callback) {

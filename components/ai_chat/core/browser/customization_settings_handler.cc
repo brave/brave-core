@@ -153,6 +153,28 @@ void CustomizationSettingsHandler::DeleteAllLearnedMemories(
   delegate_->DeleteAllLearnedMemories(std::move(callback));
 }
 
+void CustomizationSettingsHandler::EditLearnedMemory(
+    const std::string& uuid,
+    const std::string& text,
+    EditLearnedMemoryCallback callback) {
+  if (!delegate_) {
+    std::move(callback).Run(mojom::CustomizationOperationError::kNotFound);
+    return;
+  }
+  delegate_->EditLearnedMemory(uuid, text, std::move(callback));
+}
+
+void CustomizationSettingsHandler::SetLearnedMemoryPermanent(
+    const std::string& uuid,
+    bool permanent,
+    SetLearnedMemoryPermanentCallback callback) {
+  if (!delegate_) {
+    std::move(callback).Run(false);
+    return;
+  }
+  delegate_->SetLearnedMemoryPermanent(uuid, permanent, std::move(callback));
+}
+
 void CustomizationSettingsHandler::DreamNow(DreamNowCallback callback) {
   if (!delegate_) {
     std::move(callback).Run(mojom::DreamNowResult::New(

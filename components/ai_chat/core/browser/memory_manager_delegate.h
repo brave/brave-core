@@ -31,6 +31,10 @@ class MemoryManagerDelegate {
       mojom::CustomizationSettingsHandler::DeleteLearnedMemoryCallback;
   using DeleteAllLearnedMemoriesCallback =
       mojom::CustomizationSettingsHandler::DeleteAllLearnedMemoriesCallback;
+  using EditLearnedMemoryCallback =
+      mojom::CustomizationSettingsHandler::EditLearnedMemoryCallback;
+  using SetLearnedMemoryPermanentCallback =
+      mojom::CustomizationSettingsHandler::SetLearnedMemoryPermanentCallback;
   using DreamNowCallback =
       mojom::CustomizationSettingsHandler::DreamNowCallback;
   using GetDreamingReviewCallback =
@@ -57,6 +61,18 @@ class MemoryManagerDelegate {
   // Deletes all learned memories. `callback` gets false when it could not.
   virtual void DeleteAllLearnedMemories(
       DeleteAllLearnedMemoriesCallback callback) = 0;
+
+  // Changes the text of a learned memory. `callback` gets null on success.
+  virtual void EditLearnedMemory(const std::string& uuid,
+                                 const std::string& text,
+                                 EditLearnedMemoryCallback callback) = 0;
+
+  // Keeps a learned memory as it is (`permanent`), or lets Dreaming change it
+  // again. `callback` gets false when it could not.
+  virtual void SetLearnedMemoryPermanent(
+      const std::string& uuid,
+      bool permanent,
+      SetLearnedMemoryPermanentCallback callback) = 0;
 
   // Starts a Dreaming run now. `callback` gets the result when the run ends.
   virtual void DreamNow(DreamNowCallback callback) = 0;

@@ -10,6 +10,7 @@
 #include <memory>
 #include <optional>
 #include <string>
+#include <string_view>
 #include <vector>
 
 #include "base/containers/circular_deque.h"
@@ -19,6 +20,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
+#include "base/values.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/dreaming_run.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
@@ -91,6 +93,38 @@ struct DreamingReviewDecision {
   std::optional<std::string> text;
 };
 
+// A change of a learned memory that is not a step of a Dreaming run: a choice
+// of the user, the clean-up of the old memories, or a save of the memory tool.
+// For brave://leo-memory-internals. Kept in memory only.
+struct MemoryEventRecord {
+  MemoryEventRecord();
+  MemoryEventRecord(const MemoryEventRecord&) = delete;
+  MemoryEventRecord& operator=(const MemoryEventRecord&) = delete;
+  MemoryEventRecord(MemoryEventRecord&&);
+  MemoryEventRecord& operator=(MemoryEventRecord&&);
+  ~MemoryEventRecord();
+
+  uint64_t id = 0;
+  base::Time time;
+  // "keep_forever", "release_keep_forever", "edited", "deleted",
+  // "deleted_all", "expired", "tool_saved" or "tool_duplicate".
+  std::string action;
+  // The learned memory. Empty for a memory of the pref list and for
+  // "deleted_all".
+  std::string uuid;
+  std::string text;
+  base::DictValue details;
+};
+
+// Why an edit of a learned memory failed.
+enum class LearnedMemoryEditError {
+  // The text is empty or too long.
+  kInvalidLength,
+  // The memory is not stored, storage is not ready, or a review is being
+  // written.
+  kNotFound,
+};
+
 // Learns memories from past chats (Dreaming) and finds the memories that fit a
 // chat turn. AIChatService owns one instance, and registers it as an observer.
 // A timer starts Dreaming one time each day while chat history storage is on.
@@ -114,17 +148,24 @@ class UserMemoryManager : public AIChatService::Observer {
   // The first run waits after the database comes, so that it does not slow
   // down the browser start.
   static constexpr base::TimeDelta kFirstRunDelay = base::Minutes(1);
+  // How often the manager deletes the learned memories that expired (see
+  // GetLearnedMemoryExpiryTime()). The first clean-up waits kFirstRunDelay.
+  static constexpr base::TimeDelta kExpiryInterval = base::Days(1);
+  // The date of the last use of a memory moves at most once in this time.
+  static constexpr base::TimeDelta kUseGranularity = base::Days(1);
   // After a failed run, for example when Ollama is not running.
   static constexpr base::TimeDelta kRetryDelay = base::Hours(1);
-  // The time limit of a run that the user starts ("Dream now"). The user waits
-  // for it, so it is longer than the limit of the daily run, unless the feature
-  // param is longer.
+  // The time limit of a run that the user starts ("Learn from chats"). The user
+  // waits for it, so it is longer than the limit of the daily run, unless the
+  // feature param is longer.
   static constexpr base::TimeDelta kDreamNowTimeLimit = base::Minutes(5);
 
   // The finished runs that the manager keeps for brave://leo-memory-internals.
   static constexpr size_t kMaxDreamingRunRecords = 10;
   // The chat turn lookups that the manager keeps for the same page.
   static constexpr size_t kMaxTurnLookupRecords = 20;
+  // The memory events that the manager keeps for the same page.
+  static constexpr size_t kMaxMemoryEventRecords = 100;
 
   // Reads the Dreaming settings from the learned memory feature params. Each
   // run records a trace.
@@ -176,8 +217,8 @@ class UserMemoryManager : public AIChatService::Observer {
   // kReviewPending while a review waits.
   void LearnFromChats(DreamingCallback callback);
 
-  // Same as LearnFromChats(), for the "Dream now" button. The run has a longer
-  // time limit. When the memory setting is off, |callback| runs with
+  // Same as LearnFromChats(), for the "Learn from chats" button. The run has a
+  // longer time limit. When the memory setting is off, |callback| runs with
   // kUnavailable.
   void DreamNow(DreamingCallback callback);
 
@@ -191,6 +232,27 @@ class UserMemoryManager : public AIChatService::Observer {
   void DeleteLearnedMemory(const std::string& uuid,
                            base::OnceCallback<void(bool)> callback);
 
+  // Keeps the memory as it is (|permanent| true): Dreaming never replaces or
+  // merges it, it never expires, and Leo sends it in every chat. With false,
+  // the memory is long-term again. A change of the last run's review that
+  // waits for the memory is dropped when it is kept, and the run's steps tell
+  // that. |callback| gets false when the memory is not stored, a review is
+  // being written, or the write failed.
+  void SetLearnedMemoryPermanent(const std::string& uuid,
+                                 bool permanent,
+                                 base::OnceCallback<void(bool)> callback);
+
+  // Changes the text of a learned memory to |text| (trimmed). The sources and
+  // the type stay, and the old text becomes the "before" text. A change of the
+  // review that waits for the memory is dropped: the user's text wins. The
+  // search index follows through the text version. |callback| gets null on
+  // success.
+  using EditLearnedMemoryCallback =
+      base::OnceCallback<void(std::optional<LearnedMemoryEditError>)>;
+  void EditLearnedMemory(const std::string& uuid,
+                         const std::string& text,
+                         EditLearnedMemoryCallback callback);
+
   // Deletes all learned memories, and cancels the current run first: the run
   // would write the memories that it loaded again. The watermarks stay, so
   // Dreaming learns only from new turns. A review that waits is discarded, and
@@ -201,6 +263,30 @@ class UserMemoryManager : public AIChatService::Observer {
   // The active run and the last kMaxDreamingRunRecords runs, the newest first,
   // with a copy of their traces.
   std::vector<DreamingRunRecord> GetDreamingRunRecords() const;
+
+  // Learned memories were used: Leo sent them to a chat model, or a search tool
+  // found them. Their last use moves to now, and so does their expiry date. A
+  // memory that the user keeps does not expire, so it is left alone. The date
+  // moves at most once in kUseGranularity for a memory, to keep the writes
+  // few. |used_by| names the use in the event ("chat_turn" or
+  // "memory_search_tool").
+  void MarkLearnedMemoriesUsed(std::vector<std::string> uuids,
+                               std::string_view used_by);
+
+  // Deletes the learned memories that expired: not used for kShortTermMemory-
+  // Lifetime (short-term) or kLongTermMemoryLifetime (long-term). The daily
+  // timer calls it. A change of the review for such a memory is dropped.
+  void ExpireLearnedMemories();
+
+  // Adds an event for brave://leo-memory-internals. Also called by the memory
+  // tool through AIChatService.
+  void RecordMemoryEvent(std::string_view action,
+                         std::string_view uuid,
+                         std::string_view text,
+                         base::DictValue details = base::DictValue());
+
+  // The last kMaxMemoryEventRecords events, the newest first.
+  std::vector<MemoryEventRecord> GetMemoryEventRecords() const;
 
   // The last kMaxTurnLookupRecords chat turn lookups, the newest first, with
   // the steps so far of the active ones.
@@ -251,11 +337,38 @@ class UserMemoryManager : public AIChatService::Observer {
   void OnDreamingTimer();
   void OnDreamingDone(DreamingResult result);
   void OnStampsForReview(std::vector<DreamingProposal> kept,
+                         uint64_t run_id,
+                         size_t discarded,
                          std::map<std::string, base::Time> watermarks,
                          base::OnceCallback<void(bool)> callback,
                          std::vector<LearnedMemoryStamp> stamps);
   void OnReviewApplied(base::OnceCallback<void(bool)> callback,
                        std::vector<bool> results);
+  void OnMemoriesToMarkUsed(std::string used_by,
+                            std::vector<LearnedMemory> memories);
+  void OnMemoriesToExpire(std::vector<LearnedMemory> memories);
+  void ScheduleExpiry(base::TimeDelta delay);
+  void OnExpiryTimer();
+  void OnMemoriesForEdit(const std::string& uuid,
+                         std::string text,
+                         EditLearnedMemoryCallback callback,
+                         std::vector<LearnedMemory> memories);
+  // Drops the change of the review that waits for the memory, if any, and
+  // tells the run's steps why. Returns true when it dropped a change.
+  bool DropPendingChange(const std::string& uuid,
+                         std::string_view step,
+                         base::DictValue data);
+  void OnMemoriesForPermanent(const std::string& uuid,
+                              bool permanent,
+                              base::OnceCallback<void(bool)> callback,
+                              std::vector<LearnedMemory> memories);
+  // Makes the change of the review that waits fit the new type of a memory.
+  void UpdateReviewForType(const LearnedMemory& memory);
+  // Adds a step to the trace of a finished run. The step is made after the
+  // run, for example by the user's review.
+  void AppendRunStep(uint64_t run_id,
+                     std::string_view step,
+                     base::DictValue data);
   // Moves the watermarks, and ignores the results.
   void SetWatermarks(const std::map<std::string, base::Time>& watermarks);
   // Drops the review when a change in it has a source that |matches|.
@@ -272,11 +385,14 @@ class UserMemoryManager : public AIChatService::Observer {
   const TurnMemoryConfig turn_config_;
 
   base::OneShotTimer dreaming_timer_;
+  base::OneShotTimer expiry_timer_;
   // The LLM engine of the current run. It must outlive |dreaming_run_|.
   std::unique_ptr<EngineConsumer> run_llm_engine_;
   std::unique_ptr<DreamingRun> dreaming_run_;
   DreamingCallback dreaming_callback_;
   std::optional<DreamingReview> pending_review_;
+  // The run that made |pending_review_|, for its record.
+  uint64_t pending_review_run_id_ = 0;
   // The record of the active run, without its trace, and the finished runs.
   std::optional<DreamingRunRecord> active_run_record_;
   base::circular_deque<DreamingRunRecord> run_records_;
@@ -288,6 +404,8 @@ class UserMemoryManager : public AIChatService::Observer {
   std::map<uint64_t, std::unique_ptr<TurnMemoryLookup>> turn_lookups_;
   uint64_t next_turn_lookup_id_ = 1;
   base::circular_deque<TurnLookupRecord> turn_records_;
+  base::circular_deque<MemoryEventRecord> event_records_;
+  uint64_t next_event_id_ = 1;
 
   base::WeakPtrFactory<UserMemoryManager> weak_ptr_factory_{this};
 };

@@ -325,6 +325,12 @@ class AIChatService : public KeyedService,
     return user_memory_manager_.get();
   }
 
+  // A learned memory was used: Leo sent it to a chat model, or a search tool
+  // found it. |used_by| names the use for brave://leo-memory-internals. Does
+  // nothing when learned memory is off.
+  void OnLearnedMemoriesUsed(std::vector<std::string> uuids,
+                             std::string_view used_by);
+
   // LearnedMemoryDataSource:
   void GetStoredConversations(
       base::OnceCallback<void(std::vector<mojom::ConversationPtr>)> callback)
@@ -345,6 +351,10 @@ class AIChatService : public KeyedService,
       base::OnceCallback<void(std::vector<LearnedMemory>)> callback) override;
   void AddOrUpdateLearnedMemory(
       LearnedMemory memory,
+      base::OnceCallback<void(bool)> callback) override;
+  void MarkLearnedMemoriesUsed(
+      std::vector<std::string> memory_uuids,
+      base::Time time,
       base::OnceCallback<void(bool)> callback) override;
   void DeleteLearnedMemory(const std::string& memory_uuid,
                            base::OnceCallback<void(bool)> callback) override;
@@ -521,6 +531,9 @@ class AIChatService : public KeyedService,
   void OnSkillsChanged();
   void OnMemoryEnabledChanged();
   void InitializeTools();
+  std::unique_ptr<MemoryStorageTool> MakeMemoryTool();
+  // The memory tool saved |memory|. |added| is false when it was in the list.
+  void OnMemoryToolSaved(const std::string& memory, bool added);
 
   void CreateTabOrganizationEngineIfNeeded();
   void OnTabOrganizationModelPrefChanged();

@@ -64,6 +64,12 @@ class LearnedMemoryDataSource {
   virtual void AddOrUpdateLearnedMemory(
       LearnedMemory memory,
       base::OnceCallback<void(bool)> callback) = 0;
+  // Sets the date of the last use of each memory to |time|. This changes no
+  // text, so it does not tell the observers.
+  virtual void MarkLearnedMemoriesUsed(
+      std::vector<std::string> memory_uuids,
+      base::Time time,
+      base::OnceCallback<void(bool)> callback) = 0;
   // Deletes the memory for good. A successful delete tells the observers too.
   virtual void DeleteLearnedMemory(const std::string& memory_uuid,
                                    base::OnceCallback<void(bool)> callback) = 0;

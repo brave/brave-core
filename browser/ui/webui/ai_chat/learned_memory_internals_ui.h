@@ -34,7 +34,8 @@ class LearnedMemoryInternalsUIConfig
 
 // Shows the Dreaming runs and the chat turn lookups of the profile: each
 // request to the decision model and to the LLM, the answers, and the decisions
-// made from them.
+// made from them. Also the memory events: what the user and the clean-up did
+// to the learned memories.
 class LearnedMemoryInternalsUI : public ui::MojoWebUIController,
                                  public mojom::LearnedMemoryInternals {
  public:
@@ -49,6 +50,7 @@ class LearnedMemoryInternalsUI : public ui::MojoWebUIController,
   // mojom::LearnedMemoryInternals:
   void GetDreamingRuns(GetDreamingRunsCallback callback) override;
   void GetTurnLookups(GetTurnLookupsCallback callback) override;
+  void GetMemoryEvents(GetMemoryEventsCallback callback) override;
 
  private:
   raw_ptr<Profile> profile_;

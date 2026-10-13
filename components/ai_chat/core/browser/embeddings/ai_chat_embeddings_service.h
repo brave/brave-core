@@ -91,6 +91,10 @@ class AIChatEmbeddingsService
   using SearchMemoriesCallback =
       base::OnceCallback<void(std::vector<MemorySearchResult>)>;
 
+  // A search tool gave the learned memories with these uuids to the model.
+  // They count as used (see UserMemoryManager::MarkLearnedMemoriesUsed()).
+  void NotifyLearnedMemoriesUsed(std::vector<std::string> uuids);
+
   // `embedder` and `embedder_metadata_provider` must outlive the service.
   AIChatEmbeddingsService(
       AIChatService* ai_chat_service,

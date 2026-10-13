@@ -34,10 +34,20 @@ void AddLinks(std::vector<MemorySourceLink>& links,
 }
 
 // A short-term memory never replaces or merges, and Dreaming does not change
-// a memory that the user wants to keep forever.
-bool CanChangeText(LearnedMemoryType new_type, LearnedMemoryType old_type) {
-  return new_type != LearnedMemoryType::kShortTerm &&
-         old_type == LearnedMemoryType::kLongTerm;
+// a memory that the user wants to keep forever. Gives the reason that the text
+// of the old memory stays, or null when it can change.
+const char* TextChangeBlock(LearnedMemoryType new_type,
+                            LearnedMemoryType old_type) {
+  if (old_type == LearnedMemoryType::kPermanent) {
+    return "kept forever by the user";
+  }
+  if (old_type == LearnedMemoryType::kShortTerm) {
+    return "old memory is short-term";
+  }
+  if (new_type == LearnedMemoryType::kShortTerm) {
+    return "new fact is short-term";
+  }
+  return nullptr;
 }
 
 const char* Name(bool answer) {
@@ -115,6 +125,12 @@ base::ListValue LinksToList(const std::vector<MemorySourceLink>& links) {
 }
 
 const char* Name(DreamingProposal::Kind kind) {
+  return DreamingProposalKindToString(kind);
+}
+
+}  // namespace
+
+const char* DreamingProposalKindToString(DreamingProposal::Kind kind) {
   switch (kind) {
     case DreamingProposal::Kind::kNew:
       return "new";
@@ -124,8 +140,6 @@ const char* Name(DreamingProposal::Kind kind) {
       return "seen_again";
   }
 }
-
-}  // namespace
 
 const char* DreamingStatusToString(DreamingStatus status) {
   switch (status) {
@@ -278,9 +292,12 @@ void DreamingRun::OnMemories(std::vector<LearnedMemory> memories) {
     for (const auto& memory : memories_) {
       texts.Append(memory.text);
     }
+    const int permanent = std::ranges::count(
+        memories_, LearnedMemoryType::kPermanent, &LearnedMemory::type);
     Trace("loaded",
           base::DictValue()
               .Set("memories", std::move(texts))
+              .Set("kept_forever", permanent)
               .Set("watermarks", static_cast<int>(watermarks_.size())));
   }
   data_source_->GetStoredConversations(base::BindOnce(
@@ -691,6 +708,7 @@ void DreamingRun::OnNeighborMatches(std::vector<LearnedMemoryMatch> matches) {
     for (const auto& [score, index] : scored) {
       neighbors.Append(base::DictValue()
                            .Set("text", memories_[index].text)
+                           .Set("type", Name(memories_[index].type))
                            .Set("similarity", score));
     }
     Trace("neighbors", base::DictValue()
@@ -729,6 +747,7 @@ void DreamingRun::OnRelations(
     for (size_t i = 0; i < relations_.size(); ++i) {
       pairs.Append(base::DictValue()
                        .Set("old", memories_[neighbors_[i]].text)
+                       .Set("old_type", Name(memories_[neighbors_[i]].type))
                        .Set("probabilities", ToDict(relations_[i]))
                        .Set("answer", CertainToValue(Certain(relations_[i]))));
     }
@@ -791,13 +810,30 @@ void DreamingRun::ApplyRelation(RelationAnswer relation, bool certain) {
   const LearnedMemory& old = neighbor();
   // The text of an old memory changes only when the rules allow it, and the
   // decision model was certain. A wrong replace or merge loses information.
-  const bool can_change = CanChangeText(fact().type, old.type) && certain;
-  Trace("relation_applied", base::DictValue()
-                                .Set("relation", Name(relation))
-                                .Set("old", old.text)
-                                .Set("old_type", Name(old.type))
-                                .Set("decision_model_certain", certain)
-                                .Set("text_change_allowed", can_change));
+  const char* block = TextChangeBlock(fact().type, old.type);
+  const bool can_change = !block && certain;
+  if (tracing()) {
+    // Why a replace or a merge leaves the old text as it is. The fact is then
+    // compared with the next old memory, and it is added when none is left.
+    base::Value blocked_by;
+    if (relation == RelationAnswer::kReplace ||
+        relation == RelationAnswer::kMerge) {
+      if (block) {
+        blocked_by = base::Value(block);
+      } else if (!certain) {
+        blocked_by = base::Value("decision model not certain");
+      }
+    }
+    Trace("relation_applied",
+          base::DictValue()
+              .Set("relation", Name(relation))
+              .Set("old", old.text)
+              .Set("old_uuid", old.uuid)
+              .Set("old_type", Name(old.type))
+              .Set("decision_model_certain", certain)
+              .Set("text_change_allowed", can_change)
+              .Set("text_change_blocked_by", std::move(blocked_by)));
+  }
   if (relation == RelationAnswer::kSame) {
     LearnedMemory updated = old;
     updated.updated_date = std::max(old.updated_date, turn().date);
@@ -919,6 +955,7 @@ void DreamingRun::OnStored(LearnedMemory memory,
   if (tracing()) {
     Trace("store", base::DictValue()
                        .Set("action", is_new ? "add" : "update")
+                       .Set("uuid", memory.uuid)
                        .Set("text", memory.text)
                        .Set("category", Name(memory.category))
                        .Set("type", Name(memory.type))
@@ -1073,6 +1110,8 @@ void DreamingRun::Finish(DreamingStatus status) {
       proposals.Append(
           base::DictValue()
               .Set("kind", Name(proposal.kind))
+              .Set("uuid", proposal.memory.uuid)
+              .Set("type", Name(proposal.memory.type))
               .Set("text", proposal.memory.text)
               .Set("stored", proposal.stored
                                  ? base::Value(proposal.stored->text)

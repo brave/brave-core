@@ -83,11 +83,24 @@ void OnGotLearnedMemories(
     items.push_back(mojom::LearnedMemoryItem::New(
         memory.uuid, memory.text, ToMojom(memory.category),
         ToMojom(memory.type), memory.created_date, memory.updated_date,
-        std::move(previous_text)));
+        std::move(previous_text), GetLearnedMemoryExpiryTime(memory)));
   }
   // The newest memory is the first in the list.
   std::ranges::reverse(items);
   std::move(callback).Run(true, std::move(items));
+}
+
+void OnLearnedMemoryEdited(
+    MemoryManagerDelegate::EditLearnedMemoryCallback callback,
+    std::optional<LearnedMemoryEditError> error) {
+  if (!error) {
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
+  std::move(callback).Run(
+      *error == LearnedMemoryEditError::kInvalidLength
+          ? mojom::CustomizationOperationError::kInvalidLength
+          : mojom::CustomizationOperationError::kNotFound);
 }
 
 void OnMemoriesFound(MemoryManagerDelegate::SearchMemoriesCallback callback,
@@ -181,6 +194,35 @@ void MemoryManagerDelegateImpl::DeleteAllLearnedMemories(
     return;
   }
   manager->DeleteAllLearnedMemories(std::move(callback));
+}
+
+void MemoryManagerDelegateImpl::EditLearnedMemory(
+    const std::string& uuid,
+    const std::string& text,
+    EditLearnedMemoryCallback callback) {
+  AIChatService* service = AIChatServiceFactory::GetForBrowserContext(context_);
+  UserMemoryManager* manager =
+      service ? service->GetUserMemoryManager() : nullptr;
+  if (!manager) {
+    std::move(callback).Run(mojom::CustomizationOperationError::kNotFound);
+    return;
+  }
+  manager->EditLearnedMemory(
+      uuid, text, base::BindOnce(&OnLearnedMemoryEdited, std::move(callback)));
+}
+
+void MemoryManagerDelegateImpl::SetLearnedMemoryPermanent(
+    const std::string& uuid,
+    bool permanent,
+    SetLearnedMemoryPermanentCallback callback) {
+  AIChatService* service = AIChatServiceFactory::GetForBrowserContext(context_);
+  UserMemoryManager* manager =
+      service ? service->GetUserMemoryManager() : nullptr;
+  if (!manager) {
+    std::move(callback).Run(false);
+    return;
+  }
+  manager->SetLearnedMemoryPermanent(uuid, permanent, std::move(callback));
 }
 
 void MemoryManagerDelegateImpl::DreamNow(DreamNowCallback callback) {

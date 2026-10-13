@@ -106,6 +106,23 @@ void LearnedMemoryInternalsUI::GetTurnLookups(GetTurnLookupsCallback callback) {
   std::move(callback).Run(true, std::move(lookups));
 }
 
+void LearnedMemoryInternalsUI::GetMemoryEvents(
+    GetMemoryEventsCallback callback) {
+  UserMemoryManager* manager = GetUserMemoryManager(profile_);
+  if (!manager) {
+    std::move(callback).Run(false, {});
+    return;
+  }
+  std::vector<mojom::MemoryEventRecordPtr> events;
+  for (MemoryEventRecord& record : manager->GetMemoryEventRecords()) {
+    events.push_back(mojom::MemoryEventRecord::New(
+        record.id, record.time, std::move(record.action),
+        std::move(record.uuid), std::move(record.text),
+        base::WriteJson(record.details).value_or("{}")));
+  }
+  std::move(callback).Run(true, std::move(events));
+}
+
 WEB_UI_CONTROLLER_TYPE_IMPL(LearnedMemoryInternalsUI)
 
 }  // namespace ai_chat

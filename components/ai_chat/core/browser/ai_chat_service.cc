@@ -340,7 +340,7 @@ void AIChatService::OnMemoryEnabledChanged() {
 
   if (memory_enabled && !memory_tool_) {
     // Memory enabled but tool doesn't exist, add it.
-    memory_tool_ = std::make_unique<MemoryStorageTool>(profile_prefs_);
+    memory_tool_ = MakeMemoryTool();
   } else if (!memory_enabled && memory_tool_) {
     // Memory disabled but tool exists, remove it.
     memory_tool_.reset();
@@ -350,8 +350,24 @@ void AIChatService::OnMemoryEnabledChanged() {
 void AIChatService::InitializeTools() {
   // Add memory storage tool if memory is enabled.
   if (profile_prefs_->GetBoolean(prefs::kBraveAIChatUserMemoryEnabled)) {
-    memory_tool_ = std::make_unique<MemoryStorageTool>(profile_prefs_);
+    memory_tool_ = MakeMemoryTool();
   }
+}
+
+std::unique_ptr<MemoryStorageTool> AIChatService::MakeMemoryTool() {
+  return std::make_unique<MemoryStorageTool>(
+      profile_prefs_, base::BindRepeating(&AIChatService::OnMemoryToolSaved,
+                                          weak_ptr_factory_.GetWeakPtr()));
+}
+
+void AIChatService::OnMemoryToolSaved(const std::string& memory, bool added) {
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+  // brave://leo-memory-internals shows what the tool did.
+  if (user_memory_manager_) {
+    user_memory_manager_->RecordMemoryEvent(
+        added ? "tool_saved" : "tool_duplicate", "", memory);
+  }
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
 }
 
 ConversationHandler* AIChatService::GetConversation(
@@ -1662,6 +1678,28 @@ void AIChatService::AddOrUpdateLearnedMemory(
       .Then(base::BindOnce(&AIChatService::OnLearnedMemoryWritten,
                            weak_ptr_factory_.GetWeakPtr(),
                            std::move(callback)));
+}
+
+void AIChatService::MarkLearnedMemoriesUsed(
+    std::vector<std::string> memory_uuids,
+    base::Time time,
+    base::OnceCallback<void(bool)> callback) {
+  if (!ai_chat_db_) {
+    RunLater(std::move(callback), false);
+    return;
+  }
+  // The text does not change, so the observers (the embeddings index) do not
+  // need to know.
+  ai_chat_db_.AsyncCall(&AIChatDatabase::MarkLearnedMemoriesUsed)
+      .WithArgs(std::move(memory_uuids), time)
+      .Then(std::move(callback));
+}
+
+void AIChatService::OnLearnedMemoriesUsed(std::vector<std::string> uuids,
+                                          std::string_view used_by) {
+  if (user_memory_manager_) {
+    user_memory_manager_->MarkLearnedMemoriesUsed(std::move(uuids), used_by);
+  }
 }
 
 void AIChatService::DeleteLearnedMemory(

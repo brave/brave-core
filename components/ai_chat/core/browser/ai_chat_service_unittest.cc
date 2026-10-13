@@ -1358,6 +1358,36 @@ TEST_P(AIChatServiceUnitTest, LearnedMemoryDataSource_WritesTellTheObservers) {
   source.AddOrUpdateLearnedMemory(LearnedMemory(), refused.GetCallback());
   EXPECT_FALSE(refused.Get());
 }
+
+TEST_P(AIChatServiceUnitTest, LearnedMemoryDataSource_MarkUsedIsQuiet) {
+  if (!IsAIChatHistoryEnabled()) {
+    return;
+  }
+  ASSERT_TRUE(base::test::RunUntil([&] { return HasDatabase(); }));
+  LearnedMemoryDataSource& source = *ai_chat_service_;
+  LearnedMemory memory;
+  memory.uuid = "memory-1";
+  memory.text = "Lives in Berlin.";
+  base::test::TestFuture<bool> added;
+  source.AddOrUpdateLearnedMemory(memory, added.GetCallback());
+  ASSERT_TRUE(added.Get());
+
+  // The text does not change, so the observers (the index) are not told.
+  testing::StrictMock<MockAIChatServiceObserver> observer;
+  base::ScopedObservation<AIChatService, AIChatService::Observer> observation(
+      &observer);
+  observation.Observe(ai_chat_service_.get());
+  const base::Time used = base::Time::FromSecondsSinceUnixEpoch(9000);
+  base::test::TestFuture<bool> marked;
+  source.MarkLearnedMemoriesUsed({"memory-1"}, used, marked.GetCallback());
+  EXPECT_TRUE(marked.Get());
+
+  base::test::TestFuture<std::vector<LearnedMemory>> memories;
+  source.GetLearnedMemories(memories.GetCallback());
+  ASSERT_EQ(memories.Get().size(), 1u);
+  EXPECT_EQ(memories.Get()[0].last_used_date, used);
+  EXPECT_EQ(memories.Get()[0].text_version, 1);
+}
 #endif  // BUILDFLAG(ENABLE_LOCAL_AI)
 
 TEST_P(AIChatServiceUnitTest, GetAllConversationEntries) {

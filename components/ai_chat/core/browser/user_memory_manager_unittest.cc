@@ -12,6 +12,7 @@
 #include <optional>
 #include <set>
 #include <string>
+#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -371,6 +372,19 @@ class TestDataSource : public LearnedMemoryDataSource {
         .Then(std::move(callback));
   }
 
+  void MarkLearnedMemoriesUsed(
+      std::vector<std::string> memory_uuids,
+      base::Time time,
+      base::OnceCallback<void(bool)> callback) override {
+    if (!ready) {
+      RunLater(std::move(callback), false);
+      return;
+    }
+    db_->AsyncCall(&AIChatDatabase::MarkLearnedMemoriesUsed)
+        .WithArgs(std::move(memory_uuids), time)
+        .Then(std::move(callback));
+  }
+
   void DeleteLearnedMemory(const std::string& memory_uuid,
                            base::OnceCallback<void(bool)> callback) override {
     if (!ready) {
@@ -594,11 +608,13 @@ class UserMemoryManagerTest : public testing::Test {
 
   // Stores an old learned memory.
   void AddMemory(const std::string& text,
-                 LearnedMemoryType type = LearnedMemoryType::kLongTerm) {
+                 LearnedMemoryType type = LearnedMemoryType::kLongTerm,
+                 base::Time last_used = base::Time()) {
     LearnedMemory memory;
     memory.uuid = "old-" + text;
     memory.text = text;
     memory.type = type;
+    memory.last_used_date = last_used;
     memory.links = {{"old-chat", "old-entry", 0}};
     base::test::TestFuture<bool> future;
     db_.AsyncCall(&AIChatDatabase::AddOrUpdateLearnedMemory)
@@ -729,6 +745,22 @@ TEST_F(UserMemoryManagerTurnTest, RelevantMemoriesGoWithTheirDate) {
   ASSERT_EQ(client_->relevance_requests.size(), 1u);
   EXPECT_EQ(client_->relevance_requests[0].message, "Suggest a dinner.");
   EXPECT_EQ(client_->relevance_requests[0].memories.front(), "Is vegetarian.");
+}
+
+TEST_F(UserMemoryManagerTurnTest, TheMemoriesThatGoToTheModelAreUsed) {
+  client_->relevance = {{"Is vegetarian.", 0.9}, {"Writes TypeScript.", 0.1}};
+
+  GetMemoriesForTurn({"Suggest a dinner."});
+  task_environment_.RunUntilIdle();
+
+  // AddMemory() leaves the dates empty, so a use is a change.
+  std::map<std::string, LearnedMemory> memories = MemoriesByText();
+  EXPECT_FALSE(memories["Is vegetarian."].last_used_date.is_null());
+  EXPECT_TRUE(memories["Writes TypeScript."].last_used_date.is_null());
+  std::vector<MemoryEventRecord> events = manager_->GetMemoryEventRecords();
+  ASSERT_EQ(events.size(), 1u);
+  EXPECT_EQ(events[0].action, "used");
+  EXPECT_EQ(*events[0].details.FindString("by"), "chat_turn");
 }
 
 TEST_F(UserMemoryManagerTurnTest, BestMemoriesFirstAndOnlyAboveTheThreshold) {
@@ -1425,6 +1457,550 @@ TEST_F(UserMemoryManagerTest, ShortTermNeverReplaces) {
   std::map<std::string, LearnedMemory> memories = MemoriesByText();
   EXPECT_EQ(memories.size(), 2u);
   EXPECT_FALSE(memories["Lives in Berlin"].previous);
+}
+
+namespace {
+
+// The first step with |name| in |trace|, or null.
+const base::DictValue* FindStep(const base::ListValue& trace,
+                                std::string_view name) {
+  for (const base::Value& step : trace) {
+    const std::string* step_name = step.GetDict().FindString("step");
+    if (step_name && *step_name == name) {
+      return &step.GetDict();
+    }
+  }
+  return nullptr;
+}
+
+}  // namespace
+
+TEST_F(UserMemoryManagerTest, PermanentMemoryNeverReplaces) {
+  MakeManager(/*with_llm=*/true, /*record_trace=*/true);
+  const std::string turn = "We just moved to Berlin.";
+  AddMemory("Lives in San Francisco", LearnedMemoryType::kPermanent);
+  MakeClose(turn, "Lives in San Francisco");
+  AddChat("chat-1", {turn});
+  KeepSentence(turn, turn);
+  client_->relations[{turn, "Lives in San Francisco"}] =
+      RelationAnswer::kReplace;
+  StorageReady();
+
+  DreamingResult result = Dream();
+
+  // The old text stays, and the new fact is a memory of its own.
+  std::map<std::string, LearnedMemory> memories = MemoriesByText();
+  EXPECT_EQ(memories.size(), 2u);
+  EXPECT_FALSE(memories["Lives in San Francisco"].previous);
+  EXPECT_EQ(memories["Lives in San Francisco"].type,
+            LearnedMemoryType::kPermanent);
+  // The steps tell why.
+  const base::DictValue* loaded = FindStep(result.trace, "loaded");
+  ASSERT_TRUE(loaded);
+  EXPECT_EQ(loaded->FindInt("kept_forever"), 1);
+  const base::DictValue* applied = FindStep(result.trace, "relation_applied");
+  ASSERT_TRUE(applied);
+  EXPECT_EQ(*applied->FindString("old_type"), "permanent");
+  EXPECT_EQ(applied->FindBool("text_change_allowed"), false);
+  const std::string* blocked_by = applied->FindString("text_change_blocked_by");
+  ASSERT_TRUE(blocked_by);
+  EXPECT_EQ(*blocked_by, "kept forever by the user");
+}
+
+TEST_F(UserMemoryManagerTest, PermanentMemoryNeverMerges) {
+  const std::string turn = "We adopted a second dog.";
+  AddMemory("Has a dog", LearnedMemoryType::kPermanent);
+  MakeClose(turn, "Has a dog");
+  AddChat("chat-1", {turn});
+  KeepSentence(turn, turn);
+  client_->relations[{turn, "Has a dog"}] = RelationAnswer::kMerge;
+  llm_.merged = "Has two dogs";
+  StorageReady();
+
+  Dream();
+
+  std::map<std::string, LearnedMemory> memories = MemoriesByText();
+  EXPECT_EQ(memories.size(), 2u);
+  EXPECT_TRUE(memories.contains("Has a dog"));
+  EXPECT_FALSE(memories.contains("Has two dogs"));
+}
+
+TEST_F(UserMemoryManagerTest, PermanentMemoryStillGetsItsDatesForTheSameFact) {
+  const std::string turn = "I have a dog.";
+  AddMemory("Has a dog", LearnedMemoryType::kPermanent);
+  MakeClose(turn, "Has a dog");
+  AddChat("chat-1", {turn});
+  KeepSentence(turn, turn);
+  client_->relations[{turn, "Has a dog"}] = RelationAnswer::kSame;
+  StorageReady();
+
+  Dream();
+
+  // The same fact adds no memory, and only moves the dates and the sources.
+  auto memories = GetMemories();
+  ASSERT_EQ(memories.size(), 1u);
+  EXPECT_EQ(memories[0].text, "Has a dog");
+  EXPECT_EQ(memories[0].type, LearnedMemoryType::kPermanent);
+  EXPECT_EQ(memories[0].links.size(), 2u);
+}
+
+TEST_F(UserMemoryManagerTest, SetLearnedMemoryPermanentKeepsAndReleases) {
+  AddMemory("Lives in Berlin");
+  AddMemory("In Tokyo this week", LearnedMemoryType::kShortTerm);
+  StorageReady();
+
+  base::test::TestFuture<bool> kept;
+  manager_->SetLearnedMemoryPermanent("old-Lives in Berlin", true,
+                                      kept.GetCallback());
+  EXPECT_TRUE(kept.Get());
+  auto memories = MemoriesByText();
+  EXPECT_EQ(memories["Lives in Berlin"].type, LearnedMemoryType::kPermanent);
+  // The write keeps the sources and the text.
+  EXPECT_EQ(memories["Lives in Berlin"].links.size(), 1u);
+
+  base::test::TestFuture<bool> released;
+  manager_->SetLearnedMemoryPermanent("old-Lives in Berlin", false,
+                                      released.GetCallback());
+  EXPECT_TRUE(released.Get());
+  EXPECT_EQ(MemoriesByText()["Lives in Berlin"].type,
+            LearnedMemoryType::kLongTerm);
+
+  // A memory that is not permanent stays as it is when the user releases it.
+  base::test::TestFuture<bool> not_changed;
+  manager_->SetLearnedMemoryPermanent("old-In Tokyo this week", false,
+                                      not_changed.GetCallback());
+  EXPECT_TRUE(not_changed.Get());
+  EXPECT_EQ(MemoriesByText()["In Tokyo this week"].type,
+            LearnedMemoryType::kShortTerm);
+
+  base::test::TestFuture<bool> unknown;
+  manager_->SetLearnedMemoryPermanent("no-such-uuid", true,
+                                      unknown.GetCallback());
+  EXPECT_FALSE(unknown.Get());
+
+  // The page for the internals shows each choice, the newest first. A release
+  // that changes nothing is not an event.
+  std::vector<MemoryEventRecord> events = manager_->GetMemoryEventRecords();
+  ASSERT_EQ(events.size(), 2u);
+  EXPECT_EQ(events[0].action, "release_keep_forever");
+  EXPECT_EQ(events[1].action, "keep_forever");
+  EXPECT_EQ(events[1].uuid, "old-Lives in Berlin");
+  EXPECT_EQ(events[1].text, "Lives in Berlin");
+}
+
+TEST_F(UserMemoryManagerTest, EditLearnedMemoryChangesTheTextAndKeepsTheRest) {
+  AddMemory("Lives in Berlin");
+  StorageReady();
+
+  base::test::TestFuture<std::optional<LearnedMemoryEditError>> edited;
+  manager_->EditLearnedMemory("old-Lives in Berlin", "  Lives in Munich ",
+                              edited.GetCallback());
+  EXPECT_FALSE(edited.Get());
+
+  auto memories = GetMemories();
+  ASSERT_EQ(memories.size(), 1u);
+  EXPECT_EQ(memories[0].text, "Lives in Munich");
+  ASSERT_TRUE(memories[0].previous);
+  EXPECT_EQ(memories[0].previous->text, "Lives in Berlin");
+  // The sources stay, and the edit does not keep the memory as it is.
+  EXPECT_EQ(memories[0].links.size(), 1u);
+  EXPECT_EQ(memories[0].type, LearnedMemoryType::kLongTerm);
+  // The index embeds the new text.
+  EXPECT_EQ(memories[0].text_version, 2);
+  EXPECT_FALSE(memories[0].updated_date.is_null());
+  EXPECT_EQ(memories[0].last_used_date, memories[0].updated_date);
+
+  std::vector<MemoryEventRecord> events = manager_->GetMemoryEventRecords();
+  ASSERT_EQ(events.size(), 1u);
+  EXPECT_EQ(events[0].action, "edited");
+  EXPECT_EQ(events[0].text, "Lives in Munich");
+  EXPECT_EQ(*events[0].details.FindString("before"), "Lives in Berlin");
+
+  // The same text is not a change.
+  base::test::TestFuture<std::optional<LearnedMemoryEditError>> same;
+  manager_->EditLearnedMemory("old-Lives in Berlin", "Lives in Munich",
+                              same.GetCallback());
+  EXPECT_FALSE(same.Get());
+  EXPECT_EQ(GetMemories()[0].text_version, 2);
+  EXPECT_EQ(manager_->GetMemoryEventRecords().size(), 1u);
+}
+
+TEST_F(UserMemoryManagerTest, EditLearnedMemoryChecksTheTextAndTheMemory) {
+  AddMemory("Lives in Berlin");
+  StorageReady();
+
+  base::test::TestFuture<std::optional<LearnedMemoryEditError>> empty;
+  manager_->EditLearnedMemory("old-Lives in Berlin", "  ", empty.GetCallback());
+  EXPECT_EQ(empty.Get(), LearnedMemoryEditError::kInvalidLength);
+
+  base::test::TestFuture<std::optional<LearnedMemoryEditError>> too_long;
+  manager_->EditLearnedMemory("old-Lives in Berlin", std::string(513, 'a'),
+                              too_long.GetCallback());
+  EXPECT_EQ(too_long.Get(), LearnedMemoryEditError::kInvalidLength);
+
+  base::test::TestFuture<std::optional<LearnedMemoryEditError>> unknown;
+  manager_->EditLearnedMemory("no-such-uuid", "Text", unknown.GetCallback());
+  EXPECT_EQ(unknown.Get(), LearnedMemoryEditError::kNotFound);
+
+  EXPECT_EQ(GetMemories()[0].text, "Lives in Berlin");
+  EXPECT_THAT(manager_->GetMemoryEventRecords(), IsEmpty());
+}
+
+TEST_F(UserMemoryManagerTest, EditLearnedMemoryNeedsStorage) {
+  base::test::TestFuture<std::optional<LearnedMemoryEditError>> result;
+  manager_->EditLearnedMemory("x", "Text", result.GetCallback());
+  EXPECT_EQ(result.Get(), LearnedMemoryEditError::kNotFound);
+}
+
+TEST_F(UserMemoryManagerTest, EditingAMemoryDropsItsChangeFromTheReview) {
+  MakeManager(/*with_llm=*/true, /*record_trace=*/true, /*review=*/true);
+  const std::string move = "We just moved to Berlin.";
+  const std::string dog = "I have a dog.";
+  AddMemory("Lives in San Francisco");
+  MakeClose(move, "Lives in San Francisco");
+  AddChat("chat-1", {move, dog});
+  KeepSentence(move, move);
+  KeepSentence(dog, dog);
+  client_->relations[{move, "Lives in San Francisco"}] =
+      RelationAnswer::kReplace;
+  StorageReady();
+  Dream();
+  const DreamingReview* review = manager_->pending_review();
+  ASSERT_TRUE(review);
+  ASSERT_EQ(review->proposals.size(), 2u);
+  const std::string dog_uuid = review->proposals[1].memory.uuid;
+
+  // The user edits the memory that the run wants to replace.
+  base::test::TestFuture<std::optional<LearnedMemoryEditError>> edited;
+  manager_->EditLearnedMemory("old-Lives in San Francisco",
+                              "Lives near San Francisco", edited.GetCallback());
+  EXPECT_FALSE(edited.Get());
+
+  review = manager_->pending_review();
+  ASSERT_TRUE(review);
+  ASSERT_EQ(review->proposals.size(), 1u);
+  EXPECT_EQ(review->proposals[0].memory.uuid, dog_uuid);
+  std::vector<DreamingRunRecord> records = manager_->GetDreamingRunRecords();
+  ASSERT_EQ(records.size(), 1u);
+  const base::DictValue* step = FindStep(records[0].trace, "edited_by_user");
+  ASSERT_TRUE(step);
+  EXPECT_EQ(*step->FindString("pending_change"), "changed");
+  EXPECT_EQ(*step->FindString("pending_text"), move);
+  EXPECT_EQ(manager_->GetMemoryEventRecords()[0].details.FindBool(
+                "pending_change_dropped"),
+            true);
+
+  base::test::TestFuture<bool> applied;
+  manager_->ApplyDreamingReview({{dog_uuid, std::nullopt}},
+                                applied.GetCallback());
+  EXPECT_TRUE(applied.Get());
+  std::map<std::string, LearnedMemory> memories = MemoriesByText();
+  EXPECT_EQ(memories.size(), 2u);
+  EXPECT_TRUE(memories.contains("Lives near San Francisco"));
+}
+
+TEST_F(UserMemoryManagerTest, SetLearnedMemoryPermanentNeedsStorage) {
+  base::test::TestFuture<bool> result;
+  manager_->SetLearnedMemoryPermanent("x", true, result.GetCallback());
+  EXPECT_FALSE(result.Get());
+}
+
+TEST_F(UserMemoryManagerTest, KeepingAMemoryDropsItsChangeFromTheReview) {
+  MakeManager(/*with_llm=*/true, /*record_trace=*/true, /*review=*/true);
+  const std::string move = "We just moved to Berlin.";
+  const std::string dog = "I have a dog.";
+  AddMemory("Lives in San Francisco");
+  MakeClose(move, "Lives in San Francisco");
+  AddChat("chat-1", {move, dog});
+  KeepSentence(move, move);
+  KeepSentence(dog, dog);
+  client_->relations[{move, "Lives in San Francisco"}] =
+      RelationAnswer::kReplace;
+  StorageReady();
+  Dream();
+  const DreamingReview* review = manager_->pending_review();
+  ASSERT_TRUE(review);
+  ASSERT_EQ(review->proposals.size(), 2u);
+  const std::string dog_uuid = review->proposals[1].memory.uuid;
+
+  // The user keeps the memory as it is, after the run and before the review.
+  base::test::TestFuture<bool> kept;
+  manager_->SetLearnedMemoryPermanent("old-Lives in San Francisco", true,
+                                      kept.GetCallback());
+  EXPECT_TRUE(kept.Get());
+
+  // The new text of the memory is not in the review. The new memory is.
+  review = manager_->pending_review();
+  ASSERT_TRUE(review);
+  ASSERT_EQ(review->proposals.size(), 1u);
+  EXPECT_EQ(review->proposals[0].memory.uuid, dog_uuid);
+  // The steps of the run tell what the user's choice did to the review.
+  std::vector<DreamingRunRecord> records = manager_->GetDreamingRunRecords();
+  ASSERT_EQ(records.size(), 1u);
+  const base::DictValue* step = FindStep(records[0].trace, "keep_forever");
+  ASSERT_TRUE(step);
+  EXPECT_EQ(*step->FindString("pending_change"), "changed");
+  EXPECT_EQ(step->FindBool("pending_change_dropped"), true);
+  EXPECT_EQ(*step->FindString("pending_text"), move);
+
+  base::test::TestFuture<bool> applied;
+  manager_->ApplyDreamingReview({{dog_uuid, std::nullopt}},
+                                applied.GetCallback());
+  EXPECT_TRUE(applied.Get());
+  std::map<std::string, LearnedMemory> memories = MemoriesByText();
+  EXPECT_EQ(memories.size(), 2u);
+  EXPECT_EQ(memories["Lives in San Francisco"].type,
+            LearnedMemoryType::kPermanent);
+  EXPECT_FALSE(memories["Lives in San Francisco"].previous);
+  // The review tells what it wrote.
+  records = manager_->GetDreamingRunRecords();
+  const base::DictValue* review_step =
+      FindStep(records[0].trace, "review_applied");
+  ASSERT_TRUE(review_step);
+  EXPECT_EQ(review_step->FindList("written")->size(), 1u);
+  EXPECT_EQ(review_step->FindInt("discarded_by_user"), 0);
+}
+
+TEST_F(UserMemoryManagerTest, KeepingTheOnlyChangeEndsTheReview) {
+  MakeManager(/*with_llm=*/true, /*record_trace=*/false, /*review=*/true);
+  const std::string move = "We just moved to Berlin.";
+  AddMemory("Lives in San Francisco");
+  MakeClose(move, "Lives in San Francisco");
+  AddChat("chat-1", {move});
+  KeepSentence(move, move);
+  client_->relations[{move, "Lives in San Francisco"}] =
+      RelationAnswer::kReplace;
+  StorageReady();
+  Dream();
+  ASSERT_TRUE(manager_->pending_review());
+
+  base::test::TestFuture<bool> kept;
+  manager_->SetLearnedMemoryPermanent("old-Lives in San Francisco", true,
+                                      kept.GetCallback());
+  EXPECT_TRUE(kept.Get());
+
+  // Nothing is left to review, and the turn is done: it does not come back.
+  EXPECT_FALSE(manager_->pending_review());
+  EXPECT_EQ(Dream().turns_read, 0u);
+  auto memories = GetMemories();
+  ASSERT_EQ(memories.size(), 1u);
+  EXPECT_EQ(memories[0].text, "Lives in San Francisco");
+}
+
+TEST_F(UserMemoryManagerTest, ReviewKeepsTheTypeOfAMemoryKeptAfterTheRun) {
+  MakeManager(/*with_llm=*/true, /*record_trace=*/false, /*review=*/true);
+  const std::string dog = "I have a dog.";
+  AddMemory("Has a dog");
+  MakeClose(dog, "Has a dog");
+  AddChat("chat-1", {dog});
+  KeepSentence(dog, dog);
+  client_->relations[{dog, "Has a dog"}] = RelationAnswer::kSame;
+  StorageReady();
+  Dream();
+  const DreamingReview* review = manager_->pending_review();
+  ASSERT_TRUE(review);
+  ASSERT_EQ(review->proposals.size(), 1u);
+  EXPECT_EQ(review->proposals[0].kind, DreamingProposal::Kind::kSeenAgain);
+  const std::string uuid = review->proposals[0].memory.uuid;
+
+  base::test::TestFuture<bool> kept;
+  manager_->SetLearnedMemoryPermanent(uuid, true, kept.GetCallback());
+  EXPECT_TRUE(kept.Get());
+  base::test::TestFuture<bool> applied;
+  manager_->ApplyDreamingReview({{uuid, std::nullopt}}, applied.GetCallback());
+  EXPECT_TRUE(applied.Get());
+
+  // The write of the review must not undo the choice of the user.
+  auto memories = GetMemories();
+  ASSERT_EQ(memories.size(), 1u);
+  EXPECT_EQ(memories[0].type, LearnedMemoryType::kPermanent);
+  EXPECT_EQ(memories[0].links.size(), 2u);
+}
+
+TEST_F(UserMemoryManagerTest, ExpiryTimeDependsOnTheTypeAndTheLastUse) {
+  const base::Time used = base::Time::FromSecondsSinceUnixEpoch(1000000);
+  LearnedMemory memory;
+  memory.type = LearnedMemoryType::kLongTerm;
+  memory.last_used_date = used;
+  EXPECT_EQ(GetLearnedMemoryExpiryTime(memory), used + base::Days(180));
+  memory.type = LearnedMemoryType::kShortTerm;
+  EXPECT_EQ(GetLearnedMemoryExpiryTime(memory), used + base::Days(30));
+  // A memory that the user keeps never expires.
+  memory.type = LearnedMemoryType::kPermanent;
+  EXPECT_FALSE(GetLearnedMemoryExpiryTime(memory));
+
+  // Without a last use, the count starts at the last change, then at the
+  // creation. A memory without any date does not expire.
+  memory.type = LearnedMemoryType::kLongTerm;
+  memory.last_used_date = base::Time();
+  EXPECT_FALSE(GetLearnedMemoryExpiryTime(memory));
+  memory.created_date = used;
+  EXPECT_EQ(GetLearnedMemoryExpiryTime(memory), used + base::Days(180));
+  memory.updated_date = used + base::Days(1);
+  EXPECT_EQ(GetLearnedMemoryExpiryTime(memory), used + base::Days(181));
+}
+
+TEST_F(UserMemoryManagerTest, ExpireLearnedMemoriesDeletesWhatLeoDidNotUse) {
+  const base::Time now = base::Time::Now();
+  AddMemory("Old long", LearnedMemoryType::kLongTerm, now - base::Days(181));
+  AddMemory("Old short", LearnedMemoryType::kShortTerm, now - base::Days(31));
+  AddMemory("Fresh long", LearnedMemoryType::kLongTerm, now - base::Days(100));
+  AddMemory("Fresh short", LearnedMemoryType::kShortTerm, now - base::Days(29));
+  AddMemory("Kept", LearnedMemoryType::kPermanent, now - base::Days(1000));
+  AddMemory("No date", LearnedMemoryType::kLongTerm);
+  StorageReady();
+
+  manager_->ExpireLearnedMemories();
+  task_environment_.RunUntilIdle();
+
+  std::map<std::string, LearnedMemory> memories = MemoriesByText();
+  EXPECT_THAT(std::vector<std::string>({memories.begin()->first,
+                                        std::next(memories.begin())->first,
+                                        std::next(memories.begin(), 2)->first,
+                                        std::next(memories.begin(), 3)->first}),
+              testing::UnorderedElementsAre("Fresh long", "Fresh short", "Kept",
+                                            "No date"));
+  EXPECT_EQ(memories.size(), 4u);
+  // The page for the internals tells what expired, and why.
+  std::vector<MemoryEventRecord> events = manager_->GetMemoryEventRecords();
+  ASSERT_EQ(events.size(), 2u);
+  std::set<std::string> expired;
+  for (const MemoryEventRecord& event : events) {
+    EXPECT_EQ(event.action, "expired");
+    expired.insert(event.text);
+    EXPECT_TRUE(event.details.FindString("expired_at"));
+  }
+  EXPECT_THAT(expired, testing::UnorderedElementsAre("Old long", "Old short"));
+}
+
+TEST_F(UserMemoryManagerTest, TimerExpiresMemoriesEachDay) {
+  const base::Time now = base::Time::Now();
+  AddMemory("Old", LearnedMemoryType::kLongTerm, now - base::Days(181));
+  StorageReady();
+  EXPECT_THAT(GetMemories(), testing::SizeIs(1));
+
+  // The first clean-up waits, and it can wait more for a run that is active.
+  task_environment_.FastForwardBy(UserMemoryManager::kFirstRunDelay +
+                                  base::Minutes(11));
+  EXPECT_THAT(GetMemories(), IsEmpty());
+
+  AddMemory("Older", LearnedMemoryType::kShortTerm,
+            base::Time::Now() - base::Days(40));
+  task_environment_.FastForwardBy(UserMemoryManager::kExpiryInterval +
+                                  base::Minutes(11));
+  EXPECT_THAT(GetMemories(), IsEmpty());
+}
+
+TEST_F(UserMemoryManagerTest, NoCleanUpWithoutStorage) {
+  AddMemory("Old", LearnedMemoryType::kLongTerm,
+            base::Time::Now() - base::Days(181));
+  // Storage is not ready, so the manager reads nothing.
+  manager_->ExpireLearnedMemories();
+  task_environment_.RunUntilIdle();
+  EXPECT_THAT(GetMemories(), testing::SizeIs(1));
+}
+
+TEST_F(UserMemoryManagerTest, ExpiringAMemoryDropsItsChangeFromTheReview) {
+  MakeManager(/*with_llm=*/true, /*record_trace=*/true, /*review=*/true);
+  const std::string move = "We just moved to Berlin.";
+  const std::string dog = "I have a dog.";
+  AddMemory("Lives in San Francisco", LearnedMemoryType::kLongTerm,
+            base::Time::Now() - base::Days(200));
+  MakeClose(move, "Lives in San Francisco");
+  AddChat("chat-1", {move, dog});
+  KeepSentence(move, move);
+  KeepSentence(dog, dog);
+  client_->relations[{move, "Lives in San Francisco"}] =
+      RelationAnswer::kReplace;
+  StorageReady();
+  Dream();
+  const DreamingReview* review = manager_->pending_review();
+  ASSERT_TRUE(review);
+  ASSERT_EQ(review->proposals.size(), 2u);
+  const std::string dog_uuid = review->proposals[1].memory.uuid;
+
+  manager_->ExpireLearnedMemories();
+  task_environment_.RunUntilIdle();
+
+  // The memory is gone, and the review cannot write it back.
+  review = manager_->pending_review();
+  ASSERT_TRUE(review);
+  ASSERT_EQ(review->proposals.size(), 1u);
+  EXPECT_EQ(review->proposals[0].memory.uuid, dog_uuid);
+  std::vector<DreamingRunRecord> records = manager_->GetDreamingRunRecords();
+  ASSERT_EQ(records.size(), 1u);
+  EXPECT_TRUE(FindStep(records[0].trace, "expired"));
+  EXPECT_EQ(manager_->GetMemoryEventRecords()[0].details.FindBool(
+                "pending_change_dropped"),
+            true);
+
+  base::test::TestFuture<bool> applied;
+  manager_->ApplyDreamingReview({{dog_uuid, std::nullopt}},
+                                applied.GetCallback());
+  EXPECT_TRUE(applied.Get());
+  std::map<std::string, LearnedMemory> memories = MemoriesByText();
+  EXPECT_EQ(memories.size(), 1u);
+  EXPECT_TRUE(memories.contains(dog));
+}
+
+TEST_F(UserMemoryManagerTest, UsingAMemoryMovesItsLastUseOncePerDay) {
+  const base::Time now = base::Time::Now();
+  AddMemory("Due", LearnedMemoryType::kLongTerm, now - base::Days(5));
+  AddMemory("Recent", LearnedMemoryType::kLongTerm, now - base::Hours(1));
+  AddMemory("Kept", LearnedMemoryType::kPermanent, now - base::Days(5));
+  StorageReady();
+
+  manager_->MarkLearnedMemoriesUsed(
+      {"old-Due", "old-Recent", "old-Kept", "no-such-uuid"}, "chat_turn");
+  task_environment_.RunUntilIdle();
+
+  std::map<std::string, LearnedMemory> memories = MemoriesByText();
+  EXPECT_EQ(memories["Due"].last_used_date, now);
+  // A memory used a short time ago, and a kept memory, stay as they are.
+  EXPECT_EQ(memories["Recent"].last_used_date, now - base::Hours(1));
+  EXPECT_EQ(memories["Kept"].last_used_date, now - base::Days(5));
+  // The text, and so the index, do not change.
+  EXPECT_EQ(memories["Due"].text_version, 1);
+  std::vector<MemoryEventRecord> events = manager_->GetMemoryEventRecords();
+  ASSERT_EQ(events.size(), 1u);
+  EXPECT_EQ(events[0].action, "used");
+  EXPECT_EQ(*events[0].details.FindString("by"), "chat_turn");
+  const base::ListValue* marked = events[0].details.FindList("memories");
+  ASSERT_TRUE(marked);
+  ASSERT_EQ(marked->size(), 1u);
+  EXPECT_EQ(*(*marked)[0].GetDict().FindString("text"), "Due");
+
+  // The same day, the date does not move again, and there is no new event.
+  manager_->MarkLearnedMemoriesUsed({"old-Due"}, "memory_search_tool");
+  task_environment_.RunUntilIdle();
+  EXPECT_EQ(manager_->GetMemoryEventRecords().size(), 1u);
+}
+
+TEST_F(UserMemoryManagerTest, ReviewStartsTheExpiryCountAtTheWrite) {
+  MakeManager(/*with_llm=*/true, /*record_trace=*/false, /*review=*/true);
+  const std::string turn = "I have a dog.";
+  // The chat is a year old. The memory must not expire the day it is saved.
+  AddChat("chat-1", {turn}, /*hours_ago=*/24 * 365);
+  KeepSentence(turn, turn);
+  StorageReady();
+  Dream();
+  const DreamingReview* review = manager_->pending_review();
+  ASSERT_TRUE(review);
+  ASSERT_EQ(review->proposals.size(), 1u);
+
+  base::test::TestFuture<bool> applied;
+  manager_->ApplyDreamingReview(
+      {{review->proposals[0].memory.uuid, std::nullopt}},
+      applied.GetCallback());
+  ASSERT_TRUE(applied.Get());
+
+  auto memories = GetMemories();
+  ASSERT_EQ(memories.size(), 1u);
+  EXPECT_EQ(memories[0].last_used_date, base::Time::Now());
+  EXPECT_GT(*GetLearnedMemoryExpiryTime(memories[0]), base::Time::Now());
+  manager_->ExpireLearnedMemories();
+  task_environment_.RunUntilIdle();
+  EXPECT_THAT(GetMemories(), testing::SizeIs(1));
 }
 
 TEST_F(UserMemoryManagerTest, NotCertainRelationAsksTheLlm) {

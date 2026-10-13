@@ -208,6 +208,7 @@ void TurnMemoryLookup::OnRelevance(
   order.resize(std::min(order.size(), config_.max_results));
   for (size_t index : order) {
     result_.relevant.push_back(FormatForPrompt(candidates_[index]));
+    relevant_uuids_.push_back(candidates_[index].uuid);
   }
   base::ListValue answers;
   for (size_t i = 0; i < candidates_.size(); ++i) {

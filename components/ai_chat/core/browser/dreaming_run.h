@@ -97,6 +97,7 @@ struct DreamingReview {
 };
 
 const char* DreamingStatusToString(DreamingStatus status);
+const char* DreamingProposalKindToString(DreamingProposal::Kind kind);
 const char* LearnedMemoryCategoryToString(LearnedMemoryCategory category);
 const char* LearnedMemoryTypeToString(LearnedMemoryType type);
 

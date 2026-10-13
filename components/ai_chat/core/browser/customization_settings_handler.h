@@ -62,6 +62,13 @@ class CustomizationSettingsHandler
                            DeleteLearnedMemoryCallback callback) override;
   void DeleteAllLearnedMemories(
       DeleteAllLearnedMemoriesCallback callback) override;
+  void EditLearnedMemory(const std::string& uuid,
+                         const std::string& text,
+                         EditLearnedMemoryCallback callback) override;
+  void SetLearnedMemoryPermanent(
+      const std::string& uuid,
+      bool permanent,
+      SetLearnedMemoryPermanentCallback callback) override;
   void DreamNow(DreamNowCallback callback) override;
   void GetDreamingReview(GetDreamingReviewCallback callback) override;
   void ApplyDreamingReview(

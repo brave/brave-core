@@ -12,10 +12,13 @@
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
+#include "base/i18n/time_formatting.h"
 #include "base/logging.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/sequenced_task_runner.h"
+#include "base/time/time.h"
+#include "base/values.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_database.h"
 #include "brave/components/ai_chat/core/browser/dreaming_text_utils.h"
 #include "brave/components/ai_chat/core/browser/learned_memory_eval.h"
@@ -34,6 +37,11 @@ TurnLookupRecord::TurnLookupRecord() = default;
 TurnLookupRecord::TurnLookupRecord(TurnLookupRecord&&) = default;
 TurnLookupRecord& TurnLookupRecord::operator=(TurnLookupRecord&&) = default;
 TurnLookupRecord::~TurnLookupRecord() = default;
+
+MemoryEventRecord::MemoryEventRecord() = default;
+MemoryEventRecord::MemoryEventRecord(MemoryEventRecord&&) = default;
+MemoryEventRecord& MemoryEventRecord::operator=(MemoryEventRecord&&) = default;
+MemoryEventRecord::~MemoryEventRecord() = default;
 
 // static
 DreamingConfig UserMemoryManager::GetDreamingConfigFromFeatures() {
@@ -99,6 +107,9 @@ void UserMemoryManager::OnStorageReady() {
     return;
   }
   ScheduleNextDailyDreaming();
+  if (!expiry_timer_.IsRunning()) {
+    ScheduleExpiry(kFirstRunDelay);
+  }
 }
 
 void UserMemoryManager::MaybeStartEval() {
@@ -122,6 +133,7 @@ void UserMemoryManager::OnAllConversationsDeleted() {
   if (!data_source_->IsStorageReady()) {
     // Storage is off. OnStorageReady() starts everything again.
     dreaming_timer_.Stop();
+    expiry_timer_.Stop();
     eval_.reset();
     return;
   }
@@ -196,7 +208,332 @@ void UserMemoryManager::DeleteLearnedMemory(
       pending_review_.reset();
     }
   }
+  RecordMemoryEvent("deleted", uuid, "");
   data_source_->DeleteLearnedMemory(uuid, std::move(callback));
+}
+
+void UserMemoryManager::SetLearnedMemoryPermanent(
+    const std::string& uuid,
+    bool permanent,
+    base::OnceCallback<void(bool)> callback) {
+  // The writes of a review are on their way. One of them could undo this one.
+  if (!data_source_->IsStorageReady() || applying_review_) {
+    std::move(callback).Run(false);
+    return;
+  }
+  // The data source has no call that changes only the type. Read the whole
+  // memory, with its sources, and write it again.
+  data_source_->GetLearnedMemories(base::BindOnce(
+      &UserMemoryManager::OnMemoriesForPermanent,
+      weak_ptr_factory_.GetWeakPtr(), uuid, permanent, std::move(callback)));
+}
+
+void UserMemoryManager::OnMemoriesForPermanent(
+    const std::string& uuid,
+    bool permanent,
+    base::OnceCallback<void(bool)> callback,
+    std::vector<LearnedMemory> memories) {
+  auto it = std::ranges::find(memories, uuid, &LearnedMemory::uuid);
+  if (it == memories.end() || applying_review_) {
+    std::move(callback).Run(false);
+    return;
+  }
+  if ((it->type == LearnedMemoryType::kPermanent) == permanent) {
+    // Nothing to change. A short-term memory stays short-term when the user
+    // turns the setting off twice.
+    std::move(callback).Run(true);
+    return;
+  }
+  LearnedMemory memory = std::move(*it);
+  // A long life is the safe error, as for a type that is not certain.
+  memory.type =
+      permanent ? LearnedMemoryType::kPermanent : LearnedMemoryType::kLongTerm;
+  RecordMemoryEvent(permanent ? "keep_forever" : "release_keep_forever",
+                    memory.uuid, memory.text);
+  // The review and the write go in the same task, so no review can start
+  // between them.
+  UpdateReviewForType(memory);
+  data_source_->AddOrUpdateLearnedMemory(std::move(memory),
+                                         std::move(callback));
+}
+
+void UserMemoryManager::UpdateReviewForType(const LearnedMemory& memory) {
+  if (!pending_review_) {
+    return;
+  }
+  auto it = std::ranges::find(
+      pending_review_->proposals, memory.uuid,
+      [](const DreamingProposal& proposal) { return proposal.memory.uuid; });
+  if (it == pending_review_->proposals.end()) {
+    return;
+  }
+  const bool permanent = memory.type == LearnedMemoryType::kPermanent;
+  // The user keeps the text as it is, so a new text for it is not stored. The
+  // review writes the other changes with the new type.
+  const bool dropped =
+      permanent && it->kind == DreamingProposal::Kind::kChanged;
+  AppendRunStep(
+      pending_review_run_id_,
+      permanent ? "keep_forever" : "release_keep_forever",
+      base::DictValue()
+          .Set("uuid", memory.uuid)
+          .Set("text", memory.text)
+          .Set("pending_change", DreamingProposalKindToString(it->kind))
+          .Set("pending_change_dropped", dropped)
+          .Set("pending_text",
+               dropped ? base::Value(it->memory.text) : base::Value()));
+  if (dropped) {
+    pending_review_->proposals.erase(it);
+    if (pending_review_->proposals.empty()) {
+      // Nothing is left to review: the turns are done.
+      SetWatermarks(pending_review_->watermarks);
+      pending_review_.reset();
+    }
+    return;
+  }
+  it->memory.type = memory.type;
+  if (it->stored) {
+    it->stored->type = memory.type;
+  }
+}
+
+void UserMemoryManager::MarkLearnedMemoriesUsed(std::vector<std::string> uuids,
+                                                std::string_view used_by) {
+  if (uuids.empty() || !data_source_->IsStorageReady()) {
+    return;
+  }
+  // The dates are read first, to write only the memories that are due.
+  data_source_->GetLearnedMemoriesByUuid(
+      std::move(uuids),
+      base::BindOnce(&UserMemoryManager::OnMemoriesToMarkUsed,
+                     weak_ptr_factory_.GetWeakPtr(), std::string(used_by)));
+}
+
+void UserMemoryManager::OnMemoriesToMarkUsed(
+    std::string used_by,
+    std::vector<LearnedMemory> memories) {
+  const base::Time now = base::Time::Now();
+  std::vector<std::string> due;
+  base::ListValue marked;
+  for (const LearnedMemory& memory : memories) {
+    // A kept memory does not expire. A memory used a short time ago has a date
+    // that is fresh enough.
+    if (memory.type == LearnedMemoryType::kPermanent ||
+        (!memory.last_used_date.is_null() &&
+         now - memory.last_used_date < kUseGranularity)) {
+      continue;
+    }
+    due.push_back(memory.uuid);
+    LearnedMemory used = memory;
+    used.last_used_date = now;
+    marked.Append(
+        base::DictValue()
+            .Set("uuid", memory.uuid)
+            .Set("text", memory.text)
+            .Set("expires_before",
+                 base::TimeFormatAsIso8601(
+                     GetLearnedMemoryExpiryTime(memory).value_or(base::Time())))
+            .Set("expires_now",
+                 base::TimeFormatAsIso8601(
+                     GetLearnedMemoryExpiryTime(used).value_or(base::Time()))));
+  }
+  if (due.empty()) {
+    return;
+  }
+  RecordMemoryEvent(
+      "used", "", "",
+      base::DictValue().Set("by", used_by).Set("memories", std::move(marked)));
+  data_source_->MarkLearnedMemoriesUsed(std::move(due), now, base::DoNothing());
+}
+
+void UserMemoryManager::ExpireLearnedMemories() {
+  // A run in progress reads the memories. Its review is safe, but the clean-up
+  // waits for the next time.
+  if (!data_source_->IsStorageReady() || dreaming_run_ || applying_review_) {
+    return;
+  }
+  data_source_->GetLearnedMemories(base::BindOnce(
+      &UserMemoryManager::OnMemoriesToExpire, weak_ptr_factory_.GetWeakPtr()));
+}
+
+void UserMemoryManager::OnMemoriesToExpire(
+    std::vector<LearnedMemory> memories) {
+  if (dreaming_run_ || applying_review_) {
+    return;
+  }
+  const base::Time now = base::Time::Now();
+  for (const LearnedMemory& memory : memories) {
+    std::optional<base::Time> expiry = GetLearnedMemoryExpiryTime(memory);
+    if (!expiry || *expiry > now) {
+      continue;
+    }
+    // The same task drops the change of the review and deletes the memory, so
+    // the review cannot write the memory back.
+    const bool dropped = DropPendingChange(
+        memory.uuid, "expired",
+        base::DictValue().Set("uuid", memory.uuid).Set("text", memory.text));
+    RecordMemoryEvent(
+        "expired", memory.uuid, memory.text,
+        base::DictValue()
+            .Set("type", LearnedMemoryTypeToString(memory.type))
+            .Set("last_used", base::TimeFormatAsIso8601(memory.last_used_date))
+            .Set("expired_at", base::TimeFormatAsIso8601(*expiry))
+            .Set("pending_change_dropped", dropped));
+    data_source_->DeleteLearnedMemory(memory.uuid, base::DoNothing());
+  }
+}
+
+void UserMemoryManager::ScheduleExpiry(base::TimeDelta delay) {
+  if (!data_source_->IsStorageReady() || LearnedMemoryEval::IsEnabled()) {
+    return;
+  }
+  expiry_timer_.Start(FROM_HERE, delay,
+                      base::BindOnce(&UserMemoryManager::OnExpiryTimer,
+                                     base::Unretained(this)));
+}
+
+void UserMemoryManager::OnExpiryTimer() {
+  if (dreaming_run_ || applying_review_) {
+    // A run reads the memories. Try again soon.
+    ScheduleExpiry(base::Minutes(10));
+    return;
+  }
+  ExpireLearnedMemories();
+  ScheduleExpiry(kExpiryInterval);
+}
+
+void UserMemoryManager::EditLearnedMemory(const std::string& uuid,
+                                          const std::string& text,
+                                          EditLearnedMemoryCallback callback) {
+  std::string trimmed(base::TrimWhitespaceASCII(text, base::TRIM_ALL));
+  if (trimmed.empty() ||
+      base::UTF8ToUTF16(trimmed).size() > kMaxMemoryTextLength) {
+    std::move(callback).Run(LearnedMemoryEditError::kInvalidLength);
+    return;
+  }
+  // The writes of a review are on their way. One of them could undo this one.
+  if (!data_source_->IsStorageReady() || applying_review_) {
+    std::move(callback).Run(LearnedMemoryEditError::kNotFound);
+    return;
+  }
+  // The data source has no call that changes only the text. Read the whole
+  // memory, with its sources, and write it again.
+  data_source_->GetLearnedMemories(base::BindOnce(
+      &UserMemoryManager::OnMemoriesForEdit, weak_ptr_factory_.GetWeakPtr(),
+      uuid, std::move(trimmed), std::move(callback)));
+}
+
+void UserMemoryManager::OnMemoriesForEdit(const std::string& uuid,
+                                          std::string text,
+                                          EditLearnedMemoryCallback callback,
+                                          std::vector<LearnedMemory> memories) {
+  auto it = std::ranges::find(memories, uuid, &LearnedMemory::uuid);
+  if (it == memories.end() || applying_review_) {
+    std::move(callback).Run(LearnedMemoryEditError::kNotFound);
+    return;
+  }
+  if (it->text == text) {
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
+  LearnedMemory memory = std::move(*it);
+  const std::string old_text = memory.text;
+  memory.previous = PreviousMemoryText{old_text, memory.links};
+  memory.text = std::move(text);
+  // The user's own change is a fresh use. The type stays: an edit does not
+  // keep the memory as it is.
+  memory.updated_date = base::Time::Now();
+  memory.last_used_date = memory.updated_date;
+  // The user's text wins over a change of the review for the same memory. The
+  // review and the write go in the same task, so no review can start between
+  // them.
+  const bool dropped = DropPendingChange(
+      memory.uuid, "edited_by_user",
+      base::DictValue().Set("uuid", memory.uuid).Set("text", memory.text));
+  RecordMemoryEvent("edited", memory.uuid, memory.text,
+                    base::DictValue()
+                        .Set("before", old_text)
+                        .Set("pending_change_dropped", dropped));
+  // The database adds 1 to the text version, so the index embeds the new text.
+  data_source_->AddOrUpdateLearnedMemory(
+      std::move(memory),
+      base::BindOnce(
+          [](EditLearnedMemoryCallback callback, bool success) {
+            std::move(callback).Run(
+                success ? std::nullopt
+                        : std::optional(LearnedMemoryEditError::kNotFound));
+          },
+          std::move(callback)));
+}
+
+bool UserMemoryManager::DropPendingChange(const std::string& uuid,
+                                          std::string_view step,
+                                          base::DictValue data) {
+  if (!pending_review_) {
+    return false;
+  }
+  auto it = std::ranges::find(
+      pending_review_->proposals, uuid,
+      [](const DreamingProposal& proposal) { return proposal.memory.uuid; });
+  if (it == pending_review_->proposals.end()) {
+    return false;
+  }
+  data.Set("pending_change", DreamingProposalKindToString(it->kind));
+  data.Set("pending_text", it->memory.text);
+  AppendRunStep(pending_review_run_id_, step, std::move(data));
+  pending_review_->proposals.erase(it);
+  if (pending_review_->proposals.empty()) {
+    // Nothing is left to review: the turns are done.
+    SetWatermarks(pending_review_->watermarks);
+    pending_review_.reset();
+  }
+  return true;
+}
+
+void UserMemoryManager::RecordMemoryEvent(std::string_view action,
+                                          std::string_view uuid,
+                                          std::string_view text,
+                                          base::DictValue details) {
+  MemoryEventRecord record;
+  record.id = next_event_id_++;
+  record.time = base::Time::Now();
+  record.action = std::string(action);
+  record.uuid = std::string(uuid);
+  record.text = std::string(text);
+  record.details = std::move(details);
+  event_records_.push_front(std::move(record));
+  if (event_records_.size() > kMaxMemoryEventRecords) {
+    event_records_.pop_back();
+  }
+}
+
+std::vector<MemoryEventRecord> UserMemoryManager::GetMemoryEventRecords()
+    const {
+  std::vector<MemoryEventRecord> records;
+  for (const MemoryEventRecord& record : event_records_) {
+    MemoryEventRecord copy;
+    copy.id = record.id;
+    copy.time = record.time;
+    copy.action = record.action;
+    copy.uuid = record.uuid;
+    copy.text = record.text;
+    copy.details = record.details.Clone();
+    records.push_back(std::move(copy));
+  }
+  return records;
+}
+
+void UserMemoryManager::AppendRunStep(uint64_t run_id,
+                                      std::string_view step,
+                                      base::DictValue data) {
+  auto it = std::ranges::find(run_records_, run_id, &DreamingRunRecord::id);
+  if (it == run_records_.end()) {
+    return;
+  }
+  data.Set("step", step);
+  data.Set("t_ms", static_cast<int>(
+                       (base::Time::Now() - it->start_time).InMilliseconds()));
+  it->trace.Append(std::move(data));
 }
 
 void UserMemoryManager::DeleteAllLearnedMemories(
@@ -213,6 +550,7 @@ void UserMemoryManager::DeleteAllLearnedMemories(
     SetWatermarks(pending_review_->watermarks);
     pending_review_.reset();
   }
+  RecordMemoryEvent("deleted_all", "", "");
   data_source_->DeleteAllLearnedMemories(std::move(callback));
 }
 
@@ -250,6 +588,8 @@ void UserMemoryManager::ApplyDreamingReview(
     }
     proposals.push_back(std::move(proposal));
   }
+  const size_t discarded = pending_review_->proposals.size() - proposals.size();
+  const uint64_t run_id = pending_review_run_id_;
   std::map<std::string, base::Time> watermarks =
       std::move(pending_review_->watermarks);
   pending_review_.reset();
@@ -258,11 +598,14 @@ void UserMemoryManager::ApplyDreamingReview(
   // versions before the writes.
   data_source_->GetLearnedMemoryStamps(base::BindOnce(
       &UserMemoryManager::OnStampsForReview, weak_ptr_factory_.GetWeakPtr(),
-      std::move(proposals), std::move(watermarks), std::move(callback)));
+      std::move(proposals), run_id, discarded, std::move(watermarks),
+      std::move(callback)));
 }
 
 void UserMemoryManager::OnStampsForReview(
     std::vector<DreamingProposal> kept,
+    uint64_t run_id,
+    size_t discarded,
     std::map<std::string, base::Time> watermarks,
     base::OnceCallback<void(bool)> callback,
     std::vector<LearnedMemoryStamp> stamps) {
@@ -271,16 +614,36 @@ void UserMemoryManager::OnStampsForReview(
     versions[stamp.uuid] = stamp.text_version;
   }
   std::vector<LearnedMemory> writes;
+  base::ListValue written;
+  base::ListValue skipped;
   for (DreamingProposal& proposal : kept) {
     auto it = versions.find(proposal.memory.uuid);
     const bool unchanged = proposal.stored
                                ? it != versions.end() &&
                                      it->second == proposal.stored->text_version
                                : it == versions.end();
+    base::DictValue entry =
+        base::DictValue()
+            .Set("kind", DreamingProposalKindToString(proposal.kind))
+            .Set("uuid", proposal.memory.uuid)
+            .Set("type", LearnedMemoryTypeToString(proposal.memory.type))
+            .Set("text", proposal.memory.text);
     if (unchanged) {
+      written.Append(std::move(entry));
+      // A new memory, a change, and a fact that came again all start the
+      // count of the expiry now. The date of the chat can be old.
+      proposal.memory.last_used_date = base::Time::Now();
       writes.push_back(std::move(proposal.memory));
+    } else {
+      skipped.Append(std::move(entry));
     }
   }
+  AppendRunStep(run_id, "review_applied",
+                base::DictValue()
+                    .Set("written", std::move(written))
+                    // The memory changed or went away after the run.
+                    .Set("skipped_changed_since_run", std::move(skipped))
+                    .Set("discarded_by_user", static_cast<int>(discarded)));
   auto barrier = base::BarrierCallback<bool>(
       writes.size() + watermarks.size(),
       base::BindOnce(&UserMemoryManager::OnReviewApplied,
@@ -394,6 +757,8 @@ void UserMemoryManager::OnTurnLookupDone(
       record->end_time = base::Time::Now();
       record->trace = it->second->trace().Clone();
     }
+    // The memories that go to the model are used.
+    MarkLearnedMemoriesUsed(it->second->relevant_uuids(), "chat_turn");
     base::SequencedTaskRunner::GetCurrentDefault()->DeleteSoon(
         FROM_HERE, std::move(it->second));
     turn_lookups_.erase(it);
@@ -502,9 +867,11 @@ void UserMemoryManager::OnDreamingDone(DreamingResult result) {
   task_runner->DeleteSoon(FROM_HERE, std::move(dreaming_run_));
   task_runner->DeleteSoon(FROM_HERE, std::move(run_llm_engine_));
 
+  uint64_t run_id = 0;
   if (active_run_record_) {
     DreamingRunRecord record = std::move(*active_run_record_);
     active_run_record_.reset();
+    run_id = record.id;
     record.end_time = base::Time::Now();
     record.status = result.status;
     record.trace = result.trace.Clone();
@@ -520,6 +887,7 @@ void UserMemoryManager::OnDreamingDone(DreamingResult result) {
       SetWatermarks(result.review->watermarks);
     } else {
       pending_review_ = std::move(result.review);
+      pending_review_run_id_ = run_id;
     }
     result.review.reset();
   }

@@ -87,6 +87,12 @@ class TurnMemoryLookup {
   // the start).
   const base::ListValue& trace() const { return trace_; }
 
+  // The uuids of the relevant memories that the result has. Empty before the
+  // lookup ends.
+  const std::vector<std::string>& relevant_uuids() const {
+    return relevant_uuids_;
+  }
+
   // The text that goes in the request for a learned memory: the memory and the
   // date of its last mention, for example "Lives in Berlin (2026-08-22)".
   static std::string FormatForPrompt(const LearnedMemory& memory);
@@ -119,6 +125,7 @@ class TurnMemoryLookup {
   // The closest learned memories that are not permanent, the closest first.
   std::vector<LearnedMemory> candidates_;
   EngineConsumer::LearnedMemories result_;
+  std::vector<std::string> relevant_uuids_;
   // For the log (--vmodule=turn_memory_lookup=1).
   base::TimeTicks start_time_;
   base::TimeTicks permanent_time_;

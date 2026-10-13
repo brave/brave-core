@@ -2108,6 +2108,34 @@ bool AIChatDatabase::AddOrUpdateLearnedMemory(const LearnedMemory& memory) {
   return transaction.Commit();
 }
 
+bool AIChatDatabase::MarkLearnedMemoriesUsed(
+    const std::vector<std::string>& uuids,
+    base::Time time) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (!LazyInit()) {
+    return false;
+  }
+
+  sql::Transaction transaction(&GetDB());
+  if (!transaction.Begin()) {
+    DVLOG(0) << "Transaction cannot begin\n";
+    return false;
+  }
+  static constexpr char kMarkUsedQuery[] =
+      "UPDATE learned_memory SET last_used_date=? WHERE uuid=?";
+  for (const std::string& uuid : uuids) {
+    sql::Statement statement(
+        GetDB().GetCachedStatement(SQL_FROM_HERE, kMarkUsedQuery));
+    CHECK(statement.is_valid());
+    statement.BindTime(0, time);
+    statement.BindString(1, uuid);
+    if (!statement.Run()) {
+      return false;
+    }
+  }
+  return transaction.Commit();
+}
+
 bool AIChatDatabase::DeleteLearnedMemory(std::string_view memory_uuid) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (!LazyInit()) {

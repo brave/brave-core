@@ -156,9 +156,18 @@ void MemorySemanticSearchTool::OnSearchResults(
     std::vector<MemorySearchResult> results) {
   std::vector<std::string> memories;
   std::vector<std::string> learned_memories;
+  std::vector<std::string> learned_uuids;
   for (MemorySearchResult& result : results) {
-    (result.learned_uuid.empty() ? memories : learned_memories)
-        .push_back(std::move(result.text));
+    if (!result.learned_uuid.empty()) {
+      learned_uuids.push_back(std::move(result.learned_uuid));
+      learned_memories.push_back(std::move(result.text));
+    } else {
+      memories.push_back(std::move(result.text));
+    }
+  }
+  // The model gets the learned memories, so they count as used.
+  if (service_ && !learned_uuids.empty()) {
+    service_->NotifyLearnedMemoriesUsed(std::move(learned_uuids));
   }
   std::move(callback).Run(
       CreateContentBlocksForText(internal::BuildMemorySearchResultJson(

@@ -157,6 +157,10 @@ class AIChatDatabase : public syncer::SyncMetadataStore {
   // from the stored text, else the stored version.
   virtual bool AddOrUpdateLearnedMemory(const LearnedMemory& memory);
 
+  // Sets the date of the last use of each memory. Other fields stay.
+  virtual bool MarkLearnedMemoriesUsed(const std::vector<std::string>& uuids,
+                                       base::Time time);
+
   // Deletes the memory with its source links and its previous text. Nothing
   // remembers the memory afterwards: Dreaming can learn it again.
   virtual bool DeleteLearnedMemory(std::string_view memory_uuid);

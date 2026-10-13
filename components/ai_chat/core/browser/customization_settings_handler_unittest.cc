@@ -77,6 +77,21 @@ class FakeMemoryManagerDelegate : public MemoryManagerDelegate {
     std::move(callback).Run(true);
   }
 
+  void EditLearnedMemory(const std::string& uuid,
+                         const std::string& text,
+                         EditLearnedMemoryCallback callback) override {
+    edits.emplace_back(uuid, text);
+    std::move(callback).Run(std::nullopt);
+  }
+
+  void SetLearnedMemoryPermanent(
+      const std::string& uuid,
+      bool permanent,
+      SetLearnedMemoryPermanentCallback callback) override {
+    permanent_calls.emplace_back(uuid, permanent);
+    std::move(callback).Run(true);
+  }
+
   void DreamNow(DreamNowCallback callback) override {
     ++dream_now_calls;
     std::move(callback).Run(mojom::DreamNowResult::New(
@@ -99,6 +114,8 @@ class FakeMemoryManagerDelegate : public MemoryManagerDelegate {
   bool learned_available = true;
   std::vector<mojom::LearnedMemoryItemPtr> learned;
   std::vector<std::string> forgotten;
+  std::vector<std::pair<std::string, bool>> permanent_calls;
+  std::vector<std::pair<std::string, std::string>> edits;
   int dream_now_calls = 0;
   int delete_all_calls = 0;
 };
@@ -523,7 +540,7 @@ TEST_F(CustomizationSettingsHandlerTest, LearnedMemoriesGoThroughTheDelegate) {
   delegate_->learned.push_back(mojom::LearnedMemoryItem::New(
       "uuid-1", "Lives in Berlin.", mojom::LearnedMemoryCategory::kPersonalFact,
       mojom::LearnedMemoryType::kLongTerm, base::Time(), base::Time(),
-      std::nullopt));
+      std::nullopt, std::nullopt));
 
   base::test::TestFuture<bool, std::vector<mojom::LearnedMemoryItemPtr>>
       memories;
@@ -544,6 +561,21 @@ TEST_F(CustomizationSettingsHandlerTest, LearnedMemoriesGoThroughTheDelegate) {
   // "Delete all memories" deletes only the memories that the user wrote.
   handler_->DeleteAllMemories();
   EXPECT_EQ(delegate_->delete_all_calls, 1);
+
+  base::test::TestFuture<std::optional<mojom::CustomizationOperationError>>
+      edited;
+  handler_->EditLearnedMemory("uuid-2", "New text", edited.GetCallback());
+  EXPECT_FALSE(edited.Get());
+  EXPECT_THAT(delegate_->edits,
+              testing::ElementsAre(
+                  std::pair<std::string, std::string>("uuid-2", "New text")));
+
+  base::test::TestFuture<bool> kept;
+  handler_->SetLearnedMemoryPermanent("uuid-2", true, kept.GetCallback());
+  EXPECT_TRUE(kept.Get());
+  EXPECT_THAT(
+      delegate_->permanent_calls,
+      testing::ElementsAre(std::pair<std::string, bool>("uuid-2", true)));
 
   base::test::TestFuture<mojom::DreamNowResultPtr> dream;
   handler_->DreamNow(dream.GetCallback());
@@ -571,6 +603,15 @@ TEST(CustomizationSettingsHandlerNoDelegateTest, LearnedMemoryIsNotAvailable) {
   base::test::TestFuture<bool> all_deleted;
   handler.DeleteAllLearnedMemories(all_deleted.GetCallback());
   EXPECT_FALSE(all_deleted.Get());
+
+  base::test::TestFuture<std::optional<mojom::CustomizationOperationError>>
+      edited;
+  handler.EditLearnedMemory("uuid", "New text", edited.GetCallback());
+  EXPECT_EQ(edited.Get(), mojom::CustomizationOperationError::kNotFound);
+
+  base::test::TestFuture<bool> kept;
+  handler.SetLearnedMemoryPermanent("uuid", true, kept.GetCallback());
+  EXPECT_FALSE(kept.Get());
 
   base::test::TestFuture<mojom::DreamNowResultPtr> dream;
   handler.DreamNow(dream.GetCallback());

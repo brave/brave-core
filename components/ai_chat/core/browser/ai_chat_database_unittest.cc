@@ -1465,6 +1465,29 @@ TEST_P(AIChatDatabaseTest, LearnedMemory_AddGetAndUpdate) {
   EXPECT_EQ(CountRows("memory_source_link"), 2);
 }
 
+TEST_P(AIChatDatabaseTest, LearnedMemory_MarkUsedMovesOnlyTheLastUseDate) {
+  LearnedMemory first = MakeLearnedMemory("first", {{"chat-a", "entry-a1", 0}});
+  first.previous = MakePreviousText({{"chat-b", "entry-b1", 1}});
+  LearnedMemory second =
+      MakeLearnedMemory("second", {{"chat-b", "entry-b2", 0}});
+  // Memories are ordered by the creation date.
+  second.created_date = base::Time::FromSecondsSinceUnixEpoch(500);
+  ASSERT_TRUE(db_->AddOrUpdateLearnedMemory(first));
+  ASSERT_TRUE(db_->AddOrUpdateLearnedMemory(second));
+
+  const base::Time used = base::Time::FromSecondsSinceUnixEpoch(9000);
+  EXPECT_TRUE(db_->MarkLearnedMemoriesUsed({"first", "no-such-uuid"}, used));
+
+  // The text, the version, the links and the previous text stay. A uuid that
+  // is not stored is not an error.
+  first.last_used_date = used;
+  EXPECT_EQ(db_->GetAllLearnedMemories(),
+            (std::vector<LearnedMemory>{second, first}));
+  // Two links of the memories, and one of the previous text.
+  EXPECT_EQ(CountRows("memory_source_link"), 3);
+  EXPECT_TRUE(db_->MarkLearnedMemoriesUsed({}, used));
+}
+
 TEST_P(AIChatDatabaseTest, LearnedMemory_RejectsMemoryWithoutUuidOrText) {
   LearnedMemory no_text = MakeLearnedMemory("no-text", {});
   no_text.text = "";

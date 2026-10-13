@@ -86,6 +86,34 @@ struct LearnedMemory {
   bool operator==(const LearnedMemory& other) const = default;
 };
 
+// How long Leo keeps a learned memory that it does not use. The count starts at
+// the last use. A memory that the user keeps (permanent) never expires.
+inline constexpr base::TimeDelta kShortTermMemoryLifetime = base::Days(30);
+inline constexpr base::TimeDelta kLongTermMemoryLifetime = base::Days(180);
+
+// The date when Leo forgets |memory| if it does not use the memory before, or
+// null for a memory that never expires. A memory without any date does not
+// expire either: nothing says when to start the count.
+inline std::optional<base::Time> GetLearnedMemoryExpiryTime(
+    const LearnedMemory& memory) {
+  if (memory.type == LearnedMemoryType::kPermanent) {
+    return std::nullopt;
+  }
+  base::Time start = memory.last_used_date;
+  if (start.is_null()) {
+    start = memory.updated_date;
+  }
+  if (start.is_null()) {
+    start = memory.created_date;
+  }
+  if (start.is_null()) {
+    return std::nullopt;
+  }
+  return start + (memory.type == LearnedMemoryType::kShortTerm
+                      ? kShortTermMemoryLifetime
+                      : kLongTermMemoryLifetime);
+}
+
 // The version of the text of a learned memory. The embedding of the memory is
 // valid for one version. A memory without an embedding of its current version
 // is embedded again.

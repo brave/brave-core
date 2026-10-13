@@ -41,6 +41,22 @@ struct TurnLookupRecord {
   string decision_requests_json;
 };
 
+// A change of a learned memory that is not a step of a Dreaming run: a choice
+// of the user, the clean-up of old memories, or a save of the memory tool.
+struct MemoryEventRecord {
+  uint64 id;
+  mojo_base.mojom.Time time;
+  // "keep_forever", "release_keep_forever", "edited", "deleted",
+  // "deleted_all", "expired", "tool_saved" or "tool_duplicate".
+  string action;
+  // The learned memory. Empty for a memory of the pref list and for
+  // "deleted_all".
+  string uuid;
+  string text;
+  // More about the event, as a JSON object.
+  string details_json;
+};
+
 // Debugging of learned memory: what Dreaming and the chat turns asked the
 // local models and what they answered. Nothing of it is stored on disk.
 interface LearnedMemoryInternals {
@@ -50,4 +66,7 @@ interface LearnedMemoryInternals {
 
   // The last chat turn lookups, the newest first.
   GetTurnLookups() => (bool available, array<TurnLookupRecord> lookups);
+
+  // The last memory events, the newest first.
+  GetMemoryEvents() => (bool available, array<MemoryEventRecord> events);
 };

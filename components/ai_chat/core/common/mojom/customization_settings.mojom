@@ -47,6 +47,9 @@ struct LearnedMemoryItem {
   mojo_base.mojom.Time updated_time;
   // The text before the last replace or merge, if any.
   string? previous_text;
+  // The date when Leo forgets the memory if it does not use it before. Null
+  // for a memory that the user keeps.
+  mojo_base.mojom.Time? expire_time;
 };
 
 // A change that a Dreaming run wants to make. Nothing is stored before the
@@ -164,6 +167,20 @@ interface CustomizationSettingsHandler {
   // active. Dreaming does not read the chats again that it already read, so it
   // learns only from new messages.
   DeleteAllLearnedMemories() => (bool success);
+
+  // Changes the text of a learned memory. The memory keeps its sources and its
+  // type, and the old text shows as "before". |error| is kInvalidLength when
+  // the text is empty or too long, and kNotFound when the memory is not stored.
+  EditLearnedMemory(string uuid, string text) =>
+    (CustomizationOperationError? error);
+
+  // Keeps a learned memory as it is (|permanent| true), or lets Dreaming change
+  // it again (false). Dreaming never replaces or merges a permanent memory,
+  // and Leo sends it in every chat. A memory that is not permanent any more is
+  // long-term. |success| is false when the memory is not stored, or a write
+  // failed.
+  SetLearnedMemoryPermanent(string uuid, bool permanent) =>
+    (bool success);
 
   // Starts a Dreaming run now, and replies when the run ends. The changes of
   // the run wait for the user's review (GetDreamingReview), and a new run does
