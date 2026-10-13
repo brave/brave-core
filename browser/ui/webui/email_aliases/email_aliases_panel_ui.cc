@@ -16,6 +16,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/theme_source.h"
 #include "components/grit/brave_components_resources.h"
+#include "components/grit/brave_components_webui_strings.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
@@ -48,6 +49,7 @@ EmailAliasesPanelUI::EmailAliasesPanelUI(content::WebUI* web_ui)
 #endif
   webui::SetupWebUIDataSource(source, kEmailAliasesPanelResources,
                               IDR_EMAIL_ALIASES_PANEL_HTML);
+  source->AddLocalizedStrings(webui::kEmailAliasesStrings);
 }
 
 EmailAliasesPanelUI::~EmailAliasesPanelUI() = default;
