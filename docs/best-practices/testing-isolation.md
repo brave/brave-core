@@ -2,28 +2,67 @@
 
 <a id="TI-001"></a>
 
-## Test in Isolation with Fakes
+## ✅ Isolate Unit Tests with Mock or Fake Dependencies
 
-**Prefer fakes over real dependencies:**
+**Test the real component through its public API, injecting mock or fake classes
+for dependencies outside the unit under test. Do not mock the component whose
+behavior the test is meant to verify.**
 
-- Prevents cascading test failures
-- Produces more maintainable, modular code
-- Makes tests faster and more deterministic
+Using real service dependencies can turn a unit test into a quasi-integration
+test: dependency changes cause cascading failures that obscure which component
+broke. Keeping the dependency behavior under the test's control makes failures
+more informative and tests faster and more deterministic.
 
-**Example: Use MockTool instead of real navigation tool:**
+- Reuse established Brave or Chromium mock/fake classes before adding another
+  test double. Put reusable doubles in a
+  [`test_support` target](build-system.md#BS-022).
+- Inject the dependency through the constructor (see
+  [ARCH-025](architecture.md#ARCH-025)). Chromium's `Foo` interface, `FooImpl`
+  production implementation, and `FakeFoo` test implementation pattern lets a
+  consumer use the same interface in production and tests. Use an existing
+  interface where possible; this is not a requirement to add an interface or
+  make every method virtual. When the component creates its dependencies, an
+  injected factory can supply the doubles instead.
+- Prefer a fake when a small, deterministic implementation of the dependency's
+  behavior is useful, such as in-memory storage or controlled completion of an
+  operation. Use a mock when a dependency interaction is itself part of the
+  contract, such as ensuring a denied operation does not write data. Avoid
+  expectations on incidental call counts, ordering, or internal helper calls.
+- Do not start real network or storage services merely to satisfy dependencies
+  in an isolated unit test. Supply controlled responses, state, and errors
+  through doubles. This does not require replacing simple value objects or every
+  helper with a mock.
+
+For example, given a `ReportService` that accepts a `ReportStore` dependency,
+use a fake store to test the service's behavior (illustrative API):
 
 ```cpp
-// ✅ GOOD - Control exact timing with MockTool
-auto mock_tool = std::make_unique<MockTool>();
-EXPECT_CALL(*mock_tool, Execute(_, _))
-    .WillOnce([&](auto data, auto callback) {
-      tool_callback = std::move(callback);
-    });
+// ❌ WRONG - tests the store's infrastructure as well as ReportService
+ReportService service(std::make_unique<DatabaseReportStore>(database_path));
 
-// Now we can control exactly when the tool completes
-ClickPauseButton();
-std::move(tool_callback).Run(/* result */);
+// ❌ WRONG - replaces the behavior the test is supposed to exercise
+MockReportService service;
+
+// ✅ CORRECT - real subject, fake dependency, public API assertion
+TEST(ReportServiceTest, ReadsSavedReport) {
+  auto store = std::make_unique<FakeReportStore>();
+  store->SetReportForTesting("saved report");
+  ReportService service(std::move(store));
+
+  EXPECT_EQ(service.ReadReport(), "saved report");
+}
 ```
+
+Keep separate integration or browser tests for interactions between real
+components and their wiring. A test of a storage implementation itself can
+exercise real storage; the isolation rule concerns dependencies outside the unit
+being tested, not a ban on real implementations in all tests.
+
+References:
+[Chromium: Test individual components in isolation](https://www.chromium.org/chromium-os/developer-library/guides/testing/cpp-writing-tests/#test-individual-components-in-isolation)
+and
+[Chromium C++ Design Patterns: Abstract base class, Impl, Fake](https://www.chromium.org/chromium-os/developer-library/reference/cpp/cpp-patterns/#abstract-base-class-impl-fake)
+(including the discussion of mocks and injected factories).
 
 ---
 
