@@ -37,6 +37,7 @@ substitutions:
       target: non_code_constants
       list_name: configs
       literal: '[ "//brave/common:constants_configs" ]'
+      assume_defined: true
 
   - description: Add the Brave constants deps.
     add_literal_to_list:
