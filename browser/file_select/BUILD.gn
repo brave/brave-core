@@ -15,6 +15,7 @@ source_set("file_select") {
   ]
 
   deps = [
+    "//brave/browser/image_metadata_stripper",
     "//brave/components/image_metadata_stripper",
     "//brave/components/image_metadata_stripper/common",
     "//content/public/browser",
@@ -33,10 +34,12 @@ if (!is_android) {
       ":file_select",
       "//base",
       "//base/test:test_support",
+      "//brave/browser/image_metadata_stripper",
       "//brave/components/image_metadata_stripper/common",
       "//chrome/browser/ui",
       "//chrome/browser/ui/tabs",
       "//chrome/browser/ui/tabs:tab_enums",
+      "//chrome/common:constants",
       "//chrome/test:test_support",
       "//chrome/test:test_support_ui",
       "//content/public/browser",
@@ -63,8 +66,17 @@ source_set("unit_tests") {
     ":file_select",
     "//base",
     "//base/test:test_support",
-    "//brave/components/image_metadata_stripper",
+    "//brave/browser/image_metadata_stripper",
     "//brave/components/image_metadata_stripper/common",
+    "//chrome/common:constants",
+    "//components/tabs:impl",
+    "//components/tabs:test_support",
+    "//content/test:test_support",
+    "//testing/gmock",
     "//testing/gtest",
+    "//third_party/blink/public/mojom:mojom_platform_headers",
+    "//url",
   ]
+
+  data = [ "//brave/test/data/image_metadata_stripper/" ]
 }

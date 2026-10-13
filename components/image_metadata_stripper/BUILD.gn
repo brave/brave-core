@@ -4,15 +4,9 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 static_library("image_metadata_stripper") {
-  public = [
-    "image_metadata_stripper.h",
-    "image_metadata_stripper_utils.h",
-  ]
+  public = [ "image_metadata_stripper.h" ]
 
-  sources = [
-    "image_metadata_stripper.cc",
-    "image_metadata_stripper_utils.cc",
-  ]
+  sources = [ "image_metadata_stripper.cc" ]
 
   public_deps = [ "//base" ]
 
