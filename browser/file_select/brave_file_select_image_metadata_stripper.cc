@@ -10,8 +10,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/check.h"
-#include "base/check_is_test.h"
 #include "base/check_op.h"
 #include "base/feature_list.h"
 #include "base/files/file_path.h"
@@ -27,10 +25,6 @@
 namespace brave {
 
 namespace {
-
-// IN-TEST
-base::OnceCallback<void(std::vector<base::FilePath>)>*
-    g_on_strip_completed_callback_for_testing_ = nullptr;
 
 // Non-native entries map to an empty path, which yields no copy.
 std::vector<base::FilePath> GetNativeFilePaths(
@@ -69,14 +63,6 @@ void OnStripComplete(
     native->file_path = *std::move(copies[i]);
   }
 
-  // Test guarded code to get the list of temporary files we created from our
-  // component.
-  if (g_on_strip_completed_callback_for_testing_) {
-    CHECK_IS_TEST();
-    CHECK(!g_on_strip_completed_callback_for_testing_->is_null());
-    g_on_strip_completed_callback_for_testing_ = nullptr;
-  }
-
   std::move(notify).Run(std::move(selected_files));
 }
 
@@ -103,9 +89,10 @@ bool MaybeStripImageMetadataForUpload(
     return false;
   }
 
-  auto* controller =
-      image_metadata_stripper::FileUploadController::FromWebContents(
-          web_contents);
+  tabs::TabInterface* tab =
+      tabs::TabInterface::MaybeGetFromContents(web_contents);
+  auto* controller = image_metadata_stripper::FileUploadController::From(tab);
+
   if (!controller) {
     return false;
   }
@@ -118,11 +105,6 @@ bool MaybeStripImageMetadataForUpload(
       std::move(paths), image_metadata_stripper::StrippingClient::kFileSelect,
       base::BindOnce(&OnStripComplete, std::move(notify), std::move(list)));
   return true;
-}
-
-void SetStripCompletedCallbackForTesting(  // IN-TEST
-    base::OnceCallback<void(std::vector<base::FilePath>)>* callback) {
-  g_on_strip_completed_callback_for_testing_ = callback;
 }
 
 }  // namespace brave
