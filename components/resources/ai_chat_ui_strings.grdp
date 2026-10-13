@@ -855,6 +855,9 @@
   <message name="IDS_AI_CHAT_CONVERSATION_LIST_FILTER_NO_RESULTS_SUBTITLE" desc="Subtitle shown when no conversations match the filter query" formatter_data="webui=AiChat">
     Please try a different query
   </message>
+  <message name="IDS_AI_CHAT_CONVERSATION_LIST_RECENT_WORKSPACES" desc="Heading for a collapsible section at the top of the conversation list showing the most recently used workspaces (local folders attached to conversations) and the conversations attached to each" formatter_data="webui=AiChat">
+    Recent workspaces
+  </message>
   <message name="IDS_AI_CHAT_TEMPORARY_CHAT_LABEL" desc="Label for the temporary chat toggle in the feature menu" formatter_data="webui=AiChat">
     Temporary chat
   </message>

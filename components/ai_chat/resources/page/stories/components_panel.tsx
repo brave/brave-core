@@ -30,13 +30,24 @@ import {
   SelectedChatDetails,
 } from '../state/active_chat_context'
 
+const makeWorkspaceContent = (uuid: string): Mojom.AssociatedContent => ({
+  uuid,
+  contentType: Mojom.ContentType.Workspace,
+  title: 'Workspace',
+  contentId: 0,
+  url: { url: `workspace://${uuid}` },
+  contentUsedPercentage: 100,
+  conversationTurnUuid: 'turn-uuid',
+  toolsAttached: true,
+})
+
 const CONVERSATIONS: Mojom.Conversation[] = [
   {
     title: 'Star Trek Poem',
     uuid: '1',
     hasContent: true,
     updatedTime: { internalValue: BigInt('13278618001000000') },
-    associatedContent: [],
+    associatedContent: [makeWorkspaceContent('workspace-1')],
     modelKey: undefined,
     totalTokens: BigInt(0),
     trimmedTokens: BigInt(0),
@@ -48,7 +59,7 @@ const CONVERSATIONS: Mojom.Conversation[] = [
     uuid: '2',
     hasContent: true,
     updatedTime: { internalValue: BigInt('13278618001000001') },
-    associatedContent: [],
+    associatedContent: [makeWorkspaceContent('workspace-2')],
     modelKey: undefined,
     totalTokens: BigInt(0),
     trimmedTokens: BigInt(0),
@@ -364,6 +375,7 @@ type CustomArgs = {
   suggestionStatus: keyof typeof Mojom.SuggestionGenerationStatus
   isMobile: boolean
   isHistoryEnabled: boolean
+  isWorkspaceToolsEnabled: boolean
   isAIChatAgentProfileFeatureEnabled: boolean
   isAIChatAgentProfile: boolean
   isStandalone: boolean
@@ -415,6 +427,7 @@ const args: CustomArgs = {
   model: MODELS[0].key,
   isMobile: false,
   isHistoryEnabled: true,
+  isWorkspaceToolsEnabled: true,
   isAIChatAgentProfileFeatureEnabled: false,
   isAIChatAgentProfile: false,
   isStandalone: false,
@@ -685,6 +698,7 @@ function StoryContext(
         isAIChatAgentProfile: args.isAIChatAgentProfile,
         isMobile: args.isMobile,
         isHistoryFeatureEnabled: args.isHistoryEnabled,
+        isWorkspaceToolsEnabled: args.isWorkspaceToolsEnabled,
         isConversationShareEnabled: true,
         isAIChatExportJSONEnabled: true,
         skillDialog: args.skillDialog,

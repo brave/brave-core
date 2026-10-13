@@ -114,6 +114,9 @@ AIChatUI::AIChatUI(content::WebUI* web_ui)
   source->AddString("braveVersion",
                     version_info::GetBraveVersionWithoutChromiumMajorVersion());
   source->AddBoolean(
+      "isWorkspaceToolsEnabled",
+      base::FeatureList::IsEnabled(ai_chat::features::kAIChatWorkspaceTools));
+  source->AddBoolean(
       "isWorkspaceNativeDirectoriesEnabled",
       base::FeatureList::IsEnabled(ai_chat::features::kAIChatWorkspaceTools) &&
           ai_chat::features::kWorkspaceNativeDirectories.Get());
