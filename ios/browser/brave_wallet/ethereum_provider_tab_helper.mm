@@ -63,7 +63,8 @@ void ExecuteJavaScript(web::WebState* web_state, const std::u16string& script) {
   main_frame->ExecuteJavaScript(script);
 }
 
-// Dispatches an event to the page via `window.ethereum.emit(name, arguments)`.
+// Dispatches an event to the page via `window.ethereum?.emit(name, arguments)`.
+// The optional call is a no-op when the provider was not injected.
 void EmitEthereumEvent(web::WebState* web_state,
                        std::string_view event_name,
                        std::optional<base::Value> arguments) {
@@ -81,9 +82,9 @@ void EmitEthereumEvent(web::WebState* web_state,
     std::string arguments_json;
     base::JSONWriter::Write(*arguments, &arguments_json);
     script = base::StrCat(
-        {"window.ethereum.emit(", name_json, ", ", arguments_json, ")"});
+        {"window.ethereum?.emit(", name_json, ", ", arguments_json, ")"});
   } else {
-    script = base::StrCat({"window.ethereum.emit(", name_json, ")"});
+    script = base::StrCat({"window.ethereum?.emit(", name_json, ")"});
   }
   ExecuteJavaScript(web_state, base::UTF8ToUTF16(script));
 }
@@ -230,10 +231,10 @@ void EthereumProviderTabHelper::OnGetChainIdForProperties(
 
   // `chainId` is always assigned as a quoted hex string, e.g.
   // `window.ethereum.chainId = "0x1"`.
-  ExecuteJavaScript(
-      web_state_, base::UTF8ToUTF16(
-                      base::StrCat({"window.ethereum.chainId = ",
-                                    ValueOrUndefined(base::Value(chain_id))})));
+  ExecuteJavaScript(web_state_,
+                    base::UTF8ToUTF16(base::StrCat(
+                        {"if (window.ethereum) { window.ethereum.chainId = ",
+                         ValueOrUndefined(base::Value(chain_id)), " }"})));
 
   // `networkVersion` is the decimal form of the chain id, or the literal string
   // "undefined" when it cannot be parsed.
@@ -245,10 +246,11 @@ void EthereumProviderTabHelper::OnGetChainIdForProperties(
   if (uint32_t parsed = 0; base::HexStringToUInt(hex, &parsed)) {
     network_version = base::Value(base::NumberToString(parsed));
   }
-  ExecuteJavaScript(web_state_,
-                    base::UTF8ToUTF16(base::StrCat(
-                        {"window.ethereum.networkVersion = ",
-                         ValueOrUndefined(std::move(network_version))})));
+  ExecuteJavaScript(
+      web_state_,
+      base::UTF8ToUTF16(base::StrCat(
+          {"if (window.ethereum) { window.ethereum.networkVersion = ",
+           ValueOrUndefined(std::move(network_version)), " }"})));
 
   // `selectedAddress` is the first allowed account (quoted), or bare
   // `undefined` when the keyring is locked / there are no allowed accounts.
@@ -261,10 +263,11 @@ void EthereumProviderTabHelper::OnGetChainIdForProperties(
     selected_address =
         base::Value(base::StrCat({"\"", allowed_accounts->front(), "\""}));
   }
-  ExecuteJavaScript(web_state_,
-                    base::UTF8ToUTF16(base::StrCat(
-                        {"window.ethereum.selectedAddress = ",
-                         ValueOrUndefined(std::move(selected_address))})));
+  ExecuteJavaScript(
+      web_state_,
+      base::UTF8ToUTF16(base::StrCat(
+          {"if (window.ethereum) { window.ethereum.selectedAddress = ",
+           ValueOrUndefined(std::move(selected_address)), " }"})));
 }
 
 void EthereumProviderTabHelper::CreateProvider() {
