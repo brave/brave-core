@@ -57,15 +57,21 @@ AIChatCredentialManager::~AIChatCredentialManager() = default;
 
 void AIChatCredentialManager::GetPremiumStatus(
     mojom::Service::GetPremiumStatusCallback callback) {
-  base::Time now = base::Time::Now();
-  // First check for a valid credential in the cache.
-  bool credential_in_cache = false;
-
   // |pref_service_| can be null in tests.
   if (!prefs_service_) {
     std::move(callback).Run(mojom::PremiumStatus::Inactive, nullptr);
     return;
   }
+
+  pending_premium_status_callbacks_.push_back(std::move(callback));
+  // A request is already in progress; this callback will receive its result.
+  if (pending_premium_status_callbacks_.size() > 1) {
+    return;
+  }
+
+  base::Time now = base::Time::Now();
+  // First check for a valid credential in the cache.
+  bool credential_in_cache = false;
 
   const auto& cached_creds_dict =
       prefs_service_->GetDict(prefs::kBraveChatPremiumCredentialCache);
@@ -90,7 +96,7 @@ void AIChatCredentialManager::GetPremiumStatus(
     // This profile can't check skus
     // TODO(petemill): Pass the original profile skus service from
     // the incognito profile.
-    std::move(callback).Run(mojom::PremiumStatus::Inactive, nullptr);
+    CompleteGetPremiumStatus(mojom::PremiumStatus::Inactive, nullptr);
     return;
   }
 
@@ -98,12 +104,11 @@ void AIChatCredentialManager::GetPremiumStatus(
   skus_service_->CredentialSummary(
       leo_sku_domain,
       base::BindOnce(&AIChatCredentialManager::OnCredentialSummary,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback),
-                     leo_sku_domain, credential_in_cache));
+                     weak_ptr_factory_.GetWeakPtr(), leo_sku_domain,
+                     credential_in_cache));
 }
 
 void AIChatCredentialManager::OnCredentialSummary(
-    mojom::Service::GetPremiumStatusCallback callback,
     const std::string& domain,
     const bool credential_in_cache,
     skus::mojom::SkusResultPtr summary) {
@@ -118,12 +123,12 @@ void AIChatCredentialManager::OnCredentialSummary(
                             &summary_string_trimmed);
   if (summary_string_trimmed.empty()) {
     if (credential_in_cache) {
-      std::move(callback).Run(mojom::PremiumStatus::Active,
-                              std::move(premium_info));
+      CompleteGetPremiumStatus(mojom::PremiumStatus::Active,
+                               std::move(premium_info));
       return;
     }
 
-    std::move(callback).Run(mojom::PremiumStatus::Inactive, nullptr);
+    CompleteGetPremiumStatus(mojom::PremiumStatus::Inactive, nullptr);
     return;
   }
 
@@ -132,23 +137,23 @@ void AIChatCredentialManager::OnCredentialSummary(
 
   if (!records) {
     if (credential_in_cache) {
-      std::move(callback).Run(mojom::PremiumStatus::Active,
-                              std::move(premium_info));
+      CompleteGetPremiumStatus(mojom::PremiumStatus::Active,
+                               std::move(premium_info));
       return;
     }
-    std::move(callback).Run(mojom::PremiumStatus::Inactive, nullptr);
+    CompleteGetPremiumStatus(mojom::PremiumStatus::Inactive, nullptr);
     return;
   }
 
   // Empty dict - "{}" - all credentials are expired or it's a new user.
   if (records->empty()) {
     if (credential_in_cache) {
-      std::move(callback).Run(mojom::PremiumStatus::Active,
-                              std::move(premium_info));
+      CompleteGetPremiumStatus(mojom::PremiumStatus::Active,
+                               std::move(premium_info));
       return;
     }
 
-    std::move(callback).Run(mojom::PremiumStatus::Inactive, nullptr);
+    CompleteGetPremiumStatus(mojom::PremiumStatus::Inactive, nullptr);
     return;
   }
 
@@ -169,18 +174,105 @@ void AIChatCredentialManager::OnCredentialSummary(
   // refresh is available.
   if (premium_info->remaining_credential_count == 0 &&
       (!expires_at || expires_at->empty())) {
-    std::move(callback).Run(mojom::PremiumStatus::ActiveDisconnected,
-                            std::move(premium_info));
+    CompleteGetPremiumStatus(mojom::PremiumStatus::ActiveDisconnected,
+                             std::move(premium_info));
     return;
   }
 
-  std::move(callback).Run(mojom::PremiumStatus::Active,
-                          std::move(premium_info));
+  CompleteGetPremiumStatus(mojom::PremiumStatus::Active,
+                           std::move(premium_info));
+}
+
+void AIChatCredentialManager::CompleteGetPremiumStatus(
+    mojom::PremiumStatus status,
+    mojom::PremiumInfoPtr info) {
+  // Swap out the list so callbacks that call GetPremiumStatus start a new
+  // request rather than joining this completed one.
+  auto callbacks = std::exchange(pending_premium_status_callbacks_, {});
+  for (auto& callback : callbacks) {
+    std::move(callback).Run(status, info.Clone());
+  }
 }
 
 void AIChatCredentialManager::FetchPremiumCredential(
-    base::OnceCallback<void(std::optional<CredentialCacheEntry> credential)>
-        callback) {
+    FetchPremiumCredentialCallback callback) {
+  pending_fetch_credential_callbacks_.push_back(std::move(callback));
+  // A fetch is already in progress; this request will be processed once it and
+  // any requests queued ahead of it complete.
+  if (pending_fetch_credential_callbacks_.size() > 1) {
+    return;
+  }
+  ProcessNextFetchPremiumCredential();
+}
+
+void AIChatCredentialManager::OnGetPremiumStatus(mojom::PremiumStatus status,
+                                                 mojom::PremiumInfoPtr info) {
+  if (status != mojom::PremiumStatus::Active &&
+      status != mojom::PremiumStatus::ActiveDisconnected) {
+    CompleteFetchPremiumCredential(std::nullopt);
+    return;
+  }
+  const std::string leo_sku_domain = brave_domains::GetServicesDomain(
+      kLeoSkuHostnamePart, brave_domains::ServicesEnvironment::STAGING);
+
+  if (!EnsureMojoConnected()) {
+    CompleteFetchPremiumCredential(std::nullopt);
+    return;
+  }
+  DCHECK(skus_service_);
+  skus_service_->PrepareCredentialsPresentation(
+      leo_sku_domain, "*",
+      base::BindOnce(&AIChatCredentialManager::OnPrepareCredentialsPresentation,
+                     weak_ptr_factory_.GetWeakPtr(), leo_sku_domain));
+}
+
+void AIChatCredentialManager::OnPrepareCredentialsPresentation(
+    const std::string& domain,
+    skus::mojom::SkusResultPtr credential_as_cookie) {
+  // Credential is returned in cookie format.
+  net::CookieInclusionStatus status;
+  net::ParsedCookie credential_cookie(credential_as_cookie->message, &status);
+  if (!credential_cookie.IsValid()) {
+    CompleteFetchPremiumCredential(std::nullopt);
+    return;
+  }
+
+  if (!status.IsInclude()) {
+    CompleteFetchPremiumCredential(std::nullopt);
+    return;
+  }
+
+  if (!credential_cookie.Expires()) {
+    CompleteFetchPremiumCredential(std::nullopt);
+    return;
+  }
+
+  const auto time =
+      net::cookie_util::ParseCookieExpirationTime(*credential_cookie.Expires());
+  // Early return when it's already expired.
+  if (time < base::Time::Now()) {
+    CompleteFetchPremiumCredential(std::nullopt);
+    return;
+  }
+
+  // Credential value received needs to be URL decoded.
+  // That leaves us with a Base64 encoded JSON blob which is the credential.
+  const std::string encoded_credential = credential_cookie.Value();
+  std::string credential = url::DecodeUrlEscapeSequences(
+      encoded_credential, url::DecodeUrlMode::kUtf8OrIsomorphic);
+  if (credential.empty()) {
+    // Not purchased.
+    CompleteFetchPremiumCredential(std::nullopt);
+    return;
+  }
+
+  CredentialCacheEntry entry;
+  entry.credential = credential;
+  entry.expires_at = time;
+  CompleteFetchPremiumCredential(entry);
+}
+
+void AIChatCredentialManager::ProcessNextFetchPremiumCredential() {
   // Loop through credentials looking for a valid credential and remove it. If
   // there is more than one valid credential, use the one that is expiring
   // soonest. Also, remove any expired credentials as we go.
@@ -226,87 +318,29 @@ void AIChatCredentialManager::FetchPremiumCredential(
 
   // Use credential from the cache if it existed.
   if (found_valid_credential) {
-    std::move(callback).Run(valid_credential);
+    CompleteFetchPremiumCredential(valid_credential);
     return;
   }
 
   // Otherwise, fetch a fresh credential using the SKUs SDK.
   GetPremiumStatus(base::BindOnce(&AIChatCredentialManager::OnGetPremiumStatus,
-                                  weak_ptr_factory_.GetWeakPtr(),
-                                  std::move(callback)));
+                                  weak_ptr_factory_.GetWeakPtr()));
 }
 
-void AIChatCredentialManager::OnGetPremiumStatus(
-    base::OnceCallback<void(std::optional<CredentialCacheEntry> credential)>
-        callback,
-    mojom::PremiumStatus status,
-    mojom::PremiumInfoPtr info) {
-  if (status != mojom::PremiumStatus::Active &&
-      status != mojom::PremiumStatus::ActiveDisconnected) {
-    std::move(callback).Run(std::nullopt);
+void AIChatCredentialManager::CompleteFetchPremiumCredential(
+    std::optional<CredentialCacheEntry> credential) {
+  CHECK(!pending_fetch_credential_callbacks_.empty());
+  // The moved-from callback stays at the front of the queue until the callback
+  // has run. If the callback calls FetchPremiumCredential, the queue is
+  // non-empty, so the new request waits its turn rather than starting now.
+  auto callback = std::move(pending_fetch_credential_callbacks_.front());
+  std::move(callback).Run(std::move(credential));
+
+  pending_fetch_credential_callbacks_.pop_front();
+  if (pending_fetch_credential_callbacks_.empty()) {
     return;
   }
-  const std::string leo_sku_domain = brave_domains::GetServicesDomain(
-      kLeoSkuHostnamePart, brave_domains::ServicesEnvironment::STAGING);
-
-  if (!EnsureMojoConnected()) {
-    std::move(callback).Run({});
-    return;
-  }
-  DCHECK(skus_service_);
-  skus_service_->PrepareCredentialsPresentation(
-      leo_sku_domain, "*",
-      base::BindOnce(&AIChatCredentialManager::OnPrepareCredentialsPresentation,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback),
-                     leo_sku_domain));
-}
-
-void AIChatCredentialManager::OnPrepareCredentialsPresentation(
-    base::OnceCallback<void(std::optional<CredentialCacheEntry> credential)>
-        callback,
-    const std::string& domain,
-    skus::mojom::SkusResultPtr credential_as_cookie) {
-  // Credential is returned in cookie format.
-  net::CookieInclusionStatus status;
-  net::ParsedCookie credential_cookie(credential_as_cookie->message, &status);
-  if (!credential_cookie.IsValid()) {
-    std::move(callback).Run(std::nullopt);
-    return;
-  }
-
-  if (!status.IsInclude()) {
-    std::move(callback).Run(std::nullopt);
-    return;
-  }
-
-  if (!credential_cookie.Expires()) {
-    std::move(callback).Run(std::nullopt);
-    return;
-  }
-
-  const auto time =
-      net::cookie_util::ParseCookieExpirationTime(*credential_cookie.Expires());
-  // Early return when it's already expired.
-  if (time < base::Time::Now()) {
-    std::move(callback).Run(std::nullopt);
-    return;
-  }
-
-  // Credential value received needs to be URL decoded.
-  // That leaves us with a Base64 encoded JSON blob which is the credential.
-  const std::string encoded_credential = credential_cookie.Value();
-  std::string credential = url::DecodeUrlEscapeSequences(
-      encoded_credential, url::DecodeUrlMode::kUtf8OrIsomorphic);
-  if (credential.empty()) {
-    // Not purchased.
-    std::move(callback).Run(std::nullopt);
-    return;
-  }
-
-  CredentialCacheEntry entry;
-  entry.credential = credential;
-  entry.expires_at = time;
-  std::move(callback).Run(entry);
+  ProcessNextFetchPremiumCredential();
 }
 
 void AIChatCredentialManager::PutCredentialInCache(
@@ -398,6 +432,10 @@ bool AIChatCredentialManager::EnsureMojoConnected() {
 }
 
 void AIChatCredentialManager::OnMojoConnectionError() {
+  // Resetting the remote drops any in-flight response callbacks, so drop the
+  // requests waiting on them too; otherwise later calls would queue forever.
+  pending_premium_status_callbacks_.clear();
+  pending_fetch_credential_callbacks_.clear();
   skus_service_.reset();
   EnsureMojoConnected();
 }
