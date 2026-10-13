@@ -60,7 +60,8 @@ bool IsVerticalTabToggleEnabled(BrowserWindowInterface* browser) {
 // Hooks declared (but not defined) in chromium_src overrides so that those
 // overrides don't need to depend on Brave targets. Resolved at link time.
 bool BraveShouldHideVerticalTabsCompletely(PrefService* prefs) {
-  return prefs->FindPreference(
+  return base::FeatureList::IsEnabled(tabs::kBraveVerticalTabHideCompletely) &&
+         prefs->FindPreference(
              brave_tabs::kVerticalTabsHideCompletelyWhenCollapsed) &&
          prefs->GetBoolean(
              brave_tabs::kVerticalTabsHideCompletelyWhenCollapsed);
