@@ -8,10 +8,14 @@
 #include <memory>
 #include <optional>
 #include <string>
+#include <string_view>
+#include <utility>
+#include <vector>
 
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
 #include "base/run_loop.h"
+#include "base/test/bind.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
 #include "base/test/values_test_util.h"
@@ -25,6 +29,7 @@
 #include "build/build_config.h"
 #include "build/buildflag.h"
 #include "components/prefs/testing_pref_service.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 
@@ -55,18 +60,73 @@ TEST_F(MemoryStorageToolTest, UseTool_ValidInput) {
   memory_tool_->UseTool(input_json, future.GetCallback());
 
   auto [result, artifacts] = future.Take();
-  EXPECT_TRUE(artifacts.empty());
   ASSERT_EQ(result.size(), 1u);
   ASSERT_TRUE(result[0]->is_text_content_block());
 
   // Should return empty string on success
   EXPECT_EQ(result[0]->get_text_content_block()->text, "");
 
+  // The artifact tells the UI that the memory is new.
+  ASSERT_EQ(artifacts.size(), 1u);
+  EXPECT_EQ(artifacts[0]->type, mojom::kMemorySaveStatusArtifactType);
+  EXPECT_EQ(base::test::ParseJsonDict(artifacts[0]->content_json),
+            base::test::ParseJsonDict(R"({"status": "added"})"));
+
   // Verify memory was stored in prefs
   const base::ListValue& memories =
       pref_service_.GetList(prefs::kBraveAIChatUserMemories);
   ASSERT_EQ(memories.size(), 1u);
   EXPECT_EQ(memories[0].GetString(), "User prefers TypeScript");
+}
+
+TEST_F(MemoryStorageToolTest, UseTool_DuplicateIsReported) {
+  const std::string input_json = R"({"memory": "User prefers TypeScript"})";
+  base::test::TestFuture<Tool::ToolResult, Tool::ToolArtifacts> first;
+  memory_tool_->UseTool(input_json, first.GetCallback());
+  ASSERT_TRUE(first.Wait());
+
+  base::test::TestFuture<Tool::ToolResult, Tool::ToolArtifacts> second;
+  memory_tool_->UseTool(input_json, second.GetCallback());
+  auto [result, artifacts] = second.Take();
+
+  // Not an error: the memory is there. The artifact says it was there before.
+  ASSERT_EQ(result.size(), 1u);
+  EXPECT_EQ(result[0]->get_text_content_block()->text, "");
+  ASSERT_EQ(artifacts.size(), 1u);
+  EXPECT_EQ(base::test::ParseJsonDict(artifacts[0]->content_json),
+            base::test::ParseJsonDict(R"({"status": "duplicate"})"));
+  EXPECT_EQ(pref_service_.GetList(prefs::kBraveAIChatUserMemories).size(), 1u);
+}
+
+TEST_F(MemoryStorageToolTest, UseTool_TellsTheCallbackWhatItDid) {
+  std::vector<std::pair<std::string, bool>> saves;
+  memory_tool_ = std::make_unique<MemoryStorageTool>(
+      &pref_service_,
+      base::BindLambdaForTesting([&](const std::string& memory, bool added) {
+        saves.emplace_back(memory, added);
+      }));
+
+  for (int i = 0; i < 2; ++i) {
+    base::test::TestFuture<Tool::ToolResult, Tool::ToolArtifacts> future;
+    memory_tool_->UseTool(R"({"memory": "Likes tea"})", future.GetCallback());
+    ASSERT_TRUE(future.Wait());
+  }
+  // An error is not a save.
+  base::test::TestFuture<Tool::ToolResult, Tool::ToolArtifacts> error;
+  memory_tool_->UseTool(R"({"memory": ""})", error.GetCallback());
+  ASSERT_TRUE(error.Wait());
+
+  EXPECT_THAT(saves, testing::ElementsAre(
+                         std::pair<std::string, bool>("Likes tea", true),
+                         std::pair<std::string, bool>("Likes tea", false)));
+}
+
+TEST_F(MemoryStorageToolTest, DescriptionAsksForAnExplicitRequest) {
+  // A fact that the user only mentions is not saved by the tool.
+  EXPECT_NE(memory_tool_->Description().find("ONLY when the user explicitly"),
+            std::string_view::npos);
+  EXPECT_NE(memory_tool_->Description().find("I moved to Italy"),
+            std::string_view::npos);
 }
 
 TEST_F(MemoryStorageToolTest, UseTool_InvalidJson) {

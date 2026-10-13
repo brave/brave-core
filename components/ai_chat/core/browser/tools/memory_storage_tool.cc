@@ -5,9 +5,12 @@
 
 #include "brave/components/ai_chat/core/browser/tools/memory_storage_tool.h"
 
+#include <optional>
 #include <utility>
+#include <vector>
 
 #include "base/json/json_reader.h"
+#include "base/json/json_writer.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/values.h"
@@ -22,8 +25,9 @@
 
 namespace ai_chat {
 
-MemoryStorageTool::MemoryStorageTool(PrefService* pref_service)
-    : pref_service_(pref_service) {
+MemoryStorageTool::MemoryStorageTool(PrefService* pref_service,
+                                     SaveCallback on_save)
+    : pref_service_(pref_service), on_save_(std::move(on_save)) {
   CHECK(pref_service);
 }
 
@@ -34,15 +38,16 @@ std::string_view MemoryStorageTool::Name() const {
 }
 
 std::string_view MemoryStorageTool::Description() const {
-  return "Store user information ONLY when user explicitly requests to "
-         "remember something "
-         "with phrases like 'Remember that I...', 'Please note that I...', "
-         "'Store that I...', "
-         "or similar direct memory commands. Do NOT use for casual mentions, "
-         "examples, "
-         "questions, or context. Returns empty string on success, error "
-         "message "
-         "on failure. Call this tool at most once per turn.";
+  return "Store user information ONLY when the user explicitly asks you to "
+         "remember it, with phrases like 'Remember that I...', 'Please note "
+         "that I...', 'Store that I...', 'Save this to memory' or similar "
+         "direct memory commands. Do NOT use it when the user only mentions "
+         "something about themselves, for example 'I moved to Italy', 'I am a "
+         "teacher' or 'I like tea': a later step learns such facts without "
+         "this tool. Do NOT use it for examples, questions, or context. If "
+         "you are not sure that the user asked you to remember it, do not "
+         "call this tool. Returns empty string on success, error message on "
+         "failure. Call this tool at most once per turn.";
 }
 
 std::optional<base::DictValue> MemoryStorageTool::InputProperties() const {
@@ -117,10 +122,20 @@ void MemoryStorageTool::UseTool(const std::string& input_json,
   }
 
   // Store the memory using the prefs utility
-  prefs::AddMemoryToPrefs(*memory_content, *pref_service_);
+  const bool added = prefs::AddMemoryToPrefs(*memory_content, *pref_service_);
+  if (on_save_) {
+    on_save_.Run(*memory_content, added);
+  }
 
   // Return empty result to signal the completion of this tool to AI agents.
-  std::move(callback).Run(CreateContentBlocksForText(""), {});
+  // The artifact tells the UI if the memory is new.
+  std::vector<mojom::ToolArtifactPtr> artifacts;
+  artifacts.push_back(mojom::ToolArtifact::New(
+      /*id=*/std::nullopt, mojom::kMemorySaveStatusArtifactType,
+      base::WriteJson(
+          base::DictValue().Set("status", added ? "added" : "duplicate"))
+          .value_or("{}")));
+  std::move(callback).Run(CreateContentBlocksForText(""), std::move(artifacts));
 }
 
 }  // namespace ai_chat

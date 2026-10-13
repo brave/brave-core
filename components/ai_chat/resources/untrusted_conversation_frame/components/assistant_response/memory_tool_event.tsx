@@ -49,6 +49,20 @@ const MemoryToolEvent: React.FC<Props> = ({ toolUseEvent }) => {
   // Non-empty string in textContentBlock indicates an error
   const hasError = !!toolUseEvent.output?.[0]?.textContentBlock?.text
 
+  // The tool says if it added the memory, or the list had it already. Without
+  // the artifact (an older chat), the memory counts as added.
+  const alreadySaved = React.useMemo(() => {
+    const artifact = toolUseEvent.artifacts?.find(
+      (a) => a.type === Mojom.MEMORY_SAVE_STATUS_ARTIFACT_TYPE,
+    )
+    if (!artifact) return false
+    try {
+      return JSON.parse(artifact.contentJson)?.status === 'duplicate'
+    } catch (e) {
+      return false
+    }
+  }, [toolUseEvent.artifacts])
+
   const handleUndo = async () => {
     if (!memoryContent) return
 
@@ -68,6 +82,7 @@ const MemoryToolEvent: React.FC<Props> = ({ toolUseEvent }) => {
   const getTestId = () => {
     if (hasError) return 'memory-tool-event-error'
     if (!memoryExists) return 'memory-tool-event-undone'
+    if (alreadySaved) return 'memory-tool-event-duplicate'
     return 'memory-tool-event'
   }
 
@@ -114,17 +129,23 @@ const MemoryToolEvent: React.FC<Props> = ({ toolUseEvent }) => {
       {!hasError && memoryExists && (
         <div className={styles.actions}>
           <span>
-            {formatLocale(S.CHAT_UI_MEMORY_UPDATED_WITH_CONTENT_LABEL, {
-              $1: memoryContent,
-            })}
+            {formatLocale(
+              alreadySaved
+                ? S.CHAT_UI_MEMORY_ALREADY_SAVED_WITH_CONTENT_LABEL
+                : S.CHAT_UI_MEMORY_SAVED_WITH_CONTENT_LABEL,
+              { $1: memoryContent },
+            )}
           </span>
-          <button
-            className={styles.button}
-            onClick={handleUndo}
-            data-testid='memory-undo-button'
-          >
-            {getLocale(S.CHAT_UI_MEMORY_UNDO_BUTTON_LABEL)}
-          </button>
+          {/* Undo would delete the memory that was there before. */}
+          {!alreadySaved && (
+            <button
+              className={styles.button}
+              onClick={handleUndo}
+              data-testid='memory-undo-button'
+            >
+              {getLocale(S.CHAT_UI_MEMORY_UNDO_BUTTON_LABEL)}
+            </button>
+          )}
           <button
             className={styles.button}
             onClick={handleManageAll}

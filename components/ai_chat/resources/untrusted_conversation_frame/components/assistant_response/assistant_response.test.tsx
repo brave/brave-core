@@ -146,7 +146,7 @@ test('AssistantResponse should render memory tool events inline', async () => {
     expect(screen.getByTestId('memory-tool-event')).toBeInTheDocument()
   })
   expect(
-    screen.getByText(/CHAT_UI_MEMORY_UPDATED_WITH_CONTENT_LABEL/),
+    screen.getByText(/CHAT_UI_MEMORY_SAVED_WITH_CONTENT_LABEL/),
   ).toBeInTheDocument()
 })
 

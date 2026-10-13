@@ -17,11 +17,21 @@ describe('MemoryToolEvent', () => {
   const createToolUseEvent = (
     argumentsJson: string,
     output?: any[],
+    artifacts?: Mojom.ToolArtifact[],
   ): Mojom.ToolUseEvent => ({
     toolName: Mojom.MEMORY_STORAGE_TOOL_NAME,
     id: '123',
     argumentsJson,
     output,
+    artifacts,
+  })
+
+  // What the memory tool adds: "added" for a new memory, "duplicate" when the
+  // list had it already.
+  const statusArtifact = (status: string): Mojom.ToolArtifact => ({
+    id: undefined,
+    type: Mojom.MEMORY_SAVE_STATUS_ARTIFACT_TYPE,
+    contentJson: JSON.stringify({ status }),
   })
 
   test('should not render if no memory content', () => {
@@ -91,11 +101,60 @@ describe('MemoryToolEvent', () => {
       expect(screen.getByTestId('memory-tool-event')).toBeInTheDocument()
     })
     expect(
-      screen.getByText(/CHAT_UI_MEMORY_UPDATED_WITH_CONTENT_LABEL/),
+      screen.getByText(/CHAT_UI_MEMORY_SAVED_WITH_CONTENT_LABEL/),
     ).toBeInTheDocument()
     expect(screen.getByTestId('memory-undo-button')).toBeInTheDocument()
     expect(screen.getByTestId('memory-manage-button')).toBeInTheDocument()
     expect(mockHasMemory).toHaveBeenCalledWith('Test memory content')
+  })
+
+  test('should offer undo for a memory that the tool added', async () => {
+    const mockHasMemory = jest.fn().mockResolvedValue({ exists: true })
+
+    render(
+      <MockContext uiHandler={{ hasMemory: mockHasMemory }}>
+        <MemoryToolEvent
+          toolUseEvent={createToolUseEvent(
+            '{"memory": "Test memory content"}',
+            [createTextContentBlock('')],
+            [statusArtifact('added')],
+          )}
+        />
+      </MockContext>,
+    )
+
+    await waitFor(() => {
+      expect(screen.getByTestId('memory-tool-event')).toBeInTheDocument()
+    })
+    expect(screen.getByTestId('memory-undo-button')).toBeInTheDocument()
+  })
+
+  test('should say already saved, with no undo, for a duplicate', async () => {
+    const mockHasMemory = jest.fn().mockResolvedValue({ exists: true })
+
+    render(
+      <MockContext uiHandler={{ hasMemory: mockHasMemory }}>
+        <MemoryToolEvent
+          toolUseEvent={createToolUseEvent(
+            '{"memory": "Test memory content"}',
+            [createTextContentBlock('')],
+            [statusArtifact('duplicate')],
+          )}
+        />
+      </MockContext>,
+    )
+
+    await waitFor(() => {
+      expect(
+        screen.getByTestId('memory-tool-event-duplicate'),
+      ).toBeInTheDocument()
+    })
+    expect(
+      screen.getByText(/CHAT_UI_MEMORY_ALREADY_SAVED_WITH_CONTENT_LABEL/),
+    ).toBeInTheDocument()
+    // Undo would delete the memory that was there before.
+    expect(screen.queryByTestId('memory-undo-button')).not.toBeInTheDocument()
+    expect(screen.getByTestId('memory-manage-button')).toBeInTheDocument()
   })
 
   test('should render undone state when memory does not exist', async () => {

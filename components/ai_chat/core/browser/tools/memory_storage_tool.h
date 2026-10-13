@@ -11,6 +11,7 @@
 #include <string_view>
 #include <vector>
 
+#include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
@@ -22,14 +23,23 @@ namespace ai_chat {
 // Tool for storing user memories locally in prefs, which is owned by
 // AIChatService and shared across conversations.
 //
-// Assistants are supposed to use this tool when it identifies an explicit
-// request from user to remember something. Memory passed in the tool_use
-// event will be added into our memory preference automatically in UseTool.
-// UI is responsible to present the memory being added to user for visibility
-// and an option to undo the operation.
+// Assistants are supposed to use this tool only when the user explicitly asks
+// to remember something. A fact that the user only mentions is left to the
+// learning from the saved chats. Memory passed in the tool_use event will be
+// added into our memory preference automatically in UseTool. The tool adds
+// an artifact that tells if the memory is new or was saved already. UI is
+// responsible to present the memory to user for visibility, and an option to
+// undo the operation when the tool added it.
 class MemoryStorageTool : public Tool {
  public:
-  explicit MemoryStorageTool(PrefService* pref_service);
+  // Called after each save with the memory, and whether the tool added it
+  // (true) or the list had it already (false).
+  using SaveCallback =
+      base::RepeatingCallback<void(const std::string& memory, bool added)>;
+
+  // |on_save| can be null.
+  explicit MemoryStorageTool(PrefService* pref_service,
+                             SaveCallback on_save = SaveCallback());
   ~MemoryStorageTool() override;
 
   MemoryStorageTool(const MemoryStorageTool&) = delete;
@@ -49,6 +59,7 @@ class MemoryStorageTool : public Tool {
 
  private:
   raw_ptr<PrefService> pref_service_;
+  SaveCallback on_save_;
 };
 
 }  // namespace ai_chat

@@ -36,9 +36,10 @@ void ResetCustomizationsPref(PrefService& prefs);
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 std::vector<std::string> GetMemoriesFromPrefs(const PrefService& prefs);
 // Appends the memory to the memories list in the pref. Silently ignore
-// duplicate items.
+// duplicate items. Returns true if the memory is added, false if it was in the
+// list already.
 COMPONENT_EXPORT(AI_CHAT_COMMON)
-void AddMemoryToPrefs(const std::string& memory, PrefService& prefs);
+bool AddMemoryToPrefs(const std::string& memory, PrefService& prefs);
 // Updates a memory in the memories list in the pref. Returns true if the memory
 // is updated, false if the memory is not found.
 COMPONENT_EXPORT(AI_CHAT_COMMON)

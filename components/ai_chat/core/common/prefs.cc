@@ -145,15 +145,16 @@ std::vector<std::string> GetMemoriesFromPrefs(const PrefService& prefs) {
   return memories;
 }
 
-void AddMemoryToPrefs(const std::string& memory, PrefService& prefs) {
+bool AddMemoryToPrefs(const std::string& memory, PrefService& prefs) {
   ScopedListPrefUpdate update(&prefs, prefs::kBraveAIChatUserMemories);
   for (auto& item : *update) {
     if (item.is_string() && item.GetString() == memory) {
       // Silently ignore duplicate items.
-      return;
+      return false;
     }
   }
   update->Append(memory);
+  return true;
 }
 
 bool UpdateMemoryInPrefs(const std::string& old_memory,

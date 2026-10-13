@@ -62,6 +62,12 @@ const string kVisitedLinksArtifactType = "visited_links";
 const string kConversationSearchResultsArtifactType =
     "conversation_search_results";
 
+// Carries a JSON object with a "status" of the memory_storage_tool: "added" for
+// a new memory, or "duplicate" when the memory was saved already. The
+// conversation UI uses it to say which one happened, and to offer "Undo" only
+// for a memory that the tool added.
+const string kMemorySaveStatusArtifactType = "memory_save_status";
+
 // Maximum length for memory and customization records.
 const int32 kMaxMemoryRecordLength = 512;
 
