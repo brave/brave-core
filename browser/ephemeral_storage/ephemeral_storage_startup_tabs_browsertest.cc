@@ -23,6 +23,7 @@
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/startup/startup_browser_creator_impl.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "chrome/common/chrome_switches.h"
 #include "chrome/common/webui_url_constants.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/keep_alive_registry/keep_alive_types.h"
@@ -114,9 +115,11 @@ class EphemeralStorageStartupTabsBrowserTest
         profile, ProfileKeepAliveOrigin::kBrowserWindow);
     CloseBrowserSynchronously(browser);
 
-    // IsFirstRun::kNo: normal launch, avoids first-run URL override.
-    base::CommandLine dummy(base::CommandLine::NO_PROGRAM);
-    StartupBrowserCreatorImpl creator(base::FilePath(), dummy,
+    base::CommandLine command_line(base::CommandLine::NO_PROGRAM);
+    set_open_about_blank_on_browser_launch(false);
+    // Sets default command line to avoid run default browser check
+    SetUpDefaultCommandLine(&command_line);
+    StartupBrowserCreatorImpl creator(base::FilePath(), command_line,
                                       chrome::startup::IsFirstRun::kNo);
     ui_test_utils::BrowserCreatedObserver browser_created_observer;
     creator.Launch(profile, chrome::startup::IsProcessStartup::kNo,
@@ -301,6 +304,9 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageStartupTabsBrowserTest,
   // is passed via the command line instead, which is honored regardless of
   // profile type.
   base::CommandLine command_line(base::CommandLine::NO_PROGRAM);
+  set_open_about_blank_on_browser_launch(false);
+  // Sets default command line to avoid run default browser check
+  SetUpDefaultCommandLine(&command_line);
   command_line.AppendArg(a_site_ephemeral_storage_url_.spec());
   StartupBrowserCreatorImpl creator(base::FilePath(), command_line,
                                     chrome::startup::IsFirstRun::kNo);

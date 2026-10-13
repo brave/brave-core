@@ -19,11 +19,11 @@
 #include "brave/browser/containers/container_specifier_utils.h"
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
-// Returns true if the ephemeral storage for |url|'s domain is scheduled for
-// cleanup, in which case the tab should not be restored.
-// Implemented in
-// browser/ephemeral_storage/ephemeral_storage_session_restore_helpers.cc so
-// that the upstream sessions target does not depend on Brave ephemeral storage.
+// Returns true if ephemeral storage for |url|'s domain is scheduled for
+// cleanup, in which case |url| is skipped when opening startup tabs.
+// Defined in
+// browser/ephemeral_storage/ephemeral_storage_session_restore_helpers.cc so the
+// startup target does not depend on Brave ephemeral storage.
 bool BraveIsScheduledForCleanup(const GURL& url, Profile* profile);
 
 namespace {

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/startup/startup_browser_creator_impl.cc b/chrome/browser/ui/startup/startup_browser_creator_impl.cc
-index c19d4ba646850e49d845046f01dc46b661d71acb..2747148bc0979a7a8b0a26170067d20acc83a4dc 100644
+index 1e34f398af7c05e1290c22270343b3fe03b7687b..ab579666dd6ba9c42daec7793e910e90647c9a1e 100644
 --- a/chrome/browser/ui/startup/startup_browser_creator_impl.cc
 +++ b/chrome/browser/ui/startup/startup_browser_creator_impl.cc
-@@ -367,6 +367,9 @@ BrowserWindowInterface* StartupBrowserCreatorImpl::OpenTabsInBrowser(
+@@ -374,6 +374,9 @@ BrowserWindowInterface* StartupBrowserCreatorImpl::OpenTabsInBrowser(
    custom_handlers::ProtocolHandlerRegistry* registry =
        ProtocolHandlerRegistryFactory::GetForBrowserContext(profile_);
    for (auto& tab : tabs) {
@@ -12,7 +12,7 @@ index c19d4ba646850e49d845046f01dc46b661d71acb..2747148bc0979a7a8b0a26170067d20a
      // We skip URLs that we'd have to launch an external protocol handler for.
      // This avoids us getting into an infinite loop asking ourselves to open
      // a URL, should the handler be (incorrectly) configured to be us. Anyone
-@@ -424,7 +427,7 @@ BrowserWindowInterface* StartupBrowserCreatorImpl::OpenTabsInBrowser(
+@@ -431,7 +434,7 @@ BrowserWindowInterface* StartupBrowserCreatorImpl::OpenTabsInBrowser(
        params.disposition = WindowOpenDisposition::CURRENT_TAB;
        params.tabstrip_add_types = ADD_NONE;
        first_tab = false;
@@ -21,7 +21,7 @@ index c19d4ba646850e49d845046f01dc46b661d71acb..2747148bc0979a7a8b0a26170067d20a
        continue;
      }
  
-@@ -454,7 +457,7 @@ BrowserWindowInterface* StartupBrowserCreatorImpl::OpenTabsInBrowser(
+@@ -465,7 +468,7 @@ BrowserWindowInterface* StartupBrowserCreatorImpl::OpenTabsInBrowser(
      }
  #endif  // BUILDFLAG(ENABLE_RLZ)
  
