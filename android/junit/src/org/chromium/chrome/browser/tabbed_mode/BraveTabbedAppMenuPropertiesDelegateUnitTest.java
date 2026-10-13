@@ -137,6 +137,7 @@ import java.util.List;
 })
 @EnableFeatures({
     BraveFeatureList.AI_CHAT,
+    ChromeFeatureList.IN_APP_WINDOW_MANAGER_DEPRECATION,
 })
 public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
     @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
