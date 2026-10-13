@@ -1562,6 +1562,33 @@
      "spanish"
     ],
     "optional": true
+   },
+   {
+    "op": "merge",
+    "facts": [
+     "sister_lieke",
+     "niece_fenna"
+    ],
+    "optional": true,
+    "note": "Related facts in one memory (dataset version 11): the merged text keeps both facts and adds nothing."
+   },
+   {
+    "op": "merge",
+    "facts": [
+     "partner_joost",
+     "joost_vinyl"
+    ],
+    "optional": true,
+    "note": "Related facts in one memory (dataset version 11): the merged text keeps both facts and adds nothing."
+   },
+   {
+    "op": "merge",
+    "facts": [
+     "partner_joost",
+     "home_utrecht"
+    ],
+    "optional": true,
+    "note": "Related facts in one memory (dataset version 11): the merged text keeps both facts and adds nothing."
    }
   ],
   "turns": {

@@ -776,6 +776,24 @@
      "cat_juniper"
     ],
     "optional": true
+   },
+   {
+    "op": "merge",
+    "facts": [
+     "cottage_lunenburg",
+     "home_halifax"
+    ],
+    "optional": true,
+    "note": "Related facts in one memory (dataset version 11): the merged text keeps both facts and adds nothing."
+   },
+   {
+    "op": "merge",
+    "facts": [
+     "grandchild_lily",
+     "grandchild_max"
+    ],
+    "optional": true,
+    "note": "Related facts in one memory (dataset version 11): the merged text keeps both facts and adds nothing."
    }
   ],
   "turns": {

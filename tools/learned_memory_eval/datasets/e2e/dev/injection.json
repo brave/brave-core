@@ -988,6 +988,15 @@
      "daughter_anika"
     ],
     "optional": true
+   },
+   {
+    "op": "merge",
+    "facts": [
+     "vegetarian",
+     "wife_sunita"
+    ],
+    "optional": true,
+    "note": "Related facts in one memory (dataset version 11): the merged text keeps both facts and adds nothing."
    }
   ],
   "turns": {
