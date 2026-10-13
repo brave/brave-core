@@ -19,6 +19,10 @@ const uint32 kProtocolVersion = 1;
 // Browser's subordinate surface, passed to the agent's BrowserHost, so the
 // agent can call back into the browser once it accepts.
 interface BrowserEndpoint {
+  // Called with the current state as soon as the BrowserHost is bound, then
+  // on every change. |error_message| is set for error states, and null is
+  // passed otherwise.
+  OnConnectionStateChanged(VpnConnectionState state, string? error_message);
 };
 
 enum InitializeResult {
@@ -34,6 +38,15 @@ enum BindBrowserHostResult {
   kSuccess,
   kUninitialized,
   kAlreadyBound,
+};
+
+enum VpnConnectionState {
+  kDisconnected,
+  kConnected,
+  kDisconnecting,
+  kConnecting,
+  kConnectFailed,
+  kInternalError,
 };
 
 // The browser's connection to the agent, and the only interface reachable on
@@ -63,6 +76,15 @@ interface BrowserHostProvider {
 };
 
 // Agent browser-facing real API surface, owns the VPN related functionality
-// passed to the authenticanted browsers.
+// passed to the authenticated browsers.
 interface BrowserHost {
+  // Starts connecting the VPN.
+  Connect();
+
+  // Disconnects the VPN.
+  Disconnect();
+
+  // Clears a failure state and its error message, returning to kDisconnected
+  // without connecting.
+  ResetConnectionState();
 };

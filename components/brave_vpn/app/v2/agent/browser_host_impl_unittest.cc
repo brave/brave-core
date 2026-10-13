@@ -6,6 +6,7 @@
 #include "brave/components/brave_vpn/app/v2/agent/browser_host_impl.h"
 
 #include <memory>
+#include <optional>
 #include <utility>
 
 #include "base/functional/callback.h"
@@ -15,6 +16,7 @@
 #include "base/test/test_future.h"
 #include "brave/components/brave_vpn/app/v2/agent/test/fake_browser.h"
 #include "brave/components/brave_vpn/app/v2/agent/test/fake_browser_endpoint.h"
+#include "brave/components/brave_vpn/app/v2/agent/test/fake_connection_manager.h"
 #include "brave/components/brave_vpn/common/mojom/browser_agent.mojom.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
@@ -41,13 +43,14 @@ class BrowserHostImplTest : public testing::Test {
  protected:
   void CreateHost() { CreateHost(disconnected_.GetCallback()); }
   void CreateHost(base::OnceClosure disconnect_handler) {
-    host_ = std::make_unique<BrowserHostImpl>(browser_.BindEndpoint(),
-                                              browser_.BindHost(),
-                                              std::move(disconnect_handler));
+    host_ = std::make_unique<BrowserHostImpl>(
+        connection_manager_, browser_.BindEndpoint(), browser_.BindHost(),
+        std::move(disconnect_handler));
     ASSERT_TRUE(host_);
   }
 
   base::test::TaskEnvironment task_environment_;
+  FakeConnectionManager connection_manager_;
   FakeBrowser browser_;
   std::unique_ptr<BrowserHostImpl> host_;
   base::test::TestFuture<void> disconnected_;
@@ -106,6 +109,74 @@ TEST_F(BrowserHostImplTest, DestructionDoesNotReportDisconnect) {
   // processed, so the report either happened by now or never will.
   EXPECT_TRUE(browser_.WaitForHostClosed());
   EXPECT_FALSE(disconnected_.IsReady());
+}
+
+// The browser learns the current state without asking for it, exactly once.
+TEST_F(BrowserHostImplTest, SendsCurrentStateOnCreation) {
+  CreateHost();
+
+  ASSERT_TRUE(browser_.endpoint().WaitForConnectionStateUpdates(1));
+  FlushSequence();
+
+  const auto& updates = browser_.endpoint().connection_state_updates();
+  ASSERT_EQ(1u, updates.size());
+  EXPECT_EQ(mojom::VpnConnectionState::kDisconnected, updates[0].state);
+  EXPECT_EQ(std::nullopt, updates[0].error_message);
+}
+
+// The manager is shared, so a browser that binds late must see the state other
+// browsers already caused, not a default.
+TEST_F(BrowserHostImplTest, InitialStateReflectsSharedManager) {
+  connection_manager_.SetConnectionState(
+      mojom::VpnConnectionState::kConnectFailed, "Server unreachable");
+
+  CreateHost();
+  ASSERT_TRUE(browser_.endpoint().WaitForConnectionStateUpdates(1));
+
+  const auto& updates = browser_.endpoint().connection_state_updates();
+  ASSERT_EQ(1u, updates.size());
+  EXPECT_EQ(mojom::VpnConnectionState::kConnectFailed, updates[0].state);
+  EXPECT_EQ("Server unreachable", updates[0].error_message);
+}
+
+TEST_F(BrowserHostImplTest, RelaysStateChangesToEndpointInOrder) {
+  CreateHost();
+  ASSERT_TRUE(browser_.endpoint().WaitForConnectionStateUpdates(1));
+
+  connection_manager_.SetConnectionState(mojom::VpnConnectionState::kConnecting,
+                                         std::nullopt);
+  connection_manager_.SetConnectionState(
+      mojom::VpnConnectionState::kConnectFailed, "Server unreachable");
+  ASSERT_TRUE(browser_.endpoint().WaitForConnectionStateUpdates(3));
+
+  const auto& updates = browser_.endpoint().connection_state_updates();
+  ASSERT_EQ(3u, updates.size());
+  EXPECT_EQ(mojom::VpnConnectionState::kConnecting, updates[1].state);
+  EXPECT_EQ(std::nullopt, updates[1].error_message);
+  EXPECT_EQ(mojom::VpnConnectionState::kConnectFailed, updates[2].state);
+  EXPECT_EQ("Server unreachable", updates[2].error_message);
+}
+
+TEST_F(BrowserHostImplTest, ForwardsCallsToConnectionManager) {
+  CreateHost();
+
+  browser_.host()->Connect();
+  browser_.host()->Disconnect();
+  browser_.host()->ResetConnectionState();
+  browser_.FlushHost();
+
+  EXPECT_EQ(1, connection_manager_.connect_calls());
+  EXPECT_EQ(1, connection_manager_.disconnect_calls());
+  EXPECT_EQ(1, connection_manager_.reset_connection_state_calls());
+}
+
+// A destroyed host must stop observing the shared manager, or the manager
+// would go on notifying a destroyed observer.
+TEST_F(BrowserHostImplTest, StopsObservingManagerOnDestruction) {
+  CreateHost();
+  ASSERT_TRUE(connection_manager_.HasObservers());
+  host_.reset();
+  EXPECT_FALSE(connection_manager_.HasObservers());
 }
 
 }  // namespace brave_vpn::v2
