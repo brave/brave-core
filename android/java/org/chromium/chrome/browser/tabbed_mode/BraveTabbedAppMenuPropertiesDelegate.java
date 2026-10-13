@@ -644,21 +644,22 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
         }
 
         // Manage windows
+        if (BraveMultiWindowUtils.isWindowManagerAvailable()) {
+            // Remove the windows count placeholder.
+            String manageWindows =
+                    mContext.getString(R.string.menu_manage_all_windows, 0)
+                            .replaceAll("\\s*\\(\\d+\\)$", "");
 
-        // Remove the windows count placeholder.
-        String manageWindows =
-                mContext.getString(R.string.menu_manage_all_windows, 0)
-                        .replaceAll("\\s*\\(\\d+\\)$", "");
-
-        modelList.add(
-                new MVCListAdapter.ListItem(
-                        AppMenuHandler.AppMenuItemType.STANDARD,
-                        AppMenuItemUtils.buildBaseModelForTextItem(
-                                        mAppMenuItemTheme,
-                                        R.id.manage_all_windows_menu_id,
-                                        isMenuIconAtStart())
-                                .with(AppMenuItemProperties.TITLE, manageWindows)
-                                .build()));
+            modelList.add(
+                    new MVCListAdapter.ListItem(
+                            AppMenuHandler.AppMenuItemType.STANDARD,
+                            AppMenuItemUtils.buildBaseModelForTextItem(
+                                            mAppMenuItemTheme,
+                                            R.id.manage_all_windows_menu_id,
+                                            isMenuIconAtStart())
+                                    .with(AppMenuItemProperties.TITLE, manageWindows)
+                                    .build()));
+        }
 
         // Open History
         modelList.add(
