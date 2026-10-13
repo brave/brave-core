@@ -40,22 +40,3 @@ import '../brave_content_page/containers.js'
 // <if expr="enable_traffic_control">
 import '../brave_content_page/traffic_control.js'
 // </if>
-
-import {
-  html,
-  RegisterStyleOverride,
-  RegisterPolymerTemplateModifications
-} from 'chrome://resources/brave/polymer_overriding.js'
-
-
-RegisterStyleOverride(
-  'settings-basic-page',
-  html`
-    <style>
-      :host {
-        min-width: 544px !important;
-      }
-    </style>
-  ` as HTMLTemplateElement
-)
-

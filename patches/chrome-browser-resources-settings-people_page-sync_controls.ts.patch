@@ -1,8 +1,33 @@
 diff --git a/chrome/browser/resources/settings/people_page/sync_controls.ts b/chrome/browser/resources/settings/people_page/sync_controls.ts
-index 328752afd1152ab3640a99896b571ef0f6a4f103..6f8272265f303ce6c94277a1f5c500022b388b19 100644
+index 328752afd1152ab3640a99896b571ef0f6a4f103..a2a2945822c64d367582a30d5de233403c3946d0 100644
 --- a/chrome/browser/resources/settings/people_page/sync_controls.ts
 +++ b/chrome/browser/resources/settings/people_page/sync_controls.ts
-@@ -147,7 +147,7 @@ export class SettingsSyncControlsElement extends
+@@ -102,6 +102,9 @@ export class SettingsSyncControlsElement extends
+       showBatchUploadPromo_: {type: Boolean},
+ 
+       batchUploadPromoHTML_: {type: String},
++
++      isAiChatSyncEnabled_: {type: Boolean},
++      aiChatCheckboxLabel_: {type: String},
+     };
+   }
+ 
+@@ -122,6 +125,14 @@ export class SettingsSyncControlsElement extends
+   protected accessor batchUploadPromoHTML_: TrustedHTML =
+       window.trustedTypes!.emptyHTML;
+ 
++  protected accessor isAiChatSyncEnabled_: boolean =
++      loadTimeData.valueExists('isBraveSyncAIChatEnabled') &&
++      loadTimeData.getBoolean('isBraveSyncAIChatEnabled');
++  protected accessor aiChatCheckboxLabel_: string =
++      this.isAiChatSyncEnabled_ ?
++      loadTimeData.getString('aiChatCheckboxLabel') :
++      '';
++
+   override connectedCallback() {
+     super.connectedCallback();
+ 
+@@ -147,7 +158,7 @@ export class SettingsSyncControlsElement extends
  
      const router = Router.getInstance();
      const currentRoute = router.getCurrentRoute();
@@ -11,15 +36,20 @@ index 328752afd1152ab3640a99896b571ef0f6a4f103..6f8272265f303ce6c94277a1f5c50002
        this.syncBrowserProxy_.didNavigateToSyncPage();
      }
      if (currentRoute === routes.ACCOUNT) {
-@@ -361,6 +361,7 @@ export class SettingsSyncControlsElement extends
+@@ -361,6 +372,12 @@ export class SettingsSyncControlsElement extends
  
    protected disableTypeCheckBox_(dataTypeManaged: boolean|undefined|null):
        boolean {
-+    if (dataTypeManaged) { return true; } if (!this.syncStatus || !this.syncPrefs) { return !!this.syncPrefs?.syncAllDataTypes; }
++    if (dataTypeManaged) {
++      return true;
++    }
++    if (!this.syncStatus || !this.syncPrefs) {
++      return !!this.syncPrefs?.syncAllDataTypes;
++    }
      if (!this.syncStatus) {
        return true;
      }
-@@ -370,7 +371,7 @@ export class SettingsSyncControlsElement extends
+@@ -370,7 +387,7 @@ export class SettingsSyncControlsElement extends
      }
  
      if (this.syncStatus.signedInState === SignedInState.SYNCING) {
