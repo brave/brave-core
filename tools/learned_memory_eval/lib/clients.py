@@ -6,6 +6,7 @@ and the repeat index. A new model digest or a new wording gives a new key, so
 the cache never gives an old answer. The cache is a JSONL file for each
 endpoint in <results root>/cache/.
 """
+
 from __future__ import annotations
 
 import hashlib
@@ -23,7 +24,9 @@ DEFAULT_RESULTS_ROOT = "~/brave/learned_memory_eval_runs"
 
 def results_root(path: str | None = None) -> Path:
     """The results root: the flag, else $LM_EVAL_RUNS, else the default."""
-    return Path(path or os.environ.get("LM_EVAL_RUNS") or DEFAULT_RESULTS_ROOT).expanduser()
+    return Path(
+        path or os.environ.get("LM_EVAL_RUNS") or DEFAULT_RESULTS_ROOT
+    ).expanduser()
 
 
 class ModelError(Exception):
@@ -37,7 +40,10 @@ class ModelError(Exception):
 
 def http_json(url: str, body: bytes | None = None, timeout: float = 600):
     request = urllib.request.Request(
-        url, body, {"Content-Type": "application/json"} if body is not None else {})
+        url,
+        body,
+        {"Content-Type": "application/json"} if body is not None else {},
+    )
     with urllib.request.urlopen(request, timeout=timeout) as response:
         return json.load(response)
 
@@ -55,7 +61,9 @@ def model_digest(ollama: str, model: str) -> str:
                 _digests[(ollama, m["name"])] = m.get("digest", "")
         digest = _digests.get((ollama, model))
     if digest is None:
-        raise ModelError(f"model {model} is not installed in Ollama at {ollama}")
+        raise ModelError(
+            f"model {model} is not installed in Ollama at {ollama}"
+        )
     return digest
 
 
@@ -86,7 +94,10 @@ class DiskCache:
             self.data[key] = value
             self.path.parent.mkdir(parents=True, exist_ok=True)
             with open(self.path, "a", encoding="utf-8") as f:
-                f.write(json.dumps({"key": key, "value": value}, ensure_ascii=False) + "\n")
+                f.write(
+                    json.dumps({"key": key, "value": value}, ensure_ascii=False)
+                    + "\n"
+                )
 
 
 class Client:
@@ -99,16 +110,25 @@ class Client:
     too long with HTTP 400.
     """
 
-    def __init__(self, endpoint: str, ollama: str = DEFAULT_OLLAMA,
-                 cache_dir: Path | None = None, use_cache: bool = True,
-                 refresh: bool = False, retries: int = 2, timeout: float = 600):
+    def __init__(
+        self,
+        endpoint: str,
+        ollama: str = DEFAULT_OLLAMA,
+        cache_dir: Path | None = None,
+        use_cache: bool = True,
+        refresh: bool = False,
+        retries: int = 2,
+        timeout: float = 600,
+    ):
         self.ollama = ollama.rstrip("/")
         self.endpoint = endpoint
         self.url = self.ollama + endpoint
         self.retries = retries
         self.timeout = timeout
         name = endpoint.strip("/").replace("/", "_")
-        self.cache = DiskCache(cache_dir / f"{name}.jsonl" if (cache_dir and use_cache) else None)
+        self.cache = DiskCache(
+            cache_dir / f"{name}.jsonl" if (cache_dir and use_cache) else None
+        )
         self.use_cache = use_cache
         # Send each request again and write the new answer, for example to
         # measure latency. A later line of the cache file wins.
@@ -119,7 +139,12 @@ class Client:
 
     def key(self, model: str, body: str, repeat: int) -> str:
         h = hashlib.sha256()
-        for part in (model_digest(self.ollama, model), self.endpoint, body, str(repeat)):
+        for part in (
+            model_digest(self.ollama, model),
+            self.endpoint,
+            body,
+            str(repeat),
+        ):
             h.update(part.encode())
             h.update(b"\0")
         return h.hexdigest()
@@ -147,18 +172,29 @@ class Client:
             start = time.time()
             try:
                 request = urllib.request.Request(
-                    self.url, data, {"Content-Type": "application/json"})
-                with urllib.request.urlopen(request, timeout=self.timeout) as response:
+                    self.url, data, {"Content-Type": "application/json"}
+                )
+                with urllib.request.urlopen(
+                    request, timeout=self.timeout
+                ) as response:
                     text = response.read().decode("utf-8", "replace")
                     status = response.status
                 latency = int((time.time() - start) * 1000)
                 try:
                     answer = json.loads(text)
                 except json.JSONDecodeError:
-                    return {"answer": None, "status": status, "latency_ms": latency,
-                            "error": f"not JSON: {text[:200]}"}
-                return {"answer": answer, "status": status, "latency_ms": latency,
-                        "error": None}
+                    return {
+                        "answer": None,
+                        "status": status,
+                        "latency_ms": latency,
+                        "error": f"not JSON: {text[:200]}",
+                    }
+                return {
+                    "answer": answer,
+                    "status": status,
+                    "latency_ms": latency,
+                    "error": None,
+                }
             except urllib.error.HTTPError as e:
                 latency = int((time.time() - start) * 1000)
                 text = e.read().decode("utf-8", "replace")
@@ -167,8 +203,12 @@ class Client:
                         message = json.loads(text).get("error", text)
                     except (json.JSONDecodeError, AttributeError):
                         message = text
-                    return {"answer": None, "status": e.code, "latency_ms": latency,
-                            "error": str(message)[:500]}
+                    return {
+                        "answer": None,
+                        "status": e.code,
+                        "latency_ms": latency,
+                        "error": str(message)[:500],
+                    }
                 error = f"HTTP {e.code}: {text[:200]}"
             except (urllib.error.URLError, OSError, TimeoutError) as e:
                 error = str(e)
@@ -186,7 +226,9 @@ class SystemOneClient(Client):
     def ask(self, model: str, body: str, repeat: int = 0) -> dict:
         result = self.send(model, body, repeat)
         answer = result["answer"]
-        result["answers"] = answer.get("answers") if isinstance(answer, dict) else None
+        result["answers"] = (
+            answer.get("answers") if isinstance(answer, dict) else None
+        )
         if result["answers"] is None and not result["error"]:
             result["error"] = "no answers in the response"
         return result
@@ -210,8 +252,18 @@ class ChatClient(Client):
         return result
 
 
-def make_clients(ollama: str = DEFAULT_OLLAMA, root: Path | None = None,
-                 use_cache: bool = True, refresh: bool = False) -> tuple:
+def make_clients(
+    ollama: str = DEFAULT_OLLAMA,
+    root: Path | None = None,
+    use_cache: bool = True,
+    refresh: bool = False,
+) -> tuple:
     cache_dir = (root or results_root()) / "cache"
-    return (SystemOneClient(ollama, cache_dir=cache_dir, use_cache=use_cache, refresh=refresh),
-            ChatClient(ollama, cache_dir=cache_dir, use_cache=use_cache, refresh=refresh))
+    return (
+        SystemOneClient(
+            ollama, cache_dir=cache_dir, use_cache=use_cache, refresh=refresh
+        ),
+        ChatClient(
+            ollama, cache_dir=cache_dir, use_cache=use_cache, refresh=refresh
+        ),
+    )

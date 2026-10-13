@@ -9,6 +9,7 @@ http://127.0.0.1:8899/v1/chat/completions, then run
 
 Each line of the log has the time, the path and the request body.
 """
+
 import http.client
 import json
 import sys
@@ -16,6 +17,8 @@ import time
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 LOG = sys.argv[1] if len(sys.argv) > 1 else "/tmp/requests.jsonl"
+
+
 class H(BaseHTTPRequestHandler):
     def do_POST(self):
         body = self.rfile.read(int(self.headers.get('Content-Length', 0)))
@@ -24,17 +27,35 @@ class H(BaseHTTPRequestHandler):
         except Exception:
             req = {"raw": body.decode(errors='replace')}
         with open(LOG, 'a') as f:
-            f.write(json.dumps({"t": time.strftime('%H:%M:%S'), "path": self.path, "request": req}) + "\n")
+            f.write(
+                json.dumps(
+                    {
+                        "t": time.strftime('%H:%M:%S'),
+                        "path": self.path,
+                        "request": req,
+                    }
+                )
+                + "\n"
+            )
         up = http.client.HTTPConnection('localhost', 11434, timeout=600)
-        up.request('POST', self.path, body, {'Content-Type': 'application/json'})
+        up.request(
+            'POST', self.path, body, {'Content-Type': 'application/json'}
+        )
         r = up.getresponse()
         self.send_response(r.status)
-        self.send_header('Content-Type', r.getheader('Content-Type', 'application/json'))
+        self.send_header(
+            'Content-Type', r.getheader('Content-Type', 'application/json')
+        )
         self.end_headers()
         while True:
             chunk = r.read1(8192) if hasattr(r, 'read1') else r.read(8192)
             if not chunk:
                 break
-            self.wfile.write(chunk); self.wfile.flush()
-    def log_message(self, *a): pass
+            self.wfile.write(chunk)
+            self.wfile.flush()
+
+    def log_message(self, *a):
+        pass
+
+
 ThreadingHTTPServer(('127.0.0.1', 8899), H).serve_forever()

@@ -9,6 +9,7 @@ A task folder has:
 
 The agent sees only its folder. No API key is read or passed.
 """
+
 from __future__ import annotations
 
 import json
@@ -30,10 +31,16 @@ def write_task(folder: Path, task_md: str, items: list) -> Path:
     lines = [json.dumps(i, ensure_ascii=False) for i in items]
     data = "\n".join(lines) + "\n"
     if len(items) >= MAX_ITEMS or len(data.encode()) > MAX_BYTES:
-        raise ValueError(f"{folder.name}: {len(items)} items, {len(data.encode())} bytes; "
-                         f"split the task (at most {MAX_ITEMS - 1} items, {MAX_BYTES} bytes)")
+        raise ValueError(
+            f"{folder.name}: {len(items)} items, {len(data.encode())} bytes; "
+            f"split the task (at most {MAX_ITEMS - 1} items, {MAX_BYTES} bytes)"
+        )
     folder.mkdir(parents=True, exist_ok=True)
-    old = (folder / "items.jsonl").read_text() if (folder / "items.jsonl").exists() else None
+    old = (
+        (folder / "items.jsonl").read_text()
+        if (folder / "items.jsonl").exists()
+        else None
+    )
     if old is not None and old != data:
         # Other items: the old answers do not belong to them.
         for name in ("answers.jsonl", "errors.md"):
@@ -44,7 +51,11 @@ def write_task(folder: Path, task_md: str, items: list) -> Path:
 
 
 def read_items(folder: Path) -> list:
-    return [json.loads(l) for l in (folder / "items.jsonl").read_text().splitlines() if l.strip()]
+    return [
+        json.loads(l)
+        for l in (folder / "items.jsonl").read_text().splitlines()
+        if l.strip()
+    ]
 
 
 def read_answers(folder: Path) -> tuple:
@@ -89,19 +100,35 @@ def check(folder: Path, validate) -> tuple:
             errors.append(f"id {aid}: {problem}")
             continue
         by_id[aid] = a
-    missing = [i for i in items if i not in by_id and not any(e.startswith(f"id {i}:") for e in errors)]
+    missing = [
+        i
+        for i in items
+        if i not in by_id and not any(e.startswith(f"id {i}:") for e in errors)
+    ]
     if missing:
-        errors.append(f"no answer for {len(missing)} ids: {', '.join(missing[:20])}")
+        errors.append(
+            f"no answer for {len(missing)} ids: {', '.join(missing[:20])}"
+        )
     return by_id, errors
 
 
 def write_meta(folder: Path, meta: dict) -> None:
     """Puts the "_meta" line first in answers.jsonl."""
     path = folder / "answers.jsonl"
-    rest = [l for l in path.read_text(encoding="utf-8").splitlines()
-            if l.strip() and not l.lstrip().startswith('{"_meta"')]
-    path.write_text("\n".join([json.dumps({"_meta": meta}, ensure_ascii=False)] + rest) + "\n")
+    rest = [
+        l
+        for l in path.read_text(encoding="utf-8").splitlines()
+        if l.strip() and not l.lstrip().startswith('{"_meta"')
+    ]
+    path.write_text(
+        "\n".join([json.dumps({"_meta": meta}, ensure_ascii=False)] + rest)
+        + "\n"
+    )
 
 
 def basic_validate(item: dict, answer: dict):
-    return None if isinstance(answer.get("reason", ""), str) else "reason must be a string"
+    return (
+        None
+        if isinstance(answer.get("reason", ""), str)
+        else "reason must be a string"
+    )

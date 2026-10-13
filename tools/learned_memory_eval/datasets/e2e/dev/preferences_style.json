@@ -76,33 +76,23 @@
     "memories": [
       {
         "label": "prefers short answers",
-        "all": [
-          "short"
-        ]
+        "all": ["short"]
       },
       {
         "label": "prefers metric units",
-        "all": [
-          "metric"
-        ]
+        "all": ["metric"]
       },
       {
         "label": "prefers bullet points",
-        "all": [
-          "bullet"
-        ]
+        "all": ["bullet"]
       },
       {
         "label": "writes TypeScript",
-        "all": [
-          "typescript"
-        ]
+        "all": ["typescript"]
       },
       {
         "label": "no emojis",
-        "all": [
-          "emoji"
-        ]
+        "all": ["emoji"]
       }
     ],
     "absent": [],
@@ -110,9 +100,7 @@
     "at_most_one": [
       {
         "label": "short answers stored once",
-        "all": [
-          "short"
-        ]
+        "all": ["short"]
       }
     ],
     "max_memories": 8
@@ -123,137 +111,90 @@
         "id": "short_answers",
         "canonical": "Prefers short answers",
         "match": {
-          "all": [
-            "short"
-          ]
+          "all": ["short"]
         },
         "required": true,
         "type": "long_term",
         "category": "preference",
-        "sources": [
-          "c0t0",
-          "c4t0"
-        ]
+        "sources": ["c0t0", "c4t0"]
       },
       {
         "id": "reads_on_phone",
         "canonical": "Reads on a phone",
         "match": {
-          "any": [
-            "phone",
-            "mobile"
-          ]
+          "any": ["phone", "mobile"]
         },
         "required": false,
         "type": "long_term",
         "category": null,
-        "sources": [
-          "c0t0",
-          "c4t0"
-        ]
+        "sources": ["c0t0", "c4t0"]
       },
       {
         "id": "metric_units",
         "canonical": "Prefers metric units",
         "match": {
-          "all": [
-            "metric"
-          ]
+          "all": ["metric"]
         },
         "required": true,
         "type": "long_term",
         "category": "preference",
-        "sources": [
-          "c1t0"
-        ]
+        "sources": ["c1t0"]
       },
       {
         "id": "bullet_points",
         "canonical": "Prefers bullet points over long paragraphs",
         "match": {
-          "all": [
-            "bullet"
-          ]
+          "all": ["bullet"]
         },
         "required": true,
         "type": "long_term",
         "category": "preference",
-        "sources": [
-          "c2t0"
-        ]
+        "sources": ["c2t0"]
       },
       {
         "id": "typescript",
         "canonical": "Writes TypeScript with React",
         "match": {
-          "all": [
-            "typescript"
-          ]
+          "all": ["typescript"]
         },
         "required": true,
         "type": "long_term",
         "category": "personal_fact",
-        "sources": [
-          "c3t0"
-        ]
+        "sources": ["c3t0"]
       },
       {
         "id": "dry_humor",
         "canonical": "Likes dry humor",
         "match": {
-          "any": [
-            "humor",
-            "humour"
-          ]
+          "any": ["humor", "humour"]
         },
         "required": true,
         "type": "long_term",
         "category": "preference",
-        "sources": [
-          "c5t0"
-        ]
+        "sources": ["c5t0"]
       },
       {
         "id": "no_emoji",
         "canonical": "Wants no emojis",
         "match": {
-          "all": [
-            "emoji"
-          ]
+          "all": ["emoji"]
         },
         "required": true,
         "type": "long_term",
         "category": "preference",
-        "sources": [
-          "c5t0"
-        ]
+        "sources": ["c5t0"]
       }
     ],
     "stale": [],
     "forbidden": [],
     "ops": [],
     "turns": {
-      "c0t0": [
-        "short_answers",
-        "reads_on_phone"
-      ],
-      "c1t0": [
-        "metric_units"
-      ],
-      "c2t0": [
-        "bullet_points"
-      ],
-      "c3t0": [
-        "typescript"
-      ],
-      "c4t0": [
-        "short_answers",
-        "reads_on_phone"
-      ],
-      "c5t0": [
-        "dry_humor",
-        "no_emoji"
-      ],
+      "c0t0": ["short_answers", "reads_on_phone"],
+      "c1t0": ["metric_units"],
+      "c2t0": ["bullet_points"],
+      "c3t0": ["typescript"],
+      "c4t0": ["short_answers", "reads_on_phone"],
+      "c5t0": ["dry_humor", "no_emoji"],
       "c6t0": []
     }
   }

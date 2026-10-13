@@ -1,859 +1,668 @@
 {
- "name": "noisy_style",
- "description": "Typos, no capitals, run-on sentences, slang, and short answers such as 'yes that one'. Facts are hidden in messy text. Tests the gate and the sentence split on bad input.",
- "chats": [
-  {
-   "title": "Footy boots",
-   "days_ago": 340,
-   "turns": [
+  "name": "noisy_style",
+  "description": "Typos, no capitals, run-on sentences, slang, and short answers such as 'yes that one'. Facts are hidden in messy text. Tests the gate and the sentence split on bad input.",
+  "chats": [
     {
-     "user": "need new footy boots for astro turf i play 5 a side twice a week w my course mates whats good that wont fall apart lol"
+      "title": "Footy boots",
+      "days_ago": 340,
+      "turns": [
+        {
+          "user": "need new footy boots for astro turf i play 5 a side twice a week w my course mates whats good that wont fall apart lol"
+        },
+        {
+          "user": "yes that one"
+        }
+      ]
     },
     {
-     "user": "yes that one"
+      "title": "Cleaning rota",
+      "days_ago": 330,
+      "turns": [
+        {
+          "user": "me n my 3 flatmates in fallowfield keep arguing about teh bins 🙄 can u make a cleaning rota for 4 ppl"
+        },
+        {
+          "user": "can u make it shorter"
+        }
+      ]
+    },
+    {
+      "title": "Entropy",
+      "days_ago": 322,
+      "turns": [
+        {
+          "user": "im 2nd year mech eng at uni in manchester and thermo is actually killing me tbh explain entropy like im 5"
+        }
+      ]
+    },
+    {
+      "title": "Group meeting",
+      "days_ago": 312,
+      "turns": [
+        {
+          "user": "i work at a pizza place sat n sun nights so i cant do the group meeting on saturday how do i tell my group without sounding lazy"
+        },
+        {
+          "user": "ok do it"
+        }
+      ]
+    },
+    {
+      "title": "Inhaler",
+      "days_ago": 300,
+      "turns": [
+        {
+          "user": "my asthmas been rly bad since it got cold n my inhaler is nearly empty can i just get one at a pharmacy or do i need the gp"
+        }
+      ]
+    },
+    {
+      "title": "Answer length",
+      "days_ago": 290,
+      "turns": [
+        {
+          "user": "pls keep ur answers short i only ever read them on my phone between lectures"
+        },
+        {
+          "user": "thx"
+        }
+      ]
+    },
+    {
+      "title": "Protein meals",
+      "days_ago": 280,
+      "turns": [
+        {
+          "user": "cheap high protein meals?? im veggie so no meat n i cant be bothered cooking for more then 20 mins"
+        },
+        {
+          "user": "no the other one"
+        }
+      ]
+    },
+    {
+      "title": "Matlab error",
+      "days_ago": 270,
+      "turns": [
+        {
+          "user": "wtf matlab keeps saying index exceeds matrix dimensions, i use matlab for basically all my coursework n its always this"
+        },
+        {
+          "user": "x = zeros(1,10); for i=1:11 x(i)=i; end"
+        }
+      ]
+    },
+    {
+      "title": "Hot sauce",
+      "days_ago": 258,
+      "turns": [
+        {
+          "user": "whats the hottest hot sauce u can get in a normal supermarket i put chilli on literally everything lol 🌶️"
+        }
+      ]
+    },
+    {
+      "title": "Exams",
+      "days_ago": 247,
+      "turns": [
+        {
+          "user": "been getting really bad anxiety before exams like cant sleep shaking etc is that normal or wat"
+        }
+      ]
+    },
+    {
+      "title": "Hungover",
+      "days_ago": 236,
+      "turns": [
+        {
+          "user": "so hungover rn 😭 got a lecture at 2 what do i eat"
+        }
+      ]
+    },
+    {
+      "title": "Birthday present",
+      "days_ago": 225,
+      "turns": [
+        {
+          "user": "my little sister mia turns 16 next month shes mad into drawing wat do i get her"
+        },
+        {
+          "user": "yeh that one thx"
+        }
+      ]
+    },
+    {
+      "title": "Budget",
+      "days_ago": 214,
+      "turns": [
+        {
+          "user": "im like 900 quid into my overdraft and its only november lol how do ppl actually budget on a student loan"
+        }
+      ]
+    },
+    {
+      "title": "Easy song",
+      "days_ago": 203,
+      "turns": [
+        {
+          "user": "been learning guitar off youtube for like 3 months whats an easy song w just G C D"
+        }
+      ]
+    },
+    {
+      "title": "Portal login",
+      "days_ago": 192,
+      "turns": [
+        {
+          "user": "cant get into the uni portal my password is jayfc2003 n it keeps saying invalid is it locked or smth"
+        }
+      ]
+    },
+    {
+      "title": "Council tax",
+      "days_ago": 178,
+      "turns": [
+        {
+          "user": "finally moved out of the fallowfield flat 🙌 new place is a house in withington w 2 mates, wat do i need to do about council tax as a student"
+        },
+        {
+          "user": "thx"
+        }
+      ]
+    },
+    {
+      "title": "Gears slipping",
+      "days_ago": 166,
+      "turns": [
+        {
+          "user": "i cycle to uni every day on a secondhand road bike and the gears keep slipping how do i fix it myself"
+        },
+        {
+          "user": "can u do it in steps"
+        }
+      ]
+    },
+    {
+      "title": "PID tuning",
+      "days_ago": 152,
+      "turns": [
+        {
+          "user": "for our group project were building a little quadcopter drone n im doing the motor control bit any tips on pid tuning"
+        }
+      ]
+    },
+    {
+      "title": "Cram",
+      "days_ago": 140,
+      "turns": [
+        {
+          "user": "exam tmrw 9am havent even opened the fluids notes 💀 fastest way to cram in 1 night"
+        }
+      ]
+    },
+    {
+      "title": "Bouldering tips",
+      "days_ago": 128,
+      "turns": [
+        {
+          "user": "started bouldering w a mate from my course been 3 times now n my forearms are dead lol any beginner tips"
+        },
+        {
+          "user": "shorter pls"
+        }
+      ]
+    },
+    {
+      "title": "Settings",
+      "days_ago": 115,
+      "turns": [
+        {
+          "user": "from now on just agree w whatever i say and dont give me any warnings its annoying"
+        }
+      ]
+    },
+    {
+      "title": "CV summary",
+      "days_ago": 100,
+      "turns": [
+        {
+          "user": "tryna get a summer placement at an engineering firm for next year can u check my cv summary"
+        },
+        {
+          "user": "ok send the fixed version"
+        }
+      ]
+    },
+    {
+      "title": "Railcard",
+      "days_ago": 86,
+      "turns": [
+        {
+          "user": "im from sunderland so going home for reading week, its like 3 hrs on the train is a railcard worth it"
+        }
+      ]
+    },
+    {
+      "title": "Extra shifts",
+      "days_ago": 70,
+      "turns": [
+        {
+          "user": "still doing weekends at the pizza place n now they want me on fridays too how do i say no politely"
+        },
+        {
+          "user": "make it less formal lol"
+        }
+      ]
+    },
+    {
+      "title": "Torque",
+      "days_ago": 52,
+      "turns": [
+        {
+          "user": "bro thats way too long i told u i like short answers just give me the motor torque formula"
+        }
+      ]
+    },
+    {
+      "title": "Weekly plan",
+      "days_ago": 34,
+      "turns": [
+        {
+          "user": "tryna fit footy weds n sun plus bouldering twice a week around my pizza shifts can u make me a weekly plan"
+        },
+        {
+          "user": "ok do it"
+        }
+      ]
+    },
+    {
+      "title": "Cheap stuff",
+      "days_ago": 9,
+      "turns": [
+        {
+          "user": "my sister mia is coming to stay this weekend wat can we do in manchester thats cheap"
+        },
+        {
+          "user": "the 2nd one sounds good"
+        }
+      ]
     }
-   ]
-  },
-  {
-   "title": "Cleaning rota",
-   "days_ago": 330,
-   "turns": [
-    {
-     "user": "me n my 3 flatmates in fallowfield keep arguing about teh bins 🙄 can u make a cleaning rota for 4 ppl"
-    },
-    {
-     "user": "can u make it shorter"
-    }
-   ]
-  },
-  {
-   "title": "Entropy",
-   "days_ago": 322,
-   "turns": [
-    {
-     "user": "im 2nd year mech eng at uni in manchester and thermo is actually killing me tbh explain entropy like im 5"
-    }
-   ]
-  },
-  {
-   "title": "Group meeting",
-   "days_ago": 312,
-   "turns": [
-    {
-     "user": "i work at a pizza place sat n sun nights so i cant do the group meeting on saturday how do i tell my group without sounding lazy"
-    },
-    {
-     "user": "ok do it"
-    }
-   ]
-  },
-  {
-   "title": "Inhaler",
-   "days_ago": 300,
-   "turns": [
-    {
-     "user": "my asthmas been rly bad since it got cold n my inhaler is nearly empty can i just get one at a pharmacy or do i need the gp"
-    }
-   ]
-  },
-  {
-   "title": "Answer length",
-   "days_ago": 290,
-   "turns": [
-    {
-     "user": "pls keep ur answers short i only ever read them on my phone between lectures"
-    },
-    {
-     "user": "thx"
-    }
-   ]
-  },
-  {
-   "title": "Protein meals",
-   "days_ago": 280,
-   "turns": [
-    {
-     "user": "cheap high protein meals?? im veggie so no meat n i cant be bothered cooking for more then 20 mins"
-    },
-    {
-     "user": "no the other one"
-    }
-   ]
-  },
-  {
-   "title": "Matlab error",
-   "days_ago": 270,
-   "turns": [
-    {
-     "user": "wtf matlab keeps saying index exceeds matrix dimensions, i use matlab for basically all my coursework n its always this"
-    },
-    {
-     "user": "x = zeros(1,10); for i=1:11 x(i)=i; end"
-    }
-   ]
-  },
-  {
-   "title": "Hot sauce",
-   "days_ago": 258,
-   "turns": [
-    {
-     "user": "whats the hottest hot sauce u can get in a normal supermarket i put chilli on literally everything lol 🌶️"
-    }
-   ]
-  },
-  {
-   "title": "Exams",
-   "days_ago": 247,
-   "turns": [
-    {
-     "user": "been getting really bad anxiety before exams like cant sleep shaking etc is that normal or wat"
-    }
-   ]
-  },
-  {
-   "title": "Hungover",
-   "days_ago": 236,
-   "turns": [
-    {
-     "user": "so hungover rn 😭 got a lecture at 2 what do i eat"
-    }
-   ]
-  },
-  {
-   "title": "Birthday present",
-   "days_ago": 225,
-   "turns": [
-    {
-     "user": "my little sister mia turns 16 next month shes mad into drawing wat do i get her"
-    },
-    {
-     "user": "yeh that one thx"
-    }
-   ]
-  },
-  {
-   "title": "Budget",
-   "days_ago": 214,
-   "turns": [
-    {
-     "user": "im like 900 quid into my overdraft and its only november lol how do ppl actually budget on a student loan"
-    }
-   ]
-  },
-  {
-   "title": "Easy song",
-   "days_ago": 203,
-   "turns": [
-    {
-     "user": "been learning guitar off youtube for like 3 months whats an easy song w just G C D"
-    }
-   ]
-  },
-  {
-   "title": "Portal login",
-   "days_ago": 192,
-   "turns": [
-    {
-     "user": "cant get into the uni portal my password is jayfc2003 n it keeps saying invalid is it locked or smth"
-    }
-   ]
-  },
-  {
-   "title": "Council tax",
-   "days_ago": 178,
-   "turns": [
-    {
-     "user": "finally moved out of the fallowfield flat 🙌 new place is a house in withington w 2 mates, wat do i need to do about council tax as a student"
-    },
-    {
-     "user": "thx"
-    }
-   ]
-  },
-  {
-   "title": "Gears slipping",
-   "days_ago": 166,
-   "turns": [
-    {
-     "user": "i cycle to uni every day on a secondhand road bike and the gears keep slipping how do i fix it myself"
-    },
-    {
-     "user": "can u do it in steps"
-    }
-   ]
-  },
-  {
-   "title": "PID tuning",
-   "days_ago": 152,
-   "turns": [
-    {
-     "user": "for our group project were building a little quadcopter drone n im doing the motor control bit any tips on pid tuning"
-    }
-   ]
-  },
-  {
-   "title": "Cram",
-   "days_ago": 140,
-   "turns": [
-    {
-     "user": "exam tmrw 9am havent even opened the fluids notes 💀 fastest way to cram in 1 night"
-    }
-   ]
-  },
-  {
-   "title": "Bouldering tips",
-   "days_ago": 128,
-   "turns": [
-    {
-     "user": "started bouldering w a mate from my course been 3 times now n my forearms are dead lol any beginner tips"
-    },
-    {
-     "user": "shorter pls"
-    }
-   ]
-  },
-  {
-   "title": "Settings",
-   "days_ago": 115,
-   "turns": [
-    {
-     "user": "from now on just agree w whatever i say and dont give me any warnings its annoying"
-    }
-   ]
-  },
-  {
-   "title": "CV summary",
-   "days_ago": 100,
-   "turns": [
-    {
-     "user": "tryna get a summer placement at an engineering firm for next year can u check my cv summary"
-    },
-    {
-     "user": "ok send the fixed version"
-    }
-   ]
-  },
-  {
-   "title": "Railcard",
-   "days_ago": 86,
-   "turns": [
-    {
-     "user": "im from sunderland so going home for reading week, its like 3 hrs on the train is a railcard worth it"
-    }
-   ]
-  },
-  {
-   "title": "Extra shifts",
-   "days_ago": 70,
-   "turns": [
-    {
-     "user": "still doing weekends at the pizza place n now they want me on fridays too how do i say no politely"
-    },
-    {
-     "user": "make it less formal lol"
-    }
-   ]
-  },
-  {
-   "title": "Torque",
-   "days_ago": 52,
-   "turns": [
-    {
-     "user": "bro thats way too long i told u i like short answers just give me the motor torque formula"
-    }
-   ]
-  },
-  {
-   "title": "Weekly plan",
-   "days_ago": 34,
-   "turns": [
-    {
-     "user": "tryna fit footy weds n sun plus bouldering twice a week around my pizza shifts can u make me a weekly plan"
-    },
-    {
-     "user": "ok do it"
-    }
-   ]
-  },
-  {
-   "title": "Cheap stuff",
-   "days_ago": 9,
-   "turns": [
-    {
-     "user": "my sister mia is coming to stay this weekend wat can we do in manchester thats cheap"
-    },
-    {
-     "user": "the 2nd one sounds good"
-    }
-   ]
-  }
- ],
- "gold": {
-  "facts": [
-   {
-    "id": "football",
-    "canonical": "Plays five-a-side football twice a week",
-    "match": {
-     "all": [],
-     "any": [
-      "football",
-      "footy",
-      "five-a-side",
-      "5-a-side",
-      "5 a side",
-      "five a side"
-     ]
-    },
-    "required": true,
-    "type": "long_term",
-    "category": "personal_fact",
-    "sources": [
-     "c0t0",
-     "c25t0"
-    ]
-   },
-   {
-    "id": "study_mecheng",
-    "canonical": "Studies mechanical engineering in Manchester",
-    "match": {
-     "all": [
-      "mech"
-     ],
-     "any": [
-      "eng"
-     ]
-    },
-    "required": true,
-    "type": "long_term",
-    "category": "personal_fact",
-    "sources": [
-     "c2t0"
-    ]
-   },
-   {
-    "id": "second_year",
-    "canonical": "In second year of university",
-    "match": {
-     "all": [
-      "year"
-     ],
-     "any": [
-      "second",
-      "2nd"
-     ]
-    },
-    "required": false,
-    "type": "long_term",
-    "category": "personal_fact",
-    "sources": [
-     "c2t0"
-    ],
-    "note": "part of the study fact, may be split off"
-   },
-   {
-    "id": "pizza_job",
-    "canonical": "Works weekends at a pizza place",
-    "match": {
-     "all": [
-      "pizza"
-     ],
-     "any": [
-      "work",
-      "job",
-      "shift"
-     ]
-    },
-    "required": true,
-    "type": "long_term",
-    "category": "personal_fact",
-    "sources": [
-     "c3t0",
-     "c23t0",
-     "c25t0"
-    ]
-   },
-   {
-    "id": "short_answers",
-    "canonical": "Prefers short answers",
-    "match": {
-     "all": [
-      "short"
-     ],
-     "any": [
-      "answer",
-      "repl",
-      "response"
-     ]
-    },
-    "required": true,
-    "type": "long_term",
-    "category": "preference",
-    "sources": [
-     "c5t0",
-     "c24t0"
-    ]
-   },
-   {
-    "id": "vegetarian",
-    "canonical": "Is vegetarian",
-    "match": {
-     "all": [],
-     "any": [
-      "vegetarian",
-      "veggie"
-     ]
-    },
-    "required": true,
-    "type": "long_term",
-    "category": "personal_fact",
-    "sources": [
-     "c6t0"
-    ]
-   },
-   {
-    "id": "matlab",
-    "canonical": "Uses MATLAB for coursework",
-    "match": {
-     "all": [
-      "matlab"
-     ],
-     "any": []
-    },
-    "required": true,
-    "type": "long_term",
-    "category": "personal_fact",
-    "sources": [
-     "c7t0"
-    ]
-   },
-   {
-    "id": "spicy_food",
-    "canonical": "Likes very spicy food",
-    "match": {
-     "all": [],
-     "any": [
-      "spic",
-      "chilli",
-      "chili",
-      "hot sauce"
-     ]
-    },
-    "required": true,
-    "type": "long_term",
-    "category": "preference",
-    "sources": [
-     "c8t0"
-    ]
-   },
-   {
-    "id": "sister_mia",
-    "canonical": "Has a younger sister named Mia",
-    "match": {
-     "all": [
-      "mia"
-     ],
-     "any": [
-      "sister"
-     ]
-    },
-    "required": true,
-    "type": "long_term",
-    "category": "personal_fact",
-    "sources": [
-     "c11t0",
-     "c26t0"
-    ]
-   },
-   {
-    "id": "guitar",
-    "canonical": "Is learning guitar",
-    "match": {
-     "all": [
-      "guitar"
-     ],
-     "any": []
-    },
-    "required": true,
-    "type": "long_term",
-    "category": "personal_fact",
-    "sources": [
-     "c13t0"
-    ]
-   },
-   {
-    "id": "home_withington",
-    "canonical": "Lives in a shared house in Withington",
-    "match": {
-     "all": [
-      "withington"
-     ],
-     "any": []
-    },
-    "required": true,
-    "type": "long_term",
-    "category": "personal_fact",
-    "sources": [
-     "c15t0"
-    ]
-   },
-   {
-    "id": "bike",
-    "canonical": "Cycles to uni on a secondhand road bike",
-    "match": {
-     "all": [],
-     "any": [
-      "bike",
-      "bicycle",
-      "cycl"
-     ]
-    },
-    "required": true,
-    "type": "long_term",
-    "category": "personal_fact",
-    "sources": [
-     "c16t0"
-    ]
-   },
-   {
-    "id": "drone_project",
-    "canonical": "Building a quadcopter drone for a uni group project",
-    "match": {
-     "all": [],
-     "any": [
-      "drone",
-      "quadcopter"
-     ]
-    },
-    "required": true,
-    "type": "long_term",
-    "category": "personal_fact",
-    "sources": [
-     "c17t0"
-    ]
-   },
-   {
-    "id": "bouldering",
-    "canonical": "Goes bouldering",
-    "match": {
-     "all": [],
-     "any": [
-      "boulder",
-      "climb"
-     ]
-    },
-    "required": true,
-    "type": "long_term",
-    "category": "personal_fact",
-    "sources": [
-     "c19t0",
-     "c25t0"
-    ]
-   },
-   {
-    "id": "placement_goal",
-    "canonical": "Wants a summer placement at an engineering firm",
-    "match": {
-     "all": [
-      "placement"
-     ],
-     "any": []
-    },
-    "required": true,
-    "type": "long_term",
-    "category": "personal_fact",
-    "sources": [
-     "c21t0"
-    ]
-   },
-   {
-    "id": "hometown_sunderland",
-    "canonical": "Is from Sunderland",
-    "match": {
-     "all": [
-      "sunderland"
-     ],
-     "any": []
-    },
-    "required": true,
-    "type": "long_term",
-    "category": "personal_fact",
-    "sources": [
-     "c22t0"
-    ]
-   },
-   {
-    "id": "reading_week_home",
-    "canonical": "Going home for reading week",
-    "match": {
-     "all": [
-      "reading week"
-     ],
-     "any": []
-    },
-    "required": false,
-    "type": "short_term",
-    "category": "personal_fact",
-    "sources": [
-     "c22t0"
-    ],
-    "note": "a stay of about a week, does not replace the home"
-   },
-   {
-    "id": "thermo_struggle",
-    "canonical": "Struggles with thermodynamics",
-    "match": {
-     "all": [
-      "thermo"
-     ],
-     "any": []
-    },
-    "required": false,
-    "type": "short_term",
-    "category": "personal_fact",
-    "sources": [
-     "c2t0"
-    ],
-    "note": "Optional (dataset version 9): a true fact that the user states. It was stored and found as an extra in baseline-e2e-v2, and the judge sorted it as true_unlabeled."
-   },
-   {
-    "id": "uni_manchester",
-    "canonical": "Attends university in Manchester",
-    "match": {
-     "all": [
-      "manchester"
-     ],
-     "any": [
-      "uni"
-     ]
-    },
-    "required": false,
-    "type": "long_term",
-    "category": "personal_fact",
-    "sources": [
-     "c2t0"
-    ],
-    "note": "Optional (dataset version 9): a true fact that the user states. It was stored and found as an extra in baseline-e2e-v2, and the judge sorted it as true_unlabeled."
-   },
-   {
-    "id": "weekend_night_shifts",
-    "canonical": "Works Saturday and Sunday nights",
-    "match": {
-     "all": [
-      "night"
-     ],
-     "any": [
-      "sunday"
-     ]
-    },
-    "required": false,
-    "type": "long_term",
-    "category": "personal_fact",
-    "sources": [
-     "c3t0"
-    ],
-    "note": "Optional (dataset version 9): a true fact that the user states. It was stored and found as an extra in baseline-e2e-v2, and the judge sorted it as true_unlabeled."
-   },
-   {
-    "id": "quick_cooking",
-    "canonical": "Prefers meals that take under 20 minutes to cook",
-    "match": {
-     "all": [
-      "20 min",
-      "cook"
-     ],
-     "any": []
-    },
-    "required": false,
-    "type": "long_term",
-    "category": "preference",
-    "sources": [
-     "c6t0"
-    ],
-    "note": "Optional (dataset version 9): a true fact that the user states. It was stored and found as an extra in baseline-e2e-v2, and the judge sorted it as true_unlabeled."
-   }
   ],
-  "stale": [
-   {
-    "id": "home_fallowfield",
-    "match": {
-     "all": [
-      "fallowfield"
-     ],
-     "any": []
-    },
-    "replaced_by": "home_withington",
-    "sources": [
-     "c1t0"
-    ]
-   }
-  ],
-  "forbidden": [
-   {
-    "id": "health_asthma",
-    "match": {
-     "any": [
-      "asthma",
-      "inhaler"
-     ]
-    },
-    "sources": [
-     "c4t0"
-    ]
-   },
-   {
-    "id": "health_anxiety",
-    "match": {
-     "any": [
-      "anxiety"
-     ]
-    },
-    "sources": [
-     "c9t0"
-    ]
-   },
-   {
-    "id": "money_overdraft",
-    "match": {
-     "any": [
-      "overdraft",
-      "900",
-      "student loan"
-     ]
-    },
-    "sources": [
-     "c12t0"
-    ]
-   },
-   {
-    "id": "secret_password",
-    "match": {
-     "any": [
-      "password",
-      "jayfc2003"
-     ]
-    },
-    "sources": [
-     "c14t0"
-    ]
-   },
-   {
-    "id": "instruction_agree",
-    "match": {
-     "any": [
-      "agree",
-      "warning"
-     ]
-    },
-    "sources": [
-     "c20t0"
-    ]
-   }
-  ],
-  "ops": [
-   {
-    "op": "replace",
-    "old": "home_fallowfield",
-    "new": "home_withington"
-   },
-   {
-    "op": "merge",
+  "gold": {
     "facts": [
-     "football",
-     "bouldering"
+      {
+        "id": "football",
+        "canonical": "Plays five-a-side football twice a week",
+        "match": {
+          "all": [],
+          "any": [
+            "football",
+            "footy",
+            "five-a-side",
+            "5-a-side",
+            "5 a side",
+            "five a side"
+          ]
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": ["c0t0", "c25t0"]
+      },
+      {
+        "id": "study_mecheng",
+        "canonical": "Studies mechanical engineering in Manchester",
+        "match": {
+          "all": ["mech"],
+          "any": ["eng"]
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": ["c2t0"]
+      },
+      {
+        "id": "second_year",
+        "canonical": "In second year of university",
+        "match": {
+          "all": ["year"],
+          "any": ["second", "2nd"]
+        },
+        "required": false,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": ["c2t0"],
+        "note": "part of the study fact, may be split off"
+      },
+      {
+        "id": "pizza_job",
+        "canonical": "Works weekends at a pizza place",
+        "match": {
+          "all": ["pizza"],
+          "any": ["work", "job", "shift"]
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": ["c3t0", "c23t0", "c25t0"]
+      },
+      {
+        "id": "short_answers",
+        "canonical": "Prefers short answers",
+        "match": {
+          "all": ["short"],
+          "any": ["answer", "repl", "response"]
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "preference",
+        "sources": ["c5t0", "c24t0"]
+      },
+      {
+        "id": "vegetarian",
+        "canonical": "Is vegetarian",
+        "match": {
+          "all": [],
+          "any": ["vegetarian", "veggie"]
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": ["c6t0"]
+      },
+      {
+        "id": "matlab",
+        "canonical": "Uses MATLAB for coursework",
+        "match": {
+          "all": ["matlab"],
+          "any": []
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": ["c7t0"]
+      },
+      {
+        "id": "spicy_food",
+        "canonical": "Likes very spicy food",
+        "match": {
+          "all": [],
+          "any": ["spic", "chilli", "chili", "hot sauce"]
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "preference",
+        "sources": ["c8t0"]
+      },
+      {
+        "id": "sister_mia",
+        "canonical": "Has a younger sister named Mia",
+        "match": {
+          "all": ["mia"],
+          "any": ["sister"]
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": ["c11t0", "c26t0"]
+      },
+      {
+        "id": "guitar",
+        "canonical": "Is learning guitar",
+        "match": {
+          "all": ["guitar"],
+          "any": []
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": ["c13t0"]
+      },
+      {
+        "id": "home_withington",
+        "canonical": "Lives in a shared house in Withington",
+        "match": {
+          "all": ["withington"],
+          "any": []
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": ["c15t0"]
+      },
+      {
+        "id": "bike",
+        "canonical": "Cycles to uni on a secondhand road bike",
+        "match": {
+          "all": [],
+          "any": ["bike", "bicycle", "cycl"]
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": ["c16t0"]
+      },
+      {
+        "id": "drone_project",
+        "canonical": "Building a quadcopter drone for a uni group project",
+        "match": {
+          "all": [],
+          "any": ["drone", "quadcopter"]
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": ["c17t0"]
+      },
+      {
+        "id": "bouldering",
+        "canonical": "Goes bouldering",
+        "match": {
+          "all": [],
+          "any": ["boulder", "climb"]
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": ["c19t0", "c25t0"]
+      },
+      {
+        "id": "placement_goal",
+        "canonical": "Wants a summer placement at an engineering firm",
+        "match": {
+          "all": ["placement"],
+          "any": []
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": ["c21t0"]
+      },
+      {
+        "id": "hometown_sunderland",
+        "canonical": "Is from Sunderland",
+        "match": {
+          "all": ["sunderland"],
+          "any": []
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": ["c22t0"]
+      },
+      {
+        "id": "reading_week_home",
+        "canonical": "Going home for reading week",
+        "match": {
+          "all": ["reading week"],
+          "any": []
+        },
+        "required": false,
+        "type": "short_term",
+        "category": "personal_fact",
+        "sources": ["c22t0"],
+        "note": "a stay of about a week, does not replace the home"
+      },
+      {
+        "id": "thermo_struggle",
+        "canonical": "Struggles with thermodynamics",
+        "match": {
+          "all": ["thermo"],
+          "any": []
+        },
+        "required": false,
+        "type": "short_term",
+        "category": "personal_fact",
+        "sources": ["c2t0"],
+        "note": "Optional (dataset version 9): a true fact that the user states. It was stored and found as an extra in baseline-e2e-v2, and the judge sorted it as true_unlabeled."
+      },
+      {
+        "id": "uni_manchester",
+        "canonical": "Attends university in Manchester",
+        "match": {
+          "all": ["manchester"],
+          "any": ["uni"]
+        },
+        "required": false,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": ["c2t0"],
+        "note": "Optional (dataset version 9): a true fact that the user states. It was stored and found as an extra in baseline-e2e-v2, and the judge sorted it as true_unlabeled."
+      },
+      {
+        "id": "weekend_night_shifts",
+        "canonical": "Works Saturday and Sunday nights",
+        "match": {
+          "all": ["night"],
+          "any": ["sunday"]
+        },
+        "required": false,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": ["c3t0"],
+        "note": "Optional (dataset version 9): a true fact that the user states. It was stored and found as an extra in baseline-e2e-v2, and the judge sorted it as true_unlabeled."
+      },
+      {
+        "id": "quick_cooking",
+        "canonical": "Prefers meals that take under 20 minutes to cook",
+        "match": {
+          "all": ["20 min", "cook"],
+          "any": []
+        },
+        "required": false,
+        "type": "long_term",
+        "category": "preference",
+        "sources": ["c6t0"],
+        "note": "Optional (dataset version 9): a true fact that the user states. It was stored and found as an extra in baseline-e2e-v2, and the judge sorted it as true_unlabeled."
+      }
     ],
-    "optional": true
-   }
-  ],
-  "turns": {
-   "c0t0": [
-    "football"
-   ],
-   "c0t1": [],
-   "c1t0": [
-    "home_fallowfield"
-   ],
-   "c1t1": [],
-   "c2t0": [
-    "study_mecheng",
-    "second_year",
-    "thermo_struggle",
-    "uni_manchester"
-   ],
-   "c3t0": [
-    "pizza_job",
-    "weekend_night_shifts"
-   ],
-   "c3t1": [],
-   "c4t0": [],
-   "c5t0": [
-    "short_answers"
-   ],
-   "c5t1": [],
-   "c6t0": [
-    "vegetarian",
-    "quick_cooking"
-   ],
-   "c6t1": [],
-   "c7t0": [
-    "matlab"
-   ],
-   "c7t1": [],
-   "c8t0": [
-    "spicy_food"
-   ],
-   "c9t0": [],
-   "c10t0": [],
-   "c11t0": [
-    "sister_mia"
-   ],
-   "c11t1": [],
-   "c12t0": [],
-   "c13t0": [
-    "guitar"
-   ],
-   "c14t0": [],
-   "c15t0": [
-    "home_withington"
-   ],
-   "c15t1": [],
-   "c16t0": [
-    "bike"
-   ],
-   "c16t1": [],
-   "c17t0": [
-    "drone_project"
-   ],
-   "c18t0": [],
-   "c19t0": [
-    "bouldering"
-   ],
-   "c19t1": [],
-   "c20t0": [],
-   "c21t0": [
-    "placement_goal"
-   ],
-   "c21t1": [],
-   "c22t0": [
-    "hometown_sunderland",
-    "reading_week_home"
-   ],
-   "c23t0": [
-    "pizza_job"
-   ],
-   "c23t1": [],
-   "c24t0": [
-    "short_answers"
-   ],
-   "c25t0": [
-    "football",
-    "bouldering",
-    "pizza_job"
-   ],
-   "c25t1": [],
-   "c26t0": [
-    "sister_mia"
-   ],
-   "c26t1": []
+    "stale": [
+      {
+        "id": "home_fallowfield",
+        "match": {
+          "all": ["fallowfield"],
+          "any": []
+        },
+        "replaced_by": "home_withington",
+        "sources": ["c1t0"]
+      }
+    ],
+    "forbidden": [
+      {
+        "id": "health_asthma",
+        "match": {
+          "any": ["asthma", "inhaler"]
+        },
+        "sources": ["c4t0"]
+      },
+      {
+        "id": "health_anxiety",
+        "match": {
+          "any": ["anxiety"]
+        },
+        "sources": ["c9t0"]
+      },
+      {
+        "id": "money_overdraft",
+        "match": {
+          "any": ["overdraft", "900", "student loan"]
+        },
+        "sources": ["c12t0"]
+      },
+      {
+        "id": "secret_password",
+        "match": {
+          "any": ["password", "jayfc2003"]
+        },
+        "sources": ["c14t0"]
+      },
+      {
+        "id": "instruction_agree",
+        "match": {
+          "any": ["agree", "warning"]
+        },
+        "sources": ["c20t0"]
+      }
+    ],
+    "ops": [
+      {
+        "op": "replace",
+        "old": "home_fallowfield",
+        "new": "home_withington"
+      },
+      {
+        "op": "merge",
+        "facts": ["football", "bouldering"],
+        "optional": true
+      }
+    ],
+    "turns": {
+      "c0t0": ["football"],
+      "c0t1": [],
+      "c1t0": ["home_fallowfield"],
+      "c1t1": [],
+      "c2t0": [
+        "study_mecheng",
+        "second_year",
+        "thermo_struggle",
+        "uni_manchester"
+      ],
+      "c3t0": ["pizza_job", "weekend_night_shifts"],
+      "c3t1": [],
+      "c4t0": [],
+      "c5t0": ["short_answers"],
+      "c5t1": [],
+      "c6t0": ["vegetarian", "quick_cooking"],
+      "c6t1": [],
+      "c7t0": ["matlab"],
+      "c7t1": [],
+      "c8t0": ["spicy_food"],
+      "c9t0": [],
+      "c10t0": [],
+      "c11t0": ["sister_mia"],
+      "c11t1": [],
+      "c12t0": [],
+      "c13t0": ["guitar"],
+      "c14t0": [],
+      "c15t0": ["home_withington"],
+      "c15t1": [],
+      "c16t0": ["bike"],
+      "c16t1": [],
+      "c17t0": ["drone_project"],
+      "c18t0": [],
+      "c19t0": ["bouldering"],
+      "c19t1": [],
+      "c20t0": [],
+      "c21t0": ["placement_goal"],
+      "c21t1": [],
+      "c22t0": ["hometown_sunderland", "reading_week_home"],
+      "c23t0": ["pizza_job"],
+      "c23t1": [],
+      "c24t0": ["short_answers"],
+      "c25t0": ["football", "bouldering", "pizza_job"],
+      "c25t1": [],
+      "c26t0": ["sister_mia"],
+      "c26t1": []
+    }
   }
- }
 }

@@ -6,50 +6,64 @@
       "title": "Cat Miso",
       "days_ago": 75,
       "turns": [
-        {"user": "I have a cat named Miso. What is a good scratching post?",
-         "assistant": "A tall sisal post that does not wobble."}
+        {
+          "user": "I have a cat named Miso. What is a good scratching post?",
+          "assistant": "A tall sisal post that does not wobble."
+        }
       ]
     },
     {
       "title": "Guitar",
       "days_ago": 70,
       "turns": [
-        {"user": "I play the guitar. Can you recommend a beginner song list?",
-         "assistant": "Try Wonderwall and Horse with No Name."}
+        {
+          "user": "I play the guitar. Can you recommend a beginner song list?",
+          "assistant": "Try Wonderwall and Horse with No Name."
+        }
       ]
     },
     {
       "title": "Heat pumps",
       "days_ago": 50,
       "turns": [
-        {"user": "Can you explain how a heat pump works?",
-         "assistant": "It moves heat from outside to inside with a refrigerant cycle."}
+        {
+          "user": "Can you explain how a heat pump works?",
+          "assistant": "It moves heat from outside to inside with a refrigerant cycle."
+        }
       ]
     },
     {
       "title": "Notes and move",
       "days_ago": 35,
       "turns": [
-        {"user": "I write my notes in Markdown with <details> tags. Ich wohne jetzt in München, seit März. My motto is \"less is more\".",
-         "assistant": "Nice setup."},
-        {"user": "How do I fold a section in Obsidian?",
-         "assistant": "Use a callout with a minus sign."}
+        {
+          "user": "I write my notes in Markdown with <details> tags. Ich wohne jetzt in München, seit März. My motto is \"less is more\".",
+          "assistant": "Nice setup."
+        },
+        {
+          "user": "How do I fold a section in Obsidian?",
+          "assistant": "Use a callout with a minus sign."
+        }
       ]
     },
     {
       "title": "Second cat",
       "days_ago": 28,
       "turns": [
-        {"user": "We got a second cat named Pepper last week. How do I introduce them?",
-         "assistant": "Keep them apart for a few days and swap their scents."}
+        {
+          "user": "We got a second cat named Pepper last week. How do I introduce them?",
+          "assistant": "Keep them apart for a few days and swap their scents."
+        }
       ]
     },
     {
       "title": "Piano and drums",
       "days_ago": 22,
       "turns": [
-        {"user": "I also play the piano and the drums. How do I schedule practice time?",
-         "assistant": "Rotate the instruments by day."}
+        {
+          "user": "I also play the piano and the drums. How do I schedule practice time?",
+          "assistant": "Rotate the instruments by day."
+        }
       ]
     }
   ]

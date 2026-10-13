@@ -1,5 +1,6 @@
 """Shared scoring helpers: proportions with Wilson intervals, word matches,
 latency summaries and paired flips (plan section 8)."""
+
 from __future__ import annotations
 
 import math
@@ -54,8 +55,12 @@ def latency(values: list) -> dict:
     if not v:
         return {"n": 0, "median_ms": None, "p95_ms": None, "total_s": 0}
     p95 = v[min(len(v) - 1, int(math.ceil(0.95 * len(v))) - 1)]
-    return {"n": len(v), "median_ms": statistics.median(v), "p95_ms": p95,
-            "total_s": round(sum(v) / 1000, 1)}
+    return {
+        "n": len(v),
+        "median_ms": statistics.median(v),
+        "p95_ms": p95,
+        "total_s": round(sum(v) / 1000, 1),
+    }
 
 
 def fmt_latency(lat: dict) -> str:
@@ -80,6 +85,8 @@ def flips(base: list, new: list) -> dict:
     and broke, against the base variant."""
     a, b = case_outcomes(base), case_outcomes(new)
     common = sorted(set(a) & set(b))
-    return {"fixed": [c for c in common if not a[c] and b[c]],
-            "broken": [c for c in common if a[c] and not b[c]],
-            "paired": len(common)}
+    return {
+        "fixed": [c for c in common if not a[c] and b[c]],
+        "broken": [c for c in common if a[c] and not b[c]],
+        "paired": len(common),
+    }

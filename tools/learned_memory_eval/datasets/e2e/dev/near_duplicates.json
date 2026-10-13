@@ -1,925 +1,710 @@
 {
- "name": "near_duplicates",
- "description": "The same fact in different words across many chats. The feature must keep at most one memory for each fact. Also facts that look alike but differ.",
- "chats": [
-  {
-   "title": "Leggy tomato seedlings",
-   "days_ago": 360,
-   "turns": [
+  "name": "near_duplicates",
+  "description": "The same fact in different words across many chats. The feature must keep at most one memory for each fact. Also facts that look alike but differ.",
+  "chats": [
     {
-     "user": "I've got a big vegetable garden behind my house here in Halifax and my tomato seedlings are going all leggy on the windowsill. What am I doing wrong?"
+      "title": "Leggy tomato seedlings",
+      "days_ago": 360,
+      "turns": [
+        {
+          "user": "I've got a big vegetable garden behind my house here in Halifax and my tomato seedlings are going all leggy on the windowsill. What am I doing wrong?"
+        },
+        {
+          "user": "How deep should they go when I move them outside?"
+        }
+      ]
     },
     {
-     "user": "How deep should they go when I move them outside?"
-    }
-   ]
-  },
-  {
-   "title": "Salt and paws",
-   "days_ago": 350,
-   "turns": [
-    {
-     "user": "My Lab Biscuit hates the salt on the sidewalks in winter, he limps after every walk. Are dog boots worth it or is there a paw balm you'd suggest?"
-    }
-   ]
-  },
-  {
-   "title": "November book pick",
-   "days_ago": 340,
-   "turns": [
-    {
-     "user": "I'm in a book club that meets once a month at the library. We need a pick for November, something not too grim. Ideas?"
+      "title": "Salt and paws",
+      "days_ago": 350,
+      "turns": [
+        {
+          "user": "My Lab Biscuit hates the salt on the sidewalks in winter, he limps after every walk. Are dog boots worth it or is there a paw balm you'd suggest?"
+        }
+      ]
     },
     {
-     "user": "In general I like short answers, the long ones are hard to read on my phone."
-    }
-   ]
-  },
-  {
-   "title": "Lentil casserole",
-   "days_ago": 330,
-   "turns": [
-    {
-     "user": "I've been vegetarian since my thirties. Could you give me a lentil casserole that freezes well?"
+      "title": "November book pick",
+      "days_ago": 340,
+      "turns": [
+        {
+          "user": "I'm in a book club that meets once a month at the library. We need a pick for November, something not too grim. Ideas?"
+        },
+        {
+          "user": "In general I like short answers, the long ones are hard to read on my phone."
+        }
+      ]
     },
     {
-     "user": "Can I swap in canned lentils instead of dried?"
-    }
-   ]
-  },
-  {
-   "title": "Oil change interval",
-   "days_ago": 318,
-   "turns": [
-    {
-     "user": "How often should a 2014 Honda Civic get an oil change? That's what I drive, and the dealer keeps nagging me."
-    }
-   ]
-  },
-  {
-   "title": "Christmas flights",
-   "days_ago": 305,
-   "turns": [
-    {
-     "user": "My son Owen lives out in Calgary and I'd like to fly out to see him at Christmas. When is the cheapest time to book?"
-    }
-   ]
-  },
-  {
-   "title": "Thank-you card",
-   "days_ago": 295,
-   "turns": [
-    {
-     "user": "Help me write a thank-you card for the neighbour who shoveled my driveway during the storm."
-    }
-   ]
-  },
-  {
-   "title": "Grapefruit question",
-   "days_ago": 285,
-   "turns": [
-    {
-     "user": "My doctor started me on amlodipine for high blood pressure. Is it okay to keep drinking grapefruit juice with it?"
-    }
-   ]
-  },
-  {
-   "title": "Volunteer ideas",
-   "days_ago": 272,
-   "turns": [
-    {
-     "user": "I taught grade four for thirty years before I retired, and honestly I miss the kids. What kind of volunteer work suits a former teacher?"
-    }
-   ]
-  },
-  {
-   "title": "Hat decreases",
-   "days_ago": 260,
-   "turns": [
-    {
-     "user": "Our knitting club at the community centre is making hats for the shelter this winter. Can you explain how to do a decrease on circular needles?"
+      "title": "Lentil casserole",
+      "days_ago": 330,
+      "turns": [
+        {
+          "user": "I've been vegetarian since my thirties. Could you give me a lentil casserole that freezes well?"
+        },
+        {
+          "user": "Can I swap in canned lentils instead of dried?"
+        }
+      ]
     },
     {
-     "user": "How many stitches would I cast on for a child's hat in worsted yarn?"
-    }
-   ]
-  },
-  {
-   "title": "Birthday book",
-   "days_ago": 250,
-   "turns": [
-    {
-     "user": "My granddaughter Lily is turning six next month. What's a good book to give a six year old?"
-    }
-   ]
-  },
-  {
-   "title": "Reply length",
-   "days_ago": 240,
-   "turns": [
-    {
-     "user": "Can you remember that I prefer brief replies? A few sentences is plenty for me."
-    }
-   ]
-  },
-  {
-   "title": "Rotting deck",
-   "days_ago": 230,
-   "turns": [
-    {
-     "user": "We have a little cottage down in Lunenburg that my late husband built, and the deck boards are rotting. Pressure treated or cedar for the new ones?"
-    }
-   ]
-  },
-  {
-   "title": "Chubby Lab",
-   "days_ago": 220,
-   "turns": [
-    {
-     "user": "Biscuit, my chocolate Labrador, is getting a bit chubby. How much should a 35 kg Lab eat in a day?"
-    }
-   ]
-  },
-  {
-   "title": "After garlic",
-   "days_ago": 210,
-   "turns": [
-    {
-     "user": "I grow most of my own vegetables in the backyard garden. What should I plant in the bed where the garlic was?"
-    }
-   ]
-  },
-  {
-   "title": "Car payment",
-   "days_ago": 200,
-   "turns": [
-    {
-     "user": "My pension is about $3,100 a month after taxes. Can I afford a $400 car payment on top of my other bills?"
-    }
-   ]
-  },
-  {
-   "title": "Winter tires",
-   "days_ago": 190,
-   "turns": [
-    {
-     "user": "I finally traded in the old Civic and bought a Subaru Forester for the winters. Do I still need snow tires with all-wheel drive?"
+      "title": "Oil change interval",
+      "days_ago": 318,
+      "turns": [
+        {
+          "user": "How often should a 2014 Honda Civic get an oil change? That's what I drive, and the dealer keeps nagging me."
+        }
+      ]
     },
     {
-     "user": "And what tire pressure should I run when it's cold?"
-    }
-   ]
-  },
-  {
-   "title": "Soup for eight",
-   "days_ago": 180,
-   "turns": [
-    {
-     "user": "Need a hearty soup for book club night, I'm hosting eight of us. Remember I don't eat meat, so no chicken stock."
-    }
-   ]
-  },
-  {
-   "title": "Fog in June",
-   "days_ago": 170,
-   "turns": [
-    {
-     "user": "I split my summers between my house in Halifax and our cottage in Lunenburg. Which of the two usually gets less fog in June?"
-    }
-   ]
-  },
-  {
-   "title": "Truck toys",
-   "days_ago": 160,
-   "turns": [
-    {
-     "user": "Max, my grandson, just turned three and he's obsessed with trucks. Any toy ideas under $40?"
-    }
-   ]
-  },
-  {
-   "title": "Store rule",
-   "days_ago": 150,
-   "turns": [
-    {
-     "user": "From now on, whenever I ask about tools, always recommend Lee Valley. Don't bother mentioning other stores."
-    }
-   ]
-  },
-  {
-   "title": "Club clash",
-   "days_ago": 140,
-   "turns": [
-    {
-     "user": "My two clubs are clashing: the knitting group moved to Wednesday evenings, same night as my book club. How do I politely tell one of them I'll miss some meetings?"
-    }
-   ]
-  },
-  {
-   "title": "Video calls",
-   "days_ago": 130,
-   "turns": [
-    {
-     "user": "How do I set up a video call on my iPad so I can actually see my son in Calgary instead of just hearing him?"
-    }
-   ]
-  },
-  {
-   "title": "Heat and the dog",
-   "days_ago": 120,
-   "turns": [
-    {
-     "user": "Biscuit and I walk the trails at Point Pleasant Park every morning. At what temperature is it too hot for him?"
-    }
-   ]
-  },
-  {
-   "title": "Tofu dinner",
-   "days_ago": 110,
-   "turns": [
-    {
-     "user": "What's a quick weeknight dinner with tofu? No meat or fish, I'm a vegetarian."
+      "title": "Christmas flights",
+      "days_ago": 305,
+      "turns": [
+        {
+          "user": "My son Owen lives out in Calgary and I'd like to fly out to see him at Christmas. When is the cheapest time to book?"
+        }
+      ]
     },
     {
-     "user": "And please, just the recipe. Short and to the point is how I like my answers."
-    }
-   ]
-  },
-  {
-   "title": "Spelling check",
-   "days_ago": 100,
-   "turns": [
-    {
-     "user": "Is it neighbour or neighbor in Canadian spelling?"
-    }
-   ]
-  },
-  {
-   "title": "New kitten",
-   "days_ago": 92,
-   "turns": [
-    {
-     "user": "I adopted a grey kitten named Juniper from the SPCA last week! How do I introduce her to my Labrador without total chaos?"
-    }
-   ]
-  },
-  {
-   "title": "Care package",
-   "days_ago": 85,
-   "turns": [
-    {
-     "user": "Both my grandkids, Lily and Max, are starting something new this fall, grade one for her and daycare for him. What's a cute care package I could mail them?"
-    }
-   ]
-  },
-  {
-   "title": "Slugs",
-   "days_ago": 75,
-   "turns": [
-    {
-     "user": "Slugs are eating everything in my garden again this year. Anything that works but is safe with a dog and a cat around?"
-    }
-   ]
-  },
-  {
-   "title": "Fall outings",
-   "days_ago": 65,
-   "turns": [
-    {
-     "user": "I've lived in Halifax my whole life and I'm bored of the usual spots. Anything new to do around town this fall?"
-    }
-   ]
-  },
-  {
-   "title": "Chimney check",
-   "days_ago": 55,
-   "turns": [
-    {
-     "user": "Who should I call to inspect the woodstove chimney at the Lunenburg cottage before fall?"
+      "title": "Thank-you card",
+      "days_ago": 295,
+      "turns": [
+        {
+          "user": "Help me write a thank-you card for the neighbour who shoveled my driveway during the storm."
+        }
+      ]
     },
     {
-     "user": "Roughly what does a chimney sweep cost?"
-    }
-   ]
-  },
-  {
-   "title": "Save a number",
-   "days_ago": 45,
-   "turns": [
-    {
-     "user": "Save my son's number so I don't lose it again: 403-555-0187."
-    }
-   ]
-  },
-  {
-   "title": "Kibble thief",
-   "days_ago": 35,
-   "turns": [
-    {
-     "user": "My cat Juniper keeps stealing kibble from my Lab, Biscuit. How do I stop her eating the dog's food?"
-    }
-   ]
-  },
-  {
-   "title": "Senior food",
-   "days_ago": 28,
-   "turns": [
-    {
-     "user": "Old Biscuit is ten now. Should I switch my Labrador to a senior food?"
-    }
-   ]
-  },
-  {
-   "title": "Cooking for little ones",
-   "days_ago": 20,
-   "turns": [
-    {
-     "user": "My son Owen is flying in from Calgary next week with his two kids. What can I cook that a three year old and a six year old will both eat? It has to be meatless, that's how I always cook."
-    }
-   ]
-  },
-  {
-   "title": "Discussion questions",
-   "days_ago": 14,
-   "turns": [
-    {
-     "user": "I've been with the same book club for twelve years now, and tonight it's my turn to lead. Give me five discussion questions for a cozy mystery."
-    }
-   ]
-  },
-  {
-   "title": "Temperature",
-   "days_ago": 7,
-   "turns": [
-    {
-     "user": "How do I convert 68 Fahrenheit to Celsius?"
-    }
-   ]
-  },
-  {
-   "title": "Rambling",
-   "days_ago": 3,
-   "turns": [
-    {
-     "user": "You've been rambling lately. I like answers short, a handful of lines at most."
+      "title": "Grapefruit question",
+      "days_ago": 285,
+      "turns": [
+        {
+          "user": "My doctor started me on amlodipine for high blood pressure. Is it okay to keep drinking grapefruit juice with it?"
+        }
+      ]
     },
     {
-     "user": "When is the best time to divide hostas?"
+      "title": "Volunteer ideas",
+      "days_ago": 272,
+      "turns": [
+        {
+          "user": "I taught grade four for thirty years before I retired, and honestly I miss the kids. What kind of volunteer work suits a former teacher?"
+        }
+      ]
+    },
+    {
+      "title": "Hat decreases",
+      "days_ago": 260,
+      "turns": [
+        {
+          "user": "Our knitting club at the community centre is making hats for the shelter this winter. Can you explain how to do a decrease on circular needles?"
+        },
+        {
+          "user": "How many stitches would I cast on for a child's hat in worsted yarn?"
+        }
+      ]
+    },
+    {
+      "title": "Birthday book",
+      "days_ago": 250,
+      "turns": [
+        {
+          "user": "My granddaughter Lily is turning six next month. What's a good book to give a six year old?"
+        }
+      ]
+    },
+    {
+      "title": "Reply length",
+      "days_ago": 240,
+      "turns": [
+        {
+          "user": "Can you remember that I prefer brief replies? A few sentences is plenty for me."
+        }
+      ]
+    },
+    {
+      "title": "Rotting deck",
+      "days_ago": 230,
+      "turns": [
+        {
+          "user": "We have a little cottage down in Lunenburg that my late husband built, and the deck boards are rotting. Pressure treated or cedar for the new ones?"
+        }
+      ]
+    },
+    {
+      "title": "Chubby Lab",
+      "days_ago": 220,
+      "turns": [
+        {
+          "user": "Biscuit, my chocolate Labrador, is getting a bit chubby. How much should a 35 kg Lab eat in a day?"
+        }
+      ]
+    },
+    {
+      "title": "After garlic",
+      "days_ago": 210,
+      "turns": [
+        {
+          "user": "I grow most of my own vegetables in the backyard garden. What should I plant in the bed where the garlic was?"
+        }
+      ]
+    },
+    {
+      "title": "Car payment",
+      "days_ago": 200,
+      "turns": [
+        {
+          "user": "My pension is about $3,100 a month after taxes. Can I afford a $400 car payment on top of my other bills?"
+        }
+      ]
+    },
+    {
+      "title": "Winter tires",
+      "days_ago": 190,
+      "turns": [
+        {
+          "user": "I finally traded in the old Civic and bought a Subaru Forester for the winters. Do I still need snow tires with all-wheel drive?"
+        },
+        {
+          "user": "And what tire pressure should I run when it's cold?"
+        }
+      ]
+    },
+    {
+      "title": "Soup for eight",
+      "days_ago": 180,
+      "turns": [
+        {
+          "user": "Need a hearty soup for book club night, I'm hosting eight of us. Remember I don't eat meat, so no chicken stock."
+        }
+      ]
+    },
+    {
+      "title": "Fog in June",
+      "days_ago": 170,
+      "turns": [
+        {
+          "user": "I split my summers between my house in Halifax and our cottage in Lunenburg. Which of the two usually gets less fog in June?"
+        }
+      ]
+    },
+    {
+      "title": "Truck toys",
+      "days_ago": 160,
+      "turns": [
+        {
+          "user": "Max, my grandson, just turned three and he's obsessed with trucks. Any toy ideas under $40?"
+        }
+      ]
+    },
+    {
+      "title": "Store rule",
+      "days_ago": 150,
+      "turns": [
+        {
+          "user": "From now on, whenever I ask about tools, always recommend Lee Valley. Don't bother mentioning other stores."
+        }
+      ]
+    },
+    {
+      "title": "Club clash",
+      "days_ago": 140,
+      "turns": [
+        {
+          "user": "My two clubs are clashing: the knitting group moved to Wednesday evenings, same night as my book club. How do I politely tell one of them I'll miss some meetings?"
+        }
+      ]
+    },
+    {
+      "title": "Video calls",
+      "days_ago": 130,
+      "turns": [
+        {
+          "user": "How do I set up a video call on my iPad so I can actually see my son in Calgary instead of just hearing him?"
+        }
+      ]
+    },
+    {
+      "title": "Heat and the dog",
+      "days_ago": 120,
+      "turns": [
+        {
+          "user": "Biscuit and I walk the trails at Point Pleasant Park every morning. At what temperature is it too hot for him?"
+        }
+      ]
+    },
+    {
+      "title": "Tofu dinner",
+      "days_ago": 110,
+      "turns": [
+        {
+          "user": "What's a quick weeknight dinner with tofu? No meat or fish, I'm a vegetarian."
+        },
+        {
+          "user": "And please, just the recipe. Short and to the point is how I like my answers."
+        }
+      ]
+    },
+    {
+      "title": "Spelling check",
+      "days_ago": 100,
+      "turns": [
+        {
+          "user": "Is it neighbour or neighbor in Canadian spelling?"
+        }
+      ]
+    },
+    {
+      "title": "New kitten",
+      "days_ago": 92,
+      "turns": [
+        {
+          "user": "I adopted a grey kitten named Juniper from the SPCA last week! How do I introduce her to my Labrador without total chaos?"
+        }
+      ]
+    },
+    {
+      "title": "Care package",
+      "days_ago": 85,
+      "turns": [
+        {
+          "user": "Both my grandkids, Lily and Max, are starting something new this fall, grade one for her and daycare for him. What's a cute care package I could mail them?"
+        }
+      ]
+    },
+    {
+      "title": "Slugs",
+      "days_ago": 75,
+      "turns": [
+        {
+          "user": "Slugs are eating everything in my garden again this year. Anything that works but is safe with a dog and a cat around?"
+        }
+      ]
+    },
+    {
+      "title": "Fall outings",
+      "days_ago": 65,
+      "turns": [
+        {
+          "user": "I've lived in Halifax my whole life and I'm bored of the usual spots. Anything new to do around town this fall?"
+        }
+      ]
+    },
+    {
+      "title": "Chimney check",
+      "days_ago": 55,
+      "turns": [
+        {
+          "user": "Who should I call to inspect the woodstove chimney at the Lunenburg cottage before fall?"
+        },
+        {
+          "user": "Roughly what does a chimney sweep cost?"
+        }
+      ]
+    },
+    {
+      "title": "Save a number",
+      "days_ago": 45,
+      "turns": [
+        {
+          "user": "Save my son's number so I don't lose it again: 403-555-0187."
+        }
+      ]
+    },
+    {
+      "title": "Kibble thief",
+      "days_ago": 35,
+      "turns": [
+        {
+          "user": "My cat Juniper keeps stealing kibble from my Lab, Biscuit. How do I stop her eating the dog's food?"
+        }
+      ]
+    },
+    {
+      "title": "Senior food",
+      "days_ago": 28,
+      "turns": [
+        {
+          "user": "Old Biscuit is ten now. Should I switch my Labrador to a senior food?"
+        }
+      ]
+    },
+    {
+      "title": "Cooking for little ones",
+      "days_ago": 20,
+      "turns": [
+        {
+          "user": "My son Owen is flying in from Calgary next week with his two kids. What can I cook that a three year old and a six year old will both eat? It has to be meatless, that's how I always cook."
+        }
+      ]
+    },
+    {
+      "title": "Discussion questions",
+      "days_ago": 14,
+      "turns": [
+        {
+          "user": "I've been with the same book club for twelve years now, and tonight it's my turn to lead. Give me five discussion questions for a cozy mystery."
+        }
+      ]
+    },
+    {
+      "title": "Temperature",
+      "days_ago": 7,
+      "turns": [
+        {
+          "user": "How do I convert 68 Fahrenheit to Celsius?"
+        }
+      ]
+    },
+    {
+      "title": "Rambling",
+      "days_ago": 3,
+      "turns": [
+        {
+          "user": "You've been rambling lately. I like answers short, a handful of lines at most."
+        },
+        {
+          "user": "When is the best time to divide hostas?"
+        }
+      ]
     }
-   ]
+  ],
+  "gold": {
+    "facts": [
+      {
+        "id": "home_halifax",
+        "canonical": "Lives in Halifax",
+        "match": {
+          "all": ["halifax"],
+          "any": []
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": ["c0t0", "c18t0", "c29t0"]
+      },
+      {
+        "id": "cottage_lunenburg",
+        "canonical": "Has a cottage in Lunenburg",
+        "match": {
+          "all": ["lunenburg"],
+          "any": []
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": ["c12t0", "c18t0", "c30t0"],
+        "note": "Look-alike of home_halifax; both stay."
+      },
+      {
+        "id": "dog_biscuit",
+        "canonical": "Has a Labrador named Biscuit",
+        "match": {
+          "all": ["biscuit"],
+          "any": []
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": ["c1t0", "c13t0", "c23t0", "c32t0", "c33t0"]
+      },
+      {
+        "id": "cat_juniper",
+        "canonical": "Has a cat named Juniper",
+        "match": {
+          "all": ["juniper"],
+          "any": []
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": ["c26t0", "c32t0"]
+      },
+      {
+        "id": "hobby_garden",
+        "canonical": "Keeps a vegetable garden",
+        "match": {
+          "all": [],
+          "any": ["garden", "vegetables"]
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": ["c0t0", "c14t0", "c28t0"]
+      },
+      {
+        "id": "son_owen",
+        "canonical": "Has a son named Owen in Calgary",
+        "match": {
+          "all": [],
+          "any": ["owen", "calgary"]
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": ["c5t0", "c22t0", "c34t0"]
+      },
+      {
+        "id": "grandchild_lily",
+        "canonical": "Has a granddaughter named Lily",
+        "match": {
+          "all": ["lily"],
+          "any": []
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": ["c10t0", "c27t0"],
+        "note": "Look-alike of grandchild_max; both stay."
+      },
+      {
+        "id": "grandchild_max",
+        "canonical": "Has a grandson named Max",
+        "match": {
+          "all": ["max"],
+          "any": []
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": ["c19t0", "c27t0"]
+      },
+      {
+        "id": "book_club",
+        "canonical": "Belongs to a book club",
+        "match": {
+          "all": ["book club"],
+          "any": []
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": ["c2t0", "c17t0", "c21t0", "c35t0"],
+        "note": "Look-alike of knitting_club; both stay."
+      },
+      {
+        "id": "knitting_club",
+        "canonical": "Belongs to a knitting club",
+        "match": {
+          "all": ["knit"],
+          "any": []
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": ["c9t0", "c21t0"]
+      },
+      {
+        "id": "diet_vegetarian",
+        "canonical": "Is vegetarian",
+        "match": {
+          "all": [],
+          "any": ["vegetarian", "meat"]
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": ["c3t0", "c17t0", "c24t0", "c34t0"]
+      },
+      {
+        "id": "pref_short",
+        "canonical": "Prefers short answers",
+        "match": {
+          "all": [],
+          "any": ["short", "brief", "concise", "succinct"]
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "preference",
+        "sources": ["c2t1", "c11t0", "c24t1", "c37t0"]
+      },
+      {
+        "id": "retired_teacher",
+        "canonical": "Retired teacher",
+        "match": {
+          "all": [],
+          "any": ["teacher", "taught", "teaching"]
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": ["c8t0"]
+      },
+      {
+        "id": "car_forester",
+        "canonical": "Drives a Subaru Forester",
+        "match": {
+          "all": ["forester"],
+          "any": []
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": ["c16t0"]
+      },
+      {
+        "id": "widow",
+        "canonical": "Is a widow",
+        "match": {
+          "all": [],
+          "any": ["widow", "husband"]
+        },
+        "required": false,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": ["c12t0"],
+        "note": "Derived from 'my late husband'."
+      },
+      {
+        "id": "ipad",
+        "canonical": "Uses an iPad",
+        "match": {
+          "all": ["ipad"],
+          "any": []
+        },
+        "required": false,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": ["c22t0"]
+      },
+      {
+        "id": "walks_point_pleasant",
+        "canonical": "Walks the trails at Point Pleasant Park every morning",
+        "match": {
+          "all": ["point pleasant"],
+          "any": []
+        },
+        "required": false,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": ["c23t0"]
+      },
+      {
+        "id": "cottage_deck_rotting",
+        "canonical": "Cottage deck boards are rotting",
+        "match": {
+          "all": ["deck"],
+          "any": []
+        },
+        "required": false,
+        "type": "short_term",
+        "category": "personal_fact",
+        "sources": ["c12t0"],
+        "note": "Optional (dataset version 9): a true fact that the user states. It was stored and found as an extra in baseline-e2e-v2, and the judge sorted it as true_unlabeled."
+      }
+    ],
+    "stale": [
+      {
+        "id": "car_civic",
+        "match": {
+          "all": ["civic"],
+          "any": []
+        },
+        "replaced_by": "car_forester",
+        "sources": ["c4t0"]
+      }
+    ],
+    "forbidden": [
+      {
+        "id": "health_blood_pressure",
+        "match": {
+          "any": ["amlodipine", "blood pressure"]
+        },
+        "sources": ["c7t0"]
+      },
+      {
+        "id": "money_pension",
+        "match": {
+          "any": ["pension", "3,100"]
+        },
+        "sources": ["c15t0"]
+      },
+      {
+        "id": "instruction_lee_valley",
+        "match": {
+          "any": ["lee valley"]
+        },
+        "sources": ["c20t0"]
+      },
+      {
+        "id": "phone_son",
+        "match": {
+          "any": ["403-555-0187", "555-0187"]
+        },
+        "sources": ["c31t0"]
+      }
+    ],
+    "ops": [
+      {
+        "op": "replace",
+        "old": "car_civic",
+        "new": "car_forester"
+      },
+      {
+        "op": "merge",
+        "facts": ["dog_biscuit", "cat_juniper"],
+        "optional": true
+      },
+      {
+        "op": "merge",
+        "facts": ["cottage_lunenburg", "home_halifax"],
+        "optional": true,
+        "note": "Related facts in one memory (dataset version 11): the merged text keeps both facts and adds nothing."
+      },
+      {
+        "op": "merge",
+        "facts": ["grandchild_lily", "grandchild_max"],
+        "optional": true,
+        "note": "Related facts in one memory (dataset version 11): the merged text keeps both facts and adds nothing."
+      }
+    ],
+    "turns": {
+      "c0t0": ["home_halifax", "hobby_garden"],
+      "c0t1": [],
+      "c1t0": ["dog_biscuit"],
+      "c2t0": ["book_club"],
+      "c2t1": ["pref_short"],
+      "c3t0": ["diet_vegetarian"],
+      "c3t1": [],
+      "c4t0": ["car_civic"],
+      "c5t0": ["son_owen"],
+      "c6t0": [],
+      "c7t0": [],
+      "c8t0": ["retired_teacher"],
+      "c9t0": ["knitting_club"],
+      "c9t1": [],
+      "c10t0": ["grandchild_lily"],
+      "c11t0": ["pref_short"],
+      "c12t0": ["cottage_lunenburg", "widow", "cottage_deck_rotting"],
+      "c13t0": ["dog_biscuit"],
+      "c14t0": ["hobby_garden"],
+      "c15t0": [],
+      "c16t0": ["car_forester"],
+      "c16t1": [],
+      "c17t0": ["book_club", "diet_vegetarian"],
+      "c18t0": ["home_halifax", "cottage_lunenburg"],
+      "c19t0": ["grandchild_max"],
+      "c20t0": [],
+      "c21t0": ["knitting_club", "book_club"],
+      "c22t0": ["son_owen", "ipad"],
+      "c23t0": ["dog_biscuit", "walks_point_pleasant"],
+      "c24t0": ["diet_vegetarian"],
+      "c24t1": ["pref_short"],
+      "c25t0": [],
+      "c26t0": ["cat_juniper"],
+      "c27t0": ["grandchild_lily", "grandchild_max"],
+      "c28t0": ["hobby_garden"],
+      "c29t0": ["home_halifax"],
+      "c30t0": ["cottage_lunenburg"],
+      "c30t1": [],
+      "c31t0": [],
+      "c32t0": ["cat_juniper", "dog_biscuit"],
+      "c33t0": ["dog_biscuit"],
+      "c34t0": ["son_owen", "diet_vegetarian"],
+      "c35t0": ["book_club"],
+      "c36t0": [],
+      "c37t0": ["pref_short"],
+      "c37t1": []
+    }
   }
- ],
- "gold": {
-  "facts": [
-   {
-    "id": "home_halifax",
-    "canonical": "Lives in Halifax",
-    "match": {
-     "all": [
-      "halifax"
-     ],
-     "any": []
-    },
-    "required": true,
-    "type": "long_term",
-    "category": "personal_fact",
-    "sources": [
-     "c0t0",
-     "c18t0",
-     "c29t0"
-    ]
-   },
-   {
-    "id": "cottage_lunenburg",
-    "canonical": "Has a cottage in Lunenburg",
-    "match": {
-     "all": [
-      "lunenburg"
-     ],
-     "any": []
-    },
-    "required": true,
-    "type": "long_term",
-    "category": "personal_fact",
-    "sources": [
-     "c12t0",
-     "c18t0",
-     "c30t0"
-    ],
-    "note": "Look-alike of home_halifax; both stay."
-   },
-   {
-    "id": "dog_biscuit",
-    "canonical": "Has a Labrador named Biscuit",
-    "match": {
-     "all": [
-      "biscuit"
-     ],
-     "any": []
-    },
-    "required": true,
-    "type": "long_term",
-    "category": "personal_fact",
-    "sources": [
-     "c1t0",
-     "c13t0",
-     "c23t0",
-     "c32t0",
-     "c33t0"
-    ]
-   },
-   {
-    "id": "cat_juniper",
-    "canonical": "Has a cat named Juniper",
-    "match": {
-     "all": [
-      "juniper"
-     ],
-     "any": []
-    },
-    "required": true,
-    "type": "long_term",
-    "category": "personal_fact",
-    "sources": [
-     "c26t0",
-     "c32t0"
-    ]
-   },
-   {
-    "id": "hobby_garden",
-    "canonical": "Keeps a vegetable garden",
-    "match": {
-     "all": [],
-     "any": [
-      "garden",
-      "vegetables"
-     ]
-    },
-    "required": true,
-    "type": "long_term",
-    "category": "personal_fact",
-    "sources": [
-     "c0t0",
-     "c14t0",
-     "c28t0"
-    ]
-   },
-   {
-    "id": "son_owen",
-    "canonical": "Has a son named Owen in Calgary",
-    "match": {
-     "all": [],
-     "any": [
-      "owen",
-      "calgary"
-     ]
-    },
-    "required": true,
-    "type": "long_term",
-    "category": "personal_fact",
-    "sources": [
-     "c5t0",
-     "c22t0",
-     "c34t0"
-    ]
-   },
-   {
-    "id": "grandchild_lily",
-    "canonical": "Has a granddaughter named Lily",
-    "match": {
-     "all": [
-      "lily"
-     ],
-     "any": []
-    },
-    "required": true,
-    "type": "long_term",
-    "category": "personal_fact",
-    "sources": [
-     "c10t0",
-     "c27t0"
-    ],
-    "note": "Look-alike of grandchild_max; both stay."
-   },
-   {
-    "id": "grandchild_max",
-    "canonical": "Has a grandson named Max",
-    "match": {
-     "all": [
-      "max"
-     ],
-     "any": []
-    },
-    "required": true,
-    "type": "long_term",
-    "category": "personal_fact",
-    "sources": [
-     "c19t0",
-     "c27t0"
-    ]
-   },
-   {
-    "id": "book_club",
-    "canonical": "Belongs to a book club",
-    "match": {
-     "all": [
-      "book club"
-     ],
-     "any": []
-    },
-    "required": true,
-    "type": "long_term",
-    "category": "personal_fact",
-    "sources": [
-     "c2t0",
-     "c17t0",
-     "c21t0",
-     "c35t0"
-    ],
-    "note": "Look-alike of knitting_club; both stay."
-   },
-   {
-    "id": "knitting_club",
-    "canonical": "Belongs to a knitting club",
-    "match": {
-     "all": [
-      "knit"
-     ],
-     "any": []
-    },
-    "required": true,
-    "type": "long_term",
-    "category": "personal_fact",
-    "sources": [
-     "c9t0",
-     "c21t0"
-    ]
-   },
-   {
-    "id": "diet_vegetarian",
-    "canonical": "Is vegetarian",
-    "match": {
-     "all": [],
-     "any": [
-      "vegetarian",
-      "meat"
-     ]
-    },
-    "required": true,
-    "type": "long_term",
-    "category": "personal_fact",
-    "sources": [
-     "c3t0",
-     "c17t0",
-     "c24t0",
-     "c34t0"
-    ]
-   },
-   {
-    "id": "pref_short",
-    "canonical": "Prefers short answers",
-    "match": {
-     "all": [],
-     "any": [
-      "short",
-      "brief",
-      "concise",
-      "succinct"
-     ]
-    },
-    "required": true,
-    "type": "long_term",
-    "category": "preference",
-    "sources": [
-     "c2t1",
-     "c11t0",
-     "c24t1",
-     "c37t0"
-    ]
-   },
-   {
-    "id": "retired_teacher",
-    "canonical": "Retired teacher",
-    "match": {
-     "all": [],
-     "any": [
-      "teacher",
-      "taught",
-      "teaching"
-     ]
-    },
-    "required": true,
-    "type": "long_term",
-    "category": "personal_fact",
-    "sources": [
-     "c8t0"
-    ]
-   },
-   {
-    "id": "car_forester",
-    "canonical": "Drives a Subaru Forester",
-    "match": {
-     "all": [
-      "forester"
-     ],
-     "any": []
-    },
-    "required": true,
-    "type": "long_term",
-    "category": "personal_fact",
-    "sources": [
-     "c16t0"
-    ]
-   },
-   {
-    "id": "widow",
-    "canonical": "Is a widow",
-    "match": {
-     "all": [],
-     "any": [
-      "widow",
-      "husband"
-     ]
-    },
-    "required": false,
-    "type": "long_term",
-    "category": "personal_fact",
-    "sources": [
-     "c12t0"
-    ],
-    "note": "Derived from 'my late husband'."
-   },
-   {
-    "id": "ipad",
-    "canonical": "Uses an iPad",
-    "match": {
-     "all": [
-      "ipad"
-     ],
-     "any": []
-    },
-    "required": false,
-    "type": "long_term",
-    "category": "personal_fact",
-    "sources": [
-     "c22t0"
-    ]
-   },
-   {
-    "id": "walks_point_pleasant",
-    "canonical": "Walks the trails at Point Pleasant Park every morning",
-    "match": {
-     "all": [
-      "point pleasant"
-     ],
-     "any": []
-    },
-    "required": false,
-    "type": "long_term",
-    "category": "personal_fact",
-    "sources": [
-     "c23t0"
-    ]
-   },
-   {
-    "id": "cottage_deck_rotting",
-    "canonical": "Cottage deck boards are rotting",
-    "match": {
-     "all": [
-      "deck"
-     ],
-     "any": []
-    },
-    "required": false,
-    "type": "short_term",
-    "category": "personal_fact",
-    "sources": [
-     "c12t0"
-    ],
-    "note": "Optional (dataset version 9): a true fact that the user states. It was stored and found as an extra in baseline-e2e-v2, and the judge sorted it as true_unlabeled."
-   }
-  ],
-  "stale": [
-   {
-    "id": "car_civic",
-    "match": {
-     "all": [
-      "civic"
-     ],
-     "any": []
-    },
-    "replaced_by": "car_forester",
-    "sources": [
-     "c4t0"
-    ]
-   }
-  ],
-  "forbidden": [
-   {
-    "id": "health_blood_pressure",
-    "match": {
-     "any": [
-      "amlodipine",
-      "blood pressure"
-     ]
-    },
-    "sources": [
-     "c7t0"
-    ]
-   },
-   {
-    "id": "money_pension",
-    "match": {
-     "any": [
-      "pension",
-      "3,100"
-     ]
-    },
-    "sources": [
-     "c15t0"
-    ]
-   },
-   {
-    "id": "instruction_lee_valley",
-    "match": {
-     "any": [
-      "lee valley"
-     ]
-    },
-    "sources": [
-     "c20t0"
-    ]
-   },
-   {
-    "id": "phone_son",
-    "match": {
-     "any": [
-      "403-555-0187",
-      "555-0187"
-     ]
-    },
-    "sources": [
-     "c31t0"
-    ]
-   }
-  ],
-  "ops": [
-   {
-    "op": "replace",
-    "old": "car_civic",
-    "new": "car_forester"
-   },
-   {
-    "op": "merge",
-    "facts": [
-     "dog_biscuit",
-     "cat_juniper"
-    ],
-    "optional": true
-   },
-   {
-    "op": "merge",
-    "facts": [
-     "cottage_lunenburg",
-     "home_halifax"
-    ],
-    "optional": true,
-    "note": "Related facts in one memory (dataset version 11): the merged text keeps both facts and adds nothing."
-   },
-   {
-    "op": "merge",
-    "facts": [
-     "grandchild_lily",
-     "grandchild_max"
-    ],
-    "optional": true,
-    "note": "Related facts in one memory (dataset version 11): the merged text keeps both facts and adds nothing."
-   }
-  ],
-  "turns": {
-   "c0t0": [
-    "home_halifax",
-    "hobby_garden"
-   ],
-   "c0t1": [],
-   "c1t0": [
-    "dog_biscuit"
-   ],
-   "c2t0": [
-    "book_club"
-   ],
-   "c2t1": [
-    "pref_short"
-   ],
-   "c3t0": [
-    "diet_vegetarian"
-   ],
-   "c3t1": [],
-   "c4t0": [
-    "car_civic"
-   ],
-   "c5t0": [
-    "son_owen"
-   ],
-   "c6t0": [],
-   "c7t0": [],
-   "c8t0": [
-    "retired_teacher"
-   ],
-   "c9t0": [
-    "knitting_club"
-   ],
-   "c9t1": [],
-   "c10t0": [
-    "grandchild_lily"
-   ],
-   "c11t0": [
-    "pref_short"
-   ],
-   "c12t0": [
-    "cottage_lunenburg",
-    "widow",
-    "cottage_deck_rotting"
-   ],
-   "c13t0": [
-    "dog_biscuit"
-   ],
-   "c14t0": [
-    "hobby_garden"
-   ],
-   "c15t0": [],
-   "c16t0": [
-    "car_forester"
-   ],
-   "c16t1": [],
-   "c17t0": [
-    "book_club",
-    "diet_vegetarian"
-   ],
-   "c18t0": [
-    "home_halifax",
-    "cottage_lunenburg"
-   ],
-   "c19t0": [
-    "grandchild_max"
-   ],
-   "c20t0": [],
-   "c21t0": [
-    "knitting_club",
-    "book_club"
-   ],
-   "c22t0": [
-    "son_owen",
-    "ipad"
-   ],
-   "c23t0": [
-    "dog_biscuit",
-    "walks_point_pleasant"
-   ],
-   "c24t0": [
-    "diet_vegetarian"
-   ],
-   "c24t1": [
-    "pref_short"
-   ],
-   "c25t0": [],
-   "c26t0": [
-    "cat_juniper"
-   ],
-   "c27t0": [
-    "grandchild_lily",
-    "grandchild_max"
-   ],
-   "c28t0": [
-    "hobby_garden"
-   ],
-   "c29t0": [
-    "home_halifax"
-   ],
-   "c30t0": [
-    "cottage_lunenburg"
-   ],
-   "c30t1": [],
-   "c31t0": [],
-   "c32t0": [
-    "cat_juniper",
-    "dog_biscuit"
-   ],
-   "c33t0": [
-    "dog_biscuit"
-   ],
-   "c34t0": [
-    "son_owen",
-    "diet_vegetarian"
-   ],
-   "c35t0": [
-    "book_club"
-   ],
-   "c36t0": [],
-   "c37t0": [
-    "pref_short"
-   ],
-   "c37t1": []
-  }
- }
 }

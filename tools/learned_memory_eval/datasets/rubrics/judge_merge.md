@@ -2,8 +2,8 @@
 
 Rubric version: 1
 
-A memory feature keeps short memories about a user. When a new memory adds to
-an old memory, a local language model writes one merged memory. You judge one
+A memory feature keeps short memories about a user. When a new memory adds to an
+old memory, a local language model writes one merged memory. You judge one
 output.
 
 The input has the `old` memory, the `new` memory and the `merged` memory. The
@@ -26,8 +26,8 @@ The output is faithful when all three flags are false.
 ## Rules
 
 1. Judge the meaning, not the style. A shorter or re-ordered text is fine.
-2. A correct count that the two memories give together is fine ("Has a dog
-   named Luna" and "Adopted a second dog named Pixel" → "Has two dogs, Luna and
+2. A correct count that the two memories give together is fine ("Has a dog named
+   Luna" and "Adopted a second dog named Pixel" → "Has two dogs, Luna and
    Pixel").
 3. Judge only what the input shows.
 

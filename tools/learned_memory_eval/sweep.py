@@ -22,6 +22,7 @@ Scores, for each grid point:
 - forbidden keeps: kept sentences that match a forbidden item (must be 0).
 - extra keeps: other kept sentences of fact turns (for example the question).
 """
+
 from __future__ import annotations
 
 import argparse
@@ -34,18 +35,26 @@ from lib import gold as gold_lib
 from lib import scoring as sc
 from lib.steps import keep_rule
 
-PARAMS = [("gate", "gate_threshold"), ("fact", "fact_threshold"),
-          ("sensitive", "max_sensitive"), ("instruction", "max_instruction"),
-          ("short_lived", "max_short_lived")]
+PARAMS = [
+    ("gate", "gate_threshold"),
+    ("fact", "fact_threshold"),
+    ("sensitive", "max_sensitive"),
+    ("instruction", "max_instruction"),
+    ("short_lived", "max_short_lived"),
+]
 
 
 def load_runs(run: Path, gold_from: Path | None) -> list:
     out = []
-    paths = sorted(run.glob("*/r*/report.json")) or sorted(run.glob("*/report.json"))
+    paths = sorted(run.glob("*/r*/report.json")) or sorted(
+        run.glob("*/report.json")
+    )
     for path in paths:
         chat_set = json.loads((path.parent / "chats.json").read_text())
         if gold_from and (gold_from / f"{chat_set['name']}.json").exists():
-            chat_set = json.loads((gold_from / f"{chat_set['name']}.json").read_text())
+            chat_set = json.loads(
+                (gold_from / f"{chat_set['name']}.json").read_text()
+            )
         if "gold" not in chat_set:
             continue
         report = json.loads(path.read_text())
@@ -73,28 +82,64 @@ def sentences_of(chat_set: dict, report: dict) -> list:
         if split is None:
             # A skipped turn: the trace has no sentences. Use the whole turn.
             text = next((s["text"] for s in steps if s["step"] == "turn"), "")
-            split = {"sentences": [{"index": 0, "text": text, "denylist": False}]}
+            split = {
+                "sentences": [{"index": 0, "text": text, "denylist": False}]
+            }
         decisions = {s["index"]: s for s in (sd or {}).get("sentences", [])}
-        turn_items = [facts.get(i) or stale.get(i) for i in gold.get("turns", {}).get(tid, [])]
-        wanted_items = [i for i in turn_items if i and (i["id"] in stale or i.get("required"))]
-        optional = [i for i in turn_items if i and i["id"] in facts and not i.get("required")]
+        turn_items = [
+            facts.get(i) or stale.get(i)
+            for i in gold.get("turns", {}).get(tid, [])
+        ]
+        wanted_items = [
+            i
+            for i in turn_items
+            if i and (i["id"] in stale or i.get("required"))
+        ]
+        optional = [
+            i
+            for i in turn_items
+            if i and i["id"] in facts and not i.get("required")
+        ]
         for s in split["sentences"]:
             d = decisions.get(s["index"])
             role = "extra"
-            if any(gold_lib.matches(f["match"], s["text"]) or gold_lib._sentence_match(f["match"], s["text"])
-                   for f in forbidden):
+            if any(
+                gold_lib.matches(f["match"], s["text"])
+                or gold_lib._sentence_match(f["match"], s["text"])
+                for f in forbidden
+            ):
                 role = "forbidden"
             elif not turn_items:
-                role = "wrong" if gold.get("turns", {}).get(tid) == [] else "extra"
-            elif any(gold_lib._sentence_match(i["match"], s["text"]) for i in wanted_items):
+                role = (
+                    "wrong" if gold.get("turns", {}).get(tid) == [] else "extra"
+                )
+            elif any(
+                gold_lib._sentence_match(i["match"], s["text"])
+                for i in wanted_items
+            ):
                 role = "wanted"
-            elif any(gold_lib._sentence_match(i["match"], s["text"]) for i in optional):
+            elif any(
+                gold_lib._sentence_match(i["match"], s["text"])
+                for i in optional
+            ):
                 role = "optional"
-            rows.append({"set": chat_set["name"], "turn": tid, "text": s["text"],
-                         "denylist": s["denylist"], "gate": gate["probabilities"].get("yes", 0.0),
-                         "probs": None if d is None else {
-                             "fact": d["fact"].get("yes", 0.0), "safety": d["safety"]},
-                         "traced": None if d is None else d["result"] == "keep", "role": role})
+            rows.append(
+                {
+                    "set": chat_set["name"],
+                    "turn": tid,
+                    "text": s["text"],
+                    "denylist": s["denylist"],
+                    "gate": gate["probabilities"].get("yes", 0.0),
+                    "probs": None
+                    if d is None
+                    else {
+                        "fact": d["fact"].get("yes", 0.0),
+                        "safety": d["safety"],
+                    },
+                    "traced": None if d is None else d["result"] == "keep",
+                    "role": role,
+                }
+            )
     return rows
 
 
@@ -104,13 +149,25 @@ def decide(row: dict, p: dict):
         return False
     if row["probs"] is None:
         return None
-    keep, _ = keep_rule(row["probs"], p["fact_threshold"], p["max_sensitive"],
-                        p["max_instruction"], p["max_short_lived"])
+    keep, _ = keep_rule(
+        row["probs"],
+        p["fact_threshold"],
+        p["max_sensitive"],
+        p["max_instruction"],
+        p["max_short_lived"],
+    )
     return keep
 
 
 def score(rows: list, p: dict) -> dict:
-    out = {"wanted": 0, "kept_wanted": 0, "wrong": 0, "forbidden": 0, "extra": 0, "unknown": 0}
+    out = {
+        "wanted": 0,
+        "kept_wanted": 0,
+        "wrong": 0,
+        "forbidden": 0,
+        "extra": 0,
+        "unknown": 0,
+    }
     for r in rows:
         k = decide(r, p)
         if r["role"] == "wanted":
@@ -128,47 +185,82 @@ def score(rows: list, p: dict) -> dict:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description=__doc__,
-                                     formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser = argparse.ArgumentParser(
+        description=__doc__,
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+    )
     parser.add_argument("run", help="an L2 run folder of run_eval.py")
-    parser.add_argument("--gold-from", default=None, help="chat sets with newer gold, by name")
+    parser.add_argument(
+        "--gold-from", default=None, help="chat sets with newer gold, by name"
+    )
     for flag, _ in PARAMS:
-        parser.add_argument(f"--{flag.replace('_', '-')}", dest=flag, type=float, nargs="*")
-    parser.add_argument("--top", type=int, default=0, help="show only the best N points")
+        parser.add_argument(
+            f"--{flag.replace('_', '-')}", dest=flag, type=float, nargs="*"
+        )
+    parser.add_argument(
+        "--top", type=int, default=0, help="show only the best N points"
+    )
     args = parser.parse_args()
-    runs = load_runs(Path(args.run), Path(args.gold_from) if args.gold_from else None)
+    runs = load_runs(
+        Path(args.run), Path(args.gold_from) if args.gold_from else None
+    )
     if not runs:
         sys.exit("no report.json with a trace and gold in this run")
     config = runs[0][1].get("config", {})
     current = {name: config.get(name) for _, name in PARAMS}
     if None in current.values():
-        sys.exit(f"report.json config has no {[k for k, v in current.items() if v is None]}: "
-                 "the build is older than the harness")
-    rows = [r for chat_set, report, _ in runs for r in sentences_of(chat_set, report)]
+        sys.exit(
+            f"report.json config has no {[k for k, v in current.items() if v is None]}: "
+            "the build is older than the harness"
+        )
+    rows = [
+        r
+        for chat_set, report, _ in runs
+        for r in sentences_of(chat_set, report)
+    ]
 
     # The grid point of the run must give the kept sentences of the trace.
-    diffs = [r for r in rows if r["traced"] is not None and decide(r, current) != r["traced"]]
-    check = ("PASS: the run's thresholds give the kept sentences of the trace "
-             f"({sum(1 for r in rows if r['traced'] is not None)} sentences)") if not diffs else \
-        f"FAIL: {len(diffs)} sentences differ from the trace, e.g. {diffs[0]['text']!r}"
+    diffs = [
+        r
+        for r in rows
+        if r["traced"] is not None and decide(r, current) != r["traced"]
+    ]
+    check = (
+        (
+            "PASS: the run's thresholds give the kept sentences of the trace "
+            f"({sum(1 for r in rows if r['traced'] is not None)} sentences)"
+        )
+        if not diffs
+        else f"FAIL: {len(diffs)} sentences differ from the trace, e.g. {diffs[0]['text']!r}"
+    )
 
-    grid = {name: getattr(args, flag) or [current[name]] for flag, name in PARAMS}
-    points = [dict(zip(grid, values)) for values in itertools.product(*grid.values())]
+    grid = {
+        name: getattr(args, flag) or [current[name]] for flag, name in PARAMS
+    }
+    points = [
+        dict(zip(grid, values)) for values in itertools.product(*grid.values())
+    ]
     results = [(p, score(rows, p)) for p in points]
-    results.sort(key=lambda x: (x[1]["forbidden"], -x[1]["kept_wanted"], x[1]["wrong"]))
+    results.sort(
+        key=lambda x: (x[1]["forbidden"], -x[1]["kept_wanted"], x[1]["wrong"])
+    )
     if args.top:
-        results = results[:args.top]
+        results = results[: args.top]
     print(f"# Threshold sweep of {args.run}\n")
     print(f"{len(runs)} set runs, {len(rows)} sentences. {check}\n")
-    print("| Gate | Fact | Sensitive < | Instruction < | Short-lived < | Wanted kept | "
-          "Wrong keeps | Forbidden keeps | Extra keeps | Unknown |")
+    print(
+        "| Gate | Fact | Sensitive < | Instruction < | Short-lived < | Wanted kept | "
+        "Wrong keeps | Forbidden keeps | Extra keeps | Unknown |"
+    )
     print("|---|---|---|---|---|---|---|---|---|---|")
     for p, s in results:
         mark = " **(run)**" if p == current else ""
-        print(f"| {p['gate_threshold']}{mark} | {p['fact_threshold']} | {p['max_sensitive']} | "
-              f"{p['max_instruction']} | {p['max_short_lived']} | "
-              f"{sc.fmt_rate(sc.rate(s['kept_wanted'], s['wanted']), False)} | {s['wrong']} | "
-              f"{s['forbidden']}{' **LEAK RISK**' if s['forbidden'] else ''} | {s['extra']} | {s['unknown']} |")
+        print(
+            f"| {p['gate_threshold']}{mark} | {p['fact_threshold']} | {p['max_sensitive']} | "
+            f"{p['max_instruction']} | {p['max_short_lived']} | "
+            f"{sc.fmt_rate(sc.rate(s['kept_wanted'], s['wanted']), False)} | {s['wrong']} | "
+            f"{s['forbidden']}{' **LEAK RISK**' if s['forbidden'] else ''} | {s['extra']} | {s['unknown']} |"
+        )
     sys.exit(1 if diffs else 0)
 
 

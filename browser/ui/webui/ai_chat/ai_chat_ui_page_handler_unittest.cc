@@ -641,8 +641,7 @@ namespace {
 std::optional<std::vector<std::string>> SearchMemories(
     content::BrowserContext* context,
     const std::string& query) {
-  base::test::TestFuture<std::optional<std::vector<MemorySearchResult>>>
-      future;
+  base::test::TestFuture<std::optional<std::vector<MemorySearchResult>>> future;
   SearchMemoriesForUI(context, query, future.GetCallback());
   std::optional<std::vector<MemorySearchResult>> results = future.Take();
   if (!results) {

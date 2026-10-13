@@ -2,6 +2,7 @@
 
 Every run writes manifest.json. A run without it is not a result.
 """
+
 from __future__ import annotations
 
 import datetime
@@ -37,45 +38,74 @@ def new_run_dir(root: Path, tag: str) -> tuple:
 
 def _git(*args: str) -> str:
     try:
-        return subprocess.run(["git", "-C", str(REPO), *args], capture_output=True,
-                              text=True, timeout=30).stdout
+        return subprocess.run(
+            ["git", "-C", str(REPO), *args],
+            capture_output=True,
+            text=True,
+            timeout=30,
+        ).stdout
     except (OSError, subprocess.SubprocessError):
         return ""
 
 
 def git_info() -> dict:
     # Porcelain lines are "XY path". Do not strip them: X can be a space.
-    dirty = [line[3:] for line in _git("status", "--porcelain").splitlines() if line.strip()]
-    return {"sha": _git("rev-parse", "HEAD").strip(),
-            "branch": _git("rev-parse", "--abbrev-ref", "HEAD").strip(), "dirty": dirty}
+    dirty = [
+        line[3:]
+        for line in _git("status", "--porcelain").splitlines()
+        if line.strip()
+    ]
+    return {
+        "sha": _git("rev-parse", "HEAD").strip(),
+        "branch": _git("rev-parse", "--abbrev-ref", "HEAD").strip(),
+        "dirty": dirty,
+    }
 
 
 def machine_info() -> dict:
     ram = None
     try:
         if sys.platform == "darwin":
-            ram = int(subprocess.run(["sysctl", "-n", "hw.memsize"], capture_output=True,
-                                     text=True).stdout.strip())
+            ram = int(
+                subprocess.run(
+                    ["sysctl", "-n", "hw.memsize"],
+                    capture_output=True,
+                    text=True,
+                ).stdout.strip()
+            )
         else:
             for line in Path("/proc/meminfo").read_text().splitlines():
                 if line.startswith("MemTotal:"):
                     ram = int(line.split()[1]) * 1024
     except (OSError, ValueError):
         pass
-    return {"host": socket.gethostname(), "os": platform.platform(),
-            "python": platform.python_version(),
-            "ram_gb": round(ram / 2**30, 1) if ram else None}
+    return {
+        "host": socket.gethostname(),
+        "os": platform.platform(),
+        "python": platform.python_version(),
+        "ram_gb": round(ram / 2**30, 1) if ram else None,
+    }
 
 
 def ollama_info(ollama: str, models: dict) -> dict:
     """|models| maps a role (decision, llm, ...) to a model name."""
     info = {"url": ollama, "version": None, "models": []}
     try:
-        info["version"] = clients.http_json(f"{ollama}/api/version", timeout=10).get("version")
-        tags = {m["name"]: m for m in clients.http_json(f"{ollama}/api/tags", timeout=10)
-                .get("models", [])}
-        loaded = {m["name"]: m for m in clients.http_json(f"{ollama}/api/ps", timeout=10)
-                  .get("models", [])}
+        info["version"] = clients.http_json(
+            f"{ollama}/api/version", timeout=10
+        ).get("version")
+        tags = {
+            m["name"]: m
+            for m in clients.http_json(f"{ollama}/api/tags", timeout=10).get(
+                "models", []
+            )
+        }
+        loaded = {
+            m["name"]: m
+            for m in clients.http_json(f"{ollama}/api/ps", timeout=10).get(
+                "models", []
+            )
+        }
     except Exception as e:  # The manifest must not stop a run.
         info["error"] = str(e)
         return info
@@ -84,10 +114,17 @@ def ollama_info(ollama: str, models: dict) -> dict:
             continue
         tag = tags.get(name, {})
         ps = loaded.get(name, {})
-        info["models"].append({
-            "role": role, "name": name, "digest": tag.get("digest"),
-            "size": tag.get("size"), "loaded": bool(ps),
-            "size_vram": ps.get("size_vram"), "context_length": ps.get("context_length")})
+        info["models"].append(
+            {
+                "role": role,
+                "name": name,
+                "digest": tag.get("digest"),
+                "size": tag.get("size"),
+                "loaded": bool(ps),
+                "size_vram": ps.get("size_vram"),
+                "context_length": ps.get("context_length"),
+            }
+        )
     return info
 
 
@@ -98,15 +135,23 @@ def dataset_info(path: Path) -> dict:
     else:
         try:
             parsed = json.loads(data)
-            count = len(parsed.get("chats", [])) if isinstance(parsed, dict) else len(parsed)
+            count = (
+                len(parsed.get("chats", []))
+                if isinstance(parsed, dict)
+                else len(parsed)
+            )
         except json.JSONDecodeError:
             count = None
     try:
         rel = str(path.resolve().relative_to(EVAL_ROOT))
     except ValueError:
         rel = str(path)
-    return {"path": rel, "version": dataset_version(), "sha256": hashlib.sha256(data).hexdigest(),
-            "cases": count}
+    return {
+        "path": rel,
+        "version": dataset_version(),
+        "sha256": hashlib.sha256(data).hexdigest(),
+        "cases": count,
+    }
 
 
 def dataset_version() -> str | None:
@@ -122,23 +167,48 @@ def build_info(brave: str | None) -> dict | None:
     if not brave:
         return None
     p = Path(brave)
-    return {"path": str(p), "mtime": datetime.datetime.fromtimestamp(p.stat().st_mtime)
-            .isoformat(timespec="seconds") if p.exists() else None}
+    return {
+        "path": str(p),
+        "mtime": datetime.datetime.fromtimestamp(p.stat().st_mtime).isoformat(
+            timespec="seconds"
+        )
+        if p.exists()
+        else None,
+    }
 
 
-def write_manifest(run_dir: Path, *, run_id: str, tag: str, ollama: str, models: dict,
-                   params: dict, variants: dict, datasets: list, repeats: int,
-                   cache: bool, brave: str | None = None, extra: dict | None = None) -> dict:
+def write_manifest(
+    run_dir: Path,
+    *,
+    run_id: str,
+    tag: str,
+    ollama: str,
+    models: dict,
+    params: dict,
+    variants: dict,
+    datasets: list,
+    repeats: int,
+    cache: bool,
+    brave: str | None = None,
+    extra: dict | None = None,
+) -> dict:
     manifest = {
-        "run_id": run_id, "tag": tag,
+        "run_id": run_id,
+        "tag": tag,
         "started": datetime.datetime.now().isoformat(timespec="seconds"),
         "command": " ".join(sys.argv),
-        "git": git_info(), "build": build_info(brave),
+        "git": git_info(),
+        "build": build_info(brave),
         "ollama": ollama_info(ollama, models),
-        "params": params, "variants": variants,
+        "params": params,
+        "variants": variants,
         "datasets": [dataset_info(Path(d)) for d in datasets],
-        "repeats": repeats, "cache": cache, "machine": machine_info(),
+        "repeats": repeats,
+        "cache": cache,
+        "machine": machine_info(),
     }
     manifest.update(extra or {})
-    (run_dir / "manifest.json").write_text(json.dumps(manifest, indent=2, ensure_ascii=False))
+    (run_dir / "manifest.json").write_text(
+        json.dumps(manifest, indent=2, ensure_ascii=False)
+    )
     return manifest

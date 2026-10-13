@@ -1,706 +1,530 @@
 {
- "name": "career_family_changes",
- "description": "A family and a career that change over 4 months: a move, a new job, a second child, a new hobby, and the old facts that they replace.",
- "chats": [
-  {
-   "title": "Weekend rota",
-   "days_ago": 120,
-   "turns": [
+  "name": "career_family_changes",
+  "description": "A family and a career that change over 4 months: a move, a new job, a second child, a new hobby, and the old facts that they replace.",
+  "chats": [
     {
-     "user": "I live in Marseille and work as a nurse manager at Hôpital du Roucas, 34 nurses on my unit. Can you help me build a fairer weekend rota?"
+      "title": "Weekend rota",
+      "days_ago": 120,
+      "turns": [
+        {
+          "user": "I live in Marseille and work as a nurse manager at Hôpital du Roucas, 34 nurses on my unit. Can you help me build a fairer weekend rota?"
+        },
+        {
+          "user": "Some nurses only want nights. Could you show me a 4-week template?"
+        }
+      ]
     },
     {
-     "user": "Some nurses only want nights. Could you show me a 4-week template?"
-    }
-   ]
-  },
-  {
-   "title": "Maqam practice",
-   "days_ago": 116,
-   "turns": [
-    {
-     "user": "I've been playing the oud for about ten years but I'm stuck on maqam Hijaz improvisation. Any exercises you'd suggest?"
-    }
-   ]
-  },
-  {
-   "title": "Pre-run breakfast",
-   "days_ago": 112,
-   "turns": [
-    {
-     "user": "I run along the Corniche three mornings a week, usually around 8 km. What should I eat before an early run?"
-    }
-   ]
-  },
-  {
-   "title": "Exercise question",
-   "days_ago": 108,
-   "turns": [
-    {
-     "user": "I'm 26 weeks pregnant, we're expecting our second, and my doctor just told me I have gestational diabetes. Is it still safe to keep jogging a little?"
-    }
-   ]
-  },
-  {
-   "title": "Reading games",
-   "days_ago": 104,
-   "turns": [
-    {
-     "user": "My daughter Lina is 7 and goes to École des Calanques. Her teacher says her reading is a bit behind, could you suggest fun reading games we can do at home?"
+      "title": "Maqam practice",
+      "days_ago": 116,
+      "turns": [
+        {
+          "user": "I've been playing the oud for about ten years but I'm stuck on maqam Hijaz improvisation. Any exercises you'd suggest?"
+        }
+      ]
     },
     {
-     "user": "Keep each game under ten minutes, she loses focus quickly."
-    }
-   ]
-  },
-  {
-   "title": "Interview prep",
-   "days_ago": 100,
-   "turns": [
-    {
-     "user": "I have an interview this Thursday for a hospital director position in Lyon. Help me prepare a 5-minute pitch about my management style."
+      "title": "Pre-run breakfast",
+      "days_ago": 112,
+      "turns": [
+        {
+          "user": "I run along the Corniche three mornings a week, usually around 8 km. What should I eat before an early run?"
+        }
+      ]
     },
     {
-     "user": "What tough questions do panels usually ask director candidates?"
-    }
-   ]
-  },
-  {
-   "title": "Case study",
-   "days_ago": 96,
-   "turns": [
-    {
-     "user": "Besides the hospital, I teach a nursing leadership class at the IFSI every Tuesday evening. Can you help me write a case study about a conflict between two night nurses?"
-    }
-   ]
-  },
-  {
-   "title": "New job offer",
-   "days_ago": 92,
-   "turns": [
-    {
-     "user": "I got the job!! I'll be the director of Hôpital Saint-Aubin in Lyon, starting in six weeks."
+      "title": "Exercise question",
+      "days_ago": 108,
+      "turns": [
+        {
+          "user": "I'm 26 weeks pregnant, we're expecting our second, and my doctor just told me I have gestational diabetes. Is it still safe to keep jogging a little?"
+        }
+      ]
     },
     {
-     "user": "They offered a salary of 7,200 euros a month gross. Is that fair for a 400-bed hospital?"
-    }
-   ]
-  },
-  {
-   "title": "Moving checklist",
-   "days_ago": 88,
-   "turns": [
-    {
-     "user": "My husband Karim is a software developer and can work remotely, so the whole family is moving from Marseille to Lyon. Can you make me a moving checklist?"
-    }
-   ]
-  },
-  {
-   "title": "Answer style",
-   "days_ago": 82,
-   "turns": [
-    {
-     "user": "From now on please keep your answers short and in bullet points, I read them between meetings."
-    }
-   ]
-  },
-  {
-   "title": "Loan rate",
-   "days_ago": 76,
-   "turns": [
-    {
-     "user": "The bank approved a mortgage of 310,000 euros at 3.6% over 25 years. Is that a reasonable rate right now?"
-    }
-   ]
-  },
-  {
-   "title": "First steps in Lyon",
-   "days_ago": 70,
-   "turns": [
-    {
-     "user": "We moved to Lyon last weekend! Until our apartment is ready we're staying in a furnished rental in Villeurbanne for about a month."
+      "title": "Reading games",
+      "days_ago": 104,
+      "turns": [
+        {
+          "user": "My daughter Lina is 7 and goes to École des Calanques. Her teacher says her reading is a bit behind, could you suggest fun reading games we can do at home?"
+        },
+        {
+          "user": "Keep each game under ten minutes, she loses focus quickly."
+        }
+      ]
     },
     {
-     "user": "What should I sort out first: a new school for Lina, the car registration, or finding a GP?"
-    }
-   ]
-  },
-  {
-   "title": "Making friends",
-   "days_ago": 66,
-   "turns": [
-    {
-     "user": "My daughter Lina started CE1 at École des Tilleuls this week. She's shy, how can I help her make friends there?"
-    }
-   ]
-  },
-  {
-   "title": "Intro email",
-   "days_ago": 60,
-   "turns": [
-    {
-     "user": "Week one as director of Hôpital Saint-Aubin is done, and I'm no longer on the wards at all. Draft an email introducing myself to the twelve department heads."
-    }
-   ]
-  },
-  {
-   "title": "Teaching online",
-   "days_ago": 55,
-   "turns": [
-    {
-     "user": "I've decided to keep teaching my Tuesday nursing leadership class for the IFSI in Marseille, just over video now. How do I keep students engaged online?"
-    }
-   ]
-  },
-  {
-   "title": "Maqsum rhythm",
-   "days_ago": 48,
-   "turns": [
-    {
-     "user": "Karim gave me a darbuka for my birthday, so now I'm learning it alongside the oud. Can you explain the basic maqsum rhythm?"
-    }
-   ]
-  },
-  {
-   "title": "Half marathon goal",
-   "days_ago": 40,
-   "turns": [
-    {
-     "user": "I've mostly been walking these past months, but my goal is to do the Lyon half marathon next spring. Can you sketch a very gradual plan that starts in the new year?"
-    }
-   ]
-  },
-  {
-   "title": "Dinner ideas",
-   "days_ago": 34,
-   "turns": [
-    {
-     "user": "My glucose readings were high again this week and the midwife wants me to start insulin. Any easy dinner ideas that won't spike it?"
-    }
-   ]
-  },
-  {
-   "title": "Evening warm-up",
-   "days_ago": 25,
-   "turns": [
-    {
-     "user": "Rough day, I'm completely drained after back-to-back budget meetings. Give me a gentle 10-minute oud warm-up for tonight?"
-    }
-   ]
-  },
-  {
-   "title": "Housewarming",
-   "days_ago": 18,
-   "turns": [
-    {
-     "user": "We finally moved out of the rental and into our own apartment in Croix-Rousse, Lyon!"
+      "title": "Interview prep",
+      "days_ago": 100,
+      "turns": [
+        {
+          "user": "I have an interview this Thursday for a hospital director position in Lyon. Help me prepare a 5-minute pitch about my management style."
+        },
+        {
+          "user": "What tough questions do panels usually ask director candidates?"
+        }
+      ]
     },
     {
-     "user": "Help me plan a small housewarming for about 10 people, nothing fancy."
-    }
-   ]
-  },
-  {
-   "title": "Big sister",
-   "days_ago": 9,
-   "turns": [
+      "title": "Case study",
+      "days_ago": 96,
+      "turns": [
+        {
+          "user": "Besides the hospital, I teach a nursing leadership class at the IFSI every Tuesday evening. Can you help me write a case study about a conflict between two night nurses?"
+        }
+      ]
+    },
     {
-     "user": "Our son Yanis was born last week and Lina is over the moon about being a big sister. How do I make sure she doesn't feel left out?"
-    }
-   ]
-  },
-  {
-   "title": "Thank-you note",
-   "days_ago": 3,
-   "turns": [
+      "title": "New job offer",
+      "days_ago": 92,
+      "turns": [
+        {
+          "user": "I got the job!! I'll be the director of Hôpital Saint-Aubin in Lyon, starting in six weeks."
+        },
+        {
+          "user": "They offered a salary of 7,200 euros a month gross. Is that fair for a 400-bed hospital?"
+        }
+      ]
+    },
     {
-     "user": "Write a short thank-you note to my team for the flowers they sent."
-    }
-   ]
-  },
-  {
-   "title": "Short practice",
-   "days_ago": 1,
-   "turns": [
+      "title": "Moving checklist",
+      "days_ago": 88,
+      "turns": [
+        {
+          "user": "My husband Karim is a software developer and can work remotely, so the whole family is moving from Marseille to Lyon. Can you make me a moving checklist?"
+        }
+      ]
+    },
     {
-     "user": "Suggest three easy darbuka exercises I can practise in short bursts while the baby naps."
+      "title": "Answer style",
+      "days_ago": 82,
+      "turns": [
+        {
+          "user": "From now on please keep your answers short and in bullet points, I read them between meetings."
+        }
+      ]
+    },
+    {
+      "title": "Loan rate",
+      "days_ago": 76,
+      "turns": [
+        {
+          "user": "The bank approved a mortgage of 310,000 euros at 3.6% over 25 years. Is that a reasonable rate right now?"
+        }
+      ]
+    },
+    {
+      "title": "First steps in Lyon",
+      "days_ago": 70,
+      "turns": [
+        {
+          "user": "We moved to Lyon last weekend! Until our apartment is ready we're staying in a furnished rental in Villeurbanne for about a month."
+        },
+        {
+          "user": "What should I sort out first: a new school for Lina, the car registration, or finding a GP?"
+        }
+      ]
+    },
+    {
+      "title": "Making friends",
+      "days_ago": 66,
+      "turns": [
+        {
+          "user": "My daughter Lina started CE1 at École des Tilleuls this week. She's shy, how can I help her make friends there?"
+        }
+      ]
+    },
+    {
+      "title": "Intro email",
+      "days_ago": 60,
+      "turns": [
+        {
+          "user": "Week one as director of Hôpital Saint-Aubin is done, and I'm no longer on the wards at all. Draft an email introducing myself to the twelve department heads."
+        }
+      ]
+    },
+    {
+      "title": "Teaching online",
+      "days_ago": 55,
+      "turns": [
+        {
+          "user": "I've decided to keep teaching my Tuesday nursing leadership class for the IFSI in Marseille, just over video now. How do I keep students engaged online?"
+        }
+      ]
+    },
+    {
+      "title": "Maqsum rhythm",
+      "days_ago": 48,
+      "turns": [
+        {
+          "user": "Karim gave me a darbuka for my birthday, so now I'm learning it alongside the oud. Can you explain the basic maqsum rhythm?"
+        }
+      ]
+    },
+    {
+      "title": "Half marathon goal",
+      "days_ago": 40,
+      "turns": [
+        {
+          "user": "I've mostly been walking these past months, but my goal is to do the Lyon half marathon next spring. Can you sketch a very gradual plan that starts in the new year?"
+        }
+      ]
+    },
+    {
+      "title": "Dinner ideas",
+      "days_ago": 34,
+      "turns": [
+        {
+          "user": "My glucose readings were high again this week and the midwife wants me to start insulin. Any easy dinner ideas that won't spike it?"
+        }
+      ]
+    },
+    {
+      "title": "Evening warm-up",
+      "days_ago": 25,
+      "turns": [
+        {
+          "user": "Rough day, I'm completely drained after back-to-back budget meetings. Give me a gentle 10-minute oud warm-up for tonight?"
+        }
+      ]
+    },
+    {
+      "title": "Housewarming",
+      "days_ago": 18,
+      "turns": [
+        {
+          "user": "We finally moved out of the rental and into our own apartment in Croix-Rousse, Lyon!"
+        },
+        {
+          "user": "Help me plan a small housewarming for about 10 people, nothing fancy."
+        }
+      ]
+    },
+    {
+      "title": "Big sister",
+      "days_ago": 9,
+      "turns": [
+        {
+          "user": "Our son Yanis was born last week and Lina is over the moon about being a big sister. How do I make sure she doesn't feel left out?"
+        }
+      ]
+    },
+    {
+      "title": "Thank-you note",
+      "days_ago": 3,
+      "turns": [
+        {
+          "user": "Write a short thank-you note to my team for the flowers they sent."
+        }
+      ]
+    },
+    {
+      "title": "Short practice",
+      "days_ago": 1,
+      "turns": [
+        {
+          "user": "Suggest three easy darbuka exercises I can practise in short bursts while the baby naps."
+        }
+      ]
     }
-   ]
-  }
- ],
- "gold": {
-  "facts": [
-   {
-    "id": "oud",
-    "canonical": "Plays the oud",
-    "match": {
-     "all": [
-      "oud"
-     ],
-     "any": []
-    },
-    "required": true,
-    "type": "long_term",
-    "category": "personal_fact",
-    "sources": [
-     "c1t0",
-     "c15t0"
-    ]
-   },
-   {
-    "id": "running",
-    "canonical": "Runs regularly",
-    "match": {
-     "all": [
-      "run"
-     ],
-     "any": []
-    },
-    "required": true,
-    "type": "long_term",
-    "category": "personal_fact",
-    "sources": [
-     "c2t0"
-    ]
-   },
-   {
-    "id": "daughter_lina",
-    "canonical": "Has a daughter named Lina, age 7",
-    "match": {
-     "all": [
-      "lina"
-     ],
-     "any": [
-      "daughter"
-     ]
-    },
-    "required": true,
-    "type": "long_term",
-    "category": "personal_fact",
-    "sources": [
-     "c4t0",
-     "c12t0"
-    ]
-   },
-   {
-    "id": "teaching_ifsi",
-    "canonical": "Teaches a weekly nursing leadership class at an IFSI",
-    "match": {
-     "all": [
-      "teach"
-     ],
-     "any": [
-      "nursing",
-      "ifsi",
-      "leadership"
-     ]
-    },
-    "required": true,
-    "type": "long_term",
-    "category": "personal_fact",
-    "sources": [
-     "c6t0",
-     "c14t0"
-    ],
-    "note": "Kept after the move (online); stays next to the director job, no op."
-   },
-   {
-    "id": "job_director",
-    "canonical": "Works as director of Hôpital Saint-Aubin in Lyon",
-    "match": {
-     "all": [
-      "director"
-     ],
-     "any": []
-    },
-    "required": true,
-    "type": "long_term",
-    "category": "personal_fact",
-    "sources": [
-     "c7t0",
-     "c13t0"
-    ]
-   },
-   {
-    "id": "spouse_karim",
-    "canonical": "Married to Karim",
-    "match": {
-     "all": [
-      "karim"
-     ],
-     "any": [
-      "married",
-      "husband",
-      "spouse",
-      "partner",
-      "wife"
-     ]
-    },
-    "required": true,
-    "type": "long_term",
-    "category": "personal_fact",
-    "sources": [
-     "c8t0"
-    ]
-   },
-   {
-    "id": "karim_developer",
-    "canonical": "Karim works as a software developer",
-    "match": {
-     "all": [
-      "karim"
-     ],
-     "any": [
-      "developer",
-      "software"
-     ]
-    },
-    "required": false,
-    "type": "long_term",
-    "category": "personal_fact",
-    "sources": [
-     "c8t0"
-    ],
-    "note": "Detail about the husband; may be merged into the spouse memory."
-   },
-   {
-    "id": "home_lyon",
-    "canonical": "Lives in Lyon",
-    "match": {
-     "all": [
-      "lyon"
-     ],
-     "any": [
-      "live",
-      "moved",
-      "move",
-      "moving",
-      "home",
-      "based",
-      "relocat"
-     ]
-    },
-    "required": true,
-    "type": "long_term",
-    "category": "personal_fact",
-    "sources": [
-     "c8t0",
-     "c11t0",
-     "c19t0"
-    ]
-   },
-   {
-    "id": "pref_bullets",
-    "canonical": "Prefers short answers in bullet points",
-    "match": {
-     "all": [
-      "bullet"
-     ],
-     "any": []
-    },
-    "required": true,
-    "type": "long_term",
-    "category": "preference",
-    "sources": [
-     "c9t0"
-    ]
-   },
-   {
-    "id": "temp_rental",
-    "canonical": "Staying in a furnished rental in Villeurbanne for the first month",
-    "match": {
-     "all": [
-      "villeurbanne"
-     ],
-     "any": []
-    },
-    "required": false,
-    "type": "short_term",
-    "category": "personal_fact",
-    "sources": [
-     "c11t0"
-    ],
-    "note": "Short stay; does not replace the home."
-   },
-   {
-    "id": "school_tilleuls",
-    "canonical": "Lina attends École des Tilleuls",
-    "match": {
-     "all": [
-      "tilleuls"
-     ],
-     "any": []
-    },
-    "required": true,
-    "type": "long_term",
-    "category": "personal_fact",
-    "sources": [
-     "c12t0"
-    ]
-   },
-   {
-    "id": "darbuka",
-    "canonical": "Learning to play the darbuka",
-    "match": {
-     "all": [
-      "darbuka"
-     ],
-     "any": []
-    },
-    "required": true,
-    "type": "long_term",
-    "category": "personal_fact",
-    "sources": [
-     "c15t0"
-    ]
-   },
-   {
-    "id": "goal_half_marathon",
-    "canonical": "Plans to do the Lyon half marathon next spring",
-    "match": {
-     "all": [
-      "marathon"
-     ],
-     "any": [
-      "half"
-     ]
-    },
-    "required": true,
-    "type": "long_term",
-    "category": "personal_fact",
-    "sources": [
-     "c16t0"
-    ]
-   },
-   {
-    "id": "son_yanis",
-    "canonical": "Has a son named Yanis",
-    "match": {
-     "all": [
-      "yanis"
-     ],
-     "any": []
-    },
-    "required": true,
-    "type": "long_term",
-    "category": "personal_fact",
-    "sources": [
-     "c20t0"
-    ]
-   }
   ],
-  "stale": [
-   {
-    "id": "home_marseille",
-    "match": {
-     "all": [
-      "marseille"
-     ],
-     "any": [
-      "live",
-      "based",
-      "home"
-     ]
-    },
-    "replaced_by": "home_lyon",
-    "sources": [
-     "c0t0"
-    ]
-   },
-   {
-    "id": "job_nurse_manager",
-    "match": {
-     "all": [
-      "nurse"
-     ],
-     "any": [
-      "manag",
-      "roucas"
-     ]
-    },
-    "replaced_by": "job_director",
-    "sources": [
-     "c0t0"
-    ]
-   },
-   {
-    "id": "school_calanques",
-    "match": {
-     "all": [
-      "calanques"
-     ],
-     "any": []
-    },
-    "replaced_by": "school_tilleuls",
-    "sources": [
-     "c4t0"
-    ]
-   }
-  ],
-  "forbidden": [
-   {
-    "id": "pregnancy",
-    "match": {
-     "any": [
-      "pregnan",
-      "expecting"
-     ]
-    },
-    "sources": [
-     "c3t0"
-    ]
-   },
-   {
-    "id": "health_gestational_diabetes",
-    "match": {
-     "any": [
-      "gestational",
-      "diabetes"
-     ]
-    },
-    "sources": [
-     "c3t0"
-    ]
-   },
-   {
-    "id": "health_insulin",
-    "match": {
-     "any": [
-      "glucose",
-      "insulin"
-     ]
-    },
-    "sources": [
-     "c17t0"
-    ]
-   },
-   {
-    "id": "money_salary",
-    "match": {
-     "any": [
-      "salary",
-      "7,200"
-     ]
-    },
-    "sources": [
-     "c7t1"
-    ]
-   },
-   {
-    "id": "money_mortgage",
-    "match": {
-     "any": [
-      "mortgage",
-      "310,000"
-     ]
-    },
-    "sources": [
-     "c10t0"
-    ]
-   }
-  ],
-  "ops": [
-   {
-    "op": "replace",
-    "old": "home_marseille",
-    "new": "home_lyon"
-   },
-   {
-    "op": "replace",
-    "old": "job_nurse_manager",
-    "new": "job_director"
-   },
-   {
-    "op": "replace",
-    "old": "school_calanques",
-    "new": "school_tilleuls"
-   },
-   {
-    "op": "merge",
+  "gold": {
     "facts": [
-     "daughter_lina",
-     "son_yanis"
+      {
+        "id": "oud",
+        "canonical": "Plays the oud",
+        "match": {
+          "all": ["oud"],
+          "any": []
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": ["c1t0", "c15t0"]
+      },
+      {
+        "id": "running",
+        "canonical": "Runs regularly",
+        "match": {
+          "all": ["run"],
+          "any": []
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": ["c2t0"]
+      },
+      {
+        "id": "daughter_lina",
+        "canonical": "Has a daughter named Lina, age 7",
+        "match": {
+          "all": ["lina"],
+          "any": ["daughter"]
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": ["c4t0", "c12t0"]
+      },
+      {
+        "id": "teaching_ifsi",
+        "canonical": "Teaches a weekly nursing leadership class at an IFSI",
+        "match": {
+          "all": ["teach"],
+          "any": ["nursing", "ifsi", "leadership"]
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": ["c6t0", "c14t0"],
+        "note": "Kept after the move (online); stays next to the director job, no op."
+      },
+      {
+        "id": "job_director",
+        "canonical": "Works as director of Hôpital Saint-Aubin in Lyon",
+        "match": {
+          "all": ["director"],
+          "any": []
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": ["c7t0", "c13t0"]
+      },
+      {
+        "id": "spouse_karim",
+        "canonical": "Married to Karim",
+        "match": {
+          "all": ["karim"],
+          "any": ["married", "husband", "spouse", "partner", "wife"]
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": ["c8t0"]
+      },
+      {
+        "id": "karim_developer",
+        "canonical": "Karim works as a software developer",
+        "match": {
+          "all": ["karim"],
+          "any": ["developer", "software"]
+        },
+        "required": false,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": ["c8t0"],
+        "note": "Detail about the husband; may be merged into the spouse memory."
+      },
+      {
+        "id": "home_lyon",
+        "canonical": "Lives in Lyon",
+        "match": {
+          "all": ["lyon"],
+          "any": ["live", "moved", "move", "moving", "home", "based", "relocat"]
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": ["c8t0", "c11t0", "c19t0"]
+      },
+      {
+        "id": "pref_bullets",
+        "canonical": "Prefers short answers in bullet points",
+        "match": {
+          "all": ["bullet"],
+          "any": []
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "preference",
+        "sources": ["c9t0"]
+      },
+      {
+        "id": "temp_rental",
+        "canonical": "Staying in a furnished rental in Villeurbanne for the first month",
+        "match": {
+          "all": ["villeurbanne"],
+          "any": []
+        },
+        "required": false,
+        "type": "short_term",
+        "category": "personal_fact",
+        "sources": ["c11t0"],
+        "note": "Short stay; does not replace the home."
+      },
+      {
+        "id": "school_tilleuls",
+        "canonical": "Lina attends École des Tilleuls",
+        "match": {
+          "all": ["tilleuls"],
+          "any": []
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": ["c12t0"]
+      },
+      {
+        "id": "darbuka",
+        "canonical": "Learning to play the darbuka",
+        "match": {
+          "all": ["darbuka"],
+          "any": []
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": ["c15t0"]
+      },
+      {
+        "id": "goal_half_marathon",
+        "canonical": "Plans to do the Lyon half marathon next spring",
+        "match": {
+          "all": ["marathon"],
+          "any": ["half"]
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": ["c16t0"]
+      },
+      {
+        "id": "son_yanis",
+        "canonical": "Has a son named Yanis",
+        "match": {
+          "all": ["yanis"],
+          "any": []
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": ["c20t0"]
+      }
     ],
-    "optional": true
-   },
-   {
-    "op": "merge",
-    "facts": [
-     "oud",
-     "darbuka"
+    "stale": [
+      {
+        "id": "home_marseille",
+        "match": {
+          "all": ["marseille"],
+          "any": ["live", "based", "home"]
+        },
+        "replaced_by": "home_lyon",
+        "sources": ["c0t0"]
+      },
+      {
+        "id": "job_nurse_manager",
+        "match": {
+          "all": ["nurse"],
+          "any": ["manag", "roucas"]
+        },
+        "replaced_by": "job_director",
+        "sources": ["c0t0"]
+      },
+      {
+        "id": "school_calanques",
+        "match": {
+          "all": ["calanques"],
+          "any": []
+        },
+        "replaced_by": "school_tilleuls",
+        "sources": ["c4t0"]
+      }
     ],
-    "optional": true
-   }
-  ],
-  "turns": {
-   "c0t0": [
-    "home_marseille",
-    "job_nurse_manager"
-   ],
-   "c0t1": [],
-   "c1t0": [
-    "oud"
-   ],
-   "c2t0": [
-    "running"
-   ],
-   "c3t0": [],
-   "c4t0": [
-    "daughter_lina",
-    "school_calanques"
-   ],
-   "c4t1": [],
-   "c5t0": [],
-   "c5t1": [],
-   "c6t0": [
-    "teaching_ifsi"
-   ],
-   "c7t0": [
-    "job_director"
-   ],
-   "c7t1": [],
-   "c8t0": [
-    "spouse_karim",
-    "karim_developer",
-    "home_lyon"
-   ],
-   "c9t0": [
-    "pref_bullets"
-   ],
-   "c10t0": [],
-   "c11t0": [
-    "home_lyon",
-    "temp_rental"
-   ],
-   "c11t1": [],
-   "c12t0": [
-    "daughter_lina",
-    "school_tilleuls"
-   ],
-   "c13t0": [
-    "job_director"
-   ],
-   "c14t0": [
-    "teaching_ifsi"
-   ],
-   "c15t0": [
-    "darbuka",
-    "oud"
-   ],
-   "c16t0": [
-    "goal_half_marathon"
-   ],
-   "c17t0": [],
-   "c18t0": [],
-   "c19t0": [
-    "home_lyon"
-   ],
-   "c19t1": [],
-   "c20t0": [
-    "son_yanis"
-   ],
-   "c21t0": [],
-   "c22t0": []
+    "forbidden": [
+      {
+        "id": "pregnancy",
+        "match": {
+          "any": ["pregnan", "expecting"]
+        },
+        "sources": ["c3t0"]
+      },
+      {
+        "id": "health_gestational_diabetes",
+        "match": {
+          "any": ["gestational", "diabetes"]
+        },
+        "sources": ["c3t0"]
+      },
+      {
+        "id": "health_insulin",
+        "match": {
+          "any": ["glucose", "insulin"]
+        },
+        "sources": ["c17t0"]
+      },
+      {
+        "id": "money_salary",
+        "match": {
+          "any": ["salary", "7,200"]
+        },
+        "sources": ["c7t1"]
+      },
+      {
+        "id": "money_mortgage",
+        "match": {
+          "any": ["mortgage", "310,000"]
+        },
+        "sources": ["c10t0"]
+      }
+    ],
+    "ops": [
+      {
+        "op": "replace",
+        "old": "home_marseille",
+        "new": "home_lyon"
+      },
+      {
+        "op": "replace",
+        "old": "job_nurse_manager",
+        "new": "job_director"
+      },
+      {
+        "op": "replace",
+        "old": "school_calanques",
+        "new": "school_tilleuls"
+      },
+      {
+        "op": "merge",
+        "facts": ["daughter_lina", "son_yanis"],
+        "optional": true
+      },
+      {
+        "op": "merge",
+        "facts": ["oud", "darbuka"],
+        "optional": true
+      }
+    ],
+    "turns": {
+      "c0t0": ["home_marseille", "job_nurse_manager"],
+      "c0t1": [],
+      "c1t0": ["oud"],
+      "c2t0": ["running"],
+      "c3t0": [],
+      "c4t0": ["daughter_lina", "school_calanques"],
+      "c4t1": [],
+      "c5t0": [],
+      "c5t1": [],
+      "c6t0": ["teaching_ifsi"],
+      "c7t0": ["job_director"],
+      "c7t1": [],
+      "c8t0": ["spouse_karim", "karim_developer", "home_lyon"],
+      "c9t0": ["pref_bullets"],
+      "c10t0": [],
+      "c11t0": ["home_lyon", "temp_rental"],
+      "c11t1": [],
+      "c12t0": ["daughter_lina", "school_tilleuls"],
+      "c13t0": ["job_director"],
+      "c14t0": ["teaching_ifsi"],
+      "c15t0": ["darbuka", "oud"],
+      "c16t0": ["goal_half_marathon"],
+      "c17t0": [],
+      "c18t0": [],
+      "c19t0": ["home_lyon"],
+      "c19t1": [],
+      "c20t0": ["son_yanis"],
+      "c21t0": [],
+      "c22t0": []
+    }
   }
- }
 }

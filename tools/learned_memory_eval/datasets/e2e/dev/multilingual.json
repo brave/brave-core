@@ -43,29 +43,19 @@
     "memories": [
       {
         "label": "lives in Munich",
-        "any": [
-          "münchen",
-          "munich"
-        ]
+        "any": ["münchen", "munich"]
       },
       {
         "label": "dog named Canela",
-        "all": [
-          "canela"
-        ]
+        "all": ["canela"]
       },
       {
         "label": "is vegetarian",
-        "any": [
-          "vegetari"
-        ]
+        "any": ["vegetari"]
       },
       {
         "label": "is a teacher",
-        "any": [
-          "lehrerin",
-          "teacher"
-        ]
+        "any": ["lehrerin", "teacher"]
       }
     ],
     "absent": [],
@@ -78,79 +68,54 @@
         "id": "home_munich",
         "canonical": "Lives in Munich",
         "match": {
-          "any": [
-            "münchen",
-            "munich"
-          ]
+          "any": ["münchen", "munich"]
         },
         "required": true,
         "type": "long_term",
         "category": "personal_fact",
-        "sources": [
-          "c0t0"
-        ]
+        "sources": ["c0t0"]
       },
       {
         "id": "job_teacher",
         "canonical": "Works as a teacher",
         "match": {
-          "any": [
-            "lehrerin",
-            "teacher"
-          ]
+          "any": ["lehrerin", "teacher"]
         },
         "required": true,
         "type": "long_term",
         "category": "personal_fact",
-        "sources": [
-          "c0t0"
-        ]
+        "sources": ["c0t0"]
       },
       {
         "id": "dog_canela",
         "canonical": "Has a five-year-old dog named Canela",
         "match": {
-          "all": [
-            "canela"
-          ]
+          "all": ["canela"]
         },
         "required": true,
         "type": "long_term",
         "category": "personal_fact",
-        "sources": [
-          "c1t0"
-        ]
+        "sources": ["c1t0"]
       },
       {
         "id": "diet_vegetarian",
         "canonical": "Is vegetarian",
         "match": {
-          "any": [
-            "vegetari"
-          ]
+          "any": ["vegetari"]
         },
         "required": true,
         "type": "long_term",
         "category": "personal_fact",
-        "sources": [
-          "c2t0"
-        ]
+        "sources": ["c2t0"]
       }
     ],
     "stale": [],
     "forbidden": [],
     "ops": [],
     "turns": {
-      "c0t0": [
-        "home_munich",
-        "job_teacher"
-      ],
-      "c1t0": [
-        "dog_canela"
-      ],
-      "c2t0": [
-        "diet_vegetarian"
-      ],
+      "c0t0": ["home_munich", "job_teacher"],
+      "c1t0": ["dog_canela"],
+      "c2t0": ["diet_vegetarian"],
       "c3t0": []
     }
   }

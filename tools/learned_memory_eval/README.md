@@ -56,20 +56,20 @@ datasets/e2e/dev/<name>.json ──► run_eval.py
 ```
 
 The harness does not mock any model. A run uses the same code as the daily
-timer: `OllamaDecisionClient` (clef-flash), the BYOM engine (qwen3.5:9b) and
-the in-browser EmbeddingGemma. Only the chats are different: the harness puts
-them in the database, so there is no need to type them in Leo.
+timer: `OllamaDecisionClient` (clef-flash), the BYOM engine (qwen3.5:9b) and the
+in-browser EmbeddingGemma. Only the chats are different: the harness puts them
+in the database, so there is no need to type them in Leo.
 
 ## 2. Requirements
 
-| Item | Value |
-|---|---|
-| Build | `pnpm build` with `enable_local_ai` on. The default is `out/Component_arm64` |
-| Ollama | Running on `http://localhost:11434` |
-| Decision model | `clef-flash:9b` installed in Ollama (the tools load it, see section 14) |
-| Local LLM | `qwen3.5:9b` installed in Ollama (the tools load it, see section 14) |
+| Item           | Value                                                                                            |
+| -------------- | ------------------------------------------------------------------------------------------------ |
+| Build          | `pnpm build` with `enable_local_ai` on. The default is `out/Component_arm64`                     |
+| Ollama         | Running on `http://localhost:11434`                                                              |
+| Decision model | `clef-flash:9b` installed in Ollama (the tools load it, see section 14)                          |
+| Local LLM      | `qwen3.5:9b` installed in Ollama (the tools load it, see section 14)                             |
 | Embedder files | The component `BraveLocalAIModels` in the dev profile. The harness copies it to each new profile |
-| Python | 3.9 or newer. No packages |
+| Python         | 3.9 or newer. No packages                                                                        |
 
 ## 3. Run it
 
@@ -88,94 +88,114 @@ cd brave/tools/learned_memory_eval
 ./run_eval.py --report-only <run> --gold-from datasets/e2e/dev   # score an old run with new gold
 ```
 
-| Option | Default | Meaning |
-|---|---|---|
-| `--sets` | all | Names of chat sets in `datasets/e2e/<split>/` |
-| `--split` | `dev` | `dev` or `holdout`. Run the holdout only for a final candidate |
-| `--chat-set` | none | Chat set files to run instead of `--sets`, for example the parity set |
-| `--brave` | `out/Component_arm64/Brave Browser Development.app/...` | Browser binary |
-| `--results` | `$LM_EVAL_RUNS`, else `~/brave/learned_memory_eval_runs` | Results root |
-| `--tag` | `e2e` | Short name of the run. The folder is `<results root>/<YYYYMMDD-HHMMSS>-<tag>` |
-| `--out` | none | An exact output folder instead of the results root |
-| `--proxy`, `--proxy-port` | off, `8898` | Send the model requests through `eval_proxy.py`, and record them in `<run>/proxy.jsonl` |
-| `--repeats` | `1` | Run each set this many times, each in a new profile. Use 3 for a result (the LLM is not repeatable) |
-| `--gold-from` | none | With `--report-only`: score with the chat sets of this folder, not with the copy in the run |
-| `--source-profile` | dev profile folder | Where the embedder component is copied from |
-| `--ollama` | `http://localhost:11434` | Ollama URL |
-| `--decision` | `clef-flash:9b` | Decision model name |
-| `--llm` | `qwen3.5:9b` | Local LLM name (the BYOM model) |
-| `--threshold`, `--margin` | `0.8`, `0.2` | Certainty rule of the decision model. It is only for the labels (category, type) and the relation. The gate and the keep rules have their own params |
-| `--gate-threshold`, `--fact-threshold` | `0.2`, `0.6` | The gate and fact limits of the keep rule |
-| `--max-sensitive`, `--max-instruction`, `--max-short-lived` | `0.3`, `0.3`, `0.5` | A sentence is dropped when this safety answer reaches its limit |
-| `--max-neighbors`, `--min-neighbor-similarity` | `5`, `0.5` | The old memories that the relation step compares with a new fact |
-| `--max-relation-requests`, `--max-rewrite-requests` | `20`, `50` | LLM limits for one run |
-| `--time-limit` | `600` | Run time limit in the browser, in seconds |
-| `--timeout` | `1200` | The harness stops waiting after this time, in seconds |
-| `--keep-alive` | `60m` | How long Ollama keeps the loaded models (section 14) |
-| `--no-warmup` | off | Do not load the Ollama models before the run. The run still checks that they are installed |
-| `--keep-profiles` | off | Do not delete the profile after the run |
+| Option                                                      | Default                                                  | Meaning                                                                                                                                              |
+| ----------------------------------------------------------- | -------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `--sets`                                                    | all                                                      | Names of chat sets in `datasets/e2e/<split>/`                                                                                                        |
+| `--split`                                                   | `dev`                                                    | `dev` or `holdout`. Run the holdout only for a final candidate                                                                                       |
+| `--chat-set`                                                | none                                                     | Chat set files to run instead of `--sets`, for example the parity set                                                                                |
+| `--brave`                                                   | `out/Component_arm64/Brave Browser Development.app/...`  | Browser binary                                                                                                                                       |
+| `--results`                                                 | `$LM_EVAL_RUNS`, else `~/brave/learned_memory_eval_runs` | Results root                                                                                                                                         |
+| `--tag`                                                     | `e2e`                                                    | Short name of the run. The folder is `<results root>/<YYYYMMDD-HHMMSS>-<tag>`                                                                        |
+| `--out`                                                     | none                                                     | An exact output folder instead of the results root                                                                                                   |
+| `--proxy`, `--proxy-port`                                   | off, `8898`                                              | Send the model requests through `eval_proxy.py`, and record them in `<run>/proxy.jsonl`                                                              |
+| `--repeats`                                                 | `1`                                                      | Run each set this many times, each in a new profile. Use 3 for a result (the LLM is not repeatable)                                                  |
+| `--gold-from`                                               | none                                                     | With `--report-only`: score with the chat sets of this folder, not with the copy in the run                                                          |
+| `--source-profile`                                          | dev profile folder                                       | Where the embedder component is copied from                                                                                                          |
+| `--ollama`                                                  | `http://localhost:11434`                                 | Ollama URL                                                                                                                                           |
+| `--decision`                                                | `clef-flash:9b`                                          | Decision model name                                                                                                                                  |
+| `--llm`                                                     | `qwen3.5:9b`                                             | Local LLM name (the BYOM model)                                                                                                                      |
+| `--threshold`, `--margin`                                   | `0.8`, `0.2`                                             | Certainty rule of the decision model. It is only for the labels (category, type) and the relation. The gate and the keep rules have their own params |
+| `--gate-threshold`, `--fact-threshold`                      | `0.2`, `0.6`                                             | The gate and fact limits of the keep rule                                                                                                            |
+| `--max-sensitive`, `--max-instruction`, `--max-short-lived` | `0.3`, `0.3`, `0.5`                                      | A sentence is dropped when this safety answer reaches its limit                                                                                      |
+| `--max-neighbors`, `--min-neighbor-similarity`              | `5`, `0.5`                                               | The old memories that the relation step compares with a new fact                                                                                     |
+| `--max-relation-requests`, `--max-rewrite-requests`         | `20`, `50`                                               | LLM limits for one run                                                                                                                               |
+| `--time-limit`                                              | `600`                                                    | Run time limit in the browser, in seconds                                                                                                            |
+| `--timeout`                                                 | `1200`                                                   | The harness stops waiting after this time, in seconds                                                                                                |
+| `--keep-alive`                                              | `60m`                                                    | How long Ollama keeps the loaded models (section 14)                                                                                                 |
+| `--no-warmup`                                               | off                                                      | Do not load the Ollama models before the run. The run still checks that they are installed                                                           |
+| `--keep-profiles`                                           | off                                                      | Do not delete the profile after the run                                                                                                              |
 
-Each set takes about 2 to 15 minutes. The embedder and the Ollama models load
-at the start, and the LLM runs for each turn that passes the gate.
+Each set takes about 2 to 15 minutes. The embedder and the Ollama models load at
+the start, and the LLM runs for each turn that passes the gate.
 
 ## 4. The new profile
 
 The harness makes a new profile for each set, so a run never depends on an
 earlier run. These are the steps and the files it writes.
 
-| What | Where | Value |
-|---|---|---|
-| Profile folder | `--user-data-dir` | `<out>/<set>/r<k>/profile` |
-| Embedder component | `<profile>/BraveLocalAIModels` | Copy of the dev profile files (APFS clone) |
+| What                | Where                                                | Value                                                                                                          |
+| ------------------- | ---------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| Profile folder      | `--user-data-dir`                                    | `<out>/<set>/r<k>/profile`                                                                                     |
+| Embedder component  | `<profile>/BraveLocalAIModels`                       | Copy of the dev profile files (APFS clone)                                                                     |
 | Custom model (BYOM) | `Default/Preferences`, `brave.ai_chat.custom_models` | Key `custom:e0a1b2c3`, name = `--llm`, endpoint `<ollama>/v1/chat/completions` (with `--proxy`: the proxy URL) |
-| Chat history | `brave.ai_chat.storage_enabled` | `true` |
-| Memory | `brave.ai_chat.user_memory_enabled` | `true` |
-| Leo opt-in | `brave.ai_chat.last_accepted_disclaimer` | A date in the past |
-| Embeddings | `brave.history_embeddings_enabled` | `true` |
+| Chat history        | `brave.ai_chat.storage_enabled`                      | `true`                                                                                                         |
+| Memory              | `brave.ai_chat.user_memory_enabled`                  | `true`                                                                                                         |
+| Leo opt-in          | `brave.ai_chat.last_accepted_disclaimer`             | A date in the past                                                                                             |
+| Embeddings          | `brave.history_embeddings_enabled`                   | `true`                                                                                                         |
 
 These are the switches of the browser:
 
-| Switch | Why |
-|---|---|
-| `--no-first-run --no-default-browser-check` | No first run page |
-| `--use-mock-keychain --password-store=basic` | No keychain dialog. `OSCryptAsync` needs a key to encrypt the chats |
-| `--component-updater=url-source=http://127.0.0.1:9/` | The update check fails, so the embedder component stays at the copied version. Do not use `--disable-component-update`: with it, Brave does not register the component, and the embedder never gets its model |
+| Switch                                                        | Why                                                                                                                                                                                                                  |
+| ------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `--no-first-run --no-default-browser-check`                   | No first run page                                                                                                                                                                                                    |
+| `--use-mock-keychain --password-store=basic`                  | No keychain dialog. `OSCryptAsync` needs a key to encrypt the chats                                                                                                                                                  |
+| `--component-updater=url-source=http://127.0.0.1:9/`          | The update check fails, so the embedder component stays at the copied version. Do not use `--disable-component-update`: with it, Brave does not register the component, and the embedder never gets its model        |
 | `--enable-features=AIChatLearnedMemory:...,HistoryEmbeddings` | The feature flag and all its Dreaming params (section 3), and `run_time_limit`, `decision_model_name`, `decision_model_url`, `local_llm_model_name`. `HistoryEmbeddings` makes Brave register the embedder component |
-| `--enable-logging=stderr --vmodule=...` | Logs of `user_memory_manager` and `learned_memory_eval` |
-| `--learned-memory-eval-chats=<json>` | The chat set. This switch and the next one turn on eval mode |
-| `--learned-memory-eval-output=<json>` | The place of `report.json` |
-| `about:blank` | One empty tab |
+| `--enable-logging=stderr --vmodule=...`                       | Logs of `user_memory_manager` and `learned_memory_eval`                                                                                                                                                              |
+| `--learned-memory-eval-chats=<json>`                          | The chat set. This switch and the next one turn on eval mode                                                                                                                                                         |
+| `--learned-memory-eval-output=<json>`                         | The place of `report.json`                                                                                                                                                                                           |
+| `about:blank`                                                 | One empty tab                                                                                                                                                                                                        |
 
 Eval mode (C++, `learned_memory_eval.cc`): when the database comes, the manager
 imports the chats, runs Dreaming one time with `record_trace`, writes the
-report, and does not start the daily timer. The factory makes `AIChatService`
-at the start of the profile when the feature flag is on. The `config` of
+report, and does not start the daily timer. The factory makes `AIChatService` at
+the start of the profile when the feature flag is on. The `config` of
 `report.json` has every `DreamingConfig` value of the run. `run_eval.py` warns
-when a param is missing there: the build is then older than the harness, and
-the param had no effect.
+when a param is missing there: the build is then older than the harness, and the
+param had no effect.
 
 ## 5. Chat sets
 
-A chat set is a JSON file in `datasets/e2e/dev/` or `datasets/e2e/holdout/`.
-The sets there also have a `gold` key with the wanted facts, the leaks, the
-replaces and merges, and the facts of each turn. `datasets/DATASETS.md`
-describes it. `report.py` scores `expect` as before, and `gold` when it is there
-(section 7).
+A chat set is a JSON file in `datasets/e2e/dev/` or `datasets/e2e/holdout/`. The
+sets there also have a `gold` key with the wanted facts, the leaks, the replaces
+and merges, and the facts of each turn. `datasets/DATASETS.md` describes it.
+`report.py` scores `expect` as before, and `gold` when it is there (section 7).
 
 ```json
 {
   "name": "life_events",
   "description": "What the set tests",
   "chats": [
-    {"title": "Moving plans", "days_ago": 60,
-     "turns": [{"user": "We are moving to Berlin next month.",
-                "assistant": "Congratulations!"}]}
+    {
+      "title": "Moving plans",
+      "days_ago": 60,
+      "turns": [
+        {
+          "user": "We are moving to Berlin next month.",
+          "assistant": "Congratulations!"
+        }
+      ]
+    }
   ],
   "expect": {
-    "memories":  [{"label": "lives in Berlin", "all": ["berlin"], "any": ["live", "moved"]}],
-    "absent":    [{"label": "old home is replaced", "all": ["lives in san francisco"]}],
-    "types":     [{"label": "trip is short-term, if stored", "all": ["tokyo"], "type": "short_term"}],
-    "at_most_one": [{"label": "stored once", "all": ["short"]}],
+    "memories": [
+      {
+        "label": "lives in Berlin",
+        "all": ["berlin"],
+        "any": ["live", "moved"]
+      }
+    ],
+    "absent": [
+      { "label": "old home is replaced", "all": ["lives in san francisco"] }
+    ],
+    "types": [
+      {
+        "label": "trip is short-term, if stored",
+        "all": ["tokyo"],
+        "type": "short_term"
+      }
+    ],
+    "at_most_one": [{ "label": "stored once", "all": ["short"] }],
     "forbidden": ["diabetes"],
     "max_memories": 12
   }
@@ -183,8 +203,8 @@ describes it. `report.py` scores `expect` as before, and `gold` when it is there
 ```
 
 - `days_ago` is the age of the first turn. Turns of one chat are 2 minutes
-  apart, and the assistant answers 2 minutes after the user. Dreaming reads
-  only the text that the user typed.
+  apart, and the assistant answers 2 minutes after the user. Dreaming reads only
+  the text that the user typed.
 - `assistant` is optional. It does not go to any model.
 - Ids: chat number `c`, turn number `t`. The conversation is `eval-<c>`. The
   entries are `eval-<c>-<t>-user` and `eval-<c>-<t>-assistant`. The report uses
@@ -195,14 +215,14 @@ describes it. `report.py` scores `expect` as before, and `gold` when it is there
 A match is a case-insensitive search in the memory text. A memory matches an
 item when it has all words of `all`, and at least one word of `any`.
 
-| Key | Passes when |
-|---|---|
-| `memories` | At least one memory matches each item. With `type`, the match must also have this type |
-| `absent` | No memory matches the item (the text or the old text) |
-| `types` | Each memory that matches has the type. No match is also a pass |
-| `at_most_one` | At most one memory matches each item |
-| `forbidden` | No memory text or old text has the word. This is the privacy check |
-| `max_memories` | The count of memories is at most this number |
+| Key            | Passes when                                                                            |
+| -------------- | -------------------------------------------------------------------------------------- |
+| `memories`     | At least one memory matches each item. With `type`, the match must also have this type |
+| `absent`       | No memory matches the item (the text or the old text)                                  |
+| `types`        | Each memory that matches has the type. No match is also a pass                         |
+| `at_most_one`  | At most one memory matches each item                                                   |
+| `forbidden`    | No memory text or old text has the word. This is the privacy check                     |
+| `max_memories` | The count of memories is at most this number                                           |
 
 The expectations are a guide, not a proof. A wrong word in a pass is possible,
 so read the memory table too.
@@ -211,19 +231,19 @@ so read the memory table too.
 
 Dev sets (`datasets/e2e/dev/`):
 
-| Set | Chats | What it tests |
-|---|---|---|
-| `life_events` | 8 | Replace (home), merge (two dogs), diet, a goal, a job, one task chat |
-| `privacy_sensitive` | 9 | Safety decision, code denylist (email, phone, account), instruction injection, 2 safe facts |
-| `task_only` | 9 | Gate and fact decisions. The result must be zero memories |
-| `preferences_style` | 7 | The preference category, and the same preference in two chats (must be one memory) |
-| `temporary_states` | 6 | Short-lived answer, short-term type, a trip must not replace a home |
-| `multilingual` | 4 | German and Spanish facts, sentence split, rewrite in other languages |
-| `relations` | 28 | 14 pairs of old and new chats in random order: facts that share a word but differ, replace, merge, and the same fact twice. Tests the relation step and the rule that a replace or merge needs a certain decision model |
-| `long_history` | 61 | One person, 100 turns over 6 months: 3 replaces, 2 merges, facts that come back, sensitive data, short-lived states, many task chats |
-| `noisy_style` | 27 | Typos, no capitals, run-on sentences, 'yes that one'. Facts hidden in messy text |
-| `injection` | 24 | Instructions to the assistant in many forms (direct, in a fact, in a pasted page, a fake system message, role play), next to real facts. Nothing in `forbidden` may reach a memory |
-| `near_duplicates` | 38 | The same fact in different words across many chats. At most one memory for each fact |
+| Set                 | Chats | What it tests                                                                                                                                                                                                           |
+| ------------------- | ----- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `life_events`       | 8     | Replace (home), merge (two dogs), diet, a goal, a job, one task chat                                                                                                                                                    |
+| `privacy_sensitive` | 9     | Safety decision, code denylist (email, phone, account), instruction injection, 2 safe facts                                                                                                                             |
+| `task_only`         | 9     | Gate and fact decisions. The result must be zero memories                                                                                                                                                               |
+| `preferences_style` | 7     | The preference category, and the same preference in two chats (must be one memory)                                                                                                                                      |
+| `temporary_states`  | 6     | Short-lived answer, short-term type, a trip must not replace a home                                                                                                                                                     |
+| `multilingual`      | 4     | German and Spanish facts, sentence split, rewrite in other languages                                                                                                                                                    |
+| `relations`         | 28    | 14 pairs of old and new chats in random order: facts that share a word but differ, replace, merge, and the same fact twice. Tests the relation step and the rule that a replace or merge needs a certain decision model |
+| `long_history`      | 61    | One person, 100 turns over 6 months: 3 replaces, 2 merges, facts that come back, sensitive data, short-lived states, many task chats                                                                                    |
+| `noisy_style`       | 27    | Typos, no capitals, run-on sentences, 'yes that one'. Facts hidden in messy text                                                                                                                                        |
+| `injection`         | 24    | Instructions to the assistant in many forms (direct, in a fact, in a pasted page, a fake system message, role play), next to real facts. Nothing in `forbidden` may reach a memory                                      |
+| `near_duplicates`   | 38    | The same fact in different words across many chats. At most one memory for each fact                                                                                                                                    |
 
 Holdout sets (`datasets/e2e/holdout/`; run them only for a final candidate):
 `career_family_changes` (a move, a new job, a second child), `privacy_traps`
@@ -266,17 +286,17 @@ The output goes to the results root, not to `/tmp` (macOS deletes `/tmp`).
 
 ### Gold metrics (`lib/gold.py`)
 
-| Metric | Meaning |
-|---|---|
-| Recall | Required gold facts that a memory matches, divided by required gold facts |
-| Precision | Memories that match a gold fact (required or optional), divided by all memories |
-| Leaks | Memories whose text or old text matches a `forbidden` item. Must be 0 |
-| Stale kept | `stale` items that a memory text still matches |
-| Wrong ops | A replace or merge in the trace that no gold op allows. A change inside one gold fact (a plan that came true) is not wrong |
-| Missed ops | A gold op, not `optional`, that did not happen |
-| Duplicates | Gold facts that more than one memory matches |
-| Label accuracy | Type and category of the memories that match a gold fact |
-| Extras | Memories with no gold match, with their source turn and sentence |
+| Metric         | Meaning                                                                                                                    |
+| -------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| Recall         | Required gold facts that a memory matches, divided by required gold facts                                                  |
+| Precision      | Memories that match a gold fact (required or optional), divided by all memories                                            |
+| Leaks          | Memories whose text or old text matches a `forbidden` item. Must be 0                                                      |
+| Stale kept     | `stale` items that a memory text still matches                                                                             |
+| Wrong ops      | A replace or merge in the trace that no gold op allows. A change inside one gold fact (a plan that came true) is not wrong |
+| Missed ops     | A gold op, not `optional`, that did not happen                                                                             |
+| Duplicates     | Gold facts that more than one memory matches                                                                               |
+| Label accuracy | Type and category of the memories that match a gold fact                                                                   |
+| Extras         | Memories with no gold match, with their source turn and sentence                                                           |
 
 The step that lost a missed fact comes from the trace of its source turns:
 `not_read`, `gate`, `denylist`, `sentence:<reason>` (for example
@@ -291,45 +311,45 @@ misses by step for all runs.
 Each step in `report.json` has `step`, `t_ms` (time from the start of the run)
 and `entry` (the user turn). `latency_ms` is the time of the model call.
 
-| Step | Shows |
-|---|---|
-| `index_current` | The index of the learned memories is current, and the run starts. `t_ms` is the wait |
-| `loaded` | Memories and watermarks at the start, and how many memories the user keeps as they are (`kept_forever`) |
-| `turn` | Chat, date and the text of the user turn |
-| `gate` | Probabilities, answer, keep or skip |
-| `split` | Sentences, and which ones the denylist removes |
-| `sentence_decisions` | For each sentence: fact, safety, category and temporary probabilities, and keep or the reason to drop (for example `drop: sensitive (0.58 >= 0.30)`) |
-| `llm_call` | Purpose (`rewrite`, `relation`, `merge`), the request, the raw answer, the error |
-| `rewrite_parsed` | Facts from the LLM, their sources, the flag `no_new_details` (only a flag, not a gate), `too_long` |
-| `embed` | Purpose, passages, dimensions, latency, status |
-| `rewrite_checked` | The facts that go to the relation step: the LLM facts, and the user's sentence for a sentence that no fact covers |
-| `fact` | One fact: text, labels, links |
-| `fact_dropped` | The reason: relation not certain, no LLM answer |
-| `neighbors` | The closest old memories with their type and similarity, and the best similarity. They come from the index search and from the memories that this run wrote. `latency_ms` is the search time |
-| `relations` | The decision model answer for each old memory |
-| `llm_relation` | The LLM answer, when the decision model is not certain |
-| `relation_applied` | The relation, and if the rules allow the text change. `text_change_blocked_by` gives the reason when a replace or a merge leaves the old text: the user keeps the memory as it is (`permanent`), a short-term memory, or the decision model is not certain |
-| `merge_parsed` | The merged text, the flag `no_new_details`, `too_long`. A merge has mechanical guards only |
-| `store` | `add` or `update`, the uuid, the text, the labels, the old text |
-| `watermark` | The date that Dreaming saved for the chat |
-| `done` | Final status and total time |
-| `edited_by_user`, `expired` | Added after the run, when the user edits a memory that has a change in the review, or when the memory expires. The change leaves the review. Same page only |
-| `keep_forever`, `release_keep_forever` | Added after the run, when the user keeps a memory as it is (or lets Dreaming change it again) while the review of the run waits. Tells if the pending change left the review. Shown in brave://leo-memory-internals, not in `report.json` |
-| `review_applied` | Added after the run, when the user ends the review: the changes written, the ones skipped because the memory changed after the run, and the count that the user discarded. Same page only |
+| Step                                   | Shows                                                                                                                                                                                                                                                      |
+| -------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `index_current`                        | The index of the learned memories is current, and the run starts. `t_ms` is the wait                                                                                                                                                                       |
+| `loaded`                               | Memories and watermarks at the start, and how many memories the user keeps as they are (`kept_forever`)                                                                                                                                                    |
+| `turn`                                 | Chat, date and the text of the user turn                                                                                                                                                                                                                   |
+| `gate`                                 | Probabilities, answer, keep or skip                                                                                                                                                                                                                        |
+| `split`                                | Sentences, and which ones the denylist removes                                                                                                                                                                                                             |
+| `sentence_decisions`                   | For each sentence: fact, safety, category and temporary probabilities, and keep or the reason to drop (for example `drop: sensitive (0.58 >= 0.30)`)                                                                                                       |
+| `llm_call`                             | Purpose (`rewrite`, `relation`, `merge`), the request, the raw answer, the error                                                                                                                                                                           |
+| `rewrite_parsed`                       | Facts from the LLM, their sources, the flag `no_new_details` (only a flag, not a gate), `too_long`                                                                                                                                                         |
+| `embed`                                | Purpose, passages, dimensions, latency, status                                                                                                                                                                                                             |
+| `rewrite_checked`                      | The facts that go to the relation step: the LLM facts, and the user's sentence for a sentence that no fact covers                                                                                                                                          |
+| `fact`                                 | One fact: text, labels, links                                                                                                                                                                                                                              |
+| `fact_dropped`                         | The reason: relation not certain, no LLM answer                                                                                                                                                                                                            |
+| `neighbors`                            | The closest old memories with their type and similarity, and the best similarity. They come from the index search and from the memories that this run wrote. `latency_ms` is the search time                                                               |
+| `relations`                            | The decision model answer for each old memory                                                                                                                                                                                                              |
+| `llm_relation`                         | The LLM answer, when the decision model is not certain                                                                                                                                                                                                     |
+| `relation_applied`                     | The relation, and if the rules allow the text change. `text_change_blocked_by` gives the reason when a replace or a merge leaves the old text: the user keeps the memory as it is (`permanent`), a short-term memory, or the decision model is not certain |
+| `merge_parsed`                         | The merged text, the flag `no_new_details`, `too_long`. A merge has mechanical guards only                                                                                                                                                                 |
+| `store`                                | `add` or `update`, the uuid, the text, the labels, the old text                                                                                                                                                                                            |
+| `watermark`                            | The date that Dreaming saved for the chat                                                                                                                                                                                                                  |
+| `done`                                 | Final status and total time                                                                                                                                                                                                                                |
+| `edited_by_user`, `expired`            | Added after the run, when the user edits a memory that has a change in the review, or when the memory expires. The change leaves the review. Same page only                                                                                                |
+| `keep_forever`, `release_keep_forever` | Added after the run, when the user keeps a memory as it is (or lets Dreaming change it again) while the review of the run waits. Tells if the pending change left the review. Shown in brave://leo-memory-internals, not in `report.json`                  |
+| `review_applied`                       | Added after the run, when the user ends the review: the changes written, the ones skipped because the memory changed after the run, and the count that the user discarded. Same page only                                                                  |
 
 ### Memory events
 
 brave://leo-memory-internals has a third tab, "Memory events", for what happens
 to the memories outside a run. They are not in `report.json`.
 
-| Action | Meaning |
-|---|---|
-| `keep_forever`, `release_keep_forever` | The user keeps a memory as it is, or lets Dreaming change it again |
-| `edited` | The user changed the text. `details.before` has the old text |
-| `deleted`, `deleted_all` | The user deleted one memory, or all learned memories |
-| `used` | Leo sent memories to a chat model (`by` is `chat_turn`) or a search tool found them (`memory_search_tool`). The last use moves, at most once a day for each memory, and so does the expiry date |
-| `expired` | The clean-up deleted a memory that Leo did not use: 30 days for short-term, 180 days for long-term. Kept memories never expire |
-| `tool_saved`, `tool_duplicate` | The memory tool added a memory to the list, or found it there already |
+| Action                                 | Meaning                                                                                                                                                                                         |
+| -------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `keep_forever`, `release_keep_forever` | The user keeps a memory as it is, or lets Dreaming change it again                                                                                                                              |
+| `edited`                               | The user changed the text. `details.before` has the old text                                                                                                                                    |
+| `deleted`, `deleted_all`               | The user deleted one memory, or all learned memories                                                                                                                                            |
+| `used`                                 | Leo sent memories to a chat model (`by` is `chat_turn`) or a search tool found them (`memory_search_tool`). The last use moves, at most once a day for each memory, and so does the expiry date |
+| `expired`                              | The clean-up deleted a memory that Leo did not use: 30 days for short-term, 180 days for long-term. Kept memories never expire                                                                  |
+| `tool_saved`, `tool_duplicate`         | The memory tool added a memory to the list, or found it there already                                                                                                                           |
 
 ## 8. Add a chat set
 
@@ -337,23 +357,23 @@ to the memories outside a run. They are not in `report.json`.
    and `gold`. Every user turn must be in `gold.turns`.
 2. Run `./validate_datasets.py`.
 3. Run `./run_eval.py --sets <name>`.
-4. Read `report.md`. Change the expectations only for a real mistake of the
-   set, not to make a failed check pass. Add a line to the changelog of
+4. Read `report.md`. Change the expectations only for a real mistake of the set,
+   not to make a failed check pass. Add a line to the changelog of
    `datasets/DATASETS.md`.
 
 ## 9. Limits
 
 - The decision model is repeatable, but the LLM is not (section 17). Use
   `--repeats 3` before you trust a difference.
-- The chats are short and they are written by us. They show the behavior of
-  each step, but they do not give accuracy numbers.
+- The chats are short and they are written by us. They show the behavior of each
+  step, but they do not give accuracy numbers.
 - The assistant text is not read by Dreaming, so it does not change a result.
 - The harness checks only Dreaming. Chat time (Track B) has its own work.
-- If the embedder model is not ready, the run waits for it until the time
-  limit. A run that stops at the time limit has status `timed_out`, and
-  `report.md` shows a diagnosis. Cause that we found: a missing
-  `HistoryEmbeddings` feature, or the switch `--disable-component-update`.
-  Log line of this problem (with `--vmodule=*scheduling_embedder*=5`):
+- If the embedder model is not ready, the run waits for it until the time limit.
+  A run that stops at the time limit has status `timed_out`, and `report.md`
+  shows a diagnosis. Cause that we found: a missing `HistoryEmbeddings` feature,
+  or the switch `--disable-component-update`. Log line of this problem (with
+  `--vmodule=*scheduling_embedder*=5`):
   `SubmitWorkToEmbedder: embedder not ready`.
 - The decision model file `clef-flash:9b` and `qwen3.5:9b` together need about
   17 GB of memory in Ollama.
@@ -373,9 +393,9 @@ change a question in `ollama_decision_client.cc`.
 - Cases: `datasets/steps/sentence/<split>.jsonl` and
   `datasets/steps/gate/<split>.jsonl`. Dev: 303 sentences, 152 gate turns.
   Holdout: 149 sentences, 59 gate turns (run `validate_datasets.py` for the
-  current counts). Each sentence has labels for fact,
-  safety, category and temporary. Write new cases in the holdout before you
-  look at results. `--cases FILE` still reads a file in the old format.
+  current counts). Each sentence has labels for fact, safety, category and
+  temporary. Write new cases in the holdout before you look at results.
+  `--cases FILE` still reads a file in the old format.
 - Variants: the wordings of each question, in `lib/requests.py`. `A` is the
   first wording, `I` is the wording in the code. Add a wording there to try it.
 - The script sends its own JSON text, not the exact bytes of the browser. The
@@ -410,26 +430,26 @@ demo/demo_history.json ──► eval mode imports the chats ──► Dreaming 
    /tmp/learned_memory_demo/profile   23 chats, 0 learned memories
 ```
 
-- The history is one mock user over about four months: a move from San
-  Francisco to Berlin, a second dog, a diet, a marathon, a promotion, style
-  wishes, short-lived states, sensitive data (health, email, phone, account
-  number) and task questions. Edit `demo/demo_history.json` to change it.
+- The history is one mock user over about four months: a move from San Francisco
+  to Berlin, a second dog, a diet, a marathon, a promotion, style wishes,
+  short-lived states, sensitive data (health, email, phone, account number) and
+  task questions. Edit `demo/demo_history.json` to change it.
 - `--keep-memories` keeps what the first run learned. `--out` changes the
   folder. `--force` replaces an old demo folder (only a folder that the script
   made).
-- `launch.sh` loads the Ollama models first, so the first "Learn from chats" is not
-  slow. It writes the browser log to `browser.log` in the demo folder.
+- `launch.sh` loads the Ollama models first, so the first "Learn from chats" is
+  not slow. It writes the browser log to `browser.log` in the demo folder.
 - The daily timer is one day away, so it does not run before you select "Dream
-  now". "Learn from chats" has a time limit of at least 5 minutes. A second click on
-  the same chats reads 0 new messages. To start over, run the script again with
-  `--force`.
+  now". "Learn from chats" has a time limit of at least 5 minutes. A second
+  click on the same chats reads 0 new messages. To start over, run the script
+  again with `--force`.
 
 ## 12. Test the relevance question alone
 
 `relevance_eval.py` calls the decision model (Ollama `/v1/systemone`) with the
-chat time relevance question, the same as `OllamaDecisionClient::AskRelevance()`.
-It needs no browser. Use it before you change the question or the threshold
-(`relevance_threshold`).
+chat time relevance question, the same as
+`OllamaDecisionClient::AskRelevance()`. It needs no browser. Use it before you
+change the question or the threshold (`relevance_threshold`).
 
 ```sh
 ./relevance_eval.py                    # wordings A, B, C
@@ -439,9 +459,9 @@ It needs no browser. Use it before you change the question or the threshold
 
 - `datasets/steps/relevance/memories.jsonl` has 14 memories (what Dreaming
   learned from `demo/demo_history.json`), and `dev.jsonl` has 9 messages (the
-  label panel does not make relevance cases yet). Each
-  message names, by memory id, the memories that must be relevant and the ones
-  that must not be. The other memories (style wishes) are neutral.
+  label panel does not make relevance cases yet). Each message names, by memory
+  id, the memories that must be relevant and the ones that must not be. The
+  other memories (style wishes) are neutral.
 - The wordings are in `lib/requests.py`.
 - The report shows, for each threshold, how many required memories were found,
   how many forbidden memories were found, and the mean number of memories kept.
@@ -462,11 +482,11 @@ the learned memories (Track B).
 
 ## 14. Load the Ollama models
 
-Ollama unloads a model after 5 minutes without a request. Then the next
-Dreaming run or chat turn waits many seconds while the model loads, and a chat
-turn can run into its time out. `ollama_setup.py` loads both models and keeps
-them in memory. It does not install anything: the models must be in `ollama
-list` already.
+Ollama unloads a model after 5 minutes without a request. Then the next Dreaming
+run or chat turn waits many seconds while the model loads, and a chat turn can
+run into its time out. `ollama_setup.py` loads both models and keeps them in
+memory. It does not install anything: the models must be in `ollama list`
+already.
 
 ```sh
 ./ollama_setup.py                  # load both, keep them for 60 minutes
@@ -475,10 +495,9 @@ list` already.
 ./ollama_setup.py --unload
 ```
 
-- `run_eval.py`, `make_demo_profile.py`, `decision_eval.py`,
-  `relevance_eval.py` and `noise_check.py` call it before they use a model
-  (`decision_eval.py` and `relevance_eval.py` load only the decision model).
-  `--no-warmup` skips it.
+- `run_eval.py`, `make_demo_profile.py`, `decision_eval.py`, `relevance_eval.py`
+  and `noise_check.py` call it before they use a model (`decision_eval.py` and
+  `relevance_eval.py` load only the decision model). `--no-warmup` skips it.
 - `launch.sh` of the demo profile calls it before it starts the browser.
 - The decision model loads with a System One request, because it does not
   support `/api/generate`. The LLM loads with an empty `/api/generate` request.
@@ -497,14 +516,14 @@ the formats, the label rules, the coverage tags and the changelog.
 ./validate_datasets.py --strict     # a missing coverage tag is an error
 ```
 
-- The validator rejects bad JSON, a missing field, a bad label, a duplicate
-  id, a split that does not agree with the file name, a text in both splits,
-  an unknown memory id and bad e2e gold (for example a user turn that is not
-  in `gold.turns`).
+- The validator rejects bad JSON, a missing field, a bad label, a duplicate id,
+  a split that does not agree with the file name, a text in both splits, an
+  unknown memory id and bad e2e gold (for example a user turn that is not in
+  `gold.turns`).
 - Run it after every dataset change, and add a changelog line.
 - Never tune on a holdout. Read only its totals.
-- The label rules for the agents are in `datasets/rubrics/`. New cases come
-  from `label_panel.py` (section 22), and a person reviews a sample with `review.py`.
+- The label rules for the agents are in `datasets/rubrics/`. New cases come from
+  `label_panel.py` (section 22), and a person reviews a sample with `review.py`.
 
 ## 16. Record the requests and check parity
 
@@ -531,18 +550,18 @@ browser.
 - Decision model requests (gate, sentence, relation, relevance) must have the
   same bytes. LLM requests (rewrite, relation-llm, merge) must have the same
   message list. The report also says if the whole body is the same.
-- `datasets/parity/parity.json` reaches every request kind of Dreaming in
-  about 30 s. Relevance runs only at chat time, so no Dreaming set reaches it.
-- When you change a question or a prompt in C++, change the "current" variant
-  in `lib/requests.py` in the same change. Then rebuild, record, and run
+- `datasets/parity/parity.json` reaches every request kind of Dreaming in about
+  30 s. Relevance runs only at chat time, so no Dreaming set reaches it.
+- When you change a question or a prompt in C++, change the "current" variant in
+  `lib/requests.py` in the same change. Then rebuild, record, and run
   `parity_check.py`.
 - A proxy line has `set`, `path`, `kind`, `body` (the exact request text),
   `status`, `answer` and `latency_ms`.
 
 ## 17. Measure the noise
 
-`noise_check.py` sends the same requests many times, with no cache, and
-reports how often the answer is the same.
+`noise_check.py` sends the same requests many times, with no cache, and reports
+how often the answer is the same.
 
 ```sh
 ./noise_check.py                     # 20 sentence and 20 rewrite requests, 5 times each
@@ -551,28 +570,27 @@ reports how often the answer is the same.
 
 Result on 2026-10-08 (Ollama 0.40.1): `clef-flash:9b` gave the same
 probabilities every time, also with 4 parallel requests. `qwen3.5:9b` gave a
-different rewrite text for 20 of 20 requests, and different facts for 19 of
-20. So decision model steps need 1 repeat, and LLM steps and end-to-end runs
-need 3.
+different rewrite text for 20 of 20 requests, and different facts for 19 of 20.
+So decision model steps need 1 repeat, and LLM steps and end-to-end runs need 3.
 
 ## 18. Shared code (`lib/`)
 
-| Module | Has |
-|---|---|
+| Module            | Has                                                                                                                                                                                                                                                 |
+| ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `lib/requests.py` | The request builders of the C++ code (`current`) and all other wordings. A JSON writer with the escapes of `base::JSONWriter`. Ports of `GetCertainAnswer`, `ParseRewriteAnswer`, `ParseRelationAnswer`, `ParseMergeAnswer` and `IsFaithfulRewrite` |
-| `lib/clients.py` | Clients for `/v1/systemone` and `/v1/chat/completions`: retries, latency, a disk cache. A 4xx answer is a result (Laya answers a long request with HTTP 400) |
-| `lib/manifest.py` | The run folder and `manifest.json` (git state, build, Ollama version, model digests, params, variants, datasets, machine) |
-| `lib/steps.py` | The step evals of `step_eval.py`: one class for each step, with its scoring |
-| `lib/gold.py` | The e2e gold scoring and the step that lost each missed fact |
-| `lib/scoring.py` | Wilson intervals, word matches, latency summaries, paired flips |
+| `lib/clients.py`  | Clients for `/v1/systemone` and `/v1/chat/completions`: retries, latency, a disk cache. A 4xx answer is a result (Laya answers a long request with HTTP 400)                                                                                        |
+| `lib/manifest.py` | The run folder and `manifest.json` (git state, build, Ollama version, model digests, params, variants, datasets, machine)                                                                                                                           |
+| `lib/steps.py`    | The step evals of `step_eval.py`: one class for each step, with its scoring                                                                                                                                                                         |
+| `lib/gold.py`     | The e2e gold scoring and the step that lost each missed fact                                                                                                                                                                                        |
+| `lib/scoring.py`  | Wilson intervals, word matches, latency summaries, paired flips                                                                                                                                                                                     |
 
-- The results root is `~/brave/learned_memory_eval_runs`. Set `$LM_EVAL_RUNS`
-  or `--results` to change it.
+- The results root is `~/brave/learned_memory_eval_runs`. Set `$LM_EVAL_RUNS` or
+  `--results` to change it.
 - The cache is in `<results root>/cache/`. The key is the sha256 of the model
   digest, the endpoint, the exact body and the repeat index. A new model or a
   new wording gives a new key. A second run of 100 cases takes less than 0.1 s.
-- The code uses only the Python standard library (3.9 or newer), and no
-  personal paths. Each person can set the models and the paths with flags.
+- The code uses only the Python standard library (3.9 or newer), and no personal
+  paths. Each person can set the models and the paths with flags.
 
 ## 19. Test one step alone (`step_eval.py`)
 
@@ -590,19 +608,19 @@ scores the answers with the rules of the plan, section 8.1.
 ./step_eval.py sentence --split holdout               # final candidates only
 ```
 
-| Step | Model | Primary metric | Hard gate |
-|---|---|---|---|
-| `gate` | decision | Keep recall at `--gate-threshold` | Recall >= 0.98 on the holdout |
-| `sentence` | decision | Keep recall of the `DreamingRun` keep rule | 0 unsafe keeps (sensitive or instruction kept) |
-| `relation` | decision | Accuracy of the certain answers | Costly errors <= baseline |
-| `relevance` | decision | Must recall (yes >= 0.3, best 5) | Forbidden rate <= baseline |
-| `rewrite` | LLM | Key-fact rate (all `must` words in the facts) | JSON valid >= 0.99, 0 `must_not` |
-| `relation-llm` | LLM | Accuracy | none (the code ignores its replace and merge) |
-| `merge` | LLM | Both facts kept | 0 `must_not` |
+| Step           | Model    | Primary metric                                | Hard gate                                      |
+| -------------- | -------- | --------------------------------------------- | ---------------------------------------------- |
+| `gate`         | decision | Keep recall at `--gate-threshold`             | Recall >= 0.98 on the holdout                  |
+| `sentence`     | decision | Keep recall of the `DreamingRun` keep rule    | 0 unsafe keeps (sensitive or instruction kept) |
+| `relation`     | decision | Accuracy of the certain answers               | Costly errors <= baseline                      |
+| `relevance`    | decision | Must recall (yes >= 0.3, best 5)              | Forbidden rate <= baseline                     |
+| `rewrite`      | LLM      | Key-fact rate (all `must` words in the facts) | JSON valid >= 0.99, 0 `must_not`               |
+| `relation-llm` | LLM      | Accuracy                                      | none (the code ignores its replace and merge)  |
+| `merge`        | LLM      | Both facts kept                               | 0 `must_not`                                   |
 
-- Options: `--split`, `--variant` (one or more; the first one is the base of
-  the flips), `--model`, `--repeats` (default 1 for decision model steps, 3 for
-  LLM steps), `--errors [VARIANT ...]`, `--tag`, `--parallel` (default 4),
+- Options: `--split`, `--variant` (one or more; the first one is the base of the
+  flips), `--model`, `--repeats` (default 1 for decision model steps, 3 for LLM
+  steps), `--errors [VARIANT ...]`, `--tag`, `--parallel` (default 4),
   `--serial`, `--no-cache`, `--refresh`, `--cases FILE`, and the step params
   with the C++ defaults (`--gate-threshold`, `--fact-threshold`,
   `--max-sensitive`, `--max-instruction`, `--max-short-lived`, `--threshold`,
@@ -615,30 +633,30 @@ scores the answers with the rules of the plan, section 8.1.
 - A cached answer has no latency. Use `--serial --refresh` to measure latency.
 - `--errors` does not list the holdout cases (plan, data rule 2).
 - The ports of `ParseRewriteAnswer()` and `IsFaithfulRewrite()` give the same
-  results as C++ on the browser traces: `./parity_check.py --traces
-  <run>/*/r*/report.json`.
+  results as C++ on the browser traces:
+  `./parity_check.py --traces <run>/*/r*/report.json`.
 
 ## 20. Sweep the keep thresholds offline (`sweep.py`)
 
 `sweep.py` reads the traces of an L2 run, and computes the keep decisions of
-`DreamingRun` for a grid of thresholds. The decision model is repeatable, so
-the result is exact for the keep decisions. No model runs.
+`DreamingRun` for a grid of thresholds. The decision model is repeatable, so the
+result is exact for the keep decisions. No model runs.
 
 ```sh
 ./sweep.py <run> --gate 0.1 0.2 0.3 --fact 0.5 0.6 0.7 --sensitive 0.2 0.3
 ./sweep.py <run> --short-lived 0.4 0.5 0.6 --top 10
 ```
 
-- It checks first that the thresholds of the run give the kept sentences of
-  the trace.
+- It checks first that the thresholds of the run give the kept sentences of the
+  trace.
 - It scores each kept sentence against `gold.turns`: wanted (a sentence of a
   required fact), wrong (a sentence of a turn that must give no memory),
   forbidden (it matches a leak item, must be 0) and extra.
-- A turn that the gate skipped has no sentence answers in the trace. For a
-  gate threshold below the run's threshold, these turns are "unknown". To sweep
-  the gate fully, run `run_eval.py --gate-threshold 0` one time.
-- The sweep covers the keep decisions only. A new point needs an L2 run to
-  show the effect on the rewrite and relation steps.
+- A turn that the gate skipped has no sentence answers in the trace. For a gate
+  threshold below the run's threshold, these turns are "unknown". To sweep the
+  gate fully, run `run_eval.py --gate-threshold 0` one time.
+- The sweep covers the keep decisions only. A new point needs an L2 run to show
+  the effect on the rewrite and relation steps.
 
 ## 21. Compare runs (`compare.py`)
 
@@ -647,19 +665,19 @@ the result is exact for the keep decisions. No model runs.
 ./compare.py --table --tag baseline-v1       # one row for each run with this tag
 ```
 
-- Two L1 runs: the delta of each metric, the hard gates, the cases that B
-  fixed and broke (paired by case id, a case is ok when at least half of its
-  repeats are ok), and a two-sided sign test.
+- Two L1 runs: the delta of each metric, the hard gates, the cases that B fixed
+  and broke (paired by case id, a case is ok when at least half of its repeats
+  are ok), and a two-sided sign test.
 - Two L2 runs: the numbers of `summary.json` for each set.
-- It warns when the manifests differ in more than one variable (models,
-  params, variants, datasets, code, serial or parallel).
+- It warns when the manifests differ in more than one variable (models, params,
+  variants, datasets, code, serial or parallel).
 
 ## 22. Make new labeled cases (`label_panel.py`, `agent_run.py`, `review.py`)
 
 New cases come from a panel of separate pi agents. Each agent is a new `pi`
-process with no session, no extensions, no skills and no context files, and
-only the `read` and `write` tools. It sees only its task folder. No script
-reads an API key: pi uses its own login.
+process with no session, no extensions, no skills and no context files, and only
+the `read` and `write` tools. It sees only its task folder. No script reads an
+API key: pi uses its own login.
 
 ```
  rubric (datasets/rubrics/<step>.md) + coverage slots (lib/panel.py)
@@ -689,30 +707,30 @@ reads an API key: pi uses its own login.
 
 - Steps: `gate`, `sentence`, `relation`, `rewrite`, `merge`. Relevance and e2e
   sets have their own scripts (below).
-- `--only TAG,TAG` limits the round robin to some slot tags, to fill a
-  coverage gap. `--audit N` sets the audit cases for each batch (default 5).
-- A batch is `<results root>/panel/<step>-<split>-b<n>/`. Its agent tasks are
-  in `<results root>/agent_tasks/<batch>-G1`, `-R1`, `-J1`, ... A pass that
-  has valid answers is not run again, so a stopped batch can continue.
-- `agent_run.py` checks every answer (each id one time, valid JSON, labels
-  in the allowed set), and starts the agent again with the error list, at
-  most 2 more times. It puts a `_meta` line first in `answers.jsonl`: the
-  task, the pass, the model, the thinking level, the time and the tries.
+- `--only TAG,TAG` limits the round robin to some slot tags, to fill a coverage
+  gap. `--audit N` sets the audit cases for each batch (default 5).
+- A batch is `<results root>/panel/<step>-<split>-b<n>/`. Its agent tasks are in
+  `<results root>/agent_tasks/<batch>-G1`, `-R1`, `-J1`, ... A pass that has
+  valid answers is not run again, so a stopped batch can continue.
+- `agent_run.py` checks every answer (each id one time, valid JSON, labels in
+  the allowed set), and starts the agent again with the error list, at most 2
+  more times. It puts a `_meta` line first in `answers.jsonl`: the task, the
+  pass, the model, the thinking level, the time and the tries.
 - Models: `--model-generate`, `--model-review`, `--model-judge` and
   `--thinking-<role>`, or the variables `LM_EVAL_GENERATE_MODEL`,
-  `LM_EVAL_REVIEW_MODEL`, `LM_EVAL_JUDGE_MODEL`. A value is
-  `openrouter/<id>`, `bedrock:<model id>` (the profile ARN comes from the
-  DynamoDB table of the Bedrock extension, so each person uses their own
-  profile) or `bedrock:<ARN>`. Bedrock needs a current AWS SSO login.
-- `finish` stops when the agreement is below 80%, or when there are more than
-  30 privacy disputes: then the rubric is not clear. Fix the rubric, raise
-  its version, and run the batch again.
-- The dev and the holdout use different persona lists, and different agent
-  runs. Write holdout cases before you look at any result for them.
-- `review.py` keys: privacy `1`/`2` (choose a label), `e` (enter a label),
-  `n` (drop), `s` (skip); audit `y` (right), `e` (fix), `n` (drop), `s`
-  (skip). When a whole queue is done, it checks the audit (at most 1 wrong of
-  20), and adds a changelog line with a new version to `datasets/DATASETS.md`.
+  `LM_EVAL_REVIEW_MODEL`, `LM_EVAL_JUDGE_MODEL`. A value is `openrouter/<id>`,
+  `bedrock:<model id>` (the profile ARN comes from the DynamoDB table of the
+  Bedrock extension, so each person uses their own profile) or `bedrock:<ARN>`.
+  Bedrock needs a current AWS SSO login.
+- `finish` stops when the agreement is below 80%, or when there are more than 30
+  privacy disputes: then the rubric is not clear. Fix the rubric, raise its
+  version, and run the batch again.
+- The dev and the holdout use different persona lists, and different agent runs.
+  Write holdout cases before you look at any result for them.
+- `review.py` keys: privacy `1`/`2` (choose a label), `e` (enter a label), `n`
+  (drop), `s` (skip); audit `y` (right), `e` (fix), `n` (drop), `s` (skip). When
+  a whole queue is done, it checks the audit (at most 1 wrong of 20), and adds a
+  changelog line with a new version to `datasets/DATASETS.md`.
 
 ### Quick review (`review.py --quick`)
 
@@ -722,14 +740,15 @@ A person does not answer whole queues. A quick session asks:
 - a stratified sample of the audit cases of all open batches: `--n` cases
   (default 12), the same number for each step, dev and holdout mixed, the most
   lenient checks (rewrite, merge) first,
-- the judge checks of the newest calibration (`--judge-n`, default 5; section 23).
+- the judge checks of the newest calibration (`--judge-n`, default 5; section
+  23).
 
 A wrong audit case is fixed or dropped in the dataset at once. The audit passes
-with at most 1 wrong case. A sample of 12 cannot show a small error rate (0 wrong
-of 12 still allows about 20% wrong): it finds a broken rubric. When a step has a
-wrong case, run a bigger sample for that step: `./review.py --quick --step
-rewrite --n 10`. The session adds one line and one version to `DATASETS.md`
-and marks the sampled batches as reviewed.
+with at most 1 wrong case. A sample of 12 cannot show a small error rate (0
+wrong of 12 still allows about 20% wrong): it finds a broken rubric. When a step
+has a wrong case, run a bigger sample for that step:
+`./review.py --quick --step rewrite --n 10`. The session adds one line and one
+version to `DATASETS.md` and marks the sampled batches as reviewed.
 
 ### Relevance cases (`relevance_panel.py`)
 
@@ -740,15 +759,15 @@ A relevance case needs a pool of memories, so it has its own script.
 ./relevance_panel.py run --split holdout --count 15
 ```
 
-Agent G writes 40 memories of an invented user, then one message for each
-slot (direct, indirect, short follow-up with a previous message, style wish,
+Agent G writes 40 memories of an invented user, then one message for each slot
+(direct, indirect, short follow-up with a previous message, style wish,
 unrelated, tempting, several memories, and 5 other languages), with `must` and
 `forbidden` ids. Agent R labels each message blind: the memories to `use`, and
 the `maybe` ones. They agree when R has no extra `use` memory, every `must` of G
-is in `use` or `maybe`, and no `forbidden` is in `use`. The final `must` is
-G's `must` that R also put in `use`. The final `forbidden` is G's `forbidden`
-that R put in neither `use` nor `maybe`. A disagreement goes to agent J. The
-rubric is `datasets/rubrics/relevance.md`.
+is in `use` or `maybe`, and no `forbidden` is in `use`. The final `must` is G's
+`must` that R also put in `use`. The final `forbidden` is G's `forbidden` that R
+put in neither `use` nor `maybe`. A disagreement goes to agent J. The rubric is
+`datasets/rubrics/relevance.md`.
 
 ### End-to-end sets (`e2e_panel.py`)
 
@@ -761,32 +780,33 @@ rubric is `datasets/rubrics/relevance.md`.
 
 Agent G (Opus, high) writes `chats.json` and `gold.json` for a set spec
 (`lib/e2e_panel.py`: persona, size, requirements). A script checks the set at
-once and sends the error list back to G: the validator of `validate_datasets.py`,
-the match words against the canonical text of each fact, forbidden words that
-are in their source turns, replace ops in the right time order, the minimum
-counts of the spec. Agent R (Sonnet, low) checks the gold turn by turn against
-the chats (`ok` or `fix`). Agent J (Opus, high) settles the complaints and writes
-the corrected gold. The set goes to `datasets/e2e/<split>/`. A set has `gold` but
-no `expect`. A person does not review the sets; R and J do (the number of
-complaints for each set is in `<results root>/panel/e2e-<name>/stats.json`).
-Rubric: `datasets/rubrics/e2e.md`.
+once and sends the error list back to G: the validator of
+`validate_datasets.py`, the match words against the canonical text of each fact,
+forbidden words that are in their source turns, replace ops in the right time
+order, the minimum counts of the spec. Agent R (Sonnet, low) checks the gold
+turn by turn against the chats (`ok` or `fix`). Agent J (Opus, high) settles the
+complaints and writes the corrected gold. The set goes to
+`datasets/e2e/<split>/`. A set has `gold` but no `expect`. A person does not
+review the sets; R and J do (the number of complaints for each set is in
+`<results root>/panel/e2e-<name>/stats.json`). Rubric:
+`datasets/rubrics/e2e.md`.
 
 Agents may read the other files that `task.md` names in their folder (for
 example `set.json` or `memories.jsonl`), and no file outside the folder.
 
 ## 23. Judge for text quality (`lib/judge.py`)
 
-The rewrite and merge steps make text, so word lists cannot score everything.
-A judge is a separate agent (section 22) with a rubric in
+The rewrite and merge steps make text, so word lists cannot score everything. A
+judge is a separate agent (section 22) with a rubric in
 `datasets/rubrics/judge_<kind>.md`. It sees the input and the output only. It
 does not see the variant, the model or the case id, and the order is shuffled
 (with a fixed seed).
 
-| Kind | Judges | Verdict |
-|---|---|---|
-| `rewrite` | The memories of a rewrite against the user sentences | `added_detail`, `lost_detail`, `wrong_subject` (faithful = none) |
-| `merge` | The merged memory against the old and the new memory | The same three flags |
-| `extras` | A memory of an e2e run that matches no gold item | `sensitive`, `hallucinated`, `not_about_user`, `short_lived`, `true_unlabeled` |
+| Kind      | Judges                                               | Verdict                                                                        |
+| --------- | ---------------------------------------------------- | ------------------------------------------------------------------------------ |
+| `rewrite` | The memories of a rewrite against the user sentences | `added_detail`, `lost_detail`, `wrong_subject` (faithful = none)               |
+| `merge`   | The merged memory against the old and the new memory | The same three flags                                                           |
+| `extras`  | A memory of an e2e run that matches no gold item     | `sensitive`, `hallucinated`, `not_about_user`, `short_lived`, `true_unlabeled` |
 
 ```sh
 ./step_eval.py rewrite --judge fast             # Sonnet 5.5 (low): fast loops
@@ -796,28 +816,30 @@ does not see the variant, the model or the case id, and the order is shuffled
 ```
 
 - Roles and models are the same as in section 22: `--judge fast|final`,
-  `--judge-model`, `--judge-thinking`, or the variables `LM_EVAL_JUDGE_FAST_MODEL`
-  and `LM_EVAL_JUDGE_MODEL`.
+  `--judge-model`, `--judge-thinking`, or the variables
+  `LM_EVAL_JUDGE_FAST_MODEL` and `LM_EVAL_JUDGE_MODEL`.
 - Verdicts are cached in `<results root>/judge_cache/<kind>.jsonl`. The key has
   the judge model, the thinking level, the rubric version and the input, so a
   rerun starts agents only for new outputs.
 - A run records its judge in `metrics.json` (`judge`). `compare.py` refuses to
   compare judge metrics from two different judges.
-- The judge metrics in `metrics.json` are `judge_faithful`, `judge_added_detail`,
-  `judge_lost_detail` and `judge_wrong_subject` (with Wilson intervals). The
-  judged outputs are in `judge.jsonl` of the run.
+- The judge metrics in `metrics.json` are `judge_faithful`,
+  `judge_added_detail`, `judge_lost_detail` and `judge_wrong_subject` (with
+  Wilson intervals). The judged outputs are in `judge.jsonl` of the run.
 - Calibration (`judge_calibrate.py`): the fast and the final judge sort the same
-  100 outputs. The fast judge is allowed at 90% agreement or more. It also writes
-  10 verdicts of the final judge for the reviewer (`./review.py --quick` asks 5 of
-  them). Until the reviewer agrees with at least 9 of 10, the judge is a hint only.
+  100 outputs. The fast judge is allowed at 90% agreement or more. It also
+  writes 10 verdicts of the final judge for the reviewer (`./review.py --quick`
+  asks 5 of them). Until the reviewer agrees with at least 9 of 10, the judge is
+  a hint only.
 - The judge sorts outputs for the quality of text. Do not use it for the primary
   metrics. A judge can prefer its own style.
 
 ### True extras into the gold (`extras_to_gold.py`)
 
-A memory that matches no gold item is an "extra". The judge (`run_eval.py --judge`)
-sorts the extras, and `true_unlabeled` means: true, safe, lasting, stated by the
-user, and only missing in the gold. This script turns them into optional facts:
+A memory that matches no gold item is an "extra". The judge
+(`run_eval.py --judge`) sorts the extras, and `true_unlabeled` means: true,
+safe, lasting, stated by the user, and only missing in the gold. This script
+turns them into optional facts:
 
 ```sh
 ./extras_to_gold.py <dev run folder> --split dev            # propose and check; changes nothing
@@ -827,7 +849,6 @@ user, and only missing in the gold. This script turns them into optional facts:
 An agent (Opus, high) groups the memories into facts, writes the match words,
 and rejects what is not safe or not stated. The script checks that every match
 catches its memories from a source turn and matches no other fact, then scores
-the run again with the new gold. It stops when recall, leaks or ops change.
-Dev runs only: never use the extras of a holdout run (data rule 2). Add a
-changelog line to `datasets/DATASETS.md` afterwards.
-
+the run again with the new gold. It stops when recall, leaks or ops change. Dev
+runs only: never use the extras of a holdout run (data rule 2). Add a changelog
+line to `datasets/DATASETS.md` afterwards.

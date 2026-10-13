@@ -14,6 +14,7 @@ or other (lib/requests.py classify()). parity_check.py reads the file.
 run_eval.py --proxy starts it for each set and points the decision model URL
 and the BYOM endpoint at it.
 """
+
 from __future__ import annotations
 
 import argparse
@@ -40,13 +41,28 @@ class _Handler(BaseHTTPRequestHandler):
         upstream = urllib.parse.urlparse(self.server.ollama)
         status, answer, headers = 0, b"", {}
         try:
-            conn = http.client.HTTPConnection(upstream.hostname, upstream.port or 80,
-                                              timeout=self.server.timeout_s)
-            conn.request("POST", self.path, body,
-                         {"Content-Type": self.headers.get("Content-Type", "application/json")})
+            conn = http.client.HTTPConnection(
+                upstream.hostname,
+                upstream.port or 80,
+                timeout=self.server.timeout_s,
+            )
+            conn.request(
+                "POST",
+                self.path,
+                body,
+                {
+                    "Content-Type": self.headers.get(
+                        "Content-Type", "application/json"
+                    )
+                },
+            )
             response = conn.getresponse()
             status, answer = response.status, response.read()
-            headers = {"Content-Type": response.getheader("Content-Type", "application/json")}
+            headers = {
+                "Content-Type": response.getheader(
+                    "Content-Type", "application/json"
+                )
+            }
         except (OSError, http.client.HTTPException) as e:
             status, answer = 502, json.dumps({"error": f"proxy: {e}"}).encode()
             headers = {"Content-Type": "application/json"}
@@ -66,8 +82,13 @@ class _Handler(BaseHTTPRequestHandler):
 class RecordingProxy(ThreadingHTTPServer):
     daemon_threads = True
 
-    def __init__(self, log_path: Path, ollama: str, port: int = DEFAULT_PORT,
-                 timeout_s: float = 900):
+    def __init__(
+        self,
+        log_path: Path,
+        ollama: str,
+        port: int = DEFAULT_PORT,
+        timeout_s: float = 900,
+    ):
         super().__init__(("127.0.0.1", port), _Handler)
         self.ollama = ollama.rstrip("/")
         self.timeout_s = timeout_s
@@ -83,15 +104,24 @@ class RecordingProxy(ThreadingHTTPServer):
     def url(self) -> str:
         return f"http://127.0.0.1:{self.server_address[1]}"
 
-    def record(self, path: str, body: bytes, status: int, answer: bytes, latency: int):
+    def record(
+        self, path: str, body: bytes, status: int, answer: bytes, latency: int
+    ):
         text = body.decode("utf-8", "replace")
         try:
             kind = rq.classify(path, json.loads(text))
         except (json.JSONDecodeError, AttributeError):
             kind = "other"
-        line = {"t": datetime.datetime.now().isoformat(timespec="milliseconds"),
-                "set": self.label, "path": path, "kind": kind, "body": text, "status": status,
-                "answer": answer.decode("utf-8", "replace"), "latency_ms": latency}
+        line = {
+            "t": datetime.datetime.now().isoformat(timespec="milliseconds"),
+            "set": self.label,
+            "path": path,
+            "kind": kind,
+            "body": text,
+            "status": status,
+            "answer": answer.decode("utf-8", "replace"),
+            "latency_ms": latency,
+        }
         with self.lock:
             self.counts[kind] = self.counts.get(kind, 0) + 1
             with open(self.log_path, "a", encoding="utf-8") as f:
@@ -108,20 +138,28 @@ class RecordingProxy(ThreadingHTTPServer):
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description=__doc__,
-                                     formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser = argparse.ArgumentParser(
+        description=__doc__,
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+    )
     parser.add_argument("log", help="JSONL file for the records")
     parser.add_argument("--port", type=int, default=DEFAULT_PORT)
     parser.add_argument("--ollama", default="http://localhost:11434")
     args = parser.parse_args()
     proxy = RecordingProxy(Path(args.log), args.ollama, args.port)
-    print(f"Recording to {args.log}. Endpoints: {proxy.url}/v1/systemone, "
-          f"{proxy.url}/v1/chat/completions", flush=True)
+    print(
+        f"Recording to {args.log}. Endpoints: {proxy.url}/v1/systemone, "
+        f"{proxy.url}/v1/chat/completions",
+        flush=True,
+    )
     try:
         proxy.serve_forever()
     except KeyboardInterrupt:
         pass
-    print("Calls: " + ", ".join(f"{k} {v}" for k, v in sorted(proxy.counts.items())))
+    print(
+        "Calls: "
+        + ", ".join(f"{k} {v}" for k, v in sorted(proxy.counts.items()))
+    )
 
 
 if __name__ == "__main__":

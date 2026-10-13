@@ -91,52 +91,34 @@
     "memories": [
       {
         "label": "lives in Berlin",
-        "all": [
-          "berlin"
-        ],
-        "any": [
-          "live",
-          "moved",
-          "move"
-        ]
+        "all": ["berlin"],
+        "any": ["live", "moved", "move"]
       },
       {
         "label": "has a dog named Luna",
-        "all": [
-          "luna"
-        ]
+        "all": ["luna"]
       },
       {
         "label": "has a second dog (Pixel)",
-        "all": [
-          "pixel"
-        ]
+        "all": ["pixel"]
       },
       {
         "label": "is vegetarian",
-        "all": [
-          "vegetarian"
-        ]
+        "all": ["vegetarian"]
       },
       {
         "label": "trains for a marathon",
-        "all": [
-          "marathon"
-        ]
+        "all": ["marathon"]
       },
       {
         "label": "is a product designer",
-        "all": [
-          "designer"
-        ]
+        "all": ["designer"]
       }
     ],
     "absent": [
       {
         "label": "old home is replaced (lives in San Francisco)",
-        "all": [
-          "lives in san francisco"
-        ]
+        "all": ["lives in san francisco"]
       }
     ],
     "forbidden": [],
@@ -148,128 +130,90 @@
         "id": "job_designer",
         "canonical": "Works as a product designer",
         "match": {
-          "all": [
-            "designer"
-          ]
+          "all": ["designer"]
         },
         "required": true,
         "type": "long_term",
         "category": "personal_fact",
-        "sources": [
-          "c0t0"
-        ]
+        "sources": ["c0t0"]
       },
       {
         "id": "home_berlin",
         "canonical": "Lives in Berlin, moved from San Francisco",
         "match": {
-          "all": [
-            "berlin"
-          ],
-          "any": [
-            "live",
-            "moved",
-            "move",
-            "moving"
-          ]
+          "all": ["berlin"],
+          "any": ["live", "moved", "move", "moving"]
         },
         "required": true,
         "type": "long_term",
         "category": "personal_fact",
-        "sources": [
-          "c2t0",
-          "c3t0"
-        ]
+        "sources": ["c2t0", "c3t0"]
       },
       {
         "id": "partner",
         "canonical": "Has a partner who works in Berlin",
         "match": {
-          "any": [
-            "partner"
-          ]
+          "any": ["partner"]
         },
         "required": false,
         "type": "long_term",
         "category": "personal_fact",
-        "sources": [
-          "c2t0"
-        ]
+        "sources": ["c2t0"]
       },
       {
         "id": "dog_luna",
         "canonical": "Has a 3-year-old beagle named Luna",
         "match": {
-          "all": [
-            "luna"
-          ]
+          "all": ["luna"]
         },
         "required": true,
         "type": "long_term",
         "category": "personal_fact",
-        "sources": [
-          "c1t0"
-        ]
+        "sources": ["c1t0"]
       },
       {
         "id": "dog_pixel",
         "canonical": "Adopted a second dog, a rescue named Pixel",
         "match": {
-          "all": [
-            "pixel"
-          ]
+          "all": ["pixel"]
         },
         "required": true,
         "type": "long_term",
         "category": "personal_fact",
-        "sources": [
-          "c4t0"
-        ]
+        "sources": ["c4t0"]
       },
       {
         "id": "diet_vegetarian",
         "canonical": "Is vegetarian",
         "match": {
-          "all": [
-            "vegetarian"
-          ]
+          "all": ["vegetarian"]
         },
         "required": true,
         "type": "long_term",
         "category": "personal_fact",
-        "sources": [
-          "c5t0"
-        ]
+        "sources": ["c5t0"]
       },
       {
         "id": "marathon",
         "canonical": "Trains for the Berlin marathon",
         "match": {
-          "all": [
-            "marathon"
-          ]
+          "all": ["marathon"]
         },
         "required": true,
         "type": null,
         "category": "personal_fact",
-        "sources": [
-          "c6t0"
-        ]
+        "sources": ["c6t0"]
       },
       {
         "id": "dog_beagle",
         "canonical": "Has a 3-year-old beagle",
         "match": {
-          "all": [
-            "beagle"
-          ]
+          "all": ["beagle"]
         },
         "required": false,
         "type": "long_term",
         "category": "personal_fact",
-        "sources": [
-          "c1t0"
-        ],
+        "sources": ["c1t0"],
         "note": "A true part of another gold fact that the rewrite can split off. Optional (dataset version 4)"
       }
     ],
@@ -277,14 +221,10 @@
       {
         "id": "home_sf",
         "match": {
-          "all": [
-            "lives in san francisco"
-          ]
+          "all": ["lives in san francisco"]
         },
         "replaced_by": "home_berlin",
-        "sources": [
-          "c0t0"
-        ]
+        "sources": ["c0t0"]
       }
     ],
     "forbidden": [],
@@ -296,39 +236,19 @@
       },
       {
         "op": "merge",
-        "facts": [
-          "dog_luna",
-          "dog_pixel"
-        ],
+        "facts": ["dog_luna", "dog_pixel"],
         "optional": true
       }
     ],
     "turns": {
-      "c0t0": [
-        "job_designer",
-        "home_sf"
-      ],
-      "c1t0": [
-        "dog_luna",
-        "dog_beagle"
-      ],
-      "c2t0": [
-        "home_berlin",
-        "partner"
-      ],
+      "c0t0": ["job_designer", "home_sf"],
+      "c1t0": ["dog_luna", "dog_beagle"],
+      "c2t0": ["home_berlin", "partner"],
       "c2t1": [],
-      "c3t0": [
-        "home_berlin"
-      ],
-      "c4t0": [
-        "dog_pixel"
-      ],
-      "c5t0": [
-        "diet_vegetarian"
-      ],
-      "c6t0": [
-        "marathon"
-      ],
+      "c3t0": ["home_berlin"],
+      "c4t0": ["dog_pixel"],
+      "c5t0": ["diet_vegetarian"],
+      "c6t0": ["marathon"],
       "c7t0": []
     }
   }

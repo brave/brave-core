@@ -18,6 +18,7 @@ label_panel.py makes the other steps. README section 22.
 Rubric: datasets/rubrics/relevance.md. Batches: <results root>/panel/relevance-<split>-b<n>/.
 A pass that has valid answers is not run again.
 """
+
 from __future__ import annotations
 
 import argparse
@@ -40,35 +41,66 @@ POOL_SIZE = 40
 
 PERSONAS = {
     "dev": "Lena, 41, a landscape architect in Utrecht. Married to Pieter, two kids (9 and 12), a rescue greyhound "
-           "named Fenne. Cycles, bakes bread, plays the cello, plans a sabbatical in Japan. Writes code for her "
-           "plant database in Python",
+    "named Fenne. Cycles, bakes bread, plays the cello, plans a sabbatical in Japan. Writes code for her "
+    "plant database in Python",
     "holdout": "Tariq, 36, a paramedic turned software tester in Leeds. Lives with his sister, has a parrot named "
-               "Kiwi, supports Leeds United, learns to drive a manual car, cooks halal, is saving for a house, "
-               "and wants answers in plain language",
+    "Kiwi, supports Leeds United, learns to drive a manual car, cooks halal, is saving for a house, "
+    "and wants answers in plain language",
 }
 
 MEMORY_KINDS = [
-    "home city or neighborhood", "job or work project", "a family member", "partner or a close friend", "a pet",
-    "a hobby or a sport", "a diet or a food preference", "a wish about the length of answers",
-    "a wish about the format or the tone of answers", "a wish about units or about the language of answers",
-    "a tool, a language or a technology the user works with", "a plan with a date (use a date like 2026-08-28)",
-    "an event that happened with a date", "a belonging (a car, an instrument, a device)", "a long-term goal",
+    "home city or neighborhood",
+    "job or work project",
+    "a family member",
+    "partner or a close friend",
+    "a pet",
+    "a hobby or a sport",
+    "a diet or a food preference",
+    "a wish about the length of answers",
+    "a wish about the format or the tone of answers",
+    "a wish about units or about the language of answers",
+    "a tool, a language or a technology the user works with",
+    "a plan with a date (use a date like 2026-08-28)",
+    "an event that happened with a date",
+    "a belonging (a car, an instrument, a device)",
+    "a long-term goal",
     "a fragment that lost its subject, such as 'Is three years old.' or 'Studies on Tuesdays.'",
-    "a place the user visits often", "a habit or a routine", "something the user dislikes", "a project in progress",
+    "a place the user visits often",
+    "a habit or a routine",
+    "something the user dislikes",
+    "a project in progress",
 ]
 
 MESSAGE_SLOTS = [
-    ("direct", "the message is about a topic that one or two memories are about (the pet, the project)"),
-    ("indirect", "the message does not name the topic, but a memory still helps (a dinner request and a diet, a "
-                 "trip and the home city)"),
-    ("short_follow_up", "a short follow-up such as 'and for two people?' or 'what about the dog?'. Write the "
-                        "previous message too. The topic comes from the previous message"),
-    ("style_wish", "a task where a wish about units, tone, language or format clearly applies (a distance question "
-                   "and a units wish, a joke and a tone wish)"),
-    ("unrelated", "a general question (science, history, maths, a coding question) that no memory helps with. "
-                  "must is empty"),
-    ("tempting", "a message that shares words or a topic area with some memories that do not help (a trip to "
-                 "a city that is not the home; a pet question about another animal)"),
+    (
+        "direct",
+        "the message is about a topic that one or two memories are about (the pet, the project)",
+    ),
+    (
+        "indirect",
+        "the message does not name the topic, but a memory still helps (a dinner request and a diet, a "
+        "trip and the home city)",
+    ),
+    (
+        "short_follow_up",
+        "a short follow-up such as 'and for two people?' or 'what about the dog?'. Write the "
+        "previous message too. The topic comes from the previous message",
+    ),
+    (
+        "style_wish",
+        "a task where a wish about units, tone, language or format clearly applies (a distance question "
+        "and a units wish, a joke and a tone wish)",
+    ),
+    (
+        "unrelated",
+        "a general question (science, history, maths, a coding question) that no memory helps with. "
+        "must is empty",
+    ),
+    (
+        "tempting",
+        "a message that shares words or a topic area with some memories that do not help (a trip to "
+        "a city that is not the home; a pet question about another animal)",
+    ),
     ("multi", "a message that needs three or more memories"),
     ("lang:de", "any kind of message, written in German"),
     ("lang:es", "any kind of message, written in Spanish"),
@@ -237,7 +269,9 @@ def _ids(v, pool: set) -> str | None:
 
 
 def validate_pool(item: dict, a: dict):
-    if not (isinstance(a.get("text"), str) and 3 <= len(a["text"].strip()) <= 200):
+    if not (
+        isinstance(a.get("text"), str) and 3 <= len(a["text"].strip()) <= 200
+    ):
         return "text must be a short sentence"
     if not isinstance(a.get("tags", []), list):
         return "tags must be a list"
@@ -249,7 +283,9 @@ def validate_messages(pool: set):
         if not (isinstance(a.get("message"), str) and a["message"].strip()):
             return "message is missing"
         prev = a.get("previous_message")
-        if item["tag"] == "short_follow_up" and not (isinstance(prev, str) and prev.strip()):
+        if item["tag"] == "short_follow_up" and not (
+            isinstance(prev, str) and prev.strip()
+        ):
             return "a short_follow_up needs previous_message"
         if prev is not None and not isinstance(prev, str):
             return "previous_message must be text or null"
@@ -261,11 +297,18 @@ def validate_messages(pool: set):
             return "an id is in must and in forbidden"
         if item["tag"] == "unrelated" and a["must"]:
             return "an unrelated message has an empty must"
-        if item["tag"] in ("direct", "indirect", "style_wish", "multi", "short_follow_up") and not a["must"]:
+        if (
+            item["tag"]
+            in ("direct", "indirect", "style_wish", "multi", "short_follow_up")
+            and not a["must"]
+        ):
             return f"a {item['tag']} message needs at least one must id"
-        if not isinstance(a.get("clear"), bool) or not isinstance(a.get("reason"), str):
+        if not isinstance(a.get("clear"), bool) or not isinstance(
+            a.get("reason"), str
+        ):
             return "reason must be text and clear must be true or false"
         return None
+
     return check
 
 
@@ -277,9 +320,12 @@ def validate_groups(pool: set):
                 return f"{key} {bad}"
         if set(a["use"]) & set(a["maybe"]):
             return "an id is in use and in maybe"
-        if not isinstance(a.get("clear"), bool) or not isinstance(a.get("reason"), str):
+        if not isinstance(a.get("clear"), bool) or not isinstance(
+            a.get("reason"), str
+        ):
             return "reason must be text and clear must be true or false"
         return None
+
     return check
 
 
@@ -288,15 +334,27 @@ def models(args) -> dict:
     out = {}
     for r in ("generate", "review", "judge"):
         spec, thinking = agent_run.DEFAULT_MODELS[r]
-        out[r] = {"model": getattr(args, f"model_{r}", None) or spec,
-                  "thinking": getattr(args, f"thinking_{r}", None) or thinking}
+        out[r] = {
+            "model": getattr(args, f"model_{r}", None) or spec,
+            "thinking": getattr(args, f"thinking_{r}", None) or thinking,
+        }
     return out
 
 
 def run(args, folders, m, validate, name) -> dict:
-    print(f"{name}: {len(folders)} tasks, {m['model']} ({m['thinking']})", flush=True)
-    res = agent_run.run_tasks(folders, m["model"], m["thinking"], validate, name, parallel=args.parallel,
-                              agent_cmd=args.agent_cmd)
+    print(
+        f"{name}: {len(folders)} tasks, {m['model']} ({m['thinking']})",
+        flush=True,
+    )
+    res = agent_run.run_tasks(
+        folders,
+        m["model"],
+        m["thinking"],
+        validate,
+        name,
+        parallel=args.parallel,
+        agent_cmd=args.agent_cmd,
+    )
     answers, bad = {}, []
     for folder, (by_id, errors) in res.items():
         answers.update(by_id)
@@ -308,18 +366,31 @@ def run(args, folders, m, validate, name) -> dict:
 
 
 def with_pool(folder: Path, pool_rows: list) -> Path:
-    write_jsonl(folder / "memories.jsonl", [{"id": r["id"], "text": r["text"]} for r in pool_rows])
+    write_jsonl(
+        folder / "memories.jsonl",
+        [{"id": r["id"], "text": r["text"]} for r in pool_rows],
+    )
     return folder
 
 
 def next_batch(root: Path, split: str) -> str:
-    n = 1 + max([0] + [int(m.group(1)) for p in (root.glob(f"relevance-{split}-b*") if root.exists() else [])
-                       if (m := re.search(r"-b(\d+)$", p.name))])
+    n = 1 + max(
+        [0]
+        + [
+            int(m.group(1))
+            for p in (
+                root.glob(f"relevance-{split}-b*") if root.exists() else []
+            )
+            if (m := re.search(r"-b(\d+)$", p.name))
+        ]
+    )
     return f"relevance-{split}-b{n}"
 
 
 def msg_key(c: dict) -> str:
-    return re.sub(r"\s+", " ", (c.get("previous_message") or "") + " | " + c["message"]).lower()
+    return re.sub(
+        r"\s+", " ", (c.get("previous_message") or "") + " | " + c["message"]
+    ).lower()
 
 
 def cmd_run(args) -> None:
@@ -332,46 +403,88 @@ def cmd_run(args) -> None:
     m = models(args)
     rng = random.Random(name)
     _, version = rubric()
-    batch = {"batch": name, "step": "relevance", "split": args.split, "count": args.count,
-             "created": datetime.datetime.now().isoformat(timespec="seconds"), "rubric_version": version,
-             "models": m}
+    batch = {
+        "batch": name,
+        "step": "relevance",
+        "split": args.split,
+        "count": args.count,
+        "created": datetime.datetime.now().isoformat(timespec="seconds"),
+        "rubric_version": version,
+        "models": m,
+    }
 
     # 1. the pool
-    existing = {int(x["id"].split("-g")[1]) for x in read_jsonl(STEP_DIR / "memories.jsonl") if "-g" in x["id"]}
+    existing = {
+        int(x["id"].split("-g")[1])
+        for x in read_jsonl(STEP_DIR / "memories.jsonl")
+        if "-g" in x["id"]
+    }
     first_mem = max(existing | {0}) + 1
-    mem_slots = [{"id": f"mem-{args.split}-g{first_mem + n:03d}", "persona": PERSONAS[args.split],
-                  "kind": MEMORY_KINDS[n % len(MEMORY_KINDS)]} for n in range(POOL_SIZE)]
-    task = agent_tasks.write_task(tasks_root / f"{name}-P1", pool_task(), mem_slots)
+    mem_slots = [
+        {
+            "id": f"mem-{args.split}-g{first_mem + n:03d}",
+            "persona": PERSONAS[args.split],
+            "kind": MEMORY_KINDS[n % len(MEMORY_KINDS)],
+        }
+        for n in range(POOL_SIZE)
+    ]
+    task = agent_tasks.write_task(
+        tasks_root / f"{name}-P1", pool_task(), mem_slots
+    )
     answers = run(args, [task], m["generate"], validate_pool, "pool")
     pool, seen = [], set()
     for s in mem_slots:
         a = answers.get(s["id"])
         if a and a["text"].strip().lower() not in seen:
             seen.add(a["text"].strip().lower())
-            pool.append({"id": s["id"], "text": a["text"].strip(),
-                         "tags": [t for t in a.get("tags", []) if isinstance(t, str)]})
+            pool.append(
+                {
+                    "id": s["id"],
+                    "text": a["text"].strip(),
+                    "tags": [
+                        t for t in a.get("tags", []) if isinstance(t, str)
+                    ],
+                }
+            )
     pool_ids = {p["id"] for p in pool}
     write_jsonl(folder / "pool.jsonl", pool)
     print(f"pool: {len(pool)} memories", flush=True)
 
     # 2. the messages
-    old_numbers = [int(x["id"].rsplit("-g", 1)[1]) for x in read_jsonl(STEP_DIR / f"{args.split}.jsonl")
-                   if "-g" in x["id"]]
+    old_numbers = [
+        int(x["id"].rsplit("-g", 1)[1])
+        for x in read_jsonl(STEP_DIR / f"{args.split}.jsonl")
+        if "-g" in x["id"]
+    ]
     first = max(old_numbers + [0]) + 1
     slots = []
     for n in range(args.count):
         tag, note = MESSAGE_SLOTS[n % len(MESSAGE_SLOTS)]
-        slots.append({"id": f"relevance-{args.split}-g{first + n:03d}", "tag": tag, "note": note,
-                      "lang": tag.split(":")[1] if tag.startswith("lang:") else "en"})
+        slots.append(
+            {
+                "id": f"relevance-{args.split}-g{first + n:03d}",
+                "tag": tag,
+                "note": note,
+                "lang": tag.split(":")[1] if tag.startswith("lang:") else "en",
+            }
+        )
     write_jsonl(folder / "slots.jsonl", slots)
     g_tasks = []
     for k, part in enumerate(chunks(slots, 30), 1):
-        t = agent_tasks.write_task(tasks_root / f"{name}-G{k}", message_task(), part)
+        t = agent_tasks.write_task(
+            tasks_root / f"{name}-G{k}", message_task(), part
+        )
         with_pool(t, pool)
         g_tasks.append(t)
-    g_answers = run(args, g_tasks, m["generate"], validate_messages(pool_ids), "messages")
+    g_answers = run(
+        args, g_tasks, m["generate"], validate_messages(pool_ids), "messages"
+    )
     cases = {}
-    seen_msgs = {msg_key(r) for sp in ("dev", "holdout") for r in read_jsonl(STEP_DIR / f"{sp}.jsonl")}
+    seen_msgs = {
+        msg_key(r)
+        for sp in ("dev", "holdout")
+        for r in read_jsonl(STEP_DIR / f"{sp}.jsonl")
+    }
     for s in slots:
         a = g_answers.get(s["id"])
         if a is None or msg_key(a) in seen_msgs:
@@ -382,15 +495,28 @@ def cmd_run(args) -> None:
     print(f"messages: {len(cases)} of {len(slots)}", flush=True)
 
     # 3. the review (blind)
-    items = [{"id": cid, "message": c["message"],
-              **({"previous_message": c["previous_message"]} if c.get("previous_message") else {})}
-             for cid, c in cases.items()]
+    items = [
+        {
+            "id": cid,
+            "message": c["message"],
+            **(
+                {"previous_message": c["previous_message"]}
+                if c.get("previous_message")
+                else {}
+            ),
+        }
+        for cid, c in cases.items()
+    ]
     r_tasks = []
     for k, part in enumerate(chunks(items, 30), 1):
-        t = agent_tasks.write_task(tasks_root / f"{name}-R{k}", review_task(), part)
+        t = agent_tasks.write_task(
+            tasks_root / f"{name}-R{k}", review_task(), part
+        )
         with_pool(t, pool)
         r_tasks.append(t)
-    r_answers = run(args, r_tasks, m["review"], validate_groups(pool_ids), "review")
+    r_answers = run(
+        args, r_tasks, m["review"], validate_groups(pool_ids), "review"
+    )
 
     # 4. compare, and the judge
     outcomes, to_judge = {}, []
@@ -401,23 +527,45 @@ def cmd_run(args) -> None:
             continue
         g_must, g_forb = set(c["must"]), set(c["forbidden"])
         r_use, r_maybe = set(r["use"]), set(r["maybe"])
-        agree = not (r_use - g_must) and not (g_must - (r_use | r_maybe)) and not (g_forb & r_use)
+        agree = (
+            not (r_use - g_must)
+            and not (g_must - (r_use | r_maybe))
+            and not (g_forb & r_use)
+        )
         outcomes[cid] = "agree" if agree else "disagree"
         if not agree:
             mine = {"use": sorted(g_must), "reason": c["reason"]}
-            theirs = {"use": sorted(r_use), "maybe": sorted(r_maybe), "reason": r["reason"]}
+            theirs = {
+                "use": sorted(r_use),
+                "maybe": sorted(r_maybe),
+                "reason": r["reason"],
+            }
             a, b = (mine, theirs) if rng.random() < 0.5 else (theirs, mine)
-            to_judge.append({"id": cid, "message": c["message"],
-                             **({"previous_message": c["previous_message"]} if c.get("previous_message") else {}),
-                             "a": a, "b": b})
+            to_judge.append(
+                {
+                    "id": cid,
+                    "message": c["message"],
+                    **(
+                        {"previous_message": c["previous_message"]}
+                        if c.get("previous_message")
+                        else {}
+                    ),
+                    "a": a,
+                    "b": b,
+                }
+            )
     j_answers = {}
     if to_judge:
         j_tasks = []
         for k, part in enumerate(chunks(to_judge, 30), 1):
-            t = agent_tasks.write_task(tasks_root / f"{name}-J{k}", judge_task(), part)
+            t = agent_tasks.write_task(
+                tasks_root / f"{name}-J{k}", judge_task(), part
+            )
             with_pool(t, pool)
             j_tasks.append(t)
-        j_answers = run(args, j_tasks, m["judge"], validate_groups(pool_ids), "judge")
+        j_answers = run(
+            args, j_tasks, m["judge"], validate_groups(pool_ids), "judge"
+        )
 
     # 5. finish
     origin = f"generated:{name}"
@@ -425,68 +573,167 @@ def cmd_run(args) -> None:
     accepted, ambiguous = [], []
     for cid, c in cases.items():
         o = outcomes[cid]
-        base = {"id": cid, "split": args.split, "step": "relevance", "batch": name,
-                "case": {"message": c["message"], "previous_message": c.get("previous_message")}}
+        base = {
+            "id": cid,
+            "split": args.split,
+            "step": "relevance",
+            "batch": name,
+            "case": {
+                "message": c["message"],
+                "previous_message": c.get("previous_message"),
+            },
+        }
         if o == "agree":
             r = r_answers[cid]
             must = [x for x in c["must"] if x in r["use"]]
-            forb = [x for x in c["forbidden"] if x not in r["use"] and x not in r["maybe"]]
+            forb = [
+                x
+                for x in c["forbidden"]
+                if x not in r["use"] and x not in r["maybe"]
+            ]
             if c["clear"] and r["clear"] and (must or not c["must"]):
                 accepted.append((c, must, forb, []))
             else:
-                ambiguous.append({**base, "why": "agreed, not clear" if not (c["clear"] and r["clear"])
-                                  else "must is empty",
-                                  "labels": {"g": {"must": c["must"]}, "r": {"use": r["use"], "maybe": r["maybe"]}}})
+                ambiguous.append(
+                    {
+                        **base,
+                        "why": "agreed, not clear"
+                        if not (c["clear"] and r["clear"])
+                        else "must is empty",
+                        "labels": {
+                            "g": {"must": c["must"]},
+                            "r": {"use": r["use"], "maybe": r["maybe"]},
+                        },
+                    }
+                )
         elif o == "disagree":
             j = j_answers.get(cid)
             if j and j["clear"]:
-                forb = [x for x in c["forbidden"] if x not in j["use"] and x not in j["maybe"]]
+                forb = [
+                    x
+                    for x in c["forbidden"]
+                    if x not in j["use"] and x not in j["maybe"]
+                ]
                 accepted.append((c, list(j["use"]), forb, ["adjudicated"]))
             else:
-                ambiguous.append({**base, "why": "judge not clear" if j else "no judge answer",
-                                  "labels": {"g": {"must": c["must"]}, "r": {"use": r_answers[cid]["use"]},
-                                             "j": j}})
+                ambiguous.append(
+                    {
+                        **base,
+                        "why": "judge not clear" if j else "no judge answer",
+                        "labels": {
+                            "g": {"must": c["must"]},
+                            "r": {"use": r_answers[cid]["use"]},
+                            "j": j,
+                        },
+                    }
+                )
     rows = []
     for c, must, forb, extra in accepted:
-        tags = list(dict.fromkeys([c["slot_tag"]] + [t for t in c.get("tags", []) if isinstance(t, str)] + extra))
-        tags = [t for t in tags if not t.startswith("lang:")] + [f"lang:{c['lang']}"]
-        row = {"id": c["id"], "split": args.split, "tags": tags, "origin": origin, "message": c["message"]}
+        tags = list(
+            dict.fromkeys(
+                [c["slot_tag"]]
+                + [t for t in c.get("tags", []) if isinstance(t, str)]
+                + extra
+            )
+        )
+        tags = [t for t in tags if not t.startswith("lang:")] + [
+            f"lang:{c['lang']}"
+        ]
+        row = {
+            "id": c["id"],
+            "split": args.split,
+            "tags": tags,
+            "origin": origin,
+            "message": c["message"],
+        }
         if c.get("previous_message"):
             row["previous_message"] = c["previous_message"]
         row.update(memories=[p["id"] for p in pool], must=must, forbidden=forb)
         rows.append(row)
     agree_n = sum(1 for o in outcomes.values() if o == "agree")
     compared = sum(1 for o in outcomes.values() if o != "no_review")
-    stats = {"generated": len(cases), "compared": compared, "agree": agree_n,
-             "agreement": round(agree_n / compared, 3) if compared else None, "disagree": len(to_judge),
-             "judged_clear": sum(1 for j in j_answers.values() if j["clear"]), "accepted": len(rows),
-             "ambiguous": len(ambiguous), "pool": len(pool)}
-    if stats["agreement"] is not None and stats["agreement"] < 0.8 and not args.force:
-        sys.exit(f"agreement {stats['agreement']} is below 0.8: the rubric is not clear "
-                 "(--force writes the cases anyway)")
+    stats = {
+        "generated": len(cases),
+        "compared": compared,
+        "agree": agree_n,
+        "agreement": round(agree_n / compared, 3) if compared else None,
+        "disagree": len(to_judge),
+        "judged_clear": sum(1 for j in j_answers.values() if j["clear"]),
+        "accepted": len(rows),
+        "ambiguous": len(ambiguous),
+        "pool": len(pool),
+    }
+    if (
+        stats["agreement"] is not None
+        and stats["agreement"] < 0.8
+        and not args.force
+    ):
+        sys.exit(
+            f"agreement {stats['agreement']} is below 0.8: the rubric is not clear "
+            "(--force writes the cases anyway)"
+        )
     if not rows:
-        sys.exit("no accepted case; nothing is written (look at the agent logs in the task folders)")
-    write_jsonl(STEP_DIR / "memories.jsonl", read_jsonl(STEP_DIR / "memories.jsonl") +
-                [{"id": p["id"], "text": p["text"], "origin": origin, "tags": p["tags"]} for p in pool])
-    write_jsonl(STEP_DIR / f"{args.split}.jsonl", read_jsonl(STEP_DIR / f"{args.split}.jsonl") + rows)
+        sys.exit(
+            "no accepted case; nothing is written (look at the agent logs in the task folders)"
+        )
+    write_jsonl(
+        STEP_DIR / "memories.jsonl",
+        read_jsonl(STEP_DIR / "memories.jsonl")
+        + [
+            {
+                "id": p["id"],
+                "text": p["text"],
+                "origin": origin,
+                "tags": p["tags"],
+            }
+            for p in pool
+        ],
+    )
+    write_jsonl(
+        STEP_DIR / f"{args.split}.jsonl",
+        read_jsonl(STEP_DIR / f"{args.split}.jsonl") + rows,
+    )
     amb = DATASETS / "ambiguous" / "relevance.jsonl"
     write_jsonl(amb, read_jsonl(amb) + ambiguous)
     audit_rng = random.Random(name + "-audit")
-    queue = [{"kind": "audit", "id": r["id"], "step": "relevance", "split": args.split, "batch": name, "row": r,
-              "texts": {i: texts[i] for i in r["must"] + r["forbidden"]}}
-             for r in audit_rng.sample(rows, min(args.audit, len(rows)))]
+    queue = [
+        {
+            "kind": "audit",
+            "id": r["id"],
+            "step": "relevance",
+            "split": args.split,
+            "batch": name,
+            "row": r,
+            "texts": {i: texts[i] for i in r["must"] + r["forbidden"]},
+        }
+        for r in audit_rng.sample(rows, min(args.audit, len(rows)))
+    ]
     write_jsonl(folder / "review_queue.jsonl", queue)
-    batch.update(stats=stats, finished=datetime.datetime.now().isoformat(timespec="seconds"))
-    (folder / "batch.json").write_text(json.dumps(batch, indent=2, ensure_ascii=False))
-    check = subprocess.run([sys.executable, str(HERE / "validate_datasets.py")], capture_output=True, text=True)
-    print(f"finish: {len(rows)} cases and {len(pool)} memories added, {len(ambiguous)} ambiguous, agreement "
-          f"{stats['agreement']}, {len(queue)} audit cases. Validator: {check.stdout.strip().splitlines()[-1]}")
+    batch.update(
+        stats=stats,
+        finished=datetime.datetime.now().isoformat(timespec="seconds"),
+    )
+    (folder / "batch.json").write_text(
+        json.dumps(batch, indent=2, ensure_ascii=False)
+    )
+    check = subprocess.run(
+        [sys.executable, str(HERE / "validate_datasets.py")],
+        capture_output=True,
+        text=True,
+    )
+    print(
+        f"finish: {len(rows)} cases and {len(pool)} memories added, {len(ambiguous)} ambiguous, agreement "
+        f"{stats['agreement']}, {len(queue)} audit cases. Validator: {check.stdout.strip().splitlines()[-1]}"
+    )
     if check.returncode:
         print(check.stdout)
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser = argparse.ArgumentParser(
+        description=__doc__,
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+    )
     sub = parser.add_subparsers(dest="cmd", required=True)
     r = sub.add_parser("run")
     r.add_argument("--split", choices=["dev", "holdout"], required=True)

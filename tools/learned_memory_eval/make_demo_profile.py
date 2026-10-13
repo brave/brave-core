@@ -13,6 +13,7 @@ result is a profile in the state "chats stored, Dreaming never ran".
 
 See README.md for the requirements.
 """
+
 from __future__ import annotations
 
 import argparse
@@ -53,8 +54,9 @@ def run_import(args, out: Path) -> dict:
     started = time.time()
     data = None
     with open(out / "setup.log", "w") as log_file:
-        proc = subprocess.Popen(command, stdout=log_file,
-                                stderr=subprocess.STDOUT)
+        proc = subprocess.Popen(
+            command, stdout=log_file, stderr=subprocess.STDOUT
+        )
         while time.time() - started < args.timeout:
             data = run_eval.read_report(report)
             if data is not None or proc.poll() is not None:
@@ -64,8 +66,10 @@ def run_import(args, out: Path) -> dict:
         data = data or run_eval.read_report(report)
         run_eval.stop(proc, profile)
     if data is None:
-        sys.exit(f"No report after {int(time.time() - started)} s. "
-                 f"See {out / 'setup.log'}.")
+        sys.exit(
+            f"No report after {int(time.time() - started)} s. "
+            f"See {out / 'setup.log'}."
+        )
     return data
 
 
@@ -86,15 +90,19 @@ def set_last_dreaming_time(profile: Path) -> None:
     path = profile / "Default" / "Preferences"
     prefs = json.loads(path.read_text())
     prefs.setdefault("brave", {}).setdefault("ai_chat", {})[
-        LAST_DREAMING_PREF] = chrome_time_now()
+        LAST_DREAMING_PREF
+    ] = chrome_time_now()
     path.write_text(json.dumps(prefs))
 
 
 def launch_command(args, profile: Path) -> list:
     return [
-        args.brave, f"--user-data-dir={profile}",
-        "--no-first-run", "--no-default-browser-check",
-        "--use-mock-keychain", "--password-store=basic",
+        args.brave,
+        f"--user-data-dir={profile}",
+        "--no-first-run",
+        "--no-default-browser-check",
+        "--use-mock-keychain",
+        "--password-store=basic",
         "--component-updater=url-source=http://127.0.0.1:9/",
         run_eval.features_switch(args),
         "--enable-logging=stderr",
@@ -124,19 +132,35 @@ exec {quoted} 2> '{out / "browser.log"}'
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description=__doc__,
-        formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("--out", default="/tmp/learned_memory_demo",
-                        help="folder for the profile and the launch script")
-    parser.add_argument("--chats", default=str(HERE / "demo" / "demo_history.json"))
-    parser.add_argument("--keep-memories", action="store_true",
-                        help="keep what the first Dreaming run learned")
-    parser.add_argument("--force", action="store_true",
-                        help="replace an existing demo folder")
-    parser.add_argument("--no-launch", action="store_true",
-                        help="do not start the browser at the end")
+    parser = argparse.ArgumentParser(
+        description=__doc__,
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+    )
+    parser.add_argument(
+        "--out",
+        default="/tmp/learned_memory_demo",
+        help="folder for the profile and the launch script",
+    )
+    parser.add_argument(
+        "--chats", default=str(HERE / "demo" / "demo_history.json")
+    )
+    parser.add_argument(
+        "--keep-memories",
+        action="store_true",
+        help="keep what the first Dreaming run learned",
+    )
+    parser.add_argument(
+        "--force", action="store_true", help="replace an existing demo folder"
+    )
+    parser.add_argument(
+        "--no-launch",
+        action="store_true",
+        help="do not start the browser at the end",
+    )
     parser.add_argument("--brave", default=run_eval.DEFAULT_BRAVE)
-    parser.add_argument("--source-profile", default=str(run_eval.DEFAULT_SOURCE_PROFILE))
+    parser.add_argument(
+        "--source-profile", default=str(run_eval.DEFAULT_SOURCE_PROFILE)
+    )
     ollama_setup.add_arguments(parser)
     parser.add_argument("--threshold", type=float, default=0.8)
     parser.add_argument("--margin", type=float, default=0.2)
@@ -156,10 +180,13 @@ def main() -> None:
         if not args.force:
             sys.exit(f"{out} exists. Use --force to replace it.")
         if not (out / MARKER).exists():
-            sys.exit(f"{out} is not a demo folder (no {MARKER}). "
-                     "Remove it by hand.")
-        subprocess.run(["pkill", "-f", f"--user-data-dir={out / 'profile'}"],
-                       capture_output=True)
+            sys.exit(
+                f"{out} is not a demo folder (no {MARKER}). Remove it by hand."
+            )
+        subprocess.run(
+            ["pkill", "-f", f"--user-data-dir={out / 'profile'}"],
+            capture_output=True,
+        )
         shutil.rmtree(out)
     run_eval.preflight(args)
     run_eval.prepare_ollama(args)
@@ -174,13 +201,19 @@ def main() -> None:
     script = write_launch_script(args, out)
 
     run_eval.log(f"Demo profile ready: {profile}")
-    print(f"\nStart it with:  {script}\n"
-          f"Then open:      {SETTINGS_URL}\n"
-          f"Browser log:    {out / 'browser.log'}")
+    print(
+        f"\nStart it with:  {script}\n"
+        f"Then open:      {SETTINGS_URL}\n"
+        f"Browser log:    {out / 'browser.log'}"
+    )
     if not args.no_launch:
         run_eval.log("Starting the browser")
-        subprocess.Popen([str(script)], stdout=subprocess.DEVNULL,
-                         stderr=subprocess.DEVNULL, start_new_session=True)
+        subprocess.Popen(
+            [str(script)],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            start_new_session=True,
+        )
 
 
 if __name__ == "__main__":

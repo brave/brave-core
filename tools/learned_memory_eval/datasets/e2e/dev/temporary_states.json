@@ -61,45 +61,33 @@
     "memories": [
       {
         "label": "lives in Lisbon",
-        "all": [
-          "lisbon"
-        ]
+        "all": ["lisbon"]
       },
       {
         "label": "trains for a half marathon",
-        "all": [
-          "marathon"
-        ],
+        "all": ["marathon"],
         "type": "long_term"
       }
     ],
     "absent": [
       {
         "label": "dentist appointment is not stored",
-        "all": [
-          "dentist"
-        ]
+        "all": ["dentist"]
       },
       {
         "label": "flight is not stored",
-        "all": [
-          "flight"
-        ]
+        "all": ["flight"]
       }
     ],
     "types": [
       {
         "label": "Tokyo trip is short-term, if stored",
-        "all": [
-          "tokyo"
-        ],
+        "all": ["tokyo"],
         "type": "short_term"
       },
       {
         "label": "stay with parents is short-term, if stored",
-        "all": [
-          "parents"
-        ],
+        "all": ["parents"],
         "type": "short_term"
       }
     ],
@@ -112,92 +100,68 @@
         "id": "home_lisbon",
         "canonical": "Lives in Lisbon",
         "match": {
-          "all": [
-            "lisbon"
-          ]
+          "all": ["lisbon"]
         },
         "required": true,
         "type": "long_term",
         "category": "personal_fact",
-        "sources": [
-          "c0t0"
-        ]
+        "sources": ["c0t0"]
       },
       {
         "id": "job_data_engineer",
         "canonical": "Works remotely as a data engineer",
         "match": {
-          "all": [
-            "data engineer"
-          ]
+          "all": ["data engineer"]
         },
         "required": true,
         "type": "long_term",
         "category": "personal_fact",
-        "sources": [
-          "c0t0"
-        ]
+        "sources": ["c0t0"]
       },
       {
         "id": "trip_tokyo",
         "canonical": "Is in Tokyo this week for a conference",
         "match": {
-          "all": [
-            "tokyo"
-          ]
+          "all": ["tokyo"]
         },
         "required": false,
         "type": "short_term",
         "category": null,
-        "sources": [
-          "c1t0"
-        ],
+        "sources": ["c1t0"],
         "note": "short_lived in the sentence gold. Allowed only as short_term"
       },
       {
         "id": "stay_parents",
         "canonical": "Stays with parents this month during a renovation",
         "match": {
-          "all": [
-            "parents"
-          ]
+          "all": ["parents"]
         },
         "required": true,
         "type": "short_term",
         "category": "personal_fact",
-        "sources": [
-          "c3t0"
-        ]
+        "sources": ["c3t0"]
       },
       {
         "id": "half_marathon",
         "canonical": "Trains for a half marathon in March",
         "match": {
-          "all": [
-            "marathon"
-          ]
+          "all": ["marathon"]
         },
         "required": true,
         "type": "long_term",
         "category": "personal_fact",
-        "sources": [
-          "c4t0"
-        ]
+        "sources": ["c4t0"]
       },
       {
         "id": "works_remotely",
         "canonical": "Works remotely",
         "match": {
-          "all": [
-            "remote"
-          ]
+          "all": ["remote"]
         },
         "required": false,
         "type": "long_term",
         "category": "personal_fact",
-        "sources": [
-          "c0t0"
-        ],
+        "sources": ["c0t0"],
         "note": "A true part of another gold fact that the rewrite can split off. Optional (dataset version 4)"
       }
     ],
@@ -205,21 +169,11 @@
     "forbidden": [],
     "ops": [],
     "turns": {
-      "c0t0": [
-        "home_lisbon",
-        "job_data_engineer",
-        "works_remotely"
-      ],
-      "c1t0": [
-        "trip_tokyo"
-      ],
+      "c0t0": ["home_lisbon", "job_data_engineer", "works_remotely"],
+      "c1t0": ["trip_tokyo"],
       "c2t0": [],
-      "c3t0": [
-        "stay_parents"
-      ],
-      "c4t0": [
-        "half_marathon"
-      ],
+      "c3t0": ["stay_parents"],
+      "c4t0": ["half_marathon"],
       "c5t0": []
     }
   }

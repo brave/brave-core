@@ -4,6 +4,7 @@
 See README.md. For each chat set the script makes a new profile, starts the
 browser in eval mode, waits for report.json and writes report.md.
 """
+
 from __future__ import annotations
 
 import argparse
@@ -24,8 +25,10 @@ from lib import clients, manifest
 
 HERE = Path(__file__).resolve().parent
 SRC = HERE.parents[2]  # .../src
-DEFAULT_BRAVE = (SRC / "out/Component_arm64/Brave Browser Development.app"
-                 "/Contents/MacOS/Brave Browser Development")
+DEFAULT_BRAVE = (
+    SRC / "out/Component_arm64/Brave Browser Development.app"
+    "/Contents/MacOS/Brave Browser Development"
+)
 DEFAULT_SOURCE_PROFILE = Path(
     "~/Library/Application Support/BraveSoftware/Brave-Browser-Development"
 ).expanduser()
@@ -53,11 +56,15 @@ def log(message: str) -> None:
     print(f"[{time.strftime('%H:%M:%S')}] {message}", flush=True)
 
 
-def load_sets(names: list | None, files: list | None = None, split: str = "dev") -> list:
+def load_sets(
+    names: list | None, files: list | None = None, split: str = "dev"
+) -> list:
     """Returns (path, chat set) pairs: the named sets in datasets/e2e/<split>/,
     or the files of --chat-set."""
     if files:
-        return [(Path(f).resolve(), json.loads(Path(f).read_text())) for f in files]
+        return [
+            (Path(f).resolve(), json.loads(Path(f).read_text())) for f in files
+        ]
     sets = []
     for path in sorted((HERE / "datasets" / "e2e" / split).glob("*.json")):
         if names and path.stem not in names:
@@ -72,10 +79,14 @@ def load_sets(names: list | None, files: list | None = None, split: str = "dev")
 
 def preflight(args) -> None:
     if not Path(args.brave).exists():
-        sys.exit(f"Browser not found: {args.brave}\nBuild it with `pnpm build`.")
+        sys.exit(
+            f"Browser not found: {args.brave}\nBuild it with `pnpm build`."
+        )
     if not (Path(args.source_profile) / "BraveLocalAIModels").exists():
-        sys.exit(f"No BraveLocalAIModels in {args.source_profile}. Start the dev "
-                 "browser one time with local AI on, so that the embedder downloads.")
+        sys.exit(
+            f"No BraveLocalAIModels in {args.source_profile}. Start the dev "
+            "browser one time with local AI on, so that the embedder downloads."
+        )
 
 
 def prepare_ollama(args) -> None:
@@ -85,8 +96,9 @@ def prepare_ollama(args) -> None:
         if args.no_warmup:
             ollama_setup.check_installed(args.ollama, [args.decision, args.llm])
         else:
-            ollama_setup.load_models(args.ollama, args.decision, args.llm,
-                                     args.keep_alive, log=log)
+            ollama_setup.load_models(
+                args.ollama, args.decision, args.llm, args.keep_alive, log=log
+            )
     except ollama_setup.OllamaSetupError as error:
         sys.exit(str(error))
 
@@ -101,41 +113,61 @@ def make_profile(args, profile: Path) -> None:
     src = Path(args.source_profile) / "BraveLocalAIModels"
     dst = profile / "BraveLocalAIModels"
     # `cp -c` clones the files on APFS, so the copy is fast and uses no space.
-    if subprocess.run(["cp", "-c", "-R", str(src), str(dst)],
-                      capture_output=True).returncode != 0:
+    if (
+        subprocess.run(
+            ["cp", "-c", "-R", str(src), str(dst)], capture_output=True
+        ).returncode
+        != 0
+    ):
         shutil.copytree(src, dst)
-    prefs = {"brave": {"history_embeddings_enabled": True, "ai_chat": {
-        "storage_enabled": True,
-        "user_memory_enabled": True,
-        "ollama_fetch_enabled": False,
-        "last_accepted_disclaimer": ACCEPTED_DISCLAIMER,
-        "user_dismissed_storage_notice": True,
-        "custom_models": [{
-            "key": MODEL_KEY, "label": args.llm, "model_request_name": args.llm,
-            "endpoint_url": f"{model_url(args)}/v1/chat/completions",
-            "api_key": "", "context_size": 32768, "supports_tools": False,
-            "vision_support": False,
-        }],
-    }}}
-    (profile / "Default" / "Preferences").write_text(json.dumps(prefs, indent=2))
+    prefs = {
+        "brave": {
+            "history_embeddings_enabled": True,
+            "ai_chat": {
+                "storage_enabled": True,
+                "user_memory_enabled": True,
+                "ollama_fetch_enabled": False,
+                "last_accepted_disclaimer": ACCEPTED_DISCLAIMER,
+                "user_dismissed_storage_notice": True,
+                "custom_models": [
+                    {
+                        "key": MODEL_KEY,
+                        "label": args.llm,
+                        "model_request_name": args.llm,
+                        "endpoint_url": f"{model_url(args)}/v1/chat/completions",
+                        "api_key": "",
+                        "context_size": 32768,
+                        "supports_tools": False,
+                        "vision_support": False,
+                    }
+                ],
+            },
+        }
+    }
+    (profile / "Default" / "Preferences").write_text(
+        json.dumps(prefs, indent=2)
+    )
 
 
 def feature_params(args) -> dict:
     params = {name: getattr(args, flag) for flag, name, _, _ in PARAMS}
-    params.update({
-        "run_time_limit": f"{args.time_limit}s",
-        "decision_model_name": args.decision,
-        "decision_model_url": f"{model_url(args)}/v1/systemone",
-        "local_llm_model_name": args.llm,
-    })
+    params.update(
+        {
+            "run_time_limit": f"{args.time_limit}s",
+            "decision_model_name": args.decision,
+            "decision_model_url": f"{model_url(args)}/v1/systemone",
+            "local_llm_model_name": args.llm,
+        }
+    )
     return params
 
 
 def features_switch(args) -> str:
     params = feature_params(args)
     # Feature param values are URL-escaped.
-    text = "/".join(f"{k}/{urllib.parse.quote(str(v), safe='')}"
-                    for k, v in params.items())
+    text = "/".join(
+        f"{k}/{urllib.parse.quote(str(v), safe='')}" for k, v in params.items()
+    )
     # HistoryEmbeddings makes Brave register the EmbeddingGemma component. The
     # embedder of Dreaming has no model without it.
     return f"--enable-features=AIChatLearnedMemory:{text},HistoryEmbeddings"
@@ -143,9 +175,12 @@ def features_switch(args) -> str:
 
 def browser_command(args, profile: Path, chats: Path, output: Path) -> list:
     return [
-        args.brave, f"--user-data-dir={profile}",
-        "--no-first-run", "--no-default-browser-check",
-        "--use-mock-keychain", "--password-store=basic",
+        args.brave,
+        f"--user-data-dir={profile}",
+        "--no-first-run",
+        "--no-default-browser-check",
+        "--use-mock-keychain",
+        "--password-store=basic",
         # Not --disable-component-update: with it, Brave does not register the
         # embedder component. A closed port makes the update check fail, so the
         # component stays at the copied version.
@@ -175,8 +210,9 @@ def stop(proc: subprocess.Popen, profile: Path) -> None:
     except subprocess.TimeoutExpired:
         proc.kill()
     # Helper processes of this profile, if any.
-    subprocess.run(["pkill", "-f", f"--user-data-dir={profile}"],
-                   capture_output=True)
+    subprocess.run(
+        ["pkill", "-f", f"--user-data-dir={profile}"], capture_output=True
+    )
 
 
 def run_set(args, chat_set: dict, out_dir: Path, proxy=None, repeat: int = 1):
@@ -192,8 +228,9 @@ def run_set(args, chat_set: dict, out_dir: Path, proxy=None, repeat: int = 1):
     output = set_dir / "report.json"
     make_profile(args, profile)
     command = browser_command(args, profile, chats_path, output)
-    (set_dir / "command.txt").write_text(" \\\n  ".join(
-        f'"{c}"' if " " in c else c for c in command) + "\n")
+    (set_dir / "command.txt").write_text(
+        " \\\n  ".join(f'"{c}"' if " " in c else c for c in command) + "\n"
+    )
     if args.dry_run:
         log(f"{name}: profile ready, command in {set_dir / 'command.txt'}")
         return None
@@ -202,7 +239,9 @@ def run_set(args, chat_set: dict, out_dir: Path, proxy=None, repeat: int = 1):
     log(f"{name}: start ({len(chat_set['chats'])} chats)")
     started = time.time()
     with open(set_dir / "brave.log", "w") as log_file:
-        proc = subprocess.Popen(command, stdout=log_file, stderr=subprocess.STDOUT)
+        proc = subprocess.Popen(
+            command, stdout=log_file, stderr=subprocess.STDOUT
+        )
         data = None
         while time.time() - started < args.timeout:
             data = read_report(output)
@@ -213,29 +252,51 @@ def run_set(args, chat_set: dict, out_dir: Path, proxy=None, repeat: int = 1):
         data = data or read_report(output)
         stop(proc, profile)
     if data is None:
-        fatal = next((l.split("] ", 1)[-1].strip()[:300]
-                      for l in (set_dir / "brave.log").read_text(errors="replace").splitlines()
-                      if ":FATAL:" in l), "")
-        data = {"error": f"no report after {int(time.time() - started)} s"
-                         f"{', browser crashed: ' + fatal if fatal else ''} (see brave.log)"}
+        fatal = next(
+            (
+                l.split("] ", 1)[-1].strip()[:300]
+                for l in (set_dir / "brave.log")
+                .read_text(errors="replace")
+                .splitlines()
+                if ":FATAL:" in l
+            ),
+            "",
+        )
+        data = {
+            "error": f"no report after {int(time.time() - started)} s"
+            f"{', browser crashed: ' + fatal if fatal else ''} (see brave.log)"
+        }
         log(f"{name}: {data['error']}")
     markdown, summary = report_lib.render(
-        chat_set, data, {"wall_seconds": round(time.time() - started), "repeat": repeat,
-                         "report": f"{chat_set['name']}/r{repeat}/report.md"})
+        chat_set,
+        data,
+        {
+            "wall_seconds": round(time.time() - started),
+            "repeat": repeat,
+            "report": f"{chat_set['name']}/r{repeat}/report.md",
+        },
+    )
     (set_dir / "report.md").write_text(markdown)
-    gold = (f", recall {summary['gold_found']}/{summary['gold_required']}, "
-            f"{summary['leaks']} leaks, {summary['wrong_ops']} wrong ops"
-            if "recall" in summary else "")
-    log(f"{name}: {summary['status']}, {summary['memories']} memories, "
+    gold = (
+        f", recall {summary['gold_found']}/{summary['gold_required']}, "
+        f"{summary['leaks']} leaks, {summary['wrong_ops']} wrong ops"
+        if "recall" in summary
+        else ""
+    )
+    log(
+        f"{name}: {summary['status']}, {summary['memories']} memories, "
         f"checks {summary['checks_passed']}/{summary['checks_total']}, "
-        f"{summary['forbidden_hits']} forbidden hits{gold}")
+        f"{summary['forbidden_hits']} forbidden hits{gold}"
+    )
     config = data.get("config", {})
     # report.json names max_rewrite_requests "max_writing_requests".
     keys = {"max_rewrite_requests": "max_writing_requests"}
     missing = [n for _, n, _, _ in PARAMS if keys.get(n, n) not in config]
     if "error" not in data and missing:
-        log(f"{name}: WARNING: report.json has no {', '.join(missing)}. "
-            "The build is older than the harness, so these params had no effect.")
+        log(
+            f"{name}: WARNING: report.json has no {', '.join(missing)}. "
+            "The build is older than the harness, so these params had no effect."
+        )
     if not args.keep_profiles:
         shutil.rmtree(profile, ignore_errors=True)
     return summary
@@ -246,20 +307,30 @@ def report_only(out_dir: Path, sets_dir: Path | None = None) -> None:
     (for example new gold) for the old runs, by set name."""
     summaries = []
     # <set>/r<k>/report.json, or <set>/report.json of older runs.
-    paths = sorted(out_dir.glob("*/r*/report.json")) or sorted(out_dir.glob("*/report.json"))
+    paths = sorted(out_dir.glob("*/r*/report.json")) or sorted(
+        out_dir.glob("*/report.json")
+    )
     for path in paths:
         chat_set = json.loads((path.parent / "chats.json").read_text())
         if sets_dir and (sets_dir / f"{chat_set['name']}.json").exists():
-            chat_set = json.loads((sets_dir / f"{chat_set['name']}.json").read_text())
+            chat_set = json.loads(
+                (sets_dir / f"{chat_set['name']}.json").read_text()
+            )
         data = json.loads(path.read_text())
-        repeat = int(path.parent.name[1:]) if path.parent.name[:1] == "r" and path.parent.name[1:].isdigit() else 1
+        repeat = (
+            int(path.parent.name[1:])
+            if path.parent.name[:1] == "r" and path.parent.name[1:].isdigit()
+            else 1
+        )
         rel = path.parent.relative_to(out_dir)
-        markdown, summary = report_lib.render(chat_set, data, {"repeat": repeat,
-                                                               "report": f"{rel}/report.md"})
+        markdown, summary = report_lib.render(
+            chat_set, data, {"repeat": repeat, "report": f"{rel}/report.md"}
+        )
         (path.parent / "report.md").write_text(markdown)
         summaries.append(summary)
     (out_dir / "summary.md").write_text(
-        report_lib.render_summary(summaries, {"time": out_dir.name}))
+        report_lib.render_summary(summaries, {"time": out_dir.name})
+    )
     log(f"Wrote reports for {len(summaries)} sets in {out_dir}")
 
 
@@ -267,26 +338,54 @@ def judge_extras(args, out_dir: Path, sets_dir: Path | None = None) -> None:
     """Sorts the extra memories of a run with a judge agent (plan 8.2, P2.7) and
     adds a section to summary.md."""
     from lib import judge as judge_lib
-    spec = judge_lib.judge_spec(args.judge, args.judge_model, args.judge_thinking)
+
+    spec = judge_lib.judge_spec(
+        args.judge, args.judge_model, args.judge_thinking
+    )
     inputs = judge_lib.e2e_extras(out_dir, sets_dir)
     if not inputs:
         log("judge: the run has no extra memories")
         return
-    verdicts = judge_lib.judge("extras", inputs, spec, clients.results_root(args.results), log=log)
+    verdicts = judge_lib.judge(
+        "extras", inputs, spec, clients.results_root(args.results), log=log
+    )
     metrics = judge_lib.extras_metrics(verdicts)
-    (out_dir / "extras_judge.json").write_text(json.dumps(
-        {"judge": judge_lib.meta("extras", spec), "metrics": metrics,
-         "rows": [{"name": n, "input": inputs[n], "verdict": v} for n, v in verdicts.items()]},
-        indent=2, ensure_ascii=False))
+    (out_dir / "extras_judge.json").write_text(
+        json.dumps(
+            {
+                "judge": judge_lib.meta("extras", spec),
+                "metrics": metrics,
+                "rows": [
+                    {"name": n, "input": inputs[n], "verdict": v}
+                    for n, v in verdicts.items()
+                ],
+            },
+            indent=2,
+            ensure_ascii=False,
+        )
+    )
     j = judge_lib.meta("extras", spec)
-    md = ["", "## Extras sorted by a judge", "",
-          f"Judge: {j['role']} ({j['model']}, {j['thinking']}, rubric v{j['rubric_version']}). "
-          f"{metrics['n']} extra memories. `true_unlabeled` memories are true: add them to the gold as "
-          "optional facts. The other classes are errors.", "",
-          "| " + " | ".join(judge_lib.EXTRA_CLASSES) + " |", "|" + "---|" * len(judge_lib.EXTRA_CLASSES),
-          "| " + " | ".join(str(metrics["classes"][c]) for c in judge_lib.EXTRA_CLASSES) + " |", ""]
+    md = [
+        "",
+        "## Extras sorted by a judge",
+        "",
+        f"Judge: {j['role']} ({j['model']}, {j['thinking']}, rubric v{j['rubric_version']}). "
+        f"{metrics['n']} extra memories. `true_unlabeled` memories are true: add them to the gold as "
+        "optional facts. The other classes are errors.",
+        "",
+        "| " + " | ".join(judge_lib.EXTRA_CLASSES) + " |",
+        "|" + "---|" * len(judge_lib.EXTRA_CLASSES),
+        "| "
+        + " | ".join(
+            str(metrics["classes"][c]) for c in judge_lib.EXTRA_CLASSES
+        )
+        + " |",
+        "",
+    ]
     for name, v in verdicts.items():
-        md.append(f"- {name}: `{v['class']}`: \"{inputs[name]['memory']}\" ({v['reason']})")
+        md.append(
+            f"- {name}: `{v['class']}`: \"{inputs[name]['memory']}\" ({v['reason']})"
+        )
     summary = out_dir / "summary.md"
     text = summary.read_text() if summary.exists() else ""
     text = text.split("\n## Extras sorted by a judge")[0].rstrip("\n") + "\n"
@@ -296,56 +395,109 @@ def judge_extras(args, out_dir: Path, sets_dir: Path | None = None) -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--sets", nargs="*", help="names of chat sets (default: all)")
-    parser.add_argument("--chat-set", nargs="*", metavar="FILE",
-                        help="chat set files to run instead of datasets/e2e/, for "
-                             "example datasets/parity/parity.json")
-    parser.add_argument("--split", choices=["dev", "holdout"], default="dev",
-                        help="datasets/e2e/<split>/ (default dev). Run the holdout "
-                             "only for a final candidate")
-    parser.add_argument("--list", action="store_true", help="list the chat sets")
+    parser.add_argument(
+        "--sets", nargs="*", help="names of chat sets (default: all)"
+    )
+    parser.add_argument(
+        "--chat-set",
+        nargs="*",
+        metavar="FILE",
+        help="chat set files to run instead of datasets/e2e/, for "
+        "example datasets/parity/parity.json",
+    )
+    parser.add_argument(
+        "--split",
+        choices=["dev", "holdout"],
+        default="dev",
+        help="datasets/e2e/<split>/ (default dev). Run the holdout "
+        "only for a final candidate",
+    )
+    parser.add_argument(
+        "--list", action="store_true", help="list the chat sets"
+    )
     parser.add_argument("--brave", default=str(DEFAULT_BRAVE))
-    parser.add_argument("--out", default=None,
-                        help="output folder (default: <results root>/<time>-<tag>)")
-    parser.add_argument("--results", default=None,
-                        help=f"results root (default: $LM_EVAL_RUNS or "
-                             f"{clients.DEFAULT_RESULTS_ROOT})")
+    parser.add_argument(
+        "--out",
+        default=None,
+        help="output folder (default: <results root>/<time>-<tag>)",
+    )
+    parser.add_argument(
+        "--results",
+        default=None,
+        help=f"results root (default: $LM_EVAL_RUNS or "
+        f"{clients.DEFAULT_RESULTS_ROOT})",
+    )
     parser.add_argument("--tag", default="e2e", help="short name of the run")
-    parser.add_argument("--proxy", action="store_true",
-                        help="send the model requests through eval_proxy.py and "
-                             "record them in <out>/proxy.jsonl")
-    parser.add_argument("--proxy-port", type=int, default=eval_proxy.DEFAULT_PORT)
+    parser.add_argument(
+        "--proxy",
+        action="store_true",
+        help="send the model requests through eval_proxy.py and "
+        "record them in <out>/proxy.jsonl",
+    )
+    parser.add_argument(
+        "--proxy-port", type=int, default=eval_proxy.DEFAULT_PORT
+    )
     parser.add_argument("--source-profile", default=str(DEFAULT_SOURCE_PROFILE))
     ollama_setup.add_arguments(parser)
     for flag, name, kind, default in PARAMS:
-        parser.add_argument("--" + flag.replace("_", "-"), dest=flag, type=kind,
-                            default=default, help=f"feature param {name} (default {default})")
+        parser.add_argument(
+            "--" + flag.replace("_", "-"),
+            dest=flag,
+            type=kind,
+            default=default,
+            help=f"feature param {name} (default {default})",
+        )
     parser.add_argument("--time-limit", type=int, default=600)
     parser.add_argument("--timeout", type=int, default=1200)
     parser.add_argument("--keep-profiles", action="store_true")
     parser.add_argument("--dry-run", action="store_true")
-    parser.add_argument("--report-only", metavar="DIR", default=None,
-                        help="make new report.md files from an earlier run")
-    parser.add_argument("--gold-from", metavar="DIR", default=None,
-                        help="with --report-only: score with the chat sets of this folder "
-                             "(for example datasets/e2e/dev), not the copy in the run")
-    parser.add_argument("--judge", choices=["fast", "final"], default=None,
-                        help="sort the extra memories with a judge agent (fast: Sonnet, final: Opus)")
+    parser.add_argument(
+        "--report-only",
+        metavar="DIR",
+        default=None,
+        help="make new report.md files from an earlier run",
+    )
+    parser.add_argument(
+        "--gold-from",
+        metavar="DIR",
+        default=None,
+        help="with --report-only: score with the chat sets of this folder "
+        "(for example datasets/e2e/dev), not the copy in the run",
+    )
+    parser.add_argument(
+        "--judge",
+        choices=["fast", "final"],
+        default=None,
+        help="sort the extra memories with a judge agent (fast: Sonnet, final: Opus)",
+    )
     parser.add_argument("--judge-model", default=None)
     parser.add_argument("--judge-thinking", default=None)
-    parser.add_argument("--repeats", type=int, default=1,
-                        help="run each set this many times, each in a new profile")
+    parser.add_argument(
+        "--repeats",
+        type=int,
+        default=1,
+        help="run each set this many times, each in a new profile",
+    )
     args = parser.parse_args()
 
     if args.report_only:
-        report_only(Path(args.report_only), Path(args.gold_from) if args.gold_from else None)
+        report_only(
+            Path(args.report_only),
+            Path(args.gold_from) if args.gold_from else None,
+        )
         if args.judge:
-            judge_extras(args, Path(args.report_only), Path(args.gold_from) if args.gold_from else None)
+            judge_extras(
+                args,
+                Path(args.report_only),
+                Path(args.gold_from) if args.gold_from else None,
+            )
         return
     sets = load_sets(args.sets, args.chat_set, args.split)
     if args.list:
         for _, s in sets:
-            print(f'{s["name"]:20} {len(s["chats"]):2} chats  {s.get("description", "")}')
+            print(
+                f'{s["name"]:20} {len(s["chats"]):2} chats  {s.get("description", "")}'
+            )
         return
     if not args.dry_run:
         preflight(args)
@@ -355,22 +507,33 @@ def main() -> None:
         out_dir, run_id = Path(args.out), Path(args.out).name
         out_dir.mkdir(parents=True, exist_ok=True)
     else:
-        run_id, out_dir = manifest.new_run_dir(clients.results_root(args.results), args.tag)
+        run_id, out_dir = manifest.new_run_dir(
+            clients.results_root(args.results), args.tag
+        )
     log(f"Output: {out_dir}")
 
     proxy = None
     args.proxy_url = None
     if args.proxy:
-        proxy = eval_proxy.RecordingProxy(out_dir / "proxy.jsonl", args.ollama,
-                                          args.proxy_port).start()
+        proxy = eval_proxy.RecordingProxy(
+            out_dir / "proxy.jsonl", args.ollama, args.proxy_port
+        ).start()
         args.proxy_url = proxy.url
         log(f"Proxy: {proxy.url} -> {args.ollama}, records in {proxy.log_path}")
     manifest.write_manifest(
-        out_dir, run_id=run_id, tag=args.tag, ollama=args.ollama,
+        out_dir,
+        run_id=run_id,
+        tag=args.tag,
+        ollama=args.ollama,
         models={"decision": args.decision, "llm": args.llm},
-        params=feature_params(args), variants={"all": "current (C++ build)"},
-        datasets=[str(p) for p, _ in sets], repeats=args.repeats, cache=False, brave=args.brave,
-        extra={"level": "L2", "proxy": bool(args.proxy)})
+        params=feature_params(args),
+        variants={"all": "current (C++ build)"},
+        datasets=[str(p) for p, _ in sets],
+        repeats=args.repeats,
+        cache=False,
+        brave=args.brave,
+        extra={"level": "L2", "proxy": bool(args.proxy)},
+    )
 
     summaries = []
     try:
@@ -382,12 +545,21 @@ def main() -> None:
     finally:
         if proxy:
             proxy.stop()
-            log("Proxy calls: " + ", ".join(
-                f"{k} {v}" for k, v in sorted(proxy.counts.items())))
+            log(
+                "Proxy calls: "
+                + ", ".join(f"{k} {v}" for k, v in sorted(proxy.counts.items()))
+            )
     if summaries:
-        meta = {"time": stamp, "decision": args.decision, "llm": args.llm,
-                "threshold": args.threshold, "margin": args.margin}
-        (out_dir / "summary.md").write_text(report_lib.render_summary(summaries, meta))
+        meta = {
+            "time": stamp,
+            "decision": args.decision,
+            "llm": args.llm,
+            "threshold": args.threshold,
+            "margin": args.margin,
+        }
+        (out_dir / "summary.md").write_text(
+            report_lib.render_summary(summaries, meta)
+        )
         (out_dir / "summary.json").write_text(json.dumps(summaries, indent=2))
         if args.judge:
             judge_extras(args, out_dir)

@@ -23,6 +23,7 @@ IsFaithfulRewrite() on the trace of the browser: the facts of each
 Exit status 1 when a request or a result differs, or a --require kind is
 missing.
 """
+
 from __future__ import annotations
 
 import argparse
@@ -54,21 +55,21 @@ def _split_pair(user: str) -> tuple:
     head, sep, new = user.partition("\nNew memory: ")
     if not sep or not head.startswith("Old memory: "):
         raise ValueError("not an 'Old memory / New memory' message")
-    return head[len("Old memory: "):], new
+    return head[len("Old memory: ") :], new
 
 
 def _split_rewrite(user: str) -> tuple:
     first, _, rest = user.partition("\n")
     if not first.startswith("Turn date: "):
         raise ValueError("no turn date")
-    date = first[len("Turn date: "):]
+    date = first[len("Turn date: ") :]
     text = "\n" + rest
     sentences, i = [], 0
     while text:
         marker = f"\n{i}: "
         if not text.startswith(marker):
             raise ValueError(f"no sentence {i}")
-        text = text[len(marker):]
+        text = text[len(marker) :]
         nxt = text.find(f"\n{i + 1}: ")
         sentences.append(text if nxt < 0 else text[:nxt])
         text = "" if nxt < 0 else text[nxt:]
@@ -89,11 +90,20 @@ def rebuild(kind: str, body: dict) -> str:
         memories = []
         for name, q in body["questions"].items():
             text = q["instructions"]
-            if not (text.startswith(RELEVANCE_PREFIX) and text.endswith(RELEVANCE_SUFFIX)):
+            if not (
+                text.startswith(RELEVANCE_PREFIX)
+                and text.endswith(RELEVANCE_SUFFIX)
+            ):
                 raise ValueError(f"question {name} has another wording")
-            memories.append(text[len(RELEVANCE_PREFIX):-len(RELEVANCE_SUFFIX)])
-        return rq.relevance_body(model, state["user_message"],
-                                 state.get("previous_message", ""), memories)
+            memories.append(
+                text[len(RELEVANCE_PREFIX) : -len(RELEVANCE_SUFFIX)]
+            )
+        return rq.relevance_body(
+            model,
+            state["user_message"],
+            state.get("previous_message", ""),
+            memories,
+        )
     user = _messages(body)[1]
     if kind == "rewrite":
         date, sentences = _split_rewrite(user)
@@ -107,15 +117,21 @@ def rebuild(kind: str, body: dict) -> str:
 
 
 def first_difference(a: str, b: str) -> str:
-    i = next((k for k, (x, y) in enumerate(zip(a, b)) if x != y), min(len(a), len(b)))
+    i = next(
+        (k for k, (x, y) in enumerate(zip(a, b)) if x != y), min(len(a), len(b))
+    )
     lo = max(0, i - 60)
-    return (f"at character {i}:\n    recorded: ...{a[lo:i + 60]!r}\n"
-            f"    python:   ...{b[lo:i + 60]!r}")
+    return (
+        f"at character {i}:\n    recorded: ...{a[lo : i + 60]!r}\n"
+        f"    python:   ...{b[lo : i + 60]!r}"
+    )
 
 
 def check(records: list) -> dict:
-    result = {k: {"recorded": 0, "same": 0, "body_same": 0, "diffs": []}
-              for k in DM_KINDS + LLM_KINDS}
+    result = {
+        k: {"recorded": 0, "same": 0, "body_same": 0, "diffs": []}
+        for k in DM_KINDS + LLM_KINDS
+    }
     for n, rec in enumerate(records):
         kind = rec.get("kind")
         if kind not in result:
@@ -137,8 +153,10 @@ def check(records: list) -> dict:
             same = _messages(json.loads(built)) == _messages(body)
         r["same"] += same
         if not same:
-            r["diffs"].append(f"line {n + 1} ({rec.get('set')}): "
-                              + first_difference(recorded, built))
+            r["diffs"].append(
+                f"line {n + 1} ({rec.get('set')}): "
+                + first_difference(recorded, built)
+            )
     return result
 
 
@@ -150,7 +168,12 @@ def _local_ymd(iso: str) -> tuple:
 
 def check_traces(paths: list) -> dict:
     """Compares the ports with the C++ results in report.json traces."""
-    out = {"parse": [0, 0], "rewrite_flag": [0, 0], "merge_flag": [0, 0], "diffs": []}
+    out = {
+        "parse": [0, 0],
+        "rewrite_flag": [0, 0],
+        "merge_flag": [0, 0],
+        "diffs": [],
+    }
     for path in paths:
         trace = json.loads(Path(path).read_text()).get("trace", [])
         turn_date = candidates = rewrite_answer = old_text = fact_text = None
@@ -158,47 +181,71 @@ def check_traces(paths: list) -> dict:
         for step in trace:
             name = step["step"]
             if name == "turn":
-                turn_date, candidates, rewrite_answer = _local_ymd(step["date"]), [], None
+                turn_date, candidates, rewrite_answer = (
+                    _local_ymd(step["date"]),
+                    [],
+                    None,
+                )
             elif name == "sentence_decisions":
-                candidates = [s["text"] for s in step["sentences"] if s["result"] == "keep"]
+                candidates = [
+                    s["text"]
+                    for s in step["sentences"]
+                    if s["result"] == "keep"
+                ]
             elif name == "llm_call" and step["purpose"] == "rewrite":
                 rewrite_answer = step["answer"]
-                m = re.match(r"Turn date: (\d{4})-(\d{2})-(\d{2})", step["request"])
+                m = re.match(
+                    r"Turn date: (\d{4})-(\d{2})-(\d{2})", step["request"]
+                )
                 if m and tuple(int(x) for x in m.groups()) != turn_date:
-                    out["diffs"].append(f"{path}: turn date {turn_date} is not the request date")
+                    out["diffs"].append(
+                        f"{path}: turn date {turn_date} is not the request date"
+                    )
             elif name == "rewrite_parsed":
                 cpp = [(f["text"], f["sources"]) for f in step["facts"]]
                 if step["used_llm"]:
                     out["parse"][1] += 1
-                    py = rq.parse_rewrite_answer(rewrite_answer or "", len(candidates))
+                    py = rq.parse_rewrite_answer(
+                        rewrite_answer or "", len(candidates)
+                    )
                     if (py is not None) == step["parsed"] and (py or []) == cpp:
                         out["parse"][0] += 1
                     else:
                         out["diffs"].append(f"{path}: parse {py} != C++ {cpp}")
                 for f in step["facts"]:
                     out["rewrite_flag"][1] += 1
-                    py = rq.is_faithful_rewrite(f["text"], [candidates[i] for i in f["sources"]],
-                                                [turn_date])
+                    py = rq.is_faithful_rewrite(
+                        f["text"],
+                        [candidates[i] for i in f["sources"]],
+                        [turn_date],
+                    )
                     if py == f["no_new_details"]:
                         out["rewrite_flag"][0] += 1
                     else:
-                        out["diffs"].append(f"{path}: rewrite flag of {f['text']!r}: python {py}, "
-                                            f"C++ {f['no_new_details']}")
+                        out["diffs"].append(
+                            f"{path}: rewrite flag of {f['text']!r}: python {py}, "
+                            f"C++ {f['no_new_details']}"
+                        )
             elif name == "fact":
                 fact_text = step["text"]
             elif name == "relation_applied":
                 old_text = step["old"]
             elif name == "merge_parsed":
                 out["merge_flag"][1] += 1
-                created, updated = memories.get(old_text, (turn_date, turn_date))
+                created, updated = memories.get(
+                    old_text, (turn_date, turn_date)
+                )
                 text = step["text"]
                 py = bool(text) and rq.is_faithful_rewrite(
-                    text, [old_text, fact_text], [turn_date, created, updated])
+                    text, [old_text, fact_text], [turn_date, created, updated]
+                )
                 if py == step["no_new_details"]:
                     out["merge_flag"][0] += 1
                 else:
-                    out["diffs"].append(f"{path}: merge flag of {text!r}: python {py}, "
-                                        f"C++ {step['no_new_details']}")
+                    out["diffs"].append(
+                        f"{path}: merge flag of {text!r}: python {py}, "
+                        f"C++ {step['no_new_details']}"
+                    )
             elif name == "store":
                 text, previous = step["text"], step.get("previous")
                 if step["action"] == "add":
@@ -212,31 +259,49 @@ def check_traces(paths: list) -> dict:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description=__doc__,
-                                     formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("recording", nargs="?", help="proxy.jsonl of eval_proxy.py")
-    parser.add_argument("--traces", nargs="*", default=None, metavar="REPORT",
-                        help="report.json files: check the parse and faithful-check ports")
-    parser.add_argument("--require", nargs="*", default=[],
-                        help="kinds that the recording must have")
+    parser = argparse.ArgumentParser(
+        description=__doc__,
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+    )
+    parser.add_argument(
+        "recording", nargs="?", help="proxy.jsonl of eval_proxy.py"
+    )
+    parser.add_argument(
+        "--traces",
+        nargs="*",
+        default=None,
+        metavar="REPORT",
+        help="report.json files: check the parse and faithful-check ports",
+    )
+    parser.add_argument(
+        "--require",
+        nargs="*",
+        default=[],
+        help="kinds that the recording must have",
+    )
     parser.add_argument("--max-diffs", type=int, default=3)
     args = parser.parse_args()
     if args.traces is not None:
         out = check_traces(args.traces)
         print(f"Port check on {len(args.traces)} traces\n")
         print("| Port | Same as C++ |\n|---|---|")
-        for k, label in (("parse", "ParseRewriteAnswer (rewrite answers)"),
-                         ("rewrite_flag", "IsFaithfulRewrite (rewrite facts)"),
-                         ("merge_flag", "IsFaithfulRewrite (merges)")):
+        for k, label in (
+            ("parse", "ParseRewriteAnswer (rewrite answers)"),
+            ("rewrite_flag", "IsFaithfulRewrite (rewrite facts)"),
+            ("merge_flag", "IsFaithfulRewrite (merges)"),
+        ):
             print(f"| {label} | {out[k][0]}/{out[k][1]} |")
-        for d in out["diffs"][:args.max_diffs * 3]:
+        for d in out["diffs"][: args.max_diffs * 3]:
             print(f"\nDIFFERENT: {d}")
         print("\nRESULT: " + ("FAIL" if out["diffs"] else "PASS"))
         sys.exit(1 if out["diffs"] else 0)
     if not args.recording:
         parser.error("give a recording, or --traces")
-    records = [json.loads(line) for line in Path(args.recording).read_text().splitlines()
-               if line.strip()]
+    records = [
+        json.loads(line)
+        for line in Path(args.recording).read_text().splitlines()
+        if line.strip()
+    ]
     result = check(records)
     print(f"Parity check of {args.recording} ({len(records)} records)\n")
     print("| Kind | Compared | Recorded | Same | Whole body same |")
@@ -244,14 +309,18 @@ def main() -> None:
     failed = False
     for kind, r in result.items():
         how = "exact bytes" if kind in DM_KINDS else "message list"
-        print(f"| {kind} | {how} | {r['recorded']} | {r['same']} | {r['body_same']} |")
+        print(
+            f"| {kind} | {how} | {r['recorded']} | {r['same']} | {r['body_same']} |"
+        )
         failed |= r["same"] != r["recorded"]
     missing = [k for k, r in result.items() if r["recorded"] == 0]
     if missing:
-        print(f"\nNot reached by this recording: {', '.join(missing)}. "
-              "Grow the parity set to cover them (relevance runs only at chat time).")
+        print(
+            f"\nNot reached by this recording: {', '.join(missing)}. "
+            "Grow the parity set to cover them (relevance runs only at chat time)."
+        )
     for kind, r in result.items():
-        for d in r["diffs"][:args.max_diffs]:
+        for d in r["diffs"][: args.max_diffs]:
             print(f"\nDIFFERENT {kind}, {d}")
     required_missing = [k for k in args.require if k in missing]
     if required_missing:

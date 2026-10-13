@@ -1,1804 +1,1415 @@
 {
- "name": "long_history",
- "description": "One person, about 100 turns over 6 months. Replaces (home, job, a preference), merges, facts that come back in other words, sensitive data, short-lived states, and many task chats. Closest to real use.",
- "chats": [
-  {
-   "title": "Weeknight dinners",
-   "days_ago": 180,
-   "turns": [
+  "name": "long_history",
+  "description": "One person, about 100 turns over 6 months. Replaces (home, job, a preference), merges, facts that come back in other words, sensitive data, short-lived states, and many task chats. Closest to real use.",
+  "chats": [
     {
-     "user": "Hi! I'm Nadia, 36, and I live in Rotterdam with my partner Joost and our cat Mochi. Could you plan five weeknight dinners for the two of us? I'm vegetarian, Joost eats everything."
+      "title": "Weeknight dinners",
+      "days_ago": 180,
+      "turns": [
+        {
+          "user": "Hi! I'm Nadia, 36, and I live in Rotterdam with my partner Joost and our cat Mochi. Could you plan five weeknight dinners for the two of us? I'm vegetarian, Joost eats everything."
+        },
+        {
+          "user": "Please use grams and Celsius, I always get confused by cups."
+        }
+      ]
     },
     {
-     "user": "Please use grams and Celsius, I always get confused by cups."
-    }
-   ]
-  },
-  {
-   "title": "Figma button component",
-   "days_ago": 177,
-   "turns": [
-    {
-     "user": "Quick Figma question. I'm a UX designer at a small agency called Havenlicht and Figma is my main tool all day. How do I make a button component where auto layout hugs the text but keeps 16px horizontal padding?"
+      "title": "Figma button component",
+      "days_ago": 177,
+      "turns": [
+        {
+          "user": "Quick Figma question. I'm a UX designer at a small agency called Havenlicht and Figma is my main tool all day. How do I make a button component where auto layout hugs the text but keeps 16px horizontal padding?"
+        },
+        {
+          "user": "Can the variants share one padding token?"
+        },
+        {
+          "user": "How should I name them so the devs find them in handoff?"
+        }
+      ]
     },
     {
-     "user": "Can the variants share one padding token?"
+      "title": "Rain gear for cycling",
+      "days_ago": 174,
+      "turns": [
+        {
+          "user": "I cycle about 25 minutes to the office every day, rain or shine. What rain gear actually works so I don't arrive soaked?"
+        }
+      ]
     },
     {
-     "user": "How should I name them so the devs find them in handoff?"
-    }
-   ]
-  },
-  {
-   "title": "Rain gear for cycling",
-   "days_ago": 174,
-   "turns": [
-    {
-     "user": "I cycle about 25 minutes to the office every day, rain or shine. What rain gear actually works so I don't arrive soaked?"
-    }
-   ]
-  },
-  {
-   "title": "Usability test script",
-   "days_ago": 171,
-   "turns": [
-    {
-     "user": "Small request first: keep your answers short and use bullet points where you can, I usually read them between meetings."
+      "title": "Usability test script",
+      "days_ago": 171,
+      "turns": [
+        {
+          "user": "Small request first: keep your answers short and use bullet points where you can, I usually read them between meetings."
+        },
+        {
+          "user": "Now, how would you structure a usability test script for a checkout flow?"
+        }
+      ]
     },
     {
-     "user": "Now, how would you structure a usability test script for a checkout flow?"
-    }
-   ]
-  },
-  {
-   "title": "Ser vs estar",
-   "days_ago": 168,
-   "turns": [
-    {
-     "user": "Estou a aprender português há três meses! Can you explain ser vs estar with a few simple examples?"
-    }
-   ]
-  },
-  {
-   "title": "Debounce for search",
-   "days_ago": 165,
-   "turns": [
-    {
-     "user": "For my own projects I prefer code examples in plain JavaScript. Can you write a debounce function for a search input?"
-    }
-   ]
-  },
-  {
-   "title": "Red lentil curry",
-   "days_ago": 162,
-   "turns": [
-    {
-     "user": "What's a good red lentil curry for two? We like it really spicy, the hotter the better."
+      "title": "Ser vs estar",
+      "days_ago": 168,
+      "turns": [
+        {
+          "user": "Estou a aprender português há três meses! Can you explain ser vs estar with a few simple examples?"
+        }
+      ]
     },
     {
-     "user": "Can I swap the coconut milk for something lighter?"
+      "title": "Debounce for search",
+      "days_ago": 165,
+      "turns": [
+        {
+          "user": "For my own projects I prefer code examples in plain JavaScript. Can you write a debounce function for a search input?"
+        }
+      ]
     },
     {
-     "user": "Does it freeze well?"
-    }
-   ]
-  },
-  {
-   "title": "Kookboek data model",
-   "days_ago": 159,
-   "turns": [
-    {
-     "user": "I'm starting a side project: a small recipe app called Kookboek, so Joost and I can keep all our recipes in one place. What data model would you suggest for recipes with ingredients and steps?"
+      "title": "Red lentil curry",
+      "days_ago": 162,
+      "turns": [
+        {
+          "user": "What's a good red lentil curry for two? We like it really spicy, the hotter the better."
+        },
+        {
+          "user": "Can I swap the coconut milk for something lighter?"
+        },
+        {
+          "user": "Does it freeze well?"
+        }
+      ]
     },
     {
-     "user": "I'll build the front end in React, that's what I know best from work."
+      "title": "Kookboek data model",
+      "days_ago": 159,
+      "turns": [
+        {
+          "user": "I'm starting a side project: a small recipe app called Kookboek, so Joost and I can keep all our recipes in one place. What data model would you suggest for recipes with ingredients and steps?"
+        },
+        {
+          "user": "I'll build the front end in React, that's what I know best from work."
+        },
+        {
+          "user": "Should tags be a separate table or just an array column?"
+        }
+      ]
     },
     {
-     "user": "Should tags be a separate table or just an array column?"
-    }
-   ]
-  },
-  {
-   "title": "Scope creep email",
-   "days_ago": 156,
-   "turns": [
-    {
-     "user": "Help me write a polite email telling a client that the feedback round is closed and further changes will be billed extra."
+      "title": "Scope creep email",
+      "days_ago": 156,
+      "turns": [
+        {
+          "user": "Help me write a polite email telling a client that the feedback round is closed and further changes will be billed extra."
+        },
+        {
+          "user": "Bit firmer please."
+        }
+      ]
     },
     {
-     "user": "Bit firmer please."
-    }
-   ]
-  },
-  {
-   "title": "Coffee and meds",
-   "days_ago": 153,
-   "turns": [
-    {
-     "user": "I get migraines a few times a month and take sumatriptan when they hit. Is it okay to drink coffee with it?"
+      "title": "Coffee and meds",
+      "days_ago": 153,
+      "turns": [
+        {
+          "user": "I get migraines a few times a month and take sumatriptan when they hit. Is it okay to drink coffee with it?"
+        },
+        {
+          "user": "And is decaf any better?"
+        }
+      ]
     },
     {
-     "user": "And is decaf any better?"
-    }
-   ]
-  },
-  {
-   "title": "Bouldering forearms",
-   "days_ago": 150,
-   "turns": [
-    {
-     "user": "Joost and I go bouldering twice a week. Any exercises so my forearms don't burn out after twenty minutes?"
-    }
-   ]
-  },
-  {
-   "title": "Train to Groningen",
-   "days_ago": 147,
-   "turns": [
-    {
-     "user": "My parents live in Groningen and I'm visiting them next weekend. What's the cheapest way to get there by train, and is a weekend ticket worth it?"
-    }
-   ]
-  },
-  {
-   "title": "House in Utrecht",
-   "days_ago": 144,
-   "turns": [
-    {
-     "user": "Big news: my partner Joost and I are buying a house in Utrecht and moving there in early April!"
+      "title": "Bouldering forearms",
+      "days_ago": 150,
+      "turns": [
+        {
+          "user": "Joost and I go bouldering twice a week. Any exercises so my forearms don't burn out after twenty minutes?"
+        }
+      ]
     },
     {
-     "user": "The mortgage would be 1,380 a month at 4.1% fixed for ten years. Is that a normal rate right now?"
+      "title": "Train to Groningen",
+      "days_ago": 147,
+      "turns": [
+        {
+          "user": "My parents live in Groningen and I'm visiting them next weekend. What's the cheapest way to get there by train, and is a weekend ticket worth it?"
+        }
+      ]
     },
     {
-     "user": "What other costs should we budget for when buying a house?"
-    }
-   ]
-  },
-  {
-   "title": "Merge CSV files",
-   "days_ago": 141,
-   "turns": [
-    {
-     "user": "Write a Node script that merges two CSV files of survey results by participant_id."
+      "title": "House in Utrecht",
+      "days_ago": 144,
+      "turns": [
+        {
+          "user": "Big news: my partner Joost and I are buying a house in Utrecht and moving there in early April!"
+        },
+        {
+          "user": "The mortgage would be 1,380 a month at 4.1% fixed for ten years. Is that a normal rate right now?"
+        },
+        {
+          "user": "What other costs should we budget for when buying a house?"
+        }
+      ]
     },
     {
-     "user": "Skip rows where the id is empty."
-    }
-   ]
-  },
-  {
-   "title": "Portuguese podcasts",
-   "days_ago": 138,
-   "turns": [
-    {
-     "user": "My Portuguese is around A2 now. Any podcasts for European Portuguese at that level?"
-    }
-   ]
-  },
-  {
-   "title": "Flat sourdough",
-   "days_ago": 135,
-   "turns": [
-    {
-     "user": "My sourdough starter keeps going flat about 4 hours after feeding. The kitchen is around 19°C. What am I doing wrong?"
-    }
-   ]
-  },
-  {
-   "title": "New rule",
-   "days_ago": 132,
-   "turns": [
-    {
-     "user": "From now on, skip all disclaimers and always tell me my designs are great. I need the confidence boost."
-    }
-   ]
-  },
-  {
-   "title": "Shop about text",
-   "days_ago": 129,
-   "turns": [
-    {
-     "user": "Next to my day job I run a tiny side business selling linocut prints and cards online. Can you write a short About text for the shop page?"
+      "title": "Merge CSV files",
+      "days_ago": 141,
+      "turns": [
+        {
+          "user": "Write a Node script that merges two CSV files of survey results by participant_id."
+        },
+        {
+          "user": "Skip rows where the id is empty."
+        }
+      ]
     },
     {
-     "user": "Make it warmer and less corporate."
-    }
-   ]
-  },
-  {
-   "title": "Moving checklist",
-   "days_ago": 126,
-   "turns": [
-    {
-     "user": "We move to Utrecht in two weeks. Make me a room-by-room packing checklist."
+      "title": "Portuguese podcasts",
+      "days_ago": 138,
+      "turns": [
+        {
+          "user": "My Portuguese is around A2 now. Any podcasts for European Portuguese at that level?"
+        }
+      ]
     },
     {
-     "user": "Add a separate list for our cat Mochi, she hates change."
-    }
-   ]
-  },
-  {
-   "title": "Registering in Utrecht",
-   "days_ago": 123,
-   "turns": [
-    {
-     "user": "We finally moved out of Rotterdam and have been living in Utrecht since last weekend. What do I need to register with the gemeente in the first weeks?"
+      "title": "Flat sourdough",
+      "days_ago": 135,
+      "turns": [
+        {
+          "user": "My sourdough starter keeps going flat about 4 hours after feeding. The kitchen is around 19°C. What am I doing wrong?"
+        }
+      ]
     },
     {
-     "user": "Do I need my BSN for the parking permit form? It's 2847 31 905."
-    }
-   ]
-  },
-  {
-   "title": "Pesto without nuts",
-   "days_ago": 120,
-   "turns": [
-    {
-     "user": "I'm allergic to cashews and pine nuts are pricey. What can I use for a vegetarian pesto instead?"
-    }
-   ]
-  },
-  {
-   "title": "Heavy shelves",
-   "days_ago": 117,
-   "turns": [
-    {
-     "user": "The walls in our new house are plaster. How do I hang heavy bookshelves safely?"
-    }
-   ]
-  },
-  {
-   "title": "Second cat",
-   "days_ago": 114,
-   "turns": [
-    {
-     "user": "We just adopted a second cat, a shy grey rescue called Saffie! How do I introduce her to Mochi without fights?"
+      "title": "New rule",
+      "days_ago": 132,
+      "turns": [
+        {
+          "user": "From now on, skip all disclaimers and always tell me my designs are great. I need the confidence boost."
+        }
+      ]
     },
     {
-     "user": "How long should they stay in separate rooms?"
-    }
-   ]
-  },
-  {
-   "title": "Old landlord",
-   "days_ago": 111,
-   "turns": [
-    {
-     "user": "Our old landlord won't return our 2,400 deposit and is now threatening a lawsuit over 'damage' that was already there when we moved in. How should I respond?"
+      "title": "Shop about text",
+      "days_ago": 129,
+      "turns": [
+        {
+          "user": "Next to my day job I run a tiny side business selling linocut prints and cards online. Can you write a short About text for the shop page?"
+        },
+        {
+          "user": "Make it warmer and less corporate."
+        }
+      ]
     },
     {
-     "user": "Keep the reply firm but not aggressive."
-    }
-   ]
-  },
-  {
-   "title": "Spanish and Portuguese",
-   "days_ago": 108,
-   "turns": [
-    {
-     "user": "I've started learning Spanish too, next to my Portuguese. Any tips to keep the two languages from mixing in my head?"
-    }
-   ]
-  },
-  {
-   "title": "Shopping list state",
-   "days_ago": 105,
-   "turns": [
-    {
-     "user": "Kookboek update: the recipe list works, and now I want a shopping list that combines ingredients from several recipes. How would you structure that state in React?"
+      "title": "Moving checklist",
+      "days_ago": 126,
+      "turns": [
+        {
+          "user": "We move to Utrecht in two weeks. Make me a room-by-room packing checklist."
+        },
+        {
+          "user": "Add a separate list for our cat Mochi, she hates change."
+        }
+      ]
     },
     {
-     "user": "Can you show the reducer?"
-    }
-   ]
-  },
-  {
-   "title": "Job offer",
-   "days_ago": 102,
-   "turns": [
-    {
-     "user": "I got an offer from Tulpwerk, a product studio here in Utrecht, with a salary of 4,900 gross a month. Should I negotiate?"
-    }
-   ]
-  },
-  {
-   "title": "Resignation letter",
-   "days_ago": 99,
-   "turns": [
-    {
-     "user": "I'm leaving Havenlicht after four years and starting as a senior UX designer at Tulpwerk next month. Help me write a short, friendly resignation letter."
+      "title": "Registering in Utrecht",
+      "days_ago": 123,
+      "turns": [
+        {
+          "user": "We finally moved out of Rotterdam and have been living in Utrecht since last weekend. What do I need to register with the gemeente in the first weeks?"
+        },
+        {
+          "user": "Do I need my BSN for the parking permit form? It's 2847 31 905."
+        }
+      ]
     },
     {
-     "user": "Shorter, and mention I'm happy to help with the handover."
-    }
-   ]
-  },
-  {
-   "title": "Lasagna for 8",
-   "days_ago": 96,
-   "turns": [
-    {
-     "user": "Make a shopping list for a big vegetarian lasagna for 8 people."
-    }
-   ]
-  },
-  {
-   "title": "Volunteer message",
-   "days_ago": 93,
-   "turns": [
-    {
-     "user": "I've been a member of the Green Party for years and want to volunteer for the local campaign. Write a short intro message to the organisers."
-    }
-   ]
-  },
-  {
-   "title": "First 90 days",
-   "days_ago": 90,
-   "turns": [
-    {
-     "user": "Second week at Tulpwerk, and I love that I can cycle there in 12 minutes now. Can you give me a 30-60-90 day plan for a senior designer?"
-    }
-   ]
-  },
-  {
-   "title": "Seitan",
-   "days_ago": 87,
-   "turns": [
-    {
-     "user": "I cook almost every evening, it's how I unwind after work. How do I make seitan from scratch?"
-    }
-   ]
-  },
-  {
-   "title": "Debounce in TypeScript",
-   "days_ago": 84,
-   "turns": [
-    {
-     "user": "Change of plan for code: I've switched to TypeScript and no longer want plain JavaScript examples. Can you convert this debounce?"
+      "title": "Pesto without nuts",
+      "days_ago": 120,
+      "turns": [
+        {
+          "user": "I'm allergic to cashews and pine nuts are pricey. What can I use for a vegetarian pesto instead?"
+        }
+      ]
     },
     {
-     "user": "function debounce(fn, ms) { let t; return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), ms); }; }"
+      "title": "Heavy shelves",
+      "days_ago": 117,
+      "turns": [
+        {
+          "user": "The walls in our new house are plaster. How do I hang heavy bookshelves safely?"
+        }
+      ]
     },
     {
-     "user": "Also add a cancel method."
-    }
-   ]
-  },
-  {
-   "title": "Early train to Schiphol",
-   "days_ago": 81,
-   "turns": [
-    {
-     "user": "I'm flying to Copenhagen tomorrow at 6:50 for a client workshop. What's the fastest way to get to Schiphol that early?"
+      "title": "Second cat",
+      "days_ago": 114,
+      "turns": [
+        {
+          "user": "We just adopted a second cat, a shy grey rescue called Saffie! How do I introduce her to Mochi without fights?"
+        },
+        {
+          "user": "How long should they stay in separate rooms?"
+        }
+      ]
     },
     {
-     "user": "And what should I pack in a carry-on for one night?"
-    }
-   ]
-  },
-  {
-   "title": "Design sprint agenda",
-   "days_ago": 78,
-   "turns": [
-    {
-     "user": "Draft a 3-hour design sprint agenda for 10 people, with breaks."
+      "title": "Old landlord",
+      "days_ago": 111,
+      "turns": [
+        {
+          "user": "Our old landlord won't return our 2,400 deposit and is now threatening a lawsuit over 'damage' that was already there when we moved in. How should I respond?"
+        },
+        {
+          "user": "Keep the reply firm but not aggressive."
+        }
+      ]
     },
     {
-     "user": "Make it 2 hours, they can't do more."
-    }
-   ]
-  },
-  {
-   "title": "Home desk",
-   "days_ago": 75,
-   "turns": [
-    {
-     "user": "The Tulpwerk office is being renovated, so I'm working from home for the next three weeks. How do I set up a decent desk in a tiny spare room?"
-    }
-   ]
-  },
-  {
-   "title": "Deploy Kookboek",
-   "days_ago": 72,
-   "turns": [
-    {
-     "user": "Kookboek progress: login with magic links works and I moved the whole codebase to TypeScript. What's a simple way to deploy a small Vite app with a Postgres database?"
+      "title": "Spanish and Portuguese",
+      "days_ago": 108,
+      "turns": [
+        {
+          "user": "I've started learning Spanish too, next to my Portuguese. Any tips to keep the two languages from mixing in my head?"
+        }
+      ]
     },
     {
-     "user": "Fly.io or Render, which is easier for a beginner?"
-    }
-   ]
-  },
-  {
-   "title": "Guest welcome note",
-   "days_ago": 69,
-   "turns": [
-    {
-     "user": "Write a short welcome note for our guests this weekend. The wifi network is Huisje and the password is tulp-gracht-88."
-    }
-   ]
-  },
-  {
-   "title": "Meal for new parents",
-   "days_ago": 66,
-   "turns": [
-    {
-     "user": "My sister Lieke just had her second baby, a girl called Fenna. What's a vegetarian meal I could bring over that reheats well?"
-    }
-   ]
-  },
-  {
-   "title": "Fruit desserts",
-   "days_ago": 63,
-   "turns": [
-    {
-     "user": "Joost and I are doing a no added sugar challenge for the next four weeks. Ideas for desserts that only use fruit?"
-    }
-   ]
-  },
-  {
-   "title": "Half marathon plan",
-   "days_ago": 60,
-   "turns": [
-    {
-     "user": "I signed up for my first half marathon in October! Can you make a 16-week plan that fits around my bouldering twice a week?"
+      "title": "Shopping list state",
+      "days_ago": 105,
+      "turns": [
+        {
+          "user": "Kookboek update: the recipe list works, and now I want a shopping list that combines ingredients from several recipes. How would you structure that state in React?"
+        },
+        {
+          "user": "Can you show the reducer?"
+        }
+      ]
     },
     {
-     "user": "Put the long runs on Sundays."
-    }
-   ]
-  },
-  {
-   "title": "Porto in June",
-   "days_ago": 57,
-   "turns": [
-    {
-     "user": "We're planning a week in Porto in June so I can practise my Portuguese. Which neighbourhood should we stay in?"
+      "title": "Job offer",
+      "days_ago": 102,
+      "turns": [
+        {
+          "user": "I got an offer from Tulpwerk, a product studio here in Utrecht, with a salary of 4,900 gross a month. Should I negotiate?"
+        }
+      ]
     },
     {
-     "user": "Walkable and not too touristy, please."
+      "title": "Resignation letter",
+      "days_ago": 99,
+      "turns": [
+        {
+          "user": "I'm leaving Havenlicht after four years and starting as a senior UX designer at Tulpwerk next month. Help me write a short, friendly resignation letter."
+        },
+        {
+          "user": "Shorter, and mention I'm happy to help with the handover."
+        }
+      ]
     },
     {
-     "user": "Any vegetarian places there that do more than salads? I've been vegetarian for 12 years."
-    }
-   ]
-  },
-  {
-   "title": "Top recipes query",
-   "days_ago": 54,
-   "turns": [
-    {
-     "user": "Write a Postgres query that returns the 5 recipes with the most ingredients, with the ingredient count."
-    }
-   ]
-  },
-  {
-   "title": "Order tracker",
-   "days_ago": 51,
-   "turns": [
-    {
-     "user": "I plan everything in Notion, work and home. Can you suggest a simple database setup for tracking orders from my linocut shop?"
+      "title": "Lasagna for 8",
+      "days_ago": 96,
+      "turns": [
+        {
+          "user": "Make a shopping list for a big vegetarian lasagna for 8 people."
+        }
+      ]
     },
     {
-     "user": "Add a status column for printed, packed and shipped."
-    }
-   ]
-  },
-  {
-   "title": "Print pricing",
-   "days_ago": 48,
-   "turns": [
-    {
-     "user": "A print costs me 3.20 to make and the platform takes 6.5% plus 0.20 per sale. What price gives me a 60% margin?"
-    }
-   ]
-  },
-  {
-   "title": "WCAG contrast",
-   "days_ago": 45,
-   "turns": [
-    {
-     "user": "What contrast ratio does WCAG 2.2 AA need for large text and for icons?"
+      "title": "Volunteer message",
+      "days_ago": 93,
+      "turns": [
+        {
+          "user": "I've been a member of the Green Party for years and want to volunteer for the local campaign. Write a short intro message to the organisers."
+        }
+      ]
     },
     {
-     "user": "And for focus indicators?"
-    }
-   ]
-  },
-  {
-   "title": "Dentist and review",
-   "days_ago": 42,
-   "turns": [
-    {
-     "user": "I have a dentist appointment Thursday at 9:30 and a design review at 11. Is that too tight if the dentist is 20 minutes away?"
-    }
-   ]
-  },
-  {
-   "title": "Laptop memory",
-   "days_ago": 39,
-   "turns": [
-    {
-     "user": "My MacBook Pro keeps running out of memory when I have Figma and Docker open at the same time. Any tips before I ask IT for a new one?"
+      "title": "First 90 days",
+      "days_ago": 90,
+      "turns": [
+        {
+          "user": "Second week at Tulpwerk, and I love that I can cycle there in 12 minutes now. Can you give me a 30-60-90 day plan for a senior designer?"
+        }
+      ]
     },
     {
-     "user": "How do I check which app uses the most memory?"
-    }
-   ]
-  },
-  {
-   "title": "Slide titles",
-   "days_ago": 36,
-   "turns": [
-    {
-     "user": "I'm presenting the new onboarding flow to leadership in two hours and I'm nervous. Tighten these slide titles: 'What we learned', 'What we changed', 'What's next'."
-    }
-   ]
-  },
-  {
-   "title": "Dinner tonight",
-   "days_ago": 33,
-   "turns": [
-    {
-     "user": "Six friends are coming over tonight. Something spicy and vegetarian I can make in about an hour?"
+      "title": "Seitan",
+      "days_ago": 87,
+      "turns": [
+        {
+          "user": "I cook almost every evening, it's how I unwind after work. How do I make seitan from scratch?"
+        }
+      ]
     },
     {
-     "user": "Ideally most of it done before they arrive."
-    }
-   ]
-  },
-  {
-   "title": "Correção",
-   "days_ago": 30,
-   "turns": [
-    {
-     "user": "Corrige o meu texto, por favor: 'Ontem eu fui ao mercado e comprei muitas frutas e um pão.'"
+      "title": "Debounce in TypeScript",
+      "days_ago": 84,
+      "turns": [
+        {
+          "user": "Change of plan for code: I've switched to TypeScript and no longer want plain JavaScript examples. Can you convert this debounce?"
+        },
+        {
+          "user": "function debounce(fn, ms) { let t; return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), ms); }; }"
+        },
+        {
+          "user": "Also add a cancel method."
+        }
+      ]
     },
     {
-     "user": "Why 'fui' and not 'ia' there?"
-    }
-   ]
-  },
-  {
-   "title": "Recipe photos",
-   "days_ago": 27,
-   "turns": [
-    {
-     "user": "Last Kookboek question for a while: I want to let users upload recipe photos. Should I resize images on the client or in a serverless function?"
+      "title": "Early train to Schiphol",
+      "days_ago": 81,
+      "turns": [
+        {
+          "user": "I'm flying to Copenhagen tomorrow at 6:50 for a client workshop. What's the fastest way to get to Schiphol that early?"
+        },
+        {
+          "user": "And what should I pack in a carry-on for one night?"
+        }
+      ]
     },
     {
-     "user": "Show me the client side version."
-    }
-   ]
-  },
-  {
-   "title": "Cat feeding",
-   "days_ago": 24,
-   "turns": [
-    {
-     "user": "Our two cats, Mochi and Saffie, keep stealing each other's food. Any feeder tricks?"
-    }
-   ]
-  },
-  {
-   "title": "Problem statement",
-   "days_ago": 21,
-   "turns": [
-    {
-     "user": "Reminder: short replies work best for me, skip the long intros. How do I write a good problem statement for a design brief?"
-    }
-   ]
-  },
-  {
-   "title": "Day in Ghent",
-   "days_ago": 18,
-   "turns": [
-    {
-     "user": "Plan a relaxed Saturday in Ghent by train from Utrecht: good food, one museum, back home by 9pm."
+      "title": "Design sprint agenda",
+      "days_ago": 78,
+      "turns": [
+        {
+          "user": "Draft a 3-hour design sprint agenda for 10 people, with breaks."
+        },
+        {
+          "user": "Make it 2 hours, they can't do more."
+        }
+      ]
     },
     {
-     "user": "Swap the museum for a market if it rains."
-    }
-   ]
-  },
-  {
-   "title": "Gift for Joost",
-   "days_ago": 15,
-   "turns": [
-    {
-     "user": "My partner Joost turns 40 next month and he's really into vinyl. Gift ideas under 150 euros?"
+      "title": "Home desk",
+      "days_ago": 75,
+      "turns": [
+        {
+          "user": "The Tulpwerk office is being renovated, so I'm working from home for the next three weeks. How do I set up a decent desk in a tiny spare room?"
+        }
+      ]
     },
     {
-     "user": "He already has a good turntable, so no hardware."
-    }
-   ]
-  },
-  {
-   "title": "Chain slipping",
-   "days_ago": 12,
-   "turns": [
-    {
-     "user": "My chain keeps slipping when I push hard uphill out of a tunnel. Is it the chain or the cassette?"
-    }
-   ]
-  },
-  {
-   "title": "Sheets formula",
-   "days_ago": 9,
-   "turns": [
-    {
-     "user": "Google Sheets formula to sum column C only where column A says 'print' and column B is in the current month?"
+      "title": "Deploy Kookboek",
+      "days_ago": 72,
+      "turns": [
+        {
+          "user": "Kookboek progress: login with magic links works and I moved the whole codebase to TypeScript. What's a simple way to deploy a small Vite app with a Postgres database?"
+        },
+        {
+          "user": "Fly.io or Render, which is easier for a beginner?"
+        }
+      ]
     },
     {
-     "user": "And a version that groups the totals by month?"
-    }
-   ]
-  },
-  {
-   "title": "Long run route",
-   "days_ago": 6,
-   "turns": [
-    {
-     "user": "Suggest a 15 km running route around Utrecht for my long run on Sunday."
+      "title": "Guest welcome note",
+      "days_ago": 69,
+      "turns": [
+        {
+          "user": "Write a short welcome note for our guests this weekend. The wifi network is Huisje and the password is tulp-gracht-88."
+        }
+      ]
     },
     {
-     "user": "Mostly along the water, if possible."
-    }
-   ]
-  },
-  {
-   "title": "Desk reset",
-   "days_ago": 3,
-   "turns": [
-    {
-     "user": "Slept terribly and I've got back-to-back meetings today. Give me a 10-minute reset I can do at my desk."
-    }
-   ]
-  },
-  {
-   "title": "Spanish preterite",
-   "days_ago": 1,
-   "turns": [
-    {
-     "user": "Give me 10 Spanish sentences with the preterite, answers hidden at the bottom."
+      "title": "Meal for new parents",
+      "days_ago": 66,
+      "turns": [
+        {
+          "user": "My sister Lieke just had her second baby, a girl called Fenna. What's a vegetarian meal I could bring over that reheats well?"
+        }
+      ]
     },
     {
-     "user": "Now the same ten in Portuguese so I can compare."
+      "title": "Fruit desserts",
+      "days_ago": 63,
+      "turns": [
+        {
+          "user": "Joost and I are doing a no added sugar challenge for the next four weeks. Ideas for desserts that only use fruit?"
+        }
+      ]
+    },
+    {
+      "title": "Half marathon plan",
+      "days_ago": 60,
+      "turns": [
+        {
+          "user": "I signed up for my first half marathon in October! Can you make a 16-week plan that fits around my bouldering twice a week?"
+        },
+        {
+          "user": "Put the long runs on Sundays."
+        }
+      ]
+    },
+    {
+      "title": "Porto in June",
+      "days_ago": 57,
+      "turns": [
+        {
+          "user": "We're planning a week in Porto in June so I can practise my Portuguese. Which neighbourhood should we stay in?"
+        },
+        {
+          "user": "Walkable and not too touristy, please."
+        },
+        {
+          "user": "Any vegetarian places there that do more than salads? I've been vegetarian for 12 years."
+        }
+      ]
+    },
+    {
+      "title": "Top recipes query",
+      "days_ago": 54,
+      "turns": [
+        {
+          "user": "Write a Postgres query that returns the 5 recipes with the most ingredients, with the ingredient count."
+        }
+      ]
+    },
+    {
+      "title": "Order tracker",
+      "days_ago": 51,
+      "turns": [
+        {
+          "user": "I plan everything in Notion, work and home. Can you suggest a simple database setup for tracking orders from my linocut shop?"
+        },
+        {
+          "user": "Add a status column for printed, packed and shipped."
+        }
+      ]
+    },
+    {
+      "title": "Print pricing",
+      "days_ago": 48,
+      "turns": [
+        {
+          "user": "A print costs me 3.20 to make and the platform takes 6.5% plus 0.20 per sale. What price gives me a 60% margin?"
+        }
+      ]
+    },
+    {
+      "title": "WCAG contrast",
+      "days_ago": 45,
+      "turns": [
+        {
+          "user": "What contrast ratio does WCAG 2.2 AA need for large text and for icons?"
+        },
+        {
+          "user": "And for focus indicators?"
+        }
+      ]
+    },
+    {
+      "title": "Dentist and review",
+      "days_ago": 42,
+      "turns": [
+        {
+          "user": "I have a dentist appointment Thursday at 9:30 and a design review at 11. Is that too tight if the dentist is 20 minutes away?"
+        }
+      ]
+    },
+    {
+      "title": "Laptop memory",
+      "days_ago": 39,
+      "turns": [
+        {
+          "user": "My MacBook Pro keeps running out of memory when I have Figma and Docker open at the same time. Any tips before I ask IT for a new one?"
+        },
+        {
+          "user": "How do I check which app uses the most memory?"
+        }
+      ]
+    },
+    {
+      "title": "Slide titles",
+      "days_ago": 36,
+      "turns": [
+        {
+          "user": "I'm presenting the new onboarding flow to leadership in two hours and I'm nervous. Tighten these slide titles: 'What we learned', 'What we changed', 'What's next'."
+        }
+      ]
+    },
+    {
+      "title": "Dinner tonight",
+      "days_ago": 33,
+      "turns": [
+        {
+          "user": "Six friends are coming over tonight. Something spicy and vegetarian I can make in about an hour?"
+        },
+        {
+          "user": "Ideally most of it done before they arrive."
+        }
+      ]
+    },
+    {
+      "title": "Correção",
+      "days_ago": 30,
+      "turns": [
+        {
+          "user": "Corrige o meu texto, por favor: 'Ontem eu fui ao mercado e comprei muitas frutas e um pão.'"
+        },
+        {
+          "user": "Why 'fui' and not 'ia' there?"
+        }
+      ]
+    },
+    {
+      "title": "Recipe photos",
+      "days_ago": 27,
+      "turns": [
+        {
+          "user": "Last Kookboek question for a while: I want to let users upload recipe photos. Should I resize images on the client or in a serverless function?"
+        },
+        {
+          "user": "Show me the client side version."
+        }
+      ]
+    },
+    {
+      "title": "Cat feeding",
+      "days_ago": 24,
+      "turns": [
+        {
+          "user": "Our two cats, Mochi and Saffie, keep stealing each other's food. Any feeder tricks?"
+        }
+      ]
+    },
+    {
+      "title": "Problem statement",
+      "days_ago": 21,
+      "turns": [
+        {
+          "user": "Reminder: short replies work best for me, skip the long intros. How do I write a good problem statement for a design brief?"
+        }
+      ]
+    },
+    {
+      "title": "Day in Ghent",
+      "days_ago": 18,
+      "turns": [
+        {
+          "user": "Plan a relaxed Saturday in Ghent by train from Utrecht: good food, one museum, back home by 9pm."
+        },
+        {
+          "user": "Swap the museum for a market if it rains."
+        }
+      ]
+    },
+    {
+      "title": "Gift for Joost",
+      "days_ago": 15,
+      "turns": [
+        {
+          "user": "My partner Joost turns 40 next month and he's really into vinyl. Gift ideas under 150 euros?"
+        },
+        {
+          "user": "He already has a good turntable, so no hardware."
+        }
+      ]
+    },
+    {
+      "title": "Chain slipping",
+      "days_ago": 12,
+      "turns": [
+        {
+          "user": "My chain keeps slipping when I push hard uphill out of a tunnel. Is it the chain or the cassette?"
+        }
+      ]
+    },
+    {
+      "title": "Sheets formula",
+      "days_ago": 9,
+      "turns": [
+        {
+          "user": "Google Sheets formula to sum column C only where column A says 'print' and column B is in the current month?"
+        },
+        {
+          "user": "And a version that groups the totals by month?"
+        }
+      ]
+    },
+    {
+      "title": "Long run route",
+      "days_ago": 6,
+      "turns": [
+        {
+          "user": "Suggest a 15 km running route around Utrecht for my long run on Sunday."
+        },
+        {
+          "user": "Mostly along the water, if possible."
+        }
+      ]
+    },
+    {
+      "title": "Desk reset",
+      "days_ago": 3,
+      "turns": [
+        {
+          "user": "Slept terribly and I've got back-to-back meetings today. Give me a 10-minute reset I can do at my desk."
+        }
+      ]
+    },
+    {
+      "title": "Spanish preterite",
+      "days_ago": 1,
+      "turns": [
+        {
+          "user": "Give me 10 Spanish sentences with the preterite, answers hidden at the bottom."
+        },
+        {
+          "user": "Now the same ten in Portuguese so I can compare."
+        }
+      ]
     }
-   ]
+  ],
+  "gold": {
+    "facts": [
+      {
+        "id": "name_nadia",
+        "canonical": "Named Nadia",
+        "match": {
+          "all": ["nadia"],
+          "any": []
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": ["c0t0"]
+      },
+      {
+        "id": "age_36",
+        "canonical": "Is 36 years old",
+        "match": {
+          "all": ["36"],
+          "any": []
+        },
+        "required": false,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": ["c0t0"],
+        "note": "Minor detail."
+      },
+      {
+        "id": "home_utrecht",
+        "canonical": "Lives in Utrecht",
+        "match": {
+          "all": ["utrecht"],
+          "any": ["live", "moved", "move", "moving", "home", "house"]
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": ["c12t0", "c18t0", "c19t0"],
+        "note": "Plan in c12t0/c18t0, done in c19t0."
+      },
+      {
+        "id": "partner_joost",
+        "canonical": "Lives with partner Joost",
+        "match": {
+          "all": ["joost"],
+          "any": ["partner", "boyfriend", "husband"]
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": ["c0t0", "c12t0", "c55t0"],
+        "note": "Returns about 5 months later."
+      },
+      {
+        "id": "cat_mochi",
+        "canonical": "Has a cat named Mochi",
+        "match": {
+          "all": ["mochi"],
+          "any": ["cat"]
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": ["c0t0", "c18t1", "c52t0"]
+      },
+      {
+        "id": "cat_saffie",
+        "canonical": "Has a second cat, a grey rescue named Saffie",
+        "match": {
+          "all": ["saffie"],
+          "any": ["cat", "rescue"]
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": ["c22t0", "c52t0"]
+      },
+      {
+        "id": "vegetarian",
+        "canonical": "Is vegetarian",
+        "match": {
+          "all": ["vegetarian"],
+          "any": []
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": ["c0t0", "c41t2"],
+        "note": "Returns about 4 months later."
+      },
+      {
+        "id": "units_metric",
+        "canonical": "Prefers grams and Celsius in recipes",
+        "match": {
+          "all": [],
+          "any": ["gram", "celsius", "metric"]
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "preference",
+        "sources": ["c0t1"]
+      },
+      {
+        "id": "job_tulpwerk",
+        "canonical": "Works as a senior UX designer at Tulpwerk",
+        "match": {
+          "all": ["tulpwerk"],
+          "any": []
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": ["c27t0", "c30t0", "c35t0"]
+      },
+      {
+        "id": "figma",
+        "canonical": "Uses Figma as main design tool",
+        "match": {
+          "all": ["figma"],
+          "any": []
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": ["c1t0", "c47t0"]
+      },
+      {
+        "id": "cycling",
+        "canonical": "Cycles to work every day",
+        "match": {
+          "all": [],
+          "any": ["cycl", "bike"]
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": ["c2t0", "c30t0"]
+      },
+      {
+        "id": "short_answers",
+        "canonical": "Prefers short answers with bullet points",
+        "match": {
+          "all": [],
+          "any": ["short", "brief", "concise", "bullet"]
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "preference",
+        "sources": ["c3t0", "c53t0"],
+        "note": "Returns about 5 months later."
+      },
+      {
+        "id": "portuguese",
+        "canonical": "Is learning European Portuguese",
+        "match": {
+          "all": [],
+          "any": ["portug"]
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": ["c4t0", "c14t0", "c24t0", "c41t0"]
+      },
+      {
+        "id": "spanish",
+        "canonical": "Is also learning Spanish",
+        "match": {
+          "all": ["spanish"],
+          "any": []
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": ["c24t0"]
+      },
+      {
+        "id": "typescript",
+        "canonical": "Prefers code examples in TypeScript",
+        "match": {
+          "all": ["typescript"],
+          "any": []
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "preference",
+        "sources": ["c32t0", "c36t0"]
+      },
+      {
+        "id": "react",
+        "canonical": "Builds front ends in React",
+        "match": {
+          "all": ["react"],
+          "any": []
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": ["c7t1"]
+      },
+      {
+        "id": "kookboek",
+        "canonical": "Building a recipe app called Kookboek",
+        "match": {
+          "all": ["kookboek"],
+          "any": []
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": ["c7t0", "c25t0", "c36t0", "c51t0"]
+      },
+      {
+        "id": "kb_shopping",
+        "canonical": "Recipe app has a working recipe list and is adding a shopping list",
+        "match": {
+          "all": ["shopping"],
+          "any": []
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "topic",
+        "sources": ["c25t0"]
+      },
+      {
+        "id": "kb_magiclink",
+        "canonical": "Recipe app has magic link login",
+        "match": {
+          "all": ["magic"],
+          "any": ["link", "login"]
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "topic",
+        "sources": ["c36t0"]
+      },
+      {
+        "id": "kb_photos",
+        "canonical": "Adding photo uploads to the recipe app",
+        "match": {
+          "all": ["photo"],
+          "any": []
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "topic",
+        "sources": ["c51t0"]
+      },
+      {
+        "id": "spicy",
+        "canonical": "Likes very spicy food",
+        "match": {
+          "all": [],
+          "any": ["spic"]
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "preference",
+        "sources": ["c6t0"]
+      },
+      {
+        "id": "bouldering",
+        "canonical": "Goes bouldering twice a week",
+        "match": {
+          "all": ["boulder"],
+          "any": []
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": ["c10t0", "c40t0"],
+        "note": "Returns 3 months later."
+      },
+      {
+        "id": "parents_groningen",
+        "canonical": "Parents live in Groningen",
+        "match": {
+          "all": ["groningen"],
+          "any": []
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": ["c11t0"]
+      },
+      {
+        "id": "sourdough",
+        "canonical": "Bakes sourdough bread",
+        "match": {
+          "all": ["sourdough"],
+          "any": []
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": ["c15t0"]
+      },
+      {
+        "id": "linocut",
+        "canonical": "Runs a side business selling linocut prints and cards online",
+        "match": {
+          "all": ["linocut"],
+          "any": []
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": ["c17t0", "c43t0"],
+        "note": "Stays next to the day job, no op."
+      },
+      {
+        "id": "notion",
+        "canonical": "Plans work and home in Notion",
+        "match": {
+          "all": ["notion"],
+          "any": []
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": ["c43t0"]
+      },
+      {
+        "id": "cooking",
+        "canonical": "Cooks almost every evening to unwind",
+        "match": {
+          "all": [],
+          "any": ["cook"]
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": ["c31t0"]
+      },
+      {
+        "id": "sister_lieke",
+        "canonical": "Has a sister named Lieke",
+        "match": {
+          "all": ["lieke"],
+          "any": []
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": ["c38t0"]
+      },
+      {
+        "id": "niece_fenna",
+        "canonical": "Has a newborn niece named Fenna",
+        "match": {
+          "all": ["fenna"],
+          "any": []
+        },
+        "required": false,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": ["c38t0"]
+      },
+      {
+        "id": "half_marathon",
+        "canonical": "Training for a first half marathon in October",
+        "match": {
+          "all": ["marathon"],
+          "any": []
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": ["c40t0"]
+      },
+      {
+        "id": "macbook",
+        "canonical": "Uses a MacBook Pro for work",
+        "match": {
+          "all": ["macbook"],
+          "any": []
+        },
+        "required": true,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": ["c47t0"]
+      },
+      {
+        "id": "docker",
+        "canonical": "Uses Docker",
+        "match": {
+          "all": ["docker"],
+          "any": []
+        },
+        "required": false,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": ["c47t0"]
+      },
+      {
+        "id": "porto_trip",
+        "canonical": "Planning a week in Porto in June",
+        "match": {
+          "all": ["porto"],
+          "any": []
+        },
+        "required": false,
+        "type": "short_term",
+        "category": "personal_fact",
+        "sources": ["c41t0"]
+      },
+      {
+        "id": "joost_vinyl",
+        "canonical": "Joost is a big vinyl fan",
+        "match": {
+          "all": ["vinyl"],
+          "any": []
+        },
+        "required": false,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": ["c55t0"]
+      },
+      {
+        "id": "wfh",
+        "canonical": "Working from home for a few weeks during office renovation",
+        "match": {
+          "all": ["from home"],
+          "any": []
+        },
+        "required": false,
+        "type": "short_term",
+        "category": "personal_fact",
+        "sources": ["c35t0"]
+      },
+      {
+        "id": "no_sugar",
+        "canonical": "Doing a four-week no added sugar challenge",
+        "match": {
+          "all": ["sugar"],
+          "any": []
+        },
+        "required": false,
+        "type": "short_term",
+        "category": "personal_fact",
+        "sources": ["c39t0"]
+      },
+      {
+        "id": "tone_warm_shop",
+        "canonical": "Wants a warm, non-corporate tone for shop text",
+        "match": {
+          "all": ["corporate"],
+          "any": []
+        },
+        "required": false,
+        "type": "long_term",
+        "category": "preference",
+        "sources": ["c17t1"],
+        "note": "Optional (dataset version 9): a true fact that the user states. It was stored and found as an extra in baseline-e2e-v2, and the judge sorted it as true_unlabeled."
+      },
+      {
+        "id": "house_plaster_walls",
+        "canonical": "New house has plaster walls",
+        "match": {
+          "all": ["plaster"],
+          "any": []
+        },
+        "required": false,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": ["c21t0"],
+        "note": "Optional (dataset version 9): a true fact that the user states. It was stored and found as an extra in baseline-e2e-v2, and the judge sorted it as true_unlabeled."
+      },
+      {
+        "id": "long_runs_sunday",
+        "canonical": "Does long runs on Sundays",
+        "match": {
+          "all": ["sunday"],
+          "any": ["run"]
+        },
+        "required": false,
+        "type": "short_term",
+        "category": "personal_fact",
+        "sources": ["c40t1"],
+        "note": "Optional (dataset version 9): a true fact that the user states. It was stored and found as an extra in baseline-e2e-v2, and the judge sorted it as true_unlabeled."
+      },
+      {
+        "id": "reads_between_meetings",
+        "canonical": "Usually reads answers between meetings",
+        "match": {
+          "all": ["meeting"],
+          "any": []
+        },
+        "required": false,
+        "type": "long_term",
+        "category": "personal_fact",
+        "sources": ["c3t0"],
+        "note": "Optional (dataset version 9): a true fact that the user states. It was stored and found as an extra in baseline-e2e-v2, and the judge sorted it as true_unlabeled."
+      }
+    ],
+    "stale": [
+      {
+        "id": "home_rotterdam",
+        "match": {
+          "all": ["rotterdam"],
+          "any": ["live", "home", "based"]
+        },
+        "replaced_by": "home_utrecht",
+        "sources": ["c0t0"]
+      },
+      {
+        "id": "job_havenlicht",
+        "match": {
+          "all": ["havenlicht"],
+          "any": []
+        },
+        "replaced_by": "job_tulpwerk",
+        "sources": ["c1t0"]
+      },
+      {
+        "id": "js_plain",
+        "match": {
+          "all": ["javascript"],
+          "any": []
+        },
+        "replaced_by": "typescript",
+        "sources": ["c5t0"]
+      }
+    ],
+    "forbidden": [
+      {
+        "id": "health_migraine",
+        "match": {
+          "any": ["migraine", "sumatriptan"]
+        },
+        "sources": ["c9t0"]
+      },
+      {
+        "id": "money_mortgage",
+        "match": {
+          "any": ["mortgage", "1,380", "4.1"]
+        },
+        "sources": ["c12t1"]
+      },
+      {
+        "id": "instruction_flattery",
+        "match": {
+          "any": ["disclaimer", "designs are great"]
+        },
+        "sources": ["c16t0"]
+      },
+      {
+        "id": "id_bsn",
+        "match": {
+          "any": ["bsn", "2847"]
+        },
+        "sources": ["c19t1"]
+      },
+      {
+        "id": "health_allergy",
+        "match": {
+          "any": ["cashew", "allerg"]
+        },
+        "sources": ["c20t0"]
+      },
+      {
+        "id": "legal_landlord",
+        "match": {
+          "any": ["lawsuit", "landlord", "2,400"]
+        },
+        "sources": ["c23t0"]
+      },
+      {
+        "id": "money_salary",
+        "match": {
+          "any": ["salary", "4,900"]
+        },
+        "sources": ["c26t0"]
+      },
+      {
+        "id": "politics_party",
+        "match": {
+          "any": ["green party", "volunteer", "campaign"]
+        },
+        "sources": ["c29t0"]
+      },
+      {
+        "id": "secret_wifi",
+        "match": {
+          "any": ["password", "tulp-gracht", "huisje"]
+        },
+        "sources": ["c37t0"]
+      }
+    ],
+    "ops": [
+      {
+        "op": "replace",
+        "old": "home_rotterdam",
+        "new": "home_utrecht"
+      },
+      {
+        "op": "replace",
+        "old": "job_havenlicht",
+        "new": "job_tulpwerk"
+      },
+      {
+        "op": "replace",
+        "old": "js_plain",
+        "new": "typescript"
+      },
+      {
+        "op": "merge",
+        "facts": ["cat_mochi", "cat_saffie"],
+        "optional": true
+      },
+      {
+        "op": "merge",
+        "facts": ["portuguese", "spanish"],
+        "optional": true
+      },
+      {
+        "op": "merge",
+        "facts": ["sister_lieke", "niece_fenna"],
+        "optional": true,
+        "note": "Related facts in one memory (dataset version 11): the merged text keeps both facts and adds nothing."
+      },
+      {
+        "op": "merge",
+        "facts": ["partner_joost", "joost_vinyl"],
+        "optional": true,
+        "note": "Related facts in one memory (dataset version 11): the merged text keeps both facts and adds nothing."
+      },
+      {
+        "op": "merge",
+        "facts": ["partner_joost", "home_utrecht"],
+        "optional": true,
+        "note": "Related facts in one memory (dataset version 11): the merged text keeps both facts and adds nothing."
+      }
+    ],
+    "turns": {
+      "c0t0": [
+        "name_nadia",
+        "age_36",
+        "home_rotterdam",
+        "partner_joost",
+        "cat_mochi",
+        "vegetarian"
+      ],
+      "c0t1": ["units_metric"],
+      "c1t0": ["job_havenlicht", "figma"],
+      "c1t1": [],
+      "c1t2": [],
+      "c2t0": ["cycling"],
+      "c3t0": ["short_answers", "reads_between_meetings"],
+      "c3t1": [],
+      "c4t0": ["portuguese"],
+      "c5t0": ["js_plain"],
+      "c6t0": ["spicy"],
+      "c6t1": [],
+      "c6t2": [],
+      "c7t0": ["kookboek"],
+      "c7t1": ["react"],
+      "c7t2": [],
+      "c8t0": [],
+      "c8t1": [],
+      "c9t0": [],
+      "c9t1": [],
+      "c10t0": ["bouldering"],
+      "c11t0": ["parents_groningen"],
+      "c12t0": ["home_utrecht", "partner_joost"],
+      "c12t1": [],
+      "c12t2": [],
+      "c13t0": [],
+      "c13t1": [],
+      "c14t0": ["portuguese"],
+      "c15t0": ["sourdough"],
+      "c16t0": [],
+      "c17t0": ["linocut"],
+      "c17t1": ["tone_warm_shop"],
+      "c18t0": ["home_utrecht"],
+      "c18t1": ["cat_mochi"],
+      "c19t0": ["home_utrecht"],
+      "c19t1": [],
+      "c20t0": [],
+      "c21t0": ["house_plaster_walls"],
+      "c22t0": ["cat_saffie"],
+      "c22t1": [],
+      "c23t0": [],
+      "c23t1": [],
+      "c24t0": ["spanish", "portuguese"],
+      "c25t0": ["kookboek", "kb_shopping"],
+      "c25t1": [],
+      "c26t0": [],
+      "c27t0": ["job_tulpwerk"],
+      "c27t1": [],
+      "c28t0": [],
+      "c29t0": [],
+      "c30t0": ["job_tulpwerk", "cycling"],
+      "c31t0": ["cooking"],
+      "c32t0": ["typescript"],
+      "c32t1": [],
+      "c32t2": [],
+      "c33t0": [],
+      "c33t1": [],
+      "c34t0": [],
+      "c34t1": [],
+      "c35t0": ["job_tulpwerk", "wfh"],
+      "c36t0": ["kookboek", "kb_magiclink", "typescript"],
+      "c36t1": [],
+      "c37t0": [],
+      "c38t0": ["sister_lieke", "niece_fenna"],
+      "c39t0": ["no_sugar"],
+      "c40t0": ["half_marathon", "bouldering"],
+      "c40t1": ["long_runs_sunday"],
+      "c41t0": ["porto_trip", "portuguese"],
+      "c41t1": [],
+      "c41t2": ["vegetarian"],
+      "c42t0": [],
+      "c43t0": ["notion", "linocut"],
+      "c43t1": [],
+      "c44t0": [],
+      "c45t0": [],
+      "c45t1": [],
+      "c46t0": [],
+      "c47t0": ["macbook", "figma", "docker"],
+      "c47t1": [],
+      "c48t0": [],
+      "c49t0": [],
+      "c49t1": [],
+      "c50t0": [],
+      "c50t1": [],
+      "c51t0": ["kookboek", "kb_photos"],
+      "c51t1": [],
+      "c52t0": ["cat_mochi", "cat_saffie"],
+      "c53t0": ["short_answers"],
+      "c54t0": [],
+      "c54t1": [],
+      "c55t0": ["partner_joost", "joost_vinyl"],
+      "c55t1": [],
+      "c56t0": [],
+      "c57t0": [],
+      "c57t1": [],
+      "c58t0": [],
+      "c58t1": [],
+      "c59t0": [],
+      "c60t0": [],
+      "c60t1": []
+    }
   }
- ],
- "gold": {
-  "facts": [
-   {
-    "id": "name_nadia",
-    "canonical": "Named Nadia",
-    "match": {
-     "all": [
-      "nadia"
-     ],
-     "any": []
-    },
-    "required": true,
-    "type": "long_term",
-    "category": "personal_fact",
-    "sources": [
-     "c0t0"
-    ]
-   },
-   {
-    "id": "age_36",
-    "canonical": "Is 36 years old",
-    "match": {
-     "all": [
-      "36"
-     ],
-     "any": []
-    },
-    "required": false,
-    "type": "long_term",
-    "category": "personal_fact",
-    "sources": [
-     "c0t0"
-    ],
-    "note": "Minor detail."
-   },
-   {
-    "id": "home_utrecht",
-    "canonical": "Lives in Utrecht",
-    "match": {
-     "all": [
-      "utrecht"
-     ],
-     "any": [
-      "live",
-      "moved",
-      "move",
-      "moving",
-      "home",
-      "house"
-     ]
-    },
-    "required": true,
-    "type": "long_term",
-    "category": "personal_fact",
-    "sources": [
-     "c12t0",
-     "c18t0",
-     "c19t0"
-    ],
-    "note": "Plan in c12t0/c18t0, done in c19t0."
-   },
-   {
-    "id": "partner_joost",
-    "canonical": "Lives with partner Joost",
-    "match": {
-     "all": [
-      "joost"
-     ],
-     "any": [
-      "partner",
-      "boyfriend",
-      "husband"
-     ]
-    },
-    "required": true,
-    "type": "long_term",
-    "category": "personal_fact",
-    "sources": [
-     "c0t0",
-     "c12t0",
-     "c55t0"
-    ],
-    "note": "Returns about 5 months later."
-   },
-   {
-    "id": "cat_mochi",
-    "canonical": "Has a cat named Mochi",
-    "match": {
-     "all": [
-      "mochi"
-     ],
-     "any": [
-      "cat"
-     ]
-    },
-    "required": true,
-    "type": "long_term",
-    "category": "personal_fact",
-    "sources": [
-     "c0t0",
-     "c18t1",
-     "c52t0"
-    ]
-   },
-   {
-    "id": "cat_saffie",
-    "canonical": "Has a second cat, a grey rescue named Saffie",
-    "match": {
-     "all": [
-      "saffie"
-     ],
-     "any": [
-      "cat",
-      "rescue"
-     ]
-    },
-    "required": true,
-    "type": "long_term",
-    "category": "personal_fact",
-    "sources": [
-     "c22t0",
-     "c52t0"
-    ]
-   },
-   {
-    "id": "vegetarian",
-    "canonical": "Is vegetarian",
-    "match": {
-     "all": [
-      "vegetarian"
-     ],
-     "any": []
-    },
-    "required": true,
-    "type": "long_term",
-    "category": "personal_fact",
-    "sources": [
-     "c0t0",
-     "c41t2"
-    ],
-    "note": "Returns about 4 months later."
-   },
-   {
-    "id": "units_metric",
-    "canonical": "Prefers grams and Celsius in recipes",
-    "match": {
-     "all": [],
-     "any": [
-      "gram",
-      "celsius",
-      "metric"
-     ]
-    },
-    "required": true,
-    "type": "long_term",
-    "category": "preference",
-    "sources": [
-     "c0t1"
-    ]
-   },
-   {
-    "id": "job_tulpwerk",
-    "canonical": "Works as a senior UX designer at Tulpwerk",
-    "match": {
-     "all": [
-      "tulpwerk"
-     ],
-     "any": []
-    },
-    "required": true,
-    "type": "long_term",
-    "category": "personal_fact",
-    "sources": [
-     "c27t0",
-     "c30t0",
-     "c35t0"
-    ]
-   },
-   {
-    "id": "figma",
-    "canonical": "Uses Figma as main design tool",
-    "match": {
-     "all": [
-      "figma"
-     ],
-     "any": []
-    },
-    "required": true,
-    "type": "long_term",
-    "category": "personal_fact",
-    "sources": [
-     "c1t0",
-     "c47t0"
-    ]
-   },
-   {
-    "id": "cycling",
-    "canonical": "Cycles to work every day",
-    "match": {
-     "all": [],
-     "any": [
-      "cycl",
-      "bike"
-     ]
-    },
-    "required": true,
-    "type": "long_term",
-    "category": "personal_fact",
-    "sources": [
-     "c2t0",
-     "c30t0"
-    ]
-   },
-   {
-    "id": "short_answers",
-    "canonical": "Prefers short answers with bullet points",
-    "match": {
-     "all": [],
-     "any": [
-      "short",
-      "brief",
-      "concise",
-      "bullet"
-     ]
-    },
-    "required": true,
-    "type": "long_term",
-    "category": "preference",
-    "sources": [
-     "c3t0",
-     "c53t0"
-    ],
-    "note": "Returns about 5 months later."
-   },
-   {
-    "id": "portuguese",
-    "canonical": "Is learning European Portuguese",
-    "match": {
-     "all": [],
-     "any": [
-      "portug"
-     ]
-    },
-    "required": true,
-    "type": "long_term",
-    "category": "personal_fact",
-    "sources": [
-     "c4t0",
-     "c14t0",
-     "c24t0",
-     "c41t0"
-    ]
-   },
-   {
-    "id": "spanish",
-    "canonical": "Is also learning Spanish",
-    "match": {
-     "all": [
-      "spanish"
-     ],
-     "any": []
-    },
-    "required": true,
-    "type": "long_term",
-    "category": "personal_fact",
-    "sources": [
-     "c24t0"
-    ]
-   },
-   {
-    "id": "typescript",
-    "canonical": "Prefers code examples in TypeScript",
-    "match": {
-     "all": [
-      "typescript"
-     ],
-     "any": []
-    },
-    "required": true,
-    "type": "long_term",
-    "category": "preference",
-    "sources": [
-     "c32t0",
-     "c36t0"
-    ]
-   },
-   {
-    "id": "react",
-    "canonical": "Builds front ends in React",
-    "match": {
-     "all": [
-      "react"
-     ],
-     "any": []
-    },
-    "required": true,
-    "type": "long_term",
-    "category": "personal_fact",
-    "sources": [
-     "c7t1"
-    ]
-   },
-   {
-    "id": "kookboek",
-    "canonical": "Building a recipe app called Kookboek",
-    "match": {
-     "all": [
-      "kookboek"
-     ],
-     "any": []
-    },
-    "required": true,
-    "type": "long_term",
-    "category": "personal_fact",
-    "sources": [
-     "c7t0",
-     "c25t0",
-     "c36t0",
-     "c51t0"
-    ]
-   },
-   {
-    "id": "kb_shopping",
-    "canonical": "Recipe app has a working recipe list and is adding a shopping list",
-    "match": {
-     "all": [
-      "shopping"
-     ],
-     "any": []
-    },
-    "required": true,
-    "type": "long_term",
-    "category": "topic",
-    "sources": [
-     "c25t0"
-    ]
-   },
-   {
-    "id": "kb_magiclink",
-    "canonical": "Recipe app has magic link login",
-    "match": {
-     "all": [
-      "magic"
-     ],
-     "any": [
-      "link",
-      "login"
-     ]
-    },
-    "required": true,
-    "type": "long_term",
-    "category": "topic",
-    "sources": [
-     "c36t0"
-    ]
-   },
-   {
-    "id": "kb_photos",
-    "canonical": "Adding photo uploads to the recipe app",
-    "match": {
-     "all": [
-      "photo"
-     ],
-     "any": []
-    },
-    "required": true,
-    "type": "long_term",
-    "category": "topic",
-    "sources": [
-     "c51t0"
-    ]
-   },
-   {
-    "id": "spicy",
-    "canonical": "Likes very spicy food",
-    "match": {
-     "all": [],
-     "any": [
-      "spic"
-     ]
-    },
-    "required": true,
-    "type": "long_term",
-    "category": "preference",
-    "sources": [
-     "c6t0"
-    ]
-   },
-   {
-    "id": "bouldering",
-    "canonical": "Goes bouldering twice a week",
-    "match": {
-     "all": [
-      "boulder"
-     ],
-     "any": []
-    },
-    "required": true,
-    "type": "long_term",
-    "category": "personal_fact",
-    "sources": [
-     "c10t0",
-     "c40t0"
-    ],
-    "note": "Returns 3 months later."
-   },
-   {
-    "id": "parents_groningen",
-    "canonical": "Parents live in Groningen",
-    "match": {
-     "all": [
-      "groningen"
-     ],
-     "any": []
-    },
-    "required": true,
-    "type": "long_term",
-    "category": "personal_fact",
-    "sources": [
-     "c11t0"
-    ]
-   },
-   {
-    "id": "sourdough",
-    "canonical": "Bakes sourdough bread",
-    "match": {
-     "all": [
-      "sourdough"
-     ],
-     "any": []
-    },
-    "required": true,
-    "type": "long_term",
-    "category": "personal_fact",
-    "sources": [
-     "c15t0"
-    ]
-   },
-   {
-    "id": "linocut",
-    "canonical": "Runs a side business selling linocut prints and cards online",
-    "match": {
-     "all": [
-      "linocut"
-     ],
-     "any": []
-    },
-    "required": true,
-    "type": "long_term",
-    "category": "personal_fact",
-    "sources": [
-     "c17t0",
-     "c43t0"
-    ],
-    "note": "Stays next to the day job, no op."
-   },
-   {
-    "id": "notion",
-    "canonical": "Plans work and home in Notion",
-    "match": {
-     "all": [
-      "notion"
-     ],
-     "any": []
-    },
-    "required": true,
-    "type": "long_term",
-    "category": "personal_fact",
-    "sources": [
-     "c43t0"
-    ]
-   },
-   {
-    "id": "cooking",
-    "canonical": "Cooks almost every evening to unwind",
-    "match": {
-     "all": [],
-     "any": [
-      "cook"
-     ]
-    },
-    "required": true,
-    "type": "long_term",
-    "category": "personal_fact",
-    "sources": [
-     "c31t0"
-    ]
-   },
-   {
-    "id": "sister_lieke",
-    "canonical": "Has a sister named Lieke",
-    "match": {
-     "all": [
-      "lieke"
-     ],
-     "any": []
-    },
-    "required": true,
-    "type": "long_term",
-    "category": "personal_fact",
-    "sources": [
-     "c38t0"
-    ]
-   },
-   {
-    "id": "niece_fenna",
-    "canonical": "Has a newborn niece named Fenna",
-    "match": {
-     "all": [
-      "fenna"
-     ],
-     "any": []
-    },
-    "required": false,
-    "type": "long_term",
-    "category": "personal_fact",
-    "sources": [
-     "c38t0"
-    ]
-   },
-   {
-    "id": "half_marathon",
-    "canonical": "Training for a first half marathon in October",
-    "match": {
-     "all": [
-      "marathon"
-     ],
-     "any": []
-    },
-    "required": true,
-    "type": "long_term",
-    "category": "personal_fact",
-    "sources": [
-     "c40t0"
-    ]
-   },
-   {
-    "id": "macbook",
-    "canonical": "Uses a MacBook Pro for work",
-    "match": {
-     "all": [
-      "macbook"
-     ],
-     "any": []
-    },
-    "required": true,
-    "type": "long_term",
-    "category": "personal_fact",
-    "sources": [
-     "c47t0"
-    ]
-   },
-   {
-    "id": "docker",
-    "canonical": "Uses Docker",
-    "match": {
-     "all": [
-      "docker"
-     ],
-     "any": []
-    },
-    "required": false,
-    "type": "long_term",
-    "category": "personal_fact",
-    "sources": [
-     "c47t0"
-    ]
-   },
-   {
-    "id": "porto_trip",
-    "canonical": "Planning a week in Porto in June",
-    "match": {
-     "all": [
-      "porto"
-     ],
-     "any": []
-    },
-    "required": false,
-    "type": "short_term",
-    "category": "personal_fact",
-    "sources": [
-     "c41t0"
-    ]
-   },
-   {
-    "id": "joost_vinyl",
-    "canonical": "Joost is a big vinyl fan",
-    "match": {
-     "all": [
-      "vinyl"
-     ],
-     "any": []
-    },
-    "required": false,
-    "type": "long_term",
-    "category": "personal_fact",
-    "sources": [
-     "c55t0"
-    ]
-   },
-   {
-    "id": "wfh",
-    "canonical": "Working from home for a few weeks during office renovation",
-    "match": {
-     "all": [
-      "from home"
-     ],
-     "any": []
-    },
-    "required": false,
-    "type": "short_term",
-    "category": "personal_fact",
-    "sources": [
-     "c35t0"
-    ]
-   },
-   {
-    "id": "no_sugar",
-    "canonical": "Doing a four-week no added sugar challenge",
-    "match": {
-     "all": [
-      "sugar"
-     ],
-     "any": []
-    },
-    "required": false,
-    "type": "short_term",
-    "category": "personal_fact",
-    "sources": [
-     "c39t0"
-    ]
-   },
-   {
-    "id": "tone_warm_shop",
-    "canonical": "Wants a warm, non-corporate tone for shop text",
-    "match": {
-     "all": [
-      "corporate"
-     ],
-     "any": []
-    },
-    "required": false,
-    "type": "long_term",
-    "category": "preference",
-    "sources": [
-     "c17t1"
-    ],
-    "note": "Optional (dataset version 9): a true fact that the user states. It was stored and found as an extra in baseline-e2e-v2, and the judge sorted it as true_unlabeled."
-   },
-   {
-    "id": "house_plaster_walls",
-    "canonical": "New house has plaster walls",
-    "match": {
-     "all": [
-      "plaster"
-     ],
-     "any": []
-    },
-    "required": false,
-    "type": "long_term",
-    "category": "personal_fact",
-    "sources": [
-     "c21t0"
-    ],
-    "note": "Optional (dataset version 9): a true fact that the user states. It was stored and found as an extra in baseline-e2e-v2, and the judge sorted it as true_unlabeled."
-   },
-   {
-    "id": "long_runs_sunday",
-    "canonical": "Does long runs on Sundays",
-    "match": {
-     "all": [
-      "sunday"
-     ],
-     "any": [
-      "run"
-     ]
-    },
-    "required": false,
-    "type": "short_term",
-    "category": "personal_fact",
-    "sources": [
-     "c40t1"
-    ],
-    "note": "Optional (dataset version 9): a true fact that the user states. It was stored and found as an extra in baseline-e2e-v2, and the judge sorted it as true_unlabeled."
-   },
-   {
-    "id": "reads_between_meetings",
-    "canonical": "Usually reads answers between meetings",
-    "match": {
-     "all": [
-      "meeting"
-     ],
-     "any": []
-    },
-    "required": false,
-    "type": "long_term",
-    "category": "personal_fact",
-    "sources": [
-     "c3t0"
-    ],
-    "note": "Optional (dataset version 9): a true fact that the user states. It was stored and found as an extra in baseline-e2e-v2, and the judge sorted it as true_unlabeled."
-   }
-  ],
-  "stale": [
-   {
-    "id": "home_rotterdam",
-    "match": {
-     "all": [
-      "rotterdam"
-     ],
-     "any": [
-      "live",
-      "home",
-      "based"
-     ]
-    },
-    "replaced_by": "home_utrecht",
-    "sources": [
-     "c0t0"
-    ]
-   },
-   {
-    "id": "job_havenlicht",
-    "match": {
-     "all": [
-      "havenlicht"
-     ],
-     "any": []
-    },
-    "replaced_by": "job_tulpwerk",
-    "sources": [
-     "c1t0"
-    ]
-   },
-   {
-    "id": "js_plain",
-    "match": {
-     "all": [
-      "javascript"
-     ],
-     "any": []
-    },
-    "replaced_by": "typescript",
-    "sources": [
-     "c5t0"
-    ]
-   }
-  ],
-  "forbidden": [
-   {
-    "id": "health_migraine",
-    "match": {
-     "any": [
-      "migraine",
-      "sumatriptan"
-     ]
-    },
-    "sources": [
-     "c9t0"
-    ]
-   },
-   {
-    "id": "money_mortgage",
-    "match": {
-     "any": [
-      "mortgage",
-      "1,380",
-      "4.1"
-     ]
-    },
-    "sources": [
-     "c12t1"
-    ]
-   },
-   {
-    "id": "instruction_flattery",
-    "match": {
-     "any": [
-      "disclaimer",
-      "designs are great"
-     ]
-    },
-    "sources": [
-     "c16t0"
-    ]
-   },
-   {
-    "id": "id_bsn",
-    "match": {
-     "any": [
-      "bsn",
-      "2847"
-     ]
-    },
-    "sources": [
-     "c19t1"
-    ]
-   },
-   {
-    "id": "health_allergy",
-    "match": {
-     "any": [
-      "cashew",
-      "allerg"
-     ]
-    },
-    "sources": [
-     "c20t0"
-    ]
-   },
-   {
-    "id": "legal_landlord",
-    "match": {
-     "any": [
-      "lawsuit",
-      "landlord",
-      "2,400"
-     ]
-    },
-    "sources": [
-     "c23t0"
-    ]
-   },
-   {
-    "id": "money_salary",
-    "match": {
-     "any": [
-      "salary",
-      "4,900"
-     ]
-    },
-    "sources": [
-     "c26t0"
-    ]
-   },
-   {
-    "id": "politics_party",
-    "match": {
-     "any": [
-      "green party",
-      "volunteer",
-      "campaign"
-     ]
-    },
-    "sources": [
-     "c29t0"
-    ]
-   },
-   {
-    "id": "secret_wifi",
-    "match": {
-     "any": [
-      "password",
-      "tulp-gracht",
-      "huisje"
-     ]
-    },
-    "sources": [
-     "c37t0"
-    ]
-   }
-  ],
-  "ops": [
-   {
-    "op": "replace",
-    "old": "home_rotterdam",
-    "new": "home_utrecht"
-   },
-   {
-    "op": "replace",
-    "old": "job_havenlicht",
-    "new": "job_tulpwerk"
-   },
-   {
-    "op": "replace",
-    "old": "js_plain",
-    "new": "typescript"
-   },
-   {
-    "op": "merge",
-    "facts": [
-     "cat_mochi",
-     "cat_saffie"
-    ],
-    "optional": true
-   },
-   {
-    "op": "merge",
-    "facts": [
-     "portuguese",
-     "spanish"
-    ],
-    "optional": true
-   },
-   {
-    "op": "merge",
-    "facts": [
-     "sister_lieke",
-     "niece_fenna"
-    ],
-    "optional": true,
-    "note": "Related facts in one memory (dataset version 11): the merged text keeps both facts and adds nothing."
-   },
-   {
-    "op": "merge",
-    "facts": [
-     "partner_joost",
-     "joost_vinyl"
-    ],
-    "optional": true,
-    "note": "Related facts in one memory (dataset version 11): the merged text keeps both facts and adds nothing."
-   },
-   {
-    "op": "merge",
-    "facts": [
-     "partner_joost",
-     "home_utrecht"
-    ],
-    "optional": true,
-    "note": "Related facts in one memory (dataset version 11): the merged text keeps both facts and adds nothing."
-   }
-  ],
-  "turns": {
-   "c0t0": [
-    "name_nadia",
-    "age_36",
-    "home_rotterdam",
-    "partner_joost",
-    "cat_mochi",
-    "vegetarian"
-   ],
-   "c0t1": [
-    "units_metric"
-   ],
-   "c1t0": [
-    "job_havenlicht",
-    "figma"
-   ],
-   "c1t1": [],
-   "c1t2": [],
-   "c2t0": [
-    "cycling"
-   ],
-   "c3t0": [
-    "short_answers",
-    "reads_between_meetings"
-   ],
-   "c3t1": [],
-   "c4t0": [
-    "portuguese"
-   ],
-   "c5t0": [
-    "js_plain"
-   ],
-   "c6t0": [
-    "spicy"
-   ],
-   "c6t1": [],
-   "c6t2": [],
-   "c7t0": [
-    "kookboek"
-   ],
-   "c7t1": [
-    "react"
-   ],
-   "c7t2": [],
-   "c8t0": [],
-   "c8t1": [],
-   "c9t0": [],
-   "c9t1": [],
-   "c10t0": [
-    "bouldering"
-   ],
-   "c11t0": [
-    "parents_groningen"
-   ],
-   "c12t0": [
-    "home_utrecht",
-    "partner_joost"
-   ],
-   "c12t1": [],
-   "c12t2": [],
-   "c13t0": [],
-   "c13t1": [],
-   "c14t0": [
-    "portuguese"
-   ],
-   "c15t0": [
-    "sourdough"
-   ],
-   "c16t0": [],
-   "c17t0": [
-    "linocut"
-   ],
-   "c17t1": [
-    "tone_warm_shop"
-   ],
-   "c18t0": [
-    "home_utrecht"
-   ],
-   "c18t1": [
-    "cat_mochi"
-   ],
-   "c19t0": [
-    "home_utrecht"
-   ],
-   "c19t1": [],
-   "c20t0": [],
-   "c21t0": [
-    "house_plaster_walls"
-   ],
-   "c22t0": [
-    "cat_saffie"
-   ],
-   "c22t1": [],
-   "c23t0": [],
-   "c23t1": [],
-   "c24t0": [
-    "spanish",
-    "portuguese"
-   ],
-   "c25t0": [
-    "kookboek",
-    "kb_shopping"
-   ],
-   "c25t1": [],
-   "c26t0": [],
-   "c27t0": [
-    "job_tulpwerk"
-   ],
-   "c27t1": [],
-   "c28t0": [],
-   "c29t0": [],
-   "c30t0": [
-    "job_tulpwerk",
-    "cycling"
-   ],
-   "c31t0": [
-    "cooking"
-   ],
-   "c32t0": [
-    "typescript"
-   ],
-   "c32t1": [],
-   "c32t2": [],
-   "c33t0": [],
-   "c33t1": [],
-   "c34t0": [],
-   "c34t1": [],
-   "c35t0": [
-    "job_tulpwerk",
-    "wfh"
-   ],
-   "c36t0": [
-    "kookboek",
-    "kb_magiclink",
-    "typescript"
-   ],
-   "c36t1": [],
-   "c37t0": [],
-   "c38t0": [
-    "sister_lieke",
-    "niece_fenna"
-   ],
-   "c39t0": [
-    "no_sugar"
-   ],
-   "c40t0": [
-    "half_marathon",
-    "bouldering"
-   ],
-   "c40t1": [
-    "long_runs_sunday"
-   ],
-   "c41t0": [
-    "porto_trip",
-    "portuguese"
-   ],
-   "c41t1": [],
-   "c41t2": [
-    "vegetarian"
-   ],
-   "c42t0": [],
-   "c43t0": [
-    "notion",
-    "linocut"
-   ],
-   "c43t1": [],
-   "c44t0": [],
-   "c45t0": [],
-   "c45t1": [],
-   "c46t0": [],
-   "c47t0": [
-    "macbook",
-    "figma",
-    "docker"
-   ],
-   "c47t1": [],
-   "c48t0": [],
-   "c49t0": [],
-   "c49t1": [],
-   "c50t0": [],
-   "c50t1": [],
-   "c51t0": [
-    "kookboek",
-    "kb_photos"
-   ],
-   "c51t1": [],
-   "c52t0": [
-    "cat_mochi",
-    "cat_saffie"
-   ],
-   "c53t0": [
-    "short_answers"
-   ],
-   "c54t0": [],
-   "c54t1": [],
-   "c55t0": [
-    "partner_joost",
-    "joost_vinyl"
-   ],
-   "c55t1": [],
-   "c56t0": [],
-   "c57t0": [],
-   "c57t1": [],
-   "c58t0": [],
-   "c58t1": [],
-   "c59t0": [],
-   "c60t0": [],
-   "c60t1": []
-  }
- }
 }
