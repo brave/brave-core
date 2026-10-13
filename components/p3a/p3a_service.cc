@@ -131,6 +131,7 @@ void P3AService::StartTeardown() {
 #endif  // !BUILDFLAG(IS_IOS)
   dynamic_metric_sample_callbacks_.clear();
   pref_change_registrar_.RemoveAll();
+  component_update_service_ = nullptr;
 }
 
 void P3AService::RegisterDynamicMetric(const std::string& histogram_name,
