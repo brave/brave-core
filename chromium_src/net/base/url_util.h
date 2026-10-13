@@ -33,6 +33,12 @@ NET_EXPORT bool IsCrossOriginOnionRequest(const url::Origin& initiator,
                                           const GURL& url);
 NET_EXPORT bool IsCrossOriginOnionRequest(std::string_view initiator,
                                           const GURL& url);
+
+// Returns true if `host` is "onion" or a subdomain of it. `host` is
+// canonicalized first, so it does not need to be lowercase or free of a
+// trailing dot.
+NET_EXPORT bool IsOnionHostname(std::string_view host);
+
 }  // namespace net
 
 #endif  // BRAVE_CHROMIUM_SRC_NET_BASE_URL_UTIL_H_

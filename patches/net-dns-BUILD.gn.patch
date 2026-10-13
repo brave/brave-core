@@ -1,5 +1,5 @@
 diff --git a/net/dns/BUILD.gn b/net/dns/BUILD.gn
-index 5f416202e142225d8a4361ac47cb2288ee4c537f..d1775a6387e5e402caf8b42eaae641eb37652eb7 100644
+index 5f416202e142225d8a4361ac47cb2288ee4c537f..6711bd99a2c345bec72f4dd4dd26779329a7abb3 100644
 --- a/net/dns/BUILD.gn
 +++ b/net/dns/BUILD.gn
 @@ -124,6 +124,7 @@ source_set("dns") {
@@ -10,3 +10,27 @@ index 5f416202e142225d8a4361ac47cb2288ee4c537f..d1775a6387e5e402caf8b42eaae641eb
  
    if (is_win) {
      sources += [
+@@ -205,6 +206,7 @@ source_set("dns") {
+   }
+ 
+   deps = [ "//net:net_deps" ]
++  deps += brave_net_dns_deps
+ 
+   public_deps = [
+     ":dns_client",
+@@ -474,6 +476,7 @@ source_set("tests") {
+     "stale_host_resolver_unittest.cc",
+     "system_dns_config_change_notifier_unittest.cc",
+   ]
++  sources += brave_net_dns_unit_test_sources
+ 
+   if (is_win) {
+     sources += [ "dns_config_service_win_unittest.cc" ]
+@@ -519,6 +522,7 @@ source_set("tests") {
+     "//testing/gtest",
+     "//third_party/fuzztest",
+   ]
++  deps += brave_net_dns_deps
+ 
+   # TODO(crbug.com/40031409): Fix code that adds exit-time destructors and
+   # enable the diagnostic by removing this line.
