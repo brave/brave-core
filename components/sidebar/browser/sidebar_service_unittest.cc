@@ -1367,8 +1367,19 @@ TEST_F(SidebarServiceOrderingTest, LoadFromPrefsAIChatBuiltInNotListed) {
   LoadFromPrefsTest(std::move(sidebar), items, expected_count);
 }
 
+class SidebarServiceWithoutWebPanelTest : public SidebarServiceTest {
+ public:
+  SidebarServiceWithoutWebPanelTest() {
+    scoped_feature_list_.InitAndDisableFeature(features::kSidebarWebPanel);
+  }
+  ~SidebarServiceWithoutWebPanelTest() override = default;
+
+ private:
+  base::test::ScopedFeatureList scoped_feature_list_;
+};
+
 // is_web_panel_type() is always false if feature is disabled.
-TEST_F(SidebarServiceTest, WebPanelItemTest) {
+TEST_F(SidebarServiceWithoutWebPanelTest, WebPanelItemTest) {
   InitService();
 
   SidebarItem item = SidebarItem::Create(
@@ -1401,7 +1412,7 @@ TEST_F(SidebarServiceTest, WebPanelItemTest) {
 #if BUILDFLAG(ENABLE_BRAVE_TALK)
 // Brave Talk is declared as a web panel item, but opens in a tab while the
 // feature is disabled.
-TEST_F(SidebarServiceTest, BraveTalkPanelTypeTest) {
+TEST_F(SidebarServiceWithoutWebPanelTest, BraveTalkPanelTypeTest) {
   InitService();
 
   const auto& items = service_->items();

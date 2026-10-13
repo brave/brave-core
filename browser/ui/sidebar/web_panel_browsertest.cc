@@ -57,7 +57,16 @@ class WebPanelBrowserTest : public SidebarBrowserTest {
   base::test::ScopedFeatureList scoped_features_;
 };
 
-using WebPanelDisabledBrowserTest = SidebarBrowserTest;
+class WebPanelDisabledBrowserTest : public SidebarBrowserTest {
+ public:
+  WebPanelDisabledBrowserTest() {
+    scoped_features_.InitAndDisableFeature(features::kSidebarWebPanel);
+  }
+  ~WebPanelDisabledBrowserTest() override = default;
+
+ private:
+  base::test::ScopedFeatureList scoped_features_;
+};
 
 #if BUILDFLAG(ENABLE_BRAVE_TALK)
 // Brave Talk is the only built-in item declared as a web panel.
