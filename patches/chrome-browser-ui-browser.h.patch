@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/browser.h b/chrome/browser/ui/browser.h
-index 1c1beed970c04b404125f7bcad3170ebfec27735..fd7a450b90428eb15040959b8f7f238fbd11d3e2 100644
+index 1c1beed970c04b404125f7bcad3170ebfec27735..7869ed1b033db154d0c02cc6531a3ed1145e7995 100644
 --- a/chrome/browser/ui/browser.h
 +++ b/chrome/browser/ui/browser.h
 @@ -169,6 +169,8 @@ class Browser : public TabStripModelObserver,
@@ -11,12 +11,3 @@ index 1c1beed970c04b404125f7bcad3170ebfec27735..fd7a450b90428eb15040959b8f7f238f
    friend BrowserWindowInterface* CreateBrowserWindow(
        BrowserWindowCreateParams create_params);
    friend std::unique_ptr<BrowserWindowInterface>
-@@ -215,7 +217,7 @@ class Browser : public TabStripModelObserver,
- 
-   // Handle changes to tab strip model.
-   void OnTabInsertedAt(content::WebContents* contents, int index);
--  void OnTabClosing(tabs::TabInterface* tab, bool* had_active_modal_dialog);
-+  virtual void OnTabClosing(tabs::TabInterface* tab, bool* had_active_modal_dialog);
-   void OnTabDetached(tabs::TabInterface* tab,
-                      bool was_active,
-                      bool had_active_modal_dialog);

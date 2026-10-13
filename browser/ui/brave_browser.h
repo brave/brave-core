@@ -24,8 +24,6 @@ class BraveBrowser : public Browser {
       const TabStripModelChange& change,
       const TabStripSelectionChange& selection) override;
 
-  void OnTabClosing(tabs::TabInterface* tab,
-                    bool* had_active_modal_dialog) override;
   void TabStripEmpty() override;
 
   // Allows ignoring onbeforeunload handlers when closing selected tabs.
@@ -42,8 +40,6 @@ class BraveBrowser : public Browser {
   }
 
  private:
-  bool AreAllTabsSharedPinnedTabs();
-
   // When "kEnableClosingLastTab" is false, browser will try to add new tab in
   // TabStripEmpty() if there is no tab. But, in some cases, we should not add
   // new tab, like when user tries to "Bring all tabs" to other window.
