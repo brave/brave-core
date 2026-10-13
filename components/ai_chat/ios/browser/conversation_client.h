@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_AI_CHAT_IOS_BROWSER_CONVERSATION_CLIENT_H_
 #define BRAVE_COMPONENTS_AI_CHAT_IOS_BROWSER_CONVERSATION_CLIENT_H_
 
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -52,6 +53,9 @@ class ConversationClient : public mojom::ConversationUI,
   // No-op: iOS has no UI for website tool permissions.
   void OnContentToolsChanged(const std::string& content_uuid,
                              std::vector<mojom::ToolInfoPtr> tools) override {}
+  // No-op: the legacy iOS client never submits images.
+  void OnVisionModelSwitchChanged(
+      const std::optional<std::string>& model_key) override {}
   void OnConversationDeleted() override;
 
   // mojom::ServiceObserver

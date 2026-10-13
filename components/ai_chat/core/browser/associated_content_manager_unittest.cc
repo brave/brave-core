@@ -100,6 +100,8 @@ class TestConversationUI : public mojom::ConversationUI {
 #endif
   void OnAssociatedContentInfoChanged(
       std::vector<mojom::AssociatedContentPtr> associated_content) override {}
+  void OnVisionModelSwitchChanged(
+      const std::optional<std::string>& model_key) override {}
   void OnConversationDeleted() override {}
 
  private:

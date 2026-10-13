@@ -235,6 +235,8 @@ class ConversationHandler : public mojom::ConversationHandler,
       ClearErrorAndGetFailedMessageCallback callback) override;
   void StopGenerationAndMaybeGetHumanEntry(
       StopGenerationAndMaybeGetHumanEntryCallback callback) override;
+  void RespondToVisionModelSwitch(
+      mojom::VisionModelSwitchDecision decision) override;
 
   void SubmitSelectedText(const std::string& selected_text,
                           mojom::ActionType action_type);
@@ -436,6 +438,13 @@ class ConversationHandler : public mojom::ConversationHandler,
   void OnAutoScreenshotsTaken(
       base::OnceClosure callback,
       std::optional<std::vector<mojom::UploadedFilePtr>> screenshots);
+  // Whether automatic screenshots would go with a submission to a model that
+  // can't read them.
+  bool DoAutoScreenshotsNeedVisionModel();
+  void TakeAutoScreenshots(base::OnceClosure callback);
+  // Takes automatic screenshots, unless |send_images| is false, then runs
+  // |callback|.
+  void OnAutoScreenshotsDecided(base::OnceClosure callback, bool send_images);
 
   void OnEngineCompletionDataReceived(
       EngineConsumer::GenerationResultData result);
@@ -478,19 +487,30 @@ class ConversationHandler : public mojom::ConversationHandler,
   // the current conversation state.
   std::vector<base::WeakPtr<Tool>> GetTools();
 
-  // Returns `model_key` if its model supports vision; otherwise returns the
-  // freemium/premium vision-default model key.
-  std::string GetVisionCapableModelKey(const std::string& model_key) const;
+  // Returns the freemium/premium vision-default model key.
+  std::string GetVisionDefaultModelKey() const;
 
-  // Resolves the model to use for an upcoming submission and switches to it
-  // at most once. The intended starting key (e.g. a skill's pinned model) is
-  // used as-is unless an image or screenshot is attached and the starting
-  // model lacks vision support — in which case the freemium/premium vision
-  // default is used. When `intended_model_key` is unset, the conversation's
-  // persisted model is the starting point.
+  // Switches to `model_key` (e.g. a skill's pinned model) when it is set and
+  // differs from the conversation's persisted model.
   void MaybeSwitchModelForSubmission(
-      const std::optional<std::vector<mojom::UploadedFilePtr>>& uploaded_files,
-      const std::optional<std::string>& intended_model_key = std::nullopt);
+      const std::optional<std::string>& model_key);
+
+  // Whether the model that will answer |turn| can read images.
+  bool CanModelForTurnReadImages(const mojom::ConversationTurn& turn);
+
+  // Adds the submitted human entry |turn| to history and starts generation.
+  void CommitHumanConversationEntry(mojom::ConversationTurnPtr turn);
+
+  // Asks the user whether to switch to the vision-default model before
+  // sending images the current model can't read. Either |turn| is the
+  // submission held back from history, or |resume| continues a submission
+  // already in history. Sends without the images instead when another
+  // submission already waits, or there is no vision-default model to offer.
+  void RequestVisionModelSwitch(
+      mojom::ConversationTurnPtr turn,
+      base::OnceCallback<void(bool send_images)> resume);
+  void ClearVisionModelSwitch();
+  void OnVisionModelSwitchChanged();
 
   std::string model_key_;
   // Chat conversation entries
@@ -527,6 +547,15 @@ class ConversationHandler : public mojom::ConversationHandler,
   // Percentage of visual content used (0-100), tracks image truncation
   // during screenshot capture due to MAX_IMAGES limits
   std::optional<uint32_t> visual_content_used_percentage_;
+
+  // Set while a submission waits for the user to decide whether to switch to
+  // this vision model, see RequestVisionModelSwitch.
+  std::optional<std::string> vision_model_switch_key_;
+  mojom::ConversationTurnPtr vision_model_switch_turn_;
+  base::OnceCallback<void(bool send_images)> vision_model_switch_resume_;
+  // Set when the user last chose to send without automatic screenshots, so
+  // they aren't taken, and asked about, again for every entry.
+  bool auto_screenshots_declined_ = false;
 
   // Whether further assistant responses should be appended to the last or
   // created in a new sibling ConversationEntry.
