@@ -1,0 +1,20 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module network.mojom;
+
+[BraveExtend]
+struct NetworkContextParams {
+  // Whether host resolution of .onion hostnames fails. Blocked by default so
+  // that only contexts the embedder explicitly allows can send .onion names
+  // to a DNS resolver.
+  bool block_onion_hostname_resolution = true;
+};
+
+[BraveExtend]
+interface NetworkContext {
+  // Sets whether host resolution of .onion hostnames fails.
+  SetBlockOnionHostnameResolution(bool block);
+};
