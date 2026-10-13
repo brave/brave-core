@@ -740,10 +740,6 @@ void JsonRpcService::GetAllNetworks(GetAllNetworksCallback callback) {
     if (SwapService::IsChainIdSupportedBySwap(network->chain_id)) {
       result->swap_chain_ids.emplace_back(network->chain_id);
     }
-
-    if (kOffRampChains.contains(network->chain_id)) {
-      result->off_ramp_chain_ids.emplace_back(network->chain_id);
-    }
   }
 
   std::move(callback).Run(std::move(result));

@@ -1963,17 +1963,6 @@ TEST_F(JsonRpcServiceUnitTest, GetAllNetworks) {
   }
   EXPECT_THAT(all_networks->swap_chain_ids,
               ElementsAreArray(expected_swap_chain_ids));
-
-  EXPECT_THAT(all_networks->off_ramp_chain_ids,
-              ElementsAreArray({
-                  mojom::kMainnetChainId,
-                  mojom::kPolygonMainnetChainId,
-                  mojom::kBnbSmartChainMainnetChainId,
-                  mojom::kOptimismMainnetChainId,
-                  mojom::kAvalancheMainnetChainId,
-                  mojom::kSolanaMainnet,
-                  mojom::kBitcoinMainnet,
-              }));
 }
 
 TEST_F(JsonRpcServiceUnitTest, GetHiddenNetworks) {

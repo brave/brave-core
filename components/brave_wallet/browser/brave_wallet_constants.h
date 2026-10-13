@@ -44,9 +44,6 @@ inline constexpr size_t kBalanceScannerBatchSize = 4000;
 
 inline constexpr char kWalletBaseDirectory[] = "BraveWallet";
 inline constexpr char kImageSourceHost[] = "erc-token-images";
-inline constexpr char kRampBaseUrl[] = "https://app.ramp.network";
-inline constexpr char kOffRampEnabledFlows[] = "OFFRAMP";
-inline constexpr char kOffRampID[] = "y57zqta99ohs7o2paf4ak6vpfb7wf8ubj9krwtwe";
 inline constexpr size_t kSimpleHashMaxBatchSize = 50;
 
 // 0x swap constants
@@ -147,20 +144,6 @@ inline constexpr auto kAnkrBlockchains =
          {mojom::kRolluxMainnetChainId, "rollux"},
          {mojom::kSyscoinMainnetChainId, "syscoin"},
          {mojom::kZkSyncEraChainId, "zksync_era"}});
-
-inline constexpr auto kOffRampChains =
-    base::MakeFixedFlatSet<std::string_view>({
-        mojom::kMainnetChainId,
-        mojom::kPolygonMainnetChainId,
-        mojom::kBnbSmartChainMainnetChainId,
-        mojom::kAvalancheMainnetChainId,
-        mojom::kFantomMainnetChainId,
-        mojom::kCeloMainnetChainId,
-        mojom::kOptimismMainnetChainId,
-        mojom::kArbitrumMainnetChainId,
-        mojom::kSolanaMainnet,
-        mojom::kBitcoinMainnet,
-    });
 
 inline constexpr auto kEthSupportedNftInterfaces =
     std::to_array<std::string_view>({

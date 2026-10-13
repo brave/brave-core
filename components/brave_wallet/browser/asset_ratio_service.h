@@ -36,14 +36,6 @@ class AssetRatioService : public mojom::AssetRatioService {
 
   void Bind(mojo::PendingReceiver<mojom::AssetRatioService> receiver);
 
-  // Get sell URL for off-ramps
-  void GetSellUrl(mojom::OffRampProvider provider,
-                  const std::string& chain_id,
-                  const std::string& symbol,
-                  const std::string& amount,
-                  const std::string& currency_code,
-                  GetSellUrlCallback callback) override;
-
   // mojom::AssetRatioService
   void GetPrice(std::vector<mojom::AssetPriceRequestPtr> requests,
                 const std::string& vs_currency,

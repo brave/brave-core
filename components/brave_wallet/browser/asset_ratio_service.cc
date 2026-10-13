@@ -188,32 +188,6 @@ GURL AssetRatioService::GetPriceHistoryURL(
   return GURL(spec);
 }
 
-void AssetRatioService::GetSellUrl(mojom::OffRampProvider provider,
-                                   const std::string& chain_id,
-                                   const std::string& symbol,
-                                   const std::string& amount,
-                                   const std::string& currency_code,
-                                   GetSellUrlCallback callback) {
-  std::string url;
-  if (provider == mojom::OffRampProvider::kRamp) {
-    GURL off_ramp_url = GURL(kRampBaseUrl);
-    off_ramp_url = net::AppendQueryParameter(off_ramp_url, "enabledFlows",
-                                             kOffRampEnabledFlows);
-    off_ramp_url = net::AppendQueryParameter(off_ramp_url, "swapAsset", symbol);
-    off_ramp_url =
-        net::AppendQueryParameter(off_ramp_url, "offrampAsset", symbol);
-    off_ramp_url =
-        net::AppendQueryParameter(off_ramp_url, "swapAmount", amount);
-    off_ramp_url =
-        net::AppendQueryParameter(off_ramp_url, "fiatCurrency", currency_code);
-    off_ramp_url =
-        net::AppendQueryParameter(off_ramp_url, "hostApiKey", kOffRampID);
-    std::move(callback).Run(off_ramp_url.spec(), std::nullopt);
-  } else {
-    std::move(callback).Run(url, "UNSUPPORTED_OFFRAMP_PROVIDER");
-  }
-}
-
 void AssetRatioService::GetPrice(
     std::vector<mojom::AssetPriceRequestPtr> requests,
     const std::string& vs_currency,

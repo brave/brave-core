@@ -183,12 +183,6 @@ class AccountActivityStoreTests: XCTestCase {
     blockchainRegistry._allTokens = { chainId, coin, completion in
       completion(self.tokenRegistry[coin] ?? [])
     }
-    blockchainRegistry._buyTokens = { _, chainId, completion in
-      let tokensForChainId = self.tokenRegistry
-        .flatMap(\.value)
-        .filter { $0.chainId == chainId }
-      completion(tokensForChainId)
-    }
 
     let assetRatioService = BraveWallet.TestAssetRatioService()
     assetRatioService._price = { _, _, completion in

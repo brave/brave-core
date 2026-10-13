@@ -174,22 +174,6 @@ extension BraveWallet.CoinType: @retroactive Identifiable {
   }
 }
 
-extension BraveWallet.OnRampProvider: @retroactive Identifiable {
-  public var id: Int {
-    rawValue
-  }
-}
-
-extension BraveWallet.OnRampCurrency: @retroactive Identifiable {
-  public var id: String {
-    currencyCode
-  }
-
-  var symbol: String {
-    CurrencyCode.symbol(for: currencyCode)
-  }
-}
-
 extension BraveWallet.CoinMarket: @retroactive Identifiable {
   var uniqueId: String {
     "\(symbol)\(marketCapRank)"
