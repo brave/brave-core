@@ -531,16 +531,26 @@ class ConversationHandler : public mojom::ConversationHandler,
 
   void OnGeneratePageContentComplete(base::OnceClosure callback,
                                      bool content_changed);
+  // Whether there are screenshots of the content with |content_uuid|, either
+  // automatic ones or on the human entry the content was first sent with.
+  bool HasScreenshotsOfContent(const std::string& content_uuid) const;
+  void OnScreenshotsOfContentTaken(
+      base::OnceClosure callback,
+      AssociatedContentManager::ContentScreenshots content_screenshots);
   void OnAutoScreenshotsTaken(
       base::OnceClosure callback,
       std::optional<std::vector<mojom::UploadedFilePtr>> screenshots);
   // Whether automatic screenshots would go with a submission to a model that
   // can't read them.
   bool DoAutoScreenshotsNeedVisionModel();
-  void TakeAutoScreenshots(base::OnceClosure callback);
-  // Takes automatic screenshots, unless |send_images| is false, then runs
-  // |callback|.
-  void OnAutoScreenshotsDecided(base::OnceClosure callback, bool send_images);
+  // Takes automatic screenshots of the content with |content_uuids|.
+  void TakeAutoScreenshots(base::OnceClosure callback,
+                           std::vector<std::string> content_uuids);
+  // Takes automatic screenshots of the content with |content_uuids|, unless
+  // |send_images| is false, then runs |callback|.
+  void OnAutoScreenshotsDecided(base::OnceClosure callback,
+                                std::vector<std::string> content_uuids,
+                                bool send_images);
 
   void OnEngineCompletionDataReceived(
       const std::optional<std::string>& thread_uuid,
