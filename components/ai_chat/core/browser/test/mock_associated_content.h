@@ -36,6 +36,11 @@ class MockAssociatedContent : public AssociatedContentDelegate {
 
   void SetIsVideo(bool is_video) { is_video_ = is_video; }
 
+  // Overrides the content type GetContent gives, e.g. for a workspace.
+  void SetContentType(mojom::ContentType content_type) {
+    content_type_ = content_type;
+  }
+
   void SetTitle(std::u16string title);
 
   // Simulates the page registering or unregistering a tool.
@@ -65,6 +70,7 @@ class MockAssociatedContent : public AssociatedContentDelegate {
  private:
   std::string text_content_;
   bool is_video_ = false;
+  std::optional<mojom::ContentType> content_type_;
   std::optional<url::Origin> origin_;
 
   base::WeakPtrFactory<AssociatedContentDelegate> weak_ptr_factory_{this};
