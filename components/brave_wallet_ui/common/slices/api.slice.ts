@@ -303,6 +303,7 @@ export const {
   useRemoveSitePermissionMutation,
   useRemoveUserTokenMutation,
   useRequestSitePermissionMutation,
+  useRecoverWalletMutation,
   useRestoreNetworksMutation,
   useRestoreWalletMutation,
   useRetryTransactionMutation,
