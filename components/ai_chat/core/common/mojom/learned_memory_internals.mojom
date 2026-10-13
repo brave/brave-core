@@ -24,10 +24,30 @@ struct DreamingRunRecord {
   string trace_json;
 };
 
-// Debugging of learned memory: what Dreaming asked the local models and what
-// they answered. Nothing of it is stored on disk.
+// The learned memory lookup of one chat turn: which memories went with the
+// request to the chat model, and why.
+struct TurnLookupRecord {
+  uint64 id;
+  string conversation_uuid;
+  mojo_base.mojom.Time start_time;
+  // Null while the lookup is active.
+  mojo_base.mojom.Time? end_time;
+  // The steps as a JSON list, the same shape as DreamingRunRecord.trace_json.
+  // The last step ("done") has the reason the lookup ended and the memories
+  // that went.
+  string trace_json;
+  // The request to the decision model as sent and its answer, as a JSON list.
+  // "arrived_ms" can be after the end of the lookup when it timed out.
+  string decision_requests_json;
+};
+
+// Debugging of learned memory: what Dreaming and the chat turns asked the
+// local models and what they answered. Nothing of it is stored on disk.
 interface LearnedMemoryInternals {
   // The active run and the last runs, the newest first. |available| is false
   // when learned memory does not run in this profile.
   GetDreamingRuns() => (bool available, array<DreamingRunRecord> runs);
+
+  // The last chat turn lookups, the newest first.
+  GetTurnLookups() => (bool available, array<TurnLookupRecord> lookups);
 };

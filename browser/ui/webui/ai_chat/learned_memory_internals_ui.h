@@ -32,15 +32,15 @@ class LearnedMemoryInternalsUIConfig
   bool IsWebUIEnabled(content::BrowserContext* browser_context) override;
 };
 
-// Shows the Dreaming runs of the profile: each request to the decision model
-// and to the LLM, the answers, and the decisions made from them.
+// Shows the Dreaming runs and the chat turn lookups of the profile: each
+// request to the decision model and to the LLM, the answers, and the decisions
+// made from them.
 class LearnedMemoryInternalsUI : public ui::MojoWebUIController,
                                  public mojom::LearnedMemoryInternals {
  public:
   explicit LearnedMemoryInternalsUI(content::WebUI* web_ui);
   LearnedMemoryInternalsUI(const LearnedMemoryInternalsUI&) = delete;
-  LearnedMemoryInternalsUI& operator=(const LearnedMemoryInternalsUI&) =
-      delete;
+  LearnedMemoryInternalsUI& operator=(const LearnedMemoryInternalsUI&) = delete;
   ~LearnedMemoryInternalsUI() override;
 
   void BindInterface(
@@ -48,6 +48,7 @@ class LearnedMemoryInternalsUI : public ui::MojoWebUIController,
 
   // mojom::LearnedMemoryInternals:
   void GetDreamingRuns(GetDreamingRunsCallback callback) override;
+  void GetTurnLookups(GetTurnLookupsCallback callback) override;
 
  private:
   raw_ptr<Profile> profile_;

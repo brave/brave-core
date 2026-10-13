@@ -7,26 +7,40 @@ import * as React from 'react'
 import { createRoot } from 'react-dom/client'
 import {
   DreamingRunRecord,
-  LearnedMemoryInternals
+  LearnedMemoryInternals,
+  TurnLookupRecord,
 } from 'gen/brave/components/ai_chat/core/common/mojom/learned_memory_internals.mojom.m.js'
 
-// brave://leo-memory-internals: the Dreaming runs of the profile, with each
-// request to the decision model and the LLM, the answers, and the decisions
-// that the run made from them. The page reads the runs again every few
-// seconds, so an active run shows its steps as they come.
+// brave://leo-memory-internals: the Dreaming runs and the chat turn lookups of
+// the profile, with each request to the decision model and the LLM, the
+// answers, and the decisions made from them. The page reads them again every
+// few seconds, so an active run shows its steps as they come.
 
 const REFRESH_MS = 2000
 // Mojo times count microseconds since 1601-01-01 (Windows epoch).
 const WINDOWS_TO_UNIX_EPOCH_MS = 11644473600000
 // The steps that the run makes from a model answer, and the model calls.
 const MODEL_STEPS = new Set([
-  'gate', 'sentence_decisions', 'relations', 'llm_call', 'llm_relation',
-  'rewrite_parsed', 'merge_parsed'
+  'gate',
+  'sentence_decisions',
+  'relations',
+  'llm_call',
+  'llm_relation',
+  'rewrite_parsed',
+  'merge_parsed',
 ])
 // Fields that the step header shows, or that have their own view.
 const HIDDEN_FIELDS = new Set([
-  'step', 't_ms', 'entry', 'latency_ms', 'decision_requests', 'purpose',
-  'system_prompt', 'request', 'answer', 'error'
+  'step',
+  't_ms',
+  'entry',
+  'latency_ms',
+  'decision_requests',
+  'purpose',
+  'system_prompt',
+  'request',
+  'answer',
+  'error',
 ])
 
 type Json = null | boolean | number | string | Json[] | { [key: string]: Json }
@@ -37,6 +51,8 @@ interface DecisionRequest {
   response: string | null
   error: string
   latency_ms: number
+  // Chat turns only: when the answer came, since the start of the lookup.
+  arrived_ms?: number
 }
 
 interface Run {
@@ -44,11 +60,42 @@ interface Run {
   steps: Step[]
 }
 
+interface Lookup {
+  record: TurnLookupRecord
+  steps: Step[]
+  requests: DecisionRequest[]
+}
+
+// Reads the list again every REFRESH_MS. |load| gives null when learned
+// memory is not available.
+function usePolling<T>(load: () => Promise<T[] | null>): [boolean, T[]] {
+  const [available, setAvailable] = React.useState(true)
+  const [items, setItems] = React.useState<T[]>([])
+  React.useEffect(() => {
+    let stopped = false
+    const read = async () => {
+      const result = await load()
+      if (!stopped) {
+        setAvailable(result !== null)
+        setItems(result ?? [])
+      }
+    }
+    read()
+    const timer = setInterval(read, REFRESH_MS)
+    return () => {
+      stopped = true
+      clearInterval(timer)
+    }
+  }, [])
+  return [available, items]
+}
+
 const api = LearnedMemoryInternals.getRemote()
 
 function toDate(time: { internalValue: bigint }): Date {
   return new Date(
-    Number(time.internalValue / BigInt(1000)) - WINDOWS_TO_UNIX_EPOCH_MS)
+    Number(time.internalValue / BigInt(1000)) - WINDOWS_TO_UNIX_EPOCH_MS,
+  )
 }
 
 function formatSeconds(ms: number): string {
@@ -57,7 +104,9 @@ function formatSeconds(ms: number): string {
 
 function formatTime(date: Date): string {
   return date.toLocaleTimeString([], {
-    hour: '2-digit', minute: '2-digit', second: '2-digit'
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
   })
 }
 
@@ -84,9 +133,11 @@ function groupByTurn(steps: Step[]): Step[][] {
   const groups: Step[][] = []
   let current: Step[] = []
   for (const step of steps) {
-    const startsGroup = step.step === 'turn' ||
-      ((step.step === 'review' || step.step === 'done') &&
-        current.length > 0 && current[0].step === 'turn')
+    const startsGroup =
+      step.step === 'turn'
+      || ((step.step === 'review' || step.step === 'done')
+        && current.length > 0
+        && current[0].step === 'turn')
     if (startsGroup && current.length > 0) {
       groups.push(current)
       current = []
@@ -99,15 +150,32 @@ function groupByTurn(steps: Step[]): Step[][] {
   return groups
 }
 
-function DecisionRequests(props: { requests: DecisionRequest[] }) {
+// |endMs| is the end of a chat turn lookup: an answer after it came too late.
+function DecisionRequests(props: {
+  requests: DecisionRequest[]
+  endMs?: number
+  open?: boolean
+}) {
   return (
     <div className='calls'>
       {props.requests.map((request, i) => (
-        <details key={i} className='call'>
+        <details
+          key={i}
+          className='call'
+          open={props.open}
+        >
           <summary>
             Decision model request {i + 1} · {request.latency_ms} ms
-            {request.error &&
-              <span className='error'> · {request.error}</span>}
+            {request.error && <span className='error'> · {request.error}</span>}
+            {props.endMs !== undefined
+              && request.arrived_ms !== undefined
+              && request.arrived_ms > props.endMs && (
+                <span className='error'>
+                  {' '}
+                  · came {request.arrived_ms - props.endMs} ms after the lookup
+                  ended
+                </span>
+              )}
           </summary>
           <div className='call-body'>
             <div>
@@ -128,11 +196,13 @@ function DecisionRequests(props: { requests: DecisionRequest[] }) {
 function LlmCall(props: { step: Step }) {
   const { step } = props
   return (
-    <details className='call' open>
+    <details
+      className='call'
+      open
+    >
       <summary>
         LLM {asString(step.purpose)} · {asString(step.latency_ms)} ms
-        {step.error &&
-          <span className='error'> · {asString(step.error)}</span>}
+        {step.error && <span className='error'> · {asString(step.error)}</span>}
       </summary>
       <div className='call-body'>
         <div>
@@ -152,31 +222,33 @@ function LlmCall(props: { step: Step }) {
 
 function StepView(props: { step: Step }) {
   const { step } = props
-  const fields =
-    Object.entries(step).filter(([key]) => !HIDDEN_FIELDS.has(key))
+  const fields = Object.entries(step).filter(([key]) => !HIDDEN_FIELDS.has(key))
   const requests = step.decision_requests as unknown as
-    DecisionRequest[] | undefined
+    | DecisionRequest[]
+    | undefined
   return (
     <div className={`step step-${asString(step.step)}`}>
       <div className='step-header'>
         <span className='step-name'>{asString(step.step)}</span>
         <span className='muted'>
           {asString(step.t_ms)} ms
-          {step.latency_ms !== undefined && step.step !== 'llm_call' &&
-            ` · took ${asString(step.latency_ms)} ms`}
+          {step.latency_ms !== undefined
+            && step.step !== 'llm_call'
+            && ` · took ${asString(step.latency_ms)} ms`}
         </span>
       </div>
-      {fields.length > 0 &&
+      {fields.length > 0 && (
         <pre className='fields'>
           {JSON.stringify(Object.fromEntries(fields), null, 2)}
-        </pre>}
+        </pre>
+      )}
       {requests && <DecisionRequests requests={requests} />}
       {step.step === 'llm_call' && <LlmCall step={step} />}
     </div>
   )
 }
 
-function RunView(props: { run: Run, modelStepsOnly: boolean }) {
+function RunView(props: { run: Run; modelStepsOnly: boolean }) {
   const { record, steps } = props.run
   const start = toDate(record.startTime)
   const end = record.endTime ? toDate(record.endTime) : null
@@ -199,17 +271,27 @@ function RunView(props: { run: Run, modelStepsOnly: boolean }) {
       {groupByTurn(steps).map((group, i) => {
         const turn = group[0].step === 'turn' ? group[0] : null
         const shown = props.modelStepsOnly
-          ? group.filter(step => MODEL_STEPS.has(asString(step.step)))
+          ? group.filter((step) => MODEL_STEPS.has(asString(step.step)))
           : group
         return (
-          <section key={i} className='turn'>
+          <section
+            key={i}
+            className='turn'
+          >
             <h3>
-              {turn ? `Turn: ${asString(turn.text)}`
-                    : i === 0 ? 'Start of the run' : 'End of the run'}
-              {turn &&
-                <span className='muted'> · {asString(turn.date)}</span>}
+              {turn
+                ? `Turn: ${asString(turn.text)}`
+                : i === 0
+                  ? 'Start of the run'
+                  : 'End of the run'}
+              {turn && <span className='muted'> · {asString(turn.date)}</span>}
             </h3>
-            {shown.map((step, j) => <StepView key={j} step={step} />)}
+            {shown.map((step, j) => (
+              <StepView
+                key={j}
+                step={step}
+              />
+            ))}
           </section>
         )
       })}
@@ -217,75 +299,206 @@ function RunView(props: { run: Run, modelStepsOnly: boolean }) {
   )
 }
 
-function App() {
-  const [available, setAvailable] = React.useState(true)
-  const [runs, setRuns] = React.useState<Run[]>([])
+async function loadRuns(): Promise<Run[] | null> {
+  const result = await api.getDreamingRuns()
+  if (!result.available) {
+    return null
+  }
+  return result.runs.map((record) => ({
+    record,
+    steps: JSON.parse(record.traceJson) as Step[],
+  }))
+}
+
+async function loadLookups(): Promise<Lookup[] | null> {
+  const result = await api.getTurnLookups()
+  if (!result.available) {
+    return null
+  }
+  return result.lookups.map((record) => ({
+    record,
+    steps: JSON.parse(record.traceJson) as Step[],
+    requests: JSON.parse(record.decisionRequestsJson) as DecisionRequest[],
+  }))
+}
+
+function DreamingTab() {
+  const [available, runs] = usePolling(loadRuns)
   const [selectedId, setSelectedId] = React.useState<bigint | null>(null)
   const [modelStepsOnly, setModelStepsOnly] = React.useState(false)
 
-  React.useEffect(() => {
-    let stopped = false
-    const load = async () => {
-      const result = await api.getDreamingRuns()
-      if (stopped) {
-        return
-      }
-      setAvailable(result.available)
-      setRuns(result.runs.map(record => ({
-        record,
-        steps: JSON.parse(record.traceJson) as Step[]
-      })))
-    }
-    load()
-    const timer = setInterval(load, REFRESH_MS)
-    return () => {
-      stopped = true
-      clearInterval(timer)
-    }
-  }, [])
-
-  const selected = runs.find(run => run.record.id === selectedId) ?? runs[0]
+  const selected = runs.find((run) => run.record.id === selectedId) ?? runs[0]
 
   return (
-    <div className='page'>
-      <style>{CSS}</style>
-      <header>
-        <h1>Leo memory internals</h1>
-        <p className='muted'>
-          The Dreaming runs of this profile, the newest first: what each step
-          asked the decision model and the LLM, and what they answered. Kept in
-          memory until the browser restarts.
-        </p>
-        <label>
-          <input type='checkbox' checked={modelStepsOnly}
-            onChange={e => setModelStepsOnly(e.target.checked)} />
-          Only the model steps
-        </label>
-      </header>
+    <>
+      <p className='muted'>
+        The Dreaming runs, the newest first: what each step asked the decision
+        model and the LLM, and what they answered.
+      </p>
+      <label>
+        <input
+          type='checkbox'
+          checked={modelStepsOnly}
+          onChange={(e) => setModelStepsOnly(e.target.checked)}
+        />
+        Only the model steps
+      </label>
       {!available && <p>Learned memory does not run in this profile.</p>}
-      {available && runs.length === 0 &&
-        <p>No Dreaming run yet. Select "Dream now" in Leo settings.</p>}
-      {runs.length > 0 &&
+      {available && runs.length === 0 && (
+        <p>No Dreaming run yet. Select "Dream now" in Leo settings.</p>
+      )}
+      {runs.length > 0 && (
         <div className='layout'>
           <nav>
-            {runs.map(run => (
-              <button key={String(run.record.id)}
+            {runs.map((run) => (
+              <button
+                key={String(run.record.id)}
                 className={run === selected ? 'selected' : ''}
-                onClick={() => setSelectedId(run.record.id)}>
+                onClick={() => setSelectedId(run.record.id)}
+              >
                 <div>
                   #{String(run.record.id)} {run.record.trigger}
                 </div>
-                <div className={run.record.status === 'running'
-                  ? 'running' : 'muted'}>
+                <div
+                  className={
+                    run.record.status === 'running' ? 'running' : 'muted'
+                  }
+                >
                   {run.record.status} ·{' '}
                   {formatTime(toDate(run.record.startTime))}
                 </div>
               </button>
             ))}
           </nav>
-          {selected &&
-            <RunView run={selected} modelStepsOnly={modelStepsOnly} />}
-        </div>}
+          {selected && (
+            <RunView
+              run={selected}
+              modelStepsOnly={modelStepsOnly}
+            />
+          )}
+        </div>
+      )}
+    </>
+  )
+}
+
+// The message of a lookup, for its button.
+function lookupMessage(lookup: Lookup): string {
+  const messages = lookup.steps[0]?.messages
+  return Array.isArray(messages) && messages.length > 0
+    ? asString(messages[0])
+    : ''
+}
+
+function LookupView(props: { lookup: Lookup }) {
+  const { record, steps, requests } = props.lookup
+  const done = steps.find((step) => step.step === 'done')
+  const endMs = done ? Number(done.t_ms) : undefined
+  return (
+    <div className='run'>
+      <div className='run-header'>
+        <h2>
+          Chat turn {String(record.id)} ·{' '}
+          {done ? asString(done.reason) : 'running'}
+        </h2>
+        <span className='muted'>
+          {toDate(record.startTime).toLocaleString()}
+          {done && ` · ${asString(done.total_ms)} ms`}
+        </span>
+        <a
+          href={`chrome://leo-ai/${record.conversationUuid}`}
+          target='_blank'
+        >
+          Open the chat
+        </a>
+      </div>
+      <h3>Decision model</h3>
+      {requests.length === 0 ? (
+        <p className='muted'>No request (or no answer yet).</p>
+      ) : (
+        <DecisionRequests
+          requests={requests}
+          endMs={endMs}
+          open
+        />
+      )}
+      <h3>Steps</h3>
+      {steps.map((step, i) => (
+        <StepView
+          key={i}
+          step={step}
+        />
+      ))}
+    </div>
+  )
+}
+
+function TurnsTab() {
+  const [available, lookups] = usePolling(loadLookups)
+  const [selectedId, setSelectedId] = React.useState<bigint | null>(null)
+  const selected =
+    lookups.find((lookup) => lookup.record.id === selectedId) ?? lookups[0]
+  return (
+    <>
+      <p className='muted'>
+        The learned memory lookups of the last chat turns, the newest first:
+        which memories the search found, what the decision model said about each
+        one, and which went with the request to the chat model.
+      </p>
+      {!available && <p>Learned memory does not run in this profile.</p>}
+      {available && lookups.length === 0 && (
+        <p>No chat turn yet. Send a message in Leo.</p>
+      )}
+      {lookups.length > 0 && (
+        <div className='layout'>
+          <nav>
+            {lookups.map((lookup) => (
+              <button
+                key={String(lookup.record.id)}
+                className={lookup === selected ? 'selected' : ''}
+                onClick={() => setSelectedId(lookup.record.id)}
+              >
+                <div className='message'>
+                  #{String(lookup.record.id)} {lookupMessage(lookup)}
+                </div>
+                <div className={lookup.record.endTime ? 'muted' : 'running'}>
+                  {lookup.record.endTime ? '' : 'running · '}
+                  {formatTime(toDate(lookup.record.startTime))}
+                </div>
+              </button>
+            ))}
+          </nav>
+          {selected && <LookupView lookup={selected} />}
+        </div>
+      )}
+    </>
+  )
+}
+
+function App() {
+  const [tab, setTab] = React.useState<'dreaming' | 'turns'>('dreaming')
+  return (
+    <div className='page'>
+      <style>{CSS}</style>
+      <header>
+        <h1>Leo memory internals</h1>
+        <p className='muted'>Kept in memory until the browser restarts.</p>
+        <div className='tabs'>
+          <button
+            className={tab === 'dreaming' ? 'selected' : ''}
+            onClick={() => setTab('dreaming')}
+          >
+            Dreaming runs
+          </button>
+          <button
+            className={tab === 'turns' ? 'selected' : ''}
+            onClick={() => setTab('turns')}
+          >
+            Chat turns
+          </button>
+        </div>
+      </header>
+      {tab === 'dreaming' ? <DreamingTab /> : <TurnsTab />}
     </div>
   )
 }
@@ -309,7 +522,18 @@ const CSS = `
     text-align: left; padding: 6px 8px; border: 1px solid #8884;
     border-radius: 6px; background: none; color: inherit; cursor: pointer;
   }
-  nav button.selected { border-color: #66f; background: #66f2; }
+  nav button.selected, .tabs button.selected {
+    border-color: #66f; background: #66f2;
+  }
+  nav button .message {
+    max-width: 240px; overflow: hidden; text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .tabs { display: flex; gap: 4px; margin: 8px 0; }
+  .tabs button {
+    padding: 6px 12px; border: 1px solid #8884; border-radius: 6px;
+    background: none; color: inherit; cursor: pointer;
+  }
   .run { flex: 1; min-width: 0; }
   .run-header {
     display: flex; gap: 12px; align-items: baseline; flex-wrap: wrap;
@@ -318,7 +542,8 @@ const CSS = `
   .step {
     margin: 6px 0 6px 12px; padding: 6px 8px; border-left: 3px solid #8886;
   }
-  .step-gate, .step-sentence_decisions, .step-relations {
+  .step-gate, .step-sentence_decisions, .step-relations,
+  .step-relevance {
     border-left-color: #c80;
   }
   .step-llm_call, .step-llm_relation { border-left-color: #66f; }

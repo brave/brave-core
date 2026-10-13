@@ -58,8 +58,8 @@ bool LearnedMemoryInternalsUIConfig::IsWebUIEnabled(
 
 LearnedMemoryInternalsUI::LearnedMemoryInternalsUI(content::WebUI* web_ui)
     : ui::MojoWebUIController(web_ui), profile_(Profile::FromWebUI(web_ui)) {
-  content::WebUIDataSource* source = content::WebUIDataSource::CreateAndAdd(
-      profile_, kLeoMemoryInternalsHost);
+  content::WebUIDataSource* source =
+      content::WebUIDataSource::CreateAndAdd(profile_, kLeoMemoryInternalsHost);
   webui::SetupWebUIDataSource(source, kAiChatUiGenerated,
                               IDR_AI_CHAT_LEARNED_MEMORY_INTERNALS_HTML);
 }
@@ -88,6 +88,22 @@ void LearnedMemoryInternalsUI::GetDreamingRuns(
         base::WriteJson(record.trace).value_or("[]")));
   }
   std::move(callback).Run(true, std::move(runs));
+}
+
+void LearnedMemoryInternalsUI::GetTurnLookups(GetTurnLookupsCallback callback) {
+  UserMemoryManager* manager = GetUserMemoryManager(profile_);
+  if (!manager) {
+    std::move(callback).Run(false, {});
+    return;
+  }
+  std::vector<mojom::TurnLookupRecordPtr> lookups;
+  for (TurnLookupRecord& record : manager->GetTurnLookupRecords()) {
+    lookups.push_back(mojom::TurnLookupRecord::New(
+        record.id, record.conversation_uuid, record.start_time, record.end_time,
+        base::WriteJson(record.trace).value_or("[]"),
+        base::WriteJson(record.decision_requests).value_or("[]")));
+  }
+  std::move(callback).Run(true, std::move(lookups));
 }
 
 WEB_UI_CONTROLLER_TYPE_IMPL(LearnedMemoryInternalsUI)
