@@ -8,6 +8,8 @@
 
 #include <net/base/url_util.h>  // IWYU pragma: export
 
+#include <string_view>
+
 #include "net/base/net_export.h"
 #include "url/origin.h"
 
@@ -22,6 +24,10 @@ NET_EXPORT bool IsOnion(const GURL& url);
 NET_EXPORT bool IsOnion(const url::Origin& origin);
 
 NET_EXPORT bool IsLocalhostOrOnion(const GURL& url);
+
+// Returns true if `host` is "onion" or a subdomain of it, ignoring ASCII case
+// and a trailing dot. `host` does not need to be canonicalized.
+NET_EXPORT bool IsOnionHostname(std::string_view host);
 
 }  // namespace net
 

@@ -1,0 +1,15 @@
+diff --git a/net/dns/host_resolver_manager.cc b/net/dns/host_resolver_manager.cc
+index ab286b869b864d0c8f4f7c6c98374f93d686a7f7..fee05e66170701e12004922d4c4cd8a869719f30 100644
+--- a/net/dns/host_resolver_manager.cc
++++ b/net/dns/host_resolver_manager.cc
+@@ -867,6 +867,10 @@ HostCache::Entry HostResolverManager::ResolveLocally(
+     std::deque<TaskType>* out_tasks,
+     std::optional<HostCache::EntryStaleness>* out_stale_info,
+     bool record_metrics) {
++  if (IsOnionHostnameResolutionBlocked(job_key)) {
++    return HostCache::Entry(ERR_NAME_NOT_RESOLVED,
++                            HostCache::Entry::SOURCE_UNKNOWN);
++  }
+   DCHECK(out_stale_info);
+   *out_stale_info = std::nullopt;
+ 

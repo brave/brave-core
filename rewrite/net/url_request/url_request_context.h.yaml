@@ -1,0 +1,27 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+blank_macros_for_ast_parsing: true
+
+substitutions:
+  - description: |-
+      Add accessors for blocking .onion hostname resolution.
+
+      The host resolver reads this to refuse .onion lookups for contexts where
+      .onion is only reachable through Tor.
+    add_to_public:
+      class_name: URLRequestContext
+      code: |-
+        void set_block_onion_hostname_resolution(bool block) {
+          block_onion_hostname_resolution_ = block;
+        }
+        bool block_onion_hostname_resolution() const {
+          return block_onion_hostname_resolution_;
+        }
+
+  - description: Add the bool block_onion_hostname_resolution_ member.
+    add_to_protected:
+      class_name: URLRequestContext
+      code: bool block_onion_hostname_resolution_ = false;

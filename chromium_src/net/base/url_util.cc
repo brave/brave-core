@@ -5,7 +5,9 @@
 
 #include <iostream>
 #include <string>
+#include <string_view>
 
+#include "base/strings/string_util.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "url/origin.h"
 #include "url/third_party/mozilla/url_parse.h"
@@ -48,6 +50,14 @@ bool IsOnion(const url::Origin& origin) {
 
 bool IsLocalhostOrOnion(const GURL& url) {
   return IsLocalhost(url) || IsOnion(url);
+}
+
+bool IsOnionHostname(std::string_view host) {
+  if (host.ends_with('.')) {
+    host.remove_suffix(1);
+  }
+  return base::EqualsCaseInsensitiveASCII(host, kOnionDomain) ||
+         base::EndsWith(host, ".onion", base::CompareCase::INSENSITIVE_ASCII);
 }
 
 }  // namespace net

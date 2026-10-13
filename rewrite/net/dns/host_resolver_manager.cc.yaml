@@ -1,0 +1,19 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Fail .onion lookups when the request context blocks them.
+
+      Every host resolution goes through ResolveLocally() before any cache,
+      hosts file, system or DoH lookup, so failing here keeps .onion names
+      away from all of them.
+    preempt_function_impl:
+      function_name: HostResolverManager::ResolveLocally
+      code: |-
+        if (IsOnionHostnameResolutionBlocked(job_key)) {
+          return HostCache::Entry(ERR_NAME_NOT_RESOLVED,
+                                  HostCache::Entry::SOURCE_UNKNOWN);
+        }
