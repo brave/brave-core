@@ -20,10 +20,10 @@ namespace {
 
 // Launches an in process Bat Ads Service.
 mojo::Remote<bat_ads::mojom::BatAdsService> LaunchInProcessBatAdsService(
-    const scoped_refptr<base::SingleThreadTaskRunner>& launch_task_runner,
+    base::SingleThreadTaskRunner& launch_task_runner,
     scoped_refptr<BatAdsServiceLaunch> launch) {
   mojo::Remote<bat_ads::mojom::BatAdsService> bat_ads_service_remote;
-  launch_task_runner->PostDelayedTask(
+  launch_task_runner.PostDelayedTask(
       FROM_HERE,
       base::BindOnce(&BatAdsServiceLaunch::Bind, std::move(launch),
                      bat_ads_service_remote.BindNewPipeAndPassReceiver()),
@@ -47,7 +47,7 @@ mojo::Remote<bat_ads::mojom::BatAdsService> BatAdsServiceFactoryImpl::Launch() {
 
   launch_ = base::MakeRefCounted<BatAdsServiceLaunch>();
 
-  return LaunchInProcessBatAdsService(launch_task_runner_, launch_);
+  return LaunchInProcessBatAdsService(*launch_task_runner_, launch_);
 }
 
 void BatAdsServiceFactoryImpl::Invalidate() {

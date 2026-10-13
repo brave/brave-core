@@ -20,10 +20,6 @@ FakeBatAdsServiceFactory::FakeBatAdsServiceFactory() = default;
 
 FakeBatAdsServiceFactory::~FakeBatAdsServiceFactory() = default;
 
-void FakeBatAdsServiceFactory::Invalidate() {
-  ++invalidate_count_;
-}
-
 const FakeBatAdsClientNotifier*
 FakeBatAdsServiceFactory::bat_ads_client_notifier() const {
   return bat_ads_service_ ? bat_ads_service_->bat_ads_client_notifier()
@@ -74,6 +70,10 @@ mojo::Remote<bat_ads::mojom::BatAdsService> FakeBatAdsServiceFactory::Launch() {
       bat_ads_service_remote.BindNewPipeAndPassReceiver());
 
   return bat_ads_service_remote;
+}
+
+void FakeBatAdsServiceFactory::Invalidate() {
+  ++invalidate_count_;
 }
 
 }  // namespace brave_ads::test
