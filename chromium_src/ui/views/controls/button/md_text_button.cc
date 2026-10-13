@@ -26,6 +26,7 @@
 #include "ui/gfx/paint_vector_icon.h"
 #include "ui/gfx/vector_icon_types.h"
 #include "ui/native_theme/native_theme.h"
+#include "ui/views/animation/ink_drop_util.h"
 #include "ui/views/background.h"
 #include "ui/views/controls/button/button.h"
 #include "ui/views/controls/highlight_path_generator.h"
@@ -174,8 +175,12 @@ void MdTextButton::UpdateTextColor() {
 void MdTextButton::UpdateBackgroundColor() {
   auto colors = GetButtonColors();
 
-  // SubPixelRendering doesn't work if we have any background opacity.
-  SetTextSubpixelRenderingEnabled(SkColorGetA(colors.background_color) == 0xFF);
+  // SubPixelRendering doesn't work if we have any background opacity. It must
+  // also stay off in high contrast, where LabelButton paints the label to a
+  // non-opaque layer.
+  SetTextSubpixelRenderingEnabled(SkColorGetA(colors.background_color) ==
+                                      0xFF &&
+                                  !UsingPlatformHighContrastInkDrop(this));
 
   SetBackground(
       CreateBackgroundFromPainter(Painter::CreateRoundRectWith1PxBorderPainter(
