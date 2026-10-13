@@ -1,0 +1,13 @@
+diff --git a/services/network/network_context.h b/services/network/network_context.h
+index ff3c2a037b5b2441d7c82c540cb0dcb7415bf5a6..81d45b06e90122a06927f72e79292f982627db2e 100644
+--- a/services/network/network_context.h
++++ b/services/network/network_context.h
+@@ -819,6 +819,8 @@ class COMPONENT_EXPORT(NETWORK_SERVICE) NetworkContext
+       const mojom::HostResolverHost& host,
+       const net::NetworkAnonymizationKey& network_anonymization_key);
+ 
++  void SetOnionOnlyInTorWindows(bool onion_only) override;
++
+  private:
+   class NetworkContextHttpAuthPreferences : public net::HttpAuthPreferences {
+    public:

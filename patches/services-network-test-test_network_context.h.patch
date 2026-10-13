@@ -1,0 +1,12 @@
+diff --git a/services/network/test/test_network_context.h b/services/network/test/test_network_context.h
+index cb0bb823df252231630d2e15e6ff428913b80cc4..cc94a4f08cf33cdc0d7f179178e3fb4017f0daf2 100644
+--- a/services/network/test/test_network_context.h
++++ b/services/network/test/test_network_context.h
+@@ -430,6 +430,7 @@ class TestNetworkContext : public mojom::NetworkContext {
+   void SetTryQuicByDefault(bool enable) override {}
+   void SetVariationsHeaders(
+       variations::mojom::VariationsHeadersPtr variations_headers) override {}
++  void SetOnionOnlyInTorWindows(bool onion_only) override {}
+ };
+ 
+ }  // namespace network

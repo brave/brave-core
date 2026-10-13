@@ -1,0 +1,24 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module network.mojom;
+
+[BraveExtend]
+struct NetworkContextParams {
+  // Whether the context belongs to a Tor profile.
+  bool is_tor = false;
+
+  // Whether .onion hostnames may only be resolved in Tor contexts. Host
+  // resolution of .onion fails in non-Tor contexts while this is set. True by
+  // default so that only contexts the embedder explicitly allows can send
+  // .onion names to a DNS resolver.
+  bool onion_only_in_tor_windows = true;
+};
+
+[BraveExtend]
+interface NetworkContext {
+  // Sets whether .onion hostnames may only be resolved in Tor contexts.
+  SetOnionOnlyInTorWindows(bool onion_only);
+};
