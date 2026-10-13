@@ -305,6 +305,7 @@ public class BraveYouTubePictureInPictureControllerTest {
         BraveYouTubePictureInPictureController controller =
                 spy(new BraveYouTubePictureInPictureController(mBraveActivity));
         doReturn(false).when(controller).isBackgroundVideoPlaybackEnabled(any());
+        doReturn(true).when(controller).isPictureInPictureEnabled();
         doReturn(mMediaSession).when(controller).getMediaSession(any());
         doNothing().when(controller).suspendMediaSession(any());
         controller.onSessionRequested(mWebContents);
@@ -336,6 +337,7 @@ public class BraveYouTubePictureInPictureControllerTest {
         BraveYouTubePictureInPictureController controller =
                 spy(new BraveYouTubePictureInPictureController(mBraveActivity));
         doReturn(true).when(controller).isBackgroundVideoPlaybackEnabled(any());
+        doReturn(true).when(controller).isPictureInPictureEnabled();
         doReturn(mMediaSession).when(controller).getMediaSession(any());
         controller.onSessionRequested(mWebContents);
         // Media is playing when the lock hits.
@@ -369,6 +371,7 @@ public class BraveYouTubePictureInPictureControllerTest {
         BraveYouTubePictureInPictureController controller =
                 spy(new BraveYouTubePictureInPictureController(mBraveActivity));
         doReturn(true).when(controller).isBackgroundVideoPlaybackEnabled(any());
+        doReturn(true).when(controller).isPictureInPictureEnabled();
         doReturn(mMediaSession).when(controller).getMediaSession(any());
         controller.onSessionRequested(mWebContents);
         // The media session last reported itself paused: the user paused before locking.
@@ -386,6 +389,27 @@ public class BraveYouTubePictureInPictureControllerTest {
                         BraveYouTubePictureInPictureController
                                 .KEY_RESUME_MEDIA_SESSION_ON_PIP_ENTRY,
                         true));
+    }
+
+    @Test
+    public void resumeAfterScreenLock_pipDisabled_doesNotReenterPip() {
+        // The session keeps waiting instead of entering PiP.
+        when(mNatives.isPictureInPictureAvailable(mWebContents)).thenReturn(true);
+
+        BraveYouTubePictureInPictureController controller =
+                spy(new BraveYouTubePictureInPictureController(mBraveActivity));
+        doReturn(false).when(controller).isBackgroundVideoPlaybackEnabled(any());
+        doReturn(false).when(controller).isPictureInPictureEnabled();
+        doReturn(null).when(controller).getMediaSession(any());
+        doNothing().when(controller).suspendMediaSession(any());
+        controller.onSessionRequested(mWebContents);
+        controller.onFullscreenInterrupted();
+
+        controller.onResume();
+
+        assertTrue(controller.isInterruptedByScreenLockForTesting());
+        verify(mBraveActivity, never())
+                .enterPictureInPictureMode(any(PictureInPictureParams.class));
     }
 
     /** Returns the play/pause observer the controller attached to {@code mMediaSession}. */
