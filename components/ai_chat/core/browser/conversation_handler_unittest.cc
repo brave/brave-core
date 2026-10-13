@@ -8446,7 +8446,7 @@ TEST_F(ConversationHandlerUnitTest, ConversationCapabilities) {
   struct TestCase {
     std::string name;
     bool content_agent_tools_allowed;
-    bool is_content_agent_user_selectable;
+    bool content_agent_user_selectable;
     bool content_agent_chosen;
     bool deep_research_enabled;
     bool math_rendering_enabled;
@@ -8457,7 +8457,7 @@ TEST_F(ConversationHandlerUnitTest, ConversationCapabilities) {
       {
           "Chat",
           /*content_agent_tools_allowed=*/false,
-          /*is_content_agent_user_selectable=*/false,
+          /*content_agent_user_selectable=*/false,
           /*content_agent_chosen=*/false,
           /*deep_research_enabled=*/false,
           /*math_rendering_enabled=*/true,
@@ -8466,7 +8466,7 @@ TEST_F(ConversationHandlerUnitTest, ConversationCapabilities) {
       {
           "ChatWithDeepResearch",
           /*content_agent_tools_allowed=*/false,
-          /*is_content_agent_user_selectable=*/false,
+          /*content_agent_user_selectable=*/false,
           /*content_agent_chosen=*/false,
           /*deep_research_enabled=*/true,
           /*math_rendering_enabled=*/true,
@@ -8476,7 +8476,7 @@ TEST_F(ConversationHandlerUnitTest, ConversationCapabilities) {
       {
           "ContentAgent",
           /*content_agent_tools_allowed=*/true,
-          /*is_content_agent_user_selectable=*/false,
+          /*content_agent_user_selectable=*/false,
           /*content_agent_chosen=*/false,
           /*deep_research_enabled=*/false,
           /*math_rendering_enabled=*/true,
@@ -8486,7 +8486,7 @@ TEST_F(ConversationHandlerUnitTest, ConversationCapabilities) {
       {
           "ContentAgentWithDeepResearch",
           /*content_agent_tools_allowed=*/true,
-          /*is_content_agent_user_selectable=*/false,
+          /*content_agent_user_selectable=*/false,
           /*content_agent_chosen=*/false,
           /*deep_research_enabled=*/true,
           /*math_rendering_enabled=*/true,
@@ -8499,7 +8499,7 @@ TEST_F(ConversationHandlerUnitTest, ConversationCapabilities) {
       {
           "MathRenderingDisabled",
           /*content_agent_tools_allowed=*/false,
-          /*is_content_agent_user_selectable=*/false,
+          /*content_agent_user_selectable=*/false,
           /*content_agent_chosen=*/false,
           /*deep_research_enabled=*/false,
           /*math_rendering_enabled=*/false,
@@ -8509,8 +8509,8 @@ TEST_F(ConversationHandlerUnitTest, ConversationCapabilities) {
       // though the tools are registered for the profile.
       {
           "ContentAgentUserSelectableNotChosen",
-          /*is_content_agent_tools_allowed=*/true,
-          /*is_content_agent_user_selectable=*/true,
+          /*content_agent_tools_allowed=*/true,
+          /*content_agent_user_selectable=*/true,
           /*content_agent_chosen=*/false,
           /*deep_research_enabled=*/false,
           /*math_rendering_enabled=*/true,
@@ -8518,8 +8518,8 @@ TEST_F(ConversationHandlerUnitTest, ConversationCapabilities) {
       },
       {
           "ContentAgentUserSelectableChosen",
-          /*is_content_agent_tools_allowed=*/true,
-          /*is_content_agent_user_selectable=*/true,
+          /*content_agent_tools_allowed=*/true,
+          /*content_agent_user_selectable=*/true,
           /*content_agent_chosen=*/true,
           /*deep_research_enabled=*/false,
           /*math_rendering_enabled=*/true,
@@ -8531,8 +8531,8 @@ TEST_F(ConversationHandlerUnitTest, ConversationCapabilities) {
       // and the model sees no difference.
       {
           "ContentAgentChosenWithoutTools",
-          /*is_content_agent_tools_allowed=*/false,
-          /*is_content_agent_user_selectable=*/true,
+          /*content_agent_tools_allowed=*/false,
+          /*content_agent_user_selectable=*/true,
           /*content_agent_chosen=*/true,
           /*deep_research_enabled=*/false,
           /*math_rendering_enabled=*/true,
@@ -8550,8 +8550,8 @@ TEST_F(ConversationHandlerUnitTest, ConversationCapabilities) {
 
     ai_chat_service_->set_content_agent_tools_allowed(
         test_params.content_agent_tools_allowed);
-    ai_chat_service_->SetIsContentAgentUserSelectable(
-        test_params.is_content_agent_user_selectable);
+    ai_chat_service_->set_content_agent_user_selectable(
+        test_params.content_agent_user_selectable);
 
     mock_tool_provider_ = nullptr;
     std::vector<std::unique_ptr<ToolProvider>> tool_providers;
@@ -8600,8 +8600,8 @@ TEST_F(ConversationHandlerUnitTest, ConversationCapabilities) {
 }
 
 TEST_F(ConversationHandlerUnitTest, ContentAgentChoiceIgnoredWhenNotOffered) {
-  ai_chat_service_->SetIsContentAgentToolsAllowed(true);
-  ai_chat_service_->SetIsContentAgentUserSelectable(false);
+  ai_chat_service_->set_content_agent_tools_allowed(true);
+  ai_chat_service_->set_content_agent_user_selectable(false);
   RecreateConversationHandler();
 
   NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
@@ -8621,8 +8621,8 @@ TEST_F(ConversationHandlerUnitTest, ContentAgentChoiceIgnoredWhenNotOffered) {
 TEST_F(ConversationHandlerUnitTest, ContentAgentChoiceWithoutToolsIsInert) {
   // The main profile before tool registration is permitted there: the choice
   // round-trips but the model sees no difference.
-  ai_chat_service_->SetIsContentAgentToolsAllowed(false);
-  ai_chat_service_->SetIsContentAgentUserSelectable(true);
+  ai_chat_service_->set_content_agent_tools_allowed(false);
+  ai_chat_service_->set_content_agent_user_selectable(true);
   RecreateConversationHandler();
 
   NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
@@ -8642,8 +8642,8 @@ TEST_F(ConversationHandlerUnitTest, ContentAgentChoiceWithoutToolsIsInert) {
 }
 
 TEST_F(ConversationHandlerUnitTest, ContentAgentChoiceIsNotPersisted) {
-  ai_chat_service_->SetIsContentAgentToolsAllowed(true);
-  ai_chat_service_->SetIsContentAgentUserSelectable(true);
+  ai_chat_service_->set_content_agent_tools_allowed(true);
+  ai_chat_service_->set_content_agent_user_selectable(true);
   RecreateConversationHandler();
 
   conversation_handler_->SetContentAgentChosen(true);

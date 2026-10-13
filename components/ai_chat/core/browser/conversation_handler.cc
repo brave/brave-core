@@ -191,11 +191,11 @@ ConversationHandler::ThreadContainer&
 ConversationHandler::ThreadContainer::operator=(ThreadContainer&&) = default;
 
 bool ConversationHandler::IsContentAgentUserSelectable() const {
-  return ai_chat_service_->GetIsContentAgentUserSelectable();
+  return ai_chat_service_->content_agent_user_selectable();
 }
 
 bool ConversationHandler::IsContentAgentEnabled() const {
-  if (!ai_chat_service_->GetIsContentAgentToolsAllowed()) {
+  if (!ai_chat_service_->content_agent_tools_allowed()) {
     return false;
   }
   // Where the user chooses, their choice decides. Where they do not, the
