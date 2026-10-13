@@ -148,6 +148,7 @@
 #include "net/base/net_errors.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/cookies/site_for_cookies.h"
+#include "services/network/public/mojom/network_context.mojom.h"
 #include "services/network/public/mojom/web_transport.mojom.h"
 #include "services/network/public/mojom/websocket.mojom.h"
 #include "services/service_manager/public/cpp/binder_registry.h"
@@ -282,6 +283,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/tor/tor_profile_service_factory.h"
+#include "brave/browser/tor/util.h"
 #include "brave/components/tor/onion_location_navigation_throttle.h"
 #include "brave/components/tor/pref_names.h"
 #include "brave/components/tor/tor_navigation_throttle.h"
@@ -1329,6 +1331,24 @@ void BraveContentBrowserClient::WillCreateWebTransport(
   ChromeContentBrowserClient::WillCreateWebTransport(
       process_id, frame_routing_id, url, initiator_origin,
       std::move(handshake_client), std::move(callback));
+}
+
+void BraveContentBrowserClient::ConfigureNetworkContextParams(
+    content::BrowserContext* context,
+    bool in_memory,
+    const base::FilePath& relative_partition_path,
+    network::mojom::NetworkContextParams* network_context_params,
+    cert_verifier::mojom::CertVerifierCreationParams*
+        cert_verifier_creation_params) {
+  ChromeContentBrowserClient::ConfigureNetworkContextParams(
+      context, in_memory, relative_partition_path, network_context_params,
+      cert_verifier_creation_params);
+#if BUILDFLAG(ENABLE_TOR)
+  network_context_params->block_onion_hostname_resolution =
+      tor::ShouldBlockOnionHostnameResolution(context);
+#else
+  network_context_params->block_onion_hostname_resolution = false;
+#endif
 }
 
 template <template <typename> class T>

@@ -76,6 +76,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
+#include "brave/browser/tor/onion_hostname_resolution_updater_factory.h"
 #include "brave/browser/tor/tor_profile_service_factory.h"
 #endif
 
@@ -157,6 +158,7 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
   SearchEngineProviderServiceFactory::GetInstance();
   misc_metrics::ProfileMiscMetricsServiceFactory::GetInstance();
 #if BUILDFLAG(ENABLE_TOR)
+  tor::OnionHostnameResolutionUpdaterFactory::GetInstance();
   TorProfileServiceFactory::GetInstance();
 #endif
   SearchEngineTrackerFactory::GetInstance();
