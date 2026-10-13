@@ -1788,7 +1788,7 @@ TEST_P(AIChatServiceUnitTest, ServiceStateHasContentAgentUserSelectable) {
   for (bool is_user_selectable : {false, true}) {
     SCOPED_TRACE(testing::Message()
                  << "is_user_selectable: " << is_user_selectable);
-    ai_chat_service_->SetIsContentAgentUserSelectable(is_user_selectable);
+    ai_chat_service_->set_content_agent_user_selectable(is_user_selectable);
 
     mojo::PendingRemote<mojom::ServiceObserver> observer;
     auto observer_receiver = observer.InitWithNewPipeAndPassReceiver();
