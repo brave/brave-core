@@ -425,7 +425,8 @@ void OllamaDecisionClient::AskRelations(const std::string& new_memory,
 void OllamaDecisionClient::AskRelevance(const std::string& message,
                                         const std::string& previous_message,
                                         std::vector<std::string> memories,
-                                        RelevanceCallback callback) {
+                                        RelevanceCallback callback,
+                                        ExchangeCallback on_exchange) {
   if (memories.empty()) {
     base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
         FROM_HERE, base::BindOnce(std::move(callback), std::vector<double>()));
@@ -473,7 +474,7 @@ void OllamaDecisionClient::AskRelevance(const std::string& message,
             std::move(callback).Run(std::move(relevance));
           },
           count, std::move(callback)),
-      Priority::kChatTime);
+      Priority::kChatTime, std::move(on_exchange));
 }
 
 void OllamaDecisionClient::SetDreamingExchangeObserver(
@@ -507,21 +508,25 @@ void OllamaDecisionClient::AskEach(std::vector<base::Value> states,
 void OllamaDecisionClient::Ask(base::Value state,
                                std::string questions,
                                AnswersCallback callback,
-                               Priority priority) {
+                               Priority priority,
+                               ExchangeCallback on_exchange) {
   if (priority == Priority::kDreaming && chat_time_requests_ > 0) {
     // A chat turn is waiting for the decision model. Dreaming goes after it.
     deferred_requests_.push_back(base::BindOnce(
         &OllamaDecisionClient::Send, weak_ptr_factory_.GetWeakPtr(),
-        std::move(state), std::move(questions), std::move(callback), priority));
+        std::move(state), std::move(questions), std::move(callback), priority,
+        std::move(on_exchange)));
     return;
   }
-  Send(std::move(state), std::move(questions), std::move(callback), priority);
+  Send(std::move(state), std::move(questions), std::move(callback), priority,
+       std::move(on_exchange));
 }
 
 void OllamaDecisionClient::Send(base::Value state,
                                 std::string questions,
                                 AnswersCallback callback,
-                                Priority priority) {
+                                Priority priority,
+                                ExchangeCallback on_exchange) {
   if (priority == Priority::kChatTime) {
     ++chat_time_requests_;
   }
@@ -544,16 +549,19 @@ void OllamaDecisionClient::Send(base::Value state,
   loader->SetTimeoutDuration(priority == Priority::kChatTime
                                  ? kChatTimeRequestTimeout
                                  : kRequestTimeout);
+  // The request text, for the exchange observers.
+  std::string sent;
+  if (on_exchange ||
+      (dreaming_exchange_observer_ && priority == Priority::kDreaming)) {
+    sent = json;
+  }
   auto* loader_ptr = loader.get();
   loader_ptr->DownloadToString(
       url_loader_factory_.get(),
-      base::BindOnce(
-          &OllamaDecisionClient::OnResponse, weak_ptr_factory_.GetWeakPtr(),
-          std::move(loader), std::move(callback), priority,
-          dreaming_exchange_observer_ && priority == Priority::kDreaming
-              ? json
-              : std::string(),
-          base::TimeTicks::Now()),
+      base::BindOnce(&OllamaDecisionClient::OnResponse,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(loader),
+                     std::move(callback), priority, std::move(on_exchange),
+                     std::move(sent), base::TimeTicks::Now()),
       kMaxResponseSize);
 }
 
@@ -561,14 +569,18 @@ void OllamaDecisionClient::OnResponse(
     std::unique_ptr<network::SimpleURLLoader> loader,
     AnswersCallback callback,
     Priority priority,
+    ExchangeCallback on_exchange,
     std::string sent,
     base::TimeTicks start,
     std::optional<std::string> body) {
-  if (priority == Priority::kDreaming && dreaming_exchange_observer_) {
-    dreaming_exchange_observer_.Run(
-        {std::move(sent), body,
-         body ? std::string() : net::ErrorToShortString(loader->NetError()),
-         base::TimeTicks::Now() - start});
+  Exchange exchange{
+      std::move(sent), body,
+      body ? std::string() : net::ErrorToShortString(loader->NetError()),
+      base::TimeTicks::Now() - start};
+  if (on_exchange) {
+    std::move(on_exchange).Run(std::move(exchange));
+  } else if (priority == Priority::kDreaming && dreaming_exchange_observer_) {
+    dreaming_exchange_observer_.Run(std::move(exchange));
   }
   std::optional<base::DictValue> answers;
   if (!body) {

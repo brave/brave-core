@@ -62,6 +62,28 @@ struct DreamingRunRecord {
   base::ListValue trace;
 };
 
+// The learned memory lookup of one chat turn, for brave://leo-memory-internals.
+// Kept in memory only.
+struct TurnLookupRecord {
+  TurnLookupRecord();
+  TurnLookupRecord(const TurnLookupRecord&) = delete;
+  TurnLookupRecord& operator=(const TurnLookupRecord&) = delete;
+  TurnLookupRecord(TurnLookupRecord&&);
+  TurnLookupRecord& operator=(TurnLookupRecord&&);
+  ~TurnLookupRecord();
+
+  uint64_t id = 0;
+  std::string conversation_uuid;
+  base::Time start_time;
+  // Null while the lookup is active.
+  std::optional<base::Time> end_time;
+  // The steps (TurnMemoryLookup::trace()).
+  base::ListValue trace;
+  // The request to the decision model as sent and its answer, with
+  // "arrived_ms" since the start. An answer can come after the lookup ended.
+  base::ListValue decision_requests;
+};
+
 // A change of the review that the user keeps, and its text when the user
 // edited it.
 struct DreamingReviewDecision {
@@ -101,6 +123,8 @@ class UserMemoryManager : public AIChatService::Observer {
 
   // The finished runs that the manager keeps for brave://leo-memory-internals.
   static constexpr size_t kMaxDreamingRunRecords = 10;
+  // The chat turn lookups that the manager keeps for the same page.
+  static constexpr size_t kMaxTurnLookupRecords = 20;
 
   // Reads the Dreaming settings from the learned memory feature params. Each
   // run records a trace.
@@ -178,6 +202,10 @@ class UserMemoryManager : public AIChatService::Observer {
   // with a copy of their traces.
   std::vector<DreamingRunRecord> GetDreamingRunRecords() const;
 
+  // The last kMaxTurnLookupRecords chat turn lookups, the newest first, with
+  // the steps so far of the active ones.
+  std::vector<TurnLookupRecord> GetTurnLookupRecords() const;
+
   // The changes of the last run that wait for the user's review, or null.
   const DreamingReview* pending_review() const {
     return pending_review_ ? &*pending_review_ : nullptr;
@@ -192,12 +220,14 @@ class UserMemoryManager : public AIChatService::Observer {
                            base::OnceCallback<void(bool)> callback);
 
   // Chat time. Finds the learned memories for a chat turn, and runs |callback|
-  // with them. |user_messages| are the last user messages, the newest first.
+  // with them. |conversation_uuid| is the chat of the turn, for the record of
+  // the lookup. |user_messages| are the last user messages, the newest first.
   // |callback| runs at once with no memories when the memory setting is off or
   // storage is not ready. It runs later after the lookup, or after the
   // time out (see TurnMemoryConfig) with only the permanent memories. A lookup
   // that is still active when the manager is deleted does not run |callback|.
-  void GetMemoriesForTurn(std::vector<std::string> user_messages,
+  void GetMemoriesForTurn(const std::string& conversation_uuid,
+                          std::vector<std::string> user_messages,
                           TurnMemoriesCallback callback);
 
   base::WeakPtr<UserMemoryManager> GetWeakPtr() {
@@ -213,6 +243,9 @@ class UserMemoryManager : public AIChatService::Observer {
   void OnTurnLookupDone(uint64_t lookup_id,
                         TurnMemoriesCallback callback,
                         EngineConsumer::LearnedMemories memories);
+  void OnTurnExchange(uint64_t lookup_id,
+                      MemoryDecisionClient::Exchange exchange);
+  TurnLookupRecord* FindTurnRecord(uint64_t lookup_id);
   void ScheduleDreaming(base::TimeDelta delay);
   void ScheduleNextDailyDreaming();
   void OnDreamingTimer();
@@ -254,6 +287,7 @@ class UserMemoryManager : public AIChatService::Observer {
   // The active lookups for chat turns.
   std::map<uint64_t, std::unique_ptr<TurnMemoryLookup>> turn_lookups_;
   uint64_t next_turn_lookup_id_ = 1;
+  base::circular_deque<TurnLookupRecord> turn_records_;
 
   base::WeakPtrFactory<UserMemoryManager> weak_ptr_factory_{this};
 };

@@ -56,7 +56,8 @@ class OllamaDecisionClient : public MemoryDecisionClient {
   void AskRelevance(const std::string& message,
                     const std::string& previous_message,
                     std::vector<std::string> memories,
-                    RelevanceCallback callback) override;
+                    RelevanceCallback callback,
+                    ExchangeCallback on_exchange) override;
   void SetDreamingExchangeObserver(ExchangeObserver observer) override;
 
  private:
@@ -71,24 +72,28 @@ class OllamaDecisionClient : public MemoryDecisionClient {
   enum class Priority { kDreaming, kChatTime };
 
   // |questions| is JSON text, in the order that the model must see. A Dreaming
-  // question waits while a chat time question is active.
+  // question waits while a chat time question is active. |on_exchange| gets
+  // the request and its answer.
   void Ask(base::Value state,
            std::string questions,
            AnswersCallback callback,
-           Priority priority = Priority::kDreaming);
+           Priority priority = Priority::kDreaming,
+           ExchangeCallback on_exchange = {});
   void Send(base::Value state,
             std::string questions,
             AnswersCallback callback,
-            Priority priority);
+            Priority priority,
+            ExchangeCallback on_exchange);
   // Sends one request for each state at the same time. Gives the answers in
   // the order of |states|, or std::nullopt when one request fails.
   void AskEach(std::vector<base::Value> states,
                const std::string& questions,
                AllAnswersCallback callback);
-  // |sent| and |start| are for the exchange observer.
+  // |on_exchange|, |sent| and |start| are for the exchange observers.
   void OnResponse(std::unique_ptr<network::SimpleURLLoader> loader,
                   AnswersCallback callback,
                   Priority priority,
+                  ExchangeCallback on_exchange,
                   std::string sent,
                   base::TimeTicks start,
                   std::optional<std::string> body);

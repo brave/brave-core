@@ -29,18 +29,21 @@ TurnMemoryConfig TurnMemoryConfig::FromFeatures() {
   return config;
 }
 
-TurnMemoryLookup::TurnMemoryLookup(LearnedMemoryDataSource& data_source,
-                                   base::WeakPtr<LearnedMemorySearch> search,
-                                   MemoryDecisionClient& decision_client,
-                                   TurnMemoryConfig config,
-                                   std::vector<std::string> user_messages,
-                                   DoneCallback done)
+TurnMemoryLookup::TurnMemoryLookup(
+    LearnedMemoryDataSource& data_source,
+    base::WeakPtr<LearnedMemorySearch> search,
+    MemoryDecisionClient& decision_client,
+    TurnMemoryConfig config,
+    std::vector<std::string> user_messages,
+    DoneCallback done,
+    MemoryDecisionClient::ExchangeCallback on_exchange)
     : data_source_(data_source),
       search_(std::move(search)),
       decision_client_(decision_client),
       config_(config),
       user_messages_(std::move(user_messages)),
-      done_(std::move(done)) {
+      done_(std::move(done)),
+      on_exchange_(std::move(on_exchange)) {
   CHECK(done_);
 }
 
@@ -63,7 +66,7 @@ std::string TurnMemoryLookup::FormatForPrompt(const LearnedMemory& memory) {
 void TurnMemoryLookup::Start() {
   start_time_ = base::TimeTicks::Now();
   timeout_timer_.Start(FROM_HERE, config_.timeout,
-                       base::BindOnce(&TurnMemoryLookup::Finish,
+                       base::BindOnce(&TurnMemoryLookup::OnTimeout,
                                       weak_ptr_factory_.GetWeakPtr()));
   // The last two user messages, the newest first.
   for (const auto& message : user_messages_) {
@@ -76,6 +79,15 @@ void TurnMemoryLookup::Start() {
       break;
     }
   }
+  base::ListValue messages;
+  for (const std::string& passage : passages_) {
+    messages.Append(passage);
+  }
+  Trace("messages", base::DictValue()
+                        .Set("messages", std::move(messages))
+                        .Set("timeout_ms",
+                             static_cast<int>(config_.timeout.InMilliseconds()))
+                        .Set("search", !!search_));
   data_source_->GetPermanentLearnedMemories(base::BindOnce(
       &TurnMemoryLookup::OnPermanentMemories, weak_ptr_factory_.GetWeakPtr()));
 }
@@ -86,11 +98,19 @@ void TurnMemoryLookup::OnPermanentMemories(
     return;
   }
   permanent_time_ = base::TimeTicks::Now();
+  base::ListValue texts;
   for (auto& memory : memories) {
+    texts.Append(memory.text);
     result_.permanent.push_back(std::move(memory.text));
   }
+  Trace("permanent",
+        base::DictValue()
+            .Set("latency_ms",
+                 static_cast<int>(
+                     (permanent_time_ - start_time_).InMilliseconds()))
+            .Set("memories", std::move(texts)));
   if (!search_ || passages_.empty()) {
-    Finish();
+    Finish(!search_ ? "no search" : "no message");
     return;
   }
   // The index has the permanent memories too. They are left out of the
@@ -107,12 +127,19 @@ void TurnMemoryLookup::OnMatches(std::vector<LearnedMemoryMatch> matches) {
   }
   searched_time_ = base::TimeTicks::Now();
   match_count_ = matches.size();
+  Trace("search",
+        base::DictValue()
+            .Set("latency_ms",
+                 static_cast<int>(
+                     (searched_time_ - permanent_time_).InMilliseconds()))
+            .Set("found", static_cast<int>(matches.size())));
   if (matches.empty()) {
-    Finish();
+    Finish("no match");
     return;
   }
   std::vector<std::string> uuids;
   for (auto& match : matches) {
+    scores_[match.uuid] = match.score;
     uuids.push_back(std::move(match.uuid));
   }
   data_source_->GetLearnedMemoriesByUuid(
@@ -133,8 +160,17 @@ void TurnMemoryLookup::OnCandidates(std::vector<LearnedMemory> memories) {
       candidates_.push_back(std::move(memory));
     }
   }
+  base::ListValue candidates;
+  for (const LearnedMemory& candidate : candidates_) {
+    candidates.Append(base::DictValue()
+                          .Set("text", candidate.text)
+                          .Set("similarity", scores_[candidate.uuid]));
+  }
+  Trace("candidates", base::DictValue()
+                          .Set("max", static_cast<int>(config_.max_candidates))
+                          .Set("candidates", std::move(candidates)));
   if (candidates_.empty()) {
-    Finish();
+    Finish("no candidate");
     return;
   }
   std::vector<std::string> texts;
@@ -146,7 +182,8 @@ void TurnMemoryLookup::OnCandidates(std::vector<LearnedMemory> memories) {
       passages_[0], passages_.size() > 1 ? passages_[1] : std::string(),
       std::move(texts),
       base::BindOnce(&TurnMemoryLookup::OnRelevance,
-                     weak_ptr_factory_.GetWeakPtr()));
+                     weak_ptr_factory_.GetWeakPtr()),
+      std::move(on_exchange_));
 }
 
 void TurnMemoryLookup::OnRelevance(
@@ -156,7 +193,7 @@ void TurnMemoryLookup::OnRelevance(
   }
   if (!relevance || relevance->size() != candidates_.size()) {
     DVLOG(1) << "Learned memory: no relevance answer for the chat turn";
-    Finish();
+    Finish("relevance request failed");
     return;
   }
   std::vector<size_t> order;
@@ -172,10 +209,37 @@ void TurnMemoryLookup::OnRelevance(
   for (size_t index : order) {
     result_.relevant.push_back(FormatForPrompt(candidates_[index]));
   }
-  Finish();
+  base::ListValue answers;
+  for (size_t i = 0; i < candidates_.size(); ++i) {
+    answers.Append(base::DictValue()
+                       .Set("text", candidates_[i].text)
+                       .Set("relevance", (*relevance)[i])
+                       .Set("kept", std::ranges::contains(order, i)));
+  }
+  Trace("relevance",
+        base::DictValue()
+            .Set("latency_ms",
+                 static_cast<int>((base::TimeTicks::Now() - candidates_time_)
+                                      .InMilliseconds()))
+            .Set("threshold", config_.relevance_threshold)
+            .Set("max_results", static_cast<int>(config_.max_results))
+            .Set("memories", std::move(answers)));
+  Finish("completed");
 }
 
-void TurnMemoryLookup::Finish() {
+void TurnMemoryLookup::OnTimeout() {
+  Finish("timed out");
+}
+
+void TurnMemoryLookup::Trace(std::string_view step, base::DictValue data) {
+  data.Set("step", step);
+  data.Set("t_ms",
+           static_cast<int>(
+               (base::TimeTicks::Now() - start_time_).InMilliseconds()));
+  trace_.Append(std::move(data));
+}
+
+void TurnMemoryLookup::Finish(std::string_view reason) {
   if (!done_) {
     return;
   }
@@ -194,6 +258,20 @@ void TurnMemoryLookup::Finish() {
           << (now - start_time_).InMilliseconds() << " ms, relevant "
           << result_.relevant.size() << ", permanent "
           << result_.permanent.size();
+  base::ListValue relevant;
+  for (const std::string& memory : result_.relevant) {
+    relevant.Append(memory);
+  }
+  base::ListValue permanent;
+  for (const std::string& memory : result_.permanent) {
+    permanent.Append(memory);
+  }
+  Trace("done", base::DictValue()
+                    .Set("reason", reason)
+                    .Set("total_ms",
+                         static_cast<int>((now - start_time_).InMilliseconds()))
+                    .Set("relevant", std::move(relevant))
+                    .Set("permanent", std::move(permanent)));
   // After a time out, the answers of the steps that are still active are
   // ignored.
   weak_ptr_factory_.InvalidateWeakPtrs();

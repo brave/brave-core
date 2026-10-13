@@ -132,13 +132,22 @@ class FakeDecisionClient : public MemoryDecisionClient {
   void AskRelevance(const std::string& message,
                     const std::string& previous_message,
                     std::vector<std::string> memories,
-                    RelevanceCallback callback) override {
+                    RelevanceCallback callback,
+                    ExchangeCallback on_exchange) override {
     relevance_requests.push_back({message, previous_message, memories});
     if (on_relevance_asked) {
       std::move(on_relevance_asked).Run();
     }
+    // What a real client sends, in short.
+    Exchange exchange{"relevance: " + message, "answers", "",
+                      base::Milliseconds(5)};
     if (hold_relevance) {
+      held_exchange =
+          base::BindOnce(std::move(on_exchange), std::move(exchange));
       return;
+    }
+    if (on_exchange) {
+      std::move(on_exchange).Run(std::move(exchange));
     }
     std::optional<std::vector<double>> answer;
     if (!fail_relevance) {
@@ -160,6 +169,8 @@ class FakeDecisionClient : public MemoryDecisionClient {
   // The probability that a memory is relevant, by memory text.
   std::map<std::string, double> relevance;
   bool hold_relevance = false;
+  // While |hold_relevance|: gives the exchange of the held request.
+  base::OnceClosure held_exchange;
   bool fail_relevance = false;
   base::OnceClosure on_relevance_asked;
   std::vector<RelevanceRequest> relevance_requests;
@@ -696,7 +707,8 @@ class UserMemoryManagerTurnTest : public UserMemoryManagerTest {
   EngineConsumer::LearnedMemories GetMemoriesForTurn(
       std::vector<std::string> messages) {
     base::test::TestFuture<EngineConsumer::LearnedMemories> future;
-    manager_->GetMemoriesForTurn(std::move(messages), future.GetCallback());
+    manager_->GetMemoriesForTurn("chat-1", std::move(messages),
+                                 future.GetCallback());
     return future.Take();
   }
 };
@@ -789,7 +801,8 @@ TEST_F(UserMemoryManagerTurnTest, TimeOutGivesOnlyPermanentMemories) {
   base::test::TestFuture<void> asked;
   client_->on_relevance_asked = asked.GetCallback();
   base::test::TestFuture<EngineConsumer::LearnedMemories> future;
-  manager_->GetMemoriesForTurn({"Suggest a dinner."}, future.GetCallback());
+  manager_->GetMemoriesForTurn("chat-1", {"Suggest a dinner."},
+                               future.GetCallback());
   // Wait until the model has the question, then let the time pass.
   ASSERT_TRUE(asked.Wait());
   EXPECT_FALSE(future.IsReady());
@@ -798,6 +811,50 @@ TEST_F(UserMemoryManagerTurnTest, TimeOutGivesOnlyPermanentMemories) {
   EngineConsumer::LearnedMemories memories = future.Take();
   EXPECT_THAT(memories.permanent, ElementsAre("Allergic to nuts."));
   EXPECT_THAT(memories.relevant, IsEmpty());
+}
+
+TEST_F(UserMemoryManagerTurnTest, KeepsTheLookupsWithTheirSteps) {
+  client_->relevance = {{"Is vegetarian.", 0.9}};
+  GetMemoriesForTurn({"Suggest a dinner."});
+
+  std::vector<TurnLookupRecord> records = manager_->GetTurnLookupRecords();
+  ASSERT_EQ(records.size(), 1u);
+  EXPECT_EQ(records[0].conversation_uuid, "chat-1");
+  EXPECT_TRUE(records[0].end_time);
+  std::vector<std::string> steps;
+  for (const auto& step : records[0].trace) {
+    steps.push_back(*step.GetDict().FindString("step"));
+  }
+  EXPECT_THAT(steps, ElementsAre("messages", "permanent", "search",
+                                 "candidates", "relevance", "done"));
+  EXPECT_EQ(*records[0].trace.back().GetDict().FindString("reason"),
+            "completed");
+  ASSERT_EQ(records[0].decision_requests.size(), 1u);
+  EXPECT_EQ(*records[0].decision_requests[0].GetDict().FindString("request"),
+            "relevance: Suggest a dinner.");
+}
+
+TEST_F(UserMemoryManagerTurnTest, KeepsTheLateAnswerOfALookupThatTimedOut) {
+  client_->hold_relevance = true;
+  base::test::TestFuture<void> asked;
+  client_->on_relevance_asked = asked.GetCallback();
+  base::test::TestFuture<EngineConsumer::LearnedMemories> future;
+  manager_->GetMemoriesForTurn("chat-1", {"Suggest a dinner."},
+                               future.GetCallback());
+  ASSERT_TRUE(asked.Wait());
+  task_environment_.FastForwardBy(TurnMemoryConfig::FromFeatures().timeout);
+  ASSERT_TRUE(future.Wait());
+
+  std::vector<TurnLookupRecord> records = manager_->GetTurnLookupRecords();
+  ASSERT_EQ(records.size(), 1u);
+  EXPECT_EQ(*records[0].trace.back().GetDict().FindString("reason"),
+            "timed out");
+  EXPECT_TRUE(records[0].decision_requests.empty());
+
+  // The answer comes after the lookup ended. It shows why it timed out.
+  std::move(client_->held_exchange).Run();
+  records = manager_->GetTurnLookupRecords();
+  ASSERT_EQ(records[0].decision_requests.size(), 1u);
 }
 
 TEST_F(UserMemoryManagerTurnTest, FailedModelGivesNoRelevantMemories) {
@@ -821,7 +878,8 @@ TEST_F(UserMemoryManagerTurnTest, MemorySettingOffGivesNothing) {
 
 TEST_F(UserMemoryManagerTest, TurnWithoutStorageGivesNothing) {
   base::test::TestFuture<EngineConsumer::LearnedMemories> future;
-  manager_->GetMemoriesForTurn({"Suggest a dinner."}, future.GetCallback());
+  manager_->GetMemoriesForTurn("chat-1", {"Suggest a dinner."},
+                               future.GetCallback());
   EXPECT_TRUE(future.Take().empty());
 }
 

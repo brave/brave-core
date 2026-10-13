@@ -8,8 +8,10 @@
 
 #include <stddef.h>
 
+#include <map>
 #include <optional>
 #include <string>
+#include <string_view>
 #include <vector>
 
 #include "base/functional/callback.h"
@@ -17,6 +19,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
+#include "base/values.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/learned_memory_data_source.h"
 #include "brave/components/ai_chat/core/browser/learned_memory_search.h"
@@ -56,7 +59,8 @@ struct TurnMemoryConfig {
 //  5. give the memories text with the date of the last mention
 // Without the search (semantic search is off), only the permanent memories go.
 // The lookup never fails: when a step fails or takes too long, the result has
-// only the permanent memories.
+// only the permanent memories. It records each step in trace(), for
+// brave://leo-memory-internals.
 class TurnMemoryLookup {
  public:
   using DoneCallback =
@@ -64,18 +68,24 @@ class TurnMemoryLookup {
 
   // |data_source| and |decision_client| must outlive the lookup. |search| can
   // be null. |user_messages| are the last user messages, the newest first.
-  // |done| runs one time, unless the lookup is deleted before.
+  // |done| runs one time, unless the lookup is deleted before. |on_exchange|
+  // can be null; it gets the request to the decision model and its answer.
   TurnMemoryLookup(LearnedMemoryDataSource& data_source,
                    base::WeakPtr<LearnedMemorySearch> search,
                    MemoryDecisionClient& decision_client,
                    TurnMemoryConfig config,
                    std::vector<std::string> user_messages,
-                   DoneCallback done);
+                   DoneCallback done,
+                   MemoryDecisionClient::ExchangeCallback on_exchange = {});
   TurnMemoryLookup(const TurnMemoryLookup&) = delete;
   TurnMemoryLookup& operator=(const TurnMemoryLookup&) = delete;
   ~TurnMemoryLookup();
 
   void Start();
+
+  // The steps so far. Each has "step" (its name) and "t_ms" (the time since
+  // the start).
+  const base::ListValue& trace() const { return trace_; }
 
   // The text that goes in the request for a learned memory: the memory and the
   // date of its last mention, for example "Lives in Berlin (2026-08-22)".
@@ -87,8 +97,10 @@ class TurnMemoryLookup {
   void OnCandidates(std::vector<LearnedMemory> memories);
   void OnRelevance(std::optional<std::vector<double>> relevance);
   // Runs |done_| with the result so far. The result has relevant memories only
-  // after the relevance answer.
-  void Finish();
+  // after the relevance answer. |reason| says why the lookup ends.
+  void Finish(std::string_view reason);
+  void OnTimeout();
+  void Trace(std::string_view step, base::DictValue data);
 
   const raw_ref<LearnedMemoryDataSource> data_source_;
   base::WeakPtr<LearnedMemorySearch> search_;
@@ -96,6 +108,10 @@ class TurnMemoryLookup {
   const TurnMemoryConfig config_;
   const std::vector<std::string> user_messages_;
   DoneCallback done_;
+  MemoryDecisionClient::ExchangeCallback on_exchange_;
+  base::ListValue trace_;
+  // The similarity of each found memory, by uuid.
+  std::map<std::string, float> scores_;
 
   // The last user messages that the search and the decision model read, the
   // newest first.

@@ -1465,7 +1465,7 @@ void ConversationHandler::PerformAssistantGeneration() {
         GetUserMessagesForLearnedMemories();
     if (!user_messages.empty()) {
       manager->GetMemoriesForTurn(
-          std::move(user_messages),
+          metadata_->uuid, std::move(user_messages),
           base::BindOnce(
               &ConversationHandler::PerformAssistantGenerationWithMemories,
               learned_memories_weak_ptr_factory_.GetWeakPtr()));

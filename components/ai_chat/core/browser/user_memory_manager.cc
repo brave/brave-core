@@ -30,6 +30,11 @@ DreamingRunRecord::DreamingRunRecord(DreamingRunRecord&&) = default;
 DreamingRunRecord& DreamingRunRecord::operator=(DreamingRunRecord&&) = default;
 DreamingRunRecord::~DreamingRunRecord() = default;
 
+TurnLookupRecord::TurnLookupRecord() = default;
+TurnLookupRecord::TurnLookupRecord(TurnLookupRecord&&) = default;
+TurnLookupRecord& TurnLookupRecord::operator=(TurnLookupRecord&&) = default;
+TurnLookupRecord::~TurnLookupRecord() = default;
+
 // static
 DreamingConfig UserMemoryManager::GetDreamingConfigFromFeatures() {
   DreamingConfig config;
@@ -298,6 +303,7 @@ void UserMemoryManager::SetWatermarks(
 }
 
 void UserMemoryManager::GetMemoriesForTurn(
+    const std::string& conversation_uuid,
     std::vector<std::string> user_messages,
     TurnMemoriesCallback callback) {
   if (!data_source_->IsStorageReady() ||
@@ -307,14 +313,67 @@ void UserMemoryManager::GetMemoriesForTurn(
     return;
   }
   const uint64_t id = next_turn_lookup_id_++;
+  TurnLookupRecord record;
+  record.id = id;
+  record.conversation_uuid = conversation_uuid;
+  record.start_time = base::Time::Now();
+  turn_records_.push_front(std::move(record));
+  if (turn_records_.size() > kMaxTurnLookupRecords) {
+    turn_records_.pop_back();
+  }
   auto lookup = std::make_unique<TurnMemoryLookup>(
       *data_source_, search_, *decision_client_, turn_config_,
       std::move(user_messages),
       base::BindOnce(&UserMemoryManager::OnTurnLookupDone,
-                     weak_ptr_factory_.GetWeakPtr(), id, std::move(callback)));
+                     weak_ptr_factory_.GetWeakPtr(), id, std::move(callback)),
+      base::BindOnce(&UserMemoryManager::OnTurnExchange,
+                     weak_ptr_factory_.GetWeakPtr(), id));
   TurnMemoryLookup* lookup_ptr = lookup.get();
   turn_lookups_[id] = std::move(lookup);
   lookup_ptr->Start();
+}
+
+TurnLookupRecord* UserMemoryManager::FindTurnRecord(uint64_t lookup_id) {
+  auto it = std::ranges::find(turn_records_, lookup_id, &TurnLookupRecord::id);
+  return it == turn_records_.end() ? nullptr : &*it;
+}
+
+void UserMemoryManager::OnTurnExchange(
+    uint64_t lookup_id,
+    MemoryDecisionClient::Exchange exchange) {
+  TurnLookupRecord* record = FindTurnRecord(lookup_id);
+  if (!record) {
+    return;
+  }
+  record->decision_requests.Append(
+      base::DictValue()
+          .Set("request", std::move(exchange.request))
+          .Set("response", exchange.response
+                               ? base::Value(std::move(*exchange.response))
+                               : base::Value())
+          .Set("error", std::move(exchange.error))
+          .Set("latency_ms",
+               static_cast<int>(exchange.latency.InMilliseconds()))
+          .Set("arrived_ms",
+               static_cast<int>(
+                   (base::Time::Now() - record->start_time).InMilliseconds())));
+}
+
+std::vector<TurnLookupRecord> UserMemoryManager::GetTurnLookupRecords() const {
+  std::vector<TurnLookupRecord> records;
+  for (const TurnLookupRecord& record : turn_records_) {
+    TurnLookupRecord copy;
+    copy.id = record.id;
+    copy.conversation_uuid = record.conversation_uuid;
+    copy.start_time = record.start_time;
+    copy.end_time = record.end_time;
+    copy.decision_requests = record.decision_requests.Clone();
+    auto lookup = turn_lookups_.find(record.id);
+    copy.trace = lookup != turn_lookups_.end() ? lookup->second->trace().Clone()
+                                               : record.trace.Clone();
+    records.push_back(std::move(copy));
+  }
+  return records;
 }
 
 void UserMemoryManager::OnTurnLookupDone(
@@ -325,6 +384,10 @@ void UserMemoryManager::OnTurnLookupDone(
   // Delete it later.
   auto it = turn_lookups_.find(lookup_id);
   if (it != turn_lookups_.end()) {
+    if (TurnLookupRecord* record = FindTurnRecord(lookup_id)) {
+      record->end_time = base::Time::Now();
+      record->trace = it->second->trace().Clone();
+    }
     base::SequencedTaskRunner::GetCurrentDefault()->DeleteSoon(
         FROM_HERE, std::move(it->second));
     turn_lookups_.erase(it);

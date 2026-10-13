@@ -127,6 +127,7 @@ class MemoryDecisionClient {
     base::TimeDelta latency;
   };
   using ExchangeObserver = base::RepeatingCallback<void(Exchange)>;
+  using ExchangeCallback = base::OnceCallback<void(Exchange)>;
 
   virtual ~MemoryDecisionClient() = default;
 
@@ -153,10 +154,13 @@ class MemoryDecisionClient {
   // message of a chat. |previous_message| is the user message before it, or
   // empty. This question comes before the Dreaming questions: while it is
   // active, the client holds back the Dreaming questions that are not sent yet.
+  // |on_exchange|, when not null, gets the request and its answer, also when
+  // the answer comes after the caller stopped waiting.
   virtual void AskRelevance(const std::string& message,
                             const std::string& previous_message,
                             std::vector<std::string> memories,
-                            RelevanceCallback callback) = 0;
+                            RelevanceCallback callback,
+                            ExchangeCallback on_exchange) = 0;
 };
 
 }  // namespace ai_chat

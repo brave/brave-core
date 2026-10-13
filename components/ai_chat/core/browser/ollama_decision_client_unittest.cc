@@ -149,7 +149,7 @@ TEST_F(OllamaDecisionClientTest, ObserverGetsDreamingRequestsAndAnswers) {
   ASSERT_TRUE(future.Take());
   // A chat time question is not Dreaming.
   base::test::TestFuture<std::optional<std::vector<double>>> relevance;
-  client_->AskRelevance("message", "", {"memory"}, relevance.GetCallback());
+  client_->AskRelevance("message", "", {"memory"}, relevance.GetCallback(), {});
   ASSERT_TRUE(relevance.Take());
 
   ASSERT_EQ(exchanges.size(), 1u);
@@ -157,6 +157,20 @@ TEST_F(OllamaDecisionClientTest, ObserverGetsDreamingRequestsAndAnswers) {
             std::string::npos);
   EXPECT_EQ(exchanges[0].response, SentenceResponse(0.9));
   EXPECT_TRUE(exchanges[0].error.empty());
+}
+
+TEST_F(OllamaDecisionClientTest, RelevanceGivesItsRequestAndAnswer) {
+  base::test::TestFuture<MemoryDecisionClient::Exchange> exchange;
+  base::test::TestFuture<std::optional<std::vector<double>>> relevance;
+  client_->AskRelevance("Suggest a dinner.", "", {"Is vegetarian."},
+                        relevance.GetCallback(), exchange.GetCallback());
+  ASSERT_TRUE(relevance.Take());
+
+  MemoryDecisionClient::Exchange result = exchange.Take();
+  EXPECT_EQ(result.request, last_body_);
+  ASSERT_TRUE(result.response);
+  EXPECT_NE(result.response->find("\"m0\""), std::string::npos);
+  EXPECT_TRUE(result.error.empty());
 }
 
 TEST_F(OllamaDecisionClientTest, BadResponseFailsTheRequest) {
@@ -173,7 +187,8 @@ TEST_F(OllamaDecisionClientTest, BadResponseFailsTheRequest) {
 TEST_F(OllamaDecisionClientTest, RelevanceAsksOneQuestionForEachMemory) {
   base::test::TestFuture<std::optional<std::vector<double>>> future;
   client_->AskRelevance("Suggest a dinner.", "Hello",
-                        {"Is vegetarian.", "Has a dog."}, future.GetCallback());
+                        {"Is vegetarian.", "Has a dog."}, future.GetCallback(),
+                        {});
   auto relevance = future.Take();
 
   ASSERT_TRUE(relevance);
@@ -196,7 +211,7 @@ TEST_F(OllamaDecisionClientTest, DreamingQuestionWaitsForChatTimeQuestion) {
   answer_relevance_ = false;
   base::test::TestFuture<std::optional<std::vector<double>>> relevance;
   client_->AskRelevance("Suggest a dinner.", "", {"Is vegetarian."},
-                        relevance.GetCallback());
+                        relevance.GetCallback(), {});
   base::test::TestFuture<std::optional<AnswerProbabilities<bool>>> gate;
   client_->AskGate("a turn", gate.GetCallback());
   task_environment_.RunUntilIdle();
@@ -219,7 +234,7 @@ TEST_F(OllamaDecisionClientTest, FailedRelevanceRequestGivesNothing) {
   answer_relevance_ = false;
   base::test::TestFuture<std::optional<std::vector<double>>> future;
   client_->AskRelevance("Suggest a dinner.", "", {"Is vegetarian."},
-                        future.GetCallback());
+                        future.GetCallback(), {});
   task_environment_.RunUntilIdle();
   ASSERT_TRUE(url_loader_factory_.SimulateResponseForPendingRequest(
       kEndpoint, "not json"));
