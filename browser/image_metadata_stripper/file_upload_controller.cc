@@ -9,16 +9,32 @@
 
 namespace image_metadata_stripper {
 
+DEFINE_USER_DATA(FileUploadController);
+
 FileUploadController::FileUploadController(tabs::TabInterface& tab)
-    : tabs::ContentsObservingTabFeature(tab) {}
+    : tabs::ContentsObservingTabFeature(tab),
+      scoped_unowned_user_data_(tab.GetUnownedUserDataHost(), *this) {}
 
 FileUploadController::~FileUploadController() = default;
 
 // static
+FileUploadController* FileUploadController::From(tabs::TabInterface* tab) {
+  return tab ? Get(tab->GetUnownedUserDataHost()) : nullptr;
+}
+
+// static
 std::unique_ptr<FileUploadController> FileUploadController::MaybeCreate(
     tabs::TabInterface& tab) {
+  // No controller must have been created at this point.
+  auto* controller = Get(tab.GetUnownedUserDataHost());
+  CHECK(!controller);
+
   return base::WrapUnique(new FileUploadController(tab));
 }
+
+void FileUploadController::Strip(std::vector<base::FilePath> srcs,
+                                 StrippingClient client,
+                                 StripCallback callback) {}
 
 void FileUploadController::OnDiscardContents(
     tabs::TabInterface* tab,
