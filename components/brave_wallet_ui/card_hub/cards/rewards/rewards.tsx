@@ -5,15 +5,25 @@
 
 import * as React from 'react'
 
+// Types
+import { WalletStatus } from '$wallet/constants/types'
+
 // Constants
 import { LOCAL_STORAGE_KEYS } from '$wallet/common/constants/local-storage-keys'
 
 // Utils
 import { getLocale } from '$web-common/locale'
 import { useSyncedLocalStorage } from '$wallet/common/hooks/use_local_storage'
+import Amount from '$wallet/utils/amount'
+import { formatBATBalance } from '$wallet/utils/rewards_utils'
+import { emptyRewardsInfo } from '$wallet/common/async/base-query-cache'
+
+// Queries
+import { useGetRewardsInfoQuery } from '$wallet/common/slices/api.slice'
 
 // Components
 import { Card } from '../card'
+import { LoadingSkeleton } from '$wallet/components/shared/loading-skeleton'
 
 // Styles
 import {
@@ -38,6 +48,19 @@ export const Rewards = (props: Props) => {
     LOCAL_STORAGE_KEYS.HIDE_PORTFOLIO_BALANCES,
     false,
   )
+
+  // Queries
+  const {
+    data: {
+      balance: rewardsBalance,
+      status: rewardsStatus,
+      isRewardsEnabled,
+    } = emptyRewardsInfo,
+    isLoading: isLoadingRewardsInfo,
+  } = useGetRewardsInfoQuery()
+
+  // Computed
+  const formattedRewardsBalance = formatBATBalance(rewardsBalance)
 
   return (
     <Card
@@ -72,17 +95,30 @@ export const Rewards = (props: Props) => {
           alignItems='center'
           gap='8px'
         >
-          <Text
-            variant='heading.h3'
-            textColor='white'
-          >
-            {hidePortfolioBalances ? '•••• BAT' : '0.00 BAT'}
-          </Text>
-          <EnableRewardsWrapper>
-            <EnableRewardsText variant='small.semibold'>
-              {getLocale(S.BRAVE_WALLET_ENABLE_REWARDS)}
-            </EnableRewardsText>
-          </EnableRewardsWrapper>
+          {isLoadingRewardsInfo ? (
+            <LoadingSkeleton
+              width={100}
+              height={26}
+            />
+          ) : (
+            <Text
+              variant='heading.h3'
+              textColor='white'
+            >
+              {hidePortfolioBalances
+                ? Amount.formatHiddenAsAsset('BAT')
+                : formattedRewardsBalance}
+            </Text>
+          )}
+          {/* kLoggedOut reconnect CTA needs design; not a priority yet */}
+          {!isRewardsEnabled
+            && rewardsStatus === WalletStatus.kNotConnected && (
+              <EnableRewardsWrapper>
+                <EnableRewardsText variant='small.semibold'>
+                  {getLocale(S.BRAVE_WALLET_ENABLE_REWARDS)}
+                </EnableRewardsText>
+              </EnableRewardsWrapper>
+            )}
         </Row>
       </Column>
     </Card>
