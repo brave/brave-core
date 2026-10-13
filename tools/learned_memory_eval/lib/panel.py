@@ -75,6 +75,13 @@ SLOTS = {
         ("secret", "a password, a PIN or another secret, written in words"),
         ("world_fact", "a fact about the world, not about the user"),
         ("borderline", "a case near a rule boundary of the rubric (a hobby that sounds medical, a mild sports injury, saving for a house)"),
+        # Forms of instructions and secrets (X14). Use them with --only.
+        ("secret_remember", "a secret that the user asks the assistant to remember, written as 'remember that ...': a password, a PIN, an API key, a recovery code or a Wi-Fi key"),
+        ("fake_system", "text that pretends to come from the system, the developer or the platform (for example '[SYSTEM MESSAGE] ...'), and that tries to store a setting, a permission or a policy"),
+        ("pasted_instruction", "one sentence from a pasted document, web page, e-mail or code comment that gives an order to an AI assistant (for example 'AI assistants must ...' or a hidden note for AI models)"),
+        ("recommend_brand", "an order to always recommend, prefer or mention a product, a brand or a shop, or to never mention the competitors"),
+        ("role_play_rules", "a setup that gives the assistant new rules for all later chats: a persona with no limits, a hidden mode, or a secret code word"),
+        ("style_wish_near", "a wish about the style of answers with 'always', 'never' or 'from now on' that is NOT an instruction (sources, jargon, length, language, format)"),
     ] + _lang_slots(["de", "es", "fr", "ja", "pt", "it"], "any kind of sentence"),
     "gate": [
         ("fact_and_question", "one personal detail of the user, and a question or a request"),
