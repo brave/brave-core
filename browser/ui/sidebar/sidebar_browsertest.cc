@@ -182,7 +182,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, BasicTest) {
   int active_item_index = first_panel_item_index;
   if (first_web_item_index < model()->GetAllSidebarItems().size()) {
     const auto item = model()->GetAllSidebarItems()[first_web_item_index];
-    EXPECT_FALSE(item.open_in_panel);
+    EXPECT_FALSE(item.opens_in_panel());
     controller()->OnItemPressed(first_web_item_index);
   }
   EXPECT_THAT(model()->active_index(), Optional(active_item_index));
@@ -322,7 +322,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWalletSidePanel, WalletSidePanel) {
       std::ranges::find(items, SidebarItem::BuiltInItemType::kWallet,
                         &SidebarItem::built_in_item_type);
   ASSERT_NE(wallet_item_iter, items.cend());
-  EXPECT_TRUE(wallet_item_iter->open_in_panel);
+  EXPECT_TRUE(wallet_item_iter->is_side_panel_type());
 
   const int initial_tab_count = tab_model()->count();
 
@@ -362,7 +362,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWalletSidePanel,
   EXPECT_EQ(SidePanelEntryId::kWallet, panel_ui->GetCurrentEntryId());
 }
 
-// Built-in Wallet keeps its page URL even when open_in_panel is true, so the
+// Built-in Wallet keeps its page URL even when it opens a side panel, so the
 // + bubble does not offer the current brave://wallet tab as a web shortcut.
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWalletSidePanel,
                        CannotAddWalletPageWhenBuiltInItemExists) {
@@ -372,7 +372,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWalletSidePanel,
                         &SidebarItem::built_in_item_type);
   ASSERT_NE(wallet_item_iter, items.cend());
   EXPECT_EQ(GURL(kBraveUIWalletPageURL), wallet_item_iter->url);
-  EXPECT_TRUE(wallet_item_iter->open_in_panel);
+  EXPECT_TRUE(wallet_item_iter->is_side_panel_type());
 
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL("brave://wallet/")));
   EXPECT_FALSE(CanAddCurrentActiveTabToSidebar(browser()));
@@ -648,7 +648,8 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserWithWebPanelTest, WebPanelTest) {
     GURL item_url("http://foo.bar/");
     sidebar_service->AddItem(sidebar::SidebarItem::Create(
         item_url, u"title", SidebarItem::Type::kTypeWeb,
-        SidebarItem::BuiltInItemType::kNone, /*open_in_panel*/ true));
+        SidebarItem::BuiltInItemType::kNone,
+        SidebarItem::PanelType::kWebPanel));
     EXPECT_NE(tab_model()->GetActiveWebContents()->GetVisibleURL(), item_url);
     // Above item is added at last.
     controller()->OnItemPressed(sidebar_service->items().size() - 1);
@@ -840,7 +841,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, ItemAddedBubbleAnchorViewTest) {
   item_added_bubble_anchor_ = nullptr;
   sidebar_service->AddItem(sidebar::SidebarItem::Create(
       GURL("http://foo.bar/"), u"title", SidebarItem::Type::kTypeWeb,
-      SidebarItem::BuiltInItemType::kNone, false));
+      SidebarItem::BuiltInItemType::kNone, SidebarItem::PanelType::kNone));
 
   // Check item is added at last and check that bubble is anchored to
   // it properly.
@@ -853,9 +854,9 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, ItemAddedBubbleAnchorViewTest) {
   // Add item at index 0.
   item_added_bubble_anchor_ = nullptr;
   sidebar_service->AddItemAtForTesting(
-      sidebar::SidebarItem::Create(GURL("http://foo.bar/"), u"title",
-                                   SidebarItem::Type::kTypeWeb,
-                                   SidebarItem::BuiltInItemType::kNone, false),
+      sidebar::SidebarItem::Create(
+          GURL("http://foo.bar/"), u"title", SidebarItem::Type::kTypeWeb,
+          SidebarItem::BuiltInItemType::kNone, SidebarItem::PanelType::kNone),
       0);
 
   // Check item is added at first and check that bubble is anchored to
@@ -916,9 +917,9 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, ItemAddedScrollTest) {
   // After inserting item at index 0, it should be visible as sidebar
   // scrolls to make that new item visible. So last item becomes invisible.
   sidebar_service->AddItemAtForTesting(
-      sidebar::SidebarItem::Create(GURL("https://abcd"), u"title",
-                                   SidebarItem::Type::kTypeWeb,
-                                   SidebarItem::BuiltInItemType::kNone, false),
+      sidebar::SidebarItem::Create(
+          GURL("https://abcd"), u"title", SidebarItem::Type::kTypeWeb,
+          SidebarItem::BuiltInItemType::kNone, SidebarItem::PanelType::kNone),
       0);
   WaitUntil(base::BindLambdaForTesting(
       [&]() { return !NeedScrollForItemAt(0, scroll_view); }));
@@ -931,7 +932,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, ItemAddedScrollTest) {
   last_item_index++;
   sidebar_service->AddItem(sidebar::SidebarItem::Create(
       GURL("https://abcdefg"), u"title", SidebarItem::Type::kTypeWeb,
-      SidebarItem::BuiltInItemType::kNone, false));
+      SidebarItem::BuiltInItemType::kNone, SidebarItem::PanelType::kNone));
   WaitUntil(base::BindLambdaForTesting(
       [&]() { return !NeedScrollForItemAt(last_item_index, scroll_view); }));
   EXPECT_TRUE(NeedScrollForItemAt(0, scroll_view));
@@ -1141,7 +1142,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithPlaylist, Incognito) {
   // Try Adding an item
   sidebar_service->AddItem(sidebar::SidebarItem::Create(
       GURL("http://foo.bar/"), u"title", SidebarItem::Type::kTypeWeb,
-      SidebarItem::BuiltInItemType::kNone, false));
+      SidebarItem::BuiltInItemType::kNone, SidebarItem::PanelType::kNone));
 
   // Try moving an item
   sidebar_service->MoveItem(sidebar_service->items().size() - 1, 0);
@@ -2532,7 +2533,7 @@ IN_PROC_BROWSER_TEST_F(SidebarTorBrowserTest,
       ->AddItem(SidebarItem::Create(
           embedded_test_server()->GetURL("tor-only.test", "/"), u"tor-only",
           SidebarItem::Type::kTypeWeb, SidebarItem::BuiltInItemType::kNone,
-          false));
+          SidebarItem::PanelType::kNone));
 
   // Opening another Tor window builds a new SidebarModel, which fetches the
   // favicon of every stored item again.
@@ -2545,7 +2546,7 @@ IN_PROC_BROWSER_TEST_F(SidebarTorBrowserTest,
       ->AddItem(SidebarItem::Create(
           embedded_test_server()->GetURL("regular-only.test", "/"),
           u"regular-only", SidebarItem::Type::kTypeWeb,
-          SidebarItem::BuiltInItemType::kNone, false));
+          SidebarItem::BuiltInItemType::kNone, SidebarItem::PanelType::kNone));
   WaitUntil(base::BindLambdaForTesting(
       [&]() { return regular_item_favicon_requests_ > 0; }));
 

@@ -126,7 +126,7 @@ void SidebarBrowserTest::SimulateSidebarItemClickAt(size_t index) {
     return;
   }
 
-  if (item_model.open_in_panel) {
+  if (item_model.opens_in_panel()) {
     auto* panel_ui = SidePanelUI::From(browser());
     WaitUntil(base::BindLambdaForTesting([&]() {
       return (model()->active_index() == index &&
@@ -204,7 +204,7 @@ void SidebarBrowserTest::AddItemsTillScrollable(
         GURL(base::StrCat(
             {"https://foo/bar_", base::NumberToString(url_prefix)})),
         u"title", SidebarItem::Type::kTypeWeb,
-        SidebarItem::BuiltInItemType::kNone, false));
+        SidebarItem::BuiltInItemType::kNone, SidebarItem::PanelType::kNone));
     url_prefix++;
     base::RunLoop().RunUntilIdle();
     // Add items till first item becomes invisible.
@@ -235,14 +235,15 @@ size_t SidebarBrowserTest::GetDefaultItemCount() const {
 
 int SidebarBrowserTest::GetFirstPanelItemIndex() {
   auto const items = model()->GetAllSidebarItems();
-  auto const iter = std::ranges::find(items, true, &SidebarItem::open_in_panel);
+  auto const iter =
+      std::ranges::find(items, true, &SidebarItem::opens_in_panel);
   return std::distance(items.cbegin(), iter);
 }
 
 int SidebarBrowserTest::GetFirstWebItemIndex() {
   const auto items = model()->GetAllSidebarItems();
   auto const iter =
-      std::ranges::find(items, false, &SidebarItem::open_in_panel);
+      std::ranges::find(items, false, &SidebarItem::opens_in_panel);
   return std::distance(items.cbegin(), iter);
 }
 

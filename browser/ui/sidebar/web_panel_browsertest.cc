@@ -19,6 +19,8 @@
 #include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_item_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_items_contents_view.h"
+#include "brave/components/brave_talk/buildflags/buildflags.h"
+#include "brave/components/sidebar/browser/constants.h"
 #include "brave/components/sidebar/browser/pref_names.h"
 #include "brave/components/sidebar/browser/sidebar_item.h"
 #include "brave/components/sidebar/browser/sidebar_service.h"
@@ -32,6 +34,7 @@
 #include "chrome/browser/ui/views/side_panel/side_panel.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/prefs/pref_service.h"
+#include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
 #include "ui/views/animation/ink_drop.h"
 #include "ui/views/view_utils.h"
@@ -53,6 +56,111 @@ class WebPanelBrowserTest : public SidebarBrowserTest {
  private:
   base::test::ScopedFeatureList scoped_features_;
 };
+
+class WebPanelDisabledBrowserTest : public SidebarBrowserTest {
+ public:
+  WebPanelDisabledBrowserTest() {
+    scoped_features_.InitAndDisableFeature(features::kSidebarWebPanel);
+  }
+  ~WebPanelDisabledBrowserTest() override = default;
+
+ private:
+  base::test::ScopedFeatureList scoped_features_;
+};
+
+#if BUILDFLAG(ENABLE_BRAVE_TALK)
+// Brave Talk is the only built-in item declared as a web panel.
+IN_PROC_BROWSER_TEST_F(WebPanelBrowserTest, BraveTalkOpensWebPanel) {
+  const auto talk_index =
+      model()->GetIndexOf(SidebarItem::BuiltInItemType::kBraveTalk);
+  ASSERT_TRUE(talk_index);
+  const auto talk_item = model()->GetAllSidebarItems()[*talk_index];
+  EXPECT_EQ(GURL(kBraveTalkURL), talk_item.url);
+  EXPECT_EQ(SidebarItem::PanelType::kWebPanel, talk_item.panel_type);
+  EXPECT_TRUE(talk_item.is_web_panel_type());
+  EXPECT_TRUE(talk_item.opens_in_panel());
+  // A web panel item has no side panel entry to resolve.
+  EXPECT_FALSE(talk_item.is_side_panel_type());
+
+  auto* tab_strip_model = browser()->tab_strip_model();
+  ASSERT_EQ(1, tab_strip_model->count());
+  const GURL initial_url =
+      tab_strip_model->GetActiveWebContents()->GetVisibleURL();
+
+  // Pressing opens Talk in the web panel's own pinned tab and leaves the
+  // active tab alone.
+  controller()->OnItemPressed(*talk_index);
+  EXPECT_TRUE(GetBraveMultiContentsView()->IsWebPanelVisible());
+  ASSERT_EQ(2, tab_strip_model->count());
+  auto* panel_contents = tab_strip_model->GetTabAtIndex(0)->GetContents();
+  EXPECT_TRUE(tab_strip_model->GetTabAtIndex(0)->IsPinned());
+  EXPECT_EQ(panel_contents, web_panel_controller()->panel_contents());
+  EXPECT_EQ(GURL(kBraveTalkURL), panel_contents->GetVisibleURL());
+  EXPECT_EQ(initial_url,
+            tab_strip_model->GetActiveWebContents()->GetVisibleURL());
+  EXPECT_EQ(talk_index, model()->active_index());
+
+  // Pressing the active item toggles the panel off.
+  controller()->OnItemPressed(*talk_index);
+  EXPECT_FALSE(web_panel_controller()->panel_contents());
+  EXPECT_FALSE(GetBraveMultiContentsView()->IsWebPanelVisible());
+  EXPECT_EQ(1, tab_strip_model->count());
+  EXPECT_FALSE(model()->active_index());
+}
+
+// Without the feature, Talk keeps its declared type but behaves like a
+// shortcut item.
+IN_PROC_BROWSER_TEST_F(WebPanelDisabledBrowserTest, BraveTalkOpensInTab) {
+  const auto talk_index =
+      model()->GetIndexOf(SidebarItem::BuiltInItemType::kBraveTalk);
+  ASSERT_TRUE(talk_index);
+  const auto talk_item = model()->GetAllSidebarItems()[*talk_index];
+  EXPECT_EQ(SidebarItem::PanelType::kWebPanel, talk_item.panel_type);
+  EXPECT_FALSE(talk_item.is_web_panel_type());
+  EXPECT_FALSE(talk_item.is_side_panel_type());
+  EXPECT_FALSE(talk_item.opens_in_panel());
+
+  // There is no web panel to open into.
+  EXPECT_FALSE(
+      GetBraveMultiContentsView()->GetWebPanelContentsViewForTesting());
+
+  auto* tab_strip_model = browser()->tab_strip_model();
+  ASSERT_EQ(1, tab_strip_model->count());
+  ASSERT_NE(GURL(kBraveTalkURL),
+            tab_strip_model->GetActiveWebContents()->GetVisibleURL());
+
+  controller()->OnItemPressed(*talk_index);
+  EXPECT_EQ(GURL(kBraveTalkURL),
+            tab_strip_model->GetActiveWebContents()->GetVisibleURL());
+  EXPECT_EQ(1, tab_strip_model->count());
+  EXPECT_FALSE(model()->active_index());
+}
+
+// Hiding Talk puts a web panel item into the hidden built-in list, which
+// AddItemForSidePanelIdIfNeeded() walks on every side panel show. It must not
+// be mistaken for a side panel item there, which would terminate in
+// SidePanelIdFromSideBarItemType().
+IN_PROC_BROWSER_TEST_F(WebPanelBrowserTest, SidePanelAfterHidingBraveTalk) {
+  auto* service = SidebarServiceFactory::GetForProfile(browser()->GetProfile());
+  const auto talk_index =
+      model()->GetIndexOf(SidebarItem::BuiltInItemType::kBraveTalk);
+  ASSERT_TRUE(talk_index);
+  ASSERT_TRUE(model()->GetAllSidebarItems()[*talk_index].is_web_panel_type());
+
+  service->RemoveItemAt(*talk_index);
+  ASSERT_FALSE(model()->GetIndexOf(SidebarItem::BuiltInItemType::kBraveTalk));
+  ASSERT_FALSE(service->GetHiddenDefaultSidebarItems().empty());
+
+  const auto bookmarks_index =
+      model()->GetIndexOf(SidebarItem::BuiltInItemType::kBookmarks);
+  ASSERT_TRUE(bookmarks_index);
+  SidePanelUI::From(browser())->Show(SidePanelEntryId::kBookmarks);
+  ASSERT_TRUE(
+      base::test::RunUntil([&]() { return GetSidePanel()->GetVisible(); }));
+  EXPECT_EQ(bookmarks_index, model()->active_index());
+  EXPECT_FALSE(GetBraveMultiContentsView()->IsWebPanelVisible());
+}
+#endif  // BUILDFLAG(ENABLE_BRAVE_TALK)
 
 // Regression test for a crash caused by BraveMultiContentsView's web-panel
 // container never being registered in
@@ -144,7 +252,7 @@ IN_PROC_BROWSER_TEST_F(WebPanelBrowserTest, WebPanelItemActiveStateTest) {
     service->AddItem(SidebarItem::Create(url, u"title",
                                          SidebarItem::Type::kTypeWeb,
                                          SidebarItem::BuiltInItemType::kNone,
-                                         /*open_in_panel*/ true));
+                                         SidebarItem::PanelType::kWebPanel));
   }
   const size_t index_b = model()->GetAllSidebarItems().size() - 1;
   const size_t index_a = index_b - 1;
