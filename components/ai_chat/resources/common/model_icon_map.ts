@@ -16,11 +16,10 @@ export const modelIcons: Record<string, string> = {
   'chat-gpt-5-6-luna-bedrock': 'openai',
   'chat-gpt-5-6-terra-bedrock': 'openai',
   'chat-grok-4-6-bedrock': 'grok',
-  'chat-nemotron-nano-3-30b': 'nvidia-color',
-  'chat-mistral-large': 'mistral-color',
+  'chat-claude-3-haiku': 'anthropic-color',
   'chat-kimi-k2-5': 'kimi-color',
   'chat-qwen-3-8-flash-next': 'qwen-color',
-  'chat-deepseek-v3-2': 'deepseek-color',
+  'chat-glm-5-3': 'zai-color',
   'chat-claude-opus': 'anthropic-color',
 }
 

@@ -208,33 +208,6 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       models.push_back(std::move(model));
     }
 
-    // Nemotron Nano 3 30B
-    {
-      auto options = mojom::LeoModelOptions::New();
-      options->display_maker = "NVIDIA";
-      options->name = "nemotron-nano-3-30b";
-      options->category = mojom::ModelCategory::CHAT;
-      options->access = features::kFreemiumAvailable.Get()
-                            ? mojom::ModelAccess::BASIC_AND_PREMIUM
-                            : mojom::ModelAccess::BASIC;
-      options->max_associated_content_length = 128000;
-      options->long_conversation_warning_character_limit = 9700;
-
-      auto model = mojom::Model::New();
-      model->key = "chat-nemotron-nano-3-30b";
-      model->display_name = "Nemotron Nano 3 30B";
-      model->vision_support = false;
-      model->supports_tools = false;
-      model->supported_capabilities = {
-          mojom::ConversationCapability::DEEP_RESEARCH};
-      model->is_suggested_model = false;
-      model->is_near_model = false;
-      model->options =
-          mojom::ModelOptions::NewLeoModelOptions(std::move(options));
-
-      models.push_back(std::move(model));
-    }
-
     // GPT Luna
     {
       auto options = mojom::LeoModelOptions::New();
@@ -251,8 +224,9 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       model->key = "chat-gpt-5-6-luna-bedrock";
       model->display_name = "GPT Luna";
       model->vision_support = true;
-      model->supports_tools = false;
+      model->supports_tools = true;
       model->supported_capabilities = {
+          mojom::ConversationCapability::CONTENT_AGENT,
           mojom::ConversationCapability::DEEP_RESEARCH};
       model->is_suggested_model = false;
       model->is_near_model = false;
@@ -301,8 +275,9 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       model->key = "chat-grok-4-6-bedrock";
       model->display_name = "Grok 4.7";
       model->vision_support = true;
-      model->supports_tools = false;
+      model->supports_tools = true;
       model->supported_capabilities = {
+          mojom::ConversationCapability::CONTENT_AGENT,
           mojom::ConversationCapability::DEEP_RESEARCH};
       model->is_suggested_model = false;
       model->is_near_model = false;
@@ -312,22 +287,25 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       models.push_back(std::move(model));
     }
 
-    // Mistral Large 3
+    // Claude Haiku
     {
       auto options = mojom::LeoModelOptions::New();
-      options->display_maker = "Mistral";
-      options->name = "mistral-large";
+      options->display_maker = "Anthropic";
+      options->name = kClaudeHaikuModelName;
       options->category = mojom::ModelCategory::CHAT;
-      options->access = mojom::ModelAccess::PREMIUM;
+      options->access = features::kFreemiumAvailable.Get()
+                            ? mojom::ModelAccess::BASIC_AND_PREMIUM
+                            : mojom::ModelAccess::BASIC;
       options->max_associated_content_length = 64000;
       options->long_conversation_warning_character_limit = 9700;
 
       auto model = mojom::Model::New();
-      model->key = "chat-mistral-large";
-      model->display_name = "Mistral Large 3";
+      model->key = "chat-claude-3-haiku";
+      model->display_name = "Claude Haiku";
       model->vision_support = true;
-      model->supports_tools = false;
+      model->supports_tools = true;
       model->supported_capabilities = {
+          mojom::ConversationCapability::CONTENT_AGENT,
           mojom::ConversationCapability::DEEP_RESEARCH};
       model->is_suggested_model = false;
       model->is_near_model = false;
@@ -387,21 +365,21 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       models.push_back(std::move(model));
     }
 
-    // Deepseek V3.2
+    // GLM 5.3
     {
       auto options = mojom::LeoModelOptions::New();
-      options->display_maker = "Deepseek";
-      options->name = "deepseek-v3-2";
+      options->display_maker = "Z.ai";
+      options->name = "glm-5-3";
       options->category = mojom::ModelCategory::CHAT;
       options->access = mojom::ModelAccess::PREMIUM;
       options->max_associated_content_length = 64000;
       options->long_conversation_warning_character_limit = 9700;
 
       auto model = mojom::Model::New();
-      model->key = "chat-deepseek-v3-2";
-      model->display_name = "Deepseek V3.2";
+      model->key = "chat-glm-5-3";
+      model->display_name = "GLM 5.3";
       model->vision_support = false;
-      model->supports_tools = false;
+      model->supports_tools = true;
       model->supported_capabilities = {
           mojom::ConversationCapability::DEEP_RESEARCH};
       model->is_suggested_model = false;
@@ -661,7 +639,7 @@ void ModelService::MigrateProfilePrefs(PrefService* profile_prefs) {
     profile_prefs->ClearPref(prefs::kObseleteBraveChatAutoGenerateQuestions);
 
     // Migrate old model keys to "chat-automatic"
-    constexpr std::array<const char*, 17> kOldModelKeys = {
+    constexpr std::array<const char*, 20> kOldModelKeys = {
         // Added: June 6, 2024. Checks can be removed eventually
         "chat-default",
         // Added: May 28, 2025. Checks can be removed eventually
@@ -686,6 +664,10 @@ void ModelService::MigrateProfilePrefs(PrefService* profile_prefs) {
         "chat-gpt-5-4-bedrock",
         "chat-grok-4-3-bedrock",
         "chat-qwen-3-235b",
+        // Added: Oct 13, 2026. Checks can be removed eventually
+        "chat-mistral-large",
+        "chat-deepseek-v3-2",
+        "chat-nemotron-nano-3-30b",
     };
 
     if (auto* default_model_value =
@@ -930,21 +912,18 @@ ModelService::GetModelsWithSubtitles() {
       } else if (model->key == "chat-grok-4-6-bedrock") {
         model_with_subtitle->subtitle = l10n_util::GetStringUTF8(
             IDS_CHAT_UI_CHAT_GROK_4_6_BEDROCK_SUBTITLE);
-      } else if (model->key == "chat-nemotron-nano-3-30b") {
-        model_with_subtitle->subtitle = l10n_util::GetStringUTF8(
-            IDS_CHAT_UI_CHAT_NEMOTRON_NANO_3_30B_SUBTITLE);
-      } else if (model->key == "chat-mistral-large") {
+      } else if (model->key == "chat-claude-3-haiku") {
         model_with_subtitle->subtitle =
-            l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_MISTRAL_LARGE_SUBTITLE);
+            l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_CLAUDE_3_HAIKU_SUBTITLE);
       } else if (model->key == "chat-kimi-k2-5") {
         model_with_subtitle->subtitle =
             l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_KIMI_K2_5_SUBTITLE);
       } else if (model->key == "chat-qwen-3-8-flash-next") {
         model_with_subtitle->subtitle = l10n_util::GetStringUTF8(
             IDS_CHAT_UI_CHAT_QWEN_3_8_FLASH_NEXT_SUBTITLE);
-      } else if (model->key == "chat-deepseek-v3-2") {
+      } else if (model->key == "chat-glm-5-3") {
         model_with_subtitle->subtitle =
-            l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_DEEPSEEK_V3_2_SUBTITLE);
+            l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_GLM_5_3_SUBTITLE);
       } else if (model->key == "chat-claude-opus") {
         model_with_subtitle->subtitle =
             l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_CLAUDE_OPUS_SUBTITLE);
