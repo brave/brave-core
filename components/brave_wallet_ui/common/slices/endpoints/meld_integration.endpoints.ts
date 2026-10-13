@@ -19,7 +19,6 @@ import {
 
 // Utils
 import { handleEndpointError } from '../../../utils/api-utils'
-import { getMeldTokensChainId } from '../../../utils/meld_utils'
 import { WalletApiEndpointBuilderParams } from '../api-base.slice'
 
 type GetCryptoQuotesArgs = {
@@ -93,28 +92,14 @@ export const meldIntegrationEndpoints = ({
             cryptoCurrencies || [],
             1,
             async function (token: MeldCryptoCurrency) {
-              const chainId = getMeldTokensChainId(token)
-              if (chainId && token.contractAddress) {
-                const { coingeckoId } = await blockchainRegistry.getCoingeckoId(
-                  chainId,
-                  token.contractAddress,
-                )
-                if (coingeckoId) {
-                  return {
-                    ...token,
-                    chainId: chainId,
-                    coingeckoId: coingeckoId,
-                  }
-                }
-                return {
-                  ...token,
-                  chainId: chainId,
-                }
+              if (!token.contractAddress) {
+                return token
               }
-              return {
-                ...token,
-                chainId: chainId,
-              }
+              const { coingeckoId } = await blockchainRegistry.getCoingeckoId(
+                token.chainId,
+                token.contractAddress,
+              )
+              return coingeckoId ? { ...token, coingeckoId } : token
             },
           )
 

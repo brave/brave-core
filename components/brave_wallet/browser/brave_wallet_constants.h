@@ -9,6 +9,7 @@
 #include <array>
 #include <string>
 #include <string_view>
+#include <utility>
 
 #include "base/containers/fixed_flat_map.h"
 #include "base/containers/fixed_flat_set.h"
@@ -108,6 +109,27 @@ inline constexpr char kBitcoinTestnetRpcEndpoint[] =
 inline constexpr char kMeldRpcEndpoint[] = "https://api-meld.wallet.brave.com";
 inline constexpr char kMeldRpcVersionHeader[] = "Meld-Version";
 inline constexpr char kMeldRpcVersion[] = "2023-05-26";
+
+// Meld chain codes mapped to Brave's coin and chain id.
+inline constexpr auto kMeldSupportedChains =
+    base::MakeFixedFlatMap<std::string_view,
+                           std::pair<mojom::CoinType, std::string_view>>({
+        {"ARBITRUM", {mojom::CoinType::ETH, mojom::kArbitrumMainnetChainId}},
+        {"AURORA", {mojom::CoinType::ETH, mojom::kAuroraMainnetChainId}},
+        {"AVAXC", {mojom::CoinType::ETH, mojom::kAvalancheMainnetChainId}},
+        {"BSC", {mojom::CoinType::ETH, mojom::kBnbSmartChainMainnetChainId}},
+        {"CELO", {mojom::CoinType::ETH, mojom::kCeloMainnetChainId}},
+        {"ETH", {mojom::CoinType::ETH, mojom::kMainnetChainId}},
+        {"FTM", {mojom::CoinType::ETH, mojom::kFantomMainnetChainId}},
+        {"OPTIMISM", {mojom::CoinType::ETH, mojom::kOptimismMainnetChainId}},
+        {"POLYGON", {mojom::CoinType::ETH, mojom::kPolygonMainnetChainId}},
+        {"SOLANA", {mojom::CoinType::SOL, mojom::kSolanaMainnet}},
+        {"FIL", {mojom::CoinType::FIL, mojom::kFilecoinMainnet}},
+        {"BTC", {mojom::CoinType::BTC, mojom::kBitcoinMainnet}},
+        {"ZEC", {mojom::CoinType::ZEC, mojom::kZCashMainnet}},
+        {"ADA", {mojom::CoinType::ADA, mojom::kCardanoMainnet}},
+        {"ASSETHUB", {mojom::CoinType::DOT, mojom::kPolkadotMainnetAssetHub}},
+    });
 
 inline constexpr auto kEthBalanceScannerContractAddresses =
     base::MakeFixedFlatMap<std::string_view, std::string_view>(

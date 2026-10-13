@@ -5,14 +5,17 @@
 
 #include "brave/components/brave_wallet/browser/meld_integration_response_parser.h"
 
+#include <cstdint>
 #include <optional>
 #include <string>
+#include <string_view>
 #include <utility>
 #include <vector>
 
 #include "base/strings/string_number_conversions.h"
 #include "base/types/expected.h"
 #include "base/values.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/meld_integration_responses.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/meld_integration.mojom-forward.h"
@@ -42,6 +45,31 @@ base::flat_map<std::string, std::string> ParseOptionalMapOfStrings(
   }
 
   return result;
+}
+
+// Meld's chainId is only cross-checked for EVM chains, as Meld's ids of other
+// chains don't follow Brave's format.
+std::optional<std::pair<brave_wallet::mojom::CoinType, std::string_view>>
+GetBraveChain(
+    const brave_wallet::meld_integration_responses::CryptoCurrency& currency) {
+  if (!currency.chain_code) {
+    return std::nullopt;
+  }
+  const auto it = brave_wallet::kMeldSupportedChains.find(*currency.chain_code);
+  if (it == brave_wallet::kMeldSupportedChains.end()) {
+    return std::nullopt;
+  }
+
+  const auto& [coin, chain_id] = it->second;
+  if (coin == brave_wallet::mojom::CoinType::ETH && currency.chain_id) {
+    uint64_t meld_chain_id = 0;
+    if (!base::StringToUint64(*currency.chain_id, &meld_chain_id) ||
+        brave_wallet::Uint256ValueToHex(meld_chain_id) != chain_id) {
+      return std::nullopt;
+    }
+  }
+
+  return it->second;
 }
 
 }  //  namespace
@@ -302,17 +330,16 @@ std::optional<std::vector<mojom::MeldCryptoCurrencyPtr>> ParseCryptoCurrencies(
     if (!crypto_currency_value) {
       return std::nullopt;
     }
-    std::optional<std::string> chain_id_hex;
-    if (int chain_id_as_num;
-        crypto_currency_value->chain_id &&
-        base::StringToInt(*crypto_currency_value->chain_id, &chain_id_as_num)) {
-      chain_id_hex = Uint256ValueToHex(chain_id_as_num);
+    const auto brave_chain = GetBraveChain(*crypto_currency_value);
+    if (!brave_chain) {
+      continue;
     }
 
     auto cc = mojom::MeldCryptoCurrency::New(
+        brave_chain->first, std::string(brave_chain->second),
         crypto_currency_value->currency_code, crypto_currency_value->name,
         crypto_currency_value->chain_code, crypto_currency_value->chain_name,
-        chain_id_hex, crypto_currency_value->contract_address,
+        crypto_currency_value->contract_address,
         crypto_currency_value->symbol_image_url);
 
     crypto_currencies.emplace_back(std::move(cc));

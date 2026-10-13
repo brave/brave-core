@@ -48,11 +48,7 @@ import { querySubscriptionOptions60s } from '../../../../common/slices/constants
 
 // Utils
 import Amount from '../../../../utils/amount'
-import {
-  getAssetSymbol,
-  getMeldTokensChainId,
-  getMeldTokensCoinType,
-} from '../../../../utils/meld_utils'
+import { getAssetSymbol } from '../../../../utils/meld_utils'
 import { makeBuyRoute } from '../../../../utils/routes-utils'
 import {
   getPriceRequestsForTokens,
@@ -74,11 +70,12 @@ const MIN_QUOTE_RESPONSE_IDENTIFIER = 'Source amount is below'
 const MAX_QUOTE_RESPONSE_IDENTIFIER = 'Source amount is above'
 
 const DEFAULT_ASSET: MeldCryptoCurrency = {
+  'coin': BraveWallet.CoinType.ETH,
+  'chainId': BraveWallet.MAINNET_CHAIN_ID,
   'currencyCode': 'ETH',
   'name': 'Ethereum',
   'chainCode': 'ETH',
   'chainName': 'Ethereum',
-  'chainId': '1',
   'contractAddress': '0x0000000000000000000000000000000000000000',
   'symbolImageUrl': 'https://images-currency.meld.io/crypto/ETH/symbol.png',
 }
@@ -187,8 +184,8 @@ export const useBuy = () => {
     'coin' | 'chainId' | 'contractAddress'
   > = useMemo(
     () => ({
-      coin: getMeldTokensCoinType(selectedMeldAsset),
-      chainId: getMeldTokensChainId(selectedMeldAsset) ?? '',
+      coin: selectedMeldAsset.coin,
+      chainId: selectedMeldAsset.chainId,
       contractAddress: selectedMeldAsset.contractAddress || '',
     }),
     [selectedMeldAsset],
@@ -471,7 +468,7 @@ export const useBuy = () => {
 
   const onSelectToken = useCallback(
     async (asset: MeldCryptoCurrency, account?: BraveWallet.AccountInfo) => {
-      const incomingAssetsCoinType = getMeldTokensCoinType(asset)
+      const incomingAssetsCoinType = asset.coin
       const accountToUse =
         account !== undefined
           ? account

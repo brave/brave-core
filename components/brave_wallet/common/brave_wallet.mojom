@@ -1349,50 +1349,6 @@ interface AssetRatioService {
       => (bool success, array<CoinMarket> values);
 };
 
-interface MeldIntegrationService {
-  // Obtains the list of Service Providers
-  GetServiceProviders() => (array<MeldServiceProvider>? service_providers,
-                            array<string>? error);
-
-  // Obtains the crypto quotes
-  // Note that next parameters are mandatory:
-  // destination_currency_code, country, source_amount, source_currency_code
-  GetCryptoQuotes(string country,
-                  string source_currency_code,
-                  string destination_currency_code,
-                  double source_amount,
-                  string? account,
-                  string? payment_method)
-      => (array<MeldCryptoQuote>? crypto_quotes, array<string>? error);
-
-  // Obtains the list of payment methods
-  GetPaymentMethods(string country, string source_currency_code)
-      => (array<MeldPaymentMethod>? payment_methods, array<string>? error);
-
-  // Obtains the list of fiat currencies
-  GetFiatCurrencies()
-      => (array<MeldFiatCurrency>? fiat_currencies, array<string>? error);
-
-  // Obtains the list of crypto currencies
-  GetCryptoCurrencies()
-      => (array<MeldCryptoCurrency>? fiat_currencies, array<string>? error);
-
-  // Obtains the list of countries
-  GetCountries() => (array<MeldCountry>? countries, array<string>? error);
-
-  CryptoBuyWidgetCreate(CryptoBuySessionData session_data,
-                        CryptoWidgetCustomerData? customer_data)
-      => (MeldCryptoWidget? widget_data, array<string>? error);
-
-  CryptoSellWidgetCreate(CryptoSellSessionData session_data,
-                         CryptoWidgetCustomerData? customer_data)
-      => (MeldCryptoWidget? widget_data, array<string>? error);
-
-  CryptoTransferWidgetCreate(CryptoTransferSessionData session_data,
-                             CryptoWidgetCustomerData? customer_data)
-      => (MeldCryptoWidget? widget_data, array<string>? error);
-};
-
 // Implements cross-chain swap functionality using 0x, Jupiter, and LiFi APIs
 interface SwapService {
   GetQuote(SwapQuoteParams params) => (SwapQuoteUnion? response,

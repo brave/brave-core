@@ -8,6 +8,7 @@
 #include <memory>
 #include <optional>
 #include <string>
+#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -15,6 +16,7 @@
 #include "base/containers/flat_map.h"
 #include "base/functional/bind.h"
 #include "base/json/json_writer.h"
+#include "base/strings/string_util.h"
 #include "base/task/thread_pool.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
@@ -30,11 +32,6 @@
 #include "ui/base/l10n/l10n_util.h"
 
 namespace {
-
-constexpr char kMeldSupportedChains[] =
-    "BTC,FIL,ZEC,ETH,SOLANA,FTM,BSC,POLYGON,OPTIMISM,AURORA,CELO,ARBITRUM,"
-    "AVAXC,ADA";
-constexpr char kMeldSupportedChainPolkadotSuffix[] = ",ASSETHUB";
 
 net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
   return net::DefineNetworkTrafficAnnotation("meld_integration_service", R"(
@@ -570,16 +567,20 @@ void MeldIntegrationService::OnParseFiatCurrencies(
 
 // static
 GURL MeldIntegrationService::GetCryptoCurrenciesURL() {
-  std::string supported_chains = kMeldSupportedChains;
-  if (IsPolkadotEnabled()) {
-    supported_chains += kMeldSupportedChainPolkadotSuffix;
+  std::vector<std::string_view> supported_chains;
+  supported_chains.reserve(kMeldSupportedChains.size());
+  for (const auto& [chain_code, brave_chain] : kMeldSupportedChains) {
+    if (brave_chain.first == mojom::CoinType::DOT && !IsPolkadotEnabled()) {
+      continue;
+    }
+    supported_chains.push_back(chain_code);
   }
 
   return AppendFilterParams(
       GURL(kMeldRpcEndpoint)
           .Resolve("/service-providers/properties/crypto-currencies"),
       base::flat_map<std::string, std::string>{
-          {"cryptoChains", supported_chains},
+          {"cryptoChains", base::JoinString(supported_chains, ",")},
           {"includeServiceProviderDetails", "false"},
           {"accountFilter", "false"}});
 }

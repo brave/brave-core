@@ -8,11 +8,15 @@
 #include <algorithm>
 #include <cstddef>
 #include <string>
+#include <tuple>
+#include <vector>
 
 #include "base/test/values_test_util.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 using base::test::ParseJson;
+using testing::ElementsAre;
 
 namespace brave_wallet {
 
@@ -342,30 +346,71 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_FiatCurrencies) {
 TEST(MeldIntegrationResponseParserUnitTest, Parse_CryptoCurrencies) {
   std::string json(R"([
   {
-    "currencyCode": "USDT_KCC",
+    "currencyCode": "USDT_BSC",
     "name": "#REF!",
-    "chainCode": "KCC",
-    "chainName": "KuCoin Community Chain",
+    "chainCode": "BSC",
+    "chainName": "BNB Smart Chain",
     "chainId": "56",
     "contractAddress": "0xe41d2489571d322189246dafa5ebde1f4699f498",
-    "symbolImageUrl": "https://images-currency.meld.io/crypto/USDT_KCC/symbol.png"
+    "symbolImageUrl": "https://images-currency.meld.io/crypto/USDT_BSC/symbol.png"
   }])");
   auto crypto_currencies = ParseCryptoCurrencies(ParseJson(json));
   EXPECT_TRUE(crypto_currencies);
   EXPECT_EQ(std::ranges::count_if(
                 *crypto_currencies,
                 [](const auto& item) {
-                  return item->currency_code == "USDT_KCC" &&
-                         item->name == "#REF!" && item->chain_code == "KCC" &&
-                         item->chain_name == "KuCoin Community Chain" &&
-                         item->chain_id == "0x38" &&
+                  return item->currency_code == "USDT_BSC" &&
+                         item->name == "#REF!" && item->chain_code == "BSC" &&
+                         item->chain_name == "BNB Smart Chain" &&
+                         item->coin == mojom::CoinType::ETH &&
+                         item->chain_id ==
+                             mojom::kBnbSmartChainMainnetChainId &&
                          item->contract_address ==
                              "0xe41d2489571d322189246dafa5ebde1f4699f498" &&
                          item->symbol_image_url ==
                              "https://images-currency.meld.io/crypto/"
-                             "USDT_KCC/symbol.png";
+                             "USDT_BSC/symbol.png";
                 }),
             1);
+
+  // Networks are resolved by chainCode. Meld's chainId must match for EVM
+  // chains and is ignored for others. Unsupported chain codes are dropped.
+  json = R"([
+  {"currencyCode": "BTC", "chainCode": "BTC", "chainId": null},
+  {"currencyCode": "FIL", "chainCode": "FIL", "chainId": null},
+  {"currencyCode": "ZEC", "chainCode": "ZEC", "chainId": null},
+  {"currencyCode": "SOL", "chainCode": "SOLANA", "chainId": "101"},
+  {"currencyCode": "ADA", "chainCode": "ADA", "chainId": null},
+  {"currencyCode": "DOT", "chainCode": "ASSETHUB", "chainId": "0"},
+  {"currencyCode": "ETH", "chainCode": "ETH", "chainId": "1"},
+  {"currencyCode": "AURORA", "chainCode": "AURORA", "chainId": "1313161554"},
+  {"currencyCode": "POL", "chainCode": "POLYGON", "chainId": null},
+  {"currencyCode": "USDT_ARB", "chainCode": "ARBITRUM", "chainId": "1"},
+  {"currencyCode": "USDT_OP", "chainCode": "OPTIMISM", "chainId": "abc"},
+  {"currencyCode": "USDT_KCC", "chainCode": "KCC", "chainId": "321"},
+  {"currencyCode": "USDT_XYZ", "chainCode": null, "chainId": "1"}
+  ])";
+  crypto_currencies = ParseCryptoCurrencies(ParseJson(json));
+  ASSERT_TRUE(crypto_currencies);
+  std::vector<std::tuple<std::string, mojom::CoinType, std::string>> chains;
+  for (const auto& item : *crypto_currencies) {
+    chains.emplace_back(item->currency_code, item->coin, item->chain_id);
+  }
+  EXPECT_THAT(
+      chains,
+      ElementsAre(
+          std::tuple("BTC", mojom::CoinType::BTC, mojom::kBitcoinMainnet),
+          std::tuple("FIL", mojom::CoinType::FIL, mojom::kFilecoinMainnet),
+          std::tuple("ZEC", mojom::CoinType::ZEC, mojom::kZCashMainnet),
+          std::tuple("SOL", mojom::CoinType::SOL, mojom::kSolanaMainnet),
+          std::tuple("ADA", mojom::CoinType::ADA, mojom::kCardanoMainnet),
+          std::tuple("DOT", mojom::CoinType::DOT,
+                     mojom::kPolkadotMainnetAssetHub),
+          std::tuple("ETH", mojom::CoinType::ETH, mojom::kMainnetChainId),
+          std::tuple("AURORA", mojom::CoinType::ETH,
+                     mojom::kAuroraMainnetChainId),
+          std::tuple("POL", mojom::CoinType::ETH,
+                     mojom::kPolygonMainnetChainId)));
 
   EXPECT_FALSE(ParsePaymentMethods(ParseJson(R"([
   {

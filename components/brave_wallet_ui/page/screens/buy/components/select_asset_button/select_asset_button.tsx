@@ -15,10 +15,7 @@ import {
 import { MeldCryptoCurrency } from '../../../../../constants/types'
 
 // Utils
-import {
-  getAssetSymbol,
-  getMeldTokensCoinType,
-} from '../../../../../utils/meld_utils'
+import { getAssetSymbol } from '../../../../../utils/meld_utils'
 
 // Components
 import {
@@ -51,7 +48,7 @@ export const SelectAssetButton = (props: SelectAssetButtonProps) => {
     selectedAsset?.chainId
       ? {
           chainId: selectedAsset.chainId,
-          coin: getMeldTokensCoinType(selectedAsset),
+          coin: selectedAsset.coin,
         }
       : skipToken,
   )

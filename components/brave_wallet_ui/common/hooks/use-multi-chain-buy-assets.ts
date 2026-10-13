@@ -4,7 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 // types
-import { BraveWallet } from '../../constants/types'
+import { BraveWallet } from '$wallet/constants/types'
 
 // utils
 import { getAssetSymbol } from '../../utils/meld_utils'

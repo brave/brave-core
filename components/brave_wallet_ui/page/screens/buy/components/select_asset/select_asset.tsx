@@ -26,11 +26,7 @@ import { useGetNetworksQuery } from '$wallet/common/slices/api.slice'
 import { BraveWallet, MeldCryptoCurrency } from '../../../../../constants/types'
 
 // Utils
-import {
-  getAssetSymbol,
-  getAssetIdKey,
-  getMeldTokensCoinType,
-} from '../../../../../utils/meld_utils'
+import { getAssetSymbol } from '../../../../../utils/meld_utils'
 import { getLocale } from '../../../../../../common/locale'
 
 // Components
@@ -82,6 +78,12 @@ interface AssetListItemProps {
   asset: MeldCryptoCurrency
   onSelect: (currency: MeldCryptoCurrency) => void
   network?: BraveWallet.NetworkInfo
+}
+
+const getAssetIdKey = (asset: MeldCryptoCurrency) => {
+  return `${asset.coin}-${asset.chainId}-${asset.currencyCode}-${
+    asset.contractAddress
+  }`
 }
 
 const assetItemHeight = 64
@@ -236,8 +238,8 @@ export const SelectAsset = (props: SelectAssetProps) => {
     (asset: MeldCryptoCurrency) => {
       return networkList.find(
         (network) =>
-          network.chainId.toLowerCase() === asset.chainId?.toLowerCase()
-          && getMeldTokensCoinType(asset) === network.coin,
+          network.chainId.toLowerCase() === asset.chainId.toLowerCase()
+          && asset.coin === network.coin,
       )
     },
     [networkList],

@@ -35,9 +35,6 @@ extension WalletStore {
       let zcashWalletService = BraveWallet.ZCashWalletServiceFactory.get(
         privateMode: privateMode
       ),
-      let meldIntegrationService = BraveWallet.MeldIntegrationServiceFactory.get(
-        privateMode: privateMode
-      ),
       let cardanoWalletService = BraveWallet.CardanoWalletServiceFactory.get(
         privateMode: privateMode
       )
@@ -57,7 +54,6 @@ extension WalletStore {
       ipfsApi: ipfsApi,
       bitcoinWalletService: bitcoinWalletService,
       zcashWalletService: zcashWalletService,
-      meldIntegrationService: meldIntegrationService,
       cardanoWalletService: cardanoWalletService
     )
   }
@@ -83,9 +79,6 @@ extension CryptoStore {
       let zcashWalletService = BraveWallet.ZCashWalletServiceFactory.get(
         privateMode: privateMode
       ),
-      let meldIntegrationService = BraveWallet.MeldIntegrationServiceFactory.get(
-        privateMode: privateMode
-      ),
       let cardanoWalletService = BraveWallet.CardanoWalletServiceFactory.get(
         privateMode: privateMode
       )
@@ -105,7 +98,6 @@ extension CryptoStore {
       ipfsApi: ipfsApi,
       bitcoinWalletService: bitcoinWalletService,
       zcashWalletService: zcashWalletService,
-      meldIntegrationService: meldIntegrationService,
       cardanoWalletService: cardanoWalletService
     )
   }

@@ -830,29 +830,6 @@ extension String {
   }
 }
 
-extension BraveWallet.MeldCryptoCurrency {
-  var displaySymbol: String {
-    currencyCode.separatedBy("_").first ?? currencyCode
-  }
-}
-
-extension BraveWallet.MeldCryptoCurrency {
-  var coin: BraveWallet.CoinType {
-    switch chainCode {
-    case "BTC":
-      return .btc
-    case "FIL":
-      return .fil
-    case "ZEC":
-      return .zec
-    case "SOLANA":
-      return .sol
-    default:
-      return .eth
-    }
-  }
-}
-
 extension BraveWallet.SignDataUnion {
   var isWarningsNeeded: Bool {
     cardanoSignData != nil || ethSignTypedData != nil

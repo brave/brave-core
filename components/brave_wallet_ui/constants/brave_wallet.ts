@@ -7,4 +7,5 @@
 // that consumers can `import * as BraveWallet from '.../brave_wallet'` without
 // having to know which mojom file a definition lives in.
 export * from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
+export * from 'gen/brave/components/brave_wallet/common/meld_integration.mojom.m.js'
 export * from 'gen/brave/components/brave_wallet/common/mojom/brave_wallet_common.mojom.m.js'
