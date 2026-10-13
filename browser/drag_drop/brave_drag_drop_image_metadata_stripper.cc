@@ -61,6 +61,9 @@ void MaybeStripDropData(base::WeakPtr<content::WebContents> web_contents,
                         DropCompletionCallback callback,
                         std::optional<content::DropData> drop_data) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  if (!web_contents) {
+    std::move(callback).Run(std::move(drop_data));
+  }
 
   tabs::TabInterface* tab =
       tabs::TabInterface::MaybeGetFromContents(web_contents.get());
