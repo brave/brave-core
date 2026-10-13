@@ -60,10 +60,15 @@ class FileUploadController::Delegate {
       return std::nullopt;
     }
 
+    // We don't strip if the |src| file is not a supported image file or if it's
+    // supported but doesn't contain any metadata we are looking for to strip.
     if (!IsSupportedImagePath(src) || !ContainsMetadataToStrip(src)) {
       return std::nullopt;
     }
 
+    // Before stripping, we need to make the sure the root directory which will
+    // hold the temporary stripped out files is created. Bail out if there was
+    // an issue.
     if (!InitializeRootDir()) {
       return std::nullopt;
     }

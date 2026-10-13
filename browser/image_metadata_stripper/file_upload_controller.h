@@ -10,6 +10,11 @@
 #include <optional>
 #include <vector>
 
+#include "base/files/file_path.h"
+#include "base/functional/callback.h"
+#include "base/memory/scoped_refptr.h"
+#include "base/sequence_checker.h"
+#include "base/task/sequenced_task_runner.h"
 #include "base/threading/sequence_bound.h"
 #include "brave/components/image_metadata_stripper/image_metadata_stripper.h"
 #include "chrome/browser/ui/tabs/contents_observing_tab_feature.h"
