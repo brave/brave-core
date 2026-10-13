@@ -1,0 +1,35 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+blank_macros_for_ast_parsing: true
+
+substitutions:
+  - description: |-
+      Add accessors for whether the context is Tor and its .onion policy.
+
+      The host resolver reads these to refuse .onion lookups outside Tor
+      contexts when .onion is only allowed in Tor windows.
+    add_to_public:
+      class_name: URLRequestContext
+      code: |-
+        void set_is_tor(bool is_tor) { is_tor_ = is_tor; }
+        bool is_tor() const { return is_tor_; }
+        void set_onion_only_in_tor_windows(bool onion_only) {
+          onion_only_in_tor_windows_ = onion_only;
+        }
+        bool onion_only_in_tor_windows() const {
+          return onion_only_in_tor_windows_;
+        }
+
+  - description: |-
+      Add the is_tor_ and onion_only_in_tor_windows_ members.
+
+      A context that is never configured is not Tor and allows .onion only in
+      Tor windows, so it fails .onion lookups.
+    add_to_protected:
+      class_name: URLRequestContext
+      code: |-
+        bool is_tor_ = false;
+        bool onion_only_in_tor_windows_ = true;

@@ -1,0 +1,24 @@
+diff --git a/net/url_request/url_request_context.h b/net/url_request/url_request_context.h
+index f1676812dabbade4be96e9d17ce74313c663e45e..519e72297b707e3323c1a553275ef383754db9a1 100644
+--- a/net/url_request/url_request_context.h
++++ b/net/url_request/url_request_context.h
+@@ -270,6 +270,19 @@ class NET_EXPORT URLRequestContext final {
+     job_factory_ = job_factory;
+   }
+ 
++  void set_is_tor(bool is_tor) { is_tor_ = is_tor; }
++  bool is_tor() const { return is_tor_; }
++  void set_onion_only_in_tor_windows(bool onion_only) {
++    onion_only_in_tor_windows_ = onion_only;
++  }
++  bool onion_only_in_tor_windows() const {
++    return onion_only_in_tor_windows_;
++  }
++
++ protected:
++  bool is_tor_ = false;
++  bool onion_only_in_tor_windows_ = true;
++
+  private:
+   friend class URLRequestContextBuilder;
+ 
