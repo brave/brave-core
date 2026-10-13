@@ -120,10 +120,6 @@
 #include "brave/browser/ui/views/brave_actions/brave_shields_toolbar_button.h"
 #endif
 
-#if BUILDFLAG(ENABLE_BRAVE_WALLET)
-#include "brave/browser/ui/views/toolbar/wallet_button.h"
-#endif
-
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/ui/views/toolbar/brave_vpn_button.h"
 #include "brave/components/brave_vpn/common/pref_names.h"
@@ -713,18 +709,6 @@ void BraveBrowserView::ShowPlaylistBubble() {
 }
 #endif
 
-#if BUILDFLAG(ENABLE_BRAVE_WALLET)
-WalletButton* BraveBrowserView::GetWalletButton() {
-  return static_cast<BraveToolbarView*>(toolbar())->wallet_button();
-}
-
-views::View* BraveBrowserView::GetWalletButtonAnchorView() {
-  return static_cast<BraveToolbarView*>(toolbar())
-      ->wallet_button()
-      ->GetAsAnchorView();
-}
-#endif
-
 void BraveBrowserView::OnAcceleratorsChanged(
     const commands::AcceleratorPrefManager::Accelerators& changed) {
   DCHECK(base::FeatureList::IsEnabled(commands::features::kBraveCommands));
@@ -770,24 +754,6 @@ void BraveBrowserView::OnAcceleratorsChanged(
 void BraveBrowserView::OnFocusModeToggled(bool enabled) {
   UpdateFocusModeState();
 }
-
-#if BUILDFLAG(ENABLE_BRAVE_WALLET)
-void BraveBrowserView::CreateWalletBubble() {
-  DCHECK(GetWalletButton());
-  GetWalletButton()->ShowWalletBubble();
-}
-
-void BraveBrowserView::CreateApproveWalletBubble() {
-  DCHECK(GetWalletButton());
-  GetWalletButton()->ShowApproveWalletBubble();
-}
-
-void BraveBrowserView::CloseWalletBubble() {
-  if (GetWalletButton()) {
-    GetWalletButton()->CloseWalletBubble();
-  }
-}
-#endif
 
 void BraveBrowserView::AddedToWidget() {
   BrowserView::AddedToWidget();
