@@ -94,6 +94,9 @@ class EphemeralStorageService : public KeyedService {
   void TriggerCurrentAppStateNotification();
 #endif  // BUILDFLAG(IS_ANDROID)
 
+  // Returns true if first-party storage cleanup for |ephemeral_domain| is
+  // scheduled in prefs otherwise false (and always for OTR profiles),
+  // Malformed or invalid pref entries will be ignored during comparison.
   bool IsScheduledForCleanup(const std::string& ephemeral_domain);
 
  private:
