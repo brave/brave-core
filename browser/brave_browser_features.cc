@@ -80,7 +80,7 @@ BASE_FEATURE(kBraveFreshNtpAfterIdleExperiment,
 BASE_FEATURE(kBraveCustomSearchEngines, base::FEATURE_ENABLED_BY_DEFAULT);
 
 // Expose Brave's replacement "Tabs and tab groups" settings screen on Android.
-BASE_FEATURE(kBraveAndroidTabGroupsSettings, base::FEATURE_DISABLED_BY_DEFAULT);
+BASE_FEATURE(kBraveAndroidTabGroupsSettings, base::FEATURE_ENABLED_BY_DEFAULT);
 #endif  // BUILDFLAG(IS_ANDROID)
 
 // The variant of the "day zero" experiment. i.e. A, B, C, D, etc.
