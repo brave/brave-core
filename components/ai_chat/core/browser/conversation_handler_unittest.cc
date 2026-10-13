@@ -5622,6 +5622,258 @@ TEST_F(ConversationHandlerUnitTest, NoScreenshotWhenScreenshotsAlreadyExist) {
   testing::Mock::VerifyAndClearExpectations(engine);
 }
 
+// Test that screenshots are taken of content attached after an earlier turn
+// already has screenshots of other content.
+TEST_F(ConversationHandlerUnitTest, ScreenshotsForContentSentAfterScreenshots) {
+  associated_content_->SetTextContent("");
+
+  // The earlier turn has screenshots of the original content.
+  std::vector<mojom::ConversationTurnPtr> history;
+  history.push_back(mojom::ConversationTurn::New(
+      "turn-screenshots", std::nullopt /* thread_uuid */,
+      mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      "Previous question", std::nullopt, std::nullopt, std::nullopt,
+      base::Time::Now(), std::nullopt,
+      CreateSampleUploadedFiles(1, mojom::UploadedFileType::kScreenshot),
+      nullptr /* skill */, false, std::nullopt /* model_key */,
+      nullptr /* near_verification_status */,
+      std::vector<std::string>{} /* child_thread_uuids */));
+  conversation_handler_->SetChatHistoryForTesting(std::move(history));
+
+  // Replace it with other content that has no text either, which is sent
+  // with the new turn.
+  NiceMock<MockAssociatedContent> other_content;
+  other_content.SetContentId(2);
+  other_content.SetUrl(GURL("https://example.com/other.png"));
+  other_content.SetTextContent("");
+  conversation_handler_->associated_content_manager()->AddContent(
+      &other_content, /*notify_updated=*/true,
+      /*detach_existing_content=*/true);
+
+  EXPECT_CALL(other_content, GetScreenshots)
+      .WillOnce(base::test::RunOnceCallback<0>(
+          CreateSampleUploadedFiles(1, mojom::UploadedFileType::kScreenshot)));
+
+  MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .WillOnce(base::test::RunOnceCallback<7>(
+          base::ok(EngineConsumer::GenerationResultData(
+              mojom::ConversationEntryEvent::NewCompletionEvent(
+                  mojom::CompletionEvent::New("Response with screenshots")),
+              std::nullopt /* model_key */))));
+
+  NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
+  base::RunLoop loop;
+  EXPECT_CALL(client, OnAPIRequestInProgress(true)).Times(1);
+  EXPECT_CALL(client, OnAPIRequestInProgress(false))
+      .WillOnce(testing::InvokeWithoutArgs(&loop, &base::RunLoop::Quit));
+  conversation_handler_->SubmitHumanConversationEntry("Test question",
+                                                      std::nullopt);
+  loop.Run();
+
+  const auto& new_history = conversation_handler_->GetConversationHistory();
+  ASSERT_EQ(new_history.size(), 3u);
+  const auto& human_turn = new_history[1];
+  ASSERT_TRUE(human_turn->uploaded_files);
+  ASSERT_EQ(human_turn->uploaded_files->size(), 1u);
+  EXPECT_EQ(human_turn->uploaded_files->at(0)->type,
+            mojom::UploadedFileType::kScreenshot);
+
+  testing::Mock::VerifyAndClearExpectations(&other_content);
+  testing::Mock::VerifyAndClearExpectations(engine);
+}
+
+// Test that only the content without text is screenshotted.
+TEST_F(ConversationHandlerUnitTest, ScreenshotsOnlyOfContentWithoutText) {
+  associated_content_->SetTextContent("Some text");
+
+  NiceMock<MockAssociatedContent> other_content;
+  other_content.SetContentId(2);
+  other_content.SetUrl(GURL("https://example.com/other.png"));
+  other_content.SetTextContent("");
+  conversation_handler_->associated_content_manager()->AddContent(
+      &other_content);
+
+  EXPECT_CALL(*associated_content_, GetScreenshots).Times(0);
+  EXPECT_CALL(other_content, GetScreenshots)
+      .WillOnce(base::test::RunOnceCallback<0>(
+          CreateSampleUploadedFiles(1, mojom::UploadedFileType::kScreenshot)));
+
+  MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .WillOnce(base::test::RunOnceCallback<7>(
+          base::ok(EngineConsumer::GenerationResultData(
+              mojom::ConversationEntryEvent::NewCompletionEvent(
+                  mojom::CompletionEvent::New("Response")),
+              std::nullopt /* model_key */))));
+
+  NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
+  base::RunLoop loop;
+  EXPECT_CALL(client, OnAPIRequestInProgress(true)).Times(testing::AnyNumber());
+  EXPECT_CALL(client, OnAPIRequestInProgress(false))
+      .WillOnce(testing::InvokeWithoutArgs(&loop, &base::RunLoop::Quit));
+  conversation_handler_->SubmitHumanConversationEntry("Test question",
+                                                      std::nullopt);
+  loop.Run();
+
+  const auto& history = conversation_handler_->GetConversationHistory();
+  ASSERT_EQ(history.size(), 2u);
+  ASSERT_TRUE(history[0]->uploaded_files);
+  EXPECT_EQ(history[0]->uploaded_files->size(), 1u);
+
+  testing::Mock::VerifyAndClearExpectations(associated_content_.get());
+  testing::Mock::VerifyAndClearExpectations(&other_content);
+  testing::Mock::VerifyAndClearExpectations(engine);
+}
+
+// Test that content losing its text after it was first sent is screenshotted
+// onto the entry it was first sent with, and isn't screenshotted again.
+TEST_F(ConversationHandlerUnitTest, NoScreenshotsAgainOfScreenshottedContent) {
+  MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .WillRepeatedly(testing::WithArg<7>(
+          [](EngineConsumer::GenerationCompletedCallback callback) {
+            std::move(callback).Run(EngineConsumer::GenerationResultData(
+                mojom::ConversationEntryEvent::NewCompletionEvent(
+                    mojom::CompletionEvent::New("Response")),
+                std::nullopt /* model_key */));
+          }));
+  auto submit = [&](const std::string& text) {
+    const size_t expected_size =
+        conversation_handler_->GetConversationHistorySize() + 2;
+    conversation_handler_->SubmitHumanConversationEntry(text, std::nullopt);
+    EXPECT_TRUE(base::test::RunUntil([&]() {
+      return conversation_handler_->GetConversationHistorySize() ==
+                 expected_size &&
+             !conversation_handler_->IsRequestInProgress();
+    }));
+  };
+
+  // The content is first sent while it has text, so it isn't screenshotted.
+  associated_content_->SetTextContent("Some text");
+  EXPECT_CALL(*associated_content_, GetScreenshots).Times(0);
+  submit("First question");
+  testing::Mock::VerifyAndClearExpectations(associated_content_.get());
+
+  // Once it has no text, it is screenshotted, like its text, onto that entry.
+  associated_content_->SetTextContent("");
+  EXPECT_CALL(*associated_content_, GetScreenshots)
+      .WillOnce(base::test::RunOnceCallback<0>(
+          CreateSampleUploadedFiles(1, mojom::UploadedFileType::kScreenshot)));
+  submit("Second question");
+  testing::Mock::VerifyAndClearExpectations(associated_content_.get());
+
+  // Later entries reuse those screenshots.
+  EXPECT_CALL(*associated_content_, GetScreenshots).Times(0);
+  submit("Third question");
+
+  const auto& history = conversation_handler_->GetConversationHistory();
+  ASSERT_EQ(history.size(), 6u);
+  ASSERT_TRUE(history[0]->uploaded_files);
+  EXPECT_EQ(history[0]->uploaded_files->size(), 1u);
+  EXPECT_FALSE(history[2]->uploaded_files);
+  EXPECT_FALSE(history[4]->uploaded_files);
+
+  testing::Mock::VerifyAndClearExpectations(associated_content_.get());
+  testing::Mock::VerifyAndClearExpectations(engine);
+}
+
+// Test that each content's screenshots join the entry it was first sent with.
+TEST_F(ConversationHandlerUnitTest, ScreenshotsJoinEachContentsEntry) {
+  MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .WillRepeatedly(testing::WithArg<7>(
+          [](EngineConsumer::GenerationCompletedCallback callback) {
+            std::move(callback).Run(EngineConsumer::GenerationResultData(
+                mojom::ConversationEntryEvent::NewCompletionEvent(
+                    mojom::CompletionEvent::New("Response")),
+                std::nullopt /* model_key */));
+          }));
+  auto submit = [&](const std::string& text) {
+    const size_t expected_size =
+        conversation_handler_->GetConversationHistorySize() + 2;
+    conversation_handler_->SubmitHumanConversationEntry(text, std::nullopt);
+    EXPECT_TRUE(base::test::RunUntil([&]() {
+      return conversation_handler_->GetConversationHistorySize() ==
+                 expected_size &&
+             !conversation_handler_->IsRequestInProgress();
+    }));
+  };
+
+  associated_content_->SetTextContent("");
+  EXPECT_CALL(*associated_content_, GetScreenshots)
+      .WillOnce(base::test::RunOnceCallback<0>(
+          CreateSampleUploadedFiles(1, mojom::UploadedFileType::kScreenshot)));
+  submit("First question");
+  testing::Mock::VerifyAndClearExpectations(associated_content_.get());
+
+  // Content added later is sent, and screenshotted, with a later entry. The
+  // first content isn't screenshotted again.
+  NiceMock<MockAssociatedContent> other_content;
+  other_content.SetContentId(2);
+  other_content.SetUrl(GURL("https://example.com/other.png"));
+  other_content.SetTextContent("");
+  conversation_handler_->associated_content_manager()->AddContent(
+      &other_content);
+  EXPECT_CALL(*associated_content_, GetScreenshots).Times(0);
+  EXPECT_CALL(other_content, GetScreenshots)
+      .WillOnce(base::test::RunOnceCallback<0>(
+          CreateSampleUploadedFiles(2, mojom::UploadedFileType::kScreenshot)));
+  submit("Second question");
+
+  const auto& history = conversation_handler_->GetConversationHistory();
+  ASSERT_EQ(history.size(), 4u);
+  ASSERT_TRUE(history[0]->uploaded_files);
+  EXPECT_EQ(history[0]->uploaded_files->size(), 1u);
+  ASSERT_TRUE(history[2]->uploaded_files);
+  EXPECT_EQ(history[2]->uploaded_files->size(), 2u);
+
+  testing::Mock::VerifyAndClearExpectations(associated_content_.get());
+  testing::Mock::VerifyAndClearExpectations(&other_content);
+  testing::Mock::VerifyAndClearExpectations(engine);
+}
+
+// Test that the screenshot button gets screenshots of every page, including
+// those with text.
+TEST_F(ConversationHandlerUnitTest, GetScreenshotsOfEveryContent) {
+  associated_content_->SetTextContent("Some text");
+  NiceMock<MockAssociatedContent> other_content;
+  other_content.SetContentId(2);
+  other_content.SetUrl(GURL("https://example.com/other.png"));
+  other_content.SetTextContent("");
+  conversation_handler_->associated_content_manager()->AddContent(
+      &other_content);
+
+  EXPECT_CALL(*associated_content_, GetScreenshots)
+      .WillOnce(base::test::RunOnceCallback<0>(
+          CreateSampleUploadedFiles(1, mojom::UploadedFileType::kScreenshot)));
+  EXPECT_CALL(other_content, GetScreenshots)
+      .WillOnce(base::test::RunOnceCallback<0>(
+          CreateSampleUploadedFiles(2, mojom::UploadedFileType::kScreenshot)));
+  base::test::TestFuture<std::optional<std::vector<mojom::UploadedFilePtr>>>
+      future;
+  conversation_handler_->GetScreenshots(future.GetCallback());
+  auto screenshots = future.Take();
+  ASSERT_TRUE(screenshots);
+  EXPECT_EQ(screenshots->size(), 3u);
+  testing::Mock::VerifyAndClearExpectations(associated_content_.get());
+  testing::Mock::VerifyAndClearExpectations(&other_content);
+
+  // No screenshots from any page gives none.
+  EXPECT_CALL(*associated_content_, GetScreenshots)
+      .WillOnce(base::test::RunOnceCallback<0>(std::nullopt));
+  EXPECT_CALL(other_content, GetScreenshots)
+      .WillOnce(base::test::RunOnceCallback<0>(std::nullopt));
+  base::test::TestFuture<std::optional<std::vector<mojom::UploadedFilePtr>>>
+      none_future;
+  conversation_handler_->GetScreenshots(none_future.GetCallback());
+  EXPECT_FALSE(none_future.Take());
+}
+
 // Test that screenshots are appended to existing uploaded files
 TEST_F(ConversationHandlerUnitTest, ScreenshotsAppendToExistingFiles) {
   // Mock associated content to return empty text content
@@ -6224,8 +6476,11 @@ TEST_F(ConversationHandlerUnitTest,
   EXPECT_CALL(untrusted_client, OnEntriesUIStateChanged(testing::_)).Times(0);
 
   // Call the callback directly with a no-op callback
-  conversation_handler_->OnAutoScreenshotsTaken(
-      base::DoNothing(), std::make_optional(std::move(screenshots)));
+  AssociatedContentManager::ContentScreenshots content_screenshots;
+  content_screenshots.emplace_back(associated_content_->uuid(),
+                                   std::move(screenshots));
+  conversation_handler_->OnAutoScreenshotsTaken(base::DoNothing(),
+                                                std::move(content_screenshots));
 
   // Verify the percentage is still the same and no UI update was triggered
   auto entries_state = conversation_handler_->GetStateForConversationEntries();

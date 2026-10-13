@@ -19,6 +19,7 @@
 #include "base/barrier_closure.h"
 #include "base/check.h"
 #include "base/check_op.h"
+#include "base/containers/extend.h"
 #include "base/containers/flat_set.h"
 #include "base/containers/map_util.h"
 #include "base/containers/span.h"
@@ -2201,42 +2202,25 @@ void ConversationHandler::OnGeneratePageContentComplete(
   is_content_different_ = is_content_different_ || content_changed;
 
   // Check if content is empty and take screenshots if needed
-  if (std::ranges::all_of(associated_content_manager_->GetCachedContents(),
-                          [](const auto& page_content_ref) {
-                            auto page_content = page_content_ref.get();
-                            base::TrimWhitespaceASCII(page_content.content,
-                                                      base::TRIM_ALL,
-                                                      &page_content.content);
-                            return page_content.content.empty();
-                          }) &&
-      associated_content_manager_->HasAssociatedContent()) {
-    // Check if the conversation already has screenshots
-    bool has_screenshots = std::ranges::any_of(
-        chat_history_, [](const mojom::ConversationTurnPtr& turn) {
-          return turn->uploaded_files &&
-                 std::ranges::any_of(
-                     *turn->uploaded_files,
-                     [](const mojom::UploadedFilePtr& file) {
-                       return file->type ==
-                              mojom::UploadedFileType::kScreenshot;
-                     });
-        });
-
-    // Only take screenshots if no screenshots have been taken yet
-    if (!has_screenshots) {
-      if (!DoAutoScreenshotsNeedVisionModel()) {
-        TakeAutoScreenshots(std::move(callback));
-        return;
-      }
-      // Ask before taking screenshots for a model that can't read them,
-      // unless the user already chose to go without.
-      if (!auto_screenshots_declined_) {
-        RequestVisionModelSwitch(
-            nullptr, base::BindOnce(
-                         &ConversationHandler::OnAutoScreenshotsDecided,
-                         weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
-        return;
-      }
+  std::vector<std::string> content_uuids =
+      associated_content_manager_->GetContentUuidsRequiringScreenshots();
+  std::erase_if(content_uuids, [this](const std::string& content_uuid) {
+    return HasScreenshotsOfContent(content_uuid);
+  });
+  if (!content_uuids.empty()) {
+    if (!DoAutoScreenshotsNeedVisionModel()) {
+      TakeAutoScreenshots(std::move(callback), std::move(content_uuids));
+      return;
+    }
+    // Ask before taking screenshots for a model that can't read them,
+    // unless the user already chose to go without.
+    if (!auto_screenshots_declined_) {
+      RequestVisionModelSwitch(
+          nullptr,
+          base::BindOnce(&ConversationHandler::OnAutoScreenshotsDecided,
+                         weak_ptr_factory_.GetWeakPtr(), std::move(callback),
+                         std::move(content_uuids)));
+      return;
     }
   }
 
@@ -2245,6 +2229,46 @@ void ConversationHandler::OnGeneratePageContentComplete(
   // Content-used percentage and is_video might have changed in addition to
   // content_type.
   OnAssociatedContentUpdated();
+}
+
+mojom::ConversationTurn* ConversationHandler::FindConversationEntry(
+    std::string_view entry_uuid) {
+  auto find_in = [entry_uuid](std::vector<mojom::ConversationTurnPtr>& history)
+      -> mojom::ConversationTurn* {
+    auto it = std::ranges::find_if(
+        history, [entry_uuid](const mojom::ConversationTurnPtr& entry) {
+          return entry->uuid == entry_uuid;
+        });
+    return it != history.end() ? it->get() : nullptr;
+  };
+  if (mojom::ConversationTurn* entry = find_in(chat_history_)) {
+    return entry;
+  }
+  for (auto& [_uuid, container] : threads_) {
+    if (mojom::ConversationTurn* entry = find_in(container.entries)) {
+      return entry;
+    }
+  }
+  return nullptr;
+}
+
+bool ConversationHandler::HasScreenshotsOfContent(
+    const std::string& content_uuid) {
+  if (associated_content_manager_->HasAutoScreenshots(content_uuid)) {
+    return true;
+  }
+
+  // Screenshots sent with the entry the content was first sent with, e.g.
+  // ones the user took.
+  std::optional<std::string> turn_uuid =
+      associated_content_manager_->GetContentTurnUuid(content_uuid);
+  const mojom::ConversationTurn* turn =
+      turn_uuid ? FindConversationEntry(*turn_uuid) : nullptr;
+  return turn && turn->uploaded_files &&
+         std::ranges::any_of(
+             *turn->uploaded_files, [](const mojom::UploadedFilePtr& file) {
+               return file->type == mojom::UploadedFileType::kScreenshot;
+             });
 }
 
 void ConversationHandler::OnEngineCompletionDataReceived(
@@ -3070,11 +3094,26 @@ size_t ConversationHandler::GetConversationHistorySize() {
 }
 
 void ConversationHandler::GetScreenshots(GetScreenshotsCallback callback) {
-  if (associated_content_manager_->HasAssociatedContent()) {
-    associated_content_manager_->GetScreenshots(std::move(callback));
-  } else {
-    std::move(callback).Run(std::nullopt);
-  }
+  auto content_uuids =
+      base::ToVector(associated_content_manager_->GetAssociatedContent(),
+                     &mojom::AssociatedContent::uuid);
+  associated_content_manager_->GetScreenshotsOfContent(
+      content_uuids,
+      base::BindOnce(
+          [](GetScreenshotsCallback callback,
+             AssociatedContentManager::ContentScreenshots content_screenshots) {
+            if (content_screenshots.empty()) {
+              std::move(callback).Run(std::nullopt);
+              return;
+            }
+            std::vector<mojom::UploadedFilePtr> screenshots;
+            for (auto& screenshots_of_content : content_screenshots) {
+              base::Extend(screenshots,
+                           std::move(screenshots_of_content.second));
+            }
+            std::move(callback).Run(std::move(screenshots));
+          },
+          std::move(callback)));
 }
 
 bool ConversationHandler::should_send_page_contents() const {
@@ -3198,16 +3237,21 @@ bool ConversationHandler::DoAutoScreenshotsNeedVisionModel() {
          !CanModelForTurnReadImages(*chat_history_.back());
 }
 
-void ConversationHandler::TakeAutoScreenshots(base::OnceClosure callback) {
-  associated_content_manager_->GetScreenshots(
+void ConversationHandler::TakeAutoScreenshots(
+    base::OnceClosure callback,
+    std::vector<std::string> content_uuids) {
+  associated_content_manager_->GetScreenshotsOfContent(
+      content_uuids,
       base::BindOnce(&ConversationHandler::OnAutoScreenshotsTaken,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
-void ConversationHandler::OnAutoScreenshotsDecided(base::OnceClosure callback,
-                                                   bool send_images) {
+void ConversationHandler::OnAutoScreenshotsDecided(
+    base::OnceClosure callback,
+    std::vector<std::string> content_uuids,
+    bool send_images) {
   if (send_images) {
-    TakeAutoScreenshots(std::move(callback));
+    TakeAutoScreenshots(std::move(callback), std::move(content_uuids));
     return;
   }
   std::move(callback).Run();
@@ -3216,47 +3260,64 @@ void ConversationHandler::OnAutoScreenshotsDecided(base::OnceClosure callback,
 
 void ConversationHandler::OnAutoScreenshotsTaken(
     base::OnceClosure callback,
-    std::optional<std::vector<mojom::UploadedFilePtr>> screenshots) {
+    AssociatedContentManager::ContentScreenshots content_screenshots) {
   // Apply MAX_IMAGES limit to automatic screenshots and calculate visual
   // percentage This function is only called for automatic screenshot capture,
   // never for user uploads
   std::optional<uint32_t> calculated_visual_percentage;
 
-  if (screenshots && !screenshots->empty()) {
-    size_t total_screenshots = screenshots->size();
+  size_t total_screenshots = 0;
+  for (const auto& [_content_uuid, screenshots] : content_screenshots) {
+    total_screenshots += screenshots.size();
+  }
 
-    // Apply MAX_IMAGES limit for automatic screenshots
-    if (total_screenshots > mojom::MAX_IMAGES) {
-      size_t discarded_count = total_screenshots - mojom::MAX_IMAGES;
+  // Apply MAX_IMAGES limit for automatic screenshots
+  if (total_screenshots > mojom::MAX_IMAGES) {
+    size_t discarded_count = total_screenshots - mojom::MAX_IMAGES;
 
-      // Calculate visual content percentage
-      calculated_visual_percentage = base::checked_cast<uint32_t>(
-          base::checked_cast<float>(mojom::MAX_IMAGES) * 100.0f /
-          total_screenshots);
+    // Calculate visual content percentage
+    calculated_visual_percentage = base::checked_cast<uint32_t>(
+        base::checked_cast<float>(mojom::MAX_IMAGES) * 100.0f /
+        total_screenshots);
 
-      // Truncate to MAX_IMAGES limit
-      screenshots->resize(mojom::MAX_IMAGES);
-      screenshots->shrink_to_fit();
-
-      DVLOG(1) << "Image truncation details - Total captured: "
-               << total_screenshots << ", Sent to model: " << mojom::MAX_IMAGES
-               << ", Discarded: " << discarded_count;
+    // Truncate to MAX_IMAGES limit, keeping the first pages' screenshots.
+    size_t remaining = mojom::MAX_IMAGES;
+    for (auto& [_content_uuid, screenshots] : content_screenshots) {
+      screenshots.resize(std::min(screenshots.size(), remaining));
+      remaining -= screenshots.size();
     }
+    std::erase_if(content_screenshots,
+                  [](const auto& entry) { return entry.second.empty(); });
 
-    // Update the last conversation turn with the uploaded files
-    if (!chat_history_.empty() &&
-        chat_history_.back()->character_type == mojom::CharacterType::HUMAN) {
-      // Append screenshots to existing uploaded files instead of replacing them
-      if (!chat_history_.back()->uploaded_files) {
-        chat_history_.back()->uploaded_files.emplace();
-      }
-      chat_history_.back()->uploaded_files->insert(
-          chat_history_.back()->uploaded_files->end(),
-          std::make_move_iterator(screenshots->begin()),
-          std::make_move_iterator(screenshots->end()));
-      // Notify UI about the updated conversation turn
-      OnHistoryUpdate(chat_history_.back().Clone());
+    DVLOG(1) << "Image truncation details - Total captured: "
+             << total_screenshots << ", Sent to model: " << mojom::MAX_IMAGES
+             << ", Discarded: " << discarded_count;
+  }
+
+  // Each page's screenshots join the human entry it was first sent with, as
+  // its text does.
+  std::vector<mojom::ConversationTurn*> updated_turns;
+  for (auto& [content_uuid, screenshots] : content_screenshots) {
+    std::optional<std::string> turn_uuid =
+        associated_content_manager_->GetContentTurnUuid(content_uuid);
+    mojom::ConversationTurn* turn =
+        turn_uuid ? FindConversationEntry(*turn_uuid) : nullptr;
+    if (!turn || turn->character_type != mojom::CharacterType::HUMAN) {
+      continue;
     }
+    // Append screenshots to existing uploaded files instead of replacing them
+    if (!turn->uploaded_files) {
+      turn->uploaded_files.emplace();
+    }
+    base::Extend(*turn->uploaded_files, std::move(screenshots));
+    associated_content_manager_->SetHasAutoScreenshots(content_uuid);
+    if (!std::ranges::contains(updated_turns, turn)) {
+      updated_turns.push_back(turn);
+    }
+  }
+  // Notify UI about the updated conversation turns
+  for (const mojom::ConversationTurn* turn : updated_turns) {
+    OnHistoryUpdate(turn->Clone());
   }
 
   // Store the calculated visual content percentage for UI display
