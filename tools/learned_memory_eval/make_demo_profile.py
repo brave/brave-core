@@ -3,7 +3,7 @@
 
 The profile has the chats of demo/demo_history.json in the Leo history, and no
 learned memories. Open brave://settings/leo-ai/customization, then select
-"Dream now" to see Dreaming learn from the chats.
+"Learn from chats" to see Dreaming learn from the chats.
 
 How it works: the eval mode of the browser imports the chats (it is the only
 code that writes chats with dates in the past). The script lets the eval run
@@ -82,7 +82,7 @@ def reset_memories(profile: Path) -> None:
 
 def set_last_dreaming_time(profile: Path) -> None:
     """Moves the daily timer one day away, so that it does not run before the
-    user selects "Dream now"."""
+    user selects "Learn from chats"."""
     path = profile / "Default" / "Preferences"
     prefs = json.loads(path.read_text())
     prefs.setdefault("brave", {}).setdefault("ai_chat", {})[
@@ -111,7 +111,7 @@ def write_launch_script(args, out: Path) -> Path:
     setup = Path(__file__).resolve().with_name("ollama_setup.py")
     body = f"""#!/bin/sh
 # Starts the demo browser. Loads the Ollama models first, so that
-# "Dream now" does not wait for them.
+# "Learn from chats" does not wait for them.
 python3 '{setup}' --ollama '{args.ollama}' --decision '{args.decision}' \\
   --llm '{args.llm}' --keep-alive '{args.keep_alive}' \\
   || echo 'Warning: the Ollama models are not loaded.' >&2
@@ -144,6 +144,12 @@ def main() -> None:
     parser.add_argument("--timeout", type=int, default=1200)
     args = parser.parse_args()
     args.brave = str(args.brave)
+    # The other Dreaming parameters keep their defaults, and the browser
+    # talks to Ollama without the proxy.
+    for flag, _, _, default in run_eval.PARAMS:
+        if not hasattr(args, flag):
+            setattr(args, flag, default)
+    args.proxy_url = None
 
     out = Path(args.out).expanduser().resolve()
     if out.exists():
