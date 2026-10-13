@@ -117,7 +117,7 @@ class FileUploadController : public tabs::ContentsObservingTabFeature {
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
   // Created on the first strip. Resetting it deletes the copies after every
   // strip already posted to |task_runner_| has finished.
-  // Delgate lives in the I/O sequence.
+  // |delegate_| lives in the I/O sequence.
   base::SequenceBound<Delegate> delegate_;
 
   // This helps to get the right FileUploadController instance for a given
