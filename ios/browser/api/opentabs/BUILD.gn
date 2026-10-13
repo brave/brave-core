@@ -31,6 +31,7 @@ source_set("opentabs") {
     "//components/keyed_service/ios",
     "//components/send_tab_to_self",
     "//components/sync/service",
+    "//components/sync_device_info",
     "//components/sync_sessions",
     "//ios/chrome/browser/sessions/model",
     "//ios/chrome/browser/shared/model/browser",
