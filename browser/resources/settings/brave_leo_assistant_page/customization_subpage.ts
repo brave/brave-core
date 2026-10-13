@@ -24,7 +24,6 @@ import {
   BraveLeoAssistantBrowserProxyImpl
 } from './brave_leo_assistant_browser_proxy.js'
 import { getTemplate } from './customization_subpage.html.js'
-import './learned_memory_section.js'
 import './memory_section.js'
 
 const BraveLeoCustomizationSubpageBase =
@@ -69,25 +68,6 @@ class BraveLeoCustomizationSubpage extends BraveLeoCustomizationSubpageBase {
         type: Boolean,
         value: true,
       },
-      // The search box over the memories. The memory section owns the box. The
-      // learned memory section searches its list with the same text, and tells
-      // how many learned memories there are and how many match.
-      memorySearchQuery_: {
-        type: String,
-        value: '',
-      },
-      relatedLearnedUuids_: {
-        type: Array,
-        value: () => [],
-      },
-      learnedCount_: {
-        type: Number,
-        value: 0,
-      },
-      learnedMatchCount_: {
-        type: Number,
-        value: 0,
-      },
     }
   }
 
@@ -101,10 +81,6 @@ class BraveLeoCustomizationSubpage extends BraveLeoCustomizationSubpageBase {
   declare otherInput_: string
   declare changesSaved_: boolean
   declare isSaveDisabled_: boolean
-  declare memorySearchQuery_: string
-  declare relatedLearnedUuids_: string[]
-  declare learnedCount_: number
-  declare learnedMatchCount_: number
 
   override ready() {
     super.ready()

@@ -3,9 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-// Helpers for the search box over the memories that the user wrote and the
-// memories that Leo learned. Both lists filter and highlight with them, so that
-// a word is a match in both or in neither.
+// Helpers for the search box over the memories. The list filters and
+// highlights with them, so that a word is a match in a memory that the user
+// wrote and in a memory that Leo learned, or in neither.
 
 export interface TextSegment {
   text: string

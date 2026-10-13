@@ -168,6 +168,164 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
     text-decoration: underline;
     font-weight: 400;
   }
+
+  .memory-info {
+    flex: 1;
+  }
+
+  .details,
+  .previous {
+    font: var(--leo-font-small-regular);
+    color: var(--leo-color-text-tertiary);
+  }
+
+  /* The lock of a memory that Leo keeps as it is. */
+  .keep {
+    --leo-icon-color: var(--leo-color-icon-default);
+  }
+
+  .keep.kept,
+  .kept-icon {
+    --leo-icon-color: var(--leo-color-icon-interactive);
+    color: var(--leo-color-icon-interactive);
+  }
+
+  /* The same box as the icon buttons of a learned memory, so that the
+     icons of both kinds of row line up. */
+  .kept-icon {
+    --leo-icon-size: 20px;
+  }
+
+  .learn-box {
+    padding: 0 var(--leo-spacing-2xl);
+  }
+
+  .dream-result {
+    font: var(--leo-font-small-regular);
+    color: var(--leo-color-text-secondary);
+  }
+
+  /* The notice that a run of "Learn from chats" left changes to review. */
+  .review-notice {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--leo-spacing-xl);
+    margin: var(--leo-spacing-l) var(--leo-spacing-2xl) 0;
+    padding: var(--leo-spacing-l) var(--leo-spacing-xl);
+    border: 1px solid var(--leo-color-divider-subtle);
+    border-radius: var(--leo-radius-m);
+    font: var(--leo-font-default-regular);
+    color: var(--leo-color-text-primary);
+  }
+
+  .review-notice leo-button {
+    flex: 0 0 auto;
+  }
+
+  /* The review dialog. */
+  #dreamingReviewDialog [slot="body"] {
+    align-items: stretch;
+    gap: var(--leo-spacing-l);
+  }
+
+  .review-intro {
+    font: var(--leo-font-default-regular);
+    color: var(--leo-color-text-secondary);
+  }
+
+  .review-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--leo-spacing-xl);
+    font: var(--leo-font-small-regular);
+    color: var(--leo-color-text-secondary);
+  }
+
+  .review-list {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--leo-color-divider-subtle);
+    border-radius: var(--leo-radius-m);
+  }
+
+  .review-group-heading {
+    padding: var(--leo-spacing-l) var(--leo-spacing-xl) var(--leo-spacing-m);
+    font: var(--leo-font-small-semibold);
+    color: var(--leo-color-text-secondary);
+  }
+
+  .review-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--leo-spacing-m);
+    padding-block: var(--leo-spacing-m);
+    padding-inline: var(--leo-spacing-xl) var(--leo-spacing-m);
+    border-bottom: 1px solid var(--leo-color-divider-subtle);
+    color: var(--leo-color-text-primary);
+  }
+
+  /* The text box can grow, and the button stays at its first line. */
+  .review-item.editing {
+    align-items: flex-start;
+  }
+
+  .review-item:last-child {
+    border-bottom: none;
+  }
+
+  /* A change that the user does not keep. The checkbox says it too. */
+  .review-item.skipped {
+    color: var(--leo-color-text-tertiary);
+  }
+
+  .review-item-body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: var(--leo-spacing-xs);
+    min-width: 0;
+    /* Lines up with the text of the checkbox: 20px box, then the gap. */
+    padding-top: var(--leo-spacing-s);
+    padding-bottom: var(--leo-spacing-s);
+  }
+
+  .review-item-body leo-checkbox {
+    display: block;
+  }
+
+  .review-before {
+    padding-inline-start: calc(20px + var(--leo-spacing-m));
+    font: var(--leo-font-small-regular);
+    color: var(--leo-color-text-tertiary);
+  }
+
+  .review-edit {
+    display: flex;
+    flex: 1;
+    align-items: flex-start;
+    gap: var(--leo-spacing-m);
+    min-width: 0;
+    padding-top: var(--leo-spacing-s);
+  }
+
+  .review-edit leo-textarea {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .review-item-actions {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+  }
+
+  .review-error {
+    font: var(--leo-font-small-regular);
+    color: var(--leo-color-systemfeedback-error-text);
+  }
 </style>
 
 <div class="settings-box header">
@@ -186,13 +344,23 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
 </settings-toggle-button>
 
 <template is="dom-if" if="[[prefs.brave.ai_chat.user_memory_enabled.value]]" restamp>
+  <template is="dom-if" if="[[hasReview_(reviewItems_)]]">
+    <div class="review-notice">
+      <span>$i18n{braveLeoAssistantDreamReviewPending}</span>
+      <leo-button id="reviewButton" kind="filled" size="small"
+          on-click="openReview_">
+        $i18n{braveLeoAssistantDreamReviewButton}
+      </leo-button>
+    </div>
+  </template>
+
   <div class="list-container">
     <div class="search-container">
       <leo-input
         type="text"
         placeholder="$i18n{braveLeoAssistantSearchMemoriesPlaceholder}"
         value="[[searchQuery]]"
-        disabled$="[[!hasAnyMemories_(memoriesList_, learnedCount)]]"
+        disabled$="[[!hasRows_(rows_)]]"
         on-input="onSearchInput_">
         <leo-icon name="search" slot="left-icon"></leo-icon>
         <template is="dom-if" if="[[searchQuery]]">
@@ -207,90 +375,78 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
         </template>
       </leo-input>
     </div>
-    <template
-      is="dom-if"
-      if="[[showEmptyList_(memoriesList_, searchQuery)]]"
-    >
+
+    <template is="dom-if" if="[[showEmptyList_(rows_, searchQuery)]]">
       <div class="empty-memories-table">
         <div class="empty-memories-title">$i18n{braveLeoAssistantMemoryListEmptyTitle}</div>
         <div class="empty-memories-desc">
           $i18n{braveLeoAssistantMemoryListEmptyDescription}
         </div>
+        <template is="dom-if" if="[[available_]]">
+          <div class="empty-memories-desc">
+            $i18n{braveLeoAssistantLearnedMemoriesEmptyDescription}
+          </div>
+        </template>
       </div>
     </template>
 
-    <template
-      is="dom-if"
-      if="[[hasNoSearchResults_(memoriesList_, learnedCount, searchQuery, relatedMemories_, learnedMatchCount)]]"
-    >
+    <template is="dom-if" if="[[hasNoSearchResults_(rows_, groups_, searchQuery)]]">
       <div class="empty-memories-table">
         <div class="no-results-title">$i18n{braveLeoAssistantNoSearchResultsFound}</div>
         <div class="clear-search-link" on-click="clearSearch_">$i18n{braveLeoAssistantClearSearch}</div>
       </div>
     </template>
 
-    <template
-      is="dom-if"
-      if="[[hasRelatedMemories_(relatedMemories_)]]"
-    >
-      <div class="related-heading">
-        $i18n{braveLeoAssistantRelatedMemoriesHeading}
-      </div>
-      <div class="list related-memories">
-        <template
-          is="dom-repeat"
-          items="[[relatedMemories_]]"
-        >
+    <template is="dom-repeat" items="[[groups_]]" as="group">
+      <template is="dom-if" if="[[group.related]]">
+        <div class="related-heading">
+          $i18n{braveLeoAssistantRelatedMemoriesHeading}
+        </div>
+      </template>
+      <div class$="[[getGroupClass_(group)]]">
+        <template is="dom-repeat" items="[[group.rows]]" as="row">
           <div class="memory">
             <div class="memory-info">
-              <div class="label"><template is="dom-repeat" items="[[getSegments_(item, searchQuery)]]" as="segment"
+              <div class="label"><template is="dom-repeat" items="[[getSegments_(row, searchQuery)]]" as="segment"
                   ><span class$="[[getSegmentClass_(segment)]]">[[segment.text]]</span
               ></template></div>
+              <div class="details" title$="[[getDetailsTitle_(row)]]">[[getDetails_(row)]]</div>
+              <template is="dom-if" if="[[hasPreviousText_(row)]]">
+                <div class="previous">[[getPreviousText_(row)]]</div>
+              </template>
             </div>
             <div class="memory-actions">
               <leo-button
                 kind="plain-faint"
                 fab size="medium"
+                title="$i18n{braveLeoAssistantMemoryEditLabel}"
+                aria-label="$i18n{braveLeoAssistantMemoryEditLabel}"
                 on-click="handleEdit_">
                 <leo-icon name="edit-pencil"></leo-icon>
               </leo-button>
+              <template is="dom-if" if="[[!row.learned]]">
+                <leo-icon
+                  class="kept-icon"
+                  name="lock"
+                  title="$i18n{braveLeoAssistantMemoryWrittenKept}">
+                </leo-icon>
+              </template>
+              <template is="dom-if" if="[[row.learned]]">
+                <leo-button
+                  class$="[[getKeepClass_(row)]]"
+                  kind="plain-faint"
+                  fab size="medium"
+                  title$="[[getKeepLabel_(row)]]"
+                  aria-label$="[[getKeepLabel_(row)]]"
+                  on-click="onToggleKeep_">
+                  <leo-icon name$="[[getKeepIcon_(row)]]"></leo-icon>
+                </leo-button>
+              </template>
               <leo-button
                 kind="plain-faint"
                 fab size="medium"
-                on-click="handleDelete_">
-                <leo-icon name="trash"></leo-icon>
-              </leo-button>
-            </div>
-          </div>
-        </template>
-      </div>
-    </template>
-
-    <template
-      is="dom-if"
-      if="[[shouldShowFilteredMemories_(memoriesList_, searchQuery, relatedMemories_)]]"
-    >
-      <div class="list">
-        <template
-          is="dom-repeat"
-          items="[[getFilteredMemories_(memoriesList_, searchQuery, relatedMemories_)]]"
-        >
-          <div class="memory">
-            <div class="memory-info">
-              <div class="label"><template is="dom-repeat" items="[[getSegments_(item, searchQuery)]]" as="segment"
-                  ><span class$="[[getSegmentClass_(segment)]]">[[segment.text]]</span
-              ></template></div>
-            </div>
-            <div class="memory-actions">
-              <leo-button
-                kind="plain-faint"
-                fab size="medium"
-                on-click="handleEdit_">
-                <leo-icon name="edit-pencil"></leo-icon>
-              </leo-button>
-              <leo-button
-                kind="plain-faint"
-                fab size="medium"
+                title="$i18n{braveLeoAssistantMemoryDeleteLabel}"
+                aria-label="$i18n{braveLeoAssistantMemoryDeleteLabel}"
                 on-click="handleDelete_">
                 <leo-icon name="trash"></leo-icon>
               </leo-button>
@@ -308,14 +464,35 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
       class="action-button">
       $i18n{braveLeoAssistantAddNewMemoryButtonLabel}
     </leo-button>
+    <template is="dom-if" if="[[available_]]">
+      <leo-button
+        id="dreamNowButton"
+        kind="outline"
+        on-click="onDreamNow_"
+        isDisabled$="[[isDreaming_]]">
+        [[getDreamButtonText_(isDreaming_)]]
+      </leo-button>
+    </template>
     <leo-button
+      id="deleteAllButton"
       on-click="handleDeleteAllMemories_"
       kind="plain"
       class="delete-button"
-      isDisabled$="[[!hasMemories_(memoriesList_)]]">
+      isDisabled$="[[!canDeleteAll_(rows_, isDreaming_)]]">
       $i18n{braveLeoAssistantDeleteAllMemoriesConfirmationTitle}
     </leo-button>
   </div>
+
+  <template is="dom-if" if="[[available_]]">
+    <div class="learn-box">
+      <template is="dom-if" if="[[hasDreamResult_(dreamResult_)]]">
+        <div class="dream-result">[[dreamResult_]]</div>
+      </template>
+      <div class="label-secondary">
+        $i18n{braveLeoAssistantLearnedMemoriesDesc}
+      </div>
+    </div>
+  </template>
 </template>
 
 <template
@@ -324,7 +501,7 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
   restamp
 >
   <cr-dialog id="memoryDialog" show-on-attach show-close-button on-close="onDialogCancel_">
-    <div slot="title">[[getDialogTitle_(editingMemoryItem_)]]</div>
+    <div slot="title">[[getDialogTitle_(editingRow_)]]</div>
     <div slot="body">
       <leo-input required type="text"
         value="[[editingMemory_]]" on-input="onDialogInput_"
@@ -364,11 +541,107 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
     <div slot="title">$i18n{braveLeoAssistantDeleteAllMemoriesConfirmationTitle}</div>
     <div slot="body">
       $i18n{braveLeoAssistantDeleteAllMemoriesConfirmation}
+      <template is="dom-if" if="[[available_]]">
+        $i18n{braveLeoAssistantDeleteAllLearnedMemoriesNote}
+      </template>
     </div>
     <div slot="button-container">
       <leo-button kind="plain-faint" on-click="onDeleteAllDialogCancel_">$i18n{cancel}</leo-button>
-      <leo-button class="delete-button" on-click="onDeleteAllDialogConfirm_">
+      <leo-button id="deleteAllConfirmButton" class="delete-button" on-click="onDeleteAllDialogConfirm_">
         $i18n{delete}
+      </leo-button>
+    </div>
+  </cr-dialog>
+</template>
+
+<template is="dom-if" if="[[showReviewDialog_]]" restamp>
+  <cr-dialog id="dreamingReviewDialog" show-on-attach show-close-button
+      on-close="onReviewDialogClose_">
+    <div slot="title">$i18n{braveLeoAssistantDreamReviewTitle}</div>
+    <div slot="body">
+      <div class="review-intro">
+        $i18n{braveLeoAssistantDreamReviewDescription}
+      </div>
+      <div class="review-toolbar">
+        <leo-checkbox id="reviewKeepAll" size="small"
+            checked="[[reviewAllKept_]]" on-change="onReviewKeepAllChange_">
+          $i18n{braveLeoAssistantDreamReviewSelectAll}
+        </leo-checkbox>
+        <span>[[getKeptCountText_(reviewKeptCount_, reviewItems_.length)]]</span>
+      </div>
+      <div class="review-list">
+        <template is="dom-repeat" items="[[reviewItems_]]">
+          <template is="dom-if" if="[[item.firstOfKind]]">
+            <div class="review-group-heading" role="heading" aria-level="3">
+              [[getChangeLabel_(item)]]
+            </div>
+          </template>
+          <div class$="[[getReviewItemClass_(item.keep, item.editing)]]">
+            <template is="dom-if" if="[[!item.editing]]">
+              <div class="review-item-body">
+                <leo-checkbox class="review-keep"
+                    checked="[[item.keep]]" on-change="onReviewKeepChange_">
+                  [[item.text]]
+                </leo-checkbox>
+                <template is="dom-if" if="[[hasStoredText_(item)]]">
+                  <div class="review-before">[[getStoredText_(item)]]</div>
+                </template>
+              </div>
+              <div class="review-item-actions">
+                <leo-button class="review-edit-button"
+                    data-index$="[[index]]"
+                    kind="plain-faint" fab size="medium"
+                    title="$i18n{braveLeoAssistantMemoryEditLabel}"
+                    aria-label="$i18n{braveLeoAssistantMemoryEditLabel}"
+                    on-click="onReviewEdit_">
+                  <leo-icon name="edit-pencil"></leo-icon>
+                </leo-button>
+              </div>
+            </template>
+            <template is="dom-if" if="[[item.editing]]">
+              <div class="review-edit">
+                <leo-textarea class="review-text"
+                    data-index$="[[index]]"
+                    minRows="1" maxRows="4"
+                    aria-label="$i18n{braveLeoAssistantMemoryEditLabel}"
+                    value="[[item.text]]"
+                    showErrors$="[[hasReviewTextError_(item.error)]]"
+                    on-input="onReviewTextInput_"
+                    on-keydown="onReviewTextKeyDown_">
+                  <div slot="errors" class="error-message">
+                    <leo-icon name="warning-triangle-filled"></leo-icon>
+                    <span>[[getReviewTextErrorText_(item.error)]]</span>
+                  </div>
+                </leo-textarea>
+              </div>
+              <div class="review-item-actions">
+                <leo-button kind="plain-faint" fab size="medium"
+                    title="$i18n{braveLeoAssistantDreamReviewDone}"
+                    aria-label="$i18n{braveLeoAssistantDreamReviewDone}"
+                    on-click="onReviewEditDone_">
+                  <leo-icon name="check-normal"></leo-icon>
+                </leo-button>
+              </div>
+            </template>
+          </div>
+        </template>
+      </div>
+      <template is="dom-if" if="[[reviewError_]]">
+        <div class="review-error" role="alert">
+          $i18n{braveLeoAssistantDreamReviewError}
+        </div>
+      </template>
+    </div>
+    <div slot="button-container">
+      <leo-button id="reviewDiscardButton" kind="plain-faint"
+          isDisabled$="[[reviewSaving_]]" on-click="onReviewDiscard_">
+        $i18n{braveLeoAssistantDreamReviewDiscard}
+      </leo-button>
+      <leo-button id="reviewSaveButton"
+          isLoading$="[[reviewSaving_]]"
+          isDisabled$="[[!canSaveReview_(reviewKeptCount_, reviewSaving_)]]"
+          on-click="onReviewSave_">
+        $i18n{braveLeoAssistantDreamReviewSave}
       </leo-button>
     </div>
   </cr-dialog>
