@@ -5,17 +5,18 @@
 
 #include "brave/components/ntp_background_images/browser/ntp_background_images_component_installer.h"
 
+#include <cstdint>
+#include <iterator>
 #include <memory>
 #include <string>
 #include <utility>
 
-#include "base/base64.h"
-#include "base/check.h"
-#include "base/containers/to_vector.h"
 #include "base/files/file_path.h"
 #include "base/functional/bind.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "components/component_updater/component_updater_service.h"
+#include "components/crx_file/id_util.h"
+#include "crypto/sha2.h"
 
 using brave_component_updater::BraveOnDemandUpdater;
 
@@ -23,16 +24,12 @@ namespace ntp_background_images {
 
 namespace {
 
-constexpr char kNTPBackgroundImagesComponentPublicKey[] =
-    "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA4L9XGAiVhCL8oi5aQhFrVllsw6VebX"
-    "igTj5ow3e0fYeEztjM9FOgqMD6pl0AB8u05xKUPcdpIZqCguEzXyXh5vn+"
-    "BWoEGtVezEEfjd33T4drJAYwEBvgWcFVVLNWku1/53f6TZp8IiiaOhKIANUtn/Zvw/"
-    "0nUYa10nwxK4P3he4Ahj0CO6HVeu9zNRCdZFSkYdMnPnNYTU+qN88OT1DBsV1xQgd3qK+"
-    "MkzPDF1okHi9a+IXiHa3FVY++QmtSrMgetJnS/"
-    "qBt6VsZcejcQCd1KIpgHNyoVl5rodtBRj25o48SxYePrssMRTv9vAQmRUZZukOIL/"
-    "HdeqjCHIOSQTrFEQIDAQAB";  // NOLINT
-constexpr char kNTPBackgroundImagesComponentID[] =
-    "aoojcmojmmcbpfgoecoadbdpnagfchel";
+constexpr uint8_t kNTPBackgroundImagesComponentPublicKeySHA256[32] = {
+    0x0e, 0xe9, 0x2c, 0xe9, 0xcc, 0x21, 0xf5, 0x6e, 0x42, 0xe0, 0x31,
+    0x3f, 0xd0, 0x65, 0x27, 0x4b, 0x69, 0x12, 0xae, 0xea, 0xdf, 0xce,
+    0xce, 0xe0, 0x89, 0x83, 0xdd, 0x25, 0x3c, 0x4c, 0x8a, 0xc8};
+static_assert(std::size(kNTPBackgroundImagesComponentPublicKeySHA256) ==
+              crypto::kSHA256Length);
 constexpr char kNTPBackgroundImagesComponentName[] = "NTP Background Images";
 
 void RegisterNTPBackgroundImagesComponentCallback(
@@ -44,13 +41,7 @@ void RegisterNTPBackgroundImagesComponentCallback(
 
 NTPBackgroundImagesComponentInstallerPolicy::
     NTPBackgroundImagesComponentInstallerPolicy(ComponentReadyCallback callback)
-    : ready_callback_(std::move(callback)) {
-  // Generate hash from public key.
-  auto decoded_public_key =
-      base::Base64Decode(kNTPBackgroundImagesComponentPublicKey);
-  CHECK(decoded_public_key);
-  component_hash_ = crypto::SHA256Hash(*decoded_public_key);
-}
+    : ready_callback_(std::move(callback)) {}
 
 NTPBackgroundImagesComponentInstallerPolicy::
     ~NTPBackgroundImagesComponentInstallerPolicy() = default;
@@ -89,12 +80,13 @@ bool NTPBackgroundImagesComponentInstallerPolicy::VerifyInstallation(
 
 base::FilePath
 NTPBackgroundImagesComponentInstallerPolicy::GetRelativeInstallDir() const {
-  return base::FilePath::FromUTF8Unsafe(kNTPBackgroundImagesComponentID);
+  return base::FilePath::FromUTF8Unsafe(crx_file::id_util::GenerateIdFromHash(
+      kNTPBackgroundImagesComponentPublicKeySHA256));
 }
 
 void NTPBackgroundImagesComponentInstallerPolicy::GetHash(
     std::vector<uint8_t>* hash) const {
-  *hash = base::ToVector(component_hash_);
+  hash->assign_range(kNTPBackgroundImagesComponentPublicKeySHA256);
 }
 
 std::string NTPBackgroundImagesComponentInstallerPolicy::GetName() const {
@@ -125,7 +117,8 @@ void RegisterNTPBackgroundImagesComponent(
   installer->Register(
       component_update_service,
       base::BindOnce(&RegisterNTPBackgroundImagesComponentCallback,
-                     kNTPBackgroundImagesComponentID));
+                     crx_file::id_util::GenerateIdFromHash(
+                         kNTPBackgroundImagesComponentPublicKeySHA256)));
 }
 
 }  // namespace ntp_background_images

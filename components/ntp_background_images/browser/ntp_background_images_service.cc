@@ -6,6 +6,8 @@
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 
 #include <algorithm>
+#include <array>
+#include <cstdint>
 #include <memory>
 
 #include "base/check_op.h"
@@ -32,12 +34,14 @@
 #include "brave/components/ntp_background_images/browser/switches.h"
 #include "brave/components/ntp_background_images/browser/url_constants.h"
 #include "components/component_updater/component_updater_service.h"
+#include "components/crx_file/id_util.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "components/variations/pref_names.h"
 #include "components/variations/service/variations_service.h"
 #include "components/variations/service/variations_service_utils.h"
 #include "content/public/common/url_constants.h"
+#include "crypto/sha2.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "url/gurl.h"
 #include "url/url_constants.h"
@@ -239,14 +243,17 @@ std::string NTPBackgroundImagesService::GetCountryCode() const {
 
 void NTPBackgroundImagesService::RegisterSponsoredImagesComponent() {
   const std::string variations_country_code = GetCountryCode();
-  std::optional<SponsoredImagesComponentInfo> sponsored_images_component =
-      GetSponsoredImagesComponent(variations_country_code);
-  if (!sponsored_images_component) {
+  std::optional<std::array<uint8_t, crypto::kSHA256Length>> public_key_sha256 =
+      GetComponentPublicKeySHA256(variations_country_code);
+  if (!public_key_sha256) {
     // Unsupported.
     return;
   }
 
-  if (sponsored_images_component_id_ == sponsored_images_component->id) {
+  const std::string component_id =
+      crx_file::id_util::GenerateIdFromHash(*public_key_sha256);
+
+  if (sponsored_images_component_id_ == component_id) {
     // Component already loaded. Replay the callback so profiles created after
     // the initial load still receive the sponsored images data.
     if (sponsored_content_installed_dir_) {
@@ -258,15 +265,13 @@ void NTPBackgroundImagesService::RegisterSponsoredImagesComponent() {
   if (sponsored_images_component_id_) {
     UnregisterSponsoredImagesComponent();
   }
-  sponsored_images_component_id_ = sponsored_images_component->id;
+  sponsored_images_component_id_ = component_id;
 
   VLOG(0) << "Registering NTP Sponsored Images component for "
           << variations_country_code << " with ID "
           << *sponsored_images_component_id_;
   RegisterNTPSponsoredImagesComponent(
-      component_update_service_,
-      std::string(sponsored_images_component->public_key_base64),
-      *sponsored_images_component_id_,
+      component_update_service_, *public_key_sha256,
       absl::StrFormat("NTP Sponsored Images (%s)", variations_country_code),
       base::BindRepeating(
           &NTPBackgroundImagesService::OnSponsoredComponentReady,

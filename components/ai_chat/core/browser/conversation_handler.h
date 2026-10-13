@@ -17,6 +17,7 @@
 #include <variant>
 #include <vector>
 
+#include "base/containers/span.h"
 #include "base/functional/callback.h"
 #include "base/functional/callback_forward.h"
 #include "base/gtest_prod_util.h"
@@ -26,6 +27,7 @@
 #include "base/observer_list.h"
 #include "base/observer_list_types.h"
 #include "base/scoped_observation.h"
+#include "base/timer/timer.h"
 #include "base/types/expected.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
@@ -93,6 +95,11 @@ class ConversationHandler : public mojom::ConversationHandler,
     virtual void OnConversationEntryRemoved(ConversationHandler* handler,
                                             const std::string& turn_uuid) {}
 
+    // Called when a new thread's metadata has been created, before the
+    // thread's first entry is notified via OnConversationEntryAdded.
+    virtual void OnNewConversationThread(ConversationHandler* handler,
+                                         const mojom::Thread& thread) {}
+
     virtual void OnToolUseEventOutput(ConversationHandler* handler,
                                       const std::string& entry_uuid,
                                       size_t event_order,
@@ -105,6 +112,7 @@ class ConversationHandler : public mojom::ConversationHandler,
         const std::string& title) {}
     virtual void OnConversationTokenInfoChanged(
         const std::string& conversation_uuid,
+        std::optional<std::string_view> thread_uuid,
         uint64_t total_tokens,
         uint64_t trimmed_tokens) {}
     virtual void OnAssociatedContentUpdated(ConversationHandler* handler) {}
@@ -249,6 +257,14 @@ class ConversationHandler : public mojom::ConversationHandler,
   void OnAssociatedContentUpdated();
   void OnContentToolsChanged(const std::string& content_uuid,
                              std::vector<mojom::ToolInfoPtr> tools);
+
+  // Associates the content with |content_uuid|, which a tool has added, with
+  // the assistant entry whose tool use is in progress, so it's persisted with
+  // the answer (rather than the user's next message), and removed along with
+  // that entry (e.g. when the answer is regenerated). Does nothing if no tool
+  // use is in progress, in which case the content will remain associated with
+  // the next human entry, like any other staged content.
+  void AssociateContentWithToolUseEntry(std::string_view content_uuid);
 
   void OnUserOptedIn();
   size_t GetConversationHistorySize() override;
@@ -426,6 +442,12 @@ class ConversationHandler : public mojom::ConversationHandler,
       ConversationHandlerUnitTest,
       GetTools_MemoryToolFilteredForTemporaryConversations);
   FRIEND_TEST_ALL_PREFIXES(ConversationHandlerUnitTest, ThreadHistory);
+  FRIEND_TEST_ALL_PREFIXES(ConversationHandlerUnitTest,
+                           CreateConversationThread_SubmitEntry);
+  FRIEND_TEST_ALL_PREFIXES(ConversationHandlerUnitTest,
+                           CreateConversationThread_EmptyExistingThread);
+  FRIEND_TEST_ALL_PREFIXES(ConversationHandlerUnitTest,
+                           CreateConversationThread_MaxThreads);
 
   struct ThreadContainer {
     explicit ThreadContainer(mojom::ThreadPtr thread);
@@ -451,9 +473,23 @@ class ConversationHandler : public mojom::ConversationHandler,
 
   mojom::ConversationEntriesStatePtr GetStateForConversationEntries();
   void AddToConversationHistory(mojom::ConversationTurnPtr turn);
-  void PerformAssistantGenerationWithPossibleContent();
+  // If |thread_uuid| names a known thread, increments its entry count to
+  // account for a newly added entry and notifies observers. When this is the
+  // thread's first entry, observers also learn the thread now exists before its
+  // first entry is reported. A no-op otherwise.
+  void MaybeHandleNewThreadEntry(const std::optional<std::string>& thread_uuid);
+  // Builds the conversation history to send to the engine for a generation in
+  // the given thread (or the root conversation). For a thread, this prepends
+  // the root conversation entries up to and including the thread's origin
+  // entry, followed by the thread's own entries.
+  EngineConsumer::ConversationHistoryView
+  BuildConversationHistoryViewForRequest(
+      const std::optional<std::string>& thread_uuid);
+  void PerformAssistantGenerationWithPossibleContent(
+      const std::optional<std::string>& thread_uuid);
 
-  void PerformAssistantGeneration();
+  void PerformAssistantGeneration(
+      const std::optional<std::string>& thread_uuid);
   // Returns the entry list that entries for the given thread (or the root
   // conversation, if |thread_uuid| is nullopt) should be read from/appended
   // to.
@@ -462,10 +498,12 @@ class ConversationHandler : public mojom::ConversationHandler,
 
   // When the current batch of tool use requests has been completed, we can
   // send the results to the engine and wait for the next response for the loop.
-  void PerformPostToolAssistantGeneration();
+  void PerformPostToolAssistantGeneration(
+      const std::optional<std::string>& thread_uuid);
 
   void SetAPIError(EngineConsumer::Error error);
   void UpdateOrCreateLastAssistantEntry(
+      const std::optional<std::string>& thread_uuid,
       EngineConsumer::GenerationResultData result);
 
   // Moves any follow-up suggestions the assistant offered via a tool use
@@ -492,10 +530,18 @@ class ConversationHandler : public mojom::ConversationHandler,
       std::optional<std::vector<mojom::UploadedFilePtr>> screenshots);
 
   void OnEngineCompletionDataReceived(
+      const std::optional<std::string>& thread_uuid,
       EngineConsumer::GenerationResultData result);
-  void OnEngineCompletionComplete(EngineConsumer::GenerationResult result);
+  void OnEngineCompletionComplete(const std::optional<std::string>& thread_uuid,
+                                  EngineConsumer::GenerationResult result);
   void OnTitleGenerated(EngineConsumer::GenerationResult result);
-  void CompleteGeneration(bool success);
+  void CompleteGeneration(const std::optional<std::string>& thread_uuid,
+                          bool success);
+  // Schedules a retry for a connection issue if eligible. Returns true if a
+  // retry was scheduled.
+  bool MaybeAutoRetry(const std::optional<std::string>& thread_uuid,
+                      mojom::APIError api_error);
+  void RetryAfterConnectionIssue(const std::optional<std::string>& thread_uuid);
   void OnSuggestedQuestionsResponse(
       EngineConsumer::SuggestedQuestionResult result);
   void OnConversationThreadHistoryReceived(
@@ -506,24 +552,42 @@ class ConversationHandler : public mojom::ConversationHandler,
   void OnModelDataChanged();
   void OnConversationDeleted();
   void OnHistoryUpdate(mojom::ConversationTurnPtr entry);
+  void OnConversationThreadUpdate(const mojom::Thread& thread);
   void OnToolUseEventOutput(mojom::ConversationTurn* entry,
                             mojom::ToolUseEvent* tool_use);
   void OnConversationEntryAdded(mojom::ConversationTurnPtr& entry);
   void OnConversationEntryRemoved(std::optional<std::string> turn_id);
+  // Removes content associated with any of the assistant entries in |turns|,
+  // which are about to be removed. Only content a tool added during an
+  // assistant entry is associated with one, so it goes with the entry, letting
+  // a regenerated answer add it again. Content associated with human entries is
+  // kept, as those entries are resubmitted.
+  void RemoveContentAssociatedWithAssistantEntries(
+      base::span<const mojom::ConversationTurnPtr> turns);
   void OnSuggestedQuestionsChanged();
   void OnClientConnectionChanged();
   void OnConversationTitleChanged(std::string_view title);
-  void OnConversationTokenInfoChanged(uint64_t total_tokens,
-                                      uint64_t trimmed_tokens);
+  void OnConversationTokenInfoChanged(
+      std::optional<std::string_view> thread_uuid,
+      uint64_t total_tokens,
+      uint64_t trimmed_tokens);
   void OnConversationUIConnectionChanged(mojo::RemoteSetElementId id);
   void OnAPIRequestInProgressChanged();
   void OnToolUseTaskStateChanged();
   void OnStateForConversationEntriesChanged();
 
-  mojom::ToolUseEvent* GetToolUseEventForLastResponse(std::string_view tool_id);
+  using ToolUseEventAndThreadUUID =
+      std::pair<raw_ptr<mojom::ToolUseEvent>, std::optional<std::string>>;
+
+  // If |tool_id| is provided, finds the matching tool use event. Otherwise,
+  // finds the latest tool use event (pending or completed) across all
+  // histories.
+  ToolUseEventAndThreadUUID FindLatestToolUseEvent(
+      std::optional<std::string_view> tool_id = std::nullopt);
 
   // Returns true if there are any more tool use requests to handle
-  bool MaybeRespondToNextToolUseRequest();
+  bool MaybeRespondToNextToolUseRequest(
+      const std::optional<std::string>& thread_uuid);
 
   // We don't own all the available tools for the conversation as:
   // - The available tools can change over time.
@@ -561,9 +625,21 @@ class ConversationHandler : public mojom::ConversationHandler,
   // non-conversation engine requests.
   bool is_request_in_progress_ = false;
 
+  // Number of automatic retries performed for the current request after
+  // receiving a connection issue error.
+  size_t connection_issue_retry_count_ = 0;
+  // Delays the automatic retry after a connection issue.
+  base::OneShotTimer connection_issue_retry_timer_;
+
   // Are we currently performing a loop of tool uses?
   bool is_tool_use_in_progress_ = false;
   mojom::TaskState tool_use_task_state_ = mojom::TaskState::kNone;
+
+  // UUID of the thread that is currently generating or executing a tool. Set
+  // whenever is_request_in_progress_ or is_tool_use_in_progress_ is set, and
+  // cleared when generation or execution completes. std::nullopt refers to the
+  // root thread.
+  std::optional<std::string> thread_uuid_in_progress_;
 
   // Keep track of whether we've generated suggested questions for the current
   // context. We cannot rely on counting the questions in |suggested_questions_|

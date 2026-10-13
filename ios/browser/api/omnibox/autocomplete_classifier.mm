@@ -22,25 +22,25 @@ AutocompleteMatch::Type MatchTypeFromBraveType(
     BraveIOSAutocompleteMatchType type) {
   switch (type) {
     case BraveIOSAutocompleteMatchTypeUrlWhatYouTyped:
-      return AutocompleteMatch::Type::URL_WHAT_YOU_TYPED;
+      return AutocompleteMatch::Type::kUrlWhatYouTyped;
     case BraveIOSAutocompleteMatchTypeHistoryUrl:
-      return AutocompleteMatch::Type::HISTORY_URL;
+      return AutocompleteMatch::Type::kHistoryUrl;
     case BraveIOSAutocompleteMatchTypeNavSuggest:
-      return AutocompleteMatch::Type::NAVSUGGEST;
+      return AutocompleteMatch::Type::kNavsuggest;
     case BraveIOSAutocompleteMatchTypeSearchWhatYouTyped:
-      return AutocompleteMatch::Type::SEARCH_WHAT_YOU_TYPED;
+      return AutocompleteMatch::Type::kSearchWhatYouTyped;
     case BraveIOSAutocompleteMatchTypeSearchHistory:
-      return AutocompleteMatch::Type::SEARCH_HISTORY;
+      return AutocompleteMatch::Type::kSearchHistory;
     case BraveIOSAutocompleteMatchTypeSearchOtherEngine:
-      return AutocompleteMatch::Type::SEARCH_OTHER_ENGINE;
+      return AutocompleteMatch::Type::kSearchOtherEngine;
     case BraveIOSAutocompleteMatchTypeBookmarkTitle:
-      return AutocompleteMatch::Type::BOOKMARK_TITLE;
+      return AutocompleteMatch::Type::kBookmarkTitle;
     case BraveIOSAutocompleteMatchTypeClipboardUrl:
-      return AutocompleteMatch::Type::CLIPBOARD_URL;
+      return AutocompleteMatch::Type::kClipboardUrl;
     case BraveIOSAutocompleteMatchTypeClipboardText:
-      return AutocompleteMatch::Type::CLIPBOARD_TEXT;
+      return AutocompleteMatch::Type::kClipboardText;
     case BraveIOSAutocompleteMatchTypeOpenTab:
-      return AutocompleteMatch::Type::OPEN_TAB;
+      return AutocompleteMatch::Type::kOpenTab;
   }
   NOTREACHED() << "Unknown BraveIOSAutocompleteMatchType: " << type;
 }
@@ -48,28 +48,29 @@ AutocompleteMatch::Type MatchTypeFromBraveType(
 BraveIOSAutocompleteMatchType BraveTypeFromMatchType(
     AutocompleteMatch::Type type) {
   switch (type) {
-    case AutocompleteMatch::Type::URL_WHAT_YOU_TYPED:
+    case AutocompleteMatch::Type::kUrlWhatYouTyped:
       return BraveIOSAutocompleteMatchTypeUrlWhatYouTyped;
-    case AutocompleteMatch::Type::HISTORY_URL:
+    case AutocompleteMatch::Type::kHistoryUrl:
       return BraveIOSAutocompleteMatchTypeHistoryUrl;
-    case AutocompleteMatch::Type::NAVSUGGEST:
+    case AutocompleteMatch::Type::kNavsuggest:
       return BraveIOSAutocompleteMatchTypeNavSuggest;
-    case AutocompleteMatch::Type::SEARCH_WHAT_YOU_TYPED:
+    case AutocompleteMatch::Type::kSearchWhatYouTyped:
       return BraveIOSAutocompleteMatchTypeSearchWhatYouTyped;
-    case AutocompleteMatch::Type::SEARCH_HISTORY:
+    case AutocompleteMatch::Type::kSearchHistory:
       return BraveIOSAutocompleteMatchTypeSearchHistory;
-    case AutocompleteMatch::Type::SEARCH_OTHER_ENGINE:
+    case AutocompleteMatch::Type::kSearchOtherEngine:
       return BraveIOSAutocompleteMatchTypeSearchOtherEngine;
-    case AutocompleteMatch::Type::BOOKMARK_TITLE:
+    case AutocompleteMatch::Type::kBookmarkTitle:
       return BraveIOSAutocompleteMatchTypeBookmarkTitle;
-    case AutocompleteMatch::Type::CLIPBOARD_URL:
+    case AutocompleteMatch::Type::kClipboardUrl:
       return BraveIOSAutocompleteMatchTypeClipboardUrl;
-    case AutocompleteMatch::Type::CLIPBOARD_TEXT:
+    case AutocompleteMatch::Type::kClipboardText:
       return BraveIOSAutocompleteMatchTypeClipboardText;
-    case AutocompleteMatch::Type::OPEN_TAB:
+    case AutocompleteMatch::Type::kOpenTab:
       return BraveIOSAutocompleteMatchTypeOpenTab;
     default:
-      NOTREACHED() << "Unknown AutocompleteMatch::Type: " << type;
+      NOTREACHED() << "Unknown AutocompleteMatch::Type: "
+                   << omnibox::AutocompleteMatchTypeToString(type);
   }
 }
 }  // namespace brave

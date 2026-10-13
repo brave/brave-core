@@ -1,10 +1,10 @@
 diff --git a/extensions/browser/extensions_browser_client.h b/extensions/browser/extensions_browser_client.h
-index 06cecbc7c4b797fca58da2e4e32c8529c7f06d8c..2769cdce37d78b18c4461462afb68a421daa2622 100644
+index 104ed9480c0f399053b4d492291174d7e0187f57..e289efbda849a6c0b5127781cfbe9df650811edd 100644
 --- a/extensions/browser/extensions_browser_client.h
 +++ b/extensions/browser/extensions_browser_client.h
-@@ -723,6 +723,10 @@ class ExtensionsBrowserClient {
-   virtual gfx::NativeWindow GetNativeWindowForFunction(
-       ExtensionFunction& function);
+@@ -728,6 +728,10 @@ class ExtensionsBrowserClient {
+   // services.
+   virtual bool IsLazyKeyedServiceInstantiationEnabled() const;
  
 +  // Returns true if the embedder's own blocklist considers
 +  // `extension_id` to be malware. Consulted alongside Safe Browsing.

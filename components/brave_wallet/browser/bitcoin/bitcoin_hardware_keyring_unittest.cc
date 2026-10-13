@@ -5,13 +5,8 @@
 
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_hardware_keyring.h"
 
-#include <memory>
-#include <utility>
-
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_test_utils.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
-#include "brave/components/brave_wallet/browser/test_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_wallet {

@@ -6,7 +6,7 @@
 import { EntityId } from '@reduxjs/toolkit'
 
 import { TimeDelta } from 'gen/mojo/public/mojom/base/time.mojom.m.js'
-import * as BraveWallet from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
+import * as BraveWallet from './brave_wallet'
 import {
   ExternalWallet,
   ExternalWalletProvider,

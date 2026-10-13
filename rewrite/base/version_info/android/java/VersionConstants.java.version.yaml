@@ -1,0 +1,21 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Keep PRODUCT_VERSION available on Android.
+
+      The Java counterpart of
+      rewrite/base/version_info/version_info_values.h.version.yaml: since
+      7cb5ec9c41e7f upstream takes the version string on Android from the
+      manifest, which holds the 3 segments Brave version like `1.98.13`,
+      while `VersionInfo.getProductVersion()` is expected to return the
+      4 segments one like `156.1.98.18` with the Chromium major code.
+    regex:
+      re_pattern: |-
+        (public class VersionConstants \{)
+      replace: |-
+        \1
+            public static final String PRODUCT_VERSION = "@MAJOR@.@MINOR@.@BUILD@.@PATCH@";

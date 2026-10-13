@@ -12,9 +12,9 @@
 #include "base/files/file_path.h"
 #include "base/logging.h"
 #include "base/strings/string_util.h"
-#include "brave/components/brave_ads/browser/component_updater/component_info.h"
 #include "brave/components/brave_ads/browser/component_updater/component_util.h"
 #include "brave/components/brave_ads/browser/component_updater/resource_component_registrar_delegate.h"
+#include "components/crx_file/id_util.h"
 
 namespace brave_ads {
 
@@ -37,17 +37,21 @@ void ResourceComponentRegistrar::RegisterResourceComponent(
     const std::string& resource_id) {
   CHECK(!resource_id.empty());
 
-  std::optional<ComponentInfo> component = GetComponent(resource_id);
-  if (!component) {
+  std::optional<std::array<uint8_t, crypto::kSHA256Length>> public_key_sha256 =
+      GetComponentPublicKeySHA256(resource_id);
+  if (!public_key_sha256) {
     return VLOG(1) << "Ads resource not supported for " << resource_id;
   }
 
-  if (resource_component_id_ && resource_component_id_ != component->id) {
+  const std::string component_id =
+      crx_file::id_util::GenerateIdFromHash(*public_key_sha256);
+
+  if (resource_component_id_ && resource_component_id_ != component_id) {
     Unregister();
     OnComponentUnregistered(*resource_component_id_);
     last_install_dir_.reset();
   }
-  resource_component_id_ = component->id;
+  resource_component_id_ = component_id;
 
   const std::string component_name =
       base::ReplaceStringPlaceholders(kComponentName, {resource_id}, nullptr);
@@ -55,8 +59,7 @@ void ResourceComponentRegistrar::RegisterResourceComponent(
   VLOG(1) << "Registering " << component_name << " with id "
           << *resource_component_id_;
 
-  Register(component_name, *resource_component_id_,
-           std::string(component->public_key_base64));
+  Register(component_name, *public_key_sha256);
 
   if (last_install_dir_) {
     // The component was already ready before this registration. Replay

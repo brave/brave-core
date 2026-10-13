@@ -34,6 +34,7 @@
 #include "brave/components/brave_rewards/core/rewards_util.h"
 #include "brave/ios/browser/brave_ads/ads_factory.h"
 #include "components/prefs/pref_service.h"
+#include "net/base/network_change_notifier.h"
 #include "sql/database.h"
 #include "ui/base/page_transition_types.h"
 #include "url/gurl.h"
@@ -137,6 +138,10 @@ void AdsServiceImplIOS::NotifyDidClearAdsServiceData() const {
   for (AdsServiceObserver& observer : observers_) {
     observer.OnDidClearAdsServiceData();
   }
+}
+
+bool AdsServiceImplIOS::IsNetworkConnectionAvailable() const {
+  return !net::NetworkChangeNotifier::IsOffline();
 }
 
 base::WeakPtr<AdsService> AdsServiceImplIOS::GetWeakPtr() {

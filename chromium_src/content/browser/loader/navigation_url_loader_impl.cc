@@ -32,7 +32,9 @@ bool ShouldInterceptWebUINavigation(BrowserContext* browser_context,
 }
 
 mojo::PendingRemote<network::mojom::URLLoaderFactory>
-MaybeCreateWebUILoaderFactory(FrameTreeNode* frame_tree_node, const GURL& url);
+MaybeCreateWebUILoaderFactory(WebUIURLLoaderFactoryPasskey::PassKey pass_key,
+                              FrameTreeNode* frame_tree_node,
+                              const GURL& url);
 
 }  // namespace
 
@@ -44,14 +46,17 @@ namespace content {
 namespace {
 
 mojo::PendingRemote<network::mojom::URLLoaderFactory>
-MaybeCreateWebUILoaderFactory(FrameTreeNode* frame_tree_node, const GURL& url) {
+MaybeCreateWebUILoaderFactory(WebUIURLLoaderFactoryPasskey::PassKey pass_key,
+                              FrameTreeNode* frame_tree_node,
+                              const GURL& url) {
   const std::string scheme = url.GetScheme();
   if (!std::ranges::contains(URLDataManagerBackend::GetWebUISchemes(),
                              scheme)) {
     return {};
   }
-  return CreateWebUIURLLoaderFactory(frame_tree_node->current_frame_host(),
-                                     scheme, /*allowed_hosts=*/{});
+  return CreateWebUIURLLoaderFactoryWithoutOriginLock(
+      pass_key, frame_tree_node->current_frame_host(), scheme,
+      /*allowed_hosts=*/{});
 }
 
 }  // namespace

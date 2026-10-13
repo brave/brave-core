@@ -7,7 +7,7 @@ import path from 'node:path'
 import os from 'node:os'
 import fs from 'fs-extra'
 import updatePatches from './updatePatches.js'
-import util from './util.js'
+import util from './util.ts'
 
 const dirPrefixTmp = 'brave-browser-test-update-patches-'
 

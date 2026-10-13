@@ -41,7 +41,7 @@ class LeoWorkspaceUIConfig : public content::WebUIConfig {
 // page receives a FileSystemDirectoryHandle (delivered by the browser via
 // launchQueue) for a user-picked folder, implements the file tools in
 // JavaScript against it, and registers them with Leo via WebMCP
-// (navigator.modelContext). One instance is created per conversation and served
+// (document.modelContext). One instance is created per conversation and served
 // from its own origin at chrome-untrusted://<guid>.leo-workspace; it runs with
 // a locked-down CSP that permits only its own first-party bundle and framing
 // its own viewer document. This page has no visible UI of its own.

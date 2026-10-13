@@ -24,6 +24,22 @@ OBJC_EXPORT const CWVUserAgentType CWVUserAgentTypeDesktop;
 
 NS_ASSUME_NONNULL_BEGIN
 
+/// A handle to an in-flight download of the currently displayed page started
+/// via `-[CWVWebView downloadCurrentPageToPath:completionHandler:]`.
+///
+/// The download is cancelled if this handle is deallocated before it
+/// completes, so callers must retain it for the duration of the download.
+CWV_EXPORT
+@interface CWVWebViewDownload : NSObject
+
+- (instancetype)init NS_UNAVAILABLE;
+
+/// Cancels the download. The download's completion handler is invoked with an
+/// `NSURLErrorCancelled` error if it has not already completed.
+- (void)cancel;
+
+@end
+
 /// Adds additional functionality to CWVWebView that is not be supported out
 /// of the box but can be implemented using the underlying WebState
 CWV_EXPORT
@@ -80,6 +96,27 @@ CWV_EXPORT
 /// Equivalent of -[WKWebView
 /// createPDFWithConfiguration:completionHandler:]
 - (void)createFullPagePDF:(void (^)(NSData* _Nullable))completionHandler;
+
+/// Downloads the last committed page to the file at `path` using the web
+/// view's network session (cookies, auth, etc.).
+///
+/// `completionHandler` is invoked exactly once on the main thread with `nil`
+/// on success or an error on failure or cancellation. Returns nil (after
+/// invoking `completionHandler` with an error) if the download could not be
+/// started.
+- (nullable CWVWebViewDownload*)downloadCurrentPageToPath:(NSString*)path
+                                        completionHandler:
+                                            (void (^)(NSError* _Nullable error))
+                                                completionHandler;
+
+/// Returns a filename suitable for saving the last committed page to disk.
+///
+/// The name is derived from `contentDisposition` if provided, otherwise from
+/// the last committed URL, and is given an extension matching the page's MIME
+/// type when one is missing or unreliable (e.g. blob: URLs).
+- (NSString*)suggestedFilenameForCurrentPageWithContentDisposition:
+    (nullable NSString*)contentDisposition
+    NS_SWIFT_NAME(suggestedFilenameForCurrentPage(contentDisposition:));
 
 /// Whether or not you can create a snapshot using `takeSnapshotWithRect`
 - (BOOL)canTakeSnapshot;

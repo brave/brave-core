@@ -48,6 +48,7 @@ static_library("browser") {
     "//brave/components/version_info",
     "//components/component_updater",
     "//components/content_settings/core/browser",
+    "//components/crx_file",
     "//components/keyed_service/core",
     "//components/pref_registry",
     "//components/prefs",

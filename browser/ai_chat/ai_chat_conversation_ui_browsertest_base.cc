@@ -174,7 +174,8 @@ bool AIChatConversationUIBrowserTestBase::VerifyElementState(
 
   auto result = content::EvalJs(
       frame,
-      content::JsReplace(kWaitForAIChatRenderScript, test_id, !expect_exist));
+      content::JsReplace(kWaitForAIChatRenderScript, test_id, !expect_exist),
+      eval_js_options_);
   // Surface a script failure (e.g. the frame's document was replaced while the
   // promise was still pending) as a test failure: `ExtractBool` would `CHECK`
   // and take the browser test process down, losing the error along with the
@@ -260,8 +261,28 @@ bool AIChatConversationUIBrowserTestBase::VerifyElementText(
   )";
 
   auto result = content::EvalJs(
-      frame, content::JsReplace(kWaitForTextScript, test_id, expected_text));
-  return result.ExtractBool();
+      frame, content::JsReplace(kWaitForTextScript, test_id, expected_text),
+      eval_js_options_);
+  if (!result.is_ok()) {
+    ADD_FAILURE() << result.ExtractError();
+    return false;
+  }
+  if (!result.ExtractBool()) {
+    // Report what the element actually said; a bare `false` here gives whoever
+    // hits it nothing to go on.
+    auto actual = content::EvalJs(
+        frame,
+        content::JsReplace("(document.querySelector(`[data-testid=$1]`)"
+                           "?.textContent ?? '<no such element>').trim()",
+                           test_id),
+        eval_js_options_);
+    ADD_FAILURE() << "'" << test_id << "' text is '"
+                  << (actual.is_ok() ? actual.ExtractString()
+                                     : actual.ExtractError())
+                  << "', expected '" << expected_text << "'";
+    return false;
+  }
+  return true;
 }
 
 bool AIChatConversationUIBrowserTestBase::ClickElement(
@@ -281,7 +302,8 @@ bool AIChatConversationUIBrowserTestBase::ClickElement(
     })()
   )";
   return content::EvalJs(frame,
-                         content::JsReplace(kClickElementScript, test_id))
+                         content::JsReplace(kClickElementScript, test_id),
+                         eval_js_options_)
       .ExtractBool();
 }
 
@@ -306,7 +328,8 @@ bool AIChatConversationUIBrowserTestBase::HoverElement(
     })()
   )";
   return content::EvalJs(frame,
-                         content::JsReplace(kHoverElementScript, test_id))
+                         content::JsReplace(kHoverElementScript, test_id),
+                         eval_js_options_)
       .ExtractBool();
 }
 

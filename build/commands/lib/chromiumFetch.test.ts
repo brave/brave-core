@@ -13,8 +13,9 @@ import path from 'node:path'
 import { spawnSync } from 'node:child_process'
 import { checkoutChromiumRef } from './chromiumFetch.ts'
 import config from './config.ts'
+import { snapshotConfig } from './configSnapshot.ts'
 import * as Log from './log.ts'
-import util from './util.js'
+import util from './util.ts'
 
 jest.mock('./log.ts', () => ({
   warn: jest.fn(),
@@ -27,13 +28,6 @@ const releaseTag = '1.2.3.4'
 const laterReleaseTag = '5.6.7.8'
 const releaseRef = `refs/tags/${releaseTag}`
 const branchHeadsRef = 'refs/branch-heads/8010'
-
-// Config fields the tests point at the temp checkout, restored afterwards
-// because `config` is a process-wide singleton.
-type OverriddenConfig = Pick<
-  typeof config,
-  'gitCachePath' | 'chromiumRepo' | 'srcDir' | 'rootDir'
->
 
 function git(cwd: string, ...args: string[]): string {
   // Pass the env explicitly: jest's `process.env` is a sandboxed copy, which
@@ -53,7 +47,7 @@ describe('checkoutChromiumRef', () => {
   let tmpDir: string
   let upstream: string
   let srcDir: string
-  let savedConfig: OverriddenConfig
+  let restoreConfig: () => void
   let savedEnv: Record<string, string | undefined>
 
   // Commit an empty change onto whatever `upstream` has checked out.
@@ -115,12 +109,7 @@ describe('checkoutChromiumRef', () => {
   }
 
   beforeEach(() => {
-    savedConfig = {
-      gitCachePath: config.gitCachePath,
-      chromiumRepo: config.chromiumRepo,
-      srcDir: config.srcDir,
-      rootDir: config.rootDir,
-    }
+    restoreConfig = snapshotConfig()
 
     tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'brave-chromium-fetch-'))
 
@@ -176,7 +165,7 @@ describe('checkoutChromiumRef', () => {
 
   afterEach(() => {
     jest.restoreAllMocks()
-    Object.assign(config, savedConfig)
+    restoreConfig()
     for (const [name, value] of Object.entries(savedEnv)) {
       if (value === undefined) {
         delete process.env[name]

@@ -48,8 +48,7 @@ class MockJsonRpcService: BraveWallet.TestJsonRpcService, @unchecked Sendable {
             customChainIds: [],
             hiddenChainIds: [],
             ankrChainIds: [],
-            swapChainIds: [],
-            offRampChainIds: []
+            swapChainIds: []
           )
         )
         return
@@ -60,8 +59,7 @@ class MockJsonRpcService: BraveWallet.TestJsonRpcService, @unchecked Sendable {
           customChainIds: self.allCustomNetworks.map(\.chainId),
           hiddenChainIds: self.hiddenNetworks.map(\.chainId),
           ankrChainIds: [],
-          swapChainIds: self.swapSupportedChainIds,
-          offRampChainIds: []
+          swapChainIds: self.swapSupportedChainIds
         )
       )
     }

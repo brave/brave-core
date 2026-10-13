@@ -1,0 +1,19 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Use Nala's check mark, tinted with the theme's primary colour.
+
+      Upstream's ic_check_googblue_24dp is a density PNG with Google blue baked
+      in. A baked colour cannot follow the theme, so the tint has to come from
+      the view instead; colorPrimary is the attribute the sheet's Send button
+      already resolves its background through.
+    regex:
+      pattern: 'android:src="@drawable/ic_check_googblue_24dp"'
+      replace: |-
+        android:src="@drawable/ic_check_normal"
+              android:tint="?attr/colorPrimary"
+    count: 1

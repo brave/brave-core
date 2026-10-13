@@ -52,21 +52,19 @@ source_set("browser_process") {
 source_set("brave_global_features") {
   sources = [ "brave_global_features.h" ]
 
-  public_deps = [
-    "//chrome/browser:global_features",
-    "//extensions/buildflags",
-  ]
+  public_deps = [ "//extensions/buildflags" ]
 }
 
 source_set("brave_global_features_impl") {
   visibility = [ "//brave/browser:core" ]
   sources = [ "brave_global_features.cc" ]
 
+  # //chrome/browser's global_features.cc includes the header.
+  public_deps = [ "//brave/browser:brave_global_features" ]
+
   deps = [
     "//base",
-    "//brave/browser:brave_global_features",
     "//brave/components/extension_malware_blocklist/common",
-    "//chrome/browser:global_features",
     "//extensions/buildflags",
   ]
 
@@ -88,6 +86,9 @@ source_set("core") {
            "//brave/browser/ui/window_feature_controller:chromium_impl",
            "//brave/ui/webui/custom_profile_image/buildflags",
          ]
+  if (!is_android) {
+    deps += [ "//brave/browser/ui:brave_browser_header" ]
+  }
   if (enable_brave_custom_profile_image_webui) {
     deps += [ "//brave/browser/ui/webui/custom_profile_image" ]
   }

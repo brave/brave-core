@@ -35,6 +35,7 @@ source_set("brave_ads") {
     "//ios/chrome/browser/shared/model/profile:profile_keyed_service_factory",
     "//ios/chrome/common",
     "//ios/web/public",
+    "//net",
     "//sql",
   ]
 
@@ -97,6 +98,7 @@ source_set("unit_tests") {
     "//ios/web/public/test",
     "//ios/web/public/test/fakes",
     "//net",
+    "//net:test_support",
     "//testing/gmock",
     "//testing/gtest",
     "//ui/base",

@@ -42,7 +42,7 @@ __LABELS_TO_REMOVE_FROM_PLATFORMS = [
 
 # Chromium_src overrides we support with the exception of c/c++/obj-c files
 # which are handled by redirect_cc. The list should be in sync with
-# `touchOverriddenFiles()` in //brave/build/commands/lib/util.js .
+# `touchOverriddenFiles()` in //brave/build/commands/lib/util.ts .
 __BRAVE_CHROMIUM_SRC_FILE_EXTENSIONS = (
     '.css',
     '.html',

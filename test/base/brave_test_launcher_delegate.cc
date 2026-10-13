@@ -9,7 +9,7 @@
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/app/brave_main_delegate.h"
-#include "brave/browser/ui/brave_browser.h"
+#include "brave/browser/ui/window_closing_confirm/window_closing_confirm_controller.h"
 #endif
 
 #if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
@@ -28,7 +28,7 @@ BraveTestLauncherDelegate::BraveTestLauncherDelegate(
 #if !BUILDFLAG(IS_ANDROID)
   // Suppress browser window closing dialog during the test.
   // It can cause some tests timeout.
-  BraveBrowser::SuppressBrowserWindowClosingDialogForTesting(true);
+  WindowClosingConfirmController::SuppressDialogForTesting(true);  // IN-TEST
 #endif
 }
 

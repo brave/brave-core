@@ -65,6 +65,8 @@ class AdsServiceImplIOS : public AdsService {
   void NotifyDidShutdownAdsService() const;
   void NotifyDidClearAdsServiceData() const;
 
+  bool IsNetworkConnectionAvailable() const;
+
   // AdsService:
   base::WeakPtr<AdsService> GetWeakPtr() override;
   bool IsIneligibleToStart() const override;

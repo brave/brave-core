@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/toolbar/browser_app_menu_button.h b/chrome/browser/ui/views/toolbar/browser_app_menu_button.h
-index 022cc7f46e96563850aee6692a4c43375526a5e4..75e2270035f7713424326a3bb2fa503251e274dd 100644
+index ec7c460cdcd4f8d69837a953bd8f799653f85099..b5f99e55c8cee54ea7a1cea85149ae91b14c0749 100644
 --- a/chrome/browser/ui/views/toolbar/browser_app_menu_button.h
 +++ b/chrome/browser/ui/views/toolbar/browser_app_menu_button.h
-@@ -67,6 +67,7 @@ class BrowserAppMenuButton : public AppMenuButton {
+@@ -65,6 +65,7 @@ class BrowserAppMenuButton : public AppMenuButton {
    gfx::Size GetMinimumSize() const override;
  
   private:
@@ -10,7 +10,7 @@ index 022cc7f46e96563850aee6692a4c43375526a5e4..75e2270035f7713424326a3bb2fa5032
    void OnTouchUiChanged();
  
    void ButtonPressed(const ui::Event& event);
-@@ -75,13 +76,13 @@ class BrowserAppMenuButton : public AppMenuButton {
+@@ -73,13 +74,13 @@ class BrowserAppMenuButton : public AppMenuButton {
  
    bool ShouldPaintBorder() const override;
    std::optional<SkColor> GetHighlightTextColor() const override;

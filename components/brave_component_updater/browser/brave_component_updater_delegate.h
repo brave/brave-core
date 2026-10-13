@@ -6,12 +6,15 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_COMPONENT_UPDATER_BROWSER_BRAVE_COMPONENT_UPDATER_DELEGATE_H_
 #define BRAVE_COMPONENTS_BRAVE_COMPONENT_UPDATER_BROWSER_BRAVE_COMPONENT_UPDATER_DELEGATE_H_
 
+#include <cstdint>
 #include <string>
 
 #include "base/component_export.h"
+#include "base/containers/span.h"
 #include "base/functional/callback.h"
 #include "base/memory/raw_ref.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
+#include "crypto/sha2.h"
 
 namespace base {
 class SequencedTaskRunner;
@@ -40,7 +43,8 @@ class COMPONENT_EXPORT(BRAVE_COMPONENT_UPDATER) BraveComponentUpdaterDelegate
   using ComponentObserver = update_client::UpdateClient::Observer;
   // brave_component_updater::BraveComponent::Delegate implementation
   void Register(const std::string& component_name,
-                const std::string& component_base64_public_key,
+                base::span<const uint8_t, crypto::kSHA256Length>
+                    component_public_key_sha256,
                 base::OnceClosure registered_callback,
                 brave_component_updater::BraveComponent::ReadyCallback
                     ready_callback) override;

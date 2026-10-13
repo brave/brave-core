@@ -16,6 +16,7 @@
 #include "base/unguessable_token.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
+#include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
 #include "brave/browser/serp_metrics/serp_metrics_tab_helper.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
@@ -219,8 +220,12 @@ void AttachPrivacySensitiveTabHelpers(content::WebContents* web_contents) {
       std::make_unique<PageSpecificContentSettingsDelegate>(web_contents));
   brave_shields::BraveShieldsWebContentsObserver::CreateForWebContents(
       web_contents);
-  ephemeral_storage::EphemeralStorageTabHelper::CreateForWebContents(
-      web_contents);
+  if (auto* ephemeral_storage_service =
+          EphemeralStorageServiceFactory::GetForContext(
+              web_contents->GetBrowserContext())) {
+    ephemeral_storage::EphemeralStorageTabHelper::CreateForWebContents(
+        web_contents, ephemeral_storage_service);
+  }
 }
 
 }  // namespace brave

@@ -1,5 +1,5 @@
 diff --git a/extensions/common/features/feature.cc b/extensions/common/features/feature.cc
-index 92c72a69193518170b460d73b68eda91d5cda172..d213041926173adb06e82f6d4ff50491766e2c44 100644
+index d506fb6d19cfd541098a6e3f5172fd6eaf1fcf91..ea743359d483e15a1a8464a3da33b59ffba9189b 100644
 --- a/extensions/common/features/feature.cc
 +++ b/extensions/common/features/feature.cc
 @@ -27,7 +27,7 @@ Feature::Platform Feature::GetCurrentPlatform() {

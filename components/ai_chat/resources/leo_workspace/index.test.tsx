@@ -61,8 +61,9 @@ async function run(name: string, input: Record<string, unknown>) {
   return String(await registered.get(name)!.execute(input))
 }
 
+const kViewTool = 'view'
 const kEditTool = 'str_replace_based_edit_tool'
-const view = (path: string) => run(kEditTool, { command: 'view', path })
+const view = (path: string) => run(kViewTool, { path })
 
 /**
  * Errors logged by the launch, ignoring the notice that the viewer message
@@ -127,6 +128,7 @@ describe('leo workspace entry point', () => {
   it('registers the file tools before a folder arrives', async () => {
     await load()
     expect([...registered.keys()]).toEqual([
+      kViewTool,
       kEditTool,
       'grep',
       'glob',

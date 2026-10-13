@@ -1,5 +1,5 @@
 diff --git a/chrome/android/BUILD.gn b/chrome/android/BUILD.gn
-index 1b74cd83753feb11bf2571c635dbf32639f93677..ea8311f5a6c3c684741a3f6d9b901f3ef2129740 100644
+index 6ed792010ee90f07562ce80b34afe5fe722df299..7ee42eb66cf7922716e7790c92d1d312f2416714 100644
 --- a/chrome/android/BUILD.gn
 +++ b/chrome/android/BUILD.gn
 @@ -161,10 +161,12 @@ if (_is_default_toolchain) {
@@ -47,7 +47,7 @@ index 1b74cd83753feb11bf2571c635dbf32639f93677..ea8311f5a6c3c684741a3f6d9b901f3e
  
      # From java_sources.gni.
      sources = chrome_java_sources
-@@ -1030,6 +1036,7 @@ if (_is_default_toolchain) {
+@@ -1031,6 +1037,7 @@ if (_is_default_toolchain) {
        "//components/segmentation_platform/internal:internal_java",
        "//components/visited_url_ranking/internal:internal_java",
      ]
@@ -71,7 +71,7 @@ index 1b74cd83753feb11bf2571c635dbf32639f93677..ea8311f5a6c3c684741a3f6d9b901f3e
      }
    }
  
-@@ -2209,6 +2218,7 @@ if (_is_default_toolchain) {
+@@ -2208,6 +2217,7 @@ if (_is_default_toolchain) {
        "java/src/org/chromium/chrome/browser/services/gcm/InvalidationGcmUpstreamSender.java",
        "java/src/org/chromium/chrome/browser/tracing/TracingNotificationService.java",
      ]
@@ -87,7 +87,7 @@ index 1b74cd83753feb11bf2571c635dbf32639f93677..ea8311f5a6c3c684741a3f6d9b901f3e
  
      # More deps for DFMs.
      if (enable_chrome_android_internal) {
-@@ -3224,6 +3235,7 @@ if (_is_default_toolchain) {
+@@ -3222,6 +3233,7 @@ if (_is_default_toolchain) {
        "java/src/org/chromium/chrome/browser/webapps/WebappRegistry.java",
        "java/src/org/chromium/chrome/browser/xr/scenecore/XrModuleBridge.java",
      ]

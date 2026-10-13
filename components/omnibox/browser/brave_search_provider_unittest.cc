@@ -302,7 +302,7 @@ TEST_F(BraveSearchProviderTest, DontSendClipboardTextToSuggest) {
 TEST_F(BraveSearchProviderTest, ArithmeticIsAnsweredLocally) {
   const auto has_calculator_match = [&]() {
     return std::ranges::any_of(provider_->matches(), [](const auto& match) {
-      return match.type == AutocompleteMatchType::CALCULATOR;
+      return match.type == omnibox::AutocompleteMatchType::kCalculator;
     });
   };
 
@@ -343,7 +343,7 @@ TEST_F(BraveSearchProviderTest, ArithmeticIsNotAnsweredWhenFeatureDisabled) {
   EXPECT_FALSE(test_url_loader_factory_.IsPending(
       base::StrCat({kSuggestionUrlHost, base::EscapePath("9500+7804")})));
   EXPECT_FALSE(std::ranges::any_of(provider_->matches(), [](const auto& match) {
-    return match.type == AutocompleteMatchType::CALCULATOR;
+    return match.type == omnibox::AutocompleteMatchType::kCalculator;
   }));
 }
 

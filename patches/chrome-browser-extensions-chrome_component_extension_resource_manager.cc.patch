@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/extensions/chrome_component_extension_resource_manager.cc b/chrome/browser/extensions/chrome_component_extension_resource_manager.cc
-index 0f93ea0ccf25e8125ecb835da1ca62669db66545..71f0a968641dc1be2f206eee472f2c30896fa974 100644
+index d39de6b12c1eec34033eacd5ab2dfc9032b09003..45cc16cd9a0255b7aed8189ea0967ee14552f06b 100644
 --- a/chrome/browser/extensions/chrome_component_extension_resource_manager.cc
 +++ b/chrome/browser/extensions/chrome_component_extension_resource_manager.cc
-@@ -101,6 +101,8 @@ class ChromeComponentExtensionResourceManager::Data {
+@@ -102,6 +102,8 @@ class ChromeComponentExtensionResourceManager::Data {
  };
  
  ChromeComponentExtensionResourceManager::Data::Data() {
@@ -11,7 +11,7 @@ index 0f93ea0ccf25e8125ecb835da1ca62669db66545..71f0a968641dc1be2f206eee472f2c30
    static const webui::ResourcePath kExtraComponentExtensionResources[] = {
  #if BUILDFLAG(IS_CHROMEOS)
      {"web_store/webstore_icon_128.png", IDR_WEBSTORE_APP_ICON_128},
-@@ -115,9 +117,12 @@ ChromeComponentExtensionResourceManager::Data::Data() {
+@@ -116,9 +118,12 @@ ChromeComponentExtensionResourceManager::Data::Data() {
      {"chrome_app/chrome_app_icon_192.png", IDR_CHROME_APP_ICON_192},
  #endif  // BUILDFLAG(IS_CHROMEOS)
    };
@@ -24,7 +24,7 @@ index 0f93ea0ccf25e8125ecb835da1ca62669db66545..71f0a968641dc1be2f206eee472f2c30
    if (base::FeatureList::IsEnabled(
            omnibox::kAimEligibilityComponentExtension)) {
      AddComponentResourceEntries(kAimEligibilityExtensionResources);
-@@ -189,6 +194,11 @@ ChromeComponentExtensionResourceManager::Data::Data() {
+@@ -190,6 +195,11 @@ ChromeComponentExtensionResourceManager::Data::Data() {
          std::move(pdf_viewer_replacements);
    }
  #endif

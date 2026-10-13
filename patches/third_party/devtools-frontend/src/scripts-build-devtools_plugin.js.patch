@@ -1,12 +1,12 @@
 diff --git a/scripts/build/devtools_plugin.js b/scripts/build/devtools_plugin.js
-index 740572e382e9cc25b699a89def1594176d63bb2d..c945a975162b62357fadbaace7fc7976db4b7c53 100644
+index 740572e382e9cc25b699a89def1594176d63bb2d..e3b98d0620d21be6dc583ae0e3c95ad39630f4f4 100644
 --- a/scripts/build/devtools_plugin.js
 +++ b/scripts/build/devtools_plugin.js
 @@ -168,6 +168,7 @@ export function esbuildPlugin(outdir, genRoot, rootDir, externalFiles, bundleAll
        }
      }
  
-+    if (res.id.endsWith('.patch.js')) { const p = path.join(root, 'brave', 'chromium_src', path.relative(root, res.id.slice(0, -9) + '.ts')); if (fs.existsSync(p)) { return {path: p}; } }
++    if (res.id.endsWith('.patch.js')) { const p = path.join(root, 'brave', 'chromium_src', path.relative(root, res.id.slice(0, -9) + '.ts')); if (fs.existsSync(p)) { return {path: p}; } } if (res.id.includes(path.join('brave', 'chromium_src') + path.sep)) { const p = res.id.replace(path.join('brave', 'chromium_src') + path.sep, 'brave' + path.sep); const pTs = p.endsWith('.js') ? p.slice(0, -3) + '.ts' : p; if (fs.existsSync(p)) { return {path: p}; } if (fs.existsSync(pTs)) { return {path: pTs}; } }
      return {
        path: res.id,
      };

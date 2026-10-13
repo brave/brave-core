@@ -311,6 +311,13 @@ interface AIChatUIHandler {
   ShowWorkspaceFolderPicker(string conversation_uuid)
       => (string? selected_path);
 
+  // Opens `file_path` from the workspace identified by `workspace_url`
+  // (workspace://<uuid>) in the workspace's viewer page. From the side panel
+  // this navigates the active tab; from a full-page AI Chat the conversation
+  // is moved to the side panel (when supported) and the file opens in a tab
+  // in its place.
+  OpenWorkspaceFile(url.mojom.Url workspace_url, string file_path);
+
   // This might be a no-op if the UI isn't closeable
   CloseUI();
 

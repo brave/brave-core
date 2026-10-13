@@ -18,13 +18,17 @@
         blink::mojom::PermissionName::BRAVE_SOLANA);   \
   case blink::PermissionType::BRAVE_CARDANO:           \
     return CreatePermissionDescriptor(                 \
-        blink::mojom::PermissionName::BRAVE_CARDANO);
+        blink::mojom::PermissionName::BRAVE_CARDANO);  \
+  case blink::PermissionType::BRAVE_POLKADOT:          \
+    return CreatePermissionDescriptor(                 \
+        blink::mojom::PermissionName::BRAVE_POLKADOT);
 #else
 // CHROMIUM_SRC_INTERNAL_USE
 #define BRAVE_WALLET_NUM_CASES                \
   case blink::PermissionType::BRAVE_ETHEREUM: \
   case blink::PermissionType::BRAVE_SOLANA:   \
   case blink::PermissionType::BRAVE_CARDANO:  \
+  case blink::PermissionType::BRAVE_POLKADOT: \
     NOTREACHED();
 #endif
 

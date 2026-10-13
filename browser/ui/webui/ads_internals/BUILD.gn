@@ -22,7 +22,9 @@ source_set("ads_internals") {
     "//chrome/browser:browser_public_dependencies",
     "//chrome/browser/new_tab_page/prefs",
     "//chrome/browser/profiles:profile",
+    "//components/crx_file",
     "//components/variations/service",
+    "//crypto",
   ]
 
   if (enable_brave_rewards) {

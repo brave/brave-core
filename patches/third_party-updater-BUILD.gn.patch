@@ -1,0 +1,12 @@
+diff --git a/third_party/updater/BUILD.gn b/third_party/updater/BUILD.gn
+index 3b378d3ba87e5e77dde2376c151fb4cf502289fe..03d073c2cf6292d6ce72ba7051e88fcc7562859b 100644
+--- a/third_party/updater/BUILD.gn
++++ b/third_party/updater/BUILD.gn
+@@ -12,7 +12,6 @@ if (is_win || is_mac || is_linux) {
+     foreach(arch_suffix,
+             [
+               "",
+-              "_sans_iid",
+             ]) {
+       if (is_win && is_chrome_branded) {
+         sources += [

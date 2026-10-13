@@ -30,8 +30,7 @@ export class BraveAccountRowElement extends CrLitElement {
     }
   }
 
-  protected accessor browserProxy: BraveAccountRowBrowserProxy =
-    new BraveAccountRowBrowserProxyImpl()
+  protected accessor browserProxy!: BraveAccountRowBrowserProxy
   protected accessor initiatingServiceName = ''
   protected accessor state: AccountState | undefined = undefined
 
@@ -40,6 +39,7 @@ export class BraveAccountRowElement extends CrLitElement {
   override connectedCallback() {
     super.connectedCallback()
 
+    this.browserProxy = new BraveAccountRowBrowserProxyImpl()
     this.accountStateListenerId =
       this.browserProxy.authenticationObserverCallbackRouter.onAccountStateChanged.addListener(
         (state: AccountState) => {
@@ -55,6 +55,7 @@ export class BraveAccountRowElement extends CrLitElement {
     this.browserProxy.authenticationObserverCallbackRouter.removeListener(
       this.accountStateListenerId,
     )
+    this.browserProxy.authenticationObserverCallbackRouter.$.close()
   }
 }
 

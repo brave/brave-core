@@ -16,7 +16,6 @@
 #include "brave/components/brave_wallet/browser/asset_ratio_response_parser.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
-#include "brave/components/brave_wallet/browser/json_rpc_requests_helper.h"
 #include "brave/components/brave_wallet/browser/json_rpc_response_parser.h"
 #include "net/base/url_util.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
@@ -187,32 +186,6 @@ GURL AssetRatioService::GetPriceHistoryURL(
                                                     : base_url_for_test_.spec(),
                       asset, vs_asset, TimeFrameKeyToString(timeframe));
   return GURL(spec);
-}
-
-void AssetRatioService::GetSellUrl(mojom::OffRampProvider provider,
-                                   const std::string& chain_id,
-                                   const std::string& symbol,
-                                   const std::string& amount,
-                                   const std::string& currency_code,
-                                   GetSellUrlCallback callback) {
-  std::string url;
-  if (provider == mojom::OffRampProvider::kRamp) {
-    GURL off_ramp_url = GURL(kRampBaseUrl);
-    off_ramp_url = net::AppendQueryParameter(off_ramp_url, "enabledFlows",
-                                             kOffRampEnabledFlows);
-    off_ramp_url = net::AppendQueryParameter(off_ramp_url, "swapAsset", symbol);
-    off_ramp_url =
-        net::AppendQueryParameter(off_ramp_url, "offrampAsset", symbol);
-    off_ramp_url =
-        net::AppendQueryParameter(off_ramp_url, "swapAmount", amount);
-    off_ramp_url =
-        net::AppendQueryParameter(off_ramp_url, "fiatCurrency", currency_code);
-    off_ramp_url =
-        net::AppendQueryParameter(off_ramp_url, "hostApiKey", kOffRampID);
-    std::move(callback).Run(off_ramp_url.spec(), std::nullopt);
-  } else {
-    std::move(callback).Run(url, "UNSUPPORTED_OFFRAMP_PROVIDER");
-  }
 }
 
 void AssetRatioService::GetPrice(

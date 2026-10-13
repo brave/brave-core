@@ -16,47 +16,16 @@
 #include "base/path_service.h"
 #include "base/task/task_traits.h"
 #include "build/build_config.h"
+#include "components/crx_file/id_util.h"
 
 namespace tor {
 
 #if BUILDFLAG(IS_WIN)
 constexpr const char kComponentName[] = "Brave Pluggable Transports (Windows)";
-constexpr const char kTorPluggableTransportComponentId[] =
-    "dnkcahhmfcanmkjhnjejoomdihffoefm";
-constexpr const char kComponentBase64PublicKey[] =
-    "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA0IHQS/8g4/"
-    "MBIKh6qQRVQ4auvWHFaqMtCO+8C8VEqNxCxR9BWZb5kL+0QaLOeDjdbzO/YXdFSt/9tRiH4sQ/"
-    "/0XEuxmatKebzKSBBwg30oTveQeGrmtQf0FU3f6iPoPjtujNVmMtG2Azp33NqTH+"
-    "lYwdTSDpXwZwgpt2xxBdEaBwWf/"
-    "gz8OYaAniqu4xKvFpa7ai5ihRhOEP05gGFTJGSB9KbyRo4P6VSJwMZoeGlNxYSJkRr1ZpzU0lN"
-    "L1qWBpBR2LCk8SpDXluT4CZeDWJ/Ux9c5nb1yma/"
-    "uOscVniKvRRohudxoXxwsGSFtowmNLOZWSo49j+k3eBrFjdkzxn6QIDAQAB";
 #elif BUILDFLAG(IS_MAC)
 constexpr const char kComponentName[] = "Brave Pluggable Transports (Mac)";
-constexpr const char kTorPluggableTransportComponentId[] =
-    "einfndjnccmoohcngmlldpmellegjjnk";
-constexpr const char kComponentBase64PublicKey[] =
-    "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArO9CH6FdCcJkYZx073Atx+1OryS/"
-    "0uD2sHghK2ol3/SDmUmoJYSCMLgQ6DF+GtLpNTckRxss7ZM4HS1o/"
-    "RmUi02Y4siJzKjMiaXilI7EXMxwMmgTz8A6WEQo6uayBICFUQ1gzrqiQKSwQ47bjRfx2f5zuwn"
-    "Xb1sTJm+jRXpCIIeKs/YDG4e5hUHObnGR6dZCBt1R9N5DgKIPJttbfKRhJCCxY/"
-    "qeJ5maTLDHor8/h45B+VCw8w8jJ2e/"
-    "XO6PsXziSEJUIqbMBjeeLKrrFd7C7jU92MYAUzT3FWPW4Bd270iMfyLxbMhIpMeqzJvs+"
-    "wZdPOb8kowtrAtpRAQAFDX/twIDAQAB";
 #elif BUILDFLAG(IS_LINUX)
 constexpr const char kComponentName[] = "Brave Pluggable Transports (Linux)";
-constexpr const char kTorPluggableTransportComponentId[] =
-    "apfggiafobakjahnkchiecbomjgigkkn";
-constexpr const char kComponentBase64PublicKey[] =
-    "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA6V9OyRC0zja5KfQ+"
-    "cTbu1fgwD04dhcH36wU0NKlaERMSm/"
-    "kZqYFFyxr3THAki6Ajo+X4m89EW0mIcjhgvOeUqyb1AzoVLwX/"
-    "fKAM1Bf1q9zIjeDspaorSaniTtMMKcfxVI/"
-    "e+xKsPc+95NtVsxEtU1PoQdKbBvQfSXkz3QJA3Z5/"
-    "7vM+1omqwg5rCqvmqTXpyuhWOZl5lNeLRJ6zMfNiL/"
-    "rkvq+A7h3DRhABQdjKrd+UfsPhQuMlVS3tCvoHNvB/"
-    "qHEhWJqZzb0qpaMnHBCjZXD0s5PR5NxkEw/"
-    "Yd2Xcxt1xdKULx0AZWD8wx5X2Idhy5rJAHiWQ5iZCdo1IHuAy4wIDAQAB";
 #endif
 
 constexpr const char kSnowflakeExecutableName[] = "tor-snowflake-brave";
@@ -98,8 +67,8 @@ void BraveTorPluggableTransportUpdater::Register() {
   if (registered_)
     return;
 
-  BraveComponent::Register(kComponentName, kTorPluggableTransportComponentId,
-                           kComponentBase64PublicKey);
+  BraveComponent::Register(kComponentName,
+                           kTorPluggableTransportComponentPublicKeySHA256);
   registered_ = true;
   is_ready_ = false;
 }
@@ -111,7 +80,8 @@ void BraveTorPluggableTransportUpdater::Unregister() {
 
 void BraveTorPluggableTransportUpdater::Cleanup() {
   const base::FilePath component_dir =
-      user_data_dir_.AppendASCII(kTorPluggableTransportComponentId);
+      user_data_dir_.AppendASCII(crx_file::id_util::GenerateIdFromHash(
+          kTorPluggableTransportComponentPublicKeySHA256));
   GetTaskRunner()->PostTask(
       FROM_HERE, base::GetDeletePathRecursivelyCallback(component_dir));
 }
@@ -154,7 +124,9 @@ void BraveTorPluggableTransportUpdater::OnInitialized(
   if (success) {
     // <component_id>/<version>
     const auto relative_component_path =
-        base::FilePath::FromASCII(kTorPluggableTransportComponentId)
+        base::FilePath::FromASCII(
+            crx_file::id_util::GenerateIdFromHash(
+                kTorPluggableTransportComponentPublicKeySHA256))
             .Append(install_dir.BaseName());
 
     snowflake_path_ =

@@ -16,7 +16,6 @@
 #include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
-#include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/focus_mode/focus_mode_controller.h"
 #include "brave/browser/ui/focus_mode/focus_mode_utils.h"
@@ -65,7 +64,7 @@ namespace {
 
 using ShowSidebarOption = sidebar::SidebarService::ShowSidebarOption;
 
-sidebar::SidebarService* GetSidebarService(BraveBrowser* browser) {
+sidebar::SidebarService* GetSidebarService(BrowserWindowInterface* browser) {
   return sidebar::SidebarServiceFactory::GetForProfile(browser->GetProfile());
 }
 
@@ -128,7 +127,7 @@ void SidebarContainerView::Init() {
 
   AddChildViews();
   SetSidebarShowOption(
-      GetSidebarService(GetBraveBrowser())->GetSidebarShowOption());
+      GetSidebarService(browser_.get())->GetSidebarShowOption());
 }
 
 void SidebarContainerView::SetSidebarOnLeft(bool sidebar_on_left) {
@@ -213,7 +212,7 @@ void SidebarContainerView::UpdateSidebarVisibility() {
   } else {
     // Refresh sidebar visibility with current show option.
     SetSidebarShowOption(
-        GetSidebarService(GetBraveBrowser())->GetSidebarShowOption());
+        GetSidebarService(browser_.get())->GetSidebarShowOption());
   }
 }
 
@@ -234,8 +233,8 @@ void SidebarContainerView::MenuClosed() {
 }
 
 void SidebarContainerView::AddChildViews() {
-  sidebar_control_view_ = AddChildView(
-      std::make_unique<SidebarControlView>(this, GetBraveBrowser()));
+  sidebar_control_view_ =
+      AddChildView(std::make_unique<SidebarControlView>(this, browser_.get()));
   sidebar_control_view_->SetPaintToLayer();
 
   // To prevent showing layered-children while its bounds is invisible.
@@ -248,19 +247,19 @@ void SidebarContainerView::AddChildViews() {
 
 gfx::Size SidebarContainerView::CalculatePreferredSize(
     const views::SizeBounds& available_size) const {
-    if (!initialized_ || !sidebar_control_view_->GetVisible() ||
-        IsFullscreenByTab()) {
-      return gfx::Size();
-    }
+  if (!initialized_ || !sidebar_control_view_->GetVisible() ||
+      IsFullscreenByTab()) {
+    return gfx::Size();
+  }
 
-    if (!width_animation_.is_animating()) {
-      return View::CalculatePreferredSize(available_size);
-    }
+  if (!width_animation_.is_animating()) {
+    return View::CalculatePreferredSize(available_size);
+  }
 
-    return {gfx::Tween::IntValueBetween(
-                width_animation_.GetCurrentValue(), 0,
-                sidebar_control_view_->GetPreferredSize().width()),
-            0};
+  return {gfx::Tween::IntValueBetween(
+              width_animation_.GetCurrentValue(), 0,
+              sidebar_control_view_->GetPreferredSize().width()),
+          0};
 }
 
 bool SidebarContainerView::IsFullscreenByTab() const {
@@ -317,10 +316,10 @@ void SidebarContainerView::AnimationProgressed(
 }
 
 void SidebarContainerView::AnimationEnded(const gfx::Animation* animation) {
-    if (width_animation_.GetCurrentValue() == 0) {
-      sidebar_control_view_->SetVisible(false);
-    }
-    PreferredSizeChanged();
+  if (width_animation_.GetCurrentValue() == 0) {
+    sidebar_control_view_->SetVisible(false);
+  }
+  PreferredSizeChanged();
 }
 
 void SidebarContainerView::OnFocusModeToggled(bool enabled) {
@@ -423,10 +422,6 @@ void SidebarContainerView::StartBrowserWindowEventMonitoring() {
 void SidebarContainerView::StopBrowserWindowEventMonitoring() {
   DVLOG(1) << __func__;
   browser_window_event_monitor_.reset();
-}
-
-BraveBrowser* SidebarContainerView::GetBraveBrowser() const {
-  return static_cast<BraveBrowser*>(browser_.get());
 }
 
 BEGIN_METADATA(SidebarContainerView)

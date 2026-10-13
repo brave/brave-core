@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/webui/cr_components/searchbox/searchbox_omnibox_client.cc b/chrome/browser/ui/webui/cr_components/searchbox/searchbox_omnibox_client.cc
-index 314c88d2ca80fceb9dddcb344779e42c9f047e7a..5b8cfe4c4f1d010128d5278c17acdca022816d2f 100644
+index 7aebc7f88166cba5700b5914db87e8c9e9f617fd..2e5a312e301f235d79d20261cdbaa623e1b3fe4d 100644
 --- a/chrome/browser/ui/webui/cr_components/searchbox/searchbox_omnibox_client.cc
 +++ b/chrome/browser/ui/webui/cr_components/searchbox/searchbox_omnibox_client.cc
 @@ -164,8 +164,8 @@ void SearchboxOmniboxClient::OnAutocompleteAccept(

@@ -20,6 +20,8 @@ ReminderManager::~ReminderManager() = default;
 void ReminderManager::MaybeShow(mojom::ReminderType mojom_reminder_type) {
   ReminderInfo reminder = CreateReminder(mojom_reminder_type);
 
+  timeout_timers_.Stop(reminder.placement_id);
+
   delegate_->ShowNotificationAd(reminder.placement_id, reminder.title,
                                 reminder.body);
 
@@ -70,6 +72,8 @@ void ReminderManager::TimedOut(const std::string& placement_id) {
 
 void ReminderManager::Shutdown() {
   timeout_timers_.StopAll();
+
+  shown_reminder_.reset();
 }
 
 }  // namespace brave_ads

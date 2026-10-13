@@ -49,6 +49,10 @@ fetchTimeout: 300000
 # Minimum age (minutes) a published dependency version must have.
 minimumReleaseAge: 5040
 
+# Security fix published within the age window; remove once it has matured.
+minimumReleaseAgeExclude:
+  - handlebars@4.7.10
+
 # Use isolated node_modules layout (no package hoisting).
 nodeLinker: isolated
 
@@ -75,6 +79,7 @@ overrides:
   # Scoped: ethers pins ws exactly, but jayson needs ws 7.x.
   'ethers>ws': '8.22.0'
   'fast-uri': '3.1.8'
+  'handlebars': '4.7.10'
   'ip-address': '10.7.2'
   # Bumped instead of overriding stream-json, whose fixes only exist in 3.x --
   # that moved every entry point under src/ and lowercased filenames, so jayson's

@@ -90,6 +90,7 @@ source_set("browser_tests") {
         "//brave/components/web_discovery/browser:internal",
         "//brave/components/web_discovery/common",
         "//brave/components/web_discovery/common:mojom",
+        "//chrome/test/base:chrome_test_utils",
       ]
     }
   }

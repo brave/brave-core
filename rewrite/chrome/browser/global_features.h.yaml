@@ -1,0 +1,27 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Expose BraveGlobalFeatures
+
+      Brave's global features are owned by GlobalFeatures, like upstream's
+      EmbedderBrowserWindowFeatures is by BrowserWindowFeatures. Test fakes
+      derive from GlobalFeatures, so they carry it too.
+    add_to_public:
+      class_name: GlobalFeatures
+      code: |
+        BraveGlobalFeatures* brave_global_features() {
+          return brave_global_features_.get();
+        }
+
+  - description: |
+      Own BraveGlobalFeatures
+
+      Declared in the protected section so it is available to subclasses and
+      does not require an extra private section.
+    add_to_protected:
+      class_name: GlobalFeatures
+      code: 'std::unique_ptr<BraveGlobalFeatures> brave_global_features_;'

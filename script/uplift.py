@@ -394,7 +394,9 @@ def main():
         print('\nDone!')
     except Exception as e:
         print(
-            '\n[ERROR] Unhandled error while creating pull request; ' + str(e)
+            '\n[ERROR] Unhandled error while creating or updating '
+            + 'pull request; '
+            + str(e)
         )
         return 1
 

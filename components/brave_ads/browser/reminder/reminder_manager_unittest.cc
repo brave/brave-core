@@ -161,4 +161,23 @@ TEST_F(BraveAdsReminderManagerTest,
   EXPECT_FALSE(delegate_.last_opened_url());
 }
 
+TEST_F(BraveAdsReminderManagerTest,
+       MaybeHandleClickedReturnsFalseAfterShutdown) {
+  // Arrange
+  reminder_manager_.MaybeShow(mojom::ReminderType::kClickedSameAdMultipleTimes);
+  ASSERT_TRUE(delegate_.last_shown_notification_ad_placement_id());
+  const std::string placement_id =
+      *delegate_.last_shown_notification_ad_placement_id();
+
+  reminder_manager_.Shutdown();
+
+  // Act
+  const bool was_reminder = reminder_manager_.MaybeHandleClicked(placement_id);
+
+  // Assert
+  EXPECT_FALSE(was_reminder);
+  EXPECT_FALSE(delegate_.last_opened_url());
+  EXPECT_THAT(delegate_.closed_notification_ad_ids(), testing::IsEmpty());
+}
+
 }  // namespace brave_ads

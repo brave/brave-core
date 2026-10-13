@@ -205,6 +205,15 @@ public protocol TabState: AnyObject {
   func takeSnapshot(rect: CGRect, handler: @escaping (UIImage?) -> Void)
   /// Creates a full page PDF of the web contents
   func createFullPagePDF() async throws -> Data?
+  /// Downloads the last committed page to `fileURL` using the web view's network session.
+  ///
+  /// Throws `CancellationError` if the calling task is cancelled.
+  func downloadCurrentPage(to fileURL: URL) async throws
+  /// A filename suitable for saving the last committed page to disk.
+  ///
+  /// Uses `contentDisposition` if provided, otherwise the last committed URL, with an extension
+  /// derived from the page's MIME type when missing or unreliable (e.g. blob URLs).
+  func suggestedFilenameForCurrentPage(contentDisposition: String?) -> String
   /// Whether or not find in page is currently visible
   var isFindNavigatorVisible: Bool { get }
   /// Presents the find in page interaction using the provided text as an initial search query

@@ -54,6 +54,7 @@ source_set("brave_new_tab_page_refresh") {
     "//brave/browser:browser_process",
     "//brave/browser/brave_stats:first_run_util",
     "//brave/browser/misc_metrics",
+    "//brave/browser/new_tab",
     "//brave/browser/ntp_background",
     "//brave/browser/resources/brave_new_tab_page_refresh:generated_resources",
     "//brave/components/ai_chat/core/common/buildflags",

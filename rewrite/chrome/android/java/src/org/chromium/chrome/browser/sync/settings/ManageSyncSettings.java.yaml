@@ -14,6 +14,19 @@ substitutions:
       replace: 'protected \1'
 
   - description: |-
+      Expose mGoogleActivityControls and mSyncEncryption to the Brave subclass
+
+      BraveManageSyncSettings removes both preferences from the screen. Replaces
+      BraveManageSyncSettingsClassAdapter, which used to widen these fields and
+      delete the subclass copies that shadowed them.
+    count: 2
+    regex:
+      re_pattern: |-
+        private (Preference (?:mGoogleActivityControls|mSyncEncryption);)
+      replace: |-
+        protected \1
+
+  - description: |-
       Skip the isUsingExplicitPassphrase() block in onPreferenceChange()
 
       It suppresses the "addresses not encrypted" warning, which is not
@@ -24,6 +37,40 @@ substitutions:
       replace: |-
         \1
         \2if (false)  // Suppress the "addresses not encrypted" warning (not applicable to Brave's sync model).
+        \2\3
+
+  - description: |-
+      Skip initializing the central account card when there is no primary account
+
+      Brave Sync does not use a Google account, so getPrimaryAccountInfo() is
+      null here and the surrounding assumeNonNull() is a no-op at runtime.
+      BraveManageSyncSettings drops this card anyway, but it can only do so
+      after super.onCreatePreferences() has returned, and initialize() now
+      dereferences the account eagerly instead of at bind time.
+    regex:
+      re_pattern: |-
+        (IdentityManager identityManager = getIdentityManager\(profile\);)\n( *)(centralAccountCardPreference\.initialize\()
+      replace: |-
+        \1
+        \2if (identityManager.getPrimaryAccountInfo() == null) {
+        \2    return;
+        \2}
+        \2\3
+
+  - description: |-
+      Never treat the page as signed out
+
+      Brave Sync has no Chromium primary account, so hasPrimaryAccount() is
+      always false. Upstream now uses that to skip inflating the page in
+      onCreatePreferences() and to finish it outright in onStart(), which
+      leaves BraveManageSyncSettings with a null preference screen. Returning
+      false restores the unconditional inflation this page had before.
+    regex:
+      re_pattern: |-
+        (private boolean isSignedOut\(\) \{)\n( *)(return !getIdentityManager\(\)\.hasPrimaryAccount\(\);)
+      replace: |-
+        \1
+        \2if (true) return false;  // Brave Sync never has a Chromium primary account.
         \2\3
 
   - description: |-

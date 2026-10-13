@@ -5,17 +5,10 @@
 
 substitutions:
   - description: |
-      Keep the window open on last-tab close unless closing it is enabled
+      Keep the window open when its last tab closes, if that is disabled
 
-      `UnloadController::TabStripEmpty()` marks the browser as attempting to
-      close as soon as the tab strip empties. Brave gates that on the
-      `kEnableClosingLastTab` pref so that, when disabled, the window stays
-      open (a fresh tab is added elsewhere) instead of closing.
-
-      `kEnableClosingLastTab` and the `PrefService`/`Profile` accessors are
-      brought into scope by the chromium_src shadow file's includes, keeping
-      this plaster to the in-function guard that cannot be expressed at file
-      scope.
+      Brave's `kEnableClosingLastTab` pref lets the window stay open (with a
+      fresh tab) instead of closing.
     regex:
       re_pattern: '(void UnloadController::TabStripEmpty\(\) \{\n)'
       replace: |
@@ -23,13 +16,9 @@ substitutions:
             return;
           }
   - description: |
-      Reset the cached close confirmation when a warning is declined
+      Re-run closing confirmation after the user declines a close warning
 
-      When the user cancels window closing at a warning (e.g. an in-progress
-      download), `confirmed_to_close_` must be reset so the closing-confirm
-      dialog logic runs again on the next attempt.
-      `UnloadController::FinishWarnBeforeClosing()` is where that decision now
-      is made.
+      Otherwise the cached confirmation would skip the dialog next time.
     regex:
       re_pattern:
         '(void
@@ -40,42 +29,30 @@ substitutions:
             confirmed_to_close_ = false;
           }
   - description: |
-      Treat a direct close request as user-confirmed
+      Skip the closing confirmation for programmatic window closes
 
-      A window close can be requested programmatically (e.g. when deleting a
-      profile, this runs on every one of its browsers). In that case we should
-      not prompt the user, so mark the close as confirmed up front; if the user
-      later blocks it, `confirmed_to_close_` is reset by ResetTryToCloseWindow().
-      Upstream moved this method out of `Browser` into `UnloadController`, so
-      this replaces the former `BraveBrowser::TryToCloseWindow()` override.
+      No user is present to prompt, e.g. when deleting a profile.
     regex:
-      re_pattern: '(bool UnloadController::TryToCloseWindow\(.*?\) \{\n)'
+      re_pattern:
+        '(bool UnloadController::RunBeforeUnloadForShutdown\(.*?\) \{\n)'
       re_flags: [DOTALL]
       replace: |
         \1  confirmed_to_close_ = true;
   - description: |
       Clear the cached close confirmation when a close attempt is reset
 
-      Mirrors the confirmation set in TryToCloseWindow so a subsequent attempt
-      re-runs the closing-confirm logic. Upstream moved this method out of
-      `Browser` into `UnloadController`, so this replaces the former
-      `BraveBrowser::ResetTryToCloseWindow()` override.
+      Pairs with the confirmation set in `RunBeforeUnloadForShutdown()` so the
+      next attempt prompts again.
     regex:
-      re_pattern: '(void UnloadController::ResetTryToCloseWindow\(\) \{\n)'
+      re_pattern:
+        '(void UnloadController::ResetBeforeUnloadForShutdown\(\) \{\n)'
       replace: |
         \1  confirmed_to_close_ = false;
   - description: |
-      Let SharedPinnedTabService detach shared pinned tabs before the tab
-      strip closes them
+      Let SharedPinnedTabService detach shared pinned tabs before they close
 
-      When a window's only remaining tabs are shared pinned tabs,
-      `SharedPinnedTabService::BrowserClosing()` needs to run before
-      `TabStripModel::CloseAllTabs()` closes them, so it can mark the browser
-      as closing and cache/detach the shared contents instead of letting them
-      be torn down as ordinary tabs. This used to live in
-      `Browser::OnWindowClosing()` right before the equivalent
-      `CloseAllTabs()` call; upstream moved that logic into
-      `UnloadController::OnWindowClosing()`, so the hook moves here too.
+      Its `BrowserClosing()` must run before `TabStripModel::CloseAllTabs()`,
+      or the shared contents are torn down like ordinary tabs.
     regex:
       re_pattern:
         '(if \(tab_restore_service && notify_restore_service\) [\s\S]+?\n  \}\n)'

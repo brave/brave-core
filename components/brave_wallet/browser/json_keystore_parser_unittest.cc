@@ -8,7 +8,6 @@
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/browser/internal/hd_key.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
-#include "brave/components/brave_wallet/common/hex_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 using base::test::ParseJsonDict;

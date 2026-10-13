@@ -56,8 +56,8 @@ build_webui("build") {
 
   if (is_android || is_ios) {
     ts_files += [
-      "brave_account_logged_in_row.html.ts",
-      "brave_account_logged_in_row.ts",
+      "brave_account_details.html.ts",
+      "brave_account_details.ts",
       "brave_account_logged_out_row.html.ts",
       "brave_account_logged_out_row.ts",
       "brave_account_row.html.ts",
@@ -82,7 +82,7 @@ build_webui("build") {
 
   if (is_android || is_ios) {
     css_files += [
-      "brave_account_logged_in_row.css",
+      "brave_account_details.css",
       "brave_account_row_common.css",
     ]
   }

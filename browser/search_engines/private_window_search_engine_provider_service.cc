@@ -16,7 +16,7 @@
 PrivateWindowSearchEngineProviderService::
     PrivateWindowSearchEngineProviderService(Profile* otr_profile)
     : PrivateWindowSearchEngineProviderServiceBase(otr_profile) {
-  DCHECK(otr_profile->IsIncognitoProfile());
+  DCHECK(otr_profile->IsPrimaryOTRProfileWithRegularParent());
   private_search_provider_guid_.Init(
       prefs::kSyncedDefaultPrivateSearchProviderGUID,
       otr_profile_->GetOriginalProfile()->GetPrefs(),

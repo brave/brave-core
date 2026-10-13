@@ -7,7 +7,7 @@
 // shortening it from the middle. Shared by the elements that show an account
 // email, which is user-supplied and arbitrarily long.
 export class TextTruncator {
-  private measure?: (text: string) => number
+  private context?: CanvasRenderingContext2D
   private observedElement?: HTMLElement
   private resizeObserver?: ResizeObserver
   private text = ''
@@ -20,10 +20,7 @@ export class TextTruncator {
     if (this.observedElement !== element) {
       this.disconnect()
       this.observedElement = element
-
-      const ctx = document.createElement('canvas').getContext('2d')!
-      ctx.font = getComputedStyle(element).font
-      this.measure = (text: string) => ctx.measureText(text).width
+      this.context = document.createElement('canvas').getContext('2d')!
 
       this.resizeObserver = new ResizeObserver(() => this.truncate())
       this.resizeObserver.observe(element)
@@ -35,22 +32,24 @@ export class TextTruncator {
   }
 
   disconnect() {
-    this.measure = undefined
+    this.context = undefined
     this.observedElement = undefined
     this.resizeObserver?.disconnect()
     this.resizeObserver = undefined
   }
 
   private truncate() {
-    if (!this.measure || !this.observedElement || !this.text) return
+    if (!this.context || !this.observedElement || !this.text) return
 
     // Elements such as `leo-input` lay the text out in an inner `input`, which
-    // is what bounds it.
-    const availableWidth = (
+    // is what bounds it and what renders it.
+    const element =
       this.observedElement.shadowRoot?.querySelector('input')
       ?? this.observedElement
-    ).clientWidth
-    if (!availableWidth || this.measure(this.text) <= availableWidth) {
+    const availableWidth = element.clientWidth
+    this.context.font = getComputedStyle(element).font
+    const measure = (text: string) => this.context!.measureText(text).width
+    if (!availableWidth || measure(this.text) <= availableWidth) {
       this.onTruncated(this.text)
       return
     }
@@ -73,7 +72,7 @@ export class TextTruncator {
     for (let low = 0, high = chars.length; low < high; ) {
       const middle = Math.ceil((low + high) / 2)
       const candidate = makeCandidate(middle)
-      if (this.measure(candidate) <= availableWidth) {
+      if (measure(candidate) <= availableWidth) {
         truncated = candidate
         low = middle
       } else {

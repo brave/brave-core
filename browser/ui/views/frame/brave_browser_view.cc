@@ -20,7 +20,6 @@
 #include "brave/browser/brave_browser_features.h"
 #include "brave/browser/sparkle_buildflags.h"
 #include "brave/browser/translate/brave_translate_utils.h"
-#include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/commands/accelerator_service.h"
 #include "brave/browser/ui/commands/accelerator_service_factory.h"
@@ -48,7 +47,7 @@
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "brave/browser/ui/views/toolbar/screenshot_button.h"
-#include "brave/browser/ui/views/window_closing_confirm_dialog_view.h"
+#include "brave/browser/ui/window_closing_confirm/window_closing_confirm_controller.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
@@ -917,36 +916,12 @@ void BraveBrowserView::OnTabStripModelChanged(
 }
 
 views::CloseRequestResult BraveBrowserView::OnWindowCloseRequested() {
-  if (GetBraveBrowser()->ShouldAskForBrowserClosingBeforeHandlers()) {
-    if (!closing_confirm_dialog_activated_) {
-      WindowClosingConfirmDialogView::Show(
-          browser(),
-          base::BindOnce(&BraveBrowserView::OnWindowClosingConfirmResponse,
-                         weak_ptr_.GetWeakPtr()));
-      closing_confirm_dialog_activated_ = true;
-    }
+  if (auto* controller = WindowClosingConfirmController::From(browser());
+      controller && controller->MaybeAskBeforeClosing()) {
     return views::CloseRequestResult::kCannotClose;
   }
 
   return BrowserView::OnWindowCloseRequested();
-}
-
-void BraveBrowserView::OnWindowClosingConfirmResponse(bool allowed_to_close) {
-  DCHECK(closing_confirm_dialog_activated_);
-  closing_confirm_dialog_activated_ = false;
-
-  auto* browser = GetBraveBrowser();
-  // Record the user's choice on the window-scoped UnloadController, which
-  // tracks the result of any warning or beforeunload handlers.
-  UnloadController::From(browser)->set_confirmed_to_close(allowed_to_close);
-  if (allowed_to_close) {
-    // Start close window again as user allowed to close it.
-    // Confirm dialog will not be launched for this closing request
-    // as we set UnloadController::confirmed_to_close_ to true.
-    // If user cancels this window closing via additional warnings
-    // or beforeunload handler, this dialog will be shown again.
-    chrome::CloseWindow(browser);
-  }
 }
 
 void BraveBrowserView::ConfirmBrowserCloseWithPendingDownloads(
@@ -1392,10 +1367,6 @@ void BraveBrowserView::OnImmersiveModeControllerDestroyed() {
 
 bool BraveBrowserView::IsSidebarVisible() const {
   return sidebar_container_view_ && sidebar_container_view_->IsSidebarVisible();
-}
-
-BraveBrowser* BraveBrowserView::GetBraveBrowser() const {
-  return static_cast<BraveBrowser*>(browser_.get());
 }
 
 void BraveBrowserView::UpdateContentsCornerRadii(

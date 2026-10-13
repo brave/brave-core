@@ -48,6 +48,9 @@ void TorLauncherImpl::Cleanup() {
   // Delete watch folder every time that Tor is terminated
   base::DeletePathRecursively(tor_watch_path_);
   child_monitor_.reset();
+
+  // Remove state file because it contains launch time information.
+  base::DeleteFile(GetTorDataPath().AppendASCII("state"));
 }
 
 TorLauncherImpl::~TorLauncherImpl() {

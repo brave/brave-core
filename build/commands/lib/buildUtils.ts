@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import config from './config.ts'
-import util from './util.js'
+import util from './util.ts'
 import assert from 'node:assert'
 import fs from 'node:fs'
 import path from 'node:path'

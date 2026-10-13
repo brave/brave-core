@@ -15,7 +15,8 @@ FakeComponentUpdaterDelegate::~FakeComponentUpdaterDelegate() = default;
 
 void FakeComponentUpdaterDelegate::Register(
     const std::string& /*component_name*/,
-    const std::string& /*component_base64_public_key*/,
+    base::span<const uint8_t, crypto::kSHA256Length>
+    /*component_public_key_sha256*/,
     base::OnceClosure registered_callback,
     brave_component_updater::BraveComponent::ReadyCallback /*ready_callback*/) {
   if (registered_callback) {

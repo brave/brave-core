@@ -94,6 +94,8 @@ class EphemeralStorageService : public KeyedService {
   void TriggerCurrentAppStateNotification();
 #endif  // BUILDFLAG(IS_ANDROID)
 
+  bool IsScheduledForCleanup(const std::string& ephemeral_domain);
+
  private:
   FRIEND_TEST_ALL_PREFIXES(EphemeralStorageServiceAutoShredForgetFirstPartyTest,
                            CleanupOnRestart);

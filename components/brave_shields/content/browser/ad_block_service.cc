@@ -219,15 +219,24 @@ AdBlockService::AdBlockService(
       std::make_unique<AdBlockFilterListCatalogProvider>(
           component_update_service_);
 
+  const bool debug_mode = IsDebugMode();
+  use_dat_cache_ =
+      base::FeatureList::IsEnabled(features::kAdblockDATCache) && !debug_mode;
+  if (!use_dat_cache_) {
+    LOG(WARNING) << "DAT caching is disabled. Debug mode" << debug_mode
+                 << "Extra CPU and memory usage are expected.";
+  }
+
   dat_cache_manager_ = std::make_unique<AdBlockDATCacheManager>(profile_dir_);
-  // Start reading cached DAT files from disk as early as possible so the
-  // engine can be populated before components arrive from the network.
-  if (base::FeatureList::IsEnabled(features::kAdblockDATCache)) {
+  if (use_dat_cache_) {
+    // Start reading cached DAT files from disk as early as possible so the
+    // engine can be populated before components arrive from the network.
     dat_cache_manager_->MaybeReadCachedDATFiles(base::BindOnce(
         &AdBlockService::OnReadCachedDATFiles, weak_factory_.GetWeakPtr()));
   }
 
-  filters_provider_manager_ = std::make_unique<AdBlockFiltersProviderManager>();
+  filters_provider_manager_ =
+      std::make_unique<AdBlockFiltersProviderManager>(use_dat_cache_);
 
   component_service_manager_ = std::make_unique<AdBlockComponentServiceManager>(
       local_state_, filters_provider_manager_.get(), locale_,
@@ -250,12 +259,6 @@ AdBlockService::AdBlockService(
     localhost_filters_provider_ =
         std::make_unique<AdBlockLocalhostFiltersProvider>(
             filters_provider_manager_.get());
-  }
-
-  const bool debug_mode = IsDebugMode();
-  if (debug_mode) {
-    LOG(WARNING) << "Adblock debug mode is enabled. Extra CPU and memory usage "
-                    "are expected.";
   }
 
   const auto make_on_resources_loaded_callback = base::BindRepeating(
@@ -293,8 +296,7 @@ void AdBlockService::OnResourcesLoaded(
         base::BindOnce(&AdBlockService::OnDATLoaded, weak_factory_.GetWeakPtr(),
                        is_default_engine));
   } else {
-    bool should_cache =
-        base::FeatureList::IsEnabled(features::kAdblockDATCache);
+    bool should_cache = use_dat_cache_;
     AsyncCallAndReplyWithResult(
         base::BindOnce(
             [](bool is_default, bool cache,

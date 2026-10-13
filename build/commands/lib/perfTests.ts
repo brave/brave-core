@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import util from './util.js'
+import util from './util.ts'
 import config from './config.ts'
 import path from 'node:path'
 import fs from 'node:fs'

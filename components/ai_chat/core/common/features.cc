@@ -53,6 +53,9 @@ const base::FeatureParam<bool> kAutomaticModelSupportsTools{
 const base::FeatureParam<bool> kShouldIndentPageContentBlocks{
     &kAIChat, "should_indent_page_content_blocks", true};
 
+const base::FeatureParam<size_t> kMaxConnectionIssueRetries{
+    &kAIChat, "max_connection_issue_retries", 1};
+
 // Enable remote model fetching from server endpoint
 BASE_FEATURE(kAIChatRemoteModelsConfig, base::FEATURE_DISABLED_BY_DEFAULT);
 
@@ -81,6 +84,8 @@ BASE_FEATURE(kAIChatUserChoiceTool, base::FEATURE_ENABLED_BY_DEFAULT);
 // search, and edit files within a user-selected local folder.
 // See https://github.com/brave/brave-browser/issues/57388.
 BASE_FEATURE(kAIChatWorkspaceTools, base::FEATURE_DISABLED_BY_DEFAULT);
+const base::FeatureParam<bool> kWorkspaceNativeDirectories{
+    &kAIChatWorkspaceTools, "workspace_native_directories", false};
 
 BASE_FEATURE(kAIChatAgentProfile, base::FEATURE_DISABLED_BY_DEFAULT);
 
@@ -240,6 +245,9 @@ bool IsBraveSyncAIChatEnabled() {
 }
 
 BASE_FEATURE(kAIChatThreads, base::FEATURE_DISABLED_BY_DEFAULT);
+
+const base::FeatureParam<size_t> kMaxThreadsPerOriginEntry{
+    &kAIChatThreads, "max_threads_per_origin_entry", 1};
 
 BASE_FEATURE(kAIChatConversationShare, base::FEATURE_ENABLED_BY_DEFAULT);
 

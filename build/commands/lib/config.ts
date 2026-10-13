@@ -10,7 +10,7 @@ import assert from 'node:assert'
 import rootDir from './rootDir.cjs'
 import EnvConfig from './envConfig.ts'
 import * as Log from './log.ts'
-import util from './util.js'
+import util from './util.ts'
 import { isCI, isTeamcity } from './ciDetect.ts'
 import type * as buildOptions from './buildOptions.ts'
 

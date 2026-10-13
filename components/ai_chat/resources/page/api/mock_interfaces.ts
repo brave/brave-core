@@ -243,6 +243,7 @@ export function createMockUIHandler(
     getFaviconDataURL: () => Promise.resolve({ dataUrl: null }),
     setChatUI: () => Promise.resolve({ isStandalone: false }),
     showWorkspaceFolderPicker: () => Promise.resolve({ selectedPath: null }),
+    openWorkspaceFile: () => {},
 
     // Action methods - fire and forget stubs
     newConversation: () => {},

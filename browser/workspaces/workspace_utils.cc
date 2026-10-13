@@ -14,6 +14,7 @@
 #include "base/json/values_util.h"
 #include "base/logging.h"
 #include "base/time/time.h"
+#include "components/sessions/core/command_storage_read_status.h"
 
 namespace {
 
@@ -84,7 +85,8 @@ std::vector<std::unique_ptr<sessions::SessionCommand>> ReadWorkspaceFromDisk(
   // SessionID::NewUnique() which is sequence-checked to the UI thread.
   sessions::CommandStorageBackend::ReadCommandsResult result =
       backend->ReadLastSessionCommands();
-  if (result.error_reading || result.commands.empty()) {
+  if (sessions::IsCommandStorageReadError(result.status) ||
+      result.commands.empty()) {
     DVLOG(1) << "Could not read workspace session from: " << workspace_path;
     return {};
   }

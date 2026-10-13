@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/webui/favicon_source.cc b/chrome/browser/ui/webui/favicon_source.cc
-index bd70b5b6e21dd4a889e9c6d87526d1316a50fdcc..49ef875a16748acdaaf474eef295e53f7e84b4ff 100644
+index 41c17c3fee32931c3d6579bd772d67c643b02d4d..b08b4a6014682808597d1ceb7a97ef77ea1b7dbc 100644
 --- a/chrome/browser/ui/webui/favicon_source.cc
 +++ b/chrome/browser/ui/webui/favicon_source.cc
-@@ -320,11 +320,11 @@ void FaviconSource::SendDefaultResponse(
+@@ -332,11 +332,11 @@ void FaviconSource::SendDefaultResponse(
  #if !BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_DESKTOP_ANDROID)
      case 64:
        resource_id =

@@ -5,8 +5,6 @@
 
 package org.chromium.chrome.browser.suggestions;
 
-import androidx.test.filters.SmallTest;
-
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,7 +17,6 @@ import org.chromium.base.test.BaseRobolectricTestRunner;
 @Config(manifest = Config.NONE)
 public class BraveSuggestionsConfigTest {
     @Test
-    @SmallTest
     public void testMaxTileCountIsOverridden() {
         // (4 rows x 4 columns - 1 for the plus button) via a plaster on SuggestionsConfig.java.
         Assert.assertEquals(15, SuggestionsConfig.MAX_TILE_COUNT);

@@ -6,15 +6,15 @@
 #include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
 #include "chrome/browser/ui/layout_constants.h"
 
-bool BraveDisablesImmersiveFullscreenMode(
-    const base::WeakPtr<VerticalTabController>& vertical_tab_controller) {
+bool BraveDisablesImmersiveFullscreenMode(const ui::UnownedUserDataHost& host) {
+  const auto* vertical_tab_controller = VerticalTabController::Get(host);
   return (vertical_tab_controller &&
           vertical_tab_controller->ShouldShowBraveVerticalTabs()) ||
          tabs::UseCompactHorizontalTabs();
 }
 
-bool BraveShouldShowTitlebar(
-    const base::WeakPtr<VerticalTabController>& vertical_tab_controller) {
+bool BraveShouldShowTitlebar(const ui::UnownedUserDataHost& host) {
+  const auto* vertical_tab_controller = VerticalTabController::Get(host);
   return vertical_tab_controller &&
          vertical_tab_controller->ShouldShowBraveVerticalTabs() &&
          vertical_tab_controller->ShouldShowWindowTitleForVerticalTabs();

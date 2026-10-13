@@ -1,5 +1,5 @@
 diff --git a/components/minidump_uploader/BUILD.gn b/components/minidump_uploader/BUILD.gn
-index d51e0d1146a4a192b542068a3f4b39cd1c59642d..0241df7ab5c322d4e570128531b4ae494e4e5fb5 100644
+index ff635a06f614cf44f3afb198e6d5b2c093ed2aa6..3c0a88a28feb0cb6ef958d60383bca34e07238e4 100644
 --- a/components/minidump_uploader/BUILD.gn
 +++ b/components/minidump_uploader/BUILD.gn
 @@ -2,6 +2,7 @@

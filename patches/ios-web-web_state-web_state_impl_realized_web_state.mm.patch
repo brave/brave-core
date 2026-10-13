@@ -1,8 +1,8 @@
 diff --git a/ios/web/web_state/web_state_impl_realized_web_state.mm b/ios/web/web_state/web_state_impl_realized_web_state.mm
-index 6f691b27efe94d6f7215e8eac64ffbcd24fead06..fb5c84651dfe90982ae1084a55d2a47b15585aa6 100644
+index 1880d96d50f2edfc166bf1b2952506b54ba66cb1..1bc971c6232e651c72019f82df0241cfff0a9d49 100644
 --- a/ios/web/web_state/web_state_impl_realized_web_state.mm
 +++ b/ios/web/web_state/web_state_impl_realized_web_state.mm
-@@ -1116,7 +1116,7 @@ std::unique_ptr<WebUIIOS> WebStateImpl::RealizedWebState::CreateWebUIIOS(
+@@ -1136,7 +1136,7 @@ std::unique_ptr<WebUIIOS> WebStateImpl::RealizedWebState::CreateWebUIIOS(
    if (!factory) {
      return nullptr;
    }

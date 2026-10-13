@@ -93,6 +93,8 @@ export function VpnWidget() {
         return getString(S.NEW_TAB_VPN_STATUS_CONNECTING)
       case ConnectionState.DISCONNECTING:
         return getString(S.NEW_TAB_VPN_STATUS_DISCONNECTING)
+      case ConnectionState.CONNECT_NO_AGENT:
+        return getString(S.NEW_TAB_VPN_STATUS_UNAVAILABLE)
       default:
         console.error('Unhandled ConnectionState', connectionState)
         return ''
@@ -145,6 +147,7 @@ export function VpnWidget() {
               connectionState === ConnectionState.CONNECTED
               || connectionState === ConnectionState.CONNECTING
             }
+            disabled={connectionState === ConnectionState.CONNECT_NO_AGENT}
             onChange={() => actions.toggleVpnConnection()}
           />
         </div>

@@ -242,19 +242,21 @@ function RegionAutomatic() {
 
 export function PanelHeader(props: {
   title: string
-  buttonAriaLabel: string
-  onClick: () => void
+  buttonAriaLabel?: string
+  onClick?: () => void
 }) {
   return (
     <Styles.PanelHeader>
-      <Styles.StyledButton
-        type='button'
-        onClick={props.onClick}
-        aria-label={props.buttonAriaLabel}
-        title={props.buttonAriaLabel}
-      >
-        <Styles.StyledIcon name='arrow-left'></Styles.StyledIcon>
-      </Styles.StyledButton>
+      {props.onClick && (
+        <Styles.StyledButton
+          type='button'
+          onClick={props.onClick}
+          aria-label={props.buttonAriaLabel}
+          title={props.buttonAriaLabel}
+        >
+          <Styles.StyledIcon name='arrow-left'></Styles.StyledIcon>
+        </Styles.StyledButton>
+      )}
       <Styles.HeaderLabel>{props.title}</Styles.HeaderLabel>
     </Styles.PanelHeader>
   )

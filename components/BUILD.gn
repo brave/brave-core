@@ -13,6 +13,7 @@ import("//brave/components/local_ai/buildflags/buildflags.gni")
 import("//brave/components/playlist/core/common/buildflags/buildflags.gni")
 import("//brave/components/psst/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
+import("//brave/components/tor/buildflags/buildflags.gni")
 import("//brave/components/traffic_control/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 import("//build/config/ui.gni")
@@ -31,7 +32,6 @@ test("brave_components_unittests") {
     "//base",
     "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/api_request_helper:unit_tests",
-    "//brave/components/assist_ranker:unit_tests",
     "//brave/components/brave_account:unit_tests",
     "//brave/components/brave_account/endpoint_client:unit_tests",
     "//brave/components/brave_account/endpoints:unit_tests",
@@ -50,6 +50,7 @@ test("brave_components_unittests") {
     "//brave/components/screenshot/core/browser:unit_tests",
     "//brave/components/static_redirect_helper:unit_tests",
     "//brave/components/time_period_storage:unit_tests",
+    "//brave/components/translate/core/browser:unit_tests",
     "//brave/components/update_client:unit_tests",
     "//brave/components/url_sanitizer/core/browser:unit_tests",
     "//components/test:run_all_unittests",
@@ -76,6 +77,10 @@ test("brave_components_unittests") {
 
   if (enable_traffic_control) {
     deps += [ "//brave/components/traffic_control/core/browser:unit_tests" ]
+  }
+
+  if (enable_tor) {
+    deps += [ "//brave/components/services/tor:tor_unittests" ]
   }
 
   if (enable_psst) {

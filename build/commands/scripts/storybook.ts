@@ -14,7 +14,7 @@ import { Option, program } from 'commander'
 import { isCI } from '../lib/ciDetect.ts'
 import * as buildOptions from '../lib/buildOptions.ts'
 import config from '../lib/config.ts'
-import util from '../lib/util.js'
+import util from '../lib/util.ts'
 import { getPassthroughArgs } from '../lib/commandsUtils.ts'
 
 program

@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_tx_meta.h"
 
-#include <optional>
-
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_serializer.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_transaction.h"

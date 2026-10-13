@@ -18,10 +18,7 @@
 #include "brave/components/services/brave_wallet/public/proto/zcash_grpc_data.pb.h"
 #include "net/base/load_flags.h"
 #include "net/http/http_request_headers.h"
-#include "net/http/http_status_code.h"
 #include "services/network/public/cpp/resource_request.h"
-#include "services/network/public/mojom/url_loader.mojom.h"
-#include "services/network/public/mojom/url_response_head.mojom.h"
 
 namespace brave_wallet {
 

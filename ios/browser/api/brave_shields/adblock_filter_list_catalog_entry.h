@@ -24,7 +24,6 @@ OBJC_EXPORT
 @property(readonly) uint8_t permissionMask;
 @property(readonly) NSArray<NSString*>* platforms;
 @property(readonly) NSString* componentId;
-@property(readonly) NSString* base64PublicKey;
 - (instancetype)init NS_UNAVAILABLE;
 @end
 

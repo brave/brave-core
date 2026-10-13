@@ -6,11 +6,14 @@
 #include "brave/components/brave_shields/core/browser/filter_list_catalog_entry.h"
 
 #include <algorithm>
+#include <array>
 #include <optional>
 #include <string>
 #include <vector>
 
+#include "base/base64.h"
 #include "base/check.h"
+#include "base/containers/span.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_value_converter.h"
 #include "base/logging.h"
@@ -18,37 +21,30 @@
 #include "base/strings/string_util.h"
 #include "base/values.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_locale_utils.h"
+#include "crypto/sha2.h"
 
 namespace {
 
-bool GetComponentId(const base::Value* value, std::string* field) {
+// `value` is untrusted remote data (the downloaded filter-list catalog), so
+// a malformed or non-base64 key is rejected here rather than crashing
+// downstream when it's eventually decoded.
+bool GetPublicKeySHA256(
+    const base::Value* value,
+    std::optional<std::array<uint8_t, crypto::kSHA256Length>>* field) {
   if (value == nullptr || !value->is_dict()) {
     return false;
-  } else {
-    const base::DictValue& dict = value->GetDict();
-    const auto* component_id = dict.FindString("component_id");
-    if (component_id) {
-      *field = *component_id;
-      return true;
-    } else {
-      return false;
-    }
   }
-}
-
-bool GetBase64PublicKey(const base::Value* value, std::string* field) {
-  if (value == nullptr || !value->is_dict()) {
+  const base::DictValue& dict = value->GetDict();
+  const auto* base64_public_key = dict.FindString("base64_public_key");
+  if (!base64_public_key) {
     return false;
-  } else {
-    const base::DictValue& dict = value->GetDict();
-    const auto* component_id = dict.FindString("base64_public_key");
-    if (component_id) {
-      *field = *component_id;
-      return true;
-    } else {
-      return false;
-    }
   }
+  auto decoded_public_key = base::Base64Decode(*base64_public_key);
+  if (!decoded_public_key) {
+    return false;
+  }
+  *field = crypto::SHA256Hash(*decoded_public_key);
+  return true;
 }
 
 bool GetStringVector(const base::Value* value,
@@ -117,8 +113,7 @@ FilterListCatalogEntry::FilterListCatalogEntry(
     bool first_party_protections,
     uint8_t permission_mask,
     const std::vector<std::string>& platforms,
-    const std::string& component_id,
-    const std::string& base64_public_key)
+    base::span<const uint8_t, crypto::kSHA256Length> public_key_sha256)
     : uuid(uuid),
       url(url),
       title(title),
@@ -129,9 +124,11 @@ FilterListCatalogEntry::FilterListCatalogEntry(
       default_enabled(default_enabled),
       first_party_protections(first_party_protections),
       permission_mask(permission_mask),
-      platforms(platforms),
-      component_id(component_id),
-      base64_public_key(base64_public_key) {}
+      platforms(platforms) {
+  this->public_key_sha256 =
+      std::make_optional<std::array<uint8_t, crypto::kSHA256Length>>();
+  base::span(this->public_key_sha256.value()).copy_from(public_key_sha256);
+}
 
 FilterListCatalogEntry::FilterListCatalogEntry(
     const FilterListCatalogEntry& other) = default;
@@ -156,12 +153,9 @@ void FilterListCatalogEntry::RegisterJSONConverter(
       &FilterListCatalogEntry::first_party_protections);
   converter->RegisterCustomValueField(
       "permission_mask", &FilterListCatalogEntry::permission_mask, &GetUint8);
-  converter->RegisterCustomValueField("list_text_component",
-                                      &FilterListCatalogEntry::component_id,
-                                      &GetComponentId);
   converter->RegisterCustomValueField(
-      "list_text_component", &FilterListCatalogEntry::base64_public_key,
-      &GetBase64PublicKey);
+      "list_text_component", &FilterListCatalogEntry::public_key_sha256,
+      &GetPublicKeySHA256);
   converter->RegisterCustomValueField<std::vector<std::string>>(
       "platforms", &FilterListCatalogEntry::platforms, &GetStringVector);
 }
@@ -214,9 +208,10 @@ std::vector<FilterListCatalogEntry> FilterListCatalogFromJSON(
   base::JSONValueConverter<FilterListCatalogEntry> converter;
 
   for (const auto& item : *parsed_json) {
-    DCHECK(item.is_dict());
     FilterListCatalogEntry entry;
-    converter.Convert(item, &entry);
+    if (!converter.Convert(item, &entry) || !entry.public_key_sha256) {
+      continue;
+    }
     catalog.push_back(entry);
   }
 

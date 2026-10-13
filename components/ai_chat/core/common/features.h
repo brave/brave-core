@@ -66,6 +66,11 @@ extern const base::FeatureParam<bool> kAutomaticModelSupportsTools;
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 extern const base::FeatureParam<bool> kShouldIndentPageContentBlocks;
 
+// Maximum number of times a request is automatically retried when the engine
+// reports a connection issue, before the error is surfaced to the user.
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+extern const base::FeatureParam<size_t> kMaxConnectionIssueRetries;
+
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 BASE_DECLARE_FEATURE(kAIChatRemoteModelsConfig);
 
@@ -87,6 +92,11 @@ COMPONENT_EXPORT(AI_CHAT_COMMON) bool IsAIChatFirstEnabled();
 COMPONENT_EXPORT(AI_CHAT_COMMON) BASE_DECLARE_FEATURE(kAIChatUserChoiceTool);
 
 COMPONENT_EXPORT(AI_CHAT_COMMON) BASE_DECLARE_FEATURE(kAIChatWorkspaceTools);
+// Whether the user can pick a native directory as a workspace, via the
+// "Workspace" entry in the Leo attachments menu. Only meaningful when
+// kAIChatWorkspaceTools is enabled.
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+extern const base::FeatureParam<bool> kWorkspaceNativeDirectories;
 
 // Enables experimental features being enabled in a separate profile. If
 // disabled, the features will not be enabled anywhere.
@@ -184,6 +194,11 @@ COMPONENT_EXPORT(AI_CHAT_COMMON) bool IsBraveSyncAIChatEnabled();
 // Enables conversation threads, which allow new conversations to be branched
 // off from an existing conversation entry.
 COMPONENT_EXPORT(AI_CHAT_COMMON) BASE_DECLARE_FEATURE(kAIChatThreads);
+
+// The maximum number of threads that can be created from a single origin
+// conversation entry. Attempts to create more are no-ops.
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+extern const base::FeatureParam<size_t> kMaxThreadsPerOriginEntry;
 
 // Enables sharing a conversation from the conversation header.
 // https://github.com/brave/brave-browser/issues/56444

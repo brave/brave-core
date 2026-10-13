@@ -11,7 +11,6 @@
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/views/bubble/webui_bubble_manager.h"
 #include "components/grit/brave_components_strings.h"
 #include "url/gurl.h"

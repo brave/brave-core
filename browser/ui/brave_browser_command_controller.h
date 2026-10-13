@@ -28,7 +28,7 @@
 class BraveAppMenuBrowserTest;
 class BraveAppMenuModelBrowserTest;
 class BraveBrowserCommandControllerTest;
-class Browser;
+class BrowserWindowInterface;
 enum class TabChangeType;
 
 namespace content {
@@ -120,7 +120,7 @@ class BraveBrowserCommandController : public chrome::BrowserCommandController
                                           base::TimeTicks time_stamp);
 
   PrefChangeRegistrar pref_change_registrar_;
-  const raw_ref<Browser> browser_;
+  const raw_ref<BrowserWindowInterface> browser_;
 
   CommandUpdaterImpl brave_command_updater_;
 };

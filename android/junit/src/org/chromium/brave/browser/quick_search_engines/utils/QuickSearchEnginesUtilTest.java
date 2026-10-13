@@ -10,8 +10,6 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import androidx.test.filters.SmallTest;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -115,7 +113,6 @@ public class QuickSearchEnginesUtilTest {
     }
 
     @Test
-    @SmallTest
     public void testFiltersOutAutoDiscoveredEngines() {
         TemplateUrl google = mockTemplateUrl("Google", GOOGLE_KEYWORD, true);
         TemplateUrl brave = mockTemplateUrl("Brave", BRAVE_KEYWORD, true);
@@ -134,7 +131,6 @@ public class QuickSearchEnginesUtilTest {
     }
 
     @Test
-    @SmallTest
     public void testKeepsUserAddedCustomEngines() {
         setCustomKeywords(CUSTOM_KEYWORD);
 
@@ -157,7 +153,6 @@ public class QuickSearchEnginesUtilTest {
     }
 
     @Test
-    @SmallTest
     public void testKeepsAllPrepopulatedEngines() {
         TemplateUrl google = mockTemplateUrl("Google", GOOGLE_KEYWORD, true);
         TemplateUrl brave = mockTemplateUrl("Brave", BRAVE_KEYWORD, true);

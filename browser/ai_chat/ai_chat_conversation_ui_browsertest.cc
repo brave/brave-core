@@ -3,7 +3,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+#include <algorithm>
 #include <memory>
+#include <optional>
 #include <string>
 #include <string_view>
 
@@ -105,15 +107,17 @@ IN_PROC_BROWSER_TEST_F(
 // question click is a sufficient probe for every method on
 // UntrustedConversationUserActions.
 //
-// Every script this fixture runs in the untrusted frame before the click under
-// test passes EXECUTE_SCRIPT_NO_USER_GESTURE. EvalJs otherwise hands the frame
-// a transient activation that outlives the call, which would make the
-// no-gesture test pass for the wrong reason, and make the real-click test
-// prove nothing.
+// No script this fixture runs in the untrusted frame before the click under
+// test may grant an activation, hence `eval_js_options_`. EvalJs otherwise
+// hands the frame a transient activation that outlives the call, which would
+// make the no-gesture test pass for the wrong reason, and make the real-click
+// test prove nothing.
 class AIChatUserGestureBrowserTest
     : public AIChatConversationUIBrowserTestBase {
  public:
-  AIChatUserGestureBrowserTest() = default;
+  AIChatUserGestureBrowserTest() {
+    eval_js_options_ = content::EXECUTE_SCRIPT_NO_USER_GESTURE;
+  }
   ~AIChatUserGestureBrowserTest() override = default;
 
  protected:
@@ -122,47 +126,41 @@ class AIChatUserGestureBrowserTest
   // Renders a single suggested question in the untrusted frame.
   void SetUpSuggestion() {
     CreateConversationWithMockEngine();
-    NavigateToConversationUI(conversation_handler_->get_conversation_uuid());
-    // After navigating, so that the UI connecting doesn't replace this with the
-    // default starter prompts.
+
+    // A conversation with no entries has its suggestions replaced with random
+    // starter prompts every time associated content is re-evaluated
+    // (ConversationHandler::MaybeSeedOrClearSuggestions), which otherwise
+    // races the click under test. One completed entry closes that path.
+    {
+      auto generate_future = SetupMockGenerateAssistantResponse();
+      conversation_handler_->SubmitHumanConversationEntry("Opening question",
+                                                          std::nullopt);
+      auto callbacks = generate_future->Take();
+      std::move(callbacks.completed_callback)
+          .Run(base::ok(
+              EngineConsumer::GenerationResultData(nullptr, std::nullopt)));
+    }
+    // SubmitSuggestion is a no-op while a request is in flight.
+    ASSERT_TRUE(base::test::RunUntil(
+        [this] { return !conversation_handler_->IsRequestInProgress(); }));
+
+    // Submitting the suggestion starts a generation of its own. gmock matches
+    // the most recently declared expectation first, so this absorbs that call
+    // instead of over-saturating the WillOnce expectation from
+    // SetupMockGenerateAssistantResponse().
+    EXPECT_CALL(*mock_engine_, GenerateAssistantResponse)
+        .Times(testing::AnyNumber());
+
     conversation_handler_->SetSuggestedQuestionForTest(kSuggestion,
                                                        "Suggestion prompt");
-
-    constexpr char kWaitScript[] = R"(
-      new Promise((resolve) => {
-        const check = () => {
-          const el = document.querySelector(
-            '[data-testid=suggested-question-0]')
-          return !!el && el.textContent.trim() === $1
-        }
-        if (check()) {
-          resolve(true)
-          return
-        }
-        const observer = new MutationObserver(() => {
-          if (check()) {
-            observer.disconnect()
-            resolve(true)
-          }
-        })
-        observer.observe(document.documentElement, {
-          childList: true,
-          subtree: true,
-          characterData: true,
-        })
-        setTimeout(() => {
-          observer.disconnect()
-          resolve(false)
-        }, 10000)
-      })
-    )";
-    ASSERT_TRUE(EvalInFrame(content::JsReplace(kWaitScript, kSuggestion))
-                    .ExtractBool());
+    NavigateToConversationUI(conversation_handler_->get_conversation_uuid());
+    ASSERT_TRUE(VerifyConversationFrameElementText("suggested-question-0",
+                                                   kSuggestion));
   }
 
   content::EvalJsResult EvalInFrame(std::string_view script) {
     return content::EvalJs(GetConversationEntriesFrame(), script,
-                           content::EXECUTE_SCRIPT_NO_USER_GESTURE);
+                           eval_js_options_);
   }
 
   // |options| decides whether the script itself grants the frame an
@@ -182,11 +180,14 @@ class AIChatUserGestureBrowserTest
         .ExtractBool();
   }
 
+  bool HasSuggestionEntry() {
+    return std::ranges::any_of(
+        conversation_handler_->GetConversationHistory(),
+        [](const auto& turn) { return turn->text == kSuggestion; });
+  }
+
   bool SuggestionWasSubmitted() {
-    return base::test::RunUntil([this] {
-      const auto& history = conversation_handler_->GetConversationHistory();
-      return !history.empty() && history[0]->text == kSuggestion;
-    });
+    return base::test::RunUntil([this] { return HasSuggestionEntry(); });
   }
 };
 
@@ -201,7 +202,7 @@ IN_PROC_BROWSER_TEST_F(AIChatUserGestureBrowserTest,
   EXPECT_TRUE(base::test::RunUntil([this] {
     return conversation_handler_->GetUserActionReceiverCountForTesting() == 0u;
   }));
-  EXPECT_TRUE(conversation_handler_->GetConversationHistory().empty());
+  EXPECT_FALSE(HasSuggestionEntry());
 }
 
 IN_PROC_BROWSER_TEST_F(AIChatUserGestureBrowserTest,
@@ -230,6 +231,7 @@ IN_PROC_BROWSER_TEST_F(AIChatUserGestureBrowserTest, RealClickIsAccepted) {
         return [r.left + r.width / 2, r.top + r.height / 2]
       })()
     )");
+  ASSERT_TRUE(center_result.is_ok()) << center_result.ExtractError();
   const base::ListValue& center = center_result.ExtractList();
   ASSERT_EQ(center.size(), 2u);
   // The untrusted frame is an OOPIF, so its own coordinates need mapping onto

@@ -29,7 +29,6 @@
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
-#include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"

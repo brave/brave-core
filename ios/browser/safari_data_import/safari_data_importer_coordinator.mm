@@ -62,8 +62,10 @@
     PrefService* prefService = profile->GetPrefs();
     std::unique_ptr<user_data_importer::IOSBookmarkParser> bookmarkParser =
         std::make_unique<user_data_importer::IOSBookmarkParser>();
-    std::string locale =
-        GetApplicationContext()->GetApplicationLocaleStorage()->Get();
+    std::string locale(GetApplicationContext()
+                           ->GetApplicationLocaleStorage()
+                           ->GetTag()
+                           .tag_string());
     auto* paymentsDataManager = &personalDataManager->payments_data_manager();
 
     _savedPasswordsPresenter =

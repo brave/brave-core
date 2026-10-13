@@ -34,7 +34,9 @@ class BraveBrowserWindow : public BrowserWindow {
  public:
   ~BraveBrowserWindow() override {}
 
-  static BraveBrowserWindow* From(BrowserWindow*);
+  // Returns `window` as a BraveBrowserWindow, or nullptr when it is not a
+  // BrowserView (e.g. a WebUIBrowserWindow or a TestBrowserWindow).
+  static BraveBrowserWindow* From(BrowserWindow* window);
   static BraveBrowserWindow* FromBrowser(BrowserWindowInterface* browser);
 
   virtual void StartTabCycling() {}

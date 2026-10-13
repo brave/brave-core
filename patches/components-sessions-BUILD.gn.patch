@@ -1,5 +1,5 @@
 diff --git a/components/sessions/BUILD.gn b/components/sessions/BUILD.gn
-index 8fdb01e9efaf2b351ebbcdc24e50c5917f9d0031..7fc572f137ee16c11b744498522f80cfe12d9bdd 100644
+index 6d965f35ec9f2886182ae056c48921916a33191c..4837a0cea24156afe61dbb28b1aedb5ca20723e0 100644
 --- a/components/sessions/BUILD.gn
 +++ b/components/sessions/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -18,7 +18,7 @@ index 8fdb01e9efaf2b351ebbcdc24e50c5917f9d0031..7fc572f137ee16c11b744498522f80cf
    }
  } else {
    source_set("sessions") {
-@@ -145,6 +147,7 @@ source_set("shared") {
+@@ -146,6 +148,7 @@ source_set("shared") {
      "//components/os_crypt/common",
      "//skia",
    ]

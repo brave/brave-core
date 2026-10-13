@@ -246,7 +246,7 @@ std::optional<BuiltInItemType> BuiltInItemTypeFromSidePanelId(
 }
 
 SidePanelEntryId SidePanelIdFromSideBarItem(const SidebarItem& item) {
-  CHECK(item.open_in_panel) << static_cast<int>(item.built_in_item_type);
+  CHECK(item.is_side_panel_type()) << static_cast<int>(item.built_in_item_type);
   return SidePanelIdFromSideBarItemType(item.built_in_item_type);
 }
 
@@ -259,8 +259,9 @@ std::optional<SidebarItem> AddItemForSidePanelIdIfNeeded(Profile* profile,
   }
 
   for (const auto& item : hidden_default_items) {
-    // Only panel item could have panel id.
-    if (item.open_in_panel && id == sidebar::SidePanelIdFromSideBarItem(item)) {
+    // Only side panel item could have panel id.
+    if (item.is_side_panel_type() &&
+        id == sidebar::SidePanelIdFromSideBarItem(item)) {
       GetSidebarService(profile)->AddItem(item);
       return item;
     }

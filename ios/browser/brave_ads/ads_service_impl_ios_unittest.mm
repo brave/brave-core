@@ -36,6 +36,8 @@
 #include "brave/ios/browser/brave_ads/test/fake_ads_factory.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/testing_pref_service.h"
+#include "net/base/mock_network_change_notifier.h"
+#include "net/base/network_change_notifier.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "testing/platform_test.h"
@@ -161,6 +163,32 @@ TEST_F(BraveAdsServiceImplIOSTest,
   // Assert
   EXPECT_FALSE(prefs_.HasPrefPath(prefs::kDiagnosticId));
   EXPECT_FALSE(prefs_.GetBoolean(prefs::kSponsoredEnabled));
+}
+
+TEST_F(BraveAdsServiceImplIOSTest, IsNetworkConnectionAvailable) {
+  net::test::ScopedMockNetworkChangeNotifier scoped_notifier;
+  for (int type = net::NetworkChangeNotifier::CONNECTION_UNKNOWN;
+       type <= net::NetworkChangeNotifier::CONNECTION_LAST; ++type) {
+    if (type == net::NetworkChangeNotifier::CONNECTION_NONE) {
+      continue;
+    }
+    // Arrange
+    scoped_notifier.mock_network_change_notifier()->SetConnectionType(
+        static_cast<net::NetworkChangeNotifier::ConnectionType>(type));
+
+    // Act & Assert
+    EXPECT_TRUE(ads_service_->IsNetworkConnectionAvailable());
+  }
+}
+
+TEST_F(BraveAdsServiceImplIOSTest, IsNetworkConnectionUnavailable) {
+  // Arrange
+  net::test::ScopedMockNetworkChangeNotifier scoped_notifier;
+  scoped_notifier.mock_network_change_notifier()->SetConnectionType(
+      net::NetworkChangeNotifier::CONNECTION_NONE);
+
+  // Act & Assert
+  EXPECT_FALSE(ads_service_->IsNetworkConnectionAvailable());
 }
 
 TEST_F(BraveAdsServiceImplIOSTest,

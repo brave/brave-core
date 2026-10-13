@@ -13,7 +13,7 @@ import { spawnSync, type SpawnSyncReturns } from 'node:child_process'
 import prettier from 'prettier'
 
 import config from '../lib/config.ts'
-import util from '../lib/util.js'
+import util from '../lib/util.ts'
 import * as Log from '../lib/log.ts'
 
 program
@@ -72,7 +72,7 @@ const getAllFiles = () => {
     .split('\n')
 }
 
-const formatOutput = (result: SpawnSyncReturns<NonSharedBuffer>) => {
+const formatOutput = (result: SpawnSyncReturns<string | NonSharedBuffer>) => {
   return [result.stdout, result.stderr]
     .filter((v) => v.length)
     .join('\nstderr:\n')

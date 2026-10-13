@@ -48,6 +48,10 @@ const getStatusText = (status: ConnectionState) => {
     return getLocale(S.BRAVE_VPN_CONNECTION_FAILED)
   }
 
+  if (status === ConnectionState.CONNECT_NO_AGENT) {
+    return getLocale(S.BRAVE_VPN_CONNECTION_UNAVAILABLE)
+  }
+
   return null
 }
 

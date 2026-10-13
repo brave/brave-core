@@ -6,7 +6,6 @@
 #include "brave/components/brave_wallet/browser/cardano/cardano_max_token_send_solver.h"
 
 #include <algorithm>
-#include <utility>
 
 #include "base/containers/span.h"
 #include "base/strings/string_number_conversions.h"
@@ -17,7 +16,6 @@
 #include "brave/components/brave_wallet/browser/cardano/cardano_rpc_schema.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_test_utils.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_transaction.h"
-#include "brave/components/brave_wallet/browser/cardano/cardano_transaction_serializer.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "crypto/hash.h"
 #include "testing/gmock/include/gmock/gmock.h"

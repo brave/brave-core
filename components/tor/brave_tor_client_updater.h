@@ -24,8 +24,6 @@ using brave_component_updater::BraveComponent;
 
 namespace tor {
 
-extern const char kTorClientComponentId[];
-
 class BraveTorClientUpdater : public BraveComponent {
  public:
   class Observer : public base::CheckedObserver {

@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/mini_installer/BUILD.gn b/chrome/installer/mini_installer/BUILD.gn
-index ce1f5a5711eeba1109bef0169a80cbe29373a843..e3e2f86172975576bbb089cbc0ad167647ba91fd 100644
+index 39cbdeb5f067ba57b65bb903ff36b9f96c4d8631..0fa3f42feae0a93e5c02b9216d171f0ec37598e7 100644
 --- a/chrome/installer/mini_installer/BUILD.gn
 +++ b/chrome/installer/mini_installer/BUILD.gn
 @@ -2,6 +2,7 @@

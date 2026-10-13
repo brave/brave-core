@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/browser_process_impl.cc b/chrome/browser/browser_process_impl.cc
-index 548441ccaf07cf35026b78835b0382dd53a7e652..23d9ae75c385396dbb8669729cfa9b5bec283f4e 100644
+index bed9453f156ba5b94a8daa5261085045e288098e..f50161e06dfb757b362304a044dc0e70ab6ac13f 100644
 --- a/chrome/browser/browser_process_impl.cc
 +++ b/chrome/browser/browser_process_impl.cc
-@@ -405,7 +405,7 @@ void BrowserProcessImpl::Init() {
+@@ -410,7 +410,7 @@ void BrowserProcessImpl::Init() {
    // TODO(devlin): Move this block out of BrowserProcessImpl to somewhere like
    // //chrome/browser/initialize_extensions_browser_client, analogous to
    // `EnsureExtensionsClientInitialized()` above?
@@ -11,7 +11,7 @@ index 548441ccaf07cf35026b78835b0382dd53a7e652..23d9ae75c385396dbb8669729cfa9b5b
    extensions_browser_client_ = startup_data()->TakeExtensionsBrowserClient();
  #elif BUILDFLAG(ENABLE_EXTENSIONS)
    extensions_browser_client_ =
-@@ -1721,7 +1721,7 @@ void BrowserProcessImpl::PreMainMessageLoopRun() {
+@@ -1708,7 +1708,7 @@ void BrowserProcessImpl::PreMainMessageLoopRun() {
  
  // Create the global SodaInstaller instance.
  #if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_CHROMEOS)

@@ -181,8 +181,9 @@ void OnboardingTabHelper::ShowBraveHelpBubbleView() {
     return;
   }
 
-  if (!BraveBrowserWindow::From(browser_window)
-           ->ShowBraveHelpBubbleView(GetTextForOnboardingShieldsBubble())) {
+  auto* brave_browser_window = BraveBrowserWindow::From(browser_window);
+  if (!brave_browser_window || !brave_browser_window->ShowBraveHelpBubbleView(
+                                   GetTextForOnboardingShieldsBubble())) {
     return;
   }
 

@@ -40,6 +40,10 @@
     Connection Failed
   </message>
 
+  <message name="IDS_BRAVE_VPN_CONNECTION_UNAVAILABLE" desc="Status label when the VPN connection is unavailable due to a broken setup, e.g., the VPN agent is not running" formatter_data="webui=Vpn">
+    Connection unavailable
+  </message>
+
   <message name="IDS_BRAVE_VPN_UNABLE_CONNECT_TO_SERVER" desc="Title to show user can't connect to a region's server" formatter_data="webui=Vpn">
     Can't connect to server
   </message>
@@ -54,6 +58,10 @@
 
   <message name="IDS_BRAVE_VPN_UNABLE_CONNECT_INFO" desc="Description of which region VPN couldn't connect to" formatter_data="webui=Vpn">
     <ph name="PRODUCT_NAME">$1<ex>Brave Firewall + VPN</ex></ph> couldn't connect to the <ph name="REGION_NAME">$2<ex>Tokyo</ex></ph> server. Please try again or choose another country.
+  </message>
+
+  <message name="IDS_BRAVE_VPN_CONNECT_NO_AGENT" desc="Description shown when the VPN agent is not available" formatter_data="webui=Vpn">
+    <ph name="PRODUCT_NAME">$1<ex>Brave Firewall + VPN</ex></ph> isn't available. If the problem persists, please reinstall Brave or reach out to our technical support team.
   </message>
 
   <message name="IDS_BRAVE_VPN_BUY" desc="Button title to purchase vpn" formatter_data="webui=Vpn">

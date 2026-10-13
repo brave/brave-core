@@ -10,12 +10,13 @@ import fs from 'node:fs'
 import { program } from 'commander'
 import path from 'node:path'
 import config from '../lib/config.ts'
-import util from '../lib/util.js'
+import util from '../lib/util.ts'
 import * as Log from '../lib/log.ts'
 import depotTools from '../lib/depotTools.js'
 import { isCI } from '../lib/ciDetect.ts'
-import syncUtil from '../lib/syncUtils.js'
-import sisoUtils from '../lib/sisoUtils.js'
+import * as syncUtil from '../lib/syncUtils.ts'
+import { writeSisoRc } from '../lib/sisoUtils.ts'
+import { supportBuilder } from '../lib/builder.ts'
 
 program
   .version(process.env.npm_package_version || 'unknown')
@@ -44,8 +45,11 @@ program
     '--lean_sync',
     'An experimental lean sync checkout mode. https://github.com/brave/brave-browser/issues/44921',
   )
-  .action(sync)
-  .parse()
+
+// TODO(http://brave.dev/b/56449): Experimental implementation for integration
+// with our bots generator.
+supportBuilder(program, { allowed: ['init'] })
+program.action(sync).parse()
 
 function syncBrave(options) {
   let args = ['sync', '--nohooks']
@@ -147,7 +151,7 @@ async function sync(options) {
     })
   }
 
-  sisoUtils.writeSisoRc()
+  writeSisoRc()
 }
 
 function commaSeparatedToList(value, defaultValue) {

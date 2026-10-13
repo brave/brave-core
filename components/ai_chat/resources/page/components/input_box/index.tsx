@@ -457,7 +457,7 @@ const InputBox = React.forwardRef<InputBoxHandle, InputBoxProps>(
                 setAttachmentsDialog={props.context.setAttachmentsDialog}
                 focusInput={props.context.focusInput}
                 onSelectWorkspaceFolder={
-                  aiChatContext.isWorkspaceToolsEnabled
+                  aiChatContext.isWorkspaceNativeDirectoriesEnabled
                   && modelSupportsTools
                   && conversationState.conversationUuid
                     ? () => {

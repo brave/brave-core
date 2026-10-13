@@ -28,7 +28,6 @@
 #include "brave/components/brave_wallet/browser/zcash/zcash_resolve_balance_task.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_resolve_transaction_status_task.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_serializer.h"
-#include "brave/components/brave_wallet/browser/zcash/zcash_transaction_utils.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_tx_meta.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"

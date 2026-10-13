@@ -433,6 +433,10 @@
     Disconnecting
   </message>
 
+  <message name="IDS_NEW_TAB_VPN_STATUS_UNAVAILABLE" desc="Text indicating that the VPN is unavailable" formatter_data="webui=BraveNewTabPage">
+    Unavailable
+  </message>
+
   <message name="IDS_NEW_TAB_VPN_WIDGET_TITLE" desc="Title of the Brave VPN NTP widget" formatter_data="webui=BraveNewTabPage">
     BRAVE VPN
   </message>

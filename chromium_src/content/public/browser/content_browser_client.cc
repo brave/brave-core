@@ -15,12 +15,6 @@ std::string ContentBrowserClient::GetEffectiveUserAgent(
   return std::string();
 }
 
-bool ContentBrowserClient::AllowWorkerFingerprinting(
-    const GURL& url,
-    BrowserContext* browser_context) {
-  return true;
-}
-
 std::optional<base::UnguessableToken>
 ContentBrowserClient::GetEphemeralStorageToken(
     RenderFrameHost* render_frame_host,

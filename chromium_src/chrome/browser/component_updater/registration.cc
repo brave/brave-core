@@ -7,7 +7,6 @@
 
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
-
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_global_features.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
@@ -21,6 +20,7 @@
 #include "brave/components/query_filter/browser/query_filter_component_installer.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/component_updater/component_updater_utils.h"
+#include "chrome/browser/global_features.h"
 #include "extensions/buildflags/buildflags.h"
 
 #if BUILDFLAG(ENABLE_PSST)
@@ -77,9 +77,9 @@ void RegisterBraveComponentsForUpdate() {
   brave_user_agent::RegisterBraveUserAgentComponent(cus);
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   extension_malware_blocklist::RegisterExtensionMalwareBlocklistComponent(
-      cus,
-      BraveGlobalFeatures::FromGlobalFeatures(g_browser_process->GetFeatures())
-          ->extension_malware_blocklist());
+      cus, g_browser_process->GetFeatures()
+               ->brave_global_features()
+               ->extension_malware_blocklist());
 #endif  // BUILDFLAG(ENABLE_EXTENSIONS)
 #if BUILDFLAG(ENABLE_LOCAL_AI)
   local_ai::ManageLocalModelsComponentRegistration(

@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_wallet/browser/zcash/rust/orchard_decoded_blocks_bundle_impl.h"
 
-#include <memory>
 #include <utility>
 #include <variant>
 

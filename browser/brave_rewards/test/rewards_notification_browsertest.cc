@@ -17,7 +17,6 @@
 #include "brave/components/brave_rewards/content/rewards_notification_service_observer.h"
 #include "brave/components/brave_rewards/content/rewards_service_impl.h"
 #include "brave/components/constants/brave_paths.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/network_session_configurator/common/network_switches.h"

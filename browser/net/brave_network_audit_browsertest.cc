@@ -22,7 +22,7 @@
 #include "chrome/browser/password_manager/factories/profile_password_store_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
-#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/search_test_utils.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -172,7 +172,7 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkAuditTest, BasicTests) {
   auto* sidebar_model = sidebar::SidebarController::From(browser())->model();
   std::vector<SidePanelEntryId> panel_ids;
   for (const auto& item : sidebar_model->GetAllSidebarItems()) {
-    if (item.is_built_in_type() && item.open_in_panel) {
+    if (item.is_side_panel_type()) {
       panel_ids.push_back(sidebar::SidePanelIdFromSideBarItem(item));
     }
   }

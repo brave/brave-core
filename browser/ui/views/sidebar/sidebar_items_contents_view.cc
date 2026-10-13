@@ -18,7 +18,6 @@
 #include "base/strings/utf_string_conversions.h"
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/profiles/profile_util.h"
-#include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/color/color_palette.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
@@ -39,6 +38,8 @@
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/app/vector_icons/vector_icons.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/views/event_utils.h"
@@ -80,14 +81,14 @@ std::string GetFirstCharFromURL(const GURL& url) {
   return std::string(target);
 }
 
-sidebar::SidebarService* GetSidebarService(Browser* browser) {
+sidebar::SidebarService* GetSidebarService(BrowserWindowInterface* browser) {
   return sidebar::SidebarServiceFactory::GetForProfile(browser->GetProfile());
 }
 
 }  // namespace
 
 SidebarItemsContentsView::SidebarItemsContentsView(
-    BraveBrowser* browser,
+    BrowserWindowInterface* browser,
     views::DragController* drag_controller)
     : browser_(browser),
       drag_controller_(drag_controller),
@@ -150,10 +151,11 @@ void SidebarItemsContentsView::UpdateAllItemsViewState() {
   for (size_t item_index = 0; item_index < items_num; ++item_index) {
     const auto item = items[item_index];
 #if BUILDFLAG(ENABLE_BRAVE_TALK)
-    // If browser window has tab that loads brave talk, brave talk panel icon
+    // If browser window has tab that loads brave talk, brave talk item icon
     // will use colored one for normal state also.
-    if (item.built_in_item_type ==
-        sidebar::SidebarItem::BuiltInItemType::kBraveTalk) {
+    if (!item.opens_in_panel() &&
+        item.built_in_item_type ==
+            sidebar::SidebarItem::BuiltInItemType::kBraveTalk) {
       UpdateItemViewStateAt(item_index,
                             sidebar::SidebarController::From(browser_)
                                 ->DoesBrowserHaveOpenedTabForItem(item));
@@ -162,7 +164,7 @@ void SidebarItemsContentsView::UpdateAllItemsViewState() {
 #endif
 
     // Items that opens in panel can have active state.
-    if (item.open_in_panel) {
+    if (item.opens_in_panel()) {
       UpdateItemViewStateAt(item_index, item_index == active_index);
     }
   }
@@ -490,7 +492,7 @@ void SidebarItemsContentsView::UpdateItemViewStateAt(size_t index,
   const auto& item = sidebar_model_->GetAllSidebarItems()[index];
   SidebarItemView* item_view = GetItemViewAt(index);
 
-  if (item.open_in_panel) {
+  if (item.opens_in_panel()) {
     item_view->SetActiveState(active);
   }
 

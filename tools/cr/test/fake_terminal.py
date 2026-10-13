@@ -51,7 +51,7 @@ GNRT = 'gnrt'
 # The stderr line `pnpm run init` ends with when a patch fails to apply, and
 # the stdout header that precedes the JSON breakdown of the failures. Both are
 # matched by brockit, so they are reproduced verbatim from
-# `build/commands/lib/util.js` and `build/commands/lib/gitPatcherLog.ts`.
+# `build/commands/lib/util.ts` and `build/commands/lib/gitPatcherLog.ts`.
 PATCH_FAILURE_STDERR_LINE = 'Exiting as not all patches were successful!'
 PATCH_FAILURE_JSON_HEADER = '{count} Failed patches json breakdown:'
 

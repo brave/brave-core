@@ -4,10 +4,9 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import Amount from './amount'
 
-let languageGetter
+const languageGetter = jest.spyOn(window.navigator, 'language', 'get')
 
 beforeEach(() => {
-  languageGetter = jest.spyOn(window.navigator, 'language', 'get')
   languageGetter.mockReturnValue('en-GB')
 })
 
@@ -375,6 +374,19 @@ describe('Amount class', () => {
         expect(new Amount(value).formatAsFiat(currency)).toBe(expected)
       },
     )
+
+    it('should mask hidden fiat without dropping the currency symbol', () => {
+      expect(Amount.formatHiddenAsFiat('USD')).toBe('$••••')
+      expect(Amount.formatHiddenAsFiat()).toBe('••••')
+    })
+
+    it('should keep locale currency placement when masking hidden fiat', () => {
+      languageGetter.mockReturnValue('de-DE')
+      const hidden = Amount.formatHiddenAsFiat('EUR')
+      expect(hidden.includes('€')).toBe(true)
+      expect(hidden.includes('••••')).toBe(true)
+      expect(hidden).not.toMatch(/\d/)
+    })
 
     it.each([
       ['122', 2, 'USD', '$122.00'],

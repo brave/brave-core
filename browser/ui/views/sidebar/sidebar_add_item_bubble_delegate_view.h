@@ -9,7 +9,7 @@
 #include "base/memory/raw_ptr.h"
 #include "ui/views/bubble/bubble_dialog_delegate_view.h"
 
-class BraveBrowser;
+class BrowserWindowInterface;
 
 namespace sidebar {
 struct SidebarItem;
@@ -21,8 +21,8 @@ class SidebarAddItemBubbleDelegateView
   METADATA_HEADER(SidebarAddItemBubbleDelegateView,
                   views::BubbleDialogDelegateView)
  public:
-
-  static views::Widget* Create(BraveBrowser* browser, views::View* anchor_view);
+  static views::Widget* Create(BrowserWindowInterface* browser,
+                               views::View* anchor_view);
 
   ~SidebarAddItemBubbleDelegateView() override;
 
@@ -32,7 +32,7 @@ class SidebarAddItemBubbleDelegateView
       const SidebarAddItemBubbleDelegateView&) = delete;
 
  private:
-  SidebarAddItemBubbleDelegateView(BraveBrowser* browser,
+  SidebarAddItemBubbleDelegateView(BrowserWindowInterface* browser,
                                    views::View* anchor_view);
 
   void AddChildViews();
@@ -42,7 +42,7 @@ class SidebarAddItemBubbleDelegateView
   void OnCurrentItemButtonPressed();
   void CloseOrReLayoutAfterAddingItem();
 
-  raw_ptr<BraveBrowser> browser_ = nullptr;
+  raw_ptr<BrowserWindowInterface> browser_ = nullptr;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_SIDEBAR_SIDEBAR_ADD_ITEM_BUBBLE_DELEGATE_VIEW_H_

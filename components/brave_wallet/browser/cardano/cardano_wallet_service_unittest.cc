@@ -25,7 +25,6 @@
 #include "brave/components/brave_wallet/common/test_utils.h"  // IWYU pragma: keep
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"  // IWYU pragma: keep
-#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 using base::test::TestFuture;

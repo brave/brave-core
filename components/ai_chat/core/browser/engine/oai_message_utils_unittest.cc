@@ -314,6 +314,41 @@ TEST_F(OAIMessageUtilsTest, BuildOAIMessages) {
   VerifyTextBlock(FROM_HERE, messages[3].content[1], "Another question");
 }
 
+// Content associated with an assistant turn (i.e. a workspace a tool added) is
+// only known to the model via that tool's result, so isn't sent as a block of
+// the assistant message.
+TEST_F(OAIMessageUtilsTest, BuildOAIMessages_NoContentForAssistantTurns) {
+  PageContent workspace("", mojom::ContentType::Workspace);
+  PageContentsMap page_contents_map;
+  page_contents_map["turn2"] = {std::cref(workspace)};
+
+  EngineConsumer::ConversationHistory history;
+  auto turn1 = mojom::ConversationTurn::New();
+  turn1->uuid = "turn1";
+  turn1->character_type = mojom::CharacterType::HUMAN;
+  turn1->action_type = mojom::ActionType::QUERY;
+  turn1->text = "Write a file";
+  history.push_back(std::move(turn1));
+
+  auto turn2 = mojom::ConversationTurn::New();
+  turn2->uuid = "turn2";
+  turn2->character_type = mojom::CharacterType::ASSISTANT;
+  turn2->text = "Done.";
+  history.push_back(std::move(turn2));
+
+  std::vector<OAIMessage> messages = BuildOAIMessages(
+      std::move(page_contents_map), EngineConsumer::ToHistoryView(history),
+      nullptr, true, 10000, [](std::string&) {});
+
+  ASSERT_EQ(messages.size(), 2u);
+  EXPECT_EQ(messages[0].role, "user");
+  ASSERT_EQ(messages[0].content.size(), 1u);
+  VerifyTextBlock(FROM_HERE, messages[0].content[0], "Write a file");
+  EXPECT_EQ(messages[1].role, "assistant");
+  ASSERT_EQ(messages[1].content.size(), 1u);
+  VerifyTextBlock(FROM_HERE, messages[1].content[0], "Done.");
+}
+
 TEST_F(OAIMessageUtilsTest, BuildOAIMessages_ContentTruncation) {
   // Create page contents - older content is longer
   PageContent old_content("Old content that will be dropped",

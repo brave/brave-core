@@ -23,6 +23,7 @@
   BRAVE_GOOGLE_SIGN_IN,             \
   BRAVE_OPEN_AI_CHAT,               \
   BRAVE_CARDANO,                    \
+  BRAVE_POLKADOT,                   \
   NUM,                              \
   BRAVE_MIN_VALUE = BRAVE_ADS
 // clang-format on

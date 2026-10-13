@@ -90,7 +90,7 @@ leo-button {
     gap: var(--leo-spacing-m);
 
     .title {
-      font: var(--leo-font-heading-h4);
+      font: var(--leo-font-heading-h3);
     }
 
     .description {

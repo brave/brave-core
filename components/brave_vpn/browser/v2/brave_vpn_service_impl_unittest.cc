@@ -445,7 +445,7 @@ TEST_F(BraveVpnServiceImplTest, AgentErrorShowsConnectFailure) {
   ASSERT_EQ(connection_state(), mojom::ConnectionState::DISCONNECTED);
 
   NotifyAgentConnectionFailed(AgentClient::Error::kAgentUnreachable);
-  EXPECT_EQ(connection_state(), mojom::ConnectionState::CONNECT_NOT_ALLOWED);
+  EXPECT_EQ(connection_state(), mojom::ConnectionState::CONNECT_NO_AGENT);
   EXPECT_FALSE(service_->GetLastConnectionError().empty());
 }
 
@@ -454,7 +454,7 @@ TEST_F(BraveVpnServiceImplTest, StableSessionClearsConnectFailure) {
   ASSERT_EQ(connection_state(), mojom::ConnectionState::DISCONNECTED);
 
   NotifyAgentConnectionFailed(AgentClient::Error::kAgentUnreachable);
-  ASSERT_EQ(connection_state(), mojom::ConnectionState::CONNECT_NOT_ALLOWED);
+  ASSERT_EQ(connection_state(), mojom::ConnectionState::CONNECT_NO_AGENT);
   NotifyAgentSessionStable();
   EXPECT_EQ(connection_state(), mojom::ConnectionState::DISCONNECTED);
 }
@@ -467,10 +467,10 @@ TEST_F(BraveVpnServiceImplTest, ConnectingAloneDoesNotClearTheError) {
   ASSERT_EQ(connection_state(), mojom::ConnectionState::DISCONNECTED);
 
   NotifyAgentConnectionFailed(AgentClient::Error::kAgentUnreachable);
-  ASSERT_EQ(connection_state(), mojom::ConnectionState::CONNECT_NOT_ALLOWED);
+  ASSERT_EQ(connection_state(), mojom::ConnectionState::CONNECT_NO_AGENT);
 
   NotifyAgentConnected();
-  EXPECT_EQ(connection_state(), mojom::ConnectionState::CONNECT_NOT_ALLOWED);
+  EXPECT_EQ(connection_state(), mojom::ConnectionState::CONNECT_NO_AGENT);
 }
 
 // The real connection state that arrived in the meantime must survive.
@@ -505,13 +505,13 @@ TEST_F(BraveVpnServiceImplTest, AgentDisconnectionResetsOnlyConnectedState) {
 
 // A launch that never happened is terminal in effect: the handler also resets
 // the client, so no retries are left to recover it.
-TEST_F(BraveVpnServiceImplTest, LaunchFailureShowsConnectNotAllowed) {
+TEST_F(BraveVpnServiceImplTest, LaunchFailureShowsConnectNoAgent) {
   CreateService();
   ASSERT_EQ(connection_state(), mojom::ConnectionState::DISCONNECTED);
 
   NotifyAgentLaunchFailed(AgentLauncher::LaunchError::kAppNotFound);
 
-  EXPECT_EQ(connection_state(), mojom::ConnectionState::CONNECT_NOT_ALLOWED);
+  EXPECT_EQ(connection_state(), mojom::ConnectionState::CONNECT_NO_AGENT);
   EXPECT_FALSE(service_->GetLastConnectionError().empty());
 }
 
@@ -520,7 +520,7 @@ TEST_F(BraveVpnServiceImplTest, LaunchFailureShowsConnectNotAllowed) {
 TEST_F(BraveVpnServiceImplTest, LosingThePurchaseClearsConnectFailure) {
   CreateService();
   NotifyAgentConnectionFailed(AgentClient::Error::kAgentUnreachable);
-  ASSERT_EQ(connection_state(), mojom::ConnectionState::CONNECT_NOT_ALLOWED);
+  ASSERT_EQ(connection_state(), mojom::ConnectionState::CONNECT_NO_AGENT);
 
   UpdateAgentConnection(mojom::PurchasedState::NOT_PURCHASED);
 

@@ -5,9 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/json_rpc_response_parser.h"
 
-#include <memory>
 #include <optional>
-#include <utility>
 #include <vector>
 
 #include "base/strings/string_number_conversions.h"

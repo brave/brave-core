@@ -16,6 +16,7 @@
 #include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
 #include "brave/browser/ephemeral_storage/brave_ephemeral_storage_service_delegate.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
+#include "brave/browser/ephemeral_storage/tld_ephemeral_lifetime.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/features.h"
@@ -31,6 +32,7 @@
 #include "chrome/test/base/testing_profile.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings.h"
+#include "components/prefs/scoped_user_pref_update.h"
 #include "components/sync/test/test_sync_service.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "content/public/browser/storage_partition_config.h"
@@ -253,6 +255,17 @@ TEST_F(EphemeralStorageServiceTest, EphemeralCleanup) {
 }
 
 TEST_F(EphemeralStorageServiceTest,
+       TLDEphemeralLifetimeGetOrCreateWithNullServiceReturnsNull) {
+  const content::StoragePartitionConfig storage_partition_config =
+      content::StoragePartitionConfig::CreateDefault(profile_.get());
+  const TLDEphemeralLifetimeKey key{profile_.get(), "a.com",
+                                    storage_partition_config};
+
+  EXPECT_FALSE(TLDEphemeralLifetime::GetOrCreate(key, nullptr));
+  EXPECT_FALSE(TLDEphemeralLifetime::Get(key));
+}
+
+TEST_F(EphemeralStorageServiceTest,
        EphemeralCleanupNonDefaultStoragePartition) {
   const GURL url("https://a.com");
   const std::string ephemeral_domain = url.GetHost();
@@ -340,6 +353,72 @@ TEST_F(EphemeralStorageServiceNoKeepAliveTest, ImmediateCleanup) {
                                             storage_partition_config, false,
                                             StorageCleanupMode::kDefault);
   }
+}
+
+TEST_F(EphemeralStorageServiceTest, IsScheduledForCleanupEmptyList) {
+  EXPECT_FALSE(service_->IsScheduledForCleanup("a.com"));
+}
+
+TEST_F(EphemeralStorageServiceTest, IsScheduledForCleanupMatchesStringEntry) {
+  {
+    ScopedListPrefUpdate pref_update(profile_->GetPrefs(),
+                                     kFirstPartyStorageOriginsToCleanup);
+    pref_update->Append(GURL("https://a.com").spec());
+  }
+
+  EXPECT_TRUE(service_->IsScheduledForCleanup("a.com"));
+  EXPECT_FALSE(service_->IsScheduledForCleanup("b.com"));
+}
+
+TEST_F(EphemeralStorageServiceTest, IsScheduledForCleanupMatchesDictEntry) {
+  {
+    ScopedListPrefUpdate pref_update(profile_->GetPrefs(),
+                                     kFirstPartyStorageOriginsToCleanup);
+    pref_update->Append(base::Value(base::DictValue()
+                                        .Set("u", GURL("https://a.com").spec())
+                                        .Set("pd", "partition_domain")
+                                        .Set("pn", "partition_name")));
+  }
+
+  EXPECT_TRUE(service_->IsScheduledForCleanup("a.com"));
+}
+
+TEST_F(EphemeralStorageServiceTest,
+       IsScheduledForCleanupIgnoresMalformedEntries) {
+  {
+    ScopedListPrefUpdate pref_update(profile_->GetPrefs(),
+                                     kFirstPartyStorageOriginsToCleanup);
+    // Neither a string nor a dict.
+    pref_update->Append(base::Value(42));
+    // Dict missing the required "pd"/"pn" fields.
+    pref_update->Append(
+        base::Value(base::DictValue().Set("u", "https://b.com/")));
+    // Invalid URL string.
+    pref_update->Append(base::Value(std::string()));
+    // The one well-formed entry we expect to find.
+    pref_update->Append(GURL("https://a.com").spec());
+  }
+
+  EXPECT_TRUE(service_->IsScheduledForCleanup("a.com"));
+  EXPECT_FALSE(service_->IsScheduledForCleanup("b.com"));
+}
+
+TEST_F(EphemeralStorageServiceTest,
+       IsScheduledForCleanupOffTheRecordAlwaysFalse) {
+  Profile* otr_profile = profile_->GetOffTheRecordProfile(
+      Profile::OTRProfileID::PrimaryID(), true);
+  auto otr_service = CreateEphemeralStorageService(
+      otr_profile, mock_delegate_, &mock_observer_, std::nullopt);
+
+  {
+    ScopedListPrefUpdate pref_update(otr_profile->GetPrefs(),
+                                     kFirstPartyStorageOriginsToCleanup);
+    pref_update->Append(GURL("https://a.com").spec());
+  }
+
+  EXPECT_FALSE(otr_service->IsScheduledForCleanup("a.com"));
+
+  ShutdownEphemeralStorageService(otr_service);
 }
 
 class EphemeralStorageServiceForgetFirstPartyTest

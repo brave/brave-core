@@ -10,8 +10,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/logging.h"
-#include "base/memory/ptr_util.h"
 #include "base/threading/thread_restrictions.h"
 #include "brave/components/brave_wallet/browser/zcash/rust/lib.rs.h"
 #include "brave/components/brave_wallet/browser/zcash/rust/orchard_decoded_blocks_bundle_impl.h"

@@ -34,7 +34,7 @@
 #include "brave/components/tor/pref_names.h"
 #endif
 
-#if BUILDFLAG(ENABLE_EXTENSIONS)
+#if BUILDFLAG(ENABLE_EXTENSIONS_CORE)
 #include "extensions/browser/extension_registry.h"
 #endif
 
@@ -217,7 +217,7 @@ void BraveRendererUpdater::UpdateRenderer(
     mojo::AssociatedRemote<brave::mojom::BraveRendererConfiguration>*
         renderer_configuration) {
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
-#if BUILDFLAG(ENABLE_EXTENSIONS)
+#if BUILDFLAG(ENABLE_EXTENSIONS_CORE)
   extensions::ExtensionRegistry* registry =
       extensions::ExtensionRegistry::Get(profile_);
   bool has_installed_metamask =

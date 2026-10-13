@@ -12,7 +12,7 @@ import fs from 'fs-extra'
 import path from 'node:path'
 import config from '../lib/config.ts'
 import * as Log from '../lib/log.ts'
-import util from '../lib/util.js'
+import util from '../lib/util.ts'
 import assert from 'node:assert'
 import { getAffectedTests } from '../lib/affectedTests.js'
 import {

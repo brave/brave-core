@@ -444,6 +444,33 @@ void AIChatUIPageHandler::OnWorkspaceFolderChosen(
   std::move(callback).Run(selected->AsUTF8Unsafe());
 }
 
+void AIChatUIPageHandler::OpenWorkspaceFile(const GURL& workspace_url,
+                                            const std::string& file_path) {
+  if (!base::FeatureList::IsEnabled(features::kAIChatWorkspaceTools)) {
+    return;
+  }
+  std::optional<GURL> file_url =
+      ai_chat::WorkspaceAssociatedContent::GetFileUrl(workspace_url, file_path);
+  if (!file_url) {
+    return;
+  }
+
+  // From the side panel, the current tab is the one the panel is alongside.
+  if (active_chat_tab_helper_) {
+    active_chat_tab_helper_->GetWebContents().OpenURL(
+        {*file_url, content::Referrer(), WindowOpenDisposition::CURRENT_TAB,
+         ui::PAGE_TRANSITION_LINK, false},
+        /*navigation_handle_callback=*/{});
+    return;
+  }
+
+  // AI Chat is itself the current tab, so don't navigate it away from the
+  // conversation. Move the conversation into the side panel (when supported)
+  // and open the file in a tab in its place, as for other links.
+  ai_chat::MaybeMoveFullPageChatToSidePanel(owner_web_contents_);
+  OpenURLInNewTab(*file_url);
+}
+
 void AIChatUIPageHandler::OpenAIChatSettings() {
 #if !BUILDFLAG(IS_ANDROID)
   const GURL url(kAIChatSettingsURL);

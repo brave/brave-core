@@ -339,6 +339,7 @@ export const _WorkspaceFileButton = {
         <WorkspaceFileLightbox
           file={file}
           onClose={() => setFile(null)}
+          onOpen={() => setFile(null)}
           renderViewer={(file) => <PlaceholderViewer file={file} />}
         />
       </MockContext>

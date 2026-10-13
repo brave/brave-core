@@ -22,6 +22,7 @@
 #include "brave/browser/ui/views/page_info/brave_shields_ui_contents_cache.h"
 #include "brave/browser/ui/views/toolbar/screenshot_preview_dialog.h"
 #include "brave/browser/ui/views/workspaces/workspaces_bubble_controller.h"
+#include "brave/browser/ui/window_closing_confirm/window_closing_confirm_controller.h"
 #include "brave/browser/workspaces/features.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
@@ -30,7 +31,6 @@
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/tab_group_sync/tab_group_sync_service_factory.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
@@ -74,11 +74,6 @@ BrowserWindowFeatures::~BrowserWindowFeatures() = default;
 void BrowserWindowFeatures::Init(BrowserWindowInterface* browser) {
   auto* profile = browser->GetProfile();
 
-  // Initialize vertical tab controller first because WindowFeatureController
-  // needs it to determine whether immersive fullscreen is supported.
-  // The WindowFeatureController takes vertical tab controller via constructor
-  // and it's initialized in BrowserWindowFeatures_ChromiumImpl::Init().
-
   if (BrowserSupportsFocusMode(browser)) {
     focus_mode_controller_ =
         GetUserDataFactory().CreateInstance<FocusModeController>(
@@ -107,6 +102,10 @@ void BrowserWindowFeatures::Init(BrowserWindowInterface* browser) {
   brave_shields_ui_contents_cache_ =
       GetUserDataFactory().CreateInstance<BraveShieldsUIContentsCache>(
           *browser, browser->GetUnownedUserDataHost());
+
+  window_closing_confirm_controller_ =
+      GetUserDataFactory().CreateInstance<WindowClosingConfirmController>(
+          *browser, *browser);
 
   brave_non_client_hit_test_helper_ =
       GetUserDataFactory().CreateInstance<BraveNonClientHitTestHelper>(

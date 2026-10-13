@@ -96,7 +96,10 @@ class TopSitesTileSource: NSObject {
   /// The chosen mode after private browsing rules are applied: private browsing shows nothing
   /// unless the user has chosen favorites.
   private var mode: TopSitesMode {
-    let mode = Preferences.NewTabPage.topSitesMode.value
+    var mode = Preferences.NewTabPage.topSitesMode.value
+    if !FeatureList.kTopsitesEnabled.enabled, mode == .mostVisited {
+      mode = .favourite
+    }
     if isPrivateBrowsing {
       return mode == .favourite ? .favourite : TopSitesMode.none
     }

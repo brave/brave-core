@@ -442,6 +442,41 @@ class ChromiumTabState: TabState, TabStateImpl {
     return await webView?.createFullPagePDF()
   }
 
+  @MainActor func downloadCurrentPage(to fileURL: URL) async throws {
+    guard let webView else {
+      throw URLError(.unknown)
+    }
+    // Retains the download isolated to main actor for the duration of this call since the
+    // underlying download is cancelled when its handle is deallocated.
+    @MainActor final class DownloadBox {
+      var download: CWVWebViewDownload?
+    }
+    let box = DownloadBox()
+    try await withTaskCancellationHandler {
+      try await withCheckedThrowingContinuation {
+        (continuation: CheckedContinuation<Void, Error>) in
+        box.download = webView.downloadCurrentPage(
+          toPath: fileURL.path(percentEncoded: false)
+        ) { error in
+          if let error {
+            continuation.resume(throwing: error)
+          } else {
+            continuation.resume()
+          }
+        }
+      }
+    } onCancel: {
+      Task { @MainActor in
+        box.download?.cancel()
+      }
+    }
+  }
+
+  func suggestedFilenameForCurrentPage(contentDisposition: String?) -> String {
+    webView?.suggestedFilenameForCurrentPage(contentDisposition: contentDisposition)
+      ?? "document"
+  }
+
   var isFindNavigatorVisible: Bool {
     webView?.isFindNavigatorVisible ?? false
   }

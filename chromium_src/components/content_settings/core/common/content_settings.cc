@@ -48,18 +48,8 @@ void RendererContentSettingRules::FilterRulesByOutermostMainFrameURL(
       outermost_main_frame_url);
   FilterRulesForType(autoplay_rules, outermost_main_frame_url);
   FilterRulesForType(brave_shields_rules, outermost_main_frame_url);
-  // FilterRulesForType has a DCHECK on the size and these fail (for now)
-  // because they incorrectly use CONTENT_SETTINGS_DEFAULT as a distinct setting
-  std::erase_if(
-      cosmetic_filtering_rules,
-      [&outermost_main_frame_url](const ContentSettingPatternSource& source) {
-        return !source.primary_pattern.Matches(outermost_main_frame_url);
-      });
-  std::erase_if(
-      fingerprinting_rules,
-      [&outermost_main_frame_url](const ContentSettingPatternSource& source) {
-        return !source.primary_pattern.Matches(outermost_main_frame_url);
-      });
+  FilterRulesForType(cosmetic_filtering_rules, outermost_main_frame_url);
+  FilterRulesForType(fingerprinting_rules, outermost_main_frame_url);
 }
 
 namespace content_settings {

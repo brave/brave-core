@@ -8,7 +8,6 @@
 
 #include <memory>
 
-#include "chrome/browser/global_features.h"
 #include "extensions/buildflags/buildflags.h"
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
@@ -17,20 +16,16 @@ class ExtensionMalwareBlocklist;
 }  // namespace extension_malware_blocklist
 #endif  // BUILDFLAG(ENABLE_EXTENSIONS)
 
-// Brave-specific subclass of GlobalFeatures
-// This class owns the core controllers for features that are globally
-// scoped on desktop and Android. It can be subclassed by tests to perform
-// dependency injection.
-class BraveGlobalFeatures : public GlobalFeatures {
+// Owns Brave's globally scoped feature controllers. It is a member of
+// GlobalFeatures, so it is also present when tests substitute their own
+// GlobalFeatures. Retrieve it via `GlobalFeatures::brave_global_features()`.
+class BraveGlobalFeatures {
  public:
   BraveGlobalFeatures();
-  ~BraveGlobalFeatures() override;
+  ~BraveGlobalFeatures();
 
   BraveGlobalFeatures(const BraveGlobalFeatures&) = delete;
   BraveGlobalFeatures& operator=(const BraveGlobalFeatures&) = delete;
-
-  static BraveGlobalFeatures* FromGlobalFeatures(
-      GlobalFeatures* global_features);
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   // Null when the kExtensionMalwareBlocklist feature is disabled.
@@ -38,11 +33,6 @@ class BraveGlobalFeatures : public GlobalFeatures {
   extension_malware_blocklist() {
     return extension_malware_blocklist_.get();
   }
-
-  // As above, but also null when no BraveGlobalFeatures exists, which is the
-  // case in tests that substitute their own GlobalFeatures.
-  static extension_malware_blocklist::ExtensionMalwareBlocklist*
-  GetExtensionMalwareBlocklist();
 #endif  // BUILDFLAG(ENABLE_EXTENSIONS)
 
  private:

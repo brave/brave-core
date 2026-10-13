@@ -8,30 +8,10 @@ import * as leo from '@brave/leo/tokens/css/variables'
 import Icon from '@brave/leo/react/icon'
 
 // Shared Styles
-import {
-  Text,
-  Row,
-  Column,
-  WalletButton,
-} from '../../../components/shared/style'
+import { Row, Column, WalletButton } from '../../../components/shared/style'
 import {
   layoutPanelWidth, //
 } from '$wallet/page/components/wallet_page_wrapper/wallet_page_wrapper.style'
-
-export const FiatChange = styled(Text)`
-  margin-right: 8px;
-`
-
-export const PercentBubble = styled.div<{ isDown?: boolean }>`
-  font: ${leo.font.xSmall.regular};
-  display: flex;
-  padding: 4px 8px;
-  border-radius: 4px;
-  background-color: ${(p) =>
-    p.isDown ? leo.color.red[20] : leo.color.green[20]};
-  letter-spacing: 0.02em;
-  color: ${(p) => (p.isDown ? leo.color.red[50] : leo.color.green[50])};
-`
 
 export const ControlsRow = styled(Row)`
   box-shadow: 0px -1px 1px ${leo.color.elevation.primary};

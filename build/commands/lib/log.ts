@@ -125,7 +125,7 @@ export function updateStatus(
   logUpdate(statusLines.join(os.EOL))
 }
 
-export function command(dir: string, cmd: string, args: string[]) {
+export function command(dir: string | undefined, cmd: string, args: string[]) {
   console.log(divider)
   if (dir) {
     console.log(cmdDirStyle(dir))

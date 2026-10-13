@@ -1,11 +1,12 @@
 // Copyright (c) 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 module brave_wallet.mojom;
 
 import "brave/components/brave_wallet/common/meld_integration.mojom";
+import "brave/components/brave_wallet/common/mojom/brave_wallet_common.mojom";
 import "mojo/public/mojom/base/time.mojom";
 import "mojo/public/mojom/base/values.mojom";
 import "url/mojom/origin.mojom";
@@ -538,21 +539,6 @@ struct CoinMarket {
   double price_change_24h;
   double price_change_percentage_24h;
   double total_volume;
-};
-
-struct Dapp {
-  uint32 id;  // Assigned by DappRadar
-  string name;
-  string description;
-  string logo;
-  string website;
-  array<string> chains;
-  array<string> categories;
-  uint32 transactions;
-  uint32 uaw;
-  double volume;
-  double balance;
-  string range;
 };
 
 enum RoutePriority {
@@ -1127,17 +1113,6 @@ interface KeyringServiceObserver {
   SelectedDappAccountChanged(CoinType coin, AccountInfo? account);
 };
 
-enum OnRampProvider {
-  kRamp = 0,
-  kTransak = 2,
-  kStripe = 3,
-  kCoinbase = 4,
-};
-
-enum OffRampProvider {
-  kRamp = 1,
-};
-
 // List of tokens and coins that are supported.
 // is_nft property in the returned registry tokens is not reliable, the value is
 // based
@@ -1156,29 +1131,10 @@ interface BlockchainRegistry {
   GetAllTokens(string chain_id, CoinType coin)
       => (array<BlockchainToken> tokens);
 
-  // Below APIs are Ethereum only for the moment.
-  // Obtains all tokens for a single provider for the Buy UI
-  GetBuyTokens(OnRampProvider provider, string chain_id)
-      => (array<BlockchainToken> tokens);
-
-  // Obtains all tokens for multiple providers for the Buy UI
-  GetProvidersBuyTokens(array<OnRampProvider> providers, string chain_id)
-      => (array<BlockchainToken> tokens);
-
-  // Obtains all tokens for the Sell UI
-  GetSellTokens(OffRampProvider provider, array<string> chain_ids)
-      => (array<BlockchainToken> tokens);
-
-  // Get currencies list
-  GetOnRampCurrencies() => (array<OnRampCurrency> currencies);
-
   // Returns list of prepopulated networks.
   GetPrepopulatedNetworks() => (array<NetworkInfo> networks);
 
-  // Returns lists of top dapps
-  GetTopDapps(string chain_id, CoinType coin) => (array<Dapp> dapps);
-
-  // Returns the Coincecko ID for a given chain id and contract address
+  // Returns the Coingecko ID for a given chain id and contract address
   GetCoingeckoId(string chain_id, string contract_address)
       => (string? coingecko_id);
 };
@@ -1344,13 +1300,6 @@ interface KeyringService {
 
 // Used for cryptocurrency prices over time.
 interface AssetRatioService {
-  // Obtains the URL for selling assets specifying currency
-  GetSellUrl(OffRampProvider provider,
-             string chain_id,
-             string symbol,
-             string amount,
-             string currencyCode) => (string url, string? error);
-
   // Obtains the prices from a list of requests
   GetPrice(array<AssetPriceRequest> requests, string vs_currency)
       => (bool success, array<AssetPrice> values);
@@ -1686,17 +1635,6 @@ const string kScrollChainId = "0x82750";
 const string kBatTokenContractAddress =
     "0x0D8775F648430679A709E98d2b0Cb6250d2887EF";
 
-// https://github.com/satoshilabs/slips/blob/master/slip-0044.md
-enum CoinType {
-  BTC = 0,
-  ZEC = 133,
-  ETH = 60,
-  FIL = 461,
-  SOL = 501,
-  ADA = 1815,
-  DOT = 354,
-};
-
 struct NetworkInfo {
   string chain_id;
   string chain_name;
@@ -1814,7 +1752,6 @@ struct AllNetworks {
   array<string> hidden_chain_ids;
   array<string> ankr_chain_ids;
   array<string> swap_chain_ids;
-  array<string> off_ramp_chain_ids;
 };
 
 // Deals with the ETH JSON RPC API, as well as things like the user's current
@@ -3412,12 +3349,6 @@ enum RequestPermissionsError {
   kNone = 0,
   kRequestInProgress = 1,
   kInternal = 2,
-};
-
-struct OnRampCurrency {
-  string currency_code;
-  string currency_name;
-  array<OnRampProvider> providers;
 };
 
 // Common Blowfish types for both EVM and Solana.

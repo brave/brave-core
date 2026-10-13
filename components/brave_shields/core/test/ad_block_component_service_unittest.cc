@@ -4,24 +4,31 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #include <algorithm>
+#include <array>
+#include <cstdint>
 
 #include "brave/components/brave_shields/core/browser/filter_list_catalog_entry.h"
+#include "crypto/sha2.h"
 #include "testing/gtest/include/gtest/gtest.h"
+
+namespace {
+constexpr std::array<uint8_t, crypto::kSHA256Length> kTestPublicKeySHA256 = {};
+}  // namespace
 
 TEST(AdBlockComponentServiceTest, UserModelLanguages) {
   std::vector<brave_shields::FilterListCatalogEntry> catalog;
   catalog.push_back(brave_shields::FilterListCatalogEntry(
       "uuid", "https://brave.com", "Testing Filter List #1", {"fr"},
       "https://support.brave.app", "Filter list for testing purposes", false,
-      false, false, 0, {}, "componentid", "base64publickey"));
+      false, false, 0, {}, kTestPublicKeySHA256));
   catalog.push_back(brave_shields::FilterListCatalogEntry(
       "uuid", "https://brave.com", "Testing Filter List #2", {"en"},
       "https://support.brave.app", "Filter list for testing purposes", false,
-      false, false, 0, {}, "componentid", "base64publickey"));
+      false, false, 0, {}, kTestPublicKeySHA256));
   catalog.push_back(brave_shields::FilterListCatalogEntry(
       "uuid", "https://brave.com", "Testing Filter List #2", {"fr"},
       "https://support.brave.app", "Filter list for testing purposes", false,
-      false, false, 0, {}, "componentid", "base64publickey"));
+      false, false, 0, {}, kTestPublicKeySHA256));
 
   std::vector<std::string> languages({"fr", "fR", "fr-FR", "fr-ca"});
   std::for_each(
@@ -49,7 +56,7 @@ TEST(AdBlockComponentServiceTest, MissingFieldDefaultValues) {
       "base64_public_key": "base64publickey",
       "list_text_component": {
           "component_id": "componentid",
-          "base64_public_key": "base64publickey"
+          "base64_public_key": "dGVzdA=="
       },
       "sources": [
           {
@@ -66,4 +73,36 @@ TEST(AdBlockComponentServiceTest, MissingFieldDefaultValues) {
   ASSERT_EQ(catalog[0].first_party_protections, false);
   ASSERT_EQ(catalog[0].permission_mask, 0);
   ASSERT_EQ(catalog[0].platforms.size(), 0UL);
+}
+
+TEST(AdBlockComponentServiceTest, RejectsEntryMissingListTextComponent) {
+  auto catalog = brave_shields::FilterListCatalogFromJSON(R"([{
+      "uuid": "uuid",
+      "title": "Test list",
+      "desc": "Just used for testing",
+      "langs": []
+  }])");
+
+  EXPECT_EQ(catalog.size(), 0UL);
+}
+
+TEST(AdBlockComponentServiceTest, RejectsEntryWithInvalidBase64PublicKey) {
+  auto catalog = brave_shields::FilterListCatalogFromJSON(R"([{
+      "uuid": "uuid",
+      "title": "Test list",
+      "desc": "Just used for testing",
+      "langs": [],
+      "list_text_component": {
+          "base64_public_key": "not valid base64!"
+      }
+  }])");
+
+  EXPECT_EQ(catalog.size(), 0UL);
+}
+
+TEST(AdBlockComponentServiceTest, RejectsNonDictionaryListItem) {
+  auto catalog =
+      brave_shields::FilterListCatalogFromJSON(R"(["not a dictionary"])");
+
+  EXPECT_EQ(catalog.size(), 0UL);
 }

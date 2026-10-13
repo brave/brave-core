@@ -1,0 +1,15 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Don't copy previously released updaters from before install IDs
+
+      IntegrationSansInstallIdTest needs them. Our oldest released updater
+      already supports install IDs, so we have no such build. Without it, the
+      test skips itself.
+    regex:
+      re_pattern: '\n\s*"_sans_iid",'
+      replace: ''

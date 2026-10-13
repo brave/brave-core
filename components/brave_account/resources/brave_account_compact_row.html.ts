@@ -11,9 +11,8 @@ import { BraveAccountCompactRowElement } from './brave_account_compact_row.js'
 import { BraveAccountSettingsStrings } from './brave_components_webui_strings.js'
 
 export function getHtml(this: BraveAccountCompactRowElement) {
-  return html`${!this.description
-    ? nothing
-    : html` <cr-link-row
+  return html`${this.description
+    ? html` <cr-link-row
         start-icon="social-brave-release-favicon-fullheight-color"
         .label=${loadTimeData.getString(
           BraveAccountSettingsStrings.BRAVE_ACCOUNT_TITLE,
@@ -26,5 +25,6 @@ export function getHtml(this: BraveAccountCompactRowElement) {
         >
           ${this.displayDescription}
         </div>
-      </cr-link-row>`}`
+      </cr-link-row>`
+    : nothing}`
 }

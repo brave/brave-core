@@ -17,7 +17,6 @@
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/encoding_utils.h"
 #include "brave/components/brave_wallet/common/lib.rs.h"
-#include "brave/components/brave_wallet/common/solana_utils.h"
 #include "crypto/hash.h"
 
 namespace brave_wallet {

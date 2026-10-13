@@ -11,7 +11,6 @@
 
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
@@ -106,26 +105,6 @@ class AssetRatioServiceUnitTest : public testing::Test {
           url_loader_factory_.AddResponse(request.url.spec(), content,
                                           net::HTTP_REQUEST_TIMEOUT);
         }));
-  }
-
-  void TestGetSellUrl(mojom::OffRampProvider off_ramp_provider,
-                      const std::string& chain_id,
-                      const std::string& symbol,
-                      const std::string& amount,
-                      const std::string& currency_code,
-                      const std::string& expected_url,
-                      std::optional<std::string> expected_error) {
-    base::RunLoop run_loop;
-    asset_ratio_service_->GetSellUrl(
-        off_ramp_provider, chain_id, symbol, amount, currency_code,
-        base::BindLambdaForTesting(
-            [&](const std::string& url,
-                const std::optional<std::string>& error) {
-              EXPECT_EQ(url, expected_url);
-              EXPECT_EQ(error, expected_error);
-              run_loop.Quit();
-            }));
-    run_loop.Run();
   }
 
  protected:

@@ -25,7 +25,6 @@
 #include "third_party/blink/renderer/core/dom/events/event.h"
 #include "third_party/blink/renderer/core/dom/scoped_abort_state.h"
 #include "third_party/blink/renderer/core/event_type_names.h"
-#include "third_party/blink/renderer/core/events/web_mcp_event.h"
 #include "third_party/blink/renderer/core/execution_context/agent.h"
 #include "third_party/blink/renderer/core/execution_context/execution_context.h"
 #include "third_party/blink/renderer/core/frame/local_dom_window.h"
@@ -54,7 +53,7 @@ namespace {
 
 // Whether `document` is a Leo "workspace": a hidden
 // chrome-untrusted://<uuid>.leo-workspace page whose tools register themselves
-// via navigator.modelContext. Each workspace has its own subdomain, so this
+// via document.modelContext. Each workspace has its own subdomain, so this
 // tests the shape of the host rather than a fixed host, and excludes the
 // workspace's viewer document at chrome-untrusted://view.<uuid>.leo-workspace,
 // which has no tools of its own.

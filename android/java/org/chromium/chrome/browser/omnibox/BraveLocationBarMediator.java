@@ -21,14 +21,12 @@ import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
 import org.chromium.chrome.browser.lens.LensController;
-import org.chromium.chrome.browser.locale.LocaleManager;
 import org.chromium.chrome.browser.omnibox.UrlBar.ScrollType;
 import org.chromium.chrome.browser.omnibox.fusebox.FuseboxCoordinator;
 import org.chromium.chrome.browser.omnibox.styles.OmniboxResourceProvider;
 import org.chromium.chrome.browser.omnibox.suggestions.AutocompleteCoordinator;
 import org.chromium.chrome.browser.omnibox.suggestions.OmniboxLoadUrlParams;
 import org.chromium.chrome.browser.profiles.Profile;
-import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.theme.ThemeUtils;
 import org.chromium.chrome.browser.ui.theme.BrandedColorScheme;
 import org.chromium.components.browser_ui.accessibility.PageZoomIndicatorCoordinator;
@@ -74,17 +72,14 @@ public class BraveLocationBarMediator extends LocationBarMediator {
             OmniboxResourceProvider resourceProvider,
             LocationBarEmbedderUiOverrides embedderUiOverrides,
             MonotonicObservableSupplier<Profile> profileSupplier,
-            OverrideUrlLoadingDelegate overrideUrlLoadingDelegate,
-            LocaleManager localeManager,
+            LocationBarNavigator locationBarNavigator,
             OneshotSupplier<TemplateUrlService> templateUrlServiceSupplier,
             BackKeyBehaviorDelegate backKeyBehavior,
             WindowAndroid windowAndroid,
             boolean isTablet,
             LensController lensController,
-            OmniboxUma omniboxUma,
             BooleanSupplier isToolbarMicEnabledSupplier,
             OmniboxSuggestionsDropdownEmbedderImpl dropdownEmbedder,
-            MonotonicObservableSupplier<TabModelSelector> tabModelSelectorSupplier,
             @Nullable BrowserControlsStateProvider browserControlsStateProvider,
             Supplier<@Nullable ModalDialogManager> modalDialogManagerSupplier,
             @Nullable PageZoomIndicatorCoordinator pageZoomIndicatorCoordinator,
@@ -100,17 +95,14 @@ public class BraveLocationBarMediator extends LocationBarMediator {
                 resourceProvider,
                 embedderUiOverrides,
                 profileSupplier,
-                overrideUrlLoadingDelegate,
-                localeManager,
+                locationBarNavigator,
                 templateUrlServiceSupplier,
                 backKeyBehavior,
                 windowAndroid,
                 isTablet,
                 lensController,
-                omniboxUma,
                 isToolbarMicEnabledSupplier,
                 dropdownEmbedder,
-                tabModelSelectorSupplier,
                 browserControlsStateProvider,
                 modalDialogManagerSupplier,
                 pageZoomIndicatorCoordinator,
@@ -129,8 +121,8 @@ public class BraveLocationBarMediator extends LocationBarMediator {
         return LensController.class;
     }
 
-    public static Class<LocaleManager> getLocaleManagerClass() {
-        return LocaleManager.class;
+    public static Class<LocationBarNavigator> getLocationBarNavigatorClass() {
+        return LocationBarNavigator.class;
     }
 
     public static Class<OmniboxSuggestionsDropdownEmbedderImpl>

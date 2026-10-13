@@ -17,3 +17,27 @@ substitutions:
       list_name: public_deps
       literal: brave_resources_extra_grdps_deps
       import: //brave/ui/webui/resources/sources.gni
+
+  - description: Needed by the enable_extensions_core check below.
+    add_import:
+      import: //extensions/buildflags/buildflags.gni
+
+  - description: |-
+      chrome://extensions needs color_change_listener, cr_shortcut_input and
+      managed_footnote on non-desktop Android too, which upstream only
+      bundles for desktop.
+    append_to_target:
+      target: build_grd
+      code: |-
+        if (is_android && !is_desktop_android && enable_extensions_core) {
+          public_deps += [
+            "cr_components/color_change_listener:build_grdp",
+            "cr_components/cr_shortcut_input:build_grdp",
+            "cr_components/managed_footnote:build_grdp",
+          ]
+          grdp_files += [
+            "$root_gen_dir/ui/webui/resources/cr_components/color_change_listener/resources.grdp",
+            "$target_gen_dir/cr_components/cr_shortcut_input/resources.grdp",
+            "$target_gen_dir/cr_components/managed_footnote/resources.grdp",
+          ]
+        }

@@ -54,6 +54,7 @@ static_library("browser") {
     "//brave/components/resources:static_resources",
     "//brave/components/resources:strings",
     "//components/component_updater",
+    "//components/crx_file",
     "//components/download/public/common:public",
     "//components/keyed_service/core",
     "//components/prefs",

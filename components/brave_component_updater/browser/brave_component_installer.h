@@ -6,25 +6,29 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_COMPONENT_UPDATER_BROWSER_BRAVE_COMPONENT_INSTALLER_H_
 #define BRAVE_COMPONENTS_BRAVE_COMPONENT_UPDATER_BROWSER_BRAVE_COMPONENT_INSTALLER_H_
 
+#include <array>
+#include <cstdint>
 #include <string>
 #include <vector>
 
 #include "base/component_export.h"
+#include "base/containers/span.h"
 #include "base/files/file_path.h"
 #include "base/functional/callback.h"
 #include "base/values.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
 #include "components/component_updater/component_installer.h"
 #include "components/update_client/update_client.h"
+#include "crypto/sha2.h"
 
 namespace brave_component_updater {
 
 class COMPONENT_EXPORT(BRAVE_COMPONENT_UPDATER) BraveComponentInstallerPolicy
     : public component_updater::ComponentInstallerPolicy {
  public:
-  explicit BraveComponentInstallerPolicy(
+  BraveComponentInstallerPolicy(
       const std::string& name,
-      const std::string& base64_public_key,
+      base::span<const uint8_t, crypto::kSHA256Length> public_key_sha256,
       BraveComponent::ReadyCallback ready_callback);
 
   BraveComponentInstallerPolicy(const BraveComponentInstallerPolicy&) = delete;
@@ -53,8 +57,7 @@ class COMPONENT_EXPORT(BRAVE_COMPONENT_UPDATER) BraveComponentInstallerPolicy
   bool IsBraveComponent() const override;
 
   std::string name_;
-  std::string base64_public_key_;
-  std::string public_key_;
+  std::array<uint8_t, crypto::kSHA256Length> public_key_sha256_ = {};
   BraveComponent::ReadyCallback ready_callback_;
 };
 

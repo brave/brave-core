@@ -19,7 +19,8 @@ bool BraveIsOfferValid(const AutofillOfferData* offer) {
     return false;
   }
 
-  if (offer->IsGPayPromoCodeOffer()) {
+  if (offer->GetOfferType() ==
+      AutofillOfferData::OfferType::GPAY_PROMO_CODE_OFFER) {
     return false;
   }
 

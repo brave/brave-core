@@ -20,5 +20,5 @@ substitutions:
       expression. This keeps the plaster resilient if Chromium tweaks the
       condition (e.g. swaps the match type check or refactors the body).
     regex:
-      re_pattern: '(case FOCUSED_BUTTON_THUMBS_DOWN:\n)(\s+)return'
+      re_pattern: '(case LineState::kFocusedButtonThumbsDown:\n)(\s+)return'
       replace: '\1\2if ((true)) return false;\n\2return'

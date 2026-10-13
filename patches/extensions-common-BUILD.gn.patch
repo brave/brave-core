@@ -1,8 +1,8 @@
 diff --git a/extensions/common/BUILD.gn b/extensions/common/BUILD.gn
-index cfc62a4f3a8b3e3a2fcc8d7bb2bd2b24d09e6e79..2ade074e4124acd6bb7d02ee12f41473d65d8d2a 100644
+index d36d73caa35cb84eae02abb0c2a6e45e8efdf5c6..a962961ef355e6ed67dddfc00c29e87b981f8bb3 100644
 --- a/extensions/common/BUILD.gn
 +++ b/extensions/common/BUILD.gn
-@@ -62,6 +62,7 @@ source_set("constants_impl") {
+@@ -63,6 +63,7 @@ source_set("constants_impl") {
      "//build:chromeos_buildflags",
      "//extensions/common:export_impl",
    ]

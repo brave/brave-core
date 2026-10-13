@@ -50,7 +50,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 "===================================================================
 --- ../chrome/browser/resources/extensions/detail_view.html.ts
 +++ gen/chrome/browser/resources/extensions/preprocessed/detail_view.html.ts
-@@ -368,16 +368,13 @@
+@@ -365,16 +365,13 @@
              <span>$i18n{itemPinToToolbar}</span>
            </extensions-toggle-row>
          \` : ''}
@@ -89,7 +89,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
          <div id="source-indicator">
            <div class="source-icon-wrapper" role="img"
                aria-describedby="a11yAssociation"
-@@ -39,20 +38,19 @@
+@@ -39,55 +38,46 @@
        <!--Note: We wrap inspect-views in a div so that the outer div
            doesn't shrink (because it's not display: flex).-->
        <div>
@@ -116,7 +116,51 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
        </div>
        \${this.showSevereWarnings() ? html\`
          <div id="warnings">
-@@ -141,28 +139,22 @@
+           <cr-icon class="message-icon" icon="cr:error"></cr-icon>
+-          <span id="runtime-warnings" class="cr-secondary-text"
+-              aria-describedby="a11yAssociation"
+-              ?hidden="\${!this.data.runtimeWarnings.length}">
++          <span id="runtime-warnings" class="cr-secondary-text" aria-describedby="a11yAssociation" ?hidden="\${!this.data.runtimeWarnings.length}">
+             \${this.data.runtimeWarnings.map(item => html\`\${item}\`)}
+           </span>
+-          <span id="suspicious-warning" class="cr-secondary-text"
+-              aria-describedby="a11yAssociation"
+-              ?hidden="\${!this.data.disableReasons.suspiciousInstall}">
++          <span id="suspicious-warning" class="cr-secondary-text" aria-describedby="a11yAssociation" ?hidden="\${!this.data.disableReasons.suspiciousInstall}">
+             $i18n{itemSuspiciousInstall}
+-            <a target="_blank" href="$i18n{suspiciousInstallHelpUrl}"
+-                aria-label="$i18n{itemSuspiciousInstallLearnMore}">
++            <a target="_blank" href="$i18n{suspiciousInstallHelpUrl}" aria-label="$i18n{itemSuspiciousInstallLearnMore}">
+               $i18n{learnMore}
+             </a>
+           </span>
+-          <span id="corrupted-warning" class="cr-secondary-text"
+-              aria-describedby="a11yAssociation"
+-              ?hidden="\${!this.data.disableReasons.corruptInstall}">
++          <span id="corrupted-warning" class="cr-secondary-text" aria-describedby="a11yAssociation" ?hidden="\${!this.data.disableReasons.corruptInstall}">
+             $i18n{itemCorruptInstall}
+           </span>
+           <span id="blocklisted-warning" class="cr-secondary-text"><!--
+             -->\${this.data.blocklistText}<!-- No whitespace; use :empty in css.
+-       --></span>
+-          <span id="unsupported-developer-extension-warning"
+-              class="cr-secondary-text" ?hidden="\${
++       --></span><a id="brave-socket-learn-more" target="_blank" ?hidden="\${!this.isFlaggedBySocket_(this.data.blocklistText)}" href="$i18n{braveBlocklistedMalwareSocketLearnMoreUrl}" aria-label="$i18n{braveBlocklistedMalwareSocketLearnMore}">
++        $i18n{learnMore}
++      </a>
++          <span id="unsupported-developer-extension-warning" class="cr-secondary-text" ?hidden="\${
+                   !this.data.disableReasons.unsupportedDeveloperExtension}">
+             $i18n{itemUnsupportedDeveloperMode}
+           </span>
+-          <span id="disabled-by-another-extension-warning"
+-              class="cr-secondary-text"
+-              ?hidden="\${!this.isDisabledByAnotherExtension_()}">
++          <span id="disabled-by-another-extension-warning" class="cr-secondary-text" ?hidden="\${!this.isDisabledByAnotherExtension_()}">
+             \${this.getDisabledByExtensionWarningText_()}
+           </span>
+         </div>
+       \` : ''}
+@@ -140,28 +130,22 @@
              </div>
            </div>
          \` : ''}
@@ -149,7 +193,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
        </cr-button>
        \${this.shouldShowErrorsButton_() ? html\`
          <cr-button id="errors-button"
-@@ -200,20 +192,11 @@
+@@ -199,20 +183,11 @@
            aria-describedby="a11yAssociation" class="action-button">
          $i18n{itemReload}
        </cr-button>
@@ -232,7 +276,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
    <div id="history-sync-optin" class="history-sync-optin">
      \${this.isSignInState_(HistorySignInState.SIGNED_OUT) ||
              this.isSignInState_(HistorySignInState.WEB_ONLY_SIGNED_IN) ?
-@@ -124,12 +120,11 @@
+@@ -132,12 +128,11 @@
        </cr-button>
      \`}
    </div>
@@ -782,6 +826,147 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 "
 `;
 
+exports[`mangled files should have up to date snapshots ./chromium_src/chrome/browser/resources/settings/autofill_page/payments/payments_page.html.ts.lit_mangler.ts should match snapshot 1`] = `
+"===================================================================
+--- ../chrome/browser/resources/settings/autofill_page/payments/payments_page.html.ts
++++ gen/chrome/browser/resources/settings/preprocessed/autofill_page/payments/payments_page.html.ts
+@@ -3,21 +3,15 @@
+ import type {SettingsPaymentsPageElement} from './payments_page.js';
+ 
+ export function getHtml(this: SettingsPaymentsPageElement) {
+   return html\`<!--_html_template_start_-->
+-<settings-subpage page-title="$i18n{paymentsTitle}"
+-    learn-more-url="$i18n{addressesAndPaymentMethodsLearnMoreURL}"
+-    class="multi-card">
++<settings-subpage page-title="$i18n{paymentsTitle}" learn-more-url="$i18n{addressesAndPaymentMethodsLearnMoreURL}" class="multi-card">
+ 
+ <div class="card settings-card">
+ 
+ <!-- Toggle to enable/disable overall payments autofill. If disabled, almost all
+      below toggles are effectively disabled. -->
+-<settings-toggle-button id="autofillCreditCardToggle"
+-    no-extension-indicator label="$i18n{enableCreditCardsLabel}"
+-    sub-label="$i18n{enableCreditCardsSublabel}"
+-    .pref="\${this.creditCardEnabledSyntheticPref_}"
+-    @settings-boolean-control-change="\${
++<settings-toggle-button id="autofillCreditCardToggle" no-extension-indicator="" label="$i18n{enableCreditCardsLabel}" sub-label="$i18n{enableCreditCardsSublabel}" .pref="\${this.creditCardEnabledSyntheticPref_}" @settings-boolean-control-change="\${
+         this.onCreditCardToggleSettingsBooleanControlChange_}">
+ </settings-toggle-button>
+ 
+ <!-- Extension-override indicator for payments autofill enable/disable; this
+@@ -36,21 +30,10 @@
+ \` : ''}
+ 
+ <!-- Toggle to enable/disable mandatory re-authentication when user attempts to
+      view or autofill payment methods. -->
+-<if expr="is_win or is_macosx or is_chromeos">
+-\${this.mandatoryReauthFeatureFlagEnabled_ ? html\`
+-  <settings-toggle-button id="mandatoryAuthToggle"
+-      no-extension-indicator label="$i18n{enableMandatoryAuthToggleLabel}"
+-      sub-label="$i18n{enableMandatoryAuthToggleSublabel}"
+-      pref-key="autofill.payment_methods_mandatory_reauth" no-set-pref
+-      ?disabled="\${this.shouldDisableAuthToggle_()}"
+-      @settings-boolean-control-change="\${
+-          this.onMandatoryAuthToggleSettingsBooleanControlChange_}">
+-  </settings-toggle-button>
+-\` : ''}
+-</if>
+ 
++
+ <!-- Toggle to enable/disable CVC storage. -->
+ \${this.cvcStorageAvailable_ ? html\`
+   <settings-toggle-button id="cvcStorageToggle"
+       no-extension-indicator label="$i18n{enableCvcStorageLabel}"
+@@ -62,14 +45,9 @@
+   </settings-toggle-button>
+ \` : ''}
+ 
+ <!-- Toggle to enable/disable showing card benefits/rewards in autofill. -->
+-<settings-toggle-button id="cardBenefitsToggle"
+-    no-extension-indicator label="$i18n{cardBenefitsLabel}"
+-    sub-label-with-link="$i18n{cardBenefitsToggleSublabel}"
+-    @sub-label-link-clicked="\${this.onCardBenefitsSubLabelLinkClicked_}"
+-    ?disabled="\${!this.creditCardEnabledSyntheticPref_.value}"
+-    pref-key="autofill.payment_card_benefits">
++<settings-toggle-button id="cardBenefitsToggle" no-extension-indicator="" label="$i18n{cardBenefitsLabel}" sub-label-with-link="$i18n{cardBenefitsToggleSublabel}" @sub-label-link-clicked="\${this.onCardBenefitsSubLabelLinkClicked_}" ?disabled="\${!this.creditCardEnabledSyntheticPref_.value}" pref-key="autofill.payment_card_benefits" hidden="">
+ </settings-toggle-button>
+ 
+ <!-- Toggle to enable/disable Buy Now, Pay Later (BNPL) in autofill. -->
+ \${this.shouldShowPayOverTimeSettings_ ? html\`
+@@ -85,17 +63,13 @@
+ <!-- Toggle to allow/disallow certain behavior for the Payment Request API. Note
+      that this setting does *NOT* relate to payments autofill, but lives in
+      chrome://settings/payments for legacy reasons (and lack of a better place
+      to put it). -->
+-<settings-toggle-button id="canMakePaymentToggle"
+-    aria-label="$i18n{canMakePaymentToggleLabel}"
+-    label="$i18n{canMakePaymentToggleLabel}"
+-    pref-key="payments.can_make_payment_enabled"
+-    @settings-boolean-control-change="\${
++<settings-toggle-button id="canMakePaymentToggle" aria-label="$i18n{canMakePaymentToggleLabel}" label="$i18n{canMakePaymentToggleLabel}" pref-key="payments.can_make_payment_enabled" @settings-boolean-control-change="\${
+         this.onCanMakePaymentSettingsBooleanControlChange_}">
+ </settings-toggle-button>
+ 
+-<div id="manageLink" class="cr-row">
++<div id="manageLink" class="cr-row" hidden="">
+   <!-- This span lays out the link correctly, relative to the text. -->
+   <div class="cr-padded-text">$i18nRaw{manageCreditCardsLabel}</div>
+ </div>
+ 
+@@ -134,44 +108,27 @@
+         \`}">
+     </cr-lazy-render-lit>
+   \`}
+ </div>
+-<settings-payments-list id="paymentsList"
+-    class="list-frame payment-list-margin-start"
+-    .creditCards="\${this.creditCards}"
+-    .ibans="\${this.ibans}"
+-    .payOverTimeIssuers="\${this.payOverTimeIssuers}"
+-    @dots-iban-menu-click="\${this.onDotsIbanMenuClick_}"
+-    @remote-iban-menu-click="\${this.onRemoteIbanMenuClick_}"
+-    @dots-card-menu-click="\${this.onDotsCardMenuClick_}"
+-    @remote-card-menu-click="\${this.onRemoteCardMenuClick_}"
+-    aria-label="$i18n{paymentsMethodsTableAriaLabel}">
++<settings-payments-list id="paymentsList" class="list-frame payment-list-margin-start" .creditCards="\${this.creditCards}" .ibans="\${this.ibans}" .payOverTimeIssuers="\${this.payOverTimeIssuers}" @dots-iban-menu-click="\${this.onDotsIbanMenuClick_}" @remote-iban-menu-click="\${this.onRemoteIbanMenuClick_}" @dots-card-menu-click="\${this.onDotsCardMenuClick_}" @remote-card-menu-click="\${this.onRemoteCardMenuClick_}" aria-label="$i18n{paymentsMethodsTableAriaLabel}">
+ </settings-payments-list>
+ 
+ <cr-action-menu id="creditCardSharedMenu" role-description="$i18n{menu}">
+-  <button id="menuEditCreditCard" class="dropdown-item"
+-      @click="\${this.onMenuEditCreditCardClick_}">
++  <button id="menuEditCreditCard" class="dropdown-item" @click="\${this.onMenuEditCreditCardClick_}">
+     \${this.getMenuEditCardText_()}
+   </button>
+ 
+-  <button id="menuRemoveCreditCard" class="dropdown-item"
+-      ?hidden="\${!this.activeCreditCard_?.metadata?.isLocal}"
+-      @click="\${this.onMenuRemoveCreditCardClick_}">$i18n{delete}</button>
++  <button id="menuRemoveCreditCard" class="dropdown-item" ?hidden="\${!this.activeCreditCard_?.metadata?.isLocal}" @click="\${this.onMenuRemoveCreditCardClick_}">$i18n{delete}</button>
+ 
+-  <button id="menuAddVirtualCard" class="dropdown-item"
+-      @click="\${this.onMenuAddVirtualCardClick_}"
+-      ?hidden="\${!this.shouldShowAddVirtualCardButton_()}">
++  <button id="menuAddVirtualCard" class="dropdown-item" @click="\${this.onMenuAddVirtualCardClick_}" ?hidden="\${!this.shouldShowAddVirtualCardButton_()}">
+     $i18n{addVirtualCard}
+   </button>
+-  <button id="menuRemoveVirtualCard" class="dropdown-item"
+-      @click="\${this.onMenuRemoveVirtualCardClick_}"
+-      ?hidden="\${!this.shouldShowRemoveVirtualCardButton_()}">
++  <button id="menuRemoveVirtualCard" class="dropdown-item" @click="\${this.onMenuRemoveVirtualCardClick_}" ?hidden="\${!this.shouldShowRemoveVirtualCardButton_()}">
+     $i18n{removeVirtualCard}
+   </button>
+ </cr-action-menu>
+ 
+-<cr-lazy-render-lit id="ibanSharedActionMenu"
+-    .template="\${() => html\`
++<cr-lazy-render-lit id="ibanSharedActionMenu" .template="\${() => html\`
+       <cr-action-menu id="ibanSharedMenu" role-description="$i18n{menu}">
+         <button id="menuEditIban" class="dropdown-item"
+             @click="\${this.onMenuEditIbanClick_}">
+           $i18n{editIban}
+"
+`;
+
 exports[`mangled files should have up to date snapshots ./chromium_src/chrome/browser/resources/settings/clear_browsing_data_dialog/clear_browsing_data_dialog.html.ts.lit_mangler.ts should match snapshot 1`] = `
 "===================================================================
 --- ../chrome/browser/resources/settings/clear_browsing_data_dialog/clear_browsing_data_dialog.html.ts
@@ -1147,6 +1332,437 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 "
 `;
 
+exports[`mangled files should have up to date snapshots ./chromium_src/chrome/browser/resources/settings/people_page/sync_controls.html.ts.lit_mangler.ts should match snapshot 1`] = `
+"===================================================================
+--- ../chrome/browser/resources/settings/people_page/sync_controls.html.ts
++++ gen/chrome/browser/resources/settings/preprocessed/people_page/sync_controls.html.ts
+@@ -5,19 +5,10 @@
+ import type {SettingsSyncControlsElement} from './sync_controls.js';
+ 
+ export function getHtml(this: SettingsSyncControlsElement) {
+   return html\`<!--_html_template_start_-->
+-<if expr="is_chromeos">
+-  <div ?hidden="\${this.isAccountSettingsPage_}">
+-      <div class="settings-box first">
+-        <localized-link class="secondary"
+-            localized-string="$i18n{browserSyncFeatureLabel}"
+-            link-url="$i18n{osSyncSettingsUrl}">
+-        </localized-link>
+-      </div>
+-  </div>
+-</if>
+ 
++
+     \${!this.isAccountSettingsPage_ ? html\`
+       <div id="sync-data-radio" class="cr-row first">
+         <cr-radio-group
+             .selected="\${this.selectedSyncDataRadio_()}"
+@@ -33,10 +24,9 @@
+     \` : ''}
+ 
+     <div ?hidden="\${!this.showSyncDisabledInformation}">
+       <div class="cr-row first">
+-        <cr-policy-indicator id="syncDisabledIndicator"
+-            indicator-type="userPolicy">
++        <cr-policy-indicator id="syncDisabledIndicator" indicator-type="userPolicy">
+         </cr-policy-indicator>
+         <div class="cr-secondary-text flex">
+           $i18n{syncDisabledUserInformation}
+         </div>
+@@ -50,23 +40,15 @@
+       <div class="cr-row first">
+         <h2 class="cr-title-text flex">$i18n{accountDataTypesHeading}</h2>
+       </div>
+       <div class="cr-row continuation">
+-<if expr="is_chromeos">
+-        <localized-link class="cr-secondary-text flex"
+-            localized-string="$i18n{accountDataTypesBody}"
+-            link-url="$i18n{osSyncSettingsUrl}">
+-        </localized-link>
+-</if>
+-<if expr="not is_chromeos">
++
++
+         <div class="cr-secondary-text flex">$i18n{accountDataTypesBody}</div>
+-</if>
++
+       </div>
+-      <div class="cr-row continuation"
+-          ?hidden="\${!this.shouldShowBatchUploadPromo_()}">
+-        <div class="cr-secondary-text flex" id="batchUploadPromo"
+-            .innerHTML="\${this.batchUploadPromoHTML_}"
+-            @click="\${this.onBatchUploadPromoClick_}">
++      <div class="cr-row continuation" ?hidden="\${!this.shouldShowBatchUploadPromo_()}">
++        <div class="cr-secondary-text flex" id="batchUploadPromo" .innerHTML="\${this.batchUploadPromoHTML_}" @click="\${this.onBatchUploadPromoClick_}">
+         </div>
+       </div>
+     </div>
+ 
+@@ -96,304 +78,170 @@
+         </div>
+       \` : ''}
+ 
+       <div ?hidden="\${this.isAccountSettingsPage_}">
+-        <div class="list-item"
+-            ?hidden="\${!!this.syncPrefs &&
++        <div class="list-item" ?hidden="\${!!this.syncPrefs &&
+                 !this.syncPrefs.typedUrlsRegistered}">
+           <div id="historyCheckboxLabel">
+             $i18n{historyCheckboxLabel}
+           </div>
+-          <cr-policy-indicator indicator-type="userPolicy"
+-              ?hidden="\${!this.showPolicyIndicator_(
++          <cr-policy-indicator indicator-type="userPolicy" ?hidden="\${!this.showPolicyIndicator_(
+                     this.syncPrefs?.typedUrlsManaged)}">
+           </cr-policy-indicator>
+-          <cr-toggle id="historyToggle"
+-              .checked="\${!!this.syncPrefs?.typedUrlsSynced}"
+-              @change="\${this.onSingleSyncDataTypeChange_}"
+-              ?disabled="\${this.disableTypeCheckBox_(
+-                this.syncPrefs?.typedUrlsManaged)}"
+-              aria-labelledby="historyCheckboxLabel"
+-              data-type="\${UserSelectableType.HISTORY}"
+-              data-pref="typedUrlsSynced">
++          <cr-toggle id="historyToggle" .checked="\${!!this.syncPrefs?.typedUrlsSynced}" @change="\${this.onSingleSyncDataTypeChange_}" ?disabled="\${this.disableTypeCheckBox_(
++                this.syncPrefs?.typedUrlsManaged)}" aria-labelledby="historyCheckboxLabel" data-type="\${UserSelectableType.HISTORY}" data-pref="typedUrlsSynced">
+           </cr-toggle>
+         </div>
+       </div>
+ 
+-      <div class="list-item"
+-          ?hidden="\${!!this.syncPrefs && !this.syncPrefs.bookmarksRegistered}">
++      <div class="list-item" ?hidden="\${!!this.syncPrefs && !this.syncPrefs.bookmarksRegistered}">
+         <div id="bookmarksCheckboxLabel">
+           $i18n{bookmarksCheckboxLabel}
+         </div>
+-        <cr-policy-indicator indicator-type="userPolicy"
+-            ?hidden="\${!this.showPolicyIndicator_(
++        <cr-policy-indicator indicator-type="userPolicy" ?hidden="\${!this.showPolicyIndicator_(
+                   this.syncPrefs?.bookmarksManaged)}">
+         </cr-policy-indicator>
+-        <cr-toggle .checked="\${!!this.syncPrefs?.bookmarksSynced}"
+-            @change="\${this.onSingleSyncDataTypeChange_}"
+-            ?disabled="\${this.disableTypeCheckBox_(
+-                this.syncPrefs?.bookmarksManaged)}"
+-            aria-labelledby="bookmarksCheckboxLabel"
+-            data-type="\${UserSelectableType.BOOKMARKS}"
+-            data-pref="bookmarksSynced">
++        <cr-toggle .checked="\${!!this.syncPrefs?.bookmarksSynced}" @change="\${this.onSingleSyncDataTypeChange_}" ?disabled="\${this.disableTypeCheckBox_(
++                this.syncPrefs?.bookmarksManaged)}" aria-labelledby="bookmarksCheckboxLabel" data-type="\${UserSelectableType.BOOKMARKS}" data-pref="bookmarksSynced">
+         </cr-toggle>
+       </div>
+ 
+-      <div class="list-item"
+-          ?hidden="\${!!this.syncPrefs &&
++      <div class="list-item" ?hidden="\${!!this.syncPrefs &&
+               !this.syncPrefs.readingListRegistered}">
+         <div id="readingListCheckboxLabel">
+           $i18n{readingListCheckboxLabel}
+         </div>
+-        <cr-policy-indicator indicator-type="userPolicy"
+-            ?hidden="\${!this.showPolicyIndicator_(
++        <cr-policy-indicator indicator-type="userPolicy" ?hidden="\${!this.showPolicyIndicator_(
+                   this.syncPrefs?.readingListManaged)}">
+         </cr-policy-indicator>
+-        <cr-toggle .checked="\${!!this.syncPrefs?.readingListSynced}"
+-            @change="\${this.onSingleSyncDataTypeChange_}"
+-            ?disabled="\${this.disableTypeCheckBox_(
+-                this.syncPrefs?.readingListManaged)}"
+-            aria-labelledby="readingListCheckboxLabel"
+-            data-type="\${UserSelectableType.READING_LIST}"
+-            data-pref="readingListSynced">
++        <cr-toggle .checked="\${!!this.syncPrefs?.readingListSynced}" @change="\${this.onSingleSyncDataTypeChange_}" ?disabled="\${this.disableTypeCheckBox_(
++                this.syncPrefs?.readingListManaged)}" aria-labelledby="readingListCheckboxLabel" data-type="\${UserSelectableType.READING_LIST}" data-pref="readingListSynced">
+         </cr-toggle>
+       </div>
+ 
+       <div ?hidden="\${this.isAccountSettingsPage_}">
+-        <div class="list-item"
+-            ?hidden="\${!!this.syncPrefs && !this.syncPrefs.tabsRegistered}">
++        <div class="list-item" ?hidden="\${!!this.syncPrefs && !this.syncPrefs.tabsRegistered}">
+           <div id="openTabsCheckboxLabel">
+             $i18n{openTabsCheckboxLabel}
+           </div>
+-          <cr-policy-indicator indicator-type="userPolicy"
+-              ?hidden="\${!this.showPolicyIndicator_(
++          <cr-policy-indicator indicator-type="userPolicy" ?hidden="\${!this.showPolicyIndicator_(
+                     this.syncPrefs?.tabsManaged)}">
+           </cr-policy-indicator>
+-          <cr-toggle .checked="\${!!this.syncPrefs?.tabsSynced}"
+-              @change="\${this.onSingleSyncDataTypeChange_}"
+-              ?disabled="\${this.disableTypeCheckBox_(
+-                this.syncPrefs?.tabsManaged)}"
+-              aria-labelledby="openTabsCheckboxLabel"
+-              data-type="\${UserSelectableType.TABS}"
+-              data-pref="tabsSynced">
++          <cr-toggle .checked="\${!!this.syncPrefs?.tabsSynced}" @change="\${this.onSingleSyncDataTypeChange_}" ?disabled="\${this.disableTypeCheckBox_(
++                this.syncPrefs?.tabsManaged)}" aria-labelledby="openTabsCheckboxLabel" data-type="\${UserSelectableType.TABS}" data-pref="tabsSynced">
+           </cr-toggle>
+         </div>
+ 
+-        <div class="list-item"
+-            ?hidden="\${!!this.syncPrefs &&
++        <div class="list-item" ?hidden="\${!!this.syncPrefs &&
+                 !this.syncPrefs.savedTabGroupsRegistered}">
+           <div id="savedTabGroupsCheckboxLabel">
+             $i18n{savedTabGroupsCheckboxLabel}
+           </div>
+-          <cr-policy-indicator indicator-type="userPolicy"
+-              ?hidden="\${!this.showPolicyIndicator_(
++          <cr-policy-indicator indicator-type="userPolicy" ?hidden="\${!this.showPolicyIndicator_(
+                     this.syncPrefs?.savedTabGroupsManaged)}">
+           </cr-policy-indicator>
+-          <cr-toggle .checked="\${!!this.syncPrefs?.savedTabGroupsSynced}"
+-              @change="\${this.onSingleSyncDataTypeChange_}"
+-              ?disabled="\${this.disableTypeCheckBox_(
+-                this.syncPrefs?.savedTabGroupsManaged)}"
+-              aria-labelledby="savedTabGroupsCheckboxLabel"
+-              data-type="\${UserSelectableType.SAVED_TAB_GROUPS}"
+-              data-pref="savedTabGroupsSynced">
++          <cr-toggle .checked="\${!!this.syncPrefs?.savedTabGroupsSynced}" @change="\${this.onSingleSyncDataTypeChange_}" ?disabled="\${this.disableTypeCheckBox_(
++                this.syncPrefs?.savedTabGroupsManaged)}" aria-labelledby="savedTabGroupsCheckboxLabel" data-type="\${UserSelectableType.SAVED_TAB_GROUPS}" data-pref="savedTabGroupsSynced">
+           </cr-toggle>
+         </div>
+       </div>
+ 
+-      <div class="list-item"
+-          ?hidden="\${!!this.syncPrefs && !this.syncPrefs.autofillRegistered}">
++      <div class="list-item" ?hidden="\${!!this.syncPrefs && !this.syncPrefs.autofillRegistered}">
+         <div id="autofillCheckboxLabel">
+           $i18n{autofillCheckboxLabel}
+         </div>
+-        <cr-policy-indicator indicator-type="userPolicy"
+-             ?hidden="\${!this.showPolicyIndicator_(
++        <cr-policy-indicator indicator-type="userPolicy" ?hidden="\${!this.showPolicyIndicator_(
+                   this.syncPrefs?.autofillManaged)}">
+         </cr-policy-indicator>
+-        <cr-toggle id="autofillCheckbox"
+-            .checked="\${!!this.syncPrefs?.autofillSynced}"
+-            @change="\${this.onSingleSyncDataTypeChange_}"
+-            ?disabled="\${this.disableTypeCheckBox_(
+-              this.syncPrefs?.autofillManaged)}"
+-            aria-labelledby="autofillCheckboxLabel"
+-            data-type="\${UserSelectableType.AUTOFILL}"
+-            data-pref="autofillSynced">
++        <cr-toggle id="autofillCheckbox" .checked="\${!!this.syncPrefs?.autofillSynced}" @change="\${this.onSingleSyncDataTypeChange_}" ?disabled="\${this.disableTypeCheckBox_(
++              this.syncPrefs?.autofillManaged)}" aria-labelledby="autofillCheckboxLabel" data-type="\${UserSelectableType.AUTOFILL}" data-pref="autofillSynced">
+         </cr-toggle>
+       </div>
+ 
+-      <div class="list-item"
+-           ?hidden="\${!!this.syncPrefs && !this.syncPrefs.paymentsRegistered}">
+-        <div>
+-          $i18n{paymentsCheckboxLabel}
+-        </div>
+-        <cr-policy-indicator indicator-type="userPolicy"
+-            ?hidden="\${!this.showPolicyIndicator_(
+-                  this.syncPrefs?.paymentsManaged)}">
+-        </cr-policy-indicator>
+-        <cr-toggle id="paymentsCheckbox"
+-            .checked="\${!!this.syncPrefs?.paymentsSynced}"
+-            @change="\${this.onSingleSyncDataTypeChange_}"
+-            ?disabled="\${this.disableTypeCheckBox_(
+-                this.syncPrefs?.paymentsManaged)}"
+-            aria-label="$i18n{paymentsCheckboxLabel}"
+-            data-type="\${UserSelectableType.PAYMENTS}"
+-            data-pref="paymentsSynced">
+-        </cr-toggle>
+-      </div>
++      
+ 
+-      <div class="list-item"
+-          ?hidden="\${!!this.syncPrefs && !this.syncPrefs.passwordsRegistered}">
++      <div class="list-item" ?hidden="\${!!this.syncPrefs && !this.syncPrefs.passwordsRegistered}">
+         <div id="passwordsCheckboxLabel">
+           $i18n{passwordsCheckboxLabel}
+         </div>
+-        <cr-policy-indicator indicator-type="userPolicy"
+-            ?hidden="\${!this.showPolicyIndicator_(
++        <cr-policy-indicator indicator-type="userPolicy" ?hidden="\${!this.showPolicyIndicator_(
+                   this.syncPrefs?.passwordsManaged)}">
+         </cr-policy-indicator>
+-        <cr-toggle .checked="\${!!this.syncPrefs?.passwordsSynced}"
+-            @change="\${this.onSingleSyncDataTypeChange_}"
+-            ?disabled="\${this.disableTypeCheckBox_(
+-              this.syncPrefs?.passwordsManaged)}"
+-            aria-labelledby="passwordsCheckboxLabel"
+-            data-type="\${UserSelectableType.PASSWORDS}"
+-            data-pref="passwordsSynced">
++        <cr-toggle .checked="\${!!this.syncPrefs?.passwordsSynced}" @change="\${this.onSingleSyncDataTypeChange_}" ?disabled="\${this.disableTypeCheckBox_(
++              this.syncPrefs?.passwordsManaged)}" aria-labelledby="passwordsCheckboxLabel" data-type="\${UserSelectableType.PASSWORDS}" data-pref="passwordsSynced">
+         </cr-toggle>
+       </div>
+ 
+-      <div class="list-item"
+-          ?hidden="\${!!this.syncPrefs &&
++      <div class="list-item" ?hidden="\${!!this.syncPrefs &&
+               !this.syncPrefs.preferencesRegistered}">
+         <div id="settingsCheckboxLabel">
+           $i18n{settingsCheckboxLabel}
+         </div>
+-        <cr-policy-indicator indicator-type="userPolicy"
+-            ?hidden="\${!this.showPolicyIndicator_(
++        <cr-policy-indicator indicator-type="userPolicy" ?hidden="\${!this.showPolicyIndicator_(
+                   this.syncPrefs?.preferencesManaged)}">
+         </cr-policy-indicator>
+-        <cr-toggle .checked="\${!!this.syncPrefs?.preferencesSynced}"
+-            @change="\${this.onSingleSyncDataTypeChange_}"
+-            ?disabled="\${this.disableTypeCheckBox_(
+-                this.syncPrefs?.preferencesManaged)}"
+-            aria-labelledby="settingsCheckboxLabel"
+-            data-type="\${UserSelectableType.PREFERENCES}"
+-            data-pref="preferencesSynced">
++        <cr-toggle .checked="\${!!this.syncPrefs?.preferencesSynced}" @change="\${this.onSingleSyncDataTypeChange_}" ?disabled="\${this.disableTypeCheckBox_(
++                this.syncPrefs?.preferencesManaged)}" aria-labelledby="settingsCheckboxLabel" data-type="\${UserSelectableType.PREFERENCES}" data-pref="preferencesSynced">
+         </cr-toggle>
+       </div>
+ 
+-      <div class="list-item"
+-          ?hidden="\${!!this.syncPrefs && !this.syncPrefs.appsRegistered}">
++      <div class="list-item" ?hidden="\${!!this.syncPrefs && !this.syncPrefs.appsRegistered}">
+         <div id="appCheckboxLabel">$i18n{appCheckboxLabel}</div>
+-        <cr-policy-indicator indicator-type="userPolicy"
+-              ?hidden="\${!this.showPolicyIndicator_(
++        <cr-policy-indicator indicator-type="userPolicy" ?hidden="\${!this.showPolicyIndicator_(
+                   this.syncPrefs?.appsManaged)}">
+         </cr-policy-indicator>
+-        <cr-toggle .checked="\${!!this.syncPrefs?.appsSynced}"
+-            @change="\${this.onSingleSyncDataTypeChange_}"
+-            ?disabled="\${this.disableTypeCheckBox_(
+-                this.syncPrefs?.appsManaged)}"
+-            aria-labelledby="appCheckboxLabel"
+-            data-type="\${UserSelectableType.APPS}"
+-            data-pref="appsSynced">
++        <cr-toggle .checked="\${!!this.syncPrefs?.appsSynced}" @change="\${this.onSingleSyncDataTypeChange_}" ?disabled="\${this.disableTypeCheckBox_(
++                this.syncPrefs?.appsManaged)}" aria-labelledby="appCheckboxLabel" data-type="\${UserSelectableType.APPS}" data-pref="appsSynced">
+         </cr-toggle>
+       </div>
+ 
+-      <div class="list-item"
+-          ?hidden="\${!!this.syncPrefs && !this.syncPrefs.extensionsRegistered}">
++      <div class="list-item" ?hidden="\${!!this.syncPrefs && !this.syncPrefs.extensionsRegistered}">
+         <div id="extensionsCheckboxLabel">
+           $i18n{extensionsCheckboxLabel}
+         </div>
+-        <cr-policy-indicator indicator-type="userPolicy"
+-            ?hidden="\${!this.showPolicyIndicator_(
++        <cr-policy-indicator indicator-type="userPolicy" ?hidden="\${!this.showPolicyIndicator_(
+                   this.syncPrefs?.extensionsManaged)}">
+         </cr-policy-indicator>
+-        <cr-toggle .checked="\${!!this.syncPrefs?.extensionsSynced}"
+-            @change="\${this.onSingleSyncDataTypeChange_}"
+-            ?disabled="\${this.disableTypeCheckBox_(
+-                this.syncPrefs?.extensionsManaged)}"
+-            aria-labelledby="extensionsCheckboxLabel"
+-            data-type="\${UserSelectableType.EXTENSIONS}"
+-            data-pref="extensionsSynced">
++        <cr-toggle .checked="\${!!this.syncPrefs?.extensionsSynced}" @change="\${this.onSingleSyncDataTypeChange_}" ?disabled="\${this.disableTypeCheckBox_(
++                this.syncPrefs?.extensionsManaged)}" aria-labelledby="extensionsCheckboxLabel" data-type="\${UserSelectableType.EXTENSIONS}" data-pref="extensionsSynced">
+         </cr-toggle>
+       </div>
+ 
+-      <div class="list-item"
+-          ?hidden="\${!!this.syncPrefs && !this.syncPrefs.themesRegistered}">
++      <div class="list-item" ?hidden="\${!!this.syncPrefs && !this.syncPrefs.themesRegistered}">
+         <div id="themeCheckboxLabel">
+           $i18n{themeCheckboxLabel}
+         </div>
+-        <cr-policy-indicator indicator-type="userPolicy"
+-            ?hidden="\${!this.showPolicyIndicator_(
++        <cr-policy-indicator indicator-type="userPolicy" ?hidden="\${!this.showPolicyIndicator_(
+                   this.syncPrefs?.themesManaged)}">
+         </cr-policy-indicator>
+-        <cr-toggle .checked="\${!!this.syncPrefs?.themesSynced}"
+-            @change="\${this.onSingleSyncDataTypeChange_}"
+-            ?disabled="\${this.disableTypeCheckBox_(
+-                this.syncPrefs?.themesManaged)}"
+-            aria-labelledby="themeCheckboxLabel"
+-            data-type="\${UserSelectableType.THEMES}"
+-            data-pref="themesSynced">
++        <cr-toggle .checked="\${!!this.syncPrefs?.themesSynced}" @change="\${this.onSingleSyncDataTypeChange_}" ?disabled="\${this.disableTypeCheckBox_(
++                this.syncPrefs?.themesManaged)}" aria-labelledby="themeCheckboxLabel" data-type="\${UserSelectableType.THEMES}" data-pref="themesSynced">
+         </cr-toggle>
+       </div>
+ 
+-      <div class="list-item"
+-           ?hidden="\${!!this.syncPrefs &&
++      <div class="list-item" ?hidden="\${!!this.syncPrefs &&
+                !this.syncPrefs.productComparisonRegistered}">
+         <div id="productComparisonsCheckboxLabel">
+           $i18n{productComparisonsCheckboxLabel}
+         </div>
+-        <cr-policy-indicator indicator-type="userPolicy"
+-            ?hidden="\${!this.showPolicyIndicator_(
++        <cr-policy-indicator indicator-type="userPolicy" ?hidden="\${!this.showPolicyIndicator_(
+                   this.syncPrefs?.productComparisonManaged)}">
+         </cr-policy-indicator>
+-        <cr-toggle .checked="\${!!this.syncPrefs?.productComparisonSynced}"
+-            @change="\${this.onSingleSyncDataTypeChange_}"
+-            ?disabled="\${this.disableTypeCheckBox_(
+-              this.syncPrefs?.productComparisonManaged)}"
+-            aria-labelledby="productComparisonsCheckboxLabel"
+-            data-type="\${UserSelectableType.PRODUCT_COMPARISON}"
+-            data-pref="productComparisonSynced">
++        <cr-toggle .checked="\${!!this.syncPrefs?.productComparisonSynced}" @change="\${this.onSingleSyncDataTypeChange_}" ?disabled="\${this.disableTypeCheckBox_(
++              this.syncPrefs?.productComparisonManaged)}" aria-labelledby="productComparisonsCheckboxLabel" data-type="\${UserSelectableType.PRODUCT_COMPARISON}" data-pref="productComparisonSynced">
+         </cr-toggle>
+       </div>
+ 
+-<if expr="is_chromeos">
+-      <div class="list-item" id="cookiesSyncItem"
+-          ?hidden="\${this.hideCookieItem_()}">
+-        <div>
+-          $i18n{cookiesCheckboxLabel}
+-        </div>
+-        <cr-policy-indicator indicator-type="userPolicy"
+-            ?hidden="\${!this.showPolicyIndicator_(
+-                  this.syncPrefs?.cookiesManaged)}">
+-        </cr-policy-indicator>
+-        <cr-toggle id="cookiesCheckbox"
+-            .checked="\${!!this.syncPrefs?.cookiesSynced}"
+-            @change="\${this.onSingleSyncDataTypeChange_}"
+-            ?disabled="\${this.disableTypeCheckBox_(
+-                this.syncPrefs?.cookiesManaged)}"
+-            aria-label="$i18n{cookiesCheckboxLabel}"
+-            data-type="\${UserSelectableType.COOKIES}"
+-            data-pref="cookiesSynced">
+-        </cr-toggle>
+-      </div>
+ 
+-      <div class="list-item"
+-           ?hidden="\${!!this.syncPrefs &&
+-               !this.syncPrefs.wifiConfigurationsRegistered}">
+-        <div id="wifiConfigurationsCheckboxLabel">
+-          $i18n{wifiConfigurationsCheckboxLabel}
+-        </div>
+-        <cr-policy-indicator indicator-type="userPolicy"
+-            ?hidden="\${!this.showPolicyIndicator_(
+-                  this.syncPrefs?.wifiConfigurationsManaged)}">
++    \${this.isAiChatSyncEnabled_ ? html\`
++      <div class="list-item" ?hidden="\${!this.syncPrefs?.aiChatRegistered}">
++        <div id="aiChatCheckboxLabel">\${this.aiChatCheckboxLabel_}</div>
++        <cr-policy-indicator indicator-type="userPolicy" ?hidden="\${!this.showPolicyIndicator_(
++                this.syncPrefs?.aiChatManaged)}">
+         </cr-policy-indicator>
+-        <cr-toggle id="wifiToggle"
+-            .checked="\${!!this.syncPrefs?.wifiConfigurationsSynced}"
+-            @change="\${this.onSingleSyncDataTypeChange_}"
+-            ?disabled="\${this.disableTypeCheckBox_(
+-              this.syncPrefs?.wifiConfigurationsManaged)}"
+-            aria-labelledby="wifiConfigurationsCheckboxLabel"
+-            data-pref="wifiConfigurationsSynced">
++        <cr-toggle .checked="\${!!this.syncPrefs?.aiChatSynced}" @change="\${this.onSingleSyncDataTypeChange_}" ?disabled="\${this.disableTypeCheckBox_(
++                this.syncPrefs?.aiChatManaged)}" aria-labelledby="aiChatCheckboxLabel" data-type="\${UserSelectableType.AI_CHAT}" data-pref="aiChatSynced">
+         </cr-toggle>
+       </div>
+-</if>
+-    </div>
++    \` : ''}</div>
+ <!--_html_template_end_-->\`;
+ }
+"
+`;
+
 exports[`mangled files should have up to date snapshots ./chromium_src/chrome/browser/resources/settings/performance_page/memory_page.html.ts.lit_mangler.ts should match snapshot 1`] = `
 "===================================================================
 --- ../chrome/browser/resources/settings/performance_page/memory_page.html.ts
@@ -1208,6 +1824,77 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
              $i18n{memorySaverModeAggressiveDescription}
            </div>
          </controlled-radio-button>
+"
+`;
+
+exports[`mangled files should have up to date snapshots ./chromium_src/chrome/browser/resources/settings/reset_page/reset_profile_dialog.html.ts.lit_mangler.ts should match snapshot 1`] = `
+"===================================================================
+--- ../chrome/browser/resources/settings/reset_page/reset_profile_dialog.html.ts
++++ gen/chrome/browser/resources/settings/preprocessed/reset_page/reset_profile_dialog.html.ts
+@@ -4,33 +4,28 @@
+ 
+ export function getHtml(this: SettingsResetProfileDialogElement) {
+   // clang-format off
+   return html\`<!--_html_template_start_-->
+-<cr-dialog id="dialog" close-text="$i18n{close}"
+-    ignore-popstate ignore-enter-key>
++<cr-dialog id="dialog" close-text="$i18n{close}" ignore-popstate="" ignore-enter-key="">
+   <div slot="title">
+     \${this.getPageTitle_()}
+   </div>
+   <div id="dialog-body" slot="body">
+     <span .innerHTML="\${this.getExplanationText_()}">
+     </span>
+-    <a href="$i18nRaw{resetPageLearnMoreUrl}"
+-        aria-label="$i18n{resetLearnMoreAccessibilityText}"
+-        target="_blank">$i18n{learnMore}</a>
++    <a href="$i18nRaw{resetPageLearnMoreUrl}" aria-label="$i18n{resetLearnMoreAccessibilityText}" target="_blank">$i18n{learnMore}</a>
+   </div>
+   <div slot="button-container">
+     <div class="spinner" ?hidden="\${!this.clearingInProgress_}"></div>
+-    <cr-button class="cancel-button" @click="\${this.onCancelClick_}"
+-        id="cancel" ?disabled="\${this.clearingInProgress_}">
++    <cr-button class="cancel-button" @click="\${this.onCancelClick_}" id="cancel" ?disabled="\${this.clearingInProgress_}">
+       $i18n{cancel}
+     </cr-button>
+-    <cr-button class="action-button" @click="\${this.onResetClick_}"
+-        id="reset" ?disabled="\${this.clearingInProgress_}">
++    <cr-button class="action-button" @click="\${this.onResetClick_}" id="reset" ?disabled="\${this.clearingInProgress_}">
+       $i18n{resetDialogCommit}
+     </cr-button>
+   </div>
+-  <div slot="footer">
+-    <cr-checkbox id="sendSettings" checked>
++  <div slot="footer" hidden="">
++    <cr-checkbox id="sendSettings" disabled="">
+       $i18nRaw{resetPageFeedback}
+     </cr-checkbox>
+   </div>
+ </cr-dialog>
+"
+`;
+
+exports[`mangled files should have up to date snapshots ./chromium_src/chrome/browser/resources/settings/privacy_page/do_not_track_toggle.html.ts.lit_mangler.ts should match snapshot 1`] = `
+"===================================================================
+--- ../chrome/browser/resources/settings/privacy_page/do_not_track_toggle.html.ts
++++ gen/chrome/browser/resources/settings/preprocessed/privacy_page/do_not_track_toggle.html.ts
+@@ -3,15 +3,9 @@
+ import type {SettingsDoNotTrackToggleElement} from './do_not_track_toggle.js';
+ 
+ export function getHtml(this: SettingsDoNotTrackToggleElement) {
+   return html\`<!--_html_template_start_-->
+-<settings-toggle-button id="toggle" class="toggle"
+-    label="$i18n{doNotTrack}"
+-    pref-key="enable_do_not_track"
+-    @settings-boolean-control-change="\${this.onSettingsBooleanControlChange_}"
+-    sub-label="\${this.doNotTrackSublabel_}"
+-    icon="settings:forward"
+-    no-set-pref>
++<settings-toggle-button id="toggle" class="toggle hr" label="$i18n{doNotTrack}" pref-key="enable_do_not_track" @settings-boolean-control-change="\${this.onSettingsBooleanControlChange_}" sub-label="\${this.doNotTrackSublabel_}" icon="settings:forward" no-set-pref="">
+ </settings-toggle-button>
+ \${this.showDialog_ ? html\`
+   <cr-dialog id="confirmDialog"
+       close-text="$i18n{close}" @cancel="\${this.onDialogCancel_}"
 "
 `;
 
@@ -1470,7 +2157,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
  
  import {html} from '//resources/lit/v3_0/lit.rollup.js';
  
-@@ -9,101 +7,46 @@
+@@ -9,93 +7,39 @@
  export function getHtml(this: PowerBookmarksAppElement) {
    // clang-format off
    return html\`<!--_html_template_start_-->
@@ -1579,16 +2266,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
        </div>
      </cr-toolbar-selection-overlay>
    </sp-footer>
- </div>
- 
--<power-bookmarks-edit-dialog id="editDialog"
--    @save="\${this.onEditDialogSave_}">
-+<power-bookmarks-edit-dialog id="editDialog" @save="\${this.onEditDialogSave_}">
- </power-bookmarks-edit-dialog>
- 
- <cr-dialog id="disabledFeatureDialog">
-   <div slot="body" class="dialog-body">
-@@ -116,14 +59,9 @@
+@@ -112,14 +56,9 @@
      </cr-button>
    </div>
  </cr-dialog>
@@ -1611,7 +2289,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 "===================================================================
 --- ../chrome/browser/resources/side_panel/customize_chrome/app.html.ts
 +++ gen/chrome/browser/resources/side_panel/customize_chrome/preprocessed/app.html.ts
-@@ -4,31 +4,25 @@
+@@ -4,32 +4,26 @@
  
  export function getHtml(this: AppElement) {
    // clang-format off
@@ -1637,6 +2315,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 +    
 +      <brave-darker-theme-toggle></brave-darker-theme-toggle></div>
      <hr class="sp-cards-separator">
+     \${this.toolbarCustomizationEnabled_ ? html\`
 -    <cr-button id="toolbarButton" class="section sp-card"
 -        @click="\${this.onToolbarCustomizationButtonClick_}">
 -      <sp-heading hide-back-button id="toolbar-customization-heading">
@@ -1651,21 +2330,9 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 -      <cr-icon icon="cr:chevron-right" slot="suffix-icon"></cr-icon>
 +      <cr-icon icon="window-edit" slot="prefix-icon"></cr-icon>
      </cr-button>
+     \` : ''}
      \${this.ntpNextFeaturesEnabled_ && this.ntpNextDisablementEnabled_
        && this.aimPolicyEnabled_ && this.isSourceTabFirstPartyNtp_() ? html\`
-       <hr class="sp-cards-separator">
-@@ -108,10 +102,9 @@
-     <customize-chrome-wallpaper-search @back-click="\${this.onBackClick_}"
-         page-name="wallpaper-search" id="wallpaperSearchPage">
-     </customize-chrome-wallpaper-search>
-   \` : ''}
--  <customize-chrome-toolbar @back-click="\${this.onBackClick_}"
--      page-name="toolbar" id="toolbarPage"></customize-chrome-toolbar>
-+  <customize-chrome-toolbar @back-click="\${this.onBackClick_}" page-name="toolbar" id="toolbarPage"></customize-chrome-toolbar>
- </cr-page-selector>
- <!--_html_template_end_-->\`;
-   // clang-format on
- }
 "
 `;
 

@@ -9,7 +9,7 @@ import { isCI } from './ciDetect.ts'
 import fs from 'node:fs'
 import path from 'node:path'
 import * as Log from './log.ts'
-import util from './util.js'
+import util from './util.ts'
 
 // The .disable_auto_update file in the depot_tools directory, regardless of
 // its content, disables auto-updates. If a specific depot_tools reference is

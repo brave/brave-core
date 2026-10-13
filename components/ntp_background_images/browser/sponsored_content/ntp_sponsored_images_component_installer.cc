@@ -8,14 +8,13 @@
 #include <memory>
 #include <utility>
 
-#include "base/base64.h"
-#include "base/check.h"
-#include "base/containers/to_vector.h"
+#include "base/containers/span.h"
 #include "base/files/file_path.h"
 #include "base/functional/bind.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_update_util.h"
 #include "components/component_updater/component_updater_service.h"
+#include "components/crx_file/id_util.h"
 
 using brave_component_updater::BraveOnDemandUpdater;
 
@@ -34,17 +33,11 @@ void RegisterNTPSponsoredImagesComponentCallback(
 
 NTPSponsoredImagesComponentInstallerPolicy::
     NTPSponsoredImagesComponentInstallerPolicy(
-        const std::string& component_public_key,
-        const std::string& component_id,
+        base::span<const uint8_t, crypto::kSHA256Length> public_key_sha256,
         const std::string& component_name,
         ComponentReadyCallback callback)
-    : component_id_(component_id),
-      component_name_(component_name),
-      ready_callback_(std::move(callback)) {
-  // Generate hash from public key.
-  auto decoded_public_key = base::Base64Decode(component_public_key);
-  CHECK(decoded_public_key);
-  component_hash_ = crypto::SHA256Hash(*decoded_public_key);
+    : component_name_(component_name), ready_callback_(std::move(callback)) {
+  base::span(component_hash_).copy_from(public_key_sha256);
 }
 
 NTPSponsoredImagesComponentInstallerPolicy::
@@ -84,12 +77,13 @@ bool NTPSponsoredImagesComponentInstallerPolicy::VerifyInstallation(
 
 base::FilePath
 NTPSponsoredImagesComponentInstallerPolicy::GetRelativeInstallDir() const {
-  return base::FilePath::FromUTF8Unsafe(component_id_);
+  return base::FilePath::FromUTF8Unsafe(
+      crx_file::id_util::GenerateIdFromHash(component_hash_));
 }
 
 void NTPSponsoredImagesComponentInstallerPolicy::GetHash(
     std::vector<uint8_t>* hash) const {
-  *hash = base::ToVector(component_hash_);
+  hash->assign_range(component_hash_);
 }
 
 std::string NTPSponsoredImagesComponentInstallerPolicy::GetName() const {
@@ -107,8 +101,7 @@ bool NTPSponsoredImagesComponentInstallerPolicy::IsBraveComponent() const {
 
 void RegisterNTPSponsoredImagesComponent(
     component_updater::ComponentUpdateService* component_update_service,
-    const std::string& component_public_key,
-    const std::string& component_id,
+    base::span<const uint8_t, crypto::kSHA256Length> public_key_sha256,
     const std::string& component_name,
     ComponentReadyCallback callback) {
   if (!component_update_service ||
@@ -119,12 +112,11 @@ void RegisterNTPSponsoredImagesComponent(
 
   auto installer = base::MakeRefCounted<component_updater::ComponentInstaller>(
       std::make_unique<NTPSponsoredImagesComponentInstallerPolicy>(
-          component_public_key, component_id, component_name,
-          std::move(callback)));
+          public_key_sha256, component_name, std::move(callback)));
   installer->Register(
       component_update_service,
       base::BindOnce(&RegisterNTPSponsoredImagesComponentCallback,
-                     component_id));
+                     crx_file::id_util::GenerateIdFromHash(public_key_sha256)));
 }
 
 }  // namespace ntp_background_images

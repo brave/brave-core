@@ -20,6 +20,7 @@ source_set("unit_tests") {
     "//components/custom_handlers",
     "//components/custom_handlers:test_support",
     "//components/search_engines",
+    "//components/sync_preferences:test_support",
     "//content/test:test_support",
     "//testing/gmock",
     "//testing/gtest",

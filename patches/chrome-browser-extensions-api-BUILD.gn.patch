@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/extensions/api/BUILD.gn b/chrome/browser/extensions/api/BUILD.gn
-index 76252be893e5c8a238197af67ea2e087497bc084..900e8df62eb077c48c5b679f349eb17ace1c1812 100644
+index 3bbbbf599d07ec182ca51771f951dd3ec946f8bb..34101b7f9e64b1e39bfb866f5330b77ad5575dc9 100644
 --- a/chrome/browser/extensions/api/BUILD.gn
 +++ b/chrome/browser/extensions/api/BUILD.gn
 @@ -61,7 +61,7 @@ group("api_implementations") {

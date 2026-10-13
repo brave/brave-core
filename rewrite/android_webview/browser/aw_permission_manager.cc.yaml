@@ -42,6 +42,7 @@ substitutions:
         \2case PermissionType::BRAVE_ETHEREUM:
         \2case PermissionType::BRAVE_SOLANA:
         \2case PermissionType::BRAVE_CARDANO:
+        \2case PermissionType::BRAVE_POLKADOT:
         #endif
         \2case PermissionType::BRAVE_GOOGLE_SIGN_IN:
         \2case PermissionType::BRAVE_OPEN_AI_CHAT:

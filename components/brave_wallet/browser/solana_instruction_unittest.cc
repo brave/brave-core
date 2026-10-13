@@ -9,14 +9,12 @@
 #include <utility>
 #include <vector>
 
-#include "base/test/gtest_util.h"
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/browser/solana_account_meta.h"
 #include "brave/components/brave_wallet/browser/solana_compiled_instruction.h"
 #include "brave/components/brave_wallet/browser/solana_instruction_data_decoder.h"
 #include "brave/components/brave_wallet/browser/solana_message_address_table_lookup.h"
 #include "brave/components/brave_wallet/browser/solana_message_header.h"
-#include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/solana_address.h"
 
 namespace {

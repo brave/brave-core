@@ -19,6 +19,7 @@
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider_manager.h"
 #include "brave/components/brave_shields/core/browser/filter_list_catalog_entry.h"
 #include "components/component_updater/component_updater_service.h"
+#include "components/crx_file/id_util.h"
 
 constexpr char kListFile[] = "list.txt";
 
@@ -56,13 +57,12 @@ void OnReadDATFileData(
 AdBlockComponentFiltersProvider::AdBlockComponentFiltersProvider(
     component_updater::ComponentUpdateService* cus,
     AdBlockFiltersProviderManager* manager,
-    std::string component_id,
-    std::string base64_public_key,
+    base::span<const uint8_t, crypto::kSHA256Length> public_key_sha256,
     std::string title,
     uint8_t permission_mask,
     bool is_default_engine)
     : AdBlockFiltersProvider(is_default_engine, manager),
-      component_id_(component_id),
+      component_id_(crx_file::id_util::GenerateIdFromHash(public_key_sha256)),
       permission_mask_(permission_mask),
       component_updater_service_(cus) {
   // Can be nullptr in unit tests
@@ -71,7 +71,7 @@ AdBlockComponentFiltersProvider::AdBlockComponentFiltersProvider(
                 perfetto::Flow::FromPointer(this), "component_id",
                 component_id_);
     RegisterAdBlockFiltersComponent(
-        cus, base64_public_key, component_id_, title,
+        cus, public_key_sha256, title,
         base::BindRepeating(&AdBlockComponentFiltersProvider::OnComponentReady,
                             weak_factory_.GetWeakPtr()));
   }
@@ -88,8 +88,7 @@ AdBlockComponentFiltersProvider::AdBlockComponentFiltersProvider(
     bool is_default_engine)
     : AdBlockComponentFiltersProvider(cus,
                                       manager,
-                                      catalog_entry.component_id,
-                                      catalog_entry.base64_public_key,
+                                      catalog_entry.public_key_sha256.value(),
                                       catalog_entry.title,
                                       catalog_entry.permission_mask,
                                       is_default_engine) {}
