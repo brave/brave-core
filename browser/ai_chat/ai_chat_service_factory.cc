@@ -143,8 +143,8 @@ AIChatServiceFactory::BuildServiceInstanceForBrowserContext(
   // This configuration is not part of the AIChatService constructor because it
   // is experimental and might not always be per-profile and is not needed in
   // the AIChatService constructor.
-  service->SetIsContentAgentToolsAllowed(content_agent_tools_allowed);
-  service->SetIsContentAgentUserSelectable(content_agent_user_selectable);
+  service->set_content_agent_tools_allowed(content_agent_tools_allowed);
+  service->set_content_agent_user_selectable(content_agent_user_selectable);
 #endif
 
   if (base::FeatureList::IsEnabled(ai_chat::features::kAIChatWorkspaceTools)) {

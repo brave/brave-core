@@ -411,18 +411,19 @@ INSTANTIATE_TEST_SUITE_P(,
                            return info.param ? "FlagEnabled" : "FlagDisabled";
                          });
 
-IN_PROC_BROWSER_TEST_P(AIChatContentAgentMainProfilesBrowserTest, MainProfile) {
+IN_PROC_BROWSER_TEST_P(AIChatContentAgentMainProfilesBrowserTest,
+                       MainProfileOffersChoiceWithFlagButNoTools) {
   auto* service = AIChatServiceFactory::GetForBrowserContext(GetProfile());
   ASSERT_TRUE(service);
 
-  EXPECT_EQ(GetParam(), service->GetIsContentAgentUserSelectable());
+  EXPECT_EQ(GetParam(), service->content_agent_user_selectable());
   // The tools must not be registered in the main profile either way - that
   // waits until the agent's browsing is isolated from the user's storage.
-  EXPECT_FALSE(service->GetIsContentAgentToolsAllowed());
+  EXPECT_FALSE(service->content_agent_tools_allowed());
 }
 
 IN_PROC_BROWSER_TEST_P(AIChatContentAgentMainProfilesBrowserTest,
-                       AgentProfile) {
+                       AgentProfileHasToolsButNoChoice) {
   SetUserOptedIn(GetProfile()->GetPrefs(), true);
   BrowserWindowInterface* agent_browser =
       CallOpenBrowserWindowForAiChatAgentProfile(GetProfile());
@@ -435,8 +436,8 @@ IN_PROC_BROWSER_TEST_P(AIChatContentAgentMainProfilesBrowserTest,
 
   // The agent profile is unaffected by the main profiles flag: the content
   // agent is always on there, so the user is never asked to choose.
-  EXPECT_TRUE(service->GetIsContentAgentToolsAllowed());
-  EXPECT_FALSE(service->GetIsContentAgentUserSelectable());
+  EXPECT_TRUE(service->content_agent_tools_allowed());
+  EXPECT_FALSE(service->content_agent_user_selectable());
 }
 
 // UI Tests for AI Chat Agent Profile features

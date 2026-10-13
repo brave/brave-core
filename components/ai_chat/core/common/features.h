@@ -103,10 +103,6 @@ extern const base::FeatureParam<bool> kWorkspaceNativeDirectories;
 COMPONENT_EXPORT(AI_CHAT_COMMON) BASE_DECLARE_FEATURE(kAIChatAgentProfile);
 COMPONENT_EXPORT(AI_CHAT_COMMON) bool IsAIChatAgentProfileEnabled();
 
-// Allows conversations in the user's main profiles - every profile other than
-// the dedicated agent profile - to offer the content agent to the user. It does
-// not make the content agent's tools available there - that waits until the
-// agent's browsing is isolated from the user's own storage.
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 BASE_DECLARE_FEATURE(kAIChatContentAgentMainProfiles);
 
