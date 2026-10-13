@@ -39,6 +39,7 @@
 #include "chrome/browser/sessions/exit_type_service.h"
 #include "chrome/browser/sessions/tab_restore_service_factory.h"
 #include "chrome/browser/ui/actions/chrome_action_id.h"
+#include "chrome/browser/ui/browser_actions.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
@@ -1865,7 +1866,9 @@ IN_PROC_BROWSER_TEST_F(
     ContainersBrowserTest,
     PartitionedStoragePageActionRightClickSetsActionItemShowingBubble) {
   actions::ActionItem* const partitioned_storage_action =
-      actions::ActionManager::Get().FindAction(kActionShowPartitionedStorage);
+      actions::ActionManager::Get().FindAction(
+          kActionShowPartitionedStorage,
+          BrowserActions::From(browser())->root_action_item());
   ASSERT_NE(nullptr, partitioned_storage_action);
 
   auto* const partitioned_storage_view =
