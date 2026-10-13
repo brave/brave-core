@@ -73,9 +73,7 @@ std::string_view BraveVerticalTabsHideCompletelyPrefName() {
 bool BraveIsInVerticalTabHotCorner(const gfx::PointF& point_in_screen,
                                    BrowserView* browser_view) {
   auto* brave_browser_view = BraveBrowserView::From(browser_view);
-  if (!brave_browser_view) {
-    return false;
-  }
+  CHECK(brave_browser_view);
 
   gfx::RectF hot_corner(
       brave_browser_view->GetBoundingBoxInScreenForMouseOverHandling());
