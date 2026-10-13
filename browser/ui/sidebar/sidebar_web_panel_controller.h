@@ -45,7 +45,6 @@ class SidebarWebPanelController : public TabStripModelObserver {
   const BraveMultiContentsView* GetMultiContentsView() const;
 
   void OpenWebPanel(const SidebarItem& item);
-  bool IsShowingWebPanel() const;
   void ClearPanelState();
 
   // TabStripModelObesrver:
