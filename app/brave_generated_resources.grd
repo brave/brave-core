@@ -1046,10 +1046,16 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       <message name="IDS_BRAVE_WAYBACK_MACHINE_BUBBLE_NOT_AVAILABLE_TEXT" desc="Body text on the Wayback Machine bubble when the Internet Archive has no copy of this page">
         Sorry, we checked the Internet Archive and it doesn't have an archived version of this page.
       </message>
+      <message name="IDS_BRAVE_WAYBACK_MACHINE_BUBBLE_FOUND_TEXT" desc="Body text on the Wayback Machine bubble when the Internet Archive has a copy of this page">
+        The Internet Archive has an archived version of this page.
+      </message>
+      <message name="IDS_BRAVE_WAYBACK_MACHINE_BUBBLE_LOAD_BUTTON_TEXT" desc="Button label that loads the archived version of the page from the Internet Archive">
+        Go to archived version
+      </message>
       <message name="IDS_BRAVE_WAYBACK_MACHINE_BUBBLE_CHECK_BUTTON_TEXT" desc="Button label that searches the Internet Archive for a saved copy of the page">
         Look in the Archive
       </message>
-      <message name="IDS_BRAVE_WAYBACK_MACHINE_BUBBLE_DISMISS_BUTTON_TEXT" desc="Button label that closes the Wayback Machine bubble without searching">
+      <message name="IDS_BRAVE_WAYBACK_MACHINE_BUBBLE_DISMISS_BUTTON_TEXT" desc="Button label that closes the Wayback Machine bubble without searching the Internet Archive or loading the archived version of the page">
         Cancel
       </message>
       <message name="IDS_BRAVE_WAYBACK_MACHINE_BUBBLE_DONT_ASK_AGAIN_TEXT" desc="Button label that disables the Wayback Machine feature and closes the bubble">
@@ -1057,6 +1063,23 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       </message>
       <message name="IDS_BRAVE_WAYBACK_MACHINE_BUBBLE_CHECKING_ACCESSIBLE_NAME" desc="Screen reader announcement while the Wayback Machine bubble is searching the Internet Archive">
         Looking in the Archive
+      </message>
+      <message name="IDS_BRAVE_WAYBACK_MACHINE_INFOBAR_TITLE" desc="Heading on the infobar shown when the Internet Archive has an archived version of a missing page">
+        This page is missing, but an archived version is available
+      </message>
+      <message name="IDS_BRAVE_WAYBACK_MACHINE_INFOBAR_DESCRIPTION" desc="Body text on the infobar shown before automatically loading the archived version of a missing page from the Internet Archive">
+        Taking you to the archived version from <ph name="DATE">$1<ex>Feb 26, 2024</ex></ph> (<ph name="TIME_AGO">$2<ex>1 year ago</ex></ph>). <ph name="LEARN_MORE">$3<ex>Learn more.</ex></ph>
+      </message>
+      <message name="IDS_BRAVE_WAYBACK_MACHINE_INFOBAR_DESCRIPTION_NO_DATE" desc="Body text on the infobar shown before automatically loading the archived version of a missing page from the Internet Archive, when the date of the archived version is unknown">
+        Taking you to the archived version. <ph name="LEARN_MORE">$1<ex>Learn more.</ex></ph>
+      </message>
+      <message name="IDS_BRAVE_WAYBACK_MACHINE_INFOBAR_LEARN_MORE" desc="Inline link at the end of the Wayback Machine infobar description that opens a help page">
+        Learn more.
+      </message>
+      <message name="IDS_BRAVE_WAYBACK_MACHINE_INFOBAR_REDIRECT_BUTTON" desc="Label of the infobar button that counts down the seconds until the archived version of the missing page is loaded, or loads it immediately when clicked">
+        {SECONDS, plural,
+          =1 {Redirecting in 1...}
+          other {Redirecting in #...}}
       </message>
 
       <!-- Brave's copyright statement -->
