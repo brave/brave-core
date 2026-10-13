@@ -67,6 +67,7 @@ export const defaultConversationState: Mojom.ConversationState & {
   temporary: false,
   toolUseTaskState: Mojom.TaskState.kNone,
   capabilitiesEnabled: [],
+  visionModelSwitchKey: undefined,
 }
 
 const emptyTurn: Mojom.ConversationTurn = {
@@ -138,6 +139,7 @@ export function createMockConversationHandler(
     stopTask: () => {},
     setToolsAttached: () => {},
     setContentToolPermission: () => {},
+    respondToVisionModelSwitch: () => {},
 
     // Apply overrides - these will replace defaults
     ...overrides,
