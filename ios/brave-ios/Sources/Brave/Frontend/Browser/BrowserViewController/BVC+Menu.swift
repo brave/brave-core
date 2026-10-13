@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import AVKit
 import BraveCore
 import BraveShared
 import BraveUI
@@ -280,6 +281,21 @@ extension BrowserViewController {
           return .none
         }
       )
+      if AVPictureInPictureController.isPictureInPictureSupported() {
+        actions.append(
+          .init(
+            id: .pictureInPicture,
+            attributes: playlistActivity?.enabled == true ? [] : .disabled
+          ) { @MainActor [unowned self] _ in
+            self.dismiss(animated: true) {
+              self.tabManager.selectedTab?.evaluateJavaScriptUnsafe(
+                Self.requestPictureInPictureScript
+              )
+            }
+            return .none
+          }
+        )
+      }
     }
     if BraveCore.FeatureList.kBraveShredFeature.enabled {
       let isShredAvailable = tabManager.selectedTab?.visibleURL?.isShredAvailable ?? false
@@ -316,6 +332,24 @@ extension BrowserViewController {
     }
     return actions
   }
+
+  /// Requests Picture in Picture on the currently playing video element, falling back to the first
+  /// video on the page with media loaded if none are actively playing.
+  private static let requestPictureInPictureScript = """
+    (function() {
+      const videos = Array.from(document.querySelectorAll('video'));
+      const video = videos.find((v) => !v.paused && !v.ended && v.readyState > 2)
+        ?? videos.find((v) => v.readyState > 0);
+      if (!video) {
+        return;
+      }
+      if (document.pictureInPictureEnabled && !video.disablePictureInPicture) {
+        video.requestPictureInPicture().catch(() => {});
+      } else if (typeof video.webkitSetPresentationMode === 'function') {
+        video.webkitSetPresentationMode('picture-in-picture');
+      }
+    })();
+    """
 
   private var vpnMenuAction: Action {
     let alertForExpiredState: () -> UIAlertController? = { [unowned self] in

@@ -104,6 +104,13 @@ extension Strings {
       value: "Playlist",
       comment: "A button title shown on the menu that presents the Brave Playlist feature"
     )
+    public static let pictureInPicture = NSLocalizedString(
+      "ActionTitles.pictureInPicture",
+      bundle: .module,
+      value: "Picture in Picture",
+      comment:
+        "A button title shown on the menu that when tapped plays the video on the current page in Picture in Picture mode"
+    )
     public static let rewards = NSLocalizedString(
       "ActionTitles.rewards",
       bundle: .module,
