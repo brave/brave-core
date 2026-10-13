@@ -80,7 +80,7 @@ def parse_args(argv=None):
     s.add_argument("--gate-thresholds", type=float, nargs="*", default=[0.05, 0.1, 0.2, 0.3, 0.5, 0.7])
     s.add_argument("--fact-threshold", type=float, default=0.6)
     s.add_argument("--max-sensitive", type=float, default=0.3)
-    s.add_argument("--max-instruction", type=float, default=0.3)
+    s.add_argument("--max-instruction", type=float, default=0.25)
     s.add_argument("--max-short-lived", type=float, default=0.5)
     s.add_argument("--grid-fact", type=float, nargs="*", default=[0.5, 0.6, 0.7])
     s.add_argument("--grid-sensitive", type=float, nargs="*", default=[0.2, 0.25, 0.3])
