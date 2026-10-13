@@ -88,20 +88,15 @@ brave_settings_ts_files = [
   "br/config.ts",
   "br/contact_info_page.ts",
   "br/cookies_page.ts",
-  "br/edit_dictionary_page.ts",
   "br/import_data_dialog.ts",
   "br/index.ts",
   "br/page_visibility.ts",
   "br/passwords_section.ts",
   "br/payments_page.ts",
-  "br/performance_page.ts",
-  "br/printing_page.ts",
   "br/privacy_page.ts",
   "br/privacy_page_index.ts",
-  "br/reset_profile_dialog.ts",
   "br/safety_hub_page.ts",
   "br/security_page.ts",
-  "br/settings_basic_page.ts",
   "br/settings_manage_profile.ts",
   "br/settings_main.ts",
   "br/settings_menu.ts",
@@ -113,7 +108,6 @@ brave_settings_ts_files = [
   "br/site_list.ts",
   "br/add_site_dialog.ts",
   "br/site_settings_page.ts",
-  "br/sync_controls.ts",
   "br/autofill_page.ts",
   "brave_clear_browsing_data_dialog/brave_clear_browsing_data_dialog_proxy.ts",
   "brave_add_site_dialog/brave_add_site_dialog.ts",
@@ -121,7 +115,6 @@ brave_settings_ts_files = [
   "brave_default_extensions_page/brave_default_extensions_browser_proxy.ts",
   "brave_new_tab_page/brave_new_tab_browser_proxy.ts",
   "brave_privacy_page/brave_privacy_page_browser_proxy.ts",
-  "brave_reset_page/brave_reset_profile_dialog_behavior.ts",
   "brave_routes.ts",
   "brave_search_engines_page/brave_search_engines_page_browser_proxy.ts",
   "brave_sync_page/brave_sync_browser_proxy.ts",
@@ -153,6 +146,11 @@ brave_account_settings_css_files = [
   "brave_account_logged_in_row.css",
   "brave_account_row_common.css",
 ]
+
+# Matches upstream (minus chromeos)
+if (!is_mac) {
+  brave_settings_ts_files += [ "br/edit_dictionary_page.ts" ]
+}
 
 if (enable_brave_vpn_wireguard) {
   brave_settings_web_component_files +=
