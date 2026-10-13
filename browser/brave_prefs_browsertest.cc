@@ -166,9 +166,6 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest,
       policy::policy_prefs::kHideWebStoreIcon));
 
   EXPECT_FALSE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
-      prefs::kSplitViewDragAndDropEnabled));
-
-  EXPECT_FALSE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
       prefs::kWebRtcEventLogCollectionAllowed));
   EXPECT_FALSE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
       prefs::kWebRtcTextLogCollectionAllowed));

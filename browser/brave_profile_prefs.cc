@@ -281,11 +281,6 @@ void OverrideDefaultPrefValues(user_prefs::PrefRegistrySyncable* registry) {
   // against it (see components/omnibox/browser/omnibox_prefs.cc).
   registry->SetDefaultPrefValue(omnibox::kAIModeSettings, base::Value(-1));
 
-  // Disabled due to crash with tab group dragging.
-  // TODO(https://github.com/brave/brave-browser/issues/49752): Re-enable.
-  registry->SetDefaultPrefValue(prefs::kSplitViewDragAndDropEnabled,
-                                base::Value(false));
-
   // Disables WebRTC logs collection.
   registry->SetDefaultPrefValue(prefs::kWebRtcEventLogCollectionAllowed,
                                 base::Value(false));

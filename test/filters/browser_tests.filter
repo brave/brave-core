@@ -2140,14 +2140,6 @@
 -LocalNetworkAccessBrowserTest.HtmlScriptSrcAllowPermission
 -LocalNetworkAccessHtmlScriptBrowserTest.HtmlScriptSrcAllowPermission
 
-# Disabled due to crash with tab group dragging.
-# https://github.com/brave/brave-browser/issues/49752
--MultiContentsViewBrowserTest.DragAndDropEnabledPref
--MultiContentsViewBrowserTest.DropTargetLayout
--MultiContentsViewBrowserTest.HandleDropTargetViewLinkDrop_IsSupported
--MultiContentsViewBrowserTest.HandleTabDrop_EndDropTarget
--MultiContentsViewBrowserTest.HandleTabDrop_StartDropTarget
-
 # These tests fail because we don't currently support having our vertical tabs
 # support and upstream's vertical tab support active simultaneously (see
 # https://github.com/brave/brave-browser/issues/48373)
