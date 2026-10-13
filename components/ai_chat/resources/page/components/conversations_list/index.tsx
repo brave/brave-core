@@ -13,6 +13,7 @@ import * as Mojom from '../../../common/mojom'
 import { Url } from 'gen/url/mojom/url.mojom.m.js'
 import { isWorkspaceContent } from '../../../common/conversation_history_utils'
 import { useAIChat } from '../../state/ai_chat_context'
+import { useActiveChat } from '../../state/active_chat_context'
 import { getLocale } from '$web-common/locale'
 import { useConversation } from '../../state/conversation_context'
 import Alert from '@brave/leo/react/alert'
@@ -278,6 +279,7 @@ interface WorkspaceItemProps extends ConversationsListProps {
 }
 
 function WorkspaceItem(props: WorkspaceItemProps) {
+  const { createNewConversationWithWorkspace } = useActiveChat()
   const [isExpanded, setIsExpanded] = React.useState(false)
   const listId = React.useId()
   const { conversations } = props.workspace
@@ -285,28 +287,48 @@ function WorkspaceItem(props: WorkspaceItemProps) {
   // Workspaces don't have a user-facing name, so label each one with the title
   // of the conversation it was created in (the oldest attached conversation).
   const title = getConversationTitle(conversations[conversations.length - 1])
+  const newConversationLabel = getLocale(
+    S.AI_CHAT_CONVERSATION_LIST_NEW_CONVERSATION_IN_WORKSPACE,
+  )
 
   return (
     <li data-testid='workspace-item'>
-      <CollapsibleHeader
-        className={styles.workspaceHeader}
-        isExpanded={isExpanded}
-        onToggle={() => setIsExpanded((expanded) => !expanded)}
-        controlsId={listId}
-        testId='workspace-toggle'
-      >
-        <Icon
-          className={styles.workspaceIcon}
-          name={isExpanded ? 'folder-open' : 'folder'}
-        />
-        <span
-          className={styles.text}
-          title={title}
-          data-testid='workspace-title'
+      <div className={styles.workspaceRow}>
+        <CollapsibleHeader
+          className={styles.workspaceHeader}
+          isExpanded={isExpanded}
+          onToggle={() => setIsExpanded((expanded) => !expanded)}
+          controlsId={listId}
+          testId='workspace-toggle'
         >
-          {title}
-        </span>
-      </CollapsibleHeader>
+          <Icon
+            className={styles.workspaceIcon}
+            name={isExpanded ? 'folder-open' : 'folder'}
+          />
+          <span
+            className={styles.text}
+            title={title}
+            data-testid='workspace-title'
+          >
+            {title}
+          </span>
+        </CollapsibleHeader>
+        <Button
+          className={styles.workspaceNewButton}
+          fab
+          kind='plain-faint'
+          size='small'
+          aria-label={newConversationLabel}
+          title={newConversationLabel}
+          data-testid='workspace-new-conversation'
+          onClick={() => {
+            createNewConversationWithWorkspace(props.workspace.url)
+            props.setIsConversationsListOpen?.(false)
+          }}
+        >
+          <Icon name='edit-box' />
+        </Button>
+      </div>
       {isExpanded && (
         <ol
           id={listId}

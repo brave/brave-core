@@ -1164,14 +1164,16 @@ bool AIChatService::IsAIChatHistoryEnabled() {
 }
 
 std::unique_ptr<AssociatedContentDelegate>
-AIChatService::RestoreWorkspaceAssociatedContentFromUrl(const GURL& url) {
+AIChatService::RestoreWorkspaceAssociatedContentFromUrl(
+    const GURL& url,
+    const std::string& content_uuid) {
   // Note: This can happen if there's a workspace in the DB but the flag has
   // been disabled.
   if (!workspace_content_restorer_) {
     return nullptr;
   }
 
-  return workspace_content_restorer_.Run(url);
+  return workspace_content_restorer_.Run(url, content_uuid);
 }
 
 void AIChatService::OnRequestInProgressChanged(ConversationHandler* handler,

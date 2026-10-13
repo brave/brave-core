@@ -71,9 +71,9 @@ void AssociatedContentManager::LoadArchivedContent(
     auto* content = content_it->get();
     std::unique_ptr<AssociatedContentDelegate> owned_content;
     if (content->content_type == mojom::ContentType::Workspace) {
-      owned_content =
-          conversation_->ai_chat_service()
-              ->RestoreWorkspaceAssociatedContentFromUrl(content->url);
+      owned_content = conversation_->ai_chat_service()
+                          ->RestoreWorkspaceAssociatedContentFromUrl(
+                              content->url, content->uuid);
     }
 
     // Not a workspace, or workspace restoration failed, so create an archive.

@@ -1115,6 +1115,33 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
   EXPECT_EQ(cached_content[1].get().content, "The content of two");
 }
 
+TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
+       LoadArchivedContent_RestoresWorkspaceWithStoredUuid) {
+  const GURL workspace_url("workspace://1b4e28ba-2fa1-41d2-883f-0016d3cca427");
+  base::test::TestFuture<GURL, std::string> restored;
+  ai_chat_service_->SetWorkspaceContentRestorer(base::BindLambdaForTesting(
+      [&](GURL url, std::string content_uuid)
+          -> std::unique_ptr<AssociatedContentDelegate> {
+        restored.SetValue(std::move(url), std::move(content_uuid));
+        return nullptr;
+      }));
+
+  auto metadata = mojom::Conversation::New();
+  metadata->associated_content.push_back(mojom::AssociatedContent::New(
+      "workspace-content", mojom::ContentType::Workspace, "Workspace", 1,
+      workspace_url, 100, "turn-1", true));
+  auto conversation_archive = mojom::ConversationArchive::New();
+  conversation_archive->associated_content.push_back(
+      mojom::ContentArchive::New("workspace-content", "", "turn-1"));
+
+  conversation_handler_->associated_content_manager()->LoadArchivedContent(
+      metadata.get(), conversation_archive);
+
+  ASSERT_TRUE(restored.IsReady());
+  EXPECT_EQ(workspace_url, restored.Get<0>());
+  EXPECT_EQ("workspace-content", restored.Get<1>());
+}
+
 TEST_F(ConversationHandlerUnitTest, ThreadHistory) {
   base::test::ScopedFeatureList feature_list;
   feature_list.InitAndEnableFeature(features::kAIChatThreads);

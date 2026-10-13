@@ -381,7 +381,7 @@ IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentBrowserTest,
   const GURL url(base::StrCat(
       {kAIChatWorkspaceScheme, url::kStandardSchemeSeparator, uuid}));
   auto content = WorkspaceAssociatedContent::CreateFromUrl(
-      url, browser()->GetProfile(), base::DoNothing());
+      url, /*content_uuid=*/uuid, browser()->GetProfile(), base::DoNothing());
   ASSERT_TRUE(content);
   EXPECT_EQ(uuid, content->uuid());
   EXPECT_EQ(url, content->url());
@@ -432,7 +432,8 @@ IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentBrowserTest,
            GURL(base::StrCat({workspace, ":123"})),
        }) {
     EXPECT_FALSE(WorkspaceAssociatedContent::CreateFromUrl(
-        url, browser()->GetProfile(), base::DoNothing()))
+        url, /*content_uuid=*/std::nullopt, browser()->GetProfile(),
+        base::DoNothing()))
         << url.possibly_invalid_spec();
   }
 }
@@ -455,6 +456,35 @@ IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentBrowserTest, GetFileUrl) {
       WorkspaceAssociatedContent::GetFileUrl(GURL(page), "src/app.tsx"));
   EXPECT_FALSE(WorkspaceAssociatedContent::GetFileUrl(
       GURL(base::StrCat({workspace.spec(), "/path"})), "src/app.tsx"));
+}
+
+// Each attachment of a workspace has its own content uuid.
+IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentBrowserTest,
+                       CreateFromUrlAttachesWithItsOwnContentUuid) {
+  const std::string uuid = base::Uuid::GenerateRandomV4().AsLowercaseString();
+  const GURL url(base::StrCat(
+      {kAIChatWorkspaceScheme, url::kStandardSchemeSeparator, uuid}));
+  const GURL page_url(base::StrCat({content::kChromeUIUntrustedScheme,
+                                    url::kStandardSchemeSeparator, uuid,
+                                    kAIChatLeoWorkspaceUIHostSuffix, "/"}));
+
+  auto attached = WorkspaceAssociatedContent::CreateFromUrl(
+      url, /*content_uuid=*/std::nullopt, browser()->GetProfile(),
+      base::DoNothing());
+  ASSERT_TRUE(attached);
+  EXPECT_TRUE(base::Uuid::ParseLowercase(attached->uuid()).is_valid());
+  EXPECT_NE(uuid, attached->uuid());
+  EXPECT_EQ(url, attached->url());
+  EXPECT_EQ(page_url, attached->page_url());
+
+  const std::string content_uuid =
+      base::Uuid::GenerateRandomV4().AsLowercaseString();
+  auto restored = WorkspaceAssociatedContent::CreateFromUrl(
+      url, content_uuid, browser()->GetProfile(), base::DoNothing());
+  ASSERT_TRUE(restored);
+  EXPECT_EQ(content_uuid, restored->uuid());
+  EXPECT_EQ(url, restored->url());
+  EXPECT_EQ(page_url, restored->page_url());
 }
 
 // A workspace displays its contents in an iframe served from a further

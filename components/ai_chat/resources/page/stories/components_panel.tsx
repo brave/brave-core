@@ -593,6 +593,7 @@ function StoryContext(
     selectedConversationId: CONVERSATIONS[0].uuid,
     updateSelectedConversationId: () => {},
     createNewConversation: () => {},
+    createNewConversationWithWorkspace: () => {},
     isMainConversation: argsRef.current.isDefaultConversation,
     openMainConversation: () => {},
   }

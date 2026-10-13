@@ -5,6 +5,7 @@
 
 import * as React from 'react'
 import { useRoute } from '$web-common/useRoute'
+import { Url } from 'gen/url/mojom/url.mojom.m.js'
 import * as BindConversation from '../api/bind_conversation'
 import useHasConversationStarted from '../hooks/useHasConversationStarted'
 import { useAIChat } from './ai_chat_context'
@@ -18,6 +19,7 @@ export interface SelectedChatDetails
   selectedConversationId: string | undefined
   updateSelectedConversationId: (conversationId: string | undefined) => void
   createNewConversation: () => void
+  createNewConversationWithWorkspace: (workspaceUrl: Url) => void
   isMainConversation: boolean
   openMainConversation: () => void
 }
@@ -33,6 +35,7 @@ export const ActiveChatContext = React.createContext<SelectedChatDetails>({
   selectedConversationId: undefined,
   updateSelectedConversationId: () => {},
   createNewConversation: () => {},
+  createNewConversationWithWorkspace: () => {},
   isMainConversation: false,
   openMainConversation: () => {},
   // It's ok to stub undefined for now because we don't render children unless
@@ -123,6 +126,14 @@ export function ActiveChatProvider({
         // Otherwise, navigate to "/"
         updateSelectedConversation('')
       },
+      createNewConversationWithWorkspace: (workspaceUrl: Url) => {
+        setConversationAPI(
+          BindConversation.newConversation(aiChat.api, workspaceUrl),
+        )
+        if (selectedConversationId !== tabAssociatedChatId) {
+          updateSelectedConversation('')
+        }
+      },
       isMainConversation,
     }),
     [
@@ -149,11 +160,24 @@ export function ActiveChatProvider({
     }
   }, [selectedConversationId, aiChat.api])
 
+  const conversations = aiChat.api.useGetConversations().data
+
   // If the conversation ID changes explicitly to an ID or to blank,
   // we need to re-bind.
   React.useEffect(() => {
     // Handle creating a new conversation
     if (!selectedConversationId) {
+      // Keep a new conversation that's already bound, e.g. with a workspace.
+      if (
+        conversationAPI?.isNew
+        && !conversations.some(
+          (c) =>
+            c.uuid === conversationAPI.api.getState.current().conversationUuid
+            && c.hasContent,
+        )
+      ) {
+        return
+      }
       setConversationAPI(BindConversation.newConversation(aiChat.api))
       return
     }
@@ -187,8 +211,6 @@ export function ActiveChatProvider({
       conversationAPI?.close()
     }
   }, [conversationAPI])
-
-  const conversations = aiChat.api.useGetConversations().data
 
   // Handle the case where a non-existent chat has been selected:
   React.useEffect(() => {

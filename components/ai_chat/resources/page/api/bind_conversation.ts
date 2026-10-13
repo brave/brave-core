@@ -5,6 +5,7 @@
 
 import { AIChatAPI } from './ai_chat_api'
 import * as Mojom from '../../common/mojom'
+import { Url } from 'gen/url/mojom/url.mojom.m.js'
 import createConversationAPI from './conversation_api'
 
 //
@@ -60,7 +61,7 @@ export function bindConversation(
   }
 }
 
-export function newConversation(aiChat: AIChatAPI['api']) {
+export function newConversation(aiChat: AIChatAPI['api'], workspaceUrl?: Url) {
   let conversationHandler = new Mojom.ConversationHandlerRemote()
   const conversationHandlerReceiver =
     conversationHandler.$.bindNewPipeAndPassReceiver()
@@ -77,9 +78,11 @@ export function newConversation(aiChat: AIChatAPI['api']) {
   aiChat.uiHandler.newConversation(
     conversationHandlerReceiver,
     conversationUIReceiverRemote,
+    workspaceUrl ?? null,
   )
 
   return {
+    isNew: true,
     conversationHandler,
     close: () => {
       conversationAPI.close()
@@ -90,4 +93,6 @@ export function newConversation(aiChat: AIChatAPI['api']) {
   }
 }
 
-export type ConversationBindings = ReturnType<typeof newConversation>
+export type ConversationBindings = ReturnType<typeof bindConversation> & {
+  isNew?: boolean
+}

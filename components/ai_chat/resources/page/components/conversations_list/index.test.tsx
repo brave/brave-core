@@ -8,6 +8,7 @@ import '$test-utils/disable_custom_elements'
 import * as React from 'react'
 import { render, screen, act, waitFor, within } from '@testing-library/react'
 import { MockContext } from '../../state/mock_context'
+import { ActiveChatContext } from '../../state/active_chat_context'
 import { clearAllDataForTesting } from '$web-common/api'
 import ConversationsList from './index'
 import * as Mojom from '../../../common/mojom'
@@ -489,6 +490,46 @@ describe('ConversationsList', () => {
         expect(container.querySelectorAll('input[type=text]')).toHaveLength(1)
       })
       expect(workspaceB.querySelector('input[type=text]')).toBeInTheDocument()
+    })
+
+    it('new button creates a conversation with the workspace', async () => {
+      const createNewConversationWithWorkspace = jest.fn()
+      const setIsConversationsListOpen = jest.fn()
+      await renderConversationsList(
+        <MockContext
+          service={{
+            getConversations: () =>
+              Promise.resolve({ conversations: workspaceConversations }),
+          }}
+          aiChatOverrides={{ isWorkspaceToolsEnabled: true }}
+        >
+          <ActiveChatContext.Provider
+            value={{
+              api: undefined!,
+              selectedConversationId: undefined,
+              updateSelectedConversationId: () => {},
+              createNewConversation: () => {},
+              createNewConversationWithWorkspace,
+              isMainConversation: false,
+              openMainConversation: () => {},
+            }}
+          >
+            <ConversationsList
+              setIsConversationsListOpen={setIsConversationsListOpen}
+            />
+          </ActiveChatContext.Provider>
+        </MockContext>,
+      )
+
+      const workspaceB = (await screen.findAllByTestId('workspace-item'))[1]
+      act(() =>
+        within(workspaceB).getByTestId('workspace-new-conversation').click(),
+      )
+
+      expect(createNewConversationWithWorkspace).toHaveBeenCalledWith({
+        url: 'workspace://ws-b',
+      })
+      expect(setIsConversationsListOpen).toHaveBeenCalledWith(false)
     })
 
     it('is hidden while filtering', async () => {

@@ -342,9 +342,11 @@ interface AIChatUIHandler {
   DisassociateContent(AssociatedContent content, string conversation_uuid);
 
   // Make a completely new conversation, which may
-  // be bound to the associated conversation, if this UI has a target
+  // be bound to the associated conversation, if this UI has a target, with the
+  // existing workspace at |workspace_url| attached.
   NewConversation(pending_receiver<ConversationHandler> conversation,
-      pending_remote<ConversationUI> conversation_ui);
+      pending_remote<ConversationUI> conversation_ui,
+      url.mojom.Url? workspace_url);
 };
 
 // UI-side handler for messages from the browser WebUI

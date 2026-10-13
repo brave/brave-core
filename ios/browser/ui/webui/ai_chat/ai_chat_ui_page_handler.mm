@@ -417,7 +417,8 @@ void AIChatUIPageHandler::DisassociateContent(
 
 void AIChatUIPageHandler::NewConversation(
     mojo::PendingReceiver<mojom::ConversationHandler> receiver,
-    mojo::PendingRemote<mojom::ConversationUI> conversation_ui_handler) {
+    mojo::PendingRemote<mojom::ConversationUI> conversation_ui_handler,
+    const std::optional<GURL>& workspace_url) {
   ConversationHandler* conversation;
   // For standalone or global panel, don't recall conversations by their
   // associated tab.
