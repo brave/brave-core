@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <cstdint>
 #include <memory>
+#include <optional>
 #include <ranges>
 #include <string>
 #include <string_view>
@@ -596,43 +597,73 @@ void AssociatedContentManager::GetContent(base::OnceClosure callback) {
   }
 }
 
-void AssociatedContentManager::GetScreenshots(
-    mojom::ConversationHandler::GetScreenshotsCallback callback) {
+std::vector<std::string> AssociatedContentManager::GetContentUuidsWithoutText()
+    const {
+  std::vector<std::string> content_uuids;
+  for (auto* delegate : content_delegates_) {
+    if (base::TrimWhitespaceASCII(delegate->cached_page_content().content,
+                                  base::TRIM_ALL)
+            .empty()) {
+      content_uuids.push_back(delegate->uuid());
+    }
+  }
+  return content_uuids;
+}
+
+void AssociatedContentManager::GetScreenshotsOfContent(
+    const std::vector<std::string>& content_uuids,
+    GetScreenshotsOfContentCallback callback) {
   DVLOG(1) << __func__;
 
-  if (content_delegates_.size() == 0) {
-    std::move(callback).Run(std::nullopt);
+  std::vector<AssociatedContentDelegate*> delegates;
+  for (auto* delegate : content_delegates_) {
+    if (std::ranges::contains(content_uuids, delegate->uuid())) {
+      delegates.push_back(delegate);
+    }
+  }
+  if (delegates.empty()) {
+    std::move(callback).Run({});
     return;
   }
 
-  auto all_screenshots =
-      base::BarrierCallback<std::optional<std::vector<mojom::UploadedFilePtr>>>(
-          content_delegates_.size(),
-          base::BindOnce(
-              [](ConversationHandler::GetScreenshotsCallback callback,
-                 std::vector<std::optional<std::vector<mojom::UploadedFilePtr>>>
-                     screenshots) {
-                bool all_nullopt = true;
-                std::vector<mojom::UploadedFilePtr> all_screenshots;
-                for (auto& set : screenshots) {
-                  if (!set) {
-                    continue;
-                  }
+  // Each content's screenshots are tagged with its index and put back at it,
+  // so they keep the content order whichever content answers first.
+  using IndexedScreenshots =
+      std::pair<size_t, std::optional<std::vector<mojom::UploadedFilePtr>>>;
+  std::vector<std::string> uuids;
+  for (auto* delegate : delegates) {
+    uuids.push_back(delegate->uuid());
+  }
+  auto barrier = base::BarrierCallback<IndexedScreenshots>(
+      delegates.size(),
+      base::BindOnce(
+          [](GetScreenshotsOfContentCallback callback,
+             std::vector<std::string> uuids,
+             std::vector<IndexedScreenshots> results) {
+            std::vector<std::optional<std::vector<mojom::UploadedFilePtr>>>
+                ordered(uuids.size());
+            for (auto& [index, screenshots] : results) {
+              ordered[index] = std::move(screenshots);
+            }
+            ContentScreenshots content_screenshots;
+            for (size_t i = 0; i < uuids.size(); ++i) {
+              if (ordered[i] && !ordered[i]->empty()) {
+                content_screenshots.emplace_back(std::move(uuids[i]),
+                                                 std::move(*ordered[i]));
+              }
+            }
+            std::move(callback).Run(std::move(content_screenshots));
+          },
+          std::move(callback), std::move(uuids)));
 
-                  all_nullopt = false;
-                  std::ranges::move(set.value(),
-                                    std::back_inserter(all_screenshots));
-                }
-                if (all_nullopt) {
-                  std::move(callback).Run(std::nullopt);
-                } else {
-                  std::move(callback).Run(std::move(all_screenshots));
-                }
-              },
-              std::move(callback)));
-
-  for (auto* content : content_delegates_) {
-    content->GetScreenshots(all_screenshots);
+  for (size_t i = 0; i < delegates.size(); ++i) {
+    delegates[i]->GetScreenshots(base::BindOnce(
+        [](base::RepeatingCallback<void(IndexedScreenshots)> barrier,
+           size_t index,
+           std::optional<std::vector<mojom::UploadedFilePtr>> screenshots) {
+          barrier.Run({index, std::move(screenshots)});
+        },
+        barrier, i));
   }
 }
 

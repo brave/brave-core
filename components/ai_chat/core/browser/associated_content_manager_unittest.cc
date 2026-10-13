@@ -238,6 +238,97 @@ TEST_F(AssociatedContentManagerUnitTest, AssociateContentWithTurn) {
   EXPECT_FALSE(manager->AssociateContentWithTurn("unknown", "other-turn"));
 }
 
+TEST_F(AssociatedContentManagerUnitTest, GetScreenshotsOfContent) {
+  auto* manager = conversation_handler_->associated_content_manager();
+  NiceMock<MockAssociatedContent> with_text;
+  with_text.SetTextContent("Some text");
+  NiceMock<MockAssociatedContent> without_text;
+  without_text.SetTextContent(" \n ");
+  NiceMock<MockAssociatedContent> no_screenshots;
+  no_screenshots.SetTextContent("");
+  manager->AddContent(&with_text);
+  manager->AddContent(&without_text);
+  manager->AddContent(&no_screenshots);
+  ASSERT_TRUE(base::test::RunUntil(
+      [&]() { return manager->GetContentUuidsWithoutText().size() == 2u; }));
+  EXPECT_THAT(manager->GetContentUuidsWithoutText(),
+              testing::ElementsAre(without_text.uuid(), no_screenshots.uuid()));
+
+  // Only the named content is asked, and content giving no screenshots is
+  // left out.
+  EXPECT_CALL(with_text, GetScreenshots).Times(0);
+  EXPECT_CALL(without_text, GetScreenshots)
+      .WillOnce(
+          [](mojom::ConversationHandler::GetScreenshotsCallback callback) {
+            std::vector<mojom::UploadedFilePtr> screenshots;
+            screenshots.push_back(mojom::UploadedFile::New(
+                "screenshot.png", 1, std::vector<uint8_t>{1},
+                mojom::UploadedFileType::kScreenshot, std::nullopt));
+            std::move(callback).Run(std::move(screenshots));
+          });
+  EXPECT_CALL(no_screenshots, GetScreenshots)
+      .WillOnce(
+          [](mojom::ConversationHandler::GetScreenshotsCallback callback) {
+            std::move(callback).Run(std::nullopt);
+          });
+  base::test::TestFuture<AssociatedContentManager::ContentScreenshots> future;
+  manager->GetScreenshotsOfContent({without_text.uuid(), no_screenshots.uuid()},
+                                   future.GetCallback());
+  auto content_screenshots = future.Take();
+  ASSERT_EQ(content_screenshots.size(), 1u);
+  EXPECT_EQ(content_screenshots[0].first, without_text.uuid());
+  ASSERT_EQ(content_screenshots[0].second.size(), 1u);
+  EXPECT_EQ(content_screenshots[0].second[0]->filename, "screenshot.png");
+
+  // Unknown content gives nothing.
+  base::test::TestFuture<AssociatedContentManager::ContentScreenshots>
+      unknown_future;
+  manager->GetScreenshotsOfContent({"unknown"}, unknown_future.GetCallback());
+  EXPECT_TRUE(unknown_future.Take().empty());
+}
+
+TEST_F(AssociatedContentManagerUnitTest,
+       GetScreenshotsOfContent_KeepsContentOrder) {
+  auto* manager = conversation_handler_->associated_content_manager();
+  NiceMock<MockAssociatedContent> first_content;
+  NiceMock<MockAssociatedContent> second_content;
+  manager->AddContent(&first_content);
+  manager->AddContent(&second_content);
+
+  auto screenshot = [](const std::string& filename) {
+    std::vector<mojom::UploadedFilePtr> screenshots;
+    screenshots.push_back(mojom::UploadedFile::New(
+        filename, 1, std::vector<uint8_t>{1},
+        mojom::UploadedFileType::kScreenshot, std::nullopt));
+    return screenshots;
+  };
+
+  // The first content answers after the second.
+  mojom::ConversationHandler::GetScreenshotsCallback first_callback;
+  EXPECT_CALL(first_content, GetScreenshots)
+      .WillOnce(
+          [&](mojom::ConversationHandler::GetScreenshotsCallback callback) {
+            first_callback = std::move(callback);
+          });
+  EXPECT_CALL(second_content, GetScreenshots)
+      .WillOnce(
+          [&](mojom::ConversationHandler::GetScreenshotsCallback callback) {
+            std::move(callback).Run(screenshot("second.png"));
+          });
+  base::test::TestFuture<AssociatedContentManager::ContentScreenshots> future;
+  manager->GetScreenshotsOfContent(
+      {first_content.uuid(), second_content.uuid()}, future.GetCallback());
+  ASSERT_FALSE(future.IsReady());
+  std::move(first_callback).Run(screenshot("first.png"));
+
+  auto content_screenshots = future.Take();
+  ASSERT_EQ(content_screenshots.size(), 2u);
+  EXPECT_EQ(content_screenshots[0].first, first_content.uuid());
+  EXPECT_EQ(content_screenshots[0].second[0]->filename, "first.png");
+  EXPECT_EQ(content_screenshots[1].first, second_content.uuid());
+  EXPECT_EQ(content_screenshots[1].second[0]->filename, "second.png");
+}
+
 TEST_F(AssociatedContentManagerUnitTest, RemoveContentAssociatedWithTurns) {
   auto* manager = conversation_handler_->associated_content_manager();
   NiceMock<MockAssociatedContent> human_content;
