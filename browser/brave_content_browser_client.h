@@ -153,6 +153,14 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
           handshake_client,
       WillCreateWebTransportCallback callback) override;
 
+  void ConfigureNetworkContextParams(
+      content::BrowserContext* context,
+      bool in_memory,
+      const base::FilePath& relative_partition_path,
+      network::mojom::NetworkContextParams* network_context_params,
+      cert_verifier::mojom::CertVerifierCreationParams*
+          cert_verifier_creation_params) override;
+
   // Brave-only CreateWebSocket sibling injected via chromium_src. Unlike
   // upstream CreateWebSocket, it also receives the initiator renderer's
   // `process_id` and `initiator_origin` so frameless SharedWorker and
