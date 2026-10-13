@@ -294,7 +294,7 @@ and `entry` (the user turn). `latency_ms` is the time of the model call.
 | Step | Shows |
 |---|---|
 | `index_current` | The index of the learned memories is current, and the run starts. `t_ms` is the wait |
-| `loaded` | Memories and watermarks at the start |
+| `loaded` | Memories and watermarks at the start, and how many memories the user keeps as they are (`kept_forever`) |
 | `turn` | Chat, date and the text of the user turn |
 | `gate` | Probabilities, answer, keep or skip |
 | `split` | Sentences, and which ones the denylist removes |
@@ -305,14 +305,31 @@ and `entry` (the user turn). `latency_ms` is the time of the model call.
 | `rewrite_checked` | The facts that go to the relation step: the LLM facts, and the user's sentence for a sentence that no fact covers |
 | `fact` | One fact: text, labels, links |
 | `fact_dropped` | The reason: relation not certain, no LLM answer |
-| `neighbors` | The closest old memories with similarity, and the best similarity. They come from the index search and from the memories that this run wrote. `latency_ms` is the search time |
+| `neighbors` | The closest old memories with their type and similarity, and the best similarity. They come from the index search and from the memories that this run wrote. `latency_ms` is the search time |
 | `relations` | The decision model answer for each old memory |
 | `llm_relation` | The LLM answer, when the decision model is not certain |
-| `relation_applied` | The relation, and if the rules allow the text change |
+| `relation_applied` | The relation, and if the rules allow the text change. `text_change_blocked_by` gives the reason when a replace or a merge leaves the old text: the user keeps the memory as it is (`permanent`), a short-term memory, or the decision model is not certain |
 | `merge_parsed` | The merged text, the flag `no_new_details`, `too_long`. A merge has mechanical guards only |
-| `store` | `add` or `update`, the text, the labels, the old text |
+| `store` | `add` or `update`, the uuid, the text, the labels, the old text |
 | `watermark` | The date that Dreaming saved for the chat |
 | `done` | Final status and total time |
+| `edited_by_user`, `expired` | Added after the run, when the user edits a memory that has a change in the review, or when the memory expires. The change leaves the review. Same page only |
+| `keep_forever`, `release_keep_forever` | Added after the run, when the user keeps a memory as it is (or lets Dreaming change it again) while the review of the run waits. Tells if the pending change left the review. Shown in brave://leo-memory-internals, not in `report.json` |
+| `review_applied` | Added after the run, when the user ends the review: the changes written, the ones skipped because the memory changed after the run, and the count that the user discarded. Same page only |
+
+### Memory events
+
+brave://leo-memory-internals has a third tab, "Memory events", for what happens
+to the memories outside a run. They are not in `report.json`.
+
+| Action | Meaning |
+|---|---|
+| `keep_forever`, `release_keep_forever` | The user keeps a memory as it is, or lets Dreaming change it again |
+| `edited` | The user changed the text. `details.before` has the old text |
+| `deleted`, `deleted_all` | The user deleted one memory, or all learned memories |
+| `used` | Leo sent memories to a chat model (`by` is `chat_turn`) or a search tool found them (`memory_search_tool`). The last use moves, at most once a day for each memory, and so does the expiry date |
+| `expired` | The clean-up deleted a memory that Leo did not use: 30 days for short-term, 180 days for long-term. Kept memories never expire |
+| `tool_saved`, `tool_duplicate` | The memory tool added a memory to the list, or found it there already |
 
 ## 8. Add a chat set
 
@@ -375,7 +392,7 @@ change a question in `ollama_decision_client.cc`.
 
 `make_demo_profile.py` makes a profile with a mock chat history, and starts a
 browser on it. Use it to see the learned memory UI (Leo > Customization >
-Memories) and to select "Dream now".
+Memories) and to select "Learn from chats".
 
 ```sh
 ./make_demo_profile.py --force          # make the profile and start the browser
@@ -400,10 +417,10 @@ demo/demo_history.json ──► eval mode imports the chats ──► Dreaming 
 - `--keep-memories` keeps what the first run learned. `--out` changes the
   folder. `--force` replaces an old demo folder (only a folder that the script
   made).
-- `launch.sh` loads the Ollama models first, so the first "Dream now" is not
+- `launch.sh` loads the Ollama models first, so the first "Learn from chats" is not
   slow. It writes the browser log to `browser.log` in the demo folder.
 - The daily timer is one day away, so it does not run before you select "Dream
-  now". "Dream now" has a time limit of at least 5 minutes. A second click on
+  now". "Learn from chats" has a time limit of at least 5 minutes. A second click on
   the same chats reads 0 new messages. To start over, run the script again with
   `--force`.
 

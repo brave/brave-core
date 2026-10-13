@@ -70,7 +70,7 @@ each run and chat turn asked the local models, open
 `brave://leo-memory-internals` in the profile.
 
 Dreaming also runs by itself 1 minute after start. Its review waits in memory,
-and the eval reviews a waiting one before it selects "Dream now".
+and the eval reviews a waiting one before it selects "Learn from chats".
 
 ## Known issue
 

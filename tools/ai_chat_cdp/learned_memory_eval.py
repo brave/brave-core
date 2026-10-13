@@ -14,12 +14,13 @@ Steps:
   setup   prefs on; Leo > Models > Add model: the local LLM on Ollama.
   chats   types a chat set of ../learned_memory_eval/chat_sets into Leo,
           oldest first. Leo's default model answers.
-  learn   "Dream now"; nothing is stored before the review; keeps every
+  learn   "Learn from chats"; nothing is stored before the review; keeps every
           change; checks the memories against the set, that the index has
           each memory at its text version, and the settings search.
-  modify  a chat that moves the user to Munich; "Dream now"; Dream now while
-          the review waits gives kReviewPending; edits the Munich change,
-          drops the others; the edited text is stored and the index follows.
+  modify  a chat that moves the user to Munich; "Learn from chats"; a second
+          run while the review waits gives kReviewPending; edits the Munich
+          change, drops the others; the edited text is stored and the index
+          follows.
   recall  a chat turn gets the learned memories (turn_memory_lookup log).
   delete  the trash button on what "what food do I eat" finds; it leaves the
           list, the index and the search.
@@ -88,7 +89,7 @@ SEARCHES = [
     'sport I train for',
 ]
 
-LEARNED = 'LEARNED-MEMORY-SECTION'
+LEARNED = 'MEMORY-SECTION'
 LEARNED_MEMORIES = """
   const r = await sec.browserProxy_.getCustomizationSettingsHandler()
       .getLearnedMemories();
@@ -103,13 +104,12 @@ DREAM_NOW = """
 DREAM_STATE = 'return {busy: sec.isDreaming_, result: sec.dreamResult_};'
 REVIEW_STATE = """
   const d = sec.shadowRoot.querySelector('#dreamingReviewDialog');
-  const items = [...(d ? d.querySelectorAll('.review-item') : [])]
-      .filter(e => e.getClientRects().length)
-      .map(e => ({
-        change: e.querySelector('.review-change').textContent.trim(),
-        text: e.querySelector('leo-textarea').value,
-        stored: e.querySelector('.previous')?.textContent.trim() || null,
-        keep: e.querySelector('cr-checkbox').checked}));
+  // The changes in the order of the dialog: the page keeps them in that order.
+  const items = sec.reviewItems_.map(i => ({
+      change: sec.getChangeLabel_(i),
+      text: i.text,
+      stored: sec.hasStoredText_(i) ? sec.getStoredText_(i) : null,
+      keep: i.keep}));
   return {open: !!(d && d.open), pending: sec.reviewItems_.length, items,
           error: sec.reviewError_};"""
 REVIEW_ITEM = (
@@ -125,7 +125,12 @@ TRASH_BUTTON = """
     const label = row.querySelector('.label');
     if (row.getClientRects().length && label &&
         label.textContent.trim() === {text}) {{
-      row.querySelector('.memory-actions leo-button').click();
+      const trash = [...row.querySelectorAll('.memory-actions leo-button')]
+          .find(b => b.querySelector('leo-icon[name="trash"]'));
+      trash.click();
+      // The page asks first.
+      await new Promise(r => setTimeout(r, 500));
+      sec.shadowRoot.querySelector('cr-dialog .delete-button').click();
       return true;
     }}
   }}
@@ -216,7 +221,7 @@ def wait_for(predicate, limit=30):
 
 
 def dream_now(ws, limit=900):
-    """Selects "Dream now" and waits for the result line."""
+    """Selects "Learn from chats" and waits for the result line."""
     clicked = False
     for _ in range(30):  # the page can be slow while the browser indexes
         clicked = in_section(ws, LEARNED, DREAM_NOW)
@@ -224,7 +229,7 @@ def dream_now(ws, limit=900):
             break
         time.sleep(1)
     if not clicked:
-        raise RuntimeError('no Dream now button: is learned memory on?')
+        raise RuntimeError('no Learn from chats button: is learned memory on?')
     start = time.time()
     time.sleep(2)
     while time.time() - start < limit:
@@ -233,7 +238,7 @@ def dream_now(ws, limit=900):
             state['seconds'] = round(time.time() - start)
             return state
         time.sleep(3)
-    raise RuntimeError('Dream now did not finish')
+    raise RuntimeError('Learn from chats did not finish')
 
 
 def open_review(ws):
@@ -261,17 +266,26 @@ def handle_review(ws, decide, before_save=None):
     drop, edits = decide(items)
     for i in drop:
         item = REVIEW_ITEM.format(index=i)
+        # The checkbox of the change, as a user clicks it.
         in_section(
             ws,
             LEARNED,
-            f"{item}.querySelector('cr-checkbox').click(); return 1;",
+            f"{item}.querySelector('leo-checkbox').shadowRoot"
+            ".querySelector('input').click(); return 1;",
         )
     for i, text in edits.items():
         item = REVIEW_ITEM.format(index=i)
+        # The pencil opens the text box of the change, and the box gets focus.
         in_section(
             ws,
             LEARNED,
-            f"const t = {item}.querySelector('leo-textarea')"
+            f"{item}.querySelector('.review-edit-button').click(); return 1;",
+        )
+        time.sleep(0.5)
+        in_section(
+            ws,
+            LEARNED,
+            f"const t = {item}.querySelector('.review-text')"
             ".shadowRoot.querySelector('textarea');"
             't.focus(); t.select(); return 1;',
         )
@@ -304,8 +318,8 @@ def handle_review(ws, decide, before_save=None):
 
 
 def dream_and_review(ws, decide, before_save=None, rounds=4):
-    """Dream now until a run finds nothing new, and reviews each run. A run
-    of the daily timer can leave a review, or be active."""
+    """Runs "Learn from chats" until a run finds nothing new, and reviews each
+    run. A run of the daily timer can leave a review, or be active."""
     results, reviews = [], []
     for _ in range(rounds):
         if review_state(ws)['pending']:
@@ -583,7 +597,7 @@ def report_learn(result):
     out = [
         '## 1. Learn',
         '',
-        f"Dream now: {dream['result']} ({dream['seconds']} s)",
+        f"Learn from chats: {dream['result']} ({dream['seconds']} s)",
         '',
         '| Check | Label | Pass | Matched |',
         '|---|---|---|---|',
@@ -625,12 +639,12 @@ def report_modify(result):
         '',
         f'Chat: {MOVE_CHAT}',
         '',
-        f"Dream now: {result['dream']['result']}",
+        f"Learn from chats: {result['dream']['result']}",
         '',
     ]
     for review in result['reviews']:
         out += [
-            f"Review: {len(review['items'])} changes. Dream now while it "
+            f"Review: {len(review['items'])} changes. A run while it "
             f"waits: status {review['extra']} (review pending is "
             f"{REVIEW_PENDING}). Error: {review['error']}.",
             '',

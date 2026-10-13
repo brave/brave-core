@@ -141,8 +141,10 @@ def _render_step(step: dict) -> list:
     elif name == "llm_relation":
         out.append(f'- **LLM relation** vs "{step["old"]}": **{step["answer"]}**')
     elif name == "relation_applied":
+        blocked = step.get("text_change_blocked_by")
         out.append(f'- **relation applied**: {step["relation"]} with "{step["old"]}" '
-                   f'({step["old_type"]}), text change allowed: {step["text_change_allowed"]}')
+                   f'({step["old_type"]}), text change allowed: {step["text_change_allowed"]}'
+                   + (f' (blocked: {blocked})' if blocked else ''))
     elif name == "merge_parsed":
         out.append(f'- **merge parsed**: "{step["text"]}", no new details: '
                    f'{step["no_new_details"]} (flag only), too long: '
