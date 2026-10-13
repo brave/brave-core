@@ -1,0 +1,46 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Keep a blocked .onion lookup to its local tasks.
+
+      Dropping the tasks that would reach the system resolver or DoH before the
+      local lookups run lets the hosts file, otherwise left to getaddrinfo(),
+      still answer.
+    add_before_line:
+      line: '// Do initial cache lookups.'
+      code: |2
+          if (IsOnionHostnameResolutionBlocked(job_key.resolve_context.get(),
+                                               job_key.host.GetHostname())) {
+            std::erase_if(*out_tasks,
+                          [](TaskType task) { return !IsLocalTask(task); });
+          }
+
+  - description: |-
+      Fail a blocked .onion lookup that no local task answered.
+    add_before_line:
+      line:
+        'return HostCache::Entry(ERR_DNS_CACHE_MISS,
+        HostCache::Entry::SOURCE_UNKNOWN);'
+      code: |2-
+          if (IsOnionHostnameResolutionBlocked(job_key.resolve_context.get(),
+                                               job_key.host.GetHostname())) {
+            return HostCache::Entry(ERR_NAME_NOT_RESOLVED,
+                                    HostCache::Entry::SOURCE_UNKNOWN);
+          }
+
+  - description: |-
+      Skip the DoH follow-up of a blocked .onion bootstrap lookup.
+
+      StartBootstrapFollowup() starts its secure DNS job directly, so the task
+      filtering in ResolveLocally() does not apply to it.
+    preempt_function_impl:
+      function_name: HostResolverManager::StartBootstrapFollowup
+      code: |-
+        if (IsOnionHostnameResolutionBlocked(key.resolve_context.get(),
+                                             key.host.GetHostname())) {
+          return;
+        }
