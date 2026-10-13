@@ -71,6 +71,8 @@ class TestServiceObserver : public mojom::ServiceObserver {
     smart_proxy_calls_.push_back(enabled);
     MaybeQuit(smart_proxy_quit_);
   }
+
+  void OnAgentFailure() override {}
 #endif
 
   const std::vector<PurchasedStateCall>& purchased_state_calls() const {

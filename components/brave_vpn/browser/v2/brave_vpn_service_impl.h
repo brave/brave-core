@@ -92,6 +92,7 @@ class BraveVpnServiceImpl : public BraveVpnService
       GetSmartProxyRoutingStateCallback callback) override;
   void AllowLanTraffic(bool allow) override;
   void GetAllowLanTraffic(GetAllowLanTrafficCallback callback) override;
+  void ReconnectToAgent() override;
 #else   // !BUILDFLAG(IS_ANDROID)
   // mojom::ServiceHandler overrides:
   void GetPurchaseToken(GetPurchaseTokenCallback callback) override;

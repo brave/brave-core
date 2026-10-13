@@ -52,6 +52,10 @@ const observer = {
         store.dispatch(Actions.showLoadingView())
         break
     }
+  },
+
+  onAgentFailure: () => {
+    store.dispatch(Actions.agentFailure())
   }
 }
 const serviceObserver = new ServiceObserverReceiver(observer)

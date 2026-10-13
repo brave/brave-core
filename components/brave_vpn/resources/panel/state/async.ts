@@ -46,6 +46,10 @@ handler.on(Actions.connectToNewRegionAutomatically.getType(), async (store) => {
   getPanelBrowserAPI().serviceHandler.connect()
 })
 
+handler.on(Actions.reconnectToAgent.getType(), async () => {
+  getPanelBrowserAPI().serviceHandler.reconnectToAgent()
+})
+
 handler.on(Actions.connectionStateChanged.getType(), async (store) => {
   const state = getState(store)
 

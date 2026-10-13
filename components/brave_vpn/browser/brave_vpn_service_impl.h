@@ -106,6 +106,7 @@ class BraveVpnServiceImpl : public BraveVpnService,
       GetSmartProxyRoutingStateCallback callback) override;
   void AllowLanTraffic(bool allow) override;
   void GetAllowLanTraffic(GetAllowLanTrafficCallback callback) override;
+  void ReconnectToAgent() override {}
 #else   // !BUILDFLAG(IS_ANDROID)
   void GetPurchaseToken(GetPurchaseTokenCallback callback) override;
 #endif  // !BUILDFLAG(IS_ANDROID)
