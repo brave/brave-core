@@ -13,13 +13,13 @@
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/tabs/vertical_tab_strip_state_controller.h"
 #include "chrome/browser/ui/views/frame/vertical_tab_strip_region_view.h"
+#include "chrome/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "ui/compositor/layer.h"
 #include "ui/display/screen.h"
 #include "ui/gfx/geometry/rect_f.h"
 
 // Defined in //brave/browser/ui/views/tabs/vertical_tab_utils.cc.
-std::string_view BraveVerticalTabsHideCompletelyPrefName();
 bool BraveIsInVerticalTabHotCorner(const gfx::PointF& point_in_screen,
                                    BrowserView* browser_view);
 
@@ -62,7 +62,7 @@ void VerticalTabStripRegionView::ObserveHideCompletelyPref() {
   PrefService* prefs = browser_view()->GetProfile()->GetPrefs();
   hide_completely_pref_registrar_.Init(prefs);
   hide_completely_pref_registrar_.Add(
-      BraveVerticalTabsHideCompletelyPrefName(),
+      brave_tabs::kVerticalTabsHideCompletelyWhenCollapsed,
       base::BindRepeating(
           &VerticalTabStripRegionView::OnHideCompletelyPrefChanged,
           base::Unretained(this)));

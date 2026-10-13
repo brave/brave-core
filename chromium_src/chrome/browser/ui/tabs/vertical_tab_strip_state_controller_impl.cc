@@ -5,16 +5,22 @@
 
 #include "chrome/browser/ui/tabs/vertical_tab_strip_state_controller_impl.h"
 
-#include <chrome/browser/ui/tabs/vertical_tab_strip_state_controller_impl.cc>
+#include "base/feature_list.h"
+#include "chrome/browser/ui/tabs/features.h"
+#include "components/prefs/pref_service.h"
 
-// Defined in //brave/browser/ui/views/tabs/vertical_tab_utils.cc.
-bool BraveShouldHideVerticalTabsCompletely(PrefService* prefs);
+#include <chrome/browser/ui/tabs/vertical_tab_strip_state_controller_impl.cc>
 
 namespace tabs {
 
 bool VerticalTabStripStateControllerImpl::ShouldHideCompletelyWhenCollapsed()
     const {
-  return BraveShouldHideVerticalTabsCompletely(pref_service_);
+  return base::FeatureList::IsEnabled(tabs::kBraveVerticalTabHideCompletely) &&
+         pref_service_->FindPreference(
+             brave_tabs::kVerticalTabsHideCompletelyWhenCollapsed) &&
+         pref_service_->GetBoolean(
+             brave_tabs::kVerticalTabsHideCompletelyWhenCollapsed);
+  ;
 }
 
 }  // namespace tabs
