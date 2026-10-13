@@ -34,6 +34,7 @@
 #include "chrome/browser/themes/theme_service.h"
 #include "chrome/browser/themes/theme_service_factory.h"
 #include "chrome/browser/ui/actions/chrome_action_id.h"
+#include "chrome/browser/ui/browser_actions.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
@@ -804,7 +805,9 @@ class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
                 event_flags == ui::EF_LEFT_MOUSE_BUTTON);
 
     actions::ActionItem* const action =
-        actions::ActionManager::Get().FindAction(kActionShowPsstIcon);
+        actions::ActionManager::Get().FindAction(
+            kActionShowPsstIcon,
+            BrowserActions::From(browser())->root_action_item());
     ASSERT_TRUE(action);
 
     ASSERT_NO_FATAL_FAILURE(NavigateAndWaitForPsstIconVisible(url));
@@ -850,7 +853,9 @@ class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
   // failure.
   views::MenuItemView* RightClickPsstLocationBarIconAndWaitForMenu() {
     actions::ActionItem* const action =
-        actions::ActionManager::Get().FindAction(kActionShowPsstIcon);
+        actions::ActionManager::Get().FindAction(
+            kActionShowPsstIcon,
+            BrowserActions::From(browser())->root_action_item());
     if (!action) {
       return nullptr;
     }
@@ -877,7 +882,9 @@ class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
   // Waits for the PSST context menu to close.
   void WaitForPsstContextMenuClosed() {
     actions::ActionItem* const action =
-        actions::ActionManager::Get().FindAction(kActionShowPsstIcon);
+        actions::ActionManager::Get().FindAction(
+            kActionShowPsstIcon,
+            BrowserActions::From(browser())->root_action_item());
     ASSERT_TRUE(action);
     ASSERT_TRUE(
         base::test::RunUntil([&]() { return !action->GetIsShowingBubble(); }));
