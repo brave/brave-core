@@ -52,6 +52,7 @@ class WaybackMachineBubbleView : public LocationBarBubbleDelegateView {
   raw_ptr<views::View> dont_ask_again_ = nullptr;
   raw_ptr<views::View> loading_row_ = nullptr;
   raw_ptr<views::Throbber> throbber_ = nullptr;
+  bool navigate_when_found_ = false;
   base::CallbackListSubscription wayback_state_changed_subscription_;
 };
 

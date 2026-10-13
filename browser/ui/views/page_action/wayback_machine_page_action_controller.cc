@@ -100,7 +100,8 @@ WaybackMachinePageActionController::WaybackMachinePageActionController(
     : tab_(tab),
       page_action_controller_(
           static_cast<page_actions::PageActionControllerImpl&>(
-              page_action_controller)) {}
+              page_action_controller)),
+      auto_check_(tab) {}
 
 WaybackMachinePageActionController::~WaybackMachinePageActionController() {
   if (bubble_tracker_.view()) {
@@ -116,6 +117,12 @@ void WaybackMachinePageActionController::Init() {
         self->UpdatePageAction(tab->GetContents());
       },
       base::Unretained(this)));
+  will_deactivate_subscription_ =
+      tab_->RegisterWillDeactivate(base::BindRepeating(
+          [](WaybackMachinePageActionController* self, tabs::TabInterface*) {
+            self->auto_check_.Reset();
+          },
+          base::Unretained(this)));
   will_discard_contents_subscription_ =
       tab_->RegisterWillDiscardContents(base::BindRepeating(
           [](WaybackMachinePageActionController* self, tabs::TabInterface*,
@@ -141,21 +148,9 @@ WaybackMachinePageActionController::GetBubbleViewForTesting() {
 void WaybackMachinePageActionController::OnWaybackStateChanged(
     WaybackState state) {
   UpdatePageAction(tab_->GetContents());
-  if (state == WaybackState::kNeedToCheck) {
+  auto_check_.OnWaybackStateChanged(state);
+  if (state == WaybackState::kNeedToCheck && !auto_check_.is_checking()) {
     MaybeAutoShowBubble();
-  } else if (state == WaybackState::kFound) {
-    NavigateToSnapshot();
-  }
-}
-
-void WaybackMachinePageActionController::NavigateToSnapshot() {
-  content::WebContents* contents = tab_->GetContents();
-  if (!contents) {
-    return;
-  }
-  auto* tab_helper = BraveWaybackMachineTabHelper::FromWebContents(contents);
-  if (tab_helper && tab_helper->wayback_state() == WaybackState::kFound) {
-    tab_helper->NavigateToSnapshot();
   }
 }
 
@@ -194,6 +189,7 @@ void WaybackMachinePageActionController::ShowBubble(actions::ActionItem* item,
   bubble_view->ShowForReason(user_gesture
                                  ? LocationBarBubbleDelegateView::USER_GESTURE
                                  : LocationBarBubbleDelegateView::AUTOMATIC);
+  auto_check_.Reset();
 }
 
 void WaybackMachinePageActionController::MaybeAutoShowBubble() {
@@ -229,6 +225,7 @@ void WaybackMachinePageActionController::MaybeAutoShowBubble() {
 void WaybackMachinePageActionController::AttachToTabHelper(
     content::WebContents* contents) {
   wayback_state_changed_subscription_ = {};
+  auto_check_.Reset();
   if (!contents) {
     return;
   }

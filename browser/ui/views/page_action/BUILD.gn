@@ -99,6 +99,7 @@ source_set("page_action") {
 
   if (enable_brave_wayback_machine) {
     sources += [
+      "wayback_machine_auto_check.h",
       "wayback_machine_bubble_view.cc",
       "wayback_machine_bubble_view.h",
       "wayback_machine_page_action_controller.h",
@@ -131,8 +132,12 @@ source_set("impl") {
   deps = [ ":page_action" ]
 
   if (enable_brave_wayback_machine) {
-    sources += [ "wayback_machine_page_action_controller.cc" ]
+    sources += [
+      "wayback_machine_auto_check.cc",
+      "wayback_machine_page_action_controller.cc",
+    ]
     deps += [
+      "//brave/browser/infobars",
       "//brave/components/brave_wayback_machine",
       "//brave/components/vector_icons",
       "//chrome/browser/ui",
@@ -142,6 +147,7 @@ source_set("impl") {
       "//chrome/browser/ui/color:mixers",
       "//chrome/browser/ui/views/frame:browser_view_header",
       "//chrome/browser/ui/views/frame:toolbar_button_provider",
+      "//components/prefs",
       "//components/tabs:public",
       "//components/user_prefs",
       "//content/public/browser",

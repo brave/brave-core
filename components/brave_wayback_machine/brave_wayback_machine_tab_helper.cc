@@ -61,8 +61,11 @@ void BraveWaybackMachineTabHelper::FetchSnapshotInfo() {
   wayback_machine_url_fetcher_.Fetch(web_contents()->GetVisibleURL());
 }
 
-void BraveWaybackMachineTabHelper::NavigateToSnapshot() {
-  CHECK_EQ(wayback_state_, WaybackState::kFound);
+void BraveWaybackMachineTabHelper::MaybeNavigateToSnapshot() {
+  if (!snapshot_info_ || wayback_state_ == WaybackState::kLoaded) {
+    return;
+  }
+
   const GURL url = snapshot_info_->url;
   SetWaybackState(WaybackState::kLoaded);
 
