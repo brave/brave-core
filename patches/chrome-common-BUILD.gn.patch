@@ -1,5 +1,5 @@
 diff --git a/chrome/common/BUILD.gn b/chrome/common/BUILD.gn
-index 6f5f891dc689a2e7628cf731b7863264cc0ac0ab..efcb779d1bb15bd3b8aeb03c9e6114a6e0521134 100644
+index 6f5f891dc689a2e7628cf731b7863264cc0ac0ab..3fd013c3412d74c952454c7b69faf7afd82b9e27 100644
 --- a/chrome/common/BUILD.gn
 +++ b/chrome/common/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -42,14 +42,14 @@ index 6f5f891dc689a2e7628cf731b7863264cc0ac0ab..efcb779d1bb15bd3b8aeb03c9e6114a6
  
    if (is_mac || is_win || is_linux || is_chromeos) {
      deps += [ "//components/webapps/isolated_web_apps:scheme" ]
-@@ -458,6 +463,7 @@ process_version("version_header") {
- # Separate out the constants that aren't intermingled with or dependent on code
- # so that they can be used without adding any binary bloat.
- static_library("non_code_constants") {
-+  configs = [ "//brave/common:constants_configs" ]
-   sources = [
-     "chrome_constants.cc",
-     "chrome_constants.h",
+@@ -486,6 +491,7 @@ static_library("non_code_constants") {
+   if (is_chromeos) {
+     deps += [ "//ash/constants" ]
+   }
++  configs += [ "//brave/common:constants_configs" ]
+ }
+ 
+ component("chrome_features") {
 @@ -588,6 +594,7 @@ static_library("constants") {
      "//printing/buildflags",
      "//third_party/widevine/cdm:buildflags",
