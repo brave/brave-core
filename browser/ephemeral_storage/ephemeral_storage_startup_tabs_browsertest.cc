@@ -23,6 +23,7 @@
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/startup/startup_browser_creator_impl.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "chrome/common/chrome_switches.h"
 #include "chrome/common/webui_url_constants.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/keep_alive_registry/keep_alive_types.h"
@@ -116,6 +117,9 @@ class EphemeralStorageStartupTabsBrowserTest
 
     // IsFirstRun::kNo: normal launch, avoids first-run URL override.
     base::CommandLine dummy(base::CommandLine::NO_PROGRAM);
+    // kNoDefaultBrowserCheck: avoids kicking off the real async OS
+    // default-browser check
+    dummy.AppendSwitch(switches::kNoDefaultBrowserCheck);
     StartupBrowserCreatorImpl creator(base::FilePath(), dummy,
                                       chrome::startup::IsFirstRun::kNo);
     ui_test_utils::BrowserCreatedObserver browser_created_observer;
@@ -301,6 +305,8 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageStartupTabsBrowserTest,
   // is passed via the command line instead, which is honored regardless of
   // profile type.
   base::CommandLine command_line(base::CommandLine::NO_PROGRAM);
+  // Avoids kicking off the real async OS default-browser check
+  command_line.AppendSwitch(switches::kNoDefaultBrowserCheck);
   command_line.AppendArg(a_site_ephemeral_storage_url_.spec());
   StartupBrowserCreatorImpl creator(base::FilePath(), command_line,
                                     chrome::startup::IsFirstRun::kNo);
