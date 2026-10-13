@@ -14,10 +14,13 @@
 #include <utility>
 #include <vector>
 
+#include "base/check_op.h"
 #include "base/containers/fixed_flat_map.h"
 #include "base/containers/flat_map.h"
 #include "base/containers/flat_set.h"
 #include "base/containers/map_util.h"
+#include "base/containers/span.h"
+#include "base/containers/to_value_list.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
 #include "base/json/json_reader.h"
@@ -34,11 +37,16 @@
 #include "base/time/time.h"
 #include "base/timer/timer.h"
 #include "base/values.h"
+#include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_input_properties.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_utils.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
+#include "brave/components/local_ai/buildflags/buildflags.h"
+#include "chrome/browser/history/history_service_factory.h"
+#include "chrome/browser/history_embeddings/history_embeddings_service_factory.h"
+#include "chrome/browser/history_embeddings/history_embeddings_utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
@@ -47,6 +55,9 @@
 #include "chrome/browser/ui/tabs/tab_group_model.h"
 #include "chrome/browser/ui/tabs/tab_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "components/grit/brave_components_strings.h"
+#include "components/history_embeddings/content/history_embeddings_service.h"
+#include "components/keyed_service/core/service_access_type.h"
 #include "components/tab_groups/tab_group_color.h"
 #include "components/tab_groups/tab_group_id.h"
 #include "components/tab_groups/tab_group_visual_data.h"
@@ -55,6 +66,11 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "ui/base/base_window.h"
+#include "ui/base/l10n/l10n_util.h"
+
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+#include "brave/components/history_embeddings/content/open_tab_passages.h"
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
 
 static_assert(BUILDFLAG(ENABLE_AI_CHAT_TAB_MANAGEMENT_TOOL));
 static_assert(!BUILDFLAG(IS_ANDROID));
@@ -153,6 +169,14 @@ tab_groups::TabGroupVisualData ApplyGroupVisualOverrides(
     }
   }
   return visual_data;
+}
+
+size_t PassageBytes(base::span<const std::string> passages) {
+  size_t bytes = 0;
+  for (const auto& passage : passages) {
+    bytes += passage.size();
+  }
+  return bytes;
 }
 
 // A tab resolved from a tab-handle ID, together with its current location.
@@ -462,6 +486,12 @@ std::string_view TabManagementTool::Description() const {
          "the active tab, "
          "it remains active in its new location. "
          "After each operation, the updated tab list is returned. "
+         "In the result of the list operation only, tabs may include a "
+         "'passages' field with short excerpts of the page's text. It is "
+         "often absent; that implies nothing about the page, so fall back to "
+         "the title and URL. Earlier tool results may later be dropped from "
+         "the conversation, so keep anything you still need from the "
+         "passages, such as what each tab is about, in your own response. "
          "If possible and you know the operations and IDs ahead of time, "
          "try to make multiple parallel requests to use this tool without "
          "waiting for the answer. Every time this tool needs to be used, if "
@@ -530,7 +560,8 @@ bool TabManagementTool::IsAgentTool() const {
 std::variant<bool, mojom::PermissionChallengePtr>
 TabManagementTool::RequiresUserInteractionBeforeHandling(
     const mojom::ToolUseEvent& tool_use) const {
-  if (user_has_granted_permission_) {
+  if (user_has_granted_permission_ &&
+      (user_has_granted_page_content_permission_ || !CanReadPageContent())) {
     return false;
   }
   // Provide PermissionChallenge only if input is valid and we were provided
@@ -543,16 +574,79 @@ TabManagementTool::RequiresUserInteractionBeforeHandling(
   }
 
   const auto* plan = input->FindString("plan");
-  if (!plan || plan->empty()) {
-    return false;
+  if (!user_has_granted_permission_) {
+    if (!plan || plan->empty()) {
+      return false;
+    }
+  } else {
+    // Tab access is granted and page content is readable but not yet granted.
+    // Only a list sends page content, so nothing else needs asking about it.
+    const auto* action = input->FindString("action");
+    if (!action || *action != "list") {
+      return false;
+    }
   }
 
-  return mojom::PermissionChallenge::New(std::nullopt, *plan, std::nullopt,
-                                         /*supports_allow_session=*/false);
+  auto challenge = mojom::PermissionChallenge::New(
+      std::nullopt,
+      plan && !plan->empty() ? std::make_optional(*plan) : std::nullopt,
+      std::nullopt, std::nullopt, /*supports_allow_session=*/false);
+  challenge->implications = GetPermissionChallengeImplications(tool_use);
+  return challenge;
 }
 
-void TabManagementTool::UserPermissionGranted(const std::string& tool_use_id) {
+std::optional<std::string>
+TabManagementTool::GetPermissionChallengeImplications(
+    const mojom::ToolUseEvent& tool_use) const {
+  // Page content goes with the tab list whenever it can be read, since the
+  // model can't tell ahead of time whether titles and URLs will be enough.
+  // One challenge covers both, so the user is asked once.
+  if (!CanReadPageContent()) {
+    return std::nullopt;
+  }
+  return PageContentChallengeImplications();
+}
+
+void TabManagementTool::UserPermissionGranted(
+    const std::string& tool_use_id,
+    const mojom::PermissionChallenge& challenge) {
   user_has_granted_permission_ = true;
+  // Only this tool supplies the page-content implications, and only when they
+  // were shown, so the challenge the user answered says on its own whether
+  // they agreed to send page content.
+  if (challenge.implications == PageContentChallengeImplications()) {
+    user_has_granted_page_content_permission_ = true;
+  }
+}
+
+// static
+std::string TabManagementTool::PageContentChallengeImplications() {
+  return l10n_util::GetStringUTF8(
+      IDS_CHAT_UI_TOOL_TAB_MANAGEMENT_PAGE_CONTENT_PERMISSION_IMPLICATIONS);
+}
+
+void TabManagementTool::SetTabPassagesFetcherForTesting(
+    TabPassagesFetcher fetcher) {
+  tab_passages_fetcher_for_testing_ = std::move(fetcher);
+}
+
+bool TabManagementTool::CanReadPageContent() const {
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+  // The embeddings service is original-profile only, so an off-the-record
+  // profile would otherwise attach the regular profile's page text.
+  if (profile_->IsOffTheRecord() ||
+      !history_embeddings::IsHistoryEmbeddingsEnabledForProfile(profile_)) {
+    return false;
+  }
+  if (tab_passages_fetcher_for_testing_) {
+    return true;
+  }
+  return HistoryServiceFactory::GetForProfile(
+             profile_, ServiceAccessType::EXPLICIT_ACCESS) &&
+         HistoryEmbeddingsServiceFactory::GetForProfile(profile_);
+#else
+  return false;
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
 }
 
 void TabManagementTool::UseTool(const std::string& input_json,
@@ -633,9 +727,13 @@ void TabManagementTool::UseTool(const std::string& input_json,
   }
 }
 
-base::DictValue TabManagementTool::GenerateTabList() const {
+base::DictValue TabManagementTool::GenerateTabList(
+    const PassagesByUrl& passages) const {
   base::DictValue result;
   base::ListValue windows;
+  // Excerpts go to tabs in list order until this runs out; the rest fall back
+  // to their title and URL.
+  size_t passage_bytes_left = kMaxPassageBytesPerTabList;
 
   // Iterate through all browser windows for this profile
   for (BrowserWindowInterface* browser : GetAllBrowserWindowInterfaces()) {
@@ -688,6 +786,19 @@ base::DictValue TabManagementTool::GenerateTabList() const {
       tab_info.Set("title", base::UTF16ToUTF8(web_contents->GetTitle()));
       tab_info.Set("is_active", i == tab_strip->active_index());
       tab_info.Set("is_pinned", tab_strip->IsTabPinned(i));
+      const auto* tab_passages =
+          base::FindOrNull(passages, web_contents->GetURL());
+      if (tab_passages && passage_bytes_left > 0) {
+        const size_t bytes = PassageBytes(*tab_passages);
+        if (bytes <= passage_bytes_left) {
+          passage_bytes_left -= bytes;
+          tab_info.Set("passages", base::ToValueList(*tab_passages));
+        } else {
+          // Later tabs get none either, so the tabs with excerpts are always
+          // the first ones in the list.
+          passage_bytes_left = 0;
+        }
+      }
 
       // Add group information if tab is in a group
       auto group_id = tab_strip->GetTabGroupForTab(i);
@@ -710,8 +821,9 @@ base::DictValue TabManagementTool::GenerateTabList() const {
 }
 
 void TabManagementTool::SendResultWithTabList(UseToolCallback callback,
-                                              base::DictValue result) {
-  base::DictValue tab_list = GenerateTabList();
+                                              base::DictValue result,
+                                              const PassagesByUrl& passages) {
+  base::DictValue tab_list = GenerateTabList(passages);
   result.Set("windows", std::move(*tab_list.FindList("windows")));
 
   std::string json_output;
@@ -740,13 +852,76 @@ void TabManagementTool::PostTaskSendResultWithTabList(
   // We do need to collect the result on the next task since any resulting
   // browser closure won't be reflected immediately.
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-      FROM_HERE, base::BindOnce(&TabManagementTool::SendResultWithTabList,
-                                weak_ptr_factory_.GetWeakPtr(),
-                                std::move(callback), std::move(result)));
+      FROM_HERE,
+      base::BindOnce(&TabManagementTool::SendResultWithTabList,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback),
+                     std::move(result), PassagesByUrl()));
 }
 
 void TabManagementTool::HandleListTabs(UseToolCallback callback) {
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+  if (user_has_granted_page_content_permission_ && CanReadPageContent()) {
+    // Only web pages are indexed, so nothing else is worth a lookup.
+    base::flat_set<GURL> unique_urls;
+    for (BrowserWindowInterface* browser : GetAllBrowserWindowInterfaces()) {
+      if (browser->GetProfile() != profile_ || !browser->GetTabStripModel()) {
+        continue;
+      }
+      TabStripModel* tab_strip = browser->GetTabStripModel();
+      for (int i = 0; i < tab_strip->count(); ++i) {
+        const GURL& url = tab_strip->GetWebContentsAt(i)->GetURL();
+        if (url.SchemeIsHTTPOrHTTPS()) {
+          unique_urls.insert(url);
+        }
+      }
+    }
+    if (!unique_urls.empty()) {
+      std::vector<GURL> urls(unique_urls.begin(), unique_urls.end());
+      auto on_ready = base::BindOnce(&TabManagementTool::OnListPassagesReady,
+                                     weak_ptr_factory_.GetWeakPtr(),
+                                     std::move(callback), urls);
+      if (tab_passages_fetcher_for_testing_) {
+        tab_passages_fetcher_for_testing_.Run(urls, std::move(on_ready));
+      } else {
+        history_embeddings::GetPassagesForUrls(
+            HistoryServiceFactory::GetForProfile(
+                profile_, ServiceAccessType::EXPLICIT_ACCESS),
+            HistoryEmbeddingsServiceFactory::GetForProfile(profile_)
+                ->AsWeakPtr(),
+            urls, kMaxPassagesPerTab, kMaxPassageBytes, std::move(on_ready),
+            &passages_task_tracker_);
+      }
+      return;
+    }
+  }
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
   PostTaskSendResultWithTabList(std::move(callback), base::DictValue());
+}
+
+void TabManagementTool::OnListPassagesReady(
+    UseToolCallback callback,
+    std::vector<GURL> urls,
+    std::vector<std::vector<std::string>> passages) {
+  CHECK_EQ(urls.size(), passages.size());
+  PassagesByUrl passages_by_url;
+  // The read is asynchronous, so re-check that page content is still
+  // readable before attaching what it returned.
+  if (CanReadPageContent()) {
+    std::vector<std::pair<GURL, std::vector<std::string>>> entries;
+    for (size_t i = 0; i < urls.size(); ++i) {
+      if (!passages[i].empty()) {
+        entries.emplace_back(std::move(urls[i]), std::move(passages[i]));
+      }
+    }
+    passages_by_url = PassagesByUrl(std::move(entries));
+  }
+  // Matched by URL rather than position, since tabs may have moved or
+  // closed while the read was in flight.
+  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+      FROM_HERE,
+      base::BindOnce(&TabManagementTool::SendResultWithTabList,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback),
+                     base::DictValue(), std::move(passages_by_url)));
 }
 
 void TabManagementTool::HandleMoveTabs(UseToolCallback callback,

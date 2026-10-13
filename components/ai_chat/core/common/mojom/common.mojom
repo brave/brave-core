@@ -397,6 +397,10 @@ struct PermissionChallenge {
   // **https://example.com**" for website-provided (WebMCP) tools. Tools
   // must markdown-escape any untrusted values they embed.
   string? description;
+  // Human-readable, markdown-formatted account of what allowing this sends
+  // and permits, shown in place of the tool's usual implications when a tool
+  // use asks for more than they cover. Same escaping rules as `description`.
+  string? implications;
   // Whether the answer can also be recorded as the tool's standing permission,
   // which only the tools a page exposes have. Never set for the server's
   // alignment check, which is shown whatever the user answered before.
