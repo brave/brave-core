@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_WAYBACK_MACHINE_WAYBACK_MACHINE_URL_FETCHER_H_
 
 #include <memory>
+#include <optional>
 #include <string_view>
 
 #include "base/gtest_prod_util.h"
@@ -14,6 +15,7 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/time/time.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
+#include "brave/components/brave_wayback_machine/wayback_snapshot_info.h"
 
 namespace network {
 class SharedURLLoaderFactory;
@@ -30,13 +32,11 @@ class WaybackMachineURLFetcher final {
   // Receives the results of lookups started with Fetch().
   class Client {
    public:
-    // Called asynchronously once for each lookup that is not dropped.
-    // |latest_wayback_url| is an https URL on the Wayback Machine host, or
-    // empty if no snapshot is available or the response is invalid.
-    // |snapshot_time| is null if |latest_wayback_url| is empty or the time of
-    // the snapshot is unknown.
-    virtual void OnWaybackURLFetched(const GURL& latest_wayback_url,
-                                     base::Time snapshot_time) = 0;
+    // Called asynchronously once for each lookup that is not dropped, with the
+    // latest snapshot info, or nullopt if no snapshot is available or the
+    // response is invalid.
+    virtual void OnWaybackURLFetched(
+        std::optional<WaybackSnapshotInfo> snapshot) = 0;
 
    protected:
     virtual ~Client() = default;
