@@ -1,8 +1,8 @@
 diff --git a/build/android/gyp/util/resource_utils.py b/build/android/gyp/util/resource_utils.py
-index 4a37f363b6399d0b0368fc4b90594a7021dce8fa..e54b72d3aec52092273f0a93b7905216f5d626dc 100644
+index 3871cffae317509df39adb2da99b9c70dd381cbf..ce49053195872d5e8905741be3b0c2af5d6b4f20 100644
 --- a/build/android/gyp/util/resource_utils.py
 +++ b/build/android/gyp/util/resource_utils.py
-@@ -285,6 +285,7 @@ class ResourceInfoFile:
+@@ -268,6 +268,7 @@ class ResourceInfoFile:
              return
          source_path = os.path.normpath(source_path)
          new_value = self._entries.setdefault(archive_path, source_path)

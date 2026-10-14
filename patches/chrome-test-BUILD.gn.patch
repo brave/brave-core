@@ -1,5 +1,5 @@
 diff --git a/chrome/test/BUILD.gn b/chrome/test/BUILD.gn
-index a21f93489cb759c0cc14a5de831ec18fa3165174..9e59d9ff6ca5b174f35983787d50c38e8a672b57 100644
+index 9c89e53bcafcd2abcd715caf465bffb719365b03..f89e3df4176556499f58a3f6819f96ef2261e8f3 100644
 --- a/chrome/test/BUILD.gn
 +++ b/chrome/test/BUILD.gn
 @@ -14,6 +14,7 @@
@@ -26,7 +26,7 @@ index a21f93489cb759c0cc14a5de831ec18fa3165174..9e59d9ff6ca5b174f35983787d50c38e
  
    if (enable_guest_view) {
      public_deps += [ "//components/guest_view/browser:test_support" ]
-@@ -2967,6 +2970,7 @@ test("unit_tests") {
+@@ -2945,6 +2948,7 @@ test("unit_tests") {
      "//ui/strings:app_locale_settings_grit",
      "//ui/strings:ui_strings_grit",
    ]
@@ -34,7 +34,7 @@ index a21f93489cb759c0cc14a5de831ec18fa3165174..9e59d9ff6ca5b174f35983787d50c38e
  
    if (enable_devtools_frontend) {
      deps += [ "//chrome/browser/ui/webui/devtools:unit_tests" ]
-@@ -4382,6 +4386,7 @@ if (!is_android && !is_chromeos_device) {
+@@ -4355,6 +4359,7 @@ if (!is_android && !is_chromeos_device) {
      deps = [
        ":test_support",
        ":test_support_ui",

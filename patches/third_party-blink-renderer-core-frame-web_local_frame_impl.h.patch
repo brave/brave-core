@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/frame/web_local_frame_impl.h b/third_party/blink/renderer/core/frame/web_local_frame_impl.h
-index c8806c6e842ac2af397049ff94b5ebd9de08162f..771adf1cf159aba60746b2ccdd383cc9e0f2a91f 100644
+index 88dfddf28b8862fc2e7c04e72c51aaaaac0070e5..60c0a2e23ba0574d3714167ae1cc86e6e09282fe 100644
 --- a/third_party/blink/renderer/core/frame/web_local_frame_impl.h
 +++ b/third_party/blink/renderer/core/frame/web_local_frame_impl.h
-@@ -120,6 +120,7 @@ class CORE_EXPORT WebLocalFrameImpl final
+@@ -121,6 +121,7 @@ class CORE_EXPORT WebLocalFrameImpl final
    bool IsLoading() const override;
  
    // WebLocalFrame overrides:
@@ -10,7 +10,7 @@ index c8806c6e842ac2af397049ff94b5ebd9de08162f..771adf1cf159aba60746b2ccdd383cc9
    WebLocalFrameImpl* CreateLocalChild(
        mojom::blink::TreeScopeType,
        WebLocalFrameClient*,
-@@ -597,6 +598,8 @@ class CORE_EXPORT WebLocalFrameImpl final
+@@ -599,6 +600,8 @@ class CORE_EXPORT WebLocalFrameImpl final
  
    void WillSendSubmitEvent(const WebFormElement& form);
  
