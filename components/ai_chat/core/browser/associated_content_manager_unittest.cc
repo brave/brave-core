@@ -102,6 +102,9 @@ class TestConversationUI : public mojom::ConversationUI {
 #endif
   void OnAssociatedContentInfoChanged(
       std::vector<mojom::AssociatedContentPtr> associated_content) override {}
+  void OnContentAgentChanged(bool is_content_agent_chosen,
+                             const std::vector<mojom::ConversationCapability>&
+                                 capabilities_enabled) override {}
   void OnConversationDeleted() override {}
 
  private:

@@ -264,7 +264,29 @@ const InputBox = React.forwardRef<InputBoxHandle, InputBoxProps>(
       props.context.getPluralString,
     )
 
+    const { isContentAgentUserSelectable } = aiChatContext.api.useState().data
+    const isContentAgentOn = conversationState.capabilitiesEnabled.includes(
+      Mojom.ConversationCapability.CONTENT_AGENT,
+    )
+    // The button is either a per-conversation toggle or the shortcut into the
+    // dedicated agent profile, never both: once the user can choose here,
+    // sending them to another profile is not what they asked for.
+    const showContentAgentButton =
+      isContentAgentUserSelectable
+      || (props.context.isAIChatAgentProfileFeatureEnabled
+        && !props.context.isAIChatAgentProfile)
+    const showAgentProfileIndicator =
+      !isContentAgentUserSelectable
+      && props.context.isAIChatAgentProfileFeatureEnabled
+      && props.context.isAIChatAgentProfile
+
     const handleContentAgentToggle = () => {
+      if (isContentAgentUserSelectable) {
+        conversationContext.api.conversationHandler.setContentAgentChosen(
+          !conversationState.isContentAgentChosen,
+        )
+        return
+      }
       props.context.openAIChatAgentProfile()
     }
 
@@ -284,9 +306,7 @@ const InputBox = React.forwardRef<InputBoxHandle, InputBoxProps>(
       ? props.context.associatedContentInfo.filter((c) => c.toolsAttached)
       : []
     const showTaskStateActions =
-      conversationState.capabilitiesEnabled.includes(
-        Mojom.ConversationCapability.CONTENT_AGENT,
-      )
+      isContentAgentOn
       && props.context.toolUseTaskState !== Mojom.TaskState.kNone
       && props.context.toolUseTaskState !== Mojom.TaskState.kStopped
     const isSendButtonDisabled =
@@ -304,33 +324,31 @@ const InputBox = React.forwardRef<InputBoxHandle, InputBoxProps>(
         className={styles.form}
         onKeyDownCapture={handleOnKeyDown}
       >
-        {props.context.isAIChatAgentProfileFeatureEnabled
-          && props.context.isAIChatAgentProfile
-          && !props.conversationStarted && (
-            <div className={styles.contentAgentWarning}>
-              <div className={styles.contentAgentWarningIcon}>
-                <Icon name='leo-cursor-filled' />
-              </div>
-              <div className={styles.contentAgentWarningText}>
-                {formatLocale(S.CHAT_UI_CONTENT_AGENT_WARNING_TEXT, {
-                  $1: (content) => (
-                    <a
-                      // While we preventDefault onClick, we still need to pass
-                      // the href here so we can show link preview.
-                      href={LEARN_MORE_CONTENT_AGENT_URL}
-                      className={styles.learnMoreLink}
-                      onClick={(e) => {
-                        e.preventDefault()
-                        handleLearnMoreClicked()
-                      }}
-                    >
-                      {content}
-                    </a>
-                  ),
-                })}
-              </div>
+        {isContentAgentOn && !props.conversationStarted && (
+          <div className={styles.contentAgentWarning}>
+            <div className={styles.contentAgentWarningIcon}>
+              <Icon name='leo-cursor-filled' />
             </div>
-          )}
+            <div className={styles.contentAgentWarningText}>
+              {formatLocale(S.CHAT_UI_CONTENT_AGENT_WARNING_TEXT, {
+                $1: (content) => (
+                  <a
+                    // While we preventDefault onClick, we still need to pass
+                    // the href here so we can show link preview.
+                    href={LEARN_MORE_CONTENT_AGENT_URL}
+                    className={styles.learnMoreLink}
+                    onClick={(e) => {
+                      e.preventDefault()
+                      handleLearnMoreClicked()
+                    }}
+                  >
+                    {content}
+                  </a>
+                ),
+              })}
+            </div>
+          </div>
+        )}
 
         {showTaskStateActions && (
           <div
@@ -477,32 +495,37 @@ const InputBox = React.forwardRef<InputBoxHandle, InputBoxProps>(
                     : undefined
                 }
               />
-              {props.context.isAIChatAgentProfileFeatureEnabled
-                && !props.context.isAIChatAgentProfile && (
-                  <Button
-                    fab
-                    kind='plain-faint'
-                    onClick={handleContentAgentToggle}
-                    title={getLocale(S.CHAT_UI_AI_BROWSING_TOGGLE_BUTTON_LABEL)}
+              {showContentAgentButton && (
+                <Button
+                  fab
+                  kind='plain-faint'
+                  onClick={handleContentAgentToggle}
+                  title={getLocale(S.CHAT_UI_AI_BROWSING_TOGGLE_BUTTON_LABEL)}
+                  data-testid='content-agent-button'
+                >
+                  <Icon
+                    className={classnames({
+                      [styles.contentAgentButtonEnabled]:
+                        conversationState.isContentAgentChosen,
+                    })}
+                    name='leo-cursor'
+                  />
+                </Button>
+              )}
+              {showAgentProfileIndicator && (
+                <div data-testid='agent-profile-tooltip'>
+                  <Tooltip
+                    text={getLocale(
+                      S.CHAT_UI_CONTENT_AGENT_PROFILE_BUTTON_LABEL,
+                    )}
                   >
-                    <Icon name='leo-cursor' />
-                  </Button>
-                )}
-              {props.context.isAIChatAgentProfileFeatureEnabled
-                && props.context.isAIChatAgentProfile && (
-                  <div data-testid='agent-profile-tooltip'>
-                    <Tooltip
-                      text={getLocale(
-                        S.CHAT_UI_CONTENT_AGENT_PROFILE_BUTTON_LABEL,
-                      )}
-                    >
-                      <Icon
-                        className={styles.contentAgentButtonEnabled}
-                        name='leo-cursor'
-                      />
-                    </Tooltip>
-                  </div>
-                )}
+                    <Icon
+                      className={styles.contentAgentButtonEnabled}
+                      name='leo-cursor'
+                    />
+                  </Tooltip>
+                </div>
+              )}
             </div>
             <div className={styles.modelSelectorAndSendButton}>
               <ModelSelector />
