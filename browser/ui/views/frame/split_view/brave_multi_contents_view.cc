@@ -16,8 +16,8 @@
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/contents_web_view.h"
 #include "chrome/browser/ui/views/frame/multi_contents_background_view.h"
-#include "chrome/browser/ui/views/frame/multi_contents_resize_area.h"
 #include "chrome/browser/ui/views/frame/multi_contents_view_delegate.h"
+#include "components/split_tabs/split_tab_visual_data.h"
 #include "components/tabs/public/tab_interface.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/views/layout/layout_provider.h"
@@ -26,19 +26,15 @@
 namespace {
 
 // Returns |corner_radii| with the corners that meet the split divider replaced
-// by the smaller border radius.
+// by the smaller border radius. Which corners those are depends on |layout|:
+// the divider is vertical for kSideBySide and horizontal for kStacked.
 gfx::RoundedCornersF GetSplitContentsCornerRadii(
     const gfx::RoundedCornersF& corner_radii,
+    split_tabs::SplitTabLayout layout,
     bool is_first,
     bool is_last) {
   if (corner_radii.IsEmpty()) {
     return corner_radii;
-  }
-
-  // In RTL, the first split view is on the right and the last is on the left.
-  // Swap directions before setting the visual right and left radii.
-  if (base::i18n::IsRTL()) {
-    is_last = std::exchange(is_first, is_last);
   }
 
   const float adjacent_edge_radius =
@@ -46,13 +42,30 @@ gfx::RoundedCornersF GetSplitContentsCornerRadii(
           views::ShapeContextTokensOverride::kRoundedCornersBorderRadius);
 
   gfx::RoundedCornersF split_radii = corner_radii;
-  if (!is_first) {
-    split_radii.set_upper_left(adjacent_edge_radius);
-    split_radii.set_lower_left(adjacent_edge_radius);
-  }
-  if (!is_last) {
-    split_radii.set_upper_right(adjacent_edge_radius);
-    split_radii.set_lower_right(adjacent_edge_radius);
+  if (layout == split_tabs::SplitTabLayout::kSideBySide) {
+    // In RTL, the first split view is on the right and the last is on the left.
+    // Swap directions before setting the visual right and left radii.
+    if (base::i18n::IsRTL()) {
+      is_last = std::exchange(is_first, is_last);
+    }
+
+    if (!is_first) {
+      split_radii.set_upper_left(adjacent_edge_radius);
+      split_radii.set_lower_left(adjacent_edge_radius);
+    }
+    if (!is_last) {
+      split_radii.set_upper_right(adjacent_edge_radius);
+      split_radii.set_lower_right(adjacent_edge_radius);
+    }
+  } else {
+    if (!is_first) {
+      split_radii.set_upper_left(adjacent_edge_radius);
+      split_radii.set_upper_right(adjacent_edge_radius);
+    }
+    if (!is_last) {
+      split_radii.set_lower_left(adjacent_edge_radius);
+      split_radii.set_lower_right(adjacent_edge_radius);
+    }
   }
 
   return split_radii;
@@ -64,15 +77,6 @@ gfx::RoundedCornersF GetSplitContentsCornerRadii(
 BraveMultiContentsView* BraveMultiContentsView::From(MultiContentsView* view) {
   CHECK(view);
   return static_cast<BraveMultiContentsView*>(view);
-}
-
-BraveMultiContentsView::BraveMultiContentsView(
-    BrowserView* browser_view,
-    std::unique_ptr<MultiContentsViewDelegate> delegate)
-    : MultiContentsView(browser_view, std::move(delegate)) {
-  // Use rounded corners margin as resize area's width.
-  resize_area_->SetPreferredSize(
-      gfx::Size(kRoundedCornersContentsViewMargin, 0));
 }
 
 BraveMultiContentsView::~BraveMultiContentsView() = default;
@@ -151,8 +155,8 @@ void BraveMultiContentsView::UpdateContentsCornerRadii(
     if (is_in_split) {
       const bool is_first = i == 0;
       const bool is_last = i == view_count - 1;
-      container_view->SetContentsCornerRadii(
-          GetSplitContentsCornerRadii(corner_radii, is_first, is_last));
+      container_view->SetContentsCornerRadii(GetSplitContentsCornerRadii(
+          corner_radii, GetSplitLayout(), is_first, is_last));
     } else {
       container_view->SetContentsCornerRadii(corner_radii);
     }

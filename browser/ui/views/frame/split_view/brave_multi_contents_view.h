@@ -6,7 +6,6 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_FRAME_SPLIT_VIEW_BRAVE_MULTI_CONTENTS_VIEW_H_
 #define BRAVE_BROWSER_UI_VIEWS_FRAME_SPLIT_VIEW_BRAVE_MULTI_CONTENTS_VIEW_H_
 
-#include <memory>
 #include <vector>
 
 #include "base/gtest_prod_util.h"
@@ -31,8 +30,7 @@ class BraveMultiContentsView : public MultiContentsView {
  public:
   static BraveMultiContentsView* From(MultiContentsView* view);
 
-  BraveMultiContentsView(BrowserView* browser_view,
-                         std::unique_ptr<MultiContentsViewDelegate> delegate);
+  using MultiContentsView::MultiContentsView;
   ~BraveMultiContentsView() override;
 
   void UseContentsContainerViewForWebPanel();

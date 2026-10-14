@@ -369,7 +369,8 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest, BraveMultiContentsViewTest) {
   EXPECT_FALSE(
       browser_view->top_container_separator_for_testing()->GetVisible());
   EXPECT_TRUE(split_view_separator()->GetVisible());
-  EXPECT_EQ(4, split_view_separator()->GetPreferredSize().width());
+  EXPECT_EQ(kRoundedCornersContentsViewMargin,
+            split_view_separator()->GetPreferredSize().width());
 
   // Check corner radius.
   auto* multi_contents_view = brave_multi_contents_view();
@@ -448,6 +449,34 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest, BraveMultiContentsViewTest) {
     return std::abs(start_contents_web_view->width() -
                     end_contents_web_view->width()) <= 1;
   }));
+}
+
+// The resize area's preferred size is recomputed by upstream on every layout
+// change, so check that the divider keeps Brave's thickness across a
+// side-by-side -> stacked -> side-by-side round trip.
+IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest, ResizeAreaSizeAfterLayoutChange) {
+  NewSplitTab();
+  RunScheduledLayouts();
+
+  EXPECT_EQ(kRoundedCornersContentsViewMargin,
+            split_view_separator()->GetPreferredSize().width());
+
+  auto* tab_strip_model = browser()->tab_strip_model();
+  auto split_id =
+      tab_strip_model->GetSplitForTab(tab_strip_model->active_index());
+  ASSERT_TRUE(split_id);
+
+  tab_strip_model->UpdateSplitLayout(*split_id,
+                                     split_tabs::SplitTabLayout::kStacked);
+  RunScheduledLayouts();
+  EXPECT_EQ(kRoundedCornersContentsViewMargin,
+            split_view_separator()->GetPreferredSize().height());
+
+  tab_strip_model->UpdateSplitLayout(*split_id,
+                                     split_tabs::SplitTabLayout::kSideBySide);
+  RunScheduledLayouts();
+  EXPECT_EQ(kRoundedCornersContentsViewMargin,
+            split_view_separator()->GetPreferredSize().width());
 }
 
 IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest, SelectTabTest) {
