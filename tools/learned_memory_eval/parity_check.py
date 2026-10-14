@@ -107,12 +107,24 @@ def rebuild(kind: str, body: dict) -> str:
     user = _messages(body)[1]
     if kind == "rewrite":
         date, sentences = _split_rewrite(user)
-        return rq.chat_body(model, *rq.rewrite_messages(sentences, date))
+        return rq.chat_body(
+            model,
+            *rq.rewrite_messages(sentences, date),
+            rq.llm_extra("rewrite", "current"),
+        )
     old, new = _split_pair(user)
     if kind == "relation-llm":
-        return rq.chat_body(model, *rq.relation_llm_messages(new, old))
+        return rq.chat_body(
+            model,
+            *rq.relation_llm_messages(new, old),
+            rq.llm_extra("relation-llm", "current"),
+        )
     if kind == "merge":
-        return rq.chat_body(model, *rq.merge_messages(old, new))
+        return rq.chat_body(
+            model,
+            *rq.merge_messages(old, new),
+            rq.llm_extra("merge", "current"),
+        )
     raise ValueError(f"no builder for {kind}")
 
 

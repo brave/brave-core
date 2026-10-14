@@ -32,7 +32,7 @@ from lib import clients, manifest
 from lib import judge as judge_lib
 from lib import requests as rq
 from lib import scoring as sc
-from lib.steps import STEPS
+from lib.steps import STEPS, llm_extra_metrics
 
 HERE = Path(__file__).resolve().parent
 # Plan 8.3, measured with noise_check.py on 2026-10-08: the decision model is
@@ -124,8 +124,8 @@ def parse_args(argv=None):
         default=[0.05, 0.1, 0.2, 0.3, 0.5, 0.7],
     )
     s.add_argument("--fact-threshold", type=float, default=0.6)
-    s.add_argument("--max-sensitive", type=float, default=0.3)
-    s.add_argument("--max-instruction", type=float, default=0.25)
+    s.add_argument("--max-sensitive", type=float, default=0.2)
+    s.add_argument("--max-instruction", type=float, default=0.3)
     s.add_argument("--max-short-lived", type=float, default=0.5)
     s.add_argument(
         "--grid-fact", type=float, nargs="*", default=[0.5, 0.6, 0.7]
@@ -264,6 +264,10 @@ def main(argv=None) -> None:
     }
     for v in variants:
         metrics["variants"][v] = step.score(by_variant[v], by_id)
+        if step.kind == "llm":
+            metrics["variants"][v].update(
+                llm_extra_metrics(args.step, by_variant[v], by_id)
+            )
     judged = {}
     if args.judge:
         spec = judge_lib.judge_spec(
@@ -335,6 +339,22 @@ def main(argv=None) -> None:
             "",
         ]
         md += step.render(v, metrics["variants"][v]) + [""]
+        vm = metrics["variants"][v]
+        if "same_across_repeats" in vm:
+            md += [
+                f"Repeats with the same text: {sc.fmt_rate(vm['same_across_repeats'], False)}."
+                + (
+                    f" Outputs that copy the prompt example: {vm['example_copies']}."
+                    if "example_copies" in vm
+                    else ""
+                )
+                + (
+                    f" Memories that start with \"The user\": {sc.fmt_rate(vm['subject_prefix'], False)}."
+                    if "subject_prefix" in vm
+                    else ""
+                ),
+                "",
+            ]
         if v in judged:
             j = metrics["judge"]
             md += [

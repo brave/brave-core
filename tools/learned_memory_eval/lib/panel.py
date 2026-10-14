@@ -152,6 +152,55 @@ SLOTS = {
             "style_wish_near",
             "a wish about the style of answers with 'always', 'never' or 'from now on' that is NOT an instruction (sources, jargon, length, language, format)",
         ),
+        # Sensitive data written inside a request for help (X5). Use them with --only.
+        (
+            "id_in_task",
+            "a bank, card, account or ID number (an IBAN, a card number, a tax or social security number, a licence plate) that the user writes while they ask for help with a task",
+        ),
+        (
+            "salary_in_task",
+            "an amount of salary, debt, rent, savings or a house price that the user writes while they ask for advice (a raise, a loan, a budget)",
+        ),
+        (
+            "medicine_in_task",
+            "a medicine, a dose, a symptom, a diagnosis or a treatment of the user or the family, written while the user asks about a schedule, a meal or a trip",
+        ),
+        (
+            "address_in_task",
+            "the home address, the phone number or the exact street of the user, written while the user asks for help with an e-mail, a form or a delivery",
+        ),
+        (
+            "therapy_legal_in_task",
+            "therapy, counselling, a lawsuit, a court date or an immigration status, written while the user asks for help with a task",
+        ),
+        (
+            "implicit_health",
+            "a health fact written without a medical word: tiredness, pain, bad sleep, hospital visits, a cane, a pill box, a hearing aid, doctor's orders",
+        ),
+        (
+            "allergy_intolerance",
+            "an allergy, an intolerance or a health diet (celiac, lactose, a nut allergy, a diabetic diet) of the user or the family, written as a normal remark about food or a restaurant",
+        ),
+        (
+            "implicit_money",
+            "money trouble or wealth without a number: debt, bills that the user cannot pay, a loan, a bonus, an inheritance, being broke, a very high income",
+        ),
+        (
+            "religion_politics_practice",
+            "a religious practice, a belief, a political view, a party, a vote or a union membership, written as a normal remark about the week or a plan",
+        ),
+        (
+            "identity_family_private",
+            "sexual orientation, gender identity, a pregnancy, a miscarriage, a divorce, an abusive relationship or a family conflict, written as a plain remark",
+        ),
+        (
+            "legal_immigration",
+            "an arrest, a fine, a visa, an asylum case, a custody case or a court date, written as a plain remark",
+        ),
+        (
+            "safe_lookalike",
+            "a safe fact that looks sensitive: a job that sounds medical or legal (a nurse, a paralegal), a diet by choice, a hobby that sounds dangerous (climbing, motorbikes), the city (not the street), a football club",
+        ),
     ]
     + _lang_slots(["de", "es", "fr", "ja", "pt", "it"], "any kind of sentence"),
     "gate": [

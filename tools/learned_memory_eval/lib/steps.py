@@ -759,7 +759,11 @@ class Rewrite(Step):
             sentences, case["turn_date"], variant
         )
         res = ctx.llm.complete(
-            ctx.model, rq.chat_body(ctx.model, system, user), repeat
+            ctx.model,
+            rq.chat_body(
+                ctx.model, system, user, rq.llm_extra("rewrite", variant)
+            ),
+            repeat,
         )
         parsed = (
             rq.parse_rewrite_answer(res["content"] or "", len(sentences))
@@ -912,7 +916,11 @@ class RelationLlm(Step):
             case["new"], case["old"], variant
         )
         res = ctx.llm.complete(
-            ctx.model, rq.chat_body(ctx.model, system, user), repeat
+            ctx.model,
+            rq.chat_body(
+                ctx.model, system, user, rq.llm_extra("relation-llm", variant)
+            ),
+            repeat,
         )
         answer = (
             rq.parse_relation_answer(res["content"] or "")
@@ -998,7 +1006,11 @@ class Merge(Step):
     def run(self, case, variant, repeat, ctx):
         system, user = rq.merge_messages(case["old"], case["new"], variant)
         res = ctx.llm.complete(
-            ctx.model, rq.chat_body(ctx.model, system, user), repeat
+            ctx.model,
+            rq.chat_body(
+                ctx.model, system, user, rq.llm_extra("merge", variant)
+            ),
+            repeat,
         )
         merged = (
             rq.parse_merge_answer(res["content"] or "")
@@ -1112,3 +1124,51 @@ def _confusion(confusion: dict, columns: list) -> list:
             + " |"
         )
     return md
+
+
+# ---- extra numbers for the LLM steps (X11, X1) -------------------------------
+EXAMPLE_WORDS = ("berlin", "violin")  # the examples of the prompt style rules
+SUBJECT_PREFIX = ("the user", "user ")  # the style rules say: no subject
+
+
+def llm_extra_metrics(step: str, records: list, cases: dict) -> dict:
+    """Numbers that need all repeats of a case:
+    same_across_repeats  cases whose repeats gave the same text (X11)
+    example_copies       outputs that contain the example of the prompt, and the
+                         input does not (X1)"""
+    by_id: dict = {}
+    for r in records:
+        by_id.setdefault(r["id"], []).append(r)
+    multi = [rs for rs in by_id.values() if len(rs) > 1]
+    same = sum(1 for rs in multi if len({x.get("content") for x in rs}) == 1)
+    copies = 0
+    for r in records:
+        case = cases[r["id"]]
+        source = " ".join(
+            case.get("sentences") or [case.get("old", ""), case.get("new", "")]
+        ).lower()
+        if step == "rewrite":
+            texts = [f["text"] for f in r.get("facts", [])]
+        elif step == "merge":
+            texts = [r["text"]] if r.get("text") else []
+        else:
+            texts = []
+        if any(
+            w in t.lower() and w not in source
+            for t in texts
+            for w in EXAMPLE_WORDS
+        ):
+            copies += 1
+    out = {"same_across_repeats": sc.rate(same, len(multi))}
+    if step in ("rewrite", "merge"):
+        out["example_copies"] = copies
+        texts = (
+            [f["text"] for r in records for f in r.get("facts", [])]
+            if step == "rewrite"
+            else [r["text"] for r in records if r.get("text")]
+        )
+        with_subject = sum(
+            1 for t in texts if t.strip().lower().startswith(SUBJECT_PREFIX)
+        )
+        out["subject_prefix"] = sc.rate(with_subject, len(texts))
+    return out

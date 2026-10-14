@@ -285,10 +285,10 @@ const base::FeatureParam<double> kLearnedMemoryFactThreshold{
     &kAIChatLearnedMemory, "fact_threshold", 0.6};
 
 const base::FeatureParam<double> kLearnedMemoryMaxSensitive{
-    &kAIChatLearnedMemory, "max_sensitive", 0.3};
+    &kAIChatLearnedMemory, "max_sensitive", 0.2};
 
 const base::FeatureParam<double> kLearnedMemoryMaxInstruction{
-    &kAIChatLearnedMemory, "max_instruction", 0.25};
+    &kAIChatLearnedMemory, "max_instruction", 0.3};
 
 const base::FeatureParam<double> kLearnedMemoryMaxShortLived{
     &kAIChatLearnedMemory, "max_short_lived", 0.5};

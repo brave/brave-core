@@ -64,8 +64,10 @@ class OAIAPIClient {
 
 #if BUILDFLAG(ENABLE_LOCAL_AI)
   // Sends a request with no stream and no tools, and adds "reasoning_effort"
-  // to the body. Learned memory uses "none", so that a local thinking model
-  // (for example qwen3.5 on Ollama) answers in seconds, not minutes.
+  // and "temperature": 0 to the body. Learned memory uses "none", so that a
+  // local thinking model (for example qwen3.5 on Ollama) answers in seconds,
+  // not minutes, and temperature 0, so that the same sentences give the same
+  // memory text.
   // |model_options| must hold a CustomModelOptions variant.
   void PerformRequestWithReasoningEffort(
       const mojom::ModelOptions& model_options,

@@ -31,9 +31,9 @@ std::string SentenceResponse(double fact) {
   return base::StringPrintf(
       R"({"answers": {
         "fact": {"type": "noul", "noul": %f},
-        "safety": {"type": "choice", "choice": "ok", "probabilities": {
-          "ok": 0.9, "sensitive": 0.04, "instruction": 0.02,
-          "short_lived": 0.02, "not_about_user": 0.02}},
+        "safety_sensitive": {"type": "noul", "noul": 0.04},
+        "safety_instruction": {"type": "noul", "noul": 0.02},
+        "safety_short_lived": {"type": "noul", "noul": 0.02},
         "category": {"type": "choice", "choice": "preference",
           "probabilities": {"personal_fact": 0.1, "preference": 0.85,
                             "topic": 0.05}},
@@ -109,7 +109,8 @@ TEST_F(OllamaDecisionClientTest, SentenceDecisionsKeepTheOrder) {
   ASSERT_EQ(decisions->size(), 2u);
   EXPECT_DOUBLE_EQ((*decisions)[0].fact.at(true), 0.9);
   EXPECT_DOUBLE_EQ((*decisions)[1].fact.at(true), 0.2);
-  EXPECT_DOUBLE_EQ((*decisions)[0].safety.at(SafetyAnswer::kOk), 0.9);
+  EXPECT_DOUBLE_EQ((*decisions)[0].safety.at(SafetyAnswer::kSensitive), 0.04);
+  EXPECT_DOUBLE_EQ((*decisions)[0].safety.at(SafetyAnswer::kOk), 0.96);
   EXPECT_DOUBLE_EQ(
       (*decisions)[0].category.at(LearnedMemoryCategory::kPreference), 0.85);
   // One request for each sentence.
@@ -131,10 +132,9 @@ TEST_F(OllamaDecisionClientTest, RequestKeepsTheOrderOfQuestionsAndOptions) {
   };
   EXPECT_TRUE(before("\"fact\":{", "\"category\":{"));
   EXPECT_TRUE(before("\"category\":{", "\"temporary\":{"));
-  EXPECT_TRUE(before("\"temporary\":{", "\"safety\":{"));
-  EXPECT_TRUE(before("\"sensitive\":", "\"instruction\":"));
-  EXPECT_TRUE(before("\"short_lived\":", "\"not_about_user\":"));
-  EXPECT_TRUE(before("\"not_about_user\":", "\"ok\":"));
+  EXPECT_TRUE(before("\"temporary\":{", "\"safety_sensitive\":{"));
+  EXPECT_TRUE(before("\"safety_sensitive\":{", "\"safety_instruction\":{"));
+  EXPECT_TRUE(before("\"safety_instruction\":{", "\"safety_short_lived\":{"));
 }
 
 TEST_F(OllamaDecisionClientTest, ObserverGetsDreamingRequestsAndAnswers) {

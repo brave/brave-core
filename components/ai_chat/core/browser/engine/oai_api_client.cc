@@ -345,10 +345,12 @@ void OAIAPIClient::PerformRequestWithReasoningEffort(
     std::vector<OAIMessage> messages,
     std::string_view reasoning_effort,
     GenerationCompletedCallback completed_callback) {
-  PerformRequestImpl(
-      model_options, std::move(messages), std::nullopt, base::NullCallback(),
-      std::move(completed_callback), std::nullopt,
-      base::DictValue().Set("reasoning_effort", reasoning_effort));
+  PerformRequestImpl(model_options, std::move(messages), std::nullopt,
+                     base::NullCallback(), std::move(completed_callback),
+                     std::nullopt,
+                     base::DictValue()
+                         .Set("reasoning_effort", reasoning_effort)
+                         .Set("temperature", 0));
 }
 #endif  // BUILDFLAG(ENABLE_LOCAL_AI)
 

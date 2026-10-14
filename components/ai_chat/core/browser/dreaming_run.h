@@ -137,8 +137,8 @@ struct DreamingConfig {
   // and each unsafe answer below its limit. A wrong "drop" costs one memory, a
   // wrong "keep" can cost privacy, so sensitive data has the lowest limit.
   double fact_threshold = 0.6;
-  double max_sensitive = 0.3;
-  double max_instruction = 0.25;
+  double max_sensitive = 0.2;
+  double max_instruction = 0.3;
   double max_short_lived = 0.5;
   // The work time of a run. It starts after the wait for the index.
   base::TimeDelta time_limit = base::Seconds(30);
