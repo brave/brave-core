@@ -1,5 +1,5 @@
 diff --git a/components/metrics/BUILD.gn b/components/metrics/BUILD.gn
-index c32e11c10f9ce848b897f1c7e90c7ec9879632aa..19a255855db3f70fe7fddade0704c50badff75d2 100644
+index 4cb789b723e79dabdd338f7c994bd9107cce2512..44a1bf41dd9b48cb227a9d1537ca251be9c47f03 100644
 --- a/components/metrics/BUILD.gn
 +++ b/components/metrics/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -10,7 +10,7 @@ index c32e11c10f9ce848b897f1c7e90c7ec9879632aa..19a255855db3f70fe7fddade0704c50b
  import("//build/config/cronet/config.gni")
  import("//build/config/features.gni")
  import("//testing/test.gni")
-@@ -338,6 +339,7 @@ if (!is_cronet_build || is_ios) {
+@@ -336,6 +337,7 @@ if (!is_cronet_build || is_ios) {
        "//ui/base",
        "//url",
      ]

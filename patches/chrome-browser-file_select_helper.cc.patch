@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/file_select_helper.cc b/chrome/browser/file_select_helper.cc
-index 227ace408690fc9586b39692234902336a22cd1a..9878113b4a1bdd87b427fa7033a32db71311441b 100644
+index bcfed1898edb8eed02c9a44b93a9bbbea622304b..500905bdb9070965b2902fc1dd0bd81f8a5fb181 100644
 --- a/chrome/browser/file_select_helper.cc
 +++ b/chrome/browser/file_select_helper.cc
-@@ -465,6 +465,11 @@ void FileSelectHelper::ContentAnalysisCompletionCallback(
+@@ -519,6 +519,11 @@ void FileSelectHelper::ContentAnalysisCompletionCallback(
  
  void FileSelectHelper::NotifyListenerAndEnd(
      std::vector<blink::mojom::FileChooserFileInfoPtr> list) {

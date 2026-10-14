@@ -6,6 +6,7 @@
 package org.chromium.chrome.browser.tasks.tab_management;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -31,6 +32,7 @@ import org.mockito.junit.MockitoRule;
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.CallbackUtils;
 import org.chromium.base.ContextUtils;
+import org.chromium.base.Token;
 import org.chromium.base.test.BaseRobolectricTestRunner;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.tab.Tab;
@@ -39,7 +41,6 @@ import org.chromium.chrome.browser.tasks.tab_management.TabListMediator.TabListL
 import org.chromium.ui.modelutil.PropertyModel;
 import org.chromium.ui.modelutil.SimpleRecyclerViewAdapter;
 
-import java.util.List;
 import java.util.function.Supplier;
 
 /**
@@ -52,6 +53,7 @@ import java.util.function.Supplier;
 public class BraveTabGridItemTouchHelperCallbackTest {
     private static final int TAB1_ID = 1;
     private static final int TAB2_ID = 2;
+    private static final Token GROUP_ID = new Token(1L, 2L);
 
     @Rule public MockitoRule mMockitoRule = MockitoJUnit.rule();
 
@@ -59,19 +61,24 @@ public class BraveTabGridItemTouchHelperCallbackTest {
     @Mock private Supplier<TabModel> mTabModelSupplier;
     @Mock private TabModel mTabModel;
     @Mock private TabActionListener mTabClosedListener;
-    @Mock private RecyclerView mRecyclerView;
     @Mock private SimpleRecyclerViewAdapter.ViewHolder mFromViewHolder;
     @Mock private SimpleRecyclerViewAdapter.ViewHolder mToViewHolder;
+    @Mock private Tab mTab1;
     @Mock private Tab mTab2;
+
+    private RecyclerView mRecyclerView;
 
     @Before
     public void setUp() {
+        mRecyclerView = new RecyclerView(ContextUtils.getApplicationContext());
         when(mTabModelSupplier.get()).thenReturn(mTabModel);
         mFromViewHolder.model = tabCardModel(TAB1_ID);
         mToViewHolder.model = tabCardModel(TAB2_ID);
+        // The dragged tab is grouped, so grouping mode moves the whole group.
+        when(mTab1.getTabGroupId()).thenReturn(GROUP_ID);
+        when(mTabModel.getTabById(TAB1_ID)).thenReturn(mTab1);
         when(mTabModel.getTabById(TAB2_ID)).thenReturn(mTab2);
         when(mTabModel.indexOf(mTab2)).thenReturn(1);
-        when(mTabModel.getRelatedTabList(TAB2_ID)).thenReturn(List.of(mTab2));
     }
 
     @After
@@ -86,9 +93,9 @@ public class BraveTabGridItemTouchHelperCallbackTest {
 
         createCallback().onMove(mRecyclerView, mFromViewHolder, mToViewHolder);
 
-        // FLAT layout moves a single tab; grouping mode would call moveRelatedTabs.
+        // FLAT layout moves a single tab; grouping mode would call moveGroupToIndex.
         verify(mTabModel).moveTab(TAB1_ID, 1);
-        verify(mTabModel, never()).moveRelatedTabs(anyInt(), anyInt());
+        verify(mTabModel, never()).moveGroupToIndex(any(), anyInt());
     }
 
     @Test
@@ -97,7 +104,7 @@ public class BraveTabGridItemTouchHelperCallbackTest {
 
         createCallback().onMove(mRecyclerView, mFromViewHolder, mToViewHolder);
 
-        verify(mTabModel).moveRelatedTabs(TAB1_ID, 1);
+        verify(mTabModel).moveGroupToIndex(GROUP_ID, 1);
         verify(mTabModel, never()).moveTab(anyInt(), anyInt());
     }
 
@@ -113,14 +120,14 @@ public class BraveTabGridItemTouchHelperCallbackTest {
         callback.onMove(mRecyclerView, mFromViewHolder, mToViewHolder);
 
         verify(mTabModel).moveTab(TAB1_ID, 1);
-        verify(mTabModel, never()).moveRelatedTabs(anyInt(), anyInt());
+        verify(mTabModel, never()).moveGroupToIndex(any(), anyInt());
 
         // And turning it back on restores grouping, again without a restart.
         setTabGroupsEnabled(true);
         startDrag(callback);
         callback.onMove(mRecyclerView, mFromViewHolder, mToViewHolder);
 
-        verify(mTabModel).moveRelatedTabs(TAB1_ID, 1);
+        verify(mTabModel).moveGroupToIndex(GROUP_ID, 1);
     }
 
     @Test

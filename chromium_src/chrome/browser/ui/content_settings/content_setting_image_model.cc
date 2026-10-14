@@ -1,75 +1,61 @@
 /* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "chrome/browser/ui/content_settings/content_setting_image_model.h"
 
 #include <algorithm>
+#include <array>
 
-#include "base/notreached.h"
+#include "base/check_op.h"
+#include "base/containers/span.h"
 #include "brave/browser/ui/content_settings/brave_content_setting_image_models.h"
 #include "brave/components/vector_icons/vector_icons.h"
+#include "components/vector_icons/vector_icons.h"
+#include "ui/gfx/vector_icon_types.h"
 
-#define GenerateContentSettingImageModels \
-  GenerateContentSettingImageModels_ChromiumImpl
-#define GetContentSettingImageModelIndexForTesting \
-  GetContentSettingImageModelIndexForTesting_ChromiumImpl
-#define GetAllElementIdentifiers GetAllElementIdentifiers_ChromiumImpl
+namespace {
+
+// Returns whether `type` uses a Brave icon, setting `icon` and `badge` if so.
+bool BraveGetIconFromType(ContentSettingsType type,
+                          bool blocked,
+                          raw_ptr<const gfx::VectorIcon>* icon,
+                          raw_ptr<const gfx::VectorIcon>* badge) {
+  if (type != ContentSettingsType::AUTOPLAY) {
+    return false;
+  }
+  *badge = blocked ? &vector_icons::kBlockedBadgeCustomIcon
+                   : &gfx::VectorIcon::EmptyIcon();
+  *icon = &kAutoplayStatusIcon;
+  return true;
+}
+
+constexpr bool IsShownByBrave(ContentSettingImageModel::ImageType type) {
+  return !std::ranges::contains(kBraveRemovedContentSettingImageTypes, type);
+}
+
+// Returns the element identifiers of `kImageOrder`, less the image models
+// Brave removes. Brave's autoplay model reuses kMediaStream's image type, so it
+// adds no identifier of its own.
+template <const auto& kImageOrder, auto kGetElementIdentifier>
+base::span<const ui::ElementIdentifier> BraveGetAllElementIdentifiers() {
+  static constexpr auto kIdentifiers = []() consteval {
+    std::array<ui::ElementIdentifier,
+               std::ranges::count_if(kImageOrder, IsShownByBrave)>
+        result;
+    size_t i = 0;
+    for (ContentSettingImageModel::ImageType type : kImageOrder) {
+      if (IsShownByBrave(type)) {
+        result[i++] = kGetElementIdentifier(type);
+      }
+    }
+    CHECK_EQ(i, result.size());
+    return result;
+  }();
+  return kIdentifiers;
+}
+
+}  // namespace
+
 #include <chrome/browser/ui/content_settings/content_setting_image_model.cc>
-#undef GetAllElementIdentifiers
-#undef GetContentSettingImageModelIndexForTesting
-#undef GenerateContentSettingImageModels
-
-std::vector<std::unique_ptr<ContentSettingImageModel>>
-ContentSettingImageModel::GenerateContentSettingImageModels() {
-  std::vector<std::unique_ptr<ContentSettingImageModel>> result =
-      GenerateContentSettingImageModels_ChromiumImpl();
-  BraveGenerateContentSettingImageModels(&result);
-  return result;
-}
-
-// static
-std::vector<ui::ElementIdentifier>
-ContentSettingImageModel::GetAllElementIdentifiers() {
-  // Derive the identifiers from our model list, as upstream's implementation
-  // reports the models we remove. Autoplay shares kMediaStream's identifier,
-  // so skip duplicates.
-  std::vector<ui::ElementIdentifier> result;
-  for (const auto& model : GenerateContentSettingImageModels()) {
-    const ui::ElementIdentifier identifier = model->GetElementIdentifier();
-    if (!std::ranges::contains(result, identifier)) {
-      result.push_back(identifier);
-    }
-  }
-  return result;
-}
-
-// static
-size_t ContentSettingImageModel::GetContentSettingImageModelIndexForTesting(
-    ImageType image_type) {
-  // Index into our model list, not the upstream one, as that's what the
-  // location bar creates its views from.
-  std::vector<std::unique_ptr<ContentSettingImageModel>> models =
-      GenerateContentSettingImageModels();
-  for (size_t i = 0; i < models.size(); ++i) {
-    if (image_type == models[i]->image_type()) {
-      return i;
-    }
-  }
-  NOTREACHED();
-}
-
-void ContentSettingImageModel::GetIconFromType(
-    ContentSettingsType type,
-    bool blocked,
-    raw_ptr<const gfx::VectorIcon>* icon,
-    raw_ptr<const gfx::VectorIcon>* badge) {
-  if (type == ContentSettingsType::AUTOPLAY) {
-    *badge = (blocked ? &vector_icons::kBlockedBadgeCustomIcon
-                      : &gfx::VectorIcon::EmptyIcon());
-    *icon = &kAutoplayStatusIcon;
-  } else {
-    ::GetIconFromType(type, blocked, icon, badge);
-  }
-}

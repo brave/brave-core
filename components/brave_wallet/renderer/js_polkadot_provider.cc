@@ -31,14 +31,14 @@ constexpr char kBraveWallet[] = "brave-wallet";
 constexpr char kVersion[] = "1.0.0";
 
 void InjectedWeb3Getter(const v8::FunctionCallbackInfo<v8::Value>& info) {
-  info.GetReturnValue().Set(info.Data());
+  info.GetReturnValue().Set(info.DataV2().As<v8::Value>());
 }
 
 // Throw if any script attempts to replace the `injectedWeb3` object itself,
 // aside from self-assignment via `injectedWeb3 = injectedWeb3 || {}`.
 // This is so no script will be able to swap out the wallet registry.
 void InjectedWeb3Setter(const v8::FunctionCallbackInfo<v8::Value>& info) {
-  if (info[0]->StrictEquals(info.Data())) {
+  if (info[0]->StrictEquals(info.DataV2().As<v8::Value>())) {
     return;
   }
 

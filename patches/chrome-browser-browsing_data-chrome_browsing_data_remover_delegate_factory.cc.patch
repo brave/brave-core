@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate_factory.cc b/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate_factory.cc
-index 80cfa7e5302878f0cc5a7df1d854ced9889ffcb6..8222a1e52f70c0c47ea021630029d20afa814235 100644
+index ef8629f2c6144cb50ea433fd5d517561eb8b3d8e..fe60acf52fe83adad4237ab4481d78e053ca8c53 100644
 --- a/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate_factory.cc
 +++ b/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate_factory.cc
-@@ -44,9 +44,9 @@ ChromeBrowsingDataRemoverDelegateFactory::GetInstance() {
+@@ -69,9 +69,9 @@ ChromeBrowsingDataRemoverDelegateFactory::GetInstance() {
  }
  
  // static
@@ -14,10 +14,25 @@ index 80cfa7e5302878f0cc5a7df1d854ced9889ffcb6..8222a1e52f70c0c47ea021630029d20a
        GetInstance()->GetServiceForBrowserContext(profile, true));
  }
  
-@@ -99,5 +99,5 @@ ChromeBrowsingDataRemoverDelegateFactory::BuildServiceInstanceForBrowserContext(
-   // For guest profiles the browsing data is in the OTR profile.
+@@ -122,6 +122,14 @@ ChromeBrowsingDataRemoverDelegateFactory::
+   DependsOn(WebDataServiceFactory::GetInstance());
+   DependsOn(WebHistoryServiceFactory::GetInstance());
+   DependsOn(ZeroSuggestCacheServiceFactory::GetInstance());
++  DependsOn(misc_metrics::ProfileMiscMetricsServiceFactory::GetInstance());
++  DependsOn(serp_metrics::SerpMetricsServiceFactory::GetInstance());
++#if BUILDFLAG(ENABLE_AI_CHAT)
++  DependsOn(ai_chat::AIChatServiceFactory::GetInstance());
++#endif
++#if BUILDFLAG(ENABLE_BRAVE_NEWS)
++  DependsOn(brave_news::BraveNewsControllerFactory::GetInstance());
++#endif
+ 
+ #if BUILDFLAG(ENABLE_EXTENSIONS_CORE)
+   DependsOn(extensions::ActivityLog::GetFactoryInstance());
+@@ -153,5 +161,5 @@ ChromeBrowsingDataRemoverDelegateFactory::BuildServiceInstanceForBrowserContext(
    Profile* profile = static_cast<Profile*>(context);
-   DCHECK(!profile->IsGuestSession() || profile->IsOffTheRecord());
+   CHECK(!profile->IsGuestSession() || profile->IsOffTheRecord(),
+         base::NotFatalUntil::M161);
 -  return std::make_unique<ChromeBrowsingDataRemoverDelegate>(context);
 +  return std::make_unique<BraveBrowsingDataRemoverDelegate>(context);
  }

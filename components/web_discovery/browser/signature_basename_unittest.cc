@@ -5,6 +5,7 @@
 
 #include "brave/components/web_discovery/browser/signature_basename.h"
 
+#include <array>
 #include <memory>
 #include <string>
 #include <utility>
@@ -15,7 +16,7 @@
 #include "brave/components/web_discovery/browser/server_config_loader.h"
 #include "brave/components/web_discovery/browser/web_discovery_service.h"
 #include "components/prefs/testing_pref_service.h"
-#include "crypto/sha2.h"
+#include "crypto/hash.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace web_discovery {
@@ -55,7 +56,8 @@ std::vector<uint8_t> GenerateExpectedBasename(std::string action,
   EXPECT_TRUE(base::JSONWriter::Write(base::Value(std::move(expected_tag_list)),
                                       &tag_json));
 
-  auto tag_hash = crypto::SHA256HashString(tag_json);
+  std::array<uint8_t, crypto::hash::kSha256Size> tag_hash =
+      crypto::hash::Sha256(tag_json);
   return std::vector<uint8_t>(tag_hash.begin(), tag_hash.end());
 }
 

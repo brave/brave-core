@@ -1,8 +1,8 @@
 diff --git a/chrome/common/extensions/chrome_extensions_client.cc b/chrome/common/extensions/chrome_extensions_client.cc
-index 8b1b79fefcddbaa9f7671bcc87d4dc58820818bc..e3edb011e137bc43652d50a50d562270a0f6a4b9 100644
+index e94ba34f9a9090591ee5f466d04c5df10e294c8f..26d6f7d304dfce7d543612cb5fb8fd85fcb714fa 100644
 --- a/chrome/common/extensions/chrome_extensions_client.cc
 +++ b/chrome/common/extensions/chrome_extensions_client.cc
-@@ -60,6 +60,7 @@ const char kExtensionBlocklistHttpsUrlPrefix[] =
+@@ -61,6 +61,7 @@ const char kExtensionBlocklistHttpsUrlPrefix[] =
  ChromeExtensionsClient::ChromeExtensionsClient() {
    AddAPIProvider(std::make_unique<CoreExtensionsAPIProvider>());
    AddAPIProvider(std::make_unique<ChromeExtensionsAPIProvider>());

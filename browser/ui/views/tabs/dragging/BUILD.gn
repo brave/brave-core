@@ -18,7 +18,6 @@ source_set("interactive_ui_tests") {
     "//brave/components/tabs",
     "//chrome/app:command_ids",
     "//chrome/browser",
-    "//chrome/browser/ui",
     "//chrome/browser/ui:browser_window_header",
     "//chrome/browser/ui:ui_features",
     "//chrome/browser/ui/tabs:features",

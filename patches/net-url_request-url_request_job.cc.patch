@@ -1,0 +1,12 @@
+diff --git a/net/url_request/url_request_job.cc b/net/url_request/url_request_job.cc
+index 80a9c132c2939c1750ae5b1cb6832c095dd75272..c02685f213d0e841365a835638ec53500392a2a6 100644
+--- a/net/url_request/url_request_job.cc
++++ b/net/url_request/url_request_job.cc
+@@ -317,6 +317,7 @@ GURL URLRequestJob::ComputeReferrerForPolicy(
+     const GURL& original_referrer,
+     const GURL& destination,
+     bool* same_origin_out_for_metrics) {
++  if (IsCrossOriginOnionReferrer(original_referrer, destination)) return GURL();
+   // Here and below, numbered lines are from the Referrer Policy spec's
+   // "Determine request's referrer" algorithm:
+   // https://w3c.github.io/webappsec-referrer-policy/#determine-requests-referrer

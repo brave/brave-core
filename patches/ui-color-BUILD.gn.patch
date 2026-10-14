@@ -1,5 +1,5 @@
 diff --git a/ui/color/BUILD.gn b/ui/color/BUILD.gn
-index e11a5e565174e1c7f6c399fb0964f12d695cbad4..3c7236d26cfccde77e25b15ff6f300559c646f5f 100644
+index e5006c5c67aebbf557ae3e97c2559b85a90d02e8..72da33ebbfaf05ba27e325ed9fcf60e7edd52fb0 100644
 --- a/ui/color/BUILD.gn
 +++ b/ui/color/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -26,7 +26,7 @@ index e11a5e565174e1c7f6c399fb0964f12d695cbad4..3c7236d26cfccde77e25b15ff6f30055
  
    deps = [ "//third_party/abseil-cpp:absl" ]
  
-@@ -175,6 +178,7 @@ component("mixers") {
+@@ -179,6 +182,7 @@ component("mixers") {
      "ui_color_mixer.cc",
      "ui_color_mixer.h",
    ]
@@ -34,7 +34,7 @@ index e11a5e565174e1c7f6c399fb0964f12d695cbad4..3c7236d26cfccde77e25b15ff6f30055
  
    defines = [ "IS_COLOR_IMPL" ]
  
-@@ -192,6 +196,7 @@ component("mixers") {
+@@ -196,6 +200,7 @@ component("mixers") {
    ]
  
    public_deps = [ "//base" ]

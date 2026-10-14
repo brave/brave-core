@@ -251,7 +251,7 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
                                             .getDimensionPixelSize(
                                                     R.dimen.brave_bottom_toolbar_height)
                                     * -1;
-                    if (EdgeToEdgeUtils.isEdgeToEdgeBottomChinEnabled(mBraveActivity)
+                    if (EdgeToEdgeUtils.isEdgeToEdgeBottomChinSupportedByDevice(mBraveActivity)
                             && mBraveEdgeToEdgeControllerSupplier.get() != null) {
                         bottomToolbarHeight -=
                                 mBraveEdgeToEdgeControllerSupplier.get().getBottomInsetPx();

@@ -33,6 +33,7 @@ source_set("unit_tests") {
     "//brave/app:brave_generated_resources_grit_grit",
     "//chrome/browser/profiles",
     "//chrome/test:test_support",
+    "//chrome/test/base:testing_browser_process",
     "//testing/gtest",
     "//ui/base",
   ]

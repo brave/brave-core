@@ -127,8 +127,8 @@ int BraveSidePanelHeaderController::GetTopRadius() const {
           kWebViewRoundedCorners)) {
     return 0;
   }
-  return views::LayoutProvider::Get()->GetDistanceMetric(
-      ChromeDistanceMetric::DISTANCE_SIDE_PANEL_CONTENT_RADIUS);
+  return views::LayoutProvider::Get()->GetCornerRadiusMetric(
+      ChromeShapeContextTokens::kSidePanelContentRadius);
 }
 
 void BraveSidePanelHeaderController::SetUpdateHeaderCallback(

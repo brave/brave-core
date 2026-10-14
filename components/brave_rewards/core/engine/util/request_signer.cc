@@ -8,7 +8,7 @@
 #include "base/base64.h"
 #include "base/check.h"
 #include "base/strings/strcat.h"
-#include "crypto/sha2.h"
+#include "crypto/hash.h"
 #include "url/gurl.h"
 
 namespace brave_rewards::internal {
@@ -49,7 +49,7 @@ RequestSigner::RequestSigner(const RequestSigner&) = default;
 RequestSigner& RequestSigner::operator=(const RequestSigner&) = default;
 
 std::string RequestSigner::GetDigest(base::span<const uint8_t> content) {
-  return "SHA-256=" + base::Base64Encode(crypto::SHA256Hash(content));
+  return "SHA-256=" + base::Base64Encode(crypto::hash::Sha256(content));
 }
 
 std::optional<RequestSigner> RequestSigner::FromRewardsWallet(

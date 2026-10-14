@@ -16,7 +16,7 @@
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "components/component_updater/component_updater_service.h"
 #include "components/crx_file/id_util.h"
-#include "crypto/sha2.h"
+#include "crypto/hash.h"
 
 using brave_component_updater::BraveOnDemandUpdater;
 
@@ -29,7 +29,7 @@ constexpr uint8_t kNTPBackgroundImagesComponentPublicKeySHA256[32] = {
     0x3f, 0xd0, 0x65, 0x27, 0x4b, 0x69, 0x12, 0xae, 0xea, 0xdf, 0xce,
     0xce, 0xe0, 0x89, 0x83, 0xdd, 0x25, 0x3c, 0x4c, 0x8a, 0xc8};
 static_assert(std::size(kNTPBackgroundImagesComponentPublicKeySHA256) ==
-              crypto::kSHA256Length);
+              crypto::hash::kSha256Size);
 constexpr char kNTPBackgroundImagesComponentName[] = "NTP Background Images";
 
 void RegisterNTPBackgroundImagesComponentCallback(

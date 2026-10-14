@@ -1,11 +1,11 @@
 diff --git a/components/browser_actuator/internal/BUILD.gn b/components/browser_actuator/internal/BUILD.gn
-index 7c7b747c83a677b1035b477a1936221725ac8093..930988431ae6bda02f20740113ab56cdeb5c742e 100644
+index 52214521c64c3d2ff004acb90668f9a21ffe68b0..b9f06aae6a8e37a1245d0a5682a811bcec013bce 100644
 --- a/components/browser_actuator/internal/BUILD.gn
 +++ b/components/browser_actuator/internal/BUILD.gn
-@@ -34,6 +34,7 @@ source_set("features") {
+@@ -37,6 +37,7 @@ source_set("features") {
+     "//chrome/browser/sharing/browser_actuator:*",
+     "//components/browser_actuator/*",
    ]
- 
-   visibility = [ "//components/browser_actuator/*" ]
 +  visibility += [ "//brave/app:unit_tests" ]
  }
  

@@ -1,8 +1,8 @@
 diff --git a/components/search_engines/template_url.cc b/components/search_engines/template_url.cc
-index 8ea19eaf308e58e81192aae2f6fb7ecb84f04c1b..6ac4b0545ec0d99b76ac7c1dae3e95ad48a7edbe 100644
+index 391760ec198862904ae4ff648c27e7cea0b40df4..a54a5a5c9f4d29e5992fd77641fca1ac9fdb3415 100644
 --- a/components/search_engines/template_url.cc
 +++ b/components/search_engines/template_url.cc
-@@ -843,6 +843,7 @@ bool TemplateURLRef::ParseParameter(size_t start,
+@@ -925,6 +925,7 @@ bool TemplateURLRef::ParseParameter(size_t start,
    } else if (parameter == "google:searchFieldtrialParameter") {
      replacements->push_back(Replacement(GOOGLE_SEARCH_FIELDTRIAL_GROUP, start));
    } else if (parameter == "google:searchSource") {

@@ -1,8 +1,8 @@
 diff --git a/content/browser/hid/hid_service.cc b/content/browser/hid/hid_service.cc
-index e2edcbceed244e422151f69d5fe08b50eb495abc..8d5c3a05f1feb9f0350514dd2ce8c7dfc6f97aec 100644
+index 459e4ac8afb84e3d8d18a3015d5474900344898c..8e94859cd10e01787b9bb70d36c1cc161966a37a 100644
 --- a/content/browser/hid/hid_service.cc
 +++ b/content/browser/hid/hid_service.cc
-@@ -446,11 +446,13 @@ void HidService::RequestDevice(
+@@ -452,11 +452,13 @@ void HidService::RequestDevice(
    // activation to prevent stale/pending-deletion frames from opening choosers
    // or consuming user gestures from newly committed documents.
    if (!render_frame_host_ || !render_frame_host_->IsActive() ||

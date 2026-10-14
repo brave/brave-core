@@ -29,7 +29,7 @@ source_set("browser_tests") {
     "//brave/components/local_ai/core",
     "//brave/components/resources:strings_grit",
     "//chrome/browser/history",
-    "//chrome/browser/ui",
+    "//chrome/browser/ui:browser_tabstrip",
     "//chrome/browser/ui/navigator",
     "//chrome/browser/ui/webui/tab_search",
     "//chrome/browser/ui/window_metadata",

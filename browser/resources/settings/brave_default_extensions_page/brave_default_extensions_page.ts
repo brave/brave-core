@@ -5,7 +5,7 @@
 
 import './brave_extensions_manifest_v2_subpage.js';
 
-import {PrefsMixin, PrefsMixinInterface} from '/shared/settings/prefs/prefs_mixin.js';
+import {PrefServiceObserverMixin, PrefServiceObserverMixinInterface} from '/shared/settings/prefs2/pref_service_observer_mixin.js';
 import {WebUiListenerMixin, WebUiListenerMixinInterface} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js'
 import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 import type {CrViewManagerElement} from 'chrome://resources/cr_elements/cr_view_manager/cr_view_manager.js';
@@ -21,8 +21,8 @@ import {BraveDefaultExtensionsBrowserProxyImpl} from './brave_default_extensions
 import {getTemplate} from './brave_default_extensions_page.html.js'
 
 const SettingBraveDefaultExtensionsPageElementBase =
-  SearchableViewContainerMixin(SettingsViewMixin(WebUiListenerMixin(PrefsMixin(PolymerElement)))) as {
-  new (): PolymerElement & WebUiListenerMixinInterface & PrefsMixinInterface & SearchableViewContainerMixinInterface & SettingsViewMixinInterface
+  SearchableViewContainerMixin(SettingsViewMixin(WebUiListenerMixin(PrefServiceObserverMixin(PolymerElement)))) as {
+  new (): PolymerElement & WebUiListenerMixinInterface & PrefServiceObserverMixinInterface & SearchableViewContainerMixinInterface & SettingsViewMixinInterface
 }
 
 export interface SettingBraveDefaultExtensionsPageElement {
@@ -48,6 +48,8 @@ export class SettingBraveDefaultExtensionsPageElement extends SettingBraveDefaul
   static get properties() {
     return {
       showRestartToast_: Boolean,
+      googleLoginPref_: Object,
+      mediaRouterPref_: Object,
       widevineEnabledPref_: {
         type: Object,
         value() {
@@ -64,8 +66,19 @@ export class SettingBraveDefaultExtensionsPageElement extends SettingBraveDefaul
 
   private browserProxy_ = BraveDefaultExtensionsBrowserProxyImpl.getInstance()
   declare showRestartToast_: boolean
+  declare googleLoginPref_: chrome.settingsPrivate.PrefObject<boolean>
+  declare mediaRouterPref_: chrome.settingsPrivate.PrefObject<boolean>
   declare widevineEnabledPref_: chrome.settingsPrivate.PrefObject
   declare isExtensionsManifestV2FeatureEnabled_: boolean
+
+  override connectedCallback() {
+    super.connectedCallback()
+
+    this.mirrorPrefs({
+      'signin.allowed_on_next_startup': 'googleLoginPref_',
+      'brave.enable_media_router_on_restart': 'mediaRouterPref_',
+    })
+  }
 
   override ready() {
     super.ready()

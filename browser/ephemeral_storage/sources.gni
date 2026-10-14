@@ -21,8 +21,8 @@ brave_browser_ephemeral_storage_sources = [
 brave_browser_ephemeral_storage_deps = [
   "//base",
   "//brave/components/ephemeral_storage",
+  "//chrome/browser/history",
   "//chrome/browser/profiles",
-  "//chrome/browser/ui",
   "//components/content_settings/core/browser",
   "//content/public/browser",
   "//net",

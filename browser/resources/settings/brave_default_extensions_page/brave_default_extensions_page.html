@@ -62,19 +62,19 @@
   page-title="$i18n{braveDefaultExtensions}">
   <div hidden="[[isExtensionsManifestV2Routed_]]">
     <settings-toggle-button id="googleLoginForExtensions" class="cr-row first"
-      pref="{{prefs.signin.allowed_on_next_startup}}" learn-more-url="$i18n{googleLoginLearnMoreURL}"
+      pref-key="signin.allowed_on_next_startup" learn-more-url="$i18n{googleLoginLearnMoreURL}"
       label="$i18n{googleLoginForExtensionsDesc}">
       <template is="dom-if" if="[[shouldShowRestartForGoogleLogin_(
-          prefs.signin.allowed_on_next_startup.value)]]">
+          googleLoginPref_.value)]]">
         <cr-button on-click="restartBrowser_" slot="more-actions">
           $i18n{restart}
         </cr-button>
       </template>
     </settings-toggle-button>
-    <settings-toggle-button id="mediaRouterEnabled" class="cr-row" pref="{{prefs.brave.enable_media_router_on_restart}}"
+    <settings-toggle-button id="mediaRouterEnabled" class="cr-row" pref-key="brave.enable_media_router_on_restart"
       label="Media Router" sub-label="$i18n{mediaRouterEnabledDesc}">
       <template is="dom-if" if="[[shouldShowRestartForMediaRouter_(
-          prefs.brave.enable_media_router_on_restart.value)]]">
+          mediaRouterPref_.value)]]">
         <cr-button on-click="restartBrowser_" slot="more-actions">
           $i18n{restart}
         </cr-button>

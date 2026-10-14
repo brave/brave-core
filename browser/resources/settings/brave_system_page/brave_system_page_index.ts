@@ -4,7 +4,6 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import 'chrome://resources/cr_elements/cr_view_manager/cr_view_manager.js';
-import '/shared/settings/prefs/prefs.js';
 import '../settings_shared.css.js';
 
 import type { CrViewManagerElement } from 'chrome://resources/cr_elements/cr_view_manager/cr_view_manager.js';
@@ -58,7 +57,6 @@ export class SettingsBraveSystemPageIndexElement extends
 
   static get properties() {
     return {
-      prefs: Object,
       /**
       * Used to hide battery settings section if the device has no battery
       */
@@ -87,7 +85,6 @@ export class SettingsBraveSystemPageIndexElement extends
     };
   }
 
-  declare prefs: Record<string, unknown>;
   declare private showBatterySettings_: boolean;
   declare private showShortcutsPage_: boolean;
   declare private showOriginOnboarding_: boolean;

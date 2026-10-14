@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/TabSwitcherActionMenuCoordinator.java b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/TabSwitcherActionMenuCoordinator.java
-index fda85e9de75f58e568c09ac9c792fcc11480e891..5372c90e07618eac39ed3277df5835bfd614f421 100644
+index 88bc8a66daf48e07531caa972c8759ff3241d021..77ff179df776a89be02de3acf49995d43357faea 100644
 --- a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/TabSwitcherActionMenuCoordinator.java
 +++ b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/TabSwitcherActionMenuCoordinator.java
 @@ -90,7 +90,7 @@ public class TabSwitcherActionMenuCoordinator {

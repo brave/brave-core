@@ -14,12 +14,12 @@
   <settings-toggle-button id="semanticHistorySearchEnabled"
       class="cr-row"
       icon="history"
-      pref="{{prefs.brave.history_embeddings_enabled}}"
+      pref-key="brave.history_embeddings_enabled"
       label="$i18n{semanticHistorySearchLabel}"
       sub-label="$i18n{semanticHistorySearchSubLabel}"
       learn-more-url="$i18n{semanticHistorySearchLearnMoreURL}">
     <template is="dom-if" if="[[shouldShowRestartSemanticHistorySearch_(
-        prefs.brave.history_embeddings_enabled.value)]]">
+        semanticHistorySearchPref_.value)]]">
       <cr-button on-click="restartBrowser_" slot="more-actions">
         $i18n{restart}
       </cr-button>
@@ -56,10 +56,10 @@
 </div>
 <settings-toggle-button id="pushMessagingEnabled"
     class="cr-row"
-    pref="{{prefs.brave.gcm.channel_status}}"
+    pref-key="brave.gcm.channel_status"
     label="$i18n{pushMessagingLabel}">
     <template is="dom-if" if="[[shouldShowRestart_(
-      prefs.brave.gcm.channel_status.value)]]">
+      pushMessagingPref_.value)]]">
     <cr-button on-click="restartBrowser_" slot="more-actions">
       $i18n{restart}
     </cr-button>
@@ -67,7 +67,7 @@
 </settings-toggle-button>
 <settings-toggle-button
   class="cr-row"
-  pref="{{prefs.brave.de_amp.enabled}}"
+  pref-key="brave.de_amp.enabled"
   label="$i18n{deAmpSettingLabel}"
   sub-label="$i18n{deAmpSettingSubLabel}"
   learn-more-url="$i18n{deAmpLearnMoreURL}">
@@ -75,7 +75,7 @@
 <template is="dom-if" if="[[isDebounceFeatureEnabled_]]">
   <settings-toggle-button
     class="cr-row"
-    pref="{{prefs.brave.debounce.enabled}}"
+    pref-key="brave.debounce.enabled"
     label="$i18n{debounceSettingLabel}"
     sub-label="$i18n{debounceSettingSubLabel}"
     learn-more-url="$i18n{debounceLearnMoreURL}">
@@ -83,7 +83,7 @@
 </template>
 <settings-toggle-button
   class="cr-row"
-  pref="{{prefs.brave.reduce_language}}"
+  pref-key="brave.reduce_language"
   label="$i18n{reduceLanguageControlLabel}"
   sub-label="$i18n{reduceLanguageDesc}">
 </settings-toggle-button>
@@ -100,7 +100,7 @@
 <template is="dom-if" if="[[isPsstFeatureEnabled_]]">
   <settings-toggle-button
     class="cr-row"
-    pref="{{prefs.brave.psst.settings.enable_psst}}"
+    pref-key="brave.psst.settings.enable_psst"
     label="$i18n{psstSettingsToggleLabel}"
     sub-label="$i18n{psstSettingsToggleSubLabel}"
     learn-more-url="$i18n{psstLearnMoreURL}">

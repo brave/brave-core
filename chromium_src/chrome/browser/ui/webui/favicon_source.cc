@@ -3,6 +3,10 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
+#include <string>
+
+#include "base/strings/strcat.h"
+#include "brave/components/constants/webui_url_constants.h"
 #include "build/android_buildflags.h"
 #include "build/build_config.h"
 #include "ui/resources/grit/ui_resources.h"
@@ -23,5 +27,14 @@ constexpr int BRAVE_IDR_DEFAULT_FAVICON_DARK_32 = IDR_DEFAULT_FAVICON_DARK_32;
 constexpr int BRAVE_IDR_DEFAULT_FAVICON_DARK_64 = IDR_DEFAULT_FAVICON_DARK_64;
 #endif  // !defined(IDR_DEFAULT_FAVICON_32)
 #endif  // !BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_DESKTOP_ANDROID)
+
+namespace {
+
+// Brave chrome-untrusted:// pages that load from chrome-untrusted://favicon2.
+bool IsBraveUntrustedFaviconOrigin(const std::string& origin) {
+  return base::StrCat({origin, "/"}) == kAIChatUntrustedConversationUIURL;
+}
+
+}  // namespace
 
 #include <chrome/browser/ui/webui/favicon_source.cc>

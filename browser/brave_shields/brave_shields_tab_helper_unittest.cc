@@ -103,6 +103,15 @@ class BraveShieldsTabHelperUnitTest
   base::test::ScopedFeatureList feature_list_;
 };
 
+TEST_F(BraveShieldsTabHelperUnitTest, CreatesFaviconDriverWhenMissing) {
+  // Upstream attaches tab helpers before `TabFeatures::Init()` creates the
+  // favicon driver.
+  auto contents = CreateTestWebContents();
+  ASSERT_FALSE(favicon::ContentFaviconDriver::FromWebContents(contents.get()));
+  BraveShieldsTabHelper::CreateForWebContents(contents.get());
+  EXPECT_TRUE(favicon::ContentFaviconDriver::FromWebContents(contents.get()));
+}
+
 TEST_F(BraveShieldsTabHelperUnitTest,
        DontTriggerOnRepeatedReloadsDetectedWhenFeatureDisabled) {
   feature_list_.InitAndDisableFeature(features::kAdblockOnlyMode);

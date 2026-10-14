@@ -1,0 +1,34 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: Use Brave's autoplay icon for the autoplay content setting.
+    preempt_function_impl:
+      function_name: GetIconFromType
+      return_if: 'BraveGetIconFromType(type, blocked, icon, badge)'
+
+  - description: |-
+      Apply Brave's changes to the omnibox content setting image models.
+
+      Brave removes the cookies, JavaScript and storage access models, and adds
+      its autoplay model.
+    after_function_impl:
+      function_name: ContentSettingImageModel::GenerateContentSettingImageModels
+      result_var: models
+      code: |-
+        BraveGenerateContentSettingImageModels(&models);
+        return models;
+
+  - description: |-
+      Report the element identifiers of Brave's image models.
+
+      Upstream reports the identifiers of every model in its static ordering,
+      including the ones Brave removes.
+    preempt_function_impl:
+      function_name: ContentSettingImageModel::GetAllElementIdentifiers
+      return_if: '(true)'
+      return_value:
+        'BraveGetAllElementIdentifiers<kContentSettingImageOrder,
+        GetElementIdentifierForType>()'

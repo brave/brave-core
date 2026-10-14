@@ -1,8 +1,8 @@
 diff --git a/front_end/panels/timeline/components/LiveMetricsView.ts b/front_end/panels/timeline/components/LiveMetricsView.ts
-index e834310881d0edbf552af6c93c857418fb2dbf5e..36c719d2e5abeb4a108fe601d5448fe2d50a1294 100644
+index ba88b2a053f3a82de22f0ebc33a3a5cc5f449542..f7f4efdf76f1eea76882b8151374bde20d2da23b 100644
 --- a/front_end/panels/timeline/components/LiveMetricsView.ts
 +++ b/front_end/panels/timeline/components/LiveMetricsView.ts
-@@ -1056,7 +1056,7 @@ export const DEFAULT_VIEW: View = (input, output, target) => {
+@@ -1043,7 +1043,7 @@ export const DEFAULT_VIEW: View = (input, output, target) => {
          </main>
          <aside class="next-steps" aria-labelledby="next-steps-section-title">
            <h2 id="next-steps-section-title" class="section-title">${i18nString(UIStrings.nextSteps)}</h2>

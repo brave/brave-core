@@ -5,6 +5,17 @@
 
 substitutions:
   - description: |-
+      Do not create NetErrorTabHelper
+
+      It sends DNS probes when a page fails with a DNS error, which Brave
+      blocks.
+    count: 2 # Created in TabFeatures::Init() and WillDiscardContents().
+    regex:
+      re_pattern: '^( *)(net_error_tab_helper_ =[^;]*;)'
+      re_flags: [MULTILINE]
+      replace: '\1/* \2 */'
+
+  - description: |-
       Do not create FontPrewarmerTabHelper
 
       Brave does not prewarm the fonts of search results pages.

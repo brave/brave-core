@@ -19,6 +19,7 @@
 #include "brave/brave_domains/service_domains.h"
 #include "brave/components/brave_private_cdn/headers.h"
 #include "brave/components/brave_private_cdn/private_cdn_helper.h"
+#include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/storage_partition.h"
@@ -219,6 +220,15 @@ std::string BraveSanitizedImageSource::GetSource() {
                          "/"});
   }
   return kChromeUIBraveImageHost;
+}
+
+std::string BraveSanitizedImageSource::GetAccessControlAllowOriginForOrigin(
+    const std::string& origin) {
+  // chrome-untrusted://brave-image serves the images of the Brave News page.
+  if (serve_untrusted_ && base::StrCat({origin, "/"}) == kBraveNewsURL) {
+    return origin;
+  }
+  return content::URLDataSource::GetAccessControlAllowOriginForOrigin(origin);
 }
 
 void BraveSanitizedImageSource::EncodeAndReplyStaticImage(

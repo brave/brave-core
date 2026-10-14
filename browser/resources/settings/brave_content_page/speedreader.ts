@@ -5,12 +5,12 @@
 
 import { PolymerElement } from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 import { WebUiListenerMixin } from 'chrome://resources/cr_elements/web_ui_listener_mixin.js'
-import { PrefsMixin } from '/shared/settings/prefs/prefs_mixin.js'
+import { PrefServiceObserverMixin } from '/shared/settings/prefs2/pref_service_observer_mixin.js'
 import { I18nMixin } from 'chrome://resources/cr_elements/i18n_mixin.js'
 import { getTemplate } from './speedreader.html.js'
 
 const SpeedreaderBase = WebUiListenerMixin(
-  I18nMixin(PrefsMixin(PolymerElement))
+  I18nMixin(PrefServiceObserverMixin(PolymerElement))
 )
 
 /**
@@ -23,6 +23,20 @@ class SettingsBraveContentSpeedreaderElement extends SpeedreaderBase {
 
   static get template () {
     return getTemplate()
+  }
+
+  static get properties () {
+    return {
+      featureEnabledPref_: Object,
+    }
+  }
+
+  private declare featureEnabledPref_:
+      chrome.settingsPrivate.PrefObject<boolean> | undefined
+
+  override connectedCallback () {
+    super.connectedCallback()
+    this.mirrorPref('brave.speedreader.feature_enabled', 'featureEnabledPref_')
   }
 
   private isSpeedreaderFeatureManaged_(

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/tabs/tab_strip_api/tab_strip_model_impl/converters/tab_converters.cc b/chrome/browser/ui/tabs/tab_strip_api/tab_strip_model_impl/converters/tab_converters.cc
-index 58a741e388f45ada2f37a32fe35af913d7c8478a..46a70044fbe2aea5d0e154e73eace1815a437c0a 100644
+index a977c8c6c8a89298c45c6994bb3e77ebecf0a40a..98eb834f7125c29d89c0254611b02687683cd052 100644
 --- a/chrome/browser/ui/tabs/tab_strip_api/tab_strip_model_impl/converters/tab_converters.cc
 +++ b/chrome/browser/ui/tabs/tab_strip_api/tab_strip_model_impl/converters/tab_converters.cc
-@@ -165,6 +165,11 @@ tabs_api::mojom::DataPtr BuildMojoTabCollectionData(
+@@ -162,6 +162,11 @@ tabs_api::mojom::DataPtr BuildMojoTabCollectionData(
        mojo_tab_group->is_ephemeral = tab_group->is_ephemeral();
        return tabs_api::mojom::Data::NewTabGroup(std::move(mojo_tab_group));
      }
