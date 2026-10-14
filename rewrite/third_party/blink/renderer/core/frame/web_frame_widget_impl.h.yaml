@@ -1,0 +1,16 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Override WebFrameWidgetImpl::HitTestResultForContextMenuAt
+
+      See the matching web_frame_widget.h plaster for why this exists.
+    regex:
+      re_pattern:
+        '(WebHitTestResult HitTestResultAt\(const gfx::PointF&\) override;)'
+      replace: |-
+        \1
+          WebHitTestResult HitTestResultForContextMenuAt(const gfx::PointF&) override;

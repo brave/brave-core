@@ -23,6 +23,7 @@ source_set("renderer") {
     "//brave/components/brave_search/renderer",
     "//brave/components/brave_shields/core/common",
     "//brave/components/cosmetic_filters/renderer",
+    "//brave/components/gestures/renderer",
     "//v8",
   ]
 

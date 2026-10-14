@@ -69,6 +69,8 @@ brave_settings_web_component_files = [
   "default_brave_shields_page/components/brave_adblock_subscribe_dropdown.ts",
   "default_brave_shields_page/default_brave_shields_page.ts",
   "default_brave_shields_page/shields_page_index.ts",
+  "gestures_page/gesture_action_chain_group.ts",
+  "gestures_page/gestures_page.ts",
   "getting_started_page/getting_started.ts",
   "getting_started_page/getting_started_page_index.ts",
   "site_settings/site_settings_autoplay.ts",
@@ -118,6 +120,25 @@ brave_settings_ts_files = [
   "default_brave_shields_page/default_brave_shields_browser_proxy.ts",
   "getting_started_page/brave_account_page.html.ts",
   "getting_started_page/brave_account_page.ts",
+  "gestures_page/action_row_display_util.ts",
+  "gestures_page/commands_cache.ts",
+  "gestures_page/custom_gesture_geometry.ts",
+  "gestures_page/custom_gesture_svg_path.ts",
+  "gestures_page/custom_gesture_util.ts",
+  "gestures_page/directional_gesture_classifier.ts",
+  "gestures_page/directional_gesture_icons.ts",
+  "gestures_page/directional_gesture_mapping_util.ts",
+  "gestures_page/disallowed_site_util.ts",
+  "gestures_page/gesture_action_util.ts",
+  "gestures_page/gesture_command.ts",
+  "gestures_page/gesture_command_conflict.ts",
+  "gestures_page/gesture_rows.ts",
+  "gestures_page/gesture_shape_conflict.ts",
+  "gestures_page/open_settings_page.ts",
+  "gestures_page/smart_gesture_mapping_util.ts",
+  "gestures_page/smart_gesture_open_in_command_param.ts",
+  "gestures_page/smart_gesture_selected_text_search_command_param.ts",
+  "gestures_page/url_scheme_util.ts",
   "shortcuts_page/shortcuts_page.ts",
 ]
 
@@ -236,6 +257,7 @@ brave_settings_mojo_files = [
   "$root_gen_dir/brave/components/brave_account/mojom/resend_verification_email.mojom-webui.ts",
   "$root_gen_dir/brave/components/brave_account/mojom/reset_password.mojom-webui.ts",
   "$root_gen_dir/brave/components/brave_origin/mojom/brave_origin_settings.mojom-webui.ts",
+  "$root_gen_dir/brave/components/commands/common/commands.mojom-webui.ts",
 
   # Add generated strings as mojo files. Currently, this is the only way to
   # include them in build_webui() target.
@@ -246,6 +268,7 @@ brave_settings_mojo_files = [
 brave_settings_mojo_files_deps = [
   "//brave/components/brave_account/mojom:mojom_ts__generator",
   "//brave/components/brave_origin/mojom:mojom_ts__generator",
+  "//brave/components/commands/common:mojom_ts__generator",
 
   # Add generated strings to the build_webui() via mojo_files_deps.
   "//brave/app:brave_generated_resources_grit",

@@ -18,6 +18,7 @@
 #include "brave/browser/misc_metrics/page_metrics_tab_helper.h"
 #include "brave/browser/onboarding/onboarding_tab_helper.h"
 #include "brave/browser/serp_metrics/serp_metrics_tab_helper.h"
+#include "brave/browser/ui/gestures/gesture_controller.h"
 #include "brave/browser/ui/side_panel/brave_side_panel_utils.h"
 #include "brave/browser/ui/sidebar/sidebar_tab_helper.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
@@ -26,6 +27,7 @@
 #include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+#include "brave/components/gestures/core/common/features.h"
 #include "brave/components/image_metadata_stripper/common/features.h"
 #include "brave/components/local_ai/buildflags/buildflags.h"
 #include "brave/components/misc_metrics/features.h"
@@ -376,6 +378,10 @@ void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
   geolocation_permission_tab_helper_ =
       std::make_unique<BraveGeolocationPermissionTabHelper>(tab);
 #endif
+
+  if (base::FeatureList::IsEnabled(gestures::features::kGesturesFeature)) {
+    gesture_controller_ = std::make_unique<gestures::GestureController>(tab);
+  }
 
 #if BUILDFLAG(ENABLE_REQUEST_OTR)
   if (!profile->IsOffTheRecord() &&

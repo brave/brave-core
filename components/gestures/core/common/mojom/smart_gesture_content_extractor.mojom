@@ -1,0 +1,36 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module gestures.mojom;
+
+import "third_party/blink/public/mojom/tokens/tokens.mojom";
+import "ui/gfx/geometry/mojom/geometry.mojom";
+import "url/mojom/origin.mojom";
+import "url/mojom/url.mojom";
+
+// The single piece of content found at a smart gesture's start point. A
+// link and an image can overlap (e.g. an <img> inside an <a>); which one
+// this resolves to in that case is decided once here, not left for callers
+// to juggle.
+union SmartGestureContent {
+  url.mojom.Url link_url;
+  url.mojom.Url image_url;
+  string selected_text;
+};
+
+// Implemented in the renderer process, one instance per `RenderFrame`, to
+// let the browser process find out what's at a point on the page -- a link,
+// an image, or the page's current text selection -- for a smart gesture's
+// start point, without needing a full page content extraction.
+interface SmartGestureContentExtractor {
+  // `content` is null if there's no link, image, or text selection at
+  // `point`. `hit_frame_origin`/`hit_frame_token` identify the actual frame
+  // hit, which can be a same-process child distinct from this interface's
+  // own `RenderFrame`.
+  GetContentAtPoint(gfx.mojom.PointF point) =>
+      (SmartGestureContent? content,
+       url.mojom.Origin hit_frame_origin,
+       blink.mojom.LocalFrameToken hit_frame_token);
+};

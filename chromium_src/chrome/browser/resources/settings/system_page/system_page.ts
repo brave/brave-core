@@ -19,9 +19,11 @@ import {
 declare module './system_page-chromium.js' {
   interface SettingsSystemPageElement {
     shortcutsSupported_: boolean
+    gesturesFeatureEnabled_: boolean
     isMac_: boolean
     warnBeforeQuittingLabel_: string
     onShortcutsClick_(): void
+    onGesturesClick_(): void
   }
 }
 
@@ -37,6 +39,7 @@ class SettingsSystemPageElement extends SettingsSystemPageElementChromium {
     return {
       ...super.properties,
       shortcutsSupported_: { type: Boolean },
+      gesturesFeatureEnabled_: { type: Boolean },
       isMac_: { type: Boolean },
       warnBeforeQuittingLabel_: { type: String },
     }
@@ -44,6 +47,8 @@ class SettingsSystemPageElement extends SettingsSystemPageElementChromium {
 
   override accessor shortcutsSupported_: boolean =
       loadTimeData.getBoolean('areShortcutsSupported')
+  override accessor gesturesFeatureEnabled_: boolean =
+      loadTimeData.getBoolean('isGesturesFeatureEnabled')
   override accessor isMac_: boolean = isMac
 
   // 'warnBeforeQuitting' is only registered as a localized string on mac
@@ -56,6 +61,10 @@ class SettingsSystemPageElement extends SettingsSystemPageElementChromium {
 
   override onShortcutsClick_() {
     Router.getInstance().navigateTo(routes.SHORTCUTS)
+  }
+
+  override onGesturesClick_() {
+    Router.getInstance().navigateTo(routes.GESTURES)
   }
 }
 

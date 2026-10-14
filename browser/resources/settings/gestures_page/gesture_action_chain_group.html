@@ -1,0 +1,240 @@
+<style include="md-select">
+  /* `!important` needed to beat `md-select`'s own `color` rule, which has
+     higher specificity (`select.md-select:not(.z)`). */
+  .command-unassigned {
+    color: var(--leo-color-text-secondary) !important;
+  }
+
+  /* Warns when a command is also used by another gesture. The
+     systemfeedback-warning token flips to near-black brown in dark mode. */
+  .command-conflict {
+    border: 2px solid var(--leo-color-primitive-yellow-70) !important;
+  }
+
+  .action-chain-group {
+    align-items: center;
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+    margin-inline-start: auto;
+  }
+
+  .action-chain {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: flex-end;
+  }
+
+  .action-buttons {
+    display: flex;
+    flex-shrink: 0;
+    gap: 4px;
+  }
+
+  /* No gap, so the select and its `.action-param` controls sit flush as
+     one group; stretch so `.action-param` matches the select's height. */
+  .action-row {
+    align-items: stretch;
+    display: flex;
+  }
+
+  .chain-connector {
+    --leo-icon-size: 16px;
+    align-self: center;
+    color: var(--leo-color-icon-secondary);
+  }
+
+  .action-drag-handle {
+    --leo-icon-size: 16px;
+    color: var(--leo-color-icon-secondary);
+    cursor: grab;
+    margin-inline-end: 4px;
+  }
+
+  /* Shrinks each action's select to its command's text width; the
+     dropdown's own option list still sizes to fit the widest option. */
+  .action-row select {
+    --md-select-width: auto;
+  }
+
+  /* `md-select`'s own `:focus` always shows an outline, even after a
+     mouse click; keep it for keyboard navigation only. */
+  .action-row select:focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  /* Squares the trailing corner before a visible `.action-param` or
+     `.int-param-select`, so the row's controls read as one joined group. */
+  .action-row select:has(~ .action-param:not([hidden])),
+  .action-param:has(~ .action-param:not([hidden])) {
+    border-start-end-radius: 0;
+    border-end-end-radius: 0;
+  }
+
+  .action-row select:has(~ .int-param-select:not([hidden])) {
+    border-start-end-radius: 0 !important;
+    border-end-end-radius: 0 !important;
+  }
+
+  /* Counterpart to the rule above: a visible `.action-param` always follows the
+     row's select, so its leading corner is always squared. */
+  .action-param:not([hidden]) {
+    border-start-start-radius: 0;
+    border-end-start-radius: 0;
+  }
+
+  /* Shares the primary select's border, like `.action-param`, so a command's
+     second param dropdown reads as one control, not a separate field. */
+  .int-param-select:not([hidden]) {
+    border-start-start-radius: 0 !important;
+    border-end-start-radius: 0 !important;
+    margin-inline-start: -1px;
+  }
+
+  /* Shares the select's border so a command param reads as part of the
+     same control, not a separate field next to it. */
+  .action-param {
+    align-items: center;
+    border: solid 1px var(--leo-color-divider-subtle);
+    border-start-start-radius: 0;
+    border-end-start-radius: 0;
+    border-start-end-radius: 8px;
+    border-end-end-radius: 8px;
+    box-sizing: border-box;
+    display: flex;
+    gap: 4px;
+    margin-inline-start: -1px;
+    padding-inline-end: 6px;
+    padding-inline-start: 10px;
+  }
+
+  .action-param-label {
+    font-size: 12px;
+    max-width: 160px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* No label, just an icon, so needs less side padding than
+     `.action-param`'s default. */
+  .remove-action-param {
+    padding-inline: 6px;
+  }
+
+  .action-param cr-icon-button {
+    --cr-icon-button-margin-end: 0;
+    --cr-icon-button-margin-start: 0;
+    --cr-icon-button-size: 24px;
+  }
+</style>
+
+<div class="action-chain-group">
+  <div class="action-chain">
+    <div class="action-row"
+        on-dragover="onActionDragOver_"
+        on-drop="onPrimaryActionDrop_">
+      <leo-icon name="drag" class="action-drag-handle"
+          hidden$="[[!hasChainedActions_(actionRows)]]"
+          draggable="true"
+          on-dragstart="onPrimaryActionDragStart_"
+          on-dragend="onActionDragEnd_">
+      </leo-icon>
+      <select on-change="onPrimaryCommandChanged_"
+          class$="[[primaryCommandSelectClass_(actionRows, hasConflict)]]">
+        <template is="dom-repeat" items="[[optionSets.commandOptions]]" as="option">
+          <option value$="[[option.value]]"
+              selected="[[optionMatchesPrimaryCommand_(
+                  option.value, actionRows)]]">
+            [[option.name]]
+          </option>
+        </template>
+      </select>
+      <select class="md-select int-param-select"
+          on-change="onPrimaryOpenSettingsPageChanged_"
+          hidden$="[[!primaryHasIntParam_(actionRows)]]">
+        <template is="dom-repeat"
+            items="[[primaryIntParamOptionsFor_(actionRows)]]"
+            as="pageOption">
+          <option value$="[[pageOption.value]]"
+              selected="[[optionMatchesPrimaryOpenSettingsPage_(
+                  pageOption.value, actionRows)]]">
+            [[pageOption.name]]
+          </option>
+        </template>
+      </select>
+      <div class$="[[primaryUrlAttachClass_(actionRows)]]"
+          hidden$="[[!primaryHasTextParam_(actionRows)]]">
+        <span class="action-param-label">
+          [[primaryUrlButtonLabel_(actionRows)]]
+        </span>
+        <cr-icon-button iron-icon="edit-pencil"
+            on-click="onEditPrimaryUrlClick_">
+        </cr-icon-button>
+      </div>
+      <div class="action-param remove-action-param"
+          hidden$="[[!hasChainedActions_(actionRows)]]">
+        <cr-icon-button iron-icon="minus"
+            on-click="onRemovePrimaryActionClick_">
+        </cr-icon-button>
+      </div>
+    </div>
+    <template is="dom-repeat" items="[[chainedActionRows_(actionRows)]]"
+        as="chainedAction">
+      <leo-icon name="arrow-small-right" class="chain-connector"></leo-icon>
+      <div class="action-row"
+          on-dragover="onActionDragOver_"
+          on-drop="onChainedActionDrop_">
+        <leo-icon name="drag" class="action-drag-handle"
+            draggable="true"
+            on-dragstart="onChainedActionDragStart_"
+            on-dragend="onActionDragEnd_">
+        </leo-icon>
+        <select on-change="onChainedActionCommandChanged_"
+            class$="[[getCommandSelectClass_(
+                chainedAction.command, chainedAction.textParam)]]">
+          <template is="dom-repeat" items="[[optionSets.commandOptions]]" as="option">
+            <option value$="[[option.value]]"
+                selected="[[optionMatchesCommand_(
+                    option.value, chainedAction.command)]]">
+              [[option.name]]
+            </option>
+          </template>
+        </select>
+        <select class="md-select int-param-select"
+            on-change="onChainedActionOpenSettingsPageChanged_"
+            hidden$="[[!hasIntParam_(chainedAction.command)]]">
+          <template is="dom-repeat"
+              items="[[intParamOptionsFor_(chainedAction.command)]]"
+              as="pageOption">
+            <option value$="[[pageOption.value]]"
+                selected="[[optionMatchesCommand_(
+                    pageOption.value, chainedAction.openSettingsPage)]]">
+              [[pageOption.name]]
+            </option>
+          </template>
+        </select>
+        <div class$="[[getUrlAttachClass_(chainedAction.textParam)]]"
+            hidden$="[[!hasTextParam_(chainedAction.command)]]">
+          <span class="action-param-label">
+            [[getUrlButtonLabel_(chainedAction.command,
+                chainedAction.textParam)]]
+          </span>
+          <cr-icon-button iron-icon="edit-pencil"
+              on-click="onEditChainedUrlClick_">
+          </cr-icon-button>
+        </div>
+        <div class="action-param remove-action-param">
+          <cr-icon-button iron-icon="minus"
+              on-click="onRemoveChainedActionClick_">
+          </cr-icon-button>
+        </div>
+      </div>
+    </template>
+  </div>
+  <div class="action-buttons">
+    <cr-icon-button iron-icon="plus-add" on-click="onAddChainedActionClick_">
+    </cr-icon-button>
+  </div>
+</div>
