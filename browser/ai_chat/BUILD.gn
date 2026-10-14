@@ -235,7 +235,6 @@ if (enable_brave_ai_chat_agent_profile) {
       "//brave/components/ai_chat/core/common/mojom",
       "//brave/components/brave_origin",
       "//chrome/browser:browser_process",
-      "//chrome/browser:browser_public_dependencies",
       "//chrome/browser/actor",
       "//chrome/browser/actor:types",
       "//chrome/browser/actor/ui",
