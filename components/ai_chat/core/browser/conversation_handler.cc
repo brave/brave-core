@@ -197,17 +197,14 @@ ConversationHandler::ThreadContainer::ThreadContainer(ThreadContainer&&) =
 ConversationHandler::ThreadContainer&
 ConversationHandler::ThreadContainer::operator=(ThreadContainer&&) = default;
 
-bool ConversationHandler::IsContentAgentUserSelectable() const {
-  return ai_chat_service_->content_agent_user_selectable();
-}
-
 bool ConversationHandler::IsContentAgentEnabled() const {
   if (!ai_chat_service_->content_agent_tools_allowed()) {
     return false;
   }
   // Where the user chooses, their choice decides. Where they do not, the
   // content agent is the profile's purpose, so it is always on.
-  return !IsContentAgentUserSelectable() || content_agent_chosen_;
+  return !ai_chat_service_->content_agent_user_selectable() ||
+         content_agent_chosen_;
 }
 
 void ConversationHandler::BuildCapabilitiesSet() {
@@ -3089,7 +3086,8 @@ mojom::APIError ConversationHandler::current_error() const {
 }
 
 void ConversationHandler::SetContentAgentChosen(bool chosen) {
-  if (!IsContentAgentUserSelectable() || content_agent_chosen_ == chosen) {
+  if (!ai_chat_service_->content_agent_user_selectable() ||
+      content_agent_chosen_ == chosen) {
     return;
   }
 

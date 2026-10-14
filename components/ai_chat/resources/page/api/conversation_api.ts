@@ -189,7 +189,7 @@ export default function createConversationApi(
           onVisionModelSwitchChanged: (visionModelSwitchKey) => {
             api.getState.update({
               visionModelSwitchKey: visionModelSwitchKey ?? undefined,
-            }),
+            })
           },
 
           // Pushed by the browser so that every open UI for this conversation

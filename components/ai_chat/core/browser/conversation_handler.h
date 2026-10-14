@@ -191,13 +191,6 @@ class ConversationHandler : public mojom::ConversationHandler,
   // Return if this is a temporary chat.
   bool IsTemporaryChat() const;
 
-  // Whether the user decides for this conversation that the content agent is
-  // used, as opposed to it being unavailable or unconditionally on.
-  bool IsContentAgentUserSelectable() const;
-
-  // Whether the content agent is in force for this conversation.
-  bool IsContentAgentEnabled() const;
-
   // mojom::ConversationHandler
   void GetState(GetStateCallback callback) override;
   void GetConversationHistory(
@@ -475,6 +468,9 @@ class ConversationHandler : public mojom::ConversationHandler,
 
   void InitEngine();
 
+  // Whether the content agent is in force for this conversation.
+  bool IsContentAgentEnabled() const;
+
   void BuildCapabilitiesSet();
 
   // Setup tools for the conversation. When a new user message is added, we
@@ -728,7 +724,7 @@ class ConversationHandler : public mojom::ConversationHandler,
   // The user's content agent choice for this conversation. Deliberately not
   // persisted: a reloaded conversation starts with the content agent off and
   // the user chooses again. Only consulted where
-  // IsContentAgentUserSelectable().
+  // AIChatService::content_agent_user_selectable().
   bool content_agent_chosen_ = false;
 
   // Set of tab IDs that have been part of tasks whilst this conversation is
