@@ -19,6 +19,7 @@ assert(is_win || is_mac || is_linux || is_chromeos || is_android)
 source_set("tabs_public") {
   sources = [
     "public/brave_tab_features.h",
+    "public/shared_pinned_tab_utils.h",
     "public/switches.h",
     "public/vertical_tab_controller.h",
   ]
@@ -47,6 +48,7 @@ if (!is_android) {
 
     sources = [
       "brave_tab_features.cc",
+      "shared_pinned_tab_utils.cc",
       "vertical_tab_controller.cc",
     ]
 
@@ -56,6 +58,7 @@ if (!is_android) {
       "//brave/browser/image_metadata_stripper",
       "//brave/browser/misc_metrics:misc_metrics_impl",
       "//brave/browser/new_tab",
+      "//brave/browser/ui:brave_tab_prefs",
       "//brave/browser/ui:ui_features",
       "//brave/browser/ui/focus_mode",
       "//brave/browser/ui/side_panel",
@@ -66,12 +69,18 @@ if (!is_android) {
       "//brave/components/request_otr/common/buildflags",
       "//chrome/browser/content_settings:content_settings_factory",
       "//chrome/browser/profiles",
+      "//chrome/browser/ui:browser_commands",
       "//chrome/browser/ui:ui_features",
+      "//chrome/browser/ui:unload_controller",
+      "//chrome/browser/ui/browser_window",
       "//chrome/browser/ui/page_action",
       "//chrome/browser/ui/side_panel:side_panel_views_dependent",
       "//chrome/browser/ui/tabs",
+      "//chrome/browser/ui/tabs:features",
       "//chrome/browser/ui/tabs:impl",
+      "//chrome/browser/ui/tabs:tab_strip",
       "//chrome/browser/ui/thumbnails",
+      "//components/prefs",
     ]
 
     if (enable_ai_chat) {

@@ -6,6 +6,7 @@
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/brave_tab_strip_model_delegate.h"
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
+#include "brave/browser/ui/tabs/public/shared_pinned_tab_utils.h"
 #include "chrome/browser/ui/browser_command_controller.h"
 
 #include <chrome/browser/ui/browser.cc>

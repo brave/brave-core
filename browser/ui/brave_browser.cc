@@ -8,24 +8,19 @@
 #include <optional>
 
 #include "base/check.h"
-#include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
 #include "brave/browser/brave_browser_features.h"
 #include "brave/browser/ui/brave_browser_window.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
-#include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
-#include "chrome/browser/ui/browser_window/public/profile_browser_collection.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
-#include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #include "chrome/browser/ui/ui_features.h"
-#include "chrome/browser/ui/unload_controller.h"
 #include "chrome/browser/ui/webui/new_tab_page/new_tab_page_ui.h"
 #include "chrome/browser/ui/webui/new_tab_page_third_party/new_tab_page_third_party_ui.h"
 #include "chrome/browser/ui/webui/ntp/new_tab_ui.h"
@@ -60,41 +55,6 @@ BraveBrowser::BraveBrowser(BrowserWindowCreateParams params)
 }
 
 BraveBrowser::~BraveBrowser() = default;
-
-void BraveBrowser::OnTabClosing(tabs::TabInterface* tab,
-                                bool* had_active_modal_dialog) {
-  Browser::OnTabClosing(tab, had_active_modal_dialog);
-
-  if (!AreAllTabsSharedPinnedTabs()) {
-    return;
-  }
-
-  bool more_than_one = false;
-  ProfileBrowserCollection::GetForProfile(GetProfile())
-      ->ForEach([this, &more_than_one](BrowserWindowInterface* browser) {
-        if (!more_than_one) {
-          more_than_one = true;
-          return true;
-        }
-
-        base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-            FROM_HERE, base::BindOnce(
-                           [](base::WeakPtr<BraveBrowser> browser) {
-                             if (browser) {
-                               // We don't want close confirm dialog to show up.
-                               // In this case, Shared pinned tabs will be moved
-                               // to another window, so we don't have to warn
-                               // users.
-                               UnloadController::From(browser.get())
-                                   ->set_confirmed_to_close(true);
-                               chrome::CloseWindow(browser.get());
-                             }
-                           },
-                           weak_ptr_factory_.GetWeakPtr()));
-
-        return false;
-      });
-}
 
 void BraveBrowser::TabStripEmpty() {
   if (GetProfile()->GetPrefs()->GetBoolean(kEnableClosingLastTab) ||
@@ -147,24 +107,6 @@ void BraveBrowser::OnTabStripModelChanged(
           removed_tab.tab->GetHandle());
     }
   }
-}
-
-bool BraveBrowser::AreAllTabsSharedPinnedTabs() {
-  if (!base::FeatureList::IsEnabled(tabs::kBraveSharedPinnedTabs)) {
-    return false;
-  }
-
-  if (GetType() != BrowserWindowInterface::Type::TYPE_NORMAL) {
-    return false;
-  }
-
-  if (!GetProfile()->GetPrefs()->GetBoolean(brave_tabs::kSharedPinnedTab)) {
-    return false;
-  }
-
-  return tab_strip_model()->count() > 0 &&
-         tab_strip_model()->count() ==
-             tab_strip_model()->IndexOfFirstNonPinnedTab();
 }
 
 void BraveBrowser::SetTabsToIgnoreBeforeUnloadHandlers(
