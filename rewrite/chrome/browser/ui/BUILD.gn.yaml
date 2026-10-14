@@ -23,3 +23,12 @@ substitutions:
       values:
         - //brave/browser/ui:ui_public_dependencies
         - //components/saved_tab_groups/public
+
+  - description: |-
+      accelerator_table.cc chromium_src override uses ENABLE_COMMANDER build
+      flag. The dependency for the flag needs to be added.
+    insert_into_list:
+      target: accelerator_table
+      list_name: deps
+      values:
+        - //brave/components/commander/common/buildflags
