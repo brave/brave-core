@@ -1,5 +1,5 @@
 diff --git a/components/segmentation_platform/public/features.cc b/components/segmentation_platform/public/features.cc
-index 01abb4a9b8bd04ac1e9d590da4c469eed9430c25..7e9d0eb760a4b0ea41f4b15a5ccc6e7b0f0f947a 100644
+index f2ed8342bd28658fb873157789f6546cb594fae7..d5c78cc77b55aeed718be099508eb655aa2bf81e 100644
 --- a/components/segmentation_platform/public/features.cc
 +++ b/components/segmentation_platform/public/features.cc
 @@ -11,9 +11,9 @@
@@ -32,12 +32,12 @@ index 01abb4a9b8bd04ac1e9d590da4c469eed9430c25..7e9d0eb760a4b0ea41f4b15a5ccc6e7b
               base::FEATURE_DISABLED_BY_DEFAULT);
  
  // Enabled only on iOS to improve startup performance of the module ranker.
-@@ -185,7 +185,7 @@ constexpr base::FeatureParam<int> kMaxDefaultBrowserMagicStackIosImpressions{
+@@ -199,7 +199,7 @@ constexpr base::FeatureParam<int> kMaxDefaultBrowserMagicStackIosImpressions{
      "max_default_browser_magic_stack_ios_impressions",
      /*default_value=*/6};
  
 -BASE_FEATURE(kAndroidTipsNotifications, base::FEATURE_ENABLED_BY_DEFAULT);
 +BASE_OVERRIDDEN_FEATURE(kAndroidTipsNotifications, base::FEATURE_DISABLED_BY_DEFAULT);
  
- constexpr base::FeatureParam<bool> kTrustAndSafety{&kAndroidTipsNotifications,
-                                                    "trust_and_safety",
+ BASE_FEATURE(kAndroidTipsNotificationsV2, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
