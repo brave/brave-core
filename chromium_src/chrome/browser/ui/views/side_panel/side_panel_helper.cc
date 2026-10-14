@@ -23,7 +23,6 @@
 #include "base/feature_list.h"
 #include "brave/browser/ui/views/side_panel/brave_news/brave_news_side_panel_web_view.h"
 #include "brave/components/brave_news/common/features.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/side_panel/side_panel_entry.h"
 #include "chrome/browser/ui/side_panel/side_panel_entry_id.h"
 #endif

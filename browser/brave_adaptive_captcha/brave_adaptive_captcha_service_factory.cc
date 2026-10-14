@@ -23,8 +23,8 @@
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/brave_rewards/rewards_panel_coordinator.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/browser_window/public/profile_browser_collection.h"
 #endif  // !BUILDFLAG(IS_ANDROID)
 #endif  // BUILDFLAG(ENABLE_BRAVE_REWARDS)

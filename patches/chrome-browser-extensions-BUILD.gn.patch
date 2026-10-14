@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/extensions/BUILD.gn b/chrome/browser/extensions/BUILD.gn
-index 563383fc71d7bc73f0af0fd2130879d0844ba2af..d1a3691b05c1ad8d3ea5424e7f1289f4420375e7 100644
+index 45ffea4f8d3b9c1b906dbfb2af90650461e3a7e9..18c94edc3013dbbbeadd9fe09eec082cc69aa63a 100644
 --- a/chrome/browser/extensions/BUILD.gn
 +++ b/chrome/browser/extensions/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -18,3 +18,11 @@ index 563383fc71d7bc73f0af0fd2130879d0844ba2af..d1a3691b05c1ad8d3ea5424e7f1289f4
    public_deps = [
      "//chrome/browser/extensions/api/messaging",
      "//chrome/browser/media/webrtc",
+@@ -2040,6 +2042,7 @@ source_set("unit_tests") {
+     "//base",
+     "//base/test:test_config",
+     "//base/test:test_support",
++    "//brave/browser/extensions",
+     "//chrome/browser:browser_process_impl",
+     "//chrome/browser:global_features",
+     "//chrome/browser/background",

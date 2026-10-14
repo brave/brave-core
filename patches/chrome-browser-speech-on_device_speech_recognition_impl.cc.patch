@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/speech/on_device_speech_recognition_impl.cc b/chrome/browser/speech/on_device_speech_recognition_impl.cc
-index 9e209fe35b4b480b251d84e9709d1edcba513ffa..3650769f8acacc5b87ee525fd9c489135d5c1643 100644
+index e03a15d411477699fc5c40505aaf04dd0ba11692..fe9a09f21c431e4fe35320c436d4dd06e04b8254 100644
 --- a/chrome/browser/speech/on_device_speech_recognition_impl.cc
 +++ b/chrome/browser/speech/on_device_speech_recognition_impl.cc
-@@ -156,6 +156,9 @@ void OnDeviceSpeechRecognitionImpl::Available(
+@@ -158,6 +158,9 @@ void OnDeviceSpeechRecognitionImpl::Available(
      const std::vector<std::string>& languages,
      media::mojom::SpeechRecognitionQuality quality,
      OnDeviceSpeechRecognitionImpl::AvailableCallback callback) {

@@ -11,6 +11,8 @@ PRESUBMIT_VERSION = '2.0.0'
 
 
 def CheckChange(input_api, output_api):
+  if not input_api.HasAffectedFiles(extensions='.py'):
+    return []
   tests = []
   results = []
   testing_path = pathlib.Path(input_api.PresubmitLocalPath())

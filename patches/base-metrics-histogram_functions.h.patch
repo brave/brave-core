@@ -1,8 +1,8 @@
 diff --git a/base/metrics/histogram_functions.h b/base/metrics/histogram_functions.h
-index 19aedd24646a34b397b864b6c1fade032023603b..6d15203ceb470f2d8340ec2f1ebf0947f4be7980 100644
+index 6460fbc2334a45d90ef8393b79afc10926101bb6..94f92fd656a5498c9bece55aef660aed9f492e3d 100644
 --- a/base/metrics/histogram_functions.h
 +++ b/base/metrics/histogram_functions.h
-@@ -88,6 +88,7 @@ void UmaHistogramEnumeration(const StringType& name, T sample) {
+@@ -91,6 +91,7 @@ void UmaHistogramEnumeration(const StringType& name, T sample) {
                  "Enumeration's kMaxValue is out of range of "
                  "LinearHistogram::kBucketCount_MAX. Use a sparse histogram "
                  "instead.");

@@ -31,7 +31,7 @@ namespace sidebar {
 class SidebarBrowserTest;
 }  // namespace sidebar
 
-class BraveBrowser;
+class BrowserWindowInterface;
 class BrowserWindowInterface;
 
 // This view is the parent view of all sidebar ui.
@@ -131,10 +131,6 @@ class SidebarContainerView : public sidebar::Sidebar,
   // of sidebar ui.
   void StartBrowserWindowEventMonitoring();
   void StopBrowserWindowEventMonitoring();
-
-  // Casts |browser_| to BraveBrowser, as storing it as BraveBrowser would cause
-  // a precocious downcast.
-  BraveBrowser* GetBraveBrowser() const;
 
   raw_ptr<BrowserWindowInterface> browser_ = nullptr;
   raw_ptr<SidebarControlView> sidebar_control_view_ = nullptr;

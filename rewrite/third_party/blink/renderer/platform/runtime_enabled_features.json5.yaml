@@ -105,6 +105,11 @@ substitutions:
       feature_name: ControlledFrame
       value: disabled
 
+  - description: 'Ship extension content script tagging disabled.'
+    set_blink_runtime_enabled_feature_state:
+      feature_name: ExtensionScriptTagging
+      value: disabled
+
   - description: 'Ship the Protected Audience ad auction API disabled.'
     set_blink_runtime_enabled_feature_state:
       feature_name: Fledge

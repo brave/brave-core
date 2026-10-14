@@ -9,7 +9,6 @@
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/brave_search_conversion/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/common/webui_url_constants.h"
 #include "chrome/test/base/chrome_test_utils.h"
 #include "chrome/test/base/in_process_browser_test.h"

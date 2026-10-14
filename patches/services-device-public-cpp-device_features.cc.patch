@@ -1,5 +1,5 @@
 diff --git a/services/device/public/cpp/device_features.cc b/services/device/public/cpp/device_features.cc
-index 4fa3c76757f1d4a9750723ddc9a1c166d5508ccd..e2cbeb7cc0a6cc56c92ef6ae863297481b704ee9 100644
+index ee538fcacce4ce76f82dcf5159f2fbeb0b99e68a..d8a3a441b79534dc9aaf4818cf8c98a09526e7f2 100644
 --- a/services/device/public/cpp/device_features.cc
 +++ b/services/device/public/cpp/device_features.cc
 @@ -18,8 +18,8 @@ namespace features {

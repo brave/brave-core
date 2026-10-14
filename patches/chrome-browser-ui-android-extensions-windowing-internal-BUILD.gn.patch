@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/android/extensions/windowing/internal/BUILD.gn b/chrome/browser/ui/android/extensions/windowing/internal/BUILD.gn
-index 93e62ab11243e909963cbb8aeb11e83454cc227a..528b72c2d4d6f012a6d2ee06537db6e5ce6c3433 100644
+index be7d69a55cea0b390a660aea2c067cc473f16ce6..1ae22b3e19e98bf34f1396f853fc01e84ae038f4 100644
 --- a/chrome/browser/ui/android/extensions/windowing/internal/BUILD.gn
 +++ b/chrome/browser/ui/android/extensions/windowing/internal/BUILD.gn
 @@ -2,11 +2,12 @@
@@ -14,5 +14,5 @@ index 93e62ab11243e909963cbb8aeb11e83454cc227a..528b72c2d4d6f012a6d2ee06537db6e5
 -assert(is_desktop_android)
 +assert(is_android && enable_extensions_core)
  
- source_set("internal") {
-   sources = [
+ # Android C++ extension windowing internals.
+ #

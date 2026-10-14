@@ -32,7 +32,6 @@ class ActionItem;
 #include "brave/components/containers/core/mojom/containers.mojom-forward.h"
 #endif
 
-class Browser;
 class BrowserWindowInterface;
 class Profile;
 
@@ -50,20 +49,20 @@ void NewTorConnectionForSite(BrowserWindowInterface*);
 // Toggles the given side panel entry: closes the sidebar if the entry is
 // already showing, switches to the entry if the sidebar is open on a different
 // entry, or opens the sidebar on the entry if it's closed.
-void ToggleSidePanel(Browser* browser, SidePanelEntryId id);
+void ToggleSidePanel(BrowserWindowInterface* browser, SidePanelEntryId id);
 
-void ToggleAIChat(Browser* browser);
+void ToggleAIChat(BrowserWindowInterface* browser);
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
-void ShowWalletBubble(Browser* browser);
-void CloseWalletBubble(Browser* browser);
+void ShowWalletBubble(BrowserWindowInterface* browser);
+void CloseWalletBubble(BrowserWindowInterface* browser);
 #endif
 
-void MaybeDistillAndShowSpeedreaderBubble(Browser* browser);
-void ShowBraveVPNBubble(Browser* browser);
-void ToggleBraveVPNButton(Browser* browser);
+void MaybeDistillAndShowSpeedreaderBubble(BrowserWindowInterface* browser);
+void ShowBraveVPNBubble(BrowserWindowInterface* browser);
+void ToggleBraveVPNButton(BrowserWindowInterface* browser);
 void ToggleBraveVPNTrayIcon();
-void OpenBraveVPNUrls(Browser* browser, int command_id);
+void OpenBraveVPNUrls(BrowserWindowInterface* browser, int command_id);
 // Copies an url sanitized by URLSanitizerService.
 void CopySanitizedURL(BrowserWindowInterface* browser, const GURL& url);
 // Copies an url cleared through:
@@ -76,17 +75,17 @@ void CopyLinkWithStrictCleaning(BrowserWindowInterface* browser,
 void ToggleWindowTitleVisibilityForVerticalTabs(
     BrowserWindowInterface* browser);
 void ToggleVerticalTabStrip(BrowserWindowInterface* browser);
-void ToggleVerticalTabStripFloatingMode(Browser* browser);
-void ToggleVerticalTabStripExpanded(Browser* browser);
+void ToggleVerticalTabStripFloatingMode(BrowserWindowInterface* browser);
+void ToggleVerticalTabStripExpanded(BrowserWindowInterface* browser);
 
-void ToggleActiveTabAudioMute(Browser* browser);
-void ToggleSidebarPosition(Browser* browser);
-void ToggleSidebar(Browser* browser);
+void ToggleActiveTabAudioMute(BrowserWindowInterface* browser);
+void ToggleSidebarPosition(BrowserWindowInterface* browser);
+void ToggleSidebar(BrowserWindowInterface* browser);
 
 void ToggleFocusMode(BrowserWindowInterface* browser);
 
-void ToggleShieldsEnabled(Browser* browser);
-void ToggleJavascriptEnabled(Browser* browser);
+void ToggleShieldsEnabled(BrowserWindowInterface* browser);
+void ToggleJavascriptEnabled(BrowserWindowInterface* browser);
 
 // Launches the element picker ("Block elements") for the browser's active tab,
 // if the page and Shields settings support it. Backs IDC_BLOCK_ELEMENTS so
@@ -95,82 +94,82 @@ void ToggleJavascriptEnabled(Browser* browser);
 void LaunchContentPicker(BrowserWindowInterface* browser);
 
 #if BUILDFLAG(ENABLE_COMMANDER)
-void ToggleCommander(Browser* browser);
+void ToggleCommander(BrowserWindowInterface* browser);
 #endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
-void ShowPlaylistBubble(Browser* browser);
+void ShowPlaylistBubble(BrowserWindowInterface* browser);
 #endif
 
-void GroupTabsOnCurrentOrigin(Browser* browser);
-void MoveGroupToNewWindow(Browser* browser);
+void GroupTabsOnCurrentOrigin(BrowserWindowInterface* browser);
+void MoveGroupToNewWindow(BrowserWindowInterface* browser);
 
-bool IsInGroup(Browser* browser);
-bool HasUngroupedTabs(Browser* browser);
+bool IsInGroup(BrowserWindowInterface* browser);
+bool HasUngroupedTabs(BrowserWindowInterface* browser);
 
-void GroupUngroupedTabs(Browser* browser);
-void UngroupCurrentGroup(Browser* browser);
-void RemoveTabFromGroup(Browser* browser);
-void NameGroup(Browser* browser);
-void NewTabInGroup(Browser* browser);
+void GroupUngroupedTabs(BrowserWindowInterface* browser);
+void UngroupCurrentGroup(BrowserWindowInterface* browser);
+void RemoveTabFromGroup(BrowserWindowInterface* browser);
+void NameGroup(BrowserWindowInterface* browser);
+void NewTabInGroup(BrowserWindowInterface* browser);
 
-bool CanUngroupAllTabs(Browser* browser);
-void UngroupAllTabs(Browser* browser);
+bool CanUngroupAllTabs(BrowserWindowInterface* browser);
+void UngroupAllTabs(BrowserWindowInterface* browser);
 
-void ToggleGroupExpanded(Browser* browser);
-void CloseUngroupedTabs(Browser* browser);
-void CloseTabsNotInCurrentGroup(Browser* browser);
-void CloseGroup(Browser* browser);
+void ToggleGroupExpanded(BrowserWindowInterface* browser);
+void CloseUngroupedTabs(BrowserWindowInterface* browser);
+void CloseTabsNotInCurrentGroup(BrowserWindowInterface* browser);
+void CloseGroup(BrowserWindowInterface* browser);
 
 bool CanBringAllTabs(BrowserWindowInterface* browser);
 void BringAllTabs(BrowserWindowInterface* browser);
 
 bool HasDuplicatesOfActiveTab(BrowserWindowInterface* browser);
 void CloseDuplicatesOfActiveTab(BrowserWindowInterface* browser);
-bool HasAnyDuplicateTabs(Browser* browser);
-void CloseAllDuplicateTabs(Browser* browser);
-bool CanCloseTabsToLeft(Browser* browser);
-void CloseTabsToLeft(Browser* browser);
+bool HasAnyDuplicateTabs(BrowserWindowInterface* browser);
+void CloseAllDuplicateTabs(BrowserWindowInterface* browser);
+bool CanCloseTabsToLeft(BrowserWindowInterface* browser);
+void CloseTabsToLeft(BrowserWindowInterface* browser);
 
-bool CanCloseUnpinnedTabs(Browser* browser);
-void CloseUnpinnedTabs(Browser* browser);
+bool CanCloseUnpinnedTabs(BrowserWindowInterface* browser);
+void CloseUnpinnedTabs(BrowserWindowInterface* browser);
 
-void AddAllTabsToNewGroup(Browser* browser);
+void AddAllTabsToNewGroup(BrowserWindowInterface* browser);
 
-bool CanMuteAllTabs(Browser* browser, bool exclude_active);
-void MuteAllTabs(Browser* browser, bool exclude_active);
+bool CanMuteAllTabs(BrowserWindowInterface* browser, bool exclude_active);
+void MuteAllTabs(BrowserWindowInterface* browser, bool exclude_active);
 
-bool CanUnmuteAllTabs(Browser* browser);
-void UnmuteAllTabs(Browser* browser);
+bool CanUnmuteAllTabs(BrowserWindowInterface* browser);
+void UnmuteAllTabs(BrowserWindowInterface* browser);
 
-void ScrollTabToTop(Browser* browser);
-void ScrollTabToBottom(Browser* browser);
+void ScrollTabToTop(BrowserWindowInterface* browser);
+void ScrollTabToBottom(BrowserWindowInterface* browser);
 
-void ExportAllBookmarks(Browser* browser);
+void ExportAllBookmarks(BrowserWindowInterface* browser);
 void ToggleAllBookmarksButtonVisibility(BrowserWindowInterface* browser);
 
 // Split view API with SideBySide.
 // false if active tab is already split tab.
-bool CanOpenNewSplitTabsWithSideBySide(Browser* browser);
+bool CanOpenNewSplitTabsWithSideBySide(BrowserWindowInterface* browser);
 
 // true if two tabs are selected and both are not in split tabs.
-bool CanSplitTabsWithSideBySide(Browser* browser);
+bool CanSplitTabsWithSideBySide(BrowserWindowInterface* browser);
 
 // Add to split with selected two tabs.
-void SplitTabsWithSideBySide(Browser* browser,
+void SplitTabsWithSideBySide(BrowserWindowInterface* browser,
                              split_tabs::SplitTabCreatedSource source);
 
 // true if any selected tab is split tabs.
-bool IsSplitTabs(Browser* browser);
+bool IsSplitTabs(BrowserWindowInterface* browser);
 
 // Remove split tabs of selected tabs.
-void RemoveSplitWithSideBySide(Browser* browser);
+void RemoveSplitWithSideBySide(BrowserWindowInterface* browser);
 
 // Swap tabs in active tab.
-void SwapTabsInSplitWithSideBySide(Browser* browser);
+void SwapTabsInSplitWithSideBySide(BrowserWindowInterface* browser);
 
 // Force pastes into the active web contents in the browser, if focused.
-void ForcePasteInBrowser(Browser* browser);
+void ForcePasteInBrowser(BrowserWindowInterface* browser);
 
 // Force pastes into the web contents if focused.
 void ForcePasteInWebContents(content::WebContents* contents);

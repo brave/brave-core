@@ -55,6 +55,7 @@ constexpr auto kBraveCommonSyncablePrefsAllowlist = base::MakeFixedFlatMap<
             syncer::PREFERENCES,
             sync_preferences::PrefSensitivity::kNone,
             MergeBehavior::kNone,
+            WriteBehavior::kWriteToBoth,
         },
     },
     {
@@ -64,6 +65,7 @@ constexpr auto kBraveCommonSyncablePrefsAllowlist = base::MakeFixedFlatMap<
             syncer::PREFERENCES,
             sync_preferences::PrefSensitivity::kNone,
             MergeBehavior::kNone,
+            WriteBehavior::kWriteToBoth,
         },
     },
 #if BUILDFLAG(ENABLE_CONTAINERS)
@@ -74,6 +76,7 @@ constexpr auto kBraveCommonSyncablePrefsAllowlist = base::MakeFixedFlatMap<
             syncer::PREFERENCES,
             sync_preferences::PrefSensitivity::kNone,
             MergeBehavior::kNone,
+            WriteBehavior::kWriteToBoth,
         },
     },
 #endif
@@ -85,6 +88,7 @@ constexpr auto kBraveCommonSyncablePrefsAllowlist = base::MakeFixedFlatMap<
             syncer::PREFERENCES,
             sync_preferences::PrefSensitivity::kNone,
             MergeBehavior::kNone,
+            WriteBehavior::kWriteToBoth,
         },
     },
 #endif
@@ -96,6 +100,7 @@ constexpr auto kBraveCommonSyncablePrefsAllowlist = base::MakeFixedFlatMap<
             syncer::PREFERENCES,
             sync_preferences::PrefSensitivity::kNone,
             MergeBehavior::kNone,
+            WriteBehavior::kWriteToBoth,
         },
     },
 #endif

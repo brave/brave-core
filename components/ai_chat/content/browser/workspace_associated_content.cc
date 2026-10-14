@@ -171,7 +171,7 @@ void WorkspaceAssociatedContent::DeliverDirectoryHandle(
           content::FileSystemAccessEntryFactory::BindingContext(
               rfh->GetStorageKey(), committed_url, rfh->GetGlobalId()),
           content::PathInfo(folder_path_),
-          content::FileSystemAccessEntryFactory::UserAction::kOpen);
+          content::FileSystemAccessEntryFactory::AccessTrigger::kOpen);
   if (!entry) {
     return;
   }

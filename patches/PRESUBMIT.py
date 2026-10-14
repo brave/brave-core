@@ -21,6 +21,8 @@ def CheckToModifyInputApi(input_api, _output_api):
 
 
 def CheckTests(input_api, output_api):
+    if not input_api.HasAffectedFiles(extensions='.py'):
+        return []
     return input_api.canned_checks.RunUnitTestsInDirectory(
         input_api, output_api, '.', files_to_check=TEST_FILE_PATTERN)
 

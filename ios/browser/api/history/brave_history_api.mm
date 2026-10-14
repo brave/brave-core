@@ -165,7 +165,7 @@ DomainMetricTypeIOS const DomainMetricTypeIOSLast28DayMetric =
 
 - (instancetype)init {
   return [self initWithMaxCount:0
-                       hostOnly:NO
+                 hostnameSuffix:nil
               duplicateHandling:HistoryDuplicateHandlingIOSRemoveAll
                       beginDate:nil
                         endDate:nil];
@@ -175,20 +175,20 @@ DomainMetricTypeIOS const DomainMetricTypeIOSLast28DayMetric =
                duplicateHandling:
                    (HistoryDuplicateHandlingIOS)duplicateHandling {
   return [self initWithMaxCount:maxCount
-                       hostOnly:NO
+                 hostnameSuffix:nil
               duplicateHandling:duplicateHandling
                       beginDate:nil
                         endDate:nil];
 }
 
 - (instancetype)initWithMaxCount:(NSUInteger)maxCount
-                        hostOnly:(BOOL)hostOnly
+                  hostnameSuffix:(nullable NSString*)hostnameSuffix
                duplicateHandling:(HistoryDuplicateHandlingIOS)duplicateHandling
                        beginDate:(nullable NSDate*)beginDate
                          endDate:(nullable NSDate*)endDate {
   if ((self = [super init])) {
     self.maxCount = maxCount;
-    self.hostOnly = hostOnly;
+    self.hostnameSuffix = hostnameSuffix;
     self.duplicateHandling = duplicateHandling;
     self.beginDate = beginDate;
     self.endDate = endDate;
@@ -351,7 +351,8 @@ DomainMetricTypeIOS const DomainMetricTypeIOSLast28DayMetric =
     // Creating fetch options for querying history
     history::QueryOptions options;
     options.max_count = static_cast<int>(searchOptions.maxCount);
-    options.host_only = searchOptions.hostOnly;
+    options.hostname_suffix =
+        base::SysNSStringToUTF8(searchOptions.hostnameSuffix);
 
     if (searchOptions.beginDate) {
       options.begin_time = base::Time::FromNSDate(searchOptions.beginDate);

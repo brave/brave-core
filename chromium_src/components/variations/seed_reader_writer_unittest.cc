@@ -16,7 +16,7 @@ TEST_P(SeedReaderWriterSeedFilesGroupTest,
 
   SeedReaderWriter seed_reader_writer(
       &local_state_, /*seed_file_dir=*/temp_dir_.GetPath(), kSeedFilename,
-      kOldSeedFilename, GetParam().seed_fields_prefs, GetParam().channel,
+      GetParam().seed_fields_prefs, GetParam().channel,
       entropy_providers_.get(), GetHistogramSuffix(),
       file_writer_thread_.task_runner());
 
@@ -44,7 +44,7 @@ TEST_P(SeedReaderWriterSeedFilesGroupTest,
 
   SeedReaderWriter seed_reader_writer(
       &local_state_, /*seed_file_dir=*/temp_dir_.GetPath(), kSeedFilename,
-      kOldSeedFilename, GetParam().seed_fields_prefs, GetParam().channel,
+      GetParam().seed_fields_prefs, GetParam().channel,
       entropy_providers_.get(), GetHistogramSuffix(),
       file_writer_thread_.task_runner());
 
@@ -62,7 +62,7 @@ TEST_P(SeedReaderWriterSeedFilesGroupTest,
 
   SeedReaderWriter seed_reader_writer(
       &local_state_, /*seed_file_dir=*/temp_dir_.GetPath(), kSeedFilename,
-      kOldSeedFilename, GetParam().seed_fields_prefs, GetParam().channel,
+      GetParam().seed_fields_prefs, GetParam().channel,
       entropy_providers_.get(), GetHistogramSuffix(),
       file_writer_thread_.task_runner());
 
@@ -81,7 +81,7 @@ TEST_P(SeedReaderWriterLocalStateGroupsTest,
 
   SeedReaderWriter seed_reader_writer(
       &local_state_, /*seed_file_dir=*/temp_dir_.GetPath(), kSeedFilename,
-      kOldSeedFilename, GetParam().seed_fields_prefs, GetParam().channel,
+      GetParam().seed_fields_prefs, GetParam().channel,
       entropy_providers_.get(), GetHistogramSuffix(),
       file_writer_thread_.task_runner());
 

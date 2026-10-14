@@ -148,7 +148,10 @@ source_set("impl") {
       "application_state/notification_helper/notification_helper_impl_win.h",
     ]
 
-    deps += [ "//chrome/installer/util:with_no_strings" ]
+    deps += [
+      "//chrome/browser/ui:browser_window_header",
+      "//chrome/installer/util:with_no_strings",
+    ]
   }
 }
 
@@ -170,6 +173,7 @@ source_set("browser_tests") {
     "//chrome/browser/lifetime",
     "//chrome/browser/tab_list",
     "//chrome/test:test_support",
+    "//chrome/test/base:chrome_test_utils",
   ]
 
   if (is_android) {

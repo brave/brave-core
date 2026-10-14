@@ -6,7 +6,6 @@
 #include "base/memory/raw_ptr.h"
 #include "base/path_service.h"
 #include "brave/browser/extensions/brave_extension_functional_test.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/common/webui_url_constants.h"
 #include "chrome/test/base/chrome_test_utils.h"
 #include "chrome/test/base/in_process_browser_test.h"

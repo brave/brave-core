@@ -126,16 +126,8 @@ export function createSearchStore() {
 
   searchProxy.addListeners({
     autocompleteResultChanged(result) {
-      const searchMatches = result.matches.map((match) => {
-        if (match.swapContentsAndDescription) {
-          const { contents } = match
-          match.contents = match.description
-          match.description = contents
-        }
-        return match
-      })
       store.update({
-        searchMatches,
+        searchMatches: result.matches,
         searchResultSequenceId: result.sequenceId,
       })
     },

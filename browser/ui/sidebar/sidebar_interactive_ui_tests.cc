@@ -10,7 +10,6 @@
 #include "brave/browser/ui/sidebar/sidebar_model.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/sidebar/browser/sidebar_item.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"

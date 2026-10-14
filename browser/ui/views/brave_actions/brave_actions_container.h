@@ -9,7 +9,6 @@
 #include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
-#include "chrome/browser/ui/browser.h"
 #include "components/prefs/pref_member.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/gfx/skia_util.h"
@@ -18,6 +17,8 @@
 class BraveActionViewController;
 class BraveActionsContainerTest;
 class BraveShieldsActionView;
+class BrowserWindowInterface;
+class Profile;
 
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
 class BraveRewardsActionView;

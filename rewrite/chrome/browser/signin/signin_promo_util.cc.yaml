@@ -1,0 +1,32 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+blank_macros_for_ast_parsing: true
+
+substitutions:
+  - description: Never show sign-in promos.
+    preempt_function_impl:
+      function_name: ShouldShowSignInPromoCommon
+      return_if: '(true)'
+      return_value: 'false'
+
+  - description: Never show the extension sign-in promo.
+    preempt_function_impl:
+      function_name: ShouldShowExtensionSignInPromo
+      return_if: '(true)'
+      return_value: 'false'
+
+  - description: |-
+      Never show avatar button or profile menu promos.
+
+      Brave doesn't offer browser sign-in to Google, so the sign-in, history
+      sync and batch upload promos must never be computed.
+    preempt_function_impl:
+      function_name: ComputeProfileMenuAvatarButtonPromoInfo
+      code: |-
+        if ((true)) {
+          std::move(result_callback).Run(ProfileMenuAvatarButtonPromoInfo{});
+          return;
+        }

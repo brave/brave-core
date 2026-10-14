@@ -1,5 +1,5 @@
 diff --git a/components/omnibox/browser/calculator_provider.cc b/components/omnibox/browser/calculator_provider.cc
-index 7ed9d52c4549bb9fc24dbfcebaf9debf0ccb444a..67481c9d89a5c3d294e328faa044617a641023d1 100644
+index 6661ad84ff6ceca00915d2f4e221f0894d2000c1..a9f4b8267eddcaa84c0c1be2a231d8b147225c40 100644
 --- a/components/omnibox/browser/calculator_provider.cc
 +++ b/components/omnibox/browser/calculator_provider.cc
 @@ -36,6 +36,10 @@ CalculatorProvider::~CalculatorProvider() = default;

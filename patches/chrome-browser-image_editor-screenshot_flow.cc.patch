@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/image_editor/screenshot_flow.cc b/chrome/browser/image_editor/screenshot_flow.cc
-index ff72a3e713ab3c3559c4273cf5d13210c3a23f75..0181ad25fd2d4872823b41f9d025102eaf5180f6 100644
+index 4c30cfe9ca02cfec1eed21d433e3e914e18a55ee..0694bf2d1005d055783f34b77b7be92375b59f91 100644
 --- a/chrome/browser/image_editor/screenshot_flow.cc
 +++ b/chrome/browser/image_editor/screenshot_flow.cc
 @@ -132,7 +132,7 @@ void ScreenshotFlow::CreateAndAddUIOverlay() {

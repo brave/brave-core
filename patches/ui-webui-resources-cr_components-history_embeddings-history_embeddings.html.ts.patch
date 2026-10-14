@@ -1,8 +1,8 @@
 diff --git a/ui/webui/resources/cr_components/history_embeddings/history_embeddings.html.ts b/ui/webui/resources/cr_components/history_embeddings/history_embeddings.html.ts
-index fb81df3e6fc3916dce260588a28ed7124602e417..6726f8dc0a7895e7ed109bae6e32abaf2bc7959e 100644
+index 24bb6ca677e81dc296aa5fc6ef7c0e52ccede635..b81e5ee07e05de0b399786283d3980ac01ce9284 100644
 --- a/ui/webui/resources/cr_components/history_embeddings/history_embeddings.html.ts
 +++ b/ui/webui/resources/cr_components/history_embeddings/history_embeddings.html.ts
-@@ -65,10 +65,6 @@ ${!this.enableAnswers_ ? html`
+@@ -64,10 +64,6 @@ ${!this.enableAnswers_ ? html`
  
          <div class="footer">
            <div>${this.i18n('historyEmbeddingsFooter')}</div>

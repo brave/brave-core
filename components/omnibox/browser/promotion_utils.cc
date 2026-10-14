@@ -32,9 +32,10 @@ void SortBraveSearchPromotionMatch(AutocompleteResult* result) {
   // If first match is not from search query with default provider,
   // it means there are better matches from other providers.
   // In this case, remove the promotion match from |result|.
-  // NOTE: SEARCH_WHAT_YOU_TYPED : The input is a search query (with the
+  // NOTE: kSearchWhatYouTyped : The input is a search query (with the
   // default engine).
-  if (result->begin()->type != AutocompleteMatchType::SEARCH_WHAT_YOU_TYPED) {
+  if (result->begin()->type !=
+      omnibox::AutocompleteMatchType::kSearchWhatYouTyped) {
     result->EraseMatchesWhere(IsBraveSearchPromotionMatch);
     return;
   }

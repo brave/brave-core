@@ -8,22 +8,20 @@
 #include "base/check.h"
 #include "brave/browser/infobars/brave_sync_account_deleted_infobar_delegate.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
-#include "build/build_config.h"
-
-#if !BUILDFLAG(IS_ANDROID)
-#include "brave/browser/infobars/sync_cannot_run_infobar_delegate.h"
-#endif
 #include "brave/components/sync/service/brave_sync_service_impl.h"
+#include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/sync/sync_service_factory.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
 #include "components/infobars/content/content_infobar_manager.h"
 
 #if BUILDFLAG(IS_ANDROID)
 #include "base/android/jni_android.h"
 #include "brave/build/android/jni_headers/BraveSyncAccountDeletedInformer_jni.h"
 #else
-#include "chrome/browser/ui/browser.h"
+#include "brave/browser/infobars/sync_cannot_run_infobar_delegate.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
+#include "chrome/browser/ui/tabs/tab_strip_model.h"
 #endif
 
 using syncer::BraveSyncServiceImpl;

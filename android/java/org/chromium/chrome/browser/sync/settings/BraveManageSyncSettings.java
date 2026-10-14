@@ -40,14 +40,10 @@ import java.util.Optional;
 import java.util.Timer;
 import java.util.TimerTask;
 
-/** See org.brave.bytecode.BraveManageSyncSettingsClassAdapter */
 public class BraveManageSyncSettings extends ManageSyncSettings {
     private static final String TAG = "BMSS";
 
     private static final String PREF_SYNC_AI_CHAT = "account_section_ai_chat_toggle";
-
-    private Preference mGoogleActivityControls;
-    private Preference mSyncEncryption;
 
     private ChromeSwitchPreference mPrefSyncPasswords;
 

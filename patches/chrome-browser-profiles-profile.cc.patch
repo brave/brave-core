@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/profiles/profile.cc b/chrome/browser/profiles/profile.cc
-index 6b1628c9f6aa16034d68e15e0b74ec56b8fadb7c..7db25fc94d7af449eb40307e6cde24e8b605d169 100644
+index f5c9ae68aaf4a9f6f2288d9c4a7e0b249d67dcea..f9e53f32824e08529b6f6e664e26f92b70cc2b2e 100644
 --- a/chrome/browser/profiles/profile.cc
 +++ b/chrome/browser/profiles/profile.cc
-@@ -122,7 +122,7 @@ bool Profile::OTRProfileID::AllowsBrowserWindows() const {
+@@ -124,7 +124,7 @@ bool Profile::OTRProfileID::AllowsBrowserWindows() const {
    // Non-Primary OTR profiles are not supposed to create Browser windows.
    // DevTools::BrowserContext, MediaRouter::Presentation, and
    // CaptivePortal::Signin are exceptions to this ban.
@@ -11,7 +11,7 @@ index 6b1628c9f6aa16034d68e15e0b74ec56b8fadb7c..7db25fc94d7af449eb40307e6cde24e8
        base::StartsWith(profile_id_, kMediaRouterOTRProfileIDPrefix,
                         base::CompareCase::SENSITIVE)) {
      return true;
-@@ -423,6 +423,9 @@ bool Profile::IsRegularProfile() const {
+@@ -420,6 +420,9 @@ bool Profile::IsRegularProfile() const {
  }
  
  bool Profile::IsIncognitoProfile() const {
@@ -21,7 +21,7 @@ index 6b1628c9f6aa16034d68e15e0b74ec56b8fadb7c..7db25fc94d7af449eb40307e6cde24e8
    return profile_metrics::GetBrowserProfileType(this) ==
           profile_metrics::BrowserProfileType::kIncognito;
  }
-@@ -457,6 +460,9 @@ bool Profile::IsSystemProfile() const {
+@@ -454,6 +457,9 @@ bool Profile::IsSystemProfile() const {
  }
  
  bool Profile::IsPrimaryOTRProfile() const {

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/side_panel/bookmarks/power_bookmarks_list_header.ts b/chrome/browser/resources/side_panel/bookmarks/power_bookmarks_list_header.ts
-index 05bb5d0df736cdce169e00abc475a938caab6182..d6ae1bcd2dff52678c996f282f4713fd156053f9 100644
+index 8d31970cf42879ab7b782af3119fde523cdfa107..e38acde031933eae3e3d2c35beced8049079dd78 100644
 --- a/chrome/browser/resources/side_panel/bookmarks/power_bookmarks_list_header.ts
 +++ b/chrome/browser/resources/side_panel/bookmarks/power_bookmarks_list_header.ts
-@@ -112,6 +112,7 @@ export class PowerBookmarksListHeaderElement extends CrLitElement {
+@@ -114,6 +114,7 @@ export class PowerBookmarksListHeaderElement extends CrLitElement {
        label: loadTimeData.getString('sortReverseAlphabetically'),
        lowerLabel: loadTimeData.getString('sortReverseAlphabetically'),
      },

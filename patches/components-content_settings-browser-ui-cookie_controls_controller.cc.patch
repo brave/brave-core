@@ -1,8 +1,8 @@
 diff --git a/components/content_settings/browser/ui/cookie_controls_controller.cc b/components/content_settings/browser/ui/cookie_controls_controller.cc
-index e67cbe1c50ec78602f79769ff3ddb81c72a894b0..a9cc5cdcd24fdb3b5c5ee3defab6ab1f9fb1fb4b 100644
+index 259baa48deb61535145c6862291443051d602fb3..74859fa712097f9d7b9b0cc999ca93341ad0bbb4 100644
 --- a/components/content_settings/browser/ui/cookie_controls_controller.cc
 +++ b/components/content_settings/browser/ui/cookie_controls_controller.cc
-@@ -397,6 +397,7 @@ void CookieControlsController::RecordActivationMetrics() {
+@@ -401,6 +401,7 @@ void CookieControlsController::RecordActivationMetrics() {
  
  CookieControlsState CookieControlsController::GetCookieControlsIconState(
      CookieControlsState controls_state) {

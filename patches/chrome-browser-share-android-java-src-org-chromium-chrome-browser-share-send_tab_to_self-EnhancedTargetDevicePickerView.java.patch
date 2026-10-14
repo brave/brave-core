@@ -1,0 +1,21 @@
+diff --git a/chrome/browser/share/android/java/src/org/chromium/chrome/browser/share/send_tab_to_self/EnhancedTargetDevicePickerView.java b/chrome/browser/share/android/java/src/org/chromium/chrome/browser/share/send_tab_to_self/EnhancedTargetDevicePickerView.java
+index 338f41b4f7ca40b28e9e557e69fb1c6a485bafc9..38eebe4d2a347293279e6fb8a9279bf0d58e88ad 100644
+--- a/chrome/browser/share/android/java/src/org/chromium/chrome/browser/share/send_tab_to_self/EnhancedTargetDevicePickerView.java
++++ b/chrome/browser/share/android/java/src/org/chromium/chrome/browser/share/send_tab_to_self/EnhancedTargetDevicePickerView.java
+@@ -139,7 +139,7 @@ class EnhancedTargetDevicePickerView extends BottomSheetListViewBase {
+         height += paddingTop + sendButtonHeight + paddingBottom;
+         boolean isDesktop = getBottomSheetController().isLargeFormFactorUiEnabled(this);
+         if (!forHalfState || isDesktop) {
+-            height += getElementHeightWithMarginsPx(mManageDevicesBlock);
++            height += 0;  // Never showing the footer
+         }
+         return height;
+     }
+@@ -295,6 +295,7 @@ class EnhancedTargetDevicePickerView extends BottomSheetListViewBase {
+      * Updates the visibility of the manage devices footer block if it differs from current state.
+      */
+     private void updateManageDevicesVisibility(boolean visible) {
++        if (visible) return;
+         int visibility = visible ? View.VISIBLE : View.GONE;
+         if (mManageDevicesBlock.getVisibility() == visibility) return;
+         mManageDevicesBlock.setVisibility(visibility);

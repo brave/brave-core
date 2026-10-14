@@ -1,8 +1,8 @@
 diff --git a/components/ntp_tiles/features.cc b/components/ntp_tiles/features.cc
-index 5885dde354d76e56db14ccbb49e7a55029e54f84..780b68504de05433b65eb1011889f451defe8115 100644
+index 2145034565a9cf170bfa36bba21cccbf9a395aa3..c4e80887b337c53d199d65cc7707f9a043e57323 100644
 --- a/components/ntp_tiles/features.cc
 +++ b/components/ntp_tiles/features.cc
-@@ -13,13 +13,13 @@ namespace ntp_tiles {
+@@ -29,12 +29,12 @@ AimButtonRefactorArm GetAimButtonRefactorArm() {
  
  const char kPopularSitesFieldTrialName[] = "NTPPopularSites";
  
@@ -18,5 +18,4 @@ index 5885dde354d76e56db14ccbb49e7a55029e54f84..780b68504de05433b65eb1011889f451
 -             base::FEATURE_ENABLED_BY_DEFAULT);
 +             base::FEATURE_DISABLED_BY_DEFAULT);
  
- BASE_FEATURE(kPopularSitesRefreshUs, base::FEATURE_DISABLED_BY_DEFAULT);
- 
+ }  // namespace ntp_tiles

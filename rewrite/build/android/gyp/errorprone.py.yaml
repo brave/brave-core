@@ -5,12 +5,20 @@
 
 substitutions:
   - description: |
-      Disable the UnnecessaryParentheses check.
+      Disable the some errorprone checks.
 
+      UnnecessaryParentheses:
       Java plasters short-circuit a method with `if ((true))`, mirroring the
       C++ plaster idiom, and this check rejects the doubled parentheses.
+
+      AlreadyChecked:
+      Java plasters can put conditional exit from the method, but if the
+      original code has the same check further, it would cause the
+      `AlreadyChecked` errorprone message.
+      Example: EnhancedTargetDevicePickerView.updateManageDevicesVisibility.
     regex:
       re_pattern: '(\nERRORPRONE_WARNINGS_TO_DISABLE = \[)'
       replace: |-
         \1
+            'AlreadyChecked',
             'UnnecessaryParentheses',

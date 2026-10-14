@@ -1,5 +1,5 @@
 diff --git a/third_party/rust/bitflags/v2/BUILD.gn b/third_party/rust/bitflags/v2/BUILD.gn
-index de80d2f7642c45700f709c61c70873514e3e2fb3..221730263bc1e0097a536ffc19028749fd8faf38 100644
+index e4a65c834f8c36d89421a45087385ae5a352af00..419f6f34113969214796b5ef90a8527c2a10639c 100644
 --- a/third_party/rust/bitflags/v2/BUILD.gn
 +++ b/third_party/rust/bitflags/v2/BUILD.gn
 @@ -103,4 +103,9 @@ cargo_crate("lib") {

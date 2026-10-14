@@ -1,0 +1,21 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Use BraveExtensionsMenuEntryView for each menu entry.
+
+      Early-returns before upstream's own ExtensionsMenuEntryView
+      construction, deferring to CreateAndInsertBraveMenuEntry() (defined in
+      the chromium_src override) to build a BraveExtensionsMenuEntryView with
+      the same callbacks instead.
+    preempt_function_impl:
+      function_name: ExtensionsMenuMainPageView::CreateAndInsertMenuEntry
+      code: |-
+        if ((true)) {
+          CreateAndInsertBraveMenuEntry(browser_, menu_handler_, action_model,
+                                        entry_state, index, menu_entries_);
+          return;
+        }

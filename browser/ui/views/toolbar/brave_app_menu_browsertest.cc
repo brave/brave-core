@@ -112,7 +112,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, AppMenuButtonUpgradeAlertTest) {
 // Check toggle menu item has additional toggle button for purchased user.
 IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, PurchasedVPN) {
   SetPurchasedUserForBraveVPN(browser(), true);
-  menu_button()->ShowMenu(views::MenuRunner::NO_FLAGS);
+  menu_button()->ShowMenu();
   views::MenuItemView* menu_root = menu_button()->app_menu()->root_menu_item();
   auto* toggle_menu_item = menu_root->GetMenuItemByID(IDC_TOGGLE_BRAVE_VPN);
   ASSERT_TRUE(!!toggle_menu_item);
@@ -125,7 +125,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, PurchasedVPN) {
 // Check app menu has show vpn panel menu item for not purchased user.
 IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, NotPurchasedVPN) {
   SetPurchasedUserForBraveVPN(browser(), false);
-  menu_button()->ShowMenu(views::MenuRunner::NO_FLAGS);
+  menu_button()->ShowMenu();
   views::MenuItemView* menu_root = menu_button()->app_menu()->root_menu_item();
   EXPECT_TRUE(!!menu_root->GetMenuItemByID(IDC_SHOW_BRAVE_VPN_PANEL));
 }

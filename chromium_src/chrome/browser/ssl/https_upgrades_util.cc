@@ -17,6 +17,7 @@ namespace {
 
 bool NormalWindowHttpsOnly(const GURL& url, Profile* profile) {
   if (profile->IsIncognitoProfile() ||
+      profile->IsEnterpriseIsolatedModeProfile() ||
       !base::FeatureList::IsEnabled(net::features::kBraveHttpsByDefault)) {
     return false;
   }

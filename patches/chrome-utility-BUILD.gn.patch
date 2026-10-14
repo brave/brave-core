@@ -1,5 +1,5 @@
 diff --git a/chrome/utility/BUILD.gn b/chrome/utility/BUILD.gn
-index b3fa5a032cee9bf422f56a058b53046189c28a25..336057f875b8bcaae946e49ed361d2f6c348cc79 100644
+index 95b88e50fca92ca847662d1861db7de835a1cd37..51e4041b42eab4cd9a48eb88160a2e358e6b6580 100644
 --- a/chrome/utility/BUILD.gn
 +++ b/chrome/utility/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -9,8 +9,8 @@ index b3fa5a032cee9bf422f56a058b53046189c28a25..336057f875b8bcaae946e49ed361d2f6
 +import("//brave/utility/sources.gni")
  import("//build/config/sysroot.gni")
  import("//chrome/common/features.gni")
- import("//chrome/services/file_util/public/features.gni")
-@@ -23,6 +24,7 @@ static_library("utility") {
+ import("//chrome/common/request_header_integrity/buildflags.gni")
+@@ -24,6 +25,7 @@ static_library("utility") {
      "services.cc",
      "services.h",
    ]
@@ -18,7 +18,7 @@ index b3fa5a032cee9bf422f56a058b53046189c28a25..336057f875b8bcaae946e49ed361d2f6
  
    defines = []
    configs += [
-@@ -31,6 +33,7 @@ static_library("utility") {
+@@ -32,6 +34,7 @@ static_library("utility") {
    ]
  
    public_deps = []
@@ -26,7 +26,7 @@ index b3fa5a032cee9bf422f56a058b53046189c28a25..336057f875b8bcaae946e49ed361d2f6
    deps = [
      "//base",
      "//build:chromeos_buildflags",
-@@ -78,6 +81,7 @@ static_library("utility") {
+@@ -80,6 +83,7 @@ static_library("utility") {
      "//third_party/zlib/google:zip",
      "//ui/base:buildflags",
    ]

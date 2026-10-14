@@ -49,7 +49,6 @@ void BrowsingHistoryCleaner::CleanupBrowsingHistoryForDomain(
 void BrowsingHistoryCleaner::CleanupQuery(const std::string& search_domain) {
   history::QueryOptions options;
   options.max_count = 0;
-  options.host_only = false;
   options.matching_algorithm = query_parser::MatchingAlgorithm::DEFAULT;
   options.duplicate_policy = history::QueryOptions::KEEP_ALL_DUPLICATES;
   browsing_history_service_->QueryHistory(
