@@ -288,6 +288,13 @@ TEST_F(EphemeralStorageServiceTest,
 // dereferencing the null delegate_.
 TEST_F(EphemeralStorageServiceTest,
        CleanupTLDFirstPartyStorageAfterShutdownDoesNotCrash) {
+  // kBraveShredFeature is disabled by default outside Android/iOS; enable it
+  // so this call reaches the delegate_ use instead of returning early at the
+  // feature check.
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitAndEnableFeature(
+      brave_shields::features::kBraveShredFeature);
+
   mock_delegate_ = nullptr;
   service_->Shutdown();
 
