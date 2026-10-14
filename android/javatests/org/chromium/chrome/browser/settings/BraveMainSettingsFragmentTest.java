@@ -127,7 +127,6 @@ public class BraveMainSettingsFragmentTest {
         "brave_languages",
         "autofill_section",
         "passwords",
-        "email_aliases",
         "autofill_options",
         "autofill_payment_methods",
         "autofill_addresses",
@@ -279,8 +278,8 @@ public class BraveMainSettingsFragmentTest {
         // settings screen in that case.
         int expectedCount =
                 ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_ANDROID_TAB_GROUPS_SETTINGS)
-                        ? 34
-                        : 35;
+                        ? 33
+                        : 34;
 
         assertEquals(
                 "Number of preferences has changed, please check and update preferenceCount"
