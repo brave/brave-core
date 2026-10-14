@@ -5,8 +5,6 @@
 
 package org.chromium.chrome.browser.crypto_wallet.fragments.dapps;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -53,10 +51,11 @@ public class SignMessageErrorFragment extends WalletBottomSheetDialogFragment {
         getBraveWalletService()
                 .getPendingSignMessageErrors(
                         errors -> {
+                            if (!isAdded()) {
+                                return;
+                            }
                             if (errors == null || errors.length == 0) {
-                                Intent intent = new Intent();
-                                requireActivity().setResult(Activity.RESULT_OK, intent);
-                                requireActivity().finish();
+                                getWalletFragmentCallback().onAllRequestsHandled();
                                 return;
                             }
 

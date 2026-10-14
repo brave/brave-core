@@ -59,6 +59,11 @@ public class WalletBottomSheetDialogFragment extends BottomSheetDialogFragment
         return mWalletModel;
     }
 
+    /** Returns the panel hosting this fragment, which {@link #onAttach} has checked. */
+    protected WalletFragmentCallback getWalletFragmentCallback() {
+        return (WalletFragmentCallback) requireActivity();
+    }
+
     protected BraveWalletService getBraveWalletService() {
         assert mWalletModel != null;
         return mWalletModel.getBraveWalletService();

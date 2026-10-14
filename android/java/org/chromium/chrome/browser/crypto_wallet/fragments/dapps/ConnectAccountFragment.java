@@ -40,7 +40,6 @@ import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.crypto_wallet.fragments.CreateAccountBottomSheetFragment;
-import org.chromium.chrome.browser.crypto_wallet.fragments.WalletFragmentCallback;
 import org.chromium.chrome.browser.crypto_wallet.permission.BravePermissionAccountsListAdapter;
 import org.chromium.chrome.browser.crypto_wallet.permission.BravePermissionAccountsListAdapter.Mode;
 import org.chromium.chrome.browser.crypto_wallet.permission.BravePermissionAccountsListAdapter.PermissionListener;
@@ -77,12 +76,7 @@ public class ConnectAccountFragment extends BaseDAppsFragment implements Permiss
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-
-        if (context instanceof WalletFragmentCallback walletFragmentCallback) {
-            mWalletModel = walletFragmentCallback.getWalletModel();
-        } else {
-            throw new IllegalStateException("Host activity must implement WalletFragmentCallback.");
-        }
+        mWalletModel = getWalletFragmentCallback().getWalletModel();
     }
 
     @SuppressLint("NotifyDataSetChanged")

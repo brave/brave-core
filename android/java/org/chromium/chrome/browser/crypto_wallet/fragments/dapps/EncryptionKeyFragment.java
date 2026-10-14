@@ -16,8 +16,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.fragment.app.Fragment;
-
 import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AccountId;
 import org.chromium.brave_wallet.mojom.AccountInfo;
@@ -36,7 +34,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class EncryptionKeyFragment extends Fragment implements View.OnClickListener {
+public class EncryptionKeyFragment extends BaseDAppsFragment implements View.OnClickListener {
     private static final String TAG = "ConnectAccount";
 
     private static final String ACTIVITY_TYPE = "param1";
@@ -158,6 +156,9 @@ public class EncryptionKeyFragment extends Fragment implements View.OnClickListe
                     .getCryptoModel()
                     .getPublicEncryptionRequest(
                             encryptionPublicKeyRequest -> {
+                                if (!isAdded()) {
+                                    return;
+                                }
                                 if (encryptionPublicKeyRequest != null) {
                                     mEncryptionPublicKeyRequest = encryptionPublicKeyRequest;
                                     updateAccount(mEncryptionPublicKeyRequest.accountId);
@@ -176,6 +177,9 @@ public class EncryptionKeyFragment extends Fragment implements View.OnClickListe
                     .getCryptoModel()
                     .getDecryptMessageRequest(
                             decryptRequest -> {
+                                if (!isAdded()) {
+                                    return;
+                                }
                                 mDecryptRequest = decryptRequest;
                                 updateAccount(mDecryptRequest.accountId);
                                 mTveTldPlusOne.setVisibility(View.VISIBLE);
@@ -202,11 +206,27 @@ public class EncryptionKeyFragment extends Fragment implements View.OnClickListe
             mWalletModel
                     .getDappsModel()
                     .processPublicEncryptionKey(
-                            mEncryptionPublicKeyRequest.requestId, isPositiveActionTriggered(v));
+                            mEncryptionPublicKeyRequest.requestId,
+                            isPositiveActionTriggered(v),
+                            this::onRequestProcessed);
         } else if (mActivityType == BraveWalletDAppsActivity.ActivityType.DECRYPT_REQUEST) {
             mWalletModel
                     .getDappsModel()
-                    .processDecryptRequest(mDecryptRequest.requestId, isPositiveActionTriggered(v));
+                    .processDecryptRequest(
+                            mDecryptRequest.requestId,
+                            isPositiveActionTriggered(v),
+                            this::onRequestProcessed);
+        }
+    }
+
+    private void onRequestProcessed(final boolean hasMoreRequests) {
+        if (!isAdded()) {
+            return;
+        }
+        if (hasMoreRequests) {
+            getWalletFragmentCallback().showPanel(mActivityType);
+        } else {
+            getWalletFragmentCallback().onAllRequestsHandled();
         }
     }
 

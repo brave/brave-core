@@ -72,8 +72,7 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
         SIGN_TRANSACTION_DEPRECATED,
         SIGN_SOL_TRANSACTIONS,
         SIWE_MESSAGE,
-        SIGN_MESSAGE_ERROR,
-        FINISH;
+        SIGN_MESSAGE_ERROR;
     }
 
     @Override
@@ -95,16 +94,10 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
         super.onPreCreate();
         requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            mActivityType =
-                    getIntent().getSerializableExtra(EXTRA_ACTIVITY_TYPE, ActivityType.class);
-        } else {
-            mActivityType = (ActivityType) getIntent().getSerializableExtra(EXTRA_ACTIVITY_TYPE);
-        }
-
-        if (mActivityType == null) {
-            mActivityType = ActivityType.ADD_ETHEREUM_CHAIN;
-        }
+        final ActivityType activityType = getActivityType(getIntent());
+        mActivityType = activityType != null ? activityType : ActivityType.ADD_ETHEREUM_CHAIN;
+        // Closing the panel any other way than onAllRequestsHandled() means it was dismissed.
+        setResult(RESULT_CANCELED, createResult());
     }
 
     @Override
@@ -123,46 +116,14 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
             Log.e(TAG, "finishNativeInitialization", e);
         }
 
-        if (mWalletModel != null) {
-            mWalletModel
-                    .getDappsModel()
-                    .mProcessNextDAppsRequest
-                    .observe(
-                            this,
-                            activityType -> {
-                                if (activityType == null) return;
-                                switch (activityType) {
-                                    case SIGN_MESSAGE:
-                                    case SIWE_MESSAGE:
-                                        // The next queued sign request needs a different panel
-                                        // than the one on screen, so the activity type changes
-                                        // with it.
-                                        mActivityType = activityType;
-                                        processPendingDappsRequest();
-                                        break;
-                                    case GET_ENCRYPTION_PUBLIC_KEY_REQUEST:
-                                    case DECRYPT_REQUEST:
-                                        processPendingDappsRequest();
-                                        break;
-                                    case FINISH:
-                                        finish();
-                                        break;
-                                    default:
-                                        break;
-                                }
-                            });
-        }
-
         processPendingDappsRequest();
     }
 
-    // TODO (pavi): use mProcessNextDAppsRequest and remove this callback
     @Override
     public void onAddRequestProcessed(boolean hasMoreRequests) {
         processPendingAddSwitchRequest(hasMoreRequests);
     }
 
-    // TODO (pavi): use mProcessNextDAppsRequest and remove this callback
     @Override
     public void onSwitchRequestProcessed(boolean hasMoreRequests) {
         processPendingAddSwitchRequest(hasMoreRequests);
@@ -189,7 +150,7 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
                             });
         }
         mPendingTxHelper.destroy();
-        finish();
+        onAllRequestsHandled();
     }
 
     @Override
@@ -200,6 +161,18 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
     @Override
     public WalletModel getWalletModel() {
         return mWalletModel;
+    }
+
+    @Override
+    public void showPanel(final ActivityType activityType) {
+        mActivityType = activityType;
+        processPendingDappsRequest();
+    }
+
+    @Override
+    public void onAllRequestsHandled() {
+        setResult(RESULT_OK, createResult());
+        finish();
     }
 
     @Override
@@ -221,7 +194,7 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
         if (hasMoreRequests) {
             processPendingDappsRequest();
         } else {
-            finish();
+            onAllRequestsHandled();
         }
     }
 
@@ -248,7 +221,7 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
                                 this,
                                 hasNoPendingTx -> {
                                     if (hasNoPendingTx) {
-                                        finish();
+                                        onAllRequestsHandled();
                                     }
                                 });
                         mPendingTxHelper.mSelectedPendingRequest.observe(
@@ -308,13 +281,6 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
     @Override
     public void onDestroy() {
         super.onDestroy();
-        // need to clear the state for a fresh state next time
-        // TODO (pavi): update the flow with dapps model
-        // (under-development) and get rid of explicit clear state call
-        if (mWalletModel != null) {
-            mWalletModel.getDappsModel().clearDappsState();
-        }
-
         if (mPendingTxHelper != null) {
             mPendingTxHelper.destroy();
         }
@@ -323,6 +289,21 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
     @Override
     protected OneshotSupplier<ProfileProvider> createProfileProvider() {
         return new ActivityProfileProvider(getLifecycleDispatcher());
+    }
+
+    /** Returns the kind of panel {@code intent} starts, or reports back in its result. */
+    public static @Nullable ActivityType getActivityType(@Nullable final Intent intent) {
+        if (intent == null) {
+            return null;
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            return intent.getSerializableExtra(EXTRA_ACTIVITY_TYPE, ActivityType.class);
+        }
+        return (ActivityType) intent.getSerializableExtra(EXTRA_ACTIVITY_TYPE);
+    }
+
+    private Intent createResult() {
+        return new Intent().putExtra(EXTRA_ACTIVITY_TYPE, mActivityType);
     }
 
     public static Intent getIntent(final Context context, final ActivityType activityType) {

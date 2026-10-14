@@ -5,8 +5,6 @@
 
 package org.chromium.chrome.browser.crypto_wallet.fragments.dapps;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -117,8 +115,7 @@ public class SiweMessageFragment extends WalletBottomSheetDialogFragment {
         getWalletModel()
                 .getDappsModel()
                 .notifySignMessageRequestProcessed(isApproved, mCurrentSignMessageRequest.id);
-        // Nothing on screen belongs to a pending request until the next one is bound, so the
-        // buttons must not act on the request that was just processed.
+        // Nothing on screen is actionable until the next request is bound.
         mCurrentSignMessageRequest = null;
         mSiweMessageData = null;
         fillSignMessageInfo(false);
@@ -129,24 +126,21 @@ public class SiweMessageFragment extends WalletBottomSheetDialogFragment {
                 .getDappsModel()
                 .getPendingSignMessageRequests(
                         requests -> {
+                            if (!isAdded()) {
+                                return;
+                            }
                             if (requests == null || requests.length == 0) {
-                                Intent intent = new Intent();
-                                final Activity activity = getActivity();
-                                if (activity != null) {
-                                    activity.setResult(Activity.RESULT_OK, intent);
-                                    activity.finish();
-                                }
+                                getWalletFragmentCallback().onAllRequestsHandled();
                                 return;
                             }
 
                             final SignMessageRequest request = requests[0];
-                            if (DappsModel.getSignMessagePanel(request)
-                                    != BraveWalletDAppsActivity.ActivityType.SIWE_MESSAGE) {
-                                // The request now at the head of the queue is not a sign-in
-                                // message and this panel cannot display it. Hand it to the panel
-                                // that can instead of leaving the sign-in message on screen while
-                                // the buttons act on this request.
-                                getWalletModel().getDappsModel().showSignMessagePanel(request);
+                            final BraveWalletDAppsActivity.ActivityType panel =
+                                    DappsModel.getSignMessagePanel(request);
+                            if (panel != BraveWalletDAppsActivity.ActivityType.SIWE_MESSAGE) {
+                                // Only sign-in requests are shown here, the generic sign panel
+                                // shows the rest.
+                                getWalletFragmentCallback().showPanel(panel);
                                 return;
                             }
                             mCurrentSignMessageRequest = request;
@@ -157,32 +151,23 @@ public class SiweMessageFragment extends WalletBottomSheetDialogFragment {
                                 mBtSign.setOnClickListener(
                                         v -> notifySignMessageRequestProcessed(true));
                             }
-                            if (mCurrentSignMessageRequest.originInfo != null
-                                    && URLUtil.isValidUrl(
-                                            mCurrentSignMessageRequest.originInfo.originSpec)) {
-                                mTvOrigin.setText(
-                                        mCurrentSignMessageRequest.originInfo.eTldPlusOne);
-                                mTvUrl.setText(
-                                        Utils.geteTldSpanned(
-                                                mCurrentSignMessageRequest.originInfo));
+                            if (request.originInfo != null
+                                    && URLUtil.isValidUrl(request.originInfo.originSpec)) {
+                                mTvOrigin.setText(request.originInfo.eTldPlusOne);
+                                mTvUrl.setText(Utils.geteTldSpanned(request.originInfo));
                             } else {
                                 // Remove the previous request's origin.
                                 mTvOrigin.setText("");
                                 mTvUrl.setText("");
                             }
-                            updateDetails(
-                                    mCurrentSignMessageRequest.chainId,
-                                    mCurrentSignMessageRequest.accountId);
-                            updateNetwork(mCurrentSignMessageRequest.chainId);
-                            updateFavIcon(
-                                    mCurrentSignMessageRequest.originInfo,
-                                    mCurrentSignMessageRequest.accountId.address);
+                            updateDetails(request.chainId, request.accountId);
+                            updateNetwork(request.chainId);
+                            updateFavIcon(request);
                         });
     }
 
     private void updateDetails(String chainId, AccountId accountId) {
-        // Any early return below leaves the list empty rather than describing the request that
-        // was just processed.
+        // Remove the previous request's details, in case this one cannot be described.
         setDetails(Collections.emptyList());
         if (TextUtils.isEmpty(chainId)) {
             return;
@@ -262,37 +247,50 @@ public class SiweMessageFragment extends WalletBottomSheetDialogFragment {
                 .collect(Collectors.joining(System.getProperty(WalletConstants.LINE_SEPARATOR)));
     }
 
-    private void updateFavIcon(OriginInfo originInfo, String accountAddress) {
-        if (originInfo == null || !URLUtil.isValidUrl(originInfo.originSpec)) return;
+    private void updateFavIcon(final SignMessageRequest request) {
+        // Remove the previous request's icon while this one loads.
+        mIvFav.setImageDrawable(null);
+        final OriginInfo originInfo = request.originInfo;
+        if (originInfo == null || !URLUtil.isValidUrl(originInfo.originSpec)) {
+            setAccountBlockies(request.accountId.address);
+            return;
+        }
         ImageLoader.fetchFavIcon(
                 originInfo.originSpec,
                 false,
                 new WeakReference<>(getContext()),
                 bitmap -> {
+                    // The icon can arrive after the panel has moved on.
+                    if (request != mCurrentSignMessageRequest) {
+                        return;
+                    }
                     if (bitmap != null) {
                         mIvFav.setImageBitmap(bitmap);
-                    } else if (accountAddress != null) {
-                        Utils.setTextGeneratedBlockies(
-                                mExecutor, mHandler, mIvFav, accountAddress, true);
+                    } else {
+                        setAccountBlockies(request.accountId.address);
                     }
                 });
     }
 
+    private void setAccountBlockies(@Nullable final String accountAddress) {
+        if (accountAddress != null) {
+            Utils.setTextGeneratedBlockies(mExecutor, mHandler, mIvFav, accountAddress, true);
+        }
+    }
+
     private void updateNetwork(String chainId) {
-        NetworkInfo network =
+        final NetworkInfo network =
                 TextUtils.isEmpty(chainId)
                         ? null
                         : getWalletModel().getNetworkModel().getNetwork(chainId);
-        if (network == null) {
-            // Leave no network on screen rather than the one of the request that was just
-            // processed.
+        mNetworkName.setText(network != null ? network.chainName : "");
+        final String logo = network != null ? Utils.getNetworkIconName(network) : null;
+        if (TextUtils.isEmpty(logo)) {
+            // Remove the previous request's network icon.
             mIvFavNetworkContainer.setVisibility(View.GONE);
-            mNetworkName.setText("");
             return;
         }
         String tokensPath = BlockchainRegistryFactory.getInstance().getTokensIconsLocation();
-        String logo = Utils.getNetworkIconName(network);
-        if (TextUtils.isEmpty(logo)) return;
         Utils.setBitmapResource(
                 mExecutor,
                 mHandler,
@@ -302,8 +300,7 @@ public class SiweMessageFragment extends WalletBottomSheetDialogFragment {
                 mIvFavNetwork,
                 null,
                 true);
-        AndroidUtils.show(mIvFavNetworkContainer);
-        mNetworkName.setText(network.chainName);
+        mIvFavNetworkContainer.setVisibility(View.VISIBLE);
     }
 
     private void showSiweDetails() {

@@ -50,8 +50,6 @@ public class DappsModel implements KeyringServiceObserver {
     private final MutableLiveData<Boolean> mMutableWalletIconNotificationVisible =
             new MutableLiveData<>(false);
     private final Object mLock = new Object();
-    private final MutableLiveData<ActivityType> mMutableProcessNextDAppsRequest =
-            new MutableLiveData<>();
     private final MutableLiveData<List<SignSolTransactionsRequest>>
             mMutableSignSolTransactionsRequests;
     private final LiveData<List<SignSolTransactionsRequest>> mSignSolTransactionsRequests;
@@ -61,7 +59,6 @@ public class DappsModel implements KeyringServiceObserver {
     public LiveData<WalletAccountCreationRequest> mPendingWalletAccountCreationRequest;
     public final LiveData<Boolean> mWalletIconNotificationVisible =
             mMutableWalletIconNotificationVisible;
-    public final LiveData<ActivityType> mProcessNextDAppsRequest = mMutableProcessNextDAppsRequest;
 
     public DappsModel(
             JsonRpcService jsonRpcService,
@@ -106,17 +103,18 @@ public class DappsModel implements KeyringServiceObserver {
     }
 
     public void notifySignSolTransactionsRequestProcessed(
-            boolean isApproved, SignSolTransactionsRequest request) {
+            boolean isApproved,
+            SignSolTransactionsRequest request,
+            Callback1<Boolean> hasMoreRequests) {
         mBraveWalletService.notifySignSolTransactionsRequestProcessed(
                 isApproved, request.id, new SolanaSignature[0], null);
         mBraveWalletService.getPendingSignSolTransactionsRequests(
                 requests -> {
-                    if (requests.length == 0) {
-                        mMutableProcessNextDAppsRequest.postValue(ActivityType.FINISH);
-                    } else {
+                    if (requests.length != 0) {
                         mMutableSignSolTransactionsRequests.postValue(
                                 new ArrayList<>(Arrays.asList(requests)));
                     }
+                    hasMoreRequests.call(requests.length != 0);
                 });
     }
 
@@ -137,42 +135,27 @@ public class DappsModel implements KeyringServiceObserver {
         }
     }
 
-    public void clearDappsState() {
-        mMutableProcessNextDAppsRequest.postValue(null);
-    }
-
-    public void processPublicEncryptionKey(String requestId, boolean isApproved) {
+    public void processPublicEncryptionKey(
+            String requestId, boolean isApproved, Callback1<Boolean> hasMoreRequests) {
         synchronized (mLock) {
             if (mBraveWalletService == null) {
                 return;
             }
             mBraveWalletService.notifyGetPublicKeyRequestProcessed(requestId, isApproved);
             mBraveWalletService.getPendingGetEncryptionPublicKeyRequests(
-                    requests -> {
-                        if (requests != null && requests.length > 0) {
-                            mMutableProcessNextDAppsRequest.postValue(
-                                    ActivityType.GET_ENCRYPTION_PUBLIC_KEY_REQUEST);
-                        } else {
-                            mMutableProcessNextDAppsRequest.postValue(ActivityType.FINISH);
-                        }
-                    });
+                    requests -> hasMoreRequests.call(requests != null && requests.length > 0));
         }
     }
 
-    public void processDecryptRequest(String requestId, boolean isApproved) {
+    public void processDecryptRequest(
+            String requestId, boolean isApproved, Callback1<Boolean> hasMoreRequests) {
         synchronized (mLock) {
             if (mBraveWalletService == null) {
                 return;
             }
             mBraveWalletService.notifyDecryptRequestProcessed(requestId, isApproved);
             mBraveWalletService.getPendingDecryptRequests(
-                    requests -> {
-                        if (requests != null && requests.length > 0) {
-                            mMutableProcessNextDAppsRequest.postValue(ActivityType.DECRYPT_REQUEST);
-                        } else {
-                            mMutableProcessNextDAppsRequest.postValue(ActivityType.FINISH);
-                        }
-                    });
+                    requests -> hasMoreRequests.call(requests != null && requests.length > 0));
         }
     }
 
@@ -223,27 +206,14 @@ public class DappsModel implements KeyringServiceObserver {
     }
 
     /**
-     * Returns the panel that can display {@code request}. Sign-in messages have their own panel,
-     * which shows the parsed SIWE fields, while every other kind of sign request is shown by the
-     * generic sign message panel together with the risk warning it needs.
-     *
-     * <p>This is the only place that decides the mapping. A panel that displays one kind of request
-     * while the queue head is another would approve a message it never showed, because the browser
-     * always processes the request at the head of the queue, see
-     * BraveWalletService::NotifySignMessageRequestProcessed.
+     * Returns the panel that can display {@code request}: sign-in messages have their own, every
+     * other sign request goes to the generic panel. The browser only ever processes the request at
+     * the head of the queue, so a panel has to hand over any request it cannot display.
      */
     public static ActivityType getSignMessagePanel(final SignMessageRequest request) {
         return request.signData.which() == SignDataUnion.Tag.EthSiweData
                 ? ActivityType.SIWE_MESSAGE
                 : ActivityType.SIGN_MESSAGE;
-    }
-
-    /**
-     * Moves the DApps activity to the panel that can display {@code request}. Called by a sign
-     * message panel that finds a request it cannot display at the head of the queue.
-     */
-    public void showSignMessagePanel(final SignMessageRequest request) {
-        mMutableProcessNextDAppsRequest.postValue(getSignMessagePanel(request));
     }
 
     private void updateWalletBadgeVisibilityInternal() {
