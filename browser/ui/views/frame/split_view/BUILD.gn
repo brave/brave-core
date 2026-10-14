@@ -47,6 +47,8 @@ source_set("split_view") {
     "//ui/views",
   ]
 
+  public_deps = [ "//brave/components/speedreader/common/buildflags" ]
+
   if (enable_speedreader) {
     deps += [ "//brave/browser/ui/views/speedreader" ]
   }
