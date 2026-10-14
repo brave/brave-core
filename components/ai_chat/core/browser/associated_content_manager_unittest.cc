@@ -246,9 +246,18 @@ TEST_F(AssociatedContentManagerUnitTest, GetScreenshotsOfContent) {
   without_text.SetTextContent(" \n ");
   NiceMock<MockAssociatedContent> no_screenshots;
   no_screenshots.SetTextContent("");
+  // Content other than pages has no text either, but isn't screenshotted.
+  NiceMock<MockAssociatedContent> workspace;
+  workspace.SetTextContent("");
+  workspace.SetContentType(mojom::ContentType::Workspace);
+  NiceMock<MockAssociatedContent> video;
+  video.SetTextContent("");
+  video.SetIsVideo(true);
   manager->AddContent(&with_text);
   manager->AddContent(&without_text);
   manager->AddContent(&no_screenshots);
+  manager->AddContent(&workspace);
+  manager->AddContent(&video);
   ASSERT_TRUE(base::test::RunUntil([&]() {
     return manager->GetContentUuidsRequiringScreenshots().size() == 2u;
   }));

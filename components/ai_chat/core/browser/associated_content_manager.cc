@@ -602,8 +602,10 @@ std::vector<std::string>
 AssociatedContentManager::GetContentUuidsRequiringScreenshots() const {
   std::vector<std::string> content_uuids;
   for (auto* delegate : content_delegates_) {
-    if (base::TrimWhitespaceASCII(delegate->cached_page_content().content,
-                                  base::TRIM_ALL)
+    // Only pages can be shown in screenshots, not e.g. a workspace or video.
+    const PageContent& page_content = delegate->cached_page_content();
+    if (page_content.content_type == mojom::ContentType::PageContent &&
+        base::TrimWhitespaceASCII(page_content.content, base::TRIM_ALL)
             .empty()) {
       content_uuids.push_back(delegate->uuid());
     }

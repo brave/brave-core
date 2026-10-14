@@ -134,7 +134,7 @@ class AssociatedContentManager : public ToolProvider,
   // Gets the content for this conversation.
   void GetContent(base::OnceClosure callback);
 
-  // Uuids of the content whose page content is empty or only whitespace.
+  // Uuids of the pages with no text, which need screenshots to be seen.
   std::vector<std::string> GetContentUuidsRequiringScreenshots() const;
 
   // Gets screenshots of the content with |content_uuids|, with the uuid of the
