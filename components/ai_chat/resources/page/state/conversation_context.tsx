@@ -143,6 +143,17 @@ export function useProvideConversationContext(props: ConversationContextProps) {
     )
   }, [conversationState.allModels, conversationState.defaultModelKey])
 
+  // The vision model offered while a submission waits for the user to decide
+  // whether to switch to it.
+  const visionModelSwitchModel = React.useMemo(() => {
+    if (!conversationState.visionModelSwitchKey) {
+      return undefined
+    }
+    return conversationState.allModels.find(
+      (m) => m.key === conversationState.visionModelSwitchKey,
+    )
+  }, [conversationState.allModels, conversationState.visionModelSwitchKey])
+
   const shouldShowLongConversationInfo = React.useMemo<boolean>(() => {
     if (!conversationHistory || !currentModel) {
       return false
@@ -418,6 +429,23 @@ export function useProvideConversationContext(props: ConversationContextProps) {
     }
   }
 
+  const respondToVisionModelSwitch = (
+    decision: Mojom.VisionModelSwitchDecision,
+  ) => {
+    api.conversationHandler.respondToVisionModelSwitch(decision)
+  }
+
+  // Returns the waiting submission, files included, to the composer.
+  const cancelVisionModelSwitch = async () => {
+    const { humanEntry } =
+      await api.conversationHandler.stopGenerationAndMaybeGetHumanEntry()
+    if (humanEntry) {
+      setInputText([humanEntry.text])
+      setPendingMessageFiles(humanEntry.uploadedFiles ?? [])
+    }
+    focusInput()
+  }
+
   const handleVoiceRecognition = () => {
     if (!conversationState.conversationUuid) {
       console.error('No conversationUuid found')
@@ -670,6 +698,7 @@ export function useProvideConversationContext(props: ConversationContextProps) {
 
     currentModel,
     userDefaultModel,
+    visionModelSwitchModel,
 
     attachmentsDialog,
     setAttachmentsDialog: (dialog: 'tabs' | 'bookmarks' | 'history' | null) => {
@@ -730,6 +759,8 @@ export function useProvideConversationContext(props: ConversationContextProps) {
 
     handleResetError,
     handleStopGenerating,
+    respondToVisionModelSwitch,
+    cancelVisionModelSwitch,
     // Experimentally don't cache model key locally, browser should notify of model change quickly
     setCurrentModel: (model: Mojom.Model) => {
       api.conversationHandler.changeModel(model.key)
