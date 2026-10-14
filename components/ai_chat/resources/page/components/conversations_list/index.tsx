@@ -10,12 +10,17 @@ import Icon from '@brave/leo/react/icon'
 import ButtonMenu from '@brave/leo/react/buttonMenu'
 import Input from '@brave/leo/react/input'
 import * as Mojom from '../../../common/mojom'
+import { Url } from 'gen/url/mojom/url.mojom.m.js'
+import { isWorkspaceContent } from '../../../common/conversation_history_utils'
 import { useAIChat } from '../../state/ai_chat_context'
 import { getLocale } from '$web-common/locale'
 import { useConversation } from '../../state/conversation_context'
 import Alert from '@brave/leo/react/alert'
 import Button from '@brave/leo/react/button'
 import { Link } from '$web-common/useRoute'
+
+// The maximum number of workspaces shown in the recent workspaces section.
+const MAX_RECENT_WORKSPACES = 5
 
 interface SimpleInputProps {
   text?: string
@@ -56,37 +61,71 @@ function SimpleInput(props: SimpleInputProps) {
   )
 }
 
-interface ConversationItemProps extends ConversationsListProps {
-  conversation: Mojom.Conversation
-  openOptionsMenuUuid: string | undefined
-  setOpenOptionsMenuUuid: React.Dispatch<
+function getConversationTitle(conversation: Mojom.Conversation) {
+  return conversation.title || getLocale(S.AI_CHAT_CONVERSATION_LIST_UNTITLED)
+}
+
+// A conversation can be rendered more than once (e.g. in the recent workspaces
+// section and in the main list), so per-item UI state (open options menu,
+// inline rename) is tracked by an item key that is unique per rendered item,
+// rather than by conversation uuid.
+interface ItemState {
+  openOptionsMenuKey: string | undefined
+  setOpenOptionsMenuKey: React.Dispatch<
     React.SetStateAction<string | undefined>
   >
+  // The item the current rename was started from. When unset (e.g. renaming
+  // was started from outside the list), the main list item is used.
+  editingItemKey: string | undefined
+  setEditingItemKey: (key: string | undefined) => void
+}
+
+interface ConversationsListProps {
+  setIsConversationsListOpen?: (value: boolean) => unknown
+}
+
+interface ConversationItemProps extends ConversationsListProps {
+  conversation: Mojom.Conversation
+  // Unique key for this rendered item. Defaults to the conversation uuid,
+  // which is used by the main list.
+  itemKey?: string
+  itemState: ItemState
 }
 
 function ConversationItem(props: ConversationItemProps) {
   const aiChatContext = useAIChat()
   const conversationContext = useConversation()
+  const { itemState } = props
 
   const { uuid } = props.conversation
-  const title =
-    props.conversation.title || getLocale(S.AI_CHAT_CONVERSATION_LIST_UNTITLED)
+  const itemKey = props.itemKey ?? uuid
+  const title = getConversationTitle(props.conversation)
 
-  const isOptionsMenuOpen = props.openOptionsMenuUuid === uuid
+  const isOptionsMenuOpen = itemState.openOptionsMenuKey === itemKey
 
   const handleButtonMenuChange = (e: { isOpen: boolean }) => {
     if (e.isOpen) {
-      props.setOpenOptionsMenuUuid(uuid)
+      itemState.setOpenOptionsMenuKey(itemKey)
     } else {
-      props.setOpenOptionsMenuUuid((current) =>
-        current === uuid ? undefined : current,
+      itemState.setOpenOptionsMenuKey((current) =>
+        current === itemKey ? undefined : current,
       )
     }
   }
 
+  const startEditing = () => {
+    itemState.setEditingItemKey(itemKey)
+    aiChatContext.setEditingConversationId(uuid)
+  }
+
+  const stopEditing = () => {
+    itemState.setEditingItemKey(undefined)
+    aiChatContext.setEditingConversationId(null)
+  }
+
   const handleEditTitle: EventListener = (e) => {
     e.preventDefault()
-    aiChatContext.setEditingConversationId(uuid)
+    startEditing()
   }
 
   const handleDelete: EventListener = (e) => {
@@ -94,7 +133,9 @@ function ConversationItem(props: ConversationItemProps) {
     aiChatContext.setDeletingConversationId(uuid)
   }
 
-  const isEditing = aiChatContext.editingConversationId === uuid
+  const isEditing =
+    aiChatContext.editingConversationId === uuid
+    && (itemState.editingItemKey ?? uuid) === itemKey
   const isActive = uuid === conversationContext.conversationUuid
 
   return (
@@ -112,7 +153,7 @@ function ConversationItem(props: ConversationItemProps) {
           }
           props.setIsConversationsListOpen?.(false)
         }}
-        onDoubleClick={() => aiChatContext.setEditingConversationId(uuid)}
+        onDoubleClick={startEditing}
         href={`/${uuid}`}
       >
         <div className={styles.displayTitle}>
@@ -156,13 +197,13 @@ function ConversationItem(props: ConversationItemProps) {
             </ButtonMenu>
           </div>
         </div>
-        {uuid === aiChatContext.editingConversationId && (
+        {isEditing && (
           <div className={styles.editibleTitle}>
             <SimpleInput
               text={title}
-              onBlur={() => aiChatContext.setEditingConversationId(null)}
+              onBlur={stopEditing}
               onSubmit={(value) => {
-                aiChatContext.setEditingConversationId(null)
+                stopEditing()
                 aiChatContext.api.service.renameConversation(uuid, value)
               }}
             />
@@ -173,14 +214,170 @@ function ConversationItem(props: ConversationItemProps) {
   )
 }
 
-interface ConversationsListProps {
-  setIsConversationsListOpen?: (value: boolean) => unknown
+interface WorkspaceGroup {
+  // The workspace's workspace://<uuid> URL, which identifies it.
+  url: Url
+  // Conversations attached to the workspace, most recently updated first.
+  conversations: Mojom.Conversation[]
+}
+
+// Groups conversations by attached workspace. |conversations| must be sorted
+// most recently updated first (as provided by the service), so a workspace's
+// recency is that of its most recently updated conversation.
+function getRecentWorkspaces(
+  conversations: Mojom.Conversation[],
+): WorkspaceGroup[] {
+  const groups = new Map<string, WorkspaceGroup>()
+  for (const conversation of conversations) {
+    for (const content of conversation.associatedContent) {
+      if (!isWorkspaceContent(content)) continue
+      let group = groups.get(content.url.url)
+      if (!group) {
+        group = { url: content.url, conversations: [] }
+        groups.set(content.url.url, group)
+      }
+      if (!group.conversations.includes(conversation)) {
+        group.conversations.push(conversation)
+      }
+    }
+  }
+  return [...groups.values()].slice(0, MAX_RECENT_WORKSPACES)
+}
+
+interface CollapsibleHeaderProps {
+  className: string
+  isExpanded: boolean
+  onToggle: () => void
+  controlsId: string
+  testId: string
+  children: React.ReactNode
+}
+
+function CollapsibleHeader(props: CollapsibleHeaderProps) {
+  return (
+    <button
+      type='button'
+      className={props.className}
+      aria-expanded={props.isExpanded}
+      aria-controls={props.controlsId}
+      data-testid={props.testId}
+      onClick={props.onToggle}
+    >
+      <Icon
+        className={styles.collapseIcon}
+        name={props.isExpanded ? 'carat-down' : 'carat-right'}
+      />
+      {props.children}
+    </button>
+  )
+}
+
+interface WorkspaceItemProps extends ConversationsListProps {
+  workspace: WorkspaceGroup
+  itemState: ItemState
+}
+
+function WorkspaceItem(props: WorkspaceItemProps) {
+  const [isExpanded, setIsExpanded] = React.useState(false)
+  const listId = React.useId()
+  const { conversations } = props.workspace
+
+  // Workspaces don't have a user-facing name, so label each one with the title
+  // of the conversation it was created in (the oldest attached conversation).
+  const title = getConversationTitle(conversations[conversations.length - 1])
+
+  return (
+    <li data-testid='workspace-item'>
+      <CollapsibleHeader
+        className={styles.workspaceHeader}
+        isExpanded={isExpanded}
+        onToggle={() => setIsExpanded((expanded) => !expanded)}
+        controlsId={listId}
+        testId='workspace-toggle'
+      >
+        <Icon
+          className={styles.workspaceIcon}
+          name={isExpanded ? 'folder-open' : 'folder'}
+        />
+        <span
+          className={styles.text}
+          title={title}
+          data-testid='workspace-title'
+        >
+          {title}
+        </span>
+      </CollapsibleHeader>
+      {isExpanded && (
+        <ol
+          id={listId}
+          className={styles.workspaceConversations}
+        >
+          {conversations.map((conversation) => (
+            <ConversationItem
+              key={conversation.uuid}
+              setIsConversationsListOpen={props.setIsConversationsListOpen}
+              conversation={conversation}
+              itemKey={`workspace:${props.workspace.url.url}:${conversation.uuid}`}
+              itemState={props.itemState}
+            />
+          ))}
+        </ol>
+      )}
+    </li>
+  )
+}
+
+interface RecentWorkspacesProps extends ConversationsListProps {
+  workspaces: WorkspaceGroup[]
+  itemState: ItemState
+}
+
+function RecentWorkspaces(props: RecentWorkspacesProps) {
+  const [isExpanded, setIsExpanded] = React.useState(true)
+  const listId = React.useId()
+
+  return (
+    <section
+      className={styles.recentWorkspaces}
+      data-testid='recent-workspaces'
+    >
+      <CollapsibleHeader
+        className={styles.sectionHeader}
+        isExpanded={isExpanded}
+        onToggle={() => setIsExpanded((expanded) => !expanded)}
+        controlsId={listId}
+        testId='recent-workspaces-toggle'
+      >
+        {getLocale(S.AI_CHAT_CONVERSATION_LIST_RECENT_WORKSPACES)}
+      </CollapsibleHeader>
+      {isExpanded && (
+        <ol id={listId}>
+          {props.workspaces.map((workspace) => (
+            <WorkspaceItem
+              key={workspace.url.url}
+              setIsConversationsListOpen={props.setIsConversationsListOpen}
+              workspace={workspace}
+              itemState={props.itemState}
+            />
+          ))}
+        </ol>
+      )}
+    </section>
+  )
 }
 
 export default function ConversationsList(props: ConversationsListProps) {
   const aiChatContext = useAIChat()
   const [filterText, setFilterText] = React.useState('')
-  const [openOptionsMenuUuid, setOpenOptionsMenuUuid] = React.useState<string>()
+  const [openOptionsMenuKey, setOpenOptionsMenuKey] = React.useState<string>()
+  const [editingItemKey, setEditingItemKey] = React.useState<string>()
+
+  const itemState: ItemState = {
+    openOptionsMenuKey,
+    setOpenOptionsMenuKey,
+    editingItemKey,
+    setEditingItemKey,
+  }
 
   const startedNonTemporaryConversations = aiChatContext.conversations.filter(
     (c) => !c.temporary && c.hasContent,
@@ -190,10 +387,18 @@ export default function ConversationsList(props: ConversationsListProps) {
     if (!filterText) return startedNonTemporaryConversations
     const lower = filterText.toLowerCase()
     return startedNonTemporaryConversations.filter((c) => {
-      const title = c.title || getLocale(S.AI_CHAT_CONVERSATION_LIST_UNTITLED)
+      const title = getConversationTitle(c)
       return title.toLowerCase().includes(lower)
     })
   }, [startedNonTemporaryConversations, filterText])
+
+  const recentWorkspaces = React.useMemo(
+    () =>
+      aiChatContext.isWorkspaceToolsEnabled
+        ? getRecentWorkspaces(startedNonTemporaryConversations)
+        : [],
+    [aiChatContext.isWorkspaceToolsEnabled, startedNonTemporaryConversations],
+  )
 
   return (
     <>
@@ -228,6 +433,14 @@ export default function ConversationsList(props: ConversationsListProps) {
                 <Icon name='close' />
               </Button>
             </Input>
+          )}
+          {/* Hidden while filtering, as the filter applies to the main list */}
+          {!filterText && recentWorkspaces.length > 0 && (
+            <RecentWorkspaces
+              setIsConversationsListOpen={props.setIsConversationsListOpen}
+              workspaces={recentWorkspaces}
+              itemState={itemState}
+            />
           )}
           {!aiChatContext.isStoragePrefEnabled && (
             <Alert type='notice'>
@@ -283,10 +496,9 @@ export default function ConversationsList(props: ConversationsListProps) {
               {filteredConversations.map((conversation) => (
                 <ConversationItem
                   key={conversation.uuid}
-                  {...props}
+                  setIsConversationsListOpen={props.setIsConversationsListOpen}
                   conversation={conversation}
-                  openOptionsMenuUuid={openOptionsMenuUuid}
-                  setOpenOptionsMenuUuid={setOpenOptionsMenuUuid}
+                  itemState={itemState}
                 />
               ))}
             </ol>

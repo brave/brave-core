@@ -134,6 +134,66 @@
   padding: var(--leo-spacing-m) var(--leo-spacing-xl);
 }
 
+.recentWorkspaces {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: var(--leo-spacing-m);
+  border-bottom: 1px solid var(--leo-color-divider-subtle);
+}
+
+.sectionHeader,
+.workspaceHeader {
+  all: unset;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: var(--leo-spacing-m);
+  width: 100%;
+  cursor: pointer;
+  border-radius: var(--leo-radius-m);
+
+  &:hover {
+    background: var(--leo-color-container-highlight);
+  }
+
+  &:focus-visible {
+    box-shadow: var(--leo-effect-focus-state);
+  }
+}
+
+.sectionHeader {
+  font: var(--leo-font-components-label);
+  color: var(--leo-color-text-tertiary);
+  text-transform: uppercase;
+  padding: var(--leo-spacing-m) var(--leo-spacing-xl);
+}
+
+.workspaceHeader {
+  font: var(--leo-font-default-regular);
+  color: var(--leo-color-text-primary);
+  padding: var(--leo-spacing-l) var(--leo-spacing-xl);
+  // Avoid the title pushing the icons out when it overflows.
+  min-width: 0;
+}
+
+.collapseIcon {
+  --leo-icon-size: 16px;
+  flex-shrink: 0;
+  color: var(--leo-color-icon-default);
+}
+
+.workspaceIcon {
+  --leo-icon-size: 18px;
+  flex-shrink: 0;
+  color: var(--leo-color-icon-default);
+}
+
+// Indent attached conversations under their workspace. Nested under .nav to
+// override its list padding reset.
+.nav .workspaceConversations {
+  padding-left: var(--leo-spacing-2xl);
+}
+
 .scroller {
   overflow: auto;
   width: 100%;

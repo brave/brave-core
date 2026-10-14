@@ -278,6 +278,9 @@ void NewTabPageInitializer::AddLoadTimeValues() {
       "isAIChatExportJSONEnabled",
       base::FeatureList::IsEnabled(ai_chat::features::kAIChatExportJSON));
   source_->AddBoolean(
+      "isWorkspaceToolsEnabled",
+      base::FeatureList::IsEnabled(ai_chat::features::kAIChatWorkspaceTools));
+  source_->AddBoolean(
       "isWorkspaceNativeDirectoriesEnabled",
       base::FeatureList::IsEnabled(ai_chat::features::kAIChatWorkspaceTools) &&
           ai_chat::features::kWorkspaceNativeDirectories.Get());
