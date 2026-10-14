@@ -1,5 +1,5 @@
 diff --git a/components/search/ntp_features.cc b/components/search/ntp_features.cc
-index 081afcddf58ebdb65b0297ff220b880bbffe6225..a39b113d273d08bb23b59660ec76a4ae0311d85a 100644
+index 85937aad0fca38c00f8cc6139ea55f99bd912d33..09c0330bc4db68fe9ce4f2af9fd55a95756aec43 100644
 --- a/components/search/ntp_features.cc
 +++ b/components/search/ntp_features.cc
 @@ -18,17 +18,13 @@ namespace ntp_features {
@@ -56,9 +56,9 @@ index 081afcddf58ebdb65b0297ff220b880bbffe6225..a39b113d273d08bb23b59660ec76a4ae
 +BASE_OVERRIDDEN_FEATURE(kNtpChromeCartModule,
 +                        base::FEATURE_DISABLED_BY_DEFAULT);
  
- // If enabled, customization of Chrome will be promoted on the NTP.
- BASE_FEATURE(kNtpCustomizeChromeAutoOpen, base::FEATURE_ENABLED_BY_DEFAULT);
-@@ -116,19 +104,15 @@ BASE_FEATURE(kNtpDummyModules, base::FEATURE_DISABLED_BY_DEFAULT);
+ // If enabled, loads the experimental NTP component extension, which overrides
+ // chrome://newtab.
+@@ -120,19 +108,15 @@ BASE_FEATURE(kNtpDummyModules, base::FEATURE_DISABLED_BY_DEFAULT);
  
  // If enabled, Google Drive module will be shown.
  // This is a kill switch. Keep indefinitely.
@@ -81,7 +81,7 @@ index 081afcddf58ebdb65b0297ff220b880bbffe6225..a39b113d273d08bb23b59660ec76a4ae
  
  // If enabled, segmentation data will be collected to decide whether or not to
  // show the Drive module.
-@@ -156,7 +140,7 @@ BASE_FEATURE(kNtpModulesOrder, base::FEATURE_DISABLED_BY_DEFAULT);
+@@ -160,7 +144,7 @@ BASE_FEATURE(kNtpModulesOrder, base::FEATURE_DISABLED_BY_DEFAULT);
  
  // Dummy feature to set param "NtpModulesMaxColumnCountParam".
  // This is used for an emergency Finch param. Keep indefinitely.
@@ -90,7 +90,7 @@ index 081afcddf58ebdb65b0297ff220b880bbffe6225..a39b113d273d08bb23b59660ec76a4ae
  
  // Dummy feature to set param "NtpModulesLoadedWithOtherModulesMaxInstanceCount"
  // This is used for an emergency Finch param. Keep indefinitely.
-@@ -329,7 +313,7 @@ BASE_FEATURE(kNtpShortcutsRedesign, base::FEATURE_DISABLED_BY_DEFAULT);
+@@ -333,7 +317,7 @@ BASE_FEATURE(kNtpShortcutsRedesign, base::FEATURE_DISABLED_BY_DEFAULT);
  
  // If enabled, the bookmark bar may be auto-removed on the NTP and new
  // visibility settings are added.

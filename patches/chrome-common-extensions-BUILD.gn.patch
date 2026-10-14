@@ -1,5 +1,5 @@
 diff --git a/chrome/common/extensions/BUILD.gn b/chrome/common/extensions/BUILD.gn
-index 0a5ad3486e6bf4c98b3e347ba32857322bf784ae..5e6cf365380015e063e5db1a4b9527fa97082601 100644
+index 110994f9e2b2a2de114d735953543ef9122cbdd1..9be8e76fc6f3fb0c98f72c954dcc5b6ad8c36ac5 100644
 --- a/chrome/common/extensions/BUILD.gn
 +++ b/chrome/common/extensions/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -40,5 +40,5 @@ index 0a5ad3486e6bf4c98b3e347ba32857322bf784ae..5e6cf365380015e063e5db1a4b9527fa
    ]
 +  deps += brave_chrome_common_extensions_deps
  
-   # TODO(https://crbug.com/356905053): These sources do not currently build
-   # cleanly on the experimental desktop-android configuration. Gradually include
+   if (enable_platform_apps) {
+     public += [ "api/url_handlers/url_handlers_parser.h" ]

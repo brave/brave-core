@@ -1,5 +1,5 @@
 diff --git a/components/omnibox/common/omnibox_features.cc b/components/omnibox/common/omnibox_features.cc
-index 99a277595615ad7fc7b970bc18a4749f7599c4f4..1f4df7bc73ec37fd3f700dc086a5f36d98df1cb4 100644
+index 2d3b2c1e47fe6bac6daf45426cd668a04b460e67..3903656e512864f22ed5ec4360c93a280efd7f06 100644
 --- a/components/omnibox/common/omnibox_features.cc
 +++ b/components/omnibox/common/omnibox_features.cc
 @@ -173,7 +173,7 @@ BASE_FEATURE(kMostVisitedTilesHorizontalRenderGroup,
@@ -20,7 +20,7 @@ index 99a277595615ad7fc7b970bc18a4749f7599c4f4..1f4df7bc73ec37fd3f700dc086a5f36d
  
  // If enabled, specifies how URL model scores integrate with search traditional
  // scores.
-@@ -424,7 +424,7 @@ BASE_FEATURE(kOmniboxSearchPrefetchOnEnterKeyDown, DISABLED);
+@@ -428,7 +428,7 @@ BASE_FEATURE(kAndroidTabSearchRecentTabs, DISABLED);
  BASE_FEATURE(kOmniboxSiteSearch, DISABLED);
  
  // Enables additional site search providers for the Site search Starter Pack.
@@ -29,7 +29,7 @@ index 99a277595615ad7fc7b970bc18a4749f7599c4f4..1f4df7bc73ec37fd3f700dc086a5f36d
  
  // Enables an informational IPH message at the bottom of the Omnibox directing
  // users to certain starter pack engines.
-@@ -434,7 +434,7 @@ BASE_FEATURE(kStarterPackIPH, DISABLED);
+@@ -438,7 +438,7 @@ BASE_FEATURE(kStarterPackIPH, DISABLED);
  BASE_FEATURE(kAiModeStartPack, DISABLED);
  
  // If enabled, |SearchProvider| will not function in Zero Suggest.
@@ -38,7 +38,7 @@ index 99a277595615ad7fc7b970bc18a4749f7599c4f4..1f4df7bc73ec37fd3f700dc086a5f36d
  
  // If enabled, hl= is reported in search requests (applicable to iOS only).
  BASE_FEATURE(kReportApplicationLanguageInSearchRequest, ENABLED);
-@@ -463,7 +463,13 @@ BASE_FEATURE(kOmniboxMobileParityUpdate, ENABLED);
+@@ -467,7 +467,13 @@ BASE_FEATURE(kOmniboxMobileParityUpdate, ENABLED);
  
  // Updates various NTP/Omnibox assets and descriptions for visual alignment on
  // Android and iOS, V2.
@@ -51,5 +51,5 @@ index 99a277595615ad7fc7b970bc18a4749f7599c4f4..1f4df7bc73ec37fd3f700dc086a5f36d
 +#endif
 +);
  
- // If enabled, the X-Geo header will include permission granularity.
- BASE_FEATURE(kOmniboxXGeoPermissionGranularity, ENABLED);
+ // Kill switch. If enabled, the Android X-Geo header is dropped when the device
+ // hands back a precise fix for a site that only holds approximate location
