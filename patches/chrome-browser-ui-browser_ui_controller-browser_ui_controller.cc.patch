@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/browser_ui_controller/browser_ui_controller.cc b/chrome/browser/ui/browser_ui_controller/browser_ui_controller.cc
-index f68bbcc884726f183561d2108756a07493709c6b..73512da8601d541f9d16d7f075f9d10c37233432 100644
+index 1fa5dd41dece193a34a0386c67960ff40215351f..517656e8b0d401fae0c3c1f74ebab13795eb6407 100644
 --- a/chrome/browser/ui/browser_ui_controller/browser_ui_controller.cc
 +++ b/chrome/browser/ui/browser_ui_controller/browser_ui_controller.cc
 @@ -113,6 +113,8 @@ void BrowserUiController::UpdateUIForNavigationInTab(
@@ -8,6 +8,6 @@ index f68bbcc884726f183561d2108756a07493709c6b..73512da8601d541f9d16d7f075f9d10c
                                             unsigned changed_flags) {
 +  MaybeUpdateSidebarForUrlChange(*browser_, *tab_strip_model_, source,
 +                                 changed_flags);
-   DCHECK(source);
+   CHECK(source, base::NotFatalUntil::M162);
    // WebContents may in some rare cases send updates after they've been detached
    // from the tabstrip but before they are deleted, causing a potential crash if
