@@ -1,0 +1,26 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: Adds TorProfileManager as a friend to Profile::OTRProfileID.
+    add_friend:
+      class_name: OTRProfileID
+      friend_type: class TorProfileManager
+
+  - description: Brave Profile::OTRProfileID extensions.
+    add_to_public:
+      class_name: OTRProfileID
+      code: |-
+        static OTRProfileID CreateUniqueForSearchBackupResults();
+        static const OTRProfileID AIChatCodeExecutionID();
+        static const OTRProfileID TorID();
+        bool IsSearchBackupResults() const;
+
+  - description: Brave Profile overrides.
+    add_to_public:
+      class_name: Profile
+      code: |-
+        bool IsTor() const override;
+        bool IsAIChatAgent() const override;
