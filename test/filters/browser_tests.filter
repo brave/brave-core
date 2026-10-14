@@ -768,6 +768,7 @@
 -ContextMenuForSupervisedUsersBrowserTest.SaveLinkAsEntryIsEnabledForUrlsAllowedByAsyncCheckerForChild
 -ContextualSearchboxHandlerDriveSigninPromoBrowserTest.OnDriveUploadClicked_*
 -DogfoodOptimizationGuideKeyedServiceBrowserTest.LoggingDisabledByEnterprisePolicy_Dogfood_*
+-CrossDeviceSigninQrBubbleUIPixelTest.InvokeUi_default/Rtl
 -EnclaveAuthenticatorBrowserTest.*
 -EnclaveAuthenticatorImmediateMediationBrowserTest.*
 -ExtensionPostInstallDialogViewUtilsSignInBrowserTest.BubbleExplicitSignin
@@ -2756,6 +2757,13 @@
 # WebRequestAPI code unconditionally rebinds the already-bound PendingRemote via
 # InitWithNewPipeAndPassReceiver(), which DCHECKs !is_valid() and crashes.
 -SiteTokenBrowserTest.PreservesExistingHeaderClient
+
+# These tests fail because we disable kContextualTasks.
+-ContextualTasksAskGoogleEnabledTest.*
+-ContextualTasksAskGoogleSubmenuTest.*
+-ContextualTasksContextMenuAskGoogleBrowserTest.AskGoogleItemShownWhenFeatureEnabled
+-ContextualTasksContextMenuAskGoogleBrowserTest.HistogramRecordedOnAskGoogleClick
+-ContextualTasksContextMenuSubmenuBrowserTest.SubmenuShownWhenSubmenuFeatureEnabled
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -All/DeclarativeNetRequestBrowserTest.RendererCacheCleared/*
