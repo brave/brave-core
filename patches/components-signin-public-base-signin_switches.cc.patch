@@ -1,8 +1,8 @@
 diff --git a/components/signin/public/base/signin_switches.cc b/components/signin/public/base/signin_switches.cc
-index 00f7590fe4da83bf478e60b07a19a6f3c9106aac..cd91388648c91e6bb7f00ee28cbfa401c9cb6b85 100644
+index 04f8573710a5ea70e01ea3870d8b60111fa30336..3c5f30207b87bd0987d92fd22b18066ddaeeaf30 100644
 --- a/components/signin/public/base/signin_switches.cc
 +++ b/components/signin/public/base/signin_switches.cc
-@@ -671,9 +671,9 @@ BASE_FEATURE(kFirstRunDesktopChoiceScreenRefresh,
+@@ -693,9 +693,9 @@ BASE_FEATURE(kFirstRunDesktopChoiceScreenRefresh,
  
  #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
  #if BUILDFLAG(IS_WIN)
@@ -14,7 +14,7 @@ index 00f7590fe4da83bf478e60b07a19a6f3c9106aac..cd91388648c91e6bb7f00ee28cbfa401
  #endif
  bool IsFirstRunDesktopRefreshEnabled(bool is_in_search_engine_choice_region) {
    if (is_in_search_engine_choice_region &&
-@@ -825,7 +825,7 @@ BASE_FEATURE(kProfileCreationDeclineSigninCTAExperiment,
+@@ -847,7 +847,7 @@ BASE_FEATURE(kProfileCreationDeclineSigninCTAExperiment,
  #endif  // BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
  
  #if BUILDFLAG(IS_ANDROID)
@@ -23,7 +23,7 @@ index 00f7590fe4da83bf478e60b07a19a6f3c9106aac..cd91388648c91e6bb7f00ee28cbfa401
  #endif  // BUILDFLAG(IS_ANDROID)
  
  BASE_FEATURE(kProfilesReordering, base::FEATURE_DISABLED_BY_DEFAULT);
-@@ -859,7 +859,7 @@ BASE_FEATURE(kSigninInterceptGraphicUpdate, base::FEATURE_DISABLED_BY_DEFAULT);
+@@ -886,7 +886,7 @@ BASE_FEATURE(kSigninInterceptGraphicUpdate, base::FEATURE_DISABLED_BY_DEFAULT);
  #endif  // BUILDFLAG(ENABLE_DICE_SUPPORT)
  
  #if BUILDFLAG(IS_ANDROID)
@@ -32,19 +32,14 @@ index 00f7590fe4da83bf478e60b07a19a6f3c9106aac..cd91388648c91e6bb7f00ee28cbfa401
  #endif  // BUILDFLAG(IS_ANDROID)
  
  #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
-@@ -948,13 +948,8 @@ BASE_FEATURE(kSupportWebSigninAddSession, base::FEATURE_ENABLED_BY_DEFAULT);
+@@ -975,8 +975,8 @@ BASE_FEATURE(kSupportWebSigninAddSession, base::FEATURE_ENABLED_BY_DEFAULT);
  BASE_FEATURE(kSwitchToIncognitoInSettings, base::FEATURE_ENABLED_BY_DEFAULT);
  #endif  // BUILDFLAG(IS_ANDROID)
  
 -BASE_FEATURE(kSyncEnableBookmarksInTransportMode,
--#if BUILDFLAG(IS_CHROMEOS)
--             base::FEATURE_DISABLED_BY_DEFAULT
--#else
--             base::FEATURE_ENABLED_BY_DEFAULT
--#endif
--);
+-             base::FEATURE_ENABLED_BY_DEFAULT);
 +BASE_OVERRIDDEN_FEATURE(kSyncEnableBookmarksInTransportMode,
-+base::FEATURE_DISABLED_BY_DEFAULT);
++             base::FEATURE_DISABLED_BY_DEFAULT);
  
  #if BUILDFLAG(IS_CHROMEOS)
  BASE_FEATURE(kUndoChromeOsUseConsentLevelSignin,
