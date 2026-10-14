@@ -527,7 +527,7 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
 
     if let chainRequest = await rpcService.pendingAddChainRequests().first {
       return .addChain(chainRequest)
-    } 
+    }
 
     let signSolTransactionsItems = await walletService.pendingSignSolTransactionsRequests(
       allAccounts: allAccounts
