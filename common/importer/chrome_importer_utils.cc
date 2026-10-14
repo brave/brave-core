@@ -19,8 +19,8 @@
 #include "components/webdata/common/webdata_constants.h"
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
-#include "extensions/common/extension.h"
-#include "extensions/common/manifest.h"
+#include "extensions/common/extension.h"  // nogncheck
+#include "extensions/common/manifest.h"   // nogncheck
 #endif
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)

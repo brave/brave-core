@@ -1,0 +1,19 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Show the extensions UI only on tablets with BraveAndroidExtensions on.
+
+      The phone UI isn't supported yet.
+    count: 1
+    regex:
+      re_pattern:
+        '(public boolean isEnabled\(Profile profile\) \{\s*)return true;'
+      replace: |-
+        \1return org.chromium.chrome.browser.flags.ChromeFeatureList.isEnabled(
+                        "BraveAndroidExtensions")
+                        && org.chromium.ui.base.DeviceFormFactor.isNonMultiDisplayContextOnTablet(
+                                org.chromium.base.ContextUtils.getApplicationContext());

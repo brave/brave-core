@@ -86,7 +86,6 @@ brave_chrome_browser_visibility = [
 
 brave_chrome_browser_sources = [
   "//brave/browser/brave_browser_features.cc",
-  "//brave/browser/brave_browser_features.h",
   "//brave/browser/brave_browser_main_extra_parts.cc",
   "//brave/browser/brave_browser_main_extra_parts.h",
   "//brave/browser/brave_browser_main_parts.cc",
@@ -784,6 +783,7 @@ if (is_win || is_android) {
 
 brave_chrome_browser_public_deps = [
   "//brave/app/vector_icons",
+  "//brave/browser:brave_browser_features",
   "//brave/browser:browser_process",
   "//brave/browser/resources/bookmark_icon:bookmark_icon_resources",
   "//brave/browser/resources/tab_strip:tab_strip_resources",
