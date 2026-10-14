@@ -25,6 +25,7 @@
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/cookie_settings_factory.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
+#include "chrome/browser/favicon/favicon_utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/content_settings/core/browser/cookie_settings.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
@@ -70,6 +71,7 @@ BraveShieldsTabHelper::BraveShieldsTabHelper(content::WebContents* web_contents)
               Profile::FromBrowserContext(web_contents->GetBrowserContext())))),
       ephemeral_storage_service_(EphemeralStorageServiceFactory::GetForContext(
           web_contents->GetBrowserContext())) {
+  favicon::CreateContentFaviconDriverForWebContents(web_contents);
   favicon::ContentFaviconDriver::FromWebContents(web_contents)
       ->AddObserver(this);
   observation_.Observe(&*host_content_settings_map_);
@@ -161,8 +163,10 @@ void BraveShieldsTabHelper::OnShieldsAdBlockOnlyModeEnabledChanged() {
 }
 
 void BraveShieldsTabHelper::WebContentsDestroyed() {
-  favicon::ContentFaviconDriver::FromWebContents(web_contents())
-      ->RemoveObserver(this);
+  if (auto* favicon_driver =
+          favicon::ContentFaviconDriver::FromWebContents(web_contents())) {
+    favicon_driver->RemoveObserver(this);
+  }
   observation_.Reset();
 }
 
