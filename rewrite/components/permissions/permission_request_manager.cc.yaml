@@ -1,0 +1,65 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Update `tab_is_active_` with the tab activation state.
+
+      In split view an inactive split tab is still visible, but it must not
+      launch permission prompts.
+    regex:
+      re_pattern: '(OnVisibilityChanged\(.*?\n(\s*)tab_is_active_ = [^;]+;)'
+      re_flags: [DOTALL]
+      replace: |-
+        \1
+        \2UpdateTabIsHiddenWithTabActivationState();
+
+  - description: |-
+      Skip the requesting origin check for grouped Brave Wallet requests.
+
+      Wallet sub-requests carry their account in the requesting origin, so
+      grouped requests from the same site have different origins.
+    regex:
+      re_pattern: '(GetRequestingOrigin\(\).*?for \(const auto& request : requests_\) \{\n(\s*))(DCHECK_EQ\(origin, request->requesting_origin\(\)\);)'
+      re_flags: [DOTALL]
+      replace: |-
+        \1if (!ShouldBeGrouppedInRequests(request.get()))
+        \2  \3
+
+  - description: |-
+      Keep Brave Wallet requests out of the `<permission>` element prompt flow.
+
+      Wallet requests are flagged as embedded permission element initiated
+      only to keep the request queue FIFO; they have their own prompt.
+    regex:
+      re_pattern: '(RecreateView\(\) \{.*?ShouldCurrentRequestUsePermissionElementSecondaryUI\(\s*this, web_contents\(\)\))'
+      re_flags: [DOTALL]
+      replace: |-
+        \1 &&
+              !IsCurrentRequestBraveWalletInitiated()
+
+  - description: |-
+      Let Google sign-in prompts show while a navigation is uncommitted.
+
+      The Google sign-in prompt is raised for the very navigation it defers, so
+      waiting for that navigation to commit would deadlock.
+    count: 3
+    regex:
+      pattern: 'web_contents()->HasUncommittedNavigationInPrimaryMainFrame()'
+      replace: 'HasUncommittedNavigationBlockingPrompt(web_contents(), requests_, pending_permission_requests_)'
+
+  - description: |-
+      Retry showing queued prompts when a navigation ends without committing.
+
+      Requests made while a navigation is pending wait for it to finish, but
+      upstream only retries once a navigation commits, so a cancelled one would
+      leave them queued forever.
+    preempt_function_impl:
+      function_name: PermissionRequestManager::DidFinishNavigation
+      code: |-
+        if (navigation_handle->IsInPrimaryMainFrame() &&
+            !navigation_handle->HasCommitted()) {
+          ScheduleDequeueRequestIfNeeded();
+        }

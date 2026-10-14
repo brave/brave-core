@@ -11,6 +11,7 @@
 #include "base/files/file_path.h"
 #include "base/location.h"
 #include "base/path_service.h"
+#include "base/test/run_until.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_model.h"
 #include "brave/components/constants/brave_paths.h"
@@ -142,8 +143,11 @@ class AIChatBraveSearchThrottleBrowserTest : public InProcessBrowserTest {
     ClickOpenAIChatButton();
     observer.Wait();
 
-    EXPECT_EQ(IsLeoOpened(), expected_leo_opened);
-    EXPECT_EQ(expected_prompt_count, prompt_factory_->show_count());
+    // The prompt is shown, and Leo opened, after the navigation is cancelled.
+    EXPECT_TRUE(base::test::RunUntil([&]() {
+      return prompt_factory_->show_count() == expected_prompt_count &&
+             IsLeoOpened() == expected_leo_opened;
+    }));
     EXPECT_EQ(observer.last_navigation_url().path(), kLeoPath);
     EXPECT_EQ(GetActiveWebContents()->GetLastCommittedURL().path(),
               expected_last_committed_path);

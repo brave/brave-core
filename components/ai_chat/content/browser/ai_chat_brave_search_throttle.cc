@@ -136,6 +136,9 @@ void AIChatBraveSearchThrottle::OnGetOpenAIChatButtonNonce(
     OpenAIChatWithStagedEntries();
     CancelDeferredNavigation(content::NavigationThrottle::CANCEL);
   } else {  // ask
+    // The prompt is only shown once the tab has no uncommitted navigation, so
+    // the navigation is cancelled right after the request is made, and the
+    // result is handled independently of this throttle.
     permission_controller->RequestPermissionFromCurrentDocument(
         rfh,
         content::PermissionRequestDescription(
@@ -144,17 +147,35 @@ void AIChatBraveSearchThrottle::OnGetOpenAIChatButtonNonce(
                     blink::PermissionType::BRAVE_OPEN_AI_CHAT),
             /*user_gesture=*/true),
         base::BindOnce(&AIChatBraveSearchThrottle::OnPermissionPromptResult,
-                       weak_factory_.GetWeakPtr()));
+                       web_contents->GetWeakPtr(),
+                       std::move(open_ai_chat_delegate_),
+                       base::Unretained(ai_chat_service_.get())));
+    CancelDeferredNavigation(content::NavigationThrottle::CANCEL);
   }
 }
 
+// static
 void AIChatBraveSearchThrottle::OnPermissionPromptResult(
+    base::WeakPtr<content::WebContents> web_contents,
+    base::OnceCallback<void(content::WebContents*)> open_ai_chat_delegate,
+    AIChatService* ai_chat_service,
     content::PermissionResult status) {
-  if (status.status == content::PermissionStatus::GRANTED) {
-    OpenAIChatWithStagedEntries();
+  // `ai_chat_service` outlives the WebContents of its BrowserContext.
+  if (!web_contents || status.status != content::PermissionStatus::GRANTED) {
+    return;
   }
-
-  CancelDeferredNavigation(content::NavigationThrottle::CANCEL);
+  ai_chat_service->OpenConversationWithStagedEntries(
+      AIChatTabHelper::FromWebContents(web_contents.get())
+          ->web_contents_content()
+          .GetWeakPtr(),
+      base::BindOnce(
+          [](base::WeakPtr<content::WebContents> web_contents,
+             base::OnceCallback<void(content::WebContents*)> open_ai_chat) {
+            if (web_contents) {
+              std::move(open_ai_chat).Run(web_contents.get());
+            }
+          },
+          web_contents, std::move(open_ai_chat_delegate)));
 }
 
 const char* AIChatBraveSearchThrottle::GetNameForLogging() {
