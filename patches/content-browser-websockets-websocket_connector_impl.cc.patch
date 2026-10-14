@@ -1,8 +1,26 @@
 diff --git a/content/browser/websockets/websocket_connector_impl.cc b/content/browser/websockets/websocket_connector_impl.cc
-index e756aaf3ee05579c495f971c3eeed547fc30944e..2a8719984493017f51232f92b97a61975750ee2b 100644
+index e756aaf3ee05579c495f971c3eeed547fc30944e..f0e0f6315868a5e02021157b2d503a460fd90489 100644
 --- a/content/browser/websockets/websocket_connector_impl.cc
 +++ b/content/browser/websockets/websocket_connector_impl.cc
-@@ -144,9 +144,10 @@ void WebSocketConnectorImpl::Connect(
+@@ -20,6 +20,7 @@
+ #include "content/public/common/content_switches.h"
+ #include "mojo/public/cpp/bindings/message.h"
+ #include "net/base/network_handle.h"
++#include "net/base/url_util.h"
+ #include "net/http/http_request_headers.h"
+ #include "net/storage_access_api/status.h"
+ #include "services/network/public/cpp/features.h"
+@@ -139,14 +140,19 @@ void WebSocketConnectorImpl::Connect(
+   content::ContentBrowserClient::WebSocketFactory factory = base::BindOnce(
+       ConnectCalledByContentBrowserClient, requested_protocols,
+       storage_access_api_status_, isolation_info_, frame_id_,
+-      devtools_worker_token_, origin_, client_security_state_->Clone(),
++      devtools_worker_token_,
++      net::IsCrossOriginOnionRequest(origin_, url)
++          ? origin_.DeriveNewOpaqueOrigin()
++          : origin_,
++      client_security_state_->Clone(),
+       options.options, std::move(throttling_profile_id),
        network_restrictions_id_, target_address_space, target_network);
  
    if (GetContentClient()->browser()->WillInterceptWebSocket(frame)) {
