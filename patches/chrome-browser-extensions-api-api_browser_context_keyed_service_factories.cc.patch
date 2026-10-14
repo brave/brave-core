@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/extensions/api/api_browser_context_keyed_service_factories.cc b/chrome/browser/extensions/api/api_browser_context_keyed_service_factories.cc
-index 6f4953f01d03e7ad741c9371ffa89a129a25b320..fe9fd4265fec07e6fd99c6c1a534686437ed6c32 100644
+index 9758702292fb390cdf57b57ce13fd5979af8249d..29ef6d3fa172323a72834dd7d863cbb22f0e2d5f 100644
 --- a/chrome/browser/extensions/api/api_browser_context_keyed_service_factories.cc
 +++ b/chrome/browser/extensions/api/api_browser_context_keyed_service_factories.cc
 @@ -69,7 +69,8 @@

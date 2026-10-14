@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/renderer_context_menu/render_view_context_menu.h b/chrome/browser/renderer_context_menu/render_view_context_menu.h
-index 1ae42733a07e4d753e215adf56128beebce0ea4f..a3b9fe21e6872312bdadf4d3db665d8c0029b4b7 100644
+index 7d185ab33f59bfdeef856917085b697da4804882..7883099972bf6ab7f1b07979752aee524fc6743b 100644
 --- a/chrome/browser/renderer_context_menu/render_view_context_menu.h
 +++ b/chrome/browser/renderer_context_menu/render_view_context_menu.h
-@@ -120,7 +120,7 @@ enum class SplitTabLayout;
+@@ -116,7 +116,7 @@ enum class SplitTabLayout;
  }
  #endif
  
@@ -11,7 +11,7 @@ index 1ae42733a07e4d753e215adf56128beebce0ea4f..a3b9fe21e6872312bdadf4d3db665d8c
      : public RenderViewContextMenuBase,
        public custom_handlers::ProtocolHandlerRegistry::Observer {
   public:
-@@ -139,15 +139,15 @@ class RenderViewContextMenu
+@@ -138,15 +138,15 @@ class RenderViewContextMenu
        base::OnceCallback<void(content::RenderFrameHost*,
                                blink::mojom::PluginActionType)>;
  
@@ -31,7 +31,7 @@ index 1ae42733a07e4d753e215adf56128beebce0ea4f..a3b9fe21e6872312bdadf4d3db665d8c
  
    void MenuClosed(ui::SimpleMenuModel* source) override;
  
-@@ -169,7 +169,7 @@ class RenderViewContextMenu
+@@ -168,7 +168,7 @@ class RenderViewContextMenu
    // Registers a one-time callback that will be called the next time a context
    // menu is shown.
    static void RegisterMenuShownCallbackForTesting(
@@ -40,7 +40,7 @@ index 1ae42733a07e4d753e215adf56128beebce0ea4f..a3b9fe21e6872312bdadf4d3db665d8c
  
    // Register a one-time callback that will be called the next time a plugin
    // action is executed from a given render frame.
-@@ -275,6 +275,7 @@ class RenderViewContextMenu
+@@ -274,6 +274,7 @@ class RenderViewContextMenu
            navigation_handle_callback) override;
  
   private:
@@ -66,7 +66,7 @@ index 1ae42733a07e4d753e215adf56128beebce0ea4f..a3b9fe21e6872312bdadf4d3db665d8c
    void AppendSaveToMemoryBanksItem();
    void AppendGlicItems();
    void AppendRotationItems();
-@@ -657,7 +658,7 @@ class RenderViewContextMenu
+@@ -658,7 +659,7 @@ class RenderViewContextMenu
    // out if the tab navigated while the menu was open.
    const content::WeakDocumentPtr source_document_at_menu_open_;
  
