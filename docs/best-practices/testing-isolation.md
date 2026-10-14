@@ -202,9 +202,7 @@ class ReportPublisher {
   void AddObserver(Observer* observer) { observers_.AddObserver(observer); }
   void RemoveObserver(Observer* observer) { observers_.RemoveObserver(observer); }
   void SaveReport(const std::string& report) {
-    for (Observer& observer : observers_) {
-      observer.OnReportSaved(report);
-    }
+    observers_.Notify(&Observer::OnReportSaved, report);
   }
 
  private:
