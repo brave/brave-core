@@ -1,5 +1,5 @@
 diff --git a/chrome/common/BUILD.gn b/chrome/common/BUILD.gn
-index 6f5f891dc689a2e7628cf731b7863264cc0ac0ab..3fd013c3412d74c952454c7b69faf7afd82b9e27 100644
+index 5010ed5c516db70207d3852a91f374542664b735..4f8469e680ee437851bee78faca722539840b9ab 100644
 --- a/chrome/common/BUILD.gn
 +++ b/chrome/common/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -50,7 +50,7 @@ index 6f5f891dc689a2e7628cf731b7863264cc0ac0ab..3fd013c3412d74c952454c7b69faf7af
  }
  
  component("chrome_features") {
-@@ -588,6 +594,7 @@ static_library("constants") {
+@@ -589,6 +595,7 @@ static_library("constants") {
      "//printing/buildflags",
      "//third_party/widevine/cdm:buildflags",
    ]
@@ -58,7 +58,7 @@ index 6f5f891dc689a2e7628cf731b7863264cc0ac0ab..3fd013c3412d74c952454c7b69faf7af
  
    if (is_android) {
      sources += [ "chrome_paths_android.cc" ]
-@@ -897,5 +904,6 @@ source_set("unit_tests") {
+@@ -898,5 +905,6 @@ source_set("unit_tests") {
      sources += [ "media/cdm_registration_unittest.cc" ]
      deps += [ "//third_party/widevine/cdm:headers" ]
      data_deps = [ "//third_party/widevine/cdm" ]

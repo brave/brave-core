@@ -1244,6 +1244,11 @@ are declared in tools/grit/grit_args.gni.
           =1 {Your Private window won't reopen.}
           other {Your # Private windows won't reopen.}}
       </message>
+      <message name="IDS_IDLE_TIMEOUT_INCOGNITO_AND_ISOLATED" desc="The text in the Idle Timeout dialog variant when there are Private and Isolated windows open. This warns the user that Private and Isolated windows will close automatically, and their content will be lost.">
+        {COUNT, plural,
+          =1 {There is Private or Isolated window open. It won't reopen.}
+          other {There are # Private and Isolated windows open across profiles. They won't reopen.}}
+      </message>
       </if>
 
     <if expr="toolkit_views">

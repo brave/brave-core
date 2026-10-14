@@ -6552,13 +6552,13 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
 
       <!-- Remote Actor Credential Sharing Dialog -->
-      <message name="IDS_REMOTE_ACTOR_SHARING_DIALOG_TITLE" desc="Title of the dialog asking the user to share credentials with Gemini.">
-        Allow Gemini to sign in to <ph name="DOMAIN">$1<ex>example.com</ex></ph> for you?
+      <message name="IDS_REMOTE_ACTOR_SHARING_DIALOG_TITLE" desc="Title of the dialog asking the user to share credentials with a remote actor.">
+        Allow <ph name="ACTOR_NAME">$1<ex>Gemini</ex></ph> to sign in to <ph name="DOMAIN">$2<ex>example.com</ex></ph> for you?
       </message>
-      <message name="IDS_REMOTE_ACTOR_SHARING_DIALOG_SUBTITLE" desc="Subtitle of the dialog asking the user to share credentials with Gemini.">
-        Gemini can use Brave Password Manager to sign in for you. <ph name="BEGIN_LINK">$1</ph>Learn how Gemini handles your data<ph name="END_LINK">$2</ph>
+      <message name="IDS_REMOTE_ACTOR_SHARING_DIALOG_SUBTITLE" desc="Subtitle of the dialog asking the user to share credentials with a remote actor.">
+        <ph name="ACTOR_NAME">$3<ex>Gemini</ex></ph> can use Brave Password Manager to sign in for you. <ph name="BEGIN_LINK">$1</ph>Learn how <ph name="ACTOR_NAME">$3<ex>Gemini</ex></ph> handles your data<ph name="END_LINK">$2</ph>
       </message>
-      <message name="IDS_REMOTE_ACTOR_SHARING_DIALOG_ALLOW_BUTTON" desc="Button label to allow password sharing for Gemini this time.">
+      <message name="IDS_REMOTE_ACTOR_SHARING_DIALOG_ALLOW_BUTTON" desc="Button label to allow password sharing for the remote actor this time.">
         Allow this time
       </message>
 
@@ -12004,6 +12004,17 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         <message name="IDS_TAB_CXMENU_ADD_TAB_TO_NEW_COMPARISON_TABLE" desc="The label for the tab context menu item to add the current tab to a new comparison table">
           Add tab to new comparison table
         </message>
+        <message name="IDS_TAB_CXMENU_AI_MODE_SHARE" desc="The label of the tab context menu submenu for sharing the selected tab or tabs with AI Mode. [ICU Syntax]" translateable="false">
+          {NUM_TABS, plural,
+            =1 {Share tab with AI Mode}
+            other {Share # tabs with AI Mode}}
+        </message>
+        <message name="IDS_TAB_CXMENU_AI_MODE_START_NEW_THREAD" desc="The label of the 'Start new thread with AI Mode' item in the AI Mode tab context submenu." translateable="false">
+          Start new thread with AI Mode
+        </message>
+        <message name="IDS_TAB_CXMENU_AI_MODE_UNSHARE" desc="The label of the tab context menu item for unsharing the selected tab or tabs with AI Mode." translateable="false">
+          Unshare with AI Mode
+        </message>
         <if expr="is_chromeos">
           <message name="IDS_TAB_CXMENU_GROUPED_BY_DESK_MENU_ITEM_A11Y" desc="The a11y message for menu items in 'Move tabs to another window' when grouped by desk.">
             <ph name="TAB_TITLE">$1<ex>Brave News</ex></ph> belongs to desk <ph name="DESK_TITLE">$2<ex>School</ex></ph>
@@ -12131,6 +12142,17 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         </message>
         <message name="IDS_TAB_CXMENU_ADD_TAB_TO_NEW_COMPARISON_TABLE" desc="In Title Case: The label for the tab context menu item to add the current tab to a new comparison table">
           Add Tab to New Comparison Table
+        </message>
+        <message name="IDS_TAB_CXMENU_AI_MODE_SHARE" desc="In Title Case: The label of the tab context menu submenu for sharing the selected tab or tabs with AI Mode. [ICU Syntax]" translateable="false">
+          {NUM_TABS, plural,
+            =1 {Share Tab with AI Mode}
+            other {Share # Tabs with AI Mode}}
+        </message>
+        <message name="IDS_TAB_CXMENU_AI_MODE_START_NEW_THREAD" desc="In Title Case: The label of the 'Start New Thread with AI Mode' item in the AI Mode tab context submenu." translateable="false">
+          Start New Thread with AI Mode
+        </message>
+        <message name="IDS_TAB_CXMENU_AI_MODE_UNSHARE" desc="In Title Case: The label of the tab context menu item for unsharing the selected tab or tabs with AI Mode." translateable="false">
+          Unshare with AI Mode
         </message>
       </if>
 
@@ -13776,9 +13798,6 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
       <message name="IDS_TOOLBAR_BUTTON_SEND_TAB_TO_SELF_BUTTON_LABEL" desc="The label for the button in the received tab dialog shown from the toolbar button.">
         Open in New Tab
       </message>
-      <message name="IDS_TOOLBAR_BUTTON_SEND_TAB_TO_SELF_BUTTON_HINT_TEXT" desc="The hint text shown on received tab dialog shown from the toolbar button. Where 'THERE' is the device the user selected.">
-        Choose a device. Then, to see the page, open Brave there.
-      </message>
       <message name="IDS_MENU_SEND_TAB_TO_SELF" desc="The label of a menu entry to share the current tab to another device">
         Send to your &amp;device
       </message>
@@ -13812,9 +13831,6 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
       </message>
       <message name="IDS_SEND_TAB_TO_SELF_SENDING_ANNOUNCE" desc="Text read by a screenreader when a tab is sent to a target device." is_accessibility_with_no_ui="true">
         Sending link to <ph name="DEVICE_NAME">$1<ex>Ted's Pixel2</ex></ph>
-      </message>
-       <message name="IDS_SEND_TAB_TO_SELF_MANAGE_DEVICES_LINK" desc="Text with a link to a page where the user can manage the devices they can share a tab to.">
-        <ph name="BEGIN_LINK">$1</ph>Your devices<ph name="END_LINK">$2</ph> · <ph name="EMAIL">$3<ex>foo@gmail.com</ex></ph>
       </message>
       <message name="IDS_SEND_TAB_TO_SELF_NO_TARGET_DEVICE_BODY_QR" desc="Subtitle of the QR code bubble shown when a user with no available target devices attempts to use send-tab-to-self, prompting to sign in with the same account.">
         To send links between devices, sign in with the same account.
@@ -15067,6 +15083,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
 
       <message name="IDS_HISTORY_MENU" desc="The text label of the History (and recent tabs) sub-menu in the wrench menu.">
         &amp;History
+      </message>
+      <message name="IDS_OTHER_DEVICE_TABS_MENU" desc="The text label of the 'Other device tabs' sub-menu in the wrench menu that lists the tabs currently open on the user's other devices.">
+        Other device tabs
       </message>
       <message name="IDS_DEFAULT_DOWNLOAD_FILENAME" desc="Default name for downloaded files when we have no idea what they could be.">
         download
@@ -17778,6 +17797,16 @@ Please help our engineers fix this problem. Tell us what happened right before y
         {COUNT, plural,
           =1 {Your Private window won't reopen.}
           other {Your # Private windows won't reopen.}}
+      </message>
+      <message name="IDS_IDLE_TIMEOUT_ISOLATED" desc="The text in the Idle Timeout dialog variant when there are Isolated windows open. This warns the user that Isolated windows will close automatically, and their content will be lost.">
+        {COUNT, plural,
+          =1 {Your Isolated window won't reopen.}
+          other {Your # Isolated windows won't reopen.}}
+      </message>
+      <message name="IDS_IDLE_TIMEOUT_INCOGNITO_AND_ISOLATED" desc="The text in the Idle Timeout dialog variant when there are Private and Isolated windows open. This warns the user that Private and Isolated windows will close automatically, and their content will be lost.">
+        {COUNT, plural,
+          =1 {There is Private or Isolated window open. It won't reopen.}
+          other {There are # Private and Isolated windows open across profiles. They won't reopen.}}
       </message>
       <message name="IDS_IDLE_TIMEOUT_CLOSE_COUNTDOWN" desc="In the Idle Timeout dialog, a countdown that ticks every second. When it reaches zero, Brave closes all browsers.">
         {0, plural,

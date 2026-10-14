@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/tabs/tab_group_header.h b/chrome/browser/ui/views/tabs/tab_group_header.h
-index 940794d1774dad9a054559b55660f2b21e4f802c..6ea82860cfef4dcbe5f0e90686873689aa495f3c 100644
+index 25409afe15949d2ed3c5c1f78859e7e747919a31..b20c5cf8055b8bf2898f45beb5d8cffcc89b3a22 100644
 --- a/chrome/browser/ui/views/tabs/tab_group_header.h
 +++ b/chrome/browser/ui/views/tabs/tab_group_header.h
-@@ -96,7 +96,7 @@ class TabGroupHeader : public TabSlotView,
+@@ -98,7 +98,7 @@ class TabGroupHeader : public TabSlotView,
    // for our group.
    // TODO(crbug.com/372296676): Make TabGroupHeader observe the group for
    // changes to cut down on the number of times we recalculate the view.
@@ -11,7 +11,7 @@ index 940794d1774dad9a054559b55660f2b21e4f802c..6ea82860cfef4dcbe5f0e90686873689
  
    int GetCollapsedHeaderWidth() const;
  
-@@ -109,11 +109,12 @@ class TabGroupHeader : public TabSlotView,
+@@ -111,11 +111,12 @@ class TabGroupHeader : public TabSlotView,
    bool is_collapsed_for_testing() const { return is_collapsed_; }
  
   private:

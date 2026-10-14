@@ -13,7 +13,7 @@ substitutions:
 
   - description: Add the Brave browser public_deps.
     add_literal_to_list:
-      target: browser_public_dependencies
+      target: browser
       list_name: public_deps
       literal: brave_chrome_browser_public_deps
       import: //brave/browser/sources.gni
