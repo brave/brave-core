@@ -38,8 +38,9 @@ import("//third_party/widevine/cdm/widevine.gni")
 
 group("ui_public_dependencies") {
   visibility = [
+    "//brave/browser:core",
     "//brave/browser/ui",
-    "//chrome/browser:browser",
+    "//chrome/browser",
   ]
   public_deps = [
     ":brave_tab_prefs",
