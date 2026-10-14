@@ -12,7 +12,13 @@
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "brave/components/email_aliases/buildflags/buildflags.h"
 #include "brave/components/traffic_control/buildflags/buildflags.h"
+#include "build/blink_buildflags.h"
 #include "components/search_engines/search_engines_pref_names.h"
+
+#if BUILDFLAG(USE_BLINK)
+// Gestures is desktop-only for now; `core/browser` depends on blink.
+#include "brave/components/gestures/core/browser/pref_names.h"
+#endif
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
 #include "brave/components/containers/core/browser/pref_names.h"
@@ -42,6 +48,14 @@ enum {
 #if BUILDFLAG(ENABLE_TRAFFIC_CONTROL)
   kTrafficControlList = 1004,
 #endif
+  kGesturesMappings = 1005,
+  kGesturesDisallowedSites = 1006,
+  kGesturesCustomGestures = 1007,
+  kGesturesMouseRockerLeftAction = 1008,
+  kGesturesMouseRockerRightAction = 1009,
+  kGesturesMouseWheelUpAction = 1010,
+  kGesturesMouseWheelDownAction = 1011,
+  kGesturesSmartGestures = 1012,
 };
 }  // namespace brave_syncable_prefs_ids
 
@@ -104,6 +118,104 @@ constexpr auto kBraveCommonSyncablePrefsAllowlist = base::MakeFixedFlatMap<
         },
     },
 #endif
+#if BUILDFLAG(USE_BLINK)
+    {
+        gestures::prefs::kDirectionalGestures,
+        {
+            brave_syncable_prefs_ids::kGesturesMappings,
+            syncer::PREFERENCES,
+            // May contain navigation destinations (`kNavigateToUrl` action
+            // params), so it requires history opt-in to sync.
+            sync_preferences::PrefSensitivity::kSensitiveRequiresHistory,
+            MergeBehavior::kNone,
+            WriteBehavior::kWriteToBoth,
+        },
+    },
+    {
+        gestures::prefs::kDisallowedSites,
+        {
+            brave_syncable_prefs_ids::kGesturesDisallowedSites,
+            syncer::PREFERENCES,
+            // Contains hostnames, so it requires history opt-in to sync.
+            sync_preferences::PrefSensitivity::kSensitiveRequiresHistory,
+            MergeBehavior::kNone,
+            WriteBehavior::kWriteToBoth,
+        },
+    },
+    {
+        gestures::prefs::kCustomGestures,
+        {
+            brave_syncable_prefs_ids::kGesturesCustomGestures,
+            syncer::PREFERENCES,
+            // May contain navigation destinations (`kNavigateToUrl` action
+            // params), so it requires history opt-in to sync.
+            sync_preferences::PrefSensitivity::kSensitiveRequiresHistory,
+            MergeBehavior::kNone,
+            WriteBehavior::kWriteToBoth,
+        },
+    },
+    {
+        gestures::prefs::kMouseRockerLeftAction,
+        {
+            brave_syncable_prefs_ids::kGesturesMouseRockerLeftAction,
+            syncer::PREFERENCES,
+            // May contain a navigation destination (`kNavigateToUrl` action
+            // params), so it requires history opt-in to sync.
+            sync_preferences::PrefSensitivity::kSensitiveRequiresHistory,
+            MergeBehavior::kNone,
+            WriteBehavior::kWriteToBoth,
+        },
+    },
+    {
+        gestures::prefs::kMouseRockerRightAction,
+        {
+            brave_syncable_prefs_ids::kGesturesMouseRockerRightAction,
+            syncer::PREFERENCES,
+            // May contain a navigation destination (`kNavigateToUrl` action
+            // params), so it requires history opt-in to sync.
+            sync_preferences::PrefSensitivity::kSensitiveRequiresHistory,
+            MergeBehavior::kNone,
+            WriteBehavior::kWriteToBoth,
+        },
+    },
+    {
+        gestures::prefs::kMouseWheelUpAction,
+        {
+            brave_syncable_prefs_ids::kGesturesMouseWheelUpAction,
+            syncer::PREFERENCES,
+            // May contain a navigation destination (`kNavigateToUrl` action
+            // params), so it requires history opt-in to sync.
+            sync_preferences::PrefSensitivity::kSensitiveRequiresHistory,
+            MergeBehavior::kNone,
+            WriteBehavior::kWriteToBoth,
+        },
+    },
+    {
+        gestures::prefs::kMouseWheelDownAction,
+        {
+            brave_syncable_prefs_ids::kGesturesMouseWheelDownAction,
+            syncer::PREFERENCES,
+            // May contain a navigation destination (`kNavigateToUrl` action
+            // params), so it requires history opt-in to sync.
+            sync_preferences::PrefSensitivity::kSensitiveRequiresHistory,
+            MergeBehavior::kNone,
+            WriteBehavior::kWriteToBoth,
+        },
+    },
+    {
+        gestures::prefs::kSmartGestures,
+        {
+            brave_syncable_prefs_ids::kGesturesSmartGestures,
+            syncer::PREFERENCES,
+            // May contain a navigation destination (`kNavigateToUrl` action
+            // params), so it requires history opt-in to sync.
+            sync_preferences::PrefSensitivity::kSensitiveRequiresHistory,
+            MergeBehavior::kNone,
+            WriteBehavior::kWriteToBoth,
+        },
+    },
+#endif  // BUILDFLAG(USE_BLINK)
+
     // See //components/sync_preferences/README.md about adding new entries
     // here.
     //

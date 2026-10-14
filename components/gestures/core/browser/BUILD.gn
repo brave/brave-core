@@ -1,0 +1,80 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//build/config/features.gni")
+
+assert(use_blink)
+
+static_library("browser") {
+  public = [
+    "directional/directional_gesture_mapping_pref_loader.h",
+    "input/mouse/mouse_rocker_default_commands_info.h",
+    "input/mouse/mouse_wheel_default_commands_info.h",
+    "input/touch/touch_centroid_util.h",
+    "input/touch/touch_point_state_util.h",
+    "pref_names.h",
+    "prefs_registration.h",
+    "smart/smart_gesture_mapping_pref_loader.h",
+    "url_navigation_util.h",
+  ]
+
+  sources = [
+    "directional/directional_gesture_mapping_pref_loader.cc",
+    "input/touch/touch_centroid_util.cc",
+    "input/touch/touch_point_state_util.cc",
+    "prefs_registration.cc",
+    "smart/smart_gesture_mapping_pref_loader.cc",
+    "url_navigation_util.cc",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/gestures/core/common",
+    "//brave/components/gestures/core/common:features",
+    "//components/pref_registry",
+    "//components/prefs",
+    "//content/public/common",
+    "//third_party/blink/public:blink",
+    "//ui/gfx/geometry",
+    "//url",
+  ]
+}
+
+source_set("test_support") {
+  testonly = true
+  sources = [
+    "input/mouse/test/fake_mouse_rocker_wheel_default_commands.cc",
+    "input/mouse/test/fake_mouse_rocker_wheel_default_commands.h",
+    "input/touch/test/web_touch_event_test_util.cc",
+    "input/touch/test/web_touch_event_test_util.h",
+  ]
+
+  public_deps = [ ":browser" ]
+  deps = [ "//third_party/blink/public:blink" ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [
+    "input/touch/touch_centroid_util_unittest.cc",
+    "input/touch/touch_point_state_util_unittest.cc",
+    "prefs_registration_unittest.cc",
+    "url_navigation_util_unittest.cc",
+  ]
+
+  deps = [
+    ":browser",
+    ":test_support",
+    "//base",
+    "//brave/components/gestures/core/common",
+    "//brave/components/gestures/core/common:features",
+    "//components/pref_registry",
+    "//components/sync_preferences:test_support",
+    "//testing/gtest",
+    "//third_party/blink/public:blink",
+    "//ui/gfx/geometry",
+    "//url",
+  ]
+}

@@ -128,6 +128,10 @@ const jestConfig: Config = {
   ],
   setupFilesAfterEnv: ['<rootDir>/components/test/testSetup.ts'],
   moduleNameMapper: {
+    // ts-jest's ESM preset doesn't strip the `.js` extension required on
+    // relative imports by the real NodeNext/ESM build, so map it back to the
+    // source file for test resolution.
+    '^(\\.{1,2}/.*)\\.js$': '$1',
     '\\.(jpg|jpeg|png|gif|eot|otf|svg|ttf|woff|woff2)$':
       '<rootDir>/components/test/fileMock.ts',
     '\\.(css|less|scss)$': 'identity-obj-proxy',

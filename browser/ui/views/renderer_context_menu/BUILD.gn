@@ -1,0 +1,27 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+assert(is_mac)
+
+source_set("mac") {
+  visibility = [
+    "//brave/browser/ui/*",
+    "//chrome/browser/ui/views/tab_contents/*",
+  ]
+
+  sources = [
+    "brave_render_view_context_menu_mac_cocoa.h",
+    "brave_render_view_context_menu_mac_cocoa.mm",
+    "brave_render_view_context_menu_mac_remote_cocoa.h",
+    "brave_render_view_context_menu_mac_remote_cocoa.mm",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/browser/ui/gestures",
+    "//chrome/browser/ui/cocoa",
+    "//content/public/browser",
+  ]
+}

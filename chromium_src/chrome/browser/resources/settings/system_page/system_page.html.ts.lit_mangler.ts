@@ -31,7 +31,13 @@ mangle((root) => {
         label="$i18n{braveShortcutsPage}"
         role-description="$i18n{subpageArrowRoleDescription}"
         @click="\${this.onShortcutsClick_}">
-     </cr-link-row>`)
+     </cr-link-row>
+     <cr-link-row id="gesturesButton" class="hr"
+        label="$i18n{braveGesturesPage}"
+        role-description="$i18n{subpageArrowRoleDescription}"
+        @click="\${this.onGesturesClick_}">
+     </cr-link-row>
+     <div class="hr"></div>`)
 
   // Note: browser.confirm_to_quit isn't registered as a pref outside of mac
   // (see chrome/browser/ui/cocoa/confirm_quit.cc), so the toggle for it must

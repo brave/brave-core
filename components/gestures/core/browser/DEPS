@@ -1,0 +1,9 @@
+include_rules = [
+    "+brave/components/gestures/core/common",
+    "+components/pref_registry",
+    "+components/prefs",
+    "+components/sync_preferences",
+    "+content/public/common",
+    "+third_party/blink/public/common/input",
+    "+ui/gfx/geometry",
+]
