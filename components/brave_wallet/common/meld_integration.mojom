@@ -63,11 +63,11 @@ struct MeldCryptoCurrency {
   string symbol;
 
   string currency_code;
-  string? name;
-  string? chain_code;
-  string? chain_name;
+  string name;
+  string chain_code;
+  string chain_name;
   string? contract_address;
-  string? symbol_image_url;
+  string symbol_image_url;
 };
 
 struct MeldCountry {

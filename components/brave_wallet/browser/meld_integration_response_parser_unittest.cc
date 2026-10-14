@@ -377,21 +377,28 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_CryptoCurrencies) {
   // Networks are resolved by chainCode. Meld's chainId must match for EVM
   // chains and is ignored for others. Unsupported chain codes are dropped.
   json = R"([
-  {"currencyCode": "BTC", "chainCode": "BTC", "chainId": null},
-  {"currencyCode": "FIL", "chainCode": "FIL", "chainId": null},
-  {"currencyCode": "ZEC", "chainCode": "ZEC", "chainId": null},
+  {"currencyCode": "BTC", "chainCode": "BTC"},
+  {"currencyCode": "FIL", "chainCode": "FIL"},
+  {"currencyCode": "ZEC", "chainCode": "ZEC"},
   {"currencyCode": "SOL", "chainCode": "SOLANA", "chainId": "101"},
-  {"currencyCode": "ADA", "chainCode": "ADA", "chainId": null},
+  {"currencyCode": "ADA", "chainCode": "ADA"},
   {"currencyCode": "DOT", "chainCode": "ASSETHUB", "chainId": "0"},
   {"currencyCode": "ETH", "chainCode": "ETH", "chainId": "1"},
   {"currencyCode": "AURORA", "chainCode": "AURORA", "chainId": "1313161554"},
-  {"currencyCode": "POL", "chainCode": "POLYGON", "chainId": null},
+  {"currencyCode": "POL", "chainCode": "POLYGON"},
   {"currencyCode": "USDT_ARB", "chainCode": "ARBITRUM", "chainId": "1"},
   {"currencyCode": "USDT_OP", "chainCode": "OPTIMISM", "chainId": "abc"},
-  {"currencyCode": "USDT_KCC", "chainCode": "KCC", "chainId": "321"},
-  {"currencyCode": "USDT_XYZ", "chainCode": null, "chainId": "1"}
+  {"currencyCode": "USDT_KCC", "chainCode": "KCC", "chainId": "321"}
   ])";
-  crypto_currencies = ParseCryptoCurrencies(ParseJson(json));
+  auto json_value = ParseJson(json);
+  for (auto& item : json_value.GetList()) {
+    // Required fields not under test.
+    auto& dict = item.GetDict();
+    dict.Set("name", "");
+    dict.Set("chainName", "");
+    dict.Set("symbolImageUrl", "");
+  }
+  crypto_currencies = ParseCryptoCurrencies(json_value);
   ASSERT_TRUE(crypto_currencies);
   std::vector<std::tuple<std::string, mojom::CoinType, std::string>> chains;
   for (const auto& item : *crypto_currencies) {
@@ -412,6 +419,11 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_CryptoCurrencies) {
                      mojom::kAuroraMainnetChainId),
           std::tuple("POL", mojom::CoinType::ETH,
                      mojom::kPolygonMainnetChainId)));
+
+  // A missing required field fails the whole response.
+  EXPECT_FALSE(ParseCryptoCurrencies(ParseJson(R"([
+  {"currencyCode": "USDT", "name": "", "chainName": "", "symbolImageUrl": ""}
+  ])")));
 
   EXPECT_FALSE(ParsePaymentMethods(ParseJson(R"([
   {

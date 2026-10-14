@@ -54,10 +54,7 @@ base::flat_map<std::string, std::string> ParseOptionalMapOfStrings(
 std::optional<std::pair<brave_wallet::mojom::CoinType, std::string_view>>
 GetBraveChain(
     const brave_wallet::meld_integration_responses::CryptoCurrency& currency) {
-  if (!currency.chain_code) {
-    return std::nullopt;
-  }
-  const auto it = brave_wallet::kMeldSupportedChains.find(*currency.chain_code);
+  const auto it = brave_wallet::kMeldSupportedChains.find(currency.chain_code);
   if (it == brave_wallet::kMeldSupportedChains.end()) {
     return std::nullopt;
   }
@@ -77,12 +74,9 @@ GetBraveChain(
 // Meld may suffix currency codes with their chain code, e.g. "USDT_POLYGON".
 std::string GetCurrencySymbol(
     const brave_wallet::meld_integration_responses::CryptoCurrency& currency) {
-  if (currency.chain_code) {
-    if (const auto symbol =
-            base::RemoveSuffix(currency.currency_code,
-                               base::StrCat({"_", *currency.chain_code}))) {
-      return std::string(*symbol);
-    }
+  if (const auto symbol = base::RemoveSuffix(
+          currency.currency_code, base::StrCat({"_", currency.chain_code}))) {
+    return std::string(*symbol);
   }
   return currency.currency_code;
 }

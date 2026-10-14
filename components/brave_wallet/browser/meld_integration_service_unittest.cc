@@ -1204,7 +1204,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCryptoCurrencies) {
       R"([
   {
     "currencyCode": "USDT_POLYGON",
-    "name": null,
+    "name": "Tether",
     "chainCode": "POLYGON",
     "chainName": "Polygon",
     "chainId": "137",
@@ -1225,12 +1225,13 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCryptoCurrencies) {
                  crypto_currencies,
              const std::optional<std::vector<std::string>>& errors) {
             EXPECT_FALSE(errors.has_value());
+            ASSERT_TRUE(crypto_currencies);
             EXPECT_EQ(
                 std::ranges::count_if(
                     *crypto_currencies,
                     [](const auto& item) {
                       return item->currency_code == "USDT_POLYGON" &&
-                             item->symbol == "USDT" && !item->name &&
+                             item->symbol == "USDT" && item->name == "Tether" &&
                              item->chain_code == "POLYGON" &&
                              item->chain_name == "Polygon" &&
                              item->coin == mojom::CoinType::ETH &&
