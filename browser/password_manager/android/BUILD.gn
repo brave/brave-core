@@ -23,16 +23,35 @@ source_set("wipe_model_upon_sync_disabled_behavior") {
   ]
 }
 
+source_set("password_migration") {
+  sources = [
+    "brave_account_to_profile_password_migration.cc",
+    "brave_account_to_profile_password_migration.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/brave_sync:features",
+    "//chrome/browser/password_manager/factories",
+    "//chrome/browser/profiles:profile",
+    "//components/keyed_service/core",
+    "//components/password_manager/core/browser:password_form",
+    "//components/password_manager/core/browser/password_store:password_store_interface",
+  ]
+}
+
 source_set("unit_tests") {
   testonly = true
   sources = [
     "brave_account_storage_flag_unittest.cc",
+    "brave_account_to_profile_password_migration_unittest.cc",
     "brave_password_store_backend_factory_unittest.cc",
     "brave_wipe_model_upon_sync_disabled_behavior_unittest.cc",
     "password_ui_view_android_unittest.cc",
   ]
 
   deps = [
+    ":password_migration",
     ":wipe_model_upon_sync_disabled_behavior",
     "//base",
     "//base/test:test_support",
