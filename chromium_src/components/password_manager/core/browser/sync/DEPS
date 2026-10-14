@@ -1,0 +1,9 @@
+specific_include_rules = {
+  # The unittest overrides build into
+  # //brave/components/password_manager/core/browser/sync:unit_tests, which
+  # depends on brave_sync:features. The non-test overrides forward-declare
+  # instead, so the upstream targets need no Brave dep.
+  ".*_unittest\.cc": [
+    "+brave/components/brave_sync/features.h",
+  ],
+}
