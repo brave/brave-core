@@ -1273,13 +1273,15 @@ void AdsServiceImpl::GetStatementOfAccounts(
 
 void AdsServiceImpl::ParseAndSaveNewTabPageAds(base::DictValue dict,
                                                ResultCallback callback) {
+  // Neither the service not being bound nor it shutting down before a reply
+  // arrives is a failure, so report `success` as `true` in both cases.
   if (!bat_ads_associated_remote_.is_bound()) {
-    return std::move(callback).Run(/*success*/ false);
+    return std::move(callback).Run(/*success=*/true);
   }
 
   bat_ads_associated_remote_->ParseAndSaveNewTabPageAds(
       std::move(dict), mojo::WrapCallbackWithDefaultInvokeIfNotRun(
-                           std::move(callback), /*success=*/false));
+                           std::move(callback), /*success=*/true));
 }
 
 void AdsServiceImpl::MaybeServeNewTabPageAd(
