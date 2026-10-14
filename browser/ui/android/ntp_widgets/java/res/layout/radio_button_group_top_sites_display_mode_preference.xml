@@ -15,14 +15,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <org.chromium.components.browser_ui.widget.RadioButtonWithDescription
+        <org.chromium.components.browser_ui.widget.BraveRadioButtonWithDescriptionRight
             android:id="@+id/top_sites_display_mode_favorites_radio_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="@dimen/min_touch_target_size"
             app:primaryText="@string/show_favorites" />
 
-        <org.chromium.components.browser_ui.widget.RadioButtonWithDescription
+        <org.chromium.components.browser_ui.widget.BraveRadioButtonWithDescriptionRight
             android:id="@+id/top_sites_display_mode_frequent_radio_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
