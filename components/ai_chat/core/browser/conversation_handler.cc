@@ -3030,11 +3030,9 @@ size_t ConversationHandler::GetConversationHistorySize() {
 }
 
 void ConversationHandler::GetScreenshots(GetScreenshotsCallback callback) {
-  std::vector<std::string> content_uuids;
-  for (const auto& content :
-       associated_content_manager_->GetAssociatedContent()) {
-    content_uuids.push_back(content->uuid);
-  }
+  auto content_uuids =
+      base::ToVector(associated_content_manager_->GetAssociatedContent(),
+                     &mojom::AssociatedContent::uuid);
   associated_content_manager_->GetScreenshotsOfContent(
       content_uuids,
       base::BindOnce(

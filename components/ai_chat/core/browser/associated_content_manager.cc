@@ -18,6 +18,7 @@
 #include "base/barrier_callback.h"
 #include "base/barrier_closure.h"
 #include "base/check.h"
+#include "base/containers/to_vector.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_forward.h"
 #include "base/logging.h"
@@ -630,10 +631,7 @@ void AssociatedContentManager::GetScreenshotsOfContent(
   // so they keep the content order whichever content answers first.
   using IndexedScreenshots =
       std::pair<size_t, std::optional<std::vector<mojom::UploadedFilePtr>>>;
-  std::vector<std::string> uuids;
-  for (auto* delegate : delegates) {
-    uuids.push_back(delegate->uuid());
-  }
+  auto uuids = base::ToVector(delegates, &AssociatedContentDelegate::uuid);
   auto barrier = base::BarrierCallback<IndexedScreenshots>(
       delegates.size(),
       base::BindOnce(
