@@ -115,6 +115,12 @@ The `BraveEndpoint<>` template simplifies defining endpoints for Brave services.
 It uses `brave_domains::GetServicesDomain()` under the hood to automatically
 resolve the service domain to the correct environment.
 
+Non-official builds resolve to staging, so that local testing never writes to
+production. Official builds always resolve to production. Either way, the
+environment can be overridden per service domain prefix with
+`--env-<prefix>={dev,staging,prod}`, or globally with
+`--brave-services-env={dev,staging,prod}`.
+
 For non-Brave services, you can define an endpoint manually:
 
 ```cpp
