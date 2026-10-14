@@ -56,6 +56,8 @@ source_set("location_bar") {
     "//ui/gfx",
     "//ui/views",
   ]
+
+  public_deps = [ "//brave/components/playlist/core/common/buildflags" ]
 }
 
 source_set("browser_tests") {
