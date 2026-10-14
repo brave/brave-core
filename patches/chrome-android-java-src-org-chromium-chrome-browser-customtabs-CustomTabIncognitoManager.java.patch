@@ -1,0 +1,13 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/customtabs/CustomTabIncognitoManager.java b/chrome/android/java/src/org/chromium/chrome/browser/customtabs/CustomTabIncognitoManager.java
+index 572835b62a4afe93f606275870dd938d21890e63..53ba3edbfad154221b33f8fdbbe84a3990f32517 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/customtabs/CustomTabIncognitoManager.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/customtabs/CustomTabIncognitoManager.java
+@@ -101,7 +101,7 @@ public class CustomTabIncognitoManager implements NativeInitObserver, DestroyObs
+ 
+     private void maybeCreateIncognitoTabSnapshotController() {
+         if (!ChromeFeatureList.sEnableAndroidEnterpriseScreenshotProtection.isEnabled()) {
+-            new IncognitoCustomTabSnapshotController(
++            new BraveIncognitoCustomTabSnapshotController(
+                     mActivity, () -> mIntentDataProvider.getCustomTabMode() == INCOGNITO);
+         }
+     }

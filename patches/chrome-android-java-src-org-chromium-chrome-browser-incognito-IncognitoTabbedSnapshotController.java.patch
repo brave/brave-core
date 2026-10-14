@@ -1,0 +1,13 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/incognito/IncognitoTabbedSnapshotController.java b/chrome/android/java/src/org/chromium/chrome/browser/incognito/IncognitoTabbedSnapshotController.java
+index 24e4536cdf9941af73c17d2291a44d9939682af1..0c4d43274da5489dfc4242c93989b95116324d31 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/incognito/IncognitoTabbedSnapshotController.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/incognito/IncognitoTabbedSnapshotController.java
+@@ -52,7 +52,7 @@ public class IncognitoTabbedSnapshotController extends IncognitoSnapshotControll
+         Supplier<Boolean> isShowingIncognitoSupplier =
+                 getIsShowingIncognitoSupplier(tabModelSelector);
+ 
+-        new IncognitoTabbedSnapshotController(
++        new BraveIncognitoTabbedSnapshotController(
+                 activity,
+                 layoutManager,
+                 tabModelSelector,
