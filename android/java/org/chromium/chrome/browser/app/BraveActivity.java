@@ -250,6 +250,7 @@ import org.chromium.mojo.system.MojoException;
 import org.chromium.ui.widget.Toast;
 import org.chromium.url.GURL;
 
+import java.util.ArrayDeque;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -322,6 +323,15 @@ public abstract class BraveActivity extends ChromeActivity
             Arrays.asList("AM", "AZ", "BY", "KG", "KZ", "MD", "RU", "TJ", "TM", "UZ");
 
     private static final int PIP_UPDATE_DELAY_MS = 500;
+
+    // The DApps panels this window has open, the most recently opened first. The providers ask for
+    // a panel once per request they queue (see EthereumProviderImpl::SignMessageInternal), which
+    // focuses the single panel on desktop but would start a second activity here. Panels of
+    // different kinds open on top of each other and only the top one can be closed, so they close
+    // in reverse order, and Android delivers a result however a panel closes.
+    private final ArrayDeque<BraveWalletDAppsActivity.ActivityType> mOpenDAppsPanels =
+            new ArrayDeque<>();
+
     private boolean mIsVerification;
     public boolean mIsDeepLink;
     private BraveWalletService mBraveWalletService;
@@ -1948,18 +1958,23 @@ public abstract class BraveActivity extends ChromeActivity
 
     public void openBraveWalletDAppsActivity(
             final BraveWalletDAppsActivity.ActivityType activityType) {
-        final DappsModel dappsModel = mWalletModel == null ? null : mWalletModel.getDappsModel();
-        if (dappsModel != null) {
-            if (dappsModel.isPanelLaunched(activityType)) {
-                // A panel of this type is already on its way, so it will pick up the new request
-                // from the queue itself.
-                // Starting another one leaves a stale panel behind the live one.
-                return;
-            }
-            dappsModel.setLaunchedPanel(activityType);
+        final BraveWalletDAppsActivity.ActivityType panel = getDAppsPanelKey(activityType);
+        if (mOpenDAppsPanels.contains(panel)) {
+            // The open panel reads the pending requests itself, so it covers this one too.
+            return;
         }
+        mOpenDAppsPanels.push(panel);
         final Intent braveWalletIntent = BraveWalletDAppsActivity.getIntent(this, activityType);
-        startActivity(braveWalletIntent);
+        startActivityForResult(braveWalletIntent, BraveConstants.DAPPS_PANEL_REQUEST_CODE);
+    }
+
+    /** Returns the key DApps panels of {@code activityType} are recorded under. */
+    private static BraveWalletDAppsActivity.ActivityType getDAppsPanelKey(
+            final BraveWalletDAppsActivity.ActivityType activityType) {
+        // The two sign panels hand requests over to each other, so one covers both.
+        return activityType == BraveWalletDAppsActivity.ActivityType.SIWE_MESSAGE
+                ? BraveWalletDAppsActivity.ActivityType.SIGN_MESSAGE
+                : activityType;
     }
 
     public MiscAndroidMetrics getMiscAndroidMetrics() {
@@ -2574,7 +2589,10 @@ public abstract class BraveActivity extends ChromeActivity
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == RESULT_OK
+        if (requestCode == BraveConstants.DAPPS_PANEL_REQUEST_CODE) {
+            // Only the top panel can be closed, so the result is for the last one opened.
+            mOpenDAppsPanels.poll();
+        } else if (resultCode == RESULT_OK
                 && (requestCode == BraveConstants.VERIFY_WALLET_ACTIVITY_REQUEST_CODE
                         || requestCode == BraveConstants.USER_WALLET_ACTIVITY_REQUEST_CODE
                         || requestCode == BraveConstants.SITE_BANNER_REQUEST_CODE)) {

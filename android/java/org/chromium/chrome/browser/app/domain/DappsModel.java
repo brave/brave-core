@@ -20,7 +20,6 @@ import org.chromium.brave_wallet.mojom.SignSolTransactionsRequest;
 import org.chromium.brave_wallet.mojom.SolanaSignature;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TransactionStatus;
-import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletDAppsActivity.ActivityType;
 import org.chromium.chrome.browser.crypto_wallet.model.WalletAccountCreationRequest;
 import org.chromium.chrome.browser.crypto_wallet.util.PendingTxHelper;
@@ -63,14 +62,6 @@ public class DappsModel implements KeyringServiceObserver {
     public final LiveData<Boolean> mWalletIconNotificationVisible =
             mMutableWalletIconNotificationVisible;
     public final LiveData<ActivityType> mProcessNextDAppsRequest = mMutableProcessNextDAppsRequest;
-
-    // The providers ask for a panel once per request they queue (see
-    // EthereumProviderImpl::SignMessageInternal), which focuses the single panel on desktop but
-    // starts an activity on Android. The launched panel is remembered here so the second ask does
-    // not stack a duplicate. It is recorded when the panel is launched rather than discovered by
-    // looking for a running activity, because the asks arrive milliseconds apart, before the first
-    // activity exists.
-    @Nullable private ActivityType mLaunchedPanel;
 
     public DappsModel(
             JsonRpcService jsonRpcService,
@@ -147,18 +138,7 @@ public class DappsModel implements KeyringServiceObserver {
     }
 
     public void clearDappsState() {
-        mLaunchedPanel = null;
         mMutableProcessNextDAppsRequest.postValue(null);
-    }
-
-    /** Records that a DApps panel of {@code activityType} has been launched. */
-    public void setLaunchedPanel(final ActivityType activityType) {
-        mLaunchedPanel = activityType;
-    }
-
-    /** Returns whether a DApps panel of {@code activityType} is launched and not closed yet. */
-    public boolean isPanelLaunched(final ActivityType activityType) {
-        return mLaunchedPanel == activityType;
     }
 
     public void processPublicEncryptionKey(String requestId, boolean isApproved) {
