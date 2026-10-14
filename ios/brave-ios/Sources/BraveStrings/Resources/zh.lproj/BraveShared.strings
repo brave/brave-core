@@ -121,6 +121,18 @@
 /* Settings autofill section title */
 "autofill.settings.title" = "自动填充";
 
+/* A subtitle that appears in the dynamic island when a download is continuing while Brave is backgrounded. The %@'s are replaced with the current downloaded amount (e.g. '20MB') */
+"backgroundDownloadingSubtitle" = "%@";
+
+/* A subtitle that appears in the dynamic island when a download is continuing while Brave is backgrounded. The %@'s are replaced with a progress and a file size. E.g. '1MB of 20MB' */
+"backgroundDownloadingSubtitleWithExpectedSize" = "%1$@，共 %2$@";
+
+/* A title that appears in the dynamic island when a download is continuing while Brave is backgrounded. %lld is replaced with the number of active downloads */
+"backgroundDownloadingTitleMultiDownload" = "正在下载 %lld 个文件";
+
+/* A title that appears in the dynamic island when a download is continuing while Brave is backgrounded. %@ is replaced with a file name */
+"backgroundDownloadingTitleSingleDownload" = "正在下载 \"%@\"";
+
 /* cookie settings option */
 "Block3rdPartyCookies" = "拦截第三方 cookies";
 
@@ -1774,6 +1786,18 @@
 /* Accessibility text for an icon button which will go back to the previous page in QuickView mode. */
 "quickview.back.accessibility.label" = "上一页";
 
+/* Button title to keep opening links in QuickView after the confirmation alert. */
+"quickview.confirmation.alert.keep.button.title" = "继续使用 QuickView";
+
+/* Message of the alert shown the first time a user closes QuickView, explaining the feature and where to change it. */
+"quickview.confirmation.alert.message" = "QuickView 让您无需离开当前页面即可预览链接。您可以随时在设置中关闭此功能。";
+
+/* Title of the alert shown the first time a user closes QuickView, asking if they want to keep using it for future links. */
+"quickview.confirmation.alert.title" = "继续在 Quick View 中打开对话链接吗？";
+
+/* Button title to stop opening links in QuickView after the confirmation alert. */
+"quickview.confirmation.alert.turnOff.button.title" = "关闭";
+
 /* Accessibility text for an icon button which will go forward to the next page in QuickView mode. */
 "quickview.forward.accessibility.label" = "下一页";
 
@@ -2299,8 +2323,8 @@
 /* Used as a button label for crash dialog prompt */
 "SendReportButtonTitle" = "发送报告";
 
-/* No comment provided by engineer. */
-"setDefaultBrowserCalloutTitle" = "現在能夠在 iOS 將 Brave 設定為預設瀏覽器。請點選此處以開啟設定。";
+/* A callout that explains how to set Brave as the default browser. This is a markdown string, the ** is for bold. */
+"setDefaultBrowserCalloutTitle" = "**将 Brave 设为默认浏览器，并在您访问的每个网站上拦截广告。**点击此处打开设置，并将 Brave 设为默认浏览器。";
 
 /* Settings item to set the Brave as a default browser on the iOS device. */
 "setDefaultBrowserSettingsCell" = "設定為預設瀏覽器";
@@ -2380,8 +2404,8 @@
 /* Title to explain the daily usage ping toggle */
 "settings.sendUsagePingTitle" = "自动向 Brave 发送每日使用 ping";
 
-/* Description under the settings toggle that enables Sponsored Ads */
-"settings.sponsoredAdsEnabledDescription" = "通过赞助广告帮助支持 Brave 构建独立、以用户为先的网络的使命。我们以私密方式衡量广告效果，不会识别您的身份。";
+/* Markdown formatted description under the settings toggle that enables Sponsored Ads. %@ is replaced by a URL and should not be localized. */
+"settings.sponsoredAdsEnabledDescription" = "通过赞助广告帮助支持 Brave 构建独立、以用户为先的网络的使命。我们以私密方式衡量广告效果，不会识别您的身份。[了解更多](%@)";
 
 /* Title of the settings toggle that enables Sponsored Ads */
 "settings.sponsoredAdsEnabledTitle" = "启用赞助广告";

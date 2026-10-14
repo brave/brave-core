@@ -121,6 +121,18 @@
 /* Settings autofill section title */
 "autofill.settings.title" = "Saisie automatique";
 
+/* A subtitle that appears in the dynamic island when a download is continuing while Brave is backgrounded. The %@'s are replaced with the current downloaded amount (e.g. '20MB') */
+"backgroundDownloadingSubtitle" = "%@";
+
+/* A subtitle that appears in the dynamic island when a download is continuing while Brave is backgrounded. The %@'s are replaced with a progress and a file size. E.g. '1MB of 20MB' */
+"backgroundDownloadingSubtitleWithExpectedSize" = "%1$@ de %2$@";
+
+/* A title that appears in the dynamic island when a download is continuing while Brave is backgrounded. %lld is replaced with the number of active downloads */
+"backgroundDownloadingTitleMultiDownload" = "Téléchargement de %lld fichiers";
+
+/* A title that appears in the dynamic island when a download is continuing while Brave is backgrounded. %@ is replaced with a file name */
+"backgroundDownloadingTitleSingleDownload" = "Téléchargement de « %@ »";
+
 /* cookie settings option */
 "Block3rdPartyCookies" = "Bloquer les cookies tiers";
 
@@ -1774,6 +1786,18 @@
 /* Accessibility text for an icon button which will go back to the previous page in QuickView mode. */
 "quickview.back.accessibility.label" = "Page précédente";
 
+/* Button title to keep opening links in QuickView after the confirmation alert. */
+"quickview.confirmation.alert.keep.button.title" = "Continuer à utiliser QuickView";
+
+/* Message of the alert shown the first time a user closes QuickView, explaining the feature and where to change it. */
+"quickview.confirmation.alert.message" = "QuickView vous permet de prévisualiser des liens sans quitter votre page. Vous pouvez désactiver cette option à tout moment dans les Paramètres.";
+
+/* Title of the alert shown the first time a user closes QuickView, asking if they want to keep using it for future links. */
+"quickview.confirmation.alert.title" = "Continuer à ouvrir les liens de conversation dans l'aperçu rapide ?";
+
+/* Button title to stop opening links in QuickView after the confirmation alert. */
+"quickview.confirmation.alert.turnOff.button.title" = "Désactiver";
+
 /* Accessibility text for an icon button which will go forward to the next page in QuickView mode. */
 "quickview.forward.accessibility.label" = "Page suivante";
 
@@ -2299,8 +2323,8 @@
 /* Used as a button label for crash dialog prompt */
 "SendReportButtonTitle" = "Envoyer le rapport";
 
-/* No comment provided by engineer. */
-"setDefaultBrowserCalloutTitle" = "Brave peut maintenant être défini comme votre navigateur par défaut dans iOS. Appuyez ici pour ouvrir les paramètres.";
+/* A callout that explains how to set Brave as the default browser. This is a markdown string, the ** is for bold. */
+"setDefaultBrowserCalloutTitle" = "**Définissez Brave comme votre navigateur par défaut et bloquez les publicités sur tous les sites que vous visitez.** Appuyez ici pour ouvrir les Paramètres et définir Brave comme navigateur par défaut.";
 
 /* Settings item to set the Brave as a default browser on the iOS device. */
 "setDefaultBrowserSettingsCell" = "Définir comme navigateur par défaut";
@@ -2380,8 +2404,8 @@
 /* Title to explain the daily usage ping toggle */
 "settings.sendUsagePingTitle" = "Envoyer automatiquement un signal d’utilisation quotidienne à Brave";
 
-/* Description under the settings toggle that enables Sponsored Ads */
-"settings.sponsoredAdsEnabledDescription" = "Aidez à soutenir la mission de Brave de créer un Web indépendant et axé sur l'utilisateur grâce aux Sponsored Ads. Nous mesurons les performances des publicités de manière privée, sans vous identifier.";
+/* Markdown formatted description under the settings toggle that enables Sponsored Ads. %@ is replaced by a URL and should not be localized. */
+"settings.sponsoredAdsEnabledDescription" = "Aidez à soutenir la mission de Brave de créer un Web indépendant et axé sur l'utilisateur grâce aux Sponsored Ads. Nous mesurons les performances des publicités de manière privée, sans vous identifier. [En savoir plus](%@)";
 
 /* Title of the settings toggle that enables Sponsored Ads */
 "settings.sponsoredAdsEnabledTitle" = "Activer les Sponsored Ads";

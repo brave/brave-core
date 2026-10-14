@@ -97,7 +97,7 @@
 /* Title for the brave player info popup which appears when clicking on the brave player icon on the navigation bar. */
 "BravePlayerInfoTitle" = "ดูใน Brave Player แทน";
 
-/* No comment provided by engineer. */
+/* The label above / exposing the advanced controls on the Shields panel. */
 "BraveShieldsAdvancedControls" = "การควบคุมขั้นสูง";
 
 /* The number of ads and trackers blocked will be next to this */
@@ -159,6 +159,9 @@
 
 /* An error message telling the user that they crossed the line limit */
 "CustomFiltersTooManyLinesError" = "ตัวกรองแบบกำหนดเองไม่รองรับ URL ที่มากกว่า %i บรรทัด";
+
+/* An error message telling the user that the custom scriptlet failed to save to disk */
+"customScriptletFailedToSaveError" = "ไม่สามารถบันทึกสคริปต์ย่อยที่กำหนดเองได้";
 
 /* Data Saved Shield Stat */
 "DataSavedStat" = "บันทึก\nข้อมูลโดยประมาณแล้ว";
@@ -286,6 +289,9 @@
 /* Used to describe when a request was blocked by the Content Blocker in Blocked Requests view. */
 "shields.contentBlocker" = "ตัวบล็อกเนื้อหา";
 
+/* A button title displayed on Shields panel linking to Webcompat Reporter. */
+"shields.reportBrokenSiteButtonTitle" = "รายงาน";
+
 /* Used to describe when a request was blocked by our request blocking scripts in Blocked Requests view. */
 "shields.requestBlocking" = "การบล็อกคำขอ";
 
@@ -294,6 +300,15 @@
 
 /* A label displayed above the resource type of a request that was blocked in Blocked Requests view. */
 "shields.resourceTypeLabel" = "ประเภทแหล่งข้อมูล";
+
+/* A label displayed on Shields panel beside the toggle enabling shields. */
+"shields.shieldsDownForSite" = "Shields **ปิด** สำหรับเว็บไซต์นี้";
+
+/* A button title displayed on Shields panel linking to Shields global settings. */
+"shields.shieldsGlobalSettings" = "การตั้งค่า Shields ส่วนกลาง";
+
+/* A label displayed on Shields panel beside the toggle disabling shields. */
+"shields.shieldsUpForSite" = "Shields **เปิด** สำหรับเว็บไซต์นี้";
 
 /* A description beside a toggle that appears in the Shred settings screen, within Shields & Privacy settings. */
 "shields.shredHistoryRowDescription" = "หากต้องการให้ Shred ลบรายการประวัติ";
@@ -310,8 +325,17 @@
 /* A title for the Shred settings screen, within Shields & Privacy settings. */
 "shields.shredSettingsViewTitle" = "ย่อยข้อมูล";
 
+/* A footer displayed on Shields panel when shields are down. */
+"shields.siteNotWorkingCorrectly" = "เว็บไซต์นี้ทำงานไม่ถูกต้องเมื่อ Shields เปิดอยู่หรือไม่";
+
+/* A label displayed on Shields panel at the bottom. Learn more link is clickable, where `%@` will be replaced with the URL. */
+"shields.siteSeemsBroken" = "หากเว็บไซต์นี้ดูเหมือนมีปัญหา ลองปิด Shields ดู การทำเช่นนี้อาจลดการปกป้องความเป็นส่วนตัวของ Brave [เรียนรู้เพิ่มเติม](%@)";
+
 /* A label displayed above the source url of a request that was blocked in Blocked Requests view. */
 "shields.sourceURLLabel" = "URL แหล่งที่มา";
+
+/* A label displayed on Shields panel beside the number of blocked items. */
+"shields.trackersAdsAndMoreBlocked" = "ตัวติดตาม โฆษณา และอื่นๆ ถูกบล็อก";
 
 /* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
 "ShieldsDefaults" = "ค่าเริ่มต้นทั่วไปของ Brave Shields";

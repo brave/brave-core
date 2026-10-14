@@ -121,6 +121,18 @@
 /* Settings autofill section title */
 "autofill.settings.title" = "Автозаполнение";
 
+/* A subtitle that appears in the dynamic island when a download is continuing while Brave is backgrounded. The %@'s are replaced with the current downloaded amount (e.g. '20MB') */
+"backgroundDownloadingSubtitle" = "%@";
+
+/* A subtitle that appears in the dynamic island when a download is continuing while Brave is backgrounded. The %@'s are replaced with a progress and a file size. E.g. '1MB of 20MB' */
+"backgroundDownloadingSubtitleWithExpectedSize" = "%1$@ из %2$@";
+
+/* A title that appears in the dynamic island when a download is continuing while Brave is backgrounded. %lld is replaced with the number of active downloads */
+"backgroundDownloadingTitleMultiDownload" = "Скачивание %lld файлов";
+
+/* A title that appears in the dynamic island when a download is continuing while Brave is backgrounded. %@ is replaced with a file name */
+"backgroundDownloadingTitleSingleDownload" = "Скачивается «%@»";
+
 /* cookie settings option */
 "Block3rdPartyCookies" = "Блокировать сторонние файлы cookie";
 
@@ -1774,6 +1786,18 @@
 /* Accessibility text for an icon button which will go back to the previous page in QuickView mode. */
 "quickview.back.accessibility.label" = "Предыдущая страница";
 
+/* Button title to keep opening links in QuickView after the confirmation alert. */
+"quickview.confirmation.alert.keep.button.title" = "Продолжить использовать QuickView";
+
+/* Message of the alert shown the first time a user closes QuickView, explaining the feature and where to change it. */
+"quickview.confirmation.alert.message" = "QuickView позволяет просматривать ссылки, не покидая страницу. Вы можете отключить это в любое время в настройках.";
+
+/* Title of the alert shown the first time a user closes QuickView, asking if they want to keep using it for future links. */
+"quickview.confirmation.alert.title" = "Продолжить открывать ссылки из бесед в режиме быстрого просмотра?";
+
+/* Button title to stop opening links in QuickView after the confirmation alert. */
+"quickview.confirmation.alert.turnOff.button.title" = "Отключить";
+
 /* Accessibility text for an icon button which will go forward to the next page in QuickView mode. */
 "quickview.forward.accessibility.label" = "Следующая страница";
 
@@ -2299,8 +2323,8 @@
 /* Used as a button label for crash dialog prompt */
 "SendReportButtonTitle" = "Отправить отчет";
 
-/* No comment provided by engineer. */
-"setDefaultBrowserCalloutTitle" = "Теперь можно установить Brave в качестве браузера по умолчанию для iOS. Нажмите, чтобы открыть настройки.";
+/* A callout that explains how to set Brave as the default browser. This is a markdown string, the ** is for bold. */
+"setDefaultBrowserCalloutTitle" = "**Установите Brave в качестве браузера по умолчанию и блокируйте рекламу на каждом посещаемом сайте.** Нажмите здесь, чтобы открыть настройки и установить Brave по умолчанию.";
 
 /* Settings item to set the Brave as a default browser on the iOS device. */
 "setDefaultBrowserSettingsCell" = "Установить в качестве браузера по умолчанию";
@@ -2380,8 +2404,8 @@
 /* Title to explain the daily usage ping toggle */
 "settings.sendUsagePingTitle" = "Автоматически отправлять ежедневные данные PING в Brave";
 
-/* Description under the settings toggle that enables Sponsored Ads */
-"settings.sponsoredAdsEnabledDescription" = "Помогите поддержать миссию Brave по созданию независимого, ориентированного на пользователя интернета с помощью спонсируемой рекламы. Мы измеряем эффективность рекламы конфиденциально, не идентифицируя вас.";
+/* Markdown formatted description under the settings toggle that enables Sponsored Ads. %@ is replaced by a URL and should not be localized. */
+"settings.sponsoredAdsEnabledDescription" = "Помогите поддержать миссию Brave по созданию независимого, ориентированного на пользователя интернета с помощью спонсируемой рекламы. Мы измеряем эффективность рекламы конфиденциально, не идентифицируя вас. [Подробнее](%@)";
 
 /* Title of the settings toggle that enables Sponsored Ads */
 "settings.sponsoredAdsEnabledTitle" = "Включить спонсируемую рекламу";

@@ -121,6 +121,18 @@
 /* Settings autofill section title */
 "autofill.settings.title" = "Automaattinen täyttö";
 
+/* A subtitle that appears in the dynamic island when a download is continuing while Brave is backgrounded. The %@'s are replaced with the current downloaded amount (e.g. '20MB') */
+"backgroundDownloadingSubtitle" = "%@";
+
+/* A subtitle that appears in the dynamic island when a download is continuing while Brave is backgrounded. The %@'s are replaced with a progress and a file size. E.g. '1MB of 20MB' */
+"backgroundDownloadingSubtitleWithExpectedSize" = "%1$@/%2$@";
+
+/* A title that appears in the dynamic island when a download is continuing while Brave is backgrounded. %lld is replaced with the number of active downloads */
+"backgroundDownloadingTitleMultiDownload" = "Ladataan %lld tiedostoa";
+
+/* A title that appears in the dynamic island when a download is continuing while Brave is backgrounded. %@ is replaced with a file name */
+"backgroundDownloadingTitleSingleDownload" = "Ladataan kohdetta \"%@\"";
+
 /* cookie settings option */
 "Block3rdPartyCookies" = "Estä kolmannen osapuolen evästeet";
 
@@ -1774,6 +1786,18 @@
 /* Accessibility text for an icon button which will go back to the previous page in QuickView mode. */
 "quickview.back.accessibility.label" = "Edellinen sivu";
 
+/* Button title to keep opening links in QuickView after the confirmation alert. */
+"quickview.confirmation.alert.keep.button.title" = "Jatka QuickView'n käyttöä";
+
+/* Message of the alert shown the first time a user closes QuickView, explaining the feature and where to change it. */
+"quickview.confirmation.alert.message" = "QuickView'n avulla voit esikatsella linkkejä poistumatta sivulta. Voit poistaa tämän käytöstä milloin tahansa asetuksista.";
+
+/* Title of the alert shown the first time a user closes QuickView, asking if they want to keep using it for future links. */
+"quickview.confirmation.alert.title" = "Avataanko keskustelulinkit jatkossakin Quick View'ssä?";
+
+/* Button title to stop opening links in QuickView after the confirmation alert. */
+"quickview.confirmation.alert.turnOff.button.title" = "Poista käytöstä";
+
 /* Accessibility text for an icon button which will go forward to the next page in QuickView mode. */
 "quickview.forward.accessibility.label" = "Seuraava sivu";
 
@@ -2299,8 +2323,8 @@
 /* Used as a button label for crash dialog prompt */
 "SendReportButtonTitle" = "Lähetä raportti";
 
-/* No comment provided by engineer. */
-"setDefaultBrowserCalloutTitle" = "Brave voidaan nyt asettaa oletusselaimeksi iOS-laitteissa. Avaa asetukset napauttamalla tätä.";
+/* A callout that explains how to set Brave as the default browser. This is a markdown string, the ** is for bold. */
+"setDefaultBrowserCalloutTitle" = "**Aseta Brave oletusselaimeksesi ja estä mainokset jokaisella vierailemallasi sivustolla.** Napauta tästä avataksesi asetukset ja asettaaksesi Braven oletukseksi.";
 
 /* Settings item to set the Brave as a default browser on the iOS device. */
 "setDefaultBrowserSettingsCell" = "Aseta oletusselaimeksi";
@@ -2380,8 +2404,8 @@
 /* Title to explain the daily usage ping toggle */
 "settings.sendUsagePingTitle" = "Lähetä automaattisesti päivittäinen käyttöping Bravelle";
 
-/* Description under the settings toggle that enables Sponsored Ads */
-"settings.sponsoredAdsEnabledDescription" = "Auta tukemaan Braven tehtävää rakentaa itsenäinen, käyttäjää ensisijaisesti palveleva verkko sponsoroiduilla mainoksilla. Mittaamme mainosten tehokkuutta yksityisesti tunnistamatta sinua.";
+/* Markdown formatted description under the settings toggle that enables Sponsored Ads. %@ is replaced by a URL and should not be localized. */
+"settings.sponsoredAdsEnabledDescription" = "Auta tukemaan Braven tehtävää rakentaa itsenäinen, käyttäjää ensisijaisesti palveleva verkko sponsoroiduilla mainoksilla. Mittaamme mainosten tehokkuutta yksityisesti tunnistamatta sinua. [Lue lisää](%@)";
 
 /* Title of the settings toggle that enables Sponsored Ads */
 "settings.sponsoredAdsEnabledTitle" = "Ota sponsoroidut mainokset käyttöön";

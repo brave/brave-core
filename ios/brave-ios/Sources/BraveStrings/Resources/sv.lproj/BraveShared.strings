@@ -121,6 +121,18 @@
 /* Settings autofill section title */
 "autofill.settings.title" = "Autofyll";
 
+/* A subtitle that appears in the dynamic island when a download is continuing while Brave is backgrounded. The %@'s are replaced with the current downloaded amount (e.g. '20MB') */
+"backgroundDownloadingSubtitle" = "%@";
+
+/* A subtitle that appears in the dynamic island when a download is continuing while Brave is backgrounded. The %@'s are replaced with a progress and a file size. E.g. '1MB of 20MB' */
+"backgroundDownloadingSubtitleWithExpectedSize" = "%1$@ av %2$@";
+
+/* A title that appears in the dynamic island when a download is continuing while Brave is backgrounded. %lld is replaced with the number of active downloads */
+"backgroundDownloadingTitleMultiDownload" = "Hämtar %lld filer";
+
+/* A title that appears in the dynamic island when a download is continuing while Brave is backgrounded. %@ is replaced with a file name */
+"backgroundDownloadingTitleSingleDownload" = "Laddar ned \"%@\"";
+
 /* cookie settings option */
 "Block3rdPartyCookies" = "Blockera cookies från 3:e part";
 
@@ -1774,6 +1786,18 @@
 /* Accessibility text for an icon button which will go back to the previous page in QuickView mode. */
 "quickview.back.accessibility.label" = "Föregående sida";
 
+/* Button title to keep opening links in QuickView after the confirmation alert. */
+"quickview.confirmation.alert.keep.button.title" = "Fortsätt använda QuickView";
+
+/* Message of the alert shown the first time a user closes QuickView, explaining the feature and where to change it. */
+"quickview.confirmation.alert.message" = "QuickView låter dig förhandsgranska länkar utan att lämna din sida. Du kan stänga av detta när som helst i Inställningar.";
+
+/* Title of the alert shown the first time a user closes QuickView, asking if they want to keep using it for future links. */
+"quickview.confirmation.alert.title" = "Vill du fortsätta öppna konversationslänkar i snabbvyn?";
+
+/* Button title to stop opening links in QuickView after the confirmation alert. */
+"quickview.confirmation.alert.turnOff.button.title" = "Inaktivera";
+
 /* Accessibility text for an icon button which will go forward to the next page in QuickView mode. */
 "quickview.forward.accessibility.label" = "Nästa sida";
 
@@ -2299,8 +2323,8 @@
 /* Used as a button label for crash dialog prompt */
 "SendReportButtonTitle" = "Skicka rapport";
 
-/* No comment provided by engineer. */
-"setDefaultBrowserCalloutTitle" = "Brave kan nu anges som din standardwebbläsare i iOS. Tryck här för att öppna inställningarna.";
+/* A callout that explains how to set Brave as the default browser. This is a markdown string, the ** is for bold. */
+"setDefaultBrowserCalloutTitle" = "**Ange Brave som din standardwebbläsare och blockera annonser på varje webbplats du besöker.** Tryck här för att öppna Inställningar och ange Brave som standard.";
 
 /* Settings item to set the Brave as a default browser on the iOS device. */
 "setDefaultBrowserSettingsCell" = "Ange som standardwebbläsare";
@@ -2380,8 +2404,8 @@
 /* Title to explain the daily usage ping toggle */
 "settings.sendUsagePingTitle" = "Skicka daglig användningsping till Brave automatiskt";
 
-/* Description under the settings toggle that enables Sponsored Ads */
-"settings.sponsoredAdsEnabledDescription" = "Hjälp till att stödja Braves uppdrag att bygga en oberoende, användarfokuserad webb med Sponsrade annonser. Vi mäter annonsprestanda privat, utan att identifiera dig.";
+/* Markdown formatted description under the settings toggle that enables Sponsored Ads. %@ is replaced by a URL and should not be localized. */
+"settings.sponsoredAdsEnabledDescription" = "Hjälp till att stödja Braves uppdrag att bygga en oberoende, användarfokuserad webb med Sponsrade annonser. Vi mäter annonsprestanda privat, utan att identifiera dig. [Läs mer](%@)";
 
 /* Title of the settings toggle that enables Sponsored Ads */
 "settings.sponsoredAdsEnabledTitle" = "Aktivera Sponsrade annonser";

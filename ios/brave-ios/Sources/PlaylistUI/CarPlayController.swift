@@ -274,8 +274,10 @@ extension PlaylistFolder {
     let itemCount = playlistItems?.count ?? 0
     return .init(
       text: title ?? Strings.PlaylistFolders.playlistUntitledFolderTitle,
-      detailText:
-        "\(itemCount == 1 ? Strings.PlaylistFolders.playlistFolderSubtitleItemSingleCount : String.localizedStringWithFormat(Strings.PlaylistFolders.playlistFolderSubtitleItemCount, itemCount))",
+      detailText: String.localizedStringWithFormat(
+        Strings.PlaylistFolders.playlistFolderSubtitleItemCountFormat,
+        itemCount
+      ),
       image: nil,
       accessoryImage: nil,
       accessoryType: .disclosureIndicator

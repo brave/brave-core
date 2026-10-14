@@ -121,6 +121,18 @@
 /* Settings autofill section title */
 "autofill.settings.title" = "Tự động điền";
 
+/* A subtitle that appears in the dynamic island when a download is continuing while Brave is backgrounded. The %@'s are replaced with the current downloaded amount (e.g. '20MB') */
+"backgroundDownloadingSubtitle" = "%@";
+
+/* A subtitle that appears in the dynamic island when a download is continuing while Brave is backgrounded. The %@'s are replaced with a progress and a file size. E.g. '1MB of 20MB' */
+"backgroundDownloadingSubtitleWithExpectedSize" = "%1$@ trên tổng số %2$@";
+
+/* A title that appears in the dynamic island when a download is continuing while Brave is backgrounded. %lld is replaced with the number of active downloads */
+"backgroundDownloadingTitleMultiDownload" = "Đang tải %lld tệp";
+
+/* A title that appears in the dynamic island when a download is continuing while Brave is backgrounded. %@ is replaced with a file name */
+"backgroundDownloadingTitleSingleDownload" = "Đang tải xuống \"%@\"";
+
 /* cookie settings option */
 "Block3rdPartyCookies" = "Chặn cookie của bên thứ 3";
 
@@ -1774,6 +1786,18 @@
 /* Accessibility text for an icon button which will go back to the previous page in QuickView mode. */
 "quickview.back.accessibility.label" = "Trang trước";
 
+/* Button title to keep opening links in QuickView after the confirmation alert. */
+"quickview.confirmation.alert.keep.button.title" = "Tiếp tục dùng QuickView";
+
+/* Message of the alert shown the first time a user closes QuickView, explaining the feature and where to change it. */
+"quickview.confirmation.alert.message" = "QuickView cho phép bạn xem trước các liên kết mà không cần rời khỏi trang. Bạn có thể tắt tính năng này bất cứ lúc nào trong Cài đặt.";
+
+/* Title of the alert shown the first time a user closes QuickView, asking if they want to keep using it for future links. */
+"quickview.confirmation.alert.title" = "Tiếp tục mở các liên kết cuộc trò chuyện trong Quick View?";
+
+/* Button title to stop opening links in QuickView after the confirmation alert. */
+"quickview.confirmation.alert.turnOff.button.title" = "Tắt";
+
 /* Accessibility text for an icon button which will go forward to the next page in QuickView mode. */
 "quickview.forward.accessibility.label" = "Trang tiếp theo";
 
@@ -2299,8 +2323,8 @@
 /* Used as a button label for crash dialog prompt */
 "SendReportButtonTitle" = "Gửi báo cáo";
 
-/* No comment provided by engineer. */
-"setDefaultBrowserCalloutTitle" = "Brave hiện có thể được đặt làm trình duyệt mặc định của bạn trong iOS. Nhấn vào đây để mở cài đặt.";
+/* A callout that explains how to set Brave as the default browser. This is a markdown string, the ** is for bold. */
+"setDefaultBrowserCalloutTitle" = "**Đặt Brave làm trình duyệt mặc định của bạn và chặn quảng cáo trên mọi trang web bạn truy cập.** Nhấn vào đây để mở Cài đặt và đặt Brave làm mặc định.";
 
 /* Settings item to set the Brave as a default browser on the iOS device. */
 "setDefaultBrowserSettingsCell" = "Đặt làm Trình duyệt mặc định";
@@ -2380,8 +2404,8 @@
 /* Title to explain the daily usage ping toggle */
 "settings.sendUsagePingTitle" = "Tự động gửi ping sử dụng hằng ngày đến Brave";
 
-/* Description under the settings toggle that enables Sponsored Ads */
-"settings.sponsoredAdsEnabledDescription" = "Hãy giúp hỗ trợ sứ mệnh của Brave trong việc xây dựng một Web độc lập, ưu tiên người dùng bằng Quảng cáo được tài trợ. Chúng tôi đo lường hiệu suất quảng cáo một cách riêng tư, không nhận dạng bạn.";
+/* Markdown formatted description under the settings toggle that enables Sponsored Ads. %@ is replaced by a URL and should not be localized. */
+"settings.sponsoredAdsEnabledDescription" = "Hãy giúp hỗ trợ sứ mệnh của Brave trong việc xây dựng một Web độc lập, ưu tiên người dùng bằng Quảng cáo được tài trợ. Chúng tôi đo lường hiệu suất quảng cáo một cách riêng tư, không nhận dạng bạn. [Tìm hiểu thêm](%@)";
 
 /* Title of the settings toggle that enables Sponsored Ads */
 "settings.sponsoredAdsEnabledTitle" = "Bật Quảng cáo được tài trợ";
