@@ -88,3 +88,11 @@ export const NEMO_DECODER_LSTM_DIM: number = 640
 // word(s) can be dropped to right-context / emission lag. The silence frames
 // decode to RNN-T blanks, so the transcript is unaffected.
 export const SILENCE_FLUSH_CHUNKS: number = 3
+
+// Silence fed before the first real sample. The exported ONNX encoder graph
+// drops the first 2 time frames of its pre-encode output. This happens inside
+// the graph, not in our streaming code. It shifts the output grid off the
+// start of the audio, so a short word that begins within the first ~80 ms of
+// the stream can be lost, whatever the audio source. NVIDIA's Nemotron
+// streaming release notes recommend this same lead-in.
+export const LEADING_SILENCE_MS: number = 80
