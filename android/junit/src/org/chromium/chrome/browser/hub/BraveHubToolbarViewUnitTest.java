@@ -16,6 +16,7 @@ import static org.chromium.chrome.browser.hub.HubToolbarProperties.PANE_SWITCHER
 
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 
@@ -32,6 +33,7 @@ import org.robolectric.annotation.Config;
 
 import org.chromium.base.BaseSwitches;
 import org.chromium.base.BraveFeatureList;
+import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.supplier.ObservableSuppliers;
 import org.chromium.base.supplier.SettableMonotonicObservableSupplier;
 import org.chromium.base.test.BaseRobolectricTestRunner;
@@ -41,9 +43,11 @@ import org.chromium.base.test.util.Features.EnableFeatures;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.app.tabwindow.TabWindowManagerSingleton;
 import org.chromium.chrome.browser.brave_shields.FirstPartyStorageCleanerInterface;
 import org.chromium.chrome.browser.flags.ChromeSwitches;
 import org.chromium.chrome.browser.multiwindow.BraveMultiWindowTestUtils;
+import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.ui.actions.button.FullButtonData;
 import org.chromium.ui.modelutil.PropertyModel;
 import org.chromium.ui.modelutil.PropertyModelChangeProcessor;
@@ -63,12 +67,15 @@ import java.util.List;
 @SuppressWarnings("DoNotMock")
 public class BraveHubToolbarViewUnitTest {
     // Other tests in the sandbox may reset the store; the activity launch reads from it.
+    // The TabWindowManager singleton outlives tests while its activity listeners don't, so
+    // selectors of destroyed activities pile up until a launch hits the max windows limit.
     @Rule(order = Rule.DEFAULT_ORDER - 1)
     public final ExternalResource mMultiInstanceStoreRule =
             new ExternalResource() {
                 @Override
                 protected void before() {
                     BraveMultiWindowTestUtils.ensureMultiInstanceStoreInitialized();
+                    TabWindowManagerSingleton.resetTabModelSelectorFactoryForTesting();
                 }
             };
 
@@ -132,6 +139,7 @@ public class BraveHubToolbarViewUnitTest {
     @EnableFeatures({BraveFeatureList.BRAVE_SHRED})
     public void testHideManualShredButtonInIncognitoMode() {
         when(mActivity.isShredButtonVisible()).thenReturn(true);
+        mHubToolbarView.onIncognitoReauthSuccess();
         assertEquals(View.VISIBLE, mShredButton.getVisibility());
 
         when(mActivity.isShredButtonVisible()).thenReturn(false);
@@ -147,7 +155,8 @@ public class BraveHubToolbarViewUnitTest {
     @DisableFeatures({BraveFeatureList.BRAVE_SHRED})
     public void testHideManualShredButtonIfFeatureFlagDisabled() {
         when(mActivity.isShredButtonVisible()).thenReturn(true);
-        assertEquals(View.VISIBLE, mShredButton.getVisibility());
+        mHubToolbarView.onIncognitoReauthSuccess();
+        assertEquals(View.INVISIBLE, mShredButton.getVisibility());
 
         when(mActivity.isShredButtonVisible()).thenReturn(false);
         mPropertyModel.set(IS_INCOGNITO, true);
@@ -174,5 +183,27 @@ public class BraveHubToolbarViewUnitTest {
 
         mPropertyModel.set(PANE_SWITCHER_BUTTON_DATA, null);
         assertEquals(View.GONE, paneSwitcherCard.getVisibility());
+    }
+
+    @Test
+    @DisableFeatures({BraveFeatureList.BRAVE_SHRED})
+    public void testButtonsVisibilityRefreshedOnAttach() {
+        View actionButton = mToolbarContainer.findViewById(R.id.toolbar_action_button);
+        View menuButton = mToolbarContainer.findViewById(R.id.menu_button_wrapper);
+        ViewGroup parent = (ViewGroup) mToolbarContainer.getParent();
+        parent.removeView(mToolbarContainer);
+
+        // Built while detached, with the menu not in the bottom controls.
+        ChromeSharedPreferences.getInstance()
+                .writeBoolean(BravePreferenceKeys.BRAVE_IS_MENU_FROM_BOTTOM, false);
+        mPropertyModel.set(IS_INCOGNITO, true);
+        assertEquals(View.VISIBLE, actionButton.getVisibility());
+        assertEquals(View.VISIBLE, menuButton.getVisibility());
+
+        ChromeSharedPreferences.getInstance()
+                .writeBoolean(BravePreferenceKeys.BRAVE_IS_MENU_FROM_BOTTOM, true);
+        parent.addView(mToolbarContainer);
+        assertEquals(View.GONE, actionButton.getVisibility());
+        assertEquals(View.GONE, menuButton.getVisibility());
     }
 }
