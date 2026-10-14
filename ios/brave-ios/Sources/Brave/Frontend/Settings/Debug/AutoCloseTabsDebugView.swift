@@ -26,7 +26,7 @@ struct AutoCloseTabsDebugView: View {
         }
       } footer: {
         Text(
-          "Overrides the interval of the selected Auto Close Tabs setting. Leave empty to use the selected interval. Auto Close Tabs must not be set to Manually."
+          "Overrides the interval of the selected Auto Close Tabs setting. Leave empty to use the selected interval."
         )
       }
     }
