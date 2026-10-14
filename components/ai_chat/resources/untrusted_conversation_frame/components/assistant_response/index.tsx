@@ -10,6 +10,7 @@ import MarkdownRenderer from '../markdown_renderer'
 import ToolEvent from './tool_event'
 import WebSourcesEvent from './web_sources_event'
 import MemoryToolEvent from './memory_tool_event'
+import MemoriesSentEvent from './memories_sent_event'
 import Chart from './chart'
 import ConversationSearchCards from './conversation_search_cards'
 import DeepResearchEvent from './deep_research_event'
@@ -119,6 +120,10 @@ function AssistantEvent(
         isExecuting={context.isToolExecuting}
       />
     )
+  }
+
+  if (props.event.memoriesSentEvent) {
+    return <MemoriesSentEvent event={props.event.memoriesSentEvent} />
   }
 
   // Unknown events should be ignored

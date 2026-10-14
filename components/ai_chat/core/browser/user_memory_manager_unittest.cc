@@ -747,6 +747,43 @@ TEST_F(UserMemoryManagerTurnTest, RelevantMemoriesGoWithTheirDate) {
   EXPECT_EQ(client_->relevance_requests[0].memories.front(), "Is vegetarian.");
 }
 
+TEST_F(UserMemoryManagerTurnTest, TheChatGetsTheTextAndTheDateOfEachMemory) {
+  const base::Time mentioned = base::Time::FromSecondsSinceUnixEpoch(2000000);
+  const base::Time created = base::Time::FromSecondsSinceUnixEpoch(1000000);
+  auto write = [&](const std::string& text, LearnedMemoryType type,
+                   base::Time created_date, base::Time updated_date) {
+    LearnedMemory memory;
+    memory.uuid = "old-" + text;
+    memory.text = text;
+    memory.type = type;
+    memory.created_date = created_date;
+    memory.updated_date = updated_date;
+    memory.links = {{"old-chat", "old-entry", 0}};
+    base::test::TestFuture<bool> future;
+    db_.AsyncCall(&AIChatDatabase::AddOrUpdateLearnedMemory)
+        .WithArgs(memory)
+        .Then(future.GetCallback());
+    ASSERT_TRUE(future.Get());
+  };
+  write("Is vegetarian.", LearnedMemoryType::kLongTerm, created, mentioned);
+  // Without a date of the last mention, the date of the memory counts.
+  write("Allergic to nuts.", LearnedMemoryType::kPermanent, created,
+        base::Time());
+  client_->relevance = {{"Is vegetarian.", 0.9}, {"Writes TypeScript.", 0.1}};
+
+  EngineConsumer::LearnedMemories memories =
+      GetMemoriesForTurn({"Suggest a dinner."});
+
+  ASSERT_EQ(memories.permanent_info.size(), 1u);
+  EXPECT_EQ(memories.permanent_info[0].text, "Allergic to nuts.");
+  EXPECT_EQ(memories.permanent_info[0].date, created);
+  ASSERT_EQ(memories.relevant_info.size(), 1u);
+  EXPECT_EQ(memories.relevant_info[0].text, "Is vegetarian.");
+  EXPECT_EQ(memories.relevant_info[0].date, mentioned);
+  // The model gets the date in the text, the chat gets it apart.
+  EXPECT_THAT(memories.relevant, ElementsAre("Is vegetarian. (1970-01-24)"));
+}
+
 TEST_F(UserMemoryManagerTurnTest, TheMemoriesThatGoToTheModelAreUsed) {
   client_->relevance = {{"Is vegetarian.", 0.9}, {"Writes TypeScript.", 0.1}};
 

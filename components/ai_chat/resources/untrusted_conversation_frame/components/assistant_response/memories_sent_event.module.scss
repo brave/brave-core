@@ -1,0 +1,72 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+.memoriesSent {
+  animation: var(--reveal-animation);
+  margin-bottom: var(--leo-spacing-xl);
+
+  // Only the padding of Nala's Collapse changes, through its own variables, so
+  // that it fits the density of a chat.
+  --leo-collapse-summary-padding: var(--leo-spacing-m) var(--leo-spacing-l);
+  --leo-collapse-content-padding: var(--leo-spacing-s) var(--leo-spacing-l)
+    var(--leo-spacing-l) var(--leo-spacing-l);
+  --leo-collapse-icon-size: var(--leo-icon-s);
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}
+
+// The title is a label like those of the other steps of a reply, not a
+// heading. Its colour is left to the Collapse, which changes it on hover.
+.title {
+  font: var(--leo-font-small-semibold);
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--leo-spacing-l);
+  font: var(--leo-font-small-regular);
+  color: var(--leo-color-text-secondary);
+  overflow-wrap: anywhere;
+
+  p,
+  h4,
+  ul {
+    margin: 0;
+  }
+
+  h4 {
+    margin-block-end: var(--leo-spacing-s);
+    font: var(--leo-font-small-semibold);
+    color: var(--leo-color-text-primary);
+  }
+
+  ul {
+    display: flex;
+    flex-direction: column;
+    gap: var(--leo-spacing-s);
+    padding-inline-start: var(--leo-spacing-2xl);
+    color: var(--leo-color-text-primary);
+  }
+}
+
+.date {
+  display: block;
+  font: var(--leo-font-x-small-regular);
+  color: var(--leo-color-text-tertiary);
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.manageButton {
+  // The frame lets a Nala Button grow in a row. This one keeps its own width,
+  // at the start of the line.
+  flex: none;
+}

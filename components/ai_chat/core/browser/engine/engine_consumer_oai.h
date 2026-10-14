@@ -72,8 +72,8 @@ class EngineConsumerOAIRemote : public EngineConsumer {
       const PageContentsMap& page_contents,
       const ConversationHistoryView& conversation_history,
       GenerationCompletedCallback completed_callback) override;
+  bool SendsMemoryBlock(bool is_temporary_chat) const override;
 #if BUILDFLAG(ENABLE_LOCAL_AI)
-  bool UsesLearnedMemories(bool is_temporary_chat) const override;
   void GenerateAssistantResponseWithMemories(
       LearnedMemories learned_memories,
       PageContentsMap&& page_contents,

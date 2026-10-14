@@ -12,6 +12,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/time/time.h"
 #include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
 #include "brave/components/ai_chat/core/browser/associated_content_manager.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
@@ -662,6 +663,116 @@ TEST_F(OAIMessageUtilsTest, BuildOAIMessages_Memory_Excluded) {
 
   // Verify no memory when exclude memory is true
   TestNoMemoryInMessages(FROM_HERE, &prefs_, true);
+}
+
+namespace {
+
+// The number of memories in a memory block: each string value counts one, and
+// each item of a list counts one.
+size_t CountMemoriesInBlock(const mojom::MemoryContentBlockPtr& block) {
+  size_t count = 0;
+  for (const auto& [key, value] : block->memory) {
+    count += value->is_string_value() ? 1 : value->get_list_value().size();
+  }
+  return count;
+}
+
+}  // namespace
+
+TEST_F(OAIMessageUtilsTest, BuildMemoriesSentEvent) {
+  prefs_.SetBoolean(prefs::kBraveAIChatUserCustomizationEnabled, true);
+  base::DictValue customizations;
+  customizations.Set("name", "John <b>Doe</b>");
+  customizations.Set("job", "Software Engineer");
+  customizations.Set("tone", "Direct");
+  customizations.Set("other", "Answer in short sentences");
+  prefs_.SetDict(prefs::kBraveAIChatUserCustomizations,
+                 std::move(customizations));
+  prefs_.SetBoolean(prefs::kBraveAIChatUserMemoryEnabled, true);
+  base::ListValue memories;
+  memories.Append("I prefer concise explanations");
+  memories.Append("I live in Berlin");
+  prefs_.SetList(prefs::kBraveAIChatUserMemories, std::move(memories));
+
+  const base::Time kept_date = base::Time::FromSecondsSinceUnixEpoch(1000000);
+  const base::Time mention_date =
+      base::Time::FromSecondsSinceUnixEpoch(2000000);
+  EngineConsumer::LearnedMemories learned;
+  learned.permanent_info.push_back({"Uses metric units", kept_date});
+  learned.relevant_info.push_back({"Moved to Italy", mention_date});
+  learned.relevant_info.push_back({"No date", base::Time()});
+
+  mojom::ConversationEntryEventPtr event =
+      BuildMemoriesSentEvent(&prefs_, learned);
+
+  ASSERT_TRUE(event);
+  ASSERT_TRUE(event->is_memories_sent_event());
+  const auto& sent = event->get_memories_sent_event()->memories;
+  ASSERT_EQ(sent.size(), 9u);
+  // The customization, then the memories that the user wrote, then the
+  // learned ones. The text is as the user wrote it: the model gets it escaped,
+  // the chat does not need that.
+  EXPECT_EQ(sent[0]->kind, mojom::SentMemoryKind::kName);
+  EXPECT_EQ(sent[0]->text, "John <b>Doe</b>");
+  EXPECT_EQ(sent[1]->kind, mojom::SentMemoryKind::kJob);
+  EXPECT_EQ(sent[2]->kind, mojom::SentMemoryKind::kTone);
+  EXPECT_EQ(sent[3]->kind, mojom::SentMemoryKind::kOtherInstructions);
+  EXPECT_EQ(sent[4]->kind, mojom::SentMemoryKind::kWritten);
+  EXPECT_EQ(sent[4]->text, "I prefer concise explanations");
+  EXPECT_FALSE(sent[4]->date);
+  EXPECT_EQ(sent[5]->kind, mojom::SentMemoryKind::kWritten);
+  EXPECT_EQ(sent[6]->kind, mojom::SentMemoryKind::kLearned);
+  EXPECT_EQ(sent[6]->text, "Uses metric units");
+  EXPECT_EQ(sent[6]->date, kept_date);
+  EXPECT_EQ(sent[7]->text, "Moved to Italy");
+  EXPECT_EQ(sent[7]->date, mention_date);
+  EXPECT_FALSE(sent[8]->date);
+}
+
+TEST_F(OAIMessageUtilsTest, BuildMemoriesSentEventHasWhatTheBlockHas) {
+  prefs_.SetBoolean(prefs::kBraveAIChatUserCustomizationEnabled, true);
+  base::DictValue customizations;
+  customizations.Set("name", "John Doe");
+  customizations.Set("other", "Answer in short sentences");
+  prefs_.SetDict(prefs::kBraveAIChatUserCustomizations,
+                 std::move(customizations));
+  prefs_.SetBoolean(prefs::kBraveAIChatUserMemoryEnabled, true);
+  base::ListValue memories;
+  memories.Append("I live in Berlin");
+  prefs_.SetList(prefs::kBraveAIChatUserMemories, std::move(memories));
+  EngineConsumer::LearnedMemories learned;
+  learned.permanent = {"Uses metric units"};
+  learned.permanent_info.push_back({"Uses metric units", base::Time()});
+  learned.relevant = {"Moved to Italy (2026-10-13)", "Has a dog (2026-09-01)"};
+  learned.relevant_info.push_back({"Moved to Italy", base::Time()});
+  learned.relevant_info.push_back({"Has a dog", base::Time()});
+
+  // The memory block goes with the last user message, so it must be the last.
+  auto history = CreateSampleChatHistory(1);
+  history.pop_back();
+  std::vector<OAIMessage> messages = BuildOAIMessages(
+      {}, EngineConsumer::ToHistoryView(history), &prefs_, false, 10000,
+      [](std::string&) {}, learned);
+  ASSERT_FALSE(messages.empty());
+  ASSERT_TRUE(messages[0].content[0]->is_memory_content_block());
+  mojom::ConversationEntryEventPtr event =
+      BuildMemoriesSentEvent(&prefs_, learned);
+
+  ASSERT_TRUE(event);
+  EXPECT_EQ(
+      event->get_memories_sent_event()->memories.size(),
+      CountMemoriesInBlock(messages[0].content[0]->get_memory_content_block()));
+}
+
+TEST_F(OAIMessageUtilsTest, BuildMemoriesSentEventIsNullWithNothingToSend) {
+  prefs_.SetBoolean(prefs::kBraveAIChatUserCustomizationEnabled, false);
+  prefs_.SetBoolean(prefs::kBraveAIChatUserMemoryEnabled, false);
+  EXPECT_FALSE(BuildMemoriesSentEvent(&prefs_, {}));
+
+  // Without prefs the request has no memory block, even with learned memories.
+  EngineConsumer::LearnedMemories learned;
+  learned.relevant_info.push_back({"Moved to Italy", base::Time()});
+  EXPECT_FALSE(BuildMemoriesSentEvent(nullptr, learned));
 }
 
 TEST_F(OAIMessageUtilsTest, BuildOAIMessages_Memory_NullPrefs) {

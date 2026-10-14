@@ -46,6 +46,7 @@
 #include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
 #include "brave/components/ai_chat/core/browser/associated_content_manager.h"
 #include "brave/components/ai_chat/core/browser/conversation_tools.h"
+#include "brave/components/ai_chat/core/browser/engine/oai_message_utils.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/browser/model_validator.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
@@ -110,6 +111,8 @@ bool IsNonSplittingEvent(
         kConversationTitleEvent:
     case mojom::ConversationEntryEvent::Data_::ConversationEntryEvent_Tag::
         kContentReceiptEvent:
+    case mojom::ConversationEntryEvent::Data_::ConversationEntryEvent_Tag::
+        kMemoriesSentEvent:
       return true;
 
     // Receiving one of these events will trigger a new streamed event, if the
@@ -1457,6 +1460,10 @@ void ConversationHandler::PerformAssistantGeneration() {
   // assistant entries in a row.
   needs_new_entry_ = true;
 
+  // The chat shows what goes with the request. The manager adds the learned
+  // memories when it finds them.
+  pending_memories_sent_event_ = MakeMemoriesSentEvent({});
+
 #if BUILDFLAG(ENABLE_LOCAL_AI)
   // Learned memories: the manager finds the memories for this turn, then the
   // request goes. The request goes at once when the manager has no memory.
@@ -1512,6 +1519,7 @@ void ConversationHandler::PerformAssistantGenerationWithMemories(
   if (chat_history_.empty()) {
     return;
   }
+  pending_memories_sent_event_ = MakeMemoriesSentEvent(learned_memories);
   engine_->GenerateAssistantResponseWithMemories(
       std::move(learned_memories),
       associated_content_manager_->GetCachedContentsMap(),
@@ -1562,6 +1570,9 @@ void ConversationHandler::UpdateOrCreateLastAssistantEntry(
         base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */,
         false, result.model_key, nullptr /* near_verification_status */,
         std::vector<std::string>{} /* child_thread_uuids */);
+    if (pending_memories_sent_event_) {
+      entry->events->push_back(std::move(pending_memories_sent_event_));
+    }
     chat_history_.push_back(std::move(entry));
   }
 
@@ -1710,6 +1721,19 @@ void ConversationHandler::UpdateOrCreateLastAssistantEntry(
   // Update clients for partial entries but not observers, who will get notified
   // when we know this is a complete entry.
   OnHistoryUpdate(entry.Clone());
+}
+
+mojom::ConversationEntryEventPtr ConversationHandler::MakeMemoriesSentEvent(
+    const EngineConsumer::LearnedMemories& learned_memories) const {
+  // Only the request for a user message has a memory block (see
+  // BuildOAIMessages).
+  if (!prefs_ || chat_history_.empty() ||
+      chat_history_.back()->character_type != mojom::CharacterType::HUMAN ||
+      !engine_->SendsMemoryBlock(IsTemporaryChat())) {
+    return nullptr;
+  }
+
+  return BuildMemoriesSentEvent(prefs_, learned_memories);
 }
 
 void ConversationHandler::TakeFollowUpSuggestionsFromLastEntry() {

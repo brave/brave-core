@@ -15,6 +15,7 @@
 
 #include "base/functional/callback.h"
 #include "base/functional/callback_forward.h"
+#include "base/time/time.h"
 #include "base/types/expected.h"
 #include "brave/components/ai_chat/core/browser/associated_content_manager.h"
 #include "brave/components/ai_chat/core/browser/types.h"
@@ -134,7 +135,23 @@ class EngineConsumer {
     // with the date of its last mention. They go in the `learned_memories`
     // list of the memory block.
     std::vector<std::string> relevant;
+
+    // The same memories as in |permanent| and |relevant|, as the chat shows
+    // them to the user: the text and the date of the last mention.
+    struct Info {
+      std::string text;
+      base::Time date;
+    };
+    std::vector<Info> permanent_info;
+    std::vector<Info> relevant_info;
   };
+
+  // Returns true when the request for a user message has a memory block: the
+  // memories that the user wrote, the customization and the learned memories.
+  // A chat that Leo does not remember has none, and neither has a model with a
+  // custom system prompt. The chat shows the memories only when this is true.
+  // The default is false.
+  virtual bool SendsMemoryBlock(bool is_temporary_chat) const;
 
   virtual void GenerateAssistantResponse(
       PageContentsMap&& page_contents,

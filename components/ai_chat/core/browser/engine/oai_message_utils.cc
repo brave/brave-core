@@ -178,6 +178,52 @@ std::optional<mojom::MemoryContentBlockPtr> BuildMemoryContentBlock(
 
 }  // namespace
 
+mojom::ConversationEntryEventPtr BuildMemoriesSentEvent(
+    PrefService* prefs,
+    const EngineConsumer::LearnedMemories& learned_memories) {
+  // Same as BuildMemoryContentBlock(): without prefs, nothing goes.
+  if (!prefs) {
+    return nullptr;
+  }
+
+  std::vector<mojom::SentMemoryPtr> memories;
+  if (std::optional<base::DictValue> user_memory =
+          prefs::GetUserMemoryDictFromPrefs(*prefs)) {
+    static constexpr std::pair<const char*, mojom::SentMemoryKind> kFields[] = {
+        {"name", mojom::SentMemoryKind::kName},
+        {"job", mojom::SentMemoryKind::kJob},
+        {"tone", mojom::SentMemoryKind::kTone},
+        {"other", mojom::SentMemoryKind::kOtherInstructions}};
+    for (const auto& [key, kind] : kFields) {
+      if (const std::string* value = user_memory->FindString(key)) {
+        memories.push_back(mojom::SentMemory::New(kind, *value, std::nullopt));
+      }
+    }
+    if (const base::ListValue* written = user_memory->FindList(kMemoriesKey)) {
+      for (const base::Value& memory : *written) {
+        if (memory.is_string()) {
+          memories.push_back(
+              mojom::SentMemory::New(mojom::SentMemoryKind::kWritten,
+                                     memory.GetString(), std::nullopt));
+        }
+      }
+    }
+  }
+  for (const auto* infos :
+       {&learned_memories.permanent_info, &learned_memories.relevant_info}) {
+    for (const auto& info : *infos) {
+      memories.push_back(mojom::SentMemory::New(
+          mojom::SentMemoryKind::kLearned, info.text,
+          info.date.is_null() ? std::nullopt : std::optional(info.date)));
+    }
+  }
+  if (memories.empty()) {
+    return nullptr;
+  }
+  return mojom::ConversationEntryEvent::NewMemoriesSentEvent(
+      mojom::MemoriesSentEvent::New(std::move(memories)));
+}
+
 OAIMessage::OAIMessage() = default;
 
 OAIMessage::OAIMessage(OAIMessage&&) = default;

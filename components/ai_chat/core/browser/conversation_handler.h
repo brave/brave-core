@@ -427,6 +427,13 @@ class ConversationHandler : public mojom::ConversationHandler,
   // can reset some of the state of the tools, ready for the next loop.
   void InitToolsForNewGenerationLoop(base::OnceClosure on_updated);
 
+  // The event that shows the memories in the request for the last user
+  // message: the customization, the memories that the user wrote and
+  // |learned_memories|. Null when the request has no memory block, or no
+  // memory to show.
+  mojom::ConversationEntryEventPtr MakeMemoriesSentEvent(
+      const EngineConsumer::LearnedMemories& learned_memories) const;
+
   mojom::ConversationEntriesStatePtr GetStateForConversationEntries();
   void AddToConversationHistory(mojom::ConversationTurnPtr turn);
   void PerformAssistantGenerationWithPossibleContent();
@@ -572,6 +579,11 @@ class ConversationHandler : public mojom::ConversationHandler,
   // Whether further assistant responses should be appended to the last or
   // created in a new sibling ConversationEntry.
   bool needs_new_entry_ = false;
+
+  // The memories that go with the request being sent, for the chat to show.
+  // It becomes the first event of the assistant entry that the response
+  // creates. Null when the request has no memory block.
+  mojom::ConversationEntryEventPtr pending_memories_sent_event_;
 
   bool is_print_preview_fallback_requested_ = false;
 

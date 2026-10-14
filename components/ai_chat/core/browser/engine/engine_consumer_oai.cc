@@ -256,13 +256,11 @@ void EngineConsumerOAIRemote::GenerateAssistantResponse(
       tools, std::move(data_received_callback), std::move(completed_callback));
 }
 
-#if BUILDFLAG(ENABLE_LOCAL_AI)
-bool EngineConsumerOAIRemote::UsesLearnedMemories(
-    bool is_temporary_chat) const {
-  // The memory block is not sent in these cases (see PerformAssistantResponse).
+bool EngineConsumerOAIRemote::SendsMemoryBlock(bool is_temporary_chat) const {
   return !is_temporary_chat && !HasCustomSystemPrompt(*model_options_);
 }
 
+#if BUILDFLAG(ENABLE_LOCAL_AI)
 void EngineConsumerOAIRemote::GenerateAssistantResponseWithMemories(
     LearnedMemories learned_memories,
     PageContentsMap&& page_contents,
@@ -293,8 +291,7 @@ void EngineConsumerOAIRemote::PerformAssistantResponse(
     return;
   }
 
-  bool exclude_memory =
-      is_temporary_chat || HasCustomSystemPrompt(*model_options_);
+  bool exclude_memory = !SendsMemoryBlock(is_temporary_chat);
   auto conversation_messages = BuildOAIMessages(
       std::move(page_contents), conversation_history, prefs_, exclude_memory,
       max_associated_content_length_,

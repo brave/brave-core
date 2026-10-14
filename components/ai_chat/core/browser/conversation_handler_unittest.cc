@@ -7647,6 +7647,113 @@ TEST_F(ConversationHandlerUnitTest, GetCurrentModelFallsBackToAutomatic) {
             kChatAutomaticModelKey);
 }
 
+// Answers the request of the engine with one completion.
+void AnswerWithCompletion(EngineConsumer::GenerationCompletedCallback callback,
+                          base::RunLoop& run_loop) {
+  std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
+      mojom::ConversationEntryEvent::NewCompletionEvent(
+          mojom::CompletionEvent::New("Answer")),
+      std::nullopt)));
+  run_loop.QuitWhenIdle();
+}
+
+TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
+       AssistantEntryStartsWithTheMemoriesSent) {
+  prefs_.SetBoolean(prefs::kBraveAIChatUserCustomizationEnabled, true);
+  base::DictValue customizations;
+  customizations.Set("name", "Jocelyn");
+  prefs_.SetDict(prefs::kBraveAIChatUserCustomizations,
+                 std::move(customizations));
+  prefs_.SetBoolean(prefs::kBraveAIChatUserMemoryEnabled, true);
+  base::ListValue memories;
+  memories.Append("I like tea");
+  prefs_.SetList(prefs::kBraveAIChatUserMemories, std::move(memories));
+
+  MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+  EXPECT_CALL(*engine, SendsMemoryBlock(false))
+      .WillRepeatedly(testing::Return(true));
+  base::RunLoop run_loop;
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .WillOnce(testing::WithArg<7>(
+          [&](EngineConsumer::GenerationCompletedCallback callback) {
+            AnswerWithCompletion(std::move(callback), run_loop);
+          }));
+
+  conversation_handler_->SubmitHumanConversationEntry("Test question",
+                                                      std::nullopt);
+  run_loop.Run();
+
+  const auto& history = conversation_handler_->GetConversationHistory();
+  ASSERT_EQ(history.size(), 2u);
+  ASSERT_TRUE(history[1]->events);
+  ASSERT_EQ(history[1]->events->size(), 2u);
+  // The memories come before the answer, so that the answer streams below them.
+  ASSERT_TRUE((*history[1]->events)[0]->is_memories_sent_event());
+  const auto& sent =
+      (*history[1]->events)[0]->get_memories_sent_event()->memories;
+  ASSERT_EQ(sent.size(), 2u);
+  EXPECT_EQ(sent[0]->kind, mojom::SentMemoryKind::kName);
+  EXPECT_EQ(sent[0]->text, "Jocelyn");
+  EXPECT_EQ(sent[1]->kind, mojom::SentMemoryKind::kWritten);
+  EXPECT_EQ(sent[1]->text, "I like tea");
+  EXPECT_TRUE((*history[1]->events)[1]->is_completion_event());
+}
+
+TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
+       NothingIsShownWhenTheRequestHasNoMemoryBlock) {
+  prefs_.SetBoolean(prefs::kBraveAIChatUserMemoryEnabled, true);
+  base::ListValue memories;
+  memories.Append("I like tea");
+  prefs_.SetList(prefs::kBraveAIChatUserMemories, std::move(memories));
+
+  // For example a temporary chat, or a model with a custom system prompt.
+  MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+  EXPECT_CALL(*engine, SendsMemoryBlock(false))
+      .WillRepeatedly(testing::Return(false));
+  base::RunLoop run_loop;
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .WillOnce(testing::WithArg<7>(
+          [&](EngineConsumer::GenerationCompletedCallback callback) {
+            AnswerWithCompletion(std::move(callback), run_loop);
+          }));
+
+  conversation_handler_->SubmitHumanConversationEntry("Test question",
+                                                      std::nullopt);
+  run_loop.Run();
+
+  const auto& history = conversation_handler_->GetConversationHistory();
+  ASSERT_EQ(history.size(), 2u);
+  ASSERT_EQ(history[1]->events->size(), 1u);
+  EXPECT_TRUE((*history[1]->events)[0]->is_completion_event());
+}
+
+TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
+       NothingIsShownWithoutMemories) {
+  prefs_.SetBoolean(prefs::kBraveAIChatUserCustomizationEnabled, false);
+  prefs_.SetBoolean(prefs::kBraveAIChatUserMemoryEnabled, false);
+
+  MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+  EXPECT_CALL(*engine, SendsMemoryBlock(false))
+      .WillRepeatedly(testing::Return(true));
+  base::RunLoop run_loop;
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .WillOnce(testing::WithArg<7>(
+          [&](EngineConsumer::GenerationCompletedCallback callback) {
+            AnswerWithCompletion(std::move(callback), run_loop);
+          }));
+
+  conversation_handler_->SubmitHumanConversationEntry("Test question",
+                                                      std::nullopt);
+  run_loop.Run();
+
+  const auto& history = conversation_handler_->GetConversationHistory();
+  ASSERT_EQ(history[1]->events->size(), 1u);
+  EXPECT_TRUE((*history[1]->events)[0]->is_completion_event());
+}
+
 #if BUILDFLAG(ENABLE_LOCAL_AI)
 TEST_F(ConversationHandlerUnitTest_LearnedMemory,
        RequestGoesWithLearnedMemories) {

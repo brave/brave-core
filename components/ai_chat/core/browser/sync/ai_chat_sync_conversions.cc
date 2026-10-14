@@ -276,6 +276,7 @@ void WriteEvent(const mojom::ConversationEntryEvent& event,
     case mojom::ConversationEntryEvent::Tag::kDeepResearchEvent:
     case mojom::ConversationEntryEvent::Tag::kContentReceiptEvent:
     case mojom::ConversationEntryEvent::Tag::kConversationTitleEvent:
+    case mojom::ConversationEntryEvent::Tag::kMemoriesSentEvent:
       break;
   }
 }

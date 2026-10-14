@@ -575,6 +575,34 @@ union DeepResearchEvent {
   DeepResearchIterationCompleteEvent iteration_complete_event;
 };
 
+// Where a memory that went with a request comes from.
+enum SentMemoryKind {
+  // The name, job, tone and other instructions that the user wrote in the
+  // customization settings.
+  kName,
+  kJob,
+  kTone,
+  kOtherInstructions,
+  // A memory that the user wrote.
+  kWritten,
+  // A memory that Leo learned from the chats of the user.
+  kLearned,
+};
+
+// A memory that went with the request of a turn.
+struct SentMemory {
+  SentMemoryKind kind;
+  string text;
+  // The date of the last mention. Only for kLearned.
+  mojo_base.mojom.Time? date;
+};
+
+// The memories that went with the request of a turn, so that the user can see
+// what Leo sends. It is not stored or synced.
+struct MemoriesSentEvent {
+  array<SentMemory> memories;
+};
+
 // Events that occur during a conversation turn (only assistant for now)
 union ConversationEntryEvent {
   CompletionEvent completion_event;
@@ -584,6 +612,7 @@ union ConversationEntryEvent {
   ToolUseEvent tool_use_event;
   InlineSearchEvent inline_search_event;
   DeepResearchEvent deep_research_event;
+  MemoriesSentEvent memories_sent_event;
 
   // These events don't normally get added to the conversation entry
   // but are used in engine responses.

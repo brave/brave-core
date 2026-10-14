@@ -67,8 +67,8 @@ class EngineConsumerConversationAPI : public EngineConsumer {
       const ConversationCapabilitySet& conversation_capabilities,
       GenerationDataCallback data_received_callback,
       GenerationCompletedCallback completed_callback) override;
+  bool SendsMemoryBlock(bool is_temporary_chat) const override;
 #if BUILDFLAG(ENABLE_LOCAL_AI)
-  bool UsesLearnedMemories(bool is_temporary_chat) const override;
   void GenerateAssistantResponseWithMemories(
       LearnedMemories learned_memories,
       PageContentsMap&& page_contents,

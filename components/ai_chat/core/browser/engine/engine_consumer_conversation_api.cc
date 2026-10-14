@@ -89,11 +89,12 @@ void EngineConsumerConversationAPI::GenerateAssistantResponse(
                            std::move(completed_callback));
 }
 
-#if BUILDFLAG(ENABLE_LOCAL_AI)
-bool EngineConsumerConversationAPI::UsesLearnedMemories(
+bool EngineConsumerConversationAPI::SendsMemoryBlock(
     bool is_temporary_chat) const {
   return !is_temporary_chat;
 }
+
+#if BUILDFLAG(ENABLE_LOCAL_AI)
 
 void EngineConsumerConversationAPI::GenerateAssistantResponseWithMemories(
     LearnedMemories learned_memories,
@@ -136,8 +137,8 @@ void EngineConsumerConversationAPI::PerformAssistantResponse(
   memories_for_server.relevant.clear();
 
   auto messages = BuildOAIMessages(
-      std::move(page_contents), conversation_history, prefs_, is_temporary_chat,
-      max_associated_content_length_,
+      std::move(page_contents), conversation_history, prefs_,
+      !SendsMemoryBlock(is_temporary_chat), max_associated_content_length_,
       [this](std::string& input) { SanitizeInput(input); },
       memories_for_server);
 

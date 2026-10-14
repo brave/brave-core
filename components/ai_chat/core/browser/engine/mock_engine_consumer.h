@@ -55,6 +55,11 @@ class MockEngineConsumer : public EngineConsumer {
                GenerationCompletedCallback completed_callback),
               (override));
 
+  MOCK_METHOD(bool,
+              SendsMemoryBlock,
+              (bool is_temporary_chat),
+              (const, override));
+
 #if BUILDFLAG(ENABLE_LOCAL_AI)
   MOCK_METHOD(bool,
               UsesLearnedMemories,

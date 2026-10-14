@@ -214,6 +214,10 @@ void PrintTo(const ConversationEntryEvent& event, std::ostream* os) {
       PrintTo(*event.get_tool_use_event(), os);
       break;
     }
+    case Tag::kMemoriesSentEvent:
+      *os << "memories_sent: "
+          << event.get_memories_sent_event()->memories.size() << "\n";
+      break;
     default:
       *os << "event: unknown\n";
   }

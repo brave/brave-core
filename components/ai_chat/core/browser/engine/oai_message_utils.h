@@ -48,6 +48,12 @@ std::vector<OAIMessage> BuildOAIMessages(
     base::FunctionRef<void(std::string&)> sanitize_input,
     const EngineConsumer::LearnedMemories& learned_memories = {});
 
+// The memories that BuildOAIMessages() puts in the memory block, as the chat
+// shows them to the user. Gives null when there are none.
+mojom::ConversationEntryEventPtr BuildMemoriesSentEvent(
+    PrefService* prefs,
+    const EngineConsumer::LearnedMemories& learned_memories);
+
 std::vector<OAIMessage> BuildOAIQuestionSuggestionsMessages(
     PageContents page_contents,
     uint32_t remaining_length,

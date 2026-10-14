@@ -49,10 +49,19 @@ TurnMemoryLookup::TurnMemoryLookup(
 
 TurnMemoryLookup::~TurnMemoryLookup() = default;
 
+namespace {
+
+// The date of the last mention of a memory.
+base::Time LastMentionDate(const LearnedMemory& memory) {
+  return memory.updated_date.is_null() ? memory.created_date
+                                       : memory.updated_date;
+}
+
+}  // namespace
+
 // static
 std::string TurnMemoryLookup::FormatForPrompt(const LearnedMemory& memory) {
-  const base::Time date =
-      memory.updated_date.is_null() ? memory.created_date : memory.updated_date;
+  const base::Time date = LastMentionDate(memory);
   if (date.is_null()) {
     return memory.text;
   }
@@ -101,6 +110,7 @@ void TurnMemoryLookup::OnPermanentMemories(
   base::ListValue texts;
   for (auto& memory : memories) {
     texts.Append(memory.text);
+    result_.permanent_info.push_back({memory.text, LastMentionDate(memory)});
     result_.permanent.push_back(std::move(memory.text));
   }
   Trace("permanent",
@@ -208,6 +218,8 @@ void TurnMemoryLookup::OnRelevance(
   order.resize(std::min(order.size(), config_.max_results));
   for (size_t index : order) {
     result_.relevant.push_back(FormatForPrompt(candidates_[index]));
+    result_.relevant_info.push_back(
+        {candidates_[index].text, LastMentionDate(candidates_[index])});
     relevant_uuids_.push_back(candidates_[index].uuid);
   }
   base::ListValue answers;

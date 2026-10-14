@@ -124,9 +124,13 @@ EngineConsumer::LearnedMemories& EngineConsumer::LearnedMemories::operator=(
     LearnedMemories&&) = default;
 EngineConsumer::LearnedMemories::~LearnedMemories() = default;
 
+bool EngineConsumer::SendsMemoryBlock(bool is_temporary_chat) const {
+  return false;
+}
+
 #if BUILDFLAG(ENABLE_LOCAL_AI)
 bool EngineConsumer::UsesLearnedMemories(bool is_temporary_chat) const {
-  return false;
+  return SendsMemoryBlock(is_temporary_chat);
 }
 
 void EngineConsumer::GenerateAssistantResponseWithMemories(
