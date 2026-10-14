@@ -1,16 +1,16 @@
 diff --git a/components/sync/base/features.cc b/components/sync/base/features.cc
-index 30189260296b809e1819182a187053d04acf41b9..8e012ffc609d5ee178b8f72b3986e35e90ffe3ae 100644
+index 47806c5968e2dd722301d37617189c95d718196a..833270df396854b38c68f9c24ff8bbb53f7ba52d 100644
 --- a/components/sync/base/features.cc
 +++ b/components/sync/base/features.cc
-@@ -88,6 +88,7 @@ BASE_FEATURE(kReplaceSyncPromosWithSigninPromosNewSignin,
+@@ -68,6 +68,7 @@ BASE_FEATURE(kReplaceSyncPromosWithSignInPromos,
  );
  
  bool IsReplaceSyncPromosWithSignInPromosEnabled() {
 +  if ((true)) return false;
-   return base::FeatureList::IsEnabled(kReplaceSyncPromosWithSignInPromos) ||
-          base::FeatureList::IsEnabled(
-              kReplaceSyncPromosWithSigninPromosNewSignin);
-@@ -117,7 +118,7 @@ DEFINE_SYNC_AUTOFILL_AI_FEATURE(kSyncAccountSettings);
+ #if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_WIN)
+   return true;
+ #else
+@@ -99,7 +100,7 @@ DEFINE_SYNC_AUTOFILL_AI_FEATURE(kSyncAccountSettings);
  DEFINE_SYNC_AUTOFILL_AI_FEATURE(kSyncAutofillValuable);
  #endif
  
