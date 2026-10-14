@@ -124,11 +124,12 @@ void BraveVpnServiceImpl::ResetConnectionState() {
   NOTIMPLEMENTED();
 }
 
-void BraveVpnServiceImpl::EnableOnDemand(bool /*enable*/) {
+void BraveVpnServiceImpl::EnableAutoReconnect(bool /*enable*/) {
   NOTIMPLEMENTED();
 }
 
-void BraveVpnServiceImpl::GetOnDemandState(GetOnDemandStateCallback callback) {
+void BraveVpnServiceImpl::GetAutoReconnectState(
+    GetAutoReconnectStateCallback callback) {
   NOTIMPLEMENTED();
   std::move(callback).Run(false, false);
 }
