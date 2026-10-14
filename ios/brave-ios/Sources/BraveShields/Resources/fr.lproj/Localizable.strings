@@ -97,7 +97,7 @@
 /* Title for the brave player info popup which appears when clicking on the brave player icon on the navigation bar. */
 "BravePlayerInfoTitle" = "Regardez vos contenus dans le lecteur Brave";
 
-/* No comment provided by engineer. */
+/* The label above / exposing the advanced controls on the Shields panel. */
 "BraveShieldsAdvancedControls" = "Contrôles avancés";
 
 /* The number of ads and trackers blocked will be next to this */
@@ -159,6 +159,9 @@
 
 /* An error message telling the user that they crossed the line limit */
 "CustomFiltersTooManyLinesError" = "Les filtres personnalisés prennent en charge %i lignes maximum";
+
+/* An error message telling the user that the custom scriptlet failed to save to disk */
+"customScriptletFailedToSaveError" = "Échec de l'enregistrement du scriptlet personnalisé";
 
 /* Data Saved Shield Stat */
 "DataSavedStat" = "Données économisées \nestimées";
@@ -286,6 +289,9 @@
 /* Used to describe when a request was blocked by the Content Blocker in Blocked Requests view. */
 "shields.contentBlocker" = "Bloqueur de contenu";
 
+/* A button title displayed on Shields panel linking to Webcompat Reporter. */
+"shields.reportBrokenSiteButtonTitle" = "Signaler ";
+
 /* Used to describe when a request was blocked by our request blocking scripts in Blocked Requests view. */
 "shields.requestBlocking" = "Blocage de requêtes";
 
@@ -294,6 +300,15 @@
 
 /* A label displayed above the resource type of a request that was blocked in Blocked Requests view. */
 "shields.resourceTypeLabel" = "Type de ressource";
+
+/* A label displayed on Shields panel beside the toggle enabling shields. */
+"shields.shieldsDownForSite" = "Boucliers **désactivés** pour ce site";
+
+/* A button title displayed on Shields panel linking to Shields global settings. */
+"shields.shieldsGlobalSettings" = "Paramètres généraux des boucliers";
+
+/* A label displayed on Shields panel beside the toggle disabling shields. */
+"shields.shieldsUpForSite" = "Boucliers **activés** pour ce site";
 
 /* A description beside a toggle that appears in the Shred settings screen, within Shields & Privacy settings. */
 "shields.shredHistoryRowDescription" = "Si Shred doit supprimer les éléments d'historique.";
@@ -310,8 +325,17 @@
 /* A title for the Shred settings screen, within Shields & Privacy settings. */
 "shields.shredSettingsViewTitle" = "Effacer les données";
 
+/* A footer displayed on Shields panel when shields are down. */
+"shields.siteNotWorkingCorrectly" = "Ce site ne fonctionne-t-il pas correctement avec les boucliers activés ?";
+
+/* A label displayed on Shields panel at the bottom. Learn more link is clickable, where `%@` will be replaced with the URL. */
+"shields.siteSeemsBroken" = "Si ce site ne fonctionne pas correctement, essayez de désactiver les boucliers. Cette action risque de limiter les protections de confidentialité de Brave. [En savoir plus](%@)";
+
 /* A label displayed above the source url of a request that was blocked in Blocked Requests view. */
 "shields.sourceURLLabel" = "URL d’origine";
+
+/* A label displayed on Shields panel beside the number of blocked items. */
+"shields.trackersAdsAndMoreBlocked" = "traqueurs, publicités et autres contenus bloqués";
 
 /* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
 "ShieldsDefaults" = "Paramètres généraux par défaut des boucliers Brave";

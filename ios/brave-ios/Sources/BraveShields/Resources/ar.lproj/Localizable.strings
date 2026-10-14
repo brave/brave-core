@@ -97,7 +97,7 @@
 /* Title for the brave player info popup which appears when clicking on the brave player icon on the navigation bar. */
 "BravePlayerInfoTitle" = "شاهد في مشغّل Brave بدلًا من ذلك";
 
-/* No comment provided by engineer. */
+/* The label above / exposing the advanced controls on the Shields panel. */
 "BraveShieldsAdvancedControls" = "الضوابط المتقدمة";
 
 /* The number of ads and trackers blocked will be next to this */
@@ -159,6 +159,9 @@
 
 /* An error message telling the user that they crossed the line limit */
 "CustomFiltersTooManyLinesError" = "لا تدعم الفلاتر المخصصة أكثر من %i من السطور";
+
+/* An error message telling the user that the custom scriptlet failed to save to disk */
+"customScriptletFailedToSaveError" = "فشل حفظ البرنامج النصي المخصص";
 
 /* Data Saved Shield Stat */
 "DataSavedStat" = "البيانات التقديرية \nالمحفوظة";
@@ -286,6 +289,9 @@
 /* Used to describe when a request was blocked by the Content Blocker in Blocked Requests view. */
 "shields.contentBlocker" = "أداة حظر المحتوى";
 
+/* A button title displayed on Shields panel linking to Webcompat Reporter. */
+"shields.reportBrokenSiteButtonTitle" = "تقرير";
+
 /* Used to describe when a request was blocked by our request blocking scripts in Blocked Requests view. */
 "shields.requestBlocking" = "طلب الحظر";
 
@@ -294,6 +300,15 @@
 
 /* A label displayed above the resource type of a request that was blocked in Blocked Requests view. */
 "shields.resourceTypeLabel" = "نوع المورد";
+
+/* A label displayed on Shields panel beside the toggle enabling shields. */
+"shields.shieldsDownForSite" = "Shields **غير مفعلة** لهذا الموقع";
+
+/* A button title displayed on Shields panel linking to Shields global settings. */
+"shields.shieldsGlobalSettings" = "الإعدادات العامة لـ Shields";
+
+/* A label displayed on Shields panel beside the toggle disabling shields. */
+"shields.shieldsUpForSite" = "Shields **مفعلة** لهذا الموقع";
 
 /* A description beside a toggle that appears in the Shred settings screen, within Shields & Privacy settings. */
 "shields.shredHistoryRowDescription" = "إذا كان يجب على Shred إزالة عناصر السجل.";
@@ -310,8 +325,17 @@
 /* A title for the Shred settings screen, within Shields & Privacy settings. */
 "shields.shredSettingsViewTitle" = "حذف";
 
+/* A footer displayed on Shields panel when shields are down. */
+"shields.siteNotWorkingCorrectly" = "هل هذا الموقع لا يعمل بشكل صحيح مع Shields مفعلة؟";
+
+/* A label displayed on Shields panel at the bottom. Learn more link is clickable, where `%@` will be replaced with the URL. */
+"shields.siteSeemsBroken" = "إذا بدا هذا الموقع معطلاً، فجرب تعطيل Shields. قد يقلل هذا من حمايات خصوصية Brave. [معرفة المزيد](%@)";
+
 /* A label displayed above the source url of a request that was blocked in Blocked Requests view. */
 "shields.sourceURLLabel" = "عنوان URL المصدر";
+
+/* A label displayed on Shields panel beside the number of blocked items. */
+"shields.trackersAdsAndMoreBlocked" = "تم حظر أدوات التتبع والإعلانات وغيرها";
 
 /* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
 "ShieldsDefaults" = "إعدادات Brave Shields الافتراضية العالمية";

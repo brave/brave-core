@@ -97,7 +97,7 @@
 /* Title for the brave player info popup which appears when clicking on the brave player icon on the navigation bar. */
 "BravePlayerInfoTitle" = "Obejrz w Odtwarzaczu Brave";
 
-/* No comment provided by engineer. */
+/* The label above / exposing the advanced controls on the Shields panel. */
 "BraveShieldsAdvancedControls" = "Opcje zaawansowane";
 
 /* The number of ads and trackers blocked will be next to this */
@@ -159,6 +159,9 @@
 
 /* An error message telling the user that they crossed the line limit */
 "CustomFiltersTooManyLinesError" = "Filtry niestandardowe nie obsługują więcej niż %i wierszy";
+
+/* An error message telling the user that the custom scriptlet failed to save to disk */
+"customScriptletFailedToSaveError" = "Nie udało się zapisać niestandardowego skryptletu";
 
 /* Data Saved Shield Stat */
 "DataSavedStat" = "Szacunkowe dane\nzapisane";
@@ -286,6 +289,9 @@
 /* Used to describe when a request was blocked by the Content Blocker in Blocked Requests view. */
 "shields.contentBlocker" = "Bloker treści";
 
+/* A button title displayed on Shields panel linking to Webcompat Reporter. */
+"shields.reportBrokenSiteButtonTitle" = "Zgłoś";
+
 /* Used to describe when a request was blocked by our request blocking scripts in Blocked Requests view. */
 "shields.requestBlocking" = "Żądaj blokowania";
 
@@ -294,6 +300,15 @@
 
 /* A label displayed above the resource type of a request that was blocked in Blocked Requests view. */
 "shields.resourceTypeLabel" = "Typ zasobu";
+
+/* A label displayed on Shields panel beside the toggle enabling shields. */
+"shields.shieldsDownForSite" = "Tarcze **wyłączone** dla tej witryny";
+
+/* A button title displayed on Shields panel linking to Shields global settings. */
+"shields.shieldsGlobalSettings" = "Ustawienia globalne Tarcz";
+
+/* A label displayed on Shields panel beside the toggle disabling shields. */
+"shields.shieldsUpForSite" = "Tarcze **włączone** dla tej witryny";
 
 /* A description beside a toggle that appears in the Shred settings screen, within Shields & Privacy settings. */
 "shields.shredHistoryRowDescription" = "Jeśli funkcja Shred powinna usuwać elementy historii.";
@@ -310,8 +325,17 @@
 /* A title for the Shred settings screen, within Shields & Privacy settings. */
 "shields.shredSettingsViewTitle" = "Usuń";
 
+/* A footer displayed on Shields panel when shields are down. */
+"shields.siteNotWorkingCorrectly" = "Czy ta strona nie działa prawidłowo z włączonymi tarczami?";
+
+/* A label displayed on Shields panel at the bottom. Learn more link is clickable, where `%@` will be replaced with the URL. */
+"shields.siteSeemsBroken" = "Jeśli ta witryna nie działa poprawnie, spróbuj wyłączyć Tarcze. To może zmniejszyć ochronę prywatności zapewnianą przez Brave. [Dowiedz się więcej](%@)";
+
 /* A label displayed above the source url of a request that was blocked in Blocked Requests view. */
 "shields.sourceURLLabel" = "URL źródła";
+
+/* A label displayed on Shields panel beside the number of blocked items. */
+"shields.trackersAdsAndMoreBlocked" = "zablokowane skrypty śledzące, reklamy i inne";
 
 /* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
 "ShieldsDefaults" = "Ogólne domyślne ustawienia Brave Shields";

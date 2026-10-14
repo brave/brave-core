@@ -121,6 +121,18 @@
 /* Settings autofill section title */
 "autofill.settings.title" = "自動入力";
 
+/* A subtitle that appears in the dynamic island when a download is continuing while Brave is backgrounded. The %@'s are replaced with the current downloaded amount (e.g. '20MB') */
+"backgroundDownloadingSubtitle" = "%@";
+
+/* A subtitle that appears in the dynamic island when a download is continuing while Brave is backgrounded. The %@'s are replaced with a progress and a file size. E.g. '1MB of 20MB' */
+"backgroundDownloadingSubtitleWithExpectedSize" = "%1$@ / %2$@";
+
+/* A title that appears in the dynamic island when a download is continuing while Brave is backgrounded. %lld is replaced with the number of active downloads */
+"backgroundDownloadingTitleMultiDownload" = "%lld 個のファイルをダウンロード中";
+
+/* A title that appears in the dynamic island when a download is continuing while Brave is backgrounded. %@ is replaced with a file name */
+"backgroundDownloadingTitleSingleDownload" = "「%@」をダウンロードしています";
+
 /* cookie settings option */
 "Block3rdPartyCookies" = "サードパーティの Cookie をブロック";
 
@@ -1774,6 +1786,18 @@
 /* Accessibility text for an icon button which will go back to the previous page in QuickView mode. */
 "quickview.back.accessibility.label" = "前のページ";
 
+/* Button title to keep opening links in QuickView after the confirmation alert. */
+"quickview.confirmation.alert.keep.button.title" = "QuickViewの使用を続ける";
+
+/* Message of the alert shown the first time a user closes QuickView, explaining the feature and where to change it. */
+"quickview.confirmation.alert.message" = "QuickViewを使うと、ページを離れることなくリンクをプレビューできます。設定からいつでもオフにできます。";
+
+/* Title of the alert shown the first time a user closes QuickView, asking if they want to keep using it for future links. */
+"quickview.confirmation.alert.title" = "会話リンクをQuick Viewで開き続けますか？";
+
+/* Button title to stop opening links in QuickView after the confirmation alert. */
+"quickview.confirmation.alert.turnOff.button.title" = "オフにする";
+
 /* Accessibility text for an icon button which will go forward to the next page in QuickView mode. */
 "quickview.forward.accessibility.label" = "次のページ";
 
@@ -2299,8 +2323,8 @@
 /* Used as a button label for crash dialog prompt */
 "SendReportButtonTitle" = "レポートを送信";
 
-/* No comment provided by engineer. */
-"setDefaultBrowserCalloutTitle" = "Braveをデフォルトのブラウザに設定できるようになりました。こちらをタップして設定を開始しましょう。";
+/* A callout that explains how to set Brave as the default browser. This is a markdown string, the ** is for bold. */
+"setDefaultBrowserCalloutTitle" = "**Braveをデフォルトのブラウザに設定して、訪問するすべてのサイトで広告をブロックしましょう。** ここをタップして設定を開き、Braveをデフォルトに設定してください。";
 
 /* Settings item to set the Brave as a default browser on the iOS device. */
 "setDefaultBrowserSettingsCell" = "デフォルトブラウザに設定する";
@@ -2379,6 +2403,18 @@
 
 /* Title to explain the daily usage ping toggle */
 "settings.sendUsagePingTitle" = "毎日の使用状況のpingをBraveに自動送信する";
+
+/* Markdown formatted description under the settings toggle that enables Sponsored Ads. %@ is replaced by a URL and should not be localized. */
+"settings.sponsoredAdsEnabledDescription" = "スポンサー広告で、独立したユーザーファーストのウェブを構築するというBraveの使命を支援してください。私たちはあなたを特定することなく、プライベートに広告のパフォーマンスを測定します。[詳細はこちら](%@)";
+
+/* Title of the settings toggle that enables Sponsored Ads */
+"settings.sponsoredAdsEnabledTitle" = "スポンサー広告を有効にする";
+
+/* Description to explain the survey panelist toggle */
+"settings.surveyPanelistDescription" = "Braveに対し、新しいタブページに匿名アンケートへのリンクを表示することを許可します。こうした調査は、より良い機能の構築や、ブラウザベースの広告キャンペーンの効果測定などに役立ちます。[詳細](%@)";
+
+/* Title to explain the survey panelist toggle */
+"settings.surveyPanelistTitle" = "Braveアンケートを許可";
 
 /* Header for the YouTube settings section */
 "settings.youtube" = "YouTube";
