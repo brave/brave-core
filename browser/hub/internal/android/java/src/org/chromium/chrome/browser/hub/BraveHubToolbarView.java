@@ -84,6 +84,10 @@ public class BraveHubToolbarView extends HubToolbarView
         }
 
         ApplicationStatus.registerTaskVisibilityListener(this);
+
+        // The view may have been built while the hub was hidden, e.g. on a configuration change,
+        // when the bottom controls state differed.
+        updateButtonsVisibility();
     }
 
     @Override
