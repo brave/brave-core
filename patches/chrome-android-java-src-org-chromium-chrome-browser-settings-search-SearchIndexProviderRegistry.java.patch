@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/settings/search/SearchIndexProviderRegistry.java b/chrome/android/java/src/org/chromium/chrome/browser/settings/search/SearchIndexProviderRegistry.java
-index e0dfa1d71a2786e601eff6f3b26f8b1436022ae2..de12ca4fc9a315421fd199d82f656d3e0cf537fc 100644
+index bd7b0543328ebfc041c639b1ef8e77488bca53f5..538d71e4f354feff61c4be4ef2761b9d6216121f 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/settings/search/SearchIndexProviderRegistry.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/settings/search/SearchIndexProviderRegistry.java
 @@ -7,7 +7,6 @@ package org.chromium.chrome.browser.settings.search;
@@ -11,7 +11,7 @@ index e0dfa1d71a2786e601eff6f3b26f8b1436022ae2..de12ca4fc9a315421fd199d82f656d3e
  import org.chromium.chrome.browser.appearance.settings.TabPositionSettingsFragment;
  import org.chromium.chrome.browser.autofill.settings.AndroidPaymentAppsFragment;
 @@ -30,12 +29,10 @@ import org.chromium.chrome.browser.download.settings.DownloadSettings;
- import org.chromium.chrome.browser.glic.GlicSettings;
+ import org.chromium.chrome.browser.glic.settings.GlicSettings;
  import org.chromium.chrome.browser.homepage.settings.HomepageSettings;
  import org.chromium.chrome.browser.image_descriptions.ImageDescriptionsSettings;
 -import org.chromium.chrome.browser.language.settings.LanguageSettings;
