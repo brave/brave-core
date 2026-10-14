@@ -8,7 +8,6 @@
 #include "brave/components/update_client/test_util.h"
 #include "components/update_client/command_line_config_policy.h"
 #include "components/update_client/protocol_handler.h"
-#include "components/update_client/protocol_serializer.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace component_updater {

@@ -5,10 +5,8 @@
 
 #include "brave/components/brave_user_agent/browser/brave_user_agent_exceptions.h"
 
-#include <memory>
 #include <set>
 #include <string>
-#include <utility>
 #include <vector>
 
 #include "base/feature_list.h"
@@ -16,7 +14,6 @@
 #include "base/strings/string_split.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
-#include "brave/components/brave_user_agent/browser/brave_user_agent_component_installer.h"
 #include "brave/components/brave_user_agent/common/features.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 

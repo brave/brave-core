@@ -9,7 +9,6 @@
 #include "base/test/metrics/histogram_tester.h"
 #include "base/test/task_environment.h"
 #include "brave/components/email_aliases/email_aliases_notes.h"
-#include "brave/components/email_aliases/pref_names.h"
 #include "components/prefs/testing_pref_service.h"
 #include "testing/gtest/include/gtest/gtest.h"
 

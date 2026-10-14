@@ -10,7 +10,6 @@
 #include <string>
 #include <string_view>
 
-#include "base/compiler_specific.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 TEST(BravePrivateCdnHelperTest, RemovePadding) {

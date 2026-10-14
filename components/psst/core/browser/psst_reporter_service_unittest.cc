@@ -9,13 +9,10 @@
 #include <optional>
 #include <string>
 #include <utility>
-#include <vector>
 
-#include "base/functional/callback_helpers.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
-#include "brave/components/psst/core/browser/psst_component_installer.h"
 #include "brave/components/psst/core/browser/psst_report_uploader.h"
 #include "brave/components/psst/core/common/psst_script_responses.h"
 #include "brave/components/version_info/version_info.h"

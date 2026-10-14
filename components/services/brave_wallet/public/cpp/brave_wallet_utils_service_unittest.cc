@@ -13,7 +13,6 @@
 #include "brave/components/services/brave_wallet/public/cpp/utils/protobuf_utils.h"
 #include "brave/components/services/brave_wallet/public/mojom/zcash_decoder.mojom.h"
 #include "brave/components/services/brave_wallet/public/proto/zcash_grpc_data.pb.h"
-#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_wallet {

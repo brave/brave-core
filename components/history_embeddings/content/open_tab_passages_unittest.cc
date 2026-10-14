@@ -6,7 +6,6 @@
 #include "brave/components/history_embeddings/content/open_tab_passages.h"
 
 #include <memory>
-#include <optional>
 #include <string>
 #include <utility>
 #include <vector>

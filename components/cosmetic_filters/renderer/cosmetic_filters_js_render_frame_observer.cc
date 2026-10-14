@@ -13,7 +13,6 @@
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "brave/components/brave_shields/core/common/features.h"
-#include "brave/components/de_amp/common/features.h"
 #include "content/public/renderer/render_frame.h"
 #include "third_party/blink/public/platform/web_isolated_world_info.h"
 #include "third_party/blink/public/platform/web_url.h"

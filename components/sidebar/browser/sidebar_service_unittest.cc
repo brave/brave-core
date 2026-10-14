@@ -19,7 +19,6 @@
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/brave_talk/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
-#include "brave/components/constants/pref_names.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/sidebar/browser/constants.h"
 #include "brave/components/sidebar/browser/pref_names.h"
