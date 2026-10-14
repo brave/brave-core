@@ -311,14 +311,8 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
         // need to clear the state for a fresh state next time
         // TODO (pavi): update the flow with dapps model
         // (under-development) and get rid of explicit clear state call
-        try {
-            final BraveActivity activity = BraveActivity.getBraveActivity();
-            final WalletModel walletModel = activity.getWalletModel();
-            if (walletModel != null) {
-                walletModel.getDappsModel().clearDappsState();
-            }
-        } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "onDestroy", e);
+        if (mWalletModel != null) {
+            mWalletModel.getDappsModel().clearDappsState();
         }
 
         if (mPendingTxHelper != null) {
