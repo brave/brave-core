@@ -1,0 +1,9 @@
+specific_include_rules = {
+  # The test builds into
+  # //brave/chromium_src/components/password_manager/core/browser/features:unit_tests,
+  # which depends on brave_sync:features. The override itself forward-declares
+  # instead, so the upstream target needs no Brave dep.
+  ".*_unittest\.cc": [
+    "+brave/components/brave_sync/features.h",
+  ],
+}
