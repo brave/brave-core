@@ -50,4 +50,13 @@ bool IsLocalhostOrOnion(const GURL& url) {
   return IsLocalhost(url) || IsOnion(url);
 }
 
+bool IsCrossOriginOnionRequest(const url::Origin& initiator, const GURL& url) {
+  if (!IsOnion(initiator)) {
+    return false;
+  }
+  const GURL& target_url =
+      url.SchemeIsWSOrWSS() ? ChangeWebSocketSchemeToHttpScheme(url) : url;
+  return !initiator.IsSameOriginWith(target_url);
+}
+
 }  // namespace net

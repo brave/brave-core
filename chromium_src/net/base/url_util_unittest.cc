@@ -38,5 +38,40 @@ TEST(UrlUtilTest, IsOnionUrlSchemes) {
   EXPECT_FALSE(IsOnion(GURL("chrome://onion/")));
 }
 
+TEST(UrlUtilTest, IsCrossOriginOnionRequest) {
+  const auto initiator_origin = url::Origin::Create(GURL("https://foo.onion/"));
+
+  EXPECT_TRUE(
+      IsCrossOriginOnionRequest(initiator_origin, GURL("https://bar.onion/")));
+  EXPECT_TRUE(IsCrossOriginOnionRequest(initiator_origin,
+                                        GURL("https://sub.foo.onion/")));
+  EXPECT_TRUE(
+      IsCrossOriginOnionRequest(initiator_origin, GURL("https://foo.com/")));
+  EXPECT_TRUE(
+      IsCrossOriginOnionRequest(initiator_origin, GURL("http://foo.onion/")));
+  EXPECT_TRUE(
+      IsCrossOriginOnionRequest(initiator_origin, GURL("wss://bar.onion/")));
+  EXPECT_TRUE(
+      IsCrossOriginOnionRequest(initiator_origin, GURL("ws://foo.onion/")));
+  EXPECT_TRUE(IsCrossOriginOnionRequest(
+      initiator_origin.DeriveNewOpaqueOrigin(), GURL("https://foo.onion/")));
+
+  EXPECT_FALSE(
+      IsCrossOriginOnionRequest(initiator_origin, GURL("https://foo.onion/a")));
+  // This is false because IsCrossOriginOnionRequest internally maps ws:// and
+  // wss:// schemes to http:// and https:// schemes respectively and then
+  // perform cross origin checks with the initiator origin. The initiator origin
+  // in this case is https://foo.onion/
+  EXPECT_FALSE(
+      IsCrossOriginOnionRequest(initiator_origin, GURL("wss://foo.onion/a")));
+
+  const auto foo_https_site = url::Origin::Create(GURL("https://foo.com/"));
+  EXPECT_FALSE(
+      IsCrossOriginOnionRequest(foo_https_site, GURL("https://bar.onion/")));
+  EXPECT_FALSE(
+      IsCrossOriginOnionRequest(foo_https_site, GURL("wss://bar.com/")));
+  EXPECT_FALSE(IsCrossOriginOnionRequest(url::Origin(), GURL("https://a.com")));
+}
+
 }  // namespace
 }  // namespace net
