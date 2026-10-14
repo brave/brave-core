@@ -9,9 +9,12 @@
 
 #include <string>
 
+#include "base/functional/bind.h"
 #include "base/functional/callback_forward.h"
+#include "base/location.h"
 #include "base/notimplemented.h"
 #include "base/strings/sys_string_conversions.h"
+#include "base/task/single_thread_task_runner.h"
 #include "brave/ios/browser/api/web_view/autofill/brave_web_view_autofill_client.h"
 #include "components/autofill/core/browser/foundations/autofill_client.h"
 #include "components/autofill/core/browser/ui/payments/card_unmask_prompt_options.h"
@@ -300,6 +303,28 @@ using UserDecision = autofill::AutofillClient::AddressPromptUserDecision;
 
 - (void)didReceiveUnmaskOtpVerificationResult:
     (autofill::OtpUnmaskResult)unmaskResult {
+  NOTIMPLEMENTED();
+}
+
+- (BOOL)canAuthenticateUser {
+  // TODO(https://github.com/brave/brave-browser/issues/60051):
+  // Investigate if we should implement.
+  return NO;
+}
+
+- (void)authenticateUserWithReason:(NSString*)reason
+                        completion:(base::OnceCallback<void(bool)>)completion {
+  // Must never run synchronously.
+  base::SingleThreadTaskRunner::GetCurrentDefault()->PostTask(
+      FROM_HERE, base::BindOnce(std::move(completion), false));
+}
+
+- (BOOL)shouldRequireMandatoryReauth {
+  return NO;
+}
+
+- (void)showAutofillErrorDialogWithContext:
+    (const autofill::AutofillErrorDialogContext&)context {
   NOTIMPLEMENTED();
 }
 
