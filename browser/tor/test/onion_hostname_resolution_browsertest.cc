@@ -71,6 +71,12 @@ class OnionHostnameResolutionBrowserTest : public InProcessBrowserTest {
     tor::TorNavigationThrottle::SetSkipWaitForTorConnectedForTesting(true);
   }
 
+  void TearDownOnMainThread() override {
+    tor::TorNavigationThrottle::SetSkipWaitForTorConnectedForTesting(false);
+    net::ProxyConfigServiceTor::SetBypassTorProxyConfigForTesting(false);
+    InProcessBrowserTest::TearDownOnMainThread();
+  }
+
   void SetOnionOnlyInTorWindows(bool enabled) {
     browser()->GetProfile()->GetPrefs()->SetBoolean(
         tor::prefs::kOnionOnlyInTorWindows, enabled);
