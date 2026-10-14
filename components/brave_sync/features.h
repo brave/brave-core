@@ -13,6 +13,11 @@ namespace features {
 
 BASE_DECLARE_FEATURE(kBraveSync);
 BASE_DECLARE_FEATURE(kBraveSyncDefaultPasswords);
+BASE_DECLARE_FEATURE(kBraveAndroidSyncPasswordsInProfileStore);
+
+// Lets chromium_src overrides read the flag via a forward declaration, without
+// including this header into an upstream target.
+bool IsBraveAndroidSyncPasswordsInProfileStoreEnabled();
 
 }  // namespace features
 }  // namespace brave_sync
