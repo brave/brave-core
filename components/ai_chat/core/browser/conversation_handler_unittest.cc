@@ -349,6 +349,7 @@ class ConversationHandlerUnitTest : public testing::Test {
   // changed. The capability set is built in the constructor, which in
   // production always runs after the service has been configured.
   void RecreateConversationHandler() {
+    mock_tool_provider_ = nullptr;
     std::vector<std::unique_ptr<ToolProvider>> tool_providers;
     tool_providers.push_back(std::make_unique<NiceMock<MockToolProvider>>());
     conversation_handler_ = std::make_unique<ConversationHandler>(
