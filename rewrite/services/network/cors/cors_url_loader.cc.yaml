@@ -4,11 +4,23 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
+  - description: 'Add url_util.h for net::IsCrossOriginOnionRequest().'
+    regex:
+      pattern: '#include "net/base/request_priority.h"'
+      replace: |-
+        #include "net/base/request_priority.h"
+        #include "net/base/url_util.h"
+
   - description: |
       Send an opaque Origin header for cross-origin requests from .onion pages.
 
       A .onion page must not disclose the address it came from, which is the
       same treatment upstream already gives a request with a tainted origin.
     regex:
-      re_pattern: '(origin_value = )tainted_'
-      replace: '\1tainted_ || IsCrossOriginOnionRequest(request_)'
+      re_pattern: '(^[ ]*)(std::string origin_value = tainted_)'
+      re_flags: [MULTILINE]
+      replace: |-
+        \1const bool is_cross_origin_onion_request =
+              net::IsCrossOriginOnionRequest(*request_.request_initiator,
+                                             request_.url);
+        \1\2 || is_cross_origin_onion_request
