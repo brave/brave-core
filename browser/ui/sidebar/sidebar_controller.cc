@@ -287,11 +287,9 @@ void SidebarController::AddItemWithCurrentTab() {
   DCHECK(active_contents);
   const GURL url = active_contents->GetVisibleURL();
   const std::u16string title = active_contents->GetTitle();
-  GetSidebarService()->AddItem(SidebarItem::Create(
-      url, title, SidebarItem::Type::kTypeWeb,
-      SidebarItem::BuiltInItemType::kNone,
-      IsWebPanelFeatureEnabled() ? SidebarItem::PanelType::kWebPanel
-                                 : SidebarItem::PanelType::kNone));
+  GetSidebarService()->AddItem(IsWebPanelFeatureEnabled()
+                                   ? SidebarItem::CreateWebPanelItem(url, title)
+                                   : SidebarItem::CreateWebTabItem(url, title));
 }
 
 void SidebarController::HandleSidePanelOpened(SidePanelEntryId id) {

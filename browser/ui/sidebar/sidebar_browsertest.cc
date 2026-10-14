@@ -646,10 +646,8 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserWithWebPanelTest, WebPanelTest) {
     auto* sidebar_service =
         SidebarServiceFactory::GetForProfile(browser()->GetProfile());
     GURL item_url("http://foo.bar/");
-    sidebar_service->AddItem(sidebar::SidebarItem::Create(
-        item_url, u"title", SidebarItem::Type::kTypeWeb,
-        SidebarItem::BuiltInItemType::kNone,
-        SidebarItem::PanelType::kWebPanel));
+    sidebar_service->AddItem(
+        sidebar::SidebarItem::CreateWebPanelItem(item_url, u"title"));
     EXPECT_NE(tab_model()->GetActiveWebContents()->GetVisibleURL(), item_url);
     // Above item is added at last.
     controller()->OnItemPressed(sidebar_service->items().size() - 1);
@@ -839,9 +837,8 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, ItemAddedBubbleAnchorViewTest) {
 
   // Add item at last.
   item_added_bubble_anchor_ = nullptr;
-  sidebar_service->AddItem(sidebar::SidebarItem::Create(
-      GURL("http://foo.bar/"), u"title", SidebarItem::Type::kTypeWeb,
-      SidebarItem::BuiltInItemType::kNone, SidebarItem::PanelType::kNone));
+  sidebar_service->AddItem(sidebar::SidebarItem::CreateWebTabItem(
+      GURL("http://foo.bar/"), u"title"));
 
   // Check item is added at last and check that bubble is anchored to
   // it properly.
@@ -854,9 +851,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, ItemAddedBubbleAnchorViewTest) {
   // Add item at index 0.
   item_added_bubble_anchor_ = nullptr;
   sidebar_service->AddItemAtForTesting(
-      sidebar::SidebarItem::Create(
-          GURL("http://foo.bar/"), u"title", SidebarItem::Type::kTypeWeb,
-          SidebarItem::BuiltInItemType::kNone, SidebarItem::PanelType::kNone),
+      sidebar::SidebarItem::CreateWebTabItem(GURL("http://foo.bar/"), u"title"),
       0);
 
   // Check item is added at first and check that bubble is anchored to
@@ -917,9 +912,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, ItemAddedScrollTest) {
   // After inserting item at index 0, it should be visible as sidebar
   // scrolls to make that new item visible. So last item becomes invisible.
   sidebar_service->AddItemAtForTesting(
-      sidebar::SidebarItem::Create(
-          GURL("https://abcd"), u"title", SidebarItem::Type::kTypeWeb,
-          SidebarItem::BuiltInItemType::kNone, SidebarItem::PanelType::kNone),
+      sidebar::SidebarItem::CreateWebTabItem(GURL("https://abcd"), u"title"),
       0);
   WaitUntil(base::BindLambdaForTesting(
       [&]() { return !NeedScrollForItemAt(0, scroll_view); }));
@@ -930,9 +923,8 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, ItemAddedScrollTest) {
   // After inserting item at last, it should be visible as sidebar
   // scrolls to make that new item visible. So fisrt item becomes invisible.
   last_item_index++;
-  sidebar_service->AddItem(sidebar::SidebarItem::Create(
-      GURL("https://abcdefg"), u"title", SidebarItem::Type::kTypeWeb,
-      SidebarItem::BuiltInItemType::kNone, SidebarItem::PanelType::kNone));
+  sidebar_service->AddItem(sidebar::SidebarItem::CreateWebTabItem(
+      GURL("https://abcdefg"), u"title"));
   WaitUntil(base::BindLambdaForTesting(
       [&]() { return !NeedScrollForItemAt(last_item_index, scroll_view); }));
   EXPECT_TRUE(NeedScrollForItemAt(0, scroll_view));
@@ -1140,9 +1132,8 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithPlaylist, Incognito) {
   EXPECT_EQ(iter, items.end());
 
   // Try Adding an item
-  sidebar_service->AddItem(sidebar::SidebarItem::Create(
-      GURL("http://foo.bar/"), u"title", SidebarItem::Type::kTypeWeb,
-      SidebarItem::BuiltInItemType::kNone, SidebarItem::PanelType::kNone));
+  sidebar_service->AddItem(sidebar::SidebarItem::CreateWebTabItem(
+      GURL("http://foo.bar/"), u"title"));
 
   // Try moving an item
   sidebar_service->MoveItem(sidebar_service->items().size() - 1, 0);
@@ -2530,10 +2521,8 @@ IN_PROC_BROWSER_TEST_F(SidebarTorBrowserTest,
   // profile's favicon database, which is the normal case for a page that was
   // only visited over Tor.
   SidebarServiceFactory::GetForProfile(tor_profile)
-      ->AddItem(SidebarItem::Create(
-          embedded_test_server()->GetURL("tor-only.test", "/"), u"tor-only",
-          SidebarItem::Type::kTypeWeb, SidebarItem::BuiltInItemType::kNone,
-          SidebarItem::PanelType::kNone));
+      ->AddItem(SidebarItem::CreateWebTabItem(
+          embedded_test_server()->GetURL("tor-only.test", "/"), u"tor-only"));
 
   // Opening another Tor window builds a new SidebarModel, which fetches the
   // favicon of every stored item again.
@@ -2543,10 +2532,9 @@ IN_PROC_BROWSER_TEST_F(SidebarTorBrowserTest,
   // from the network. Waiting for it makes sure the favicon lookups had time
   // to run.
   SidebarServiceFactory::GetForProfile(browser()->GetProfile())
-      ->AddItem(SidebarItem::Create(
+      ->AddItem(SidebarItem::CreateWebTabItem(
           embedded_test_server()->GetURL("regular-only.test", "/"),
-          u"regular-only", SidebarItem::Type::kTypeWeb,
-          SidebarItem::BuiltInItemType::kNone, SidebarItem::PanelType::kNone));
+          u"regular-only"));
   WaitUntil(base::BindLambdaForTesting(
       [&]() { return regular_item_favicon_requests_ > 0; }));
 

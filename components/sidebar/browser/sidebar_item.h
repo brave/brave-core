@@ -78,16 +78,17 @@ struct SidebarItem {
 #endif
       ;
 
-  static SidebarItem Create(const std::u16string& title,
-                            Type type,
-                            BuiltInItemType built_in_item_type,
-                            PanelType panel_type);
+  // `url` is empty for built-in items that have no page of their own.
+  static SidebarItem CreateBuiltInItem(BuiltInItemType built_in_item_type,
+                                       const std::u16string& title,
+                                       PanelType panel_type,
+                                       const GURL& url = GURL());
 
-  static SidebarItem Create(const GURL& url,
-                            const std::u16string& title,
-                            Type type,
-                            BuiltInItemType built_in_item_type,
-                            PanelType panel_type);
+  // Custom items. Always kTypeWeb without a built-in item type.
+  static SidebarItem CreateWebPanelItem(const GURL& url,
+                                        const std::u16string& title);
+  static SidebarItem CreateWebTabItem(const GURL& url,
+                                      const std::u16string& title);
 
   SidebarItem();
   SidebarItem(const SidebarItem&);

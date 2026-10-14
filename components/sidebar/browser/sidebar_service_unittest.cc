@@ -318,10 +318,8 @@ TEST_F(SidebarServiceTest, AddRemoveItems) {
   EXPECT_EQ(default_item_count, service_->items().size());
   EXPECT_EQ(0UL, service_->GetHiddenDefaultSidebarItems().size());
 
-  const SidebarItem item2 = SidebarItem::Create(
-      GURL("https://www.brave.com/"), u"brave software",
-      SidebarItem::Type::kTypeWeb, SidebarItem::BuiltInItemType::kNone,
-      SidebarItem::PanelType::kNone);
+  const SidebarItem item2 = SidebarItem::CreateWebTabItem(
+      GURL("https://www.brave.com/"), u"brave software");
   EXPECT_TRUE(item2.is_web_type());
   EXPECT_CALL(observer_, OnItemAdded(item2, default_item_count)).Times(1);
   service_->AddItem(item2);
@@ -336,10 +334,8 @@ TEST_F(SidebarServiceTest, MoveItem) {
   InitService();
 
   // Add one more item to test.
-  SidebarItem new_item = SidebarItem::Create(
-      GURL("https://www.brave.com/"), u"brave software",
-      SidebarItem::Type::kTypeWeb, SidebarItem::BuiltInItemType::kNone,
-      SidebarItem::PanelType::kNone);
+  SidebarItem new_item = SidebarItem::CreateWebTabItem(
+      GURL("https://www.brave.com/"), u"brave software");
   service_->AddItem(new_item);
   const size_t items_count = service_->items().size();
   EXPECT_EQ(GetDefaultItemCount() + 1, items_count);
@@ -370,6 +366,34 @@ TEST_F(SidebarServiceTest, MoveItem) {
   item = service_->items()[mid_idx];
   service_->MoveItem(mid_idx, 1);
   EXPECT_EQ(item.url, service_->items()[1].url);
+}
+
+TEST(SidebarItemTest, Factories) {
+  const auto built_in = SidebarItem::CreateBuiltInItem(
+      SidebarItem::BuiltInItemType::kBookmarks, u"title",
+      SidebarItem::PanelType::kSidePanel);
+  EXPECT_TRUE(built_in.is_built_in_type());
+  EXPECT_EQ(SidebarItem::BuiltInItemType::kBookmarks,
+            built_in.built_in_item_type);
+  EXPECT_EQ(SidebarItem::PanelType::kSidePanel, built_in.panel_type);
+  EXPECT_TRUE(built_in.url.is_empty());
+  EXPECT_TRUE(built_in.IsValidItem());
+
+  const GURL url("https://abcd.com/");
+
+  const auto web_panel = SidebarItem::CreateWebPanelItem(url, u"title");
+  EXPECT_TRUE(web_panel.is_web_type());
+  EXPECT_EQ(SidebarItem::BuiltInItemType::kNone, web_panel.built_in_item_type);
+  EXPECT_EQ(SidebarItem::PanelType::kWebPanel, web_panel.panel_type);
+  EXPECT_EQ(url, web_panel.url);
+  EXPECT_TRUE(web_panel.IsValidItem());
+
+  const auto web_tab = SidebarItem::CreateWebTabItem(url, u"title");
+  EXPECT_TRUE(web_tab.is_web_type());
+  EXPECT_EQ(SidebarItem::BuiltInItemType::kNone, web_tab.built_in_item_type);
+  EXPECT_EQ(SidebarItem::PanelType::kNone, web_tab.panel_type);
+  EXPECT_FALSE(web_tab.opens_in_panel());
+  EXPECT_TRUE(web_tab.IsValidItem());
 }
 
 TEST(SidebarItemTest, SidebarItemValidation) {
@@ -481,10 +505,8 @@ TEST_F(SidebarServiceTest, MoveItemSavedToPrefs) {
 
   // Add one more item to test.
   const auto expected_item_count = GetDefaultItemCount() + 1;
-  SidebarItem new_item = SidebarItem::Create(
-      GURL("https://www.brave.com/"), u"brave software",
-      SidebarItem::Type::kTypeWeb, SidebarItem::BuiltInItemType::kNone,
-      SidebarItem::PanelType::kNone);
+  SidebarItem new_item = SidebarItem::CreateWebTabItem(
+      GURL("https://www.brave.com/"), u"brave software");
   service_->AddItem(new_item);
   EXPECT_EQ(expected_item_count, service_->items().size());
 
@@ -1382,18 +1404,18 @@ class SidebarServiceWithoutWebPanelTest : public SidebarServiceTest {
 TEST_F(SidebarServiceWithoutWebPanelTest, WebPanelItemTest) {
   InitService();
 
-  SidebarItem item = SidebarItem::Create(
-      GURL("https://www.brave.com/"), u"brave software",
-      SidebarItem::Type::kTypeWeb, SidebarItem::BuiltInItemType::kNone,
-      SidebarItem::PanelType::kNone);
-  EXPECT_TRUE(item.is_web_type());
-  service_->AddItem(item);
+  const GURL item_url("https://www.brave.com/");
+  const std::u16string item_title(u"brave software");
+
+  const auto tab_item = SidebarItem::CreateWebTabItem(item_url, item_title);
+  EXPECT_TRUE(tab_item.is_web_type());
+  service_->AddItem(tab_item);
   const int web_type_item_index = service_->items().size() - 1;
 
-  item.panel_type = SidebarItem::PanelType::kWebPanel;
-  EXPECT_FALSE(item.is_web_panel_type());
-  EXPECT_FALSE(item.opens_in_panel());
-  service_->AddItem(item);
+  const auto panel_item = SidebarItem::CreateWebPanelItem(item_url, item_title);
+  EXPECT_FALSE(panel_item.is_web_panel_type());
+  EXPECT_FALSE(panel_item.opens_in_panel());
+  service_->AddItem(panel_item);
   const int web_panel_type_item_index = web_type_item_index + 1;
 
   ResetService();
@@ -1441,18 +1463,18 @@ class SidebarServiceWithWebPanelTest : public SidebarServiceTest {
 TEST_F(SidebarServiceWithWebPanelTest, WebPanelItemTest) {
   InitService();
 
-  SidebarItem item = SidebarItem::Create(
-      GURL("https://www.brave.com/"), u"brave software",
-      SidebarItem::Type::kTypeWeb, SidebarItem::BuiltInItemType::kNone,
-      SidebarItem::PanelType::kNone);
-  EXPECT_TRUE(item.is_web_type());
-  service_->AddItem(item);
+  const GURL item_url("https://www.brave.com/");
+  const std::u16string item_title(u"brave software");
+
+  const auto tab_item = SidebarItem::CreateWebTabItem(item_url, item_title);
+  EXPECT_TRUE(tab_item.is_web_type());
+  service_->AddItem(tab_item);
   const int web_type_item_index = service_->items().size() - 1;
 
-  item.panel_type = SidebarItem::PanelType::kWebPanel;
-  EXPECT_TRUE(item.is_web_type());
-  EXPECT_TRUE(item.is_web_panel_type());
-  service_->AddItem(item);
+  const auto panel_item = SidebarItem::CreateWebPanelItem(item_url, item_title);
+  EXPECT_TRUE(panel_item.is_web_type());
+  EXPECT_TRUE(panel_item.is_web_panel_type());
+  service_->AddItem(panel_item);
   const int web_panel_type_item_index = web_type_item_index + 1;
 
   ResetService();
