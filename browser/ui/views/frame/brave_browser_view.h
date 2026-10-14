@@ -81,7 +81,6 @@ class TabStripPlacementCoordinator;
 class BraveVerticalTabStripContainerView;
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
-class WalletButton;
 #endif
 
 class BraveBrowserView : public BrowserView,
@@ -117,13 +116,6 @@ class BraveBrowserView : public BrowserView,
   gfx::Rect GetBoundingBoxInScreenForMouseOverHandling() const;
 
   void ShowBraveVPNBubble(bool show_select = false);
-#if BUILDFLAG(ENABLE_BRAVE_WALLET)
-  void CreateWalletBubble();
-  void CreateApproveWalletBubble();
-  void CloseWalletBubble();
-  WalletButton* GetWalletButton();
-  views::View* GetWalletButtonAnchorView();
-#endif
 
   // BrowserView overrides:
   void StartTabCycling() override;

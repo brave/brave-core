@@ -22,6 +22,7 @@
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
+#include "chrome/browser/ui/views/interaction/browser_elements_views.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_ink_drop_util.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
@@ -35,6 +36,7 @@
 #include "ui/gfx/paint_vector_icon.h"
 #include "ui/menus/simple_menu_model.h"
 #include "ui/views/controls/highlight_path_generator.h"
+#include "ui/views/view_class_properties.h"
 
 namespace {
 
@@ -118,6 +120,15 @@ const ui::ColorProvider* GetColorProviderForView(
 
 }  // namespace
 
+DEFINE_CLASS_ELEMENT_IDENTIFIER_VALUE(WalletButton, kWalletButtonElementId);
+
+// static
+WalletButton* WalletButton::From(BrowserWindowInterface* browser) {
+  auto* elements = BrowserElementsViews::From(browser);
+  return elements ? elements->GetViewAs<WalletButton>(kWalletButtonElementId)
+                  : nullptr;
+}
+
 WalletButton::WalletButton(View* backup_anchor_view, Profile* profile)
     : ToolbarButton(
           base::BindRepeating(&WalletButton::OnWalletPressed,
@@ -129,6 +140,7 @@ WalletButton::WalletButton(View* backup_anchor_view, Profile* profile)
       prefs_(profile->GetPrefs()),
       backup_anchor_view_(backup_anchor_view) {
   SetTooltipText(l10n_util::GetStringUTF16(IDS_TOOLTIP_WALLET));
+  SetProperty(views::kElementIdentifierKey, kWalletButtonElementId);
 
   // The MenuButtonController makes sure the panel closes when clicked if the
   // panel is already open.
