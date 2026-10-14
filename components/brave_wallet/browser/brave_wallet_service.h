@@ -14,6 +14,7 @@
 
 #include "base/callback_list.h"
 #include "base/containers/circular_deque.h"
+#include "base/functional/callback_forward.h"
 #include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
@@ -327,7 +328,8 @@ class BraveWalletService : public KeyedService,
   void AddSignMessageError(mojom::SignMessageErrorPtr error);
   void AddSuggestTokenRequest(mojom::AddSuggestTokenRequestPtr request,
                               mojom::EthereumProvider::RequestCallback callback,
-                              base::Value id);
+                              base::Value id,
+                              base::OnceClosure on_added);
   void AddGetPublicKeyRequest(const mojom::AccountIdPtr& account_id,
                               const url::Origin& origin,
                               mojom::EthereumProvider::RequestCallback callback,
@@ -479,6 +481,24 @@ class BraveWalletService : public KeyedService,
   bool SetUserAssetVisible(mojom::BlockchainTokenPtr token, bool visible);
   bool SetAssetSpamStatus(mojom::BlockchainTokenPtr token, bool is_spam);
   void OnNetworkChanged();
+  void QueueSuggestTokenRequest(
+      mojom::AddSuggestTokenRequestPtr request,
+      mojom::EthereumProvider::RequestCallback callback,
+      base::Value id,
+      base::OnceClosure on_added);
+  void OnGetSuggestedTokenDecimals(mojom::AddSuggestTokenRequestPtr request,
+                                   base::OnceClosure on_added,
+                                   const std::string& decimals,
+                                   mojom::ProviderError error,
+                                   const std::string& error_message);
+  void OnGetSuggestedTokenSymbol(mojom::AddSuggestTokenRequestPtr request,
+                                 base::OnceClosure on_added,
+                                 const std::string& symbol,
+                                 mojom::ProviderError error,
+                                 const std::string& error_message);
+  void RejectSuggestedTokenRequest(const std::string& contract_address,
+                                   mojom::ProviderError error,
+                                   const std::string& error_message);
   void CancelAllSuggestedTokenCallbacks();
   void CancelAllSignMessageCallbacks();
   void CancelAllSignSolTransactionsCallbacks();

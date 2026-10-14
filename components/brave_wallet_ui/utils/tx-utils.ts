@@ -32,7 +32,10 @@ import {
   getTypedSolanaTxInstructions,
   TypedSolanaInstructionWithParams,
 } from './solana-instruction-utils'
-import { findTokenByContractAddress } from './asset-utils'
+import {
+  findTokenByChainAndContractAddress,
+  findTokenByContractAddress,
+} from './asset-utils'
 import Amount from './amount'
 import { getCoinFromTxDataUnion, TxDataPresence } from './network-utils'
 import { toProperCase } from './string-utils'
@@ -582,10 +585,12 @@ export const findTransactionToken = <
     )
   }
 
-  // Solana Dapps, Filecoin & EVM
-  return findTokenByContractAddress(
-    // tx interacts with the contract address
+  // Solana Dapps, Filecoin & EVM. Match the chain too: the same contract
+  // address can be a watched asset with different decimals on another chain.
+  return findTokenByChainAndContractAddress(
     getTransactionInteractionAddress(tx),
+    tx.chainId,
+    tx.fromAccountId.coin,
     tokensList,
   )
 }
@@ -640,7 +645,12 @@ export const parseSwapInfo = ({
     swapInfo.sourceTokenAddress === NATIVE_EVM_ASSET_CONTRACT_ADDRESS
       ? sourceNativeAsset
       : swapInfo.sourceTokenAddress
-        ? findTokenByContractAddress(swapInfo.sourceTokenAddress, tokensList)
+        ? findTokenByChainAndContractAddress(
+            swapInfo.sourceTokenAddress,
+            swapInfo.sourceChainId,
+            swapInfo.sourceCoin,
+            tokensList,
+          )
           // token not found
           // return a "faked" coin (will need to "discover" it later)
           || ({
@@ -665,8 +675,10 @@ export const parseSwapInfo = ({
     swapInfo.destinationTokenAddress === NATIVE_EVM_ASSET_CONTRACT_ADDRESS
       ? destinationNativeAsset
       : swapInfo.destinationTokenAddress
-        ? findTokenByContractAddress(
+        ? findTokenByChainAndContractAddress(
             swapInfo.destinationTokenAddress,
+            swapInfo.destinationChainId,
+            swapInfo.destinationCoin,
             tokensList,
           )
           // token not found
