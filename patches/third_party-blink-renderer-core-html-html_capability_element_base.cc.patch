@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/html/html_capability_element_base.cc b/third_party/blink/renderer/core/html/html_capability_element_base.cc
-index 930c91365badafd2f2c599d4913dea520be5c065..cf0c7de52b92e87e14e28948b3b215729c0b9709 100644
+index c7e1bbfbfad29fb44f60bee027b4c02426b228d4..808ded2996d623eceb423bfb204e36e67c778c41 100644
 --- a/third_party/blink/renderer/core/html/html_capability_element_base.cc
 +++ b/third_party/blink/renderer/core/html/html_capability_element_base.cc
-@@ -697,9 +697,15 @@ bool HTMLCapabilityElementBase::MaybeRegisterPageEmbeddedPermissionControl() {
+@@ -709,6 +709,12 @@ bool HTMLCapabilityElementBase::MaybeRegisterPageEmbeddedPermissionControl() {
    embedded_permission_control_receiver_.Bind(
        client.InitWithNewPipeAndPassReceiver(), GetTaskRunner());
    CHECK(embedded_permission_control_receiver_.is_bound());
@@ -13,9 +13,14 @@ index 930c91365badafd2f2c599d4913dea520be5c065..cf0c7de52b92e87e14e28948b3b21572
 +    return false;
 +  }
    GetPermissionService()->RegisterPageEmbeddedPermissionControl(
-       mojo::Clone(permission_descriptors_),
--      CreateEmbeddedPermissionRequestDescriptor(), std::move(client));
-+      std::move(request_descriptor), std::move(client));
-   return true;
- }
+       mojo::Clone(permission_descriptors_), std::move(descriptor),
+       std::move(client));
+@@ -1145,7 +1151,7 @@ void HTMLCapabilityElementBase::RequestPageEmbededPermissions() {
+   CHECK_LE(permission_descriptors_.size(), 2U);
+   pending_request_created_ = base::TimeTicks::Now();
  
+-  // `CreateEmbeddedPermissionRequestDescriptor()` forces a synchronous layout
++  // `std::move(request_descriptor)` forces a synchronous layout
+   // update, which may detach the frame or make the element unrendered.
+   auto descriptor = CreateEmbeddedPermissionRequestDescriptor();
+   if (!GetDocument().GetFrame() || !IsRendered()) {

@@ -1,8 +1,8 @@
 diff --git a/net/cookies/cookie_monster.cc b/net/cookies/cookie_monster.cc
-index e8e83353e74b95c076b313d255e6a21fddb4ae04..22742c40fda0f8997dda81a62f53a7ccf79cdddb 100644
+index 5496af44be90bc7f04361be2c2752c33fd06adb0..15d65d40c1cb664059d188c0530a3a7e7518405c 100644
 --- a/net/cookies/cookie_monster.cc
 +++ b/net/cookies/cookie_monster.cc
-@@ -147,7 +147,7 @@ enum CookieType {
+@@ -148,7 +148,7 @@ enum CookieType {
    COOKIE_TYPE_LAST_ENTRY
  };
  
@@ -11,7 +11,7 @@ index e8e83353e74b95c076b313d255e6a21fddb4ae04..22742c40fda0f8997dda81a62f53a7cc
                              base::OnceClosure callback) {
    if (cookie_monster && callback)
      std::move(callback).Run();
-@@ -176,7 +176,7 @@ bool IncludeUnpartitionedCookies(
+@@ -177,7 +177,7 @@ bool IncludeUnpartitionedCookies(
  }
  
  size_t NumBytesInCookieMapForKey(
@@ -20,7 +20,7 @@ index e8e83353e74b95c076b313d255e6a21fddb4ae04..22742c40fda0f8997dda81a62f53a7cc
      const std::string& key) {
    size_t result = 0;
    auto range = cookie_map.equal_range(key);
-@@ -187,7 +187,7 @@ size_t NumBytesInCookieMapForKey(
+@@ -188,7 +188,7 @@ size_t NumBytesInCookieMapForKey(
  }
  
  size_t NumBytesInCookieItVector(
@@ -29,7 +29,7 @@ index e8e83353e74b95c076b313d255e6a21fddb4ae04..22742c40fda0f8997dda81a62f53a7cc
    size_t result = 0;
    for (const auto& it : cookie_its) {
      result += net::cookie_util::NameValueSizeBytes(*it->second);
-@@ -219,23 +219,23 @@ namespace net {
+@@ -220,23 +220,23 @@ namespace net {
  
  // See comments at declaration of these variables in cookie_monster.h
  // for details.
@@ -64,7 +64,7 @@ index e8e83353e74b95c076b313d255e6a21fddb4ae04..22742c40fda0f8997dda81a62f53a7cc
  
  namespace {
  
-@@ -252,14 +252,14 @@ const int kDefaultAccessUpdateThresholdSeconds = 60;
+@@ -253,14 +253,14 @@ const int kDefaultAccessUpdateThresholdSeconds = 60;
  // Comparator to sort cookies from highest creation date to lowest
  // creation date.
  struct OrderByCreationTimeDesc {
@@ -83,7 +83,7 @@ index e8e83353e74b95c076b313d255e6a21fddb4ae04..22742c40fda0f8997dda81a62f53a7cc
    if (it1->second->LastAccessDate() != it2->second->LastAccessDate())
      return it1->second->LastAccessDate() < it2->second->LastAccessDate();
  
-@@ -269,8 +269,8 @@ bool LRACookieSorter(const CookieMonster::CookieMap::iterator& it1,
+@@ -270,8 +270,8 @@ bool LRACookieSorter(const CookieMonster::CookieMap::iterator& it1,
  
  // For a CookieItVector iterator range [|it_begin|, |it_end|),
  // sorts the first |num_sort| elements by LastAccessDate().
@@ -94,7 +94,7 @@ index e8e83353e74b95c076b313d255e6a21fddb4ae04..22742c40fda0f8997dda81a62f53a7cc
                                 size_t num_sort) {
    DCHECK_LE(static_cast<int>(num_sort), it_end - it_begin);
    std::partial_sort(it_begin, it_begin + num_sort, it_end, LRACookieSorter);
-@@ -281,9 +281,9 @@ void SortLeastRecentlyAccessed(CookieMonster::CookieItVector::iterator it_begin,
+@@ -282,9 +282,9 @@ void SortLeastRecentlyAccessed(CookieMonster::CookieItVector::iterator it_begin,
  // |non_secure_cookie_its|. Both |secure_cookie_its| and |non_secure_cookie_its|
  // must be non-NULL.
  void SplitCookieVectorIntoSecureAndNonSecure(
@@ -107,7 +107,7 @@ index e8e83353e74b95c076b313d255e6a21fddb4ae04..22742c40fda0f8997dda81a62f53a7cc
    DCHECK(secure_cookie_its && non_secure_cookie_its);
    for (const auto& curit : cookie_its) {
      if (curit->second->SecureAttribute()) {
-@@ -294,7 +294,7 @@ void SplitCookieVectorIntoSecureAndNonSecure(
+@@ -295,7 +295,7 @@ void SplitCookieVectorIntoSecureAndNonSecure(
    }
  }
  
@@ -116,7 +116,7 @@ index e8e83353e74b95c076b313d255e6a21fddb4ae04..22742c40fda0f8997dda81a62f53a7cc
                                      Time access_date) {
    return it->second->LastAccessDate() < access_date;
  }
-@@ -303,9 +303,9 @@ bool LowerBoundAccessDateComparator(const CookieMonster::CookieMap::iterator it,
+@@ -304,9 +304,9 @@ bool LowerBoundAccessDateComparator(const CookieMonster::CookieMap::iterator it,
  // from a CookieItVector sorted by LastAccessDate(), returns the
  // first iterator with access date >= |access_date|, or cookie_its_end if this
  // holds for all.
@@ -129,7 +129,7 @@ index e8e83353e74b95c076b313d255e6a21fddb4ae04..22742c40fda0f8997dda81a62f53a7cc
      Time access_date) {
    return std::lower_bound(its_begin, its_end, access_date,
                            LowerBoundAccessDateComparator);
-@@ -364,7 +364,7 @@ bool IsCookieEligibleForEviction(CookiePriority current_priority_level,
+@@ -365,7 +365,7 @@ bool IsCookieEligibleForEviction(CookiePriority current_priority_level,
  
  size_t CountCookiesForPossibleDeletion(
      CookiePriority priority,
@@ -138,7 +138,7 @@ index e8e83353e74b95c076b313d255e6a21fddb4ae04..22742c40fda0f8997dda81a62f53a7cc
      bool protect_secure_cookies) {
    size_t cookies_count = 0U;
    for (const auto& cookie : cookies) {
-@@ -378,8 +378,8 @@ size_t CountCookiesForPossibleDeletion(
+@@ -379,8 +379,8 @@ size_t CountCookiesForPossibleDeletion(
  }
  
  struct DeletionCookieLists {
@@ -149,7 +149,7 @@ index e8e83353e74b95c076b313d255e6a21fddb4ae04..22742c40fda0f8997dda81a62f53a7cc
  };
  
  // Performs 2 tasks
-@@ -390,7 +390,7 @@ struct DeletionCookieLists {
+@@ -391,7 +391,7 @@ struct DeletionCookieLists {
  size_t CountCookiesAndGenerateListsForPossibleDeletion(
      CookiePriority priority,
      DeletionCookieLists& could_be_deleted,
@@ -158,7 +158,7 @@ index e8e83353e74b95c076b313d255e6a21fddb4ae04..22742c40fda0f8997dda81a62f53a7cc
      bool generate_for_secure) {
    size_t total_cookies_at_priority = 0;
  
-@@ -425,7 +425,7 @@ size_t CountCookiesAndGenerateListsForPossibleDeletion(
+@@ -426,7 +426,7 @@ size_t CountCookiesAndGenerateListsForPossibleDeletion(
  // in `cookies`.
  DeletionCookieLists
  CountCookiesAndGenerateListsForPossibleDeletionPartitionedCookies(
@@ -167,7 +167,7 @@ index e8e83353e74b95c076b313d255e6a21fddb4ae04..22742c40fda0f8997dda81a62f53a7cc
    DeletionCookieLists could_be_deleted;
    for (auto list_it = cookies.begin(); list_it != cookies.end(); list_it++) {
      const auto cookiemap_it = *list_it;
-@@ -464,16 +464,16 @@ void RecordPersistanceHistograms(const CanonicalCookie& cookie,
+@@ -465,16 +465,16 @@ void RecordPersistanceHistograms(const CanonicalCookie& cookie,
  
  }  // namespace
  
@@ -187,7 +187,7 @@ index e8e83353e74b95c076b313d255e6a21fddb4ae04..22742c40fda0f8997dda81a62f53a7cc
                               scoped_refptr<PersistentCookieStore> store,
                               base::TimeDelta last_access_threshold,
                               NetLog* net_log,
-@@ -491,19 +491,19 @@ CookieMonster::CookieMonster(base::PassKey<CookieMonster>,
+@@ -492,19 +492,19 @@ CookieMonster::CookieMonster(base::PassKey<CookieMonster>,
  }
  
  // static
@@ -211,7 +211,7 @@ index e8e83353e74b95c076b313d255e6a21fddb4ae04..22742c40fda0f8997dda81a62f53a7cc
    DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
  
    if (initialized_ && store_.get()) {
-@@ -514,24 +514,24 @@ void CookieMonster::FlushStore(base::OnceClosure callback) {
+@@ -515,24 +515,24 @@ void CookieMonster::FlushStore(base::OnceClosure callback) {
    }
  }
  
@@ -240,7 +240,7 @@ index e8e83353e74b95c076b313d255e6a21fddb4ae04..22742c40fda0f8997dda81a62f53a7cc
      std::unique_ptr<CanonicalCookie> cookie,
      const GURL& source_url,
      const CookieOptions& options,
-@@ -548,13 +548,13 @@ void CookieMonster::SetCanonicalCookieAsync(
+@@ -549,13 +549,13 @@ void CookieMonster::SetCanonicalCookieAsync(
            // base::Unretained is safe as DoCookieCallbackForHostOrDomain stores
            // the callback on |*this|, so the callback will not outlive
            // the object.
@@ -256,7 +256,7 @@ index e8e83353e74b95c076b313d255e6a21fddb4ae04..22742c40fda0f8997dda81a62f53a7cc
      std::unique_ptr<CanonicalCookie> cookie,
      SetCookiesCallback callback) {
    CanonicalCookie::CanonicalizationResult result = cookie->IsCanonical();
-@@ -566,12 +566,12 @@ void CookieMonster::SetUnsafeCanonicalCookieForTestAsync(
+@@ -567,12 +567,12 @@ void CookieMonster::SetUnsafeCanonicalCookieForTestAsync(
            // base::Unretained is safe as DoCookieCallbackForHostOrDomain stores
            // the callback on |*this|, so the callback will not outlive
            // the object.
@@ -271,7 +271,7 @@ index e8e83353e74b95c076b313d255e6a21fddb4ae04..22742c40fda0f8997dda81a62f53a7cc
      const GURL& url,
      const CookieOptions& options,
      const CookiePartitionKeyCollection& cookie_partition_key_collection,
-@@ -583,67 +583,67 @@ void CookieMonster::GetCookieListWithOptionsAsync(
+@@ -584,38 +584,38 @@ void CookieMonster::GetCookieListWithOptionsAsync(
            // base::Unretained is safe as DoCookieCallbackForURL stores
            // the callback on |*this|, so the callback will not outlive
            // the object.
@@ -309,13 +309,17 @@ index e8e83353e74b95c076b313d255e6a21fddb4ae04..22742c40fda0f8997dda81a62f53a7cc
 -void CookieMonster::DeleteCanonicalCookieAsync(const CanonicalCookie& cookie,
 +void CookieMonster_ChromiumImpl::DeleteCanonicalCookieAsync(const CanonicalCookie& cookie,
                                                 DeleteCallback callback) {
-   DoCookieCallback(base::BindOnce(
+   auto delete_callback = base::BindOnce(
        // base::Unretained is safe as DoCookieCallback stores
        // the callback on |*this|, so the callback will not outlive
        // the object.
 -      &CookieMonster::DeleteCanonicalCookie, base::Unretained(this), cookie,
 +      &CookieMonster_ChromiumImpl::DeleteCanonicalCookie, base::Unretained(this), cookie,
-       std::move(callback)));
+       std::move(callback));
+   if (base::FeatureList::IsEnabled(features::kCookieMonsterPerKeyDelete)) {
+     // `DeleteCanonicalCookie` only inspects
+@@ -631,18 +631,18 @@ void CookieMonster::DeleteCanonicalCookieAsync(const CanonicalCookie& cookie,
+   DoCookieCallback(std::move(delete_callback));
  }
  
 -void CookieMonster::DeleteAllCreatedInTimeRangeAsync(
@@ -334,18 +338,26 @@ index e8e83353e74b95c076b313d255e6a21fddb4ae04..22742c40fda0f8997dda81a62f53a7cc
 -void CookieMonster::DeleteAllMatchingInfoAsync(CookieDeletionInfo delete_info,
 +void CookieMonster_ChromiumImpl::DeleteAllMatchingInfoAsync(CookieDeletionInfo delete_info,
                                                 DeleteCallback callback) {
+   std::optional<std::string> key =
+       delete_info.SingleMatchingRegistrableDomain();
+@@ -651,13 +651,13 @@ void CookieMonster::DeleteAllMatchingInfoAsync(CookieDeletionInfo delete_info,
+       key.has_value());
+ 
    auto cookie_matcher =
 -      base::BindRepeating(&CookieMonster::MatchCookieDeletionInfo,
 +      base::BindRepeating(&CookieMonster_ChromiumImpl::MatchCookieDeletionInfo,
                            base::Unretained(this), std::move(delete_info));
- 
-   DoCookieCallback(base::BindOnce(
+   auto delete_callback = base::BindOnce(
        // base::Unretained is safe as DoCookieCallback stores
        // the callback on |*this|, so the callback will not outlive
        // the object.
 -      &CookieMonster::DeleteMatchingCookies, base::Unretained(this),
 +      &CookieMonster_ChromiumImpl::DeleteMatchingCookies, base::Unretained(this),
-       std::move(cookie_matcher), DELETE_COOKIE_EXPLICIT, std::move(callback)));
+       std::move(cookie_matcher), DELETE_COOKIE_EXPLICIT, std::move(callback));
+ 
+   if (key.has_value() &&
+@@ -668,7 +668,7 @@ void CookieMonster::DeleteAllMatchingInfoAsync(CookieDeletionInfo delete_info,
+   DoCookieCallback(std::move(delete_callback));
  }
  
 -void CookieMonster::DeleteSessionCookiesAsync(
@@ -353,7 +365,7 @@ index e8e83353e74b95c076b313d255e6a21fddb4ae04..22742c40fda0f8997dda81a62f53a7cc
      CookieStore::DeleteCallback callback) {
    auto session_cookie_matcher =
        base::BindRepeating([](const net::CanonicalCookie& cookie) {
-@@ -653,23 +653,23 @@ void CookieMonster::DeleteSessionCookiesAsync(
+@@ -678,23 +678,23 @@ void CookieMonster::DeleteSessionCookiesAsync(
        // base::Unretained is safe as DoCookieCallback stores
        // the callback on |*this|, so the callback will not outlive
        // the object.
@@ -381,7 +393,7 @@ index e8e83353e74b95c076b313d255e6a21fddb4ae04..22742c40fda0f8997dda81a62f53a7cc
      std::vector<std::string> schemes,
      SetCookieableSchemesCallback callback) {
    DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
-@@ -686,7 +686,7 @@ void CookieMonster::SetCookieableSchemes(
+@@ -711,7 +711,7 @@ void CookieMonster::SetCookieableSchemes(
  }
  
  // This function must be called before the CookieMonster is used.
@@ -390,7 +402,7 @@ index e8e83353e74b95c076b313d255e6a21fddb4ae04..22742c40fda0f8997dda81a62f53a7cc
    DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
    DCHECK(!initialized_);
    net_log_.AddEntryWithBoolParams(
-@@ -696,21 +696,21 @@ void CookieMonster::SetPersistSessionCookies(bool persist_session_cookies) {
+@@ -721,21 +721,21 @@ void CookieMonster::SetPersistSessionCookies(bool persist_session_cookies) {
  }
  
  // static
@@ -416,7 +428,7 @@ index e8e83353e74b95c076b313d255e6a21fddb4ae04..22742c40fda0f8997dda81a62f53a7cc
                                   const CanonicalCookie* cc2) {
    // Mozilla sorts on the path length (longest first), and then it sorts by
    // creation time (oldest first).  The RFC says the sort order for the domain
-@@ -720,7 +720,7 @@ bool CookieMonster::CookieSorter(const CanonicalCookie* cc1,
+@@ -745,7 +745,7 @@ bool CookieMonster::CookieSorter(const CanonicalCookie* cc1,
    return cc1->Path().length() > cc2->Path().length();
  }
  
@@ -425,7 +437,7 @@ index e8e83353e74b95c076b313d255e6a21fddb4ae04..22742c40fda0f8997dda81a62f53a7cc
    DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
  
    // This function is being called to scrape the cookie list for management UI
-@@ -757,7 +757,7 @@ void CookieMonster::GetAllCookies(GetAllCookiesCallback callback) {
+@@ -782,7 +782,7 @@ void CookieMonster::GetAllCookies(GetAllCookiesCallback callback) {
    MaybeRunCookieCallback(std::move(callback), cookie_list);
  }
  
@@ -434,7 +446,7 @@ index e8e83353e74b95c076b313d255e6a21fddb4ae04..22742c40fda0f8997dda81a62f53a7cc
      GetAllCookiesWithAccessSemanticsCallback callback,
      const CookieList& cookie_list) {
    std::vector<CookieAccessSemantics> access_semantics_list;
-@@ -768,7 +768,7 @@ void CookieMonster::AttachAccessSemanticsListForCookieList(
+@@ -793,7 +793,7 @@ void CookieMonster::AttachAccessSemanticsListForCookieList(
                           access_semantics_list);
  }
  
@@ -443,7 +455,7 @@ index e8e83353e74b95c076b313d255e6a21fddb4ae04..22742c40fda0f8997dda81a62f53a7cc
      const GURL& url,
      const CookieOptions& options,
      const CookiePartitionKeyCollection& cookie_partition_key_collection,
-@@ -834,7 +834,7 @@ void CookieMonster::GetCookieListWithOptions(
+@@ -859,7 +859,7 @@ void CookieMonster::GetCookieListWithOptions(
    }
  }
  
@@ -452,7 +464,7 @@ index e8e83353e74b95c076b313d255e6a21fddb4ae04..22742c40fda0f8997dda81a62f53a7cc
                                                  DeleteCallback callback) {
    DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
  
-@@ -881,7 +881,7 @@ void CookieMonster::DeleteAllCreatedInTimeRange(const TimeRange& creation_range,
+@@ -906,7 +906,7 @@ void CookieMonster::DeleteAllCreatedInTimeRange(const TimeRange& creation_range,
                                : base::OnceClosure()));
  }
  
@@ -461,7 +473,7 @@ index e8e83353e74b95c076b313d255e6a21fddb4ae04..22742c40fda0f8997dda81a62f53a7cc
      const CookieDeletionInfo& delete_info,
      const net::CanonicalCookie& cookie) {
    bool delegate_treats_url_as_trustworthy = false;  // irrelevant if no URL.
-@@ -899,7 +899,7 @@ bool CookieMonster::MatchCookieDeletionInfo(
+@@ -924,7 +924,7 @@ bool CookieMonster::MatchCookieDeletionInfo(
                           delegate_treats_url_as_trustworthy});
  }
  
@@ -469,9 +481,9 @@ index e8e83353e74b95c076b313d255e6a21fddb4ae04..22742c40fda0f8997dda81a62f53a7cc
 +void CookieMonster_ChromiumImpl::DeleteCanonicalCookie(const CanonicalCookie& cookie,
                                            DeleteCallback callback) {
    DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
-   uint32_t result = 0u;
-@@ -941,7 +941,7 @@ void CookieMonster::DeleteCanonicalCookie(const CanonicalCookie& cookie,
-                               : base::OnceClosure()));
+   base::ElapsedTimer timer;
+@@ -970,7 +970,7 @@ void CookieMonster::DeleteCanonicalCookie(const CanonicalCookie& cookie,
+       base::Microseconds(1), base::Milliseconds(128), 100);
  }
  
 -void CookieMonster::DeleteMatchingCookies(DeletePredicate predicate,
@@ -479,7 +491,7 @@ index e8e83353e74b95c076b313d255e6a21fddb4ae04..22742c40fda0f8997dda81a62f53a7cc
                                            DeletionCause cause,
                                            DeleteCallback callback) {
    DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
-@@ -985,12 +985,12 @@ void CookieMonster::DeleteMatchingCookies(DeletePredicate predicate,
+@@ -1014,12 +1014,12 @@ void CookieMonster::DeleteMatchingCookies(DeletePredicate predicate,
                                : base::OnceClosure()));
  }
  
@@ -494,7 +506,7 @@ index e8e83353e74b95c076b313d255e6a21fddb4ae04..22742c40fda0f8997dda81a62f53a7cc
    DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
    if (store_.get() && !started_fetching_all_cookies_) {
      started_fetching_all_cookies_ = true;
-@@ -998,7 +998,7 @@ void CookieMonster::FetchAllCookiesIfNecessary() {
+@@ -1027,7 +1027,7 @@ void CookieMonster::FetchAllCookiesIfNecessary() {
    }
  }
  
@@ -503,7 +515,7 @@ index e8e83353e74b95c076b313d255e6a21fddb4ae04..22742c40fda0f8997dda81a62f53a7cc
    DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
    DCHECK(store_.get()) << "Store must exist to initialize";
    DCHECK(!finished_fetching_all_cookies_)
-@@ -1006,12 +1006,12 @@ void CookieMonster::FetchAllCookies() {
+@@ -1035,12 +1035,12 @@ void CookieMonster::FetchAllCookies() {
  
    // We bind in the current time so that we can report the wall-clock time for
    // loading cookies.
@@ -518,7 +530,7 @@ index e8e83353e74b95c076b313d255e6a21fddb4ae04..22742c40fda0f8997dda81a62f53a7cc
      TimeTicks beginning_time,
      std::vector<std::unique_ptr<CanonicalCookie>> cookies) {
    DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
-@@ -1033,7 +1033,7 @@ void CookieMonster::OnLoaded(
+@@ -1062,7 +1062,7 @@ void CookieMonster::OnLoaded(
    InvokeQueue();
  }
  
@@ -527,7 +539,7 @@ index e8e83353e74b95c076b313d255e6a21fddb4ae04..22742c40fda0f8997dda81a62f53a7cc
      const std::string& key,
      std::vector<std::unique_ptr<CanonicalCookie>> cookies) {
    DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
-@@ -1061,7 +1061,7 @@ void CookieMonster::OnKeyLoaded(
+@@ -1090,7 +1090,7 @@ void CookieMonster::OnKeyLoaded(
    keys_loaded_.insert(key);
  }
  
@@ -536,7 +548,7 @@ index e8e83353e74b95c076b313d255e6a21fddb4ae04..22742c40fda0f8997dda81a62f53a7cc
      std::vector<std::unique_ptr<CanonicalCookie>> cookies) {
    DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
  
-@@ -1126,7 +1126,7 @@ void CookieMonster::StoreLoadedCookies(
+@@ -1155,7 +1155,7 @@ void CookieMonster::StoreLoadedCookies(
    EnsureCookiesMapIsValid();
  }
  
@@ -545,7 +557,7 @@ index e8e83353e74b95c076b313d255e6a21fddb4ae04..22742c40fda0f8997dda81a62f53a7cc
    DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
  
    // Move all per-key tasks into the global queue, if there are any.  This is
-@@ -1155,7 +1155,7 @@ void CookieMonster::InvokeQueue() {
+@@ -1184,7 +1184,7 @@ void CookieMonster::InvokeQueue() {
    keys_loaded_.clear();
  }
  
@@ -554,7 +566,7 @@ index e8e83353e74b95c076b313d255e6a21fddb4ae04..22742c40fda0f8997dda81a62f53a7cc
    DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
  
    // Iterate through all the of the cookies, grouped by host.
-@@ -1197,7 +1197,7 @@ void CookieMonster::EnsureCookiesMapIsValid() {
+@@ -1226,7 +1226,7 @@ void CookieMonster::EnsureCookiesMapIsValid() {
  // (2) For each list with more than 1 entry, keep the cookie having the
  //     most recent creation time, and delete the others.
  //
@@ -563,7 +575,7 @@ index e8e83353e74b95c076b313d255e6a21fddb4ae04..22742c40fda0f8997dda81a62f53a7cc
      const std::string& key,
      CookieMap::iterator begin,
      CookieMap::iterator end,
-@@ -1284,10 +1284,10 @@ void CookieMonster::TrimDuplicateCookiesForKey(
+@@ -1313,10 +1313,10 @@ void CookieMonster::TrimDuplicateCookiesForKey(
  }
  
  std::vector<CanonicalCookie*>
@@ -576,7 +588,7 @@ index e8e83353e74b95c076b313d255e6a21fddb4ae04..22742c40fda0f8997dda81a62f53a7cc
    DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
  
    if (!cookie_map)
-@@ -1323,7 +1323,7 @@ CookieMonster::FindCookiesForRegistryControlledHost(
+@@ -1352,7 +1352,7 @@ CookieMonster::FindCookiesForRegistryControlledHost(
  }
  
  std::vector<CanonicalCookie*>
@@ -585,7 +597,7 @@ index e8e83353e74b95c076b313d255e6a21fddb4ae04..22742c40fda0f8997dda81a62f53a7cc
      const CookiePartitionKey& cookie_partition_key,
      const GURL& url) {
    DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
-@@ -1336,7 +1336,7 @@ CookieMonster::FindPartitionedCookiesForRegistryControlledHost(
+@@ -1365,7 +1365,7 @@ CookieMonster::FindPartitionedCookiesForRegistryControlledHost(
    return FindCookiesForRegistryControlledHost(url, it->second.get(), &it);
  }
  
@@ -594,7 +606,7 @@ index e8e83353e74b95c076b313d255e6a21fddb4ae04..22742c40fda0f8997dda81a62f53a7cc
      const GURL& url,
      const CookieOptions& options,
      const CookiePartitionKeyCollection& cookie_partition_key_collection,
-@@ -1478,8 +1478,8 @@ void CookieMonster::FilterCookiesWithOptions(
+@@ -1507,8 +1507,8 @@ void CookieMonster::FilterCookiesWithOptions(
    }
  }
  
@@ -605,7 +617,7 @@ index e8e83353e74b95c076b313d255e6a21fddb4ae04..22742c40fda0f8997dda81a62f53a7cc
      const std::string& key,
      const CanonicalCookie& cookie_being_set,
      bool allowed_to_set_secure_cookie,
-@@ -1613,7 +1613,7 @@ CookieMonster::MaybeDeleteEquivalentCookieAndUpdateStatus(
+@@ -1642,7 +1642,7 @@ CookieMonster::MaybeDeleteEquivalentCookieAndUpdateStatus(
  }
  
  // static
@@ -614,7 +626,7 @@ index e8e83353e74b95c076b313d255e6a21fddb4ae04..22742c40fda0f8997dda81a62f53a7cc
      CookieChangeObservability observability) {
    switch (observability) {
      case CookieChangeObservability::kWebObservable:
-@@ -1627,9 +1627,9 @@ CookieChangeCause CookieMonster::ToCookieChangeCause(
+@@ -1656,9 +1656,9 @@ CookieChangeCause CookieMonster::ToCookieChangeCause(
                 << static_cast<int>(observability);
  }
  
@@ -627,7 +639,7 @@ index e8e83353e74b95c076b313d255e6a21fddb4ae04..22742c40fda0f8997dda81a62f53a7cc
                                      std::unique_ptr<CanonicalCookie> cc,
                                      bool sync_to_store,
                                      const CookieAccessResult& access_result,
-@@ -1714,11 +1714,11 @@ CookieMonster::InternalInsertCookie(const std::string& key,
+@@ -1743,11 +1743,11 @@ CookieMonster::InternalInsertCookie(const std::string& key,
    return inserted;
  }
  
@@ -641,7 +653,7 @@ index e8e83353e74b95c076b313d255e6a21fddb4ae04..22742c40fda0f8997dda81a62f53a7cc
      std::unique_ptr<CanonicalCookie> cc,
      const GURL& source_url,
      const CookieOptions& options,
-@@ -1867,7 +1867,7 @@ void CookieMonster::SetCanonicalCookie(
+@@ -1896,7 +1896,7 @@ void CookieMonster::SetCanonicalCookie(
    MaybeRunCookieCallback(std::move(callback), access_result);
  }
  
@@ -650,7 +662,7 @@ index e8e83353e74b95c076b313d255e6a21fddb4ae04..22742c40fda0f8997dda81a62f53a7cc
                                    SetCookiesCallback callback) {
    DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
  
-@@ -1909,7 +1909,7 @@ void CookieMonster::SetAllCookies(CookieList list,
+@@ -1938,7 +1938,7 @@ void CookieMonster::SetAllCookies(CookieList list,
    MaybeRunCookieCallback(std::move(callback), CookieAccessResult());
  }
  
@@ -659,7 +671,7 @@ index e8e83353e74b95c076b313d255e6a21fddb4ae04..22742c40fda0f8997dda81a62f53a7cc
      std::unique_ptr<CanonicalCookie> cc,
      SetCookiesCallback callback) {
    DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
-@@ -1930,7 +1930,7 @@ void CookieMonster::SetUnsafeCanonicalCookieForTest(
+@@ -1959,7 +1959,7 @@ void CookieMonster::SetUnsafeCanonicalCookieForTest(
    MaybeRunCookieCallback(std::move(callback), access_result);
  }
  
@@ -668,7 +680,7 @@ index e8e83353e74b95c076b313d255e6a21fddb4ae04..22742c40fda0f8997dda81a62f53a7cc
                                                     Time current) {
    DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
  
-@@ -1949,7 +1949,7 @@ void CookieMonster::InternalUpdateCookieAccessTime(CanonicalCookie& cc,
+@@ -1978,7 +1978,7 @@ void CookieMonster::InternalUpdateCookieAccessTime(CanonicalCookie& cc,
  
  // InternalDeleteCookies must not invalidate iterators other than the one being
  // deleted.
@@ -677,7 +689,7 @@ index e8e83353e74b95c076b313d255e6a21fddb4ae04..22742c40fda0f8997dda81a62f53a7cc
                                           bool sync_to_store,
                                           DeletionCause deletion_cause) {
    DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
-@@ -2004,7 +2004,7 @@ void CookieMonster::InternalDeleteCookie(CookieMap::iterator it,
+@@ -2033,7 +2033,7 @@ void CookieMonster::InternalDeleteCookie(CookieMap::iterator it,
    cookies_.erase(it);
  }
  
@@ -686,7 +698,7 @@ index e8e83353e74b95c076b313d255e6a21fddb4ae04..22742c40fda0f8997dda81a62f53a7cc
      PartitionedCookieMap::iterator partition_it,
      CookieMap::iterator cookie_it,
      bool sync_to_store,
-@@ -2071,7 +2071,7 @@ void CookieMonster::InternalDeletePartitionedCookie(
+@@ -2100,7 +2100,7 @@ void CookieMonster::InternalDeletePartitionedCookie(
  
  // Domain expiry behavior is unchanged by key/expiry scheme (the
  // meaning of the key is different, but that's not visible to this routine).
@@ -695,7 +707,7 @@ index e8e83353e74b95c076b313d255e6a21fddb4ae04..22742c40fda0f8997dda81a62f53a7cc
    DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
  
    size_t num_deleted = 0;
-@@ -2252,7 +2252,7 @@ size_t CookieMonster::GarbageCollect(Time current, const std::string& key) {
+@@ -2281,7 +2281,7 @@ size_t CookieMonster::GarbageCollect(Time current, const std::string& key) {
    return num_deleted;
  }
  
@@ -704,7 +716,7 @@ index e8e83353e74b95c076b313d255e6a21fddb4ae04..22742c40fda0f8997dda81a62f53a7cc
      base::Time current,
      const CookiePartitionKey& cookie_partition_key,
      const std::string& key) {
-@@ -2375,7 +2375,7 @@ size_t CookieMonster::GarbageCollectPartitionedCookies(
+@@ -2404,7 +2404,7 @@ size_t CookieMonster::GarbageCollectPartitionedCookies(
    return num_deleted;
  }
  
@@ -713,7 +725,7 @@ index e8e83353e74b95c076b313d255e6a21fddb4ae04..22742c40fda0f8997dda81a62f53a7cc
                                                CookiePriority priority,
                                                size_t to_protect,
                                                size_t purge_goal,
-@@ -2427,7 +2427,7 @@ size_t CookieMonster::PurgeLeastRecentMatches(CookieItVector& cookies,
+@@ -2456,7 +2456,7 @@ size_t CookieMonster::PurgeLeastRecentMatches(CookieItVector& cookies,
    return removed;
  }
  
@@ -722,7 +734,7 @@ index e8e83353e74b95c076b313d255e6a21fddb4ae04..22742c40fda0f8997dda81a62f53a7cc
      CookieItList& cookies,
      CookiePriority priority,
      size_t to_protect,
-@@ -2505,7 +2505,7 @@ size_t CookieMonster::PurgeLeastRecentMatchesForOBC(
+@@ -2534,7 +2534,7 @@ size_t CookieMonster::PurgeLeastRecentMatchesForOBC(
    return removed;
  }
  
@@ -731,7 +743,7 @@ index e8e83353e74b95c076b313d255e6a21fddb4ae04..22742c40fda0f8997dda81a62f53a7cc
                                              const CookieMapItPair& itpair,
                                              CookieItVector* cookie_its) {
    DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
-@@ -2526,7 +2526,7 @@ size_t CookieMonster::GarbageCollectExpired(Time current,
+@@ -2555,7 +2555,7 @@ size_t CookieMonster::GarbageCollectExpired(Time current,
    return num_deleted;
  }
  
@@ -740,7 +752,7 @@ index e8e83353e74b95c076b313d255e6a21fddb4ae04..22742c40fda0f8997dda81a62f53a7cc
      Time current,
      const PartitionedCookieMap::iterator& cookie_partition_it,
      const CookieMapItPair& itpair,
-@@ -2550,7 +2550,7 @@ size_t CookieMonster::GarbageCollectExpiredPartitionedCookies(
+@@ -2579,7 +2579,7 @@ size_t CookieMonster::GarbageCollectExpiredPartitionedCookies(
    return num_deleted;
  }
  
@@ -749,7 +761,7 @@ index e8e83353e74b95c076b313d255e6a21fddb4ae04..22742c40fda0f8997dda81a62f53a7cc
    DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
    for (auto it = partitioned_cookies_.begin();
         it != partitioned_cookies_.end();) {
-@@ -2567,7 +2567,7 @@ void CookieMonster::GarbageCollectAllExpiredPartitionedCookies(Time current) {
+@@ -2596,7 +2596,7 @@ void CookieMonster::GarbageCollectAllExpiredPartitionedCookies(Time current) {
    }
  }
  
@@ -758,7 +770,7 @@ index e8e83353e74b95c076b313d255e6a21fddb4ae04..22742c40fda0f8997dda81a62f53a7cc
      Time current,
      DeletionCause cause,
      CookieItVector::iterator it_begin,
-@@ -2580,7 +2580,7 @@ size_t CookieMonster::GarbageCollectDeleteRange(
+@@ -2609,7 +2609,7 @@ size_t CookieMonster::GarbageCollectDeleteRange(
    return it_end - it_begin;
  }
  
@@ -767,7 +779,7 @@ index e8e83353e74b95c076b313d255e6a21fddb4ae04..22742c40fda0f8997dda81a62f53a7cc
      base::Time current,
      base::Time safe_date,
      size_t purge_goal,
-@@ -2632,7 +2632,7 @@ size_t CookieMonster::GarbageCollectLeastRecentlyAccessed(
+@@ -2661,7 +2661,7 @@ size_t CookieMonster::GarbageCollectLeastRecentlyAccessed(
  // non-problem).
  //
  // static
@@ -776,7 +788,7 @@ index e8e83353e74b95c076b313d255e6a21fddb4ae04..22742c40fda0f8997dda81a62f53a7cc
    std::string effective_domain(
        registry_controlled_domains::GetDomainAndRegistry(
            domain, registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES));
-@@ -2642,7 +2642,7 @@ std::string CookieMonster::GetKey(std::string_view domain) {
+@@ -2671,7 +2671,7 @@ std::string CookieMonster::GetKey(std::string_view domain) {
    return cookie_util::CookieDomainAsHost(effective_domain);
  }
  
@@ -785,7 +797,7 @@ index e8e83353e74b95c076b313d255e6a21fddb4ae04..22742c40fda0f8997dda81a62f53a7cc
    DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
  
    // Make sure the request is on a cookie-able url scheme.
-@@ -2659,14 +2659,14 @@ bool CookieMonster::HasCookieableScheme(const GURL& url) {
+@@ -2688,14 +2688,14 @@ bool CookieMonster::HasCookieableScheme(const GURL& url) {
    return is_cookieable;
  }
  
@@ -802,7 +814,7 @@ index e8e83353e74b95c076b313d255e6a21fddb4ae04..22742c40fda0f8997dda81a62f53a7cc
      const std::string_view domain) const {
    if (cookie_access_delegate()) {
      return cookie_access_delegate()->GetScopeSemantics(domain);
-@@ -2674,7 +2674,7 @@ CookieScopeSemantics CookieMonster::GetScopeSemanticsForCookieDomain(
+@@ -2703,7 +2703,7 @@ CookieScopeSemantics CookieMonster::GetScopeSemanticsForCookieDomain(
    return CookieScopeSemantics::UNKNOWN;
  }
  
@@ -811,7 +823,7 @@ index e8e83353e74b95c076b313d255e6a21fddb4ae04..22742c40fda0f8997dda81a62f53a7cc
      const std::string_view domain) {
    const std::string cookie_key = GetKey(domain);
    CookieScopeSemantics cookie_scope_semantic =
-@@ -2712,7 +2712,7 @@ CookieScopeSemantics CookieMonster::CheckAndActivateLegacyScopeBehavior(
+@@ -2741,7 +2741,7 @@ CookieScopeSemantics CookieMonster::CheckAndActivateLegacyScopeBehavior(
    return cookie_scope_semantic;
  }
  
@@ -820,7 +832,7 @@ index e8e83353e74b95c076b313d255e6a21fddb4ae04..22742c40fda0f8997dda81a62f53a7cc
    DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
    std::map<UniqueCookieKey, std::pair<base::Time, UniqueCookieKey>>
        most_recent_cookies;
-@@ -2758,7 +2758,7 @@ void CookieMonster::DeleteAllAliasingCookies(const std::string& domain) {
+@@ -2787,7 +2787,7 @@ void CookieMonster::DeleteAllAliasingCookies(const std::string& domain) {
    }
  }
  
@@ -829,7 +841,7 @@ index e8e83353e74b95c076b313d255e6a21fddb4ae04..22742c40fda0f8997dda81a62f53a7cc
      const CookieMapItPair& itpair,
      std::map<UniqueCookieKey, std::pair<base::Time, UniqueCookieKey>>&
          most_recent_cookies) {
-@@ -2788,7 +2788,7 @@ void CookieMonster::UpdateMostRecentCookie(
+@@ -2817,7 +2817,7 @@ void CookieMonster::UpdateMostRecentCookie(
  // last_statistic_record_time_ is initialized to Now() rather than null
  // in the constructor so that we won't take statistics right after
  // startup, to avoid bias from browsers that are started but not used.
@@ -838,7 +850,7 @@ index e8e83353e74b95c076b313d255e6a21fddb4ae04..22742c40fda0f8997dda81a62f53a7cc
    DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
  
    const base::TimeDelta kRecordStatisticsIntervalTime(
-@@ -2804,7 +2804,7 @@ void CookieMonster::RecordPeriodicStats(base::Time current_time) {
+@@ -2833,7 +2833,7 @@ void CookieMonster::RecordPeriodicStats(base::Time current_time) {
      last_statistic_record_time_ = current_time;
  }
  
@@ -847,7 +859,7 @@ index e8e83353e74b95c076b313d255e6a21fddb4ae04..22742c40fda0f8997dda81a62f53a7cc
    DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
  
    // These values are all bogus if we have only partially loaded the cookies.
-@@ -2888,7 +2888,7 @@ bool CookieMonster::DoRecordPeriodicStats() {
+@@ -2917,7 +2917,7 @@ bool CookieMonster::DoRecordPeriodicStats() {
    return true;
  }
  
@@ -856,7 +868,7 @@ index e8e83353e74b95c076b313d255e6a21fddb4ae04..22742c40fda0f8997dda81a62f53a7cc
    DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
  
    MarkCookieStoreAsInitialized();
-@@ -2906,7 +2906,7 @@ void CookieMonster::DoCookieCallback(base::OnceClosure callback) {
+@@ -2935,7 +2935,7 @@ void CookieMonster::DoCookieCallback(base::OnceClosure callback) {
    std::move(callback).Run();
  }
  
@@ -865,7 +877,7 @@ index e8e83353e74b95c076b313d255e6a21fddb4ae04..22742c40fda0f8997dda81a62f53a7cc
    DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
    constexpr std::string_view kCookieOnPreconnectLoadCookie =
        "Cookie.OnPreconnect.LoadCookie";
-@@ -2916,17 +2916,17 @@ void CookieMonster::OnPreconnect(const GURL& url) {
+@@ -2945,17 +2945,17 @@ void CookieMonster::OnPreconnect(const GURL& url) {
    }
    base::UmaHistogramBoolean(kCookieOnPreconnectLoadCookie, true);
    base::SingleThreadTaskRunner::GetCurrentDefault()->PostTask(
@@ -886,7 +898,7 @@ index e8e83353e74b95c076b313d255e6a21fddb4ae04..22742c40fda0f8997dda81a62f53a7cc
      base::OnceClosure callback,
      std::string_view host_or_domain) {
    DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
-@@ -2951,7 +2951,7 @@ void CookieMonster::DoCookieCallbackForHostOrDomain(
+@@ -2980,7 +2980,7 @@ void CookieMonster::DoCookieCallbackForHostOrDomain(
        auto it = tasks_pending_for_key_.find(key);
        if (it == tasks_pending_for_key_.end()) {
          store_->LoadCookiesForKey(
@@ -895,7 +907,7 @@ index e8e83353e74b95c076b313d255e6a21fddb4ae04..22742c40fda0f8997dda81a62f53a7cc
                                  weak_ptr_factory_.GetWeakPtr(), key));
          it = tasks_pending_for_key_
                   .emplace(key, base::circular_deque<base::OnceClosure>())
-@@ -2965,8 +2965,8 @@ void CookieMonster::DoCookieCallbackForHostOrDomain(
+@@ -2994,8 +2994,8 @@ void CookieMonster::DoCookieCallbackForHostOrDomain(
    std::move(callback).Run();
  }
  
@@ -906,7 +918,7 @@ index e8e83353e74b95c076b313d255e6a21fddb4ae04..22742c40fda0f8997dda81a62f53a7cc
      const GURL& destination,
      int source_port,
      CookieSourceScheme source_scheme) {
-@@ -3002,7 +3002,7 @@ CookieMonster::IsCookieSentToSamePortThatSetIt(
+@@ -3031,7 +3031,7 @@ CookieMonster::IsCookieSentToSamePortThatSetIt(
    return CookieSentToSamePort::kNo;
  }
  
