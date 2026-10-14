@@ -32,6 +32,7 @@ source_set("email_aliases") {
     "//brave/components/brave_account/mojom",
     "//brave/components/brave_account/resources",
     "//brave/components/constants",
+    "//brave/components/email_aliases:features",
     "//brave/components/email_aliases:mojom",
     "//brave/components/email_aliases:service",
     "//brave/components/resources:static_resources_grit",
@@ -42,7 +43,9 @@ source_set("email_aliases") {
     "//url",
   ]
 
-  if (!is_android) {
+  if (is_android) {
+    deps += [ "//brave/browser/ui/brave_account" ]
+  } else {
     deps += [ "//chrome/browser/ui/webui:theme_source" ]
   }
 }
