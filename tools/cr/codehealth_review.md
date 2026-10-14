@@ -27,7 +27,12 @@ of upstream code has missed a fix.
   `src/brave`. These are the build fixes made during the rebase. Each one names
   the upstream commit it follows, and shows which patterns recur. A commit
   marked `[WIP]` isn't a fix yet: list what it leaves to verify as an item
-  (M157, 8097.1: the iOS MojoFacade reset).
+  (M157, 8097.1: the iOS MojoFacade reset). Neither is a commit that drops a
+  hook or a pin. After "Drop the X patch/override", grep that the Brave function
+  the hook called still has a caller (M158: `brave::AttachTabHelpers()` was left
+  with none). After "Drop the X pin", read the commit that added the pin
+  (`git log origin/master -S'<feature>'`) and check that upstream's clean-up
+  didn't keep the branch Brave avoided (M158: `kFewerUpdateConfirmations`).
 
 If the tracker already exists, update it (see
 [Updating a tracker](#updating-a-tracker)) rather than writing a new one.
@@ -50,10 +55,12 @@ If the tracker already exists, update it (see
   Brave data source was opened up.
 - Check reverts. For every candidate, search the range for `Revert "<subject>"`
   and for a later reland. Only what's left standing counts.
-- Don't trust a green Linux build. Brave sources listed only under `is_win`,
-  `is_mac`, `is_android` or `is_ios` in `BUILD.gn` aren't compiled there (in
-  M156, a Windows-only browser test called `profile()` on a
-  `BrowserWindowInterface*`).
+- Don't trust a green Linux build (M158: an `IS_ANDROID` block uses a pref name
+  that moved to a target private to `//components/ntp_tiles`; grep Brave's
+  platform blocks for constants that "Restrict visibility" commits move). Brave
+  sources listed only under `is_win`, `is_mac`, `is_android` or `is_ios` in
+  `BUILD.gn` aren't compiled there (in M156, a Windows-only browser test called
+  `profile()` on a `BrowserWindowInterface*`).
 - Name the upstream commit that motivates each item, linked as
   `[<hash>](https://chromium.googlesource.com/chromium/src/+/<hash>)`. V8
   changes live in `src/v8` and link to `.../v8/v8/+/<hash>`.
@@ -141,12 +148,16 @@ the M156/M157 examples for calibration. Ask each one for method notes: for every
 signal it tried, which sweep it belongs to, what it found (verified items, or
 only noise), and how to rerun it. Step 5 uses them. Also ask for the hashes of
 the commits it read, one per line, and append them to `$D/claimed` for step 3.
+Forks may not be allowed to write report files, so ask for the items and notes
+in the final reply as well.
 
 #### a. Overlap: commits touching what Brave overrides
 
 Group the overlap list by overridden file, so that each override is read once
 against every commit that touches it. For each commit, read only the
-Brave-relevant part: `git show <hash> -- <overridden paths>`. Look for:
+Brave-relevant part: `git show <hash> -- <overridden paths>`. In an incremental
+range, the net `git diff -U3 $A $B -- <path>` per overridden file is cheaper and
+reads the same (M158, 8115.1: 179 files, 8k lines). Look for:
 
 - **The hook point moved.** Upstream moved the call, or the logic, that a
   `#define` or plaster anchors to into another function or file, so Brave's hook
@@ -161,13 +172,20 @@ Brave-relevant part: `git show <hash> -- <overridden paths>`. Look for:
   upstream `.h` and `.cc` at both tags; a different count means a different
   reach (`#define AppMenu BraveAppMenu` also rewrote `GetAppMenu()` after
   upstream moved it; M157, 8094.1: a new internal `FormatUrlOrigin()` call
-  skipped Brave's scheme swap). For `Foo` → `Foo_ChromiumImpl` renames, look for
-  upstream calls to `Foo()` inside the same file: those skip Brave's wrapper. A
-  private method may never reach the wrapper at all (`CancelBrowserClose`). When
-  upstream adds a post-processing pass inside a function Brave extends, check
-  whether Brave's additions land before or after it (a miss, found in the
-  rebase: accelerators got action IDs in a loop that runs before Brave's
-  `GetAcceleratorList()` appends its own).
+  skipped Brave's scheme swap). A count of 0 at the new tag means upstream
+  renamed the function, and the `#define` now matches nothing (M158, 8109.1:
+  `CreateLocalBlockingJsonRuleList` → `CreateAppSpecificURLsJsonRuleList` on
+  iOS, which re-enabled the rule list Brave empties). For `Foo` →
+  `Foo_ChromiumImpl` renames, look for upstream calls to `Foo()` inside the same
+  file: those skip Brave's wrapper, and a default flip can make a dormant one
+  live (M158: `ShouldTypeExpireActively()` and `kActiveContentSettingExpiry`). A
+  private method may never reach the wrapper at all (`CancelBrowserClose`), and
+  neither does a function in an anonymous namespace: Brave's wrapper is then a
+  different function that nothing calls (M158, 8111.0: the commander group in
+  `BuildDefaultGroups()`, dead since M131). When upstream adds a post-processing
+  pass inside a function Brave extends, check whether Brave's additions land
+  before or after it (a miss, found in the rebase: accelerators got action IDs
+  in a loop that runs before Brave's `GetAcceleratorList()` appends its own).
 - **A predicate Brave pins was removed.** "Remove X from Y" and flag clean-ups
   hard-code the launched branch exactly where Brave forced the other one, which
   re-enables the feature (`IsReplaceSyncPromosWithSignInPromosEnabled` stopped
@@ -202,7 +220,12 @@ Brave-relevant part: `git show <hash> -- <overridden paths>`. Look for:
   text is there. Read each touched plaster's descriptions against the pristine
   function at the new tag. A plaster that enumerates methods (an alternation
   with a `count`) misses new ones: diff the class's method list at both tags
-  (M157, 8097.1: `GlicEnabling.isEnabledAndConsentForProfile`).
+  (M157, 8097.1: `GlicEnabling.isEnabledAndConsentForProfile`). Also look for a
+  sibling path that computes the same value (M158: the .onion Origin is opaque
+  in `MaybeSetOriginHeader` but not on the CORS preflight). When a plaster
+  returns a value built from Brave constants, read what the callee now accepts
+  (M158: `Cup` `CHECK`s for an ML-DSA-44 key, and Brave's CUP key is ECDSA;
+  found by grepping Brave for removed flag names, here `kPqcCupSigning`).
 
 The mechanical checks are cheap, but most real breaks are semantic. One check is
 that every non-`BRAVE_` `#define` token still appears in the pristine upstream
@@ -223,20 +246,35 @@ Brave turns upstream things off in many places, and upstream keeps moving them:
   `TabModel` runs `AttachTabHelpers`, and so Brave's tab helper constructors,
   before `TabFeatures::Init`, so they now get null (M157, 8103.1:
   `BraveShieldsTabHelper` observes the `ContentFaviconDriver`, found by two
-  sweeps).
+  sweeps). Grep for accessors that return an invalid value rather than null too
+  (M158: `SessionTabHelper::IdForTab()` in the Ads and Rewards tab helpers,
+  found by two sweeps).
 - **Feature defaults.** Brave's overrides are the
   `set_feature_flag_default_state` plasters,
   `base/compile_overridden_features.inc`, the json5 plaster for Blink runtime
   features, the feature strings in `renderer/brave_content_renderer_client.cc`,
   and `app/feature_defaults_unittest.cc`. The plaster swaps the macro to
   `BASE_OVERRIDDEN_FEATURE`, so grep for both macros. Classify the features in
-  `git diff $A $B -U3 -G'FEATURE_(EN|DIS)ABLED'` as new, gone or flipped; a
-  plain `-G'BASE_FEATURE\('` misses multi-line and `#if` flips.
+  `git diff $A $B -U3 -G'FEATURE_(EN|DIS)ABLED|BASE_FEATURE\(k\w+, *(ENABLED|DISABLED|enable_if)'`
+  as new, gone or flipped. The second alternative catches the short form
+  `BASE_FEATURE(kX, ENABLED)` (M158: `kAim3pEntrypoint`); a plain
+  `-G'BASE_FEATURE\('` misses multi-line and `#if` flips. Parse with context
+  (`-U4`) and carry the last `BASE_FEATURE(k…` name across context lines, or a
+  flip whose name line didn't change is lost (M158, 8127.2:
+  `kContextualTasksSidePanel` became enabled on desktop inside an `#if`).
   - A disabled → enabled flip ("Launch … to 100%", "Enable … by default") is the
     highest-yield signal. Check it against Brave UI and features, not only
     privacy (Android tips promo; Ctrl+Tab MRU duplicating Brave's MRU cycling;
-    the bookmark bar IPH). Android Java safe defaults
+    the bookmark bar IPH; M158, 8113.1: `kUnoPhase2FollowUp` shows the history
+    page's Google sync promo, and `kReadAnythingOmniboxChip` adds a Reading mode
+    chip next to Speedreader). For WebUI promos, read the element's show
+    condition against a signed-out Brave profile. Android Java safe defaults
     (`newMutableFlagWithSafeDefault`) flip together with C++.
+  - An `app/feature_defaults_unittest.cc` entry with no override behind it only
+    records upstream's default, and a flip makes the test fail while the feature
+    ships. Check each entry against the plasters and `chromium_src` (M158,
+    8117.1: `kAndroidPageInfoAsAppMenuItem` moved page info into the Android app
+    menu).
   - An override that now equals upstream's default is allowed as a pin against
     upstream sliding back (`rewriters.pyl`), so it isn't an item by itself. Flag
     it only when the override was meant as temporary (Brave reverted
@@ -247,11 +285,21 @@ Brave turns upstream things off in many places, and upstream keeps moving them:
     can also `CHECK` that the disabled feature's service exists (a miss, found
     in the rebase: `kPersonalContext` off made `DeviceInfoSyncClient` crash).
   - Superseded or split flags (`kFoo` → `kFooV2`, new params): Brave's override
-    no longer gates the behaviour.
+    no longer gates the behaviour. Likewise a predicate that ORs a pinned flag
+    with others: grep each pinned flag's `Is…Enabled()` helpers for `||`, and
+    check every other operand's default (M158, 8127.2:
+    `IsContextualTasksUIEnabled()` turned on through `kContextualTasksSidePanel`
+    past the `kContextualTasks` pin).
   - Blink runtime features don't show up in a `BASE_FEATURE` diff. Compare the
     `name:` lists of `runtime_enabled_features.json5` at both tags against
     Brave's `EnableFeatureFromString` strings and the json5 plaster. An unknown
-    name is silently ignored (`AIClassifierAPI` → `AIDecisionModelAPI`).
+    name is silently ignored (`AIClassifierAPI` → `AIDecisionModelAPI`). Diff
+    the `status:` dicts too
+    (`git diff -U12 … | grep -E '^[-+]\s+(status|"Android")|name:'`), and check
+    each json5 pin's `copied_from_base_feature_if`: with `"overridden"`, a
+    disabled `base_feature_status` that nothing overrides leaves a `stable`
+    feature on (M158: `LanguageDetectionAPI` went stable on Android, and
+    `TranslationAPI` is exposed on desktop).
   - Use `git diff $A $B -U0 -G'\b(kA|kB|…)\b'` over Brave's pinned features to
     find code paths that stopped checking them.
 - **Prefs.** For each `SetDefaultPrefValue` and pref override, check that
@@ -275,10 +323,24 @@ Brave turns upstream things off in many places, and upstream keeps moving them:
   re-tints the location icon chip). List IDs on added `mixer[k…]` lines in
   `git diff $A $B -U0 -- chrome/browser/ui/color ui/color ui/gtk ui/qt chrome/browser/themes`,
   intersect them with Brave's `mixer[k…]` assignments, and compare the order in
-  which the two mixers run.
+  which the two mixers run. Also intersect new IDs defaulted to another ID
+  (`mixer[kNew] = {kOld}`) with Brave's `postprocessing_mixer[kOld]`: references
+  resolve through `GetLastNonPostprocessingMixer()`, so the new ID misses
+  Brave's value (M158: hovered inactive tab foreground). Diff the branches of
+  `ThemeService::GetColorProviderKey()` too: a new branch ahead of the
+  `GetIsGrayscale()` check skips Brave's override (M158, 8113.1: the GTK
+  accent).
+- **Downloads moved to the component updater.** A flag flip can route a fetch
+  Brave stubs out (e.g. `PredictionManager`) through a new component installer
+  instead. For each new or newly enabled installer, compute its CRX id from the
+  public key hash and check it against `kDisallowedComponents` in
+  `chromium_src/components/component_updater/component_installer.cc` (M158,
+  8111.0: `kPredictionModelComponentDelivery`, found by two sweeps).
 - Other lists to check: the origin-trial blocklist
-  (`chromium_src/third_party/blink/common/origin_trials/origin_trials.cc`), the
-  component ID blocklist, and the Android `GlicEnabling.java` list.
+  (`chromium_src/third_party/blink/common/origin_trials/origin_trials.cc`) and
+  the Android `GlicEnabling.java` list. `base/compile_overridden_features.inc`
+  isn't a pin; check that its names are upstream features (M158:
+  `ReadIsSubjectToUniversalOptOutCapability` isn't).
 
 New upstream features that phone home or add Google-service UI aren't
 code-health items. List them at the end of the tracker for the privacy team, one
@@ -292,8 +354,11 @@ line each.
   (`WebUIURLLoaderFactory` now blocks loads between `chrome-untrusted://` hosts,
   but no Brave data source allows its embedders). Brave subclasses also inherit
   upstream's new restrictive overrides (`PlaylistDataSource : FaviconSource`).
-  For WebUI, build a table of requesting page × target host from Brave's CSP
-  overrides and the `//host` URLs in the front-end code.
+  The same goes for "add X to the remaining N uses of `<element>`" in WebUI:
+  grep Brave's templates for that element without the attribute (M158, 8115.1:
+  `route-path` on `<settings-subpage>`, which sets the tab title). For WebUI,
+  build a table of requesting page × target host from Brave's CSP overrides and
+  the `//host` URLs in the front-end code.
 - **Fixes in upstream siblings of Brave forks.** Index the forks:
 
   - comments such as "copied from", "taken from", "adapted from", "kept in sync"
@@ -307,7 +372,17 @@ line each.
 
   Then run `git log $A..$B -- <originals>`, or `git log -L :<function>:<file>`
   for a single function, and check whether the Brave copy needs the same fix
-  (FollowRedirect validation; `bypass_redirect_checks`).
+  (FollowRedirect validation; `bypass_redirect_checks`). When upstream changes a
+  contract ("factory no longer returns null; check `IsEnabled()`"), the callers
+  it updates are the originals (M158: Brave's `HistoryDriverIOS` fork missed the
+  `IsEnabled()` check and now hits a `CHECK`).
+
+- **A security fix closes what a Brave workaround relies on.** Brave code
+  commented as reverting to "legacy behaviour" around a navigation or WebUI
+  restriction is exposed when upstream hardens that path. For each navigation,
+  opener or WebUI hardening, grep Brave's front end for `window.open(''`,
+  `window.opener`, `.location.href =` on a popup, `top.location` and
+  `parent.location` (M158: the Trezor bridge's blank-popup opener).
 
 - **New request and storage paths.** Inventory Brave's choke points:
   `WillCreateURLLoaderFactory`, URL loader and navigation throttles, the
@@ -329,6 +404,11 @@ line each.
   `runtime_enabled_features.json5`, which a `name:` diff misses: map each newly
   stable IDL surface to `git grep -l PerturbPixels chromium_src` (M157, 8097.1:
   HTML-in-canvas read back through WebGPU).
+- **New bundle files.** Brave's Mac universal build copies the other
+  architecture's app with ignore patterns
+  (`installer/mac/copy_other_arch_binary.py`). Check new files in
+  `chrome/chrome_paks.gni` and other bundle data diffs against them (M158:
+  per-architecture `webui_code_cache.*.pak` matched `*.pak`).
 - **Build flag splits.** Grep Brave for the old `BUILDFLAG` and GN arg, and read
   upstream's TODOs about future defaults (key pinning split from the HSTS
   preload list; Brave iOS relies on the pins).
@@ -348,11 +428,12 @@ line each.
   `br/privacy_page.ts` during the rebase, and the element went Lit in the next
   range (M157, 8093.0: `settings-privacy-page`, `category-reference-card`;
   8094.1: `settings-ui`, `settings-menu` and the autofill page, right after the
-  rebase had fixed the last two). `polymer_overriding` only hooks Polymer
-  elements, so an override of a Lit element silently does nothing (payments and
-  contact-info pages). Check all of them, not just the ones that changed in the
-  range: earlier lifts left some dead (sync controls, performance page,
-  bookmarks side panel).
+  rebase had fixed the last two; M158, 8109.1: `settings-main`, whose `br/`
+  override kept registering Polymer modifications). `polymer_overriding` only
+  hooks Polymer elements, so an override of a Lit element silently does nothing
+  (payments and contact-info pages). Check all of them, not just the ones that
+  changed in the range: earlier lifts left some dead (sync controls, performance
+  page, bookmarks side panel).
 - **Check selectors.** For tags still on Polymer, check each `querySelector`
   target against the template at the new tag. A query on the template fragment
   doesn't reach into nested `<template>` (`dom-if`) content. Attribute selectors
@@ -364,7 +445,9 @@ line each.
   Check Brave's `{{prefs.…}}` bindings inside them, and any `prefs` they pass
   down to Brave children (the email aliases toggle broke two levels down; M157:
   `settings-privacy-page` stayed Polymer, and Brave's personalization toggles
-  lost their prefs). The fix is `pref-key`.
+  lost their prefs). The fix is `pref-key`. Grep Brave's templates for
+  `{{prefs.` every lift: master commits keep adding the old binding after the
+  branch migrated an element (M158, 8117.1: the on-device speech model toggle).
 - **A removed ancestor property or element.** When a commit removes an element
   or property from an ancestor (`<settings-prefs>` and `prefs` on
   `settings-ui`/`settings-main`), grep Brave for every consumer reached through
@@ -372,11 +455,38 @@ line each.
   `querySelector('settings-prefs')` and `CrSettingsPrefs`, including
   `chromium_src` search code that walks shadow roots (M157, 8093.0: every Brave
   settings page lost its prefs, and the Brave search card stopped rendering).
+- **Lit controls that take only `prefKey`.** For each element on
+  `PrefKeyObserverMixinLit` at the new tag
+  (`git grep -l 'PrefKeyObserverMixinLit(' $B -- chrome/browser/resources`),
+  grep Brave's templates for a `pref=` binding on its tag, including attributes
+  on later lines: the mixin asserts (M158, 8113.1: the Tor bridges radios bound
+  a fake pref). Commits that move upstream's clients of a Polymer control to
+  `prefKey` "in preparation for migrating" it announce the next one; list
+  Brave's `pref=` bindings on that tag as a deprecation, and expect the
+  migration within a lift or two (M158: announced at 8117.1, and at 8127.2
+  `settings-toggle-button` went Lit, so 17 Brave toggles throw).
+- **Allowlists in shared WebUI code.** When upstream adds a hard-coded list of
+  enum values to shared infrastructure, compare it with the values Brave's
+  patches add to that enum (M158, 8113.1: `CATEGORY_DEFAULT_SYNTHETIC_PREFS`
+  lacks Brave's site-settings categories, so their default radios throw).
 - **Lit siblings of patched mixins.** A new `*_lit.ts` copy of a Polymer mixin
   doesn't carry Brave's patch, and elements that migrate to it lose it
   (`SiteSettingsMixinLit` and `braveCookieType`). Compare
   `git diff --name-status --diff-filter=A $A $B -- 'chrome/browser/resources/**/*_lit.ts'`
   against `patches/chrome-browser-resources-*`.
+- **Polymer files that stop being generated from Lit.** Some Polymer shared
+  files are built from their Lit twin, so Brave's override of the Lit file
+  reaches both. When upstream replaces one with a standalone copy, often while
+  moving it ("Move shared Polymer files to last clients"), the Polymer copy
+  loses Brave's override. Match
+  `git diff -M --diff-filter=DR --name-status $A $B -- ui/webui/resources chrome/browser/resources`
+  against `chromium_src/` (M158, 8127.2: `md_select.css` moved to
+  `settings_shared/`, and Brave's selects lost the Nala style).
+- **Flags that switch shared WebUI CSS.** A flag that sets a host attribute
+  (`[webui-rounded-icons]`) enables `:host-context([…])` blocks whose selectors
+  outrank Brave's plain overrides. Intersect the classes in such blocks with
+  Brave's `chromium_src/ui/webui/resources/**/*.css` (M158, 8127.2:
+  `kWebUIRoundedIcons` replaced Brave's edit and folder icons).
 - **Lit manglers.** `mangle()` throws when its template is missing, which is
   loud. `mangleAll`, `?.` and `if (el)` guards skip silently.
 - **Data sources.** See the WebUI CORS item in sweep
@@ -403,9 +513,11 @@ line each.
 - **Presubmit:** Brave inlines `//PRESUBMIT.py` and configures it by check name
   in `chromium_presubmit_config.json5`. A textual diff of `PRESUBMIT.py` is
   useless when upstream reorders it. Instead, diff the set of `def Check*`
-  names, each check's body and the `_BANNED_*` lists between the two tags. A
-  renamed check leaves Brave's config entry matching nothing (`CheckParseErrors`
-  → `CheckJSONParseErrors`). For a changed check, replay its logic over Brave
+  names, each check's body and the `_BANNED_*` lists between the two tags; a new
+  `treat_as_error` ban is an upcoming deprecation for each Brave call site
+  (M158, 8127.2: `DeprecatedLayoutImmediately()`). A renamed check leaves
+  Brave's config entry matching nothing (`CheckParseErrors` →
+  `CheckJSONParseErrors`). For a changed check, replay its logic over Brave
   files. For a removed check, grep Brave for its name: code written to dodge it,
   and docs describing it, are now obsolete (`CheckSettingsChanges`).
 - **Clang plugins:** what's enforced today is in
@@ -430,14 +542,20 @@ Cluster the range by `Bug:` id, and by subject tag (`[Bedrock]`,
 `[dcheck-to-check]`) and verb ("Migrate X to Y", "Replace", "Convert"). For
 clusters of three or more commits, read a representative diff and write down the
 old → new idiom. Measure the trend with `git grep -c '<old idiom>'` at both
-tags. A falling count means an active campaign (`CreateForWebContents(` lines in
-`chrome/browser/ui/tab_helpers.cc`: 111 at 155, 36 at 157.0.8090.1, 24 at
-157.0.8093.0; state the command with the numbers); a flat count means a stale
-deprecation that isn't worth an item. Headers that say "Do not add more public
-accessors" or carry a `TODO(crbug)` confirm the direction. Then grep Brave,
-including `browser/resources/**/br/`, `rewrite/` and platform-only sources.
-Report the count, the list of sites (or the grep command when there are many)
-and one upstream example of the new idiom.
+tags. Intersect the files a scripted campaign touches with `chromium_src/` files
+that replace the whole upstream file: the script only fixes upstream's text
+(M158, 8109.1: the typed-factory conversion broke Brave's
+`GoogleGroupsManagerFactory` stub on iOS). Read the non-scripted commits under
+the same `Bug:` too: one that drops a parameter breaks Brave's call sites (M158,
+8115.1: `ios::HistoryServiceFactory::GetForProfile()` lost its
+`ServiceAccessType`). A falling count means an active campaign
+(`CreateForWebContents(` lines in `chrome/browser/ui/tab_helpers.cc`: 111 at
+155, 36 at 157.0.8090.1, 24 at 157.0.8093.0; state the command with the
+numbers); a flat count means a stale deprecation that isn't worth an item.
+Headers that say "Do not add more public accessors" or carry a `TODO(crbug)`
+confirm the direction. Then grep Brave, including `browser/resources/**/br/`,
+`rewrite/` and platform-only sources. Report the count, the list of sites (or
+the grep command when there are many) and one upstream example of the new idiom.
 
 Skip ash/ChromeOS, roll, gardening and large feature-bug clusters (Glic, Actor)
 unless Brave touches the code.
@@ -452,9 +570,11 @@ unless Brave touches the code.
   added them for the same symptom (`ViewShadow::OnLayerRecreated`;
   single-process `ScopedChromeExtensionsClient` sharing).
 - **Workarounds added during this lift.** Developers lift against intermediate
-  versions, so the upstream fix can land later in the same range. Re-check every
-  patch the rebase commits added (a Widevine dep was added a day after upstream
-  added the same line).
+  versions, so the upstream fix can land later in the same range. A patch the
+  rebase regenerated can also duplicate work upstream now does (M158, 8109.1:
+  `html_capability_element_base.cc` computed the descriptor a second time).
+  Re-check every patch the rebase commits added (a Widevine dep was added a day
+  after upstream added the same line).
 - **Hooks made unreachable by an upstream early return** ("Disable X if flag is
   off": the offer-notification promo-code exclusion).
 - **Brave changes that upstream adopted.** For each patch, count how often each
@@ -465,19 +585,27 @@ unless Brave touches the code.
   regenerated patch keeps only to re-sort lines upstream added (M157, 8103.1:
   `chrome-browser-notifications-BUILD.gn.patch`). Also flag patches whose
   non-generic `+` lines already occur in the pristine file at both tags (M157,
-  8097.1: the `HTMLParserScriptRunner` guard, upstream since M146).
+  8097.1: the `HTMLParserScriptRunner` guard, upstream since M146). Line counts
+  miss an adoption under another name: read overlap subjects for a Brave hook's
+  behaviour (M158, 8127.2: upstream's `UpdateSessionCountryAndGeoLevel1()` on
+  304 responses duplicates Brave's variations `SetSessionCountry` hook).
 - **Test filters.** Parse the filters into `Suite.Test` names and index the
   `TEST*(Suite, Name)` macros at both tags (strip `MAYBE_`, `DISABLED_` and
   `PRE_`, and record `INSTANTIATE_*` prefixes). For entries that disappeared,
   `git log -S<name> $A..$B` finds the commit; read it, because a renamed test
   needs its filter retargeted, not deleted. A negative filter matches the full
   name exactly, so upstream turning a `TEST_F` into a `TEST_P` silently
-  re-enables a filtered test (`All/…/0`), and the reverse leaves a `/1` entry
-  matching nothing. The `TEST*` macros on the `+`/`-` lines of
-  `git diff $A $B -U0 -- '*.cc' '*.mm'` are a cheaper index than both trees, but
-  miss macros split across lines: also flag each filtered test name that occurs
-  only on `-` lines (M157: renamed `TransportSecurityStateTest` cases). Include
-  `test/filters/generated/`, which is fixed by rerunning
+  re-enables a filtered test (`All/…/0`), and the reverse does too: the `All/…`
+  entry matches nothing (M158, 8117.1: flag clean-ups turned
+  `ForceSigninProfilePickerCreationFlowBrowserTest` into `_F` and folded
+  `CanOfferSigninWithSigninToSyncFeatureTest` into `CanOfferSigninTest`). The
+  `TEST*` macros on the `+`/`-` lines of `git diff $A $B -U0 -- '*.cc' '*.mm'`
+  are a cheaper index than both trees, but miss macros split across lines: also
+  flag each filtered test name that occurs only on `-` lines (M157: renamed
+  `TransportSecurityStateTest` cases). A class split also copies tests into a
+  new suite the filters don't name: check new test files for filtered test names
+  (M158, 8127.2: `KeyPinningStateChrome.PreloadedProductionStaticPins` and four
+  more). Include `test/filters/generated/`, which is fixed by rerunning
   `tools/chromium_tests_analysis/update-upstream-flake-filters.py` rather than
   by hand (the payment handler camera test). Tests whose `DISABLED_` prefix was
   removed in the range (`git log -p -U0 -G'DISABLED_' $A..$B -- '*test*.cc'`)
@@ -492,23 +620,41 @@ unless Brave touches the code.
   target into an aggregator ("no sources, allow_circular_includes_from or
   deps"), Brave's `deps +=` and `allow_circular_includes_from` patches on it
   stop doing anything or move deps after the lock (M157, 8093.0:
-  `//chrome/browser/ui:ui`). Read the target's upstream comment at the new tag
-  for each Brave `patches/**/BUILD.gn.patch`.
+  `//chrome/browser/ui:ui`; M158, 8109.1: a `sources` plaster on the
+  `sources = []` `//chrome/test:test_support`). Grep the range for
+  `sources = \[\]` and "Do not add new sources". Read the target's upstream
+  comment at the new tag for each Brave `patches/**/BUILD.gn.patch`.
 - **Dead overrides:** `chromium_src` files, Polymer modifications, lit manglers
   and `build/chromium/resources/` files whose target no longer exists upstream;
   `chromium_src` files that replace a header outright and still define what
   upstream deleted; stale entries in `base/compile_overridden_features.inc`.
-  Nothing checks these automatically. Also grep all of Brave for the basename of
-  each file deleted in the range
-  (`git diff --name-status --diff-filter=D $A $B`): plain includes in
-  platform-only sources break only that platform's build (M157, 8101.1:
-  `target_device_info.h` in iOS `brave_sendtab_api.mm`, found by three sweeps).
+  Nothing checks these automatically. A mechanical check: take identifiers of 8+
+  characters on `-` lines of `range.diff` that are on no `+` line, keep those
+  Brave uses, and drop those still in the tree at the new tag
+  (`git grep -h -o -w -F -f <candidates> $B`); what's left is a removed name
+  Brave still uses (M158, 8115.1: 6 real out of 9, all Android and iOS build
+  breaks such as `OriginalProfileSupplier` and
+  `CSPDirectiveName::TreatAsPublicAddress`). Also grep all of Brave for the
+  basename of each file deleted or moved in the range
+  (`git diff --name-status --diff-filter=DR $A $B`; git detects renames by
+  default, so `D` alone misses moves): plain includes in platform-only sources
+  break only that platform's build (M157, 8101.1: `target_device_info.h` in iOS
+  `brave_sendtab_api.mm`, found by three sweeps; M158, 8117.1:
+  `profile_keyed_service_factory_ios.h` moved into a restricted `internal/`
+  target, which every Brave iOS factory includes). For each `chromium_src`
+  header that never includes the original, diff its constant and function names
+  against the pristine header (`comm -23`) (M158, 8127.2: 26 dead constants in
+  `chrome/common/url_constants.h`).
 
 #### h. Android and iOS
 
 - **Bytecode adapters.** Resolve each adapter target (class, method, field) at
   both tags. Targets that vanished are dead hooks, and adapter operations
   without a `BytecodeTest` assertion are where they accumulate.
+  `changeMethodOwner` matches by name only, so a method upstream re-signs, or a
+  static it retires for a same-named instance method, gets redirected to a
+  descriptor Brave lacks (M158: `UndoBarController.showUndoBar`; the
+  `OmniboxResourceProvider` statics).
 - **Subclass overrides and spoofs.** Check that Brave Java overrides are still
   called. For hooks that pretend to be something, trace whether upstream still
   asks the spoofed method (`TabImpl.isCustomTab()` moved to the tab's delegate
@@ -516,7 +662,9 @@ unless Brave touches the code.
 - **Hide lists keyed by name.** Brave subclasses that remove upstream
   preferences or menu items by key miss new ones. Diff the XML and menu keys
   across the range (the new "Search AI Mode and connected apps" sync row; M157,
-  8094.1: a `bottom_bar_switch` that duplicates Brave's own toggle). Brave's
+  8094.1: a `bottom_bar_switch` that duplicates Brave's own toggle). A key that
+  moves to another screen leaves Brave's handling on the old one (M158, 8111.0:
+  `homepage` moved from Main settings to Appearance). Brave's
   `SEARCH_INDEX_DATA_PROVIDER` replacements need the same removals. Upstream
   strings that newly show up in Brave's rebranded `.grd` files, often as mangled
   Google product names, are a cheap signal.
@@ -538,13 +686,18 @@ unless Brave touches the code.
 - **Java class moves and renames break the XML references to them.** Brave's
   `android:fragment=` attributes and custom view tags name upstream classes as
   plain strings that javac, `gn check` and R8 all ignore, so nothing fails until
-  the user opens the screen. Index the moves with
+  the user opens the screen. Brave's Java imports break too, which only the
+  Android build catches (M158, 8115.1: `GlicButtonDelegate` moved to
+  `glic.toolbar_button`). Index the moves with
   `git -C .. diff -M --diff-filter=RD --name-status $A $B -- '*.java'`, then
   grep each old package in Brave's XML, e.g.
   `git grep -n 'tab_management\.TabArchiveSettingsFragment' -- '*.xml'` (that
   class moved into `…tab_management.archived_tabs` and QA, not CI, found the
   dead tab settings row; `BravePreferenceFragmentNamesTest` now covers the
-  `android:fragment` surface, custom view tags remain unchecked).
+  `android:fragment` surface, custom view tags remain unchecked). Also grep the
+  bare class name: a same-package Brave test needs no import, so a qualified
+  grep misses it (M158, 8127.2: an orphaned `BraveRecentTabsCoordinatorTest`
+  still in `ntp/`).
 - **Changed Java signatures.** Collect method names declared on both `-` and `+`
   lines of `git diff -U0 -w $A $B -- '*.java'`, and grep Brave's Java, patches
   and plasters. Noisy, but the Linux build never catches these (M157:
@@ -556,10 +709,17 @@ unless Brave touches the code.
   subclasses or redirects with a bytecode adapter: compare the parameter list
   with the Brave subclass's `super(...)` call (M157, 8093.0:
   `AutocompleteMediator` gained `urlTextWrappingSupplier`; 8097.1:
-  `TopToolbarCoordinator` changed again after the rebase had fixed it). Grep all
-  of Brave's Java, not only `android/`: subclasses and backports also live under
-  `browser/` (8097.1: `BraveBottomControlsMediator`, and the backported
-  `ExportFlow` using removed histogram helpers).
+  `TopToolbarCoordinator` changed again after the rebase had fixed it). A
+  `new Brave\1` plaster passes upstream's new arguments along while the Brave
+  constructor keeps the old list (M158, 8111.0: `BraveBottomBarCoordinator`).
+  Grep all of Brave's Java, not only `android/`: subclasses and backports also
+  live under `browser/` (8097.1: `BraveBottomControlsMediator`, and the
+  backported `ExportFlow` using removed histogram helpers).
+- **ProGuard keep rules.** Resolve each member of every `-keep class X { … }`
+  block in `android/java/*.flags` against the class at the new tag; a rule left
+  behind when the rebase drops the reflection it served keeps nothing (M158,
+  8113.1: `UndoBarController.showUndoBar` after the plaster replaced the
+  adapter, plus four rules dead since M115–M150).
 - **Removed flag constants.** Diff the `ChromeFeatureList` constants at both
   tags and grep Brave's `@EnableFeatures`/`@DisableFeatures` for the removed
   ones (M157, 8097.1: `SETTINGS_SINGLE_ACTIVITY`, which three sweeps found).
@@ -567,8 +727,12 @@ unless Brave touches the code.
   Resolve each `BraveReflectionUtil.invokeMethod`/`getField` literal and each
   `methodExists`/`fieldExists` string against the upstream class at the new tag
   (M157, 8093.0: `isTabModelRestored` was renamed, which turned Brave's tab
-  auto-grouping off in release builds). This is mechanical and has found items
-  once; a script under `tools/cr/` would run it each lift.
+  auto-grouping off in release builds). Compare the parameter lists too, not
+  just the names: overloads hide a removed signature (M158:
+  `SingleWebsiteSettings.setupContentSettingsPreference` gained a
+  `PermissionSetting`; 8107.2: `UndoBarController.showUndoBar`). This is
+  mechanical and has found items in three lifts; a script under `tools/cr/`
+  would run it each lift (see the M158 tracker).
 - **A guard moved out of a shared helper.** Grep removed lines of the diff for
   `SDK_INT`, `VERSION_CODES` and `isAndroid*`, and the Javadoc "callers must
   check" in helpers Brave calls (M157, 8093.0: `PictureInPicture.isEnabled()`
@@ -584,10 +748,16 @@ unless Brave touches the code.
   `ios/browser/providers/BUILD.gn`, which misses new providers every lift.
   Brave's Objective-C bridges conform to upstream protocols with no `@optional`
   methods: diff `git show <tag>:<header> | grep '^- ('` at both tags for each
-  protocol Brave adopts (M157, 8103.1: `CWVAutofillClientIOSBridge` gained four
-  methods that `BraveAutofillClientBridge` lacks). Full-function replacements in
+  protocol Brave adopts, including Swift conformances in `ios/brave-ios`
+  (`git grep -nE 'class \w+: .*\b<Protocol>\b' -- '*.swift'`; M157, 8103.1:
+  `CWVAutofillClientIOSBridge` gained four methods that
+  `BraveAutofillClientBridge` lacks; M158, 8113.1: Swift's `MockCredential`
+  missed two `Credential` properties). Full-function replacements in
   `chromium_src/ios` miss upstream security fixes to the original (the WebSocket
-  block for local pages).
+  block for local pages). For each iOS hardening done in a tab helper or policy
+  decider, check that Brave's `tab_helper_util.mm` replacement creates that
+  helper, and compare Brave's Swift deciders (M158: `NewTabPageTabHelper` now
+  blocks web-initiated `about://newtab`, but Brave never creates it).
 - Feature-list and `about_flags` overlaps are noise here; use the feature
   default diff from sweep [b](#b-brave-disablements-and-defaults) instead.
 
@@ -599,7 +769,7 @@ but it is noisy (about 1000 hits in cr156):
 ```sh
 p='codehealth|code health|deprecat|migrate|replace .* with|clean ?up|rename'
 p+='|refactor|bedrock|\blit\b|polymer|use-after|uaf|dangling|race|crash'
-p+='|consolidat|split|move|enforce|launch|enable .* by default'
+p+='|consolidat|split|move|enforce|launch|enable .* by default|compile-time|use .* form'
 grep -iE "$p" $D/subjects
 ```
 
@@ -631,10 +801,22 @@ about 870 subjects: the class-basename match of touched Java files against
 Brave's `android/` and bytecode adapters found a constructor that gained a
 parameter (`AutocompleteMediator`). The overlap join and the removed-token grep
 were noise. In 8093.0..8094.1 it gave none out of 445, in 8094.1..8097.1 none
-out of 727, in 8097.1..8101.1 none out of 313, and in 8101.1..8103.1 none out of
-292 (one about:flags entry extended an existing item). Keep it short there, and
-drop `BUILD.gn`, `DEPS`, `*.xml` and `features.*` before the basename match;
-they make up nearly all of its hits.
+out of 727, in 8097.1..8101.1 none out of 313, in 8101.1..8103.1 none out of 292
+(one about:flags entry extended an existing item), and in M158, 8103.3..8104.1,
+none out of 226. In 8107.2..8109.1 it gave none out of 815, and in
+8109.1..8111.0 none out of 840 (421 after noise). In 8104.1..8107.2 it gave one
+out of 972: a mechanical "Use gin's compile-time `SetMethod<&T::M>()` form"
+campaign, found by skimming subjects, not by the basename match; the basename
+match only re-found a Java signature change sweep [h](#h-android-and-ios) had
+found. In 8111.1..8113.1 it gave none out of 647 (486 after noise), in
+8113.1..8115.1 none out of 707 (480 after noise), in 8115.1..8117.1 none out of
+535 (346 after noise), and in 8117.1..8127.2 one optional item out of 2899 (1962
+after noise; Quick Delete from Android WebUI history, found by reading a
+hand-picked diff against a Brave hide list). Keep it short there, and drop
+`BUILD.gn`, `DEPS`, `*.xml` and `features.*` before the basename match; they
+make up nearly all of its hits. In 8127.2 the basename match found nothing:
+generic names (`app.ts`, `README.md`) dominate, so match full paths or
+fully-qualified Java names with a stoplist instead.
 
 Items found here meet the same ground rules as any other. Each one is a
 mechanism no sweep describes, so record it in the method notes for step 5 (the
@@ -679,12 +861,16 @@ items off as they land.
 ## 5. Optional
 
 ## For privacy review
+
+## Tooling TODOs
 ```
 
 Each numbered section holds `###` items, each with its explanation and
 checkboxes. Leave out empty sections, and order items within a section by
 urgency. Regressions go first: silent ones, then those only some platforms
 build. "For privacy review" is a plain list, one line per upstream feature.
+"Tooling TODOs" is filed by lift runs (see `tools/cr/autolift/SKILL.md`): keep
+it when updating the tracker, and don't review it as upstream items.
 
 Format the file afterwards with `pnpm run format --base HEAD`. Without
 `--base HEAD`, it formats everything the cr branch changed since
