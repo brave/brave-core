@@ -1,28 +1,7 @@
 diff --git a/chrome/browser/notifications/BUILD.gn b/chrome/browser/notifications/BUILD.gn
-index 34cc8b26fdce1cb0e5a77a5e5ae0f9b579a02f78..8817b1687ca939bc28ca63d9185e9636f8835478 100644
+index 0ccb2bdd16b4f2507ca5b50bffe1ab314a02f2d4..f74ec24f495bc03cb7037b3acbb20875ae0e9df7 100644
 --- a/chrome/browser/notifications/BUILD.gn
 +++ b/chrome/browser/notifications/BUILD.gn
-@@ -193,6 +193,7 @@ source_set("impl") {
-   public_deps = [ ":notifications" ]
- 
-   deps = [
-+    "//chrome/app:generated_resources",
-     "//chrome/browser:browser_features",
-     "//chrome/browser/content_settings:content_settings_factory",
-     "//chrome/browser/lifetime",
-@@ -212,11 +213,10 @@ source_set("impl") {
-     "//components/safe_browsing/content/browser/notification_content_detection",
-     "//components/safe_browsing/core/browser:safe_browsing_metrics_collector",
-     "//components/safe_browsing/core/common:features",
-+    "//components/search_engines",
-     "//components/site_engagement/content",
-     "//components/visibility_timer",
-     "//ui/message_center",
--    "//chrome/app:generated_resources",
--    "//components/search_engines",
-     "//ui/native_theme",
-     "//ui/strings:ui_strings_grit",
-   ]
 @@ -667,6 +667,7 @@ if (is_android) {
      deps = [
        ":java_resources",
@@ -30,4 +9,4 @@ index 34cc8b26fdce1cb0e5a77a5e5ae0f9b579a02f78..8817b1687ca939bc28ca63d9185e9636
 +      "//brave/browser/notifications/android:brave_java",
        "//build/android:build_java",
        "//chrome/android:base_module_java",
-       "//chrome/browser/flags:java",
+       "//chrome/browser/feature_engagement:java",
