@@ -1,0 +1,77 @@
+# Sweep a: commits touching what Brave overrides. See
+# tools/cr/codehealth/scripts/sweep.py for the fields.
+agentic_review {
+  # The overlap list, by overridden file: as commits, it's too long to read.
+  # Drops build files, flag metadata, histograms and strings: feature-list
+  # overlaps are read in sweep b. It can't see Brave's Polymer overrides
+  # (sweep d), test filters or build/chromium/resources/ (sweep g).
+  capability_groups {
+    tool: "vpython3 tools/cr/codehealth/scripts/overlap.py {old}..{new}"
+    rules: "tools/cr/codehealth/rules/overlap/overridden-files.md"
+    rules: "tools/cr/codehealth/rules/overlap/hook-point-moved.md"
+    rules: "tools/cr/codehealth/rules/overlap/consolidated-entry-points.md"
+  }
+  capability_groups {
+    tool: "vpython3 tools/cr/codehealth/scripts/overlap.py {old}..{new} --kind plaster"
+    rules: "tools/cr/codehealth/rules/overlap/plaster-intent.md"
+  }
+  capability_groups {
+    tool: "vpython3 tools/cr/codehealth/scripts/define_reach.py {old}..{new}"
+    rules: "tools/cr/codehealth/rules/overlap/define-reach.md"
+  }
+  capability_groups {
+    tool: "vpython3 tools/cr/codehealth/scripts/python_reach.py {old}..{new}"
+    rules: "tools/cr/codehealth/rules/overlap/python-reach.md"
+  }
+  # Clean-ups that remove a predicate or feature Brave names.
+  capability_groups {
+    path_expression: ".*\\.(?:cc|h|mm)"
+    exclude_path_expression: ".*(?:_unittest|_browsertest|_test|_interactive_uitest)\\.(?:cc|mm)|.*/test/.*"
+    subject_patterns: "(?i)\\b(?:remove|clean ?up|launch|delete|finch)"
+    # Only removed feature checks: other `k` constants Brave names are noise.
+    content_patterns: "^-.*(?:FeatureList::IsEnabled\\(|\\b(?:Is|Should|Has|Can)\\w+Enabled\\()"
+    brave_mentions: "\\b((?:Is|Should|Has|Can)\\w+Enabled|k[A-Z]\\w+)\\b"
+    rules: "tools/cr/codehealth/rules/overlap/pinned-predicate-removed.md"
+  }
+  capability_groups {
+    overridden_by_brave: true
+    body_patterns: "(?i)\\bstale\\b"
+    rules: "tools/cr/codehealth/rules/overlap/cached-state-replaced-by-parameters.md"
+  }
+  # Removed or re-signed virtuals Brave overrides: a change has a `-` line.
+  capability_groups {
+    path_expression: ".*\\.h"
+    exclude_path_expression: ".*(?:/test/|_test_|mock_|fake_).*"
+    content_patterns: "^-\\s*virtual\\b"
+    brave_mentions: "virtual\\s[^(]*?\\b(\\w+)\\s*\\("
+    rules: "tools/cr/codehealth/rules/overlap/changed-virtuals.md"
+  }
+  # New virtuals in the base classes Brave overrides most.
+  capability_groups {
+    path_expression: "(?:content/public/browser/content_browser_client|extensions/common/extensions_client|components/autofill/core/browser/foundations/autofill_client|components/update_client/configurator|chrome/browser/ui/tabs/tab_strip_model_observer)\\.h"
+    content_patterns: "^\\+\\s*virtual\\b"
+    rules: "tools/cr/codehealth/rules/overlap/changed-virtuals.md"
+  }
+  capability_groups {
+    path_expression: "(?:chrome/browser/ui/views|ui/views)/.*\\.cc"
+    exclude_path_expression: ".*(?:_unittest|_browsertest|_interactive_uitest)\\.cc"
+    content_patterns: "^\\+.*\\b(?:InvalidateLayout|PreferredSizeChanged)\\(\\)"
+    brave_mentions: "/(\\w+)\\.cc$"
+    subject_patterns: "(?i)layout|dirty|perf|lazy|defer"
+    rules: "tools/cr/codehealth/rules/overlap/work-deferred-to-layout.md"
+  }
+  capability_groups {
+    path_expression: "chrome/browser/.*\\.(?:cc|mm)"
+    exclude_path_expression: ".*(?:_unittest|_browsertest|_interactive_uitest|_test)\\.(?:cc|mm)|.*/test/.*"
+    content_patterns: "^\\+.*\\b(?:GetUniqueElement|GetFirstMatchingElement|GetElementInAnyContext|GetAllMatchingElements)\\w*\\("
+    rules: "tools/cr/codehealth/rules/overlap/visibility-dependent-lookups.md"
+  }
+  # A new feature branch inside a file Brave hooks: a factory that may pick a
+  # path Brave doesn't.
+  capability_groups {
+    overridden_by_brave: true
+    exclude_path_expression: ".*(?:_unittest|_browsertest|_test)\\.(?:cc|mm)|.*(?:BUILD\\.gn|\\.gni|about_flags\\.cc)"
+    content_patterns: "^\\+.*\\b(?:IsInfoBarMigrated|base::FeatureList::IsEnabled)\\("
+    rules: "tools/cr/codehealth/rules/overlap/parallel-implementations.md"
+  }
+}

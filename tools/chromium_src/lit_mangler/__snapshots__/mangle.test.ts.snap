@@ -933,9 +933,10 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
  export function getHtml(this: SettingsContactInfoPageElement) {
    return html\`<!--_html_template_start_-->
 -  <settings-subpage page-title="$i18n{contactInfoTitle}"
+-      route-path="\${this.routePath}"
 -      learn-more-url="$i18n{addressesAndPaymentMethodsLearnMoreURL}"
 -      class="multi-card">
-+  <settings-subpage page-title="$i18n{contactInfoTitle}" learn-more-url="$i18n{addressesAndPaymentMethodsLearnMoreURL}" class="multi-card">
++  <settings-subpage page-title="$i18n{contactInfoTitle}" route-path="\${this.routePath}" learn-more-url="$i18n{addressesAndPaymentMethodsLearnMoreURL}" class="multi-card">
      <div class="card">
 -      <settings-toggle-button id="autofillProfileToggle"
 -          no-extension-indicator label="$i18n{enableProfilesLabel}"
