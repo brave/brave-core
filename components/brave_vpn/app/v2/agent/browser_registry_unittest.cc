@@ -22,6 +22,7 @@
 #include "brave/components/brave_vpn/app/v2/agent/browser_identity.h"
 #include "brave/components/brave_vpn/app/v2/agent/test/fake_browser.h"
 #include "brave/components/brave_vpn/app/v2/agent/test/fake_browser_identity.h"
+#include "brave/components/brave_vpn/app/v2/agent/test/fake_connection_manager.h"
 #include "brave/components/brave_vpn/common/mojom/browser_agent.mojom.h"
 #include "components/named_mojo_ipc_server/connection_info.h"
 #include "components/named_mojo_ipc_server/fake_ipc_server.h"
@@ -46,6 +47,7 @@ class BrowserRegistryTest : public testing::Test {
                 &BrowserRegistryTest::CaptureIdentityForConnection,
                 base::Unretained(this)))) {
     registry_ = BrowserRegistry::CreateForTesting(
+        connection_manager_,
         std::make_unique<named_mojo_ipc_server::FakeIpcServer>(&server_state_));
   }
 
@@ -169,6 +171,7 @@ class BrowserRegistryTest : public testing::Test {
       BrowserIdentity::VerificationResult::kAccepted;
   base::AutoReset<BrowserIdentityCaptureCallback>
       identity_capture_callback_reset_;
+  FakeConnectionManager connection_manager_;
   std::unique_ptr<BrowserRegistry> registry_;
 };
 
@@ -715,6 +718,27 @@ TEST_F(BrowserRegistryTest, ReconnectingAfterExpiryGetsFreshCapture) {
   FakeBrowser browser;
   EXPECT_EQ(mojom::BindBrowserHostResult::kSuccess,
             BindBrowserHost(browser, second_connection));
+}
+
+// Every bound browser observes the one shared manager, so a single change
+// reaches all of them.
+TEST_F(BrowserRegistryTest, StateChangeReachesEveryBoundBrowser) {
+  FakeBrowser first;
+  FakeBrowser second;
+  ASSERT_EQ(mojom::BindBrowserHostResult::kSuccess,
+            BindBrowserHost(first, NextConnectionId()));
+  ASSERT_EQ(mojom::BindBrowserHostResult::kSuccess,
+            BindBrowserHost(second, NextConnectionId()));
+
+  connection_manager_.SetConnectionState(mojom::VpnConnectionState::kConnecting,
+                                         std::nullopt);
+
+  // The first update each receives is the initial state sent on binding.
+  for (FakeBrowser* browser : {&first, &second}) {
+    ASSERT_TRUE(browser->endpoint().WaitForConnectionStateUpdates(2));
+    EXPECT_EQ(mojom::VpnConnectionState::kConnecting,
+              browser->endpoint().connection_state_updates()[1].state);
+  }
 }
 
 }  // namespace brave_vpn::v2

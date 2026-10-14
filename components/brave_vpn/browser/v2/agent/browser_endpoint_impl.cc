@@ -28,6 +28,13 @@ BrowserEndpointImpl::BindNewPipeAndPassRemote() {
   return remote;
 }
 
+void BrowserEndpointImpl::OnConnectionStateChanged(
+    mojom::VpnConnectionState state,
+    const std::optional<std::string>& error_message) {
+  // TODO(https://github.com/brave/brave-browser/issues/54624)
+  // Pass the connection state change to the service.
+}
+
 void BrowserEndpointImpl::OnPipeDisconnected() {
   // Stop listening before running the handler.
   receiver_.reset();

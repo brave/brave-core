@@ -11,6 +11,7 @@
 #include <memory>
 
 #include "base/functional/callback.h"
+#include "base/memory/raw_ref.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/process/process_handle.h"
@@ -31,11 +32,14 @@
 namespace brave_vpn::v2 {
 
 class BrowserHostImpl;
+class ConnectionManager;
 
 // Owns the IPC server and every browser to agent connection on it, plus the
 // authentication policy the unauthenticated surface delegates to. Sessions
 // are keyed by the BrowserHostProvider receiver id, which identifies the
-// connection: one authenticated BrowserHost per connection at a time.
+// connection: one authenticated BrowserHost per connection at a time. The
+// ConnectionManager is shared by every BrowserHost this registry creates and
+// must outlive it.
 //
 // Authentication state is split across two maps:
 //
@@ -54,7 +58,8 @@ class BrowserHostImpl;
 // verification functions work with pointers into the map.
 class BrowserRegistry : public BrowserHostProviderImpl::Delegate {
  public:
-  explicit BrowserRegistry(mojo::NamedPlatformChannel::ServerName server_name);
+  BrowserRegistry(ConnectionManager& connection_manager,
+                  mojo::NamedPlatformChannel::ServerName server_name);
   ~BrowserRegistry() override;
 
   BrowserRegistry(const BrowserRegistry&) = delete;
@@ -63,12 +68,14 @@ class BrowserRegistry : public BrowserHostProviderImpl::Delegate {
   // Takes the IPC server directly, so a test can choose connection ids and
   // report disconnects without a real endpoint.
   static std::unique_ptr<BrowserRegistry> CreateForTesting(
+      ConnectionManager& connection_manager,
       std::unique_ptr<named_mojo_ipc_server::IpcServer> host_server);
 
  private:
   friend class BrowserRegistryTest;
 
-  explicit BrowserRegistry(
+  BrowserRegistry(
+      ConnectionManager& connection_manager,
       std::unique_ptr<named_mojo_ipc_server::IpcServer> host_server);
 
   // Enum describing whether a connection's peer has been verified.
@@ -140,6 +147,8 @@ class BrowserRegistry : public BrowserHostProviderImpl::Delegate {
 
   void OnHostProviderDisconnected();
   void OnHostDisconnected(mojo::ReceiverId id);
+
+  const raw_ref<ConnectionManager> connection_manager_;
 
   // Shared by every connection: the IPC server hands the same instance to each
   // one, so it must outlive the host server.

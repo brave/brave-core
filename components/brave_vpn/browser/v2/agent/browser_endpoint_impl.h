@@ -6,6 +6,9 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_V2_AGENT_BROWSER_ENDPOINT_IMPL_H_
 #define BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_V2_AGENT_BROWSER_ENDPOINT_IMPL_H_
 
+#include <optional>
+#include <string>
+
 #include "base/functional/callback.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/mojom/browser_agent.mojom.h"
@@ -36,9 +39,9 @@ class BrowserEndpointImpl : public brave_vpn::mojom::BrowserEndpoint {
 
  private:
   // brave_vpn::mojom::BrowserEndpoint:
-  // Nothing yet: the interface is a placeholder for the agent-initiated half of
-  // the contract. New methods forward to a delegate injected here rather than
-  // reaching into browser state directly.
+  void OnConnectionStateChanged(
+      mojom::VpnConnectionState state,
+      const std::optional<std::string>& error_message) override;
 
   void OnPipeDisconnected();
 
