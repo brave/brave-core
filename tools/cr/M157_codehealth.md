@@ -1491,11 +1491,12 @@ The same bug deleted `//chrome/browser/ui:ui`. Uses fell from 875 lines at
 (`git grep -c browser_public_dependencies <tag> -- '*.gn' '*.gni'`, summed;
 [d85d15e2e8f8e](https://chromium.googlesource.com/chromium/src/+/d85d15e2e8f8e)).
 
-- [ ] Brave's 21 uses
+- [x] Brave's 21 uses
       (`git grep -n 'chrome/browser:browser_public_dependencies' -- '*.gn' '*.gni'`):
       drop the dep from targets outside
       `brave_chrome_browser_allow_circular_includes_from`, add their direct
-      deps, and verify with `gn check`
+      deps, and verify with `gn check`. None left at 158.0.8104.1, where
+      upstream removed the target; follow-up in the M158 tracker
 
 ### iOS: `TypedProfileKeyedServiceFactoryIOS`
 
