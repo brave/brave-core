@@ -60,7 +60,8 @@ struct MeldFiatCurrency {
 struct MeldCryptoCurrency {
   CoinType coin;
   string chain_id;
-  
+  string symbol;
+
   string currency_code;
   string? name;
   string? chain_code;
@@ -159,7 +160,7 @@ interface MeldIntegrationService {
 
   // Obtains the list of crypto currencies
   GetCryptoCurrencies()
-      => (array<MeldCryptoCurrency>? fiat_currencies, array<string>? error);
+      => (array<MeldCryptoCurrency>? crypto_currencies, array<string>? error);
 
   // Obtains the list of countries
   GetCountries() => (array<MeldCountry>? countries, array<string>? error);

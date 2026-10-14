@@ -18,7 +18,6 @@ import {
 import Amount from '../../../../../utils/amount'
 import { toProperCase } from '../../../../../utils/string-utils'
 import { getLocale } from '../../../../../../common/locale'
-import { getAssetSymbol } from '../../../../../utils/meld_utils'
 
 // Styled Components
 import {
@@ -81,7 +80,7 @@ export const BuyQuote = ({
   )
 
   const assetsSymbol = selectedAsset
-    ? getAssetSymbol(selectedAsset)
+    ? selectedAsset.symbol
     : destinationCurrencyCode
 
   const formattedCryptoAmount = new Amount(
@@ -96,7 +95,7 @@ export const BuyQuote = ({
     sourceAmountWithoutFee ?? '',
   ).formatAsFiat('', 2)
   const formattedTotalFee = new Amount(totalFee ?? '').formatAsFiat('', 2)
-  const [isCreditCardSupported, isDeditCardSupported] = [
+  const [isCreditCardSupported, isDebitCardSupported] = [
     paymentMethod?.includes('CREDIT'),
     paymentMethod?.includes('DEBIT'),
   ]
@@ -154,7 +153,7 @@ export const BuyQuote = ({
               </BestOptionLabel>
             ) : null}
             <PaymentMethodsWrapper>
-              {isDeditCardSupported ? <PaymentMethodIcon name='bank' /> : null}
+              {isDebitCardSupported ? <PaymentMethodIcon name='bank' /> : null}
               {isCreditCardSupported ? (
                 <PaymentMethodIcon name='credit-card' />
               ) : null}

@@ -48,7 +48,6 @@ import { querySubscriptionOptions60s } from '../../../../common/slices/constants
 
 // Utils
 import Amount from '../../../../utils/amount'
-import { getAssetSymbol } from '../../../../utils/meld_utils'
 import { makeBuyRoute } from '../../../../utils/routes-utils'
 import {
   getPriceRequestsForTokens,
@@ -72,6 +71,7 @@ const MAX_QUOTE_RESPONSE_IDENTIFIER = 'Source amount is above'
 const DEFAULT_ASSET: MeldCryptoCurrency = {
   'coin': BraveWallet.CoinType.ETH,
   'chainId': BraveWallet.MAINNET_CHAIN_ID,
+  'symbol': 'ETH',
   'currencyCode': 'ETH',
   'name': 'Ethereum',
   'chainCode': 'ETH',
@@ -222,7 +222,7 @@ export const useBuy = () => {
 
   const [cryptoEstimate, formattedCryptoEstimate] = useMemo(() => {
     if (selectedAssetSpotPrice && selectedMeldAsset) {
-      const symbol = getAssetSymbol(selectedMeldAsset)
+      const symbol = selectedMeldAsset.symbol
       const estimate = new Amount(amount).div(selectedAssetSpotPrice)
 
       return [
@@ -281,14 +281,14 @@ export const useBuy = () => {
     const match = /(\d+(?:\.\d+)?)\s*([A-Z]{3})/.exec(error)
     const extractedAmount = match?.[1]
     const extractedCurrencyCode = match?.[2]
-    const formatedAmount =
+    const formattedAmount =
       extractedAmount && extractedCurrencyCode
         ? new Amount(extractedAmount ?? '').formatAsFiat(
             extractedCurrencyCode,
             2,
           )
         : ''
-    const formattedAmountWithCurrency = `${formatedAmount} ${extractedCurrencyCode}`
+    const formattedAmountWithCurrency = `${formattedAmount} ${extractedCurrencyCode}`
 
     if (
       error.startsWith(MIN_QUOTE_RESPONSE_IDENTIFIER)

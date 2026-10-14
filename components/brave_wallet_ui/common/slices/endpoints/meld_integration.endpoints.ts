@@ -2,7 +2,6 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
-import { mapLimit } from 'async'
 
 // Types
 import {
@@ -82,26 +81,10 @@ export const meldIntegrationEndpoints = ({
         baseQuery,
       ) => {
         try {
-          const { meldIntegrationService, blockchainRegistry } =
-            baseQuery(undefined).data
+          const { meldIntegrationService } = baseQuery(undefined).data
 
-          const { fiatCurrencies: cryptoCurrencies, error } =
+          const { cryptoCurrencies, error } =
             await meldIntegrationService.getCryptoCurrencies()
-
-          const tokenList = await mapLimit(
-            cryptoCurrencies || [],
-            1,
-            async function (token: MeldCryptoCurrency) {
-              if (!token.contractAddress) {
-                return token
-              }
-              const { coingeckoId } = await blockchainRegistry.getCoingeckoId(
-                token.chainId,
-                token.contractAddress,
-              )
-              return coingeckoId ? { ...token, coingeckoId } : token
-            },
-          )
 
           if (error) {
             return handleEndpointError(
@@ -112,7 +95,7 @@ export const meldIntegrationEndpoints = ({
           }
 
           return {
-            data: tokenList || [],
+            data: cryptoCurrencies || [],
           }
         } catch (error) {
           return handleEndpointError(

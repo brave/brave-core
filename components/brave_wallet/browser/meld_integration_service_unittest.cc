@@ -1230,7 +1230,8 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCryptoCurrencies) {
                     *crypto_currencies,
                     [](const auto& item) {
                       return item->currency_code == "USDT_POLYGON" &&
-                             !item->name && item->chain_code == "POLYGON" &&
+                             item->symbol == "USDT" && !item->name &&
+                             item->chain_code == "POLYGON" &&
                              item->chain_name == "Polygon" &&
                              item->coin == mojom::CoinType::ETH &&
                              item->chain_id == "0x89" &&
@@ -1246,7 +1247,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCryptoCurrencies) {
                     *crypto_currencies,
                     [](const auto& item) {
                       return item->currency_code == "00" &&
-                             item->name == "00 Token" &&
+                             item->symbol == "00" && item->name == "00 Token" &&
                              item->chain_code == "ETH" &&
                              item->chain_name == "Ethereum" &&
                              item->coin == mojom::CoinType::ETH &&

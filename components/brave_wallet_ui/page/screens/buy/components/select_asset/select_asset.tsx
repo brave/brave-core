@@ -26,7 +26,6 @@ import { useGetNetworksQuery } from '$wallet/common/slices/api.slice'
 import { BraveWallet, MeldCryptoCurrency } from '../../../../../constants/types'
 
 // Utils
-import { getAssetSymbol } from '../../../../../utils/meld_utils'
 import { getLocale } from '../../../../../../common/locale'
 
 // Components
@@ -99,7 +98,7 @@ export const AssetListItem = ({
   const { symbolImageUrl, currencyCode, chainName } = asset
 
   // Computed
-  const assetSymbol = getAssetSymbol(asset)
+  const assetSymbol = asset.symbol
   const networkDescription =
     currencyCode !== ''
       ? getLocale(S.BRAVE_WALLET_PORTFOLIO_ASSET_NETWORK_DESCRIPTION)
@@ -191,7 +190,7 @@ export const SelectAsset = (props: SelectAssetProps) => {
     if (searchText === '') return assetsFilteredByNetwork
 
     return assetsFilteredByNetwork.filter((asset) => {
-      const assetSymbol = getAssetSymbol(asset).toLowerCase()
+      const assetSymbol = asset.symbol.toLowerCase()
       const assetName = asset.name?.toLowerCase() ?? ''
       return (
         assetName.startsWith(searchText.toLowerCase())

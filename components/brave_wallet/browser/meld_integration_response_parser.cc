@@ -12,7 +12,9 @@
 #include <utility>
 #include <vector>
 
+#include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/strings/string_util.h"
 #include "base/types/expected.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
@@ -70,6 +72,19 @@ GetBraveChain(
   }
 
   return it->second;
+}
+
+// Meld may suffix currency codes with their chain code, e.g. "USDT_POLYGON".
+std::string GetCurrencySymbol(
+    const brave_wallet::meld_integration_responses::CryptoCurrency& currency) {
+  if (currency.chain_code) {
+    if (const auto symbol =
+            base::RemoveSuffix(currency.currency_code,
+                               base::StrCat({"_", *currency.chain_code}))) {
+      return std::string(*symbol);
+    }
+  }
+  return currency.currency_code;
 }
 
 }  //  namespace
@@ -337,6 +352,7 @@ std::optional<std::vector<mojom::MeldCryptoCurrencyPtr>> ParseCryptoCurrencies(
 
     auto cc = mojom::MeldCryptoCurrency::New(
         brave_chain->first, std::string(brave_chain->second),
+        GetCurrencySymbol(*crypto_currency_value),
         crypto_currency_value->currency_code, crypto_currency_value->name,
         crypto_currency_value->chain_code, crypto_currency_value->chain_name,
         crypto_currency_value->contract_address,

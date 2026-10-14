@@ -14,9 +14,6 @@ import {
 // Types
 import { MeldCryptoCurrency } from '../../../../../constants/types'
 
-// Utils
-import { getAssetSymbol } from '../../../../../utils/meld_utils'
-
 // Components
 import {
   CreateNetworkIcon, //
@@ -54,7 +51,7 @@ export const SelectAssetButton = (props: SelectAssetButtonProps) => {
   )
 
   // Computed
-  const assetSymbol = selectedAsset ? getAssetSymbol(selectedAsset) : ''
+  const assetSymbol = selectedAsset ? selectedAsset.symbol : ''
   const assetURL = selectedAsset?.symbolImageUrl ?? ''
 
   return (

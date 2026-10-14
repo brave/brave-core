@@ -15,7 +15,6 @@ import { useBuy } from './hooks/use_buy'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
-import { getAssetSymbol } from '../../../utils/meld_utils'
 import { isComponentInStorybook } from '../../../utils/string-utils'
 
 // Selectors
@@ -127,7 +126,7 @@ export const Buy = () => {
   const isStorybook = isComponentInStorybook()
   const pageTitle = getLocale(S.BRAVE_WALLET_BUY_ASSET).replace(
     '$1',
-    getAssetSymbol(selectedMeldAsset),
+    selectedMeldAsset.symbol,
   )
   const isFetchingFirstTimeQuotes = isFetchingQuotes && quotes?.length === 0
 
@@ -295,7 +294,7 @@ export const Buy = () => {
                     >
                       {getLocale(S.BRAVE_WALLET_NO_PROVIDER_FOUND).replace(
                         '$1',
-                        getAssetSymbol(selectedMeldAsset),
+                        selectedMeldAsset.symbol,
                       )}
                     </Text>
                     <Text

@@ -40,7 +40,6 @@ import {
 } from '../../../market/market-ui-messages'
 import { makeDepositRoute, makeBuyRoute } from '../../../utils/routes-utils'
 import { getAssetIdKey } from '../../../utils/asset-utils'
-import { getAssetSymbol } from '../../../utils/meld_utils'
 
 const assetsRequestLimit = 250
 
@@ -87,7 +86,7 @@ export const MarketView = () => {
           const { payload } = message as SelectBuyMessage
           const symbolLower = payload.symbol.toLowerCase()
           const foundMeldTokens = buyAssets?.filter(
-            (t) => getAssetSymbol(t) === symbolLower,
+            (t) => t.symbol === symbolLower,
           )
           if (foundMeldTokens) {
             openOrPushRoute(makeBuyRoute(foundMeldTokens[0]))

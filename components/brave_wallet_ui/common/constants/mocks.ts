@@ -956,6 +956,7 @@ export const mockMeldCryptoCurrencies: MeldCryptoCurrency[] = [
   {
     'coin': BraveWallet.CoinType.ETH,
     'chainId': '0x1',
+    'symbol': '00',
     'currencyCode': '00',
     'name': '00 Token',
     'chainCode': 'ETH',
@@ -966,6 +967,7 @@ export const mockMeldCryptoCurrencies: MeldCryptoCurrency[] = [
   {
     'coin': BraveWallet.CoinType.ETH,
     'chainId': '0x1',
+    'symbol': 'ZRX',
     'currencyCode': 'ZRX',
     'name': '0x',
     'chainCode': 'ETH',
@@ -976,6 +978,7 @@ export const mockMeldCryptoCurrencies: MeldCryptoCurrency[] = [
   {
     'coin': BraveWallet.CoinType.ETH,
     'chainId': '0xfa',
+    'symbol': 'OXD',
     'currencyCode': 'OXD_FTM',
     'name': '0xDAO',
     'chainCode': 'FTM',
@@ -987,6 +990,7 @@ export const mockMeldCryptoCurrencies: MeldCryptoCurrency[] = [
   {
     'coin': BraveWallet.CoinType.ETH,
     'chainId': '0x1',
+    'symbol': '1INCH',
     'currencyCode': '1INCH',
     'name': '1inch',
     'chainCode': 'ETH',
@@ -997,6 +1001,7 @@ export const mockMeldCryptoCurrencies: MeldCryptoCurrency[] = [
   {
     'coin': BraveWallet.CoinType.ETH,
     'chainId': '0x38',
+    'symbol': '1INCH',
     'currencyCode': '1INCH_BSC',
     'name': '1inch',
     'chainCode': 'BSC',

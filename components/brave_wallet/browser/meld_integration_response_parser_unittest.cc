@@ -360,7 +360,8 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_CryptoCurrencies) {
                 *crypto_currencies,
                 [](const auto& item) {
                   return item->currency_code == "USDT_BSC" &&
-                         item->name == "#REF!" && item->chain_code == "BSC" &&
+                         item->symbol == "USDT" && item->name == "#REF!" &&
+                         item->chain_code == "BSC" &&
                          item->chain_name == "BNB Smart Chain" &&
                          item->coin == mojom::CoinType::ETH &&
                          item->chain_id ==
