@@ -23,6 +23,7 @@ class ChromeBrowserFieldTrials : public ChromeBrowserFieldTrialsChromium {
       bool has_seed,
       const variations::EntropyProviders& entropy_providers,
       base::FeatureList* feature_list) override;
+  void RegisterFeatureOverrides(base::FeatureList* feature_list) override;
 };
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_CHROME_BROWSER_FIELD_TRIALS_H_
