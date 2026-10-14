@@ -1117,7 +1117,10 @@ Brave only pins the two WebUI omnibox flags.
       ([6ac6e3080c1d5](https://chromium.googlesource.com/chromium/src/+/6ac6e3080c1d554ba9e5270f860b51e4ae361e17)),
       which Brave's copied `ParseTemplateURLId`
       (`browser/ui/webui/settings/brave_search_engines_handler.cc:42`) `CHECK`s
-      on
+      on. In M158 it also adds `GetMoreSearchEngines()`
+      ([01588dedc5d5f](https://chromium.googlesource.com/chromium/src/+/01588dedc5d5f79896eeb4adda1a938ae7f28bdb)),
+      which lists upstream's `GetAllPrepopulatedEngines()` rather than Brave's
+      engines
 
 ### Android settings in a tab bypass Brave's settings substitutions
 
@@ -1219,8 +1222,11 @@ must return a single `html` literal, and no bare `${html`…`}` wrappers
 ([08026e3be1aaf](https://chromium.googlesource.com/chromium/src/+/08026e3be1aaf103b577c3e5c1cf0c39783396ea)).
 Brave's `build_webui` targets run upstream's ESLint rules.
 
-- [ ] `components/brave_account/resources/brave_account_dialogs.html.ts:17`:
-      replace the IIFE with a `switch` by ternaries or a method
+- [x] `components/brave_account/resources/brave_account_dialogs.html.ts:17`:
+      replace the IIFE with a `switch` by ternaries or a method. Done in
+      "[cr158] Restructure Lit templates for the new template lint checks"; the
+      ESLint rule landed in M158
+      ([b2d1723241776](https://chromium.googlesource.com/chromium/src/+/b2d1723241776f3c7961fc7b28ef350b55821845))
 
 ### `raw_ptr<T, UnprotectedInRelease>` is on its way out
 
@@ -1275,7 +1281,9 @@ the new caller still reaches Brave's wrapper by name. The idiom:
 Brave already has `BraveTabFeatures` on desktop
 (`browser/ui/tabs/brave_tab_features.cc`) and Android
 (`browser/android/brave_tab_features.cc`). Move the helpers created in
-`browser/brave_tab_helpers.cc`:
+`browser/brave_tab_helpers.cc`. In M158 upstream deleted `TabHelpers`, and
+nothing calls `brave::AttachTabHelpers()` any more, so every helper left here is
+unattached (see M158's "Brave's tab helpers are no longer attached to tabs"):
 
 - [ ] `YouTubeScriptInjectorTabHelper`
 - [ ] `brave_shields::BraveShieldsTabHelper`
@@ -1530,11 +1538,12 @@ The same bug deleted `//chrome/browser/ui:ui`. Uses fell from 875 lines at
 (`git grep -c browser_public_dependencies <tag> -- '*.gn' '*.gni'`, summed;
 [d85d15e2e8f8e](https://chromium.googlesource.com/chromium/src/+/d85d15e2e8f8e)).
 
-- [ ] Brave's 21 uses
+- [x] Brave's 21 uses
       (`git grep -n 'chrome/browser:browser_public_dependencies' -- '*.gn' '*.gni'`):
       drop the dep from targets outside
       `brave_chrome_browser_allow_circular_includes_from`, add their direct
-      deps, and verify with `gn check`
+      deps, and verify with `gn check`. None left at 158.0.8104.1, where
+      upstream removed the target; follow-up in the M158 tracker
 
 ### iOS: `TypedProfileKeyedServiceFactoryIOS`
 
@@ -2000,7 +2009,17 @@ nothing.
       (crbug.com/394420459,
       [604563b50c707](https://chromium.googlesource.com/chromium/src/+/604563b50c7072b720f2f6f73064e57a4013ccba)):
       `browser/ui/views/infobars/web_discovery_infobar_content_view.cc:435`,
-      `browser/ui/views/toolbar/wallet_button.cc:212`, `:216`.
+      `browser/ui/views/toolbar/wallet_button.cc:212`, `:216`. M158 extends it
+      to `Label::SetEnabledColor` and `CreateSolidBackground`
+      ([638c6142bb4eb](https://chromium.googlesource.com/chromium/src/+/638c6142bb4eb1bb7ee83664fe20b1eadfb841e3)),
+      where Brave resolves colors once:
+      `browser/ui/views/sidebar/sidebar_add_item_bubble_delegate_view.cc:169`,
+      `sidebar_edit_item_bubble_delegate_view.cc:92`, `:106`, `:124`,
+      `browser/ui/views/toolbar/brave_vpn_status_label.cc:69`,
+      `browser/ui/views/bookmarks/bookmark_bar_instructions_view.cc:115`,
+      `:125`,
+      `browser/ui/views/omnibox/brave_search_conversion_promotion_view.cc:382`
+      and `web_discovery_infobar_content_view.cc:401`.
 - [ ] On the next run of `update-upstream-flake-filters.py`, check that the
       `ChromeBackForwardCacheBrowserWithEmbedPdfTest…/guestview_*` entries
       (`test/filters/generated/browser_tests-linux.filter:63`, `:66`, `:69`,
