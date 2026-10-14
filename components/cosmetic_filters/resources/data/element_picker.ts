@@ -3,7 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { ChromiumElementPickerAPI } from './element_picker_api_chromium'
+import type { ElementPickerAPI } from './element_picker_api'
+import { elementPickerTemplate } from './element_picker_template'
 
 const NSSVG = 'http://www.w3.org/2000/svg'
 
@@ -17,7 +18,8 @@ let btnCreateDisabledText: string
 let btnShowRulesBoxText: string
 let btnHideRulesBoxText: string
 
-const api = new ChromiumElementPickerAPI()
+// Set by `showElementPicker()` before any of the picker UI is created.
+let api: ElementPickerAPI
 
 // When the picker is activated, it eats all pointer events and takes up the
 // entire screen. All calls to document.elementFromPoint(..) will return the
@@ -317,10 +319,9 @@ const attachElementPicker = () => {
   pickerDiv.id = 'brave-element-picker'
   shadowRoot = pickerDiv.attachShadow({ mode: 'closed' })
 
-  // Will be resolved by webpack to the file content.
   // It's a trusted content so it's safe to use innerHTML.
-  // eslint-disable-next-line no-unsanitized/property, @typescript-eslint/no-require-imports
-  shadowRoot.innerHTML = require('./element_picker.html')
+  // eslint-disable-next-line no-unsanitized/property
+  shadowRoot.innerHTML = elementPickerTemplate
 
   const pickerCSSStyle: string = [
     'background: transparent',
@@ -894,8 +895,19 @@ const localizeTextData = (
   }
 }
 
-const active = document.getElementById('brave-element-picker')
-if (!active) {
+// Opens the element picker, or un-minimizes it if it is already open. The
+// platform supplies its own `ElementPickerAPI` since the browser-side
+// transport differs between Chromium and WebKit.
+export const showElementPicker = (platformApi: ElementPickerAPI) => {
+  api = platformApi
+
+  const active = document.getElementById('brave-element-picker')
+  if (active) {
+    // Re-opening existing picker
+    setMinimizeState(false)
+    return
+  }
+
   isAndroid = api.getPlatform() === 'android'
   isIOS = api.getPlatform() === 'ios'
   isMobile = isAndroid || isIOS
@@ -921,7 +933,4 @@ if (!active) {
       launchElementPicker(root)
     },
   )
-} else {
-  // Re-opening existing picker
-  setMinimizeState(false)
 }
