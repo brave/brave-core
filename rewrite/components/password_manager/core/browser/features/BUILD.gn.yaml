@@ -1,0 +1,15 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Add the Brave password manager features utils deps.
+
+      Brave's `IsAccountStorageActive` override reads a brave_sync feature.
+    add_literal_to_list:
+      target: utils
+      list_name: deps
+      literal: brave_components_password_manager_core_browser_features_deps
+      import: //brave/components/password_manager/core/browser/features/sources.gni
