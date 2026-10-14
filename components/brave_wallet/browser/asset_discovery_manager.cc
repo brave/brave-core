@@ -107,7 +107,7 @@ AssetDiscoveryManager::GetFungibleSupportedChains() {
   supported_chains.push_back(
       mojom::ChainId::New(mojom::CoinType::SOL, mojom::kSolanaMainnet));
 
-  if (IsPolkadotAssetDiscoveryEnabled()) {
+  if (IsPolkadotEnabled()) {
     for (std::string chain_id :
          {mojom::kPolkadotMainnetAssetHub, mojom::kPolkadotTestnetAssetHub,
           mojom::kPolkadotPaseoAssetHub}) {
@@ -122,8 +122,14 @@ AssetDiscoveryManager::GetFungibleSupportedChains() {
 std::vector<mojom::ChainIdPtr>
 AssetDiscoveryManager::GetNonFungibleSupportedChains() {
   // Use fungible chains as a base.
-  std::vector<mojom::ChainIdPtr> non_fungible_supported_chains =
-      CloneVector(GetFungibleSupportedChains());
+  std::vector<mojom::ChainIdPtr> non_fungible_supported_chains;
+  for (const auto& entry : kEthBalanceScannerContractAddresses) {
+    non_fungible_supported_chains.push_back(
+        mojom::ChainId::New(mojom::CoinType::ETH, std::string(entry.first)));
+  }
+
+  non_fungible_supported_chains.push_back(
+      mojom::ChainId::New(mojom::CoinType::SOL, mojom::kSolanaMainnet));
 
   // Add in all the user networks that are supported by SimpleHash
   auto custom_non_fungible_eth_chains =
@@ -183,7 +189,7 @@ void AssetDiscoveryManager::AccountsAdded(
     if (account->account_id->coin == mojom::CoinType::ETH ||
         account->account_id->coin == mojom::CoinType::SOL ||
         (account->account_id->coin == mojom::CoinType::DOT &&
-         IsPolkadotAssetDiscoveryEnabled())) {
+         IsPolkadotEnabled())) {
       accounts.push_back(account_id.Clone());
     }
   }
