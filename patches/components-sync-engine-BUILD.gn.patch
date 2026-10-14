@@ -1,5 +1,5 @@
 diff --git a/components/sync/engine/BUILD.gn b/components/sync/engine/BUILD.gn
-index e412d28b88f8edcc9fb94df7a9686154de041ca0..550ca0755d3f0c2ee0445e00d3a391001555d9d0 100644
+index cba82110676b75b0618b7d673e0a91caf54ce28d..092d545abe6395536d0aa9340a36b2494b978c19 100644
 --- a/components/sync/engine/BUILD.gn
 +++ b/components/sync/engine/BUILD.gn
 @@ -2,6 +2,8 @@
@@ -11,7 +11,7 @@ index e412d28b88f8edcc9fb94df7a9686154de041ca0..550ca0755d3f0c2ee0445e00d3a39100
  static_library("engine") {
    sources = [
      "active_devices_invalidation_info.cc",
-@@ -157,6 +159,7 @@ static_library("engine") {
+@@ -159,6 +161,7 @@ static_library("engine") {
      "traffic_logger.h",
      "update_handler.h",
    ]

@@ -1,8 +1,8 @@
 diff --git a/components/sync_device_info/device_info_sync_bridge.h b/components/sync_device_info/device_info_sync_bridge.h
-index 863108376ef41530fb462ebcf0a10af3f1031bd0..bdda50f27a214a50023e3949ca256a81190e34ca 100644
+index fef111f8900a87487e3aecd5460827fcfcebe66f..0dedeaef5cf0cd115958ea65b28b43f0c5fb9935 100644
 --- a/components/sync_device_info/device_info_sync_bridge.h
 +++ b/components/sync_device_info/device_info_sync_bridge.h
-@@ -114,6 +114,12 @@ class DeviceInfoSyncBridge : public DataTypeSyncBridge,
+@@ -115,6 +115,12 @@ class DeviceInfoSyncBridge : public DataTypeSyncBridge,
    bool IsPulseTimerRunningForTest() const;
    void ForcePulseForTest() override;
  

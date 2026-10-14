@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/importer/importer_list.cc b/chrome/browser/importer/importer_list.cc
-index 62546b572bab849b182fed62ad964d5cef136571..f53e90f130948f5dd74895f1d2ea9e73d6c5dfa6 100644
+index 1d7c9bca117843a2a869bac43de3b4e53ceedf65..8501459d11d7434f44b170d56463b5ed4f0167b2 100644
 --- a/chrome/browser/importer/importer_list.cc
 +++ b/chrome/browser/importer/importer_list.cc
 @@ -51,7 +51,7 @@ void DetectEdgeProfiles(

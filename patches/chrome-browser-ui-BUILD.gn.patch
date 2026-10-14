@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/BUILD.gn b/chrome/browser/ui/BUILD.gn
-index 7029b02a8ebb5f27e38f70d88a27f42d5ba6d7c0..f93af58ca88608733dc87f89171cd1f46cf58740 100644
+index 1e352a02e9720c91917e329c22674fdd33451f4b..5ca416247b05b7959fccc3931629a7b0512f667e 100644
 --- a/chrome/browser/ui/BUILD.gn
 +++ b/chrome/browser/ui/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -10,7 +10,7 @@ index 7029b02a8ebb5f27e38f70d88a27f42d5ba6d7c0..f93af58ca88608733dc87f89171cd1f4
  import("//build/config/buildflags_paint_preview.gni")
  import("//build/config/chrome_build.gni")
  import("//build/config/compiler/compiler.gni")
-@@ -1513,6 +1514,7 @@ if (!is_android) {
+@@ -1478,6 +1479,7 @@ if (!is_android) {
        ":core",
        "//chrome/browser/ui/browser_window/internal",
      ]
@@ -18,7 +18,7 @@ index 7029b02a8ebb5f27e38f70d88a27f42d5ba6d7c0..f93af58ca88608733dc87f89171cd1f4
      public_deps = [
        ":browser_window_deleter",
        "//base",
-@@ -1670,11 +1672,13 @@ if (!is_android) {
+@@ -1634,11 +1636,13 @@ if (!is_android) {
  group("ui_public_dependencies") {
    visibility = [ "//chrome/browser:browser_public_dependencies" ]
    public_deps = [
