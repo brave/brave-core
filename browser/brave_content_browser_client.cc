@@ -884,6 +884,12 @@ void BraveContentBrowserClient::RegisterTrustedWebUIInterfaceBrokers(
 void BraveContentBrowserClient::RegisterUntrustedWebUIInterfaceBrokers(
     content::WebUIBrowserInterfaceBrokerRegistry& registry) {
   ChromeContentBrowserClient::RegisterUntrustedWebUIInterfaceBrokers(registry);
+#if !BUILDFLAG(IS_ANDROID)
+  // Upstream's per-document ColorChangeHandler DCHECKs on a second bind, which
+  // happens when leo.bundle.js and a bundled WebUI each create a BrowserProxy.
+  registry.AddGlobal<color_change_listener::mojom::PageHandler>(
+      base::BindRepeating(&MaybeBindColorChangeHandler));
+#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN) && !BUILDFLAG(IS_ANDROID)
   if (brave_vpn::IsBraveVPNFeatureEnabled()) {
