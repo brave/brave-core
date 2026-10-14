@@ -635,6 +635,15 @@ scores the answers with the rules of the plan, section 8.1.
 - The ports of `ParseRewriteAnswer()` and `IsFaithfulRewrite()` give the same
   results as C++ on the browser traces:
   `./parity_check.py --traces <run>/*/r*/report.json`.
+- LLM variants can add fields to the request body (`extra` in the variant, for
+  example `{"temperature": 0}`; `rq.llm_extra()`). The safety wording of the
+  sentence step has variants K to R: `R` (three yes/no questions) is the C++
+  text. An LLM step prints three more numbers: repeats with the same text
+  (`same_across_repeats`), outputs that copy an example of the prompt
+  (`example_copies`) and memories that start with "The user" (`subject_prefix`;
+  the style rules say no subject, and a prompt without examples broke this).
+- Tried and rejected variants stay in `lib/requests.py` (`X1a`, `X1b`, `X2a` to
+  `X2f`, `N` to `Q`); the log of the experiments is in the notes folder.
 
 ## 20. Sweep the keep thresholds offline (`sweep.py`)
 
