@@ -59,6 +59,14 @@ function getTranscript(event: SpeechRecognitionEvent) {
   return transcript
 }
 
+/** Options for recognizing one utterance at a time. */
+interface SpeechRecognitionOptions {
+  continuous?: boolean
+  /** Stop after the transcript has stopped changing for this many milliseconds. */
+  inactivityTimeoutMs?: number
+  onComplete?: (transcript: string) => void
+}
+
 export interface SpeechRecognitionState {
   /** False when the API is missing, e.g. on a platform without it. */
   isSupported: boolean
@@ -67,6 +75,7 @@ export interface SpeechRecognitionState {
   error: string | null
   start: () => void
   stop: () => void
+  cancel: () => void
 }
 
 /**
@@ -82,14 +91,22 @@ export interface SpeechRecognitionState {
  */
 export function useSpeechRecognition(
   onTranscript: (transcript: string) => void,
+  options: SpeechRecognitionOptions = {},
 ): SpeechRecognitionState {
   const [isListening, setIsListening] = React.useState(false)
   const [error, setError] = React.useState<string | null>(null)
   const recognitionRef = React.useRef<SpeechRecognitionInstance | null>(null)
+  const inactivityTimer = React.useRef<number | undefined>(undefined)
+  const clearInactivityTimer = React.useCallback(() => {
+    window.clearTimeout(inactivityTimer.current)
+    inactivityTimer.current = undefined
+  }, [])
 
   // Held in a ref so a new callback each render does not need a restart.
   const onTranscriptRef = React.useRef(onTranscript)
   onTranscriptRef.current = onTranscript
+  const optionsRef = React.useRef(options)
+  optionsRef.current = options
 
   const start = React.useCallback(() => {
     const SpeechRecognition = getSpeechRecognitionConstructor()
@@ -99,33 +116,87 @@ export function useSpeechRecognition(
 
     const recognition = new SpeechRecognition()
     recognition.lang = navigator.language
-    recognition.continuous = true
+    recognition.continuous = optionsRef.current.continuous ?? true
+    let transcript = ''
+    let failed = false
+    let stopping = false
     recognition.interimResults = true
     recognition.onresult = (event) => {
-      onTranscriptRef.current(getTranscript(event))
+      if (recognitionRef.current === recognition) {
+        const nextTranscript = getTranscript(event)
+        const changed = nextTranscript !== transcript
+        transcript = nextTranscript
+        onTranscriptRef.current(transcript)
+        // The local engine emits unchanged interim results during silence.
+        if (!changed || stopping) {
+          return
+        }
+        clearInactivityTimer()
+        if (transcript.trim() && optionsRef.current.inactivityTimeoutMs) {
+          inactivityTimer.current = window.setTimeout(() => {
+            if (recognitionRef.current === recognition) {
+              stopping = true
+              recognition.stop()
+            }
+          }, optionsRef.current.inactivityTimeoutMs)
+        }
+      }
     }
     recognition.onerror = (event) => {
+      if (recognitionRef.current !== recognition) {
+        return
+      }
+      failed = event.error !== 'no-speech'
       setError(event.error)
     }
     // Fires for both a normal stop and an error, so it is the single place
     // that returns the button to its idle state.
     recognition.onend = () => {
+      if (recognitionRef.current !== recognition) {
+        return
+      }
       recognitionRef.current = null
+      clearInactivityTimer()
       setIsListening(false)
+      if (!failed) {
+        optionsRef.current.onComplete?.(transcript)
+      }
     }
 
     recognitionRef.current = recognition
     setError(null)
     setIsListening(true)
-    recognition.start()
-  }, [])
+    try {
+      recognition.start()
+    } catch {
+      recognitionRef.current = null
+      setIsListening(false)
+      setError('audio-capture')
+    }
+  }, [clearInactivityTimer])
 
   const stop = React.useCallback(() => {
     recognitionRef.current?.stop()
   }, [])
 
+  const cancel = React.useCallback(() => {
+    clearInactivityTimer()
+    const recognition = recognitionRef.current
+    if (!recognition) {
+      return
+    }
+    // Ignore queued results before aborting so submitted text stays cleared.
+    recognitionRef.current = null
+    recognition.onresult = null
+    recognition.onerror = null
+    recognition.onend = null
+    recognition.abort()
+    setIsListening(false)
+  }, [clearInactivityTimer])
+
   React.useEffect(() => {
     return () => {
+      clearInactivityTimer()
       const recognition = recognitionRef.current
       if (!recognition) {
         return
@@ -138,7 +209,7 @@ export function useSpeechRecognition(
       recognition.abort()
       recognitionRef.current = null
     }
-  }, [])
+  }, [clearInactivityTimer])
 
   return {
     isSupported: !!getSpeechRecognitionConstructor(),
@@ -146,5 +217,6 @@ export function useSpeechRecognition(
     error,
     start,
     stop,
+    cancel,
   }
 }

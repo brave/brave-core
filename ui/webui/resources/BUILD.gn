@@ -382,6 +382,7 @@ leo_icons_sources = [
   "metamask-color.svg",
   "microphone-off.svg",
   "microphone.svg",
+  "voice-mode.svg",
   "minus.svg",
   "mistral-color.svg",
   "money-bag-coins.svg",

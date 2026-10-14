@@ -175,6 +175,7 @@ export default function createAIChatApi(
         | `processImageFile`
         | `processPdfFile`
         | `showWorkspaceFolderPicker`
+        | 'synthesizeSpeech'
       >,
       metrics: metrics as Pick<
         Mojom.MetricsInterface,

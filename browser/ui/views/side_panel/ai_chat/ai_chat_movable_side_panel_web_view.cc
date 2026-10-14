@@ -15,6 +15,7 @@
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/file_select_helper.h"
+#include "chrome/browser/media/webrtc/media_capture_devices_dispatcher.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/navigator/browser_navigator.h"
@@ -297,3 +298,20 @@ void AIChatMovableSidePanelWebView::DetachWebContentsModalDialogManager(
 
 BEGIN_METADATA(AIChatMovableSidePanelWebView)
 END_METADATA
+
+void AIChatMovableSidePanelWebView::RequestMediaAccessPermission(
+    content::WebContents* web_contents,
+    const content::MediaStreamRequest& request,
+    content::MediaResponseCallback callback) {
+  MediaCaptureDevicesDispatcher::GetInstance()->ProcessMediaAccessRequest(
+      web_contents, request, std::move(callback), nullptr);
+}
+
+bool AIChatMovableSidePanelWebView::CheckMediaAccessPermission(
+    content::RenderFrameHost* render_frame_host,
+    const url::Origin& security_origin,
+    blink::mojom::MediaStreamType type) {
+  return MediaCaptureDevicesDispatcher::GetInstance()
+      ->CheckMediaAccessPermission(render_frame_host, security_origin, type,
+                                   nullptr);
+}

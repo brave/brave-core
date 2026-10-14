@@ -277,6 +277,10 @@ interface AIChatUIHandler {
   RefreshPremiumSession();
   ManagePremium();
   HandleVoiceRecognition(string conversation_uuid);
+  // Synthesizes mono float32 PCM using the local Pocket TTS service.
+  SynthesizeSpeech(string text)
+      => (array<uint8> audio_data, uint32 sample_rate, string error);
+  CancelSpeech();
   ShowSoftKeyboard();
 
   // Process image files using backend processing (resizing and sanitization)

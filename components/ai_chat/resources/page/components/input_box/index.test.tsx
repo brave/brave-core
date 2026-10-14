@@ -8,7 +8,17 @@
 import * as React from 'react'
 import { render, screen, fireEvent, waitFor, act } from '@testing-library/react'
 import { clearAllDataForTesting } from '$web-common/api'
-import { ContentType, UploadedFileType, TaskState } from '../../../common/mojom'
+import {
+  CharacterType,
+  ContentType,
+  UploadedFileType,
+  TaskState,
+} from '../../../common/mojom'
+import {
+  createConversationTurnWithDefaults,
+  getCompletionEvent,
+} from '../../../common/test_data_utils'
+import * as LocalSpeech from './use_local_speech'
 import { MockContext } from '../../state/mock_context'
 import InputBox, { InputBoxProps, type InputBoxHandle } from '.'
 
@@ -616,4 +626,182 @@ describe('input box', () => {
     expect(focusSpy).toHaveBeenCalled()
     focusSpy.mockRestore()
   })
+})
+
+it('automatically submits the final voice transcript from the updated composer', async () => {
+  const original = window.SpeechRecognition
+  const originalAudioContext = window.AudioContext
+  window.AudioContext = jest.fn(() => ({
+    resume: jest.fn().mockResolvedValue(undefined),
+    close: jest.fn().mockResolvedValue(undefined),
+  })) as unknown as typeof AudioContext
+  const instances: InstanceType<
+    NonNullable<typeof window.SpeechRecognition>
+  >[] = []
+  window.SpeechRecognition = jest.fn().mockImplementation(() => {
+    const instance = {
+      lang: '',
+      continuous: false,
+      interimResults: false,
+      onresult: null,
+      onerror: null,
+      onend: null,
+      start: jest.fn(),
+      stop: jest.fn(),
+      abort: jest.fn(),
+    }
+    instances.push(instance)
+    return instance
+  })
+  const submit = jest.fn()
+  function Composer() {
+    const [inputText, setInputText] = React.useState<
+      InputBoxProps['context']['inputText']
+    >(['Draft'])
+    const [isGenerating, setIsGenerating] = React.useState(false)
+    return (
+      <InputBox
+        context={{
+          ...testContext,
+          inputText,
+          setInputText,
+          isGenerating,
+          submitInputTextToAPI: () => {
+            submit(inputText)
+            setInputText([])
+            setIsGenerating(true)
+          },
+        }}
+        conversationStarted={true}
+      />
+    )
+  }
+  try {
+    await renderInputBox(
+      <MockContext>
+        <Composer />
+      </MockContext>,
+    )
+    await act(async () => {
+      screen
+        .getByTestId('voice-conversation-button')
+        .shadowRoot!.querySelector('button')!
+        .click()
+    })
+    act(() =>
+      instances[0].onresult!({ results: [{ 0: { transcript: 'hello' } }] }),
+    )
+    expect(submit).not.toHaveBeenCalled()
+    act(() => {
+      instances[0].onresult!({ results: [{ 0: { transcript: 'hello Leo' } }] })
+      instances[0].onend!()
+    })
+    expect(submit).toHaveBeenCalledTimes(1)
+    expect(submit).toHaveBeenCalledWith(['Draft', ' hello Leo'])
+    expect(screen.queryByText('Draft hello Leo')).not.toBeInTheDocument()
+    expect(screen.getByTestId('voice-conversation-status')).toBeInTheDocument()
+    await act(async () => {
+      screen
+        .getByTestId('voice-conversation-button')
+        .shadowRoot!.querySelector('button')!
+        .click()
+    })
+    expect(
+      screen.queryByTestId('voice-conversation-status'),
+    ).not.toBeInTheDocument()
+  } finally {
+    window.SpeechRecognition = original
+    window.AudioContext = originalAudioContext
+  }
+})
+
+it('speaks completed sentences while Leo is still generating', async () => {
+  const original = window.SpeechRecognition
+  let recognition!: InstanceType<NonNullable<typeof window.SpeechRecognition>>
+  window.SpeechRecognition = jest.fn().mockImplementation(() => {
+    recognition = {
+      lang: '',
+      continuous: false,
+      interimResults: true,
+      onresult: null,
+      onerror: null,
+      onend: null,
+      start: jest.fn(),
+      stop: jest.fn(),
+      abort: jest.fn(),
+    }
+    return recognition
+  })
+  const speak = jest.fn().mockResolvedValue(undefined)
+  const speechMock = jest.spyOn(LocalSpeech, 'useLocalSpeech').mockReturnValue({
+    prepare: jest.fn(),
+    cancel: jest.fn(),
+    speak,
+  })
+  let updateReply!: (text: string) => void
+  function Composer() {
+    const [inputText, setInputText] = React.useState<
+      InputBoxProps['context']['inputText']
+    >([])
+    const [isGenerating, setIsGenerating] = React.useState(false)
+    const [reply, setReply] = React.useState('')
+    React.useEffect(() => {
+      updateReply = setReply
+    }, [])
+    return (
+      <InputBox
+        context={{
+          ...testContext,
+          inputText,
+          setInputText,
+          isGenerating,
+          conversationHistory: reply
+            ? [
+                createConversationTurnWithDefaults({
+                  uuid: 'streaming-reply',
+                  characterType: CharacterType.ASSISTANT,
+                  events: [getCompletionEvent(reply)],
+                }),
+              ]
+            : [],
+          submitInputTextToAPI: () => {
+            setInputText([])
+            setIsGenerating(true)
+          },
+        }}
+        conversationStarted
+      />
+    )
+  }
+  const view = await renderInputBox(
+    <MockContext>
+      <Composer />
+    </MockContext>,
+  )
+  try {
+    await act(async () => {
+      screen
+        .getByTestId('voice-conversation-button')
+        .shadowRoot!.querySelector('button')!
+        .click()
+    })
+    await act(async () => {
+      recognition.onresult!({
+        results: [{ 0: { transcript: 'tell me a story' } }],
+      })
+      recognition.onend!()
+    })
+    await act(async () => updateReply('The first sentence. The next'))
+    expect(speak.mock.calls).toEqual([['The first sentence.']])
+    await act(async () => updateReply('The first sentence. The next sentence.'))
+    expect(speak.mock.calls).toEqual([
+      ['The first sentence.'],
+      ['The next sentence.'],
+    ])
+    expect(screen.getByTestId('voice-conversation-status')).toBeInTheDocument()
+  } finally {
+    view.unmount()
+    speechMock.mockRestore()
+    window.SpeechRecognition = original
+  }
 })

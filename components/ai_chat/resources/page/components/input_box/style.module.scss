@@ -219,3 +219,9 @@
     color: var(--leo-color-text-interactive);
   }
 }
+
+.voiceConversationStatus {
+  padding: var(--leo-spacing-m) var(--editable-padding-x) 0;
+  color: var(--leo-color-text-secondary);
+  font: var(--leo-font-small-regular);
+}

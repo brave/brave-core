@@ -35,6 +35,7 @@ source_set("ai_chat") {
     "//brave/components/constants",
     "//brave/components/resources:strings_grit",
     "//chrome/browser:file_select_helper",
+    "//chrome/browser/media/webrtc",
     "//chrome/browser/profiles",
     "//chrome/browser/tab_list",
     "//chrome/browser/ui:browser_element_identifiers",

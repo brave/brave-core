@@ -9,6 +9,7 @@
 #include "base/functional/callback.h"
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
 #include "chrome/browser/ui/webui/top_chrome/webui_contents_wrapper.h"
+#include "content/public/browser/media_stream_request.h"
 #include "url/gurl.h"
 
 class Profile;
@@ -37,6 +38,14 @@ class AIChatSidePanelContentsWrapper : public WebUIContentsWrapperT<AIChatUI> {
       base::RepeatingCallback<void(const GURL&)> callback);
 
   // content::WebContentsDelegate:
+  void RequestMediaAccessPermission(
+      content::WebContents* web_contents,
+      const content::MediaStreamRequest& request,
+      content::MediaResponseCallback callback) override;
+  bool CheckMediaAccessPermission(
+      content::RenderFrameHost* render_frame_host,
+      const url::Origin& security_origin,
+      blink::mojom::MediaStreamType type) override;
   void UpdateTargetURL(content::WebContents* source, const GURL& url) override;
 
  private:

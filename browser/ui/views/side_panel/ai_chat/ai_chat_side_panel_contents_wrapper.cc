@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
+#include "chrome/browser/media/webrtc/media_capture_devices_dispatcher.h"
 
 AIChatSidePanelContentsWrapper::AIChatSidePanelContentsWrapper(
     const GURL& webui_url,
@@ -32,4 +33,21 @@ void AIChatSidePanelContentsWrapper::UpdateTargetURL(
   if (target_url_changed_callback_) {
     target_url_changed_callback_.Run(url);
   }
+}
+
+void AIChatSidePanelContentsWrapper::RequestMediaAccessPermission(
+    content::WebContents* web_contents,
+    const content::MediaStreamRequest& request,
+    content::MediaResponseCallback callback) {
+  MediaCaptureDevicesDispatcher::GetInstance()->ProcessMediaAccessRequest(
+      web_contents, request, std::move(callback), nullptr);
+}
+
+bool AIChatSidePanelContentsWrapper::CheckMediaAccessPermission(
+    content::RenderFrameHost* render_frame_host,
+    const url::Origin& security_origin,
+    blink::mojom::MediaStreamType type) {
+  return MediaCaptureDevicesDispatcher::GetInstance()
+      ->CheckMediaAccessPermission(render_frame_host, security_origin, type,
+                                   nullptr);
 }

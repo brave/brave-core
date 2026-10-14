@@ -59,6 +59,7 @@ class FaviconService;
 
 namespace ai_chat {
 class WorkspaceFolderChooser;
+class LocalTTSClient;
 
 class AIChatUIPageHandler : public mojom::AIChatUIHandler,
                             public AssociatedContentDelegate::Observer
@@ -96,6 +97,9 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
   void RefreshPremiumSession() override;
   void ManagePremium() override;
   void HandleVoiceRecognition(const std::string& conversation_uuid) override;
+  void SynthesizeSpeech(const std::string& text,
+                        SynthesizeSpeechCallback callback) override;
+  void CancelSpeech() override;
   void ShowSoftKeyboard() override;
   void ProcessImageFile(const std::vector<uint8_t>& file_data,
                         const std::string& filename,
@@ -218,6 +222,7 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
 
   // Active native folder picker for the workspace tools, if any.
   std::unique_ptr<WorkspaceFolderChooser> workspace_folder_chooser_;
+  std::unique_ptr<LocalTTSClient> local_tts_client_;
 
   mojo::Receiver<ai_chat::mojom::AIChatUIHandler> receiver_;
   mojo::Remote<ai_chat::mojom::ChatUI> chat_ui_;

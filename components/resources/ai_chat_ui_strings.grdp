@@ -828,6 +828,18 @@
   <message name="IDS_AI_CHAT_WORKSPACE_FOLDER_BUTTON_LABEL" desc="The button label for selecting a local workspace folder for Leo's experimental workspace tools" formatter_data="webui=AiChat">
     Workspace folder
   </message>
+  <message name="IDS_AI_CHAT_VOICE_CONVERSATION_START" desc="Button label for starting a hands-free voice conversation with Leo" formatter_data="webui=AiChat">
+    Start voice conversation
+  </message>
+  <message name="IDS_AI_CHAT_VOICE_CONVERSATION_STOP" desc="Button label for ending a hands-free voice conversation with Leo" formatter_data="webui=AiChat">
+    End voice conversation
+  </message>
+  <message name="IDS_AI_CHAT_VOICE_CONVERSATION_LISTENING" desc="Status shown while Leo listens in hands-free voice mode" formatter_data="webui=AiChat">
+    Listening… Your message will be sent when you finish speaking.
+  </message>
+  <message name="IDS_AI_CHAT_VOICE_CONVERSATION_WAITING" desc="Status shown while voice mode waits for Leo to finish responding" formatter_data="webui=AiChat">
+    Leo is responding… Listening will resume afterward.
+  </message>
   <message name="IDS_AI_CHAT_USE_MICROPHONE_BUTTON_LABEL" desc="The button label for Leo's microphone feature" formatter_data="webui=AiChat">
     Use microphone
   </message>

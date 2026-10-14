@@ -70,6 +70,8 @@ static_library("browser") {
     "engine/oblivious_http_config_manager.h",
     "history_ui_handler.cc",
     "history_ui_handler.h",
+    "local_tts_client.cc",
+    "local_tts_client.h",
     "model_service.cc",
     "model_service.h",
     "model_validator.cc",

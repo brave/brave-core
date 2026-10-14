@@ -240,6 +240,13 @@ export function createMockUIHandler(
         },
       }),
     getPluralString: () => Promise.resolve({ pluralString: '' }),
+    synthesizeSpeech: () =>
+      Promise.resolve({
+        audioData: [],
+        sampleRate: 0,
+        error: 'Local TTS is unavailable in this mock',
+      }),
+    cancelSpeech: () => {},
     getFaviconDataURL: () => Promise.resolve({ dataUrl: null }),
     setChatUI: () => Promise.resolve({ isStandalone: false }),
     showWorkspaceFolderPicker: () => Promise.resolve({ selectedPath: null }),

@@ -30,6 +30,7 @@
 #include "brave/components/ai_chat/content/browser/workspace_associated_content.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
+#include "brave/components/ai_chat/core/browser/local_tts_client.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/ai_chat_urls.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
@@ -55,6 +56,7 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/common/url_constants.h"
+#include "mojo/public/cpp/bindings/callback_helpers.h"
 #include "printing/printing_utils.h"
 #include "services/data_decoder/public/cpp/decode_image.h"
 #include "services/data_decoder/public/mojom/image_decoder.mojom.h"
@@ -274,6 +276,25 @@ void AIChatUIPageHandler::ShowSoftKeyboard() {
 #if BUILDFLAG(IS_ANDROID)
   ai_chat::HandleShowSoftKeyboard(owner_web_contents_.get());
 #endif
+}
+
+void AIChatUIPageHandler::SynthesizeSpeech(const std::string& text,
+                                           SynthesizeSpeechCallback callback) {
+  if (!local_tts_client_) {
+    local_tts_client_ = std::make_unique<LocalTTSClient>(
+        profile_->GetDefaultStoragePartition()
+            ->GetURLLoaderFactoryForBrowserProcess());
+  }
+  local_tts_client_->Synthesize(
+      text, mojo::WrapCallbackWithDefaultInvokeIfNotRun(
+                std::move(callback), std::vector<uint8_t>{}, uint32_t{0},
+                std::string("Local TTS request cancelled")));
+}
+
+void AIChatUIPageHandler::CancelSpeech() {
+  if (local_tts_client_) {
+    local_tts_client_->Cancel();
+  }
 }
 
 void AIChatUIPageHandler::ProcessImageFile(

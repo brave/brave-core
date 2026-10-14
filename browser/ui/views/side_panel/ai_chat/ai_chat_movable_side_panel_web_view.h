@@ -12,6 +12,7 @@
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/views/controls/webview/unhandled_keyboard_event_handler.h"
 #include "ui/views/controls/webview/webview.h"
+#include "content/public/browser/media_stream_request.h"
 #include "url/gurl.h"
 
 namespace blink::mojom {
@@ -85,6 +86,14 @@ class AIChatMovableSidePanelWebView
   void OnVisibleBoundsChanged() override;
 
   // content::WebContentsDelegate:
+  void RequestMediaAccessPermission(
+      content::WebContents* web_contents,
+      const content::MediaStreamRequest& request,
+      content::MediaResponseCallback callback) override;
+  bool CheckMediaAccessPermission(
+      content::RenderFrameHost* render_frame_host,
+      const url::Origin& security_origin,
+      blink::mojom::MediaStreamType type) override;
   // The side panel's `WebContents` delegate does not drive the browser status
   // bubble, so hovering a link would otherwise disclose nothing. Show the
   // hovered URL in our own status bubble, mirroring a normal tab. Keeping this

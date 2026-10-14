@@ -31,6 +31,21 @@ import { isFullPageScreenshot } from '../../../common/conversation_history_utils
 import Editable from './editable'
 import { Content, stringifyContent } from './editable_content'
 import { useSpeechRecognition } from './use_speech_recognition'
+import { useVoiceConversation } from './use_voice_conversation'
+import { useLocalSpeech } from './use_local_speech'
+import { SpeechQueue } from './speech_queue'
+
+function getSpeechText(turn: Mojom.ConversationTurn) {
+  const reply = turn.edits?.at(-1) ?? turn
+  const completions = (reply.events ?? []).flatMap((event) =>
+    event.completionEvent ? [event.completionEvent.completion] : [],
+  )
+  return completions.length ? completions.join('') : reply.text
+}
+
+function getSpeechTurnKey(turn?: Mojom.ConversationTurn) {
+  return turn?.uuid ?? turn?.createdTime.internalValue.toString()
+}
 
 const LEARN_MORE_CONTENT_AGENT_URL =
   'https://support.brave.app/hc/en-us/articles/41240379376909'
@@ -224,6 +239,10 @@ const InputBox = React.forwardRef<InputBoxHandle, InputBoxProps>(
 
     const handleSubmit = () => {
       querySubmitted.current = true
+      voiceConversation.stop()
+      setPendingVoiceInput(null)
+      dictation.cancel()
+      dictationBaseRef.current = []
       props.context.submitInputTextToAPI()
     }
 
@@ -249,7 +268,136 @@ const InputBox = React.forwardRef<InputBoxHandle, InputBoxProps>(
 
     const dictation = useSpeechRecognition(handleTranscript)
 
+    const [pendingVoiceInput, setPendingVoiceInput] =
+      React.useState<Content | null>(null)
+    const voiceBaseRef = React.useRef<Content>([])
+    const localSpeech = useLocalSpeech(aiChatContext.api.uiHandler)
+    const cancelLocalSpeech = localSpeech.cancel
+    const speechQueue = React.useMemo(
+      () => new SpeechQueue(localSpeech.speak),
+      [localSpeech.speak],
+    )
+    const voiceReplyPending = React.useRef(false)
+    const previousVoiceTurn = React.useRef<string | undefined>(undefined)
+    const cancelResponseSpeech = React.useCallback(() => {
+      voiceReplyPending.current = false
+      speechQueue.reset()
+      cancelLocalSpeech()
+    }, [speechQueue, cancelLocalSpeech])
+    const voiceConversation = useVoiceConversation(
+      props.context.isGenerating || props.context.shouldDisableUserInput,
+      (transcript) => {
+        setInputText(appendTranscript(voiceBaseRef.current, transcript))
+      },
+      (transcript) => {
+        speechQueue.reset()
+        voiceReplyPending.current = true
+        previousVoiceTurn.current = getSpeechTurnKey(
+          props.context.conversationHistory?.at(-1),
+        )
+        const content = appendTranscript(voiceBaseRef.current, transcript)
+        voiceBaseRef.current = []
+        setInputText(content)
+        setPendingVoiceInput(content)
+      },
+      {
+        speak: async (isCancelled) => {
+          const history =
+            await conversationContext.api.getConversationHistory.fetch()
+          if (isCancelled()) {
+            return
+          }
+          const turn = history[history.length - 1]
+          if (
+            turn?.characterType === Mojom.CharacterType.ASSISTANT
+            && getSpeechTurnKey(turn) !== previousVoiceTurn.current
+          ) {
+            speechQueue.append(
+              getSpeechText(turn),
+              true,
+              getSpeechTurnKey(turn),
+            )
+          }
+          await speechQueue.wait()
+          voiceReplyPending.current = false
+        },
+        cancel: cancelResponseSpeech,
+      },
+    )
+
+    const isVoiceWaiting = voiceConversation.isWaiting
+
+    React.useEffect(() => {
+      if (!isVoiceWaiting || !voiceReplyPending.current) {
+        return
+      }
+      const turn = props.context.conversationHistory?.at(-1)
+      if (
+        turn?.characterType === Mojom.CharacterType.ASSISTANT
+        && getSpeechTurnKey(turn) !== previousVoiceTurn.current
+      ) {
+        speechQueue.append(getSpeechText(turn), false, getSpeechTurnKey(turn))
+      }
+    }, [props.context.conversationHistory, isVoiceWaiting, speechQueue])
+
+    const voiceConversationUuid = React.useRef(
+      conversationState.conversationUuid,
+    )
+    const stopVoiceConversation = voiceConversation.stop
+    React.useEffect(() => {
+      const uuid = conversationState.conversationUuid
+      if (
+        voiceConversationUuid.current
+        && voiceConversationUuid.current !== uuid
+      ) {
+        stopVoiceConversation()
+        setPendingVoiceInput(null)
+      }
+      voiceConversationUuid.current = uuid
+    }, [conversationState.conversationUuid, stopVoiceConversation])
+
+    React.useEffect(() => {
+      // Submit after the final transcript has reached the conversation context.
+      if (
+        pendingVoiceInput
+        && !props.context.shouldDisableUserInput
+        && !props.context.isGenerating
+        && stringifyContent(props.context.inputText)
+          === stringifyContent(pendingVoiceInput)
+      ) {
+        querySubmitted.current = true
+        props.context.submitInputTextToAPI()
+        setPendingVoiceInput(null)
+      }
+    }, [
+      pendingVoiceInput,
+      props.context.inputText,
+      props.context.shouldDisableUserInput,
+      props.context.isGenerating,
+      props.context.submitInputTextToAPI,
+    ])
+
+    const speechError =
+      dictation.error
+      || (voiceConversation.error !== 'no-speech'
+        ? voiceConversation.error
+        : null)
+
+    const handleVoiceConversation = () => {
+      if (voiceConversation.isActive) {
+        voiceConversation.stop()
+        setPendingVoiceInput(null)
+        return
+      }
+      dictation.cancel()
+      voiceBaseRef.current = props.context.inputText
+      localSpeech.prepare()
+      voiceConversation.start()
+    }
+
     const handleDictation = () => {
+      voiceConversation.stop()
+      setPendingVoiceInput(null)
       if (dictation.isListening) {
         dictation.stop()
         return
@@ -261,7 +409,7 @@ const InputBox = React.forwardRef<InputBoxHandle, InputBoxProps>(
     const handleOnKeyDown = (e: React.KeyboardEvent) => {
       if (e.key === 'Enter' && !e.shiftKey && !e.nativeEvent.isComposing) {
         if (!e.repeat) {
-          props.context.submitInputTextToAPI()
+          handleSubmit()
         }
 
         e.preventDefault()
@@ -434,6 +582,19 @@ const InputBox = React.forwardRef<InputBoxHandle, InputBoxProps>(
               onPreviewFile={props.context.setPreviewUploadedFile}
             />
           )}
+          {voiceConversation.isActive && (
+            <div
+              role='status'
+              className={styles.voiceConversationStatus}
+              data-testid='voice-conversation-status'
+            >
+              {getLocale(
+                voiceConversation.isWaiting
+                  ? S.AI_CHAT_VOICE_CONVERSATION_WAITING
+                  : S.AI_CHAT_VOICE_CONVERSATION_LISTENING,
+              )}
+            </div>
+          )}
           <Editable
             ref={setEditableRef}
             placeholder={placeholderText}
@@ -443,12 +604,14 @@ const InputBox = React.forwardRef<InputBoxHandle, InputBoxProps>(
             }}
             onPaste={handleOnPaste}
           />
-          {dictation.error && (
+          {speechError && (
             <div
               className={styles.dictationError}
               data-testid='web-speech-dictation-error'
             >
-              {`Speech recognition error: ${dictation.error}`}
+              {speechError === 'tts-unavailable'
+                ? 'Could not play Leo’s voice. Check that the local TTS server is running.'
+                : `Speech recognition error: ${speechError}`}
             </div>
           )}
           <div className={styles.toolsContainer}>
@@ -504,6 +667,36 @@ const InputBox = React.forwardRef<InputBoxHandle, InputBoxProps>(
                     name={
                       dictation.isListening ? 'microphone' : 'microphone-off'
                     }
+                  />
+                </Button>
+              )}
+              {voiceConversation.isSupported && (
+                <Button
+                  fab
+                  kind='plain-faint'
+                  onClick={handleVoiceConversation}
+                  disabled={
+                    !voiceConversation.isActive
+                    && props.context.shouldDisableUserInput
+                  }
+                  title={getLocale(
+                    voiceConversation.isActive
+                      ? S.AI_CHAT_VOICE_CONVERSATION_STOP
+                      : S.AI_CHAT_VOICE_CONVERSATION_START,
+                  )}
+                  aria-label={getLocale(
+                    voiceConversation.isActive
+                      ? S.AI_CHAT_VOICE_CONVERSATION_STOP
+                      : S.AI_CHAT_VOICE_CONVERSATION_START,
+                  )}
+                  aria-pressed={voiceConversation.isActive}
+                  data-testid='voice-conversation-button'
+                >
+                  <Icon
+                    className={classnames({
+                      [styles.dictationIconActive]: voiceConversation.isActive,
+                    })}
+                    name='voice-mode'
                   />
                 </Button>
               )}
