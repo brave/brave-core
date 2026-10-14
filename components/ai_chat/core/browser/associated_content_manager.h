@@ -12,6 +12,7 @@
 #include <memory>
 #include <string>
 #include <string_view>
+#include <utility>
 #include <vector>
 
 #include "base/containers/flat_map.h"
@@ -133,8 +134,17 @@ class AssociatedContentManager : public ToolProvider,
   // Gets the content for this conversation.
   void GetContent(base::OnceClosure callback);
 
-  void GetScreenshots(
-      mojom::ConversationHandler::GetScreenshotsCallback callback);
+  // Uuids of the content whose page content is empty or only whitespace.
+  std::vector<std::string> GetContentUuidsWithoutText() const;
+
+  // Gets screenshots of the content with |content_uuids|, with the uuid of the
+  // content each set is of. Content that gives no screenshots is left out.
+  using ContentScreenshots =
+      std::vector<std::pair<std::string, std::vector<mojom::UploadedFilePtr>>>;
+  using GetScreenshotsOfContentCallback =
+      base::OnceCallback<void(ContentScreenshots)>;
+  void GetScreenshotsOfContent(const std::vector<std::string>& content_uuids,
+                               GetScreenshotsOfContentCallback callback);
   void GetStagedEntriesFromContent(GetStagedEntriesCallback callback);
 
   std::vector<mojom::AssociatedContentPtr> GetAssociatedContent() const;

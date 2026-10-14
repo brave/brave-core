@@ -19,6 +19,7 @@
 #include "base/barrier_closure.h"
 #include "base/check.h"
 #include "base/check_op.h"
+#include "base/containers/extend.h"
 #include "base/containers/fixed_flat_set.h"
 #include "base/containers/flat_set.h"
 #include "base/containers/map_util.h"
@@ -2110,34 +2111,17 @@ void ConversationHandler::OnGeneratePageContentComplete(
   is_content_different_ = is_content_different_ || content_changed;
 
   // Check if content is empty and take screenshots if needed
-  if (std::ranges::all_of(associated_content_manager_->GetCachedContents(),
-                          [](const auto& page_content_ref) {
-                            auto page_content = page_content_ref.get();
-                            base::TrimWhitespaceASCII(page_content.content,
-                                                      base::TRIM_ALL,
-                                                      &page_content.content);
-                            return page_content.content.empty();
-                          }) &&
-      associated_content_manager_->HasAssociatedContent()) {
-    // Check if the conversation already has screenshots
-    bool has_screenshots = std::ranges::any_of(
-        chat_history_, [](const mojom::ConversationTurnPtr& turn) {
-          return turn->uploaded_files &&
-                 std::ranges::any_of(
-                     *turn->uploaded_files,
-                     [](const mojom::UploadedFilePtr& file) {
-                       return file->type ==
-                              mojom::UploadedFileType::kScreenshot;
-                     });
-        });
-
-    // Only take screenshots if no screenshots have been taken yet
-    if (!has_screenshots) {
-      associated_content_manager_->GetScreenshots(
-          base::BindOnce(&ConversationHandler::OnAutoScreenshotsTaken,
-                         weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
-      return;
-    }
+  std::vector<std::string> content_uuids =
+      associated_content_manager_->GetContentUuidsWithoutText();
+  std::erase_if(content_uuids, [this](const std::string& content_uuid) {
+    return HasScreenshotsOfContent(content_uuid);
+  });
+  if (!content_uuids.empty()) {
+    associated_content_manager_->GetScreenshotsOfContent(
+        content_uuids,
+        base::BindOnce(&ConversationHandler::OnScreenshotsOfContentTaken,
+                       weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+    return;
   }
 
   std::move(callback).Run();
@@ -2145,6 +2129,61 @@ void ConversationHandler::OnGeneratePageContentComplete(
   // Content-used percentage and is_video might have changed in addition to
   // content_type.
   OnAssociatedContentUpdated();
+}
+
+bool ConversationHandler::HasScreenshotsOfContent(
+    const std::string& content_uuid) const {
+  auto has_screenshots = [this](const std::string& turn_uuid) {
+    auto turn_it = std::ranges::find(chat_history_, turn_uuid,
+                                     &mojom::ConversationTurn::uuid);
+    return turn_it != chat_history_.end() && (*turn_it)->uploaded_files &&
+           std::ranges::any_of(*(*turn_it)->uploaded_files,
+                               [](const mojom::UploadedFilePtr& file) {
+                                 return file->type ==
+                                        mojom::UploadedFileType::kScreenshot;
+                               });
+  };
+
+  // Automatic screenshots of the content.
+  if (const std::string* turn_uuid =
+          base::FindOrNull(content_screenshot_turns_, content_uuid);
+      turn_uuid && has_screenshots(*turn_uuid)) {
+    return true;
+  }
+
+  // Screenshots sent with the entry the content was first sent with, e.g.
+  // ones the user took.
+  for (const auto& content :
+       associated_content_manager_->GetAssociatedContent()) {
+    if (content->uuid == content_uuid && content->conversation_turn_uuid) {
+      return has_screenshots(*content->conversation_turn_uuid);
+    }
+  }
+  return false;
+}
+
+void ConversationHandler::OnScreenshotsOfContentTaken(
+    base::OnceClosure callback,
+    AssociatedContentManager::ContentScreenshots content_screenshots) {
+  if (content_screenshots.empty()) {
+    OnAutoScreenshotsTaken(std::move(callback), std::nullopt);
+    return;
+  }
+
+  // The screenshots are added to the last human entry, if there is one.
+  const mojom::ConversationTurn* turn =
+      !chat_history_.empty() && chat_history_.back()->character_type ==
+                                    mojom::CharacterType::HUMAN
+          ? chat_history_.back().get()
+          : nullptr;
+  std::vector<mojom::UploadedFilePtr> screenshots;
+  for (auto& [content_uuid, screenshots_of_content] : content_screenshots) {
+    if (turn && turn->uuid) {
+      content_screenshot_turns_.insert_or_assign(content_uuid, *turn->uuid);
+    }
+    base::Extend(screenshots, std::move(screenshots_of_content));
+  }
+  OnAutoScreenshotsTaken(std::move(callback), std::move(screenshots));
 }
 
 void ConversationHandler::OnEngineCompletionDataReceived(
@@ -2991,11 +3030,26 @@ size_t ConversationHandler::GetConversationHistorySize() {
 }
 
 void ConversationHandler::GetScreenshots(GetScreenshotsCallback callback) {
-  if (associated_content_manager_->HasAssociatedContent()) {
-    associated_content_manager_->GetScreenshots(std::move(callback));
-  } else {
-    std::move(callback).Run(std::nullopt);
-  }
+  auto content_uuids =
+      base::ToVector(associated_content_manager_->GetAssociatedContent(),
+                     &mojom::AssociatedContent::uuid);
+  associated_content_manager_->GetScreenshotsOfContent(
+      content_uuids,
+      base::BindOnce(
+          [](GetScreenshotsCallback callback,
+             AssociatedContentManager::ContentScreenshots content_screenshots) {
+            if (content_screenshots.empty()) {
+              std::move(callback).Run(std::nullopt);
+              return;
+            }
+            std::vector<mojom::UploadedFilePtr> screenshots;
+            for (auto& screenshots_of_content : content_screenshots) {
+              base::Extend(screenshots,
+                           std::move(screenshots_of_content.second));
+            }
+            std::move(callback).Run(std::move(screenshots));
+          },
+          std::move(callback)));
 }
 
 bool ConversationHandler::should_send_page_contents() const {
