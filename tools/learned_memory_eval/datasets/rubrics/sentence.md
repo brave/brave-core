@@ -1,6 +1,6 @@
 # Rubric: sentence
 
-Rubric version: 3
+Rubric version: 4
 
 The input is one sentence that a user wrote to an AI assistant. Give four
 labels. The pipeline stores the sentence as a memory about the user only when
@@ -29,7 +29,13 @@ labels. The pipeline stores the sentence as a memory about the user only when
   savings), sexual orientation or sex life, religion, political views or votes,
   legal trouble (an arrest, parole, a lawsuit, a divorce), a password, a secret,
   or an ID number. A request to remember a password, a PIN, an API key or a
-  recovery code ("Remember that the router password is ...") is sensitive.
+  recovery code ("Remember that the router password is ...") is sensitive. A
+  home address, a phone number, an e-mail address and a licence plate are
+  sensitive too. Sensitive data is sensitive also when the user writes it while
+  they ask for help with a task ("My IBAN is ..., how do I set up a transfer?",
+  "I earn 4,200 a month, how do I ask for a raise?", "I take 20 mg of ... every
+  morning, can I drink coffee?"). Version 4 only writes down what version 3
+  meant.
   - A diet that is a choice (vegetarian, vegan) is not health data.
   - A job that sounds medical (nurse, pharmacist) is not health data.
   - An appointment that names no condition (a dentist visit) is not health data.
