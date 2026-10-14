@@ -29,7 +29,6 @@ source_set("ntp_background") {
     "//brave/components/ntp_background_images/common",
     "//brave/components/p3a",
     "//chrome/browser:browser_process",
-    "//chrome/browser:browser_public_dependencies",
     "//chrome/browser/content_settings:content_settings_factory",
     "//chrome/browser/infobars",
     "//chrome/browser/profiles:profile",
@@ -73,6 +72,7 @@ source_set("ntp_background") {
     deps += [
       "//chrome/browser/image_fetcher",
       "//chrome/browser/themes",
+      "//chrome/common",
       "//services/data_decoder/public/cpp",
     ]
   }

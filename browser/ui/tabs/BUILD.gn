@@ -153,16 +153,14 @@ if (!is_android) {
 
     deps = [
       "//brave/browser/ui:brave_browser_window_header",
+      "//brave/browser/ui:brave_tab_prefs",
       "//brave/components/tabs",
       "//chrome/browser/ui:browser_window_header",
       "//chrome/browser/ui/tabs:features",
       "//chrome/browser/ui/tabs:tab_strip",
     ]
 
-    public_deps = [
-      ":tree_tab",
-      "//chrome/browser:browser_public_dependencies",
-    ]
+    public_deps = [ ":tree_tab" ]
   }
 
   source_set("tab_menu") {
