@@ -1,0 +1,56 @@
+# Sweep g: obsolete Brave code. See tools/cr/codehealth/scripts/sweep.py for the fields.
+# Most of it is indexes of Brave's own code, which obsolete.py builds.
+agentic_review {
+  capability_groups {
+    tool: "vpython3 tools/cr/codehealth/scripts/obsolete.py cited-bugs {old}..{new}"
+    rules: "tools/cr/codehealth/rules/obsolete/upstream-bugs-now-fixed.md"
+  }
+  capability_groups {
+    tool: "vpython3 tools/cr/codehealth/scripts/obsolete.py lift-overrides {old}..{new}"
+    rules: "tools/cr/codehealth/rules/obsolete/workarounds-added-during-lift.md"
+  }
+  capability_groups {
+    tool: "vpython3 tools/cr/codehealth/scripts/obsolete.py patch-adoptions {old}..{new}"
+    rules: "tools/cr/codehealth/rules/obsolete/changes-upstream-adopted.md"
+  }
+  capability_groups {
+    tool: "vpython3 tools/cr/codehealth/scripts/obsolete.py test-filters {old}..{new}"
+    rules: "tools/cr/codehealth/rules/obsolete/test-filters.md"
+  }
+  capability_groups {
+    tool: "vpython3 tools/cr/codehealth/scripts/obsolete.py removed-names {old}..{new}"
+    rules: "tools/cr/codehealth/rules/obsolete/dead-overrides.md"
+    rules: "tools/cr/codehealth/rules/obsolete/removed-names-brave-uses.md"
+    rules: "tools/cr/codehealth/rules/obsolete/deleted-files-brave-includes.md"
+    rules: "tools/cr/codehealth/rules/obsolete/replaced-headers-keep-deleted-names.md"
+  }
+  capability_groups {
+    subject_patterns: "(?i)\\b(?:remove|delete|drop|clean ?up)\\b.*\\b(?:workarounds?|hacks?)\\b"
+    body_patterns: "(?i)\\b(?:workaround|hack)\\b.*\\bno longer (?:needed|necessary|required)\\b"
+    rules: "tools/cr/codehealth/rules/obsolete/workarounds-upstream-removed.md"
+  }
+  # Removed workaround comments in what Brave overrides; elsewhere they're
+  # upstream's own business.
+  capability_groups {
+    overridden_by_brave: true
+    content_patterns: "^-.*(?i:\\bworkaround\\b|\\bhack\\b|TODO\\((?:https?://)?crbug)"
+    rules: "tools/cr/codehealth/rules/obsolete/workarounds-upstream-removed.md"
+  }
+  # An early return needs both halves: the flag check and the return.
+  capability_groups {
+    overridden_by_brave: true
+    content_patterns: "^\\+\\s*if \\(!?\\s*(?:base::FeatureList::IsEnabled\\(|[\\w:]*Is\\w*Enabled\\()"
+    required_patterns: "^\\+\\s*return\\b"
+    rules: "tools/cr/codehealth/rules/obsolete/hooks-unreachable-early-return.md"
+  }
+  capability_groups {
+    subject_patterns: "(?i)^(?:\\[[^]]*\\]\\s*)*(?:disable|skip|don't|do not)\\b.*\\b(?:if|when|unless)\\b.*\\b(?:flag|feature|off|disabled)\\b"
+    rules: "tools/cr/codehealth/rules/obsolete/hooks-unreachable-early-return.md"
+  }
+  capability_groups {
+    path_expression: "(?:.*/)?BUILD\\.gn"
+    overridden_by_brave: true
+    content_patterns: "^\\+.*(?:sources\\s*=\\s*\\[\\s*\\]|[Dd]o not add (?:new )?sources|no sources)"
+    rules: "tools/cr/codehealth/rules/obsolete/gn-targets-emptied.md"
+  }
+}
