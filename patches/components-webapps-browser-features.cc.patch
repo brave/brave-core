@@ -1,8 +1,8 @@
 diff --git a/components/webapps/browser/features.cc b/components/webapps/browser/features.cc
-index 3fd6898e280ee2c91364188217f099e63552e7d4..a986cdf9caecb003cba28a0f27db9bd0bd65f607 100644
+index 0f6ad9b0eac56e18d69026f0600a53c31993d98f..4c338729cc8642bd0db3bfa811efc9f74e963b01 100644
 --- a/components/webapps/browser/features.cc
 +++ b/components/webapps/browser/features.cc
-@@ -26,12 +26,8 @@ BASE_FEATURE(kAlwaysShowInstallDisambiguationDialog,
+@@ -41,12 +41,8 @@ BASE_FEATURE(kInstallableRootFaviconFallback, base::FEATURE_ENABLED_BY_DEFAULT);
  
  // Do not remove this feature flag, since it serves as a kill-switch for the ML
  // promotion model. Kill switches are required for all ML model-backed features.
