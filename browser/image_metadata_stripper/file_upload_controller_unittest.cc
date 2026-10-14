@@ -8,6 +8,7 @@
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/path_service.h"
+#include "base/task/thread_pool/thread_pool_instance.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/scoped_path_override.h"
 #include "base/test/task_environment.h"
@@ -74,7 +75,7 @@ TEST_F(FileUploadControllerCleanUpTest, DeletesFilesLeftFromLastSession) {
   ASSERT_TRUE(base::PathExists(StripperRootDir()));
 
   FileUploadController::CleanUpFromLastSession();
-  task_environment_.RunUntilIdle();
+  base::ThreadPoolInstance::Get()->FlushForTesting();
 
   EXPECT_FALSE(base::PathExists(StripperRootDir()));
 }
@@ -87,7 +88,7 @@ TEST_F(FileUploadControllerCleanUpTest, LeavesTheRestOfUserDataAlone) {
   ASSERT_TRUE(base::WriteFile(sibling_file, "{}"));
 
   FileUploadController::CleanUpFromLastSession();
-  task_environment_.RunUntilIdle();
+  base::ThreadPoolInstance::Get()->FlushForTesting();
 
   EXPECT_FALSE(base::PathExists(StripperRootDir()));
   EXPECT_TRUE(base::PathExists(sibling_file));
@@ -97,7 +98,6 @@ TEST_F(FileUploadControllerCleanUpTest, DoesNothingWhenThereAreNoLeftovers) {
   ASSERT_FALSE(base::PathExists(StripperRootDir()));
 
   FileUploadController::CleanUpFromLastSession();
-  task_environment_.RunUntilIdle();
 
   EXPECT_FALSE(base::PathExists(StripperRootDir()));
   EXPECT_TRUE(base::PathExists(UserDataDir()));
@@ -107,7 +107,6 @@ TEST_F(FileUploadControllerCleanUpDisabledTest, KeepsFilesLeftFromLastSession) {
   CreateLeftoversFromLastSession();
 
   FileUploadController::CleanUpFromLastSession();
-  task_environment_.RunUntilIdle();
 
   EXPECT_TRUE(base::PathExists(StripperRootDir()));
 }
