@@ -20,23 +20,13 @@ substitutions:
         \1CreateWebSocketWithFrameId\2,
                 frame_id_.child_id.value(), origin_\3
 
-  - description: 'Add url_util.h for net::IsCrossOriginOnionRequest().'
-    regex:
-      pattern: '#include "net/base/network_handle.h"'
-      replace: |-
-        #include "net/base/network_handle.h"
-        #include "net/base/url_util.h"
-
   - description: |-
-      Send an opaque Origin for cross-origin WebSockets from .onion pages.
+      May send an opaque Origin for cross-origin WebSockets.
 
-      A .onion page must not disclose the address it came from. WebSockets do
-      not go through CorsURLLoader, so the origin handed to the network service
-      is made opaque here instead, as MaybeTreatLocalOriginAsOpaque() does for
-      local origins.
+      For example for a .onion page must not disclose the address it came from.
+      WebSockets do not go through CorsURLLoader, so the origin handed to the
+      network service is made opaque here instead.
     regex:
-      re_pattern: '(base::BindOnce\(\s*ConnectCalledByContentBrowserClient,.*?,)\s*origin_,\s*'
+      re_pattern: '(base::BindOnce\(\s*ConnectCalledByContentBrowserClient,.*?)\borigin_,'
       re_flags: [DOTALL]
-      replace:
-        '\1\n      net::IsCrossOriginOnionRequest(origin_, url)\n          ?
-        origin_.DeriveNewOpaqueOrigin()\n          : origin_,\n      '
+      replace: '\1MaybeTreatCrossOriginAsOpaque(origin_, url),'
