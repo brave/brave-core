@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/BUILD.gn b/chrome/browser/ui/BUILD.gn
-index 1e352a02e9720c91917e329c22674fdd33451f4b..5ca416247b05b7959fccc3931629a7b0512f667e 100644
+index 752a83ef133c49030a4379d1855da3c757efcc81..d096339486ffc6de3d3fe0664bd2790a641fde2f 100644
 --- a/chrome/browser/ui/BUILD.gn
 +++ b/chrome/browser/ui/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -10,7 +10,7 @@ index 1e352a02e9720c91917e329c22674fdd33451f4b..5ca416247b05b7959fccc3931629a7b0
  import("//build/config/buildflags_paint_preview.gni")
  import("//build/config/chrome_build.gni")
  import("//build/config/compiler/compiler.gni")
-@@ -1478,6 +1479,7 @@ if (!is_android) {
+@@ -1480,6 +1481,7 @@ if (!is_android) {
        ":core",
        "//chrome/browser/ui/browser_window/internal",
      ]
@@ -18,17 +18,3 @@ index 1e352a02e9720c91917e329c22674fdd33451f4b..5ca416247b05b7959fccc3931629a7b0
      public_deps = [
        ":browser_window_deleter",
        "//base",
-@@ -1634,11 +1636,13 @@ if (!is_android) {
- group("ui_public_dependencies") {
-   visibility = [ "//chrome/browser:browser_public_dependencies" ]
-   public_deps = [
-+    "//brave/browser/ui:ui_public_dependencies",
-     "//components/cross_device/logging",
-     "//components/dom_distiller/core",
-     "//components/enterprise/buildflags",
-     "//components/paint_preview/buildflags",
-     "//components/safe_browsing:buildflags",
-+    "//components/saved_tab_groups/public",
-     "//components/segmentation_platform/public",
-     "//components/sync",
-     "//components/sync_user_events",
