@@ -57,7 +57,8 @@ class AIChatDatabase : public syncer::SyncMetadataStore {
   ~AIChatDatabase() override;
 
   // Gets lightweight metadata for all conversations. No high-memory-consuming
-  // data is returned.
+  // data is returned. Sync stubs, which are waiting for their metadata record,
+  // are not included.
   virtual std::vector<mojom::ConversationPtr> GetAllConversations();
 
   // Gets all data needed to rehydrate a conversation
@@ -132,8 +133,9 @@ class AIChatDatabase : public syncer::SyncMetadataStore {
                              std::optional<base::Time> end_time);
 
   // Applies a remote conversation metadata record from sync. Upserts the
-  // conversation row only; existing entries and associated content are left
-  // untouched (they sync as independent records).
+  // conversation row only, turning a stub into a listed conversation;
+  // existing entries and associated content are left untouched (they sync as
+  // independent records).
   // Precondition: the caller has validated the record. Sync enforces this via
   // AIChatSyncBridge::IsEntityDataValid(), which rejects an empty uuid before
   // an entity reaches the bridge's apply path.
@@ -142,8 +144,10 @@ class AIChatDatabase : public syncer::SyncMetadataStore {
 
   // Applies a remote conversation entry from sync, replacing any local entry
   // with the same uuid along with its event, uploaded file, associated
-  // content and edit rows. If the parent conversation does not exist yet a
-  // stub row is created, which a later metadata record fills in.
+  // content and edit rows. Workspace associated content is device-local and
+  // is kept. If the parent conversation does not exist yet a stub row is
+  // created, hidden from GetAllConversations() until a metadata record fills
+  // it in.
   // |associated_content| is the per-entry content metadata and |contents| a
   // parallel vector of texts for each row's last_contents column. Sync may omit
   // data to fit its size budget, so the caller is responsible for fully
@@ -211,8 +215,11 @@ class AIChatDatabase : public syncer::SyncMetadataStore {
   bool CreateSchema();
 
   // Deletes a conversation entry, everything that belongs to it, and
-  // transitively each of its edits. Must be called within a transaction.
-  bool DeleteEntryAndOwnedRows(std::string_view conversation_entry_uuid);
+  // transitively each of its edits. With |keep_workspace_content|, the
+  // entry's Workspace associated content rows are left in place. Must be
+  // called within a transaction.
+  bool DeleteEntryAndOwnedRows(std::string_view conversation_entry_uuid,
+                               bool keep_workspace_content);
 
   // The directory storing the database.
   const base::FilePath db_file_path_;

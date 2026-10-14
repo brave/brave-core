@@ -7,6 +7,7 @@
 
 #include <stdint.h>
 
+#include <algorithm>
 #include <array>
 #include <map>
 #include <memory>
@@ -1680,25 +1681,32 @@ TEST_F(AIChatDatabaseSyncTest,
 }
 
 TEST_F(AIChatDatabaseSyncTest, ApplyRemoteEntryCreatesStubConversation) {
-  auto entry = mojom::ConversationTurn::New();
-  entry->uuid = "entry-1";
-  entry->character_type = mojom::CharacterType::HUMAN;
-  entry->action_type = mojom::ActionType::QUERY;
-  entry->text = "Orphan entry";
-  entry->created_time = base::Time::Now();
+  auto make_entry = [](std::string_view uuid, std::string_view text) {
+    auto entry = mojom::ConversationTurn::New();
+    entry->uuid = std::string(uuid);
+    entry->character_type = mojom::CharacterType::HUMAN;
+    entry->action_type = mojom::ActionType::QUERY;
+    entry->text = std::string(text);
+    entry->created_time = base::Time::Now();
+    return entry;
+  };
 
-  // No parent conversation exists yet; a stub should be created.
-  EXPECT_TRUE(db_->ApplyRemoteEntry("orphan-conv", std::move(entry), {}, {}));
+  // No parent conversation exists yet, so a stub is created to hold the
+  // entry, and it still counts as the parent for the next one.
+  EXPECT_TRUE(db_->ApplyRemoteEntry(
+      "orphan-conv", make_entry("entry-1", "Orphan entry"), {}, {}));
+  EXPECT_TRUE(db_->ApplyRemoteEntry(
+      "orphan-conv", make_entry("entry-2", "Second entry"), {}, {}));
 
-  auto conversations = db_->GetAllConversations();
-  ASSERT_EQ(conversations.size(), 1u);
-  EXPECT_EQ(conversations[0]->uuid, "orphan-conv");
+  // The stub isn't listed until its metadata record arrives.
+  EXPECT_TRUE(db_->GetAllConversations().empty());
 
   auto data = db_->GetConversationData("orphan-conv");
   ASSERT_TRUE(data);
-  ASSERT_EQ(data->entries.size(), 1u);
+  ASSERT_EQ(data->entries.size(), 2u);
   EXPECT_EQ(data->entries[0]->uuid, "entry-1");
   EXPECT_EQ(data->entries[0]->text, "Orphan entry");
+  EXPECT_EQ(data->entries[1]->uuid, "entry-2");
 }
 
 TEST_F(AIChatDatabaseSyncTest, ApplyRemoteEntryReplacesExistingEntry) {
@@ -1849,8 +1857,9 @@ TEST_F(AIChatDatabaseSyncTest, ApplyRemoteEntryKeepsExistingConversation) {
 }
 
 TEST_F(AIChatDatabaseSyncTest, ApplyRemoteConversationMetadataFillsInStub) {
-  // Records can arrive in either order: an entry first leaves a stub row that
-  // the metadata record then fills in, without disturbing the entry.
+  // Records can arrive in either order: an entry first leaves a hidden stub
+  // row that the metadata record then fills in and lists, without disturbing
+  // the entry.
   auto entry = mojom::ConversationTurn::New();
   entry->uuid = "entry-1";
   entry->character_type = mojom::CharacterType::HUMAN;
@@ -1858,6 +1867,7 @@ TEST_F(AIChatDatabaseSyncTest, ApplyRemoteConversationMetadataFillsInStub) {
   entry->text = "Hello";
   entry->created_time = base::Time::Now();
   ASSERT_TRUE(db_->ApplyRemoteEntry("conv", std::move(entry), {}, {}));
+  ASSERT_TRUE(db_->GetAllConversations().empty());
 
   auto conversation = mojom::Conversation::New();
   conversation->uuid = "conv";
@@ -1904,6 +1914,74 @@ TEST_F(AIChatDatabaseSyncTest, ApplyRemoteEntryPersistsAssociatedContent) {
   EXPECT_EQ(data->associated_content[0]->content_uuid, "ac-1");
   EXPECT_EQ(data->associated_content[0]->content, "page text");
   EXPECT_EQ(data->associated_content[0]->conversation_turn_uuid, "entry-1");
+}
+
+TEST_F(AIChatDatabaseSyncTest, ApplyRemoteEntryKeepsWorkspaceContent) {
+  // Sync never carries Workspace content, so a remote entry can't include it.
+  // Replacing the entry must keep this device's Workspace rows while still
+  // replacing the synced content.
+  auto entry = mojom::ConversationTurn::New();
+  entry->uuid = "entry-1";
+  entry->character_type = mojom::CharacterType::HUMAN;
+  entry->action_type = mojom::ActionType::QUERY;
+  entry->text = "With content";
+  entry->created_time = base::Time::Now();
+
+  auto make_content = [](std::string_view uuid, mojom::ContentType type,
+                         std::string_view url) {
+    auto content = mojom::AssociatedContent::New();
+    content->uuid = std::string(uuid);
+    content->content_type = type;
+    content->title = "Title";
+    content->url = GURL(url);
+    content->content_used_percentage = 50;
+    content->conversation_turn_uuid = "entry-1";
+    return content;
+  };
+
+  auto conversation = mojom::Conversation::New();
+  conversation->uuid = "conv";
+  conversation->associated_content.push_back(make_content(
+      "workspace-ac", mojom::ContentType::Workspace, "https://workspace.test"));
+  conversation->associated_content.push_back(make_content(
+      "page-ac", mojom::ContentType::PageContent, "https://example.com"));
+  ASSERT_TRUE(db_->AddConversation(std::move(conversation),
+                                   {"workspace text", "page text"},
+                                   entry->Clone()));
+
+  std::vector<mojom::AssociatedContentPtr> remote_content;
+  remote_content.push_back(make_content(
+      "page-ac", mojom::ContentType::PageContent, "https://example.com"));
+  ASSERT_TRUE(db_->ApplyRemoteEntry("conv", entry->Clone(),
+                                    std::move(remote_content),
+                                    {"updated page text"}));
+
+  auto conversations = db_->GetAllConversations();
+  ASSERT_EQ(conversations.size(), 1u);
+  const auto& listed_content = conversations[0]->associated_content;
+  EXPECT_EQ(listed_content.size(), 2u);
+  auto workspace = std::ranges::find(listed_content, "workspace-ac",
+                                     &mojom::AssociatedContent::uuid);
+  ASSERT_NE(workspace, listed_content.end());
+  EXPECT_EQ((*workspace)->content_type, mojom::ContentType::Workspace);
+  EXPECT_EQ((*workspace)->title, "Title");
+  EXPECT_EQ((*workspace)->url, GURL("https://workspace.test"));
+  EXPECT_EQ((*workspace)->content_used_percentage, 50);
+  EXPECT_EQ((*workspace)->conversation_turn_uuid, "entry-1");
+
+  auto data = db_->GetConversationData("conv");
+  ASSERT_TRUE(data);
+  ASSERT_EQ(data->associated_content.size(), 2u);
+  EXPECT_EQ(data->associated_content[0]->content_uuid, "page-ac");
+  EXPECT_EQ(data->associated_content[0]->content, "updated page text");
+  EXPECT_EQ(data->associated_content[1]->content_uuid, "workspace-ac");
+  EXPECT_EQ(data->associated_content[1]->content, "workspace text");
+
+  // Deleting the entry locally still deletes its Workspace content.
+  ASSERT_TRUE(db_->DeleteConversationEntry("entry-1"));
+  data = db_->GetConversationData("conv");
+  ASSERT_TRUE(data);
+  EXPECT_TRUE(data->associated_content.empty());
 }
 
 // Test the migration for each version upgrade
@@ -2366,6 +2444,31 @@ TEST_P(AIChatDatabaseMigrationTest, Migration_Version11To12_OrphanedChildRows) {
   EXPECT_EQ(conversation_data->entries[0]->uploaded_files->size(), 2u);
   ASSERT_TRUE(conversation_data->entries[1]->events);
   EXPECT_EQ(conversation_data->entries[1]->events->size(), 1u);
+}
+
+TEST_P(AIChatDatabaseMigrationTest, Migration_Version12To13_SyncStubColumn) {
+  // Existing conversations aren't stubs, so they stay listed.
+  auto conversations = db_->GetAllConversations();
+  EXPECT_NE(
+      std::ranges::find(conversations, "1ae484fe-ab33-4f42-8813-14080e4addc1",
+                        &mojom::Conversation::uuid),
+      conversations.end());
+
+  // The migrated column holds the stub flag: hidden until metadata arrives.
+  auto entry = mojom::ConversationTurn::New();
+  entry->uuid = "stub-entry";
+  entry->character_type = mojom::CharacterType::HUMAN;
+  entry->action_type = mojom::ActionType::QUERY;
+  entry->text = "Hello";
+  entry->created_time = base::Time::Now();
+  ASSERT_TRUE(db_->ApplyRemoteEntry("stub-conv", std::move(entry), {}, {}));
+  EXPECT_EQ(db_->GetAllConversations().size(), conversations.size());
+
+  auto metadata = mojom::Conversation::New();
+  metadata->uuid = "stub-conv";
+  metadata->title = "Title";
+  ASSERT_TRUE(db_->ApplyRemoteConversationMetadata(std::move(metadata)));
+  EXPECT_EQ(db_->GetAllConversations().size(), conversations.size() + 1);
 }
 
 }  // namespace ai_chat
