@@ -11,8 +11,5 @@
 @implementation BraveAccount
 @end
 
-NSString* const BraveAccountInitiatingServiceNameQueryParam =
-    base::SysUTF8ToNSString(brave_account::kInitiatingServiceNameQueryParam);
-
 NSString* const BraveAccountSettingsPath =
     base::SysUTF8ToNSString(brave_account::kSettingsPath);

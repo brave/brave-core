@@ -71,8 +71,7 @@ class StateBase : public mojom::Authentication {
 
   void LogOut() override;
 
-  void LoginStep1(mojom::Service initiating_service,
-                  const std::string& email,
+  void LoginStep1(const std::string& email,
                   const std::string& serialized_ke1,
                   LoginStep1Callback callback) override;
 
@@ -80,8 +79,7 @@ class StateBase : public mojom::Authentication {
                   const std::string& client_mac,
                   LoginStep2Callback callback) override;
 
-  void RegisterStep1(mojom::Service initiating_service,
-                     const std::string& email,
+  void RegisterStep1(const std::string& email,
                      const std::string& blinded_message,
                      RegisterStep1Callback callback) override;
 

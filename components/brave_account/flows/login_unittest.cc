@@ -41,8 +41,8 @@ struct LoginStep1TestCase {
                   base::test::TaskEnvironment& task_environment,
                   mojo::Remote<mojom::Authentication>& authentication,
                   base::OnceCallback<void(MojoExpected)> callback) {
-    authentication->LoginStep1(mojom::Service::kAccounts, kEmailAddress,
-                               "serialized_ke1", std::move(callback));
+    authentication->LoginStep1(kEmailAddress, "serialized_ke1",
+                               std::move(callback));
   }
 
   std::string test_name;

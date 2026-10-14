@@ -79,17 +79,13 @@ interface Authentication {
   AddObserver(pending_remote<AuthenticationObserver> observer);
 
   // First step of the registration process.
-  // `initiatingService`: the service that
-  //                      initiated the registration process
   // `email`: user's email address.
   // `blindedMessage`: initial blinded request
   //                   produced by the OPAQUE library,
   //                   to be sent to the server.
   // Returns `RegisterStep1Result` on success, or
   //         `RegisterError` on failure.
-  RegisterStep1(Service initiatingService,
-                string email,
-                string blindedMessage)
+  RegisterStep1(string email, string blindedMessage)
     => result<RegisterStep1Result, RegisterError>;
 
   // Second step of the registration process.
@@ -159,17 +155,13 @@ interface Authentication {
     => result<ResetPasswordStep4Result, ResetPasswordError>;
 
   // First step of the login process.
-  // `initiatingService`: the service that
-  //                      initiated the login process
   // `email`: user's email address.
   // `serializedKE1`: initial blinded request
   //                  produced by the OPAQUE library,
   //                  to be sent to the server.
   // Returns `LoginStep1Result` on success, or
   //         `LoginError` on failure.
-  LoginStep1(Service initiatingService,
-             string email,
-             string serializedKE1)
+  LoginStep1(string email, string serializedKE1)
     => result<LoginStep1Result, LoginError>;
 
   // Second step of the login process.
@@ -255,5 +247,5 @@ interface DialogController {
 // Interface for opening the Brave Account dialog.
 interface DialogOpener {
   // Opens the Brave Account dialog over the page that hosts the account rows.
-  OpenDialog(string initiating_service_name, DialogMode dialog_mode);
+  OpenDialog(DialogMode dialog_mode);
 };

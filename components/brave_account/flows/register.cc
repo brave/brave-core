@@ -11,7 +11,6 @@
 #include "base/check_deref.h"
 #include "base/functional/bind.h"
 #include "base/types/expected.h"
-#include "brave/components/brave_account/brave_account_utils.h"
 #include "brave/components/brave_account/endpoint_client/with_headers.h"
 #include "brave/components/brave_account/flows/make_request.h"
 #include "brave/components/brave_account/mojom/register.mojom.h"
@@ -34,8 +33,7 @@ Register::Register(
 
 Register::~Register() = default;
 
-void Register::Step1(mojom::Service initiating_service,
-                     const std::string& email,
+void Register::Step1(const std::string& email,
                      const std::string& blinded_message,
                      mojom::Authentication::RegisterStep1Callback callback) {
   CHECK(!email.empty());
@@ -43,8 +41,6 @@ void Register::Step1(mojom::Service initiating_service,
 
   auto request = MakeRequest<endpoints::PasswordInit::Request>();
   request.body.blinded_message = blinded_message;
-  request.body.initiating_service_name =
-      kServiceToString.at(initiating_service);
   request.body.new_account_email = email;
   request.body.serialize_response = true;
 

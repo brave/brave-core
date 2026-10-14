@@ -20,11 +20,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// the account rows.
 OBJC_EXPORT
 @protocol BraveAccountDialogOpenerBridge
-- (void)openBraveAccountDialogWithInitiatingServiceName:
-            (NSString*)initiatingServiceName
-                                             dialogMode:(BraveAccountDialogMode)
-                                                            dialogMode
-    NS_SWIFT_NAME(openBraveAccountDialog(initiatingServiceName:dialogMode:));
+- (void)openBraveAccountDialogWithDialogMode:(BraveAccountDialogMode)dialogMode
+    NS_SWIFT_NAME(openBraveAccountDialog(dialogMode:));
 @end
 
 NS_ASSUME_NONNULL_END

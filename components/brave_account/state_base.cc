@@ -78,8 +78,7 @@ void StateBase::GetServiceToken(mojom::Service,
 
 void StateBase::LogOut() {}
 
-void StateBase::LoginStep1(mojom::Service initiating_service,
-                           const std::string& email,
+void StateBase::LoginStep1(const std::string& email,
                            const std::string& serialized_ke1,
                            LoginStep1Callback callback) {
   std::move(callback).Run(MakeCalledInWrongStateError<mojom::LoginError>());
@@ -91,8 +90,7 @@ void StateBase::LoginStep2(const std::string& encrypted_login_token,
   std::move(callback).Run(MakeCalledInWrongStateError<mojom::LoginError>());
 }
 
-void StateBase::RegisterStep1(mojom::Service initiating_service,
-                              const std::string& email,
+void StateBase::RegisterStep1(const std::string& email,
                               const std::string& blinded_message,
                               RegisterStep1Callback callback) {
   std::move(callback).Run(MakeCalledInWrongStateError<mojom::RegisterError>());

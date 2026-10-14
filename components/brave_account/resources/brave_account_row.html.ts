@@ -19,13 +19,11 @@ export function getHtml(this: BraveAccountRowElement) {
     : whichAccountState(this.state) === AccountStateFieldTags.LOGGED_IN
       ? html` <brave-account-details
           .browserProxy=${this.browserProxy}
-          .initiatingServiceName=${this.initiatingServiceName}
           .state=${this.state.loggedIn}
         >
         </brave-account-details>`
       : html` <brave-account-logged-out-row
           .browserProxy=${this.browserProxy}
-          .initiatingServiceName=${this.initiatingServiceName}
           .state=${this.state.loggedOut}
         >
         </brave-account-logged-out-row>`}`

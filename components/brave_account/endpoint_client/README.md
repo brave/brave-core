@@ -48,12 +48,10 @@ namespace endpoints {
   // JSON sent:
   // {
   //   "email": "user@example.com",
-  //   "initiatingServiceName": "accounts",
   //   "serializedKE1": "0e85b8e68bd22965e15e..."
   // }
   dictionary LoginInitRequestBody {
     DOMString email;
-    DOMString initiatingServiceName;
     DOMString serializedKE1;
   };
 
@@ -142,7 +140,6 @@ LoginInit::Request request;
 request.network_traffic_annotation_tag =
     net::MutableNetworkTrafficAnnotationTag(kTrafficAnnotation);
 request.email = "user@example.com";
-request.initiating_service_name = "accounts";
 request.serialized_ke1 = "0e85b8e68bd22965e15e...";
 
 Client<LoginInit>::Send(

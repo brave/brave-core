@@ -16,11 +16,8 @@ BraveAccountDialogOpener::BraveAccountDialogOpener(content::WebUI& web_ui)
 
 BraveAccountDialogOpener::~BraveAccountDialogOpener() = default;
 
-void BraveAccountDialogOpener::OpenDialog(
-    const std::string& initiating_service_name,
-    mojom::DialogMode dialog_mode) {
-  OpenBraveAccountDialog(CHECK_DEREF(web_ui_->GetWebContents()),
-                         initiating_service_name, dialog_mode);
+void BraveAccountDialogOpener::OpenDialog(mojom::DialogMode dialog_mode) {
+  OpenBraveAccountDialog(CHECK_DEREF(web_ui_->GetWebContents()), dialog_mode);
 }
 
 }  // namespace brave_account

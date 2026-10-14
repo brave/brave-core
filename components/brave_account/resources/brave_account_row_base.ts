@@ -34,14 +34,12 @@ export abstract class BraveAccountRowBaseElement<
   static override get properties() {
     return {
       browserProxy: { type: Object },
-      initiatingServiceName: { type: String },
       isResendingConfirmationEmail: { type: Boolean, state: true },
       state: { type: Object },
     }
   }
 
   accessor browserProxy!: BraveAccountRowBrowserProxy
-  protected accessor initiatingServiceName = ''
   protected accessor isResendingConfirmationEmail = false
   // `& object` is only here to satisfy the @webui-eslint/lit-property-accessor
   // lint rule, which expects Object reactive properties to be typed as objects.
@@ -115,9 +113,6 @@ export abstract class BraveAccountRowBaseElement<
   // dialog over the page, mobile presents them over the page serving the rows.
   // Either way the browser does it, so both go through the same call.
   private openDialog(dialogMode: DialogMode) {
-    this.browserProxy.dialogOpener.openDialog(
-      this.initiatingServiceName,
-      dialogMode,
-    )
+    this.browserProxy.dialogOpener.openDialog(dialogMode)
   }
 }

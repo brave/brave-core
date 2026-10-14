@@ -21,7 +21,6 @@
 
 BraveAccountUIAndroid::BraveAccountUIAndroid(content::WebUI* web_ui)
     : BraveAccountUIBase(Profile::FromWebUI(web_ui),
-                         web_ui->GetWebContents()->GetVisibleURL(),
                          base::BindOnce(&webui::SetupWebUIDataSource)),
       WebUIController(web_ui) {}
 
@@ -52,10 +51,9 @@ void BraveAccountUIAndroid::GetDialogMode(GetDialogModeCallback callback) {
 }
 
 void BraveAccountUIAndroid::OpenDialog(
-    const std::string& initiating_service_name,
     brave_account::mojom::DialogMode dialog_mode) {
   brave_account::OpenBraveAccountDialog(CHECK_DEREF(web_ui()->GetWebContents()),
-                                        initiating_service_name, dialog_mode);
+                                        dialog_mode);
 }
 
 WEB_UI_CONTROLLER_TYPE_IMPL(BraveAccountUIAndroid)

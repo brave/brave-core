@@ -49,8 +49,7 @@ class Register : public FlowBase {
 
   ~Register();
 
-  void Step1(mojom::Service initiating_service,
-             const std::string& email,
+  void Step1(const std::string& email,
              const std::string& blinded_message,
              mojom::Authentication::RegisterStep1Callback callback);
 
