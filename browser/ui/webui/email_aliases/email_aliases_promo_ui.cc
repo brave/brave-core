@@ -10,6 +10,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/theme_source.h"
 #include "components/grit/brave_components_resources.h"
+#include "components/grit/brave_components_webui_strings.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/common/url_constants.h"
@@ -40,6 +41,7 @@ EmailAliasesPromoUI::EmailAliasesPromoUI(content::WebUI* web_ui)
 #endif
   webui::SetupWebUIDataSource(source, kEmailAliasesPromoResources,
                               IDR_EMAIL_ALIASES_PROMO_HTML);
+  source->AddLocalizedStrings(webui::kEmailAliasesStrings);
 }
 
 EmailAliasesPromoUI::~EmailAliasesPromoUI() = default;
