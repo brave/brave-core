@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/BUILD.gn b/chrome/browser/BUILD.gn
-index 50a88c1804b27bb35e3123888a7d9948d1320541..51d3430f0deec81797126aee10b81f9a0d780164 100644
+index 9bb7c6a239353b622471c22ebcfeedc5ca7fe975..6023a4c9b566f83cd08f5f411ed059811b252843 100644
 --- a/chrome/browser/BUILD.gn
 +++ b/chrome/browser/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -10,28 +10,28 @@ index 50a88c1804b27bb35e3123888a7d9948d1320541..51d3430f0deec81797126aee10b81f9a
  import("//base/allocator/allocator.gni")
  import("//build/buildflag_header.gni")
  import("//build/config/buildflags_paint_preview.gni")
-@@ -2222,6 +2223,7 @@ source_set("browser") {
-     # should be added to browser_generated_files.
-     ":browser_public_dependencies",
-     ":core",
+@@ -2209,6 +2210,7 @@ source_set("browser") {
+   public_deps = [
+     ":browser_features",
+     ":buildflags",
 +    "//brave/browser:core",
      "//chrome/browser/accessibility/accessibility_prefs",
      "//chrome/browser/browsing_data",
      "//chrome/browser/download",
-@@ -3591,7 +3593,7 @@ source_set("browser") {
+@@ -2259,6 +2261,7 @@ source_set("browser") {
+     "//components/webapps/browser",
+     "//components/webui/chrome_urls/mojom:mojo_bindings",
+   ]
++  public_deps += brave_chrome_browser_public_deps
+ 
+   # :core must appear after //chrome/common in public_deps so that on Windows,
+   # //chrome/common/win:delay_load_hooks is linked before
+@@ -4124,7 +4127,7 @@ source_set("browser") {
  
    # TODO(https://crbug.com/356905053): Add more dependencies here and merge this
    # block with the `enable_extensions` block above.
 -  if (enable_desktop_android_extensions) {
 +  if (is_android && enable_extensions_core) {
-     deps += [ "//chrome/browser/ui/android/extensions" ]
-   }
- 
-@@ -5341,6 +5343,7 @@ group("browser_public_dependencies") {
-     "//sql",
-     "//ui/lottie",
-   ]
-+  public_deps += brave_chrome_browser_public_deps
-   if (is_android) {
-     public_deps += [
-       "//chrome/android/features/dev_ui:buildflags",
+     deps += [
+       "//chrome/browser/ui/android/extensions",
+       "//chrome/browser/ui/android/extensions/browser_window_helper/internal",

@@ -26,6 +26,7 @@ source_set("brave_actions") {
     "//brave/browser/brave_shields",
     "//brave/components/brave_origin/buildflags",
     "//brave/components/resources:strings_grit",
+    "//brave/components/speedreader/common/buildflags",
     "//brave/components/vector_icons",
     "//chrome/browser/ui/extensions",
     "//chrome/browser/ui/tabs:tab_strip",

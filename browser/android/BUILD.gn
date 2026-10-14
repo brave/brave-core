@@ -22,6 +22,7 @@ source_set("android_browser_process") {
   deps = [
     "//base",
     "//brave/brave_domains/android:jni_headers",
+    "//brave/browser:browser_process",
     "//brave/browser/android/browsing_data",
     "//brave/browser/android/preferences",
     "//brave/browser/android/safe_browsing",
@@ -42,7 +43,6 @@ source_set("android_browser_process") {
     "//brave/components/image_metadata_stripper/common",
     "//chrome/android:jni_headers",
     "//chrome/browser:browser_process",
-    "//chrome/browser:browser_public_dependencies",
     "//chrome/browser:flags",
     "//chrome/browser/content_settings:content_settings_factory",
     "//chrome/browser/lifetime",

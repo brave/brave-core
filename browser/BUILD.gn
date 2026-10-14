@@ -87,13 +87,16 @@ source_set("core") {
            "//brave/ui/webui/custom_profile_image/buildflags",
          ]
   if (!is_android) {
-    deps += [ "//brave/browser/ui:brave_browser_header" ]
+    deps += [
+      "//brave/browser/ui:brave_browser_header",
+      "//chrome/browser/ui/webui/side_panel/bookmarks:mojo_bindings",
+    ]
   }
   if (enable_brave_custom_profile_image_webui) {
     deps += [ "//brave/browser/ui/webui/custom_profile_image" ]
   }
-  public_deps = brave_chrome_browser_public_deps +
-                [ "//chrome/browser:browser_public_dependencies" ]
+  public_deps = [ "//chrome/browser:shell_integration" ] +
+                brave_chrome_browser_public_deps
   allow_circular_includes_from =
       brave_chrome_browser_allow_circular_includes_from
 }
