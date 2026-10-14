@@ -110,7 +110,8 @@
     &brave_origin::features::kBraveOrigin,                                     \
     &features::kBraveCustomSearchEngines,                                      \
     &features::kBraveAndroidTabGroupsSettings,                                 \
-    &features::kBraveAndroidMergeInstallPwaAndCreateShortcut
+    &features::kBraveAndroidMergeInstallPwaAndCreateShortcut,                  \
+    &features::kBraveAndroidExtensions
 
 // clang-format on
 
