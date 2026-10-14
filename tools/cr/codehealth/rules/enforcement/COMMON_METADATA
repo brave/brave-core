@@ -1,0 +1,48 @@
+# Sweep e: enforcement and deprecations. See tools/cr/codehealth/scripts/sweep.py for
+# the fields.
+agentic_review {
+  capability_groups {
+    tool: "vpython3 tools/cr/codehealth/scripts/v8_deprecations.py {old}..{new}"
+    rules: "tools/cr/codehealth/rules/enforcement/v8-deprecations.md"
+  }
+  # Only added lines: a removed comment is a deprecation finished, which the
+  # build already caught.
+  capability_groups {
+    path_expression: ".*\\.h"
+    exclude_path_expression: "(?:third_party/(?!blink/)|v8/).*"
+    content_patterns: "^\\+.*(?:[Dd]eprecat|DEPRECAT|[Dd]o not use|being removed|will be removed|\\[\\[deprecated)"
+    rules: "tools/cr/codehealth/rules/enforcement/header-deprecations.md"
+  }
+  capability_groups {
+    path_expression: "(?:base|content/public|ui/views|net|mojo/public)/.*\\.h"
+    content_patterns: "^\\+\\s*//.*(?:[Pp]refer |[Aa]void |[Nn]ew callers)"
+    rules: "tools/cr/codehealth/rules/enforcement/header-deprecations.md"
+  }
+  capability_groups {
+    path_expression: "PRESUBMIT\\.py|PRESUBMIT_test\\.py"
+    rules: "tools/cr/codehealth/rules/enforcement/presubmit-checks.md"
+  }
+  capability_groups {
+    path_expression: "build/config/raw_ptr_plugin_config\\.yaml|tools/clang/(?:raw_ptr_plugin|plugins)/(?!tests/).*|build/config/clang/.*"
+    rules: "tools/cr/codehealth/rules/enforcement/clang-plugins.md"
+  }
+  capability_groups {
+    path_expression: ".*\\.gni?"
+    content_patterns: "^-.*\\b(?:no_exit_time_destructors|no_wexit_time_destructors|-Wno-[\\w-]+)"
+    rules: "tools/cr/codehealth/rules/enforcement/warning-opt-outs.md"
+  }
+  # Clean-up scripts live under tools/; blinkpy's `pr_cleanup_tool.py` and the
+  # like are noise.
+  capability_groups {
+    path_expression: "tools/(?:.*/)?clean[-_]?up[^/]*\\.py|base/.*not_fatal_until\\.h"
+    rules: "tools/cr/codehealth/rules/enforcement/scripted-cleanups.md"
+  }
+  capability_groups {
+    subject_patterns: "(?i)clean-?up[-_\\w]*\\.py|NotFatalUntil"
+    rules: "tools/cr/codehealth/rules/enforcement/scripted-cleanups.md"
+  }
+  capability_groups {
+    body_patterns: "(?i)preempt|upcoming (?:clang|presubmit|plugin)|will be disallowed|\\bLSC\\b|is being deprecated|in preparation (?:for|of)"
+    rules: "tools/cr/codehealth/rules/enforcement/commit-body-announcements.md"
+  }
+}

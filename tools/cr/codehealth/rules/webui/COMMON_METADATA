@@ -1,0 +1,98 @@
+# Sweep d: WebUI. See tools/cr/codehealth/scripts/sweep.py for the fields.
+agentic_review {
+  # Every tag Brave registers with `polymer_overriding`, whether or not the
+  # range touched it.
+  capability_groups {
+    tool: "vpython3 tools/cr/codehealth/scripts/polymer_tags.py {old}..{new}"
+    rules: "tools/cr/codehealth/rules/webui/polymer-overrides-on-lit-elements.md"
+    rules: "tools/cr/codehealth/rules/webui/polymer-selectors.md"
+  }
+  # The range's Polymer-to-Lit migrations.
+  capability_groups {
+    path_expression: "(?:chrome/browser/resources|ui/webui/resources)/.*\\.ts"
+    exclude_path_expression: ".*(?:_test\\.ts|/test/.*)"
+    content_patterns: "^-.*\\bPolymerElement\\b"
+    required_patterns: "^\\+.*\\bCrLitElement\\b"
+    rules: "tools/cr/codehealth/rules/webui/polymer-overrides-on-lit-elements.md"
+  }
+  # Polymer templates whose name Brave spells (its `br/` modules import them):
+  # drops templates of elements Brave never touches. Names without an
+  # underscore (`app`, `icons`) are words Brave spells anyway, so they never
+  # count.
+  capability_groups {
+    path_expression: "(?:chrome/browser/resources|ui/webui/resources)/.*\\.html"
+    exclude_path_expression: ".*/test/.*"
+    brave_mentions: "/(\\w+_\\w+)\\.html$"
+    rules: "tools/cr/codehealth/rules/webui/polymer-selectors.md"
+  }
+  capability_groups {
+    path_expression: "chrome/browser/resources/.*\\.(?:ts|html)"
+    exclude_path_expression: ".*(?:_test\\.ts|/test/.*)"
+    content_patterns: "^[-+].*(?:\\bPrefsMixin\\b|prefs=\"\\{\\{prefs\\}\\}\")"
+    rules: "tools/cr/codehealth/rules/webui/prefs-bindings-on-migrated-elements.md"
+  }
+  capability_groups {
+    path_expression: "chrome/browser/resources/.*\\.(?:ts|html)"
+    exclude_path_expression: ".*(?:_test\\.ts|/test/.*)"
+    content_patterns: "^-.*(?:<settings-prefs\\b|getPrefsElement\\(|\\bCrSettingsPrefs\\b|'settings-prefs')"
+    rules: "tools/cr/codehealth/rules/webui/removed-ancestor-prefs.md"
+  }
+  capability_groups {
+    path_expression: "chrome/browser/resources/.*\\.ts"
+    exclude_path_expression: ".*(?:_test\\.ts|/test/.*)"
+    content_patterns: "PrefKeyObserverMixinLit\\("
+    rules: "tools/cr/codehealth/rules/webui/lit-controls-take-only-pref-key.md"
+  }
+  # Announcements: their diffs only move clients to `prefKey`.
+  capability_groups {
+    subject_patterns: "(?i)in preparation for (?:the )?migrat|remove (?:legacy )?pref support|support for legacy prefs"
+    path_expression: "chrome/browser/resources/.*"
+    rules: "tools/cr/codehealth/rules/webui/lit-controls-take-only-pref-key.md"
+  }
+  # Added constant lists in shared WebUI code.
+  capability_groups {
+    path_expression: "(?:chrome/browser/resources|ui/webui/resources)/.*\\.ts"
+    exclude_path_expression: ".*(?:_test\\.ts|/test/.*)"
+    content_patterns: "^\\+\\s*(?:export\\s+)?const\\s+[A-Z][A-Z0-9_]+\\s*(?::[^=]*)?=\\s*(?:new\\s+(?:Set|Map)\\b|\\[)"
+    rules: "tools/cr/codehealth/rules/webui/allowlists-in-shared-webui-code.md"
+  }
+  # A new or moved file adds its copyright line. Only Lit copies of files
+  # whose name Brave spells (in its patches and overrides) count.
+  capability_groups {
+    path_expression: "(?:chrome/browser/resources|ui/webui/resources)/.*_lit\\.ts"
+    exclude_path_expression: ".*(?:_test\\.ts|/test/.*)"
+    content_patterns: "^\\+(?://|/\\*) Copyright"
+    brave_mentions: "/(\\w+)_lit\\.ts$"
+    rules: "tools/cr/codehealth/rules/webui/lit-siblings-of-patched-mixins.md"
+  }
+  # A deleted or moved file removes its copyright line. Brave's override has
+  # often moved along during the rebase, so match the files whose name Brave
+  # spells rather than the ones it overrides now. A rename lists only the new
+  # path: only deletions and copy-then-delete moves are found.
+  capability_groups {
+    path_expression: "(?:chrome/browser/resources|ui/webui/resources)/.*\\.(?:css|ts|html)"
+    exclude_path_expression: ".*(?:_test\\.ts|/test/.*)"
+    content_patterns: "^-(?://|/\\*) Copyright"
+    brave_mentions: "/(\\w+)\\.(?:css|ts|html)$"
+    rules: "tools/cr/codehealth/rules/webui/polymer-files-no-longer-generated-from-lit.md"
+  }
+  # WebUI feature flips.
+  capability_groups {
+    path_expression: ".*\\.cc"
+    content_patterns: "^-BASE_FEATURE\\(kWebU[Ii]\\w*"
+    required_patterns: "^\\+BASE_FEATURE\\(kWebU[Ii]\\w*"
+    rules: "tools/cr/codehealth/rules/webui/flags-switching-shared-css.md"
+  }
+  capability_groups {
+    path_expression: "(?:chrome/browser/resources|ui/webui/resources)/.*\\.(?:css|ts)"
+    overridden_by_brave: true
+    content_patterns: ":host-context\\(\\["
+    rules: "tools/cr/codehealth/rules/webui/flags-switching-shared-css.md"
+  }
+  # Templates a lit_mangler targets.
+  capability_groups {
+    path_expression: ".*\\.html\\.ts"
+    overridden_by_brave: true
+    rules: "tools/cr/codehealth/rules/webui/lit-mangler-guards.md"
+  }
+}
