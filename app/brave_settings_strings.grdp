@@ -653,6 +653,247 @@
     Shortcuts
   </message>
 
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_TITLE" desc="The text label for the gestures settings page">
+    Gestures
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_ABOUT_DESC" desc="Description for the about gestures section">
+    Draw gestures to go back, open a new tab, reload the page, and more. Hold the right mouse button while dragging, hold Alt/Option while dragging on a trackpad, or use two fingers on a touchscreen.
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_ENABLE_LABEL" desc="The label for the toggle that enables gestures">
+    Enable gestures
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_SHOW_TRAIL_LABEL" desc="The label for the toggle that shows a cursor trail while drawing a gesture">
+    Show cursor trail
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_SHOW_TRAIL_DESC" desc="Description shown under the show cursor trail toggle, explaining what it does">
+    Show the path of the cursor while drawing a gesture.
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_SHOW_MATCHED_GESTURE_LABEL" desc="The label for the toggle that shows the matched command label while drawing a gesture">
+    Show matched gesture
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_SHOW_MATCHED_GESTURE_DESC" desc="Description shown under the show matched gesture toggle, explaining what it does">
+    Show the recognized gesture as you draw.
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_SENSITIVITY_LABEL" desc="The label for the gesture sensitivity slider">
+    Sensitivity
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_SENSITIVITY_DESC" desc="Description shown under the gesture sensitivity slider, explaining what it controls">
+    Controls how much movement is required to recognize a gesture. Lower values respond to shorter movements; higher values require longer, more deliberate movements.
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_MAPPINGS_LABEL" desc="The label for the list of gesture-to-command mappings">
+    Directional Gestures
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_MAPPINGS_HELP" desc="Help text shown above the list of directional gesture mappings, explaining what the arrow icons on each row mean">
+    To run an action, hold down the right mouse button and draw in the direction indicated by the arrows. If a row contains more than one arrow, draw each direction in sequence. For example, ↓→ means draw down, then right.
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_SMART_GESTURES_LABEL" desc="The label for the list of smart gesture mappings">
+    Smart Gestures
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_SMART_GESTURES_HELP" desc="Help text shown above the list of smart gesture mappings, explaining how to trigger them">
+    To run an action, hold the right mouse button and swipe over a link, an image, or the page's selected text.
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_SMART_GESTURES_LINK_LABEL" desc="Heading for the smart gesture rows that trigger when swiping over a link">
+    Link
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_SMART_GESTURES_SELECTED_TEXT_LABEL" desc="Heading for the smart gesture rows that trigger when swiping over selected text">
+    Selected text
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_SMART_GESTURES_IMAGE_LABEL" desc="Heading for the smart gesture rows that trigger when swiping over an image">
+    Image
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_OPEN_TARGET_NEW_BACKGROUND_TAB" desc="Dropdown option: open the link or image in a new background tab">
+    New background tab
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_OPEN_TARGET_NEW_FOREGROUND_TAB" desc="Dropdown option: open the link or image in a new foreground tab">
+    New foreground tab
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_OPEN_TARGET_NEW_WINDOW" desc="Dropdown option: open the link or image in a new window">
+    New window
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_SEARCH_TARGET_BRAVE_SEARCH" desc="Dropdown option: search the selected text with Brave Search">
+    Brave Search
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_SEARCH_TARGET_ASK_BRAVE" desc="Dropdown option: ask Brave's AI assistant about the selected text">
+    Ask Brave
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_CHAINED_ACTIONS_HELP_DRAG_PREFIX" desc="Text before the drag-handle icon in the sentence explaining it reorders actions in a chain">
+    Drag
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_CHAINED_ACTIONS_HELP_DRAG_SUFFIX" desc="Text after the drag-handle icon in the sentence explaining it reorders actions in a chain">
+    to reorder actions in the chain.
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_CHAINED_ACTIONS_HELP_ADD_PREFIX" desc="Text before the + icon in the sentence explaining it adds another chained action">
+    Click
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_CHAINED_ACTIONS_HELP_ADD_SUFFIX" desc="Text after the + icon in the sentence explaining it adds another chained action">
+    to add an action.
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_CHAINED_ACTIONS_HELP_REMOVE_PREFIX" desc="Text before the minus icon in the sentence explaining it removes a chained action">
+    Click
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_CHAINED_ACTIONS_HELP_REMOVE_SUFFIX" desc="Text after the minus icon in the sentence explaining it removes a chained action">
+    to remove an action.
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_CUSTOM_GESTURE_HELP_REMOVE_PREFIX" desc="Text before the x icon in the sentence explaining it deletes a whole custom gesture">
+    Click
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_CUSTOM_GESTURE_HELP_REMOVE_SUFFIX" desc="Text after the x icon in the sentence explaining it deletes a whole custom gesture">
+    to remove gesture.
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_RESET_LABEL" desc="The label for the button that resets gesture mappings to their defaults">
+    Reset to defaults
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_RESET_CONFIRM" desc="Confirmation shown before resetting gesture mappings to their defaults">
+    Are you sure you want to reset your directional gestures?
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_SMART_GESTURES_RESET_CONFIRM" desc="Confirmation shown before resetting smart gestures to their defaults">
+    Are you sure you want to reset your smart gestures?
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_ROCKER_LABEL" desc="The label for the rocker gestures section">
+    Mouse Rocker Gestures
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_ROCKER_ENABLE_LABEL" desc="The label for the toggle that enables rocker gestures">
+    Enable rocker gestures
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_ROCKER_ABOUT_DESC" desc="Description for the rocker gestures section">
+    Hold one mouse button and click the other to trigger an action.
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_ROCK_LEFT_LABEL" desc="The label for the row that configures the action run when the right mouse button is held and the left mouse button is clicked">
+    Hold the right mouse button and click the left
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_ROCK_RIGHT_LABEL" desc="The label for the row that configures the action run when the left mouse button is held and the right mouse button is clicked">
+    Hold the left mouse button and click the right
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_WHEEL_LABEL" desc="The label for the wheel gestures section">
+    Mouse Wheel Gestures
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_WHEEL_ENABLE_LABEL" desc="The label for the toggle that enables wheel gestures">
+    Enable wheel gestures
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_WHEEL_ABOUT_DESC" desc="Description for the wheel gestures section">
+    Hold a mouse button and scroll the mouse wheel to trigger an action.
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_WHEEL_MODIFIER_BUTTON_LABEL" desc="The label for the dropdown that picks which mouse button modifies wheel gestures">
+    Modifier button
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_WHEEL_MODIFIER_BUTTON_DESC" desc="Description shown under the wheel modifier button dropdown, explaining what it does">
+    Choose which mouse button to hold while scrolling.
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_WHEEL_MODIFIER_LEFT_LABEL" desc="Option label for using the left mouse button to modify wheel gestures">
+    Left
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_WHEEL_MODIFIER_MIDDLE_LABEL" desc="Option label for using the middle mouse button to modify wheel gestures">
+    Middle
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_WHEEL_MODIFIER_RIGHT_LABEL" desc="Option label for using the right mouse button to modify wheel gestures">
+    Right
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_WHEEL_SENSITIVITY_LABEL" desc="The label for the wheel gesture sensitivity slider">
+    Sensitivity
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_WHEEL_SENSITIVITY_DESC" desc="Description shown under the wheel gesture sensitivity slider, explaining what it controls">
+    How far you need to scroll before it triggers an action. Lower values trigger on a light scroll; higher values require a more deliberate one.
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_WHEEL_UP_LABEL" desc="The label for the row that configures the action run when the wheel is scrolled up while the modifier button is held">
+    Scroll up
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_WHEEL_DOWN_LABEL" desc="The label for the row that configures the action run when the wheel is scrolled down while the modifier button is held">
+    Scroll down
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_ROCKER_RESET_CONFIRM" desc="Confirmation shown before resetting rocker gestures to their defaults">
+    Are you sure you want to reset your mouse rocker gestures?
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_WHEEL_RESET_CONFIRM" desc="Confirmation shown before resetting wheel gestures to their defaults">
+    Are you sure you want to reset your mouse wheel gestures?
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_DISALLOWED_SITES_LABEL" desc="The label for the list of sites where gestures are disallowed">
+    Disallowed sites
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_DISALLOWED_SITES_DESC" desc="Description shown under the disallowed sites list, explaining what it does">
+    Add sites where gestures should be disabled.
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_ADD_SITE_LABEL" desc="The label for the button that adds a site to the disallowed list">
+    Add a site
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_ADD_SITE_PROMPT" desc="The prompt text asking the user to enter a website to disallow gestures on">
+    Enter a website to disallow gestures on (e.g. example.com)
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_EDIT_SITE_LABEL" desc="The title of the dialog that edits an existing site in the disallowed list, and the label for its confirm button">
+    Edit site
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_CUSTOM_GESTURES_LABEL" desc="The label for the list of user-recorded custom gestures">
+    Custom gestures
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_ADD_CUSTOM_GESTURE_LABEL" desc="The heading for the section where a new custom gesture is drawn and saved">
+    Add custom gesture
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_CUSTOM_GESTURES_HELP" desc="Help text shown above the list of saved custom gestures, explaining what custom gestures are">
+    Custom gestures let you draw your own shape and assign one or more actions to it, as an alternative to the directional gestures above.
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_CLOSED_SHAPE_HELP" desc="Help text shown above the list of saved custom gestures once at least one exists, explaining closed shapes like a circle can be started from anywhere on the shape">
+    For closed gestures, you can start drawing from any point.
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_DRAW_CUSTOM_GESTURE_HELP" desc="Help text shown above the row where a new custom gesture's action is chosen, explaining how to draw it">
+    Hold the left mouse button and draw a gesture in the area below. Release the button when finished, assign one or more actions to run when it's drawn, then click Save.
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_SAVE_CUSTOM_GESTURE_LABEL" desc="The label for the button that saves a newly-drawn custom gesture">
+    Save
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_CLEAR_CUSTOM_GESTURE_LABEL" desc="The label for the button that clears the currently-drawn custom gesture without saving it">
+    Clear
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_CLEAR_CUSTOM_GESTURE_CONFIRM" desc="Confirmation shown before clearing the currently-drawn custom gesture">
+    Are you sure you want to clear this gesture?
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_REMOVE_CUSTOM_GESTURE_LABEL" desc="The label for the button that removes an already-saved custom gesture">
+    Remove
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_REMOVE_CUSTOM_GESTURE_CONFIRM" desc="Confirmation shown before removing an already-saved custom gesture">
+    Are you sure you want to remove this gesture? You will need to draw it again if you want to use it in the future.
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_NAVIGATE_TO_URL_PLACEHOLDER" desc="Placeholder text for the URL field shown when a gesture is set to navigate to a URL">
+    Enter a URL
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_SET_URL_LABEL" desc="Label shown on the button that opens the dialog for setting a navigate-to-URL gesture's destination, before a URL has been set">
+    Set URL
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_SWITCH_TO_TAB_PLACEHOLDER" desc="Placeholder text for the pattern field shown when a gesture is set to switch to a matching tab">
+    Enter a pattern, e.g. *gmail*
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_SET_PATTERN_LABEL" desc="Label shown on the button that opens the dialog for setting a switch-to-tab gesture's pattern, before a pattern has been set">
+    Set pattern
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_COMMAND_CONFLICT_SUBLABEL" desc="Sub-label under a gesture naming which other gesture(s) also perform the same action">
+    Action conflicts with <ph name="CONFLICT_LIST">$1<ex>← and ↓→</ex></ph>
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_CONFLICT_CUSTOM_GESTURE_SINGULAR" desc="Names a single conflicting custom gesture in the conflict sub-label, since custom gestures have no readable name">
+    a custom gesture
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_CONFLICT_CUSTOM_GESTURE_PLURAL" desc="Names multiple conflicting custom gestures in the conflict sub-label">
+    <ph name="COUNT">$1<ex>2</ex></ph> custom gestures
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_CONFLICT_MOUSE_ROCKER_SINGULAR" desc="Names a single conflicting mouse rocker gesture in the conflict sub-label, since its own label is too long a sentence to use inline">
+    a mouse rocker gesture
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_CONFLICT_MOUSE_ROCKER_PLURAL" desc="Names multiple conflicting mouse rocker gestures in the conflict sub-label">
+    <ph name="COUNT">$1<ex>2</ex></ph> mouse rocker gestures
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_CONFLICT_MOUSE_WHEEL_SINGULAR" desc="Names a single conflicting mouse wheel gesture in the conflict sub-label, since its own label is too long a sentence to use inline">
+    a mouse wheel gesture
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_CONFLICT_MOUSE_WHEEL_PLURAL" desc="Names multiple conflicting mouse wheel gestures in the conflict sub-label">
+    <ph name="COUNT">$1<ex>2</ex></ph> mouse wheel gestures
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_SHAPE_CONFLICT_SUBLABEL" desc="Sub-label shown when a custom gesture's drawn path looks similar enough to another custom gesture's that the recognizer could confuse them">
+    Shape looks similar to another custom gesture
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_SHAPE_CONFLICT_DIRECTIONAL_SUBLABEL" desc="Sub-label shown on a custom gesture row when its drawn path would resolve to the named directional gesture instead, making it unreachable">
+    Shape looks similar to <ph name="KEY">$1<ex>↑↓</ex></ph>
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_SHAPE_CONFLICT_CUSTOM_SUBLABEL" desc="Sub-label shown on a directional gesture row when a saved custom gesture's drawn path would resolve to it instead, making that custom gesture unreachable">
+    Looks similar to a custom gesture
+  </message>
+
   <!-- Settings / Brave Origin -->
   <message name="IDS_SETTINGS_BRAVE_ORIGIN_TITLE" desc="The title for the Brave Origin section in settings">
     Brave Origin

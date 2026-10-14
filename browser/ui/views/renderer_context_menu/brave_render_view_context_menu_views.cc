@@ -5,7 +5,10 @@
 
 #include "brave/browser/ui/views/renderer_context_menu/brave_render_view_context_menu_views.h"
 
+#include "base/functional/bind.h"
 #include "base/memory/ptr_util.h"
+#include "brave/browser/ui/gestures/gesture_context_menu_util.h"
+#include "content/public/browser/web_contents.h"
 
 BraveRenderViewContextMenuViews::BraveRenderViewContextMenuViews(
     content::RenderFrameHost& render_frame_host,
@@ -33,6 +36,18 @@ BraveRenderViewContextMenuViews::Create(
 }
 
 void BraveRenderViewContextMenuViews::Show() {
+  if (auto* web_contents = GetWebContents();
+      web_contents &&
+      gestures::ConsumeSuppressContextMenuForWebContents(
+          web_contents,
+          base::BindOnce(&BraveRenderViewContextMenuViews::ShowNow,
+                         weak_factory_.GetWeakPtr()))) {
+    return;
+  }
+  ShowNow();
+}
+
+void BraveRenderViewContextMenuViews::ShowNow() {
   // Removes duplicated separator if any. The duplicated separator may appear
   // in |BraveRenderViewContextMenu::InitMenu| after remove the translate menu
   // item.

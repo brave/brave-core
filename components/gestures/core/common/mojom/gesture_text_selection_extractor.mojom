@@ -1,0 +1,16 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module gestures.mojom;
+
+// Implemented in the renderer process, one instance per `RenderFrame`, to
+// let the browser process read that frame's current text selection for a
+// gesture action (e.g. "search selected text") without needing a full page
+// content extraction.
+interface GestureTextSelectionExtractor {
+  // The frame's currently selected text, or an empty string if nothing is
+  // selected.
+  GetSelectedText() => (string selected_text);
+};

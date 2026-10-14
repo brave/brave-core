@@ -147,6 +147,10 @@ test("brave_components_unittests") {
         "//brave/components/brave_wallet/renderer/test:unit_tests",
       ]
     }
+    deps += [
+      "//brave/components/gestures/core/browser:unit_tests",
+      "//brave/components/gestures/core/common:unit_tests",
+    ]
   }
 
   if (is_ios) {

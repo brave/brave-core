@@ -40,6 +40,10 @@ class PartitionedStoragePageActionController;
 }
 #endif
 
+namespace gestures {
+class GestureController;
+}  // namespace gestures
+
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 #include "brave/browser/ui/views/page_action/speedreader_page_action_controller.h"
 #endif
@@ -176,6 +180,10 @@ class BraveTabFeatures : public TabFeatures {
   // Records whether the page asked for high accuracy geolocation.
   std::unique_ptr<ContentsObservingTabFeature>
       geolocation_permission_tab_helper_;
+
+  // Detects drag gestures over page content. Null when the feature is
+  // disabled.
+  std::unique_ptr<gestures::GestureController> gesture_controller_;
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
   std::unique_ptr<ai_chat::TabDataWebContentsObserver> tab_data_observer_;

@@ -32,13 +32,13 @@ TEST(BraveAdsUrlUtilInternalTest, HasSearchQueryNameWithNoValue) {
   EXPECT_FALSE(HasSearchQuery(GURL("https://xyzzy.com/?search")));
 }
 
-TEST(BraveAdsUrlUtilInternalTest, DoesETLDPlusOneContainWildcards) {
+TEST(BraveAdsUrlUtilInternalTest, ShouldDetectWildcardsInETLDPlusOne) {
   // Act & Assert
   EXPECT_TRUE(DoesETLDPlusOneContainWildcards(GURL("https://*.appspot.com")));
   EXPECT_TRUE(DoesETLDPlusOneContainWildcards(GURL("https://*.com")));
 }
 
-TEST(BraveAdsUrlUtilInternalTest, DoesETLDPlusOneNotContainWildcards) {
+TEST(BraveAdsUrlUtilInternalTest, ShouldNotDetectWildcardsInETLDPlusOne) {
   // Act & Assert
   EXPECT_FALSE(DoesETLDPlusOneContainWildcards(GURL("https://*.xyzzy.com")));
   EXPECT_FALSE(
@@ -142,6 +142,19 @@ TEST(BraveAdsUrlUtilInternalTest,
      ShouldNotSupportInternalUrlWithChromeSchemeAndSettingsHostAndFooBarPath) {
   // Act & Assert
   EXPECT_FALSE(ShouldSupportInternalUrl(GURL("chrome://settings/foobar")));
+}
+
+TEST(BraveAdsUrlUtilInternalTest, ShouldSupportChromeSettingsGesturesUrl) {
+  // Act & Assert
+  EXPECT_TRUE(
+      ShouldSupportInternalUrl(GURL("chrome://settings/system/gestures")));
+}
+
+TEST(BraveAdsUrlUtilInternalTest,
+     ShouldNotSupportChromeSettingsGesturesUrlWithQuery) {
+  // Act & Assert
+  EXPECT_FALSE(ShouldSupportInternalUrl(
+      GURL("chrome://settings/system/gestures?foo=bar")));
 }
 
 TEST(

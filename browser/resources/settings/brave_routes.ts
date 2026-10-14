@@ -44,6 +44,12 @@ export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
     }
   }
 
+  if (r.SYSTEM) {
+    r.GESTURES = r.SYSTEM.createChild('/system/gestures')
+  } else if (!isGuest) {
+    console.error('[Settings] Routes: could not find SYSTEM page')
+  }
+
   r.EXTENSIONS = r.BASIC.createSection('/extensions', 'extensions')
   r.EXTENSIONS_V2 = r.EXTENSIONS.createChild('/extensions/v2')
   if (pageVisibility.braveSync) {
