@@ -159,18 +159,21 @@ public class EncryptionKeyFragment extends BaseDAppsFragment implements View.OnC
                                 if (!isAdded()) {
                                     return;
                                 }
-                                if (encryptionPublicKeyRequest != null) {
-                                    mEncryptionPublicKeyRequest = encryptionPublicKeyRequest;
-                                    updateAccount(mEncryptionPublicKeyRequest.accountId);
-                                    String formattedeTLD =
-                                            String.format(
-                                                    getString(
-                                                            R.string
-                                                                    .brave_wallet_provide_encryption_key_description),
-                                                    Utils.geteTldHtmlString(
-                                                            encryptionPublicKeyRequest.originInfo));
-                                    mTvMessageDesc.setText(AndroidUtils.formatHTML(formattedeTLD));
+                                // The queue can empty before the panel reads it.
+                                if (encryptionPublicKeyRequest == null) {
+                                    getWalletFragmentCallback().onAllRequestsHandled();
+                                    return;
                                 }
+                                mEncryptionPublicKeyRequest = encryptionPublicKeyRequest;
+                                updateAccount(mEncryptionPublicKeyRequest.accountId);
+                                String formattedeTLD =
+                                        String.format(
+                                                getString(
+                                                        R.string
+                                                                .brave_wallet_provide_encryption_key_description),
+                                                Utils.geteTldHtmlString(
+                                                        encryptionPublicKeyRequest.originInfo));
+                                mTvMessageDesc.setText(AndroidUtils.formatHTML(formattedeTLD));
                             });
         } else if (mActivityType == BraveWalletDAppsActivity.ActivityType.DECRYPT_REQUEST) {
             mWalletModel
@@ -178,6 +181,11 @@ public class EncryptionKeyFragment extends BaseDAppsFragment implements View.OnC
                     .getDecryptMessageRequest(
                             decryptRequest -> {
                                 if (!isAdded()) {
+                                    return;
+                                }
+                                // The queue can empty before the panel reads it.
+                                if (decryptRequest == null) {
+                                    getWalletFragmentCallback().onAllRequestsHandled();
                                     return;
                                 }
                                 mDecryptRequest = decryptRequest;
