@@ -33,6 +33,44 @@ bool BraveMaybeHandleReloadBypassingCache(BrowserWindowInterface* browser) {
   return false;
 }
 
-}  // namespace
+#if BUILDFLAG(ENABLE_CONTAINERS)
+void NewSplitTab(BrowserWindowInterface* browser,
+                 split_tabs::SplitTabLayout layout,
+                 split_tabs::SplitTabCreatedSource source) {
+  auto* tab_strip_model = browser->GetTabStripModel();
+  const int active_index = tab_strip_model->active_index();
+  const GURL new_tab_url =
+      !browser->GetProfile()->IsPrimaryOTRProfileWithRegularParent() &&
+              tab_strip_model->count() > 1
+          ? GURL(chrome::kChromeUINewTabURL)
+          : chrome::ChromeUINewTabURLAsGURL();
+  brave::AddTabAtInheritingActiveContainer(
+      browser, new_tab_url, active_index + 1, true,
+      tab_strip_model->GetTabGroupForTab(active_index),
+      tab_strip_model->IsTabPinned(active_index));
+  tab_strip_model->AddToNewSplit(
+      {active_index}, split_tabs::SplitTabVisualData(layout), source);
+  tab_strip_model->ActivateTabAt(active_index + 1);
+}
+#else
+void NewSplitTab(BrowserWindowInterface* browser,
+                 split_tabs::SplitTabLayout layout,
+                 split_tabs::SplitTabCreatedSource source) {
+  auto* tab_strip_model = browser->GetTabStripModel();
+  const int active_index = tab_strip_model->active_index();
+  const GURL new_tab_url =
+      !browser->GetProfile()->IsPrimaryOTRProfileWithRegularParent() &&
+              tab_strip_model->count() > 1
+          ? GURL(chrome::kChromeUINewTabURL)
+          : chrome::ChromeUINewTabURLAsGURL();
+  tab_strip_model->delegate()->AddTabAt(
+      new_tab_url, active_index + 1, true,
+      tab_strip_model->GetTabGroupForTab(active_index),
+      tab_strip_model->IsTabPinned(active_index));
+  tab_strip_model->AddToNewSplit(
+      {active_index}, split_tabs::SplitTabVisualData(layout), source);
+  tab_strip_model->ActivateTabAt(active_index + 1);
+}
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
 #include <chrome/browser/ui/browser_commands.cc>

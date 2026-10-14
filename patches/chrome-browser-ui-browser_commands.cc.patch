@@ -2,65 +2,31 @@ diff --git a/chrome/browser/ui/browser_commands.cc b/chrome/browser/ui/browser_c
 index e303064f2b54221790414b24b43731ce95135e10..2d64048381488ef0d567d1346ee994b1daf887ce 100644
 --- a/chrome/browser/ui/browser_commands.cc
 +++ b/chrome/browser/ui/browser_commands.cc
-@@ -503,7 +503,12 @@ void MoveTabsToWindowImpl(BrowserWindowInterface* source,
-     } else if (auto collection =
-                    std::get_if<std::unique_ptr<DetachedTabCollection>>(
-                        &tab_or_collection)) {
--      if (std::holds_alternative<std::unique_ptr<tabs::TabGroupTabCollection>>(
-+      if (std::holds_alternative<
-+              std::unique_ptr<tabs::TreeTabNodeTabCollection>>(
-+              collection->get()->collection_)) {
-+        target_model->InsertDetachedTreeTabNodeAt(std::move(*collection),
-+                                                  target_model->count());
-+      } else if (std::holds_alternative<std::unique_ptr<tabs::TabGroupTabCollection>>(
-               collection->get()->collection_)) {
-         target_model->InsertDetachedTabGroupAt(std::move(*collection),
-                                                target_model->count());
-@@ -739,6 +744,11 @@ void ReloadInternal(BrowserWindowInterface* browser,
-   bool multiple_ui_tabs_selected =
-       active_tab && tab_strip_model->selection_model().size() >
-                         (active_tab->IsSplit() ? 2 : 1);
-+  if (multiple_ui_tabs_selected &&
-+      static_cast<BraveTabStripModel*>(tab_strip_model)
-+          ->IsOnlyActiveTabAndTreeDescendantsSelected()) {
-+    multiple_ui_tabs_selected = false;
-+  }
- 
-   if (multiple_ui_tabs_selected) {
-     // Reloading a tab may change the selection (see crbug.com/339061099), so
-@@ -1170,6 +1180,7 @@ void Reload(BrowserWindowInterface* browser,
- 
- void ReloadBypassingCache(BrowserWindowInterface* browser,
-                           WindowOpenDisposition disposition) {
-+  if (BraveMaybeHandleReloadBypassingCache(browser)) return;
-   base::RecordAction(UserMetricsAction("ReloadBypassingCache"));
-   ReloadInternal(browser, disposition, true);
- }
-@@ -1470,7 +1481,9 @@ void CloseTab(BrowserWindowInterface* browser) {
-       active_tab->IsSplit() &&
-       browser->GetTabStripModel()->selection_model().size() == 2;
- 
--  if (only_active_split_tab_selected) {
-+  if (only_active_split_tab_selected ||
-+      static_cast<BraveTabStripModel*>(browser->GetTabStripModel())
-+          ->IsOnlyActiveTabAndTreeDescendantsSelected()) {
-     RecordTabCloseCount(1);
-     active_tab->GetContents()->Close();
-     return;
-@@ -1490,6 +1503,7 @@ void CloseTab(BrowserWindowInterface* browser) {
- #endif
- 
-   ToastController* toast_controller = ToastController::From(browser);
-+  toast_controller = nullptr;
-   if (!toast_controller) {
-     CloseSelectedTabAndRecordTabCountMetric(browser);
-     return;
-@@ -1816,7 +1830,7 @@ void NewSplitTab(BrowserWindowInterface* browser,
-   const GURL new_tab_url =
+@@ -16,6 +16,7 @@
+ #include "base/check.h"
+ #include "base/check_deref.h"
+ #include "base/command_line.h"
++#include "brave/browser/ui/browser_commands.h"
+ #include "base/containers/adapters.h"
+ #include "base/feature_list.h"
+ #include "base/i18n/rtl.h"
+@@ -1830,13 +1831,21 @@ void NewSplitTab(BrowserWindowInterface* browser,
        !browser->GetProfile()->IsPrimaryOTRProfileWithRegularParent() &&
                tab_strip_model->count() > 1
--          ? GURL(chrome::kChromeUISplitViewNewTabPageURL)
-+          ? GURL(chrome::kChromeUINewTabURL)
+           ? GURL(chrome::kChromeUINewTabURL)
            : chrome::ChromeUINewTabURLAsGURL();
-   tab_strip_model->delegate()->AddTabAt(
-       new_tab_url, active_index + 1, true,
++#if BUILDFLAG(ENABLE_CONTAINERS)
++  brave::AddTabAtInheritingActiveContainer(
++      browser, new_tab_url, active_index + 1, true,
++      tab_strip_model->GetTabGroupForTab(active_index),
++      tab_strip_model->IsTabPinned(active_index));
++#else
++  tab_strip_model->delegate()->AddTabAt(
++      new_tab_url, active_index + 1, true);
++#endif
+   tab_strip_model->AddToNewSplit(
+       {active_index}, split_tabs::SplitTabVisualData(layout), source);
++
+   tab_strip_model->ActivateTabAt(active_index + 1);
+ }
+

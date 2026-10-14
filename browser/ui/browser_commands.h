@@ -181,6 +181,14 @@ void ForcePasteInWebContents(content::WebContents* contents);
 void OpenTabUrlsInContainer(BrowserWindowInterface* bwi,
                             const std::vector<tabs::TabHandle>& tabs,
                             const containers::mojom::ContainerPtr& container);
+
+// Adds a new tab inheriting the container from the active tab.
+void AddTabAtInheritingActiveContainer(BrowserWindowInterface* browser,
+                                       const GURL& url,
+                                       int index,
+                                       bool foreground,
+                                       std::optional<tab_groups::TabGroupId> group,
+                                       bool pinned);
 // Creates a new tab with the specified URL in the given container.
 void OpenUrlInContainer(
     BrowserWindowInterface* bwi,
