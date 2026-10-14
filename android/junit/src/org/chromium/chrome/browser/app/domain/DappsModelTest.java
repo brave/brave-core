@@ -18,6 +18,9 @@ import org.robolectric.annotation.Config;
 
 import org.chromium.base.test.BaseRobolectricTestRunner;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
+import org.chromium.brave_wallet.mojom.BraveWalletService.GetPendingDecryptRequests_Response;
+import org.chromium.brave_wallet.mojom.BraveWalletService.GetPendingGetEncryptionPublicKeyRequests_Response;
+import org.chromium.brave_wallet.mojom.BraveWalletService.GetPendingSignSolTransactionsRequests_Response;
 import org.chromium.brave_wallet.mojom.CardanoSignData;
 import org.chromium.brave_wallet.mojom.DecryptRequest;
 import org.chromium.brave_wallet.mojom.EthSignTypedData;
@@ -109,11 +112,9 @@ public class DappsModelTest {
         BraveWalletService service = mock(BraveWalletService.class);
         doAnswer(
                         invocation -> {
-                            invocation
-                                    .<BraveWalletService
-                                                    .GetPendingGetEncryptionPublicKeyRequests_Response>
-                                            getArgument(0)
-                                    .call(pending);
+                            GetPendingGetEncryptionPublicKeyRequests_Response callback =
+                                    invocation.getArgument(0);
+                            callback.call(pending);
                             return null;
                         })
                 .when(service)
@@ -127,10 +128,8 @@ public class DappsModelTest {
         BraveWalletService service = mock(BraveWalletService.class);
         doAnswer(
                         invocation -> {
-                            invocation
-                                    .<BraveWalletService.GetPendingDecryptRequests_Response>
-                                            getArgument(0)
-                                    .call(pending);
+                            GetPendingDecryptRequests_Response callback = invocation.getArgument(0);
+                            callback.call(pending);
                             return null;
                         })
                 .when(service)
@@ -145,11 +144,9 @@ public class DappsModelTest {
         BraveWalletService service = mock(BraveWalletService.class);
         doAnswer(
                         invocation -> {
-                            invocation
-                                    .<BraveWalletService
-                                                    .GetPendingSignSolTransactionsRequests_Response>
-                                            getArgument(0)
-                                    .call(pending);
+                            GetPendingSignSolTransactionsRequests_Response callback =
+                                    invocation.getArgument(0);
+                            callback.call(pending);
                             return null;
                         })
                 .when(service)

@@ -129,6 +129,16 @@ public class EncryptionKeyFragment extends BaseDAppsFragment implements View.OnC
                         });
     }
 
+    private void showEncryptionPublicKeyRequest(final GetEncryptionPublicKeyRequest request) {
+        mEncryptionPublicKeyRequest = request;
+        updateAccount(request.accountId);
+        final String description =
+                getString(
+                        R.string.brave_wallet_provide_encryption_key_description,
+                        Utils.geteTldHtmlString(request.originInfo));
+        mTvMessageDesc.setText(AndroidUtils.formatHTML(description));
+    }
+
     private void initState() {
         if (mWalletModel == null) {
             return;
@@ -164,16 +174,7 @@ public class EncryptionKeyFragment extends BaseDAppsFragment implements View.OnC
                                     getWalletFragmentCallback().onAllRequestsHandled();
                                     return;
                                 }
-                                mEncryptionPublicKeyRequest = encryptionPublicKeyRequest;
-                                updateAccount(mEncryptionPublicKeyRequest.accountId);
-                                String formattedeTLD =
-                                        String.format(
-                                                getString(
-                                                        R.string
-                                                                .brave_wallet_provide_encryption_key_description),
-                                                Utils.geteTldHtmlString(
-                                                        encryptionPublicKeyRequest.originInfo));
-                                mTvMessageDesc.setText(AndroidUtils.formatHTML(formattedeTLD));
+                                showEncryptionPublicKeyRequest(encryptionPublicKeyRequest);
                             });
         } else if (mActivityType == BraveWalletDAppsActivity.ActivityType.DECRYPT_REQUEST) {
             mWalletModel
