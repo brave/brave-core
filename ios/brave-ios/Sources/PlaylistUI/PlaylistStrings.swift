@@ -175,14 +175,8 @@ extension Strings {
       value: "Delete",
       comment: "A button title that when tapped will allow the user to delete the selected item."
     )
-    static let itemCountSingular = NSLocalizedString(
-      "playlist.itemCountSingular",
-      bundle: .module,
-      value: "1 item",
-      comment: "A count of how many items there are in the playlist"
-    )
-    static let itemCountPlural = NSLocalizedString(
-      "playlist.itemCountPlural",
+    static let itemCountFormat = NSLocalizedString(
+      "playlist.itemCountFormat",
       bundle: .module,
       value: "%lld items",
       comment:
