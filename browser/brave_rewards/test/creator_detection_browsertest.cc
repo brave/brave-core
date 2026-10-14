@@ -19,6 +19,7 @@
 #include "brave/components/brave_rewards/content/rewards_service.h"
 #include "brave/components/brave_rewards/core/features.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
+#include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/test/base/chrome_test_utils.h"
 #include "chrome/test/base/platform_browser_test.h"
@@ -27,6 +28,11 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "net/dns/mock_host_resolver.h"
+
+#if !BUILDFLAG(IS_ANDROID)
+#include "brave/browser/ui/tabs/public/brave_tab_features.h"
+#include "components/tabs/public/tab_interface.h"
+#endif
 
 using base::test::TestFuture;
 using net::test_server::BasicHttpResponse;
@@ -91,7 +97,14 @@ class CreatorDetectionBrowserTest : public PlatformBrowserTest {
   RewardsTabHelper& GetRewardsTabHelper() {
     auto* web_contents = chrome_test_utils::GetActiveWebContents(this);
     CHECK(web_contents);
+#if BUILDFLAG(IS_ANDROID)
     auto* tab_helper = RewardsTabHelper::FromWebContents(web_contents);
+#else
+    auto* tab_helper =
+        tabs::BraveTabFeatures::FromTabFeatures(
+            tabs::TabInterface::GetFromContents(web_contents)->GetTabFeatures())
+            ->rewards_tab_helper();
+#endif
     CHECK(tab_helper);
     return *tab_helper;
   }

@@ -95,7 +95,9 @@ AdsTabHelper::AdsTabHelper(content::WebContents* const web_contents)
   OnVisibilityChanged(web_contents->GetVisibility());
 }
 
-AdsTabHelper::~AdsTabHelper() = default;
+AdsTabHelper::~AdsTabHelper() {
+  MaybeNotifyTabdidClose();
+}
 
 void AdsTabHelper::SetAdsServiceForTesting(AdsService* const ads_service) {
   CHECK_IS_TEST();
@@ -459,12 +461,6 @@ void AdsTabHelper::OnVisibilityChanged(const content::Visibility visibility) {
   if (last_is_web_contents_visible != is_web_contents_visible_) {
     MaybeNotifyTabDidChange();
   }
-}
-
-void AdsTabHelper::WebContentsDestroyed() {
-  MaybeNotifyTabdidClose();
-
-  ads_service_ = nullptr;
 }
 
 #if !BUILDFLAG(IS_ANDROID)

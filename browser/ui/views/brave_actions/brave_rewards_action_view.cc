@@ -14,6 +14,7 @@
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/ui/page_info/features.h"
+#include "brave/browser/ui/tabs/public/brave_tab_features.h"
 #include "brave/browser/ui/views/brave_actions/brave_icon_with_badge_image_source.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_page_top_ui.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_web_ui_utils.h"
@@ -33,6 +34,7 @@
 #include "chrome/browser/ui/views/location_bar/location_bar_view.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
+#include "components/tabs/public/tab_interface.h"
 #include "extensions/common/constants.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
@@ -307,6 +309,11 @@ void BraveRewardsActionView::OnTabStripModelChanged(
   }
 }
 
+void BraveRewardsActionView::OnRewardsTabHelperDestroyed() {
+  tab_helper_ = nullptr;
+  tab_helper_observation_.Reset();
+}
+
 void BraveRewardsActionView::OnPublisherForTabUpdated(
     const std::string& publisher_id) {
   publisher_registered_ = {publisher_id, false};
@@ -506,8 +513,13 @@ void BraveRewardsActionView::UpdateTabHelper(
     tab_helper_observation_.Reset();
   }
 
-  if (web_contents) {
-    if (auto* helper = RewardsTabHelper::FromWebContents(web_contents)) {
+  auto* tab = web_contents
+                  ? tabs::TabInterface::MaybeGetFromContents(web_contents)
+                  : nullptr;
+  if (tab) {
+    if (auto* helper =
+            tabs::BraveTabFeatures::FromTabFeatures(tab->GetTabFeatures())
+                ->rewards_tab_helper()) {
       tab_helper_ = helper;
       tab_helper_observation_.Observe(helper);
     }

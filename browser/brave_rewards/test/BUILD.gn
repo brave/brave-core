@@ -27,6 +27,13 @@ source_set("browser_tests") {
     "//content/test:test_support",
   ]
 
+  if (!is_android) {
+    deps += [
+      "//brave/browser/ui/tabs:tabs_public",
+      "//components/tabs:public",
+    ]
+  }
+
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
   # TODO(https://github.com/brave/brave-browser/issues/41833): Update these

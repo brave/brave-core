@@ -56,7 +56,7 @@
 #include "brave/browser/brave_ads/tabs/ads_tab_helper.h"
 #endif
 
-#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS) && BUILDFLAG(IS_ANDROID)
 #include "brave/browser/brave_rewards/rewards_tab_helper.h"
 #endif
 
@@ -131,7 +131,7 @@ void AttachTabHelpers(content::WebContents* web_contents) {
   BraveGeolocationPermissionTabHelper::CreateForWebContents(web_contents);
 #endif
 
-#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS) && BUILDFLAG(IS_ANDROID)
   brave_rewards::RewardsTabHelper::CreateForWebContents(web_contents);
 #endif
 
@@ -171,7 +171,9 @@ void AttachTabHelpers(content::WebContents* web_contents) {
   }
 
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
+#if BUILDFLAG(IS_ANDROID)
   brave_ads::AdsTabHelper::CreateForWebContents(web_contents);
+#endif  // BUILDFLAG(IS_ANDROID)
   brave_ads::CreativeSearchResultAdTabHelper::MaybeCreateForWebContents(
       web_contents);
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)

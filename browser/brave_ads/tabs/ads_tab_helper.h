@@ -102,7 +102,6 @@ class AdsTabHelper final : public content::WebContentsObserver,
   void MediaMutedStatusChanged(const content::MediaPlayerId& id,
                                bool muted) override;
   void OnVisibilityChanged(content::Visibility visibility) override;
-  void WebContentsDestroyed() override;
 
 #if !BUILDFLAG(IS_ANDROID)
   // BrowserCollectionObserver:

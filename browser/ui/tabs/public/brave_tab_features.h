@@ -9,7 +9,9 @@
 #include <memory>
 
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
+#include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
@@ -29,6 +31,18 @@ namespace ai_chat {
 class TabDataWebContentsObserver;
 class WebMcpInjector;
 }  // namespace ai_chat
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+namespace brave_ads {
+class AdsTabHelper;
+}
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+namespace brave_rewards {
+class RewardsTabHelper;
+}
 #endif
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
@@ -79,6 +93,16 @@ class BraveTabFeatures : public TabFeatures {
   ~BraveTabFeatures() override;
 
   void Init(TabInterface& tab, Profile* profile) override;
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+  brave_ads::AdsTabHelper* ads_tab_helper() { return ads_tab_helper_.get(); }
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+  brave_rewards::RewardsTabHelper* rewards_tab_helper() {
+    return rewards_tab_helper_.get();
+  }
+#endif
 
 #if BUILDFLAG(ENABLE_PSST)
   psst::PsstTabWebContentsObserver* psst_web_contents_observer() {
@@ -153,6 +177,12 @@ class BraveTabFeatures : public TabFeatures {
   // Opens the Leo panel once for users in the sidebar test.
   std::unique_ptr<ContentsObservingTabFeature> sidebar_tab_helper_;
 
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+  std::unique_ptr<brave_ads::AdsTabHelper> ads_tab_helper_;
+#endif
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+  std::unique_ptr<brave_rewards::RewardsTabHelper> rewards_tab_helper_;
+#endif
 #if BUILDFLAG(ENABLE_AI_CHAT)
   std::unique_ptr<ai_chat::TabDataWebContentsObserver> tab_data_observer_;
   std::unique_ptr<ai_chat::WebMcpInjector> web_mcp_injector_;

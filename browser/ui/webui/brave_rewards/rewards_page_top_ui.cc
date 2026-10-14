@@ -11,6 +11,7 @@
 #include "brave/browser/brave_adaptive_captcha/brave_adaptive_captcha_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_tab_helper.h"
+#include "brave/browser/ui/tabs/public/brave_tab_features.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_page_data_source.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_page_handler.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_web_ui_utils.h"
@@ -62,9 +63,10 @@ class RewardsPageBubbleDelegate : public RewardsPageHandler::BubbleDelegate {
     }
     if (auto* browser = ProfileBrowserCollection::GetForProfile(profile_.get())
                             ->GetLastActiveBrowser()) {
-      if (auto* contents =
-              browser->GetTabStripModel()->GetActiveWebContents()) {
-        if (auto* tab_helper = RewardsTabHelper::FromWebContents(contents)) {
+      if (auto* tab = browser->GetActiveTabInterface()) {
+        if (auto* tab_helper =
+                tabs::BraveTabFeatures::FromTabFeatures(tab->GetTabFeatures())
+                    ->rewards_tab_helper()) {
           return tab_helper->GetPublisherIdForTab();
         }
       }

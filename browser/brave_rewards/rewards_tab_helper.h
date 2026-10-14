@@ -30,6 +30,8 @@ class RewardsTabHelper : public content::WebContentsUserData<RewardsTabHelper>,
                          public content::WebContentsObserver,
                          public RewardsServiceObserver {
  public:
+  explicit RewardsTabHelper(content::WebContents* web_contents);
+
   RewardsTabHelper(const RewardsTabHelper&) = delete;
   RewardsTabHelper& operator=(const RewardsTabHelper&) = delete;
   ~RewardsTabHelper() override;
@@ -37,6 +39,7 @@ class RewardsTabHelper : public content::WebContentsUserData<RewardsTabHelper>,
   class Observer : public base::CheckedObserver {
    public:
     virtual void OnPublisherForTabUpdated(const std::string& publisher_id) = 0;
+    virtual void OnRewardsTabHelperDestroyed() {}
   };
 
   void AddObserver(Observer* observer);
@@ -55,8 +58,6 @@ class RewardsTabHelper : public content::WebContentsUserData<RewardsTabHelper>,
 
  private:
   friend class content::WebContentsUserData<RewardsTabHelper>;
-
-  explicit RewardsTabHelper(content::WebContents* web_contents);
 
   // content::WebContentsObserver:
   void DidFinishNavigation(

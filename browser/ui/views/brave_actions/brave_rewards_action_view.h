@@ -75,6 +75,7 @@ class BraveRewardsActionView
 
   // brave_rewards::RewardsTabHelper::Observer:
   void OnPublisherForTabUpdated(const std::string& publisher_id) override;
+  void OnRewardsTabHelperDestroyed() override;
 
   // brave_rewards::RewardsPanelCoordinator::Observer:
   void OnRewardsPanelRequested() override;

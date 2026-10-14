@@ -25,6 +25,7 @@
 #include "base/test/gmock_callback_support.h"
 #include "base/test/test_future.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
+#include "brave/browser/ui/tabs/public/brave_tab_features.h"
 #include "brave/components/brave_ads/core/browser/service/test/ads_service_mock.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
@@ -895,7 +896,9 @@ IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest,
   ASSERT_TRUE(web_contents);
 
   AdsTabHelper* const ads_tab_helper =
-      AdsTabHelper::FromWebContents(web_contents);
+      tabs::BraveTabFeatures::FromTabFeatures(
+          tabs::TabInterface::GetFromContents(web_contents)->GetTabFeatures())
+          ->ads_tab_helper();
   ASSERT_TRUE(ads_tab_helper);
 
   EXPECT_TRUE(ads_tab_helper->ads_service());
@@ -910,7 +913,9 @@ IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest,
   ASSERT_TRUE(web_contents);
 
   AdsTabHelper* const ads_tab_helper =
-      AdsTabHelper::FromWebContents(web_contents);
+      tabs::BraveTabFeatures::FromTabFeatures(
+          tabs::TabInterface::GetFromContents(web_contents)->GetTabFeatures())
+          ->ads_tab_helper();
   ASSERT_TRUE(ads_tab_helper);
 
   EXPECT_FALSE(ads_tab_helper->ads_service());
@@ -925,7 +930,9 @@ IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest,
   ASSERT_TRUE(web_contents);
 
   AdsTabHelper* const ads_tab_helper =
-      AdsTabHelper::FromWebContents(web_contents);
+      tabs::BraveTabFeatures::FromTabFeatures(
+          tabs::TabInterface::GetFromContents(web_contents)->GetTabFeatures())
+          ->ads_tab_helper();
   ASSERT_TRUE(ads_tab_helper);
 
   EXPECT_FALSE(ads_tab_helper->ads_service());
