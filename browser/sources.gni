@@ -798,6 +798,7 @@ brave_chrome_browser_public_deps = [
   "//brave/browser:browser_process",
   "//brave/browser/resources/bookmark_icon:bookmark_icon_resources",
   "//brave/browser/resources/tab_strip:tab_strip_resources",
+  "//brave/browser/ui:ui_public_dependencies",
   "//brave/common/importer:interfaces",
   "//brave/components/brave_sync:constants",
   "//brave/components/containers/buildflags",
@@ -805,6 +806,7 @@ brave_chrome_browser_public_deps = [
   "//brave/components/traffic_control/buildflags",
   "//brave/components/v8/buildflags",
   "//brave/components/variations",
+  "//components/saved_tab_groups/public",
 ]
 
 if (is_mac) {
