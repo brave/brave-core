@@ -49,6 +49,16 @@
     </settings-brave-shortcuts-page>
   </template>
 
+  <template is="dom-if" if="[[showGesturesPage_]]">
+    <settings-gestures-page
+      id="gestures"
+      slot="view"
+      prefs="{{prefs}}"
+      data-parent-view-id="system"
+      in-search-mode="[[inSearchMode_]]">
+    </settings-gestures-page>
+  </template>
+
   <template is="dom-if" if="[[showOriginOnboarding_]]">
     <settings-brave-origin-onboarding
       id="origin-onboarding"

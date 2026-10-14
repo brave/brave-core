@@ -1,0 +1,36 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+static_library("browser") {
+  public = [
+    "pref_names.h",
+    "prefs_registration.h",
+  ]
+
+  sources = [ "prefs_registration.cc" ]
+
+  deps = [
+    "//base",
+    "//brave/components/gestures/core/common",
+    "//brave/components/gestures/core/common:features",
+    "//components/pref_registry",
+    "//components/prefs",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [ "prefs_registration_unittest.cc" ]
+
+  deps = [
+    ":browser",
+    "//base",
+    "//brave/components/gestures/core/common",
+    "//brave/components/gestures/core/common:features",
+    "//components/pref_registry",
+    "//components/sync_preferences:test_support",
+    "//testing/gtest",
+  ]
+}

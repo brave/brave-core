@@ -8,6 +8,7 @@
 
 #include <memory>
 
+#include "base/memory/weak_ptr.h"
 #include "chrome/browser/ui/views/renderer_context_menu/render_view_context_menu_views.h"
 
 class BraveRenderViewContextMenuViews : public RenderViewContextMenuViews {
@@ -36,6 +37,13 @@ class BraveRenderViewContextMenuViews : public RenderViewContextMenuViews {
                                   const content::ContextMenuParams& params,
                                   bool is_paste_enabled,
                                   bool is_paste_and_match_style_enabled);
+
+ private:
+  // Actually shows the menu, run immediately or deferred; see
+  // `gestures::ConsumeSuppressContextMenuForWebContents`.
+  void ShowNow();
+
+  base::WeakPtrFactory<BraveRenderViewContextMenuViews> weak_factory_{this};
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_RENDERER_CONTEXT_MENU_BRAVE_RENDER_VIEW_CONTEXT_MENU_VIEWS_H_

@@ -12,9 +12,11 @@
 #include "brave/browser/image_metadata_stripper/file_upload_controller.h"
 #include "brave/browser/misc_metrics/captcha_metrics.h"
 #include "brave/browser/misc_metrics/page_metrics_tab_helper.h"
+#include "brave/browser/ui/gestures/gesture_controller.h"
 #include "brave/browser/ui/side_panel/brave_side_panel_utils.h"
 #include "brave/browser/ui/sidebar/sidebar_tab_helper.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/gestures/core/common/features.h"
 #include "brave/components/image_metadata_stripper/common/features.h"
 #include "brave/components/misc_metrics/features.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
@@ -216,6 +218,10 @@ void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
       std::make_unique<misc_metrics::PageMetricsTabHelper>(tab);
 
   sidebar_tab_helper_ = sidebar::SidebarTabHelper::MaybeCreate(tab);
+
+  if (base::FeatureList::IsEnabled(gestures::features::kGesturesFeature)) {
+    gesture_controller_ = std::make_unique<gestures::GestureController>(tab);
+  }
 
 #if BUILDFLAG(ENABLE_REQUEST_OTR)
   if (!profile->IsOffTheRecord() &&

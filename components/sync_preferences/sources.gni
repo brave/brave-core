@@ -10,6 +10,7 @@ import("//brave/components/traffic_control/buildflags/buildflags.gni")
 brave_common_syncable_prefs_database_public_deps = [
   "//brave/components/containers/buildflags",
   "//brave/components/email_aliases/buildflags",
+  "//brave/components/gestures/core/browser",
   "//brave/components/traffic_control/buildflags",
 ]
 

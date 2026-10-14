@@ -30,6 +30,7 @@ constexpr std::string_view kSearchEnginesPath = "/searchEngines";
 constexpr std::string_view kSearchPath = "/search";
 constexpr std::string_view kDefaultSearchPath = "/search/defaultSearch";
 constexpr std::string_view kSearchQuery = "search";
+constexpr std::string_view kGesturesPath = "/system/gestures";
 
 }  // namespace
 
@@ -69,17 +70,18 @@ bool ShouldSupportInternalUrl(const GURL& url) {
     return false;
   }
 
-  if (url_path == kSearchEnginesPath || url_path == kSearchPath ||
-      url_path == kDefaultSearchPath) {
+  if (url_path == kGesturesPath || url_path == kSearchEnginesPath ||
+      url_path == kSearchPath || url_path == kDefaultSearchPath) {
     if (!url.has_query()) {
-      // Support chrome://settings/searchEngines,
+      // Support chrome://settings/system/gestures,
+      // chrome://settings/searchEngines,
       // chrome://settings/searchEngines/defaultSearch and
       // chrome://settings/search paths without a query.
       return true;
     }
 
     // Support chrome://settings/search paths with a query.
-    return HasSearchQuery(url);
+    return url_path != kGesturesPath && HasSearchQuery(url);
   }
 
   // We can reject everything else!

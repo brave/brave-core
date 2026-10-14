@@ -43,6 +43,7 @@
 #include "brave/components/de_amp/common/pref_names.h"
 #include "brave/components/debounce/core/browser/debounce_service.h"
 #include "brave/components/email_aliases/buildflags/buildflags.h"
+#include "brave/components/gestures/core/browser/prefs_registration.h"
 #include "brave/components/global_privacy_control/pref_names.h"
 #include "brave/components/ipfs/ipfs_prefs.h"
 #include "brave/components/local_ai/buildflags/buildflags.h"
@@ -511,6 +512,10 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 // Private New Tab Page
 #if !BUILDFLAG(IS_ANDROID)
   brave_private_new_tab::prefs::RegisterProfilePrefs(registry);
+#endif
+
+#if !BUILDFLAG(IS_ANDROID)
+  gestures::RegisterProfilePrefs(registry);
 #endif
 
   registry->RegisterIntegerPref(

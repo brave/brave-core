@@ -22,6 +22,7 @@ declare module './system_page-chromium.js' {
     isMac_: boolean
     warnBeforeQuittingLabel_: string
     onShortcutsClick_(): void
+    onGesturesClick_(): void
   }
 }
 
@@ -49,6 +50,10 @@ class SettingsSystemPageElement extends SettingsSystemPageElementChromium {
 
   override onShortcutsClick_() {
     Router.getInstance().navigateTo(routes.SHORTCUTS)
+  }
+
+  override onGesturesClick_() {
+    Router.getInstance().navigateTo(routes.GESTURES)
   }
 }
 
