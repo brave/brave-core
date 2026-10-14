@@ -121,6 +121,18 @@
 /* Settings autofill section title */
 "autofill.settings.title" = "ऑटोमैटिक भरना";
 
+/* A subtitle that appears in the dynamic island when a download is continuing while Brave is backgrounded. The %@'s are replaced with the current downloaded amount (e.g. '20MB') */
+"backgroundDownloadingSubtitle" = "%@";
+
+/* A subtitle that appears in the dynamic island when a download is continuing while Brave is backgrounded. The %@'s are replaced with a progress and a file size. E.g. '1MB of 20MB' */
+"backgroundDownloadingSubtitleWithExpectedSize" = "%2$@ में से %1$@";
+
+/* A title that appears in the dynamic island when a download is continuing while Brave is backgrounded. %lld is replaced with the number of active downloads */
+"backgroundDownloadingTitleMultiDownload" = "%lld फ़ाइलें डाउनलोड हो रही हैं";
+
+/* A title that appears in the dynamic island when a download is continuing while Brave is backgrounded. %@ is replaced with a file name */
+"backgroundDownloadingTitleSingleDownload" = "\"%@\" डाउनलोड हो रहा है";
+
 /* cookie settings option */
 "Block3rdPartyCookies" = "3rd पार्टी कुकीज़ को अवरुद्ध करें ";
 
@@ -1774,6 +1786,18 @@
 /* Accessibility text for an icon button which will go back to the previous page in QuickView mode. */
 "quickview.back.accessibility.label" = "पिछला पृष्ठ";
 
+/* Button title to keep opening links in QuickView after the confirmation alert. */
+"quickview.confirmation.alert.keep.button.title" = "QuickView का उपयोग करना जारी रखें";
+
+/* Message of the alert shown the first time a user closes QuickView, explaining the feature and where to change it. */
+"quickview.confirmation.alert.message" = "QuickView आपको अपना पेज छोड़े बिना लिंक का पूर्वावलोकन करने देता है। आप इसे कभी भी सेटिंग में बंद कर सकते हैं।";
+
+/* Title of the alert shown the first time a user closes QuickView, asking if they want to keep using it for future links. */
+"quickview.confirmation.alert.title" = "कन्वर्सेशन लिंक को Quick View में खोलना जारी रखें?";
+
+/* Button title to stop opening links in QuickView after the confirmation alert. */
+"quickview.confirmation.alert.turnOff.button.title" = "बंद करें";
+
 /* Accessibility text for an icon button which will go forward to the next page in QuickView mode. */
 "quickview.forward.accessibility.label" = "अगला पृष्ठ";
 
@@ -2299,8 +2323,8 @@
 /* Used as a button label for crash dialog prompt */
 "SendReportButtonTitle" = "रिपोर्ट भेजें";
 
-/* No comment provided by engineer. */
-"setDefaultBrowserCalloutTitle" = "अब Brave को iOS में आपके डिफ़ॉल्ट ब्राउज़र के तौर पर सेट किया जा सकता है। सेटिंग खोलने के लिए यहाँ टैप करें।";
+/* A callout that explains how to set Brave as the default browser. This is a markdown string, the ** is for bold. */
+"setDefaultBrowserCalloutTitle" = "**Brave को अपने डिफ़ॉल्ट ब्राउज़र के रूप में सेट करें और आपके द्वारा विज़िट की जाने वाली हर साइट पर ऐड ब्लॉक करें।** सेटिंग खोलने और Brave को डिफ़ॉल्ट के रूप में सेट करने के लिए यहाँ टैप करें।";
 
 /* Settings item to set the Brave as a default browser on the iOS device. */
 "setDefaultBrowserSettingsCell" = "डिफ़ॉल्ट ब्राउज़र के तौर पर सेट करें";
@@ -2380,8 +2404,8 @@
 /* Title to explain the daily usage ping toggle */
 "settings.sendUsagePingTitle" = "हर दिन के उपयोग पिंग Brave को अपने आप भेजें";
 
-/* Description under the settings toggle that enables Sponsored Ads */
-"settings.sponsoredAdsEnabledDescription" = "स्पॉन्सर्ड ऐड के साथ एक स्वतंत्र, यूज़र-फ़र्स्ट वेब बनाने के Brave के मिशन का समर्थन करने में मदद करें। हम आपकी पहचान किए बिना निजी तौर पर ऐड प्रदर्शन को मापते हैं।";
+/* Markdown formatted description under the settings toggle that enables Sponsored Ads. %@ is replaced by a URL and should not be localized. */
+"settings.sponsoredAdsEnabledDescription" = "स्पॉन्सर्ड ऐड के साथ एक स्वतंत्र, यूज़र-फ़र्स्ट वेब बनाने के Brave के मिशन का समर्थन करने में मदद करें। हम आपकी पहचान किए बिना निजी तौर पर ऐड प्रदर्शन को मापते हैं। [और जानें](%@)";
 
 /* Title of the settings toggle that enables Sponsored Ads */
 "settings.sponsoredAdsEnabledTitle" = "प्रायोजित ऐड चालू करें";

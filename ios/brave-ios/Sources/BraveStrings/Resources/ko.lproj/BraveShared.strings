@@ -121,6 +121,18 @@
 /* Settings autofill section title */
 "autofill.settings.title" = "자동 완성";
 
+/* A subtitle that appears in the dynamic island when a download is continuing while Brave is backgrounded. The %@'s are replaced with the current downloaded amount (e.g. '20MB') */
+"backgroundDownloadingSubtitle" = "%@";
+
+/* A subtitle that appears in the dynamic island when a download is continuing while Brave is backgrounded. The %@'s are replaced with a progress and a file size. E.g. '1MB of 20MB' */
+"backgroundDownloadingSubtitleWithExpectedSize" = "%1$@ / %2$@";
+
+/* A title that appears in the dynamic island when a download is continuing while Brave is backgrounded. %lld is replaced with the number of active downloads */
+"backgroundDownloadingTitleMultiDownload" = "%lld개 파일 다운로드 중";
+
+/* A title that appears in the dynamic island when a download is continuing while Brave is backgrounded. %@ is replaced with a file name */
+"backgroundDownloadingTitleSingleDownload" = "\"%@\" 다운로드 중";
+
 /* cookie settings option */
 "Block3rdPartyCookies" = "제3자 쿠키 차단";
 
@@ -1774,6 +1786,18 @@
 /* Accessibility text for an icon button which will go back to the previous page in QuickView mode. */
 "quickview.back.accessibility.label" = "이전 페이지";
 
+/* Button title to keep opening links in QuickView after the confirmation alert. */
+"quickview.confirmation.alert.keep.button.title" = "QuickView 계속 사용";
+
+/* Message of the alert shown the first time a user closes QuickView, explaining the feature and where to change it. */
+"quickview.confirmation.alert.message" = "QuickView를 사용하면 페이지를 벗어나지 않고도 링크를 미리 볼 수 있습니다. 설정에서 언제든지 이 기능을 끌 수 있습니다.";
+
+/* Title of the alert shown the first time a user closes QuickView, asking if they want to keep using it for future links. */
+"quickview.confirmation.alert.title" = "대화 링크를 QuickView에서 계속 열까요?";
+
+/* Button title to stop opening links in QuickView after the confirmation alert. */
+"quickview.confirmation.alert.turnOff.button.title" = "사용 중지";
+
 /* Accessibility text for an icon button which will go forward to the next page in QuickView mode. */
 "quickview.forward.accessibility.label" = "다음 페이지";
 
@@ -2299,8 +2323,8 @@
 /* Used as a button label for crash dialog prompt */
 "SendReportButtonTitle" = "보고서 보내기";
 
-/* No comment provided by engineer. */
-"setDefaultBrowserCalloutTitle" = "이제 iOS에서 Brave를 기본 브라우저로 설정할 수 있습니다. 여기를 탭하여 설정을 여세요.";
+/* A callout that explains how to set Brave as the default browser. This is a markdown string, the ** is for bold. */
+"setDefaultBrowserCalloutTitle" = "**Brave를 기본 브라우저로 설정하고 방문하는 모든 사이트에서 광고를 차단하세요.** 여기를 탭하여 설정을 열고 Brave를 기본값으로 설정하세요.";
 
 /* Settings item to set the Brave as a default browser on the iOS device. */
 "setDefaultBrowserSettingsCell" = "기본 브라우저로 설정";
@@ -2380,8 +2404,8 @@
 /* Title to explain the daily usage ping toggle */
 "settings.sendUsagePingTitle" = "일일 사용 Ping을 Brave에 자동으로 보내기";
 
-/* Description under the settings toggle that enables Sponsored Ads */
-"settings.sponsoredAdsEnabledDescription" = "스폰서 광고로 독립적이고 사용자 우선의 웹을 구축하려는 Brave의 미션을 지원하세요. 저희는 광고 성과를 사용자를 식별하지 않고 비공개로 측정합니다.";
+/* Markdown formatted description under the settings toggle that enables Sponsored Ads. %@ is replaced by a URL and should not be localized. */
+"settings.sponsoredAdsEnabledDescription" = "스폰서 광고로 독립적이고 사용자 우선의 웹을 구축하려는 Brave의 미션을 지원하세요. 저희는 광고 성과를 사용자를 식별하지 않고 비공개로 측정합니다. [자세히 알아보기](%@)";
 
 /* Title of the settings toggle that enables Sponsored Ads */
 "settings.sponsoredAdsEnabledTitle" = "스폰서 광고 활성화";

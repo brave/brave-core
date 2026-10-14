@@ -97,8 +97,8 @@
 /* Title for the brave player info popup which appears when clicking on the brave player icon on the navigation bar. */
 "BravePlayerInfoTitle" = "Brave Player'da İzle";
 
-/* No comment provided by engineer. */
-"BraveShieldsAdvancedControls" = "Gelişmiş denetimler";
+/* The label above / exposing the advanced controls on the Shields panel. */
+"BraveShieldsAdvancedControls" = "Gelişmiş Denetimler";
 
 /* The number of ads and trackers blocked will be next to this */
 "BraveShieldsBlockedCountLabel" = "Reklamlar ve diğer ürpertici şeyler engellendi";
@@ -159,6 +159,9 @@
 
 /* An error message telling the user that they crossed the line limit */
 "CustomFiltersTooManyLinesError" = "Özel filtreler %i satırdan fazlasını desteklemez";
+
+/* An error message telling the user that the custom scriptlet failed to save to disk */
+"customScriptletFailedToSaveError" = "Özel scriptlet kaydedilemedi";
 
 /* Data Saved Shield Stat */
 "DataSavedStat" = "Tah. Veri \nMiktarı";
@@ -286,6 +289,9 @@
 /* Used to describe when a request was blocked by the Content Blocker in Blocked Requests view. */
 "shields.contentBlocker" = "İçerik Engelleyici";
 
+/* A button title displayed on Shields panel linking to Webcompat Reporter. */
+"shields.reportBrokenSiteButtonTitle" = "Bildir";
+
 /* Used to describe when a request was blocked by our request blocking scripts in Blocked Requests view. */
 "shields.requestBlocking" = "İstek Engelleme";
 
@@ -294,6 +300,15 @@
 
 /* A label displayed above the resource type of a request that was blocked in Blocked Requests view. */
 "shields.resourceTypeLabel" = "Kaynak Türü";
+
+/* A label displayed on Shields panel beside the toggle enabling shields. */
+"shields.shieldsDownForSite" = "Bu site için Kalkanlar **kapalı**";
+
+/* A button title displayed on Shields panel linking to Shields global settings. */
+"shields.shieldsGlobalSettings" = "Kalkanlar Genel Ayarları";
+
+/* A label displayed on Shields panel beside the toggle disabling shields. */
+"shields.shieldsUpForSite" = "Bu site için Kalkanlar **açık**";
 
 /* A description beside a toggle that appears in the Shred settings screen, within Shields & Privacy settings. */
 "shields.shredHistoryRowDescription" = "Shred'in geçmiş öğelerini kaldırıp kaldırmayacağı.";
@@ -310,8 +325,17 @@
 /* A title for the Shred settings screen, within Shields & Privacy settings. */
 "shields.shredSettingsViewTitle" = "Yok et";
 
+/* A footer displayed on Shields panel when shields are down. */
+"shields.siteNotWorkingCorrectly" = "Shields açık durumdayken bu site doğru çalışmıyor mu?";
+
+/* A label displayed on Shields panel at the bottom. Learn more link is clickable, where `%@` will be replaced with the URL. */
+"shields.siteSeemsBroken" = "Bu site düzgün görüntülenmiyorsa, Kalkanlar'ı kapatmayı deneyin. Bu, Brave'in gizlilik korumalarını azaltabilir. [Daha fazla bilgi edinin](%@)";
+
 /* A label displayed above the source url of a request that was blocked in Blocked Requests view. */
 "shields.sourceURLLabel" = "Kaynak URL'si";
+
+/* A label displayed on Shields panel beside the number of blocked items. */
+"shields.trackersAdsAndMoreBlocked" = "i̇zleyiciler, reklamlar ve daha fazlası engellendi";
 
 /* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
 "ShieldsDefaults" = "Brave Kalkanları Küresel Varsayılanları";

@@ -121,6 +121,18 @@
 /* Settings autofill section title */
 "autofill.settings.title" = "Αυτόματη συμπλήρωση";
 
+/* A subtitle that appears in the dynamic island when a download is continuing while Brave is backgrounded. The %@'s are replaced with the current downloaded amount (e.g. '20MB') */
+"backgroundDownloadingSubtitle" = "%@";
+
+/* A subtitle that appears in the dynamic island when a download is continuing while Brave is backgrounded. The %@'s are replaced with a progress and a file size. E.g. '1MB of 20MB' */
+"backgroundDownloadingSubtitleWithExpectedSize" = "%1$@ από %2$@";
+
+/* A title that appears in the dynamic island when a download is continuing while Brave is backgrounded. %lld is replaced with the number of active downloads */
+"backgroundDownloadingTitleMultiDownload" = "Λήψη %lld αρχείων";
+
+/* A title that appears in the dynamic island when a download is continuing while Brave is backgrounded. %@ is replaced with a file name */
+"backgroundDownloadingTitleSingleDownload" = "Λήψη του \"%@\"";
+
 /* cookie settings option */
 "Block3rdPartyCookies" = "Αποκλεισμός cookies τρίτων";
 
@@ -1774,6 +1786,18 @@
 /* Accessibility text for an icon button which will go back to the previous page in QuickView mode. */
 "quickview.back.accessibility.label" = "Προηγούμενη σελίδα";
 
+/* Button title to keep opening links in QuickView after the confirmation alert. */
+"quickview.confirmation.alert.keep.button.title" = "Συνέχεια χρήσης του QuickView";
+
+/* Message of the alert shown the first time a user closes QuickView, explaining the feature and where to change it. */
+"quickview.confirmation.alert.message" = "Το QuickView σας επιτρέπει να κάνετε προεπισκόπηση συνδέσμων χωρίς να εγκαταλείπετε τη σελίδα σας. Μπορείτε να το απενεργοποιήσετε ανά πάσα στιγμή στις Ρυθμίσεις.";
+
+/* Title of the alert shown the first time a user closes QuickView, asking if they want to keep using it for future links. */
+"quickview.confirmation.alert.title" = "Να συνεχιστεί το άνοιγμα συνδέσμων συνομιλίας στο Quick View;";
+
+/* Button title to stop opening links in QuickView after the confirmation alert. */
+"quickview.confirmation.alert.turnOff.button.title" = "Απενεργοποίηση";
+
 /* Accessibility text for an icon button which will go forward to the next page in QuickView mode. */
 "quickview.forward.accessibility.label" = "Επόμενη σελίδα";
 
@@ -2299,8 +2323,8 @@
 /* Used as a button label for crash dialog prompt */
 "SendReportButtonTitle" = "Αποστολή αναφοράς";
 
-/* No comment provided by engineer. */
-"setDefaultBrowserCalloutTitle" = "Το Brave μπορεί πλέον να οριστεί ως το προεπιλεγμένο πρόγραμμα περιήγησής σας στο iOS. Πατήστε εδώ για να ανοίξετε τις ρυθμίσεις.";
+/* A callout that explains how to set Brave as the default browser. This is a markdown string, the ** is for bold. */
+"setDefaultBrowserCalloutTitle" = "**Ορίστε το Brave ως το προεπιλεγμένο πρόγραμμα περιήγησής σας και αποκλείστε τις διαφημίσεις σε κάθε ιστότοπο που επισκέπτεστε.** Πατήστε εδώ για να ανοίξετε τις Ρυθμίσεις και να ορίσετε το Brave ως προεπιλογή.";
 
 /* Settings item to set the Brave as a default browser on the iOS device. */
 "setDefaultBrowserSettingsCell" = "Να οριστεί ως προεπιλεγμένο πρόγραμμα περιήγησης";
@@ -2380,8 +2404,8 @@
 /* Title to explain the daily usage ping toggle */
 "settings.sendUsagePingTitle" = "Αυτόματη αποστολή ping καθημερινής χρήσης στο Brave";
 
-/* Description under the settings toggle that enables Sponsored Ads */
-"settings.sponsoredAdsEnabledDescription" = "Υποστηρίξτε την αποστολή του Brave να δημιουργήσει έναν ανεξάρτητο Ιστό που δίνει προτεραιότητα στον χρήστη με χορηγούμενες διαφημίσεις. Μετράμε την απόδοση των διαφημίσεων ιδιωτικά, χωρίς να σας ταυτοποιούμε.";
+/* Markdown formatted description under the settings toggle that enables Sponsored Ads. %@ is replaced by a URL and should not be localized. */
+"settings.sponsoredAdsEnabledDescription" = "Υποστηρίξτε την αποστολή του Brave να δημιουργήσει έναν ανεξάρτητο Ιστό που δίνει προτεραιότητα στον χρήστη με χορηγούμενες διαφημίσεις. Μετράμε την απόδοση των διαφημίσεων ιδιωτικά, χωρίς να σας ταυτοποιούμε. [Μάθετε περισσότερα](%@)";
 
 /* Title of the settings toggle that enables Sponsored Ads */
 "settings.sponsoredAdsEnabledTitle" = "Ενεργοποίηση χορηγούμενων Ads";

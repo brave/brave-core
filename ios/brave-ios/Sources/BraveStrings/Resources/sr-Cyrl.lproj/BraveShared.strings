@@ -121,6 +121,18 @@
 /* Settings autofill section title */
 "autofill.settings.title" = "Аутоматски унос";
 
+/* A subtitle that appears in the dynamic island when a download is continuing while Brave is backgrounded. The %@'s are replaced with the current downloaded amount (e.g. '20MB') */
+"backgroundDownloadingSubtitle" = "%@";
+
+/* A subtitle that appears in the dynamic island when a download is continuing while Brave is backgrounded. The %@'s are replaced with a progress and a file size. E.g. '1MB of 20MB' */
+"backgroundDownloadingSubtitleWithExpectedSize" = "%1$@ од %2$@";
+
+/* A title that appears in the dynamic island when a download is continuing while Brave is backgrounded. %lld is replaced with the number of active downloads */
+"backgroundDownloadingTitleMultiDownload" = "Преузимање %lld фајлова";
+
+/* A title that appears in the dynamic island when a download is continuing while Brave is backgrounded. %@ is replaced with a file name */
+"backgroundDownloadingTitleSingleDownload" = "Преузимање \"%@\"";
+
 /* cookie settings option */
 "Block3rdPartyCookies" = "Блокирај колачиће трећих страна";
 
@@ -1774,6 +1786,18 @@
 /* Accessibility text for an icon button which will go back to the previous page in QuickView mode. */
 "quickview.back.accessibility.label" = "Претходна страница";
 
+/* Button title to keep opening links in QuickView after the confirmation alert. */
+"quickview.confirmation.alert.keep.button.title" = "Настави да користиш QuickView";
+
+/* Message of the alert shown the first time a user closes QuickView, explaining the feature and where to change it. */
+"quickview.confirmation.alert.message" = "QuickView вам омогућава да прегледате везе без напуштања ваше странице. Ово можете искључити у било ком тренутку у подешавањима.";
+
+/* Title of the alert shown the first time a user closes QuickView, asking if they want to keep using it for future links. */
+"quickview.confirmation.alert.title" = "Желите да наставите да отварате везе из разговора у Quick View-у?";
+
+/* Button title to stop opening links in QuickView after the confirmation alert. */
+"quickview.confirmation.alert.turnOff.button.title" = "Искључи";
+
 /* Accessibility text for an icon button which will go forward to the next page in QuickView mode. */
 "quickview.forward.accessibility.label" = "Следећа страница";
 
@@ -2299,8 +2323,8 @@
 /* Used as a button label for crash dialog prompt */
 "SendReportButtonTitle" = "Пошаљи извештај";
 
-/* No comment provided by engineer. */
-"setDefaultBrowserCalloutTitle" = "Сада можете подесити Brave као подразумевани прегледач у iOS-у. Додирните овде да отворите подешавања.";
+/* A callout that explains how to set Brave as the default browser. This is a markdown string, the ** is for bold. */
+"setDefaultBrowserCalloutTitle" = "**Поставите Brave као подразумевани прегледач и блокирајте огласе на свакој страници коју посетите.** Додирните овде да бисте отворили подешавања и поставили Brave као подразумевани.";
 
 /* Settings item to set the Brave as a default browser on the iOS device. */
 "setDefaultBrowserSettingsCell" = "Подеси као подразумевани прегледач";
@@ -2380,8 +2404,8 @@
 /* Title to explain the daily usage ping toggle */
 "settings.sendUsagePingTitle" = "Аутоматски шаљи Brave-u пинг за свакодневно коришћење";
 
-/* Description under the settings toggle that enables Sponsored Ads */
-"settings.sponsoredAdsEnabledDescription" = "Помозите да подржите Brave мисију за изградњу независног интернета који ставља кориснике на прво место уз Спонзорисане огласе. Приватно меримо учинак огласа, без вашег идентификовања.";
+/* Markdown formatted description under the settings toggle that enables Sponsored Ads. %@ is replaced by a URL and should not be localized. */
+"settings.sponsoredAdsEnabledDescription" = "Помозите да подржите Brave мисију за изградњу независног интернета који ставља кориснике на прво место уз Спонзорисане огласе. Приватно меримо учинак огласа, без вашег идентификовања. [Сазнајте више](%@)";
 
 /* Title of the settings toggle that enables Sponsored Ads */
 "settings.sponsoredAdsEnabledTitle" = "Активирај спонзорисане огласе";
