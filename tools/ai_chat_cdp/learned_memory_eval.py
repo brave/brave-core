@@ -12,7 +12,7 @@
 
 Steps:
   setup   prefs on; Leo > Models > Add model: the local LLM on Ollama.
-  chats   types a chat set of ../learned_memory_eval/chat_sets into Leo,
+  chats   types a chat set of ../learned_memory_eval/datasets/e2e into Leo,
           oldest first. Leo's default model answers.
   learn   "Learn from chats"; nothing is stored before the review; keeps every
           change; checks the memories against the set, that the index has
@@ -48,6 +48,7 @@ import leo
 
 PROFILE_NAME = 'leo-learned-memory-test'
 EVAL_TOOLS = os.path.join(cdp.BRAVE_DIR, 'tools', 'learned_memory_eval')
+CHAT_SETS = os.path.join(EVAL_TOOLS, 'datasets', 'e2e')
 
 LLM = 'qwen3.5:9b'
 LLM_ENDPOINT = 'http://localhost:11434/v1/chat/completions'
@@ -190,7 +191,8 @@ class Eval:
         ) as c:
             index = sorted(
                 c.execute(
-                    'SELECT memory_uuid, text_version FROM learned_memory_passage'
+                    'SELECT memory_uuid, text_version '
+                    'FROM learned_memory_passage'
                 ).fetchall()
             )
         return chat_db, index
@@ -740,6 +742,15 @@ def write_report(run):
         json.dump(run.state, f, indent=1)
 
 
+def chat_set_path(name):
+    """The file of chat set |name|, in the dev or the holdout split."""
+    for split in ('dev', 'holdout'):
+        path = os.path.join(CHAT_SETS, split, f'{name}.json')
+        if os.path.exists(path):
+            return path
+    raise SystemExit(f'No chat set {name} in {CHAT_SETS}.')
+
+
 def main():
     parser = argparse.ArgumentParser(
         description=__doc__.split('\n', maxsplit=1)[0]
@@ -747,7 +758,7 @@ def main():
     parser.add_argument(
         '--set',
         default='life_events',
-        help='a chat set of ../learned_memory_eval/chat_sets',
+        help='a chat set of ../learned_memory_eval/datasets/e2e',
     )
     parser.add_argument(
         '--fresh',
@@ -765,10 +776,7 @@ def main():
     cdp.check_build()
     if args.fresh:
         shutil.rmtree(cdp.profile_path(args.profile), ignore_errors=True)
-    with open(
-        os.path.join(EVAL_TOOLS, 'chat_sets', f'{args.set}.json'),
-        encoding='utf-8',
-    ) as f:
+    with open(chat_set_path(args.set), encoding='utf-8') as f:
         run = Eval(args.profile, json.load(f))
 
     # Loads both Ollama models for an hour, so no step waits for a cold model.

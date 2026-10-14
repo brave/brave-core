@@ -173,7 +173,8 @@ def search_memories(ws, query):
     return ws.eval(
         find_in(
             MEMORY_SECTION,
-            'const r = await sec.browserProxy_.getCustomizationSettingsHandler()'
+            'const r = await sec.browserProxy_'
+            '.getCustomizationSettingsHandler()'
             f'.searchMemories({json.dumps(query)});'
             'return (r.results || []).map(m => ({text: m.text,'
             ' learned: !!m.learnedUuid}));',
