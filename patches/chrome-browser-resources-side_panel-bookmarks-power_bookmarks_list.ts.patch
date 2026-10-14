@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/side_panel/bookmarks/power_bookmarks_list.ts b/chrome/browser/resources/side_panel/bookmarks/power_bookmarks_list.ts
-index c68a0fdcee8391fa4ccecf9364eed72c57cd9c9e..aa47d6e82a500a70c91c8647f0f5e27c06ab9cf9 100644
+index c32568c1c13d2c7db615f5168a60de18da92049d..25e6f6d86cafcf7de9dea9448291773a4dce1c26 100644
 --- a/chrome/browser/resources/side_panel/bookmarks/power_bookmarks_list.ts
 +++ b/chrome/browser/resources/side_panel/bookmarks/power_bookmarks_list.ts
-@@ -1272,4 +1272,3 @@ declare global {
+@@ -1277,4 +1277,3 @@ declare global {
    }
  }
  

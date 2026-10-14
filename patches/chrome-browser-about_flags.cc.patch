@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/about_flags.cc b/chrome/browser/about_flags.cc
-index 9029a80c8d43f9426eb4f37c0c0596afc009d146..48b78fdc3ed2e08f4be2fe64682db41bb999fb30 100644
+index ba175a0e376a962cf6bd09c8ae1b82819788ee9d..b5c434d06b2cb2f5110ec6b5bc71b68f01140c8a 100644
 --- a/chrome/browser/about_flags.cc
 +++ b/chrome/browser/about_flags.cc
 @@ -5038,6 +5038,7 @@ constexpr char kEnterpriseIsolatedModeInternalName[] =
