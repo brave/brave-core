@@ -31,6 +31,7 @@
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
+#include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile_attributes_entry.h"
@@ -80,6 +81,7 @@
 #if BUILDFLAG(IS_ANDROID)
 #include <memory>
 
+#include "brave/browser/password_manager/android/brave_account_to_profile_password_migration.h"
 #include "chrome/browser/ui/webui/theme_source.h"
 #include "content/public/browser/url_data_source.h"
 #endif
@@ -277,6 +279,7 @@ void BraveProfileManager::DoFinalInitForServices(Profile* profile,
   // upstream WebUIs that don't register it. Desktop gets this from
   // InstantService (crbug.com/40757220), which doesn't exist on Android.
   content::URLDataSource::Add(profile, std::make_unique<ThemeSource>(profile));
+  brave_password_manager::MaybeMigrateAccountPasswordsToProfileStore(profile);
 #endif
 }
 
