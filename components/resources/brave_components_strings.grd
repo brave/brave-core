@@ -423,6 +423,57 @@
       <message name="IDS_BRAVE_NEWS_BUBBLE_TITLE" desc="The title for the Brave News bubble">
         Follow this source in 1-click.
       </message>
+      <message name="IDS_BRAVE_GESTURES_COMMAND_UNASSIGNED" desc="Gesture overlay label: no action assigned">
+        Unassigned
+      </message>
+      <message name="IDS_BRAVE_GESTURES_COMMAND_NAVIGATE_TO_URL" desc="Gesture overlay label: navigate to a URL set for this gesture">
+        Navigate to URL
+      </message>
+      <message name="IDS_BRAVE_GESTURES_COMMAND_SWITCH_TO_TAB" desc="Gesture overlay label: switch to a tab matching a glob pattern">
+        Switch to tab
+      </message>
+      <message name="IDS_BRAVE_GESTURES_COMMAND_SEARCH_SELECTED_TEXT" desc="Gesture overlay label: search Brave Search with the page's currently selected text">
+        Search selected text
+      </message>
+      <message name="IDS_BRAVE_GESTURES_COMMAND_OPEN_LINK_IN" desc="Gesture overlay label: open the link captured by a smart gesture in a new tab or window">
+        Open link
+      </message>
+      <message name="IDS_BRAVE_GESTURES_COMMAND_COPY_LINK_ADDRESS" desc="Gesture overlay label: copy the address of the link captured by a smart gesture">
+        Copy link address
+      </message>
+      <message name="IDS_BRAVE_GESTURES_COMMAND_COPY_SELECTED_TEXT" desc="Gesture overlay label: copy the page's currently selected text">
+        Copy selected text
+      </message>
+      <message name="IDS_BRAVE_GESTURES_COMMAND_OPEN_IMAGE_IN" desc="Gesture overlay label: open the image captured by a smart gesture in a new tab or window">
+        Open image
+      </message>
+      <message name="IDS_BRAVE_GESTURES_COMMAND_SAVE_IMAGE" desc="Gesture overlay label: save the image captured by a smart gesture">
+        Save image
+      </message>
+      <message name="IDS_BRAVE_GESTURES_COMMAND_COPY_IMAGE" desc="Gesture overlay label: copy the image captured by a smart gesture to the clipboard">
+        Copy image
+      </message>
+      <message name="IDS_BRAVE_GESTURES_COMMAND_OPEN_SETTINGS_PAGE" desc="Gesture overlay label: open a settings page">
+        Open Settings Page
+      </message>
+      <message name="IDS_BRAVE_GESTURES_OPEN_TARGET_NEW_BACKGROUND_TAB" desc="Gesture overlay label suffix: open target is a new background tab">
+        New background tab
+      </message>
+      <message name="IDS_BRAVE_GESTURES_OPEN_TARGET_NEW_FOREGROUND_TAB" desc="Gesture overlay label suffix: open target is a new foreground tab">
+        New foreground tab
+      </message>
+      <message name="IDS_BRAVE_GESTURES_OPEN_TARGET_NEW_WINDOW" desc="Gesture overlay label suffix: open target is a new window">
+        New window
+      </message>
+      <message name="IDS_BRAVE_GESTURES_SEARCH_TARGET_BRAVE_SEARCH" desc="Gesture overlay label suffix: search target is Brave Search">
+        Brave Search
+      </message>
+      <message name="IDS_BRAVE_GESTURES_SEARCH_TARGET_BRAVE_ASK" desc="Gesture overlay label suffix: search target is Brave Ask">
+        Brave Ask
+      </message>
+      <message name="IDS_BRAVE_GESTURES_UNKNOWN_GESTURE" desc="Gesture overlay label shown while a gesture in progress doesn't match any mapping">
+        Unmatched
+      </message>
       <message name="IDS_BRAVE_NEWS_BUBBLE_SUBTITLE" desc="The subtitle for the Brave News bubble">
         Get all the latest stories in Brave News.
       </message>

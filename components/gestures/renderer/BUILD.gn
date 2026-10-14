@@ -1,0 +1,44 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+assert(is_win || is_mac || is_linux || is_android)
+
+static_library("renderer") {
+  sources = [
+    "gesture_selected_text_util.cc",
+    "gesture_selected_text_util.h",
+    "gesture_text_selection_extractor.cc",
+    "gesture_text_selection_extractor.h",
+    "smart_gesture_content_extractor.cc",
+    "smart_gesture_content_extractor.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/gestures/core/common/mojom",
+    "//content/public/renderer",
+    "//mojo/public/cpp/bindings",
+    "//services/service_manager/public/cpp",
+    "//third_party/blink/public:blink",
+  ]
+}
+
+if (!is_ios) {
+  source_set("browser_tests") {
+    testonly = true
+    sources = [ "gesture_text_selection_extractor_browsertest.cc" ]
+
+    deps = [
+      "//base/test:test_support",
+      "//brave/components/gestures/core/common/mojom",
+      "//brave/components/gestures/renderer",
+      "//content/public/renderer",
+      "//content/test:test_support",
+      "//mojo/public/cpp/bindings",
+      "//services/service_manager/public/cpp",
+      "//testing/gtest",
+    ]
+  }
+}
