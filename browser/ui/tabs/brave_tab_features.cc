@@ -18,6 +18,7 @@
 #include "brave/browser/ui/sidebar/sidebar_tab_helper.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"
+#include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/image_metadata_stripper/common/features.h"
 #include "brave/components/misc_metrics/features.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
@@ -44,6 +45,10 @@
 #if BUILDFLAG(ENABLE_REQUEST_OTR)
 #include "brave/browser/request_otr/request_otr_tab_helper.h"
 #include "brave/components/request_otr/common/features.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+#include "brave/browser/brave_rewards/rewards_tab_helper.h"
 #endif
 
 #if BUILDFLAG(IS_WIN)
@@ -98,6 +103,13 @@ BraveTabFeatures::~BraveTabFeatures() = default;
 
 void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
   TabFeatures::Init(tab, profile);
+
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+  // Requires a valid session id, which upstream only creates after
+  // `TabHelpers::AttachTabHelpers`, so it can't be attached there.
+  rewards_tab_helper_ =
+      std::make_unique<brave_rewards::RewardsTabHelper>(tab.GetContents());
+#endif
 
   // Expect upstream's Init to create the registry.
   auto* side_panel_registry = SidePanelRegistry::From(&tab);

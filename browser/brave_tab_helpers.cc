@@ -115,7 +115,7 @@ void AttachTabHelpers(content::WebContents* web_contents) {
   BraveGeolocationPermissionTabHelper::CreateForWebContents(web_contents);
 #endif
 
-#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS) && BUILDFLAG(IS_ANDROID)
   brave_rewards::RewardsTabHelper::CreateForWebContents(web_contents);
 #endif
 

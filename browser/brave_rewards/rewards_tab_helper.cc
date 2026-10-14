@@ -35,7 +35,11 @@ RewardsTabHelper::RewardsTabHelper(content::WebContents* web_contents)
   }
 }
 
-RewardsTabHelper::~RewardsTabHelper() = default;
+RewardsTabHelper::~RewardsTabHelper() {
+  for (auto& observer : observer_list_) {
+    observer.OnRewardsTabHelperDestroyed();
+  }
+}
 
 void RewardsTabHelper::AddObserver(Observer* observer) {
   observer_list_.AddObserver(observer);
