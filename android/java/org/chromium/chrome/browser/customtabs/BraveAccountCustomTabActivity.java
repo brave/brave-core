@@ -149,18 +149,6 @@ public class BraveAccountCustomTabActivity extends CustomTabActivity {
 
     public static void openBraveAccountDialog(
             Activity activity, @DialogMode.EnumType int dialogMode) {
-        openBraveAccountDialog(activity, "", dialogMode);
-    }
-
-    public static void openBraveAccountDialog(
-            Activity activity, String initiatingServiceName, @DialogMode.EnumType int dialogMode) {
-        Uri.Builder uri = Uri.parse("brave://account").buildUpon();
-        if (!initiatingServiceName.isEmpty()) {
-            uri.appendQueryParameter(
-                    BraveAccountConstants.INITIATING_SERVICE_NAME_QUERY_PARAM,
-                    initiatingServiceName);
-        }
-
-        openBraveAccountWebUI(activity, uri.build(), dialogMode);
+        openBraveAccountWebUI(activity, Uri.parse("brave://account"), dialogMode);
     }
 }

@@ -25,18 +25,6 @@ static_assert(kServiceToString.size() ==
                   static_cast<std::size_t>(mojom::Service::kMaxValue) + 1,
               "kServiceToString must contain all mojom::Service enum values!");
 
-inline constexpr auto kServiceFromString =
-    base::MakeFixedFlatMap<std::string_view, mojom::Service>({
-        {"accounts", mojom::Service::kAccounts},
-        {"email-aliases", mojom::Service::kEmailAliases},
-        {"premium", mojom::Service::kPremium},
-        {"sync", mojom::Service::kSync},
-    });
-static_assert(
-    kServiceFromString.size() ==
-        static_cast<std::size_t>(mojom::Service::kMaxValue) + 1,
-    "kServiceFromString must contain all mojom::Service enum values!");
-
 }  // namespace brave_account
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ACCOUNT_BRAVE_ACCOUNT_UTILS_H_

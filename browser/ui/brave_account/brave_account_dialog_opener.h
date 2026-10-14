@@ -6,8 +6,6 @@
 #ifndef BRAVE_BROWSER_UI_BRAVE_ACCOUNT_BRAVE_ACCOUNT_DIALOG_OPENER_H_
 #define BRAVE_BROWSER_UI_BRAVE_ACCOUNT_BRAVE_ACCOUNT_DIALOG_OPENER_H_
 
-#include <string>
-
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
 
 namespace content {
@@ -17,7 +15,6 @@ class WebContents;
 namespace brave_account {
 
 void OpenBraveAccountDialog(content::WebContents& web_contents,
-                            const std::string& initiating_service_name,
                             mojom::DialogMode dialog_mode);
 
 }  // namespace brave_account

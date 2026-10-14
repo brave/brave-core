@@ -44,8 +44,7 @@ struct RegisterStep1TestCase {
                   base::test::TaskEnvironment& task_environment,
                   mojo::Remote<mojom::Authentication>& authentication,
                   base::OnceCallback<void(MojoExpected)> callback) {
-    authentication->RegisterStep1(mojom::Service::kAccounts, test_case.email,
-                                  test_case.blinded_message,
+    authentication->RegisterStep1(test_case.email, test_case.blinded_message,
                                   std::move(callback));
   }
 

@@ -25,13 +25,11 @@ export class BraveAccountRowElement extends CrLitElement {
   static override get properties() {
     return {
       browserProxy: { type: Object },
-      initiatingServiceName: { type: String },
       state: { type: Object },
     }
   }
 
   protected accessor browserProxy!: BraveAccountRowBrowserProxy
-  protected accessor initiatingServiceName = ''
   protected accessor state: AccountState | undefined = undefined
 
   private accountStateListenerId: number | null = null

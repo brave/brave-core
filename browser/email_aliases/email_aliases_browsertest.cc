@@ -200,8 +200,7 @@ class EmailAliasesBrowserTestBase : public InProcessBrowserTest {
         base::expected<brave_account::mojom::LoginStep1ResultPtr,
                        brave_account::mojom::LoginErrorPtr>>
         login_step1_future;
-    authentication_->LoginStep1(brave_account::mojom::Service::kEmailAliases,
-                                kSuccessEmail, "serialized_ke1",
+    authentication_->LoginStep1(kSuccessEmail, "serialized_ke1",
                                 login_step1_future.GetCallback());
     const auto login_step1_result = login_step1_future.Take();
     ASSERT_TRUE(login_step1_result.has_value());
