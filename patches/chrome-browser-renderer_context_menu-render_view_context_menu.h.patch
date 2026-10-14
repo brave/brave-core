@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/renderer_context_menu/render_view_context_menu.h b/chrome/browser/renderer_context_menu/render_view_context_menu.h
-index 1ae42733a07e4d753e215adf56128beebce0ea4f..a3b9fe21e6872312bdadf4d3db665d8c0029b4b7 100644
+index 08f5dd9888879d04afda2304c0f761d31c8fedcd..e7c61235d9f838923e46c1b00ff0a50f892606b4 100644
 --- a/chrome/browser/renderer_context_menu/render_view_context_menu.h
 +++ b/chrome/browser/renderer_context_menu/render_view_context_menu.h
 @@ -120,7 +120,7 @@ enum class SplitTabLayout;
@@ -11,7 +11,7 @@ index 1ae42733a07e4d753e215adf56128beebce0ea4f..a3b9fe21e6872312bdadf4d3db665d8c
      : public RenderViewContextMenuBase,
        public custom_handlers::ProtocolHandlerRegistry::Observer {
   public:
-@@ -139,15 +139,15 @@ class RenderViewContextMenu
+@@ -141,15 +141,15 @@ class RenderViewContextMenu
        base::OnceCallback<void(content::RenderFrameHost*,
                                blink::mojom::PluginActionType)>;
  
@@ -31,7 +31,7 @@ index 1ae42733a07e4d753e215adf56128beebce0ea4f..a3b9fe21e6872312bdadf4d3db665d8c
  
    void MenuClosed(ui::SimpleMenuModel* source) override;
  
-@@ -169,7 +169,7 @@ class RenderViewContextMenu
+@@ -171,7 +171,7 @@ class RenderViewContextMenu
    // Registers a one-time callback that will be called the next time a context
    // menu is shown.
    static void RegisterMenuShownCallbackForTesting(
@@ -40,7 +40,7 @@ index 1ae42733a07e4d753e215adf56128beebce0ea4f..a3b9fe21e6872312bdadf4d3db665d8c
  
    // Register a one-time callback that will be called the next time a plugin
    // action is executed from a given render frame.
-@@ -275,6 +275,7 @@ class RenderViewContextMenu
+@@ -277,6 +277,7 @@ class RenderViewContextMenu
            navigation_handle_callback) override;
  
   private:
@@ -48,7 +48,7 @@ index 1ae42733a07e4d753e215adf56128beebce0ea4f..a3b9fe21e6872312bdadf4d3db665d8c
    std::u16string GetElidedSelectionText(size_t max_length,
                                          gfx::BreakType break_type);
  
-@@ -336,7 +337,7 @@ class RenderViewContextMenu
+@@ -338,7 +339,7 @@ class RenderViewContextMenu
    bool IsInProgressiveWebApp() const;
    bool IsLinkToIsolatedWebApp() const;
  
@@ -57,7 +57,7 @@ index 1ae42733a07e4d753e215adf56128beebce0ea4f..a3b9fe21e6872312bdadf4d3db665d8c
    void AppendDevtoolsForUnpackedExtensions();
    void AppendLinkItems();
    void AppendCopyLinkLocationItem();
-@@ -358,7 +359,7 @@ class RenderViewContextMenu
+@@ -360,7 +361,7 @@ class RenderViewContextMenu
    void AppendPartialTranslateItem();
    void AppendTranslateItem();
    void AppendMediaRouterItem();
@@ -66,7 +66,7 @@ index 1ae42733a07e4d753e215adf56128beebce0ea4f..a3b9fe21e6872312bdadf4d3db665d8c
    void AppendSaveToMemoryBanksItem();
    void AppendGlicItems();
    void AppendRotationItems();
-@@ -657,7 +658,7 @@ class RenderViewContextMenu
+@@ -662,7 +663,7 @@ class RenderViewContextMenu
    // out if the tab navigated while the menu was open.
    const content::WeakDocumentPtr source_document_at_menu_open_;
  
