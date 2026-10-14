@@ -35,6 +35,15 @@
 #include "brave/net/proxy_resolution/proxy_config_service_tor.h"
 #endif
 
+namespace {
+
+// A JSON POST is not a simple request, so it triggers a CORS preflight.
+constexpr char kPreflightedFetchJs[] =
+    R"(fetch($1, {method: 'POST', headers: {'Content-Type': 'application/json'},
+                  body: '{}'}).then(() => 'ok', () => 'blocked'))";
+
+}  // namespace
+
 class BraveSiteHacksNetworkDelegateBrowserTest : public InProcessBrowserTest {
  public:
   BraveSiteHacksNetworkDelegateBrowserTest()
@@ -105,10 +114,12 @@ class BraveSiteHacksNetworkDelegateBrowserTest : public InProcessBrowserTest {
     }
 
     auto origin_it = request.headers.find("Origin");
-    if (origin_it == request.headers.end()) {
-      last_origin_[request.GetURL()] = "";
+    const std::string origin =
+        origin_it == request.headers.end() ? "" : origin_it->second;
+    if (request.method == net::test_server::METHOD_OPTIONS) {
+      last_preflight_origin_[request.GetURL()] = origin;
     } else {
-      last_origin_[request.GetURL()] = origin_it->second;
+      last_origin_[request.GetURL()] = origin;
     }
   }
 
@@ -211,6 +222,19 @@ class BraveSiteHacksNetworkDelegateBrowserTest : public InProcessBrowserTest {
     return last_origin_[internal_url];
   }
 
+  // The Origin of the last CORS preflight to `url`, if there was one.
+  std::optional<std::string> last_preflight_origin(const GURL& url) {
+    base::AutoLock auto_lock(last_headers_lock_);
+    GURL::Replacements replacements;
+    replacements.SetHostStr("127.0.0.1");
+    const auto it =
+        last_preflight_origin_.find(url.ReplaceComponents(replacements));
+    if (it == last_preflight_origin_.end()) {
+      return std::nullopt;
+    }
+    return it->second;
+  }
+
   content::WebContents* contents(BrowserWindowInterface* browser) {
     return browser->tab_strip_model()->GetActiveWebContents();
   }
@@ -246,6 +270,7 @@ class BraveSiteHacksNetworkDelegateBrowserTest : public InProcessBrowserTest {
   GURL onion_iframe_outer_url_;
   std::map<GURL, std::string> last_referrer_;
   std::map<GURL, std::string> last_origin_;
+  std::map<GURL, std::string> last_preflight_origin_;
   mutable base::Lock last_headers_lock_;
 
   base::FilePath test_data_dir_;
@@ -402,7 +427,37 @@ IN_PROC_BROWSER_TEST_F(BraveSiteHacksNetworkDelegateBrowserTest,
   }
 }
 
+IN_PROC_BROWSER_TEST_F(BraveSiteHacksNetworkDelegateBrowserTest,
+                       CrossOriginPreflightKeepsOrigin) {
+  const GURL page_url = cross_site_url().Resolve("/simple.html");
+  const GURL target_url = simple_landing_url();
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), page_url));
+  // The preflight fails since the server doesn't allow it; it's still sent.
+  EXPECT_EQ("blocked", content::EvalJs(contents(browser()),
+                                       content::JsReplace(kPreflightedFetchJs,
+                                                          target_url)));
+  EXPECT_EQ(last_preflight_origin(target_url),
+            url::Origin::Create(page_url).Serialize());
+}
+
 #if BUILDFLAG(ENABLE_TOR)
+IN_PROC_BROWSER_TEST_F(BraveSiteHacksNetworkDelegateBrowserTest,
+                       OnionCrossOriginPreflightIsOpaque) {
+  net::ProxyConfigServiceTor::SetBypassTorProxyConfigForTesting(true);
+  tor::TorNavigationThrottle::SetSkipWaitForTorConnectedForTesting(true);
+  BrowserWindowInterface* tor_browser =
+      TorProfileManager::SwitchToTorProfile(browser()->GetProfile());
+
+  const GURL page_url = onion_url().Resolve("/simple.html");
+  const GURL target_url = simple_landing_url();
+  NavigateToURLAndWaitForRedirects(tor_browser, page_url, page_url);
+  // The preflight fails since the server doesn't allow it; it's still sent.
+  EXPECT_EQ("blocked", content::EvalJs(contents(tor_browser),
+                                       content::JsReplace(kPreflightedFetchJs,
+                                                          target_url)));
+  EXPECT_EQ(last_preflight_origin(target_url), "null");
+}
+
 IN_PROC_BROWSER_TEST_F(BraveSiteHacksNetworkDelegateBrowserTest,
                        OnionReferrers) {
   net::ProxyConfigServiceTor::SetBypassTorProxyConfigForTesting(true);
