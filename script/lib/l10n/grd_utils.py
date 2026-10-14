@@ -389,6 +389,15 @@ def get_original_grd(src_root, grd_file_path):
             'strings',
             'android_chrome_strings.grd',
         )
+    if grd_file_name == 'android_ui_strings.grd':
+        return os.path.join(
+            src_root,
+            'ui',
+            'android',
+            'java',
+            'strings',
+            'android_ui_strings.grd',
+        )
     if grd_file_name == 'android_chrome_tab_ui_strings.grd':
         return os.path.join(
             src_root,
