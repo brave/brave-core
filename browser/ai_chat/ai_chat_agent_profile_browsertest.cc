@@ -387,6 +387,59 @@ IN_PROC_BROWSER_TEST_F(AIChatAgentProfileBrowserTest,
                    .value_or(false));
 }
 
+// The content agent is gated by two independent decisions: whether its tools
+// may be registered for a profile, and whether the user decides per
+// conversation that it is used. kAIChatContentAgentMainProfiles controls only
+// the latter, and only outside the dedicated agent profile.
+class AIChatContentAgentMainProfilesBrowserTest
+    : public AIChatAgentProfileBrowserTest,
+      public testing::WithParamInterface<bool> {
+ public:
+  AIChatContentAgentMainProfilesBrowserTest() {
+    main_profile_feature_list_.InitWithFeatureState(
+        ai_chat::features::kAIChatContentAgentMainProfiles, GetParam());
+  }
+
+ private:
+  base::test::ScopedFeatureList main_profile_feature_list_;
+};
+
+INSTANTIATE_TEST_SUITE_P(,
+                         AIChatContentAgentMainProfilesBrowserTest,
+                         testing::Bool(),
+                         [](const testing::TestParamInfo<bool>& info) {
+                           return info.param ? "FlagEnabled" : "FlagDisabled";
+                         });
+
+IN_PROC_BROWSER_TEST_P(AIChatContentAgentMainProfilesBrowserTest,
+                       MainProfileOffersChoiceWithFlagButNoTools) {
+  auto* service = AIChatServiceFactory::GetForBrowserContext(GetProfile());
+  ASSERT_TRUE(service);
+
+  EXPECT_EQ(GetParam(), service->content_agent_user_selectable());
+  // The tools must not be registered in the main profile either way - that
+  // waits until the agent's browsing is isolated from the user's storage.
+  EXPECT_FALSE(service->content_agent_tools_allowed());
+}
+
+IN_PROC_BROWSER_TEST_P(AIChatContentAgentMainProfilesBrowserTest,
+                       AgentProfileHasToolsButNoChoice) {
+  SetUserOptedIn(GetProfile()->GetPrefs(), true);
+  BrowserWindowInterface* agent_browser =
+      CallOpenBrowserWindowForAiChatAgentProfile(GetProfile());
+  ASSERT_TRUE(agent_browser);
+  ASSERT_TRUE(agent_browser->GetProfile()->IsAIChatAgent());
+
+  auto* service =
+      AIChatServiceFactory::GetForBrowserContext(agent_browser->GetProfile());
+  ASSERT_TRUE(service);
+
+  // The agent profile is unaffected by the main profiles flag: the content
+  // agent is always on there, so the user is never asked to choose.
+  EXPECT_TRUE(service->content_agent_tools_allowed());
+  EXPECT_FALSE(service->content_agent_user_selectable());
+}
+
 // UI Tests for AI Chat Agent Profile features
 // TODO(https://github.com/brave/brave-browser/issues/48165): This should be
 // converted to an interactive_uitest.

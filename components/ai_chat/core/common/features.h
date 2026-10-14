@@ -103,6 +103,9 @@ extern const base::FeatureParam<bool> kWorkspaceNativeDirectories;
 COMPONENT_EXPORT(AI_CHAT_COMMON) BASE_DECLARE_FEATURE(kAIChatAgentProfile);
 COMPONENT_EXPORT(AI_CHAT_COMMON) bool IsAIChatAgentProfileEnabled();
 
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+BASE_DECLARE_FEATURE(kAIChatContentAgentMainProfiles);
+
 // Enables optimization_guide-based page content extraction (AIPageContent) as
 // the default extraction method for AI Chat.
 COMPONENT_EXPORT(AI_CHAT_COMMON)
