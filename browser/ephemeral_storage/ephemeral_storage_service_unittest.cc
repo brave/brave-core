@@ -264,6 +264,49 @@ TEST_F(EphemeralStorageServiceTest,
   EXPECT_FALSE(TLDEphemeralLifetime::Get(key));
 }
 
+#if BUILDFLAG(IS_ANDROID)
+// Regression test: TriggerCurrentAppStateNotification() can be invoked (e.g.
+// a JNI call from Activity lifecycle code racing with profile teardown)
+// after Shutdown() has already reset delegate_ to null, while the
+// KeyedService object itself is still alive. It must no-op instead of
+// dereferencing the null delegate_.
+TEST_F(EphemeralStorageServiceTest,
+       TriggerCurrentAppStateNotificationAfterShutdownDoesNotCrash) {
+  mock_delegate_ = nullptr;
+  service_->Shutdown();
+
+  // delegate_ is null at this point but service_ is still alive (it isn't
+  // reset/destroyed like ShutdownEphemeralStorageService() would do).
+  service_->TriggerCurrentAppStateNotification();
+}
+#endif  // BUILDFLAG(IS_ANDROID)
+
+// Regression test: CleanupTLDFirstPartyStorage() can be invoked from a
+// tab-bound caller (BraveShieldsTabHelper) racing with profile teardown,
+// after Shutdown() has already reset delegate_ to null, while the
+// KeyedService object itself is still alive. It must no-op instead of
+// dereferencing the null delegate_.
+TEST_F(EphemeralStorageServiceTest,
+       CleanupTLDFirstPartyStorageAfterShutdownDoesNotCrash) {
+  // kBraveShredFeature is disabled by default outside Android/iOS; enable it
+  // so this call reaches the delegate_ use instead of returning early at the
+  // feature check.
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitAndEnableFeature(
+      brave_shields::features::kBraveShredFeature);
+
+  mock_delegate_ = nullptr;
+  service_->Shutdown();
+
+  const GURL url("https://a.com");
+  const auto storage_partition_config =
+      content::StoragePartitionConfig::CreateDefault(profile_.get());
+  // delegate_ is null at this point but service_ is still alive (it isn't
+  // reset/destroyed like ShutdownEphemeralStorageService() would do).
+  service_->CleanupTLDFirstPartyStorage(url, storage_partition_config,
+                                        /*enforced_by_user=*/true);
+}
+
 TEST_F(EphemeralStorageServiceTest,
        EphemeralCleanupNonDefaultStoragePartition) {
   const GURL url("https://a.com");
