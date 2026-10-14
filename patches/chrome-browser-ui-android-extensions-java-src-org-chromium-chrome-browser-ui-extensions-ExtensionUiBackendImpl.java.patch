@@ -1,0 +1,16 @@
+diff --git a/chrome/browser/ui/android/extensions/java/src/org/chromium/chrome/browser/ui/extensions/ExtensionUiBackendImpl.java b/chrome/browser/ui/android/extensions/java/src/org/chromium/chrome/browser/ui/extensions/ExtensionUiBackendImpl.java
+index 3b26ce12a0041cf837003468fd0bf5b773c98f05..dee6c44357965c64086fb7d7473a1d2d322d0cea 100644
+--- a/chrome/browser/ui/android/extensions/java/src/org/chromium/chrome/browser/ui/extensions/ExtensionUiBackendImpl.java
++++ b/chrome/browser/ui/android/extensions/java/src/org/chromium/chrome/browser/ui/extensions/ExtensionUiBackendImpl.java
+@@ -20,7 +20,10 @@ public class ExtensionUiBackendImpl implements ExtensionUiBackend {
+ 
+     @Override
+     public boolean isEnabled(Profile profile) {
+-        return true;
++        return org.chromium.chrome.browser.flags.ChromeFeatureList.isEnabled(
++                "BraveAndroidExtensions")
++                && org.chromium.ui.base.DeviceFormFactor.isNonMultiDisplayContextOnTablet(
++                        org.chromium.base.ContextUtils.getApplicationContext());
+     }
+ 
+     @Override

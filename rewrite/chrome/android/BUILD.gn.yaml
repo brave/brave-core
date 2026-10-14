@@ -45,6 +45,30 @@ substitutions:
       list_name: deps
       literal: brave_chrome_all_java_deps
 
+  - description: |-
+      side_panel/internal and windowing/internal only assert
+      enable_extensions_core, with nothing specific to desktop; use them on
+      non-desktop Android with the core enabled too, matching the native
+      chrome/browser/ui/BUILD.gn dependency.
+    regex:
+      re_pattern: >-
+        deps \+= \[\s*
+        "//chrome/browser/ui/android/extensions/side_panel/stub:java",\s*
+        "//chrome/browser/ui/android/extensions/windowing/stub:java",\s* \]
+      re_flags: [DOTALL]
+      replace: |-
+        if (enable_extensions_core) {
+                deps += [
+                  "//chrome/browser/ui/android/extensions/side_panel/internal:java",
+                  "//chrome/browser/ui/android/extensions/windowing/internal:java",
+                ]
+              } else {
+                deps += [
+                  "//chrome/browser/ui/android/extensions/side_panel/stub:java",
+                  "//chrome/browser/ui/android/extensions/windowing/stub:java",
+                ]
+              }
+
   - description: Add the Brave base module resources to the public APK.
     add_literal_to_list:
       target: chrome_public_apk_base_module_resources
