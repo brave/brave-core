@@ -26,6 +26,7 @@
 #include "content/public/test/test_utils.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/default_handlers.h"
+#include "net/test/embedded_test_server/install_default_websocket_handlers.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "url/origin.h"
 
@@ -52,6 +53,8 @@ class BraveSiteHacksNetworkDelegateBrowserTest : public InProcessBrowserTest {
     https_server_.ServeFilesFromDirectory(test_data_dir_);
     https_server_.AddDefaultHandlers(GetChromeTestDataDir());
     content::SetupCrossSiteRedirector(&https_server_);
+
+    net::test_server::InstallDefaultWebSocketHandlers(&https_server_);
 
     https_server_.RegisterRequestMonitor(base::BindRepeating(
         &BraveSiteHacksNetworkDelegateBrowserTest::HandleRequest,
@@ -194,6 +197,11 @@ class BraveSiteHacksNetworkDelegateBrowserTest : public InProcessBrowserTest {
   const GURL& iframe_outer_url() { return iframe_outer_url_; }
   const GURL& onion_iframe_inner_url() { return onion_iframe_inner_url_; }
   const GURL& onion_iframe_outer_url() { return onion_iframe_outer_url_; }
+
+  GURL echo_request_headers_ws_url(std::string_view host) {
+    return net::test_server::GetWebSocketURL(https_server_, host,
+                                             "/echo-request-headers");
+  }
 
   const std::string& last_referrer(const GURL& url) {
     base::AutoLock auto_lock(last_headers_lock_);
@@ -564,6 +572,68 @@ IN_PROC_BROWSER_TEST_F(BraveSiteHacksNetworkDelegateBrowserTest,
         content::EvalJs(inner_frame, "getAncestors()").ExtractString();
     iframe_origin.pop_back();  // remove trailing slash
     EXPECT_EQ(real_value, "[" + iframe_origin + "]");
+  }
+}
+
+IN_PROC_BROWSER_TEST_F(BraveSiteHacksNetworkDelegateBrowserTest,
+                       OnionWebSocketOrigin) {
+  net::ProxyConfigServiceTor::SetBypassTorProxyConfigForTesting(true);
+  tor::TorNavigationThrottle::SetSkipWaitForTorConnectedForTesting(true);
+  BrowserWindowInterface* tor_browser =
+      TorProfileManager::SwitchToTorProfile(browser()->GetProfile());
+
+  // Resolves with the Origin header received by the server during the
+  // WebSocket handshake.
+  static constexpr char kFrameWebSocketScript[] = R"(
+    new Promise((resolve, reject) => {
+      const ws = new WebSocket($1);
+      ws.onmessage = (e) => {
+        resolve(JSON.parse(e.data).origin ?? '');
+        ws.close();
+      };
+      ws.onerror = () => reject('WebSocket error');
+    });
+  )";
+
+  // Same as above, but the WebSocket is opened from a SharedWorker, which has
+  // no RenderFrameHost.
+  static constexpr char kSharedWorkerWebSocketScript[] = R"(
+    new Promise((resolve, reject) => {
+      const worker = new SharedWorker('/shared_worker_websocket_echo.js',
+                                      `websocket-${crypto.randomUUID()}`);
+      worker.port.onmessage = (e) => {
+        try {
+          resolve(JSON.parse(e.data).origin ?? '');
+        } catch {
+          reject(e.data);
+        }
+      };
+      worker.onerror = () => reject('SharedWorker error');
+      worker.port.postMessage($1);
+    });
+  )";
+
+  const GURL page_url = reflect_referrer_same_origin_url();
+  NavigateToURLAndWaitForRedirects(tor_browser, page_url, page_url);
+  content::RenderFrameHost* rfh = contents(tor_browser)->GetPrimaryMainFrame();
+
+  std::string onion_origin = url::Origin::Create(page_url).Serialize();
+
+  for (const char* script :
+       {kFrameWebSocketScript, kSharedWorkerWebSocketScript}) {
+    SCOPED_TRACE(script);
+
+    // Same-origin WebSockets keep the .onion origin.
+    EXPECT_EQ(content::EvalJs(
+                  rfh, content::JsReplace(script, echo_request_headers_ws_url(
+                                                      "foobar.onion"))),
+              onion_origin);
+
+    // Cross-origin WebSockets must not disclose the .onion origin.
+    EXPECT_EQ(
+        content::EvalJs(rfh, content::JsReplace(
+                                 script, echo_request_headers_ws_url("a.com"))),
+        "null");
   }
 }
 #endif
