@@ -122,6 +122,10 @@ source_set("profiles") {
   if (enable_tor) {
     deps += [ "//brave/components/tor" ]
   }
+
+  if (is_android) {
+    deps += [ "//brave/browser/password_manager/android:password_migration" ]
+  }
 }
 
 source_set("util") {
