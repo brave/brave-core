@@ -12,3 +12,13 @@ substitutions:
     regex:
       re_pattern: '(origin_value = )tainted_'
       replace: '\1tainted_ || IsCrossOriginOnionRequest(request_)'
+
+  - description: |
+      Send an opaque Origin header on preflights for cross-origin requests from
+      .onion pages.
+
+      The preflight builds its Origin from the tainted flag alone, so without
+      this it disclosed the .onion address the actual request hides.
+    regex:
+      re_pattern: '(cors_non_wildcard_request_headers_support\(\),\s+)tainted_,'
+      replace: '\1tainted_ || IsCrossOriginOnionRequest(request_),'

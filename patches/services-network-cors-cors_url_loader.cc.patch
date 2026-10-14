@@ -1,8 +1,8 @@
 diff --git a/services/network/cors/cors_url_loader.cc b/services/network/cors/cors_url_loader.cc
-index 237985a6c1563facaa22fa58f60c4e75408cbb3b..e53212e8460a9d12a78de6e89118bc0aa0adba44 100644
+index 53b283bc1d612dcedcfaeb2b470ddcc88f487a37..57fddbb872b6fccacfc7861d521ce9d65cec7ff7 100644
 --- a/services/network/cors/cors_url_loader.cc
 +++ b/services/network/cors/cors_url_loader.cc
-@@ -1230,7 +1230,7 @@ void CorsURLLoader::MaybeSetOriginHeader(
+@@ -1232,7 +1232,7 @@ void CorsURLLoader::MaybeSetOriginHeader(
      return;
    }
  
@@ -11,3 +11,12 @@ index 237985a6c1563facaa22fa58f60c4e75408cbb3b..e53212e8460a9d12a78de6e89118bc0a
                                   ? url::Origin().Serialize()
                                   : request_.request_initiator->Serialize();
    if (headers_update_params) {
+@@ -1312,7 +1312,7 @@ void CorsURLLoader::StartPreflightCheck() {
+           request_id_, request_,
+           PreflightController::WithTrustedHeaderClient(
+               options_ & mojom::kURLLoadOptionUseHeaderClient),
+-          context_->cors_non_wildcard_request_headers_support(), tainted_,
++          context_->cors_non_wildcard_request_headers_support(), tainted_ || IsCrossOriginOnionRequest(request_),
+           net::NetworkTrafficAnnotationTag(traffic_annotation_),
+           network_loader_factory_, isolation_info_,
+           weak_devtools_observer_factory_.GetWeakPtr(), net_log_,
