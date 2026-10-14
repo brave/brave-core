@@ -598,8 +598,8 @@ void AssociatedContentManager::GetContent(base::OnceClosure callback) {
   }
 }
 
-std::vector<std::string> AssociatedContentManager::GetContentUuidsWithoutText()
-    const {
+std::vector<std::string>
+AssociatedContentManager::GetContentUuidsRequiringScreenshots() const {
   std::vector<std::string> content_uuids;
   for (auto* delegate : content_delegates_) {
     if (base::TrimWhitespaceASCII(delegate->cached_page_content().content,

@@ -249,9 +249,10 @@ TEST_F(AssociatedContentManagerUnitTest, GetScreenshotsOfContent) {
   manager->AddContent(&with_text);
   manager->AddContent(&without_text);
   manager->AddContent(&no_screenshots);
-  ASSERT_TRUE(base::test::RunUntil(
-      [&]() { return manager->GetContentUuidsWithoutText().size() == 2u; }));
-  EXPECT_THAT(manager->GetContentUuidsWithoutText(),
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    return manager->GetContentUuidsRequiringScreenshots().size() == 2u;
+  }));
+  EXPECT_THAT(manager->GetContentUuidsRequiringScreenshots(),
               testing::ElementsAre(without_text.uuid(), no_screenshots.uuid()));
 
   // Only the named content is asked, and content giving no screenshots is

@@ -2112,7 +2112,7 @@ void ConversationHandler::OnGeneratePageContentComplete(
 
   // Check if content is empty and take screenshots if needed
   std::vector<std::string> content_uuids =
-      associated_content_manager_->GetContentUuidsWithoutText();
+      associated_content_manager_->GetContentUuidsRequiringScreenshots();
   std::erase_if(content_uuids, [this](const std::string& content_uuid) {
     return HasScreenshotsOfContent(content_uuid);
   });
