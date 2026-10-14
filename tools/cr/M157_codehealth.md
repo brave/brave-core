@@ -22,12 +22,11 @@ every desktop tab. Prerender, NoStatePrefetch and other contents that still get
 `AttachTabHelpers` never get a driver at all. Unit tests create the driver
 explicitly, so they don't catch it.
 
-- [ ] `browser/brave_shields/brave_shields_tab_helper.cc:73`, `:164`: create
-      `BraveShieldsTabHelper` in `BraveTabFeatures::Init()` (see the TabHelpers
-      → TabFeatures item), or call
-      `favicon::CreateContentFaviconDriverForWebContents()` before
-      `FromWebContents()` (it's a no-op if the driver exists) and null-check in
-      `WebContentsDestroyed()`
+- [x] `browser/brave_shields/brave_shields_tab_helper.cc`: the constructor calls
+      `favicon::CreateContentFaviconDriverForWebContents()` (a no-op if the
+      driver exists) before observing it, and `WebContentsDestroyed()`
+      null-checks it. `CreatesFaviconDriverWhenMissing` covers it. The move to
+      `BraveTabFeatures::Init()` stays in the TabHelpers → TabFeatures item
 
 ### Brave settings pages lose the top-level `prefs`
 
