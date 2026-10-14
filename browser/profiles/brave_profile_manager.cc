@@ -31,6 +31,7 @@
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
+#include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile_attributes_entry.h"
@@ -75,6 +76,10 @@
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/components/tor/tor_constants.h"
+#endif
+
+#if BUILDFLAG(IS_ANDROID)
+#include "brave/browser/password_manager/android/brave_account_to_profile_password_migration.h"
 #endif
 
 using brave_shields::ControlType;
@@ -264,6 +269,9 @@ void BraveProfileManager::DoFinalInitForServices(Profile* profile,
   misc_metrics::ProfileMiscMetricsServiceFactory::GetServiceForContext(profile);
 #if BUILDFLAG(ENABLE_REQUEST_OTR)
   request_otr::RequestOTRServiceFactory::GetForBrowserContext(profile);
+#endif
+#if BUILDFLAG(IS_ANDROID)
+  brave_password_manager::MaybeMigrateAccountPasswordsToProfileStore(profile);
 #endif
 }
 
