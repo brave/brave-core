@@ -951,6 +951,9 @@
   <message name="IDS_CHAT_UI_PERMISSION_CHALLENGE_HEADER" desc="Heading for permission challenge" formatter_data="webui=AiChat">
     Security warning
   </message>
+  <message name="IDS_CHAT_UI_PERMISSION_CHALLENGE_WEB_TOOL_HEADER" desc="Heading for a permission challenge raised by a website-provided (WebMCP) tool, asking the user whether the AI may run the tool">
+    Tool permission request
+  </message>
   <message name="IDS_CHAT_UI_PERMISSION_CHALLENGE_SUMMARY" desc="Summary for permission challenge" formatter_data="webui=AiChat">
     Brave AI needs your permission for: <ph name="TOOL_LABEL">$1<ex>Navigating to https://www.example.com/path/to/page</ex></ph>
   </message>

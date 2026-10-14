@@ -1044,8 +1044,9 @@ IN_PROC_BROWSER_TEST_F(TabManagementToolPageContentBrowserTest,
 
   tool.UserPermissionGranted(
       "server-challenge", *mojom::PermissionChallenge::New(
-                              "off-topic", std::nullopt, std::nullopt,
-                              std::nullopt, /*supports_allow_session=*/false));
+                              "off-topic", std::nullopt, /*title=*/std::nullopt,
+                              std::nullopt, std::nullopt,
+                              /*supports_allow_session=*/false));
 
   base::DictValue output = base::test::ParseJsonDict(
       RunToolAndGetText(FROM_HERE, &tool, kListInput));
@@ -1072,7 +1073,8 @@ IN_PROC_BROWSER_TEST_F(TabManagementToolPageContentBrowserTest,
 
   tool.UserPermissionGranted(
       use->id, *mojom::PermissionChallenge::New(
-                   "off-topic", std::nullopt, std::nullopt, implications,
+                   "off-topic", std::nullopt, /*title=*/std::nullopt,
+                   std::nullopt, implications,
                    /*supports_allow_session=*/false));
   EXPECT_FALSE(GetChallenge(tool, *ToolUse("2", kListInput)));
 
@@ -1170,6 +1172,7 @@ IN_PROC_BROWSER_TEST_F(TabManagementToolPageContentBrowserTest,
 
   tool.UserPermissionGranted(
       "1", *mojom::PermissionChallenge::New("off-topic", std::nullopt,
+                                            /*title=*/std::nullopt,
                                             std::nullopt, std::nullopt,
                                             /*supports_allow_session=*/false));
 

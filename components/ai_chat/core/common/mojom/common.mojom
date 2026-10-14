@@ -391,6 +391,10 @@ struct PermissionChallenge {
   string? assessment;
   // Tool's explanation for why it needs permission
   string? plan;
+  // Localized heading for the permission prompt, e.g. "Tool Permission
+  // Request" for website-provided (WebMCP) tools. When absent the UI shows
+  // its default "Security warning" heading.
+  string? title;
   // Human-readable, markdown-formatted description of what the tool wants
   // permission to do, rendered with the UI's markdown renderer, e.g. "Brave
   // AI would like to execute **get_stock_price** on
