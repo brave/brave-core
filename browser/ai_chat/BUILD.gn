@@ -242,7 +242,6 @@ if (enable_brave_ai_chat_agent_profile) {
       "//brave/components/brave_origin",
       "//brave/components/containers/buildflags",
       "//chrome/browser:browser_process",
-      "//chrome/browser:browser_public_dependencies",
       "//chrome/browser/actor",
       "//chrome/browser/actor:types",
       "//chrome/browser/actor/ui",
