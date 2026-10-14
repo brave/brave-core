@@ -24,7 +24,6 @@ source_set("new_tab_takeover") {
     "//brave/components/constants",
     "//brave/components/new_tab_takeover:new_tab_takeover_generated_resources",
     "//brave/components/ntp_background_images/browser",
-    "//chrome/browser:browser_public_dependencies",
     "//chrome/browser/autocomplete",
     "//chrome/browser/profiles:profile",
     "//chrome/browser/search_engines",
