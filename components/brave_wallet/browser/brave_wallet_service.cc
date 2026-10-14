@@ -14,6 +14,7 @@
 #include "base/check_op.h"
 #include "base/files/file_path.h"
 #include "base/notreached.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/values.h"
@@ -42,6 +43,7 @@
 #include "brave/components/brave_wallet/common/encoding_utils.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/fil_address.h"
+#include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/solana_address.h"
 #include "brave/components/brave_wallet/common/solana_utils.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
@@ -1566,7 +1568,8 @@ BraveWalletService::GetPendingSignSolTransactionsRequest(int32_t id) {
 void BraveWalletService::AddSuggestTokenRequest(
     mojom::AddSuggestTokenRequestPtr request,
     mojom::EthereumProvider::RequestCallback callback,
-    base::Value id) {
+    base::Value id,
+    base::OnceClosure on_added) {
   // wallet_watchAsset currently only expect non-empty contract address and
   // only ERC20 type.
   DCHECK_EQ(request->token->coin, mojom::CoinType::ETH);
@@ -1576,7 +1579,12 @@ void BraveWalletService::AddSuggestTokenRequest(
   DCHECK(!request->token->is_erc1155);
   DCHECK_EQ(request->token->token_id, "");
 
-  if (add_suggest_token_requests_.contains(request->token->contract_address)) {
+  const std::string addr = request->token->contract_address;
+
+  // Callbacks are stored while an unknown token is being read, before the
+  // suggestion itself is queued.
+  if (add_suggest_token_requests_.contains(addr) ||
+      add_suggest_token_callbacks_.contains(addr)) {
     bool reject = true;
     base::Value formed_response = GetProviderErrorDictionary(
         mojom::ProviderError::kInvalidParams,
@@ -1586,12 +1594,10 @@ void BraveWalletService::AddSuggestTokenRequest(
     return;
   }
 
-  const std::string addr = request->token->contract_address;
-
   // Priority of token source:
   //     1. User asset list
   //     2. BlockchainRegistry
-  //     3. wallet_watchAsset request
+  //     3. decimals and symbol read from the contract
   mojom::BlockchainTokenPtr token;
   for (auto& user_asset : ::brave_wallet::GetAllUserAssets(profile_prefs_)) {
     if (user_asset->coin == mojom::CoinType::ETH &&
@@ -1611,8 +1617,27 @@ void BraveWalletService::AddSuggestTokenRequest(
 
   if (token) {
     request->token = std::move(token);
+    QueueSuggestTokenRequest(std::move(request), std::move(callback),
+                             std::move(id), std::move(on_added));
+    return;
   }
 
+  // GetEthTokenInfo reports success when decimals or symbol are missing, so
+  // it cannot gate storing dapp-supplied metadata.
+  add_suggest_token_callbacks_[addr] = std::move(callback);
+  add_suggest_token_ids_[addr] = std::move(id);
+  json_rpc_service_->GetEthTokenDecimals(
+      addr, request->token->chain_id,
+      base::BindOnce(&BraveWalletService::OnGetSuggestedTokenDecimals,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(request),
+                     std::move(on_added)));
+}
+
+void BraveWalletService::QueueSuggestTokenRequest(
+    mojom::AddSuggestTokenRequestPtr request,
+    mojom::EthereumProvider::RequestCallback callback,
+    base::Value id,
+    base::OnceClosure on_added) {
   if (request->token->coingecko_id.empty()) {
     std::optional<std::string> coingecko_id =
         BlockchainRegistry::GetInstance()->GetCoingeckoId(
@@ -1622,9 +1647,90 @@ void BraveWalletService::AddSuggestTokenRequest(
     }
   }
 
+  const std::string addr = request->token->contract_address;
   add_suggest_token_requests_[addr] = std::move(request);
   add_suggest_token_callbacks_[addr] = std::move(callback);
   add_suggest_token_ids_[addr] = std::move(id);
+  if (on_added) {
+    std::move(on_added).Run();
+  }
+}
+
+void BraveWalletService::OnGetSuggestedTokenDecimals(
+    mojom::AddSuggestTokenRequestPtr request,
+    base::OnceClosure on_added,
+    const std::string& decimals,
+    mojom::ProviderError error,
+    const std::string& error_message) {
+  const std::string contract_address = request->token->contract_address;
+  if (!add_suggest_token_callbacks_.contains(contract_address)) {
+    return;
+  }
+
+  int decimals_int = 0;
+  if (error != mojom::ProviderError::kSuccess || decimals.empty() ||
+      !IsValidHexString(decimals) ||
+      !base::HexStringToInt(decimals, &decimals_int)) {
+    const bool parsed = error == mojom::ProviderError::kSuccess;
+    RejectSuggestedTokenRequest(
+        contract_address, parsed ? mojom::ProviderError::kParsingError : error,
+        parsed ? l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)
+               : error_message);
+    return;
+  }
+
+  request->token->decimals = decimals_int;
+  const std::string chain_id = request->token->chain_id;
+  json_rpc_service_->GetEthTokenSymbol(
+      contract_address, chain_id,
+      base::BindOnce(&BraveWalletService::OnGetSuggestedTokenSymbol,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(request),
+                     std::move(on_added)));
+}
+
+void BraveWalletService::OnGetSuggestedTokenSymbol(
+    mojom::AddSuggestTokenRequestPtr request,
+    base::OnceClosure on_added,
+    const std::string& symbol,
+    mojom::ProviderError error,
+    const std::string& error_message) {
+  const std::string contract_address = request->token->contract_address;
+  if (!add_suggest_token_callbacks_.contains(contract_address)) {
+    return;
+  }
+
+  if (error != mojom::ProviderError::kSuccess || symbol.empty()) {
+    const bool parsed = error == mojom::ProviderError::kSuccess;
+    RejectSuggestedTokenRequest(
+        contract_address, parsed ? mojom::ProviderError::kParsingError : error,
+        parsed ? l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)
+               : error_message);
+    return;
+  }
+
+  request->token->symbol = symbol;
+  auto callback = std::move(add_suggest_token_callbacks_[contract_address]);
+  base::Value id = std::move(add_suggest_token_ids_[contract_address]);
+  add_suggest_token_callbacks_.erase(contract_address);
+  add_suggest_token_ids_.erase(contract_address);
+  QueueSuggestTokenRequest(std::move(request), std::move(callback),
+                           std::move(id), std::move(on_added));
+}
+
+void BraveWalletService::RejectSuggestedTokenRequest(
+    const std::string& contract_address,
+    mojom::ProviderError error,
+    const std::string& error_message) {
+  if (!add_suggest_token_callbacks_.contains(contract_address)) {
+    return;
+  }
+  auto callback = std::move(add_suggest_token_callbacks_[contract_address]);
+  base::Value id = std::move(add_suggest_token_ids_[contract_address]);
+  add_suggest_token_callbacks_.erase(contract_address);
+  add_suggest_token_ids_.erase(contract_address);
+  std::move(callback).Run(mojom::EthereumProviderResponse::New(
+      std::move(id), GetProviderErrorDictionary(error, error_message), true, "",
+      false));
 }
 
 void BraveWalletService::AddGetPublicKeyRequest(
