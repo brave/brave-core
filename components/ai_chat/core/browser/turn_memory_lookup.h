@@ -43,21 +43,27 @@ struct TurnMemoryConfig {
   double relevance_threshold = 0.3;
   // The most learned memories that go in one request.
   size_t max_results = 5;
+  // The most preferences that go in every request, without a question to the
+  // decision model.
+  size_t max_always = 5;
   // The lookup gives up after this time. The turn then has no relevant learned
-  // memories, and the request goes on. The permanent memories still go.
+  // memories, and the request goes on. The preferences still go.
   base::TimeDelta timeout = base::Seconds(3);
   // The longest part of a user message that the search reads.
   size_t max_message_length = 1000;
 };
 
 // Finds the learned memories for one chat turn (Track B):
-//  1. read the permanent memories: they always go
+//  1. read the preferences: they always go, at most |max_always|. The ones that
+//     the user keeps (permanent) come first, then the newest
 //  2. search the index for the memories closest to the last user messages
 //     (the search embeds the messages at the priority of the user)
 //  3. read the found memories from the chat database
 //  4. ask the decision model if each candidate is relevant, and keep the best
 //  5. give the memories text with the date of the last mention
-// Without the search (semantic search is off), only the permanent memories go.
+// Without the search (semantic search is off), only the preferences go. A
+// memory that the user keeps is not sent for that reason: it goes when it is a
+// preference, or when the decision model says that it is relevant.
 // The lookup never fails: when a step fails or takes too long, the result has
 // only the permanent memories. It records each step in trace(), for
 // brave://leo-memory-internals.
@@ -87,18 +93,16 @@ class TurnMemoryLookup {
   // the start).
   const base::ListValue& trace() const { return trace_; }
 
-  // The uuids of the relevant memories that the result has. Empty before the
-  // lookup ends.
-  const std::vector<std::string>& relevant_uuids() const {
-    return relevant_uuids_;
-  }
+  // The uuids of the learned memories that the result has, so that the owner
+  // can mark them as used. Empty before the lookup ends.
+  const std::vector<std::string>& used_uuids() const { return used_uuids_; }
 
   // The text that goes in the request for a learned memory: the memory and the
   // date of its last mention, for example "Lives in Berlin (2026-08-22)".
   static std::string FormatForPrompt(const LearnedMemory& memory);
 
  private:
-  void OnPermanentMemories(std::vector<LearnedMemory> memories);
+  void OnPreferences(std::vector<LearnedMemory> memories);
   void OnMatches(std::vector<LearnedMemoryMatch> matches);
   void OnCandidates(std::vector<LearnedMemory> memories);
   void OnRelevance(std::optional<std::vector<double>> relevance);
@@ -122,13 +126,17 @@ class TurnMemoryLookup {
   // The last user messages that the search and the decision model read, the
   // newest first.
   std::vector<std::string> passages_;
-  // The closest learned memories that are not permanent, the closest first.
+  // The preferences that always go.
+  std::vector<LearnedMemory> always_;
+  // The closest learned memories that are not in |always_|, the closest first.
   std::vector<LearnedMemory> candidates_;
+  // The candidates that the decision model said are relevant, the best first.
+  std::vector<LearnedMemory> selected_;
   EngineConsumer::LearnedMemories result_;
-  std::vector<std::string> relevant_uuids_;
+  std::vector<std::string> used_uuids_;
   // For the log (--vmodule=turn_memory_lookup=1).
   base::TimeTicks start_time_;
-  base::TimeTicks permanent_time_;
+  base::TimeTicks preferences_time_;
   base::TimeTicks searched_time_;
   base::TimeTicks candidates_time_;
   size_t match_count_ = 0;

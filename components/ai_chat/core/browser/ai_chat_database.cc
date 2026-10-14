@@ -2015,21 +2015,26 @@ std::vector<LearnedMemory> AIChatDatabase::GetLearnedMemoriesByUuid(
   return memories;
 }
 
-std::vector<LearnedMemory> AIChatDatabase::GetPermanentLearnedMemories() {
+std::vector<LearnedMemory> AIChatDatabase::GetPreferenceLearnedMemories(
+    size_t limit) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (!LazyInit()) {
     return {};
   }
 
   sql::Statement statement(GetDB().GetUniqueStatement(absl::StrFormat(
-      "SELECT %s FROM learned_memory WHERE type=? ORDER BY created_date ASC,"
-      " uuid ASC",
+      "SELECT %s FROM learned_memory WHERE category=? AND type!=?"
+      " ORDER BY (type=?) DESC, updated_date DESC, created_date DESC,"
+      " uuid ASC LIMIT ?",
       kLightLearnedMemoryColumns)));
   CHECK(statement.is_valid());
-  statement.BindInt(0, static_cast<int>(LearnedMemoryType::kPermanent));
+  statement.BindInt(0, static_cast<int>(LearnedMemoryCategory::kPreference));
+  statement.BindInt(1, static_cast<int>(LearnedMemoryType::kShortTerm));
+  statement.BindInt(2, static_cast<int>(LearnedMemoryType::kPermanent));
+  statement.BindInt64(3, static_cast<int64_t>(limit));
   std::vector<LearnedMemory> memories = ReadLightLearnedMemories(statement);
   if (!statement.Succeeded()) {
-    DVLOG(0) << "Failed to read permanent learned memories: "
+    DVLOG(0) << "Failed to read preference learned memories: "
              << db_.GetErrorMessage();
     return {};
   }

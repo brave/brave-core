@@ -2102,7 +2102,7 @@
     Leo forgets a learned memory that it does not use for a long time. Each time Leo uses the memory, the date moves. A memory that you keep never expires.
   </message>
   <message name="IDS_SETTINGS_LEO_ASSISTANT_MEMORY_KEEP_AS_IS" desc="The tooltip for the lock button of a learned memory that Leo may change. The button keeps the memory as it is.">
-    Keep this memory as it is. Leo will not change it, and will use it in every chat.
+    Keep this memory as it is. Leo will not change it or forget it.
   </message>
   <message name="IDS_SETTINGS_LEO_ASSISTANT_MEMORY_KEPT_AS_IS" desc="The tooltip for the lock button of a learned memory that Leo keeps as it is. The button lets Leo change the memory again.">
     Kept as it is. Select to let Leo update this memory again.

@@ -56,8 +56,11 @@ class LearnedMemoryDataSource {
   virtual void GetLearnedMemoriesByUuid(
       std::vector<std::string> memory_uuids,
       base::OnceCallback<void(std::vector<LearnedMemory>)> callback) = 0;
-  // The permanent memories, the same content as GetLearnedMemoriesByUuid().
-  virtual void GetPermanentLearnedMemories(
+  // The memories of the category preference, at most |limit|, the same content
+  // as GetLearnedMemoriesByUuid(). The ones that the user keeps come first,
+  // then the newest mention. A short-term memory is left out.
+  virtual void GetPreferenceLearnedMemories(
+      size_t limit,
       base::OnceCallback<void(std::vector<LearnedMemory>)> callback) = 0;
   // Adds the memory or replaces the one with the same uuid. A successful write
   // tells the observers of AIChatService (OnLearnedMemoriesChanged).

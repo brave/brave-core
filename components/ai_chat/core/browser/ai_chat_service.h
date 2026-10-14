@@ -347,7 +347,8 @@ class AIChatService : public KeyedService,
   void GetLearnedMemoriesByUuid(
       std::vector<std::string> memory_uuids,
       base::OnceCallback<void(std::vector<LearnedMemory>)> callback) override;
-  void GetPermanentLearnedMemories(
+  void GetPreferenceLearnedMemories(
+      size_t limit,
       base::OnceCallback<void(std::vector<LearnedMemory>)> callback) override;
   void AddOrUpdateLearnedMemory(
       LearnedMemory memory,

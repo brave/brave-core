@@ -147,9 +147,11 @@ class AIChatDatabase : public syncer::SyncMetadataStore {
   virtual std::vector<LearnedMemory> GetLearnedMemoriesByUuid(
       const std::vector<std::string>& memory_uuids);
 
-  // Gets the learned memories of the permanent type, with the same content as
-  // GetLearnedMemoriesByUuid().
-  virtual std::vector<LearnedMemory> GetPermanentLearnedMemories();
+  // Gets the learned memories of the category preference, at most |limit|, with
+  // the same content as GetLearnedMemoriesByUuid(). A short-term memory is
+  // left out: it is about now, not about the user. The ones that the user keeps
+  // (the permanent type) come first, then the newest mention.
+  virtual std::vector<LearnedMemory> GetPreferenceLearnedMemories(size_t limit);
 
   // Adds the memory, or replaces the stored memory with the same uuid,
   // including its source links and previous text. The database sets the text

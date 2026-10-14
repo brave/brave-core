@@ -1656,13 +1656,15 @@ void AIChatService::GetLearnedMemoriesByUuid(
       .Then(std::move(callback));
 }
 
-void AIChatService::GetPermanentLearnedMemories(
+void AIChatService::GetPreferenceLearnedMemories(
+    size_t limit,
     base::OnceCallback<void(std::vector<LearnedMemory>)> callback) {
   if (!ai_chat_db_) {
     RunLater(std::move(callback), std::vector<LearnedMemory>());
     return;
   }
-  ai_chat_db_.AsyncCall(&AIChatDatabase::GetPermanentLearnedMemories)
+  ai_chat_db_.AsyncCall(&AIChatDatabase::GetPreferenceLearnedMemories)
+      .WithArgs(limit)
       .Then(std::move(callback));
 }
 

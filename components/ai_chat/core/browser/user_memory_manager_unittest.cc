@@ -350,13 +350,15 @@ class TestDataSource : public LearnedMemoryDataSource {
         .Then(std::move(callback));
   }
 
-  void GetPermanentLearnedMemories(
+  void GetPreferenceLearnedMemories(
+      size_t limit,
       base::OnceCallback<void(std::vector<LearnedMemory>)> callback) override {
     if (!ready) {
       RunLater(std::move(callback), std::vector<LearnedMemory>());
       return;
     }
-    db_->AsyncCall(&AIChatDatabase::GetPermanentLearnedMemories)
+    db_->AsyncCall(&AIChatDatabase::GetPreferenceLearnedMemories)
+        .WithArgs(limit)
         .Then(std::move(callback));
   }
 
@@ -607,13 +609,18 @@ class UserMemoryManagerTest : public testing::Test {
   }
 
   // Stores an old learned memory.
-  void AddMemory(const std::string& text,
-                 LearnedMemoryType type = LearnedMemoryType::kLongTerm,
-                 base::Time last_used = base::Time()) {
+  void AddMemory(
+      const std::string& text,
+      LearnedMemoryType type = LearnedMemoryType::kLongTerm,
+      base::Time last_used = base::Time(),
+      LearnedMemoryCategory category = LearnedMemoryCategory::kPersonalFact,
+      base::Time updated = base::Time()) {
     LearnedMemory memory;
     memory.uuid = "old-" + text;
     memory.text = text;
     memory.type = type;
+    memory.category = category;
+    memory.updated_date = updated;
     memory.last_used_date = last_used;
     memory.links = {{"old-chat", "old-entry", 0}};
     base::test::TestFuture<bool> future;
@@ -751,11 +758,13 @@ TEST_F(UserMemoryManagerTurnTest, TheChatGetsTheTextAndTheDateOfEachMemory) {
   const base::Time mentioned = base::Time::FromSecondsSinceUnixEpoch(2000000);
   const base::Time created = base::Time::FromSecondsSinceUnixEpoch(1000000);
   auto write = [&](const std::string& text, LearnedMemoryType type,
-                   base::Time created_date, base::Time updated_date) {
+                   LearnedMemoryCategory category, base::Time created_date,
+                   base::Time updated_date) {
     LearnedMemory memory;
     memory.uuid = "old-" + text;
     memory.text = text;
     memory.type = type;
+    memory.category = category;
     memory.created_date = created_date;
     memory.updated_date = updated_date;
     memory.links = {{"old-chat", "old-entry", 0}};
@@ -765,17 +774,19 @@ TEST_F(UserMemoryManagerTurnTest, TheChatGetsTheTextAndTheDateOfEachMemory) {
         .Then(future.GetCallback());
     ASSERT_TRUE(future.Get());
   };
-  write("Is vegetarian.", LearnedMemoryType::kLongTerm, created, mentioned);
-  // Without a date of the last mention, the date of the memory counts.
-  write("Allergic to nuts.", LearnedMemoryType::kPermanent, created,
-        base::Time());
+  write("Is vegetarian.", LearnedMemoryType::kLongTerm,
+        LearnedMemoryCategory::kPersonalFact, created, mentioned);
+  // A preference that the user keeps goes without a question. Without a date
+  // of the last mention, the date of the memory counts.
+  write("Prefers metric units.", LearnedMemoryType::kPermanent,
+        LearnedMemoryCategory::kPreference, created, base::Time());
   client_->relevance = {{"Is vegetarian.", 0.9}, {"Writes TypeScript.", 0.1}};
 
   EngineConsumer::LearnedMemories memories =
       GetMemoriesForTurn({"Suggest a dinner."});
 
   ASSERT_EQ(memories.permanent_info.size(), 1u);
-  EXPECT_EQ(memories.permanent_info[0].text, "Allergic to nuts.");
+  EXPECT_EQ(memories.permanent_info[0].text, "Prefers metric units.");
   EXPECT_EQ(memories.permanent_info[0].date, created);
   ASSERT_EQ(memories.relevant_info.size(), 1u);
   EXPECT_EQ(memories.relevant_info[0].text, "Is vegetarian.");
@@ -812,17 +823,80 @@ TEST_F(UserMemoryManagerTurnTest, BestMemoriesFirstAndOnlyAboveTheThreshold) {
               ElementsAre("Has a beagle named Luna.", "Is vegetarian."));
 }
 
-TEST_F(UserMemoryManagerTurnTest, PermanentMemoriesAlwaysGo) {
-  AddMemory("Allergic to nuts.", LearnedMemoryType::kPermanent);
+TEST_F(UserMemoryManagerTurnTest, PreferencesAlwaysGo) {
+  AddMemory("Prefers short answers.", LearnedMemoryType::kLongTerm,
+            base::Time(), LearnedMemoryCategory::kPreference);
 
   EngineConsumer::LearnedMemories memories =
       GetMemoriesForTurn({"Suggest a dinner."});
 
-  EXPECT_THAT(memories.permanent, ElementsAre("Allergic to nuts."));
-  // A permanent memory is not asked about.
+  // The message has nothing to do with it, and it goes. It is not asked about.
+  EXPECT_THAT(memories.relevant, ElementsAre("Prefers short answers."));
+  ASSERT_EQ(client_->relevance_requests.size(), 1u);
   for (const auto& memory : client_->relevance_requests[0].memories) {
-    EXPECT_NE(memory, "Allergic to nuts.");
+    EXPECT_NE(memory, "Prefers short answers.");
   }
+}
+
+TEST_F(UserMemoryManagerTurnTest,
+       PreferencesAreLimitedAndTheKeptOnesComeFirst) {
+  const base::Time now = base::Time::Now();
+  // Seven preferences, and the limit is five.
+  for (int i = 0; i < 6; ++i) {
+    AddMemory(base::StrCat({"Prefers style ", base::NumberToString(i), "."}),
+              LearnedMemoryType::kLongTerm, base::Time(),
+              LearnedMemoryCategory::kPreference, now - base::Days(10 - i));
+  }
+  AddMemory("Prefers metric units.", LearnedMemoryType::kPermanent,
+            base::Time(), LearnedMemoryCategory::kPreference,
+            now - base::Days(100));
+
+  EngineConsumer::LearnedMemories memories =
+      GetMemoriesForTurn({"Suggest a dinner."});
+
+  // The one that the user keeps, then the four newest. The kept one goes with
+  // the memories that the user wrote.
+  EXPECT_THAT(memories.permanent, ElementsAre("Prefers metric units."));
+  std::vector<std::string> texts;
+  for (const auto& info : memories.relevant_info) {
+    texts.push_back(info.text);
+  }
+  EXPECT_THAT(texts, ElementsAre("Prefers style 5.", "Prefers style 4.",
+                                 "Prefers style 3.", "Prefers style 2."));
+  // A preference over the limit is a normal candidate: the model can still
+  // pick it. The ones that go are not asked about.
+  ASSERT_EQ(client_->relevance_requests.size(), 1u);
+  const auto& asked = client_->relevance_requests[0].memories;
+  EXPECT_THAT(asked, testing::Contains("Prefers style 1."));
+  EXPECT_THAT(asked, testing::Contains("Prefers style 0."));
+  EXPECT_THAT(asked, testing::Not(testing::Contains("Prefers style 5.")));
+}
+
+TEST_F(UserMemoryManagerTurnTest, ShortTermPreferencesAreNotSentAlways) {
+  AddMemory("Wants a quick dinner tonight.", LearnedMemoryType::kShortTerm,
+            base::Time(), LearnedMemoryCategory::kPreference);
+
+  EngineConsumer::LearnedMemories memories =
+      GetMemoriesForTurn({"Write a poem."});
+
+  EXPECT_THAT(memories.relevant, IsEmpty());
+}
+
+TEST_F(UserMemoryManagerTurnTest, AFactThatTheUserKeepsIsAskedAbout) {
+  AddMemory("Allergic to nuts.", LearnedMemoryType::kPermanent);
+
+  // It is kept, but it has nothing to do with the message.
+  EngineConsumer::LearnedMemories memories =
+      GetMemoriesForTurn({"Suggest a dinner."});
+  EXPECT_THAT(memories.permanent, IsEmpty());
+  EXPECT_THAT(client_->relevance_requests[0].memories,
+              testing::Contains("Allergic to nuts."));
+
+  // When the model says it is relevant, it goes with the memories that the
+  // user wrote.
+  client_->relevance = {{"Allergic to nuts.", 0.9}};
+  memories = GetMemoriesForTurn({"Suggest a dinner."});
+  EXPECT_THAT(memories.permanent, ElementsAre("Allergic to nuts."));
 }
 
 TEST_F(UserMemoryManagerTurnTest, TwoUserMessagesAreSentToTheModel) {
@@ -852,19 +926,23 @@ TEST_F(UserMemoryManagerTurnTest, MemoryDeletedAfterTheSyncIsNotSent) {
               ElementsAre("Has a beagle named Luna.", "Writes TypeScript."));
 }
 
-TEST_F(UserMemoryManagerTurnTest, WithoutTheSearchOnlyPermanentMemoriesGo) {
+TEST_F(UserMemoryManagerTurnTest, WithoutTheSearchOnlyPreferencesGo) {
+  AddMemory("Prefers short answers.", LearnedMemoryType::kLongTerm,
+            base::Time(), LearnedMemoryCategory::kPreference);
   AddMemory("Allergic to nuts.", LearnedMemoryType::kPermanent);
   manager_->SetLearnedMemorySearch(nullptr);
 
   EngineConsumer::LearnedMemories memories =
       GetMemoriesForTurn({"Suggest a dinner."});
 
-  EXPECT_THAT(memories.permanent, ElementsAre("Allergic to nuts."));
-  EXPECT_THAT(memories.relevant, IsEmpty());
+  EXPECT_THAT(memories.relevant, ElementsAre("Prefers short answers."));
+  EXPECT_THAT(memories.permanent, IsEmpty());
   EXPECT_THAT(client_->relevance_requests, IsEmpty());
 }
 
-TEST_F(UserMemoryManagerTurnTest, TimeOutGivesOnlyPermanentMemories) {
+TEST_F(UserMemoryManagerTurnTest, TimeOutGivesOnlyPreferences) {
+  AddMemory("Prefers short answers.", LearnedMemoryType::kLongTerm,
+            base::Time(), LearnedMemoryCategory::kPreference);
   AddMemory("Allergic to nuts.", LearnedMemoryType::kPermanent);
   client_->hold_relevance = true;
   client_->relevance = {{"Is vegetarian.", 0.9}};
@@ -880,8 +958,20 @@ TEST_F(UserMemoryManagerTurnTest, TimeOutGivesOnlyPermanentMemories) {
   task_environment_.FastForwardBy(TurnMemoryConfig::FromFeatures().timeout);
 
   EngineConsumer::LearnedMemories memories = future.Take();
-  EXPECT_THAT(memories.permanent, ElementsAre("Allergic to nuts."));
-  EXPECT_THAT(memories.relevant, IsEmpty());
+  EXPECT_THAT(memories.relevant, ElementsAre("Prefers short answers."));
+  EXPECT_THAT(memories.permanent, IsEmpty());
+}
+
+TEST_F(UserMemoryManagerTurnTest, PreferencesThatGoAreUsed) {
+  AddMemory("Prefers short answers.", LearnedMemoryType::kLongTerm,
+            base::Time(), LearnedMemoryCategory::kPreference);
+
+  GetMemoriesForTurn({"Write a poem."});
+  task_environment_.RunUntilIdle();
+
+  // A preference that goes in every request must not expire as unused.
+  EXPECT_FALSE(
+      MemoriesByText()["Prefers short answers."].last_used_date.is_null());
 }
 
 TEST_F(UserMemoryManagerTurnTest, KeepsTheLookupsWithTheirSteps) {
@@ -896,7 +986,7 @@ TEST_F(UserMemoryManagerTurnTest, KeepsTheLookupsWithTheirSteps) {
   for (const auto& step : records[0].trace) {
     steps.push_back(*step.GetDict().FindString("step"));
   }
-  EXPECT_THAT(steps, ElementsAre("messages", "permanent", "search",
+  EXPECT_THAT(steps, ElementsAre("messages", "preferences", "search",
                                  "candidates", "relevance", "done"));
   EXPECT_EQ(*records[0].trace.back().GetDict().FindString("reason"),
             "completed");

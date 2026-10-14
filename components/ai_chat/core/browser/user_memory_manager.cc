@@ -758,7 +758,7 @@ void UserMemoryManager::OnTurnLookupDone(
       record->trace = it->second->trace().Clone();
     }
     // The memories that go to the model are used.
-    MarkLearnedMemoriesUsed(it->second->relevant_uuids(), "chat_turn");
+    MarkLearnedMemoriesUsed(it->second->used_uuids(), "chat_turn");
     base::SequencedTaskRunner::GetCurrentDefault()->DeleteSoon(
         FROM_HERE, std::move(it->second));
     turn_lookups_.erase(it);

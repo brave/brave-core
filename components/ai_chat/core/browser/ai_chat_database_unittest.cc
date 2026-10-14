@@ -1600,15 +1600,56 @@ TEST_P(AIChatDatabaseTest, LearnedMemory_LightQueries) {
   EXPECT_EQ(found[1].uuid, "first");
   EXPECT_FALSE(found[1].previous.has_value());
 
-  std::vector<LearnedMemory> permanents = db_->GetPermanentLearnedMemories();
-  ASSERT_EQ(permanents.size(), 1u);
-  EXPECT_EQ(permanents[0].uuid, "permanent");
-  EXPECT_EQ(permanents[0].type, LearnedMemoryType::kPermanent);
-
   EXPECT_EQ(db_->GetLearnedMemoryStamps(),
             (std::vector<LearnedMemoryStamp>{
                 {"first", 1}, {"permanent", 1}, {"third", 1}}));
   EXPECT_TRUE(db_->GetLearnedMemoriesByUuid({}).empty());
+}
+
+TEST_P(AIChatDatabaseTest, LearnedMemory_PreferencesForEveryRequest) {
+  auto make = [](std::string uuid, LearnedMemoryCategory category,
+                 LearnedMemoryType type, int updated_seconds) {
+    LearnedMemory memory = MakeLearnedMemory(uuid, {});
+    memory.category = category;
+    memory.type = type;
+    memory.updated_date =
+        base::Time::FromSecondsSinceUnixEpoch(updated_seconds);
+    return memory;
+  };
+  for (const LearnedMemory& memory :
+       {make("old", LearnedMemoryCategory::kPreference,
+             LearnedMemoryType::kLongTerm, 100),
+        make("new", LearnedMemoryCategory::kPreference,
+             LearnedMemoryType::kLongTerm, 300),
+        make("kept", LearnedMemoryCategory::kPreference,
+             LearnedMemoryType::kPermanent, 50),
+        make("short", LearnedMemoryCategory::kPreference,
+             LearnedMemoryType::kShortTerm, 400),
+        make("fact", LearnedMemoryCategory::kPersonalFact,
+             LearnedMemoryType::kLongTerm, 500),
+        make("kept-fact", LearnedMemoryCategory::kPersonalFact,
+             LearnedMemoryType::kPermanent, 600),
+        make("topic", LearnedMemoryCategory::kTopic,
+             LearnedMemoryType::kLongTerm, 700)}) {
+    ASSERT_TRUE(db_->AddOrUpdateLearnedMemory(memory));
+  }
+
+  // Only preferences, and not the short-term one. The memory that the user
+  // keeps comes first, then the newest.
+  std::vector<LearnedMemory> preferences =
+      db_->GetPreferenceLearnedMemories(10);
+  ASSERT_EQ(preferences.size(), 3u);
+  EXPECT_EQ(preferences[0].uuid, "kept");
+  EXPECT_EQ(preferences[0].type, LearnedMemoryType::kPermanent);
+  EXPECT_EQ(preferences[1].uuid, "new");
+  EXPECT_EQ(preferences[2].uuid, "old");
+
+  // The limit keeps the first ones.
+  preferences = db_->GetPreferenceLearnedMemories(2);
+  ASSERT_EQ(preferences.size(), 2u);
+  EXPECT_EQ(preferences[0].uuid, "kept");
+  EXPECT_EQ(preferences[1].uuid, "new");
+  EXPECT_TRUE(db_->GetPreferenceLearnedMemories(0).empty());
 }
 
 TEST_P(AIChatDatabaseTest, LearnedMemory_UpgradesAnEarlierShapeOfTheTables) {

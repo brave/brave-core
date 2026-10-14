@@ -6,6 +6,7 @@
 #include "brave/components/ai_chat/core/browser/turn_memory_lookup.h"
 
 #include <algorithm>
+#include <set>
 #include <utility>
 
 #include "base/check.h"
@@ -26,6 +27,8 @@ TurnMemoryConfig TurnMemoryConfig::FromFeatures() {
   config.max_results = static_cast<size_t>(
       std::max(1, features::kLearnedMemoryMaxTurnMemories.Get()));
   config.timeout = features::kLearnedMemoryRelevanceTimeout.Get();
+  config.max_always = static_cast<size_t>(
+      std::max(0, features::kLearnedMemoryMaxAlwaysMemories.Get()));
   return config;
 }
 
@@ -97,36 +100,36 @@ void TurnMemoryLookup::Start() {
                         .Set("timeout_ms",
                              static_cast<int>(config_.timeout.InMilliseconds()))
                         .Set("search", !!search_));
-  data_source_->GetPermanentLearnedMemories(base::BindOnce(
-      &TurnMemoryLookup::OnPermanentMemories, weak_ptr_factory_.GetWeakPtr()));
+  data_source_->GetPreferenceLearnedMemories(
+      config_.max_always, base::BindOnce(&TurnMemoryLookup::OnPreferences,
+                                         weak_ptr_factory_.GetWeakPtr()));
 }
 
-void TurnMemoryLookup::OnPermanentMemories(
-    std::vector<LearnedMemory> memories) {
+void TurnMemoryLookup::OnPreferences(std::vector<LearnedMemory> memories) {
   if (!done_) {
     return;
   }
-  permanent_time_ = base::TimeTicks::Now();
+  preferences_time_ = base::TimeTicks::Now();
+  always_ = std::move(memories);
   base::ListValue texts;
-  for (auto& memory : memories) {
+  for (const LearnedMemory& memory : always_) {
     texts.Append(memory.text);
-    result_.permanent_info.push_back({memory.text, LastMentionDate(memory)});
-    result_.permanent.push_back(std::move(memory.text));
   }
-  Trace("permanent",
+  Trace("preferences",
         base::DictValue()
             .Set("latency_ms",
                  static_cast<int>(
-                     (permanent_time_ - start_time_).InMilliseconds()))
+                     (preferences_time_ - start_time_).InMilliseconds()))
+            .Set("max", static_cast<int>(config_.max_always))
             .Set("memories", std::move(texts)));
   if (!search_ || passages_.empty()) {
     Finish(!search_ ? "no search" : "no message");
     return;
   }
-  // The index has the permanent memories too. They are left out of the
-  // candidates, so ask for more.
+  // The index has the preferences too. They are left out of the candidates,
+  // so ask for more.
   search_->SearchLearnedMemories(
-      passages_, config_.max_candidates + result_.permanent.size(),
+      passages_, config_.max_candidates + always_.size(),
       base::BindOnce(&TurnMemoryLookup::OnMatches,
                      weak_ptr_factory_.GetWeakPtr()));
 }
@@ -141,7 +144,7 @@ void TurnMemoryLookup::OnMatches(std::vector<LearnedMemoryMatch> matches) {
         base::DictValue()
             .Set("latency_ms",
                  static_cast<int>(
-                     (searched_time_ - permanent_time_).InMilliseconds()))
+                     (searched_time_ - preferences_time_).InMilliseconds()))
             .Set("found", static_cast<int>(matches.size())));
   if (matches.empty()) {
     Finish("no match");
@@ -163,9 +166,14 @@ void TurnMemoryLookup::OnCandidates(std::vector<LearnedMemory> memories) {
   }
   candidates_time_ = base::TimeTicks::Now();
   // The memories come in the order of the matches, the closest first. A
-  // memory deleted after the search is not there.
+  // memory deleted after the search is not there. A preference that always
+  // goes is not asked about.
+  std::set<std::string> always_uuids;
+  for (const LearnedMemory& memory : always_) {
+    always_uuids.insert(memory.uuid);
+  }
   for (auto& memory : memories) {
-    if (memory.type != LearnedMemoryType::kPermanent &&
+    if (!always_uuids.contains(memory.uuid) &&
         candidates_.size() < config_.max_candidates) {
       candidates_.push_back(std::move(memory));
     }
@@ -217,10 +225,7 @@ void TurnMemoryLookup::OnRelevance(
   });
   order.resize(std::min(order.size(), config_.max_results));
   for (size_t index : order) {
-    result_.relevant.push_back(FormatForPrompt(candidates_[index]));
-    result_.relevant_info.push_back(
-        {candidates_[index].text, LastMentionDate(candidates_[index])});
-    relevant_uuids_.push_back(candidates_[index].uuid);
+    selected_.push_back(candidates_[index]);
   }
   base::ListValue answers;
   for (size_t i = 0; i < candidates_.size(); ++i) {
@@ -262,15 +267,31 @@ void TurnMemoryLookup::Finish(std::string_view reason) {
   auto step_ms = [](base::TimeTicks from, base::TimeTicks to) {
     return from.is_null() || to.is_null() ? 0 : (to - from).InMilliseconds();
   };
-  VLOG(1) << "Learned memory for a chat turn: permanent "
-          << step_ms(start_time_, permanent_time_) << " ms, search "
-          << step_ms(permanent_time_, searched_time_) << " ms (" << match_count_
-          << " found), read " << step_ms(searched_time_, candidates_time_)
-          << " ms (" << candidates_.size() << " candidates), relevance "
+  // The best of the relevant memories first, then the preferences. A memory
+  // that the user keeps goes with the memories that the user wrote.
+  for (const auto* memories : {&selected_, &always_}) {
+    for (const LearnedMemory& memory : *memories) {
+      if (memory.type == LearnedMemoryType::kPermanent) {
+        result_.permanent.push_back(memory.text);
+        result_.permanent_info.push_back(
+            {memory.text, LastMentionDate(memory)});
+      } else {
+        result_.relevant.push_back(FormatForPrompt(memory));
+        result_.relevant_info.push_back({memory.text, LastMentionDate(memory)});
+      }
+      used_uuids_.push_back(memory.uuid);
+    }
+  }
+  VLOG(1) << "Learned memory for a chat turn: preferences "
+          << step_ms(start_time_, preferences_time_) << " ms, search "
+          << step_ms(preferences_time_, searched_time_) << " ms ("
+          << match_count_ << " found), read "
+          << step_ms(searched_time_, candidates_time_) << " ms ("
+          << candidates_.size() << " candidates), relevance "
           << step_ms(candidates_time_, now) << " ms, total "
           << (now - start_time_).InMilliseconds() << " ms, relevant "
-          << result_.relevant.size() << ", permanent "
-          << result_.permanent.size();
+          << result_.relevant.size() << ", kept " << result_.permanent.size()
+          << ", preferences " << always_.size();
   base::ListValue relevant;
   for (const std::string& memory : result_.relevant) {
     relevant.Append(memory);

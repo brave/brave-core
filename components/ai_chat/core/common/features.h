@@ -283,7 +283,7 @@ extern const base::FeatureParam<base::TimeDelta> kLearnedMemoryRunTimeLimit;
 
 // How long a chat turn waits for its learned memories (the embedding of the
 // last user messages and the relevance answer) before it continues without
-// them. The permanent memories still go.
+// them. The preferences still go.
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 extern const base::FeatureParam<base::TimeDelta> kLearnedMemoryRelevanceTimeout;
 
@@ -297,6 +297,10 @@ COMPONENT_EXPORT(AI_CHAT_COMMON)
 extern const base::FeatureParam<double> kLearnedMemoryRelevanceThreshold;
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 extern const base::FeatureParam<int> kLearnedMemoryMaxTurnMemories;
+// The most preferences that go in every request, without a question to the
+// decision model. The ones that the user keeps come first, then the newest.
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+extern const base::FeatureParam<int> kLearnedMemoryMaxAlwaysMemories;
 #endif  // BUILDFLAG(ENABLE_LOCAL_AI)
 
 }  // namespace ai_chat::features

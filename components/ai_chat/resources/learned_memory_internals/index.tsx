@@ -251,8 +251,8 @@ function stepNote(step: Step): string | null {
     }
     case 'edited_by_user':
       return 'The user edited this memory. Its pending change left the review.'
-    case 'permanent':
-      return 'Memories that the user keeps as they are. They go with every request.'
+    case 'preferences':
+      return 'Preferences go with every request, up to a limit. The memories that the user keeps come first, then the newest.'
     default:
       return null
   }
@@ -666,7 +666,7 @@ const CSS = `
   .step-llm_call, .step-llm_relation { border-left-color: #66f; }
   .step-review, .step-store, .step-review_applied { border-left-color: #2a7; }
   .step-fact_dropped { border-left-color: #d33; }
-  .step-keep_forever, .step-release_keep_forever, .step-permanent,
+  .step-keep_forever, .step-release_keep_forever, .step-preferences,
   .step-blocked, .step-event-keep_forever, .step-event-release_keep_forever {
     border-left-color: #0aa;
   }
