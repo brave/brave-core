@@ -1833,11 +1833,20 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_HISTORY_FILTER_BY_APP" desc="Text used in the app filter button and in the header of app filter sheet.">
         Filter by app
       </message>
-      <message name="IDS_HISTORY_FILTER_BY_HOST" desc="Text used in the host filter button and in the header of host filter sheet." translateable="false">
+      <message name="IDS_HISTORY_APP_FILTER_CHIP_TEXT" desc="Text used in the app filter chip when no option is selected.">
+        App
+      </message>
+      <message name="IDS_HISTORY_FILTER_BY_HOST" desc="Text used in the header of host filter sheet.">
         Filter by host
       </message>
-      <message name="IDS_HISTORY_FILTER_BY_CLIENT" desc="Text used in the client filter button and in the header of client filter sheet." translateable="false">
+      <message name="IDS_HISTORY_HOST_FILTER_CHIP_TEXT" desc="Text used in the host filter chip when no option is selected.">
+        Host
+      </message>
+      <message name="IDS_HISTORY_FILTER_BY_CLIENT" desc="Text used in the header of client filter sheet.">
         Filter by device
+      </message>
+      <message name="IDS_HISTORY_CLIENT_FILTER_CHIP_TEXT" desc="Text used in the client filter chip when no option is selected.">
+        Device
       </message>
       <message name="IDS_HISTORY_ACTOR_FILTER_CHIP_TEXT" desc="Text used in the actor filter chip when no option is selected." translateable="false">
         Who browsed
@@ -1851,7 +1860,7 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_HISTORY_ACTOR_FILTER_ACTOR" desc="Label of the item in the actor filter sheet, when selected restricts the history results to entries in Brave history that are the result of Gemini in Brave browsing while performing an auto browse task for the user." translateable="false">
         Gemini
       </message>
-      <message name="IDS_HISTORY_RESET_FILTERS" desc="Text used in the button to reset all applied history filters." translateable="false">
+      <message name="IDS_HISTORY_RESET_FILTERS" desc="Text used in the button to reset all applied history filters.">
         Clear all
       </message>
       <message name="IDS_HISTORY_IPH_BUBBLE_TEXT" desc="The message on the text bubble shown to educate users about the app history filter.">
@@ -3820,8 +3829,8 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_SIGNIN_DEVICE_TYPE_TABLET" desc="Device type string to be inserted as a placeholder into sign-in promo and web sign-in subtitle messages.">
         your tablet
       </message>
-      <message name="IDS_SIGNIN_DEVICE_TYPE_LAPTOP" desc="Device type string to be inserted as a placeholder into sign-in promo and web sign-in subtitle messages.">
-        your laptop
+      <message name="IDS_SIGNIN_DEVICE_TYPE_COMPUTER" desc="Device type string to be inserted as a placeholder into sign-in promo and web sign-in subtitle messages.">
+        your computer
       </message>
       <message name="IDS_SIGNIN_ACCOUNT_PICKER_BOTTOM_SHEET_SUBTITLE_ON_ALL_DEVICES_SAVED_INFO" desc="This string is the subtitle of a promotional bottom sheet about signing in to Brave with the user's Brave sync chain. It explains the user benefit of signing in to get data on all devices.">
         Sign in to get your saved info and more on all your devices
@@ -4540,6 +4549,9 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_MENU_HELP_CENTER" desc="Menu item for opening the help center. [CHAR_LIMIT=27]">
         Help center
+      </message>
+      <message name="IDS_MENU_REPORT_ISSUE" desc="Menu item for reporting an issue. [CHAR_LIMIT=27]">
+        Report an issue
       </message>
       <message name="IDS_MENU_EMPTY_SUBMENU" desc="Menu item to show when a folder doesn't contain any items.">
         (empty)
