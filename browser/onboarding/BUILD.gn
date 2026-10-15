@@ -14,7 +14,7 @@ source_set("onboarding") {
   ]
   public_deps = [
     "//base",
-    "//content/public/browser",
+    "//chrome/browser/ui/tabs:tabs_public",
   ]
 }
 
@@ -32,11 +32,10 @@ source_set("impl") {
     "//brave/components/resources:strings",
     "//chrome/browser:browser_process",
     "//chrome/browser/first_run",
-    "//chrome/browser/ui:browser_window_header",
     "//chrome/browser/ui/browser_window",
-    "//chrome/browser/ui/tabs:tab_strip",
     "//components/permissions",
     "//components/prefs",
+    "//components/tabs:public",
     "//content/public/browser",
     "//ui/base",
   ]
@@ -53,7 +52,34 @@ source_set("unit_tests") {
     "//brave/browser",
     "//chrome/browser",
     "//chrome/test:test_support",
+    "//components/prefs",
+    "//components/tabs:test_support",
     "//content/test:test_support",
+    "//testing/gmock",
     "//testing/gtest",
+  ]
+}
+
+source_set("browser_tests") {
+  testonly = true
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+
+  sources = [ "onboarding_browsertest.cc" ]
+
+  deps = [
+    ":onboarding",
+    "//base",
+    "//brave/browser/brave_shields",
+    "//brave/components/brave_shields/core/common",
+    "//chrome/browser:browser_process",
+    "//chrome/browser/ui/browser_window",
+    "//chrome/test:test_support",
+    "//chrome/test:test_support_ui",
+    "//components/prefs",
+    "//content/public/browser",
+    "//content/test:test_support",
+    "//net:test_support",
+    "//ui/base",
+    "//url",
   ]
 }
