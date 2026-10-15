@@ -12,6 +12,7 @@
 #include "brave/browser/ui/views/playlist/playlist_add_bubble_view.h"
 #include "brave/browser/ui/views/playlist/playlist_edit_bubble_view.h"
 #include "brave/components/playlist/content/browser/playlist_tab_helper.h"
+#include "components/tabs/public/tab_interface.h"
 #include "ui/views/bubble/bubble_dialog_delegate_view.h"
 #include "ui/views/view.h"
 
@@ -40,7 +41,8 @@ void PlaylistBubblesController::ShowBubble(views::View* anchor_view,
     return;
   }
 
-  auto* tab_helper = PlaylistTabHelper::FromWebContents(&GetWebContents());
+  auto* tab_helper = PlaylistTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(&GetWebContents()));
   CHECK(tab_helper);
 
   switch (bubble_type) {

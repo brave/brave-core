@@ -21,6 +21,7 @@
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/image_metadata_stripper/common/features.h"
 #include "brave/components/misc_metrics/features.h"
+#include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/web_discovery/buildflags/buildflags.h"
 #include "chrome/browser/android/tab_android.h"
 #include "chrome/browser/profiles/profile.h"
@@ -45,6 +46,13 @@
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #endif
 
+#if BUILDFLAG(ENABLE_PLAYLIST)
+#include "brave/browser/playlist/playlist_service_factory.h"
+#include "brave/components/playlist/content/browser/playlist_tab_helper.h"
+#include "brave/components/playlist/core/browser/utils.h"
+#include "components/user_prefs/user_prefs.h"
+#endif
+
 #if BUILDFLAG(ENABLE_WEB_DISCOVERY)
 #include "brave/browser/web_discovery/web_discovery_tab_helper.h"
 #endif
@@ -54,6 +62,28 @@
 #endif
 
 namespace tabs {
+
+namespace {
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+// Returns nullptr when Playlist is disallowed or unavailable for the profile.
+std::unique_ptr<playlist::PlaylistTabHelper> MaybeCreatePlaylistTabHelper(
+    tabs::TabInterface& tab,
+    content::WebContents* contents) {
+  content::BrowserContext* const context = contents->GetBrowserContext();
+  if (!playlist::IsPlaylistAllowed(user_prefs::UserPrefs::Get(context))) {
+    return nullptr;
+  }
+  auto* const playlist_service =
+      playlist::PlaylistServiceFactory::GetForBrowserContext(context);
+  if (!playlist_service) {
+    return nullptr;
+  }
+  return playlist::PlaylistTabHelper::Create(tab, contents, playlist_service);
+}
+#endif  // BUILDFLAG(ENABLE_PLAYLIST)
+
+}  // namespace
 
 BraveTabFeatures::BraveTabFeatures(content::WebContents* web_contents,
                                    Profile* profile)
@@ -123,6 +153,11 @@ BraveTabFeatures::BraveTabFeatures(content::WebContents* web_contents,
   perf_predictor_tab_helper_ =
       std::make_unique<brave_perf_predictor::PerfPredictorTabHelper>(
           tab_interface, web_contents);
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+  playlist_tab_helper_ =
+      MaybeCreatePlaylistTabHelper(tab_interface, web_contents);
+#endif
 }
 
 BraveTabFeatures::~BraveTabFeatures() = default;

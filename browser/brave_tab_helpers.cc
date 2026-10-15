@@ -20,13 +20,11 @@
 #include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"
-#include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/content_settings/page_specific_content_settings_delegate.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "components/content_settings/browser/page_specific_content_settings.h"
-#include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/web_contents.h"
 #include "extensions/buildflags/buildflags.h"
@@ -37,12 +35,6 @@
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/ai_chat/ai_chat_utils.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
-#endif
-
-#if BUILDFLAG(ENABLE_PLAYLIST)
-#include "brave/browser/playlist/playlist_service_factory.h"
-#include "brave/components/playlist/content/browser/playlist_tab_helper.h"
-#include "brave/components/playlist/core/browser/utils.h"
 #endif
 
 #if BUILDFLAG(ENABLE_PRINT_PREVIEW)
@@ -79,18 +71,6 @@ void AttachTabHelpers(content::WebContents* web_contents) {
     );
   }
 #endif
-
-#if BUILDFLAG(ENABLE_PLAYLIST)
-  if (playlist::IsPlaylistAllowed(
-          user_prefs::UserPrefs::Get(web_contents->GetBrowserContext()))) {
-    if (auto* playlist_service =
-            playlist::PlaylistServiceFactory::GetForBrowserContext(
-                web_contents->GetBrowserContext())) {
-      playlist::PlaylistTabHelper::CreateForWebContents(web_contents,
-                                                        playlist_service);
-    }
-  }
-#endif  // BUILDFLAG(ENABLE_PLAYLIST)
 }
 
 void AttachPrivacySensitiveTabHelpers(content::WebContents* web_contents) {

@@ -9,9 +9,11 @@
 #include <utility>
 #include <vector>
 
+#include "base/callback_list.h"
 #include "base/check.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/functional/bind.h"
+#include "base/functional/callback_helpers.h"
 #include "base/scoped_observation.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/playlist/playlist_service_factory.h"
@@ -44,15 +46,6 @@
 #include "ui/actions/actions.h"
 
 namespace page_actions {
-
-namespace {
-
-void AttachTabHelpers(playlist::PlaylistService* service,
-                      content::WebContents* contents) {
-  playlist::PlaylistTabHelper::CreateForWebContents(contents, service);
-}
-
-}  // namespace
 
 class PlaylistPageActionControllerTest : public testing::Test {
  public:
@@ -101,10 +94,24 @@ class PlaylistPageActionControllerTest : public testing::Test {
 
     pinned_actions_model_ =
         std::make_unique<PinnedToolbarActionsModel>(profile_.get());
-    tab_interface_ = std::make_unique<TestTabInterface>(
-        profile_.get(),
-        base::BindRepeating(&AttachTabHelpers, playlist_service_.get()));
+    tab_interface_ =
+        std::make_unique<TestTabInterface>(profile_.get(), base::DoNothing());
     tab_interface_->Activate();
+
+    // Like BraveTabFeatures, rebuild the tab helper for swapped in contents
+    // before the controller handles the swap.
+    tab_helper_ = playlist::PlaylistTabHelper::Create(
+        *tab_interface_, tab_interface_->GetContents(),
+        playlist_service_.get());
+    will_discard_contents_subscription_ =
+        tab_interface_->RegisterWillDiscardContents(base::BindRepeating(
+            [](PlaylistPageActionControllerTest* self, tabs::TabInterface* tab,
+               content::WebContents*, content::WebContents* new_contents) {
+              self->tab_helper_.reset();
+              self->tab_helper_ = playlist::PlaylistTabHelper::Create(
+                  *tab, new_contents, self->playlist_service_.get());
+            },
+            base::Unretained(this)));
 
     page_action_controller_ = std::make_unique<PageActionControllerImpl>(
         *tab_interface_,
@@ -131,6 +138,8 @@ class PlaylistPageActionControllerTest : public testing::Test {
   void TearDown() override {
     observation_.Reset();
     controller_.reset();
+    will_discard_contents_subscription_ = base::CallbackListSubscription();
+    tab_helper_.reset();
     action_item_subscription_ = base::CallbackListSubscription();
     action_item_.reset();
     page_action_controller_.reset();
@@ -143,10 +152,7 @@ class PlaylistPageActionControllerTest : public testing::Test {
     download::ClearIOTaskRunnerForTesting();
   }
 
-  playlist::PlaylistTabHelper* tab_helper() {
-    return playlist::PlaylistTabHelper::FromWebContents(
-        tab_interface_->GetContents());
-  }
+  playlist::PlaylistTabHelper* tab_helper() { return tab_helper_.get(); }
 
   // Mirrors PlaylistTabHelper::OnMediaFilesUpdated(), a public
   // mojom::PlaylistServiceObserver override that the real PlaylistService
@@ -195,6 +201,8 @@ class PlaylistPageActionControllerTest : public testing::Test {
   base::ScopedObservation<PageActionModelInterface, PageActionModelObserver>
       observation_{&observer_};
 
+  std::unique_ptr<playlist::PlaylistTabHelper> tab_helper_;
+  base::CallbackListSubscription will_discard_contents_subscription_;
   std::unique_ptr<PlaylistPageActionController> controller_;
 };
 
@@ -216,24 +224,16 @@ TEST_F(PlaylistPageActionControllerTest, VisibleWithSavedItem) {
 
 // The tab's contents can be swapped out - by tab discarding, or by a shared
 // pinned tab being moved to another window. The controller has to follow the
-// swapped in contents, and stop observing the outgoing contents' tab helper,
-// which is about to be destroyed.
+// tab helper rebuilt for the swapped in contents.
 TEST_F(PlaylistPageActionControllerTest, FollowsDiscardedContents) {
-  playlist::PlaylistTabHelper* const discarded_tab_helper = tab_helper();
-  AddFoundItem(discarded_tab_helper);
+  AddFoundItem();
   ASSERT_TRUE(observer().visible());
 
   // The swapped in contents has no items, so the action hides.
   tab_interface().DiscardContents();
-  ASSERT_NE(discarded_tab_helper, tab_helper());
   EXPECT_FALSE(observer().visible());
 
-  // The discarded contents no longer drives the page action.
-  const int model_change_count = observer().model_change_count();
-  AddFoundItem(discarded_tab_helper);
-  EXPECT_EQ(model_change_count, observer().model_change_count());
-
-  // The swapped in one does.
+  // The rebuilt tab helper drives the page action.
   AddFoundItem();
   EXPECT_TRUE(observer().visible());
 }

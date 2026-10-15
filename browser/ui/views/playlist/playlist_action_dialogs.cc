@@ -29,6 +29,7 @@
 #include "chrome/browser/ui/singleton_tabs.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "components/tabs/public/tab_interface.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "ui/base/cursor/cursor.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
@@ -238,8 +239,9 @@ void ShowPlaylistAddBubble(content::WebContents* contents) {
   CHECK(browser_view);
 
   auto* tab_strip_model = browser_view->browser()->GetTabStripModel();
-  auto* playlist_tab_helper = PlaylistTabHelper::FromWebContents(
-      tab_strip_model->GetActiveWebContents());
+  auto* playlist_tab_helper =
+      PlaylistTabHelper::From(tabs::TabInterface::MaybeGetFromContents(
+          tab_strip_model->GetActiveWebContents()));
   if (playlist_tab_helper->found_items().empty()) {
     return;
   }

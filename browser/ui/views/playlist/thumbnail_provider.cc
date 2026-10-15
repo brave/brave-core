@@ -22,6 +22,7 @@
 #include "brave/components/playlist/content/browser/playlist_constants.h"
 #include "brave/components/playlist/content/browser/playlist_service.h"
 #include "brave/components/playlist/content/browser/playlist_tab_helper.h"
+#include "content/public/browser/web_contents.h"
 #include "net/base/filename_util.h"
 
 namespace {

@@ -25,6 +25,10 @@ namespace brave_perf_predictor {
 class PerfPredictorTabHelper;
 }  // namespace brave_perf_predictor
 
+namespace playlist {
+class PlaylistTabHelper;
+}  // namespace playlist
+
 namespace image_metadata_stripper {
 class FileUploadController;
 }  // namespace image_metadata_stripper
@@ -197,6 +201,11 @@ class BraveTabFeatures : public TabFeatures {
   // Estimates the bandwidth that Shields saves.
   std::unique_ptr<brave_perf_predictor::PerfPredictorTabHelper>
       perf_predictor_tab_helper_;
+#if BUILDFLAG(ENABLE_PLAYLIST)
+  // Finds and saves the page's media. Null when Playlist is unavailable.
+  // Declared before the page action controller that observes it.
+  std::unique_ptr<playlist::PlaylistTabHelper> playlist_tab_helper_;
+#endif
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
   // Looks up Wayback Machine snapshots. Null when disabled. Declared before
   // the page action controller that observes it.
