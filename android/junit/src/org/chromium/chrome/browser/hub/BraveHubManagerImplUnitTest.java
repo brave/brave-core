@@ -27,7 +27,6 @@ import org.robolectric.Robolectric;
 import org.robolectric.android.controller.ActivityController;
 
 import org.chromium.base.BraveFeatureList;
-import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.supplier.LazyOneshotSupplier;
 import org.chromium.base.supplier.MonotonicObservableSupplier;
@@ -131,8 +130,7 @@ public class BraveHubManagerImplUnitTest {
         if (mHubManager != null) mHubManager.destroy();
         mActivityController.close();
         ChromeSharedPreferences.getInstance().removeKey(ChromePreferenceKeys.TOOLBAR_TOP_ANCHORED);
-        ChromeSharedPreferences.getInstance()
-                .removeKey(BravePreferenceKeys.BRAVE_ENABLE_BOTTOM_BAR);
+        ChromeSharedPreferences.getInstance().removeKey(ChromePreferenceKeys.BOTTOM_BAR_ENABLED);
     }
 
     @Test
@@ -236,7 +234,7 @@ public class BraveHubManagerImplUnitTest {
 
     private void setBottomBarSettingEnabled(boolean enabled) {
         ChromeSharedPreferences.getInstance()
-                .writeBoolean(BravePreferenceKeys.BRAVE_ENABLE_BOTTOM_BAR, enabled);
+                .writeBoolean(ChromePreferenceKeys.BOTTOM_BAR_ENABLED, enabled);
     }
 
     private View showHub() {
