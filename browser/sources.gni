@@ -758,10 +758,6 @@ if (enable_tor) {
 }
 
 if (enable_widevine) {
-  brave_chrome_browser_sources += [
-    "//brave/browser/brave_drm_tab_helper.cc",
-    "//brave/browser/brave_drm_tab_helper.h",
-  ]
   brave_chrome_browser_deps += [
     "//brave/browser/widevine",
     "//brave/components/brave_drm",
