@@ -10,6 +10,8 @@
 #include <utility>
 #include <vector>
 
+#include "base/containers/span.h"
+#include "base/location.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_split.h"
@@ -45,6 +47,7 @@
 #include "chrome/browser/ui/views/side_panel/side_panel.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_coordinator.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_web_ui_view.h"
+#include "chrome/common/chrome_isolated_world_ids.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/browser/render_frame_host.h"
@@ -963,7 +966,10 @@ class AIChatSidePanelLinkBrowserTest : public AIChatGlobalSidePanelBrowserTest {
 
   static EchoedHeaders GetEchoedHeaders(content::WebContents* contents) {
     const std::string body =
-        content::EvalJs(contents, "document.body.innerText").ExtractString();
+        content::EvalJs(contents, "document.body.innerText",
+                        content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+                        ISOLATED_WORLD_ID_BRAVE_INTERNAL)
+            .ExtractString();
     const std::vector<std::string> lines = base::SplitString(
         body, "\n", base::TRIM_WHITESPACE, base::SPLIT_WANT_ALL);
     EXPECT_EQ(lines.size(), 2u) << body;
@@ -1019,8 +1025,7 @@ class AIChatSidePanelLinkBrowserTest : public AIChatGlobalSidePanelBrowserTest {
   }
 
   // Has the mock engine answer with `completion`, citing `sources`.
-  void Respond(const std::string& completion,
-               const std::vector<GURL>& sources) {
+  void Respond(const std::string& completion, base::span<const GURL> sources) {
     auto generate_future = SetupMockGenerateAssistantResponse();
     conversation_handler_->SubmitHumanConversationEntry("Question",
                                                         std::nullopt);
@@ -1050,22 +1055,46 @@ class AIChatSidePanelLinkBrowserTest : public AIChatGlobalSidePanelBrowserTest {
   // Waits for the response in `frame` to render a link with `text` to `url`.
   bool WaitForLink(content::RenderFrameHost* frame,
                    const GURL& url,
-                   std::string_view text) {
-    constexpr char kHasLinkScript[] = R"(
-      [...document.querySelectorAll('a[target=_blank]')].some(
-          (a) => a.href === $1 && a.textContent.trim() === $2)
+                   std::string_view text,
+                   base::Location location = base::Location::Current()) {
+    SCOPED_TRACE(location.ToString());
+    // Resolves once the link exists, now or after a later DOM change.
+    constexpr char kWaitForLinkScript[] = R"(
+      new Promise((resolve) => {
+        const hasLink = () =>
+            [...document.querySelectorAll('a[target=_blank]')].some(
+                (a) => a.href === $1 && a.textContent.trim() === $2);
+        if (hasLink()) {
+          resolve(true);
+          return;
+        }
+        const observer = new MutationObserver(() => {
+          if (hasLink()) {
+            observer.disconnect();
+            resolve(true);
+          }
+        });
+        // `document`, as the body may not exist yet.
+        observer.observe(document,
+            {childList: true, subtree: true, characterData: true,
+             attributes: true});
+      })
     )";
-    return base::test::RunUntil([&]() {
-      return content::EvalJs(frame,
-                             content::JsReplace(kHasLinkScript, url, text))
-          .ExtractBool();
-    });
+    const content::EvalJsResult result = content::EvalJs(
+        frame, content::JsReplace(kWaitForLinkScript, url, text),
+        content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+        ISOLATED_WORLD_ID_BRAVE_INTERNAL);
+    EXPECT_EQ(true, result);
+    return result == true;
   }
 
   // Clicks the link and returns the tab it loaded in.
-  content::WebContents* FollowLink(content::RenderFrameHost* frame,
-                                   const GURL& url,
-                                   std::string_view text) {
+  content::WebContents* FollowLink(
+      content::RenderFrameHost* frame,
+      const GURL& url,
+      std::string_view text,
+      base::Location location = base::Location::Current()) {
+    SCOPED_TRACE(location.ToString());
     constexpr char kClickLinkScript[] = R"(
       [...document.querySelectorAll('a[target=_blank]')]
           .find((a) => a.href === $1 && a.textContent.trim() === $2)
@@ -1074,8 +1103,10 @@ class AIChatSidePanelLinkBrowserTest : public AIChatGlobalSidePanelBrowserTest {
     content::TestNavigationObserver observer(url);
     observer.StartWatchingNewWebContents();
     observer.WatchExistingWebContents();
-    EXPECT_TRUE(content::ExecJs(
-        frame, content::JsReplace(kClickLinkScript, url, text)));
+    EXPECT_TRUE(content::ExecJs(frame,
+                                content::JsReplace(kClickLinkScript, url, text),
+                                content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+                                ISOLATED_WORLD_ID_BRAVE_INTERNAL));
     observer.Wait();
     content::WebContents* active =
         browser()->tab_strip_model()->GetActiveWebContents();
@@ -1084,9 +1115,12 @@ class AIChatSidePanelLinkBrowserTest : public AIChatGlobalSidePanelBrowserTest {
   }
 
   // Checks where the link opened and that B saw a cross-site request.
-  void ExpectCrossSiteNavigation(content::WebContents* site_a_tab,
-                                 int initial_tab_count,
-                                 content::WebContents* opened) {
+  void ExpectCrossSiteNavigation(
+      content::WebContents* site_a_tab,
+      int initial_tab_count,
+      content::WebContents* opened,
+      base::Location location = base::Location::Current()) {
+    SCOPED_TRACE(location.ToString());
     auto* tab_strip = browser()->tab_strip_model();
     if (IsGlobalFlagEnabled()) {
       // The tab next to the panel navigated from A to B.
@@ -1098,10 +1132,15 @@ class AIChatSidePanelLinkBrowserTest : public AIChatGlobalSidePanelBrowserTest {
     }
 
     const EchoedHeaders headers = GetEchoedHeaders(opened);
-    EXPECT_EQ(headers.sec_fetch_site, "cross-site");
-    EXPECT_THAT(headers.cookie, testing::Not(testing::HasSubstr("strict=1")));
-    EXPECT_THAT(headers.cookie, testing::HasSubstr("lax=1"));
-    EXPECT_THAT(headers.cookie, testing::HasSubstr("none=1"));
+    const std::string context =
+        base::StrCat({"Cookie: ", headers.cookie,
+                      ", Sec-Fetch-Site: ", headers.sec_fetch_site,
+                      ", URL: ", opened->GetLastCommittedURL().spec()});
+    EXPECT_EQ(headers.sec_fetch_site, "cross-site") << context;
+    EXPECT_THAT(headers.cookie, testing::Not(testing::HasSubstr("strict=1")))
+        << context;
+    EXPECT_THAT(headers.cookie, testing::HasSubstr("lax=1")) << context;
+    EXPECT_THAT(headers.cookie, testing::HasSubstr("none=1")) << context;
   }
 };
 
@@ -1114,7 +1153,7 @@ IN_PROC_BROWSER_TEST_P(AIChatSidePanelLinkBrowserTest,
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), echo_url));
   const EchoedHeaders headers =
       GetEchoedHeaders(browser()->tab_strip_model()->GetActiveWebContents());
-  EXPECT_EQ(headers.sec_fetch_site, "none");
+  EXPECT_EQ(headers.sec_fetch_site, "none") << "Cookie: " << headers.cookie;
   EXPECT_THAT(headers.cookie, testing::HasSubstr("strict=1"));
   EXPECT_THAT(headers.cookie, testing::HasSubstr("lax=1"));
   EXPECT_THAT(headers.cookie, testing::HasSubstr("none=1"));

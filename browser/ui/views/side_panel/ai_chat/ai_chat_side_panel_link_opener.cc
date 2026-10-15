@@ -83,6 +83,8 @@ content::WebContents* OpenSidePanelLinkContents(
     const GURL& target_url,
     const blink::mojom::WindowFeatures& window_features,
     bool user_gesture) {
+  // Without a window or contents there is nowhere to open the link, so it is
+  // dropped, matching how content drops a popup nobody adopts.
   if (!browser || !new_contents) {
     return nullptr;
   }
@@ -118,6 +120,8 @@ content::WebContents* OpenSidePanelLinkContents(
   opener->ApplyTo(params);
   if (navigate_active_tab) {
     tabs::TabInterface* active_tab = browser->GetActiveTabInterface();
+    // No tab to navigate next to the panel (e.g. the window is closing), and
+    // opening a new tab instead would defy the global panel's behavior.
     if (!active_tab) {
       return nullptr;
     }
