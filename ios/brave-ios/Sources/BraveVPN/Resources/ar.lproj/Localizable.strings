@@ -40,9 +40,6 @@
 /* App Version field for customer support contact form. */
 "vpn.contactFormAppVersion" = "نسخة من التطبيق";
 
-/* Cellular Carrier field for customer support contact form. */
-"vpn.contactFormCarrier" = "الناقل الخلوي";
-
 /* Text to tell user to not modify support info below email's body. */
 "vpn.contactFormDoNotEditText" = "Brave لا يتتبعك أو يعرف كيف تستخدم تطبيقنا، لذلك لا نعرف كيف قمت بإعداد VPN. يرجى مشاركة معلومات حول المشكلة التي تواجهها وسنبذل قصارى جهدنا لحلها في أقرب وقت ممكن.";
 
