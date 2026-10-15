@@ -1881,6 +1881,18 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="2737084171727561244">Anar a la carpeta</translation>
 <translation id="3499452861061048987">Afegir token</translation>
 <translation id="5046066249040287308">Serveis de la Cartera de Brave</translation>
+<translation id="8767749833522980474">Crypto</translation>
+<translation id="4509084261025090951">Obté la teva targeta</translation>
+<translation id="3624463584770657372">Verifica la teva identitat per veure els números de la targeta i començar a gastar.</translation>
+<translation id="2508337767012636987">Prem per verificar</translation>
+<translation id="703964541421486259">Amaga els saldos</translation>
+<translation id="302114796458112924">Mostra els saldos</translation>
+<translation id="9083210401924577263">Targeta de Recompenses de Brave</translation>
+<translation id="2433507940547922241">Aparença</translation>
+<translation id="3435738964857648380">Seguretat</translation>
+<translation id="6700561332544287722">Requereix desbloqueig la pròxima vegada</translation>
+<translation id="5605360570977617291">Vols amagar <ph name="CARD_NAME"/> de la pàgina d'inici?</translation>
+<translation id="2721464457853369512">El teu saldo de <ph name="CARD_NAME"/> no canvia. Això només amaga la targeta de la pàgina d'inici. Pots tornar-la a mostrar en qualsevol moment a Configuració, a l'apartat Cartera.</translation>
 <translation id="3155170474926428993">Llançador de Tor</translation>
 <translation id="3745016858329272300">Informació general</translation>
 <translation id="4045404575593562245">Esdeveniments de control de Tor</translation>
@@ -1920,7 +1932,6 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="6261915643960475695">Empresa</translation>
 <translation id="8265589281845759879">Cotxes</translation>
 <translation id="7726519849288907308">Celebritats</translation>
-<translation id="8767749833522980474">Crypto</translation>
 <translation id="7577010593836079522">Cultura</translation>
 <translation id="6807791860691150411">Educació</translation>
 <translation id="3706423975342040244">Entreteniment</translation>
@@ -2099,9 +2110,6 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="3067105725259639716">Configura Notícies de Brave</translation>
 <translation id="6286510487460330478">Configura les dreceres del teclat</translation>
 <translation id="9214819486716388964">Mostra Conversa de Brave</translation>
-<translation id="5950760360751948276">Mostra la barra de l'adreça d'interès</translation>
-<translation id="2960757369920422313">Mostra la barra de l'adreça d'interès a una pàgina de pestanya nova</translation>
-<translation id="522953399371747698">Amaga la barra de l'adreça d'interès</translation>
 <translation id="9079813619990532635">Exportar totes les adreces d'interès</translation>
 <translation id="134184943774258988">Activa/Desactiva la visibilitat del botó de totes les adreces d'interès</translation>
 <translation id="2158862020143233462">Activa/Desactiva els escuts</translation>
@@ -2216,6 +2224,7 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="5820497878628354073">Codi d'estat: <ph name="STATUS_CODE"/>, codi d'estat intern: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">Has arribat al límit de la tarifa Premium. Torna-ho a provar d'aquí a unes hores.</translation>
 <translation id="6873128487002733717">Has assolit el límit premium per aquest model. Selecciona un model diferent o torna-ho a provar més tard.</translation>
+<translation id="2688661132468689309">Has assolit el límit premium per aquest model. Es restableix d'aquí a <ph name="RESET_DURATION"/> (a les <ph name="RESET_TIME"/>). Selecciona un model diferent o torna-ho a provar llavors.</translation>
 <translation id="3683964919745779766">Has assolit el límit de taxa per aquest model i no et queden crèdits. Torna-ho a provar més tard.</translation>
 <translation id="7692501701960747469">La clau API configurada per a aquest model no és vàlida. Comprova la teva configuració i torna-ho a provar.</translation>
 <translation id="7905602379229309187">En aquests moments, el punt final està sobrecarregat. Torna-ho a provar més tard.</translation>
@@ -2224,12 +2233,12 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="3852808100039989429">Hola, soc en Leo, un assistent d'IA de Brave. Tinc la tecnologia Qwen VL 30B, un model creat per Alibaba Cloud per ser eficient i aplicable a molts casos d'ús. Qwen s’allotja als servidors de Brave mitjançant la nostra pròpia infraestructura segura.<ph name="LINK_BEFORE"/>Més informació<ph name="LINK_AFTER"/></translation>
 <translation id="8659225822055186905">Hola, soc en Leo, un assistent d'IA de Brave. Tinc la tecnologia GLM-5.3 Flash, un model creat per Zhipu AI per ser eficient i aplicable a molts casos d'ús. GLM-5.3 Flash s'allotja a través de la seva pròpia infraestructura segura verificable de NEAR.<ph name="LINK_BEFORE"/>Més informació<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">Hola, soc en Leo. Soc un assistent amb IA de Brave. Funciono amb Claude Instant, un model creat per Anthropic per gestionar tasques de conversa i processament de text. Claude Instant s'allotja a Brave mitjançant la nostra infraestructura segura.<ph name="LINK_BEFORE"/>Més informació<ph name="LINK_AFTER"/></translation>
-<translation id="3789772321824682783">Hola, soc en Leo. Estic en un servidor intermedi de Brave i funciono amb Claude Haiku, un model creat per Anthropic per permetre tasques de conversa i de processament de textos. Claude Haiku s'allotja als servidors de Brave mitjançant la nostra pròpia infraestructura segura.<ph name="LINK_BEFORE"/>Per a més informació<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Hola, soc en Leo. Estic en un servidor intermedi de Brave i funciono amb Claude Sonnet, un model creat per Anthropic per permetre tasques de conversa i de processament de textos. Claude Sonnet s'allotja als servidors de Brave mitjançant la nostra pròpia infraestructura segura.<ph name="LINK_BEFORE"/>Per a més informació<ph name="LINK_AFTER"/></translation>
-<translation id="3399141352144059821">Hola, soc en Leo, un assistent d'IA de Brave. Tinc la tecnologia Grok 4.3, un model creat per xAI per ser eficient i aplicable a molts casos d'ús. Grok 4.3 s'allotja als servidors de Brave mitjançant la nostra pròpia infraestructura segura.<ph name="LINK_BEFORE"/>Més informació<ph name="LINK_AFTER"/></translation>
-<translation id="8868813509973985458">Hola, soc en Leo, un assistent d'IA de Brave. Tinc la tecnologia GPT 5.4, un model creat per OpenAI per ser eficient i aplicable a molts casos d'ús. GPT 5.4 s'allotja als servidors de Brave mitjançant la nostra pròpia infraestructura segura.<ph name="LINK_BEFORE"/>Més informació<ph name="LINK_AFTER"/></translation>
+<translation id="6676306995311143470">Hola, soc en Leo, un assistent d'IA de Brave. Tinc la tecnologia Grok 4.6, el model de raonament d'avantguarda de xAI a Amazon Bedrock Mantle. Grok 4.6 es proporciona mitjançant la infraestructura segura d'AWS de Brave.<ph name="LINK_BEFORE"/>Més informació<ph name="LINK_AFTER"/></translation>
+<translation id="2394656730986208060">Hola, soc en Leo, un assistent d'IA de Brave. Tinc la tecnologia GPT 5.6 Luna, el model ràpid i de baixa latència d'OpenAI a Amazon Bedrock Mantle. GPT 5.6 Luna es proporciona mitjançant la infraestructura segura d'AWS de Brave.<ph name="LINK_BEFORE"/>Més informació<ph name="LINK_AFTER"/></translation>
+<translation id="5278969721580944810">Hola, soc en Leo, un assistent d'IA de Brave. Tinc la tecnologia GPT 5.6 Terra, el model de producció equilibrat d'OpenAI a Amazon Bedrock Mantle. GPT 5.6 Terra es proporciona mitjançant la infraestructura segura d'AWS de Brave.<ph name="LINK_BEFORE"/>Més informació<ph name="LINK_AFTER"/></translation>
 <translation id="5037359072717016032">Hola, soc en Leo, un assistent d'IA de Brave. Tinc la tecnologia Mistral Large, un model creat per Mistral per ser eficient i aplicable a molts casos d'ús. Mistral Large s'allotja als servidors de Brave mitjançant la nostra pròpia infraestructura segura.<ph name="LINK_BEFORE"/>Més informació<ph name="LINK_AFTER"/></translation>
-<translation id="4026902371301997261">Hola, soc en Leo, un assistent d'IA de Brave. Tinc la tecnologia Qwen 3 235B, un model creat per Alibaba Cloud per ser eficient i aplicable a molts casos d'ús. Qwen 3 235B s'allotja als servidors de Brave mitjançant la nostra pròpia infraestructura segura.<ph name="LINK_BEFORE"/>Més informació<ph name="LINK_AFTER"/></translation>
+<translation id="5475035333915581972">Hola, soc en Leo, un assistent d'IA de Brave. Tinc la tecnologia Qwen 3.8 Flash Next, un model creat per Alibaba Cloud per ser eficient i aplicable a molts casos d'ús. Qwen 3.8 Flash Next s'allotja als servidors de Brave mitjançant la nostra pròpia infraestructura segura.<ph name="LINK_BEFORE"/>Més informació<ph name="LINK_AFTER"/></translation>
 <translation id="8720758690351028307">Hola, soc en Leo, un assistent d'IA de Brave. Tinc la tecnologia Deepseek V3.2, un model creat per Deepseek per ser eficient i aplicable a molts casos d'ús. Deepseek V3.2 s'allotja als servidors de Brave mitjançant la nostra pròpia infraestructura segura.<ph name="LINK_BEFORE"/>Més informació<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">Hola, soc en Leo. Estic en un servidor intermedi de Brave i funciono amb Claude Opus, un model creat per Anthropic per permetre tasques de conversa i de processament de textos. Claude Opus s'allotja als servidors de Brave mitjançant la nostra pròpia infraestructura segura.<ph name="LINK_BEFORE"/>Per a més informació<ph name="LINK_AFTER"/></translation>
 <translation id="7238858567393403597">Hola, soc en Leo, un assistent d'IA de Brave. Tinc la tecnologia GPT OSS 120B, un model creat per OpenAI per ser eficient i aplicable a molts casos d'ús. GPT OSS 120B s'allotja als servidors de Brave mitjançant la nostra pròpia infraestructura segura.<ph name="LINK_BEFORE"/>Més informació<ph name="LINK_AFTER"/></translation>
@@ -2242,7 +2251,6 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="4773408460773097271">Ollama</translation>
 <translation id="631371844654031449">Models recomanats</translation>
 <translation id="6568044140836233369">Mostrar tots els models</translation>
-<translation id="6187065185557150870">Xat</translation>
 <translation id="4685048769603134644">Obre pàgina completa</translation>
 <translation id="2961040541145689181">Xat nou</translation>
 <translation id="7557539689487606886">Canvia a Premium</translation>
@@ -2366,13 +2374,13 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="887511360213807449">L'historial està deshabilitat</translation>
 <translation id="5380979378058584412">Per poder accedir a les teves converses anteriors amb Leo, hauràs d'habilitar l'historial de converses.</translation>
 <translation id="3185367320601718531">Conversa i generació de text</translation>
-<translation id="2793458212460902934">Ràpid • Cercador • Eines</translation>
 <translation id="8506027496671575183">Cercador • Visió • Eines</translation>
 <translation id="3184606955650139158">Ràpid • Cercador • Visió</translation>
 <translation id="7465032796278724624">Verificadament privat amb NEAR AI TEE</translation>
 <translation id="8782867266498869301">El model canvia dinàmicament per utilitzar el més adequat per a la tasca</translation>
 <translation id="7348809809749151120">Ràpid • Cercador</translation>
 <translation id="3213834013136637671">Cercador • Visió</translation>
+<translation id="2793458212460902934">Ràpid • Cercador • Eines</translation>
 <translation id="5276681919620506371">Cercador • Eines</translation>
 <translation id="7434375176361995333">Resums • Ràpid</translation>
 <translation id="3965507912994218570">Configuració de Leo</translation>
@@ -2936,9 +2944,7 @@ Connecteu-vos-hi ara mateix!</translation>
 <translation id="3750210661641549834">Per crear el teu compte, verifica la teva adreça de correu electrònic.</translation>
 <translation id="4351175281479794167">Introdueix el codi de verificació</translation>
 <translation id="1672793037892810340">Hauries d'haver rebut un correu amb un codi que hauràs d'introduir.</translation>
-<translation id="4821255729182569254">Reenvia el correu de confirmació</translation>
 <translation id="5837679375142747484">No veus el correu? Comprova la teva carpeta de spam o <ph name="BEGIN_LINK"/>torna'l a enviar<ph name="END_LINK"/>.</translation>
-<translation id="1080588816740959885">No veus el correu? Comprova la teva carpeta de spam o torna'l a enviar.</translation>
 <translation id="1020730839570724178">Cancel·la el registre</translation>
 <translation id="7155125570724238786">Per restablir la teva contrasenya, verifica la teva adreça de correu electrònic.</translation>
 <translation id="816074628631172140">El teu correu electrònic s'ha verificat. Estableix una nova contrasenya per completar el restabliment de la contrasenya.</translation>

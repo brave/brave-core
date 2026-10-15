@@ -1881,6 +1881,18 @@
 <translation id="2737084171727561244">前往投资组合</translation>
 <translation id="3499452861061048987">添加代币</translation>
 <translation id="5046066249040287308">Brave 钱包实用程序服务</translation>
+<translation id="8767749833522980474">加密</translation>
+<translation id="4509084261025090951">获取您的卡片</translation>
+<translation id="3624463584770657372">验证您的身份以查看卡号并开始消费。</translation>
+<translation id="2508337767012636987">轻击以验证</translation>
+<translation id="703964541421486259">隐藏余额</translation>
+<translation id="302114796458112924">显示余额</translation>
+<translation id="9083210401924577263">Brave 奖励卡</translation>
+<translation id="2433507940547922241">外观</translation>
+<translation id="3435738964857648380">安全</translation>
+<translation id="6700561332544287722">下次需要解锁</translation>
+<translation id="5605360570977617291">从主页隐藏 <ph name="CARD_NAME"/>？</translation>
+<translation id="2721464457853369512">您的 <ph name="CARD_NAME"/> 余额保持不变。这仅会从主页隐藏该卡片。您随时可以在“设置”的“钱包”下重新显示它。</translation>
 <translation id="3155170474926428993">Tor 启动器</translation>
 <translation id="3745016858329272300">基本信息</translation>
 <translation id="4045404575593562245">Tor 控制活动</translation>
@@ -1920,7 +1932,6 @@ other {# 个来源}
 <translation id="6261915643960475695">商业</translation>
 <translation id="8265589281845759879">汽车</translation>
 <translation id="7726519849288907308">名人</translation>
-<translation id="8767749833522980474">加密</translation>
 <translation id="7577010593836079522">文化</translation>
 <translation id="6807791860691150411">学历</translation>
 <translation id="3706423975342040244">娱乐</translation>
@@ -2099,9 +2110,6 @@ other {# 个来源}
 <translation id="3067105725259639716">配置 Brave 新闻</translation>
 <translation id="6286510487460330478">配置快捷方式</translation>
 <translation id="9214819486716388964">展示 Brave 对话</translation>
-<translation id="5950760360751948276">始终显示书签栏</translation>
-<translation id="2960757369920422313">在 NTP 上显示书签栏</translation>
-<translation id="522953399371747698">隐藏书签栏</translation>
 <translation id="9079813619990532635">导出所有书签</translation>
 <translation id="134184943774258988">切换所有书签按钮的可见性</translation>
 <translation id="2158862020143233462">切换防护罩</translation>
@@ -2216,6 +2224,7 @@ other {# 个来源}
 <translation id="5820497878628354073">状态码:<ph name="STATUS_CODE"/>,内部状态码:<ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">您已达到  premium 速率上限。请几小时后重试。</translation>
 <translation id="6873128487002733717">您已达到此模型的高级版费用上限。请选择其他模型或稍后再试。</translation>
+<translation id="2688661132468689309">您已达到该模型的高级版限制。将于 <ph name="RESET_DURATION"/>（在 <ph name="RESET_TIME"/>）后重置。请选择其他模型或届时重试。</translation>
 <translation id="3683964919745779766">您已达到此模型的费用上限或积分不足。请稍后再试。</translation>
 <translation id="7692501701960747469">为该模型配置的 API 密钥无效。请检查您的配置并重试。</translation>
 <translation id="7905602379229309187">端点当前过载。请稍后再试。</translation>
@@ -2224,12 +2233,12 @@ other {# 个来源}
 <translation id="3852808100039989429">嗨，我是 Leo。我是由 Brave 完全托管的 AI 助手。我由 Qwen VL 30B 提供支持，这是一个由阿里巴巴云创建的模型，性能卓越，适用于多种用例。Qwen 通过我们自己的安全基础设施由 Brave 托管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="8659225822055186905">嗨，我是 Leo。我是由 Brave 提供的 AI 助手。我由 GLM-5.3 Flash 提供支持，这是一个由 Zhipu AI 创建的模型，性能卓越，适用于多种用例。GLM-5.3 Flash 通过他们自己的可验证私密安全基础设施由 NEAR 托管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">您好，我是 Leo。是 Brave 提供的 AI 助手，由 Anthropic 创建的 Claude Instant 模型驱动⸺该模型可处理对话及文本任务。Claude Instant 由 Brave 自有安全基础架构托管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
-<translation id="3789772321824682783">嗨，我是 Leo。我是由 Brave 完全托管的 AI 助手。我由 Claude Haiku 提供支持，这是一个由 Anthropic 创建的模型，用于支持对话和文本处理任务。Claude Haiku 通过我们自己的安全基础设施由 Brave 托管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">嗨，我是 Leo。我是由 Brave 完全托管的 AI 助手。我由 Claude Sonnet 提供支持，这是一个由 Anthropic 创建的模型，用于支持对话和文本处理任务。Claude Sonnet 通过我们自己的安全基础设施由 Brave 托管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
-<translation id="3399141352144059821">嗨，我是 Leo。我是由 Brave 完全托管的 AI 助手。我由 Grok 4.3 提供支持，这是一个由 xAI 创建的模型，性能卓越，适用于多种用例。Grok 4.3 通过我们自己的安全基础设施由 Brave 托管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
-<translation id="8868813509973985458">嗨，我是 Leo。我是由 Brave 完全托管的 AI 助手。我由 GPT 5.4 提供支持，这是一个由 OpenAI 创建的模型，性能卓越，适用于多种用例。GPT 5.4 通过我们自己的安全基础设施由 Brave 托管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
+<translation id="6676306995311143470">嗨，我是 Leo。我是由 Brave 完全托管的 AI 助手。我由 Grok 4.6 提供支持，这是 xAI 在 Amazon Bedrock Mantle 上的前沿推理模型。Grok 4.6 通过 Brave 安全的 AWS 基础设施提供服务。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
+<translation id="2394656730986208060">嗨，我是 Leo。我是由 Brave 完全托管的 AI 助手。我由 GPT 5.6 Luna 提供支持，这是 OpenAI 在 Amazon Bedrock Mantle 上的快速、低延迟模型。GPT 5.6 Luna 通过 Brave 安全的 AWS 基础设施提供服务。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
+<translation id="5278969721580944810">嗨，我是 Leo。我是由 Brave 完全托管的 AI 助手。我由 GPT 5.6 Terra 提供支持，这是 OpenAI 在 Amazon Bedrock Mantle 上的均衡生产模型。GPT 5.6 Terra 通过 Brave 安全的 AWS 基础设施提供服务。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="5037359072717016032">嗨，我是 Leo。我是由 Brave 完全托管的 AI 助手。我由 Mistral Large 提供支持，这是一个由 Mistral 创建的模型，性能卓越，适用于多种用例。Mistral Large 通过我们自己的安全基础设施由 Brave 托管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
-<translation id="4026902371301997261">嗨，我是 Leo。我是由 Brave 完全托管的 AI 助手。我由 Qwen 3 235B 提供支持，这是一个由阿里巴巴云创建的模型，性能卓越，适用于多种用例。Qwen 3 235B 通过我们自己的安全基础设施由 Brave 托管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
+<translation id="5475035333915581972">嗨，我是 Leo。我是由 Brave 完全托管的 AI 助手。我由 Qwen 3.8 Flash Next 提供支持，这是一个由阿里巴巴云创建的模型，性能卓越，适用于多种用例。Qwen 3.8 Flash Next 通过我们自己的安全基础设施由 Brave 托管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="8720758690351028307">嗨，我是 Leo。我是由 Brave 完全托管的 AI 助手。我由 Deepseek V3.2 提供支持，这是一个由 Deepseek 创建的模型，性能卓越，适用于多种用例。Deepseek V3.2 通过我们自己的安全基础设施由 Brave 托管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">嗨，我是 Leo。我是由 Brave 完全托管的 AI 助手。我由 Claude Opus 提供支持，这是一个由 Anthropic 创建的模型，用于支持对话和文本处理任务。Claude Opus 通过我们自己的安全基础设施由 Brave 托管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="7238858567393403597">嗨，我是 Leo。我是由 Brave 完全托管的 AI 助手。我由 GLM-4-7-Flash 提供支持，这是一个由 Zhipu AI 创建的模型，性能卓越，适用于多种用例。GLM-4-7-Flash 通过我们自己的安全基础设施由 Brave 托管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
@@ -2242,7 +2251,6 @@ other {# 个来源}
 <translation id="4773408460773097271">Ollama</translation>
 <translation id="631371844654031449">推荐模型</translation>
 <translation id="6568044140836233369">显示所有模型</translation>
-<translation id="6187065185557150870">会话</translation>
 <translation id="4685048769603134644">打开整页</translation>
 <translation id="2961040541145689181">新会话</translation>
 <translation id="7557539689487606886">订阅 Premium</translation>
@@ -2366,13 +2374,13 @@ other {# 个来源}
 <translation id="887511360213807449">对话记录已禁用</translation>
 <translation id="5380979378058584412">如要查看您之前与 Leo 的对话，您需要启用对话记录。</translation>
 <translation id="3185367320601718531">对话和文本生成</translation>
-<translation id="2793458212460902934">快速 • 搜索 • 工具</translation>
 <translation id="8506027496671575183">搜索 • 视觉 • 工具</translation>
 <translation id="3184606955650139158">快速 • 搜索 • 视觉</translation>
 <translation id="7465032796278724624">通过 NEAR AI TEE 实现可验证的隐私保护</translation>
 <translation id="8782867266498869301">模型会动态变化以使用最适合任务的模型</translation>
 <translation id="7348809809749151120">快速 • 搜索</translation>
 <translation id="3213834013136637671">搜索 • 视觉</translation>
+<translation id="2793458212460902934">快速 • 搜索 • 工具</translation>
 <translation id="5276681919620506371">搜索 • 工具</translation>
 <translation id="7434375176361995333">总结 • 快速</translation>
 <translation id="3965507912994218570">Leo 设置</translation>
@@ -2935,9 +2943,7 @@ Brave 有一个帮助服务，通过过滤在 VPN 连接上进行 DNS 查询的�
 <translation id="3750210661641549834">为了创建您的账户，请验证您的电子邮件地址。</translation>
 <translation id="4351175281479794167">输入验证码</translation>
 <translation id="1672793037892810340">您应该已收到一封包含需要输入的验证码的电子邮件。</translation>
-<translation id="4821255729182569254">重新发送确认电子邮件</translation>
 <translation id="5837679375142747484">没有看到电子邮件？检查您的垃圾邮件文件夹或 <ph name="BEGIN_LINK"/>重新发送<ph name="END_LINK"/>。</translation>
-<translation id="1080588816740959885">没有看到电子邮件？检查您的垃圾邮件文件夹或重新发送。</translation>
 <translation id="1020730839570724178">取消注册</translation>
 <translation id="7155125570724238786">为了重置您的密码，请验证您的电子邮件地址。</translation>
 <translation id="816074628631172140">您的电子邮件已验证。设置新密码以完成密码重置。</translation>

@@ -1881,6 +1881,18 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="2737084171727561244">Отиди в Портфолиото</translation>
 <translation id="3499452861061048987">Добавяне на токен</translation>
 <translation id="5046066249040287308">Комунална услуга чрез портфейла на Brave</translation>
+<translation id="8767749833522980474">Крипто</translation>
+<translation id="4509084261025090951">Вземи картата си</translation>
+<translation id="3624463584770657372">Потвърди самоличността си, за да видиш номерата на картата и да започнеш да харчиш.</translation>
+<translation id="2508337767012636987">Докосни, за да потвърдиш</translation>
+<translation id="703964541421486259">Скриване на салда</translation>
+<translation id="302114796458112924">Показване на салда</translation>
+<translation id="9083210401924577263">Карта на Brave награди</translation>
+<translation id="2433507940547922241">Облик</translation>
+<translation id="3435738964857648380">Защита</translation>
+<translation id="6700561332544287722">Изисквай отключване следващия път</translation>
+<translation id="5605360570977617291">Да се скрие ли <ph name="CARD_NAME"/> от началния екран?</translation>
+<translation id="2721464457853369512">Салдото ти в <ph name="CARD_NAME"/> остава непроменено. Това само скрива картата от началния екран. Можеш да я покажеш отново по всяко време в Настройки, под Портфейл.</translation>
 <translation id="3155170474926428993">Програма за стартиране на Tor</translation>
 <translation id="3745016858329272300">Обща информация</translation>
 <translation id="4045404575593562245">Събития за контрол на Tor</translation>
@@ -1920,7 +1932,6 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="6261915643960475695">Бизнес</translation>
 <translation id="8265589281845759879">Коли</translation>
 <translation id="7726519849288907308">Знаменитости</translation>
-<translation id="8767749833522980474">Крипто</translation>
 <translation id="7577010593836079522">Култура</translation>
 <translation id="6807791860691150411">Образование</translation>
 <translation id="3706423975342040244">Развлечения</translation>
@@ -2099,9 +2110,6 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="3067105725259639716">Конфигуриране на Brave News</translation>
 <translation id="6286510487460330478">Конфигуриране на клавишни комбинации</translation>
 <translation id="9214819486716388964">Показване на Brave Talk</translation>
-<translation id="5950760360751948276">Винаги да се показва лентата за отметки</translation>
-<translation id="2960757369920422313">Показване на лентата за отметки на страницата на нов раздел (NTP)</translation>
-<translation id="522953399371747698">Скриване на лентата за отметки</translation>
 <translation id="9079813619990532635">Експортиране на всички отметки</translation>
 <translation id="134184943774258988">Превключване на видимостта на бутона за всички отметки</translation>
 <translation id="2158862020143233462">Превключване на щитовете</translation>
@@ -2216,6 +2224,7 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="5820497878628354073">Код на състоянието: <ph name="STATUS_CODE"/>, вътрешен код на състоянието: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">Достигнахте лимита за оценка за premium. Моля, опитайте отново след няколко часа.</translation>
 <translation id="6873128487002733717">Достигнал си премиум лимита за този модел. Избери различен модел или опитай отново по-късно.</translation>
+<translation id="2688661132468689309">Достигнал си премиум лимита за този модел. Той се нулира след <ph name="RESET_DURATION"/> (в <ph name="RESET_TIME"/>). Избери различен модел или опитай отново тогава.</translation>
 <translation id="3683964919745779766">Достигнал си лимита на тарифата за този модел или си изчерпал своя кредит. Моля, опитай отново по-късно.</translation>
 <translation id="7692501701960747469">Конфигурираният за този модел API ключ е невалиден. Моля, провери конфигурацията си и опитай отново.</translation>
 <translation id="7905602379229309187">Крайното устройство в момента е претоварено. Моля, опитай отново по-късно.</translation>
@@ -2224,12 +2233,12 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="3852808100039989429">Здравей, аз съм Лио, асистентът на Brave с изкуствен интелект. Задвижван съм от Qwen VL 30B – модел, създаден от Alibaba Cloud с цел ефективност и широк обхват. Qwen се хоства от Brave чрез нашата собствена защитена инфраструктура.<ph name="LINK_BEFORE"/>Научи повече<ph name="LINK_AFTER"/></translation>
 <translation id="8659225822055186905">Здравей, аз съм Лио, асистентът на Brave с изкуствен интелект. Задвижен съм от GLM-5.3 Flash – модел, създаден от Zhipu AI с цел ефективност и широк обхват. GLM-5.3 Flash се хоства от NEAR чрез тяхна проверимо защитена инфраструктура.<ph name="LINK_BEFORE"/>Научи повече<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">Здравей, аз съм Leo. Аз съм AI асистент на Brave. Захранвам се от Claude Instant — модел, създаден от Anthropic за водене на диалог и обработка на текст. Claude Instant се хоства от Brave чрез нашата собствена защитена инфраструктура.<ph name="LINK_BEFORE"/>Научете повече<ph name="LINK_AFTER"/></translation>
-<translation id="3789772321824682783">Здравей, аз съм Лио. Проксиран съм от Brave и съм задвижван от Claude Haiku – модел, създаден от Anthropic с цел да захранва разговорни задачи и задачи за обработка на текст. Claude Haiku се хоства от Brave чрез нашата собствена защитена инфраструктура. <ph name="LINK_BEFORE"/>Научи повече<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Здравей, аз съм Лио. Проксиран съм от Brave и съм задвижван от Claude Sonnet – модел, създаден от Anthropic с цел да захранва разговорни задачи и задачи за обработка на текст. Claude Sonnet се хоства от Brave чрез нашата собствена защитена инфраструктура. <ph name="LINK_BEFORE"/>Научи повече<ph name="LINK_AFTER"/></translation>
-<translation id="3399141352144059821">Здравей, аз съм Лио, асистентът на Brave, поддържан изцяло с изкуствен интелект. Задвижен съм от Grok 4.3 – модел, създаден от xAI с цел ефективност и широко приложение. Grok 4.3 се хоства от Brave чрез нашата собствена защитена инфраструктура.<ph name="LINK_BEFORE"/>Научи повече<ph name="LINK_AFTER"/></translation>
-<translation id="8868813509973985458">Здравей, аз съм Лио, асистентът на Brave, поддържан изцяло с изкуствен интелект. Задвижен съм от GPT 5.4 – модел, създаден от OpenAI с цел ефективност и широко приложение. GPT 5.4 се хоства от Brave чрез нашата собствена защитена инфраструктура.<ph name="LINK_BEFORE"/>Научи повече<ph name="LINK_AFTER"/></translation>
+<translation id="6676306995311143470">Здравей, аз съм Лио, асистентът на Brave, поддържан изцяло с изкуствен интелект. Задвижен съм от Grok 4.6 – граничния разсъждаващ модел на xAI в Amazon Bedrock Mantle. Grok 4.6 се предоставя чрез защитената AWS инфраструктура на Brave.<ph name="LINK_BEFORE"/>Научи повече<ph name="LINK_AFTER"/></translation>
+<translation id="2394656730986208060">Здравей, аз съм Лио, асистентът на Brave, поддържан изцяло с изкуствен интелект. Задвижен съм от GPT 5.6 Luna – бързия модел с ниска латентност на OpenAI в Amazon Bedrock Mantle. GPT 5.6 Luna се предоставя чрез защитената AWS инфраструктура на Brave.<ph name="LINK_BEFORE"/>Научи повече<ph name="LINK_AFTER"/></translation>
+<translation id="5278969721580944810">Здравей, аз съм Лио, асистентът на Brave, поддържан изцяло с изкуствен интелект. Задвижен съм от GPT 5.6 Terra – балансирания производствен модел на OpenAI в Amazon Bedrock Mantle. GPT 5.6 Terra се предоставя чрез защитената AWS инфраструктура на Brave.<ph name="LINK_BEFORE"/>Научи повече<ph name="LINK_AFTER"/></translation>
 <translation id="5037359072717016032">Здравей, аз съм Лио, асистентът на Brave, поддържан изцяло с изкуствен интелект. Задвижен съм от Mistral Large – модел, създаден от Mistral с цел ефективност и широко приложение. Mistral Large се хоства от Brave чрез нашата собствена защитена инфраструктура.<ph name="LINK_BEFORE"/>Научи повече<ph name="LINK_AFTER"/></translation>
-<translation id="4026902371301997261">Здравей, аз съм Лио, асистентът на Brave, поддържан изцяло с изкуствен интелект. Задвижван съм от Qwen 3 235B – модел, създаден от Alibaba Cloud с цел ефективност и широко приложение. Qwen 3 235B се хоства от Brave чрез нашата собствена защитена инфраструктура. <ph name="LINK_BEFORE"/>Научи повече<ph name="LINK_AFTER"/></translation>
+<translation id="5475035333915581972">Здравей, аз съм Лио, асистентът на Brave, поддържан изцяло с изкуствен интелект. Задвижен съм от Qwen 3.8 Flash Next – модел, създаден от Alibaba Cloud с цел ефективност и широко приложение. Qwen 3.8 Flash Next се хоства от Brave чрез нашата собствена защитена инфраструктура.<ph name="LINK_BEFORE"/>Научи повече<ph name="LINK_AFTER"/></translation>
 <translation id="8720758690351028307">Здравей, аз съм Лио, асистентът на Brave, поддържан изцяло с изкуствен интелект. Задвижен съм от Deepseek V3.2 – модел, създаден от Deepseek с цел ефективност и широко приложение. Deepseek V3.2 се хоства от Brave чрез нашата собствена защитена инфраструктура.<ph name="LINK_BEFORE"/>Научи повече<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">Здравей, аз съм Лио. Проксиран съм от Brave и съм задвижван от Claude Opus – модел, създаден от Anthropic с цел да захранва разговорни задачи и задачи за обработка на текст. Claude Opus се хоства от Brave чрез нашата собствена защитена инфраструктура. <ph name="LINK_BEFORE"/>Научи повече<ph name="LINK_AFTER"/></translation>
 <translation id="7238858567393403597">Здравей, аз съм Лио, асистентът на Brave с изкуствен интелект. Задвижен съм от GLM-4-7-Flash – модел, създаден от Zhipu AI с цел ефективност и широк обхват. GLM-4-7-Flash се хоства от Brave чрез нашата собствена защитена инфраструктура.<ph name="LINK_BEFORE"/>Научи повече<ph name="LINK_AFTER"/></translation>
@@ -2242,7 +2251,6 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="4773408460773097271">Ollama</translation>
 <translation id="631371844654031449">Препоръчани модели</translation>
 <translation id="6568044140836233369">Покажи всички модели</translation>
-<translation id="6187065185557150870">Чат</translation>
 <translation id="4685048769603134644">Зареждане на цялата страница</translation>
 <translation id="2961040541145689181">Нов чат</translation>
 <translation id="7557539689487606886">Абонирайте се за Premium</translation>
@@ -2366,13 +2374,13 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="887511360213807449">Историята е деактивирана</translation>
 <translation id="5380979378058584412">За да видите предишните си разговори с Leo, трябва да активирате историята на разговорите.</translation>
 <translation id="3185367320601718531">Генериране на разговор и текст</translation>
-<translation id="2793458212460902934">Бързо • Търсене • Инструменти</translation>
 <translation id="8506027496671575183">Търсене • Визия • Инструменти</translation>
 <translation id="3184606955650139158">Бързо • Търсене • Визия</translation>
 <translation id="7465032796278724624">Проверимо поверителен чрез NEAR AI TEE</translation>
 <translation id="8782867266498869301">Моделът се променя динамично, за да се използва най-добрият за задачата</translation>
 <translation id="7348809809749151120">Бързо • Търсене</translation>
 <translation id="3213834013136637671">Търсене • Визия</translation>
+<translation id="2793458212460902934">Бързо • Търсене • Инструменти</translation>
 <translation id="5276681919620506371">Търсене • Инструменти</translation>
 <translation id="7434375176361995333">Обобщения • Бързо</translation>
 <translation id="3965507912994218570">Настройки на Leo</translation>
@@ -2936,9 +2944,7 @@ Brave има помощна услуга, която Ви защитава от 
 <translation id="3750210661641549834">За да създадете акаунта си, моля, потвърдете имейл адреса си.</translation>
 <translation id="4351175281479794167">Въведете кода за потвърждение</translation>
 <translation id="1672793037892810340">Трябва да сте получили имейл с код, който трябва да въведете.</translation>
-<translation id="4821255729182569254">Повторно изпращане на потвърдително писмо</translation>
 <translation id="5837679375142747484">Не виждате имейла? Проверете папката за спам или <ph name="BEGIN_LINK"/>изпратете повторно<ph name="END_LINK"/>.</translation>
-<translation id="1080588816740959885">Не виждате имейла? Проверете папката за спам или го изпратете повторно.</translation>
 <translation id="1020730839570724178">Отмяна на регистрацията</translation>
 <translation id="7155125570724238786">За да нулирате паролата си, моля, потвърдете имейл адреса си.</translation>
 <translation id="816074628631172140">Имейлът ви беше потвърден. Задайте нова парола, за да завършите нулирането на паролата.</translation>

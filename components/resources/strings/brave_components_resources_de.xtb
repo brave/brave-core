@@ -1878,6 +1878,18 @@ other {{PENDING_TRANSACTIONS} weitere anstehende Transaktionen.}
 <translation id="2737084171727561244">Zum Portfolio</translation>
 <translation id="3499452861061048987">Token hinzufügen</translation>
 <translation id="5046066249040287308">Brave Wallet-Utility-Dienst</translation>
+<translation id="8767749833522980474">Krypto</translation>
+<translation id="4509084261025090951">Karte anfordern</translation>
+<translation id="3624463584770657372">Verifiziere deine Identität, um Kartennummern zu sehen und mit dem Ausgeben zu beginnen.</translation>
+<translation id="2508337767012636987">Zum Verifizieren tippen</translation>
+<translation id="703964541421486259">Guthaben ausblenden</translation>
+<translation id="302114796458112924">Guthaben anzeigen</translation>
+<translation id="9083210401924577263">Brave Rewards-Karte</translation>
+<translation id="2433507940547922241">Darstellung</translation>
+<translation id="3435738964857648380">Sicherheit</translation>
+<translation id="6700561332544287722">Beim nächsten Mal Entsperrung erforderlich</translation>
+<translation id="5605360570977617291"><ph name="CARD_NAME"/> von der Startseite ausblenden?</translation>
+<translation id="2721464457853369512">Dein <ph name="CARD_NAME"/>-Guthaben bleibt unverändert. Dadurch wird die Karte nur von der Startseite ausgeblendet. Du kannst sie jederzeit wieder in den Einstellungen unter Wallet anzeigen.</translation>
 <translation id="3155170474926428993">Tor-Startprogramm</translation>
 <translation id="3745016858329272300">Allgemeine Information</translation>
 <translation id="4045404575593562245">Tor Kontroll Ereignisse</translation>
@@ -1917,7 +1929,6 @@ other {{PENDING_TRANSACTIONS} weitere anstehende Transaktionen.}
 <translation id="6261915643960475695">Unternehmen</translation>
 <translation id="8265589281845759879">Autos</translation>
 <translation id="7726519849288907308">Berühmtheiten</translation>
-<translation id="8767749833522980474">Krypto</translation>
 <translation id="7577010593836079522">Kultur</translation>
 <translation id="6807791860691150411">Bildung</translation>
 <translation id="3706423975342040244">Unterhaltung</translation>
@@ -2095,9 +2106,6 @@ other {{PENDING_TRANSACTIONS} weitere anstehende Transaktionen.}
 <translation id="3067105725259639716">Brave News konfigurieren</translation>
 <translation id="6286510487460330478">Tastenkombinationen konfigurieren</translation>
 <translation id="9214819486716388964">Brave Talk anzeigen</translation>
-<translation id="5950760360751948276">Lesezeichenleiste immer anzeigen</translation>
-<translation id="2960757369920422313">Lesezeichenleiste auf NTP anzeigen</translation>
-<translation id="522953399371747698">Lesezeichenleiste ausblenden</translation>
 <translation id="9079813619990532635">Alle Lesezeichen exportieren</translation>
 <translation id="134184943774258988">Sichtbarkeit der Schaltfläche „Alle Lesezeichen“ an-/ausschalten</translation>
 <translation id="2158862020143233462">Schutz umschalten</translation>
@@ -2211,6 +2219,7 @@ other {{PENDING_TRANSACTIONS} weitere anstehende Transaktionen.}
 <translation id="9215978379284690246">Statuscode: <ph name="STATUS_CODE"/></translation>
 <translation id="5820497878628354073">Statuscode: <ph name="STATUS_CODE"/>, innerer Statuscode: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">Sie haben die Premium-Antwortquote erreicht. Bitte versuchen Sie es in ein paar Stunden erneut.</translation>
+<translation id="2688661132468689309">Du hast das Premium-Limit für dieses Modell erreicht. Es wird in <ph name="RESET_DURATION"/> zurückgesetzt (um <ph name="RESET_TIME"/>). Wähle ein anderes Modell oder versuche es dann erneut.</translation>
 <translation id="3683964919745779766">Es scheint, dass das Kontingent für dieses Modell erreicht oder keine Credits mehr verfügbar sind. Bitte versuche es später erneut.</translation>
 <translation id="7692501701960747469">Es scheint ein Problem mit dem API-Schlüssel zu geben. Bitte prüfe die Konfiguration und versuche es erneut.</translation>
 <translation id="7905602379229309187">Es scheint, dass der Endpunkt momentan überlastet ist. Bitte versuche es später noch einmal.</translation>
@@ -2219,12 +2228,12 @@ other {{PENDING_TRANSACTIONS} weitere anstehende Transaktionen.}
 <translation id="3852808100039989429">Hallo, ich bin Leo. Ich bin ein KI-Assistent von Brave. Ich basiere auf Qwen VL 30B, einem Modell, das von Alibaba Cloud entwickelt wurde, um möglichst leistungsstark und für viele Anwendungsbereiche geeignet zu sein. Qwen wird von Brave über unsere eigene sichere Infrastruktur gehostet.<ph name="LINK_BEFORE"/>Weitere Informationen<ph name="LINK_AFTER"/></translation>
 <translation id="8659225822055186905">Hallo, ich bin Leo. Ich bin ein KI-Assistent von Brave. Ich basiere auf GLM-5.3 Flash, einem Modell, das von Zhipu AI entwickelt wurde, um möglichst leistungsstark und für viele Anwendungsbereiche geeignet zu sein. GLM-5.3 Flash wird von NEAR über die unternehmenseigene, nachweislich private und sichere Infrastruktur gehostet.<ph name="LINK_BEFORE"/>Weitere Informationen<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">Hallo, ich bin Leo. Ich bin ein KI-Assistent von Brave. Ich werde von Claude Instant angetrieben, einem Modell, das von Anthropic entwickelt wurde, um Gesprächs- und Textverarbeitungsaufgaben zu ermöglichen. Claude Instant wird von Brave über unsere eigene sichere Infrastruktur gehostet.<ph name="LINK_BEFORE"/>Mehr erfahren<ph name="LINK_AFTER"/></translation>
-<translation id="3789772321824682783">Hallo, ich bin Leo. Ich bin ein KI-Assistent von Brave. Ich werde von Claude Haiku angetrieben, einem Modell, das von Anthropic entwickelt wurde, um Gesprächs- und Textverarbeitungsaufgaben zu ermöglichen. Claude Haiku wird von Brave über unsere eigene sichere Infrastruktur gehostet. <ph name="LINK_BEFORE"/>Mehr erfahren<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Hallo, ich bin Leo. Ich bin ein KI-Assistent von Brave. Ich werde von Claude Sonnet angetrieben, einem Modell, das von Anthropic entwickelt wurde, um Gesprächs- und Textverarbeitungsaufgaben zu unterstützen. Claude Sonnet wird von Brave über unsere eigene sichere Infrastruktur gehostet. <ph name="LINK_BEFORE"/>Mehr erfahren<ph name="LINK_AFTER"/></translation>
-<translation id="3399141352144059821">Hallo, ich bin Leo. Ich bin ein KI-Assistent von Brave. Ich basiere auf Grok 4.3, einem Modell, das von xAI entwickelt wurde, um möglichst leistungsstark und für viele Anwendungsbereiche geeignet zu sein. Grok 4.3 wird von Brave über unsere eigene sichere Infrastruktur gehostet.<ph name="LINK_BEFORE"/>Weitere Informationen<ph name="LINK_AFTER"/></translation>
-<translation id="8868813509973985458">Hallo, ich bin Leo. Ich bin ein KI-Assistent von Brave. Ich basiere auf GPT 5.4, einem Modell, das von OpenAI entwickelt wurde, um möglichst leistungsstark und für viele Anwendungsbereiche geeignet zu sein. GPT 5.4 wird von Brave über unsere eigene sichere Infrastruktur gehostet.<ph name="LINK_BEFORE"/>Weitere Informationen<ph name="LINK_AFTER"/></translation>
+<translation id="6676306995311143470">Hallo, ich bin Leo. Ich bin ein KI-Assistent von Brave. Ich basiere auf Grok 4.6, dem fortschrittlichen Reasoning-Modell von xAI auf Amazon Bedrock Mantle. Grok 4.6 wird über Braves sichere AWS-Infrastruktur bereitgestellt.<ph name="LINK_BEFORE"/>Weitere Informationen<ph name="LINK_AFTER"/></translation>
+<translation id="2394656730986208060">Hallo, ich bin Leo. Ich bin ein KI-Assistent von Brave. Ich basiere auf GPT 5.6 Luna, OpenAIs schnellem Modell mit niedriger Latenz auf Amazon Bedrock Mantle. GPT 5.6 Luna wird über Braves sichere AWS-Infrastruktur bereitgestellt.<ph name="LINK_BEFORE"/>Weitere Informationen<ph name="LINK_AFTER"/></translation>
+<translation id="5278969721580944810">Hallo, ich bin Leo. Ich bin ein KI-Assistent von Brave. Ich basiere auf GPT 5.6 Terra, OpenAIs ausgewogenem Produktionsmodell auf Amazon Bedrock Mantle. GPT 5.6 Terra wird über Braves sichere AWS-Infrastruktur bereitgestellt.<ph name="LINK_BEFORE"/>Weitere Informationen<ph name="LINK_AFTER"/></translation>
 <translation id="5037359072717016032">Hallo, ich bin Leo. Ich bin ein KI-Assistent von Brave. Ich basiere auf Mistral Large, einem Modell, das von Mistral entwickelt wurde, um möglichst leistungsstark und für viele Anwendungsbereiche geeignet zu sein. Mistral Large wird von Brave über unsere eigene sichere Infrastruktur gehostet.<ph name="LINK_BEFORE"/>Weitere Informationen<ph name="LINK_AFTER"/></translation>
-<translation id="4026902371301997261">Hallo, ich bin Leo. Ich bin ein KI-Assistent von Brave. Ich basiere auf Qwen 3 235B, einem Modell, das von Alibaba Cloud entwickelt wurde, um möglichst leistungsstark und für viele Anwendungsbereiche geeignet zu sein. Qwen 3 235B wird von Brave über unsere eigene sichere Infrastruktur gehostet.<ph name="LINK_BEFORE"/>Weitere Informationen<ph name="LINK_AFTER"/></translation>
+<translation id="5475035333915581972">Hallo, ich bin Leo. Ich bin ein KI-Assistent von Brave. Ich basiere auf Qwen 3.8 Flash Next, einem Modell, das von Alibaba Cloud entwickelt wurde, um möglichst leistungsstark und für viele Anwendungsbereiche geeignet zu sein. Qwen 3.8 Flash Next wird von Brave über unsere eigene sichere Infrastruktur gehostet.<ph name="LINK_BEFORE"/>Weitere Informationen<ph name="LINK_AFTER"/></translation>
 <translation id="8720758690351028307">Hallo, ich bin Leo. Ich bin ein KI-Assistent von Brave. Ich basiere auf DeepSeek V3.2, einem Modell, das von DeepSeek entwickelt wurde, um möglichst leistungsstark und für viele Anwendungsbereiche geeignet zu sein. DeepSeek V3.2 wird von Brave über unsere eigene sichere Infrastruktur gehostet.<ph name="LINK_BEFORE"/>Weitere Informationen<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">Hallo, ich bin Leo. Ich bin ein KI-Assistent von Brave. Ich basiere auf Claude Opus, einem Modell, das von Anthropic entwickelt wurde, um Gesprächs- und Textverarbeitungsaufgaben zu ermöglichen. Claude Opus wird von Brave über unsere eigene sichere Infrastruktur gehostet.<ph name="LINK_BEFORE"/>Weitere Informationen<ph name="LINK_AFTER"/></translation>
 <translation id="7238858567393403597">Hallo, ich bin Leo. Ich bin ein KI-Assistent von Brave. Ich basiere auf GLM-4.7-Flash, einem Modell, das von Zhipu AI entwickelt wurde, um möglichst leistungsstark und für viele Anwendungsbereiche geeignet zu sein. GLM-4.7-Flash wird von Brave über unsere eigene sichere Infrastruktur gehostet.<ph name="LINK_BEFORE"/>Weitere Informationen<ph name="LINK_AFTER"/></translation>
@@ -2237,7 +2246,6 @@ other {{PENDING_TRANSACTIONS} weitere anstehende Transaktionen.}
 <translation id="4773408460773097271">Ollama</translation>
 <translation id="631371844654031449">Empfohlene Modelle</translation>
 <translation id="6568044140836233369">Alle Modelle anzeigen</translation>
-<translation id="6187065185557150870">Chat</translation>
 <translation id="4685048769603134644">Gesamte Seite öffnen</translation>
 <translation id="2961040541145689181">Neuer Chat</translation>
 <translation id="7557539689487606886">Jetzt Premium sichern</translation>
@@ -2361,13 +2369,13 @@ other {{PENDING_TRANSACTIONS} weitere anstehende Transaktionen.}
 <translation id="887511360213807449">Verlauf ist deaktiviert</translation>
 <translation id="5380979378058584412">Um deine früheren Unterhaltungen mit Leo zu sehen, musst du den Gesprächsverlauf aktivieren.</translation>
 <translation id="3185367320601718531">Unterhaltung und Textgenerierung</translation>
-<translation id="2793458212460902934">Schnell • Suche • Tools</translation>
 <translation id="8506027496671575183">Suche • Vision • Tools</translation>
 <translation id="3184606955650139158">Schnell • Suche • Vision</translation>
 <translation id="7465032796278724624">Nachweislich privat – mit dem TEE-Gateway von NEAR AI</translation>
 <translation id="8782867266498869301">Das Modell passt sich dynamisch an, um für die jeweilige Aufgabe das beste zu verwenden</translation>
 <translation id="7348809809749151120">Schnell • Suche</translation>
 <translation id="3213834013136637671">Suche • Vision</translation>
+<translation id="2793458212460902934">Schnell • Suche • Tools</translation>
 <translation id="5276681919620506371">Suche • Tools</translation>
 <translation id="7434375176361995333">Zusammenfassungen • Schnell</translation>
 <translation id="3965507912994218570">Leo-Einstellungen</translation>
@@ -2927,9 +2935,7 @@ Lassen Sie uns gemeinsam eine Verbindung herstellen!</translation>
 <translation id="3750210661641549834">Um Ihr Konto zu erstellen, verifizieren Sie bitte Ihre E-Mail-Adresse.</translation>
 <translation id="4351175281479794167">Verifizierungscode eingeben</translation>
 <translation id="1672793037892810340">Sie sollten eine E-Mail mit einem Code erhalten haben, den Sie eingeben müssen.</translation>
-<translation id="4821255729182569254">Bestätigungs-E-Mail erneut senden</translation>
 <translation id="5837679375142747484">Keine E-Mail erhalten? Überprüfen Sie Ihren Spam-Ordner oder <ph name="BEGIN_LINK"/>fordern Sie sie erneut an<ph name="END_LINK"/>.</translation>
-<translation id="1080588816740959885">Keine E-Mail erhalten? Überprüfen Sie Ihren Spam-Ordner oder fordern Sie sie erneut an.</translation>
 <translation id="1020730839570724178">Registrierung abbrechen</translation>
 <translation id="7155125570724238786">Um Ihr Passwort zurückzusetzen, verifizieren Sie bitte Ihre E-Mail-Adresse.</translation>
 <translation id="816074628631172140">Ihre E-Mail-Adresse wurde verifiziert. Legen Sie ein neues Passwort fest, um das Zurücksetzen Ihres Passworts abzuschließen.</translation>

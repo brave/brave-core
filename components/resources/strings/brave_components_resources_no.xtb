@@ -1882,6 +1882,18 @@
 <translation id="2737084171727561244">Gå til portefølje</translation>
 <translation id="3499452861061048987">Legg til token</translation>
 <translation id="5046066249040287308">Brave Wallet-forsyningstjeneste</translation>
+<translation id="8767749833522980474">Krypto</translation>
+<translation id="4509084261025090951">Hent kortet ditt</translation>
+<translation id="3624463584770657372">Bekreft identiteten din for å se kortnumre og begynne å bruke kortet.</translation>
+<translation id="2508337767012636987">Trykk for å bekrefte</translation>
+<translation id="703964541421486259">Skjul saldoer</translation>
+<translation id="302114796458112924">Vis saldoer</translation>
+<translation id="9083210401924577263">Brave Rewards-kort</translation>
+<translation id="2433507940547922241">Utseende</translation>
+<translation id="3435738964857648380">Sikkerhet</translation>
+<translation id="6700561332544287722">Krev opplåsing neste gang</translation>
+<translation id="5605360570977617291">Vil du skjule <ph name="CARD_NAME"/> fra startsiden?</translation>
+<translation id="2721464457853369512"><ph name="CARD_NAME"/>-saldoen din er uendret. Dette skjuler bare kortet fra startsiden. Du kan vise det igjen når som helst i Innstillinger, under Lommebok.</translation>
 <translation id="3155170474926428993">Tor-starter</translation>
 <translation id="3745016858329272300">Generell informasjon</translation>
 <translation id="4045404575593562245">Tor-kontrollhendelser</translation>
@@ -1921,7 +1933,6 @@
 <translation id="6261915643960475695">Business</translation>
 <translation id="8265589281845759879">Biler</translation>
 <translation id="7726519849288907308">Kjendiser</translation>
-<translation id="8767749833522980474">Krypto</translation>
 <translation id="7577010593836079522">Kultur</translation>
 <translation id="6807791860691150411">Utdanning</translation>
 <translation id="3706423975342040244">Underholdning</translation>
@@ -2100,9 +2111,6 @@
 <translation id="3067105725259639716">Konfigurer Brave Nyheter</translation>
 <translation id="6286510487460330478">Konfigurer snarveier</translation>
 <translation id="9214819486716388964">Vis Brave Talk</translation>
-<translation id="5950760360751948276">Vis alltid bokmerkeraden</translation>
-<translation id="2960757369920422313">Vis bokmerkeraden på NTP</translation>
-<translation id="522953399371747698">Skjul bokmerkeraden</translation>
 <translation id="9079813619990532635">Eksporter alle bokmerker</translation>
 <translation id="134184943774258988">Aktiver/deaktiver synligheten til Alle bokmerker-knappen</translation>
 <translation id="2158862020143233462">Slå på skjold</translation>
@@ -2217,6 +2225,7 @@
 <translation id="5820497878628354073">Statuskode: <ph name="STATUS_CODE"/>, indre statuskode: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">Du har nådd premium-grensen. Prøv på nytt om noen timer.</translation>
 <translation id="6873128487002733717">Du har nådd Premium-grensen for denne modellen. Velg en annen modell eller prøv igjen senere.</translation>
+<translation id="2688661132468689309">Du har nådd Premium-grensen for denne modellen. Den tilbakestilles om <ph name="RESET_DURATION"/> (kl. <ph name="RESET_TIME"/>). Velg en annen modell eller prøv igjen da.</translation>
 <translation id="3683964919745779766">Du har enten nådd maksgrensen for denne modellen, eller så er du tom for kreditter. Prøv igjen senere.</translation>
 <translation id="7692501701960747469">API-nøkkelen som er konfigurert for denne modellen er ugyldig. Sjekk konfigurasjonen og prøv på nytt.</translation>
 <translation id="7905602379229309187">Endepunktet er overbelastet. Prøv igjen senere.</translation>
@@ -2225,12 +2234,12 @@
 <translation id="3852808100039989429">Hei, jeg heter Leo og er en KI-assistent fra Brave. Jeg driftes av Qwen VL 30B, som er en ytelsesdyktig modell fra Alibaba Cloud med mange ulike bruksområder. Brave er vert for Qwen via vår egen, sikre infrastruktur.<ph name="LINK_BEFORE"/>Les mer<ph name="LINK_AFTER"/>.</translation>
 <translation id="8659225822055186905">Hei, jeg heter Leo og er en KI-assistent fra Brave. Jeg driftes av GLM-5.3 Flash, som er en ytelsesdyktig modell fra Zhipu AI med mange ulike bruksområder. GLM-5.3 Flash er vert for via deres egen verifiserbart private og sikre infrastruktur.<ph name="LINK_BEFORE"/>Les mer<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">Hei, jeg er Leo. Jeg er en AI-assistent fra Brave. Jeg drives av Claude Instant, en modell utviklet av Anthropic for samtale og tekstbehandling. Claude Instant hostes av Brave via vår egen sikre infrastruktur.<ph name="LINK_BEFORE"/>Les mer<ph name="LINK_AFTER"/></translation>
-<translation id="3789772321824682783">Hei, jeg heter Leo. Jeg er en KI-assistent fra Brave. Jeg driftes av Claude Haiku, en modell skapt av Anthropic for å drive samtale- og tekstbehandlingsoppgaver. Brave er vert for Claude Haiku via vår egen, sikre infrastruktur.<ph name="LINK_BEFORE"/>Les mer<ph name="LINK_AFTER"/>.</translation>
 <translation id="1778885220602472158">Hei, jeg heter Leo. Jeg er en KI-assistent fra Brave. Jeg driftes av Claude Sonnet, en modell skapt av Anthropic for å drive samtale- og tekstbehandlingsoppgaver. Brave er vert for Claude Sonnet via vår egen, sikre infrastruktur.<ph name="LINK_BEFORE"/>Les mer<ph name="LINK_AFTER"/>.</translation>
-<translation id="3399141352144059821">Hei, jeg heter Leo og er en KI-assistent fra Brave. Jeg driftes av Grok 4.3, som er en ytelsesdyktig modell fra xAI med mange ulike bruksområder. Brave er vert for Grok 4.3 via vår egen, sikre infrastruktur.<ph name="LINK_BEFORE"/>Les mer<ph name="LINK_AFTER"/>.</translation>
-<translation id="8868813509973985458">Hei, jeg heter Leo og er en KI-assistent fra Brave. Jeg driftes av GPT 5.4, som er en ytelsesdyktig modell fra OpenAI med mange ulike bruksområder. Brave er vert for GPT 5.4 via vår egen, sikre infrastruktur.<ph name="LINK_BEFORE"/>Les mer<ph name="LINK_AFTER"/>.</translation>
+<translation id="6676306995311143470">Hei, jeg heter Leo og er en KI-assistent fra Brave. Jeg driftes av Grok 4.6, xAIs ledende resonneringsmodell på Amazon Bedrock Mantle. Grok 4.6 leveres via Braves sikre AWS-infrastruktur.<ph name="LINK_BEFORE"/>Les mer<ph name="LINK_AFTER"/></translation>
+<translation id="2394656730986208060">Hei, jeg heter Leo og er en KI-assistent fra Brave. Jeg driftes av GPT 5.6 Luna, OpenAIs raske modell med lav ventetid på Amazon Bedrock Mantle. GPT 5.6 Luna leveres via Braves sikre AWS-infrastruktur.<ph name="LINK_BEFORE"/>Les mer<ph name="LINK_AFTER"/></translation>
+<translation id="5278969721580944810">Hei, jeg heter Leo og er en KI-assistent fra Brave. Jeg driftes av GPT 5.6 Terra, OpenAIs balanserte produksjonsmodell på Amazon Bedrock Mantle. GPT 5.6 Terra leveres via Braves sikre AWS-infrastruktur.<ph name="LINK_BEFORE"/>Les mer<ph name="LINK_AFTER"/></translation>
 <translation id="5037359072717016032">Hei, jeg heter Leo og er en KI-assistent fra Brave. Jeg driftes av Mistral Large, som er en ytelsesdyktig modell fra Mistral med mange ulike bruksområder. Brave er vert for Mistral Large via vår egen, sikre infrastruktur.<ph name="LINK_BEFORE"/>Les mer<ph name="LINK_AFTER"/>.</translation>
-<translation id="4026902371301997261">Hei, jeg heter Leo og er en KI-assistent fra Brave. Jeg driftes av Qwen 3 235B, som er en ytelsesdyktig modell fra Alibaba Cloud med mange ulike bruksområder. Brave er vert for Qwen 3 235B via vår egen, sikre infrastruktur.<ph name="LINK_BEFORE"/>Les mer<ph name="LINK_AFTER"/>.</translation>
+<translation id="5475035333915581972">Hei, jeg heter Leo og er en KI-assistent fra Brave. Jeg driftes av Qwen 3.8 Flash Next, som er en ytelsesdyktig modell fra Alibaba Cloud med mange ulike bruksområder. Brave er vert for Qwen 3.8 Flash Next via vår egen, sikre infrastruktur.<ph name="LINK_BEFORE"/>Les mer<ph name="LINK_AFTER"/></translation>
 <translation id="8720758690351028307">Hei, jeg heter Leo og er en KI-assistent fra Brave. Jeg driftes av Deepseek V3.2, som er en ytelsesdyktig modell fra Deepseek med mange ulike bruksområder. Brave er vert for Deepseek V3.2 via vår egen, sikre infrastruktur.<ph name="LINK_BEFORE"/>Les mer<ph name="LINK_AFTER"/>.</translation>
 <translation id="3369866806475938617">Hei, jeg heter Leo. Jeg er en KI-assistent fra Brave. Jeg driftes av Claude Opus, en modell skapt av Anthropic for å drive samtale- og tekstbehandlingsoppgaver. Brave er vert for Claude Opus via vår egen, sikre infrastruktur.<ph name="LINK_BEFORE"/>Les mer<ph name="LINK_AFTER"/>.</translation>
 <translation id="7238858567393403597">Hei, jeg heter Leo og er en KI-assistent fra Brave. Jeg driftes av GLM-4-7-Flash, som er en ytelsesdyktig modell fra Zhipu AI med mange ulike bruksområder. GLM-4-7-Flash er vert for Brave via vår egen, sikre infrastruktur.<ph name="LINK_BEFORE"/>Les mer<ph name="LINK_AFTER"/></translation>
@@ -2243,7 +2252,6 @@
 <translation id="4773408460773097271">Ollama</translation>
 <translation id="631371844654031449">Anbefalte modeller</translation>
 <translation id="6568044140836233369">Vis alle modeller</translation>
-<translation id="6187065185557150870">Chat</translation>
 <translation id="4685048769603134644">Åpne hele siden</translation>
 <translation id="2961040541145689181">Ny chat</translation>
 <translation id="7557539689487606886">Oppgrader til Premium</translation>
@@ -2367,13 +2375,13 @@
 <translation id="887511360213807449">Loggen er deaktivert</translation>
 <translation id="5380979378058584412">For å se tidligere samtaler du har hatt med Leo, må du aktivere samtaleloggen.</translation>
 <translation id="3185367320601718531">Samtale og tekstgenerering</translation>
-<translation id="2793458212460902934">Rask • Søk • Verktøy</translation>
 <translation id="8506027496671575183">Søk • Visjon • Verktøy</translation>
 <translation id="3184606955650139158">Rask • Søk • Visjon</translation>
 <translation id="7465032796278724624">Verifiserbart privat med NEAR AI TEE</translation>
 <translation id="8782867266498869301">Modellen endres dynamisk for å bruke den beste for oppgaven</translation>
 <translation id="7348809809749151120">Rask • Søk</translation>
 <translation id="3213834013136637671">Søk • Visjon</translation>
+<translation id="2793458212460902934">Rask • Søk • Verktøy</translation>
 <translation id="5276681919620506371">Søk • Verktøy</translation>
 <translation id="7434375176361995333">Oppsummeringer • Rask</translation>
 <translation id="3965507912994218570">Innstillinger for Leo</translation>
@@ -2937,9 +2945,7 @@ eksisterende fanen</translation>
 <translation id="3750210661641549834">For å opprette kontoen din, må du verifisere e-postadressen din.</translation>
 <translation id="4351175281479794167">Skriv inn verifiseringskode</translation>
 <translation id="1672793037892810340">Du skal ha mottatt en e-post med en kode du må skrive inn.</translation>
-<translation id="4821255729182569254">Send bekreftelses-e-post på nytt</translation>
 <translation id="5837679375142747484">Finner du ikke e-posten? Sjekk søppelposten eller <ph name="BEGIN_LINK"/>send på nytt<ph name="END_LINK"/>.</translation>
-<translation id="1080588816740959885">Finner du ikke e-posten? Sjekk søppelposten eller send den på nytt.</translation>
 <translation id="1020730839570724178">Avbryt registrering</translation>
 <translation id="7155125570724238786">For å tilbakestille passordet ditt, må du verifisere e-postadressen din.</translation>
 <translation id="816074628631172140">E-posten din er verifisert. Angi et nytt passord for å fullføre tilbakestillingen av passordet.</translation>

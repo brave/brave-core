@@ -1871,6 +1871,18 @@
 <translation id="2737084171727561244">Shko te Portofoli</translation>
 <translation id="3499452861061048987">Shto token</translation>
 <translation id="5046066249040287308">Shërbimi i Mjeteve të Portofolit</translation>
+<translation id="8767749833522980474">Kripto</translation>
+<translation id="4509084261025090951">Merr kartën tënde</translation>
+<translation id="3624463584770657372">Verifiko identitetin tënd për të parë numrat e kartës dhe filluar shpenzimet.</translation>
+<translation id="2508337767012636987">Trokit për të verifikuar</translation>
+<translation id="703964541421486259">Fshih balancat</translation>
+<translation id="302114796458112924">Trego balancat</translation>
+<translation id="9083210401924577263">Karta e Shpërblimeve Brave</translation>
+<translation id="2433507940547922241">Dukje</translation>
+<translation id="3435738964857648380">Siguria</translation>
+<translation id="6700561332544287722">Kërko shkyçje herën tjetër</translation>
+<translation id="5605360570977617291">Të fshehet <ph name="CARD_NAME"/> nga kreu?</translation>
+<translation id="2721464457853369512">Balanca jote e <ph name="CARD_NAME"/> është e pandryshuar. Kjo vetëm e fsheh kartën nga kreu. Mund ta tregosh përsëri në çdo kohë te Parametrat, nën Kuleta.</translation>
 <translation id="3155170474926428993">Nisës Tor-i</translation>
 <translation id="3745016858329272300">Informacione të Përgjithshme</translation>
 <translation id="4045404575593562245">Ngjarjet e Kontrollit të Torit</translation>
@@ -1910,7 +1922,6 @@
 <translation id="6261915643960475695">Biznes</translation>
 <translation id="8265589281845759879">Makina</translation>
 <translation id="7726519849288907308">Të famshme</translation>
-<translation id="8767749833522980474">Kripto</translation>
 <translation id="7577010593836079522">Kulturë</translation>
 <translation id="6807791860691150411">Arsim</translation>
 <translation id="3706423975342040244">Argëtim</translation>
@@ -2089,9 +2100,6 @@
 <translation id="3067105725259639716">Konfiguro Lajme Brave</translation>
 <translation id="6286510487460330478">Konfiguro shkurtoret</translation>
 <translation id="9214819486716388964">Shfaq Bisedën Brave</translation>
-<translation id="5950760360751948276">Shfaqi gjithmonë shiritin e faqeshënuesve</translation>
-<translation id="2960757369920422313">Shfaq shiritin e faqeshënuesve në faqen e re</translation>
-<translation id="522953399371747698">Fshih shiritin e faqeshënuesve</translation>
 <translation id="9079813619990532635">Eksporto të gjitha faqeshënuesit</translation>
 <translation id="134184943774258988">Ndiz/Fik butonin 'Të gjitha faqeshënuesit'</translation>
 <translation id="2158862020143233462">Ndiz/Fik mburojat</translation>
@@ -2206,6 +2214,7 @@
 <translation id="5820497878628354073">Kodi i statusit: <ph name="STATUS_CODE"/>, kodi i brendshëm i statusit: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">Ke arritur kufirin e shpejtësisë premium. Provoni përsëri pas disa orësh.</translation>
 <translation id="6873128487002733717">Keni arritur limitin premium për këtë model. Zgjidhni një model tjetër ose provoni përsëri më vonë.</translation>
+<translation id="2688661132468689309">Keni arritur limitin premium për këtë model. Rivendoset në <ph name="RESET_DURATION"/> (në <ph name="RESET_TIME"/>). Zgjidhni një model tjetër ose provoni përsëri atëherë.</translation>
 <translation id="3683964919745779766">Keni arritur limitin e shpejtësisë për këtë model ose jeni pa kredite. Ju lutem provoni përsëri më vonë.</translation>
 <translation id="7692501701960747469">Çelësi API i konfiguruar për këtë model është i pavlefshëm. Ju lutem kontrolloni konfigurimin tuaj dhe provoni përsëri.</translation>
 <translation id="7905602379229309187">Pika e fundit është aktualisht e ngarkuar. Ju lutem provoni përsëri më vonë.</translation>
@@ -2214,12 +2223,12 @@
 <translation id="3852808100039989429">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga Qwen VL 30B, një model i krijuar nga Alibaba Cloud për të qenë performues dhe i aplikueshëm për shumë raste përdorimi. Qwen është i mbajtur nga Brave përmes infrastrukturës tonë të sigurt. <ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
 <translation id="8659225822055186905">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga GLM-5.3 Flash, një model i krijuar nga Zhipu AI për të qenë performues dhe i aplikueshëm për shumë raste përdorimi. GLM-5.3 Flash është i mbajtur në NEAR përmes infrastrukturës së tyre të verifikueshme dhe të sigurt të privatësisë.<ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">Përshëndetje, unë jam Leo. Unë jam një asistent AI i Brave. Kam fuqi nga Claude Instant, një model i krijuar nga Anthropic për të kryer detyra bisedore dhe përpunimi teksti. Claude Instant ofrohet nga Brave përmes infrastrukturës sonë të sigurt.<ph name="LINK_BEFORE"/>Mësoni më shumë<ph name="LINK_AFTER"/></translation>
-<translation id="3789772321824682783">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga Claude Haiku, një model i krijuar nga Anthropic për të fuqizuar detyrat e bisedave dhe përpunimit të teksteve. Claude Haiku është i mbajtur nga Brave përmes infrastrukturës tonë të sigurt. <ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga Claude Sonnet, një model i krijuar nga Anthropic për të fuqizuar detyrat e bisedave dhe përpunimit të teksteve. Claude Sonnet është i mbajtur nga Brave përmes infrastrukturës tonë të sigurt. <ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
-<translation id="3399141352144059821">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga Grok 4.3, një model i krijuar nga xAI për të qenë performues dhe i aplikueshëm për shumë raste përdorimi. Grok 4.3 është i mbajtur nga Brave përmes infrastrukturës tonë të sigurt. <ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
-<translation id="8868813509973985458">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga GPT 5.4, një model i krijuar nga OpenAI për të qenë performues dhe i aplikueshëm për shumë raste përdorimi. GPT 5.4 është i mbajtur nga Brave përmes infrastrukturës tonë të sigurt. <ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
+<translation id="6676306995311143470">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga Grok 4.6, modeli frontier i arsyetimit i xAI në Amazon Bedrock Mantle. Grok 4.6 shërbehet përmes infrastrukturës së sigurt AWS të Brave.<ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
+<translation id="2394656730986208060">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga GPT 5.6 Luna, modeli i shpejtë dhe me vonesë të ulët i OpenAI në Amazon Bedrock Mantle. GPT 5.6 Luna shërbehet përmes infrastrukturës së sigurt AWS të Brave.<ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
+<translation id="5278969721580944810">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga GPT 5.6 Terra, modeli i balancuar i prodhimit i OpenAI në Amazon Bedrock Mantle. GPT 5.6 Terra shërbehet përmes infrastrukturës së sigurt AWS të Brave.<ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
 <translation id="5037359072717016032">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga Mistral Large, një model i krijuar nga Mistral për të qenë performues dhe i aplikueshëm për shumë raste përdorimi. Mistral Large është i mbajtur nga Brave përmes infrastrukturës tonë të sigurt. <ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
-<translation id="4026902371301997261">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga Qwen 3 235B, një model i krijuar nga Alibaba Cloud për të qenë performues dhe i aplikueshëm për shumë raste përdorimi. Qwen 3 235B është i mbajtur nga Brave përmes infrastrukturës tonë të sigurt. <ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
+<translation id="5475035333915581972">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga Qwen 3.8 Flash Next, një model i krijuar nga Alibaba Cloud për të qenë performues dhe i aplikueshëm për shumë raste përdorimi. Qwen 3.8 Flash Next është i mbajtur nga Brave përmes infrastrukturës tonë të sigurt.<ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
 <translation id="8720758690351028307">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga Deepseek V3.2, një model i krijuar nga Deepseek për të qenë performues dhe i aplikueshëm për shumë raste përdorimi. Deepseek V3.2 është i mbajtur nga Brave përmes infrastrukturës tonë të sigurt. <ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga Claude Opus, një model i krijuar nga Anthropic për të fuqizuar detyrat e bisedave dhe përpunimit të teksteve. Claude Opus është i mbajtur nga Brave përmes infrastrukturës tonë të sigurt. <ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
 <translation id="7238858567393403597">Përshëndetje, jam Leo. Jam një asistent AI nga Brave. Jam fuqizuar nga GLM-4-7-Flash, një model i krijuar nga Zhipu AI për të qenë performues dhe i aplikueshëm për shumë raste përdorimi. GLM-4-7-Flash është i mbajtur nga Brave përmes infrastrukturës tonë të sigurt. <ph name="LINK_BEFORE"/>Mëso më shumë<ph name="LINK_AFTER"/></translation>
@@ -2232,7 +2241,6 @@
 <translation id="4773408460773097271">Ollama</translation>
 <translation id="631371844654031449">Modelet e rekomanduara</translation>
 <translation id="6568044140836233369">Shfaq të gjitha modelet</translation>
-<translation id="6187065185557150870">Biseda</translation>
 <translation id="4685048769603134644">Hap faqen e plotë</translation>
 <translation id="2961040541145689181">Bisedë e re</translation>
 <translation id="7557539689487606886">Bëhu Premium</translation>
@@ -2356,13 +2364,13 @@
 <translation id="887511360213807449">Historia është ç'aktivizuar</translation>
 <translation id="5380979378058584412">Për të parë bisedat e mëparshme me Leo, duhet të aktivizoni historikun e bisedave.</translation>
 <translation id="3185367320601718531">Bisedë dhe gjenerim tekstesh</translation>
-<translation id="2793458212460902934">I shpejtë • Kërkim • Mjete</translation>
 <translation id="8506027496671575183">Kërkim • Vision • Mjete</translation>
 <translation id="3184606955650139158">I shpejtë • Kërkim • Vision</translation>
 <translation id="7465032796278724624">Verifikuar si Privat nga NEAR AI TEE</translation>
 <translation id="8782867266498869301">Modeli ndryshon dinamikisht për të përdorur më të mirën për detyrën</translation>
 <translation id="7348809809749151120">I shpejtë • Kërkim</translation>
 <translation id="3213834013136637671">Kërkim • Vision</translation>
+<translation id="2793458212460902934">I shpejtë • Kërkim • Mjete</translation>
 <translation id="5276681919620506371">Kërkim • Mjete</translation>
 <translation id="7434375176361995333">Përmbledhje • I shpejtë</translation>
 <translation id="3965507912994218570">Parametrat e Leo</translation>
@@ -2924,9 +2932,7 @@ Le të ju lidhim!</translation>
 <translation id="3750210661641549834">Që të krijohet llogaria jote, të lutemi verifiko adresën tënde email.</translation>
 <translation id="4351175281479794167">Fut kodin e verifikimit</translation>
 <translation id="1672793037892810340">Duhet të kesh marrë një email me një kod që duhet ta fusësh.</translation>
-<translation id="4821255729182569254">Ridërgo emailin e konfirmimit</translation>
 <translation id="5837679375142747484">Nuk e sheh emailin? Kontrollo dosjen e postës së padëshiruar ose <ph name="BEGIN_LINK"/>ridërgoje<ph name="END_LINK"/>.</translation>
-<translation id="1080588816740959885">Nuk e sheh emailin? Kontrollo dosjen e postës së padëshiruar ose ridërgoje.</translation>
 <translation id="1020730839570724178">Anulo regjistrimin</translation>
 <translation id="7155125570724238786">Që të rivendoset fjalëkalimi yt, të lutemi verifiko adresën tënde email.</translation>
 <translation id="816074628631172140">Emaili yt është verifikuar. Vendos një fjalëkalim të ri për të përfunduar rivendosjen e fjalëkalimit.</translation>

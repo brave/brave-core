@@ -1881,6 +1881,18 @@
 <translation id="2737084171727561244">Go to Portfolio</translation>
 <translation id="3499452861061048987">Add token</translation>
 <translation id="5046066249040287308">Brave Wallet utility service</translation>
+<translation id="8767749833522980474">Crypto</translation>
+<translation id="4509084261025090951">Get your card</translation>
+<translation id="3624463584770657372">Verify your identity to see card numbers and start spending.</translation>
+<translation id="2508337767012636987">Tap to verify</translation>
+<translation id="703964541421486259">Hide balances</translation>
+<translation id="302114796458112924">Show balances</translation>
+<translation id="9083210401924577263">Brave Rewards Card</translation>
+<translation id="2433507940547922241">Appearance</translation>
+<translation id="3435738964857648380">Security</translation>
+<translation id="6700561332544287722">Require unlock next time</translation>
+<translation id="5605360570977617291">Hide <ph name="CARD_NAME"/> from home?</translation>
+<translation id="2721464457853369512">Your <ph name="CARD_NAME"/> balance is unchanged. This only hides the card from home. You can show it again anytime in Settings, under Wallet.</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
 <translation id="3745016858329272300">General info</translation>
 <translation id="4045404575593562245">Tor control events</translation>
@@ -1920,7 +1932,6 @@
 <translation id="6261915643960475695">Business</translation>
 <translation id="8265589281845759879">Cars</translation>
 <translation id="7726519849288907308">Celebrities</translation>
-<translation id="8767749833522980474">Crypto</translation>
 <translation id="7577010593836079522">Culture</translation>
 <translation id="6807791860691150411">Education</translation>
 <translation id="3706423975342040244">Entertainment</translation>
@@ -2099,9 +2110,6 @@
 <translation id="3067105725259639716">Configure Brave News</translation>
 <translation id="6286510487460330478">Configure shortcuts</translation>
 <translation id="9214819486716388964">Show Brave Talk</translation>
-<translation id="5950760360751948276">Always show bookmark bar</translation>
-<translation id="2960757369920422313">Show bookmark bar on NTP</translation>
-<translation id="522953399371747698">Hide bookmark bar</translation>
 <translation id="9079813619990532635">Export all bookmarks</translation>
 <translation id="134184943774258988">Toggle all bookmarks button visibility</translation>
 <translation id="2158862020143233462">Toggle shields</translation>
@@ -2216,6 +2224,7 @@
 <translation id="5820497878628354073">Status code: <ph name="STATUS_CODE"/>, inner status code: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">You've reached the premium rate limit. Please try again in a few hours.</translation>
 <translation id="6873128487002733717">You've reached the premium limit for this model. Select a different model or try again later.</translation>
+<translation id="2688661132468689309">You've reached the premium limit for this model. It resets in <ph name="RESET_DURATION"/> (at <ph name="RESET_TIME"/>). Select a different model or try again then.</translation>
 <translation id="3683964919745779766">You've reached the rate limit for this model or are out of credits. Please try again later.</translation>
 <translation id="7692501701960747469">The API key configured for this model is invalid. Please check your configuration and try again.</translation>
 <translation id="7905602379229309187">The endpoint is currently overloaded. Please try again later.</translation>
@@ -2224,12 +2233,12 @@
 <translation id="3852808100039989429">Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by Qwen VL 30B, a model created by Alibaba Cloud to be performant and applicable to many use cases. Qwen is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
 <translation id="8659225822055186905">Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by GLM-5.3 Flash, a model created by Zhipu AI to be performant and applicable to many use cases. GLM-5.3 Flash is NEAR-hosted through their own verifiably private secure infrastructure.<ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by Claude Instant, a model created by Anthropic to power conversational and text processing tasks. Claude Instant is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
-<translation id="3789772321824682783">Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by Claude Haiku, a model created by Anthropic to power conversational and text processing tasks. Claude Haiku is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by Claude Sonnet, a model created by Anthropic to power conversational and text processing tasks. Claude Sonnet is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
-<translation id="3399141352144059821">Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by Grok 4.3, a model created by xAI to be performant and applicable to many use cases. Grok 4.3 is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
-<translation id="8868813509973985458">Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by GPT 5.4, a model created by OpenAI to be performant and applicable to many use cases. GPT 5.4 is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
+<translation id="6676306995311143470">Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by Grok 4.6, xAI's frontier reasoning model on Amazon Bedrock Mantle. Grok 4.6 is served through Brave's secure AWS infrastructure.<ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
+<translation id="2394656730986208060">Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by GPT 5.6 Luna, OpenAI's fast, low-latency model on Amazon Bedrock Mantle. GPT 5.6 Luna is served through Brave's secure AWS infrastructure.<ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
+<translation id="5278969721580944810">Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by GPT 5.6 Terra, OpenAI's balanced production model on Amazon Bedrock Mantle. GPT 5.6 Terra is served through Brave's secure AWS infrastructure.<ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
 <translation id="5037359072717016032">Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by Mistral Large, a model created by Mistral to be performant and applicable to many use cases. Mistral Large is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
-<translation id="4026902371301997261">Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by Qwen 3 235B, a model created by Alibaba Cloud to be performant and applicable to many use cases. Qwen 3 235B is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
+<translation id="5475035333915581972">Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by Qwen 3.8 Flash Next, a model created by Alibaba Cloud to be performant and applicable to many use cases. Qwen 3.8 Flash Next is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
 <translation id="8720758690351028307">Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by Deepseek V3.2, a model created by Deepseek to be performant and applicable to many use cases. Deepseek V3.2 is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by Claude Opus, a model created by Anthropic to power conversational and text processing tasks. Claude Opus is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
 <translation id="7238858567393403597">Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by GLM-4-7-Flash, a model created by Zhipu AI to be performant and applicable to many use cases. GLM-4-7-Flash is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
@@ -2242,7 +2251,6 @@
 <translation id="4773408460773097271">Ollama</translation>
 <translation id="631371844654031449">Recommended models</translation>
 <translation id="6568044140836233369">Show all models</translation>
-<translation id="6187065185557150870">Chat</translation>
 <translation id="4685048769603134644">Open full page</translation>
 <translation id="2961040541145689181">New chat</translation>
 <translation id="7557539689487606886">Go Premium</translation>
@@ -2366,13 +2374,13 @@
 <translation id="887511360213807449">History is disabled</translation>
 <translation id="5380979378058584412">In order to view your previous conversations with Leo, you need to enable conversation history.</translation>
 <translation id="3185367320601718531">Conversation and text generation</translation>
-<translation id="2793458212460902934">Fast • Search • Tools</translation>
 <translation id="8506027496671575183">Search • Vision • Tools</translation>
 <translation id="3184606955650139158">Fast • Search • Vision</translation>
 <translation id="7465032796278724624">Verifiably Private With NEAR AI TEE</translation>
 <translation id="8782867266498869301">Model changes dynamically to use the best one for the task</translation>
 <translation id="7348809809749151120">Fast • Search</translation>
 <translation id="3213834013136637671">Search • Vision</translation>
+<translation id="2793458212460902934">Fast • Search • Tools</translation>
 <translation id="5276681919620506371">Search • Tools</translation>
 <translation id="7434375176361995333">Summaries • Fast</translation>
 <translation id="3965507912994218570">Leo settings</translation>
@@ -2939,9 +2947,7 @@ Let's get you connected!</translation>
 <translation id="3750210661641549834">In order to create your account, please verify your email address.</translation>
 <translation id="4351175281479794167">Enter verification code</translation>
 <translation id="1672793037892810340">You should have received an email with a code that you'll need to input.</translation>
-<translation id="4821255729182569254">Resend confirmation email</translation>
 <translation id="5837679375142747484">Don't see the email? Check your spam folder or <ph name="BEGIN_LINK"/>resend<ph name="END_LINK"/> it.</translation>
-<translation id="1080588816740959885">Don't see the email? Check your spam folder or resend it.</translation>
 <translation id="1020730839570724178">Cancel registration</translation>
 <translation id="7155125570724238786">In order to reset your password, please verify your email address.</translation>
 <translation id="816074628631172140">Your email has been verified. Set a new password to complete your password reset.</translation>

@@ -1871,6 +1871,18 @@
 <translation id="2737084171727561244">Оди на Портфолио</translation>
 <translation id="3499452861061048987">Додај токен</translation>
 <translation id="5046066249040287308">Brave Wallet Utility Service</translation>
+<translation id="8767749833522980474">Криптовалути</translation>
+<translation id="4509084261025090951">Земете ја вашата картичка</translation>
+<translation id="3624463584770657372">Потврдете го вашиот идентитет за да ги видите броевите на картичката и да започнете со трошење.</translation>
+<translation id="2508337767012636987">Допрете за потврда</translation>
+<translation id="703964541421486259">Сокриј салда</translation>
+<translation id="302114796458112924">Прикажи салда</translation>
+<translation id="9083210401924577263">Картичка за Brave награди</translation>
+<translation id="2433507940547922241">Изглед</translation>
+<translation id="3435738964857648380">Безбедност</translation>
+<translation id="6700561332544287722">Барај отклучување следниот пат</translation>
+<translation id="5605360570977617291">Да се сокрие <ph name="CARD_NAME"/> од почетната страница?</translation>
+<translation id="2721464457853369512">Вашето <ph name="CARD_NAME"/> салдо е непроменето. Ова само ја крие картичката од почетната страница. Можете повторно да ја прикажете во секое време во Поставки, под Wallet.</translation>
 <translation id="3155170474926428993">Тор Лансер</translation>
 <translation id="3745016858329272300">Општа Информација</translation>
 <translation id="4045404575593562245">Тор Контролни Настани</translation>
@@ -1910,7 +1922,6 @@
 <translation id="6261915643960475695">Бизнис</translation>
 <translation id="8265589281845759879">Автомобили</translation>
 <translation id="7726519849288907308">Познати личности</translation>
-<translation id="8767749833522980474">Криптовалути</translation>
 <translation id="7577010593836079522">Култура</translation>
 <translation id="6807791860691150411">Образование</translation>
 <translation id="3706423975342040244">Забава</translation>
@@ -2089,9 +2100,6 @@
 <translation id="3067105725259639716">Конфигурирај Brave Вести</translation>
 <translation id="6286510487460330478">Конфигурирај кратенки</translation>
 <translation id="9214819486716388964">Прикажи Brave Разговор</translation>
-<translation id="5950760360751948276">Секогаш прикажувај ја лентата за обележувачи</translation>
-<translation id="2960757369920422313">Прикажи ја лентата за обележувачи на NTP</translation>
-<translation id="522953399371747698">Сокриј ја лентата за обележувачи</translation>
 <translation id="9079813619990532635">Извези ги сите обележувачи</translation>
 <translation id="134184943774258988">Преклопи видливост на копчето Сите обележувачи</translation>
 <translation id="2158862020143233462">Преклопи штитови</translation>
@@ -2206,6 +2214,7 @@
 <translation id="5820497878628354073">Статусен код: <ph name="STATUS_CODE"/>, внатрешен статусен код: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">Го достигнавте премиум лимитот за стапката. Обидете се повторно по неколку часа.</translation>
 <translation id="6873128487002733717">Ја достигнавте premium границата за овој модел. Изберете различен модел или обидете се повторно подоцна.</translation>
+<translation id="2688661132468689309">Ја достигнавте premium границата за овој модел. Се ресетира за <ph name="RESET_DURATION"/> (во <ph name="RESET_TIME"/>). Изберете различен модел или обидете се повторно тогаш.</translation>
 <translation id="3683964919745779766">Ја достигнавте границата на број на барања за овој модел или немате повеќе кредити. Ве молиме обидете се повторно подоцна.</translation>
 <translation id="7692501701960747469">API клучот конфигуриран за овој модел е невалиден. Ве молиме проверете ја вашем конфигурација и обидете се повторно.</translation>
 <translation id="7905602379229309187">Крајната точка моментално е преоптоварена. Ве молиме обидете се повторно подоцна.</translation>
@@ -2214,12 +2223,12 @@
 <translation id="3852808100039989429">Здраво, јас сум Лео. Јас сум AI асистент на Brave. Ме напојува Qwen VL 30B, модел создаден од Alibaba Cloud да биде ефикасен и применлив за многу случаи. Qwen е хостиран од Brave преку нашата сопствена сигурна инфраструктура.<ph name="LINK_BEFORE"/>Дознај повеќе<ph name="LINK_AFTER"/></translation>
 <translation id="8659225822055186905">Здраво, јас сум Лео. Јас сум AI асистент на Brave. Ме напојува GLM-5.3 Flash, модел создаден од Zhipu AI да биде ефикасен и применлив за многу случаи. GLM-5.3 Flash е хостиран од NEAR преку нивна потврдена приватна сигурна инфраструктура.<ph name="LINK_BEFORE"/>Дознај повеќе<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">Здраво, јас сум Лео. Јас сум AI асистент од Brave. Работам со Claude Instant, модел создаден од Anthropic за разговори и обработка на текст. Claude Instant е хостиран од Brave преку нашата сопствена безбедна инфраструктура.<ph name="LINK_BEFORE"/>Дознај повеќе<ph name="LINK_AFTER"/></translation>
-<translation id="3789772321824682783">Здраво, јас сум Лео. Јас сум AI асистент на Brave. Ме напојува Claude Haiku, модел создаден од Anthropic за поддршка на разговорни и задачи за обработка на текст. Claude Haiku е хостиран од Brave преку нашата сопствена сигурна инфраструктура.<ph name="LINK_BEFORE"/>Дознај повеќе<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Здраво, јас сум Лео. Јас сум AI асистент на Brave. Ме напојува Claude Sonnet, модел создаден од Anthropic за поддршка на разговорни и задачи за обработка на текст. Claude Sonnet е хостиран од Brave преку нашата сопствена сигурна инфраструктура.<ph name="LINK_BEFORE"/>Дознај повеќе<ph name="LINK_AFTER"/></translation>
-<translation id="3399141352144059821">Здраво, јас сум Лео. Јас сум AI асистент на Brave. Ме напојува Grok 4.3, модел создаден од xAI да биде ефикасен и применлив за многу случаи. Grok 4.3 е хостиран од Brave преку нашата сопствена сигурна инфраструктура.<ph name="LINK_BEFORE"/>Дознај повеќе<ph name="LINK_AFTER"/></translation>
-<translation id="8868813509973985458">Здраво, јас сум Лео. Јас сум AI асистент на Brave. Ме напојува GPT 5.4, модел создаден од OpenAI да биде ефикасен и применлив за многу случаи. GPT 5.4 е хостиран од Brave преку нашата сопствена сигурна инфраструктура.<ph name="LINK_BEFORE"/>Дознај повеќе<ph name="LINK_AFTER"/></translation>
+<translation id="6676306995311143470">Здраво, јас сум Лео. Јас сум AI асистент на Brave. Ме напојува Grok 4.6, пограничниот модел за расудување на xAI на Amazon Bedrock Mantle. Grok 4.6 се опслужува преку сигурната AWS инфраструктура на Brave.<ph name="LINK_BEFORE"/>Дознај повеќе<ph name="LINK_AFTER"/></translation>
+<translation id="2394656730986208060">Здраво, јас сум Лео. Јас сум AI асистент на Brave. Ме напојува GPT 5.6 Luna, брзиот модел со мала латентност на OpenAI на Amazon Bedrock Mantle. GPT 5.6 Luna се опслужува преку сигурната AWS инфраструктура на Brave.<ph name="LINK_BEFORE"/>Дознај повеќе<ph name="LINK_AFTER"/></translation>
+<translation id="5278969721580944810">Здраво, јас сум Лео. Јас сум AI асистент на Brave. Ме напојува GPT 5.6 Terra, балансираниот продукциски модел на OpenAI на Amazon Bedrock Mantle. GPT 5.6 Terra се опслужува преку сигурната AWS инфраструктура на Brave.<ph name="LINK_BEFORE"/>Дознај повеќе<ph name="LINK_AFTER"/></translation>
 <translation id="5037359072717016032">Здраво, јас сум Лео. Јас сум AI асистент на Brave. Ме напојува Mistral Large, модел создаден од Mistral да биде ефикасен и применлив за многу случаи. Mistral Large е хостиран од Brave преку нашата сопствена сигурна инфраструктура.&amp;<ph name="LINK_BEFORE"/>Дознај повеќе<ph name="LINK_AFTER"/></translation>
-<translation id="4026902371301997261">Здраво, јас сум Лео. Јас сум AI асистент на Brave. Ме напојува Qwen 3 235B, модел создаден од Alibaba Cloud да биде ефикасен и применлив за многу случаи. Qwen 3 235B е хостиран од Brave преку нашата сопствена сигурна инфраструктура.&amp;<ph name="LINK_BEFORE"/>Дознај повеќе<ph name="LINK_AFTER"/></translation>
+<translation id="5475035333915581972">Здраво, јас сум Лео. Јас сум AI асистент на Brave. Ме напојува Qwen 3.8 Flash Next, модел создаден од Alibaba Cloud да биде ефикасен и применлив за многу случаи. Qwen 3.8 Flash Next е хостиран од Brave преку нашата сопствена сигурна инфраструктура.<ph name="LINK_BEFORE"/>Дознај повеќе<ph name="LINK_AFTER"/></translation>
 <translation id="8720758690351028307">Здраво, јас сум Лео. Јас сум AI асистент на Brave. Ме напојува Deepseek V3.2, модел создаден од Deepseek да биде ефикасен и применлив за многу случаи. Deepseek V3.2 е хостиран од Brave преку нашата сопствена сигурна инфраструктура.&amp;<ph name="LINK_BEFORE"/>Дознај повеќе<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">Здраво, јас сум Лео. Јас сум AI асистент на Brave. Ме напојува Claude Opus, модел создаден од Anthropic за поддршка на разговорни и задачи за обработка на текст. Claude Opus е хостиран од Brave преку нашата сопствена сигурна инфраструктура.&amp;<ph name="LINK_BEFORE"/>Дознај повеќе<ph name="LINK_AFTER"/></translation>
 <translation id="7238858567393403597">Здраво, јас сум Лео. Јас сум AI асистент на Brave. Ме напојува GLM-4-7-Flash, модел создаден од Zhipu AI да биде ефикасен и применлив за многу случаи. GLM-4-7-Flash е хостиран од Brave преку нашата сопствена сигурна инфраструктура.<ph name="LINK_BEFORE"/>Дознај повеќе<ph name="LINK_AFTER"/></translation>
@@ -2232,7 +2241,6 @@
 <translation id="4773408460773097271">Ollama</translation>
 <translation id="631371844654031449">Препорачани модели</translation>
 <translation id="6568044140836233369">Прикажи ги сите модели</translation>
-<translation id="6187065185557150870">Разговор</translation>
 <translation id="4685048769603134644">Отвори цела страница</translation>
 <translation id="2961040541145689181">Нов разговор</translation>
 <translation id="7557539689487606886">Вклучи Premium</translation>
@@ -2356,13 +2364,13 @@
 <translation id="887511360213807449">Историјата е оневозможена</translation>
 <translation id="5380979378058584412">За да ги видите вашите претходни разговори со Лео, треба да овозможите зачувување на историјата од разговорите.</translation>
 <translation id="3185367320601718531">Разговор и генерирање текст</translation>
-<translation id="2793458212460902934">Брзо • Пребарување • Алатки</translation>
 <translation id="8506027496671575183">Пребарување • Визија • Алатки</translation>
 <translation id="3184606955650139158">Брзо • Пребарување • Визија</translation>
 <translation id="7465032796278724624">Проверено приватно со NEAR AI TEE</translation>
 <translation id="8782867266498869301">Моделот се менува динамички за да го користи најдобриот за задачата</translation>
 <translation id="7348809809749151120">Брзо • Пребарување</translation>
 <translation id="3213834013136637671">Пребарување • Визија</translation>
+<translation id="2793458212460902934">Брзо • Пребарување • Алатки</translation>
 <translation id="5276681919620506371">Пребарување • Алатки</translation>
 <translation id="7434375176361995333">Резимирања • Брзо</translation>
 <translation id="3965507912994218570">Leo поставки</translation>
@@ -2925,9 +2933,7 @@ Brave има услуга за помош која ве штити од ова �
 <translation id="3750210661641549834">За да го создадете вашиот профил, ве молиме потврдете ја вашата адреса на е-пошта.</translation>
 <translation id="4351175281479794167">Внеси код за потврда</translation>
 <translation id="1672793037892810340">Требаше да добиете е-порака со код што ќе треба да го внесете.</translation>
-<translation id="4821255729182569254">Препрати ја потврдната е-порака</translation>
 <translation id="5837679375142747484">Не ја гледате е-пораката? Проверете го вашето сандаче за несакана пошта или <ph name="BEGIN_LINK"/>препратете ја<ph name="END_LINK"/>.</translation>
-<translation id="1080588816740959885">Не ја гледате е-пораката? Проверете го вашето сандаче за несакана пошта или препратете ја.</translation>
 <translation id="1020730839570724178">Откажи регистрација</translation>
 <translation id="7155125570724238786">За да ја ресетирате вашата лозинка, ве молиме потврдете ја вашата адреса на е-пошта.</translation>
 <translation id="816074628631172140">Вашата е-пошта е потврдена. Поставете нова лозинка за да го завршите ресетирањето на вашата лозинка.</translation>

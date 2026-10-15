@@ -1881,6 +1881,18 @@
 <translation id="2737084171727561244">Siirry portfolioon</translation>
 <translation id="3499452861061048987">Lisää tokeni</translation>
 <translation id="5046066249040287308">Brave-lompakon apupalvelu</translation>
+<translation id="8767749833522980474">Krypto</translation>
+<translation id="4509084261025090951">Hanki korttisi</translation>
+<translation id="3624463584770657372">Vahvista henkilöllisyytesi nähdäksesi kortin numerot ja aloittaaksesi kuluttamisen.</translation>
+<translation id="2508337767012636987">Vahvista napauttamalla</translation>
+<translation id="703964541421486259">Piilota saldot</translation>
+<translation id="302114796458112924">Näytä saldot</translation>
+<translation id="9083210401924577263">Brave-palkkiot-kortti</translation>
+<translation id="2433507940547922241">Ulkonäkö</translation>
+<translation id="3435738964857648380">Turvallisuus</translation>
+<translation id="6700561332544287722">Vaadi avausta seuraavalla kerralla</translation>
+<translation id="5605360570977617291">Piilotetaanko <ph name="CARD_NAME"/> aloitusnäkymästä?</translation>
+<translation id="2721464457853369512"><ph name="CARD_NAME"/>-saldosi pysyy ennallaan. Tämä piilottaa vain kortin aloitusnäkymästä. Voit näyttää sen uudelleen milloin tahansa Asetukset-kohdassa, Lompakko-osiossa.</translation>
 <translation id="3155170474926428993">Tor-laukaisin</translation>
 <translation id="3745016858329272300">Yleiset tiedot</translation>
 <translation id="4045404575593562245">Tor-hallinnointitapahtumat</translation>
@@ -1920,7 +1932,6 @@
 <translation id="6261915643960475695">Liiketoiminta</translation>
 <translation id="8265589281845759879">Autot</translation>
 <translation id="7726519849288907308">Julkkikset</translation>
-<translation id="8767749833522980474">Krypto</translation>
 <translation id="7577010593836079522">Kulttuuri</translation>
 <translation id="6807791860691150411">Koulutus</translation>
 <translation id="3706423975342040244">Viihde</translation>
@@ -2099,9 +2110,6 @@
 <translation id="3067105725259639716">Määritä Brave-uutiset</translation>
 <translation id="6286510487460330478">Määritä pikakuvakkeet</translation>
 <translation id="9214819486716388964">Näytä Brave-puhe</translation>
-<translation id="5950760360751948276">Näytä aina kirjanmerkkipalkki</translation>
-<translation id="2960757369920422313">Näytä kirjanmerkkipalkki uudella välilehtisivulla</translation>
-<translation id="522953399371747698">Piilota kirjanmerkkipalkki</translation>
 <translation id="9079813619990532635">Vie kaikki kirjanmerkit</translation>
 <translation id="134184943774258988">Vaihda Kaikki kirjanmerkit -painikkeen näkyvyysasetusta</translation>
 <translation id="2158862020143233462">Vaihda suojia</translation>
@@ -2216,6 +2224,7 @@
 <translation id="5820497878628354073">Tilakoodi: <ph name="STATUS_CODE"/>, sisäinen tilakoodi: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">Olet saavuttanut premium-määrärajan. Yritä uudelleen muutaman tunnin kuluttua.</translation>
 <translation id="6873128487002733717">Olet saavuttanut tämän mallin premium-rajan. Valitse toinen malli tai yritä myöhemmin uudelleen.</translation>
+<translation id="2688661132468689309">Olet saavuttanut tämän mallin premium-rajan. Se nollautuu ajassa <ph name="RESET_DURATION"/> (klo <ph name="RESET_TIME"/>). Valitse toinen malli tai yritä silloin uudelleen.</translation>
 <translation id="3683964919745779766">Olet saavuttanut tämän mallin hintarajan tai sinulla ei ole enää krediittejä. Yritä myöhemmin uudelleen.</translation>
 <translation id="7692501701960747469">Tähän malliin määritetty API-avain on virheellinen. Tarkista asetukset ja yritä uudelleen.</translation>
 <translation id="7905602379229309187">Päätepiste on tällä hetkellä ylikuormitettu. Yritä myöhemmin uudelleen.</translation>
@@ -2224,12 +2233,12 @@
 <translation id="3852808100039989429">Hei, olen Leo. Olen Braven AI-avustaja. Toimintani perustuu Qwen VL 30B:hen, Alibaba Cloudin luomaan malliin, joka on suorituskykyinen ja soveltuu moniin käyttötarkoituksiin. Qwen on Brave-hostattu oman suojatun infrastruktuurimme kautta.<ph name="LINK_BEFORE"/>Lisätietoja<ph name="LINK_AFTER"/></translation>
 <translation id="8659225822055186905">Hei, olen Leo. Olen Braven AI-avustaja. Toimintani perustuu GLM-5.3 Flashiin, Zhipu AI:n luomaan malliin, joka on suorituskykyinen ja soveltuu moniin käyttötarkoituksiin. GLM-5.3 Flash on NEAR-hostattu heidän varmennetun yksityisen suojatun infrastruktuurinsa kautta.<ph name="LINK_BEFORE"/>Lisätietoja<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">Hei, olen Leo. Olen Braven tekoälyavustaja. Käytän Claude Instant -mallia, jonka on kehittänyt Anthropic keskustelu- ja tekstinkäsittelytehtäviin. Claude Instant toimii Braven isännöimänä turvallisessa infrastruktuurissamme.<ph name="LINK_BEFORE"/>Lue lisää<ph name="LINK_AFTER"/></translation>
-<translation id="3789772321824682783">Hei, olen Leo. Olen Braven AI-avustaja. Toimintani perustuu Claude Haiku -malliin, jonka on luonut Anthropic keskustelu- ja tekstinkäsittelytehtäviin. Claude Haiku on Brave-hostattu oman suojatun infrastruktuurimme kautta.<ph name="LINK_BEFORE"/>Lisätietoja<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Hei, olen Leo. Olen Braven AI-avustaja. Toimintani perustuu Claude Sonnet -malliin, jonka on luonut Anthropic keskustelu- ja tekstinkäsittelytehtäviin. Claude Sonnet on Brave-hostattu oman suojatun infrastruktuurimme kautta.<ph name="LINK_BEFORE"/>Lisätietoja<ph name="LINK_AFTER"/></translation>
-<translation id="3399141352144059821">Hei, olen Leo. Olen Braven AI-avustaja. Toimintani perustuu Grok 4.3:een, xAI:n luomaan malliin, joka on suorituskykyinen ja soveltuu moniin käyttötarkoituksiin. Grok 4.3 on Brave-hostattu oman suojatun infrastruktuurimme kautta.<ph name="LINK_BEFORE"/>Lisätietoja<ph name="LINK_AFTER"/></translation>
-<translation id="8868813509973985458">Hei, olen Leo. Olen Braven AI-avustaja. Toimintani perustuu GPT 5.4:ään, OpenAI:n luomaan malliin, joka on suorituskykyinen ja soveltuu moniin käyttötarkoituksiin. GPT 5.4 on Brave-hostattu oman suojatun infrastruktuurimme kautta.<ph name="LINK_BEFORE"/>Lisätietoja<ph name="LINK_AFTER"/></translation>
+<translation id="6676306995311143470">Hei, olen Leo. Olen Braven AI-avustaja. Toimintani perustuu Grok 4.6:een, xAI:n huippuluokan päättelymalliin Amazon Bedrock Mantlessa. Grok 4.6 tarjotaan Braven suojatun AWS-infrastruktuurin kautta.<ph name="LINK_BEFORE"/>Lisätietoja<ph name="LINK_AFTER"/></translation>
+<translation id="2394656730986208060">Hei, olen Leo. Olen Braven AI-avustaja. Toimintani perustuu GPT 5.6 Lunaan, OpenAI:n nopeaan, matalan latenssin malliin Amazon Bedrock Mantlessa. GPT 5.6 Luna tarjotaan Braven suojatun AWS-infrastruktuurin kautta.<ph name="LINK_BEFORE"/>Lisätietoja<ph name="LINK_AFTER"/></translation>
+<translation id="5278969721580944810">Hei, olen Leo. Olen Braven AI-avustaja. Toimintani perustuu GPT 5.6 Terraan, OpenAI:n tasapainoiseen tuotantomalliin Amazon Bedrock Mantlessa. GPT 5.6 Terra tarjotaan Braven suojatun AWS-infrastruktuurin kautta.<ph name="LINK_BEFORE"/>Lisätietoja<ph name="LINK_AFTER"/></translation>
 <translation id="5037359072717016032">Hei, olen Leo. Olen Braven AI-avustaja. Toimintani perustuu Mistral Large -malliin, jonka on luonut Mistral ja joka on suorituskykyinen ja soveltuu moniin käyttötarkoituksiin. Mistral Large on Brave-hostattu oman suojatun infrastruktuurimme kautta.<ph name="LINK_BEFORE"/>Lisätietoja<ph name="LINK_AFTER"/></translation>
-<translation id="4026902371301997261">Hei, olen Leo. Olen Braven AI-avustaja. Toimintani perustuu Qwen 3 235B:hen, Alibaba Cloudin luomaan malliin, joka on suorituskykyinen ja soveltuu moniin käyttötarkoituksiin. Qwen 3 235B on Brave-hostattu oman suojatun infrastruktuurimme kautta.<ph name="LINK_BEFORE"/>Lisätietoja<ph name="LINK_AFTER"/></translation>
+<translation id="5475035333915581972">Hei, olen Leo. Olen Braven AI-avustaja. Toimintani perustuu Qwen 3.8 Flash Nextiin, Alibaba Cloudin luomaan malliin, joka on suorituskykyinen ja soveltuu moniin käyttötarkoituksiin. Qwen 3.8 Flash Next on Brave-hostattu oman suojatun infrastruktuurimme kautta.<ph name="LINK_BEFORE"/>Lisätietoja<ph name="LINK_AFTER"/></translation>
 <translation id="8720758690351028307">Hei, olen Leo. Olen Braven AI-avustaja. Toimintani perustuu Deepseek V3.2:een, Deepseekin luomaan malliin, joka on suorituskykyinen ja soveltuu moniin käyttötarkoituksiin. Deepseek V3.2 on Brave-hostattu oman suojatun infrastruktuurimme kautta.<ph name="LINK_BEFORE"/>Lisätietoja<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">Hei, olen Leo. Olen Braven AI-avustaja. Toimintani perustuu Claude Opus -malliin, jonka on luonut Anthropic keskustelu- ja tekstinkäsittelytehtäviin. Claude Opus on Brave-hostattu oman suojatun infrastruktuurimme kautta.<ph name="LINK_BEFORE"/>Lisätietoja<ph name="LINK_AFTER"/></translation>
 <translation id="7238858567393403597">Hei, olen Leo. Olen Braven AI-avustaja. Toimintani perustuu GLM-4-7-Flash:iin, Zhipu AI:n luomaan malliin, joka on suorituskykyinen ja soveltuu moniin käyttötarkoituksiin. GLM-4-7-Flash on Brave-hostattu oman suojatun infrastruktuurimme kautta.<ph name="LINK_BEFORE"/>Lisätietoja<ph name="LINK_AFTER"/></translation>
@@ -2242,7 +2251,6 @@
 <translation id="4773408460773097271">Ollama</translation>
 <translation id="631371844654031449">Suositellut mallit</translation>
 <translation id="6568044140836233369">Näytä kaikki mallit</translation>
-<translation id="6187065185557150870">Chat</translation>
 <translation id="4685048769603134644">Avaa koko sivu</translation>
 <translation id="2961040541145689181">Uusi chat</translation>
 <translation id="7557539689487606886">Siirry Premiumiin</translation>
@@ -2366,13 +2374,13 @@
 <translation id="887511360213807449">Historia on poistettu käytöstä</translation>
 <translation id="5380979378058584412">Voidaksesi tarkastella aiempia keskusteluja Leon kanssa sinun on otettava keskusteluhistoria käyttöön.</translation>
 <translation id="3185367320601718531">Keskustelun ja tekstin tuottaminen</translation>
-<translation id="2793458212460902934">Nopea • Haku • Työkalut</translation>
 <translation id="8506027496671575183">Haku • Näkö • Työkalut</translation>
 <translation id="3184606955650139158">Nopea • Haku • Näkemys</translation>
 <translation id="7465032796278724624">Todistetusti yksityinen NEAR AI TEE:n avulla</translation>
 <translation id="8782867266498869301">Malli vaihtuu dynaamisesti sellaiseksi, joka on paras kyseistä tehtävää varten</translation>
 <translation id="7348809809749151120">Nopea • Haku</translation>
 <translation id="3213834013136637671">Haku • Näkö</translation>
+<translation id="2793458212460902934">Nopea • Haku • Työkalut</translation>
 <translation id="5276681919620506371">Haku • Työkalut</translation>
 <translation id="7434375176361995333">Tiivistelmät • Nopea</translation>
 <translation id="3965507912994218570">Leo-asetukset</translation>
@@ -2936,9 +2944,7 @@ Muodostetaan sinulle yhteys!</translation>
 <translation id="3750210661641549834">Vahvista sähköpostiosoitteesi luodaksesi tilisi.</translation>
 <translation id="4351175281479794167">Syötä vahvistuskoodi</translation>
 <translation id="1672793037892810340">Sinun olisi pitänyt saada sähköpostiviesti, joka sisältää syötettävän koodin.</translation>
-<translation id="4821255729182569254">Lähetä vahvistussähköposti uudelleen</translation>
 <translation id="5837679375142747484">Etkö näe sähköpostia? Tarkista roskapostikansiosi tai <ph name="BEGIN_LINK"/>lähetä uudelleen<ph name="END_LINK"/>.</translation>
-<translation id="1080588816740959885">Etkö näe sähköpostia? Tarkista roskapostikansiosi tai lähetä se uudelleen.</translation>
 <translation id="1020730839570724178">Peruuta rekisteröinti</translation>
 <translation id="7155125570724238786">Nollataksesi salasanasi, vahvista sähköpostiosoitteesi.</translation>
 <translation id="816074628631172140">Sähköpostisi on vahvistettu. Aseta uusi salasana viimeistelläksesi salasanan nollauksen.</translation>

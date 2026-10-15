@@ -193,9 +193,6 @@
 <translation id="5668852698659986622">スポンサー広告を有効にする</translation>
 <translation id="431194936581466649">スポンサー広告で、独立したユーザーファーストのウェブを構築するというBraveの使命を支援してください。私たちはあなたを特定することなく、プライベートに広告のパフォーマンスを測定します。</translation>
 <translation id="1939813747486101115">スポンサー広告について詳しく知る</translation>
-<translation id="8347743943525229984">Braveアンケートを許可</translation>
-<translation id="6022939994702081659">Braveに対し、新しいタブページに匿名アンケートへのリンクを表示することを許可します。こうした調査は、より良い機能の構築や、ブラウザベースの広告キャンペーンの効果測定などに役立ちます。</translation>
-<translation id="7746496306508543965">Braveアンケートの詳細</translation>
 <translation id="410351446219883937">自動再生</translation>
 <translation id="7445411102860286510">ミュートされた動画の自動再生をサイトに許可する（推奨）</translation>
 <translation id="7837721118676387834">特定のサイトに対し、ミュートされた動画の自動再生を許可します。</translation>
@@ -223,6 +220,7 @@
 <translation id="9040069796107003510">Braveリワードアイコン</translation>
 <translation id="6333347122924254968">アドレスバーにBraveリワードのアイコンを表示</translation>
 <translation id="4393974575368329991">下部ナビゲーションツールバー</translation>
+<translation id="8727059712928806451">下部のバーを有効にします</translation>
 <translation id="1834226716203076292">ホーム、ブックマーク、検索にすばやくアクセスするための下部バーを表示</translation>
 <translation id="1422686363939271829">この設定は、アドレスバーの位置が下部に配置されている場合は無効になります。</translation>
 <translation id="6587448235155023666">変更は、次にBraveを再起動した際に有効になります</translation>
@@ -398,6 +396,12 @@
 <translation id="8793108040181436796">ウィジェット</translation>
 <translation id="8643377320501056697">トップサイトを表示</translation>
 <translation id="7275773481201277457">Braveのデータを表示</translation>
+<translation id="8516804522688861636">よく閲覧するサイトを表示</translation>
+<translation id="4546260624932151782">お気に入りを表示</translation>
+<translation id="5313967007315987356">サイトを追加</translation>
+<translation id="1773147648972887693">よく閲覧するメニュー項目を表示</translation>
+<translation id="752098910262610337">ショートカットを表示</translation>
+<translation id="7134741506051403308">ウィジェットを非表示</translation>
 <translation id="7462178177755090262">ブラウザ起動時の画面</translation>
 <translation id="5365434987337264071">前回開いていたタブ</translation>
 <translation id="6019856124237323989">{HOURS, plural,
@@ -1001,6 +1005,13 @@
 <translation id="7530313002494358590">Brave機能を有効または無効にするには、ブラウザを再起動して変更を適用する必要があります。Brave Originの更新が完了したら、<ph name="BEGIN_BOLD"/>今すぐ再起動<ph name="END_BOLD"/>をタップしてください。</translation>
 <translation id="1028940738207645746">すべての設定をデフォルトにリセットしてよろしいですか？</translation>
 <translation id="5939518447894949180">リセット</translation>
+<translation id="3222790865318305905">アクティベーションの上限に達しました</translation>
+<translation id="3787857711016546034">不正を防ぐため、Origin のアクティベーションには回数制限があります。ただし、より多くのデバイスで Origin ライセンスを使用するために、いつでも追加のアクティベーションをリクエストできます。「アクティベーションを追加でリクエスト」オプションをクリックするか、ヘルプが必要な場合は<ph name="CONTACT_SUPPORT"/>してください。</translation>
+<translation id="6760819753412779585">サポートにお問い合わせ</translation>
+<translation id="571697836019670200">アクティベーションを追加でリクエスト</translation>
+<translation id="9019545131475425538">処理中…</translation>
+<translation id="7242700630179071243">アクティベーションの準備完了</translation>
+<translation id="5463918917265356202">このデバイスで Brave Origin が有効になりました。この機能の使用を開始するには、ブラウザを再起動する必要があります。今すぐ再起動しますか？</translation>
 <translation id="8554205386170195281">購入</translation>
 <translation id="8613144770663526433">Braveウォレットにサインイン</translation>
 <translation id="3696514931437952995"><ph name="ORIGIN"/>にサインインしています。Braveウォレットはあなたのウォレットのアドレスを<ph name="ORIGIN"/>に共有します。</translation>

@@ -3,18 +3,14 @@
 <translationbundle lang="cs">
 <translation id="1751249301761991853">Osobní</translation>
 <translation id="3333887201479867589">Odměny Brave</translation>
-<translation id="7561196759112975576">Vždy</translation>
-<translation id="7961015016161918242">Nikdy</translation>
 <translation id="8507663778530179003">Tlačítko Zobrazit všechny záložky</translation>
 <translation id="9018648632047670921">Tlačítko Zobrazit všechny záložky</translation>
 <translation id="7630214457764713113">Kopírovat čistý odkaz</translation>
 <translation id="7973394300052703468">Nové &amp;anonymní okno</translation>
 <translation id="4615489450165434530">Nahlásit porouchané stránky</translation>
 <translation id="8097438084542431276">Kopírovat očištěný odkaz</translation>
-<translation id="4678672101289648246">Pouze na nové kartě</translation>
 <translation id="6516243500644829484">Nové &amp;anonymní okno</translation>
 <translation id="1209739344687072997">Nahlásit porouchané stránky</translation>
-<translation id="8294286161128352783">Pouze na nové kartě</translation>
 <translation id="6406506848690869874">Synchronizace</translation>
 <translation id="1544192797660353713">Peněženka</translation>
 <translation id="2361906291514218784">Umělá inteligence Leo</translation>
@@ -195,7 +191,9 @@ Nebo změňte později na odkaze<ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="5977931179408079967">Pozice</translation>
 <translation id="3790384768741064842">Přesunout vpravo</translation>
 <translation id="7444424316576061724">Přesunout vlevo</translation>
+<translation id="7561196759112975576">Vždy</translation>
 <translation id="7060352228894039151">Po přejetí myší</translation>
+<translation id="7961015016161918242">Nikdy</translation>
 <translation id="8981254605840444865">Zobrazit nastavení</translation>
 <translation id="59174027418879706">Povoleno</translation>
 <translation id="4176463684765177261">Zakázáno</translation>
@@ -221,6 +219,7 @@ Nebo změňte později na odkaze<ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="4515057635283480525">Internetový archiv (Internet Archive) ukládá dřívější verze mnoha webových stránek. Chcete tuto stránku vyhledat v archivu?</translation>
 <translation id="8252977752585110703">Je nám líto, prohledali jsme Internetový archiv (Internet Archive) a nemá archivovanou verzi této stránky.</translation>
 <translation id="8748778103033196270">Hledat v archivu</translation>
+<translation id="7369915833843501413">Hledání v archivu</translation>
 <translation id="191143826155037518">Brave máte k dispozici v rámci <ph name="BEGIN_LINK_MPL"/>veřejné licence Mozilla 2.0<ph name="END_LINK_MPL"/> (MPL) a obsahuje <ph name="BEGIN_LINK_OSS"/>otevřený software<ph name="END_LINK_OSS"/> na základě různých jiných licencí.
         Můžete si sami přečíst <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>pokyny ke způsobu stahování a tvorby<ph name="END_LINK_BUILD_INSTRUCTIONS"/> specifického <ph name="BEGIN_LINK_SOURCE_CODE"/>zdrojového kódu používaného k vytváření této kopie<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">Přidat do záložek všechny karty...</translation>
@@ -371,7 +370,7 @@ Nebo změňte později na odkaze<ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="7985042437720138349">Tato funkce odesílá data o vašich otevřených kartách Leovi, asistentovi prohlížeče Brave, který využívá umělou inteligenci.</translation>
 <translation id="6165508094623778733">Zjistěte více.</translation>
 <translation id="7557539689487606886">Přejít na Premium</translation>
-<translation id="1035309871698658326">Když je tato funkce zapnutá, názvy a původ všech nesoukromých karet jsou odeslány Leovy k roztřídění.</translation>
+<translation id="7103144720752576727">Po otevření se automaticky odešlou nadpisy a origin všech ne-soukromých panelů do Leo, aby je klasifikoval. Pokud také zapnete odesílání obsahu stránky, odešlou se i krátké úryvky textu z každého panelu.</translation>
 <translation id="3435896845095436175">Aktivovat</translation>
 <translation id="9031526219709160683">Brave vám může pomoci optimalizovat nastavení ochrany soukromí na tomto webu. Chcete si prohlédnout návrhy Brave?</translation>
 <translation id="5739953050957336013">Návrhy vyhledávání</translation>
@@ -386,8 +385,6 @@ Nebo změňte později na odkaze<ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="8570228839666486945">Lokální AI</translation>
 <translation id="7447041379556102185">Rozpoznávání řeči na zařízení</translation>
 <translation id="3456536577668402695">Vaše vyhledávání a obsah stránek jsou zpracovávány na tomto zařízení. Nic se neodesílá společnosti Brave ani to nevidí lidští kontroloři.</translation>
-<translation id="4751537843966994505">Sémantické vyhledávání historie</translation>
-<translation id="6175973371938222040">Indexujte stránky, které navštěvujete, lokálně, abyste mohli prohledávat svou historii podle významu. Veškeré zpracování zůstává na tomto zařízení.</translation>
 <translation id="9156965752763025780">Změny se projeví po příštím restartu prohlížeče Brave.</translation>
 <translation id="7179921470347911571">Znovu spustit</translation>
 <translation id="1426410128494586442">Ano</translation>
@@ -425,6 +422,7 @@ Nebo změňte později na odkaze<ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="4328541188421002379">Pojmenujte svůj kontejner jako třeba Práce nebo Osobní.</translation>
 <translation id="4976989127264491396">Chyba: <ph name="ERROR_MESSAGE"/></translation>
 <translation id="5436069931267876389">Kontejner nebyl nalezen</translation>
+<translation id="5831840958001766835">Změnit pořadí položky. K přesunu použijte šipky.</translation>
 <translation id="6055154402239241620">Řízení provozu</translation>
 <translation id="8134521925475508805">Nakonfigurujte konkrétní weby tak, aby se automaticky otevíraly v určitém kontextu, čímž vytvoříte oddělení mezi vašimi relacemi prohlížení. <ph name="BEGIN_LINK"/>Zjistit více<ph name="END_LINK"/></translation>
 <translation id="6944848312867106540">Povolit řízení provozu</translation>
@@ -477,10 +475,6 @@ Nebo změňte později na odkaze<ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="7310387888625228830">Asistent s umělou inteligencí Leo</translation>
 <translation id="5222974844674487962">Tlačítko Zobrazit Brave News</translation>
 <translation id="2085436423511121572">Zobrazit tlačítko UI Leo</translation>
-<translation id="6156323911414505561">Zobrazit lištu záložek</translation>
-<translation id="4054323497808446566">Panel záložek je viditelný na všech stránkách</translation>
-<translation id="8693858092251192712">Panel záložek je skrytý na všech stránkách kromě nové karty</translation>
-<translation id="7158817046543187970">Panel záložek je skrytý na všech stránkách</translation>
 <translation id="3416468988018290825">Vždy zobrazuje úplné adresy URL</translation>
 <translation id="5529693968082667490">Tlačítko Zobrazit záložky pro vyhledávání</translation>
 <translation id="1013121820689882118">Speedreader</translation>
@@ -612,6 +606,8 @@ Nebo změňte později na odkaze<ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="5825943197137337319">Pouze výchozí veřejné rozhraní</translation>
 <translation id="1689062823386843231">Deaktivujte službu UDP bez proxy</translation>
 <translation id="3540231253392253941">Použít pro oznámení služby Google</translation>
+<translation id="2224032129673914306">Sémantické vyhledávání historie</translation>
+<translation id="6045998903985162478">Indexujte stránky, které navštívíte, abyste je snadno našli v historii, otevřených kartách a Leo.</translation>
 <translation id="5813105074916486721">Uchovávání místní historie</translation>
 <translation id="5671611745062206644">Jak dlouho Brave ukládá vaši historii prohlížení lokálně</translation>
 <translation id="7184510058087008090">1 den</translation>
@@ -876,6 +872,7 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="2618193846561624884">Chcete aktualizovat stávající síť?</translation>
 <translation id="1643029991199044105">Přepínejte naposledy použité karty pomocí Ctrl+Tab</translation>
 <translation id="2775956301559569472">Zobrazit výzvu Wayback Machine na 404 stránkách</translation>
+<translation id="8485716275262929774">Automaticky načítat uložené verze z Wayback Machine na stránkách s chybou 404</translation>
 <translation id="3095201688102519917">Upozornění před zavřením okna s více kartami</translation>
 <translation id="7120553802660696133">Při zavření posledního panelu zavřete okno</translation>
 <translation id="3394171693948989253">Zobrazení připomenutí na celou obrazovku, abyste při ukončení stiskli Esc</translation>
@@ -885,6 +882,8 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="1529674267267221673">Leo se objeví v kontextové nabídce, když kliknete pravým tlačítkem na webovou stránku. To odešle kontext z aktuální webové stránky do Leo.</translation>
 <translation id="5226020406479918122">Režim zaměření na karty</translation>
 <translation id="3705539672403311123">Zapne organizování karet na stránce hledání karet. Když je tato funkce aktivována, názvy a původ všech nesoukromých karet jsou automaticky odesílány Leovi, aby je roztřídil. <ph name="BEGIN_LINK"/>Další informace<ph name="END_LINK"/></translation>
+<translation id="2002238795517052616">Odesílat obsah stránky pro zaměření karet</translation>
+<translation id="2276823422122514441">Odesílat také krátké úryvky textu z každé karty, aby byly karty seskupeny podle toho, o čem stránka je, místo podle jejího názvu. Úryvky putují do Leo, nebo do vašeho vlastního modelu, pokud jste si nějaký zvolili pro zaměření karet. To vyžaduje <ph name="BEGIN_LINK"/><ph name="SEMANTIC_HISTORY_SEARCH"/><ph name="END_LINK"/>, které úryvky vytváří na vašem zařízení.</translation>
 <translation id="9049433973274198706">Výchozí model pro tab focus</translation>
 <translation id="2161546758719933059">Model použitý k uspořádání vašich karet v režimu zaměření karet. <ph name="BEGIN_LINK"/>Další informace<ph name="END_LINK"/></translation>
 <translation id="8172263161008556851">Zobrazit navrhované výzvy v konverzaci</translation>
@@ -966,9 +965,6 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="1838374766361614909">Vymazat vyhledávání</translation>
 <translation id="5126255551970171328">Vyhledávat v paměti</translation>
 <translation id="7402116145895962069">Synchronizovat vaše místní modely v Ollama</translation>
-<translation id="5985516785067818307">Účastník průzkumu</translation>
-<translation id="8347743943525229984">Povolit průzkumy Brave</translation>
-<translation id="3204080538332044581">Umožňuje službě Brave zobrazovat na nově kartě odkazy na soukromé průzkumy. Průzkumy nám pomáhají vytvářet lepší funkce a měřit účinnost reklamních kampaní v prohlížeči. <ph name="BEGIN_LINK"/>Learn more<ph name="END_LINK"/></translation>
 <translation id="349846214503465941">Aktivovat seznam stop</translation>
 <translation id="7903608716704052878">Automaticky přidávat soubory pro prohlížení offline</translation>
 <translation id="384666453982355633">Tato možnost automaticky ukládá mediální soubory do mezipaměti, abyste je mohli přehrávat bez připojení k Internetu</translation>

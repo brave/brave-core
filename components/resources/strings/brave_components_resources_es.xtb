@@ -1882,6 +1882,18 @@ other {Este mes has visitado # creadores apoyados por Recompensas de Brave}
 <translation id="2737084171727561244">Ir a la cartera</translation>
 <translation id="3499452861061048987">Añadir token</translation>
 <translation id="5046066249040287308">Servicio de uso general de Cartera de Brave</translation>
+<translation id="8767749833522980474">Crypto</translation>
+<translation id="4509084261025090951">Obtén tu tarjeta</translation>
+<translation id="3624463584770657372">Verifica tu identidad para ver los números de la tarjeta y empezar a gastar.</translation>
+<translation id="2508337767012636987">Toca para verificar</translation>
+<translation id="703964541421486259">Ocultar saldos</translation>
+<translation id="302114796458112924">Mostrar saldos</translation>
+<translation id="9083210401924577263">Tarjeta de Recompensas de Brave</translation>
+<translation id="2433507940547922241">Apariencia</translation>
+<translation id="3435738964857648380">Seguridad</translation>
+<translation id="6700561332544287722">Requerir desbloqueo la próxima vez</translation>
+<translation id="5605360570977617291">¿Ocultar <ph name="CARD_NAME"/> del inicio?</translation>
+<translation id="2721464457853369512">Tu saldo de <ph name="CARD_NAME"/> no cambia. Esto solo oculta la tarjeta del inicio. Puedes volver a mostrarla en cualquier momento en Configuración, en Billetera.</translation>
 <translation id="3155170474926428993">Lanzador de Tor</translation>
 <translation id="3745016858329272300">Información general</translation>
 <translation id="4045404575593562245">Control de eventos de Tor</translation>
@@ -1921,7 +1933,6 @@ other {Este mes has visitado # creadores apoyados por Recompensas de Brave}
 <translation id="6261915643960475695">Negocios</translation>
 <translation id="8265589281845759879">Coches</translation>
 <translation id="7726519849288907308">Famosos</translation>
-<translation id="8767749833522980474">Crypto</translation>
 <translation id="7577010593836079522">Cultura</translation>
 <translation id="6807791860691150411">Educación</translation>
 <translation id="3706423975342040244">Entretenimiento</translation>
@@ -2100,9 +2111,6 @@ other {Este mes has visitado # creadores apoyados por Recompensas de Brave}
 <translation id="3067105725259639716">Configurar Noticias de Brave</translation>
 <translation id="6286510487460330478">Configurar accesos directos</translation>
 <translation id="9214819486716388964">Mostrar Brave Talk</translation>
-<translation id="5950760360751948276">Mostrar siempre la barra de marcadores</translation>
-<translation id="2960757369920422313">Mostrar barra de marcadores en nueva página de pestañas</translation>
-<translation id="522953399371747698">Ocultar barra de marcadores</translation>
 <translation id="9079813619990532635">Exportar todos los marcadores</translation>
 <translation id="134184943774258988">Activar o desactivar la visibilidad del botón "Todos los marcadores"</translation>
 <translation id="2158862020143233462">Activar/desactivar escudos</translation>
@@ -2217,6 +2225,7 @@ other {Este mes has visitado # creadores apoyados por Recompensas de Brave}
 <translation id="5820497878628354073">Código de estado: <ph name="STATUS_CODE"/>, código de estado interno: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">Ha alcanzado el límite de Premium. Vuelva a intentarlo en unas horas.</translation>
 <translation id="6873128487002733717">Has alcanzado el límite premium para este modelo. Selecciona un modelo diferente o vuelve a intentarlo más tarde.</translation>
+<translation id="2688661132468689309">Has alcanzado el límite premium para este modelo. Se restablece en <ph name="RESET_DURATION"/> (a las <ph name="RESET_TIME"/>). Selecciona un modelo diferente o vuelve a intentarlo entonces.</translation>
 <translation id="3683964919745779766">Has alcanzado el límite de tarifa para este modelo o te has quedado sin créditos. Vuelve a intentarlo más tarde.</translation>
 <translation id="7692501701960747469">La clave API configurada para este modelo no es válida. Comprueba su configuración e inténtalo de nuevo.</translation>
 <translation id="7905602379229309187">El punto final está sobrecargado. Inténtalo de nuevo más tarde.</translation>
@@ -2225,12 +2234,12 @@ other {Este mes has visitado # creadores apoyados por Recompensas de Brave}
 <translation id="3852808100039989429">Hola, soy Leo. Soy un asistente de IA de Brave. Funciono con tecnología de Qwen VL 30B, un modelo creado por Alibaba Cloud para ser de gran utilidad en multitud de situaciones. Qwen está alojado en los servidores de Brave a través de nuestra propia infraestructura segura.<ph name="LINK_BEFORE"/>Más información<ph name="LINK_AFTER"/></translation>
 <translation id="8659225822055186905">Hola, soy Leo. Soy un asistente de IA de Brave. Funciono con tecnología de GLM-5.3 Flash, un modelo creado por Zhipu AI para ser de gran utilidad en multitud de situaciones. GLM-5.3 Flash está alojado mediante infraestructura segura de NEAR.<ph name="LINK_BEFORE"/>Más información<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">Hola, soy Leo. Soy un asistente de IA de Brave. Estoy impulsado por Claude Instant, un modelo creado por Anthropic para tareas conversacionales y de procesamiento de texto. Claude Instant es alojado por Brave a través de nuestra propia infraestructura segura.<ph name="LINK_BEFORE"/>Más información<ph name="LINK_AFTER"/></translation>
-<translation id="3789772321824682783">Hola, soy Leo. Soy un asistente de IA de Brave. Funciono con tecnología de Claude Haiku, un modelo creado por Anthropic para llevar a cabo tareas conversacionales y de procesamiento de textos. Claude Haiku está alojado en los servidores de Brave a través de nuestra propia infraestructura segura. <ph name="LINK_BEFORE"/>Más información<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Hola, soy Leo. Soy un asistente de IA de Brave. Funciono con tecnología de Claude Sonnet, un modelo creado por Anthropic para llevar a cabo tareas conversacionales y de procesamiento de textos. Claude Sonnet está alojado en los servidores de Brave a través de nuestra propia infraestructura segura. <ph name="LINK_BEFORE"/>Más información<ph name="LINK_AFTER"/></translation>
-<translation id="3399141352144059821">Hola, soy Leo. Soy un asistente de IA de Brave. Funciono con tecnología de Grok 4.3, un modelo creado por xAI para ser de gran utilidad en multitud de situaciones. Grok 4.3 está alojado en los servidores de Brave a través de nuestra propia infraestructura segura.<ph name="LINK_BEFORE"/>Más información<ph name="LINK_AFTER"/></translation>
-<translation id="8868813509973985458">Hola, soy Leo. Soy un asistente de IA de Brave. Funciono con tecnología de GPT 5.4, un modelo creado por OpenAI para ser de gran utilidad en multitud de situaciones. GPT 5.4 está alojado en los servidores de Brave a través de nuestra propia infraestructura segura.<ph name="LINK_BEFORE"/>Más información<ph name="LINK_AFTER"/></translation>
+<translation id="6676306995311143470">Hola, soy Leo. Soy un asistente de IA de Brave. Funciono con tecnología de Grok 4.6, el modelo de razonamiento de vanguardia de xAI en Amazon Bedrock Mantle. Grok 4.6 se sirve a través de la infraestructura segura de AWS de Brave.<ph name="LINK_BEFORE"/>Más información<ph name="LINK_AFTER"/></translation>
+<translation id="2394656730986208060">Hola, soy Leo. Soy un asistente de IA de Brave. Funciono con tecnología de GPT 5.6 Luna, el modelo rápido y de baja latencia de OpenAI en Amazon Bedrock Mantle. GPT 5.6 Luna se sirve a través de la infraestructura segura de AWS de Brave.<ph name="LINK_BEFORE"/>Más información<ph name="LINK_AFTER"/></translation>
+<translation id="5278969721580944810">Hola, soy Leo. Soy un asistente de IA de Brave. Funciono con tecnología de GPT 5.6 Terra, el modelo de producción equilibrado de OpenAI en Amazon Bedrock Mantle. GPT 5.6 Terra se sirve a través de la infraestructura segura de AWS de Brave.<ph name="LINK_BEFORE"/>Más información<ph name="LINK_AFTER"/></translation>
 <translation id="5037359072717016032">Hola, soy Leo. Soy un asistente de IA de Brave. Funciono con tecnología de Mistral Large, un modelo creado por Mistral para ser de gran utilidad en multitud de situaciones. Mistral Large está alojado en los servidores de Brave a través de nuestra propia infraestructura segura.<ph name="LINK_BEFORE"/>Más información<ph name="LINK_AFTER"/></translation>
-<translation id="4026902371301997261">Hola, soy Leo. Soy un asistente de IA de Brave. Funciono con tecnología de Qwen 3 235B, un modelo creado por Alibaba Cloud para ser de gran utilidad en multitud de situaciones. Qwen 3 235B está alojado en los servidores de Brave a través de nuestra propia infraestructura segura.<ph name="LINK_BEFORE"/>Más información<ph name="LINK_AFTER"/></translation>
+<translation id="5475035333915581972">Hola, soy Leo. Soy un asistente de IA de Brave. Funciono con tecnología de Qwen 3.8 Flash Next, un modelo creado por Alibaba Cloud para ser de gran utilidad en multitud de situaciones. Qwen 3.8 Flash Next está alojado en los servidores de Brave a través de nuestra propia infraestructura segura.<ph name="LINK_BEFORE"/>Más información<ph name="LINK_AFTER"/></translation>
 <translation id="8720758690351028307">Hola, soy Leo. Soy un asistente de IA de Brave. Funciono con tecnología de Deepseek V3.2, un modelo creado por Deepseek para ser de gran utilidad en multitud de situaciones. Deepseek V3.2 está alojado en los servidores de Brave a través de nuestra propia infraestructura segura.<ph name="LINK_BEFORE"/>Más información<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">Hola, soy Leo. Soy un asistente de IA de Brave. Funciono con tecnología de Claude Opus, un modelo creado por Anthropic para llevar a cabo tareas conversacionales y de procesamiento de textos. Claude Opus está alojado en los servidores de Brave a través de nuestra propia infraestructura segura.<ph name="LINK_BEFORE"/>Más información<ph name="LINK_AFTER"/></translation>
 <translation id="7238858567393403597">Hola, soy Leo. Soy un asistente de IA de Brave. Funciono con tecnología de GLM-4-7-Flash, un modelo creado por Zhipu AI para ser de gran utilidad en multitud de situaciones. GLM-4-7-Flash está alojado en los servidores de Brave a través de nuestra propia infraestructura segura.<ph name="LINK_BEFORE"/>Más información<ph name="LINK_AFTER"/></translation>
@@ -2243,7 +2252,6 @@ other {Este mes has visitado # creadores apoyados por Recompensas de Brave}
 <translation id="4773408460773097271">Ollama</translation>
 <translation id="631371844654031449">Modelos recomendados</translation>
 <translation id="6568044140836233369">Mostrar todos los modelos</translation>
-<translation id="6187065185557150870">Chat</translation>
 <translation id="4685048769603134644">Abrir página completa</translation>
 <translation id="2961040541145689181">Nuevo chat</translation>
 <translation id="7557539689487606886">Hazte Premium</translation>
@@ -2367,13 +2375,13 @@ other {Este mes has visitado # creadores apoyados por Recompensas de Brave}
 <translation id="887511360213807449">El historial está desactivado</translation>
 <translation id="5380979378058584412">Para poder ver tus conversaciones anteriores con Leo, necesitas activar el historial de conversaciones.</translation>
 <translation id="3185367320601718531">Generación de texto y conversaciones</translation>
-<translation id="2793458212460902934">Rápido • Buscador • Herramientas</translation>
 <translation id="8506027496671575183">Buscador • Visión • Herramientas</translation>
 <translation id="3184606955650139158">Rápido • Buscador • Visión</translation>
 <translation id="7465032796278724624">Verificadamente privado con NEAR IA TEE</translation>
 <translation id="8782867266498869301">El modelo cambia dinámicamente para usar el mejor para la tarea</translation>
 <translation id="7348809809749151120">Rápido • Buscador</translation>
 <translation id="3213834013136637671">Buscador • Visión</translation>
+<translation id="2793458212460902934">Rápido • Buscador • Herramientas</translation>
 <translation id="5276681919620506371">Buscador • Herramientas</translation>
 <translation id="7434375176361995333">Resúmenes • Rápido</translation>
 <translation id="3965507912994218570">Configuración de Leo</translation>
@@ -2937,9 +2945,7 @@ Puede revertir los cambios y volver a usar WireGuard en cualquier momento en bra
 <translation id="3750210661641549834">Para crear tu cuenta, verifica tu dirección de correo electrónico.</translation>
 <translation id="4351175281479794167">Introducir código de verificación</translation>
 <translation id="1672793037892810340">Deberías haber recibido un correo con un código que tendrás que introducir.</translation>
-<translation id="4821255729182569254">Reenviar correo de confirmación</translation>
 <translation id="5837679375142747484">¿No ves el correo? Consulta la carpeta de spam o <ph name="BEGIN_LINK"/>reenvíalo<ph name="END_LINK"/>.</translation>
-<translation id="1080588816740959885">¿No ves el correo? Consulta la carpeta de spam o reenvíalo.</translation>
 <translation id="1020730839570724178">Cancelar registro</translation>
 <translation id="7155125570724238786">Para restablecer tu contraseña, verifica tu dirección de correo electrónico.</translation>
 <translation id="816074628631172140">Tu correo electrónico ha sido verificado. Establece una nueva contraseña para completar el restablecimiento de tu contraseña.</translation>

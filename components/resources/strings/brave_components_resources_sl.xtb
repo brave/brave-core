@@ -1888,6 +1888,18 @@
 <translation id="2737084171727561244">Pojdi na Portfolio</translation>
 <translation id="3499452861061048987">Dodajanje žetona</translation>
 <translation id="5046066249040287308">Uporabna storitev Denarnice Brave</translation>
+<translation id="8767749833522980474">Kripto</translation>
+<translation id="4509084261025090951">Pridobite svojo kartico</translation>
+<translation id="3624463584770657372">Preverite svojo identiteto, da si ogledate številke kartice in začnete trošiti.</translation>
+<translation id="2508337767012636987">Tapnite za preverjanje</translation>
+<translation id="703964541421486259">Skrij stanja</translation>
+<translation id="302114796458112924">Prikaži stanja</translation>
+<translation id="9083210401924577263">Kartica Brave Nagrad</translation>
+<translation id="2433507940547922241">Videz</translation>
+<translation id="3435738964857648380">Varnost</translation>
+<translation id="6700561332544287722">Zahtevaj odklep naslednjič</translation>
+<translation id="5605360570977617291">Skriješ <ph name="CARD_NAME"/> z začetne strani?</translation>
+<translation id="2721464457853369512">Vaše stanje <ph name="CARD_NAME"/> ostaja nespremenjeno. To samo skrije kartico z začetne strani. Lahko jo kadar koli znova prikažete v Nastavitvah, pod Denarnica.</translation>
 <translation id="3155170474926428993">Zaganjalnik brskalnika Tor</translation>
 <translation id="3745016858329272300">Splošne informacije</translation>
 <translation id="4045404575593562245">Tor nadzorni dogodki</translation>
@@ -1927,7 +1939,6 @@
 <translation id="6261915643960475695">Posel</translation>
 <translation id="8265589281845759879">Avtomobili</translation>
 <translation id="7726519849288907308">Zvezdniki</translation>
-<translation id="8767749833522980474">Kripto</translation>
 <translation id="7577010593836079522">Kultura</translation>
 <translation id="6807791860691150411">Izobraževanje</translation>
 <translation id="3706423975342040244">Razvedrilo</translation>
@@ -2106,9 +2117,6 @@
 <translation id="3067105725259639716">Konfiguriraj Brave Novice</translation>
 <translation id="6286510487460330478">Konfiguriraj bližnjice</translation>
 <translation id="9214819486716388964">Prikaži Brave Govor</translation>
-<translation id="5950760360751948276">Vedno pokaži vrstico z zaznamki</translation>
-<translation id="2960757369920422313">Pokaži vrstico z zaznamki na NTP</translation>
-<translation id="522953399371747698">Skrij vrstico z zaznamki</translation>
 <translation id="9079813619990532635">Izvozi vse zaznamke</translation>
 <translation id="134184943774258988">Preklopi vidnost gumba Vsi zaznamki</translation>
 <translation id="2158862020143233462">Preklopi ščite</translation>
@@ -2223,6 +2231,7 @@
 <translation id="5820497878628354073">Statusna koda: <ph name="STATUS_CODE"/>, notranja statusna koda: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">Dosegli ste omejitev stopnje Premium. Poskusite znova čez nekaj ur.</translation>
 <translation id="6873128487002733717">Dosegli ste omejitev za Premium za ta model. Izberite drug model ali poskusite znova pozneje.</translation>
+<translation id="2688661132468689309">Dosegli ste omejitev za Premium za ta model. Ponastavi se čez <ph name="RESET_DURATION"/> (ob <ph name="RESET_TIME"/>). Izberite drug model ali poskusite znova takrat.</translation>
 <translation id="3683964919745779766">Dosegli ste omejitev za ta model ali vam je zmanjkalo kreditov. Prosimo, poskusite znova pozneje.</translation>
 <translation id="7692501701960747469">Ključ API, konfiguriran za ta model, je neveljaven. Preverite konfiguracijo in poskusite znova.</translation>
 <translation id="7905602379229309187">Končna točka je trenutno preobremenjena. Prosimo, poskusite znova pozneje.</translation>
@@ -2231,12 +2240,12 @@
 <translation id="3852808100039989429">Živjo, jaz sem Leo. Sem Braveov pomočnik z umetno inteligenco. Poganja me Qwen VL 30B, model, ki ga je ustvaril Alibaba Cloud z visoko zmogljivostjo in uporabo za veliko število primerov uporabe. Qwen gostuje v Braveu prek naše lastne varne infrastrukture.<ph name="LINK_BEFORE"/>Več o tem<ph name="LINK_AFTER"/></translation>
 <translation id="8659225822055186905">Živjo, jaz sem Leo. Sem Braveov pomočnik z umetno inteligenco. Poganja me GLM-5.3 Flash, model, ki ga je ustvaril Zhipu AI za visoko zmogljivost in široko uporabnost. GLM-5.3 Flash gostuje v NEAR prek njihove preverljivo varne infrastrukture.<ph name="LINK_BEFORE"/>Več o tem<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">Živjo, sem Leo. Sem AI pomočnik podjetja Brave. Poganja me Claude Instant, model podjetja Anthropic, namenjen pogovoru in obdelavi besedil. Claude Instant gostuje neposredno pri Brave na naši varni infrastrukturi.<ph name="LINK_BEFORE"/>Več o tem<ph name="LINK_AFTER"/></translation>
-<translation id="3789772321824682783">Živjo, jaz sem Leo. Delujem prek brskalnika Brave in poganja me Claude Haiku – model, ki ga je ustvaril Anthropic za pogovorne in besedilne naloge. Claude Haiku gostuje v podjetju Brave prek naše lastne varne infrastrukture.<ph name="LINK_BEFORE"/>Več o tem<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Živjo, jaz sem Leo. Delujem prek brskalnika Brave in poganja me Claude Sonnet – model, ki ga je ustvaril Anthropic za pogovorne in besedilne naloge. Claude Sonnet gostuje v podjetju Brave prek naše lastne varne infrastrukture.<ph name="LINK_BEFORE"/>Več o tem<ph name="LINK_AFTER"/></translation>
-<translation id="3399141352144059821">Živjo, jaz sem Leo. Sem Braveov popolnoma gostujoči pomočnik z umetno inteligenco. Poganja me Grok 4.3, model, ki ga je ustvaril xAI za zmogljivost in uporabnost za številne primere uporabe. Grok 4.3 gostuje v podjetju Brave prek naše lastne varne infrastrukture.<ph name="LINK_BEFORE"/>Več o tem<ph name="LINK_AFTER"/></translation>
-<translation id="8868813509973985458">Živjo, jaz sem Leo. Sem Braveov popolnoma gostujoči pomočnik z umetno inteligenco. Poganja me GPT 5.4, model, ki ga je ustvaril OpenAI za zmogljivost in uporabnost za številne primere uporabe. GPT 5.4 gostuje v podjetju Brave prek naše lastne varne infrastrukture.<ph name="LINK_BEFORE"/>Več o tem<ph name="LINK_AFTER"/></translation>
+<translation id="6676306995311143470">Živjo, jaz sem Leo. Sem Braveov pomočnik z umetno inteligenco. Poganja me Grok 4.6, xAI-jev vrhunski model za sklepanje na platformi Amazon Bedrock Mantle. Grok 4.6 je na voljo prek Braveove varne infrastrukture AWS.<ph name="LINK_BEFORE"/>Več o tem<ph name="LINK_AFTER"/></translation>
+<translation id="2394656730986208060">Živjo, jaz sem Leo. Sem Braveov pomočnik z umetno inteligenco. Poganja me GPT 5.6 Luna, OpenAI-jev hiter model z nizko zakasnitvijo na platformi Amazon Bedrock Mantle. GPT 5.6 Luna je na voljo prek Braveove varne infrastrukture AWS.<ph name="LINK_BEFORE"/>Več o tem<ph name="LINK_AFTER"/></translation>
+<translation id="5278969721580944810">Živjo, jaz sem Leo. Sem Braveov pomočnik z umetno inteligenco. Poganja me GPT 5.6 Terra, OpenAI-jev uravnotežen produkcijski model na platformi Amazon Bedrock Mantle. GPT 5.6 Terra je na voljo prek Braveove varne infrastrukture AWS.<ph name="LINK_BEFORE"/>Več o tem<ph name="LINK_AFTER"/></translation>
 <translation id="5037359072717016032">Živjo, jaz sem Leo. Sem Braveov popolnoma gostujoči pomočnik z umetno inteligenco. Poganja me Mistral Large, model, ki ga je ustvaril Mistral za zmogljivost in uporabnost za številne primere uporabe. Mistral Large gostuje v podjetju Brave prek naše lastne varne infrastrukture.<ph name="LINK_BEFORE"/>Več o tem<ph name="LINK_AFTER"/></translation>
-<translation id="4026902371301997261">Živjo, jaz sem Leo. Sem Braveov popolnoma gostujoči pomočnik z umetno inteligenco. Poganja me Qwen 3 235B, model, ki ga je ustvaril Alibaba Cloud za zmogljivost in uporabnost za številne primere uporabe. Qwen 3 235B gostuje v podjetju Brave prek naše lastne varne infrastrukture.<ph name="LINK_BEFORE"/>Več o tem<ph name="LINK_AFTER"/></translation>
+<translation id="5475035333915581972">Živjo, jaz sem Leo. Sem Braveov pomočnik z umetno inteligenco. Poganja me Qwen 3.8 Flash Next, model, ki ga je ustvaril Alibaba Cloud za zmogljivost in uporabnost za številne primere uporabe. Qwen 3.8 Flash Next gostuje v podjetju Brave prek naše lastne varne infrastrukture.<ph name="LINK_BEFORE"/>Več o tem<ph name="LINK_AFTER"/></translation>
 <translation id="8720758690351028307">Živjo, jaz sem Leo. Sem Braveov popolnoma gostujoči pomočnik z umetno inteligenco. Poganja me Deepseek V3.2, model, ki ga je ustvaril Deepseek za zmogljivost in uporabnost za številne primere uporabe. Deepseek V3.2 gostuje v podjetju Brave prek naše lastne varne infrastrukture.<ph name="LINK_BEFORE"/>Več o tem<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">Živjo, jaz sem Leo. Delujem prek brskalnika Brave in poganja me Claude Opus – model, ki ga je ustvaril Anthropic za pogovorne in besedilne naloge. Claude Opus gostuje v podjetju Brave prek naše lastne varne infrastrukture.<ph name="LINK_BEFORE"/>Več o tem<ph name="LINK_AFTER"/></translation>
 <translation id="7238858567393403597">Živjo, jaz sem Leo. Sem Braveov popolnoma gostujoči pomočnik z umetno inteligenco. Poganja me GLM-4-7-Flash, model, ki ga je ustvaril Zhipu AI za zmogljivost in uporabnost za številne primere uporabe. GLM-4-7-Flash gostuje v podjetju Brave prek naše lastne varne infrastrukture.<ph name="LINK_BEFORE"/>Več o tem<ph name="LINK_AFTER"/></translation>
@@ -2249,7 +2258,6 @@
 <translation id="4773408460773097271">Ollama</translation>
 <translation id="631371844654031449">Priporočeni modeli</translation>
 <translation id="6568044140836233369">Prikaži vse modele</translation>
-<translation id="6187065185557150870">Klepet</translation>
 <translation id="4685048769603134644">Odpri celotno stran</translation>
 <translation id="2961040541145689181">Nov klepet</translation>
 <translation id="7557539689487606886">Pojdi na Premium</translation>
@@ -2373,13 +2381,13 @@
 <translation id="887511360213807449">Zgodovina je onemogočena</translation>
 <translation id="5380979378058584412">Če si želite ogledati prejšnje pogovore z Leom, morate omogočiti zgodovino pogovorov.</translation>
 <translation id="3185367320601718531">Pogovor in ustvarjanje besedila</translation>
-<translation id="2793458212460902934">Hitro • Iskanje • Orodja</translation>
 <translation id="8506027496671575183">Iskanje • Vizija • Orodja</translation>
 <translation id="3184606955650139158">Hitro • Iskanje • Vizija</translation>
 <translation id="7465032796278724624">Z jamstvom zasebnosti z NEAR AI TEE</translation>
 <translation id="8782867266498869301">Model se dinamično spreminja, da uporabi najboljšega za določen opravek</translation>
 <translation id="7348809809749151120">Hitro • Iskanje</translation>
 <translation id="3213834013136637671">Iskanje • Vizija</translation>
+<translation id="2793458212460902934">Hitro • Iskanje • Orodja</translation>
 <translation id="5276681919620506371">Iskanje • Orodja</translation>
 <translation id="7434375176361995333">Povzetki • Hitro</translation>
 <translation id="3965507912994218570">Nastavitve Lea</translation>
@@ -2937,9 +2945,7 @@ pritisnite Tab in nato Enter, da preklopite na odprti zavihek</translation>
 <translation id="3750210661641549834">Za ustvarjanje računa potrdite svoj e-poštni naslov.</translation>
 <translation id="4351175281479794167">Vnesite potrditveno kodo</translation>
 <translation id="1672793037892810340">Prejeli ste e-poštno sporočilo s kodo, ki jo morate vnesti.</translation>
-<translation id="4821255729182569254">Ponovno pošlji potrdilno e-pošto</translation>
 <translation id="5837679375142747484">Ne vidite e-poštnega sporočila? Preverite mapo z neželeno pošto ali ga <ph name="BEGIN_LINK"/>ponovno pošljite<ph name="END_LINK"/>.</translation>
-<translation id="1080588816740959885">Ne vidite e-poštnega sporočila? Preverite mapo z neželeno pošto ali ga ponovno pošljite.</translation>
 <translation id="1020730839570724178">Prekliči registracijo</translation>
 <translation id="7155125570724238786">Za ponastavitev gesla potrdite svoj e-poštni naslov.</translation>
 <translation id="816074628631172140">Vaša e-pošta je bila potrjena. Nastavite novo geslo za dokončanje ponastavitve gesla.</translation>

@@ -193,9 +193,6 @@
 <translation id="5668852698659986622">הפעלת מודעות ממומנות</translation>
 <translation id="431194936581466649">עזרו לתמוך במשימה של Brave לבנות רשת עצמאית שממקמת את המשתמש במקום הראשון, באמצעות מודעות ממומנות. אנחנו מודדים את ביצועי המודעות באופן פרטי, מבלי לזהות אתכם.</translation>
 <translation id="1939813747486101115">למידע נוסף על מודעות ממומנות</translation>
-<translation id="8347743943525229984">הפעלת סקרי Brave</translation>
-<translation id="6022939994702081659">מאפשר ל-Brave להציג לינקים לסקרים פרטיים בדף הכרטיסייה החדשה. סקרים עוזרים לנו לבנות פיצ׳רים טובים יותר ולמדוד את היעילות של קמפיינים פרסומיים בדפדפן.</translation>
-<translation id="7746496306508543965">למידע נוסף על סקרי Brave</translation>
 <translation id="410351446219883937">הפעלה אוטומטית</translation>
 <translation id="7445411102860286510">אתרים יוכלו להפעיל באופן אוטומטי סרטונים מושתקים (מומלץ)</translation>
 <translation id="7837721118676387834">אפשר הפעלה אוטומטית של סרטונים מושתקים באתר ספציפי.</translation>
@@ -223,6 +220,7 @@
 <translation id="9040069796107003510">סמל Brave Rewards</translation>
 <translation id="6333347122924254968">הצג את סמליל פרסי Brave בשורת הכתובת</translation>
 <translation id="4393974575368329991">סרגל ניווט תחתון</translation>
+<translation id="8727059712928806451">הפעל סרגל תחתון</translation>
 <translation id="1834226716203076292">הצגת סרגל תחתון לגישה מהירה לדף הבית, לסימניות ולחיפוש</translation>
 <translation id="1422686363939271829">ההגדרה הזו מושבתת בעת בחירה למקם את סרגל הכתובת למטה</translation>
 <translation id="6587448235155023666">השינויים שלך ייכנסו לתוקף בפעם הבאה שתפעיל/י מחדש את Brave</translation>
@@ -399,6 +397,12 @@
 <translation id="8793108040181436796">ווידג'טים</translation>
 <translation id="8643377320501056697">הצג אתרים מובילים</translation>
 <translation id="7275773481201277457">הצג סטטיסטיקות Brave</translation>
+<translation id="8516804522688861636">הצג אתרים שבהם מבקרים לעתים קרובות</translation>
+<translation id="4546260624932151782">הצג מועדפים</translation>
+<translation id="5313967007315987356">הוסף אתר</translation>
+<translation id="1773147648972887693">הצג ביקורים תכופים</translation>
+<translation id="752098910262610337">הצג קיצורי דרך</translation>
+<translation id="7134741506051403308">הסתר ווידג'ט</translation>
 <translation id="7462178177755090262">מסך פתיחה</translation>
 <translation id="5365434987337264071">הכרטיסייה האחרונה שנפתחה</translation>
 <translation id="6019856124237323989">{HOURS, plural,
@@ -1002,6 +1006,13 @@
 <translation id="7530313002494358590">הפעלה או השבתה של תכונת Brave דורשת הפעלה מחדש של הדפדפן כדי להחיל שינויים. אנא לחץ על <ph name="BEGIN_BOLD"/>הפעל מחדש כעת<ph name="END_BOLD"/> כאשר Brave Origin סיים את העדכון.</translation>
 <translation id="1028940738207645746">האם אתה בטוח שברצונך לאפס את כל ההגדרות לברירת המחדל?</translation>
 <translation id="5939518447894949180">אפס</translation>
+<translation id="3222790865318305905">הגעת למגבלת ההפעלות</translation>
+<translation id="3787857711016546034">כדי למנוע הונאה, הפעלות של Origin מוגבלות בקצב. אבל תמיד תוכל לבקש הפעלות נוספות כדי להשתמש ברישיון Origin שלך ביותר מכשירים. פשוט לחץ על האפשרות בקש הפעלות נוספות, או <ph name="CONTACT_SUPPORT"/> לקבלת עזרה.</translation>
+<translation id="6760819753412779585">פנה לתמיכה</translation>
+<translation id="571697836019670200">בקש הפעלות נוספות</translation>
+<translation id="9019545131475425538">עיבוד…</translation>
+<translation id="7242700630179071243">מוכן להפעלה</translation>
+<translation id="5463918917265356202">Brave Origin פעיל כעת במכשיר זה. כדי להתחיל להשתמש בתכונה, עליך להפעיל מחדש את הדפדפן. האם ברצונך להפעיל מחדש כעת?</translation>
 <translation id="8554205386170195281">קנייה</translation>
 <translation id="8613144770663526433">היכנס עם Brave Wallet</translation>
 <translation id="3696514931437952995">אתה נכנס לחשבון<ph name="ORIGIN"/>.ארנק אמיץ ישתף את כתובת הארנק שלך<ph name="ORIGIN"/>.</translation>
