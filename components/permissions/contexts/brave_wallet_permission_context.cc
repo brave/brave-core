@@ -81,6 +81,8 @@ std::optional<RequestType> GetWalletRequestType(
       return RequestType::kBraveSolana;
     case ContentSettingsType::BRAVE_CARDANO:
       return RequestType::kBraveCardano;
+    case ContentSettingsType::BRAVE_POLKADOT:
+      return RequestType::kBravePolkadot;
     default:
       return std::nullopt;
   }
@@ -478,6 +480,7 @@ void BraveWalletPermissionContext::ResetAllPermissions(
   map->ClearSettingsForOneType(ContentSettingsType::BRAVE_ETHEREUM);
   map->ClearSettingsForOneType(ContentSettingsType::BRAVE_SOLANA);
   map->ClearSettingsForOneType(ContentSettingsType::BRAVE_CARDANO);
+  map->ClearSettingsForOneType(ContentSettingsType::BRAVE_POLKADOT);
 }
 
 }  // namespace permissions
