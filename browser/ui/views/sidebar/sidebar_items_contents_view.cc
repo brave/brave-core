@@ -297,12 +297,14 @@ void SidebarItemsContentsView::OnItemMoved(const sidebar::SidebarItem& item,
 void SidebarItemsContentsView::BuildItemViews() {
   CHECK(children().empty());
 
-  const auto& items = sidebar_model_->GetAllSidebarItems();
-  for (size_t i = 0; i < items.size(); ++i) {
-    AddItemView(items[i], static_cast<int>(i), /*user_gesture=*/false);
-    if (items[i].is_web_type()) {
-      sidebar_model_->FetchFavicon(items[i]);
+  // Start with saved item list.
+  int index = 0;
+  for (const auto& item : sidebar_model_->GetAllSidebarItems()) {
+    AddItemView(item, index, /*user_gesture=*/false);
+    if (item.is_web_type()) {
+      sidebar_model_->FetchFavicon(item);
     }
+    index++;
   }
 }
 
