@@ -1874,6 +1874,18 @@
 <translation id="2737084171727561244">გადადით პორტფელში</translation>
 <translation id="3499452861061048987">ტოკენის დამატება</translation>
 <translation id="5046066249040287308">Brave Wallet-ის გამოსაყენებელი სერვისი</translation>
+<translation id="8767749833522980474">კრიპტო</translation>
+<translation id="4509084261025090951">მიიღეთ თქვენი ბარათი</translation>
+<translation id="3624463584770657372">დაადასტურეთ თქვენი ვინაობა, რომ იხილოთ ბარათის ნომრები და დაიწყოთ ხარჯვა.</translation>
+<translation id="2508337767012636987">შეეხეთ დასადასტურებლად</translation>
+<translation id="703964541421486259">ბალანსების დამალვა</translation>
+<translation id="302114796458112924">ბალანსების ჩვენება</translation>
+<translation id="9083210401924577263">Brave Rewards ბარათი</translation>
+<translation id="2433507940547922241">გარეგნული იერსახე</translation>
+<translation id="3435738964857648380">უსაფრთხოება</translation>
+<translation id="6700561332544287722">მოითხოვე განბლოკვა შემდეგ ჯერზე</translation>
+<translation id="5605360570977617291">დავმალოთ <ph name="CARD_NAME"/> მთავარი გვერდიდან?</translation>
+<translation id="2721464457853369512">თქვენი <ph name="CARD_NAME"/> ბალანსი უცვლელია. ეს მხოლოდ მალავს ბარათს მთავარი გვერდიდან. შეგიძლიათ კვლავ აჩვენოთ ის ნებისმიერ დროს პარამეტრებში, Wallet-ის ქვეშ.</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
 <translation id="3745016858329272300">ზოგადი ინფორმაცია</translation>
 <translation id="4045404575593562245">Tor-ის კონტროლის ღონისძიებანი</translation>
@@ -1910,7 +1922,6 @@
 <translation id="6261915643960475695">ბიზნესი</translation>
 <translation id="8265589281845759879">მანქანები</translation>
 <translation id="7726519849288907308">ცნობადებები</translation>
-<translation id="8767749833522980474">კრიპტო</translation>
 <translation id="7577010593836079522">კულტურა</translation>
 <translation id="6807791860691150411">განათლება</translation>
 <translation id="3706423975342040244">გართობა</translation>
@@ -2089,9 +2100,6 @@
 <translation id="3067105725259639716">Brave სიახლეების კონფიგურაცია</translation>
 <translation id="6286510487460330478">სანომ დროიმის კონფიგურაცია</translation>
 <translation id="9214819486716388964">Brave Talk -ის ჩვენება</translation>
-<translation id="5950760360751948276">სანიშნების ზოლის მუდმივად ჩვენება</translation>
-<translation id="2960757369920422313">სანიშნების ზოლის ჩვენება NTP-ში</translation>
-<translation id="522953399371747698">სანიშნების ზოლის დამალვა</translation>
 <translation id="9079813619990532635">ყველა სანიშნის ექსპორტი</translation>
 <translation id="134184943774258988">ყველა სანიშნის ღილაკის ხილვადობის გადართვა</translation>
 <translation id="2158862020143233462">ნიხრები</translation>
@@ -2206,6 +2214,7 @@
 <translation id="5820497878628354073">სტატუსის კოდი: <ph name="STATUS_CODE"/>, შიდა სტატუსის კოდი: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">თქვენ მიაღწიეთ პრემიუმ შეზღუდვას. სცადეთ რამდენიმე საათის შემდეგ.</translation>
 <translation id="6873128487002733717">თქვენ მიაღწიეთ ამ მოდელის premium ლიმიტს. აირჩიეთ სხვა მოდელი ან სცადეთ მოგვიანებით.</translation>
+<translation id="2688661132468689309">თქვენ მიაღწიეთ ამ მოდელის premium ლიმიტს. ის განულდება <ph name="RESET_DURATION"/>-ში (<ph name="RESET_TIME"/>-ზე). აირჩიეთ სხვა მოდელი ან სცადეთ მაშინ ხელახლა.</translation>
 <translation id="3683964919745779766">თქვენ მიაღწიეთ ამ მოდელის მოთხოვნის ლიმიტს ან ამოშლილია კრედიტები. გთხოვთ სცადოთ ისევ მოგვიანებით.</translation>
 <translation id="7692501701960747469">ამ მოდელისთვის კონფიგურირებული API გასაღები არასწორი ფორმატშია. გთხოვთ, შეამოწმეთ თქვენი კონფიგურაცია და სცადეთ თავიდან.</translation>
 <translation id="7905602379229309187">ინფრასტრუქტურას აქვს გადატვირთვა. გთხოვთ სცადოთ ისევ მოგვიანებით.</translation>
@@ -2214,12 +2223,12 @@
 <translation id="3852808100039989429">გამარჯობა, მე ვარ ლეო. მე ვარ Brave-ის AI ასისტენტი. ჩემი ძალა Qwen VL 30B-ზეა, მოდელი, რომელიც შექმნილია Alibaba Cloud-ის მიერ, რომ იყოს პერფორმანტული და მრავალი გამოყენების შემთხვევასთან შესაფერისი. Qwen Brave-ს მიერ მასპინძლობს ჩვენს საკუთარ დაცულ ინფრასტრუქტურაში.<ph name="LINK_BEFORE"/>გაიგეთ მეტი<ph name="LINK_AFTER"/></translation>
 <translation id="8659225822055186905">გამარჯობა, მე ვარ ლეო. მე ვარ Brave-ის AI ასისტენტი. ჩემი ძალა GLM-5.3 Flash-ზეა, მოდელი, რომელიც შექმნილია Zhipu AI-ს მიერ, რომ იყოს პერფორმანტული და მრავალი გამოყენების შემთხვევებთან შესაფერისი. GLM-5.3 Flash NEAR-ის მიერ მასპინძლობს მათ საკუთარ დაცულ ინფრასტრუქტურაში.<ph name="LINK_BEFORE"/>გაიგეთ მეტი<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">გამარჯობა, მე ლეო ვარ. ვარ Brave-ის ხელოვნური ინტელექტის ასისტენტი. მუშაობს Claude Instant-ზე — მოდელზე, რომელიც Anthropic-ს მიერაა შექმნილი ტექსტებისა და დიალოგების დასამუშავებლად. Claude Instant Brave-ის ინფრასტრუქტურაზე მუშაობს საიმედოდ და უსაფრთხოდ.<ph name="LINK_BEFORE"/>გაიგეთ მეტი<ph name="LINK_AFTER"/></translation>
-<translation id="3789772321824682783">გამარჯობა, მე ვარ ლეო. მე ვარ Brave-ის AI ასისტენტი. ჩემი ძალა Claude Haiku-ზეა, მოდელი, რომელიც შექმნილია Anthropic-ის მიერ, რომ ემსახუროს საუბრის და ტექსტის დამუშავების ამოცანებს. Claude Haiku Brave-ს მიერ მასპინძლობს ჩვენს საკუთარ დაცულ ინფრასტრუქტურაში.<ph name="LINK_BEFORE"/>გაიგეთ მეტი<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">გამარჯობა, მე ვარ ლეო. მე ვარ Brave-ის AI ასისტენტი. ჩემი ძალა Claude Sonnet-ზეა, მოდელი, რომელიც შექმნილია Anthropic-ის მიერ, რომ ემსახუროს საუბრის და ტექსტის დამუშავების ამოცანებს. Claude Sonnet Brave-ს მიერ მასპინძლობს ჩვენს საკუთარ დაცულ ინფრასტრუქტურაში.<ph name="LINK_BEFORE"/>გაიგეთ მეტი<ph name="LINK_AFTER"/></translation>
-<translation id="3399141352144059821">გამარჯობა, მე ვარ ლეო. მე ვარ Brave-ის AI ასისტენტი. ჩემი ძალა Grok 4.3-ზეა, მოდელი, რომელიც შექმნილია xAI-ს მიერ, რომ იყოს პერფორმანტული და მრავალი გამოყენების შემთხვევასთან შესაფერისი. Grok 4.3 Brave-ს მიერ მასპინძლობს ჩვენს საკუთარ დაცულ ინფრასტრუქტურაში.<ph name="LINK_BEFORE"/>გაიგეთ მეტი<ph name="LINK_AFTER"/></translation>
-<translation id="8868813509973985458">გამარჯობა, მე ვარ ლეო. მე ვარ Brave-ის AI ასისტენტი. ჩემი ძალა GPT 5.4-ზეა, მოდელი, რომელიც შექმნილია OpenAI-ს მიერ, რომ იყოს პერფორმანტული და მრავალი გამოყენების შემთხვევასთან შესაფერისი. GPT 5.4 Brave-ს მიერ მასპინძლობს ჩვენს საკუთარ დაცულ ინფრასტრუქტურაში.<ph name="LINK_BEFORE"/>გაიგეთ მეტი<ph name="LINK_AFTER"/></translation>
+<translation id="6676306995311143470">გამარჯობა, მე ვარ ლეო. მე ვარ Brave-ის AI ასისტენტი. ჩემი ძალა Grok 4.6-ზეა, xAI-ს უახლესი მსჯელობის მოდელი Amazon Bedrock Mantle-ზე. Grok 4.6 მოემსახურება Brave-ის დაცული AWS ინფრასტრუქტურის მეშვეობით.<ph name="LINK_BEFORE"/>გაიგეთ მეტი<ph name="LINK_AFTER"/></translation>
+<translation id="2394656730986208060">გამარჯობა, მე ვარ ლეო. მე ვარ Brave-ის AI ასისტენტი. ჩემი ძალა GPT 5.6 Luna-ზეა, OpenAI-ს სწრაფი, დაბალ-შეყოვნების მოდელი Amazon Bedrock Mantle-ზე. GPT 5.6 Luna მოემსახურება Brave-ის დაცული AWS ინფრასტრუქტურის მეშვეობით.<ph name="LINK_BEFORE"/>გაიგეთ მეტი<ph name="LINK_AFTER"/></translation>
+<translation id="5278969721580944810">გამარჯობა, მე ვარ ლეო. მე ვარ Brave-ის AI ასისტენტი. ჩემი ძალა GPT 5.6 Terra-ზეა, OpenAI-ს დაბალანსებული საწარმოო მოდელი Amazon Bedrock Mantle-ზე. GPT 5.6 Terra მოემსახურება Brave-ის დაცული AWS ინფრასტრუქტურის მეშვეობით.<ph name="LINK_BEFORE"/>გაიგეთ მეტი<ph name="LINK_AFTER"/></translation>
 <translation id="5037359072717016032">გამარჯობა, მე ვარ ლეო. მე ვარ Brave-ის AI ასისტენტი. ჩემი ძალა Mistral Large-ზეა, მოდელი, რომელიც შექმნილია Mistral-ის მიერ, რომ იყოს პერფორმანტული და მრავალი გამოყენების შემთხვევასთან შესაფერისი. Mistral Large Brave-ს მიერ მასპინძლობს ჩვენს საკუთარ დაცულ ინფრასტრუქტურაში.<ph name="LINK_BEFORE"/>გაიგეთ მეტი<ph name="LINK_AFTER"/></translation>
-<translation id="4026902371301997261">გამარჯობა, მე ვარ ლეო. მე ვარ Brave-ის AI ასისტენტი. ჩემი ძალა Qwen 3 235B-ზეა, მოდელი, რომელიც შექმნილია Alibaba Cloud-ის მიერ, რომ იყოს პერფორმანტული და მრავალი გამოყენების შემთხვევასთან შესაფერისი. Qwen 3 235B Brave-ს მიერ მასპინძლობს ჩვენს საკუთარ დაცულ ინფრასტრუქტურაში.<ph name="LINK_BEFORE"/>გაიგეთ მეტი<ph name="LINK_AFTER"/></translation>
+<translation id="5475035333915581972">გამარჯობა, მე ვარ ლეო. მე ვარ Brave-ის AI ასისტენტი. ჩემი ძალა Qwen 3.8 Flash Next-ზეა, მოდელი, რომელიც შექმნილია Alibaba Cloud-ის მიერ, რომ იყოს პერფორმანტული და მრავალი გამოყენების შემთხვევასთან შესაფერისი. Qwen 3.8 Flash Next Brave-ს მიერ მასპინძლობს ჩვენს საკუთარ დაცულ ინფრასტრუქტურაში.<ph name="LINK_BEFORE"/>გაიგეთ მეტი<ph name="LINK_AFTER"/></translation>
 <translation id="8720758690351028307">გამარჯობა, მე ვარ ლეო. მე ვარ Brave-ის AI ასისტენტი. ჩემი ძალა Deepseek V3.2-ზეა, მოდელი, რომელიც შექმნილია Deepseek-ის მიერ, რომ იყოს პერფორმანტული და მრავალი გამოყენების შემთხვევასთან შესაფერისი. Deepseek V3.2 Brave-ს მიერ მასპინძლობს ჩვენს საკუთარ დაცულ ინფრასტრუქტურაში.<ph name="LINK_BEFORE"/>გაიგეთ მეტი<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">გამარჯობა, მე ვარ ლეო. მე ვარ Brave-ის AI ასისტენტი. ჩემი ძალა Claude Opus-ზეა, მოდელი, რომელიც შექმნილია Anthropic-ის მიერ, რომ ემსახუროს საუბრის და ტექსტის დამუშავების ამოცანებს. Claude Opus Brave-ს მიერ მასპინძლობს ჩვენს საკუთარ დაცულ ინფრასტრუქტურაში.<ph name="LINK_BEFORE"/>გაიგეთ მეტი<ph name="LINK_AFTER"/></translation>
 <translation id="7238858567393403597">გამარჯობა, მე ვარ ლეო. მე ვარ Brave-ის AI ასისტენტი. ჩემი ძალა GLM-4-7-Flash-ზეა, მოდელი, რომელიც შექმნილია Zhipu AI-ს მიერ, რომ იყოს პერფორმანტული და მრავალი გამოყენების შემთხვევასთან შესაფერისი. GLM-4-7-Flash Brave-ს მიერ მასპინძლობს ჩვენს საკუთარ დაცულ ინფრასტრუქტურაში.<ph name="LINK_BEFORE"/>გაიგეთ მეტი<ph name="LINK_AFTER"/></translation>
@@ -2232,7 +2241,6 @@
 <translation id="4773408460773097271">Ollama</translation>
 <translation id="631371844654031449">რეკომენდებული მოდელები</translation>
 <translation id="6568044140836233369">ყველა მოდელის ჩვენება</translation>
-<translation id="6187065185557150870">ჩატი</translation>
 <translation id="4685048769603134644">სრული გვერდის გახსნა</translation>
 <translation id="2961040541145689181">ახალი ჩატი</translation>
 <translation id="7557539689487606886">პრემიუმის გააქტიურება</translation>
@@ -2356,13 +2364,13 @@
 <translation id="887511360213807449">ისტორია გამორთულია</translation>
 <translation id="5380979378058584412">თქვენი წინა საუბრების სანახავად Leo-სთან, საჭიროა ჩართოთ საუბრის ისტორია.</translation>
 <translation id="3185367320601718531">საუბარი და ტექსტის გენერაცია</translation>
-<translation id="2793458212460902934">სწრაფი • ძიება • ინსტრუმენტები</translation>
 <translation id="8506027496671575183">ძიება • ხედვა • ინსტრუმენტები</translation>
 <translation id="3184606955650139158">სწრაფი • ძიება • ხედვა</translation>
 <translation id="7465032796278724624">დამოწმებული კონფიდენციალურობა NEAR AI TEE-სთან ერთად</translation>
 <translation id="8782867266498869301">მოდელი მყისიერად იცვლება სამუშაოს საუკეთესოდ შესასრულებლად</translation>
 <translation id="7348809809749151120">სწრაფი • ძიება</translation>
 <translation id="3213834013136637671">ძიება • ხედვა</translation>
+<translation id="2793458212460902934">სწრაფი • ძიება • ინსტრუმენტები</translation>
 <translation id="5276681919620506371">ძიება • ინსტრუმენტები</translation>
 <translation id="7434375176361995333">შეჯამებები • სწრაფი</translation>
 <translation id="3965507912994218570">ლეოს პარამეტრები</translation>
@@ -2925,9 +2933,7 @@ Brave-ს აქვს დამხმარე სერვისი, რომ
 <translation id="3750210661641549834">თქვენი ანგარიშის შესაქმნელად, გთხოვთ დაადასტუროთ თქვენი ელფოსტის მისამართი.</translation>
 <translation id="4351175281479794167">შეიყვანეთ დადასტურების კოდი</translation>
 <translation id="1672793037892810340">თქვენ უნდა მიგეღოთ მეილი კოდით, რომელიც უნდა შეიყვანოთ.</translation>
-<translation id="4821255729182569254">დასტურის მეილის ხელახლა გაგზავნა</translation>
 <translation id="5837679375142747484">ვერ ნახულობთ მეილს? შეამოწმეთ თქვენი სპამ ფოლდერი ან <ph name="BEGIN_LINK"/>გააგზავნეთ ხელახლა<ph name="END_LINK"/>.</translation>
-<translation id="1080588816740959885">ვერ ნახულობთ მეილს? შეამოწმეთ თქვენი სპამ ფოლდერი ან გააგზავნეთ ხელახლა.</translation>
 <translation id="1020730839570724178">რეგისტრაციის გაუქმება</translation>
 <translation id="7155125570724238786">თქვენი პაროლის გადასაყენებლად, გთხოვთ დაადასტუროთ თქვენი ელფოსტის მისამართი.</translation>
 <translation id="816074628631172140">თქვენი ელფოსტა დადასტურდა. დააყენეთ ახალი პაროლი თქვენი პაროლის გადაყენების დასასრულებლად.</translation>

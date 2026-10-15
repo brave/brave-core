@@ -193,9 +193,6 @@
 <translation id="5668852698659986622">Aktifkan Iklan Bersponsor</translation>
 <translation id="431194936581466649">Bantu dukung misi Brave untuk membangun Web yang independen dan mengutamakan pengguna dengan Iklan Bersponsor. Kami mengukur performa iklan secara privat, tanpa mengidentifikasi Anda.</translation>
 <translation id="1939813747486101115">Pelajari selengkapnya tentang Iklan Bersponsor</translation>
-<translation id="8347743943525229984">Izinkan survei Brave</translation>
-<translation id="6022939994702081659">Izinkan Brave menampilkan tautan ke survei privat di halaman tab baru. Survei membantu kami membangun fitur yang lebih baik dan mengukur keefektifan kampanye iklan berbasis browser.</translation>
-<translation id="7746496306508543965">Pelajari selengkapnya tentang survei Brave</translation>
 <translation id="410351446219883937">Putar otomatis</translation>
 <translation id="7445411102860286510">Izinkan situs untuk otomatis memutar video yang dibisukan (disarankan)</translation>
 <translation id="7837721118676387834">Izinkan pemutaran otomatis video yang dibisukan untuk situs tertentu.</translation>
@@ -223,6 +220,7 @@
 <translation id="9040069796107003510">Ikon Imbalan Brave</translation>
 <translation id="6333347122924254968">Tampilkan ikon Brave Rewards pada bilah alamat</translation>
 <translation id="4393974575368329991">Bilah alat navigasi bawah</translation>
+<translation id="8727059712928806451">Aktifkan bilah bawah</translation>
 <translation id="1834226716203076292">Tampilkan bilah bawah untuk akses cepat ke beranda, markah, dan penelusuran</translation>
 <translation id="1422686363939271829">Pengaturan ini dinonaktifkan apabila posisi bilah alamat bawah dipilih</translation>
 <translation id="6587448235155023666">Semua perubahan akan berlaku begitu Anda meluncurkan ulang Brave</translation>
@@ -398,6 +396,12 @@ Anda yakin ingin melakukan hal ini?</translation>
 <translation id="8793108040181436796">Tombol</translation>
 <translation id="8643377320501056697">Tampilkan Situs Teratas</translation>
 <translation id="7275773481201277457">Tampilkan Statistik Brave</translation>
+<translation id="8516804522688861636">Tampilkan situs yang sering dikunjungi</translation>
+<translation id="4546260624932151782">Tampilkan favorit</translation>
+<translation id="5313967007315987356">Tambahkan situs</translation>
+<translation id="1773147648972887693">Tampilkan situs yang sering dikunjungi</translation>
+<translation id="752098910262610337">Tampilkan jalan pintas</translation>
+<translation id="7134741506051403308">Sembunyikan widget</translation>
 <translation id="7462178177755090262">Layar Pembuka</translation>
 <translation id="5365434987337264071">Tab terakhir dibuka</translation>
 <translation id="6019856124237323989">{HOURS, plural, =1 {Tab baru setelah tidak aktif selama <ph name="HOURS_ONE"/> jam} other {Tab baru setelah tidak aktif selama <ph name="HOURS_MANY"/> jam}}</translation>
@@ -998,6 +1002,13 @@ Jika Anda tidak menerima permintaan ini, VPN tidak akan tersambung kembali dan s
 <translation id="7530313002494358590">Mengaktifkan atau menonaktifkan fitur Brave memerlukan restart browser untuk menerapkan perubahan. Harap ketuk <ph name="BEGIN_BOLD"/>Mulai ulang sekarang<ph name="END_BOLD"/> setelah Brave Origin selesai diperbarui.</translation>
 <translation id="1028940738207645746">Apakah Anda yakin ingin mengatur ulang semua pengaturan ke default?</translation>
 <translation id="5939518447894949180">Setel ulang</translation>
+<translation id="3222790865318305905">Batas aktivasi tercapai</translation>
+<translation id="3787857711016546034">Untuk mencegah penipuan, aktivasi Origin dibatasi jumlahnya. Namun, Anda selalu dapat meminta lebih banyak aktivasi untuk menggunakan lisensi Origin Anda pada lebih banyak perangkat. Cukup klik opsi Minta lebih banyak aktivasi, atau <ph name="CONTACT_SUPPORT"/> untuk bantuan.</translation>
+<translation id="6760819753412779585">hubungi layanan pendukung</translation>
+<translation id="571697836019670200">Minta lebih banyak aktivasi</translation>
+<translation id="9019545131475425538">Memproses…</translation>
+<translation id="7242700630179071243">Siap untuk diaktifkan</translation>
+<translation id="5463918917265356202">Brave Origin kini aktif pada perangkat ini. Untuk mulai menggunakan fitur ini, Anda perlu memulai ulang browser. Apakah Anda ingin memulai ulang sekarang?</translation>
 <translation id="8554205386170195281">Beli</translation>
 <translation id="8613144770663526433">Masuk dengan Dompet Brave</translation>
 <translation id="3696514931437952995">Anda masuk ke <ph name="ORIGIN"/>. Dompet Brave akan membagikan alamat dompet Anda dengan <ph name="ORIGIN"/>.</translation>

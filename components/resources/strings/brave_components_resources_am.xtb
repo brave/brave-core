@@ -1886,6 +1886,18 @@
 <translation id="2737084171727561244">ወደ ማህክር ሂድ</translation>
 <translation id="3499452861061048987">ቶክን አክል</translation>
 <translation id="5046066249040287308">የ Brave Wallet መገልገያ አገልግሎት</translation>
+<translation id="8767749833522980474">ስወራ</translation>
+<translation id="4509084261025090951">ካርድዎን ያግኙ</translation>
+<translation id="3624463584770657372">የካርድ ቁጥሮችን ለማየት እና ወጪ ማድረግ ለመጀመር ማንነትዎን ያረጋግጡ።</translation>
+<translation id="2508337767012636987">ለማረጋገጥ ይንኩ</translation>
+<translation id="703964541421486259">ሂሳቦችን ደብቅ</translation>
+<translation id="302114796458112924">ሂሳቦችን አሳይ</translation>
+<translation id="9083210401924577263">የ Brave Rewards ካርድ</translation>
+<translation id="2433507940547922241">ገጽታ</translation>
+<translation id="3435738964857648380">ደህንነት</translation>
+<translation id="6700561332544287722">በሚቀጥለው ጊዜ መክፈት ይጠይቅ</translation>
+<translation id="5605360570977617291"><ph name="CARD_NAME"/> ከመነሻ ይደበቅ?</translation>
+<translation id="2721464457853369512">የ<ph name="CARD_NAME"/> ሂሳብዎ አልተለወጠም። ይህ ካርዱን ከመነሻ ብቻ ይደብቃል። በቅንብሮች ውስጥ፣ በ Wallet ስር በማንኛውም ጊዜ እንደገና ማሳየት ይችላሉ።</translation>
 <translation id="3155170474926428993">ቶር ማስጀመርያ</translation>
 <translation id="3745016858329272300">አጠቃላይ መረጃ</translation>
 <translation id="4045404575593562245">በ ቶር ቁጥጥር ያሉ ክስተቶች</translation>
@@ -1925,7 +1937,6 @@
 <translation id="6261915643960475695">ቢዝነስ</translation>
 <translation id="8265589281845759879">መኪናዎች</translation>
 <translation id="7726519849288907308">አነሳስት</translation>
-<translation id="8767749833522980474">ስወራ</translation>
 <translation id="7577010593836079522">ባህል</translation>
 <translation id="6807791860691150411">ትምህርት</translation>
 <translation id="3706423975342040244">መዝናኛ</translation>
@@ -2104,9 +2115,6 @@
 <translation id="3067105725259639716">Brave Newsን አዋቅር</translation>
 <translation id="6286510487460330478">አቋራጮችን አዋቅር</translation>
 <translation id="9214819486716388964">Brave Talk አሳይ</translation>
-<translation id="5950760360751948276">ሁልጊዜ የዕልባት አሞሌን አሳይ</translation>
-<translation id="2960757369920422313">የዕልባት አሞሌን በNTP ላይ አሳይ</translation>
-<translation id="522953399371747698">የዕልባት አሞሌን ደብቅ</translation>
 <translation id="9079813619990532635">ሁሉንም መጻፍተኛ መዝገቦችን ላክ</translation>
 <translation id="134184943774258988">ሁሉንም የዕልባቶች አዝራር ታይነት ቀይር</translation>
 <translation id="2158862020143233462">መከለያዎችን ቀያይር</translation>
@@ -2215,6 +2223,7 @@
 <translation id="5820497878628354073">የሁኔታ ኮድ: <ph name="STATUS_CODE"/>, ውስጣዊ የሁኔታ ኮድ: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">የpremium ደረጃን እስከደረስነዋል። እባኮትን ከጥቂት ሰዓታት በኋላ ደግመው ይሞክሩ።</translation>
 <translation id="6873128487002733717">ለዚህ ሞዴል የPremium ገደብ ላይ ደርሰዋል። የተለየ ሞዴል ይምረጡ ወይም ቆይተው እንደገና ይሞክሩ።</translation>
+<translation id="2688661132468689309">ለዚህ ሞዴል የPremium ገደብ ላይ ደርሰዋል። በ<ph name="RESET_DURATION"/> ውስጥ (በ<ph name="RESET_TIME"/>) እንደገና ይጀምራል። የተለየ ሞዴል ይምረጡ ወይም ያኔ እንደገና ይሞክሩ።</translation>
 <translation id="3683964919745779766">የሞዴሉ እለፍ-ምልካ ተጠናቋል ወይም ያክራችሁን ካሚስ ያበርክተዋል። እባክዎትን ቀጣዩን ይሞክሩ።</translation>
 <translation id="7692501701960747469">ለዚህ ሞዴል የተቻለ ኤፒኤ ቁልፍ የማይሆን ነው። እባክዎትን ኮንፊግራሽን ይምረኩና ይቀጥሉ።</translation>
 <translation id="7905602379229309187">አቃፊዎች ሰርተሽንዎችን የቋርጥቋል። ቀጣዩን ይሞክሩ።</translation>
@@ -2223,12 +2232,12 @@
 <translation id="3852808100039989429">ሰላም፣ እኔ ሊዮ ነኝ። እኔ ባሕሪ የሆነ የ Bravን አእምሮ ረዳት ነኝ። በAlibaba Cloud በተፈጠረው Qwen VL 30B ሞዴል በኃይል የተሞላ ነኝ፣ ለብዙ ጉዳዮች በሚስማምም እና በብዙ ቦታዎች ብቻ ሳይሆን። Qwen በብሬቭ በራስዎ ደህንነት አውታረ መረብ ውስጥ ተሰብስቧል።<ph name="LINK_BEFORE"/>ተጨማሪ ይማሩ<ph name="LINK_AFTER"/></translation>
 <translation id="8659225822055186905">ሰላም ፣ እኔ ሊዮ ነኝ ። እኔ የብሬቭ AI ረዳት ነኝ ። በZhipu AI የተፈጠረ እና ለብዙ ጉዳዮች ላይ ሥራ የሚያደርግ ሞዴል በሆነው GLM-5.3 Flash የተደገፍኩ ነኝ ። GLM-5.3 Flash በራሳቸው በማረጋገጥ የሚቻል የግል ደህንነቱ የተጠበቀ መሠረተ ልማት በNEAR ይስተናገዳል ።<ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">ሰላም፣ እኔ ሌዮ ነኝ። እኔ የBrave የአርሰት-ኢ አገልጋይ ነኝ። Claude Instant ተብሎ በAnthropic የተፈጠረ ሞዴል ነው፣ እና የንግግርና የጽሁፍ ሂደት ሥራዎችን ሊያከናውን ይችላል። Claude Instant በBrave የራሱ ደህንነቱን የሚጠብቀው አሰራር ላይ ነው የተሰቀመው።<ph name="LINK_BEFORE"/>ተጨማሪ ያስሱ<ph name="LINK_AFTER"/></translation>
-<translation id="3789772321824682783">ሰላም ፣ እኔ ሊዮ ነኝ ። እኔ የአእምሮ ማስተማር ባህሪ የባልደረሰበት ብሬቭ ነኝ ። በClaude Haiku ታውቆ በአንድ ልማድ እና በጽሁፍ ማስማር ተግባር እንዲሁም እንዲሁም በብቸኝነት እንዲሁም በፍላጎት እኛ ጊዜ እያደርገው አሥክ ነኝ ። <ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">ሰላም ፣ እኔ ሊዮ ነኝ ። እኔ የአእምሮ ማስተማር ባህሪ የባልደረሰበት ብሬቭ ነኝ ። በClaude Sonnet ታውቆ በአንድ ልማድ እና በጽሁፍ ማስማር ተግባር እንዲሁም እንዲሁም በብቸኝነት እንዲሁም በፍላጎት እኛ ጊዜ እያደርገው አሥክ ነኝ ። <ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
-<translation id="3399141352144059821">ሰላም ፣ እኔ ሊዮ ነኝ ። እኔ የBrave አኤ አገዝ ነኝ ። በxAI የተፈጠረ ፣ አፈጻጸም ያለው እና ለብዙ ጉዳዮች ተግባራዊ የሚሆን ሞዴል በሆነው Grok 4.3 እሰራለሁ ። Grok 4.3 በራሳችን ደህንነታዊ መሠረተ ልማት በኩል Brave-ተስተናጋጅ ነው ።<ph name="LINK_BEFORE"/>ተጨማሪ ይወቁ<ph name="LINK_AFTER"/></translation>
-<translation id="8868813509973985458">ሰላም ፣ እኔ ሊዮ ነኝ ። እኔ የBrave አኤ አገዝ ነኝ ። በOpenAI የተፈጠረ ፣ አፈጻጸም ያለው እና ለብዙ ጉዳዮች ተግባራዊ የሚሆን ሞዴል በሆነው GPT 5.4 እሰራለሁ ። GPT 5.4 በራሳችን ደህንነታዊ መሠረተ ልማት በኩል Brave-ተስተናጋጅ ነው ።<ph name="LINK_BEFORE"/>ተጨማሪ ይወቁ<ph name="LINK_AFTER"/></translation>
+<translation id="6676306995311143470">ሰላም ፣ እኔ ሊዮ ነኝ። እኔ የ Brave የ AI ረዳት ነኝ። በ Grok 4.6 እገዛ ነኝ የሚሰራው፣ የ xAI የፊት መስመር የማመዛዘን ሞዴል በ Amazon Bedrock Mantle ላይ። Grok 4.6 በ Brave አስተማማኝ የ AWS መሠረተ ልማት በኩል ይቀርባል።<ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
+<translation id="2394656730986208060">ሰላም ፣ እኔ ሊዮ ነኝ። እኔ የ Brave የ AI ረዳት ነኝ። በ GPT 5.6 Luna እገዛ ነኝ የሚሰራው፣ የ OpenAI ፈጣን፣ ዝቅተኛ መዘግየት ያለው ሞዴል በ Amazon Bedrock Mantle ላይ። GPT 5.6 Luna በ Brave አስተማማኝ የ AWS መሠረተ ልማት በኩል ይቀርባል።<ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
+<translation id="5278969721580944810">ሰላም ፣ እኔ ሊዮ ነኝ። እኔ የ Brave የ AI ረዳት ነኝ። በ GPT 5.6 Terra እገዛ ነኝ የሚሰራው፣ የ OpenAI ሚዛናዊ የምርት ሞዴል በ Amazon Bedrock Mantle ላይ። GPT 5.6 Terra በ Brave አስተማማኝ የ AWS መሠረተ ልማት በኩል ይቀርባል።<ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
 <translation id="5037359072717016032">ሰላም ፣ እኔ ሊዮ ነኝ ። እኔ የአእምሮ ማስተማር ባህሪ የባልደረሰበት ብሬቭ ነኝ ። በMistral ተፈጥሮ ብዙ ችሎታዎችን ለመከናወን እጅግ የተሟላ እና አስተገባባቂ የሆነ Mistral Large ሞዴል ተጠቃሚ ነኝ። Mistral Large በራሳችን ደህንነታዊ መረብ እያለ በBrave ይጠቀማል።<ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
-<translation id="4026902371301997261">ሰላም ፣ እኔ ሊዮ ነኝ ። እኔ የአእምሮ ማስተማር ባህሪ የባልደረሰበት ብሬቭ ነኝ ። በAlibaba Cloud ተፈጥሮ ብዙ ችሎታዎችን ለመከናወን እጅግ የተሟላ እና አስተገባባቂ የሆነ Qwen 3 235B ሞዴል ተጠቃሚ ነኝ። Qwen 3 235B በራሳችን ደህንነታዊ መረብ እያለ በBrave ይጠቀማል።<ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
+<translation id="5475035333915581972">ሰላም ፣ እኔ ሊዮ ነኝ። እኔ የ Brave የ AI ረዳት ነኝ። በ Qwen 3.8 Flash Next እገዛ ነኝ የሚሰራው፣ በ Alibaba Cloud የተፈጠረ ሞዴል ሆኖ ለብዙ ጉዳዮች ተፈፃሚ እና ውጤታማ ነው። Qwen 3.8 Flash Next በ Brave በራሳችን አስተማማኝ መሠረተ ልማት በኩል ይስተናገዳል።<ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
 <translation id="8720758690351028307">ሰላም ፣ እኔ ሊዮ ነኝ ። እኔ የAI 助手 በBrave ነኝ ። በDeepseek ታውቆ በብዙ ጉዳዮች ላይ ሥራ የሚያደርግ ባህሪ ሞዴል ነበር አሸንፊ የሆነው Deepseek V3.2 Label ነኝ ። Deepseek V3.2 በብቸኝነት በFbrave ጊዜ <ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">ሰላም ፣ እኔ ሊዮ ነኝ ። እኔ የአእምሮ ማስተማር ባህሪ የባልደረሰበት ብሬቭ ነኝ ። በClaude Opus ተፈጥሮ ፍቺ ተደርጎ ሚና እና ከጽሁፍ ከመረጃ እንዲሁም የንግግር ጉዳዮችን ማስተናገድ የሚችል ሞዴል ነው። Claude Opus በBrave በራሱ የሥራ መረብ እና ተመልከት ያለው ነው።<ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
 <translation id="7238858567393403597">ሰላም ፣ እኔ ሊዮ ነኝ ። እኔ የአእምሮ ማስተማር ባህሪ የባልደረሰበት ብሬቭ ነኝ ። በMeta ታውቆ በብዙ ጉዳዮች ላይ ሥራ የሚያደርግ ባህሪ ሞዴል ነበር አሸንፊ የሆነው Llama  3.1 8B Label ነኝ ። Llama በብቸኝነት በፍላጎት እኛ ጊዜ <ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
@@ -2241,7 +2250,6 @@
 <translation id="4773408460773097271">Ollama</translation>
 <translation id="631371844654031449">የተመነጩ ሞዴሎች</translation>
 <translation id="6568044140836233369">ሁሉንም ሞዴሎች አሳይ</translation>
-<translation id="6187065185557150870">ጭውውት</translation>
 <translation id="4685048769603134644">ሙሉ ሁለት እኩል ማሳያ ክፈት</translation>
 <translation id="2961040541145689181">አዲስ ጭውውት</translation>
 <translation id="7557539689487606886">ፕሪሚየም አባል ይሁኑ</translation>
@@ -2365,13 +2373,13 @@
 <translation id="887511360213807449">ታሪክ በማበሰለ ተንብ ዝጋ</translation>
 <translation id="5380979378058584412">ውይይት ታሪክዎን ለመመለከት እባክዎን የውይይት ታሪክ ያስተካክሉ።</translation>
 <translation id="3185367320601718531">ውይይት እና የጽሁፍ ማመንጨት</translation>
-<translation id="2793458212460902934">ፈጣን • ፍለጋ • መሳሪያዎች</translation>
 <translation id="8506027496671575183">ፍለጋ • እይታ • መሳሪያዎች</translation>
 <translation id="3184606955650139158">ፈጣን • ፍለጋ • ቪዥን</translation>
 <translation id="7465032796278724624">በNEAR AI TEE ወይ ተረጋግጠው የግል</translation>
 <translation id="8782867266498869301">ሞዴሉ ስለምልክት ተርጂውን እንዲጠብቅ ተቀይሯል።</translation>
 <translation id="7348809809749151120">ፈጣን • ፍለጋ</translation>
 <translation id="3213834013136637671">ፍለጋ • እይታ</translation>
+<translation id="2793458212460902934">ፈጣን • ፍለጋ • መሳሪያዎች</translation>
 <translation id="5276681919620506371">ፈጣን • ፍለጋ • መሳሪያዎች</translation>
 <translation id="7434375176361995333">ማጠቃለሎች • ፈጣን</translation>
 <translation id="3965507912994218570">Leo ቅንብሮች</translation>
@@ -2928,9 +2936,7 @@ Brave የDNS ጥያቄዎች በእርስዎ VPN ግንኙነት ላይ በሚ�
 <translation id="3750210661641549834">መለያዎን ለመፍጠር፣ እባክዎ የኢሜይል አድራሻዎን ያረጋግጡ።</translation>
 <translation id="4351175281479794167">የማረጋገጫ ኮድ ያስገቡ</translation>
 <translation id="1672793037892810340">ማስገባት የሚያስፈልግዎትን ኮድ የያዘ ኢሜይል ደርሶዎታል።</translation>
-<translation id="4821255729182569254">የማረጋገጫ ኢሜይል እንደገና ይላኩ</translation>
 <translation id="5837679375142747484">ኢሜይሉን አያዩትም? የስፓም አቃፊዎን ይፈትሹ ወይም <ph name="BEGIN_LINK"/>እንደገና ይላኩት<ph name="END_LINK"/>።</translation>
-<translation id="1080588816740959885">ኢሜይሉን አያዩትም? የስፓም አቃፊዎን ይፈትሹ ወይም እንደገና ይላኩት።</translation>
 <translation id="1020730839570724178">ምዝገባን ሰርዝ</translation>
 <translation id="7155125570724238786">የይለፍ ቃልዎን ዳግም ለማስጀመር፣ እባክዎ የኢሜይል አድራሻዎን ያረጋግጡ።</translation>
 <translation id="816074628631172140">የኢሜይልዎ ተረጋግጧል። የይለፍ ቃል ዳግም ማስጀመርዎን ለማጠናቀቅ አዲስ የይለፍ ቃል ያዘጋጁ።</translation>

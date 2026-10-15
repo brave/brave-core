@@ -193,9 +193,6 @@
 <translation id="5668852698659986622">Įjungti remiamus skelbimus</translation>
 <translation id="431194936581466649">Padėkite palaikyti „Brave“ misiją kurti nepriklausomą, į naudotoją orientuotą žiniatinklį su remiamais skelbimais. Skelbimų efektyvumą matuojame privačiai, jūsų neidentifikuodami.</translation>
 <translation id="1939813747486101115">Sužinokite daugiau apie remiamas reklamas</translation>
-<translation id="8347743943525229984">Leisti „Brave“ apklausas</translation>
-<translation id="6022939994702081659">Leidžia „Brave“ rodyti nuorodas į konfidencialias apklausas naujos kortelės puslapyje. Apklausos padeda mums sukurti geresnes funkcijas ir įvertinti naršyklės reklamos kampanijų efektyvumą.</translation>
-<translation id="7746496306508543965">Sužinokite daugiau apie „Brave“ apklausas</translation>
 <translation id="410351446219883937">Automatinis paleidimas</translation>
 <translation id="7445411102860286510">Leisti svetainėms automatiškai leisti nutildytus vaizdo įrašus (rekomenduojama)</translation>
 <translation id="7837721118676387834">Leisti automatiškai paleisti nutildytus vaizdo įrašus konkrečioje svetainėje</translation>
@@ -223,6 +220,7 @@
 <translation id="9040069796107003510">„Brave Rewards“ piktograma</translation>
 <translation id="6333347122924254968">Rodyti „Brave“ atlygio piktogramą adreso juostoje</translation>
 <translation id="4393974575368329991">Apatinė naršymo juosta</translation>
+<translation id="8727059712928806451">Įjungti apatinę juostą</translation>
 <translation id="1834226716203076292">Rodyti apatinę juostą, kad būtų galima greitai pasiekti pradžią, žymes ir paiešką</translation>
 <translation id="1422686363939271829">Ši nuostata išjungiama, kai pasirinkta apatinė adreso juostos padėtis</translation>
 <translation id="6587448235155023666">Pakeitimai įsigalios kitą kartą iš naujo paleidus „Brave“</translation>
@@ -402,6 +400,12 @@ Ar tikrai norite tai padaryti?</translation>
 <translation id="8793108040181436796">Valdikliai</translation>
 <translation id="8643377320501056697">Rodyti populiarias svetaines</translation>
 <translation id="7275773481201277457">Rodyti „Brave“ statistiką</translation>
+<translation id="8516804522688861636">Rodyti dažnai lankomas svetaines</translation>
+<translation id="4546260624932151782">Rodyti mėgstamiausius</translation>
+<translation id="5313967007315987356">Pridėti svetainę</translation>
+<translation id="1773147648972887693">Rodyti dažnai lankomas</translation>
+<translation id="752098910262610337">Rodyti sparčiuosius klavišus</translation>
+<translation id="7134741506051403308">Slėpti valdiklį</translation>
 <translation id="7462178177755090262">Paleidimo ekranas</translation>
 <translation id="5365434987337264071">Paskutinė atidaryta kortelė</translation>
 <translation id="6019856124237323989">{HOURS, plural,
@@ -1005,6 +1009,13 @@ Užklausos nepriėmus, prie VPN pakartotinai prisijungta nebus ir interneto ryš
 <translation id="7530313002494358590">Norint įjungti arba išjungti Brave funkciją, reikia iš naujo paleisti naršyklę, kad pakeitimai įsigaliotų. Kai Brave Origin baigs atnaujinimą, palieskite <ph name="BEGIN_BOLD"/>Paleisti iš naujo dabar<ph name="END_BOLD"/>.</translation>
 <translation id="1028940738207645746">Ar tikrai norite nustatyti visas nuostatas iš naujo į numatytas?</translation>
 <translation id="5939518447894949180">Nustatyti iš naujo</translation>
+<translation id="3222790865318305905">Pasiektas aktyvinimų limitas</translation>
+<translation id="3787857711016546034">Siekiant užkirsti kelią sukčiavimui, Origin aktyvinimai yra apriboti pagal dažnį. Tačiau visada galite paprašyti daugiau aktyvinimų, kad galėtumėte naudoti savo Origin licenciją daugiau įrenginių. Tiesiog spustelėkite parinktį „Prašyti daugiau aktyvinimų“ arba <ph name="CONTACT_SUPPORT"/> pagalbos.</translation>
+<translation id="6760819753412779585">susisiekti su pagalbos skyriumi</translation>
+<translation id="571697836019670200">Prašyti daugiau aktyvinimų</translation>
+<translation id="9019545131475425538">Apdorojama…</translation>
+<translation id="7242700630179071243">Paruošta aktyvinti</translation>
+<translation id="5463918917265356202">Brave Origin dabar aktyvus šiame įrenginyje. Kad pradėtumėte naudoti šią funkciją, turite iš naujo paleisti naršyklę. Ar norite paleisti iš naujo dabar?</translation>
 <translation id="8554205386170195281">Nusipirkti</translation>
 <translation id="8613144770663526433">Prisijunkite naudodami „Brave“ piniginę</translation>
 <translation id="3696514931437952995">Jungiatės prie <ph name="ORIGIN"/>. „Brave“ piniginė pasidalins jūsų piniginės adresu su<ph name="ORIGIN"/>.</translation>

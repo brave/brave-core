@@ -3,18 +3,14 @@
 <translationbundle lang="ar">
 <translation id="1751249301761991853">شخصي</translation>
 <translation id="3333887201479867589">مكافآت Brave</translation>
-<translation id="7561196759112975576">دائماً</translation>
-<translation id="7961015016161918242">مطلقًا</translation>
 <translation id="8507663778530179003">عرض زر كل الإشارات المرجعية</translation>
 <translation id="9018648632047670921">عرض زر كل الإشارات المرجعية</translation>
 <translation id="7630214457764713113">نسخ الرابط الكامل</translation>
 <translation id="7973394300052703468">نافذة خاصة &amp; جديدة</translation>
 <translation id="4615489450165434530">الإبلاغ عن موقع إلكتروني معطل</translation>
 <translation id="8097438084542431276">نسخ الرابط النظيف</translation>
-<translation id="4678672101289648246">فقط على صفحة علامة التبويب الجديدة</translation>
 <translation id="6516243500644829484">نافذة &amp; جديدة للتصفح المتخفي</translation>
 <translation id="1209739344687072997">الإبلاغ عن موقع إلكتروني معطل</translation>
-<translation id="8294286161128352783">فقط على صفحة علامة التبويب الجديدة</translation>
 <translation id="6406506848690869874">مزامنة</translation>
 <translation id="1544192797660353713">المحفظة</translation>
 <translation id="2361906291514218784">Leo الذكاء الاصطناعي</translation>
@@ -195,7 +191,9 @@
 <translation id="5977931179408079967">موضع</translation>
 <translation id="3790384768741064842">نقل إلى اليمين</translation>
 <translation id="7444424316576061724">نقل إلى اليسار</translation>
+<translation id="7561196759112975576">دائماً</translation>
 <translation id="7060352228894039151">عند تحريك الفأرة</translation>
+<translation id="7961015016161918242">مطلقًا</translation>
 <translation id="8981254605840444865">إعدادات العرض</translation>
 <translation id="59174027418879706">تم التمكين</translation>
 <translation id="4176463684765177261">غير مفعّل</translation>
@@ -221,6 +219,7 @@
 <translation id="4515057635283480525">يحفظ أرشيف الإنترنت الإصدارات السابقة للعديد من صفحات الويب. هل تريد البحث عن هذه الصفحة في الأرشيف؟</translation>
 <translation id="8252977752585110703">عذرًا، لقد تحققنا من أرشيف الإنترنت ولا يحتوي على نسخة مؤرشفة من هذه الصفحة.</translation>
 <translation id="8748778103033196270">البحث في الأرشيف</translation>
+<translation id="7369915833843501413">جارٍ البحث في الأرشيف</translation>
 <translation id="191143826155037518">يتم توفير Brave لك بموجب <ph name="BEGIN_LINK_MPL"/>ترخيص Mozilla العام 2.0<ph name="END_LINK_MPL"/> (MPL) ويشمل <ph name="BEGIN_LINK_OSS"/>برمجيات مفتوحة المصدر<ph name="END_LINK_OSS"/> بموجب مختلف التراخيص الأخرى.
         يمكنك قراءة <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>التعليمات حول كيفية تنزيل وبناء<ph name="END_LINK_BUILD_INSTRUCTIONS"/> <ph name="BEGIN_LINK_SOURCE_CODE"/> التعليمات البرمجية الأصلية المحددة المستخدمة لإنشاء هذه النسخة<ph name="END_LINK_SOURCE_CODE"/> لنفسك.</translation>
 <translation id="4474155171896946103">وضع إشارات على كل علامات التبويب...</translation>
@@ -372,7 +371,7 @@
 <translation id="7985042437720138349">ترسل هذه الميزة بيانات حول علامات التبويب المفتوحة إلى Leo، مساعد المتصفح المدعوم بالذكاء الاصطناعي من Brave.</translation>
 <translation id="6165508094623778733">اعرف المزيد</translation>
 <translation id="7557539689487606886">الاشتراك الحصري (Premium)</translation>
-<translation id="1035309871698658326">عند استخدامها، سيؤدي ذلك تلقائيًا إلى إرسال عناوين وأصل جميع علامات التبويب غير الخاصة إلى Leo لتصنيفها.</translation>
+<translation id="7103144720752576727">عند فتحها، سيتم إرسال عناوين وأصل جميع علامات التبويب غير الخاصة تلقائيًا إلى Leo لتصنيفها. إذا قمت أيضًا بتفعيل إرسال محتوى الصفحة، فسيتم إرسال مقتطفات قصيرة من نص كل علامة تبويب أيضًا.</translation>
 <translation id="3435896845095436175">تمكين</translation>
 <translation id="9031526219709160683">يمكن لـ Brave مساعدتك في تحسين إعدادات الخصوصية لهذا الموقع. هل تريد مراجعة اقتراحات Brave؟</translation>
 <translation id="5739953050957336013">اقتراحات البحث</translation>
@@ -387,8 +386,6 @@
 <translation id="8570228839666486945">الذكاء الاصطناعي المحلي</translation>
 <translation id="7447041379556102185">التعرّف على الكلام على الجهاز</translation>
 <translation id="3456536577668402695">تتم معالجة عمليات البحث ومحتويات الصفحة على هذا الجهاز. لا يتم إرسال أي شيء إلى Brave ولا يراه المراجعون البشريون.</translation>
-<translation id="4751537843966994505">البحث الدلالي في السجل</translation>
-<translation id="6175973371938222040">فهرسة الصفحات التي تزورها محليًا حتى تتمكن من البحث في سجلك حسب المعنى. تبقى جميع المعالجة على هذا الجهاز.</translation>
 <translation id="9156965752763025780">‏ستسري التغييرات في المرة التالية التي تعيد فيها تشغيل Brave.</translation>
 <translation id="7179921470347911571">أعد التشغيل الآن</translation>
 <translation id="1426410128494586442">نعم</translation>
@@ -426,6 +423,7 @@
 <translation id="4328541188421002379">اعط حاويتك اسمًا مثل "العمل" أو "شخصي"</translation>
 <translation id="4976989127264491396">خطأ: <ph name="ERROR_MESSAGE"/></translation>
 <translation id="5436069931267876389">تعذر العثور على الحاوية</translation>
+<translation id="5831840958001766835">إعادة ترتيب العنصر. استخدم مفاتيح الأسهم للتحريك.</translation>
 <translation id="6055154402239241620">التحكم في حركة المرور</translation>
 <translation id="8134521925475508805">قم بتكوين مواقع محددة لفتحها تلقائيًا في سياق معين، مما يؤدي إلى الفصل بين جلسات التصفح الخاصة بك. <ph name="BEGIN_LINK"/>معرفة المزيد<ph name="END_LINK"/></translation>
 <translation id="6944848312867106540">تمكين التحكم في حركة المرور</translation>
@@ -478,10 +476,6 @@
 <translation id="7310387888625228830">مساعد Leo الذي يعمل بالذكاء الاصطناعي</translation>
 <translation id="5222974844674487962">عرض زر Brave News</translation>
 <translation id="2085436423511121572">إظهار زر Leo AI</translation>
-<translation id="6156323911414505561">عرض شريط الإشارات</translation>
-<translation id="4054323497808446566">شريط الإشارات مرئي في جميع الصفحات</translation>
-<translation id="8693858092251192712">شريط الإشارات مخفي في كل الصفحات باستثناء صفحة علامة التبويب الجديدة</translation>
-<translation id="7158817046543187970">شريط الإشارات مخفي في كل الصفحات</translation>
 <translation id="3416468988018290825">أظهِر عناوين URLs كاملة دائمًا</translation>
 <translation id="5529693968082667490">إظهار زر بحث علامة التبويب</translation>
 <translation id="1013121820689882118">قارئ السرعة</translation>
@@ -613,6 +607,8 @@
 <translation id="5825943197137337319">الواجهة العامة الافتراضية فقط</translation>
 <translation id="1689062823386843231">تعطيل UDP التي ليس لها وكيل</translation>
 <translation id="3540231253392253941">استخدم خدمات Google لإرسال الرسائل</translation>
+<translation id="2224032129673914306">البحث الدلالي في السجل</translation>
+<translation id="6045998903985162478">فهرسة الصفحات التي تزورها حتى تتمكن من العثور عليها بسهولة في السجل والعلامات المفتوحة و Leo.</translation>
 <translation id="5813105074916486721">الاحتفاظ بالسجل المحلي</translation>
 <translation id="5671611745062206644">المدة التي يخزن فيها Brave سجل التصفح محليًا</translation>
 <translation id="7184510058087008090">يوم واحد</translation>
@@ -877,6 +873,7 @@
 <translation id="2618193846561624884">هل تريد تحديث الشبكة الموجودة؟</translation>
 <translation id="1643029991199044105">تنقل عبر آخر علامات التبويب المستخدمة باستخدام Ctrl-Tab</translation>
 <translation id="2775956301559569472">عرض تنبيه "واي باك مشين" الفوري على صفحات 404</translation>
+<translation id="8485716275262929774">تحميل النسخ المحفوظة تلقائيًا من Wayback Machine في صفحات 404</translation>
 <translation id="3095201688102519917">تحذيري قبل إغلاق النافذة بعلامات تبويب متعددة</translation>
 <translation id="7120553802660696133">أغلق النافذة عند إغلاق آخر علامة تبويب</translation>
 <translation id="3394171693948989253">إظهار تذكير ملء الشاشة للضغط على Esc عند الخروج</translation>
@@ -886,6 +883,8 @@
 <translation id="1529674267267221673">سيظهر مساعد Leo في قائمة السياقات عندما تنقر بزر الماوس الأيمن على موقع الويب. وسيؤدي ذلك إلى إرسال السياق من صفحة الويب الحالية إلى مساعد Leo.</translation>
 <translation id="5226020406479918122">وضع تركيز علامات التبويب</translation>
 <translation id="3705539672403311123">تمكين تنظيم علامات التبويب في صفحة البحث عن علامات التبويب. عند استخدام هذه الميزة، سيؤدي ذلك تلقائيًا إلى إرسال عناوين وأصول جميع علامات التبويب غير الخاصة إلى Leo لتصنيفها. <ph name="BEGIN_LINK"/>تعرف على المزيد<ph name="END_LINK"/></translation>
+<translation id="2002238795517052616">إرسال محتوى الصفحة لتركيز العلامات</translation>
+<translation id="2276823422122514441">أرسل أيضًا مقتطفات قصيرة من نص كل علامة تبويب، بحيث يتم تجميع العلامات حسب موضوع الصفحة بدلاً من عنوانها. تذهب المقتطفات إلى Leo، أو إلى النموذج الخاص بك إذا اخترت واحدًا لتركيز العلامات. يتطلب ذلك <ph name="BEGIN_LINK"/><ph name="SEMANTIC_HISTORY_SEARCH"/><ph name="END_LINK"/>، الذي يبني المقتطفات على جهازك.</translation>
 <translation id="9049433973274198706">النموذج التلقائي للمحادثات الجديدة</translation>
 <translation id="2161546758719933059">النموذج المستخدم لتنظيم علامات التبويب الخاصة بك في وضع تركيز علامات التبويب. <ph name="BEGIN_LINK"/>معرفة المزيد<ph name="END_LINK"/></translation>
 <translation id="8172263161008556851">إظهار المطالبات المقترحة في المحادثة</translation>
@@ -968,9 +967,6 @@ Leo AI في المستقبل وستقوم أيضًا بمحو سجل الدرد�
 <translation id="1838374766361614909">مسح البحث</translation>
 <translation id="5126255551970171328">البحث عن ذكرى</translation>
 <translation id="7402116145895962069">مزامنة نماذج Ollama المحلية الخاصة بك</translation>
-<translation id="5985516785067818307">مشارك في استطلاع الرأي</translation>
-<translation id="8347743943525229984">السماح لاستطلاعات الرأي لـ Brave</translation>
-<translation id="3204080538332044581">السماح لـ Brave بإظهار الروابط لاستطلاعات الرأي الخاصة في صفحة علامة التبويب الجديدة. تساعدنا استطلاعات الرأي على إنشاء ميزات أفضل وقياس فعالية الحملات الإعلانية المستندة إلى المتصفح. <ph name="BEGIN_LINK"/>معرفة المزيد<ph name="END_LINK"/></translation>
 <translation id="349846214503465941">تمكين قائمة التشغيل</translation>
 <translation id="7903608716704052878">إضافة الملفات تلقائيًا للعرض من دون الاتصال بالإنترنت</translation>
 <translation id="384666453982355633">سيقوم هذا الخيار تلقائيًا بتخزين ملفات الوسائط مؤقتًا حتى تتمكن من تشغيلها من دون اتصال بالإنترنت</translation>

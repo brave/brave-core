@@ -193,9 +193,6 @@
 <translation id="5668852698659986622">啟用贊助廣告</translation>
 <translation id="431194936581466649">以贊助廣告支持 Brave 打造獨立、以使用者為先的網路使命。我們以隱私方式衡量廣告成效，不會識別您的身分。</translation>
 <translation id="1939813747486101115">進一步了解贊助廣告</translation>
-<translation id="8347743943525229984">允許 Brave 調查</translation>
-<translation id="6022939994702081659">允許 Brave 在新分頁中顯示隱私調查的連結。調查有助於我們建立更好的功能，並衡量基於瀏覽器的廣告活動其有效性。</translation>
-<translation id="7746496306508543965">深入了解 Brave 調查</translation>
 <translation id="410351446219883937">自動播放</translation>
 <translation id="7445411102860286510">允許網站自動播放靜音的影片 (建議)</translation>
 <translation id="7837721118676387834">允許特定網站自動播放靜音的影片。</translation>
@@ -223,6 +220,7 @@
 <translation id="9040069796107003510">Brave Rewards 圖示</translation>
 <translation id="6333347122924254968">在網址列顯示 Brave 獎勵圖示</translation>
 <translation id="4393974575368329991">底部導覽工具列</translation>
+<translation id="8727059712928806451">啟用底部工具列</translation>
 <translation id="1834226716203076292">顯示底部列，以快速存取首頁、書籤和搜尋</translation>
 <translation id="1422686363939271829">選取底部位址列位置時，此設定會停用</translation>
 <translation id="6587448235155023666">所有變更將在你下次重啟 Brave 時生效</translation>
@@ -398,6 +396,12 @@
 <translation id="8793108040181436796">小工具</translation>
 <translation id="8643377320501056697">顯示頂部網站</translation>
 <translation id="7275773481201277457">顯示 Brave 統計</translation>
+<translation id="8516804522688861636">顯示經常造訪的網站</translation>
+<translation id="4546260624932151782">顯示最愛</translation>
+<translation id="5313967007315987356">新增網站</translation>
+<translation id="1773147648972887693">顯示經常造訪</translation>
+<translation id="752098910262610337">顯示捷徑</translation>
+<translation id="7134741506051403308">隱藏小工具</translation>
 <translation id="7462178177755090262">開啟畫面</translation>
 <translation id="5365434987337264071">上次開啟的分頁</translation>
 <translation id="6019856124237323989">{HOURS, plural,
@@ -1001,6 +1005,13 @@
 <translation id="7530313002494358590">啟用或停用 Brave 功能需要重新啟動瀏覽器才能套用變更。請在 Brave Origin 完成更新後，點擊<ph name="BEGIN_BOLD"/>立即重新啟動<ph name="END_BOLD"/>。</translation>
 <translation id="1028940738207645746">確定要將所有設定重設為預設值嗎？</translation>
 <translation id="5939518447894949180">重設</translation>
+<translation id="3222790865318305905">已達啟用數上限</translation>
+<translation id="3787857711016546034">為防止詐騙，Origin 啟用次數有限制。但您隨時可以要求更多啟用次數，以便在更多裝置上使用您的 Origin 授權。只需點選「要求更多啟用次數」選項，或<ph name="CONTACT_SUPPORT"/>以尋求協助。</translation>
+<translation id="6760819753412779585">聯絡客服</translation>
+<translation id="571697836019670200">要求更多啟用次數</translation>
+<translation id="9019545131475425538">處理中……</translation>
+<translation id="7242700630179071243">準備啟用</translation>
+<translation id="5463918917265356202">Brave Origin 現已在此裝置上啟用。若要開始使用此功能，您需要重新啟動瀏覽器。是否要立即重新啟動？</translation>
 <translation id="8554205386170195281">購買</translation>
 <translation id="8613144770663526433">用 Brave 錢包登入</translation>
 <translation id="3696514931437952995">您正在登入 <ph name="ORIGIN"/>。Brave 錢包將與 <ph name="ORIGIN"/> 分享您的錢包位址。</translation>

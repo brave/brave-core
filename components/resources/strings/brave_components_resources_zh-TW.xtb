@@ -1881,6 +1881,18 @@
 <translation id="2737084171727561244">前往投資組合</translation>
 <translation id="3499452861061048987">加入代幣</translation>
 <translation id="5046066249040287308">Brave 錢包公用程式服務</translation>
+<translation id="8767749833522980474">加密</translation>
+<translation id="4509084261025090951">取得您的卡片</translation>
+<translation id="3624463584770657372">驗證您的身分以查看卡號並開始消費。</translation>
+<translation id="2508337767012636987">輕觸以驗證</translation>
+<translation id="703964541421486259">隱藏餘額</translation>
+<translation id="302114796458112924">顯示餘額</translation>
+<translation id="9083210401924577263">Brave 獎勵卡</translation>
+<translation id="2433507940547922241">外觀</translation>
+<translation id="3435738964857648380">安全</translation>
+<translation id="6700561332544287722">下次需要解鎖</translation>
+<translation id="5605360570977617291">要從首頁隱藏 <ph name="CARD_NAME"/> 嗎？</translation>
+<translation id="2721464457853369512">您的 <ph name="CARD_NAME"/> 餘額不會改變。這只會從首頁隱藏卡片。您可以隨時在「設定」的「錢包」中再次顯示它。</translation>
 <translation id="3155170474926428993">Tor 啟動程式</translation>
 <translation id="3745016858329272300">一般資訊</translation>
 <translation id="4045404575593562245">Tor 控制事件</translation>
@@ -1920,7 +1932,6 @@
 <translation id="6261915643960475695">商業</translation>
 <translation id="8265589281845759879">汽車</translation>
 <translation id="7726519849288907308">名人</translation>
-<translation id="8767749833522980474">加密</translation>
 <translation id="7577010593836079522">文化</translation>
 <translation id="6807791860691150411">教育</translation>
 <translation id="3706423975342040244">娛樂</translation>
@@ -2099,9 +2110,6 @@
 <translation id="3067105725259639716">設定 Brave 新聞</translation>
 <translation id="6286510487460330478">設定快速鍵</translation>
 <translation id="9214819486716388964">顯示 Brave Talk</translation>
-<translation id="5950760360751948276">一律顯示書籤列</translation>
-<translation id="2960757369920422313">在 NTP 上顯示書籤列</translation>
-<translation id="522953399371747698">隱藏書籤列</translation>
 <translation id="9079813619990532635">匯出所有書籤</translation>
 <translation id="134184943774258988">切換所有書籤按鈕的顯示方式</translation>
 <translation id="2158862020143233462">切換防護</translation>
@@ -2216,6 +2224,7 @@
 <translation id="5820497878628354073">狀態碼：<ph name="STATUS_CODE"/>，內部狀態碼：<ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">您已達到  premium 速率限制。請在幾小時候重試。</translation>
 <translation id="6873128487002733717">您已達到此模型的高級版上限。請選擇其他模型或稍後再試。</translation>
+<translation id="2688661132468689309">您已達到此模型的高級版上限。將於 <ph name="RESET_DURATION"/>（在 <ph name="RESET_TIME"/>）後重設。請選擇其他模型或屆時再試。</translation>
 <translation id="3683964919745779766">您已到達此模型的費率上限，或點數已用完。請稍後再試。</translation>
 <translation id="7692501701960747469">為此模型設定的 API 金鑰無效。請檢查您的設定並重試。</translation>
 <translation id="7905602379229309187">端點目前已超載。請稍後再試。</translation>
@@ -2224,12 +2233,12 @@
 <translation id="3852808100039989429">嗨，我是 Leo。我是完全託管於 Brave 的 AI 助理。由 Alibaba Cloud 建立的模型 Qwen VL 30B 提供技術支援，效能強大，可適用於許多使用案例。Qwen 透過我們自己的安全基礎架構由 Brave 託管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="8659225822055186905">嗨，我是 Leo。我是 Brave 的 AI 助理。由 Zhipu AI 建立的模型 GLM-5.3 Flash 提供技術支援，效能強大，可適用於許多使用案例。GLM-5.3 Flash 通過其自主可驗證的私有安全基礎架構由 NEAR 託管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">嗨，我是 Leo，是由 Brave 提供的 AI 助理。我由 Claude Instant 提供支援，這是一個由 Anthropic 所創建的模型，用於進行對話與文字處理工作。Claude Instant 透過 Brave 自有的安全基礎設施託管。<ph name="LINK_BEFORE"/>深入了解<ph name="LINK_AFTER"/></translation>
-<translation id="3789772321824682783">嗨，我是 Leo。我是完全託管於 Brave 的 AI 助理。由 Claude Haiku 提供技術支援，Claude Haiku 是 Anthropic 建立的模型，用來執行會話與文字處理工作。Claude Haiku 透過我們自己的安全基礎架構由 Brave 託管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">嗨，我是 Leo。我是完全託管於 Brave 的 AI 助理。由 Claude Sonnet 提供技術支援，Claude Sonnet 是 Anthropic 建立的模型，用來執行會話與文字處理工作。Claude Sonnet 透過我們自己的安全基礎架構由 Brave 託管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
-<translation id="3399141352144059821">嗨，我是 Leo。我是 Brave 的 AI 助理。由 xAI 建立的模型 Grok 4.3 提供技術支援，效能強大，可適用於許多使用案例。Grok 4.3 透過我們自己的安全基礎架構由 Brave 託管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
-<translation id="8868813509973985458">嗨，我是 Leo。我是 Brave 的 AI 助理。由 OpenAI 建立的模型 GPT 5.4 提供技術支援，效能強大，可適用於許多使用案例。GPT 5.4 透過我們自己的安全基礎架構由 Brave 託管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
+<translation id="6676306995311143470">嗨，我是 Leo。我是 Brave 的 AI 助理。由 Amazon Bedrock Mantle 上 xAI 的前沿推理模型 Grok 4.6 提供技術支援。Grok 4.6 透過 Brave 的安全 AWS 基礎架構提供服務。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
+<translation id="2394656730986208060">嗨，我是 Leo。我是 Brave 的 AI 助理。由 Amazon Bedrock Mantle 上 OpenAI 的快速、低延遲模型 GPT 5.6 Luna 提供技術支援。GPT 5.6 Luna 透過 Brave 的安全 AWS 基礎架構提供服務。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
+<translation id="5278969721580944810">嗨，我是 Leo。我是 Brave 的 AI 助理。由 Amazon Bedrock Mantle 上 OpenAI 的平衡型生產模型 GPT 5.6 Terra 提供技術支援。GPT 5.6 Terra 透過 Brave 的安全 AWS 基礎架構提供服務。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="5037359072717016032">嗨，我是 Leo。我是完全託管於 Brave 的 AI 助理。由 Mistral 建立的模型 Mistral Large 提供技術支援，效能強大，可適用於許多使用案例。Mistral Large 透過我們自己的安全基礎架構由 Brave 託管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
-<translation id="4026902371301997261">嗨，我是 Leo。我是完全託管於 Brave 的 AI 助理。由 Alibaba Cloud 建立的模型 Qwen 3 235B 提供技術支援，效能強大，可適用於許多使用案例。Qwen 3 235B 透過我們自己的安全基礎架構由 Brave 託管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
+<translation id="5475035333915581972">嗨，我是 Leo。我是 Brave 的 AI 助理。由 Alibaba Cloud 建立的模型 Qwen 3.8 Flash Next 提供技術支援，效能強大，可適用於許多使用案例。Qwen 3.8 Flash Next 透過我們自己的安全基礎架構由 Brave 託管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="8720758690351028307">嗨，我是 Leo。我是完全託管於 Brave 的 AI 助理。由 Deepseek 建立的模型 Deepseek V3.2 提供技術支援，效能強大，可適用於許多使用案例。Deepseek V3.2 透過我們自己的安全基礎架構由 Brave 託管。<ph name="LINK_BEFORE"/>暸解更多<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">嗨，我是 Leo。我是完全託管於 Brave 的 AI 助理。由 Anthropic 建立的模型 Claude Opus 提供技術支援，Claude Opus 用來執行會話與文字處理工作。Claude Opus 透過我們自己的安全基礎架構由 Brave 託管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="7238858567393403597">嗨，我是 Leo。我是完全託管於 Brave 的 AI 助理。由 Zhipu AI 建立的模型 GLM-4-7-Flash 提供技術支援，效能強大，可適用於許多使用案例。GLM-4-7-Flash 透過我們自己的安全基礎架構由 Brave 託管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
@@ -2242,7 +2251,6 @@
 <translation id="4773408460773097271">Ollama</translation>
 <translation id="631371844654031449">推薦模型</translation>
 <translation id="6568044140836233369">顯示所有模型</translation>
-<translation id="6187065185557150870">聊天</translation>
 <translation id="4685048769603134644">開啟完整頁面</translation>
 <translation id="2961040541145689181">新聊天</translation>
 <translation id="7557539689487606886">訂閱 Premium</translation>
@@ -2366,13 +2374,13 @@
 <translation id="887511360213807449">紀錄已停用</translation>
 <translation id="5380979378058584412">若要檢視您之前與 Leo 的對話，您需要啟用對話紀錄。</translation>
 <translation id="3185367320601718531">對話和文字生成</translation>
-<translation id="2793458212460902934">快速 • 搜尋 • 工具</translation>
 <translation id="8506027496671575183">搜尋 • 顯示 • 工具</translation>
 <translation id="3184606955650139158">快速 • 搜尋 • 視覺</translation>
 <translation id="7465032796278724624">以 NEAR AI TEE 驗證隱私</translation>
 <translation id="8782867266498869301">模型動態更改以選擇最適合的任務</translation>
 <translation id="7348809809749151120">快速 • 搜尋</translation>
 <translation id="3213834013136637671">搜尋 • 顯示</translation>
+<translation id="2793458212460902934">快速 • 搜尋 • 工具</translation>
 <translation id="5276681919620506371">搜尋 • 工具</translation>
 <translation id="7434375176361995333">摘要 • 快速</translation>
 <translation id="3965507912994218570">Leo 設定</translation>
@@ -2936,9 +2944,7 @@ Brave 的協助程式服務可過濾對您 VPN 連線執行 DNS 查詢的方式�
 <translation id="3750210661641549834">為了建立您的帳戶，請驗證您的電子郵件地址。</translation>
 <translation id="4351175281479794167">輸入驗證碼</translation>
 <translation id="1672793037892810340">您應該已收到一封包含代碼的電子郵件，您需要輸入該代碼。</translation>
-<translation id="4821255729182569254">重新發送確認電郵</translation>
 <translation id="5837679375142747484">看不到郵件？請檢查您的垃圾郵件文件夾或<ph name="BEGIN_LINK"/>重新發送<ph name="END_LINK"/>。</translation>
-<translation id="1080588816740959885">看不到郵件？請檢查您的垃圾郵件文件夾或重新發送。</translation>
 <translation id="1020730839570724178">取消註冊</translation>
 <translation id="7155125570724238786">為了重設您的密碼，請驗證您的電子郵件地址。</translation>
 <translation id="816074628631172140">您的電子郵件已驗證。請設定新密碼以完成密碼重設。</translation>

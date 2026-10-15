@@ -1885,6 +1885,18 @@
 <translation id="2737084171727561244">Prejsť na portfólio</translation>
 <translation id="3499452861061048987">Pridať token</translation>
 <translation id="5046066249040287308">Pomocné služby pre Brave Wallet</translation>
+<translation id="8767749833522980474">Krypto</translation>
+<translation id="4509084261025090951">Získajte svoju kartu</translation>
+<translation id="3624463584770657372">Overte svoju totožnosť, aby ste videli čísla karty a mohli začať míňať.</translation>
+<translation id="2508337767012636987">Ťuknutím overíte</translation>
+<translation id="703964541421486259">Skryť zostatky</translation>
+<translation id="302114796458112924">Zobraziť zostatky</translation>
+<translation id="9083210401924577263">Karta Brave Rewards</translation>
+<translation id="2433507940547922241">Vzhľad</translation>
+<translation id="3435738964857648380">Bezpečnosť</translation>
+<translation id="6700561332544287722">Vyžadovať odomknutie pri ďalšom prístupe</translation>
+<translation id="5605360570977617291">Skryť kartu <ph name="CARD_NAME"/> z domovskej obrazovky?</translation>
+<translation id="2721464457853369512">Váš zostatok <ph name="CARD_NAME"/> sa nezmení. Týmto sa karta iba skryje z domovskej obrazovky. Môžete ju kedykoľvek znova zobraziť v Nastaveniach v sekcii Peňaženka.</translation>
 <translation id="3155170474926428993">Spúšťač Tor</translation>
 <translation id="3745016858329272300">Všeobecné informácie</translation>
 <translation id="4045404575593562245">Udalosti riadenia Tor</translation>
@@ -1925,7 +1937,6 @@
 <translation id="6261915643960475695">Podnikanie</translation>
 <translation id="8265589281845759879">Autá</translation>
 <translation id="7726519849288907308">Celebrity</translation>
-<translation id="8767749833522980474">Krypto</translation>
 <translation id="7577010593836079522">Kultúra</translation>
 <translation id="6807791860691150411">Vzdelanie</translation>
 <translation id="3706423975342040244">Zábavný priemysel</translation>
@@ -2104,9 +2115,6 @@
 <translation id="3067105725259639716">Konfigurovať Brave News</translation>
 <translation id="6286510487460330478">Konfigurovať skratky</translation>
 <translation id="9214819486716388964">Zobraziť Brave Talk</translation>
-<translation id="5950760360751948276">Vždy zobrazovať panel záložiek</translation>
-<translation id="2960757369920422313">Zobraziť panel záložiek na novej stránke karty</translation>
-<translation id="522953399371747698">Skryť panel záložiek</translation>
 <translation id="9079813619990532635">Exportovať všetky záložky</translation>
 <translation id="134184943774258988">Prepnúť viditeľnosť tlačidla Všetky záložky</translation>
 <translation id="2158862020143233462">Zapnúť/vypnúť štíty</translation>
@@ -2221,6 +2229,7 @@
 <translation id="5820497878628354073">Stavový kód: <ph name="STATUS_CODE"/>, vnútorný stavový kód: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">Dosiahli ste limit odozvy pre Premium. Skúste to znova o niekoľko hodín.</translation>
 <translation id="6873128487002733717">Dosiahli ste limit prémiového plánu pre tento model. Vyberte iný model alebo to skúste neskôr.</translation>
+<translation id="2688661132468689309">Dosiahli ste limit prémiového plánu pre tento model. Obnoví sa o <ph name="RESET_DURATION"/> (dňa <ph name="RESET_TIME"/>). Vyberte iný model alebo to skúste vtedy.</translation>
 <translation id="3683964919745779766">Dosiahli ste limit sadzby pre tento model alebo vám došli kredity. Skúste to prosím neskôr.</translation>
 <translation id="7692501701960747469">Kľúč API nakonfigurovaný pre tento model je neplatný. Skontrolujte prosím svoju konfiguráciu a skúste to znova.</translation>
 <translation id="7905602379229309187">Koncový bod je v súčasnosti preťažený. Skúste to prosím neskôr.</translation>
@@ -2229,12 +2238,12 @@
 <translation id="3852808100039989429">Ahoj, ja som Leo. Som asistent s umelou inteligenciou prevádzkovaný spoločnosťou Brave. Som poháňaný modelom Qwen VL 30B vytvoreným spoločnosťou Alibaba Cloud, aby som bol výkonný a použiteľný v mnohých prípadoch. Qwen prevádzkuje priamo spoločnosť Brave cez svoju vlastnú zabezpečenú infraštruktúru.<ph name="LINK_BEFORE"/>Zistiť viac<ph name="LINK_AFTER"/></translation>
 <translation id="8659225822055186905">Ahoj, ja som Leo. Som asistent s umelou inteligenciou prevádzkovaný spoločnosťou Brave. Som poháňaný modelom GLM-5.3 Flash vytvoreným spoločnosťou Zhipu AI, aby som bol výkonný a použiteľný v mnohých prípadoch. GLM-5.3 Flash je prevádzkovaný cez verifikovanú a súkromnú zabezpečenú infraštruktúru spoločnosti NEAR.<ph name="LINK_BEFORE"/>Zistiť viac<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">Ahoj, som Leo. Som AI asistent od Brave. Poháňa ma Claude Instant, model vytvorený spoločnosťou Anthropic na konverzačné úlohy a spracovanie textu. Claude Instant je hostovaný Brave na našej vlastnej zabezpečenej infraštruktúre.<ph name="LINK_BEFORE"/>Zistiť viac<ph name="LINK_AFTER"/></translation>
-<translation id="3789772321824682783">Ahoj, ja som Leo. Som asistent s umelou inteligenciou prevádzkovaný spoločnosťou Brave. Som poháňaný modelom Claude Haiku vytvoreným spoločnosťou Anthropic na spracovanie konverzačných a textových úloh. Claude Haiku prevádzkuje priamo spoločnosť Brave cez svoju vlastnú zabezpečenú infraštruktúru. <ph name="LINK_BEFORE"/>Zistiť viac<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Ahoj, ja som Leo. Som asistent s umelou inteligenciou prevádzkovaný spoločnosťou Brave. Som poháňaný modelom Claude Sonnet vytvoreným spoločnosťou Anthropic na spracovanie konverzačných a textových úloh. Claude Sonnet prevádzkuje priamo spoločnosť Brave cez svoju vlastnú zabezpečenú infraštruktúru. <ph name="LINK_BEFORE"/>Zistiť viac<ph name="LINK_AFTER"/></translation>
-<translation id="3399141352144059821">Ahoj, ja som Leo. Som asistent s umelou inteligenciou prevádzkovaný spoločnosťou Brave. Som poháňaný modelom Grok 4.3 vytvoreným spoločnosťou xAI, aby som bol výkonný a použiteľný v mnohých prípadoch. Model Grok 4.3 prevádzkuje priamo spoločnosť Brave cez svoju vlastnú zabezpečenú infraštruktúru.<ph name="LINK_BEFORE"/>Zistiť viac<ph name="LINK_AFTER"/></translation>
-<translation id="8868813509973985458">Ahoj, ja som Leo. Som asistent s umelou inteligenciou prevádzkovaný spoločnosťou Brave. Som poháňaný modelom GPT 5.4 vytvoreným spoločnosťou OpenAI, aby som bol výkonný a použiteľný v mnohých prípadoch. Model GPT 5.4 prevádzkuje priamo spoločnosť Brave cez svoju vlastnú zabezpečenú infraštruktúru.<ph name="LINK_BEFORE"/>Zistiť viac<ph name="LINK_AFTER"/></translation>
+<translation id="6676306995311143470">Ahoj, ja som Leo. Som asistent s umelou inteligenciou prevádzkovaný spoločnosťou Brave. Som poháňaný modelom Grok 4.6, špičkovým uvažovacím modelom spoločnosti xAI na platforme Amazon Bedrock Mantle. Model Grok 4.6 je prevádzkovaný cez zabezpečenú infraštruktúru AWS spoločnosti Brave.<ph name="LINK_BEFORE"/>Zistiť viac<ph name="LINK_AFTER"/></translation>
+<translation id="2394656730986208060">Ahoj, ja som Leo. Som asistent s umelou inteligenciou prevádzkovaný spoločnosťou Brave. Som poháňaný modelom GPT 5.6 Luna, rýchlym modelom s nízkou latenciou spoločnosti OpenAI na platforme Amazon Bedrock Mantle. Model GPT 5.6 Luna je prevádzkovaný cez zabezpečenú infraštruktúru AWS spoločnosti Brave.<ph name="LINK_BEFORE"/>Zistiť viac<ph name="LINK_AFTER"/></translation>
+<translation id="5278969721580944810">Ahoj, ja som Leo. Som asistent s umelou inteligenciou prevádzkovaný spoločnosťou Brave. Som poháňaný modelom GPT 5.6 Terra, vyváženým produkčným modelom spoločnosti OpenAI na platforme Amazon Bedrock Mantle. Model GPT 5.6 Terra je prevádzkovaný cez zabezpečenú infraštruktúru AWS spoločnosti Brave.<ph name="LINK_BEFORE"/>Zistiť viac<ph name="LINK_AFTER"/></translation>
 <translation id="5037359072717016032">Ahoj, ja som Leo. Som asistent s umelou inteligenciou prevádzkovaný spoločnosťou Brave. Som poháňaný modelom Mistral Large vytvoreným spoločnosťou Mistral, aby som bol výkonný a použiteľný v mnohých prípadoch. Model Mistral Large prevádzkuje priamo spoločnosť Brave cez svoju vlastnú zabezpečenú infraštruktúru.<ph name="LINK_BEFORE"/>Zistiť viac<ph name="LINK_AFTER"/></translation>
-<translation id="4026902371301997261">Ahoj, ja som Leo. Som asistent s umelou inteligenciou prevádzkovaný spoločnosťou Brave. Som poháňaný modelom Qwen 3 235B vytvoreným spoločnosťou Alibaba Cloud, aby som bol výkonný a použiteľný v mnohých prípadoch. Model Qwen 3 235B prevádzkuje priamo spoločnosť Brave cez svoju vlastnú zabezpečenú infraštruktúru.<ph name="LINK_BEFORE"/>Zistiť viac<ph name="LINK_AFTER"/></translation>
+<translation id="5475035333915581972">Ahoj, ja som Leo. Som asistent s umelou inteligenciou prevádzkovaný spoločnosťou Brave. Som poháňaný modelom Qwen 3.8 Flash Next vytvoreným spoločnosťou Alibaba Cloud, aby som bol výkonný a použiteľný v mnohých prípadoch. Model Qwen 3.8 Flash Next prevádzkuje priamo spoločnosť Brave cez svoju vlastnú zabezpečenú infraštruktúru.<ph name="LINK_BEFORE"/>Zistiť viac<ph name="LINK_AFTER"/></translation>
 <translation id="8720758690351028307">Ahoj, ja som Leo. Som asistent s umelou inteligenciou prevádzkovaný spoločnosťou Brave. Som poháňaný modelom Deepseek V3.2 vytvoreným spoločnosťou Deepseek, aby som bol výkonný a použiteľný v mnohých prípadoch. Deepseek V3.2 prevádzkuje priamo spoločnosť Brave cez svoju vlastnú zabezpečenú infraštruktúru.<ph name="LINK_BEFORE"/>Zistiť viac<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">Ahoj, ja som Leo. Som asistent s umelou inteligenciou prevádzkovaný spoločnosťou Brave. Som poháňaný modelom Claude Opus vytvoreným spoločnosťou Anthropic na spracovanie konverzačných a textových úloh. Claude Opus prevádzkuje priamo spoločnosť Brave cez svoju vlastnú zabezpečenú infraštruktúru.<ph name="LINK_BEFORE"/>Zistiť viac<ph name="LINK_AFTER"/></translation>
 <translation id="7238858567393403597">Ahoj, ja som Leo. Som asistent s umelou inteligenciou prevádzkovaný spoločnosťou Brave. Som poháňaný modelom GLM-4-7-Flash vytvoreným spoločnosťou Zhipu AI, aby som bol výkonný a použiteľný v mnohých prípadoch. Model GLM-4-7-Flash prevádzkuje priamo spoločnosť Brave cez svoju vlastnú zabezpečenú infraštruktúru.<ph name="LINK_BEFORE"/>Zistiť viac<ph name="LINK_AFTER"/></translation>
@@ -2247,7 +2256,6 @@
 <translation id="4773408460773097271">Ollama</translation>
 <translation id="631371844654031449">Odporúčané modely</translation>
 <translation id="6568044140836233369">Zobraziť všetky modely</translation>
-<translation id="6187065185557150870">Chat</translation>
 <translation id="4685048769603134644">Otvoriť celú stránku</translation>
 <translation id="2961040541145689181">Nový chat</translation>
 <translation id="7557539689487606886">Prejsť na Premium</translation>
@@ -2371,13 +2379,13 @@
 <translation id="887511360213807449">História je vypnutá</translation>
 <translation id="5380979378058584412">Ak chcete zobraziť svoje predchádzajúce konverzácie s Leom, musíte povoliť históriu konverzácií.</translation>
 <translation id="3185367320601718531">Konverzácia a generovanie textu</translation>
-<translation id="2793458212460902934">Rýchle • Vyhľadávanie • Nástroje</translation>
 <translation id="8506027496671575183">Vyhľadávanie • Vízia • Nástroje</translation>
 <translation id="3184606955650139158">Rýchle • Vyhľadávanie • Vízia</translation>
 <translation id="7465032796278724624">Verifikované súkromné riešenie s NEAR AI TEE</translation>
 <translation id="8782867266498869301">Model sa dynamicky mení na ten najvhodnejší pre danú úlohu</translation>
 <translation id="7348809809749151120">Rýchle • Vyhľadávanie</translation>
 <translation id="3213834013136637671">Vyhľadávanie • Vízia</translation>
+<translation id="2793458212460902934">Rýchle • Vyhľadávanie • Nástroje</translation>
 <translation id="5276681919620506371">Hľadať • Nástroje</translation>
 <translation id="7434375176361995333">Zhrnutia • Rýchle</translation>
 <translation id="3965507912994218570">Nastavenia Lea</translation>
@@ -2941,9 +2949,7 @@ Pripojíme vás!</translation>
 <translation id="3750210661641549834">Pre vytvorenie účtu prosím overte svoju emailovú adresu.</translation>
 <translation id="4351175281479794167">Zadať overovací kód</translation>
 <translation id="1672793037892810340">Mali by ste dostať email s kódom, ktorý budete musieť zadať.</translation>
-<translation id="4821255729182569254">Znova odoslať potvrdzovací email</translation>
 <translation id="5837679375142747484">Nevidíte email? Skontrolujte priečinok so spamom alebo ho <ph name="BEGIN_LINK"/>pošlite znova<ph name="END_LINK"/>.</translation>
-<translation id="1080588816740959885">Nevidíte email? Skontrolujte priečinok so spamom alebo ho pošlite znova.</translation>
 <translation id="1020730839570724178">Zrušiť registráciu</translation>
 <translation id="7155125570724238786">Pre obnovenie hesla prosím overte svoju emailovú adresu.</translation>
 <translation id="816074628631172140">Váš email bol overený. Nastavte nové heslo, aby ste dokončili obnovenie hesla.</translation>

@@ -193,9 +193,6 @@
 <translation id="5668852698659986622">Luba sponsoreeritud reklaamid</translation>
 <translation id="431194936581466649">Aita toetada Brave'i missiooni luua sõltumatu, kasutajakeskne veeb sponsoreeritud reklaamidega. Me mõõdame reklaamide toimivust privaatselt, sind tuvastamata.</translation>
 <translation id="1939813747486101115">Lisateave sponsoreeritud reklaamide kohta</translation>
-<translation id="8347743943525229984">Lubage Brave'i uuringud</translation>
-<translation id="6022939994702081659">Võimaldab Brave'il näidata uuel vahelehel linke privaatsetele küsitlustele. Küsitlused aitavad meil luua paremaid funktsioone ja mõõta brauseripõhiste reklaamikampaaniate tõhusust.</translation>
-<translation id="7746496306508543965">Lisateave Brave'i uuringute kohta</translation>
 <translation id="410351446219883937">Automaatesitus</translation>
 <translation id="7445411102860286510">Luba saitidel vaigistatud videoid automaatselt esitada (soovitatav)</translation>
 <translation id="7837721118676387834">Lubage vaigistatud videote automaatne esitamine konkreetsel saidil.</translation>
@@ -223,6 +220,7 @@
 <translation id="9040069796107003510">Brave'i Preemiate ikoon</translation>
 <translation id="6333347122924254968">Kuvage aadressiribal Brave'i preemiate ikoon</translation>
 <translation id="4393974575368329991">Alumine navigatsiooniriba</translation>
+<translation id="8727059712928806451">Luba alumine riba</translation>
 <translation id="1834226716203076292">Kuva alumine riba, et pääseks kiiresti juurde avalehele, järjehoidjatele ja otsingule</translation>
 <translation id="1422686363939271829">See seade on välja lülitatud, kui on valitud alumine aadressiriba asukoht</translation>
 <translation id="6587448235155023666">Muudatused jõustuvad järgmine kord, kui Brave’i taaskäivitate</translation>
@@ -399,6 +397,12 @@ Kas soovite seda kindlasti teha?</translation>
 <translation id="8793108040181436796">Vidinad</translation>
 <translation id="8643377320501056697">Kuva popid saidid</translation>
 <translation id="7275773481201277457">Kuva Brave’i statistika</translation>
+<translation id="8516804522688861636">Kuva sageli külastatud saidid</translation>
+<translation id="4546260624932151782">Kuva lemmikud</translation>
+<translation id="5313967007315987356">Lisa sait</translation>
+<translation id="1773147648972887693">Kuva sageli külastatud</translation>
+<translation id="752098910262610337">Kuva otseteed</translation>
+<translation id="7134741506051403308">Peida vidin</translation>
 <translation id="7462178177755090262">Avakuva seaded</translation>
 <translation id="5365434987337264071">Viimane avatud kaart</translation>
 <translation id="6019856124237323989">{HOURS, plural, =1 {Uus kaart pärast <ph name="HOURS_ONE"/> tunni jooksul tegevusetust} other {Uus kaart pärast <ph name="HOURS_MANY"/> tunni jooksul tegevusetust}}</translation>
@@ -999,6 +1003,13 @@ Kui te selle taotlusega ei nõustu, siis VPN-i ühendust ei taastata ja teie int
 <translation id="7530313002494358590">Brave'i funktsiooni lubamine või keelamine nõuab muudatuste rakendamiseks brauseri taaskäivitamist. Palun klõpsake <ph name="BEGIN_BOLD"/>Käivita nüüd<ph name="END_BOLD"/>, kui Brave Origin on uuendamise lõpetanud.</translation>
 <translation id="1028940738207645746">Kas soovite kindlasti lähtestada kõik sätted vaikimisi väärtustele?</translation>
 <translation id="5939518447894949180">Lähtesta</translation>
+<translation id="3222790865318305905">Aktiveerimiste piirmäär saavutatud</translation>
+<translation id="3787857711016546034">Pettuste vältimiseks on Origini aktiveerimised piiratud. Kuid sa saad alati taotleda rohkem aktiveerimisi, et kasutada oma Origini litsentsi rohkematel seadmetel. Lihtsalt klõpsa valikul „Taotle rohkem aktiveerimisi“ või <ph name="CONTACT_SUPPORT"/> abi saamiseks.</translation>
+<translation id="6760819753412779585">võtke ühendust klienditoega</translation>
+<translation id="571697836019670200">Taotle rohkem aktiveerimisi</translation>
+<translation id="9019545131475425538">Töötlemise käigus…</translation>
+<translation id="7242700630179071243">Aktiveerimiseks valmis</translation>
+<translation id="5463918917265356202">Brave Origin on nüüd sellel seadmel aktiivne. Funktsiooni kasutamise alustamiseks pead brauseri taaskäivitama. Kas soovid nüüd taaskäivitada?</translation>
 <translation id="8554205386170195281">Ost</translation>
 <translation id="8613144770663526433">Logi sisse Brave’i rahakotiga</translation>
 <translation id="3696514931437952995">Logite sisse kohta <ph name="ORIGIN"/>. Brave’i rahakott jagab teie rahakotiaadressi ressursiga <ph name="ORIGIN"/>.</translation>

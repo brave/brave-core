@@ -3,18 +3,14 @@
 <translationbundle lang="da">
 <translation id="1751249301761991853">Personlig</translation>
 <translation id="3333887201479867589">Brave Belønninger</translation>
-<translation id="7561196759112975576">Altid</translation>
-<translation id="7961015016161918242">Aldrig</translation>
 <translation id="8507663778530179003">Vis Alle bogmærker-knappen</translation>
 <translation id="9018648632047670921">Vis alle bogmærker-knap</translation>
 <translation id="7630214457764713113">Kopiér rent link</translation>
 <translation id="7973394300052703468">Nyt &amp;privat vindue</translation>
 <translation id="4615489450165434530">Rapporter en side der ikke virker ordentligt</translation>
 <translation id="8097438084542431276">Kopiér rent link</translation>
-<translation id="4678672101289648246">Kun på siden med nye faneblad</translation>
 <translation id="6516243500644829484">Nyt &amp;privat vindue</translation>
 <translation id="1209739344687072997">Rapporter en side der ikke virker</translation>
-<translation id="8294286161128352783">Kun på siden med nye faneblad</translation>
 <translation id="6406506848690869874">Synkroniser</translation>
 <translation id="1544192797660353713">Wallet</translation>
 <translation id="2361906291514218784">Leo AI</translation>
@@ -196,7 +192,9 @@ vindue med Tor</translation>
 <translation id="5977931179408079967">Position</translation>
 <translation id="3790384768741064842">Flyt til højre</translation>
 <translation id="7444424316576061724">Flyt til venstre</translation>
+<translation id="7561196759112975576">Altid</translation>
 <translation id="7060352228894039151">Ved musemarkering</translation>
+<translation id="7961015016161918242">Aldrig</translation>
 <translation id="8981254605840444865">Vis indstillinger</translation>
 <translation id="59174027418879706">Aktiveret</translation>
 <translation id="4176463684765177261">Deaktiveret</translation>
@@ -222,6 +220,7 @@ vindue med Tor</translation>
 <translation id="4515057635283480525">Internet Archive gemmer tidligere versioner af mange websider. Vil du lede efter denne side i arkivet?</translation>
 <translation id="8252977752585110703">Beklager, vi tjekkede Internet Archive, og det har ikke en arkiveret version af denne side.</translation>
 <translation id="8748778103033196270">Kig i arkivet</translation>
+<translation id="7369915833843501413">Kigger i arkivet</translation>
 <translation id="191143826155037518">Brave bliver gjort tilgængelig for dig under <ph name="BEGIN_LINK_MPL"/>Mozilla Public License 2.0<ph name="END_LINK_MPL"/> (MPL) og inkluderer <ph name="BEGIN_LINK_OSS"/> open-source software <ph name="END_LINK_OSS"/> under forskellige andre licensaftaler.
 DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan du downloader og bygger selv<ph name="END_LINK_BUILD_INSTRUCTIONS"/> <ph name="BEGIN_LINK_SOURCE_CODE"/>den kildekode som bruges til at lave denne kopi<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">Tilføj alle faner som bogmærker...</translation>
@@ -372,7 +371,7 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 <translation id="7985042437720138349">Denne funktion sender data om dine åbne faner til Leo, Braves AI-drevne browserassistent.</translation>
 <translation id="6165508094623778733">Lær mere</translation>
 <translation id="7557539689487606886">Vælg Premium</translation>
-<translation id="1035309871698658326">Når den åbnes, sender den automatisk titlerne og oprindelsen på alle ikke-private faner til Leo for at klassificere dem.</translation>
+<translation id="7103144720752576727">Når det åbnes, sender dette automatisk titlerne og oprindelsen af alle ikke-private faner til Leo for at klassificere dem. Hvis du også aktiverer afsendelse af sideindhold, sendes korte uddrag af teksten fra hver fane også.</translation>
 <translation id="3435896845095436175">Aktivér</translation>
 <translation id="9031526219709160683">Brave kan hjælpe dig med at optimere privatlivsindstillingerne på dette websted. Vil du gerne se Braves forslag?</translation>
 <translation id="5739953050957336013">Se forslag</translation>
@@ -387,8 +386,6 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 <translation id="8570228839666486945">On-Device AI</translation>
 <translation id="7447041379556102185">Talegenkendelse på enheden</translation>
 <translation id="3456536577668402695">Dine søgninger og sideindhold behandles på denne enhed. Intet sendes til Brave eller ses af menneskelige korrekturlæsere.</translation>
-<translation id="4751537843966994505">Semantisk historiksøgning</translation>
-<translation id="6175973371938222040">Indekser sider, du besøger, lokalt, så du kan søge i din historik efter betydning. Al behandling forbliver på denne enhed.</translation>
 <translation id="9156965752763025780">Dine ændringer træder i kraft, næste gang du genstarter Brave.</translation>
 <translation id="7179921470347911571">Genstart nu</translation>
 <translation id="1426410128494586442">Ja</translation>
@@ -426,6 +423,7 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 <translation id="4328541188421002379">Giv din beholder et navn som Arbejde eller Privat</translation>
 <translation id="4976989127264491396">Fejl: <ph name="ERROR_MESSAGE"/></translation>
 <translation id="5436069931267876389">Beholderen blev ikke fundet</translation>
+<translation id="5831840958001766835">Omarrangér element. Brug piletasterne til at flytte.</translation>
 <translation id="6055154402239241620">Traffic Control</translation>
 <translation id="8134521925475508805">Konfigurer bestemte sites til automatisk at åbne i en bestemt kontekst, hvilket skaber adskillelse mellem dine browsersessioner. <ph name="BEGIN_LINK"/>Læs mere<ph name="END_LINK"/></translation>
 <translation id="6944848312867106540">Aktiver Traffic Control</translation>
@@ -478,10 +476,6 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 <translation id="7310387888625228830">AI-assistenten Leo</translation>
 <translation id="5222974844674487962">Vis knappen Brave News</translation>
 <translation id="2085436423511121572">Vis knappen Leo AI</translation>
-<translation id="6156323911414505561">Vis bogmærkelinjen</translation>
-<translation id="4054323497808446566">Bogmærkelinjen er synlig på alle sider</translation>
-<translation id="8693858092251192712">Bogmærkelinjen er skjult på alle sider undtagen på siden med nye faneblad</translation>
-<translation id="7158817046543187970">Borgmærker er skjult på alle sider</translation>
 <translation id="3416468988018290825">Vis altid hele URL</translation>
 <translation id="5529693968082667490">Vis fane-søgeknap</translation>
 <translation id="1013121820689882118">Speedreader</translation>
@@ -613,6 +607,8 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 <translation id="5825943197137337319">Kun standard offentlig grænseflade</translation>
 <translation id="1689062823386843231">Deaktiver UDP uden proxy</translation>
 <translation id="3540231253392253941">Brug Google-tjenester til push-beskeder</translation>
+<translation id="2224032129673914306">Semantisk historiksøgning</translation>
+<translation id="6045998903985162478">Indeksér de sider, du besøger, så du nemt kan finde dem i historikken, åbne faner og Leo.</translation>
 <translation id="5813105074916486721">Lokal historikopbevaring</translation>
 <translation id="5671611745062206644">Hvor længe Brave gemmer din browserhistorik lokalt</translation>
 <translation id="7184510058087008090">1 dag</translation>
@@ -877,6 +873,7 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 <translation id="2618193846561624884">Vil du opdatere det eksisterende netværk?</translation>
 <translation id="1643029991199044105">Gennemse de senest anvendte faner med Ctrl-Tab</translation>
 <translation id="2775956301559569472">Vis Wayback Machine-forespørgsel på 404-sider</translation>
+<translation id="8485716275262929774">Indlæs automatisk gemte versioner fra Wayback Machine på 404-sider</translation>
 <translation id="3095201688102519917">Advar, inden jeg lukker et vindue med flere faner</translation>
 <translation id="7120553802660696133">Luk hele vinduet, når det sidste faneblad lukkes</translation>
 <translation id="3394171693948989253">Vis påmindelse i fuld skærm om at trykke Esc ved afslutning</translation>
@@ -886,6 +883,8 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 <translation id="1529674267267221673">Leo vil blive vist i kontekstmenuen, når du højreklikker på en hjemmeside. Dette vil sende konteksten fra den aktuelle hjemmeside til Leo.</translation>
 <translation id="5226020406479918122">Fanefokus-tilstand</translation>
 <translation id="3705539672403311123">Aktivér organisering af faner på siden Fanesøgning. Når den åbnes, sender den automatisk titlerne og oprindelserne på alle ikke-private faner til Leo for at klassificere dem. <ph name="BEGIN_LINK"/>Få mere at vide<ph name="END_LINK"/></translation>
+<translation id="2002238795517052616">Send sideindhold til fanefokus</translation>
+<translation id="2276823422122514441">Send også korte uddrag af teksten fra hver fane, så faner grupperes efter, hvad en side handler om, i stedet for dens titel. Uddragene sendes til Leo eller til din egen model, hvis du har valgt en til fanefokus. Dette kræver <ph name="BEGIN_LINK"/><ph name="SEMANTIC_HISTORY_SEARCH"/><ph name="END_LINK"/>, som opbygger uddragene på din enhed.</translation>
 <translation id="9049433973274198706">Standardmodel for tab-fokus</translation>
 <translation id="2161546758719933059">Modellen, der bruges til at organisere dine faner i Fanefokustilstand. <ph name="BEGIN_LINK"/>Læs mere<ph name="END_LINK"/></translation>
 <translation id="8172263161008556851">Vis anbefalede forespørgsler i samtalen</translation>
@@ -967,9 +966,6 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 <translation id="1838374766361614909">Ryd søgning</translation>
 <translation id="5126255551970171328">Søg efter en hukommelse</translation>
 <translation id="7402116145895962069">Synkronisér dine lokale Ollama-modeller</translation>
-<translation id="5985516785067818307">Paneldeltager i undersøgelsen</translation>
-<translation id="8347743943525229984">Tillad Brave-undersøgelser</translation>
-<translation id="3204080538332044581">Giver Brave mulighed for at vise links til private undersøgelser i den nye fane. Undersøgelser hjælper os med at udvikle bedre funktioner og måle effektiviteten af browserbaserede annoncekampagner. <ph name="BEGIN_LINK"/>Få mere at vide<ph name="END_LINK"/></translation>
 <translation id="349846214503465941">Aktivér spilleliste</translation>
 <translation id="7903608716704052878">Tilføj automatisk filer til offline visning</translation>
 <translation id="384666453982355633">Denne indstilling vil automatisk lave cache mediefiler, så du kan afspille dem uden internetforbindelse</translation>

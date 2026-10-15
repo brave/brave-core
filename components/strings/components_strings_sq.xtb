@@ -86,7 +86,7 @@
 <translation id="1143142264369994168">Nënshkruesi i certifikatës</translation>
 <translation id="1149617035358809955">të verifikojë që je ti që të mund të plotësojë informacionet e tua të pagesës</translation>
 <translation id="1150979032973867961">Ky server nuk mundi të dëshmonte se ky është <ph name="DOMAIN"/>; certifikata e tij e sigurisë nuk është e besueshme nga sistemi operativ i kompjuterit. Kjo mund të shkaktohet nga keqkonfigurimi ose ndonjë sulmues që po ndërhyn në lidhjen tënde.</translation>
-<translation id="1115388613038124176">Mund t'i plotësosh automatikisht kartat që janë ruajtur te "Portofoli i Brave"</translation>
+<translation id="1151858212483238980">Mund t'i plotësosh automatikisht kartat që janë ruajtur te "Portofoli i Brave"</translation>
 <translation id="1151972924205500581">Kërkohet fjalëkalimi</translation>
 <translation id="1156303062776767266">Po shikon një skedar lokal ose të ndarë</translation>
 <translation id="1158211211994409885"><ph name="HOST_NAME"/> e mbylli lidhjen papritur.</translation>
@@ -123,7 +123,7 @@ Ndryshe kjo do të bllokohet nga cilësimet e tua të privatësisë. Kjo do ta l
 <translation id="1201402288615127009">Para</translation>
 <translation id="1201895884277373915">Më shumë nga ky sajt</translation>
 <translation id="1204184165594298176">{0,plural, =1{Kopjimi i skedarit është bllokuar}other{Kopjimi i <ph name="FILE_COUNT"/> skedarëve është bllokuar}}</translation>
-<translation id="1476484148752770616">Mund të plotësosh automatikisht kartat që janë ruajtur te "Portofoli i Brave".</translation>
+<translation id="1205344127823614428">Mund të plotësosh automatikisht kartat që janë ruajtur te "Portofoli i Brave".</translation>
 <translation id="1206967143813997005">Nënshkrimi fillestar i gabuar</translation>
 <translation id="1209206284964581585">Fshih për momentin</translation>
 <translation id="121201262018556460">Tentove të hapje <ph name="DOMAIN"/>, por serveri paraqiti një certifikatë që përmban një çelës të dobët. Një sulmues mund ta ketë prishur çelësin privat dhe serveri mund të mos jetë ai që prisje (mund të jesh duke komunikuar me një sulmues).</translation>
@@ -196,7 +196,7 @@ Ndryshe kjo do të bllokohet nga cilësimet e tua të privatësisë. Kjo do ta l
 <translation id="1323433172918577554">Shfaq më shumë</translation>
 <translation id="1326962902431997202">Me vizë në mes</translation>
 <translation id="1330449323196174374">Palosje me dritare majtas</translation>
-<translation id="2753620827734134329">Ruaj numrin e kompensimit në mënyrë të sigurt te "Portofoli i Brave"</translation>
+<translation id="1330952240988133220">Ruaj numrin e kompensimit në mënyrë të sigurt te "Portofoli i Brave"</translation>
 <translation id="133173645041092770">Mbyll uebsajtin</translation>
 <translation id="4274264486214599895">Luaj lojën Brave Dino</translation>
 <translation id="1333989956347591814">Aktiviteti yt <ph name="BEGIN_EMPHASIS"/>mund të jetë përsëri i dukshëm<ph name="END_EMPHASIS"/> për:
@@ -212,6 +212,7 @@ Ndryshe kjo do të bllokohet nga cilësimet e tua të privatësisë. Kjo do ta l
 <translation id="4167284810587724062">Identifikohu në Brave</translation>
 <translation id="1346748346194534595">Djathtas</translation>
 <translation id="1348779747280417563">Konfirmo emrin</translation>
+<translation id="1353546633704510580">Rajoni i zgjedhur</translation>
 <translation id="1357195169723583938">Kush e ka përdorur pajisjen së fundi dhe kur</translation>
 <translation id="1358187717814494928">Krijo fletë</translation>
 <translation id="1361528602584216624">Kufiri për Pix: <ph name="TRANSACTION_LIMIT"/> BRL</translation>
@@ -236,7 +237,7 @@ Ndryshe kjo do të bllokohet nga cilësimet e tua të privatësisë. Kjo do ta l
 <translation id="1392813880755413602">Prezantim OpenDocument</translation>
 <translation id="139305205187523129"><ph name="HOST_NAME"/> nuk dërgoi asnjë të dhënë.</translation>
 <translation id="3057197202055415269">Sulmuesit në sajtin që u përpoqe të vizitoje mund të të mashtrojnë që të instalosh një softuer ose të zbulosh gjëra të tilla si fjalëkalimet, numrat e telefonit ose të kartave të kreditit. Brave rekomandon shumë të kthehesh aty ku je i sigurt. <ph name="BEGIN_LEARN_MORE_LINK"/>Mëso më shumë për këtë paralajmërim<ph name="END_LEARN_MORE_LINK"/></translation>
-<translation id="6113998327720481921">Shto kartën e identitetit në mënyrë të sigurt te "Portofoli i Brave"</translation>
+<translation id="1397342126322860141">Shto kartën e identitetit në mënyrë të sigurt te "Portofoli i Brave"</translation>
 <translation id="1398743098754840707">Sajtet që shton këtu nuk do të referohen për përgjigje, edhe nëse skeda është e hapur. Nëse një sajt që shton po përdoret aktualisht në një bashkëbisedim, mund të duhen deri në 30 minuta që bashkëbisedimi të mos e referojë më.</translation>
 <translation id="1405567553485452995">Jeshile e çelur</translation>
 <translation id="1406370515365284486">Mënyrat e tua të pagesës do të ruhen përsëri</translation>
@@ -249,7 +250,7 @@ Ndryshe kjo do të bllokohet nga cilësimet e tua të privatësisë. Kjo do ta l
 <translation id="1410306713026702438"><ph name="SUGGESTION_TITLE"/>, <ph name="SUGGESTION_DESCRIPTION"/>. <ph name="SUGGESTION_TYPE"/>. <ph name="MATCH_POSITION"/> nga <ph name="NUM_MATCHES_IN_GROUP"/> në grupin "<ph name="GROUP_HEADER"/>".</translation>
 <translation id="5488251800208457874">Të tjerët që e përdorin këtë pajisje nuk do të shikojnë aktivitetin tënd, kështu që mund të shfletosh në mënyrë më private. Kjo nuk do të ndryshojë mënyrën se si mblidhen të dhënat nga uebsajtet që viziton ti dhe shërbimet që përdorin ato, duke përfshirë Brave. Do të ruhen shkarkimet, faqeshënuesit dhe artikujt e listës së leximit.</translation>
 <translation id="1410941016594047814">Zarf ftese</translation>
-<translation id="648124447162177252">CVC-ja e kësaj karte do të enkriptohet dhe do të ruhet te "Portofoli i Brave" për përfundim më të shpejtë të blerjes</translation>
+<translation id="1413235258620101697">CVC-ja e kësaj karte do të enkriptohet dhe do të ruhet te "Portofoli i Brave" për përfundim më të shpejtë të blerjes</translation>
 <translation id="1413809658975081374">Gabim i privatësisë</translation>
 <translation id="5305237486453576422">Butoni "Menaxho shkarkimet në Brave". Aktivizoje për të menaxhuar skedarët që ke shkarkuar në Brave</translation>
 <translation id="1580876941880939337">Mënyra jote e ruajtur e pagesës automatike mund të përdoret për këtë pagesë. Për të çaktivizuar portofolat elektronikë në Brave, shko te <ph name="BEGIN_LINK1"/>cilësimet e pagesës<ph name="END_LINK1"/></translation>
@@ -276,10 +277,10 @@ Ndryshe kjo do të bllokohet nga cilësimet e tua të privatësisë. Kjo do ta l
 <translation id="1445896388055045436">Shfaq përfitimet dhe shpërblimet e disponueshme të kartës në përfundim të blerjes. Zbatohen kushtet e lëshuesit.</translation>
 <translation id="1447067628680007684">(x86_64)</translation>
 <translation id="1448166547804028941">Çelësat "<ph name="DATA_CONTROLS_FIRST_KEY_SET"/>" nuk mund të caktohen në të njëjtin fjalor me çelësat "<ph name="DATA_CONTROLS_SECOND_KEY_SET"/>"</translation>
-<translation id="923286722567024030">Ruaj numrin e kompensimit te "Portofoli i Brave"</translation>
+<translation id="1449251255954293933">Ruaj numrin e kompensimit te "Portofoli i Brave"</translation>
 <translation id="1455413310270022028">Goma</translation>
+<translation id="1456749217800922313">Kodi i verifikimit</translation>
 <translation id="1457992721081300557">{NUM_REVIEWS,plural, =0{Shiko 0 komente}=1{Shiko 1 koment}other{Shiko të # komentet}}</translation>
-<translation id="1458770162980644530">Ekrani i kushteve të shërbimit për metodën "Bli tani, paguaj më vonë". Tastiera është e fshehur.</translation>
 <translation id="1460317464907341501">Të verifikohet automatikisht ky email?</translation>
 <translation id="1461041542809785877">Cilësia e funksionimit</translation>
 <translation id="1462245070427461050">JIS B9</translation>
@@ -350,6 +351,7 @@ Ndryshe kjo do të bllokohet nga cilësimet e tua të privatësisë. Kjo do ta l
 <translation id="1574714699824202614">Mënyra e pagesës po verifikohet</translation>
 <translation id="1576277203042721907">Statistikat për blerjet</translation>
 <translation id="1579189948231786790">Ky sajt është bllokuar nga organizata jote</translation>
+<translation id="1579940597679293608">Mbyll të gjitha dritaret e izoluara</translation>
 <translation id="1581080074034554886">CVC</translation>
 <translation id="1583429793053364125">Shkoi diçka keq kur po shfaqej faqja e uebit.</translation>
 <translation id="1585306568496579337">Shtesa "<ph name="EXTENSION_NAME"/>" dëshiron të hapë lidhjet<ph name="PROTOCOL"/> nëpërmjet <ph name="HANDLER_HOSTNAME"/></translation>
@@ -442,7 +444,7 @@ Ndryshe kjo do të bllokohet nga cilësimet e tua të privatësisë. Kjo do ta l
 <translation id="173080396488393970">Kjo lloj karte nuk mbështetet</translation>
 <translation id="1731563515262205847">ML-DSA-65</translation>
 <translation id="1732445923934584865">Pyete personalisht më mirë</translation>
-<translation id="5456336665142990002">Përditëso numrin e kompensimit në "Portofolin e Brave"</translation>
+<translation id="1732796940245838248">Përditëso numrin e kompensimit në "Portofolin e Brave"</translation>
 <translation id="1733064249834771892">fontet</translation>
 <translation id="1733762317901693627">Edhe sajtet që janë zakonisht të sigurta, ndonjëherë komprometohen nga sulmuesit. Vizito <ph name="BEGIN_LINK"/>këtë sajt të pasigurt<ph name="END_LINK"/> vetëm nëse je i sigurt që i kupton rreziqet.</translation>
 <translation id="1734864079702812349">Amex</translation>
@@ -464,7 +466,6 @@ Ndryshe kjo do të bllokohet nga cilësimet e tua të privatësisë. Kjo do ta l
 <translation id="1757773103848038814">Fonti me hapësirë fikse</translation>
 <translation id="3727704638090640904">Butoni "Ndrysho fjalëkalimin e Brave". Aktivizoje për të ndryshuar fjalëkalimin e "Llogarisë sate të Brave"</translation>
 <translation id="593191007871547182">Plotëso automatikisht kodet e verifikimit që përdorin sajtet për të përmirësuar sigurinë tënde. Brave mund t'i marrë këto kode nga Gmail. <ph name="BEGIN_LINK"/>Mëso më shumë rreth kësaj veçorie<ph name="LINK_END"/></translation>
-<translation id="353492317551888534">Vizito "Portofolin e Brave" për të kontrolluar <ph name="BEGIN_LINK1"/>preferencat e të dhënave dhe privatësisë<ph name="END_LINK1"/> ose për të menaxhuar <ph name="BEGIN_LINK2"/>mënyrat e pagesës<ph name="END_LINK2"/> dhe <ph name="BEGIN_LINK3"/>dokumentet dixhitale<ph name="END_LINK3"/> si kartat e besnikërisë dhe dokumentet e identifikimit</translation>
 <translation id="1763864636252898013">Ky server nuk mundi të dëshmonte se ky është <ph name="DOMAIN"/>; certifikata e tij e sigurisë nuk është e besueshme nga Brave. Kjo mund të shkaktohet nga keqkonfigurimi ose ndonjë sulmues që po kap lidhjen tënde.</translation>
 <translation id="1768211456781949159"><ph name="BEGIN_LINK"/>Provo të ekzekutosh diagnostikimin e rrjetit të Windows<ph name="END_LINK"/>.</translation>
 <translation id="1777422078676229054">Fotografi (arkivore)</translation>
@@ -499,7 +500,7 @@ Ndryshe kjo do të bllokohet nga cilësimet e tua të privatësisë. Kjo do ta l
 <translation id="1823768272150895732">Fonti</translation>
 <translation id="1824402189105105503">Ruli i tetë</translation>
 <translation id="1826516787628120939">Po kontrollon</translation>
-<translation id="6275942451098940709">ruajtjes së informacioneve te "Portofoli i Brave" te cilësimet</translation>
+<translation id="1829026591231985685">ruajtjes së informacioneve te "Portofoli i Brave" te cilësimet</translation>
 <translation id="1832474362231610822">Fotografia u ruajt te OneDrive</translation>
 <translation id="1832730227369924598">Sinkronizimi i tavolinës së punës</translation>
 <translation id="1837606605602726453">Rezultati për rrezikun dhe kategoritë shpërfillen sepse shtesa lejohet ose bllokohet në mënyrë të qartë nga administratori.</translation>
@@ -515,6 +516,7 @@ Ndryshe kjo do të bllokohet nga cilësimet e tua të privatësisë. Kjo do ta l
 <translation id="1849438148665368129">Blerja duhet të jetë nën <ph name="CHECKOUT_AMOUNT_MAXIMUM"/></translation>
 <translation id="1853392626017747777">Regjistrimi i kartës virtuale u mbyll</translation>
 <translation id="1854180393107901205">Ndalo transmetimin</translation>
+<translation id="1860986945084448084">Hap detajet e certifikatës</translation>
 <translation id="1863257867908022953">Tabakaja 12</translation>
 <translation id="1863374797460198869">Biseda u fsheh</translation>
 <translation id="1871208020102129563">Përfaqësuesi është caktuar të përdorë serverë përfaqësues fiksë, jo një shkrim URL-je .pac.</translation>
@@ -536,7 +538,7 @@ Ndryshe kjo do të bllokohet nga cilësimet e tua të privatësisë. Kjo do ta l
 <translation id="1902576642799138955">Periudha e vlefshmërisë</translation>
 <translation id="1908217026282415406">Përdorimi dhe lëvizja e kamerës</translation>
 <translation id="1908690643053136980">Administratori yt nuk lejon <ph name="PERMISSION"/> për këtë sajt</translation>
-<translation id="5430059593940336932">Ruaj kartën e identitetit te "Portofoli i Brave"</translation>
+<translation id="1912750443952232242">Ruaj kartën e identitetit te "Portofoli i Brave"</translation>
 <translation id="1913037223029790376">Përdor kodin CVC për këtë kartë virtuale</translation>
 <translation id="191374271204266022">Kopjo si JSON</translation>
 <translation id="1914326953223720820">Shërbimi i shpaketimit</translation>
@@ -547,6 +549,7 @@ Ndryshe kjo do të bllokohet nga cilësimet e tua të privatësisë. Kjo do ta l
 <translation id="1924727005275031552">I ri</translation>
 <translation id="4527827173940627753">Brave regjistron se si e përdor veçorinë, si p.sh. kërkesat dhe sjelljen tënde kur pranon ose shpërfill sugjerimet</translation>
 <translation id="1932098463447129402">Jo më parë</translation>
+<translation id="1932629105611536854">Kodi ZIP i dërgesës</translation>
 <translation id="1935353813610900265">Dërgo komente për kërkimin te historiku, mundësuar nga IA-ja</translation>
 <translation id="1935995810530254458">Kopjo gjithsesi</translation>
 <translation id="1938580037092872316">Shto informacione të reja për adresën e ruajtur</translation>
@@ -611,6 +614,7 @@ Ndryshe kjo do të bllokohet nga cilësimet e tua të privatësisë. Kjo do ta l
 <translation id="2045871135676061132">Zarf personal</translation>
 <translation id="2048261947532620704">Faqja po përkthet</translation>
 <translation id="2055016614992422886">Bisedë</translation>
+<translation id="2057654338925604102">Domeni i operatorit celular</translation>
 <translation id="2059166748188874810">Komunë</translation>
 <translation id="2059202684901022309">22 x 34 inç</translation>
 <translation id="2063929825539050431">Për ta dërguar me shpejtësi këtë faqe në një pajisje tjetër, prek dhe mbaj shtypur shiritin e adresave</translation>
@@ -638,6 +642,7 @@ Ndryshe kjo do të bllokohet nga cilësimet e tua të privatësisë. Kjo do ta l
 <translation id="2096183846792489672">Përmbajtja dhe URL-të e faqeve që viziton mund të përpunohen në një hapësirë private në renë kompjuterike</translation>
 <translation id="209961642949927292">Të përfundohet blerja më shpejt herën tjetër?</translation>
 <translation id="2099652385553570808">Tri kapje me tel majtas</translation>
+<translation id="210056520177407132">Shenja e besimit e BE-së</translation>
 <translation id="2101225219012730419">Versioni:</translation>
 <translation id="2102134110707549001">Sugjero fjalëkalim të fortë…</translation>
 <translation id="2102495993840063010">Aplikacionet e Android</translation>
@@ -655,7 +660,7 @@ Ndryshe kjo do të bllokohet nga cilësimet e tua të privatësisë. Kjo do ta l
 <translation id="2119867082804433120">Shpim poshtë djathtas</translation>
 <translation id="2122214041802369259">Çmimi është i lartë</translation>
 <translation id="2122719317867821810">Kjo politikë funksionon sipas parashikimit, por diku është caktuar një vlerë në konflikt dhe ajo është anuluar nga kjo politikë.</translation>
-<translation id="1405760536280692221">Përditëso automjetin në "Portofolin e Brave"</translation>
+<translation id="2124081665399116863">Përditëso automjetin në "Portofolin e Brave"</translation>
 <translation id="2126374524350484896">Prodhuesi i PDF-së:</translation>
 <translation id="2127090458081644412">Fjalëkalimet e ruajtura në këtë pajisje</translation>
 <translation id="2127747486437921899">Kursive</translation>
@@ -735,6 +740,7 @@ Ndryshe kjo do të bllokohet nga cilësimet e tua të privatësisë. Kjo do ta l
 <translation id="2233745931693710080">Disk kompakt</translation>
 <translation id="2236949375853147973">Aktiviteti im</translation>
 <translation id="2239100178324503013">Dërgo tani</translation>
+<translation id="223921069122391343">Oferta jote e ruajtur do të ofrohet në përfundim të blerjes duke përdorur plotësimin automatik. <ph name="BEGIN_LINK"/>Shiko kushtet e përgjithshme<ph name="END_LINK"/></translation>
 <translation id="224130779555573777">Shto numrin e zhdëmtimit</translation>
 <translation id="2241693394036365668">Skedari është shkarkuar</translation>
 <translation id="2242389809734574253">"Ruaj numrin IBAN" është mbyllur.</translation>
@@ -760,6 +766,7 @@ Ndryshe kjo do të bllokohet nga cilësimet e tua të privatësisë. Kjo do ta l
 <translation id="2277753418458118549">Shfaq detajet e lidhjes</translation>
 <translation id="2277949605527755300"><ph name="URL"/> kërkon të të gjurmojë duart</translation>
 <translation id="22792995594807632">Kërkohet rishikimi përpara shkarkimit</translation>
+<translation id="2279607542590042584">Çelësi i kalimit • Fjalëkalimet e Apple</translation>
 <translation id="2283340219607151381">Ruaj dhe plotëso adresat</translation>
 <translation id="2283447177162560884">"<ph name="PAGE_TITLE"/>" u fshi</translation>
 <translation id="2283599456633275070">Udhëtimi</translation>
@@ -770,7 +777,6 @@ Ndryshe kjo do të bllokohet nga cilësimet e tua të privatësisë. Kjo do ta l
 <translation id="2292556288342944218">Qasja jote në internet është bllokuar</translation>
 <translation id="2294150501457238325">Shto pasaportën në mënyrë të sigurt</translation>
 <translation id="2295831393422400053">Aktivizo cilësimin "Përmirëso kërkimet dhe shfletimin" për të përdorur "Më ndihmo të shkruaj"</translation>
-<translation id="2296244067976588032">Çelësi i kalimit • iCloud Keychain</translation>
 <translation id="2296331629987861142">Paguaj në këste të lehta (subjekt i kualifikueshmërisë; zbatohen tarifa)</translation>
 <translation id="2300306941146563769">Pa ngarkuar</translation>
 <translation id="2301064673700597535">Deklaratat e certifikatave të kualifikuara</translation>
@@ -787,7 +793,7 @@ Ndryshe kjo do të bllokohet nga cilësimet e tua të privatësisë. Kjo do ta l
 <translation id="2321291402658100099">Menaxho informacionet</translation>
 <translation id="2322254345061973671">{COUNT,plural, =1{1 dritare}other{# dritare}}</translation>
 <translation id="2325722389016720813">Shtyp shigjetën lart ose poshtë për plotësimet automatike. Shkruaj për plotësimin automatik.</translation>
-<translation id="4848600035394410348">Tani mund të plotësosh automatikisht më shumë informacione nga "Portofoli i Brave"</translation>
+<translation id="2326283484705860548">Tani mund të plotësosh automatikisht më shumë informacione nga "Portofoli i Brave"</translation>
 <translation id="2326747055382936979">Menaxho plotësimin automatik të përmirësuar</translation>
 <translation id="2328651992442742497">Lejohet (e parazgjedhur)</translation>
 <translation id="2330137317877982892"><ph name="CREDIT_CARD"/>, skadon më <ph name="EXPIRATION_DATE_ABBR"/></translation>
@@ -835,7 +841,7 @@ Mund ta heqësh këtë sugjerim nga Brave. Burimi yt origjinal nuk do të fshihe
 <translation id="2396249848217231973">&amp;Zhbëje fshirjen</translation>
 <translation id="4124760202519850347">Ky numër IBAN është ruajtur në "Llogarinë tënde të Brave" që të mund ta përdorësh atë nëpër shërbimet e Brave.</translation>
 <translation id="2400263725572336749">Shto pasaportën</translation>
-<translation id="1258449952808226603">Menaxho kartat e tua të besnikërisë te "Portofoli i Brave"</translation>
+<translation id="2400271059665846158">Menaxho kartat e tua të besnikërisë te "Portofoli i Brave"</translation>
 <translation id="2400600116338235695">Mund të kërkojë të lidhet me portat seriale</translation>
 <translation id="2403474027143565107">E saktë</translation>
 <translation id="240450251994300576">Logoja dytësore e titullit</translation>
@@ -850,9 +856,8 @@ Mund ta heqësh këtë sugjerim nga Brave. Burimi yt origjinal nuk do të fshihe
 <translation id="2436186046335138073">Të lejohet <ph name="HANDLER_HOSTNAME"/> të hapë të gjitha lidhjet <ph name="PROTOCOL"/>?</translation>
 <translation id="4819123264415400027">Kjo kartë nuk mund të ruhen në "Llogarinë tënde të Brave". Në vend të kësaj, ajo është ruajtur në Brave në këtë pajisje.</translation>
 <translation id="2438874542388153331">Katër shpime djathtas</translation>
-<translation id="2441854154602066476">Mënyrat e pagesës të disponueshme për t'u plotësuar me prekje. Tastiera është e fshehur.</translation>
 <translation id="2448295565072560657">Pajisjet periferike të montuara në këtë pajisje ndërkohë që je i identifikuar</translation>
-<translation id="7174054574169352743">Mënyrat e pagesës dhe informacione të tjera nga "Portofoli i Brave"</translation>
+<translation id="2450019289047528273">Mënyrat e pagesës dhe informacione të tjera nga "Portofoli i Brave"</translation>
 <translation id="2451201933352935301"><ph name="URL"/> lejohen të menaxhojnë dritaret në të gjitha ekranet e tua</translation>
 <translation id="2451607499823206582">Po monitorohet</translation>
 <translation id="2452837234288608067">Nuk mund të të ndihmoja me këtë. Provo përsëri.</translation>
@@ -871,7 +876,7 @@ Mund ta heqësh këtë sugjerim nga Brave. Burimi yt origjinal nuk do të fshihe
 <translation id="2469153820345007638">Renditja 1 deri në N</translation>
 <translation id="24699311393038040">Letër (e veshur)</translation>
 <translation id="2471632709106952369">Tabelat e krahasimit</translation>
-<translation id="768574016157037999">Ruaj në mënyrë të sigurt numrin e udhëtarit të njohur te "Portofoli i Brave"</translation>
+<translation id="2472396075297339227">Ruaj në mënyrë të sigurt numrin e udhëtarit të njohur te "Portofoli i Brave"</translation>
 <translation id="50589553892093838">Të dhëna të tjera të Brave</translation>
 <translation id="247903268499247848">Sensorët e lëvizjes dhe të dritës nuk lejohen</translation>
 <translation id="2479148705183875116">Shko te "Cilësimet"</translation>
@@ -884,8 +889,8 @@ Mund ta heqësh këtë sugjerim nga Brave. Burimi yt origjinal nuk do të fshihe
 <translation id="2491120439723279231">Certifikata e serverit përmban gabime.</translation>
 <translation id="2491414235131909199">Kjo faqe është bllokuar nga një shtesë</translation>
 <translation id="2493122313108999546">Përmasat u ndryshuan</translation>
-<translation id="249376477913017009">Njoftimi për plotësimin automatik nga Gmail etj. u hap</translation>
 <translation id="2495083838625180221">Analizuesi JSON</translation>
+<translation id="2495909791227061512">Të lidhet me pajisjet në afërsi?</translation>
 <translation id="2496402116964818747">Mund të ndryshosh nëse e përdor gjurmën e gishtit për plotësimin e fjalëkalimeve te "<ph name="SETTINGS"/>"</translation>
 <translation id="2498091847651709837">Skano një kartë të re</translation>
 <translation id="2501270939904835585">Etiketa (saten)</translation>
@@ -894,6 +899,7 @@ Mund ta heqësh këtë sugjerim nga Brave. Burimi yt origjinal nuk do të fshihe
 <translation id="2505063700931618106">Informacionet e kartës u ruajtën</translation>
 <translation id="2505268675989099013">Mbroje llogarinë</translation>
 <translation id="2508626115198287271"><ph name="BENEFIT_DESCRIPTION"/> (zbatohen kushtet)</translation>
+<translation id="251033673027346551">Vizito "Portofolin e Brave" për të menaxhuar <ph name="BEGIN_LINK"/>preferencat e të dhënave dhe privatësisë<ph name="END_LINK"/>.</translation>
 <translation id="2512101340618156538">Nuk lejohet (e parazgjedhur)</translation>
 <translation id="3233967599412104589">Cakto Brave si butonin e shfletuesit të parazgjedhur; shtyp "Enter" për të caktuar Brave si shfletuesin e parazgjedhur të sistemit te cilësimet e iOS</translation>
 <translation id="2515629240566999685">Të kontrollosh sinjalin në zonën tënde</translation>
@@ -908,7 +914,6 @@ Mund ta heqësh këtë sugjerim nga Brave. Burimi yt origjinal nuk do të fshihe
 <translation id="2527451058878391043">Numri CVC është në pjesën e përparme të kartës sate. Ai është kodi me 4 shifra në krye djathtas mbi numrin e kartës sate.</translation>
 <translation id="2529899080962247600">Kjo fushë nuk duhet të ketë më shumë se <ph name="MAX_ITEMS_LIMIT"/> regjistrime. Të gjitha hyrjet e mëtejshme do të shpërfillen.</translation>
 <translation id="2530042584066815841">Kyçja dhe përdorimi i miut</translation>
-<translation id="253493526287553278">Shiko detajet e kodit promocional</translation>
 <translation id="2535659140340599600">{COUNT,plural, =1{dhe 1 tjetër}other{dhe # të tjera}}</translation>
 <translation id="2536110899380797252">Shto adresë</translation>
 <translation id="3140033400151786080">Të tjerët që e përdorin këtë pajisje nuk do të shikojnë aktivitetin tënd, kështu që mund të shfletosh në mënyrë më private. Kjo nuk do të ndryshojë mënyrën se si mblidhen të dhënat nga uebsajtet që viziton ti dhe shërbimet që përdorin ato, duke përfshirë Brave. Shkarkimet dhe faqeshënuesit do të ruhen.</translation>
@@ -967,7 +972,6 @@ Mund ta heqësh këtë sugjerim nga Brave. Burimi yt origjinal nuk do të fshihe
 <translation id="6484547507342500969">Ky server nuk mund të vërtetonte që është <ph name="DOMAIN"/> sepse po përdor një certifikatë sigurie që nuk është e besuar nga Brave ose nga konfigurimi i sistemit tënd për enkriptimin e trafikut të uebit. Kjo mund të jetë shkaktuar nga një konfigurim i gabuar ose nga ndërhyrja e një sulmuesi në lidhjen tënde.</translation>
 <translation id="2628224721443278970">Identifikohu në Microsoft OneDrive</translation>
 <translation id="2631059741268498165">Administratori yt e lokalizoi këtë pajisje kur ajo ishte e çaktivizuar. Ai është riaktivizuar dhe është gati për t'u përdorur.</translation>
-<translation id="2631387782019878060">Kodi i verifikimit: <ph name="OTP"/></translation>
 <translation id="2634124572758952069">Adresa e IP-së së serverit të <ph name="HOST_NAME"/> nuk mund të gjendej.</translation>
 <translation id="2635276683026132559">Po nënshkruhet</translation>
 <translation id="2638070510549214427">Shëno si të sigurt</translation>
@@ -1074,6 +1078,7 @@ Mund ta heqësh këtë sugjerim nga Brave. Burimi yt origjinal nuk do të fshihe
 <translation id="2858134430383535011">200 x 300 mm</translation>
 <translation id="2859383374160668142">Mund t'i shikosh uljet e çmimeve për produktet që monitoron në çdo kohë.</translation>
 <translation id="2859806420264540918">Ky sajt shfaq reklama ndërhyrëse ose mashtruese.</translation>
+<translation id="2864493683872263351">Kodo, shkruaj ose krijo diapozitiva</translation>
 <translation id="2873317327342476681">Loja Dino, trokit te dinozauri ose shtyp tastin e hapësirës për të luajtur</translation>
 <translation id="287387905105155974">Flluska e ndihmës</translation>
 <translation id="2111353921621866764">Kur sinjalizohen ngjarje sigurie nga Brave, të dhënat përkatëse rreth ngjarjeve i dërgohen administratorit tënd. Kjo mund të përfshijë URL-të dhe titujt e faqeve që viziton në Brave, URL-të e faqeve nga të cilat ke kopjuar të dhënat, emrat ose metadatat e skedarëve, adresat IP, ndërprerjet aksidentale të shfletuesit ose të skedës dhe emrin e përdoruesit që përdor ti për t'u identifikuar në aplikacionet bazuar në ueb, në pajisjen tënde dhe në Brave.</translation>
@@ -1097,7 +1102,7 @@ Mund ta heqësh këtë sugjerim nga Brave. Burimi yt origjinal nuk do të fshihe
 <translation id="2905107382358353958">Sinjalizimi për cilësimin e pagesës së re</translation>
 <translation id="2909946352844186028">U zbulua një ndryshim i rrjetit.</translation>
 <translation id="2910062169995917863">Seanca skadoi</translation>
-<translation id="7085506453142803285">Cilësimet e "Portofolit të Brave" zbatohen për informacionet e ruajtura nga Brave</translation>
+<translation id="7165817952874613339">Cilësimet e "Portofolit të Brave" zbatohen për informacionet e ruajtura nga Brave</translation>
 <translation id="2911973620368911614">ID-ja e përdoruesit të llogarisë së punës</translation>
 <translation id="2915068235268646559">Ndërprerje aksidentale nga <ph name="CRASH_TIME"/></translation>
 <translation id="2916038427272391327">Mbyll programet e tjera</translation>
@@ -1180,7 +1185,6 @@ Mund ta heqësh këtë sugjerim nga Brave. Burimi yt origjinal nuk do të fshihe
 <translation id="2396578282884469363">Zakonisht lidhesh me sajtet në mënyrë të sigurt, por Brave nuk mund të përdorte një lidhje të sigurt në këtë moment. Një sulmues mund të jetë duke u përpjekur të përgjojë ose modifikojë lidhjen tënde të internetit. <ph name="BEGIN_LEARN_MORE_LINK"/>Mëso më shumë për këtë paralajmërim<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="3052964831964880138"><ph name="PRICE_DROP"/> ulje çmimi në <ph name="PRODUCT_NAME"/></translation>
 <translation id="3053013834507634016">Përdorimi i çelësit të certifikatës</translation>
-<translation id="3056660797732519147">Ekrani i gabimit për metodën "Bli tani, paguaj më vonë". Tastiera është e fshehur.</translation>
 <translation id="3057844102210575426">Menaxho informacionet e udhëtimit</translation>
 <translation id="3061707000357573562">Shërbimi i korrigjimit</translation>
 <translation id="3062655045399308513">Fshi të dhënat e shfletimit…</translation>
@@ -1250,6 +1254,7 @@ Për të fshehur opsionet e "Paguaj më vonë", shko te <ph name="BEGIN_LINK"/>c
 <translation id="3162559335345991374">Lidhja Wi-Fi që po përdor mund të të kërkojë që të vizitosh faqen e saj të identifikimit.</translation>
 <translation id="316542773973815724">Lundrimi</translation>
 <translation id="316638481603975524">Mund të kërkojë të instalojë aplikacione uebi</translation>
+<translation id="3166688462674378969">Butoni "Mbyll dritaret e izoluara". Aktivizoje për të mbyllur të gjitha dritaret e izoluara që janë aktualisht të hapura</translation>
 <translation id="5128545107355520364">Brave do të ofrojë që ta ruajë atë te "<ph name="IDS_AUTOFILL_GOOGLE_WALLET_TITLE"/>" herën tjetër kur ta përdorësh.</translation>
 <translation id="3169472444629675720">Discover</translation>
 <translation id="3176929007561373547">Kontrollo cilësimet e përfaqësuesit ose kontakto me administratorin e rrjetit
@@ -1263,7 +1268,7 @@ Për të fshehur opsionet e "Paguaj më vonë", shko te <ph name="BEGIN_LINK"/>c
 <translation id="3190736958609431397">Anulo monitorimin</translation>
 <translation id="3194737229810486521"><ph name="URL"/> kërkon të ruajë në mënyrë të përhershme të dhëna në pajisjen tënde</translation>
 <translation id="3194765668709099364">Klarna</translation>
-<translation id="2277495157469546105">Shto lejen e drejtimit te "Portofoli i Brave"</translation>
+<translation id="3194768112587954116">Shto lejen e drejtimit te "Portofoli i Brave"</translation>
 <translation id="3195213714973468956"><ph name="PRINTER_NAME"/> në <ph name="SERVER_NAME"/></translation>
 <translation id="3196374699162453920">Kodi i rezervimit</translation>
 <translation id="3196902089458890316">Të ndahen gjithmonë skedat përkatëse për përgjigje më të mira?</translation>
@@ -1275,8 +1280,10 @@ Për të fshehur opsionet e "Paguaj më vonë", shko te <ph name="BEGIN_LINK"/>c
 <translation id="3207960819495026254">Regjistruar në faqeshënues</translation>
 <translation id="3209034400446768650">Faqja mund të tarifojë para</translation>
 <translation id="809694630565139611">Kërkesat, titujt e faqeve dhe URL-të e tua dërgohen te Brave dhe mund të shqyrtohen për të përmirësuar plotësimin automatik të përmirësuar</translation>
+<translation id="3211727636285361260">Hap lidhjet e <ph name="PROTOCOL"/> nëpërmjet <ph name="HANDLER_HOSTNAME"/></translation>
 <translation id="3212468046572043669">Shkarkimi filloi. Për ta shikuar, zvarrite nga kreu dhe prek butonin "prapa"</translation>
 <translation id="3212581601480735796">Aktiviteti yt në <ph name="HOSTNAME"/> po monitorohet</translation>
+<translation id="1886580873774405358">{NUM_SOURCES,plural, =1{Brave do të ndalojë së sugjeruari këto informacione. Burimi yt origjinal nuk do të fshihet.}other{Brave do të ndalojë së sugjeruari këto informacione. Burimet e tua origjinale nuk do të fshihen.}}</translation>
 <translation id="3215092763954878852">WebAuthn nuk mund të përdorej</translation>
 <translation id="3215311088819828484">Rezultati u përditësua</translation>
 <translation id="3218181027817787318">Relativ</translation>
@@ -1297,7 +1304,7 @@ Për të fshehur opsionet e "Paguaj më vonë", shko te <ph name="BEGIN_LINK"/>c
 <translation id="323585066388831737">E kuqe e çelur</translation>
 <translation id="3235902901585019063">Skedarët lokalë do të fshihen më <ph name="DATE_TIME"/>. Sigurohu që të dhënat kritike personale ose të biznesit të ruhen në nivel të jashtëm.</translation>
 <translation id="3236212803136366317">Përfitimet e kartave</translation>
-<translation id="2816340899490518371">Nuk mund të ruhet në "Portofolin e Brave"</translation>
+<translation id="3237427677128462778">Nuk mund të ruhet në "Portofolin e Brave"</translation>
 <translation id="3240683217920639535"><ph name="MANAGE_CHROME_THEMES_FOCUSED_FRIENDLY_MATCH_TEXT"/>. Shtyp "Tab" dhe më pas "Enter" për të personalizuar pamjen e shfletuesit tënd</translation>
 <translation id="3243131902823383230">Laptop <ph name="MANUFACTURER"/></translation>
 <translation id="3243650379537999343">Vizato</translation>
@@ -1321,7 +1328,7 @@ Për të fshehur opsionet e "Paguaj më vonë", shko te <ph name="BEGIN_LINK"/>c
 <translation id="7460223968433527020">Administratori yt mund të bëjë ndryshime në profilin dhe shfletuesin tënd në distancë, mund të analizojë informacionet rreth shfletuesit nëpërmjet raportimit dhe mund të kryejë detyra të tjera të nevojshme. Aktiviteti në këtë pajisje mund të menaxhohet edhe jashtë Brave. <ph name="BEGIN_LINK"/>Mëso më shumë<ph name="END_LINK"/></translation>
 <translation id="3273757719652748628">"Ruaj numrin IBAN" hapur në lartësi të plotë.</translation>
 <translation id="327455571215090823">Plotësim automatik më inteligjent, i mbajtur privat</translation>
-<translation id="5506816339792547413">Përditëso pasaportën në mënyrë të sigurt te "Portofoli i Brave"</translation>
+<translation id="3280440382387335343">Përditëso pasaportën në mënyrë të sigurt te "Portofoli i Brave"</translation>
 <translation id="3281350579597955952">{0,plural, =1{Politika e administratorit nuk rekomandon hapjen e këtij skedari te: <ph name="DESTINATION_NAME"/>}other{Politika e administratorit nuk rekomandon hapjen e këtyre skedarëve te: <ph name="DESTINATION_NAME"/>}}</translation>
 <translation id="3282085321714087552">Organizata jote, <ph name="ENROLLMENT_DOMAIN"/>, ka dërguar disa informacione te sajtet e mëposhtme të uebit, si p.sh. cilësime ose politika.</translation>
 <translation id="3286372614333682499">portret</translation>
@@ -1340,6 +1347,7 @@ Për të fshehur opsionet e "Paguaj më vonë", shko te <ph name="BEGIN_LINK"/>c
 <translation id="4731386748664539266">Butoni "Personalizo Brave". Aktivizoje për të personalizuar pamjen e shfletuesit tënd</translation>
 <translation id="3308006649705061278">Njësia organizative (OU)</translation>
 <translation id="3312952471765023168">Ngarkimi u krye me sukses</translation>
+<translation id="3323135197619890621">Aktivizo plotësimin automatik për t'i bërë blerjet më të lehta</translation>
 <translation id="3324687287337751929">4 x 6 inç</translation>
 <translation id="3325568918769906282">në rend zbritës</translation>
 <translation id="3325662270238538525">Qasjen dhe modifikimet e skedarëve së fundi, duke përfshirë emrat e skedarëve, gjurmët dixhitale të gishtave për përmbajtjet e skedarëve, burimet e shkarkimit dhe metadatat</translation>
@@ -1368,7 +1376,7 @@ Për të fshehur opsionet e "Paguaj më vonë", shko te <ph name="BEGIN_LINK"/>c
 <translation id="3380864720620200369">ID-ja e klientit:</translation>
 <translation id="3383566085871012386">Porosia aktuale me përparësi</translation>
 <translation id="3383713837163550889">Skedarët e tu lokalë do të fshihen pas 1 minute</translation>
-<translation id="6707404155107941120">Shto numrin e udhëtarit të njohur te "Portofoli i Brave"</translation>
+<translation id="33837817515081754">Shto numrin e udhëtarit të njohur te "Portofoli i Brave"</translation>
 <translation id="3384522979010096022">Organizata jote nuk të lejon që të shikosh këtë sajt</translation>
 <translation id="3391030046425686457">Adresa e dorëzimit</translation>
 <translation id="3391482648489541560">modifikimi i skedarëve</translation>
@@ -1392,7 +1400,7 @@ Për të fshehur opsionet e "Paguaj më vonë", shko te <ph name="BEGIN_LINK"/>c
 <translation id="3422472998109090673"><ph name="HOST_NAME"/> nuk është i arritshëm aktualisht.</translation>
 <translation id="3422794267539320056">Trokit te dinozauri ose shtyp tastin e hapësirës për të luajtur</translation>
 <translation id="3423742043356668186">Specifikuar nga sistemi</translation>
-<translation id="6418111414395514325">Përditëso pasaportën në "Portofolin e Brave"</translation>
+<translation id="3426672782316020729">Përditëso pasaportën në "Portofolin e Brave"</translation>
 <translation id="3427342743765426898">&amp;Ribëj redaktimin</translation>
 <translation id="3428151540071562330">Një ose disa nga URI-të e shablloneve të serverit DnsOverHttpsTemplates janë të pavlefshme dhe nuk do të përdoren.</translation>
 <translation id="3432601291244612633">Mbyll faqen</translation>
@@ -1410,6 +1418,7 @@ Për të fshehur opsionet e "Paguaj më vonë", shko te <ph name="BEGIN_LINK"/>c
 <translation id="3447884698081792621">Shfaq certifikatën (lëshuar nga <ph name="ISSUER"/>)</translation>
 <translation id="3450323514459570273">Mund të kërkojë të kontrollojë dhe riprogramojë pajisjet e tua MIDI</translation>
 <translation id="3452404311384756672">Intervali i marrjes:</translation>
+<translation id="345268527248907593">Ky sajt nuk mund të arrihej</translation>
 <translation id="3453962258458347894">Numri i ripërpjekjeve</translation>
 <translation id="3461266716147554923"><ph name="URL"/> dëshiron të shikojë tekstin dhe imazhet e kopjuara te kujtesa e fragmenteve</translation>
 <translation id="3461824795358126837">Theksuesi</translation>
@@ -1421,6 +1430,7 @@ Për të fshehur opsionet e "Paguaj më vonë", shko te <ph name="BEGIN_LINK"/>c
 <translation id="3807334561457710885">Butoni "Personalizo fontet në Brave". Aktivizoje për të personalizuar madhësitë e fonteve dhe llojin e karaktereve në Brave</translation>
 <translation id="3478033058537426179">Sipas grupit</translation>
 <translation id="3479552764303398839">Jo tani</translation>
+<translation id="3481315707647070701">Vizualizo dhe modifiko</translation>
 <translation id="3484861421501147767">Rikujtesë: Një kod promocional i ruajtur është i disponueshëm</translation>
 <translation id="3569096371291033687">Për të përdorur fjalëkalimet dhe të tjera të ruajtura në "Llogarinë tënde të Brave", verifiko që je ti</translation>
 <translation id="3487845404393360112">Tabakaja 4</translation>
@@ -1441,7 +1451,7 @@ Për të fshehur opsionet e "Paguaj më vonë", shko te <ph name="BEGIN_LINK"/>c
 <translation id="3517264445792388751">Sistemi i skedarëve është çaktivizuar nga administratori yt</translation>
 <translation id="3518941727116570328">Menaxhimi i shumë objekteve</translation>
 <translation id="3519670528214225835">Pyet <ph name="KEYWORD_SUFFIX"/></translation>
-<translation id="3138333648486601120">Shto automjetin te "Portofoli i Brave"</translation>
+<translation id="3520762308733579540">Shto automjetin te "Portofoli i Brave"</translation>
 <translation id="3525130752944427905">10 x 14 inç</translation>
 <translation id="3525435918300186947">Të kontrollohen dhe të riprogramohen pajisjet MIDI?</translation>
 <translation id="3527624163937328588">Hiq bashkëngjitjen</translation>
@@ -1467,7 +1477,7 @@ Për të fshehur opsionet e "Paguaj më vonë", shko te <ph name="BEGIN_LINK"/>c
 <translation id="3549904448933807997">Informacionet e shfletuesve dhe profileve (duke përfshirë profilet personale dhe të punës)</translation>
 <translation id="3552155506104542239">Paralajmërim: Kjo politikë është në konflikt me <ph name="POLICY_NAME"/> dhe nuk do të ketë asnjë efekt në aplikacionet për Android. Në rast të kundërt, kjo politikë funksionon siç pritet.</translation>
 <translation id="3552297013052089404">Fonti sans-serif</translation>
-<translation id="379073195905791294">Numri IBAN u ruajt te "Portofoli i Brave"</translation>
+<translation id="3558335486599406178">Numri IBAN u ruajt te "Portofoli i Brave"</translation>
 <translation id="3558573058928565255">Dita dhe ora</translation>
 <translation id="3559897352860026926">Kërkoji administratorit që të verifikojë cilësimet e konfigurimit të "<ph name="CLOUD_PROVIDER"/>".</translation>
 <translation id="3560824484345057728">Shiko sajtet e lidhura</translation>
@@ -1505,7 +1515,8 @@ Për të fshehur opsionet e "Paguaj më vonë", shko te <ph name="BEGIN_LINK"/>c
 <translation id="3614001939154393113">Sulmuesit mund të përpiqen të vjedhin informacionet e tua nga <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/> (p.sh. fjalëkalimet, mesazhet ose kartat e kreditit). <ph name="BEGIN_LEARN_MORE_LINK"/>Mëso më shumë për këtë paralajmërim<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="361438452008624280">Regjistrimi i listës "<ph name="LANGUAGE_ID"/>": Gjuhë e panjohur ose e pambështetur.</translation>
 <translation id="3274500070896023877"><ph name="RUN_CHROME_SAFETY_CHECK_FOCUSED_FRIENDLY_MATCH_TEXT"/>, shtyp "Tab", më pas "Enter" për të ekzekutuar një kontroll sigurie te cilësimet e Brave</translation>
-<translation id="8284620253545560278">Ky numër IBAN nuk mund të ruhej te "Portofoli i Brave". Në vend të kësaj, ai është ruajtur në Brave në këtë pajisje. Brave do të të pyesë përsëri herën tjetër kur ta përdorësh këtë numër IBAN.</translation>
+<translation id="3615354126333642335"><ph name="TEXT"/>, <ph name="SUBTEXT"/></translation>
+<translation id="1705437522221127648">Ky numër IBAN nuk mund të ruhej te "Portofoli i Brave". Në vend të kësaj, ai është ruajtur në Brave në këtë pajisje. Brave do të të pyesë përsëri herën tjetër kur ta përdorësh këtë numër IBAN.</translation>
 <translation id="3621401353678567613">Për të marrë sinjalizime për uljen e çmimit për produktet që monitoron ti, aktivizo njoftimet te cilësimet.</translation>
 <translation id="362276910939193118">Shfaq historikun e plotë</translation>
 <translation id="5043591794632164789">Për të përdorur kamerën, jepi qasje Brave te <ph name="LINK"/>.</translation>
@@ -1520,7 +1531,7 @@ Për të fshehur opsionet e "Paguaj më vonë", shko te <ph name="BEGIN_LINK"/>c
 <translation id="3632892046558972264">"Ndarja e ekranit" është vendosur në pauzë</translation>
 <translation id="3634530185120165534">Tabakaja 5</translation>
 <translation id="3638102297696182302">Vazhdo me "Më ndihmo të shkruaj". Shtyp "Tab" dhe më pas "Enter" për ta hapur</translation>
-<translation id="5522999398661802511">Ky numër IBAN është ruajtur në "Portofolin e Brave" që të mund ta përdorësh nëpër produktet e Brave.</translation>
+<translation id="5164471176749888807">Ky numër IBAN është ruajtur në "Portofolin e Brave" që të mund ta përdorësh nëpër produktet e Brave.</translation>
 <translation id="3642196846309122856">Provo t'i shkarkosh përsëri skedarët e tu</translation>
 <translation id="3642638418806704195">Aplikacioni:</translation>
 <translation id="3647286794400715637">Çdo hyrje e vargjeve të URL-ve duhet të përfshijë nga 1 deri në 2 URL.</translation>
@@ -1559,6 +1570,7 @@ Për të fshehur opsionet e "Paguaj më vonë", shko te <ph name="BEGIN_LINK"/>c
 <translation id="3704162925118123524">Rrjeti që po përdor mund të kërkojë që të vizitosh faqen e tij të lidhjes.</translation>
 <translation id="3705189812819839667"><ph name="RESULT_OWNER"/> - <ph name="RESULT_PRODUCT_SOURCE"/></translation>
 <translation id="370665806235115550">Po ngarkon...</translation>
+<translation id="7773998265513139683">Organizata jote kërkon që të identifikohesh në Brave</translation>
 <translation id="3709599264800900598">Teksti që kopjove</translation>
 <translation id="3711223220609269738">Skedë e re e izoluar</translation>
 <translation id="450379565246785127">Shfletuesi Brave po përpiqet të shfaqë fjalëkalimet</translation>
@@ -1574,12 +1586,14 @@ Për të fshehur opsionet e "Paguaj më vonë", shko te <ph name="BEGIN_LINK"/>c
 <translation id="3715597595485130451">Lidhu me Wi-Fi</translation>
 <translation id="3717027428350673159"><ph name="BEGIN_LINK"/>Të kontrollosh përfaqësuesin, murin mbrojtës dhe konfigurimin e DNS-së<ph name="END_LINK"/></translation>
 <translation id="3723316892512143176">IBAN</translation>
+<translation id="3724078054554953078">Data e dërgimit</translation>
 <translation id="372429172604983730">Aplikacionet që mund ta shkaktojnë këtë gabim përfshijnë softuerë antivirusi, murin mbrojtës, si dhe softuerë filtrimi uebi ose ndërmjetësues.</translation>
 <translation id="3838210050876514022"><ph name="CREATE_GOOGLE_SLIDE_FOCUSED_FRIENDLY_MATCH_TEXT"/>, shtyp Tab pastaj Enter për të krijuar shpejt një prezantim të ri të Brave në "Diapozitivat e Brave"</translation>
 <translation id="3727309136762649052">Hapësira e emrit</translation>
 <translation id="8077319455765501118">Për të përdorur "Menaxherin e fjalëkalimeve të Brave" me macOS Keychain, rihap Brave dhe lejo qasjen për Keychain. Skedat e tua do të hapen përsëri pas rihapjes.</translation>
 <translation id="2967969024210491578">Shfletuesi Brave nuk do të kërkojë më gjurmën tënde të gishtit për të plotësuar fjalëkalimet</translation>
 <translation id="3729811201279509483">Shto skedat manualisht</translation>
+<translation id="3732370487905329239">Data e parashikuar e dërgesës</translation>
 <translation id="8656776619448807468">Shfletuesi Brave po përpiqet të plotësojë informacionet e tua delikate në <ph name="APP_NAME"/>.</translation>
 <translation id="3738166223076830879">Shfletuesi yt menaxhohet nga administratori yt.</translation>
 <translation id="3739842843727261045">Opsioni i gishtave tregon se të pëlqejnë këto rezultate</translation>
@@ -1664,6 +1678,7 @@ Për të fshehur opsionet e "Paguaj më vonë", shko te <ph name="BEGIN_LINK"/>c
 <translation id="3865339060090354361">Shiko kushtet këtu për <ph name="CREDIT_CARD_NAME"/></translation>
 <translation id="3869939189466884821">Skedarët e tu lokalë do të fshihen pas <ph name="MINUTES"/> minutash</translation>
 <translation id="3875783148670536197">Më trego mënyrën</translation>
+<translation id="3877021395754842994">Mbyll të gjitha dritaret e izoluara që janë aktualisht të hapura</translation>
 <translation id="3877603629930976930">Mos e ndaj</translation>
 <translation id="3878445208930547646">Kopjimi nga ky sajt nuk lejohet</translation>
 <translation id="3879674895057686427">Zgjidh gjuhën në të cilën do të përkthehet</translation>
@@ -1693,6 +1708,7 @@ Për të fshehur opsionet e "Paguaj më vonë", shko te <ph name="BEGIN_LINK"/>c
 <translation id="3928806096717999469">Modifiko, hapet në një dritare të re</translation>
 <translation id="393417216277380082">Sensorët e lëvizjes dhe të dritës</translation>
 <translation id="3937640725563832867">Emri alternativ i lëshuesit të certifikatës</translation>
+<translation id="3938243129430544357">Përfundo blerjen në mënyrë të sigurt me plotësimin automatik</translation>
 <translation id="3939773374150895049">Të përdoret WebAuthn në vend të CVC?</translation>
 <translation id="3941630233824954464">Aktivizo rivërtetimin e detyrueshëm</translation>
 <translation id="3942048175062210325">Provo t'i hapësh përsëri skedarët e tu</translation>
@@ -1836,7 +1852,7 @@ Për të fshehur opsionet e "Paguaj më vonë", shko te <ph name="BEGIN_LINK"/>c
 <translation id="4159784952369912983">Vjollcë</translation>
 <translation id="4165422751765527461">Hap një artikull të "Qendrës së ndihmës" në një skedë të re</translation>
 <translation id="4165986682804962316">Cilësimet e sajtit</translation>
-<translation id="535085301118821481">Menaxho kartat e besnikërisë ose çaktivizoji këto sugjerime te "Portofoli i Brave"</translation>
+<translation id="4169189393773057143">Menaxho kartat e besnikërisë ose çaktivizoji këto sugjerime te "Portofoli i Brave"</translation>
 <translation id="4169535189173047238">Mos lejo</translation>
 <translation id="4170851022123611628">Lista e kartave të besnikërisë është mbyllur.</translation>
 <translation id="4171400957073367226">Nënshkrim vërtetimi i gabuar</translation>
@@ -1854,7 +1870,7 @@ Për të fshehur opsionet e "Paguaj më vonë", shko te <ph name="BEGIN_LINK"/>c
 <translation id="9150836098508392713">Butoni "Shiko këshilla për Brave". Aktivizoje për të mësuar për veçoritë e Brave</translation>
 <translation id="4195643157523330669">Hape në një skedë të re</translation>
 <translation id="4196861286325780578">&amp;Bëje përsëri zhvendosjen</translation>
-<translation id="1390806521042945654">Shto pasaportën te "Portofoli i Brave"</translation>
+<translation id="4199131764832701740">Shto pasaportën te "Portofoli i Brave"</translation>
 <translation id="4202554117186904723">Ruli i pestë</translation>
 <translation id="4203769790323223880">Kamera nuk lejohet</translation>
 <translation id="4203896806696719780"><ph name="BEGIN_LINK"/>Të kontrollosh konfigurimet e murit mbrojtës dhe antivirusit<ph name="END_LINK"/></translation>
@@ -1863,6 +1879,7 @@ Për të fshehur opsionet e "Paguaj më vonë", shko te <ph name="BEGIN_LINK"/>c
 <translation id="4209092469652827314">E madhe</translation>
 <translation id="4210602799576081649">Kodi i verifikimit skadoi; kërko një kod të ri</translation>
 <translation id="421066178035138955">Përdor pajisjet dhe të dhënat e "Realitetit virtual"</translation>
+<translation id="4211023027325848327">Hap certifikatën e kualifikuar të BE-së (QWAC)</translation>
 <translation id="4214357935346142455">profili i ekranit të identifikimit</translation>
 <translation id="4218327733815631046">Mbaj vendndodhjen e përafërt</translation>
 <translation id="4219596572397833317">Shiko historikun e çmimit dhe më shumë për të të ndihmuar të kryesh blerje më të zgjuara.</translation>
@@ -1873,7 +1890,7 @@ Për të fshehur opsionet e "Paguaj më vonë", shko te <ph name="BEGIN_LINK"/>c
 <translation id="4231448684371260244">8 x 13 inç</translation>
 <translation id="279016548542240532">Paguaj me Pix pa i ndërruar aplikacionet në Brave</translation>
 <translation id="4238607350028440048">Më ndihmo të praktikohem për intervistën duke më bërë pyetje sikur je një menaxher rekrutimi</translation>
-<translation id="3325641703531153643">Ruaj lejen e drejtimit në mënyrë të sigurt te "Portofoli i Brave"</translation>
+<translation id="4239215166147486528">Ruaj lejen e drejtimit në mënyrë të sigurt te "Portofoli i Brave"</translation>
 <translation id="4239799716689808527">Etiketa</translation>
 <translation id="424063167283213501">Ruaj numrin e udhëtarit të njohur</translation>
 <translation id="4241830393007970744">Sulmuesit në sajtin që u përpoqe të vizitoje mund të të mashtrojnë që të instalosh një softuer ose të zbulosh gjëra të tilla si fjalëkalimet, numrat e telefonit ose të kartave të kreditit.</translation>
@@ -1915,6 +1932,7 @@ Për të fshehur opsionet e "Paguaj më vonë", shko te <ph name="BEGIN_LINK"/>c
 <translation id="4284885181066817063">Bllokuar nga <ph name="DOMAIN"/></translation>
 <translation id="4288101205645068104">Fshi automjetin</translation>
 <translation id="4290920330097335010">Mos lejo asnjëherë</translation>
+<translation id="4291909791598163333">Organizata jote të ka bllokuar që të mos vizitosh sajtin ku je drejtuar</translation>
 <translation id="4297502707443874121">Miniatura për faqen <ph name="THUMBNAIL_PAGE"/></translation>
 <translation id="4297937944457164390"><ph name="ATTRIBUTE_NAME"/> u përditësua</translation>
 <translation id="4298148761711700950">Paguaj në çast pa ngarkimin e kodit QR</translation>
@@ -1985,7 +2003,8 @@ Për të fshehur opsionet e "Paguaj më vonë", shko te <ph name="BEGIN_LINK"/>c
 <translation id="5221858344642681996">Për mirëmbajtjen e sigurisë, organizata jote nuk lejon që fjalëkalimet të ripërdoren në Brave. Fjalëkalimet në Brave janë të enkriptuara për të mbrojtur privatësinë e përdoruesve.</translation>
 <translation id="4409271659088619928">Motori yt i kërkimit është <ph name="DSE"/>. Shiko udhëzimet e motorit të kërkimit për fshirjen e historikut të kërkimit, nëse është e vlefshme.</translation>
 <translation id="4409556632583862731">Bashkëbisedim i ri</translation>
-<translation id="4235960211211581927">Përditëso kartën e identitetit në mënyrë të sigurt te "Portofoli i Brave"</translation>
+<translation id="4410614037742891410">Përditëso kartën e identitetit në mënyrë të sigurt te "Portofoli i Brave"</translation>
+<translation id="441152911646545600"><ph name="CLOSE_ISOLATED_WINDOWS_FOCUSED_FRIENDLY_MATCH_TEXT"/>, shtyp Tab dhe më pas Enter për të mbyllur të gjitha dritaret e izoluara që janë hapur aktualisht</translation>
 <translation id="4412074349188076601">Ky konfigurim është shënuar si i instalueshëm, por për këtë arkitekturë nuk ofrohet asnjë imazh, prandaj ai nuk mund të instalohet.</translation>
 <translation id="4412377069090572315">Çfarë po thonë njerëzit</translation>
 <translation id="4414515549596849729">kukit dhe të dhënat e faqes</translation>
@@ -1996,6 +2015,7 @@ Për të fshehur opsionet e "Paguaj më vonë", shko te <ph name="BEGIN_LINK"/>c
 <translation id="4419287616181386201">Fjalëkalimet mund të fshihen te cilësimet e tyre të menaxhimit</translation>
 <translation id="4425137053900958839">Shijo lehtësinë dhe sigurinë që të ofron Pix</translation>
 <translation id="443121186588148776">Porta seriale</translation>
+<translation id="6820946380501615505">Të hiqet nga Brave?</translation>
 <translation id="4432688616882109544"><ph name="HOST_NAME"/> nuk e pranoi certifikatën tënde të identifikimit ose ajo mund të mos jetë dhënë.</translation>
 <translation id="4432792777822557199">Faqet në <ph name="SOURCE_LANGUAGE"/> do të përkthehen në <ph name="TARGET_LANGUAGE"/> nga tani e në vazhdim</translation>
 <translation id="4433642172056592619">Injoruar pasi përdoruesi nuk është i lidhur me menaxhimin e makinerisë ose makineria nuk është e menaxhuar.</translation>
@@ -2025,7 +2045,7 @@ Për të fshehur opsionet e "Paguaj më vonë", shko te <ph name="BEGIN_LINK"/>c
 <translation id="4490717597759821841">A7</translation>
 <translation id="3966104135245031874">Enkripto fjalëkalimet e sinkronizuara me "Llogarinë tënde të Brave"</translation>
 <translation id="4493480324863638523">URL e pavlefshme. Duhet të jetë URL me një skemë standarde, p.sh. http://shembull.com ose https://shembull.com.</translation>
-<translation id="4497010149473852018">Kartat e besnikërisë të disponueshme për t'u plotësuar me prekje. Tastiera është e fshehur.</translation>
+<translation id="4497843134750481377">Menaxho ofertat</translation>
 <translation id="4500587658229086076">përmbajtja e pasigurt</translation>
 <translation id="4501939680615452918">Shiko për vende të lira në restorantet në tendencë</translation>
 <translation id="4503459574136856756">Rishkruaj biografinë time që të duket më profesionale</translation>
@@ -2060,7 +2080,7 @@ Për të fshehur opsionet e "Paguaj më vonë", shko te <ph name="BEGIN_LINK"/>c
 <translation id="455113658016510503">A9</translation>
 <translation id="4556069465387849460">Po përdor kyçjen e ekranit për plotësimin e fjalëkalimeve</translation>
 <translation id="4558551763791394412">Provo të çaktivizosh shtesat.</translation>
-<translation id="6895010158785274408">Përditëso kartën e identitetit te "Portofoli i Brave"</translation>
+<translation id="4568572491321119037">Përditëso kartën e identitetit te "Portofoli i Brave"</translation>
 <translation id="4569155249847375786">I verifikuar</translation>
 <translation id="4570008401337135432">Drejtvendosja e tekstit</translation>
 <translation id="457875822857220463">Dorëzimi</translation>
@@ -2072,7 +2092,7 @@ Për të fshehur opsionet e "Paguaj më vonë", shko te <ph name="BEGIN_LINK"/>c
 <translation id="4592951414987517459">Lidhja jote me <ph name="DOMAIN"/> është enkriptuar duke përdorur një paketë moderne shifrimi.</translation>
 <translation id="4594403342090139922">&amp;Zhbëje fshirjen</translation>
 <translation id="4598556348158889687">Menaxhimi i hapësirës ruajtëse</translation>
-<translation id="5585910165070997524">Paguaj më shpejt me Google Pay kur karta jote është e ruajtur. Detajet e kartës janë të enkriptuara te "Portofoli i Brave".</translation>
+<translation id="4599572944836204718">Paguaj më shpejt me Google Pay kur karta jote është e ruajtur. Detajet e kartës janë të enkriptuara te "Portofoli i Brave".</translation>
 <translation id="4603727370377253901">Rezervimet e fluturimeve</translation>
 <translation id="8338928872956435647">Shiko këshillat për Brave</translation>
 <translation id="4607879293515681409">Plotësimi automatik i përmirësuar tani mund të gjejë dhe të plotësojë informacionet, si p.sh. numrat e fluturimeve dhe oraret e takimeve, nga aplikacionet si Gmail dhe "Fotografitë"</translation>
@@ -2080,8 +2100,9 @@ Për të fshehur opsionet e "Paguaj më vonë", shko te <ph name="BEGIN_LINK"/>c
 <translation id="4610279718074907952">Ky sajt është në një grup, i përcaktuar nga <ph name="SET_OWNER"/>, që mund ta shikojë aktivitetin tënd</translation>
 <translation id="4612631413844865947">Ndodhi një gabim gjatë përpunimit të porosisë sate në <ph name="MERCHANT_ORIGIN"/> nëpërmjet <ph name="PAYMENT_APP_ORIGIN"/>.</translation>
 <translation id="4612904677925722054">Ky sajt mund të ketë përmbajtje për të rritur. Një prind ose kujdestar duhet të pranojë që ta vizitosh këtë uebsajt.</translation>
+<translation id="4613873770449493819">URL-ja duhet të drejtojë te një domen i <ph name="GEMINI_ENTERPRISE_PRODUCT_NAME"/>.</translation>
 <translation id="4619564267100705184">Verifiko që je ti</translation>
-<translation id="3127071008735497897">Ruaj lejen e drejtimit te "Portofoli i Brave"</translation>
+<translation id="4619669610757527494">Ruaj lejen e drejtimit te "Portofoli i Brave"</translation>
 <translation id="4622292761762557753">Transfero gjithsesi</translation>
 <translation id="4622647778991854660">Aktivizo njoftimet në "Qendrën e njoftimeve". Hap <ph name="LINK"/>.</translation>
 <translation id="4623894491222334521">Dokumentet e identitetit</translation>
@@ -2089,7 +2110,6 @@ Për të fshehur opsionet e "Paguaj më vonë", shko te <ph name="BEGIN_LINK"/>c
 <translation id="4628948037717959914">Fotografia</translation>
 <translation id="4629370161347991046">A4x6</translation>
 <translation id="462989688138616749">Ngarkimi i skedarit në <ph name="CLOUD_PROVIDER"/> do të fillojë pas <ph name="HOURS"/> orësh</translation>
-<translation id="4631881646528206880">Regjistrimi i kartës virtuale</translation>
 <translation id="4635278307999235413">Të dhënat po dërgohen te paneli i administratorit</translation>
 <translation id="4636930964841734540">Informacion</translation>
 <translation id="4640225694041297329">Shfaq rezultatet nga 7 ditët e fundit</translation>
@@ -2149,6 +2169,7 @@ Për të fshehur opsionet e "Paguaj më vonë", shko te <ph name="BEGIN_LINK"/>c
 <translation id="4732860731866514038">Po shkarkohet paketa gjuhësore në <ph name="LANGUAGE"/>... <ph name="PERCENT"/>%</translation>
 <translation id="4733082559415072992"><ph name="URL"/> kërkon të përdorë vendndodhjen e pajisjes sate</translation>
 <translation id="473414950835101501">Të përdorë kamerat e tua</translation>
+<translation id="4736089601076994090">Skadon: <ph name="EXPIRATION_DATE"/></translation>
 <translation id="4736934858538408121">Karta virtuale</translation>
 <translation id="473775607612524610">Përditësoje</translation>
 <translation id="4738601419177586157">Sugjerim kërkimi për <ph name="TEXT"/></translation>
@@ -2177,7 +2198,7 @@ Për të fshehur opsionet e "Paguaj më vonë", shko te <ph name="BEGIN_LINK"/>c
 <translation id="4766713847338118463">Dy kapje me tel në fund</translation>
 <translation id="4768816584204270288">Kur paguan me kalimin e kohës, plotësohet një numër vetëm për një herë i kartës virtuale. Mund të klikosh për të kopjuar dhe ngjitur detajet e kartës për këtë blerje.</translation>
 <translation id="4768864802656530630">Evidencat e detajuara të sistemit. <ph name="BEGIN_LINK"/>Mëso më shumë<ph name="END_LINK"/></translation>
-<translation id="4341731325100657394">Përditëso numrin KTN në "Portofolin e Brave"</translation>
+<translation id="4770909831299304090">Përditëso numrin KTN në "Portofolin e Brave"</translation>
 <translation id="4771973620359291008">Ka ndodhur një gabim i panjohur.</translation>
 <translation id="4775456404799771098">Do ta humbasësh skedarin përgjithmonë</translation>
 <translation id="477945296921629067">{NUM_POPUPS,plural, =1{Një dritare kërcyese u bllokua}other{# dritare kërcyese u bllokuan}}</translation>
@@ -2196,10 +2217,10 @@ Për të fshehur opsionet e "Paguaj më vonë", shko te <ph name="BEGIN_LINK"/>c
 <translation id="4803924862070940586"><ph name="FORMATTED_TOTAL_AMOUNT"/> <ph name="CURRENCY_CODE"/></translation>
 <translation id="4805128460707321168">Përditëso kartën e identitetit në mënyrë të sigurt</translation>
 <translation id="4807098396393229769">Emri në kartë</translation>
-<translation id="5108824058672523034">Shto numrin e udhëtarit të njohur në mënyrë të sigurt te "Portofoli i Brave"</translation>
+<translation id="4808598252755230865">Shto numrin e udhëtarit të njohur në mënyrë të sigurt te "Portofoli i Brave"</translation>
 <translation id="4809079943450490359">Udhëzimet nga administratori i pajisjes sate:</translation>
 <translation id="4811450222531576619">Mëso rreth burimit të saj dhe temës</translation>
-<translation id="1177020771645812087">Ruaj automjetin në mënyrë të sigurt te "Portofoli i Brave"</translation>
+<translation id="4811696127853690432">Ruaj automjetin në mënyrë të sigurt te "Portofoli i Brave"</translation>
 <translation id="4811918461974803225">Google Pay, logoja e Affirm</translation>
 <translation id="4813512666221746211">Gabim në rrjet</translation>
 <translation id="4814114628197290459">Fshi numrin IBAN</translation>
@@ -2248,8 +2269,10 @@ Për të fshehur opsionet e "Paguaj më vonë", shko te <ph name="BEGIN_LINK"/>c
 <translation id="4885256590493466218">Paguaj me <ph name="CARD_DETAIL"/> në përfundim të blerjes</translation>
 <translation id="4300808005160908299">Shfletuesi Brave dëshiron të verifikojë që je ti para se të ndryshosh cilësimet</translation>
 <translation id="4887406273302438710">Mbroji fjalëkalimet me Windows Hello</translation>
+<translation id="4887435305021446590">Hap Gmail</translation>
 <translation id="4887785555357166111">Ruaj kuadrin e videos</translation>
 <translation id="5465328071969343355"><ph name="CLEAR_BROWSING_DATA_FOCUSED_FRIENDLY_MATCH_TEXT"/>, shtyp "Tab" dhe më pas "Enter" për të fshirë historikun e shfletimit, kukit, memorien specifike etj. te cilësimet e Brave</translation>
+<translation id="4892391379033030113">Butoni "Hap dritaren e izoluar". Aktivizoje për të hapur një dritare të re të izoluar për të shfletuar në mënyrë private</translation>
 <translation id="4892518386797173871">Prapa</translation>
 <translation id="4894390983254799375">Si p.sh. ID-ja e pajisjes, emri, versioni i sistemit operativ dhe emri i përdoruesit të sistemit operativ</translation>
 <translation id="4895877746940133817"><ph name="TYPE_1"/>, <ph name="TYPE_2"/>, <ph name="TYPE_3"/></translation>
@@ -2285,10 +2308,11 @@ Për të fshehur opsionet e "Paguaj më vonë", shko te <ph name="BEGIN_LINK"/>c
 <translation id="4943620199112228840">Të përdorë mikrofonat e tu</translation>
 <translation id="4943872375798546930">Asnjë rezultat</translation>
 <translation id="494701040141924538">E kuptova, mbylle njoftimin</translation>
+<translation id="4951038790614970523">Teksti që pret ose kopjon në kujtesën e fragmenteve dërgohet te Google Cloud ose te palë të treta për analizim. Për shembull, ato mund të skanohen për të dhëna delikate dhe mund të ruhen bazuar në politikat e kompanisë dhe të jenë të dukshme për administratorin tënd.</translation>
 <translation id="495170559598752135">Veprimet</translation>
 <translation id="4953689047182316270">Reago ndaj ngjarjeve të qasshmërisë</translation>
 <translation id="2087849210737883918">Për të ofruar sugjerime dhe për të përmirësuar këtë veçori, URL-ja dhe përmbajtja e faqes ndahen me Brave</translation>
-<translation id="888946399124114802">Paguaj më shpejt me kartën tënde të ruajtur. Detajet e kartës janë të enkriptuara te "Portofoli i Brave".</translation>
+<translation id="4954891067389874142">Paguaj më shpejt me kartën tënde të ruajtur. Detajet e kartës janë të enkriptuara te "Portofoli i Brave".</translation>
 <translation id="2351178841237473727">Butoni "Shiko historikun tënd të Brave". Aktivizoje për të shikuar dhe menaxhuar historikun tënd të shfletimit te cilësimet e Brave</translation>
 <translation id="4957781475307065660">{DOMAIN_COUNT,plural, =1{+ 1 sajt}other{+ # sajte}}</translation>
 <translation id="4958444002117714549">Zgjero listën</translation>
@@ -2337,7 +2361,7 @@ Për të fshehur opsionet e "Paguaj më vonë", shko te <ph name="BEGIN_LINK"/>c
 <translation id="5026121202864677765">Shkruaj letrën time të motivimit</translation>
 <translation id="5030338702439866405">Lëshuar nga</translation>
 <translation id="503069730517007720">Për "<ph name="SOFTWARE_NAME"/>" kërkohet një certifikatë rrënjë, por ajo nuk është instaluar. Administratori i TI-së duhet të shikojë udhëzimet e konfigurimit për "<ph name="SOFTWARE_NAME"/>" për të rregulluar këtë problem. <ph name="FURTHER_EXPLANATION"/></translation>
-<translation id="7106879493637631619">Ruaj numrin KTN në mënyrë të sigurt te "Portofoli i Brave"</translation>
+<translation id="5034488401832901795">Ruaj numrin KTN në mënyrë të sigurt te "Portofoli i Brave"</translation>
 <translation id="503498442187459473"><ph name="HOST"/> kërkon të përdorë kamerën dhe mikrofonin</translation>
 <translation id="503574301575803523">SRA3</translation>
 <translation id="5039762155821394373">Madhësia e fontit</translation>
@@ -2348,7 +2372,7 @@ Për të fshehur opsionet e "Paguaj më vonë", shko te <ph name="BEGIN_LINK"/>c
 <translation id="5045550434625856497">Fjalëkalim i gabuar</translation>
 <translation id="5051254010007014901"><ph name="TOOLBELT_PRECEDING_MATCH_TEXT"/>, shtyp "Tab" për më shumë shkurtore kërkimi që ofrohen pas këtij sugjerimi kërkimi</translation>
 <translation id="5052488928733955073">Problem me plotësimin e informacioneve të tua. Kontrollo lidhjen tënde.</translation>
-<translation id="4845759156174221500">Një numër karte virtuale do të plotësohet kur të përfundosh blerjen me këtë kartë për të mbrojtur detajet e tua aktuale. Menaxho te "Portofoli i Brave". <ph name="IDS_AUTOFILL_VIRTUAL_CARD_ENROLLMENT_LEARN_MORE_LINK_LABEL"/></translation>
+<translation id="5053116470141135293">Një numër karte virtuale do të plotësohet kur të përfundosh blerjen me këtë kartë për të mbrojtur detajet e tua aktuale. Menaxho te "Portofoli i Brave". <ph name="IDS_AUTOFILL_VIRTUAL_CARD_ENROLLMENT_LEARN_MORE_LINK_LABEL"/></translation>
 <translation id="5056425809654826431">{NUM_FILES,plural, =1{Për ta dërguar këtë skedar duke përdorur "Ndarjen në afërsi", liro hapësirë (<ph name="DISK_SPACE_SIZE"/>) në pajisjen tënde}other{Për ta dërguar këta skedarë duke përdorur "Ndarjen në afërsi", liro hapësirë (<ph name="DISK_SPACE_SIZE"/>) në pajisjen tënde}}</translation>
 <translation id="505757197798929356">Jep arsyen për hapjen (e detyrueshme)</translation>
 <translation id="5058282932481719070">mëso më shumë rreth plotësimit automatik të përmirësuar te cilësimet</translation>
@@ -2426,6 +2450,7 @@ Për të fshehur opsionet e "Paguaj më vonë", shko te <ph name="BEGIN_LINK"/>c
 <translation id="5177076414499237632">Mëso rreth temës dhe burimit të kësaj faqeje</translation>
 <translation id="5179490652562926740">Cilësimet e verifikimit të pagesave u ruajtën</translation>
 <translation id="5180662470511508940">Kyçja e tastierës nuk lejohet</translation>
+<translation id="5180732217498483224">Hap burimin e <ph name="APP_NAME"/>: <ph name="TITLE"/></translation>
 <translation id="5190072300954988691">Kamera dhe mikrofoni nuk lejohen</translation>
 <translation id="5190835502935405962">Shiriti i faqeshënuesve</translation>
 <translation id="5191315092027169558">Profili yt menaxhohet nga <ph name="DOMAIN"/></translation>
@@ -2467,14 +2492,15 @@ Për të fshehur opsionet e "Paguaj më vonë", shko te <ph name="BEGIN_LINK"/>c
 <translation id="5255583962255635076">Politikat e zbatuara të shfletuesit në profilin tënd të punës</translation>
 <translation id="5255690596502591079">Shkrepe gjithsesi</translation>
 <translation id="5255771248404149177">Ofruesi i kartës dëshiron të sigurohet që je ti</translation>
-<translation id="525579853540851404">Ekrani i progresit për metodën "Bli tani, paguaj më vonë". Tastiera është e fshehur.</translation>
 <translation id="5255833070095767006">350 x 460 mm</translation>
 <translation id="5257739419779698609">{0,plural, =1{Politika e administratorit nuk rekomandon kopjimin e këtij skedari te: <ph name="DESTINATION_NAME"/>}other{Politika e administratorit nuk rekomandon kopjimin e këtyre skedarëve te: <ph name="DESTINATION_NAME"/>}}</translation>
 <translation id="5258473597674772367">Grupi i skedave "<ph name="GROUP_NAME"/>" nuk ofrohet më</translation>
 <translation id="5260842098960755113">Bashkëbisedimi u mbyll</translation>
 <translation id="5262342527470539728">Informacionet e tua ruhen te <ph name="IDS_AUTOFILL_GOOGLE_WALLET_TITLE"/> për <ph name="ACCOUNT"/></translation>
+<translation id="5263202631354741256">ID</translation>
 <translation id="5263867360296733198">Kërkohet rishikimi përpara ngarkimit</translation>
 <translation id="5266128565379329178">Lidhje lart</translation>
+<translation id="5268746892698450173">Emri i operatorit celular</translation>
 <translation id="5269225904387178860">Katër shpime poshtë</translation>
 <translation id="5271381225185906340">"<ph name="DATA_CONTROLS_ATTRIBUTE"/>" nuk është një kusht i mbështetur për "<ph name="DATA_CONTROLS_RESTRICTION"/>"</translation>
 <translation id="527191520368130807">Përsos</translation>
@@ -2502,6 +2528,7 @@ Për të fshehur opsionet e "Paguaj më vonë", shko te <ph name="BEGIN_LINK"/>c
 <translation id="5314967030527622926">Krijuesi i broshurës</translation>
 <translation id="5316812925700871227">Rrotullo në drejtim të kundërt të akrepave të orës</translation>
 <translation id="5317780077021120954">Ruaj</translation>
+<translation id="5318654747230250818">Kodi: <ph name="PROMO_CODE"/></translation>
 <translation id="5323043727018853753">Përmbajtja e integruar lejohet</translation>
 <translation id="5323105697514565458"><ph name="FRIENDLY_MATCH_TEXT"/>, <ph name="MATCH_POSITION"/> nga <ph name="NUM_MATCHES"/></translation>
 <translation id="2334093076041322971">Menaxhoje në "Llogarinë tënde të Brave"</translation>
@@ -2514,6 +2541,7 @@ Për të fshehur opsionet e "Paguaj më vonë", shko te <ph name="BEGIN_LINK"/>c
 <translation id="533323551986281710">Fleta e poshtme e tregtisë u hap në lartësi të plotë</translation>
 <translation id="5334013548165032829">Evidencat e detajuara të sistemit</translation>
 <translation id="5340250774223869109">Aplikacioni është bllokuar</translation>
+<translation id="5342666539242413840">Teksti është kopjuar te kujtesa e fragmenteve</translation>
 <translation id="5342693890921195472">min. më parë</translation>
 <translation id="534295439873310000">Pajisjet me NFC</translation>
 <translation id="5344579389779391559">Kjo faqe mund të përpiqet të të tarifojë në para</translation>
@@ -2546,10 +2574,9 @@ Për të fshehur opsionet e "Paguaj më vonë", shko te <ph name="BEGIN_LINK"/>c
 <translation id="5396631636586785122">Qepje anësore djathtas</translation>
 <translation id="5396837962335265787"><ph name="ATTRIBUTE_NAME"/>, ishte <ph name="OLD_ATTRIBUTE_ATTRIBUTE"/></translation>
 <translation id="5397794290049113714">Ti</translation>
-<translation id="7948560911043168202">Për të plotësuar automatikisht këtë numër IBAN herën tjetër, ruaje atë te "Portofoli i Brave"</translation>
+<translation id="5398461103557553443">Për të plotësuar automatikisht këtë numër IBAN herën tjetër, ruaje atë te "Portofoli i Brave"</translation>
 <translation id="5398772614898833570">Reklamat janë të bllokuara</translation>
 <translation id="5400836586163650660">Gri</translation>
-<translation id="5402715318763077894">Të lejohet qasja në rrjetin lokal?</translation>
 <translation id="540949333488055151">Plastikë (me ngjyra)</translation>
 <translation id="540969355065856584">Ky server nuk mund të provojë se është <ph name="DOMAIN"/>; certifikata e tij e sigurisë është e pavlefshme në këtë moment. Kjo mund të shkaktohet për shkak të konfigurimit të pasaktë ose në rast të ndërhyrjes së ndonjë sulmuesi në lidhjen tënde.</translation>
 <translation id="5411462078004183575">Opsion me çmim të ulët</translation>
@@ -2571,18 +2598,19 @@ Për të fshehur opsionet e "Paguaj më vonë", shko te <ph name="BEGIN_LINK"/>c
             <ph name="LIST_ITEM"/>Kukit dhe të dhënat e sajteve
             <ph name="LIST_ITEM"/>Informacionet e futura në formularë
           <ph name="END_LIST"/></translation>
-<translation id="4203264631355936344">Për përfundim më të shpejtë të blerjes, ruaje këtë kod CVC te "Portofoli i Brave" (<ph name="ACCOUNT_EMAIL"/>)</translation>
+<translation id="5434803328547504573">Për përfundim më të shpejtë të blerjes, ruaje këtë kod CVC te "Portofoli i Brave" (<ph name="ACCOUNT_EMAIL"/>)</translation>
 <translation id="5436307623797390637">Aplikacionet në pajisje</translation>
 <translation id="543656192084990644">Sensorët e lëvizjes nuk lejohen</translation>
 <translation id="5441409130426352029"><ph name="ATTRIBUTE_VALUE"/>, ishte <ph name="PREVIOUS_VALUE"/></translation>
 <translation id="5443468954631487277">Renditja e kundërt e kthyer lart</translation>
-<translation id="4784093498984929780">Ruaj pasaportën te "Portofoli i Brave"</translation>
+<translation id="5447103258548475868">Ruaj pasaportën te "Portofoli i Brave"</translation>
 <translation id="5447235695608032700">Lejo që <ph name="SITE"/> të përdorë informacionet e ruajtura për ty</translation>
 <translation id="5447973833955560753">Fjalëkalimi i rikuperimit</translation>
 <translation id="5452270690849572955">Kjo faqe e <ph name="HOST_NAME"/> nuk mund të gjendet</translation>
 <translation id="5452923259299906094">Paguaj me "Portofolin elektronik" dhe Pix</translation>
 <translation id="5455374756549232013">Vulë kohore politike e gabuar</translation>
 <translation id="5456428544444655325">Mos shfaq asnjëherë</translation>
+<translation id="5457082343331641453">Shto në kërkimin tënd</translation>
 <translation id="5458150163479425638">{CONTACT,plural, =0{<ph name="CONTACT_PREVIEW"/>}=1{<ph name="CONTACT_PREVIEW"/> dhe <ph name="NUMBER_OF_ADDITIONAL_CONTACTS"/> tjetër}other{<ph name="CONTACT_PREVIEW"/> dhe <ph name="NUMBER_OF_ADDITIONAL_CONTACTS"/> të tjerë}}</translation>
 <translation id="5463625433003343978">Po gjen pajisje...</translation>
 <translation id="5465128270485645058">Merr përgjigje më të personalizuara duke ndarë automatikisht skedat e hapura në këtë dritare nëse kanë lidhje me këtë bashkëbisedim.</translation>
@@ -2652,7 +2680,7 @@ Për të fshehur opsionet e "Paguaj më vonë", shko te <ph name="BEGIN_LINK"/>c
 <translation id="5561747310506483298">Kartat e identitetit</translation>
 <translation id="55635442646131152">Konturi i dokumentit</translation>
 <translation id="1702142849385752335">Për të përdorur vendndodhjen, jepi qasje Brave te <ph name="LINK"/>.</translation>
-<translation id="4508945603260486778">Shto kartën e identitetit te "Portofoli i Brave"</translation>
+<translation id="5565613377956908865">Shto kartën e identitetit te "Portofoli i Brave"</translation>
 <translation id="5565735124758917034">Aktiv</translation>
 <translation id="5570825185877910964">Mbroje llogarinë</translation>
 <translation id="5571083550517324815">Nuk mund të merret nga kjo adresë. Zgjidh një adresë tjetër.</translation>
@@ -2661,7 +2689,7 @@ Për të fshehur opsionet e "Paguaj më vonë", shko te <ph name="BEGIN_LINK"/>c
 <translation id="5580958916614886209">Kontrollo muajin e skadimit dhe provo përsëri</translation>
 <translation id="5582453333200265572">Përditëso kartën e identitetit</translation>
 <translation id="5583442610070676234">Më shumë veprime për tabelën e krahasimit "<ph name="COMPARE_SET_NAME"/>"</translation>
-<translation id="1279569289359558111">Ky numër IBAN nuk mund të ruhej te "Portofoli i Brave". Në vend të kësaj, ai është ruajtur në Brave në këtë pajisje.</translation>
+<translation id="3962928901296144284">Ky numër IBAN nuk mund të ruhej te "Portofoli i Brave". Në vend të kësaj, ai është ruajtur në Brave në këtë pajisje.</translation>
 <translation id="558420943003240152">Menaxho fjalëkalimet dhe çelësat e kalimit…</translation>
 <translation id="5586446728396275693">Nuk ka adresa të ruajtura</translation>
 <translation id="5586831831248371458">Kërko te <ph name="KEYWORD_SUFFIX"/></translation>
@@ -2709,7 +2737,7 @@ Për të fshehur opsionet e "Paguaj më vonë", shko te <ph name="BEGIN_LINK"/>c
 <translation id="5648166631817621825">7 ditët e fundit</translation>
 <translation id="5649053991847567735">Shkarkimet automatike</translation>
 <translation id="5651323159439184939">Furnizimi me dhëmbëza</translation>
-<translation id="5987316528511737389">Përditëso kartën e identitetit në mënyrë të sigurt te "Portofoli i Brave"</translation>
+<translation id="5653681867130739344">Përditëso kartën e identitetit në mënyrë të sigurt te "Portofoli i Brave"</translation>
 <translation id="7288726880908739179">Ruaj informacionet e tua dhe bëji gjërat më shpejt, si p.sh. plotësimin e formularëve nëpër produktet e Brave. Mund të <ph name="MANAGE_WALLET_SETTINGS_LINK"/> për <ph name="ACCOUNT"/>.</translation>
 <translation id="5654927323611874862">U ngarkua ID-ja e raporteve të ndërprerjeve aksidentale:</translation>
 <translation id="5654965123204121933">URL-ja nuk përfshin vargun e kërkuar të zëvendësimit <ph name="SEARCH_TERMS_REPLACEMENT"/>: <ph name="SEARCH_URL"/></translation>
@@ -2739,7 +2767,7 @@ Për të fshehur opsionet e "Paguaj më vonë", shko te <ph name="BEGIN_LINK"/>c
 <translation id="5715150588940290235">Të fshihen kodet e ruajtura të sigurisë?</translation>
 <translation id="5715918316982363436"><ph name="TAB_COUNT"/> nga <ph name="WINDOW_COUNT"/> në këtë pajisje</translation>
 <translation id="5716325061445053985">Trokit për ta hapur skedën në telefonin tënd</translation>
-<translation id="5576354004856163244">Plotëso automatikisht detajet e kartës kur përfundon blerjen online. Kartat ruhen në mënyrë të sigurt te "Portofoli i Brave".</translation>
+<translation id="5717281954932320486">Plotëso automatikisht detajet e kartës kur përfundon blerjen online. Kartat ruhen në mënyrë të sigurt te "Portofoli i Brave".</translation>
 <translation id="5718326209176373202">Shto shënime me tekst</translation>
 <translation id="5718601519531438273">Përfshin informacione si pasaportat dhe lejet e drejtimit</translation>
 <translation id="5720705177508910913">Përdoruesi aktual</translation>
@@ -2788,6 +2816,7 @@ Për të fshehur opsionet e "Paguaj më vonë", shko te <ph name="BEGIN_LINK"/>c
 <translation id="5789643057113097023">.</translation>
 <translation id="5793317771769868848">Kjo mënyrë pagese do të fshihet nga kjo pajisje</translation>
 <translation id="5794065675298686371">Aktivizo njoftimet për monitorimin e çmimeve</translation>
+<translation id="5794093550048860249">Numri i gjurmimit</translation>
 <translation id="7504725958983465699">Aktivizo "<ph name="BEGIN_LINK"/>Veçoritë inteligjente në produktet e tjera të Brave<ph name="LINK_END"/>"</translation>
 <translation id="5797984091151707075">Bllokuar nga politika e administratorit</translation>
 <translation id="5804241973901381774">Lejet</translation>
@@ -2802,7 +2831,7 @@ Për të fshehur opsionet e "Paguaj më vonë", shko te <ph name="BEGIN_LINK"/>c
 <translation id="5820751560028604030">Shkarkimi lokal u bllokua</translation>
 <translation id="5826507051599432481">Emri i zakonshëm (CN)</translation>
 <translation id="5830698870816298009">Përdorimi dhe lëvizja e kamerës</translation>
-<translation id="8488282162676695335">Portofoli i Brave</translation>
+<translation id="5831217499016131155">Portofoli i Brave</translation>
 <translation id="5832976493438355584">I kyçur</translation>
 <translation id="5837220895135257862">Liro hapësirë në "<ph name="CLOUD_PROVIDER"/>" para se të provosh përsëri</translation>
 <translation id="5838278095973806738">Nuk duhet të futësh asnjë informacion delikat në këtë sajt (p.sh. fjalëkalimet ose karta krediti) pasi mund të vidhet nga sulmuesit.</translation>
@@ -2811,7 +2840,7 @@ Për të fshehur opsionet e "Paguaj më vonë", shko te <ph name="BEGIN_LINK"/>c
 <translation id="5841007907672481419">Nga <ph name="TYPE_1"/></translation>
 <translation id="5843987376989109187">Kjo gjuhë nuk mbështetet ende.
     <ph name="BEGIN_LINK"/>Mëso më shumë<ph name="END_LINK"/></translation>
-<translation id="8224714187340014040">Pasi të rishikosh porosinë, duhet të identifikohesh ose të krijosh një llogari me <ph name="BNPL_ISSUER_NAME"/>. Kjo llogari do të lidhet automatikisht te "Portofoli i Brave".</translation>
+<translation id="5848445080378515710">Pasi të rishikosh porosinë, duhet të identifikohesh ose të krijosh një llogari me <ph name="BNPL_ISSUER_NAME"/>. Kjo llogari do të lidhet automatikisht te "Portofoli i Brave".</translation>
 <translation id="5851548754964597211">Lista e skedave</translation>
 <translation id="5851868085455377790">Publikuesi</translation>
 <translation id="5852909432155870672">RA4</translation>
@@ -2825,7 +2854,7 @@ Për të fshehur opsionet e "Paguaj më vonë", shko te <ph name="BEGIN_LINK"/>c
 <translation id="5866898949289125849">Po shikon një faqe të veglave të zhvilluesit</translation>
 <translation id="5869405914158311789">Ky sajt është i paarritshëm</translation>
 <translation id="5869522115854928033">Fjalëkalimet e ruajtura</translation>
-<translation id="1025941152813277982">Përditëso numrin KTN në mënyrë të sigurt te "Portofoli i Brave"</translation>
+<translation id="5872115357279348603">Përditëso numrin KTN në mënyrë të sigurt te "Portofoli i Brave"</translation>
 <translation id="5872215789867188990">"<ph name="GROUP_TITLE"/>" grup skedash nuk ofrohet më</translation>
 <translation id="5872692522325383488">Numri IBAN u ruajt</translation>
 <translation id="5879989559903563723">Nuk lejohet në modalitetin "vizitor"</translation>
@@ -2841,14 +2870,14 @@ Për të fshehur opsionet e "Paguaj më vonë", shko te <ph name="BEGIN_LINK"/>c
 <translation id="3476147989326158506">Brave po përpiqet të shfaqë informacione delikate</translation>
 <translation id="5898767305816764989">Butoni i gishtave lart, shtyp tastin Enter për të dërguar koment që të pëlqen, <ph name="THUMBS_UP_SUGGESTION_BUTTON_FOCUSED_FRIENDLY_MATCH_TEXT"/></translation>
 <translation id="5901630391730855834">E verdhë</translation>
-<translation id="9017337151040864889">Shto lejen e drejtimit në mënyrë të sigurt te "Portofoli i Brave"</translation>
+<translation id="5902204772823742902">Shto lejen e drejtimit në mënyrë të sigurt te "Portofoli i Brave"</translation>
 <translation id="5903264686717710770">Titulli:</translation>
 <translation id="3704860399319731107">Adresa jote e punës mund të të ndihmojë të realizosh gjërat në shërbimet e Brave, si p.sh. rezultate më të përshtatshme të "Kërko" dhe udhëzimet në Brave Maps. Mund ta modifikosh ose ta fshish adresën tënde <ph name="BEGIN_LINK"/>në "Llogarinë tënde të Brave" <ph name="ACCOUNT"/><ph name="END_LINK"/>.</translation>
 <translation id="5908541034548427511"><ph name="TYPE_1"/> (sinkronizuar)</translation>
 <translation id="5910140988253729859">Zhbëje plotësimin automatik</translation>
 <translation id="5911110632211230665">Hapja u bllokua</translation>
-<translation id="1765144800915733093">Hap "Portofolin e Brave"</translation>
-<translation id="7227888833179196534">Ruaj numrin KTN te "Portofoli i Brave"</translation>
+<translation id="5912796581727968237">Hap "Portofolin e Brave"</translation>
+<translation id="5914185423510719251">Ruaj numrin KTN te "Portofoli i Brave"</translation>
 <translation id="5914465277418006379"><ph name="MEMBER_FIRST_NAME"/> e shtoi këtë skedë</translation>
 <translation id="59174027418879706">Aktivizuar</translation>
 <translation id="5917538780499455803">Ruaj kartën e identitetit në mënyrë të sigurt</translation>
@@ -2916,6 +2945,7 @@ Për të fshehur opsionet e "Paguaj më vonë", shko te <ph name="BEGIN_LINK"/>c
 <translation id="6025416945513303461"><ph name="TYPE_1"/>, <ph name="TYPE_2"/>, <ph name="TYPE_3"/> (sinkronizuar)</translation>
 <translation id="6025471531651464742">Shto skedarë</translation>
 <translation id="6028591542479806248">Menaxho njoftimet e email-it dhe pajisjes celulare</translation>
+<translation id="6029805223627823735"><ph name="LAUNCH_ISOLATED_FOCUSED_FRIENDLY_MATCH_TEXT"/>, shtyp tastin Tab dhe më pas tastin Enter për të hapur një dritare të re të izoluar për të shfletuar në mënyrë private</translation>
 <translation id="603068602130820122">Dy kapje me tel djathtas</translation>
 <translation id="6031824805267965302">Të përdorë sensorët e lëvizjes</translation>
 <translation id="6032524144326295339">Kutia postare 2</translation>
@@ -2953,7 +2983,7 @@ Për të fshehur opsionet e "Paguaj më vonë", shko te <ph name="BEGIN_LINK"/>c
 <translation id="6085149458302186532">Etiketa (me ngjyra)</translation>
 <translation id="6087312102907839798">Kërkime të ngjashme</translation>
 <translation id="7851017866080575588">Skedat që fshin nga historiku i Brave do të shfaqen ende në tabelat e tua të krahasimit</translation>
-<translation id="8165276822290438118">Logoja e "Portofolit të Brave"</translation>
+<translation id="6091115085465716987">Logoja e "Portofolit të Brave"</translation>
 <translation id="6091691259076781835">Për përfundim më të shpejtë të blerjes, ruaje këtë kod CVC në pajisjen tënde</translation>
 <translation id="6093599771645355227">E verdhë 1</translation>
 <translation id="6093795393556121384">Karta jote është verifikuar</translation>
@@ -3052,7 +3082,7 @@ Për të fshehur opsionet e "Paguaj më vonë", shko te <ph name="BEGIN_LINK"/>c
 <translation id="6248988683584659830">Cilësimet e kërkimit</translation>
 <translation id="6251906504834538140">{0,plural, =1{Zhvendosja e skedarit është bllokuar}other{Zhvendosja e <ph name="FILE_COUNT"/> skedarëve është bllokuar}}</translation>
 <translation id="3917320044622606497"><ph name="MANAGE_CHROME_DOWNLOADS_FOCUSED_FRIENDLY_MATCH_TEXT"/>. Shtyp "Tab" dhe më pas "Enter" për të menaxhuar skedarët që ke shkarkuar në Brave</translation>
-<translation id="8057290549484414862">Ruaje kartën te "Portofoli i Brave"</translation>
+<translation id="6253380015872250643">Ruaje kartën te "Portofoli i Brave"</translation>
 <translation id="6254436959401408446">Nuk ka memorie të mjaftueshme për të hapur këtë faqe</translation>
 <translation id="625463612687472648">Ndalo lejimin</translation>
 <translation id="6259156558325130047">&amp;Ribëj riporosinë</translation>
@@ -3061,8 +3091,10 @@ Për të fshehur opsionet e "Paguaj më vonë", shko te <ph name="BEGIN_LINK"/>c
 <translation id="6263376278284652872">Faqeshënuesit e <ph name="DOMAIN"/></translation>
 <translation id="6264376385120300461">Shkarkoje gjithsesi</translation>
 <translation id="6264485186158353794">Kthehu aty ku je i sigurt</translation>
+<translation id="6264507470395196064">Portëkalimi i sigurt</translation>
 <translation id="6264636978858465832">"Menaxheri i fjalëkalimeve" ka nevojë për më shumë qasje</translation>
 <translation id="6265794661083428563">Kopjo vlerën e politikës së <ph name="POLICY_NAME"/></translation>
+<translation id="6271264012613848937">Je bllokuar që të mos vizitosh <ph name="URL"/> për shkak të politikave të organizatës sate. Nëse kjo është e papritur, kontakto me administratorin tënd.</translation>
 <translation id="1300170712564922349">Vazhdo udhëtimin për të parë aktivitetin përkatës në historikun tënd të Brave</translation>
 <translation id="9136010393039243713">Përditësimi i Brave</translation>
 <translation id="6278015583149890680">"Diskut të Brave" dhe OneDrive</translation>
@@ -3087,6 +3119,7 @@ Për të fshehur opsionet e "Paguaj më vonë", shko te <ph name="BEGIN_LINK"/>c
 <translation id="6311410654831092784">Karton i hollë</translation>
 <translation id="6311642842034740437">Vendndodhja e emërtuar</translation>
 <translation id="6312113039770857350">Faqja e uebit nuk është e disponueshme</translation>
+<translation id="6313189007657889655">ID-ja e porosisë</translation>
 <translation id="6316110367871394043">Ngarkimi i skedarëve te "<ph name="CLOUD_PROVIDER"/>" është vendosur në pauzë</translation>
 <translation id="63172326633386613">Menaxho cilësimet e qasshmërisë</translation>
 <translation id="7867333304076398451">Ky sajt do të qëndrojë i bllokuar sepse je në "Programin e 'Mbrojtjes së përparuar'" të Brave. <ph name="BEGIN_LEARN_MORE_LINK"/>Mëso më shumë për këtë paralajmërim<ph name="END_LEARN_MORE_LINK"/></translation>
@@ -3157,7 +3190,7 @@ Për të fshehur opsionet e "Paguaj më vonë", shko te <ph name="BEGIN_LINK"/>c
 <translation id="6413532517183895572">menaxhosh cilësimet e "Portofolit"</translation>
 <translation id="6416877227920300343">EDP</translation>
 <translation id="6418199314628742460">Sigurohu që të dhënat kritike të biznesit ose të dhënat personale të ruhen në nivel të jashtëm.</translation>
-<translation id="4561848316196784217">Përditëso automjetin në mënyrë të sigurt te "Portofoli i Brave"</translation>
+<translation id="6422648598133086441">Përditëso automjetin në mënyrë të sigurt te "Portofoli i Brave"</translation>
 <translation id="6425092077175753609">Material</translation>
 <translation id="6427730057873428458">Palosje me dritare</translation>
 <translation id="6429267199680088961">A4 Tab</translation>
@@ -3245,8 +3278,8 @@ Për të fshehur opsionet e "Paguaj më vonë", shko te <ph name="BEGIN_LINK"/>c
 <translation id="2679746641101586196">Brave po përpiqet të plotësojë informacionet e tua delikate në <ph name="APP_NAME"/>.</translation>
 <translation id="6578434528542148658">ID e pavlefshme e shtesës.</translation>
 <translation id="3157702622633401823">Sulmuesit në sajtin që u përpoqe të vizitoje mund të instalojnë një softuer të dëmshëm që vjedh ose fshin gjëra të tilla si fjalëkalimet, fotografitë, mesazhet ose numrat e kartave të kreditit. Brave rekomandon shumë të kthehesh aty ku je i sigurt. <ph name="BEGIN_LEARN_MORE_LINK"/>Mëso më shumë për këtë paralajmërim<ph name="END_LEARN_MORE_LINK"/></translation>
-<translation id="2571911185264872034">Ruajtur te "Portofoli i Brave"</translation>
-<translation id="4503563163243322840">Kjo kartë është ruajtur në "Portofolin e Brave" që të mund ta përdorësh nëpër produktet e Brave</translation>
+<translation id="6583309742916093092">Ruajtur te "Portofoli i Brave"</translation>
+<translation id="2765043438745652392">Kjo kartë është ruajtur në "Portofolin e Brave" që të mund ta përdorësh nëpër produktet e Brave</translation>
 <translation id="6587893660316489419">Zarf B5</translation>
 <translation id="6587923378399804057">Lidhja që kopjove</translation>
 <translation id="6591833882275308647">Pajisja jote <ph name="DEVICE_TYPE"/> nuk është e menaxhuar</translation>
@@ -3259,17 +3292,18 @@ Për të fshehur opsionet e "Paguaj më vonë", shko te <ph name="BEGIN_LINK"/>c
 <translation id="5887670611153282204">Mëso më shumë për motorin e kërkimit në Brave</translation>
 <translation id="6615297766614333076">Stivuesi 2</translation>
 <translation id="6619496928666593220">Numri IBAN nuk është plotësuar</translation>
-<translation id="7974914674103704697">Shto automjetin në mënyrë të sigurt te "Portofoli i Brave"</translation>
+<translation id="662009501953240458">Shto automjetin në mënyrë të sigurt te "Portofoli i Brave"</translation>
 <translation id="6624427990725312378">Informacionet e kontaktit</translation>
 <translation id="6625629379283886932">Më mëso se si të kodoj</translation>
 <translation id="6628463337424475685">Kërkimi me <ph name="ENGINE"/></translation>
 <translation id="6630043285902923878">Po gjen pajisjet USB...</translation>
 <translation id="4945711024178085608">Butoni "Menaxho cilësimet e Brave". Aktivizoje për të vizituar cilësimet e Brave</translation>
 <translation id="663260587451432563">JIS B4</translation>
+<translation id="8669809408036157295">Për të vizituar sajtin në vijim, organizata jote kërkon që të identifikohesh me llogarinë tënde të menaxhuar të Brave.</translation>
 <translation id="6635900375070654124">një pajisje vërtetuese</translation>
 <translation id="6641852376826221947">Konfirmo blerjen tënde</translation>
 <translation id="6643016212128521049">Pastro</translation>
-<translation id="6978162289423667633">Kjo kartë nuk mund të ruhej te "Portofoli i Brave". Në vend të kësaj, ajo është ruajtur në Brave në këtë pajisje.</translation>
+<translation id="5131980803947333612">Kjo kartë nuk mund të ruhej te "Portofoli i Brave". Në vend të kësaj, ajo është ruajtur në Brave në këtë pajisje.</translation>
 <translation id="6645291930348198241">Të ketë qasje te kukit dhe të dhënat e sajtit.</translation>
 <translation id="6645478838938543427">Sinjalizimet për uljet e çmimeve do të dërgohen te <ph name="EMAIL_ADDRESS"/></translation>
 <translation id="6678472970290886941">Administratori yt mund të ndryshojë konfigurimin e shfletuesit në distancë. Aktiviteti në këtë pajisje mund të menaxhohet edhe jashtë Brave.</translation>
@@ -3320,6 +3354,7 @@ Për të fshehur opsionet e "Paguaj më vonë", shko te <ph name="BEGIN_LINK"/>c
 <translation id="671076103358959139">Tokeni i regjistrimit:</translation>
 <translation id="6711464428925977395">Ka një gabim me serverin përfaqësues ose adresa është e pasaktë.</translation>
 <translation id="6711700233707023861">Vargu i varianteve u kopjua te kujtesa e fragmenteve</translation>
+<translation id="6712003214447962889">Përgjigje më inteligjente dhe më të shpejta</translation>
 <translation id="6712343563085762261">U zhvendos lart</translation>
 <translation id="6716039223770814796">Krahaso "<ph name="COMPARE_SET_NAME"/>" · <ph name="ITEMS"/> artikuj</translation>
 <translation id="6716672519412350405"><ph name="URL"/> kërkon të krijojë një hartë 3D të ambientit tënd rrethues dhe të gjurmojë pozicionin e kamerës</translation>
@@ -3339,6 +3374,7 @@ Për të fshehur opsionet e "Paguaj më vonë", shko te <ph name="BEGIN_LINK"/>c
 <translation id="6751487147225428522">ROC 8K</translation>
 <translation id="6753269504797312559">Vlera e politikës</translation>
 <translation id="6753434778807740853">Fshi hyrjen: <ph name="ENTRY_VOICEOVER"/></translation>
+<translation id="3557432974914530754">Sugjerimi u hoq nga Brave</translation>
 <translation id="6757797048963528358">Pajisja jote kaloi në gjumë.</translation>
 <translation id="6758934187792712102"><ph name="URL"/> dëshiron të përdorë sensorët e lëvizjes dhe të dritës</translation>
 <translation id="6770747695101757579">Letër (pambuk)</translation>
@@ -3417,6 +3453,7 @@ Për të fshehur opsionet e "Paguaj më vonë", shko te <ph name="BEGIN_LINK"/>c
 <translation id="6897140037006041989">Agjenti i përdoruesit</translation>
 <translation id="6898699227549475383">Organizata (O)</translation>
 <translation id="6900702165119149418">Ke dalë</translation>
+<translation id="6902049722133977432">Zhbëj</translation>
 <translation id="6910211073230771657">Fshirë</translation>
 <translation id="691024665142758461">Shkarko shumë skedarë</translation>
 <translation id="691046363691324218">Numri i zhdëmtimit</translation>
@@ -3433,7 +3470,7 @@ Për të fshehur opsionet e "Paguaj më vonë", shko te <ph name="BEGIN_LINK"/>c
 <translation id="6927878187051807444">skedarët e kamerës dhe pamjet e ekranit</translation>
 <translation id="6090573860187511325"><ph name="BEGIN_BOLD"/>Motori i parazgjedhur i kërkimit të lejon të kërkosh në ueb dhe mundëson veçoritë e Brave<ph name="END_BOLD"/>, si p.sh. kërkimin nga shiriti i adresave dhe nga imazhet në faqet e uebit. Një veçori mund të mos ofrohet nëse ajo nuk mbështetet nga motori i kërkimit.</translation>
 <translation id="6722453239914327220">Ky emër është nga "Llogaria jote e Brave"</translation>
-<translation id="7372037107287931628">Tani mund të plotësosh automatikisht kartat e besnikërisë nga "Portofoli i Brave"</translation>
+<translation id="6935077351544118151">Tani mund të plotësosh automatikisht kartat e besnikërisë nga "Portofoli i Brave"</translation>
 <translation id="6935179587384421592"><ph name="SIZE"/>. Disa sajte mund të ngarkohen më ngadalë në vizitën tënde të radhës.</translation>
 <translation id="6936976777388162184">Kjo është një pajisje pjesë e një pakete dhe nuk mund të regjistrohet me përmirësimin e kioskës dhe sinjalizimit.</translation>
 <translation id="6942444979237658241">Komentet - <ph name="GROUP_NAME"/></translation>
@@ -3451,6 +3488,7 @@ Për të fshehur opsionet e "Paguaj më vonë", shko te <ph name="BEGIN_LINK"/>c
 <translation id="6957153644870901611">Aktivizo plotësimin automatik të përmirësuar për të plotësuar automatikisht më shumë fusha</translation>
 <translation id="6957887021205513506">Certifikata e serverit duket se është e rreme.</translation>
 <translation id="774679539085757206">Menaxho cilësimet e privatësisë të Brave në "Llogarinë tënde të Brave"</translation>
+<translation id="3446213142631997348">"Menaxheri i fjalëkalimeve i Brave" mund t'i marrë këto kode për ty nga Gmail <ph name="EMAIL"/>. Mund të ndryshosh mendje dhe <ph name="IDS_AUTOFILL_GMAIL_OTP_OPT_IN_LEARN_MORE_LINK"/>.</translation>
 <translation id="6961844873822989059">Mund të kërkojë të përdorë fontet e instaluara në pajisjen tënde</translation>
 <translation id="6962858948849099922">Koha e zhvendosjes skadoi</translation>
 <translation id="6963520811470373926">Zëvendëson</translation>
@@ -3511,7 +3549,7 @@ Për të fshehur opsionet e "Paguaj më vonë", shko te <ph name="BEGIN_LINK"/>c
 <translation id="7058163556978339998"><ph name="BROWSER"/> verifikoi se <ph name="ISSUER"/> ka lëshuar certifikatën e kësaj faqeje interneti.</translation>
 <translation id="7058774143982824355">Shërbimi i analizuesit të fjalëkalimeve në CSV</translation>
 <translation id="7059913660448028407">Nuk ofrohet aktualisht</translation>
-<translation id="6761410840196521760">Për të paguar më shpejt herën tjetër, ruaje kartën dhe adresën të faturimit në "Portofolin e Brave"</translation>
+<translation id="7062344833049251424">Për të paguar më shpejt herën tjetër, ruaje kartën dhe adresën të faturimit në "Portofolin e Brave"</translation>
 <translation id="5320462991730735481">Shto dhe menaxho adresat te cilësimet e Brave</translation>
 <translation id="7063157783216323487">E gjelbër 2</translation>
 <translation id="7064851114919012435">Informacionet e kontaktit</translation>
@@ -3528,6 +3566,7 @@ Për të fshehur opsionet e "Paguaj më vonë", shko te <ph name="BEGIN_LINK"/>c
 <translation id="70846382339153529">Skedar me tekst OpenDocument</translation>
 <translation id="7086090958708083563">Përditësimi u kërkua nga përdoruesi</translation>
 <translation id="7090698782953528257">Më ndihmo të paraqes një funksion në grafik për të vizualizuar ekuacionin matematikor dhe për të parë formën e lakores</translation>
+<translation id="7092087596499105699">Administratori yt ka konfiguruar bashkuesin e portëkalimit të sigurt për të mbrojtur qasjen në aplikacionet private të uebit të organizatës sate. Ai mund të përdorë të dhëna nga profili yt i punës për të verifikuar qasjen.</translation>
 <translation id="1313878436434241688"><ph name="MANAGE_SITE_SETTINGS_FOCUSED_FRIENDLY_MATCH_TEXT"/>. Shtyp "Tab" dhe më pas "Enter" për të menaxhuar lejet dhe të dhënat e ruajtura nëpër sajte te cilësimet e Brave</translation>
 <translation id="709604659664854823">Gjej një rezervim të minutës së fundit në restorantet në afërsi sonte</translation>
 <translation id="7096341143397839437">Email-i: <ph name="EMAIL"/></translation>
@@ -3571,7 +3610,7 @@ Për të fshehur opsionet e "Paguaj më vonë", shko te <ph name="BEGIN_LINK"/>c
 <translation id="7162277662076933695">Lexuesi i kartave inteligjente</translation>
 <translation id="7163295244162773898">{0,plural, =1{Të kopjohet skedari konfidencial?}other{Të kopjohen skedarët konfidencialë?}}</translation>
 <translation id="7168625890036931112">"<ph name="DATA_CONTROLS_RESTRICTION"/>" nuk është një kufizim i mbështetur në këtë platformë</translation>
-<translation id="6390064556944765055">Të gjitha kodet e sigurisë të ruajtura në pajisjen tënde dhe në "Portofolin e Brave" do të fshihen</translation>
+<translation id="7170930892977483182">Të gjitha kodet e sigurisë të ruajtura në pajisjen tënde dhe në "Portofolin e Brave" do të fshihen</translation>
 <translation id="717330890047184534">ID-ja e Gaia:</translation>
 <translation id="7173338713290252554">Historiku i çmimeve nëpër ueb</translation>
 <translation id="7174545416324379297">E shkrirë</translation>
@@ -3615,7 +3654,7 @@ Për të fshehur opsionet e "Paguaj më vonë", shko te <ph name="BEGIN_LINK"/>c
 Detaje shtesë:
 <ph name="DEBUG_INFO"/></translation>
 <translation id="7252424535852086046">Për t'i fshirë këto të dhëna, shko te cilësimet e menaxhimit</translation>
-<translation id="4241646169865720085">Përditëso numrin e kompensimit në mënyrë të sigurt te "Portofoli i Brave"</translation>
+<translation id="7253051586755429279">Përditëso numrin e kompensimit në mënyrë të sigurt te "Portofoli i Brave"</translation>
 <translation id="7255540419660272073">Butoni i gishtave poshtë, shtyp tastin Enter për të hapur një formular për të dërguar koment të detajuar se pse nuk të pëlqen, <ph name="THUMBS_DOWN_SUGGESTION_BUTTON_FOCUSED_FRIENDLY_MATCH_TEXT"/></translation>
 <translation id="7256634549594854023">Tabakaja e pasme</translation>
 <translation id="725866823122871198">Nuk mund të vendoset një lidhje private me <ph name="BEGIN_BOLD"/><ph name="DOMAIN"/><ph name="END_BOLD"/> sepse data dhe ora (<ph name="DATE_AND_TIME"/>) e kompjuterit tënd nuk janë të sakta.</translation>
@@ -3623,8 +3662,9 @@ Detaje shtesë:
 <translation id="7261463765917514051">Përfundo blerjen në mënyrë të sigurt me plotësimin automatik</translation>
 <translation id="7265608370113700582">Adresa ofrohet vetëm në këtë pajisje</translation>
 <translation id="7266094331715305887">aplikacionet në pajisje</translation>
-<translation id="3320731678580031767">Shto pasaportën në mënyrë të sigurt te "Portofoli i Brave"</translation>
+<translation id="7268742523336093718">Shto pasaportën në mënyrë të sigurt te "Portofoli i Brave"</translation>
 <translation id="7269151392155523061">Shkurtorja nuk mund të jetë e njëjtë me fjalën kyçe të përmbledhësit të kërkimit të përcaktuar nga <ph name="SEARCH_AGGREGATOR_SETTINGS_POLICY"/>: <ph name="SHORTCUT_NAME"/></translation>
+<translation id="7271135282910524932">Ndodhi një gabim me mbrojtjet ose politikat e caktuara nga organizata jote. Provo përsëri më vonë ose kontakto me administratorin.</translation>
 <translation id="7273111226200291353">Skedarët që shkarkon dërgohen te Google Cloud ose te palë të treta për analizim. Për shembull, ata mund të skanohen për të dhëna delikate ose softuerë keqdashës dhe mund të ruhen bazuar në politikat e kompanisë dhe të jenë të dukshëm për administratorin tënd.</translation>
 <translation id="7275334191706090484">Faqeshënuesit e menaxhuar</translation>
 <translation id="7278933725460302617">Tani je në modalitetin "I izoluar"</translation>
@@ -3632,11 +3672,11 @@ Detaje shtesë:
 <translation id="7286908876112207905">Ngjitja e kësaj përmbajtjeje në këtë sajt nuk lejohet</translation>
 <translation id="7291578327729322058">Shto lejen e drejtimit</translation>
 <translation id="7292031607255951991">Emri i marrësit</translation>
-<translation id="5119862674579456673">Ruaj informacionet te "Portofoli i Brave" nga faqet që shikon</translation>
+<translation id="7297228218361240128">Ruaj informacionet te "Portofoli i Brave" nga faqet që shikon</translation>
 <translation id="7298195798382681320">I rekomanduar</translation>
 <translation id="7299471494012161875">Shfaq pajisjet periferike të lidhura</translation>
 <translation id="7299721129597238157">Fshi faqeshënuesin</translation>
-<translation id="7996735040909243152">Menaxho kartat e besnikërisë te "Portofoli i Brave"</translation>
+<translation id="7299769361777046949">Menaxho kartat e besnikërisë te "Portofoli i Brave"</translation>
 <translation id="7304030187361489308">I lartë</translation>
 <translation id="244157907932852817">Menaxho cilësimet e privatësisë të "Llogarisë së Brave"</translation>
 <translation id="7305756307268530424">Fillo më ngadalë</translation>
@@ -3651,6 +3691,7 @@ Detaje shtesë:
 <translation id="7316521168101843192">Skedari po ruhet te Microsoft OneDrive</translation>
 <translation id="7319430975418800333">A3</translation>
 <translation id="7320336641823683070">Ndihma e lidhjes</translation>
+<translation id="7328315434053660512">Hap dritaren e izoluar</translation>
 <translation id="733354035281974745">Anulimi i llogarisë lokale të pajisjes</translation>
 <translation id="7334320624316649418">&amp;Ribëj renditjen</translation>
 <translation id="7335157162773372339">Mund të kërkojë të përdorë kamerën tënde</translation>
@@ -3663,6 +3704,7 @@ Detaje shtesë:
 <translation id="7347640536700429009">Emri në kartë është i pavlefshëm</translation>
 <translation id="7352651011704765696">Diçka shkoi keq</translation>
 <translation id="7353601530677266744">Linja e komandave</translation>
+<translation id="7358055687760675498">Hap lidhjet e <ph name="PROTOCOL"/> nëpërmjet <ph name="HANDLER_HOSTNAME"/> në vend të <ph name="REPLACED_HANDLER_TITLE"/></translation>
 <translation id="7359588939039777303">Reklamat janë të bllokuara.</translation>
 <translation id="7362281996276843968">Ky grup është i mbyllur</translation>
 <translation id="5417725730200908216"><ph name="MANAGE_ADDRESSES_FOCUSED_FRIENDLY_MATCH_TEXT"/>. Shtyp "Tab" dhe më pas "Enter" për të shtuar dhe menaxhuar adresat te cilësimet e Brave</translation>
@@ -3697,6 +3739,7 @@ Detaje shtesë:
 <translation id="7402375256128852434">Shto skedat e fundit</translation>
 <translation id="7403392780200267761">Ndaje këtë skedë duke ndarë lidhjen, duke krijuar një kod QR, duke transmetuar etj.</translation>
 <translation id="7403591733719184120">Pajisja jote <ph name="DEVICE_NAME"/> është e menaxhuar</translation>
+<translation id="7404785524901232736">{NUM_SOURCES,plural, =1{Sugjerimi u hoq. Burimi yt origjinal nuk do të fshihet.}other{Sugjerimi u hoq. Burimet e tua origjinale nuk do të fshihen.}}</translation>
 <translation id="7405878640835614059"><ph name="ENROLLMENT_DOMAIN"/> ka instaluar aplikacione për funksionet shtesë. Aplikacionet kanë qasje te disa prej të dhënave të tua.</translation>
 <translation id="2789355205455889336">Të hiqet adresa e punës nga plotësimi automatik i Brave?</translation>
 <translation id="2562227627470773235">&lt;p&gt;Do të shohësh këtë gabim nëse ke softuer Superfish në kompjuterin tënd me Windows.&lt;/p&gt;
@@ -3711,7 +3754,7 @@ Detaje shtesë:
     &lt;/ol&gt;</translation>
 <translation id="7410852728357935715">Transmeto te një pajisje</translation>
 <translation id="741204030948306876">Po, jam dakord</translation>
-<translation id="2863838403912088928">Karta jote është e ruajtur te "Portofoli i Brave", kështu që mund ta plotësosh automatikisht për blerjet e ardhshme</translation>
+<translation id="7412081313067625215">Karta jote është e ruajtur te "Portofoli i Brave", kështu që mund ta plotësosh automatikisht për blerjet e ardhshme</translation>
 <translation id="7416351320495623771">Menaxho fjalëkalimet…</translation>
 <translation id="741772962178517671">Affirm</translation>
 <translation id="7419106976560586862">Shtegu i profilit</translation>
@@ -3764,6 +3807,7 @@ Detaje shtesë:
 <translation id="7500917112031739411">Shfaq sipas grupit</translation>
 <translation id="7501663406926337752">Sajti ku je drejtuar është raportuar nga organizata jote</translation>
 <translation id="7502044688973049724">menaxhosh informacionet e tua</translation>
+<translation id="7506748477220312995">Burimet për sugjerimin</translation>
 <translation id="7507075214339298899">Zarf nr. 9</translation>
 <translation id="7508255263130623398">ID-ja e kthyer e pajisjes së politikës është bosh ose nuk përputhet me ID-në e pajisjes aktuale</translation>
 <translation id="7511707705708508147">Monedha nuk mbështetet</translation>
@@ -3805,7 +3849,7 @@ Detaje shtesë:
 <translation id="8661288256654172117">Brave po përpiqet të plotësojë fjalëkalimin tënd në <ph name="APP_NAME"/>.</translation>
 <translation id="7569072768465750771">{COUNT,plural, =0{Asnjë}=1{1 skedë në këtë pajisje}other{# skeda në këtë pajisje}}</translation>
 <translation id="7569983096843329377">E zezë</translation>
-<translation id="5042051836875308124">Përditëso kartën e identitetit në "Portofolin e Brave"</translation>
+<translation id="7570524564113479209">Përditëso kartën e identitetit në "Portofolin e Brave"</translation>
 <translation id="7570862164055912832">Numrat e kompensimit</translation>
 <translation id="5806362888687058351">Modaliteti i IA-së së Brave</translation>
 <translation id="7575207903026901870">Butoni "Hiq sugjerimin", shtyp Enter për ta hequr këtë sugjerim</translation>
@@ -3828,7 +3872,7 @@ Detaje shtesë:
 <translation id="7599089013883397081">Koha e shkarkimit skadoi</translation>
 <translation id="1062868744766141611">Pyet Brave rreth kësaj faqeje</translation>
 <translation id="7606123685356405076">Modelet e Gemini 3</translation>
-<translation id="7138721839933201978">Ruaj automjetin te "Portofoli i Brave"</translation>
+<translation id="760632772920590778">Ruaj automjetin te "Portofoli i Brave"</translation>
 <translation id="7610193165460212391">Vlera është jashtë gamës <ph name="VALUE"/>.</translation>
 <translation id="761261689936461781">E trashë</translation>
 <translation id="7613889955535752492">Data e skadimit: <ph name="EXPIRATION_MONTH"/>/<ph name="EXPIRATION_YEAR"/></translation>
@@ -3855,7 +3899,7 @@ Detaje shtesë:
 <translation id="7648133459447652947">Për të shfaqur kursorin, ndërro aplikacionet, ringarko faqen ose kthehu prapa</translation>
 <translation id="764847582138410250">Skano për t'u identifikuar me telefonin tënd</translation>
 <translation id="7648527891719919697">Ky sajt do të qëndrojë i bllokuar sepse ke të aktivizuar "Mbrojtjen e përparuar" te <ph name="BEGIN_ANDROID_SETTINGS_LINK"/>Cilësimet e Android<ph name="END_ANDROID_SETTINGS_LINK"/>. <ph name="BEGIN_LEARN_MORE_LINK"/>Mëso më shumë për këtë paralajmërim<ph name="END_LEARN_MORE_LINK"/></translation>
-<translation id="1658842203772810888">Ruaj numrin e udhëtarit të njohur te "Portofoli i Brave"</translation>
+<translation id="7648900539798595789">Ruaj numrin e udhëtarit të njohur te "Portofoli i Brave"</translation>
 <translation id="7648992873808071793">Ruaji skedarët në këtë pajisje</translation>
 <translation id="7649070708921625228">Ndihma</translation>
 <translation id="7650141368285545431">Përdor çelësin e kalimit nga një pajisje tjetër</translation>
@@ -3911,6 +3955,7 @@ Detaje shtesë:
 <translation id="7718626066800460799">Skanimi nuk mund të ruhet</translation>
 <translation id="772128550427553158">Numri CVC ndodhet në pjesën e përparme të kartës sate.</translation>
 <translation id="7724603315864178912">Prite</translation>
+<translation id="7726402116075326231">Hap një dritare të re të izoluar për të shfletuar në mënyrë private</translation>
 <translation id="7730057435797792985">Rendit</translation>
 <translation id="1296098648902562076">Krijo shpejt një formular të ri te "Formulari i Brave"</translation>
 <translation id="773466115871691567">Përkthe gjithmonë faqet që janë në <ph name="SOURCE_LANGUAGE"/></translation>
@@ -3935,10 +3980,11 @@ Detaje shtesë:
 <translation id="7765158879357617694">Zhvendos</translation>
 <translation id="7766518757692125295">Bordura</translation>
 <translation id="776749070095465053">Pëlhurë</translation>
+<translation id="7772659560036894129">Emrat e produkteve</translation>
 <translation id="7773005668374414287">E njëjta renditje e kthyer lart</translation>
 <translation id="7779418012194492374">Revoko qasjen për <ph name="DEVICE_NAME"/></translation>
 <translation id="7781829728241885113">Dje</translation>
-<translation id="15891224440739379">Ruaj kartën e identitetit te "Portofoli i Brave"</translation>
+<translation id="7782228658217918863">Ruaj kartën e identitetit te "Portofoli i Brave"</translation>
 <translation id="7782465647372057580">Informacionet e llogarisë janë të enkriptuara dhe mbahen private</translation>
 <translation id="7785471469930192436">Shiko udhëzimet e motorit të kërkimit për fshirjen e historikut të kërkimit, nëse është e vlefshme.</translation>
 <translation id="7785790577395078482">këtë tablet</translation>
@@ -3970,7 +4016,6 @@ Detaje shtesë:
 <translation id="7839192898639727867">ID-ja e çelësit të certifikatës së subjektit</translation>
 <translation id="7840103971441592723">Regjistrimi i ekranit ka filluar</translation>
 <translation id="784137052867620416">Statistikat për blerjet</translation>
-<translation id="7841633276323004751">Mënyrat e pagesës të disponueshme për t'u zgjedhur për të vazhduar me pagesën. Tastiera është e fshehur.</translation>
 <translation id="7844689747373518809">{COUNT,plural, =0{Asnjë}=1{1 aplikacion (<ph name="EXAMPLE_APP_1"/>)}=2{2 aplikacione (<ph name="EXAMPLE_APP_1"/>, <ph name="EXAMPLE_APP_2"/>)}other{# aplikacione (<ph name="EXAMPLE_APP_1"/>, <ph name="EXAMPLE_APP_2"/>, <ph name="AND_MORE"/>)}}</translation>
 <translation id="7846161022626028328">Ndodhi një gabim. Provo përsëri.</translation>
 <translation id="784623644169604270">Asnjë aktivitet së fundi</translation>
@@ -4049,7 +4094,6 @@ Detaje shtesë:
 <translation id="79682505114836835">Vlera "<ph name="VALUE"/>" është një ngjyrë hekzadecimale e pavlefshme.</translation>
 <translation id="7968982339740310781">Shiko detajet</translation>
 <translation id="7972714317346275248">PKCS #1 SHA-384 me enkriptim RSA</translation>
-<translation id="7976053965094442846">Lëshuesit e "Bli tani, paguaj më vonë" që disponohen për të paguar me kalimin e kohës. Tastiera është e fshehur.</translation>
 <translation id="7976214039405368314">Ka shumë kërkesa</translation>
 <translation id="7977029776654598145">Kur përdoret</translation>
 <translation id="7977538094055660992">Pajisja e daljes</translation>
@@ -4059,6 +4103,7 @@ Detaje shtesë:
 <translation id="8896585555528145662">Nuk mund ta vizitosh <ph name="SITE"/> tani sepse uebsajti dërgoi kredenciale të koduara që nuk mund të përpunohen nga Brave. Gabimet dhe sulmet në rrjet zakonisht janë të përkohshme, kështu që kjo faqe ndoshta do të punojë më vonë.</translation>
 <translation id="7986319120639858961"><ph name="CARD_TITLE"/> <ph name="TIME"/> <ph name="BOOKMARKED"/> <ph name="TITLE"/> <ph name="DOMAIN"/></translation>
 <translation id="7987087088851949178">Lëshuesit e "Bli tani, paguaj më vonë" që disponohen për të paguar me kalimin e kohës janë hapur në lartësi të plotë.</translation>
+<translation id="7990290316254726169">Po e shikon këtë paralajmërim sepse ky sajt nuk e mbështet protokollin HTTPS dhe je në modalitetin "I izoluar". <ph name="BEGIN_LEARN_MORE_LINK"/>Mëso më shumë për këtë paralajmërim<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="799149739215780103">Lidhje</translation>
 <translation id="7992044431894087211">U riaktivizua ndarja e ekranit me <ph name="APPLICATION_TITLE"/></translation>
 <translation id="799384093520583425">Organizata jote ka bllokuar përdorimin e DevTools në këtë faqe</translation>
@@ -4101,6 +4146,7 @@ Detaje shtesë:
 <translation id="8075898834294118863">Menaxho cilësimet e sajtit</translation>
 <translation id="8076492880354921740">Skedat</translation>
 <translation id="546884209099464360">"Llogaria jote e Brave" mund të ketë forma të tjera të historikut të shfletimit në <ph name="BEGIN_LINK_GMA"/>myactivity.google.com<ph name="END_LINK_GMA"/>, si p.sh. <ph name="BEGIN_LINK_GAA"/>Aktiviteti i aplikacioneve Gemini<ph name="END_LINK_GAA"/></translation>
+<translation id="8077465698530018904">Hiq rajonin e zgjedhur</translation>
 <translation id="8077669823243888800">Zarf kinez nr. 8</translation>
 <translation id="8078006011486731853">{0,plural, =1{Të ngarkohet skedari konfidencial?}other{Të ngarkohen skedarët konfidencialë?}}</translation>
 <translation id="8079031581361219619">Dëshiron të ngarkosh përsëri sajtin?</translation>
@@ -4119,6 +4165,7 @@ Detaje shtesë:
 <translation id="8099473231501330216">të kërkosh që të fshihen</translation>
 <translation id="8103161714697287722">Mënyra e pagesës</translation>
 <translation id="8103643211515685474">Printo gjithsesi</translation>
+<translation id="8104153649317588511">Fleta e burimeve u mbyll</translation>
 <translation id="8105368624971345109">Çaktivizo</translation>
 <translation id="810875025413331850">Nuk u gjetën pajisje afër.</translation>
 <translation id="8116925261070264013">Zëri i çaktivizuar</translation>
@@ -4126,6 +4173,7 @@ Detaje shtesë:
 <translation id="8118506371121007279">Dërgo komente</translation>
 <translation id="812020627659652807">Fshi skedarët tani</translation>
 <translation id="8120720167840853945">Kjo politikë nuk po e kontrollon sjelljen e parazgjedhur të asnjë politike tjetër.</translation>
+<translation id="8120827570827570666">Domeni i tregtarit</translation>
 <translation id="8127301229239896662">"<ph name="SOFTWARE_NAME"/>" nuk është instaluar mirë në kompjuter ose në rrjet. Kërkoji administratorit të TI-së që të zgjidhë këtë problem.</translation>
 <translation id="8130113808541743942">Zhvendos te...</translation>
 <translation id="813024282736408069">Aktivizo një kartë virtuale për plotësimin automatik</translation>
@@ -4145,7 +4193,7 @@ Detaje shtesë:
 <translation id="8155253549374198915">Skedat e fundit të hapura</translation>
 <translation id="7904243652775639741">Brave ka veçori të integruara sigurie për të të mbrojtur ndërsa shfleton, si p.sh. "Shfletimi i sigurt i Brave", i cili <ph name="BEGIN_LINK"/>së fundi gjeti një softuer keqdashës<ph name="END_LINK"/> në sajtin që u përpoqe të vizitoje.</translation>
 <translation id="8161095570253161196">Vazhdo të shfletosh</translation>
-<translation id="4900205713719197017">Aktivizo plotësimin automatik për të përfunduar blerjet online në mënyrë të sigurt. Detajet e kartës sate janë të enkriptuara te "Portofoli i Brave".</translation>
+<translation id="8163468049564974856">Aktivizo plotësimin automatik për të përfunduar blerjet online në mënyrë të sigurt. Detajet e kartës sate janë të enkriptuara te "Portofoli i Brave".</translation>
 <translation id="8163866351304776260">Katër shpime majtas</translation>
 <translation id="8164078261547504572">Dëshiron të marrësh email-e kur të bien çmimet?</translation>
 <translation id="8169175551046720804">Çelësat "<ph name="DATA_CONTROLS_KEYS"/>" nuk mund të caktohen në të njëjtin fjalor</translation>
@@ -4211,7 +4259,7 @@ Detaje shtesë:
 <translation id="8280630997017109758">Tabakaja 11</translation>
 <translation id="8281886186245836920">Anashkalo</translation>
 <translation id="8282292167096638950">Fshi lejen e drejtimit</translation>
-<translation id="792704835644878748">Ruaj numrin IBAN te "Portofoli i Brave"</translation>
+<translation id="828282277746732142">Ruaj numrin IBAN te "Portofoli i Brave"</translation>
 <translation id="8282947398454257691">Njihu me identifikuesin unik të pajisjes tënde</translation>
 <translation id="8283946103133796868">Llogarit notën time mesatare të ponderuar</translation>
 <translation id="4596532552309852907">Menaxho shfletimin e sigurt dhe më shumë te cilësimet e Brave</translation>
@@ -4230,12 +4278,13 @@ Detaje shtesë:
 <translation id="8297545700510100061">Kukit dhe të dhënat e tjera të sajtit përdoren për të të kujtuar ty, p.sh. për të të identifikuar ose për të personalizuar reklamat. Për të menaxhuar kukit për të gjitha sajtet, shiko <ph name="SETTINGS"/>.</translation>
 <translation id="8298115750975731693">Lidhja Wi-Fi që po përdor (<ph name="WIFI_NAME"/>) mund të kërkojë që të vizitosh <ph name="BEGIN_BOLD"/><ph name="LOGIN_URL"/><ph name="END_BOLD"/>.</translation>
 <translation id="8298399736867690281">Karta është ruajtur vetëm në pajisje</translation>
-<translation id="7150057276888666361">Ruaj kartën e identitetit në mënyrë të sigurt te "Portofoli i Brave"</translation>
+<translation id="8300302621078931927">Ruaj kartën e identitetit në mënyrë të sigurt te "Portofoli i Brave"</translation>
 <translation id="8301894345671534559">Fut kodin</translation>
 <translation id="830498451218851433">Palosje në gjysmë</translation>
 <translation id="830868413617744215">Beta</translation>
 <translation id="8310477433309274098">Pa tarifa, me deri në 0% NEI</translation>
 <translation id="8312841338723044391">DREJTPËRDREJT</translation>
+<translation id="8314036873065514376">Emri i tregtarit</translation>
 <translation id="8316555157357957253">Po përdoret tani</translation>
 <translation id="8319414634934645341">Përdorimi i zgjeruar i çelësit</translation>
 <translation id="831997045666694187">Mbrëmje</translation>
@@ -4281,7 +4330,7 @@ Detaje shtesë:
 <translation id="8389532092404711541">Zakonisht <ph name="LOW_PRICE"/></translation>
 <translation id="8390725133630534698">Ndarja nga <ph name="ORIGIN_NAME"/> te <ph name="VM_NAME"/> është bllokuar nga politika e administratorit</translation>
 <translation id="8392783408127179588">Politikat po ringarkohen</translation>
-<translation id="2792973694349074955">Përditëso lejen e drejtimit në "Portofolin e Brave"</translation>
+<translation id="8393948304336153065">Përditëso lejen e drejtimit në "Portofolin e Brave"</translation>
 <translation id="8396522675989118466">Ky është kodi me <ph name="NUMBER_OF_DIGITS"/> shifra në <ph name="SIDE_OF_CARD"/></translation>
 <translation id="8398335999901363925">Mënyrat e pagesës të disponueshme për t'u plotësuar me prekje janë hapur në lartësi të plotë.</translation>
 <translation id="8398446215576328011">Rivendos politikat e zbatuara</translation>
@@ -4353,7 +4402,6 @@ Detaje shtesë:
 <translation id="1426902392270366682">Brave mund të të ndihmojë ta mbrosh "Llogarinë tënde të Brave" dhe të ndryshosh fjalëkalimin tënd.</translation>
 <translation id="8523574453888018351">Më mëso një gjuhë të re</translation>
 <translation id="852450791482410042">Paguaj tani</translation>
-<translation id="8528479410903501741">Ruaj numrin IBAN</translation>
 <translation id="8533411848724153701">Gemini</translation>
 <translation id="8533587060884335451">Përdor vendndodhjen e saktë</translation>
 <translation id="8533619373899488139">Vizito &lt;strong&gt;chrome://policy&lt;/strong&gt; për të parë listën e URL-ve të bllokuara dhe politika të tjera të detyruara nga administratori i sistemit tënd.</translation>
@@ -4396,6 +4444,7 @@ Detaje shtesë:
 <translation id="860043288473659153">Emri i mbajtësit të kartës</translation>
 <translation id="8601206103050338563">Vërtetimi i klientit TLS WWW</translation>
 <translation id="8604103095921958091">Ekrani i kushteve të shërbimit për metodën "Bli tani, paguaj më vonë" u hap në lartësi të plotë.</translation>
+<translation id="8605014984308506350">Po e shikon këtë paralajmërim sepse ky sajt nuk e mbështet protokollin HTTPS dhe je në "Modalitetin e izoluar". <ph name="LEARN_MORE"/></translation>
 <translation id="8617269623452051934">përdorimi i pajisjes sate</translation>
 <translation id="8619130384334725124">Parazgjedhja aktuale</translation>
 <translation id="8620276786115098679">Zarf Kaku 7</translation>
@@ -4446,7 +4495,7 @@ Detaje shtesë:
 <translation id="8712637175834984815">E kuptova</translation>
 <translation id="4328387382326136101">Brave sapo raportoi një uebsajt që po përpiqeshe të vizitoje. Na ndihmo t'i përmirësojmë këto paralajmërime duke plotësuar një anketë 1-minutëshe.</translation>
 <translation id="8716983145825913456">Ruaj automjetin në mënyrë të sigurt</translation>
-<translation id="3201352891862147498">Ruaj pasaportën në mënyrë të sigurt te "Portofoli i Brave"</translation>
+<translation id="8717177139469452440">Ruaj pasaportën në mënyrë të sigurt te "Portofoli i Brave"</translation>
 <translation id="8718314106902482036">Pagesa nuk përfundoi</translation>
 <translation id="8719263113926255150"><ph name="ENTITY"/>, <ph name="DESCRIPTION"/>, sugjerim kërkimi</translation>
 <translation id="8719528812645237045">Shumë shpime lart</translation>
@@ -4528,7 +4577,7 @@ Detaje shtesë:
 <translation id="7487066225574140895">Ndarja me Brave</translation>
 <translation id="4764754838347156633">Brave rekomandon rivendosjen e fjalëkalimit tënd të <ph name="BEGIN_BOLD"/><ph name="ORG_NAME"/><ph name="END_BOLD"/> nëse e ke ripërdorur në sajte të tjera.</translation>
 <translation id="885906927438988819">Nëse nuk ka ndonjë gabim drejtshkrimor, <ph name="BEGIN_LINK"/>provo të ekzekutosh "Diagnostikimin e rrjetit të Windows"<ph name="END_LINK"/>.</translation>
-<translation id="1154336171889402657">Ky informacion nuk mund të ruhej te "Portofoli i Brave". Në vend të tij, ai është ruajtur në Brave në këtë pajisje. Brave do të ofrojë që ta ruajë atë te "Portofoli" herën tjetër kur ta përdorësh.</translation>
+<translation id="7950428070992438240">Ky informacion nuk mund të ruhej te "Portofoli i Brave". Në vend të tij, ai është ruajtur në Brave në këtë pajisje. Brave do të ofrojë që ta ruajë atë te "Portofoli" herën tjetër kur ta përdorësh.</translation>
 <translation id="8863218129525348270">Për të paguar më shpejt herën tjetër, ruaje kartën në pajisjen tënde</translation>
 <translation id="8866481888320382733">Gabim gjatë analizimit të cilësimeve të politikës</translation>
 <translation id="8866928039507595380">Palosje</translation>
@@ -4544,7 +4593,8 @@ Detaje shtesë:
 <translation id="888169490072887292">Gjej restorante të përshtatshme për familjen me meny për fëmijët</translation>
 <translation id="8883863364960302898">Dosja e "Diskut të Brave"</translation>
 <translation id="8884537526797090108">Nuk mund të regjistrojë përmbajtje konfidenciale</translation>
-<translation id="4135437686782002023">Përditëso lejen e drejtimit në mënyrë të sigurt te "Portofoli i Brave"</translation>
+<translation id="8889525327610245418">Përditëso lejen e drejtimit në mënyrë të sigurt te "Portofoli i Brave"</translation>
+<translation id="8890516388109605451">Burimet</translation>
 <translation id="8891031436559779793">Do të njoftohesh nëse ulet çmimi në ndonjë sajt.</translation>
 <translation id="8891727572606052622">Modalitet i pavlefshëm përfaqësuesi.</translation>
 <translation id="8894794286471754040">Ana e gjatë në fillim</translation>
@@ -4598,6 +4648,7 @@ Detaje shtesë:
 <translation id="8997023839087525404">Serveri paraqiti një certifikatë që nuk ishte zbuluar publikisht duke përdorur politikën e "Transparencës së certifikatës". Kjo është e detyrueshme për disa certifikata, për të siguruar besueshmërinë e tyre dhe për t'u mbrojtur kundër sulmuesve.</translation>
 <translation id="9001074447101275817">Përfaqësuesi <ph name="DOMAIN"/> kërkon një emër përdoruesi dhe një fjalëkalim.</translation>
 <translation id="9001963517402879850">Kërce!</translation>
+<translation id="9002677862950442746">Kodi i verifikimit: <ph name="OTP"/></translation>
 <translation id="9003263770394939629">Sugjeruar nga Gemini. Menaxho plotësimin automatik të përmirësuar te cilësimet.</translation>
 <translation id="9003639428623471314">Zarf Kahu</translation>
 <translation id="9004367719664099443">Sesioni VR në proces</translation>
@@ -4757,7 +4808,8 @@ Detaje shtesë:
 <translation id="1283739678317676574"><ph name="CREATE_GOOGLE_SITE_FOCUSED_FRIENDLY_MATCH_TEXT"/>,shtyp Tab pastaj Enter për të krijuar shpejt një sajt të ri në Brave Sites</translation>
 <translation id="949026252328034572"><ph name="MEMBER_COUNT"/> anëtarë u bashkuan në grupin e skedave "<ph name="GROUP_NAME"/>"</translation>
 <translation id="949314938206378263">Ti kërkove që të vizitoje këtë sajt. Prindi yt mund të përgjigjet në Family Link.</translation>
-<translation id="6543976614537748698">Shto numrin e kompensimit te "Portofoli i Brave"</translation>
+<translation id="949484466204182817">Shto numrin e kompensimit te "Portofoli i Brave"</translation>
+<translation id="950533895669718124">të mësosh më shumë rreth kësaj veçorie te cilësimet</translation>
 <translation id="950736567201356821">Tri shpime lart</translation>
 <translation id="1762533279914543867">Çelësi i kalimit • Menaxheri i fjalëkalimeve i Brave</translation>
 <translation id="952165179818196872">Shto <ph name="PROVIDER"/> për të paguar pa ndërruar aplikacionet</translation>
@@ -4772,7 +4824,7 @@ Detaje shtesë:
 <translation id="962484866189421427">Kjo përmbajtje mund të përpiqet të instalojë aplikacione mashtruese që pretendojnë se janë diçka tjetër ose që mbledhin të dhëna që mund të përdoren për të të gjurmuar. <ph name="BEGIN_LINK"/>Shfaq gjithsesi<ph name="END_LINK"/></translation>
 <translation id="776356972507701422">Në bazë të një ligji në rajonin tënd, Brave të kërkon të zgjedhësh motorin e parazgjedhur të kërkimit. Këta motorë kërkimi janë të njohur në rajonin tënd dhe shfaqen në renditje të rastësishme.</translation>
 <translation id="963837307749850257">Të gjithë përdoruesit</translation>
-<translation id="1548867141525863761">Shto numrin e kompensimit në mënyrë të sigurt te "Portofoli i Brave"</translation>
+<translation id="963988220224168636">Shto numrin e kompensimit në mënyrë të sigurt te "Portofoli i Brave"</translation>
 <translation id="964050462028070434">Menaxho fjalëkalimet dhe çelësat e kalimit…</translation>
 <translation id="964681140808832181">Po, dua ta anuloj</translation>
 <translation id="969892804517981540">Ndërtimi zyrtar</translation>
@@ -4780,12 +4832,13 @@ Detaje shtesë:
 <translation id="973788791897303708">Ky grup skedash është plot</translation>
 <translation id="975560348586398090">{COUNT,plural, =0{Asnjë}=1{1 artikull}other{# artikuj}}</translation>
 <translation id="976522784004777030">5 x 8 inç</translation>
-<translation id="3666543487519182654">Plotëso automatikisht këtë kartë për blerjet e bëra në Brave kur ajo ruhet te "Portofoli i Brave"</translation>
+<translation id="3027500266970040515">Plotëso automatikisht këtë kartë për blerjet e bëra në Brave kur ajo ruhet te "Portofoli i Brave"</translation>
 <translation id="979107176848483472">Shfletuesi dhe profili yt menaxhohen nga <ph name="DOMAIN"/></translation>
 <translation id="981121421437150478">Offline</translation>
-<translation id="5456048065008297112">Ruaj kartën e identitetit në mënyrë të sigurt te "Portofoli i Brave"</translation>
+<translation id="98237783946365638">Ruaj kartën e identitetit në mënyrë të sigurt te "Portofoli i Brave"</translation>
 <translation id="983587187183716432">Butoni "<ph name="AI_ENGINE_NAME"/>", shtyp "Enter" për të pyetur <ph name="AI_ENGINE_NAME"/></translation>
 <translation id="984275831282074731">Mënyrat e pagesës</translation>
+<translation id="984950103108016064">Nga <ph name="EMAIL"/></translation>
 <translation id="985199708454569384">&lt;p&gt;Këtë gabim do ta shohësh nëse data dhe ora e kompjuterit ose e pajisjes celulare janë të pasakta.&lt;/p&gt;
     &lt;p&gt;Për të rregulluar gabimin, hap orën e pajisjes. Sigurohu që ora dhe data të jenë të sakta.&lt;/p&gt;</translation>
 <translation id="987264212798334818">Të përgjithshme</translation>
