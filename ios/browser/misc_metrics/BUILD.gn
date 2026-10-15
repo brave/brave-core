@@ -12,7 +12,9 @@ source_set("misc_metrics") {
   ]
 
   deps = [
+    "//base",
     "//brave/components/ai_chat/core/browser",
+    "//brave/ios/browser/skus",
     "//components/keyed_service/core",
     "//components/keyed_service/ios",
     "//components/prefs",
