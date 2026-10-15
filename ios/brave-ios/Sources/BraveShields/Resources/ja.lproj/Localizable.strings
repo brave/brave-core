@@ -97,7 +97,7 @@
 /* Title for the brave player info popup which appears when clicking on the brave player icon on the navigation bar. */
 "BravePlayerInfoTitle" = "代わりにBraveプレーヤーで視聴";
 
-/* No comment provided by engineer. */
+/* The label above / exposing the advanced controls on the Shields panel. */
 "BraveShieldsAdvancedControls" = "詳細設定";
 
 /* The number of ads and trackers blocked will be next to this */
@@ -159,6 +159,9 @@
 
 /* An error message telling the user that they crossed the line limit */
 "CustomFiltersTooManyLinesError" = "カスタムフィルターは%i行以上をサポートしていません";
+
+/* An error message telling the user that the custom scriptlet failed to save to disk */
+"customScriptletFailedToSaveError" = "カスタムスクリプトレットの保存に失敗しました";
 
 /* Data Saved Shield Stat */
 "DataSavedStat" = "節約できた\nデータ量(推定)";
@@ -286,6 +289,9 @@
 /* Used to describe when a request was blocked by the Content Blocker in Blocked Requests view. */
 "shields.contentBlocker" = "コンテンツブロッカー";
 
+/* A button title displayed on Shields panel linking to Webcompat Reporter. */
+"shields.reportBrokenSiteButtonTitle" = "報告";
+
 /* Used to describe when a request was blocked by our request blocking scripts in Blocked Requests view. */
 "shields.requestBlocking" = "ブロックをリクエスト";
 
@@ -294,6 +300,15 @@
 
 /* A label displayed above the resource type of a request that was blocked in Blocked Requests view. */
 "shields.resourceTypeLabel" = "リソースタイプ";
+
+/* A label displayed on Shields panel beside the toggle enabling shields. */
+"shields.shieldsDownForSite" = "このサイトはシールドが**オフ**です";
+
+/* A button title displayed on Shields panel linking to Shields global settings. */
+"shields.shieldsGlobalSettings" = "シールドのグローバル設定";
+
+/* A label displayed on Shields panel beside the toggle disabling shields. */
+"shields.shieldsUpForSite" = "このサイトはシールドが**オン**です";
 
 /* A description beside a toggle that appears in the Shred settings screen, within Shields & Privacy settings. */
 "shields.shredHistoryRowDescription" = "Shredがhistoryアイテムを削除すべきかどうか。";
@@ -310,8 +325,17 @@
 /* A title for the Shred settings screen, within Shields & Privacy settings. */
 "shields.shredSettingsViewTitle" = "削除";
 
+/* A footer displayed on Shields panel when shields are down. */
+"shields.siteNotWorkingCorrectly" = "Shieldsがオンの場合、このサイトが正しく機能していませんか?";
+
+/* A label displayed on Shields panel at the bottom. Learn more link is clickable, where `%@` will be replaced with the URL. */
+"shields.siteSeemsBroken" = "サイトの表示に問題があると思われる場合は、シールドを無効化してください。これにより、Braveのプライバシー保護機能が低下する場合があります。[詳細](%@)";
+
 /* A label displayed above the source url of a request that was blocked in Blocked Requests view. */
 "shields.sourceURLLabel" = "ソースURL";
+
+/* A label displayed on Shields panel beside the number of blocked items. */
+"shields.trackersAdsAndMoreBlocked" = "トラッカー、広告などがブロックされました";
 
 /* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
 "ShieldsDefaults" = "Brave Shieldsの全体のデフォルト設定";

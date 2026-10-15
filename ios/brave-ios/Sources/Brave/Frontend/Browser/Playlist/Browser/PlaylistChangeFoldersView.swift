@@ -107,11 +107,7 @@ struct PlaylistChangeFoldersView: View {
   }
 
   private func folderCountLabel(_ count: Int) -> String {
-    String.localizedStringWithFormat(
-      count == 1
-        ? Strings.PlayList.folderItemCountSingular : Strings.PlayList.folderItemCountPlural,
-      count
-    )
+    String.localizedStringWithFormat(Strings.PlayList.folderItemCountFormat, count)
   }
 }
 

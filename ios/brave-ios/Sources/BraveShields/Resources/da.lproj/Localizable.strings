@@ -97,8 +97,8 @@
 /* Title for the brave player info popup which appears when clicking on the brave player icon on the navigation bar. */
 "BravePlayerInfoTitle" = "Se i Brave Player i stedet";
 
-/* No comment provided by engineer. */
-"BraveShieldsAdvancedControls" = "Avancerede kontroller ";
+/* The label above / exposing the advanced controls on the Shields panel. */
+"BraveShieldsAdvancedControls" = "Avancerede kontroller";
 
 /* The number of ads and trackers blocked will be next to this */
 "BraveShieldsBlockedCountLabel" = "Reklamer og andet utøj blev blokeret";
@@ -159,6 +159,9 @@
 
 /* An error message telling the user that they crossed the line limit */
 "CustomFiltersTooManyLinesError" = "Brugerdefinerede filtre understøtter højst %i linjer";
+
+/* An error message telling the user that the custom scriptlet failed to save to disk */
+"customScriptletFailedToSaveError" = "Kunne ikke gemme tilpasset scriptlet";
 
 /* Data Saved Shield Stat */
 "DataSavedStat" = "Est. data\ngemt";
@@ -286,6 +289,9 @@
 /* Used to describe when a request was blocked by the Content Blocker in Blocked Requests view. */
 "shields.contentBlocker" = "Blokering af indhold";
 
+/* A button title displayed on Shields panel linking to Webcompat Reporter. */
+"shields.reportBrokenSiteButtonTitle" = "Rapporter";
+
 /* Used to describe when a request was blocked by our request blocking scripts in Blocked Requests view. */
 "shields.requestBlocking" = "Anmod om blokering";
 
@@ -294,6 +300,15 @@
 
 /* A label displayed above the resource type of a request that was blocked in Blocked Requests view. */
 "shields.resourceTypeLabel" = "Ressourcetype";
+
+/* A label displayed on Shields panel beside the toggle enabling shields. */
+"shields.shieldsDownForSite" = "Shields er **deaktiveret** for denne side";
+
+/* A button title displayed on Shields panel linking to Shields global settings. */
+"shields.shieldsGlobalSettings" = "Globale Shields-indstillinger";
+
+/* A label displayed on Shields panel beside the toggle disabling shields. */
+"shields.shieldsUpForSite" = "Shields er **aktiveret** for denne side";
 
 /* A description beside a toggle that appears in the Shred settings screen, within Shields & Privacy settings. */
 "shields.shredHistoryRowDescription" = "Hvis Shred skal fjerne historik-elementer.";
@@ -310,8 +325,17 @@
 /* A title for the Shred settings screen, within Shields & Privacy settings. */
 "shields.shredSettingsViewTitle" = "Makuler";
 
+/* A footer displayed on Shields panel when shields are down. */
+"shields.siteNotWorkingCorrectly" = "Fortæl os, hvis siden ikke virker korrekt med Shields op.";
+
+/* A label displayed on Shields panel at the bottom. Learn more link is clickable, where `%@` will be replaced with the URL. */
+"shields.siteSeemsBroken" = "Hvis denne side virker brudt, kan du prøve at slå Shields fra. Dette kan reducere Braves beskyttelse af privatlivets fred. [Få mere at vide](%@)";
+
 /* A label displayed above the source url of a request that was blocked in Blocked Requests view. */
 "shields.sourceURLLabel" = "Kilde-URL";
+
+/* A label displayed on Shields panel beside the number of blocked items. */
+"shields.trackersAdsAndMoreBlocked" = "trackere, reklamer og mere er blokeret";
 
 /* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
 "ShieldsDefaults" = "Globale standarder for Brave Shields";

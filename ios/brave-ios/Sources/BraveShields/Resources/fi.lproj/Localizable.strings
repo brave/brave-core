@@ -97,7 +97,7 @@
 /* Title for the brave player info popup which appears when clicking on the brave player icon on the navigation bar. */
 "BravePlayerInfoTitle" = "Katso sen sijaan Brave-mediasoittimessa";
 
-/* No comment provided by engineer. */
+/* The label above / exposing the advanced controls on the Shields panel. */
 "BraveShieldsAdvancedControls" = "Edistyneet kontrollit";
 
 /* The number of ads and trackers blocked will be next to this */
@@ -159,6 +159,9 @@
 
 /* An error message telling the user that they crossed the line limit */
 "CustomFiltersTooManyLinesError" = "Mukautetut suodattimet tukevat korkeintaan %i riviä";
+
+/* An error message telling the user that the custom scriptlet failed to save to disk */
+"customScriptletFailedToSaveError" = "Mukautetun komentosarjasovelman tallennus epäonnistui";
 
 /* Data Saved Shield Stat */
 "DataSavedStat" = "Tallennettuja\ntietoja keskim.";
@@ -286,6 +289,9 @@
 /* Used to describe when a request was blocked by the Content Blocker in Blocked Requests view. */
 "shields.contentBlocker" = "Sisällön esto";
 
+/* A button title displayed on Shields panel linking to Webcompat Reporter. */
+"shields.reportBrokenSiteButtonTitle" = "Ilmoita";
+
 /* Used to describe when a request was blocked by our request blocking scripts in Blocked Requests view. */
 "shields.requestBlocking" = "Pyydä estoa";
 
@@ -294,6 +300,15 @@
 
 /* A label displayed above the resource type of a request that was blocked in Blocked Requests view. */
 "shields.resourceTypeLabel" = "Resurssityyppi";
+
+/* A label displayed on Shields panel beside the toggle enabling shields. */
+"shields.shieldsDownForSite" = "Suojaus on **poissa käytöstä** tälle sivustolle";
+
+/* A button title displayed on Shields panel linking to Shields global settings. */
+"shields.shieldsGlobalSettings" = "Suojauksen yleiset asetukset";
+
+/* A label displayed on Shields panel beside the toggle disabling shields. */
+"shields.shieldsUpForSite" = "Suojaus on **käytössä** tälle sivustolle";
 
 /* A description beside a toggle that appears in the Shred settings screen, within Shields & Privacy settings. */
 "shields.shredHistoryRowDescription" = "Jos Shred poistaa historiatietoja.";
@@ -310,8 +325,17 @@
 /* A title for the Shred settings screen, within Shields & Privacy settings. */
 "shields.shredSettingsViewTitle" = "Silppua";
 
+/* A footer displayed on Shields panel when shields are down. */
+"shields.siteNotWorkingCorrectly" = "Eikö sivusto toimi oikein suojausten ollessa käytössä?";
+
+/* A label displayed on Shields panel at the bottom. Learn more link is clickable, where `%@` will be replaced with the URL. */
+"shields.siteSeemsBroken" = "Jos sivusto vaikuttaa rikkinäiseltä, kokeile poistaa suojaus käytöstä. Se saattaa heikentää Braven tietosuojaa. [Lue lisää](%@)";
+
 /* A label displayed above the source url of a request that was blocked in Blocked Requests view. */
 "shields.sourceURLLabel" = "Lähteen URL";
+
+/* A label displayed on Shields panel beside the number of blocked items. */
+"shields.trackersAdsAndMoreBlocked" = "seurantaa, mainoksia ja muuta estetty";
 
 /* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
 "ShieldsDefaults" = "Brave-suojausten yleiset oletukset";

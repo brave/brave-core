@@ -192,11 +192,7 @@ struct PlaylistSidebarListHeader: View {
             )
           )
           let totalSize = totalSizeOnDisk
-          Text(
-            items.count == 1
-              ? Strings.Playlist.itemCountSingular
-              : String.localizedStringWithFormat(Strings.Playlist.itemCountPlural, items.count)
-          )
+          Text(String.localizedStringWithFormat(Strings.Playlist.itemCountFormat, items.count))
           if !items.isEmpty {
             Text(totalDuration, format: .units(width: .narrow, maximumUnitCount: 2))
           }

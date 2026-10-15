@@ -97,8 +97,8 @@
 /* Title for the brave player info popup which appears when clicking on the brave player icon on the navigation bar. */
 "BravePlayerInfoTitle" = "Tonton Dalam Pemain Brave";
 
-/* No comment provided by engineer. */
-"BraveShieldsAdvancedControls" = "Kawalan lanjutan";
+/* The label above / exposing the advanced controls on the Shields panel. */
+"BraveShieldsAdvancedControls" = "Kawalan Lanjutan";
 
 /* The number of ads and trackers blocked will be next to this */
 "BraveShieldsBlockedCountLabel" = "Iklan dan perkara menakutkan yang lain disekat";
@@ -159,6 +159,9 @@
 
 /* An error message telling the user that they crossed the line limit */
 "CustomFiltersTooManyLinesError" = "Penapis tersuai tidak menyokong lebih daripada %i baris";
+
+/* An error message telling the user that the custom scriptlet failed to save to disk */
+"customScriptletFailedToSaveError" = "Gagal menyimpan skriplet tersuai";
 
 /* Data Saved Shield Stat */
 "DataSavedStat" = "Data Jangkaan \nDisimpan";
@@ -286,6 +289,9 @@
 /* Used to describe when a request was blocked by the Content Blocker in Blocked Requests view. */
 "shields.contentBlocker" = "Penyekat Kandungan";
 
+/* A button title displayed on Shields panel linking to Webcompat Reporter. */
+"shields.reportBrokenSiteButtonTitle" = "Laporkan";
+
 /* Used to describe when a request was blocked by our request blocking scripts in Blocked Requests view. */
 "shields.requestBlocking" = "Penjejak dan Iklan Disekat";
 
@@ -294,6 +300,15 @@
 
 /* A label displayed above the resource type of a request that was blocked in Blocked Requests view. */
 "shields.resourceTypeLabel" = "Jenis Sumber";
+
+/* A label displayed on Shields panel beside the toggle enabling shields. */
+"shields.shieldsDownForSite" = "Perisai **dimatikan** untuk laman web ini";
+
+/* A button title displayed on Shields panel linking to Shields global settings. */
+"shields.shieldsGlobalSettings" = "Tetapan Global Perisai";
+
+/* A label displayed on Shields panel beside the toggle disabling shields. */
+"shields.shieldsUpForSite" = "Perisai **berfungsi** untuk laman web ini";
 
 /* A description beside a toggle that appears in the Shred settings screen, within Shields & Privacy settings. */
 "shields.shredHistoryRowDescription" = "Jika Shred harus membuang item sejarah.";
@@ -310,8 +325,17 @@
 /* A title for the Shred settings screen, within Shields & Privacy settings. */
 "shields.shredSettingsViewTitle" = "Hapus";
 
+/* A footer displayed on Shields panel when shields are down. */
+"shields.siteNotWorkingCorrectly" = "Adakah laman ini tidak berfungsi dengan baik dengan Perisai ke atas?";
+
+/* A label displayed on Shields panel at the bottom. Learn more link is clickable, where `%@` will be replaced with the URL. */
+"shields.siteSeemsBroken" = "Jika laman ini kelihatan rosak, cuba matikan Perisai. Ini mungkin mengurangkan perlindungan privasi Brave. [Ketahui lebih lanjut](%@)";
+
 /* A label displayed above the source url of a request that was blocked in Blocked Requests view. */
 "shields.sourceURLLabel" = "URL Sumber";
+
+/* A label displayed on Shields panel beside the number of blocked items. */
+"shields.trackersAdsAndMoreBlocked" = "penjejak, iklan dan banyak lagi disekat";
 
 /* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
 "ShieldsDefaults" = "Lalai Global Brave Shields";

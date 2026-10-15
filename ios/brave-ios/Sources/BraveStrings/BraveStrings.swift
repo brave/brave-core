@@ -1238,19 +1238,12 @@ extension Strings {
       value: "Private Browsing",
       comment: "Accessibility label for the regular browsing option in the browsing mode picker"
     )
-    public static let tabsCountFormatSingular = NSLocalizedString(
-      "tabGrid.tabsCountFormatSingular",
-      tableName: "BraveShared",
-      bundle: .module,
-      value: "%lld Tab",
-      comment: "A label in the tab tray mode switcher shown when there is 1 regular tab open e.g. '1 Tab'"
-    )
-    public static let tabsCountFormatPlural = NSLocalizedString(
-      "tabGrid.tabsCountFormatPlural",
+    public static let tabsCountFormat = NSLocalizedString(
+      "tabGrid.tabsCountFormat",
       tableName: "BraveShared",
       bundle: .module,
       value: "%lld Tabs",
-      comment: "A label in the tab tray mode switcher shown when there are 0 or more than 1 regular tabs open e.g. '129 Tabs'"
+      comment: "A label in the tab tray mode switcher showing how many regular tabs are open e.g. '129 Tabs'"
     )
     public static let privateBrowsingModeTitle = NSLocalizedString(
       "tabGrid.privateBrowsingModeTitle",
@@ -4922,22 +4915,13 @@ extension Strings {
         comment: "Playlist alert message when playlist is already showing on a different window"
       )
 
-    public static let folderItemCountSingular =
+    public static let folderItemCountFormat =
       NSLocalizedString(
-        "playlist.foldersCountSingular",
+        "playlist.folderItemCountFormat",
         tableName: "BraveShared",
         bundle: .module,
-        value: "%d item",
-        comment: "Title for when there's a single item inside of a folder"
-      )
-
-    public static let folderItemCountPlural =
-      NSLocalizedString(
-        "playlist.folderItemCountPlural",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "%d items",
-        comment: "Number of items in the playlsit folder. Example: '10 items'"
+        value: "%lld items",
+        comment: "Number of items in the playlist folder. Example: '10 items'"
       )
   }
 
@@ -4978,19 +4962,9 @@ extension Strings {
         comment: "The title of the button to create a new folder"
       )
 
-    public static let playlistFolderSubtitleItemSingleCount =
+    public static let playlistFolderSubtitleItemCountFormat =
       NSLocalizedString(
-        "playlistFolders.subtitleItemSingleCount",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "1 Item",
-        comment:
-          "The sub-title of the folder. Example: This folder contains ONE item. This folder contains 1 Item."
-      )
-
-    public static let playlistFolderSubtitleItemCount =
-      NSLocalizedString(
-        "playlistFolders.subtitleItemCount",
+        "playlistFolders.subtitleItemCountFormat",
         tableName: "BraveShared",
         bundle: .module,
         value: "%lld Items",
