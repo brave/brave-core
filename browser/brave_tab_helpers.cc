@@ -51,7 +51,6 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
 #include "brave/browser/brave_ads/creatives/search_result_ad/creative_search_result_ad_tab_helper.h"
-#include "brave/browser/brave_ads/tabs/ads_tab_helper.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
@@ -161,7 +160,6 @@ void AttachTabHelpers(content::WebContents* web_contents) {
       web_contents);
 
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
-  brave_ads::AdsTabHelper::CreateForWebContents(web_contents);
   brave_ads::CreativeSearchResultAdTabHelper::MaybeCreateForWebContents(
       web_contents);
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)

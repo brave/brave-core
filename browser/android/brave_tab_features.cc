@@ -13,12 +13,17 @@
 #include "brave/browser/misc_metrics/captcha_metrics.h"
 #include "brave/browser/misc_metrics/page_metrics_tab_helper.h"
 #include "brave/browser/serp_metrics/serp_metrics_tab_helper.h"
+#include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/image_metadata_stripper/common/features.h"
 #include "brave/components/misc_metrics/features.h"
 #include "chrome/browser/android/tab_android.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/web_contents.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+#include "brave/browser/brave_ads/tabs/ads_tab_helper.h"
+#endif
 
 namespace tabs {
 
@@ -55,6 +60,10 @@ BraveTabFeatures::BraveTabFeatures(content::WebContents* web_contents,
       std::make_unique<misc_metrics::PageMetricsTabHelper>(tab_interface);
   serp_metrics_tab_helper_ =
       serp_metrics::SerpMetricsTabHelper::MaybeCreate(tab_interface);
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+  ads_tab_helper_ = std::make_unique<brave_ads::AdsTabHelper>(tab_interface);
+#endif
 }
 
 BraveTabFeatures::~BraveTabFeatures() = default;

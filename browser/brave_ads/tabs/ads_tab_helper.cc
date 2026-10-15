@@ -16,6 +16,7 @@
 #include "components/prefs/pref_service.h"
 #include "components/sessions/content/session_tab_helper.h"
 #include "components/sessions/core/session_id.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/media_player_id.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/render_frame_host.h"
@@ -69,16 +70,32 @@ bool IsHttpErrorStatusCode(int http_status_code) {
 
 }  // namespace
 
-AdsTabHelper::AdsTabHelper(content::WebContents* const web_contents)
-    : content::WebContentsObserver(web_contents),
-      content::WebContentsUserData<AdsTabHelper>(*web_contents),
-      session_id_(sessions::SessionTabHelper::IdForTab(web_contents)) {
+DEFINE_USER_DATA(AdsTabHelper);
+
+AdsTabHelper::AdsTabHelper(tabs::TabInterface& tab)
+    : tabs::ContentsObservingTabFeature(tab),
+      scoped_unowned_user_data_(tab.GetUnownedUserDataHost(), *this) {
+  Initialize();
+}
+
+// TabFeatures, and so this helper, are destroyed before the tab's contents.
+AdsTabHelper::~AdsTabHelper() {
+  MaybeNotifyTabdidClose();
+}
+
+// static
+AdsTabHelper* AdsTabHelper::From(tabs::TabInterface* tab) {
+  return tab ? Get(tab->GetUnownedUserDataHost()) : nullptr;
+}
+
+void AdsTabHelper::Initialize() {
+  session_id_ = sessions::SessionTabHelper::IdForTab(web_contents());
   if (!session_id_.is_valid()) {
     return;
   }
 
   Profile* const profile =
-      Profile::FromBrowserContext(web_contents->GetBrowserContext());
+      Profile::FromBrowserContext(web_contents()->GetBrowserContext());
   ads_service_ = AdsServiceFactory::GetForProfile(profile);
   if (!ads_service_) {
     return;
@@ -92,10 +109,35 @@ AdsTabHelper::AdsTabHelper(content::WebContents* const web_contents)
 
   MaybeSetBrowserIsActive();
 
-  OnVisibilityChanged(web_contents->GetVisibility());
+  OnVisibilityChanged(web_contents()->GetVisibility());
 }
 
-AdsTabHelper::~AdsTabHelper() = default;
+void AdsTabHelper::OnDiscardContents(tabs::TabInterface* tab,
+                                     content::WebContents* old_contents,
+                                     content::WebContents* new_contents) {
+  // The old contents are destroyed. Report the tab as closed and start over
+  // with the new contents, as the ads service expects for a new tab.
+  MaybeNotifyTabdidClose();
+
+  weak_factory_.InvalidateWeakPtrs();
+#if !BUILDFLAG(IS_ANDROID)
+  browser_collection_observation_.Reset();
+#endif  // !BUILDFLAG(IS_ANDROID)
+  session_id_ = SessionID::InvalidValue();
+  ads_service_ = nullptr;
+  is_web_contents_visible_ = false;
+  was_restored_ = false;
+  is_new_navigation_ = false;
+  redirect_chain_.clear();
+  http_status_code_.reset();
+  started_media_players_.clear();
+  media_players_with_audio_.clear();
+  is_browser_active_.reset();
+
+  tabs::ContentsObservingTabFeature::OnDiscardContents(tab, old_contents,
+                                                       new_contents);
+  Initialize();
+}
 
 void AdsTabHelper::SetAdsServiceForTesting(AdsService* const ads_service) {
   CHECK_IS_TEST();
@@ -461,12 +503,6 @@ void AdsTabHelper::OnVisibilityChanged(const content::Visibility visibility) {
   }
 }
 
-void AdsTabHelper::WebContentsDestroyed() {
-  MaybeNotifyTabdidClose();
-
-  ads_service_ = nullptr;
-}
-
 #if !BUILDFLAG(IS_ANDROID)
 // TODO(https://github.com/brave/brave-browser/issues/24970): Decouple
 // BrowserCollectionObserver.
@@ -479,7 +515,5 @@ void AdsTabHelper::OnBrowserDeactivated(BrowserWindowInterface* /*browser*/) {
   MaybeSetBrowserIsNoLongerActive();
 }
 #endif
-
-WEB_CONTENTS_USER_DATA_KEY_IMPL(AdsTabHelper);
 
 }  // namespace brave_ads
