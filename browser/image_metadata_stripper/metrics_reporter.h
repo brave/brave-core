@@ -15,10 +15,10 @@ class PrefService;
 namespace image_metadata_stripper {
 
 namespace metrics {
-// This helps in respecting the 24 hours boundary from the last time the
+// This helps in respecting the 7 day boundary from the last time the
 // metrics was recorded. Metrics are recorded from inside the browser
-// process which keeps track of a 24 hour timer in-memory. So, if the
-// process dies and restarted again within the 24h mark, we wouldn't want to
+// process which keeps track of a weekly timer in-memory. So, if the
+// process dies and restarted again within the week mark, we wouldn't want to
 // emit the histogram again. So, keeping this last track timer helps to keep
 // that window tight across process restarts. See metrics_reporter.cc for
 // implementation details.
@@ -56,7 +56,7 @@ inline constexpr char kUploadFBMDCountStrippedHistogramName[] =
     "Brave.ImageMetadataStripper.UploadFBMDCount.Stripped";
 
 // Collects the FBMD metadata stripping counts and reports them to P3A once a
-// day. Owned by the browser (e.g. ProcessMiscMetrics) and created on the UI
+// week. Owned by the browser (e.g. ProcessMiscMetrics) and created on the UI
 // thread. Clients record observations must be called on the UI thread since we
 // record the metrics count in local state.
 class MetricsReporter {
@@ -79,7 +79,7 @@ class MetricsReporter {
 
  private:
   // Reports histograms iff their corresponding count recorded in the
-  // last 24h was non zero. This also schedules the next report.
+  // last week was non zero. This also schedules the next report.
   void MaybeReport();
 
   // The timer to help schedule the next reporting.
