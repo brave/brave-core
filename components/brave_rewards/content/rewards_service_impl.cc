@@ -9,7 +9,6 @@
 
 #include <algorithm>
 #include <optional>
-#include <set>
 #include <string>
 #include <utility>
 #include <vector>
@@ -22,7 +21,6 @@
 #include "base/files/important_file_writer.h"
 #include "base/functional/bind.h"
 #include "base/i18n/time_formatting.h"
-#include "base/json/json_string_value_serializer.h"
 #include "base/json/json_writer.h"
 #include "base/logging.h"
 #include "base/notreached.h"
@@ -53,7 +51,6 @@
 #include "brave/components/brave_rewards/core/publisher_utils.h"
 #include "brave/components/brave_rewards/core/rewards_util.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
-#include "brave/components/ntp_background_images/common/pref_names.h"
 #include "components/country_codes/country_codes.h"
 #include "components/favicon/core/favicon_service.h"
 #include "components/grit/brave_components_strings.h"

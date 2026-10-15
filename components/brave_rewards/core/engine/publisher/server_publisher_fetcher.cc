@@ -5,16 +5,13 @@
 
 #include "brave/components/brave_rewards/core/engine/publisher/server_publisher_fetcher.h"
 
-#include <memory>
 #include <utility>
 
 #include "base/check.h"
 #include "base/functional/callback_helpers.h"
-#include "base/json/json_reader.h"
 #include "base/time/time.h"
 #include "brave/components/brave_rewards/core/engine/database/database.h"
 #include "brave/components/brave_rewards/core/engine/publisher/prefix_util.h"
-#include "brave/components/brave_rewards/core/engine/publisher/protos/channel_response.pb.h"
 #include "brave/components/brave_rewards/core/engine/publisher/publisher_prefix_list_updater.h"
 #include "brave/components/brave_rewards/core/engine/rewards_engine.h"
 

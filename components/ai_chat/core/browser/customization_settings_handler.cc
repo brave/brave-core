@@ -5,16 +5,12 @@
 
 #include "brave/components/ai_chat/core/browser/customization_settings_handler.h"
 
-#include <algorithm>
 #include <string>
 #include <utility>
 
 #include "base/check.h"
 #include "base/functional/bind.h"
-#include "base/strings/string_util.h"
-#include "base/values.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
-#include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/customization_settings.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/ai_chat/core/common/prefs.h"

@@ -8,7 +8,6 @@
 #include <algorithm>
 #include <cstdint>
 #include <memory>
-#include <ranges>
 #include <string>
 #include <string_view>
 #include <utility>
@@ -21,7 +20,6 @@
 #include "base/functional/callback_forward.h"
 #include "base/logging.h"
 #include "base/memory/weak_ptr.h"
-#include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/sequenced_task_runner.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"

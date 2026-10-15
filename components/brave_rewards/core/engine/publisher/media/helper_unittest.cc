@@ -7,7 +7,6 @@
 
 #include <string>
 
-#include "brave/components/brave_rewards/core/engine/rewards_callbacks.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=RewardsMediaHelperTest.*

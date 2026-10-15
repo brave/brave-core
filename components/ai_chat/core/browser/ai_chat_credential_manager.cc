@@ -7,9 +7,7 @@
 
 #include <compare>
 #include <optional>
-#include <ostream>
 #include <string_view>
-#include <type_traits>
 #include <utility>
 #include <vector>
 
@@ -31,7 +29,6 @@
 #include "net/cookies/cookie_inclusion_status.h"
 #include "net/cookies/cookie_util.h"
 #include "net/cookies/parsed_cookie.h"
-#include "url/url_canon.h"
 #include "url/url_util.h"
 
 #if BUILDFLAG(IS_ANDROID)

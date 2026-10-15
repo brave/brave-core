@@ -13,7 +13,6 @@
 #include "base/test/mock_callback.h"
 #include "base/test/test_future.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
-#include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
 #include "brave/components/screenshot/content/pdf_utils.h"
