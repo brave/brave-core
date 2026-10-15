@@ -10,22 +10,22 @@
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_handle.h"
+#include "content/public/browser/web_contents.h"
 
 namespace tor {
 
 TorTabHelper::TorTabHelper(content::WebContents* web_contents)
-    : content::WebContentsObserver(web_contents),
-      content::WebContentsUserData<TorTabHelper>(*web_contents) {}
+    : content::WebContentsObserver(web_contents) {}
 
 TorTabHelper::~TorTabHelper() = default;
 
 // static
-void TorTabHelper::MaybeCreateForWebContents(
+std::unique_ptr<TorTabHelper> TorTabHelper::MaybeCreate(
     content::WebContents* web_contents) {
   if (!web_contents->GetBrowserContext()->IsTor()) {
-    return;
+    return nullptr;
   }
-  TorTabHelper::CreateForWebContents(web_contents);
+  return std::make_unique<TorTabHelper>(web_contents);
 }
 
 void TorTabHelper::DidFinishNavigation(
@@ -48,7 +48,5 @@ void TorTabHelper::ReloadTab(content::WebContents* web_contents) {
   DCHECK(web_contents);
   web_contents->GetController().Reload(content::ReloadType::NORMAL, false);
 }
-
-WEB_CONTENTS_USER_DATA_KEY_IMPL(TorTabHelper);
 
 }  // namespace tor

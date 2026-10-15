@@ -72,7 +72,7 @@ void OnionLocationPageActionController::ExecuteAction() {
   if (!contents) {
     return;
   }
-  auto* helper = tor::OnionLocationTabHelper::FromWebContents(contents);
+  auto* helper = tor::OnionLocationTabHelper::From(&tab_.get());
   if (!helper || !helper->should_show_icon()) {
     return;
   }
@@ -106,7 +106,7 @@ void OnionLocationPageActionController::UpdatePageAction(
     return;
   }
 
-  auto* helper = tor::OnionLocationTabHelper::FromWebContents(contents);
+  auto* helper = tor::OnionLocationTabHelper::From(&tab_.get());
   if (!helper || !helper->should_show_icon()) {
     ResetPageAction();
     return;

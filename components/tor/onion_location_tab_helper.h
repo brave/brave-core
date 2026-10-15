@@ -10,16 +10,26 @@
 
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_observer.h"
-#include "content/public/browser/web_contents_user_data.h"
+#include "ui/base/unowned_user_data/scoped_unowned_user_data.h"
 #include "url/gurl.h"
 #include "url/origin.h"
 
+namespace tabs {
+class TabInterface;
+}  // namespace tabs
+
 namespace tor {
 
-class OnionLocationTabHelper
-    : public content::WebContentsUserData<OnionLocationTabHelper>,
-      public content::WebContentsObserver {
+// Holds the Onion-Location of the page shown in a tab. Owned by the tab's
+// features, and recreated when the tab's contents is replaced.
+class OnionLocationTabHelper : public content::WebContentsObserver {
  public:
+  DECLARE_USER_DATA(OnionLocationTabHelper);
+
+  static OnionLocationTabHelper* From(tabs::TabInterface* tab);
+
+  OnionLocationTabHelper(tabs::TabInterface& tab,
+                         content::WebContents* web_contents);
   OnionLocationTabHelper(const OnionLocationTabHelper&) = delete;
   OnionLocationTabHelper& operator=(const OnionLocationTabHelper&) = delete;
   ~OnionLocationTabHelper() override;
@@ -37,10 +47,7 @@ class OnionLocationTabHelper
       std::optional<url::Origin> initiator_origin = std::nullopt);
 
  private:
-  friend class content::WebContentsUserData<OnionLocationTabHelper>;
   friend class OnionLocationNavigationThrottle;
-
-  explicit OnionLocationTabHelper(content::WebContents* web_contents);
 
   static void SetOnionLocationByThrottle(
       content::WebContents* web_contents,
@@ -56,7 +63,7 @@ class OnionLocationTabHelper
   GURL onion_location_;
   std::optional<url::Origin> initiator_origin_;
 
-  WEB_CONTENTS_USER_DATA_KEY_DECL();
+  ui::ScopedUnownedUserData<OnionLocationTabHelper> scoped_unowned_user_data_;
 };
 
 }  // namespace tor

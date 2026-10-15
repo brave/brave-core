@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "base/memory/ptr_util.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/web_contents_delegate.h"
@@ -55,7 +56,8 @@ void OnionLocationTabHelper::SetOnionLocationByThrottle(
     content::WebContents* web_contents,
     const GURL& onion_location,
     const std::optional<url::Origin>& initiator_origin) {
-  auto* tab_helper = OnionLocationTabHelper::FromWebContents(web_contents);
+  auto* tab_helper = OnionLocationTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(web_contents));
   if (!tab_helper) {
     return;
   }
@@ -64,12 +66,18 @@ void OnionLocationTabHelper::SetOnionLocationByThrottle(
       onion_location.is_empty() ? std::nullopt : initiator_origin;
 }
 
-OnionLocationTabHelper::OnionLocationTabHelper(
-    content::WebContents* web_contents)
-    : content::WebContentsUserData<OnionLocationTabHelper>(*web_contents),
-      content::WebContentsObserver(web_contents) {}
+DEFINE_USER_DATA(OnionLocationTabHelper);
 
-WEB_CONTENTS_USER_DATA_KEY_IMPL(OnionLocationTabHelper);
+// static
+OnionLocationTabHelper* OnionLocationTabHelper::From(tabs::TabInterface* tab) {
+  return tab ? Get(tab->GetUnownedUserDataHost()) : nullptr;
+}
+
+OnionLocationTabHelper::OnionLocationTabHelper(
+    tabs::TabInterface& tab,
+    content::WebContents* web_contents)
+    : content::WebContentsObserver(web_contents),
+      scoped_unowned_user_data_(tab.GetUnownedUserDataHost(), *this) {}
 
 void OnionLocationTabHelper::DidFinishNavigation(
     content::NavigationHandle* navigation_handle) {

@@ -6,9 +6,10 @@
 #ifndef BRAVE_COMPONENTS_TOR_TOR_TAB_HELPER_H_
 #define BRAVE_COMPONENTS_TOR_TOR_TAB_HELPER_H_
 
+#include <memory>
+
 #include "base/memory/weak_ptr.h"
 #include "content/public/browser/web_contents_observer.h"
-#include "content/public/browser/web_contents_user_data.h"
 
 namespace content {
 class NavigationHandle;
@@ -17,19 +18,20 @@ class WebContents;
 
 namespace tor {
 
-class TorTabHelper final : public content::WebContentsObserver,
-                           public content::WebContentsUserData<TorTabHelper> {
+// Owned by the tab's features, and recreated when the tab's contents is
+// replaced.
+class TorTabHelper final : public content::WebContentsObserver {
  public:
+  // Returns nullptr unless `web_contents` is in a Tor profile.
+  static std::unique_ptr<TorTabHelper> MaybeCreate(
+      content::WebContents* web_contents);
+
+  explicit TorTabHelper(content::WebContents* web_contents);
   TorTabHelper(const TorTabHelper&) = delete;
   TorTabHelper& operator=(const TorTabHelper&) = delete;
   ~TorTabHelper() override;
 
-  static void MaybeCreateForWebContents(content::WebContents* web_contents);
-
  private:
-  friend class content::WebContentsUserData<TorTabHelper>;
-  explicit TorTabHelper(content::WebContents* web_contents);
-
   // content::WebContentsObserver
   void DidFinishNavigation(
       content::NavigationHandle* navigation_handle) override;
@@ -37,8 +39,6 @@ class TorTabHelper final : public content::WebContentsObserver,
   void ReloadTab(content::WebContents* web_contents);
 
   base::WeakPtrFactory<TorTabHelper> weak_ptr_factory_{this};
-
-  WEB_CONTENTS_USER_DATA_KEY_DECL();
 };
 
 }  // namespace tor

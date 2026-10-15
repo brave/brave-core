@@ -8,7 +8,9 @@
 #include <memory>
 #include <vector>
 
+#include "base/callback_list.h"
 #include "base/functional/bind.h"
+#include "base/functional/callback_helpers.h"
 #include "base/scoped_observation.h"
 #include "brave/browser/ui/views/page_action/page_action_test_observer.h"
 #include "brave/browser/ui/views/page_action/test_tab_interface.h"
@@ -31,14 +33,6 @@
 
 namespace page_actions {
 
-namespace {
-
-void AttachTabHelpers(content::WebContents* contents) {
-  tor::OnionLocationTabHelper::CreateForWebContents(contents);
-}
-
-}  // namespace
-
 class OnionLocationPageActionControllerTest : public testing::Test {
  public:
   OnionLocationPageActionControllerTest()
@@ -53,9 +47,24 @@ class OnionLocationPageActionControllerTest : public testing::Test {
   void SetUp() override {
     pinned_actions_model_ =
         std::make_unique<PinnedToolbarActionsModel>(&profile_);
-    tab_interface_ = std::make_unique<TestTabInterface>(
-        &profile_, base::BindRepeating(&AttachTabHelpers));
+    tab_interface_ =
+        std::make_unique<TestTabInterface>(&profile_, base::DoNothing());
     tab_interface_->Activate();
+
+    // Like BraveTabFeatures, rebuild the tab helper for swapped in contents
+    // before the controller handles the swap.
+    tab_helper_ = std::make_unique<tor::OnionLocationTabHelper>(
+        *tab_interface_, tab_interface_->GetContents());
+    will_discard_contents_subscription_ =
+        tab_interface_->RegisterWillDiscardContents(base::BindRepeating(
+            [](OnionLocationPageActionControllerTest* self,
+               tabs::TabInterface* tab, content::WebContents*,
+               content::WebContents* new_contents) {
+              self->tab_helper_.reset();
+              self->tab_helper_ = std::make_unique<tor::OnionLocationTabHelper>(
+                  *tab, new_contents);
+            },
+            base::Unretained(this)));
 
     page_action_controller_ = std::make_unique<PageActionControllerImpl>(
         *tab_interface_,
@@ -82,6 +91,8 @@ class OnionLocationPageActionControllerTest : public testing::Test {
   void TearDown() override {
     observation_.Reset();
     controller_.reset();
+    will_discard_contents_subscription_ = base::CallbackListSubscription();
+    tab_helper_.reset();
     action_item_subscription_ = base::CallbackListSubscription();
     action_item_.reset();
     page_action_controller_.reset();
@@ -89,10 +100,7 @@ class OnionLocationPageActionControllerTest : public testing::Test {
     pinned_actions_model_.reset();
   }
 
-  tor::OnionLocationTabHelper* tab_helper() {
-    return tor::OnionLocationTabHelper::FromWebContents(
-        tab_interface_->GetContents());
-  }
+  tor::OnionLocationTabHelper* tab_helper() { return tab_helper_.get(); }
 
   // Re-triggers the controller's RegisterDidActivate subscription, which is
   // how it picks up onion-location state changes made directly on the tab
@@ -119,6 +127,8 @@ class OnionLocationPageActionControllerTest : public testing::Test {
   base::ScopedObservation<PageActionModelInterface, PageActionModelObserver>
       observation_{&observer_};
 
+  std::unique_ptr<tor::OnionLocationTabHelper> tab_helper_;
+  base::CallbackListSubscription will_discard_contents_subscription_;
   std::unique_ptr<OnionLocationPageActionController> controller_;
 };
 
@@ -150,18 +160,14 @@ TEST_F(OnionLocationPageActionControllerTest, HiddenAgainAfterReset) {
 
 // The tab's contents can be swapped out - by tab discarding, or by a shared
 // pinned tab being moved to another window. The controller has to follow the
-// swapped in contents, and stop observing the outgoing one, which is about to
-// be destroyed.
+// tab helper rebuilt for the swapped in contents.
 TEST_F(OnionLocationPageActionControllerTest, FollowsDiscardedContents) {
-  tor::OnionLocationTabHelper* const discarded_tab_helper = tab_helper();
-  discarded_tab_helper->SetOnionLocationForTesting(
-      GURL("http://example.onion/"));
+  tab_helper()->SetOnionLocationForTesting(GURL("http://example.onion/"));
   RefreshPageAction();
   ASSERT_TRUE(observer().visible());
 
   // The swapped in contents has no onion location, so the action hides.
   tab_interface().DiscardContents();
-  ASSERT_NE(discarded_tab_helper, tab_helper());
   EXPECT_FALSE(observer().visible());
 
   // The swapped in contents is the one driving the page action now.
