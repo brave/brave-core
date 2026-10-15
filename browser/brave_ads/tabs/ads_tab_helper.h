@@ -14,10 +14,10 @@
 #include "base/memory/weak_ptr.h"
 #include "base/values.h"
 #include "build/build_config.h"
+#include "chrome/browser/ui/tabs/contents_observing_tab_feature.h"
 #include "components/sessions/core/session_id.h"
 #include "content/public/browser/media_player_id.h"
-#include "content/public/browser/web_contents_observer.h"
-#include "content/public/browser/web_contents_user_data.h"
+#include "ui/base/unowned_user_data/scoped_unowned_user_data.h"
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "base/scoped_observation.h"
@@ -28,17 +28,26 @@ class GURL;
 class BrowserWindowInterface;
 class BrowserCollection;
 
+namespace tabs {
+class TabInterface;
+}  // namespace tabs
+
 namespace brave_ads {
 
 class AdsService;
 
-class AdsTabHelper final : public content::WebContentsObserver,
+// Notifies the ads service of tab events. Owned by BraveTabFeatures.
+class AdsTabHelper final :
 #if !BUILDFLAG(IS_ANDROID)
-                           public BrowserCollectionObserver,
+    public BrowserCollectionObserver,
 #endif
-                           public content::WebContentsUserData<AdsTabHelper> {
+    public tabs::ContentsObservingTabFeature {
  public:
-  explicit AdsTabHelper(content::WebContents*);
+  DECLARE_USER_DATA(AdsTabHelper);
+
+  static AdsTabHelper* From(tabs::TabInterface* tab);
+
+  explicit AdsTabHelper(tabs::TabInterface& tab);
 
   AdsTabHelper(const AdsTabHelper&) = delete;
   AdsTabHelper& operator=(const AdsTabHelper&) = delete;
@@ -50,7 +59,8 @@ class AdsTabHelper final : public content::WebContentsObserver,
   void SetAdsServiceForTesting(AdsService* ads_service);
 
  private:
-  friend class content::WebContentsUserData<AdsTabHelper>;
+  // Starts tracking the tab's current contents, as if this were a new helper.
+  void Initialize();
 
   bool IsNotificationAdsEnabled() const;
 
@@ -87,6 +97,11 @@ class AdsTabHelper final : public content::WebContentsObserver,
 
   void MaybeNotifyTabdidClose();
 
+  // tabs::ContentsObservingTabFeature:
+  void OnDiscardContents(tabs::TabInterface* tab,
+                         content::WebContents* old_contents,
+                         content::WebContents* new_contents) override;
+
   // content::WebContentsObserver:
   void DidStartNavigation(
       content::NavigationHandle* navigation_handle) override;
@@ -102,7 +117,6 @@ class AdsTabHelper final : public content::WebContentsObserver,
   void MediaMutedStatusChanged(const content::MediaPlayerId& id,
                                bool muted) override;
   void OnVisibilityChanged(content::Visibility visibility) override;
-  void WebContentsDestroyed() override;
 
 #if !BUILDFLAG(IS_ANDROID)
   // BrowserCollectionObserver:
@@ -110,7 +124,7 @@ class AdsTabHelper final : public content::WebContentsObserver,
   void OnBrowserDeactivated(BrowserWindowInterface* browser) override;
 #endif
 
-  SessionID session_id_;
+  SessionID session_id_ = SessionID::InvalidValue();
 
   raw_ptr<AdsService> ads_service_ = nullptr;  // Not owned.
 
@@ -135,9 +149,9 @@ class AdsTabHelper final : public content::WebContentsObserver,
       browser_collection_observation_{this};
 #endif
 
-  base::WeakPtrFactory<AdsTabHelper> weak_factory_{this};
+  ui::ScopedUnownedUserData<AdsTabHelper> scoped_unowned_user_data_;
 
-  WEB_CONTENTS_USER_DATA_KEY_DECL();
+  base::WeakPtrFactory<AdsTabHelper> weak_factory_{this};
 };
 
 }  // namespace brave_ads

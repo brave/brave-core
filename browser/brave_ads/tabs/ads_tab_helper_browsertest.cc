@@ -34,10 +34,15 @@
 #include "chrome/browser/profiles/keep_alive/profile_keep_alive_types.h"
 #include "chrome/browser/profiles/keep_alive/scoped_profile_keep_alive.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/resource_coordinator/lifecycle_unit_state.mojom.h"
+#include "chrome/browser/resource_coordinator/tab_lifecycle_unit_external.h"
+#include "chrome/browser/resource_coordinator/tab_lifecycle_unit_source.h"
 #include "chrome/browser/sessions/session_restore_test_helper.h"
 #include "chrome/browser/sessions/session_restore_test_utils.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+#include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/test/base/chrome_test_utils.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -59,6 +64,7 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/content_mock_cert_verifier.h"
+#include "content/public/test/test_utils.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/http/http_status_code.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
@@ -67,7 +73,9 @@
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
+#include "ui/base/window_open_disposition.h"
 #include "url/gurl.h"
+#include "url/url_constants.h"
 
 // pnpm test brave_browser_tests --filter=BraveAds*
 
@@ -851,6 +859,32 @@ IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest, NotifyDidCloseTab) {
   CloseActiveWebContents();
 }
 
+// Discarding a tab destroys its contents, which the ads service sees as the tab
+// closing.
+IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest, NotifyDidCloseTabWhenDiscarded) {
+  ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
+      browser(), GURL(url::kAboutBlankURL),
+      WindowOpenDisposition::NEW_BACKGROUND_TAB,
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
+  TabStripModel* const tab_strip_model = browser()->GetTabStripModel();
+  content::WebContents* const web_contents =
+      tab_strip_model->GetWebContentsAt(tab_strip_model->count() - 1);
+  const int32_t tab_id =
+      sessions::SessionTabHelper::IdForTab(web_contents).id();
+
+  EXPECT_CALL(GetAdsServiceMock(), NotifyDidCloseTab(tab_id));
+  content::WebContentsDestroyedWatcher destroyed_watcher(web_contents);
+  auto* const lifecycle_unit =
+      resource_coordinator::TabLifecycleUnitSource::GetTabLifecycleUnitExternal(
+          web_contents);
+  ASSERT_TRUE(lifecycle_unit);
+  ASSERT_TRUE(
+      lifecycle_unit->DiscardTab(::mojom::LifecycleUnitDiscardReason::URGENT));
+  destroyed_watcher.Wait();
+  // The other tabs are reported as closed when the browser shuts down.
+  ::testing::Mock::VerifyAndClearExpectations(&GetAdsServiceMock());
+}
+
 IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest, NotifyUserGestureEventTriggered) {
   EXPECT_CALL(GetAdsServiceMock(), NotifyUserGestureEventTriggered)
       .Times(::testing::AtLeast(1));
@@ -895,7 +929,7 @@ IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest,
   ASSERT_TRUE(web_contents);
 
   AdsTabHelper* const ads_tab_helper =
-      AdsTabHelper::FromWebContents(web_contents);
+      AdsTabHelper::From(tabs::TabInterface::GetFromContents(web_contents));
   ASSERT_TRUE(ads_tab_helper);
 
   EXPECT_TRUE(ads_tab_helper->ads_service());
@@ -910,7 +944,7 @@ IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest,
   ASSERT_TRUE(web_contents);
 
   AdsTabHelper* const ads_tab_helper =
-      AdsTabHelper::FromWebContents(web_contents);
+      AdsTabHelper::From(tabs::TabInterface::GetFromContents(web_contents));
   ASSERT_TRUE(ads_tab_helper);
 
   EXPECT_FALSE(ads_tab_helper->ads_service());
@@ -925,7 +959,7 @@ IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest,
   ASSERT_TRUE(web_contents);
 
   AdsTabHelper* const ads_tab_helper =
-      AdsTabHelper::FromWebContents(web_contents);
+      AdsTabHelper::From(tabs::TabInterface::GetFromContents(web_contents));
   ASSERT_TRUE(ads_tab_helper);
 
   EXPECT_FALSE(ads_tab_helper->ads_service());
