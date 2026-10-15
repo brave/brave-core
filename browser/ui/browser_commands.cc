@@ -78,6 +78,7 @@
 #include "components/split_tabs/split_tab_visual_data.h"
 #include "components/tab_groups/tab_group_visual_data.h"
 #include "components/tabs/public/tab_group.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/page_navigator.h"
 #include "content/public/browser/web_contents.h"
@@ -139,7 +140,6 @@
 #include "brave/components/containers/content/browser/storage_partition_utils.h"
 #include "brave/components/containers/core/browser/containers_service.h"
 #include "brave/components/containers/core/mojom/containers.mojom.h"
-#include "components/tabs/public/tab_interface.h"
 #if defined(TOOLKIT_VIEWS)
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #endif
@@ -533,8 +533,8 @@ void ToggleShieldsEnabled(BrowserWindowInterface* browser) {
   if (!contents) {
     return;
   }
-  auto* shields =
-      brave_shields::BraveShieldsTabHelper::FromWebContents(contents);
+  auto* shields = brave_shields::BraveShieldsTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(contents));
   if (!shields) {
     return;
   }
@@ -551,8 +551,8 @@ void ToggleJavascriptEnabled(BrowserWindowInterface* browser) {
   if (!contents) {
     return;
   }
-  auto* shields =
-      brave_shields::BraveShieldsTabHelper::FromWebContents(contents);
+  auto* shields = brave_shields::BraveShieldsTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(contents));
   if (!shields) {
     return;
   }

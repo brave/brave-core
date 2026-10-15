@@ -175,7 +175,7 @@ void OnboardingTabHelper::MaybeHighlightShields() {
 
 void OnboardingTabHelper::PerformBraveShieldsChecksAndShowHelpBubble() {
   auto* shields_data_controller =
-      brave_shields::BraveShieldsTabHelper::FromWebContents(web_contents());
+      brave_shields::BraveShieldsTabHelper::From(&tab());
   DCHECK(shields_data_controller);
 
   if (shields_data_controller->IsBraveShieldsEnabled() &&
@@ -223,7 +223,7 @@ void OnboardingTabHelper::ShowBraveHelpBubbleView() {
 
 std::string OnboardingTabHelper::GetTextForOnboardingShieldsBubble() {
   auto* shields_data_controller =
-      brave_shields::BraveShieldsTabHelper::FromWebContents(web_contents());
+      brave_shields::BraveShieldsTabHelper::From(&tab());
 
   if (!shields_data_controller) {
     return std::string();

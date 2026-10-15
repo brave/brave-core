@@ -12,6 +12,7 @@
 #include "chrome/browser/ui/browser_location_bar_model_delegate.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/test/browser_test.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
@@ -74,8 +75,8 @@ class BraveLocationBarModelDelegateBrowserTest : public InProcessBrowserTest {
   }
 
   brave_shields::BraveShieldsTabHelper* GetShieldsHelper() {
-    return brave_shields::BraveShieldsTabHelper::FromWebContents(
-        GetActiveWebContents());
+    return brave_shields::BraveShieldsTabHelper::From(
+        tabs::TabInterface::MaybeGetFromContents(GetActiveWebContents()));
   }
 
  protected:

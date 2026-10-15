@@ -20,6 +20,7 @@
 #include "components/content_settings/core/common/content_settings_types.h"
 #include "components/favicon/content/content_favicon_driver.h"
 #include "components/prefs/pref_service.h"
+#include "components/tabs/public/mock_tab_interface.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_task_environment.h"
 #include "content/public/test/test_renderer_host.h"
@@ -61,10 +62,13 @@ class BraveShieldsDataControllerTest : public testing::Test {
         content::WebContentsTester::CreateTestWebContents(profile_, nullptr);
     favicon::ContentFaviconDriver::CreateForWebContents(
         test_web_contents_.get(), nullptr);
-    BraveShieldsTabHelper::CreateForWebContents(test_web_contents_.get());
+    ON_CALL(tab_, GetContents())
+        .WillByDefault(testing::Return(test_web_contents_.get()));
+    shields_data_controller_ = std::make_unique<BraveShieldsTabHelper>(tab_);
   }
 
   void TearDown() override {
+    shields_data_controller_.reset();
     test_web_contents_.reset();
     profile_ = nullptr;
     profile_manager_->DeleteTestingProfile(kTestProfileName);
@@ -78,7 +82,7 @@ class BraveShieldsDataControllerTest : public testing::Test {
   }
 
   BraveShieldsTabHelper* GetShieldsDataController() {
-    return BraveShieldsTabHelper::FromWebContents(web_contents());
+    return shields_data_controller_.get();
   }
 
   ContentSetting GetContentSettingFor(Profile* profile,
@@ -129,6 +133,8 @@ class BraveShieldsDataControllerTest : public testing::Test {
  private:
   content::BrowserTaskEnvironment task_environment_;
   std::unique_ptr<content::WebContents> test_web_contents_;
+  tabs::MockTabInterface tab_;
+  std::unique_ptr<BraveShieldsTabHelper> shields_data_controller_;
   content::RenderViewHostTestEnabler render_view_host_test_enabler_;
   raw_ptr<Profile> profile_;
   std::unique_ptr<TestingProfileManager> profile_manager_;
@@ -144,8 +150,10 @@ TEST_F(BraveShieldsDataControllerTest, RegularVsIncognitoContentSettings) {
       content::WebContentsTester::CreateTestWebContents(otr_profile, nullptr);
   favicon::ContentFaviconDriver::CreateForWebContents(otr_web_contents.get(),
                                                       nullptr);
-  auto* incognito_controller =
-      BraveShieldsTabHelper::GetOrCreateForWebContents(otr_web_contents.get());
+  tabs::MockTabInterface otr_tab;
+  ON_CALL(otr_tab, GetContents())
+      .WillByDefault(testing::Return(otr_web_contents.get()));
+  auto incognito_controller = std::make_unique<BraveShieldsTabHelper>(otr_tab);
   content::WebContentsTester::For(otr_web_contents.get())
       ->SetLastCommittedURL(GURL("http://brave.com"));
 
@@ -312,8 +320,10 @@ TEST_F(BraveShieldsDataControllerTest, Observer_OnShieldsEnabledChangedTest) {
       content::WebContentsTester::CreateTestWebContents(profile(), nullptr);
   favicon::ContentFaviconDriver::CreateForWebContents(web_contents_2.get(),
                                                       nullptr);
-  BraveShieldsTabHelper::CreateForWebContents(web_contents_2.get());
-  auto* ctrl_2 = BraveShieldsTabHelper::FromWebContents(web_contents_2.get());
+  tabs::MockTabInterface tab_2;
+  ON_CALL(tab_2, GetContents())
+      .WillByDefault(testing::Return(web_contents_2.get()));
+  auto ctrl_2 = std::make_unique<BraveShieldsTabHelper>(tab_2);
   ctrl_2->AddObserver(&observer_2);
   content::WebContentsTester::For(web_contents_2.get())
       ->SetLastCommittedURL(GURL("http://brave.com"));
@@ -327,8 +337,10 @@ TEST_F(BraveShieldsDataControllerTest, Observer_OnShieldsEnabledChangedTest) {
       content::WebContentsTester::CreateTestWebContents(profile(), nullptr);
   favicon::ContentFaviconDriver::CreateForWebContents(web_contents_3.get(),
                                                       nullptr);
-  BraveShieldsTabHelper::CreateForWebContents(web_contents_3.get());
-  auto* ctrl_3 = BraveShieldsTabHelper::FromWebContents(web_contents_3.get());
+  tabs::MockTabInterface tab_3;
+  ON_CALL(tab_3, GetContents())
+      .WillByDefault(testing::Return(web_contents_3.get()));
+  auto ctrl_3 = std::make_unique<BraveShieldsTabHelper>(tab_3);
   ctrl_3->AddObserver(&observer_3);
   content::WebContentsTester::For(web_contents_3.get())
       ->SetLastCommittedURL(GURL("http://github.com"));
