@@ -330,6 +330,7 @@ pub(crate) enum SignedExtension {
     StorageWeightReclaim,
     ChargeTransactionPayment,
     WeightReclaim,
+    UnitTransactionExtension,
     // Special sentinel.
     UnusedLast,
 }
@@ -377,6 +378,7 @@ impl TryFrom<&str> for SignedExtension {
             "storageweightreclaim" => SignedExtension::StorageWeightReclaim,
             "chargetransactionpayment" => SignedExtension::ChargeTransactionPayment,
             "weightreclaim" => SignedExtension::WeightReclaim,
+            "unittransactionextension" => SignedExtension::UnitTransactionExtension,
             _ => {
                 return Err(Error::UnknownSignedExtension);
             }

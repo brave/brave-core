@@ -630,8 +630,10 @@ TEST(PolkadotExtrinsics, SignedExtrinsic_AssetsTransferKeepAlive) {
 
   EXPECT_TRUE(keypair.VerifyMessage(signature, signature_payload));
 
+  // Paseo regularly updates its SignedExtensions, which means all signatures
+  // are temporal in nature.
   const char expected_signatured[] =
-      R"(5efe791156873c32cc943d154cb2876b041b5345df6c975a5f426afefd121b10cc8da530fcecda4b14d8670669d33ac0685c83511af89eeae64b5c4c63532a88)";
+      R"(06fdc4b509c6427f45ab0fb8c6f34b405e91c28ebb4adb02b6e4d033ffd35837be379dc8e20c9c149a4916b7d47b9f56bf6bf85710b663d0ae3f8b698caf7083)";
   EXPECT_EQ(base::HexEncodeLower(signature), expected_signatured);
 
   auto signed_extrinsic =
@@ -643,16 +645,16 @@ TEST(PolkadotExtrinsics, SignedExtrinsic_AssetsTransferKeepAlive) {
   auto extrinsic = base::HexEncodeLower(signed_extrinsic);
 
   std::string_view expected_extrinsic =
-      "6502"  // SCALE-encoded length.
+      "5d02"  // SCALE-encoded length.
       "84"    // Signed, extrinsic v4.
       "00"    // Multi-address type.
       // Sender.
       "0e161e17289c260a07020cc2a23192e882d5bee006b1390deed844b881b7e71e"
       "01"  // Signature type (sr25519)
       // Signature.
-      "5efe791156873c32cc943d154cb2876b041b5345df6c975a5f426afefd121b10"
-      "cc8da530fcecda4b14d8670669d33ac0685c83511af89eeae64b5c4c63532a88"
-      "0000000000"
+      "06fdc4b509c6427f45ab0fb8c6f34b405e91c28ebb4adb02b6e4d033ffd35837"
+      "be379dc8e20c9c149a4916b7d47b9f56bf6bf85710b663d0ae3f8b698caf7083"
+      "000000"
       "a500"      // Mortal era.
       "14"        // SCALE-encoded nonce.
       "00"        // Tip.
@@ -733,7 +735,7 @@ TEST(PolkadotExtrinsics, SignedExtrinsic_AssetsTransferAll) {
   EXPECT_TRUE(keypair.VerifyMessage(signature, signature_payload));
 
   const char expected_signatured[] =
-      R"(36ef9fb067bc836b62c7b7c73c92970b3862067fa5e87efd0bae5b092d81181612480cdcd9b2282a3c25b0c19928ccb9e3e000ad82611ec747fc9f5d74ab748f)";
+      R"(780744176c0e1176eabe9e09de85daf61d58a2bebfad71a942c23d7590fc705034858de06d3d522821ee50284041fcbc047b9b76a0c882b65f2959c0436c2d89)";
   EXPECT_EQ(base::HexEncodeLower(signature), expected_signatured);
 
   auto signed_extrinsic =
@@ -745,16 +747,16 @@ TEST(PolkadotExtrinsics, SignedExtrinsic_AssetsTransferAll) {
   auto extrinsic = base::HexEncodeLower(signed_extrinsic);
 
   std::string_view expected_extrinsic =
-      "5902"  // SCALE-encoded length.
+      "5102"  // SCALE-encoded length.
       "84"    // Signed, extrinsic v4.
       "00"    // Multi-address type.
       // Sender
       "ae70948d0c015b6c2b1ac46b8931ad6301f2c648f3f0adf71d08a68fe745561e"
       "01"  // Signature type (sr25519).
       // Signature.
-      "36ef9fb067bc836b62c7b7c73c92970b3862067fa5e87efd0bae5b092d811816"
-      "12480cdcd9b2282a3c25b0c19928ccb9e3e000ad82611ec747fc9f5d74ab748f"
-      "0000000000"
+      "780744176c0e1176eabe9e09de85daf61d58a2bebfad71a942c23d75"
+      "90fc705034858de06d3d522821ee50284041fcbc047b9b76a0c882b65f2959c0436c2d89"
+      "000000"
       "6501"      // Mortal era.
       "04"        // SCALE-encoded nonce.
       "00"        // Tip.
