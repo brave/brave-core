@@ -32,6 +32,7 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/prefs/pref_service.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
@@ -197,12 +198,14 @@ class BraveNewsTabHelperTest : public InProcessBrowserTest {
 };
 
 IN_PROC_BROWSER_TEST_F(BraveNewsTabHelperTest, TabHelperIsCreated) {
-  EXPECT_NE(nullptr, BraveNewsTabHelper::FromWebContents(contents()));
+  EXPECT_NE(nullptr, BraveNewsTabHelper::From(
+                         tabs::TabInterface::MaybeGetFromContents(contents())));
 }
 
 IN_PROC_BROWSER_TEST_F(BraveNewsTabHelperTest,
                        TabHelperNotifiesObserversWhenFoundFeeds) {
-  auto* tab_helper = BraveNewsTabHelper::FromWebContents(contents());
+  auto* tab_helper = BraveNewsTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(contents()));
   WaitForFeedsChanged waiter(tab_helper, 2);
 
   tab_helper->OnReceivedRssUrls(
@@ -214,7 +217,8 @@ IN_PROC_BROWSER_TEST_F(BraveNewsTabHelperTest,
 }
 
 IN_PROC_BROWSER_TEST_F(BraveNewsTabHelperTest, FeedsAreDeduplicated) {
-  auto* tab_helper = BraveNewsTabHelper::FromWebContents(contents());
+  auto* tab_helper = BraveNewsTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(contents()));
   WaitForFeedsChanged waiter(tab_helper, 1);
 
   GURL url("https://example.com/1");
@@ -231,7 +235,8 @@ IN_PROC_BROWSER_TEST_F(BraveNewsTabHelperTest, NonExistingFeedsAreRemoved) {
   GURL rss_page_url =
       https_server()->GetURL("example.com", "/page_with_bad_rss.html");
 
-  auto* tab_helper = BraveNewsTabHelper::FromWebContents(contents());
+  auto* tab_helper = BraveNewsTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(contents()));
 
   GURL feed_url;
   {
@@ -267,7 +272,8 @@ IN_PROC_BROWSER_TEST_F(BraveNewsTabHelperTest, FeedsAreFoundWhenTheyExist) {
   GURL rss_page_url =
       https_server()->GetURL("example.com", "/page_with_rss.html");
 
-  auto* tab_helper = BraveNewsTabHelper::FromWebContents(contents());
+  auto* tab_helper = BraveNewsTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(contents()));
 
   GURL feed_url;
   {
@@ -301,7 +307,8 @@ IN_PROC_BROWSER_TEST_F(BraveNewsTabHelperTest, FeedsAreFoundWhenTheyExist) {
 IN_PROC_BROWSER_TEST_F(BraveNewsTabHelperTest, FeedsAreNotFoundWhenNotOptedIn) {
   GURL rss_page_url = https_server()->GetURL("/page_with_rss.html");
 
-  auto* tab_helper = BraveNewsTabHelper::FromWebContents(contents());
+  auto* tab_helper = BraveNewsTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(contents()));
 
   ui_test_utils::NavigateToURLWithDisposition(
       browser(), rss_page_url, WindowOpenDisposition::CURRENT_TAB,
@@ -320,7 +327,8 @@ IN_PROC_BROWSER_TEST_F(BraveNewsTabHelperTest, FeedsAreNotFoundWhenNotOptedIn) {
 // See https://github.com/brave/brave-browser/issues/56884.
 IN_PROC_BROWSER_TEST_F(BraveNewsTabHelperTest,
                        LocalNetworkFeedUrlsAreNotAvailable) {
-  auto* tab_helper = BraveNewsTabHelper::FromWebContents(contents());
+  auto* tab_helper = BraveNewsTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(contents()));
   WaitForFeedsChanged waiter(tab_helper, 1);
 
   const GURL allowed_feed("https://example.com/feed.xml");
@@ -370,7 +378,8 @@ IN_PROC_BROWSER_TEST_F(BraveNewsTabHelperTest,
                        FeedUrlsWhichResolveToLocalAddressesAreRemoved) {
   OptIn();
 
-  auto* tab_helper = BraveNewsTabHelper::FromWebContents(contents());
+  auto* tab_helper = BraveNewsTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(contents()));
 
   ASSERT_TRUE(ui_test_utils::NavigateToURL(
       browser(), https_server()->GetURL("example.com", "/simple.html")));

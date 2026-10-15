@@ -9,6 +9,7 @@
 
 #include "brave/browser/brave_news/brave_news_tab_helper.h"
 #include "brave/browser/ui/views/brave_news/brave_news_feed_item_view.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/web_contents.h"
 #include "third_party/skia/include/core/SkColor.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
@@ -34,7 +35,8 @@ constexpr SkColor kBorderColorDark = SkColorSetRGB(59, 62, 79);
 BraveNewsFeedsContainerView::BraveNewsFeedsContainerView(
     content::WebContents* contents)
     : contents_(contents) {
-  auto* tab_helper = BraveNewsTabHelper::FromWebContents(contents);
+  auto* tab_helper = BraveNewsTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(contents));
 
   auto available_feeds = tab_helper->GetAvailableFeedUrls();
   for (auto& feed_item : available_feeds) {

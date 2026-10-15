@@ -98,6 +98,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
+#include "brave/browser/brave_news/brave_news_tab_helper.h"
 #include "brave/browser/ui/views/page_action/brave_news_page_action_controller.h"
 #endif
 
@@ -219,6 +220,8 @@ void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
+  // Created before the page action controller, which observes it.
+  brave_news_tab_helper_ = BraveNewsTabHelper::MaybeCreate(tab);
   if (!profile->IsOffTheRecord() &&
       page_action_controller()->ActionExists(kActionShowBraveNews)) {
     brave_news_page_action_controller_ =
