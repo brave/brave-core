@@ -738,6 +738,7 @@ if (enable_tor) {
     "//brave/components/tor",
     "//brave/components/tor:common",
     "//brave/components/tor:pref_names",
+    "//brave/components/tor/common",
   ]
 }
 
