@@ -51,8 +51,8 @@ function resumePlayingVideos(): void {
     playingVideo = null
     video.play().catch(() => {})
   }
-  resume()
-  setTimeout(resume, 100)
+  // WebKit applies its background pause after the scene enters the background,
+  // so the video may still be playing when this runs. Allow for a small delay before resuming.
   setTimeout(resume, 250)
 }
 
