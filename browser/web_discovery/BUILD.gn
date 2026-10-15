@@ -17,8 +17,10 @@ source_set("web_discovery") {
   public_deps = [
     "//base",
     "//brave/components/web_discovery/buildflags",
+    "//chrome/browser/ui/tabs:tabs_public",
     "//components/infobars/core",
     "//content/public/browser",
+    "//ui/base/unowned_user_data",
   ]
 
   if (enable_web_discovery_native) {
@@ -48,6 +50,7 @@ source_set("impl") {
     "//components/infobars/core",
     "//components/prefs",
     "//components/search_engines",
+    "//components/tabs:public",
     "//content/public/browser",
   ]
 
@@ -83,8 +86,10 @@ source_set("unit_tests") {
     "//components/prefs",
     "//components/search_engines",
     "//components/sync_preferences:test_support",
+    "//components/tabs:test_support",
     "//content/public/browser",
     "//content/test:test_support",
+    "//testing/gmock",
     "//testing/gtest",
   ]
 }
