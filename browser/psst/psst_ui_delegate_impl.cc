@@ -138,7 +138,7 @@ psst::mojom::SettingCardDataPtr PsstUiDelegateImpl::GetShowDialogData() {
   for (const auto& task : user_script_result_->tasks) {
     // We should mark all checkboxes as checked when psst website settings
     // doesn't exist, or use saved state for them
-    const auto is_checked =
+    const bool is_checked =
         !current_website_settings.has_value() ||
         std::ranges::contains(current_website_settings->uids_to_perform,
                               task.uid);

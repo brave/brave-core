@@ -703,8 +703,12 @@ class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
     if (!dialog_wc) {
       return nullptr;
     }
-    auto* dialog_ui =
-        dialog_wc->GetWebUI()->GetController()->GetAs<BravePsstDialogUI>();
+    auto* web_ui = dialog_wc->GetWebUI();
+    if (!web_ui) {
+      return nullptr;
+    }
+
+    auto* dialog_ui = web_ui->GetController()->GetAs<BravePsstDialogUI>();
     if (!dialog_ui || !dialog_ui->psst_consent_handler_) {
       return nullptr;
     }
@@ -1201,12 +1205,10 @@ IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
   ASSERT_TRUE(dialog_data);
 
   auto find_item = [&](const std::string& uid) -> mojom::SettingCardDataItem* {
-    for (const auto& item : dialog_data->items) {
-      if (item->uid == uid) {
-        return item.get();
-      }
-    }
-    return nullptr;
+    auto it = std::ranges::find_if(
+        dialog_data->items,
+        [&uid](const auto& item) { return item->uid == uid; });
+    return it == dialog_data->items.end() ? nullptr : it->get();
   };
 
   auto* item_1 = find_item("1");
