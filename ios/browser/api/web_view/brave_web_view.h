@@ -212,6 +212,15 @@ CWV_EXPORT
 @end
 
 CWV_EXPORT
+@interface BraveWebView (VideoBackgroundPlayback)
+// Records which videos are still playing before the scene enters the
+// background.
+- (void)markPlayingVideos;
+// Resumes videos recorded by `markPlayingVideos`.
+- (void)resumePlayingVideos;
+@end
+
+CWV_EXPORT
 @interface BraveWebView (ErrorPage)
 /// Loads Chromium's generic network error page for `URL` in place of the
 /// current page, as if a navigation to `URL` had failed.

@@ -22,6 +22,12 @@ namespace {
 constexpr char kMediaBackgroundingJavaScriptFeatureKeyName[] =
     "media_backgrounding_java_script_feature";
 constexpr char kScriptName[] = "media_backgrounding";
+constexpr char kVideoBackgroundPlaybackScriptName[] =
+    "video_background_playback";
+constexpr char kMarkPlayingVideosFunction[] =
+    "videoBackgroundPlayback.markPlayingVideos";
+constexpr char kResumePlayingVideosFunction[] =
+    "videoBackgroundPlayback.resumePlayingVideos";
 }  // namespace
 
 MediaBackgroundingJavaScriptFeature::MediaBackgroundingJavaScriptFeature(
@@ -57,6 +63,29 @@ MediaBackgroundingJavaScriptFeature::FromBrowserState(
   return feature;
 }
 
+void MediaBackgroundingJavaScriptFeature::MarkPlayingVideos(
+    web::WebState* web_state) {
+  CallPlaybackFunction(web_state, kMarkPlayingVideosFunction);
+}
+
+void MediaBackgroundingJavaScriptFeature::ResumePlayingVideos(
+    web::WebState* web_state) {
+  CallPlaybackFunction(web_state, kResumePlayingVideosFunction);
+}
+
+void MediaBackgroundingJavaScriptFeature::CallPlaybackFunction(
+    web::WebState* web_state,
+    const std::string& function_name) {
+  if (!web_state || web_state->IsBeingDestroyed()) {
+    return;
+  }
+  web::WebFrame* main_frame = GetWebFramesManager(web_state)->GetMainWebFrame();
+  if (!main_frame) {
+    return;
+  }
+  CallJavaScriptFunction(main_frame, function_name, base::ListValue());
+}
+
 void MediaBackgroundingJavaScriptFeature::OnPrefUpdated() {
   // Feature scripts must be explicitly updated after this pref changes.
   web::WKWebViewConfigurationProvider& config_provider =
@@ -68,17 +97,24 @@ std::vector<web::JavaScriptFeature::FeatureScript>
 MediaBackgroundingJavaScriptFeature::GetScripts() const {
   bool is_media_backgrounding_enabled =
       profile_->GetPrefs()->GetBoolean(prefs::kMediaBackgroundingEnabled);
-  return {FeatureScript::CreateWithFilename(
-      kScriptName, FeatureScript::InjectionTime::kDocumentStart,
-      FeatureScript::TargetFrames::kAllFrames,
-      FeatureScript::ReinjectionBehavior::kInjectOncePerWindow,
-      base::BindRepeating(
-          [](bool is_media_backgrounding_enabled)
-              -> FeatureScript::PlaceholderReplacements {
-            return @{
-              @"window.gCrWebPlaceholderMediaBackgroundingEnabled" :
-                      is_media_backgrounding_enabled ? @"true" : @"false"
-            };
-          },
-          is_media_backgrounding_enabled))};
+  return {
+      FeatureScript::CreateWithFilename(
+          kScriptName, FeatureScript::InjectionTime::kDocumentStart,
+          FeatureScript::TargetFrames::kAllFrames,
+          FeatureScript::ReinjectionBehavior::kInjectOncePerWindow,
+          base::BindRepeating(
+              [](bool is_media_backgrounding_enabled)
+                  -> FeatureScript::PlaceholderReplacements {
+                return @{
+                  @"window.gCrWebPlaceholderMediaBackgroundingEnabled" :
+                          is_media_backgrounding_enabled ? @"true" : @"false"
+                };
+              },
+              is_media_backgrounding_enabled)),
+      FeatureScript::CreateWithFilename(
+          kVideoBackgroundPlaybackScriptName,
+          FeatureScript::InjectionTime::kDocumentStart,
+          FeatureScript::TargetFrames::kMainFrame,
+          FeatureScript::ReinjectionBehavior::kReinjectOnDocumentRecreation),
+  };
 }
