@@ -1783,7 +1783,6 @@ if (is_android) {
       "//brave/browser/android/preferences:pref_names_java",
       "//brave/browser/autofill/android:options_java",
       "//brave/browser/customize_menu/android:java",
-      "//brave/browser/ui/android/bottombar:prefs_java",
       "//brave/components/safe_browsing/android:brave_safe_browsing_java",
       "//cc:cc_java",
       "//chrome/browser/android/browserservices/intents:java",

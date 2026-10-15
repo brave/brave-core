@@ -277,7 +277,6 @@ if (is_android) {
     deps = [
       "//base:base_java",
       "//base:base_junit_test_support",
-      "//brave/browser/ui/android/bottombar:prefs_java",
       "//chrome/android/junit:chrome_junit_tests_helper",
       "//chrome/browser/flags:java",
       "//chrome/browser/preferences:java",
