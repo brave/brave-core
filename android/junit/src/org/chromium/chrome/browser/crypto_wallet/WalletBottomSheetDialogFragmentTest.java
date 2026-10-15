@@ -28,6 +28,7 @@ import org.robolectric.annotation.Config;
 import org.chromium.base.test.BaseRobolectricTestRunner;
 import org.chromium.chrome.browser.app.domain.KeyringModel;
 import org.chromium.chrome.browser.app.domain.WalletModel;
+import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletDAppsActivity;
 import org.chromium.chrome.browser.crypto_wallet.fragments.WalletBottomSheetDialogFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.WalletFragmentCallback;
 import org.chromium.chrome.browser.crypto_wallet.observers.KeyringServiceObserverImpl;
@@ -97,5 +98,11 @@ public class WalletBottomSheetDialogFragmentTest {
         public WalletModel getWalletModel() {
             return mWalletModel;
         }
+
+        @Override
+        public void showPanel(BraveWalletDAppsActivity.ActivityType activityType) {}
+
+        @Override
+        public void onAllRequestsHandled() {}
     }
 }

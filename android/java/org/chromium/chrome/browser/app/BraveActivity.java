@@ -94,7 +94,6 @@ import org.chromium.brave_wallet.mojom.EthTxManagerProxy;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
-import org.chromium.brave_wallet.mojom.SignDataUnion;
 import org.chromium.brave_wallet.mojom.SolanaTxManagerProxy;
 import org.chromium.brave_wallet.mojom.TxService;
 import org.chromium.build.annotations.MonotonicNonNull;
@@ -112,6 +111,7 @@ import org.chromium.chrome.browser.IntentHandler;
 import org.chromium.chrome.browser.InternetConnection;
 import org.chromium.chrome.browser.LaunchIntentDispatcher;
 import org.chromium.chrome.browser.OpenYtInBraveDialogFragment;
+import org.chromium.chrome.browser.app.domain.DappsModel;
 import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.app.tabwindow.TabWindowManagerSingleton;
 import org.chromium.chrome.browser.billing.InAppPurchaseWrapper;
@@ -253,6 +253,7 @@ import org.chromium.url.GURL;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -322,6 +323,13 @@ public abstract class BraveActivity extends ChromeActivity
             Arrays.asList("AM", "AZ", "BY", "KG", "KZ", "MD", "RU", "TJ", "TM", "UZ");
 
     private static final int PIP_UPDATE_DELAY_MS = 500;
+
+    // The kinds of DApps panel this window has open. Providers ask for a panel once per request
+    // they queue (see EthereumProviderImpl::SignMessageInternal), and a kind that already has one
+    // is not opened again.
+    private final EnumSet<BraveWalletDAppsActivity.ActivityType> mOpenDAppsPanels =
+            EnumSet.noneOf(BraveWalletDAppsActivity.ActivityType.class);
+
     private boolean mIsVerification;
     public boolean mIsDeepLink;
     private BraveWalletService mBraveWalletService;
@@ -772,9 +780,10 @@ public abstract class BraveActivity extends ChromeActivity
                     if (errors != null && errors.length != 0) {
                         openBraveWalletDAppsActivity(
                                 BraveWalletDAppsActivity.ActivityType.SIGN_MESSAGE_ERROR);
+                        return;
                     }
+                    maybeShowSignMessageRequestLayout(openWalletPanelRunnable);
                 });
-        maybeShowSignMessageRequestLayout(openWalletPanelRunnable);
     }
 
     private void maybeShowSignMessageRequestLayout(
@@ -783,11 +792,7 @@ public abstract class BraveActivity extends ChromeActivity
         mBraveWalletService.getPendingSignMessageRequests(
                 requests -> {
                     if (requests != null && requests.length != 0) {
-                        BraveWalletDAppsActivity.ActivityType activityType =
-                                (requests[0].signData.which() == SignDataUnion.Tag.EthSiweData)
-                                        ? BraveWalletDAppsActivity.ActivityType.SIWE_MESSAGE
-                                        : BraveWalletDAppsActivity.ActivityType.SIGN_MESSAGE;
-                        openBraveWalletDAppsActivity(activityType);
+                        openBraveWalletDAppsActivity(DappsModel.getSignMessagePanel(requests[0]));
                         return;
                     }
                     maybeShowChainRequestLayout(openWalletPanelRunnable);
@@ -1952,8 +1957,51 @@ public abstract class BraveActivity extends ChromeActivity
 
     public void openBraveWalletDAppsActivity(
             final BraveWalletDAppsActivity.ActivityType activityType) {
+        if (!mOpenDAppsPanels.add(getDAppsPanelKey(activityType))) {
+            // The open panel reads the pending requests itself, so it covers this one too.
+            return;
+        }
         final Intent braveWalletIntent = BraveWalletDAppsActivity.getIntent(this, activityType);
-        startActivity(braveWalletIntent);
+        startActivityForResult(braveWalletIntent, BraveConstants.DAPPS_PANEL_REQUEST_CODE);
+    }
+
+    private void onDAppsPanelClosed(final int resultCode, @Nullable final Intent result) {
+        final BraveWalletDAppsActivity.ActivityType panel =
+                BraveWalletDAppsActivity.getActivityType(result);
+        if (panel != null) {
+            mOpenDAppsPanels.remove(getDAppsPanelKey(panel));
+        } else {
+            // Without its kind the closed panel cannot be identified, so tracking starts over and
+            // no kind stays blocked.
+            mOpenDAppsPanels.clear();
+        }
+        if (resultCode == RESULT_OK) {
+            // Requests may have queued up while the panel was open: after it last read its queue,
+            // or of a kind the selection chain stopped short of.
+            showPendingDAppsRequests();
+        }
+    }
+
+    /** Opens a panel for the first pending DApps request, as a provider asking for one does. */
+    private void showPendingDAppsRequests() {
+        if (mKeyringService == null || !BraveWalletPreferences.getPrefWeb3NotificationsEnabled()) {
+            return;
+        }
+        mKeyringService.isLocked(
+                locked -> {
+                    if (!locked) {
+                        maybeShowSignSolTransactionsRequestLayout(() -> {});
+                    }
+                });
+    }
+
+    /** Returns the key DApps panels of {@code activityType} are recorded under. */
+    private static BraveWalletDAppsActivity.ActivityType getDAppsPanelKey(
+            final BraveWalletDAppsActivity.ActivityType activityType) {
+        // The two sign panels hand requests over to each other, so one covers both.
+        return activityType == BraveWalletDAppsActivity.ActivityType.SIWE_MESSAGE
+                ? BraveWalletDAppsActivity.ActivityType.SIGN_MESSAGE
+                : activityType;
     }
 
     public MiscAndroidMetrics getMiscAndroidMetrics() {
@@ -2568,7 +2616,9 @@ public abstract class BraveActivity extends ChromeActivity
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == RESULT_OK
+        if (requestCode == BraveConstants.DAPPS_PANEL_REQUEST_CODE) {
+            onDAppsPanelClosed(resultCode, data);
+        } else if (resultCode == RESULT_OK
                 && (requestCode == BraveConstants.VERIFY_WALLET_ACTIVITY_REQUEST_CODE
                         || requestCode == BraveConstants.USER_WALLET_ACTIVITY_REQUEST_CODE
                         || requestCode == BraveConstants.SITE_BANNER_REQUEST_CODE)) {

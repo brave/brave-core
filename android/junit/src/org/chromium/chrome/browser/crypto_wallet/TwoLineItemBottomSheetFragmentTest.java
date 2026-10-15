@@ -27,6 +27,7 @@ import org.chromium.base.test.BaseRobolectricTestRunner;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.domain.KeyringModel;
 import org.chromium.chrome.browser.app.domain.WalletModel;
+import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletDAppsActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.TwoLineItemRecyclerViewAdapter.TwoLineItemText;
 import org.chromium.chrome.browser.crypto_wallet.fragments.TwoLineItemBottomSheetFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.WalletFragmentCallback;
@@ -82,5 +83,11 @@ public class TwoLineItemBottomSheetFragmentTest {
         public WalletModel getWalletModel() {
             return mWalletModel;
         }
+
+        @Override
+        public void showPanel(BraveWalletDAppsActivity.ActivityType activityType) {}
+
+        @Override
+        public void onAllRequestsHandled() {}
     }
 }
