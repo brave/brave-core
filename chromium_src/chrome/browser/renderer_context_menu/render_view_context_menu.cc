@@ -286,8 +286,8 @@ void OnRewriteSuggestionCompleted(
     if (!ai_chat_service) {
       return;
     }
-    ai_chat::AIChatTabHelper* helper =
-        ai_chat::AIChatTabHelper::FromWebContents(web_contents.get());
+    ai_chat::AIChatTabHelper* helper = ai_chat::AIChatTabHelper::From(
+        tabs::TabInterface::MaybeGetFromContents(web_contents.get()));
     if (!helper) {
       return;
     }
@@ -542,8 +542,8 @@ void RenderViewContextMenu::ExecuteAIChatCommand(int command) {
                        source_web_contents_->GetWeakPtr(), selected_text,
                        action_type));
   } else {
-    ai_chat::AIChatTabHelper* helper =
-        ai_chat::AIChatTabHelper::FromWebContents(embedder_web_contents_);
+    ai_chat::AIChatTabHelper* helper = ai_chat::AIChatTabHelper::From(
+        tabs::TabInterface::MaybeGetFromContents(embedder_web_contents_));
     if (!helper) {
       VLOG(1) << "Can't get AI chat tab helper";
       return;

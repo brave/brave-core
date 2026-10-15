@@ -15,6 +15,7 @@
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/utils.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/permission_controller.h"
@@ -77,7 +78,7 @@ AIChatBraveSearchThrottle::WillStartRequest() {
   }
 
   // Check if nonce in HTML tag matches the one in the URL.
-  AIChatTabHelper::FromWebContents(web_contents)
+  AIChatTabHelper::From(tabs::TabInterface::MaybeGetFromContents(web_contents))
       ->web_contents_content()
       .GetOpenAIChatButtonNonce(
           base::BindOnce(&AIChatBraveSearchThrottle::OnGetOpenAIChatButtonNonce,
@@ -92,7 +93,8 @@ void AIChatBraveSearchThrottle::OpenAIChatWithStagedEntries() {
   }
 
   ai_chat_service_->OpenConversationWithStagedEntries(
-      AIChatTabHelper::FromWebContents(web_contents)
+      AIChatTabHelper::From(
+          tabs::TabInterface::MaybeGetFromContents(web_contents))
           ->web_contents_content()
           .GetWeakPtr(),
       base::BindOnce(&AIChatBraveSearchThrottle::OnOpenAIChat,
