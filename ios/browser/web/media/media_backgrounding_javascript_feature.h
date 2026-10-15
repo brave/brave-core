@@ -26,8 +26,8 @@ class MediaBackgroundingJavaScriptFeature
   static MediaBackgroundingJavaScriptFeature* FromBrowserState(
       web::BrowserState* browser_state);
 
-  // Records which videos are still playing. Called while the scene is resigning active, 
-  // before WebKit pauses them for backgrounding.
+  // Records which videos are still playing. Called while the scene is resigning
+  // active, before WebKit pauses them for backgrounding.
   void MarkPlayingVideos(web::WebState* web_state);
 
   // Resumes videos recorded by `MarkPlayingVideos`.
