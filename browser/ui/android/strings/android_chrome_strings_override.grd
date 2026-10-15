@@ -444,6 +444,12 @@ CHAR_LIMIT guidelines:
       <message name="IDS_GLIC_INCOGNITO_NOT_AVAILABLE" desc="Text displayed in a snackbar when clicking the Glic button in a Private tab.">
         Gemini isn’t available in Private mode
       </message>
+      <message name="IDS_BOTTOM_BAR_SETTING_TITLE" desc="Title for the setting that enables the bottom bar. [CHAR_LIMIT=32]">
+        Enable bottom bar
+      </message>
+      <message name="IDS_BOTTOM_BAR_SETTING_SUMMARY" desc="Summary for the setting that enables the bottom bar.">
+        Show a bottom bar for quick access to home, bookmarks, and search
+      </message>
       </messages>
   </release>
 </grit>
