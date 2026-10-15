@@ -5,13 +5,55 @@
 
 import("//brave/components/web_discovery/buildflags/buildflags.gni")
 
-if (enable_web_discovery_native) {
-  static_library("web_discovery") {
-    sources = [
-      "web_discovery_service_factory.cc",
-      "web_discovery_service_factory.h",
-    ]
-    deps = [
+assert(enable_web_discovery)
+
+source_set("web_discovery") {
+  sources = [
+    "web_discovery_cta_util.h",
+    "web_discovery_infobar_delegate.h",
+    "web_discovery_tab_helper.h",
+  ]
+
+  public_deps = [
+    "//base",
+    "//brave/components/web_discovery/buildflags",
+    "//components/infobars/core",
+    "//content/public/browser",
+  ]
+
+  if (enable_web_discovery_native) {
+    sources += [ "web_discovery_service_factory.h" ]
+    public_deps += [ "//chrome/browser/profiles:profile" ]
+  }
+}
+
+source_set("impl") {
+  visibility = [ "//brave/browser:core" ]
+
+  sources = [
+    "web_discovery_cta_util.cc",
+    "web_discovery_infobar_delegate.cc",
+    "web_discovery_tab_helper.cc",
+  ]
+
+  deps = [
+    ":web_discovery",
+    "//brave/common",
+    "//brave/components/constants",
+    "//brave/components/search_engines",
+    "//chrome/browser/profiles",
+    "//chrome/browser/search_engines",
+    "//chrome/browser/ui",
+    "//components/infobars/content",
+    "//components/infobars/core",
+    "//components/prefs",
+    "//components/search_engines",
+    "//content/public/browser",
+  ]
+
+  if (enable_web_discovery_native) {
+    sources += [ "web_discovery_service_factory.cc" ]
+    deps += [
       "//base",
       "//brave/browser/brave_search",
       "//brave/components/web_discovery/browser",
@@ -21,77 +63,74 @@ if (enable_web_discovery_native) {
       "//chrome/common:constants",
       "//components/keyed_service/content",
       "//components/user_prefs",
-      "//content/public/browser",
       "//third_party/re2",
     ]
   }
 }
 
 source_set("unit_tests") {
-  if (enable_web_discovery) {
-    testonly = true
+  testonly = true
 
-    sources = [ "web_discovery_unittest.cc" ]
+  sources = [ "web_discovery_unittest.cc" ]
 
-    deps = [
-      "//brave/components/constants",
-      "//brave/components/search_engines",
-      "//chrome/browser",
-      "//chrome/browser/prefs",
-      "//chrome/test:test_support",
-      "//components/prefs",
-      "//components/search_engines",
-      "//components/sync_preferences:test_support",
-      "//content/public/browser",
-      "//content/test:test_support",
-      "//testing/gtest",
-    ]
-  }
+  deps = [
+    ":web_discovery",
+    "//brave/components/constants",
+    "//brave/components/search_engines",
+    "//chrome/browser",
+    "//chrome/browser/prefs",
+    "//chrome/test:test_support",
+    "//components/prefs",
+    "//components/search_engines",
+    "//components/sync_preferences:test_support",
+    "//content/public/browser",
+    "//content/test:test_support",
+    "//testing/gtest",
+  ]
 }
 
 source_set("browser_tests") {
-  if (enable_web_discovery) {
-    testonly = true
-    defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+  testonly = true
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
-    sources = []
+  sources = []
 
-    deps = [
-      "//base/test:test_support",
-      "//brave/components/constants",
-      "//brave/components/search_engines",
-      "//chrome/browser",
-      "//chrome/browser/profiles:profile",
-      "//chrome/browser/ui",
-      "//chrome/test:test_support",
-      "//components/infobars/content",
-      "//components/prefs",
-      "//content/public/browser",
-      "//content/test:test_support",
-      "//net:test_support",
-      "//services/service_manager/public/cpp",
-      "//testing/gmock",
-      "//testing/gtest",
+  deps = [
+    "//base/test:test_support",
+    "//brave/components/constants",
+    "//brave/components/search_engines",
+    "//chrome/browser",
+    "//chrome/browser/profiles:profile",
+    "//chrome/browser/ui",
+    "//chrome/test:test_support",
+    "//components/infobars/content",
+    "//components/prefs",
+    "//content/public/browser",
+    "//content/test:test_support",
+    "//net:test_support",
+    "//services/service_manager/public/cpp",
+    "//testing/gmock",
+    "//testing/gtest",
+  ]
+
+  if (!is_android) {
+    sources += [ "web_discovery_browsertest.cc" ]
+    deps += [
+      ":web_discovery",
+      "//extensions:test_support",
+      "//extensions/browser",
+      "//extensions/common:common_constants",
     ]
+  }
 
-    if (!is_android) {
-      sources += [ "web_discovery_browsertest.cc" ]
-      deps += [
-        "//extensions:test_support",
-        "//extensions/browser",
-        "//extensions/common:common_constants",
-      ]
-    }
-
-    if (enable_web_discovery_native) {
-      sources += [ "content_scraper_browsertest.cc" ]
-      deps += [
-        "//brave/components/web_discovery/browser",
-        "//brave/components/web_discovery/browser:internal",
-        "//brave/components/web_discovery/common",
-        "//brave/components/web_discovery/common:mojom",
-        "//chrome/test/base:chrome_test_utils",
-      ]
-    }
+  if (enable_web_discovery_native) {
+    sources += [ "content_scraper_browsertest.cc" ]
+    deps += [
+      "//brave/components/web_discovery/browser",
+      "//brave/components/web_discovery/browser:internal",
+      "//brave/components/web_discovery/common",
+      "//brave/components/web_discovery/common:mojom",
+      "//chrome/test/base:chrome_test_utils",
+    ]
   }
 }
