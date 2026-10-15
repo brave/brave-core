@@ -40,6 +40,7 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/prefs/pref_service.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
@@ -119,8 +120,8 @@ class AIChatUIBrowserTest : public InProcessBrowserTest {
     // Set a smaller window size so we can have test data with more pages.
     BrowserWindow::FromBrowser(browser())->SetContentsSize(gfx::Size(800, 600));
 
-    chat_tab_helper_ =
-        ai_chat::AIChatTabHelper::FromWebContents(GetActiveWebContents());
+    chat_tab_helper_ = ai_chat::AIChatTabHelper::From(
+        tabs::TabInterface::MaybeGetFromContents(GetActiveWebContents()));
     ASSERT_TRUE(chat_tab_helper_);
     ai_chat::SetUserOptedIn(prefs(), true);
     OpenAIChatSidePanel();
@@ -279,8 +280,8 @@ IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, FetchPageContentPDF) {
   ASSERT_TRUE(
       pdf_extension_test_util::EnsurePDFHasLoaded(GetActiveWebContents()));
   // It needs update because it was created for tab 0 at setup
-  chat_tab_helper_ =
-      ai_chat::AIChatTabHelper::FromWebContents(GetActiveWebContents());
+  chat_tab_helper_ = ai_chat::AIChatTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(GetActiveWebContents()));
   ASSERT_TRUE(chat_tab_helper_);
   FetchPageContent(FROM_HERE, kExpectedText);
 }
@@ -404,8 +405,8 @@ class AIChatPDFOCRBrowserTest : public InProcessBrowserTest {
     embedded_test_server()->ServeFilesFromSourceDirectory("chrome/test/data");
     ASSERT_TRUE(embedded_test_server()->Start());
 
-    chat_tab_helper_ =
-        ai_chat::AIChatTabHelper::FromWebContents(GetActiveWebContents());
+    chat_tab_helper_ = ai_chat::AIChatTabHelper::From(
+        tabs::TabInterface::MaybeGetFromContents(GetActiveWebContents()));
     ASSERT_TRUE(chat_tab_helper_);
     ai_chat::SetUserOptedIn(prefs(), true);
   }

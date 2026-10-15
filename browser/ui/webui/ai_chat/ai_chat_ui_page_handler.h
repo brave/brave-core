@@ -164,6 +164,7 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
   void OpenURLInNewTab(const GURL& url);
 
   // AssociatedContentDelegate::Observer
+  void OnDestroyed(AssociatedContentDelegate* delegate) override;
   void OnRequestArchive(AssociatedContentDelegate* delegate) override;
   void OnNewPage(AssociatedContentDelegate* delegate) override;
 

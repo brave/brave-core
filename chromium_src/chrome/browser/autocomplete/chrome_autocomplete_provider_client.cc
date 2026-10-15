@@ -11,6 +11,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/browser_window/public/profile_browser_collection.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/base/page_transition_types.h"
 #include "ui/base/window_open_disposition.h"
@@ -96,8 +97,9 @@ void ChromeAutocompleteProviderClient::OpenLeo(const std::u16string& query) {
                       ui::PageTransition::PAGE_TRANSITION_GENERATED, false},
                      {});
   } else {
-    auto* chat_tab_helper = ai_chat::AIChatTabHelper::FromWebContents(
-        browser->GetTabStripModel()->GetActiveWebContents());
+    auto* chat_tab_helper =
+        ai_chat::AIChatTabHelper::From(tabs::TabInterface::MaybeGetFromContents(
+            browser->GetTabStripModel()->GetActiveWebContents()));
     DCHECK(chat_tab_helper);
     conversation_handler =
         ai_chat_service->GetOrCreateConversationHandlerForContent(

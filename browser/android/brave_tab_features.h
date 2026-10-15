@@ -13,6 +13,7 @@
 class Profile;
 
 namespace ai_chat {
+class AIChatTabHelper;
 class TabDataWebContentsObserver;
 class WebMcpInjector;
 }  // namespace ai_chat
@@ -80,6 +81,8 @@ class BraveTabFeatures : public TabFeatures_Chromium {
   // Enters fullscreen and Picture-in-Picture for YouTube videos.
   std::unique_ptr<ContentsObservingTabFeature> youtube_script_injector_;
 
+  // Provides the tab's content to AI Chat. Null when AI Chat is not allowed.
+  std::unique_ptr<ai_chat::AIChatTabHelper> ai_chat_tab_helper_;
   std::unique_ptr<ai_chat::TabDataWebContentsObserver> tab_data_observer_;
   std::unique_ptr<ai_chat::WebMcpInjector> web_mcp_injector_;
 

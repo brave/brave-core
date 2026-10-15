@@ -9,6 +9,7 @@
 
 #include "brave/components/ai_chat/content/browser/associated_web_contents_content.h"
 #include "brave/components/ai_chat/content/browser/page_content_fetcher.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/browser_accessibility_state.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/web_contents.h"
@@ -20,18 +21,25 @@
 
 namespace ai_chat {
 
+DEFINE_USER_DATA(AIChatTabHelper);
+
+// static
+AIChatTabHelper* AIChatTabHelper::From(tabs::TabInterface* tab) {
+  return tab ? Get(tab->GetUnownedUserDataHost()) : nullptr;
+}
+
 AIChatTabHelper::AIChatTabHelper(
+    tabs::TabInterface& tab,
     content::WebContents* web_contents,
     std::unique_ptr<
         AssociatedWebContentsContent::PrintPreviewExtractionDelegate>
         print_preview_extraction_delegate)
-    : content::WebContentsUserData<AIChatTabHelper>(*web_contents),
+    : contents_(*web_contents),
       web_contents_content_(std::make_unique<AssociatedWebContentsContent>(
           web_contents,
-          std::move(print_preview_extraction_delegate))) {}
+          std::move(print_preview_extraction_delegate))),
+      scoped_unowned_user_data_(tab.GetUnownedUserDataHost(), *this) {}
 
 AIChatTabHelper::~AIChatTabHelper() = default;
-
-WEB_CONTENTS_USER_DATA_KEY_IMPL(AIChatTabHelper);
 
 }  // namespace ai_chat

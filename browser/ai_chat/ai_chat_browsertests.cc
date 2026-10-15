@@ -20,9 +20,14 @@
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/resource_coordinator/lifecycle_unit_state.mojom.h"
+#include "chrome/browser/resource_coordinator/tab_lifecycle_unit_external.h"
+#include "chrome/browser/resource_coordinator/tab_lifecycle_unit_source.h"
 #include "chrome/browser/ui/browser_commands.h"
+#include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
@@ -30,6 +35,7 @@
 #include "services/network/public/cpp/network_switches.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "ui/base/page_transition_types.h"
 
 namespace ai_chat {
 
@@ -159,6 +165,28 @@ class AIChatBrowserTest : public InProcessBrowserTest {
   net::EmbeddedTestServer https_server_{net::EmbeddedTestServer::TYPE_HTTPS};
 };
 
+// Discarding a tab replaces its contents, for which the tab's features build a
+// new tab helper that provides the new contents to AI Chat.
+IN_PROC_BROWSER_TEST_F(AIChatBrowserTest, FollowsDiscardedContents) {
+  TabStripModel* const tab_strip_model = browser()->tab_strip_model();
+  tabs::TabInterface* const tab = tab_strip_model->GetActiveTab();
+  ASSERT_TRUE(AIChatTabHelper::From(tab));
+
+  ASSERT_TRUE(AddTabAtIndex(1, GURL("about:blank"), ui::PAGE_TRANSITION_TYPED));
+  auto* const lifecycle_unit =
+      resource_coordinator::TabLifecycleUnitSource::GetTabLifecycleUnitExternal(
+          tab->GetContents());
+  ASSERT_TRUE(lifecycle_unit);
+  ASSERT_TRUE(
+      lifecycle_unit->DiscardTab(::mojom::LifecycleUnitDiscardReason::URGENT));
+
+  auto* const tab_helper = AIChatTabHelper::From(tab);
+  ASSERT_TRUE(tab_helper);
+  EXPECT_EQ(&tab_helper->GetWebContents(), tab->GetContents());
+  EXPECT_EQ(tab_helper->web_contents_content().web_contents(),
+            tab->GetContents());
+}
+
 IN_PROC_BROWSER_TEST_F(AIChatBrowserTest, YoutubeNavigations) {
   const GURL url("https://www.youtube.com/youtube.html?v=video_id_001");
 
@@ -193,7 +221,8 @@ IN_PROC_BROWSER_TEST_F(AIChatBrowserTest, AttachingYoutubeTabDetectsVideo) {
       AIChatServiceFactory::GetForBrowserContext(browser()->GetProfile());
   auto* conversation = ai_chat_service->CreateConversation();
   ai_chat_service->MaybeAssociateContent(
-      &AIChatTabHelper::FromWebContents(ActiveWebContents())
+      &AIChatTabHelper::From(
+           tabs::TabInterface::MaybeGetFromContents(ActiveWebContents()))
            ->web_contents_content(),
       conversation->get_conversation_uuid());
 
@@ -249,8 +278,8 @@ IN_PROC_BROWSER_TEST_F(AIChatBrowserTest, ExtractsAIPageContent) {
 IN_PROC_BROWSER_TEST_F(AIChatBrowserTest,
                        ClosingMultiAssociatedChatDoesNotCrash) {
   auto get_associated_content = [](content::RenderFrameHost* rfh) {
-    return AIChatTabHelper::FromWebContents(
-        content::WebContents::FromRenderFrameHost(rfh));
+    return AIChatTabHelper::From(tabs::TabInterface::MaybeGetFromContents(
+        content::WebContents::FromRenderFrameHost(rfh)));
   };
   auto* content1 =
       get_associated_content(ui_test_utils::NavigateToURLWithDisposition(

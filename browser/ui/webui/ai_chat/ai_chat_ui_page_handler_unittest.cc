@@ -43,6 +43,8 @@
 #include "components/history/core/browser/history_service.h"
 #include "components/history/core/browser/history_types.h"
 #include "components/keyed_service/core/service_access_type.h"
+#include "components/tabs/public/mock_tab_interface.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/test/web_contents_tester.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
@@ -570,8 +572,12 @@ class AIChatUIPageHandlerGlobalSidePanelTest
     ASSERT_TRUE(
         AIChatServiceFactory::GetForBrowserContext(GetBrowserContext()));
 
-    // The constructor expects an AIChatTabHelper on chat_context_web_contents.
-    AIChatTabHelper::CreateForWebContents(web_contents(), nullptr);
+    // The constructor expects an AIChatTabHelper on chat_context_web_contents's
+    // tab.
+    ON_CALL(tab_, GetContents()).WillByDefault(testing::Return(web_contents()));
+    tabs::TabLookupFromWebContents::CreateForWebContents(web_contents(), &tab_);
+    tab_helper_ =
+        std::make_unique<AIChatTabHelper>(tab_, web_contents(), nullptr);
 
     mojo::PendingReceiver<mojom::AIChatUIHandler> receiver;
     page_handler_ = std::make_unique<AIChatUIPageHandler>(
@@ -581,6 +587,7 @@ class AIChatUIPageHandlerGlobalSidePanelTest
 
   void TearDown() override {
     page_handler_.reset();
+    tab_helper_.reset();
     ChromeRenderViewHostTestHarness::TearDown();
   }
 
@@ -602,6 +609,8 @@ class AIChatUIPageHandlerGlobalSidePanelTest
 
  private:
   base::test::ScopedFeatureList scoped_feature_list_;
+  tabs::MockTabInterface tab_;
+  std::unique_ptr<AIChatTabHelper> tab_helper_;
   std::unique_ptr<AIChatUIPageHandler> page_handler_;
   FakeChatUI fake_chat_ui_;
   std::optional<mojo::Receiver<mojom::ChatUI>> fake_chat_ui_receiver_;
@@ -619,7 +628,13 @@ TEST_F(AIChatUIPageHandlerGlobalSidePanelTest,
   std::unique_ptr<content::WebContents> new_tab =
       content::WebContentsTester::CreateTestWebContents(GetBrowserContext(),
                                                         nullptr);
-  AIChatTabHelper::CreateForWebContents(new_tab.get(), nullptr);
+  tabs::MockTabInterface new_tab_interface;
+  ON_CALL(new_tab_interface, GetContents())
+      .WillByDefault(testing::Return(new_tab.get()));
+  tabs::TabLookupFromWebContents::CreateForWebContents(new_tab.get(),
+                                                       &new_tab_interface);
+  auto new_tab_helper = std::make_unique<AIChatTabHelper>(
+      new_tab_interface, new_tab.get(), nullptr);
 
   // Simulate the active tab changing to |new_tab|.
   TabStripSelectionChange selection;
