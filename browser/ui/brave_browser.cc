@@ -12,7 +12,6 @@
 #include "base/functional/callback_helpers.h"
 #include "brave/browser/brave_browser_features.h"
 #include "brave/browser/ui/brave_browser_window.h"
-#include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_commands.h"
@@ -34,17 +33,6 @@ BraveBrowser::BraveBrowser(BrowserWindowCreateParams params)
   if (!brave_browser_window) {
     // The window is not a BrowserView, e.g. a WebUIBrowserWindow.
     return;
-  }
-
-  if (auto* sidebar_controller = sidebar::SidebarController::From(this)) {
-    // TODO(https://github.com/brave/brave-browser/issues/45633): Cleanup this.
-    // Below call order is important.
-    // When reaches here, Sidebar UI is setup in BraveBrowserView but
-    // not initialized. It's just empty because sidebar controller/model is not
-    // ready yet. BraveBrowserView is instantiated by the ctor of Browser.
-    // So, initializing sidebar controller/model here and then ask to initialize
-    // sidebar UI. After that, UI will be updated for model's change.
-    sidebar_controller->SetSidebar(brave_browser_window->InitSidebar());
   }
 
   // As browser window(BrowserView) is initialized before fullscreen controller

@@ -103,23 +103,21 @@ class SidebarContainerView::BrowserWindowEventObserver
   const raw_ref<SidebarContainerView> host_;
 };
 
-SidebarContainerView::SidebarContainerView(BrowserWindowInterface* browser)
+SidebarContainerView::SidebarContainerView(
+    BrowserWindowInterface* browser,
+    base::RepeatingClosure sidebar_control_view_visibility_changed_callback)
     : views::AnimationDelegateViews(this),
       browser_(browser),
       browser_window_event_observer_(
-          std::make_unique<BrowserWindowEventObserver>(*this)) {
+          std::make_unique<BrowserWindowEventObserver>(*this)),
+      sidebar_control_view_visibility_changed_callback_(
+          std::move(sidebar_control_view_visibility_changed_callback)) {
   constexpr int kAnimationDurationMS = 150;
   width_animation_.SetSlideDuration(base::Milliseconds(kAnimationDurationMS));
 
   SetNotifyEnterExitOnChild(true);
   SetUseDefaultFillLayout(true);
   SetBackground(views::CreateSolidBackground(kColorToolbar));
-}
-
-SidebarContainerView::~SidebarContainerView() = default;
-
-void SidebarContainerView::Init() {
-  initialized_ = true;
 
   if (auto* focus_mode_controller = FocusModeController::From(browser_)) {
     focus_mode_observation_.Observe(focus_mode_controller);
@@ -130,9 +128,9 @@ void SidebarContainerView::Init() {
       GetSidebarService(browser_.get())->GetSidebarShowOption());
 }
 
-void SidebarContainerView::SetSidebarOnLeft(bool sidebar_on_left) {
-  DCHECK(initialized_);
+SidebarContainerView::~SidebarContainerView() = default;
 
+void SidebarContainerView::SetSidebarOnLeft(bool sidebar_on_left) {
   if (sidebar_on_left_ == sidebar_on_left) {
     return;
   }
@@ -145,11 +143,6 @@ void SidebarContainerView::SetSidebarOnLeft(bool sidebar_on_left) {
 
 bool SidebarContainerView::IsSidebarVisible() const {
   return sidebar_control_view_ && sidebar_control_view_->GetVisible();
-}
-
-void SidebarContainerView::SetSidebarControlViewVisibilityChangedCallback(
-    base::RepeatingClosure callback) {
-  sidebar_control_view_visibility_changed_callback_ = std::move(callback);
 }
 
 void SidebarContainerView::ChildVisibilityChanged(views::View* child) {
@@ -247,7 +240,7 @@ void SidebarContainerView::AddChildViews() {
 
 gfx::Size SidebarContainerView::CalculatePreferredSize(
     const views::SizeBounds& available_size) const {
-  if (!initialized_ || !sidebar_control_view_->GetVisible() ||
+  if (!sidebar_control_view_ || !sidebar_control_view_->GetVisible() ||
       IsFullscreenByTab()) {
     return gfx::Size();
   }
@@ -263,9 +256,13 @@ gfx::Size SidebarContainerView::CalculatePreferredSize(
 }
 
 bool SidebarContainerView::IsFullscreenByTab() const {
+  // Null while the browser window is still being constructed.
   auto* exclusive_access_manager = ExclusiveAccessManager::From(browser_);
-  DCHECK(exclusive_access_manager &&
-         exclusive_access_manager->fullscreen_controller());
+  if (!exclusive_access_manager) {
+    return false;
+  }
+
+  CHECK(exclusive_access_manager->fullscreen_controller());
   return exclusive_access_manager->fullscreen_controller()
       ->IsWindowFullscreenForTabOrPending();
 }

@@ -92,7 +92,7 @@ class SidebarController : public SidebarService::Observer,
 
   void TearDownPreBrowserWindowDestruction();
 
-  void SetSidebar(Sidebar* sidebar);
+  void SetSidebar(Sidebar& sidebar);
   Sidebar* sidebar() const { return sidebar_; }
   SidebarModel* model() const { return sidebar_model_.get(); }
 

@@ -75,8 +75,6 @@ class SidebarModel : public SidebarService::Observer,
   SidebarModel(const SidebarModel&) = delete;
   SidebarModel& operator=(const SidebarModel&) = delete;
 
-  void Init(history::HistoryService* history_service);
-
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
 

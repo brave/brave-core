@@ -22,7 +22,6 @@
 #include "brave/components/sidebar/browser/pref_names.h"
 #include "brave/components/sidebar/browser/sidebar_service.h"
 #include "brave/components/sidebar/common/features.h"
-#include "chrome/browser/history/history_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window.h"
@@ -340,15 +339,9 @@ void SidebarController::OnWebPanelStateChanged() {
   }
 }
 
-void SidebarController::SetSidebar(Sidebar* sidebar) {
+void SidebarController::SetSidebar(Sidebar& sidebar) {
   DCHECK(!sidebar_);
-  // |sidebar| can be null in unit test.
-  if (!sidebar)
-    return;
-  sidebar_ = sidebar;
-
-  sidebar_model_->Init(HistoryServiceFactory::GetForProfile(
-      profile_, ServiceAccessType::EXPLICIT_ACCESS));
+  sidebar_ = &sidebar;
 }
 
 SidebarWebPanelController* SidebarController::GetWebPanelController() {

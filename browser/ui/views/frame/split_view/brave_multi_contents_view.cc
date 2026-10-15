@@ -13,6 +13,7 @@
 #include "chrome/browser/devtools/devtools_ui_controller.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/layout_constants.h"
+#include "chrome/browser/ui/side_panel/side_panel_entry.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/contents_web_view.h"
 #include "chrome/browser/ui/views/frame/multi_contents_background_view.h"
@@ -87,6 +88,7 @@ void BraveMultiContentsView::UseContentsContainerViewForWebPanel() {
         AddChildView(std::make_unique<BraveContentsContainerView>(
             browser_view_, /*for_web_panel*/ true));
     contents_container_view_for_web_panel_->SetVisible(false);
+    SetWebPanelWidth(SidePanelEntry::kSidePanelDefaultContentWidth);
 
     auto& view_map =
         container_focusable_map_[contents_container_view_for_web_panel_];
@@ -106,7 +108,8 @@ void BraveMultiContentsView::UseContentsContainerViewForWebPanel() {
 
 void BraveMultiContentsView::SetWebPanelContents(
     content::WebContents* web_contents) {
-  CHECK(contents_container_view_for_web_panel_);
+  UseContentsContainerViewForWebPanel();
+
   contents_container_view_for_web_panel_->contents_view()->SetWebContents(
       web_contents);
   contents_container_view_for_web_panel_->SetVisible(web_contents);
@@ -114,8 +117,8 @@ void BraveMultiContentsView::SetWebPanelContents(
 }
 
 bool BraveMultiContentsView::IsWebPanelVisible() const {
-  CHECK(contents_container_view_for_web_panel_);
-  return contents_container_view_for_web_panel_->GetVisible();
+  return contents_container_view_for_web_panel_ &&
+         contents_container_view_for_web_panel_->GetVisible();
 }
 
 views::View*

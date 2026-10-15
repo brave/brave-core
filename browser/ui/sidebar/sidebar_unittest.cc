@@ -18,6 +18,7 @@
 #include "brave/components/brave_talk/buildflags/buildflags.h"
 #include "brave/components/sidebar/browser/constants.h"
 #include "brave/components/sidebar/browser/sidebar_service.h"
+#include "chrome/browser/history/history_service_factory.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/prefs/pref_service.h"
@@ -77,6 +78,10 @@ class SidebarModelTest : public testing::Test {
     // Instantiate SidebarServiceFactory before creating TestingProfile
     // as SidebarServiceFactory registers profile prefs.
     SidebarServiceFactory::GetInstance();
+    // SidebarModel's ctor asks for the HistoryService. Instantiating the
+    // factory before the profile is what makes it hand back null here
+    // (ServiceIsNULLWhileTesting) instead of building a real service.
+    HistoryServiceFactory::GetInstance();
     profile_ = std::make_unique<TestingProfile>();
     service_ = SidebarServiceFactory::GetForProfile(profile_.get());
     model_ = std::make_unique<SidebarModel>(profile_.get());
@@ -97,8 +102,6 @@ class SidebarModelTest : public testing::Test {
 };
 
 TEST_F(SidebarModelTest, ItemsChangedTest) {
-  model()->Init(nullptr);
-
   EXPECT_THAT(model()->active_index(), Eq(std::nullopt));
 
   // Record the initial item count before adding custom items.
