@@ -4,294 +4,106 @@
 
 ## ✅ Isolate Unit Tests with Fake Dependencies
 
-**Test the real component through its public API, injecting fake classes for
-dependencies outside the unit under test. Do not replace the component whose
-behavior the test is meant to verify.**
+**Exercise the real component through its public API; inject fakes for
+dependencies outside the unit under test. Prefer fakes over gMock:** assertions
+about results survive refactoring better than expectations about incidental
+calls or ordering. Mocks are not banned, but should not be the default.
 
-Using real service dependencies can turn a unit test into a quasi-integration
-test: dependency changes cause cascading failures that obscure which component
-broke. Keeping dependency behavior under the test's control makes failures more
-informative and tests faster and more deterministic.
+Reuse existing interfaces and fakes; put reusable doubles in a
+[`test_support` target](build-system.md#BS-022). Prefer
+[constructor injection](architecture.md#ARCH-025), not virtual methods
+everywhere. These excerpts omit unrelated declarations and method definitions.
 
-**Prefer fakes over gMock.** Chromium's
-[Why not GMock?](https://www.chromium.org/chromium-os/developer-library/reference/cpp/cpp-patterns/#why-not-gmock)
-explains that mock expectations tend to overspecify interactions, producing
-brittle tests that break when implementation details change. Mocks are not
-banned, but are not the default recommendation: a small fake usually expresses
-controlled behavior and observable results without prescribing incidental call
-counts or ordering.
+### Inject a fake, not a real service
 
-- Reuse established Brave or Chromium fakes before adding another test double.
-  Put reusable doubles in a [`test_support` target](build-system.md#BS-022).
-- Inject dependencies through the constructor (see
-  [ARCH-025](architecture.md#ARCH-025)). Reuse existing interfaces where
-  possible; this is not a requirement to make every method virtual.
-- Do not start real network or storage services merely to satisfy dependencies
-  in an isolated unit test. Supply controlled responses, state, and errors
-  through fakes. Simple value objects and helpers need not be replaced.
-
-The following independent, illustrative C++ excerpts show the patterns from
-[Chromium C++ Design Patterns](https://www.chromium.org/chromium-os/developer-library/reference/cpp/cpp-patterns/).
-Includes and production method definitions are omitted where they are not
-relevant to the pattern.
-
-### Abstract base class, implementation, and fake
-
-The consumer accepts the same interface for a production implementation and a
-small in-memory fake. The test exercises the real consumer and asserts its
-public result, not its internal implementation.
+**BAD:** An isolated test starts production storage just to test its consumer.
 
 ```cpp
-class ReportStore {
- public:
-  virtual ~ReportStore() = default;
-  virtual std::string ReadReport() const = 0;
-};
+ReportService service(std::make_unique<ReportStoreImpl>(database_path));
+EXPECT_EQ(service.ReadReport(), "saved report");  // Depends on disk state.
+```
 
-class ReportStoreImpl : public ReportStore {
- public:
-  std::string ReadReport() const override;  // Reads production storage.
-};
+**GOOD:** A small fake implements the existing `ReportStore` interface; the real
+`ReportService` still runs.
 
+```cpp
 class FakeReportStore : public ReportStore {
  public:
-  explicit FakeReportStore(std::string report) : report_(std::move(report)) {}
-  std::string ReadReport() const override { return report_; }
-
- private:
-  std::string report_;
+  std::string ReadReport() const override { return "saved report"; }
 };
 
-class ReportService {
- public:
-  explicit ReportService(std::unique_ptr<ReportStore> store)
-      : store_(std::move(store)) {}
-  std::string ReadReport() const { return store_->ReadReport(); }
+ReportService service(std::make_unique<FakeReportStore>());
+EXPECT_EQ(service.ReadReport(), "saved report");
+```
 
- private:
-  std::unique_ptr<ReportStore> store_;
-};
+### Assert behavior, not incidental interactions
 
-TEST(ReportServiceTest, ReadsSavedReport) {
-  ReportService service(std::make_unique<FakeReportStore>("saved report"));
-  EXPECT_EQ(service.ReadReport(), "saved report");
+**BAD:** The test requires exactly one storage read, even though caching or
+batching could change without affecting the service's contract.
+
+```cpp
+auto store = std::make_unique<MockReportStore>();
+EXPECT_CALL(*store, ReadReport()).Times(1).WillOnce(Return("saved report"));
+ReportService service(std::move(store));
+EXPECT_EQ(service.ReadReport(), "saved report");
+```
+
+**GOOD:** Assert the contract using the fake above, allowing internal read
+counts to change.
+
+```cpp
+ReportService service(std::make_unique<FakeReportStore>());
+EXPECT_EQ(service.ReadReport(), "saved report");
+EXPECT_EQ(service.ReadReport(), "saved report");
+```
+
+Configure fakes with data, errors, or pending callbacks as needed. Verify call
+counts only when they are contractual.
+
+### Inject creation when dependencies are made on demand
+
+**BAD:** The consumer hard-codes production storage.
+
+```cpp
+std::string ReportReader::ReadReport() {
+  return ReportStoreImpl(database_path_).ReadReport();
 }
 ```
 
-### Inject an abstract factory when the consumer creates dependencies
-
-If a consumer must create dependencies on demand, inject the factory rather than
-constructing real dependencies inside the consumer. This sketch reuses
-`ReportStore` and its implementations above; production injects a factory that
-creates `ReportStoreImpl` instances.
+**GOOD:** Inject a factory through the constructor; production supplies the real
+factory and tests supply a fake.
 
 ```cpp
-class ReportStoreFactory {
- public:
-  virtual ~ReportStoreFactory() = default;
-  virtual std::unique_ptr<ReportStore> Create() = 0;
-};
-
-class FakeReportStoreFactory : public ReportStoreFactory {
- public:
-  std::unique_ptr<ReportStore> Create() override {
-    return std::make_unique<FakeReportStore>("saved report");
-  }
-};
-
-class ReportReader {
- public:
-  explicit ReportReader(std::unique_ptr<ReportStoreFactory> factory)
-      : factory_(std::move(factory)) {}
-  std::string ReadReport() { return factory_->Create()->ReadReport(); }
-
- private:
-  std::unique_ptr<ReportStoreFactory> factory_;
-};
-
-TEST(ReportReaderTest, ReadsReportFromCreatedStore) {
-  ReportReader reader(std::make_unique<FakeReportStoreFactory>());
-  EXPECT_EQ(reader.ReadReport(), "saved report");
+using CreateStore = base::RepeatingCallback<std::unique_ptr<ReportStore>()>;
+ReportReader::ReportReader(CreateStore create_store)
+    : create_store_(std::move(create_store)) {}
+std::string ReportReader::ReadReport() {
+  return create_store_.Run()->ReadReport();
 }
+
+ReportReader reader(base::BindRepeating([]() -> std::unique_ptr<ReportStore> {
+  return std::make_unique<FakeReportStore>();
+}));
+EXPECT_EQ(reader.ReadReport(), "saved report");
 ```
 
-### Static factory override: restore global state with a scoped override
+Keep other dependency boundaries equally small:
 
-A static factory is an alternative when an existing API does not support
-constructor injection. It introduces global state, so prefer the injected
-factory above when possible. Restore the prior factory before the fake is
-destroyed, including when a test exits early; never leave a dangling override
-for later tests. This sketch reuses `ReportStoreFactory` above.
+- **Static factories:** when injection is unavailable, use a scoped test
+  override that restores the previous factory before the fake is destroyed. Do
+  not leak global overrides between tests.
+- **Async/fallible creation:** use a factory method with an explicit result and
+  ownership-bearing callback, not a blocking constructor or partially
+  initialized object. A fake controls both completion time and success/failure.
+- **Observers:** record event data in a fake observer and assert it. Prefer
+  `base::ScopedObservation` for cleanup; the publisher must outlive the
+  observation.
+- **Delegates:** declare the interface in the lower-level component and inject a
+  fake in its tests. Do not depend upward on the concrete consumer.
 
-```cpp
-class ReportStores {
- public:
-  static std::unique_ptr<ReportStore> Create() {
-    if (factory_for_testing_) {
-      return factory_for_testing_->Create();
-    }
-    return std::make_unique<ReportStoreImpl>();
-  }
-
-  [[nodiscard]] static base::AutoReset<ReportStoreFactory*> OverrideForTesting(
-      ReportStoreFactory* factory) {
-    return base::AutoReset<ReportStoreFactory*>(&factory_for_testing_, factory);
-  }
-
- private:
-  inline static ReportStoreFactory* factory_for_testing_ = nullptr;
-};
-
-TEST(ReportStoresTest, UsesScopedFakeFactory) {
-  FakeReportStoreFactory factory;
-  auto reset_factory = ReportStores::OverrideForTesting(&factory);
-  EXPECT_EQ(ReportStores::Create()->ReadReport(), "saved report");
-  // reset_factory restores the old pointer before factory is destroyed.
-}
-```
-
-### Factory method for asynchronous or fallible construction
-
-Do not block a constructor while acquiring a resource or expose a partially
-initialized object. A factory method can return an explicit result and deliver
-ownership asynchronously. Its contract should guarantee a non-null connection on
-success and a null connection on failure. For isolated consumer tests, supply
-this operation through an injected connector/factory whose fake controls the
-callback result and completion time.
-
-```cpp
-class Connection {
- public:
-  enum class Result { kSuccess, kTimeout, kRejected };
-  using ConnectCallback =
-      base::OnceCallback<void(Result, std::unique_ptr<Connection>)>;
-
-  static void Connect(ConnectCallback callback);
-  ~Connection();
-
- private:
-  Connection();  // Only Connect() creates a fully established connection.
-};
-
-// Example consumer callback; no blocking wait in the production constructor.
-Connection::Connect(base::BindOnce(
-    [](Connection::Result result, std::unique_ptr<Connection> connection) {
-      if (result != Connection::Result::kSuccess) {
-        // Report the failure; no connection is available to use.
-        return;
-      }
-      // Transfer the established connection to its owner here.
-    }));
-```
-
-### Observers: subscribe and unsubscribe with explicit lifetimes
-
-Use observers when a publisher should notify subscribers without depending on
-concrete subscriber types. A recording observer is a fake: test the event's
-observable data without gMock expectations. `ScopedObservation` removes the
-observer on scope exit; the publisher must outlive the observation.
-
-```cpp
-class ReportPublisher {
- public:
-  class Observer : public base::CheckedObserver {
-   public:
-    virtual void OnReportSaved(const std::string& report) = 0;
-  };
-
-  void AddObserver(Observer* observer) { observers_.AddObserver(observer); }
-  void RemoveObserver(Observer* observer) { observers_.RemoveObserver(observer); }
-  void SaveReport(const std::string& report) {
-    observers_.Notify(&Observer::OnReportSaved, report);
-  }
-
- private:
-  base::ObserverList<Observer> observers_;
-};
-
-class RecordingReportObserver : public ReportPublisher::Observer {
- public:
-  void OnReportSaved(const std::string& report) override { report_ = report; }
-  const std::string& report() const { return report_; }
-
- private:
-  std::string report_;
-};
-
-TEST(ReportPublisherTest, NotifiesSubscriberOfSavedReport) {
-  ReportPublisher publisher;
-  RecordingReportObserver observer;
-  base::ScopedObservation<ReportPublisher, ReportPublisher::Observer>
-      observation(&observer);
-  observation.Observe(&publisher);
-
-  publisher.SaveReport("saved report");
-  EXPECT_EQ(observer.report(), "saved report");
-}
-```
-
-### Delegates: keep dependency direction legal
-
-A lower-level component declares the delegate interface it needs; a higher-level
-component implements it. The lower-level component never includes the
-higher-level implementation, avoiding dependency cycles or forbidden DEPS edges.
-Inject a fake delegate to test the lower-level component in isolation.
-
-```cpp
-// Declared in the lower-level component, not in its higher-level consumer.
-class ReportController {
- public:
-  class Delegate {
-   public:
-    virtual ~Delegate() = default;
-    virtual bool CanSaveReport() const = 0;
-    virtual void SaveReport(const std::string& report) = 0;
-  };
-
-  explicit ReportController(Delegate& delegate) : delegate_(delegate) {}
-  bool SaveReport(const std::string& report) {
-    if (!delegate_->CanSaveReport()) {
-      return false;
-    }
-    delegate_->SaveReport(report);
-    return true;
-  }
-
- private:
-  const raw_ref<Delegate> delegate_;  // Delegate must outlive the controller.
-};
-
-class FakeReportDelegate : public ReportController::Delegate {
- public:
-  bool CanSaveReport() const override { return can_save_; }
-  void SaveReport(const std::string& report) override { report_ = report; }
-  void set_can_save(bool can_save) { can_save_ = can_save; }
-  const std::string& report() const { return report_; }
-
- private:
-  bool can_save_ = false;
-  std::string report_;
-};
-
-TEST(ReportControllerTest, SavesOnlyWhenDelegateAllowsIt) {
-  FakeReportDelegate delegate;
-  ReportController controller(delegate);
-  EXPECT_FALSE(controller.SaveReport("blocked report"));
-  EXPECT_TRUE(delegate.report().empty());
-
-  delegate.set_can_save(true);
-  EXPECT_TRUE(controller.SaveReport("saved report"));
-  EXPECT_EQ(delegate.report(), "saved report");
-}
-```
-
-Keep separate integration or browser tests for interactions between real
-components and their wiring. A test of a storage implementation itself can
-exercise real storage; the isolation rule concerns dependencies outside the unit
-being tested, not a ban on real implementations in all tests.
-
-See also
-[Chromium: Test individual components in isolation](https://www.chromium.org/chromium-os/developer-library/guides/testing/cpp-writing-tests/#test-individual-components-in-isolation).
+Keep integration/browser tests for real component wiring. A storage
+implementation's own tests may use real storage; isolate dependencies outside
+the unit under test, not the unit itself or simple value objects.
 
 ---
 
@@ -1037,8 +849,7 @@ weighs the coverage of the lines a change touches more heavily than the
 project-wide number. Chasing coverage past ~90% is counterproductive: the
 remaining lines are usually `NOTREACHED()`/`CHECK()`/`LOG(FATAL)` paths that
 take contrived abuse to reach and yield little beyond what the check already
-guarantees. See
-[Chromium C++ testing best practices](https://www.chromium.org/chromium-os/developer-library/guides/testing/cpp-writing-tests/).
+guarantees.
 
 **Exception:** Don't require a dedicated test when the change is trivial UI with
 no meaningful logic to test (e.g. a toggle wired to a pref), or when it follows
@@ -1135,9 +946,6 @@ TEST_P(MyFeatureTest, BehaviorIsCorrectForAllFlagCombinations) {
 
 Place `kTestFeatures` in an unnamed namespace per Chromium C++ style. Use `int`
 instead of `size_t` for masks with more than 16 flags to avoid overflow.
-
-See
-[Chromium C++ Testing Best Practices](https://www.chromium.org/chromium-os/developer-library/guides/testing/cpp-writing-tests/).
 
 ---
 
