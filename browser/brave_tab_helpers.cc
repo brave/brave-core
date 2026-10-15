@@ -104,10 +104,6 @@
 #include "brave/browser/web_discovery/web_discovery_tab_helper.h"
 #endif
 
-#if defined(TOOLKIT_VIEWS)
-#include "brave/browser/onboarding/onboarding_tab_helper.h"
-#endif
-
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #endif
@@ -191,10 +187,6 @@ void AttachTabHelpers(content::WebContents* web_contents) {
 
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
   BraveNewsTabHelper::MaybeCreateForWebContents(web_contents);
-#endif
-
-#if defined(TOOLKIT_VIEWS)
-  OnboardingTabHelper::MaybeCreateForWebContents(web_contents);
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)

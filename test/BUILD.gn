@@ -1488,6 +1488,7 @@ test("brave_browser_tests") {
       "//brave/browser/ui/views/toolbar/screenshot_preview_dialog_browsertest.cc",
     ]
     deps += [
+      "//brave/browser/onboarding:browser_tests",
       "//brave/browser/ui/darker_theme:browser_tests",
       "//brave/browser/ui/focus_mode",
       "//brave/browser/ui/sidebar:browser_tests",
