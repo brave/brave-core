@@ -111,18 +111,22 @@ export const Default: Story = {
       {
         uid: '1',
         description: 'Manage cookie preferences and tracking protection',
+        checked: true,
       },
       {
         uid: '2',
         description: 'Control analytics and data collection settings',
+        checked: true,
       },
       {
         uid: '3',
         description: 'Configure advertising preferences',
+        checked: false,
       },
       {
         uid: '4',
         description: 'Manage location data sharing',
+        checked: true,
       },
     ],
     errorUids: [],
@@ -141,18 +145,22 @@ export const WithErrors: Story = {
       {
         uid: '1',
         description: 'Manage cookie preferences and tracking protection',
+        checked: true,
       },
       {
         uid: '2',
         description: 'Control analytics and data collection settings',
+        checked: true,
       },
       {
         uid: '3',
         description: 'Configure advertising preferences',
+        checked: false,
       },
       {
         uid: '4',
         description: 'Manage location data sharing',
+        checked: true,
       },
     ],
     errorUids: ['2', '4'],
