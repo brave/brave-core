@@ -63,6 +63,17 @@ if (!is_android) {
       "//chrome/browser/ui:browser_header",
     ]
   }
+
+  # Counterpart of //chrome/browser/ui:browser_window_header. Its implementation
+  # is in :ui.
+  source_set("brave_browser_window_header") {
+    public = [ "brave_browser_window.h" ]
+    public_deps = [
+      "//brave/components/playlist/core/common/buildflags",
+      "//brave/components/speedreader/common/buildflags",
+      "//chrome/browser/ui:browser_window_header",
+    ]
+  }
 }
 
 source_set("ui") {
@@ -381,7 +392,6 @@ source_set("ui") {
       "brave_browser_web_contents_delegate.cc",
       "brave_browser_web_contents_delegate.h",
       "brave_browser_window.cc",
-      "brave_browser_window.h",
       "brave_file_select_utils.cc",
       "brave_file_select_utils.h",
       "brave_pages.cc",
@@ -490,6 +500,7 @@ source_set("ui") {
 
     deps += [
       ":brave_browser_header",
+      ":brave_browser_window_header",
       "//base",
       "//brave/browser/brave_account",
       "//brave/browser/new_tab",
@@ -1691,6 +1702,7 @@ source_set("browser_tests") {
     ]
 
     deps = [
+      ":brave_browser_window_header",
       "//brave/app:command_ids",
       "//brave/browser/ui/window_closing_confirm",
       "//brave/components/constants",

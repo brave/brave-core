@@ -55,6 +55,7 @@ source_set("internal") {
 
   if (!is_android) {
     deps += [
+      "//brave/browser/ui:brave_browser_window_header",
       "//brave/browser/ui/focus_mode",
       "//brave/browser/ui/screenshot",
       "//brave/browser/ui/tabs:tab_menu",
