@@ -20,6 +20,13 @@
 -InstallAppLocallyCommandTest.BasicBehavior
 -WebAppPolicyForceUnregistrationTest.*
 
+
+# These fail because Brave intentionally sets kColorOmniboxIconBackground to
+# transparent (brave_color_mixer.cc), while upstream expects the chip background
+# to equal kColorToolbar and be readable against it
+-NativeChromeColorMixerLinuxChipTest.DarkToolbarDarkModeReadable
+-NativeChromeColorMixerLinuxChipTest.LightToolbarLightModeReadable
+
 -ChromePaths.*
 -ShellIntegrationTest.*
 -WebAppShortcutLinuxTest.*

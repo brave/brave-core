@@ -35,6 +35,18 @@
 # overrides or patches touch this file).
 -SystemMediaSourceWinTest.ConstructionDoesNotCrash
 
+# Same root cause as the ColorProviderTest.SystemThemeUsesNativeUserColor
+# entries in unit_tests.filter: BraveThemeService::GetIsGrayscale() returns true
+# for the baseline theme, so key.user_color_source is kGrayscale instead of the
+# kBaseline the test expects. On Windows,
+# IsSystemThemeDistinctFromDefaultTheme() is false so the SystemTheme variants
+# take the same path as the default ones. Deterministic failure caused by an
+# intentional Brave divergence, not a flake.
+-ColorProviderTest.SystemThemeUsesNativeUserColor/DarkSystemTheme
+-ColorProviderTest.SystemThemeUsesNativeUserColor/DarkHighContrastSystemTheme
+-ColorProviderTest.SystemThemeUsesNativeUserColor/LightSystemTheme
+-ColorProviderTest.SystemThemeUsesNativeUserColor/LightHighContrastSystemTheme
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -EnterpriseReportingPrivateGetContextInfoOSFirewallTest.*
 -EnterpriseReportingPrivateGetPersistentSecretFunctionTest.GetSecret
