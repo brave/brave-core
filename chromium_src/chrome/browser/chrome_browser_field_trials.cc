@@ -8,15 +8,18 @@
 #include "build/build_config.h"
 #include "extensions/buildflags/buildflags.h"
 
-#if BUILDFLAG(IS_ANDROID) && BUILDFLAG(ENABLE_EXTENSIONS_CORE)
-#include "brave/browser/brave_browser_features.h"
-#endif  // BUILDFLAG(IS_ANDROID) && BUILDFLAG(ENABLE_EXTENSIONS_CORE)
-
 #define ChromeBrowserFieldTrials ChromeBrowserFieldTrialsChromium
 
 #include <chrome/browser/chrome_browser_field_trials.cc>
 
 #undef ChromeBrowserFieldTrials
+
+#if BUILDFLAG(IS_ANDROID) && BUILDFLAG(ENABLE_EXTENSIONS_CORE)
+// Implemented in
+// brave/browser/extensions/android/brave_extension_field_trials.cc, which
+// owns the kBraveAndroidExtensions check and the Brave feature deps.
+void BraveRegisterFeatureOverrides(base::FeatureList* feature_list);
+#endif  // BUILDFLAG(IS_ANDROID) && BUILDFLAG(ENABLE_EXTENSIONS_CORE)
 
 void ChromeBrowserFieldTrials::SetUpClientSideFieldTrials(
     bool has_seed,
@@ -30,19 +33,6 @@ void ChromeBrowserFieldTrials::RegisterFeatureOverrides(
   ChromeBrowserFieldTrialsChromium::RegisterFeatureOverrides(feature_list);
 
 #if BUILDFLAG(IS_ANDROID) && BUILDFLAG(ENABLE_EXTENSIONS_CORE)
-  // The FeatureList isn't initialized yet, so read the flag as about:flags
-  // passes it.
-  if (!feature_list->IsFeatureOverriddenFromCommandLine(
-          features::kBraveAndroidExtensions.name,
-          base::FeatureList::OVERRIDE_ENABLE_FEATURE)) {
-    return;
-  }
-
-  // The extensions tabs APIs expect every tab to have WebContents, as upstream
-  // guarantees on desktop Android.
-  variations::FeatureOverrides feature_overrides(*feature_list);
-  feature_overrides.EnableFeature(features::kWebContentsDiscard);
-  feature_overrides.EnableFeature(features::kLazyBrowserInterfaceBroker);
-  feature_overrides.EnableFeature(chrome::android::kLoadAllTabsAtStartup);
+  BraveRegisterFeatureOverrides(feature_list);
 #endif  // BUILDFLAG(IS_ANDROID) && BUILDFLAG(ENABLE_EXTENSIONS_CORE)
 }
