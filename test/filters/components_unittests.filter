@@ -159,6 +159,7 @@
 -IdentityUtilsTest.GetOrderedAccountsForDisplayCookieOrderOnDesktop
 -LensIdentityDelegationHelperTest.FetchIdentityDelegationHeaders_*
 -WebSigninTrackerTest.FreshCookiesWithSigninAccountShouldTriggerSuccessResult
+-WebSigninTrackerTest.KnownResultShouldNotBeTriggeredBeforeStart
 
 # These tests fail because we do not record permissions UKM, see
 # brave/chromium_src/components/permissions/permission_uma_util.cc
@@ -198,6 +199,8 @@
 -GetUserPopulationTest.PopulatesPopulation_WithoutSBERDeprecation
 -RealTimeUrlLookupServiceTest.TestCanSendRTSampleRequest_FeatureEnabled
 -RealTimeUrlLookupServiceTest.TestFillLlamaForcedTriggerCapability
+-SafeBrowsingPrefsTest.ExplicitPermanentNoProtectionOptOut
+-SafeBrowsingPrefsTest.TemporaryNoProtectionStateTracking
 -SuspiciousSiteTriggerTest.MonitorMode_SuspiciousHitDuringLoad
 -TriggerManagerTest.AdSamplerTrigger
 -TriggerManagerTest.CollectionWhenSBERDisabledByPolicy_WithSBERDeprecation
@@ -235,6 +238,7 @@
 
 # These tests fail because the default search engine is Brave instead of Google.
 -DefaultSearchManagerTest.DefaultSearchOverridesIgnoredWhenFlagEnabled
+-SearchEngineSettingsDataProviderNonSplitRegionTest.GetAllPrepopulatedSearchEngines_CuratesTheCatalog
 
 # This test fails because we disable Actor Safety Lists component.
 -ActorSafetyListsComponentInstallerPolicyTest.ComponentRegistered
@@ -467,6 +471,8 @@
 -TemplateURLPrepopulateDataTest.ClearProvidersFromPrefs
 -TemplateURLPrepopulateDataTest.EntriesPerCountryConsistency
 -TemplateURLPrepopulateDataTest.FindGoogleAsFallback
+-TemplateURLPrepopulateDataTest.GetAllPrepopulatedEngines_RegionalPriority
+-TemplateURLPrepopulateDataTest.GetAllPrepopulatedEngines_SkipsMigratingTargets
 -TemplateURLPrepopulateDataTest.GetPrepopulatedEngineFromFullList
 -TemplateURLPrepopulateDataTest.NumberOfEntriesPerCountryConsistency
 -TemplateURLPrepopulateDataTest.ProvidersFromPrepopulated

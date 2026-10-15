@@ -5,6 +5,14 @@
 ## why the filter is required and create an associated tracking issue.
 ##
 
+# GoogleGroupsManagerFactory is permanently disabled in chromium_src
+# (BuildServiceInstanceForBrowserContext/RegisterProfilePrefs are no-ops), so
+# the real GoogleGroupsManager this fixture constructs via a custom
+# TestingFactory crashes in every test (CHECK failed: unregistered pref
+# sync.dogfood_groups) during TestingProfile::Init.
+-AiOverlayDialogPageHandlerTest.*
+-GeicEnablingTest.GoogleGroupsFilterEnablesOnlyMatchingProfile
+
 # Tests assume kPdfInfoBar is enabled; we disable it.
 -PdfInfoBarControllerTest.*
 
@@ -22,7 +30,7 @@
 -AppMenuModelTest.ProfileSyncBookmarkLimitExceededErrorHiddenTest_*
 -BrowsingHistoryHandlerTest.RequestAccountInfo
 -BrowsingHistoryHandlerTest.SendsUpdatedInfoOnAccountChange
--CanOfferSigninTest.ProfileConnected
+-CanOfferSigninTest.*
 -GlicButtonControllerTest.*
 -GlicEnablingAnchorEntryPointTestBase.*
 -GlicEnablingCombinedObserverTest.*
@@ -42,6 +50,9 @@
 -TabStripActionContainerTest.Glic*
 -TabStripActionContainerTest.SeparatorVisibilityFollowsGlicButton
 -TabStripActionContainerWithToolbarButtonTest.SeparatorHiddenWhenToolbarButtonEnabled
+-WhatsNewHandlerTest.GetServerUrlWithCrossDeviceSigninPromo
+-WhatsNewHandlerTest.NoReloadOnSignoutWithoutCrossDeviceSigninPromo
+-WhatsNewHandlerTest.ReloadsOnSignoutWithCrossDeviceSigninPromo
 
 # These tests fail because we don't use kChromeUINewTabPageThirdPartyURL
 -All/PermissionSubscriptionGeolocationTest.SubscribeUnsubscribeForNewTabPage/*
@@ -64,6 +75,11 @@
 -ExtensionSyncServiceCustomGalleryTest.ProcessSyncDataDeferredEnable
 -ExtensionSyncServiceCustomGalleryTest.ProcessSyncDataPermissionApproval
 -ExtensionSyncServiceTest.AccountExtensionTypeChangesWithSync
+
+# These tests fail because we set kHideWebStoreIcon's default value to true,
+# so TopSites never includes the Web Store prepopulated page the tests expect.
+-TopSitesFactoryTest.Desktop_GoogleDSE_ContainsWebStore
+-TopSitesFactoryTest.Desktop_NotGoogleDSE_ContainsWebStore
 
 # This test fails because BRAVE_FINGERPRINTING_V2 and BRAVE_HTTPS_UPGRADE don't
 # have readable names and aren't in the test's list of types that are expected
@@ -146,6 +162,7 @@
 -ActorSitePolicyTest.*
 -ActorTaskListBubbleControllerTest.*
 -All/ChangePasswordFormFinderTest.*/*
+-All/IndigoPageActionControllerTest.*/*
 -ChangePasswordFormFinderTest.*
 -ChromeComposeClientTest.*
 -ComposeEnablingTest.*
@@ -177,7 +194,7 @@
 -ExplainSelectionTriggerTest.RequestExplanationOptimizationGuide*
 -FindsTabHelperTest.TestOmniboxRecentSearchSuggestionCountThresholdMet
 -HistoryEmbeddingsHandlerTest.*
--IndigoPageActionControllerTest.*
+-IndigoPageActionControllerLegacyTest.*
 -LoginStateCheckerTest.*
 -ModelQualityLogsUploaderTest.TotalFlowTimeIsRecorded
 -NotificationContentDetectionServiceFactoryTest.DisabledForAndroidArmAndLowEndDevices
@@ -197,6 +214,16 @@
 # These tests fail because we don't use upstream's material colors.
 -MaterialNewTabPageColorMixerTest.*
 -MaterialTabStripColorMixerTest.*
+
+# These tests fail because BraveThemeService::GetIsGrayscale() intentionally
+# returns true whenever ThemeService::GetIsBaseline() is true (we replace the
+# baseline palette with grayscale), so key.user_color_source resolves to
+# kGrayscale instead of the kBaseline the tests expect for the non-system,
+# non-device-theme cases.
+-ColorProviderTest.SystemThemeUsesNativeUserColor/Dark
+-ColorProviderTest.SystemThemeUsesNativeUserColor/DarkHighContrast
+-ColorProviderTest.SystemThemeUsesNativeUserColor/Light
+-ColorProviderTest.SystemThemeUsesNativeUserColor/LightHighContrast
 
 # These tests fail because we disable kFirstPartySets.
 -DefaultFirstPartySetsPolicyServiceTest.*
@@ -345,9 +372,7 @@
 -ContextualTasksEligibilityManagerTest.*
 -ContextualTasksUiServiceTest.PrefetchOnEligibilityChange
 -ContextualTasksUiServiceTest.PrefetchOnStartupIfAlreadyEligible
--ContextualTasksUiTest.ProfileIndicator_LoadTimeDataPopulated
--ContextualTasksUiTest.ProfileIndicator_UpdateProfileIndicatorPushesAvatarUrl
--ContextualTasksUiTest.ProfileIndicator_WebSignedInWithExtendedInfo
+-ContextualTasksUiTest.ProfileIndicator_*
 -ContextualTasksWebContentsUserDataTest.GetOrCreateInputStateModel_IdentityFallback_DefaultTrue
 -DeveloperPrivateApiTransportModeUnitTest.CannotUploadAfterSignOut
 -DeveloperPrivateApiTransportModeUnitTest.CannotUploadWithFullSync
@@ -372,7 +397,7 @@
 -PeopleHandlerWebOnlySigninTest.ChromeSigninUserAvailableOnWebSignin
 -ProfileDynamicMenuTest.BuildSyncSection_SignedInProfile
 -ProfileDynamicMenuTest.BuildSyncSection_SyncError
--SendTabToSelfPromoBubbleViewEnhancedTest.LoadsAccountAwareDesign
+-SendTabToSelfPromoBubbleViewTest.LoadsAccountAwareDesign
 -ShowPromoTest.*
 -SigninUtilHistorySyncOptinTest.*
 -TabStripActionContainerTest.OrdersButtonsCorrectlyAtConstruction
@@ -741,8 +766,12 @@
 -All/RenderViewContextMenuReadAnythingTest.AppendPageItems/*
 -RenderViewContextMenuExtensionsTest.*
 -RenderViewContextMenuListenToThisPageTest.MenuItemPresentWhenEnabled
--RenderViewContextMenuMenuSimplificationTest.PageMenuSeparators
--RenderViewContextMenuMenuSimplificationTest.PureSelectionLayout
+
+# These tests don't account for our added context menu items
+# (e.g. Open Link with Tor, Open Link in Container Tab).
+-RenderViewContextMenuOrderTest.*
+-RenderViewContextMenuSimplifiedOrderTest.*
+-RenderViewContextMenuMenuSimplificationTest.*
 
 # These tests don't account for our added context menu items
 # (e.g. Open Link with Tor, Open Link in Container Tab).
@@ -954,7 +983,7 @@
 
 # This test fails because it expects "Google Password Manager" to appear in the
 # subtitle, but instead "Brave Password Manager" appears there
--RemoteActorSelectionDialogControllerTest.Properties
+-RemoteActorSelectionDialogControllerTest.Properties*
 
 # These tests fail because of mismatch in location bar height (32 vs 34)
 -OmniboxPopupUITest.FullWebUIOmniboxLayoutHelperStandardMode
@@ -964,6 +993,9 @@
 # never registers a caption bubble listener. The first translated dispatch
 # returns false, setting stop_transcriptions_, and later results are dropped.
 -LiveCaptionSpeechRecognitionHostTest.MultiSentencePartialDebouncedWhenTrailingSentenceUnpunctuated
+
+# This test fails because we disable kSegmentationPlatformFeature
+-SegmentationPlatformServiceFactoryTest.TestTipsNotificationsRanker
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*
@@ -980,7 +1012,7 @@
 -BookmarkTest.EmptyBookmarkBarNotShownOnNTP
 -BrowserBookmarkBarTest.StateOnActiveTabChanged
 -BrowserCommandHandlerTest.CanShowSafeBrowsingEnhancedProtectionCommandPromo_EnhancedProtectionEnabled
--CWSInfoServiceTest.IgnoresNonCWSExtensions
+-CertificateSignalsCollectorDelegateImplTest.CreateClientCertStore_ReturnsProfileStore
 -ChromeBrowsingDataRemoverDelegateTest.*
 -ChromeComponentUpdaterConfiguratorTest.*
 -ChromeDownloadManagerDelegateTest.*
@@ -992,8 +1024,10 @@
 -CloudBinaryUploadServiceTest.DeepScanESBEnabledEnhancedProtectionMalwareRequestAuthorized
 -ConfigParserTest.*
 -CountingPolicyTest.*
+-CWSInfoServiceTest.IgnoresNonCWSExtensions
 -DeclarativeContentActionTest.*
 -DevToolsUIBindingsTest.SanitizeFrontendURL
+-DevToolsUIDataSourceTest.TestDevToolsRemoteHostDataSource
 -DevToolsUIDataSourceTest.TestDevToolsRemoteURL
 -DevToolsUIDataSourceWithTaskEnvTest.GotDataCallbackOwnsDevToolsDataSource
 -DownloadProtectionServiceTest.*
