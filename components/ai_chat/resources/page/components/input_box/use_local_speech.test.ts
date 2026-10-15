@@ -31,6 +31,7 @@ beforeEach(() => {
   createBuffer = jest.fn(() => ({ copyToChannel }))
   window.AudioContext = jest.fn(() => ({
     resume: jest.fn().mockResolvedValue(undefined),
+    suspend: jest.fn().mockResolvedValue(undefined),
     close: jest.fn().mockResolvedValue(undefined),
     createBuffer,
     createBufferSource: jest.fn(() => playback),
@@ -116,4 +117,29 @@ it('reports local server errors without playing audio', async () => {
     'Local TTS request failed',
   )
   expect(playback.start).not.toHaveBeenCalled()
+})
+
+it('pauses and resumes the same playback without cancelling synthesis or losing its position', async () => {
+  const handler = {
+    synthesizeSpeech: jest.fn().mockResolvedValue(response()),
+    cancelSpeech: jest.fn(),
+  }
+  const { result } = renderHook(() => useLocalSpeech(handler))
+  let speech!: Promise<void>
+  await act(async () => {
+    speech = result.current.speak('Continue this reply.')
+  })
+  const audioContext = jest.mocked(window.AudioContext).mock.results[0].value
+  act(() => result.current.pause())
+  expect(audioContext.suspend).toHaveBeenCalledTimes(1)
+  act(() => result.current.resume())
+  expect(audioContext.resume).toHaveBeenCalledTimes(2)
+  expect(playback.stop).not.toHaveBeenCalled()
+  expect(playback.start).toHaveBeenCalledTimes(1)
+  expect(handler.synthesizeSpeech).toHaveBeenCalledTimes(1)
+  expect(handler.cancelSpeech).not.toHaveBeenCalled()
+  await act(async () => {
+    playback.onended!()
+    await speech
+  })
 })

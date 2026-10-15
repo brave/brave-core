@@ -322,6 +322,11 @@ const InputBox = React.forwardRef<InputBoxHandle, InputBoxProps>(
           voiceReplyPending.current = false
         },
         cancel: cancelResponseSpeech,
+        pause: localSpeech.pause,
+        resume: localSpeech.resume,
+        interrupt: async () => {
+          await conversationContext.api.conversationHandler.stopGenerationAndMaybeGetHumanEntry()
+        },
       },
     )
 

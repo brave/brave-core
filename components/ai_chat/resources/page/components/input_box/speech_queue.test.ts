@@ -132,3 +132,25 @@ it('keeps code out of speech as fenced blocks stream in', async () => {
   await queue.wait()
   expect(speak.mock.calls).toEqual([['Here is code.'], ['Explanation.']])
 })
+
+it('removes emojis and composite sequences without removing numbers or non-English text', async () => {
+  const speak = jest.fn().mockResolvedValue(undefined)
+  const queue = new SpeechQueue(speak)
+  queue.append('Hello 😊 👩🏽‍💻 🇬🇧 1️⃣ ❤️! Café costs €5; 2 + 3 = 5. 你好。', true)
+  await queue.wait()
+  expect(speak.mock.calls.map(([text]) => text).join(' ')).toBe(
+    'Hello     ! Café costs €5; 2 + 3 = 5. 你好。',
+  )
+})
+
+it('does not repeat or drop words as emojis stream into the response', async () => {
+  const speak = jest.fn().mockResolvedValue(undefined)
+  const queue = new SpeechQueue(speak)
+  queue.append('Hello 😊. Still')
+  await queue.wait()
+  queue.append('Hello 😊. Still thinking 👩🏽‍💻.')
+  await queue.wait()
+  queue.append('Hello 😊. Still thinking 👩🏽‍💻. 🇬🇧 👍🏽 2️⃣', true)
+  await queue.wait()
+  expect(speak.mock.calls).toEqual([['Hello .'], ['Still thinking .']])
+})

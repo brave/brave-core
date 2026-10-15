@@ -57,6 +57,13 @@ export class SpeechQueue {
       .replace(/```[\s\S]*?(?:```|$)/g, '')
       .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
       .replace(/https?:\/\/\S+/g, '')
+      // Keep ordinary numbers and symbols; remove emoji sequences and their
+      // modifiers, including flags, keycaps, and joined characters.
+      .replace(/[0-9#*]\uFE0F?\u20E3/gu, '')
+      .replace(
+        /[\p{Extended_Pictographic}\p{Regional_Indicator}\p{Emoji_Modifier}\u200D\uFE0F\u{E0020}-\u{E007F}]/gu,
+        '',
+      )
       .replace(/[*_~`#>]/g, '')
     let remainder = cleaned.slice(this.offset)
     while (remainder.length) {

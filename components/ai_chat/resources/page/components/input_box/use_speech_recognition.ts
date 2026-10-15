@@ -31,7 +31,7 @@ interface SpeechRecognitionInstance {
   onresult: ((event: SpeechRecognitionEvent) => void) | null
   onerror: ((event: SpeechRecognitionErrorEvent) => void) | null
   onend: (() => void) | null
-  start: () => void
+  start: (track?: MediaStreamTrack) => void
   stop: () => void
   abort: () => void
 }
@@ -62,9 +62,12 @@ function getTranscript(event: SpeechRecognitionEvent) {
 /** Options for recognizing one utterance at a time. */
 interface SpeechRecognitionOptions {
   continuous?: boolean
-  /** Stop after the transcript has stopped changing for this many milliseconds. */
+  /** Stop after this much microphone silence, or unchanged text without a detector. */
   inactivityTimeoutMs?: number
   onComplete?: (transcript: string) => void
+  /** Time since processed microphone activity; undefined uses transcript timing. */
+  getSpeechIdleMs?: () => number | undefined
+  getAudioTrack?: () => MediaStreamTrack | undefined
 }
 
 export interface SpeechRecognitionState {
@@ -133,12 +136,26 @@ export function useSpeechRecognition(
         }
         clearInactivityTimer()
         if (transcript.trim() && optionsRef.current.inactivityTimeoutMs) {
-          inactivityTimer.current = window.setTimeout(() => {
-            if (recognitionRef.current === recognition) {
-              stopping = true
-              recognition.stop()
+          const timeoutMs = optionsRef.current.inactivityTimeoutMs
+          const finishAfterSilence = () => {
+            if (recognitionRef.current !== recognition) {
+              return
             }
-          }, optionsRef.current.inactivityTimeoutMs)
+            const idleMs = optionsRef.current.getSpeechIdleMs?.()
+            if (idleMs !== undefined && idleMs < timeoutMs) {
+              inactivityTimer.current = window.setTimeout(
+                finishAfterSilence,
+                Math.max(20, timeoutMs - idleMs),
+              )
+              return
+            }
+            stopping = true
+            recognition.stop()
+          }
+          inactivityTimer.current = window.setTimeout(
+            finishAfterSilence,
+            timeoutMs,
+          )
         }
       }
     }
@@ -167,7 +184,12 @@ export function useSpeechRecognition(
     setError(null)
     setIsListening(true)
     try {
-      recognition.start()
+      const track = optionsRef.current.getAudioTrack?.()
+      if (track) {
+        recognition.start(track)
+      } else {
+        recognition.start()
+      }
     } catch {
       recognitionRef.current = null
       setIsListening(false)

@@ -15,6 +15,7 @@ type SpeechHandler = Pick<
 export function useLocalSpeech(handler: SpeechHandler) {
   const context = React.useRef<AudioContext | undefined>(undefined)
   const source = React.useRef<AudioBufferSourceNode | undefined>(undefined)
+  const paused = React.useRef(false)
   const generation = React.useRef(0)
   const finishPlayback = React.useRef<(() => void) | undefined>(undefined)
 
@@ -25,6 +26,7 @@ export function useLocalSpeech(handler: SpeechHandler) {
   }, [])
 
   const cancel = React.useCallback(() => {
+    paused.current = false
     generation.current++
     handler.cancelSpeech()
     source.current?.stop()
@@ -33,6 +35,15 @@ export function useLocalSpeech(handler: SpeechHandler) {
     finishPlayback.current?.()
     finishPlayback.current = undefined
   }, [handler])
+
+  const pause = React.useCallback(() => {
+    paused.current = true
+    void context.current?.suspend().catch(() => {})
+  }, [])
+  const resume = React.useCallback(() => {
+    paused.current = false
+    void context.current?.resume().catch(() => {})
+  }, [])
 
   const speak = React.useCallback(
     async (text: string) => {
@@ -59,7 +70,11 @@ export function useLocalSpeech(handler: SpeechHandler) {
       }
       context.current ??= new AudioContext()
       const audioContext = context.current
-      await audioContext.resume()
+      if (paused.current) {
+        await audioContext.suspend()
+      } else {
+        await audioContext.resume()
+      }
       if (currentGeneration !== generation.current) {
         return
       }
@@ -93,5 +108,5 @@ export function useLocalSpeech(handler: SpeechHandler) {
     }
   }, [cancel])
 
-  return { prepare, speak, cancel }
+  return { prepare, speak, cancel, pause, resume }
 }

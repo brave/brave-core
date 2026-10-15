@@ -19,6 +19,17 @@ import {
   getCompletionEvent,
 } from '../../../common/test_data_utils'
 import * as LocalSpeech from './use_local_speech'
+import { useVoiceCapture } from './use_voice_capture'
+
+jest.mock('./use_voice_capture')
+
+beforeEach(() => {
+  jest.mocked(useVoiceCapture).mockReturnValue({
+    start: jest.fn().mockResolvedValue({ kind: 'audio', readyState: 'live' }),
+    getSpeechIdleMs: jest.fn().mockReturnValue(undefined),
+    stop: jest.fn(),
+  })
+})
 import { MockContext } from '../../state/mock_context'
 import InputBox, { InputBoxProps, type InputBoxHandle } from '.'
 
@@ -735,6 +746,8 @@ it('speaks completed sentences while Leo is still generating', async () => {
   const speak = jest.fn().mockResolvedValue(undefined)
   const speechMock = jest.spyOn(LocalSpeech, 'useLocalSpeech').mockReturnValue({
     prepare: jest.fn(),
+    pause: jest.fn(),
+    resume: jest.fn(),
     cancel: jest.fn(),
     speak,
   })
@@ -798,6 +811,17 @@ it('speaks completed sentences while Leo is still generating', async () => {
       ['The first sentence.'],
       ['The next sentence.'],
     ])
+    await act(async () => {
+      recognition.onresult!({
+        results: [{ 0: { transcript: 'actually stop' } }],
+      })
+    })
+    expect(speechMock.mock.results.at(-1)!.value.cancel).toHaveBeenCalled()
+    expect(screen.getByText('actually stop')).toBeInTheDocument()
+    await act(async () =>
+      updateReply('The first sentence. The next sentence. Do not read this.'),
+    )
+    expect(speak).toHaveBeenCalledTimes(2)
     expect(screen.getByTestId('voice-conversation-status')).toBeInTheDocument()
   } finally {
     view.unmount()

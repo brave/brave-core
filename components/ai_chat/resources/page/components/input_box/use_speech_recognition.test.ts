@@ -53,3 +53,55 @@ it('ignores queued transcripts after cancellation and allows a new session', () 
     window.SpeechRecognition = original
   }
 })
+
+it('waits for microphone silence when transcript updates stall mid-sentence', () => {
+  jest.useFakeTimers()
+  const original = window.SpeechRecognition
+  const instance = {
+    start: jest.fn(),
+    stop: jest.fn(),
+    abort: jest.fn(),
+    onresult: null,
+    onend: null,
+  } as unknown as InstanceType<NonNullable<typeof window.SpeechRecognition>>
+  window.SpeechRecognition = jest.fn().mockImplementation(() => instance)
+  let lastSpeech = 0
+  const onComplete = jest.fn()
+  try {
+    const { result, unmount } = renderHook(() =>
+      useSpeechRecognition(jest.fn(), {
+        inactivityTimeoutMs: 2000,
+        getSpeechIdleMs: () => performance.now() - lastSpeech,
+        onComplete,
+      }),
+    )
+    act(() => result.current.start())
+    act(() =>
+      instance.onresult!({
+        results: [{ 0: { transcript: 'let me explain' } }],
+      }),
+    )
+    for (let i = 0; i < 6; i++) {
+      act(() => {
+        lastSpeech = performance.now()
+        jest.advanceTimersByTime(500)
+      })
+    }
+    expect(instance.stop).not.toHaveBeenCalled()
+    act(() => jest.advanceTimersByTime(1499))
+    expect(instance.stop).not.toHaveBeenCalled()
+    act(() => jest.advanceTimersByTime(1))
+    expect(instance.stop).toHaveBeenCalledTimes(1)
+    act(() => {
+      instance.onresult!({
+        results: [{ 0: { transcript: 'let me explain the whole idea' } }],
+      })
+      instance.onend!()
+    })
+    expect(onComplete).toHaveBeenCalledWith('let me explain the whole idea')
+    unmount()
+  } finally {
+    window.SpeechRecognition = original
+    jest.useRealTimers()
+  }
+})
