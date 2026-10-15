@@ -7,11 +7,14 @@
 
 #include <memory>
 #include <optional>
+#include <string>
 #include <utility>
+#include <vector>
 
 #include "base/functional/callback.h"
 #include "base/run_loop.h"
 #include "base/test/bind.h"
+#include "base/test/run_until.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
 #include "brave/components/brave_vpn/app/v2/agent/test/fake_browser.h"
@@ -47,6 +50,15 @@ class BrowserHostImplTest : public testing::Test {
         connection_manager_, browser_.BindEndpoint(), browser_.BindHost(),
         std::move(disconnect_handler));
     ASSERT_TRUE(host_);
+  }
+
+  // Runs until the endpoint has received |count| hostname updates. Messages
+  // on one pipe arrive in order, so every update sent before that hostname
+  // has arrived too.
+  [[nodiscard]] bool WaitForHostnameUpdates(size_t count) {
+    return base::test::RunUntil([&] {
+      return browser_.endpoint().last_hostname_updates().size() >= count;
+    });
   }
 
   base::test::TaskEnvironment task_environment_;
@@ -111,50 +123,95 @@ TEST_F(BrowserHostImplTest, DestructionDoesNotReportDisconnect) {
   EXPECT_FALSE(disconnected_.IsReady());
 }
 
-// The browser learns the current state without asking for it, exactly once.
-TEST_F(BrowserHostImplTest, SendsCurrentStateOnCreation) {
+// A destroyed host must stop observing the shared manager, or the manager
+// would go on notifying a destroyed observer.
+TEST_F(BrowserHostImplTest, StopsObservingManagerOnDestruction) {
   CreateHost();
+  ASSERT_TRUE(connection_manager_.HasObservers());
+  host_.reset();
+  EXPECT_FALSE(connection_manager_.HasObservers());
+}
 
-  ASSERT_TRUE(browser_.endpoint().WaitForConnectionStateUpdates(1));
+// The browser learns the current state without asking for it, one update of
+// each kind. The manager is shared, so a browser that binds late must get what
+// other browsers already caused: non-default values prove the push reads the
+// manager rather than sending defaults.
+TEST_F(BrowserHostImplTest, SendsCurrentStateOnCreation) {
+  connection_manager_.UpdateConnectionState(
+      mojom::VpnConnectionState::kConnectFailed, "Server unreachable");
+  connection_manager_.UpdateSelectedRegion(mojom::VpnRegion::New("Europe"));
+  connection_manager_.UpdateSmartProxyRoutingState(true);
+  connection_manager_.UpdateAllowLanTrafficState(true, true);
+  connection_manager_.UpdateLastHostname("eu-1.example.com");
+
+  CreateHost();
+  ASSERT_TRUE(WaitForHostnameUpdates(1));
+  // Rules out a duplicate push queued right behind the first one.
   FlushSequence();
 
-  const auto& updates = browser_.endpoint().connection_state_updates();
-  ASSERT_EQ(1u, updates.size());
-  EXPECT_EQ(mojom::VpnConnectionState::kDisconnected, updates[0].state);
-  EXPECT_EQ(std::nullopt, updates[0].error_message);
+  const FakeBrowserEndpoint& endpoint = browser_.endpoint();
+
+  const auto& states = endpoint.connection_state_updates();
+  ASSERT_EQ(1u, states.size());
+  EXPECT_EQ(mojom::VpnConnectionState::kConnectFailed, states[0].state);
+  EXPECT_EQ("Server unreachable", states[0].error_message);
+
+  const auto& regions = endpoint.selected_region_updates();
+  ASSERT_EQ(1u, regions.size());
+  EXPECT_EQ("Europe", regions[0]->name);
+
+  EXPECT_EQ(std::vector<bool>{true},
+            endpoint.smart_proxy_routing_state_updates());
+
+  const auto& lan = endpoint.allow_lan_traffic_state_updates();
+  ASSERT_EQ(1u, lan.size());
+  EXPECT_TRUE(lan[0].available);
+  EXPECT_TRUE(lan[0].enabled);
+
+  EXPECT_EQ(std::vector<std::string>{"eu-1.example.com"},
+            endpoint.last_hostname_updates());
 }
 
-// The manager is shared, so a browser that binds late must see the state other
-// browsers already caused, not a default.
-TEST_F(BrowserHostImplTest, InitialStateReflectsSharedManager) {
-  connection_manager_.SetConnectionState(
-      mojom::VpnConnectionState::kConnectFailed, "Server unreachable");
-
+// Every kind of change reaches the browser, and connection state changes keep
+// their order.
+TEST_F(BrowserHostImplTest, RelaysStateChangesToEndpoint) {
   CreateHost();
-  ASSERT_TRUE(browser_.endpoint().WaitForConnectionStateUpdates(1));
+  ASSERT_TRUE(WaitForHostnameUpdates(1));
 
-  const auto& updates = browser_.endpoint().connection_state_updates();
-  ASSERT_EQ(1u, updates.size());
-  EXPECT_EQ(mojom::VpnConnectionState::kConnectFailed, updates[0].state);
-  EXPECT_EQ("Server unreachable", updates[0].error_message);
-}
-
-TEST_F(BrowserHostImplTest, RelaysStateChangesToEndpointInOrder) {
-  CreateHost();
-  ASSERT_TRUE(browser_.endpoint().WaitForConnectionStateUpdates(1));
-
-  connection_manager_.SetConnectionState(mojom::VpnConnectionState::kConnecting,
-                                         std::nullopt);
-  connection_manager_.SetConnectionState(
+  connection_manager_.UpdateConnectionState(
+      mojom::VpnConnectionState::kConnecting, std::nullopt);
+  connection_manager_.UpdateConnectionState(
       mojom::VpnConnectionState::kConnectFailed, "Server unreachable");
-  ASSERT_TRUE(browser_.endpoint().WaitForConnectionStateUpdates(3));
+  connection_manager_.UpdateSelectedRegion(mojom::VpnRegion::New("Asia"));
+  connection_manager_.UpdateSmartProxyRoutingState(true);
+  connection_manager_.UpdateAllowLanTrafficState(true, false);
+  connection_manager_.UpdateLastHostname("as-1.example.com");
+  ASSERT_TRUE(WaitForHostnameUpdates(2));
 
-  const auto& updates = browser_.endpoint().connection_state_updates();
-  ASSERT_EQ(3u, updates.size());
-  EXPECT_EQ(mojom::VpnConnectionState::kConnecting, updates[1].state);
-  EXPECT_EQ(std::nullopt, updates[1].error_message);
-  EXPECT_EQ(mojom::VpnConnectionState::kConnectFailed, updates[2].state);
-  EXPECT_EQ("Server unreachable", updates[2].error_message);
+  // Index 0 of each list is the initial push.
+  const FakeBrowserEndpoint& endpoint = browser_.endpoint();
+
+  const auto& states = endpoint.connection_state_updates();
+  ASSERT_EQ(3u, states.size());
+  EXPECT_EQ(mojom::VpnConnectionState::kConnecting, states[1].state);
+  EXPECT_EQ(std::nullopt, states[1].error_message);
+  EXPECT_EQ(mojom::VpnConnectionState::kConnectFailed, states[2].state);
+  EXPECT_EQ("Server unreachable", states[2].error_message);
+
+  const auto& regions = endpoint.selected_region_updates();
+  ASSERT_EQ(2u, regions.size());
+  EXPECT_EQ("Asia", regions[1]->name);
+
+  EXPECT_EQ((std::vector<bool>{false, true}),
+            endpoint.smart_proxy_routing_state_updates());
+
+  const auto& lan = endpoint.allow_lan_traffic_state_updates();
+  ASSERT_EQ(2u, lan.size());
+  EXPECT_TRUE(lan[1].available);
+  EXPECT_FALSE(lan[1].enabled);
+
+  ASSERT_EQ(2u, endpoint.last_hostname_updates().size());
+  EXPECT_EQ("as-1.example.com", endpoint.last_hostname_updates()[1]);
 }
 
 TEST_F(BrowserHostImplTest, ForwardsCallsToConnectionManager) {
@@ -163,20 +220,36 @@ TEST_F(BrowserHostImplTest, ForwardsCallsToConnectionManager) {
   browser_.host()->Connect();
   browser_.host()->Disconnect();
   browser_.host()->ResetConnectionState();
+  browser_.host()->SetSelectedRegion(mojom::VpnRegion::New("Europe"));
+  browser_.host()->SetSmartProxyRoutingState(true);
+  // False rather than true: proves the request was recorded, not just that the
+  // optional happens to hold a truthy value.
+  browser_.host()->SetAllowLanTrafficState(false);
   browser_.FlushHost();
 
   EXPECT_EQ(1, connection_manager_.connect_calls());
   EXPECT_EQ(1, connection_manager_.disconnect_calls());
   EXPECT_EQ(1, connection_manager_.reset_connection_state_calls());
+  ASSERT_TRUE(connection_manager_.last_selected_region());
+  EXPECT_EQ("Europe", connection_manager_.last_selected_region()->name);
+  EXPECT_EQ(true, connection_manager_.last_smart_proxy_routing_request());
+  EXPECT_EQ(false, connection_manager_.last_allow_lan_traffic_request());
 }
 
-// A destroyed host must stop observing the shared manager, or the manager
-// would go on notifying a destroyed observer.
-TEST_F(BrowserHostImplTest, StopsObservingManagerOnDestruction) {
+TEST_F(BrowserHostImplTest, ReturnsRegionsFromConnectionManager) {
+  std::vector<mojom::VpnRegionPtr> regions;
+  regions.push_back(mojom::VpnRegion::New("Europe"));
+  regions.push_back(mojom::VpnRegion::New("Asia"));
+  connection_manager_.set_regions(std::move(regions));
   CreateHost();
-  ASSERT_TRUE(connection_manager_.HasObservers());
-  host_.reset();
-  EXPECT_FALSE(connection_manager_.HasObservers());
+
+  base::test::TestFuture<std::vector<mojom::VpnRegionPtr>> future;
+  browser_.host()->GetAllRegions(future.GetCallback());
+
+  std::vector<mojom::VpnRegionPtr> result = future.Take();
+  ASSERT_EQ(2u, result.size());
+  EXPECT_EQ("Europe", result[0]->name);
+  EXPECT_EQ("Asia", result[1]->name);
 }
 
 }  // namespace brave_vpn::v2

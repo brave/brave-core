@@ -730,8 +730,8 @@ TEST_F(BrowserRegistryTest, StateChangeReachesEveryBoundBrowser) {
   ASSERT_EQ(mojom::BindBrowserHostResult::kSuccess,
             BindBrowserHost(second, NextConnectionId()));
 
-  connection_manager_.SetConnectionState(mojom::VpnConnectionState::kConnecting,
-                                         std::nullopt);
+  connection_manager_.UpdateConnectionState(
+      mojom::VpnConnectionState::kConnecting, std::nullopt);
 
   // The first update each receives is the initial state sent on binding.
   for (FakeBrowser* browser : {&first, &second}) {

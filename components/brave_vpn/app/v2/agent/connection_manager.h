@@ -8,7 +8,9 @@
 
 #include <optional>
 #include <string>
+#include <vector>
 
+#include "base/functional/callback.h"
 #include "base/observer_list.h"
 #include "base/observer_list_types.h"
 #include "base/sequence_checker.h"
@@ -27,10 +29,18 @@ class ConnectionManager {
     virtual void OnConnectionStateChanged(
         mojom::VpnConnectionState state,
         std::optional<std::string> error_message) = 0;
+    virtual void OnSelectedRegionChanged(const mojom::VpnRegion& region) = 0;
+    virtual void OnSmartProxyRoutingStateChanged(bool enabled) = 0;
+    virtual void OnAllowLanTrafficStateChanged(bool available,
+                                               bool enabled) = 0;
+    virtual void OnLastHostnameChanged(const std::string& hostname) = 0;
 
    protected:
     ~Observer() override = default;
   };
+
+  using GetAllRegionsCallback =
+      base::OnceCallback<void(std::vector<mojom::VpnRegionPtr>)>;
 
   ConnectionManager();
   virtual ~ConnectionManager();
@@ -44,6 +54,11 @@ class ConnectionManager {
 
   mojom::VpnConnectionState connection_state() const;
   const std::optional<std::string>& error_message() const;
+  const mojom::VpnRegion& current_region() const;
+  bool smart_proxy_routing_enabled() const;
+  bool allow_lan_traffic_available() const;
+  bool allow_lan_traffic_enabled() const;
+  const std::string& last_hostname() const;
 
   // Starts connecting the VPN; completion is reported asynchronously through
   // observer's OnConnectionStateChanged.
@@ -55,12 +70,30 @@ class ConnectionManager {
   // without connecting; completion is reported asynchronously through
   // observer's OnConnectionStateChanged.
   virtual void ResetConnectionState();
+  // Gets information about all available regions from an internal cache which
+  // is fetched from the VPN provider. |callback| always runs asynchronously,
+  // and runs with an empty list if they can't be fetched.
+  virtual void GetAllRegions(GetAllRegionsCallback callback);
+  // Sets the desired region which is currently selected in the UI.
+  virtual void SetSelectedRegion(mojom::VpnRegionPtr region);
+  // Sets the desired Smart Proxy routing state; this is a suggestion for the
+  // agent and can be rejected; if the actual state gets changed, an update
+  // will be dispatched via the corresponding observer callback.
+  virtual void SetSmartProxyRoutingState(bool enable);
+  // Sets the desired LAN traffic allowance state; this is a suggestion for the
+  // agent and can be rejected; if the actual state gets changed, an update
+  // will be dispatched via the corresponding observer callback.
+  virtual void SetAllowLanTrafficState(bool enable);
 
  protected:
-  // Records the new state and notifies observers. Does nothing if neither the
-  // state nor the error message changed.
-  void SetConnectionState(mojom::VpnConnectionState state,
-                          std::optional<std::string> error_message);
+  // Each records the new value and notifies observers. Does nothing if the
+  // value didn't change.
+  void UpdateConnectionState(mojom::VpnConnectionState state,
+                             std::optional<std::string> error_message);
+  void UpdateSelectedRegion(mojom::VpnRegionPtr region);
+  void UpdateSmartProxyRoutingState(bool enabled);
+  void UpdateAllowLanTrafficState(bool available, bool enabled);
+  void UpdateLastHostname(std::string hostname);
 
  private:
   SEQUENCE_CHECKER(sequence_checker_);
@@ -68,6 +101,11 @@ class ConnectionManager {
   mojom::VpnConnectionState connection_state_ =
       mojom::VpnConnectionState::kDisconnected;
   std::optional<std::string> error_message_;
+  mojom::VpnRegionPtr current_region_ = mojom::VpnRegion::New();
+  bool smart_proxy_routing_enabled_ = false;
+  bool allow_lan_traffic_available_ = false;
+  bool allow_lan_traffic_enabled_ = false;
+  std::string last_hostname_;
 };
 
 }  // namespace brave_vpn::v2

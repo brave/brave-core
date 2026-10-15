@@ -42,6 +42,10 @@ class BrowserEndpointImpl : public brave_vpn::mojom::BrowserEndpoint {
   void OnConnectionStateChanged(
       mojom::VpnConnectionState state,
       const std::optional<std::string>& error_message) override;
+  void OnSelectedRegionChanged(mojom::VpnRegionPtr region) override;
+  void OnSmartProxyRoutingStateChanged(bool enabled) override;
+  void OnAllowLanTrafficStateChanged(bool available, bool enabled) override;
+  void OnLastHostnameChanged(const std::string& hostname) override;
 
   void OnPipeDisconnected();
 
