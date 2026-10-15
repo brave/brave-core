@@ -76,6 +76,15 @@ fixup_replacements = [
 ]
 
 
+# Descriptions for messages that Chromium leaves without one, so translators
+# get context. Descriptions do not affect translation ids.
+missing_descriptions = {
+    'IDS_EXTENSION_EXTERNAL_INITIAL_INSTALL_PROMPT_TITLE_EXTENSION': (
+        'Title of the prompt window for an extension added by a partner program'
+    ),
+}
+
+
 # Replacements for text nodes and neither for inside descriptions nor comments
 main_text_only_replacements = [
     # By converting it back first, it makes this idempotent

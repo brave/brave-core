@@ -28,7 +28,8 @@ sys.path.insert(0, os.path.join(BRAVE_SOURCE_ROOT, 'script'))
 sys.path.insert(0, os.path.join(SRC_SOURCE_ROOT, 'tools/grit/grit/extern'))
 
 # pylint: disable=wrong-import-position
-from lib.l10n.grd_utils import update_xtbs_locally
+import lxml.etree  # pylint: disable=import-error
+from lib.l10n.grd_utils import braveify_grd_tree, update_xtbs_locally
 
 GRD_TEMPLATE = """<?xml version="1.0" encoding="UTF-8"?>
 <grit latest_public_release="0" current_release="1" source_lang_id="en">
@@ -145,6 +146,27 @@ class UpdateXtbsLocallyTest(unittest.TestCase):
         self.assertIn('Supprimer de Brave', result)
         self.assertNotIn('Retirer de', result)
         self.assertIn('Autre', result)
+
+
+class BraveifyMissingDescriptionTest(unittest.TestCase):
+    def braveify(self, desc_attribute):
+        name = 'IDS_EXTENSION_EXTERNAL_INITIAL_INSTALL_PROMPT_TITLE_EXTENSION'
+        tree = lxml.etree.fromstring(
+            f'<grit-part><message name="{name}"{desc_attribute}>'
+            'Chrome works</message></grit-part>'
+        )
+        braveify_grd_tree(tree, False)
+        return tree.find('message')
+
+    def test_fills_empty_description(self):
+        message = self.braveify(' desc=""')
+        self.assertIn('partner program', message.get('desc'))
+        self.assertEqual(message.text, 'Brave works')
+
+    def test_keeps_existing_description(self):
+        self.assertEqual(
+            self.braveify(' desc="Chrome title"').get('desc'), 'Brave title'
+        )
 
 
 if __name__ == '__main__':
