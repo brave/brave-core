@@ -146,6 +146,7 @@
 -ActorSitePolicyTest.*
 -ActorTaskListBubbleControllerTest.*
 -All/ChangePasswordFormFinderTest.*/*
+-All/IndigoPageActionControllerTest.*/*
 -ChangePasswordFormFinderTest.*
 -ChromeComposeClientTest.*
 -ComposeEnablingTest.*
@@ -177,7 +178,7 @@
 -ExplainSelectionTriggerTest.RequestExplanationOptimizationGuide*
 -FindsTabHelperTest.TestOmniboxRecentSearchSuggestionCountThresholdMet
 -HistoryEmbeddingsHandlerTest.*
--IndigoPageActionControllerTest.*
+-IndigoPageActionControllerLegacyTest.*
 -LoginStateCheckerTest.*
 -ModelQualityLogsUploaderTest.TotalFlowTimeIsRecorded
 -NotificationContentDetectionServiceFactoryTest.DisabledForAndroidArmAndLowEndDevices
@@ -372,7 +373,7 @@
 -PeopleHandlerWebOnlySigninTest.ChromeSigninUserAvailableOnWebSignin
 -ProfileDynamicMenuTest.BuildSyncSection_SignedInProfile
 -ProfileDynamicMenuTest.BuildSyncSection_SyncError
--SendTabToSelfPromoBubbleViewEnhancedTest.LoadsAccountAwareDesign
+-SendTabToSelfPromoBubbleViewTest.LoadsAccountAwareDesign
 -ShowPromoTest.*
 -SigninUtilHistorySyncOptinTest.*
 -TabStripActionContainerTest.OrdersButtonsCorrectlyAtConstruction
@@ -933,7 +934,7 @@
 
 # This test fails because it expects "Google Password Manager" to appear in the
 # subtitle, but instead "Brave Password Manager" appears there
--RemoteActorSelectionDialogControllerTest.Properties
+-RemoteActorSelectionDialogControllerTest.Properties*
 
 # These tests fail because of mismatch in location bar height (32 vs 34)
 -OmniboxPopupUITest.FullWebUIOmniboxLayoutHelperStandardMode

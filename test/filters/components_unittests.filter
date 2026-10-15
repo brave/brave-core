@@ -226,6 +226,7 @@
 
 # These tests fail because the default search engine is Brave instead of Google.
 -DefaultSearchManagerTest.DefaultSearchOverridesIgnoredWhenFlagEnabled
+-SearchEngineSettingsDataProviderNonSplitRegionTest.GetAllPrepopulatedSearchEngines_CuratesTheCatalog
 
 # This test fails because we disable Actor Safety Lists component.
 -ActorSafetyListsComponentInstallerPolicyTest.ComponentRegistered
@@ -458,6 +459,8 @@
 -TemplateURLPrepopulateDataTest.ClearProvidersFromPrefs
 -TemplateURLPrepopulateDataTest.EntriesPerCountryConsistency
 -TemplateURLPrepopulateDataTest.FindGoogleAsFallback
+-TemplateURLPrepopulateDataTest.GetAllPrepopulatedEngines_RegionalPriority
+-TemplateURLPrepopulateDataTest.GetAllPrepopulatedEngines_SkipsMigratingTargets
 -TemplateURLPrepopulateDataTest.GetPrepopulatedEngineFromFullList
 -TemplateURLPrepopulateDataTest.NumberOfEntriesPerCountryConsistency
 -TemplateURLPrepopulateDataTest.ProvidersFromPrepopulated

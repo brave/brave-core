@@ -8,6 +8,7 @@
 # References menu items by explicit index, which doesn't match our menu since we
 # insert an additional "Clear browsing data" item ahead of them.
 -RecentTabsSubMenuModelTest.MaxSessionsAndRecency
+-RecentTabsSubMenuModelWithoutOtherDeviceTabsInAppMenuTest.MaxSessionsAndRecency
 
 # References the recently closed submenu by explicit index, which doesn't match
 # our menu since we disable History Clusters and every item shifts down by one
@@ -243,7 +244,7 @@
 -ReadAnythingOmniboxControllerBrowserTest.*
 -ReadAnythingApp*Test.*
 -ReadAnythingControllerBrowserTest.*
--ReadAnythingPrintingBrowserTest.*
+-ReadAnythingPrinting*BrowserTest.*
 -ReadAnythingReadAloudAppModelTest.*
 -ReadAnythingReadAloudAppModelV8SegmentationTest.*
 -ReadAnythingSidePanelNavigationThrottleBrowserTest.NavigateInReadAnythingWebContentsProceeds
@@ -261,6 +262,7 @@
 # base::RunLoop::RunUntilIdle(). A renderer-side mojo pipe is stuck in a
 # perpetual connection-error loop: the main thread keeps re-posting/servicing
 # OnPipeConnectionError work.
+-AXTreeDistillerTestBase.DistillPdfListItem
 -AXTreeDistillerTestBase.DistillPdfRoot
 
 # Google translate is disabled
@@ -403,6 +405,7 @@
 
 # These tests fail because they expect the infobar count to be 1, but we
 # display an additional confirmation infobar for P3A
+-All/DevToolsRemoteServerInfobarBrowserTest.*/*
 -All/DefaultBrowserInfoBarManagerBrowserTest.DestroyingWithoutCloseAllDetachesFromTabs/*
 -All/DefaultBrowserInfoBarManagerBrowserTest.DismissRecordsTheInteractionAndPrefs/*
 -All/DefaultBrowserInfoBarManagerBrowserTest.ShowShowsThePromptInEveryWindow/*
@@ -546,6 +549,7 @@
 -ExtensionScriptTrackerBrowserTest.TrackingEnabledForPrerenderedDefaultSearchResultPage
 -ExtensionScriptTrackerBrowserTest.TrackingEnabledForPrerenderedDsePage
 -FrameNodeImplPrerenderBrowserTest.Bind_PrerenderNavigation
+-GlicMessagingPrerenderBrowserTest.PrerenderedPage
 -GWSPageLoadMetricsObserverBrowserTest.PrerenderSRPAndActivate
 -GWSPageLoadMetricsObserverPrewarmCoverageBrowserTest.*
 -HoldbackSearchPreloadUnifiedBrowserTest.PrerenderDSEHoldbackTest
@@ -733,6 +737,8 @@
 -AccountsPolicyManagerBrowserTest.ProfileSigninAllowedForCookies_Managed
 -All/AppMenuModelSigninPromoTest.SignedIn/*
 -All/AppMenuModelSigninPromoTest.SignedOut/*
+-All/IndigoHighDsfBrowserTest.ToolbarPositioning/*
+-All/IndigoOnboardingBrowserTest.*/*
 -All/ParentApprovalHandlingByExtensionSwitchTest.GrantParentApprovalWhenExtensionSwitchBecomesEnabled/*
 -All/ParentApprovalHandlingByExtensionSwitchTest.GrantParentParentApprovalOnInstallationIfExtensionSwitchEnabled/*
 -All/ParentApprovalRequestTest.RequestToInstallApprovedExtension/0
@@ -790,9 +796,6 @@
 -GlicUserStatusBrowserTest.ClientDataHeaderExists
 -HistorySyncOptinManagedType/AvatarToolbarButtonHistorySyncOptinManagedTypeTest.HistorySyncOptinNotShownWhenSyncManaged/*
 -Incognito/EnclaveAuthenticatorIncognitoBrowserTest.MultipleDeclinedBootstrappings/*
--IndigoBrowserTest.ToolbarPositioning
--IndigoHighDsfBrowserTest.ToolbarPositioning
--IndigoOnboardingBrowserTest.OnboardingFlow
 -ManagedProfileCreationBrowserTest.Test/*PrimaryAccount_*
 -NoSoftwareKeysFallbackEnclaveAuthenticatorBrowserTest.CancelRacesTPMCheck
 -NoSoftwareKeysFallbackEnclaveAuthenticatorBrowserTest.IsUVPAA_NoUnexportableKeys
@@ -848,6 +851,9 @@
 -TrustedVaultEncryptionKeysTabHelperBrowserTest.ShouldBindAddRecoveryMethodApiInMainFrame
 -TrustedVaultEncryptionKeysTabHelperBrowserTest.ShouldNotBindEncryptionKeysApiInPrerendering
 -TrustedVaultEncryptionKeysTabHelperBrowserTestWithEnclaveAuthenticator.SetPasskeysKeyInEnclaveManagerWhileSignedIn
+-TrustedVaultEncryptionKeysTabHelperBrowserTestWithLocalGpmPasskeys.SetKeysForMultipleSecurityDomains
+-TrustedVaultEncryptionKeysTabHelperBrowserTestWithLocalGpmPasskeys.SetPasskeysKey*
+-TrustedVaultEncryptionKeysTabHelperBrowserTestWithLocalGpmPasskeysAllUsers.SetPasskeysKeyInTrustedVaultClientEvenWhenEnclaveRegistered
 -TurnSyncOnHelperBrowserTest.PrimaryAccountResetAfterSyncOptInFlowAbortedForNewAccount
 -TurnSyncOnHelperBrowserTest.PrimaryAccountResetAfterSyncOptInFlowAbortedForSecondaryAccount
 -TurnSyncOnHelperBrowserTest.UndoSyncRemoveAccount
@@ -1316,9 +1322,6 @@
 -IOSPromosUtilsTest.InvokeUi_addresses
 -IOSPromosUtilsTest.InvokeUi_passwords
 -IOSPromosUtilsTest.InvokeUi_payments
--IndigoBrowserTest.CloseResetsReplacements
--IndigoBrowserTest.ShowToolbarWhileInactiveDeferred
--IndigoBrowserTest.TabSwitchPreservesToolbarState
 -IndigoPolicyTest.*
 -MetricsConsentMigrationBrowserTest.*MigrateSignedIn_*
 -MetricsConsentMigrationMultiProfileBrowserTest.*
@@ -1335,9 +1338,8 @@
 -ProfileMenuViewSyncServiceUnavailableTest.DoesNotCrashWhenSyncPaused
 -ProfileMenuViewWebOnlyTest.ContinueAs
 -ProfilePickerDeviceSignalsDisclaimerBrowserTest.*
--SaveCardBubbleViewsFullFormBrowserTest.Upload_ClickingSave_DisablesCardholderNameField/*
--SaveCardBubbleViewsFullFormBrowserTest.Upload_ClickingSave_ShowsLoadingView/*
--SaveCardBubbleViewsFullFormBrowserTest.Upload_InProgress_ShowsLoadingView/*
+-SaveCardBubbleViewsFullFormBrowserTest.CardholderNameUpdate_*/*
+-SaveCardBubbleViewsFullFormBrowserTest.Upload_*/*
 -SingleBookmarkUploadDialogPixelTest.InvokeUi
 -SkillsUiWindowControllerBrowserTest.AccountPaused_ClosesDialogAndReloadsPage
 -SkillsUiWindowControllerBrowserTest.PrimaryAccountChanged_ClosesDialogAndReloadsPage
@@ -1397,8 +1399,9 @@
 
 # Occasionally flaky upstream as well (via LUCI). Flaky on our CI but passes
 # locally.
+-All/GlicDragAndDropPolicyTest.*/*
+-All/GlicWebDragAndDropBrowserTest.*/*
 -BrowsingTopicsInternalsBrowserTest.TopicsState_OverrideStatusMessage
--GlicDragAndDropPolicyTest.testWebToGlicDragMaterialization*
 -InitialWebUIMetricsMappingBrowserTest.NormalRendererMetricsAreNotMapped
 
 # Occasionally flaky upstream as well (via LUCI). Flaky on our CI and locally.
@@ -1734,9 +1737,9 @@
 -BreadcrumbManagerTabHelperSecurityStateBrowserTest.BrokenAuthentication
 
 # These fail because we disable history_clusters::internal::kJourneys.
--ABASearchJourneysContextMenuBrowserTest.SearchWebForRecordsCopyMatchingCommittedSrpQuery
+-ABASearchJourneysContextMenuBrowserTest.*
 -CopySearchJourneyTabFeatureBrowserTest.*
--CopyTextJourneysContextMenuBrowserTest.SearchWebForRecordsCopyMatchingCommittedSrpQuery
+-CopyTextJourneysContextMenuBrowserTest.*
 -ExtensionOpenSidePanelBrowserTest.PinExtensionViaSidePanelJourneyCompletion
 -HistoryClustersPolicyTest.HistoryClustersVisible
 -HistoryClustersSidePanelCoordinatorBrowserTest.*
@@ -1984,6 +1987,7 @@
 
 # These tests fail because we disable blink::features::kFileSystemAccessAPI and
 # they try to call showOpenFilePicker or showSaveFilePicker
+-All/GlicFilePickerBrowserTest.ShowOpenFilePickerInNarrowSidePanel/*
 -All/PDFExtensionSaveInBlocksLargeFileTest.UsingDownloadButton/*
 -All/PDFExtensionSaveInBlocksTest.BasicUsingContextMenu/*
 -All/PDFExtensionSaveInBlocksTest.BasicUsingDownloadButton/*
@@ -2079,9 +2083,7 @@
 -All/JSCallStackReportingBrowserTest.MainPageNotOptedIn/*
 -All/JSCallStackReportingBrowserTest.MainPageOptedIn/*
 -All/ReportingBrowserTestCrashReportingStorage.CrashStorageAPI*/*
--All/ReportingBrowserTestMoreContextData.CrashReportHiddenPage/*
--All/ReportingBrowserTestMoreContextData.CrashReportUnresponsive/*
--All/ReportingBrowserTestMoreContextData.CrashReportUnresponsiveCrossOriginIframe/*
+-All/ReportingBrowserTestMoreContextData.CrashReport*/*
 -All/ReportingBrowserTestSpecifyCrashEndpoint.SpecifyCrashEndpoint/*
 -All/ReportingBrowserTestUnresponsiveWithoutHungExitCode.CrashReportUnresponsiveWithoutHungExitCode/*
 
@@ -2172,17 +2174,13 @@
 -OmniboxContextMenuControllerBrowserTest.SortTabsWithCheckedFirst
 -OmniboxContextMenuControllerContextManagementBrowserTest.SharedTabsSubmenuDynamicLabel
 -OmniboxContextMenuControllerPecBrowserTest.ExecuteCommand*
--OmniboxContextMenuControllerPecBrowserTestWithFlagsDisabled.VerifyModelPickerCheckmark_FlagOff
+-OmniboxContextMenuControllerPecBrowserTestWithFlagsDisabled.Verify*_FlagOff
 -OmniboxContextMenuControllerPecBrowserTest.ModelPickerCheckmark
 -OmniboxContextMenuControllerPecBrowserTest.RecordHistogramOnCanvasCommand
 -OmniboxContextMenuControllerPecBrowserTest.VerifyTabEnablementWhenMaxInputsReached
 
 # This test fails because we add our own item to omnibox contextual search
 -OmniboxRowGroupedViewBrowserTest.AnimationAndGrouping
-
-# This test fails because we don't show profile menu for a browser with a
-# single profile
--ProfileMenuViewBrowserTest.ProfileMenuDoesNotOutliveBrowser
 
 # This test fails because we temporarily reverted
 # https://source.chromium.org/chromium/chromium/src/+/b1e66bdb
@@ -2291,6 +2289,7 @@
 -PinnedToolbarActionsContainerBrowserTest.DividerNotVisibleWhileButtonPoppedOut
 -PinnedToolbarActionsContainerBrowserTest.MetricsRecordedForPinnableActions
 -PinnedToolbarActionsContainerBrowserTest.PoppedOutButtonsAreAfterPinned
+-PinnedToolbarActionsContainerBrowserTest.QRCodeUpdatesWithPolicyPrefChanges
 -PinnedToolbarActionsContainerBrowserTest.StateChangesBetweenPinnedandUnpinnedWhileActive
 -PinnedToolbarActionsContainerBrowserTest.UnpinnedToolbarButtonsPoppedOutWhileActive
 -PinnedToolbarActionsContainerWebUIDisabledBrowserTest.ActiveActionSkipsExecution
@@ -2409,6 +2408,7 @@
 -WebUIAvatarButtonBrowserTest.AvatarButtonState
 -WebUILocationBarBrowserTest.*
 -WebUIPinnedToolbarActionsBrowserTest.*
+-WebUIPinnedToolbarActionsTtcBrowserTest.*
 -WebUIReadOnlyOmniboxDragDropBrowserTest.Drop*
 -WebUIToolbarDropBrowserTest.*
 -WebUIToolbarFullyEnabledBrowserTest.*
@@ -2432,7 +2432,10 @@
 # https://issues.chromium.org/issues/502415811
 -OrbAndCorsExtensionBrowserTest.ActiveTabPersmissionVsOrb
 
-# This test fails because we don't show avatar button with a single profile.
+# These tests fail because we don't show the avatar button or profile menu when
+# there's only a single profile.
+-ProfileMenuViewAiSubscriptionTierOverrideTest.BadgeOverrideUsesGenericAnnouncement
+-ProfileMenuViewBrowserTest.ProfileMenuDoesNotOutliveBrowser
 -ProfileMenuViewBrowserTest.ProfileMenuDoubleOpenBeforeBatchUploadResults
 
 # These tests fail because they expect the hardcoded view name BrowserRootView,
@@ -2539,9 +2542,12 @@
 
 # These tests fail because we override IdentityManager::GetAccountsInCookieJar
 # to return an empty list.
+-ActorUiTabControllerNavigationConfirmLegacyContextualTasksTest.AiModeSearch_ConfirmsContextualTasksReload
 -GlicMessagingWebContinuityBrowserTest.InvokeWebContinuity
 -GlicMessagingWebViewGuestTest.WebViewGuest
 -GlicMessagingWebViewGuestTest.WebViewGuestInvoke
+-GlicSubframeInvokeBrowserTest.SubframeInCorpGeminiOuterTab
+-GlicSubframeInvokeBrowserTest.SubframeInGeminiOuterTab
 
 # These tests fail because they expect the WebUSB support url to be
 # https://support.google.com/chrome?p=webusb, but it's
@@ -2802,6 +2808,7 @@
 # Brave replaces the NTP (BraveNewTabPageUI), so Chromium's NewTabPageHandler
 # the only caller of ScheduledRestartBubbleController::MaybeShowNTPNudge()
 # is never constructed and the nudge never fires.
+-ScheduledRestartBubbleControllerBrowserTest.AppMenuCommandReplacesPassiveBubbleWithoutDismissal
 -ScheduledRestartBubbleControllerBrowserTest.TriggerBubbleOnNTPCreation
 
 # Brave removes the Cookies, JavaScript and StorageAccess content setting image
@@ -2859,6 +2866,7 @@
 -All/GetAuthTokenFunctionEnableGranularPermissionsTest.EnableGranularPermissions/*
 -All/HeadlessModeDumpDomCommandBrowserTestWithSubResourceTimeout.HeadlessDumpDomWithSubResourceTimeout/*
 -All/IdentityGetProfileUserInfoFunctionTest*.*/*
+-All/IndigoBrowserTest.*/*
 -All/LoginPromptBrowserTest.*
 -All/NetInfoNetworkQualityEstimatorHoldbackBrowserTest.*
 -All/NonIsolatedReportingBrowserTest.*
@@ -3078,8 +3086,8 @@
 -IncognitoProfileMainNetworkContext/NetworkContextConfigurationProxySettingsBrowserTest.*
 -IncognitoProfileMainNetworkContext/NetworkContextConfigurationReportingAndNelBrowserTest.*
 -IndigoAgentBrowserTest.*
--IndigoBrowserTest.*
 -IndigoHighDsfBrowserTest.*
+-IndigoLegacyBrowserTest.*
 -IndigoOnboardingBrowserTest.*
 -InfoBarsTest.*
 -InlineLoginHelperBrowserTest.*
@@ -3115,6 +3123,7 @@
 -NewTabUIProcessPerTabTest.*
 -NoSessionRestoreTest.*
 -NoStatePrefetchBrowserTest.*
+-NoStatePrefetchLocalNetworkAccessBrowserTest.*
 -NonTabWebUIPageLoadMetricsObserverBrowserTest.DoesntRecordHistogramsForTabWebUI
 -NotificationPermissionBrowserTest.IframesInNonDefaultPartitionDontGetPermission
 -NotificationPermissionBrowserTest.UndelegatedPermissionDeniedIfNotGrantedToOrigin

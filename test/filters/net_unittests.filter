@@ -58,6 +58,7 @@
 -TransportSecurityStateStaticTest.OverrideBuiltins
 -TransportSecurityStateStaticTest.Preloaded
 -TransportSecurityStateStaticTest.PreloadedDomainSet
+-TransportSecurityStateStaticTest.PreloadedProductionStaticPins
 -TransportSecurityStateTest.StaticOrDynamicSource
 -TransportSecurityStateTest.UpdateKeyPinsEmptyList
 -TransportSecurityStateTest.UpdateKeyPinsListTimestamp
