@@ -12,22 +12,34 @@
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
-#include "content/public/browser/web_contents_observer.h"
-#include "content/public/browser/web_contents_user_data.h"
+#include "chrome/browser/ui/tabs/contents_observing_tab_feature.h"
+#include "ui/base/unowned_user_data/scoped_unowned_user_data.h"
 
 class GURL;
 class PrefService;
+
+namespace tabs {
+class TabInterface;
+}  // namespace tabs
 
 namespace brave_ads {
 
 class AdsService;
 class CreativeSearchResultAdHandler;
 
+// Handles search result ad events in a tab. Owned by BraveTabFeatures.
 class CreativeSearchResultAdTabHelper final
-    : public content::WebContentsObserver,
-      public content::WebContentsUserData<CreativeSearchResultAdTabHelper> {
+    : public tabs::ContentsObservingTabFeature {
  public:
-  explicit CreativeSearchResultAdTabHelper(content::WebContents* web_contents);
+  DECLARE_USER_DATA(CreativeSearchResultAdTabHelper);
+
+  static CreativeSearchResultAdTabHelper* From(tabs::TabInterface* tab);
+
+  // Returns nullptr for off-the-record profiles.
+  static std::unique_ptr<CreativeSearchResultAdTabHelper> MaybeCreate(
+      tabs::TabInterface& tab);
+
+  explicit CreativeSearchResultAdTabHelper(tabs::TabInterface& tab);
 
   CreativeSearchResultAdTabHelper(const CreativeSearchResultAdTabHelper&) =
       delete;
@@ -38,14 +50,10 @@ class CreativeSearchResultAdTabHelper final
 
   static void SetAdsServiceForTesting(AdsService* ads_service);
 
-  static void MaybeCreateForWebContents(content::WebContents* web_contents);
-
   void MaybeTriggerCreativeAdClickedEvent(const GURL& url,
                                           ResultCallback callback);
 
  private:
-  friend class content::WebContentsUserData<CreativeSearchResultAdTabHelper>;
-
   AdsService* GetAdsService() const;
 
   PrefService* GetPrefs() const;
@@ -70,20 +78,25 @@ class CreativeSearchResultAdTabHelper final
   void MaybeHandleCreativeAdClickedEventCallback(
       mojom::CreativeSearchResultAdInfoPtr creative_search_result_ad);
 
+  // tabs::ContentsObservingTabFeature:
+  void OnDiscardContents(tabs::TabInterface* tab,
+                         content::WebContents* old_contents,
+                         content::WebContents* new_contents) override;
+
   // content::WebContentsObserver:
   void DidStartNavigation(
       content::NavigationHandle* navigation_handle) override;
   void DidFinishNavigation(
       content::NavigationHandle* navigation_handle) override;
   void DocumentOnLoadCompletedInPrimaryMainFrame() override;
-  void WebContentsDestroyed() override;
 
   std::unique_ptr<CreativeSearchResultAdHandler>
       creative_search_result_ad_handler_;
 
-  base::WeakPtrFactory<CreativeSearchResultAdTabHelper> weak_factory_{this};
+  ui::ScopedUnownedUserData<CreativeSearchResultAdTabHelper>
+      scoped_unowned_user_data_;
 
-  WEB_CONTENTS_USER_DATA_KEY_DECL();
+  base::WeakPtrFactory<CreativeSearchResultAdTabHelper> weak_factory_{this};
 };
 
 }  // namespace brave_ads
