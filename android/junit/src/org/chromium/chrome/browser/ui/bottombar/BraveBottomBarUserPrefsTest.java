@@ -6,8 +6,6 @@
 package org.chromium.chrome.browser.ui.bottombar;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 import org.junit.After;
 import org.junit.Test;
@@ -20,28 +18,28 @@ import org.chromium.base.test.BaseRobolectricTestRunner;
 import org.chromium.base.test.util.Features.DisableFeatures;
 import org.chromium.base.test.util.Features.EnableFeatures;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
+import org.chromium.chrome.browser.preferences.ChromePreferenceKeys;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.toolbar.ToolbarVariationUtils;
 
 /**
- * Unit tests for the "Enable bottom bar" setting.
+ * Unit tests for the bottom bar setting's Brave defaults.
  *
- * <p>Both gates below are patched into upstream, and upstream keeps them in step with each other
- * through LINT.IfChange. These tests fail if a rebase drops either patch, or applies only one of
- * them.
+ * <p>These fail if a rebase drops the BottomBarConfigUtils patch.
  */
 @RunWith(BaseRobolectricTestRunner.class)
 @Config(manifest = Config.NONE)
 public class BraveBottomBarUserPrefsTest {
     @After
     public void tearDown() {
+        ChromeSharedPreferences.getInstance().removeKey(ChromePreferenceKeys.BOTTOM_BAR_ENABLED);
         ChromeSharedPreferences.getInstance()
                 .removeKey(BravePreferenceKeys.BRAVE_ENABLE_BOTTOM_BAR);
         ChromeSharedPreferences.getInstance()
                 .removeKey(BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY);
     }
 
-    private void setBottomBarSetting(boolean enabled) {
+    private void setFormerBottomBarSetting(boolean enabled) {
         ChromeSharedPreferences.getInstance()
                 .writeBoolean(BravePreferenceKeys.BRAVE_ENABLE_BOTTOM_BAR, enabled);
     }
@@ -67,71 +65,48 @@ public class BraveBottomBarUserPrefsTest {
 
     @Test
     @EnableFeatures(ChromeFeatureList.ANDROID_BOTTOM_BAR)
-    public void testEnabledWhenNeitherSettingIsSet() {
-        assertTrue(BraveBottomBarUserPrefs.isBottomBarEnabled());
+    public void testEnabledWhenNoSettingIsSet() {
         assertBottomBarGates(true);
     }
 
     @Test
     @EnableFeatures(ChromeFeatureList.ANDROID_BOTTOM_BAR)
-    public void testSettingOnKeepsBottomBar() {
-        setBottomBarSetting(true);
-        assertBottomBarGates(true);
-    }
-
-    @Test
-    @EnableFeatures(ChromeFeatureList.ANDROID_BOTTOM_BAR)
-    public void testSettingOffDisablesBottomBar() {
-        setBottomBarSetting(false);
-        assertFalse(BraveBottomBarUserPrefs.isBottomBarEnabled());
+    public void testUnsetSettingInheritsFormerBottomBarSettingOff() {
+        setFormerBottomBarSetting(false);
         assertBottomBarGates(false);
     }
 
-    // Until it is set the setting inherits the bottom navigation toolbar setting, so switching the
-    // flag on does not hand a bottom bar back to someone who turned that one off.
     @Test
     @EnableFeatures(ChromeFeatureList.ANDROID_BOTTOM_BAR)
     public void testUnsetSettingInheritsBottomToolbarSettingOff() {
         setBottomToolbarSetting(false);
-        assertFalse(BraveBottomBarUserPrefs.isBottomBarEnabled());
         assertBottomBarGates(false);
     }
 
     @Test
     @EnableFeatures(ChromeFeatureList.ANDROID_BOTTOM_BAR)
-    public void testUnsetSettingInheritsBottomToolbarSettingOn() {
-        setBottomToolbarSetting(true);
-        assertTrue(BraveBottomBarUserPrefs.isBottomBarEnabled());
-        assertBottomBarGates(true);
-    }
-
-    // The bottom bar UI is built once per run, so a change the user declined to relaunch for must
-    // not reach the gates, while the settings screen still shows it.
-    @Test
-    @EnableFeatures(ChromeFeatureList.ANDROID_BOTTOM_BAR)
-    public void testSettingChangeAppliesOnlyAfterRelaunch() {
-        setBottomBarSetting(true);
-        assertBottomBarGates(true);
-
-        setBottomBarSetting(false);
-        assertFalse(BraveBottomBarUserPrefs.isBottomBarSettingEnabled());
-        assertTrue(BraveBottomBarUserPrefs.isBottomBarEnabled());
-        assertBottomBarGates(true);
-    }
-
-    @Test
-    @EnableFeatures(ChromeFeatureList.ANDROID_BOTTOM_BAR)
-    public void testSettingOverridesBottomToolbarSetting() {
+    public void testFormerBottomBarSettingOverridesBottomToolbarSetting() {
         setBottomToolbarSetting(false);
-        setBottomBarSetting(true);
-        assertTrue(BraveBottomBarUserPrefs.isBottomBarEnabled());
+        setFormerBottomBarSetting(true);
         assertBottomBarGates(true);
+    }
+
+    @Test
+    @EnableFeatures(ChromeFeatureList.ANDROID_BOTTOM_BAR)
+    public void testSettingOverridesBraveDefaults() {
+        setFormerBottomBarSetting(false);
+        setBottomToolbarSetting(false);
+        BottomBarConfigUtils.setBottomBarUserEnabled(true);
+        assertBottomBarGates(true);
+
+        BottomBarConfigUtils.setBottomBarUserEnabled(false);
+        assertBottomBarGates(false);
     }
 
     @Test
     @DisableFeatures(ChromeFeatureList.ANDROID_BOTTOM_BAR)
     public void testSettingOnDoesNotEnableBottomBarWithoutFlag() {
-        setBottomBarSetting(true);
+        BottomBarConfigUtils.setBottomBarUserEnabled(true);
         assertBottomBarGates(false);
     }
 }
