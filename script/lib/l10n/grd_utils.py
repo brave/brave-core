@@ -260,6 +260,15 @@ def update_xtbs_locally(grd_file_path, brave_source_root, only_for_lang):
                     node.attrib['id'] = new_fp
                     # print(f'fp: {old_fp} -> {new_fp}')
 
+        # Chromium and Chrome variants of a string are separate messages that
+        # become identical after branding, so keep the first translation.
+        seen_ids = set()
+        for node in xml_tree.xpath('//translation'):
+            if node.attrib['id'] in seen_ids:
+                node.getparent().remove(node)
+            else:
+                seen_ids.add(node.attrib['id'])
+
         # Special treatment for brave_strings.grd
         if os.path.basename(grd_file_path) == 'brave_strings.grd':
             add_extra_translations_from_brave_xtb(
