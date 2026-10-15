@@ -15,6 +15,7 @@
 #include "base/timer/timer.h"
 #include "brave/components/gestures/core/common/actions/gesture_action_info.h"
 #include "brave/components/gestures/core/common/directional/directional_gesture_recognizer.h"
+#include "brave/components/gestures/core/common/directional/directional_gesture_types.h"
 #include "ui/gfx/geometry/point_f.h"
 
 class PrefService;
@@ -77,6 +78,11 @@ class GestureDrawSession final {
  private:
   void CheckHoldTimeout();
   void UpdateOverlay();
+  // Resamples `raw_traced_path_` to even spacing before classifying it into
+  // directional strokes, so the result doesn't depend on how unevenly the
+  // original points happened to be sampled (see `ResampleAtInterval`).
+  std::vector<DirectionalGestureDirectionType>
+  ClassifyResampledDirectionalStrokes() const;
 
   base::RepeatingCallback<content::WebContents*()> web_contents_getter_;
   const raw_ref<PrefService> prefs_;

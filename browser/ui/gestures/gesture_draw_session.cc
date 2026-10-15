@@ -101,7 +101,7 @@ GestureDrawSession::MaybeFinish() {
 
   std::vector<GestureActionInfo> actions =
       config_tracker_->directional_gesture_mapping().ActionsForStrokes(
-          directional_gesture_recognizer_.strokes());
+          ClassifyResampledDirectionalStrokes());
   if (!actions.empty()) {
     return actions;
   }
@@ -142,8 +142,8 @@ void GestureDrawSession::UpdateOverlay() {
     return;
   }
 
-  const std::vector<DirectionalGestureDirectionType>& strokes =
-      directional_gesture_recognizer_.strokes();
+  const std::vector<DirectionalGestureDirectionType> strokes =
+      ClassifyResampledDirectionalStrokes();
   const std::vector<GestureActionInfo>& stroke_actions =
       config_tracker_->directional_gesture_mapping().ActionsForStrokes(strokes);
   if (!stroke_actions.empty()) {
@@ -167,6 +167,21 @@ void GestureDrawSession::UpdateOverlay() {
           ? l10n_util::GetStringUTF16(IDS_BRAVE_GESTURES_UNKNOWN_GESTURE)
           : ToDisplayName(custom_gesture_actions.front().command);
   overlay_->UpdateTrail(raw_traced_path_, should_show_trail, label);
+}
+
+std::vector<DirectionalGestureDirectionType>
+GestureDrawSession::ClassifyResampledDirectionalStrokes() const {
+  const double min_stroke_pixels =
+      prefs_->GetDouble(prefs::kSensitivityInPixels);
+  // Resampling first makes the result depend only on the shape drawn, not on
+  // how unevenly the original points happened to be sampled (e.g. a brief
+  // slowdown mid-drag producing two unusually close consecutive points,
+  // which could otherwise fail a sustain check that a steadier draw of the
+  // exact same shape would have passed).
+  const std::vector<gfx::PointF> resampled_path = ResampleAtInterval(
+      raw_traced_path_, static_cast<float>(min_stroke_pixels / 3.0));
+  return ClassifyDirectionalStrokes(resampled_path, min_stroke_pixels,
+                                    features::kMaxDirectionalStrokes.Get());
 }
 
 }  // namespace gestures

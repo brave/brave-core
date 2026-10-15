@@ -5,6 +5,9 @@
 
 #include "brave/components/gestures/core/common/directional/directional_gesture_recognizer.h"
 
+#include <cmath>
+#include <numbers>
+
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/gestures/core/common/features.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -24,6 +27,23 @@ TEST(DirectionalGestureRecognizerTest, IgnoresMovementBelowThreshold) {
   EXPECT_THAT(gesture_recognizer.strokes(), testing::IsEmpty());
 }
 
+TEST(DirectionalGestureRecognizerTest,
+     ProposedFirstDirectionDoesNotCommitUntilSustained) {
+  DirectionalGestureRecognizer gesture_recognizer;
+
+  gesture_recognizer.Reset(/*start_location=*/gfx::PointF(),
+                           /*now=*/base::TimeTicks(),
+                           /*min_stroke_pixels=*/20);
+  gesture_recognizer.OnMouseMoved(/*location=*/gfx::PointF(20, 0),
+                                  /*now=*/base::TimeTicks());
+
+  // Unlike every later stroke, the very first qualifying direction used to
+  // commit unconditionally here, with no sustain check at all; that
+  // asymmetry is what let a hand-drawn oval collapse to a single false
+  // stroke.
+  EXPECT_THAT(gesture_recognizer.strokes(), testing::IsEmpty());
+}
+
 TEST(DirectionalGestureRecognizerTest, RegistersStrokeAtConfiguredThreshold) {
   DirectionalGestureRecognizer gesture_recognizer;
 
@@ -31,6 +51,10 @@ TEST(DirectionalGestureRecognizerTest, RegistersStrokeAtConfiguredThreshold) {
                            /*now=*/base::TimeTicks(),
                            /*min_stroke_pixels=*/20);
   gesture_recognizer.OnMouseMoved(/*location=*/gfx::PointF(20, 0),
+                                  /*now=*/base::TimeTicks());
+  // Confirms the proposed direction by sustaining it on its own for another
+  // `min_stroke_pixels`.
+  gesture_recognizer.OnMouseMoved(/*location=*/gfx::PointF(40, 0),
                                   /*now=*/base::TimeTicks());
 
   EXPECT_THAT(gesture_recognizer.strokes(),
@@ -43,8 +67,10 @@ TEST(DirectionalGestureRecognizerTest, ResolvesStraightDiagonalMovement) {
   gesture_recognizer.Reset(/*start_location=*/gfx::PointF(),
                            /*now=*/base::TimeTicks(),
                            /*min_stroke_pixels=*/20);
-  gesture_recognizer.OnMouseMoved(/*location=*/gfx::PointF(40, 40),
+  gesture_recognizer.OnMouseMoved(/*location=*/gfx::PointF(20, 20),
                                   /*now=*/base::TimeTicks());  // 45 degrees.
+  gesture_recognizer.OnMouseMoved(/*location=*/gfx::PointF(40, 40),
+                                  /*now=*/base::TimeTicks());
 
   EXPECT_THAT(
       gesture_recognizer.strokes(),
@@ -60,6 +86,8 @@ TEST(DirectionalGestureRecognizerTest, ResolvesToNearestOfEightDirections) {
   gesture_recognizer.OnMouseMoved(
       /*location=*/gfx::PointF(40, 10),
       /*now=*/base::TimeTicks());  // ~14 degrees.
+  gesture_recognizer.OnMouseMoved(/*location=*/gfx::PointF(80, 20),
+                                  /*now=*/base::TimeTicks());
 
   EXPECT_THAT(gesture_recognizer.strokes(),
               testing::ElementsAre(DirectionalGestureDirectionType::kRight));
@@ -72,6 +100,8 @@ TEST(DirectionalGestureRecognizerTest, ResolvesVerticalMovement) {
                            /*now=*/base::TimeTicks(),
                            /*min_stroke_pixels=*/20);
   gesture_recognizer.OnMouseMoved(/*location=*/gfx::PointF(0, 61),
+                                  /*now=*/base::TimeTicks());
+  gesture_recognizer.OnMouseMoved(/*location=*/gfx::PointF(0, 122),
                                   /*now=*/base::TimeTicks());
 
   EXPECT_THAT(gesture_recognizer.strokes(),
@@ -101,13 +131,15 @@ TEST(DirectionalGestureRecognizerTest, RecordsDistinctConsecutiveStrokes) {
   gesture_recognizer.Reset(/*start_location=*/gfx::PointF(),
                            /*now=*/base::TimeTicks(),
                            /*min_stroke_pixels=*/20);
+  // The first sample proposes `kDown`, the second confirms and commits it.
   gesture_recognizer.OnMouseMoved(/*location=*/gfx::PointF(0, 30),
                                   /*now=*/base::TimeTicks());
-  // A direction change is only committed once sustained on its own; the
-  // first sample proposes the new direction, the second confirms it.
-  gesture_recognizer.OnMouseMoved(/*location=*/gfx::PointF(30, 30),
+  gesture_recognizer.OnMouseMoved(/*location=*/gfx::PointF(0, 60),
                                   /*now=*/base::TimeTicks());
-  gesture_recognizer.OnMouseMoved(/*location=*/gfx::PointF(60, 30),
+  // Likewise, the third sample proposes `kRight`, the fourth confirms it.
+  gesture_recognizer.OnMouseMoved(/*location=*/gfx::PointF(30, 60),
+                                  /*now=*/base::TimeTicks());
+  gesture_recognizer.OnMouseMoved(/*location=*/gfx::PointF(60, 60),
                                   /*now=*/base::TimeTicks());
 
   EXPECT_THAT(gesture_recognizer.strokes(),
@@ -123,19 +155,45 @@ TEST(DirectionalGestureRecognizerTest,
                            /*now=*/base::TimeTicks(),
                            /*min_stroke_pixels=*/20);
   gesture_recognizer.OnMouseMoved(/*location=*/gfx::PointF(0, 30),
-                                  /*now=*/base::TimeTicks());  // Down.
+                                  /*now=*/base::TimeTicks());
+  gesture_recognizer.OnMouseMoved(/*location=*/gfx::PointF(0, 60),
+                                  /*now=*/base::TimeTicks());  // Commits down.
   // Briefly moves through the diagonal octant while turning, as a smooth
   // 90-degree turn naturally does, rather than a sharp right angle.
-  gesture_recognizer.OnMouseMoved(/*location=*/gfx::PointF(25, 45),
+  gesture_recognizer.OnMouseMoved(/*location=*/gfx::PointF(25, 85),
                                   /*now=*/base::TimeTicks());
-  gesture_recognizer.OnMouseMoved(/*location=*/gfx::PointF(60, 40),
+  gesture_recognizer.OnMouseMoved(/*location=*/gfx::PointF(60, 80),
                                   /*now=*/base::TimeTicks());
-  gesture_recognizer.OnMouseMoved(/*location=*/gfx::PointF(90, 35),
-                                  /*now=*/base::TimeTicks());
+  gesture_recognizer.OnMouseMoved(/*location=*/gfx::PointF(90, 85),
+                                  /*now=*/base::TimeTicks());  // Commits right.
 
   EXPECT_THAT(gesture_recognizer.strokes(),
               testing::ElementsAre(DirectionalGestureDirectionType::kDown,
                                    DirectionalGestureDirectionType::kRight));
+}
+
+TEST(DirectionalGestureRecognizerTest,
+     DoesNotCollapseAContinuouslyCurvingPathToASingleFalseStroke) {
+  // Regression test: a hand-drawn oval/circle traces a smoothly, continuously
+  // turning path. Since no single direction ever sustains on its own for a
+  // full `min_stroke_pixels` before the curve has already moved on to the
+  // next octant, no stroke should ever commit.
+  DirectionalGestureRecognizer gesture_recognizer;
+
+  gesture_recognizer.Reset(/*start_location=*/gfx::PointF(100, 100),
+                           /*now=*/base::TimeTicks(),
+                           /*min_stroke_pixels=*/30);
+  constexpr int kPointCount = 16;
+  constexpr float kRadius = 20;
+  for (int i = 1; i <= kPointCount; ++i) {
+    const float angle = 2 * std::numbers::pi_v<float> * i / kPointCount;
+    gesture_recognizer.OnMouseMoved(
+        gfx::PointF(100 + kRadius * std::cos(angle),
+                   100 + kRadius * std::sin(angle)),
+        base::TimeTicks());
+  }
+
+  EXPECT_THAT(gesture_recognizer.strokes(), testing::IsEmpty());
 }
 
 TEST(DirectionalGestureRecognizerTest, DiscardsExcessStrokesBeyondMaxLength) {
@@ -150,11 +208,15 @@ TEST(DirectionalGestureRecognizerTest, DiscardsExcessStrokesBeyondMaxLength) {
                            /*min_stroke_pixels=*/20);
   gesture_recognizer.OnMouseMoved(/*location=*/gfx::PointF(0, 30),
                                   /*now=*/base::TimeTicks());
-  gesture_recognizer.OnMouseMoved(/*location=*/gfx::PointF(30, 30),
+  gesture_recognizer.OnMouseMoved(/*location=*/gfx::PointF(0, 60),
+                                  /*now=*/base::TimeTicks());  // Commits down.
+  gesture_recognizer.OnMouseMoved(/*location=*/gfx::PointF(30, 60),
                                   /*now=*/base::TimeTicks());
-  gesture_recognizer.OnMouseMoved(/*location=*/gfx::PointF(60, 30),
-                                  /*now=*/base::TimeTicks());
-  gesture_recognizer.OnMouseMoved(/*location=*/gfx::PointF(90, 0),
+  gesture_recognizer.OnMouseMoved(/*location=*/gfx::PointF(60, 60),
+                                  /*now=*/base::TimeTicks());  // Commits right.
+  // A third stroke's worth of movement, discarded: the cap of 2 is already
+  // reached, so `OnMouseMoved` returns before even considering it.
+  gesture_recognizer.OnMouseMoved(/*location=*/gfx::PointF(60, 0),
                                   /*now=*/base::TimeTicks());
 
   EXPECT_THAT(gesture_recognizer.strokes(),
@@ -196,6 +258,8 @@ TEST(DirectionalGestureRecognizerTest, DoesNotTimeOutWhileMovementContinues) {
 
   gesture_recognizer.Reset(/*start_location=*/gfx::PointF(),
                            /*now=*/base::TimeTicks());
+  // Qualifying movement resets the idle timer even though it only proposes a
+  // pending candidate direction here, rather than committing a stroke.
   gesture_recognizer.OnMouseMoved(
       /*location=*/gfx::PointF(0, 30),
       /*now=*/base::TimeTicks() + base::Seconds(2));

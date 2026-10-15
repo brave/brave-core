@@ -5,16 +5,13 @@
 
 import {Point} from './custom_gesture_geometry.js'
 
-// Mirrors `DirectionalGestureRecognizer`'s classification in
-// brave/components/gestures/core/common/directional/directional_gesture_recognizer.cc
-// and `DirectionToKeyCode` in directional_gesture_util.cc. Direction
-// classification itself has no timing dependency there (only the idle-hold
-// timeout does, which only matters for an abandoned, not-yet-finished draw),
-// so replaying a finished raw point sequence through this batch version
-// reproduces exactly what the live incremental recognizer would have
-// resolved to. Used only for a pre-save "this looks like a mapped
-// directional gesture, so it would never actually run" warning; actual
-// directional matching is always done in C++ at gesture time.
+// Mirrors `ResampleAtInterval`/`ClassifyDirectionalStrokes` in
+// brave/components/gestures/core/common/directional/directional_gesture_util.cc,
+// which `GestureDrawSession::ClassifyResampledDirectionalStrokes` runs
+// against the raw traced path at gesture-finish time. Used only for a
+// pre-save "this looks like a mapped directional gesture, so it would never
+// actually run" warning; actual directional matching is always done in C++
+// at gesture time.
 
 // Clockwise angular order starting from "right" (screen angle 0), matching
 // `kDirectionsByAngle` in directional_gesture_util.cc.
@@ -35,57 +32,111 @@ function maybeMovementDirection(
   return DIRECTIONS_BY_ANGLE[octant]
 }
 
-// Classifies `rawPoints` (in the same raw pixel units `minStrokePixels` is
-// calibrated in, not resampled or normalized) into the stroke-key string
-// `DirectionalGestureMapping` looks mappings up by, e.g. "←" or "↓→".
-export function classifyDirectionalStrokeKey(
-    rawPoints: Point[], minStrokePixels: number, maxStrokes: number):
-    string {
-  if (rawPoints.length === 0) {
-    return ''
+// Mirrors `ResampleAtInterval`: resamples `path` to points evenly spaced
+// `intervalPixels` apart by arc length, so classification doesn't depend on
+// how unevenly the original points happened to be sampled (e.g. a brief
+// slowdown mid-drag producing two unusually close consecutive points, which
+// could otherwise fail a sustain check that a steadier draw of the exact
+// same shape would have passed).
+function resampleAtInterval(path: Point[], intervalPixels: number): Point[] {
+  if (path.length === 0) {
+    return []
+  }
+  const resampled: Point[] = [path[0]]
+  if (path.length < 2 || intervalPixels <= 0) {
+    return resampled
   }
 
-  const strokes: string[] = []
-  let strokeOrigin = rawPoints[0]
-  // A direction change not yet committed as a stroke, mirroring
-  // `pending_direction_type_`/`pending_origin_`: a 90-degree turn briefly
-  // crosses the diagonal octant between the two strokes, so a candidate
-  // direction is only committed once it's sustained on its own for
-  // `minStrokePixels`.
-  let pendingDirection: string|null = null
-  let pendingOrigin: Point = {x: 0, y: 0}
+  // Carries over leftover distance from one original segment to the next, so
+  // intervals stay consistent across the original points' own boundaries,
+  // not just within each one.
+  let accumulated = 0
+  let lastPoint = path[0]
+  for (let i = 1; i < path.length; ++i) {
+    const current = path[i]
+    let segmentLength =
+        Math.hypot(current.x - lastPoint.x, current.y - lastPoint.y)
 
-  for (let i = 1; i < rawPoints.length && strokes.length < maxStrokes; ++i) {
-    const location = rawPoints[i]
-    const direction = maybeMovementDirection(
-        strokeOrigin, location, minStrokePixels)
+    while (accumulated + segmentLength >= intervalPixels) {
+      const remaining = intervalPixels - accumulated
+      const ratio = segmentLength > 0 ? remaining / segmentLength : 0
+      const newPoint = {
+        x: lastPoint.x + ratio * (current.x - lastPoint.x),
+        y: lastPoint.y + ratio * (current.y - lastPoint.y),
+      }
+      resampled.push(newPoint)
+      segmentLength -= remaining
+      // Advances from the newly interpolated point, not the original
+      // segment's start, so a single long original segment resamples into
+      // several evenly-spaced points rather than repeatedly interpolating
+      // from the same fixed start.
+      lastPoint = newPoint
+      accumulated = 0
+    }
+    accumulated += segmentLength
+    lastPoint = current
+  }
+  const last = resampled[resampled.length - 1]
+  const end = path[path.length - 1]
+  if (last.x !== end.x || last.y !== end.y) {
+    resampled.push(end)
+  }
+  return resampled
+}
+
+// Mirrors `ClassifyDirectionalStrokes`: classifies `path` into a sequence of
+// directional strokes, capped at `maxStrokes`. `origin` is always either the
+// start of the current committed stroke or the start of the current pending
+// candidate -- it advances every time the candidate direction changes, not
+// just on commit. Measuring from a stale anchor left over from several
+// direction-changes ago reads a slowly-drifting aggregate bearing on a
+// curved path, which can disagree with the real local tangent for the
+// entire rest of the path and prevent any further stroke from ever
+// committing -- e.g. a hand-drawn oval collapsing to a single stroke.
+function classifyDirectionalStrokes(
+    path: Point[], minStrokePixels: number, maxStrokes: number): string[] {
+  const strokes: string[] = []
+  if (path.length === 0) {
+    return strokes
+  }
+
+  let origin = path[0]
+  let pendingDirection: string|null = null
+
+  for (let i = 1; i < path.length && strokes.length < maxStrokes; ++i) {
+    const location = path[i]
+    const direction = maybeMovementDirection(origin, location, minStrokePixels)
     if (direction === null) {
       continue
     }
 
-    if (strokes.length === 0 || direction === strokes[strokes.length - 1]) {
+    if (strokes.length > 0 && direction === strokes[strokes.length - 1]) {
       pendingDirection = null
-      if (strokes.length === 0) {
-        strokes.push(direction)
-      }
-      strokeOrigin = location
+      origin = location
       continue
     }
 
     if (pendingDirection !== direction) {
       pendingDirection = direction
-      pendingOrigin = location
-      continue
-    }
-    if (maybeMovementDirection(pendingOrigin, location, minStrokePixels) !==
-        direction) {
+      origin = location
       continue
     }
 
     strokes.push(direction)
     pendingDirection = null
-    strokeOrigin = location
+    origin = location
   }
 
+  return strokes
+}
+
+// Classifies `rawPoints` (in the same raw pixel units `minStrokePixels` is
+// calibrated in, not normalized) into the stroke-key string
+// `DirectionalGestureMapping` looks mappings up by, e.g. "←" or "↓→".
+export function classifyDirectionalStrokeKey(
+    rawPoints: Point[], minStrokePixels: number, maxStrokes: number):
+    string {
+  const resampled = resampleAtInterval(rawPoints, minStrokePixels / 3)
+  const strokes = classifyDirectionalStrokes(resampled, minStrokePixels, maxStrokes)
   return strokes.join('')
 }
