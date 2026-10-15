@@ -124,6 +124,22 @@ const update = () => {
     ),
   ])
   fileMap.add([
+    path.join(
+      config.braveCoreDir,
+      'components',
+      'permissions',
+      'android',
+      'translations',
+    ),
+    path.join(
+      config.srcDir,
+      'components',
+      'permissions',
+      'android',
+      'translations',
+    ),
+  ])
+  fileMap.add([
     braveAndroidTabUiJavaStringsTranslationsDir,
     chromeAndroidTabUiJavaStringsTranslationsDir,
   ])
