@@ -4,9 +4,9 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
-  - description: Depend on the Brave browser window additions.
-    insert_into_list:
-      target: browser_window
-      list_name: deps
-      values:
-        - //brave/browser/ui/browser_window
+  - description: 'Own BraveBrowserWindowFeatures.'
+    add_to_protected:
+      class_name: EmbedderBrowserWindowFeatures
+      code: |-
+        std::unique_ptr<BraveBrowserWindowFeatures>
+            brave_browser_window_features_;

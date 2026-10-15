@@ -14,7 +14,10 @@ import("//printing/buildflags/buildflags.gni")
 source_set("internal") {
   sources = []
   if (!is_android) {
-    sources += [ "browser_window_features.cc" ]
+    sources += [
+      "brave_browser_window_features.cc",
+      "brave_browser_window_features.h",
+    ]
   }
 
   deps = [
@@ -28,6 +31,7 @@ source_set("internal") {
     "//chrome/browser/tab_group_sync:factories",
     "//chrome/browser/ui/browser_window",
     "//printing/buildflags",
+    "//ui/base/unowned_user_data",
   ]
 
   if (enable_ai_chat && toolkit_views) {

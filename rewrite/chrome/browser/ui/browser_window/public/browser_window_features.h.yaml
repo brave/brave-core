@@ -6,41 +6,24 @@
 blank_macros_for_ast_parsing: true
 
 substitutions:
-  - description: |
-      Rename BrowserWindowFeatures to BrowserWindowFeatures_ChromiumImpl
+  - description: |-
+      Let BraveBrowserWindowFeatures use GetUserDataFactory().
 
-      This allows brave/browser/ui/browser_window/public/browser_window_features.h
-      to provide a Brave-specific BrowserWindowFeatures subclass.
-    rename_class:
-      class_name: BrowserWindowFeatures
-      rename: BrowserWindowFeatures_ChromiumImpl
-
-  - description: 'Make the destructor virtual for subclassing.'
-    make_virtual:
-      class_name: BrowserWindowFeatures_ChromiumImpl
-      method_name: '~BrowserWindowFeatures_ChromiumImpl'
-
-  - description: 'Make Init virtual.'
-    make_virtual:
-      class_name: BrowserWindowFeatures_ChromiumImpl
-      method_name: Init
-
-  - description: 'Make InitPostWindowConstruction virtual.'
-    make_virtual:
-      class_name: BrowserWindowFeatures_ChromiumImpl
-      method_name: InitPostWindowConstruction
-
-  - description: 'Make InitPostBrowserViewConstruction virtual.'
-    make_virtual:
-      class_name: BrowserWindowFeatures_ChromiumImpl
-      method_name: InitPostBrowserViewConstruction
-
-  - description: 'Make TearDownPreBrowserWindowDestruction virtual.'
-    make_virtual:
-      class_name: BrowserWindowFeatures_ChromiumImpl
-      method_name: TearDownPreBrowserWindowDestruction
-
-  - description: 'Let the Brave subclass reach private members.'
+      Brave's window features are created through the same factory as the
+      Chromium ones, so tests can override them.
     add_friend:
-      class_name: BrowserWindowFeatures_ChromiumImpl
-      friend_type: class BrowserWindowFeatures
+      class_name: BrowserWindowFeatures
+      friend_type: class BraveBrowserWindowFeatures
+
+  - description: |-
+      Own the controllers Brave needs before the other window features.
+
+      On macOS the immersive mode controller is created during Init(), and
+      choosing which kind depends on whether vertical tabs are in use, so the
+      vertical tab controller (and the focus mode controller it points to) has
+      to exist before the other window features.
+    add_to_protected:
+      class_name: BrowserWindowFeatures
+      code: |-
+        std::unique_ptr<FocusModeController> brave_focus_mode_controller_;
+        std::unique_ptr<VerticalTabController> brave_vertical_tab_controller_;

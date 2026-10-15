@@ -1,49 +1,17 @@
 diff --git a/chrome/browser/ui/browser_window/public/browser_window_features.h b/chrome/browser/ui/browser_window/public/browser_window_features.h
-index 91af7d2ac72f0f5a33de41cc0f26c427a8459128..c12037d6b56d1da9e6a80949838e23d97ccf9674 100644
+index 91af7d2ac72f0f5a33de41cc0f26c427a8459128..0c0599358e87c8ed9b4e311f373210091e6464a8 100644
 --- a/chrome/browser/ui/browser_window/public/browser_window_features.h
 +++ b/chrome/browser/ui/browser_window/public/browser_window_features.h
-@@ -277,34 +277,35 @@ class AppBrowserController;
- // Do not add more public accessors. Instead use the UnownedUserData design
- // pattern, see ui/base/unowned_user_data/README.md.
- // TODO(crbug.com/481268779a): Remove existing public accessors.
--class BrowserWindowFeatures {
-+class BrowserWindowFeatures_ChromiumImpl {
-  public:
--  BrowserWindowFeatures();
--  ~BrowserWindowFeatures();
-+  BrowserWindowFeatures_ChromiumImpl();
-+  virtual ~BrowserWindowFeatures_ChromiumImpl();
- 
--  BrowserWindowFeatures(const BrowserWindowFeatures&) = delete;
--  BrowserWindowFeatures& operator=(const BrowserWindowFeatures&) = delete;
-+  BrowserWindowFeatures_ChromiumImpl(const BrowserWindowFeatures_ChromiumImpl&) = delete;
-+  BrowserWindowFeatures_ChromiumImpl& operator=(const BrowserWindowFeatures_ChromiumImpl&) = delete;
- 
-   // Called exactly once to initialize features. This is called prior to
-   // instantiating BrowserView, to allow the view hierarchy to depend on state
-   // in this class.
--  void Init(BrowserWindowInterface* browser);
-+  virtual void Init(BrowserWindowInterface* browser);
- 
-   // Called exactly once to initialize features that depend on the window object
-   // being created.
--  void InitPostWindowConstruction(BrowserWindowInterface* browser);
-+  virtual void InitPostWindowConstruction(BrowserWindowInterface* browser);
- 
-   // Called exactly once to initialize features that depend on the view
-   // hierarchy in BrowserView.
--  void InitPostBrowserViewConstruction(BrowserView* browser_view);
-+  virtual void InitPostBrowserViewConstruction(BrowserView* browser_view);
- 
-   // Called exactly once to tear down state that depends on the window object.
--  void TearDownPreBrowserWindowDestruction();
-+  virtual void TearDownPreBrowserWindowDestruction();
- 
+@@ -304,7 +304,12 @@ class BrowserWindowFeatures {
    static ui::UserDataFactoryWithOwner<BrowserWindowInterface>&
    GetUserDataFactoryForTesting();
  
++ protected:
++  std::unique_ptr<FocusModeController> brave_focus_mode_controller_;
++  std::unique_ptr<VerticalTabController> brave_vertical_tab_controller_;
++
   private:
-+  friend class BrowserWindowFeatures;
++  friend class BraveBrowserWindowFeatures;
    static ui::UserDataFactoryWithOwner<BrowserWindowInterface>&
    GetUserDataFactory();
  

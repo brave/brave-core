@@ -3,20 +3,17 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
+#include "brave/browser/ui/browser_window/internal/brave_browser_window_features.h"
 
 #include "base/containers/flat_map.h"
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
-#include "base/memory/ptr_util.h"
+#include "base/types/to_address.h"
 #include "base/unguessable_token.h"
 #include "brave/browser/ui/brave_browser_window.h"
-#include "brave/browser/ui/focus_mode/focus_mode_controller.h"
-#include "brave/browser/ui/focus_mode/focus_mode_utils.h"
 #include "brave/browser/ui/screenshot/screenshot_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
-#include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
 #include "brave/browser/ui/tabs/tree_tab_session_manager.h"
 #include "brave/browser/ui/views/frame/brave_non_client_hit_test_helper.h"
 #include "brave/browser/ui/views/page_info/brave_shields_ui_contents_cache.h"
@@ -31,6 +28,7 @@
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/tab_group_sync/tab_group_sync_service_factory.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
@@ -68,59 +66,52 @@
 #include "brave/components/ai_chat/core/common/features.h"
 #endif
 
-BrowserWindowFeatures::BrowserWindowFeatures() = default;
-BrowserWindowFeatures::~BrowserWindowFeatures() = default;
+BraveBrowserWindowFeatures::BraveBrowserWindowFeatures(
+    BrowserWindowInterface& browser)
+    : browser_(browser) {}
 
-void BrowserWindowFeatures::Init(BrowserWindowInterface* browser) {
-  auto* profile = browser->GetProfile();
+BraveBrowserWindowFeatures::~BraveBrowserWindowFeatures() = default;
 
-  if (BrowserSupportsFocusMode(browser)) {
-    focus_mode_controller_ =
-        GetUserDataFactory().CreateInstance<FocusModeController>(
-            *browser, browser->GetUnownedUserDataHost());
-  }
+// static
+ui::UserDataFactoryWithOwner<BrowserWindowInterface>&
+BraveBrowserWindowFeatures::GetUserDataFactory() {
+  return BrowserWindowFeatures::GetUserDataFactory();
+}
 
-  // VerticalTabController should be constructed in Init() instead of
-  // InitPostBrowserViewConstruction() because it would be referenced by many
-  // views.
-  vertical_tab_controller_ =
-      GetUserDataFactory().CreateInstance<VerticalTabController>(
-          *browser, browser->GetUnownedUserDataHost(), browser->GetType(),
-          profile->GetPrefs(), focus_mode_controller_.get());
-
-  BrowserWindowFeatures_ChromiumImpl::Init(browser);
+void BraveBrowserWindowFeatures::Init() {
+  auto* profile = browser_->GetProfile();
 
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   if (brave_rewards::RewardsServiceFactory::GetForProfile(profile)) {
     rewards_panel_coordinator_ =
         GetUserDataFactory()
-            .CreateInstance<brave_rewards::RewardsPanelCoordinator>(*browser,
-                                                                    browser);
+            .CreateInstance<brave_rewards::RewardsPanelCoordinator>(
+                *browser_, base::to_address(browser_));
   }
 #endif
 
   brave_shields_ui_contents_cache_ =
       GetUserDataFactory().CreateInstance<BraveShieldsUIContentsCache>(
-          *browser, browser->GetUnownedUserDataHost());
+          *browser_, browser_->GetUnownedUserDataHost());
 
   window_closing_confirm_controller_ =
       GetUserDataFactory().CreateInstance<WindowClosingConfirmController>(
-          *browser, *browser);
+          *browser_, *browser_);
 
   brave_non_client_hit_test_helper_ =
       GetUserDataFactory().CreateInstance<BraveNonClientHitTestHelper>(
-          *browser, browser->GetUnownedUserDataHost());
+          *browser_, browser_->GetUnownedUserDataHost());
 
   if (base::FeatureList::IsEnabled(tabs::kBraveTreeTab) &&
-      browser->GetType() == BrowserWindowInterface::Type::TYPE_NORMAL) {
+      browser_->GetType() == BrowserWindowInterface::Type::TYPE_NORMAL) {
     tree_tab_session_manager_ =
         GetUserDataFactory().CreateInstance<TreeTabSessionManager>(
-            *browser, browser->GetUnownedUserDataHost(), profile,
-            browser->GetTabStripModel(), browser->GetSessionID());
+            *browser_, browser_->GetUnownedUserDataHost(), profile,
+            browser_->GetTabStripModel(), browser_->GetSessionID());
   }
 }
 
-void BrowserWindowFeatures::InitPostBrowserViewConstruction(
+void BraveBrowserWindowFeatures::InitPostBrowserViewConstruction(
     BrowserView* browser_view) {
   if (sidebar::CanUseSidebar(browser_view->browser())) {
     sidebar_controller_ =
@@ -201,16 +192,12 @@ void BrowserWindowFeatures::InitPostBrowserViewConstruction(
           browser_->GetProfile())) {
     ai_chat_side_panel_tab_transfer_bridge_ =
         GetUserDataFactory().CreateInstance<AIChatSidePanelTabTransferBridge>(
-            *browser_, browser_);
+            *browser_, base::to_address(browser_));
   }
 #endif
-
-  BrowserWindowFeatures_ChromiumImpl::InitPostBrowserViewConstruction(
-      browser_view);
 }
 
-void BrowserWindowFeatures::TearDownPreBrowserWindowDestruction() {
-  BrowserWindowFeatures_ChromiumImpl::TearDownPreBrowserWindowDestruction();
+void BraveBrowserWindowFeatures::TearDownPreBrowserWindowDestruction() {
   screenshot_controller_.reset();
 #if BUILDFLAG(ENABLE_AI_CHAT)
   ai_chat_side_panel_tab_transfer_bridge_.reset();

@@ -24,6 +24,7 @@
 #include "brave/browser/ui/views/toolbar/side_panel_button.h"
 #include "brave/browser/workspaces/features.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"
