@@ -25,6 +25,11 @@ namespace image_metadata_stripper {
 class FileUploadController;
 }  // namespace image_metadata_stripper
 
+namespace tor {
+class OnionLocationTabHelper;
+class TorTabHelper;
+}  // namespace tor
+
 #if BUILDFLAG(ENABLE_AI_CHAT)
 namespace ai_chat {
 class TabDataWebContentsObserver;
@@ -182,6 +187,14 @@ class BraveTabFeatures : public TabFeatures {
 #endif
   // Offers to enable Widevine when the page asks for it. Null without it.
   std::unique_ptr<ContentsObservingTabFeature> drm_tab_helper_;
+#if BUILDFLAG(ENABLE_TOR)
+  // Retries Tor navigations while the Tor process is not ready. Null outside
+  // Tor profiles.
+  std::unique_ptr<tor::TorTabHelper> tor_tab_helper_;
+  // Holds the page's Onion-Location. Declared before the page action
+  // controller that reads it.
+  std::unique_ptr<tor::OnionLocationTabHelper> onion_location_tab_helper_;
+#endif  // BUILDFLAG(ENABLE_TOR)
   // Holds the Shields state for the page shown in the tab.
   std::unique_ptr<ContentsObservingTabFeature> brave_shields_tab_helper_;
   // Records whether the page asked for high accuracy geolocation.

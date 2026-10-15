@@ -9,6 +9,7 @@
 
 #include "base/check.h"
 #include "brave/components/tor/onion_location_tab_helper.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/web_contents_observer.h"
@@ -79,8 +80,8 @@ OnionLocationNavigationThrottle::WillProcessResponse() {
       return content::NavigationThrottle::PROCEED;
     }
     // Process only 'tabs' web contents and don't touch other.
-    if (!OnionLocationTabHelper::FromWebContents(
-            navigation_handle()->GetWebContents())) {
+    if (!OnionLocationTabHelper::From(tabs::TabInterface::MaybeGetFromContents(
+            navigation_handle()->GetWebContents()))) {
       return content::NavigationThrottle::PROCEED;
     }
     OnionLocationTabHelper::SetOnionLocationByThrottle(
