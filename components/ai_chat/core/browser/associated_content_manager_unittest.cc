@@ -339,6 +339,27 @@ TEST_F(AssociatedContentManagerUnitTest,
   EXPECT_EQ(content_screenshots[1].second[0]->filename, "second.png");
 }
 
+TEST_F(AssociatedContentManagerUnitTest, ScreenshotTurnUuid) {
+  auto* manager = conversation_handler_->associated_content_manager();
+  NiceMock<MockAssociatedContent> content;
+  manager->AddContent(&content);
+
+  // Content not yet sent with an entry can't have screenshots recorded.
+  manager->SetScreenshotTurnUuid(content.uuid(), "screenshot-turn");
+  EXPECT_FALSE(manager->GetScreenshotTurnUuid(content.uuid()));
+
+  ASSERT_TRUE(manager->AssociateContentWithTurn(content.uuid(), "turn"));
+  EXPECT_FALSE(manager->GetScreenshotTurnUuid(content.uuid()));
+  manager->SetScreenshotTurnUuid(content.uuid(), "screenshot-turn");
+  EXPECT_EQ(manager->GetScreenshotTurnUuid(content.uuid()), "screenshot-turn");
+  // The entry it was first sent with is unchanged.
+  EXPECT_EQ(manager->GetAssociatedContent()[0]->conversation_turn_uuid, "turn");
+
+  // It goes with the content when the entry it was sent with is removed.
+  manager->RemoveContentAssociatedWithTurns({"turn"});
+  EXPECT_FALSE(manager->GetScreenshotTurnUuid(content.uuid()));
+}
+
 TEST_F(AssociatedContentManagerUnitTest, RemoveContentAssociatedWithTurns) {
   auto* manager = conversation_handler_->associated_content_manager();
   NiceMock<MockAssociatedContent> human_content;

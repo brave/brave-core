@@ -92,8 +92,8 @@ void AssociatedContentManager::LoadArchivedContent(
     AddContent(owned_content_.back().get(), /*notify_updated=*/false);
 
     // Be sure to record the turn that this content is associated with.
-    content_uuid_to_conversation_turns_[archive_content->content_uuid] =
-        archive_content->conversation_turn_uuid;
+    content_uuid_to_conversation_turns_[archive_content->content_uuid] = {
+        .turn_uuid = archive_content->conversation_turn_uuid};
   }
 
   conversation_->OnAssociatedContentUpdated();
@@ -428,7 +428,8 @@ void AssociatedContentManager::AssociateUnsentContentWithTurn(
     if (content_uuid_to_conversation_turns_.contains(content->uuid())) {
       continue;
     }
-    content_uuid_to_conversation_turns_[content->uuid()] = turn->uuid.value();
+    content_uuid_to_conversation_turns_[content->uuid()] = {
+        .turn_uuid = turn->uuid.value()};
   }
 }
 
@@ -444,7 +445,8 @@ bool AssociatedContentManager::AssociateContentWithTurn(
   }
   const bool inserted =
       content_uuid_to_conversation_turns_
-          .try_emplace(std::string(content_uuid), std::string(turn_uuid))
+          .try_emplace(std::string(content_uuid),
+                       ContentTurns{.turn_uuid = std::string(turn_uuid)})
           .second;
   if (!inserted) {
     return false;
@@ -459,9 +461,9 @@ void AssociatedContentManager::RemoveContentAssociatedWithTurns(
   DVLOG(1) << __func__;
 
   std::vector<std::string> to_remove;
-  for (const auto& [content_uuid, turn_uuid] :
+  for (const auto& [content_uuid, turns] :
        content_uuid_to_conversation_turns_) {
-    if (turn_uuids.contains(turn_uuid)) {
+    if (turn_uuids.contains(turns.turn_uuid)) {
       to_remove.push_back(content_uuid);
     }
   }
@@ -516,7 +518,7 @@ AssociatedContentManager::GetAssociatedContent() const {
 
     auto it = content_uuid_to_conversation_turns_.find(content->uuid);
     if (it != content_uuid_to_conversation_turns_.end()) {
-      content->conversation_turn_uuid = it->second;
+      content->conversation_turn_uuid = it->second.turn_uuid;
     }
 
     content->tools_attached = delegate->tools_attached();
@@ -664,6 +666,24 @@ void AssociatedContentManager::GetScreenshotsOfContent(
           barrier.Run({index, std::move(screenshots)});
         },
         barrier, i));
+  }
+}
+
+std::optional<std::string> AssociatedContentManager::GetScreenshotTurnUuid(
+    std::string_view content_uuid) const {
+  auto it = content_uuid_to_conversation_turns_.find(content_uuid);
+  if (it == content_uuid_to_conversation_turns_.end()) {
+    return std::nullopt;
+  }
+  return it->second.screenshot_turn_uuid;
+}
+
+void AssociatedContentManager::SetScreenshotTurnUuid(
+    std::string_view content_uuid,
+    std::string turn_uuid) {
+  auto it = content_uuid_to_conversation_turns_.find(content_uuid);
+  if (it != content_uuid_to_conversation_turns_.end()) {
+    it->second.screenshot_turn_uuid = std::move(turn_uuid);
   }
 }
 

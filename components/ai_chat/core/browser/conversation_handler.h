@@ -17,7 +17,6 @@
 #include <variant>
 #include <vector>
 
-#include "base/containers/flat_map.h"
 #include "base/containers/span.h"
 #include "base/functional/callback.h"
 #include "base/functional/callback_forward.h"
@@ -662,10 +661,6 @@ class ConversationHandler : public mojom::ConversationHandler,
   // Percentage of visual content used (0-100), tracks image truncation
   // during screenshot capture due to MAX_IMAGES limits
   std::optional<uint32_t> visual_content_used_percentage_;
-
-  // The uuid of the human entry holding the automatic screenshots of each
-  // content, by content uuid.
-  base::flat_map<std::string, std::string> content_screenshot_turns_;
 
   // Whether further assistant responses should be appended to the last or
   // created in a new sibling ConversationEntry.

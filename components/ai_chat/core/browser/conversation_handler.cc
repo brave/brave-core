@@ -2145,8 +2145,8 @@ bool ConversationHandler::HasScreenshotsOfContent(
   };
 
   // Automatic screenshots of the content.
-  if (const std::string* turn_uuid =
-          base::FindOrNull(content_screenshot_turns_, content_uuid);
+  if (std::optional<std::string> turn_uuid =
+          associated_content_manager_->GetScreenshotTurnUuid(content_uuid);
       turn_uuid && has_screenshots(*turn_uuid)) {
     return true;
   }
@@ -2179,7 +2179,8 @@ void ConversationHandler::OnScreenshotsOfContentTaken(
   std::vector<mojom::UploadedFilePtr> screenshots;
   for (auto& [content_uuid, screenshots_of_content] : content_screenshots) {
     if (turn && turn->uuid) {
-      content_screenshot_turns_.insert_or_assign(content_uuid, *turn->uuid);
+      associated_content_manager_->SetScreenshotTurnUuid(content_uuid,
+                                                         *turn->uuid);
     }
     base::Extend(screenshots, std::move(screenshots_of_content));
   }
