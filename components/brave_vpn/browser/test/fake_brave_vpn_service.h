@@ -57,8 +57,8 @@ class FakeBraveVpnService : public BraveVpnService {
                            CreateSupportTicketCallback callback) override {}
   void GetSupportData(GetSupportDataCallback callback) override {}
   void ResetConnectionState() override {}
-  void EnableOnDemand(bool enable) override {}
-  void GetOnDemandState(GetOnDemandStateCallback callback) override {}
+  void EnableAutoReconnect(bool enable) override {}
+  void GetAutoReconnectState(GetAutoReconnectStateCallback callback) override {}
   void EnableSmartProxyRouting(bool enable) override {}
   void GetSmartProxyRoutingState(
       GetSmartProxyRoutingStateCallback callback) override {}
