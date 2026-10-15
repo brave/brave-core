@@ -22,7 +22,6 @@
 #include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
-#include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
@@ -46,10 +45,6 @@
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/ai_chat/ai_chat_utils.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
-#endif
-
-#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
-#include "brave/browser/brave_rewards/rewards_tab_helper.h"
 #endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
@@ -104,10 +99,6 @@ void AttachTabHelpers(content::WebContents* web_contents) {
 
 #if BUILDFLAG(IS_ANDROID)
   YouTubeScriptInjectorTabHelper::CreateForWebContents(web_contents);
-#endif
-
-#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
-  brave_rewards::RewardsTabHelper::CreateForWebContents(web_contents);
 #endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT)

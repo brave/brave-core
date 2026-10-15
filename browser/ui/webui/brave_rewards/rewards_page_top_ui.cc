@@ -62,11 +62,9 @@ class RewardsPageBubbleDelegate : public RewardsPageHandler::BubbleDelegate {
     }
     if (auto* browser = ProfileBrowserCollection::GetForProfile(profile_.get())
                             ->GetLastActiveBrowser()) {
-      if (auto* contents =
-              browser->GetTabStripModel()->GetActiveWebContents()) {
-        if (auto* tab_helper = RewardsTabHelper::FromWebContents(contents)) {
-          return tab_helper->GetPublisherIdForTab();
-        }
+      if (auto* tab_helper = RewardsTabHelper::From(
+              browser->GetTabStripModel()->GetActiveTab())) {
+        return tab_helper->GetPublisherIdForTab();
       }
     }
     return "";

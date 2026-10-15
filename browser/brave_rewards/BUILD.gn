@@ -16,6 +16,11 @@ source_set("brave_rewards") {
     "rewards_tab_helper.h",
   ]
 
+  public_deps = [
+    "//chrome/browser/ui/tabs:tabs_public",
+    "//ui/base/unowned_user_data",
+  ]
+
   deps = [
     "//base",
     "//brave/components/brave_rewards/content",
@@ -56,6 +61,7 @@ source_set("brave_rewards_impl") {
     "//components/policy/core/common",
     "//components/prefs",
     "//components/sessions",
+    "//components/tabs:public",
   ]
 
   if (enable_brave_wallet) {

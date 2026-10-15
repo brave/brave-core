@@ -227,10 +227,15 @@ BraveRewardsActionView::BraveRewardsActionView(
     panel_observation_.Observe(panel_coordinator_);
   }
 
-  UpdateTabHelper(GetActiveWebContents());
+  UpdateTabHelper(
+      browser_window_interface_->GetTabStripModel()->GetActiveTab());
 }
 
-BraveRewardsActionView::~BraveRewardsActionView() = default;
+BraveRewardsActionView::~BraveRewardsActionView() {
+  if (tab_helper_) {
+    tab_helper_->RemoveObserver(this);
+  }
+}
 
 void BraveRewardsActionView::Update() {
   gfx::Size preferred_size = GetPreferredSize();
@@ -303,7 +308,7 @@ void BraveRewardsActionView::OnTabStripModelChanged(
     const TabStripModelChange& change,
     const TabStripSelectionChange& selection) {
   if (selection.active_tab_changed()) {
-    UpdateTabHelper(selection.new_contents);
+    UpdateTabHelper(selection.new_tab);
   }
 }
 
@@ -499,18 +504,15 @@ void BraveRewardsActionView::IsPublisherRegisteredCallback(
   }
 }
 
-void BraveRewardsActionView::UpdateTabHelper(
-    content::WebContents* web_contents) {
-  tab_helper_ = nullptr;
-  if (tab_helper_observation_.IsObserving()) {
-    tab_helper_observation_.Reset();
+void BraveRewardsActionView::UpdateTabHelper(tabs::TabInterface* tab) {
+  if (tab_helper_) {
+    tab_helper_->RemoveObserver(this);
   }
+  tab_helper_ = nullptr;
 
-  if (web_contents) {
-    if (auto* helper = RewardsTabHelper::FromWebContents(web_contents)) {
-      tab_helper_ = helper;
-      tab_helper_observation_.Observe(helper);
-    }
+  if (auto* helper = RewardsTabHelper::From(tab)) {
+    tab_helper_ = helper->GetWeakPtr();
+    helper->AddObserver(this);
   }
 
   OnPublisherForTabUpdated(tab_helper_ ? tab_helper_->GetPublisherIdForTab()
