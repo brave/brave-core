@@ -949,12 +949,11 @@ public class BrowserViewController: UIViewController {
   }
 
   private func callVideoBackgroundPlayback(_ call: (BraveWebView) -> Void) {
-    guard let tab = tabManager.selectedTab, tab.isWebViewCreated,
-      let webView = BraveWebView.from(tab: tab)
-    else {
-      return
+    // The playing video may be in a background tab.
+    for tab in tabManager.allTabs where tab.isWebViewCreated {
+      guard let webView = BraveWebView.from(tab: tab) else { continue }
+      call(webView)
     }
-    call(webView)
   }
 
   @objc private func sceneDidEnterBackgroundNotification(_ notification: NSNotification) {
