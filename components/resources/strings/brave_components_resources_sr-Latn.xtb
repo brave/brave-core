@@ -1883,6 +1883,18 @@ other {Zarađujete gledajući <ph name="COUNT_BEGIN"/># oglasa<ph name="COUNT_EN
 <translation id="2737084171727561244">Idi na portfolio</translation>
 <translation id="3499452861061048987">Dodaj token</translation>
 <translation id="5046066249040287308">Pomoćna usluga Brave novačanika</translation>
+<translation id="8767749833522980474">Kripto</translation>
+<translation id="4509084261025090951">Preuzmite svoju karticu</translation>
+<translation id="3624463584770657372">Verifikujte svoj identitet da biste videli brojeve kartice i počeli da trošite.</translation>
+<translation id="2508337767012636987">Dodirnite za verifikaciju</translation>
+<translation id="703964541421486259">Sakrij iznose</translation>
+<translation id="302114796458112924">Prikaži iznose</translation>
+<translation id="9083210401924577263">Brave nagrade kartica</translation>
+<translation id="2433507940547922241">Izgled</translation>
+<translation id="3435738964857648380">Bezbednost</translation>
+<translation id="6700561332544287722">Zahtevaj otključavanje sledeći put</translation>
+<translation id="5605360570977617291">Sakriti <ph name="CARD_NAME"/> sa početne stranice?</translation>
+<translation id="2721464457853369512">Vaš <ph name="CARD_NAME"/> iznos je nepromenjen. Ovo samo sakriva karticu sa početne stranice. Možete je ponovo prikazati bilo kada u Podešavanjima, pod Novčanik.</translation>
 <translation id="3155170474926428993">Tor pokretač</translation>
 <translation id="3745016858329272300">Opšte informacije</translation>
 <translation id="4045404575593562245">Kontrolni događaji Tor-a</translation>
@@ -1922,7 +1934,6 @@ other {Zarađujete gledajući <ph name="COUNT_BEGIN"/># oglasa<ph name="COUNT_EN
 <translation id="6261915643960475695">Biznis</translation>
 <translation id="8265589281845759879">Automobili</translation>
 <translation id="7726519849288907308">Poznate ličnosti</translation>
-<translation id="8767749833522980474">Kripto</translation>
 <translation id="7577010593836079522">Kultura</translation>
 <translation id="6807791860691150411">Obrazovanje</translation>
 <translation id="3706423975342040244">Zabava</translation>
@@ -2101,9 +2112,6 @@ other {Zarađujete gledajući <ph name="COUNT_BEGIN"/># oglasa<ph name="COUNT_EN
 <translation id="3067105725259639716">Konfiguriši Brave vesti</translation>
 <translation id="6286510487460330478">Konfiguriši prečice</translation>
 <translation id="9214819486716388964">Prikaži Brave razgovor</translation>
-<translation id="5950760360751948276">Uvek prikazuj traku sa obeleživačima</translation>
-<translation id="2960757369920422313">Prikaži traku sa obeleživačima na NTP-u</translation>
-<translation id="522953399371747698">Sakrij traku sa obeleživačima</translation>
 <translation id="9079813619990532635">Izvezi sve oznake</translation>
 <translation id="134184943774258988">Uključi/isključi vidljivost dugmeta za sve obeleživače</translation>
 <translation id="2158862020143233462">Uključi/isključi štitove</translation>
@@ -2218,6 +2226,7 @@ other {Zarađujete gledajući <ph name="COUNT_BEGIN"/># oglasa<ph name="COUNT_EN
 <translation id="5820497878628354073">Statusni kod: <ph name="STATUS_CODE"/>, unutrašnji statusni kod: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">Dostigli ste limit za odgovore premijum usluge. Probajte ponovo za nekoliko sati.</translation>
 <translation id="6873128487002733717">Dostigli ste premium limit za ovaj model. Izaberite drugi model ili probajte ponovo kasnije.</translation>
+<translation id="2688661132468689309">Dostigli ste premium limit za ovaj model. Resetuje se za <ph name="RESET_DURATION"/> (u <ph name="RESET_TIME"/>). Izaberite drugi model ili probajte ponovo tada.</translation>
 <translation id="3683964919745779766">Dostigli ste limit za odgovore za ovaj model ili ste ostali bez kredita. Probajte ponovo kasnije.</translation>
 <translation id="7692501701960747469">API ključ konfigurisan za ovaj model je nevažeći. Proverite konfiguraciju i probajte ponovo.</translation>
 <translation id="7905602379229309187">Kraja tačka je trenutno preopterećena. Probajte ponovo kasnije.</translation>
@@ -2226,12 +2235,12 @@ other {Zarađujete gledajući <ph name="COUNT_BEGIN"/># oglasa<ph name="COUNT_EN
 <translation id="3852808100039989429">Zdravo, zovem se Leo. Ja sam asistent zasnovan na veštačkoj inteligenciji u potpunosti hostovan od strane kompanije Brave. Pokreće me Qwen VL 30B, model koji je kreirala kompanija Alibaba Cloud kako bih bio efikasan i primenljiv na mnoge slučajeve upotrebe. Qwen se hostuje na Brave-ovoj sopstvenoj bezbednoj infrastrukturi.<ph name="LINK_BEFORE"/>Saznajte više<ph name="LINK_AFTER"/></translation>
 <translation id="8659225822055186905">Zdravo, ja sam Leo. Ja sam AI asistent kompanije Brave. Pokreće me GLM-5.3 Flash, model koji je kreirao Zhipu AI da bude performantan i primenljiv na mnoge slučajeve upotrebe. GLM-5.3 Flash se hostuje putem NEAR-a preko njihove sopstvene proverljivo privatne bezbedne infrastrukture.<ph name="LINK_BEFORE"/>Saznajte više<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">Zdravo, ja sam Leo. Ja sam AI asistent kompanije Brave. Pokreće me Claude Instant, model koji je kreirala kompanija Anthropic za potrebe konverzacije i obrade teksta. Claude Instant se hostuje preko Brave infrastrukture.<ph name="LINK_BEFORE"/>Saznajte više<ph name="LINK_AFTER"/></translation>
-<translation id="3789772321824682783">Zdravo, zovem se Leo. Brave mi je proksi, a pokreće me Claude Haiku, model koji je kreirala kompanija Anthropic kako bi omogućila razgovorne zadatke i zadatke obrade teksta. Claude Haiku se hostuje na Brave-ovoj sopstvenoj bezbednoj infrastrukturi. <ph name="LINK_BEFORE"/>Saznajte više<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Zdravo, zovem se Leo. Brave mi je proksi, a pokreće me Claude Sonnet, model koji je kreirala kompanija Anthropic kako bi omogućila razgovorne zadatke i zadatke obrade teksta. Claude Sonnet se hostuje na Brave-ovoj sopstvenoj bezbednoj infrastrukturi. <ph name="LINK_BEFORE"/>Saznajte više<ph name="LINK_AFTER"/></translation>
-<translation id="3399141352144059821">Zdravo, zovem se Leo. Ja sam asistent zasnovan na veštačkoj inteligenciji u potpunosti hostovan od strane kompanije Brave. Pokreće me Grok 4.3, model koji je kreirala kompanija xAI kako bih bio efikasan i primenljiv na mnoge slučajeve upotrebe. Grok 4.3 se hostuje na Brave-ovoj sopstvenoj bezbednoj infrastrukturi.<ph name="LINK_BEFORE"/>Saznajte više<ph name="LINK_AFTER"/></translation>
-<translation id="8868813509973985458">Zdravo, zovem se Leo. Ja sam asistent zasnovan na veštačkoj inteligenciji u potpunosti hostovan od strane kompanije Brave. Pokreće me GPT 5.4, model koji je kreirala kompanija OpenAI kako bih bio efikasan i primenljiv na mnoge slučajeve upotrebe. GPT 5.4 se hostuje na Brave-ovoj sopstvenoj bezbednoj infrastrukturi.<ph name="LINK_BEFORE"/>Saznajte više<ph name="LINK_AFTER"/></translation>
+<translation id="6676306995311143470">Zdravo, zovem se Leo. Ja sam asistent zasnovan na veštačkoj inteligenciji u potpunosti hostovan od strane kompanije Brave. Pokreće me Grok 4.6, xAI-jev vrhunski model rezonovanja na Amazon Bedrock Mantle. Grok 4.6 se poslužuje preko Brave-ove bezbedne AWS infrastrukture.<ph name="LINK_BEFORE"/>Saznajte više<ph name="LINK_AFTER"/></translation>
+<translation id="2394656730986208060">Zdravo, zovem se Leo. Ja sam asistent zasnovan na veštačkoj inteligenciji u potpunosti hostovan od strane kompanije Brave. Pokreće me GPT 5.6 Luna, OpenAI-jev brz model sa niskom latencijom na Amazon Bedrock Mantle. GPT 5.6 Luna se poslužuje preko Brave-ove bezbedne AWS infrastrukture.<ph name="LINK_BEFORE"/>Saznajte više<ph name="LINK_AFTER"/></translation>
+<translation id="5278969721580944810">Zdravo, zovem se Leo. Ja sam asistent zasnovan na veštačkoj inteligenciji u potpunosti hostovan od strane kompanije Brave. Pokreće me GPT 5.6 Terra, OpenAI-jev uravnoteženi produkcioni model na Amazon Bedrock Mantle. GPT 5.6 Terra se poslužuje preko Brave-ove bezbedne AWS infrastrukture.<ph name="LINK_BEFORE"/>Saznajte više<ph name="LINK_AFTER"/></translation>
 <translation id="5037359072717016032">Zdravo, zovem se Leo. Ja sam asistent zasnovan na veštačkoj inteligenciji u potpunosti hostovan od strane kompanije Brave. Pokreće me Mistral Large, model koji je kreirala kompanija Mistral kako bih bio efikasan i primenljiv na mnoge slučajeve upotrebe. Mistral Large se hostuje na Brave-ovoj sopstvenoj bezbednoj infrastrukturi.<ph name="LINK_BEFORE"/>Saznajte više<ph name="LINK_AFTER"/></translation>
-<translation id="4026902371301997261">Zdravo, zovem se Leo. Ja sam asistent zasnovan na veštačkoj inteligenciji u potpunosti hostovan od strane kompanije Brave. Pokreće me Qwen 3 235B, model koji je kreirala kompanija Alibaba Cloud kako bih bio efikasan i primenljiv na mnoge slučajeve upotrebe. Qwen 3 235B se hostuje na Brave-ovoj sopstvenoj bezbednoj infrastrukturi.<ph name="LINK_BEFORE"/>Saznajte više<ph name="LINK_AFTER"/></translation>
+<translation id="5475035333915581972">Zdravo, zovem se Leo. Ja sam asistent zasnovan na veštačkoj inteligenciji u potpunosti hostovan od strane kompanije Brave. Pokreće me Qwen 3.8 Flash Next, model koji je kreirala kompanija Alibaba Cloud kako bih bio efikasan i primenljiv na mnoge slučajeve upotrebe. Qwen 3.8 Flash Next se hostuje na Brave-ovoj sopstvenoj bezbednoj infrastrukturi.<ph name="LINK_BEFORE"/>Saznajte više<ph name="LINK_AFTER"/></translation>
 <translation id="8720758690351028307">Zdravo, zovem se Leo. Ja sam asistent zasnovan na veštačkoj inteligenciji u potpunosti hostovan od strane kompanije Brave. Pokreće me Deepseek V3.2, model koji je kreirala kompanija Deepseek kako bih bio efikasan i primenljiv na mnoge slučajeve upotrebe. Deepseek V3.2 se hostuje na Brave-ovoj sopstvenoj bezbednoj infrastrukturi.<ph name="LINK_BEFORE"/>Saznajte više<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">Zdravo, zovem se Leo. Ja sam asistent zasnovan na veštačkoj inteligenciji u potpunosti hostovan od strane kompanije Brave. Pokreće me Claude Opus, model koji je kreirala kompanija Anthropic kako bi omogućila razgovorne zadatke i zadatke obrade teksta. Claude Opus se hostuje na Brave-ovoj sopstvenoj bezbednoj infrastrukturi.<ph name="LINK_BEFORE"/>Saznajte više<ph name="LINK_AFTER"/></translation>
 <translation id="7238858567393403597">Zdravo, zovem se Leo. Ja sam asistent zasnovan na veštačkoj inteligenciji u potpunosti hostovan od strane kompanije Brave. Pokreće me GLM-4-7-Flash, model koji je kreirala kompanija Zhipu AI kako bih bio efikasan i primenljiv na mnoge slučajeve upotrebe. GLM-4-7-Flash se hostuje na Brave-ovoj sopstvenoj bezbednoj infrastrukturi.<ph name="LINK_BEFORE"/>Saznajte više<ph name="LINK_AFTER"/></translation>
@@ -2244,7 +2253,6 @@ other {Zarađujete gledajući <ph name="COUNT_BEGIN"/># oglasa<ph name="COUNT_EN
 <translation id="4773408460773097271">Ollama</translation>
 <translation id="631371844654031449">Preporučeni modeli</translation>
 <translation id="6568044140836233369">Prikaži sve modele</translation>
-<translation id="6187065185557150870">Ćaskanje</translation>
 <translation id="4685048769603134644">Otvori kompletnu stranicu</translation>
 <translation id="2961040541145689181">Novo ćaskanje</translation>
 <translation id="7557539689487606886">Pređite na Premium</translation>
@@ -2368,13 +2376,13 @@ other {Zarađujete gledajući <ph name="COUNT_BEGIN"/># oglasa<ph name="COUNT_EN
 <translation id="887511360213807449">Istorija je isključena</translation>
 <translation id="5380979378058584412">Da biste videli prethodne razgovore sa asistentom Leo, morate da uključite istoriju razgovora.</translation>
 <translation id="3185367320601718531">Razgovor i generisanje teksta</translation>
-<translation id="2793458212460902934">Brzo • Pretraga • Alatke</translation>
 <translation id="8506027496671575183">Pretraga • Vizija • Alatke</translation>
 <translation id="3184606955650139158">Brzo • Pretraga • Vizija</translation>
 <translation id="7465032796278724624">Verifikovano privatno uz NEAR AI TEE</translation>
 <translation id="8782867266498869301">Model se dinamički menja kako bi koristio najbolji za zadatak</translation>
 <translation id="7348809809749151120">Brzo • Pretraga</translation>
 <translation id="3213834013136637671">Pretraga • Vizija</translation>
+<translation id="2793458212460902934">Brzo • Pretraga • Alatke</translation>
 <translation id="5276681919620506371">Pretraga • Alatke</translation>
 <translation id="7434375176361995333">Rezimea • Brzo</translation>
 <translation id="3965507912994218570">Podešavanja asistenta Leo</translation>
@@ -2936,9 +2944,7 @@ Hajde da vas povežemo!</translation>
 <translation id="3750210661641549834">Kako bismo kreirali vaš nalog, potvrdite svoju imejl adresu.</translation>
 <translation id="4351175281479794167">Unesite verifikacioni kod</translation>
 <translation id="1672793037892810340">Trebalo je da dobijete imejl sa kodom koji treba da unesete.</translation>
-<translation id="4821255729182569254">Pošalji ponovo imejl za potvrdu</translation>
 <translation id="5837679375142747484">Ne vidite imejl? Proverite folder sa neželjenom poštom ili <ph name="BEGIN_LINK"/>pošaljite ga ponovo<ph name="END_LINK"/>.</translation>
-<translation id="1080588816740959885">Ne vidite imejl? Proverite folder sa neželjenom poštom ili ga pošaljite ponovo.</translation>
 <translation id="1020730839570724178">Otkaži registraciju</translation>
 <translation id="7155125570724238786">Kako biste resetovali svoju lozinku, potvrdite svoju imejl adresu.</translation>
 <translation id="816074628631172140">Vaša imejl adresa je verifikovana. Postavite novu lozinku da biste dovršili resetovanje lozinke.</translation>

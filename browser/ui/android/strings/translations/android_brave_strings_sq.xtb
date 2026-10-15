@@ -193,9 +193,6 @@
 <translation id="5668852698659986622">Aktivizo Reklamat e Sponsorizuara</translation>
 <translation id="431194936581466649">Ndihmo në mbështetjen e misionit të Brave për ndërtimin e një Ueb-i të pavarur, që i vë përdoruesit të parët, me Reklama të Sponsorizuara. Ne matim performancën e reklamave në mënyrë private, pa të identifikuar ty.</translation>
 <translation id="1939813747486101115">Mësoni më shumë rreth Reklamave të Sponsorizuara</translation>
-<translation id="8347743943525229984">Lejo ankeset e Brave</translation>
-<translation id="6022939994702081659">Lejon Brave të tregojë lidhje për anketa private në faqen e skedës së re. Anketat na ndihmojnë të ndërtojmë funksione më të mira dhe të matim efektivitetin e fushatave reklamuese të bazuara në shfletues.</translation>
-<translation id="7746496306508543965">Mëso më shumë rreth anketave Brave</translation>
 <translation id="410351446219883937">Vetëluaje</translation>
 <translation id="7445411102860286510">Lejo faqet të luajnë automatikisht video të heshtuara (rekomandohet)</translation>
 <translation id="7837721118676387834">Lejo riprodhimin automatik të videove të heshtuara për një faqe specifike.</translation>
@@ -223,6 +220,7 @@
 <translation id="9040069796107003510">Ikona e Shpërblimeve Brave</translation>
 <translation id="6333347122924254968">Shfaq ikonën e Shpërblimeve Brave në shiritin e adresës</translation>
 <translation id="4393974575368329991">Shiriti i poshtëm i navigacionit</translation>
+<translation id="8727059712928806451">Aktivizo shiritin e poshtëm</translation>
 <translation id="1834226716203076292">Shfaq një shirit të poshtëm për qasje të shpejtë te faqja kryesore, faqeruajtësit dhe kërkimi</translation>
 <translation id="1422686363939271829">Kjo cilësim është e çaktivizuar kur po ndodh zgjedhja e pozicionit të shiritit të adresave të poshtme</translation>
 <translation id="6587448235155023666">Ndryshimet e bëra do të jenë efektive herën tjetër kur do të rinisësh Brave-n</translation>
@@ -398,6 +396,12 @@ A jeni të sigurtë që dëshironi të bëni këtë?</translation>
 <translation id="8793108040181436796">Miniaplikacione</translation>
 <translation id="8643377320501056697">Shfaq Sajte Kryesues</translation>
 <translation id="7275773481201277457">Shfaq Statistika Brave-i</translation>
+<translation id="8516804522688861636">Shfaq sajte të vizituar shpesh</translation>
+<translation id="4546260624932151782">Shfaq të preferuarat</translation>
+<translation id="5313967007315987356">Shto një sajt</translation>
+<translation id="1773147648972887693">Shfaq të vizituara shpesh</translation>
+<translation id="752098910262610337">Shfaq shkurtore</translation>
+<translation id="7134741506051403308">Fshih widget-in</translation>
 <translation id="7462178177755090262">Ekrani i Hapjes</translation>
 <translation id="5365434987337264071">Skeda e fundit e hapur</translation>
 <translation id="6019856124237323989">{HOURS, plural, =1 {Skedë e re pas <ph name="HOURS_ONE"/> ore pasiviteti} other {Skedë e re pas <ph name="HOURS_MANY"/> orësh pasiviteti}}</translation>
@@ -998,6 +1002,13 @@ Nëse nuk e pranoni këtë kërkesë, VPN nuk do të rindërlidhet dhe lidhja ju
 <translation id="7530313002494358590">Aktivizimi ose çaktivizimi i një funksioni Brave kërkon rinisje të shfletuesit për të zbatuar ndryshimet. Ju lutemi klikoni <ph name="BEGIN_BOLD"/>Rinis tani<ph name="END_BOLD"/> sapo Brave Origin të ketë përfunduar përditësimin.</translation>
 <translation id="1028940738207645746">Jeni të sigurt që doni të rivendosni të gjitha cilësimet në parazgjedhje?</translation>
 <translation id="5939518447894949180">Rivendos</translation>
+<translation id="3222790865318305905">U arrit kufiri i aktivizimeve</translation>
+<translation id="3787857711016546034">Për të parandaluar mashtrimin, aktivizimet e Origin kanë kufi shkalle. Por mund të kërkoni përherë më shumë aktivizime, që ta përdorni licencën tuaj Origin në më shumë pajisje. Thjesht klikoni mundësinë Kërko më shumë aktivizime, ose <ph name="CONTACT_SUPPORT"/> për ndihmë.</translation>
+<translation id="6760819753412779585">kontakto mbështetjen</translation>
+<translation id="571697836019670200">Kërko më shumë aktivizime</translation>
+<translation id="9019545131475425538">Duke vepruar…</translation>
+<translation id="7242700630179071243">Gati për aktivizim</translation>
+<translation id="5463918917265356202">Brave Origin tani është aktiv në këtë pajisje. Për të filluar të përdorni veçorinë, lypset të rinisni shfletuesin. Doni ta rinisni tani?</translation>
 <translation id="8554205386170195281">Blerje</translation>
 <translation id="8613144770663526433">Identifikohu me Brave Wallet</translation>
 <translation id="3696514931437952995">Po lidhesh me <ph name="ORIGIN"/>. Kuleta Brave do të ndajë adresën tënde të kuletës me <ph name="ORIGIN"/>.</translation>

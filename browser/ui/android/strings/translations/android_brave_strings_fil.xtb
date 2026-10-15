@@ -193,9 +193,6 @@
 <translation id="5668852698659986622">I-enable ang Sponsored Ads</translation>
 <translation id="431194936581466649">Tumulong na suportahan ang misyon ng Brave na bumuo ng isang independiyente, user-first na Web sa pamamagitan ng Sponsored Ads. Sinusukat namin ang performance ng ad nang pribado, nang hindi kinikilala ka.</translation>
 <translation id="1939813747486101115">Alamin ang higit pa tungkol sa Mga Naka-sponsor na Ads</translation>
-<translation id="8347743943525229984">Payagan ang mga survey ng Brave</translation>
-<translation id="6022939994702081659">Binibigyang-daan ang Brave na magpakita ng mga link sa mga pribadong survey sa page ng bagong tab. Tinutulungan kami ng mga survey na bumuo ng mas magagandang feature at sukatin ang pagiging epektibo ng mga ad campaign na nakabatay sa browser.</translation>
-<translation id="7746496306508543965">Alamin pa ang tungkol sa mga survey ng Brave</translation>
 <translation id="410351446219883937">I-autoplay</translation>
 <translation id="7445411102860286510">Payagan ang mga site na awtomatikong mag-play ng mga naka-mute na video (inirerekomenda)</translation>
 <translation id="7837721118676387834">Payagan ang pag-autoplay ng mga naka-mute na video para sa isang partikular na site.</translation>
@@ -223,6 +220,7 @@
 <translation id="9040069796107003510">Icon ng Brave Rewards</translation>
 <translation id="6333347122924254968">Ipakita ang icon ng Mga Reward ng Brave sa address bar</translation>
 <translation id="4393974575368329991">Toolbar ng navigation sa ibaba</translation>
+<translation id="8727059712928806451">I-enable ang bottom bar</translation>
 <translation id="1834226716203076292">Magpakita ng bottom bar para sa mabilis na pag-access sa home, bookmarks, at search</translation>
 <translation id="1422686363939271829">Naka-disable ang setting na ito kapag pinili ang posisyon ng address bar sa ibaba</translation>
 <translation id="6587448235155023666">Magkakabisa ang iyong mga pagbabago sa susunod na ilunsad mong muli ang Brave</translation>
@@ -398,6 +396,12 @@ Sigurado ka bang gusto mo itong gawin?</translation>
 <translation id="8793108040181436796">Mga Widget</translation>
 <translation id="8643377320501056697">Ipakita ang Mga Nangungunang Site</translation>
 <translation id="7275773481201277457">Ipakita ang Mga Istatistika ng Brave</translation>
+<translation id="8516804522688861636">Ipakita ang madalas na binibisitang mga site</translation>
+<translation id="4546260624932151782">Ipakita ang mga paborito</translation>
+<translation id="5313967007315987356">Magdagdag ng site</translation>
+<translation id="1773147648972887693">Ipakita ang madalas na binibisita</translation>
+<translation id="752098910262610337">Ipakita ang mga shortcut</translation>
+<translation id="7134741506051403308">Itago ang widget</translation>
 <translation id="7462178177755090262">Pambungad na Screen</translation>
 <translation id="5365434987337264071">Huling binuksang tab</translation>
 <translation id="6019856124237323989">{HOURS, plural, =1 {Bagong tab matapos ang <ph name="HOURS_ONE"/> oras ng kawalang-aktibidad} other {Bagong tab matapos ang <ph name="HOURS_MANY"/> oras ng kawalang-aktibidad}}</translation>
@@ -992,6 +996,13 @@ Kung hindi mo tatanggapin ang kahilingang ito, hindi kokonekta ulit ang VPN at h
 <translation id="7530313002494358590">Ang pag-enable o pag-disable ng isang Brave feature ay nangangailangan ng pag-restart ng browser upang mailapat ang mga pagbabago. Mangyaring i-tap ang <ph name="BEGIN_BOLD"/>Restart now<ph name="END_BOLD"/> sa sandaling natapos na ang pag-update ng Brave Origin.</translation>
 <translation id="1028940738207645746">Sigurado ka bang gusto mong i-reset ang lahat ng setting sa default?</translation>
 <translation id="5939518447894949180">I-reset</translation>
+<translation id="3222790865318305905">Naabot na ang limitasyon ng aktibasyon</translation>
+<translation id="3787857711016546034">Upang maiwasan ang pandaraya, limitado ang bilis ng mga aktibasyon ng Origin. Ngunit maaari ka palaging humiling ng higit pang mga aktibasyon upang magamit ang iyong Origin license sa mas maraming device. I-click lang ang opsyon na Humiling ng higit pang mga aktibasyon, o <ph name="CONTACT_SUPPORT"/> para sa tulong.</translation>
+<translation id="6760819753412779585">makipag-ugnayan sa suporta</translation>
+<translation id="571697836019670200">Humiling ng higit pang mga aktibasyon</translation>
+<translation id="9019545131475425538">Pinoproseso…</translation>
+<translation id="7242700630179071243">Handa nang i-activate</translation>
+<translation id="5463918917265356202">Aktibo na ang Brave Origin sa device na ito. Upang simulan ang paggamit ng feature, kailangan mong i-restart ang browser. Gusto mo bang i-restart ngayon?</translation>
 <translation id="8554205386170195281">Bumili</translation>
 <translation id="8613144770663526433">Mag-sign in gamit ang Brave Wallet</translation>
 <translation id="3696514931437952995">Nagsa-sign in ka sa <ph name="ORIGIN"/>. Ibabahagi ng Brave wallet ang wallet address mo sa <ph name="ORIGIN"/>.</translation>

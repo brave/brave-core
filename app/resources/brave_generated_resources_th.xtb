@@ -3,18 +3,14 @@
 <translationbundle lang="th">
 <translation id="1751249301761991853">ส่วนตัว</translation>
 <translation id="3333887201479867589">Brave Rewards</translation>
-<translation id="7561196759112975576">เสมอ</translation>
-<translation id="7961015016161918242">ไม่ต้องเลย</translation>
 <translation id="8507663778530179003">แสดงปุ่มบุ๊กมาร์กทั้งหมด</translation>
 <translation id="9018648632047670921">แสดงปุ่มบุ๊กมาร์กทั้งหมด</translation>
 <translation id="7630214457764713113">คัดลอกลิงก์เท่านั้น</translation>
 <translation id="7973394300052703468">&amp;หน้าต่างส่วนตัวใหม่</translation>
 <translation id="4615489450165434530">รายงานเว็บไซต์เสียหาย</translation>
 <translation id="8097438084542431276">คัดลอกคลีนลิงก์</translation>
-<translation id="4678672101289648246">บนหน้าแท็บใหม่เท่านั้น</translation>
 <translation id="6516243500644829484">&amp;หน้าต่างส่วนตัวใหม่</translation>
 <translation id="1209739344687072997">รายงานเว็บไซต์เสียหาย</translation>
-<translation id="8294286161128352783">บนหน้าแท็บใหม่เท่านั้น</translation>
 <translation id="6406506848690869874">ซิงค์</translation>
 <translation id="1544192797660353713">วอลเล็ท</translation>
 <translation id="2361906291514218784">Leo AI</translation>
@@ -195,7 +191,9 @@
 <translation id="5977931179408079967">ตำแหน่ง</translation>
 <translation id="3790384768741064842">ย้ายไปทางขวา</translation>
 <translation id="7444424316576061724">ย้ายไปทางซ้าย</translation>
+<translation id="7561196759112975576">เสมอ</translation>
 <translation id="7060352228894039151">วางเมาส์เหนือ</translation>
+<translation id="7961015016161918242">ไม่ต้องเลย</translation>
 <translation id="8981254605840444865">แสดงการตั้งค่า</translation>
 <translation id="59174027418879706">เปิดใช้งานแล้ว</translation>
 <translation id="4176463684765177261">ปิดการใช้งานแล้ว</translation>
@@ -221,6 +219,7 @@
 <translation id="4515057635283480525">Internet Archive จะบันทึกเวอร์ชันก่อนหน้าของหน้าเว็บจำนวนมาก คุณต้องการค้นหาหน้านี้ใน Archive หรือไม่?</translation>
 <translation id="8252977752585110703">ขออภัย เราได้ตรวจสอบ Internet Archive แล้วและไม่พบเวอร์ชันที่จัดเก็บถาวรของหน้านี้</translation>
 <translation id="8748778103033196270">ค้นหาใน Archive</translation>
+<translation id="7369915833843501413">กำลังค้นหาใน Archive</translation>
 <translation id="191143826155037518">การให้บริการ Brave อยู่ภายใต้ <ph name="BEGIN_LINK_MPL"/>ใบอนุญาต Mozilla Public License รุ่น 2.0<ph name="END_LINK_MPL"/> (MPL) และมี <ph name="BEGIN_LINK_OSS"/>ซอฟต์แวร์โอเพ่นซอร์ส<ph name="END_LINK_OSS"/> ซึ่งอยู่ภายใต้ใบอนุญาตอื่นๆ อีกมากมาย
         คุณสามารถอ่าน <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>คำแนะนำวิธีดาวน์โหลดและสร้าง<ph name="END_LINK_BUILD_INSTRUCTIONS"/> the specific <ph name="BEGIN_LINK_SOURCE_CODE"/>ซอร์ซโค้ดที่ใช้สร้างสำเนานี้<ph name="END_LINK_SOURCE_CODE"/>ด้วยตัวเองได้</translation>
 <translation id="4474155171896946103">บุ๊กมาร์กแท็บทั้งหมด...</translation>
@@ -371,7 +370,7 @@
 <translation id="7985042437720138349">ฟีเจอร์นี้ส่งข้อมูลเกี่ยวกับแท็บที่เปิดของคุณไปยัง Leo ผู้ช่วยเบราว์เซอร์ที่ขับเคลื่อนด้วย AI ของ Brave</translation>
 <translation id="6165508094623778733">ดูข้อมูลเพิ่มเติม</translation>
 <translation id="7557539689487606886">ใช้งาน Premium</translation>
-<translation id="1035309871698658326">เมื่อเปิดใช้งาน ฟีเจอร์นี้จะส่งชื่อและแหล่งที่มาของแท็บทั้งหมดที่ไม่ใช่โหมดส่วนตัวไปยัง Leo เพื่อจัดประเภท</translation>
+<translation id="7103144720752576727">เมื่อเปิด ระบบจะส่งชื่อเรื่องและ origin ของแท็บที่ไม่ใช่แท็บส่วนตัวทั้งหมดไปยัง Leo โดยอัตโนมัติเพื่อจัดหมวดหมู่ หากคุณเปิดการส่งเนื้อหาหน้าเว็บด้วย ข้อความบางส่วนสั้นๆ ของแต่ละแท็บก็จะถูกส่งไปด้วยเช่นกัน</translation>
 <translation id="3435896845095436175">เปิดการใช้งาน</translation>
 <translation id="9031526219709160683">Brave สามารถช่วยคุณปรับแต่งการตั้งค่าความเป็นส่วนตัวของไซต์นี้ได้ คุณต้องการตรวจสอบคำแนะนำของ Brave หรือไม่</translation>
 <translation id="5739953050957336013">คำแนะนำในการค้นหา</translation>
@@ -386,8 +385,6 @@
 <translation id="8570228839666486945">AI บนอุปกรณ์</translation>
 <translation id="7447041379556102185">การรู้จำเสียงพูดบนอุปกรณ์</translation>
 <translation id="3456536577668402695">การค้นหาและเนื้อหาของหน้าเว็บของคุณจะถูกประมวลผลบนอุปกรณ์นี้ ไม่มีสิ่งใดถูกส่งไปยัง Brave หรือถูกตรวจสอบโดยมนุษย์</translation>
-<translation id="4751537843966994505">การค้นหาประวัติเชิงความหมาย</translation>
-<translation id="6175973371938222040">จัดทำดัชนีหน้าที่คุณเยี่ยมชมในเครื่อง เพื่อให้คุณค้นหาประวัติตามความหมายได้ การประมวลผลทั้งหมดจะอยู่บนอุปกรณ์นี้</translation>
 <translation id="9156965752763025780">การเปลี่ยนแปลงของคุณจะมีผลในครั้งถัดไปที่คุณเปิด Brave ขึ้นอีก</translation>
 <translation id="7179921470347911571">เปิดใหม่อีกครั้ง</translation>
 <translation id="1426410128494586442">ใช่</translation>
@@ -425,6 +422,7 @@
 <translation id="4328541188421002379">ตั้งชื่อคอนเทนเนอร์ของคุณ เช่น งาน หรือ ส่วนตัว</translation>
 <translation id="4976989127264491396">ข้อผิดพลาด: <ph name="ERROR_MESSAGE"/></translation>
 <translation id="5436069931267876389">ไม่พบคอนเทนเนอร์</translation>
+<translation id="5831840958001766835">จัดเรียงรายการใหม่ ใช้ปุ่มลูกศรเพื่อย้าย</translation>
 <translation id="6055154402239241620">ควบคุมทราฟฟิก</translation>
 <translation id="8134521925475508805">กำหนดค่าไซต์ที่เจาะจงให้เปิดในบริบทที่ต้องการโดยอัตโนมัติ เพื่อแยกเซสชันการเรียกดูของคุณออกจากกัน <ph name="BEGIN_LINK"/>เรียนรู้เพิ่มเติม<ph name="END_LINK"/></translation>
 <translation id="6944848312867106540">เปิดใช้งานควบคุมทราฟฟิก</translation>
@@ -477,10 +475,6 @@
 <translation id="7310387888625228830">Leo ผู้ช่วย AI</translation>
 <translation id="5222974844674487962">แสดงปุ่ม Brave News</translation>
 <translation id="2085436423511121572">แสดงปุ่ม Leo AI</translation>
-<translation id="6156323911414505561">แสดงแถบบุ๊กมาร์ก</translation>
-<translation id="4054323497808446566">แถบบุ๊กมาร์กจะแสดงให้เห็นบนทุกหน้า</translation>
-<translation id="8693858092251192712">แถบบุ๊กมาร์กจะซ่อนอยู่บนทุกหน้า ยกเว้นหน้าแท็บใหม่</translation>
-<translation id="7158817046543187970">แถบบุ๊กมาร์กจะซ่อนอยู่บนทุกหน้า</translation>
 <translation id="3416468988018290825">แสดง URL แบบเต็มเสมอ</translation>
 <translation id="5529693968082667490">แสดงปุ่มค้นหาแท็บ</translation>
 <translation id="1013121820689882118">Speedreader</translation>
@@ -612,6 +606,8 @@
 <translation id="5825943197137337319">เฉพาะหน้าอินเตอร์เฟซสาธารณะค่าเดิมเท่านั้น</translation>
 <translation id="1689062823386843231">ปิดการใช้งาน UDP ที่ไม่ใช่พร็อกซี่</translation>
 <translation id="3540231253392253941">ใช้บริการ Google ในการส่งข้อความแบบพุช</translation>
+<translation id="2224032129673914306">การค้นหาประวัติเชิงความหมาย</translation>
+<translation id="6045998903985162478">จัดทำดัชนีหน้าเว็บที่คุณเข้าชม เพื่อให้คุณค้นหาได้ง่ายในประวัติ แท็บที่เปิดอยู่ และ Leo</translation>
 <translation id="5813105074916486721">การเก็บรักษาประวัติในเครื่อง</translation>
 <translation id="5671611745062206644">ระยะเวลาที่ Brave จัดเก็บประวัติการเยี่ยมชมของคุณในเครื่อง</translation>
 <translation id="7184510058087008090">1 วัน</translation>
@@ -878,6 +874,7 @@
 <translation id="2618193846561624884">คุณต้องการอัปเดตเครือข่ายที่มีอยู่หรือไม่</translation>
 <translation id="1643029991199044105">ย้อนกลับไปแท็บที่ใช้ไปล่าสุดด้วย Ctrl-Tab</translation>
 <translation id="2775956301559569472">แสดงพร้อมท์ Wayback Machine ในหน้า 404</translation>
+<translation id="8485716275262929774">โหลดเวอร์ชันที่บันทึกไว้จาก Wayback Machine โดยอัตโนมัติในหน้า 404</translation>
 <translation id="3095201688102519917">เตือนฉันก่อนปิดหน้าต่างที่มีหลายแท็บ</translation>
 <translation id="7120553802660696133">ปิดหน้าต่างเมื่อปิดแท็บสุดท้าย</translation>
 <translation id="3394171693948989253">แสดงการแจ้งเตือนแบบเต็มหน้าจอในการกดปุ่ม Esc เมื่อทำการออกจากโปรแกรม</translation>
@@ -887,6 +884,8 @@
 <translation id="1529674267267221673">Leo จะปรากฏในเมนูตามบริบทเมื่อคุณคลิกขวาบนเว็บไซต์ การคลิกจะส่งบริบทจากหน้าเว็บปัจจุบันไปยัง Leo</translation>
 <translation id="5226020406479918122">โหมดโฟกัสแท็บ</translation>
 <translation id="3705539672403311123">เปิดใช้งานการจัดระเบียบแท็บในหน้า Tab Search เมื่อเปิดใช้งาน ระบบจะส่งชื่อเรื่องและแหล่งที่มาของแท็บทั้งหมดที่ไม่ใช่โหมดส่วนตัวไปยัง Leo เพื่อจัดประเภท <ph name="BEGIN_LINK"/>เรียนรู้เพิ่มเติม<ph name="END_LINK"/></translation>
+<translation id="2002238795517052616">ส่งเนื้อหาหน้าเว็บสำหรับการโฟกัสแท็บ</translation>
+<translation id="2276823422122514441">ส่งข้อความบางส่วนสั้น ๆ ของแต่ละแท็บด้วย เพื่อจัดกลุ่มแท็บตามเนื้อหาของหน้าแทนชื่อหน้า ข้อความบางส่วนจะถูกส่งไปยัง Leo หรือไปยังโมเดลของคุณเองหากคุณเลือกไว้สำหรับการโฟกัสแท็บ สิ่งนี้ต้องการ <ph name="BEGIN_LINK"/><ph name="SEMANTIC_HISTORY_SEARCH"/><ph name="END_LINK"/> ซึ่งสร้างข้อความบางส่วนบนอุปกรณ์ของคุณ</translation>
 <translation id="9049433973274198706">โมเดลเริ่มต้นสำหรับการโฟกัสแท็บ</translation>
 <translation id="2161546758719933059">โมเดลที่ใช้จัดระเบียบแท็บของคุณในโหมด Tab Focus <ph name="BEGIN_LINK"/>เรียนรู้เพิ่มเติม<ph name="END_LINK"/></translation>
 <translation id="8172263161008556851">แสดงข้อความแจ้งเตือนที่แนะนำในการสนทนา</translation>
@@ -968,10 +967,6 @@
 <translation id="1838374766361614909">ล้างการค้นหา</translation>
 <translation id="5126255551970171328">ค้นหาข้อมูลในความจำ</translation>
 <translation id="7402116145895962069">ซิงค์โมเดลโลคอล Ollama ของคุณ</translation>
-<translation id="5985516785067818307">ผู้ร่วมตอบแบบสำรวจ</translation>
-<translation id="8347743943525229984">เปิดใช้งานแบบสำรวจจาก Brave</translation>
-<translation id="3204080538332044581">อนุญาตให้ Brave แสดงลิงก์ไปยังแบบสำรวจส่วนตัวในหน้าแท็บใหม่ แบบสำรวจเหล่านี้ช่วยให้เราพัฒนาฟีเจอร์ให้ดีขึ้น และวัดประสิทธิภาพของแคมเปญโฆษณาบนเบราว์เซอร์ได้
-<ph name="BEGIN_LINK"/>เรียนรู้เพิ่มเติม<ph name="END_LINK"/></translation>
 <translation id="349846214503465941">เปิดใช้งานเพลย์ลิสต์</translation>
 <translation id="7903608716704052878">เพิ่มไฟล์เพื่อการดูแบบออฟไลน์โดยอัตโนมัติ</translation>
 <translation id="384666453982355633">ตัวเลือกนี้จะทำการแคชไฟล์สื่อแบบอัตโนมัติ เพื่อให้คุณสามารถดูไฟล์เหล่านั้นได้โดยไม่ต้องใช้การเชื่อมต่ออินเทอร์เน็ต</translation>

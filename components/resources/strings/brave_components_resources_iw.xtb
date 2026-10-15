@@ -1901,6 +1901,18 @@ CoinGecko</translation>
 <translation id="2737084171727561244">מעבר לפרופיל</translation>
 <translation id="3499452861061048987">הוספת טוקן</translation>
 <translation id="5046066249040287308">שירותי ארנק Brave</translation>
+<translation id="8767749833522980474">קריפטו</translation>
+<translation id="4509084261025090951">קבלת הכרטיס שלך</translation>
+<translation id="3624463584770657372">יש לאמת את זהותך כדי לראות את מספרי הכרטיס ולהתחיל להוציא כספים.</translation>
+<translation id="2508337767012636987">יש ללחוץ כדי לאמת</translation>
+<translation id="703964541421486259">הסתר יתרות</translation>
+<translation id="302114796458112924">הצג יתרות</translation>
+<translation id="9083210401924577263">כרטיס Brave Rewards</translation>
+<translation id="2433507940547922241">מראה</translation>
+<translation id="3435738964857648380">אבטחה</translation>
+<translation id="6700561332544287722">דרוש שחרור נעילה בפעם הבאה</translation>
+<translation id="5605360570977617291">להסתיר את <ph name="CARD_NAME"/> מהדף הראשי?</translation>
+<translation id="2721464457853369512">יתרת <ph name="CARD_NAME"/> שלך לא משתנה. פעולה זו רק מסתירה את הכרטיס מהדף הראשי. ניתן להציג אותו שוב בכל עת בהגדרות, תחת ארנק.</translation>
 <translation id="3155170474926428993">דפדפן Tor</translation>
 <translation id="3745016858329272300">מידע כללי</translation>
 <translation id="4045404575593562245">אירועי שליטת Tor</translation>
@@ -1942,7 +1954,6 @@ CoinGecko</translation>
 <translation id="6261915643960475695">עסקים</translation>
 <translation id="8265589281845759879">רכבים</translation>
 <translation id="7726519849288907308">סלבריטאים</translation>
-<translation id="8767749833522980474">קריפטו</translation>
 <translation id="7577010593836079522">תרבות</translation>
 <translation id="6807791860691150411">חינוך</translation>
 <translation id="3706423975342040244">בידור</translation>
@@ -2121,9 +2132,6 @@ CoinGecko</translation>
 <translation id="3067105725259639716">קבע את תצורת חדשות Brave</translation>
 <translation id="6286510487460330478">קבע תצורות קיצורי דרך</translation>
 <translation id="9214819486716388964">הצג את השיחה לגבי Brave</translation>
-<translation id="5950760360751948276">הצג תמיד את סרגל הסימניות</translation>
-<translation id="2960757369920422313">הצג את סרגל הסימניות על NTP</translation>
-<translation id="522953399371747698">הסתר את סרגל הסימניות</translation>
 <translation id="9079813619990532635">ייצוא כל הסימניות</translation>
 <translation id="134184943774258988">שנה את נראות לחצן כל הסימניות</translation>
 <translation id="2158862020143233462">החלף מגנים</translation>
@@ -2238,6 +2246,7 @@ CoinGecko</translation>
 <translation id="5820497878628354073">קוד מצב: <ph name="STATUS_CODE"/>, קוד מצב פנימי: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">הגעתם לגבול דירוג הפרימיום. אנא נסו שוב בעוד מספר שעות</translation>
 <translation id="6873128487002733717">הגעת למגבלת הפרימיום עבור מודל זה. נא לבחור מודל אחר או לנסות שוב מאוחר יותר.</translation>
+<translation id="2688661132468689309">הגעת למגבלת הפרימיום עבור מודל זה. היא תתאפס בעוד <ph name="RESET_DURATION"/> (בשעה <ph name="RESET_TIME"/>). נא לבחור מודל אחר או לנסות שוב אז.</translation>
 <translation id="3683964919745779766">הגעת למגבלת התעריף עבור מודל זה או שאזלו לך הקרדיטים. נא לנסות שוב מאוחר יותר.</translation>
 <translation id="7692501701960747469">מפתח ה-API שהוגדר עבור מודל זה אינו חוקי. נא לבדוק את הקונפיגורציה שלך ולנסות שוב.</translation>
 <translation id="7905602379229309187">נקודת הקצה נמצאת בעומס יתר כרגע. נא לנסות שוב מאוחר יותר.</translation>
@@ -2246,12 +2255,12 @@ CoinGecko</translation>
 <translation id="3852808100039989429">היי, אני Leo. אני עוזר AI המנוהל במלואו על ידי Brave. אני מופעל באמצעות Qwen VL 30B, מודל שנוצר על ידי Alibaba Cloud לשימוש ויישום במגוון תרחישים. Qwen מנוהל על ידי Brave באמצעות התשתית המאובטחת שלנו.<ph name="LINK_BEFORE"/>למידע נוסף<ph name="LINK_AFTER"/></translation>
 <translation id="8659225822055186905">היי, אני Leo. אני עוזר AI המנוהל על ידי Brave. אני מופעל באמצעות GLM-5.3 Flash, מודל שנוצר על ידי Zhipu AI לשימוש ויישום במגוון תרחישים. GLM-5.3 Flash מתארח על ידי NEAR באמצעות התשתית המאובטחת והפרטית שלהם.<ph name="LINK_BEFORE"/>למידע נוסף<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">שלום, אני לאו. אני עוזר AI של Brave. אני מוטמע יחד עם Claude Instant, מודל שפותח על ידי Anthropic לביצוע משימות שיחה ועיבוד טקסט. Claude Instant מתארח על-ידי Brave בתשתית המאובטחת שלה.<ph name="LINK_BEFORE"/>למידע נוסף<ph name="LINK_AFTER"/></translation>
-<translation id="3789772321824682783">היי, אני Leo. אני עוזר AI המנוהל במלואו על ידי Brave. אני מופעל באמצעות Claude Haiku, מודל שנוצר על ידי Anthropic לשימוש ויישום במגוון תרחישים. Claude Haiku מנוהל על ידי Brave באמצעות התשתית המאובטחת שלנו.<ph name="LINK_BEFORE"/>למידע נוסף<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">היי, אני Leo. אני עוזר AI המנוהל במלואו על ידי Brave. אני מופעל באמצעות Claude Sonnet, מודל שנוצר על ידי Anthropic לשימוש ויישום במגוון תרחישים. Claude Sonnet מנוהל על ידי Brave באמצעות התשתית המאובטחת שלנו.<ph name="LINK_BEFORE"/>למידע נוסף<ph name="LINK_AFTER"/></translation>
-<translation id="3399141352144059821">היי, אני Leo. אני עוזר AI המנוהל במלואו על ידי Brave. אני מופעל באמצעות Grok 4.3, מודל שנוצר על ידי xAI לשימוש ויישום במגוון תרחישים. Grok 4.3 מנוהל על ידי Brave באמצעות התשתית המאובטחת שלנו.<ph name="LINK_BEFORE"/>למידע נוסף<ph name="LINK_AFTER"/></translation>
-<translation id="8868813509973985458">היי, אני Leo. אני עוזר AI המנוהל במלואו על ידי Brave. אני מופעל באמצעות GPT 5.4, מודל שנוצר על ידי OpenAI לשימוש ויישום במגוון תרחישים. GPT 5.4 מנוהל על ידי Brave באמצעות התשתית המאובטחת שלנו.<ph name="LINK_BEFORE"/>למידע נוסף<ph name="LINK_AFTER"/></translation>
+<translation id="6676306995311143470">היי, אני Leo. אני עוזר AI המנוהל במלואו על ידי Brave. אני מופעל באמצעות Grok 4.6, מודל החשיבה המתקדם של xAI ב-Amazon Bedrock Mantle. Grok 4.6 מוגש באמצעות התשתית המאובטחת של Brave ב-AWS.<ph name="LINK_BEFORE"/>למידע נוסף<ph name="LINK_AFTER"/></translation>
+<translation id="2394656730986208060">היי, אני Leo. אני עוזר AI המנוהל במלואו על ידי Brave. אני מופעל באמצעות GPT 5.6 Luna, המודל המהיר עם זמן השהיה נמוך של OpenAI ב-Amazon Bedrock Mantle. GPT 5.6 Luna מוגש באמצעות התשתית המאובטחת של Brave ב-AWS.<ph name="LINK_BEFORE"/>למידע נוסף<ph name="LINK_AFTER"/></translation>
+<translation id="5278969721580944810">היי, אני Leo. אני עוזר AI המנוהל במלואו על ידי Brave. אני מופעל באמצעות GPT 5.6 Terra, מודל הייצור המאוזן של OpenAI ב-Amazon Bedrock Mantle. GPT 5.6 Terra מוגש באמצעות התשתית המאובטחת של Brave ב-AWS.<ph name="LINK_BEFORE"/>למידע נוסף<ph name="LINK_AFTER"/></translation>
 <translation id="5037359072717016032">היי, אני Leo. אני עוזר AI המנוהל במלואו על ידי Brave. אני מופעל באמצעות Mistral Large, מודל שנוצר על ידי Mistral לשימוש ויישום במגוון תרחישים. Mistral Large מנוהל על ידי Brave באמצעות התשתית המאובטחת שלנו.<ph name="LINK_BEFORE"/>למידע נוסף<ph name="LINK_AFTER"/></translation>
-<translation id="4026902371301997261">היי, אני Leo. אני עוזר AI המנוהל במלואו על ידי Brave. אני מופעל באמצעות Qwen 3 235B, מודל שנוצר על ידי Alibaba לשימוש ויישום במגוון תרחישים. Qwen 3 235B מנוהל על ידי Brave באמצעות התשתית המאובטחת שלנו.<ph name="LINK_BEFORE"/>למידע נוסף<ph name="LINK_AFTER"/></translation>
+<translation id="5475035333915581972">היי, אני Leo. אני עוזר AI המנוהל במלואו על ידי Brave. אני מופעל באמצעות Qwen 3.8 Flash Next, מודל שנוצר על ידי Alibaba Cloud לשימוש ויישום במגוון תרחישים. Qwen 3.8 Flash Next מנוהל על ידי Brave באמצעות התשתית המאובטחת שלנו.<ph name="LINK_BEFORE"/>למידע נוסף<ph name="LINK_AFTER"/></translation>
 <translation id="8720758690351028307">היי, אני Leo. אני עוזר AI המנוהל במלואו על ידי Brave. אני מופעל באמצעות Deepseek V3.2, מודל שנוצר על ידי Deepseek לשימוש ויישום במגוון תרחישים. Deepseek V3.2 מנוהל על ידי Brave באמצעות התשתית המאובטחת שלנו.<ph name="LINK_BEFORE"/>למידע נוסף<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">היי, אני Leo. אני עוזר AI המנוהל במלואו על ידי Brave. אני מופעל באמצעות Claude Opus, מודל שנוצר על ידי Anthropic למטרות עיבוד שפה ושיחות. Claude Opus מנוהל על ידי Brave באמצעות התשתית המאובטחת שלנו.<ph name="LINK_BEFORE"/>למידע נוסף<ph name="LINK_AFTER"/></translation>
 <translation id="7238858567393403597">היי, אני Leo. אני עוזר AI המנוהל במלואו על ידי Brave. אני מופעל באמצעות GLM-4-7-Flash, מודל שנוצר על ידי Zhipu AI לשימוש ויישום במגוון תרחישים. GLM-4-7-Flash מנוהל על ידי Brave באמצעות התשתית המאובטחת שלנו.<ph name="LINK_BEFORE"/>למידע נוסף<ph name="LINK_AFTER"/></translation>
@@ -2264,7 +2273,6 @@ CoinGecko</translation>
 <translation id="4773408460773097271">Ollama</translation>
 <translation id="631371844654031449">מודלים מומלצים</translation>
 <translation id="6568044140836233369">הצגת כל המודלים</translation>
-<translation id="6187065185557150870">לְשׂוֹחֵחַ</translation>
 <translation id="4685048769603134644">פתיחת דף מלא</translation>
 <translation id="2961040541145689181">שיחה חדשה</translation>
 <translation id="7557539689487606886">לעבור לפרימיום</translation>
@@ -2388,13 +2396,13 @@ CoinGecko</translation>
 <translation id="887511360213807449">היסטוריה מושבתת</translation>
 <translation id="5380979378058584412">כדי להציג את השיחות הקודמות שלך עם Leo, צריך לאפשר היסטוריית שיחות.</translation>
 <translation id="3185367320601718531">יצירת שיחות וטקסט</translation>
-<translation id="2793458212460902934">מהיר • לחפש • כלים</translation>
 <translation id="8506027496671575183">לחפש • חזון • כלים</translation>
 <translation id="3184606955650139158">מהיר • חיפוש • חזון</translation>
 <translation id="7465032796278724624">פרטי בראי אימות עם NEAR AI TEE</translation>
 <translation id="8782867266498869301">המודל משתנה באופן דינמי על מנת להשתמש בזה שמותאם למשימה באופן המיטבי</translation>
 <translation id="7348809809749151120">מהיר • לחפש</translation>
 <translation id="3213834013136637671">חיפוש • חזון</translation>
+<translation id="2793458212460902934">מהיר • לחפש • כלים</translation>
 <translation id="5276681919620506371">חיפוש • כלים</translation>
 <translation id="7434375176361995333">סיכומים • מהר</translation>
 <translation id="3965507912994218570">הגדרות Leo</translation>
@@ -2959,9 +2967,7 @@ Brave יש שירות עוזר שמגן עליך מפני חשיפה זו על �
 <translation id="3750210661641549834">כדי ליצור את החשבון שלך, יש לאמת את כתובת האימייל שלך.</translation>
 <translation id="4351175281479794167">הזנת קוד אימות</translation>
 <translation id="1672793037892810340">אמור היה להגיע אליך אימייל עם קוד שעליך להזין.</translation>
-<translation id="4821255729182569254">שליחה חוזרת של דוא״ל אימות</translation>
 <translation id="5837679375142747484">לא רואה את האימייל? כדאי לבדוק את תיקיית הספאם שלך או <ph name="BEGIN_LINK"/>לשלוח אותו שוב<ph name="END_LINK"/>.</translation>
-<translation id="1080588816740959885">לא רואה את האימייל? כדאי לבדוק את תיקיית הספאם שלך או לשלוח אותו שוב.</translation>
 <translation id="1020730839570724178">ביטול הרשמה</translation>
 <translation id="7155125570724238786">כדי לאפס את הסיסמה שלך, יש לאמת את כתובת האימייל שלך.</translation>
 <translation id="816074628631172140">האימייל שלך אומת. יש להגדיר סיסמה חדשה כדי להשלים את איפוס הסיסמה.</translation>

@@ -3,18 +3,14 @@
 <translationbundle lang="sr-Latn">
 <translation id="1751249301761991853">Personal</translation>
 <translation id="3333887201479867589">Brave nagrade</translation>
-<translation id="7561196759112975576">Uvek</translation>
-<translation id="7961015016161918242">Nikad</translation>
 <translation id="8507663778530179003">Dugme za prikazivanje svih obeleživača</translation>
 <translation id="9018648632047670921">Dugme za prikazivanje svih obeleživača</translation>
 <translation id="7630214457764713113">Kopiraj čist link</translation>
 <translation id="7973394300052703468">Novi privatni prozor</translation>
 <translation id="4615489450165434530">Prijavite da sajt ne funkcioniše</translation>
 <translation id="8097438084542431276">Kopiraj čist link</translation>
-<translation id="4678672101289648246">Samo na stranici nove kartice</translation>
 <translation id="6516243500644829484">Novi privatni prozor</translation>
 <translation id="1209739344687072997">Prijavite da sajt ne funkcioniše</translation>
-<translation id="8294286161128352783">Samo na stranici nove kartice</translation>
 <translation id="6406506848690869874">Sinhronizuj</translation>
 <translation id="1544192797660353713">Novčanik</translation>
 <translation id="2361906291514218784">Leo AI</translation>
@@ -193,7 +189,9 @@ Ili kasnije idite u <ph name="SETTINGS_EXTENIONS_LINK"/> da to promenite.</trans
 <translation id="5977931179408079967">Položaj</translation>
 <translation id="3790384768741064842">Pomeri udesno</translation>
 <translation id="7444424316576061724">Pomeri ulevo</translation>
+<translation id="7561196759112975576">Uvek</translation>
 <translation id="7060352228894039151">Pri prelasku mišem</translation>
+<translation id="7961015016161918242">Nikad</translation>
 <translation id="8981254605840444865">Prikaži podešavanja</translation>
 <translation id="59174027418879706">Uključeno</translation>
 <translation id="4176463684765177261">Isključeno</translation>
@@ -219,6 +217,7 @@ Ili kasnije idite u <ph name="SETTINGS_EXTENIONS_LINK"/> da to promenite.</trans
 <translation id="4515057635283480525">„Internet Archive“ čuva ranije verzije mnogih veb-stranica. Da li želite da potražite ovu stranicu u arhivi?</translation>
 <translation id="8252977752585110703">Nažalost, proverili smo „Internet Archive“ i ne postoji arhivirana verzija ove stranice.</translation>
 <translation id="8748778103033196270">Potraži u arhivi</translation>
+<translation id="7369915833843501413">Pretraživanje arhive</translation>
 <translation id="191143826155037518">Brave vam je dostupan pod <ph name="BEGIN_LINK_MPL"/>javnom licencom kompanije Mozilla 2.0<ph name="END_LINK_MPL"/> (engl. Mozilla Public License, MPL) i on obuhvata <ph name="BEGIN_LINK_OSS"/>softver otvorenog koda<ph name="END_LINK_OSS"/> pod različitim licencama.
         Možete pročitati <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>uputstva kako da preuzmete i sami izradite za sebe<ph name="END_LINK_BUILD_INSTRUCTIONS"/> konkretni <ph name="BEGIN_LINK_SOURCE_CODE"/>izvorni kod koji je korišćen za kreiranje ove kopije<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">Stavi sve kartice u obeleživače…</translation>
@@ -369,7 +368,7 @@ Ili kasnije idite u <ph name="SETTINGS_EXTENIONS_LINK"/> da to promenite.</trans
 <translation id="7985042437720138349">Ova funkcija šalje podatke o vašim otvorenim karticama Brave-ovom asistentu Leo kojeg pokreće veštačka inteligencija.</translation>
 <translation id="6165508094623778733">Saznajte više</translation>
 <translation id="7557539689487606886">Pređite na Premium</translation>
-<translation id="1035309871698658326">Kada je otvorena, automatski se šalju naslovi i poreklo svih kartica koje nisu privatne asistentu Leo da ih klasifikuje.</translation>
+<translation id="7103144720752576727">Kada se otvori, ovo će automatski poslati naslove i origin svih kartica koje nisu privatne usluzi Leo radi njihove klasifikacije. Ako takođe uključite slanje sadržaja stranice, šalju se i kratki isečci teksta svake kartice.</translation>
 <translation id="3435896845095436175">Aktiviraj</translation>
 <translation id="9031526219709160683">Breivu može pomoći da optimizujete postavke privatnosti ovog sajta. Želite li da pregledate Brejvove predloge?</translation>
 <translation id="5739953050957336013">Pregled predloga</translation>
@@ -384,8 +383,6 @@ Ili kasnije idite u <ph name="SETTINGS_EXTENIONS_LINK"/> da to promenite.</trans
 <translation id="8570228839666486945">AI na uređaju</translation>
 <translation id="7447041379556102185">Prepoznavanje govora na uređaju</translation>
 <translation id="3456536577668402695">Vaše pretrage i sadržaji stranica obrađuju se na ovom uređaju. Ništa se ne šalje Brave-u niti vide ljudski recenzenti.</translation>
-<translation id="4751537843966994505">Semantičko pretraživanje istorije</translation>
-<translation id="6175973371938222040">Indeksirajte stranice koje posećujete lokalno kako biste mogli da pretražujete istoriju prema značenju. Sva obrada ostaje na ovom uređaju.</translation>
 <translation id="9156965752763025780">Promene će biti primenjene kada sledeći put ponovo pokrenete Brave.</translation>
 <translation id="7179921470347911571">Ponovo pokreni sada</translation>
 <translation id="1426410128494586442">Da</translation>
@@ -423,6 +420,7 @@ Ili kasnije idite u <ph name="SETTINGS_EXTENIONS_LINK"/> da to promenite.</trans
 <translation id="4328541188421002379">Dajte svom kontejneru naziv poput „Posao“ ili „Privatno“</translation>
 <translation id="4976989127264491396">Greška: <ph name="ERROR_MESSAGE"/></translation>
 <translation id="5436069931267876389">Kontejner nije pronađen</translation>
+<translation id="5831840958001766835">Promeni redosled stavke. Koristite strelice da pomerite.</translation>
 <translation id="6055154402239241620">Kontrola saobraćaja</translation>
 <translation id="8134521925475508805">Podesite određene sajtove da se automatski otvaraju u određenom kontekstu, stvarajući razdvajanje između vaših sesija pregledanja. <ph name="BEGIN_LINK"/>Saznajte više<ph name="END_LINK"/></translation>
 <translation id="6944848312867106540">Omogući kontrolu saobraćaja</translation>
@@ -475,10 +473,6 @@ Ili kasnije idite u <ph name="SETTINGS_EXTENIONS_LINK"/> da to promenite.</trans
 <translation id="7310387888625228830">Asistent Leo AI</translation>
 <translation id="5222974844674487962">Prikaži dugme za Brave vesti</translation>
 <translation id="2085436423511121572">Prikaži dugme za Leo AI</translation>
-<translation id="6156323911414505561">Prikaži traku sa obeleživačima</translation>
-<translation id="4054323497808446566">Traka sa obeleživačima je vidljiva na svim stranicama</translation>
-<translation id="8693858092251192712">Traka sa obeleživačima je skrivena na svim stranicama osim na stranicama novih kartica</translation>
-<translation id="7158817046543187970">Traka sa obeleživačima je skrivena na svim stranicama</translation>
 <translation id="3416468988018290825">Uvek prikazuj kompletan URL</translation>
 <translation id="5529693968082667490">Prikaži dugme za pretragu kartica</translation>
 <translation id="1013121820689882118">Brzo čitanje</translation>
@@ -610,6 +604,8 @@ Ili kasnije idite u <ph name="SETTINGS_EXTENIONS_LINK"/> da to promenite.</trans
 <translation id="5825943197137337319">Samo podrazumevani javni interfejs</translation>
 <translation id="1689062823386843231">Isključi UDP bez proksija</translation>
 <translation id="3540231253392253941">Koristite Google usluge za direktna obaveštenja</translation>
+<translation id="2224032129673914306">Semantičko pretraživanje istorije</translation>
+<translation id="6045998903985162478">Indeksirajte stranice koje posećujete kako biste ih lako pronašli u istoriji, otvorenim karticama i Leo-u.</translation>
 <translation id="5813105074916486721">Zadržavanje lokalne istorije</translation>
 <translation id="5671611745062206644">Koliko dugo Brave lokalno čuva vašu istoriju pregledanja</translation>
 <translation id="7184510058087008090">1 dan</translation>
@@ -873,6 +869,7 @@ Dobro proverite da li je ove reči koda generisao uređaj koji vi posedujete.
 <translation id="2618193846561624884">Želite li da ažurirate postojeću mrežu?</translation>
 <translation id="1643029991199044105">Prolazite kroz poslednje korišćene kartice pomoću tastera Ctrl-Tab</translation>
 <translation id="2775956301559569472">Prikaži poruku za korišćenje Wayback Machine-a na stranicama 404</translation>
+<translation id="8485716275262929774">Automatski učitavaj sačuvane verzije iz Wayback Machine-a na stranicama sa greškom 404</translation>
 <translation id="3095201688102519917">Upozori me pre zatvaranja prozora sa više kartica</translation>
 <translation id="7120553802660696133">Zatvori prozor kada se zatvori poslednja kartica</translation>
 <translation id="3394171693948989253">Prikaži podsetnik preko celog ekrana da se pritisne Esc pri izlasku</translation>
@@ -882,6 +879,8 @@ Dobro proverite da li je ove reči koda generisao uređaj koji vi posedujete.
 <translation id="1529674267267221673">Leo će se pojaviti u kontekstualnom meniju kada kliknete desnim tasterom miša na veb-sajt. Time će se poslati kontekst sa trenutne veb stranice na asistenta Leo.</translation>
 <translation id="5226020406479918122">Režim za fokus kartica</translation>
 <translation id="3705539672403311123">Aktivirajte organizaciju kartica na stranici za pretragu kartica. Kada je otvorena, automatski se šalju naslovi i poreklo svih kartica koje nisu privatne asistentu Leo da ih klasifikuje. <ph name="BEGIN_LINK"/> Saznajte više<ph name="END_LINK"/></translation>
+<translation id="2002238795517052616">Pošalji sadržaj stranice za fokus kartica</translation>
+<translation id="2276823422122514441">Takođe pošalji kratke isečke teksta svake kartice, tako da se kartice grupišu prema tome o čemu je stranica, umesto prema naslovu. Isečci idu Leo-u ili vašem sopstvenom modelu ako ste ga izabrali za fokus kartica. Za ovo je potrebno <ph name="BEGIN_LINK"/><ph name="SEMANTIC_HISTORY_SEARCH"/><ph name="END_LINK"/>, koje gradi isečke na vašem uređaju.</translation>
 <translation id="9049433973274198706">Podrazumevani model za tab žižu</translation>
 <translation id="2161546758719933059">Model koji se koristi za organizovanje vaših kartica u režimu fokusa kartica. <ph name="BEGIN_LINK"/>Saznajte više<ph name="END_LINK"/></translation>
 <translation id="8172263161008556851">Prikaži predložene upite u razgovoru</translation>
@@ -963,9 +962,6 @@ Dobro proverite da li je ove reči koda generisao uređaj koji vi posedujete.
 <translation id="1838374766361614909">Obriši pretragu</translation>
 <translation id="5126255551970171328">Pretraga memorije</translation>
 <translation id="7402116145895962069">Sinhronizuj svoje lokalne modele Ollama</translation>
-<translation id="5985516785067818307">Anketni panelista</translation>
-<translation id="8347743943525229984">Aktiviraj Brave ankete</translation>
-<translation id="3204080538332044581">Omogućava Brave-u da prikazuje linkove za privatne ankete na novoj kartici. Ankete nam pomažu da kreiramo bolje funkcije i merimo efikasnost oglasnih kampanja zasnovanih na pretraživaču. <ph name="BEGIN_LINK"/>Saznajte više<ph name="END_LINK"/></translation>
 <translation id="349846214503465941">Uključi plejlistu</translation>
 <translation id="7903608716704052878">Automatski dodaj fajlove radi oflajn gledanja</translation>
 <translation id="384666453982355633">Ova opcija će automatski keširati medijske fajlove tako da možete da ih pustite bez veze sa internetom</translation>

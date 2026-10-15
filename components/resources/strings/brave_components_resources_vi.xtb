@@ -1881,6 +1881,18 @@
 <translation id="2737084171727561244">Đi đến Danh mục</translation>
 <translation id="3499452861061048987">Thêm mã thông báo</translation>
 <translation id="5046066249040287308">Dịch vụ tiện ích Ví Brave</translation>
+<translation id="8767749833522980474">Tiền điện tử</translation>
+<translation id="4509084261025090951">Nhận thẻ của bạn</translation>
+<translation id="3624463584770657372">Xác minh danh tính của bạn để xem số thẻ và bắt đầu chi tiêu.</translation>
+<translation id="2508337767012636987">Nhấn để xác minh</translation>
+<translation id="703964541421486259">Ẩn số dư</translation>
+<translation id="302114796458112924">Hiển thị số dư</translation>
+<translation id="9083210401924577263">Thẻ Brave Phần thưởng</translation>
+<translation id="2433507940547922241">Hình thức</translation>
+<translation id="3435738964857648380">Bảo mật</translation>
+<translation id="6700561332544287722">Yêu cầu mở khóa vào lần sau</translation>
+<translation id="5605360570977617291">Ẩn <ph name="CARD_NAME"/> khỏi màn hình chính?</translation>
+<translation id="2721464457853369512">Số dư <ph name="CARD_NAME"/> của bạn không thay đổi. Việc này chỉ ẩn thẻ khỏi màn hình chính. Bạn có thể hiển thị lại bất cứ lúc nào trong phần Cài đặt, mục Ví.</translation>
 <translation id="3155170474926428993">Trình chạy Tor</translation>
 <translation id="3745016858329272300">Thông tin Chung</translation>
 <translation id="4045404575593562245">Sự kiện Kiểm soát Tor</translation>
@@ -1920,7 +1932,6 @@
 <translation id="6261915643960475695">Kinh doanh</translation>
 <translation id="8265589281845759879">Ô tô</translation>
 <translation id="7726519849288907308">Người nổi tiếng</translation>
-<translation id="8767749833522980474">Tiền điện tử</translation>
 <translation id="7577010593836079522">Văn hóa</translation>
 <translation id="6807791860691150411">Giáo dục</translation>
 <translation id="3706423975342040244">Giải trí</translation>
@@ -2099,9 +2110,6 @@
 <translation id="3067105725259639716">Cấu hình Brave Tin tức</translation>
 <translation id="6286510487460330478">Cấu hình phím tắt</translation>
 <translation id="9214819486716388964">Hiển thị Brave Trò chuyện</translation>
-<translation id="5950760360751948276">Luôn hiển thị thanh dấu trang</translation>
-<translation id="2960757369920422313">Hiển thị thanh dấu trang trên trang tab mới</translation>
-<translation id="522953399371747698">Ẩn thanh dấu trang</translation>
 <translation id="9079813619990532635">Xuất tất cả dấu trang</translation>
 <translation id="134184943774258988">Tắt/Bật hiển thị nút Tất cả dấu trang</translation>
 <translation id="2158862020143233462">Tắt/Bật khiên</translation>
@@ -2216,6 +2224,7 @@
 <translation id="5820497878628354073">Mã trạng thái: <ph name="STATUS_CODE"/>, mã trạng thái nội bộ: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">Bạn đã đạt đến giới hạn premium. Vui lòng thử lại sau vài giờ nữa.</translation>
 <translation id="6873128487002733717">Bạn đã đạt giới hạn Premium cho mô hình này. Hãy chọn mô hình khác hoặc thử lại sau.</translation>
+<translation id="2688661132468689309">Bạn đã đạt giới hạn Premium cho mô hình này. Giới hạn sẽ được đặt lại sau <ph name="RESET_DURATION"/> (vào lúc <ph name="RESET_TIME"/>). Hãy chọn mô hình khác hoặc thử lại sau đó.</translation>
 <translation id="3683964919745779766">Bạn đã đạt giới hạn tần suất của mô hình này hoặc đã hết tín dụng. Vui lòng thử lại sau.</translation>
 <translation id="7692501701960747469">Khóa API được cấu hình cho mô hình này không hợp lệ. Vui lòng kiểm tra cấu hình của bạn và thử lại.</translation>
 <translation id="7905602379229309187">Điểm cuối hiện đang quá tải. Vui lòng thử lại sau.</translation>
@@ -2224,12 +2233,12 @@
 <translation id="3852808100039989429">Xin chào, tôi là Leo. Tôi là một trợ lý AI của Brave. Tôi được hỗ trợ bởi Qwen VL 30B, một mô hình được tạo ra bởi Alibaba Cloud để hoạt động hiệu quả và áp dụng cho nhiều trường hợp sử dụng. Qwen được Brave lưu trữ thông qua cơ sở hạ tầng bảo mật của chúng tôi.<ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
 <translation id="8659225822055186905">Xin chào, tôi là Leo. Tôi là một trợ lý AI của Brave. Tôi được hỗ trợ bởi GLM-5.3 Flash, một mô hình được tạo ra bởi Zhipu AI để hoạt động hiệu quả và áp dụng cho nhiều trường hợp sử dụng. GLM-5.3 Flash được NEAR lưu trữ thông qua cơ sở hạ tầng bảo mật riêng của họ có thể xác minh.<ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">Xin chào, tôi là Leo. Tôi là trợ lý AI của Brave. Tôi được cung cấp bởi Claude Instant, một mô hình do Anthropic phát triển để xử lý hội thoại và văn bản. Claude Instant được Brave lưu trữ thông qua cơ sở hạ tầng bảo mật riêng.<ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
-<translation id="3789772321824682783">Xin chào, tôi là Leo. Tôi là một trợ lý AI của Brave. Tôi được hỗ trợ bởi Claude Haiku, một mô hình được tạo ra bởi Anthropic để hỗ trợ các công việc đàm thoại và xử lý văn bản. Claude Haiku được Brave lưu trữ thông qua cơ sở hạ tầng bảo mật của chúng tôi.<ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Xin chào, tôi là Leo. Tôi là một trợ lý AI của Brave. Tôi được hỗ trợ bởi Claude Sonnet, một mô hình được tạo ra bởi Anthropic để hỗ trợ các công việc đàm thoại và xử lý văn bản. Claude Sonnet được Brave lưu trữ thông qua cơ sở hạ tầng bảo mật của chúng tôi.<ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
-<translation id="3399141352144059821">Xin chào, tôi là Leo. Tôi là một trợ lý AI của Brave. Tôi được hỗ trợ bởi Grok 4.3, một mô hình được tạo ra bởi xAI để hoạt động hiệu quả và áp dụng cho nhiều trường hợp sử dụng. Grok 4.3 được Brave lưu trữ thông qua cơ sở hạ tầng bảo mật của chúng tôi.<ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
-<translation id="8868813509973985458">Xin chào, tôi là Leo. Tôi là một trợ lý AI của Brave. Tôi được hỗ trợ bởi GPT 5.4, một mô hình được tạo ra bởi OpenAI để hoạt động hiệu quả và áp dụng cho nhiều trường hợp sử dụng. GPT 5.4 được Brave lưu trữ thông qua cơ sở hạ tầng bảo mật của chúng tôi.<ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
+<translation id="6676306995311143470">Xin chào, tôi là Leo. Tôi là một trợ lý AI của Brave. Tôi được hỗ trợ bởi Grok 4.6, mô hình suy luận tiên tiến của xAI trên Amazon Bedrock Mantle. Grok 4.6 được phục vụ thông qua cơ sở hạ tầng AWS bảo mật của Brave.<ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
+<translation id="2394656730986208060">Xin chào, tôi là Leo. Tôi là một trợ lý AI của Brave. Tôi được hỗ trợ bởi GPT 5.6 Luna, mô hình nhanh, độ trễ thấp của OpenAI trên Amazon Bedrock Mantle. GPT 5.6 Luna được phục vụ thông qua cơ sở hạ tầng AWS bảo mật của Brave.<ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
+<translation id="5278969721580944810">Xin chào, tôi là Leo. Tôi là một trợ lý AI của Brave. Tôi được hỗ trợ bởi GPT 5.6 Terra, mô hình sản xuất cân bằng của OpenAI trên Amazon Bedrock Mantle. GPT 5.6 Terra được phục vụ thông qua cơ sở hạ tầng AWS bảo mật của Brave.<ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
 <translation id="5037359072717016032">Xin chào, tôi là Leo. Tôi là một trợ lý AI của Brave. Tôi được hỗ trợ bởi Mistral Large, một mô hình được tạo ra bởi Mistral để hoạt động hiệu quả và áp dụng cho nhiều trường hợp sử dụng. Mistral Large được Brave lưu trữ thông qua cơ sở hạ tầng bảo mật của chúng tôi.<ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
-<translation id="4026902371301997261">Xin chào, tôi là Leo. Tôi là một trợ lý AI của Brave. Tôi được hỗ trợ bởi Qwen 3 235B, một mô hình được tạo ra bởi Alibaba Cloud để hoạt động hiệu quả và áp dụng cho nhiều trường hợp sử dụng. Qwen 3 235B được Brave lưu trữ thông qua cơ sở hạ tầng bảo mật của chúng tôi.<ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
+<translation id="5475035333915581972">Xin chào, tôi là Leo. Tôi là một trợ lý AI của Brave. Tôi được hỗ trợ bởi Qwen 3.8 Flash Next, một mô hình được tạo ra bởi Alibaba Cloud để hoạt động hiệu quả và áp dụng cho nhiều trường hợp sử dụng. Qwen 3.8 Flash Next được Brave lưu trữ thông qua cơ sở hạ tầng bảo mật của chúng tôi.<ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
 <translation id="8720758690351028307">Xin chào, tôi là Leo. Tôi là một trợ lý AI của Brave. Tôi được hỗ trợ bởi Deepseek V3.2, một mô hình được tạo ra bởi Deepseek để hoạt động hiệu quả và áp dụng cho nhiều trường hợp sử dụng. Deepseek V3.2 được Brave lưu trữ thông qua cơ sở hạ tầng bảo mật của chúng tôi.<ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">Xin chào, tôi là Leo. Tôi là một trợ lý AI của Brave. Tôi được hỗ trợ bởi Claude Opus, một mô hình được tạo ra bởi Anthropic để hỗ trợ các công việc đàm thoại và xử lý văn bản. Claude Opus được Brave lưu trữ thông qua cơ sở hạ tầng bảo mật của chúng tôi.<ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
 <translation id="7238858567393403597">Xin chào, tôi là Leo. Tôi là một trợ lý AI của Brave. Tôi được hỗ trợ bởi GLM-4-7-Flash, một mô hình được tạo ra bởi Zhipu AI để hoạt động hiệu quả và áp dụng cho nhiều trường hợp sử dụng. GLM-4-7-Flash được Brave lưu trữ thông qua cơ sở hạ tầng bảo mật của chúng tôi.<ph name="LINK_BEFORE"/>Tìm hiểu thêm<ph name="LINK_AFTER"/></translation>
@@ -2242,7 +2251,6 @@
 <translation id="4773408460773097271">Ollama</translation>
 <translation id="631371844654031449">Mô hình đề xuất</translation>
 <translation id="6568044140836233369">Hiển thị tất cả mô hình</translation>
-<translation id="6187065185557150870">Trò chuyện</translation>
 <translation id="4685048769603134644">Mở trang đầy đủ</translation>
 <translation id="2961040541145689181">Trò chuyện mới</translation>
 <translation id="7557539689487606886">Nâng cấp lên Premium</translation>
@@ -2366,13 +2374,13 @@
 <translation id="887511360213807449">Lịch sử không được bật</translation>
 <translation id="5380979378058584412">Để xem các cuộc trò chuyện với Leo trước đây, bạn cần bật lịch sử trò chuyện.</translation>
 <translation id="3185367320601718531">Cuộc trò chuyện và tạo văn bản</translation>
-<translation id="2793458212460902934">Nhanh • Tìm kiếm • Công cụ</translation>
 <translation id="8506027496671575183">Tìm kiếm • Thị giác • Công cụ</translation>
 <translation id="3184606955650139158">Nhanh • Tìm kiếm • Tầm nhìn</translation>
 <translation id="7465032796278724624">Riêng tư có thể xác minh với NEAR AI TEE</translation>
 <translation id="8782867266498869301">Mô hình thay đổi động để sử dụng mô hình tốt nhất cho tác vụ</translation>
 <translation id="7348809809749151120">Nhanh • Tìm kiếm</translation>
 <translation id="3213834013136637671">Tìm kiếm • Thị giác</translation>
+<translation id="2793458212460902934">Nhanh • Tìm kiếm • Công cụ</translation>
 <translation id="5276681919620506371">Tìm kiếm • Công cụ</translation>
 <translation id="7434375176361995333">Tóm tắt • Nhanh</translation>
 <translation id="3965507912994218570">Cài đặt Leo</translation>
@@ -2936,9 +2944,7 @@ Chúng tôi sẽ giúp bạn kết nối!</translation>
 <translation id="3750210661641549834">Để tạo tài khoản của bạn, vui lòng xác minh địa chỉ email của bạn.</translation>
 <translation id="4351175281479794167">Nhập mã xác minh</translation>
 <translation id="1672793037892810340">Bạn sẽ nhận được một email chứa mã mà bạn cần phải nhập.</translation>
-<translation id="4821255729182569254">Gửi lại email xác nhận</translation>
 <translation id="5837679375142747484">Không thấy email? Hãy kiểm tra thư mục thư rác của bạn hoặc <ph name="BEGIN_LINK"/>gửi lại<ph name="END_LINK"/>.</translation>
-<translation id="1080588816740959885">Không thấy email? Hãy kiểm tra thư mục thư rác của bạn hoặc gửi lại.</translation>
 <translation id="1020730839570724178">Hủy đăng ký</translation>
 <translation id="7155125570724238786">Để đặt lại mật khẩu của bạn, vui lòng xác minh địa chỉ email của bạn.</translation>
 <translation id="816074628631172140">Email của bạn đã được xác minh. Hãy đặt mật khẩu mới để hoàn tất việc đặt lại mật khẩu.</translation>

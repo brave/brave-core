@@ -193,9 +193,6 @@
 <translation id="5668852698659986622">Washa Matangazo Yaliyofadhiliwa</translation>
 <translation id="431194936581466649">Saidia dhamira ya Brave ya kujenga Wavuti huru inayoweka mtumiaji kwanza kwa Matangazo Yaliyofadhiliwa. Tunapima utendaji wa matangazo kwa faragha, bila kukutambua.</translation>
 <translation id="1939813747486101115">Jifunze zaidi kuhusu Sponsored Ads</translation>
-<translation id="8347743943525229984">Ruhusu tafiti za Brave</translation>
-<translation id="6022939994702081659">Inaruhusu Brave kuonyesha viungo vya tafiti za faragha kwenye ukurasa mpya wa kichupo. Tafiti zinatusaidia kujenga vipengele bora na kupima ufanisi wa kampeni za matangazo kwenye kivinjari.</translation>
-<translation id="7746496306508543965">Jifunze zaidi kuhusu tafiti za Brave</translation>
 <translation id="410351446219883937">Kucheza kiotomatiki</translation>
 <translation id="7445411102860286510">Ruhusu tovuti zicheze video kiotomatiki bila sauti (inapendekezwa)</translation>
 <translation id="7837721118676387834">Ruhusu uchezaji wa video kiotomatiki bila sauti kwenye tovuti mahususi.</translation>
@@ -223,6 +220,7 @@
 <translation id="9040069796107003510">Aikoni ya Tuzo za Brave</translation>
 <translation id="6333347122924254968">Onyesha ikoni ya Brave Rewards kwenye upau wa anwani</translation>
 <translation id="4393974575368329991">Upau wa chini wa usafiri</translation>
+<translation id="8727059712928806451">Washa upau wa chini</translation>
 <translation id="1834226716203076292">Onyesha upau wa chini kwa ufikiaji wa haraka wa nyumbani, alamisho na utafutaji</translation>
 <translation id="1422686363939271829">Mpangilio huu umezimwa wakati nafasi ya chini ya upau wa anwani imechaguliwa</translation>
 <translation id="6587448235155023666">Mabadiliko yako yatatekelezwa utakapofungua upya Brave</translation>
@@ -398,6 +396,12 @@ Je, una uhakika unataka kufanya hili?</translation>
 <translation id="8793108040181436796">Wijeti</translation>
 <translation id="8643377320501056697">Onyesha Tovuti Bora</translation>
 <translation id="7275773481201277457">Onyesha Takwimu za Brave</translation>
+<translation id="8516804522688861636">Onyesha tovuti zinazotembelewa mara kwa mara</translation>
+<translation id="4546260624932151782">Onyesha vipendwa</translation>
+<translation id="5313967007315987356">Ongeza tovuti</translation>
+<translation id="1773147648972887693">Onyesha zinazotembelewa mara kwa mara</translation>
+<translation id="752098910262610337">Onyesha njia mkato</translation>
+<translation id="7134741506051403308">Ficha wijeti</translation>
 <translation id="7462178177755090262">Skrini ya Kufungua</translation>
 <translation id="5365434987337264071">Kichupo kilichokuwa wazi mwisho</translation>
 <translation id="6019856124237323989">{HOURS, plural, =1 {Kichupo kipya baada ya <ph name="HOURS_ONE"/> saa ya kutotumika} other {Kichupo kipya baada ya <ph name="HOURS_MANY"/> saa za kutotumika}}</translation>
@@ -998,6 +1002,13 @@ Usipolikubali ombi hili, VPN haitaunganisha tena na muunganisho wako wa intaneti
 <translation id="7530313002494358590">Kuwezesha au kuzima kipengele cha Brave kunahitaji browser kuanzishwa upya ili kutekeleza mabadiliko. Tafadhali gusa <ph name="BEGIN_BOLD"/>Anzisha sasa<ph name="END_BOLD"/> mara Brave Origin itakapomaliza kusasisha.</translation>
 <translation id="1028940738207645746">Una uhakika kwamba unataka kuweka upya usanidi wote kuwa chaguo-msingi?</translation>
 <translation id="5939518447894949180">Weka upya</translation>
+<translation id="3222790865318305905">Kikomo cha uwezeshaji kimefikiwa</translation>
+<translation id="3787857711016546034">Ili kuzuia ulaghai, uwezeshaji wa Origin una kikomo cha kiwango. Lakini unaweza kuomba uwezeshaji zaidi wakati wowote ili kutumia leseni yako ya Origin kwenye vifaa zaidi. Bofya tu chaguo la Omba uwezeshaji zaidi, au <ph name="CONTACT_SUPPORT"/> kwa usaidizi.</translation>
+<translation id="6760819753412779585">wasiliana na usaidizi</translation>
+<translation id="571697836019670200">Omba uwezeshaji zaidi</translation>
+<translation id="9019545131475425538">Inashughulikia…</translation>
+<translation id="7242700630179071243">Tayari kuwezesha</translation>
+<translation id="5463918917265356202">Brave Origin sasa inafanya kazi kwenye kifaa hiki. Ili kuanza kutumia kipengele hiki, unahitaji kuanzisha upya kivinjari. Je, ungependa kuanzisha upya sasa?</translation>
 <translation id="8554205386170195281">Nunua</translation>
 <translation id="8613144770663526433">Ingia kwa Pochi ya Brave</translation>
 <translation id="3696514931437952995">Unaingia kwenye <ph name="ORIGIN"/>. Pochi ya Brave itashiriki anwani ya pochi yako na <ph name="ORIGIN"/>.</translation>

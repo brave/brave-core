@@ -1883,6 +1883,18 @@
 <translation id="2737084171727561244">पोर्टफ़ोलियो पर जाएँ</translation>
 <translation id="3499452861061048987">टोकन जोड़ें</translation>
 <translation id="5046066249040287308">Brave वॉलेट यूटिलिटी सेवा</translation>
+<translation id="8767749833522980474">क्रिप्टो</translation>
+<translation id="4509084261025090951">अपना कार्ड पाएँ</translation>
+<translation id="3624463584770657372">कार्ड नंबर देखने और खर्च करना शुरू करने के लिए अपनी पहचान सत्यापित करें।</translation>
+<translation id="2508337767012636987">सत्यापित करने के लिए टैप करें</translation>
+<translation id="703964541421486259">बैलेंस छिपाएँ</translation>
+<translation id="302114796458112924">बैलेंस दिखाएँ</translation>
+<translation id="9083210401924577263">Brave Rewards कार्ड</translation>
+<translation id="2433507940547922241">प्रकटन</translation>
+<translation id="3435738964857648380">सुरक्षा</translation>
+<translation id="6700561332544287722">अगली बार अनलॉक करना आवश्यक करें</translation>
+<translation id="5605360570977617291"><ph name="CARD_NAME"/> को होम से छिपाएँ?</translation>
+<translation id="2721464457853369512">आपका <ph name="CARD_NAME"/> बैलेंस अपरिवर्तित है। इससे केवल कार्ड होम से छिपता है। आप इसे कभी भी सेटिंग्स में, वॉलेट के तहत, फिर से दिखा सकते हैं।</translation>
 <translation id="3155170474926428993">टॉर लॉन्चर</translation>
 <translation id="3745016858329272300">सामान्य जानकारी</translation>
 <translation id="4045404575593562245">टॉर नियंत्रण इवेंट्स</translation>
@@ -1922,7 +1934,6 @@
 <translation id="6261915643960475695">बिज़नेस</translation>
 <translation id="8265589281845759879">गाड़ियाँ</translation>
 <translation id="7726519849288907308">सेलिब्रिटीज़</translation>
-<translation id="8767749833522980474">क्रिप्टो</translation>
 <translation id="7577010593836079522">संस्कृति</translation>
 <translation id="6807791860691150411">शिक्षा</translation>
 <translation id="3706423975342040244">मनोरंजन</translation>
@@ -2101,9 +2112,6 @@
 <translation id="3067105725259639716">Brave न्यूज़ को कॉन्फ़िगर करें</translation>
 <translation id="6286510487460330478">शॉर्टकट को कॉन्फ़िगर करें</translation>
 <translation id="9214819486716388964">Brave Talk दिखाएँ</translation>
-<translation id="5950760360751948276">बुकमार्क बार को हमेशा दिखाएँ</translation>
-<translation id="2960757369920422313">NTP पर बुकमार्क बार दिखाएँ</translation>
-<translation id="522953399371747698">बुकमार्क बार को छिपाएँ</translation>
 <translation id="9079813619990532635">सभी बुकमार्क एक्सपोर्ट करें</translation>
 <translation id="134184943774258988">सभी बुकमार्क बटन की दृश्यता को टॉगल करें</translation>
 <translation id="2158862020143233462">शील्ड को छिपाएँ/दिखाएँ</translation>
@@ -2218,6 +2226,7 @@
 <translation id="5820497878628354073">स्टेटस कोड: <ph name="STATUS_CODE"/>, इनर स्टेटस कोड: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">आप प्रीमियम रेट की सीमा पूरी कर चुके हैं. कुछ घंटों में कृपया फिर से कोशिश करें.</translation>
 <translation id="6873128487002733717">आप इस मॉडल के लिए प्रीमियम सीमा तक पहुँच गए हैं। कोई दूसरा मॉडल चुनें या बाद में फिर से कोशिश करें।</translation>
+<translation id="2688661132468689309">आप इस मॉडल के लिए प्रीमियम सीमा तक पहुँच गए हैं। यह <ph name="RESET_DURATION"/> में (<ph name="RESET_TIME"/> पर) रीसेट होगी। कोई दूसरा मॉडल चुनें या तब फिर से कोशिश करें।</translation>
 <translation id="3683964919745779766">आप इस मॉडल के लिए रेट की सीमा तक पहुँच गए हैं या आपके क्रेडिट खत्म हो चुके हैं। कृपया बाद में कोशिश करें।</translation>
 <translation id="7692501701960747469">इस मॉडल के लिए कॉन्फ़िगर की गई API की अमान्य है। कृपया अपना कॉन्फ़िगरेशन देखें और फिर से कोशिश करें।</translation>
 <translation id="7905602379229309187">फ़िलहाल, एंडपॉइंट ओवरलोडेड है। कृपया बाद में कोशिश करें।</translation>
@@ -2226,12 +2235,12 @@
 <translation id="3852808100039989429">नमस्ते, मैं Leo हूँ। मैं Brave द्वारा पूरी तरह से होस्ट किया गया AI सहायक हूँ। मैं Qwen VL 30B द्वारा संचालित हूँ, जो Alibaba Cloud द्वारा बनाया गया एक मॉडल है जो परफ़ॉर्मेंस और कई यूज़ केसेज़ के लिए लागू होता है। Qwen हमारे अपने सुरक्षित इंफ़्रास्ट्रक्चर के ज़रिए Brave होस्ट करता है।<ph name="LINK_BEFORE"/>ज़्यादा जानें<ph name="LINK_AFTER"/></translation>
 <translation id="8659225822055186905">नमस्ते, मैं Leo हूँ। मैं Brave द्वारा AI सहायक हूँ। मैं GLM-5.3 Flash द्वारा संचालित हूँ, जो Zhipu AI द्वारा बनाया गया एक मॉडल है जो परफ़ॉर्मेंस और कई यूज़ केसेज़ के लिए लागू होता है। GLM-5.3 Flash उनके अपने सत्यापन योग्य निजी सुरक्षित इंफ़्रास्ट्रक्चर के ज़रिए NEAR होस्ट करता है।<ph name="LINK_BEFORE"/>ज़्यादा जानें<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">नमस्ते, मैं Leo हूँ। मैं Brave का एक एआई सहायक हूँ। मुझे Claude Instant द्वारा शक्ति प्रदान की गई है, जिसे Anthropic ने संवाद और पाठ संसाधन कार्यों के लिए बनाया है। Claude Instant को Brave की सुरक्षा पर होस्ट किया गया है।<ph name="LINK_BEFORE"/>और जानें<ph name="LINK_AFTER"/></translation>
-<translation id="3789772321824682783">नमस्ते, मैं Leo हूँ। मैं Brave द्वारा पॉवरड हूँ और Claude Haiku द्वारा संचालित हूँ, जो Anthropic द्वारा बनाया गया एक मॉडल है जो संवादात्मक और टेक्स्ट प्रोसेसिंग जैसे कामों को पावर करता है। Claude Haiku हमारे अपने सुरक्षित इंफ़्रास्ट्रक्चर के ज़रिए Brave होस्ट करता है।<ph name="LINK_BEFORE"/>ज़्यादा जानें<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">नमस्ते, मैं Leo हूँ। मैं Brave द्वारा पॉवरड हूँ और Claude Sonnet द्वारा संचालित हूँ, जो Anthropic द्वारा बनाया गया एक मॉडल है जो संवादात्मक और टेक्स्ट प्रोसेसिंग जैसे कामों को पावर करता है। Claude Sonnet हमारे अपने सुरक्षित इंफ़्रास्ट्रक्चर के ज़रिए Brave होस्ट करता है।<ph name="LINK_BEFORE"/>ज़्यादा जानें<ph name="LINK_AFTER"/></translation>
-<translation id="3399141352144059821">नमस्ते, मैं Leo हूँ। मैं Brave द्वारा पूरी तरह से होस्ट किया गया AI सहायक हूँ। मैं Grok 4.3 द्वारा संचालित हूँ, जो xAI द्वारा बनाया गया एक मॉडल है जो परफ़ॉर्मेंस और कई यूज़ केसेज़ के लिए लागू होता है। Grok 4.3 हमारे अपने सुरक्षित इंफ़्रास्ट्रक्चर के ज़रिए Brave होस्ट करता है।<ph name="LINK_BEFORE"/>ज़्यादा जानें<ph name="LINK_AFTER"/></translation>
-<translation id="8868813509973985458">नमस्ते, मैं Leo हूँ। मैं Brave द्वारा पूरी तरह से होस्ट किया गया AI सहायक हूँ। मैं GPT 5.4 द्वारा संचालित हूँ, जो OpenAI द्वारा बनाया गया एक मॉडल है जो परफ़ॉर्मेंस और कई यूज़ केसेज़ के लिए लागू होता है। GPT 5.4 हमारे अपने सुरक्षित इंफ़्रास्ट्रक्चर के ज़रिए Brave होस्ट करता है।<ph name="LINK_BEFORE"/>ज़्यादा जानें<ph name="LINK_AFTER"/></translation>
+<translation id="6676306995311143470">नमस्ते, मैं Leo हूँ। मैं Brave द्वारा एक AI सहायक हूँ। मैं Grok 4.6 द्वारा संचालित हूँ, जो Amazon Bedrock Mantle पर xAI का फ्रंटियर रीज़निंग मॉडल है। Grok 4.6 को Brave के सुरक्षित AWS इंफ़्रास्ट्रक्चर के ज़रिए सर्व किया जाता है।<ph name="LINK_BEFORE"/>ज़्यादा जानें<ph name="LINK_AFTER"/></translation>
+<translation id="2394656730986208060">नमस्ते, मैं Leo हूँ। मैं Brave द्वारा एक AI सहायक हूँ। मैं GPT 5.6 Luna द्वारा संचालित हूँ, जो Amazon Bedrock Mantle पर OpenAI का तेज़, लो-लेटेंसी मॉडल है। GPT 5.6 Luna को Brave के सुरक्षित AWS इंफ़्रास्ट्रक्चर के ज़रिए सर्व किया जाता है।<ph name="LINK_BEFORE"/>ज़्यादा जानें<ph name="LINK_AFTER"/></translation>
+<translation id="5278969721580944810">नमस्ते, मैं Leo हूँ। मैं Brave द्वारा एक AI सहायक हूँ। मैं GPT 5.6 Terra द्वारा संचालित हूँ, जो Amazon Bedrock Mantle पर OpenAI का संतुलित प्रोडक्शन मॉडल है। GPT 5.6 Terra को Brave के सुरक्षित AWS इंफ़्रास्ट्रक्चर के ज़रिए सर्व किया जाता है।<ph name="LINK_BEFORE"/>ज़्यादा जानें<ph name="LINK_AFTER"/></translation>
 <translation id="5037359072717016032">नमस्ते, मैं Leo हूँ। मैं Brave द्वारा पूरी तरह से होस्ट किया गया AI सहायक हूँ। मैं Mistral Large द्वारा संचालित हूँ, जो Mistral द्वारा बनाया गया एक मॉडल है जो परफ़ॉर्मेंस और कई यूज़ केसेज़ के लिए लागू होता है। Mistral Large हमारे अपने सुरक्षित इंफ़्रास्ट्रक्चर के ज़रिए Brave होस्ट करता है।<ph name="LINK_BEFORE"/>ज़्यादा जानें<ph name="LINK_AFTER"/></translation>
-<translation id="4026902371301997261">नमस्ते, मैं Leo हूँ। मैं Brave द्वारा पूरी तरह से होस्ट किया गया AI सहायक हूँ। मैं Qwen 3 235B द्वारा संचालित हूँ, जो Alibaba Cloud द्वारा बनाया गया एक मॉडल है जो परफ़ॉर्मेंस और कई यूज़ केसेज़ के लिए लागू होता है। Qwen 3 235B हमारे अपने सुरक्षित इंफ़्रास्ट्रक्चर के ज़रिए Brave होस्ट करता है।<ph name="LINK_BEFORE"/>ज़्यादा जानें<ph name="LINK_AFTER"/></translation>
+<translation id="5475035333915581972">नमस्ते, मैं Leo हूँ। मैं Brave द्वारा एक AI सहायक हूँ। मैं Qwen 3.8 Flash Next द्वारा संचालित हूँ, जो Alibaba Cloud द्वारा बनाया गया एक मॉडल है जो परफ़ॉर्मेंस और कई यूज़ केसेज़ के लिए लागू होता है। Qwen 3.8 Flash Next हमारे अपने सुरक्षित इंफ़्रास्ट्रक्चर के ज़रिए Brave होस्ट करता है।<ph name="LINK_BEFORE"/>ज़्यादा जानें<ph name="LINK_AFTER"/></translation>
 <translation id="8720758690351028307">नमस्ते, मैं Leo हूँ। मैं Brave द्वारा पूरी तरह से होस्ट किया गया AI सहायक हूँ। मैं Deepseek V3.2 द्वारा संचालित हूँ, जो Deepseek द्वारा बनाया गया एक मॉडल है जो परफ़ॉर्मेंस और कई यूज़ केसेज़ के लिए लागू होता है। Deepseek V3.2 हमारे अपने सुरक्षित इंफ़्रास्ट्रक्चर के ज़रिए Brave होस्ट करता है।<ph name="LINK_BEFORE"/>ज़्यादा जानें<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">नमस्ते, मैं Leo हूँ। मैं Brave द्वारा पॉवरड हूँ और Claude Opus द्वारा संचालित हूँ, जो Anthropic द्वारा बनाया गया एक मॉडल है जो संवादात्मक और टेक्स्ट प्रोसेसिंग जैसे कामों को पावर करता है। Claude Opus हमारे अपने सुरक्षित इंफ़्रास्ट्रक्चर के ज़रिए Brave होस्ट करता है।<ph name="LINK_BEFORE"/>ज़्यादा जानें<ph name="LINK_AFTER"/></translation>
 <translation id="7238858567393403597">नमस्ते, मैं Leo हूँ। मैं Brave द्वारा पूरी तरह से होस्ट किया गया AI सहायक हूँ। मैं GLM-4-7-Flash द्वारा संचालित हूँ, जो Zhipu AI द्वारा बनाया गया एक मॉडल है जो परफ़ॉर्मेंस और कई यूज़ केसेज़ के लिए लागू होता है। GLM-4-7-Flash हमारे अपने सुरक्षित इंफ़्रास्ट्रक्चर के ज़रिए Brave होस्ट करता है।<ph name="LINK_BEFORE"/>ज़्यादा जानें<ph name="LINK_AFTER"/></translation>
@@ -2244,7 +2253,6 @@
 <translation id="4773408460773097271">Ollama</translation>
 <translation id="631371844654031449">सुझाए गए मॉडल</translation>
 <translation id="6568044140836233369">सभी मॉडल दिखाएँ</translation>
-<translation id="6187065185557150870">चैट</translation>
 <translation id="4685048769603134644">पूरा पेज खोलें</translation>
 <translation id="2961040541145689181">नई चैट</translation>
 <translation id="7557539689487606886">प्रीमियम सदस्य बनें</translation>
@@ -2368,13 +2376,13 @@
 <translation id="887511360213807449">इतिहास बंद है</translation>
 <translation id="5380979378058584412">Leo के साथ अपनी पिछली बातचीतों को देखने के लिए, आपको बातचीत का इतिहास चालू करना होगा।</translation>
 <translation id="3185367320601718531">बातचीत और टेक्स्ट जनरेशन</translation>
-<translation id="2793458212460902934">तेज़ • सर्च • टूल्स</translation>
 <translation id="8506027496671575183">सर्च • विज़न • टूल्स</translation>
 <translation id="3184606955650139158">तेज़ • सर्च • विज़न</translation>
 <translation id="7465032796278724624">NEAR AI TEE के साथ सत्यापित रूप से निजी</translation>
 <translation id="8782867266498869301">कार्य के लिए सबसे अच्छा मॉडल इस्तेमाल करने की वजह से मॉडल डाइनैमिक रूप से बदलता है</translation>
 <translation id="7348809809749151120">तेज़ • सर्च</translation>
 <translation id="3213834013136637671">सर्च • विज़न</translation>
+<translation id="2793458212460902934">तेज़ • सर्च • टूल्स</translation>
 <translation id="5276681919620506371">सर्च • टूल्स</translation>
 <translation id="7434375176361995333">सारांश • तेज़</translation>
 <translation id="3965507912994218570">लियो सेटिंग्स</translation>
@@ -2937,9 +2945,7 @@ Brave में एक सहयोगी सेवा है, जो आपक�
 <translation id="3750210661641549834">अपना अकाउंट बनाने के लिए, कृपया अपने ईमेल पते की पुष्टि करें।</translation>
 <translation id="4351175281479794167">सत्यापन कोड दर्ज करें</translation>
 <translation id="1672793037892810340">आपको एक कोड के साथ एक ईमेल मिला होगा जिसे आपको दर्ज करना होगा।</translation>
-<translation id="4821255729182569254">पुष्टि ईमेल दोबारा भेजें</translation>
 <translation id="5837679375142747484">ईमेल नहीं दिख रहा है? अपना स्पैम फ़ोल्डर जाँचें या इसे <ph name="BEGIN_LINK"/>फिर से भेजें<ph name="END_LINK"/>।</translation>
-<translation id="1080588816740959885">ईमेल नहीं दिख रहा है? अपना स्पैम फ़ोल्डर जाँचें या इसे फिर से भेजें।</translation>
 <translation id="1020730839570724178">पंजीकरण रद्द करें</translation>
 <translation id="7155125570724238786">अपना पासवर्ड रीसेट करने के लिए, कृपया अपने ईमेल पते की पुष्टि करें।</translation>
 <translation id="816074628631172140">आपका ईमेल सत्यापित हो गया है। अपना पासवर्ड रीसेट पूरा करने के लिए एक नया पासवर्ड सेट करें।</translation>

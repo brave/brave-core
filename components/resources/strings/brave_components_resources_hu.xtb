@@ -1877,6 +1877,18 @@
 <translation id="2737084171727561244">Lépjen a Portfólióhoz</translation>
 <translation id="3499452861061048987">Token hozzáadása</translation>
 <translation id="5046066249040287308">Brave pénztárca segédprogram-szolgáltató</translation>
+<translation id="8767749833522980474">Kripto</translation>
+<translation id="4509084261025090951">Kártya igénylése</translation>
+<translation id="3624463584770657372">Igazolja a személyazonosságát a kártyaszámok megtekintéséhez és a vásárlás megkezdéséhez.</translation>
+<translation id="2508337767012636987">Koppintson a hitelesítéshez</translation>
+<translation id="703964541421486259">Egyenlegek elrejtése</translation>
+<translation id="302114796458112924">Egyenlegek megjelenítése</translation>
+<translation id="9083210401924577263">Brave jutalomkártya</translation>
+<translation id="2433507940547922241">Megjelenés</translation>
+<translation id="3435738964857648380">Biztonság</translation>
+<translation id="6700561332544287722">Feloldás igénylése legközelebb</translation>
+<translation id="5605360570977617291">Elrejti a(z) <ph name="CARD_NAME"/> kártyát a kezdőoldalról?</translation>
+<translation id="2721464457853369512">A(z) <ph name="CARD_NAME"/> egyenlege változatlan marad. Ez csak a kártyát rejti el a kezdőoldalról. Bármikor újra megjelenítheti a Beállításokban, a Pénztárca alatt.</translation>
 <translation id="3155170474926428993">Tor indítóprogram</translation>
 <translation id="3745016858329272300">Általános információk</translation>
 <translation id="4045404575593562245">Tor vezérlési események</translation>
@@ -1916,7 +1928,6 @@
 <translation id="6261915643960475695">Üzleti világ</translation>
 <translation id="8265589281845759879">Autók</translation>
 <translation id="7726519849288907308">Sztárok</translation>
-<translation id="8767749833522980474">Kripto</translation>
 <translation id="7577010593836079522">Kultúra</translation>
 <translation id="6807791860691150411">Oktatás</translation>
 <translation id="3706423975342040244">Szórakozás</translation>
@@ -2095,9 +2106,6 @@
 <translation id="3067105725259639716">Brave hírek konfigurálása</translation>
 <translation id="6286510487460330478">Billentyűparancsok konfigurálása</translation>
 <translation id="9214819486716388964">Brave Talk megjelenítése</translation>
-<translation id="5950760360751948276">A könyvjelzősáv mindig látható</translation>
-<translation id="2960757369920422313">Könyvjelzősáv megjelenítése az NTP-n</translation>
-<translation id="522953399371747698">Könyvjelzősáv elrejtése</translation>
 <translation id="9079813619990532635">Könyvjelzők exportálása</translation>
 <translation id="134184943774258988">Összes könyvtár gomb láthatóságának átkapcsolása</translation>
 <translation id="2158862020143233462">Pajzsok ki-/bekapcsolása</translation>
@@ -2212,6 +2220,7 @@
 <translation id="5820497878628354073">Állapotkód: <ph name="STATUS_CODE"/>, belső állapotkód: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">Elérte a prémium gyakorisági korlátot. Néhány óra múlva próbálja újra.</translation>
 <translation id="6873128487002733717">Elérte a modell prémium használati mennyiségét. Válasszon egy másik modellt, vagy próbálja meg később.</translation>
+<translation id="2688661132468689309">Elérte a modell prémium használati mennyiségét. Ez <ph name="RESET_DURATION"/> múlva (<ph name="RESET_TIME"/>-kor) nullázódik. Válasszon egy másik modellt, vagy próbálja meg akkor újra.</translation>
 <translation id="3683964919745779766">Elérte a modell által megengedett használati mennyiséget, vagy nem rendelkezik elegendő kredittel a további használathoz. Kérjük próbálja meg később.</translation>
 <translation id="7692501701960747469">A modellhez konfigurált API-kulcs érvénytelen. Kérjük, ellenőrizze a konfigurációt, és próbálja meg újra.</translation>
 <translation id="7905602379229309187">A szolgáltatás jelenleg túlterhelt. Kérjük, próbálja meg később.</translation>
@@ -2220,12 +2229,12 @@
 <translation id="3852808100039989429">Üdv, Leo vagyok, a Brave AI-asszisztense. a működésem pedig a Qwen VL 30B modellen alapul, amelyet az Alibaba Cloud fejlesztett ki annak érdekében, hogy teljesítményorientált és sokféle felhasználási területre alkalmas legyen. A Qwen a Brave saját, biztonságos infrastruktúráján keresztül működik.<ph name="LINK_BEFORE"/>További tudnivalók<ph name="LINK_AFTER"/></translation>
 <translation id="8659225822055186905">Üdv, Leo vagyok, a Brave AI-asszisztense. A működésem a GLM-5.3 Flash modellen alapul, amelyet a Zhipu AI fejlesztett ki annak érdekében, hogy teljesítményorientált és sokféle felhasználási területre alkalmas legyen. A GLM-5.3 Flash modellt a NEAR egy ellenőrizhetően privát, biztonságos infrastruktúráján keresztül üzemelteti.<ph name="LINK_BEFORE"/>További tudnivalók<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">Szia, Leo vagyok. Én vagyok a Brave által működtetett AI-asszisztens. Az Anthropoc által létrehozott Claude Instant modell hajt végre beszélgetési és szövegfeldolgozási feladatokat. A Claude Instant a Brave biztonságos infrastruktúráján fut.<ph name="LINK_BEFORE"/>További információ<ph name="LINK_AFTER"/></translation>
-<translation id="3789772321824682783">Üdv, Leo vagyok. A Brave proxyval üzemeltetnek, a működésem a Claude Haiku modellen alapul, amelyet az Anthropic fejlesztett ki beszélgetésre és szövegfeldolgozási feladatok elvégzésére. A Claude Haiku a Brave által biztosított, saját biztonságos infrastruktúrán fut.<ph name="LINK_BEFORE"/>Tudjon meg többet<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Üdv, Leo vagyok. A Brave proxyval üzemeltetnek, a működésem a Claude Sonnet modellen alapul, amelyet az Anthropic fejlesztett ki beszélgetésre és szövegfeldolgozási feladatok elvégzésére. A Claude Sonnet a Brave által biztosított, saját biztonságos infrastruktúrán fut.<ph name="LINK_BEFORE"/>Tudjon meg többet<ph name="LINK_AFTER"/></translation>
-<translation id="3399141352144059821">Üdv, Leo vagyok, a Brave AI-asszisztense. a működésem pedig a Grok 4.3 modellen alapul, amelyet az xAI fejlesztett ki, amely számos esetben használható. A Grok 4.3 a Brave által biztosított, saját biztonságos infrastruktúrán fut. <ph name="LINK_BEFORE"/>További tudnivalók<ph name="LINK_AFTER"/></translation>
-<translation id="8868813509973985458">Üdv, Leo vagyok, a Brave AI-asszisztense. a működésem pedig a GPT 5.4 modellen alapul, amelyet az OpenAI fejlesztett ki, amely számos esetben használható. A GPT 5.4 a Brave által biztosított, saját biztonságos infrastruktúrán fut. <ph name="LINK_BEFORE"/>További tudnivalók<ph name="LINK_AFTER"/></translation>
+<translation id="6676306995311143470">Üdv, Leo vagyok, a Brave AI-asszisztense. A működésem a Grok 4.6-on alapul, az xAI élvonalbeli gondolkodási modelljén az Amazon Bedrock Mantle-en. A Grok 4.6 a Brave biztonságos AWS-infrastruktúráján keresztül érhető el.<ph name="LINK_BEFORE"/>További tudnivalók<ph name="LINK_AFTER"/></translation>
+<translation id="2394656730986208060">Üdv, Leo vagyok, a Brave AI-asszisztense. A működésem a GPT 5.6 Luna-n alapul, az OpenAI gyors, alacsony késleltetésű modelljén az Amazon Bedrock Mantle-en. A GPT 5.6 Luna a Brave biztonságos AWS-infrastruktúráján keresztül érhető el.<ph name="LINK_BEFORE"/>További tudnivalók<ph name="LINK_AFTER"/></translation>
+<translation id="5278969721580944810">Üdv, Leo vagyok, a Brave AI-asszisztense. A működésem a GPT 5.6 Terra-n alapul, az OpenAI kiegyensúlyozott éles modelljén az Amazon Bedrock Mantle-en. A GPT 5.6 Terra a Brave biztonságos AWS-infrastruktúráján keresztül érhető el.<ph name="LINK_BEFORE"/>További tudnivalók<ph name="LINK_AFTER"/></translation>
 <translation id="5037359072717016032">Üdv, Leo vagyok, a Brave AI-asszisztense. a működésem pedig a Mistral Large modellen alapul, amelyet a Mistral fejlesztett ki, amely számos esetben használható. A Mistral Large a Brave által biztosított, saját biztonságos infrastruktúrán fut.<ph name="LINK_BEFORE"/>További tudnivalók<ph name="LINK_AFTER"/></translation>
-<translation id="4026902371301997261">Üdv, Leo vagyok, a Brave AI-asszisztense. a működésem pedig a Qwen 3 235B modellen alapul, amelyet az Alibaba Cloud fejlesztett ki, amely számos esetben használható. A Qwen 3 235B a Brave által biztosított, saját biztonságos infrastruktúrán fut.<ph name="LINK_BEFORE"/>További tudnivalók<ph name="LINK_AFTER"/></translation>
+<translation id="5475035333915581972">Üdv, Leo vagyok, a Brave AI-asszisztense. A működésem a Qwen 3.8 Flash Next-en alapul, amelyet az Alibaba Cloud fejlesztett ki annak érdekében, hogy teljesítményorientált és sokféle felhasználási területre alkalmas legyen. A Qwen 3.8 Flash Next a Brave saját, biztonságos infrastruktúráján keresztül működik.<ph name="LINK_BEFORE"/>További tudnivalók<ph name="LINK_AFTER"/></translation>
 <translation id="8720758690351028307">Üdv, Leo vagyok, a Brave AI-asszisztense. a működésem pedig a Deepseek V3.2 modellen alapul, amelyet a Deepseek fejlesztett ki annak érdekében, hogy teljesítményorientált és sokféle felhasználási területre alkalmas legyen. A Deepseek V3.2 modellt a Brave egy ellenőrizhetően privát, biztonságos infrastruktúráján keresztül üzemelteti.<ph name="LINK_BEFORE"/>További tudnivalók<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">Üdv, Leo vagyok. A Brave proxyval üzemeltetnek, a működésem a Claude Opus modellen alapul, amelyet az Anthropic fejlesztett ki beszélgetésre és szövegfeldolgozási feladatok elvégzésére. A Claude Opus a Brave által biztosított, saját biztonságos infrastruktúrán fut.<ph name="LINK_BEFORE"/>Tudjon meg többet<ph name="LINK_AFTER"/></translation>
 <translation id="7238858567393403597">Üdv, Leo vagyok, a Brave AI-asszisztense. a működésem pedig a GLM-4-7-Flash modellen alapul, amelyet a Zhipu AI fejlesztett ki, amely számos esetben használható. A GLM-4-7-Flash a Brave által biztosított, saját biztonságos infrastruktúrán fut. <ph name="LINK_BEFORE"/>További tudnivalók<ph name="LINK_AFTER"/></translation>
@@ -2238,7 +2247,6 @@
 <translation id="4773408460773097271">Ollama</translation>
 <translation id="631371844654031449">Ajánlott modellek</translation>
 <translation id="6568044140836233369">Minden modell megjelenítése</translation>
-<translation id="6187065185557150870">Csevegés</translation>
 <translation id="4685048769603134644">Teljes oldal megnyitása</translation>
 <translation id="2961040541145689181">Új csevegés</translation>
 <translation id="7557539689487606886">Prémium előfizetés</translation>
@@ -2362,13 +2370,13 @@
 <translation id="887511360213807449">Előzmények letiltása</translation>
 <translation id="5380979378058584412">Ahhoz, hogy megtekinthesse a Leóval folytatott korábbi beszélgetéseit, engedélyeznie kell a beszélgetési előzményeket.</translation>
 <translation id="3185367320601718531">Beszélgetés és szöveg generálása</translation>
-<translation id="2793458212460902934">Gyors • Keresés • Eszközök</translation>
 <translation id="8506027496671575183">Keresés • Képességek • Eszközök</translation>
 <translation id="3184606955650139158">Gyors • Keresés • Látás</translation>
 <translation id="7465032796278724624">Ellenőrizhetően privát a NEAR AI TEE-vel</translation>
 <translation id="8782867266498869301">A modell dinamikusan változik a legjobb feladatellátás érdekében</translation>
 <translation id="7348809809749151120">Gyors • Keresés</translation>
 <translation id="3213834013136637671">Keresés • Látás</translation>
+<translation id="2793458212460902934">Gyors • Keresés • Eszközök</translation>
 <translation id="5276681919620506371">Keresés • Eszközök</translation>
 <translation id="7434375176361995333">Összegzések • Gyors</translation>
 <translation id="3965507912994218570">Leo-beállítások</translation>
@@ -2932,9 +2940,7 @@ a meglévő lapra való váltás helyett</translation>
 <translation id="3750210661641549834">A fiók létrehozásához erősítse meg e-mail-címét.</translation>
 <translation id="4351175281479794167">Adja meg a megerősítő kódot</translation>
 <translation id="1672793037892810340">Egy kódot tartalmazó e-mailt kellett kapnia, amelyet meg kell adnia.</translation>
-<translation id="4821255729182569254">Megerősítő e-mail újraküldése</translation>
 <translation id="5837679375142747484">Nem látja az e-mailt? Ellenőrizze a spam mappáját vagy <ph name="BEGIN_LINK"/>küldje újra<ph name="END_LINK"/>.</translation>
-<translation id="1080588816740959885">Nem látja az e-mailt? Ellenőrizze a spam mappáját, vagy küldje újra.</translation>
 <translation id="1020730839570724178">Regisztráció visszavonása</translation>
 <translation id="7155125570724238786">A jelszó visszaállításához erősítse meg e-mail-címét.</translation>
 <translation id="816074628631172140">E-mail-címét megerősítettük. Állítson be egy új jelszót a jelszó-visszaállítás befejezéséhez.</translation>

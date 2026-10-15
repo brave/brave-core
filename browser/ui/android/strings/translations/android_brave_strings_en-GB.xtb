@@ -193,9 +193,6 @@
 <translation id="5668852698659986622">Enable Sponsored Ads</translation>
 <translation id="431194936581466649">Help support Brave's mission to build an independent, user-first Web with Sponsored Ads. We measure ad performance privately, without identifying you.</translation>
 <translation id="1939813747486101115">Learn more about Sponsored Ads</translation>
-<translation id="8347743943525229984">Allow Brave surveys</translation>
-<translation id="6022939994702081659">Allows Brave to show links to private surveys in the new tab page. Surveys help us build better features and measure the effectiveness of browser-based ad campaigns.</translation>
-<translation id="7746496306508543965">Learn more about Brave surveys</translation>
 <translation id="410351446219883937">Auto-play</translation>
 <translation id="7445411102860286510">Allow sites to automatically play muted videos (recommended)</translation>
 <translation id="7837721118676387834">Allow auto-play of muted videos for a specific site.</translation>
@@ -223,6 +220,7 @@
 <translation id="9040069796107003510">Brave Rewards icon</translation>
 <translation id="6333347122924254968">Show Brave Rewards icon in address bar</translation>
 <translation id="4393974575368329991">Bottom navigation toolbar</translation>
+<translation id="8727059712928806451">Enable bottom bar</translation>
 <translation id="1834226716203076292">Show a bottom bar for quick access to home, bookmarks, and search</translation>
 <translation id="1422686363939271829">This setting is disabled when the bottom address bar position is selected</translation>
 <translation id="6587448235155023666">Your changes will take effect the next time you relaunch Brave</translation>
@@ -398,6 +396,12 @@ Are you sure you want to do this?</translation>
 <translation id="8793108040181436796">Widgets</translation>
 <translation id="8643377320501056697">Show Top Sites</translation>
 <translation id="7275773481201277457">Show Brave Stats</translation>
+<translation id="8516804522688861636">Show frequently visited sites</translation>
+<translation id="4546260624932151782">Show favourites</translation>
+<translation id="5313967007315987356">Add site</translation>
+<translation id="1773147648972887693">Show frequently visited</translation>
+<translation id="752098910262610337">Show shortcuts</translation>
+<translation id="7134741506051403308">Hide widget</translation>
 <translation id="7462178177755090262">Opening Screen</translation>
 <translation id="5365434987337264071">Last open tab</translation>
 <translation id="6019856124237323989">{HOURS, plural,
@@ -1001,6 +1005,13 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="7530313002494358590">Enabling or disabling a Brave feature requires a browser restart to apply changes. Please tap <ph name="BEGIN_BOLD"/>Restart now<ph name="END_BOLD"/> once Brave Origin has finished updating.</translation>
 <translation id="1028940738207645746">Are you sure you want to reset all settings to default?</translation>
 <translation id="5939518447894949180">Reset</translation>
+<translation id="3222790865318305905">Activation limit reached</translation>
+<translation id="3787857711016546034">To prevent fraud, Origin activations are rate limited. But you can always request more activations to use your Origin licence on more devices. Just click the Request more activations option, or <ph name="CONTACT_SUPPORT"/> for help.</translation>
+<translation id="6760819753412779585">contact support</translation>
+<translation id="571697836019670200">Request more activations</translation>
+<translation id="9019545131475425538">Processing…</translation>
+<translation id="7242700630179071243">Ready to activate</translation>
+<translation id="5463918917265356202">Brave Origin is now active on this device. In order to start using the feature, you need to restart the browser. Would you like to restart now?</translation>
 <translation id="8554205386170195281">Purchase</translation>
 <translation id="8613144770663526433">Sign in with Brave Wallet</translation>
 <translation id="3696514931437952995">You are signing into <ph name="ORIGIN"/>. Brave wallet will share your wallet address with <ph name="ORIGIN"/>.</translation>

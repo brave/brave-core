@@ -193,9 +193,6 @@
 <translation id="5668852698659986622">Povolit sponzorované reklamy</translation>
 <translation id="431194936581466649">Pomozte podpořit misi Brave vybudovat nezávislý web, který dává uživatele na první místo, prostřednictvím sponzorovaných reklam. Výkon reklam měříme soukromě, aniž bychom vás identifikovali.</translation>
 <translation id="1939813747486101115">Zjistit více o sponzorovaných reklamách</translation>
-<translation id="8347743943525229984">Povolit průzkumy Brave</translation>
-<translation id="6022939994702081659">Umožňuje službě Brave zobrazovat na nové kartě odkazy na soukromé průzkumy. Průzkumy nám pomáhají vytvářet lepší funkce a měřit účinnost reklamních kampaní v prohlížeči.</translation>
-<translation id="7746496306508543965">Další informace o průzkumech Brave</translation>
 <translation id="410351446219883937">Automatické přehrávání</translation>
 <translation id="7445411102860286510">Povolit webům automaticky přehrávat ztlumená videa (doporučeno)</translation>
 <translation id="7837721118676387834">Povolit automatické přehrávání ztlumených videí na konkrétním webu.</translation>
@@ -223,6 +220,7 @@
 <translation id="9040069796107003510">Ikona odměn Brave</translation>
 <translation id="6333347122924254968">Zobrazit ikonu Odměny Brave v adresním řádku</translation>
 <translation id="4393974575368329991">Spodní navigační lišta</translation>
+<translation id="8727059712928806451">Povolit spodní panel</translation>
 <translation id="1834226716203076292">Zobrazit spodní lištu pro rychlý přístup k domovské stránce, záložkám a vyhledávání</translation>
 <translation id="1422686363939271829">Toto nastavení je zakázáno, když je vybrána spodní pozice adresního řádku.</translation>
 <translation id="6587448235155023666">Vaše změny se projeví při příštím spuštění Brave</translation>
@@ -398,6 +396,12 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="8793108040181436796">Widgety</translation>
 <translation id="8643377320501056697">Ukázat Top stránky</translation>
 <translation id="7275773481201277457">Zobrazit statistiky Brave</translation>
+<translation id="8516804522688861636">Zobrazit často navštěvované stránky</translation>
+<translation id="4546260624932151782">Zobrazit oblíbené</translation>
+<translation id="5313967007315987356">Přidat web</translation>
+<translation id="1773147648972887693">Zobrazit často navštěvované</translation>
+<translation id="752098910262610337">Zobrazit zkratky</translation>
+<translation id="7134741506051403308">Skrýt widget</translation>
 <translation id="7462178177755090262">Úvodní obrazovka</translation>
 <translation id="5365434987337264071">Poslední otevřená záložka</translation>
 <translation id="6019856124237323989">{HOURS, plural, =1 {Nová karta po <ph name="HOURS_ONE"/> hodině nečinnosti} few {Nová karta po <ph name="HOURS_MANY"/> hodinách nečinnosti} many {Nová karta po <ph name="HOURS_MANY"/> hodinách nečinnosti} other {Nová karta po <ph name="HOURS_MANY"/> hodinách nečinnosti}}</translation>
@@ -998,6 +1002,13 @@ Pokud tuto žádost nepřijmete, síť VPN se znovu nepřipojí a vaše připoje
 <translation id="7530313002494358590">Povolení nebo zakázání funkce Brave vyžaduje restartování prohlížeče, aby se změny projevily. Po dokončení aktualizace Brave Origin prosím klepněte na <ph name="BEGIN_BOLD"/>Restartovat nyní<ph name="END_BOLD"/>.</translation>
 <translation id="1028940738207645746">Opravdu chcete resetovat všechna nastavení na výchozí hodnoty?</translation>
 <translation id="5939518447894949180">Resetovat</translation>
+<translation id="3222790865318305905">Dosažen limit aktivací</translation>
+<translation id="3787857711016546034">Aby se zabránilo podvodům, jsou aktivace Origin omezeny. Vždy ale můžete požádat o další aktivace, abyste mohli používat svou licenci Origin na více zařízeních. Stačí kliknout na možnost Požádat o další aktivace, nebo <ph name="CONTACT_SUPPORT"/> pro pomoc.</translation>
+<translation id="6760819753412779585">kontaktovat podporu</translation>
+<translation id="571697836019670200">Požádat o další aktivace</translation>
+<translation id="9019545131475425538">Zpracování…</translation>
+<translation id="7242700630179071243">Připraveno k aktivaci</translation>
+<translation id="5463918917265356202">Brave Origin je nyní na tomto zařízení aktivní. Chcete-li začít funkci používat, musíte prohlížeč restartovat. Chcete jej restartovat nyní?</translation>
 <translation id="8554205386170195281">Koupit</translation>
 <translation id="8613144770663526433">Přihlásit se peněženkou Brave Wallet</translation>
 <translation id="3696514931437952995">Přihlašujete se do <ph name="ORIGIN"/>. Peněženka Brave Wallet bude s <ph name="ORIGIN"/> sdílet adresu vaší peněženky.</translation>

@@ -3,18 +3,14 @@
 <translationbundle lang="si">
 <translation id="1751249301761991853">පුද්ගලික</translation>
 <translation id="3333887201479867589">Brave පාරිතෝෂික</translation>
-<translation id="7561196759112975576">සැමවිට</translation>
-<translation id="7961015016161918242">කවදාවත් නැහැ</translation>
 <translation id="8507663778530179003">සියලු ‌පොත්යොමු බොත්තම පෙන්වන්න</translation>
 <translation id="9018648632047670921">සියලු පොත්යොමු බොත්තම පෙන්වන්න</translation>
 <translation id="7630214457764713113">පිරිසිදු සබැඳියේ පිටපතක්</translation>
 <translation id="7973394300052703468">නව පෞද්ගලික කවුළුව</translation>
 <translation id="4615489450165434530">කැඩුණු අඩවියක් වාර්තා කරන්න</translation>
 <translation id="8097438084542431276">පිරිසිදු සබැඳියේ පිටපතක්</translation>
-<translation id="4678672101289648246">නව පටිති පිටුවේ පමණි</translation>
 <translation id="6516243500644829484">නව පෞද්ගලික කවුළුව</translation>
 <translation id="1209739344687072997">කැඩුණු අඩවියක් වාර්තා කරන්න</translation>
-<translation id="8294286161128352783">නව පටිති පිටුවේ පමණි</translation>
 <translation id="6406506848690869874">සමමුහූර්තය</translation>
 <translation id="1544192797660353713">පසුම්බිය</translation>
 <translation id="2361906291514218784">Leo AI</translation>
@@ -194,7 +190,9 @@
 <translation id="5977931179408079967">පිහිටීම</translation>
 <translation id="3790384768741064842">දකුණට ගෙනයන්න</translation>
 <translation id="7444424316576061724">වමට ගෙනයන්න</translation>
+<translation id="7561196759112975576">සැමවිට</translation>
 <translation id="7060352228894039151">මූසිකය මත</translation>
+<translation id="7961015016161918242">කවදාවත් නැහැ</translation>
 <translation id="8981254605840444865">සැකසුම් පෙන්වන්න</translation>
 <translation id="59174027418879706">සබලයි</translation>
 <translation id="4176463684765177261">අබලයි</translation>
@@ -220,6 +218,7 @@
 <translation id="4515057635283480525">ඉන්ටර්නෙට් ලේඛනාගාරය බොහෝ වෙබ් පිටුවල පැරණි අනුවාද සුරකියි. ඔබට මෙම පිටුව ලේඛනාගාරයේ සොයා බැලීමට අවශ්‍යද?</translation>
 <translation id="8252977752585110703">සමාවෙන්න, අපි ඉන්ටර්නෙට් ලේඛනාගාරය පරීක්ෂා කළ අතර එහි මෙම පිටුවේ සංරක්‍ෂිත අනුවාදයක් නොමැත.</translation>
 <translation id="8748778103033196270">ලේඛනාගාරයේ බලන්න</translation>
+<translation id="7369915833843501413">ලේඛනාගාරයේ සොයමින්</translation>
 <translation id="191143826155037518"><ph name="BEGIN_LINK_MPL"/>මොසිල්ලා පොදු බලපත්‍රය 2.0<ph name="END_LINK_MPL"/> (MPL) යටතේ බ්‍රේව් ලද හැකි අතර වෙනත් විවිධ බලපත්‍ර යටතේ <ph name="BEGIN_LINK_OSS"/>විවෘත මූලාශ්‍ර මෘදුකාංග<ph name="END_LINK_OSS"/> ඇතුළත් වේ.
         මෙම <ph name="BEGIN_LINK_SOURCE_CODE"/>පිටපත සෑදීමට<ph name="END_LINK_SOURCE_CODE"/> භාවිතා කළ <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>මූලාශ්‍ර කේත බාගෙන ඔබම තනන්නේ කෙසේදැයි<ph name="END_LINK_BUILD_INSTRUCTIONS"/> පිළිබඳ උපදෙස් කියවීමට හැකිය.</translation>
 <translation id="4474155171896946103">සියලු පටිති වලට පොත්යොමු තබන්න...</translation>
@@ -370,7 +369,7 @@
 <translation id="7985042437720138349">මෙම විශේෂාංගය ඔබගේ විවෘත ටැබ් පිළිබඳ දත්ත Brave හි AI බලයෙන් ක්‍රියාත්මක වන බ්‍රව්සර් සහායක Leo වෙත යවයි.</translation>
 <translation id="6165508094623778733">තව දැනගන්න</translation>
 <translation id="7557539689487606886">ආධික්‍ය ගන්න</translation>
-<translation id="1035309871698658326">විවෘත කළ විට, මෙය සියලුම පුද්ගලික නොවන ටැබ් වල මාතෘකා සහ ආරම්භය වර්ගීකරණය කිරීම සඳහා ස්වයංක්‍රීයව ලියෝ වෙත යවනු ඇත.</translation>
+<translation id="7103144720752576727">විවෘත කළ විට, මෙය සියලුම පුද්ගලික නොවන ටැබ්වල මාතෘකා සහ Origin ස්වයංක්‍රීයව Leo වෙත ඒවා වර්ගීකරණය කිරීමට යවයි. ඔබ පිටු අන්තර්ගතය යැවීම ද සක්‍රීය කළහොත්, එක් එක් ටැබයේ පෙළෙහි කෙටි උද්ධෘතද යවනු ලැබේ.</translation>
 <translation id="3435896845095436175">සබල කරන්න</translation>
 <translation id="9031526219709160683">Brave එই site ගේ පෞද්ගලිকත්ව සැකසුම් ඔප්ටිමයිස් කිරීමට ඔබට උපකාර කළ හැකිය. ඔබ Brave ගේ යෝජනා සමාලෝචනය කිරීමට කැමැතිද?</translation>
 <translation id="5739953050957336013">යෝජනා සමාලෝචනය කරන්න</translation>
@@ -385,8 +384,6 @@
 <translation id="8570228839666486945">උපාංග මත AI</translation>
 <translation id="7447041379556102185">උපාංගය මත කථන හඳුනාගැනීම</translation>
 <translation id="3456536577668402695">ඔබගේ සෙවුම් සහ පිටු අන්තර්ගතයන් මෙම උපාංගය තුළ සැකසේ. කිසිවක් බ්‍රේව් වෙත නොයවන අතර මානව සමාලෝචකයන් විසින් නොදැකේ.</translation>
-<translation id="4751537843966994505">අර්ථමය ඉතිහාස සෙවීම</translation>
-<translation id="6175973371938222040">ඔබ ප්‍රාදේශීයව පිවිසෙන පිටු සුචිගත කරන්න එවිට ඔබට ඔබේ ඉතිහාසය අර්ථය අනුව සෙවිය හැක. සියලු සැකසුම් මෙම උපාංගයේ පවතී.</translation>
 <translation id="9156965752763025780">ඔබ ඊළඟ වතාවේ බ්‍රේව් දියත් කරන විට වෙනස්කම් යෙදෙනු ඇත</translation>
 <translation id="7179921470347911571">යළි දියත් කරන්න</translation>
 <translation id="1426410128494586442">ඔව්</translation>
@@ -424,6 +421,7 @@
 <translation id="4328541188421002379">ඔබගේ අඩංගුවට වැඩ/පෞද්ගලික ලෙස නමක් දිය හැක</translation>
 <translation id="4976989127264491396">දෝෂය: <ph name="ERROR_MESSAGE"/></translation>
 <translation id="5436069931267876389">අඩංගුව හමු නොවිණි</translation>
+<translation id="5831840958001766835">අයිතමය නැවත පිළිවෙළට සකසන්න. ගෙනයාමට ඊතල යතුරු භාවිතා කරන්න.</translation>
 <translation id="6055154402239241620">තදබදය පාලනය</translation>
 <translation id="8134521925475508805">ඔබගේ බ්‍රවුස් සැසි අතර වෙන්වීමක් ඇති කරමින්, විශේෂිත සන්දර්භයක ස්වයංක්‍රීයව විවෘත වීමට නිශ්චිත අඩවි වින්‍යාස කරන්න. <ph name="BEGIN_LINK"/>තව දැනගන්න<ph name="END_LINK"/></translation>
 <translation id="6944848312867106540">තදබදය පාලනය සබල කරන්න</translation>
@@ -476,10 +474,6 @@
 <translation id="7310387888625228830">Leo AI සහායක</translation>
 <translation id="5222974844674487962">Brave පුවත් බොත්තම පෙන්වන්න</translation>
 <translation id="2085436423511121572">Leo AI බොත්තම පෙන්වන්න</translation>
-<translation id="6156323911414505561">පොත්යොමු තීරුව පෙන්වන්න</translation>
-<translation id="4054323497808446566">පොත්යොමු තීරුව සියලු පිටු මත දිස්වේ</translation>
-<translation id="8693858092251192712">නව පටිති පිටු වල හැර අනෙකුත් සියලුම පිටු වල පොත්යොමු තීරුව සඟවා ඇත</translation>
-<translation id="7158817046543187970">පොත්යොමු තීරුව සියලු පිටු වල සඟවා ඇත</translation>
 <translation id="3416468988018290825">සෑමවිට පූර්ණ ඒ.ස.නි. පෙන්වන්න</translation>
 <translation id="5529693968082667490">පටිති සෙවුම බොත්තම පෙන්වන්න</translation>
 <translation id="1013121820689882118">වේගවත් කියවනය</translation>
@@ -611,6 +605,8 @@
 <translation id="5825943197137337319">පෙරනිමි ප්‍රසිද්ධ අතුරු මුහුණත පමණි</translation>
 <translation id="1689062823386843231">ප්‍රතියුක්තගත නොවන UDP අබල කරන්න</translation>
 <translation id="3540231253392253941">තල්ලු පණිවිඩ සඳහා ගූගල් සේවා භාවිතා කරන්න</translation>
+<translation id="2224032129673914306">අර්ථමය ඉතිහාස සෙවීම</translation>
+<translation id="6045998903985162478">ඔබ පිවිසෙන පිටු සුචිගත කරන්න, එවිට ඔබට ඒවා ඉතිහාසයේ, විවෘත ටැබ් සහ Leo හි පහසුවෙන් සොයාගත හැක.</translation>
 <translation id="5813105074916486721">ප්‍රාදේශීය ඉතිහාස රඳවා තබා ගැනීම</translation>
 <translation id="5671611745062206644">Brave ඔබේ බ්‍රවුසින් ඉතිහාසය ප්‍රාදේශීයව ගබඩා කරන කාලය</translation>
 <translation id="7184510058087008090">දවස් 1</translation>
@@ -874,6 +870,7 @@
 <translation id="2618193846561624884">ඔබට පවතින ජාලය යාවත්කාලයට වුවමනා ද?</translation>
 <translation id="1643029991199044105">Ctrl-Tab සමඟ මෑතදී භාවිත පටිති සන්තානය</translation>
 <translation id="2775956301559569472">404 පිටු සඳහා වේබැක් මැෂින් ප්‍රේරකය පෙන්වන්න</translation>
+<translation id="8485716275262929774">404 පිටුවල Wayback Machine වෙතින් සුරැකි අනුවාද ස්වයංක්‍රීයව පූරණය කරන්න</translation>
 <translation id="3095201688102519917">පටිති කිහිපයක් සහිත කවුළුවක් වසන විට අඟවන්න</translation>
 <translation id="7120553802660696133">අන්තිම පටිත්ත වසන විට කවුළුව වසන්න</translation>
 <translation id="3394171693948989253">පිටවීමේ දී Esc එබීමට පූර්ණ තිර සිහිකැඳවීම පෙන්වන්න</translation>
@@ -883,6 +880,8 @@
 <translation id="1529674267267221673">ඔබ අඩවියක් මත දකුණින් එබූ විට සන්දර්භ වට්ටෝරුවේ ලියෝ දිස්වනු ඇත. මෙය වත්මන් පිටුවෙන් ලියෝ වෙත සන්දර්භය යවනු ඇත.</translation>
 <translation id="5226020406479918122">පටිති නාභිගත ප්‍රකාරය</translation>
 <translation id="3705539672403311123">ටැබ් සෙවුම් පිටුවේ ටැබ් සංවිධානය සක්‍රීය කරන්න. විවෘත කළ විට, මෙය සියලුම පුද්ගලික නොවන ටැබ් වල මාතෘකා සහ මූලාරම්භයන් වර්ගීකරණය කිරීම සඳහා ලියෝ වෙත ස්වයංක්‍රීයව යවනු ඇත. <ph name="BEGIN_LINK"/>තව දැනගන්න<ph name="END_LINK"/></translation>
+<translation id="2002238795517052616">ටැබ් නාභිගත කිරීම සඳහා පිටු අන්තර්ගතය යවන්න</translation>
+<translation id="2276823422122514441">එසේම එක් එක් ටැබයේ පෙළ කෙටි උපුටනයන් ද යවන්න, එවිට ටැබ් ඒවායේ මාතෘකාව වෙනුවට පිටුවක් ගැන අනුව කාණ්ඩ කරනු ලැබේ. උපුටනයන් Leo වෙත, නැතහොත් ඔබ ටැබ් නාභිගත කිරීම සඳහා තෝරාගත් ඔබේම ආකෘතියකට යයි. මෙයට <ph name="BEGIN_LINK"/><ph name="SEMANTIC_HISTORY_SEARCH"/><ph name="END_LINK"/> අවශ්‍ය වේ, එය ඔබේ උපාංගයේ උපුටනයන් ගොඩනඟයි.</translation>
 <translation id="9049433973274198706">ටැබ් ফෝකස සඳහා පෙරනිමි ආදර්ශකය</translation>
 <translation id="2161546758719933059">ටැබ අවධාන ප්‍රකාරයේදී ඔබගේ ටැබ සංවිධානය කිරීමට භාවිතා කරන ආකෘතිය. <ph name="BEGIN_LINK"/>තවත් දැනගන්න<ph name="END_LINK"/></translation>
 <translation id="8172263161008556851">සංවාදයේ යෝජිත ප්‍රේරක පෙන්වන්න</translation>
@@ -964,9 +963,6 @@
 <translation id="1838374766361614909">සෙවීම හිස් කරන්න</translation>
 <translation id="5126255551970171328">මතකයක් සොයන්න</translation>
 <translation id="7402116145895962069">ඔබගේ Ollama ප්‍රාදේශීය ආදර්ශ සමමුහුර්ත කරන්න</translation>
-<translation id="5985516785067818307">Survey Panelist</translation>
-<translation id="8347743943525229984">Brave සමීක්ෂණ අවසර දෙන්න</translation>
-<translation id="3204080538332044581">Brave පටිත්තයේ පෞද්ගලික සමීක්ෂණ සඳහා සම්බන්ධ කිරීම් පෙන්වීමට අවසර දෙන්න. සමීක්ෂණ අපට වෙබ් භාවිතය සහ බ්‍රවුසිං අඩ් කැම්පේන් සඳහා පරිපූර්ණ විශේෂාංග ගොඩනැඟීමට සහ ප්‍රමාණන කිරීමට සහාය ලබා දෙයි. <ph name="BEGIN_LINK"/>වැඩිදුර ඉගෙන ගන්න<ph name="END_LINK"/></translation>
 <translation id="349846214503465941">වාදන ලැයිස්තුව සබල කරන්න</translation>
 <translation id="7903608716704052878">මාර්ගඅපගතව බැලීමට ස්වයංක්‍රීයව ගොනු එක් කරන්න</translation>
 <translation id="384666453982355633">මෙම විකල්පය ස්වයංක්‍රීයව මාධ්‍ය ගොනු නිහිතගත කරයි. එවිට ඔබට අන්තර්ජාල සම්බන්ධතාවකින් තොරව ඒවා වාදනයට හැකිය</translation>

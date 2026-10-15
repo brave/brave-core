@@ -3,18 +3,14 @@
 <translationbundle lang="mn">
 <translation id="1751249301761991853">Хувийн</translation>
 <translation id="3333887201479867589">Brave-н Урамшуулал</translation>
-<translation id="7561196759112975576">Байнга</translation>
-<translation id="7961015016161918242">Хэзээ ч</translation>
 <translation id="8507663778530179003">Бүх Хадгалагдсан Хуудасны Товчийг Харуулах</translation>
 <translation id="9018648632047670921">Бүх хадгалагдсан хуудасны товчийг харуулах</translation>
 <translation id="7630214457764713113">Цэвэр линк хуулах</translation>
 <translation id="7973394300052703468">Шинэ &amp;Private Window</translation>
 <translation id="4615489450165434530">Эвдрэлтэй сайтыг мэдээлэх</translation>
 <translation id="8097438084542431276">Цэвэр линк хуулах</translation>
-<translation id="4678672101289648246">Зөвхөн шинэ табын хуудсан дээр</translation>
 <translation id="6516243500644829484">Шинэ &amp;private window</translation>
 <translation id="1209739344687072997">Эвдрэлтэй сайтыг мэдээлэх</translation>
-<translation id="8294286161128352783">Зөвхөн шинэ табын хуудсан дээр</translation>
 <translation id="6406506848690869874">Синк хийх</translation>
 <translation id="1544192797660353713">Хэтэвч</translation>
 <translation id="2361906291514218784">Leo AI</translation>
@@ -195,7 +191,9 @@
 <translation id="5977931179408079967">Байрлал</translation>
 <translation id="3790384768741064842">Баруун талд харуулах</translation>
 <translation id="7444424316576061724">Зүүн талд харуулах</translation>
+<translation id="7561196759112975576">Байнга</translation>
 <translation id="7060352228894039151">Дээр хулганаар ороход</translation>
+<translation id="7961015016161918242">Хэзээ ч</translation>
 <translation id="8981254605840444865">Тохиргоог харуулах</translation>
 <translation id="59174027418879706">Идэвхжүүлсэн</translation>
 <translation id="4176463684765177261">Идэвхгүй болсон</translation>
@@ -221,6 +219,7 @@
 <translation id="4515057635283480525">Internet Archive нь олон вэб хуудасны өмнөх хувилбаруудыг хадгалдаг. Та энэ хуудсыг архиваас хайхыг хүсэж байна уу?</translation>
 <translation id="8252977752585110703">Уучлаарай, бид Internet Archive-ыг шалгасан бөгөөд энэ хуудасны архивласан хувилбар байхгүй байна.</translation>
 <translation id="8748778103033196270">Архиваас хайх</translation>
+<translation id="7369915833843501413">Архиваас хайж байна</translation>
 <translation id="191143826155037518">Brave танд <ph name="BEGIN_LINK_MPL"/>Mozilla Public License 2.0<ph name="END_LINK_MPL"/> (MPL) лицензээр болон бусад олон төрлийн <ph name="BEGIN_LINK_OSS"/>нээлттэй эхийн программ хангамжийн<ph name="END_LINK_OSS"/> лицензүүдийн дагуу ашиглах боломжтой. Эндээс <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>татаж авч хэрхэн өөрөө байгуулах талаар мэдээг<ph name="END_LINK_BUILD_INSTRUCTIONS"/> уншиж болно <ph name="BEGIN_LINK_SOURCE_CODE"/>эх кодын <ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">Бүх табуудыг хадгалах...</translation>
 <translation id="3987546108749866209">Босоо табуудыг ашиглах</translation>
@@ -370,7 +369,7 @@
 <translation id="7985042437720138349">Энэ функц нь таны нээлттэй табуудын мэдээллийг Leo, Brave-ын AI-дээр ажилладаг хөтөчийн туслахад илгээдэг.</translation>
 <translation id="6165508094623778733">Дэлгэрэнгүйг харах</translation>
 <translation id="7557539689487606886">Премиум багцаар явах</translation>
-<translation id="1035309871698658326">Нээгдэх үед энэ нь бүх нууцлалгүй табуудын гарчиг ба эх үүсвэрийг автоматаар Leo-д илгээж ангилуулна.</translation>
+<translation id="7103144720752576727">Нээгдсэн үед энэ нь бүх хувийн бус табуудын гарчиг болон origin-ийг Leo-д автоматаар илгээж ангилах болно. Хэрэв та хуудасны агуулга илгээхийг мөн асаавал, таб бүрийн текстийн богино хэсгүүдийг мөн илгээнэ.</translation>
 <translation id="3435896845095436175">Идэвхжүүлэх</translation>
 <translation id="9031526219709160683">Brave төхөөрөмж дээрх энэ сайтын нууцлалын тохиргоог оновчтой болгоход туслах боломжтой. Та Brave-ын санал хүсэлтүүдийг үзэх сонирхолтой юу?</translation>
 <translation id="5739953050957336013">Санал хүсэлтүүдийг үзэх</translation>
@@ -385,8 +384,6 @@
 <translation id="8570228839666486945">Төхөөрөмжид суурилсан AI</translation>
 <translation id="7447041379556102185">Төхөөрөмж дээрх ярианы таних</translation>
 <translation id="3456536577668402695">Таны хайлт болон хуудасны агуулгыг энэ төхөөрөмж дээр боловсруулна. Brave-д юу ч илгээгдэхгүй, мөн хүний шалгагч нар үзэхгүй.</translation>
-<translation id="4751537843966994505">Утга санааны түүхийн хайлт</translation>
-<translation id="6175973371938222040">Таны зочилсон хуудсуудыг локал байдлаар индексжүүлж, түүхээ утга санаагаар нь хайх боломжтой. Бүх боловсруулалт энэ төхөөрөмж дээр хийгдэнэ.</translation>
 <translation id="9156965752763025780">Өөрчлөлтүүд тань Brave дахин эхлэхэд хүчин төгөлдөр болох болно.</translation>
 <translation id="7179921470347911571">Одоо дахин эхлүүлэх</translation>
 <translation id="1426410128494586442">Тийм</translation>
@@ -424,6 +421,7 @@
 <translation id="4328541188421002379">Ажил эсвэл Хувийн гэх зэрэг саванд нэр өгөөрэй</translation>
 <translation id="4976989127264491396">Алдаа: <ph name="ERROR_MESSAGE"/></translation>
 <translation id="5436069931267876389">Сав олдсонгүй</translation>
+<translation id="5831840958001766835">Элементийг дахин эрэмбэлэх. Зөөхийн тулд сумтай товчлууруудыг ашиглана уу.</translation>
 <translation id="6055154402239241620">Урсгал удирдлага</translation>
 <translation id="8134521925475508805">Тодорхой site-уудыг тодорхой контекстэд автоматаар нээхээр тохируулж, вэб хайлтын сессүүдийн хооронд тусгаарлалт үүсгэнэ үү. <ph name="BEGIN_LINK"/>Дэлгэрэнгүй<ph name="END_LINK"/></translation>
 <translation id="6944848312867106540">Урсгал удирдлагыг идэвхжүүлэх</translation>
@@ -476,10 +474,6 @@
 <translation id="7310387888625228830">Leo AI туслах</translation>
 <translation id="5222974844674487962">Brave Шинэ мэдээ товчийг харуулах</translation>
 <translation id="2085436423511121572">Leo AI товчийг харуулах</translation>
-<translation id="6156323911414505561">Хадгалагдсан хуудасны мөрийг харуулах</translation>
-<translation id="4054323497808446566">Хадгалсан хуудасны баар нь бүх хуудсанд харагдаж байна</translation>
-<translation id="8693858092251192712">Хадгалсан хуудасны баар нь зөвхөн шинэ таб хуудсанд харагдахгүй байна</translation>
-<translation id="7158817046543187970">Хадгалсан хуудасны баар нь бүх хуудсанд харагдахгүй байна</translation>
 <translation id="3416468988018290825">Бүтэн URL-ийг үргэлж харуулах</translation>
 <translation id="5529693968082667490">Таб хайлтын товчийг харуулах</translation>
 <translation id="1013121820689882118">Хурдан уншигч</translation>
@@ -611,6 +605,8 @@
 <translation id="5825943197137337319">Зөвхөн нийтийн интерфейсийг үндсэн тохиргоо болгох</translation>
 <translation id="1689062823386843231">Прокси ашиглаагүй UDP ажиллагааг хаах</translation>
 <translation id="3540231253392253941">Push зурваслахад Google үйлчилгээг ашиглах</translation>
+<translation id="2224032129673914306">Утга санааны түүхийн хайлт</translation>
+<translation id="6045998903985162478">Зочилсон хуудсуудаа индексжүүлснээр түүх, нээлттэй табууд болон Leo-гоос амархан олох боломжтой.</translation>
 <translation id="5813105074916486721">Локал түүх хадгалах хугацаа</translation>
 <translation id="5671611745062206644">Brave таны browsing history-г локал байдлаар хэр удаан хадгалах</translation>
 <translation id="7184510058087008090">1 өдөр</translation>
@@ -874,6 +870,7 @@
 <translation id="2618193846561624884">Та одоо байгаа сүлжээг шинэчлэхийг хүсч байна уу?</translation>
 <translation id="1643029991199044105">Ctrl-Tab товчитой хамгийн сүүлд ашигласан табуудыг дамжуулах</translation>
 <translation id="2775956301559569472">404 хуудсан дээр Wayback Machine сануулга харуулах</translation>
+<translation id="8485716275262929774">404 хуудсууд дээр Wayback Machine-ээс хадгалагдсан хувилбаруудыг автоматаар ачаалах</translation>
 <translation id="3095201688102519917">Олон табтай цонхыг хаахын өмнө намайг сэрэмжлүүлэх</translation>
 <translation id="7120553802660696133">Сүүлийн табыг хаахад цонхыг хаах</translation>
 <translation id="3394171693948989253">Гарахдаа Esc-ийг дар гэж бүтэн дэлгэцийн сануулга харуулах</translation>
@@ -883,6 +880,8 @@
 <translation id="1529674267267221673">Leo вэбсайт дээр хулганы баруун товчийг дарахад контекст цэсэнд гарч ирнэ. Энэ нь одоогийн вэб хуудсаны контекстийг Leo-д илгээнэ.</translation>
 <translation id="5226020406479918122">Таб Анхааруулга Горим</translation>
 <translation id="3705539672403311123">Таб Хайлт хуудасанд табыг ангилахыг идэвхжүүл. Нээгдэх үед энэ нь бүх нууцлалгүй табуудын гарчиг ба эх үүсвэрийг автоматаар Leo-д илгээж ангилуулна. <ph name="BEGIN_LINK"/>Илүү ихийг сур <ph name="END_LINK"/></translation>
+<translation id="2002238795517052616">Таб фокусд зориулж хуудасны агуулгыг илгээх</translation>
+<translation id="2276823422122514441">Мөн таб бүрийн текстийн богино хэсгүүдийг илгээснээр табуудыг гарчгаар нь биш, харин хуудасны агуулгаар нь бүлэглэнэ. Хэсгүүд нь Leo руу, эсвэл таб фокусд та өөрийн загвараа сонгосон бол тэр загвар руу очно. Үүнд таны төхөөрөмж дээр хэсгүүдийг бүрдүүлдэг <ph name="BEGIN_LINK"/><ph name="SEMANTIC_HISTORY_SEARCH"/><ph name="END_LINK"/> шаардлагатай.</translation>
 <translation id="9049433973274198706">Таб фокусын үндсэн загвар</translation>
 <translation id="2161546758719933059">Таб Фокус Горимд табуудыг зохион байгуулахад ашиглагдах загвар. <ph name="BEGIN_LINK"/>Дэлгэрэнгүй<ph name="END_LINK"/></translation>
 <translation id="8172263161008556851">Харилцан ярианд санал болгосон сануулгуудыг харуулах</translation>
@@ -964,9 +963,6 @@
 <translation id="1838374766361614909">Хайлт арилгах</translation>
 <translation id="5126255551970171328">Санах ой дотроос хайх</translation>
 <translation id="7402116145895962069">Орон нутгийн Ollama загваруудаа синк хийнэ үү</translation>
-<translation id="5985516785067818307">Судалгаанд оролцогч</translation>
-<translation id="8347743943525229984">Brave судалгаануудыг зөвшөөрөх</translation>
-<translation id="3204080538332044581">Brave танд судалгаанд оролцох хувийн хандалтыг шинэ таб хуудсанд харуулахыг зөвшөөрнө. Судалгаа нь бидэнд шинэ онцлогуудыг нэмэгдүүлэх болон хөтөч доторхи сурталчилгааны компанит ажлуудын үр дүнг хэмжихэд тусалдаг. <ph name="BEGIN_LINK"/>Дэлгэрэнгүй унших<ph name="END_LINK"/></translation>
 <translation id="349846214503465941">Playlist-г идэвхжүүлэх</translation>
 <translation id="7903608716704052878">Офлайн үзэхийн тулд файлуудыг автоматаар нэмэх</translation>
 <translation id="384666453982355633">Энэ сонголт нь медиа файлуудыг автоматаар кэшлэх бөгөөд тэдгээрийг интернэт холболтгүйгээр тоглуулах боломжийг олгоно</translation>

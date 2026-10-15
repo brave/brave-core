@@ -1883,6 +1883,18 @@
 <translation id="2737084171727561244">Accesează Portofoliul</translation>
 <translation id="3499452861061048987">Adăugare token</translation>
 <translation id="5046066249040287308">Serviciul de utilitate pentru Portofelul Brave</translation>
+<translation id="8767749833522980474">Cripto</translation>
+<translation id="4509084261025090951">Obține cardul</translation>
+<translation id="3624463584770657372">Verifică-ți identitatea pentru a vedea numerele cardului și a începe să cheltuiești.</translation>
+<translation id="2508337767012636987">Apasă pentru a verifica</translation>
+<translation id="703964541421486259">Ascunde soldurile</translation>
+<translation id="302114796458112924">Afișează soldurile</translation>
+<translation id="9083210401924577263">Card Brave Rewards</translation>
+<translation id="2433507940547922241">Aspect</translation>
+<translation id="3435738964857648380">Securitate</translation>
+<translation id="6700561332544287722">Solicită deblocarea data viitoare</translation>
+<translation id="5605360570977617291">Ascunzi <ph name="CARD_NAME"/> din pagina principală?</translation>
+<translation id="2721464457853369512">Soldul tău <ph name="CARD_NAME"/> rămâne neschimbat. Aceasta doar ascunde cardul din pagina principală. Îl poți afișa din nou oricând în Setări, la secțiunea Portofel.</translation>
 <translation id="3155170474926428993">Lansatorul Tor</translation>
 <translation id="3745016858329272300">Informații generale</translation>
 <translation id="4045404575593562245">Evenimente control Tor</translation>
@@ -1922,7 +1934,6 @@ other {# surse}
 <translation id="6261915643960475695">Afaceri</translation>
 <translation id="8265589281845759879">Mașini</translation>
 <translation id="7726519849288907308">Vedete</translation>
-<translation id="8767749833522980474">Cripto</translation>
 <translation id="7577010593836079522">Cultură</translation>
 <translation id="6807791860691150411">Educație</translation>
 <translation id="3706423975342040244">Divertisment</translation>
@@ -2101,9 +2112,6 @@ other {# surse}
 <translation id="3067105725259639716">Configurați știrile Brave</translation>
 <translation id="6286510487460330478">Configurați comenzile rapide</translation>
 <translation id="9214819486716388964">Afișați Brave Talk</translation>
-<translation id="5950760360751948276">Afișați mere bara de marcaje</translation>
-<translation id="2960757369920422313">Afișați bara de marcaje pe NTP</translation>
-<translation id="522953399371747698">Ascundeți bara de marcaje</translation>
 <translation id="9079813619990532635">Exportă toate marcajele</translation>
 <translation id="134184943774258988">Comutator vizibilitate buton pentru toate marcajele</translation>
 <translation id="2158862020143233462">Comutator scuturi</translation>
@@ -2218,6 +2226,7 @@ other {# surse}
 <translation id="5820497878628354073">Cod de stare: <ph name="STATUS_CODE"/>, cod de stare intern: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">Ai ajuns la limita maximă a nivelului premium. Încearcă din nou peste câteva ore.</translation>
 <translation id="6873128487002733717">Ai atins limita premium pentru acest model. Selectează un alt model sau încearcă din nou mai târziu.</translation>
+<translation id="2688661132468689309">Ai atins limita premium pentru acest model. Se resetează în <ph name="RESET_DURATION"/> (la <ph name="RESET_TIME"/>). Selectează un alt model sau încearcă din nou atunci.</translation>
 <translation id="3683964919745779766">Ai atins limita pentru acest model sau nu mai ai credite. Te rugăm să încerci din nou mai târziu.</translation>
 <translation id="7692501701960747469">Cheia API configurată pentru acest model nu este valabilă. Te rugăm să verifici configurația și să încerci din nou.</translation>
 <translation id="7905602379229309187">Punctul final este în prezent supraîncărcat. Te rugăm să încerci din nou mai târziu.</translation>
@@ -2226,12 +2235,12 @@ other {# surse}
 <translation id="3852808100039989429">Salut, eu sunt Leo. Sunt un asistent IA complet găzduit de Brave. Sunt structurat pe baza Qwen VL 30B, un model creat de Alibaba Cloud pentru a fi performant și aplicabil la multe cazuri de utilizare. Qwen este găzduit de Brave prin intermediul propriei noastre infrastructuri securizate.<ph name="LINK_BEFORE"/>Află mai multe<ph name="LINK_AFTER"/></translation>
 <translation id="8659225822055186905">Salut, eu sunt Leo. Sunt un asistent IA de la Brave. Sunt structurat pe baza GLM-5.3 Flash, un model creat de Zhipu AI pentru a fi performant și aplicabil la multe cazuri de utilizare. GLM-5.3 Flash este găzduit de NEAR prin intermediul propriei lor infrastructuri securizate verificabil private.<ph name="LINK_BEFORE"/>Află mai multe<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">Salut, sunt Leo. Sunt un asistent AI oferit de Brave. Sunt alimentat de Claude Instant, un model creat de Anthropic pentru a susține sarcini conversaționale și de procesare a textului. Claude Instant este găzduit de Brave prin infrastructura noastră securizată.<ph name="LINK_BEFORE"/>Află mai multe<ph name="LINK_AFTER"/></translation>
-<translation id="3789772321824682783">Salut, eu sunt Leo. Sunt un asistent IA complet găzduit de Brave. Sunt structurat pe baza Claude Haiku, un model creat de Anthropic pentru sarcini conversaționale și de procesare de text. Claude Haiku este găzduit de Brave prin intermediul propriei noastre infrastructuri securizate.<ph name="LINK_BEFORE"/>Află mai multe<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Salut, eu sunt Leo. Sunt un asistent IA complet găzduit de Brave. Sunt structurat pe baza Claude Sonnet, un model creat de Anthropic pentru sarcini conversaționale și de procesare de text. Claude Sonnet este găzduit de Brave prin intermediul propriei noastre infrastructuri securizate.<ph name="LINK_BEFORE"/>Află mai multe<ph name="LINK_AFTER"/></translation>
-<translation id="3399141352144059821">Salut, eu sunt Leo. Sunt un asistent IA complet găzduit de Brave. Sunt structurat pe baza Grok 4.3, un model creat de xAI pentru a fi performant și aplicabil la multe cazuri de utilizare. Grok 4.3 este găzduit de Brave prin intermediul propriei noastre infrastructuri securizate.<ph name="LINK_BEFORE"/>Află mai multe<ph name="LINK_AFTER"/></translation>
-<translation id="8868813509973985458">Salut, eu sunt Leo. Sunt un asistent IA complet găzduit de Brave. Sunt structurat pe baza GPT 5.4, un model creat de OpenAI pentru a fi performant și aplicabil la multe cazuri de utilizare. GPT 5.4 este găzduit de Brave prin intermediul propriei noastre infrastructuri securizate.<ph name="LINK_BEFORE"/>Află mai multe<ph name="LINK_AFTER"/></translation>
+<translation id="6676306995311143470">Salut, eu sunt Leo. Sunt un asistent IA de la Brave. Sunt structurat pe baza Grok 4.6, modelul de raționament de ultimă generație al xAI de pe Amazon Bedrock Mantle. Grok 4.6 este furnizat prin infrastructura securizată AWS a Brave.<ph name="LINK_BEFORE"/>Află mai multe<ph name="LINK_AFTER"/></translation>
+<translation id="2394656730986208060">Salut, eu sunt Leo. Sunt un asistent IA de la Brave. Sunt structurat pe baza GPT 5.6 Luna, modelul rapid, cu latență redusă al OpenAI de pe Amazon Bedrock Mantle. GPT 5.6 Luna este furnizat prin infrastructura securizată AWS a Brave.<ph name="LINK_BEFORE"/>Află mai multe<ph name="LINK_AFTER"/></translation>
+<translation id="5278969721580944810">Salut, eu sunt Leo. Sunt un asistent IA de la Brave. Sunt structurat pe baza GPT 5.6 Terra, modelul de producție echilibrat al OpenAI de pe Amazon Bedrock Mantle. GPT 5.6 Terra este furnizat prin infrastructura securizată AWS a Brave.<ph name="LINK_BEFORE"/>Află mai multe<ph name="LINK_AFTER"/></translation>
 <translation id="5037359072717016032">Salut, eu sunt Leo. Sunt un asistent IA complet găzduit de Brave. Sunt structurat pe baza Mistral Large, un model creat de Mistral pentru a fi performant și aplicabil la multe cazuri de utilizare. Mistral Large este găzduit de Brave prin intermediul propriei noastre infrastructuri securizate.<ph name="LINK_BEFORE"/>Află mai multe<ph name="LINK_AFTER"/></translation>
-<translation id="4026902371301997261">Salut, eu sunt Leo. Sunt un asistent IA complet găzduit de Brave. Sunt structurat pe baza Qwen 3 235B, un model creat de Alibaba Cloud pentru a fi performant și aplicabil la multe cazuri de utilizare. Qwen 3 235B este găzduit de Brave prin intermediul propriei noastre infrastructuri securizate.<ph name="LINK_BEFORE"/>Află mai multe<ph name="LINK_AFTER"/></translation>
+<translation id="5475035333915581972">Salut, eu sunt Leo. Sunt un asistent IA de la Brave. Sunt structurat pe baza Qwen 3.8 Flash Next, un model creat de Alibaba Cloud pentru a fi performant și aplicabil la multe cazuri de utilizare. Qwen 3.8 Flash Next este găzduit de Brave prin intermediul propriei noastre infrastructuri securizate.<ph name="LINK_BEFORE"/>Află mai multe<ph name="LINK_AFTER"/></translation>
 <translation id="8720758690351028307">Salut, eu sunt Leo. Sunt un asistent IA complet găzduit de Brave. Sunt structurat pe baza Deepseek V3.2, un model creat de Deepseek pentru a fi performant și aplicabil la multe cazuri de utilizare. Deepseek V3.2 este găzduit de Brave prin intermediul propriei noastre infrastructuri securizate.<ph name="LINK_BEFORE"/>Află mai multe<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">Salut, eu sunt Leo. Sunt un asistent IA complet găzduit de Brave. Sunt structurat pe baza Claude Opus, un model creat de Anthropic pentru sarcini conversaționale și de procesare de text. Claude Opus este găzduit de Brave prin intermediul propriei noastre infrastructuri securizate.<ph name="LINK_BEFORE"/>Află mai multe<ph name="LINK_AFTER"/></translation>
 <translation id="7238858567393403597">Salut, eu sunt Leo. Sunt un asistent IA complet găzduit de Brave. Sunt structurat pe baza GLM-4-7-Flash, un model creat de Zhipu AI pentru a fi performant și aplicabil la multe cazuri de utilizare. GLM-4-7-Flash este găzduit de Brave prin intermediul propriei noastre infrastructuri securizate.<ph name="LINK_BEFORE"/>Află mai multe<ph name="LINK_AFTER"/></translation>
@@ -2244,7 +2253,6 @@ other {# surse}
 <translation id="4773408460773097271">Ollama</translation>
 <translation id="631371844654031449">Modele recomandate</translation>
 <translation id="6568044140836233369">Afișați toate modelele</translation>
-<translation id="6187065185557150870">Chat</translation>
 <translation id="4685048769603134644">Deschideți pagina întreagă</translation>
 <translation id="2961040541145689181">Chat nou</translation>
 <translation id="7557539689487606886">Alege Premium</translation>
@@ -2368,13 +2376,13 @@ other {# surse}
 <translation id="887511360213807449">Istoricul este dezactivat</translation>
 <translation id="5380979378058584412">Pentru a vizualiza conversațiile anterioare cu Leo, trebuie să activezi istoricul conversațiilor.</translation>
 <translation id="3185367320601718531">Conversație și generare de text</translation>
-<translation id="2793458212460902934">Rapid • Căutare • Instrumente</translation>
 <translation id="8506027496671575183">Căutare • Viziune • Instrumente</translation>
 <translation id="3184606955650139158">Rapid • Căutare • Viziune</translation>
 <translation id="7465032796278724624">Privacy verificabilă cu NEAR AI TEE</translation>
 <translation id="8782867266498869301">Modelul se schimbă dinamic pentru a folosi cel mai bun pentru sarcină</translation>
 <translation id="7348809809749151120">Rapid • Căutare</translation>
 <translation id="3213834013136637671">Căutare • Viziune</translation>
+<translation id="2793458212460902934">Rapid • Căutare • Instrumente</translation>
 <translation id="5276681919620506371">Căutare • Instrumente</translation>
 <translation id="7434375176361995333">Rezumate • Rapid</translation>
 <translation id="3965507912994218570">Setări Leo</translation>
@@ -2938,9 +2946,7 @@ Permiteți-ne să vă conectăm!</translation>
 <translation id="3750210661641549834">Pentru a crea contul, verifică adresa de email.</translation>
 <translation id="4351175281479794167">Introdu codul de verificare</translation>
 <translation id="1672793037892810340">Ar trebui să fi primit un email cu un cod pe care trebuie să-l introduci.</translation>
-<translation id="4821255729182569254">Trimiteți din nou e-mailul de confirmare</translation>
 <translation id="5837679375142747484">Nu vezi emailul? Verifică folderul de spam sau <ph name="BEGIN_LINK"/>retrimite-l<ph name="END_LINK"/>.</translation>
-<translation id="1080588816740959885">Nu vezi emailul? Verifică folderul de spam sau retrimite-l.</translation>
 <translation id="1020730839570724178">Anulează înregistrarea</translation>
 <translation id="7155125570724238786">Pentru a-ți reseta parola, te rog verifică adresa de email.</translation>
 <translation id="816074628631172140">Adresa ta de email a fost verificată. Setează o parolă nouă pentru a finaliza resetarea parolei.</translation>

@@ -3,18 +3,14 @@
 <translationbundle lang="fa">
 <translation id="1751249301761991853">شخصی</translation>
 <translation id="3333887201479867589">پاداش‌های Brave</translation>
-<translation id="7561196759112975576">همیشه</translation>
-<translation id="7961015016161918242">هرگز</translation>
 <translation id="8507663778530179003">دکمه نمایش همه نشانک‌ها</translation>
 <translation id="9018648632047670921">دکمه نمایش همه نشانک‌ها</translation>
 <translation id="7630214457764713113">کپی کردن پیوند تمیز</translation>
 <translation id="7973394300052703468">پنجره &amp;خصوصی جدید</translation>
 <translation id="4615489450165434530">گزارش خرابی سایت</translation>
 <translation id="8097438084542431276">کپی کردن پیوند تمیز</translation>
-<translation id="4678672101289648246">فقط در صفحه زبانه جدید</translation>
 <translation id="6516243500644829484">&amp;پنجره جدید حالت ناشناس</translation>
 <translation id="1209739344687072997">گزارش خرابی سایت</translation>
-<translation id="8294286161128352783">فقط در صفحه زبانه جدید</translation>
 <translation id="6406506848690869874">همگام‌سازی</translation>
 <translation id="1544192797660353713">کیف پول</translation>
 <translation id="2361906291514218784">هوش مصنوعی Leo</translation>
@@ -194,7 +190,9 @@
 <translation id="5977931179408079967">موقعیت</translation>
 <translation id="3790384768741064842">حرکت به سمت راست</translation>
 <translation id="7444424316576061724">حرکت به سمت چپ</translation>
+<translation id="7561196759112975576">همیشه</translation>
 <translation id="7060352228894039151">با حرکت ماوس</translation>
+<translation id="7961015016161918242">هرگز</translation>
 <translation id="8981254605840444865">نمایش تنظیمات</translation>
 <translation id="59174027418879706">فعال شد</translation>
 <translation id="4176463684765177261">غیرفعال شد</translation>
@@ -220,6 +218,7 @@
 <translation id="4515057635283480525">آرشیو اینترنتی (Internet Archive) نسخه‌های قبلی بسیاری از صفحات وب را ذخیره می‌کند. آیا می‌خواهید این صفحه را در آرشیو جستجو کنید؟</translation>
 <translation id="8252977752585110703">متأسفیم، آرشیو اینترنتی را بررسی کردیم و نسخه آرشیوشده‌ای از این صفحه ندارد.</translation>
 <translation id="8748778103033196270">جستجو در آرشیو</translation>
+<translation id="7369915833843501413">جستجو در آرشیو</translation>
 <translation id="191143826155037518">Brave تحت <ph name="BEGIN_LINK_MPL"/>مجوزهای عمومی Mozilla نسخه 2.0<ph name="END_LINK_MPL"/> (MPL) در اختیار شما قرار داده می‌شود و شامل <ph name="BEGIN_LINK_OSS"/>نرم‌افزار متن‌باز<ph name="END_LINK_OSS"/> تحت مجموعه دیگری از مجوزها است.
 شما می‌توانید <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>دستورالعمل‌های مربوط به نحوه دانلود و ایجاد<ph name="END_LINK_BUILD_INSTRUCTIONS"/> کد منبع مشخص <ph name="BEGIN_LINK_SOURCE_CODE"/>استفاده‌شده برای ایجاد این نسخه را مطالعه کنید<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">نشانک‌گذاری همه برگه‌ها...</translation>
@@ -370,7 +369,7 @@
 <translation id="7985042437720138349">این ویژگی داده‌های مربوط به برگه‌های بازِ شما را به Leo، دستیار مبتنی بر هوش مصنوعی مرورگر Brave، ارسال می‌کند.</translation>
 <translation id="6165508094623778733">بیشتر بدانید</translation>
 <translation id="7557539689487606886">تبدیل عضویت به Premium</translation>
-<translation id="1035309871698658326">وقتی این ویژگی باز شود، عناوین و مبدأ همه برگه‌های غیرخصوصی را به‌طور خودکار برای طبقه‌بندی به Leo ارسال می‌کند.</translation>
+<translation id="7103144720752576727">هنگام باز شدن، این کار به‌طور خودکار عنوان‌ها و مبدأ همهٔ زبانه‌های غیرخصوصی را برای طبقه‌بندی به Leo ارسال می‌کند. اگر ارسال محتوای صفحه را نیز روشن کنید، گزیده‌های کوتاهی از متن هر زبانه نیز ارسال می‌شود.</translation>
 <translation id="3435896845095436175">فعال کنید</translation>
 <translation id="9031526219709160683">Brave می‌تواند به شما کمک کند تا تنظیمات حریم خصوصی این سایت را بهینه کنید. آیا می‌خواهید پیشنهادهای Brave را بررسی کنید؟</translation>
 <translation id="5739953050957336013">بررسی پیشنهادها</translation>
@@ -385,8 +384,6 @@
 <translation id="8570228839666486945">AI روی دستگاه</translation>
 <translation id="7447041379556102185">تشخیص گفتار روی دستگاه</translation>
 <translation id="3456536577668402695">جست‌وجوها و محتوای صفحه‌های شما روی این دستگاه پردازش می‌شوند. هیچ چیزی به Brave ارسال نمی‌شود و هیچ بازبین انسانی آن را نمی‌بیند.</translation>
-<translation id="4751537843966994505">جستجوی معنایی تاریخچه</translation>
-<translation id="6175973371938222040">صفحاتی که بازدید می‌کنید را به صورت محلی نمایه‌سازی کنید تا بتوانید تاریخچه خود را بر اساس معنا جستجو کنید. تمام پردازش روی این دستگاه باقی می‌ماند.</translation>
 <translation id="9156965752763025780">‏دفعه بعدی که Brave را مجدداً راه‌اندازی می‌کنید، این تغییرات اعمال می‌شوند.</translation>
 <translation id="7179921470347911571">اکنون راه‌اندازی مجدد شود</translation>
 <translation id="1426410128494586442">بله</translation>
@@ -424,6 +421,7 @@
 <translation id="4328541188421002379">برای محفظه خود نامی انتخاب کنید، مثلاً «کار» یا «شخصی»</translation>
 <translation id="4976989127264491396">خطا: <ph name="ERROR_MESSAGE"/></translation>
 <translation id="5436069931267876389">محفظه یافت نشد</translation>
+<translation id="5831840958001766835">ترتیب‌بندی مجدد مورد. برای جابجایی از کلیدهای جهت‌دار استفاده کنید.</translation>
 <translation id="6055154402239241620">کنترل ترافیک</translation>
 <translation id="8134521925475508805">سایت‌های خاصی را پیکربندی کنید تا به‌طور خودکار در یک زمینه خاص باز شوند و بین جلسات مرور خود جدایی ایجاد کنید. <ph name="BEGIN_LINK"/>بیشتر بدانید<ph name="END_LINK"/></translation>
 <translation id="6944848312867106540">فعال‌سازی کنترل ترافیک</translation>
@@ -476,10 +474,6 @@
 <translation id="7310387888625228830">دستیار هوش مصنوعی Leo</translation>
 <translation id="5222974844674487962">نمایش دکمه اخبار Brave</translation>
 <translation id="2085436423511121572">نمایش دکمه هوش مصنوعی Leo</translation>
-<translation id="6156323911414505561">نمایش نوار نشانک‌ها</translation>
-<translation id="4054323497808446566">نوار نشانک روی همه صفحات قابل مشاهده است</translation>
-<translation id="8693858092251192712">نوار نشانک در همه صفحات،‌ به غیر از صفحه زبانه جدید، مخفی شده است</translation>
-<translation id="7158817046543187970">نوار نشانک در همه صفحات مخفی شده است</translation>
 <translation id="3416468988018290825">همیشه آدرس وب کامل نشان داده شود</translation>
 <translation id="5529693968082667490">نمایش دکمه جستجوی زبانه‌ها</translation>
 <translation id="1013121820689882118">تندخوان</translation>
@@ -611,6 +605,8 @@
 <translation id="5825943197137337319">فقط رابط عمومی پیش‌فرض</translation>
 <translation id="1689062823386843231">غیرفعال کردن UDP غیرپروکسی</translation>
 <translation id="3540231253392253941">استفاده از سرویس‌های Google برای پیام‌رسانی فشاری</translation>
+<translation id="2224032129673914306">جستجوی معنایی تاریخچه</translation>
+<translation id="6045998903985162478">صفحاتی را که بازدید می‌کنید فهرست‌بندی کنید تا بتوانید به‌راحتی آن‌ها را در تاریخچه، زبانه‌های باز و Leo پیدا کنید.</translation>
 <translation id="5813105074916486721">نگهداری تاریخچه محلی</translation>
 <translation id="5671611745062206644">مدت زمانی که Brave تاریخچه مرور شما را به صورت محلی ذخیره می‌کند</translation>
 <translation id="7184510058087008090">1 روز</translation>
@@ -875,6 +871,7 @@
 <translation id="2618193846561624884">می‌خواهید شبکه موجود را به‌روزرسانی کنید؟</translation>
 <translation id="1643029991199044105">با Ctrl-Tab بین آخرین برگه‌های استفاده‌شده جابه‌جا شوید</translation>
 <translation id="2775956301559569472">نشان دادن پیام‌واره Wayback Machine در صفحه‌های خطای 404</translation>
+<translation id="8485716275262929774">بارگذاری خودکار نسخه‌های ذخیره‌شده از Wayback Machine در صفحات 404</translation>
 <translation id="3095201688102519917">قبل از بستن پنجره‌ای با چندین زبانه، به من هشدار داده شود</translation>
 <translation id="7120553802660696133">هنگام بستن آخرین زبانه، پنجره بسته شود</translation>
 <translation id="3394171693948989253">نمایش یادآور تمام‌صفحه برای فشار دادن Esc هنگام خروج</translation>
@@ -884,6 +881,8 @@
 <translation id="1529674267267221673">وقتی روی یک وب‌سایت کلیک راست می‌کنید، Leo در منوی زمینه ظاهر می‌شود. بدین ترتیب زمینه از صفحه وب فعلی به Leo ارسال می‌شود.</translation>
 <translation id="5226020406479918122">حالت برگه متمرکز</translation>
 <translation id="3705539672403311123">سازماندهی برگه‌ها را در صفحه «جستجوی برگه» فعال می‌کند. زمانی که این ویژگی باز شود، عناوین و مبدأ همه برگه‌های غیرخصوصی را به‌طور خودکار برای طبقه‌بندی به Leo ارسال می‌کند. <ph name="BEGIN_LINK"/>اطلاعات بیشتر<ph name="END_LINK"/></translation>
+<translation id="2002238795517052616">ارسال محتوای صفحه برای تمرکز زبانه</translation>
+<translation id="2276823422122514441">همچنین بخش‌های کوتاهی از متن هر زبانه ارسال می‌شود تا زبانه‌ها بر اساس موضوع صفحه گروه‌بندی شوند، به‌جای عنوان آن. بخش‌ها به Leo، یا به مدل خودتان اگر یکی را برای تمرکز زبانه انتخاب کرده‌اید، ارسال می‌شوند. این به <ph name="BEGIN_LINK"/><ph name="SEMANTIC_HISTORY_SEARCH"/><ph name="END_LINK"/> نیاز دارد، که این بخش‌ها را روی دستگاه شما می‌سازد.</translation>
 <translation id="9049433973274198706">مدل پیش‌فرض برای تمرکز تب</translation>
 <translation id="2161546758719933059">مدلی که برای سازماندهی زبانه‌های شما در حالت تمرکز زبانه استفاده می‌شود. <ph name="BEGIN_LINK"/>بیشتر بدانید<ph name="END_LINK"/></translation>
 <translation id="8172263161008556851">نمایش دستورهای پیشنهادی در گفتگو</translation>
@@ -965,9 +964,6 @@
 <translation id="1838374766361614909">پاک کردن Search</translation>
 <translation id="5126255551970171328">Search حافظه</translation>
 <translation id="7402116145895962069">همگام‌سازی مدل‌های محلی Ollama شما</translation>
-<translation id="5985516785067818307">عضو پنل نظرسنجی</translation>
-<translation id="8347743943525229984">مجاز کردن نظرسنجی‌های Brave</translation>
-<translation id="3204080538332044581">به Brave اجازه می‌دهد که در صفحه زبانه جدید لینک‌های نظرسنجی‌های خصوصی را نمایش دهد. نظرسنجی‌ها به ما کمک می‌کنند تا قابلیت‌های بهتری بسازیم و اثربخشی کمپین‌های تبلیغاتی مرورگرمحور را ارزیابی کنیم. <ph name="BEGIN_LINK"/>بیشتر بدانید<ph name="END_LINK"/></translation>
 <translation id="349846214503465941">لیست پخش را فعال کنید</translation>
 <translation id="7903608716704052878">به‌طور خودکار فایل‌ها را برای مشاهده آفلاین اضافه کنید</translation>
 <translation id="384666453982355633">این گزینه به‌طور خودکار فایل‌های رسانه‌ای را ذخیره می‌کند تا بتوانید آنها را بدون اتصال به اینترنت پخش کنید</translation>

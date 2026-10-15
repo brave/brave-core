@@ -3,18 +3,14 @@
 <translationbundle lang="sl">
 <translation id="1751249301761991853">Osebno</translation>
 <translation id="3333887201479867589">Storitev Brave Rewards</translation>
-<translation id="7561196759112975576">Vedno</translation>
-<translation id="7961015016161918242">Nikoli</translation>
 <translation id="8507663778530179003">Gumb Prikaži vse zaznamke</translation>
 <translation id="9018648632047670921">Gumb prikaži vse zaznamke</translation>
 <translation id="7630214457764713113">Kopirajte čisto povezavo</translation>
 <translation id="7973394300052703468">Novo &amp;okno brez beleženja zgodovine</translation>
 <translation id="4615489450165434530">Prijavite nedelujočo spletno stran</translation>
 <translation id="8097438084542431276">Kopirajte čisto povezavo</translation>
-<translation id="4678672101289648246">Samo na strani »Nov zavihek«</translation>
 <translation id="6516243500644829484">Novo &amp;okno brez beleženja zgodovine</translation>
 <translation id="1209739344687072997">Prijavite nedelujočo spletno stran</translation>
-<translation id="8294286161128352783">Samo na strani nov zavihek</translation>
 <translation id="6406506848690869874">Sinhronizacija</translation>
 <translation id="1544192797660353713">Denarnica</translation>
 <translation id="2361906291514218784">Leo AI</translation>
@@ -197,7 +193,9 @@ To lahko spremenite tudi pozneje na <ph name="SETTINGS_EXTENIONS_LINK"/>.</trans
 <translation id="5977931179408079967">Položaj</translation>
 <translation id="3790384768741064842">Premik v desno</translation>
 <translation id="7444424316576061724">Premik v levo</translation>
+<translation id="7561196759112975576">Vedno</translation>
 <translation id="7060352228894039151">Ob prehodu miške</translation>
+<translation id="7961015016161918242">Nikoli</translation>
 <translation id="8981254605840444865">Prikaži nastavitve</translation>
 <translation id="59174027418879706">Omogočeno</translation>
 <translation id="4176463684765177261">Onemogočeno</translation>
@@ -223,6 +221,7 @@ To lahko spremenite tudi pozneje na <ph name="SETTINGS_EXTENIONS_LINK"/>.</trans
 <translation id="4515057635283480525">Internetni arhiv shranjuje pretekle različice številnih spletnih strani. Ali želite poiskati to stran v arhivu?</translation>
 <translation id="8252977752585110703">Oprostite, preverili smo internetni arhiv in ne vsebuje arhivirane različice te strani.</translation>
 <translation id="8748778103033196270">Poišči v arhivu</translation>
+<translation id="7369915833843501413">Iskanje v arhivu</translation>
 <translation id="191143826155037518">Brave vam je na voljo na <ph name="BEGIN_LINK_MPL"/>javna licenca Mozilla 2.0<ph name="END_LINK_MPL"/> (MPL) in vključuje <ph name="BEGIN_LINK_OSS"/>odprtokodno programsko opremo<ph name="END_LINK_OSS"/> pod različnimi drugimi licencami.
 Preberete si lahko <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>navodila o tem, kako prenesete in oblikujete<ph name="END_LINK_BUILD_INSTRUCTIONS"/> specifično <ph name="BEGIN_LINK_SOURCE_CODE"/>izvorno kodo, uporabljeno za ustvarjanje te kopije<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">Dodaj vse zavihke med zaznamke ...</translation>
@@ -374,7 +373,7 @@ se lahko izteče. Ali ga želite obnoviti?</translation>
 <translation id="7985042437720138349">Ta funkcija pošilja podatke o odprtih zavihkih Leu, pomočniku brskalnika z umetno inteligenco storitve Brave.</translation>
 <translation id="6165508094623778733">Preberite več</translation>
 <translation id="7557539689487606886">Pojdi na Premium</translation>
-<translation id="1035309871698658326">Ko jo odprete, bo Leu samodejno poslala naslove in izvor vseh zavihkov, ki niso zasebni, da jih razvrsti.</translation>
+<translation id="7103144720752576727">Ko se odpre, bo samodejno poslal naslove in izvor vseh nezasebnih zavihkov Leu, da jih razvrsti. Če vklopite tudi pošiljanje vsebine strani, se pošljejo tudi kratki odlomki besedila vsakega zavihka.</translation>
 <translation id="3435896845095436175">Omogoči</translation>
 <translation id="9031526219709160683">Brave vam lahko pomaga optimizirati nastavitve zasebnosti te strani. Želite pregledati predloge Brave?</translation>
 <translation id="5739953050957336013">Predlogi iskanja</translation>
@@ -389,8 +388,6 @@ se lahko izteče. Ali ga želite obnoviti?</translation>
 <translation id="8570228839666486945">Umetna inteligenca na napravi</translation>
 <translation id="7447041379556102185">Prepoznavanje govora na napravi</translation>
 <translation id="3456536577668402695">Vaša iskanja in vsebine strani se obdelujejo na tej napravi. Nič se ne pošlje Brave ali ne vidijo človeški pregledovalci.</translation>
-<translation id="4751537843966994505">Pomensko iskanje po zgodovini</translation>
-<translation id="6175973371938222040">Lokalno indeksiraj strani, ki jih obiščete, da lahko po zgodovini iščete po pomenu. Vsa obdelava ostane v tej napravi.</translation>
 <translation id="9156965752763025780">Spremembe bodo začele veljati ob naslednjem zagonu Bravea.</translation>
 <translation id="7179921470347911571">Znova zaženite zdaj</translation>
 <translation id="1426410128494586442">Da</translation>
@@ -428,6 +425,7 @@ se lahko izteče. Ali ga želite obnoviti?</translation>
 <translation id="4328541188421002379">Poimenujte vsebnik, na primer Delovno ali Osebno</translation>
 <translation id="4976989127264491396">Napaka: <ph name="ERROR_MESSAGE"/></translation>
 <translation id="5436069931267876389">Vsebnik ni bil najden</translation>
+<translation id="5831840958001766835">Ponovno razvrsti element. Za premikanje uporabite puščične tipke.</translation>
 <translation id="6055154402239241620">Nadzor prometa</translation>
 <translation id="8134521925475508805">Nastavite določena spletna mesta, da se samodejno odprejo v določenem kontekstu, in tako ustvarite ločnico med sejami brskanja. <ph name="BEGIN_LINK"/>Več o tem<ph name="END_LINK"/></translation>
 <translation id="6944848312867106540">Omogoči nadzor prometa</translation>
@@ -480,10 +478,6 @@ se lahko izteče. Ali ga želite obnoviti?</translation>
 <translation id="7310387888625228830">Leo AI pomočnik</translation>
 <translation id="5222974844674487962">Prikaži gumb Brave News</translation>
 <translation id="2085436423511121572">Pokaži gumb za Leo AI</translation>
-<translation id="6156323911414505561">Pokaži vrstico z zaznamki</translation>
-<translation id="4054323497808446566">Vrstica z zaznamki je prikazana na vseh straneh</translation>
-<translation id="8693858092251192712">Vrstica z zaznamki je skrita na vseh straneh, razen na strani novega zavihka</translation>
-<translation id="7158817046543187970">Vrstica z zaznamki je skrita na vseh straneh</translation>
 <translation id="3416468988018290825">Vedno prikaži celoten naslov URL</translation>
 <translation id="5529693968082667490">Prikaži gumb za iskanje po zavihkih</translation>
 <translation id="1013121820689882118">Hitri bralnik</translation>
@@ -615,6 +609,8 @@ se lahko izteče. Ali ga želite obnoviti?</translation>
 <translation id="5825943197137337319">Samo privzeti javni vmesnik</translation>
 <translation id="1689062823386843231">Onemogoči UDP, ki ne poteka prek strežnika proxy</translation>
 <translation id="3540231253392253941">Za potisna sporočila uporabite Googlove storitve</translation>
+<translation id="2224032129673914306">Pomensko iskanje po zgodovini</translation>
+<translation id="6045998903985162478">Indeksirajte strani, ki jih obiščete, da jih boste lahko enostavno našli v zgodovini, odprtih zavihkih in Leo.</translation>
 <translation id="5813105074916486721">Lokalna hramba zgodovine</translation>
 <translation id="5671611745062206644">Kako dolgo Brave lokalno shranjuje vašo zgodovino brskanja</translation>
 <translation id="7184510058087008090">1 dan</translation>
@@ -879,6 +875,7 @@ ponovno uporabo sinhronizacije, boste morali ustvariti nov račun in posamično 
 <translation id="2618193846561624884">Ali želite posodobiti obstoječe omrežje?</translation>
 <translation id="1643029991199044105">S Ctrl-Tab se pomikajte po zadnjih uporabljenih zavihkih</translation>
 <translation id="2775956301559569472">Prikaži poziv računalnika Wayback na 404 straneh</translation>
+<translation id="8485716275262929774">Samodejno naloži shranjene različice iz Wayback Machine na straneh 404</translation>
 <translation id="3095201688102519917">Opozori me pred zaprtjem okna z več zavihki</translation>
 <translation id="7120553802660696133">Zapri okno, ko se zapre zadnji zavihek</translation>
 <translation id="3394171693948989253">Ob izhodu prikaži celozaslonski opomnik za pritisk tipke Esc</translation>
@@ -888,6 +885,8 @@ ponovno uporabo sinhronizacije, boste morali ustvariti nov račun in posamično 
 <translation id="1529674267267221673">Leo se prikaže v kontekstnem meniju, ko z desno tipko miške kliknete na spletno mesto. To bo v program Leo poslalo kontekst iz trenutne spletne strani.</translation>
 <translation id="5226020406479918122">Način fokus zavihka</translation>
 <translation id="3705539672403311123">Omogočite organizacijo zavihkov na strani Iskanje zavihkov. Ko jo odprete, bo Leu samodejno poslala naslove in izvore vseh zavihkov, ki niso zasebni, da jih razvrsti. <ph name="BEGIN_LINK"/>Več informacij<ph name="END_LINK"/></translation>
+<translation id="2002238795517052616">Pošlji vsebino strani za fokus zavihkov</translation>
+<translation id="2276823422122514441">Pošljite tudi kratke izvlečke besedila vsakega zavihka, tako da so zavihki združeni po tem, o čem govori stran, namesto po njenem naslovu. Izvlečki gredo v Leo ali v vaš lasten model, če ste zanj izbrali fokus zavihkov. To potrebuje <ph name="BEGIN_LINK"/><ph name="SEMANTIC_HISTORY_SEARCH"/><ph name="END_LINK"/>, ki gradi izvlečke na vaši napravi.</translation>
 <translation id="9049433973274198706">Privzeti model za novo zavihko</translation>
 <translation id="2161546758719933059">Model, ki se uporablja za organizacijo vaših zavihkov v načinu osredotočenosti na zavihke. <ph name="BEGIN_LINK"/>Več o tem<ph name="END_LINK"/></translation>
 <translation id="8172263161008556851">Pokaži predlagane pozive v pogovoru</translation>
@@ -969,9 +968,6 @@ ponovno uporabo sinhronizacije, boste morali ustvariti nov račun in posamično 
 <translation id="1838374766361614909">Počisti iskanje</translation>
 <translation id="5126255551970171328">Išči spomin</translation>
 <translation id="7402116145895962069">Sinhronizirajte svoje lokalne modele Ollama</translation>
-<translation id="5985516785067818307">Sodelujoči v anketi</translation>
-<translation id="8347743943525229984">Omogočite ankete Brave</translation>
-<translation id="3204080538332044581">Brave lahko na strani z novim zavihkom prikaže povezave do zasebnih anket. Ankete nam pomagajo pri ustvarjanju boljših funkcij in merjenju učinkovitosti oglaševalskih kampanj v brskalniku. <ph name="BEGIN_LINK"/>Več informacij<ph name="END_LINK"/></translation>
 <translation id="349846214503465941">Omogoči seznam predvajanja</translation>
 <translation id="7903608716704052878">Samodejno dodajanje datotek za ogled brez povezave</translation>
 <translation id="384666453982355633">Ta možnost samodejno shrani medijske datoteke v predpomnilnik, da jih lahko predvajate brez internetne povezave</translation>
