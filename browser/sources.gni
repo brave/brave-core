@@ -421,6 +421,13 @@ if (enable_local_ai) {
   ]
 }
 
+if (is_win || is_mac || is_linux) {
+  brave_chrome_browser_deps += [
+    "//brave/browser/ui/geolocation",
+    "//brave/browser/ui/geolocation:impl",
+  ]
+}
+
 if (!is_android) {
   # BraveHidDelegate inherits from ChromeHidDelegate, and referenced by
   # BraveContentBrowserClient, so we put into the same source_set.
