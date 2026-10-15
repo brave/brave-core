@@ -27,7 +27,7 @@ import StoreKit
 import SwiftUI
 import Translation
 import UIKit
-import Web
+@_spi(ChromiumWebViewAccess) import Web
 import WebKit
 import os.log
 
@@ -940,36 +940,22 @@ public class BrowserViewController: UIViewController {
 
   /// Stamp videos that are playing before WebKit's background pause. A video the user already paused stays unmarked
   private func markPlayingVideosBeforeBackground() {
-    evaluateVideoBackgroundPlayback("markPlayingVideos")
+    callVideoBackgroundPlayback { $0.markPlayingVideos() }
   }
 
   /// Resumes videos marked while this scene was resigning active.
   private func resumePlayingVideoAfterBackground() {
-    evaluateVideoBackgroundPlayback("resumePlayingVideos")
+    callVideoBackgroundPlayback { $0.resumePlayingVideos() }
   }
 
-  private func evaluateVideoBackgroundPlayback(_ function: String) {
+  private func callVideoBackgroundPlayback(_ call: (BraveWebView) -> Void) {
     guard let tab = tabManager.selectedTab, tab.isWebViewCreated,
-      let source = Self.videoBackgroundPlaybackSource
+      let webView = BraveWebView.from(tab: tab)
     else {
       return
     }
-    tab.evaluateJavaScriptUnsafe(
-      """
-      (function() {
-      \(source)
-      \(function)()
-      })()
-      """
-    )
+    call(webView)
   }
-
-  private static let videoBackgroundPlaybackSource: String? = {
-    guard let path = Bundle.module.path(forResource: "VideoBackgroundPlayback", ofType: "js") else {
-      return nil
-    }
-    return try? String(contentsOfFile: path, encoding: .utf8)
-  }()
 
   @objc private func sceneDidEnterBackgroundNotification(_ notification: NSNotification) {
     guard let scene = notification.object as? UIScene, scene == currentScene else {

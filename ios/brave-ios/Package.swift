@@ -179,9 +179,6 @@ var package = Package(
         .copy(
           "Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Paged/MediaBackgroundingScript.js"
         ),
-        .copy(
-          "Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Paged/VideoBackgroundPlayback.js"
-        ),
         .copy("Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Paged/PlaylistScript.js"),
         .copy(
           "Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Paged/PlaylistSwizzlerScript.js"
