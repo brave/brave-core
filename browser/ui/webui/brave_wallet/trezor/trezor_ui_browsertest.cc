@@ -10,6 +10,7 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/content_mock_cert_verifier.h"
+#include "content/public/test/test_navigation_observer.h"
 #include "net/dns/mock_host_resolver.h"
 #include "services/network/public/cpp/network_switches.h"
 
@@ -37,6 +38,22 @@ class TrezorUIBrowserTest : public InProcessBrowserTest {
   }
 
  protected:
+  // Opens a blank popup from `opener`, navigates it to `url` and returns
+  // whether the popup kept `window.opener`.
+  bool BlankPopupKeepsOpener(content::RenderFrameHost* opener,
+                             const GURL& url) {
+    content::WebContentsAddedObserver popup_observer;
+    EXPECT_TRUE(
+        content::ExecJs(opener, "window.popup = window.open('', '_blank')"));
+    content::WebContents* popup = popup_observer.GetWebContents();
+    content::TestNavigationObserver navigation_observer(popup);
+    EXPECT_TRUE(content::ExecJs(
+        opener, content::JsReplace("window.popup.location.href = $1", url)));
+    navigation_observer.Wait();
+    EXPECT_EQ(url, popup->GetLastCommittedURL());
+    return content::EvalJs(popup, "!!window.opener").ExtractBool();
+  }
+
   net::EmbeddedTestServer https_server_{net::EmbeddedTestServer::TYPE_HTTPS};
 };
 
@@ -91,6 +108,25 @@ IN_PROC_BROWSER_TEST_F(TrezorUIBrowserTest, CheckOpenerInPopup) {
         content::EvalJs(example_popup, "!!window.opener").ExtractBool());
     example_popup->Close();
   }
+}
+
+IN_PROC_BROWSER_TEST_F(TrezorUIBrowserTest, BlankPopupToOtherSiteLosesOpener) {
+  auto* trezor_bridge = ui_test_utils::NavigateToURLWithDisposition(
+      browser(), GURL(kUntrustedTrezorURL),
+      WindowOpenDisposition::kNewForegroundTab,
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
+  EXPECT_FALSE(BlankPopupKeepsOpener(trezor_bridge,
+                                     GURL("https://example.com/empty.html")));
+}
+
+IN_PROC_BROWSER_TEST_F(TrezorUIBrowserTest,
+                       BlankPopupFromOtherUntrustedUILosesOpener) {
+  auto* ledger_bridge = ui_test_utils::NavigateToURLWithDisposition(
+      browser(), GURL(kUntrustedLedgerURL),
+      WindowOpenDisposition::kNewForegroundTab,
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
+  EXPECT_FALSE(BlankPopupKeepsOpener(
+      ledger_bridge, GURL("https://connect.trezor.io/empty.html")));
 }
 
 }  // namespace brave_wallet
