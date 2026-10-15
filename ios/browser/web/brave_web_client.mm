@@ -137,8 +137,8 @@ std::vector<web::JavaScriptFeature*> BraveWebClient::GetJavaScriptFeatures(
   features.push_back(
       security_interstitials::IOSSecurityInterstitialJavaScriptFeature::
           GetInstance());
-  // Registered for every profile. `CallJavaScriptFunction` aborts when the instance 
-  // it is called on was not added here.
+  // Registered for every profile. `CallJavaScriptFunction` aborts when the
+  // instance it is called on was not added here.
   features.push_back(
       MediaBackgroundingJavaScriptFeature::FromBrowserState(browser_state));
   if (base::FeatureList::IsEnabled(
