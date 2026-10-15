@@ -12,6 +12,7 @@
 
 #include "base/check.h"
 #include "base/check_op.h"
+#include "base/containers/map_util.h"
 #include "base/files/file_path.h"
 #include "base/notreached.h"
 #include "base/strings/string_util.h"
@@ -208,6 +209,17 @@ std::unique_ptr<TxStorage> CreateTxStorage(
   return TxStorage::MakeWithDbStorage(wallet_delegate.GetWalletBaseDirectory());
 }
 
+std::vector<GURL> GetPolkadotDappUrls(std::string_view chain_id) {
+  const auto& rpc_url_map =
+      BlockchainRegistry::GetInstance()->GetPolkadotRpcUrls();
+
+  const auto* urls = base::FindOrNull(rpc_url_map, chain_id);
+  if (!urls) {
+    return {};
+  }
+  return *urls;
+}
+
 }  // namespace
 
 struct PendingDecryptRequest {
@@ -294,6 +306,8 @@ BraveWalletService::BraveWalletService(
     polkadot_wallet_service_ = std::make_unique<PolkadotWalletService>(
         *keyring_service(), *network_manager(), *profile_prefs,
         url_loader_factory);
+    polkadot_wallet_service_->GetPolkadotRpc()->SetParachainUrlMapCallback(
+        base::BindRepeating(GetPolkadotDappUrls));
   }
 
 #if BUILDFLAG(ENABLE_SNAP)

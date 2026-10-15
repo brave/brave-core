@@ -371,7 +371,10 @@ PolkadotSubstrateRpc::PolkadotSubstrateRpc(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
     : network_manager_(network_manager),
       api_request_helper_(GetNetworkTrafficAnnotationTag(),
-                          url_loader_factory) {}
+                          url_loader_factory) {
+  rpc_url_callback_ = base::BindRepeating(
+      [](std::string_view chain_id) -> std::vector<GURL> { return {}; });
+}
 
 PolkadotSubstrateRpc::~PolkadotSubstrateRpc() = default;
 
@@ -386,6 +389,10 @@ base::DictValue PolkadotSubstrateRpc::MakeRpcRequestJson(
   return req;
 }
 
+void PolkadotSubstrateRpc::SetParachainUrlMapCallback(
+    PolkadotRpcUrlMapCallback rpc_url_callback) {
+  rpc_url_callback_ = std::move(rpc_url_callback);
+}
 void PolkadotSubstrateRpc::GetChainName(std::string_view chain_id,
                                         GetChainNameCallback callback) {
   auto url = GetNetworkURL(chain_id);
@@ -1007,7 +1014,21 @@ void PolkadotSubstrateRpc::OnGetEvents(GetEventsCallback callback,
 }
 
 GURL PolkadotSubstrateRpc::GetNetworkURL(std::string_view chain_id) {
-  return network_manager_->GetNetworkURL(chain_id, mojom::CoinType::DOT);
+  GURL url = network_manager_->GetNetworkURL(chain_id, mojom::CoinType::DOT);
+  if (url.is_empty()) {
+    url = GetRpcUrlFromChainId(chain_id);
+  }
+  return url;
+}
+
+GURL PolkadotSubstrateRpc::GetRpcUrlFromChainId(std::string_view chain_id) {
+  auto urls = rpc_url_callback_.Run(chain_id);
+
+  if (urls.empty()) {
+    return GURL();
+  }
+
+  return urls.front();
 }
 
 void PolkadotSubstrateRpc::MakePostRequestInternal(
