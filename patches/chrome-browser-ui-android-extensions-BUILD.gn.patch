@@ -1,0 +1,20 @@
+diff --git a/chrome/browser/ui/android/extensions/BUILD.gn b/chrome/browser/ui/android/extensions/BUILD.gn
+index 9df3612a0ba5ce9db626eb0a5787c05f1101fe72..47039b5c02b4aba7e6933da9ae62542a9f31ab57 100644
+--- a/chrome/browser/ui/android/extensions/BUILD.gn
++++ b/chrome/browser/ui/android/extensions/BUILD.gn
+@@ -2,6 +2,7 @@
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
+ 
++import("//brave/build/android/config.gni")
+ import("//build/config/android/config.gni")
+ import("//build/config/android/rules.gni")
+ import("//extensions/buildflags/buildflags.gni")
+@@ -141,6 +142,7 @@ android_library("java") {
+       "//extensions/common:java_features_srcjar",
+     ]
+     resources_package = "org.chromium.chrome.browser.ui.extensions"
++    sources += brave_browser_ui_extensions_java_sources
+   }
+ }
+ 

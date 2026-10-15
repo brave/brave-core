@@ -1,5 +1,5 @@
 diff --git a/chrome/android/BUILD.gn b/chrome/android/BUILD.gn
-index 6ed792010ee90f07562ce80b34afe5fe722df299..8c1d4695ec88cbf2591ae967a98600ca2c0b4284 100644
+index 6ed792010ee90f07562ce80b34afe5fe722df299..defe890420b8cc9240209fc318f0f8373e44fffd 100644
 --- a/chrome/android/BUILD.gn
 +++ b/chrome/android/BUILD.gn
 @@ -161,10 +161,12 @@ if (_is_default_toolchain) {
@@ -55,28 +55,20 @@ index 6ed792010ee90f07562ce80b34afe5fe722df299..8c1d4695ec88cbf2591ae967a98600ca
  
      if (is_desktop_android) {
        deps += [
-@@ -1039,10 +1046,17 @@ if (_is_default_toolchain) {
+@@ -1044,6 +1051,13 @@ if (_is_default_toolchain) {
+         "//chrome/browser/ui/android/extensions/windowing/stub:java",
        ]
-     } else {
-       # TODO(crbug.com/434123514): see if we can remove these stub targets.
--      deps += [
--        "//chrome/browser/ui/android/extensions/side_panel/stub:java",
--        "//chrome/browser/ui/android/extensions/windowing/stub:java",
--      ]
-+      if (enable_extensions_core) {
-+        deps += [
-+          "//chrome/browser/ui/android/extensions/side_panel/internal:java",
-+          "//chrome/browser/ui/android/extensions/windowing/internal:java",
-+        ]
-+      } else {
-+        deps += [
-+          "//chrome/browser/ui/android/extensions/side_panel/stub:java",
-+          "//chrome/browser/ui/android/extensions/windowing/stub:java",
-+        ]
-+      }
      }
++    if (enable_extensions_core) {
++      deps -= [
++        "//chrome/browser/ui/android/extensions/side_panel/stub:java",
++        "//chrome/browser/ui/android/extensions/windowing/stub:java",
++      ]
++      deps += brave_chrome_extensions_internal_java_deps
++    }
    }
  
+   action_with_pydeps("chrome_android_java_google_api_keys_srcjar") {
 @@ -1822,6 +1836,7 @@ if (_is_default_toolchain) {
        "java/res_chromium_base/mipmap-xxxhdpi/layered_app_icon_background.png",
        "java/res_chromium_base/values/channel_constants.xml",
