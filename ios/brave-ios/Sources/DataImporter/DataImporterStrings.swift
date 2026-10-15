@@ -21,14 +21,6 @@ extension Strings {
 
     // MARK: - Data Import Internals
 
-    public static let personalImportTitle = NSLocalizedString(
-      "personalImportTitle",
-      bundle: .module,
-      value: "Personal",
-      comment:
-        "The name of the folder or profile containing Personal data that should be imported. IE: You can have work profiles, personal profiles, etc."
-    )
-
     // MARK: - Data Import Loading Screen
 
     public static let loadingTitle = NSLocalizedString(
@@ -268,61 +260,6 @@ extension Strings {
   }
 
   public struct DataImportError {
-    public static let failedToUnzipError =
-      NSLocalizedString(
-        "failedToUnzipError",
-        bundle: .module,
-        value: "An error occurred while unzipping the file.",
-        comment:
-          "Error message shown when unzipping a zip file failed"
-      )
-
-    public static let failedToImportBookmarksError =
-      NSLocalizedString(
-        "failedToImportBookmarks",
-        bundle: .module,
-        value: "An error occurred while importing Bookmarks.",
-        comment:
-          "Error message shown when importing bookmarks failed"
-      )
-
-    public static let failedToImportHistoryError =
-      NSLocalizedString(
-        "failedToImportHistory",
-        bundle: .module,
-        value: "An error occurred while importing History.",
-        comment:
-          "Error message shown when importing history failed"
-      )
-
-    public static let failedToImportPasswordsError =
-      NSLocalizedString(
-        "failedToImportPasswordsError",
-        bundle: .module,
-        value: "An error occurred while importing Passwords.",
-        comment:
-          "Error message shown when importing passwords failed"
-      )
-
-    public static let failedToImportPasswordsDueToConflictError =
-      NSLocalizedString(
-        "failedToImportPasswordsDueToConflictError",
-        bundle: .module,
-        value:
-          "An error occurred while importing Passwords.\nSome passwords could not be imported due to conflicts.",
-        comment:
-          "Error message shown when importing passwords failed due to a password already existing (a conflict)"
-      )
-
-    public static let invalidZipFileDataError =
-      NSLocalizedString(
-        "invalidZipFileDataError",
-        bundle: .module,
-        value: "The zip file does not contain import data.",
-        comment:
-          "Error message shown when the zip file doesn't contain any history, bookmarks, passwords, or credit cards to import"
-      )
-
     public static let unknownError =
       NSLocalizedString(
         "unknownError",

@@ -47,13 +47,6 @@ extension Strings {
       value: "Accounts",
       comment: "The title of the accounts page in the Crypto tab"
     )
-    public static let selectedAccountAccessibilityLabel = NSLocalizedString(
-      "wallet.selectedAccount",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value: "Selected Account",
-      comment: "The accessibility label for the selected account picker"
-    )
     public static let hideDetailsButtonTitle = NSLocalizedString(
       "wallet.hideDetailsButtonTitle",
       tableName: "BraveWallet",
@@ -545,14 +538,6 @@ extension Strings {
       value:
         "Your recovery phrase is the key to access your wallet in case you forget your password or lose your device.\n\nKeep it in a secure place that is not accessible to others and avoid sharing it with anyone.",
       comment: "The subtitle of the backup recovery phrase screen"
-    )
-    public static let backupRecoveryPhraseBackButtonTitle = NSLocalizedString(
-      "wallet.backupRecoveryPhraseBackButtonTitle",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value: "Recovery Phrase",
-      comment:
-        "The title that will be displayed when long-pressing the back button in the navigation bar. As in the a list of words to recovery your account on another device/wallet"
     )
     public static let backupSkipButtonTitle = NSLocalizedString(
       "wallet.backupSkipButtonTitle",

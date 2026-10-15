@@ -169,20 +169,6 @@ extension Strings {
       value: "Enter code words",
       comment: "Sync enter code words"
     )
-    public static let showCodeWords = NSLocalizedString(
-      "sync.showCodeWords",
-      tableName: "BraveShared",
-      bundle: .module,
-      value: "Show code words instead",
-      comment: "Show code words instead"
-    )
-    public static let syncDevices = NSLocalizedString(
-      "sync.Syncdevices",
-      tableName: "BraveShared",
-      bundle: .module,
-      value: "Devices & Settings",
-      comment: "Sync you browser settings across devices."
-    )
     public static let devices = NSLocalizedString(
       "sync.devices",
       tableName: "BraveShared",
@@ -225,13 +211,6 @@ extension Strings {
       value: "Can't sync this device",
       comment: "Description on popup when setting up a sync group fails"
     )
-    public static let copied = NSLocalizedString(
-      "sync.copied",
-      tableName: "BraveShared",
-      bundle: .module,
-      value: "Copied!",
-      comment: "Copied action complete title"
-    )
     public static let wordCount = NSLocalizedString(
       "sync.wordCount",
       tableName: "BraveShared",
@@ -253,20 +232,6 @@ extension Strings {
       value: "Unable to join sync group. Please check the entered words and try again.",
       comment: "Sync Alert"
     )
-    public static let enterCodeWordsBelow = NSLocalizedString(
-      "sync.enterCodeWordsBelow",
-      tableName: "BraveShared",
-      bundle: .module,
-      value: "Enter code words below",
-      comment: "Enter sync code words below"
-    )
-    public static let removeThisDevice = NSLocalizedString(
-      "sync.removeThisDevice",
-      tableName: "BraveShared",
-      bundle: .module,
-      value: "Remove this device",
-      comment: "Sync remove device."
-    )
     public static let removeDeviceAction = NSLocalizedString(
       "sync.removeDeviceAction",
       tableName: "BraveShared",
@@ -274,34 +239,12 @@ extension Strings {
       value: "Remove device",
       comment: "Remove device button for action sheet."
     )
-    public static let syncRemoveThisDeviceQuestion = NSLocalizedString(
-      "sync.syncRemoveThisDeviceQuestion",
-      tableName: "BraveShared",
-      bundle: .module,
-      value: "Remove this device?",
-      comment: "Sync remove device?"
-    )
     public static let chooseDeviceHeader = NSLocalizedString(
       "sync.chooseDeviceHeader",
       tableName: "BraveShared",
       bundle: .module,
       value: "Choose the type of device you would like to sync to.",
       comment: "Header for device choosing screen."
-    )
-    public static let removeThisDeviceQuestionDesc = NSLocalizedString(
-      "sync.removeThisDeviceQuestionDesc",
-      tableName: "BraveShared",
-      bundle: .module,
-      value:
-        "This device will be disconnected from sync group and no longer receive or send sync data. All existing data will remain on device.",
-      comment: "Sync remove device?"
-    )
-    public static let pair = NSLocalizedString(
-      "sync.pair",
-      tableName: "BraveShared",
-      bundle: .module,
-      value: "Pair",
-      comment: "Sync pair device settings section title"
     )
     public static let addAnotherDevice = NSLocalizedString(
       "sync.addAnotherDevice",
@@ -476,13 +419,6 @@ extension Strings {
       bundle: .module,
       value: "This sync code has expired, please generate a new sync code and try again.",
       comment: "Sync Error message for when the sync code is expired"
-    )
-    public static let genericError = NSLocalizedString(
-      "sync.genericError",
-      tableName: "BraveShared",
-      bundle: .module,
-      value: "Sorry, something went wrong",
-      comment: "Generic Sync Error Description"
     )
     public static let notEnoughWordsTitle = NSLocalizedString(
       "sync.notEnoughWordsTitle",
