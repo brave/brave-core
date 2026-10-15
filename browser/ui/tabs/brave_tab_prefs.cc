@@ -30,10 +30,12 @@ void RegisterBraveProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(kVerticalTabsShowTitleOnWindow, false);
 #endif
 
+#if !BUILDFLAG(IS_ANDROID)
   if (base::FeatureList::IsEnabled(tabs::kBraveVerticalTabHideCompletely)) {
     registry->RegisterBooleanPref(kVerticalTabsHideCompletelyWhenCollapsed,
                                   false);
   }
+#endif
 
   registry->RegisterBooleanPref(kVerticalTabsFloatingEnabled, true);
   registry->RegisterBooleanPref(kVerticalTabsShowToggleButton, true);

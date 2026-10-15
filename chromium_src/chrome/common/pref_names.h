@@ -25,6 +25,17 @@ inline constexpr char kPinPwaInstallButton[] = "browser.pin_pwa_install_button";
 #endif  // defined(TOOLKIT_VIEWS)
 }  // namespace prefs
 
+#if !BUILDFLAG(IS_ANDROID)
+// TODO(https://github.com/brave/brave-browser/issues/58988)
+// Use namespace prefs for consistency with other vertical tab pref names
+namespace brave_tabs {
+// A boolean specifying whether vertical tabs should be hidden completely when
+// collapsed.
+inline constexpr char kVerticalTabsHideCompletelyWhenCollapsed[] =
+    "brave.tabs.vertical_tabs_hide_completely_when_collapsed";
+}  // namespace brave_tabs
+#endif  // !BUILDFLAG(IS_ANDROID)
+
 #include <chrome/common/pref_names.h>  // IWYU pragma: export
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_COMMON_PREF_NAMES_H_
