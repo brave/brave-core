@@ -95,8 +95,7 @@ void PlaylistPageActionController::AttachToTabHelper(
     content::WebContents* contents) {
   tab_helper_observation_.Reset();
   if (contents) {
-    if (auto* tab_helper =
-            playlist::PlaylistTabHelper::FromWebContents(contents)) {
+    if (auto* tab_helper = playlist::PlaylistTabHelper::From(&tab_.get())) {
       tab_helper_observation_.Observe(tab_helper);
     }
   }
@@ -132,8 +131,7 @@ void PlaylistPageActionController::UpdateState(content::WebContents* contents) {
   bool has_saved_items = false;
   bool has_found_items = false;
   if (contents) {
-    if (auto* tab_helper =
-            playlist::PlaylistTabHelper::FromWebContents(contents)) {
+    if (auto* tab_helper = playlist::PlaylistTabHelper::From(&tab_.get())) {
       has_saved_items = !tab_helper->saved_items().empty();
       has_found_items = !tab_helper->found_items().empty();
     }

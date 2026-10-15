@@ -9,6 +9,7 @@
 #include <memory>
 
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+#include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "chrome/browser/android/tab_features.h"
 
 class Profile;
@@ -17,6 +18,10 @@ namespace ai_chat {
 class TabDataWebContentsObserver;
 class WebMcpInjector;
 }  // namespace ai_chat
+
+namespace playlist {
+class PlaylistTabHelper;
+}  // namespace playlist
 
 namespace brave_perf_predictor {
 class PerfPredictorTabHelper;
@@ -74,6 +79,10 @@ class BraveTabFeatures : public TabFeatures_Chromium {
   // Estimates the bandwidth that Shields saves.
   std::unique_ptr<brave_perf_predictor::PerfPredictorTabHelper>
       perf_predictor_tab_helper_;
+#if BUILDFLAG(ENABLE_PLAYLIST)
+  // Finds and saves the page's media. Null when Playlist is unavailable.
+  std::unique_ptr<playlist::PlaylistTabHelper> playlist_tab_helper_;
+#endif
   // Enters fullscreen and Picture-in-Picture for YouTube videos.
   std::unique_ptr<ContentsObservingTabFeature> youtube_script_injector_;
 
