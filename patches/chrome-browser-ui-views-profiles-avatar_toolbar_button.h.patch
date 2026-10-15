@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/profiles/avatar_toolbar_button.h b/chrome/browser/ui/views/profiles/avatar_toolbar_button.h
-index 63bd79598ded0350612843ab5a60df9d4fa56f61..978bc620e6320332156aa5dd8457e93db06dbd1c 100644
+index 7dca7fe1a19114ebc2e5f17a4551feaf0f74a781..9e12899dd1cf3100d0da932800ea427d50db77ac 100644
 --- a/chrome/browser/ui/views/profiles/avatar_toolbar_button.h
 +++ b/chrome/browser/ui/views/profiles/avatar_toolbar_button.h
-@@ -90,6 +90,7 @@ class AvatarToolbarButton : public ToolbarButton,
+@@ -86,6 +86,7 @@ class AvatarToolbarButton : public ToolbarButton,
    void OnBoundsChanged(const gfx::Rect& previous_bounds) override;
  
   private:

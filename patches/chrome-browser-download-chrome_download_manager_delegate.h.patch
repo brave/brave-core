@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/download/chrome_download_manager_delegate.h b/chrome/browser/download/chrome_download_manager_delegate.h
-index 3f21fa06d58c3db97a8cb101925f4261619baa2a..142425da9446262e22eb244c4e4a37a432414d82 100644
+index 677db611b4936cfdaa397b5f7dccf02d01fcfcea..cb1d84a7231ce356f355d773b67c604a4f82d531 100644
 --- a/chrome/browser/download/chrome_download_manager_delegate.h
 +++ b/chrome/browser/download/chrome_download_manager_delegate.h
 @@ -301,6 +301,7 @@ class ChromeDownloadManagerDelegate

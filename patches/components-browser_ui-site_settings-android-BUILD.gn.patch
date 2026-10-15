@@ -1,5 +1,5 @@
 diff --git a/components/browser_ui/site_settings/android/BUILD.gn b/components/browser_ui/site_settings/android/BUILD.gn
-index 273fb740be3f97fdcd946a6f31528244d0e39fda..6af485297b4de97a15c6c5914b39a482c093d5bc 100644
+index e91f024a25b53b8b6d5cdad17962b545fb27d786..152868417b302ceaf9f3d949b5fc2cd227226e47 100644
 --- a/components/browser_ui/site_settings/android/BUILD.gn
 +++ b/components/browser_ui/site_settings/android/BUILD.gn
 @@ -111,6 +111,7 @@ android_library("java") {
@@ -10,7 +10,7 @@ index 273fb740be3f97fdcd946a6f31528244d0e39fda..6af485297b4de97a15c6c5914b39a482
  
    resources_package = "org.chromium.components.browser_ui.site_settings"
    deps = [
-@@ -155,6 +156,7 @@ android_library("java") {
+@@ -156,6 +157,7 @@ android_library("java") {
      "//ui/android:ui_utils_java",
      "//url:gurl_java",
    ]

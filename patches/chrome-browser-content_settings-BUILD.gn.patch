@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/content_settings/BUILD.gn b/chrome/browser/content_settings/BUILD.gn
-index 5778004befe23694a9affdcd794f40378fe72ed0..abfe1cc22f461da80e64dec166a61e4b166cedec 100644
+index 884ad2f2f6acbfe02da2a56d316b10a749436c6c..bebf6316709195529b1902ceaacdbe8331bcdbc7 100644
 --- a/chrome/browser/content_settings/BUILD.gn
 +++ b/chrome/browser/content_settings/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -10,7 +10,7 @@ index 5778004befe23694a9affdcd794f40378fe72ed0..abfe1cc22f461da80e64dec166a61e4b
  import("//components/guest_view/buildflags/buildflags.gni")
  import("//content/public/common/features.gni")
  import("//extensions/buildflags/buildflags.gni")
-@@ -102,6 +103,7 @@ source_set("impl") {
+@@ -99,6 +100,7 @@ source_set("impl") {
      "//services/metrics/public/cpp:ukm_builders",
      "//ui/webui",
    ]
@@ -18,7 +18,7 @@ index 5778004befe23694a9affdcd794f40378fe72ed0..abfe1cc22f461da80e64dec166a61e4b
  
    if (is_android) {
      sources += [
-@@ -364,6 +366,7 @@ source_set("unit_tests") {
+@@ -356,6 +358,7 @@ source_set("unit_tests") {
    if (is_android) {
      sources += [ "javascript_optimizer_provider_android_unittest.cc" ]
      deps += [ "//chrome/browser/android:tabs_public" ]

@@ -1,5 +1,5 @@
 diff --git a/components/sync_preferences/BUILD.gn b/components/sync_preferences/BUILD.gn
-index 952d70810eb36c73a12fca4a545ccddabca21a4f..d889124314c66ebf03b9a479ceb9c5a0c2d459b8 100644
+index 6464eec9a548f1571e173ae9fc64b15d61741e7f..13dc0d4b1eb59284e8d56f3880dc9834b0708cc7 100644
 --- a/components/sync_preferences/BUILD.gn
 +++ b/components/sync_preferences/BUILD.gn
 @@ -2,6 +2,8 @@
@@ -11,7 +11,7 @@ index 952d70810eb36c73a12fca4a545ccddabca21a4f..d889124314c66ebf03b9a479ceb9c5a0
  source_set("features") {
    sources = [
      "features.cc",
-@@ -47,6 +49,7 @@ static_library("sync_preferences") {
+@@ -48,6 +50,7 @@ static_library("sync_preferences") {
  }
  
  source_set("common_syncable_prefs_database") {
