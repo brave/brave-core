@@ -2373,6 +2373,57 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetMetadata) {
   }
 }
 
+TEST_F(PolkadotSubstrateRpcUnitTest, DappParachainRpcUrls) {
+  url_loader_factory_.ClearResponses();
+
+  const struct {
+    std::string_view chain_id;
+    std::string_view rpc_url;
+  } test_cases[] = {
+      {mojom::kPolkadotAcala, "https://acala-rpc-0.aca-api.network/"},
+      {mojom::kPolkadotBifrost, "https://hk.p.bifrost-rpc.liebi.com/"},
+      {mojom::kPolkadotHydration, "https://hydration-rpc.n.dwellir.com/"},
+      {mojom::kPolkadotNeuroWeb, "https://parachain-rpc.origin-trail.network/"},
+      {mojom::kPolkadotJamton, "https://rpc.jamton.network/"},
+  };
+
+  base::MockCallback<PolkadotSubstrateRpc::GetMetadataCallback> callback;
+  auto* reqs = url_loader_factory_.pending_requests();
+
+  for (const auto& test_case : test_cases) {
+    SCOPED_TRACE(test_case.chain_id);
+
+    ASSERT_TRUE(network_manager_
+                    ->GetNetworkURL(test_case.chain_id, mojom::CoinType::DOT)
+                    .is_empty());
+
+    polkadot_substrate_rpc_->GetMetadata(test_case.chain_id, callback.Get());
+
+    ASSERT_EQ(reqs->size(), 1u);
+    EXPECT_EQ(reqs->front().request.url, test_case.rpc_url);
+
+    reqs->clear();
+  }
+
+  // We route Asset Hub through the same URL our wallet natively uses.
+  polkadot_substrate_rpc_->GetMetadata(mojom::kPolkadotMainnetAssetHub,
+                                       callback.Get());
+  ASSERT_EQ(reqs->size(), 1u);
+  EXPECT_EQ(reqs->front().request.url,
+            "https://polkadot-asset-hub.wallet.brave.com/");
+  reqs->clear();
+
+  // Users can also manually set where Asset Hub points.
+  network_manager_->SetNetworkURLForTesting(
+      mojom::kPolkadotMainnetAssetHub,
+      GURL("https://asset-hub.example.com/rpc"));
+  polkadot_substrate_rpc_->GetMetadata(mojom::kPolkadotMainnetAssetHub,
+                                       callback.Get());
+  ASSERT_EQ(reqs->size(), 1u);
+  EXPECT_EQ(reqs->front().request.url, "https://asset-hub.example.com/rpc");
+  reqs->clear();
+}
+
 TEST_F(PolkadotSubstrateRpcUnitTest, SubmitExtrinsic) {
   url_loader_factory_.ClearResponses();
 

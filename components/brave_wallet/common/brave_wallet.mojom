@@ -1513,6 +1513,16 @@ const string kPolkadotMainnet = "polkadot_mainnet";
 
 const string kPolkadotMainnetAssetHub = "polkadot_asset_hub";
 
+const string kPolkadotAcala = "polkadot_acala";
+
+const string kPolkadotBifrost = "polkadot_bifrost";
+
+const string kPolkadotHydration = "polkadot_hydration";
+
+const string kPolkadotNeuroWeb = "polkadot_neuroweb";
+
+const string kPolkadotJamton = "polkadot_jamton";
+
 const string kPolkadotTestnet = "polkadot_testnet";
 
 const string kPolkadotTestnetAssetHub = "westend_asset_hub";
