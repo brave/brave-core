@@ -7,6 +7,7 @@
 
   ./open_profile.py search            # the semantic search profile
   ./open_profile.py learned-memory    # with the learned memory switches
+  ./open_profile.py demo              # the demo profile, for the demo
 
 Other arguments go to the browser.
 """
@@ -15,6 +16,7 @@ import argparse
 import subprocess
 
 import cdp
+import demo_profile
 import learned_memory_eval
 import search_profile
 
@@ -24,6 +26,7 @@ PROFILES = {
         learned_memory_eval.PROFILE_NAME,
         learned_memory_eval.SWITCHES,
     ),
+    'demo': (demo_profile.PROFILE_NAME, learned_memory_eval.SWITCHES),
 }
 
 
@@ -35,6 +38,9 @@ def main():
     args, browser_args = parser.parse_known_args()
     cdp.check_build()
     name, switches = PROFILES[args.profile]
+    if args.profile == 'demo':
+        # The daily Dreaming run must not learn before the demo does.
+        demo_profile.set_prefs(demo_profile.Demo(name))
     subprocess.run(
         ['pnpm', 'start', f'--user_data_dir_name={name}']
         + switches

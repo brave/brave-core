@@ -88,7 +88,7 @@ def _reply_length(text, sent):
     return len(text) - sum(len(m) for m in sent)
 
 
-def _wait_for_reply(conversation, sent, before, limit=300, stable=8):
+def wait_for_reply(conversation, sent, before, limit=300, stable=8):
     """Waits until a reply comes and then stops changing. A search or a tool
     call can keep the text still for a while before the reply."""
     start, last, since = time.time(), None, time.time()
@@ -116,7 +116,7 @@ def chat(browser, messages, tries=3):
                 time.sleep(2)
                 if conversation.accept_disclaimer():
                     time.sleep(2)
-                text, added = _wait_for_reply(
+                text, added = wait_for_reply(
                     conversation, sent + [message], before
                 )
                 if added - before > 40:
