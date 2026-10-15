@@ -1,0 +1,28 @@
+<?xml version="1.0" ?>
+<!DOCTYPE translationbundle>
+<translationbundle lang="hr">
+<translation id="5725339460980108526">Kad ste u anonimnom načinu, Brave web-lokacijama blokira upotrebu kolačića trećih strana</translation>
+<translation id="1365023215312302966">Web-lokacije ne mogu upotrebljavati kolačiće trećih strana za personalizaciju sadržaja i oglasa te da bi saznale više o radnjama koje poduzimate na drugim web-lokacijama</translation>
+<translation id="7271018957317922139">Kad ste u anonimnom načinu, web-lokacije ne mogu upotrebljavati kolačiće trećih strana. Ako web-lokacija koja se oslanja na te kolačiće ne funkcionira, možete <ph name="BEGIN_LINK"/>joj pokušati dati privremeni pristup kolačićima treće strane<ph name="END_LINK"/>.</translation>
+<translation id="2004697686368036666">Značajke na nekim web-lokacijama možda neće funkcionirati</translation>
+<translation id="2183376768278472507">Ako web-lokacija ne funkcionira na očekivani način, možete dopustiti kolačiće treće strane za određenu web-lokaciju koju posjećujete</translation>
+<translation id="2235344399760031203">Blokirani su kolačići treće strane</translation>
+<translation id="2360633687155619995">Web-lokacije ne mogu upotrebljavati kolačiće trećih strana za personalizaciju sadržaja i oglasa te da bi saznale više o radnjama koje poduzimate na drugim web-lokacijama. Neke značajke web-lokacije možda neće funkcionirati u skladu s očekivanjima.</translation>
+<translation id="2496115946829713659">Web-lokacije mogu upotrebljavati kolačiće trećih strana za personaliziranje sadržaja i oglasa te da bi saznale više o radnjama koje poduzimate na drugim web-lokacijama</translation>
+<translation id="7220743783949410550">Kad ste u anonimnom načinu, web-lokacije ne mogu upotrebljavati kolačiće trećih strana. Ako web-lokacija koja se oslanja na te kolačiće ne funkcionira, možete <ph name="START_LINK"/>joj pokušati dati privremeni pristup kolačićima treće strane<ph name="END_LINK"/>.</translation>
+<translation id="3425311689852411591">Web-lokacije koje se oslanjaju na kolačiće trećih strana trebale bi funkcionirati u skladu s očekivanjima</translation>
+<translation id="3624583033347146597">Odabir preferencija za kolačiće trećih strana</translation>
+<translation id="3918378745482005425">Neke značajke možda neće funkcionirati. Povezane web-lokacije i dalje mogu upotrebljavati kolačiće trećih strana.</translation>
+<translation id="4278390842282768270">Dopušteno</translation>
+<translation id="4412992751769744546">Dopusti kolačiće trećih strana</translation>
+<translation id="4711259472133554310">Iznimke možete izraditi u postavkama da biste određenim web-lokacijama uvijek dopustili upotrebu kolačića trećih strana</translation>
+<translation id="5677928146339483299">Blokirano</translation>
+<translation id="6196640612572343990">Blokiraj kolačiće trećih strana</translation>
+<translation id="6308169245546905162">Web-lokacije mogu upotrebljavati kolačiće trećih strana kako bi saznale više o radnjama koje poduzimate na drugim web-lokacijama</translation>
+<translation id="7315780377187123731">Više o opciji Blokiraj kolačiće trećih strana</translation>
+<translation id="7374493521304367420">Web-lokacije i dalje mogu upotrebljavati kolačiće za uvid u aktivnost pregledavanja na svojoj web-lokaciji</translation>
+<translation id="7453144832830554937">Značajke web-lokacije koje se oslanjaju na kolačiće trećih strana možda neće funkcionirati</translation>
+<translation id="7538480403395139206">Više o opciji Dopusti kolačiće trećih strana</translation>
+<translation id="8200078544056087897">Značajke web-lokacije koje se oslanjaju na kolačiće trećih strana trebale bi funkcionirati u skladu s očekivanjima</translation>
+<translation id="839994149685752920">Web-lokacije mogu upotrebljavati kolačiće trećih strana za personalizaciju sadržaja i oglasa</translation>
+</translationbundle>
