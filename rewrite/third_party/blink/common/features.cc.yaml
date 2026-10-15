@@ -39,3 +39,8 @@ substitutions:
     set_feature_flag_default_state:
       feature_name: kPreloadingEagerViewportHeuristics
       value: base::FEATURE_DISABLED_BY_DEFAULT
+
+  - description: 'Ship kPreloadingModerateViewportHeuristics disabled.'
+    set_feature_flag_default_state:
+      feature_name: kPreloadingModerateViewportHeuristics
+      value: base::FEATURE_DISABLED_BY_DEFAULT

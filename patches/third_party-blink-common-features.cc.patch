@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/common/features.cc b/third_party/blink/common/features.cc
-index 6dca1ba06fd1aeff560c3a34855a6375fdb1b81a..feea4bffcf479cc1f63c6a22edf20d0ae89ef465 100644
+index 6dca1ba06fd1aeff560c3a34855a6375fdb1b81a..96065585647ee713a5b67fd048367c3fc9ea97dc 100644
 --- a/third_party/blink/common/features.cc
 +++ b/third_party/blink/common/features.cc
 @@ -128,7 +128,7 @@ BASE_FEATURE(kAllowDatapipeDrainedAsBytesConsumerInBFCache,
@@ -49,6 +49,17 @@ index 6dca1ba06fd1aeff560c3a34855a6375fdb1b81a..feea4bffcf479cc1f63c6a22edf20d0a
  BASE_FEATURE_PARAM(bool,
                     kPreloadingEagerViewportHeuristicsForDevToolsEmulation,
                     &kPreloadingEagerViewportHeuristics,
+@@ -1823,8 +1823,8 @@ BASE_FEATURE_PARAM(base::TimeDelta,
+                    "viewport_present_time",
+                    base::Milliseconds(50));
+ 
+-BASE_FEATURE(kPreloadingModerateViewportHeuristics,
+-             base::FEATURE_ENABLED_BY_DEFAULT);
++BASE_OVERRIDDEN_FEATURE(kPreloadingModerateViewportHeuristics,
++             base::FEATURE_DISABLED_BY_DEFAULT);
+ BASE_FEATURE_PARAM(bool,
+                    kPreloadingModerateViewportHeuristicsEnactCandidates,
+                    &kPreloadingModerateViewportHeuristics,
 @@ -1886,7 +1886,7 @@ BASE_FEATURE(kLocalCompileHints, base::FEATURE_ENABLED_BY_DEFAULT);
  
  // Reduce the amount of information in the default 'referer' header for
