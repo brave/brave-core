@@ -189,6 +189,15 @@ class BraveifyLanguageFormsTest(unittest.TestCase):
         )
         self.assertEqual(self.braveify('cs', 'funkce Chromu.'), 'funkce Brave.')
         self.assertEqual(self.braveify('fa', 'کنید chrome را'), 'کنید Brave را')
+
+    def test_leaves_chrome_urls_alone(self):
+        for text in (
+            'chrome://flags',
+            'chrome-untrusted://terminal',
+            'google.com/chrome',
+            'chrome.google.com',
+        ):
+            self.assertEqual(self.braveify('fa', text), text)
         self.assertEqual(self.braveify('ky', '\u0421hrome\'ду'), "Brave'ду")
 
     def test_leaves_other_locales_alone(self):
