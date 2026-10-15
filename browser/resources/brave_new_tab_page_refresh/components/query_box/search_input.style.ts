@@ -16,6 +16,13 @@ export const style = scoped.css`
     overflow: clip;
   }
 
+  .input-row {
+    --search-engine-icon-size: 20px;
+
+    display: flex;
+    flex-direction: column;
+  }
+
   input {
     margin: 12px 16px 8px;
     border: none;
@@ -26,8 +33,6 @@ export const style = scoped.css`
   }
 
   .search-actions {
-    --search-engine-icon-size: 20px;
-
     display: flex;
     align-items: center;
     gap: 8px;
@@ -59,12 +64,16 @@ export const style = scoped.css`
     border-top: solid 1px ${color.divider.subtle};
   }
 
-  &.single-line {
+  &.single-line .input-row {
     flex-direction: row;
+    align-items: center;
     gap: 8px;
+    padding: 8px;
 
-    .search-actions {
-      order: -1;
+    input {
+      flex: 1 1 auto;
+      min-width: 0;
+      margin: 0;
     }
   }
 
