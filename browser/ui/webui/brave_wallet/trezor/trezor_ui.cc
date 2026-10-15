@@ -14,10 +14,6 @@
 #include "content/public/browser/web_ui_data_source.h"
 #include "ui/webui/resources/grit/webui_resources.h"
 
-namespace {
-constexpr char kTrezorConnectURL[] = "https://connect.trezor.io/";
-}  // namespace
-
 namespace trezor {
 
 UntrustedTrezorUI::UntrustedTrezorUI(content::WebUI* web_ui)
@@ -30,7 +26,7 @@ UntrustedTrezorUI::UntrustedTrezorUI(content::WebUI* web_ui)
   untrusted_source->AddFrameAncestor(GURL(kBraveUIWalletPanelURL));
   untrusted_source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ConnectSrc,
-      "connect-src 'self' https://connect.trezor.io;");
+      std::string("connect-src 'self' ") + kTrezorConnectURL + ";");
   untrusted_source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ScriptSrc,
       std::string("script-src chrome://resources/js/ 'self' ") +
