@@ -16,7 +16,7 @@ substitutions:
 
   - description: Get CollapsedWidth dynamically based on Brave vertical tabs
     regex:
-      pattern: 'VerticalTabStripRegionView::kCollapsedWidth'
+      pattern: 'tabs::kVerticalTabStripCollapsedWidth'
       replace: 'views().vertical_tab_strip_region_view->GetCollapsedWidth()'
 
   - description: |-
