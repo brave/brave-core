@@ -22,6 +22,7 @@
 #include "content/public/browser/web_contents.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
+#include "brave/browser/brave_ads/creatives/search_result_ad/creative_search_result_ad_tab_helper.h"
 #include "brave/browser/brave_ads/tabs/ads_tab_helper.h"
 #endif
 
@@ -63,6 +64,8 @@ BraveTabFeatures::BraveTabFeatures(content::WebContents* web_contents,
 
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
   ads_tab_helper_ = std::make_unique<brave_ads::AdsTabHelper>(tab_interface);
+  creative_search_result_ad_tab_helper_ =
+      brave_ads::CreativeSearchResultAdTabHelper::MaybeCreate(tab_interface);
 #endif
 }
 
