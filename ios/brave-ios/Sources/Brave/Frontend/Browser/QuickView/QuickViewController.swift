@@ -480,6 +480,7 @@ class QuickViewController: UIViewController {
     )
 
     viewController.modalPresentationStyle = .popover
+    viewController.preferredContentSize = CGSize(width: 400, height: 600)
 
     if let popover = viewController.popoverPresentationController {
       popover.sourceView = toolbarHostingController.rootView.shieldBackgroundView.uiView
@@ -489,7 +490,6 @@ class QuickViewController: UIViewController {
       sheet.largestUndimmedDetentIdentifier = .medium
       sheet.prefersEdgeAttachedInCompactHeight = true
       sheet.widthFollowsPreferredContentSizeWhenEdgeAttached = true
-      sheet.detents = [.medium(), .large()]
       sheet.prefersGrabberVisible = true
     }
     if UIDevice.current.userInterfaceIdiom != .pad {
