@@ -69,11 +69,10 @@ SpeedreaderToolbarDataHandlerImpl::SpeedreaderToolbarDataHandlerImpl(
   }
   browser_tab_strip_tracker_.Init();
 
-  active_tab_helper_ = speedreader::SpeedreaderTabHelper::FromWebContents(
-      browser_->GetTabStripModel()->GetActiveWebContents());
   speedreader_service_observation_.Observe(GetSpeedreaderService());
   tts_player_observation_.Observe(speedreader::TtsPlayer::GetInstance());
-  tab_helper_observation_.Observe(active_tab_helper_);
+  SetActiveTabHelper(speedreader::SpeedreaderTabHelper::From(
+      browser_->GetTabStripModel()->GetActiveTab()));
 
   speedreader::TtsPlayer::GetInstance()->set_delegate(
       std::make_unique<TtsPlayerDelegate>());
@@ -84,8 +83,20 @@ SpeedreaderToolbarDataHandlerImpl::SpeedreaderToolbarDataHandlerImpl(
   speedreader::TtsPlayer::GetInstance()->SetVoice(tts_settings.voice);
 }
 
-SpeedreaderToolbarDataHandlerImpl::~SpeedreaderToolbarDataHandlerImpl() =
-    default;
+SpeedreaderToolbarDataHandlerImpl::~SpeedreaderToolbarDataHandlerImpl() {
+  SetActiveTabHelper(nullptr);
+}
+
+void SpeedreaderToolbarDataHandlerImpl::SetActiveTabHelper(
+    speedreader::SpeedreaderTabHelper* tab_helper) {
+  if (active_tab_helper_) {
+    active_tab_helper_->RemoveObserver(this);
+  }
+  active_tab_helper_ = tab_helper ? tab_helper->GetWeakPtr() : nullptr;
+  if (active_tab_helper_) {
+    active_tab_helper_->AddObserver(this);
+  }
+}
 
 void SpeedreaderToolbarDataHandlerImpl::ShowTuneBubble(bool show) {
   if (!active_tab_helper_) {
@@ -269,14 +280,10 @@ void SpeedreaderToolbarDataHandlerImpl::OnTabStripModelChanged(
     const TabStripModelChange& change,
     const TabStripSelectionChange& selection) {
   if (selection.active_tab_changed()) {
-    tab_helper_observation_.Reset();
-    active_tab_helper_ = nullptr;
-
-    if (selection.new_contents) {
-      active_tab_helper_ = speedreader::SpeedreaderTabHelper::FromWebContents(
-          selection.new_contents);
+    SetActiveTabHelper(
+        speedreader::SpeedreaderTabHelper::From(selection.new_tab));
+    if (active_tab_helper_) {
       active_tab_helper_->OnToolbarStateChanged(current_button_);
-      tab_helper_observation_.Observe(active_tab_helper_);
       events_->SetPlaybackState(GetTabPlaybackState());
     }
 

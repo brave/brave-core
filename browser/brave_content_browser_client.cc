@@ -119,6 +119,7 @@
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/embedder_support/switches.h"
 #include "components/prefs/pref_service.h"
+#include "components/tabs/public/tab_interface.h"
 #include "components/user_prefs/user_prefs.h"
 #include "components/version_info/version_info.h"
 #include "content/public/browser/browser_context.h"
@@ -1228,8 +1229,8 @@ BraveContentBrowserClient::CreateURLLoaderThrottles(
 
     // Speedreader
 #if BUILDFLAG(ENABLE_SPEEDREADER)
-    auto* tab_helper =
-        speedreader::SpeedreaderTabHelper::FromWebContents(contents);
+    auto* tab_helper = speedreader::SpeedreaderTabHelper::From(
+        tabs::TabInterface::MaybeGetFromContents(contents));
     if (tab_helper && isMainFrame) {
       auto* speedreader_service =
           speedreader::SpeedreaderServiceFactory::GetForBrowserContext(

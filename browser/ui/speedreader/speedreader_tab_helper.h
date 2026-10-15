@@ -18,10 +18,10 @@
 #include "brave/components/speedreader/speedreader_service.h"
 #include "brave/components/speedreader/speedreader_util.h"
 #include "brave/components/speedreader/tts_player.h"
+#include "chrome/browser/ui/tabs/contents_observing_tab_feature.h"
 #include "components/dom_distiller/content/browser/distillable_page_utils.h"
-#include "content/public/browser/web_contents_observer.h"
-#include "content/public/browser/web_contents_user_data.h"
 #include "mojo/public/cpp/bindings/associated_receiver.h"
+#include "ui/base/unowned_user_data/scoped_unowned_user_data.h"
 #include "url/gurl.h"
 
 namespace content {
@@ -30,6 +30,10 @@ class WebContents;
 }  // namespace content
 
 #if BUILDFLAG(IS_ANDROID)
+namespace tabs {
+class TabInterface;
+}  // namespace tabs
+
 namespace ui {
 class ViewAndroid;
 }
@@ -45,15 +49,14 @@ enum class SpeedreaderBubbleLocation : int {
 };
 
 // Determines if speedreader should be active for a given top-level navigation.
-class SpeedreaderTabHelper
-    : public content::WebContentsObserver,
-      public content::WebContentsUserData<SpeedreaderTabHelper>,
-      public PageDistiller,
-      public SpeedreaderDelegate,
-      public mojom::SpeedreaderHost,
-      public SpeedreaderService::Observer,
-      public dom_distiller::DistillabilityObserver,
-      public speedreader::TtsPlayer::Observer {
+// Distills the page shown in a tab. Owned by BraveTabFeatures.
+class SpeedreaderTabHelper : public tabs::ContentsObservingTabFeature,
+                             public PageDistiller,
+                             public SpeedreaderDelegate,
+                             public mojom::SpeedreaderHost,
+                             public SpeedreaderService::Observer,
+                             public dom_distiller::DistillabilityObserver,
+                             public speedreader::TtsPlayer::Observer {
  public:
   struct Observer : public base::CheckedObserver {
     ~Observer() override = default;
@@ -66,6 +69,17 @@ class SpeedreaderTabHelper
     virtual void OnDistillStateUpdated() {}
   };
 
+  DECLARE_USER_DATA(SpeedreaderTabHelper);
+
+  static SpeedreaderTabHelper* From(tabs::TabInterface* tab);
+
+  // Returns nullptr when Speedreader is disabled or unavailable.
+  static std::unique_ptr<SpeedreaderTabHelper> MaybeCreate(
+      tabs::TabInterface& tab);
+
+  SpeedreaderTabHelper(tabs::TabInterface& tab,
+                       SpeedreaderService& speedreader_service,
+                       SpeedreaderRewriterService* rewriter_service);
   ~SpeedreaderTabHelper() override;
 
   SpeedreaderTabHelper(const SpeedreaderTabHelper&) = delete;
@@ -76,8 +90,6 @@ class SpeedreaderTabHelper
   static void BindSpeedreaderHost(
       mojo::PendingAssociatedReceiver<mojom::SpeedreaderHost> receiver,
       content::RenderFrameHost* rfh);
-
-  static void MaybeCreateForWebContents(content::WebContents* contents);
 
   static PageDistiller* GetPageDistiller(content::WebContents* contents);
 
@@ -119,10 +131,8 @@ class SpeedreaderTabHelper
   void OnToolbarStateChanged(mojom::MainButtonType button);
 
  private:
-  friend class content::WebContentsUserData<SpeedreaderTabHelper>;
-  explicit SpeedreaderTabHelper(content::WebContents* web_contents,
-                                SpeedreaderService& speedreader_service,
-                                SpeedreaderRewriterService* rewriter_service);
+  // Stops observing the services and the contents, and hides the bubble.
+  void StopObserving();
 
   void BindReceiver(
       mojo::PendingAssociatedReceiver<mojom::SpeedreaderHost> receiver);
@@ -151,7 +161,11 @@ class SpeedreaderTabHelper
   void DidStopLoading() override;
   void DOMContentLoaded(content::RenderFrameHost* render_frame_host) override;
   void OnVisibilityChanged(content::Visibility visibility) override;
-  void WebContentsDestroyed() override;
+
+  // tabs::ContentsObservingTabFeature:
+  void OnDiscardContents(tabs::TabInterface* tab,
+                         content::WebContents* old_contents,
+                         content::WebContents* new_contents) override;
 
   // SpeedreaderDelegate:
   bool IsPageDistillationAllowed() override;
@@ -219,9 +233,9 @@ class SpeedreaderTabHelper
 
   base::ObserverList<Observer> observers_;
 
-  base::WeakPtrFactory<SpeedreaderTabHelper> weak_factory_{this};
+  ui::ScopedUnownedUserData<SpeedreaderTabHelper> scoped_unowned_user_data_;
 
-  WEB_CONTENTS_USER_DATA_KEY_DECL();
+  base::WeakPtrFactory<SpeedreaderTabHelper> weak_factory_{this};
 };
 
 }  // namespace speedreader

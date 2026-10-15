@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_UI_WEBUI_SPEEDREADER_SPEEDREADER_TOOLBAR_DATA_HANDLER_IMPL_H_
 #define BRAVE_BROWSER_UI_WEBUI_SPEEDREADER_SPEEDREADER_TOOLBAR_DATA_HANDLER_IMPL_H_
 
+#include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
 #include "brave/browser/ui/speedreader/speedreader_tab_helper.h"
 #include "brave/components/speedreader/common/speedreader_toolbar.mojom.h"
@@ -74,6 +75,9 @@ class SpeedreaderToolbarDataHandlerImpl
       speedreader::mojom::MainButtonType button) override;
 
  private:
+  // Moves this observer to `tab_helper`, which may be null.
+  void SetActiveTabHelper(speedreader::SpeedreaderTabHelper* tab_helper);
+
   speedreader::SpeedreaderService* GetSpeedreaderService();
   speedreader::TtsPlayer::Controller* GetTtsController();
   speedreader::mojom::PlaybackState GetTabPlaybackState();
@@ -127,16 +131,14 @@ class SpeedreaderToolbarDataHandlerImpl
                           speedreader::TtsPlayer::Observer>
       tts_player_observation_{this};
 
-  raw_ptr<speedreader::SpeedreaderTabHelper> active_tab_helper_ = nullptr;
+  // Invalidated when the tab closes, before the tab strip notifies this.
+  base::WeakPtr<speedreader::SpeedreaderTabHelper> active_tab_helper_;
   BrowserTabStripTracker browser_tab_strip_tracker_;
 
   base::ScopedObservation<ThemeService, ThemeServiceObserver>
       theme_observation_{this};
   base::ScopedObservation<ui::NativeTheme, ui::NativeThemeObserver>
       native_theme_observation_{this};
-  base::ScopedObservation<speedreader::SpeedreaderTabHelper,
-                          speedreader::SpeedreaderTabHelper::Observer>
-      tab_helper_observation_{this};
 
   base::WeakPtrFactory<SpeedreaderToolbarDataHandlerImpl> weak_factory_{this};
 };
