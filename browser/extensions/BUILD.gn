@@ -290,6 +290,7 @@ source_set("extensions") {
     # Android's extension management policy, standing in for the desktop
     # brave_extension_management.{cc,h} pulled in above.
     sources += [
+      "android/brave_extension_field_trials.cc",
       "android/brave_extension_management.cc",
       "android/brave_extension_management.h",
     ]
@@ -297,6 +298,9 @@ source_set("extensions") {
     deps += [
       "//brave/browser:brave_browser_features",
       "//chrome/browser/extensions:chrome_extensions_browser_client",
+      "//chrome/browser/flags:flags_android",
+      "//components/variations",
+      "//content/public/common",
       "//extensions/strings",
     ]
   }
