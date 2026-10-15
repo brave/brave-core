@@ -213,9 +213,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &features::kDigitalGoodsApi,
       &features::kEmailVerificationProtocol,
       &features::kFedCm,
-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
-      &features::kFewerUpdateConfirmations,
-#endif
       &features::kHttpsFirstBalancedMode,
       &features::kIndigo,
 #if BUILDFLAG(IS_WIN)
