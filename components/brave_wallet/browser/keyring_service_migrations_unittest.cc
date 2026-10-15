@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "base/containers/to_vector.h"
 #include "base/functional/callback_helpers.h"
 #include "base/test/bind.h"
 #include "base/test/mock_callback.h"
@@ -21,6 +22,7 @@
 
 using base::test::ParseJsonDict;
 using testing::_;
+using testing::ElementsAre;
 
 namespace brave_wallet {
 
@@ -444,16 +446,9 @@ class KeyringServiceMigrationsUnitTest : public testing::Test {
   static std::optional<std::string> GetWalletMnemonic(
       const std::string& password,
       KeyringService* service) {
-    base::RunLoop run_loop;
-    std::optional<std::string> mnemonic;
-    service->GetWalletMnemonic(
-        password,
-        base::BindLambdaForTesting([&](const std::optional<std::string>& v) {
-          mnemonic = v;
-          run_loop.Quit();
-        }));
-    run_loop.Run();
-    return mnemonic;
+    base::test::TestFuture<const std::optional<std::string>&> future;
+    service->GetWalletMnemonic(password, future.GetCallback());
+    return future.Get();
   }
 
   static mojom::RecoverWalletResult RecoverWallet(
@@ -724,15 +719,13 @@ TEST_F(KeyringServiceMigrationsLegacyIterationsUnitTest,
   ValidateRecoveredPrefs();
 
   const auto& all_accounts = service.GetAllAccountInfos();
-  ASSERT_EQ(all_accounts.size(), 4u);
-  EXPECT_EQ(all_accounts[0]->address,
-            "0xf81229FE54D8a20fBc1e1e2a3451D1c7489437Db");
-  EXPECT_EQ(all_accounts[1]->address,
-            "0x00c0f72E601C31DEb7890612cB92Ac0Fb7090EB0");
-  EXPECT_EQ(all_accounts[2]->address,
-            "f1qjidlytseoouzfhsgzczf3ettbhuaezorczeava");
-  EXPECT_EQ(all_accounts[3]->address,
-            "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8");
+  EXPECT_THAT(
+      base::ToVector(all_accounts,
+                     [](const auto& account) { return account->address; }),
+      ElementsAre("0xf81229FE54D8a20fBc1e1e2a3451D1c7489437Db",
+                  "0x00c0f72E601C31DEb7890612cB92Ac0Fb7090EB0",
+                  "f1qjidlytseoouzfhsgzczf3ettbhuaezorczeava",
+                  "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8"));
 
   ValidateUnlockAfterRecovery(service, new_password);
 }
@@ -944,23 +937,21 @@ TEST_F(KeyringServiceMigrationsLegacyMnemonicFormatUnitTest,
       mojom::RecoverWalletResult::kSuccess);
   ValidateRecoveredPrefs();
 
-  // Derived and hardware accounts survive, imported ones are dropped.
+  // Derived accounts survive and imported ones are dropped. Bitcoin and Zcash
+  // accounts have an empty address, so they are identified by unique key.
   const auto& all_accounts = service.GetAllAccountInfos();
-  ASSERT_EQ(all_accounts.size(), 9u);
-  EXPECT_EQ(all_accounts[0]->address,
-            "0xf81229FE54D8a20fBc1e1e2a3451D1c7489437Db");
-  EXPECT_EQ(all_accounts[1]->address,
-            "0x00c0f72E601C31DEb7890612cB92Ac0Fb7090EB0");
-  EXPECT_EQ(all_accounts[2]->address,
-            "f1qjidlytseoouzfhsgzczf3ettbhuaezorczeava");
-  EXPECT_EQ(all_accounts[3]->address,
-            "t1dca7adhz5lbvin5n3qlw67munu6xhn5fpb77nly");
-  EXPECT_EQ(all_accounts[4]->address,
-            "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8");
-  EXPECT_EQ(all_accounts[5]->account_id->unique_key, "0_4_0_0");
-  EXPECT_EQ(all_accounts[6]->account_id->unique_key, "0_5_0_0");
-  EXPECT_EQ(all_accounts[7]->account_id->unique_key, "133_6_0_0");
-  EXPECT_EQ(all_accounts[8]->account_id->unique_key, "133_7_0_0");
+  EXPECT_THAT(base::ToVector(all_accounts,
+                             [](const auto& account) {
+                               return account->address.empty()
+                                          ? account->account_id->unique_key
+                                          : account->address;
+                             }),
+              ElementsAre("0xf81229FE54D8a20fBc1e1e2a3451D1c7489437Db",
+                          "0x00c0f72E601C31DEb7890612cB92Ac0Fb7090EB0",
+                          "f1qjidlytseoouzfhsgzczf3ettbhuaezorczeava",
+                          "t1dca7adhz5lbvin5n3qlw67munu6xhn5fpb77nly",
+                          "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8",
+                          "0_4_0_0", "0_5_0_0", "133_6_0_0", "133_7_0_0"));
 
   ValidateUnlockAfterRecovery(service, new_password);
 }

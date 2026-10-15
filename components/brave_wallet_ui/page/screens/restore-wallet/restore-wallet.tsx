@@ -427,7 +427,9 @@ export const RestoreWallet = () => {
                 isDisabled={!hasConfirmedImportedAccountsRemoval}
                 onClick={onConfirmImportedAccountsWarning}
               >
-                {getLocale(S.BRAVE_WALLET_BUTTON_CONTINUE)}
+                {getLocale(
+                  S.BRAVE_WALLET_RECOVERY_IMPORTED_ACCOUNTS_WARNING_CONFIRM,
+                )}
               </Button>
             </WarningModalButtons>
           </WarningModalContent>

@@ -1827,6 +1827,7 @@ mojom::RecoverWalletResult KeyringService::RecoverWalletSync(
   }
 
   MaybeRunPasswordMigrations(profile_prefs_, new_password);
+  // Unlock wallet if password matches old one.
   if (ValidatePasswordInternal(new_password)) {
     return UnlockSync(new_password)
                ? mojom::RecoverWalletResult::kSuccess
