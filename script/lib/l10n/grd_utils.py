@@ -19,6 +19,7 @@ from lib.l10n.grd_string_replacements import (
     default_replacements,
     fixup_replacements,
     main_text_only_replacements,
+    missing_descriptions,
 )
 from lib.l10n.validation import validate_tags_in_one_string
 
@@ -124,6 +125,9 @@ def braveify_grd_tree(source_xml_tree, branding_replacements_only):
     wording"""
     for elem in source_xml_tree.xpath('//message'):
         generate_braveified_node(elem, False, branding_replacements_only)
+        description = missing_descriptions.get(elem.get('name'))
+        if description and not elem.get('desc'):
+            elem.set('desc', description)
     for elem in source_xml_tree.xpath('//comment()'):
         generate_braveified_node(elem, True, branding_replacements_only)
 

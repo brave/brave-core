@@ -17,7 +17,7 @@
 
 <ph name="EXTENSION_NAME">$1<ex>Babylon Toolbar</ex></ph>
   </message>
-  <message name="IDS_EXTENSION_EXTERNAL_INITIAL_INSTALL_PROMPT_TITLE_EXTENSION" desc="">
+  <message name="IDS_EXTENSION_EXTERNAL_INITIAL_INSTALL_PROMPT_TITLE_EXTENSION" desc="Title of the prompt window for an extension added by a partner program">
     <ph name="PARTNER_NAME">$1<ex>Brave</ex></ph> has added an extension that may change the way Brave works.
 
 <ph name="EXTENSION_NAME">$2<ex>Babylon Toolbar</ex></ph>
