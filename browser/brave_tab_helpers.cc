@@ -39,7 +39,6 @@
 #include "extensions/buildflags/buildflags.h"
 #include "net/base/features.h"
 #include "printing/buildflags/buildflags.h"
-#include "third_party/widevine/cdm/buildflags.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
@@ -64,10 +63,6 @@
 #include "chrome/browser/ui/webui/print_preview/print_preview_ui.h"
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
 #endif  // BUILDFLAG(ENABLE_PRINT_PREVIEW)
-
-#if BUILDFLAG(ENABLE_WIDEVINE)
-#include "brave/browser/widevine/brave_drm_tab_helper.h"
-#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
 #include "brave/components/brave_wayback_machine/brave_wayback_machine_tab_helper.h"
@@ -119,10 +114,6 @@ void AttachTabHelpers(content::WebContents* web_contents) {
 #endif
     );
   }
-#endif
-
-#if BUILDFLAG(ENABLE_WIDEVINE)
-  BraveDrmTabHelper::CreateForWebContents(web_contents);
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
