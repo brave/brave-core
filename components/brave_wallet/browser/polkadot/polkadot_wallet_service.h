@@ -134,6 +134,12 @@ class PolkadotWalletService : public mojom::PolkadotWalletService,
       base::span<const uint8_t, kPolkadotSubstrateAccountIdSize> recipient,
       GetFeeEstimateCallback callback);
 
+  // Returns the associated chain id given a prefixed hex string representing
+  // the genesis hash of the associated parachain. Case-sensitive lookup,
+  // leading prefix required as this is what dapps present us.
+  static std::optional<std::string_view> GetChainIdFromGenesisHash(
+      std::string_view genesis_hash);
+
  private:
   // KeyringServiceObserverBase:
   void Unlocked() override;

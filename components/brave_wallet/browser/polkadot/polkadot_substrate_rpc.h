@@ -8,6 +8,7 @@
 
 #include <vector>
 
+#include "base/functional/callback.h"
 #include "base/memory/weak_ptr.h"
 #include "base/types/expected.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
@@ -15,8 +16,12 @@
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
+#include "url/gurl.h"
 
 namespace brave_wallet {
+
+using PolkadotRpcUrlMapCallback =
+    base::RepeatingCallback<std::vector<GURL>(std::string_view)>;
 
 class NetworkManager;
 
@@ -77,6 +82,8 @@ class PolkadotSubstrateRpc {
 
   using GetEventsCallback = base::OnceCallback<void(
       base::expected<std::vector<uint8_t>, std::string>)>;
+
+  void SetParachainUrlMapCallback(PolkadotRpcUrlMapCallback rpc_url_callback);
 
   // Get the name of the chain pointed to by the current network
   // configuration. "Westend" or "Paseo" for the testnets, "Polkadot" for
@@ -194,6 +201,7 @@ class PolkadotSubstrateRpc {
                                             base::ListValue params);
 
   GURL GetNetworkURL(std::string_view chain_id);
+  GURL GetRpcUrlFromChainId(std::string_view chain_id);
 
   // Issues a POST request with a JSON payload to `url`, attaching the Brave
   // services key header when `url` points at a Brave wallet proxy endpoint.
@@ -218,6 +226,7 @@ class PolkadotSubstrateRpc {
   void OnGetPaymentInfo(GetPaymentInfoCallback callback, APIRequestResult res);
   void OnGetEvents(GetEventsCallback callback, APIRequestResult res);
 
+  PolkadotRpcUrlMapCallback rpc_url_callback_;
   const raw_ref<NetworkManager> network_manager_;
   api_request_helper::APIRequestHelper api_request_helper_;
   base::WeakPtrFactory<PolkadotSubstrateRpc> weak_ptr_factory_{this};

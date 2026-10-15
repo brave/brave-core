@@ -91,6 +91,21 @@ class BlockchainRegistry : public mojom::BlockchainRegistry {
     base::flat_set<std::string> previous_addresses_;
   };
 
+  class ScopedPolkadotRpcUrlsForTesting {
+   public:
+    explicit ScopedPolkadotRpcUrlsForTesting(
+        PolkadotRpcUrlsMap polkadot_rpc_urls);
+    ~ScopedPolkadotRpcUrlsForTesting();
+
+    ScopedPolkadotRpcUrlsForTesting(const ScopedPolkadotRpcUrlsForTesting&) =
+        delete;
+    ScopedPolkadotRpcUrlsForTesting& operator=(
+        const ScopedPolkadotRpcUrlsForTesting&) = delete;
+
+   private:
+    PolkadotRpcUrlsMap previous_rpc_urls_;
+  };
+
   bool IsEmptyForTesting();
   void ResetForTesting();
 
