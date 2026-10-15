@@ -171,6 +171,9 @@ class BraveTabFeatures : public TabFeatures {
   // Serves the wallet providers of the tab's frames. Null without Brave
   // Wallet.
   std::unique_ptr<ContentsObservingTabFeature> brave_wallet_tab_helper_;
+  // Distills the page. Null without Speedreader. Declared before the page
+  // action controller that observes it.
+  std::unique_ptr<ContentsObservingTabFeature> speedreader_tab_helper_;
   // Offers to enable Widevine when the page asks for it. Null without it.
   std::unique_ptr<ContentsObservingTabFeature> drm_tab_helper_;
   // Holds the Shields state for the page shown in the tab.
