@@ -1297,8 +1297,8 @@ public class BrowserViewController: UIViewController {
     }
     self.tabManager.selectTab(tabToSelect)
 
-    // Shred Domain's with SiteShieldLevel.appExit
-    self.tabManager.forgetDataOnAppExitDomains()
+    // Shred sites with a pending Auto Shred. Must run after tabs are restored.
+    self.tabManager.forgetDataWithPendingShredOnStartup()
 
     if !setupTasksCompleted {
       for task in postSetupTasks {
