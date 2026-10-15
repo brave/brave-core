@@ -20,7 +20,10 @@ source_set("sync") {
 if (!is_ios) {
   source_set("browser_tests") {
     testonly = true
-    sources = [ "network_time_helper_browsertest.cc" ]
+    sources = [
+      "brave_sync_smoke_browsertest.cc",
+      "network_time_helper_browsertest.cc",
+    ]
 
     deps = [
       "//base",
@@ -28,7 +31,14 @@ if (!is_ios) {
       "//brave/components/brave_sync:network_time_helper",
       "//brave/components/brave_sync:prefs",
       "//chrome/browser",
+      "//chrome/browser/sync",
       "//chrome/test:test_support",
+      "//chrome/test/base:chrome_test_utils",
+      "//components/sync:test_support",
+      "//components/sync/base",
+      "//components/sync/protocol",
+      "//components/sync/service",
+      "//net:test_support",
     ]
 
     defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
