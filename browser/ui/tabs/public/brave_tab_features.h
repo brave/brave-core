@@ -154,6 +154,8 @@ class BraveTabFeatures : public TabFeatures {
   std::unique_ptr<ContentsObservingTabFeature> sidebar_tab_helper_;
   // Highlights the Brave Shields icon once for new users.
   std::unique_ptr<ContentsObservingTabFeature> onboarding_tab_helper_;
+  // Records searches. Null when SERP metrics are disabled or off the record.
+  std::unique_ptr<ContentsObservingTabFeature> serp_metrics_tab_helper_;
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
   std::unique_ptr<ai_chat::TabDataWebContentsObserver> tab_data_observer_;
