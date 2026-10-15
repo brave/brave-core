@@ -11,10 +11,10 @@ substitutions:
       class_name: 'VerticalTabStripRegionView'
       rename: 'VerticalTabStripRegionView_ChromiumImpl'
 
-  - description: Replace kCollapsedWidth with dynamic getter
+  - description: Replace kVerticalTabStripCollapsedWidth with dynamic getter
     count: 0
     regex:
-      pattern: 'kCollapsedWidth'
+      pattern: 'tabs::kVerticalTabStripCollapsedWidth'
       replace: 'GetCollapsedWidth()'
 
   - description: 'Consider IsMouseInHotCorner even if mouse is not hovered'
