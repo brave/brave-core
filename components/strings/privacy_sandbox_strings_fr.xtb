@@ -1,0 +1,28 @@
+<?xml version="1.0" ?>
+<!DOCTYPE translationbundle>
+<translationbundle lang="fr">
+<translation id="5725339460980108526">Lorsque vous êtes en mode navigation privée, Brave empêche les sites d'utiliser des cookies tiers</translation>
+<translation id="1365023215312302966">Les sites ne peuvent pas utiliser de cookies tiers pour personnaliser les contenus et les annonces, ni pour connaître les actions que vous effectuez sur d'autres sites</translation>
+<translation id="7271018957317922139">En mode navigation privée, les sites ne peuvent pas utiliser de cookies tiers. Si un site qui dépend de ces cookies ne fonctionne pas, vous pouvez <ph name="BEGIN_LINK"/>essayer de lui donner un accès temporaire aux cookies tiers<ph name="END_LINK"/>.</translation>
+<translation id="2004697686368036666">Il est possible que les fonctionnalités de certains sites ne fonctionnent pas</translation>
+<translation id="2183376768278472507">Si un site ne fonctionne pas comme prévu, vous pouvez essayer d'autoriser les cookies tiers pour un site spécifique que vous consultez</translation>
+<translation id="2235344399760031203">Les cookies tiers sont bloqués</translation>
+<translation id="2360633687155619995">Les sites ne peuvent pas utiliser de cookies tiers pour personnaliser les contenus et les annonces, ni pour connaître les actions que vous effectuez sur d'autres sites. Il est possible que certaines fonctionnalités du site ne fonctionnent pas comme prévu.</translation>
+<translation id="2496115946829713659">Les sites peuvent utiliser des cookies tiers pour personnaliser les contenus et les annonces, et pour connaître les actions que vous effectuez sur d'autres sites</translation>
+<translation id="7220743783949410550">En mode navigation privée, les sites ne peuvent pas utiliser de cookies tiers. Si un site qui dépend de ces cookies ne fonctionne pas, vous pouvez <ph name="START_LINK"/>essayer de lui donner un accès temporaire aux cookies tiers<ph name="END_LINK"/>.</translation>
+<translation id="3425311689852411591">Les sites qui dépendent des cookies tiers devraient fonctionner comme prévu</translation>
+<translation id="3624583033347146597">Sélectionner vos préférences concernant les cookies tiers</translation>
+<translation id="3918378745482005425">Il est possible que certaines fonctionnalités ne fonctionnent pas. Les sites associés peuvent toujours utiliser des cookies tiers.</translation>
+<translation id="4278390842282768270">Autorisés</translation>
+<translation id="4412992751769744546">Autoriser les cookies tiers</translation>
+<translation id="4711259472133554310">Vous pouvez créer des exceptions dans les paramètres pour toujours autoriser des sites spécifiques à utiliser des cookies tiers</translation>
+<translation id="5677928146339483299">Bloqués</translation>
+<translation id="6196640612572343990">Bloquer les cookies tiers</translation>
+<translation id="6308169245546905162">Les sites peuvent utiliser des cookies tiers pour connaître les actions que vous effectuez sur d'autres sites</translation>
+<translation id="7315780377187123731">En savoir plus sur l'option "Bloquer les cookies tiers"</translation>
+<translation id="7374493521304367420">Les sites peuvent toujours utiliser les cookies pour voir votre activité de navigation sur leur propre site</translation>
+<translation id="7453144832830554937">Il est possible que les fonctionnalités des sites qui dépendent des cookies tiers ne fonctionnent pas</translation>
+<translation id="7538480403395139206">En savoir plus sur l'option "Autoriser les cookies tiers"</translation>
+<translation id="8200078544056087897">Les fonctionnalités du site qui dépendent des cookies tiers devraient fonctionner comme prévu</translation>
+<translation id="839994149685752920">Les sites peuvent utiliser des cookies tiers pour personnaliser les contenus et les annonces</translation>
+</translationbundle>
