@@ -22,8 +22,8 @@
 -All/RestrictedCookieManagerTest.CookiesEnabledFor/*
 -All/RestrictedCookieManagerTest.GetAllForUrlPolicy/*
 -All/RestrictedCookieManagerTest.SetCanonicalCookiePolicy/*
--All/RestrictedCookieManagerTest.SetCookieFromStringCrossOrigin/NETWORK_000100
--All/RestrictedCookieManagerTest.SetCookieFromStringCrossOrigin/SCRIPT_000100
+-All/RestrictedCookieManagerTest.SetCookieFromStringCrossOrigin/NETWORK_00010
+-All/RestrictedCookieManagerTest.SetCookieFromStringCrossOrigin/SCRIPT_00010
 -CookieManagerTest.BlockThirdPartyCookies
 -NetworkServiceNetworkDelegateTest.ClearSiteDataPartitionedStateOnlyForCrossSiteSubframe
 
