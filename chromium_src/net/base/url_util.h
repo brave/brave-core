@@ -25,8 +25,9 @@ NET_EXPORT bool IsOnion(const url::Origin& origin);
 
 NET_EXPORT bool IsLocalhostOrOnion(const GURL& url);
 
-// Returns true if `host` is "onion" or a subdomain of it, ignoring ASCII case
-// and a trailing dot. `host` does not need to be canonicalized.
+// Returns true if `host` is "onion" or a subdomain of it. `host` is
+// canonicalized first, so it does not need to be lowercase or free of a
+// trailing dot.
 NET_EXPORT bool IsOnionHostname(std::string_view host);
 
 }  // namespace net
