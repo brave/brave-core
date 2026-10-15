@@ -14,6 +14,7 @@
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/test/base/android/android_browser_test.h"
 #include "chrome/test/base/chrome_test_utils.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/content_mock_cert_verifier.h"
@@ -160,8 +161,8 @@ IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorBrowserTest,
       content::EvalJs(web_contents(), "document.fullscreenElement === null")
           .ExtractBool());
 
-  YouTubeScriptInjectorTabHelper* helper =
-      YouTubeScriptInjectorTabHelper::FromWebContents(web_contents());
+  YouTubeScriptInjectorTabHelper* helper = YouTubeScriptInjectorTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(web_contents()));
   ASSERT_TRUE(helper);
 
   helper->MaybeSetFullScreenAndPictureInPictureMode();
@@ -194,8 +195,8 @@ IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorBrowserTest,
           "})();")
           .ExtractBool());
 
-  YouTubeScriptInjectorTabHelper* helper =
-      YouTubeScriptInjectorTabHelper::FromWebContents(web_contents());
+  YouTubeScriptInjectorTabHelper* helper = YouTubeScriptInjectorTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(web_contents()));
   ASSERT_TRUE(helper);
 
   helper->MaybeSetFullScreenAndPictureInPictureMode();
@@ -229,8 +230,8 @@ IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorBrowserTest,
   ASSERT_TRUE(
       WaitForJsResult(web_contents(), "document.fullscreenElement !== null"));
 
-  YouTubeScriptInjectorTabHelper* helper =
-      YouTubeScriptInjectorTabHelper::FromWebContents(web_contents());
+  YouTubeScriptInjectorTabHelper* helper = YouTubeScriptInjectorTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(web_contents()));
   ASSERT_TRUE(helper);
 
   helper->MaybeSetFullScreenAndPictureInPictureMode();
@@ -256,8 +257,8 @@ IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorBrowserTest,
   std::string dom_before =
       content::EvalJs(web_contents(), "document.body.innerHTML")
           .ExtractString();
-  YouTubeScriptInjectorTabHelper* helper =
-      YouTubeScriptInjectorTabHelper::FromWebContents(web_contents());
+  YouTubeScriptInjectorTabHelper* helper = YouTubeScriptInjectorTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(web_contents()));
   ASSERT_TRUE(helper);
 
   // Attempt to set fullscreen, which should not change anything.
@@ -303,8 +304,8 @@ IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorBrowserTest,
                   "document.querySelector('button.fullscreen-icon') === null")
                   .ExtractBool());
 
-  YouTubeScriptInjectorTabHelper* helper =
-      YouTubeScriptInjectorTabHelper::FromWebContents(web_contents());
+  YouTubeScriptInjectorTabHelper* helper = YouTubeScriptInjectorTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(web_contents()));
   ASSERT_TRUE(helper);
 
   helper->MaybeSetFullScreenAndPictureInPictureMode();
@@ -340,8 +341,8 @@ IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorBrowserTest,
   content::NavigateToURLBlockUntilNavigationsComplete(web_contents(), url, 1,
                                                       true);
 
-  YouTubeScriptInjectorTabHelper* helper =
-      YouTubeScriptInjectorTabHelper::FromWebContents(web_contents());
+  YouTubeScriptInjectorTabHelper* helper = YouTubeScriptInjectorTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(web_contents()));
   ASSERT_TRUE(helper);
 
   // First call should trigger fullscreen.
@@ -379,8 +380,8 @@ IN_PROC_BROWSER_TEST_F(YouTubeScriptInjectorBrowserTest,
   content::NavigateToURLBlockUntilNavigationsComplete(web_contents(), url1, 1,
                                                       true);
 
-  YouTubeScriptInjectorTabHelper* helper =
-      YouTubeScriptInjectorTabHelper::FromWebContents(web_contents());
+  YouTubeScriptInjectorTabHelper* helper = YouTubeScriptInjectorTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(web_contents()));
   ASSERT_TRUE(helper);
 
   // The user triggers fullscreen and PiP on the first video.

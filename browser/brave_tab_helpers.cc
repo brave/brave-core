@@ -24,7 +24,6 @@
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
-#include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/content_settings/page_specific_content_settings_delegate.h"
@@ -47,10 +46,6 @@
 #include "brave/browser/playlist/playlist_service_factory.h"
 #include "brave/components/playlist/content/browser/playlist_tab_helper.h"
 #include "brave/components/playlist/core/browser/utils.h"
-#endif
-
-#if BUILDFLAG(IS_ANDROID)
-#include "brave/browser/android/youtube_script_injector/youtube_script_injector_tab_helper.h"
 #endif
 
 #if BUILDFLAG(ENABLE_PRINT_PREVIEW)
@@ -76,10 +71,6 @@ void AttachTabHelpers(content::WebContents* web_contents) {
   // If your TabHelper is related to privacy consider whether it belongs in this
   // method, so it can also be attached to background WebContents.
   AttachPrivacySensitiveTabHelpers(web_contents);
-
-#if BUILDFLAG(IS_ANDROID)
-  YouTubeScriptInjectorTabHelper::CreateForWebContents(web_contents);
-#endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
   content::BrowserContext* context = web_contents->GetBrowserContext();

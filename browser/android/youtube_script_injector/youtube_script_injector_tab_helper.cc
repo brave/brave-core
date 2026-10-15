@@ -17,6 +17,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "components/prefs/pref_service.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/navigation_handle.h"
@@ -377,10 +378,18 @@ bool IsPictureInPictureRequested(content::NavigationEntry& entry) {
 
 }  // namespace
 
+DEFINE_USER_DATA(YouTubeScriptInjectorTabHelper);
+
+// static
+YouTubeScriptInjectorTabHelper* YouTubeScriptInjectorTabHelper::From(
+    tabs::TabInterface* tab) {
+  return tab ? Get(tab->GetUnownedUserDataHost()) : nullptr;
+}
+
 YouTubeScriptInjectorTabHelper::YouTubeScriptInjectorTabHelper(
-    content::WebContents* contents)
-    : WebContentsObserver(contents),
-      content::WebContentsUserData<YouTubeScriptInjectorTabHelper>(*contents) {}
+    tabs::TabInterface& tab)
+    : tabs::ContentsObservingTabFeature(tab),
+      scoped_unowned_user_data_(tab.GetUnownedUserDataHost(), *this) {}
 
 YouTubeScriptInjectorTabHelper::~YouTubeScriptInjectorTabHelper() {}
 
@@ -620,5 +629,3 @@ void YouTubeScriptInjectorTabHelper::EnsureBound(
   rfh->GetRemoteAssociatedInterfaces()->GetInterface(&script_injector_remote_);
   script_injector_remote_.reset_on_disconnect();
 }
-
-WEB_CONTENTS_USER_DATA_KEY_IMPL(YouTubeScriptInjectorTabHelper);
