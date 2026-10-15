@@ -665,6 +665,14 @@ IN_PROC_BROWSER_TEST_P(BraveBrowserViewWithRoundedCornersTest,
 // rounded corners pref because a split always gets rounded corners.
 IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest,
                        RoundedCornersWithStackedSplitTabTest) {
+#if BUILDFLAG(IS_MAC)
+  // TODO(https://github.com/brave/brave-browser/issues/55995): Re-enable on
+  // macOS 26.
+  if (base::mac::MacOSMajorVersion() >= 26) {
+    GTEST_SKIP() << "Disabled on macOS Tahoe and later.";
+  }
+#endif  // BUILDFLAG(IS_MAC)
+
   NewSplitTab();
   RunScheduledLayouts();
 
