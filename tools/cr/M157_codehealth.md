@@ -188,11 +188,12 @@ upstream's and doesn't drop the new entry, so settings search lists it even with
 the flag off.
 
 - [x] `android/java/org/chromium/chrome/browser/settings/AppearancePreferences.java:99-104`:
-      remove `AppearanceSettingsFragment.PREF_BOTTOM_BAR_SWITCH`, or back
-      Brave's switch with `BottomBarConfigUtils.setBottomBarUserEnabled()` and
-      drop the plaster's AND
-- [x] Same file, `updateDynamicPreferences`: remove `PREF_BOTTOM_BAR_SWITCH`
-      from the index
+      drop Brave's `BRAVE_ENABLE_BOTTOM_BAR` switch for upstream's, which now
+      recreates the activity on toggle
+      ([fa0772bdad64d](https://github.com/chromium/chromium/commit/fa0772bdad64de174760606ed4030fb9a6c12500));
+      the plaster only defaults upstream's pref to Brave's prior settings
+- [x] Same file, `updateDynamicPreferences`: drop `PREF_BOTTOM_BAR_SWITCH` from
+      the index when `shouldShowSettingsToggle()` is false
 
 ### Shared pinned tabs miss blocked-state changes
 
