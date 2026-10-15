@@ -12,6 +12,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "components/grit/brave_components_strings.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/browser_thread.h"
 #include "third_party/skia/include/core/SkColor.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -33,7 +34,8 @@ BraveNewsFeedItemView::BraveNewsFeedItemView(const GURL& feed_url,
                                              content::WebContents* contents)
     : feed_url_(feed_url), contents_(contents) {
   DCHECK(contents_);
-  tab_helper_ = BraveNewsTabHelper::FromWebContents(contents);
+  tab_helper_ = BraveNewsTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(contents));
   tab_helper_observation_.Observe(tab_helper_);
 
   SetLayoutManager(std::make_unique<views::FlexLayout>())

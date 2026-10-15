@@ -22,6 +22,7 @@
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #include "components/grit/brave_components_strings.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/page_navigator.h"
@@ -106,9 +107,10 @@ BraveNewsBubbleView::BraveNewsBubbleView(views::View* action_view,
   subtitle_label_->SetProperty(views::kMarginsKey,
                                gfx::Insets::TLBR(0, 0, 16, 0));
 
+  auto* tab_helper = BraveNewsTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(contents));
   feeds_container_ = AddChildView(std::make_unique<BraveNewsFeedsContainerView>(
-      BraveNewsTabHelper::FromWebContents(contents)->GetAvailableFeedUrls(),
-      contents));
+      tab_helper->GetAvailableFeedUrls(), contents));
 
   SetLayoutManager(std::make_unique<views::FlexLayout>())
       ->SetOrientation(views::LayoutOrientation::kVertical)

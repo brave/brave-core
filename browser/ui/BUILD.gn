@@ -367,6 +367,7 @@ source_set("ui") {
   if (enable_brave_news) {
     deps += [
       "//brave/browser/brave_news",
+      "//brave/browser/brave_news:tab_helper",
       "//brave/components/brave_news/common",
     ]
   }
