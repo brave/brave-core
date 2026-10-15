@@ -73,6 +73,13 @@ void MediaBackgroundingJavaScriptFeature::ResumePlayingVideos(
   CallPlaybackFunction(web_state, kResumePlayingVideosFunction);
 }
 
+void MediaBackgroundingJavaScriptFeature::OnPrefUpdated() {
+  // Feature scripts must be explicitly updated after this pref changes.
+  web::WKWebViewConfigurationProvider& config_provider =
+      web::WKWebViewConfigurationProvider::FromBrowserState(profile_);
+  config_provider.UpdateScripts();
+}
+
 void MediaBackgroundingJavaScriptFeature::CallPlaybackFunction(
     web::WebState* web_state,
     const std::string& function_name) {
@@ -86,35 +93,30 @@ void MediaBackgroundingJavaScriptFeature::CallPlaybackFunction(
   CallJavaScriptFunction(main_frame, function_name, base::ListValue());
 }
 
-void MediaBackgroundingJavaScriptFeature::OnPrefUpdated() {
-  // Feature scripts must be explicitly updated after this pref changes.
-  web::WKWebViewConfigurationProvider& config_provider =
-      web::WKWebViewConfigurationProvider::FromBrowserState(profile_);
-  config_provider.UpdateScripts();
-}
-
 std::vector<web::JavaScriptFeature::FeatureScript>
 MediaBackgroundingJavaScriptFeature::GetScripts() const {
   bool is_media_backgrounding_enabled =
       profile_->GetPrefs()->GetBoolean(prefs::kMediaBackgroundingEnabled);
-  return {
-      FeatureScript::CreateWithFilename(
-          kScriptName, FeatureScript::InjectionTime::kDocumentStart,
-          FeatureScript::TargetFrames::kAllFrames,
-          FeatureScript::ReinjectionBehavior::kInjectOncePerWindow,
-          base::BindRepeating(
-              [](bool is_media_backgrounding_enabled)
-                  -> FeatureScript::PlaceholderReplacements {
-                return @{
-                  @"window.gCrWebPlaceholderMediaBackgroundingEnabled" :
-                          is_media_backgrounding_enabled ? @"true" : @"false"
-                };
-              },
-              is_media_backgrounding_enabled)),
-      FeatureScript::CreateWithFilename(
-          kVideoBackgroundPlaybackScriptName,
-          FeatureScript::InjectionTime::kDocumentStart,
-          FeatureScript::TargetFrames::kMainFrame,
-          FeatureScript::ReinjectionBehavior::kReinjectOnDocumentRecreation),
-  };
+  std::vector<FeatureScript> scripts;
+  scripts.push_back(FeatureScript::CreateWithFilename(
+      kScriptName, FeatureScript::InjectionTime::kDocumentStart,
+      FeatureScript::TargetFrames::kAllFrames,
+      FeatureScript::ReinjectionBehavior::kInjectOncePerWindow,
+      base::BindRepeating(
+          [](bool is_media_backgrounding_enabled)
+              -> FeatureScript::PlaceholderReplacements {
+            return @{
+              @"window.gCrWebPlaceholderMediaBackgroundingEnabled" :
+                      is_media_backgrounding_enabled ? @"true" : @"false"
+            };
+          },
+          is_media_backgrounding_enabled)));
+  // YouTube Music keeps playing with the background-audio setting off, so this
+  // script is not gated on `kMediaBackgroundingEnabled`.
+  scripts.push_back(FeatureScript::CreateWithFilename(
+      kVideoBackgroundPlaybackScriptName,
+      FeatureScript::InjectionTime::kDocumentStart,
+      FeatureScript::TargetFrames::kMainFrame,
+      FeatureScript::ReinjectionBehavior::kReinjectOnDocumentRecreation));
+  return scripts;
 }
