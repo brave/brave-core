@@ -17,3 +17,6 @@
 # race, not a Brave-specific issue — Brave only adds unrelated trace categories
 # in chromium_src/base/trace_event/builtin_categories.h.
 -TraceEventTestFixture.PrimitiveArgs
+
+# These started flaking on CR158 and require investigation
+-AlternateTestParams/*

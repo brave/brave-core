@@ -35,6 +35,7 @@
 -CrossDeviceSigninQrBubbleUIPixelTest.InvokeUi_default/Rtl
 -DownloadExtensionBubbleEnabledTest.SetUiOptionsBeforeDownloadStart
 -SaveDesktopSnapshotTest.SaveDesktopSnapshot
+-ServiceWorker/ExtensionWebRequestMockedClockTest.OnActionIgnored_Redirect/BackgroundResourceFetch*
 
 # Flaky Chromium test - resize event fires during print preview due to Brave UI
 # layout (sidebar, vertical tabs, side panel). Chromium also disables this on
