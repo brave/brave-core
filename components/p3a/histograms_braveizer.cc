@@ -6,12 +6,10 @@
 #include "brave/components/p3a/histograms_braveizer.h"
 
 #include <array>
-#include <string>
 
 #include "base/functional/bind.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/metrics/statistics_recorder.h"
-#include "brave/components/p3a_utils/bucket.h"
 
 namespace p3a {
 

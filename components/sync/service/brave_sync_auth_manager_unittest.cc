@@ -7,9 +7,7 @@
 
 #include <memory>
 
-#include "base/functional/callback_helpers.h"
 #include "base/strings/strcat.h"
-#include "base/test/mock_callback.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_sync/network_time_helper.h"
 #include "brave/components/constants/brave_services_key.h"

@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_origin/features.h"
 
-#include "base/feature_list.h"
-
 namespace brave_origin::features {
 
 BASE_FEATURE(kBraveOrigin, base::FEATURE_ENABLED_BY_DEFAULT);

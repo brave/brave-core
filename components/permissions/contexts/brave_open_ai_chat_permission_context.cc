@@ -5,12 +5,9 @@
 
 #include "brave/components/permissions/contexts/brave_open_ai_chat_permission_context.h"
 
-#include <utility>
-
 #include "brave/brave_domains/service_domains.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_types.h"
-#include "components/permissions/permission_request_data.h"
 #include "services/network/public/mojom/permissions_policy/permissions_policy_feature.mojom-shared.h"
 #include "url/gurl.h"
 #include "url/url_constants.h"

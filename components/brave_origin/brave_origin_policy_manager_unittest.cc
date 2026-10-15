@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_origin/brave_origin_policy_manager.h"
 
-#include "base/memory/raw_ptr.h"
 #include "base/strings/strcat.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_origin/brave_origin_policy_info.h"
