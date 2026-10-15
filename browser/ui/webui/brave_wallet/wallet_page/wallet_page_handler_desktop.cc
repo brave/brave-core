@@ -8,6 +8,7 @@
 #include "base/notreached.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_page/wallet_page_handler.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_controller.h"
 
@@ -24,8 +25,8 @@ WalletPageHandler::WalletPageHandler(
 WalletPageHandler::~WalletPageHandler() = default;
 
 void WalletPageHandler::ShowApprovePanelUI() {
-  BraveWalletTabHelper::FromWebContents(
-      webui_controller_->web_ui()->GetWebContents())
+  BraveWalletTabHelper::From(tabs::TabInterface::MaybeGetFromContents(
+                                 webui_controller_->web_ui()->GetWebContents()))
       ->ShowApproveWalletBubble();
 }
 

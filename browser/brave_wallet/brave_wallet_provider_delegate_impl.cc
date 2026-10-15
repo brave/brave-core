@@ -18,6 +18,7 @@
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #include "brave/components/brave_wallet/browser/permission_utils.h"
 #include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/visibility.h"
 #include "content/public/browser/web_contents.h"
@@ -165,8 +166,8 @@ bool BraveWalletProviderDelegateImpl::IsPermissionDenied(mojom::CoinType type) {
 void BraveWalletProviderDelegateImpl::AddSolanaConnectedAccount(
     const std::string& account) {
   CHECK(web_contents());
-  if (auto* tab_helper =
-          BraveWalletTabHelper::FromWebContents(web_contents())) {
+  if (auto* tab_helper = BraveWalletTabHelper::From(
+          tabs::TabInterface::MaybeGetFromContents(web_contents()))) {
     tab_helper->AddSolanaConnectedAccount(host_id_, account);
   }
 }
@@ -174,8 +175,8 @@ void BraveWalletProviderDelegateImpl::AddSolanaConnectedAccount(
 void BraveWalletProviderDelegateImpl::RemoveSolanaConnectedAccount(
     const std::string& account) {
   CHECK(web_contents());
-  if (auto* tab_helper =
-          BraveWalletTabHelper::FromWebContents(web_contents())) {
+  if (auto* tab_helper = BraveWalletTabHelper::From(
+          tabs::TabInterface::MaybeGetFromContents(web_contents()))) {
     tab_helper->RemoveSolanaConnectedAccount(host_id_, account);
   }
 }
@@ -183,8 +184,8 @@ void BraveWalletProviderDelegateImpl::RemoveSolanaConnectedAccount(
 bool BraveWalletProviderDelegateImpl::IsSolanaAccountConnected(
     const std::string& account) {
   CHECK(web_contents());
-  if (auto* tab_helper =
-          BraveWalletTabHelper::FromWebContents(web_contents())) {
+  if (auto* tab_helper = BraveWalletTabHelper::From(
+          tabs::TabInterface::MaybeGetFromContents(web_contents()))) {
     return tab_helper->IsSolanaAccountConnected(host_id_, account);
   }
   return false;
@@ -199,16 +200,16 @@ void BraveWalletProviderDelegateImpl::RenderFrameHostChanged(
   }
 
   CHECK(web_contents());
-  if (auto* tab_helper =
-          BraveWalletTabHelper::FromWebContents(web_contents())) {
+  if (auto* tab_helper = BraveWalletTabHelper::From(
+          tabs::TabInterface::MaybeGetFromContents(web_contents()))) {
     tab_helper->ClearSolanaConnectedAccounts(host_id_);
   }
 }
 
 void BraveWalletProviderDelegateImpl::PrimaryPageChanged(content::Page& page) {
   CHECK(web_contents());
-  if (auto* tab_helper =
-          BraveWalletTabHelper::FromWebContents(web_contents())) {
+  if (auto* tab_helper = BraveWalletTabHelper::From(
+          tabs::TabInterface::MaybeGetFromContents(web_contents()))) {
     tab_helper->ClearSolanaConnectedAccounts(host_id_);
   }
 }
