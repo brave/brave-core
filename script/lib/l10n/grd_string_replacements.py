@@ -76,6 +76,21 @@ fixup_replacements = [
 ]
 
 
+# Declined or mistyped brand forms that the language-agnostic rules above miss,
+# keyed by locale. Applied to XTB translations after the rules above.
+language_branding_replacements = {
+    'cs': [(r'\bChromu\b', r'Brave')],
+    'fa': [(r'\bchrome\b', r'Brave')],
+    # Chromium's translation starts with a Cyrillic C.
+    'ky': [(r'\u0421hrome', r'Brave')],
+    'sl': [
+        (r'Brave Chroma\b', r'Brave'),
+        (r'\bChroma\b', r'Brave'),
+        (r'\bChromov\b', r'Braveov'),
+    ],
+}
+
+
 # Descriptions for messages that Chromium leaves without one, so translators
 # get context. Descriptions do not affect translation ids.
 missing_descriptions = {

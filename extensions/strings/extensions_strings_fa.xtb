@@ -73,7 +73,7 @@
 <translation id="4633003931260532286">افزونه به «<ph name="IMPORT_NAME"/>» با نسخه حداقل «<ph name="IMPORT_VERSION"/>» نیاز دارد اما تنها نسخه «<ph name="INSTALLED_VERSION"/>» نصب شده است</translation>
 <translation id="4660476621274971848">نسخه موردانتظار «<ph name="EXPECTED_VERSION"/>» است، اما نسخه «<ph name="NEW_ID"/>» بود</translation>
 <translation id="471800408830181311">ارسال کلید خصوصی ناموفق بود.</translation>
-<translation id="5792597703870189834">‏بسته نصب نشد چون پردازش برنامه سودمند انجام نشد. سعی کنید chrome را راه‌اندازی مجدد نمایید و دوباره امتحان کنید.</translation>
+<translation id="5792597703870189834">‏بسته نصب نشد چون پردازش برنامه سودمند انجام نشد. سعی کنید Brave را راه‌اندازی مجدد نمایید و دوباره امتحان کنید.</translation>
 <translation id="4988792151665380515">صادر کردن کلید عمومی ناموفق بود.</translation>
 <translation id="501057610015570208">‏برنامه‌هایی که مشخصه مانیفست «kiosk_only» دارند باید در حالت کیوسک ChromeOS Flex نصب شوند.</translation>
 <translation id="5026754133087629784">وب‌نما: <ph name="WEBVIEW_TAG_NAME"/></translation>

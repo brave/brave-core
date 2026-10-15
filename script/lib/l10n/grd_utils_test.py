@@ -29,7 +29,11 @@ sys.path.insert(0, os.path.join(SRC_SOURCE_ROOT, 'tools/grit/grit/extern'))
 
 # pylint: disable=wrong-import-position
 import lxml.etree  # pylint: disable=import-error
-from lib.l10n.grd_utils import braveify_grd_tree, update_xtbs_locally
+from lib.l10n.grd_utils import (
+    braveify_grd_tree,
+    braveify_language_forms,
+    update_xtbs_locally,
+)
 
 GRD_TEMPLATE = """<?xml version="1.0" encoding="UTF-8"?>
 <grit latest_public_release="0" current_release="1" source_lang_id="en">
@@ -167,6 +171,28 @@ class BraveifyMissingDescriptionTest(unittest.TestCase):
         self.assertEqual(
             self.braveify(' desc="Chrome title"').get('desc'), 'Brave title'
         )
+
+
+class BraveifyLanguageFormsTest(unittest.TestCase):
+    def braveify(self, lang, text):
+        node = lxml.etree.fromstring(f'<translation>{text}</translation>')
+        braveify_language_forms(node, lang)
+        return node.text
+
+    def test_replaces_declined_and_mistyped_forms(self):
+        self.assertEqual(
+            self.braveify('sl', 'Prilagajanje Brave Chroma'),
+            'Prilagajanje Brave',
+        )
+        self.assertEqual(
+            self.braveify('sl', 'Chromov predlog'), 'Braveov predlog'
+        )
+        self.assertEqual(self.braveify('cs', 'funkce Chromu.'), 'funkce Brave.')
+        self.assertEqual(self.braveify('fa', 'کنید chrome را'), 'کنید Brave را')
+        self.assertEqual(self.braveify('ky', '\u0421hrome\'ду'), "Brave'ду")
+
+    def test_leaves_other_locales_alone(self):
+        self.assertEqual(self.braveify('de', 'Chroma Chromu'), 'Chroma Chromu')
 
 
 if __name__ == '__main__':
