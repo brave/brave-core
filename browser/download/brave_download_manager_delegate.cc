@@ -14,12 +14,14 @@
 #include "base/location.h"
 #include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"
+#include "brave/browser/brave_browser_process.h"
+#include "brave/browser/image_metadata_stripper/metrics_reporter.h"
+#include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/components/image_metadata_stripper/common/features.h"
 #include "brave/components/image_metadata_stripper/image_metadata_stripper.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/download/public/common/download_item.h"
 #include "content/public/browser/browser_thread.h"
-#include "content/public/browser/download_manager.h"
 
 // Factory used by the plastered download_core_service_impl.cc construction
 // site. Keeping the Brave header out of chrome/browser/download avoids pulling
@@ -101,11 +103,11 @@ bool BraveDownloadManagerDelegate::IsDownloadReadyForCompletion(
 }
 
 void BraveDownloadManagerDelegate::OnImageMetadataStripped(uint32_t download_id,
-                                                           bool /*stripped*/) {
+                                                           bool stripped) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
-  // The download may have been removed while the stripping task was running, so
-  // the item and its keyed state have to be looked up again.
+  // The download may have been removed while the stripping task was
+  // running, so the item and its keyed state have to be looked up again.
   if (download_manager_) {
     download::DownloadItem* item = download_manager_->GetDownload(download_id);
     if (item) {
@@ -117,4 +119,11 @@ void BraveDownloadManagerDelegate::OnImageMetadataStripped(uint32_t download_id,
       }
     }
   }
+
+  // Record the metrics.
+  auto* stripper_metrics_reporter =
+      g_brave_browser_process->process_misc_metrics()
+          ->image_metadata_stripper_metrics();
+  stripper_metrics_reporter->MaybeRecordFbmd(
+      image_metadata_stripper::StrippingClient::kDownloadManager, stripped);
 }

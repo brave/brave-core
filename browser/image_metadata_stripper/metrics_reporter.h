@@ -1,0 +1,94 @@
+/* Copyright (c) 2026 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+#ifndef BRAVE_BROWSER_IMAGE_METADATA_STRIPPER_METRICS_REPORTER_H_
+#define BRAVE_BROWSER_IMAGE_METADATA_STRIPPER_METRICS_REPORTER_H_
+
+#include "base/memory/raw_ptr.h"
+#include "base/timer/wall_clock_timer.h"
+#include "brave/components/image_metadata_stripper/image_metadata_stripper.h"
+
+class PrefRegistrySimple;
+class PrefService;
+
+namespace image_metadata_stripper {
+
+namespace metrics {
+// This helps in respecting the 24 hours boundary from the last time the
+// metrics was recorded. Metrics are recorded from inside the browser
+// process which keeps track of a 24 hour timer in-memory. So, if the
+// process dies and restarted again within the 24h mark, we wouldn't want to
+// emit the histogram again. So, keeping this last track timer helps to keep
+// that window tight across process restarts. See metrics_reporter.cc for
+// implementation details.
+inline constexpr char kLastRecordedTimePref[] =
+    "brave.image_metadata_stripper.last_recorded_time";
+
+// This is the main pref key mapping to a dictionary in the local state which
+// will keep track of all actual the counts.
+// "brave.image_metadata_stripper.dict" : {
+//      "download" : {
+//         "FBMD" : {
+//            "stripped" : value,
+//          },
+//      },
+//      "upload" : {...},
+//  }
+inline constexpr char kRootPrefKey[] = "brave.image_metadata_stripper.dict";
+
+// These corresponds to the various ways a user can get/share an image from/to
+// internet.
+inline constexpr char kDownloadPrefKey[] = "download";
+inline constexpr char kUploadPrefKey[] = "upload";
+
+// This correponds to the main metadata header present inside the image.
+inline constexpr char kFBMDMetadataPrefKey[] = "FBMD";
+
+// These corresponds to the various different attributes we want to measure for
+// the |kMetadataPrefKey|.
+inline constexpr char kStrippedPrefKey[] = "stripped";
+
+// Histogram goes here. Keep them in sync with components/p3a/metric_names.h.
+inline constexpr char kDownloadFBMDCountStrippedHistogramName[] =
+    "Brave.ImageMetadataStripper.DownloadFBMDCount.Stripped";
+inline constexpr char kUploadFBMDCountStrippedHistogramName[] =
+    "Brave.ImageMetadataStripper.UploadFBMDCount.Stripped";
+
+// Collects the FBMD metadata stripping counts and reports them to P3A once a
+// day. Owned by the browser (e.g. ProcessMiscMetrics) and created on the UI
+// thread. Clients record observations must be called on the UI thread since we
+// record the metrics count in local state.
+class MetricsReporter {
+ public:
+  // Schedules the first P3A report. Does not emit on a first-ever registration.
+  explicit MetricsReporter(PrefService* local_state);
+  ~MetricsReporter();
+
+  MetricsReporter(const MetricsReporter&) = delete;
+  MetricsReporter& operator=(const MetricsReporter&) = delete;
+
+  // Registers the various prefs to store the histogram count.
+  static void RegisterPrefs(PrefRegistrySimple* registry);
+
+  // Records that an image carrying the FBMD marker was seen. |client| selects
+  // the download or the upload flow, and |was_stripped| additionally bumps the
+  // |kStrippedPrefKey| count. Must be called on the sequence that owns this
+  // reporter (the UI thread).
+  void MaybeRecordFbmd(StrippingClient client, bool was_stripped);
+
+ private:
+  // Reports histograms iff their corresponding count recorded in the
+  // last 24h was non zero. This also schedules the next report.
+  void MaybeReport();
+
+  // The timer to help schedule the next reporting.
+  base::WallClockTimer report_timer_;
+  raw_ptr<PrefService> local_state_;
+};
+
+}  // namespace metrics
+
+}  // namespace image_metadata_stripper
+
+#endif  // BRAVE_BROWSER_IMAGE_METADATA_STRIPPER_METRICS_REPORTER_H_
