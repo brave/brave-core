@@ -780,9 +780,10 @@ public abstract class BraveActivity extends ChromeActivity
                     if (errors != null && errors.length != 0) {
                         openBraveWalletDAppsActivity(
                                 BraveWalletDAppsActivity.ActivityType.SIGN_MESSAGE_ERROR);
+                        return;
                     }
+                    maybeShowSignMessageRequestLayout(openWalletPanelRunnable);
                 });
-        maybeShowSignMessageRequestLayout(openWalletPanelRunnable);
     }
 
     private void maybeShowSignMessageRequestLayout(
