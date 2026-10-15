@@ -64,7 +64,6 @@
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/brave_shields/brave_shields_tab_helper.h"
-#include "brave/browser/ui/geolocation/brave_geolocation_permission_tab_helper.h"
 #endif
 
 #if BUILDFLAG(ENABLE_PRINT_PREVIEW)
@@ -112,7 +111,6 @@ void AttachTabHelpers(content::WebContents* web_contents) {
 #else
   // Add tab helpers here unless they are intended for android too
   brave_shields::BraveShieldsTabHelper::CreateForWebContents(web_contents);
-  BraveGeolocationPermissionTabHelper::CreateForWebContents(web_contents);
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)

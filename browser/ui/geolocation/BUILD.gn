@@ -10,7 +10,9 @@ if (is_win || is_mac || is_linux) {
     sources = [ "brave_geolocation_permission_tab_helper.h" ]
     public_deps = [
       "//brave/components/brave_geolocation_permission/common:brave_geolocation_permission",
+      "//chrome/browser/ui/tabs:tabs_public",
       "//content/public/browser",
+      "//ui/base/unowned_user_data",
     ]
   }
 
@@ -21,6 +23,7 @@ if (is_win || is_mac || is_linux) {
 
     deps = [
       ":geolocation",
+      "//components/tabs:public",
       "//content/public/browser",
     ]
   }
@@ -41,6 +44,8 @@ source_set("browser_tests") {
     "//chrome/browser/ui:browser_commands",
     "//chrome/common:constants",
     "//chrome/test:test_support_ui",
+    "//components/permissions",
+    "//components/tabs:public",
     "//content/test:test_support",
     "//net:test_support",
     "//url",

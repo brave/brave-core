@@ -164,6 +164,9 @@ class BraveTabFeatures : public TabFeatures {
       creative_search_result_ad_tab_helper_;
   // Offers and runs Web Discovery. Null without it or outside regular profiles.
   std::unique_ptr<ContentsObservingTabFeature> web_discovery_tab_helper_;
+  // Records whether the page asked for high accuracy geolocation.
+  std::unique_ptr<ContentsObservingTabFeature>
+      geolocation_permission_tab_helper_;
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
   std::unique_ptr<ai_chat::TabDataWebContentsObserver> tab_data_observer_;
