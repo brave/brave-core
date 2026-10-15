@@ -37,6 +37,7 @@ source_set("browser_tests") {
 
   deps += [
     "//base",
+    "//brave/browser/playlist",
     "//brave/components/playlist/content/browser",
     "//brave/components/playlist/core/common",
     "//chrome/app:command_ids",
@@ -89,6 +90,7 @@ source_set("unit_tests") {
 
   deps = [
     "//base",
+    "//brave/browser/playlist",
     "//brave/components/playlist/content/browser",
     "//brave/components/playlist/core/common",
     "//chrome/browser/prefs",

@@ -255,6 +255,7 @@ source_set("unit_tests") {
     deps += [
       # PlaylistPageActionController itself lives in //brave/browser/ui; see
       # the comment on that dep in browser/ui/tabs/BUILD.gn.
+      "//brave/browser/playlist",
       "//brave/browser/ui",
       "//brave/components/playlist/content/browser",
       "//brave/components/playlist/core/common",

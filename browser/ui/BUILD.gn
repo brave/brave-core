@@ -259,6 +259,7 @@ source_set("ui") {
 
   if (enable_playlist) {
     deps += [
+      "//brave/browser/playlist",
       "//brave/components/playlist/core/browser",
       "//brave/components/playlist/core/common",
     ]

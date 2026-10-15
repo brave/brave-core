@@ -3,13 +3,12 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-brave_browser_playlist_sources = [
-  "//brave/browser/playlist/playlist_service_factory.cc",
-  "//brave/browser/playlist/playlist_service_factory.h",
-]
+brave_browser_playlist_sources =
+    [ "//brave/browser/playlist/playlist_service_factory.cc" ]
 
 brave_browser_playlist_deps = [
   "//base",
+  "//brave/browser/playlist",
   "//brave/components/playlist/content/browser",
   "//brave/components/playlist/core/browser",
   "//chrome/browser:browser_process",
