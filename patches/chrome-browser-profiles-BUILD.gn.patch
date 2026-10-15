@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/profiles/BUILD.gn b/chrome/browser/profiles/BUILD.gn
+index 1c4ee4ac17e827a18dbb363f61aea886b5487bd2..09af93b511d5f1b7293fe043d1c3f73b56852935 100644
+--- a/chrome/browser/profiles/BUILD.gn
++++ b/chrome/browser/profiles/BUILD.gn
+@@ -423,7 +423,7 @@ source_set("profile") {
+     "//content/public/browser",
+     "//extensions/buildflags",
+   ]
+-  if (enable_extensions) {
++  if (enable_extensions_core) {
+     deps += [ "//extensions/browser" ]
+   }
+   if (is_chromeos) {
