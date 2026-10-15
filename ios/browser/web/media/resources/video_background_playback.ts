@@ -8,42 +8,52 @@ import {
   gCrWeb,
 } from '//ios/web/public/js_messaging/resources/gcrweb.js'
 
-// Set while the scene is resigning active, before WebKit pauses video for backgrounding.
-const wasPlaying = new WeakMap<HTMLVideoElement, boolean>()
+// The audible video that was playing while the scene resigned active, before
+// WebKit pauses video for backgrounding. One per document so a second play()
+// does not restart its buffer.
+let playingVideo: HTMLVideoElement | null = null
 
-function visitVideos(
-  root: ParentNode,
-  visit: (video: HTMLVideoElement) => void,
-): void {
+function isAudibleAndPlaying(video: HTMLVideoElement): boolean {
+  return !video.paused && !video.ended && !video.muted && video.volume > 0
+}
+
+function findPlayingVideo(root: ParentNode): HTMLVideoElement | null {
   for (const video of root.querySelectorAll<HTMLVideoElement>('video')) {
-    visit(video)
-  }
-  for (const element of root.querySelectorAll('*')) {
-    if (element.shadowRoot) {
-      visitVideos(element.shadowRoot, visit)
+    if (isAudibleAndPlaying(video)) {
+      return video
     }
   }
+  for (const element of root.querySelectorAll('*')) {
+    if (!element.shadowRoot) {
+      continue
+    }
+    const found = findPlayingVideo(element.shadowRoot)
+    if (found) {
+      return found
+    }
+  }
+  return null
 }
 
 function markPlayingVideos(): void {
-  visitVideos(document, (video) => {
-    wasPlaying.set(video, !video.paused && !video.ended)
-  })
+  playingVideo = findPlayingVideo(document)
 }
 
 function resumePlayingVideos(): void {
+  const video = playingVideo
+  if (!video) {
+    return
+  }
   const resume = (): void => {
-    visitVideos(document, (video) => {
-      if (video.ended || !wasPlaying.get(video) || !video.paused) {
-        return
-      }
-      wasPlaying.set(video, false)
-      video.play()
-    })
+    if (playingVideo !== video || video.ended || !video.paused) {
+      return
+    }
+    playingVideo = null
+    video.play().catch(() => {})
   }
   resume()
-  setTimeout(resume, 0)
   setTimeout(resume, 100)
+  setTimeout(resume, 250)
 }
 
 const videoBackgroundPlaybackApi = new CrWebApi('videoBackgroundPlayback')
