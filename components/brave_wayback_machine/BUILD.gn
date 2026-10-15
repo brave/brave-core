@@ -31,6 +31,7 @@ static_library("brave_wayback_machine") {
     "//brave/components/api_request_helper",
     "//brave/components/constants",
     "//components/prefs",
+    "//components/tabs:public",
     "//components/user_prefs",
     "//content/public/browser",
     "//content/public/common",
@@ -38,6 +39,8 @@ static_library("brave_wayback_machine") {
     "//services/network/public/cpp",
     "//url",
   ]
+
+  public_deps = [ "//ui/base/unowned_user_data" ]
 }
 
 source_set("unit_tests") {

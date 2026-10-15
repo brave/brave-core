@@ -20,7 +20,6 @@
 #include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"
-#include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -54,10 +53,6 @@
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
 #endif  // BUILDFLAG(ENABLE_PRINT_PREVIEW)
 
-#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
-#include "brave/components/brave_wayback_machine/brave_wayback_machine_tab_helper.h"
-#endif
-
 namespace brave {
 
 void AttachTabHelpers(content::WebContents* web_contents) {
@@ -83,10 +78,6 @@ void AttachTabHelpers(content::WebContents* web_contents) {
 #endif
     );
   }
-#endif
-
-#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
-  BraveWaybackMachineTabHelper::CreateIfNeeded(web_contents);
 #endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST)

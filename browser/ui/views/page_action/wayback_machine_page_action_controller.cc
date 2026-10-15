@@ -153,7 +153,7 @@ void WaybackMachinePageActionController::NavigateToSnapshot() {
   if (!contents) {
     return;
   }
-  auto* tab_helper = BraveWaybackMachineTabHelper::FromWebContents(contents);
+  auto* tab_helper = BraveWaybackMachineTabHelper::From(&tab_.get());
   if (tab_helper && tab_helper->wayback_state() == WaybackState::kFound) {
     tab_helper->NavigateToSnapshot();
   }
@@ -170,7 +170,7 @@ void WaybackMachinePageActionController::ShowBubble(actions::ActionItem* item,
     return;
   }
 
-  auto* tab_helper = BraveWaybackMachineTabHelper::FromWebContents(contents);
+  auto* tab_helper = BraveWaybackMachineTabHelper::From(&tab_.get());
   if (!tab_helper) {
     return;
   }
@@ -232,7 +232,7 @@ void WaybackMachinePageActionController::AttachToTabHelper(
   if (!contents) {
     return;
   }
-  auto* tab_helper = BraveWaybackMachineTabHelper::FromWebContents(contents);
+  auto* tab_helper = BraveWaybackMachineTabHelper::From(&tab_.get());
   if (!tab_helper) {
     return;
   }
@@ -255,7 +255,7 @@ void WaybackMachinePageActionController::UpdatePageAction(
     return;
   }
 
-  auto* tab_helper = BraveWaybackMachineTabHelper::FromWebContents(contents);
+  auto* tab_helper = BraveWaybackMachineTabHelper::From(&tab_.get());
   if (!tab_helper) {
     page_action_controller_->Hide(kActionShowWaybackMachine);
     return;

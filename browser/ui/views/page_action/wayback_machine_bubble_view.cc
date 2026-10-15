@@ -18,6 +18,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "components/prefs/pref_service.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/actions/actions.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -47,7 +48,8 @@ BraveWaybackMachineTabHelper* GetTabHelper(content::WebContents* web_contents) {
     return nullptr;
   }
 
-  return BraveWaybackMachineTabHelper::FromWebContents(web_contents);
+  return BraveWaybackMachineTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(web_contents));
 }
 
 gfx::FontList GetFont(int font_size, gfx::Font::Weight weight) {

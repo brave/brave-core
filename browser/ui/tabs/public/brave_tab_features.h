@@ -19,6 +19,7 @@
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/ui/tabs/public/tab_features.h"
 
+class BraveWaybackMachineTabHelper;
 class Profile;
 
 namespace brave_perf_predictor {
@@ -194,6 +195,11 @@ class BraveTabFeatures : public TabFeatures {
   // Estimates the bandwidth that Shields saves.
   std::unique_ptr<brave_perf_predictor::PerfPredictorTabHelper>
       perf_predictor_tab_helper_;
+#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
+  // Looks up Wayback Machine snapshots. Null when disabled. Declared before
+  // the page action controller that observes it.
+  std::unique_ptr<BraveWaybackMachineTabHelper> wayback_machine_tab_helper_;
+#endif  // BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
 #if BUILDFLAG(ENABLE_TOR)
   // Retries Tor navigations while the Tor process is not ready. Null outside
   // Tor profiles.
