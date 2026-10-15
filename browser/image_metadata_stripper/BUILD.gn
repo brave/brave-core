@@ -29,17 +29,40 @@ source_set("image_metadata_stripper") {
   ]
 }
 
+source_set("test_support") {
+  testonly = true
+
+  sources = [
+    "metrics_reporter_test_util.cc",
+    "metrics_reporter_test_util.h",
+  ]
+
+  public_deps = [ "//components/prefs" ]
+
+  deps = [
+    ":image_metadata_stripper",
+    "//base",
+  ]
+}
+
 source_set("unit_tests") {
   testonly = true
 
-  sources = [ "file_upload_controller_unittest.cc" ]
+  sources = [
+    "file_upload_controller_unittest.cc",
+    "metrics_reporter_unittest.cc",
+  ]
 
   deps = [
     ":image_metadata_stripper",
     "//base",
     "//base/test:test_support",
+    "//brave/components/image_metadata_stripper",
     "//brave/components/image_metadata_stripper/common",
     "//chrome/common:constants",
+    "//components/prefs",
+    "//components/prefs:test_support",
+    "//content/test:test_support",
     "//testing/gtest",
   ]
 }
