@@ -20,7 +20,6 @@
 #include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"
-#include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "chrome/browser/browser_process.h"
@@ -89,9 +88,6 @@ void AttachTabHelpers(content::WebContents* web_contents) {
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
   BraveWaybackMachineTabHelper::CreateIfNeeded(web_contents);
 #endif
-
-  brave_perf_predictor::PerfPredictorTabHelper::CreateForWebContents(
-      web_contents);
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
   if (playlist::IsPlaylistAllowed(

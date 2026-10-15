@@ -34,6 +34,7 @@ static_library("browser") {
     "//components/page_load_metrics/common:page_load_metrics_mojom",
     "//components/prefs",
     "//components/sessions",
+    "//components/tabs:public",
     "//components/user_prefs",
     "//content/public/browser",
     "//net/base/registry_controlled_domains",
@@ -42,6 +43,8 @@ static_library("browser") {
     "//ui/base",
     "//url",
   ]
+
+  public_deps = [ "//ui/base/unowned_user_data" ]
 
   if (is_android) {
     # for #include "brave/browser/android/brave_shields_content_settings.h"

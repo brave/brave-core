@@ -16,6 +16,7 @@
 #include "brave/browser/serp_metrics/serp_metrics_tab_helper.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
+#include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/image_metadata_stripper/common/features.h"
@@ -119,6 +120,9 @@ BraveTabFeatures::BraveTabFeatures(content::WebContents* web_contents,
 
   youtube_script_injector_ =
       std::make_unique<YouTubeScriptInjectorTabHelper>(tab_interface);
+  perf_predictor_tab_helper_ =
+      std::make_unique<brave_perf_predictor::PerfPredictorTabHelper>(
+          tab_interface, web_contents);
 }
 
 BraveTabFeatures::~BraveTabFeatures() = default;

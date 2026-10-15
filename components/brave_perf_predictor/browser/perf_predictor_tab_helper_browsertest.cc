@@ -14,6 +14,7 @@
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/constants/pref_names.h"
+#include "build/build_config.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -23,6 +24,13 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "net/dns/mock_host_resolver.h"
+
+#if !BUILDFLAG(IS_ANDROID)
+#include "chrome/browser/resource_coordinator/lifecycle_unit_state.mojom.h"
+#include "chrome/browser/resource_coordinator/tab_lifecycle_unit_external.h"
+#include "chrome/browser/resource_coordinator/tab_lifecycle_unit_source.h"
+#include "chrome/browser/ui/tabs/tab_strip_model.h"
+#endif
 
 namespace {
 
@@ -171,3 +179,31 @@ IN_PROC_BROWSER_TEST_F(PerfPredictorTabHelperTest, NewNavigationStoresSavings) {
   contents->Close();
   EXPECT_NE(getProfileBandwidthSaved(browser()), previous_nav_savings);
 }
+
+#if !BUILDFLAG(IS_ANDROID)
+// Discarding a tab replaces its contents, which records the old page's
+// savings like closing the tab does.
+IN_PROC_BROWSER_TEST_F(PerfPredictorTabHelperTest, DiscardStoresSavings) {
+  UpdateAdBlockInstanceWithRules("^analytics.js");
+  EXPECT_EQ(getProfileBandwidthSaved(browser()), 0ULL);
+
+  GURL url = embedded_test_server()->GetURL("/blocking.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  EXPECT_EQ(true, EvalJs(contents,
+                         "addImage('logo.png');"
+                         "setExpectations(0, 0, 0, 1);"
+                         "xhr('analytics.js')"));
+  EXPECT_EQ(getProfileAdsBlocked(browser()), 1ULL);
+
+  AddBlankTabAndShow(browser());
+  auto* const lifecycle_unit =
+      resource_coordinator::TabLifecycleUnitSource::GetTabLifecycleUnitExternal(
+          contents);
+  ASSERT_TRUE(lifecycle_unit);
+  ASSERT_TRUE(
+      lifecycle_unit->DiscardTab(::mojom::LifecycleUnitDiscardReason::URGENT));
+  EXPECT_NE(getProfileBandwidthSaved(browser()), 0ULL);
+}
+#endif  // !BUILDFLAG(IS_ANDROID)
