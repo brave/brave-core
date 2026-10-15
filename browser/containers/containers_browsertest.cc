@@ -20,6 +20,7 @@
 #include "brave/browser/containers/used_container_storage_partitions.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#include "chrome/browser/ui/tabs/split_tab_metrics.h"
 #include "brave/browser/ui/views/tabs/brave_new_tab_button.h"
 #include "brave/browser/ui/views/tabs/brave_tab.h"
 #include "brave/components/containers/content/browser/storage_partition_utils.h"
@@ -53,6 +54,7 @@
 #include "chrome/browser/ui/views/page_action/test_support/page_action_test_accessor.h"
 #include "chrome/browser/ui/views/tabs/hovercard/tab_hover_card_bubble_view.h"
 #include "chrome/browser/ui/views/tabs/hovercard/tab_hover_card_test_util.h"
+#include "chrome/browser/ui/tabs/tab_strip_user_gesture_details.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
 #include "chrome/browser/ui/zoom/chrome_zoom_level_prefs.h"
 #include "chrome/browser/web_applications/test/os_integration_test_override_impl.h"
@@ -3173,6 +3175,102 @@ IN_PROC_BROWSER_TEST_F(ContainersPwaBrowserTest, LaunchPwaWithoutContainer) {
           base::CommandLine(base::CommandLine::NO_PROGRAM));
   ASSERT_TRUE(config.has_value());
   EXPECT_NE(kContainersStoragePartitionDomain, config->partition_domain());
+}
+
+// Test that when a link is opened in split view from a tab with a container,
+// the destination tab in the split inherits the container if they differ.
+class SplitViewContainerInheritanceBrowserTest : public ContainersBrowserTest {
+ public:
+  SplitViewContainerInheritanceBrowserTest() = default;
+
+  void SetUp() override {
+    ContainersBrowserTest::SetUp();
+
+    // Create two containers for testing
+    std::vector<mojom::ContainerPtr> containers;
+    containers.push_back(MakeContainer("container-a", "Container A",
+                                        mojom::Icon::kWork, SK_ColorRED));
+    containers.push_back(MakeContainer("container-b", "Container B",
+                                        mojom::Icon::kPersonal, SK_ColorBLUE));
+    SetContainersToPrefs(containers, *browser()->GetProfile()->GetPrefs());
+  }
+
+  // Opens a URL in a container and returns the WebContents
+  content::WebContents* OpenUrlInContainerTab(const GURL& url,
+                                              const std::string& container_id) {
+    NavigateParams params(browser(), url, ui::PAGE_TRANSITION_LINK);
+    params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+    params.storage_partition_config = content::StoragePartitionConfig::Create(
+        browser()->GetProfile(), kContainersStoragePartitionDomain,
+        container_id, browser()->GetProfile()->IsOffTheRecord());
+    ui_test_utils::NavigateToURL(&params);
+    return browser()->tab_strip_model()->GetActiveWebContents();
+  }
+
+   int GetContainerIndex(const std::string& container_id) {
+     auto* containers_service =
+         ContainersServiceFactory::GetForProfile(browser()->GetProfile());
+     std::optional<std::string> resolved_id =
+         containers_service->GetContainerIdFromContainerSpecifier(
+             containers::ContainerId(container_id));
+    if (!resolved_id.has_value()) {
+      return -1;
+    }
+    // Get all containers and find the index
+    const auto& all_containers = containers_service->GetContainers();
+    for (size_t i = 0; i < all_containers.size(); ++i) {
+      if (all_containers[i]->id == *resolved_id) {
+        return static_cast<int>(i);
+      }
+    }
+    return -1;
+  }
+};
+
+// Test opening a link in split view where source and destination tabs have
+// different containers - destination should inherit source container
+IN_PROC_BROWSER_TEST_F(SplitViewContainerInheritanceBrowserTest,
+                       OpenLinkInSplitViewDifferentContainer) {
+  // Open tab A in container A
+  GURL url_a = https_server_.GetURL("a.test", "/title1.html");
+  OpenUrlInContainerTab(url_a, "container-a");
+  ASSERT_EQ(1, browser()->tab_strip_model()->count());
+
+  // Open tab B in container B
+  GURL url_b = https_server_.GetURL("b.test", "/title2.html");
+  OpenUrlInContainerTab(url_b, "container-b");
+  ASSERT_EQ(2, browser()->tab_strip_model()->count());
+
+  // Verify both tabs have different containers
+  auto config_a = GetStoragePartitionConfigOfTabAt(browser(), 0);
+  auto config_b = GetStoragePartitionConfigOfTabAt(browser(), 1);
+  ASSERT_TRUE(config_a.has_value());
+  ASSERT_TRUE(config_b.has_value());
+  EXPECT_EQ("container-a", config_a->partition_name());
+  EXPECT_EQ("container-b", config_b->partition_name());
+
+  // Activate tab A (in container A)
+  browser()->tab_strip_model()->ActivateTabAt(
+      0, TabStripUserGestureDetails(
+            TabStripUserGestureDetails::GestureType::kOther));
+  ASSERT_TRUE(browser()->tab_strip_model()->GetActiveTab());
+
+  // Open split view from tab A
+  chrome::NewSplitTab(browser(), split_tabs::SplitTabLayout::kSideBySide,
+                      split_tabs::SplitTabCreatedSource::kLinkClick);
+
+  // Verify split view was created
+  ASSERT_EQ(2, browser()->tab_strip_model()->count());
+  EXPECT_TRUE(browser()->tab_strip_model()->GetActiveTab()->IsSplit());
+
+  // Check the active tab's container after split
+  // The newly created destination tab should inherit from source container
+  int active_index = browser()->tab_strip_model()->active_index();
+  auto active_config = GetStoragePartitionConfigOfTabAt(browser(), active_index);
+  ASSERT_TRUE(active_config.has_value());
+  
+  // After split, the newly added tab should inherit from the source container
+  EXPECT_EQ("container-a", active_config->partition_name());
 }
 
 }  // namespace containers

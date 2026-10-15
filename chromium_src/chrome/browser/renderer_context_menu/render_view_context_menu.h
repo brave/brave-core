@@ -91,6 +91,7 @@ class RenderViewContextMenu : public RenderViewContextMenu_Chromium
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
   void BuildContainersMenu();
+  void OpenLinkInSplitViewInheritingContainer();
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
 #if BUILDFLAG(ENABLE_TEXT_RECOGNITION)

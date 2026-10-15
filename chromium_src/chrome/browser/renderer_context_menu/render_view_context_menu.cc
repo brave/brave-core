@@ -77,7 +77,14 @@
 #include "brave/components/containers/content/browser/storage_partition_utils.h"
 #include "brave/components/containers/core/browser/containers_service.h"
 #include "brave/components/containers/core/common/features.h"
+#include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "components/split_tabs/public/split_tab_data.h"
+#include "components/tabs/public/tab_interface.h"
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
+
+#include "chrome/browser/ui/navigator/browser_navigator.h"
+#include "chrome/browser/ui/navigator/browser_navigator_params.h"
+#include "chrome/browser/ui/window_open_disposition.h"
 
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
 #include "brave/browser/ui/email_aliases/email_aliases_controller.h"
@@ -463,6 +470,123 @@ void RenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
       }
       break;
 #endif
+#if BUILDFLAG(ENABLE_CONTAINERS)
+    case IDC_CONTENT_CONTEXT_OPENLINKSPLITVIEW:
+      OpenLinkInSplitViewInheritingContainer();
+      break;
+#endif  // BUILDFLAG(ENABLE_CONTAINERS)
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+void RenderViewContextMenu::OpenLinkInSplitViewInheritingContainer() {
+  if (!base::FeatureList::IsEnabled(containers::features::kContainers)) {
+    OpenLinkInSplitView();
+    return;
+  }
+
+  // Get the current browser and tab strip model
+  auto* browser = GetBrowser();
+  if (!browser) {
+    OpenLinkInSplitView();
+    return;
+  }
+
+  auto* tab_strip_model = browser->GetTabStripModel();
+  if (!tab_strip_model) {
+    OpenLinkInSplitView();
+    return;
+  }
+
+  // Get the active tab (source tab)
+  tabs::TabInterface* active_tab = tab_strip_model->GetActiveTab();
+  if (!active_tab) {
+    OpenLinkInSplitView();
+    return;
+  }
+
+  // Get source container ID
+  std::string source_container_id =
+      containers::GetContainerIdForWebContents(source_web_contents_);
+
+  // If source has no container, just use regular split view
+  if (source_container_id.empty()) {
+    OpenLinkInSplitView();
+    return;
+  }
+
+  // Get split tab ID to find destination tab
+  auto split_id = active_tab->GetSplit();
+  if (!split_id.has_value()) {
+    // Not in a split, just open split view normally
+    OpenLinkInSplitView();
+    return;
+  }
+
+  // Get the split data to find destination tab
+  split_tabs::SplitTabData* split_data = tab_strip_model->GetSplitData(split_id.value());
+  if (!split_data) {
+    OpenLinkInSplitView();
+    return;
+  }
+
+  // Get list of tabs in the split
+  std::vector<tabs::TabInterface*> split_tabs = split_data->ListTabs();
+  if (split_tabs.size() != 2) {
+    // Unexpected number of tabs in split, use regular behavior
+    OpenLinkInSplitView();
+    return;
+  }
+
+  // Determine which tab is the source and which is destination
+  tabs::TabInterface* destination_tab = nullptr;
+  for (tabs::TabInterface* tab : split_tabs) {
+    if (tab != active_tab) {
+      destination_tab = tab;
+      break;
+    }
+  }
+
+  if (!destination_tab) {
+    OpenLinkInSplitView();
+    return;
+  }
+
+  // Get destination container ID
+  std::string destination_container_id =
+      containers::GetContainerIdForWebContents(destination_tab->GetContents());
+
+  // If containers are the same, use regular split view
+  if (source_container_id == destination_container_id) {
+    OpenLinkInSplitView();
+    return;
+  }
+
+  // Containers differ - we need to replace the destination tab with a new one
+  // that inherits the source container. The standard OpenLinkInSplitView
+  // cannot change an existing tab's partition, so we create a new tab via
+  // OpenURL which will inherit the container.
+
+  // Get the navigation parameters for the link
+  if (!params_.link_url.is_valid()) {
+    OpenLinkInSplitView();
+    return;
+  }
+
+  // Open the URL in a new tab with the source container
+  // This will inherit the container from source_web_contents_
+  GURL url = params_.link_url;
+  NavigateParams params(browser, url, ui::PAGE_TRANSITION_LINK);
+  params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+  params.target_contents_web_contents = destination_tab->GetContents();
+  params.storage_partition_config =
+      source_web_contents_->GetSiteInstance()
+          ->GetSecurityPrincipal()
+          .GetStoragePartitionConfig();
+
+  // Navigate the destination tab with the inherited container
+  chrome::Navigate(&params);
+
+  return;
+}
     default:
       RenderViewContextMenu_Chromium::ExecuteCommand(id, event_flags);
   }
