@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ads_util.h"
 
-#include <optional>
 #include <string_view>
 #include <utility>
 

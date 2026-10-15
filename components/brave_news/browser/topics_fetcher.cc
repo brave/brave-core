@@ -6,9 +6,7 @@
 #include "brave/components/brave_news/browser/topics_fetcher.h"
 
 #include <string>
-#include <tuple>
 #include <utility>
-#include <variant>
 #include <vector>
 
 #include "base/functional/bind.h"

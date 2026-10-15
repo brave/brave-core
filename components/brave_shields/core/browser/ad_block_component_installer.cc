@@ -11,7 +11,6 @@
 
 #include "base/containers/span.h"
 #include "base/functional/bind.h"
-#include "base/functional/callback.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "components/component_updater/component_installer.h"

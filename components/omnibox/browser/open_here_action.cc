@@ -5,7 +5,6 @@
 
 #include "brave/components/omnibox/browser/open_here_action.h"
 
-#include <numeric>
 #include <utility>
 
 #include "build/build_config.h"

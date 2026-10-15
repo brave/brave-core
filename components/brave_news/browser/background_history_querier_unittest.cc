@@ -20,7 +20,6 @@
 #include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"
 #include "base/test/bind.h"
-#include "base/test/task_environment.h"
 #include "brave/components/brave_news/browser/brave_news_controller.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/history/core/browser/history_types.h"

@@ -6,7 +6,6 @@
 #include "brave/components/brave_news/browser/peeking_card.h"
 
 #include <algorithm>
-#include <iterator>
 #include <map>
 #include <optional>
 #include <set>
