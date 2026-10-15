@@ -1,17 +1,8 @@
 diff --git a/chrome/browser/ui/ui_features.cc b/chrome/browser/ui/ui_features.cc
-index 1f958582a085d4709b3ef430f2eb99d57ab1be0f..c8e783ab9d57084c9755008f54dc1d5640acb13e 100644
+index 68c3b3d8746b274e3bbfdf68ea14ff79dc154840..8f593dc83cec836cdecbd6403a12e9c58209f1b9 100644
 --- a/chrome/browser/ui/ui_features.cc
 +++ b/chrome/browser/ui/ui_features.cc
-@@ -147,7 +147,7 @@ BASE_FEATURE(kFeedbackDisabledDialog, base::FEATURE_DISABLED_BY_DEFAULT);
- 
- // Enables the feature to remove the last confirmation dialog when relaunching
- // to update Chrome.
--BASE_FEATURE(kFewerUpdateConfirmations, base::FEATURE_ENABLED_BY_DEFAULT);
-+BASE_OVERRIDDEN_FEATURE(kFewerUpdateConfirmations, base::FEATURE_DISABLED_BY_DEFAULT);
- 
- BASE_FEATURE(kLegacySearchIntegrityCheck, base::FEATURE_DISABLED_BY_DEFAULT);
- #endif
-@@ -165,7 +165,7 @@ BASE_FEATURE(kExtensionsPinnedByDefault, base::FEATURE_ENABLED_BY_DEFAULT);
+@@ -161,7 +161,7 @@ BASE_FEATURE(kExtensionsPinnedByDefault, base::FEATURE_ENABLED_BY_DEFAULT);
  #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
  // Shows an infobar on PDFs offering to become the default PDF viewer if Chrome
  // isn't the default already.
@@ -20,7 +11,7 @@ index 1f958582a085d4709b3ef430f2eb99d57ab1be0f..c8e783ab9d57084c9755008f54dc1d56
  
  BASE_FEATURE(kSeparateDefaultAndPinPrompt,
  #if BUILDFLAG(IS_WIN)
-@@ -278,13 +278,8 @@ BASE_FEATURE(kNewTabButtonContextMenu, base::FEATURE_ENABLED_BY_DEFAULT);
+@@ -274,13 +274,8 @@ BASE_FEATURE(kNewTabButtonContextMenu, base::FEATURE_ENABLED_BY_DEFAULT);
  
  // Enables preview images in tab-hover cards.
  // https://crbug.com/41439486
@@ -36,7 +27,7 @@ index 1f958582a085d4709b3ef430f2eb99d57ab1be0f..c8e783ab9d57084c9755008f54dc1d56
  
  BASE_FEATURE(kTabModalUsesDesktopWidget, base::FEATURE_DISABLED_BY_DEFAULT);
  
-@@ -384,7 +379,7 @@ BASE_FEATURE(kNonMilestoneUpdateToast, base::FEATURE_ENABLED_BY_DEFAULT);
+@@ -380,7 +375,7 @@ BASE_FEATURE(kNonMilestoneUpdateToast, base::FEATURE_ENABLED_BY_DEFAULT);
  BASE_FEATURE(kRespectShouldTriggerSessionRestoreOnDesktop,
               base::FEATURE_ENABLED_BY_DEFAULT);
  

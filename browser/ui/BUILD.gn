@@ -924,14 +924,6 @@ source_set("ui") {
       deps += [ "//chrome/browser/ui/views/renderer_context_menu" ]
     }
 
-    if (enable_sparkle) {
-      sources += [
-        "views/update_recommended_message_box_mac.h",
-        "views/update_recommended_message_box_mac.mm",
-      ]
-      deps += [ "//chrome/browser/ui/views:update_recommended_message_box" ]
-    }
-
     if (is_win) {
       sources += [
         "views/frame/brave_browser_frame_view_win.cc",
@@ -1051,7 +1043,6 @@ source_set("ui") {
     "//brave/app:command_ids",
     "//brave/app/vector_icons",
     "//brave/browser:browser_process",
-    "//brave/browser:sparkle_buildflags",
     "//brave/browser/misc_metrics",
     "//brave/browser/shell_integrations/buildflags",
     "//brave/browser/ui/brave_tooltips",
@@ -1750,6 +1741,7 @@ source_set("browser_tests") {
 
     sources = [
       "brave_browser_browsertest.cc",
+      "relaunch_to_update_browsertest.cc",
       "views/frame/brave_system_menu_model_builder_browsertest.cc",
       "window_closing_confirm_browsertest.cc",
     ]
@@ -1762,6 +1754,7 @@ source_set("browser_tests") {
       "//brave/components/constants",
       "//chrome/browser",
       "//chrome/browser/devtools:test_support",
+      "//chrome/browser/first_run:test_support",
       "//chrome/browser/profiles:profile",
       "//chrome/browser/ui:browser_tabstrip",
       "//chrome/browser/ui:tab_ui_helper",
@@ -1781,6 +1774,11 @@ source_set("browser_tests") {
       "//content/test:test_support",
       "//ui/actions",
     ]
+
+    if (enable_sparkle) {
+      sources += [ "relaunch_to_update_sparkle_browsertest.mm" ]
+      deps += [ "//brave/browser/mac:test_support" ]
+    }
 
     if (enable_playlist_webui) {
       sources += [ "views/side_panel/playlist/playlist_side_panel_coordinator_browsertest.cc" ]
