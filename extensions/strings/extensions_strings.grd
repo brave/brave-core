@@ -206,7 +206,7 @@
       <!-- Document Scan API strings. Please keep alphabetized. -->
 
       <!-- General extensions strings. Please keep alphabetized. -->
-      <message name="IDS_EXTENSION_BAD_FILE_ENCODING" desc="">
+      <message name="IDS_EXTENSION_BAD_FILE_ENCODING" desc="Error shown when a content script file of an extension is not UTF-8 encoded and cannot be loaded">
         Could not load file '<ph name="RELATIVE_PATH">$1<ex>file.js</ex></ph>' for content script. It isn't UTF-8 encoded.
       </message>
       <message name="IDS_EXTENSION_CANT_GET_ABSOLUTE_PATH" desc="Warning displayed in pack dialog when the absolute path to the extension directory can not be found.">
@@ -236,31 +236,31 @@
       <message name="IDS_EXTENSION_FAILED_DURING_PACKAGING" desc="Warning displayed in pack dialog when was not possible to create a zip file.">
         Failed to create temporary zip file during packaging.
       </message>
-      <message name="IDS_EXTENSION_LOAD_ABOUT_PAGE_FAILED" desc="">
+      <message name="IDS_EXTENSION_LOAD_ABOUT_PAGE_FAILED" desc="Error shown when the about page declared by an extension cannot be loaded">
         Could not load about page '<ph name="ABOUT_PAGE">$1<ex>page.html</ex></ph>'.
       </message>
-      <message name="IDS_EXTENSION_LOAD_BACKGROUND_SCRIPT_FAILED" desc="">
+      <message name="IDS_EXTENSION_LOAD_BACKGROUND_SCRIPT_FAILED" desc="Error shown when the background script declared by an extension cannot be loaded">
         Could not load background script '<ph name="BACKGROUND_SCRIPT">$1<ex>script.js</ex></ph>'.
       </message>
-      <message name="IDS_EXTENSION_LOAD_BACKGROUND_PAGE_FAILED" desc="">
+      <message name="IDS_EXTENSION_LOAD_BACKGROUND_PAGE_FAILED" desc="Error shown when the background page declared by an extension cannot be loaded">
         Could not load background page '<ph name="BACKGROUND_PAGE">$1<ex>page.html</ex></ph>'.
       </message>
-      <message name="IDS_EXTENSION_LOAD_CSS_FAILED" desc="">
+      <message name="IDS_EXTENSION_LOAD_CSS_FAILED" desc="Error shown when a CSS file that an extension lists for a content script cannot be loaded">
         Could not load css '<ph name="RELATIVE_PATH">$1<ex>file.css</ex></ph>' for script.
       </message>
-      <message name="IDS_EXTENSION_LOAD_JAVASCRIPT_FAILED" desc="">
+      <message name="IDS_EXTENSION_LOAD_JAVASCRIPT_FAILED" desc="Error shown when a JavaScript file that an extension lists for a content script cannot be loaded">
         Could not load javascript '<ph name="RELATIVE_PATH">$1<ex>javas.js</ex></ph>' for script.
       </message>
-      <message name="IDS_EXTENSION_LOAD_OPTIONS_PAGE_FAILED" desc="">
+      <message name="IDS_EXTENSION_LOAD_OPTIONS_PAGE_FAILED" desc="Error shown when the options page declared by an extension cannot be loaded">
         Could not load options page '<ph name="OPTIONS_PAGE">$1<ex>page.html</ex></ph>'.
       </message>
-      <message name="IDS_EXTENSION_LOCALES_NO_DEFAULT_LOCALE_SPECIFIED" desc="">
+      <message name="IDS_EXTENSION_LOCALES_NO_DEFAULT_LOCALE_SPECIFIED" desc="Error shown when an extension uses localization but its manifest does not specify a default locale">
         Localization used, but default_locale wasn't specified in the manifest.
       </message>
-      <message name="IDS_EXTENSION_MANIFEST_UNREADABLE" desc="">
+      <message name="IDS_EXTENSION_MANIFEST_UNREADABLE" desc="Error shown when the manifest file of an extension is missing or cannot be read">
         Manifest file is missing or unreadable
       </message>
-      <message name="IDS_EXTENSION_MANIFEST_INVALID" desc="">
+      <message name="IDS_EXTENSION_MANIFEST_INVALID" desc="Error shown when the manifest file of an extension is not valid">
         Manifest file is invalid
       </message>
       <message name="IDS_EXTENSION_PACKAGE_IMAGE_ERROR" desc="Message for when an error occurs while trying to decode an image found within a packaged extension or app.">
@@ -426,7 +426,7 @@
       <message name="IDS_EXTENSION_CANT_DOWNGRADE_VERSION" desc="Error message when a user tries to install an extension with a lower version than a version that it already installed.">
         Attempted to downgrade extension.
       </message>
-      <message name="IDS_EXTENSION_MOVE_DIRECTORY_TO_PROFILE_FAILED" desc="">
+      <message name="IDS_EXTENSION_MOVE_DIRECTORY_TO_PROFILE_FAILED" desc="Error shown when the directory of an extension cannot be moved into the user profile during installation">
         Could not move extension directory into profile.
       </message>
 

@@ -195,5 +195,18 @@ class BraveifyLanguageFormsTest(unittest.TestCase):
         self.assertEqual(self.braveify('de', 'Chroma Chromu'), 'Chroma Chromu')
 
 
+class GeneratedExtensionsStringsTest(unittest.TestCase):
+    def test_every_message_has_a_description(self):
+        grd = os.path.join(
+            BRAVE_SOURCE_ROOT, 'extensions', 'strings', 'extensions_strings.grd'
+        )
+        empty = [
+            message.get('name')
+            for message in lxml.etree.parse(grd).iter('message')
+            if not (message.get('desc') or '').strip()
+        ]
+        self.assertEqual(empty, [])
+
+
 if __name__ == '__main__':
     unittest.main()
