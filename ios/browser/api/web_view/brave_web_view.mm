@@ -48,6 +48,7 @@
 #include "brave/ios/browser/web/force_paste/force_paste_javascript_feature.h"
 #include "brave/ios/browser/web/logins/logins_tab_helper.h"
 #include "brave/ios/browser/web/logins/logins_tab_helper_bridge.h"
+#include "brave/ios/browser/web/media/media_backgrounding_javascript_feature.h"
 #include "brave/ios/browser/web/page_metadata/page_metadata_javascript_feature.h"
 #include "brave/ios/browser/web/reader_mode/reader_mode_javascript_feature.h"
 #include "brave/ios/browser/web/text_content_distiller/text_content_distiller_javascript_feature.h"
@@ -797,6 +798,30 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
 - (void)forcePasteContents:(NSString*)contents {
   ForcePasteJavaScriptFeature::GetInstance()->ForcePaste(
       self.webState, base::SysNSStringToUTF8(contents));
+}
+
+@end
+
+@implementation BraveWebView (VideoBackgroundPlayback)
+
+- (void)markPlayingVideos {
+  web::WebState* webState = self.webState;
+  if (!webState) {
+    return;
+  }
+  MediaBackgroundingJavaScriptFeature::FromBrowserState(
+      webState->GetBrowserState())
+      ->MarkPlayingVideos(webState);
+}
+
+- (void)resumePlayingVideos {
+  web::WebState* webState = self.webState;
+  if (!webState) {
+    return;
+  }
+  MediaBackgroundingJavaScriptFeature::FromBrowserState(
+      webState->GetBrowserState())
+      ->ResumePlayingVideos(webState);
 }
 
 @end
