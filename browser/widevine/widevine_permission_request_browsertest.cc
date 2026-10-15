@@ -9,6 +9,7 @@
 
 #include "base/check.h"
 #include "base/path_service.h"
+#include "base/test/run_until.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/widevine/brave_drm_tab_helper.h"
 #include "brave/browser/widevine/widevine_utils.h"
@@ -19,6 +20,9 @@
 #include "brave/components/widevine/constants.h"
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/resource_coordinator/lifecycle_unit_state.mojom.h"
+#include "chrome/browser/resource_coordinator/tab_lifecycle_unit_external.h"
+#include "chrome/browser/resource_coordinator/tab_lifecycle_unit_source.h"
 #include "chrome/browser/ssl/cert_verifier_browser_test.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
@@ -30,7 +34,9 @@
 #include "components/permissions/permission_request.h"
 #include "components/permissions/request_type.h"
 #include "components/prefs/pref_service.h"
+#include "components/tabs/public/tab_interface.h"
 #include "components/update_client/crx_update_item.h"
+#include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
@@ -88,7 +94,7 @@ class WidevinePermissionRequestBrowserTest : public InProcessBrowserTest {
   }
 
   BraveDrmTabHelper* GetBraveDrmTabHelper() {
-    return BraveDrmTabHelper::FromWebContents(GetActiveWebContents());
+    return BraveDrmTabHelper::From(browser()->GetActiveTabInterface());
   }
 
   // BraveDrmTabHelper::OnWidevineKeySystemAccessRequest() can only resolve the
@@ -246,7 +252,8 @@ IN_PROC_BROWSER_TEST_F(WidevinePermissionRequestBrowserTest,
   TestObserver tor_observer;
   tor_permission_request_manager->AddObserver(&tor_observer);
 
-  auto* tor_drm_tab_helper = BraveDrmTabHelper::FromWebContents(tor_contents);
+  auto* tor_drm_tab_helper =
+      BraveDrmTabHelper::From(tor_browser->GetActiveTabInterface());
   ASSERT_TRUE(tor_drm_tab_helper);
   tor_drm_tab_helper->OnWidevineKeySystemAccessRequestForFrame(
       tor_contents->GetPrimaryMainFrame());
@@ -325,9 +332,12 @@ class ScriptTriggerWidevinePermissionRequestBrowserTest
 #if defined(OFFICIAL_BUILD) && BUILDFLAG(IS_WIN)
 #define MAYBE_SuggestPermissionIfWidevineDetected \
   DISABLED_SuggestPermissionIfWidevineDetected
+#define MAYBE_SuggestPermissionAfterDiscard \
+  DISABLED_SuggestPermissionAfterDiscard
 #else
 #define MAYBE_SuggestPermissionIfWidevineDetected \
   SuggestPermissionIfWidevineDetected
+#define MAYBE_SuggestPermissionAfterDiscard SuggestPermissionAfterDiscard
 #endif
 IN_PROC_BROWSER_TEST_F(ScriptTriggerWidevinePermissionRequestBrowserTest,
                        MAYBE_SuggestPermissionIfWidevineDetected) {
@@ -433,4 +443,42 @@ IN_PROC_BROWSER_TEST_F(ScriptTriggerWidevinePermissionRequestBrowserTest,
   // answer this test exists to catch: the helper used to pass the tab's URL.
   EXPECT_NE(main_url.DeprecatedGetOriginAsURL(),
             requests[0]->requesting_origin());
+}
+
+// Discarding a tab replaces its contents, whose frames must still reach the
+// tab helper.
+IN_PROC_BROWSER_TEST_F(ScriptTriggerWidevinePermissionRequestBrowserTest,
+                       MAYBE_SuggestPermissionAfterDiscard) {
+  GURL url = https_server_.GetURL("a.com", "/simple.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
+      browser(), url, WindowOpenDisposition::NEW_BACKGROUND_TAB,
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
+  TabStripModel* const tab_strip_model = browser()->tab_strip_model();
+  const int index = tab_strip_model->count() - 1;
+  tabs::TabInterface* const tab = tab_strip_model->GetTabAtIndex(index);
+  auto* const tab_helper = BraveDrmTabHelper::From(tab);
+  ASSERT_TRUE(tab_helper);
+
+  auto* const lifecycle_unit =
+      resource_coordinator::TabLifecycleUnitSource::GetTabLifecycleUnitExternal(
+          tab->GetContents());
+  ASSERT_TRUE(lifecycle_unit);
+  ASSERT_TRUE(
+      lifecycle_unit->DiscardTab(::mojom::LifecycleUnitDiscardReason::URGENT));
+  EXPECT_EQ(tab_helper, BraveDrmTabHelper::From(tab));
+
+  content::TestNavigationObserver navigation_observer(tab->GetContents());
+  tab_strip_model->ActivateTabAt(index);
+  tab->GetContents()->GetController().LoadIfNecessary();
+  navigation_observer.Wait();
+
+  TestObserver discarded_tab_observer;
+  GetPermissionRequestManager()->AddObserver(&discarded_tab_observer);
+  ASSERT_TRUE(content::ExecJs(active_contents(), R"(
+      navigator.requestMediaKeySystemAccess(
+          'com.widevine.alpha', [{initDataTypes: ['cenc']}])
+          .catch(() => {});)"));
+  EXPECT_TRUE(base::test::RunUntil(
+      [&] { return discarded_tab_observer.bubble_added_; }));
+  GetPermissionRequestManager()->RemoveObserver(&discarded_tab_observer);
 }

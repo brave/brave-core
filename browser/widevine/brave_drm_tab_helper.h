@@ -6,22 +6,32 @@
 #ifndef BRAVE_BROWSER_WIDEVINE_BRAVE_DRM_TAB_HELPER_H_
 #define BRAVE_BROWSER_WIDEVINE_BRAVE_DRM_TAB_HELPER_H_
 
+#include <memory>
+
 #include "base/scoped_observation.h"
 #include "brave/components/brave_drm/brave_drm.mojom.h"
+#include "chrome/browser/ui/tabs/contents_observing_tab_feature.h"
 #include "components/component_updater/component_updater_service.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/render_frame_host_receiver_set.h"
-#include "content/public/browser/web_contents_observer.h"
-#include "content/public/browser/web_contents_user_data.h"
+#include "ui/base/unowned_user_data/scoped_unowned_user_data.h"
 
-// Reacts to DRM content detected on the renderer side.
+namespace tabs {
+class TabInterface;
+}  // namespace tabs
+
+// Reacts to DRM content detected on the renderer side. Owned by
+// BraveTabFeatures.
 class BraveDrmTabHelper final
-    : public content::WebContentsObserver,
-      public content::WebContentsUserData<BraveDrmTabHelper>,
+    : public tabs::ContentsObservingTabFeature,
       public brave_drm::mojom::BraveDRM,
       public component_updater::ComponentUpdateService::Observer {
  public:
-  explicit BraveDrmTabHelper(content::WebContents* contents);
+  DECLARE_USER_DATA(BraveDrmTabHelper);
+
+  static BraveDrmTabHelper* From(tabs::TabInterface* tab);
+
+  explicit BraveDrmTabHelper(tabs::TabInterface& tab);
   ~BraveDrmTabHelper() override;
 
   static void BindBraveDRM(
@@ -49,10 +59,15 @@ class BraveDrmTabHelper final
   // component_updater::ComponentUpdateService::Observer
   void OnEvent(const update_client::CrxUpdateItem& item) override;
 
-  WEB_CONTENTS_USER_DATA_KEY_DECL();
-
  private:
-  content::RenderFrameHostReceiverSet<brave_drm::mojom::BraveDRM>
+  // tabs::ContentsObservingTabFeature
+  void OnDiscardContents(tabs::TabInterface* tab,
+                         content::WebContents* old_contents,
+                         content::WebContents* new_contents) override;
+
+  // Bound to the tab's current contents.
+  std::unique_ptr<
+      content::RenderFrameHostReceiverSet<brave_drm::mojom::BraveDRM>>
       brave_drm_receivers_;
 
   // Permission request is done only once during the navigation. If user
@@ -66,6 +81,8 @@ class BraveDrmTabHelper final
   base::ScopedObservation<component_updater::ComponentUpdateService,
                           component_updater::ComponentUpdateService::Observer>
       observer_{this};
+
+  ui::ScopedUnownedUserData<BraveDrmTabHelper> scoped_unowned_user_data_;
 };
 
 #endif  // BRAVE_BROWSER_WIDEVINE_BRAVE_DRM_TAB_HELPER_H_
