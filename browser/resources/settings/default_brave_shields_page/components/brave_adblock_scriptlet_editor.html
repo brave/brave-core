@@ -1,4 +1,4 @@
-<style include="cr-shared-style settings-shared">
+<style include="cr-shared-style settings-shared md-select">
     div[slot=body] {
         overflow: hidden;
     }
@@ -44,13 +44,23 @@
 <cr-dialog id="dialog" show-close-button show-on-attach>
     <div slot="title">[[dialogTitle_]]</div>
     <div slot="body">
-        <div class="flex">
+        <div class="flex content">
             <div>$i18n{adblockCustomSciptletDialogNameLabel}</div>
             <cr-input id="scriptlet-name" value="{{scriptletName_}}" invalid="[[!isScriptletValid_]]" autofocus required
                 spellcheck="false" on-input="validateName_" error-message="[[scriptletErrorMessage_]]">
                 <span slot="inline-prefix" class="input-affix">user-</span>
                 <span slot="inline-suffix" class="input-affix">.js</span>
             </cr-input>
+        </div>
+        <div class="flex content">
+            <div>$i18n{adblockCustomScriptletDialogMimeLabel}</div>
+            <select id="scriptlet-mime" class="md-select" on-change="onMimeChange_">
+                <template is="dom-repeat" items="[[mimeOptions_]]">
+                    <option value="[[item.value]]" selected="[[mimeEqual_(item.value, scriptletMime_)]]">
+                        [[item.value]]
+                    </option>
+                </template>
+            </select>
         </div>
         <div>
             <div class="flex content">$i18n{adblockCustomScriptletDialogContentLabel}</div>
