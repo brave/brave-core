@@ -81,40 +81,53 @@ def browser_binary(build_dir=DEFAULT_BUILD_DIR):
 
 
 def check_build(build_dir=DEFAULT_BUILD_DIR):
-    """Stops when the browser is older than the last pull, rebase, checkout
-    or reset: a test of a binary without that code says nothing. A commit
-    records code that was in the tree, so it does not count."""
+    """Stops when the code of the browser changed after it was built: a test
+    of a binary without that code says nothing. The code is the tree at HEAD
+    when the binary was built, without tools/ and Markdown files, which do
+    not go into the browser."""
     library = 'libchrome_dll.dylib' if sys.platform == 'darwin' else 'chrome'
     built = os.path.getmtime(os.path.join(build_dir, library))
-    reflog = subprocess.run(
-        [
-            'git',
-            '-C',
-            BRAVE_DIR,
-            'log',
-            '-g',
-            '-50',
-            '--format=%gd %gs',
-            '--date=unix',
-        ],
-        capture_output=True,
-        text=True,
-        check=True,
-    ).stdout.splitlines()
-    moves = [line.split(' ', 1) for line in reflog]
-    moved = next(
-        (
-            int(entry.split('{')[1].rstrip('}'))
-            for entry, action in moves
-            if not action.startswith('commit')
-        ),
-        0,
+
+    def git(*args):
+        return subprocess.run(
+            ['git', '-C', BRAVE_DIR] + list(args),
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+
+    # The newest HEAD that is older than the binary.
+    reflog = git('log', '-g', '-200', '--format=%H %gd', '--date=unix')
+    built_head = None
+    for line in reflog.stdout.splitlines():
+        commit, entry = line.split(' ', 1)
+        if int(entry.split('{')[1].rstrip('}')) <= built:
+            built_head = commit
+            break
+    changed = (
+        git(
+            'diff',
+            '--name-only',
+            built_head,
+            'HEAD',
+            '--',
+            '.',
+            ':(exclude)tools',
+            ':(exclude)*.md',
+        )
+        if built_head
+        else None
     )
-    if built < moved:
+    if changed is None or changed.returncode != 0 or changed.stdout.strip():
+        files = changed.stdout.split() if changed else []
         raise SystemExit(
-            'The browser is older than the last move of HEAD '
-            f'({time.ctime(built)} < {time.ctime(moved)}). '
-            'Build it first.'
+            f'The browser ({time.ctime(built)}) is older than its code'
+            + (
+                f' ({len(files)} files changed, for example {files[0]})'
+                if files
+                else ''
+            )
+            + '. Build it first.'
         )
 
 

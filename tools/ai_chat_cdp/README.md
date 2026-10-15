@@ -34,9 +34,8 @@ history search on, and wait until that folder exists.
 
 ## Before a run
 
-- **Build first.** The scripts stop when the browser is older than the last move
-  of HEAD (pull, rebase, checkout): a test of a binary without the branch says
-  nothing.
+- **Build first.** The scripts stop when a file outside `tools/` changed since
+  the browser was built: a test of a binary without that code says nothing.
 - **No other browser on the profile.** Quit it first; the scripts start and quit
   their own.
 
