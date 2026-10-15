@@ -18,6 +18,7 @@ from lib.l10n.grd_string_replacements import (
     brave_strings_grd_replacements,
     default_replacements,
     fixup_replacements,
+    language_branding_replacements,
     main_text_only_replacements,
     missing_descriptions,
 )
@@ -118,6 +119,16 @@ def write_xml_file_from_tree(string_path, xml_tree):
     transformed_content = format_xml_style(transformed_content)
     with open(string_path, mode='wb') as f:
         f.write(transformed_content)
+
+
+def braveify_language_forms(node, lang):
+    """Replaces brand forms that only occur in the given locale"""
+    for pattern, to in language_branding_replacements.get(lang, []):
+        for elem in node.iter():
+            if elem.text:
+                elem.text = re.sub(pattern, to, elem.text)
+            if elem.tail:
+                elem.tail = re.sub(pattern, to, elem.tail)
 
 
 def braveify_grd_tree(source_xml_tree, branding_replacements_only):
@@ -231,6 +242,11 @@ def update_xtbs_locally(grd_file_path, brave_source_root, only_for_lang):
         )
     }
 
+    xtb_langs = [
+        lang
+        for (lang, path) in xtb_files
+        if not only_for_lang or only_for_lang == lang
+    ]
     xtb_file_paths = [
         os.path.join(grd_base_path, path)
         for (lang, path) in xtb_files
@@ -253,6 +269,7 @@ def update_xtbs_locally(grd_file_path, brave_source_root, only_for_lang):
 
         for node in xml_tree.xpath('//translation'):
             generate_braveified_node(node, False, True)
+            braveify_language_forms(node, xtb_langs[idx])
             # Use our fp, when exists.
             old_fp = node.attrib['id']
             # It's possible for an xtb string to not be in our GRD.

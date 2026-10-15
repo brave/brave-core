@@ -2,7 +2,7 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="sl">
 <translation id="10146536653536065">Namestitev razširitve »<ph name="EXTENSION_NAME"/>«</translation>
-<translation id="6654312501894761082">Drug program v računalniku je dodal razširitev, ki lahko spremeni način delovanja Chroma.
+<translation id="6654312501894761082">Drug program v računalniku je dodal razširitev, ki lahko spremeni način delovanja Brave.
 
 <ph name="EXTENSION_NAME"/></translation>
 <translation id="1076698951459398590">Omogoči temo</translation>
@@ -19,7 +19,7 @@
 <translation id="1483493594462132177">Pošlji</translation>
 <translation id="1485015260175968628">Zdaj lahko:</translation>
 <translation id="1556537182262721003">Imenika razširitve ni bilo mogoče premakniti v profil.</translation>
-<translation id="3225882094369124157">Drug program v računalniku je dodal temo, ki lahko spremeni način delovanja Chroma.
+<translation id="3225882094369124157">Drug program v računalniku je dodal temo, ki lahko spremeni način delovanja Brave.
 
 <ph name="EXTENSION_NAME"/></translation>
 <translation id="1610570795592207282">Ni bilo mogoče naložiti CSS-ja »<ph name="RELATIVE_PATH"/>« za skript.</translation>
