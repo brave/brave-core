@@ -192,11 +192,16 @@ void FileUploadController::OnStripped(
 
   // Record the metrics. A non-null copy means the image carried FBMD metadata
   // that was stripped;
-  auto* stripper_metrics_reporter =
+  if (g_brave_browser_process &&
+      g_brave_browser_process->process_misc_metrics() &&
       g_brave_browser_process->process_misc_metrics()
-          ->image_metadata_stripper_metrics();
-  for (const auto& copy : copies) {
-    stripper_metrics_reporter->MaybeRecordFbmd(client, copy.has_value());
+          ->image_metadata_stripper_metrics()) {
+    auto* stripper_metrics_reporter =
+        g_brave_browser_process->process_misc_metrics()
+            ->image_metadata_stripper_metrics();
+    for (const auto& copy : copies) {
+      stripper_metrics_reporter->MaybeRecordFbmd(client, copy.has_value());
+    }
   }
 
   std::move(callback).Run(std::move(copies));

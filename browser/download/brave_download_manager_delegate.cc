@@ -121,9 +121,14 @@ void BraveDownloadManagerDelegate::OnImageMetadataStripped(uint32_t download_id,
   }
 
   // Record the metrics.
-  auto* stripper_metrics_reporter =
+  if (g_brave_browser_process &&
+      g_brave_browser_process->process_misc_metrics() &&
       g_brave_browser_process->process_misc_metrics()
-          ->image_metadata_stripper_metrics();
-  stripper_metrics_reporter->MaybeRecordFbmd(
-      image_metadata_stripper::StrippingClient::kDownloadManager, stripped);
+          ->image_metadata_stripper_metrics()) {
+    auto* stripper_metrics_reporter =
+        g_brave_browser_process->process_misc_metrics()
+            ->image_metadata_stripper_metrics();
+    stripper_metrics_reporter->MaybeRecordFbmd(
+        image_metadata_stripper::StrippingClient::kDownloadManager, stripped);
+  }
 }
