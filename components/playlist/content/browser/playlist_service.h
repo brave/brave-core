@@ -224,6 +224,7 @@ class PlaylistService : public KeyedService,
  private:
   friend class ::CosmeticFilteringPlaylistFlagEnabledTest;
   friend class PlaylistBrowserTest;
+  friend class PlaylistStreamPlaybackBrowserTest;
   friend class ::PlaylistMediaDiscoveryBrowserTest;
 
   FRIEND_TEST_ALL_PREFIXES(PlaylistServiceUnitTest, CreatePlaylist);
