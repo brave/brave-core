@@ -143,3 +143,27 @@ it('pauses and resumes the same playback without cancelling synthesis or losing 
     await speech
   })
 })
+
+it.each(['A sentence.', 'A question?', '“A quoted sentence.”', 'Heading:'])(
+  'adds a short silence after %s',
+  async (text) => {
+    const handler = {
+      synthesizeSpeech: jest.fn().mockResolvedValue(response()),
+      cancelSpeech: jest.fn(),
+    }
+    const { result } = renderHook(() => useLocalSpeech(handler))
+    let speech!: Promise<void>
+    await act(async () => {
+      speech = result.current.speak(text)
+    })
+    expect(createBuffer).toHaveBeenCalledWith(1, 6002, 24000)
+    expect(copyToChannel).toHaveBeenCalledWith(
+      new Float32Array([0.25, -0.5]),
+      0,
+    )
+    await act(async () => {
+      playback.onended!()
+      await speech
+    })
+  },
+)

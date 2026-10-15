@@ -67,7 +67,9 @@ export class SpeechQueue {
       .replace(/[*_~`#>]/g, '')
     let remainder = cleaned.slice(this.offset)
     while (remainder.length) {
-      const sentence = /[.!?](?:["')\]]*)(?:\s+|$)/.exec(remainder)
+      const sentence = /[.!?。！？](?:["'’”）)\]]*)(?:\s+|$)|[\r\n]+/u.exec(
+        remainder,
+      )
       let end = sentence ? sentence.index + sentence[0].length : 0
       if (!end && !final && remainder.length <= MAX_SPEECH_CHUNK_LENGTH) {
         break
@@ -82,11 +84,22 @@ export class SpeechQueue {
           end--
         }
       }
-      const chunk = remainder.slice(0, end).trim()
+      const rawChunk = remainder.slice(0, end)
+      let chunk = rawChunk.trim()
       this.offset += end
       remainder = remainder.slice(end)
-      if (!chunk) {
+      // Decorative rules and punctuation alone can produce phantom speech.
+      if (!/[\p{L}\p{N}]/u.test(chunk)) {
         continue
+      }
+      // Give unpunctuated headings and list items a natural stopping point.
+      if (
+        /[\r\n]$/.test(rawChunk)
+        && chunk
+        && chunk.length < MAX_SPEECH_CHUNK_LENGTH
+        && !/[.!?。！？:;]["'’”）)\]]*$/.test(chunk)
+      ) {
+        chunk += '.'
       }
       const generation = this.generation
       this.pending = this.pending.then(async () => {

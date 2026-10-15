@@ -78,7 +78,14 @@ export function useLocalSpeech(handler: SpeechHandler) {
       if (currentGeneration !== generation.current) {
         return
       }
-      const buffer = audioContext.createBuffer(1, samples.length, sampleRate)
+      // Keep sentence boundaries audible even when synthesis omits silence.
+      // Buffer silence follows audio pause/resume and cancellation naturally.
+      const pauseSeconds = /[.!?。！？:;]["'’”）)\]]*\s*$/.test(text) ? 0.25 : 0
+      const buffer = audioContext.createBuffer(
+        1,
+        samples.length + Math.round(sampleRate * pauseSeconds),
+        sampleRate,
+      )
       buffer.copyToChannel(samples, 0)
       const playback = audioContext.createBufferSource()
       playback.buffer = buffer

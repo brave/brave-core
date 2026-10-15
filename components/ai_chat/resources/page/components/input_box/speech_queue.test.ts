@@ -154,3 +154,76 @@ it('does not repeat or drop words as emojis stream into the response', async () 
   await queue.wait()
   expect(speak.mock.calls).toEqual([['Hello .'], ['Still thinking .']])
 })
+
+it('separates paragraphs, headings and list lines without sending newlines to TTS', async () => {
+  const speak = jest.fn().mockResolvedValue(undefined)
+  const queue = new SpeechQueue(speak)
+  queue.append(
+    'Heading\r\n\r\nFirst paragraph without punctuation\nSecond paragraph. “Quoted sentence.” Next sentence.',
+    true,
+  )
+  await queue.wait()
+  expect(speak.mock.calls).toEqual([
+    ['Heading.'],
+    ['First paragraph without punctuation.'],
+    ['Second paragraph.'],
+    ['“Quoted sentence.”'],
+    ['Next sentence.'],
+  ])
+})
+
+it('preserves words as paragraph breaks stream in after a spoken sentence', async () => {
+  const speak = jest.fn().mockResolvedValue(undefined)
+  const queue = new SpeechQueue(speak)
+  queue.append('First paragraph.')
+  await queue.wait()
+  queue.append('First paragraph.\n\nNext heading\nStill generating')
+  await queue.wait()
+  queue.append(
+    'First paragraph.\n\nNext heading\nStill generating the reply.',
+    true,
+  )
+  await queue.wait()
+  expect(speak.mock.calls).toEqual([
+    ['First paragraph.'],
+    ['Next heading.'],
+    ['Still generating the reply.'],
+  ])
+})
+
+it.each(['---', '- - -', '***', '* * *', '___', '===', '———', '───', '...'])(
+  'does not synthesize a decorative separator: %s',
+  async (separator) => {
+    const speak = jest.fn().mockResolvedValue(undefined)
+    const queue = new SpeechQueue(speak)
+    queue.append(`Before.\n\n${separator}\n\nAfter.`, true)
+    await queue.wait()
+    expect(speak.mock.calls).toEqual([['Before.'], ['After.']])
+  },
+)
+
+it('skips separators as they stream without repeating or dropping the following text', async () => {
+  const speak = jest.fn().mockResolvedValue(undefined)
+  const queue = new SpeechQueue(speak)
+  for (const text of [
+    'Before.\n\n-',
+    'Before.\n\n---',
+    'Before.\n\n---\n',
+    'Before.\n\n---\n\nAfter',
+    'Before.\n\n---\n\nAfter.',
+  ]) {
+    queue.append(text)
+    await queue.wait()
+  }
+  queue.append('Before.\n\n---\n\nAfter.', true)
+  await queue.wait()
+  expect(speak.mock.calls).toEqual([['Before.'], ['After.']])
+})
+
+it('keeps numbers and non-English words around separators', async () => {
+  const speak = jest.fn().mockResolvedValue(undefined)
+  const queue = new SpeechQueue(speak)
+  queue.append('42\n---\n你好\n===\nCafé costs €5.', true)
+  await queue.wait()
+  expect(speak.mock.calls).toEqual([['42.'], ['你好.'], ['Café costs €5.']])
+})
