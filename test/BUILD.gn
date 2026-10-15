@@ -1336,6 +1336,7 @@ test("brave_browser_tests") {
 
   if (enable_playlist) {
     deps += [
+      "//brave/browser/playlist",
       "//brave/browser/playlist/test:browser_tests",
       "//brave/components/playlist/content/browser",
     ]
