@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #include "brave/browser/psst/psst_ui_delegate_impl.h"
+
 #include <algorithm>
 
 #include "base/functional/bind.h"
@@ -142,8 +143,8 @@ psst::mojom::SettingCardDataPtr PsstUiDelegateImpl::GetShowDialogData() {
         std::ranges::contains(current_website_settings->uids_to_perform,
                               task.uid);
 
-    items.push_back(
-        psst::mojom::SettingCardDataItem::New(task.description, task.uid, is_checked));
+    items.push_back(psst::mojom::SettingCardDataItem::New(
+        task.description, task.uid, is_checked));
   }
 
   return psst::mojom::SettingCardData::New(origin_->GetURL().spec(),
