@@ -42,6 +42,7 @@ extension BrowserViewController: TabManagerDelegate {
     tab.print = .init(tab: tab, baseViewController: self)
     tab.externalAppURLHelper = .init(tab: tab, browserViewController: self)
     tab.forcePaste = .init(tab: tab)
+    tab.videoBackgroundPlayback = .init(tab: tab)
     tab.aiChatWebUIHelper = .init(
       tab: tab,
       webDelegate: tab.leoTabHelper,
