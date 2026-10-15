@@ -20,6 +20,11 @@ if (enable_web_discovery) {
       "//content/public/browser",
     ]
 
+    public_deps += [
+      "//chrome/browser/ui/tabs:tabs_public",
+      "//ui/base/unowned_user_data",
+    ]
+
     if (enable_web_discovery_native) {
       sources += [ "web_discovery_service_factory.h" ]
       public_deps += [ "//chrome/browser/profiles:profile" ]
@@ -47,6 +52,7 @@ if (enable_web_discovery) {
       "//components/infobars/core",
       "//components/prefs",
       "//components/search_engines",
+      "//components/tabs:public",
       "//content/public/browser",
     ]
 
@@ -84,6 +90,7 @@ source_set("unit_tests") {
       "//components/prefs",
       "//components/search_engines",
       "//components/sync_preferences:test_support",
+      "//components/tabs:test_support",
       "//content/public/browser",
       "//content/test:test_support",
       "//testing/gtest",

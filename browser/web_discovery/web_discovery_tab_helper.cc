@@ -16,6 +16,7 @@
 #include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "components/infobars/content/content_infobar_manager.h"
 #include "components/infobars/core/infobar.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
@@ -34,24 +35,28 @@ std::unique_ptr<infobars::InfoBar> CreateWebDiscoveryInfoBar(
 
 namespace web_discovery {
 
+DEFINE_USER_DATA(WebDiscoveryTabHelper);
+
 // static
-void WebDiscoveryTabHelper::MaybeCreateForWebContents(
-    content::WebContents* contents) {
-  if (!contents) {
-    return;
-  }
-
-  auto* profile = Profile::FromBrowserContext(contents->GetBrowserContext());
-  if (!profile || !profile->IsRegularProfile()) {
-    return;
-  }
-
-  WebDiscoveryTabHelper::CreateForWebContents(contents);
+WebDiscoveryTabHelper* WebDiscoveryTabHelper::From(tabs::TabInterface* tab) {
+  return tab ? Get(tab->GetUnownedUserDataHost()) : nullptr;
 }
 
-WebDiscoveryTabHelper::WebDiscoveryTabHelper(content::WebContents* contents)
-    : content::WebContentsObserver(contents),
-      content::WebContentsUserData<WebDiscoveryTabHelper>(*contents) {}
+// static
+std::unique_ptr<WebDiscoveryTabHelper> WebDiscoveryTabHelper::MaybeCreate(
+    tabs::TabInterface& tab) {
+  auto* profile =
+      Profile::FromBrowserContext(tab.GetContents()->GetBrowserContext());
+  if (!profile || !profile->IsRegularProfile()) {
+    return nullptr;
+  }
+
+  return std::make_unique<WebDiscoveryTabHelper>(tab);
+}
+
+WebDiscoveryTabHelper::WebDiscoveryTabHelper(tabs::TabInterface& tab)
+    : tabs::ContentsObservingTabFeature(tab),
+      scoped_unowned_user_data_(tab.GetUnownedUserDataHost(), *this) {}
 
 WebDiscoveryTabHelper::~WebDiscoveryTabHelper() = default;
 
@@ -126,7 +131,5 @@ void WebDiscoveryTabHelper::MaybeExtractFromPage(
   web_discovery_service->StartExtractingFromPage(url, std::move(remote));
 }
 #endif
-
-WEB_CONTENTS_USER_DATA_KEY_IMPL(WebDiscoveryTabHelper);
 
 }  // namespace web_discovery

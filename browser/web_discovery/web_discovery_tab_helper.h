@@ -6,20 +6,34 @@
 #ifndef BRAVE_BROWSER_WEB_DISCOVERY_WEB_DISCOVERY_TAB_HELPER_H_
 #define BRAVE_BROWSER_WEB_DISCOVERY_WEB_DISCOVERY_TAB_HELPER_H_
 
+#include <memory>
+
 #include "base/gtest_prod_util.h"
 #include "brave/components/web_discovery/buildflags/buildflags.h"
-#include "content/public/browser/web_contents_observer.h"
-#include "content/public/browser/web_contents_user_data.h"
+#include "chrome/browser/ui/tabs/contents_observing_tab_feature.h"
+#include "ui/base/unowned_user_data/scoped_unowned_user_data.h"
 
 class PrefService;
 
+namespace tabs {
+class TabInterface;
+}  // namespace tabs
+
 namespace web_discovery {
 
-class WebDiscoveryTabHelper
-    : public content::WebContentsObserver,
-      public content::WebContentsUserData<WebDiscoveryTabHelper> {
+// Offers Web Discovery on Brave Search pages, and extracts page data for it.
+// Owned by BraveTabFeatures.
+class WebDiscoveryTabHelper : public tabs::ContentsObservingTabFeature {
  public:
-  static void MaybeCreateForWebContents(content::WebContents* contents);
+  DECLARE_USER_DATA(WebDiscoveryTabHelper);
+
+  static WebDiscoveryTabHelper* From(tabs::TabInterface* tab);
+
+  // Returns nullptr unless the tab's profile is a regular profile.
+  static std::unique_ptr<WebDiscoveryTabHelper> MaybeCreate(
+      tabs::TabInterface& tab);
+
+  explicit WebDiscoveryTabHelper(tabs::TabInterface& tab);
 
   ~WebDiscoveryTabHelper() override;
 
@@ -28,10 +42,6 @@ class WebDiscoveryTabHelper
 
  private:
   FRIEND_TEST_ALL_PREFIXES(WebDiscoveryTest, InfobarAddedTest);
-
-  friend class content::WebContentsUserData<WebDiscoveryTabHelper>;
-
-  explicit WebDiscoveryTabHelper(content::WebContents* contents);
 
   // content::WebContentsObserver overrides:
   void DidFinishLoad(content::RenderFrameHost* render_frame_host,
@@ -44,7 +54,7 @@ class WebDiscoveryTabHelper
                             const GURL& url);
 #endif
 
-  WEB_CONTENTS_USER_DATA_KEY_DECL();
+  ui::ScopedUnownedUserData<WebDiscoveryTabHelper> scoped_unowned_user_data_;
 };
 
 }  // namespace web_discovery

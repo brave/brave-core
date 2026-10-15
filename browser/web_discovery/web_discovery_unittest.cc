@@ -20,10 +20,12 @@
 #include "components/search_engines/search_engines_pref_names.h"
 #include "components/search_engines/template_url_service.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
+#include "components/tabs/public/mock_tab_interface.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_task_environment.h"
 #include "content/public/test/test_renderer_host.h"
 #include "content/public/test/web_contents_tester.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace web_discovery {
@@ -40,10 +42,6 @@ class WebDiscoveryCTATest : public testing::Test {
     web_contents_ =
         content::WebContentsTester::CreateTestWebContents(profile(), nullptr);
     ASSERT_TRUE(web_contents_.get());
-  }
-
-  WebDiscoveryTabHelper* tab_helper() {
-    return WebDiscoveryTabHelper::FromWebContents(web_contents());
   }
 
   void SetBraveSearchAsDefaultProvider() {
@@ -70,8 +68,9 @@ class WebDiscoveryCTATest : public testing::Test {
 
   bool IsBraveSearchDefault() {
     auto* template_url = service()->GetDefaultSearchProvider();
-    if (!template_url)
+    if (!template_url) {
       return false;
+    }
     return template_url->prepopulate_id() ==
            TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE;
   }
@@ -104,8 +103,9 @@ TEST_F(WebDiscoveryCTATest, InitialDataTest) {
   EXPECT_TRUE(info_value.empty());
 
   // Tab helper can be created by default.
-  WebDiscoveryTabHelper::MaybeCreateForWebContents(web_contents());
-  EXPECT_TRUE(tab_helper());
+  tabs::MockTabInterface tab;
+  ON_CALL(tab, GetContents()).WillByDefault(testing::Return(web_contents()));
+  EXPECT_TRUE(WebDiscoveryTabHelper::MaybeCreate(tab));
 }
 
 TEST_F(WebDiscoveryCTATest, ShouldCreateTabHelperWithPrivateProfileTest) {
@@ -116,9 +116,10 @@ TEST_F(WebDiscoveryCTATest, ShouldCreateTabHelperWithPrivateProfileTest) {
       private_profile, nullptr);
   ASSERT_TRUE(web_contents.get());
 
-  WebDiscoveryTabHelper::MaybeCreateForWebContents(web_contents.get());
-  // Check helper is not attached.
-  EXPECT_FALSE(WebDiscoveryTabHelper::FromWebContents(web_contents.get()));
+  tabs::MockTabInterface tab;
+  ON_CALL(tab, GetContents())
+      .WillByDefault(testing::Return(web_contents.get()));
+  EXPECT_FALSE(WebDiscoveryTabHelper::MaybeCreate(tab));
 }
 
 TEST_F(WebDiscoveryCTATest, ShouldShowInfoBarTest) {

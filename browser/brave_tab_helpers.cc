@@ -28,7 +28,6 @@
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
-#include "brave/components/web_discovery/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -93,10 +92,6 @@
 #include "brave/components/tor/tor_tab_helper.h"
 #endif
 
-#if BUILDFLAG(ENABLE_WEB_DISCOVERY)
-#include "brave/browser/web_discovery/web_discovery_tab_helper.h"
-#endif
-
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #endif
@@ -154,10 +149,6 @@ void AttachTabHelpers(content::WebContents* web_contents) {
 
   brave_perf_predictor::PerfPredictorTabHelper::CreateForWebContents(
       web_contents);
-
-#if BUILDFLAG(ENABLE_WEB_DISCOVERY)
-  web_discovery::WebDiscoveryTabHelper::MaybeCreateForWebContents(web_contents);
-#endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   speedreader::SpeedreaderTabHelper::MaybeCreateForWebContents(web_contents);
