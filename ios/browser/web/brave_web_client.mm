@@ -137,6 +137,10 @@ std::vector<web::JavaScriptFeature*> BraveWebClient::GetJavaScriptFeatures(
   features.push_back(
       security_interstitials::IOSSecurityInterstitialJavaScriptFeature::
           GetInstance());
+  // Registered for every profile. `CallJavaScriptFunction` aborts when the instance 
+  // it is called on was not added here.
+  features.push_back(
+      MediaBackgroundingJavaScriptFeature::FromBrowserState(browser_state));
   if (base::FeatureList::IsEnabled(
           brave::features::kUseChromiumWebViewsAutofill)) {
     // Order matters for these scripts, `PasswordManagerJavaScriptFeature` must
@@ -185,8 +189,6 @@ std::vector<web::JavaScriptFeature*> BraveWebClient::GetJavaScriptFeatures(
     if (!gpc_handled_by_webkit) {
       features.push_back(GPCJavaScriptFeature::FromBrowserState(browser_state));
     }
-    features.push_back(
-        MediaBackgroundingJavaScriptFeature::FromBrowserState(browser_state));
     features.push_back(NightModeJavaScriptFeature::GetInstance());
     features.push_back(PageMetadataJavaScriptFeature::GetInstance());
 #if BUILDFLAG(ENABLE_PLAYLIST)
@@ -258,8 +260,8 @@ void BraveWebClient::BuildEditMenu(web::WebState* web_state,
   }
   id<BraveWebViewUIDelegate> uiDelegate = webView.UIDelegate;
 
-  if ([uiDelegate respondsToSelector:@selector(webView:
-                                         buildEditMenuWithBuilder:)]) {
+  if ([uiDelegate
+          respondsToSelector:@selector(webView:buildEditMenuWithBuilder:)]) {
     return [uiDelegate webView:webView buildEditMenuWithBuilder:builder];
   }
 }
@@ -276,8 +278,9 @@ bool BraveWebClient::ShouldBlockJavaScript(web::WebState* webState,
   id<BraveWebViewNavigationDelegate> navigationDelegate =
       webView.navigationDelegate;
 
-  if ([navigationDelegate respondsToSelector:@selector
-                          (webView:shouldBlockJavaScriptForRequest:)]) {
+  if ([navigationDelegate
+          respondsToSelector:@selector(
+                                 webView:shouldBlockJavaScriptForRequest:)]) {
     return [navigationDelegate webView:webView
         shouldBlockJavaScriptForRequest:request];
   }
@@ -293,8 +296,9 @@ bool BraveWebClient::ShouldBlockUniversalLinks(web::WebState* webState,
   id<BraveWebViewNavigationDelegate> navigationDelegate =
       webView.navigationDelegate;
 
-  if ([navigationDelegate respondsToSelector:@selector
-                          (webView:shouldBlockUniversalLinksForRequest:)]) {
+  if ([navigationDelegate
+          respondsToSelector:
+              @selector(webView:shouldBlockUniversalLinksForRequest:)]) {
     return [navigationDelegate webView:webView
         shouldBlockUniversalLinksForRequest:request];
   }
@@ -321,8 +325,9 @@ NSString* BraveWebClient::GetUserAgentForRequest(
 
   id<BraveWebViewNavigationDelegate> navigationDelegate =
       webView.navigationDelegate;
-  if ([navigationDelegate respondsToSelector:@selector
-                          (webView:userAgentForUserAgentType:request:)]) {
+  if ([navigationDelegate
+          respondsToSelector:@selector(
+                                 webView:userAgentForUserAgentType:request:)]) {
     return [navigationDelegate
                           webView:webView
         userAgentForUserAgentType:static_cast<CWVUserAgentType>(userAgentType)
