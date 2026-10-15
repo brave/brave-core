@@ -21,7 +21,7 @@ namespace image_metadata_stripper::metrics {
 
 namespace {
 
-constexpr base::TimeDelta kReportInterval = base::Days(1);
+constexpr base::TimeDelta kReportInterval = base::Days(7);
 
 // 1-5, 6-10, 11-20, 21-30, 31+
 constexpr int kCountBuckets[] = {5, 10, 20, 30};
