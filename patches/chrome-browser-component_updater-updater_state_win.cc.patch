@@ -1,20 +1,36 @@
 diff --git a/chrome/browser/component_updater/updater_state_win.cc b/chrome/browser/component_updater/updater_state_win.cc
-index 781db7a6b09b53e67c25768a7d4cf5cebbf16260..e67a563640b2966c0cc845b76409c119f93b4cb8 100644
+index 523dec8edfedcdb27b5abed3ff82e5cf946b641f..a04923b8817d4e7df3768c3314251dc3fe3210b7 100644
 --- a/chrome/browser/component_updater/updater_state_win.cc
 +++ b/chrome/browser/component_updater/updater_state_win.cc
-@@ -18,6 +18,7 @@ namespace component_updater {
- namespace {
+@@ -19,21 +19,26 @@ namespace {
  
  // Google Update group policy settings.
-+#if 0
- const wchar_t kGoogleUpdatePoliciesKey[] =
-     L"SOFTWARE\\Policies\\Google\\Update";
- const wchar_t kCheckPeriodOverrideMinutes[] = L"AutoUpdateCheckPeriodMinutes";
-@@ -33,6 +34,7 @@ const wchar_t kRegPathGoogleUpdate[] = L"Software\\Google\\Update";
- const wchar_t kRegPathClientsGoogleUpdate[] =
-     L"Software\\Google\\Update\\Clients\\"
-     L"{430FD4D0-B729-4F61-AA34-91526481799D}";
-+#endif
- const wchar_t kRegValueGoogleUpdatePv[] = L"pv";
- const wchar_t kRegValueLastStartedAU[] = L"LastStartedAU";
- const wchar_t kRegValueLastChecked[] = L"LastChecked";
+ constexpr wchar_t kGoogleUpdatePoliciesKey[] =
+-    L"SOFTWARE\\Policies\\Google\\Update";
++    L"SOFTWARE\\Policies\\BraveSoftware\\Update";
+ constexpr wchar_t kCheckPeriodOverrideMinutes[] =
+     L"AutoUpdateCheckPeriodMinutes";
+ constexpr wchar_t kUpdatePolicyValue[] = L"UpdateDefault";
++#if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+ constexpr wchar_t kChromeUpdatePolicyOverride[] =
+-    L"Update{8A69D345-D564-463C-AFF1-A69D9E530F96}";
++    L"Update{F1EF32DE-F987-4289-81D2-6C4780027F9B}";
++#else
++constexpr wchar_t kChromeUpdatePolicyOverride[] =
++    L"Update{AFE6A462-C574-4B8A-AF43-4CC60DF4563B}";
++#endif  // BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+ 
+ // Don't allow update periods longer than six weeks (Chrome release cadence).
+ constexpr int kCheckPeriodOverrideMinutesMax = 60 * 24 * 7 * 6;
+ 
+ // Google Update registry settings.
+-constexpr wchar_t kRegPathGoogleUpdate[] = L"Software\\Google\\Update";
++constexpr wchar_t kRegPathGoogleUpdate[] = L"Software\\BraveSoftware\\Update";
+ constexpr wchar_t kRegPathClientsGoogleUpdate[] =
+-    L"Software\\Google\\Update\\Clients\\"
+-    L"{430FD4D0-B729-4F61-AA34-91526481799D}";
++    L"Software\\BraveSoftware\\Update\\Clients\\"
++    L"{B131C935-9BE6-41DA-9599-1F776BEB8019}";
+ constexpr wchar_t kRegValueGoogleUpdatePv[] = L"pv";
+ constexpr wchar_t kRegValueLastStartedAU[] = L"LastStartedAU";
+ constexpr wchar_t kRegValueLastChecked[] = L"LastChecked";
