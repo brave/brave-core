@@ -27,7 +27,7 @@ import StoreKit
 import SwiftUI
 import Translation
 import UIKit
-@_spi(ChromiumWebViewAccess) import Web
+import Web
 import WebKit
 import os.log
 
@@ -940,19 +940,15 @@ public class BrowserViewController: UIViewController {
 
   /// Stamp videos that are playing before WebKit's background pause. A video the user already paused stays unmarked
   private func markPlayingVideosBeforeBackground() {
-    callVideoBackgroundPlayback { $0.markPlayingVideos() }
+    for tab in tabManager.allTabs {
+      tab.videoBackgroundPlayback?.markPlayingVideos()
+    }
   }
 
   /// Resumes videos marked while this scene was resigning active.
   private func resumePlayingVideoAfterBackground() {
-    callVideoBackgroundPlayback { $0.resumePlayingVideos() }
-  }
-
-  private func callVideoBackgroundPlayback(_ call: (BraveWebView) -> Void) {
-    // The playing video may be in a background tab.
-    for tab in tabManager.allTabs where tab.isWebViewCreated {
-      guard let webView = BraveWebView.from(tab: tab) else { continue }
-      call(webView)
+    for tab in tabManager.allTabs {
+      tab.videoBackgroundPlayback?.resumePlayingVideos()
     }
   }
 
