@@ -61,6 +61,9 @@ class BraveTabFeatures : public TabFeatures_Chromium {
   // Finds the page's Brave News feeds. Null without Brave News or off the
   // record.
   std::unique_ptr<ContentsObservingTabFeature> brave_news_tab_helper_;
+  // Serves the wallet providers of the tab's frames. Null without Brave
+  // Wallet.
+  std::unique_ptr<ContentsObservingTabFeature> brave_wallet_tab_helper_;
 
   std::unique_ptr<ai_chat::TabDataWebContentsObserver> tab_data_observer_;
   std::unique_ptr<ai_chat::WebMcpInjector> web_mcp_injector_;

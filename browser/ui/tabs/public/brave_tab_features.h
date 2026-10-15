@@ -168,6 +168,9 @@ class BraveTabFeatures : public TabFeatures {
   // Finds the page's Brave News feeds. Null without Brave News or off the
   // record. Declared before the page action controllers that observe it.
   std::unique_ptr<ContentsObservingTabFeature> brave_news_tab_helper_;
+  // Serves the wallet providers of the tab's frames. Null without Brave
+  // Wallet.
+  std::unique_ptr<ContentsObservingTabFeature> brave_wallet_tab_helper_;
   // Offers to enable Widevine when the page asks for it. Null without it.
   std::unique_ptr<ContentsObservingTabFeature> drm_tab_helper_;
   // Holds the Shields state for the page shown in the tab.
