@@ -98,6 +98,10 @@ const update = () => {
     path.join(chromeComponentsDir, 'strings'),
   ])
   fileMap.add([
+    path.join(config.braveCoreDir, 'extensions', 'strings'),
+    path.join(config.srcDir, 'extensions', 'strings'),
+  ])
+  fileMap.add([
     braveAndroidJavaStringsTranslationsDir,
     chromeAndroidJavaStringsTranslationsDir,
   ])
