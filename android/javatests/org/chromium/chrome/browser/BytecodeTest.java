@@ -1809,7 +1809,8 @@ public class BytecodeTest {
                         WindowAndroid.class,
                         DeferredIMEWindowInsetApplicationCallback.class,
                         FuseboxCoordinator.class,
-                        LocationBarEmbedderUiOverrides.class));
+                        LocationBarEmbedderUiOverrides.class,
+                        NonNullObservableSupplier.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/omnibox/suggestions/OmniboxViewHolderFactory",

@@ -265,6 +265,7 @@
 -RecordReplayDriverFactoryTest.GetActiveDrivers
 -ContentAutofillDriverTest_Prerender.BadMessageIfPrerendering
 -ContentAutofillDriverTest_Prerender.ObserveFieldVisibilityDisconnectsIfInactive
+-ContentPasswordManagerDriverFactoryPageActivationTest.PrerenderedPageActivationDoesNotResetDriver
 
 # This test asserts features::kSkillsEnabled's upstream default which we
 # override.
