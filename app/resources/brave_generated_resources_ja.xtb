@@ -3,18 +3,14 @@
 <translationbundle lang="ja">
 <translation id="1751249301761991853">個人用</translation>
 <translation id="3333887201479867589">Brave Rewards</translation>
-<translation id="7561196759112975576">常に表示</translation>
-<translation id="7961015016161918242">使用しない</translation>
 <translation id="8507663778530179003">「すべてのブックマーク」ボタンを表示する</translation>
 <translation id="9018648632047670921">ブックマークボタンを表示する</translation>
 <translation id="7630214457764713113">クリーンリンクをコピー</translation>
 <translation id="7973394300052703468">新しいシークレット ウインドウ(&amp;I)</translation>
 <translation id="4615489450165434530">サイト表示の不具合を報告</translation>
 <translation id="8097438084542431276">クリーンリンクをコピー</translation>
-<translation id="4678672101289648246">新しいタブページのみ</translation>
 <translation id="6516243500644829484">シークレット ウィンドウを開く(&amp;I)</translation>
 <translation id="1209739344687072997">サイト表示の不具合を報告</translation>
-<translation id="8294286161128352783">新しいタブページのみ</translation>
 <translation id="6406506848690869874">同期</translation>
 <translation id="1544192797660353713">ウォレット</translation>
 <translation id="2361906291514218784">Leo AI</translation>
@@ -195,7 +191,9 @@
 <translation id="5977931179408079967">位置</translation>
 <translation id="3790384768741064842">右に移動</translation>
 <translation id="7444424316576061724">左に移動</translation>
+<translation id="7561196759112975576">常に表示</translation>
 <translation id="7060352228894039151">マウスオーバーで表示</translation>
+<translation id="7961015016161918242">使用しない</translation>
 <translation id="8981254605840444865">設定を表示</translation>
 <translation id="59174027418879706">有効</translation>
 <translation id="4176463684765177261">無効</translation>
@@ -221,6 +219,7 @@
 <translation id="4515057635283480525">Internet Archiveは、多くのウェブページの過去のバージョンを保存しています。このページをArchiveで探しますか？</translation>
 <translation id="8252977752585110703">申し訳ありませんが、Internet Archiveを確認したところ、このページのアーカイブされたバージョンはありませんでした。</translation>
 <translation id="8748778103033196270">Archiveを検索</translation>
+<translation id="7369915833843501413">Archiveを検索中</translation>
 <translation id="191143826155037518">Braveは、<ph name="BEGIN_LINK_MPL"/>Mozilla Public License 2.0<ph name="END_LINK_MPL"/> (MPL) に基づき利用可能となっており、そこには他のさまざまなライセンスに基づく<ph name="BEGIN_LINK_OSS"/>オープンソース・ソフトウェア<ph name="END_LINK_OSS"/>が含まれています。
 <ph name="BEGIN_LINK_SOURCE_CODE"/>このコピーの作成に使われた特定のソースコード<ph name="END_LINK_SOURCE_CODE"/>を<ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>ダウンロードして、自分で構築する方法については説明書<ph name="END_LINK_BUILD_INSTRUCTIONS"/>をお読みください。</translation>
 <translation id="4474155171896946103">すべてのタブをブックマークに追加...</translation>
@@ -371,7 +370,7 @@
 <translation id="7985042437720138349">この機能は、開いているタブに関するデータをBraveのブラウザAIアシスタント、Leoに送信します。</translation>
 <translation id="6165508094623778733">詳しく見る</translation>
 <translation id="7557539689487606886">プレミアムプランへ</translation>
-<translation id="1035309871698658326">これを開くと、プライベート以外のタブのタイトルと発信元が自動的にLeoに送信され、分類されます。</translation>
+<translation id="7103144720752576727">開くと、すべての非プライベートタブのタイトルとOriginがLeoに自動的に送信され、分類されます。ページコンテンツの送信もオンにすると、各タブのテキストの短い抜粋も送信されます。</translation>
 <translation id="3435896845095436175">有効にする</translation>
 <translation id="9031526219709160683">Braveはこのサイトのプライバシー設定を最適化するお手伝いをいたします。Braveの提案を検討しますか？</translation>
 <translation id="5739953050957336013">提案を確認</translation>
@@ -386,8 +385,6 @@
 <translation id="8570228839666486945">デバイス上のAI</translation>
 <translation id="7447041379556102185">デバイス上の音声認識</translation>
 <translation id="3456536577668402695">検索内容とページコンテンツはこのデバイス上で処理されます。Braveに送信されることも、人間のレビュアーによって閲覧されることもありません。</translation>
-<translation id="4751537843966994505">セマンティック履歴検索</translation>
-<translation id="6175973371938222040">訪問したページをローカルにインデックス化し、意味で履歴を検索できるようにします。すべての処理はこのデバイス上で行われます。</translation>
 <translation id="9156965752763025780">変更内容は次に Brave を再起動したときに有効になります。</translation>
 <translation id="7179921470347911571">今すぐ再起動</translation>
 <translation id="1426410128494586442">はい</translation>
@@ -425,6 +422,7 @@
 <translation id="4328541188421002379">「仕事」「個人」など、コンテナに名前を付けてください</translation>
 <translation id="4976989127264491396">エラー: <ph name="ERROR_MESSAGE"/></translation>
 <translation id="5436069931267876389">コンテナが見つかりません</translation>
+<translation id="5831840958001766835">項目を並べ替えます。矢印キーを使用して移動します。</translation>
 <translation id="6055154402239241620">トラフィックコントロール</translation>
 <translation id="8134521925475508805">特定のサイトを特定のコンテキストで自動的に開くよう設定し、ブラウジングセッション間を分離します。<ph name="BEGIN_LINK"/>詳細<ph name="END_LINK"/></translation>
 <translation id="6944848312867106540">トラフィックコントロールを有効にする</translation>
@@ -477,10 +475,6 @@
 <translation id="7310387888625228830">Leo AI アシスタント</translation>
 <translation id="5222974844674487962">Brave Newsボタンを表示する</translation>
 <translation id="2085436423511121572">Leo AIボタンを表示</translation>
-<translation id="6156323911414505561">ブックマーク バーを表示する</translation>
-<translation id="4054323497808446566">ブックマーク バーをすべてのページに表示</translation>
-<translation id="8693858092251192712">新しいタブページを除き、ブックマーク バーをすべてのページで非表示</translation>
-<translation id="7158817046543187970">ブックマーク バーをすべてのページで非表示</translation>
 <translation id="3416468988018290825">常に完全な URL を表示</translation>
 <translation id="5529693968082667490">タブの検索ボタンを表示</translation>
 <translation id="1013121820689882118">Speedreader</translation>
@@ -612,6 +606,8 @@
 <translation id="5825943197137337319">デフォルトのパブリックインターフェイスのみ</translation>
 <translation id="1689062823386843231">非プロキシUDPを無効にする</translation>
 <translation id="3540231253392253941">プッシュメッセージングにGoogleサービスを使用</translation>
+<translation id="2224032129673914306">セマンティック履歴検索</translation>
+<translation id="6045998903985162478">アクセスしたページにインデックスを付けて、履歴、開いているタブ、Leoで簡単に見つけられるようにします。</translation>
 <translation id="5813105074916486721">ローカル履歴の保持期間</translation>
 <translation id="5671611745062206644">Braveが閲覧履歴をローカルに保存する期間</translation>
 <translation id="7184510058087008090">1日</translation>
@@ -876,6 +872,7 @@
 <translation id="2618193846561624884">既存のネットワークを更新しますか？</translation>
 <translation id="1643029991199044105">Ctrl-Tabを使用し、タブを直近使用したものの中で切り替える</translation>
 <translation id="2775956301559569472">404ページ上に「Wayback Machine (ウェイバックマシン)」プロンプトを表示する</translation>
+<translation id="8485716275262929774">404ページでWayback Machineから保存されたバージョンを自動的に読み込む</translation>
 <translation id="3095201688102519917">複数のタブでウィンドウを閉じる前に警告を表示する</translation>
 <translation id="7120553802660696133">最後のタブを閉じる際にウィンドウを閉じる</translation>
 <translation id="3394171693948989253">終了時にEscを押すよう、全画面でリマインダーを表示</translation>
@@ -885,6 +882,8 @@
 <translation id="1529674267267221673">ウェブサイトを右クリックすると、コンテキストメニューにLeoが表示されます。これにより、現在のウェブページのコンテキストがLeoに送信されます。</translation>
 <translation id="5226020406479918122">タブのグループ化モード</translation>
 <translation id="3705539672403311123">タブ検索ページでタブのグループ化を有効にします。 開くと、プライベート以外のタブのタイトルと発信元が自動的にLeoに送信され、分類されます。 <ph name="BEGIN_LINK"/><ph name="END_LINK"/></translation>
+<translation id="2002238795517052616">タブフォーカス用にページコンテンツを送信</translation>
+<translation id="2276823422122514441">各タブのテキストの短い抜粋も送信して、タブがタイトルではなくページの内容によってグループ化されるようにします。抜粋はLeo、またはタブフォーカス用に独自のモデルを選択した場合はそのモデルに送信されます。これには<ph name="BEGIN_LINK"/><ph name="SEMANTIC_HISTORY_SEARCH"/><ph name="END_LINK"/>が必要です。これはお使いのデバイス上で抜粋を作成します。</translation>
 <translation id="9049433973274198706">タブフォーカス向けデフォルトモデル</translation>
 <translation id="2161546758719933059">タブフォーカスモードでタブを整理するために使用されるモデルです。<ph name="BEGIN_LINK"/>詳細<ph name="END_LINK"/></translation>
 <translation id="8172263161008556851">会話でおすすめのプロンプトを表示</translation>
@@ -967,9 +966,6 @@
 <translation id="1838374766361614909">検索を消去</translation>
 <translation id="5126255551970171328">メモリを検索</translation>
 <translation id="7402116145895962069">Ollamaローカルモデルを同期する</translation>
-<translation id="5985516785067818307">調査パネリスト</translation>
-<translation id="8347743943525229984">Braveアンケートを許可</translation>
-<translation id="3204080538332044581">Braveに対し、新しいタブページに匿名アンケートへのリンクを表示することを許可します。こうした調査は、より良い機能の構築や、ブラウザベースの広告キャンペーンの効果測定などに役立ちます。<ph name="BEGIN_LINK"/>詳細<ph name="END_LINK"/></translation>
 <translation id="349846214503465941">プレイリストを有効にする</translation>
 <translation id="7903608716704052878">オフラインでの閲覧用に自動でファイルを追加</translation>
 <translation id="384666453982355633">このオプションは、メディアファイルを自動的にキャッシュし、インターネット接続がなくても再生できるようにします。</translation>

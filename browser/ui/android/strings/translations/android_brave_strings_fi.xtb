@@ -193,9 +193,6 @@
 <translation id="5668852698659986622">Ota sponsoroidut mainokset käyttöön</translation>
 <translation id="431194936581466649">Auta tukemaan Braven tehtävää rakentaa itsenäinen, käyttäjää ensisijaisesti palveleva verkko sponsoroiduilla mainoksilla. Mittaamme mainosten tehokkuutta yksityisesti tunnistamatta sinua.</translation>
 <translation id="1939813747486101115">Lue lisää sponsoroiduista mainoksista</translation>
-<translation id="8347743943525229984">Salli Braven kyselyt</translation>
-<translation id="6022939994702081659">Sallii Braven näyttää linkkejä yksityisiin kyselyihin uudella välilehdellä. Kyselyt auttavat meitä rakentamaan parempia ominaisuuksia ja mittaamaan selainpohjaisten mainoskampanjoiden tehokkuutta.</translation>
-<translation id="7746496306508543965">Lue lisää Braven kyselyistä</translation>
 <translation id="410351446219883937">Automaattinen toisto</translation>
 <translation id="7445411102860286510">Salli sivustoille mykistettyjen videoiden automaattinen toisto (suositus)</translation>
 <translation id="7837721118676387834">Sallii tietylle sivustolle mykistettyjen videoiden automaattisen toiston.</translation>
@@ -223,6 +220,7 @@
 <translation id="9040069796107003510">Brave-palkinnot-kuvake</translation>
 <translation id="6333347122924254968">Näytä Brave-palkinnot-kuvake osoiterivillä</translation>
 <translation id="4393974575368329991">Alareunan navigointityökalurivi</translation>
+<translation id="8727059712928806451">Ota alalaita käyttöön</translation>
 <translation id="1834226716203076292">Näytä alapalkki, jonka avulla pääset nopeasti aloitussivulle, kirjanmerkkeihin ja hakuun</translation>
 <translation id="1422686363939271829">Tämä asetus ei ole käytössä, kun osoitepalkin alareunan sijainti on valittu</translation>
 <translation id="6587448235155023666">Muutokset tulevat voimaan, kun käynnistät Braven uudelleen seuraavan kerran</translation>
@@ -398,6 +396,12 @@ Haluatko varmasti tehdä tämän?</translation>
 <translation id="8793108040181436796">Widgetit</translation>
 <translation id="8643377320501056697">Näytä kärkisivustot</translation>
 <translation id="7275773481201277457">Näytä Brave-tilastot</translation>
+<translation id="8516804522688861636">Näytä usein käydyt sivustot</translation>
+<translation id="4546260624932151782">Näytä suosikit</translation>
+<translation id="5313967007315987356">Lisää sivusto</translation>
+<translation id="1773147648972887693">Näytä usein käytetyt</translation>
+<translation id="752098910262610337">Näytä pikavalinnat</translation>
+<translation id="7134741506051403308">Piilota pienoisohjelma</translation>
 <translation id="7462178177755090262">Aloitusnäyttö</translation>
 <translation id="5365434987337264071">Viimeksi avattu välilehti</translation>
 <translation id="6019856124237323989">{HOURS, plural, =1 {Uusi välilehti <ph name="HOURS_ONE"/> tunnin toimettomuuden jälkeen} other {Uusi välilehti <ph name="HOURS_MANY"/> tunnin toimettomuuden jälkeen}}</translation>
@@ -998,6 +1002,13 @@ Jos et hyväksy tätä pyyntöä, yhteyttä VPN:ään ei muodosta uudelleen ja I
 <translation id="7530313002494358590">Brave-ominaisuuden käyttöön ottaminen tai poistaminen edellyttää selaimen uudelleenkäynnistystä muutosten soveltamiseksi. Napsauta <ph name="BEGIN_BOLD"/>Käynnistä uudelleen nyt<ph name="END_BOLD"/> sen jälkeen, kun Brave Origin on päivittänyt.</translation>
 <translation id="1028940738207645746">Haluatko varmasti nollata kaikki asetukset oletuksiksi?</translation>
 <translation id="5939518447894949180">Tyhjennä</translation>
+<translation id="3222790865318305905">Aktivointiraja saavutettu</translation>
+<translation id="3787857711016546034">Petosten estämiseksi Origin-aktivoinnit on rajoitettu. Voit kuitenkin aina pyytää lisää aktivointeja käyttääksesi Origin-lisenssiäsi useammilla laitteilla. Napsauta vain Pyydä lisää aktivointeja -vaihtoehtoa tai <ph name="CONTACT_SUPPORT"/> saadaksesi apua.</translation>
+<translation id="6760819753412779585">ota yhteyttä tukeen</translation>
+<translation id="571697836019670200">Pyydä lisää aktivointeja</translation>
+<translation id="9019545131475425538">Käsitellään…</translation>
+<translation id="7242700630179071243">Valmis aktivoitavaksi</translation>
+<translation id="5463918917265356202">Brave Origin on nyt aktiivinen tällä laitteella. Jotta voit aloittaa ominaisuuden käytön, sinun on käynnistettävä selain uudelleen. Haluatko käynnistää uudelleen nyt?</translation>
 <translation id="8554205386170195281">Osta</translation>
 <translation id="8613144770663526433">Kirjaudu sisään Brave-lompakon kautta</translation>
 <translation id="3696514931437952995">Olet kirjautumassa sisään kohteeseen <ph name="ORIGIN"/>. Brave-lompakko jakaa lompakkosi osoitteen kohteen <ph name="ORIGIN"/> kanssa.</translation>

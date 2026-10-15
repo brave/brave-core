@@ -3,18 +3,14 @@
 <translationbundle lang="iw">
 <translation id="1751249301761991853">אישי</translation>
 <translation id="3333887201479867589">תגמולי Brave</translation>
-<translation id="7561196759112975576">תמיד</translation>
-<translation id="7961015016161918242">אף פעם</translation>
 <translation id="8507663778530179003">הצג את לחצן כל הסימניות</translation>
 <translation id="9018648632047670921">הצג את לחצן כל הסימניות</translation>
 <translation id="7630214457764713113">העתק קישור נקי</translation>
 <translation id="7973394300052703468">חלון &amp;נסתר חדש</translation>
 <translation id="4615489450165434530">דווח/י על אתר לא תקין</translation>
 <translation id="8097438084542431276">העתקת קישור נקי</translation>
-<translation id="4678672101289648246">בדף הכרטיסייה החדשה בלבד</translation>
 <translation id="6516243500644829484">חלון 'גלישה בסתר' חדש</translation>
 <translation id="1209739344687072997">דווח/י על אתר לא תקין</translation>
-<translation id="8294286161128352783">בדף הכרטיסייה החדשה בלבד</translation>
 <translation id="6406506848690869874">סנכרון</translation>
 <translation id="1544192797660353713">ארנק</translation>
 <translation id="2361906291514218784">Leo המבוסס בינה מלאכותית</translation>
@@ -195,7 +191,9 @@
 <translation id="5977931179408079967">עמדה</translation>
 <translation id="3790384768741064842">העבר ימינה</translation>
 <translation id="7444424316576061724">העבר שמאלה</translation>
+<translation id="7561196759112975576">תמיד</translation>
 <translation id="7060352228894039151">במעבר עם העכבר</translation>
+<translation id="7961015016161918242">אף פעם</translation>
 <translation id="8981254605840444865">הצג הגדרות</translation>
 <translation id="59174027418879706">מופעל</translation>
 <translation id="4176463684765177261">מושבת</translation>
@@ -221,6 +219,7 @@
 <translation id="4515057635283480525">Internet Archive שומר גרסאות קודמות של דפי אינטרנט רבים. האם ברצונך לחפש דף זה בארכיון?</translation>
 <translation id="8252977752585110703">מצטערים, בדקנו ב-Internet Archive ואין בו גרסה מאורכבת של דף זה.</translation>
 <translation id="8748778103033196270">חפש בארכיון</translation>
+<translation id="7369915833843501413">מחפש בארכיון</translation>
 <translation id="191143826155037518">Brave זמין עבורך תחת <ph name="BEGIN_LINK_MPL"/> הרישיון הציבורי של מוזילה 2.0<ph name="END_LINK_MPL"/> (MPL) אשר כולל <ph name="BEGIN_LINK_OSS"/> תוכנת קוד פתוח<ph name="END_LINK_OSS"/> תחת מגוון רישיונות אחרים. באפשרותך לקרוא <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/> הנחיות כיצד להוריד ולבנות בעצמך<ph name="END_LINK_BUILD_INSTRUCTIONS"/> את <ph name="BEGIN_LINK_SOURCE_CODE"/>קוד המקור הספציפי בו נעשה שימוש כדי ליצור עותק זה <ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">צור סימניה לכל הכרטיסיות...</translation>
 <translation id="3987546108749866209">השתמשו בכרטיסיות אנכיות</translation>
@@ -370,7 +369,7 @@
 <translation id="7985042437720138349">הפיצ׳ר הזה שולח נתונים על הכרטיסיות הפתוחות שלך אל Leo, עוזר הדפדפן מבוסס ה-AI של Brave.</translation>
 <translation id="6165508094623778733">למידע נוסף</translation>
 <translation id="7557539689487606886">לעבור לפרימיום</translation>
-<translation id="1035309871698658326">כשהוא מופעל, זה ישלח אוטומטית את הכותרות ואת המקור של כל הכרטיסיות הלא-פרטיות אל Leo למטרת סיווג.</translation>
+<translation id="7103144720752576727">כאשר ייפתח, הדבר ישלח אוטומטית את הכותרות ואת ה-origin של כל הלשוניות שאינן פרטיות אל Leo כדי לסווג אותן. אם תפעיל גם שליחת תוכן הדף, קטעים קצרים מהטקסט של כל לשונית יישלחו גם כן.</translation>
 <translation id="3435896845095436175">הפעל</translation>
 <translation id="9031526219709160683">Brave יכול לעזור לך לייעל את הגדרות הפרטיות של האתר הזה. האם אתה רוצה לעיין בהצעות של Brave?</translation>
 <translation id="5739953050957336013">הצעות חיפוש</translation>
@@ -385,8 +384,6 @@
 <translation id="8570228839666486945">AI על ההתקן</translation>
 <translation id="7447041379556102185">זיהוי דיבור במכשיר</translation>
 <translation id="3456536577668402695">החיפושים ותוכן העמודים מעובדים במכשיר זה. שום דבר לא נשלח ל-Brave ולא נצפה על ידי בודקים אנושיים.</translation>
-<translation id="4751537843966994505">חיפוש היסטוריה סמנטי</translation>
-<translation id="6175973371938222040">נהל אינדקס של דפים שאתה מבקר בהם באופן מקומי כדי שתוכל לחפש בהיסטוריה שלך לפי משמעות. כל העיבוד נשאר על התקן זה.</translation>
 <translation id="9156965752763025780">‏השינויים שביצעת ייכנסו לתוקף בפעם הבאה שתפעיל מחדש את Brave‏.</translation>
 <translation id="7179921470347911571">הפעלה מחדש כעת</translation>
 <translation id="1426410128494586442">כן</translation>
@@ -424,6 +421,7 @@
 <translation id="4328541188421002379">אפשר לתת לקונטיינר שלך שם כמו ׳עבודה׳ או ׳אישי׳</translation>
 <translation id="4976989127264491396">שגיאה: <ph name="ERROR_MESSAGE"/></translation>
 <translation id="5436069931267876389">קונטיינר לא נמצא</translation>
+<translation id="5831840958001766835">סדר מחדש את הפריט. השתמש במקשי החיצים כדי להזיז.</translation>
 <translation id="6055154402239241620">בקרת תנועה</translation>
 <translation id="8134521925475508805">הגדירו אתרים ספציפיים שייפתחו באופן אוטומטי בהקשר מסוים, ויצרו הפרדה בין מפגשי הגלישה שלכם. <ph name="BEGIN_LINK"/>למידע נוסף<ph name="END_LINK"/></translation>
 <translation id="6944848312867106540">הפעלת בקרת תנועה</translation>
@@ -476,10 +474,6 @@
 <translation id="7310387888625228830">עוזר בינה מלאכותית של ליאו</translation>
 <translation id="5222974844674487962">כפתור הצג חדשות אמיצות</translation>
 <translation id="2085436423511121572">הצג את לחצן Leo המבוסס בינה מלאכותית</translation>
-<translation id="6156323911414505561">הצג את סרגל הסימניות</translation>
-<translation id="4054323497808446566">סרגל הסימניות נראה בכל הדפים</translation>
-<translation id="8693858092251192712">סרגל הסימניות מוסתר בכל הדפים למעט את דף הכרטיסייה החדשה</translation>
-<translation id="7158817046543187970">סרגל הסימניות מוסתר בכל הדפים</translation>
 <translation id="3416468988018290825">הצג תמיד כתובות אתרים מלאות</translation>
 <translation id="5529693968082667490">הצג לחצן חיפוש כרטיסייה</translation>
 <translation id="1013121820689882118">Speedreader</translation>
@@ -611,6 +605,8 @@
 <translation id="5825943197137337319">ברירת המחדל של הממשק הציבורי בלבד</translation>
 <translation id="1689062823386843231">השבתת UDP ללא פרוקסי</translation>
 <translation id="3540231253392253941">השתמש בשירותי Google לצורך שליחת הודעות פוש</translation>
+<translation id="2224032129673914306">חיפוש היסטוריה סמנטי</translation>
+<translation id="6045998903985162478">אינדוקס של דפים שאתה מבקר בהם כדי שתוכל למצוא אותם בקלות בהיסטוריה, בכרטיסיות פתוחות וב-Leo.</translation>
 <translation id="5813105074916486721">שמירת היסטוריה מקומית</translation>
 <translation id="5671611745062206644">למשך כמה זמן Brave שומר את היסטוריית הגלישה שלך באופן מקומי</translation>
 <translation id="7184510058087008090">יום 1</translation>
@@ -875,6 +871,7 @@
 <translation id="2618193846561624884">האם ברצונך לעדכן את הרשת הקיימת?</translation>
 <translation id="1643029991199044105">עברו על הלשוניות שנעשה בהן שימוש לאחרונה באמצעות Ctrl-Tab</translation>
 <translation id="2775956301559569472">הצג הודעת Wayback Machine בדפי 404</translation>
+<translation id="8485716275262929774">טען אוטומטית גרסאות שמורות מ-Wayback Machine בדפי 404</translation>
 <translation id="3095201688102519917">הזהר אותי לפני סגירת חלון שבו מספר כרטיסיות</translation>
 <translation id="7120553802660696133">סגור חלון בסגירת הכרטיסייה האחרונה</translation>
 <translation id="3394171693948989253">הצג תזכורת במסך מלא ללחוץ על Esc ליציאה</translation>
@@ -884,6 +881,8 @@
 <translation id="1529674267267221673">ליאו יוצג בתפריט הקונטקסט כשתלחץ על הלחצן הימני של העכבר באתר האינטרנט. הפעולה תשלח קונטקסט מדף האינטרנט הנוכחי אל ליאו.</translation>
 <translation id="5226020406479918122">מצב מיקוד כרטיסיות</translation>
 <translation id="3705539672403311123">אפשר להפעיל את ארגון הכרטיסיות בדף ׳חיפוש כרטיסיות׳. כשהוא מופעל, זה ישלח אוטומטית את הכותרות ואת המקור של כל הכרטיסיות הלא-פרטיות אל Leo למטרת סיווג. <ph name="BEGIN_LINK"/>למידע נוסף<ph name="END_LINK"/></translation>
+<translation id="2002238795517052616">שלח תוכן דף למיקוד כרטיסיות</translation>
+<translation id="2276823422122514441">שלח גם קטעים קצרים מהטקסט של כל כרטיסייה, כך שהכרטיסיות יקובצו לפי נושא הדף במקום לפי הכותרת שלו. הקטעים נשלחים אל Leo, או אל המודל שלך אם בחרת כזה למיקוד כרטיסיות. הדבר דורש <ph name="BEGIN_LINK"/><ph name="SEMANTIC_HISTORY_SEARCH"/><ph name="END_LINK"/>, שבונה את הקטעים במכשיר שלך.</translation>
 <translation id="9049433973274198706">מודל ברירת מחדל להתמקדות בכרטיסייה</translation>
 <translation id="2161546758719933059">המודל המשמש לארגון הכרטיסיות שלכם במצב מיקוד כרטיסיות. <ph name="BEGIN_LINK"/>מידע נוסף<ph name="END_LINK"/></translation>
 <translation id="8172263161008556851">הצג הצעות מוצעות בשיחה</translation>
@@ -965,9 +964,6 @@
 <translation id="1838374766361614909">ניקוי חיפוש</translation>
 <translation id="5126255551970171328">חפש זיכרון</translation>
 <translation id="7402116145895962069">סנכרן את המודלים המקומיים של Ollama</translation>
-<translation id="5985516785067818307">משתתפ/ת בסקר</translation>
-<translation id="8347743943525229984">הפעלת סקרי Brave</translation>
-<translation id="3204080538332044581">מאפשר ל-Brave להציג לינקים לסקרים פרטיים בדף הכרטיסייה החדשה. סקרים עוזרים לנו לבנות פיצ׳רים טובים יותר ולמדוד את היעילות של קמפיינים פרסומיים בדפדפן. <ph name="BEGIN_LINK"/>למידע נוסף<ph name="END_LINK"/></translation>
 <translation id="349846214503465941">אפשר רשימת השמעה</translation>
 <translation id="7903608716704052878">הוסף אוטומטית קבצים לצפייה במצב לא מקוון</translation>
 <translation id="384666453982355633">אפשרות זו תשמור באופן אוטומטי קבצי מדיה במטמון כך שניתן יהיה לנגן אותם ללא חיבור לאינטרנט</translation>

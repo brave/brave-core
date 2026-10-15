@@ -1884,6 +1884,18 @@
 <translation id="2737084171727561244">ポートフォリオに移動</translation>
 <translation id="3499452861061048987">トークンの追加</translation>
 <translation id="5046066249040287308">Braveウォレットユーティリティサービス</translation>
+<translation id="8767749833522980474">暗号資産</translation>
+<translation id="4509084261025090951">カードを取得</translation>
+<translation id="3624463584770657372">本人確認を行うと、カード番号が表示され利用を開始できます。</translation>
+<translation id="2508337767012636987">タップして確認</translation>
+<translation id="703964541421486259">残高を非表示</translation>
+<translation id="302114796458112924">残高を表示</translation>
+<translation id="9083210401924577263">Brave Rewardsカード</translation>
+<translation id="2433507940547922241">デザイン</translation>
+<translation id="3435738964857648380">セキュリティ</translation>
+<translation id="6700561332544287722">次回はロック解除を要求</translation>
+<translation id="5605360570977617291">ホームから<ph name="CARD_NAME"/>を非表示にしますか？</translation>
+<translation id="2721464457853369512"><ph name="CARD_NAME"/>の残高は変わりません。これはホームからカードを非表示にするだけです。設定の「ウォレット」からいつでも再度表示できます。</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
 <translation id="3745016858329272300">一般情報</translation>
 <translation id="4045404575593562245">Torコントロールイベント</translation>
@@ -1923,7 +1935,6 @@
 <translation id="6261915643960475695">ビジネス</translation>
 <translation id="8265589281845759879">自動車</translation>
 <translation id="7726519849288907308">芸能</translation>
-<translation id="8767749833522980474">暗号資産</translation>
 <translation id="7577010593836079522">文化</translation>
 <translation id="6807791860691150411">教育</translation>
 <translation id="3706423975342040244">エンタメ</translation>
@@ -2102,9 +2113,6 @@
 <translation id="3067105725259639716">Brave Newsを設定</translation>
 <translation id="6286510487460330478">ショートカットを設定</translation>
 <translation id="9214819486716388964">Braveトークを表示</translation>
-<translation id="5950760360751948276">ブックマーク バーを常に表示</translation>
-<translation id="2960757369920422313">ブックマーク バーをNTPで表示</translation>
-<translation id="522953399371747698">ブックマーク バーを非表示</translation>
 <translation id="9079813619990532635">すべてのブックマークをエクスポート</translation>
 <translation id="134184943774258988">「すべてのブックマーク」ボタンの表示を切り替え</translation>
 <translation id="2158862020143233462">シールドをオン/オフ</translation>
@@ -2219,6 +2227,7 @@
 <translation id="5820497878628354073">ステータスコード: <ph name="STATUS_CODE"/>、内部ステータスコード: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">プレミアムレートの制限に達しました。数時間お待ちいただき、もう一度お試しください。</translation>
 <translation id="6873128487002733717">このモデルのPremium上限に達しました。別のモデルを選択するか、後でもう一度お試しください。</translation>
+<translation id="2688661132468689309">このモデルのPremium上限に達しました。<ph name="RESET_DURATION"/>後（<ph name="RESET_TIME"/>）にリセットされます。別のモデルを選択するか、その時にもう一度お試しください。</translation>
 <translation id="3683964919745779766">このモデルのレートが上限に達しているか、あるいはクレジットが不足しています。後でもう一度お試しください。</translation>
 <translation id="7692501701960747469">このモデルに設定されているAPIキーが無効です。設定を確認し、もう一度お試しください。</translation>
 <translation id="7905602379229309187">エンドポイントは現在過負荷の状態です。時間をおいて再度お試しください。</translation>
@@ -2227,12 +2236,12 @@
 <translation id="3852808100039989429">こんにちは、Leoです。私はBraveにホストされているAIアシスタントで、Qwen VL 30Bを搭載しています。このモデルはAlibaba Cloudによって作成されたもので、パフォーマンスが高く、多くのユースケースに適用可能です。QwenはBrave独自の安全なインフラを通じてホストされています。<ph name="LINK_BEFORE"/>詳細はこちら<ph name="LINK_AFTER"/></translation>
 <translation id="8659225822055186905">こんにちは、Leoです。私はBraveのAIアシスタントで、GLM-5.3 Flashを搭載しています。このモデルはZhipu AIによって作成されたもので、パフォーマンスが高く、多くのユースケースに適用可能です。GLM-5.3 FlashはNEARの検証可能なプライベートインフラストラクチャを通じてホストされています。<ph name="LINK_BEFORE"/>詳細はこちら<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">こんにちは、Leoです。私はBraveにホストされているAIアシスタントで、Claude Instantを搭載しています。このモデルはAnthropicによって作成されたもので、会話・テキスト処理タスクをパワーアップさせます。Claude InstantはBrave独自の安全なインフラを通じてホストされています。<ph name="LINK_BEFORE"/>詳細はこちら<ph name="LINK_AFTER"/></translation>
-<translation id="3789772321824682783">こんにちは、Leoです。私はBraveにホストされているAIアシスタントで、Claude Haikuを搭載しています。このモデルはAnthropicによって作成されたもので、会話・テキスト処理タスクをパワーアップさせます。Claude HaikuはBrave独自の安全なインフラを通じてホストされています。<ph name="LINK_BEFORE"/>詳細はこちら<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">こんにちは、Leoです。私はBraveにホストされているAIアシスタントで、Claude Sonnetを搭載しています。このモデルはAnthropicによって作成されたもので、会話・テキスト処理タスクをパワーアップさせます。Claude SonnetはBrave独自の安全なインフラを通じてホストされています。<ph name="LINK_BEFORE"/>詳細はこちら<ph name="LINK_AFTER"/></translation>
-<translation id="3399141352144059821">こんにちは、Leoです。私はBraveにホストされているAIアシスタントで、Grok 4.3を搭載しています。このモデルはxAIによって作成されたもので、パフォーマンスが高く、多くのユースケースに適用可能です。Grok 4.3はBrave独自の安全なインフラを通じてホストされています。<ph name="LINK_BEFORE"/>詳細はこちら<ph name="LINK_AFTER"/></translation>
-<translation id="8868813509973985458">こんにちは、Leoです。私はBraveにホストされているAIアシスタントで、GPT 5.4を搭載しています。このモデルはOpenAIによって作成されたもので、パフォーマンスが高く、多くのユースケースに適用可能です。GPT 5.4はBrave独自の安全なインフラを通じてホストされています。<ph name="LINK_BEFORE"/>詳細はこちら<ph name="LINK_AFTER"/></translation>
+<translation id="6676306995311143470">こんにちは、Leoです。私はBraveにホストされているAIアシスタントで、Grok 4.6を搭載しています。これはxAIのAmazon Bedrock Mantle上で動作するフロンティア推論モデルです。Grok 4.6はBraveの安全なAWSインフラを通じて提供されています。<ph name="LINK_BEFORE"/>詳細はこちら<ph name="LINK_AFTER"/></translation>
+<translation id="2394656730986208060">こんにちは、Leoです。私はBraveにホストされているAIアシスタントで、GPT 5.6 Lunaを搭載しています。これはOpenAIのAmazon Bedrock Mantle上で動作する高速・低遅延モデルです。GPT 5.6 LunaはBraveの安全なAWSインフラを通じて提供されています。<ph name="LINK_BEFORE"/>詳細はこちら<ph name="LINK_AFTER"/></translation>
+<translation id="5278969721580944810">こんにちは、Leoです。私はBraveにホストされているAIアシスタントで、GPT 5.6 Terraを搭載しています。これはOpenAIのAmazon Bedrock Mantle上で動作するバランスの取れたプロダクションモデルです。GPT 5.6 TerraはBraveの安全なAWSインフラを通じて提供されています。<ph name="LINK_BEFORE"/>詳細はこちら<ph name="LINK_AFTER"/></translation>
 <translation id="5037359072717016032">こんにちは、Leoです。私はBraveにホストされているAIアシスタントで、Mistral Largeを搭載しています。このモデルはMistralによって作成されたもので、パフォーマンスが高く、多くのユースケースに適用可能です。Mistral LargeはBrave独自の安全なインフラを通じてホストされています。<ph name="LINK_BEFORE"/>詳細はこちら<ph name="LINK_AFTER"/></translation>
-<translation id="4026902371301997261">こんにちは、Leoです。私はBraveにホストされているAIアシスタントで、Qwen 3 235Bを搭載しています。このモデルはAlibaba Cloudによって作成されたもので、パフォーマンスが高く、多くのユースケースに適用可能です。Qwen 3 235BはBrave独自の安全なインフラを通じてホストされています。<ph name="LINK_BEFORE"/>詳細はこちら<ph name="LINK_AFTER"/></translation>
+<translation id="5475035333915581972">こんにちは、Leoです。私はBraveにホストされているAIアシスタントで、Qwen 3.8 Flash Nextを搭載しています。このモデルはAlibaba Cloudによって作成されたもので、パフォーマンスが高く、多くのユースケースに適用可能です。Qwen 3.8 Flash NextはBrave独自の安全なインフラを通じてホストされています。<ph name="LINK_BEFORE"/>詳細はこちら<ph name="LINK_AFTER"/></translation>
 <translation id="8720758690351028307">こんにちは、Leoです。私はBraveにホストされているAIアシスタントで、Deepseek V3.2を搭載しています。このモデルはDeepseekによって作成されたもので、パフォーマンスが高く、多くのユースケースに適用可能です。Deepseek V3.2はBrave独自の安全なインフラを通じてホストされています。<ph name="LINK_BEFORE"/>詳細はこちら<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">こんにちは、Leoです。私はBraveにホストされているAIアシスタントで、Claude Opusを搭載しています。このモデルはAnthropicによって作成されたもので、会話・テキスト処理タスクをパワーアップさせます。Claude OpusはBrave独自の安全なインフラを通じてホストされています。<ph name="LINK_BEFORE"/>詳細はこちら<ph name="LINK_AFTER"/></translation>
 <translation id="7238858567393403597">こんにちは、Leoです。私はBraveにホストされているAIアシスタントで、GLM-4-7-Flashを搭載しています。このモデルはZhipu AIによって作成されたもので、パフォーマンスが高く、多くのユースケースに適用可能です。GLM-4-7-FlashはBrave独自の安全なインフラを通じてホストされています。<ph name="LINK_BEFORE"/>詳細はこちら<ph name="LINK_AFTER"/></translation>
@@ -2245,7 +2254,6 @@
 <translation id="4773408460773097271">Ollama</translation>
 <translation id="631371844654031449">推奨モデル</translation>
 <translation id="6568044140836233369">すべてのモデルを表示</translation>
-<translation id="6187065185557150870">チャット</translation>
 <translation id="4685048769603134644">全ページを開く</translation>
 <translation id="2961040541145689181">新しいチャット</translation>
 <translation id="7557539689487606886">プレミアムプラン</translation>
@@ -2369,13 +2377,13 @@
 <translation id="887511360213807449">履歴が無効になりました</translation>
 <translation id="5380979378058584412">Leoとの以前の会話を表示するには、会話履歴を有効にする必要があります。</translation>
 <translation id="3185367320601718531">会話・テキスト生成</translation>
-<translation id="2793458212460902934">高速 • Search • ツール</translation>
 <translation id="8506027496671575183">Search • ビジョン • ツール</translation>
 <translation id="3184606955650139158">高速・検索・Vision</translation>
 <translation id="7465032796278724624">NEAR AI TEEで検証されたプライバシー</translation>
 <translation id="8782867266498869301">モデルはタスクに最適なものに動的に変わります</translation>
 <translation id="7348809809749151120">高速 • Search</translation>
 <translation id="3213834013136637671">検索 - Vision</translation>
+<translation id="2793458212460902934">高速 • Search • ツール</translation>
 <translation id="5276681919620506371">検索 • ツール</translation>
 <translation id="7434375176361995333">要約 • 高速</translation>
 <translation id="3965507912994218570">Leoの設定</translation>
@@ -2939,9 +2947,7 @@ Tab + Enterキーの順に操作して開いているタブを切り替えます
 <translation id="3750210661641549834">アカウントを作成するには、メールアドレスを確認してください。</translation>
 <translation id="4351175281479794167">確認コードを入力</translation>
 <translation id="1672793037892810340">入力する必要のあるコードが記載されたメールが届いているはずです。</translation>
-<translation id="4821255729182569254">確認メールを再送信</translation>
 <translation id="5837679375142747484">メールが見当たりませんか？ 迷惑メールフォルダーをチェックするか、<ph name="BEGIN_LINK"/>再送信<ph name="END_LINK"/>してください。</translation>
-<translation id="1080588816740959885">メールが見当たりませんか？ 迷惑メールフォルダーをチェックするか、再送信してください。</translation>
 <translation id="1020730839570724178">登録をキャンセル</translation>
 <translation id="7155125570724238786">パスワードをリセットするには、メールアドレスを確認してください。</translation>
 <translation id="816074628631172140">メールアドレスが確認されました。パスワードのリセットを完了するには、新しいパスワードを設定してください。</translation>

@@ -193,9 +193,6 @@
 <translation id="5668852698659986622">የተደገፉ ማስታወቂያዎችን አንቃ</translation>
 <translation id="431194936581466649">Brave ገለልተኛ የሆነ፣ ተጠቃሚን ቅድሚያ የሚሰጥ ድር ለመገንባት ያለውን ተልእኮ በተደገፉ ማስታወቂያዎች ይደግፉ። የማስታወቂያ አፈጻጸምን በግል እንለካለን፣ እርስዎን ሳንለይ።</translation>
 <translation id="1939813747486101115">ስለ Sponsored Ads ተጨማሪ ይማሩ</translation>
-<translation id="8347743943525229984">የBrave ምርመራዎችን ፍቀድ</translation>
-<translation id="6022939994702081659">እንድትረዱ Brave የኢንዱስትሪ መሪነት ሥራ ለየድር ግልጋሎትና ለክፍተት የተቀመጡ መዘምበር ቆጥሮች</translation>
-<translation id="7746496306508543965">ስለ Brave እሴቶች ተጨማሪ ተማሩ</translation>
 <translation id="410351446219883937">ራስ-አጫውት</translation>
 <translation id="7445411102860286510">ጣቢያዎች ድምፀ-ከል የተደረገባቸው ቪዲዮዎችን በራስ-ሰር እንዲያጫውቱ ይፍቀዱላቸው (የሚመከር)</translation>
 <translation id="7837721118676387834">ለአንድ የተወሰነ ጣቢያ ድምጸ-ከል የተደረጉ ቪዲዮዎችን በራስ-ሰር ማጫወትን ይፍቀዱ።</translation>
@@ -223,6 +220,7 @@
 <translation id="9040069796107003510">የ Brave Rewards አዶ</translation>
 <translation id="6333347122924254968">የ Brave ሽልማት አዶን በአድራሻ መጻፍያ ውስጥ አሳይ</translation>
 <translation id="4393974575368329991">የታች የአሰሳ መሣሪያ አሞሌ</translation>
+<translation id="8727059712928806451">የታችኛውን አሞሌ አንቃ</translation>
 <translation id="1834226716203076292">ወደ መነሻ፣ ዕልባቶች እና ፍለጋ ፈጣን መዳረሻ የታች አሞሌ አሳይ</translation>
 <translation id="1422686363939271829">በታች ያለውን አስገቢያ አሞሌ ሲነቆሉ እንዳልተፈቀደ ፕሮግራም እንዲሆን አታደርግም</translation>
 <translation id="6587448235155023666">ለውጦችዎ Brave በሚያስጀምሩበት ቀጣዩ ጊዜ ላይ ይተገበራሉ</translation>
@@ -398,6 +396,12 @@
 <translation id="8793108040181436796">ምግብሮች</translation>
 <translation id="8643377320501056697">ከፍተኛ ጣቢያዎችን አሳይ</translation>
 <translation id="7275773481201277457">የ Brave ስታቲስቲክስ አሳይ</translation>
+<translation id="8516804522688861636">በተደጋጋሚ የተጎበኙ ሳይቶችን አሳይ</translation>
+<translation id="4546260624932151782">ተወዳጆችን አሳይ</translation>
+<translation id="5313967007315987356">ጣቢያ አክል</translation>
+<translation id="1773147648972887693">በተደጋጋሚ የተጎበኙን አሳይ</translation>
+<translation id="752098910262610337">አቋራጮችን አሳይ</translation>
+<translation id="7134741506051403308">መግብሩን ደብቅ</translation>
 <translation id="7462178177755090262">መከፈቻ ማብሪያ ማያ</translation>
 <translation id="5365434987337264071">መጨረሻ የተከፈተ ታብ</translation>
 <translation id="6019856124237323989">{HOURS, plural, =1 {ከ<ph name="HOURS_ONE"/> ሰአት ዝምታ በኋላ አዲስ ታብ} other {ከ<ph name="HOURS_MANY"/> ሰአታት ዝምታ በኋላ አዲስ ታብ}}</translation>
@@ -988,6 +992,13 @@
 <translation id="7530313002494358590">የBrave ባህሪን ማንቃት ወይም ማቦዘን ለውጦቹን ለመተግበር አሳሹን እንደገና ማስጀመር ይጠይቃል። Brave Origin ማዘመኑን እንደጨረሰ እባክዎ <ph name="BEGIN_BOLD"/>አሁን እንደገና አስጀምር<ph name="END_BOLD"/> የሚለውን ይንኩ።</translation>
 <translation id="1028940738207645746">እርግጠኛ ነዎት ሁሉንም ቅንጅቶች ወደ ነባሪ ሊመልሱ ይፈልጋሉ?</translation>
 <translation id="5939518447894949180">ዳግም አስጀምር</translation>
+<translation id="3222790865318305905">የማግበር ገደብ ላይ ደርሷል</translation>
+<translation id="3787857711016546034">ማጭበርበርን ለመከላከል፣ የOrigin ማግበሮች በፍጥነት የተገደቡ ናቸው። ነገር ግን የOrigin ፍቃድዎን በተጨማሪ መሣሪያዎች ላይ ለመጠቀም ሁልጊዜ ተጨማሪ ማግበሮችን መጠየቅ ይችላሉ። ተጨማሪ ማግበሮችን ይጠይቁ የሚለውን አማራጭ ጠቅ ያድርጉ፣ ወይም ለእገዛ <ph name="CONTACT_SUPPORT"/>።</translation>
+<translation id="6760819753412779585">ድጋፍ ሰችን ያነጋግሩ</translation>
+<translation id="571697836019670200">ተጨማሪ ማግበሮችን ይጠይቁ</translation>
+<translation id="9019545131475425538">በማስኬድ ላይ…</translation>
+<translation id="7242700630179071243">ለማግበር ዝግጁ</translation>
+<translation id="5463918917265356202">Brave Origin አሁን በዚህ መሣሪያ ላይ ንቁ ነው። ባህሪውን መጠቀም ለመጀመር፣ አሳሹን እንደገና ማስጀመር ያስፈልግዎታል። አሁን እንደገና ማስጀመር ይፈልጋሉ?</translation>
 <translation id="8554205386170195281">ግዥ</translation>
 <translation id="8613144770663526433">በBrave Wallet ይግቡ</translation>
 <translation id="3696514931437952995">እርስዎ ወደ <ph name="ORIGIN"/>እየገቡ ነው። Brave ዋሌት የእርስዎን የዋሌት አድራሻ ከ<ph name="ORIGIN"/>ጋር ያጋራል።</translation>

@@ -193,9 +193,6 @@
 <translation id="5668852698659986622">Ativar Anúncios Patrocinados</translation>
 <translation id="431194936581466649">Ajude a apoiar a missão da Brave de criar uma Web independente e centrada no usuário com os Anúncios Patrocinados. Medimos o desempenho dos anúncios de forma privada, sem identificar você.</translation>
 <translation id="1939813747486101115">Saiba mais sobre Anúncios Patrocinados</translation>
-<translation id="8347743943525229984">Autorizar pesquisas Brave</translation>
-<translation id="6022939994702081659">Permite que o Brave mostre links para pesquisas privadas na página da nova guia. As pesquisas nos ajudam a criar recursos melhores e a medir a eficácia das campanhas publicitárias baseadas no navegador.</translation>
-<translation id="7746496306508543965">Saiba mais sobre as Pesquisas Brave</translation>
 <translation id="410351446219883937">Reprodução automática</translation>
 <translation id="7445411102860286510">Permite que os sites mostrem vídeos sem som automaticamente (recomendado)</translation>
 <translation id="7837721118676387834">Permite que um determinado site mostre vídeos sem som automaticamente.</translation>
@@ -223,6 +220,7 @@
 <translation id="9040069796107003510">Ícone do Recompensas Brave</translation>
 <translation id="6333347122924254968">Mostrar ícone das Recompensas Brave na barra de endereço</translation>
 <translation id="4393974575368329991">Barra de ferramentas de navegação inferior</translation>
+<translation id="8727059712928806451">Habilitar barra inferior</translation>
 <translation id="1834226716203076292">Exibir uma barra inferior para acesso rápido à página inicial, favoritos e pesquisa</translation>
 <translation id="1422686363939271829">Essa configuração é desativada quando a posição da barra de endereço inferior é selecionada</translation>
 <translation id="6587448235155023666">Suas alterações terão efeito na próxima vez que você rodar o Brave</translation>
@@ -398,6 +396,12 @@ Tem certeza de que deseja continuar?</translation>
 <translation id="8793108040181436796">Widgets</translation>
 <translation id="8643377320501056697">Mostrar os Melhores Sites</translation>
 <translation id="7275773481201277457">Mostrar Estatísticas do Brave</translation>
+<translation id="8516804522688861636">Mostrar sites acessados com frequência</translation>
+<translation id="4546260624932151782">Mostrar favoritos</translation>
+<translation id="5313967007315987356">Adicionar site</translation>
+<translation id="1773147648972887693">Mostrar acessados com frequência</translation>
+<translation id="752098910262610337">Mostrar atalhos</translation>
+<translation id="7134741506051403308">Ocultar widget</translation>
 <translation id="7462178177755090262">Tela inicial</translation>
 <translation id="5365434987337264071">Última aba aberta</translation>
 <translation id="6019856124237323989">{HOURS, plural, =1 {Nova aba após <ph name="HOURS_ONE"/> hora de inatividade} other {Nova aba após <ph name="HOURS_MANY"/> horas de inatividade}}</translation>
@@ -998,6 +1002,13 @@ Se você não aceitar essa solicitação, a VPN não se reconectará, e sua cone
 <translation id="7530313002494358590">Ativar ou desativar um recurso do Brave exige a reinicialização do navegador para aplicar as alterações. Toque em <ph name="BEGIN_BOLD"/>Reiniciar agora<ph name="END_BOLD"/> assim que o Brave Origin terminar de atualizar.</translation>
 <translation id="1028940738207645746">Tem a certeza de que deseja redefinir todas as configurações para o padrão?</translation>
 <translation id="5939518447894949180">Redefinir</translation>
+<translation id="3222790865318305905">Limite de ativações atingido</translation>
+<translation id="3787857711016546034">Para evitar fraudes, as ativações do Origin têm um limite de taxa. Mas você sempre pode solicitar mais ativações para usar sua licença Origin em mais dispositivos. Basta clicar na opção Solicitar mais ativações ou <ph name="CONTACT_SUPPORT"/> para obter ajuda.</translation>
+<translation id="6760819753412779585">entre em contato com o suporte</translation>
+<translation id="571697836019670200">Solicitar mais ativações</translation>
+<translation id="9019545131475425538">Processando…</translation>
+<translation id="7242700630179071243">Pronto para ativar</translation>
+<translation id="5463918917265356202">O Brave Origin agora está ativo neste dispositivo. Para começar a usar o recurso, você precisa reiniciar o navegador. Gostaria de reiniciar agora?</translation>
 <translation id="8554205386170195281">Comprar</translation>
 <translation id="8613144770663526433">Iniciar sessão com a Carteira Brave</translation>
 <translation id="3696514931437952995">Você iniciou sessão em <ph name="ORIGIN"/>. A carteira Brave compartilhará o endereço da sua carteira com <ph name="ORIGIN"/>.</translation>

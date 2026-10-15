@@ -75,6 +75,7 @@
 <translation id="1046521327593783388">{NUM_PASSWORDS,plural, =1{इस डिवाइस पर, <ph name="BRAND"/> में एक पासवर्ड इंपोर्ट किया गया}one{इस डिवाइस पर, <ph name="BRAND"/> में {NUM_PASSWORDS} पासवर्ड इंपोर्ट किया गया}other{इस डिवाइस पर, <ph name="BRAND"/> में {NUM_PASSWORDS} पासवर्ड इंपोर्ट किए गए}}</translation>
 <translation id="1046572983040892965">विंडो को ऊपर की ओर बाईं तरफ़ ले जाया गया</translation>
 <translation id="1047431265488717055">लिंक ले&amp;ख को कॉपी करें</translation>
+<translation id="104751728059674265">आपके खाते के लिए सुझाव, शिकायत या राय सबमिट करने की सुविधा उपलब्ध नहीं है. कोई वयस्क आपके लिए, अपने डिवाइस या प्रोफ़ाइल का इस्तेमाल करके समस्या की शिकायत कर सकता है.</translation>
 <translation id="1048986595386481879">डाइनैमिक रूप से दिया गया साइज़</translation>
 <translation id="1049324577536766607">{COUNT,plural, =1{<ph name="DEVICE_NAME"/> से <ph name="ATTACHMENTS"/> मिल रहा है}one{<ph name="DEVICE_NAME"/> से <ph name="ATTACHMENTS"/> मिल रहा है}other{<ph name="DEVICE_NAME"/> से <ph name="ATTACHMENTS"/> मिल रहे हैं}}</translation>
 <translation id="1049795001945932310">&amp;भाषा सेटिंग</translation>
@@ -328,6 +329,7 @@
 <translation id="1231572247662419826">साइटें आपके माउस इनपुट को कैप्चर और इस्तेमाल करने की अनुमति मांग सकती हैं</translation>
 <translation id="1232569758102978740">टाइटल रहित</translation>
 <translation id="1233497634904001272">अनुरोध को पूरा करने के लिए अपनी सुरक्षा कुंजी दोबारा छुएं.</translation>
+<translation id="4275981015584662669">जिस किसी भी व्यक्ति के पास आपके Gemini Apps का ऐक्सेस है, वह आपके Brave ब्राउज़र को कंट्रोल कर सकता है.</translation>
 <translation id="1233721473400465416">स्थान-भाषा</translation>
 <translation id="1233835246554936745">{0,plural, =1{खाते में 1 आइटम सेव करें}one{खाते में # आइटम सेव करें}other{खाते में # आइटम सेव करें}}</translation>
 <translation id="1234736487471201993">इस इमेज के लिए क्यूआर कोड बनाएं</translation>
@@ -466,6 +468,7 @@
 <translation id="1341701348342335220">बढ़िया काम!</translation>
 <translation id="873343310451048603">यह देखने के लिए कि पासवर्ड हैक या चोरी तो नहीं हुए हैं, Brave Password Manager पर जाएं</translation>
 <translation id="1343920184519992513">जहां आपने छोड़ा था वहीं से जारी रखें और पेजों के एक खास सेट को खोलें</translation>
+<translation id="1344216785734288669">Apple Passwords</translation>
 <translation id="1346630054604077329">पुष्टि करें और रीस्टार्ट करें</translation>
 <translation id="1346748346194534595">दाएं</translation>
 <translation id="1347512539447549782">Linux मेमोरी</translation>
@@ -526,6 +529,7 @@
 <translation id="1401216725754314428">मिलती-जुलती साइटों को नए टैब में देखने के बारे में ज़्यादा जानें</translation>
 <translation id="1402426911829176748">आपके डिवाइस से कनेक्ट किया जा रहा है</translation>
 <translation id="1405779994569073824">बंद हो गया.</translation>
+<translation id="1406812885827747674">अभी के लिए अनुमति दें</translation>
 <translation id="1407069428457324124">गहरे रंग वाली थीम</translation>
 <translation id="1407135791313364759">सभी बुकमार्क खोलें</translation>
 <translation id="140723521119632973">सेल्युलर एक्टिवेशन</translation>
@@ -548,6 +552,7 @@
 <translation id="1421514190500081936">कृपया इस डेटा को डाउनलोड करने की वजह बताएं:</translation>
 <translation id="1422159345171879700">असुरक्षित स्क्रिप्ट लोड करें</translation>
 <translation id="1425040197660226913">इमेज को अपलोड नहीं किया जा सकता. कृपया 20 एमबी से कम साइज़ की इमेज अपलोड करें.</translation>
+<translation id="1426154609634610063">Gemini का इस्तेमाल करने से जुड़े जोखिमों के बारे में जानें</translation>
 <translation id="1426410128494586442">हां</translation>
 <translation id="142655739075382478"><ph name="APP_NAME"/> को ब्लॉक कर दिया गया है</translation>
 <translation id="1427179946227469514">लिखाई को बोली में बदलने की पिच</translation>
@@ -791,7 +796,6 @@
 <translation id="160689647589417224">यह ऐप्लिकेशन इस देश/इलाके में इस्तेमाल नहीं किया जा सकता.</translation>
 <translation id="1607139524282324606">प्रविष्टि हटाएं</translation>
 <translation id="1608668830839595724">चुने गए आइटम के लिए और कार्रवाई</translation>
-<translation id="1609603645228231640">Gemini Spark, एक्सपेरिमेंट के तौर पर उपलब्ध है. इसलिए, यह आपकी अनुमति के बिना जानकारी शेयर करने या खरीदारी करने जैसे काम कर सकता है. <ph name="LINK_BEGIN"/>जोखिमों के बारे में जानें<ph name="LINK_END"/>.</translation>
 <translation id="1610272688494140697">ऐप्लिकेशन की सेटिंग</translation>
 <translation id="161042844686301425">स्यान</translation>
 <translation id="1611649489706141841">आगे जाएं</translation>
@@ -983,7 +987,7 @@
 <translation id="1753905327828125965">सबसे ज़्यादा देखे गए</translation>
 <translation id="1755601632425835748">टेक्स्ट का आकार</translation>
 <translation id="1756963401828337401">कैप्चर करने के लिए कोई स्क्रीन चुनें</translation>
-<translation id="353492317551888534"><ph name="BEGIN_LINK1"/>डेटा और निजता से जुड़ी प्राथमिकताएं<ph name="END_LINK1"/> कंट्रोल करने या <ph name="BEGIN_LINK2"/>पेमेंट के तरीके<ph name="END_LINK2"/> और <ph name="BEGIN_LINK3"/>पास<ph name="END_LINK3"/> मैनेज करने के लिए Brave Wallet पर जाएं. जैसे, लॉयल्टी कार्ड और आईडी</translation>
+<translation id="1758845021884209593">ओएस के सभी ऐप्लिकेशन में शॉर्टकट का इस्तेमाल करें</translation>
 <translation id="1761402971842586829"><ph name="BUTTON_NAME"/> को <ph name="REMAPPING_OPTION"/> पर दोबारा मैप किया गया.</translation>
 <translation id="1761845175367251960"><ph name="NAME"/> के खाते</translation>
 <translation id="176272781006230109">खरीदारी के लिए सुझाव</translation>
@@ -1069,7 +1073,6 @@
 <translation id="1822517323280215012">सलेटी</translation>
 <translation id="1822635184853104396">डाउनलोड का पूरा इतिहास, नए टैब में दिखाएं</translation>
 <translation id="1823768272150895732">फ़ॉन्ट</translation>
-<translation id="1823781806707127806">मौजूदा ब्राउज़िंग डेटा को मैनेज की जा रही प्रोफ़ाइल में जोड़ें</translation>
 <translation id="1825073796163165618">लिंक चालू करें</translation>
 <translation id="1825565032302550710">पोर्ट, 1024 और 65535 के बीच का ही हो</translation>
 <translation id="18260074040409954">आपके पास सेव किए गए पासवर्ड को किसी भी डिवाइस पर इस्तेमाल करने का विकल्प होता है. <ph name="EMAIL"/> के लिए, ये पासवर्ड <ph name="GOOGLE_PASSWORD_MANAGER"/> में सेव किए गए हैं.</translation>
@@ -1287,7 +1290,6 @@
 <translation id="1983612835086592681">आपने इसे पिछले हफ़्ते खोला था</translation>
 <translation id="1984087999855033707">फ़ोन नंबर</translation>
 <translation id="1984417487208496350">कोई सुरक्षा नहीं (हम ऐसा करने का सुझाव नहीं देते)</translation>
-<translation id="1984683754853869253">क्या आपको स्कूल के लिए एक नई प्रोफ़ाइल बनानी है?</translation>
 <translation id="198507684520034826">सहायता</translation>
 <translation id="1986113927738155371">iPad</translation>
 <translation id="1986836014090708999">जगह की जानकारी की ऐडवांस सेटिंग</translation>
@@ -1320,7 +1322,7 @@
 <translation id="2010501376126504057">इसके साथ काम करने वाले डिवाइस</translation>
 <translation id="2010636492623189611">चुना गया.</translation>
 <translation id="2012935757369720523">फ़ाइल मिटाएं</translation>
-<translation id="2014495120525813351">Gemini Spark को इस डिवाइस पर ब्राउज़ करने की अनुमति दें</translation>
+<translation id="2014191284313949173">आइसोलेटेड टैब बंद करें</translation>
 <translation id="2016473077102413275">वे सुविधाएं काम नहीं करेंगी जिन्हें इमेज की ज़रूरत है</translation>
 <translation id="2017334798163366053">'परफ़ॉर्मेंस डेटा' इकट्ठा करना बंद करें</translation>
 <translation id="2017770349934140286">इस Chromebook से Google Play के साथ ही, उन सभी ऐप्लिकेशन को भी मिटा दिया जाएगा जिन्हें आपने Play से डाउनलोड किया था.
@@ -1383,6 +1385,7 @@
 <translation id="2061366302742593739">कोई जानकारी मौजूद नहीं है</translation>
 <translation id="206308717637808771">सभी विंडो बंद करने पर डेटा मिटाएं. देखी जा रही साइट के लिए, स्टोरेज ऐक्सेस की जो सेटिंग चुनी गई है वही डेटा के लिए भी लागू होती है</translation>
 <translation id="2066700471214517561">बीमफ़ॉर्मिंग माइक के ज़रिए, Chromebook इस्तेमाल करने वाले व्यक्ति की आवाज़ साफ़ सुनाई देती है.</translation>
+<translation id="2067778293100584091"><ph name="BEGIN_LINK1"/>डेटा और निजता से जुड़ी प्राथमिकताएं<ph name="END_LINK1"/> कंट्रोल करने या <ph name="BEGIN_LINK2"/>पेमेंट के तरीके<ph name="END_LINK2"/> और <ph name="BEGIN_LINK3"/>पास<ph name="END_LINK3"/> मैनेज करने के लिए, Google Wallet पर जाएं. जैसे, लॉयल्टी कार्ड, आईडी, और ऑफ़र</translation>
 <translation id="2068581968816126410">सभी डिवाइसों पर बुकमार्क इस्तेमाल करें</translation>
 <translation id="2069020119963193894">साइज़ बदलें</translation>
 <translation id="2071393345806050157">कोई स्थानीय लॉग फ़ाइल नहीं है.</translation>
@@ -1449,6 +1452,7 @@
 <translation id="2121825465123208577">आकार बदलें</translation>
 <translation id="2602671390787651972">आपकी स्किल, Brave खाते में सेव हो जाती हैं</translation>
 <translation id="2123766928840368256">कोई दूसरी फ़ाइल चुनें</translation>
+<translation id="2124153808069020510">डेटा मिटाने के लिए, सभी आइसोलेटेड विंडो बंद करें</translation>
 <translation id="2124930039827422115">{1,plural, =1{एक उपयोगकर्ता ने <ph name="AVERAGE_RATING"/> रेटिंग दी है.}one{# उपयोगकर्ताओं ने <ph name="AVERAGE_RATING"/> रेटिंग दी है.}other{# उपयोगकर्ताओं ने <ph name="AVERAGE_RATING"/> रेटिंग दी है.}}</translation>
 <translation id="2125715366913703594">एक्सटेंशन एक्सप्लोर करें</translation>
 <translation id="2126167708562367080">सिंक को आपके व्यवस्थापक ने अक्षम किया है.</translation>
@@ -1552,6 +1556,7 @@
 <translation id="2198625180564913276">प्रोफ़ाइल जोड़ी जा रही है. इसमें कुछ मिनट लग सकते हैं.</translation>
 <translation id="2198712775285959645">बदलाव करें</translation>
 <translation id="2199298570273670671">गड़बड़ी</translation>
+<translation id="2879288960033380959">अपने अन्य डिवाइसों में मौजूद ब्राउज़िंग इतिहास ऐक्सेस करने के लिए, <ph name="EMAIL"/> से साइन इन करें. इसके बाद, इसके साथ ब्राउज़िंग इतिहास और टैब सिंक करें. इससे आपको सभी डिवाइसों पर पासवर्ड वगैरह का भी ऐक्सेस मिलेगा. सेटिंग में जाकर, सिंक करने की सुविधा को कभी भी बंद किया जा सकता है. Brave आपके ब्राउज़िंग इतिहास के आधार पर, Search और अन्य सेवाओं में आपकी दिलचस्पी के मुताबिक अनुभव दे सकता है.</translation>
 <translation id="2798272130984183944">चुनें कि Brave को आपके डिवाइस पर सीधे तौर पर काम करने वाले एआई मॉडल इस्तेमाल करने हैं या नहीं</translation>
 <translation id="2200094388063410062">ई-मेल</translation>
 <translation id="2200781749203116929">ChromeOS के सिस्टम के लॉग</translation>
@@ -1590,6 +1595,7 @@
 <translation id="2227179592712503583">सुझाव हटाएं</translation>
 <translation id="222931766245975952">फ़ाइल छोटी हो गई</translation>
 <translation id="2229342031987138128">सबटाइटल की सेटिंग</translation>
+<translation id="22294739381015133">आपकी विज़िट की गई साइटों की जानकारी आइसोलेटेड मोड में सेव नहीं होती</translation>
 <translation id="2231351769755997720">कोई सुझाव उपलब्ध नहीं है. इस पेज के बारे में सवाल पूछें.</translation>
 <translation id="2232751457155581899">साइटें आपके कैमरे की स्थिति को ट्रैक करने के लिए पूछ सकती हैं</translation>
 <translation id="2233502537820838181">&amp;अधिक जानकारी</translation>
@@ -1825,6 +1831,7 @@
 <translation id="2416435988630956212">कीबोर्ड के फ़ंक्शन बटन</translation>
 <translation id="2419131370336513030">इंस्टॉल किए गए ऐप्लिकेशन देखें</translation>
 <translation id="2419706071571366386">सुरक्षा के लिए, आपका कंप्यूटर इस्तेमाल में नहीं होने पर साइन आउट कर दें.</translation>
+<translation id="2423226060967554289">बुकमार्क बार दिखाएं</translation>
 <translation id="2423506062824112361">किसी अज्ञात वजह से कॉन्टेंट डाउनलोड नहीं किया जा सका.</translation>
 <translation id="2423578206845792524">इमेज को इस रूप में सेव करें...</translation>
 <translation id="2424424966051154874">{0,plural, =1{मेहमान}one{मेहमान (#)}other{मेहमान (#)}}</translation>
@@ -2028,7 +2035,6 @@
 <translation id="2554553592469060349">चुनी गई फ़ाइल बहुत बड़ी है (अधिकतम आकार: 3mb).</translation>
 <translation id="2555802059188792472"><ph name="TOTAL_NUM_APPS"/> में से <ph name="NUM_ALLOWED_APPS"/> ऐप्लिकेशन को सूचनाएं भेजने की अनुमति है</translation>
 <translation id="2555855727505718984">फ़ॉर्म भरने में मदद करने के लिए, इस डिवाइस पर ऑटोमैटिक भरने की सुविधा के पास यह जानकारी नहीं होगी</translation>
-<translation id="25568951186001797">Fenced Frame: <ph name="FENCEDFRAME_SITE"/></translation>
 <translation id="2561211427862644160">अपने सभी बुकमार्क यहां देखें</translation>
 <translation id="2563924218974330506">अब यहां से अपने टैब ग्रुप मैनेज किए जा सकते हैं. आपके पास इस पैनल को किसी भी समय अनपिन करने का विकल्प भी है.</translation>
 <translation id="2564520396658920462">AppleScript के ज़रिए JavaScript काम में लेने की सुविधा बंद है. उसे चालू करने के लिए, मेन्यू बार से, View &gt; Developer &gt; Allow JavaScript from Apple Events पर जाएं. ज़्यादा जानकारी के लिए: https://support.google.com/chrome/?p=applescript</translation>
@@ -2063,6 +2069,7 @@
 <translation id="2588271083332682494">टैब ग्रुप की मदद से, अपने काम के टैब व्यवस्थित करें</translation>
 <translation id="2588636910004461974"><ph name="VENDOR_NAME"/> की ओर से डिवाइस</translation>
 <translation id="2589658397149952302">Drive में मौजूद फ़ाइलें कभी न दिखाएं</translation>
+<translation id="339648490849255521">जब दूसरे Gemini Apps से कोई टास्क शुरू किया जाता है, तो Gemini इस डिवाइस पर Brave की 'ऑटो ब्राउज़' सुविधा का इस्तेमाल कर सकता है. इससे वह आपकी ओर से साइटों के साथ इंटरैक्ट कर सकता है और टास्क पूरे कर सकता है. इन ऐप्लिकेशन में, gemini.google.com और Gemini के मोबाइल ऐप्लिकेशन शामिल हैं. <ph name="LINK_BEGIN"/>ज़्यादा जानें<ph name="LINK_END"/></translation>
 <translation id="2597073208962000830">आस-पास मौजूद डिवाइसों को खोजने के लिए, आस-पास शेयर करने की सुविधा में ब्लूटूथ स्कैनिंग का इस्तेमाल किया जाता है.</translation>
 <translation id="2598136842498757793">टूलबार के बटनों को पसंद के मुताबिक बनाएं</translation>
 <translation id="2024721991200132064">Brave का नया वर्शन उपलब्ध है</translation>
@@ -2107,7 +2114,6 @@
 <translation id="2485390081857818912">Brave के साथ-साथ अन्य साइटें भी इस अनुरोध का जवाब देते समय अपने विवेक का इस्तेमाल करेंगी</translation>
 <translation id="2626799779920242286">कृपया बाद में फिर से प्रयास करें.</translation>
 <translation id="2627424346328942291">फ़ाइल शेयर नहीं की जा सकती</translation>
-<translation id="2627970398976286795">Gemini Spark के इस्तेमाल से जुड़े जोखिमों के बारे में जानें</translation>
 <translation id="6881963560587394660">क्या आपको Brave में जानकारी ऑटोमैटिक तरीके से भरने की सुविधा से घर का पता हटाना है?</translation>
 <translation id="2628770867680720336">ADB डीबग करने की सुविधा चालू करने के लिए इस Chromebook को फ़ैक्ट्री रीसेट करना ज़रूरी है. <ph name="BEGIN_LINK_LEARN_MORE"/>ज़्यादा जानें<ph name="END_LINK_LEARN_MORE"/></translation>
 <translation id="2628874386573004005">Gemini के साथ नई चैट शुरू करें</translation>
@@ -2277,6 +2283,7 @@
 <translation id="2743387203779672305">क्लिपबोर्ड में कॉपी करें</translation>
 <translation id="274362947316498129">कोई ऐप्लिकेशन आपके <ph name="DEVICE_NAME"/> को ऐक्सेस करने की कोशिश कर रहा है. ऐक्सेस करने की अनुमति देने के लिए, <ph name="DEVICE_NAME"/> के प्राइवसी स्विच को बंद करें.</translation>
 <translation id="2744221223678373668">शेयर किए गए</translation>
+<translation id="2744919074068076548">स्प्लिट व्यू खोलें</translation>
 <translation id="2745080116229976798">Microsoft Qualified Subordination</translation>
 <translation id="2749756011735116528"><ph name="PRODUCT_NAME"/> में साइन इन करें</translation>
 <translation id="2749836841884031656">सिम</translation>
@@ -2328,6 +2335,7 @@
 <translation id="2777525873368474674">इमेज का लिंक चिपकाएं</translation>
 <translation id="2777815813197804919">{NUM_SITES,plural, =1{बहुत सारी सूचनाओं वाली 1 साइट मिली}one{बहुत सारी सूचनाओं वाली {NUM_SITES} साइट मिली}other{बहुत सारी सूचनाओं वाली {NUM_SITES} साइट मिलीं}}</translation>
 <translation id="2778471504622896352">ChromeOS लॉन्चर में रिमोट ऐप्लिकेशन जोड़ें</translation>
+<translation id="2877586568180250679">अपने अन्य डिवाइसों में मौजूद ब्राउज़िंग इतिहास ऐक्सेस करने के लिए, उसे सिंक करें. सेटिंग में जाकर, सिंक करने की सुविधा को कभी भी बंद किया जा सकता है. Brave आपके ब्राउज़िंग इतिहास के आधार पर, Search और अन्य सेवाओं में आपकी दिलचस्पी के मुताबिक अनुभव दे सकता है.</translation>
 <translation id="2781459437789641557"><ph name="ATTRIBUTION_LINE_1"/>, <ph name="ATTRIBUTION_LINE_2"/></translation>
 <translation id="2781692009645368755">Google Pay</translation>
 <translation id="2783952358106015700"><ph name="APP_NAME"/> के ज़रिए अपनी 'सुरक्षा चाबी' का इस्तेमाल करें</translation>
@@ -2374,6 +2382,7 @@
 <translation id="2813094189969465044">माता-पिता के नियंत्रण में</translation>
 <translation id="2814489978934728345">इस पेज को लोड करना रोकें</translation>
 <translation id="2576226373705473566">अपने Brave खाते में पासवर्ड सेव करने के लिए, सिंक करना चालू करें.</translation>
+<translation id="281678554528702272">ध्यान दें: साइट ऐक्सेस की इन सेटिंग को एंटरप्राइज़ नीतियों या बेहतर एपीआई से बदला जा सकता है.</translation>
 <translation id="2817435998497102771">अपना वॉलपेपर और स्टाइल सेट करें</translation>
 <translation id="2817861546829549432">"ट्रैक न करें" को सक्षम करने का अर्थ है कि आपके ब्राउज़िंग ट्रैफ़िक के साथ एक अनुरोध शामिल किया जाएगा. कोई भी प्रभाव इस बात पर निर्भर करता है कि वेबसाइट अनुरोध को प्रतिसाद देती है या नहीं, और अनुरोध का अर्थ किस प्रकार लगाया जाता है. उदाहरण के लिए, कुछ वेबसाइटें आपको ऐसे विज्ञापन दिखाकर इस अनुरोध को प्रतिसाद दे सकती हैं जो   देखी जाने वाली वेबसाइटों पर आधारित नहीं होते. कई वेबसाइटें अब भी आपके ब्राउज़िंग डेटा को एकत्रित करेंगी और उसका उपयोग करेंगी - उदाहरण के लिए सुरक्षा को बेहतर बनाने के लिए, अपनी वेबसाइटों पर सामग्री, सेवाएं, विज्ञापन और सुझाव उपलब्ध कराने और रिपोर्टिंग के आंकड़े जनरेट करने के लिए.</translation>
 <translation id="2818476747334107629">प्रिंटर विवरण</translation>
@@ -2389,6 +2398,7 @@
 <translation id="2826576843404243001">सुरक्षित कनेक्शन की सुविधा न देने वाली साइटों पर विज़िट करने से पहले आपको चेतावनी मिलेगी. इस सेटिंग को नहीं बदला जा सकता, क्योंकि आपने ऐडवांस सुरक्षा की सेटिंग चालू की हुई है.</translation>
 <translation id="2828375943530438449">'साइन इन करें' पेज से वापस जाएं</translation>
 <translation id="2828833307884755422"><ph name="MEMORY_SAVINGS"/> मेमोरी खाली की गई</translation>
+<translation id="1247351634917521935">अपने अन्य डिवाइसों में खोले गए टैब ऐक्सेस करने के लिए, साइन इन करें और ब्राउज़िंग इतिहास सिंक करें. इससे आपको सभी डिवाइसों पर सेव की गई जानकारी वगैरह का भी ऐक्सेस मिलेगा. सिंक करने की सुविधा को सेटिंग में जाकर कभी भी बंद किया जा सकता है. Brave आपके ब्राउज़िंग इतिहास के आधार पर, Search और अन्य सेवाओं में आपकी दिलचस्पी के मुताबिक अनुभव दे सकता है.</translation>
 <translation id="2833144527504272627">टेक्स्ट कर्सर की मदद से नेविगेट करें</translation>
 <translation id="2833727845850279275">इस फ़ाइल में मैलवेयर है या यह किसी संदिग्ध साइट से डाउनलोड की गई है.</translation>
 <translation id="2835177225987815960">स्कैन करने वाला आपका मौजूदा सेट अप रीसेट हो जाएगा. इसमें, असाइन किए गए स्विच और अपने-आप तेज़ी से स्कैन होने की सेटिंग शामिल हैं.</translation>
@@ -2410,7 +2420,6 @@
 <translation id="5955675310630864290">Brave Calendar के लिए ज़्यादा कार्रवाइयां</translation>
 <translation id="2845382757467349449">बुकमार्क बार हमेशा दिखाएं</translation>
 <translation id="284581348330507117">यूनीक पासवर्ड बनाएं</translation>
-<translation id="2846345106886298325">टास्क पूरा हो गया है और Gemini Spark पर वापस आ गया है</translation>
 <translation id="284884486564166077">Lens की मदद से, किसी भी इमेज को खोजें</translation>
 <translation id="2849035674501872372">ऊपर देखें</translation>
 <translation id="284970761985428403"><ph name="ASCII_NAME"/> (<ph name="UNICODE_NAME"/>)</translation>
@@ -2472,7 +2481,6 @@
 <translation id="2893318819023133318">व्यू को आपस में बदलें</translation>
 <translation id="2894596417096093634">क्रैश रिपोर्ट के आइडेंटिफ़ायर</translation>
 <translation id="2894757982205307093">ग्रुप में नया टैब जोड़ें</translation>
-<translation id="5168657537153320842">Gemini Spark, इस डिवाइस पर ऑटो ब्राउज़ की सुविधा का इस्तेमाल सिर्फ़ तब कर सकता है, जब डिवाइस चालू हो और Brave चल रहा हो.</translation>
 <translation id="289695669188700754">कुंजी ID: <ph name="KEY_ID"/></translation>
 <translation id="2897878306272793870">क्या आप वाकई <ph name="TAB_COUNT"/> टैब खोलना चाहते हैं?</translation>
 <translation id="2900247416110050639">Google Docs, Sheets, और Slides का इस्तेमाल करने पर फ़ाइलें Google Drive में सेव होती हैं. इसलिए, लोकल फ़ाइलें Google Drive में ट्रांसफ़र हो जाएंगी. वहीं, दूसरे डिवाइसों पर मौजूद फ़ाइलों की कॉपी यहां सेव होगी. अपनी फ़ाइलें देखने के लिए, Files ऐप्लिकेशन के Google Drive फ़ोल्डर में जाएं.</translation>
@@ -2524,7 +2532,6 @@
 <translation id="2933653107553951760">ग्रुप को वापस लाएं</translation>
 <translation id="2934225044529065415">कैमरा ऐक्सेस नहीं किया जा सकता</translation>
 <translation id="2935314715123552088">चालू ई-सिम प्रोफ़ाइल को बंद करें</translation>
-<translation id="2936067606203230121">Gemini Spark, आपके शुरू किए गए या अपडेट किए गए टास्क के आधार पर यह तय करेगा कि उसे कौनसी कार्रवाइयां करनी हैं.</translation>
 <translation id="2936851848721175671">बैकअप लेना और इंपोर्ट करना</translation>
 <translation id="2938981087412273365">इस साइट को पढ़ने और इसमें बदलाव करने की अनुमति नहीं है</translation>
 <translation id="2939005221756255562">सूचना केंद्र में जाकर, सूचनाएं पाने की सुविधा चालू करें. <ph name="BEGIN_LINK"/>सिस्टम सेटिंग<ph name="END_LINK"/> खोलें.</translation>
@@ -2588,6 +2595,7 @@
 <translation id="2984727013951557074">फ़ाइल अब भी Drive में सिंक हो रही है.</translation>
 <translation id="5706997116413643454">Brave Password Manager का इस्तेमाल करके इस डिवाइस पर अपनी पासकी पाएं</translation>
 <translation id="2985476671756533899">{NUM_SUB_APPS,plural, =1{<ph name="APP_NAME"/> ने एक ऐप्लिकेशन अनइंस्टॉल किया}one{<ph name="APP_NAME"/> ने # ऐप्लिकेशन अनइंस्टॉल किया}other{<ph name="APP_NAME"/> ने # ऐप्लिकेशन अनइंस्टॉल किए}}</translation>
+<translation id="2987777176328481585">{NUM_TABS,plural, =1{टैब पर फ़ोकस करें}one{# टैब पर फ़ोकस करें}other{# टैब पर फ़ोकस करें}}</translation>
 <translation id="2988018669686457659">स्पेयर बनाने वाला</translation>
 <translation id="2988328607561082373">आपका कोई भी पासवर्ड ऐसा नहीं है जिसका इस्तेमाल एक से ज़्यादा खातों के लिए किया गया है</translation>
 <translation id="2989123969927553766">माउस से स्क्रोल करने की रफ़्तार</translation>
@@ -2680,7 +2688,7 @@
 <translation id="3038612606416062604">कोई प्रिंटर मैन्युअल रूप से जोड़ें</translation>
 <translation id="3038628620670416486">अपने माउस पर मौजूद बटन पर क्लिक करें</translation>
 <translation id="303955801043931176">टैब बंद किया गया</translation>
-<translation id="3565088180637574018">आपके Brave Wallet में मौजूद पास</translation>
+<translation id="3040435070100611531">आपके Google Wallet में मौजूद पास</translation>
 <translation id="304169924727249890"><ph name="OWNER_FIRST_NAME"/> के साथ टैब ग्रुप में शामिल हों</translation>
 <translation id="3042097545107738107">चार्जिंग को ऑप्टिमाइज़ करने वाली सेटिंग में बदलाव करें.</translation>
 <translation id="3043016484125065343">अपने बुकमार्क देखने के लिए साइन इन करें</translation>
@@ -2700,7 +2708,6 @@
 <translation id="3048917188684939573">कास्ट और डिवाइस लॉग</translation>
 <translation id="3049356453907822148">नई स्किल जोड़ें</translation>
 <translation id="3051250416341590778">डिसप्ले का साइज़</translation>
-<translation id="3051676221004664500">“<ph name="SELECTION"/>” का अनुवाद करें</translation>
 <translation id="3053273573829329829">इस्तेमाल करने वाले का पिन चालू करें</translation>
 <translation id="3053274730492362225">कर्सर के ब्लिंक करने की दर कम करें</translation>
 <translation id="3057938290530993634">अपनी सबसे ज़्यादा देखी गई वेबसाइटों को पिन करने के लिए उन पर टैप करके रखें, ताकि उनको आसानी से ऐक्सेस किया जा सके</translation>
@@ -2753,6 +2760,7 @@
 <translation id="3102309003841389927">लोगो में हुए बदलाव की समीक्षा करें</translation>
 <translation id="310297983047869047">पिछली स्लाइड</translation>
 <translation id="3103451787721578293">कृपया इस डेटा को अपलोड करने की वजह बताएं:</translation>
+<translation id="8189560304532205734">अन्य डिवाइसों में खोले गए टैब ऐक्सेस करने के लिए, साइन इन करें और ब्राउज़िंग इतिहास सिंक करें. इससे आपको सभी डिवाइसों पर एक्सटेंशन वगैरह का भी ऐक्सेस मिलेगा. सेटिंग में जाकर, सिंक करने की सुविधा को कभी भी बंद किया जा सकता है. Brave आपके ब्राउज़िंग इतिहास के आधार पर, Search और अन्य सेवाओं में आपकी दिलचस्पी के मुताबिक अनुभव दे सकता है.</translation>
 <translation id="3105339775057145050">पिछला अपडेट, जो पूरा नहीं हो सका</translation>
 <translation id="4566550081126272435">इसे बदलकर फिर से Brave करें?</translation>
 <translation id="3105820656234755131">पासवर्ड अपडेट किया गया</translation>
@@ -2764,6 +2772,7 @@
 <translation id="3109206895301430738">सेव किए हुए टैब ग्रुप</translation>
 <translation id="3109724472072898302">संक्षिप्त</translation>
 <translation id="3112292765614504292">ऐप्लिकेशन का साइज़: <ph name="APP_SIZE"/></translation>
+<translation id="4539978296384383446">अपने अन्य डिवाइसों में खोले गए टैब ऐक्सेस करने के लिए, साइन इन करके ब्राउज़िंग इतिहास सिंक करें. इससे आपको सभी डिवाइसों पर बुकमार्क वगैरह का ऐक्सेस भी मिलेगा. सेटिंग में जाकर, सिंक करने की सुविधा को कभी भी बंद किया जा सकता है. Brave आपके ब्राउज़िंग इतिहास के आधार पर, Search और अन्य सेवाओं में आपकी दिलचस्पी के मुताबिक अनुभव दे सकता है.</translation>
 <translation id="311347022006935575">यह टैब जोड़ा गया</translation>
 <translation id="311394601889664316">साइटों को अपने डिवाइस पर फ़ाइलों या फ़ोल्डर में बदलाव करने की अनुमति न दें</translation>
 <translation id="3113970906450647715">बटन अनपिन किया गया</translation>
@@ -2794,6 +2803,7 @@
 <translation id="3132996321662585180">हर रोज़ रीफ्रेश करें</translation>
 <translation id="3134312457920437826">एक्सटेंशन इंस्टॉल नहीं किया जा सकता, क्योंकि इसमें ऐसे मेनिफ़ेस्ट वर्शन का इस्तेमाल किया है जो काम नहीं करता.</translation>
 <translation id="3134393957315651797">एक्सपेरिमेंट <ph name="EXPERIMENT_NAME"/> के लिए, एक्सपेरिमेंट की स्थिति चुनें. एक्सपेरिमेंट का ब्यौरा: <ph name="EXPERIMENT_DESCRIPTION"/></translation>
+<translation id="3134822828309700120">दूसरे Gemini Apps को किसी भी डिवाइस से रिमोट तरीके से ब्राउज़ करने की अनुमति दें</translation>
 <translation id="3139925690611372679">डिफ़ॉल्ट पीला अवतार</translation>
 <translation id="314095642664111744">फ़ोकस बंद करें</translation>
 <translation id="3141093262818886744">फिर भी खोलें</translation>
@@ -2899,6 +2909,7 @@
 <translation id="3213681682237645841"><ph name="LANGUAGE"/> भाषा में ऑडियो डाउनलोड किया जा रहा है...</translation>
 <translation id="3217843140356091325">शॉर्टकट बनाएं?</translation>
 <translation id="3220494908385619295">अगल-बगल दिखाएं</translation>
+<translation id="3220541426929880850">अपने डिवाइस से आइसोलेटेड ब्राउज़िंग इतिहास मिटाने के लिए, सभी आइसोलेटेड टैब बंद करें</translation>
 <translation id="3220943972464248773">पासवर्ड सिंक करने के लिए अपनी पहचान की पुष्टि करें</translation>
 <translation id="3222066309010235055">प्रीरेंडर: <ph name="PRERENDER_CONTENTS_NAME"/></translation>
 <translation id="3222779980972075989"><ph name="USB_VM_NAME"/> से जोड़ें</translation>
@@ -2984,7 +2995,6 @@
 <translation id="3284050785966252943">ऑटोमैटिक भरने की सुविधा के मेटाडेटा की झलक</translation>
 <translation id="3285218179623157680"><ph name="WINDOW_TITLE"/> - सबसे नीचे का व्यू</translation>
 <translation id="3285329711156774325">स्किल खोजें</translation>
-<translation id="3285500645985761267">मिलती-जुलती साइटों को, ग्रुप में की गई आपकी गतिविधि को देखने की अनुमति दें</translation>
 <translation id="328571385944182268">क्या आप पासवर्ड सेव करना चाहते हैं?</translation>
 <translation id="3285969135399641759">नई स्किल सीखें</translation>
 <translation id="3289668031376215426">अपने-आप अक्षर बड़े होने की सुविधा चालू करना</translation>
@@ -3076,6 +3086,7 @@
 <translation id="3355936511340229503">कनेक्शन गड़बड़ी</translation>
 <translation id="335678817537689040">स्टैटिक</translation>
 <translation id="3359256513598016054">प्रमाणपत्र नीति बाध्यताएं</translation>
+<translation id="3359465538772230055">कोई टास्क मौजूद नहीं है</translation>
 <translation id="3360297538363969800">प्रिंट करना पूरा नहीं हो सका. कृपया अपना प्रिंटर जाँचें और फिर से कोशिश करें.</translation>
 <translation id="3360306038446926262">Windows</translation>
 <translation id="3361421571228286637">{COUNT,plural, =1{<ph name="DEVICE_NAME"/> आपके साथ <ph name="ATTACHMENTS"/> शेयर कर रहा है.}one{<ph name="DEVICE_NAME"/> आपके साथ <ph name="ATTACHMENTS"/> शेयर कर रहा है.}other{<ph name="DEVICE_NAME"/> आपके साथ <ph name="ATTACHMENTS"/> शेयर कर रहा है.}}</translation>
@@ -3266,6 +3277,7 @@
 <translation id="3498138244916757538">माइक्रोफ़ोन की सेटिंग में बदलाव करने के लिए, <ph name="SPECIFIC_NAME"/> को शट डाउन करना ज़रूरी है. आगे बढ़ने के लिए, <ph name="SPECIFIC_NAME"/> को शट डाउन करें.</translation>
 <translation id="3500417806337761827">शेयर माउंट करने में गड़बड़ी हुई. बहुत से एसएमबी शेयर पहले ही माउंट कर दिए गए हैं.</translation>
 <translation id="3500764001796099683">आइसोलेटेड वेब ऐप्लिकेशन चालू करें</translation>
+<translation id="1557710450386240526"><ph name="DEVICE"/> में खोले गए अपने टैब ऐक्सेस करने के लिए, साइन इन करें और ब्राउज़िंग इतिहास सिंक करें. इससे आपको सभी डिवाइसों पर एक्सटेंशन वगैरह का भी ऐक्सेस मिलेगा. सेटिंग में जाकर, सिंक करने की सुविधा को कभी भी बंद किया जा सकता है. Brave आपके ब्राउज़िंग इतिहास के आधार पर, Search और अन्य सेवाओं में आपकी दिलचस्पी के मुताबिक अनुभव दे सकता है.</translation>
 <translation id="3505100368357440862">खरीदारी के लिए सुझाव</translation>
 <translation id="3507650052590605702">पासवर्ड मैनेज करें</translation>
 <translation id="3507888235492474624">ब्लूटूथ डिवाइस के लिए दोबारा स्कैन करें</translation>
@@ -3342,6 +3354,7 @@
 <translation id="8111951508601102818">अपने फ़ोन में Brave पर हाल ही में खोले गए टैब देखें</translation>
 <translation id="356268274299520831">साइट पर जाकर इसे बदलें</translation>
 <translation id="3563392617245068355">मूड</translation>
+<translation id="3564327838471533677">हाल ही में बंद किया गया स्प्लिट व्यू</translation>
 <translation id="3564456410937306182">अडैप्टिव चार्जिंग की सुविधा के बारे में ज़्यादा जानें.</translation>
 <translation id="3564659095423213915">यह फ़ोल्डर सिर्फ़ इस डिवाइस में सेव किया गया है. अगर आपने इसे “<ph name="ACCOUNT_FOLDER"/>” में सेव किया, तो यह फ़ोल्डर आपके खाते में भी सेव हो जाएगा.</translation>
 <translation id="3564848315152754834">USB सुरक्षा चाबी</translation>
@@ -3397,6 +3410,7 @@
 <translation id="3600956933576601730">इन सुविधाओं का इस्तेमाल करने के लिए, आपको शर्तों को पढ़कर स्वीकार करना होगा</translation>
 <translation id="3601374594714740284">अच्छी क्वालिटी की आवाज़ों के लिए, अपने डिवाइस का कुछ स्टोरेज खाली करें</translation>
 <translation id="360180734785106144">उपलब्ध होने पर नई सुविधाएं ऑफ़र कर सकता है</translation>
+<translation id="3601988315287782413">इसका असर सिर्फ़ आइसोलेटेड विंडो पर पड़ता है</translation>
 <translation id="3602290021589620013">झलक देखें</translation>
 <translation id="3602495161941872610">सिंक करने की समस्या को ठीक करें</translation>
 <translation id="3602894439067790744">नंबर इस तरह पढ़ें</translation>
@@ -3602,6 +3616,7 @@
 <translation id="3736487688526377259">वह डिवाइस चुनें जिस पर आपको यह लिंक चाहिए.</translation>
 <translation id="3737058101969549870">क्या आपको मौजूदा ब्राउज़िंग डेटा को इस नई प्रोफ़ाइल से अलग रखना है?</translation>
 <translation id="3738924763801731196"><ph name="OID"/>:</translation>
+<translation id="8059403755470969154">Gemini इस डिवाइस पर 'ऑटो ब्राउज़' सुविधा का इस्तेमाल सिर्फ़ तब कर सकता है, जब डिवाइस ऐक्टिव हो और Brave चल रहा हो.</translation>
 <translation id="3739254215541673094"><ph name="APPLICATION"/> खोलना चाहते हैं?</translation>
 <translation id="3739349485749941749">साइटें आपके डिवाइस से ऐक्सेस किए जा सकने वाले प्रिंटर खोजने और उनका इस्तेमाल करने की अनुमति मांग सकती हैं</translation>
 <translation id="3741056951918180319">एक्सटेंशन पर क्लिक करके, इसे किसी भी साइट पर इस्तेमाल किया जा सकता है</translation>
@@ -3624,7 +3639,6 @@
 <translation id="3756578970075173856">पिन सेट करें</translation>
 <translation id="3756806135608816820">साइटें, ब्लूटूथ डिवाइसों को खोजने की अनुमति मांग सकती हैं</translation>
 <translation id="3756823472711156529">ग्रुप को वापस लाएं</translation>
-<translation id="3757337311115630808">Gemini Spark के बारे में ज़्यादा जानें</translation>
 <translation id="3757567010566591880">टूलबार से अनपिन करें</translation>
 <translation id="3757645900890881944">खोज टूल</translation>
 <translation id="3757733214359997190">कोई साइट नहीं मिली</translation>
@@ -3749,6 +3763,7 @@
 <translation id="3838085852053358637">एक्सटेंशन लोड नहीं हो सका</translation>
 <translation id="3838486795898716504">ज़्यादा <ph name="PAGE_TITLE"/></translation>
 <translation id="383891835335927981">कोई भी साइट ज़ूम इन या ज़ूम आउट नहीं की गई है</translation>
+<translation id="8113563293271971298">अपने अन्य डिवाइसों में मौजूद ब्राउज़िंग इतिहास ऐक्सेस करने के लिए, <ph name="EMAIL"/> से साइन इन करें. इसके बाद, इसके साथ टैब और इतिहास सिंक करें. इससे आपको अपने सभी डिवाइसों पर सेव की गई जानकारी वगैरह का भी ऐक्सेस मिलेगा. सेटिंग में जाकर, सिंक करने की सुविधा को कभी भी बंद किया जा सकता है. Brave आपके ब्राउज़िंग इतिहास के आधार पर, Search और अन्य सेवाओं में आपकी दिलचस्पी के मुताबिक अनुभव दे सकता है.</translation>
 <translation id="3839516600093027468"><ph name="HOST"/> को क्लिपबोर्ड देखने से हमेशा ब्लॉक करें</translation>
 <translation id="3840096463915153852">बातचीत का इतिहास</translation>
 <translation id="3841319830220785495">डिफ़ॉल्ट के तौर पर सेट की गई अच्छी क्वालिटी वाली आवाज़</translation>
@@ -3908,6 +3923,7 @@
 <translation id="3954953195017194676">आपके पास हाल ही में कैप्चर किया गया कोई WebRTC इवेंट लॉग नहीं है.</translation>
 <translation id="3955321697524543127">साइटों को यूएसबी डिवाइसों से कनेक्ट करने की अनुमति न दें</translation>
 <translation id="3957663711862465084">यूएसबी सेटिंग</translation>
+<translation id="3958085090855822556">चुने गए टेक्स्ट को प्रिंट करें...</translation>
 <translation id="3958088479270651626">बुकमार्क और सेटिंग इंपोर्ट करें</translation>
 <translation id="3958110062351175311">टूलबार में अनुरोध दिखाने की अनुमति है</translation>
 <translation id="3958821725268247062"><ph name="APP_NAME"/> को पहले ही इंस्टॉल कर दिया गया है</translation>
@@ -3952,6 +3968,7 @@
 <translation id="3987993985790029246">लिंक कॉपी करें</translation>
 <translation id="3988124842897276887">यह टैब किसी यूएसबी डिवाइस से कनेक्ट है</translation>
 <translation id="3989635538409502728">साइन आउट करें</translation>
+<translation id="399132041334931433">नए ग्रुप में टैब जोड़ें</translation>
 <translation id="399179161741278232">आयातित</translation>
 <translation id="3992008114154328194"><ph name="FILE_NAME"/> डाउनलोड हो रही है, <ph name="STATUS"/></translation>
 <translation id="3994075804072562819"><ph name="SPECIFIC_NAME"/> को यूएसबी डिवाइसों को कंट्रोल करने की अनुमति दें.</translation>
@@ -3990,7 +4007,6 @@
 <translation id="4024768890073681126">आपके ब्राउज़र को आपके माता-पिता मैनेज करते हैं</translation>
 <translation id="4025039777635956441">चुनी गई साइट म्यूट करें</translation>
 <translation id="402707738228916911"><ph name="AUTHORIZE_INSTRUCTION_NAME"/> निर्देश मिला</translation>
-<translation id="4027569221211770437"><ph name="FOLDER_TITLE"/> फ़ोल्डर</translation>
 <translation id="4028467762035011525">इनपुट का तरीका जोड़ें</translation>
 <translation id="4028830198155575078">मूव करें</translation>
 <translation id="4029024445166427442">लॉन्चर + shift + backspace</translation>
@@ -4268,6 +4284,7 @@
 <translation id="4258860425202724393">{NUM_GROUPS,plural, =1{ग्रुप बनाए रखें}one{ग्रुप बनाए रखें}other{ग्रुप बनाए रखें}}</translation>
 <translation id="4261429981378979799">एक्सटेंशन की अनुमतियां</translation>
 <translation id="4262004481148703251">चेतावनी खारिज करें</translation>
+<translation id="1942721247706357478"><ph name="DEVICE"/> में खोले गए टैब ऐक्सेस करने के लिए, टैब और ब्राउज़िंग इतिहास को <ph name="EMAIL"/> के साथ सिंक करें. सेटिंग में जाकर, सिंक करने की सुविधा को कभी भी बंद किया जा सकता है. Brave आपके ब्राउज़िंग इतिहास के आधार पर, Search और अन्य सेवाओं में आपकी दिलचस्पी के मुताबिक अनुभव दे सकता है.</translation>
 <translation id="4263470758446311292">ज़्यादा से ज़्यादा मेमोरी करें. थोड़े समय तक इस्तेमाल न किए जाने पर, टैब इनऐक्टिव हो जाते हैं.</translation>
 <translation id="4263824086525632">ऑरोरा बोरिऐलिस</translation>
 <translation id="4265096510956307240">अपनी पहचान की पुष्टि करें</translation>
@@ -4462,7 +4479,6 @@
 <translation id="4403775189117163360">कोई दूसरा फ़ोल्डर चुनें</translation>
 <translation id="4404843640767531781">आपके माता-पिता ने <ph name="APP_NAME"/> को ब्लॉक किया है. उनसे इस ऐप्लिकेशन का इस्तेमाल करने की अनुमति लें.</translation>
 <translation id="4405117686468554883">*.jpeg, *.jpg, *.png</translation>
-<translation id="4405224443901389797">इसमें ले जाएं…</translation>
 <translation id="4405580203042711503">नीचे नया टैब खोलें</translation>
 <translation id="4405781821077215583">टेक्स्ट के साथ-साथ आपकी स्क्रीन पर मौजूद आइटम को छोटा या बड़ा करता है</translation>
 <translation id="4406308048672435032">इस टैब को बंद किया जा सकता है या पूरी सूची को फिर से देखने के लिए, इसे रीफ़्रेश किया जा सकता है</translation>
@@ -4724,6 +4740,7 @@
 <translation id="4617880081511131945">फ़ोन से कनेक्ट नहीं किया जा सका</translation>
 <translation id="4619564267100705184">अपनी पहचान की पुष्टि करें</translation>
 <translation id="4619615317237390068">अन्य डिवाइस के टैब</translation>
+<translation id="4619910360235236556">चुने गए टेक्स्ट को प्रिंट करें...</translation>
 <translation id="4620757807254334872">माउस</translation>
 <translation id="4620809267248568679">यह सेटिंग किसी एक्‍सटेंशन द्वारा लागू की गई है.</translation>
 <translation id="6043913159431614914">काम की अतिरिक्त जानकारी पाने के लिए, इस पेज को Brave की मदद से खोजा जा सकता है</translation>
@@ -4740,6 +4757,7 @@
 <translation id="4631637535315947773">सबसे ज़्यादा देखी गई साइटों के शॉर्टकट हटा दिए गए, क्योंकि आपने पिछले कुछ समय से उनका इस्तेमाल नहीं किया है</translation>
 <translation id="4631955550884380853">साफ़ आवाज़ की सुविधा</translation>
 <translation id="4632655012900268062">कार्ड को पसंद के मुताबिक बनाएं</translation>
+<translation id="3924258127660962431">Gemini, Brave Password Manager का इस्तेमाल करके, आपके लिए साइन इन कर सकता है. <ph name="BEGIN_LINK"/>जानें कि Gemini आपके डेटा का इस्तेमाल कैसे करता है<ph name="END_LINK"/></translation>
 <translation id="4635072447747973225">Crostini अनइंस्टॉल करें</translation>
 <translation id="4635398712689569051"><ph name="PAGE_NAME"/> मेहमान उपयोगकर्ताओं के लिए उपलब्ध नहीं है.</translation>
 <translation id="4635975718422788482">{FILE_LIMIT,plural, =1{अपने सवाल के साथ इस्तेमाल करने के लिए, 1 इमेज अपलोड करें}one{अपने सवाल के साथ इस्तेमाल करने के लिए, ज़्यादा से ज़्यादा # इमेज अपलोड करें}other{अपने सवाल के साथ इस्तेमाल करने के लिए, ज़्यादा से ज़्यादा # इमेज अपलोड करें}}</translation>
@@ -4899,8 +4917,10 @@
 <translation id="4750185073185658673">कुछ और अनुमतियां देखने के लिए अपने फ़ोन के अनुमतियों वाले सेक्शन पर जाएं. पक्का करें कि आपके फ़ोन का ब्लूटूथ और वाई-फ़ाई चालू हो.</translation>
 <translation id="4750394297954878236">सुझाव</translation>
 <translation id="475088594373173692">पहला उपयोगकर्ता</translation>
+<translation id="5493907995833370558">अपने अन्य डिवाइसों में मौजूद ब्राउज़िंग इतिहास ऐक्सेस करने के लिए, <ph name="EMAIL"/> से साइन इन करें. इसके बाद, इसके साथ टैब और इतिहास सिंक करें. इससे आपको अपने सभी डिवाइसों पर एक्सटेंशन वगैरह का भी ऐक्सेस मिलेगा. सेटिंग में जाकर, सिंक करने की सुविधा को कभी भी बंद किया जा सकता है. Brave आपके ब्राउज़िंग इतिहास के आधार पर, Search और अन्य सेवाओं में आपकी दिलचस्पी के मुताबिक अनुभव दे सकता है.</translation>
 <translation id="4753084533826742808">पासवर्ड में कम से कम एक वर्ण होना चाहिए</translation>
 <translation id="4754590344707355551">एक्सटेंशन इस्तेमाल करके, अपने ब्राउज़र को बेहतर बनाएं</translation>
+<translation id="1498792489923809330"><ph name="DEVICE"/> में मौजूद अपना ब्राउज़िंग इतिहास ऐक्सेस करने के लिए, <ph name="EMAIL"/> से साइन इन करें. इसके बाद, इसके साथ इतिहास और टैब सिंक करें. इससे आपको अपने सभी डिवाइसों पर सेव की गई जानकारी वगैरह का भी ऐक्सेस मिलेगा. सेटिंग में जाकर, सिंक करने की सुविधा को कभी भी बंद किया जा सकता है. Brave आपके ब्राउज़िंग इतिहास के आधार पर, Search और अन्य सेवाओं में आपकी दिलचस्पी के मुताबिक अनुभव दे सकता है.</translation>
 <translation id="4756378406049221019">रोकें/फिर से लोड करें</translation>
 <translation id="4756388243121344051">&amp;इतिहास</translation>
 <translation id="4756627014339714615">रीडायरेक्ट करें</translation>
@@ -5033,6 +5053,7 @@
 <translation id="4850886885716139402">देखें</translation>
 <translation id="485088796993065002">साइटें संगीत, वीडियो और अन्य मीडिया से जुड़े ऑडियो देने के लिए साउंड चला सकती हैं</translation>
 <translation id="4850919322897956733">डेटा मिटा दिया गया है.</translation>
+<translation id="4851973858921178330">साइटें फ़िल्टर करें</translation>
 <translation id="4852030988197799562">हाल ही में खोली गई साइटों पर JavaScript ऑप्टिमाइज़र का ऐक्सेस ब्लॉक करें</translation>
 <translation id="4852383141291180386">ऐप्लिकेशन से मिलने वाली सूचनाएं मैनेज करना</translation>
 <translation id="4852916668365817106">माउस का रंग बदलने से जुड़ी सेटिंग पर जाएं</translation>
@@ -5127,8 +5148,6 @@
 <translation id="4913573660390710463">बेहतर सुविधाओं वाले पैकेज किए गए वेब ऐप्लिकेशन ऐक्सेस करें. <ph name="BEGIN_LINK_LEARN_MORE"/>ज़्यादा जानें<ph name="END_LINK_LEARN_MORE"/></translation>
 <translation id="4913695564084524048">ऐप्लिकेशन का डेटा नहीं मिला</translation>
 <translation id="4915961947098019832">इमेज दिखाने की अनुमति है</translation>
-<translation id="4916140032692201190">चुने गए टेक्स्ट का अनुवाद करें</translation>
-<translation id="491779113051926205">ChromeOS के ट्रैफ़िक काउंटर</translation>
 <translation id="4918021164741308375"><ph name="ORIGIN"/> "<ph name="EXTENSION_NAME"/>" एक्‍सटेंशन से संचार करना चाहता है</translation>
 <translation id="4918086044614829423">स्वीकार करें</translation>
 <translation id="4918762404810341788">कॉपी करें और खोलें</translation>
@@ -5164,6 +5183,7 @@
 <translation id="4941963255146903244">अपने फ़ोन में मौजूद फ़ोटो, मीडिया, और ऐप्लिकेशन देखें</translation>
 <translation id="494286511941020793">प्रॉक्सी कॉन्फ़िगरेशन सहायता</translation>
 <translation id="4943368462779413526">फ़ुटबॉल</translation>
+<translation id="4943872375798546930">कोई परिणाम नहीं</translation>
 <translation id="4943927218331934807">पासवर्ड डालना ज़रूरी है</translation>
 <translation id="4946998421534856407">लॉन्चर + अप ऐरो</translation>
 <translation id="4947376546135294974">जिस साइट को विज़िट किया जा रहा है उसका डेटा</translation>
@@ -5174,6 +5194,7 @@
 <translation id="495170559598752135">क्रियाएं</translation>
 <translation id="4951966678293618079">इस साइट के लिए कभी भी पासवर्ड सेव न करें</translation>
 <translation id="4952580838083306838">ऑर्गनाइज़र पैनल छिपाएं</translation>
+<translation id="4952628481830269193">बुकमार्क बार दिखाएं</translation>
 <translation id="4953808748584563296">डिफ़ॉल्ट नारंगी अवतार</translation>
 <translation id="4954652437333037880">फ़ाइल</translation>
 <translation id="4954831709600868883"><ph name="TEXT"/> के बारे में पूछें</translation>
@@ -5203,11 +5224,11 @@
 <translation id="4972129977812092092">प्रिंटर में बदलाव करें</translation>
 <translation id="4972164225939028131">दर्ज किया गया पासवर्ड गलत है</translation>
 <translation id="4972737347717125191">साइटें, वर्चुअल रियलिटी डिवाइस और डेटा का इस्तेमाल करने के लिए पूछ सकती हैं</translation>
-<translation id="4973302523373219907">अगर पसंद के मुताबिक शॉर्टकट सेट नहीं किया गया है, तो डिफ़ॉल्ट रूप से @@ का इस्तेमाल किया जाएगा</translation>
 <translation id="4973325300212422370">{NUM_TABS,plural, =1{साइट म्यूट करें}one{साइटें म्यूट करें}other{साइटें म्यूट करें}}</translation>
 <translation id="497403230787583386">सुरक्षा जांच पूरी हो गई. आपका दस्तावेज़ प्रिंट कर दिया जाएगा.</translation>
 <translation id="4974442344472293753">अपडेट का नतीजा</translation>
 <translation id="4975771730019223894">ऐप बैजिंग</translation>
+<translation id="6751519582102089581">अपने अन्य डिवाइसों में खोले गए टैब ऐक्सेस करने के लिए, साइन इन करें और ब्राउज़िंग इतिहास सिंक करें. इससे आपको सभी डिवाइसों पर रीडिंग लिस्ट वगैरह का भी ऐक्सेस मिलेगा. सेटिंग में जाकर, सिंक करने की सुविधा को कभी भी बंद किया जा सकता है. Brave आपके ब्राउज़िंग इतिहास के आधार पर, Search और अन्य सेवाओं में आपकी दिलचस्पी के मुताबिक अनुभव दे सकता है.</translation>
 <translation id="4977882548591990850"><ph name="CHARACTER_COUNT"/>/<ph name="CHARACTER_LIMIT"/></translation>
 <translation id="4977942889532008999">एक्सेस के लिए दोबारा पूछें</translation>
 <translation id="4979263087381759787">डेवलपर के लिए सेटिंग और टूल</translation>
@@ -5223,7 +5244,6 @@
 <translation id="4989966318180235467">निरीक्षण और पेजभूमि पेज</translation>
 <translation id="499016799952867794">इससे ऐप्लिकेशन उम्मीद के मुताबिक काम कर पाता है.</translation>
 <translation id="4990673372047946816">कोई कैमरा उपलब्ध नहीं</translation>
-<translation id="7538826519053730023">Gemini Spark, इस डिवाइस पर Brave की ऑटो ब्राउज़ की सुविधा का इस्तेमाल करके, साइटों के साथ इंटरैक्ट कर सकता है और आपके टास्क पूरे कर सकता है. <ph name="LINK_BEGIN"/>ज़्यादा जानें<ph name="LINK_END"/></translation>
 <translation id="4991420928586866460">शीर्ष पंक्ति कुंजियों को फ़ंक्शन कुंजियों के रूप में मानें</translation>
 <translation id="4991873517942703737">इस दस्तावेज़ के बारे में पूछें</translation>
 <translation id="4992066212339426712">अनम्यूट करें</translation>
@@ -5248,6 +5268,7 @@
 <translation id="5008936837313706385">गतिविधि का नाम</translation>
 <translation id="5009463889040999939">प्रोफ़ाइल का नाम बदला जा रहा है. इसमें कुछ मिनट लग सकते हैं.</translation>
 <translation id="5010886807652684893">विज़ुअल व्यू</translation>
+<translation id="5012016139642806466">अपने सभी डिवाइसों पर पासवर्ड वगैरह ऐक्सेस करें</translation>
 <translation id="5012523644916800014">पासवर्ड और पासकी मैनेज करें</translation>
 <translation id="501394389332262641">बैटरी कम होने पर आवाज़ करे</translation>
 <translation id="5014286001996333986">क्या आपको मौजूदा ग्रुप बदलना है या नया ग्रुप बनाना है?</translation>
@@ -5378,6 +5399,7 @@
 <translation id="511313294362309725">फ़ास्ट पेयर की सुविधा चालू करें</translation>
 <translation id="6409962091529734959">Brave की ऑटो ब्राउज़ सुविधा के बारे में ज़्यादा जानें</translation>
 <translation id="51143538739122961">अपनी सुरक्षा कुंजी लगाएं और उसे छुएं</translation>
+<translation id="5394494793600778066"><ph name="DEVICE"/> में खोले गए अपने टैब ऐक्सेस करने के लिए, साइन इन करें और ब्राउज़िंग इतिहास सिंक करें. इससे आपको सभी डिवाइसों पर बुकमार्क वगैरह का भी ऐक्सेस मिलेगा. सेटिंग में जाकर, सिंक करने की सुविधा को कभी भी बंद किया जा सकता है. Brave आपके ब्राउज़िंग इतिहास के आधार पर, Search और अन्य सेवाओं में आपकी दिलचस्पी के मुताबिक अनुभव दे सकता है.</translation>
 <translation id="5115338116365931134">एसएसओ (SSO)</translation>
 <translation id="5116628073786783676">इस रूप में ऑडियो स&amp;हेजें...</translation>
 <translation id="5117139026559873716">अपने फ़ोन को <ph name="DEVICE_TYPE"/> से डिसकनेक्ट करें. अब वे अपने आप नहीं जुड़ेंगे.</translation>
@@ -5425,6 +5447,7 @@
 <translation id="5149602533174716626">वीडियो फ़्रेम कॉपी करें</translation>
 <translation id="5150254825601720210">Netscape प्रमाणपत्र SSL सर्वर नाम</translation>
 <translation id="5151354047782775295">डिस्क स्पेस खाली करें अन्यथा चयनित डेटा अपने आप हट जाएगा</translation>
+<translation id="5152719737931716272">टास्क पूरा हो गया है और Gemini पर वापस आ गया है</translation>
 <translation id="5153074793829217329">माउस के कर्सर को कंट्रोल करने के लिए, कीबोर्ड या न्यूमेरिक कीपैड का इस्तेमाल करें</translation>
 <translation id="5153234146675181447">फ़ोन को भूल जाएं</translation>
 <translation id="5153907427821264830"><ph name="STATUS"/> • <ph name="MESSAGE"/></translation>
@@ -5478,7 +5501,6 @@
 <translation id="5189274947477567401">शेयर करने की प्रोसेस से ऑप्ट आउट करने पर, ब्राउज़र को रीस्टार्ट करना होगा. यह ब्राउज़र अभी रीस्टार्ट होगा.</translation>
 <translation id="5189404424758444348">स्टीमपंक</translation>
 <translation id="5190577235024772869"><ph name="USED_SPACE"/> का इस्तेमाल किया जा रहा है</translation>
-<translation id="5190835502935405962">बुकमार्क बार</translation>
 <translation id="5190926251776387065">पोर्ट को चालू करें</translation>
 <translation id="5190959794678983197">कोई माइक्रोफ़ोन कनेक्ट नहीं है</translation>
 <translation id="5191094172448199359">आपके डाले गए पिन मेल नहीं खा रहे हैं</translation>
@@ -5633,6 +5655,7 @@
 <translation id="5311304534597152726">इसके रूप में प्रवेश हो रहा है</translation>
 <translation id="5312746996236433535">स्क्रीन शेयर करने वाला बटन</translation>
 <translation id="5313967007315987356">साइट जोड़ें</translation>
+<translation id="531500736198839473">{NUM_TABS,plural, =1{टैब पर फ़ोकस करें}one{# टैब पर फ़ोकस करें}other{# टैब पर फ़ोकस करें}}</translation>
 <translation id="5315738755890845852">ज़्यादा कर्ली ब्रेस: <ph name="ERROR_LINE"/></translation>
 <translation id="5317780077021120954">सेव करें</translation>
 <translation id="5317781812114905957">निर्देश</translation>
@@ -5737,6 +5760,7 @@
 <translation id="5414836363063783498">सत्यापन हो रहा है...</translation>
 <translation id="5415497281076257439">वाक्यांश</translation>
 <translation id="5415871492522952905">आपके सभी डिवाइसों पर टैब और ब्राउज़िंग इतिहास सेव रहेगा, ताकि आप अपने पिछले काम जारी रख सकें</translation>
+<translation id="5417160551295347092">Gemini से गलतियां हो सकती हैं. जैसे, यह बिना पूछे आपकी जानकारी शेयर कर सकता है या खरीदारी कर सकता है. <ph name="LINK_BEGIN"/>जोखिमों के बारे में जानें<ph name="LINK_END"/>.</translation>
 <translation id="5417293056300086453">यह साइट आपको सुरक्षित कॉन्टेंट दिखाने के लिए आइडेंटिफ़ायर इस्तेमाल कर सकती है.</translation>
 <translation id="5417312524372586921">ब्राउज़र थीम</translation>
 <translation id="541737483547792035">स्क्रीन ज़ूम करने की सुविधा से जुड़ी सेटिंग पर जाएं</translation>
@@ -5768,6 +5792,7 @@
 <translation id="5436211819997237281">आपके 'नया टैब' पेज को मौजूदा एक्सटेंशन मैनेज कर रहा है</translation>
 <translation id="5436492226391861498">प्रॉक्सी टनल का इंतज़ार किया जा रहा है...</translation>
 <translation id="5436510242972373446">खोजें <ph name="SITE_NAME"/>:</translation>
+<translation id="5437406591808823366">अपने सभी डिवाइसों पर पासवर्ड सेव करने और उन्हें ऑटोमैटिक तरीके से भरने के लिए, <ph name="EMAIL"/> से साइन इन करें</translation>
 <translation id="5438014818441491616"><ph name="WINDOW_SIDE"/> विंडो अब <ph name="WINDOW_SIZE_PERCENT"/> चौड़ी है, <ph name="PANE_SIDE"/> पैनल अब <ph name="PANE_SIZE_PERCENT"/> चौड़ा है.</translation>
 <translation id="5438060324827306856">एक्सटेंशन ढूंढें</translation>
 <translation id="5440240650630588012">फ़ोकस करने में मदद पाने के लिए, रीडिंग लाइन या विंडो लागू करें. ⌥L दबाएं या सेटिंग पर जाएं.</translation>
@@ -5797,6 +5822,7 @@
 <translation id="5457795687441958389">साइन आउट रहें</translation>
 <translation id="5458214261780477893">ड्वोरक</translation>
 <translation id="5458716506062529991">आपने कई बार गलत पिन डाल दिया है. अपनी पासकी और पासवर्ड ऐक्सेस करने के लिए, अपना पिन बदलें.</translation>
+<translation id="1320546369848431849"><ph name="DEVICE"/> में मौजूद अपना ब्राउज़िंग इतिहास ऐक्सेस करने के लिए, <ph name="EMAIL"/> से साइन इन करें. इसके बाद, इसके साथ इतिहास और टैब सिंक करें. इससे आपको अपने सभी डिवाइसों पर एक्सटेंशन वगैरह का भी ऐक्सेस मिलेगा. सेटिंग में जाकर, सिंक करने की सुविधा को कभी भी बंद किया जा सकता है. Brave आपके ब्राउज़िंग इतिहास के आधार पर, Search और अन्य सेवाओं में आपकी दिलचस्पी के मुताबिक अनुभव दे सकता है.</translation>
 <translation id="5459470938885464873">सर्टिफ़िकेट को इंपोर्ट करते समय गड़बड़ी हुई</translation>
 <translation id="5459864179070366255">इंस्टॉल करना जारी रखें</translation>
 <translation id="5460861858595506978">प्रेरणा के लिए वॉलपेपर</translation>
@@ -5966,6 +5992,7 @@
 <translation id="5583640892426849032">Backspace</translation>
 <translation id="5584088138253955452">उपयोगकर्ता नाम सेव करें?</translation>
 <translation id="5585019845078534178">कार्ड</translation>
+<translation id="1693519364658956062">अपने अन्य डिवाइसों में मौजूद ब्राउज़िंग इतिहास ऐक्सेस करने के लिए, <ph name="EMAIL"/> से साइन इन करें. इसके बाद, इसके साथ टैब और इतिहास सिंक करें. इससे आपको अपने सभी डिवाइसों पर रीडिंग लिस्ट वगैरह का भी ऐक्सेस मिलेगा. सेटिंग में जाकर, सिंक करने की सुविधा को कभी भी बंद किया जा सकता है. Brave आपके ब्राउज़िंग इतिहास के आधार पर, Search और अन्य सेवाओं में आपकी दिलचस्पी के मुताबिक अनुभव दे सकता है.</translation>
 <translation id="5585118885427931890">बुकमार्क फ़ोल्‍डर नहीं बना सका.</translation>
 <translation id="558563010977877295">कोई खास पेज या पेजों का समूह खोलें</translation>
 <translation id="5587592231724900065">कोई एक्सटेंशन इस सेटिंग को कंट्रोल कर रहा है</translation>
@@ -5992,7 +6019,6 @@
 <translation id="5611398002774823980">खाते में सेव करें</translation>
 <translation id="5611474372949142946">नीचे दिए गए टैब बंद करें</translation>
 <translation id="5614553682702429503">पासवर्ड सेव करें?</translation>
-<translation id="5614947000616625327">iCloud Keychain</translation>
 <translation id="5616571005307953937">बुकमार्क की गई सबसे पुरानी साइटें</translation>
 <translation id="5616726534702877126">साइज़ रिज़र्व करें</translation>
 <translation id="561698261642843490">Firefox बंद करें</translation>
@@ -6039,6 +6065,7 @@
 <translation id="5641715878999557094">"<ph name="EXTENSION_NAME"/>" ने होम बटन पर क्लिक करने पर दिखने वाला पेज बदल दिया है.</translation>
 <translation id="5643191124441701136">आपके कार्ड के अगले हिस्से पर आपका सुरक्षा कोड मौजूद होता है</translation>
 <translation id="5643321261065707929">सीमित डेटा वाला नेटवर्क</translation>
+<translation id="5645369002069651355">ईमेल पते की पुष्टि की जा रही है</translation>
 <translation id="5646376287012673985">जगह की जानकारी</translation>
 <translation id="5646558797914161501">व्यवसायी</translation>
 <translation id="3783963471691739258">Brave पर “<ph name="SEARCH_TERMS"/>” खोजें</translation>
@@ -6077,6 +6104,7 @@
 <translation id="5687340364605915800">यह साइटों पर निर्भर करता है कि वे इस अनुरोध को स्वीकार करेंगी या नहीं</translation>
 <translation id="5689233503102158537">alt + backspace</translation>
 <translation id="5689516760719285838">जगह की जानकारी</translation>
+<translation id="568984110402742489">सुझाव, शिकायत या राय सबमिट नहीं की जा सकती</translation>
 <translation id="56907980372820799">डेटा लिंक करें</translation>
 <translation id="5691772641933328258">फ़िंगरप्रिंट नहीं पहचाना गया</translation>
 <translation id="5693255400847650006">माइक्रोफ़ोन इस्तेमाल हो रहा है</translation>
@@ -6175,6 +6203,7 @@
 <translation id="5776571780337000608">इस ऐप्लिकेशन में इस्तेमाल की जा सकने वाली फ़ाइलों को खोला जा सकता है और उनमें बदलाव किया जा सकता है. ऐसा, फ़ाइल ब्राउज़र या दूसरे ऐप्लिकेशन में किया जा सकता है. यह कंट्रोल करने के लिए कि कौनसी फ़ाइलें, डिफ़ॉल्ट तौर पर इस ऐप्लिकेशन में खुलेंगी, <ph name="BEGIN_LINK"/>अपने डिवाइस पर डिफ़ॉल्ट ऐप्लिकेशन सेट करने का तरीका जानें<ph name="END_LINK"/>.</translation>
 <translation id="6676231621615806698">Brave खोलें</translation>
 <translation id="5778491106820461378">आप <ph name="LINK_BEGIN"/>सेटिंग<ph name="LINK_END"/> में जाकर, साइन-इन किए गए Brave खाते मैनेज कर सकते हैं. आपने वेबसाइटों और ऐप्लिकेशन को जो अनुमतियां दी हैं वे सभी खातों पर लागू हो सकती हैं. अगर आप नहीं चाहते कि साइटें या ऐप्लिकेशन आपके खाते की जानकारी ऐक्सेस करें, तो आप <ph name="DEVICE_TYPE"/> में मेहमान के तौर पर साइन इन कर सकते हैं.</translation>
+<translation id="5779636902585836564">अनुवाद करें</translation>
 <translation id="5780011244986845107">आपके चुने हुए फ़ोल्डर में संवेदनशील फ़ाइलें हैं. क्या आप "<ph name="APP_NAME"/>" को इस फ़ोल्डर को पढ़ने का ऐक्सेस हमेशा के लिए देना चाहते हैं?</translation>
 <translation id="5780973441651030252">प्राथमिकता संसाधित करें</translation>
 <translation id="5781120434102258025">स्कूल वाले खाते का डेटा, अपने निजी खाते में ट्रांसफ़र करें</translation>
@@ -6185,7 +6214,7 @@
 <translation id="5784291589716625675">ऐप्लिकेशन की भाषा बदलें</translation>
 <translation id="7171242884588191792">Brave की फ़ाइल सुविधाएं</translation>
 <translation id="5787420647064736989">डिवाइस का नाम</translation>
-<translation id="3481489625298495279"><ph name="BEGIN_LINK_LOYALTY_CARDS"/>लॉयल्टी कार्ड<ph name="END_LINK_LOYALTY_CARDS"/> या Google Pay के <ph name="BEGIN_LINK_PAYMENT_METHODS"/>पेमेंट के तरीके<ph name="END_LINK_PAYMENT_METHODS"/> जोड़ने या उन्हें मैनेज करने के लिए, Brave Wallet पर जाएं</translation>
+<translation id="5787582109651427233"><ph name="BEGIN_LINK_LOYALTY_CARDS"/>लॉयल्टी कार्ड<ph name="END_LINK_LOYALTY_CARDS"/> या Google Pay के <ph name="BEGIN_LINK_PAYMENT_METHODS"/>पेमेंट के तरीके<ph name="END_LINK_PAYMENT_METHODS"/> जोड़ने या उन्हें मैनेज करने के लिए, Google Wallet पर जाएं</translation>
 <translation id="5789581866075720267">इस डिवाइस पर <ph name="BRAND"/> में पासवर्ड इंपोर्ट करने के लिए, कोई CSV फ़ाइल चुनें.</translation>
 <translation id="5790085346892983794">सफलता</translation>
 <translation id="5790651917470750848">पोर्ट फ़ॉरवर्ड की सुविधा पहले से मौजूद है</translation>
@@ -6244,9 +6273,9 @@
 <translation id="5828633471261496623">प्रिंट हो रहा है...</translation>
 <translation id="5829137022934788067">मुझे इसके बारे में बताओ</translation>
 <translation id="5829214552954466783">इस उपयोगकर्ता नाम के लिए <ph name="CREDENTIAL_TYPE"/> शेयर करें: <ph name="USER_EMAIL"/></translation>
-<translation id="4505167298598179061">Brave Wallet में पेमेंट के तरीके</translation>
+<translation id="5829544019044013776">Google Wallet में पेमेंट के तरीके</translation>
 <translation id="5830512293931520102">आपका पासवर्ड एन्क्रिप्ट (सुरक्षित) किया जाता है और किसी को भी नहीं दिखता है</translation>
-<translation id="8488282162676695335">Brave वॉलेट</translation>
+<translation id="5831217499016131155">Brave वॉलेट</translation>
 <translation id="583179300286794292">आपने <ph name="SPAN_START"/><ph name="DRIVE_ACCOUNT_EMAIL"/><ph name="SPAN_END"/> के तौर पर साइन इन किया है</translation>
 <translation id="5831950941058843834">क्या आपको <ph name="SITE_NAME"/> के तहत आने वाली सभी साइटों और इंस्टॉल किए गए ऐप्लिकेशन के लिए, साइट डेटा और अनुमतियां मिटानी हैं?</translation>
 <translation id="583281660410589416">अज्ञात</translation>
@@ -6480,6 +6509,7 @@
 <translation id="6003143259071779217">eSIM मोबाइल नेटवर्क हटाएं</translation>
 <translation id="6003479444341796444">अब टाइटल बार दिख रहा है</translation>
 <translation id="6003582434972667631">थीम को आपके संगठन ने सेट किया है</translation>
+<translation id="600407115562756795">Gemini, आपके शुरू या अपडेट किए गए टास्क के आधार पर यह तय करेगा कि उसे कौनसी कार्रवाइयां करनी हैं.</translation>
 <translation id="6005045517426700202">ब्रिक बिल्डिंग</translation>
 <translation id="6006484371116297560">क्लासिक</translation>
 <translation id="6007053304250788613">मिरर मोड में सिर्फ़ एक डिसप्ले को हटाया जा सकता है</translation>
@@ -6602,7 +6632,6 @@
 <translation id="610487644502954950">साइड पैनल को अनपिन किया गया</translation>
 <translation id="6104929924898022309">फ़ंक्शन बटन के ऐक्शन को बदलने के लिए खोज बटन का इस्तेमाल करें</translation>
 <translation id="6108952804512516814">एआई की मदद से बनाएं</translation>
-<translation id="611041979451429698">“<ph name="SELECTION"/>” को प्रिंट करें</translation>
 <translation id="6110794992500777605">मेरे शॉर्टकट और साइटें</translation>
 <translation id="6111718295497931251">क्या Google Drive का ऐक्सेस हटाएं</translation>
 <translation id="934027498329250030">Brave से “<ph name="SEARCH_TERMS"/>” के बारे में पूछें</translation>
@@ -6695,6 +6724,7 @@
 <translation id="6175910054050815932">लिंक पाएं</translation>
 <translation id="6177478397823976397">कोई डिवाइस नहीं मिला. किसी नए टैब में सहायता केंद्र लेख खोलें</translation>
 <translation id="6177779807714496775">लिंक को लेफ़्ट व्यू में खोलें</translation>
+<translation id="867862823299373755">अपने अन्य डिवाइसों में खोले गए टैब ऐक्सेस करने के लिए, टैब और इतिहास <ph name="EMAIL"/> के साथ सिंक करें. सेटिंग में जाकर, सिंक करने की सुविधा को कभी भी बंद किया जा सकता है. Brave आपके ब्राउज़िंग इतिहास के आधार पर, Search और अन्य सेवाओं में आपकी दिलचस्पी के मुताबिक अनुभव दे सकता है.</translation>
 <translation id="6178664161104547336">किसी प्रमाणपत्र को चुनें</translation>
 <translation id="6178682841350631965">आपने साइन इन करने के लिए जो डेटा डाला है, वह अपडेट हो गया</translation>
 <translation id="6179830757749383456">ब्राउज़र को <ph name="BROWSER_DOMAIN"/> मैनेज करता है और प्रोफ़ाइल को <ph name="PROFILE_DOMAIN"/> मैनेज करता है</translation>
@@ -6741,7 +6771,7 @@
 <translation id="6212168817037875041">डिसप्ले बंद करें</translation>
 <translation id="6212752530110374741">लिंक ईमेल करें</translation>
 <translation id="6214106213498203737">वॉटरकलर</translation>
-<translation id="5940545598733494637">Brave Wallet में बदलाव करें</translation>
+<translation id="6214157047210274853">Google Wallet में बदलाव करें</translation>
 <translation id="621470880408090483">साइटों को ब्लूटूथ डिवाइसों से कनेक्ट करने की अनुमति न दें</translation>
 <translation id="6215039389782910006">{1,plural, =1{आपके पासवर्ड को सुरक्षित रखने के लिए, 1 मिनट तक कोई गतिविधि न होने पर <ph name="BRAND"/> लॉक हो जाता है}one{आपके पासवर्ड को सुरक्षित रखने के लिए, # मिनट तक कोई गतिविधि न होने पर <ph name="BRAND"/> लॉक हो जाता है}other{आपके पासवर्ड को सुरक्षित रखने के लिए, # मिनट तक कोई गतिविधि न होने पर <ph name="BRAND"/> लॉक हो जाता है}}</translation>
 <translation id="6216154119179790291">स्क्रोल करके पहले टैब पर जाएं</translation>
@@ -6824,6 +6854,7 @@
 <translation id="6273677812470008672">गुणवत्ता</translation>
 <translation id="6274089201566806618"><ph name="HOST_DEVICE_NAME"/> से कनेक्ट किया जा रहा है</translation>
 <translation id="6274202259872570803">स्क्रीनकास्ट</translation>
+<translation id="6276246115230302286">अपने सभी डिवाइसों पर बुकमार्क का इस्तेमाल करके पसंदीदा साइटों को तुरंत ऐक्सेस करने के लिए, <ph name="EMAIL"/> के तौर पर साइन इन करें</translation>
 <translation id="6277105963844135994">नेटवर्क समय खत्म</translation>
 <translation id="6277518330158259200">स्क्री&amp;नशॉट लें</translation>
 <translation id="6278428485366576908">थीम</translation>
@@ -6908,7 +6939,6 @@
 <translation id="6347010704471250799">सूचना दिखाएं</translation>
 <translation id="634792071306410644">आपके साथ कोई भी तब तक फ़ाइलें शेयर नहीं कर सकता, जब तक आपका डिवाइस सभी को दिखने न लगे</translation>
 <translation id="6348252528297699679">सेटिंग &gt; निजता और सुरक्षा &gt; निजता सेटिंग &gt; जगह की जानकारी का ऐक्सेस पर जाकर, जगह की जानकारी शेयर करने की सुविधा को बंद किया जा सकता है. <ph name="LINK_BEGIN"/>ज़्यादा जानें<ph name="LINK_END"/></translation>
-<translation id="5204908437780124695">अपने Brave खाते का इस्तेमाल करें या नया खाता बनाएं</translation>
 <translation id="6348805481186204412">डिवाइस का ऑफ़लाइन स्टोरेज</translation>
 <translation id="6349101878882523185"><ph name="APP_NAME"/> इंस्टॉल करें</translation>
 <translation id="6350745006329795504">अपने डिवाइस मैनेज करें</translation>
@@ -6965,7 +6995,6 @@
 <translation id="6393550101331051049">असुरक्षित कॉन्टेंट दिखाने की अनुमति है</translation>
 <translation id="6394634179843537518">फ़ाइल जोड़ें</translation>
 <translation id="6395423953133416962"><ph name="BEGIN_LINK1"/>सिस्टम की जानकारी<ph name="END_LINK1"/> और <ph name="BEGIN_LINK2"/>मेट्रिक्स<ph name="END_LINK2"/> भेजें</translation>
-<translation id="6397586889873084061">हां, मेरा निजी और स्कूल से जुड़ा डेटा अलग-अलग रखें (सुझाया गया)</translation>
 <translation id="6398715114293939307">Google Play Store निकालें</translation>
 <translation id="6398765197997659313">फ़ुल स्क्रीन से बाहर निकलें</translation>
 <translation id="639880411171387127">Google Lens के ज़रिए इमेज का चुना गया हिस्सा. Google Lens से चुना गया हिस्सा मिटाने के लिए, Enter या backspace दबाएं</translation>
@@ -7007,6 +7036,7 @@
 <translation id="6430202563517028640">लिंक को रीडिंग लिस्ट में जोड़ें</translation>
 <translation id="6430814529589430811">Base64 में एन्कोड किया गया ASCII, सिर्फ़ एक प्रमाणपत्र</translation>
 <translation id="6431347207794742960"><ph name="PRODUCT_NAME"/> इस कंप्यूटर के सभी उपयोगकर्ताओं के लिए स्वचालित अपडेट सेट करेगा.</translation>
+<translation id="6810251970906725363"><ph name="DEVICE"/> में खोले गए अपने टैब ऐक्सेस करने के लिए, साइन इन करें और ब्राउज़िंग इतिहास को सिंक करें. इससे आपको अपने सभी डिवाइसों पर रीडिंग लिस्ट वगैरह का भी ऐक्सेस मिलेगा. सेटिंग में जाकर, सिंक करने की सुविधा को कभी भी बंद किया जा सकता है. Brave आपके ब्राउज़िंग इतिहास के आधार पर, Search और अन्य सेवाओं में आपकी दिलचस्पी के मुताबिक अनुभव दे सकता है.</translation>
 <translation id="6434104957329207050">पॉइंट स्कैनिंग कर्सर की स्पीड</translation>
 <translation id="6434309073475700221">खारिज करें</translation>
 <translation id="6434755719322447931">अस्त-व्यस्त</translation>
@@ -7169,6 +7199,7 @@
 <translation id="6556903358015358733">थीम और वॉलपेपर</translation>
 <translation id="6557199166823345360">खोज के नतीजे बेहतर बनाने के लिए, ज़्यादा जानकारी जोड़ें या अपने चुने हुए विकल्प के बारे में सवाल पूछें</translation>
 <translation id="6557290421156335491">मेरे शॉर्टकट</translation>
+<translation id="5886404036848242975"><ph name="DEVICE"/> में खोले गए अपने टैब ऐक्सेस करने के लिए, साइन इन करें और ब्राउज़िंग इतिहास को सिंक करें. इससे आपको अपने सभी डिवाइसों पर सेव की गई जानकारी वगैरह का भी ऐक्सेस मिलेगा. सेटिंग में जाकर, सिंक करने की सुविधा को कभी भी बंद किया जा सकता है. Brave आपके ब्राउज़िंग इतिहास के आधार पर, Search और अन्य सेवाओं में आपकी दिलचस्पी के मुताबिक अनुभव दे सकता है.</translation>
 <translation id="6558098963164662391">डिक्शनरी से हटाएं</translation>
 <translation id="6560061709899140565">अन्य कास्ट सेशन की जानकारी दिखाएं</translation>
 <translation id="656065428026159829">ज़्यादा देखें</translation>
@@ -7245,6 +7276,7 @@
 <translation id="6607831829715835317">ज़्यादा टू&amp;ल</translation>
 <translation id="6608166463665411119">ई-सिम को रीसेट करें</translation>
 <translation id="660846213831377756">माउस का काम करने वाले बटन</translation>
+<translation id="6608725880745776452"><ph name="DEVICE"/> में मौजूद अपने पासवर्ड वगैरह ऐक्सेस करें</translation>
 <translation id="6610002944194042868">अनुवाद के विकल्प</translation>
 <translation id="6611432349566876829"><ph name="NUM"/> टैब</translation>
 <translation id="661266467055912436">वेब पर आपकी और सभी उपयोगकर्ताओं की सुरक्षा को बेहतर बनाती है.</translation>
@@ -7428,6 +7460,7 @@
 <translation id="6754359471209693699">नई खोज शुरू करें</translation>
 <translation id="6755702685749429945">डिक्शनरी जोड़ें</translation>
 <translation id="6756643207511618722">लिखाई को बोली में बदलने की सुविधा से जुड़ी सेटिंग पर जाएं</translation>
+<translation id="6756882635793733911">स्क्रीन पर दिख रहे किसी भी कॉन्टेंट के बारे में पूछें</translation>
 <translation id="6757431299485455321">इस हॉटस्पॉट को खोजने में अन्य डिवाइसों की मदद करें.</translation>
 <translation id="6757615605516049275">कृपया <ph name="TOKEN_NAME"/> अनलॉक करें.</translation>
 <translation id="6758056191028427665">हमें बताएं कि हम कैसा प्रदर्शन कर रहे हैं.</translation>
@@ -7606,7 +7639,6 @@
 <translation id="6870470066213933201">JavaScript ऑप्टिमाइज़ेशन और सुरक्षा को मैनेज करें</translation>
 <translation id="6870953451576517204">अपने-आप जांचने की सुविधा काम कर रही है</translation>
 <translation id="6871397658902960384">ब्राउज़ करना शुरू करें</translation>
-<translation id="6871609459496868094">“<ph name="SELECTION"/>” को कॉपी करें</translation>
 <translation id="6871644448911473373">OCSP प्रतिसादी: <ph name="LOCATION"/></translation>
 <translation id="6871860225073478239">भाषाएं...</translation>
 <translation id="6873156759937047811">पिन:</translation>
@@ -7728,7 +7760,6 @@
 <translation id="7372568976265027634">Brave खाते में पासवर्ड सेव करने पर, उन्हें इस डिवाइस और उन सभी डिवाइसों पर इस्तेमाल किया जा सकता है जिन पर आपने साइन इन किया हुआ है</translation>
 <translation id="6970480684834282392">स्टार्टअप प्रकार</translation>
 <translation id="6970543303783413625">पासवर्ड इंपोर्ट नहीं किए जा सके. एक बार में सिर्फ़ <ph name="COUNT"/> पासवर्ड इंपोर्ट किए जा सकते हैं.</translation>
-<translation id="6970856801391541997">विशेष पेज प्रिंट करें</translation>
 <translation id="6970861306198150268">पक्का करें कि इस साइट के लिए आपका मौजूदा पासवर्ड सेव किया जा रहा हो</translation>
 <translation id="6971184043765343932">अपलोड की गई आपकी इमेज</translation>
 <translation id="6971570759801670426">इस उपयोगकर्ता नाम के लिए <ph name="CREDENTIAL_TYPE"/> में बदलाव करें: <ph name="USER_EMAIL"/></translation>
@@ -7852,6 +7883,7 @@
 <translation id="7065343991414968778">{NUM_PASSWORDS,plural, =1{<ph name="USER_EMAIL"/> के लिए, <ph name="BRAND"/> में एक पासवर्ड इंपोर्ट किया गया}one{<ph name="USER_EMAIL"/> के लिए, <ph name="BRAND"/> में {NUM_PASSWORDS} पासवर्ड इंपोर्ट किया गया}other{<ph name="USER_EMAIL"/> के लिए, <ph name="BRAND"/> में {NUM_PASSWORDS} पासवर्ड इंपोर्ट किए गए}}</translation>
 <translation id="7065534935986314333">सिस्टम के बारे में</translation>
 <translation id="706626672220389329">शेयर माउंट करने में गड़बड़ी. बताया गया शेयर पहले से माउंट किया हुआ है.</translation>
+<translation id="8020454728939018580"><ph name="DEVICE"/> में मौजूद अपना ब्राउज़िंग इतिहास ऐक्सेस करने के लिए, <ph name="EMAIL"/> से साइन इन करें. इसके बाद, इसके साथ इतिहास और टैब सिंक करें. इससे आपको अपने सभी डिवाइसों पर पासवर्ड वगैरह का भी ऐक्सेस मिलेगा. सेटिंग में जाकर, सिंक करने की सुविधा को कभी भी बंद किया जा सकता है. Brave आपके ब्राउज़िंग इतिहास के आधार पर, Search और अन्य सेवाओं में आपकी दिलचस्पी के मुताबिक अनुभव दे सकता है.</translation>
 <translation id="7067396782363924830">आस-पास के माहौल के हिसाब से रंग</translation>
 <translation id="7067725467529581407">इसे फिर से कभी ना दिखाएं.</translation>
 <translation id="8332021337957914073">अब 'Brave को पसंद के मुताबिक बनाएं' मेन्यू में जाकर, किसी भी समय अपने ब्राउज़र को एक नया लुक दिया जा सकता है</translation>
@@ -8037,6 +8069,7 @@
 <translation id="7214047272988222011">अनुमति है – <ph name="PERMISSION_DETAILS"/>. <ph name="LINK_BEGIN"/>सिस्टम का कैमरा ऐक्सेस करने<ph name="LINK_END"/> की अनुमति दें.</translation>
 <translation id="7214104268140700348">{NUM_TABS,plural, =1{1 टैब में नया टैब}one{# टैब में नया टैब}other{# टैब में नया टैब}}</translation>
 <translation id="721490496276866468">पासवर्ड इंपोर्ट करें</translation>
+<translation id="8777169527962172893">अपने अन्य डिवाइसों में मौजूद ब्राउज़िंग इतिहास ऐक्सेस करने के लिए, <ph name="EMAIL"/> से साइन इन करें. इसके बाद, इसके साथ टैब और इतिहास सिंक करें. इससे आपको अपने सभी डिवाइसों पर बुकमार्क वगैरह का भी ऐक्सेस मिलेगा. सेटिंग में जाकर, सिंक करने की सुविधा को कभी भी बंद किया जा सकता है. Brave आपके ब्राउज़िंग इतिहास के आधार पर, Search और अन्य सेवाओं में आपकी दिलचस्पी के मुताबिक अनुभव दे सकता है.</translation>
 <translation id="7217208603285112910">चुना गया कॉन्टेंट <ph name="LANGUAGE"/> भाषा में नहीं है</translation>
 <translation id="7217317914610152390">नए टेक्स्ट एनोटेशन टूल की मदद से, टेक्स्ट, टिप्पणियां, और नोट जोड़ें</translation>
 <translation id="7219254577985949841">क्या आपको साइट डेटा मिटाना है?</translation>
@@ -8047,6 +8080,7 @@
 <translation id="7222232353993864120">ईमेल पता</translation>
 <translation id="7222335051802562841">अपडेट पूरा करें</translation>
 <translation id="7222373446505536781">F11</translation>
+<translation id="6767127458649502157"><ph name="DEVICE"/> में मौजूद अपना ब्राउज़िंग इतिहास ऐक्सेस करने के लिए, <ph name="EMAIL"/> से साइन इन करें. इसके बाद, इसके साथ इतिहास और टैब सिंक करें. इससे आपको अपने सभी डिवाइसों पर रीडिंग लिस्ट वगैरह का भी ऐक्सेस मिलेगा. सेटिंग में जाकर, सिंक करने की सुविधा को कभी भी बंद किया जा सकता है. Brave आपके ब्राउज़िंग इतिहास के आधार पर, Search और अन्य सेवाओं में आपकी दिलचस्पी के मुताबिक अनुभव दे सकता है.</translation>
 <translation id="7223027547122518521">कोई ऐसी फ़ाइल चुनें जिसे देखने की अनुमति इस साइट को देनी है</translation>
 <translation id="7223952304612664117">इससे सिस्टम की सेवाओं को जगह की सटीक जानकारी का इस्तेमाल करने की अनुमति मिलती है, ताकि आपकी जगह की जानकारी का पता लगाया जा सके. जगह की सटीक जानकारी की सेटिंग के चालू होने पर, डिवाइस की ज़्यादा सटीक जानकारी का पता लगाने के लिए वायरलेस सिग्नल और सेंसर इस्तेमाल किए जाते हैं.</translation>
 <translation id="7225082563376899794">पासवर्ड डालते समय, Windows Hello का इस्तेमाल करें</translation>
@@ -8136,7 +8170,7 @@
 <translation id="7292195267473691167"><ph name="LOCALE"/> (<ph name="VARIANT"/>)</translation>
 <translation id="7293774463163321848">मैनेजमेंट सेटिंग में जाकर, अपना खोज इतिहास, Gemini पर की गई गतिविधि का डेटा, और पासवर्ड मिटाए जा सकते हैं</translation>
 <translation id="7296503797589217366"><ph name="FOLDER_TITLE"/> फ़ोल्डर चुनें</translation>
-<translation id="5119862674579456673">देखे गए पेजों की जानकारी को Brave Wallet में सेव करें</translation>
+<translation id="7297228218361240128">देखे गए पेजों की जानकारी को Google Wallet में सेव करें</translation>
 <translation id="7297726121602187087">गहरा हरा</translation>
 <translation id="7298195798382681320">सुझाए गए</translation>
 <translation id="7299515639584427954">क्या आप सहायता लिंक खोलने के लिए, डिफ़ॉल्ट ऐप्लिकेशन बदलना चाहते हैं?</translation>
@@ -8318,7 +8352,6 @@
 <translation id="7421293530411019405">क्या आपको टैब ग्रुप से बाहर निकलना है?</translation>
 <translation id="7421925624202799674">पेज का स्रोत &amp;देखें</translation>
 <translation id="7422192691352527311">प्राथमिकताएं...</translation>
-<translation id="5797098178256696347">जिस किसी भी व्यक्ति के पास आपके Gemini Spark एजेंट का ऐक्सेस है वह आपके Brave ब्राउज़र को कंट्रोल कर सकता है.</translation>
 <translation id="7423425410216218516">'किसको दिखाई दे' सेटिंग <ph name="MINUTES"/> मिनट तक चालू है</translation>
 <translation id="7423513079490750513"><ph name="INPUT_METHOD_NAME"/> हटाएं</translation>
 <translation id="7424818322350938336">नेटवर्क जोड़ा गया</translation>
@@ -8416,6 +8449,7 @@
 <translation id="7501957181231305652">या</translation>
 <translation id="7502220299952823578">"इन साइटों को हमेशा चालू रखें" सूची में जोड़ें</translation>
 <translation id="7502528909759062987"><ph name="DEVICE_NAME"/> पर, टैब कास्ट करना रोकें</translation>
+<translation id="750275011730776314">Gemini पर वापस जाएं</translation>
 <translation id="7502804472671406749">शेयर किए गए टैब में स्क्रोल और ज़ूम किए जा सकते हैं</translation>
 <translation id="750314150962284310">लाइन फ़ोकस</translation>
 <translation id="7503191893372251637">Netscape प्रमाणपत्र प्रकार</translation>
@@ -8443,6 +8477,7 @@
 <translation id="9075033240840348521">अपने Brave खाते में सेव किए गए पासवर्ड के लिए, Brave के एन्क्रिप्ट (सुरक्षित) करने के डिफ़ॉल्ट तरीके का इस्तेमाल करें</translation>
 <translation id="385431757934284424">आपके परिवार के सदस्य को अभी पासवर्ड नहीं मिल सकता. उन्हें Brave अपडेट करने और अपना पासवर्ड सिंक करने के लिए कहें.</translation>
 <translation id="7518079994230200553">फ़िलहाल, यह विकल्प उपलब्ध नहीं है.</translation>
+<translation id="7519506357537394422">क्या Gemini को आपकी ओर से <ph name="DOMAIN"/> में साइन इन करने की अनुमति देनी है?</translation>
 <translation id="752021853309481824">अपने सभी डिवाइसों पर सेव की गई जानकारी वगैरह ऐक्सेस करने के लिए, <ph name="EMAIL"/> के तौर पर साइन इन करें</translation>
 <translation id="752098910262610337">शॉर्टकट दिखाएं</translation>
 <translation id="7521430434164837205">Microsoft 365 फ़ाइलें</translation>
@@ -8450,6 +8485,7 @@
 <translation id="7523117833414447032">कैपिटल लेटर पढ़ते समय</translation>
 <translation id="7523585675576642403">प्रोफ़ाइल का नाम बदलें</translation>
 <translation id="7525067979554623046">बनाएं</translation>
+<translation id="7526083414913154899">Gemini की मदद से किए जाने वाले टास्क के बारे में ज़्यादा जानें</translation>
 <translation id="7528224636098571080">न खोलें</translation>
 <translation id="7528440855533975803">{GROUP_COUNT,plural, =1{क्या टैब ग्रुप को ग्रुप से अलग करना है?}one{क्या टैब ग्रुप को ग्रुप से अलग करना है?}other{क्या टैब ग्रुप, ग्रुप से अलग करने हैं?}}</translation>
 <translation id="7529411698175791732">अपना इंटरनेट कनेक्शन जाँचें. अगर समस्या बनी रहती है, तो साइन आउट करें और दोबारा साइन इन करके देखें.</translation>
@@ -8502,6 +8538,7 @@
 <translation id="7575272930307342804">नेविगेशन के लिए कंट्रोल</translation>
 <translation id="757660455834887988">अनुमति है – <ph name="PERMISSION_DETAILS"/>. अपने डिवाइस से कैमरा कनेक्ट करें.</translation>
 <translation id="7576690715254076113">सेट में प्रिंट करें</translation>
+<translation id="7577535322483673900">"<ph name="SELECTION"/>" का लिंक कॉपी करें</translation>
 <translation id="7578137152457315135">फ़िंगरप्रिंट की सेटिंग</translation>
 <translation id="7578692661782707876">कृपया अपना पुष्टिकरण कोड डालें.</translation>
 <translation id="757941033127302446">साइन इन हो गया</translation>
@@ -8652,6 +8689,7 @@
 <translation id="1669729672557072907">ऐप्लिकेशन बनाने और उसकी जांच करने के लिए, Android डीबग ब्रिज (ADB) चालू करें. ध्यान दें कि इस कार्रवाई के लिए ऐसे Android ऐप्लिकेशन इंस्टॉल करने की अनुमति दी जाती है जिनकी पुष्टि Brave ने नहीं की है. साथ ही, फ़ैक्ट्री रीसेट को बंद करना ज़रूरी है.</translation>
 <translation id="7684803937028953000">आपके संगठन ने इस फ़ाइल को डिवाइस पर डाउनलोड करने पर रोक लगाई हुई है.</translation>
 <translation id="7684913007876670600">इस पेज को आसानी से देखने के लिए, साइड पैनल खोलें और Reading mode चुनें</translation>
+<translation id="7684957383619170952"><ph name="DEVICE"/> से अपने बुकमार्क वगैरह पाएं</translation>
 <translation id="7685038817958445325">कास्ट नहीं हो पाया</translation>
 <translation id="7685049629764448582">JavaScript मेमोरी</translation>
 <translation id="7685087414635069102">पिन की ज़रूरत है</translation>
@@ -8667,7 +8705,6 @@
 <translation id="769824636077131955">यह दस्तावेज़ बहुत बड़ा है, इसलिए इसकी सुरक्षा जांच नहीं की जा सकती. सिर्फ़ 50 एमबी तक के दस्तावेज़ प्रिंट किए जा सकते हैं.</translation>
 <translation id="7698507637739331665">कुछ आइटम ब्लॉक किए गए हैं</translation>
 <translation id="7700516433658473670">प्रिंटर और स्कैनर</translation>
-<translation id="7700873336634517379">नहीं, स्कूल के लिए इस प्रोफ़ाइल का इस्तेमाल जारी रखें</translation>
 <translation id="7701040980221191251">कुछ भी नहीं</translation>
 <translation id="7701869757853594372">उपयोगकर्ता हैंडल</translation>
 <translation id="770231223935918661">इस इमेज के बारे में पूछें</translation>
@@ -8713,6 +8750,7 @@
 <translation id="7730683939467795481">"<ph name="EXTENSION_NAME"/>" एक्सटेंशन ने इस पेज में बदलाव किया है</translation>
 <translation id="7735558909644181051">इंटरमीडिएट सर्टिफ़िकेट</translation>
 <translation id="7736119438443237821">इस डिवाइस से पासकी का ऐक्सेस हटाया जा रहा है</translation>
+<translation id="7737161071513018955">“<ph name="SELECTION"/>” का लिंक कॉपी करें</translation>
 <translation id="7737203573077018777"><ph name="PROOF_OF_POSSESSION_INSTRUCTION_NAME"/> निर्देश मिला</translation>
 <translation id="7737948071472253612">कैमरा इस्तेमाल करने की अनुमति नहीं है</translation>
 <translation id="77381465218432215">उच्चारण के चिह्न और विशेष वर्ण दिखाएं</translation>
@@ -8928,6 +8966,7 @@
 <translation id="7911118814695487383">Linux</translation>
 <translation id="791247712619243506">सेट अप रद्द करें</translation>
 <translation id="7912974581251770345">अनुवाद करें</translation>
+<translation id="8104490283194542948"><ph name="DEVICE"/> में खोले गए टैब ऐक्सेस करने के लिए, साइन इन करें और ब्राउज़िंग इतिहास सिंक करें. इससे आपको सभी डिवाइसों पर पासवर्ड वगैरह का भी ऐक्सेस मिलेगा. सेटिंग में जाकर, सिंक करने की सुविधा को कभी भी बंद किया जा सकता है. Brave आपके ब्राउज़िंग इतिहास के आधार पर, Search और अन्य सेवाओं में आपकी दिलचस्पी के मुताबिक अनुभव दे सकता है.</translation>
 <translation id="7914399737746719723">ऐप्लिकेशन इंस्टॉल हो गया है</translation>
 <translation id="7915457674565721553">'माता-पिता के नियंत्रण में' सुविधा सेट करने के लिए इंटरनेट से कनेक्ट करें</translation>
 <translation id="7916364730877325865">इस खाते के साथ सिंक नहीं किया जा सकता, क्योंकि आपका संगठन इसकी अनुमति नहीं देता</translation>
@@ -9031,6 +9070,7 @@
 <translation id="6417033266065686942">इससे आपको अपने Brave खातों से साइन आउट कर दिया जाएगा. आपके बुकमार्क, इतिहास, पासवर्ड वगैरह अब सिंक नहीं किए जाएंगे.</translation>
 <translation id="7980066177668669492">ASCII में Base64 में एन्कोड किए गए, एक से ज़्यादा सर्टिफ़िकेट</translation>
 <translation id="7981410461060625406"><ph name="APP_NAME"/> के लिए सेव की गई पासकी का इस्तेमाल करें</translation>
+<translation id="7981445433812028278">आपके ईमेल पते की पुष्टि नहीं की जा सकी</translation>
 <translation id="7981662863948574132">डिवाइस का ईआईडी और क्यूआर कोड पॉप-अप दिखाएं</translation>
 <translation id="7982578888426609524">इस ग्रुप से जुड़े हाल ही के अपडेट</translation>
 <translation id="7982789257301363584">नेटवर्क</translation>
@@ -9174,11 +9214,12 @@
 <translation id="8081989000209387414">ADB डीबग करने की सुविधा बंद करें?</translation>
 <translation id="8082132721957920509">आपका कार्ड सेव किया गया</translation>
 <translation id="8082390128630131497">ADB डीबग करने की सुविधा बंद करने से यह <ph name="DEVICE_TYPE"/> फ़ैक्ट्री सेटिंग पर रीसेट हो जाएगा. सभी उपयोगकर्ता खातों और स्थानीय डेटा को हमेशा के लिए मिटा दिया जाएगा.</translation>
+<translation id="3804282809013772539">आपके संगठन ने Brave खाते में इतिहास सेव करने की सुविधा बंद कर दी है</translation>
 <translation id="8084114998886531721">सेव किया गया पासवर्ड</translation>
 <translation id="8084417885464859041">Gemini का सुरक्षित तरीके से इस्तेमाल करें</translation>
 <translation id="8084429490152575036">मोबाइल की एपीएन सेटिंग</translation>
 <translation id="8084628902026812045">यह साइट सुरक्षित कनेक्शन का इस्तेमाल नहीं कर रही है और हो सकता है कि फ़ाइल के साथ छेड़छाड़ की गई हो</translation>
-<translation id="1687447852120925634">Brave Wallet में मौजूद आपकी जानकारी, साइन इन किए गए सभी डिवाइसों पर दिखेगी</translation>
+<translation id="808488435221187916">Google Wallet में मौजूद आपकी जानकारी, साइन इन किए गए सभी डिवाइसों पर दिखेगी</translation>
 <translation id="8086015605808120405"><ph name="PRINTER_NAME"/> कॉन्फ़िगर किया जा रहा है ...</translation>
 <translation id="8086121155774250556">यह टैब आपकी स्क्रीन शेयर कर रहा है</translation>
 <translation id="80866457114322936">{NUM_FILES,plural, =1{यह फ़ाइल सुरक्षित की गई है. इसके मालिक से इसे सबकी पहुंच में लाने के लिए कहें.}one{इनमें से कुछ फ़ाइलें सुरक्षित की गई हैं. इनके मालिक से इन्हें सबकी पहुंच में लाने के लिए कहें.}other{इनमें से कुछ फ़ाइलें सुरक्षित की गई हैं. इनके मालिक से इन्हें सबकी पहुंच में लाने के लिए कहें.}}</translation>
@@ -9206,6 +9247,7 @@
 <translation id="810362914482827094">पासवर्ड खोजें</translation>
 <translation id="8104088837833760645">ई-सिम प्रोफ़ाइल डाउनलोड करें</translation>
 <translation id="8104388155778519213">Google Lens की मदद से, स्क्रीन पर मौजूद कॉन्टेंट शेयर करें</translation>
+<translation id="71997506879775970"><ph name="DEVICE"/> में मौजूद अपना ब्राउज़िंग इतिहास ऐक्सेस करने के लिए, उसे सिंक करें. सेटिंग में जाकर, सिंक करने की सुविधा को कभी भी बंद किया जा सकता है. Brave आपके ब्राउज़िंग इतिहास के आधार पर, Search और अन्य सेवाओं में आपकी दिलचस्पी के मुताबिक अनुभव दे सकता है.</translation>
 <translation id="8104778744208707085">इन समस्याओं पर ध्यान देने की ज़रूरत है</translation>
 <translation id="8105273883928376822">कृपया जारी रखने के लिए साइन इन करें.</translation>
 <translation id="8106114112474206597">माउस बटन को दबाने के लिए, “i” का इस्तेमाल करें</translation>
@@ -9216,6 +9258,7 @@
 <translation id="8109991406044913868">एआई की मदद से बनाई गई थीम</translation>
 <translation id="8110393529211831722">सदस्यता सिर्फ़ इस डिवाइस पर सिंक की गई है. इसे आपके खाते का इस्तेमाल करने वाले अन्य डिवाइसों के साथ सिंक नहीं किया गया है. <ph name="LINK_BEGIN"/>ज़्यादा जानें<ph name="LINK_END"/></translation>
 <translation id="8110489095782891123">संपर्क सूची डाउनलोड हो रही है...</translation>
+<translation id="8110781914702267195"><ph name="BEGIN_LINK1"/>डेटा और निजता से जुड़ी प्राथमिकताएं<ph name="END_LINK1"/> कंट्रोल करने या <ph name="BEGIN_LINK2"/>पेमेंट के तरीके<ph name="END_LINK2"/> और लॉयल्टी कार्ड जैसे <ph name="BEGIN_LINK3"/>पास<ph name="END_LINK3"/> मैनेज करने के लिए, Google Wallet पर जाएं</translation>
 <translation id="8114925369073821854"><ph name="APP_NAME"/> के लिए माइक्रोफ़ोन को इस्तेमाल करने की अनुमति</translation>
 <translation id="8116497846156149">माता-पिता से अनुमति मांगें</translation>
 <translation id="8118276691321086429"><ph name="PASSWORD_MANAGER_BRAND"/> याद रखता है कि आपने कैसे साइन इन किया था और जब भी संभव होता है, वह आपको अपने-आप साइन कर देता है. इस सुविधा के बंद होने पर, आपसे हर बार पुष्टि करने के लिए कहा जाएगा.</translation>
@@ -9235,6 +9278,7 @@
 <translation id="8124313775439841391">प्रबंधित ONC</translation>
 <translation id="8125651784723647184">पासवर्ड शेयर करने की सुविधा को आपका एडमिन मैनेज करता है</translation>
 <translation id="8126355825906412872">मुस्कुराएं</translation>
+<translation id="479612661604810454"><ph name="DEVICE"/> में मौजूद अपना ब्राउज़िंग इतिहास ऐक्सेस करने के लिए, <ph name="EMAIL"/> से साइन इन करें. इसके बाद, इसके साथ इतिहास और टैब सिंक करें. इससे आपको अपने सभी डिवाइसों पर बुकमार्क वगैरह का भी ऐक्सेस मिलेगा. सेटिंग में जाकर, सिंक करने की सुविधा को कभी भी बंद किया जा सकता है. Brave आपके ब्राउज़िंग इतिहास के आधार पर, Search और अन्य सेवाओं में आपकी दिलचस्पी के मुताबिक अनुभव दे सकता है.</translation>
 <translation id="813082847718468539">साइट जानकारी देखें</translation>
 <translation id="8131740175452115882">पुष्टि करें</translation>
 <translation id="8133297578569873332">स्वीकार करने लायक - FM</translation>
@@ -9296,6 +9340,7 @@
 <translation id="8180295062887074137"><ph name="PRINTER_NAME"/> <ph name="PRINTER_STATUS"/>. <ph name="NUM_PRINTERS"/> में से <ph name="ITEM_POSITION"/> प्रिंटर.</translation>
 <translation id="8180785270975217276">एनर्जी सेवर चालू किया गया</translation>
 <translation id="8180786512391440389">"<ph name="EXTENSION"/>" चेक किए गए स्थानों में इमेज, वीडियो, और ध्वनि फ़ाइलों को पढ़ सकता है और मिटा सकता है.</translation>
+<translation id="8181132988581553950">Gemini के पास उन्हीं साइटों का ऐक्सेस होगा जिनका ऐक्सेस आपके पास है. इनमें वे साइटें भी शामिल हैं जिन पर आपने साइन इन किया हुआ है. यह तीसरे पक्ष के साथ ज़रूरी जानकारी शेयर करेगा. इसमें आपकी वह निजी जानकारी भी शामिल हो सकती है जो आपको संवेदनशील लग सकती है.</translation>
 <translation id="8183703640399301650">आपके डिवाइस का ईआईडी <ph name="EID_NUMBER"/> है और IMEI <ph name="IMEI_NUMBER"/> है. सेवा चालू करने के लिए, इन नंबरों का इस्तेमाल किया जा सकता है.</translation>
 <translation id="8184288427634747179"><ph name="AVATAR_NAME"/> पर जाएं</translation>
 <translation id="8184318863960255706">ज़्यादा जानकारी</translation>
@@ -9680,7 +9725,6 @@
 <translation id="8477241577829954800">अधिक्रमित किया गया</translation>
 <translation id="8477384620836102176">&amp;सामान्य</translation>
 <translation id="8477446666255316832">अगली बार ज़्यादा तेज़ी से साइन इन करें</translation>
-<translation id="8477548388161793571">चुने गए टेक्स्ट का अनुवाद करें</translation>
 <translation id="8478346767369317046">वर्क प्रोफ़ाइल</translation>
 <translation id="8479176401914456949">यह कोड गलत/अमान्य है. कृपया फिर से कोशिश करें.</translation>
 <translation id="8480869669560681089"><ph name="VENDOR_NAME"/> की ओर से अज्ञात डिवाइस</translation>
@@ -10082,6 +10126,7 @@
 <translation id="878862491037637275">इस टैब ग्रुप में अब और लोग नहीं जोड़े जा सकते</translation>
 <translation id="8791157330927639737">अपडेट करने के बारे में ज़्यादा जानें</translation>
 <translation id="8791534160414513928">अपने ब्राउज़िंग ट्रैफ़िक के साथ "Do Not Track" अनुरोध भेजें</translation>
+<translation id="879230900046110068"><ph name="WINDOW_TITLE"/> (आइसोलेटेड)</translation>
 <translation id="8793390639824829328">शेयर किए गए टैब में स्क्रोल और ज़ूम करने के लिए, साइटें इस सुविधा का इस्तेमाल करती हैं</translation>
 <translation id="8793895150509408038"><ph name="SECTION_HEADER"/> की सूची में से, <ph name="SITE"/> वाली साइट की जानकारी देखें</translation>
 <translation id="879413103056696865">हॉटस्पॉट चालू होने पर, आपका <ph name="PHONE_NAME"/> यह काम करेगा:</translation>
@@ -10145,6 +10190,7 @@
 <translation id="8841884135319684422">टास्क बंद करें</translation>
 <translation id="8842594465773264717">इस फ़िंगरप्रिंट को मिटाएं</translation>
 <translation id="8843160937959801189"><ph name="DEVICE"/> से अपने बुकमार्क वगैरह ऐक्सेस करने के लिए, <ph name="EMAIL"/> के तौर पर साइन इन करें</translation>
+<translation id="8844476858332168421">स्किल मैनेज करें</translation>
 <translation id="8845001906332463065">सहायता पाएं</translation>
 <translation id="8846132060409673887">इस कंप्यूटर का निर्माता और मॉडल पढ़ें</translation>
 <translation id="8846239054091760429">मोनो ऑडियो, स्टार्टअप, और लाइव कैप्शन वगैरह</translation>
@@ -10153,7 +10199,6 @@
 <translation id="8849001918648564819">छिपा हुआ</translation>
 <translation id="8849219423513870962"><ph name="PROFILE_NAME"/> नाम की ई-सिम प्रोफ़ाइल को हटाने की प्रक्रिया रद्द करें</translation>
 <translation id="8849262417389398097"><ph name="CHECKING"/> में से <ph name="CHECKED"/></translation>
-<translation id="8850251000316748990">ज़्यादा देखें...</translation>
 <translation id="885246833287407341">एपीआई फ़ंक्शन के तर्क</translation>
 <translation id="8853586775156634952">इस कार्ड को सिर्फ़ इस डिवाइस पर सेव किया जाएगा</translation>
 <translation id="8855242995793521265">आपके ब्राउज़र या डिवाइस को धीमा नहीं करती.</translation>
@@ -10188,6 +10233,7 @@
 <translation id="8874341931345877644">किसी डिवाइस पर कास्ट करें:</translation>
 <translation id="8874647982044395866">ऑर्गैनिक</translation>
 <translation id="8874790741333031443">कुछ समय के लिए तीसरे पक्ष की कुकी को अनुमति दें. इसका मतलब है कि साइट को मिलने वाली ब्राउज़िंग से जुड़ी सुरक्षा कम हो जाएगी. हालांकि, साइट की सुविधाएं उम्मीद के मुताबिक काम करेंगी.</translation>
+<translation id="8874864294955002500">आपके खाते के लिए सुझाव, शिकायत या राय सबमिट करने की सुविधा उपलब्ध नहीं है. आपके एंटरप्राइज़ का एडमिन, आपके लिए किसी समस्या की शिकायत करने के लिए, अपने डिवाइस या प्रोफ़ाइल का इस्तेमाल कर सकता है.</translation>
 <translation id="8875736897340638404">'डिवाइस किसको दिखाई दे' सेटिंग में कोई विकल्प चुनें</translation>
 <translation id="8876307312329369159">यह सेटिंग किसी डेमो सत्र में बदली नहीं जा सकती है.</translation>
 <translation id="8876965259056847565"><ph name="FEATURE_NAME"/> आस-पास मौजूद डिवाइसों को खोजने के लिए, ब्लूटूथ डिवाइस का पता लगाने की सुविधा का इस्तेमाल करती है.</translation>
@@ -10314,7 +10360,6 @@
 <translation id="897525204902889653">क्वॉरंटीन सेवा</translation>
 <translation id="8975562453115131273">{NUM_OTHER_TABS,plural, =0{"<ph name="TAB_TITLE"/>"}=1{"<ph name="TAB_TITLE"/>" और 1 अन्य टैब}one{"<ph name="TAB_TITLE"/>" और # अन्य टैब}other{"<ph name="TAB_TITLE"/>" और # अन्य टैब}}</translation>
 <translation id="897565255818387330">क्या इस साइट को <ph name="FILE_NAME"/> को देखने और उसकी कॉपी बनाने की अनुमति देनी है?</translation>
-<translation id="8977523125954274918">कोई स्कूल प्रोफ़ाइल सेट अप करें, ताकि आप अपने खाते में पासवर्ड वगैरह सेव कर सकें और उनका इस्तेमाल कर सकें</translation>
 <translation id="8977811652087512276">गलत पासवर्ड या खराब फ़ाइल</translation>
 <translation id="8978154919215542464">चालू - सब कुछ सिंक करें</translation>
 <translation id="8978670037548431647">टेदरिंग की सुविधा को रीफ़्रेश करें</translation>
@@ -10418,7 +10463,6 @@
 <translation id="9040661932550800571"><ph name="ORIGIN"/> के लिए पासवर्ड अपडेट करें?</translation>
 <translation id="6583236347997565045">Brave Password Manager की मदद से, मज़बूत पासवर्ड सेव करने के लिए Brave में साइन इन करें</translation>
 <translation id="9041692268811217999">आपके एडमिन ने आपकी मशीन पर स्थानीय फ़ाइलों की एक्सेस बंद कर दी है</translation>
-<translation id="9041881059840744611">स्कूल प्रोफ़ाइल के बारे में जानकारी</translation>
 <translation id="904224458472510106">इस बदलाव को पहले जैसा नहीं किया जा सकता</translation>
 <translation id="9042827002460091668">अपने इंटरनेट कनेक्शन की जांच करें और फिर से कोशिश करें</translation>
 <translation id="9042893549633094279">निजता और सुरक्षा</translation>
@@ -10633,7 +10677,6 @@
 <translation id="9219103736887031265">इमेज</translation>
 <translation id="4769114656102162048">Brave को भेजा गया डेटा, समीक्षा करने वाले लोगों को दिख सकता है. इसका मकसद, Brave की एआई टेक्नोलॉजी को बेहतर बनाना है</translation>
 <translation id="9219741625496141320">ब्राउज़िंग डेटा अपने-आप मिट गया</translation>
-<translation id="9220484506568374422">Gemini Spark के पास उन साइटों का ऐक्सेस होगा जिन्हें आपने ऐक्सेस किया है. इनमें वे साइटें भी शामिल हैं जिन पर आपने साइन इन किया है. यह तीसरे पक्ष के साथ ज़रूरी जानकारी शेयर करेगा. इसमें आपकी वह निजी जानकारी भी शामिल हो सकती है जो आपको संवेदनशील लगे.</translation>
 <translation id="9220525904950070496">खाता हटाएं</translation>
 <translation id="9220723036554088545">कोई फ़ाइल अपलोड करें</translation>
 <translation id="9220820413868316583">उंगली उठाएं और फिर से कोशिश करें.</translation>
@@ -10696,6 +10739,7 @@
 <translation id="96756691973639907"><ph name="MODULE_NAME"/> से जुड़ी और कार्रवाइयां</translation>
 <translation id="967624055006145463">सेव किया गया डेटा</translation>
 <translation id="96774243435178359">मैनेज किए गए प्रिंटर</translation>
+<translation id="967745417352972504"><ph name="BEGIN_LINK_PAYMENT_METHODS"/>पेमेंट के तरीके<ph name="END_LINK_PAYMENT_METHODS"/> और <ph name="BEGIN_LINK_PASSES"/>पास<ph name="END_LINK_PASSES"/> जोड़ने या उन्हें मैनेज करने के लिए, Google Wallet पर जाएं. जैसे, लॉयल्टी कार्ड, आईडी, और ऑफ़र</translation>
 <translation id="968000525894980488">Google Play सेवाएं चालू करें.</translation>
 <translation id="968037381421390582">चिपकाएं और “<ph name="SEARCH_TERMS"/>” को खोजें</translation>
 <translation id="969096075394517431">भाषाएं बदलें</translation>
@@ -10755,7 +10799,6 @@
 <translation id="6666022817001893507">प्राइवेट पीछे/आगे कैश सबफ़्रेम: <ph name="BACK_FORWARD_CACHE_INCOGNITO_PAGE_URL"/></translation>
 <translation id="3857922370664436307">प्राइवेट PDF सबफ़्रेम: <ph name="SUBFRAME_SITE"/></translation>
 <translation id="3193187622878830588">प्राइवेट पोर्टल: <ph name="SUBFRAME_SITE"/></translation>
-<translation id="1389212885096774902">प्राइवेट फ़ेंस फ़्रेम : <ph name="FENCEDFRAME_SITE"/></translation>
 <translation id="8261378640211443080">यह एक्सटेंशन <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> में सूचीबद्ध नहीं है और यह आपकी जानकारी के बिना जोड़ा गया हो सकता है.</translation>
 <translation id="3591188117102923109">वेब स्टोर पर<ph name="END_LINK1"/> <ph name="BEGIN_LINK1"/>से एक्सटेंशन के साथ अपने ब्राउज़र को और भी ज़्यादा ऑप्टिमाइज़ करें.</translation>
 <translation id="7226591269860979104">आपको 'वेब स्टोर' में पुराने रंग मिल सकते हैं</translation>
@@ -10810,7 +10853,6 @@
         other {दोबारा लॉन्च करने के बाद आपकी {COUNT} प्राइवेट विंडो फिर से नहीं खुलेंगी}}</translation>
 <translation id="5840822070878669614">वेब स्टोर खोलें</translation>
 <translation id="3497049935870467874">निजी मोड में असुरक्षित साइटों पर जाने से पहले चेतावनियां देखें</translation>
-<translation id="1593610935874634135">कोई कंपनी साइटों का एक ऐसा समूह बना सकती है, जो समूह में आपकी गतिविधि शेयर करने के लिए कुकीज़ का इस्तेमाल कर सकता है. गुप्त विंडो में ऐसा नहीं किया जा सकता.</translation>
 <translation id="6710473112951410470">केवल चालू प्राइवेट सेशन</translation>
 <translation id="8148807910118761153">जब आप अपनी सभी निजी विंडो बंद कर देंगे तो यह कस्टम सेटिंग हटा दी जाएगी</translation>
 <translation id="5079334477644844710">प्राइवेट मोड में <ph name="BEGIN_LINK"/>आपकी ब्राउज़िंग प्राइवेट रहती है<ph name="END_LINK"/> तब भी, जब आपका डिवाइस कोई और इस्तेमाल कर रहा हो</translation>

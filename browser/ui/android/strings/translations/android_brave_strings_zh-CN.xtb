@@ -193,9 +193,6 @@
 <translation id="5668852698659986622">启用赞助广告</translation>
 <translation id="431194936581466649">通过赞助广告帮助支持 Brave 构建独立、以用户为先的网络的使命。我们以私密方式衡量广告效果，不会识别您的身份。</translation>
 <translation id="1939813747486101115">进一步了解赞助广告</translation>
-<translation id="8347743943525229984">允许 Brave 进行调查</translation>
-<translation id="6022939994702081659">允许 Brave 在新标签页中显示隐私调查链接。这些调查可以帮助我们开发更好的功能，以及衡量浏览器广告活动的有效性。</translation>
-<translation id="7746496306508543965">了解有关 Brave 调查的更多信息</translation>
 <translation id="410351446219883937">自动播放</translation>
 <translation id="7445411102860286510">允许网站自动播放静音的视频（推荐）</translation>
 <translation id="7837721118676387834">允许特定网站自动播放静音的视频。</translation>
@@ -223,6 +220,7 @@
 <translation id="9040069796107003510">Brave 奖励图标</translation>
 <translation id="6333347122924254968">在地址栏显示 Brave 奖励图标</translation>
 <translation id="4393974575368329991">底部导航工具栏</translation>
+<translation id="8727059712928806451">启用底部工具栏</translation>
 <translation id="1834226716203076292">显示底部栏以便快速访问主页、书签和搜索</translation>
 <translation id="1422686363939271829">选择底部地址栏位置时，此设置将会被禁用</translation>
 <translation id="6587448235155023666">您所做的更改将在您下次重新启动 Brave 时生效</translation>
@@ -398,6 +396,12 @@
 <translation id="8793108040181436796">小工具</translation>
 <translation id="8643377320501056697">显示热门网站</translation>
 <translation id="7275773481201277457">显示 Brave 统计信息</translation>
+<translation id="8516804522688861636">显示经常访问的网站</translation>
+<translation id="4546260624932151782">显示收藏夹</translation>
+<translation id="5313967007315987356">添加网站</translation>
+<translation id="1773147648972887693">显示经常访问的菜单</translation>
+<translation id="752098910262610337">显示快捷方式</translation>
+<translation id="7134741506051403308">隐藏小部件</translation>
 <translation id="7462178177755090262">启动屏幕</translation>
 <translation id="5365434987337264071">上次打开的标签页</translation>
 <translation id="6019856124237323989">{HOURS, plural,
@@ -1001,6 +1005,13 @@
 <translation id="7530313002494358590">启用或禁用 Brave 功能需要重新启动浏览器才能应用更改。请在 Brave Origin 完成更新后点击<ph name="BEGIN_BOLD"/>立即重启<ph name="END_BOLD"/>。</translation>
 <translation id="1028940738207645746">确定要将所有设置重置为默认值吗?</translation>
 <translation id="5939518447894949180">重置</translation>
+<translation id="3222790865318305905">已达到激活上限</translation>
+<translation id="3787857711016546034">为防止欺诈，Origin 激活次数受到限制。但您随时可以请求更多激活次数，以便在更多设备上使用您的 Origin 许可证。只需点击“请求更多激活次数”选项，或 <ph name="CONTACT_SUPPORT"/> 寻求帮助。</translation>
+<translation id="6760819753412779585">联系支持</translation>
+<translation id="571697836019670200">请求更多激活次数</translation>
+<translation id="9019545131475425538">处理中……</translation>
+<translation id="7242700630179071243">准备激活</translation>
+<translation id="5463918917265356202">Brave Origin 现已在此设备上激活。要开始使用此功能，您需要重启浏览器。您想现在重启吗？</translation>
 <translation id="8554205386170195281">购买</translation>
 <translation id="8613144770663526433">用 Brave Wallet 登录</translation>
 <translation id="3696514931437952995">你正在登录<ph name="ORIGIN"/>。Brave 钱包将与<ph name="ORIGIN"/>共享钱包地址。</translation>

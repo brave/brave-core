@@ -10,6 +10,7 @@
 
 Ezinye izici kungenzeka zingabi khona futhi izinguquko kokuncamelayo ngeke zize zilondolozwe.</translation>
 <translation id="7577672138294294152">Umzali wakho uvale "Izimvume zamasayithi, ama-app, nezandiso" ze-Brave</translation>
+<translation id="446816247111620025">IBrave idinga ukufinyelela kunethiwekhi yakho yendawo ukuze ithole futhi isebenzise amadivayisi aseduze</translation>
 <translation id="4408482856437790071">Ukuze useshe isakhi noma isandiso esithile seBrave, thayipha isinqamuleli sayo kubha yekheli, kulandelwe ukhiye wakho wekhibhodi okhethiwe</translation>
 <translation id="3257316091303113323">Bonisa ukusesha ngeBrave kugqoko lwesistimu bese uvula isinqamuleli sekhibhodi</translation>
 <translation id="5918095577778020936">I-Brave ifuna ukuthumela amaphasiwedi akho. Thayipha iphasiwedi yakho ye-Windows ukuze uvumele lokhu.</translation>
@@ -43,6 +44,7 @@ Ezinye izici kungenzeka zingabi khona futhi izinguquko kokuncamelayo ngeke zize 
 <translation id="141901961143729572">Yabelana ngemicabango yakho</translation>
 <translation id="3880714039086599943">Ukuze wabelane ngewindi lakho, vumela ukurekhodwa kwesikrini kweBrave Kumasethingi Ohlelo.</translation>
 <translation id="1586284627848250203">Thola usizo nge-Brave Yokuhlola</translation>
+<translation id="6741861636851880121">Ukuze uthole imininingwane yakho egciniwe nokukuma<ph name="DEVICE"/>, ngena ngemvume kuBrave</translation>
 <translation id="1497802159252041924">Iphutha lokufaka <ph name="INSTALL_ERROR"/></translation>
 <translation id="1518627427551567882">Leli khasi livikelwe</translation>
 <translation id="5147525139567260139">Yabelana ngethebhu ye-Brave</translation>
@@ -105,6 +107,7 @@ Ezinye izici kungenzeka zingabi khona futhi izinguquko kokuncamelayo ngeke zize 
 <translation id="2126108037660393668">Ifayela elidawunilodiwe aliphumelelanga lapho liqinisekiswa.</translation>
 <translation id="2135919691573380097">Bika le sayithi</translation>
 <translation id="2137162749895930932">Vala isikrini sokuhumusha</translation>
+<translation id="2147218225094845757">Fihla iphaneli eseceleni</translation>
 <translation id="5789330946301045610">I-Brave ivimbele lokhu kulanda ngoba isayithi alisebenzisi uxhumano oluvikelekile futhi kungenzeka ukuthi ifayela lonaniwe.</translation>
 <translation id="2170098639895543546">Khetha noma yini esekhasini</translation>
 <translation id="142389341645668510">Yenza i-Brave ngokwezifiso</translation>
@@ -189,6 +192,7 @@ Ezinye izici kungenzeka zingabi khona futhi izinguquko kokuncamelayo ngeke zize 
 <translation id="7611046016537686219">{count,plural, =1{IBrave idinga ukuqinisekisa ukuthi uwena ngaphambi kokuthi idatha ethile ilondolozwe kuBrave sync chain yakho futhi isetshenziswe kuwo wonke amadivayisi akho. Uma uphuma ngemvume manje, le datha (into e-1) izosulwa.}one{IBrave idinga ukuqinisekisa ukuthi uwena ngaphambi kokuthi idatha ethile ilondolozwe kuBrave sync chain yakho futhi isetshenziswe kuwo wonke amadivayisi akho. Uma uphuma ngemvume manje, le datha (izinto ezingu-{count}) izosulwa.}other{IBrave idinga ukuqinisekisa ukuthi uwena ngaphambi kokuthi idatha ethile ilondolozwe kuBrave sync chain yakho futhi isetshenziswe kuwo wonke amadivayisi akho. Uma uphuma ngemvume manje, le datha (izinto ezingu-{count}) izosulwa.}}</translation>
 <translation id="4202995875619419215">Vula i-<ph name="URL"/> kuthebhu entsha ku-Brave.</translation>
 <translation id="1266825212217391702">Okusha kwe-AI okufana namakhono kulondolozwa kuBrave sync chain yakho futhi kulawulwa ngokuhlukile ekuvumelaniseni kweBrave</translation>
+<translation id="5459594001857520297">Ukuze uthole izandiso zakho nokukumadivayisi akho, ngena ngemvume kuBrave</translation>
 <translation id="8880183781256147665">Ingeza ku-Brave...</translation>
 <translation id="3038232873781883849">Ilinde ukufaka...</translation>
 <translation id="3045032126857188731">Ulimi oluhunyushiwe: <ph name="LANGUAGE"/></translation>
@@ -199,6 +203,7 @@ Ezinye izici kungenzeka zingabi khona futhi izinguquko kokuncamelayo ngeke zize 
 <translation id="7918740962659365265">Siza ukwenza i-Brave ibe ngcono ngokuthumela imibiko yokuphahlazeka ne-<ph name="UMA_LINK"/> ku-Brave</translation>
 <translation id="6828757829023033545">Sebenzisa i-app yeBrave ukuze uvikele iBrave usendleleni</translation>
 <translation id="2332543193474246254">{NUM_DEVICES,plural, =0{Idivayisi e-1 ye-USB ibifinyelelwa yisandiso se-Brave esisodwa noma eziningi}=1{Idivayisi e-1 ye-USB ifinyelelwa yisandiso se-Brave esisodwa noma eziningi}one{Amadivayisi angu-# e-USB abefinyelelwa yisandiso se-Brave esisodwa noma eziningi}other{Amadivayisi angu-# e-USB abefinyelelwa yisandiso se-Brave esisodwa noma eziningi}}</translation>
+<translation id="3924086216508892728">Ukuze uthole uhlu lwakho lokufunda nokuningi ku-<ph name="DEVICE"/>, ngena ngemvume kuBrave</translation>
 <translation id="3700405816184340252">Umlando weBrave</translation>
 <translation id="7365690458036015383">Isifaki sihlulekile ukungaminyanisi ingobo yomlando. Sicela ulande i-Brave futhi.</translation>
 <translation id="310459126943037700">Yehlulekile ukuqeda imisebenzi.</translation>
@@ -220,6 +225,7 @@ Ezinye izici kungenzeka zingabi khona futhi izinguquko kokuncamelayo ngeke zize 
 
 <ph name="USER_DATA_DIRECTORY"/></translation>
 <translation id="8414435293910785169">Sebenzisa amathuluzi akho ayintandokazi eBrave AI usendleleni ngeBrave ku-iOS.</translation>
+<translation id="7474458067542595245">Ukuze uthole izandiso zakho nokukuma<ph name="DEVICE"/>, ngena ngemvume kuBrave</translation>
 <translation id="3286538390144397061">Qala kabusha manje</translation>
 <translation id="2339258256897053758">Okhiye be-Brave API abekho. Okunye ukusebenza kwe-Brave kuzokhutshazwa.</translation>
 <translation id="8926637909431618259">Qhubeka usebenzise izinhlelo zokusebenza ezingemuva uma i-Brave ivaliwe</translation>
@@ -231,6 +237,7 @@ Ezinye izici kungenzeka zingabi khona futhi izinguquko kokuncamelayo ngeke zize 
 <translation id="2645435784669275700">I-ChromeOS</translation>
 <translation id="2297290224191497273">Shintshela kwiphrofayela le-Brave elikhona kakade?</translation>
 <translation id="3412460710772753638">Kokuthi Isiphathi Sephasiwedi kule divayisi</translation>
+<translation id="5079573433701109938">Ukuze uthole amabhukhimakhi akho nokukuma<ph name="DEVICE"/>, ngena ngemvume kuBrave</translation>
 <translation id="3438772217992559640">Sesha Le Thebhu Ngosesho Lomfanekiso</translation>
 <translation id="2491221873705777076">Nweba Ukubhrawuza Okuphephe Ngokuthuthukisiwe ngeBrave efonini yakho</translation>
 <translation id="7304389940068374923">Yenza iBrave ibe ngeyakho...</translation>
@@ -263,7 +270,7 @@ Ezinye izici kungenzeka zingabi khona futhi izinguquko kokuncamelayo ngeke zize 
 
           **Phakamisa Imibuzo:** Sungula uhlu lwamachashazi olunemibuzo emi-3 ukuya kwemi-5 eshukumisa ingqondo engase ibuzwe umsebenzisi ukuze asiqonde kahle i-screenshot. Le mibuzo kufanele ihlanganise okungenani owodwa okhuluma ngokuqondile ngento ebukwayo, indlela eklanywe ngayo, noma indawo ekuyo.</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
-<translation id="387514319934708384">IBrave idinga imvume yenethiwekhi yendawo kule sayithi</translation>
+<translation id="2715414892112164725">Ukuze uthole amabhukhimakhi nokukumadivayisi akho, ngena ngemvume kuBrave</translation>
 <translation id="3885770153807205175">Okokukhetha ulimi</translation>
 <translation id="6315734375101223238">Yenza ngokwezifiso uphinde ulawule i-Brave. Okuthile kudinga ukuthi ukunake - chofoza ngemininingwane.</translation>
 <translation id="7130675370997202556">Chofoza igama lakho ukuze uvule i-Brave uphinde uqale ukudlulisa amehlo.</translation>
@@ -272,6 +279,7 @@ Ezinye izici kungenzeka zingabi khona futhi izinguquko kokuncamelayo ngeke zize 
 <translation id="6184592406110188164">Lesi sandiso sephula inqubomgomo Yesitolo sewebu se-Brave, futhi kungenzeka singabi esiphephile. Sisuse ku-Brave ukuze singasakwazi ukubona nokushintsha idatha yakho kumasayithi owavakashelayo, okufaka phakathi ulwazi lwakho lomuntu siqu.</translation>
 <translation id="3941890832296813527">Iphutha lokufaka: Igama lefayela lesifaki alivumelekile noma alisekelwe.</translation>
 <translation id="8090497651549769448">I-Brave izama ukukopisha amaphasiwedi. Thayipha iphasiwedi yakho ye-Windows ukuze uvumele lokhu.</translation>
+<translation id="794644331787250140">Ukuze uthole imininingwane oyigcinile nokukumadivayisi akho, ngena ngemvume kuBrave</translation>
 <translation id="4256965182800026277">Amaphasiwedi akho, izindlela zokukhokha, namakheli owalondoloze kuBrave sync chain yakho azosuswa kule divayisi. Ukuze uphinde uzisebenzise kuBrave, ngena ngemvume futhi.</translation>
 <translation id="395904275706073188">Amakhasi avikelwe awakwazi ukufundwa. Zama ikhasi elehlukile.</translation>
 <translation id="4194619960643453552">Funda ukuthi i-Brave ikugcina kanjani uphephile</translation>
@@ -360,6 +368,7 @@ Ezinye izici kungenzeka zingabi khona futhi izinguquko kokuncamelayo ngeke zize 
 <translation id="711601904575862069">Qalisa kabusha ukuze Ubuyekeze i-&amp;Brave</translation>
 <translation id="4918086044614829423">Yamukela</translation>
 <translation id="4918844574251943176">Umfanekiso ukopishiwe</translation>
+<translation id="1762888370864318972">Ukuze uthole uhlu lwakho lokufunda nokukumadivayisi akho, ngena ngemvume kuBrave</translation>
 <translation id="8797356639448065696">I-Brave kumodi yasemuva.</translation>
 <translation id="1895567721497166950">Chofoza ukuze uvale ibhokisi lokungena ngemvume leBrave</translation>
 <translation id="2692971232706994729">Ngamaphrofayela weBrave ungahlukanisa zonke izinto zakho zeBrave. Sungula amaphrofayela wabangane nomndeni, noma uhlukanise phakathi komsebenzi nobumnandi.</translation>
@@ -441,9 +450,9 @@ Uma leli khasi lingasebenzi njengoba kulindelekile, zama ukuvumela ukulungiselel
 <translation id="8054200348483755053">I-Brave ithole ukuthi lezi zinto zinohlelo olungayilungele ikhompyutha</translation>
 <translation id="3955583201925082436">I-Brave ihlale ihlola ukuze iqinisekise ukuthi ibhrawuza inamasethingi aphephe kakhulu. Sizokwazisa uma kukhona okudinga ukubuyekezwa.</translation>
 <translation id="5895138241574237353">Qalisa kabusha</translation>
+<translation id="5095041423280144434">IGemini Enterprise kuBrave</translation>
 <translation id="5903106910045431592"><ph name="PAGE_TITLE"/> - Inethiwekhi Yokugena ngemvume</translation>
 <translation id="5924017743176219022">Ixhuma Ku-inthanethi...</translation>
-<translation id="1275716786566134844">Masilungiselele iBrave yakho</translation>
 <translation id="5941711191222866238">Nciphisa</translation>
 <translation id="5768962901674164501">Ukuze uthole le bhukhimakhi nokuningi kuwo wonke amadivayisi akho, ngena ngemvume kuBrave</translation>
 <translation id="5101892358689285100">Yenza iBrave Yakho</translation>
@@ -594,6 +603,7 @@ Amabhukhimakhi amasha awakwazi ukulondolozwa e-akhawuntini yakho uze usule amany
 <translation id="5755581833598928580">Sebenzisa i-Brave noma nini lapho uchofoza amalinki emiyalezweni, kumadokhumenti, nakwamanye ama-app</translation>
 <translation id="7216228761061470870">Uma usebenzisa Usesho Lomfanekiso kudeskithophu, isihloko sekhasi, i-URL, nekhontenti, okuhlanganisa ama-PDF, kuthunyelwa kuseva</translation>
 <translation id="5516268345616100622">Isiphathi somsebenzi - I-Brave</translation>
+<translation id="4366259698872849085">Buza mayelana nekhontenti ngaphandle kweBrave, njengamanye ama-app noma amafayela</translation>
 <translation id="2416155625082200759">U-<ph name="EXISTING_USER"/> usevele ungene ngemvume. Ukuze ugcine ukubhrawuza kwakho kuhlukile, ngena ngemvume kuBrave kuphrofayela yakho njengo-<ph name="USER_EMAIL_ADDRESS"/> Uzothola nemininingwane yakho elondoloziwe nokuningi kuwo wonke amadivayisi akho.</translation>
 <translation id="1871621397473741084">Qala ukubhrawuza ngokushesha: IBrave manje ingaqala lapho iWindows iqala.</translation>
 <translation id="7274695763216404502">Kuphiniwe! Sebenzisa Usesho Lomfanekiso futhi kubha yamathuluzi</translation>
@@ -648,7 +658,6 @@ I-Brave ayikwazi ukubuyisela izilungiselelo zakho.</translation>
 <translation id="77283119132245232">Inikeza amasevisi okulandelela isistimu ku-<ph name="BROWSER_NAME"/>. Uma le sevisi ikhutshaziwe, ukusebenza kokulandelela okusungulwe yibhrawuza ngeke kuhlanganise imisebenzi yobubanzi besistimu njengokushintshwa kokuqukethwe kanye nemisebenzi esikulungele yochungechunge.</translation>
 <translation id="4784414698887946907">Lokhu kuzosusa idatha yakho yokuphequlula kusukela kule divayisi. Ukuze uthole idatha yakho emuva kwesikhathi, ngena ngemvume ku-Brave njengo-<ph name="USER_EMAIL"/>.</translation>
 <translation id="7747138024166251722">Isifaki asikwazanga ukudala umkhombandlela wesikhashana. Sicela uhlolele isikhala esikhululekile sediski nemvume ukuze ufake isofthiwe.</translation>
-<translation id="644418935605751729">Sesha ku-Brave</translation>
 <translation id="8543787950557226450">Setha Kabusha kuBrave Ezenzakalelayo</translation>
 <translation id="4859382825808018797">Ukuze uvikele umsebenzi wakho kuBrave, inhlangano yakho izokwazi ukubuka noma ukulawula ulwazi oluthile uma ungene ngemvume kuBrave.</translation>
 <translation id="4976450819672499783">Setha iBrave njengokuzenzakalelayo bese uyiphina ku-taskbar</translation>
@@ -656,7 +665,6 @@ I-Brave ayikwazi ukubuyisela izilungiselelo zakho.</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> - Brave Canary</translation>
 <translation id="2684504034454188774">Kwenze kube nzima kubantu abanokufinyelela kuthrafikhi yakho ye-inthanethi ukuze babone ukuthi imaphi amasayithi owavakashelayo. I-Brave isebenzisa ukuxhuma okuvikelekile ukuze ibheke ikheli lasesizindeni se-inthanethi lesayithi ku-DNS (Isistimu Yokwetha Isizinda).</translation>
 <translation id="7810005234485217901">Ungaphina Usesho Lomfanekiso ukuze lufinyeleleke kalula</translation>
-<translation id="3219490697448569661">Buza mayelana nekhontenti ngaphandle kweBrave, njengenye i-app noma ifayela olivulile</translation>
 <translation id="4191642852677143100">Khetha ukuthi yini ongabelana ngayo neBrave</translation>
 <translation id="1652855885539187849">Iphrofayela ye-Brave enale akhawunti isikhona akakade kule divayisi</translation>
 <translation id="7845233973568007926">Siyabonga ngokufaka. Kufanele uqalise kabusha ikhompyutha yakho ngaphambi kokusebenzisa i-<ph name="BUNDLE_NAME"/>.</translation>
@@ -790,6 +798,7 @@ I-Brave ayikwazi ukubuyisela izilungiselelo zakho.</translation>
 <translation id="7055223246119657449">I-Brave ivimbele lokhu kudawuniloda ngoba ifayela lengobo yomlando lihlanganisa namanye amafayela angase afihle uhlelo olungayilungele ikhompyutha</translation>
 <translation id="8341362078156319636">Gcina amaphasiwedi akho, amabhukhimakhi, nomlando kuvunyelaniswe ngokuphelele kuwo wonke amadivayisi. Finyelela kalula izakhi ozaziyo nozithandayo ngokubuyekeza ibhrawuza yakho evuleka ngokuzenzakalelayo ibe yiBrave. IBrave izophinwa kutaskbar yakho ukuze ifinyeleleke ngokushesha.</translation>
 <translation id="8965179855019347124">Sebenzisa amathuluzi e-AI ahamba phambili eBrave nge-app yeBrave efonini yakho</translation>
+<translation id="7591043002129819267">Ukuze uthole amaphasiwedi akho nokuningi ku-<ph name="DEVICE"/>, ngena ngemvume kuBrave</translation>
 <translation id="9049928023195059068">Ngena ngemvume ku-Brave uma ungena ngemvume kwamanye amasevisi e-Brave</translation>
 <translation id="4561046754724442504">I-Brave ivalwe ngokuzenzekelayo</translation>
 <translation id="5173820533850252773">I-Brave ayikho kudethi</translation>

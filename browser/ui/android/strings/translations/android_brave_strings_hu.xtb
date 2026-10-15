@@ -193,9 +193,6 @@
 <translation id="5668852698659986622">Szponzorált hirdetések engedélyezése</translation>
 <translation id="431194936581466649">Támogassa a Brave küldetését, hogy egy független, felhasználó-központú webet építsen a szponzorált hirdetésekkel. A hirdetések teljesítményét privát módon mérjük, anélkül, hogy azonosítanánk Önt.</translation>
 <translation id="1939813747486101115">Tudj meg többet a szponzorált hirdetésekről</translation>
-<translation id="8347743943525229984">Brave felmérések engedélyezése</translation>
-<translation id="6022939994702081659">Engedélyezi, hogy a Brave privát kérdőívekre mutató hivatkozásokat jelenítsen meg az új lap oldalon. A kérdőívek segítenek jobb funkciókat létrehozni, és mérni a böngészőalapú hirdetési kampányok hatékonyságát.</translation>
-<translation id="7746496306508543965">Tudjon meg többet a Brave-felmérésekről</translation>
 <translation id="410351446219883937">Automatikus lejátszás</translation>
 <translation id="7445411102860286510">Lehetővé teszi a webhelyek számára a némított videók automatikus lejátszását (ajánlott)</translation>
 <translation id="7837721118676387834">A némított videók automatikus lejátszásának engedélyezése az adott webhelyen.</translation>
@@ -223,6 +220,7 @@
 <translation id="9040069796107003510">Brave jutalom ikon</translation>
 <translation id="6333347122924254968">A Brave-jutalmak ikonjának megjelenítése a címsorban</translation>
 <translation id="4393974575368329991">Alsó navigációs eszköztár</translation>
+<translation id="8727059712928806451">Alsó sáv engedélyezése</translation>
 <translation id="1834226716203076292">Alsó sáv megjelenítése a kezdőlap, a könyvjelzők és a keresés gyors eléréséhez</translation>
 <translation id="1422686363939271829">Ez a beállítás nem elérhető, ha az alsó címsáv van kiválasztva</translation>
 <translation id="6587448235155023666">A változtatásai a Brave következő indításakor lépnek érvénybe</translation>
@@ -398,6 +396,12 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="8793108040181436796">Widgetek</translation>
 <translation id="8643377320501056697">Legjobb oldalak mutatása</translation>
 <translation id="7275773481201277457">Brave statisztikák mutatása</translation>
+<translation id="8516804522688861636">Gyakran látogatott oldalak mutatása</translation>
+<translation id="4546260624932151782">Kedvencek mutatása</translation>
+<translation id="5313967007315987356">Webhely hozzáadása</translation>
+<translation id="1773147648972887693">Gyakran látogatottak mutatása</translation>
+<translation id="752098910262610337">Parancsikonok mutatása</translation>
+<translation id="7134741506051403308">Modul elrejtése</translation>
 <translation id="7462178177755090262">Kezdőképernyő</translation>
 <translation id="5365434987337264071">Utoljára megnyitott lap</translation>
 <translation id="6019856124237323989">{HOURS, plural, =1 {Új lap <ph name="HOURS_ONE"/> óra tétlenség után} other {Új lap <ph name="HOURS_MANY"/> óra tétlenség után}}</translation>
@@ -998,6 +1002,13 @@ other {<ph name="CITY_COUNT_MANY"/> város - }
 <translation id="7530313002494358590">A Brave-funkciók engedélyezése vagy letiltása böngésző-újraindítást igényel a módosítások alkalmazásához. Kérjük, kattintson a <ph name="BEGIN_BOLD"/>Újraindítás most<ph name="END_BOLD"/> gombra, miután a Brave Origin befejezte a frissítést.</translation>
 <translation id="1028940738207645746">Biztosan visszaállítja az összes beállítást az alapértelmezettre?</translation>
 <translation id="5939518447894949180">Visszaállítás</translation>
+<translation id="3222790865318305905">Aktiválási korlát elérve</translation>
+<translation id="3787857711016546034">A csalás megelőzése érdekében az Origin-aktiválások száma korlátozott. De bármikor kérhet több aktiválást, hogy az Origin-licencét több eszközön is használhassa. Csak kattintson a Több aktiválás kérése lehetőségre, vagy <ph name="CONTACT_SUPPORT"/> segítségért.</translation>
+<translation id="6760819753412779585">lépjen kapcsolatba az ügyfélszolgálattal</translation>
+<translation id="571697836019670200">Több aktiválás kérése</translation>
+<translation id="9019545131475425538">Feldolgozás…</translation>
+<translation id="7242700630179071243">Készen áll az aktiválásra</translation>
+<translation id="5463918917265356202">A Brave Origin most már aktív ezen az eszközön. A funkció használatának megkezdéséhez újra kell indítania a böngészőt. Szeretné most újraindítani?</translation>
 <translation id="8554205386170195281">Vásárlás</translation>
 <translation id="8613144770663526433">Bejelentkezés a Brave pénztárcával</translation>
 <translation id="3696514931437952995">A következőbe jelentkezik be: <ph name="ORIGIN"/>. A Brave pénztárca meg fogja osztani a pénztárcája címét a következővel: <ph name="ORIGIN"/>.</translation>

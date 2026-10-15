@@ -193,9 +193,6 @@
 <translation id="5668852698659986622">Homiylik reklamalarini yoqish</translation>
 <translation id="431194936581466649">Homiylik reklamalari bilan Brave'ning mustaqil, foydalanuvchini birinchi o'ringa qo'yuvchi Web qurish missiyasini qo'llab-quvvatlashga yordam bering. Biz reklama samaradorligini sizni aniqlamasdan, maxfiy tarzda o'lchaymiz.</translation>
 <translation id="1939813747486101115">Homiylik qilingan reklamalar haqida ko‘proq bilib oling</translation>
-<translation id="8347743943525229984">Brave soʻrovnomalariga ruxsat bering</translation>
-<translation id="6022939994702081659">Brave'ga yangi varaq sahifasida shaxsiy soʻrovnomalarga havolalarni koʻrsatishga ruxsat beradi. Soʻrovnomalar bizga yangi funksiyalarni yaxshilash va brauzer orqali amalga oshiriladigan reklama kampaniyalarining samaradorligini baholashga yordam beradi.</translation>
-<translation id="7746496306508543965">Brave soʻrovnomalari haqida batafsil</translation>
 <translation id="410351446219883937">Avtomatik ijro</translation>
 <translation id="7445411102860286510">Saytlarga ovozsiz videolarni avtomatik o‘ynatishga ruxsat bering (tavsiya etiladi)</translation>
 <translation id="7837721118676387834">Ma’lum bir sayt uchun ovozsiz videolarni avtomatik ijro etishga ruxsat bering.</translation>
@@ -223,6 +220,7 @@
 <translation id="9040069796107003510">Brave Rewards belgisi</translation>
 <translation id="6333347122924254968">Manzil satrida Brave Rewards belgisini ko‘rsatish</translation>
 <translation id="4393974575368329991">Pastki navigatsion panel</translation>
+<translation id="8727059712928806451">Pastki panelni yoqish</translation>
 <translation id="1834226716203076292">Bosh sahifa, xatcho'plar va qidiruvga tez kirish uchun pastki panelni ko'rsatish</translation>
 <translation id="1422686363939271829">Bu sozlama pastki manzil paneli tanlanganda o‘chiriladi</translation>
 <translation id="6587448235155023666">O‘zgartirishlaringiz Brave qayta ishga tushirilgandan keyin kuchga kiradi</translation>
@@ -405,6 +403,12 @@ Buni qilishga ishonchingiz komilmi?</translation>
 <translation id="8793108040181436796">Vidgetlar</translation>
 <translation id="8643377320501056697">Eng ko'p kirilgan saytlarni ko'rsatish</translation>
 <translation id="7275773481201277457">Brave Statistikasini koʻrsatish</translation>
+<translation id="8516804522688861636">Tez-tez tashrif buyuriladigan saytlarni koʻrsatish</translation>
+<translation id="4546260624932151782">Sevimlilarni koʻrsatish</translation>
+<translation id="5313967007315987356">Sayt qoʻshish</translation>
+<translation id="1773147648972887693">Tez-tez tashrif buyuriladiganlarni koʻrsatish</translation>
+<translation id="752098910262610337">Tezkor tugmalarni koʻrsatish</translation>
+<translation id="7134741506051403308">Vidjetni yashirish</translation>
 <translation id="7462178177755090262">Ochilish ekrani</translation>
 <translation id="5365434987337264071">Oxirgi ochilgan tab</translation>
 <translation id="6019856124237323989">{HOURS, plural, =1 {Faolliksiz <ph name="HOURS_ONE"/> soatdan so‘ng yangi tab ochiladi} other {Faolliksiz <ph name="HOURS_MANY"/> soatdan so‘ng yangi tab ochiladi}}</translation>
@@ -1017,6 +1021,13 @@ Dastlab yanada koʻproq maʼlumot baham koʻrsangiz, bizning yordam xizmatimiz m
 <translation id="7530313002494358590">Brave funksiyasini faollashtirish yoki oʻchirish oʻzgarishlarni qoʻllash uchun brauzerni qayta ishga tushirishni talab qiladi. Iltimos, Brave Origin yangilanishini tugatgach <ph name="BEGIN_BOLD"/>Hozir qayta ishga tushiring<ph name="END_BOLD"/> tugmasini bosing.</translation>
 <translation id="1028940738207645746">Siz haqiqatan ham barcha sozlamalarni standartga qaytarishni xohlaysizmi?</translation>
 <translation id="5939518447894949180">Tiklash</translation>
+<translation id="3222790865318305905">Faollashtirish chegarasiga yetildi</translation>
+<translation id="3787857711016546034">Firibgarlikning oldini olish uchun Origin faollashtirishlari cheklangan. Lekin siz Origin litsenziyangizni koʻproq qurilmalarda ishlatish uchun istalgan vaqtda qoʻshimcha faollashtirishlar soʻrashingiz mumkin. Faqat Qoʻshimcha faollashtirishlar soʻrash opsiyasini bosing yoki yordam uchun <ph name="CONTACT_SUPPORT"/>.</translation>
+<translation id="6760819753412779585">yordam bilan bog‘lanish</translation>
+<translation id="571697836019670200">Qoʻshimcha faollashtirishlar soʻrash</translation>
+<translation id="9019545131475425538">Qayta ishlanmoqda…</translation>
+<translation id="7242700630179071243">Faollashtirishga tayyor</translation>
+<translation id="5463918917265356202">Brave Origin endi ushbu qurilmada faol. Funksiyadan foydalanishni boshlash uchun brauzerni qayta ishga tushirishingiz kerak. Hozir qayta ishga tushirmoqchimisiz?</translation>
 <translation id="8554205386170195281">Sotib olish</translation>
 <translation id="8613144770663526433">Brave hamyon bilan kirish</translation>
 <translation id="3696514931437952995">Siz <ph name="ORIGIN"/> ga kiryapsiz. Brave hamyon manzilingizni <ph name="ORIGIN"/> bilan boʻlishadi.</translation>
