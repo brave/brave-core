@@ -29,8 +29,10 @@ static_library("serp_metrics") {
     "//brave/components/serp_metrics",
     "//brave/components/serp_metrics/time_period_storage",
     "//chrome/browser/profiles:profile",
+    "//chrome/browser/ui/tabs:tabs_public",
     "//components/search_engines",
     "//content/public/browser",
+    "//ui/base/unowned_user_data",
   ]
 
   deps = [
@@ -44,6 +46,7 @@ static_library("serp_metrics") {
     "//chrome/browser/profiles:profile_util",
     "//components/keyed_service/core",
     "//components/prefs",
+    "//components/tabs:public",
     "//ui/base",
     "//url",
   ]
