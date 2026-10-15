@@ -8,6 +8,8 @@ source and headers live in
 
 ## ✅ DEPS File - Use Commit Hashes
 
+**File Patterns:** `**/DEPS`
+
 **In DEPS files, always use commit hashes rather than branch names or tags.**
 Commit hashes are immutable and ensure reproducible builds.
 
@@ -16,6 +18,8 @@ Commit hashes are immutable and ensure reproducible builds.
 <a id="BS-003"></a>
 
 ## ✅ Reuse Existing GN Config Args
+
+**File Patterns:** `**/BUILD.gn`, `**/*.gni`
 
 **Check for existing GN args before creating new ones.** Duplicating config
 arguments (e.g., creating `brave_android_keystore_path` when
@@ -26,6 +30,8 @@ arguments (e.g., creating `brave_android_keystore_path` when
 <a id="BS-004"></a>
 
 ## ✅ Python Build Scripts
+
+**File Patterns:** `**/*.py`. Python build scripts.
 
 Python scripts used in the build system should follow these conventions:
 
@@ -50,6 +56,8 @@ Python scripts used in the build system should follow these conventions:
 
 ## ✅ Group Sources and Deps Together in BUILD.gn
 
+**File Patterns:** `**/BUILD.gn`, `**/*.gni`
+
 **Always group `sources` and `deps` in the same block.** Don't dump everything
 in one place - move files to separate BUILD.gn files when needed so it's clear
 which deps belong to which sources.
@@ -73,6 +81,8 @@ source_set("branded_wallpaper") {
 <a id="BS-006"></a>
 
 ## ❌ Never More Than One Guard Per Target
+
+**File Patterns:** `**/BUILD.gn`, `**/*.gni`
 
 **There should almost never be more than one of the same guard in any given
 BUILD.gn target.** If you find yourself repeating the same
@@ -110,6 +120,8 @@ currently used by that feature.
 
 ## ✅ Buildflag Naming Convention
 
+**File Patterns:** `**/BUILD.gn`, `**/*.gni`
+
 **Use `enable_brave_<feature>` as the naming convention for buildflags when the
 flag needs to be distinguished from a Chromium flag or is a top-level Brave
 feature.** The `enable_brave_` prefix is not required for flags that are clearly
@@ -134,6 +146,9 @@ enable_tab_management_tool = !is_android
 
 ## ❌ Don't Duplicate License Files
 
+**File Patterns:** `**/LICENSE*`, `**/COPYING*`. License-file candidates; also
+inspect equivalent license files with other names.
+
 **Never duplicate Chromium or other project license files.** Use special cases
 or references instead.
 
@@ -142,6 +157,9 @@ or references instead.
 <a id="BS-011"></a>
 
 ## ✅ JSON Resources Should Go in GRD Files
+
+**File Patterns:** `**/*.json`, `**/*.{grd,grdp}`. Packaged resource data, not
+arbitrary JSON configuration.
 
 **JSON data files should be packaged as resources in `.grd` files, not loaded
 from disk.** This allows the same data to be used from both C++ and JS.
@@ -155,6 +173,8 @@ for an example.
 <a id="BS-013"></a>
 
 ## ✅ Use `//brave/` Deps Instead of Modifying Visibility Lists
+
+**File Patterns:** `**/BUILD.gn`, `**/*.gni`
 
 **When adding deps from Chromium targets to Brave code, use high-level
 `//brave/` targets (e.g., `//brave/utility`) instead of modifying Chromium
@@ -174,6 +194,9 @@ deps += [ "//brave/utility" ]
 <a id="BS-015"></a>
 
 ## ✅ Keep Scripts Near Their Use
+
+**File Patterns:** `**/*.{py,js,sh}`. Build/utility scripts, not every file with
+these extensions.
 
 **Build and utility scripts should live near the build target or configuration
 that uses them.** For example, if a script is only used by a GN `action()` in a
@@ -214,6 +237,8 @@ network auditor.
 
 ## ❌ Don't Use OS Guards as Proxy for Feature Guards
 
+**File Patterns:** `**/BUILD.gn`, `**/*.gni`
+
 **Use the correct feature guard (`brave_wallet_enabled`, `enable_extensions`)
 instead of approximating with OS guards (`!is_android && !is_ios`).** OS guards
 can get out of sync with the actual feature flag logic.
@@ -235,6 +260,8 @@ if (brave_wallet_enabled) {
 <a id="BS-019"></a>
 
 ## ✅ Use `use_blink` for Content-Layer Dependencies, Not `!is_ios`
+
+**File Patterns:** `**/BUILD.gn`, `**/*.gni`
 
 **Code that depends on the content layer (`//content/...`) must be guarded with
 `use_blink`, not `!is_ios`.** The `use_blink` flag is the correct way to detect
@@ -274,6 +301,8 @@ if (use_blink) {
 
 ## ❌ Don't Have Both `BUILD.gn` and `sources.gni` in the Same Directory
 
+**File Patterns:** `**/BUILD.gn`, `**/sources.gni`
+
 **A directory should contain either a `BUILD.gn` file (preferred) or a
 `sources.gni` file, but not both.** Having both creates confusion about which is
 authoritative and makes dependency tracking harder.
@@ -283,6 +312,8 @@ authoritative and makes dependency tracking harder.
 <a id="BS-053"></a>
 
 ## ✅ Use `sources.gni` Only for Circular Dependencies with Upstream
+
+**File Patterns:** `**/BUILD.gn`, `**/sources.gni`
 
 **Only use `sources.gni` when inserting source files into upstream Chromium
 targets with circular deps.** For all other cases, use normal `BUILD.gn`
@@ -294,6 +325,9 @@ changes trigger rebuilds of large upstream targets.
 <a id="BS-021"></a>
 
 ## ✅ Wire Component Unit Tests Through `components/BUILD.gn`
+
+**File Patterns:** `components/**/BUILD.gn`, `components/BUILD.gn`,
+`test/BUILD.gn`
 
 **Unit test files should have a `unit_tests` target in the component's own
 `BUILD.gn`, not be individually listed in a top-level test target. For code
@@ -336,6 +370,10 @@ flag every existing dep there as a violation.
 
 ## ✅ Create `test_support` Targets for Reusable Fakes/Mocks
 
+**File Patterns:** `**/BUILD.gn`, `**/{fake_,mock_}*.{cc,h,mm}`,
+`**/*_{fake,mock}.{cc,h,mm}`. Fakes/mocks can have other names; inspect reusable
+test support regardless of filename.
+
 **When creating fake or mock implementations of services for testing, put them
 in a separate `test_support` BUILD.gn target rather than embedding them directly
 in a `unit_tests` target.** This allows multiple test targets across the
@@ -376,6 +414,9 @@ source_set("unit_tests") {
 
 ## ✅ Use `PlatformBrowserTest` for Cross-Platform Browser Tests
 
+**File Patterns:** `**/*browsertest*.{cc,h,mm}`. Cross-platform browser-test
+candidates.
+
 **Browser tests that should run on both desktop and Android should use
 `PlatformBrowserTest` as the base class instead of `InProcessBrowserTest`.**
 
@@ -398,6 +439,8 @@ class MyBrowserTest : public PlatformBrowserTest {};
 <a id="BS-024"></a>
 
 ## ✅ Use `public_deps` for Header-File Includes in BUILD.gn
+
+**File Patterns:** `**/BUILD.gn`, `**/*.gni`
 
 **When a dependency's headers are included in your target's header files (not
 just .cc files), that dependency must be listed in `public_deps`, not `deps`.**
@@ -425,6 +468,9 @@ source_set("my_service") {
 
 ## ✅ Utility Scripts Should Be Python, Not Node.js or Shell
 
+**File Patterns:** `**/*.{py,js,sh}`. Build/utility scripts, not every file with
+these extensions.
+
 **Build and utility scripts in brave-core should be written in Python (using
 `vpython` from depot tools), not Node.js or shell scripts.** This follows
 Chromium conventions, avoids additional runtime dependencies, and works on all
@@ -435,6 +481,8 @@ platforms including Windows.
 <a id="BS-027"></a>
 
 ## ✅ Unconditional Buildflags Deps with Conditional `deps +=`
+
+**File Patterns:** `**/BUILD.gn`, `**/*.gni`
 
 **When adding `deps +=` inside an `if(enable_feature)` block in GN, always add
 an unconditional `buildflags` dependency outside the conditional.** The
@@ -466,6 +514,8 @@ if (enable_brave_rewards) {
 
 ## ✅ Use source_set Only for Internal Targets (with Restricted Visibility)
 
+**File Patterns:** `**/BUILD.gn`, `**/*.gni`
+
 **Public targets for a component should use `static_library` or `component`, not
 `source_set`.** Only internal deps should use `source_set`, and those must have
 restricted visibility to prevent external use.
@@ -489,6 +539,8 @@ source_set("internal_network") {
 
 ## ✅ Python File Writes: Use `newline='\n'`
 
+**File Patterns:** `**/*.py`. Python file writes.
+
 **When writing files from Python scripts, always specify `newline='\n'`** in
 `open()` to ensure consistent LF line endings across platforms (especially
 Windows).
@@ -508,6 +560,8 @@ with open(output_path, 'w', newline='\n') as f:
 <a id="BS-030"></a>
 
 ## ✅ Use `include_rules` for Common Includes, `specific_include_rules` for Edge Cases
+
+**File Patterns:** `**/DEPS`
 
 **In DEPS files, use `include_rules` for generally allowed includes across all
 files in a directory.** Reserve `specific_include_rules` for edge cases where an
@@ -535,6 +589,8 @@ include_rules = [
 
 ## ✅ Bump `resource_ids.spec` by 5
 
+**File Patterns:** `**/resource_ids.spec`
+
 **When adding new resource IDs in `resource_ids.spec`, bump the next ID by 5
 (not 1)** to leave room for additions without conflicting with adjacent entries.
 
@@ -543,6 +599,8 @@ include_rules = [
 <a id="BS-032"></a>
 
 ## ✅ Use `component()` Not `static_library()` for Service GN Targets
+
+**File Patterns:** `**/BUILD.gn`, `**/*.gni`
 
 **Mojo service targets should use `component()` instead of `static_library()` in
 BUILD.gn.** Components support dynamic linking and are the correct target type
@@ -553,6 +611,10 @@ for service implementations.
 <a id="BS-033"></a>
 
 ## ❌ Unit Tests for Components Must NOT Live in Browser
+
+**File Patterns:** `components/**/*{_unittest,_test}.{cc,mm}`, `**/BUILD.gn`,
+`**/DEPS`. Component tests and dependencies; misplaced component tests under
+browser also trigger the rule.
 
 **Unit tests for code in `//brave/components` must not be placed in
 `//brave/browser`.** Tests should live alongside the code they test. Use
@@ -577,6 +639,8 @@ source_set("unit_tests") {
 
 ## ✅ DEPS Allowlist Paths Must Exactly Match Include Paths
 
+**File Patterns:** `**/DEPS`
+
 **DEPS file allowlist paths must exactly match the `#include` paths used in
 source files.** A mismatch (e.g., `common/` vs `core/`) means the DEPS check
 doesn't validate the right file.
@@ -586,6 +650,8 @@ doesn't validate the right file.
 <a id="BS-037"></a>
 
 ## ✅ Use `assert()` at Top of Entire-Feature BUILD.gn Files
+
+**File Patterns:** `**/BUILD.gn`, `**/*.gni`
 
 **If an entire BUILD.gn file belongs to a feature, use `assert(enable_feature)`
 at the top** rather than wrapping individual blocks in `if (enable_feature)`.
@@ -663,6 +729,8 @@ smell that masks real build dependency issues.
 
 ## ✅ GN Deps Guarded by Feature Flags Only, Not Platform Guards
 
+**File Patterns:** `**/BUILD.gn`, `**/*.gni`
+
 **Within a single GN target, deps should be added behind the relevant buildflags
 only, not nested inside platform guards.** GN and C++ guards should always
 match.
@@ -686,6 +754,8 @@ if (enable_tor) {
 <a id="BS-041"></a>
 
 ## ❌ Don't Guard Deps with Unrelated Guards
+
+**File Patterns:** `**/BUILD.gn`, `**/*.gni`
 
 **A dep should only be placed inside a guard if the dep itself is specific to
 that guard condition.** If a dep is needed regardless of the guard condition,
@@ -718,6 +788,8 @@ if (use_blink) {
 
 ## ✅ When Disabling a Feature, Compile Out Its Tests
 
+**File Patterns:** `**/BUILD.gn`, `**/*.gni`
+
 **When a build flag disables a feature, exclude the feature-specific test files
 from the build** using conditionals rather than trying to fix compilation errors
 by adjusting test dependencies.
@@ -748,6 +820,8 @@ frequently only appear in the disabled state.
 
 ## ✅ Use Chromium UI Preprocessor for Conditional WebUI Code
 
+**File Patterns:** `**/*.{js,ts,html}`. Conditional WebUI code.
+
 **Use `// <if expr="enable_feature">` in JS and `<if expr="enable_feature">` in
 HTML to conditionally compile feature-specific WebUI code.** This completely
 removes the code from the build when the feature is disabled, rather than
@@ -765,6 +839,8 @@ import { SpeedreaderPage } from './speedreader_page.js'
 <a id="BS-046"></a>
 
 ## ✅ Assert Build Flag Dependencies Between Features
+
+**File Patterns:** `**/BUILD.gn`, `**/*.gni`
 
 **When Feature A depends on Feature B, assert Feature B's build flag is true
 when Feature A is enabled** rather than making Feature A work without Feature B
@@ -806,6 +882,9 @@ inline constexpr char kOllamaEndpoint[] = "http://localhost:11434";
 
 ## ❌ Never Add Anything to `components/constants` (Deprecated)
 
+**File Patterns:** `components/constants/**`. Also inspect new dependencies on
+this deprecated component elsewhere.
+
 **The `components/constants` directory is not a real component — it is a
 deprecated legacy dumping ground that should be removed.** Never add new
 constants, headers, or targets there. Instead, place constants in a `common`
@@ -833,6 +912,8 @@ clear owner, place it in a `brave_domains` target.
 
 ## ❌ Don't Use Compound Buildflags (Channel + Platform + Official)
 
+**File Patterns:** `**/BUILD.gn`, `**/*.gni`
+
 **Do not create buildflags that combine channel, platform, and official_build
 conditions** (e.g., enabled only on nightly + desktop + official). These
 compound flags break during branch migration (nightly → beta → release) and
@@ -844,6 +925,8 @@ independently testable flags instead.
 <a id="BS-055"></a>
 
 ## ✅ Use `public` to Restrict Header Visibility in Components
+
+**File Patterns:** `**/BUILD.gn`, `**/*.gni`
 
 **When a GN target exposes only a subset of its headers to consumers, explicitly
 list those headers in `public = [...]` to keep the rest internal.** This
@@ -897,6 +980,8 @@ whether they require user opt-in.
 
 ## ❌ Don't Add New Source Files to `browser/ui/BUILD.gn`
 
+**File Patterns:** `browser/ui/BUILD.gn`
+
 **Don't add new `sources` entries to the `source_set("ui")` target in
 `brave/browser/ui/BUILD.gn`.** Adding source files here is flagged in review
 because `//chrome/browser/ui` is prone to circular dependencies, and Brave
@@ -937,6 +1022,8 @@ to suppress circular include errors. See [`gni_sources.md`](../gni_sources.md)
 <a id="BS-058"></a>
 
 ## ❌ Don't Use System-Absolute Paths in GN
+
+**File Patterns:** `**/BUILD.gn`, `**/*.gni`
 
 **Targets that are part of the Brave build must never use system-absolute paths
 in GN. When calling `rebase_path()`, pass the path's expected base as

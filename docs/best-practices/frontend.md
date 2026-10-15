@@ -4,6 +4,9 @@
 
 ## ❌ Don't Spread Args in Render Helpers or Components
 
+**File Patterns:** `**/*.{tsx,jsx,ts,js}`. React-bearing code; verify React
+usage rather than requiring a component filename.
+
 **Avoid spreading `...args` into `render()`, component props, or other React
 APIs.** Spreading arbitrary arguments can allow unexpected attributes to be
 injected, potentially leading to XSS. Pass explicit props instead.
@@ -39,6 +42,9 @@ async function renderMyComponent(
 
 ## ❌ Avoid Redundant React Keys
 
+**File Patterns:** `**/*.{tsx,jsx,ts,js}`. React-bearing code; verify React
+usage rather than requiring a component filename.
+
 **When a parent component already assigns a `key` prop to a child in a list, the
 child should not redundantly set its own key on inner elements for list-keying
 purposes.** Redundant keys suggest a misunderstanding of React's reconciliation
@@ -70,6 +76,8 @@ boundary.
 
 ## ✅ Move Utility Functions to Dedicated Modules
 
+**File Patterns:** `**/*.{ts,tsx}`
+
 **Pure utility functions should live in dedicated utility modules (e.g.,
 `utils/conversation_history_utils.ts`), not in React context/state files.**
 Context files should focus on state management, not data transformation logic.
@@ -79,6 +87,9 @@ Context files should focus on state management, not data transformation logic.
 <a id="FE-004"></a>
 
 ## ✅ Merge Similar UI Components
+
+**File Patterns:** `**/*.{tsx,jsx,ts,js}`. React-bearing code; verify React
+usage rather than requiring a component filename.
 
 **When adding support for a new file type to an upload/attachment UI, merge
 similar components into a single generic one** rather than creating parallel
@@ -98,6 +109,10 @@ components.
 <a id="FE-005"></a>
 
 ## ❌ Don't Redefine Types from Generated Bindings
+
+**File Patterns:** `**/*.{test,spec}.{ts,tsx,js,jsx}`,
+`**/__tests__/**/*.{ts,tsx,js,jsx}`. Test candidates; tests can use other
+filenames.
 
 **In TypeScript tests, import enum types from generated Mojo bindings or source
 files.** Do not redefine or duplicate them in test files.
@@ -119,6 +134,9 @@ import { FileType } from 'gen/brave/components/ai_chat/core/common/mojom/ai_chat
 
 ## ❌ Avoid Unnecessary `useMemo` for Simple Property Access
 
+**File Patterns:** `**/*.{tsx,jsx,ts,js}`. React-bearing code; verify React
+usage rather than requiring a component filename.
+
 **Don't wrap simple property lookups in `useMemo`.** Accessing `array.length`,
 `obj.property`, or other trivial derivations is cheaper than React's memoization
 overhead.
@@ -136,6 +154,9 @@ const count = items.length
 <a id="FE-007"></a>
 
 ## ✅ Return Null from Components When No Data
+
+**File Patterns:** `**/*.{tsx,jsx,ts,js}`. React-bearing code; verify React
+usage rather than requiring a component filename.
 
 **React components should return `null` early when there's no data to render,**
 rather than rendering empty containers or placeholder markup that adds
@@ -160,6 +181,9 @@ function UserInfo({ user }: Props) {
 
 ## ✅ Use `generateReactContext` for Mojo API Contexts
 
+**File Patterns:** `**/*.{tsx,jsx,ts,js}`. React-bearing code; verify React
+usage rather than requiring a component filename.
+
 **Use the `generateReactContext` helper from `$web-common/api/react_api`** for
 creating React context + provider pairs for Mojo API bindings. Don't write
 custom context boilerplate for each API.
@@ -169,6 +193,9 @@ custom context boilerplate for each API.
 <a id="FE-009"></a>
 
 ## ✅ Use Partial Value Updates Instead of Spread-Then-Modify
+
+**File Patterns:** `**/*.{tsx,jsx,ts,js}`. React-bearing code; verify React
+usage rather than requiring a component filename.
 
 **When updating state objects, prefer partial update functions over spreading
 the entire object and overriding one field.** This is more efficient and less
@@ -188,6 +215,9 @@ setPartialState({ isLoading: true })
 
 ## ❌ Don't Provide Defaults for Leo CSS Variables
 
+**File Patterns:** `**/*.{css,scss,ts,tsx,js,jsx,html}`. Styles using Leo CSS
+variables, including CSS-in-JS.
+
 **Never provide fallback/default values for Leo design system CSS custom
 properties.** Leo variables are guaranteed to be set by the design system;
 providing defaults can mask theming bugs and produce inconsistent styling.
@@ -205,6 +235,9 @@ color: var(--leo-color-text-primary);
 <a id="FE-012"></a>
 
 ## ✅ New UI Components Must Have Storybook Stories
+
+**File Patterns:** `**/*.{tsx,jsx}`, `**/*.stories.{ts,tsx,js,jsx}`. New UI
+components trigger the requirement; do not inspect only existing story files.
 
 **New UI features should have Storybook stories that cover their primary visual
 states.** Stories serve as both documentation and visual regression baselines. A
@@ -237,6 +270,8 @@ if ('text' in value && 'role' in value) { ... }
 <a id="FE-014"></a>
 
 ## ✅ WebUI Resource Files Must Be in Correct Top-Level Directory
+
+**File Patterns:** `**/resources/**`. WebUI resource directories.
 
 **WebUI resource files must be placed in the correct top-level directory under
 `resources/` matching the WebUI host name.** Misplaced resources won't be found
@@ -274,6 +309,10 @@ language. Design system consistency takes precedence over raw semantic HTML.
 
 ## ❌ Avoid Unnecessary `waitFor` in React Tests
 
+**File Patterns:** `**/*.{test,spec}.{ts,tsx,js,jsx}`,
+`**/__tests__/**/*.{ts,tsx,js,jsx}`. Test candidates; tests can use other
+filenames.
+
 **In React component tests, if you are using `rerender` to trigger updates,
 `waitFor` should not be needed** since `rerender` is synchronous. Similarly,
 wrapping DOM mutations in `act()` applies pending React updates. Using `waitFor`
@@ -284,6 +323,9 @@ unnecessarily makes tests slower and can mask timing-related bugs.
 <a id="FE-017"></a>
 
 ## ❌ Avoid Global State Assumptions for Component-Scoped Operations
+
+**File Patterns:** `**/*.{tsx,jsx,ts,js}`. React-bearing code; verify React
+usage rather than requiring a component filename.
 
 **When a function accesses global state (like `window.getSelection()`), consider
 what happens if multiple instances of the component exist on the page.** If the
@@ -296,6 +338,8 @@ instead of relying on global state.
 
 ## ✅ Document Exported TypeScript Types
 
+**File Patterns:** `**/*.{ts,tsx}`
+
 **Exported TypeScript types intended for use outside the component must have
 documentation comments** explaining their purpose. Complex union types and data
 shapes used as component APIs especially need explicit documentation for
@@ -306,6 +350,9 @@ consumers.
 <a id="FE-022"></a>
 
 ## ✅ Documentation Code Examples Must Be Valid
+
+**File Patterns:** `**/*.{md,mdx}`. Documentation code examples; examples
+embedded elsewhere also qualify.
 
 **Code examples in README files and documentation must be syntactically valid
 and compilable.** Developers copy-paste them. Invalid JSX (e.g., missing
@@ -330,6 +377,9 @@ fragment wrappers for sibling elements, `onClick={fn()}` instead of
 
 ## ✅ Use TypeScript Entry Points Instead of Inline Scripts
 
+**File Patterns:** `**/*.html`, `**/*.ts`, `**/BUILD.gn`. WebUI entry points and
+their build wiring.
+
 **When adding JavaScript to WebUI pages, always use compiled TypeScript entry
 points rather than inline `<script>` tags.** This gives you type checking, code
 analysis, and consistent bundling. Add additional entry points to the GN build
@@ -348,6 +398,9 @@ entry_points = [
 <a id="FE-024"></a>
 
 ## ✅ Prefer Functional Components Over Class Components
+
+**File Patterns:** `**/*.{tsx,jsx,ts,js}`. React-bearing code; verify React
+usage rather than requiring a component filename.
 
 **Write React components as functions, not classes.** Functional components with
 hooks are simpler, easier to test, and compose better. Class components require
@@ -432,6 +485,8 @@ runs.
 
 ## ❌ Don't Replace Hardcoded Initial CSS With Design Tokens That Load Asynchronously
 
+**File Patterns:** `**/*.html`. WebUI initial styling.
+
 **In WebUI HTML files, keep hardcoded initial background/foreground colors for
 the page body or root container.** Design tokens like
 `var(--leo-color-container-background)` are loaded asynchronously via JavaScript
@@ -462,6 +517,9 @@ initial paint.
 
 ## ✅ Wrap `JSON.parse` in Try/Catch in React Render Paths
 
+**File Patterns:** `**/*.{tsx,jsx,ts,js}`. React-bearing code; verify React
+usage rather than requiring a component filename.
+
 **`JSON.parse` calls on external or server data in React render paths (including
 `useMemo`) must be wrapped in `try/catch`.** Malformed JSON will throw a
 `SyntaxError` that crashes the entire component tree if uncaught.
@@ -486,6 +544,10 @@ const config = useMemo(() => {
 
 ## ❌ Don't Use `render().toBeTruthy()` in React Tests
 
+**File Patterns:** `**/*.{test,spec}.{ts,tsx,js,jsx}`,
+`**/__tests__/**/*.{ts,tsx,js,jsx}`. Test candidates; tests can use other
+filenames.
+
 **`render()` always returns a truthy object, so
 `expect(render(<Component />)).toBeTruthy()` always passes.** Assert on actual
 rendered content instead.
@@ -505,6 +567,9 @@ expect(getByText('Expected text')).toBeTruthy()
 
 ## ❌ Avoid `dangerouslySetInnerHTML` for External Content
 
+**File Patterns:** `**/*.{tsx,jsx,ts,js}`. React-bearing code; verify React
+usage rather than requiring a component filename.
+
 **Do not use `dangerouslySetInnerHTML` to render HTML from external or untrusted
 sources.** Instead, parse the data and render known safe elements using React
 components. If raw HTML rendering is unavoidable, sanitize it first and request
@@ -515,6 +580,9 @@ a security review.
 <a id="FE-029"></a>
 
 ## ✅ Clean Up Async Operations in React `useEffect`
+
+**File Patterns:** `**/*.{tsx,jsx,ts,js}`. React-bearing code; verify React
+usage rather than requiring a component filename.
 
 **Async operations started in `useEffect` must be properly cleaned up to prevent
 state updates on unmounted components.** Use `AbortController` or a ref-based

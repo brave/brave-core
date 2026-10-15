@@ -124,6 +124,10 @@ Real fixes are:
 
 ## ❌ NEVER Use RunUntilIdle()
 
+**File Patterns:** `**/*{_unittest,_browsertest,_test}.{cc,mm}`,
+`**/test*/**/*.{cc,h,mm}`. Async C++ tests; inspect test code with other
+filenames too.
+
 **DO NOT use `RunLoop::RunUntilIdle()` for asynchronous testing.**
 
 This is explicitly forbidden by Chromium style guide because it causes flaky
@@ -141,6 +145,10 @@ tests:
 <a id="TA-006"></a>
 
 ## ✅ Use base::test::RunUntil() for C++ Conditions
+
+**File Patterns:** `**/*{_unittest,_browsertest,_test}.{cc,mm}`,
+`**/test*/**/*.{cc,h,mm}`. Async C++ tests; inspect test code with other
+filenames too.
 
 **GOOD - When checking C++ state:**
 
@@ -164,6 +172,10 @@ ASSERT_TRUE(base::test::RunUntil([this]() {
 
 ## General Rule: Avoid Nested Run Loops
 
+**File Patterns:** `**/*{_unittest,_browsertest,_test}.{cc,mm}`,
+`**/test*/**/*.{cc,h,mm}`. Async C++ tests; inspect test code with other
+filenames too.
+
 **Any operation that creates its own run loop should NOT be called inside
 `base::test::RunUntil()`:**
 
@@ -179,6 +191,10 @@ ASSERT_TRUE(base::test::RunUntil([this]() {
 <a id="TA-009"></a>
 
 ## ✅ ALWAYS Use `base::test::TestFuture` Over RunLoop for Callbacks
+
+**File Patterns:** `**/*{_unittest,_browsertest,_test}.{cc,mm}`,
+`**/test*/**/*.{cc,h,mm}`. Async C++ tests; inspect test code with other
+filenames too.
 
 **REQUIRED for callback-based operations.** `TestFuture` is more concise and
 less error-prone than `RunLoop` patterns. Reviewers actively enforce this — PRs
@@ -214,6 +230,10 @@ cancellation).
 
 ## ✅ Mojo Message Ordering for Test Synchronization
 
+**File Patterns:** `**/*{_unittest,_browsertest,_test}.{cc,mm}`,
+`**/test*/**/*.{cc,h,mm}`. Async C++ tests; inspect test code with other
+filenames too.
+
 **Mojo processes messages in order on a given interface.** Making a synchronous
 mojo call through an interface guarantees that all prior async messages on that
 same interface have been processed. This is a precise alternative to polling for
@@ -237,6 +257,10 @@ EXPECT_EQ(true, content::EvalJs(web_contents,
 
 ## Alternative: QuitClosure() + Run()
 
+**File Patterns:** `**/*{_unittest,_browsertest,_test}.{cc,mm}`,
+`**/test*/**/*.{cc,h,mm}`. Async C++ tests; inspect test code with other
+filenames too.
+
 **For manual control when TestFuture doesn't fit:**
 
 ```cpp
@@ -250,6 +274,10 @@ run_loop.Run();  // Waits specifically for this closure
 <a id="TA-012"></a>
 
 ## ✅ Wait for Mojo Completion Before EvalJs Assertions
+
+**File Patterns:** `**/*{_unittest,_browsertest,_test}.{cc,mm}`,
+`**/test*/**/*.{cc,h,mm}`. Async C++ tests; inspect test code with other
+filenames too.
 
 **In browser tests, do not call `EvalJs` immediately after an async Mojo
 operation to check its effects.** The mojo message may not have been processed

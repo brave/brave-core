@@ -4,6 +4,9 @@
 
 ## ✅ Update Documentation Alongside Code Changes
 
+**File Patterns:** `**/*.{md,mdx}`. Documentation candidates; inline
+documentation and documentation affected by code changes also qualify.
+
 **Documentation changes must accompany code modifications in the same
 changelist.** Don't create separate CLs for documentation updates — they tend to
 get forgotten or lose context. Updating docs in the same CL ensures accuracy and
@@ -23,6 +26,9 @@ CL 1: Refactor RewardsService API + update README and method docs
 <a id="DOC-002"></a>
 
 ## ✅ Delete Dead Documentation
+
+**File Patterns:** `**/*.{md,mdx}`. Documentation candidates; inline
+documentation and documentation affected by code changes also qualify.
 
 **Remove outdated documentation rather than letting it rot.** Obsolete docs
 mislead developers and erode trust in the codebase. When you encounter
@@ -73,6 +79,8 @@ std::optional<PublisherInfo> GetPublisherInfo(const std::string& id);
 
 ## ✅ README.md Files Should Orient New Readers
 
+**File Patterns:** `**/README.md`
+
 **Each major directory should have a README.md that orients new developers.** A
 good README identifies:
 
@@ -114,6 +122,9 @@ Get the service via the factory: RewardsServiceFactory::GetForProfile(profile)
 
 ## ✅ Don't Duplicate Documentation — Link to Canonical Sources
 
+**File Patterns:** `**/*.{md,mdx}`. Documentation candidates; inline
+documentation and documentation affected by code changes also qualify.
+
 **Link to existing documentation rather than creating duplicates.** Duplicate
 docs inevitably drift out of sync. If you need project-specific context, add a
 brief note and link to the canonical source.
@@ -145,6 +156,9 @@ Brave-specific: also register in `brave/browser/about_flags.cc`.
 <a id="DOC-011"></a>
 
 ## ✅ Prefer Minimal, Fresh Documentation Over Comprehensive Stale Documentation
+
+**File Patterns:** `**/*.{md,mdx}`. Documentation candidates; inline
+documentation and documentation affected by code changes also qualify.
 
 **A small amount of accurate, up-to-date documentation is more valuable than
 extensive documentation in poor condition.** Treat documentation like a bonsai

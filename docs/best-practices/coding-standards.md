@@ -197,6 +197,8 @@ copy-paste old copyright years from other files.
 
 ## ❌ Don't Define Methods in Headers
 
+**File Patterns:** `**/*.h`
+
 **Move method definitions to .cc files.** Keep headers minimal - only include
 what's strictly required for the declarations.
 
@@ -249,6 +251,8 @@ local to a `.cc` file in an unnamed namespace (see [CS-016](#CS-016)).
 <a id="CS-014"></a>
 
 ## ✅ Use Forward Declarations in Headers, Include in `.cc`
+
+**File Patterns:** `**/*.h`
 
 **Headers should use forward declarations instead of `#include` for types only
 used as pointers or references.** Move the full `#include` to the `.cc` file.
@@ -315,6 +319,8 @@ class MyClass {
 
 ## ✅ Use Anonymous Namespaces for Internal Code
 
+**File Patterns:** `**/*.{cc,mm}`. Internal implementation helpers.
+
 **If a function or class is strictly internal to a .cc file, put it in an
 anonymous namespace.**
 
@@ -348,6 +354,8 @@ constexpr int kMaxRetries = 3;
 <a id="CS-017"></a>
 
 ## ✅ Function Ordering in `.cc` Should Match `.h`
+
+**File Patterns:** `**/*.{cc,h,mm}`
 
 **Function definitions in `.cc` files should appear in the same order as their
 declarations in the corresponding `.h` file.**
@@ -472,6 +480,8 @@ if (!number) return std::nullopt;
 <a id="CS-022"></a>
 
 ## ✅ Feature Flag Comments Go in `.cc` Files
+
+**File Patterns:** `**/*.{cc,h,mm}`
 
 **Comments explaining what a `base::Feature` does should be placed in the `.cc`
 file where the feature is defined, not in the `.h` file.**
@@ -704,6 +714,9 @@ void RewardsService::SavePendingContribution(...) {
 <a id="CS-033"></a>
 
 ## ✅ Platform-Specific Code Splitting
+
+**File Patterns:** `**/*.{cc,h,mm}`. Include generic files containing
+platform-specific code, not only platform-suffixed files.
 
 **When a method's implementation is completely different on a platform, split it
 into a separate file** like `my_class_android.cc` rather than filling the main
@@ -1172,6 +1185,10 @@ std::string script = "const selectors = " + json_selectors + ";";
 
 ## ✅ Use `EvalJs` Instead of Deprecated `ExecuteScriptAndExtract*`
 
+**File Patterns:** `**/*{_unittest,_browsertest,_test}.{cc,mm}`,
+`**/test*/**/*.{cc,h,mm}`. C++ tests and helpers; test code can use other
+filenames.
+
 **In browser tests, use `EvalJs` and `ExecJs` instead of the deprecated
 `ExecuteScriptAndExtractBool/String/Int` functions.**
 
@@ -1230,6 +1247,10 @@ loader->DownloadUrl(url);
 <a id="CS-061"></a>
 
 ## ✅ Name Death Test Suites with `*DeathTest` Suffix
+
+**File Patterns:** `**/*{_unittest,_browsertest,_test}.{cc,mm}`,
+`**/test*/**/*.{cc,h,mm}`. C++ tests and helpers; test code can use other
+filenames.
 
 **Per GoogleTest conventions, death test suite names must end with
 `DeathTest`.** GoogleTest uses this suffix to apply special threading behavior
@@ -1373,6 +1394,8 @@ See
 
 ## ✅ Use `*.mojom-forward.h` in Headers When Only Forward Declarations Are Needed
 
+**File Patterns:** `**/*.h`
+
 **When a header only references mojom types as pointers, references, or function
 parameters, include the auto-generated `*.mojom-forward.h` instead of the full
 `*.mojom.h` bindings.** The forward header declares all types from the mojom
@@ -1482,6 +1505,8 @@ in an opaque-origin context.
 <a id="CS-072"></a>
 
 ## ❌ Don't Use `#pragma once` — Use `#include` Guards
+
+**File Patterns:** `**/*.h`
 
 **Every header needs a standard `#include` guard; `#pragma once` is not
 allowed.** It was historically unsupported on some platforms and doesn't

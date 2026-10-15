@@ -225,6 +225,10 @@ inline constexpr base::TimeDelta kCleanupDelay = base::Seconds(30);
 
 ## ❌ Don't Depend on `//chrome` from Components Tests
 
+**File Patterns:** `components/**/*{_unittest,_test}.{cc,mm}`, `**/BUILD.gn`,
+`**/DEPS`. Component tests and dependencies; misplaced component tests under
+browser also trigger the rule.
+
 **Component-level unit tests must not depend on `//chrome`.** If you need
 objects typically created by Chrome infrastructure, create them manually in the
 test.
@@ -797,6 +801,9 @@ computation.
 <a id="TI-040"></a>
 
 ## ✅ Use chromium_src Include Pattern to Test Upstream Overrides
+
+**File Patterns:** `chromium_src/**/*{_unittest,_browsertest,_test}.{cc,mm}`.
+Override-test candidates; other test filenames can also wrap upstream tests.
 
 **When overriding upstream Chromium code via `chromium_src`, include the
 upstream test file and add Brave-specific tests after it.** This runs all
