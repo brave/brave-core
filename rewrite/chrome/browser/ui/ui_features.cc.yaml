@@ -4,11 +4,6 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
-  - description: 'Ship kFewerUpdateConfirmations disabled.'
-    set_feature_flag_default_state:
-      feature_name: kFewerUpdateConfirmations
-      value: base::FEATURE_DISABLED_BY_DEFAULT
-
   - description: |-
       Ship kPdfInfoBar disabled.
 
