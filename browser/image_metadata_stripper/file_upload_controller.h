@@ -13,6 +13,7 @@
 #include "base/files/file_path.h"
 #include "base/functional/callback.h"
 #include "base/memory/scoped_refptr.h"
+#include "base/memory/weak_ptr.h"
 #include "base/sequence_checker.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/threading/sequence_bound.h"
@@ -105,6 +106,12 @@ class FileUploadController : public tabs::ContentsObservingTabFeature {
 
   explicit FileUploadController(tabs::TabInterface& tab);
 
+  // Records the FBMD metadata stripping metrics for |copies| and forwards them
+  // to the client's |callback|. Runs on the calling (UI) sequence.
+  void OnStripped(StrippingClient client,
+                  StripCallback callback,
+                  std::vector<std::optional<base::FilePath>> copies);
+
   // tabs::ContentsObservingTabFeature override.
   // TODO(https://github.com/brave/brave-browser/issues/58868): Consider
   // observing OnPrimaryPageChanged to reset the Delegate (therefore deleting
@@ -126,6 +133,11 @@ class FileUploadController : public tabs::ContentsObservingTabFeature {
   // This helps to get the right FileUploadController instance for a given
   // WebContents.
   ui::ScopedUnownedUserData<FileUploadController> scoped_unowned_user_data_;
+
+  // Safety measure to ensure calling FileUploadController::OnStripped callback
+  // on the UI thread is safe if ever the owning FileUploadController instance
+  // is destroyed.
+  base::WeakPtrFactory<FileUploadController> weak_ptr_factory_{this};
 };
 }  // namespace image_metadata_stripper
 
