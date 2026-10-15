@@ -15,20 +15,20 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <org.chromium.components.browser_ui.widget.RadioButtonWithDescription
+        <org.chromium.components.browser_ui.widget.BraveRadioButtonWithDescriptionRight
             android:id="@+id/new_opening_screen_last_open_tab_radio_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="@dimen/min_touch_target_size"
             app:primaryText="@string/opening_screen_last_open_tab" />
 
-        <org.chromium.components.browser_ui.widget.RadioButtonWithDescription
+        <org.chromium.components.browser_ui.widget.BraveRadioButtonWithDescriptionRight
             android:id="@+id/new_opening_screen_new_tab_after_inactivity_radio_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="@dimen/min_touch_target_size" />
 
-        <org.chromium.components.browser_ui.widget.RadioButtonWithDescription
+        <org.chromium.components.browser_ui.widget.BraveRadioButtonWithDescriptionRight
             android:id="@+id/new_opening_screen_new_tab_radio_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
