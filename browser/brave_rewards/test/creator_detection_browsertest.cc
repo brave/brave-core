@@ -19,14 +19,26 @@
 #include "brave/components/brave_rewards/content/rewards_service.h"
 #include "brave/components/brave_rewards/core/features.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
+#include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/test/base/chrome_test_utils.h"
 #include "chrome/test/base/platform_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/prefs/pref_service.h"
+#include "components/tabs/public/tab_interface.h"
+#include "content/public/browser/navigation_controller.h"
+#include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
+#include "content/public/test/test_navigation_observer.h"
 #include "net/dns/mock_host_resolver.h"
+
+#if !BUILDFLAG(IS_ANDROID)
+#include "chrome/browser/resource_coordinator/lifecycle_unit_state.mojom.h"
+#include "chrome/browser/resource_coordinator/tab_lifecycle_unit_external.h"
+#include "chrome/browser/resource_coordinator/tab_lifecycle_unit_source.h"
+#include "chrome/browser/ui/tabs/tab_strip_model.h"
+#endif
 
 using base::test::TestFuture;
 using net::test_server::BasicHttpResponse;
@@ -91,7 +103,8 @@ class CreatorDetectionBrowserTest : public PlatformBrowserTest {
   RewardsTabHelper& GetRewardsTabHelper() {
     auto* web_contents = chrome_test_utils::GetActiveWebContents(this);
     CHECK(web_contents);
-    auto* tab_helper = RewardsTabHelper::FromWebContents(web_contents);
+    auto* tab_helper = RewardsTabHelper::From(
+        tabs::TabInterface::GetFromContents(web_contents));
     CHECK(tab_helper);
     return *tab_helper;
   }
@@ -431,5 +444,45 @@ IN_PROC_BROWSER_TEST_F(CreatorDetectionFeatureDisabledBrowserTest,
   WaitForTimeout();
   EXPECT_EQ(GetRewardsTabHelper().GetPublisherIdForTab(), "");
 }
+
+#if !BUILDFLAG(IS_ANDROID)
+// Discarding a tab keeps its Rewards tab helper, which must forget the old
+// page's creator and detect it again once the tab reloads.
+IN_PROC_BROWSER_TEST_F(CreatorDetectionBrowserTest, ClearsCreatorOnDiscard) {
+  SetResponseHTML(R"(
+    <!doctype html>
+    <html>
+      <body>Example creator</body>
+    </html>
+  )");
+
+  ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
+      browser(),
+      embedded_https_test_server().GetURL("example-creator.com", "/"),
+      WindowOpenDisposition::NEW_BACKGROUND_TAB,
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
+  TabStripModel* const tab_strip_model = browser()->tab_strip_model();
+  tabs::TabInterface* const tab =
+      tab_strip_model->GetTabAtIndex(tab_strip_model->count() - 1);
+  auto* const tab_helper = RewardsTabHelper::From(tab);
+  ASSERT_TRUE(tab_helper);
+  EXPECT_EQ(tab_helper->GetPublisherIdForTab(), "example-creator.com");
+
+  auto* const lifecycle_unit =
+      resource_coordinator::TabLifecycleUnitSource::GetTabLifecycleUnitExternal(
+          tab->GetContents());
+  ASSERT_TRUE(lifecycle_unit);
+  ASSERT_TRUE(
+      lifecycle_unit->DiscardTab(::mojom::LifecycleUnitDiscardReason::URGENT));
+  EXPECT_EQ(tab_helper, RewardsTabHelper::From(tab));
+  EXPECT_EQ(tab_helper->GetPublisherIdForTab(), "");
+
+  content::TestNavigationObserver navigation_observer(tab->GetContents());
+  tab_strip_model->ActivateTabAt(tab_strip_model->GetIndexOfTab(tab));
+  tab->GetContents()->GetController().LoadIfNecessary();
+  navigation_observer.Wait();
+  EXPECT_EQ(tab_helper->GetPublisherIdForTab(), "example-creator.com");
+}
+#endif  // !BUILDFLAG(IS_ANDROID)
 
 }  // namespace brave_rewards

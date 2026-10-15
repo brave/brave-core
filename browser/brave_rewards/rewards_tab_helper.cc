@@ -13,25 +13,31 @@
 #include "brave/components/brave_rewards/core/publisher_utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/sessions/content/session_tab_helper.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
-#include "content/public/browser/web_contents_user_data.h"
 #include "third_party/blink/public/mojom/loader/resource_load_info.mojom.h"
 
 namespace brave_rewards {
 
-RewardsTabHelper::RewardsTabHelper(content::WebContents* web_contents)
-    : content::WebContentsUserData<RewardsTabHelper>(*web_contents),
-      WebContentsObserver(web_contents),
-      tab_id_(sessions::SessionTabHelper::IdForTab(web_contents)) {
-  if (tab_id_.is_valid()) {
-    rewards_service_ = RewardsServiceFactory::GetForProfile(
-        Profile::FromBrowserContext(GetWebContents().GetBrowserContext()));
-    if (rewards_service_) {
-      rewards_service_observation_.Observe(rewards_service_);
-    }
+DEFINE_USER_DATA(RewardsTabHelper);
+
+// static
+RewardsTabHelper* RewardsTabHelper::From(tabs::TabInterface* tab) {
+  return Get(tab->GetUnownedUserDataHost());
+}
+
+RewardsTabHelper::RewardsTabHelper(tabs::TabInterface& tab)
+    : tabs::ContentsObservingTabFeature(tab),
+      tab_id_(sessions::SessionTabHelper::IdForTab(tab.GetContents())),
+      rewards_service_(RewardsServiceFactory::GetForProfile(
+          Profile::FromBrowserContext(tab.GetContents()->GetBrowserContext()))),
+      scoped_unowned_user_data_(tab.GetUnownedUserDataHost(), *this) {
+  CHECK(tab_id_.is_valid());
+  if (rewards_service_) {
+    rewards_service_observation_.Observe(rewards_service_);
   }
 }
 
@@ -70,14 +76,26 @@ void RewardsTabHelper::DidFinishNavigation(
     auto id = GetPublisherIdFromURL(navigation_handle->GetURL());
     SetPublisherIdForTab(id ? *id : "");
     MaybeSavePublisherInfo();
-    creator_detection_.MaybeInjectScript(
+    creator_detection_->MaybeInjectScript(
         navigation_handle->GetRenderFrameHost());
   }
 
-  creator_detection_.DetectCreator(
+  creator_detection_->DetectCreator(
       navigation_handle->GetRenderFrameHost(),
       base::BindOnce(&RewardsTabHelper::OnCreatorDetected,
                      base::Unretained(this)));
+}
+
+void RewardsTabHelper::OnDiscardContents(tabs::TabInterface* tab,
+                                         content::WebContents* old_contents,
+                                         content::WebContents* new_contents) {
+  // The script injector and any pending detection are for the old contents'
+  // page.
+  creator_detection_ = std::make_unique<CreatorDetectionScriptInjector>();
+  tab_id_ = sessions::SessionTabHelper::IdForTab(new_contents);
+  tabs::ContentsObservingTabFeature::OnDiscardContents(tab, old_contents,
+                                                       new_contents);
+  SetPublisherIdForTab("");
 }
 
 void RewardsTabHelper::OnRewardsInitialized(RewardsService* rewards_service) {
@@ -93,7 +111,7 @@ void RewardsTabHelper::MaybeSavePublisherInfo() {
   // populated by calling `NotifyPublisherPageVisit` as the user navigates
   // the web.
   rewards_service_->NotifyPublisherPageVisit(
-      tab_id_.id(), GetWebContents().GetLastCommittedURL().spec());
+      tab_id_.id(), web_contents()->GetLastCommittedURL().spec());
 }
 
 void RewardsTabHelper::OnCreatorDetected(
@@ -124,7 +142,5 @@ void RewardsTabHelper::OnCreatorDetected(
     rewards_service_->NotifyPublisherPageVisit(visit->Clone());
   }
 }
-
-WEB_CONTENTS_USER_DATA_KEY_IMPL(RewardsTabHelper);
 
 }  // namespace brave_rewards

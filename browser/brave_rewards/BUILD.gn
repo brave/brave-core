@@ -13,7 +13,6 @@ source_set("brave_rewards") {
   sources = [
     "creator_detection_script_injector.h",
     "rewards_service_factory.h",
-    "rewards_tab_helper.h",
   ]
 
   deps = [
@@ -33,7 +32,6 @@ source_set("brave_rewards_impl") {
     "rewards_prefs_util.cc",
     "rewards_prefs_util.h",
     "rewards_service_factory.cc",
-    "rewards_tab_helper.cc",
   ]
 
   public_deps = [ ":brave_rewards" ]
@@ -62,6 +60,29 @@ source_set("brave_rewards_impl") {
   if (enable_brave_wallet) {
     deps += [ "//brave/browser/brave_wallet" ]
   }
+}
+
+source_set("tab_helper") {
+  sources = [
+    "rewards_tab_helper.cc",
+    "rewards_tab_helper.h",
+  ]
+
+  public_deps = [
+    ":brave_rewards",
+    "//base",
+    "//brave/components/brave_rewards/content",
+    "//chrome/browser/ui/tabs:tabs_public",
+    "//components/sessions",
+    "//ui/base/unowned_user_data",
+  ]
+
+  deps = [
+    "//brave/components/brave_rewards/core",
+    "//chrome/browser/profiles:profile",
+    "//components/tabs:public",
+    "//content/public/browser",
+  ]
 }
 
 source_set("util") {
