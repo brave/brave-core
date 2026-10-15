@@ -16,6 +16,7 @@
 #include "components/content_settings/core/browser/content_settings_utils.h"
 #include "components/feature_engagement/public/feature_constants.h"
 #include "components/page_info/page_info.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/web_contents.h"
@@ -29,7 +30,8 @@ brave_shields::BraveShieldsTabHelper* GetShieldsHelper(
   if (!web_contents) {
     return nullptr;
   }
-  return brave_shields::BraveShieldsTabHelper::FromWebContents(web_contents);
+  return brave_shields::BraveShieldsTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(web_contents));
 }
 
 }  // namespace
@@ -57,7 +59,9 @@ void BraveShieldsPageInfoController::UpdateWebContents(
 
   // Start observing the new WebContents and its shields helper.
   Observe(contents);
-  if (auto* shields_helper = GetShieldsHelper(contents)) {
+  // A discarded tab keeps its shields helper, so it may already be observed.
+  if (auto* shields_helper = GetShieldsHelper(contents);
+      shields_helper && !shields_helper->HasObserver(this)) {
     shields_helper->AddObserver(this);
   }
 

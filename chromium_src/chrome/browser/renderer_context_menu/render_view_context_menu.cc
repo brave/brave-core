@@ -41,6 +41,7 @@
 #include "components/omnibox/browser/autocomplete_classifier.h"
 #include "components/omnibox/browser/autocomplete_controller.h"
 #include "components/omnibox/browser/autocomplete_match_type.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/security_principal.h"
 #include "content/public/browser/web_contents.h"
 #include "net/base/filename_util.h"
@@ -719,9 +720,8 @@ void RenderViewContextMenu::AddAccessibilityLabelsServiceItem(bool is_checked) {
 void RenderViewContextMenu::AppendDeveloperItems() {
   RenderViewContextMenu_Chromium::AppendDeveloperItems();
 
-  auto* shields_tab_helper =
-      brave_shields::BraveShieldsTabHelper::FromWebContents(
-          source_web_contents_);
+  auto* shields_tab_helper = brave_shields::BraveShieldsTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(source_web_contents_));
   bool add_block_elements = shields_tab_helper &&
                             shields_tab_helper->IsBraveShieldsEnabled() &&
                             shields_tab_helper->GetAdBlockMode() !=

@@ -16,6 +16,7 @@
 #include "components/favicon/content/content_favicon_driver.h"
 #include "components/favicon/core/test/mock_favicon_service.h"
 #include "components/prefs/testing_pref_service.h"
+#include "components/tabs/public/mock_tab_interface.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/test/navigation_simulator.h"
 #include "content/public/test/test_renderer_host.h"
@@ -54,9 +55,8 @@ class BraveShieldsTabHelperUnitTest
 
     favicon::ContentFaviconDriver::CreateForWebContents(web_contents(),
                                                         &favicon_service_);
-    BraveShieldsTabHelper::CreateForWebContents(web_contents());
-    brave_shields_tab_helper_ =
-        BraveShieldsTabHelper::FromWebContents(web_contents());
+    ON_CALL(tab_, GetContents()).WillByDefault(testing::Return(web_contents()));
+    brave_shields_tab_helper_ = std::make_unique<BraveShieldsTabHelper>(tab_);
     observer_ = std::make_unique<
         testing::NiceMock<MockBraveShieldsTabHelperObserver>>();
     brave_shields_tab_helper_->AddObserver(observer_.get());
@@ -66,7 +66,7 @@ class BraveShieldsTabHelperUnitTest
 
   void TearDown() override {
     brave_shields_tab_helper_->RemoveObserver(observer_.get());
-    brave_shields_tab_helper_ = nullptr;
+    brave_shields_tab_helper_.reset();
     content::RenderViewHostTestHarness::TearDown();
   }
 
@@ -99,7 +99,8 @@ class BraveShieldsTabHelperUnitTest
   testing::NiceMock<favicon::MockFaviconService> favicon_service_;
   std::unique_ptr<testing::NiceMock<MockBraveShieldsTabHelperObserver>>
       observer_;
-  raw_ptr<BraveShieldsTabHelper> brave_shields_tab_helper_;
+  tabs::MockTabInterface tab_;
+  std::unique_ptr<BraveShieldsTabHelper> brave_shields_tab_helper_;
   base::test::ScopedFeatureList feature_list_;
 };
 
