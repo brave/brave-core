@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WAYBACK_MACHINE_BRAVE_WAYBACK_MACHINE_TAB_HELPER_H_
 #define BRAVE_COMPONENTS_BRAVE_WAYBACK_MACHINE_BRAVE_WAYBACK_MACHINE_TAB_HELPER_H_
 
+#include <memory>
 #include <optional>
 #include <string>
 
@@ -18,16 +19,30 @@
 #include "brave/components/brave_wayback_machine/wayback_state.h"
 #include "components/prefs/pref_member.h"
 #include "content/public/browser/web_contents_observer.h"
-#include "content/public/browser/web_contents_user_data.h"
+#include "ui/base/unowned_user_data/scoped_unowned_user_data.h"
 
 class PrefService;
 
-class BraveWaybackMachineTabHelper
-    : public content::WebContentsObserver,
-      public WaybackMachineURLFetcher::Client,
-      public content::WebContentsUserData<BraveWaybackMachineTabHelper> {
+namespace tabs {
+class TabInterface;
+}  // namespace tabs
+
+// Looks up Wayback Machine snapshots for the page shown in a tab. Owned by the
+// tab's features, and recreated when the tab's contents is replaced.
+class BraveWaybackMachineTabHelper : public content::WebContentsObserver,
+                                     public WaybackMachineURLFetcher::Client {
  public:
-  static void CreateIfNeeded(content::WebContents* web_contents);
+  DECLARE_USER_DATA(BraveWaybackMachineTabHelper);
+
+  static BraveWaybackMachineTabHelper* From(tabs::TabInterface* tab);
+
+  // Returns nullptr when the Wayback Machine is disabled from the command line.
+  static std::unique_ptr<BraveWaybackMachineTabHelper> MaybeCreate(
+      tabs::TabInterface& tab,
+      content::WebContents* web_contents);
+
+  BraveWaybackMachineTabHelper(tabs::TabInterface& tab,
+                               content::WebContents* web_contents);
 
   using WaybackStateChangedCallbackList =
       base::RepeatingCallbackList<void(WaybackState state)>;
@@ -37,8 +52,8 @@ class BraveWaybackMachineTabHelper
   ~BraveWaybackMachineTabHelper() override;
 
   BraveWaybackMachineTabHelper(const BraveWaybackMachineTabHelper&) = delete;
-  BraveWaybackMachineTabHelper& operator=(
-      const BraveWaybackMachineTabHelper&) = delete;
+  BraveWaybackMachineTabHelper& operator=(const BraveWaybackMachineTabHelper&) =
+      delete;
 
   // Registers a callback invoked when the WaybackState changes. Destroying the
   // returned subscription unregisters the callback. State changes made from
@@ -68,8 +83,6 @@ class BraveWaybackMachineTabHelper
   void NavigateToSnapshot();
 
  private:
-  explicit BraveWaybackMachineTabHelper(content::WebContents* contents);
-
   // content::WebContentsObserver:
   void DidFinishNavigation(
       content::NavigationHandle* navigation_handle) override;
@@ -97,8 +110,8 @@ class BraveWaybackMachineTabHelper
   WaybackMachineURLFetcher wayback_machine_url_fetcher_;
   BooleanPrefMember wayback_enabled_;
 
-  friend WebContentsUserData;
-  WEB_CONTENTS_USER_DATA_KEY_DECL();
+  ui::ScopedUnownedUserData<BraveWaybackMachineTabHelper>
+      scoped_unowned_user_data_;
 };
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WAYBACK_MACHINE_BRAVE_WAYBACK_MACHINE_TAB_HELPER_H_
