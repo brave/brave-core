@@ -57,9 +57,9 @@ std::vector<TabMatchInfo> FindMatchingTabs(Profile& profile,
               tab_strip_model->GetWebContentsAt(i);
           if (web_contents &&
               (MatchesPattern(web_contents->GetLastCommittedURL().spec(),
-                               pattern) ||
+                              pattern) ||
                MatchesPattern(base::UTF16ToUTF8(web_contents->GetTitle()),
-                               pattern))) {
+                              pattern))) {
             tab_matches.push_back(TabMatchInfo{browser_window, i});
           }
         }

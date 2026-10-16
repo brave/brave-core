@@ -21,11 +21,12 @@ constexpr int kSomeRealCommand = 33000;
 
 }  // namespace
 
-TEST(CustomGesturePrefParserTest, MaybeParseCustomGestureReturnsNulloptMissingId) {
+TEST(CustomGesturePrefParserTest,
+     MaybeParseCustomGestureReturnsNulloptMissingId) {
   base::DictValue custom_gesture_dict;
   custom_gesture_dict.Set("points", base::ListValue())
       .Set("actions", base::ListValue().Append(
-                           base::DictValue().Set("command", kSomeRealCommand)));
+                          base::DictValue().Set("command", kSomeRealCommand)));
 
   EXPECT_FALSE(MaybeParseCustomGesture(custom_gesture_dict));
 }
@@ -35,7 +36,7 @@ TEST(CustomGesturePrefParserTest,
   base::DictValue custom_gesture_dict;
   custom_gesture_dict.Set("id", "id")
       .Set("actions", base::ListValue().Append(
-                           base::DictValue().Set("command", kSomeRealCommand)));
+                          base::DictValue().Set("command", kSomeRealCommand)));
 
   EXPECT_FALSE(MaybeParseCustomGesture(custom_gesture_dict));
 }
@@ -43,8 +44,7 @@ TEST(CustomGesturePrefParserTest,
 TEST(CustomGesturePrefParserTest,
      MaybeParseCustomGestureReturnsNulloptWithNoValidActions) {
   base::DictValue custom_gesture_dict;
-  custom_gesture_dict
-      .Set("id", "id")
+  custom_gesture_dict.Set("id", "id")
       .Set("points", base::ListValue()
                          .Append(base::DictValue().Set("x", 0.0).Set("y", 0.0))
                          .Append(base::DictValue().Set("x", 1.0).Set("y", 1.0)))
@@ -56,25 +56,23 @@ TEST(CustomGesturePrefParserTest,
 TEST(CustomGesturePrefParserTest,
      MaybeParseCustomGestureReturnsNulloptWithFewerThanTwoPoints) {
   base::DictValue custom_gesture_dict;
-  custom_gesture_dict
-      .Set("id", "id")
+  custom_gesture_dict.Set("id", "id")
       .Set("points", base::ListValue().Append(
                          base::DictValue().Set("x", 0.0).Set("y", 0.0)))
       .Set("actions", base::ListValue().Append(
-                           base::DictValue().Set("command", kSomeRealCommand)));
+                          base::DictValue().Set("command", kSomeRealCommand)));
 
   EXPECT_FALSE(MaybeParseCustomGesture(custom_gesture_dict));
 }
 
 TEST(CustomGesturePrefParserTest, MaybeParseCustomGestureParsesAValidEntry) {
   base::DictValue custom_gesture_dict;
-  custom_gesture_dict
-      .Set("id", "id")
+  custom_gesture_dict.Set("id", "id")
       .Set("points", base::ListValue()
                          .Append(base::DictValue().Set("x", 0.0).Set("y", 0.0))
                          .Append(base::DictValue().Set("x", 1.0).Set("y", 1.0)))
       .Set("actions", base::ListValue().Append(
-                           base::DictValue().Set("command", kSomeRealCommand)));
+                          base::DictValue().Set("command", kSomeRealCommand)));
 
   const std::optional<CustomGestureInfo> custom_gesture =
       MaybeParseCustomGesture(custom_gesture_dict);
@@ -84,9 +82,9 @@ TEST(CustomGesturePrefParserTest, MaybeParseCustomGestureParsesAValidEntry) {
   EXPECT_THAT(
       custom_gesture->stroke_points,
       testing::ElementsAre(gfx::PointF(0.0, 0.0), gfx::PointF(1.0, 1.0)));
-  EXPECT_THAT(custom_gesture->actions,
-              testing::ElementsAre(
-                  testing::Eq(MakeGestureAction(kSomeRealCommand))));
+  EXPECT_THAT(
+      custom_gesture->actions,
+      testing::ElementsAre(testing::Eq(MakeGestureAction(kSomeRealCommand))));
 }
 
 }  // namespace gestures

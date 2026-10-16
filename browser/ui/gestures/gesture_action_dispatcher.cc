@@ -126,9 +126,10 @@ void GestureActionDispatcher::RunOpenSettings(
       std::get_if<IntParamInfo>(&gesture_action.command_params);
   // An out-of-range cast just falls through `PageToWebUIPath`'s switch to
   // the basic page, so a corrupted pref value cannot crash here.
-  const OpenSettingsPage settings_page = int_param_info
-      ? static_cast<OpenSettingsPage>(int_param_info->value_param)
-      : OpenSettingsPage::kBasic;
+  const OpenSettingsPage settings_page =
+      int_param_info
+          ? static_cast<OpenSettingsPage>(int_param_info->value_param)
+          : OpenSettingsPage::kBasic;
   BrowserWindowInterface* const browser_window =
       tab_->GetBrowserWindowInterface();
   if (!browser_window) {

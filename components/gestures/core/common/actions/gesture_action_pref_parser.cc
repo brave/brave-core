@@ -16,8 +16,7 @@ namespace gestures {
 
 namespace {
 
-std::optional<GestureActionInfo> ParseGestureAction(
-    const base::Value& value) {
+std::optional<GestureActionInfo> ParseGestureAction(const base::Value& value) {
   const base::DictValue* dict = value.GetIfDict();
   const std::optional<int> raw_gesture_command =
       dict ? dict->FindInt("command") : std::nullopt;

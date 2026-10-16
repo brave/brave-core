@@ -37,7 +37,8 @@ GestureActionInfo MakeSwitchToTabGestureAction(std::string pattern) {
   return gesture_action;
 }
 
-GestureActionInfo MakeOpenSettingsGestureAction(OpenSettingsPage settings_page) {
+GestureActionInfo MakeOpenSettingsGestureAction(
+    OpenSettingsPage settings_page) {
   GestureActionInfo gesture_action;
   gesture_action.command = kIdcOptions;
   gesture_action.command_params =

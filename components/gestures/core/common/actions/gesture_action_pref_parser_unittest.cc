@@ -106,10 +106,10 @@ TEST(GestureActionPrefParserTest,
 TEST(GestureActionPrefParserTest,
      MaybeParseGestureActionsParsesAnOpenSettingsCommand) {
   base::ListValue list;
-  list.Append(base::DictValue()
-                  .Set("command", kOpenSettingsCommand)
-                  .Set("value_param",
-                       static_cast<int>(OpenSettingsPage::kPrivacy)));
+  list.Append(
+      base::DictValue()
+          .Set("command", kOpenSettingsCommand)
+          .Set("value_param", static_cast<int>(OpenSettingsPage::kPrivacy)));
 
   const std::optional<std::vector<GestureActionInfo>> actions =
       MaybeParseGestureActions(list);

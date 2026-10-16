@@ -16,7 +16,8 @@ TEST(TextParamUtilTest, ParseTextParamReturnsAnEmptyStringWhenFieldIsMissing) {
   EXPECT_EQ("", ParseTextParam(dict).text_param);
 }
 
-TEST(TextParamUtilTest, ParseTextParamReturnsAnEmptyStringWhenFieldIsNotAString) {
+TEST(TextParamUtilTest,
+     ParseTextParamReturnsAnEmptyStringWhenFieldIsNotAString) {
   base::DictValue dict;
   dict.Set("text_param", 42);
 
