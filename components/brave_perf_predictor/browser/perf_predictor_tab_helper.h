@@ -9,10 +9,11 @@
 #include <memory>
 #include <string>
 
+#include "base/memory/weak_ptr.h"
 #include "brave/components/brave_perf_predictor/browser/bandwidth_savings_predictor.h"
 #include "brave/components/brave_perf_predictor/browser/p3a_bandwidth_savings_tracker.h"
 #include "content/public/browser/web_contents_observer.h"
-#include "content/public/browser/web_contents_user_data.h"
+#include "ui/base/unowned_user_data/scoped_unowned_user_data.h"
 
 class PrefRegistrySimple;
 
@@ -28,6 +29,10 @@ class ResourceLoadInfo;
 }  // namespace mojom
 }  // namespace blink
 
+namespace tabs {
+class TabInterface;
+}  // namespace tabs
+
 namespace page_load_metrics {
 namespace mojom {
 class PageLoadTiming;
@@ -38,12 +43,18 @@ namespace brave_perf_predictor {
 
 // The main entry point for performance prediction. Collects events from
 // WebContentsObserver, received `PageLoadTiming` reports and adblocker resource
-// blocked events to compute estimated shields' savings seen by the user.
-class PerfPredictorTabHelper
-    : public content::WebContentsObserver,
-      public content::WebContentsUserData<PerfPredictorTabHelper> {
+// blocked events to compute estimated shields' savings seen by the user. Owned
+// by the tab's features, and recreated when the tab's contents is replaced.
+class PerfPredictorTabHelper : public content::WebContentsObserver {
  public:
-  explicit PerfPredictorTabHelper(content::WebContents*);
+  DECLARE_USER_DATA(PerfPredictorTabHelper);
+
+  static PerfPredictorTabHelper* From(tabs::TabInterface* tab);
+
+  PerfPredictorTabHelper(tabs::TabInterface& tab,
+                         content::WebContents* web_contents);
+  // Runs a prediction for the page shown, as the tab closes or its contents is
+  // replaced.
   ~PerfPredictorTabHelper() override;
   PerfPredictorTabHelper(const PerfPredictorTabHelper&) = delete;
   PerfPredictorTabHelper& operator=(const PerfPredictorTabHelper&) = delete;
@@ -58,8 +69,9 @@ class PerfPredictorTabHelper
       const std::string& subresource,
       content::GlobalRenderFrameHostToken render_frame_token);
 
+  base::WeakPtr<PerfPredictorTabHelper> GetWeakPtr();
+
  private:
-  friend class content::WebContentsUserData<PerfPredictorTabHelper>;
   void RecordSavings();
   void OnBlockedSubresource(const std::string& subresource);
 
@@ -84,15 +96,13 @@ class PerfPredictorTabHelper
       const GURL& original_url,
       const blink::mojom::ResourceLoadInfo& resource_load_info) override;
 
-  // When web contents are destroyed (tab closed, window closed, entire browser
-  // closed, etc.) run the prediction
-  void WebContentsDestroyed() override;
-
   int64_t navigation_id_ = -1;
   std::unique_ptr<BandwidthSavingsPredictor> bandwidth_predictor_;
   std::unique_ptr<P3ABandwidthSavingsTracker> bandwidth_tracker_;
 
-  WEB_CONTENTS_USER_DATA_KEY_DECL();
+  ui::ScopedUnownedUserData<PerfPredictorTabHelper> scoped_unowned_user_data_;
+
+  base::WeakPtrFactory<PerfPredictorTabHelper> weak_factory_{this};
 };
 
 }  // namespace brave_perf_predictor

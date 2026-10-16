@@ -19,6 +19,7 @@
 #include "brave/browser/ui/sidebar/sidebar_tab_helper.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"
+#include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/image_metadata_stripper/common/features.h"
@@ -283,6 +284,9 @@ void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
 
   brave_shields_tab_helper_ =
       std::make_unique<brave_shields::BraveShieldsTabHelper>(tab);
+  perf_predictor_tab_helper_ =
+      std::make_unique<brave_perf_predictor::PerfPredictorTabHelper>(
+          tab, tab.GetContents());
 
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   rewards_tab_helper_ = std::make_unique<brave_rewards::RewardsTabHelper>(tab);
@@ -321,11 +325,15 @@ void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
 void BraveTabFeatures::WillDiscardContents(TabInterface* tab,
                                            content::WebContents* old_contents,
                                            content::WebContents* new_contents) {
+  // Only one instance can be registered with the tab at a time.
+  perf_predictor_tab_helper_.reset();
+  perf_predictor_tab_helper_ =
+      std::make_unique<brave_perf_predictor::PerfPredictorTabHelper>(
+          *tab, new_contents);
 #if BUILDFLAG(ENABLE_TOR)
   if (tor_tab_helper_) {
     tor_tab_helper_ = std::make_unique<tor::TorTabHelper>(new_contents);
   }
-  // Only one instance can be registered with the tab at a time.
   onion_location_tab_helper_.reset();
   onion_location_tab_helper_ =
       std::make_unique<tor::OnionLocationTabHelper>(*tab, new_contents);

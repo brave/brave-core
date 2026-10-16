@@ -93,6 +93,7 @@ source_set("tabs_impl") {
     "//brave/browser/serp_metrics",
     "//brave/components/brave_ads/buildflags",
     "//brave/components/brave_news/common/buildflags",
+    "//brave/components/brave_perf_predictor/browser",
     "//brave/components/brave_rewards/core/buildflags",
     "//brave/components/brave_wallet/common/buildflags",
     "//brave/components/image_metadata_stripper/common",

@@ -7,6 +7,7 @@
 
 #include "base/logging.h"
 #include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/web_contents.h"
@@ -23,17 +24,20 @@ PerfPredictorPageMetricsObserver::OnCommit(
   // Skip if off the record
   if (navigation_handle->GetWebContents()
           ->GetBrowserContext()
-          ->IsOffTheRecord())
+          ->IsOffTheRecord()) {
     return STOP_OBSERVING;
+  }
 
   navigation_id_ = navigation_handle->GetNavigationId();
   // We'll be forwarding all performance metrics to the observer
-  observer_ = PerfPredictorTabHelper::FromWebContents(
-      navigation_handle->GetWebContents());
-  if (!observer_) {
+  auto* tab_helper =
+      PerfPredictorTabHelper::From(tabs::TabInterface::MaybeGetFromContents(
+          navigation_handle->GetWebContents()));
+  if (!tab_helper) {
     VLOG(2) << navigation_id_ << " could not get PerfPredictorTabHelper";
     return STOP_OBSERVING;
   }
+  observer_ = tab_helper->GetWeakPtr();
   return CONTINUE_OBSERVING;
 }
 

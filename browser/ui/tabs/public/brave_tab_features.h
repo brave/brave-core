@@ -21,6 +21,10 @@
 
 class Profile;
 
+namespace brave_perf_predictor {
+class PerfPredictorTabHelper;
+}  // namespace brave_perf_predictor
+
 namespace image_metadata_stripper {
 class FileUploadController;
 }  // namespace image_metadata_stripper
@@ -189,6 +193,9 @@ class BraveTabFeatures : public TabFeatures {
   std::unique_ptr<ContentsObservingTabFeature> speedreader_tab_helper_;
   // Offers to enable Widevine when the page asks for it. Null without it.
   std::unique_ptr<ContentsObservingTabFeature> drm_tab_helper_;
+  // Estimates the bandwidth that Shields saves.
+  std::unique_ptr<brave_perf_predictor::PerfPredictorTabHelper>
+      perf_predictor_tab_helper_;
 #if BUILDFLAG(ENABLE_TOR)
   // Retries Tor navigations while the Tor process is not ready. Null outside
   // Tor profiles.
