@@ -22,7 +22,6 @@ import { qrCodeEndpoints } from './endpoints/qr-code.endpoints'
 import { handleEndpointError } from '../../utils/api-utils'
 import { walletEndpoints } from './endpoints/wallet.endpoints'
 import { tokenEndpoints } from './endpoints/token.endpoints'
-import { coingeckoEndpoints } from './endpoints/coingecko-endpoints'
 import {
   tokenSuggestionsEndpoints, //
 } from './endpoints/token_suggestions.endpoints'
@@ -116,8 +115,6 @@ export function createWalletApi() {
       .injectEndpoints({ endpoints: pricingEndpoints })
       // nfts endpoints
       .injectEndpoints({ endpoints: nftsEndpoints })
-      // coingecko endpoints
-      .injectEndpoints({ endpoints: coingeckoEndpoints })
       // token suggestion request endpoints
       .injectEndpoints({ endpoints: tokenSuggestionsEndpoints })
       // QR Code generator endpoints
@@ -191,7 +188,6 @@ export const {
   useGetAvailableShieldedAccountQuery,
   useGetBitcoinBalancesQuery,
   useGetChainTipStatusQuery,
-  useGetCoingeckoIdQuery,
   useGetCoinMarketQuery,
   useGetDefaultEthereumWalletQuery,
   useGetDefaultFiatCurrencyQuery,

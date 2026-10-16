@@ -53,7 +53,6 @@ import {
   searchCoinMarkets,
   sortCoinMarkets,
 } from '../utils/coin-market-utils'
-import { getAssetSymbol } from '../utils/meld_utils'
 
 // Options
 import { AssetFilterOptions } from '../options/market-data-filter-options'
@@ -120,8 +119,7 @@ const App = () => {
       return (
         buyableAssets?.some(
           (asset) =>
-            getAssetSymbol(asset).toLowerCase()
-            === coinMarket.symbol.toLowerCase(),
+            asset.symbol.toLowerCase() === coinMarket.symbol.toLowerCase(),
         ) ?? false
       )
     },

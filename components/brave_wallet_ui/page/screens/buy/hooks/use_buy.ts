@@ -48,11 +48,6 @@ import { querySubscriptionOptions60s } from '../../../../common/slices/constants
 
 // Utils
 import Amount from '../../../../utils/amount'
-import {
-  getAssetSymbol,
-  getMeldTokensChainId,
-  getMeldTokensCoinType,
-} from '../../../../utils/meld_utils'
 import { makeBuyRoute } from '../../../../utils/routes-utils'
 import {
   getPriceRequestsForTokens,
@@ -74,11 +69,13 @@ const MIN_QUOTE_RESPONSE_IDENTIFIER = 'Source amount is below'
 const MAX_QUOTE_RESPONSE_IDENTIFIER = 'Source amount is above'
 
 const DEFAULT_ASSET: MeldCryptoCurrency = {
+  'coin': BraveWallet.CoinType.ETH,
+  'chainId': BraveWallet.MAINNET_CHAIN_ID,
+  'symbol': 'ETH',
   'currencyCode': 'ETH',
   'name': 'Ethereum',
   'chainCode': 'ETH',
   'chainName': 'Ethereum',
-  'chainId': '1',
   'contractAddress': '0x0000000000000000000000000000000000000000',
   'symbolImageUrl': 'https://images-currency.meld.io/crypto/ETH/symbol.png',
 }
@@ -187,8 +184,8 @@ export const useBuy = () => {
     'coin' | 'chainId' | 'contractAddress'
   > = useMemo(
     () => ({
-      coin: getMeldTokensCoinType(selectedMeldAsset),
-      chainId: getMeldTokensChainId(selectedMeldAsset) ?? '',
+      coin: selectedMeldAsset.coin,
+      chainId: selectedMeldAsset.chainId,
       contractAddress: selectedMeldAsset.contractAddress || '',
     }),
     [selectedMeldAsset],
@@ -225,7 +222,7 @@ export const useBuy = () => {
 
   const [cryptoEstimate, formattedCryptoEstimate] = useMemo(() => {
     if (selectedAssetSpotPrice && selectedMeldAsset) {
-      const symbol = getAssetSymbol(selectedMeldAsset)
+      const symbol = selectedMeldAsset.symbol
       const estimate = new Amount(amount).div(selectedAssetSpotPrice)
 
       return [
@@ -284,14 +281,14 @@ export const useBuy = () => {
     const match = /(\d+(?:\.\d+)?)\s*([A-Z]{3})/.exec(error)
     const extractedAmount = match?.[1]
     const extractedCurrencyCode = match?.[2]
-    const formatedAmount =
+    const formattedAmount =
       extractedAmount && extractedCurrencyCode
         ? new Amount(extractedAmount ?? '').formatAsFiat(
             extractedCurrencyCode,
             2,
           )
         : ''
-    const formattedAmountWithCurrency = `${formatedAmount} ${extractedCurrencyCode}`
+    const formattedAmountWithCurrency = `${formattedAmount} ${extractedCurrencyCode}`
 
     if (
       error.startsWith(MIN_QUOTE_RESPONSE_IDENTIFIER)
@@ -471,7 +468,7 @@ export const useBuy = () => {
 
   const onSelectToken = useCallback(
     async (asset: MeldCryptoCurrency, account?: BraveWallet.AccountInfo) => {
-      const incomingAssetsCoinType = getMeldTokensCoinType(asset)
+      const incomingAssetsCoinType = asset.coin
       const accountToUse =
         account !== undefined
           ? account

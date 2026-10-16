@@ -74,7 +74,6 @@ public class WalletStore {
     ipfsApi: IpfsAPI,
     bitcoinWalletService: BraveWalletBitcoinWalletService,
     zcashWalletService: BraveWalletZCashWalletService,
-    meldIntegrationService: BraveWalletMeldIntegrationService,
     cardanoWalletService: BraveWalletCardanoWalletService
   ) {
     self.keyringStore = .init(
@@ -94,7 +93,6 @@ public class WalletStore {
       ipfsApi: ipfsApi,
       bitcoinWalletService: bitcoinWalletService,
       zcashWalletService: zcashWalletService,
-      meldIntegrationService: meldIntegrationService,
       cardanoWalletService: cardanoWalletService
     )
   }
@@ -121,7 +119,6 @@ public class WalletStore {
     ipfsApi: IpfsAPI,
     bitcoinWalletService: BraveWalletBitcoinWalletService,
     zcashWalletService: BraveWalletZCashWalletService,
-    meldIntegrationService: BraveWalletMeldIntegrationService,
     cardanoWalletService: BraveWalletCardanoWalletService
   ) {
     self.cancellable = self.keyringStore.$isWalletCreated
@@ -146,7 +143,6 @@ public class WalletStore {
             ipfsApi: ipfsApi,
             bitcoinWalletService: bitcoinWalletService,
             zcashWalletService: zcashWalletService,
-            meldIntegrationService: meldIntegrationService,
             cardanoWalletService: cardanoWalletService,
             origin: self.origin
           )

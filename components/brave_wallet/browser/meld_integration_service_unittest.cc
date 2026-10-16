@@ -1186,12 +1186,12 @@ TEST_F(MeldIntegrationServiceUnitTest, GetFiatCurrencies) {
 TEST_F(MeldIntegrationServiceUnitTest, GetCryptoCurrencies) {
   const auto url = MeldIntegrationService::GetCryptoCurrenciesURL();
 
-  std::string expected_crypto_chains =
-      "BTC,FIL,ZEC,ETH,SOLANA,FTM,BSC,POLYGON,OPTIMISM,"
-      "AURORA,CELO,ARBITRUM,AVAXC,ADA";
-  if (IsPolkadotEnabled()) {
-    expected_crypto_chains += ",ASSETHUB";
-  }
+  const std::string expected_crypto_chains =
+      IsPolkadotEnabled()
+          ? "ADA,ARBITRUM,ASSETHUB,AURORA,AVAXC,BSC,BTC,CELO,ETH,FIL,FTM,"
+            "OPTIMISM,POLYGON,SOLANA,ZEC"
+          : "ADA,ARBITRUM,AURORA,AVAXC,BSC,BTC,CELO,ETH,FIL,FTM,OPTIMISM,"
+            "POLYGON,SOLANA,ZEC";
 
   EXPECT_EQ(url.path(), "/service-providers/properties/crypto-currencies");
   EXPECT_THAT(net::UrlSearchParams(url).params(),
@@ -1203,13 +1203,13 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCryptoCurrencies) {
   TestGetCryptoCurrencies(
       R"([
   {
-    "currencyCode": "USDT_KCC",
-    "name": null,
-    "chainCode": "KCC",
-    "chainName": "KuCoin Community Chain",
+    "currencyCode": "USDT_POLYGON",
+    "name": "Tether",
+    "chainCode": "POLYGON",
+    "chainName": "Polygon",
     "chainId": "137",
     "contractAddress": "0xe41d2489571d322189246dafa5ebde1f4699f498",
-    "symbolImageUrl": "https://images-currency.meld.io/crypto/USDT_KCC/symbol.png"
+    "symbolImageUrl": "https://images-currency.meld.io/crypto/USDT_POLYGON/symbol.png"
   },
   {
     "currencyCode": "00",
@@ -1225,19 +1225,22 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCryptoCurrencies) {
                  crypto_currencies,
              const std::optional<std::vector<std::string>>& errors) {
             EXPECT_FALSE(errors.has_value());
+            ASSERT_TRUE(crypto_currencies);
             EXPECT_EQ(
                 std::ranges::count_if(
                     *crypto_currencies,
                     [](const auto& item) {
-                      return item->currency_code == "USDT_KCC" && !item->name &&
-                             item->chain_code == "KCC" &&
-                             item->chain_name == "KuCoin Community Chain" &&
+                      return item->currency_code == "USDT_POLYGON" &&
+                             item->symbol == "USDT" && item->name == "Tether" &&
+                             item->chain_code == "POLYGON" &&
+                             item->chain_name == "Polygon" &&
+                             item->coin == mojom::CoinType::ETH &&
                              item->chain_id == "0x89" &&
                              item->contract_address ==
                                  "0xe41d2489571d322189246dafa5ebde1f4699f498" &&
                              item->symbol_image_url ==
                                  "https://images-currency.meld.io/crypto/"
-                                 "USDT_KCC/symbol.png";
+                                 "USDT_POLYGON/symbol.png";
                     }),
                 1);
             EXPECT_EQ(
@@ -1245,9 +1248,10 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCryptoCurrencies) {
                     *crypto_currencies,
                     [](const auto& item) {
                       return item->currency_code == "00" &&
-                             item->name == "00 Token" &&
+                             item->symbol == "00" && item->name == "00 Token" &&
                              item->chain_code == "ETH" &&
                              item->chain_name == "Ethereum" &&
+                             item->coin == mojom::CoinType::ETH &&
                              item->chain_id == "0x1" &&
                              item->contract_address ==
                                  "0x111111111117dc0aa78b770fa6a738034120c302" &&
