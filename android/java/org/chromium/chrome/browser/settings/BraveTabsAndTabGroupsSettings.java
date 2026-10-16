@@ -311,12 +311,9 @@ public class BraveTabsAndTabGroupsSettings extends BravePreferenceFragment {
     }
 
     private static String getTabArchiveSettingsSummary(Resources resources) {
-        TabArchiveSettings archiveSettings = TabArchiveSettings.getInstance();
-        try {
-            return getTabArchiveSettingsSummary(resources, archiveSettings);
-        } finally {
-            archiveSettings.destroy();
-        }
+        // Must not be destroyed here: this is the process-wide singleton, and destroy() nulls
+        // its archived tab count supplier, which upstream unboxes without a null check.
+        return getTabArchiveSettingsSummary(resources, TabArchiveSettings.getInstance());
     }
 
     private static String getTabArchiveSettingsSummary(
