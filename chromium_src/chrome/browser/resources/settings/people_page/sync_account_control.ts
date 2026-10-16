@@ -13,8 +13,15 @@ import {
 // avatar row (both pointing at Google account flows we don't offer) don't
 // belong anywhere we embed <settings-sync-account-control> (e.g. the
 // getStarted page).
+// Upstream's HTMLElementTagNameMap entry for this tag points at the upstream
+// class, and TypeScript rejects a second entry with a different type.
+// eslint-disable-next-line @webui-eslint/lit-element-structure
 class SettingsSyncAccountControlElement extends
     SettingsSyncAccountControlElementChromium {
+  static override get is() {
+    return 'settings-sync-account-control'
+  }
+
   override willUpdate(changedProperties: PropertyValues<this>) {
     super.willUpdate(changedProperties)
     this.shouldShowAvatarRow_ = false
