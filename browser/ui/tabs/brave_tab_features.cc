@@ -17,6 +17,7 @@
 #include "brave/browser/ui/side_panel/brave_side_panel_utils.h"
 #include "brave/browser/ui/sidebar/sidebar_tab_helper.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/image_metadata_stripper/common/features.h"
 #include "brave/components/misc_metrics/features.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
@@ -29,6 +30,10 @@
 #include "chrome/browser/ui/thumbnails/thumbnail_tab_helper.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "components/tabs/public/tab_interface.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+#include "brave/browser/brave_ads/tabs/ads_tab_helper.h"
+#endif
 
 #if BUILDFLAG(ENABLE_REQUEST_OTR)
 #include "brave/browser/request_otr/request_otr_tab_helper.h"
@@ -221,6 +226,10 @@ void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
   onboarding_tab_helper_ = OnboardingTabHelper::MaybeCreate(tab);
   serp_metrics_tab_helper_ =
       serp_metrics::SerpMetricsTabHelper::MaybeCreate(tab);
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+  ads_tab_helper_ = std::make_unique<brave_ads::AdsTabHelper>(tab);
+#endif
 
 #if BUILDFLAG(ENABLE_REQUEST_OTR)
   if (!profile->IsOffTheRecord() &&
