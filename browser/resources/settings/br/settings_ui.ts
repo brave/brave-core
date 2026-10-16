@@ -45,6 +45,7 @@ function throttle (callback: () => void, maxWaitTime: number = 30) {
 injectStyle(SettingsUiElement, css`
   :host {
     display: inline-block;
+    width: 100%;
     /* we will enforce sizing at the container level and let children fill 100% of parent
       top-down, rather than chromium's strategy of children setting their max width
       bottom-up, which can be confusing, especially when our layout is different. */
@@ -152,21 +153,15 @@ function clearSettingsMenuHighlight(this: SettingsUiElement) {
   })
 }
 
-const connectedCallback = SettingsUiElement.prototype.connectedCallback
-SettingsUiElement.prototype.connectedCallback = function() {
-  connectedCallback.call(this)
-
-  // In Brave we scroll the settings-main element, not the container.
+// In Brave we scroll the settings-main element, not the container.
+function useMainAsScrollTarget(this: SettingsUiElement) {
   // Note: We abuse resetGlobalScrollTargetForTesting() to clear the global
   // scroll target, as the promise it uses can only be resolved once.
   resetGlobalScrollTargetForTesting()
   setGlobalScrollTarget(this.$.main)
 }
 
-const firstUpdated = SettingsUiElement.prototype.firstUpdated
-SettingsUiElement.prototype.firstUpdated = function() {
-  firstUpdated.call(this)
-
+function addAlertCenter(this: SettingsUiElement) {
   // Not a lit_mangler, as upstream's template holds a nested template in an
   // attribute value, which can't be round-tripped. Lit only manages the nodes
   // between its own markers, so this one is left alone by renders.
@@ -174,6 +169,29 @@ SettingsUiElement.prototype.firstUpdated = function() {
   alertCenter.style.position = 'fixed'
   alertCenter.style.zIndex = '1'
   this.shadowRoot.prepend(alertCenter)
+}
 
+const connectedCallback = SettingsUiElement.prototype.connectedCallback
+SettingsUiElement.prototype.connectedCallback = function() {
+  connectedCallback.call(this)
+  useMainAsScrollTarget.call(this)
+}
+
+const firstUpdated = SettingsUiElement.prototype.firstUpdated
+SettingsUiElement.prototype.firstUpdated = function() {
+  firstUpdated.call(this)
+  addAlertCenter.call(this)
   clearSettingsMenuHighlight.call(this)
+}
+
+// <settings-ui> is in settings.html, so upstream's define() upgrades and
+// renders it before the overrides above are installed. Apply them to it.
+const settingsUi = document.querySelector('settings-ui')
+if (settingsUi instanceof SettingsUiElement) {
+  settingsUi.shadowRoot.adoptedStyleSheets =
+      SettingsUiElement.elementStyles.map(
+          s => s instanceof CSSStyleSheet ? s : s.styleSheet!)
+  addAlertCenter.call(settingsUi)
+  clearSettingsMenuHighlight.call(settingsUi)
+  useMainAsScrollTarget.call(settingsUi)
 }
