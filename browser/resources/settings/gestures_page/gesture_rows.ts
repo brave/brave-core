@@ -30,8 +30,8 @@ function textParamFromDict(dict: ActionDict): string {
   return dict.text_param ?? ''
 }
 
-// Open Settings' target page has its own wire key, since it is a bounded
-// enum rather than free text and does not share `textParam`'s storage.
+// Open Settings' target page has its own dedicated wire key, since it is
+// a bounded enum rather than free text.
 function openSettingsPageParamFromDict(dict: ActionDict): OpenSettingsPage {
   return dict.open_settings_page ?? OpenSettingsPage.BASIC
 }
