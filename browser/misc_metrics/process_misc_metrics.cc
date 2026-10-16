@@ -7,9 +7,9 @@
 
 #include "base/feature_list.h"
 #include "base/metrics/histogram_macros.h"
-#include "brave/browser/image_metadata_stripper/metrics_reporter.h"
 #include "brave/browser/misc_metrics/captcha_metrics.h"
 #include "brave/browser/misc_metrics/doh_metrics.h"
+#include "brave/browser/misc_metrics/image_metadata_stripper_metrics.h"
 #include "brave/browser/misc_metrics/media_session_metrics_impl.h"
 #include "brave/browser/misc_metrics/uptime_monitor_impl.h"
 #include "brave/browser/serp_metrics/serp_metrics_p3a.h"
@@ -56,9 +56,9 @@ ProcessMiscMetrics::ProcessMiscMetrics(PrefService* local_state)
   if (base::FeatureList::IsEnabled(features::kCaptchaMetricsCollection)) {
     captcha_metrics_ = std::make_unique<CaptchaMetrics>(local_state);
   }
-  image_metadata_stripper_metrics_ =
-      std::make_unique<image_metadata_stripper::metrics::MetricsReporter>(
-          local_state);
+  image_metadata_stripper_metrics_ = std::make_unique<
+      image_metadata_stripper::metrics::ImageMetadataStripperMetrics>(
+      local_state);
   doh_metrics_ = std::make_unique<DohMetrics>(local_state);
   uptime_monitor_ = std::make_unique<UptimeMonitorImpl>(local_state);
   media_session_metrics_ = std::make_unique<MediaSessionMetricsImpl>(
@@ -113,7 +113,7 @@ CaptchaMetrics* ProcessMiscMetrics::captcha_metrics() {
   return captcha_metrics_.get();
 }
 
-image_metadata_stripper::metrics::MetricsReporter*
+image_metadata_stripper::metrics::ImageMetadataStripperMetrics*
 ProcessMiscMetrics::image_metadata_stripper_metrics() {
   return image_metadata_stripper_metrics_.get();
 }
@@ -142,7 +142,8 @@ void ProcessMiscMetrics::RegisterPrefs(PrefRegistrySimple* registry) {
   TabMetrics::RegisterPrefs(registry);
 #endif
   CaptchaMetrics::RegisterPrefs(registry);
-  image_metadata_stripper::metrics::MetricsReporter::RegisterPrefs(registry);
+  image_metadata_stripper::metrics::ImageMetadataStripperMetrics::RegisterPrefs(
+      registry);
   DohMetrics::RegisterPrefs(registry);
   MediaSessionMetricsImpl::RegisterPrefs(registry);
   UptimeMonitorImpl::RegisterPrefs(registry);
