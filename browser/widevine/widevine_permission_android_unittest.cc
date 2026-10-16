@@ -20,6 +20,7 @@
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/testing_pref_service.h"
+#include "components/tabs/public/mock_tab_interface.h"
 #include "content/public/test/browser_task_environment.h"
 #include "content/public/test/mock_navigation_handle.h"
 #include "content/public/test/test_renderer_host.h"
@@ -72,8 +73,9 @@ class WidevinePermissionAndroidTest : public ChromeRenderViewHostTestHarness {
     web_contents_ = content::WebContents::Create(
         content::WebContents::CreateParams(profile_));
 
-    BraveDrmTabHelper::CreateForWebContents(web_contents_.get());
-    tab_helper_ = BraveDrmTabHelper::FromWebContents(web_contents_.get());
+    ON_CALL(tab_, GetContents())
+        .WillByDefault(testing::Return(web_contents_.get()));
+    tab_helper_ = std::make_unique<BraveDrmTabHelper>(tab_);
     permissions::PermissionRequestManager::CreateForWebContents(
         web_contents_.get());
     permission_request_manager_ =
@@ -83,6 +85,8 @@ class WidevinePermissionAndroidTest : public ChromeRenderViewHostTestHarness {
   }
 
   void TearDown() override {
+    permission_request_manager_ = nullptr;
+    tab_helper_.reset();
     web_contents_.reset();
     profile_manager_.reset();
     ChromeRenderViewHostTestHarness::TearDown();
@@ -93,13 +97,14 @@ class WidevinePermissionAndroidTest : public ChromeRenderViewHostTestHarness {
   }
   Profile* profile() { return profile_; }
   content::WebContents* web_contents() const { return web_contents_.get(); }
-  BraveDrmTabHelper* brave_drm_tab_helper() const { return tab_helper_; }
+  BraveDrmTabHelper* brave_drm_tab_helper() const { return tab_helper_.get(); }
 
  private:
   std::unique_ptr<TestingProfileManager> profile_manager_;
   raw_ptr<TestingProfile> profile_ = nullptr;
   std::unique_ptr<content::WebContents> web_contents_;
-  raw_ptr<BraveDrmTabHelper> tab_helper_ = nullptr;
+  tabs::MockTabInterface tab_;
+  std::unique_ptr<BraveDrmTabHelper> tab_helper_;
   raw_ptr<permissions::PermissionRequestManager> permission_request_manager_ =
       nullptr;
 };
