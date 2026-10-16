@@ -30,6 +30,7 @@ source_set("ai_chat") {
   public_deps = [ "//ui/shell_dialogs" ]
 
   deps = [
+    "//brave/browser:tab_helpers_header",
     "//brave/browser/ai_chat",
     "//brave/browser/ai_chat/ollama",
     "//brave/browser/misc_metrics",
