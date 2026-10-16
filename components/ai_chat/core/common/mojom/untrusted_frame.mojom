@@ -82,7 +82,7 @@ interface UntrustedConversationHandler {
   GenerateQuestions();
 
   // Retry the last failed API request.
-  RetryAPIRequest();
+  RetryAPIRequest(string? thread_uuid);
 
   // Creates a new thread originating from the conversation entry with the
   // given uuid, and returns its uuid. Does not persist anything until a turn is
