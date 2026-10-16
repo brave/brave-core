@@ -159,21 +159,25 @@ extension RecentSearchQRCodeScannerController {
             string: scannedText,
             attributes: [
               .font: UIFont.preferredFont(forTextStyle: .body),
+              .foregroundColor: UIColor(braveSystemName: .schemesOnPrimary),
               .paragraphStyle: paragraphStyle,
             ]
           )
 
           scannedDisplayButton.configuration?.titleLineBreakMode = truncationMode
-          scannedDisplayButton.setAttributedTitle(title, for: .normal)
+          scannedDisplayButton.configuration?.attributedTitle = AttributedString(title)
         } else {
-          scannedDisplayButton.setTitle(nil, for: .normal)
+          scannedDisplayButton.configuration?.attributedTitle = nil
         }
       }
     }
 
     let scannedDisplayButton = UIButton().then {
       var configuration = UIButton.Configuration.plain()
-      configuration.baseBackgroundColor = .clear
+      configuration.baseForegroundColor = UIColor(braveSystemName: .schemesOnPrimary)
+      configuration.background.backgroundColor = UIColor(braveSystemName: .buttonBackground)
+      configuration.background.cornerRadius = 10
+      configuration.cornerStyle = .fixed
       configuration.contentInsets = NSDirectionalEdgeInsets(
         top: 12,
         leading: 16,
@@ -188,11 +192,6 @@ extension RecentSearchQRCodeScannerController {
         return outgoing
       }
       $0.configuration = configuration
-      $0.setTitleColor(UIColor(braveSystemName: .schemesOnPrimary), for: .normal)
-      $0.backgroundColor = UIColor(braveSystemName: .buttonBackground)
-      $0.layer.cornerRadius = 10
-      $0.layer.cornerCurve = .continuous
-      $0.layer.masksToBounds = true
       $0.isHidden = true
     }
 
