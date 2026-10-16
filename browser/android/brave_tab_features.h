@@ -45,6 +45,8 @@ class BraveTabFeatures : public TabFeatures_Chromium {
 
   // Records page and media session metrics.
   std::unique_ptr<ContentsObservingTabFeature> page_metrics_tab_helper_;
+  // Records searches. Null when SERP metrics are disabled or off the record.
+  std::unique_ptr<ContentsObservingTabFeature> serp_metrics_tab_helper_;
 
   std::unique_ptr<ai_chat::TabDataWebContentsObserver> tab_data_observer_;
   std::unique_ptr<ai_chat::WebMcpInjector> web_mcp_injector_;

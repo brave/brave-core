@@ -59,6 +59,7 @@ if (!is_android) {
       "//brave/browser/misc_metrics:misc_metrics_impl",
       "//brave/browser/new_tab",
       "//brave/browser/onboarding",
+      "//brave/browser/serp_metrics",
       "//brave/browser/ui:brave_tab_prefs",
       "//brave/browser/ui:ui_features",
       "//brave/browser/ui/focus_mode",

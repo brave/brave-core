@@ -37,6 +37,7 @@
 #include "chrome/test/base/platform_browser_test.h"
 #include "chrome/test/base/search_test_utils.h"
 #include "components/prefs/pref_service.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
@@ -786,8 +787,8 @@ IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
       SerpMetricsServiceFactory::GetFor(GetProfile());
   EXPECT_TRUE(serp_metrics_service);
 
-  SerpMetricsTabHelper* serp_metrics_tab_helper =
-      SerpMetricsTabHelper::FromWebContents(GetWebContents());
+  SerpMetricsTabHelper* serp_metrics_tab_helper = SerpMetricsTabHelper::From(
+      tabs::TabInterface::GetFromContents(GetWebContents()));
   EXPECT_TRUE(serp_metrics_tab_helper);
 }
 
@@ -801,9 +802,8 @@ IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
       SerpMetricsServiceFactory::GetFor(incognito_browser->GetProfile());
   EXPECT_FALSE(serp_metrics_service);
 
-  SerpMetricsTabHelper* serp_metrics_tab_helper =
-      SerpMetricsTabHelper::FromWebContents(
-          incognito_browser->tab_strip_model()->GetActiveWebContents());
+  SerpMetricsTabHelper* serp_metrics_tab_helper = SerpMetricsTabHelper::From(
+      incognito_browser->GetTabStripModel()->GetActiveTab());
   EXPECT_FALSE(serp_metrics_tab_helper);
 }
 
@@ -816,9 +816,8 @@ IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
       SerpMetricsServiceFactory::GetFor(guest_browser->GetProfile());
   EXPECT_FALSE(serp_metrics_service);
 
-  SerpMetricsTabHelper* serp_metrics_tab_helper =
-      SerpMetricsTabHelper::FromWebContents(
-          guest_browser->tab_strip_model()->GetActiveWebContents());
+  SerpMetricsTabHelper* serp_metrics_tab_helper = SerpMetricsTabHelper::From(
+      guest_browser->GetTabStripModel()->GetActiveTab());
   EXPECT_FALSE(serp_metrics_tab_helper);
 }
 

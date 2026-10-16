@@ -6,38 +6,42 @@
 #ifndef BRAVE_BROWSER_SERP_METRICS_SERP_METRICS_TAB_HELPER_H_
 #define BRAVE_BROWSER_SERP_METRICS_SERP_METRICS_TAB_HELPER_H_
 
+#include <memory>
 #include <optional>
 
 #include "base/memory/raw_ref.h"
+#include "chrome/browser/ui/tabs/contents_observing_tab_feature.h"
 #include "components/search_engines/search_engine_type.h"
-#include "content/public/browser/web_contents_observer.h"
-#include "content/public/browser/web_contents_user_data.h"
+#include "ui/base/unowned_user_data/scoped_unowned_user_data.h"
 #include "url/gurl.h"
 
-namespace content {
-class WebContents;
-}  // namespace content
+namespace tabs {
+class TabInterface;
+}  // namespace tabs
 
 namespace serp_metrics {
 
 class SerpMetrics;
 
-class SerpMetricsTabHelper final
-    : public content::WebContentsObserver,
-      public content::WebContentsUserData<SerpMetricsTabHelper> {
+// Records searches made in a tab. Owned by BraveTabFeatures.
+class SerpMetricsTabHelper final : public tabs::ContentsObservingTabFeature {
  public:
+  DECLARE_USER_DATA(SerpMetricsTabHelper);
+
+  static SerpMetricsTabHelper* From(tabs::TabInterface* tab);
+
+  // Returns nullptr when the feature is disabled or the profile has no
+  // SerpMetricsService, e.g. off the record.
+  static std::unique_ptr<SerpMetricsTabHelper> MaybeCreate(
+      tabs::TabInterface& tab);
+
+  SerpMetricsTabHelper(tabs::TabInterface& tab, SerpMetrics& serp_metrics);
   SerpMetricsTabHelper(const SerpMetricsTabHelper&) = delete;
   SerpMetricsTabHelper& operator=(const SerpMetricsTabHelper&) = delete;
 
   ~SerpMetricsTabHelper() override;
 
-  static void MaybeCreateForWebContents(content::WebContents* web_contents);
-
  private:
-  friend class content::WebContentsUserData<SerpMetricsTabHelper>;
-
-  SerpMetricsTabHelper(content::WebContents*, SerpMetrics& serp_metrics);
-
   bool IsSameSerpAsLastRecorded(const GURL& url) const;
 
   void MaybeClassifyAndRecordSearchEngineForUrl(const GURL& url);
@@ -51,7 +55,7 @@ class SerpMetricsTabHelper final
 
   std::optional<GURL> last_recorded_serp_url_;
 
-  WEB_CONTENTS_USER_DATA_KEY_DECL();
+  ui::ScopedUnownedUserData<SerpMetricsTabHelper> scoped_unowned_user_data_;
 };
 
 }  // namespace serp_metrics

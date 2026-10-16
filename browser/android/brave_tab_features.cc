@@ -12,6 +12,7 @@
 #include "brave/browser/image_metadata_stripper/file_upload_controller.h"
 #include "brave/browser/misc_metrics/captcha_metrics.h"
 #include "brave/browser/misc_metrics/page_metrics_tab_helper.h"
+#include "brave/browser/serp_metrics/serp_metrics_tab_helper.h"
 #include "brave/components/image_metadata_stripper/common/features.h"
 #include "brave/components/misc_metrics/features.h"
 #include "chrome/browser/android/tab_android.h"
@@ -52,6 +53,8 @@ BraveTabFeatures::BraveTabFeatures(content::WebContents* web_contents,
 
   page_metrics_tab_helper_ =
       std::make_unique<misc_metrics::PageMetricsTabHelper>(tab_interface);
+  serp_metrics_tab_helper_ =
+      serp_metrics::SerpMetricsTabHelper::MaybeCreate(tab_interface);
 }
 
 BraveTabFeatures::~BraveTabFeatures() = default;

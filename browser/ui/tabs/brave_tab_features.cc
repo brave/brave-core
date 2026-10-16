@@ -13,6 +13,7 @@
 #include "brave/browser/misc_metrics/captcha_metrics.h"
 #include "brave/browser/misc_metrics/page_metrics_tab_helper.h"
 #include "brave/browser/onboarding/onboarding_tab_helper.h"
+#include "brave/browser/serp_metrics/serp_metrics_tab_helper.h"
 #include "brave/browser/ui/side_panel/brave_side_panel_utils.h"
 #include "brave/browser/ui/sidebar/sidebar_tab_helper.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
@@ -218,6 +219,8 @@ void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
 
   sidebar_tab_helper_ = sidebar::SidebarTabHelper::MaybeCreate(tab);
   onboarding_tab_helper_ = OnboardingTabHelper::MaybeCreate(tab);
+  serp_metrics_tab_helper_ =
+      serp_metrics::SerpMetricsTabHelper::MaybeCreate(tab);
 
 #if BUILDFLAG(ENABLE_REQUEST_OTR)
   if (!profile->IsOffTheRecord() &&
