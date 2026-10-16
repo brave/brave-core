@@ -200,11 +200,10 @@ void SidebarBrowserTest::AddItemsTillScrollable(
     SidebarService* sidebar_service) {
   int url_prefix = 0;
   while (true) {
-    sidebar_service->AddItem(sidebar::SidebarItem::Create(
+    sidebar_service->AddItem(sidebar::SidebarItem::CreateWebTabItem(
         GURL(base::StrCat(
             {"https://foo/bar_", base::NumberToString(url_prefix)})),
-        u"title", SidebarItem::Type::kTypeWeb,
-        SidebarItem::BuiltInItemType::kNone, SidebarItem::PanelType::kNone));
+        u"title"));
     url_prefix++;
     base::RunLoop().RunUntilIdle();
     // Add items till first item becomes invisible.

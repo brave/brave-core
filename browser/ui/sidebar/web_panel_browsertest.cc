@@ -249,10 +249,7 @@ IN_PROC_BROWSER_TEST_F(WebPanelBrowserTest, WebPanelItemActiveStateTest) {
   const GURL url_a("https://brave.com/");
   const GURL url_b("https://basicattentiontoken.com/");
   for (const auto& url : {url_a, url_b}) {
-    service->AddItem(SidebarItem::Create(url, u"title",
-                                         SidebarItem::Type::kTypeWeb,
-                                         SidebarItem::BuiltInItemType::kNone,
-                                         SidebarItem::PanelType::kWebPanel));
+    service->AddItem(SidebarItem::CreateWebPanelItem(url, u"title"));
   }
   const size_t index_b = model()->GetAllSidebarItems().size() - 1;
   const size_t index_a = index_b - 1;
