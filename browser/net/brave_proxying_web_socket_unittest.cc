@@ -17,6 +17,7 @@
 #include "base/test/run_until.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
+#include "base/values.h"
 #include "brave/browser/net/fake_brave_request_handler.h"
 #include "brave/browser/net/url_context.h"
 #include "chrome/test/base/testing_profile.h"
@@ -38,6 +39,7 @@
 #include "services/network/public/mojom/websocket.mojom.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
+#include "url/origin.h"
 
 namespace {
 
@@ -125,9 +127,12 @@ class TestTrustedHeaderClient : public network::mojom::TrustedHeaderClient {
 class BraveProxyingWebSocketTest : public testing::Test {
  protected:
   std::unique_ptr<BraveProxyingWebSocket<std::shared_ptr>> CreateProxy(
-      content::ContentBrowserClient::WebSocketFactory factory) {
+      content::ContentBrowserClient::WebSocketFactory factory,
+      const GURL& url = GURL("wss://example.test/socket"),
+      std::optional<url::Origin> initiator = std::nullopt) {
     network::ResourceRequest request;
-    request.url = GURL("wss://example.test/socket");
+    request.url = url;
+    request.request_initiator = std::move(initiator);
 
     request_handler_ =
         std::make_unique<FakeBraveRequestHandler<std::shared_ptr>>();
@@ -246,6 +251,97 @@ TEST_F(BraveProxyingWebSocketTest,
   // The network-service handshake has not completed yet, so the downstream
   // handshake client must not see OnConnectionEstablished before response
   // header processing has run.
+}
+
+class BraveProxyingWebSocketOnionOriginTest
+    : public BraveProxyingWebSocketTest {
+ protected:
+  static constexpr char kOnionOrigin[] = "https://foo.onion";
+
+  // Starts a proxied WebSocket from a .onion page to `url`, optionally with a
+  // downstream header client, and returns the Origin header the network service
+  // would send after the proxy's header client has run. Returns std::nullopt if
+  // the proxy does not install a header client.
+  std::optional<std::string> GetSentOrigin(const GURL& url,
+                                           bool with_downstream_header_client) {
+    TestTrustedHeaderClient downstream_header_client;
+    TestHandshakeClient downstream_handshake_client;
+    base::test::TestFuture<int, const std::optional<net::HttpRequestHeaders>&,
+                           std::optional<base::DictValue>>
+        before_send_headers;
+    bool factory_called = false;
+    bool has_header_client = false;
+
+    auto proxy = CreateProxy(
+        base::BindLambdaForTesting(
+            [&](const GURL& request_url,
+                std::vector<network::mojom::HttpHeaderPtr> additional_headers,
+                mojo::PendingRemote<network::mojom::WebSocketHandshakeClient>
+                    handshake_client,
+                mojo::PendingRemote<
+                    network::mojom::WebSocketAuthenticationHandler>
+                    auth_handler,
+                mojo::PendingRemote<network::mojom::TrustedHeaderClient>
+                    trusted_header_client) {
+              factory_called = true;
+              proxy_handshake_client_.Bind(std::move(handshake_client));
+              if (!trusted_header_client) {
+                return;
+              }
+              has_header_client = true;
+              proxy_header_client_.Bind(std::move(trusted_header_client));
+
+              net::HttpRequestHeaders headers;
+              headers.SetHeader(net::HttpRequestHeaders::kOrigin, kOnionOrigin);
+              proxy_header_client_->OnBeforeSendHeaders(
+                  request_url, headers, before_send_headers.GetCallback());
+            }),
+        url, url::Origin::Create(GURL(kOnionOrigin)));
+
+    proxy->CreateWebSocketFactory().Run(
+        url, /*additional_headers=*/{},
+        downstream_handshake_client.CreateRemote(), mojo::NullRemote(),
+        with_downstream_header_client ? downstream_header_client.CreateRemote()
+                                      : mojo::NullRemote());
+    EXPECT_TRUE(factory_called);
+    if (!has_header_client) {
+      return std::nullopt;
+    }
+
+    const auto& [result, headers, net_log_events] = before_send_headers.Get();
+    EXPECT_EQ(net::OK, result);
+    if (!headers) {
+      return std::nullopt;
+    }
+    return headers->GetHeader(net::HttpRequestHeaders::kOrigin);
+  }
+};
+
+TEST_F(BraveProxyingWebSocketOnionOriginTest,
+       CrossOriginWithoutDownstreamHeaderClient) {
+  EXPECT_EQ("null", GetSentOrigin(GURL("wss://bar.com/socket"),
+                                  /*with_downstream_header_client=*/false));
+}
+
+TEST_F(BraveProxyingWebSocketOnionOriginTest,
+       SameOriginWithoutDownstreamHeaderClient) {
+  // No header client is installed, so the Origin is left untouched.
+  EXPECT_EQ(std::nullopt,
+            GetSentOrigin(GURL("wss://foo.onion/socket"),
+                          /*with_downstream_header_client=*/false));
+}
+
+TEST_F(BraveProxyingWebSocketOnionOriginTest,
+       CrossOriginWithDownstreamHeaderClient) {
+  EXPECT_EQ("null", GetSentOrigin(GURL("wss://bar.com/socket"),
+                                  /*with_downstream_header_client=*/true));
+}
+
+TEST_F(BraveProxyingWebSocketOnionOriginTest,
+       SameOriginWithDownstreamHeaderClient) {
+  EXPECT_EQ(kOnionOrigin,
+            GetSentOrigin(GURL("wss://foo.onion/socket"),
+                          /*with_downstream_header_client=*/true));
 }
 
 }  // namespace

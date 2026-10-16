@@ -5,7 +5,9 @@
 
 #include "brave/browser/net/brave_proxying_web_socket.h"
 
+#include <memory>
 #include <optional>
+#include <string>
 #include <utility>
 
 #include "base/check.h"
@@ -17,8 +19,52 @@
 #include "brave/components/constants/network_constants.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/browser_thread.h"
+#include "mojo/public/cpp/bindings/self_owned_receiver.h"
+#include "net/base/url_util.h"
 #include "net/cookies/site_for_cookies.h"
+#include "net/http/http_request_headers.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
+#include "url/gurl.h"
+#include "url/origin.h"
+
+namespace {
+
+// A cross-origin WebSocket opened by a .onion page must not disclose the
+// address it came from, so its Origin header is nullified.
+void MaybeHideCrossOriginOnionOrigin(const GURL& url,
+                                     net::HttpRequestHeaders& headers) {
+  std::optional<std::string> origin =
+      headers.GetHeader(net::HttpRequestHeaders::kOrigin);
+  if (origin &&
+      net::IsCrossOriginOnionRequest(url::Origin::Create(GURL(*origin)), url)) {
+    headers.SetHeader(net::HttpRequestHeaders::kOrigin,
+                      url::Origin().Serialize());
+  }
+}
+
+// The Origin header is only added by the network service, so it can only be
+// rewritten through a TrustedHeaderClient. Used when no other header client is
+// installed, otherwise we rely on OnBeforeSendHeadersComplete.
+class CrossOriginOnionHeaderClient
+    : public network::mojom::TrustedHeaderClient {
+ public:
+  void OnBeforeSendHeaders(const GURL& request_url,
+                           const net::HttpRequestHeaders& headers,
+                           OnBeforeSendHeadersCallback callback) override {
+    net::HttpRequestHeaders modified_headers = headers;
+    MaybeHideCrossOriginOnionOrigin(request_url, modified_headers);
+    std::move(callback).Run(net::OK, modified_headers, std::nullopt);
+  }
+
+  void OnHeadersReceived(const std::string& headers,
+                         const net::IPEndPoint& remote_endpoint,
+                         const std::optional<net::SSLInfo>& ssl_info,
+                         OnHeadersReceivedCallback callback) override {
+    std::move(callback).Run(net::OK, std::nullopt, std::nullopt);
+  }
+};
+
+}  // namespace
 
 template <template <typename> class T>
 BraveProxyingWebSocket<T>::BraveProxyingWebSocket(
@@ -376,6 +422,8 @@ void BraveProxyingWebSocket<T>::OnBeforeSendHeadersComplete(int error_code) {
     return;
   }
 
+  MaybeHideCrossOriginOnionOrigin(request_.url, request_.headers);
+
   if (on_before_send_headers_callback_) {
     std::move(on_before_send_headers_callback_)
         .Run(error_code,
@@ -409,6 +457,12 @@ void BraveProxyingWebSocket<T>::ContinueToStartRequest(int error_code) {
   if (proxy_has_extra_headers()) {
     trusted_header_client =
         receiver_as_header_client_.BindNewPipeAndPassRemote();
+  } else if (request_.request_initiator &&
+             net::IsCrossOriginOnionRequest(*request_.request_initiator,
+                                            request_.url)) {
+    mojo::MakeSelfOwnedReceiver(
+        std::make_unique<CrossOriginOnionHeaderClient>(),
+        trusted_header_client.InitWithNewPipeAndPassReceiver());
   }
 
   std::move(factory_).Run(
