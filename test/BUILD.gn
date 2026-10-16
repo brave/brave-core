@@ -1322,6 +1322,8 @@ test("brave_browser_tests") {
 
   if (enable_playlist) {
     deps += [
+      # Required for ad_block_service_browsertest.cc
+      "//brave/browser/playlist",
       "//brave/browser/playlist/test:browser_tests",
       "//brave/components/playlist/content/browser",
     ]
