@@ -100,7 +100,10 @@ if (!is_android) {
     ]
 
     if (enable_ai_chat) {
-      deps += [ "//brave/browser/ai_chat" ]
+      deps += [
+        "//brave/browser/ai_chat",
+        "//brave/components/ai_chat/content/browser",
+      ]
     }
 
     if (enable_web_discovery) {

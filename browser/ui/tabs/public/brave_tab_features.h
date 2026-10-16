@@ -35,6 +35,7 @@ class FileUploadController;
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 namespace ai_chat {
+class AIChatTabHelper;
 class TabDataWebContentsObserver;
 class WebMcpInjector;
 }  // namespace ai_chat
@@ -226,6 +227,8 @@ class BraveTabFeatures : public TabFeatures {
       geolocation_permission_tab_helper_;
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
+  // Provides the tab's content to AI Chat. Null when AI Chat is not allowed.
+  std::unique_ptr<ai_chat::AIChatTabHelper> ai_chat_tab_helper_;
   std::unique_ptr<ai_chat::TabDataWebContentsObserver> tab_data_observer_;
   std::unique_ptr<ai_chat::WebMcpInjector> web_mcp_injector_;
 #endif

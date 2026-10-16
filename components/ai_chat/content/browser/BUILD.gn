@@ -40,7 +40,10 @@ static_library("browser") {
     ]
   }
 
-  public_deps = [ "//mojo/public/cpp/bindings" ]
+  public_deps = [
+    "//mojo/public/cpp/bindings",
+    "//ui/base/unowned_user_data",
+  ]
 
   deps = [
     "//base",
@@ -68,6 +71,7 @@ static_library("browser") {
     "//components/permissions",
     "//components/prefs",
     "//components/strings:components_strings_grit",
+    "//components/tabs:public",
     "//components/user_prefs",
     "//content/public/browser",
     "//net",
@@ -116,6 +120,7 @@ source_set("unit_tests") {
     "//components/optimization_guide/content/browser",
     "//components/optimization_guide/proto:optimization_guide_proto",
     "//components/pdf/common:constants",
+    "//components/tabs:test_support",
     "//content/public/browser",
     "//content/test:test_support",
     "//net:test_support",

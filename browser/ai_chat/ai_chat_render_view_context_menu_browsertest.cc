@@ -34,6 +34,7 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/prefs/pref_service.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/context_menu_params.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/render_view_host.h"
@@ -268,7 +269,8 @@ class AIChatRenderViewContextMenuBrowserTest : public InProcessBrowserTest {
   }
 
   ConversationHandler* GetConversationHandler() {
-    AIChatTabHelper* helper = AIChatTabHelper::FromWebContents(web_contents());
+    AIChatTabHelper* helper = AIChatTabHelper::From(
+        tabs::TabInterface::MaybeGetFromContents(web_contents()));
     if (!helper) {
       return nullptr;
     }

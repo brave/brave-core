@@ -36,6 +36,7 @@
 #include "chrome/test/base/ui_test_utils.h"
 #endif
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/common/url_constants.h"
@@ -710,7 +711,8 @@ IN_PROC_BROWSER_TEST_F(AIChatUIPageHandlerTabPanelBrowserTest,
   OpenNewTab();
   auto* tab_contents = web_contents();
   ASSERT_TRUE(tab_contents);
-  auto* tab_helper = AIChatTabHelper::FromWebContents(tab_contents);
+  auto* tab_helper = AIChatTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(tab_contents));
   ASSERT_TRUE(tab_helper);
 
   // Mimic the context menu flow: get or create a conversation tied to the
@@ -785,7 +787,8 @@ IN_PROC_BROWSER_TEST_F(
   OpenNewTab();
   auto* tab_contents = web_contents();
   ASSERT_TRUE(tab_contents);
-  auto* tab_helper = AIChatTabHelper::FromWebContents(tab_contents);
+  auto* tab_helper = AIChatTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(tab_contents));
   ASSERT_TRUE(tab_helper);
 
   // Pre-create a conversation tied to the tab. With the flag disabled,

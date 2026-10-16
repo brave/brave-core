@@ -91,9 +91,11 @@
 #endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/browser/ai_chat/ai_chat_tab_helper_factory.h"
 #include "brave/browser/ai_chat/ai_chat_utils.h"
 #include "brave/browser/ai_chat/tab_data_web_contents_observer.h"
 #include "brave/browser/ai_chat/web_mcp_injection/web_mcp_injector.h"
+#include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 #endif
 
 #if BUILDFLAG(ENABLE_PSST)
@@ -163,6 +165,12 @@ void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
   will_discard_contents_subscription_ =
       tab.RegisterWillDiscardContents(base::BindRepeating(
           &BraveTabFeatures::WillDiscardContents, base::Unretained(this)));
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  // Created first, as other features may look it up through the tab.
+  ai_chat_tab_helper_ =
+      ai_chat::MaybeCreateAIChatTabHelper(tab, tab.GetContents());
+#endif
 
   // Expect upstream's Init to create the registry.
   auto* side_panel_registry = SidePanelRegistry::From(&tab);
@@ -366,6 +374,13 @@ void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
 void BraveTabFeatures::WillDiscardContents(TabInterface* tab,
                                            content::WebContents* old_contents,
                                            content::WebContents* new_contents) {
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  if (ai_chat_tab_helper_) {
+    ai_chat_tab_helper_.reset();
+    ai_chat_tab_helper_ =
+        ai_chat::MaybeCreateAIChatTabHelper(*tab, new_contents);
+  }
+#endif
   // Only one instance can be registered with the tab at a time.
   perf_predictor_tab_helper_.reset();
   perf_predictor_tab_helper_ =

@@ -245,8 +245,8 @@ AIChatUIPageHandler::AIChatUIPageHandler(
       ai_chat_metrics_->RecordSidebarUsage();
     }
 #endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
-    active_chat_tab_helper_ =
-        ai_chat::AIChatTabHelper::FromWebContents(chat_context_web_contents);
+    active_chat_tab_helper_ = ai_chat::AIChatTabHelper::From(
+        tabs::TabInterface::MaybeGetFromContents(chat_context_web_contents));
 
     associated_content_delegate_observation_.Observe(
         &active_chat_tab_helper_->web_contents_content());
@@ -612,8 +612,8 @@ void AIChatUIPageHandler::OnTabStripModelChanged(
 
   auto* new_contents = selection.new_contents.get();
   if (new_contents) {
-    auto* active_chat_tab_helper =
-        ai_chat::AIChatTabHelper::FromWebContents(new_contents);
+    auto* active_chat_tab_helper = ai_chat::AIChatTabHelper::From(
+        tabs::TabInterface::MaybeGetFromContents(new_contents));
     if (active_chat_tab_helper) {
       active_chat_tab_helper_ = active_chat_tab_helper;
       associated_content_delegate_observation_.Observe(
@@ -631,6 +631,13 @@ void AIChatUIPageHandler::OnTabStripModelChanged(
   NotifyNewDefaultConversation();
 }
 #endif
+
+void AIChatUIPageHandler::OnDestroyed(AssociatedContentDelegate* delegate) {
+  // The content is owned by the tab helper, which is destroyed before its
+  // contents when the tab closes or its contents is replaced.
+  associated_content_delegate_observation_.Reset();
+  active_chat_tab_helper_ = nullptr;
+}
 
 void AIChatUIPageHandler::OnNewPage(AssociatedContentDelegate* delegate) {
   if (!features::IsAIChatGlobalSidePanelEverywhereEnabled() ||
@@ -738,8 +745,8 @@ void AIChatUIPageHandler::AssociateTab(mojom::TabDataPtr mojom_tab,
       contents, base::BindOnce(
                     [](const std::string& conversation_uuid,
                        content::WebContents* contents) {
-                      auto* tab_helper =
-                          ai_chat::AIChatTabHelper::FromWebContents(contents);
+                      auto* tab_helper = ai_chat::AIChatTabHelper::From(
+                          tabs::TabInterface::MaybeGetFromContents(contents));
                       if (!tab_helper) {
                         return;
                       }

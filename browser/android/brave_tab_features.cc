@@ -6,6 +6,7 @@
 #include "brave/browser/android/brave_tab_features.h"
 
 #include "base/feature_list.h"
+#include "brave/browser/ai_chat/ai_chat_tab_helper_factory.h"
 #include "brave/browser/ai_chat/ai_chat_utils.h"
 #include "brave/browser/ai_chat/tab_data_web_contents_observer.h"
 #include "brave/browser/ai_chat/web_mcp_injection/web_mcp_injector.h"
@@ -14,6 +15,7 @@
 #include "brave/browser/misc_metrics/captcha_metrics.h"
 #include "brave/browser/misc_metrics/page_metrics_tab_helper.h"
 #include "brave/browser/serp_metrics/serp_metrics_tab_helper.h"
+#include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
@@ -91,6 +93,10 @@ BraveTabFeatures::BraveTabFeatures(content::WebContents* web_contents,
   // Clients should rely on this for observing web contents based changes.
   tabs::TabInterface& tab_interface =
       *TabInterface::GetFromContents(web_contents);
+
+  // Created first, as other features may look it up through the tab.
+  ai_chat_tab_helper_ =
+      ai_chat::MaybeCreateAIChatTabHelper(tab_interface, web_contents);
 
   if (ai_chat::IsAllowedForContext(profile)) {
     tab_data_observer_ = std::make_unique<ai_chat::TabDataWebContentsObserver>(
