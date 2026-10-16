@@ -9,6 +9,7 @@
 #include "base/functional/callback_helpers.h"
 #include "base/run_loop.h"
 #include "base/test/bind.h"
+#include "brave/components/brave_sync/test/test_sync_code.h"
 #include "brave/components/sync/service/brave_sync_service_impl.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/keep_alive/profile_keep_alive_waiter.h"
@@ -29,13 +30,6 @@ static_assert(!BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS));
 using testing::IsEmpty;
 using testing::Not;
 using testing::Optional;
-
-namespace {
-constexpr char kValidSyncCode[] =
-    "fringe digital begin feed equal output proof cheap "
-    "exotic ill sure question trial squirrel glove celery "
-    "awkward push jelly logic broccoli almost grocery drift";
-}
 
 // Inspired by src/chrome/browser/profiles/delete_profile_helper_browsertest.cc
 class DeleteProfileHelperBrowserTest : public InProcessBrowserTest {
@@ -68,7 +62,7 @@ IN_PROC_BROWSER_TEST_F(DeleteProfileHelperBrowserTest,
               &profile_to_delete));
 
   // Set the sync code to ensure it will be cleared on profile deletion
-  EXPECT_TRUE(brave_sync_service->SetSyncCode(kValidSyncCode));
+  EXPECT_TRUE(brave_sync_service->SetSyncCode(brave_sync::kValidSyncCode));
 
   auto seed = brave_sync_service->GetSeed();
   ASSERT_TRUE(seed.has_value());

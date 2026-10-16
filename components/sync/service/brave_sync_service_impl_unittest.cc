@@ -23,6 +23,7 @@
 #include "brave/components/brave_sync/brave_sync_p3a.h"
 #include "brave/components/brave_sync/features.h"
 #include "brave/components/brave_sync/network_time_helper.h"
+#include "brave/components/brave_sync/test/test_sync_code.h"
 #include "brave/components/history/core/browser/sync/brave_history_data_type_controller.h"
 #include "brave/components/history/core/browser/sync/brave_history_delete_directives_data_type_controller.h"
 #include "brave/components/sync/service/sync_service_impl_delegate.h"
@@ -67,10 +68,7 @@ namespace {
 
 constexpr char kCacheGuid[] = "cache_guid";
 
-constexpr char kValidSyncCode[] =
-    "fringe digital begin feed equal output proof cheap "
-    "exotic ill sure question trial squirrel glove celery "
-    "awkward push jelly logic broccoli almost grocery drift";
+using brave_sync::kValidSyncCode;
 
 // Taken from anonymous namespace from sync_service_crypto_unittest.cc
 sync_pb::EncryptedData MakeEncryptedData(

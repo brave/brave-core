@@ -30,6 +30,7 @@ if (!is_ios) {
       "//base/test:test_support",
       "//brave/components/brave_sync:network_time_helper",
       "//brave/components/brave_sync:prefs",
+      "//brave/components/brave_sync/test:test_support",
       "//chrome/browser",
       "//chrome/browser/sync",
       "//chrome/test:test_support",

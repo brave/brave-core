@@ -7,6 +7,7 @@
 
 #include "base/command_line.h"
 #include "base/test/run_until.h"
+#include "brave/components/brave_sync/test/test_sync_code.h"
 #include "brave/components/sync/service/brave_sync_service_impl.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/sync/sync_service_factory.h"
@@ -21,15 +22,6 @@
 #include "content/public/test/browser_test.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "testing/gtest/include/gtest/gtest.h"
-
-namespace {
-
-constexpr char kValidSyncCode[] =
-    "fringe digital begin feed equal output proof cheap "
-    "exotic ill sure question trial squirrel glove celery "
-    "awkward push jelly logic broccoli almost grocery drift";
-
-}  // namespace
 
 // Smoke test for enabling Sync. It runs the real sync engine against an
 // in-process `fake_server::FakeServer`, so it needs neither Brave's sync
@@ -100,7 +92,7 @@ IN_PROC_BROWSER_TEST_F(BraveSyncSmokeBrowserTest, EnableSync) {
 
   // Mirrors joining a sync chain, see `BraveSyncHandler::HandleSetSyncCode()`
   // and `BraveSyncWorker::SaveCodeWords()`.
-  ASSERT_TRUE(sync_service->SetSyncCode(kValidSyncCode));
+  ASSERT_TRUE(sync_service->SetSyncCode(brave_sync::kValidSyncCode));
   sync_service->GetUserSettings()->SetInitialSyncFeatureSetupComplete();
 
   // A committed DEVICE_INFO entity proves the engine got through the initial
