@@ -26,6 +26,7 @@ import PrivacyMessage from '../privacy_message'
 import FeedbackForm from '../feedback_form'
 import ShareConversationModal from '../share_conversation_modal'
 import SharedConversationsModal from '../shared_conversations_modal'
+import VisionModelSwitchModal from '../vision_model_switch_modal'
 import ToolsMenu, {
   ExtendedActionEntry,
   getIsSkill,
@@ -265,6 +266,7 @@ function Main() {
         />
       </div>
       <DeleteConversationModal />
+      <VisionModelSwitchModal />
       <ImageLightbox
         file={conversationContext.previewUploadedFile}
         onClose={() => conversationContext.setPreviewUploadedFile(null)}

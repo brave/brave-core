@@ -379,6 +379,18 @@ struct ConversationState {
 
   // Which of the available capabilities are enabled for this conversation
   array<ConversationCapability> capabilities_enabled;
+
+  // Set while a submission waits for the user to decide whether to switch to
+  // this vision model, because it has images the current model can't read.
+  string? vision_model_switch_key;
+};
+
+// How the user answered the prompt to switch to a vision model.
+enum VisionModelSwitchDecision {
+  // Switch the conversation to the offered model and send the images.
+  kSwitch,
+  // Keep the current model and send the submission without its images.
+  kSendWithoutImages,
 };
 
 // Browser-side handler for a Conversation
@@ -419,6 +431,11 @@ interface ConversationHandler {
   // Stops a generation and if the last entry was a human entry returns it
   // to the caller.
   StopGenerationAndMaybeGetHumanEntry() => (ConversationTurn? human_entry);
+
+  // Resumes the submission waiting on |vision_model_switch_key|.
+  // StopGenerationAndMaybeGetHumanEntry cancels it instead, returning the
+  // waiting human entry.
+  RespondToVisionModelSwitch(VisionModelSwitchDecision decision);
 
   // Send a user-rating for a chat
   // message. |turn_id| is the index of the message in the
@@ -501,6 +518,10 @@ interface ConversationUI {
   // Pushed rather than invalidated so every open UI for this conversation
   // settles on the same list without each one re-asking the page.
   OnContentToolsChanged(string content_uuid, array<ToolInfo> tools);
+
+  // A submission started or stopped waiting for the user to decide whether
+  // to switch to the vision model |model_key|.
+  OnVisionModelSwitchChanged(string? model_key);
 
   OnConversationDeleted();
 };
