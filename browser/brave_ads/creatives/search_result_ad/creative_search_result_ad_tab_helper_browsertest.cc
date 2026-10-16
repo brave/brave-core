@@ -65,9 +65,8 @@ constexpr auto kCreativeAdPlacementIdToIndex =
 
 CreativeSearchResultAdTabHelper* GetCreativeSearchResultAdTabHelper(
     BrowserWindowInterface* browser) {
-  content::WebContents* web_contents =
-      browser->GetActiveTabInterface()->GetContents();
-  return CreativeSearchResultAdTabHelper::FromWebContents(web_contents);
+  return CreativeSearchResultAdTabHelper::From(
+      browser->GetActiveTabInterface());
 }
 
 bool HasSearchResultAdClickedInfoBar(content::WebContents* web_contents) {
