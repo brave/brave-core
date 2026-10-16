@@ -9,8 +9,8 @@
 
 #include "base/check.h"
 #include "base/path_service.h"
-#include "brave/browser/brave_drm_tab_helper.h"
 #include "brave/browser/ui/browser_commands.h"
+#include "brave/browser/widevine/brave_drm_tab_helper.h"
 #include "brave/browser/widevine/widevine_utils.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/constants/pref_names.h"
@@ -58,8 +58,7 @@ class TestObserver : public permissions::PermissionRequestManager::Observer {
 };
 }  // namespace
 
-class WidevinePermissionRequestBrowserTest
-    : public InProcessBrowserTest {
+class WidevinePermissionRequestBrowserTest : public InProcessBrowserTest {
  public:
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
@@ -121,8 +120,8 @@ IN_PROC_BROWSER_TEST_F(WidevinePermissionRequestBrowserTest, VisibilityTest) {
 
   // Check permission is requested again after new navigation.
   observer.bubble_added_ = false;
-  EXPECT_TRUE(content::NavigateToURL(GetActiveWebContents(),
-                                     GURL("chrome://newtab/")));
+  EXPECT_TRUE(
+      content::NavigateToURL(GetActiveWebContents(), GURL("chrome://newtab/")));
   SimulateWidevineKeySystemAccessRequest();
   content::RunAllTasksUntilIdle();
   EXPECT_TRUE(observer.bubble_added_);
@@ -132,8 +131,8 @@ IN_PROC_BROWSER_TEST_F(WidevinePermissionRequestBrowserTest, VisibilityTest) {
   static_cast<Profile*>(GetActiveWebContents()->GetBrowserContext())
       ->GetPrefs()
       ->SetBoolean(kAskEnableWidvine, false);
-  EXPECT_TRUE(content::NavigateToURL(GetActiveWebContents(),
-                                     GURL("chrome://newtab/")));
+  EXPECT_TRUE(
+      content::NavigateToURL(GetActiveWebContents(), GURL("chrome://newtab/")));
   SimulateWidevineKeySystemAccessRequest();
   content::RunAllTasksUntilIdle();
   EXPECT_FALSE(observer.bubble_added_);
@@ -143,8 +142,8 @@ IN_PROC_BROWSER_TEST_F(WidevinePermissionRequestBrowserTest, VisibilityTest) {
   static_cast<Profile*>(GetActiveWebContents()->GetBrowserContext())
       ->GetPrefs()
       ->SetBoolean(kAskEnableWidvine, true);
-  EXPECT_TRUE(content::NavigateToURL(GetActiveWebContents(),
-                                     GURL("chrome://newtab/")));
+  EXPECT_TRUE(
+      content::NavigateToURL(GetActiveWebContents(), GURL("chrome://newtab/")));
   SimulateWidevineKeySystemAccessRequest();
   content::RunAllTasksUntilIdle();
   EXPECT_TRUE(observer.bubble_added_);
@@ -152,8 +151,7 @@ IN_PROC_BROWSER_TEST_F(WidevinePermissionRequestBrowserTest, VisibilityTest) {
 
 // Check extra text is added.
 IN_PROC_BROWSER_TEST_F(WidevinePermissionRequestBrowserTest, BubbleTest) {
-  auto* permission_request_manager =
-      GetPermissionRequestManager();
+  auto* permission_request_manager = GetPermissionRequestManager();
   EXPECT_FALSE(permission_request_manager->IsRequestInProgress());
   SimulateWidevineKeySystemAccessRequest();
   content::RunAllTasksUntilIdle();
@@ -163,8 +161,7 @@ IN_PROC_BROWSER_TEST_F(WidevinePermissionRequestBrowserTest, BubbleTest) {
   DCHECK(widget);
 
   auto* delegate_view =
-      static_cast<views::BubbleDialogDelegateView*>(
-          widget->widget_delegate());
+      static_cast<views::BubbleDialogDelegateView*>(widget->widget_delegate());
   DCHECK(delegate_view);
   // Original PermissionsBubbleDialogDelegateView has one child.
   // It's label that includes icon and fragment test.
@@ -313,9 +310,7 @@ class ScriptTriggerWidevinePermissionRequestBrowserTest
         active_contents());
   }
 
-  bool IsPermissionBubbleShown() {
-    return observer.bubble_added_;
-  }
+  bool IsPermissionBubbleShown() { return observer.bubble_added_; }
 
   void ResetBubbleState() {
     observer.bubble_added_ = false;
@@ -348,8 +343,8 @@ IN_PROC_BROWSER_TEST_F(ScriptTriggerWidevinePermissionRequestBrowserTest,
   const std::string drm_js =
       "var config = [{initDataTypes: ['cenc']}];"
       "navigator.requestMediaKeySystemAccess($1, config);";
-  const std::string widevine_js = content::JsReplace(drm_js,
-                                                     "com.widevine.alpha");
+  const std::string widevine_js =
+      content::JsReplace(drm_js, "com.widevine.alpha");
 
   EXPECT_THAT(content::EvalJs(active_contents(), widevine_js),
               content::EvalJsResult::ErrorIs(testing::Eq(js_error)));
