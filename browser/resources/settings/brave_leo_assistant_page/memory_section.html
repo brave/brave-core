@@ -272,9 +272,26 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
     gap: var(--leo-spacing-m);
   }
 
-  /* The text box can grow, and the button stays at its first line. */
+  /* The text box can grow, and the buttons stay at its first line. */
   .review-item.editing .review-item-main {
     align-items: flex-start;
+  }
+
+  /* The text box takes the place of the text of the checkbox. */
+  .review-text {
+    margin-inline-start: calc(var(--leo-icon-m) + var(--leo-spacing-m));
+  }
+
+  /* The error under the text box starts at the box, like its text. */
+  .review-text .error-message {
+    align-items: flex-start;
+    padding-top: var(--leo-spacing-s);
+    text-align: start;
+  }
+
+  .review-text .error-message leo-icon {
+    flex: 0 0 auto;
+    --leo-icon-size: var(--leo-icon-m);
   }
 
   .review-item:last-child {
@@ -320,11 +337,6 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
         var(--leo-spacing-m);
   }
 
-  /* The text box has no checkbox before it. */
-  .review-item.editing .review-quotes {
-    padding-inline-start: 0;
-  }
-
   /* The border shows only with forced colours, which remove the
      background. */
   .review-quote {
@@ -346,20 +358,6 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
   .review-quote-caption {
     font: var(--leo-font-x-small-regular);
     color: var(--leo-color-text-tertiary);
-  }
-
-  .review-edit {
-    display: flex;
-    flex: 1;
-    align-items: flex-start;
-    gap: var(--leo-spacing-m);
-    min-width: 0;
-    padding-top: var(--leo-spacing-s);
-  }
-
-  .review-edit leo-textarea {
-    flex: 1;
-    min-width: 0;
   }
 
   .review-item-actions {
@@ -625,27 +623,44 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
           </template>
           <div class$="[[getReviewItemClass_(item.keep, item.editing)]]">
             <div class="review-item-main">
-              <template is="dom-if" if="[[!item.editing]]">
-                <div class="review-item-body">
+              <div class="review-item-body">
+                <template is="dom-if" if="[[!item.editing]]">
                   <leo-checkbox class="review-keep"
                       checked="[[item.keep]]" on-change="onReviewKeepChange_">
                     [[item.text]]
                   </leo-checkbox>
-                  <template is="dom-if" if="[[hasStoredText_(item)]]">
-                    <div class="review-details">[[getStoredText_(item)]]</div>
-                  </template>
-                  <template is="dom-if" if="[[hasReviewSources_(item)]]">
-                    <div class="review-details"
-                      ><span>[[item.source.before]]</span
-                      ><template is="dom-if" if="[[item.source.url]]"
-                        ><a href$="[[item.source.url]]" target="_blank"
-                          >[[item.source.link]]</a
-                        ><span>[[item.source.after]]</span
-                      ></template
-                    ></div>
-                  </template>
-                </div>
-                <div class="review-item-actions">
+                </template>
+                <template is="dom-if" if="[[item.editing]]">
+                  <leo-textarea class="review-text"
+                      data-index$="[[index]]"
+                      minRows="1" maxRows="1"
+                      aria-label="$i18n{braveLeoAssistantMemoryEditLabel}"
+                      value="[[item.text]]"
+                      showErrors$="[[hasReviewTextError_(item.error)]]"
+                      on-input="onReviewTextInput_"
+                      on-keydown="onReviewTextKeyDown_">
+                    <div slot="errors" class="error-message">
+                      <leo-icon name="warning-triangle-filled"></leo-icon>
+                      <span>[[getReviewTextErrorText_(item.error)]]</span>
+                    </div>
+                  </leo-textarea>
+                </template>
+                <template is="dom-if" if="[[hasStoredText_(item)]]">
+                  <div class="review-details">[[getStoredText_(item)]]</div>
+                </template>
+                <template is="dom-if" if="[[hasReviewSources_(item)]]">
+                  <div class="review-details"
+                    ><span>[[item.source.before]]</span
+                    ><template is="dom-if" if="[[item.source.url]]"
+                      ><a href$="[[item.source.url]]" target="_blank"
+                        >[[item.source.link]]</a
+                      ><span>[[item.source.after]]</span
+                    ></template
+                  ></div>
+                </template>
+              </div>
+              <div class="review-item-actions">
+                <template is="dom-if" if="[[!item.editing]]">
                   <leo-button class="review-edit-button"
                       data-index$="[[index]]"
                       kind="plain-faint" fab size="medium"
@@ -664,33 +679,21 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
                       </leo-icon>
                     </leo-button>
                   </template>
-                </div>
-              </template>
-              <template is="dom-if" if="[[item.editing]]">
-                <div class="review-edit">
-                  <leo-textarea class="review-text"
-                      data-index$="[[index]]"
-                      minRows="1" maxRows="4"
-                      aria-label="$i18n{braveLeoAssistantMemoryEditLabel}"
-                      value="[[item.text]]"
-                      showErrors$="[[hasReviewTextError_(item.error)]]"
-                      on-input="onReviewTextInput_"
-                      on-keydown="onReviewTextKeyDown_">
-                    <div slot="errors" class="error-message">
-                      <leo-icon name="warning-triangle-filled"></leo-icon>
-                      <span>[[getReviewTextErrorText_(item.error)]]</span>
-                    </div>
-                  </leo-textarea>
-                </div>
-                <div class="review-item-actions">
+                </template>
+                <template is="dom-if" if="[[item.editing]]">
+                  <leo-button kind="plain-faint" fab size="medium"
+                      title="$i18n{cancel}" aria-label="$i18n{cancel}"
+                      on-click="onReviewEditCancel_">
+                    <leo-icon name="close"></leo-icon>
+                  </leo-button>
                   <leo-button kind="plain-faint" fab size="medium"
                       title="$i18n{braveLeoAssistantDreamReviewDone}"
                       aria-label="$i18n{braveLeoAssistantDreamReviewDone}"
                       on-click="onReviewEditDone_">
                     <leo-icon name="check-normal"></leo-icon>
                   </leo-button>
-                </div>
-              </template>
+                </template>
+              </div>
             </div>
             <template is="dom-if" if="[[showReviewQuotes_(item, item.sourcesOpen)]]">
               <div class="review-quotes">

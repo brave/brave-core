@@ -2068,8 +2068,8 @@
   <message name="IDS_SETTINGS_LEO_ASSISTANT_DREAM_REVIEW_DONE" desc="The tooltip and accessible name of the button that closes the text box of a memory in the review dialog and keeps the text">
     Done
   </message>
-  <message name="IDS_SETTINGS_LEO_ASSISTANT_DREAM_REVIEW_EMPTY_ERROR" desc="The error under the text box of a memory in the review dialog when the user left it empty">
-    Enter some text, or clear the checkbox to skip this memory.
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_DREAM_REVIEW_EMPTY_ERROR" desc="The error under the text box of a memory in the review dialog when the user left it empty. Cancelling the edit brings back the text from before the edit.">
+    Enter some text, or cancel the edit.
   </message>
   <message name="IDS_SETTINGS_LEO_ASSISTANT_DREAM_REVIEW_SOURCE" desc="The line under a memory in the review dialog that tells the chat that the memory came from, and the date of the message. The chat title is a link that opens the chat at that message.">
     From “<ph name="CHAT_TITLE">$1<ex>Dog food ideas</ex></ph>” · <ph name="DATE">$2<ex>10/12/2026</ex></ph>

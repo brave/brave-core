@@ -127,6 +127,10 @@ const REVIEW_KIND_ORDER = [
   LearnedMemoryChange.kSeenAgain
 ]
 
+// The text box of a change shows this many lines at most, then it scrolls. A
+// memory of the longest length takes about this many lines.
+const REVIEW_TEXT_MAX_LINES = 8
+
 // Takes the place of a chat title in a translated line. The title itself never
 // goes through i18n(), which reads HTML: a title can contain "<".
 const CHAT_TITLE_MARKER = 'LEO_CHAT_TITLE_MARKER'
@@ -907,6 +911,10 @@ class MemorySection extends MemorySectionBase {
   onReviewTextInput_(e: LeoInputEvent) {
     const index = e.model.index
     this.set(`reviewItems_.${index}.text`, e.value)
+    const textarea = this.getReviewTextArea_(index)
+    if (textarea) {
+      this.fitReviewText_(textarea)
+    }
     // An error goes as soon as the text is fixed. A new one waits for the end
     // of the edit or for the save.
     if (this.reviewItems_[index].error &&
@@ -930,16 +938,25 @@ class MemorySection extends MemorySectionBase {
     } else if (key.key === 'Escape') {
       key.preventDefault()
       key.stopPropagation()
-      this.set(`reviewItems_.${index}.text`,
-               this.reviewItems_[index].textBeforeEdit)
-      this.set(`reviewItems_.${index}.error`, '')
-      this.set(`reviewItems_.${index}.editing`, false)
-      this.focusReviewEditButton_(index)
+      this.cancelReviewEdit_(index)
     }
   }
 
   onReviewEditDone_(e: { model: { index: number } }) {
     this.finishReviewEdit_(e.model.index)
+  }
+
+  // The button does what Esc does.
+  onReviewEditCancel_(e: { model: { index: number } }) {
+    this.cancelReviewEdit_(e.model.index)
+  }
+
+  cancelReviewEdit_(index: number) {
+    this.set(`reviewItems_.${index}.text`,
+             this.reviewItems_[index].textBeforeEdit)
+    this.set(`reviewItems_.${index}.error`, '')
+    this.set(`reviewItems_.${index}.editing`, false)
+    this.focusReviewEditButton_(index)
   }
 
   finishReviewEdit_(index: number) {
@@ -961,14 +978,48 @@ class MemorySection extends MemorySectionBase {
     return trimmed.length > MAX_MEMORY_RECORD_LENGTH ? 'tooLong' : ''
   }
 
+  // The text area inside the Leo text box of the change |index|.
+  getReviewTextArea_(index: number): HTMLTextAreaElement | null {
+    const box = this.shadowRoot?.querySelector(
+      `.review-text[data-index="${index}"]`) as HTMLElement | null
+    return box?.shadowRoot?.querySelector('textarea') ?? null
+  }
+
+  // The Leo text box grows only at a line break, not when a long line wraps,
+  // so it showed one line of a long memory at a time. This gives it the
+  // height of its text, up to REVIEW_TEXT_MAX_LINES lines. Remove it when the
+  // Leo text box grows with wrapped lines.
+  fitReviewText_(textarea: HTMLTextAreaElement) {
+    const lineHeight = parseFloat(getComputedStyle(textarea).lineHeight)
+    const maxHeight = Number.isFinite(lineHeight)
+      ? lineHeight * REVIEW_TEXT_MAX_LINES
+      : Infinity
+    textarea.style.height = 'auto'
+    textarea.style.height = `${Math.min(textarea.scrollHeight, maxHeight)}px`
+  }
+
   // Focus follows the person: into the text box when it opens, and back to the
-  // button when it closes.
+  // button when it closes. The text box gets the height of its text first.
   focusReviewText_(index: number) {
     this.focusWhenReady_(() => {
-      const box = this.shadowRoot?.querySelector(
-        `.review-text[data-index="${index}"]`) as HTMLElement | null
-      return box?.shadowRoot?.querySelector('textarea') ?? null
+      const textarea = this.getReviewTextArea_(index)
+      if (textarea) {
+        this.fitReviewText_(textarea)
+      }
+      return textarea
     })
+  }
+
+  // A text box that opens without the focus, for an error at the save.
+  fitReviewTextWhenReady_(index: number, triesLeft = 25) {
+    setTimeout(() => {
+      const textarea = this.getReviewTextArea_(index)
+      if (textarea) {
+        this.fitReviewText_(textarea)
+      } else if (triesLeft > 0) {
+        this.fitReviewTextWhenReady_(index, triesLeft - 1)
+      }
+    }, 20)
   }
 
   focusReviewEditButton_(index: number) {
@@ -1000,6 +1051,8 @@ class MemorySection extends MemorySectionBase {
         this.set(`reviewItems_.${index}.editing`, true)
         if (firstError < 0) {
           firstError = index
+        } else {
+          this.fitReviewTextWhenReady_(index)
         }
       }
     })
