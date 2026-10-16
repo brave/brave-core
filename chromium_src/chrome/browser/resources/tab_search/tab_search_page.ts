@@ -86,6 +86,12 @@ class BraveTabSearchPageElement extends TabSearchPageElement {
   }
 }
 
+declare global {
+  interface HTMLElementTagNameMap {
+    'brave-tab-search-page': BraveTabSearchPageElement
+  }
+}
+
 customElements.define(
     BraveTabSearchPageElement.is, BraveTabSearchPageElement)
 
