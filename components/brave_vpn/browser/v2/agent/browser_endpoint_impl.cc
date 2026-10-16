@@ -35,6 +35,27 @@ void BrowserEndpointImpl::OnConnectionStateChanged(
   // Pass the connection state change to the service.
 }
 
+void BrowserEndpointImpl::OnSelectedRegionChanged(mojom::VpnRegionPtr region) {
+  // TODO(https://github.com/brave/brave-browser/issues/54624)
+  // Pass the selected region change to the service.
+}
+
+void BrowserEndpointImpl::OnSmartProxyRoutingStateChanged(bool enabled) {
+  // TODO(https://github.com/brave/brave-browser/issues/54624)
+  // Pass the smart proxy routing state change to the service.
+}
+
+void BrowserEndpointImpl::OnAllowLanTrafficStateChanged(bool available,
+                                                        bool enabled) {
+  // TODO(https://github.com/brave/brave-browser/issues/54624)
+  // Pass the allow LAN traffic state change to the service.
+}
+
+void BrowserEndpointImpl::OnLastHostnameChanged(const std::string& hostname) {
+  // TODO(https://github.com/brave/brave-browser/issues/54624)
+  // Pass the last hostname change to the service.
+}
+
 void BrowserEndpointImpl::OnPipeDisconnected() {
   // Stop listening before running the handler.
   receiver_.reset();

@@ -20,9 +20,14 @@ namespace {
 // Records every notification it receives, oldest first.
 class TestObserver : public ConnectionManager::Observer {
  public:
-  struct Update {
+  struct ConnectionStateUpdate {
     mojom::VpnConnectionState state;
     std::optional<std::string> error_message;
+  };
+
+  struct AllowLanTrafficStateUpdate {
+    bool available = false;
+    bool enabled = false;
   };
 
   explicit TestObserver(ConnectionManager& manager) {
@@ -37,15 +42,46 @@ class TestObserver : public ConnectionManager::Observer {
   void OnConnectionStateChanged(
       mojom::VpnConnectionState state,
       std::optional<std::string> error_message) override {
-    updates_.push_back(Update{.state = state, .error_message = error_message});
+    connection_state_updates_.push_back(
+        ConnectionStateUpdate{.state = state, .error_message = error_message});
+  }
+  void OnSelectedRegionChanged(const mojom::VpnRegion& region) override {
+    selected_region_name_updates_.push_back(region.name);
+  }
+  void OnSmartProxyRoutingStateChanged(bool enabled) override {
+    smart_proxy_routing_state_updates_.push_back(enabled);
+  }
+  void OnAllowLanTrafficStateChanged(bool available, bool enabled) override {
+    allow_lan_traffic_state_updates_.push_back(
+        AllowLanTrafficStateUpdate{.available = available, .enabled = enabled});
+  }
+  void OnLastHostnameChanged(const std::string& hostname) override {
+    last_hostname_updates_.push_back(hostname);
   }
 
-  void StopObserving() { observation_.Reset(); }
-
-  const std::vector<Update>& updates() const { return updates_; }
+  const std::vector<ConnectionStateUpdate>& connection_state_updates() const {
+    return connection_state_updates_;
+  }
+  const std::vector<std::string>& selected_region_name_updates() const {
+    return selected_region_name_updates_;
+  }
+  const std::vector<bool>& smart_proxy_routing_state_updates() const {
+    return smart_proxy_routing_state_updates_;
+  }
+  const std::vector<AllowLanTrafficStateUpdate>&
+  allow_lan_traffic_state_updates() const {
+    return allow_lan_traffic_state_updates_;
+  }
+  const std::vector<std::string>& last_hostname_updates() const {
+    return last_hostname_updates_;
+  }
 
  private:
-  std::vector<Update> updates_;
+  std::vector<ConnectionStateUpdate> connection_state_updates_;
+  std::vector<std::string> selected_region_name_updates_;
+  std::vector<bool> smart_proxy_routing_state_updates_;
+  std::vector<AllowLanTrafficStateUpdate> allow_lan_traffic_state_updates_;
+  std::vector<std::string> last_hostname_updates_;
   base::ScopedObservation<ConnectionManager, ConnectionManager::Observer>
       observation_{this};
 };
@@ -53,65 +89,111 @@ class TestObserver : public ConnectionManager::Observer {
 }  // namespace
 
 // The state handling under test lives in ConnectionManager itself; the fake
-// only exposes SetConnectionState(), so these tests exercise the real logic.
+// only exposes its Update*() methods, so these tests exercise the real logic.
 class ConnectionManagerTest : public testing::Test {
  protected:
   FakeConnectionManager manager_;
   TestObserver observer_{manager_};
 };
 
-TEST_F(ConnectionManagerTest, ReportsStateThroughGettersAndObserver) {
+TEST_F(ConnectionManagerTest, UpdatesConnectionState) {
   EXPECT_EQ(mojom::VpnConnectionState::kDisconnected,
             manager_.connection_state());
   EXPECT_EQ(std::nullopt, manager_.error_message());
 
-  manager_.SetConnectionState(mojom::VpnConnectionState::kConnectFailed,
-                              "Server unreachable");
+  // Same as the initial state.
+  manager_.UpdateConnectionState(mojom::VpnConnectionState::kDisconnected,
+                                 std::nullopt);
+  manager_.UpdateConnectionState(mojom::VpnConnectionState::kConnectFailed,
+                                 "Server unreachable");
+  manager_.UpdateConnectionState(mojom::VpnConnectionState::kConnectFailed,
+                                 "Server unreachable");
 
   EXPECT_EQ(mojom::VpnConnectionState::kConnectFailed,
             manager_.connection_state());
   EXPECT_EQ("Server unreachable", manager_.error_message());
 
-  ASSERT_EQ(1u, observer_.updates().size());
-  EXPECT_EQ(mojom::VpnConnectionState::kConnectFailed,
-            observer_.updates()[0].state);
-  EXPECT_EQ("Server unreachable", observer_.updates()[0].error_message);
+  const auto& updates = observer_.connection_state_updates();
+  ASSERT_EQ(1u, updates.size());
+  EXPECT_EQ(mojom::VpnConnectionState::kConnectFailed, updates[0].state);
+  EXPECT_EQ("Server unreachable", updates[0].error_message);
 }
 
-TEST_F(ConnectionManagerTest, DoesNotNotifyWhenNothingChanges) {
-  // Same as the initial state.
-  manager_.SetConnectionState(mojom::VpnConnectionState::kDisconnected,
-                              std::nullopt);
-  EXPECT_TRUE(observer_.updates().empty());
+// The error message counts on its own: replacing or clearing it at the same
+// state must notify, so observers never keep showing a stale message.
+TEST_F(ConnectionManagerTest, UpdatesErrorMessageAtSameConnectionState) {
+  manager_.UpdateConnectionState(mojom::VpnConnectionState::kConnectFailed,
+                                 "Server unreachable");
+  manager_.UpdateConnectionState(mojom::VpnConnectionState::kConnectFailed,
+                                 "Handshake timed out");
+  manager_.UpdateConnectionState(mojom::VpnConnectionState::kConnectFailed,
+                                 std::nullopt);
 
-  manager_.SetConnectionState(mojom::VpnConnectionState::kConnectFailed,
-                              "Server unreachable");
-  manager_.SetConnectionState(mojom::VpnConnectionState::kConnectFailed,
-                              "Server unreachable");
-  EXPECT_EQ(1u, observer_.updates().size());
-}
-
-TEST_F(ConnectionManagerTest, NotifiesWhenOnlyErrorMessageChanges) {
-  manager_.SetConnectionState(mojom::VpnConnectionState::kConnectFailed,
-                              "Server unreachable");
-
-  // A different error at the same state.
-  manager_.SetConnectionState(mojom::VpnConnectionState::kConnectFailed,
-                              "Handshake timed out");
-
-  // Clearing the error at the same state is a change too: observers still
-  // showing the old message must hear about it.
-  manager_.SetConnectionState(mojom::VpnConnectionState::kConnectFailed,
-                              std::nullopt);
-
-  ASSERT_EQ(3u, observer_.updates().size());
-  EXPECT_EQ(mojom::VpnConnectionState::kConnectFailed,
-            observer_.updates()[1].state);
-  EXPECT_EQ("Handshake timed out", observer_.updates()[1].error_message);
-  EXPECT_EQ(mojom::VpnConnectionState::kConnectFailed,
-            observer_.updates()[2].state);
-  EXPECT_EQ(std::nullopt, observer_.updates()[2].error_message);
+  const auto& updates = observer_.connection_state_updates();
+  ASSERT_EQ(3u, updates.size());
+  EXPECT_EQ("Handshake timed out", updates[1].error_message);
+  EXPECT_EQ(std::nullopt, updates[2].error_message);
   EXPECT_EQ(std::nullopt, manager_.error_message());
+}
+
+// Regions are compared by value, not by pointer: a new but equal region is no
+// change.
+TEST_F(ConnectionManagerTest, UpdatesSelectedRegion) {
+  EXPECT_EQ("", manager_.current_region().name);
+
+  manager_.UpdateSelectedRegion(mojom::VpnRegion::New("Europe"));
+  manager_.UpdateSelectedRegion(mojom::VpnRegion::New("Europe"));
+  manager_.UpdateSelectedRegion(mojom::VpnRegion::New("Asia"));
+
+  EXPECT_EQ("Asia", manager_.current_region().name);
+  EXPECT_EQ((std::vector<std::string>{"Europe", "Asia"}),
+            observer_.selected_region_name_updates());
+}
+
+// Both fields count: a change to either one alone must notify.
+TEST_F(ConnectionManagerTest, UpdatesAllowLanTrafficState) {
+  EXPECT_FALSE(manager_.allow_lan_traffic_available());
+  EXPECT_FALSE(manager_.allow_lan_traffic_enabled());
+
+  // Only |available| changes from the initial {false, false}.
+  manager_.UpdateAllowLanTrafficState(true, false);
+  // Only |enabled| changes.
+  manager_.UpdateAllowLanTrafficState(true, true);
+  manager_.UpdateAllowLanTrafficState(true, true);
+
+  EXPECT_TRUE(manager_.allow_lan_traffic_available());
+  EXPECT_TRUE(manager_.allow_lan_traffic_enabled());
+
+  const auto& updates = observer_.allow_lan_traffic_state_updates();
+  ASSERT_EQ(2u, updates.size());
+  EXPECT_TRUE(updates[0].available);
+  EXPECT_FALSE(updates[0].enabled);
+  EXPECT_TRUE(updates[1].available);
+  EXPECT_TRUE(updates[1].enabled);
+}
+
+TEST_F(ConnectionManagerTest, UpdatesSmartProxyRoutingState) {
+  EXPECT_FALSE(manager_.smart_proxy_routing_enabled());
+
+  manager_.UpdateSmartProxyRoutingState(true);
+  manager_.UpdateSmartProxyRoutingState(true);
+  manager_.UpdateSmartProxyRoutingState(false);
+
+  EXPECT_FALSE(manager_.smart_proxy_routing_enabled());
+  EXPECT_EQ((std::vector<bool>{true, false}),
+            observer_.smart_proxy_routing_state_updates());
+}
+
+TEST_F(ConnectionManagerTest, UpdatesLastHostname) {
+  EXPECT_EQ("", manager_.last_hostname());
+
+  manager_.UpdateLastHostname("eu-1.example.com");
+  manager_.UpdateLastHostname("eu-1.example.com");
+  manager_.UpdateLastHostname("as-1.example.com");
+
+  EXPECT_EQ("as-1.example.com", manager_.last_hostname());
+  EXPECT_EQ((std::vector<std::string>{"eu-1.example.com", "as-1.example.com"}),
+            observer_.last_hostname_updates());
 }
 
 }  // namespace brave_vpn::v2
