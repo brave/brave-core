@@ -178,6 +178,7 @@
 #if BUILDFLAG(ENABLE_LOCAL_AI)
 #include "brave/browser/speech/on_device_speech_recognition_controller.h"
 #include "brave/browser/ui/webui/local_ai/on_device_speech_recognition_worker_ui.h"
+#include "brave/components/local_ai/content/no_network_connection_allowlist_throttle.h"
 #include "brave/components/local_ai/core/features.h"
 #include "brave/components/local_ai/core/on_device_speech_recognition.mojom.h"
 #endif
@@ -1215,6 +1216,15 @@ BraveContentBrowserClient::CreateURLLoaderThrottles(
   auto result = ChromeContentBrowserClient::CreateURLLoaderThrottles(
       request, browser_context, wc_getter, navigation_ui_data,
       frame_tree_node_id, navigation_id);
+
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+  // Not in the `contents` check: worker scripts load with no WebContents.
+  if (auto throttle = local_ai::NoNetworkConnectionAllowlistThrottle::
+          MaybeCreateThrottleFor(request.url)) {
+    result.push_back(std::move(throttle));
+  }
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
+
   content::WebContents* contents = wc_getter.Run();
 
   if (contents) {
