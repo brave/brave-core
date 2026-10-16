@@ -14,6 +14,6 @@ substitutions:
       forces enable_extensions_core=true on Android while enable_extensions
       stays false there.
     regex:
-      re_pattern:
-        'if \(enable_extensions\)(\s*\{\s*deps \+= \[ "//extensions/browser" \])'
-      replace: 'if (enable_extensions_core)\1'
+      re_pattern: '(source_set\("profile"\).*?if \()enable_extensions(\))'
+      re_flags: [DOTALL]
+      replace: '\1enable_extensions_core\2'
