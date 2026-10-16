@@ -1,5 +1,5 @@
 diff --git a/net/url_request/url_request_context.h b/net/url_request/url_request_context.h
-index f1676812dabbade4be96e9d17ce74313c663e45e..316f1b8e68f3d206df2e4431b737203b6d599f81 100644
+index f1676812dabbade4be96e9d17ce74313c663e45e..32ca978d759d552166b4089862d5ba0bc0b6e37d 100644
 --- a/net/url_request/url_request_context.h
 +++ b/net/url_request/url_request_context.h
 @@ -270,6 +270,16 @@ class NET_EXPORT URLRequestContext final {
@@ -14,7 +14,7 @@ index f1676812dabbade4be96e9d17ce74313c663e45e..316f1b8e68f3d206df2e4431b737203b
 +  }
 +
 + protected:
-+  bool block_onion_hostname_resolution_ = false;
++  bool block_onion_hostname_resolution_ = true;
 +
   private:
    friend class URLRequestContextBuilder;

@@ -39,11 +39,13 @@ class OnionHostnameResolutionTest : public testing::Test {
     context_ = builder->Build();
   }
 
-  int Resolve(std::string_view host) {
+  int Resolve(std::string_view host,
+              std::optional<HostResolver::ResolveHostParameters> parameters =
+                  std::nullopt) {
     std::unique_ptr<HostResolver::ResolveHostRequest> request =
         context_->host_resolver()->CreateRequest(
             HostPortPair(host, 80), NetworkAnonymizationKey(),
-            handles::kInvalidNetworkHandle, NetLogWithSource(), std::nullopt);
+            handles::kInvalidNetworkHandle, NetLogWithSource(), parameters);
     TestCompletionCallback callback;
     return callback.GetResult(request->Start(callback.callback()));
   }
@@ -69,16 +71,21 @@ class OnionHostnameResolutionTest : public testing::Test {
   std::unique_ptr<URLRequestContext> context_;
 };
 
+TEST_F(OnionHostnameResolutionTest, BlocksByDefault) {
+  EXPECT_TRUE(context_->block_onion_hostname_resolution());
+
+  EXPECT_EQ(ERR_NAME_NOT_RESOLVED, Resolve("example.onion"));
+  EXPECT_EQ(0u, NumSystemResolves());
+}
+
 TEST_F(OnionHostnameResolutionTest, ResolvesOnionWhenNotBlocked) {
-  EXPECT_FALSE(context_->block_onion_hostname_resolution());
+  context_->set_block_onion_hostname_resolution(false);
 
   EXPECT_EQ(OK, Resolve("example.onion"));
   EXPECT_EQ(1u, NumSystemResolves());
 }
 
 TEST_F(OnionHostnameResolutionTest, FailsOnionWhenBlocked) {
-  context_->set_block_onion_hostname_resolution(true);
-
   EXPECT_EQ(ERR_NAME_NOT_RESOLVED, Resolve("example.onion"));
   EXPECT_EQ(ERR_NAME_NOT_RESOLVED, Resolve("sub.example.onion"));
   EXPECT_EQ(ERR_NAME_NOT_RESOLVED, Resolve("EXAMPLE.ONION"));
@@ -90,8 +97,6 @@ TEST_F(OnionHostnameResolutionTest, FailsOnionWhenBlocked) {
 }
 
 TEST_F(OnionHostnameResolutionTest, ResolvesOtherHostsWhenBlocked) {
-  context_->set_block_onion_hostname_resolution(true);
-
   EXPECT_EQ(OK, Resolve("example.com"));
   EXPECT_EQ(OK, Resolve("example.onion.com"));
   EXPECT_EQ(OK, Resolve("exampleonion"));
@@ -99,15 +104,19 @@ TEST_F(OnionHostnameResolutionTest, ResolvesOtherHostsWhenBlocked) {
   EXPECT_EQ(4u, NumSystemResolves());
 }
 
-TEST_F(OnionHostnameResolutionTest, BlocksCachedOnionResults) {
+TEST_F(OnionHostnameResolutionTest, ServesCachedOnionResultsWhenBlocked) {
+  context_->set_block_onion_hostname_resolution(false);
   EXPECT_EQ(OK, Resolve("example.onion"));
   EXPECT_EQ(1u, NumSystemResolves());
 
   context_->set_block_onion_hostname_resolution(true);
-  EXPECT_EQ(ERR_NAME_NOT_RESOLVED, Resolve("example.onion"));
-
-  context_->set_block_onion_hostname_resolution(false);
   EXPECT_EQ(OK, Resolve("example.onion"));
+
+  HostResolver::ResolveHostParameters parameters;
+  parameters.cache_usage =
+      HostResolver::ResolveHostParameters::CacheUsage::DISALLOWED;
+  EXPECT_EQ(ERR_NAME_NOT_RESOLVED, Resolve("example.onion", parameters));
+  EXPECT_EQ(1u, NumSystemResolves());
 }
 
 }  // namespace net

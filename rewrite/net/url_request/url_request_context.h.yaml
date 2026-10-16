@@ -21,7 +21,10 @@ substitutions:
           return block_onion_hostname_resolution_;
         }
 
-  - description: Add the bool block_onion_hostname_resolution_ member.
+  - description: |-
+      Add the bool block_onion_hostname_resolution_ member, true by default.
+
+      A context that is never configured fails .onion lookups.
     add_to_protected:
       class_name: URLRequestContext
-      code: bool block_onion_hostname_resolution_ = false;
+      code: bool block_onion_hostname_resolution_ = true;

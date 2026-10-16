@@ -5,15 +5,20 @@
 
 substitutions:
   - description: |-
-      Fail .onion lookups when the request context blocks them.
+      Fail .onion lookups that would leave the machine when the request
+      context blocks them.
 
-      Every host resolution goes through ResolveLocally() before any cache,
-      hosts file, system or DoH lookup, so failing here keeps .onion names
-      away from all of them.
-    preempt_function_impl:
-      function_name: HostResolverManager::ResolveLocally
-      code: |-
-        if (IsOnionHostnameResolutionBlocked(job_key)) {
-          return HostCache::Entry(ERR_NAME_NOT_RESOLVED,
-                                  HostCache::Entry::SOURCE_UNKNOWN);
-        }
+      ResolveLocally() ends with this cache-miss return once the cache, hosts
+      file and config presets have no answer; its callers then start a job for
+      the system resolver or DoH. Failing here instead keeps .onion names from
+      reaching either, while local answers still apply.
+    add_before_line:
+      line:
+        'return HostCache::Entry(ERR_DNS_CACHE_MISS,
+        HostCache::Entry::SOURCE_UNKNOWN);'
+      code: |2-
+          if (IsOnionHostnameResolutionBlocked(job_key)) {
+            out_tasks->clear();
+            return HostCache::Entry(ERR_NAME_NOT_RESOLVED,
+                                    HostCache::Entry::SOURCE_UNKNOWN);
+          }
