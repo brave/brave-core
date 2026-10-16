@@ -339,6 +339,8 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   // On-device AI pref
   (*s_brave_allowlist)[local_ai::prefs::kBraveHistoryEmbeddingsEnabled] =
       settings_api::PrefType::kBoolean;
+  (*s_brave_allowlist)[local_ai::prefs::kOnDeviceSpeechModelEnabled] =
+      settings_api::PrefType::kBoolean;
 #endif
 
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)

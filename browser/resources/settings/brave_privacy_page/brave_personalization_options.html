@@ -26,6 +26,15 @@
     </template>
   </settings-toggle-button>
 </template>
+<template is="dom-if" if="[[isOnDeviceSpeechModelAvailable_]]">
+  <settings-toggle-button id="onDeviceSpeechModelEnabled"
+      class="cr-row"
+      icon="microphone"
+      pref="{{prefs.brave.local_ai.on_device_speech_model_enabled}}"
+      label="$i18n{onDeviceSpeechModelLabel}"
+      sub-label="$i18n{onDeviceSpeechModelSubLabel}">
+  </settings-toggle-button>
+</template>
 <!-- </if> -->
 <div class="settings-box">
   <span class="icon" aria-hidden="true">

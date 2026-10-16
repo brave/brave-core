@@ -16,9 +16,14 @@
 
 namespace local_ai {
 
-bool IsOnDeviceSpeechRecognitionAllowed(const PrefService* local_state) {
+bool CanOfferOnDeviceSpeech(const PrefService* local_state) {
   return base::FeatureList::IsEnabled(kBraveOnDeviceSpeechRecognition) &&
          (!local_state || local_state->GetBoolean(prefs::kBraveLocalAIEnabled));
+}
+
+bool ShouldInstallOnDeviceSpeechModel(const PrefService* local_state) {
+  return local_state && CanOfferOnDeviceSpeech(local_state) &&
+         local_state->GetBoolean(prefs::kOnDeviceSpeechModelEnabled);
 }
 
 std::optional<mojo_base::BigBuffer> ReadFileToBigBuffer(
