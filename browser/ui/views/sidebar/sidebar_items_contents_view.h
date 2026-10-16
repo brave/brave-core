@@ -49,6 +49,7 @@ class SidebarItemsContentsView : public views::View,
   // views::View overrides:
   gfx::Size CalculatePreferredSize(
       const views::SizeBounds& available_size) const override;
+  void AddedToWidget() override;
   void OnThemeChanged() override;
 
   // views::ContextMenuController overrides:
@@ -96,6 +97,11 @@ class SidebarItemsContentsView : public views::View,
     kItemEdit,
     kItemRemove,
   };
+
+  // Builds the views for the items that exist before this view does. Only
+  // called from AddedToWidget() because SetDefaultImageFor() needs a widget
+  // for the device scale factor.
+  void BuildItemViews();
 
   void AddItemView(const sidebar::SidebarItem& item,
                    int index,

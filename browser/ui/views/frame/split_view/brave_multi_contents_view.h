@@ -33,7 +33,6 @@ class BraveMultiContentsView : public MultiContentsView {
   using MultiContentsView::MultiContentsView;
   ~BraveMultiContentsView() override;
 
-  void UseContentsContainerViewForWebPanel();
   void SetWebPanelContents(content::WebContents* web_contents);
   bool IsWebPanelVisible() const;
 
@@ -76,6 +75,8 @@ class BraveMultiContentsView : public MultiContentsView {
   void ExecuteOnEachVisibleContentsView(
       base::RepeatingCallback<void(ContentsWebView*)> callback) override;
 
+  // Creates the web panel's container on first use.
+  void UseContentsContainerViewForWebPanel();
   int GetWebPanelWidth() const;
 
   std::vector<ContentsContainerView*> contents_container_views_for_testing()

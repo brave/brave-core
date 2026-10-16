@@ -50,13 +50,16 @@ class SidebarContainerView : public sidebar::Sidebar,
                              public FocusModeController::Observer {
   METADATA_HEADER(SidebarContainerView, views::View)
  public:
-  explicit SidebarContainerView(BrowserWindowInterface* browser);
+  // The callback runs whenever the sidebar control view's visibility changes,
+  // so the side panel can recompute its content corner radii (which depend on
+  // that visibility — see GetPanelContentsRoundedCorners()).
+  SidebarContainerView(
+      BrowserWindowInterface* browser,
+      base::RepeatingClosure sidebar_control_view_visibility_changed_callback);
   ~SidebarContainerView() override;
 
   SidebarContainerView(const SidebarContainerView&) = delete;
   SidebarContainerView& operator=(const SidebarContainerView&) = delete;
-
-  void Init();
 
   bool sidebar_on_left() const { return sidebar_on_left_; }
   void SetSidebarOnLeft(bool sidebar_on_left);
@@ -66,12 +69,6 @@ class SidebarContainerView : public sidebar::Sidebar,
   // Show sidebar if the hot corner contains |point_in_screen|.
   void ShowSidebarOnMouseOver(const gfx::PointF& point_in_screen);
   void UpdateBorder();
-
-  // Runs `callback` whenever the sidebar control view's visibility changes, so
-  // the side panel can recompute its content corner radii (which depend on
-  // sidebar control view visibility — see GetPanelContentsRoundedCorners()).
-  void SetSidebarControlViewVisibilityChangedCallback(
-      base::RepeatingClosure callback);
 
   // Sidebar overrides:
   void SetSidebarShowOption(
@@ -134,7 +131,6 @@ class SidebarContainerView : public sidebar::Sidebar,
 
   raw_ptr<BrowserWindowInterface> browser_ = nullptr;
   raw_ptr<SidebarControlView> sidebar_control_view_ = nullptr;
-  bool initialized_ = false;
   bool sidebar_on_left_ = true;
   base::OneShotTimer sidebar_hide_timer_;
   sidebar::SidebarService::ShowSidebarOption show_sidebar_option_ =

@@ -71,7 +71,6 @@
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
 #include "chrome/browser/ui/frame/window_frame_util.h"
-#include "chrome/browser/ui/side_panel/side_panel_entry.h"
 #include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/views/frame/browser_frame_view.h"
@@ -361,17 +360,14 @@ BraveBrowserView::BraveBrowserView(BrowserWindowInterface* browser)
   // Only normal window (tabbed) should have sidebar.
   const bool can_have_sidebar = sidebar::CanUseSidebar(browser_);
   if (can_have_sidebar) {
+    // Unretained() is safe: `this` owns `sidebar_container_view_` (added via
+    // AddChildView), so the container cannot outlive the callback target.
     sidebar_container_view_ =
-        AddChildView(std::make_unique<SidebarContainerView>(browser_));
-    // Recompute the panel's content corners whenever the sidebar control view
-    // shows or hides, since the bottom corner radius depends on sidebar
-    // control view visibility. Unretained() is safe: `this` owns
-    // `sidebar_container_view_` (added via AddChildView), so the container
-    // cannot outlive the callback target.
-    sidebar_container_view_->SetSidebarControlViewVisibilityChangedCallback(
-        base::BindRepeating(
-            &BraveBrowserView::OnSidebarControlViewVisibilityChanged,
-            base::Unretained(this)));
+        AddChildView(std::make_unique<SidebarContainerView>(
+            browser_,
+            base::BindRepeating(
+                &BraveBrowserView::OnSidebarControlViewVisibilityChanged,
+                base::Unretained(this))));
 
     side_panel_->SetResizeArea(
         std::make_unique<views::BraveSidePanelResizeArea>(side_panel_));
@@ -384,6 +380,11 @@ BraveBrowserView::BraveBrowserView(BrowserWindowInterface* browser)
         prefs::kSidePanelHorizontalAlignment,
         base::BindRepeating(&BraveBrowserView::OnPreferenceChanged,
                             base::Unretained(this)));
+
+    sidebar::SidebarController::From(browser_)->SetSidebar(
+        *sidebar_container_view_);
+
+    UpdateSideBarHorizontalAlignment();
   }
 
   const bool supports_vertical_tabs =
@@ -477,23 +478,6 @@ BraveBrowserView::~BraveBrowserView() {
     auto container_view = RemoveChildViewT(vertical_tab_strip_container_view_);
     vertical_tab_strip_container_view_ = nullptr;
   }
-}
-
-sidebar::Sidebar* BraveBrowserView::InitSidebar() {
-  // Start Sidebar UI initialization.
-  DCHECK(sidebar_container_view_);
-  sidebar_container_view_->Init();
-
-  // Ask BraveMultiContentsView for preparing web panel feature.
-  if (base::FeatureList::IsEnabled(sidebar::features::kSidebarWebPanel)) {
-    GetBraveMultiContentsView()->SetWebPanelWidth(
-        SidePanelEntry::kSidePanelDefaultContentWidth);
-    GetBraveMultiContentsView()->UseContentsContainerViewForWebPanel();
-  }
-
-  UpdateSideBarHorizontalAlignment();
-
-  return sidebar_container_view_;
 }
 
 void BraveBrowserView::ToggleSidebar() {

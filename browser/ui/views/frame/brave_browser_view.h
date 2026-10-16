@@ -323,7 +323,6 @@ class BraveBrowserView : public BrowserView,
   // class's ctor body runs).
   void EnsureFindBarHostViewIsLastChild();
 
-  sidebar::Sidebar* InitSidebar() override;
   void ToggleSidebar() override;
   bool HasSelectedURL() const override;
   void CleanAndCopySelectedURL() override;

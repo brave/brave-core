@@ -633,11 +633,12 @@ class SidebarBrowserWithWebPanelTest
 };
 
 IN_PROC_BROWSER_TEST_P(SidebarBrowserWithWebPanelTest, WebPanelTest) {
-  auto contents_container_view_for_web_panel =
-      GetBraveMultiContentsView()->contents_container_view_for_web_panel_;
-  if (!IsWebPanelEnabled()) {
-    EXPECT_FALSE(contents_container_view_for_web_panel);
+  // The container is created on first use, so it doesn't exist yet regardless
+  // of the feature state.
+  EXPECT_FALSE(
+      GetBraveMultiContentsView()->contents_container_view_for_web_panel_);
 
+  if (!IsWebPanelEnabled()) {
     // Even web panel feature is disabled, sidebar could have web panel
     // type because it could be added when that feature enabled.
     // In this sitaution, web panel type should work like web type that
@@ -665,7 +666,10 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserWithWebPanelTest, WebPanelTest) {
     return;
   }
 
-  EXPECT_TRUE(contents_container_view_for_web_panel);
+  GetBraveMultiContentsView()->UseContentsContainerViewForWebPanel();
+  auto contents_container_view_for_web_panel =
+      GetBraveMultiContentsView()->contents_container_view_for_web_panel_;
+  ASSERT_TRUE(contents_container_view_for_web_panel);
   EXPECT_FALSE(contents_container_view_for_web_panel->GetVisible());
   EXPECT_GT(GetBraveMultiContentsView()->web_panel_width_, 0);
   EXPECT_EQ(GetBraveMultiContentsView()->GetWebPanelWidth(), 0);
