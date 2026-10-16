@@ -9,8 +9,15 @@ import {
   SettingsSearchPageIndexElement as SettingsSearchPageIndexElementChromium
 } from './search_page_index-chromium.js'
 
+// Upstream's HTMLElementTagNameMap entry for this tag points at the upstream
+// class, and TypeScript rejects a second entry with a different type.
+// eslint-disable-next-line @webui-eslint/lit-element-structure
 class SettingsSearchPageIndexElement extends
     SettingsSearchPageIndexElementChromium {
+  static override get is() {
+    return 'settings-search-page-index'
+  }
+
   // DEFAULT_SEARCH and PRIVATE_SEARCH are Brave-only routes (deep links into
   // the default/private search engine dialogs, which live on the 'parent'
   // view). Just show 'parent' and let settings-search-page's own
