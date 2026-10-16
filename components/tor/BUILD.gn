@@ -26,6 +26,7 @@ static_library("tor") {
   public_deps = [
     ":common",
     "//brave/components/tor/buildflags",
+    "//ui/base/unowned_user_data",
   ]
 
   sources = [ "tor_launcher_observer.h" ]
@@ -71,6 +72,7 @@ static_library("tor") {
     "//components/crx_file",
     "//components/pref_registry",
     "//components/prefs",
+    "//components/tabs:public",
     "//components/user_prefs",
     "//content/public/browser",
     "//crypto",

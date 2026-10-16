@@ -8,6 +8,7 @@
 
 #include <memory>
 
+#include "base/callback_list.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
@@ -61,6 +62,10 @@ class PsstTabWebContentsObserver;
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/ui/views/page_action/onion_location_page_action_controller.h"
+namespace tor {
+class OnionLocationTabHelper;
+class TorTabHelper;
+}  // namespace tor
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
@@ -132,6 +137,14 @@ class BraveTabFeatures : public TabFeatures {
 #endif
 
  private:
+  // Rebuilds the features that observe a single WebContents for the one that
+  // replaces it.
+  void WillDiscardContents(TabInterface* tab,
+                           content::WebContents* old_contents,
+                           content::WebContents* new_contents);
+
+  base::CallbackListSubscription will_discard_contents_subscription_;
+
   // The main controller which takes care of stripping metadata from images
   // for the upload flow.
   std::unique_ptr<image_metadata_stripper::FileUploadController>
@@ -176,6 +189,14 @@ class BraveTabFeatures : public TabFeatures {
   std::unique_ptr<ContentsObservingTabFeature> speedreader_tab_helper_;
   // Offers to enable Widevine when the page asks for it. Null without it.
   std::unique_ptr<ContentsObservingTabFeature> drm_tab_helper_;
+#if BUILDFLAG(ENABLE_TOR)
+  // Retries Tor navigations while the Tor process is not ready. Null outside
+  // Tor profiles.
+  std::unique_ptr<tor::TorTabHelper> tor_tab_helper_;
+  // Holds the page's Onion-Location. Declared before the page action
+  // controller that reads it.
+  std::unique_ptr<tor::OnionLocationTabHelper> onion_location_tab_helper_;
+#endif
   // Holds the Shields state for the page shown in the tab.
   std::unique_ptr<ContentsObservingTabFeature> brave_shields_tab_helper_;
   // Records whether the page asked for high accuracy geolocation.
