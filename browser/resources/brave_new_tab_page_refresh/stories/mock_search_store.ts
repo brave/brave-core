@@ -3,7 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { SecondaryTextPlacement, SuggestStyle } from 'chrome://resources/mojo/components/omnibox/browser/suggest_template_info.mojom-webui.js'
+import {
+  SecondaryTextPlacement,
+  SuggestStyle,
+} from 'chrome://resources/mojo/components/omnibox/browser/suggest_template_info.mojom-webui.js'
 import { SearchActions, defaultSearchStore } from '../state/search_store'
 
 function suggestTemplate(primaryText: string, secondaryText: string) {
