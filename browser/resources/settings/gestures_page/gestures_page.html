@@ -374,35 +374,32 @@
                     on-dragend="onActionDragEnd_">
                 </leo-icon>
                 <select on-change="onCommandChanged_"
-                    class$="[[getCommandSelectClass_(
-                        primaryActionRow_(item.actionRows).command,
-                        primaryActionRow_(item.actionRows).textParam)]]">
+                    class$="[[primaryCommandSelectClass_(item.actionRows)]]">
                   <template is="dom-repeat" items="[[commandOptions_]]"
                       as="option">
                     <option value$="[[option.value]]"
-                        selected="[[optionMatchesCommand_(
-                            option.value, primaryActionRow_(item.actionRows).command)]]">
+                        selected="[[optionMatchesPrimaryCommand_(
+                            option.value, item.actionRows)]]">
                       [[option.name]]
                     </option>
                   </template>
                 </select>
                 <select class="md-select"
                     on-change="onDirectionalGestureMappingOpenSettingsPageChanged_"
-                    hidden$="[[!isOpenSettingsCommand_(primaryActionRow_(item.actionRows).command)]]">
+                    hidden$="[[!isPrimaryOpenSettingsCommand_(item.actionRows)]]">
                   <template is="dom-repeat" items="[[openSettingsPageOptions_]]"
                       as="pageOption">
                     <option value$="[[pageOption.value]]"
-                        selected="[[optionMatchesCommand_(
-                            pageOption.value, primaryActionRow_(item.actionRows).openSettingsPage)]]">
+                        selected="[[optionMatchesPrimaryOpenSettingsPage_(
+                            pageOption.value, item.actionRows)]]">
                       [[pageOption.name]]
                     </option>
                   </template>
                 </select>
-                <div class$="[[getUrlAttachClass_(primaryActionRow_(item.actionRows).textParam)]]"
-                    hidden$="[[!hasTextParam_(primaryActionRow_(item.actionRows).command)]]">
+                <div class$="[[primaryUrlAttachClass_(item.actionRows)]]"
+                    hidden$="[[!primaryHasTextParam_(item.actionRows)]]">
                   <span class="action-param-label">
-                    [[getUrlButtonLabel_(primaryActionRow_(item.actionRows).command,
-                        primaryActionRow_(item.actionRows).textParam)]]
+                    [[primaryUrlButtonLabel_(item.actionRows)]]
                   </span>
                   <cr-icon-button iron-icon="edit-pencil"
                       on-click="onEditDirectionalGestureMappingUrlClick_">
@@ -544,35 +541,32 @@
                   on-dragend="onActionDragEnd_">
               </leo-icon>
               <select on-change="onCustomGestureCommandChanged_"
-                  class$="[[getCommandSelectClass_(
-                      primaryActionRow_(item.actionRows).command,
-                      primaryActionRow_(item.actionRows).textParam)]]">
+                  class$="[[primaryCommandSelectClass_(item.actionRows)]]">
                 <template is="dom-repeat" items="[[commandOptions_]]"
                     as="option">
                   <option value$="[[option.value]]"
-                      selected="[[optionMatchesCommand_(
-                          option.value, primaryActionRow_(item.actionRows).command)]]">
+                      selected="[[optionMatchesPrimaryCommand_(
+                          option.value, item.actionRows)]]">
                     [[option.name]]
                   </option>
                 </template>
               </select>
               <select class="md-select"
                   on-change="onCustomGestureOpenSettingsPageChanged_"
-                  hidden$="[[!isOpenSettingsCommand_(primaryActionRow_(item.actionRows).command)]]">
+                  hidden$="[[!isPrimaryOpenSettingsCommand_(item.actionRows)]]">
                 <template is="dom-repeat" items="[[openSettingsPageOptions_]]"
                     as="pageOption">
                   <option value$="[[pageOption.value]]"
-                      selected="[[optionMatchesCommand_(
-                          pageOption.value, primaryActionRow_(item.actionRows).openSettingsPage)]]">
+                      selected="[[optionMatchesPrimaryOpenSettingsPage_(
+                          pageOption.value, item.actionRows)]]">
                     [[pageOption.name]]
                   </option>
                 </template>
               </select>
-              <div class$="[[getUrlAttachClass_(primaryActionRow_(item.actionRows).textParam)]]"
-                  hidden$="[[!hasTextParam_(primaryActionRow_(item.actionRows).command)]]">
+              <div class$="[[primaryUrlAttachClass_(item.actionRows)]]"
+                  hidden$="[[!primaryHasTextParam_(item.actionRows)]]">
                 <span class="action-param-label">
-                  [[getUrlButtonLabel_(primaryActionRow_(item.actionRows).command,
-                      primaryActionRow_(item.actionRows).textParam)]]
+                  [[primaryUrlButtonLabel_(item.actionRows)]]
                 </span>
                 <cr-icon-button iron-icon="edit-pencil"
                     on-click="onEditCustomGestureUrlClick_">
@@ -695,36 +689,33 @@
                 on-dragend="onActionDragEnd_">
             </leo-icon>
             <select on-change="onDrawnCustomGestureCommandChanged_"
-                class$="[[getCommandSelectClass_(
-                    primaryActionRow_(drawnCustomGestureActionRows_).command,
-                    primaryActionRow_(drawnCustomGestureActionRows_).textParam)]]">
+                class$="[[primaryCommandSelectClass_(drawnCustomGestureActionRows_)]]">
               <template is="dom-repeat" items="[[commandOptions_]]"
                   as="option">
                 <option value$="[[option.value]]"
-                    selected="[[optionMatchesCommand_(
-                        option.value, primaryActionRow_(drawnCustomGestureActionRows_).command)]]">
+                    selected="[[optionMatchesPrimaryCommand_(
+                        option.value, drawnCustomGestureActionRows_)]]">
                   [[option.name]]
                 </option>
               </template>
             </select>
             <select class="md-select"
                 on-change="onDrawnCustomGestureOpenSettingsPageChanged_"
-                hidden$="[[!isOpenSettingsCommand_(primaryActionRow_(drawnCustomGestureActionRows_).command)]]">
+                hidden$="[[!isPrimaryOpenSettingsCommand_(drawnCustomGestureActionRows_)]]">
               <template is="dom-repeat" items="[[openSettingsPageOptions_]]"
                   as="pageOption">
                 <option value$="[[pageOption.value]]"
-                    selected="[[optionMatchesCommand_(
-                        pageOption.value, primaryActionRow_(drawnCustomGestureActionRows_).openSettingsPage)]]">
+                    selected="[[optionMatchesPrimaryOpenSettingsPage_(
+                        pageOption.value, drawnCustomGestureActionRows_)]]">
                   [[pageOption.name]]
                 </option>
               </template>
             </select>
             <div
-                class$="[[getUrlAttachClass_(primaryActionRow_(drawnCustomGestureActionRows_).textParam)]]"
-                hidden$="[[!hasTextParam_(primaryActionRow_(drawnCustomGestureActionRows_).command)]]">
+                class$="[[primaryUrlAttachClass_(drawnCustomGestureActionRows_)]]"
+                hidden$="[[!primaryHasTextParam_(drawnCustomGestureActionRows_)]]">
               <span class="action-param-label">
-                [[getUrlButtonLabel_(primaryActionRow_(drawnCustomGestureActionRows_).command,
-                    primaryActionRow_(drawnCustomGestureActionRows_).textParam)]]
+                [[primaryUrlButtonLabel_(drawnCustomGestureActionRows_)]]
               </span>
               <cr-icon-button iron-icon="edit-pencil"
                   on-click="onEditDrawnCustomGestureUrlClick_">
@@ -869,35 +860,33 @@
                 on-dragend="onActionDragEnd_">
             </leo-icon>
             <select on-change="onMouseRockerCommandChanged_"
-                class$="[[getCommandSelectClass_(
-                    primaryActionRow_(mouseRockerLeftActionRow_.actionRows).command,
-                    primaryActionRow_(mouseRockerLeftActionRow_.actionRows).textParam)]]">
+                class$="[[primaryCommandSelectClass_(mouseRockerLeftActionRow_.actionRows)]]">
               <template is="dom-repeat" items="[[commandOptions_]]"
                   as="option">
                 <option value$="[[option.value]]"
-                    selected="[[optionMatchesCommand_(
-                        option.value, primaryActionRow_(mouseRockerLeftActionRow_.actionRows).command)]]">
+                    selected="[[optionMatchesPrimaryCommand_(
+                        option.value, mouseRockerLeftActionRow_.actionRows)]]">
                   [[option.name]]
                 </option>
               </template>
             </select>
             <select class="md-select"
                 on-change="onMouseRockerOpenSettingsPageChanged_"
-                hidden$="[[!isOpenSettingsCommand_(
-                    primaryActionRow_(mouseRockerLeftActionRow_.actionRows).command)]]">
+                hidden$="[[!isPrimaryOpenSettingsCommand_(
+                    mouseRockerLeftActionRow_.actionRows)]]">
               <template is="dom-repeat" items="[[openSettingsPageOptions_]]"
                   as="pageOption">
                 <option value$="[[pageOption.value]]"
-                    selected="[[optionMatchesCommand_(
-                        pageOption.value, primaryActionRow_(mouseRockerLeftActionRow_.actionRows).openSettingsPage)]]">
+                    selected="[[optionMatchesPrimaryOpenSettingsPage_(
+                        pageOption.value, mouseRockerLeftActionRow_.actionRows)]]">
                   [[pageOption.name]]
                 </option>
               </template>
             </select>
-            <div class$="[[getUrlAttachClass_(primaryActionRow_(mouseRockerLeftActionRow_.actionRows).textParam)]]"
-                hidden$="[[!hasTextParam_(primaryActionRow_(mouseRockerLeftActionRow_.actionRows).command)]]">
+            <div class$="[[primaryUrlAttachClass_(mouseRockerLeftActionRow_.actionRows)]]"
+                hidden$="[[!primaryHasTextParam_(mouseRockerLeftActionRow_.actionRows)]]">
               <span class="action-param-label">
-                [[getUrlButtonLabel_(primaryActionRow_(mouseRockerLeftActionRow_.actionRows).command, primaryActionRow_(mouseRockerLeftActionRow_.actionRows).textParam)]]
+                [[primaryUrlButtonLabel_(mouseRockerLeftActionRow_.actionRows)]]
               </span>
               <cr-icon-button iron-icon="edit-pencil"
                   on-click="onEditMouseRockerUrlClick_">
@@ -992,35 +981,33 @@
                 on-dragend="onActionDragEnd_">
             </leo-icon>
             <select on-change="onMouseRockerCommandChanged_"
-                class$="[[getCommandSelectClass_(
-                    primaryActionRow_(mouseRockerRightActionRow_.actionRows).command,
-                    primaryActionRow_(mouseRockerRightActionRow_.actionRows).textParam)]]">
+                class$="[[primaryCommandSelectClass_(mouseRockerRightActionRow_.actionRows)]]">
               <template is="dom-repeat" items="[[commandOptions_]]"
                   as="option">
                 <option value$="[[option.value]]"
-                    selected="[[optionMatchesCommand_(
-                        option.value, primaryActionRow_(mouseRockerRightActionRow_.actionRows).command)]]">
+                    selected="[[optionMatchesPrimaryCommand_(
+                        option.value, mouseRockerRightActionRow_.actionRows)]]">
                   [[option.name]]
                 </option>
               </template>
             </select>
             <select class="md-select"
                 on-change="onMouseRockerOpenSettingsPageChanged_"
-                hidden$="[[!isOpenSettingsCommand_(
-                    primaryActionRow_(mouseRockerRightActionRow_.actionRows).command)]]">
+                hidden$="[[!isPrimaryOpenSettingsCommand_(
+                    mouseRockerRightActionRow_.actionRows)]]">
               <template is="dom-repeat" items="[[openSettingsPageOptions_]]"
                   as="pageOption">
                 <option value$="[[pageOption.value]]"
-                    selected="[[optionMatchesCommand_(
-                        pageOption.value, primaryActionRow_(mouseRockerRightActionRow_.actionRows).openSettingsPage)]]">
+                    selected="[[optionMatchesPrimaryOpenSettingsPage_(
+                        pageOption.value, mouseRockerRightActionRow_.actionRows)]]">
                   [[pageOption.name]]
                 </option>
               </template>
             </select>
-            <div class$="[[getUrlAttachClass_(primaryActionRow_(mouseRockerRightActionRow_.actionRows).textParam)]]"
-                hidden$="[[!hasTextParam_(primaryActionRow_(mouseRockerRightActionRow_.actionRows).command)]]">
+            <div class$="[[primaryUrlAttachClass_(mouseRockerRightActionRow_.actionRows)]]"
+                hidden$="[[!primaryHasTextParam_(mouseRockerRightActionRow_.actionRows)]]">
               <span class="action-param-label">
-                [[getUrlButtonLabel_(primaryActionRow_(mouseRockerRightActionRow_.actionRows).command, primaryActionRow_(mouseRockerRightActionRow_.actionRows).textParam)]]
+                [[primaryUrlButtonLabel_(mouseRockerRightActionRow_.actionRows)]]
               </span>
               <cr-icon-button iron-icon="edit-pencil"
                   on-click="onEditMouseRockerUrlClick_">
@@ -1181,34 +1168,33 @@
                 on-dragend="onActionDragEnd_">
             </leo-icon>
             <select on-change="onMouseWheelCommandChanged_"
-                class$="[[getCommandSelectClass_(
-                    primaryActionRow_(mouseWheelUpActionRow_.actionRows).command, primaryActionRow_(mouseWheelUpActionRow_.actionRows).textParam)]]">
+                class$="[[primaryCommandSelectClass_(mouseWheelUpActionRow_.actionRows)]]">
               <template is="dom-repeat" items="[[commandOptions_]]"
                   as="option">
                 <option value$="[[option.value]]"
-                    selected="[[optionMatchesCommand_(
-                        option.value, primaryActionRow_(mouseWheelUpActionRow_.actionRows).command)]]">
+                    selected="[[optionMatchesPrimaryCommand_(
+                        option.value, mouseWheelUpActionRow_.actionRows)]]">
                   [[option.name]]
                 </option>
               </template>
             </select>
             <select class="md-select"
                 on-change="onMouseWheelOpenSettingsPageChanged_"
-                hidden$="[[!isOpenSettingsCommand_(
-                    primaryActionRow_(mouseWheelUpActionRow_.actionRows).command)]]">
+                hidden$="[[!isPrimaryOpenSettingsCommand_(
+                    mouseWheelUpActionRow_.actionRows)]]">
               <template is="dom-repeat" items="[[openSettingsPageOptions_]]"
                   as="pageOption">
                 <option value$="[[pageOption.value]]"
-                    selected="[[optionMatchesCommand_(
-                        pageOption.value, primaryActionRow_(mouseWheelUpActionRow_.actionRows).openSettingsPage)]]">
+                    selected="[[optionMatchesPrimaryOpenSettingsPage_(
+                        pageOption.value, mouseWheelUpActionRow_.actionRows)]]">
                   [[pageOption.name]]
                 </option>
               </template>
             </select>
-            <div class$="[[getUrlAttachClass_(primaryActionRow_(mouseWheelUpActionRow_.actionRows).textParam)]]"
-                hidden$="[[!hasTextParam_(primaryActionRow_(mouseWheelUpActionRow_.actionRows).command)]]">
+            <div class$="[[primaryUrlAttachClass_(mouseWheelUpActionRow_.actionRows)]]"
+                hidden$="[[!primaryHasTextParam_(mouseWheelUpActionRow_.actionRows)]]">
               <span class="action-param-label">
-                [[getUrlButtonLabel_(primaryActionRow_(mouseWheelUpActionRow_.actionRows).command, primaryActionRow_(mouseWheelUpActionRow_.actionRows).textParam)]]
+                [[primaryUrlButtonLabel_(mouseWheelUpActionRow_.actionRows)]]
               </span>
               <cr-icon-button iron-icon="edit-pencil"
                   on-click="onEditMouseWheelUrlClick_">
@@ -1303,35 +1289,33 @@
                 on-dragend="onActionDragEnd_">
             </leo-icon>
             <select on-change="onMouseWheelCommandChanged_"
-                class$="[[getCommandSelectClass_(
-                    primaryActionRow_(mouseWheelDownActionRow_.actionRows).command,
-                    primaryActionRow_(mouseWheelDownActionRow_.actionRows).textParam)]]">
+                class$="[[primaryCommandSelectClass_(mouseWheelDownActionRow_.actionRows)]]">
               <template is="dom-repeat" items="[[commandOptions_]]"
                   as="option">
                 <option value$="[[option.value]]"
-                    selected="[[optionMatchesCommand_(
-                        option.value, primaryActionRow_(mouseWheelDownActionRow_.actionRows).command)]]">
+                    selected="[[optionMatchesPrimaryCommand_(
+                        option.value, mouseWheelDownActionRow_.actionRows)]]">
                   [[option.name]]
                 </option>
               </template>
             </select>
             <select class="md-select"
                 on-change="onMouseWheelOpenSettingsPageChanged_"
-                hidden$="[[!isOpenSettingsCommand_(
-                    primaryActionRow_(mouseWheelDownActionRow_.actionRows).command)]]">
+                hidden$="[[!isPrimaryOpenSettingsCommand_(
+                    mouseWheelDownActionRow_.actionRows)]]">
               <template is="dom-repeat" items="[[openSettingsPageOptions_]]"
                   as="pageOption">
                 <option value$="[[pageOption.value]]"
-                    selected="[[optionMatchesCommand_(
-                        pageOption.value, primaryActionRow_(mouseWheelDownActionRow_.actionRows).openSettingsPage)]]">
+                    selected="[[optionMatchesPrimaryOpenSettingsPage_(
+                        pageOption.value, mouseWheelDownActionRow_.actionRows)]]">
                   [[pageOption.name]]
                 </option>
               </template>
             </select>
-            <div class$="[[getUrlAttachClass_(primaryActionRow_(mouseWheelDownActionRow_.actionRows).textParam)]]"
-                hidden$="[[!hasTextParam_(primaryActionRow_(mouseWheelDownActionRow_.actionRows).command)]]">
+            <div class$="[[primaryUrlAttachClass_(mouseWheelDownActionRow_.actionRows)]]"
+                hidden$="[[!primaryHasTextParam_(mouseWheelDownActionRow_.actionRows)]]">
               <span class="action-param-label">
-                [[getUrlButtonLabel_(primaryActionRow_(mouseWheelDownActionRow_.actionRows).command, primaryActionRow_(mouseWheelDownActionRow_.actionRows).textParam)]]
+                [[primaryUrlButtonLabel_(mouseWheelDownActionRow_.actionRows)]]
               </span>
               <cr-icon-button iron-icon="edit-pencil"
                   on-click="onEditMouseWheelUrlClick_">

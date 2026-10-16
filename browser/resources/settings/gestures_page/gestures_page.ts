@@ -683,6 +683,44 @@ class SettingsGesturesPage extends SettingsGesturesPageBase {
     return optionValue === command
   }
 
+  // Template bindings cannot nest a method call inside another method
+  // call's argument list, so these flatten `primaryActionRow_(actionRows)`
+  // into a single call for markup that needs the primary action's fields.
+  private primaryCommandSelectClass_(actionRows: ActionRow[]): string {
+    const primary = this.primaryActionRow_(actionRows)
+    return this.getCommandSelectClass_(primary.command, primary.textParam)
+  }
+
+  private optionMatchesPrimaryCommand_(
+    optionValue: number, actionRows: ActionRow[]): boolean {
+    return this.optionMatchesCommand_(
+      optionValue, this.primaryActionRow_(actionRows).command)
+  }
+
+  private isPrimaryOpenSettingsCommand_(actionRows: ActionRow[]): boolean {
+    return this.isOpenSettingsCommand_(
+      this.primaryActionRow_(actionRows).command)
+  }
+
+  private optionMatchesPrimaryOpenSettingsPage_(
+    optionValue: number, actionRows: ActionRow[]): boolean {
+    return this.optionMatchesCommand_(
+      optionValue, this.primaryActionRow_(actionRows).openSettingsPage)
+  }
+
+  private primaryUrlAttachClass_(actionRows: ActionRow[]): string {
+    return this.getUrlAttachClass_(this.primaryActionRow_(actionRows).textParam)
+  }
+
+  private primaryHasTextParam_(actionRows: ActionRow[]): boolean {
+    return this.hasTextParam_(this.primaryActionRow_(actionRows).command)
+  }
+
+  private primaryUrlButtonLabel_(actionRows: ActionRow[]): string {
+    const primary = this.primaryActionRow_(actionRows)
+    return this.getUrlButtonLabel_(primary.command, primary.textParam)
+  }
+
   private onCommandChanged_(
     e: DomRepeatEvent<DirectionalGestureMappingActionRow>) {
     const row = e.model.item
