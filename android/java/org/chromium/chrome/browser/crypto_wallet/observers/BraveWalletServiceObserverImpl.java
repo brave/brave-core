@@ -24,8 +24,6 @@ public class BraveWalletServiceObserverImpl implements BraveWalletServiceObserve
 
         default void onDefaultBaseCurrencyChanged(String currency) {}
 
-        default void onDefaultBaseCryptocurrencyChanged(String cryptocurrency) {}
-
         default void onNetworkListChanged() {}
 
         default void onDiscoverAssetsStarted() {}
@@ -64,11 +62,6 @@ public class BraveWalletServiceObserverImpl implements BraveWalletServiceObserve
     @Override
     public void onDefaultBaseCurrencyChanged(String currency) {
         if (isActive()) getRef().onDefaultBaseCurrencyChanged(currency);
-    }
-
-    @Override
-    public void onDefaultBaseCryptocurrencyChanged(String cryptocurrency) {
-        if (isActive()) getRef().onDefaultBaseCryptocurrencyChanged(cryptocurrency);
     }
 
     @Override

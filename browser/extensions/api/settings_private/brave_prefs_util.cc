@@ -290,8 +290,6 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::kNumber;
   (*s_brave_allowlist)[brave_wallet::kDefaultBaseCurrency] =
       settings_api::PrefType::kString;
-  (*s_brave_allowlist)[brave_wallet::kDefaultBaseCryptocurrency] =
-      settings_api::PrefType::kString;
   (*s_brave_allowlist)[brave_wallet::kShowWalletIconOnToolbar] =
       settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[brave_wallet::kBraveWalletAutoLockMinutes] =

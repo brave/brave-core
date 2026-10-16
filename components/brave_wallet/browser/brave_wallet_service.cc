@@ -347,11 +347,6 @@ BraveWalletService::BraveWalletService(
       base::BindRepeating(&BraveWalletService::OnDefaultBaseCurrencyChanged,
                           base::Unretained(this)));
   pref_change_registrar_.Add(
-      kDefaultBaseCryptocurrency,
-      base::BindRepeating(
-          &BraveWalletService::OnDefaultBaseCryptocurrencyChanged,
-          base::Unretained(this)));
-  pref_change_registrar_.Add(
       kBraveWalletCustomNetworks,
       base::BindRepeating(&BraveWalletService::OnNetworkListChanged,
                           base::Unretained(this)));
@@ -749,22 +744,6 @@ void BraveWalletService::SetDefaultBaseCurrency(const std::string& currency) {
   }
 }
 
-void BraveWalletService::GetDefaultBaseCryptocurrency(
-    GetDefaultBaseCryptocurrencyCallback callback) {
-  std::move(callback).Run(
-      ::brave_wallet::GetDefaultBaseCryptocurrency(profile_prefs_));
-}
-
-void BraveWalletService::SetDefaultBaseCryptocurrency(
-    const std::string& cryptocurrency) {
-  auto old_default_cryptocurrency =
-      ::brave_wallet::GetDefaultBaseCryptocurrency(profile_prefs_);
-  if (old_default_cryptocurrency != cryptocurrency) {
-    ::brave_wallet::SetDefaultBaseCryptocurrency(profile_prefs_,
-                                                 cryptocurrency);
-  }
-}
-
 void BraveWalletService::EnsureSelectedAccountForChain(
     mojom::CoinType coin,
     const std::string& chain_id,
@@ -968,13 +947,6 @@ void BraveWalletService::OnDefaultBaseCurrencyChanged() {
   auto value = ::brave_wallet::GetDefaultBaseCurrency(profile_prefs_);
   for (const auto& observer : observers_) {
     observer->OnDefaultBaseCurrencyChanged(value);
-  }
-}
-
-void BraveWalletService::OnDefaultBaseCryptocurrencyChanged() {
-  auto value = ::brave_wallet::GetDefaultBaseCryptocurrency(profile_prefs_);
-  for (const auto& observer : observers_) {
-    observer->OnDefaultBaseCryptocurrencyChanged(value);
   }
 }
 

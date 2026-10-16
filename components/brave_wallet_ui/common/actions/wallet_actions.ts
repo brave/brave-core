@@ -9,7 +9,6 @@ import { WalletActions } from '../slices/wallet.slice'
 export const {
   autoLockMinutesChanged,
   backedUp,
-  defaultBaseCryptocurrencyChanged,
   defaultBaseCurrencyChanged,
   getAllNetworks,
   initialize,

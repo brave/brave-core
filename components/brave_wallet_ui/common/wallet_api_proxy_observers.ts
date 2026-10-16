@@ -206,11 +206,6 @@ export function makeBraveWalletServiceObserver(store: Store) {
       onDefaultBaseCurrencyChanged: function (currency) {
         store.dispatch(WalletActions.defaultBaseCurrencyChanged({ currency }))
       },
-      onDefaultBaseCryptocurrencyChanged: function (cryptocurrency) {
-        store.dispatch(
-          WalletActions.defaultBaseCryptocurrencyChanged({ cryptocurrency }),
-        )
-      },
       onNetworkListChanged: function () {
         // FIXME(onyb): Due to a bug, the OnNetworkListChanged event is fired
         // merely upon switching to a custom network.
