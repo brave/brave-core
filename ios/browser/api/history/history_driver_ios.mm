@@ -7,7 +7,6 @@
 
 #import <utility>
 
-#import "base/check.h"
 #import "components/browsing_data/core/history_notice_utils.h"
 #import "ios/chrome/browser/history/model/history_utils.h"
 
@@ -15,11 +14,7 @@ using history::BrowsingHistoryService;
 
 #pragma mark - HistoryDriverIOS
 
-HistoryDriverIOS::HistoryDriverIOS(
-    WebHistoryServiceGetter history_service_getter)
-    : history_service_getter_(history_service_getter) {
-  DCHECK(!history_service_getter_.is_null());
-}
+HistoryDriverIOS::HistoryDriverIOS() = default;
 
 HistoryDriverIOS::~HistoryDriverIOS() = default;
 
@@ -60,10 +55,6 @@ bool HistoryDriverIOS::AllowHistoryDeletions() {
 
 bool HistoryDriverIOS::ShouldHideWebHistoryUrl(const GURL& url) {
   return !ios::CanAddURLToHistory(url);
-}
-
-history::WebHistoryService* HistoryDriverIOS::GetWebHistoryService() {
-  return history_service_getter_.Run();
 }
 
 void HistoryDriverIOS::ShouldShowNoticeAboutOtherFormsOfBrowsingHistory(
