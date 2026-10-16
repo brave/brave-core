@@ -29,6 +29,8 @@
 
 // The decision returned to the feature for incoming requests.
 @property(nonatomic) BOOL shouldBlock;
+@property(nonatomic, copy, nullable) NSString* redirect;
+@property(nonatomic, copy, nullable) NSURL* rewrittenURL;
 // Whether a request has been received from the feature.
 @property(nonatomic) BOOL requestReceived;
 // Parameters from the most recently received request.
@@ -43,12 +45,14 @@
 - (void)shouldBlockRequestURL:(NSURL*)requestURL
                     sourceURL:(NSURL*)sourceURL
                  resourceType:(NSString*)resourceType
-                   completion:(void (^)(BOOL shouldBlock))completion {
+                   completion:(void (^)(BOOL shouldBlock,
+                                        NSString* redirect,
+                                        NSURL* rewrittenURL))completion {
   self.lastRequestURL = requestURL;
   self.lastSourceURL = sourceURL;
   self.lastResourceType = resourceType;
   self.requestReceived = YES;
-  completion(self.shouldBlock);
+  completion(self.shouldBlock, self.redirect, self.rewrittenURL);
 }
 
 @end
@@ -157,4 +161,55 @@ TEST_F(RequestBlockingJavaScriptFeatureTest, TestXHR) {
         return result != nil;
       }));
   EXPECT_EQ("blocked", base::SysNSStringToUTF8(result));
+}
+
+// Tests that a redirect returned by the bridge replaces the `fetch()` response
+// with the redirect resource rather than failing the request.
+TEST_F(RequestBlockingJavaScriptFeatureTest, TestFetchRedirect) {
+  bridge_.shouldBlock = YES;
+  bridge_.redirect = @"data:text/plain,redirected";
+
+  web::test::ExecuteJavaScript(
+      @"window.sval = undefined;"
+      @"fetch('https://brave.com/resource.json')"
+      @"    .then((r) => r.text())"
+      @"    .then((text) => { window.sval = text; })"
+      @"    .catch(() => { window.sval = 'blocked'; });"
+      @"true;",  // keep response serializable for WebKit/obj-c
+      web_state());
+
+  __block NSString* result = nil;
+  ASSERT_TRUE(base::test::ios::WaitUntilConditionOrTimeout(
+      base::test::ios::kWaitForJSCompletionTimeout, ^bool {
+        result = base::apple::ObjCCast<NSString>(
+            web::test::ExecuteJavaScript(@"window.sval", web_state()));
+        return result != nil;
+      }));
+  EXPECT_EQ("redirected", base::SysNSStringToUTF8(result));
+}
+
+// Tests that a rewritten URL returned by the bridge is loaded in place of the
+// original `XMLHttpRequest` URL.
+TEST_F(RequestBlockingJavaScriptFeatureTest, TestXHRRewrittenURL) {
+  bridge_.shouldBlock = NO;
+  bridge_.rewrittenURL = [NSURL URLWithString:@"data:text/plain,rewritten"];
+
+  web::test::ExecuteJavaScript(
+      @"window.sval = undefined;"
+      @"var xhr = new XMLHttpRequest();"
+      @"xhr.open('GET', 'https://brave.com/resource.json?utm_source=x');"
+      @"xhr.onload = () => { window.sval = xhr.responseText; };"
+      @"xhr.onerror = () => { window.sval = 'error'; };"
+      @"xhr.send();"
+      @"true;",  // keep response serializable for WebKit/obj-c
+      web_state());
+
+  __block NSString* result = nil;
+  ASSERT_TRUE(base::test::ios::WaitUntilConditionOrTimeout(
+      base::test::ios::kWaitForJSCompletionTimeout, ^bool {
+        result = base::apple::ObjCCast<NSString>(
+            web::test::ExecuteJavaScript(@"window.sval", web_state()));
+        return result != nil;
+      }));
+  EXPECT_EQ("rewritten", base::SysNSStringToUTF8(result));
 }

@@ -680,6 +680,31 @@ import os
     }).contains(where: { $0 })
   }
 
+  /// Checks the general and regional engines for a block decision along with any redirect
+  /// resource or rewritten URL
+  func requestResult(
+    requestURL: URL,
+    sourceURL: URL,
+    resourceType: AdblockResourceType,
+    isAdBlockEnabled: Bool,
+    isAdBlockModeAggressive: Bool
+  ) async -> AdblockRequestResult {
+    let results = await cachedEngines(isAdBlockEnabled: isAdBlockEnabled).asyncConcurrentMap({
+      cachedEngine in
+      return await cachedEngine.requestResult(
+        requestURL: requestURL,
+        sourceURL: sourceURL,
+        resourceType: resourceType,
+        isAggressiveMode: isAdBlockModeAggressive
+      )
+    })
+    return AdblockRequestResult(
+      shouldBlock: results.contains(where: \.shouldBlock),
+      redirect: results.lazy.compactMap(\.redirect).first,
+      rewrittenURL: results.lazy.compactMap(\.rewrittenURL).first
+    )
+  }
+
   /// This returns all the user script types for the given frame
   func makeEngineScriptTypes(
     frameURL: URL,

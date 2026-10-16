@@ -8,12 +8,18 @@
 #include <utility>
 
 #include "base/functional/callback.h"
-#include "base/functional/callback_helpers.h"
 #include "base/strings/sys_string_conversions.h"
 #include "brave/ios/browser/brave_shields/request_blocking/request_blocking_tab_helper_bridge.h"
 #include "ios/web/public/web_state.h"
 #include "net/base/apple/url_conversions.h"
 #include "url/gurl.h"
+
+RequestBlockingResult::RequestBlockingResult() = default;
+RequestBlockingResult::RequestBlockingResult(const RequestBlockingResult&) =
+    default;
+RequestBlockingResult& RequestBlockingResult::operator=(
+    const RequestBlockingResult&) = default;
+RequestBlockingResult::~RequestBlockingResult() = default;
 
 RequestBlockingTabHelper::RequestBlockingTabHelper(web::WebState* web_state) {}
 
@@ -28,14 +34,30 @@ void RequestBlockingTabHelper::ShouldBlock(
     const GURL& request_url,
     const GURL& source_url,
     const std::string& resource_type,
-    base::OnceCallback<void(bool)> callback) {
+    base::OnceCallback<void(RequestBlockingResult)> callback) {
   if (!bridge_) {
-    std::move(callback).Run(false);
+    std::move(callback).Run(RequestBlockingResult());
     return;
   }
+
+  __block auto block_callback = std::move(callback);
 
   [bridge_ shouldBlockRequestURL:net::NSURLWithGURL(request_url)
                        sourceURL:net::NSURLWithGURL(source_url)
                     resourceType:base::SysUTF8ToNSString(resource_type)
-                      completion:base::CallbackToBlock(std::move(callback))];
+                      completion:^(BOOL should_block, NSString* redirect,
+                                   NSURL* rewritten_url) {
+                        RequestBlockingResult result;
+                        result.should_block = should_block;
+                        if (redirect) {
+                          result.redirect = base::SysNSStringToUTF8(redirect);
+                        }
+                        if (rewritten_url) {
+                          result.rewritten_url =
+                              net::GURLWithNSURL(rewritten_url);
+                        }
+                        if (block_callback) {
+                          std::move(block_callback).Run(std::move(result));
+                        }
+                      }];
 }

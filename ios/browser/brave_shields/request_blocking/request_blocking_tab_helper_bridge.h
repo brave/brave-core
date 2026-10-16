@@ -20,12 +20,16 @@ NS_ASSUME_NONNULL_BEGIN
  * @param resourceType A string indicating the type of resource (e.g., "image",
  * "script", "stylesheet").
  * @param completion A block invoked with YES if the resource should be blocked,
- * NO otherwise.
+ * NO otherwise, a `data:` URL to substitute for the resource if a redirect
+ * rule matched, and the request URL rewritten by `$removeparam` rules if any.
  */
 - (void)shouldBlockRequestURL:(NSURL*)requestURL
                     sourceURL:(NSURL*)sourceURL
                  resourceType:(NSString*)resourceType
-                   completion:(void (^)(BOOL shouldBlock))completion
+                   completion:
+                       (void (^)(BOOL shouldBlock,
+                                 NSString* _Nullable redirect,
+                                 NSURL* _Nullable rewrittenURL))completion
     NS_SWIFT_NAME(shouldBlock(requestURL:sourceURL:resourceType:completion:));
 
 @end
