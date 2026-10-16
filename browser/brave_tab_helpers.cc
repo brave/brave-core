@@ -217,9 +217,12 @@ void AttachTabHelpers(content::WebContents* web_contents) {
 }
 
 void AttachPrivacySensitiveTabHelpers(content::WebContents* web_contents) {
-  content_settings::PageSpecificContentSettings::CreateForWebContents(
-      web_contents,
-      std::make_unique<PageSpecificContentSettingsDelegate>(web_contents));
+  if (!content_settings::PageSpecificContentSettings::GetDelegateForWebContents(
+          web_contents)) {
+    content_settings::PageSpecificContentSettings::CreateForWebContents(
+        web_contents,
+        std::make_unique<PageSpecificContentSettingsDelegate>(web_contents));
+  }
   brave_shields::BraveShieldsWebContentsObserver::CreateForWebContents(
       web_contents);
   if (auto* ephemeral_storage_service =

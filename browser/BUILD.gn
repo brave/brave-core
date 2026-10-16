@@ -73,6 +73,11 @@ source_set("brave_global_features_impl") {
   }
 }
 
+# Header-only so targets that can't depend on :core can use it.
+source_set("tab_helpers_header") {
+  sources = [ "brave_tab_helpers.h" ]
+}
+
 source_set("core") {
   visibility = [ "//chrome/browser" ]
 
@@ -95,8 +100,10 @@ source_set("core") {
   if (enable_brave_custom_profile_image_webui) {
     deps += [ "//brave/browser/ui/webui/custom_profile_image" ]
   }
-  public_deps = [ "//chrome/browser:shell_integration" ] +
-                brave_chrome_browser_public_deps
+  public_deps = [
+                  ":tab_helpers_header",
+                  "//chrome/browser:shell_integration",
+                ] + brave_chrome_browser_public_deps
   allow_circular_includes_from =
       brave_chrome_browser_allow_circular_includes_from
 }
