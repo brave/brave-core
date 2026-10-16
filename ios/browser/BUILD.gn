@@ -57,7 +57,6 @@ group("browser") {
     "//brave/ios/browser/most_visited_sites",
     "//brave/ios/browser/playlist",
     "//brave/ios/browser/policy",
-    "//brave/ios/browser/profile/model",
     "//brave/ios/browser/safari_data_import",
     "//brave/ios/browser/search_engines",
     "//brave/ios/browser/shared/prefs",

@@ -1,0 +1,27 @@
+diff --git a/ios/chrome/browser/profile/model/keyed_service_factories.mm b/ios/chrome/browser/profile/model/keyed_service_factories.mm
+index e09b9b7eded0302b14dda08fa2a08eb387d3ba7c..fa74e018f74970ac790b31f6fff8e16482b9599a 100644
+--- a/ios/chrome/browser/profile/model/keyed_service_factories.mm
++++ b/ios/chrome/browser/profile/model/keyed_service_factories.mm
+@@ -3,6 +3,7 @@
+ // found in the LICENSE file.
+ 
+ #import "ios/chrome/browser/profile/model/keyed_service_factories.h"
++#import "brave/ios/browser/profile/model/brave_keyed_service_factories.h"
+ 
+ #import "ios/chrome/browser/account_settings/model/ios_account_setting_service_factory.h"
+ #import "ios/chrome/browser/affiliations/model/ios_chrome_affiliation_service_factory.h"
+@@ -252,6 +253,7 @@
+ // required to create services that uses ServiceCreation::kCreateWithProfile
+ // can be created with the profile.
+ void EnsureProfileKeyedServiceFactoriesBuilt() {
++  [&]() -> void {
+   // Keep this list alphabetized -- namespaced factories first, followed by
+   // non-namespaced factories.
+   actor::ActorServiceFactory::GetInstance();
+@@ -500,4 +502,6 @@ void EnsureProfileKeyedServiceFactoriesBuilt() {
+   if (web::features::IsCobaltEnabled()) {
+     ios::provider::EnsureCobaltProfileKeyedServiceFactoriesBuilt();
+   }
++  }();
++  brave::EnsureProfileKeyedServiceFactoriesBuilt();
+ }
