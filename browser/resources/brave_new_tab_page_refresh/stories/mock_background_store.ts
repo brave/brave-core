@@ -33,6 +33,7 @@ const sponsoredBackgrounds = {
       imageUrl: sampleBackground,
     },
     metricType: NewTabPageAdMetricType.kConfirmation,
+    shouldAutoDisplayNewTabTakeoverDisclosure: true,
   },
 
   richMedia: {
@@ -47,6 +48,7 @@ const sponsoredBackgrounds = {
       imageUrl: '',
     },
     metricType: NewTabPageAdMetricType.kConfirmation,
+    shouldAutoDisplayNewTabTakeoverDisclosure: true,
   },
 
   none: null,
