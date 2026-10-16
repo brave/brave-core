@@ -28,12 +28,13 @@ TEST_P(RequestSenderTest, UsesBraveCUPKey) {
 
   EXPECT_EQ(1, post_interceptor_->GetHitCount())
       << post_interceptor_->GetRequestsAsString();
-  GURL request_url = std::get<2>(post_interceptor_->GetRequests()[0]);
+
   // It's hard to check the key contents. But it is easy to check the key
   // version. Ours differs from upstream. So we can use this as a proxy check
   // that our key is indeed being used.
-  EXPECT_NE(request_url.query().find("cup2key=1:"), std::string::npos)
-      << request_url.query();
+  const std::string query(
+      std::get<2>(post_interceptor_->GetRequests()[0]).query());
+  EXPECT_TRUE(base::StartsWith(query, "cup2key=ML-DSA-44-1:")) << query;
 }
 
 // This is our replacement for the disabled upstream `CupKeySelection` test. No
@@ -55,9 +56,7 @@ TEST_P(RequestSenderTest, BraveKeyIgnoresPqcCupSigningFlag) {
 
   const std::string query(
       std::get<2>(post_interceptor_->GetRequests()[0]).query());
-  EXPECT_TRUE(base::StartsWith(query, "cup2key=1:")) << query;
-  EXPECT_FALSE(base::StartsWith(query, "cup2key=16:")) << query;
-  EXPECT_FALSE(base::StartsWith(query, "cup2key=ML-DSA-44-16:")) << query;
+  EXPECT_TRUE(base::StartsWith(query, "cup2key=ML-DSA-44-1:")) << query;
 }
 
 }  // namespace update_client
