@@ -65,8 +65,6 @@ base::DictValue DeviceInfo::ToValue() const {
   dict.Set("chromeVersion", chrome_version());
   dict.Set("lastUpdatedTimestamp",
            static_cast<int>(last_updated_timestamp().ToTimeT()));
-  dict.Set("sendTabToSelfReceivingEnabled",
-           send_tab_to_self_receiving_enabled());
   dict.Set("hasSharingInfo", sharing_info().has_value());
   return dict;
 }
