@@ -7,7 +7,14 @@ import {
   SettingsPeoplePageElement as SettingsPeoplePageElementChromium
 } from './people_page-chromium.js'
 
+// Upstream's HTMLElementTagNameMap entry for this tag points at the upstream
+// class, and TypeScript rejects a second entry with a different type.
+// eslint-disable-next-line @webui-eslint/lit-element-structure
 class SettingsPeoplePageElement extends SettingsPeoplePageElementChromium {
+  static override get is() {
+    return 'settings-people-page'
+  }
+
   // We set signin.allowed to false (see
   // BraveProfileManager::InitProfileUserPrefs), which would otherwise hide
   // both #manage-google-account and #edit-profile ("Profile name and icon").
