@@ -25,9 +25,9 @@ import org.jni_zero.NativeMethods;
 
 import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AccountInfo;
-import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.KeyringService;
+import org.chromium.brave_wallet.mojom.OriginInfo;
 import org.chromium.brave_wallet.mojom.PermissionLifetimeOption;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
@@ -65,13 +65,17 @@ public class BraveDappPermissionPromptDialog
     private long mNativeDialogController;
     private PropertyModel mPropertyModel;
     private final String mFavIconURL;
+
+    // The origin that requested the permission and receives the grant. It differs from the tab's
+    // origin when the request comes from an iframe.
+    private final OriginInfo mRequestingOrigin;
+
     private MaterialCardView mCvFavContainer;
     private ImageView mFavIconImage;
     private RecyclerView mRecyclerView;
     private BravePermissionAccountsListAdapter mAccountsListAdapter;
     private KeyringService mKeyringService;
     private boolean mMojoServicesClosed;
-    private BraveWalletService mBraveWalletService;
     private View mPermissionDialogPositiveButton;
     private WalletModel mWalletModel;
 
@@ -80,18 +84,30 @@ public class BraveDappPermissionPromptDialog
             long nativeDialogController,
             @NonNull WindowAndroid windowAndroid,
             String favIconURL,
-            @CoinType.EnumType int coinType) {
+            @CoinType.EnumType int coinType,
+            String originSpec,
+            String eTldPlusOne) {
         return new BraveDappPermissionPromptDialog(
-                nativeDialogController, windowAndroid, favIconURL, coinType);
+                nativeDialogController,
+                windowAndroid,
+                favIconURL,
+                coinType,
+                originSpec,
+                eTldPlusOne);
     }
 
     public BraveDappPermissionPromptDialog(
             long nativeDialogController,
             @NonNull WindowAndroid windowAndroid,
             String favIconURL,
-            @CoinType.EnumType int coinType) {
+            @CoinType.EnumType int coinType,
+            String originSpec,
+            String eTldPlusOne) {
         mNativeDialogController = nativeDialogController;
         mFavIconURL = favIconURL;
+        mRequestingOrigin = new OriginInfo();
+        mRequestingOrigin.originSpec = originSpec;
+        mRequestingOrigin.eTldPlusOne = eTldPlusOne;
         mContext = windowAndroid.getActivity().get();
         mWindow = windowAndroid.getWindow();
         mModalDialogManager = windowAndroid.getModalDialogManager();
@@ -122,12 +138,8 @@ public class BraveDappPermissionPromptDialog
         setFavIcon();
         mRecyclerView = customView.findViewById(R.id.accounts_list);
 
-        initBraveWalletService();
         TextView domain = customView.findViewById(R.id.domain);
-        mBraveWalletService.getActiveOrigin(
-                originInfo -> {
-                    domain.setText(Utils.geteTldSpanned(originInfo));
-                });
+        domain.setText(Utils.geteTldSpanned(mRequestingOrigin));
 
         mPropertyModel =
                 new PropertyModel.Builder(ModalDialogProperties.ALL_KEYS)
@@ -185,13 +197,6 @@ public class BraveDappPermissionPromptDialog
             }
         }
         return (ViewGroup) viewParent;
-    }
-
-    private void initBraveWalletService() {
-        if (mBraveWalletService != null) {
-            return;
-        }
-        mBraveWalletService = BraveWalletServiceFactory.getInstance().getBraveWalletService(this);
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -305,10 +310,6 @@ public class BraveDappPermissionPromptDialog
         if (mKeyringService != null) {
             mKeyringService.close();
             mKeyringService = null;
-        }
-        if (mBraveWalletService != null) {
-            mBraveWalletService.close();
-            mBraveWalletService = null;
         }
     }
 
