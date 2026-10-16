@@ -1,8 +1,8 @@
 diff --git a/components/permissions/request_type.h b/components/permissions/request_type.h
-index 70ce0b07da74da50a292c88f7f360442f77cc0b4..6f4d3a27651876487711f586eb5b3855f904d221 100644
+index 70ce0b07da74da50a292c88f7f360442f77cc0b4..e0cbbab9fdada93e1ae2109a464170b34a3dcea5 100644
 --- a/components/permissions/request_type.h
 +++ b/components/permissions/request_type.h
-@@ -74,7 +74,16 @@ enum class RequestType {
+@@ -74,7 +74,17 @@ enum class RequestType {
    kWebPrinting,
  #endif
    kWindowManagement,
@@ -10,6 +10,7 @@ index 70ce0b07da74da50a292c88f7f360442f77cc0b4..6f4d3a27651876487711f586eb5b3855
 +  kWidevine,
 +  kBraveEthereum,
 +  kBraveSolana,
++  kBraveOnDeviceSpeechModel,
 +  kBraveOpenAIChat,
 +  kBraveGoogleSignInPermission,
 +  kBraveCardano,
