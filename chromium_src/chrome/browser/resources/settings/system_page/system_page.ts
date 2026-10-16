@@ -25,7 +25,14 @@ declare module './system_page-chromium.js' {
   }
 }
 
+// Upstream's HTMLElementTagNameMap entry for this tag points at the upstream
+// class, and TypeScript rejects a second entry with a different type.
+// eslint-disable-next-line @webui-eslint/lit-element-structure
 class SettingsSystemPageElement extends SettingsSystemPageElementChromium {
+  static override get is() {
+    return 'settings-system-page'
+  }
+
   static override get properties() {
     return {
       ...super.properties,
