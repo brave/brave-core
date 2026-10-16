@@ -10,8 +10,8 @@ import type {Point} from './custom_gesture_geometry.js'
 // from the generated `chrome_command_ids.h`. Keep in sync with it.
 export const IDC_OPTIONS = 40015
 
-// One action in a gesture's chain. Only one of `textParam`/
-// `openSettingsPage` is meaningful at a time, depending on `command`.
+// One action in a gesture's chain. Only one param is meaningful at a
+// time, depending on `command`.
 export interface ActionRow {
   command: number
   textParam: string
