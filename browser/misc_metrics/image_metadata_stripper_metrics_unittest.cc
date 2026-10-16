@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/image_metadata_stripper/metrics_reporter.h"
+#include "brave/browser/misc_metrics/image_metadata_stripper_metrics.h"
 
 #include <memory>
 
@@ -17,27 +17,25 @@
 
 namespace image_metadata_stripper::metrics {
 
-class ImageMetadataStripperMetricsReporterTest : public testing::Test {
+class ImageMetadataStripperMetricsTest : public testing::Test {
  public:
-  ImageMetadataStripperMetricsReporterTest()
+  ImageMetadataStripperMetricsTest()
       : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {}
 
-  ~ImageMetadataStripperMetricsReporterTest() override = default;
+  ~ImageMetadataStripperMetricsTest() override = default;
 
   void SetUp() override {
-    MetricsReporter::RegisterPrefs(pref_service_.registry());
+    ImageMetadataStripperMetrics::RegisterPrefs(pref_service_.registry());
     CreateReporter();
   }
 
   // (Re)creates the reporter sharing the same local state. This mirrors a
   // browser process restart, which re-runs the construction-time MaybeReport().
   void CreateReporter() {
-    reporter_ = std::make_unique<MetricsReporter>(&pref_service_);
+    reporter_ = std::make_unique<ImageMetadataStripperMetrics>(&pref_service_);
   }
 
-  void RecordFbmd(StrippingClient client, bool was_stripped) {
-    reporter_->MaybeRecordFbmd(client, was_stripped);
-  }
+  void RecordFbmd(StrippingClient client) { reporter_->RecordFbmd(client); }
 
   void ExpectNoSamples() {
     histogram_tester_.ExpectTotalCount(kDownloadFBMDCountStrippedHistogramName,
@@ -49,25 +47,25 @@ class ImageMetadataStripperMetricsReporterTest : public testing::Test {
  protected:
   content::BrowserTaskEnvironment task_environment_;
   TestingPrefServiceSimple pref_service_;
-  std::unique_ptr<MetricsReporter> reporter_;
+  std::unique_ptr<ImageMetadataStripperMetrics> reporter_;
   base::HistogramTester histogram_tester_;
 };
 
-TEST_F(ImageMetadataStripperMetricsReporterTest, DoesNotReportOnConstruction) {
+TEST_F(ImageMetadataStripperMetricsTest, DoesNotReportOnConstruction) {
   ExpectNoSamples();
 }
 
-TEST_F(ImageMetadataStripperMetricsReporterTest, DoesNotReportUntilInterval) {
-  RecordFbmd(StrippingClient::kDownloadManager, /*was_stripped=*/true);
-  RecordFbmd(StrippingClient::kFileSelect, /*was_stripped=*/true);
+TEST_F(ImageMetadataStripperMetricsTest, DoesNotReportUntilInterval) {
+  RecordFbmd(StrippingClient::kDownloadManager);
+  RecordFbmd(StrippingClient::kFileSelect);
   task_environment_.FastForwardBy(base::Days(6));
 
   ExpectNoSamples();
 }
 
-TEST_F(ImageMetadataStripperMetricsReporterTest,
+TEST_F(ImageMetadataStripperMetricsTest,
        DoesNotRereportOnRestartWithinInterval) {
-  RecordFbmd(StrippingClient::kDownloadManager, /*was_stripped=*/true);
+  RecordFbmd(StrippingClient::kDownloadManager);
 
   // A restart within the reporting window must not emit; it only reschedules
   // the timer for the remainder of the window.
@@ -76,8 +74,8 @@ TEST_F(ImageMetadataStripperMetricsReporterTest,
   ExpectNoSamples();
 }
 
-TEST_F(ImageMetadataStripperMetricsReporterTest, ReportsDownloadCount) {
-  RecordFbmd(StrippingClient::kDownloadManager, /*was_stripped=*/true);
+TEST_F(ImageMetadataStripperMetricsTest, ReportsDownloadCount) {
+  RecordFbmd(StrippingClient::kDownloadManager);
   task_environment_.FastForwardBy(base::Days(7));
 
   // A single stripped download falls in the 1-5 bucket (index 0).
@@ -86,11 +84,11 @@ TEST_F(ImageMetadataStripperMetricsReporterTest, ReportsDownloadCount) {
   histogram_tester_.ExpectTotalCount(kUploadFBMDCountStrippedHistogramName, 0);
 }
 
-TEST_F(ImageMetadataStripperMetricsReporterTest,
+TEST_F(ImageMetadataStripperMetricsTest,
        ReportsUploadCountFromBothUploadFlows) {
   // Both the file-select and drag-drop flows aggregate into the upload count.
-  RecordFbmd(StrippingClient::kFileSelect, /*was_stripped=*/true);
-  RecordFbmd(StrippingClient::kDragDrop, /*was_stripped=*/true);
+  RecordFbmd(StrippingClient::kFileSelect);
+  RecordFbmd(StrippingClient::kDragDrop);
   task_environment_.FastForwardBy(base::Days(7));
 
   // Two stripped uploads fall in the 1-5 bucket (index 0).
@@ -100,19 +98,10 @@ TEST_F(ImageMetadataStripperMetricsReporterTest,
                                      0);
 }
 
-TEST_F(ImageMetadataStripperMetricsReporterTest, DoesNotRecordWhenNotStripped) {
-  // An observed FBMD image that was not stripped must not emit anything.
-  RecordFbmd(StrippingClient::kDownloadManager, /*was_stripped=*/false);
-  RecordFbmd(StrippingClient::kFileSelect, /*was_stripped=*/false);
-  task_environment_.FastForwardBy(base::Days(7));
-
-  ExpectNoSamples();
-}
-
-TEST_F(ImageMetadataStripperMetricsReporterTest, BucketsCounts) {
+TEST_F(ImageMetadataStripperMetricsTest, BucketsCounts) {
   // 6 stripped downloads fall in the 6-10 bucket (index 1).
   for (int i = 0; i < 6; ++i) {
-    RecordFbmd(StrippingClient::kDownloadManager, /*was_stripped=*/true);
+    RecordFbmd(StrippingClient::kDownloadManager);
   }
   task_environment_.FastForwardBy(base::Days(7));
 
@@ -120,29 +109,21 @@ TEST_F(ImageMetadataStripperMetricsReporterTest, BucketsCounts) {
                                       1, 1);
 }
 
-TEST_F(ImageMetadataStripperMetricsReporterTest, StoresCountsInNestedDict) {
-  RecordFbmd(StrippingClient::kDownloadManager, /*was_stripped=*/true);
-  RecordFbmd(StrippingClient::kDownloadManager, /*was_stripped=*/true);
-  RecordFbmd(StrippingClient::kFileSelect, /*was_stripped=*/true);
+TEST_F(ImageMetadataStripperMetricsTest, StoresCountsInFbmdDict) {
+  RecordFbmd(StrippingClient::kDownloadManager);
+  RecordFbmd(StrippingClient::kDownloadManager);
+  RecordFbmd(StrippingClient::kFileSelect);
 
   const base::DictValue& root = pref_service_.GetDict(kRootPrefKey);
 
-  const base::DictValue* download = root.FindDict(kDownloadPrefKey);
-  ASSERT_TRUE(download);
-  const base::DictValue* download_fbmd =
-      download->FindDict(kFBMDMetadataPrefKey);
-  ASSERT_TRUE(download_fbmd);
-  EXPECT_EQ(download_fbmd->FindInt(kStrippedPrefKey), 2);
-
-  const base::DictValue* upload = root.FindDict(kUploadPrefKey);
-  ASSERT_TRUE(upload);
-  const base::DictValue* upload_fbmd = upload->FindDict(kFBMDMetadataPrefKey);
-  ASSERT_TRUE(upload_fbmd);
-  EXPECT_EQ(upload_fbmd->FindInt(kStrippedPrefKey), 1);
+  const base::DictValue* fbmd = root.FindDict(kFbmdPrefKey);
+  ASSERT_TRUE(fbmd);
+  EXPECT_EQ(fbmd->FindInt(kDownloadStrippedPrefKey), 2);
+  EXPECT_EQ(fbmd->FindInt(kUploadStrippedPrefKey), 1);
 }
 
-TEST_F(ImageMetadataStripperMetricsReporterTest, ClearsCountsAfterReporting) {
-  RecordFbmd(StrippingClient::kDownloadManager, /*was_stripped=*/true);
+TEST_F(ImageMetadataStripperMetricsTest, ClearsCountsAfterReporting) {
+  RecordFbmd(StrippingClient::kDownloadManager);
   task_environment_.FastForwardBy(base::Days(7));
 
   histogram_tester_.ExpectBucketCount(kDownloadFBMDCountStrippedHistogramName,

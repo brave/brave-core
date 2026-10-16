@@ -244,6 +244,9 @@ inline constexpr auto kCollectedTypicalHistograms =
     {"Brave.Wallet.UsageWeekly", MetricConfig{.ephemeral = true}},
     {"Brave.Web3.DappVisited", MetricConfig{.ephemeral = true}},
     {"Brave.WebTorrent.UsageWeekly", MetricConfig{.ephemeral = true}},
+     // Keep the image metadata metrics in sync with browser/misc_metrics/image_metadata_stripper_metrics.h.
+    {"Brave.Shields.DownloadFBMDStripped", MetricConfig{.ephemeral=true}},
+    {"Brave.Shields.UploadFBMDStripped", MetricConfig{.ephemeral=true}},
 });
 
 inline constexpr auto kCollectedSlowHistograms =
@@ -473,13 +476,6 @@ inline constexpr auto kCollectedExpressHistograms =
       .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kChannel, MetricAttribute::kPlatform, MetricAttribute::kDateOfInstall, MetricAttribute::kSubregion, MetricAttribute::kVersion},
     }},
     {"creativeInstanceId.total.count", {}},
-    // Keep the image metadata metrics in sync with browser/image_metadata_stripper/metrics_reporter.h.
-    {"Brave.ImageMetadataStripper.DownloadFBMDCount.Stripped", MetricConfig{
-      .ephemeral=true,
-    }},
-    {"Brave.ImageMetadataStripper.UploadFBMDCount.Stripped", MetricConfig{
-      .ephemeral=true,
-    }}
 });
 
 }  // namespace p3a
