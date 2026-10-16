@@ -15,7 +15,7 @@
 #include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"
 #include "brave/browser/brave_browser_process.h"
-#include "brave/browser/image_metadata_stripper/metrics_reporter.h"
+#include "brave/browser/misc_metrics/image_metadata_stripper_metrics.h"
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/components/image_metadata_stripper/common/features.h"
 #include "brave/components/image_metadata_stripper/image_metadata_stripper.h"
@@ -128,7 +128,9 @@ void BraveDownloadManagerDelegate::OnImageMetadataStripped(uint32_t download_id,
     auto* stripper_metrics_reporter =
         g_brave_browser_process->process_misc_metrics()
             ->image_metadata_stripper_metrics();
-    stripper_metrics_reporter->MaybeRecordFbmd(
-        image_metadata_stripper::StrippingClient::kDownloadManager, stripped);
+    if (stripped) {
+      stripper_metrics_reporter->RecordFbmd(
+          image_metadata_stripper::StrippingClient::kDownloadManager);
+    }
   }
 }

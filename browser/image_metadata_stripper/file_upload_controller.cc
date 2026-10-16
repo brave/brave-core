@@ -15,7 +15,7 @@
 #include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"
 #include "brave/browser/brave_browser_process.h"
-#include "brave/browser/image_metadata_stripper/metrics_reporter.h"
+#include "brave/browser/misc_metrics/image_metadata_stripper_metrics.h"
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/components/image_metadata_stripper/common/features.h"
 #include "chrome/common/chrome_paths.h"
@@ -200,7 +200,9 @@ void FileUploadController::OnStripped(
         g_brave_browser_process->process_misc_metrics()
             ->image_metadata_stripper_metrics();
     for (const auto& copy : copies) {
-      stripper_metrics_reporter->MaybeRecordFbmd(client, copy.has_value());
+      if (copy.has_value()) {
+        stripper_metrics_reporter->RecordFbmd(client);
+      }
     }
   }
 
