@@ -25,6 +25,7 @@ import {
   LearnedMemoryItem,
   LearnedMemoryProposal,
   LearnedMemoryReviewDecision,
+  LearnedMemorySource,
   LearnedMemoryType,
   MemorySearchResult
 } from '../customization_settings.mojom-webui.js'
@@ -78,6 +79,14 @@ export interface MemoryGroup {
 // What is wrong with the text of a change of the review.
 type ReviewTextError = '' | 'empty' | 'tooLong'
 
+// A sentence that Leo read, under a change of the review.
+interface ReviewQuote {
+  sentence: string
+  // The chat and the date of the sentence. Empty when all the sentences come
+  // from one chat: the line above them tells it.
+  caption: string
+}
+
 // A change of the Dreaming review, as the user edits it.
 interface ReviewItem {
   proposal: LearnedMemoryProposal
@@ -90,6 +99,12 @@ interface ReviewItem {
   error: ReviewTextError
   // The first change of its kind, which has the heading of the kind above it.
   firstOfKind: boolean
+  // The line that tells where the change came from. Empty without sources.
+  sourceSummary: string
+  quotes: ReviewQuote[]
+  // The sentences show under the line. They show at first for a change of a
+  // saved memory: the user needs them to decide.
+  sourcesOpen: boolean
 }
 
 type LeoInputEvent = { value: string, model: { index: number } }
@@ -326,7 +341,9 @@ class MemorySection extends MemorySectionBase {
           editing: false,
           textBeforeEdit: proposal.text,
           error: '',
-          firstOfKind: i === 0 || ordered[i - 1].change !== proposal.change
+          firstOfKind: i === 0 || ordered[i - 1].change !== proposal.change,
+          ...this.getReviewSources_(proposal.sources),
+          sourcesOpen: proposal.change === LearnedMemoryChange.kChanged
         }))
         return this.reviewItems_.length
       })
@@ -370,6 +387,42 @@ class MemorySection extends MemorySectionBase {
     const unixMs =
       Number(time.internalValue / BigInt(1000)) - WINDOWS_TO_UNIX_EPOCH_MS
     return new Date(unixMs).toLocaleDateString()
+  }
+
+  // The line under a change of the review: the chat and the date of the last
+  // sentence. When the sentences come from more than one chat, the line does
+  // not name a chat, and each sentence tells its own.
+  getReviewSources_(sources: LearnedMemorySource[]):
+      { sourceSummary: string, quotes: ReviewQuote[] } {
+    if (sources.length === 0) {
+      return { sourceSummary: '', quotes: [] }
+    }
+    const last = sources.reduce((a, b) =>
+      b.date.internalValue > a.date.internalValue ? b : a)
+    const date = this.formatDate_(last.date)
+    const severalChats =
+      new Set(sources.map(source => source.conversationUuid)).size > 1
+    let sourceSummary: string
+    if (severalChats) {
+      sourceSummary =
+        this.i18n('braveLeoAssistantDreamReviewSourceSeveral', date)
+    } else if (last.conversationTitle) {
+      sourceSummary = this.i18n('braveLeoAssistantDreamReviewSource',
+                                last.conversationTitle, date)
+    } else {
+      sourceSummary =
+        this.i18n('braveLeoAssistantDreamReviewSourceUntitled', date)
+    }
+    const quotes = sources.map((source): ReviewQuote => ({
+      sentence: source.sentence,
+      caption: severalChats
+        ? this.i18n('braveLeoAssistantDreamReviewSourceCaption',
+                    source.conversationTitle ||
+                      this.i18n('braveLeoAssistantDreamReviewUntitledChat'),
+                    this.formatDate_(source.date))
+        : ''
+    }))
+    return { sourceSummary, quotes }
   }
 
   // Without a search, one part with all the memories. With a search, the
@@ -985,6 +1038,33 @@ class MemorySection extends MemorySectionBase {
   getStoredText_(item: ReviewItem): string {
     return this.i18n('braveLeoAssistantLearnedMemoryPrevious',
                      item.proposal.storedText ?? '')
+  }
+
+  hasReviewSources_(item: ReviewItem): boolean {
+    return item.quotes.length > 0
+  }
+
+  // The arguments are the fields, not only the item, so that the page asks
+  // again when the user opens or closes the sentences.
+  showReviewQuotes_(item: ReviewItem, open: boolean): boolean {
+    return open && item.quotes.length > 0
+  }
+
+  onReviewSourcesToggle_(e: { model: { index: number } }) {
+    const index = e.model.index
+    this.set(`reviewItems_.${index}.sourcesOpen`,
+             !this.reviewItems_[index].sourcesOpen)
+  }
+
+  getSourcesButtonClass_(open: boolean): string {
+    return open ? 'review-sources-button open' : 'review-sources-button'
+  }
+
+  // The Leo button does not pass aria-expanded to its inner button, so the
+  // name of the button tells the state.
+  getSourcesButtonLabel_(open: boolean): string {
+    return this.i18n(open ? 'braveLeoAssistantDreamReviewHideSources'
+                          : 'braveLeoAssistantDreamReviewShowSources')
   }
 
   // A change that the user does not keep reads quieter.

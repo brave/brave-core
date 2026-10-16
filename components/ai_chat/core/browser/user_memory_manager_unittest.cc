@@ -1568,6 +1568,47 @@ TEST_F(UserMemoryManagerTest, ReviewDoesNotBringBackAMemoryGoneMeanwhile) {
   EXPECT_THAT(GetMemories(), IsEmpty());
 }
 
+TEST_F(UserMemoryManagerTest, ReviewHasTheSentencesOfTheRun) {
+  MakeManager(/*with_llm=*/true, /*record_trace=*/false, /*review=*/true);
+  const std::string dog = "We adopted a second dog.";
+  const std::string tea = "Hello there. I like tea.";
+  AddMemory("Has a dog");
+  MakeClose(dog, "Has a dog");
+  AddChat("chat-1", {dog});
+  AddChat("chat-2", {tea}, /*hours_ago=*/5);
+  KeepSentence(dog, dog);
+  // Only the second sentence of the turn is a fact.
+  KeepSentence(tea, "I like tea.");
+  llm_.rewrites["I like tea."] = "Likes tea";
+  client_->relations[{dog, "Has a dog"}] = RelationAnswer::kMerge;
+  llm_.merged = "Has two dogs";
+  MakeClose("Has two dogs", "Has a dog");
+  embedder_.vectors["Has two dogs"] = embedder_.vectors[dog];
+  StorageReady();
+
+  Dream();
+
+  const DreamingReview* review = manager_->pending_review();
+  ASSERT_TRUE(review);
+  ASSERT_EQ(review->proposals.size(), 2u);
+  // The merged memory keeps the link of its old text, but only the sentence
+  // of this run is a source.
+  const DreamingProposal& merged = review->proposals[0];
+  EXPECT_EQ(merged.kind, DreamingProposal::Kind::kChanged);
+  EXPECT_EQ(merged.memory.links.size(), 2u);
+  EXPECT_THAT(merged.sources,
+              ElementsAre(DreamingSource{dog, "chat-1", "title",
+                                         merged.memory.updated_date}));
+  // The source is the sentence that the link names, not the whole turn.
+  const DreamingProposal& added = review->proposals[1];
+  EXPECT_EQ(added.kind, DreamingProposal::Kind::kNew);
+  EXPECT_EQ(added.memory.text, "Likes tea");
+  EXPECT_THAT(added.sources,
+              ElementsAre(DreamingSource{"I like tea.", "chat-2", "title",
+                                         added.memory.created_date}));
+  EXPECT_FALSE(added.memory.created_date.is_null());
+}
+
 TEST_F(UserMemoryManagerTest, ShortTermNeverReplaces) {
   const std::string turn = "I am in Tokyo this week.";
   AddMemory("Lives in Berlin");
@@ -1928,6 +1969,9 @@ TEST_F(UserMemoryManagerTest, ReviewKeepsTheTypeOfAMemoryKeptAfterTheRun) {
   ASSERT_TRUE(review);
   ASSERT_EQ(review->proposals.size(), 1u);
   EXPECT_EQ(review->proposals[0].kind, DreamingProposal::Kind::kSeenAgain);
+  // The sentence that mentioned the memory again.
+  EXPECT_THAT(review->proposals[0].sources,
+              ElementsAre(testing::Field(&DreamingSource::sentence, dog)));
   const std::string uuid = review->proposals[0].memory.uuid;
 
   base::test::TestFuture<bool> kept;

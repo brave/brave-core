@@ -63,6 +63,16 @@ enum LearnedMemoryChange {
   kSeenAgain,
 };
 
+// A sentence of a chat that a change of the review came from.
+struct LearnedMemorySource {
+  string sentence;
+  string conversation_uuid;
+  // The title of the chat when Leo read it. It can be empty.
+  string conversation_title;
+  // The date of the message.
+  mojo_base.mojom.Time date;
+};
+
 struct LearnedMemoryProposal {
   // The uuid of the memory, new or stored.
   string uuid;
@@ -72,6 +82,8 @@ struct LearnedMemoryProposal {
   string? stored_text;
   LearnedMemoryCategory category;
   LearnedMemoryType type;
+  // The sentences of the run that the change came from.
+  array<LearnedMemorySource> sources;
 };
 
 // A change of the review that the user keeps.

@@ -250,10 +250,16 @@ void MemoryManagerDelegateImpl::GetDreamingReview(
       if (proposal.stored) {
         stored_text = proposal.stored->text;
       }
+      std::vector<mojom::LearnedMemorySourcePtr> sources;
+      for (const DreamingSource& source : proposal.sources) {
+        sources.push_back(mojom::LearnedMemorySource::New(
+            source.sentence, source.conversation_uuid,
+            source.conversation_title, source.date));
+      }
       proposals.push_back(mojom::LearnedMemoryProposal::New(
           proposal.memory.uuid, ToMojom(proposal.kind), proposal.memory.text,
           std::move(stored_text), ToMojom(proposal.memory.category),
-          ToMojom(proposal.memory.type)));
+          ToMojom(proposal.memory.type), std::move(sources)));
     }
   }
   std::move(callback).Run(std::move(proposals));

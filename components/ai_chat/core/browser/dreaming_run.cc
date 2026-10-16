@@ -312,6 +312,9 @@ void DreamingRun::OnConversations(
   // temporary chats, so Dreaming never reads them.
   for (const auto& conversation : conversations) {
     conversations_to_read_.push_back(conversation->uuid);
+    if (config_.review_changes) {
+      conversation_titles_[conversation->uuid] = conversation->title;
+    }
   }
   ReadNextConversation();
 }
@@ -501,6 +504,13 @@ void DreamingRun::OnSentenceDecisions(
       continue;
     }
     Candidate candidate;
+    candidate.link = {turn().conversation_uuid, turn().entry_uuid,
+                      static_cast<uint32_t>(sentence_indexes[i])};
+    if (config_.review_changes) {
+      review_sources_[candidate.link] = {
+          sentences[i], turn().conversation_uuid,
+          conversation_titles_[turn().conversation_uuid], turn().date};
+    }
     candidate.text = std::move(sentences[i]);
     // Neutral labels when not certain: a personal fact, and long-term.
     candidate.category = Certain(decision.category)
@@ -508,8 +518,6 @@ void DreamingRun::OnSentenceDecisions(
     candidate.type = Certain(decision.temporary).value_or(false)
                          ? LearnedMemoryType::kShortTerm
                          : LearnedMemoryType::kLongTerm;
-    candidate.link = {turn().conversation_uuid, turn().entry_uuid,
-                      static_cast<uint32_t>(sentence_indexes[i])};
     candidates_.push_back(std::move(candidate));
   }
   Trace("sentence_decisions", base::DictValue()
@@ -1107,6 +1115,10 @@ void DreamingRun::Finish(DreamingStatus status) {
       } else {
         ++result_.memories_updated;
       }
+      base::ListValue sources;
+      for (const DreamingSource& source : proposal.sources) {
+        sources.Append(source.sentence);
+      }
       proposals.Append(
           base::DictValue()
               .Set("kind", Name(proposal.kind))
@@ -1115,7 +1127,8 @@ void DreamingRun::Finish(DreamingStatus status) {
               .Set("text", proposal.memory.text)
               .Set("stored", proposal.stored
                                  ? base::Value(proposal.stored->text)
-                                 : base::Value()));
+                                 : base::Value())
+              .Set("sources", std::move(sources)));
     }
     Trace("review", base::DictValue().Set("proposals", std::move(proposals)));
   }
@@ -1152,6 +1165,13 @@ DreamingReview DreamingRun::MakeReview() const {
       proposal.memory.previous =
           PreviousMemoryText{stored->text, stored->links};
       proposal.stored = *stored;
+    }
+    // Only the links of this run have a sentence here. The links of the stored
+    // memory come from older runs.
+    for (const MemorySourceLink& link : memory.links) {
+      if (auto it = review_sources_.find(link); it != review_sources_.end()) {
+        proposal.sources.push_back(it->second);
+      }
     }
     review.proposals.push_back(std::move(proposal));
   }

@@ -54,6 +54,20 @@ enum class DreamingStatus {
   kReviewPending,
 };
 
+// A sentence of a chat that a change came from. The review shows it, so the
+// user can see why Leo wants the change. It is kept in memory only, like the
+// review.
+struct DreamingSource {
+  std::string sentence;
+  std::string conversation_uuid;
+  // The title of the chat when the run read it. It can be empty.
+  std::string conversation_title;
+  // The date of the message.
+  base::Time date;
+
+  bool operator==(const DreamingSource& other) const = default;
+};
+
 // A change that a run wants to make, for the user to review.
 struct DreamingProposal {
   enum class Kind {
@@ -77,6 +91,9 @@ struct DreamingProposal {
   LearnedMemory memory;
   // The stored memory at the start of the run. Null for kNew.
   std::optional<LearnedMemory> stored;
+  // The sentences of this run that the change came from, in the order of the
+  // links of |memory|. The sources of |stored| are not here.
+  std::vector<DreamingSource> sources;
 };
 
 // What a run learned, held until the user reviews it. Nothing is stored before
@@ -359,6 +376,10 @@ class DreamingRun {
   std::vector<LearnedMemory> stored_memories_;
   std::optional<std::vector<LearnedMemory>> turn_start_memories_;
   std::map<std::string, base::Time> review_watermarks_;
+  // With review_changes: the titles of the chats, and the sentences that
+  // became candidates, for the sources of the review.
+  std::map<std::string, std::string> conversation_titles_;
+  std::map<MemorySourceLink, DreamingSource> review_sources_;
   // The embeddings of the texts that this run wrote, by memory uuid. The index
   // gets them only after its next sync, so the neighbor search uses these.
   std::map<std::string, std::vector<float>> run_embeddings_;

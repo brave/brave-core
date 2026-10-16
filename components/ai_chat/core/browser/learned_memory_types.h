@@ -57,6 +57,7 @@ struct MemorySourceLink {
   uint32_t sentence_index = 0;
 
   bool operator==(const MemorySourceLink& other) const = default;
+  auto operator<=>(const MemorySourceLink& other) const = default;
 };
 
 // The text that the last replace or merge overwrote, kept for undo.
