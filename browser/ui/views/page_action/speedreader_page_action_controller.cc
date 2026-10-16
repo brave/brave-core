@@ -73,8 +73,7 @@ void SpeedreaderPageActionController::ExecuteAction(int event_flags) {
   if (!contents) {
     return;
   }
-  auto* tab_helper =
-      speedreader::SpeedreaderTabHelper::FromWebContents(contents);
+  auto* tab_helper = speedreader::SpeedreaderTabHelper::From(&tab_.get());
   if (!tab_helper) {
     return;
   }
@@ -96,7 +95,7 @@ void SpeedreaderPageActionController::AttachToTabHelper(
   tab_helper_observation_.Reset();
   if (contents) {
     if (auto* tab_helper =
-            speedreader::SpeedreaderTabHelper::FromWebContents(contents)) {
+            speedreader::SpeedreaderTabHelper::From(&tab_.get())) {
       tab_helper_observation_.Observe(tab_helper);
     }
   }
@@ -117,8 +116,7 @@ void SpeedreaderPageActionController::UpdatePageAction(
     return;
   }
 
-  auto* tab_helper =
-      speedreader::SpeedreaderTabHelper::FromWebContents(contents);
+  auto* tab_helper = speedreader::SpeedreaderTabHelper::From(&tab_.get());
   if (!tab_helper) {
     page_action_controller_->Hide(kActionShowSpeedreader);
     return;

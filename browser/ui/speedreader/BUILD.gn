@@ -16,13 +16,16 @@ source_set("speedreader") {
 
   public_deps = [
     "//brave/browser/speedreader",
+    "//chrome/browser/ui/tabs:tabs_public",
     "//components/dom_distiller/content/browser",
+    "//ui/base/unowned_user_data",
   ]
 
   deps = [
     "//brave/browser:browser_process",
     "//brave/components/resources:static_resources_grit",
     "//chrome/common",
+    "//components/tabs:public",
   ]
 
   if (!is_android) {
