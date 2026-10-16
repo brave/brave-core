@@ -214,11 +214,14 @@ IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentBrowserTest,
 
   // The content is identified by workspace://<uuid>, which is what's stored
   // with the conversation and never loaded.
-  EXPECT_FALSE(content->uuid().empty());
-  EXPECT_EQ(
-      GURL(base::StrCat({kAIChatWorkspaceScheme, url::kStandardSchemeSeparator,
-                         content->uuid()})),
-      content->url());
+  EXPECT_TRUE(content->url().SchemeIs(kAIChatWorkspaceScheme));
+  const std::string workspace_uuid(content->url().host());
+  EXPECT_TRUE(base::Uuid::ParseLowercase(workspace_uuid).is_valid());
+
+  // The content's own uuid is independent of the workspace's, as several
+  // conversations can attach the same workspace.
+  EXPECT_TRUE(base::Uuid::ParseLowercase(content->uuid()).is_valid());
+  EXPECT_NE(workspace_uuid, content->uuid());
 
   // Each workspace's page is served from its own
   // chrome-untrusted://<uuid>.leo-workspace subdomain, so no two conversations
@@ -226,7 +229,7 @@ IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentBrowserTest,
   // grants).
   const GURL url = content->page_url();
   EXPECT_TRUE(url.SchemeIs(content::kChromeUIUntrustedScheme));
-  EXPECT_EQ(content->uuid() + "." + kAIChatLeoWorkspaceUIHost, url.host());
+  EXPECT_EQ(workspace_uuid + "." + kAIChatLeoWorkspaceUIHost, url.host());
   EXPECT_EQ("/", url.path());
   // Tools, and so tool permissions, belong to the page's origin, not the
   // (opaque) origin of the workspace:// URL.
@@ -497,9 +500,10 @@ IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentBrowserTest,
   ASSERT_TRUE(content::WaitForLoadStop(web_contents));
 
   const GURL viewer_url = ViewerURL(content->page_url());
-  ASSERT_EQ(base::StrCat({kAIChatLeoWorkspaceViewUIHostPrefix, content->uuid(),
-                          kAIChatLeoWorkspaceUIHostSuffix}),
-            viewer_url.host());
+  ASSERT_EQ(
+      base::StrCat({kAIChatLeoWorkspaceViewUIHostPrefix, content->url().host(),
+                    kAIChatLeoWorkspaceUIHostSuffix}),
+      viewer_url.host());
 
   ASSERT_TRUE(FrameLoads(web_contents, viewer_url));
 

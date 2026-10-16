@@ -90,7 +90,8 @@ WorkspaceAssociatedContent::WorkspaceAssociatedContent(
     content::BrowserContext* browser_context,
     base::OnceCallback<void(content::WebContents*)> attach_tab_helpers)
     : WorkspaceAssociatedContent(
-          base::Uuid::GenerateRandomV4().AsLowercaseString()) {
+          /*workspace_uuid=*/base::Uuid::GenerateRandomV4().AsLowercaseString(),
+          /*content_uuid=*/base::Uuid::GenerateRandomV4().AsLowercaseString()) {
   folder_path_ = std::move(folder_path);
   DVLOG(2) << __func__ << " creating workspace " << url().spec()
            << " for folder " << folder_path_.value_or(base::FilePath());
@@ -185,9 +186,6 @@ url::Origin WorkspaceAssociatedContent::GetOrigin() const {
   // page, so they belong to its origin.
   return url::Origin::Create(page_url_);
 }
-
-WorkspaceAssociatedContent::WorkspaceAssociatedContent(std::string uuid)
-    : WorkspaceAssociatedContent(uuid, uuid) {}
 
 WorkspaceAssociatedContent::WorkspaceAssociatedContent(
     std::string_view workspace_uuid,

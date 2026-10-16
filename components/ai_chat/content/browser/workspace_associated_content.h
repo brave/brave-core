@@ -91,8 +91,8 @@ class WorkspaceAssociatedContent : public AssociatedContentDelegate,
   }
 
  private:
-  // Sets up the identity of the workspace with |uuid|, without loading it.
-  explicit WorkspaceAssociatedContent(std::string uuid);
+  // Sets up the identity of the workspace with |workspace_uuid|, attached with
+  // |content_uuid|, without loading it.
   WorkspaceAssociatedContent(std::string_view workspace_uuid,
                              std::string content_uuid);
 
