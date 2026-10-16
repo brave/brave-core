@@ -15,6 +15,7 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/prefs/pref_service.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
@@ -62,7 +63,8 @@ class OnboardingBrowserTest : public InProcessBrowserTest {
     // Let the helper's first-run check complete.
     content::RunAllTasksUntilIdle();
 
-    brave_shields::BraveShieldsTabHelper::FromWebContents(contents)
+    brave_shields::BraveShieldsTabHelper::From(
+        tabs::TabInterface::MaybeGetFromContents(contents))
         ->HandleItemBlocked(brave_shields::kAds,
                             embedded_test_server()->GetURL("/ad.js").spec());
     ASSERT_TRUE(

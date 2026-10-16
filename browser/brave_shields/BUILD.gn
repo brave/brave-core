@@ -20,8 +20,8 @@ source_set("brave_shields") {
     "//base",
     "//brave/components/brave_shields/content/browser",
     "//brave/components/brave_shields/core/common:mojom",
-    "//brave/components/ephemeral_storage",
     "//chrome/browser/profiles:profile",
+    "//chrome/browser/ui/tabs:tabs_public",
     "//components/content_settings/core/browser",
     "//components/content_settings/core/common",
     "//components/favicon/core",
@@ -30,6 +30,7 @@ source_set("brave_shields") {
     "//components/prefs",
     "//content/public/browser",
     "//mojo/public/cpp/bindings",
+    "//ui/base/unowned_user_data",
     "//url",
   ]
 }
@@ -54,6 +55,7 @@ source_set("brave_shields_impl") {
     "//brave/components/brave_shields/core/common",
     "//brave/components/brave_user_agent/browser",
     "//brave/components/constants",
+    "//brave/components/ephemeral_storage",
     "//chrome/browser:browser_process",
     "//chrome/browser/content_settings:content_settings_factory",
     "//chrome/browser/download",
@@ -65,6 +67,7 @@ source_set("brave_shields_impl") {
     "//components/favicon/content",
     "//components/prefs",
     "//components/proxy_config",
+    "//components/tabs:public",
     "//components/user_prefs",
     "//extensions/buildflags",
     "//net",
@@ -142,6 +145,7 @@ source_set("unit_tests") {
       "//chrome/test/base:chrome_render_view_host_test_harness",
       "//components/favicon/content",
       "//components/favicon/core/test:test_support",
+      "//components/tabs:test_support",
     ]
   }
 }

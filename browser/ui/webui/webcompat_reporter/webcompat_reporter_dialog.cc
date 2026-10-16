@@ -23,6 +23,7 @@
 #include "brave/components/webcompat_reporter/browser/fields.h"
 #include "brave/components/webcompat_reporter/browser/webcompat_reporter_service.h"
 #include "chrome/browser/ui/webui/constrained_web_dialog_ui.h"
+#include "components/tabs/public/tab_interface.h"
 #include "components/web_modal/web_contents_modal_dialog_manager.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/render_frame_host.h"
@@ -166,7 +167,8 @@ void OpenReporterDialog(content::WebContents* initiator, UISource source) {
   brave_shields::mojom::AdBlockMode ad_block_mode =
       brave_shields::mojom::AdBlockMode::STANDARD;
   brave_shields::BraveShieldsTabHelper* shields_data_controller =
-      brave_shields::BraveShieldsTabHelper::FromWebContents(initiator);
+      brave_shields::BraveShieldsTabHelper::From(
+          tabs::TabInterface::MaybeGetFromContents(initiator));
   if (shields_data_controller != nullptr) {
     shields_enabled = shields_data_controller->IsBraveShieldsEnabled();
     fp_block_mode = shields_data_controller->GetFingerprintMode();

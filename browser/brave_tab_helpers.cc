@@ -62,10 +62,6 @@
 #include "brave/browser/android/youtube_script_injector/youtube_script_injector_tab_helper.h"
 #endif
 
-#if !BUILDFLAG(IS_ANDROID)
-#include "brave/browser/brave_shields/brave_shields_tab_helper.h"
-#endif
-
 #if BUILDFLAG(ENABLE_PRINT_PREVIEW)
 #include "brave/browser/screenshot/print_preview_extractor_factory.h"
 #if BUILDFLAG(ENABLE_AI_CHAT)
@@ -108,9 +104,6 @@ void AttachTabHelpers(content::WebContents* web_contents) {
 
 #if BUILDFLAG(IS_ANDROID)
   YouTubeScriptInjectorTabHelper::CreateForWebContents(web_contents);
-#else
-  // Add tab helpers here unless they are intended for android too
-  brave_shields::BraveShieldsTabHelper::CreateForWebContents(web_contents);
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)

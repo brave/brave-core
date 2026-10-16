@@ -533,8 +533,8 @@ void ToggleShieldsEnabled(BrowserWindowInterface* browser) {
   if (!contents) {
     return;
   }
-  auto* shields =
-      brave_shields::BraveShieldsTabHelper::FromWebContents(contents);
+  auto* shields = brave_shields::BraveShieldsTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(contents));
   if (!shields) {
     return;
   }
@@ -551,8 +551,8 @@ void ToggleJavascriptEnabled(BrowserWindowInterface* browser) {
   if (!contents) {
     return;
   }
-  auto* shields =
-      brave_shields::BraveShieldsTabHelper::FromWebContents(contents);
+  auto* shields = brave_shields::BraveShieldsTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(contents));
   if (!shields) {
     return;
   }
