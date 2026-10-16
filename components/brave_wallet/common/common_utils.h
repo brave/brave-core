@@ -123,6 +123,7 @@ mojom::AccountIdPtr MakeIndexBasedAccountId(mojom::CoinType coin,
 
 bool IsHTTPSOrLocalhostURL(const std::string& url);
 
+// True for non-opaque http/https origins.
 bool IsValidDappOrigin(const url::Origin& origin);
 
 template <typename T>
