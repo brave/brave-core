@@ -5,25 +5,66 @@
 
 import("//brave/components/web_discovery/buildflags/buildflags.gni")
 
-if (enable_web_discovery_native) {
-  static_library("web_discovery") {
+if (enable_web_discovery) {
+  source_set("web_discovery") {
     sources = [
-      "web_discovery_service_factory.cc",
-      "web_discovery_service_factory.h",
+      "web_discovery_cta_util.h",
+      "web_discovery_infobar_delegate.h",
+      "web_discovery_tab_helper.h",
     ]
-    deps = [
+
+    public_deps = [
       "//base",
-      "//brave/browser/brave_search",
-      "//brave/components/web_discovery/browser",
-      "//brave/components/web_discovery/common",
-      "//chrome/browser:browser_process",
-      "//chrome/browser/profiles:profile",
-      "//chrome/common:constants",
-      "//components/keyed_service/content",
-      "//components/user_prefs",
+      "//brave/components/web_discovery/buildflags",
+      "//components/infobars/core",
       "//content/public/browser",
-      "//third_party/re2",
     ]
+
+    if (enable_web_discovery_native) {
+      sources += [ "web_discovery_service_factory.h" ]
+      public_deps += [ "//chrome/browser/profiles:profile" ]
+    }
+  }
+
+  source_set("impl") {
+    visibility = [ "//brave/browser:core" ]
+
+    sources = [
+      "web_discovery_cta_util.cc",
+      "web_discovery_infobar_delegate.cc",
+      "web_discovery_tab_helper.cc",
+    ]
+
+    deps = [
+      ":web_discovery",
+      "//brave/common",
+      "//brave/components/constants",
+      "//brave/components/search_engines",
+      "//chrome/browser/profiles",
+      "//chrome/browser/search_engines",
+      "//chrome/browser/ui",
+      "//components/infobars/content",
+      "//components/infobars/core",
+      "//components/prefs",
+      "//components/search_engines",
+      "//content/public/browser",
+    ]
+
+    if (enable_web_discovery_native) {
+      sources += [ "web_discovery_service_factory.cc" ]
+      deps += [
+        "//base",
+        "//brave/browser/brave_search",
+        "//brave/components/web_discovery/browser",
+        "//brave/components/web_discovery/common",
+        "//chrome/browser:browser_process",
+        "//chrome/browser/profiles:profile",
+        "//chrome/common:constants",
+        "//components/keyed_service/content",
+        "//components/user_prefs",
+        "//third_party/re2",
+      ]
+    }
   }
 }
 
@@ -34,6 +75,7 @@ source_set("unit_tests") {
     sources = [ "web_discovery_unittest.cc" ]
 
     deps = [
+      ":web_discovery",
       "//brave/components/constants",
       "//brave/components/search_engines",
       "//chrome/browser",
@@ -77,6 +119,7 @@ source_set("browser_tests") {
     if (!is_android) {
       sources += [ "web_discovery_browsertest.cc" ]
       deps += [
+        ":web_discovery",
         "//extensions:test_support",
         "//extensions/browser",
         "//extensions/common:common_constants",

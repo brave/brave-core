@@ -1215,6 +1215,7 @@ source_set("ui") {
         "views/infobars/web_discovery_infobar_view.cc",
         "views/infobars/web_discovery_infobar_view.h",
       ]
+      deps += [ "//brave/browser/web_discovery" ]
     }
 
     deps += [
