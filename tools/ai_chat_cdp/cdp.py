@@ -18,6 +18,7 @@ folder of the profile, so deleting the profile deletes them too.
 """
 
 import base64
+import glob
 import json
 import os
 import socket
@@ -80,13 +81,44 @@ def browser_binary(build_dir=DEFAULT_BUILD_DIR):
         return f.read().strip().replace('\\ ', ' ')
 
 
+def build_time(build_dir=DEFAULT_BUILD_DIR):
+    """When the browser was built last: the newest of its library and its
+    resource packs. A change of only WebUI files or strings builds the packs
+    again, and not the library."""
+    library = 'libchrome_dll.dylib' if sys.platform == 'darwin' else 'chrome'
+    paths = [os.path.join(build_dir, library)]
+    if sys.platform == 'darwin':
+        paths += glob.glob(
+            os.path.join(
+                build_dir,
+                '*.app',
+                'Contents',
+                'Frameworks',
+                '*.framework',
+                'Versions',
+                'Current',
+                'Resources',
+                '**',
+                '*.pak',
+            ),
+            recursive=True,
+        )
+    else:
+        paths += glob.glob(os.path.join(build_dir, '*.pak'))
+        paths += glob.glob(os.path.join(build_dir, 'locales', '*.pak'))
+    return max(os.path.getmtime(path) for path in paths if os.path.exists(path))
+
+
 def check_build(build_dir=DEFAULT_BUILD_DIR):
     """Stops when the code of the browser changed after it was built: a test
-    of a binary without that code says nothing. The code is the tree at HEAD
-    when the binary was built, without tools/ and Markdown files, which do
-    not go into the browser."""
-    library = 'libchrome_dll.dylib' if sys.platform == 'darwin' else 'chrome'
-    built = os.path.getmtime(os.path.join(build_dir, library))
+    of a binary without that code says nothing. The code is the tree without
+    tools/ and Markdown files, which do not go into the browser.
+
+    The files to check are the ones that differ from HEAD at the time of the
+    build: later commits, and changes not committed yet. Such a file was in
+    the build when it did not change on disk after the build, so a commit
+    made after the build of its changes does not count."""
+    built = build_time(build_dir)
 
     def git(*args):
         return subprocess.run(
@@ -104,12 +136,12 @@ def check_build(build_dir=DEFAULT_BUILD_DIR):
         if int(entry.split('{')[1].rstrip('}')) <= built:
             built_head = commit
             break
+    # Without a commit argument after it, the diff is to the files on disk.
     changed = (
         git(
             'diff',
             '--name-only',
             built_head,
-            'HEAD',
             '--',
             '.',
             ':(exclude)tools',
@@ -118,13 +150,20 @@ def check_build(build_dir=DEFAULT_BUILD_DIR):
         if built_head
         else None
     )
-    if changed is None or changed.returncode != 0 or changed.stdout.strip():
-        files = changed.stdout.split() if changed else []
+    newer = None
+    if changed is not None and changed.returncode == 0:
+        newer = []
+        for name in changed.stdout.split():
+            path = os.path.join(BRAVE_DIR, name)
+            # A deleted file has no time. It counts as changed.
+            if not os.path.exists(path) or os.path.getmtime(path) > built:
+                newer.append(name)
+    if newer is None or newer:
         raise SystemExit(
             f'The browser ({time.ctime(built)}) is older than its code'
             + (
-                f' ({len(files)} files changed, for example {files[0]})'
-                if files
+                f' ({len(newer)} files changed, for example {newer[0]})'
+                if newer
                 else ''
             )
             + '. Build it first.'
