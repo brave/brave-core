@@ -673,7 +673,9 @@ class SettingsGesturesPage extends SettingsGesturesPageBase {
   }
 
   private getUrlAttachClass_(textParam: string): string {
-    return textParam ? 'param-attach' : 'param-attach action-incomplete'
+    return textParam
+      ? 'action-param param-attach'
+      : 'action-param param-attach action-incomplete'
   }
 
   // Native `<option>` reflects the `<select>`'s value via its own
@@ -937,6 +939,12 @@ class SettingsGesturesPage extends SettingsGesturesPageBase {
 
   private chainedActionRows_(actionRows: ActionRow[]): ActionRow[] {
     return actionRows.slice(1)
+  }
+
+  // Flattens a method call plus property access into one call, since
+  // bindings cannot chain the two.
+  private hasChainedActions_(actionRows: ActionRow[]): boolean {
+    return this.chainedActionRows_(actionRows).length > 0
   }
 
   private onDirectionalGestureMappingChainedActionDragStart_(e: DragEvent &

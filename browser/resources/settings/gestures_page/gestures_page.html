@@ -368,7 +368,7 @@
                   on-dragover="onActionDragOver_"
                   on-drop="onDirectionalGestureMappingPrimaryActionDrop_">
                 <leo-icon name="drag" class="action-drag-handle"
-                    hidden$="[[!chainedActionRows_(item.actionRows).length]]"
+                    hidden$="[[!hasChainedActions_(item.actionRows)]]"
                     draggable="true"
                     on-dragstart="onDirectionalGestureMappingPrimaryActionDragStart_"
                     on-dragend="onActionDragEnd_">
@@ -406,7 +406,7 @@
                   </cr-icon-button>
                 </div>
                 <div class="action-param remove-action-param"
-                    hidden$="[[!chainedActionRows_(item.actionRows).length]]">
+                    hidden$="[[!hasChainedActions_(item.actionRows)]]">
                   <cr-icon-button iron-icon="minus"
                       on-click="onRemoveDirectionalGestureMappingPrimaryActionClick_">
                   </cr-icon-button>
@@ -535,7 +535,7 @@
                 on-dragover="onActionDragOver_"
                 on-drop="onCustomGesturePrimaryActionDrop_">
               <leo-icon name="drag" class="action-drag-handle"
-                  hidden$="[[!chainedActionRows_(item.actionRows).length]]"
+                  hidden$="[[!hasChainedActions_(item.actionRows)]]"
                   draggable="true"
                   on-dragstart="onCustomGesturePrimaryActionDragStart_"
                   on-dragend="onActionDragEnd_">
@@ -573,7 +573,7 @@
                 </cr-icon-button>
               </div>
               <div class="action-param remove-action-param"
-                  hidden$="[[!chainedActionRows_(item.actionRows).length]]">
+                  hidden$="[[!hasChainedActions_(item.actionRows)]]">
                 <cr-icon-button iron-icon="minus"
                     on-click="onRemoveCustomGesturePrimaryActionClick_">
                 </cr-icon-button>
@@ -683,7 +683,7 @@
               on-dragover="onActionDragOver_"
               on-drop="onDrawnCustomGesturePrimaryActionDrop_">
             <leo-icon name="drag" class="action-drag-handle"
-                hidden$="[[!chainedActionRows_(drawnCustomGestureActionRows_).length]]"
+                hidden$="[[!hasChainedActions_(drawnCustomGestureActionRows_)]]"
                 draggable="true"
                 on-dragstart="onDrawnCustomGesturePrimaryActionDragStart_"
                 on-dragend="onActionDragEnd_">
@@ -722,7 +722,7 @@
               </cr-icon-button>
             </div>
             <div class="action-param remove-action-param"
-                hidden$="[[!chainedActionRows_(drawnCustomGestureActionRows_).length]]">
+                hidden$="[[!hasChainedActions_(drawnCustomGestureActionRows_)]]">
               <cr-icon-button iron-icon="minus"
                   on-click="onRemoveDrawnCustomGesturePrimaryActionClick_">
               </cr-icon-button>
@@ -854,7 +854,7 @@
               on-dragover="onActionDragOver_"
               on-drop="onMouseRockerPrimaryActionDrop_">
             <leo-icon name="drag" class="action-drag-handle"
-                hidden$="[[!chainedActionRows_(mouseRockerLeftActionRow_.actionRows).length]]"
+                hidden$="[[!hasChainedActions_(mouseRockerLeftActionRow_.actionRows)]]"
                 draggable="true"
                 on-dragstart="onMouseRockerPrimaryActionDragStart_"
                 on-dragend="onActionDragEnd_">
@@ -893,7 +893,7 @@
               </cr-icon-button>
             </div>
             <div class="action-param remove-action-param"
-                hidden$="[[!chainedActionRows_(mouseRockerLeftActionRow_.actionRows).length]]">
+                hidden$="[[!hasChainedActions_(mouseRockerLeftActionRow_.actionRows)]]">
               <cr-icon-button iron-icon="minus"
                   on-click="onRemoveMouseRockerPrimaryActionClick_">
               </cr-icon-button>
@@ -975,7 +975,7 @@
               on-dragover="onActionDragOver_"
               on-drop="onMouseRockerPrimaryActionDrop_">
             <leo-icon name="drag" class="action-drag-handle"
-                hidden$="[[!chainedActionRows_(mouseRockerRightActionRow_.actionRows).length]]"
+                hidden$="[[!hasChainedActions_(mouseRockerRightActionRow_.actionRows)]]"
                 draggable="true"
                 on-dragstart="onMouseRockerPrimaryActionDragStart_"
                 on-dragend="onActionDragEnd_">
@@ -1014,7 +1014,7 @@
               </cr-icon-button>
             </div>
             <div class="action-param remove-action-param"
-                hidden$="[[!chainedActionRows_(mouseRockerRightActionRow_.actionRows).length]]">
+                hidden$="[[!hasChainedActions_(mouseRockerRightActionRow_.actionRows)]]">
               <cr-icon-button iron-icon="minus"
                   on-click="onRemoveMouseRockerPrimaryActionClick_">
               </cr-icon-button>
@@ -1162,7 +1162,7 @@
               on-dragover="onActionDragOver_"
               on-drop="onMouseWheelPrimaryActionDrop_">
             <leo-icon name="drag" class="action-drag-handle"
-                hidden$="[[!chainedActionRows_(mouseWheelUpActionRow_.actionRows).length]]"
+                hidden$="[[!hasChainedActions_(mouseWheelUpActionRow_.actionRows)]]"
                 draggable="true"
                 on-dragstart="onMouseWheelPrimaryActionDragStart_"
                 on-dragend="onActionDragEnd_">
@@ -1201,7 +1201,7 @@
               </cr-icon-button>
             </div>
             <div class="action-param remove-action-param"
-                hidden$="[[!chainedActionRows_(mouseWheelUpActionRow_.actionRows).length]]">
+                hidden$="[[!hasChainedActions_(mouseWheelUpActionRow_.actionRows)]]">
               <cr-icon-button iron-icon="minus"
                   on-click="onRemoveMouseWheelPrimaryActionClick_">
               </cr-icon-button>
@@ -1283,7 +1283,7 @@
               on-dragover="onActionDragOver_"
               on-drop="onMouseWheelPrimaryActionDrop_">
             <leo-icon name="drag" class="action-drag-handle"
-                hidden$="[[!chainedActionRows_(mouseWheelDownActionRow_.actionRows).length]]"
+                hidden$="[[!hasChainedActions_(mouseWheelDownActionRow_.actionRows)]]"
                 draggable="true"
                 on-dragstart="onMouseWheelPrimaryActionDragStart_"
                 on-dragend="onActionDragEnd_">
@@ -1322,7 +1322,7 @@
               </cr-icon-button>
             </div>
             <div class="action-param remove-action-param"
-                hidden$="[[!chainedActionRows_(mouseWheelDownActionRow_.actionRows).length]]">
+                hidden$="[[!hasChainedActions_(mouseWheelDownActionRow_.actionRows)]]">
               <cr-icon-button iron-icon="minus"
                   on-click="onRemoveMouseWheelPrimaryActionClick_">
               </cr-icon-button>
