@@ -49,8 +49,7 @@ inline constexpr char kUploadFBMDCountStrippedHistogramName[] =
 
 // Collects the FBMD metadata stripping counts and reports them to P3A once a
 // week. Owned by the browser (e.g. ProcessMiscMetrics) and created on the UI
-// thread. Clients record observations must be called on the UI thread since we
-// record the metrics count in local state.
+// thread.
 class ImageMetadataStripperMetrics {
  public:
   // Schedules the first P3A report. Does not emit on a first-ever registration.
