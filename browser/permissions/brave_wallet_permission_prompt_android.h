@@ -14,7 +14,6 @@
 #include "brave/browser/permissions/brave_dapp_permission_prompt_dialog_controller_android.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "components/permissions/permissions_client.h"
-#include "url/origin.h"
 
 namespace content {
 class WebContents;
@@ -22,7 +21,8 @@ class WebContents;
 
 namespace permissions {
 class PermissionPromptAndroid;
-}
+class PermissionRequest;
+}  // namespace permissions
 
 class BraveWalletPermissionPrompt
     : public BraveDappPermissionPromptDialogController::Delegate,
@@ -43,7 +43,7 @@ class BraveWalletPermissionPrompt
   BraveWalletPermissionPrompt(content::WebContents* web_contents,
                               std::unique_ptr<Delegate> delegate,
                               brave_wallet::mojom::CoinType coin_type,
-                              const url::Origin& requesting_origin);
+                              const permissions::PermissionRequest& request);
   ~BraveWalletPermissionPrompt() override;
 
  protected:
