@@ -7262,6 +7262,7 @@ TEST_F(ConversationHandlerUnitTest, PermissionChallenge) {
                         "Server determined this tool use "
                         "is off-topic",  // assessment
                         std::nullopt,    // plan
+                        std::nullopt,    // title
                         std::nullopt,    // description
                         std::nullopt, /*supports_allow_session=*/false),
                     false);
@@ -7390,6 +7391,7 @@ TEST_F(ConversationHandlerUnitTest, PermissionChallenge_ToolReturnsChallenge) {
             mojom::PermissionChallenge::New(
                 std::nullopt,                           // assessment
                 "This tool needs to manage your tabs",  // plan
+                std::nullopt,                           // title
                 std::nullopt,                           // description
                 std::nullopt, /*supports_allow_session=*/false));
       });
@@ -7483,7 +7485,8 @@ TEST_F(ConversationHandlerUnitTest, PermissionChallenge_UserAllowsForSession) {
 
   StageHaltedToolUse(conversation_handler_.get(), "cancel_cart",
                      mojom::PermissionChallenge::New(
-                         std::nullopt, std::nullopt, std::nullopt, std::nullopt,
+                         std::nullopt, std::nullopt, /*title=*/std::nullopt,
+                         std::nullopt, std::nullopt,
                          /*supports_allow_session=*/true));
 
   conversation_handler_->ProcessPermissionChallenge(
@@ -7519,7 +7522,8 @@ TEST_F(ConversationHandlerUnitTest,
 
   StageHaltedToolUse(conversation_handler_.get(), "cancel_cart",
                      mojom::PermissionChallenge::New(
-                         std::nullopt, std::nullopt, std::nullopt, std::nullopt,
+                         std::nullopt, std::nullopt, /*title=*/std::nullopt,
+                         std::nullopt, std::nullopt,
                          /*supports_allow_session=*/true));
 
   conversation_handler_->ProcessPermissionChallenge(
@@ -7563,7 +7567,8 @@ TEST_F(ConversationHandlerUnitTest,
 
   StageHaltedToolUse(conversation_handler_.get(), "cancel_cart",
                      mojom::PermissionChallenge::New(
-                         "Off-topic", std::nullopt, std::nullopt, std::nullopt,
+                         "Off-topic", std::nullopt, /*title=*/std::nullopt,
+                         std::nullopt, std::nullopt,
                          /*supports_allow_session=*/false));
 
   conversation_handler_->ProcessPermissionChallenge(
@@ -7753,6 +7758,7 @@ TEST_F(ConversationHandlerUnitTest, PermissionChallenge_UserDeniesPermission) {
                                 "Server determined this tool use "
                                 "is off-topic",  // assessment
                                 std::nullopt,    // plan
+                                std::nullopt,    // title
                                 std::nullopt,    // description
                                 std::nullopt, /*supports_allow_session=*/false),
                             false)),
@@ -7839,6 +7845,7 @@ TEST_F(ConversationHandlerUnitTest,
             mojom::PermissionChallenge::New(
                 std::nullopt,  // assessment
                 "Client-side: This tool needs to access your tabs",  // plan
+                std::nullopt,                                        // title
                 std::nullopt,  // description
                 std::nullopt, /*supports_allow_session=*/false));
       });
@@ -7865,7 +7872,8 @@ TEST_F(ConversationHandlerUnitTest,
                     std::nullopt, std::nullopt,
                     mojom::PermissionChallenge::New(
                         "Server-side: This tool use needs alignment check",
-                        std::nullopt, std::nullopt, std::nullopt,
+                        std::nullopt, /*title=*/std::nullopt, std::nullopt,
+                        std::nullopt,
                         /*supports_allow_session=*/false),
                     false);
                 callback.Run(EngineConsumer::GenerationResultData(
@@ -7992,7 +8000,8 @@ TEST_F(ConversationHandlerUnitTest,
                     "test_tool", "tool_id_1", "{}", std::nullopt, std::nullopt,
                     mojom::PermissionChallenge::New(
                         "Server determined this tool use is off-topic",
-                        std::nullopt, std::nullopt, std::nullopt,
+                        std::nullopt, /*title=*/std::nullopt, std::nullopt,
+                        std::nullopt,
                         /*supports_allow_session=*/false),
                     false);
                 callback.Run(EngineConsumer::GenerationResultData(
@@ -8060,7 +8069,8 @@ TEST_F(ConversationHandlerUnitTest,
                     "test_tool", "tool_id_1", "{}", std::nullopt, std::nullopt,
                     mojom::PermissionChallenge::New(
                         "Server determined this tool use is off-topic",
-                        std::nullopt, std::nullopt, std::nullopt,
+                        std::nullopt, /*title=*/std::nullopt, std::nullopt,
+                        std::nullopt,
                         /*supports_allow_session=*/false),
                     false);
                 callback.Run(EngineConsumer::GenerationResultData(

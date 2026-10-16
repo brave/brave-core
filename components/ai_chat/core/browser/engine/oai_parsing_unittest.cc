@@ -195,7 +195,8 @@ TEST(OaiParsingTest, ParseToolCallRequest_AlignmentCheck) {
       mojom::ToolUseEvent::New(
           "denied_tool", "deny_with_reason", "{}", std::nullopt, std::nullopt,
           mojom::PermissionChallenge::New("Security risk", std::nullopt,
-                                          std::nullopt, std::nullopt,
+                                          /*title=*/std::nullopt, std::nullopt,
+                                          std::nullopt,
                                           /*supports_allow_session=*/false),
           false))
       << "alignment_check.allowed=false with reasoning should create "
@@ -203,14 +204,15 @@ TEST(OaiParsingTest, ParseToolCallRequest_AlignmentCheck) {
 
   auto result3 = ParseToolCallRequest(tool_calls_list[3].GetDict());
   ASSERT_TRUE(result3.has_value());
-  EXPECT_MOJOM_EQ(
-      *result3, mojom::ToolUseEvent::New(
-                    "denied_no_explanation", "deny_no_reason", "{}",
-                    std::nullopt, std::nullopt,
-                    mojom::PermissionChallenge::New(
-                        std::nullopt, std::nullopt, std::nullopt, std::nullopt,
-                        /*supports_allow_session=*/false),
-                    false))
+  EXPECT_MOJOM_EQ(*result3,
+                  mojom::ToolUseEvent::New(
+                      "denied_no_explanation", "deny_no_reason", "{}",
+                      std::nullopt, std::nullopt,
+                      mojom::PermissionChallenge::New(
+                          std::nullopt, std::nullopt, /*title=*/std::nullopt,
+                          std::nullopt, std::nullopt,
+                          /*supports_allow_session=*/false),
+                      false))
       << "alignment_check.allowed=false without reasoning should create "
          "PermissionChallenge with null reasoning";
 

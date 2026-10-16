@@ -160,6 +160,10 @@ ContentTool::RequiresUserInteractionBeforeHandling(
   }
 
   auto challenge = mojom::PermissionChallenge::New();
+  // Only set on the challenges this tool raises itself, so a server alignment
+  // check on the same tool call keeps the default "Security warning" heading.
+  challenge->title = l10n_util::GetStringUTF8(
+      IDS_CHAT_UI_PERMISSION_CHALLENGE_WEB_TOOL_HEADER);
   challenge->description = GetPermissionChallengeDescription(tool_use);
   // Every tool a page exposes has a standing permission in the website tools
   // dialog for the answer to be recorded as.

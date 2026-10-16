@@ -128,6 +128,7 @@ describe('ToolEvent', () => {
             permissionChallenge: {
               assessment: 'This is an assessment',
               plan: 'This is a plan',
+              title: undefined,
               description: undefined,
               implications: undefined,
               supportsAllowSession: false,
@@ -185,6 +186,7 @@ describe('ToolEvent', () => {
               // permission challenge UI.
               assessment: undefined,
               plan: undefined,
+              title: undefined,
               description: undefined,
               implications: undefined,
               supportsAllowSession: false,
@@ -229,6 +231,7 @@ describe('ToolEvent', () => {
             permissionChallenge: {
               assessment: undefined,
               plan: undefined,
+              title: undefined,
               description:
                 'Brave AI would like to execute **get_stock_price** '
                 + 'on **https://example.com**',
@@ -262,6 +265,7 @@ describe('ToolEvent', () => {
             permissionChallenge: {
               assessment: undefined,
               plan: undefined,
+              title: undefined,
               description: undefined,
               implications: 'Allowing this will send **page text**',
               supportsAllowSession: false,
@@ -287,6 +291,34 @@ describe('ToolEvent', () => {
     ).not.toBeInTheDocument()
   })
 
+  it('should show the challenge title instead of the default header', () => {
+    render(
+      <MockContext>
+        <ToolEvent
+          toolUseEvent={{
+            toolName: 'web_example_com_get_stock_price',
+            id: '123',
+            argumentsJson: '{}',
+            output: undefined,
+            permissionChallenge: {
+              assessment: undefined,
+              plan: undefined,
+              title: 'Tool permission request',
+              description: undefined,
+              implications: undefined,
+              supportsAllowSession: true,
+            },
+          }}
+          isEntryActive={true}
+        />
+      </MockContext>,
+    )
+    expect(screen.getByText('Tool permission request')).toBeInTheDocument()
+    expect(
+      screen.queryByText(S.CHAT_UI_PERMISSION_CHALLENGE_HEADER),
+    ).not.toBeInTheDocument()
+  })
+
   it('should record the answer when allow for this session is offered', () => {
     const mockProcessPermissionChallenge = jest.fn()
     render(
@@ -304,6 +336,7 @@ describe('ToolEvent', () => {
             permissionChallenge: {
               assessment: undefined,
               plan: undefined,
+              title: undefined,
               description: undefined,
               implications: undefined,
               supportsAllowSession: true,
@@ -342,6 +375,7 @@ describe('ToolEvent', () => {
               // permission challenge UI.
               assessment: undefined,
               plan: undefined,
+              title: undefined,
               description: undefined,
               implications: undefined,
               supportsAllowSession: false,
@@ -379,6 +413,7 @@ describe('ToolEvent', () => {
               permissionChallenge: {
                 assessment: undefined,
                 plan: undefined,
+                title: undefined,
                 description: undefined,
                 implications: undefined,
                 supportsAllowSession: false,

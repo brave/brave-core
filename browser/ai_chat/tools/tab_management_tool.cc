@@ -590,7 +590,8 @@ TabManagementTool::RequiresUserInteractionBeforeHandling(
   auto challenge = mojom::PermissionChallenge::New(
       std::nullopt,
       plan && !plan->empty() ? std::make_optional(*plan) : std::nullopt,
-      std::nullopt, std::nullopt, /*supports_allow_session=*/false);
+      /*title=*/std::nullopt, std::nullopt, std::nullopt,
+      /*supports_allow_session=*/false);
   challenge->implications = GetPermissionChallengeImplications(tool_use);
   return challenge;
 }

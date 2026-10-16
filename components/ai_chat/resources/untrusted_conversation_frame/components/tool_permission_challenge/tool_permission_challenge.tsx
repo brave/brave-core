@@ -147,7 +147,8 @@ export default function ToolPermissionChallenge(props: Props) {
           className={styles.headerIcon}
         />
         <span className={styles.headerText}>
-          {getLocale(S.CHAT_UI_PERMISSION_CHALLENGE_HEADER)}
+          {permissionChallenge.title
+            ?? getLocale(S.CHAT_UI_PERMISSION_CHALLENGE_HEADER)}
         </span>
       </div>
 
