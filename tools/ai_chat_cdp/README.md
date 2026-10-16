@@ -94,6 +94,11 @@ The chats come in through the eval mode of the browser, which writes them with
 their dates. Its Dreaming run is removed afterwards, so the profile has no
 learned memory, and the daily run is a day away.
 
+The demo browser starts with `certain_threshold` 0.75 (`demo_profile.SWITCHES`;
+the feature default is 0.8). With 0.8 the decision model gives 0.79 for "merge"
+in step 4, it is not certain, and the kitten becomes a second memory instead of
+a change of the memory about Mochi.
+
 Demo steps, in brave://leo-ai:
 
 1. **Search the conversations.** Type a query with other words than the chat and

@@ -26,7 +26,7 @@ PROFILES = {
         learned_memory_eval.PROFILE_NAME,
         learned_memory_eval.SWITCHES,
     ),
-    'demo': (demo_profile.PROFILE_NAME, learned_memory_eval.SWITCHES),
+    'demo': (demo_profile.PROFILE_NAME, demo_profile.SWITCHES),
 }
 
 

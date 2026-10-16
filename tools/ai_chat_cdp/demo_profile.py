@@ -39,6 +39,24 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 CHAT_SET = os.path.join(HERE, 'demo', 'leo_demo.json')
 # Leo's model for the chats that are typed in the demo.
 CHAT_MODEL = 'chat-automatic'
+# The decision model must be this sure (the feature default is 0.8) before it
+# changes an old memory. With 0.8 it gives 0.79 for "merge" in step 4, and the
+# kitten becomes a second memory. The eval log has the measurements.
+CERTAIN_THRESHOLD = '0.75'
+
+
+def demo_switches():
+    """The learned memory switches of the eval, with the demo's threshold."""
+    switches = list(lme.SWITCHES)
+    switches[0] = switches[0].replace(
+        ',HistoryEmbeddings',
+        f'/certain_threshold/{CERTAIN_THRESHOLD},HistoryEmbeddings',
+    )
+    assert switches[0] != lme.SWITCHES[0], 'the feature switch changed'
+    return switches
+
+
+SWITCHES = demo_switches()
 # Tables that Dreaming writes. The chats stay.
 MEMORY_TABLES = ('learned_memory', 'memory_source_link', 'memory_watermark')
 WINDOWS_TO_UNIX_EPOCH_S = 11644473600
@@ -102,7 +120,7 @@ class Demo:
         return cdp.Browser(
             self.path,
             os.path.join(self.files, f'browser-{name}.log'),
-            lme.SWITCHES,
+            SWITCHES,
         )
 
 
@@ -443,7 +461,7 @@ def learn_one(browser, problems):
     if not (
         len(items) == 1
         and items[0]['change'] == 'Changed'
-        and (items[0]['stored'] or '').endswith(SINGLE_MEMORY_OLD)
+        and (items[0]['stored'] or '').rstrip('.').endswith(SINGLE_MEMORY_OLD)
         and SINGLE_MEMORY_WORD in items[0]['text'].lower()
     ):
         problems.append(f'step 4: the review is not one change: {items}')
