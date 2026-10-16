@@ -193,9 +193,6 @@
 <translation id="5668852698659986622">Sponsorlu Reklamları Etkinleştir</translation>
 <translation id="431194936581466649">Brave'in bağımsız, kullanıcı öncelikli bir Web oluşturma misyonunu Sponsorlu Reklamlarla destekleyin. Reklam performansını sizi tanımlamadan, gizli bir şekilde ölçüyoruz.</translation>
 <translation id="1939813747486101115">Sponsorlu Reklamlar hakkında daha fazla bilgi edinin</translation>
-<translation id="8347743943525229984">Brave anketlerine izin ver</translation>
-<translation id="6022939994702081659">Brave'in yeni sekme sayfasında özel anketlere bağlantılar göstermesine izin verir. Anketler, daha iyi özellikler oluşturmamıza ve tarayıcı tabanlı reklam kampanyalarının etkinliğini ölçmemize yardımcı olur.</translation>
-<translation id="7746496306508543965">Brave anketleri hakkında daha fazla bilgi edinin</translation>
 <translation id="410351446219883937">Otomatik oynatma</translation>
 <translation id="7445411102860286510">Sitelerin, sesi kapatılmış videoları otomatik olarak oynatmasına izin ver (önerilen)</translation>
 <translation id="7837721118676387834">Belirli bir sitenin, sesi kapatılmış videoları otomatik olarak oynatmasına izin verin.</translation>
@@ -223,6 +220,7 @@
 <translation id="9040069796107003510">Brave Ödülleri simgesi</translation>
 <translation id="6333347122924254968">Adres çubuğunda Brave Ödülleri simgesini göster</translation>
 <translation id="4393974575368329991">Alt gezinme araç çubuğu</translation>
+<translation id="8727059712928806451">Alt çubuğu etkinleştir</translation>
 <translation id="1834226716203076292">Ana sayfa, yer imleri ve aramaya hızlı erişim için bir alt çubuk göster</translation>
 <translation id="1422686363939271829">Alt adres çubuğu konumu seçildiğinde bu ayar devre dışı bırakılır</translation>
 <translation id="6587448235155023666">Yaptığınız değişiklikler cihazı yeniden başlattığınızda etkinleşecektir.</translation>
@@ -399,6 +397,12 @@ Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="8793108040181436796">Widget'lar</translation>
 <translation id="8643377320501056697">En Popüler Siteleri Göster</translation>
 <translation id="7275773481201277457">Brave İstatistiklerini Göster</translation>
+<translation id="8516804522688861636">Sık ziyaret edilen siteleri göster</translation>
+<translation id="4546260624932151782">Favorileri göster</translation>
+<translation id="5313967007315987356">Site ekle</translation>
+<translation id="1773147648972887693">Sık ziyaret edilenleri göster</translation>
+<translation id="752098910262610337">Kestirmeleri göster</translation>
+<translation id="7134741506051403308">Öğeyi gizle</translation>
 <translation id="7462178177755090262">Açılış Ekranı</translation>
 <translation id="5365434987337264071">Son açık sekme</translation>
 <translation id="6019856124237323989">{HOURS, plural, =1 {<ph name="HOURS_ONE"/> saatlik hareketsizlikten sonra yeni sekme} other {<ph name="HOURS_MANY"/> saatlik hareketsizlikten sonra yeni sekme}}</translation>
@@ -999,6 +1003,13 @@ Bu talebi kabul etmezseniz VPN yeniden bağlanmaz ve internet bağlantınız gü
 <translation id="7530313002494358590">Brave özelliğini etkinleştirmek veya devre dışı bırakmak değişiklikleri uygulamak için tarayıcının yeniden başlatılmasını gerektirir. Lütfen Brave Origin güncelleştirmeyi bitirdikten sonra <ph name="BEGIN_BOLD"/>Şimdi yeniden başlat<ph name="END_BOLD"/> seçeneğine dokunun.</translation>
 <translation id="1028940738207645746">Tüm ayarları varsayılana sıfırlamak istediğinizden emin misiniz?</translation>
 <translation id="5939518447894949180">Sıfırla</translation>
+<translation id="3222790865318305905">Etkinleştirme limitine ulaşıldı</translation>
+<translation id="3787857711016546034">Dolandırıcılığı önlemek için Origin etkinleştirmeleri sınırlandırılmıştır. Ancak Origin lisansınızı daha fazla cihazda kullanmak için her zaman daha fazla etkinleştirme talep edebilirsiniz. Yalnızca Daha fazla etkinleştirme talep et seçeneğine tıklayın veya yardım için <ph name="CONTACT_SUPPORT"/>.</translation>
+<translation id="6760819753412779585">destek birimine ulaşın</translation>
+<translation id="571697836019670200">Daha fazla etkinleştirme talep et</translation>
+<translation id="9019545131475425538">İşleniyor…</translation>
+<translation id="7242700630179071243">Etkinleştirmeye hazır</translation>
+<translation id="5463918917265356202">Brave Origin artık bu cihazda etkin. Özelliği kullanmaya başlamak için tarayıcıyı yeniden başlatmanız gerekir. Şimdi yeniden başlatmak ister misiniz?</translation>
 <translation id="8554205386170195281">Satın al</translation>
 <translation id="8613144770663526433">Brave Cüzdan'la oturum açın</translation>
 <translation id="3696514931437952995"><ph name="ORIGIN"/> adresinde oturum açıyorsunuz. Brave Cüzdanı, cüzdan adresinizi <ph name="ORIGIN"/> ile paylaşacak.</translation>

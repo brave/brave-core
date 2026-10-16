@@ -193,9 +193,6 @@
 <translation id="5668852698659986622">Omogući sponzorisane oglase</translation>
 <translation id="431194936581466649">Pomozite u podršci Brave-ove misije za izgradnju nezavisnog Veba usmerenog na korisnika pomoću sponzorisanih oglasa. Merimo učinak oglasa privatno, bez identifikovanja vas.</translation>
 <translation id="1939813747486101115">Saznajte više o sponzorisanim oglasima</translation>
-<translation id="8347743943525229984">Aktiviraj Brave ankete</translation>
-<translation id="6022939994702081659">Omogućava Brave-u da prikazuje linkove za privatne ankete na stranici nove kartice. Ankete nam omogućavaju da kreiramo bolje funkcije i merimo efikasnost oglasnih kampanja zasnovanih na pregledaču.</translation>
-<translation id="7746496306508543965">Saznajte više o Brave anketama</translation>
 <translation id="410351446219883937">Automatsko puštanje</translation>
 <translation id="7445411102860286510">Dozvoli sajtovima da automatski puštaju video snimke sa isključenim zvukom (preporučeno)</translation>
 <translation id="7837721118676387834">Dozvoli automatsko puštanje video snimaka sa isključenim zvukom određenom sajtu.</translation>
@@ -223,6 +220,7 @@
 <translation id="9040069796107003510">Ikona Brave nagrada</translation>
 <translation id="6333347122924254968">Prikaži ikonu Brave nagrada na traci za adresu</translation>
 <translation id="4393974575368329991">Donja traka sa alatkama za navigaciju</translation>
+<translation id="8727059712928806451">Aktiviraj donju traku</translation>
 <translation id="1834226716203076292">Prikaži donju traku za brzi pristup početnoj stranici, obeleživačima i pretrazi</translation>
 <translation id="1422686363939271829">Ovo podešavanje je deaktivirano kada je izabrana donja pozicija trake za adresu</translation>
 <translation id="6587448235155023666">Promene će biti primenjene kada sledeći put ponovo pokrenete Brave</translation>
@@ -398,6 +396,12 @@ Dobro proverite da li je ove reči koda generisao uređaj koji vi posedujete.
 <translation id="8793108040181436796">Vidžeti</translation>
 <translation id="8643377320501056697">Prikaži omiljene sajtove</translation>
 <translation id="7275773481201277457">Pokaži Brave statistiku</translation>
+<translation id="8516804522688861636">Prikaži često posećivane sajtove</translation>
+<translation id="4546260624932151782">Prikaži omiljeno</translation>
+<translation id="5313967007315987356">Dodaj sajt</translation>
+<translation id="1773147648972887693">Prikaži često posećivano</translation>
+<translation id="752098910262610337">Prikaži prečice</translation>
+<translation id="7134741506051403308">Sakrij vidžet</translation>
 <translation id="7462178177755090262">Početni ekran</translation>
 <translation id="5365434987337264071">Poslednja otvorena kartica</translation>
 <translation id="6019856124237323989">{HOURS, plural,
@@ -1002,6 +1006,13 @@ Ako ne budete prihvatili ovaj zahtev, VPN se neće ponovo povezati i vaša veza 
 <translation id="7530313002494358590">Omogućavanje ili isključivanje funkcije Brave zahteva restartovanje pregledača da bi se izmene primenile. Molim vas da kliknete <ph name="BEGIN_BOLD"/>Restartuj sada<ph name="END_BOLD"/> čim Brave Origin završi ažuriranje.</translation>
 <translation id="1028940738207645746">Želite li zaista da resetujete sve postavke na podrazumevano?</translation>
 <translation id="5939518447894949180">Resetuj</translation>
+<translation id="3222790865318305905">Dostignuto ograničenje aktivacija</translation>
+<translation id="3787857711016546034">Da bi se sprečila prevara, Origin aktivacije su ograničene po stopi. Ali uvek možete zatražiti više aktivacija kako biste koristili svoju Origin licencu na više uređaja. Samo kliknite na opciju Zatraži više aktivacija ili <ph name="CONTACT_SUPPORT"/> za pomoć.</translation>
+<translation id="6760819753412779585">obratite se podršci</translation>
+<translation id="571697836019670200">Zatraži više aktivacija</translation>
+<translation id="9019545131475425538">Obrađuje se…</translation>
+<translation id="7242700630179071243">Spremno za aktivaciju</translation>
+<translation id="5463918917265356202">Brave Origin je sada aktivan na ovom uređaju. Da biste počeli da koristite funkciju, potrebno je da ponovo pokrenete browser. Želite li da ponovo pokrenete sada?</translation>
 <translation id="8554205386170195281">Kupovina</translation>
 <translation id="8613144770663526433">Prijavite se pomoću Brave novčanika</translation>
 <translation id="3696514931437952995">Prijavljujete se na: <ph name="ORIGIN"/>. Brave novčanik će podeliti vašu adresu novčanika sa: <ph name="ORIGIN"/>.</translation>

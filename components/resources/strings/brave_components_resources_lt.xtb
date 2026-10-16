@@ -1885,6 +1885,18 @@
 <translation id="2737084171727561244">Eiti į portfelį</translation>
 <translation id="3499452861061048987">Pridėti prieigos raktą</translation>
 <translation id="5046066249040287308">„Brave“ piniginės paslaugų programos</translation>
+<translation id="8767749833522980474">Kriptovaliuta</translation>
+<translation id="4509084261025090951">Gaukite savo kortelę</translation>
+<translation id="3624463584770657372">Patvirtinkite tapatybę, kad matytumėte kortelės numerius ir pradėtumėte leisti lėšas.</translation>
+<translation id="2508337767012636987">Bakstelėkite, kad patvirtintumėte</translation>
+<translation id="703964541421486259">Slėpti likučius</translation>
+<translation id="302114796458112924">Rodyti likučius</translation>
+<translation id="9083210401924577263">„Brave Rewards“ kortelė</translation>
+<translation id="2433507940547922241">Išvaizda</translation>
+<translation id="3435738964857648380">Sauga</translation>
+<translation id="6700561332544287722">Kitą kartą reikalauti atrakinimo</translation>
+<translation id="5605360570977617291">Slėpti „<ph name="CARD_NAME"/>“ iš pagrindinio?</translation>
+<translation id="2721464457853369512">Jūsų „<ph name="CARD_NAME"/>“ likutis nekeičiamas. Taip tik paslepiama kortelė iš pagrindinio. Bet kada galite ją vėl parodyti nustatymuose, dalyje „Piniginė“.</translation>
 <translation id="3155170474926428993">„Tor“ paleidimo priemonė</translation>
 <translation id="3745016858329272300">Bendroji informacija</translation>
 <translation id="4045404575593562245">„Tor“ valdymo įvykiai</translation>
@@ -1924,7 +1936,6 @@
 <translation id="6261915643960475695">Verslas</translation>
 <translation id="8265589281845759879">Automobiliai</translation>
 <translation id="7726519849288907308">Įžymybės</translation>
-<translation id="8767749833522980474">Kriptovaliuta</translation>
 <translation id="7577010593836079522">Kultūra</translation>
 <translation id="6807791860691150411">Švietimas</translation>
 <translation id="3706423975342040244">Pramogos</translation>
@@ -2103,9 +2114,6 @@
 <translation id="3067105725259639716">Konfigūruoti „Brave“ naujienas</translation>
 <translation id="6286510487460330478">Konfigūruoti sparčiuosius klavišus</translation>
 <translation id="9214819486716388964">Rodyti „Brave“ pokalbius</translation>
-<translation id="5950760360751948276">Visada rodyti žymių juostą</translation>
-<translation id="2960757369920422313">Rodyti žymių juostą naujų skirtukų puslapiuose</translation>
-<translation id="522953399371747698">Slėpti žymių juostą</translation>
 <translation id="9079813619990532635">Eksportuoti visas žymes</translation>
 <translation id="134184943774258988">Visų žymių perjungimo mygtuko matomumas</translation>
 <translation id="2158862020143233462">Perjungti skydus</translation>
@@ -2220,6 +2228,7 @@
 <translation id="5820497878628354073">Būsenos kodas: <ph name="STATUS_CODE"/>, vidinis būsenos kodas: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">Pasiekėte „Premium“ tarifo limitą. Bandykite dar kartą po kelių valandų.</translation>
 <translation id="6873128487002733717">Pasiekėte šio modelio „Premium“ limitą. Pasirinkite kitą modelį arba pabandykite vėliau.</translation>
+<translation id="2688661132468689309">Pasiekėte šio modelio „Premium“ limitą. Jis bus atstatytas po <ph name="RESET_DURATION"/> (<ph name="RESET_TIME"/>). Pasirinkite kitą modelį arba pabandykite tuomet dar kartą.</translation>
 <translation id="3683964919745779766">Pasiekėte šio modelio tarifų limitą arba nebeturite kreditų. Prašome pabandyti vėliau.</translation>
 <translation id="7692501701960747469">Šiam modeliui sukonfigūruotas API raktas negalioja. Patikrinkite savo konfigūraciją ir bandykite dar kartą.</translation>
 <translation id="7905602379229309187">Šiuo metu galinis taškas yra perkrautas. Prašome pabandyti vėliau.</translation>
@@ -2228,12 +2237,12 @@
 <translation id="3852808100039989429">Sveiki! Mano vardas Leo. Esu AI asistentas iš Brave. Mane valdo Qwen VL 30B – modelis, sukurtas Alibaba Cloud, kad veiktų našiai ir būtų pritaikomas įvairiems panaudojimo atvejams. Qwen veikia „Brave“ saugioje infrastruktūroje.<ph name="LINK_BEFORE"/>Sužinokite daugiau<ph name="LINK_AFTER"/></translation>
 <translation id="8659225822055186905">Sveiki! Mano vardas Leo. Esu AI asistentas iš Brave. Mane valdo GLM-5.3 Flash – modelis, sukurtas Zhipu AI, kad veiktų našiai ir būtų pritaikomas įvairiems panaudojimo atvejams. GLM-5.3 Flash veikia per NEAR teikiamą patikimą ir privačią infrastruktūrą.<ph name="LINK_BEFORE"/>Sužinokite daugiau<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">Sveiki, aš – Leo. Esu Brave dirbtinio intelekto asistentas. Dirbu su Claude Instant modeliu, sukurtu Anthropic, siekiant vykdyti pokalbių ir teksto apdorojimo užduotis. Claude Instant yra talpinamas Brave per mūsų saugią infrastruktūrą.<ph name="LINK_BEFORE"/>Sužinoti daugiau<ph name="LINK_AFTER"/></translation>
-<translation id="3789772321824682783">Sveiki! Mano vardas Leo. Esu visišką prieglobą turintis „Brave“ dirbtinio intelekto asistentas. Aš veikiu su „Anthropic“ sukurtu „Claude Haiku“ modeliu, skirtu pokalbių ir tekstų apdorojimo užduotims atlikti. „Brave“ naudoja „Claude Haiku“ modelį savo saugioje infrastruktūroje.<ph name="LINK_BEFORE"/>Sužinokite daugiau<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Sveiki! Mano vardas Leo. Esu visišką prieglobą turintis „Brave“ dirbtinio intelekto asistentas. Aš veikiu su „Anthropic“ sukurtu „Claude Sonnet“ modeliu, skirtu pokalbių ir tekstų apdorojimo užduotims atlikti. „Brave“ naudoja „Claude Sonnet“ modelį savo saugioje infrastruktūroje.<ph name="LINK_BEFORE"/>Sužinokite daugiau<ph name="LINK_AFTER"/></translation>
-<translation id="3399141352144059821">Sveiki! Mano vardas Leo. Esu „Brave“ dirbtinio intelekto asistentas. Aš veikiu su „xAI“ sukurtu „Grok 4.3“ modeliu, kuris yra našus ir pritaikomas daugeliui naudojimo atvejų. „Brave“ naudoja „Grok 4.3“ modelį savo saugioje infrastruktūroje.<ph name="LINK_BEFORE"/>Sužinokite daugiau<ph name="LINK_AFTER"/></translation>
-<translation id="8868813509973985458">Sveiki! Mano vardas Leo. Esu „Brave“ dirbtinio intelekto asistentas. Aš veikiu su „OpenAI“ sukurtu „GPT 5.4“ modeliu, kuris yra našus ir pritaikomas daugeliui naudojimo atvejų. „Brave“ naudoja „GPT 5.4“ modelį savo saugioje infrastruktūroje.<ph name="LINK_BEFORE"/>Sužinokite daugiau<ph name="LINK_AFTER"/></translation>
+<translation id="6676306995311143470">Sveiki! Mano vardas Leo. Esu „Brave“ dirbtinio intelekto asistentas. Aš veikiu su „Grok 4.6“ – „xAI“ pažangiu samprotavimo modeliu „Amazon Bedrock Mantle“. „Grok 4.6“ pateikiamas per saugią „Brave“ AWS infrastruktūrą.<ph name="LINK_BEFORE"/>Sužinokite daugiau<ph name="LINK_AFTER"/></translation>
+<translation id="2394656730986208060">Sveiki! Mano vardas Leo. Esu „Brave“ dirbtinio intelekto asistentas. Aš veikiu su „GPT 5.6 Luna“ – „OpenAI“ greitu, mažo delsos laiko modeliu „Amazon Bedrock Mantle“. „GPT 5.6 Luna“ pateikiamas per saugią „Brave“ AWS infrastruktūrą.<ph name="LINK_BEFORE"/>Sužinokite daugiau<ph name="LINK_AFTER"/></translation>
+<translation id="5278969721580944810">Sveiki! Mano vardas Leo. Esu „Brave“ dirbtinio intelekto asistentas. Aš veikiu su „GPT 5.6 Terra“ – „OpenAI“ subalansuotu gamybiniu modeliu „Amazon Bedrock Mantle“. „GPT 5.6 Terra“ pateikiamas per saugią „Brave“ AWS infrastruktūrą.<ph name="LINK_BEFORE"/>Sužinokite daugiau<ph name="LINK_AFTER"/></translation>
 <translation id="5037359072717016032">Sveiki! Mano vardas Leo. Esu visišką prieglobą turintis „Brave“ dirbtinio intelekto asistentas. Aš veikiu su „Mistral“ sukurtu „Mistral Large“ modeliu, kuris yra našus ir pritaikomas daugeliui naudojimo atvejų. „Brave“ naudoja „Mistral Large“ modelį savo saugioje infrastruktūroje.<ph name="LINK_BEFORE"/>Sužinokite daugiau<ph name="LINK_AFTER"/></translation>
-<translation id="4026902371301997261">Sveiki! Mano vardas Leo. Esu visišką prieglobą turintis „Brave“ dirbtinio intelekto asistentas. Aš veikiu su „Alibaba Cloud“ sukurtu „Qwen 3 235B“ modeliu, kuris yra našus ir pritaikomas daugeliui naudojimo atvejų. „Brave“ naudoja „Qwen 3 235B“ modelį savo saugioje infrastruktūroje.<ph name="LINK_BEFORE"/>Sužinokite daugiau<ph name="LINK_AFTER"/></translation>
+<translation id="5475035333915581972">Sveiki! Mano vardas Leo. Esu „Brave“ dirbtinio intelekto asistentas. Aš veikiu su „Alibaba Cloud“ sukurtu „Qwen 3.8 Flash Next“ modeliu, kuris yra našus ir pritaikomas daugeliui naudojimo atvejų. „Brave“ naudoja „Qwen 3.8 Flash Next“ modelį savo saugioje infrastruktūroje.<ph name="LINK_BEFORE"/>Sužinokite daugiau<ph name="LINK_AFTER"/></translation>
 <translation id="8720758690351028307">Sveiki! Mano vardas Leo. Esu visišką prieglobą turintis „Brave“ dirbtinio intelekto asistentas. Aš veikiu su „Deepseek“ sukurtu „Deepseek V3.2“ modeliu, kuris yra našus ir pritaikomas daugeliui naudojimo atvejų. „Brave“ naudoja „Deepseek V3.2“ modelį savo saugioje infrastruktūroje.<ph name="LINK_BEFORE"/>Sužinokite daugiau<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">Sveiki! Mano vardas Leo. Esu visišką prieglobą turintis „Brave“ dirbtinio intelekto asistentas. Aš veikiu su „Anthropic“ sukurtu „Claude Opus“ modeliu, skirtu pokalbių ir tekstų apdorojimo užduotims atlikti. „Brave“ naudoja „Claude Opus“ modelį savo saugioje infrastruktūroje.<ph name="LINK_BEFORE"/>Sužinokite daugiau<ph name="LINK_AFTER"/></translation>
 <translation id="7238858567393403597">Sveiki, esu Leo. Esu „Brave“ DI asistentas. Mane palaiko GLM-4-7-Flash – modelis, sukurtas „Zhipu AI“, kad būtų našus ir pritaikomas daugeliui naudojimo atvejų. GLM-4-7-Flash talpinamas „Brave“ per mūsų pačių saugią infrastruktūrą.<ph name="LINK_BEFORE"/>Sužinokite daugiau<ph name="LINK_AFTER"/></translation>
@@ -2246,7 +2255,6 @@
 <translation id="4773408460773097271">Ollama</translation>
 <translation id="631371844654031449">Rekomenduojami modeliai</translation>
 <translation id="6568044140836233369">Rodyti visus modelius</translation>
-<translation id="6187065185557150870">Pokalbiai</translation>
 <translation id="4685048769603134644">Atidaryti visą puslapį</translation>
 <translation id="2961040541145689181">Naujas pokalbis</translation>
 <translation id="7557539689487606886">Užsisakyti „Premium“</translation>
@@ -2370,13 +2378,13 @@
 <translation id="887511360213807449">Istorija išjungta</translation>
 <translation id="5380979378058584412">Jei norite peržiūrėti ankstesnius pokalbius su „Leo“, turite įjungti pokalbių istoriją.</translation>
 <translation id="3185367320601718531">Pokalbis ir teksto generavimas</translation>
-<translation id="2793458212460902934">Greita • Paieška • Įrankiai</translation>
 <translation id="8506027496671575183">Paieška • Vizija • Įrankiai</translation>
 <translation id="3184606955650139158">Greita • Paieška • Vaizdas</translation>
 <translation id="7465032796278724624">Patikimai privatu naudojant NEAR AI TEE</translation>
 <translation id="8782867266498869301">Modelis dinamiškai keičiasi, kad būtų naudojamas geriausias užduočiai atlikti</translation>
 <translation id="7348809809749151120">Greita • Paieška</translation>
 <translation id="3213834013136637671">Paieška • Vizija</translation>
+<translation id="2793458212460902934">Greita • Paieška • Įrankiai</translation>
 <translation id="5276681919620506371">Paieška • Įrankiai</translation>
 <translation id="7434375176361995333">Santraukos • Greita</translation>
 <translation id="3965507912994218570">"Leo" nustatymai</translation>
@@ -2940,9 +2948,7 @@ Būkite prisijungę!</translation>
 <translation id="3750210661641549834">Norėdami sukurti paskyrą, patvirtinkite savo el. pašto adresą.</translation>
 <translation id="4351175281479794167">Įvesti patvirtinimo kodą</translation>
 <translation id="1672793037892810340">Turėjote gauti el. laišką su kodu, kurį reikės įvesti.</translation>
-<translation id="4821255729182569254">Siųsti patvirtinimo el. laišką iš naujo</translation>
 <translation id="5837679375142747484">Nematote el. laiško? Patikrinkite savo brukalo aplanką arba <ph name="BEGIN_LINK"/>siųskite iš naujo<ph name="END_LINK"/>.</translation>
-<translation id="1080588816740959885">Nematote el. laiško? Patikrinkite savo brukalo aplanką arba siųskite jį iš naujo.</translation>
 <translation id="1020730839570724178">Atšaukti registraciją</translation>
 <translation id="7155125570724238786">Norėdami iš naujo nustatyti slaptažodį, patvirtinkite savo el. pašto adresą.</translation>
 <translation id="816074628631172140">Jūsų el. paštas patvirtintas. Nustatykite naują slaptažodį, kad užbaigtumėte slaptažodžio atkūrimą.</translation>

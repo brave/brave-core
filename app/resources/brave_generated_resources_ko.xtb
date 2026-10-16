@@ -3,18 +3,14 @@
 <translationbundle lang="ko">
 <translation id="1751249301761991853">개인</translation>
 <translation id="3333887201479867589">Brave 리워드</translation>
-<translation id="7561196759112975576">항상</translation>
-<translation id="7961015016161918242">사용하지 않음</translation>
 <translation id="8507663778530179003">모든 북마크 버튼 표시</translation>
 <translation id="9018648632047670921">모든 북마크 버튼 표시</translation>
 <translation id="7630214457764713113">클린 링크 복사</translation>
 <translation id="7973394300052703468">새 시크릿 창(&amp;I)</translation>
 <translation id="4615489450165434530">작동이 멈춘 사이트 보고</translation>
 <translation id="8097438084542431276">클린 링크 복사</translation>
-<translation id="4678672101289648246">새 탭 페이지에서만</translation>
 <translation id="6516243500644829484">새 &amp;시크릿 창</translation>
 <translation id="1209739344687072997">작동이 멈춘 사이트 보고</translation>
-<translation id="8294286161128352783">새 탭 페이지에서만</translation>
 <translation id="6406506848690869874">동기화</translation>
 <translation id="1544192797660353713">월렛</translation>
 <translation id="2361906291514218784">레오 AI</translation>
@@ -195,7 +191,9 @@
 <translation id="5977931179408079967">위치</translation>
 <translation id="3790384768741064842">오른쪽으로 이동</translation>
 <translation id="7444424316576061724">왼쪽으로 이동</translation>
+<translation id="7561196759112975576">항상</translation>
 <translation id="7060352228894039151">온마우스오버</translation>
+<translation id="7961015016161918242">사용하지 않음</translation>
 <translation id="8981254605840444865">설정 표시</translation>
 <translation id="59174027418879706">사용 설정됨</translation>
 <translation id="4176463684765177261">사용 중지</translation>
@@ -221,6 +219,7 @@
 <translation id="4515057635283480525">Internet Archive는 여러 웹 페이지의 과거 버전을 저장합니다. 이 페이지를 Archive에서 찾아보시겠습니까?</translation>
 <translation id="8252977752585110703">죄송합니다. Internet Archive를 확인해 보았지만 이 페이지의 아카이브 버전이 없습니다.</translation>
 <translation id="8748778103033196270">Archive에서 찾아보기</translation>
+<translation id="7369915833843501413">Archive에서 찾아보는 중</translation>
 <translation id="191143826155037518">Brave (브레이브)는 <ph name="BEGIN_LINK_MPL"/>모질라 공용 허가서 2.0<ph name="END_LINK_MPL"/> (MPL)에 따라 사용자에게 제공되며, 여러 다양한 기타 허가서에 따라 <ph name="BEGIN_LINK_OSS"/>오픈 소스 소프트웨어<ph name="END_LINK_OSS"/>를 포함합니다. 
         귀하는 <ph name="BEGIN_LINK_SOURCE_CODE"/>이 사본을 만드는 데 사용되는 특정 소스 코드<ph name="END_LINK_SOURCE_CODE"/>를 <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>다운로드하고 구축하는 방법에 대한 지침<ph name="END_LINK_BUILD_INSTRUCTIONS"/>을 읽으실 수 있습니다.</translation>
 <translation id="4474155171896946103">모든 탭 북마크...</translation>
@@ -371,7 +370,7 @@
 <translation id="7985042437720138349">이 기능은 열려 있는 탭에 관한 데이터를 Brave의 AI 기반 브라우저 어시스턴트인 레오로 전송합니다.</translation>
 <translation id="6165508094623778733">더 알아보기</translation>
 <translation id="7557539689487606886">프리미엄 가입</translation>
-<translation id="1035309871698658326">탭을 열면 비공개 탭이 아닌 모든 탭의 제목과 출처가 자동으로 레오로 전송되어 분류됩니다.</translation>
+<translation id="7103144720752576727">열리면 모든 비공개가 아닌 탭의 제목과 origin이 자동으로 Leo에 전송되어 분류됩니다. 페이지 콘텐츠 전송도 켜면 각 탭의 텍스트에서 짧은 발췌문도 함께 전송됩니다.</translation>
 <translation id="3435896845095436175">사용</translation>
 <translation id="9031526219709160683">Brave는 이 사이트의 개인 정보 보호 설정을 최적화하는 데 도움을 줄 수 있습니다. Brave의 제안을 검토하시겠습니까?</translation>
 <translation id="5739953050957336013">추천 검색어</translation>
@@ -386,8 +385,6 @@
 <translation id="8570228839666486945">온디바이스 AI</translation>
 <translation id="7447041379556102185">온디바이스 음성 인식</translation>
 <translation id="3456536577668402695">검색어 및 페이지 콘텐츠는 이 기기에서 처리됩니다. Brave로 전송되거나 사람이 검토하는 정보는 없습니다.</translation>
-<translation id="4751537843966994505">의미 기반 기록 검색</translation>
-<translation id="6175973371938222040">방문하는 페이지를 로컬에서 색인화하여 의미로 기록을 검색할 수 있습니다. 모든 처리는 이 기기에서 이루어집니다.</translation>
 <translation id="9156965752763025780">변경사항은 다음에 Brave을 다시 시작할 때 적용됩니다.</translation>
 <translation id="7179921470347911571">지금 다시 실행</translation>
 <translation id="1426410128494586442">예</translation>
@@ -425,6 +422,7 @@
 <translation id="4328541188421002379">컨테이너에 ‘업무용’, ‘개인용’ 같은 이름을 붙여주세요</translation>
 <translation id="4976989127264491396">오류: <ph name="ERROR_MESSAGE"/></translation>
 <translation id="5436069931267876389">컨테이너가 없습니다</translation>
+<translation id="5831840958001766835">항목 순서 변경. 화살표 키를 사용하여 이동하세요.</translation>
 <translation id="6055154402239241620">트래픽 제어</translation>
 <translation id="8134521925475508805">특정 사이트가 특정 컨텍스트에서 자동으로 열리도록 구성하여 브라우징 세션 간에 분리를 만듭니다. <ph name="BEGIN_LINK"/>자세히 알아보기<ph name="END_LINK"/></translation>
 <translation id="6944848312867106540">트래픽 제어 활성화</translation>
@@ -477,10 +475,6 @@
 <translation id="7310387888625228830">레오 AI 어시스턴트</translation>
 <translation id="5222974844674487962">Brave News 버튼 표시</translation>
 <translation id="2085436423511121572">레오 AI 버튼 표시</translation>
-<translation id="6156323911414505561">북마크바 표시</translation>
-<translation id="4054323497808446566">모든 페이지에서 북마크 바 표시</translation>
-<translation id="8693858092251192712">새 탭 페이지를 제외한 모든 페이지에서 북마크 바 숨김</translation>
-<translation id="7158817046543187970">모든 페이지에서 북마크 바 숨김</translation>
 <translation id="3416468988018290825">항상 URL 풀로 표시</translation>
 <translation id="5529693968082667490">탭 검색 버튼 표시</translation>
 <translation id="1013121820689882118">Speedreader</translation>
@@ -612,6 +606,8 @@
 <translation id="5825943197137337319">기본 공개 인터페이스 전용</translation>
 <translation id="1689062823386843231">프록시가 아닌 UDP 비활성화히기</translation>
 <translation id="3540231253392253941">푸시 메시지에 Google 서비스 사용</translation>
+<translation id="2224032129673914306">의미 기반 기록 검색</translation>
+<translation id="6045998903985162478">방문한 페이지를 색인화하여 기록, 열린 탭, 레오에서 쉽게 찾을 수 있습니다.</translation>
 <translation id="5813105074916486721">로컬 기록 보관</translation>
 <translation id="5671611745062206644">Brave가 브라우징 기록을 로컬에 저장하는 기간</translation>
 <translation id="7184510058087008090">1일</translation>
@@ -876,6 +872,7 @@
 <translation id="2618193846561624884">기존 네트워크를 업데이트하시겠습니까?</translation>
 <translation id="1643029991199044105">Ctrl-Tab을 사용하여 가장 최근에 사용한 탭 순환</translation>
 <translation id="2775956301559569472">404 페이지에 Wayback Machine 프롬프트 표시</translation>
+<translation id="8485716275262929774">404 페이지에서 Wayback Machine의 저장된 버전을 자동으로 불러오기</translation>
 <translation id="3095201688102519917">탭 여러 개가 있는 창을 닫기 전에 경고</translation>
 <translation id="7120553802660696133">마지막 탭을 닫으면 창 닫기</translation>
 <translation id="3394171693948989253">전체화면 알림 표시, 나가려면 Esc 누르기</translation>
@@ -885,6 +882,8 @@
 <translation id="1529674267267221673">웹사이트에서 우클릭하면 나오는 컨텍스트 메뉴에 레오가 표시됩니다. 현재 웹페이지의 컨텍스트를 레오로 보낼 수 있습니다.</translation>
 <translation id="5226020406479918122">탭 포커스 모드</translation>
 <translation id="3705539672403311123">탭 검색 페이지의 탭 정리를 활성화합니다. 탭을 열면 비공개가 아닌 모든 탭의 제목과 출처가 자동으로 레오에 전송되어 분류됩니다. <ph name="BEGIN_LINK"/>자세히 알아보기<ph name="END_LINK"/></translation>
+<translation id="2002238795517052616">탭 포커스를 위한 페이지 콘텐츠 보내기</translation>
+<translation id="2276823422122514441">각 탭의 텍스트 일부 발췌본도 함께 보내어 탭이 제목이 아닌 페이지의 내용에 따라 그룹화되도록 합니다. 발췌본은 레오로 전송되거나, 탭 포커스용으로 직접 선택한 모델이 있다면 해당 모델로 전송됩니다. 이 기능에는 발췌본을 기기에서 생성하는 <ph name="BEGIN_LINK"/><ph name="SEMANTIC_HISTORY_SEARCH"/><ph name="END_LINK"/>이(가) 필요합니다.</translation>
 <translation id="9049433973274198706">탭 포커스의 기본 모델</translation>
 <translation id="2161546758719933059">탭 포커스 모드에서 탭을 정리하는 데 사용되는 모델입니다. <ph name="BEGIN_LINK"/>자세히 알아보기<ph name="END_LINK"/></translation>
 <translation id="8172263161008556851">대화 내에 추천 프롬프트 표시</translation>
@@ -966,9 +965,6 @@
 <translation id="1838374766361614909">검색어 지우기</translation>
 <translation id="5126255551970171328">메모리 검색</translation>
 <translation id="7402116145895962069">Ollama 로컬 모델 동기화</translation>
-<translation id="5985516785067818307">설문조사 패널리스트</translation>
-<translation id="8347743943525229984">Brave 설문조사 허용</translation>
-<translation id="3204080538332044581">새 탭 페이지에서 비공개 설문조사 링크를 표시할 수 있도록 허용합니다. 설문조사는 더 나은 기능을 개발하고, 브라우저 기반 광고 캠페인의 효과를 측정하는 데 도움이 됩니다. <ph name="BEGIN_LINK"/>자세히 알아보기<ph name="END_LINK"/></translation>
 <translation id="349846214503465941">재생목록 활성화</translation>
 <translation id="7903608716704052878">파일을 오프라인 보기용으로 자동 추가</translation>
 <translation id="384666453982355633">이 옵션을 선택하면 미디어 파일을 자동으로 캐싱하여 인터넷 연결이 끊어진 상태에서도 재생할 수 있습니다</translation>

@@ -1881,6 +1881,18 @@
 <translation id="2737084171727561244">Portföy'e git</translation>
 <translation id="3499452861061048987">Token ekle</translation>
 <translation id="5046066249040287308">Brave Cüzdanı Yardımcı Hizmeti</translation>
+<translation id="8767749833522980474">Kripto</translation>
+<translation id="4509084261025090951">Kartınızı alın</translation>
+<translation id="3624463584770657372">Kart numaralarını görmek ve harcamaya başlamak için kimliğinizi doğrulayın.</translation>
+<translation id="2508337767012636987">Doğrulamak için dokunun</translation>
+<translation id="703964541421486259">Bakiyeleri gizle</translation>
+<translation id="302114796458112924">Bakiyeleri göster</translation>
+<translation id="9083210401924577263">Brave Ödüller Kartı</translation>
+<translation id="2433507940547922241">Görünüm</translation>
+<translation id="3435738964857648380">Güvenlik</translation>
+<translation id="6700561332544287722">Bir sonraki sefere kilit açma iste</translation>
+<translation id="5605360570977617291"><ph name="CARD_NAME"/> kartı ana ekrandan gizlensin mi?</translation>
+<translation id="2721464457853369512"><ph name="CARD_NAME"/> bakiyeniz değişmez. Bu yalnızca kartı ana ekrandan gizler. İstediğiniz zaman Ayarlar'da Cüzdan altından tekrar gösterebilirsiniz.</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
 <translation id="3745016858329272300">Genel Bilgi</translation>
 <translation id="4045404575593562245">Tor Denetimi Olayları</translation>
@@ -1920,7 +1932,6 @@
 <translation id="6261915643960475695">İş Dünyası</translation>
 <translation id="8265589281845759879">Arabalar</translation>
 <translation id="7726519849288907308">Ünlü isimler</translation>
-<translation id="8767749833522980474">Kripto</translation>
 <translation id="7577010593836079522">Kültür</translation>
 <translation id="6807791860691150411">Eğitim</translation>
 <translation id="3706423975342040244">Eğlence Dünyası</translation>
@@ -2099,9 +2110,6 @@
 <translation id="3067105725259639716">Brave Haberlerini yapılandır</translation>
 <translation id="6286510487460330478">Kısayolları yapılandır</translation>
 <translation id="9214819486716388964">Brave Talk'ı göster</translation>
-<translation id="5950760360751948276">Yer işareti çubuğunu her zaman göster</translation>
-<translation id="2960757369920422313">NTP'de yer işareti çubuğunu göster</translation>
-<translation id="522953399371747698">Yer işareti çubuğunu gizle</translation>
 <translation id="9079813619990532635">Tüm yer imlerini dışa aktar</translation>
 <translation id="134184943774258988">Tüm yer işaretleri butonunun görünürlüğünü aç/kapat</translation>
 <translation id="2158862020143233462">Kalkanları aç/kapat</translation>
@@ -2216,6 +2224,7 @@
 <translation id="5820497878628354073">Durum kodu: <ph name="STATUS_CODE"/>, iç durum kodu: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">Premium hızı limitine ulaştınız. Lütfen birkaç saat içinde tekrar deneyin.</translation>
 <translation id="6873128487002733717">Bu model için premium limitine ulaştınız. Farklı bir model seçin veya daha sonra tekrar deneyin.</translation>
+<translation id="2688661132468689309">Bu model için premium limitine ulaştınız. Limit <ph name="RESET_DURATION"/> içinde (<ph name="RESET_TIME"/> tarihinde) sıfırlanır. Farklı bir model seçin veya o zaman tekrar deneyin.</translation>
 <translation id="3683964919745779766">Bu model için limite ulaştınız veya krediniz bitti. Lütfen daha sonra tekrar deneyin.</translation>
 <translation id="7692501701960747469">Bu model için yapılandırılan API anahtarı geçersiz. Lütfen yapılandırmanızı kontrol edin ve tekrar deneyin.</translation>
 <translation id="7905602379229309187">Uç nokta şu anda aşırı yüklenmiş durumda. Lütfen daha sonra tekrar deneyin.</translation>
@@ -2224,12 +2233,12 @@
 <translation id="3852808100039989429">Merhaba, ben Leo. Brave tarafından geliştirilen bir yapay zeka asistanıyım. Alibaba Cloud tarafından birçok kullanım durumuna uygun olacak şekilde tasarlanmış Qwen VL 30B modeliyle çalışıyorum. Qwen, Brave tarafından kendi güvenli altyapımızda barındırılmaktadır.<ph name="LINK_BEFORE"/>Daha fazla bilgi<ph name="LINK_AFTER"/></translation>
 <translation id="8659225822055186905">Merhaba, ben Leo. Brave tarafından geliştirilen bir yapay zeka asistanıyım. Zhipu AI tarafından birçok kullanım durumuna uygun olarak oluşturulan GLM-5.3 Flash modeliyle çalışıyorum. GLM-5.3 Flash, kendi doğrulanabilir özel güvenli altyapıları aracılığıyla NEAR tarafından barındırılmaktadır.<ph name="LINK_BEFORE"/>Daha fazla bilgi<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">Merhaba, ben Leo. Brave tarafından geliştirilen bir Yapay Zeka asistanıyım. Konuşma ve metin işleme görevleri için Anthropic tarafından eğitilen Claude Instant modeliyle çalışıyorum. Claude Instant modeli, güvenli altyapımız sayesinde Brave tarafından barındırılır.<ph name="LINK_BEFORE"/>Daha fazla bilgi edinin<ph name="LINK_AFTER"/></translation>
-<translation id="3789772321824682783">Merhaba, ben Leo. Brave tarafından tamamen yerel olarak barındırılan bir yapay zeka asistanıyım. Anthropic'in sohbet ve metin işleme görevleri için geliştirdiği Claude Haiku modeliyle çalışıyorum. Claude Haiku, Brave'in kendi güvenli altyapısı üzerinde barındırılmaktadır.<ph name="LINK_BEFORE"/>Daha fazla bilgi<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Merhaba, ben Leo. Brave tarafından tamamen yerel olarak barındırılan bir yapay zeka asistanıyım. Anthropic'in sohbet ve metin işleme görevleri için geliştirdiği Claude Sonnet modeliyle çalışıyorum. Claude Sonnet, Brave'in kendi güvenli altyapısı üzerinde barındırılmaktadır.<ph name="LINK_BEFORE"/>Daha fazla bilgi<ph name="LINK_AFTER"/></translation>
-<translation id="3399141352144059821">Merhaba, ben Leo. Brave tarafından tamamen yerel olarak barındırılan bir yapay zeka asistanıyım. xAI tarafından birçok alanda yüksek performans göstermesi ve uygulanabilir olması için geliştirilen Grok 4.3 modeliyle çalışıyorum. Grok 4.3, Brave'in kendi güvenli altyapısı üzerinde barındırılmaktadır.<ph name="LINK_BEFORE"/>Daha fazla bilgi<ph name="LINK_AFTER"/></translation>
-<translation id="8868813509973985458">Merhaba, ben Leo. Brave tarafından tamamen yerel olarak barındırılan bir yapay zeka asistanıyım. OpenAI tarafından birçok alanda yüksek performans göstermesi ve uygulanabilir olması için geliştirilen GPT 5.4 modeliyle çalışıyorum. GPT 5.4, Brave'in kendi güvenli altyapısı üzerinde barındırılmaktadır.<ph name="LINK_BEFORE"/>Daha fazla bilgi<ph name="LINK_AFTER"/></translation>
+<translation id="6676306995311143470">Merhaba, ben Leo. Brave tarafından geliştirilen bir yapay zeka asistanıyım. Amazon Bedrock Mantle üzerinde çalışan, xAI'nin öncü akıl yürütme modeli Grok 4.6 ile çalışıyorum. Grok 4.6, Brave'in güvenli AWS altyapısı üzerinden sunulmaktadır.<ph name="LINK_BEFORE"/>Daha fazla bilgi<ph name="LINK_AFTER"/></translation>
+<translation id="2394656730986208060">Merhaba, ben Leo. Brave tarafından geliştirilen bir yapay zeka asistanıyım. Amazon Bedrock Mantle üzerinde çalışan, OpenAI'nin hızlı ve düşük gecikmeli modeli GPT 5.6 Luna ile çalışıyorum. GPT 5.6 Luna, Brave'in güvenli AWS altyapısı üzerinden sunulmaktadır.<ph name="LINK_BEFORE"/>Daha fazla bilgi<ph name="LINK_AFTER"/></translation>
+<translation id="5278969721580944810">Merhaba, ben Leo. Brave tarafından geliştirilen bir yapay zeka asistanıyım. Amazon Bedrock Mantle üzerinde çalışan, OpenAI'nin dengeli üretim modeli GPT 5.6 Terra ile çalışıyorum. GPT 5.6 Terra, Brave'in güvenli AWS altyapısı üzerinden sunulmaktadır.<ph name="LINK_BEFORE"/>Daha fazla bilgi<ph name="LINK_AFTER"/></translation>
 <translation id="5037359072717016032">Merhaba, ben Leo. Brave tarafından tamamen yerel olarak barındırılan bir yapay zeka asistanıyım. Mistral tarafından birçok alanda yüksek performans göstermesi ve uygulanabilir olması için geliştirilen Mistral Large modeliyle çalışıyorum. Mistral Large, Brave'in kendi güvenli altyapısı üzerinde barındırılmaktadır.<ph name="LINK_BEFORE"/>Daha fazla bilgi<ph name="LINK_AFTER"/></translation>
-<translation id="4026902371301997261">Merhaba, ben Leo. Brave tarafından tamamen yerel olarak barındırılan bir yapay zeka asistanıyım. Alibaba Cloud tarafından birçok alanda yüksek performans göstermesi ve uygulanabilir olması için geliştirilen Qwen 3 235B modeliyle çalışıyorum. Qwen 3 235B, Brave'in kendi güvenli altyapısı üzerinde barındırılmaktadır.<ph name="LINK_BEFORE"/>Daha fazla bilgi<ph name="LINK_AFTER"/></translation>
+<translation id="5475035333915581972">Merhaba, ben Leo. Brave tarafından geliştirilen bir yapay zeka asistanıyım. Alibaba Cloud tarafından birçok alanda yüksek performans göstermesi ve uygulanabilir olması için geliştirilen Qwen 3.8 Flash Next modeliyle çalışıyorum. Qwen 3.8 Flash Next, Brave'in kendi güvenli altyapısı üzerinde barındırılmaktadır.<ph name="LINK_BEFORE"/>Daha fazla bilgi<ph name="LINK_AFTER"/></translation>
 <translation id="8720758690351028307">Merhaba, ben Leo. Brave tarafından tamamen yerel olarak barındırılan bir yapay zeka asistanıyım. Deepseek tarafından birçok alanda yüksek performans göstermesi ve uygulanabilir olması için geliştirilen Deepseek V3.2 modeliyle çalışıyorum. Deepseek V3.2, Brave'in kendi güvenli altyapısı üzerinde barındırılmaktadır.<ph name="LINK_BEFORE"/>Daha fazla bilgi<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">Merhaba, ben Leo. Brave tarafından tamamen yerel olarak barındırılan bir yapay zeka asistanıyım. Anthropic'in sohbet ve metin işleme görevleri için geliştirdiği Claude Opus modeliyle çalışıyorum. Claude Opus, Brave'in kendi güvenli altyapısı üzerinde barındırılmaktadır.<ph name="LINK_BEFORE"/>Daha fazla bilgi<ph name="LINK_AFTER"/></translation>
 <translation id="7238858567393403597">Merhaba, ben Leo. Brave tarafından tamamen yerel olarak barındırılan bir yapay zeka asistanıyım. Zhipu AI tarafından birçok alanda yüksek performans göstermesi ve uygulanabilir olması için geliştirilen GLM-4-7-Flash modeliyle çalışıyorum. GLM-4-7-Flash, Brave'in kendi güvenli altyapısı üzerinde barındırılmaktadır.<ph name="LINK_BEFORE"/>Daha fazla bilgi<ph name="LINK_AFTER"/></translation>
@@ -2242,7 +2251,6 @@
 <translation id="4773408460773097271">Ollama</translation>
 <translation id="631371844654031449">Önerilen modeller</translation>
 <translation id="6568044140836233369">Tüm modelleri göster</translation>
-<translation id="6187065185557150870">Sohbet</translation>
 <translation id="4685048769603134644">Tam sayfada aç</translation>
 <translation id="2961040541145689181">Yeni sohbet</translation>
 <translation id="7557539689487606886">Premium olun</translation>
@@ -2366,13 +2374,13 @@
 <translation id="887511360213807449">Geçmiş devre dışı</translation>
 <translation id="5380979378058584412">Leo ile önceki konuşmalarınızı görüntülemek için konuşma geçmişini etkinleştirmeniz gerekir.</translation>
 <translation id="3185367320601718531">Konuşma ve metin oluşturma</translation>
-<translation id="2793458212460902934">Hızlı • Arama • Araçlar</translation>
 <translation id="8506027496671575183">Arama • Görüntü • Araçlar</translation>
 <translation id="3184606955650139158">Hızlı • Arama • Görsel</translation>
 <translation id="7465032796278724624">NEAR AI TEE ile Doğrulanabilir Gizlilik</translation>
 <translation id="8782867266498869301">Görev için en iyi olanı kullanmak üzere model dinamik olarak değişir</translation>
 <translation id="7348809809749151120">Hızlı • Arama</translation>
 <translation id="3213834013136637671">Arama • Görüntü</translation>
+<translation id="2793458212460902934">Hızlı • Arama • Araçlar</translation>
 <translation id="5276681919620506371">Arama • Araçlar</translation>
 <translation id="7434375176361995333">Özetler • Hızlı</translation>
 <translation id="3965507912994218570">Leo ayarları</translation>
@@ -2936,9 +2944,7 @@ Hadi sizi bağlayalım!</translation>
 <translation id="3750210661641549834">Hesabınızı oluşturmak için lütfen e-posta adresinizi doğrulayın.</translation>
 <translation id="4351175281479794167">Doğrulama kodunu girin</translation>
 <translation id="1672793037892810340">Girmeniz gereken bir kod içeren bir e-posta almış olmalısınız.</translation>
-<translation id="4821255729182569254">Onay e-postasını yeniden gönder</translation>
 <translation id="5837679375142747484">E-posta görünmüyor mu? Spam klasörünüzü kontrol edin veya <ph name="BEGIN_LINK"/>yeniden gönderin<ph name="END_LINK"/>.</translation>
-<translation id="1080588816740959885">E-posta görünmüyor mu? Spam klasörünüzü kontrol edin veya yeniden gönderin.</translation>
 <translation id="1020730839570724178">Kaydı iptal et</translation>
 <translation id="7155125570724238786">Parolanızı sıfırlamak için lütfen e-posta adresinizi doğrulayın.</translation>
 <translation id="816074628631172140">E-postanız doğrulandı. Parola sıfırlamanızı tamamlamak için yeni bir parola belirleyin.</translation>

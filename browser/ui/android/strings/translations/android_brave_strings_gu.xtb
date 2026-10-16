@@ -193,9 +193,6 @@
 <translation id="5668852698659986622">Sponsored Ads સક્ષમ કરો</translation>
 <translation id="431194936581466649">Sponsored Ads સાથે એક સ્વતંત્ર, વપરાશકર્તા-પ્રથમ વેબ બનાવવાના Braveના મિશનને સહાય કરો. અમે તમને ઓળખ્યા વગર, ખાનગી રીતે એડ પ્રદર્શન માપીએ છીએ.</translation>
 <translation id="1939813747486101115">Sponsored Ads વિશે વધુ જુઓ</translation>
-<translation id="8347743943525229984">Brave સર્વેને મંજૂરી આપો</translation>
-<translation id="6022939994702081659">Brave સર્વેને નવા ટૅબ પેજમાં પ્રાઇવેટ સર્વેની લિંક દર્શાવવાની મંજૂરી આપો. સર્વે અમને બહેતર ફીચર બનાવવા અને બ્રાઇઝર-આધારિત જાહેરાત પ્રચારોની અસરકારકતા માપવામાં મદદ કરે છે.</translation>
-<translation id="7746496306508543965">Brave સર્વે વિશે વધુ જાણો</translation>
 <translation id="410351446219883937">ઑટોપ્લે</translation>
 <translation id="7445411102860286510">સાઇટ્સને આપમેળે મ્યૂટ કરેલ વિડિઓઝને ચલાવવાની મંજૂરી આપો (ભલામણ કરેલ)</translation>
 <translation id="7837721118676387834">કોઈ ચોક્કસ સાઇટ માટે મ્યૂટ કરેલ વિડિઓઝને ઑટોપ્લેની મંજૂરી આપો.</translation>
@@ -223,6 +220,7 @@
 <translation id="9040069796107003510">Brave રિવોર્ડ્સ ચિહ્ન</translation>
 <translation id="6333347122924254968">સરનામા પટ્ટીમાં Brave રિવોર્ડ્સ ચિહ્ન બતાવો</translation>
 <translation id="4393974575368329991">નીચેનું નૅવિગેશન ટૂલબાર</translation>
+<translation id="8727059712928806451">નીચેનો બાર સક્ષમ કરો</translation>
 <translation id="1834226716203076292">હોમ, બુકમાર્ક્સ, અને શોધ માટે ઝડપી ઍક્સેસ કરવા નીચે એક બાર બતાવો</translation>
 <translation id="1422686363939271829">જો નીચેનું સરનામું બાર વિરામ પર પસંદ કરવામાં આવે છે તો આ સેટિંગ અક્ષમ છે</translation>
 <translation id="6587448235155023666">આગલા વખતે જ્યારે તમે Brave ને ફરીથી લોન્ચ કરો ત્યારે તમારા ફેરફારો પ્રભાવમાં આવશે</translation>
@@ -405,6 +403,12 @@
 <translation id="8793108040181436796">વિજેટ્સ</translation>
 <translation id="8643377320501056697">ટોચની સાઇટ્સ બતાવો</translation>
 <translation id="7275773481201277457">Brave આંકડા બતાવો</translation>
+<translation id="8516804522688861636">વારંવાર મુલાકાત લીધેલ સાઇટ્સ બતાવો</translation>
+<translation id="4546260624932151782">મનપસંદ બતાવો</translation>
+<translation id="5313967007315987356">સાઈટ ઉમેરો</translation>
+<translation id="1773147648972887693">વારંવાર મુલાકાત લીધેલ બતાવો</translation>
+<translation id="752098910262610337">શૉર્ટકટ્સ બતાવો</translation>
+<translation id="7134741506051403308">વિજેટ છુપાવો</translation>
 <translation id="7462178177755090262">પ્રારંભ સ્ક્રીન</translation>
 <translation id="5365434987337264071">છેલ્લો ખુલેલ ટૅબ</translation>
 <translation id="6019856124237323989">{HOURS, plural, =1 {અપ્રવૃત્તિ પછી <ph name="HOURS_ONE"/> કલાકમાં નવો ટૅબ} other {અપ્રવૃત્તિ પછી <ph name="HOURS_MANY"/> કલાકોમાં નવો ટૅબ}}</translation>
@@ -1003,6 +1007,13 @@
 <translation id="7530313002494358590">Brave ફીચર સક્ષમ અથવા અક્ષમ કરવા માટે બ્રાઉઝરને પુનરાવર્તન કરવું જરૂરી છે. Brave Origin અપડેટ કરવું સમાપ્ત કર્યા પછી <ph name="BEGIN_BOLD"/>હવે પુનરાવર્તન કરો<ph name="END_BOLD"/> પર ટેપ કરો.</translation>
 <translation id="1028940738207645746">શું તમે ખરેખર તમામ સેટિંગ્સને ડિફોલ્ટમાં પુનરાવર્તિત કરવા માંગો છો?</translation>
 <translation id="5939518447894949180">રીસેટ કરો</translation>
+<translation id="3222790865318305905">સક્રિયકરણની મર્યાદા પહોંચી ગઈ</translation>
+<translation id="3787857711016546034">છેતરપિંડી અટકાવવા માટે, Origin સક્રિયકરણ દર-મર્યાદિત છે. પરંતુ તમે હંમેશાં તમારા Origin લાઇસન્સનો ઉપયોગ વધુ ઉપકરણો પર કરવા માટે વધુ સક્રિયકરણની વિનંતી કરી શકો છો. ફક્ત વધુ સક્રિયકરણની વિનંતી કરો વિકલ્પ પર ક્લિક કરો, અથવા મદદ માટે <ph name="CONTACT_SUPPORT"/>.</translation>
+<translation id="6760819753412779585">સપોર્ટનો સંપર્ક કરો</translation>
+<translation id="571697836019670200">વધુ સક્રિયકરણની વિનંતી કરો</translation>
+<translation id="9019545131475425538">પ્રક્રિયા કરી રહ્યું છે…</translation>
+<translation id="7242700630179071243">સક્રિય કરવા માટે તૈયાર</translation>
+<translation id="5463918917265356202">Brave Origin હવે આ ઉપકરણ પર સક્રિય છે. આ સુવિધાનો ઉપયોગ શરૂ કરવા માટે, તમારે બ્રાઉઝર ફરીથી શરૂ કરવાની જરૂર છે. શું તમે હવે ફરીથી શરૂ કરવા માંગો છો?</translation>
 <translation id="8554205386170195281">ખરીદો</translation>
 <translation id="8613144770663526433">Brave Wallet સાથે સાઇન ઇન કરો</translation>
 <translation id="3696514931437952995">તમે <ph name="ORIGIN"/> સાઇન ઇન કરી રહ્યા છો. Brave આ સરનામો શેર કરશે <ph name="ORIGIN"/>.</translation>

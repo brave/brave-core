@@ -3,18 +3,14 @@
 <translationbundle lang="az">
 <translation id="1751249301761991853">Şəxsi</translation>
 <translation id="3333887201479867589">Brave Mükafatları</translation>
-<translation id="7561196759112975576">Həmişə</translation>
-<translation id="7961015016161918242">Heç vaxt</translation>
 <translation id="8507663778530179003">Bütün Əlfəcinləri Göstər Düyməsi</translation>
 <translation id="9018648632047670921">Bütün Əlfəcinləri Göstər Düyməsi</translation>
 <translation id="7630214457764713113">Təmiz keçidi kopyalayın</translation>
 <translation id="7973394300052703468">Yeni &amp;Gizli pəncərə</translation>
 <translation id="4615489450165434530">Nasaz sayt haqqında bildirin</translation>
 <translation id="8097438084542431276">Təmiz keçidi kopyalayın</translation>
-<translation id="4678672101289648246">Yeniləmə səlləri Yalnız Yeni Tab'nda Göstər</translation>
 <translation id="6516243500644829484">Yeni &amp;gizli pəncərə</translation>
 <translation id="1209739344687072997">Nasaz sayt haqqında bildirin</translation>
-<translation id="8294286161128352783">Yeniləmə səlləri Yalnız Yeni Tab'nda Göstər</translation>
 <translation id="6406506848690869874">Sinxronlaşdırma</translation>
 <translation id="1544192797660353713">Balans</translation>
 <translation id="2361906291514218784">Leo AI</translation>
@@ -195,7 +191,9 @@ Və ya bunu sonra <ph name="SETTINGS_EXTENIONS_LINK"/>-də dəyişdirin.</transl
 <translation id="5977931179408079967">Mövqe</translation>
 <translation id="3790384768741064842">Sağa keç</translation>
 <translation id="7444424316576061724">Sola keç</translation>
+<translation id="7561196759112975576">Həmişə</translation>
 <translation id="7060352228894039151">Siçan üzərində</translation>
+<translation id="7961015016161918242">Heç vaxt</translation>
 <translation id="8981254605840444865">Parametrləri göstər</translation>
 <translation id="59174027418879706">Aktivdir</translation>
 <translation id="4176463684765177261">Deaktivdir</translation>
@@ -221,6 +219,7 @@ Və ya bunu sonra <ph name="SETTINGS_EXTENIONS_LINK"/>-də dəyişdirin.</transl
 <translation id="4515057635283480525">Internet Archive bir çox veb səhifənin keçmiş versiyalarını yadda saxlayır. Bu səhifəni Arxivdə axtarmaq istəyirsiniz?</translation>
 <translation id="8252977752585110703">Təəssüf ki, biz Internet Archive-i yoxladıq və orada bu səhifənin arxivlənmiş versiyası yoxdur.</translation>
 <translation id="8748778103033196270">Arxivdə axtar</translation>
+<translation id="7369915833843501413">Arxivdə axtarılır</translation>
 <translation id="191143826155037518">Brave sizə <ph name="BEGIN_LINK_MPL"/>Mozilla İctimai Lisenziyası 2.0<ph name="END_LINK_MPL"/> (MPL) altında təqdim edilir və müxtəlif digər lisenziyalar altında <ph name="BEGIN_LINK_OSS"/>açıq mənbə proqram təminatını<ph name="END_LINK_OSS"/> əhatə edir.
         Bu nüsxəni yaratmaq üçün istifadə edilən xüsusi <ph name="BEGIN_LINK_SOURCE_CODE"/>mənbə kodunu<ph name="END_LINK_SOURCE_CODE"/> yükləmək və özünüz üçün necə qurmaq barədə təlimatları <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>oxuya bilərsiniz<ph name="END_LINK_BUILD_INSTRUCTIONS"/>.</translation>
 <translation id="4474155171896946103">Bütün tab-vərəqələri əlfəcindən et...</translation>
@@ -371,7 +370,7 @@ Və ya bunu sonra <ph name="SETTINGS_EXTENIONS_LINK"/>-də dəyişdirin.</transl
 <translation id="7985042437720138349">Bu xüsusiyyət açıq olan tablarınız haqqında məlumatları Brave'nin AI tərəfindən idarə olunan brauzer köməkçisi Leo ilə paylaşır.</translation>
 <translation id="6165508094623778733">Ətraflı məlumat</translation>
 <translation id="7557539689487606886">Premiuma keç</translation>
-<translation id="1035309871698658326">Açıldıqda, bu, bütün şəxsi olmayan tabların başlıqlarını və mənşəyini Leo'ya təsnif etmək üçün avtomatik olaraq göndərəcək.</translation>
+<translation id="7103144720752576727">Açıldıqda bu, bütün qeyri-məxfi tabların başlıqlarını və mənbəsini (origin) onları təsnif etmək üçün avtomatik olaraq Leo-ya göndərəcək. Həmçinin səhifə məzmununun göndərilməsini aktivləşdirsəniz, hər tabın mətninin qısa hissələri də göndərilir.</translation>
 <translation id="3435896845095436175">Aktiv et</translation>
 <translation id="9031526219709160683">Brave bu saytın məxfilik parametrlərini optimallaştırmağa kömək edə bilər. Brave-nin təkliflərini nəzərdən keçirmək istərdiniz?</translation>
 <translation id="5739953050957336013">Təklifləri nəzərdən keçirin</translation>
@@ -386,8 +385,6 @@ Və ya bunu sonra <ph name="SETTINGS_EXTENIONS_LINK"/>-də dəyişdirin.</transl
 <translation id="8570228839666486945">Cihazda AI</translation>
 <translation id="7447041379556102185">Cihazda Nitq Tanınması</translation>
 <translation id="3456536577668402695">Axtarışlarınız və səhifə məzmunu bu cihazda işlənir. Heç nə Brave-ə göndərilmir və insan nəzərdən keçiriciləri tərəfindən görünmür.</translation>
-<translation id="4751537843966994505">Semantik Tarixçə Axtarışı</translation>
-<translation id="6175973371938222040">Ziyarət etdiyiniz səhifələri yerli olaraq indeksləyin ki, tarixçənizi məna üzrə axtara biləsiniz. Bütün emal bu cihazda qalır.</translation>
 <translation id="9156965752763025780">Dəyişiklikləriniz Brave-i yenidən işə saldığınız zaman qüvvəyə minəcək.</translation>
 <translation id="7179921470347911571">Yenidən işə sal</translation>
 <translation id="1426410128494586442">Bəli</translation>
@@ -425,6 +422,7 @@ Və ya bunu sonra <ph name="SETTINGS_EXTENIONS_LINK"/>-də dəyişdirin.</transl
 <translation id="4328541188421002379">Containerinizə İş və ya Şəxsi kimi bir ad verin</translation>
 <translation id="4976989127264491396">Xəta: <ph name="ERROR_MESSAGE"/></translation>
 <translation id="5436069931267876389">Container tapılmadı</translation>
+<translation id="5831840958001766835">Elementi yenidən sırala. Hərəkət etdirmək üçün ox düymələrindən istifadə edin.</translation>
 <translation id="6055154402239241620">Trafik Nəzarəti</translation>
 <translation id="8134521925475508805">Xüsusi saytları müəyyən kontekstdə avtomatik açılacaq şəkildə konfiqurasiya edin və brauzer sessiyalarınız arasında ayrılıq yaradın. <ph name="BEGIN_LINK"/>Ətraflı öyrənin<ph name="END_LINK"/></translation>
 <translation id="6944848312867106540">Trafik Nəzarətini aktivləşdir</translation>
@@ -477,10 +475,6 @@ Və ya bunu sonra <ph name="SETTINGS_EXTENIONS_LINK"/>-də dəyişdirin.</transl
 <translation id="7310387888625228830">Leo Süni İntellekt Asistenti</translation>
 <translation id="5222974844674487962">Brave Xəbərləri göstər düyməsini göstər</translation>
 <translation id="2085436423511121572">Leo Süni İntellekt düyməsini göstər</translation>
-<translation id="6156323911414505561">Əlfəcinlər panelini göstər</translation>
-<translation id="4054323497808446566">Əlfəcinin zolağı bütün səhifələrdə görünür</translation>
-<translation id="8693858092251192712">Əlfəcinin zolağı yalnız yeni tab-səhifə istisna olmaqla bütün səhifələrdə gizlidir</translation>
-<translation id="7158817046543187970">Əlfəcinin zolağı bütün səhifələrdə gizlidir</translation>
 <translation id="3416468988018290825">Tam URL-ləri həmişə göstər</translation>
 <translation id="5529693968082667490">Tab axtarışı düyməsini göstər</translation>
 <translation id="1013121820689882118">Speedreader</translation>
@@ -612,6 +606,8 @@ Və ya bunu sonra <ph name="SETTINGS_EXTENIONS_LINK"/>-də dəyişdirin.</transl
 <translation id="5825943197137337319">Yalnız standart ictimai interfeys</translation>
 <translation id="1689062823386843231">Proksi edilməyən UDP-ni deaktiv et</translation>
 <translation id="3540231253392253941">Push mesajlaşma üçün Google xidmətlərindən istifadə et</translation>
+<translation id="2224032129673914306">Semantik tarixçə axtarışı</translation>
+<translation id="6045998903985162478">Ziyarət etdiyiniz səhifələri indeksləyin ki, onları tarixçədə, açıq tablarda və Leo-da asanlıqla tapa biləsiniz.</translation>
 <translation id="5813105074916486721">Yerli tarixçə saxlanması</translation>
 <translation id="5671611745062206644">Brave sizin baxış tarixçənizi yerli olaraq nə qədər müddət saxlayır</translation>
 <translation id="7184510058087008090">1 gün</translation>
@@ -875,6 +871,7 @@ Bunu etmək istədiyinizə əminsiniz?</translation>
 <translation id="2618193846561624884">Mövcud şəbəkəni yeniləmək istəyirsiniz?</translation>
 <translation id="1643029991199044105">Ctrl-Tab ilə ən son istifadə edilmiş panellər arasında keçid edin</translation>
 <translation id="2775956301559569472">404 səhifələrdə Wayback Machine sorğusunu göstərin</translation>
+<translation id="8485716275262929774">404 səhifələrində Wayback Machine-dən yadda saxlanmış versiyaları avtomatik yükləyin</translation>
 <translation id="3095201688102519917">Çoxlu panel ilə pəncərəni bağlamadan əvvəl məni xəbərdar edin</translation>
 <translation id="7120553802660696133">Son paneli bağlayanda pəncərəni bağla</translation>
 <translation id="3394171693948989253">Çıxışda Esc tuşuna basmaq üçün tam ekran xatırlatma göstərin</translation>
@@ -884,6 +881,8 @@ Bunu etmək istədiyinizə əminsiniz?</translation>
 <translation id="1529674267267221673">Bu səhifənin məzmunu mesajlarınızla birlikdə Leo'ya göndəriləcək.</translation>
 <translation id="5226020406479918122">Tab Fokus Rejimi</translation>
 <translation id="3705539672403311123">Tab axtarışı səhifəsində tabların təşkilini aktiv edin. Açıldıqda, bu, bütün şəxsi olmayan tabların başlıqlarını və mənşəyini Leo'ya təsnif etmək üçün avtomatik olaraq göndərəcək. <ph name="BEGIN_LINK"/>Daha çox öyrənin<ph name="END_LINK"/></translation>
+<translation id="2002238795517052616">Tab fokusu üçün səhifə məzmununu göndər</translation>
+<translation id="2276823422122514441">Həmçinin hər tabın mətnindən qısa hissələr göndərin ki, tablar başlığına görə deyil, səhifənin nə haqqında olduğuna görə qruplaşdırılsın. Hissələr Leo-ya və ya tab fokusu üçün seçmisinizsə öz modelinizə göndərilir. Bunun üçün <ph name="BEGIN_LINK"/><ph name="SEMANTIC_HISTORY_SEARCH"/><ph name="END_LINK"/> lazımdır ki, bu da hissələri sizin cihazınızda qurur.</translation>
 <translation id="9049433973274198706">Səkmə fokusunun standart modeli</translation>
 <translation id="2161546758719933059">Tab Fokus Rejimində tablarınızı təşkil etmək üçün istifadə edilən model. <ph name="BEGIN_LINK"/>Ətraflı məlumat<ph name="END_LINK"/></translation>
 <translation id="8172263161008556851">Söhbətdə təklif olunan sorğuları göstərin</translation>
@@ -965,9 +964,6 @@ Bunu etmək istədiyinizə əminsiniz?</translation>
 <translation id="1838374766361614909">Axtarışı təmizlə</translation>
 <translation id="5126255551970171328">Yaddaş üçün axtarış</translation>
 <translation id="7402116145895962069">Ollama lokal modellərini sinxronlaşdır</translation>
-<translation id="5985516785067818307">Sorğu panelisti</translation>
-<translation id="8347743943525229984">Brave sorğularına icazə ver</translation>
-<translation id="3204080538332044581">Brave-ə keçidləri yeni tab-vərəqə səhifəsində məxfi sorğulara göstərməyə icazə verir. Sorğular daha yaxşı xüsusiyyətlər yaratmağımıza və brauzer əsaslı reklam kampaniyalarının effektivliyini ölçməyimizə kömək edir. <ph name="BEGIN_LINK"/>Ətraflı məlumat<ph name="END_LINK"/></translation>
 <translation id="349846214503465941">Playlist-i aktiv edin</translation>
 <translation id="7903608716704052878">Offline baxış üçün avtomatik olaraq faylları əlavə edin</translation>
 <translation id="384666453982355633">Bu seçim media fayllarını avtomatik olaraq keş etmənizə imkan verəcək, beləliklə onları internet bağlantısı olmadan oxuya bilərsiniz.</translation>

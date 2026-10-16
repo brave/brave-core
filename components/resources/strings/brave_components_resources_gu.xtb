@@ -1881,6 +1881,18 @@
 <translation id="2737084171727561244">પોર્ટફોલિયો પર જાઓ</translation>
 <translation id="3499452861061048987">ટોકન ઉમેરો</translation>
 <translation id="5046066249040287308">Brave Wallet Utility Service</translation>
+<translation id="8767749833522980474">ક્રિપ્ટો</translation>
+<translation id="4509084261025090951">તમારું કાર્ડ મેળવો</translation>
+<translation id="3624463584770657372">કાર્ડ નંબર જોવા અને ખર્ચ કરવાનું શરૂ કરવા તમારી ઓળખ ચકાસો.</translation>
+<translation id="2508337767012636987">ચકાસવા માટે ટેપ કરો</translation>
+<translation id="703964541421486259">બેલેન્સ છુપાવો</translation>
+<translation id="302114796458112924">બેલેન્સ બતાવો</translation>
+<translation id="9083210401924577263">Brave રિવોર્ડ્સ કાર્ડ</translation>
+<translation id="2433507940547922241">દેખાવ</translation>
+<translation id="3435738964857648380">સુરક્ષા</translation>
+<translation id="6700561332544287722">આગલી વખતે અનલૉક કરવાની જરૂર પડે</translation>
+<translation id="5605360570977617291">હોમમાંથી <ph name="CARD_NAME"/> છુપાવવું છે?</translation>
+<translation id="2721464457853369512">તમારું <ph name="CARD_NAME"/> બેલેન્સ બદલાયું નથી. આ ફક્ત કાર્ડને હોમમાંથી છુપાવે છે. તમે તેને ગમે ત્યારે સેટિંગ્સમાં, વૉલેટ હેઠળ ફરીથી બતાવી શકો છો.</translation>
 <translation id="3155170474926428993">Tor લોન્ચર</translation>
 <translation id="3745016858329272300">જાહેર માહિતી</translation>
 <translation id="4045404575593562245">Tor નિયંત્રણ ઇવેન્ટ્સ</translation>
@@ -1920,7 +1932,6 @@
 <translation id="6261915643960475695">બિઝનેસ</translation>
 <translation id="8265589281845759879">કાર્સ</translation>
 <translation id="7726519849288907308">સેલેબ્રિટીસ</translation>
-<translation id="8767749833522980474">ક્રિપ્ટો</translation>
 <translation id="7577010593836079522">સંસ્કૃતિ</translation>
 <translation id="6807791860691150411">શિક્ષણ</translation>
 <translation id="3706423975342040244">મનોરંજન</translation>
@@ -2099,9 +2110,6 @@
 <translation id="3067105725259639716">Brave ન્યૂઝ કન્ફિગર કરો</translation>
 <translation id="6286510487460330478">શોર્ટકટ્સ કન્ફિગર કરો</translation>
 <translation id="9214819486716388964">Brave ટૉક બતાવો</translation>
-<translation id="5950760360751948276">હંમેશા બુકમાર્ક બાર બતાવો</translation>
-<translation id="2960757369920422313">NTP પર બુકમાર્ક બાર બતાવો</translation>
-<translation id="522953399371747698">બુકમાર્ક બાર છુપાવો</translation>
 <translation id="9079813619990532635">તમામ બૂકમાર્ક્સ નિકાસ કરો</translation>
 <translation id="134184943774258988">તમામ બુકમાર્ક્સ બટન વિઝિબિલિટી ટૉગલ કરો</translation>
 <translation id="2158862020143233462">શિલ્ડ્સ ટૉગલ કરો</translation>
@@ -2216,6 +2224,7 @@
 <translation id="5820497878628354073">સ્થિતિ કોડ: <ph name="STATUS_CODE"/>, આંતરિક સ્થિતિ કોડ: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">તમે પ્રાઇમ રેટ લિમિટ પર પહોંચ્યા છે. કૃપા કરીને થોડા કલાકો પછી ફરી પ્રયાસ કરો.</translation>
 <translation id="6873128487002733717">તમે આ મોડેલ માટે પ્રીમિયમ મર્યાદા પહોંચ્યા છો. અલગ મોડેલ પસંદ કરો અથવા થોડીવાર પછી ફરી પ્રયાસ કરો.</translation>
+<translation id="2688661132468689309">તમે આ મોડેલ માટે પ્રીમિયમ મર્યાદા પહોંચ્યા છો. તે <ph name="RESET_DURATION"/> માં (<ph name="RESET_TIME"/> વાગ્યે) રીસેટ થાય છે. અલગ મોડેલ પસંદ કરો અથવા ત્યારે ફરી પ્રયાસ કરો.</translation>
 <translation id="3683964919745779766">તમે આ મોડેલ માટેની દર મર્યાદા પહોંચ્યા છો અથવા ક્રેડિટ ખતમ થઈ ગયા છે. કૃપા કરી થોડીવાર પછી ફરી પ્રયાસ કરો.</translation>
 <translation id="7692501701960747469">આ મોડેલ માટે સંપર્કારિત API કી અમાન્ય છે. કૃપા કરી તમારી રૂપરેખા તપાસો અને ફરી પ્રયાસ કરો.</translation>
 <translation id="7905602379229309187">એન્ડપોઇન્ટ હાલમાં વધુ કર્મદટા ભરેલી છે. કૃપા કરી થોડીવાર પછી ફરી પ્રયાસ કરો.</translation>
@@ -2224,12 +2233,12 @@
 <translation id="3852808100039989429">હાય, હું Leo છું. હું Brave નો AI સહાયક છું. હું Qwen VL 30B દ્વારા સંચાલિત છું, જે Alibaba Cloud દ્વારા ઉત્તમ પ્રદર્શન અને વિવિધ ઉપયોગ માટે તૈયાર કરવામાં આવ્યું છે. Qwen Brave માં અમારા પોતાના સુરક્ષિત માળખા મારફતે હોસ્ટ થયેલ છે.<ph name="LINK_BEFORE"/>વધુ જાણો<ph name="LINK_AFTER"/></translation>
 <translation id="8659225822055186905">હાય, હું લિયો છું. હું Brave નો AI સહાયક છું. હું GLM-5.3 Flash દ્વારા સંચાલિત છું, જે Zhipu AI દ્વારા ઉત્કૃષ્ટ પ્રદર્શન અને વિવિધ માળખાકીય ઉદ્દેશ્ય માટે બનાવવામાં આવ્યું છે. GLM-5.3 Flash NEAR દ્વારા હોસ્ટ કરવામાં આવે છે તેમના પોતાના ચકાસી શકાય તેવા ખાનગી સુરક્ષિત ઢાંચા દ્વારા.<ph name="LINK_BEFORE"/>વધુ જાણો<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">હાય, હું લિયો છું. હું Brave તરફથી એક AI સહાયક છું. હું Claude Instant દ્વારા સંચાલિત છું, જે ઉચ્ચારણ અને લખાણ પ્રક્રિયા કરવાના કાર્ય માટે બનાવવામાં આવેલ મોડલ છે અને Brave ની સુરક્ષિત ઇન્ફ્રાસ્ટ્રક્ચર દ્વારા હોસ્ટ કરવામાં આવેલ છે.<ph name="LINK_BEFORE"/>વિશેષ જાણો<ph name="LINK_AFTER"/></translation>
-<translation id="3789772321824682783">હાય, હું લિયો છું. હું Brave નો AI સહાયક છું. હું Claude Haiku દ્વારા સંચાલિત છું, જે Anthropic દ્વારા વાર્તાલાપ અને ટેક્સ્ટ પ્રક્રિયા કાર્યો માટે બનાવવામાં આવ્યું છે. Brave માં અમારાં પોતનાં સુરક્ષિત ઢાંચા દ્વારા Claude Haiku હોસ્ટ કરવામાં આવે છે.<ph name="LINK_BEFORE"/>વધુ જાણો<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">હાય, હું લિયો છું. હું Brave નો AI સહાયક છું. હું Claude Sonnet દ્વારા સંચાલિત છું, જે Anthropic દ્વારા વાર્તાલાપ અને ટેક્સ્ટ પ્રક્રિયા કાર્યો માટે બનાવવામાં આવ્યું છે. Brave માં અમારાં પોતનાં સુરક્ષિત ઢાંચા દ્વારા Claude Sonnet હોસ્ટ કરવામાં આવે છે.<ph name="LINK_BEFORE"/>વધુ જાણો<ph name="LINK_AFTER"/></translation>
-<translation id="3399141352144059821">હાય, હું લિયો છું. હું Brave નો AI સહાયક છું. હું Grok 4.3 દ્વારા સંચાલિત છું, જે xAI દ્વારા શ્રેષ્ઠ પ્રદર્શન અને વિવિધ ઉપયોગકેસ માટે બનાવવામાં આવ્યું છે. Grok 4.3 Brave ના પોતાના સુરક્ષિત ઢાંચા દ્વારા હોસ્ટ કરવામાં આવે છે.<ph name="LINK_BEFORE"/>વધુ જાણો<ph name="LINK_AFTER"/></translation>
-<translation id="8868813509973985458">હાય, હું લિયો છું. હું Brave નો AI સહાયક છું. હું GPT 5.4 દ્વારા સંચાલિત છું, જે OpenAI દ્વારા શ્રેષ્ઠ પ્રદર્શન અને વિવિધ ઉપયોગકેસ માટે બનાવવામાં આવ્યું છે. GPT 5.4 Brave ના પોતાના સુરક્ષિત ઢાંચા દ્વારા હોસ્ટ કરવામાં આવે છે.<ph name="LINK_BEFORE"/>વધુ જાણો<ph name="LINK_AFTER"/></translation>
+<translation id="6676306995311143470">હાય, હું લિયો છું. હું Brave નો AI સહાયક છું. હું Grok 4.6 દ્વારા સંચાલિત છું, જે Amazon Bedrock Mantle પર xAI નું ફ્રન્ટિયર રીઝનિંગ મોડેલ છે. Grok 4.6 Brave ના સુરક્ષિત AWS ઢાંચા દ્વારા સેવા આપવામાં આવે છે.<ph name="LINK_BEFORE"/>વધુ જાણો<ph name="LINK_AFTER"/></translation>
+<translation id="2394656730986208060">હાય, હું લિયો છું. હું Brave નો AI સહાયક છું. હું GPT 5.6 Luna દ્વારા સંચાલિત છું, જે Amazon Bedrock Mantle પર OpenAI નું ઝડપી, લો-લેટન્સી મોડેલ છે. GPT 5.6 Luna Brave ના સુરક્ષિત AWS ઢાંચા દ્વારા સેવા આપવામાં આવે છે.<ph name="LINK_BEFORE"/>વધુ જાણો<ph name="LINK_AFTER"/></translation>
+<translation id="5278969721580944810">હાય, હું લિયો છું. હું Brave નો AI સહાયક છું. હું GPT 5.6 Terra દ્વારા સંચાલિત છું, જે Amazon Bedrock Mantle પર OpenAI નું સંતુલિત પ્રોડક્શન મોડેલ છે. GPT 5.6 Terra Brave ના સુરક્ષિત AWS ઢાંચા દ્વારા સેવા આપવામાં આવે છે.<ph name="LINK_BEFORE"/>વધુ જાણો<ph name="LINK_AFTER"/></translation>
 <translation id="5037359072717016032">હાય, હું લિયો છું. હું Brave નો AI સહાયક છું. હું Mistral Large દ્વારા સંચાલિત છું, જે Mistral દ્વારા શ્રેષ્ઠ કાર્યક્ષમતા અને વિવિધ ઉપયોગ માટે લાગુ પડતા મૉડેલ તરીકે વિકસાવવામાં આવ્યું છે. Brave ના પોતાના સુરક્ષિત ઢાંચા દ્વારા Mistral Large હોસ્ટ કરવામાં આવે છે.<ph name="LINK_BEFORE"/>વધુ જાણો<ph name="LINK_AFTER"/></translation>
-<translation id="4026902371301997261">હાય, હું લિયો છું. હું Brave નો AI સહાયક છું. હું Qwen 3 235B દ્વારા સંચાલિત છું, જે Alibaba Cloud દ્વારા શ્રેષ્ઠ કાર્યક્ષમતા અને ઘણા ઉપયોગકેસ માટે બનાવવામાં આવ્યું છે. Brave ના પોતાના સુરક્ષિત માળખાં દ્વારા Qwen 3 235B હોસ્ટ કરવામાં આવે છે.<ph name="LINK_BEFORE"/>વધુ જાણો<ph name="LINK_AFTER"/></translation>
+<translation id="5475035333915581972">હાય, હું લિયો છું. હું Brave નો AI સહાયક છું. હું Qwen 3.8 Flash Next દ્વારા સંચાલિત છું, જે Alibaba Cloud દ્વારા શ્રેષ્ઠ પ્રદર્શન અને વિવિધ ઉપયોગકેસ માટે બનાવવામાં આવ્યું છે. Qwen 3.8 Flash Next Brave ના પોતાના સુરક્ષિત ઢાંચા દ્વારા હોસ્ટ કરવામાં આવે છે.<ph name="LINK_BEFORE"/>વધુ જાણો<ph name="LINK_AFTER"/></translation>
 <translation id="8720758690351028307">હાય, હું લિયો છું. હું Brave નો AI સહાયક છું. હું DeepSeek V3.2 દ્વારા સંચાલિત છું, જે DeepSeek દ્વારા ઉત્કૃષ્ટ પ્રદર્શન અને વિવિધ માળખાકીય ઉદ્દેશ્ય માટે બનાવવામાં આવ્યું છે. DeepSeek V3.2 Brave માં અમારાં પોતાના સુરક્ષિત ઢાંચા દ્વારા હોસ્ટ કરવામાં આવે છે.<ph name="LINK_BEFORE"/>વધુ જાણો<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">હાય, હું લિયો છું. હું Brave નો AI સહાયક છું. હું Claude Opus દ્વારા સંચાલિત છું, જે Anthropic દ્વારાવાર્તાલાપ અને લખાણ પ્રક્રિયા કાર્યો માટે બનાવવામાં આવ્યું છે. Brave એ Claude Opus ને પોતાનાં સુરક્ષિત ઢાંખાં દ્વારા હોસ્ટ કર્યું છે.<ph name="LINK_BEFORE"/>વધુ જાણો<ph name="LINK_AFTER"/></translation>
 <translation id="7238858567393403597">હાય, હું લિયો છું. હું Brave નો AI સહાયક છું. હું GLM-4-7-Flash દ્વારા સંચાલિત છું, જે Zhipu AI દ્વારા ઉત્કૃષ્ટ પ્રદર્શન અને વિવિધ ઉપયોગકેસ માટે બનાવવામાં આવ્યું છે. GLM-4-7-Flash Brave ના પોતાના સુરક્ષિત ઢાંચા દ્વારા હોસ્ટ કરવામાં આવે છે.<ph name="LINK_BEFORE"/>વધુ જાણો<ph name="LINK_AFTER"/></translation>
@@ -2242,7 +2251,6 @@
 <translation id="4773408460773097271">Ollama</translation>
 <translation id="631371844654031449">ભલામણ કરેલ મોડેલ</translation>
 <translation id="6568044140836233369">બધા મોડેલ બતાવો</translation>
-<translation id="6187065185557150870">ચેટ</translation>
 <translation id="4685048769603134644">પૂર્ણ પાનું ખોલો</translation>
 <translation id="2961040541145689181">નવી ચેટ</translation>
 <translation id="7557539689487606886">પ્રીમિયમ સભ્ય બનો</translation>
@@ -2366,13 +2374,13 @@
 <translation id="887511360213807449">ઇતિહાસ અરક્ષણ અક્ષમ છે</translation>
 <translation id="5380979378058584412">Leo સાથેના તમારા પૂર્વ સંવાદ જોવા માટે, તમારે સંવાદ ઇતિહાસ સક્ષમ કરવો પડશે.</translation>
 <translation id="3185367320601718531">વાતચીત અને પૃથિ્ન્ષલકાવાદ ની રચના</translation>
-<translation id="2793458212460902934">ઝડપભર્યું • શોધ • ટૂલ્સ</translation>
 <translation id="8506027496671575183">શોધ • વિઝન • ટૂલ્સ</translation>
 <translation id="3184606955650139158">ઝડપભર્યું • શોધો • વિઝન</translation>
 <translation id="7465032796278724624">NEAR AI TEE સાથે ચકાસણીપૂર્વક ખાનગી</translation>
 <translation id="8782867266498869301">મોડલને ક્રિયાપ્રતિક્રિયાઓ માટે શ્રેષ્ઠ વિડીયો ઉપયોગ કરવા માટે ગતિશીલપણે બદલાય છે.</translation>
 <translation id="7348809809749151120">ઝડપભર્યું • શોધ</translation>
 <translation id="3213834013136637671">શોધ • વિઝન</translation>
+<translation id="2793458212460902934">ઝડપભર્યું • શોધ • ટૂલ્સ</translation>
 <translation id="5276681919620506371">શોધ • ટૂલ્સ</translation>
 <translation id="7434375176361995333">સારાંશ • ઝડપભર્યું</translation>
 <translation id="3965507912994218570">લિઓ સેટિંગ્સ</translation>
@@ -2934,9 +2942,7 @@ Brave પાસે એક મદદ પણ છે જે DNS ક્વેરી�
 <translation id="3750210661641549834">તમારું એકાઉન્ટ બનાવવા માટે, કૃપા કરીને તમારું ઇમેઇલ સરનામું ચકાસો.</translation>
 <translation id="4351175281479794167">ચકાસણી કોડ દાખલ કરો</translation>
 <translation id="1672793037892810340">તમને એક કોડ સાથેનો ઇમેઇલ મળ્યો હોવો જોઈએ જે તમારે દાખલ કરવાનો રહેશે.</translation>
-<translation id="4821255729182569254">કન્ફર્મેશન ઇમેઇલ ફરી મોકલો</translation>
 <translation id="5837679375142747484">ઇમેઇલ નથી દેખાઈ રહ્યો? તમારું સ્પામ ફોલ્ડર તપાસો અથવા <ph name="BEGIN_LINK"/>ફરી મોકલો<ph name="END_LINK"/>.</translation>
-<translation id="1080588816740959885">ઇમેઇલ નથી દેખાઈ રહ્યો? તમારું સ્પામ ફોલ્ડર તપાસો અથવા ફરી મોકલો.</translation>
 <translation id="1020730839570724178">નોંધણી રદ કરો</translation>
 <translation id="7155125570724238786">તમારો પાસવર્ડ રીસેટ કરવા માટે, કૃપા કરીને તમારું ઇમેઇલ સરનામું ચકાસો.</translation>
 <translation id="816074628631172140">તમારું ઇમેઇલ ચકાસવામાં આવ્યું છે. તમારો પાસવર્ડ રીસેટ પૂર્ણ કરવા માટે નવો પાસવર્ડ સેટ કરો.</translation>

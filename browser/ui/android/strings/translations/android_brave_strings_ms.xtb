@@ -193,9 +193,6 @@
 <translation id="5668852698659986622">Dayakan Iklan Ditaja</translation>
 <translation id="431194936581466649">Bantu menyokong misi Brave untuk membina Web yang bebas dan mengutamakan pengguna dengan Iklan Ditaja. Kami mengukur prestasi iklan secara peribadi, tanpa mengenal pasti anda.</translation>
 <translation id="1939813747486101115">Ketahui lebih lanjut tentang Iklan yang Ditaja</translation>
-<translation id="8347743943525229984">Benarkan Tinjauan Brave</translation>
-<translation id="6022939994702081659">Benarkan Brave memaparkan pautan ke tinjauan peribadi di halaman tab baharu. Tinjauan membantu kami membina ciri yang lebih baik dan mengukur keberkesanan kempen iklan berasaskan pelayar.</translation>
-<translation id="7746496306508543965">Ketahui lebih lanjut tentang tinjauan Brave</translation>
 <translation id="410351446219883937">Automain</translation>
 <translation id="7445411102860286510">Benarkan tapak untuk memainkan video yang diredam secara automatik (disyorkan)</translation>
 <translation id="7837721118676387834">Benarkan video yang diredamkan dimainkan secara automatik untuk tapak web tertentu.</translation>
@@ -223,6 +220,7 @@
 <translation id="9040069796107003510">Ikon Ganjaran Brave</translation>
 <translation id="6333347122924254968">Tunjukkan ikon Ganjaran Brave dalam bar alamat</translation>
 <translation id="4393974575368329991">Bar alat navigasi bawah</translation>
+<translation id="8727059712928806451">Dayakan bar bawah</translation>
 <translation id="1834226716203076292">Tunjukkan bar bawah untuk akses pantas ke laman utama, penanda halaman dan carian</translation>
 <translation id="1422686363939271829">Tetapan ini dimatikan apabila kedudukan bar alamat bawah dipilih</translation>
 <translation id="6587448235155023666">Perubahan anda akan kelihatan apabila anda melancarkan semula Brave</translation>
@@ -398,6 +396,12 @@ Anda pasti anda ingin melakukan tindakan ini?</translation>
 <translation id="8793108040181436796">Widget</translation>
 <translation id="8643377320501056697">Tunjukkan Tapak Teratas</translation>
 <translation id="7275773481201277457">Tunjukkan Statistik Brave</translation>
+<translation id="8516804522688861636">Paparkan laman web yang kerap dilawati</translation>
+<translation id="4546260624932151782">Paparkan keutamaan</translation>
+<translation id="5313967007315987356">Tambahkan tapak</translation>
+<translation id="1773147648972887693">Paparkan laman web yang kerap dilawati</translation>
+<translation id="752098910262610337">Paparkan pintasan</translation>
+<translation id="7134741506051403308">Sembunyikan widget</translation>
 <translation id="7462178177755090262">Skrin Pembukaan</translation>
 <translation id="5365434987337264071">Tab terakhir dibuka</translation>
 <translation id="6019856124237323989">{HOURS, plural,
@@ -1001,6 +1005,13 @@ Jika anda tidak menerima permintaan ini, VPN tidak akan bersambung semula dan sa
 <translation id="7530313002494358590">Mengaktifkan atau menyahdayaaktifkan ciri Brave memerlukan semula penyemak imbas untuk menggunakan perubahan. Sila ketik <ph name="BEGIN_BOLD"/>Mulakan semula sekarang<ph name="END_BOLD"/> selepas Brave Origin selesai mengemas kini.</translation>
 <translation id="1028940738207645746">Betulkah anda mahu menetapkan semula semua tetapan kepada lalai?</translation>
 <translation id="5939518447894949180">Tetapkan semula</translation>
+<translation id="3222790865318305905">Had pengaktifan dicapai</translation>
+<translation id="3787857711016546034">Untuk mengelakkan penipuan, pengaktifan Origin dihadkan kadarnya. Namun anda sentiasa boleh meminta lebih banyak pengaktifan untuk menggunakan lesen Origin anda pada lebih banyak peranti. Hanya klik pilihan Minta lebih banyak pengaktifan, atau <ph name="CONTACT_SUPPORT"/> untuk bantuan.</translation>
+<translation id="6760819753412779585">hubungi sokongan</translation>
+<translation id="571697836019670200">Minta lebih banyak pengaktifan</translation>
+<translation id="9019545131475425538">Memproses…</translation>
+<translation id="7242700630179071243">Sedia untuk diaktifkan</translation>
+<translation id="5463918917265356202">Brave Origin kini aktif pada peranti ini. Untuk mula menggunakan ciri ini, anda perlu memulakan semula pelayar. Adakah anda ingin memulakan semula sekarang?</translation>
 <translation id="8554205386170195281">Beli</translation>
 <translation id="8613144770663526433">Log masuk dengan Brave Wallet</translation>
 <translation id="3696514931437952995">Anda sedang log masuk ke <ph name="ORIGIN"/>. Brave Wallet akan berkongsi alamat dompet anda dengan <ph name="ORIGIN"/>.</translation>

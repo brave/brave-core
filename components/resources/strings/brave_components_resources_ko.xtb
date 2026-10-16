@@ -1881,6 +1881,18 @@
 <translation id="2737084171727561244">포트폴리오로 이동</translation>
 <translation id="3499452861061048987">토큰 추가</translation>
 <translation id="5046066249040287308">Brave 월렛 유틸리티 서비스</translation>
+<translation id="8767749833522980474">암호화폐</translation>
+<translation id="4509084261025090951">카드 받기</translation>
+<translation id="3624463584770657372">카드 번호를 확인하고 사용을 시작하려면 신원을 인증하세요.</translation>
+<translation id="2508337767012636987">탭하여 인증</translation>
+<translation id="703964541421486259">잔액 숨기기</translation>
+<translation id="302114796458112924">잔액 표시</translation>
+<translation id="9083210401924577263">Brave 리워드 카드</translation>
+<translation id="2433507940547922241">모양</translation>
+<translation id="3435738964857648380">보안</translation>
+<translation id="6700561332544287722">다음에 잠금 해제 필요</translation>
+<translation id="5605360570977617291">홈에서 <ph name="CARD_NAME"/>을(를) 숨기시겠어요?</translation>
+<translation id="2721464457853369512"><ph name="CARD_NAME"/> 잔액은 변경되지 않습니다. 이 작업은 홈에서 카드만 숨깁니다. 설정의 지갑에서 언제든지 다시 표시할 수 있습니다.</translation>
 <translation id="3155170474926428993">Tor 런처</translation>
 <translation id="3745016858329272300">일반 정보</translation>
 <translation id="4045404575593562245">Tor 제어 이벤트</translation>
@@ -1920,7 +1932,6 @@
 <translation id="6261915643960475695">비즈니스</translation>
 <translation id="8265589281845759879">자동차</translation>
 <translation id="7726519849288907308">셀럽</translation>
-<translation id="8767749833522980474">암호화폐</translation>
 <translation id="7577010593836079522">문화</translation>
 <translation id="6807791860691150411">교육</translation>
 <translation id="3706423975342040244">엔터테인먼트</translation>
@@ -2099,9 +2110,6 @@
 <translation id="3067105725259639716">Brave News 구성</translation>
 <translation id="6286510487460330478">바로가기 구성</translation>
 <translation id="9214819486716388964">Brave Talk 표시</translation>
-<translation id="5950760360751948276">북마크바 항상 표시</translation>
-<translation id="2960757369920422313">NTP 위에 북마크바 표시</translation>
-<translation id="522953399371747698">북마크바 숨기기</translation>
 <translation id="9079813619990532635">모든 북마크 내보내기</translation>
 <translation id="134184943774258988">모든 북마크 버튼 표시 여부 토글</translation>
 <translation id="2158862020143233462">Shields 토글</translation>
@@ -2216,6 +2224,7 @@
 <translation id="5820497878628354073">상태 코드: <ph name="STATUS_CODE"/>, 내부 상태 코드: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">프리미엄 답변 한도에 도달했습니다. 몇 시간 후 다시 시도해보세요.</translation>
 <translation id="6873128487002733717">이 모델의 프리미엄 한도에 도달했습니다. 다른 모델을 선택하거나 나중에 다시 시도해 주세요.</translation>
+<translation id="2688661132468689309">이 모델의 프리미엄 한도에 도달했습니다. 한도는 <ph name="RESET_DURATION"/> 후(<ph name="RESET_TIME"/>)에 재설정됩니다. 다른 모델을 선택하거나 그때 다시 시도해 주세요.</translation>
 <translation id="3683964919745779766">이 모델의 요청 한도에 도달했거나 크레딧이 부족합니다. 나중에 다시 시도해 주세요.</translation>
 <translation id="7692501701960747469">이 모델에 구성된 API 키가 잘못되었습니다. 구성을 확인한 후 다시 시도하세요.</translation>
 <translation id="7905602379229309187">현재 엔드포인트에 과부하가 걸렸습니다. 나중에 다시 시도하세요.</translation>
@@ -2224,12 +2233,12 @@
 <translation id="3852808100039989429">안녕하세요, 저는 레오예요. 저는 Brave가 완전히 자체 호스팅하는 AI 어시스턴트로, 다양한 활용 사례에 맞춰 높은 성능을 발휘하도록 알리바바 클라우드에서 개발한 Qwen VL 30B 모델을 기반으로 구동됩니다. Qwen은 Brave의 안전한 인프라를 통해 호스팅됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
 <translation id="8659225822055186905">안녕하세요, 저는 레오예요. 저는 Brave가 제공하는 AI 어시스턴트로, 다양한 활용 사례에 맞춰 높은 성능을 발휘하도록 Zhipu AI에서 개발한 GLM-5.3 Flash 모델을 기반으로 구동됩니다. GLM-5.3 Flash는 자체 검증 가능한 안전한 인프라를 통해 NEAR에서 호스팅됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">안녕하세요, 저는 레오예요. 저는 Brave가 프록시하고, 대화문과 텍스트 처리 성능을 제공하기 위해 앤쓰라픽에서 개발한 클로드 인스턴트 모델을 기반으로 구동됩니다. 클로드 인스턴트는 Brave의 안전한 인프라를 통해 호스팅됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
-<translation id="3789772321824682783">안녕하세요, 저는 레오예요. 저는 Brave가 프록시하고, 대화문과 텍스트 처리 성능을 제공하기 위해 앤쓰라픽에서 개발한 클로드 하이쿠 모델을 기반으로 구동됩니다. 클로드 하이쿠는 Brave의 안전한 인프라를 통해 호스팅됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">안녕하세요, 저는 레오예요. 저는 Brave가 프록시하고, 대화문과 텍스트 처리 성능을 제공하기 위해 앤쓰라픽에서 개발한 클로드 소네트 모델을 기반으로 구동됩니다. 클로드 소네트는 Brave의 안전한 인프라를 통해 호스팅됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
-<translation id="3399141352144059821">안녕하세요, 저는 레오예요. 저는 Brave가 완전히 자체 호스팅하는 AI 어시스턴트로, 다양한 활용 사례에 맞춰 높은 성능을 발휘하도록 xAI에서 개발한 Grok 4.3 모델을 기반으로 구동됩니다. Grok 4.3은 Brave의 안전한 인프라를 통해 호스팅됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
-<translation id="8868813509973985458">안녕하세요, 저는 레오예요. 저는 Brave가 완전히 자체 호스팅하는 AI 어시스턴트로, 다양한 활용 사례에 맞춰 높은 성능을 발휘하도록 OpenAI에서 개발한 GPT 5.4 모델을 기반으로 구동됩니다. GPT 5.4는 Brave의 안전한 인프라를 통해 호스팅됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
+<translation id="6676306995311143470">안녕하세요, 저는 레오예요. 저는 Brave의 AI 어시스턴트로, Amazon Bedrock Mantle에서 제공되는 xAI의 최첨단 추론 모델인 Grok 4.6을 기반으로 구동됩니다. Grok 4.6은 Brave의 안전한 AWS 인프라를 통해 제공됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
+<translation id="2394656730986208060">안녕하세요, 저는 레오예요. 저는 Brave의 AI 어시스턴트로, Amazon Bedrock Mantle에서 제공되는 OpenAI의 빠르고 낮은 지연 시간의 모델인 GPT 5.6 Luna를 기반으로 구동됩니다. GPT 5.6 Luna는 Brave의 안전한 AWS 인프라를 통해 제공됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
+<translation id="5278969721580944810">안녕하세요, 저는 레오예요. 저는 Brave의 AI 어시스턴트로, Amazon Bedrock Mantle에서 제공되는 OpenAI의 균형 잡힌 프로덕션 모델인 GPT 5.6 Terra를 기반으로 구동됩니다. GPT 5.6 Terra는 Brave의 안전한 AWS 인프라를 통해 제공됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
 <translation id="5037359072717016032">안녕하세요, 저는 레오예요. 저는 Brave가 완전히 자체 호스팅하는 AI 어시스턴트로, 다양한 활용 사례에 맞춰 높은 성능을 발휘하도록 Mistral에서 개발한 Mistral Large 모델을 기반으로 구동됩니다. Mistral Large는 Brave의 안전한 인프라를 통해 호스팅됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
-<translation id="4026902371301997261">안녕하세요, 저는 레오예요. 저는 Brave가 완전히 자체 호스팅하는 AI 어시스턴트로, 다양한 활용 사례에 맞춰 높은 성능을 발휘하도록 Alibaba Cloud에서 개발한 Qwen 3 235B 모델을 기반으로 구동됩니다. Qwen 3 235B는 Brave의 안전한 인프라를 통해 호스팅됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
+<translation id="5475035333915581972">안녕하세요, 저는 레오예요. 저는 Brave가 완전히 자체 호스팅하는 AI 어시스턴트로, 다양한 활용 사례에 맞춰 높은 성능을 발휘하도록 Alibaba Cloud에서 개발한 Qwen 3.8 Flash Next 모델을 기반으로 구동됩니다. Qwen 3.8 Flash Next는 Brave의 안전한 인프라를 통해 호스팅됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
 <translation id="8720758690351028307">안녕하세요, 저는 레오예요. 저는 Brave가 완전히 자체 호스팅하는 AI 어시스턴트로, 다양한 활용 사례에 맞춰 높은 성능을 발휘하도록 Deepseek에서 개발한 Deepseek V3.2 모델을 기반으로 구동됩니다. Deepseek V3.2은 Brave의 안전한 인프라를 통해 호스팅됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">안녕하세요, 저는 레오예요. 저는 Brave가 완전히 자체 호스팅하는 AI 어시스턴트로, 대화문과 텍스트 처리 성능을 제공하기 위해 Anthropic에서 개발한 클로드 오퍼스 모델을 기반으로 구동됩니다. 클로드 오퍼스는 Brave의 안전한 인프라를 통해 호스팅됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
 <translation id="7238858567393403597">안녕하세요, 저는 레오예요. 저는 Brave가 완전히 자체 호스팅하는 AI 어시스턴트로, 다양한 활용 사례에 맞춰 높은 성능을 발휘하도록 Zhipu AI에서 개발한 GLM-4-7-Flash 모델을 기반으로 구동됩니다. GLM-4-7-Flash는 Brave의 안전한 인프라를 통해 호스팅됩니다.<ph name="LINK_BEFORE"/>자세히 알아보기<ph name="LINK_AFTER"/></translation>
@@ -2242,7 +2251,6 @@
 <translation id="4773408460773097271">Ollama</translation>
 <translation id="631371844654031449">추천 모델</translation>
 <translation id="6568044140836233369">모든 모델 표시</translation>
-<translation id="6187065185557150870">채팅</translation>
 <translation id="4685048769603134644">전체 페이지 열기</translation>
 <translation id="2961040541145689181">새 채팅</translation>
 <translation id="7557539689487606886">프리미엄 가입</translation>
@@ -2366,13 +2374,13 @@
 <translation id="887511360213807449">기록을 비활성화함</translation>
 <translation id="5380979378058584412">레오와의 이전 대화를 보려면 대화 기록을 활성화해야 합니다.</translation>
 <translation id="3185367320601718531">대화 및 텍스트 생성</translation>
-<translation id="2793458212460902934">빠름 • 검색 • 도구</translation>
 <translation id="8506027496671575183">검색 • 비전 • 도구</translation>
 <translation id="3184606955650139158">빠름 • 검색 • 비전</translation>
 <translation id="7465032796278724624">NEAR AI TEE로 입증 가능한 개인 정보 보호</translation>
 <translation id="8782867266498869301">최고의 작업을 위해 동적으로 모델을 변경합니다</translation>
 <translation id="7348809809749151120">빠름 • 검색</translation>
 <translation id="3213834013136637671">검색 • 비전</translation>
+<translation id="2793458212460902934">빠름 • 검색 • 도구</translation>
 <translation id="5276681919620506371">검색 • 도구</translation>
 <translation id="7434375176361995333">요약 • 빠름</translation>
 <translation id="3965507912994218570">레오 설정</translation>
@@ -2936,9 +2944,7 @@ Brave에는 VPN 연결에서 DNS 쿼리가 생성되는 방식을 필터링하�
 <translation id="3750210661641549834">계정을 만들려면 이메일 주소를 인증해 주세요.</translation>
 <translation id="4351175281479794167">인증 코드 입력</translation>
 <translation id="1672793037892810340">입력해야 할 코드가 포함된 이메일을 받으셨을 것입니다.</translation>
-<translation id="4821255729182569254">확인 이메일 다시 보내기</translation>
 <translation id="5837679375142747484">이메일이 보이지 않습니까? 스팸 폴더를 확인하거나 <ph name="BEGIN_LINK"/>다시 전송<ph name="END_LINK"/>하세요.</translation>
-<translation id="1080588816740959885">이메일이 보이지 않습니까? 스팸 폴더를 확인하거나 다시 전송하세요.</translation>
 <translation id="1020730839570724178">등록 취소</translation>
 <translation id="7155125570724238786">비밀번호를 재설정하려면 이메일 주소를 인증해 주세요.</translation>
 <translation id="816074628631172140">이메일이 인증되었습니다. 비밀번호 재설정을 완료하려면 새 비밀번호를 설정하세요.</translation>
