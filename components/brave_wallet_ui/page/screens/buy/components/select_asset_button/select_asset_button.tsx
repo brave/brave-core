@@ -58,7 +58,7 @@ export const SelectAssetButton = (props: SelectAssetButtonProps) => {
 
   // Computed
   const assetSymbol = selectedAsset ? getAssetSymbol(selectedAsset) : ''
-  const assetURL = selectedAsset?.symbolImageUrl ?? ''
+  const assetURL = selectedAsset?.symbol ?? ''
 
   return (
     <Column alignItems='flex-start'>

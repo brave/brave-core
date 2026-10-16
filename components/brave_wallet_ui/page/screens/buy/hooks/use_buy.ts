@@ -76,11 +76,12 @@ const MAX_QUOTE_RESPONSE_IDENTIFIER = 'Source amount is above'
 const DEFAULT_ASSET: MeldCryptoCurrency = {
   'currencyCode': 'ETH',
   'name': 'Ethereum',
+  'decimalPlaces': 18,
   'chainCode': 'ETH',
   'chainName': 'Ethereum',
   'chainId': '1',
-  'contractAddress': '0x0000000000000000000000000000000000000000',
-  'symbolImageUrl': 'https://images-currency.meld.io/crypto/ETH/symbol.png',
+  'contract': '0x0000000000000000000000000000000000000000',
+  'symbol': 'https://images-currency.meld.io/crypto/ETH/symbol.png',
 }
 
 const DEFAULT_PAYMENT_METHOD: MeldPaymentMethod = {
@@ -109,11 +110,16 @@ export const useBuy = () => {
   const history = useHistory()
   const query = useQuery()
 
+  // State
+  const [selectedCountryCode, setSelectedCountryCode] = useState<string>('US')
+
   // Queries
   const { data: defaultFiatCurrency = 'USD' } = useGetDefaultFiatCurrencyQuery()
-  const { data: fiatCurrencies } = useGetMeldFiatCurrenciesQuery()
+  const { data: fiatCurrencies } = useGetMeldFiatCurrenciesQuery({
+    country: selectedCountryCode,
+  })
   const { data: meldSupportedBuyAssets, isLoading: isLoadingAssets } =
-    useGetMeldCryptoCurrenciesQuery()
+    useGetMeldCryptoCurrenciesQuery({ country: selectedCountryCode })
   const { accounts } = useAccountsQuery()
   const { data: countries, isLoading: isLoadingCountries } =
     useGetMeldCountriesQuery()
@@ -143,7 +149,6 @@ export const useBuy = () => {
   const [timeUntilNextQuote, setTimeUntilNextQuote] = useState<
     number | undefined
   >(undefined)
-  const [selectedCountryCode, setSelectedCountryCode] = useState<string>('US')
   const [selectedPaymentMethod, setSelectedPaymentMethod] =
     useState<MeldPaymentMethod>(DEFAULT_PAYMENT_METHOD)
   const [isCreatingWidgetFor, setIsCreatingWidgetFor] = useState<
@@ -189,7 +194,7 @@ export const useBuy = () => {
     () => ({
       coin: getMeldTokensCoinType(selectedMeldAsset),
       chainId: getMeldTokensChainId(selectedMeldAsset) ?? '',
-      contractAddress: selectedMeldAsset.contractAddress || '',
+      contractAddress: selectedMeldAsset.contract || '',
     }),
     [selectedMeldAsset],
   )

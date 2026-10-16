@@ -21,7 +21,6 @@
 #include "base/test/task_environment.h"
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
-#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/meld_integration.mojom.h"
 #include "components/grit/brave_components_strings.h"
 #include "net/base/url_search_params.h"
@@ -198,6 +197,7 @@ class MeldIntegrationServiceUnitTest : public testing::Test {
 
   void TestGetFiatCurrencies(
       const std::string& content,
+      const std::string& country,
       MeldIntegrationService::GetFiatCurrenciesCallback callback,
       const net::HttpStatusCode http_status = net::HTTP_OK) {
     SetInterceptor(content, http_status);
@@ -214,12 +214,13 @@ class MeldIntegrationServiceUnitTest : public testing::Test {
               std::move(callback).Run(std::move(fiat_currencies), errors);
               run_loop.Quit();
             });
-    meld_integration_service_->GetFiatCurrencies(mock_callback.Get());
+    meld_integration_service_->GetFiatCurrencies(country, mock_callback.Get());
     run_loop.Run();
   }
 
   void TestGetCryptoCurrencies(
       const std::string& content,
+      const std::string& country,
       MeldIntegrationService::GetCryptoCurrenciesCallback callback,
       const net::HttpStatusCode http_status = net::HTTP_OK) {
     SetInterceptor(content, http_status);
@@ -236,7 +237,8 @@ class MeldIntegrationServiceUnitTest : public testing::Test {
               std::move(callback).Run(std::move(crypto_currencies), errors);
               run_loop.Quit();
             });
-    meld_integration_service_->GetCryptoCurrencies(mock_callback.Get());
+    meld_integration_service_->GetCryptoCurrencies(country,
+                                                   mock_callback.Get());
     run_loop.Run();
   }
 
@@ -912,20 +914,18 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCryptoQuotes) {
 
 TEST_F(MeldIntegrationServiceUnitTest, GetPaymentMethods) {
   const auto url = MeldIntegrationService::GetPaymentMethodsURL("US", "USD");
-  EXPECT_EQ(url.path(), "/service-providers/properties/payment-methods");
+  EXPECT_EQ(url.path(), "/network-partner/supported/payment-methods");
   EXPECT_THAT(net::UrlSearchParams(url).params(),
-              ElementsAre(Pair("accountFilter", "false"),  //
-                          Pair("countries", "US"),         //
-                          Pair("fiatCurrencies", "USD"),   //
-                          Pair("includeServiceProviderDetails", "false"),
-                          Pair("statuses", "LIVE,RECENTLY_ADDED")));
+              ElementsAre(Pair("category", "CRYPTO_ONRAMP"),
+                          Pair("country", "US"),  //
+                          Pair("currencyCode", "USD")));
   TestGetPaymentMethods(
       R"([
   {
-    "paymentMethod": "ACH",
+    "method": "ACH",
     "name": null,
     "paymentType": "BANK_TRANSFER",
-    "logos": {
+    "logo": {
       "dark": "https://images-paymentMethod.meld.io/ACH/logo_dark.png",
       "light": "https://images-paymentMethod.meld.io/ACH/logo_light.png"
     }
@@ -959,10 +959,10 @@ TEST_F(MeldIntegrationServiceUnitTest, GetPaymentMethods) {
   TestGetPaymentMethods(
       R"([
   {
-    "paymentMethod": "ACH",
+    "method": "ACH",
     "name": "ACH",
     "paymentType": "BANK_TRANSFER",
-    "logos": {
+    "logo": {
       "dark": null,
       "light": "https://images-paymentMethod.meld.io/ACH/logo_light.png"
     }
@@ -993,10 +993,10 @@ TEST_F(MeldIntegrationServiceUnitTest, GetPaymentMethods) {
 
   TestGetPaymentMethods(
       R"({
-    "paymentMethod": "ACH",
+    "method": "ACH",
     "name": "ACH",
     "paymentType": "BANK_TRANSFER",
-    "logos": {
+    "logo": {
       "dark": null,
       "light": "https://images-paymentMethod.meld.io/ACH/logo_light.png"
     }
@@ -1016,7 +1016,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetPaymentMethods) {
       R"([{
     "name": "ACH",
     "paymentType": "BANK_TRANSFER",
-    "logos": {
+    "logo": {
       "dark": null,
       "light": "https://images-paymentMethod.meld.io/ACH/logo_light.png"
     }
@@ -1070,25 +1070,28 @@ TEST_F(MeldIntegrationServiceUnitTest, GetPaymentMethods) {
 }
 
 TEST_F(MeldIntegrationServiceUnitTest, GetFiatCurrencies) {
-  const auto url = MeldIntegrationService::GetFiatCurrenciesURL();
-  EXPECT_EQ(url.path(), "/service-providers/properties/fiat-currencies");
+  const auto url = MeldIntegrationService::GetFiatCurrenciesURL("US");
+  EXPECT_EQ(url.path(), "/network-partner/supported/currencies");
   EXPECT_THAT(net::UrlSearchParams(url).params(),
-              ElementsAre(Pair("accountFilter", "false"),
-                          Pair("includeServiceProviderDetails", "false"),
-                          Pair("statuses", "LIVE,RECENTLY_ADDED")));
+              ElementsAre(Pair("category", "CRYPTO_ONRAMP"),
+                          Pair("country", "US"),  //
+                          Pair("type", "FIAT")));
 
   TestGetFiatCurrencies(
-      R"([
+      R"({
+  "currencies": [
   {
     "currencyCode": "AFN",
     "name": null,
-    "symbolImageUrl": "https://images-currency.meld.io/fiat/AFN/symbol.png"
+    "symbol": "https://images-currency.meld.io/fiat/AFN/symbol.png"
   },
   {
     "currencyCode": "DZD",
     "name": "Algerian Dinar",
-    "symbolImageUrl": "https://images-currency.meld.io/fiat/DZD/symbol.png"
-  }])",
+    "decimalPlaces": 2,
+    "symbol": "https://images-currency.meld.io/fiat/DZD/symbol.png"
+  }]})",
+      "US",
       base::BindLambdaForTesting(
           [](std::optional<std::vector<mojom::MeldFiatCurrencyPtr>>
                  fiat_currencies,
@@ -1099,7 +1102,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetFiatCurrencies) {
                           [](const auto& item) {
                             return item->currency_code == "AFN" &&
                                    !item->name &&
-                                   item->symbol_image_url ==
+                                   item->symbol ==
                                        "https://images-currency.meld.io/fiat/"
                                        "AFN/symbol.png";
                           }),
@@ -1109,34 +1112,23 @@ TEST_F(MeldIntegrationServiceUnitTest, GetFiatCurrencies) {
                           [](const auto& item) {
                             return item->currency_code == "DZD" &&
                                    item->name == "Algerian Dinar" &&
-                                   item->symbol_image_url ==
+                                   item->decimal_places == 2 &&
+                                   item->symbol ==
                                        "https://images-currency.meld.io/fiat/"
                                        "DZD/symbol.png";
                           }),
                       1);
           }));
 
+  // Old, unwrapped array shape is no longer valid.
   TestGetFiatCurrencies(
-      R"({
+      R"([
+  {
     "currencyCode": "AFN",
     "name": null,
-    "symbolImageUrl": "https://images-currency.meld.io/fiat/AFN/symbol.png"
-  })",
-      base::BindLambdaForTesting(
-          [](std::optional<std::vector<mojom::MeldFiatCurrencyPtr>>
-                 fiat_currencies,
-             const std::optional<std::vector<std::string>>& errors) {
-            EXPECT_TRUE(errors.has_value());
-            EXPECT_EQ(*errors,
-                      std::vector<std::string>{
-                          l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)});
-          }));
-
-  TestGetFiatCurrencies(
-      R"([{
-    "name": null,
-    "symbolImageUrl": "https://images-currency.meld.io/fiat/AFN/symbol.png"
+    "symbol": "https://images-currency.meld.io/fiat/AFN/symbol.png"
   }])",
+      "US",
       base::BindLambdaForTesting(
           [](std::optional<std::vector<mojom::MeldFiatCurrencyPtr>>
                  fiat_currencies,
@@ -1148,7 +1140,24 @@ TEST_F(MeldIntegrationServiceUnitTest, GetFiatCurrencies) {
           }));
 
   TestGetFiatCurrencies(
-      "some wrong data",
+      R"({
+  "currencies": [{
+    "name": null,
+    "symbol": "https://images-currency.meld.io/fiat/AFN/symbol.png"
+  }]})",
+      "US",
+      base::BindLambdaForTesting(
+          [](std::optional<std::vector<mojom::MeldFiatCurrencyPtr>>
+                 fiat_currencies,
+             const std::optional<std::vector<std::string>>& errors) {
+            EXPECT_TRUE(errors.has_value());
+            EXPECT_EQ(*errors,
+                      std::vector<std::string>{
+                          l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)});
+          }));
+
+  TestGetFiatCurrencies(
+      "some wrong data", "US",
       base::BindLambdaForTesting(
           [](std::optional<std::vector<mojom::MeldFiatCurrencyPtr>>
                  fiat_currencies,
@@ -1171,6 +1180,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetFiatCurrencies) {
     "requestId": "356dd2b40fa55037bfe9d190b6438f59",
     "timestamp": "2024-04-05T07:54:01.318455Z"
   })",
+      "US",
       base::BindLambdaForTesting(
           [&](std::optional<std::vector<mojom::MeldFiatCurrencyPtr>>
                   fiat_currencies,
@@ -1184,89 +1194,82 @@ TEST_F(MeldIntegrationServiceUnitTest, GetFiatCurrencies) {
 }
 
 TEST_F(MeldIntegrationServiceUnitTest, GetCryptoCurrencies) {
-  const auto url = MeldIntegrationService::GetCryptoCurrenciesURL();
+  const auto url = MeldIntegrationService::GetCryptoCurrenciesURL("US");
 
-  std::string expected_crypto_chains =
-      "BTC,FIL,ZEC,ETH,SOLANA,FTM,BSC,POLYGON,OPTIMISM,"
-      "AURORA,CELO,ARBITRUM,AVAXC,ADA";
-  if (IsPolkadotEnabled()) {
-    expected_crypto_chains += ",ASSETHUB";
-  }
-
-  EXPECT_EQ(url.path(), "/service-providers/properties/crypto-currencies");
+  EXPECT_EQ(url.path(), "/network-partner/supported/currencies");
   EXPECT_THAT(net::UrlSearchParams(url).params(),
-              ElementsAre(Pair("accountFilter", "false"),
-                          Pair("cryptoChains", expected_crypto_chains),
-                          Pair("includeServiceProviderDetails", "false"),
-                          Pair("statuses", "LIVE,RECENTLY_ADDED")));
+              ElementsAre(Pair("category", "CRYPTO_ONRAMP"),
+                          Pair("country", "US"),  //
+                          Pair("type", "CRYPTO")));
 
   TestGetCryptoCurrencies(
-      R"([
+      R"({
+  "currencies": [
   {
     "currencyCode": "USDT_KCC",
     "name": null,
     "chainCode": "KCC",
     "chainName": "KuCoin Community Chain",
     "chainId": "137",
-    "contractAddress": "0xe41d2489571d322189246dafa5ebde1f4699f498",
-    "symbolImageUrl": "https://images-currency.meld.io/crypto/USDT_KCC/symbol.png"
+    "contract": "0xe41d2489571d322189246dafa5ebde1f4699f498",
+    "symbol": "https://images-currency.meld.io/crypto/USDT_KCC/symbol.png"
   },
   {
     "currencyCode": "00",
     "name": "00 Token",
+    "decimalPlaces": 18,
     "chainCode": "ETH",
     "chainName": "Ethereum",
     "chainId": "1",
-    "contractAddress": "0x111111111117dc0aa78b770fa6a738034120c302",
-    "symbolImageUrl": "https://images-currency.meld.io/crypto/00/symbol.png"
-  }])",
+    "contract": "0x111111111117dc0aa78b770fa6a738034120c302",
+    "symbol": "https://images-currency.meld.io/crypto/00/symbol.png"
+  }]})",
+      "US",
       base::BindLambdaForTesting(
           [](std::optional<std::vector<mojom::MeldCryptoCurrencyPtr>>
                  crypto_currencies,
              const std::optional<std::vector<std::string>>& errors) {
             EXPECT_FALSE(errors.has_value());
+            // KCC is not in the supported chain allowlist, so it's filtered
+            // out of the parsed result.
             EXPECT_EQ(
                 std::ranges::count_if(
                     *crypto_currencies,
                     [](const auto& item) {
-                      return item->currency_code == "USDT_KCC" && !item->name &&
-                             item->chain_code == "KCC" &&
-                             item->chain_name == "KuCoin Community Chain" &&
-                             item->chain_id == "0x89" &&
-                             item->contract_address ==
-                                 "0xe41d2489571d322189246dafa5ebde1f4699f498" &&
-                             item->symbol_image_url ==
-                                 "https://images-currency.meld.io/crypto/"
-                                 "USDT_KCC/symbol.png";
+                      return item->currency_code == "USDT_KCC";
                     }),
-                1);
+                0);
             EXPECT_EQ(
                 std::ranges::count_if(
                     *crypto_currencies,
                     [](const auto& item) {
                       return item->currency_code == "00" &&
                              item->name == "00 Token" &&
+                             item->decimal_places == 18 &&
                              item->chain_code == "ETH" &&
                              item->chain_name == "Ethereum" &&
                              item->chain_id == "0x1" &&
-                             item->contract_address ==
+                             item->contract ==
                                  "0x111111111117dc0aa78b770fa6a738034120c302" &&
-                             item->symbol_image_url ==
+                             item->symbol ==
                                  "https://images-currency.meld.io/crypto/00/"
                                  "symbol.png";
                     }),
                 1);
           }));
+
+  // Old, unwrapped array shape is no longer valid.
   TestGetCryptoCurrencies(
-      R"({
+      R"([{
     "currencyCode": "USDT_KCC",
     "name": null,
     "chainCode": "KCC",
     "chainName": "KuCoin Community Chain",
     "chainId": "0",
-    "contractAddress": "0xe41d2489571d322189246dafa5ebde1f4699f498",
-    "symbolImageUrl": "https://images-currency.meld.io/crypto/USDT_KCC/symbol.png"
-  })",
+    "contract": "0xe41d2489571d322189246dafa5ebde1f4699f498",
+    "symbol": "https://images-currency.meld.io/crypto/USDT_KCC/symbol.png"
+  }])",
+      "US",
       base::BindLambdaForTesting(
           [](std::optional<std::vector<mojom::MeldCryptoCurrencyPtr>>
                  crypto_currencies,
@@ -1278,14 +1281,16 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCryptoCurrencies) {
           }));
 
   TestGetCryptoCurrencies(
-      R"([{
+      R"({
+  "currencies": [{
     "name": null,
     "chainCode": "KCC",
     "chainName": "KuCoin Community Chain",
     "chainId": "0",
-    "contractAddress": "0xe41d2489571d322189246dafa5ebde1f4699f498",
-    "symbolImageUrl": "https://images-currency.meld.io/crypto/USDT_KCC/symbol.png"
-  }])",
+    "contract": "0xe41d2489571d322189246dafa5ebde1f4699f498",
+    "symbol": "https://images-currency.meld.io/crypto/USDT_KCC/symbol.png"
+  }]})",
+      "US",
       base::BindLambdaForTesting(
           [](std::optional<std::vector<mojom::MeldCryptoCurrencyPtr>>
                  crypto_currencies,
@@ -1297,7 +1302,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCryptoCurrencies) {
           }));
 
   TestGetCryptoCurrencies(
-      "some wrong data",
+      "some wrong data", "US",
       base::BindLambdaForTesting(
           [](std::optional<std::vector<mojom::MeldCryptoCurrencyPtr>>
                  crypto_currencies,
@@ -1320,6 +1325,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCryptoCurrencies) {
     "requestId": "356dd2b40fa55037bfe9d190b6438f59",
     "timestamp": "2024-04-05T07:54:01.318455Z"
   })",
+      "US",
       base::BindLambdaForTesting(
           [&](std::optional<std::vector<mojom::MeldCryptoCurrencyPtr>>
                   crypto_currencies,
@@ -1334,23 +1340,22 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCryptoCurrencies) {
 
 TEST_F(MeldIntegrationServiceUnitTest, GetCountries) {
   const auto url = MeldIntegrationService::GetCountriesURL();
-  EXPECT_EQ(url.path(), "/service-providers/properties/countries");
+  EXPECT_EQ(url.path(), "/network-partner/supported/countries");
   EXPECT_THAT(net::UrlSearchParams(url).params(),
-              ElementsAre(Pair("accountFilter", "false"),
-                          Pair("includeServiceProviderDetails", "false"),
-                          Pair("statuses", "LIVE,RECENTLY_ADDED")));
+              ElementsAre(Pair("category", "CRYPTO_ONRAMP")));
   TestGetCountries(
-      R"([
+      R"({
+  "countries": [
   {
     "countryCode": "AF",
     "name": "Afghanistan",
-    "flagImageUrl": "https://images-country.meld.io/AF/flag.svg"
+    "flag": "https://images-country.meld.io/AF/flag.svg"
   },
   {
     "countryCode": "AL",
     "name": "Albania",
-    "flagImageUrl": "https://images-country.meld.io/AL/flag.svg"
-  }])",
+    "flag": "https://images-country.meld.io/AL/flag.svg"
+  }]})",
       base::BindLambdaForTesting(
           [](std::optional<std::vector<mojom::MeldCountryPtr>> countries,
              const std::optional<std::vector<std::string>>& errors) {
@@ -1361,7 +1366,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCountries) {
                     [](const auto& item) {
                       return item->country_code == "AF" &&
                              item->name == "Afghanistan" &&
-                             item->flag_image_url ==
+                             item->flag ==
                                  "https://images-country.meld.io/AF/flag.svg";
                     }),
                 1);
@@ -1371,17 +1376,35 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCountries) {
                     [](const auto& item) {
                       return item->country_code == "AL" &&
                              item->name == "Albania" &&
-                             item->flag_image_url ==
+                             item->flag ==
                                  "https://images-country.meld.io/AL/flag.svg";
                     }),
                 1);
           }));
+  // Old, unwrapped array shape is no longer valid.
   TestGetCountries(
       R"([
   {
+    "countryCode": "AL",
     "name": "Albania",
-    "flagImageUrl": "https://images-country.meld.io/AL/flag.svg"
+    "flag": "https://images-country.meld.io/AL/flag.svg"
   }])",
+      base::BindLambdaForTesting(
+          [](std::optional<std::vector<mojom::MeldCountryPtr>> countries,
+             const std::optional<std::vector<std::string>>& errors) {
+            EXPECT_TRUE(errors.has_value());
+            EXPECT_EQ(*errors,
+                      std::vector<std::string>{
+                          l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)});
+          }));
+
+  TestGetCountries(
+      R"({
+  "countries": [
+  {
+    "name": "Albania",
+    "flag": "https://images-country.meld.io/AL/flag.svg"
+  }]})",
       base::BindLambdaForTesting(
           [](std::optional<std::vector<mojom::MeldCountryPtr>> countries,
              const std::optional<std::vector<std::string>>& errors) {

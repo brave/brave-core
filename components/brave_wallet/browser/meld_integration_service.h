@@ -53,13 +53,15 @@ class MeldIntegrationService : public mojom::MeldIntegrationService {
                          const std::string& source_currency_code,
                          GetPaymentMethodsCallback callback) override;
 
-  static GURL GetFiatCurrenciesURL();
+  static GURL GetFiatCurrenciesURL(const std::string& country);
 
-  void GetFiatCurrencies(GetFiatCurrenciesCallback callback) override;
+  void GetFiatCurrencies(const std::string& country,
+                         GetFiatCurrenciesCallback callback) override;
 
-  static GURL GetCryptoCurrenciesURL();
+  static GURL GetCryptoCurrenciesURL(const std::string& country);
 
-  void GetCryptoCurrencies(GetCryptoCurrenciesCallback callback) override;
+  void GetCryptoCurrencies(const std::string& country,
+                           GetCryptoCurrenciesCallback callback) override;
 
   static GURL GetCountriesURL();
 
