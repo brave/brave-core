@@ -190,6 +190,11 @@ class MockConversationHandlerClient : public mojom::ConversationUI {
                std::vector<mojom::ToolInfoPtr> tools),
               (override));
 
+  MOCK_METHOD(void,
+              OnVisionModelSwitchChanged,
+              (const std::optional<std::string>& model_key),
+              (override));
+
   MOCK_METHOD(void, OnConversationDeleted, (), (override));
 
  private:
@@ -402,6 +407,23 @@ class ConversationHandlerUnitTest : public testing::Test {
     base::test::TestFuture<mojom::ConversationStatePtr> state_future;
     conversation_handler_->GetState(state_future.GetCallback());
     return state_future.Take();
+  }
+
+  // Switches to |model_key| and swaps in a mock engine for the one
+  // ChangeModel created.
+  MockEngineConsumer* ChangeModelAndMockEngine(
+      MockConversationHandlerClient& client,
+      const std::string& model_key) {
+    base::RunLoop loop;
+    EXPECT_CALL(client, OnModelDataChanged)
+        .WillOnce(testing::InvokeWithoutArgs(&loop, &base::RunLoop::Quit));
+    conversation_handler_->ChangeModel(model_key);
+    loop.Run();
+    testing::Mock::VerifyAndClearExpectations(&client);
+    conversation_handler_->SetEngineForTesting(
+        std::make_unique<NiceMock<MockEngineConsumer>>());
+    return static_cast<MockEngineConsumer*>(
+        conversation_handler_->GetEngineForTesting());
   }
 
  protected:
@@ -2886,25 +2908,28 @@ TEST_F(ConversationHandlerUnitTest, UploadFile) {
   // because currently there is no perfect timing to call
   // SetEngineForTesting() after auto model switch.
   base::RunLoop loop3;
-  if (std::ranges::any_of(
-          uploaded_files, [](const mojom::UploadedFilePtr& file) {
-            return file->type == mojom::UploadedFileType::kImage ||
-                   file->type == mojom::UploadedFileType::kScreenshot;
-          })) {
-    EXPECT_CALL(client, OnModelDataChanged)
-        .WillOnce(base::test::RunClosure(base::BindLambdaForTesting([&]() {
-          // verify auto switched to vision support model
-          EXPECT_TRUE(conversation_handler_->GetCurrentModel().vision_support);
-          loop3.Quit();
-        })));
-  } else {
-    EXPECT_CALL(client, OnAPIRequestInProgress(false))
-        .WillOnce(testing::InvokeWithoutArgs(&loop3, &base::RunLoop::Quit));
-  }
-
+  // The current model can't read the images, so the submission waits for the
+  // user instead of switching models.
+  EXPECT_CALL(client, OnModelDataChanged).Times(0);
+  EXPECT_CALL(client, OnVisionModelSwitchChanged(testing::Optional(_)))
+      .WillOnce(testing::InvokeWithoutArgs(&loop3, &base::RunLoop::Quit));
   conversation_handler_->SubmitHumanConversationEntry(kTestPrompt,
                                                       Clone(uploaded_files));
   loop3.Run();
+  testing::Mock::VerifyAndClearExpectations(&client);
+  EXPECT_EQ(conversation_handler_->GetConversationHistorySize(), 4u);
+  EXPECT_FALSE(conversation_handler_->GetCurrentModel().vision_support);
+
+  base::RunLoop loop4;
+  EXPECT_CALL(client, OnVisionModelSwitchChanged(testing::Eq(std::nullopt)));
+  EXPECT_CALL(client, OnModelDataChanged)
+      .WillOnce(base::test::RunClosure(base::BindLambdaForTesting([&]() {
+        EXPECT_TRUE(conversation_handler_->GetCurrentModel().vision_support);
+        loop4.Quit();
+      })));
+  conversation_handler_->RespondToVisionModelSwitch(
+      mojom::VisionModelSwitchDecision::kSwitch);
+  loop4.Run();
   testing::Mock::VerifyAndClearExpectations(&client);
   // verify image in history
   auto& last_entry = conversation_handler_->GetConversationHistory().back();
@@ -5602,28 +5627,37 @@ TEST_F(ConversationHandlerUnitTest, ScreenshotsAppendToExistingFiles) {
   testing::Mock::VerifyAndClearExpectations(engine);
 }
 
-// Test that vision model is automatically switched when screenshots are taken
+// Test that taking screenshots for a model that can't read them waits for the
+// user to switch to a vision model.
 TEST_F(ConversationHandlerUnitTest, VisionModelSwitchOnScreenshots) {
-  // Switch to a model without vision support first
-  base::RunLoop loop_for_change_model;
   NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
-  EXPECT_CALL(client, OnModelDataChanged)
-      .WillOnce(testing::InvokeWithoutArgs(&loop_for_change_model,
-                                           &base::RunLoop::Quit));
-  conversation_handler_->ChangeModel(kNonVisionModelKey);
-  loop_for_change_model.Run();
-  testing::Mock::VerifyAndClearExpectations(&client);
-
-  // Re-setting a mock engine because it was replaced due to ChangeModel call.
-  conversation_handler_->SetEngineForTesting(
-      std::make_unique<NiceMock<MockEngineConsumer>>());
-  MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
-      conversation_handler_->GetEngineForTesting());
-
+  MockEngineConsumer* engine =
+      ChangeModelAndMockEngine(client, kNonVisionModelKey);
   EXPECT_FALSE(conversation_handler_->GetCurrentModel().vision_support);
 
   // Mock associated content to return empty text content
   associated_content_->SetTextContent("");
+
+  // Nothing is captured before the user decides.
+  EXPECT_CALL(*associated_content_, GetScreenshots).Times(0);
+
+  base::RunLoop prompt_loop;
+  EXPECT_CALL(client, OnModelDataChanged).Times(0);
+  EXPECT_CALL(client, OnVisionModelSwitchChanged(testing::Optional(_)))
+      .WillOnce(testing::InvokeWithoutArgs(&prompt_loop, &base::RunLoop::Quit));
+  EXPECT_CALL(*engine, GenerateAssistantResponse).Times(0);
+  conversation_handler_->SubmitHumanConversationEntry("Test question",
+                                                      std::nullopt);
+  prompt_loop.Run();
+  testing::Mock::VerifyAndClearExpectations(&client);
+  testing::Mock::VerifyAndClearExpectations(engine);
+  testing::Mock::VerifyAndClearExpectations(associated_content_.get());
+
+  ASSERT_EQ(conversation_handler_->GetConversationHistorySize(), 1u);
+  EXPECT_FALSE(
+      conversation_handler_->GetConversationHistory()[0]->uploaded_files);
+  EXPECT_TRUE(conversation_handler_->IsRequestInProgress());
+  EXPECT_TRUE(GetState()->vision_model_switch_key);
 
   // Mock GetScreenshots to return sample screenshots
   std::vector<mojom::UploadedFilePtr> mock_screenshots =
@@ -5631,39 +5665,14 @@ TEST_F(ConversationHandlerUnitTest, VisionModelSwitchOnScreenshots) {
   EXPECT_CALL(*associated_content_, GetScreenshots)
       .WillOnce(base::test::RunOnceCallback<0>(Clone(mock_screenshots)));
 
-  // Mock engine response
-  EXPECT_CALL(*engine, GenerateAssistantResponse)
-      .WillRepeatedly(
-          [](PageContentsMap page_contents,
-             const EngineConsumer::ConversationHistoryView& history,
-             bool is_temporary_chat,
-             const std::vector<base::WeakPtr<Tool>>& tools,
-             std::optional<std::string_view> preferred_tool_name,
-             const ConversationCapabilitySet& conversation_capabilities,
-             EngineConsumer::GenerationDataCallback callback,
-             EngineConsumer::GenerationCompletedCallback done_callback) {
-            std::move(done_callback)
-                .Run(base::ok(EngineConsumer::GenerationResultData(
-                    mojom::ConversationEntryEvent::NewCompletionEvent(
-                        mojom::CompletionEvent::New(
-                            "Response with vision model")),
-                    std::nullopt /* model_key */)));
-          });
-
-  base::RunLoop loop;
-  // Note: OnModelDataChanged expectation is set at the end for auto model
-  // switch
+  base::RunLoop switch_loop;
+  EXPECT_CALL(client, OnVisionModelSwitchChanged(testing::Eq(std::nullopt)));
   EXPECT_CALL(client, OnModelDataChanged)
-      .WillOnce(base::test::RunClosure(base::BindLambdaForTesting([&]() {
-        // Verify auto switched to vision support model
-        EXPECT_TRUE(conversation_handler_->GetCurrentModel().vision_support);
-        loop.Quit();
-      })));
-
-  // Submit a conversation entry
-  conversation_handler_->SubmitHumanConversationEntry("Test question",
-                                                      std::nullopt);
-  loop.Run();
+      .WillOnce(testing::InvokeWithoutArgs(&switch_loop, &base::RunLoop::Quit));
+  conversation_handler_->RespondToVisionModelSwitch(
+      mojom::VisionModelSwitchDecision::kSwitch);
+  switch_loop.Run();
+  testing::Mock::VerifyAndClearExpectations(&client);
 
   // Verify that screenshots were attached and model has vision support
   const auto& history = conversation_handler_->GetConversationHistory();
@@ -5675,10 +5684,258 @@ TEST_F(ConversationHandlerUnitTest, VisionModelSwitchOnScreenshots) {
   EXPECT_EQ((*human_turn->uploaded_files)[0]->type,
             mojom::UploadedFileType::kScreenshot);
   EXPECT_TRUE(conversation_handler_->GetCurrentModel().vision_support);
+  EXPECT_FALSE(GetState()->vision_model_switch_key);
+}
 
+TEST_F(ConversationHandlerUnitTest,
+       VisionModelSwitchOnScreenshots_SendWithoutImages) {
+  NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
+  MockEngineConsumer* engine =
+      ChangeModelAndMockEngine(client, kNonVisionModelKey);
+
+  associated_content_->SetTextContent("");
+  EXPECT_CALL(*associated_content_, GetScreenshots).Times(0);
+
+  base::RunLoop prompt_loop;
+  EXPECT_CALL(client, OnVisionModelSwitchChanged(testing::Optional(_)))
+      .WillOnce(testing::InvokeWithoutArgs(&prompt_loop, &base::RunLoop::Quit));
+  conversation_handler_->SubmitHumanConversationEntry("Test question",
+                                                      std::nullopt);
+  prompt_loop.Run();
   testing::Mock::VerifyAndClearExpectations(&client);
-  testing::Mock::VerifyAndClearExpectations(associated_content_.get());
+
+  base::RunLoop done_loop;
+  EXPECT_CALL(client, OnModelDataChanged).Times(0);
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .WillOnce(testing::WithArgs<1, 7>(
+          [](const EngineConsumer::ConversationHistoryView& history,
+             EngineConsumer::GenerationCompletedCallback done_callback) {
+            ASSERT_EQ(history.size(), 1u);
+            EXPECT_FALSE(history[0]->uploaded_files);
+            std::move(done_callback)
+                .Run(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewCompletionEvent(
+                        mojom::CompletionEvent::New("No screenshots")),
+                    std::nullopt));
+          }));
+  EXPECT_CALL(client, OnAPIRequestInProgress(false))
+      .WillOnce(testing::InvokeWithoutArgs(&done_loop, &base::RunLoop::Quit));
+  conversation_handler_->RespondToVisionModelSwitch(
+      mojom::VisionModelSwitchDecision::kSendWithoutImages);
+  done_loop.Run();
+  testing::Mock::VerifyAndClearExpectations(&client);
   testing::Mock::VerifyAndClearExpectations(engine);
+  testing::Mock::VerifyAndClearExpectations(associated_content_.get());
+
+  EXPECT_EQ(conversation_handler_->GetCurrentModel().key, kNonVisionModelKey);
+  EXPECT_EQ(conversation_handler_->GetConversationHistorySize(), 2u);
+
+  // Later entries go without screenshots, and without asking again.
+  EXPECT_CALL(*associated_content_, GetScreenshots).Times(0);
+  EXPECT_CALL(client, OnVisionModelSwitchChanged).Times(0);
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .WillOnce(testing::WithArgs<1, 7>(
+          [](const EngineConsumer::ConversationHistoryView& history,
+             EngineConsumer::GenerationCompletedCallback done_callback) {
+            ASSERT_EQ(history.size(), 3u);
+            EXPECT_FALSE(history[2]->uploaded_files);
+            std::move(done_callback)
+                .Run(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewCompletionEvent(
+                        mojom::CompletionEvent::New("Still none")),
+                    std::nullopt));
+          }));
+  conversation_handler_->SubmitHumanConversationEntry("Another question",
+                                                      std::nullopt);
+  EXPECT_TRUE(base::test::RunUntil([&]() {
+    return conversation_handler_->GetConversationHistorySize() == 4u;
+  }));
+}
+
+TEST_F(ConversationHandlerUnitTest, VisionModelSwitch_SendWithoutImages) {
+  conversation_handler_->associated_content_manager()->ClearContent();
+  NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
+  MockEngineConsumer* engine =
+      ChangeModelAndMockEngine(client, kNonVisionModelKey);
+
+  auto uploaded_files =
+      CreateSampleUploadedFiles(1, mojom::UploadedFileType::kImage);
+  uploaded_files.push_back(std::move(
+      CreateSampleUploadedFiles(1, mojom::UploadedFileType::kPdf)[0]));
+
+  base::RunLoop prompt_loop;
+  EXPECT_CALL(client, OnVisionModelSwitchChanged(testing::Optional(_)))
+      .WillOnce(testing::InvokeWithoutArgs(&prompt_loop, &base::RunLoop::Quit));
+  EXPECT_CALL(*engine, GenerateAssistantResponse).Times(0);
+  conversation_handler_->SubmitHumanConversationEntry(
+      "What is this?", std::move(uploaded_files));
+  prompt_loop.Run();
+  testing::Mock::VerifyAndClearExpectations(&client);
+  testing::Mock::VerifyAndClearExpectations(engine);
+
+  // The submission is held back from history, but shown to the UI.
+  EXPECT_TRUE(conversation_handler_->GetConversationHistory().empty());
+  base::test::TestFuture<std::vector<mojom::ConversationTurnPtr>>
+      history_future;
+  conversation_handler_->GetConversationHistory(history_future.GetCallback());
+  ASSERT_EQ(history_future.Get().size(), 1u);
+  EXPECT_EQ(history_future.Get()[0]->text, "What is this?");
+  EXPECT_TRUE(history_future.Get()[0]->uuid);
+
+  base::RunLoop done_loop;
+  EXPECT_CALL(client, OnVisionModelSwitchChanged(testing::Eq(std::nullopt)));
+  EXPECT_CALL(client, OnModelDataChanged).Times(0);
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .WillOnce(testing::WithArgs<1, 7>(
+          [](const EngineConsumer::ConversationHistoryView& history,
+             EngineConsumer::GenerationCompletedCallback done_callback) {
+            ASSERT_EQ(history.size(), 1u);
+            ASSERT_TRUE(history[0]->uploaded_files);
+            ASSERT_EQ(history[0]->uploaded_files->size(), 1u);
+            EXPECT_EQ(history[0]->uploaded_files->at(0)->type,
+                      mojom::UploadedFileType::kPdf);
+            std::move(done_callback)
+                .Run(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewCompletionEvent(
+                        mojom::CompletionEvent::New("A document")),
+                    std::nullopt));
+          }));
+  EXPECT_CALL(client, OnAPIRequestInProgress(false))
+      .WillOnce(testing::InvokeWithoutArgs(&done_loop, &base::RunLoop::Quit));
+  conversation_handler_->RespondToVisionModelSwitch(
+      mojom::VisionModelSwitchDecision::kSendWithoutImages);
+  done_loop.Run();
+
+  EXPECT_EQ(conversation_handler_->GetCurrentModel().key, kNonVisionModelKey);
+  ASSERT_EQ(conversation_handler_->GetConversationHistorySize(), 2u);
+  EXPECT_EQ(conversation_handler_->GetConversationHistory()[0]->uuid,
+            history_future.Get()[0]->uuid);
+}
+
+// A submission made while another waits for the vision model decision is
+// shown after the waiting one.
+TEST_F(ConversationHandlerUnitTest, VisionModelSwitch_HistoryOrder) {
+  conversation_handler_->associated_content_manager()->ClearContent();
+  NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
+  ChangeModelAndMockEngine(client, kNonVisionModelKey);
+
+  base::RunLoop prompt_loop;
+  EXPECT_CALL(client, OnVisionModelSwitchChanged(testing::Optional(_)))
+      .WillOnce(testing::InvokeWithoutArgs(&prompt_loop, &base::RunLoop::Quit));
+  conversation_handler_->SubmitHumanConversationEntry(
+      "What is this?",
+      CreateSampleUploadedFiles(1, mojom::UploadedFileType::kImage));
+  prompt_loop.Run();
+
+  // E.g. from the location bar, while the first submission waits.
+  conversation_handler_->SubmitHumanConversationEntry(
+      mojom::ConversationTurn::New(
+          std::nullopt, std::nullopt, mojom::CharacterType::HUMAN,
+          mojom::ActionType::QUERY, "And this?", std::nullopt, std::nullopt,
+          std::nullopt, base::Time::Now(), std::nullopt, std::nullopt, nullptr,
+          false, std::nullopt, nullptr, std::vector<std::string>{}));
+
+  base::test::TestFuture<std::vector<mojom::ConversationTurnPtr>>
+      history_future;
+  conversation_handler_->GetConversationHistory(history_future.GetCallback());
+  const auto& history = history_future.Get();
+  ASSERT_EQ(history.size(), 2u);
+  EXPECT_EQ(history[0]->text, "What is this?");
+  EXPECT_EQ(history[1]->text, "And this?");
+}
+
+class ConversationHandlerUnitTest_NoVisionDefaultModel
+    : public ConversationHandlerUnitTest {
+ public:
+  ConversationHandlerUnitTest_NoVisionDefaultModel() {
+    scoped_feature_list_.InitAndEnableFeatureWithParameters(
+        features::kAIChat,
+        {{features::kAIModelsVisionDefaultKey.name, "missing-model"},
+         {features::kAIModelsPremiumVisionDefaultKey.name, "missing-model"}});
+  }
+
+ private:
+  base::test::ScopedFeatureList scoped_feature_list_;
+};
+
+// Without a vision model to offer, the UI has no dialog to show, so the
+// submission goes without its images instead of waiting.
+TEST_F(ConversationHandlerUnitTest_NoVisionDefaultModel, SendsWithoutImages) {
+  conversation_handler_->associated_content_manager()->ClearContent();
+  NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
+  MockEngineConsumer* engine =
+      ChangeModelAndMockEngine(client, kNonVisionModelKey);
+
+  base::RunLoop loop;
+  EXPECT_CALL(client, OnVisionModelSwitchChanged).Times(0);
+  EXPECT_CALL(client, OnModelDataChanged).Times(0);
+  EXPECT_CALL(*engine, GenerateAssistantResponse)
+      .WillOnce(testing::WithArgs<1, 7>(
+          [](const EngineConsumer::ConversationHistoryView& history,
+             EngineConsumer::GenerationCompletedCallback done_callback) {
+            ASSERT_EQ(history.size(), 1u);
+            EXPECT_FALSE(history[0]->uploaded_files);
+            std::move(done_callback)
+                .Run(EngineConsumer::GenerationResultData(
+                    mojom::ConversationEntryEvent::NewCompletionEvent(
+                        mojom::CompletionEvent::New("No image")),
+                    std::nullopt));
+          }));
+  EXPECT_CALL(client, OnAPIRequestInProgress(true)).Times(testing::AnyNumber());
+  EXPECT_CALL(client, OnAPIRequestInProgress(false))
+      .WillOnce(testing::InvokeWithoutArgs(&loop, &base::RunLoop::Quit));
+  conversation_handler_->SubmitHumanConversationEntry(
+      "What is this?",
+      CreateSampleUploadedFiles(1, mojom::UploadedFileType::kImage));
+  loop.Run();
+
+  EXPECT_EQ(conversation_handler_->GetCurrentModel().key, kNonVisionModelKey);
+  EXPECT_EQ(conversation_handler_->GetConversationHistorySize(), 2u);
+  EXPECT_FALSE(GetState()->vision_model_switch_key);
+}
+
+TEST_F(ConversationHandlerUnitTest, VisionModelSwitch_Cancel) {
+  conversation_handler_->associated_content_manager()->ClearContent();
+  NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
+  MockEngineConsumer* engine =
+      ChangeModelAndMockEngine(client, kNonVisionModelKey);
+
+  base::RunLoop prompt_loop;
+  EXPECT_CALL(client, OnVisionModelSwitchChanged(testing::Optional(_)))
+      .WillOnce(testing::InvokeWithoutArgs(&prompt_loop, &base::RunLoop::Quit));
+  EXPECT_CALL(client, OnModelDataChanged).Times(0);
+  EXPECT_CALL(*engine, GenerateAssistantResponse).Times(0);
+  conversation_handler_->SubmitHumanConversationEntry(
+      "What is this?",
+      CreateSampleUploadedFiles(1, mojom::UploadedFileType::kImage));
+  prompt_loop.Run();
+  EXPECT_TRUE(conversation_handler_->IsRequestInProgress());
+
+  base::RunLoop cancel_loop;
+  EXPECT_CALL(client, OnVisionModelSwitchChanged(testing::Eq(std::nullopt)));
+  EXPECT_CALL(client, OnAPIRequestInProgress(false))
+      .WillOnce(testing::InvokeWithoutArgs(&cancel_loop, &base::RunLoop::Quit));
+  base::test::TestFuture<mojom::ConversationTurnPtr> entry_future;
+  conversation_handler_->StopGenerationAndMaybeGetHumanEntry(
+      entry_future.GetCallback());
+  mojom::ConversationTurnPtr entry = entry_future.Take();
+  cancel_loop.Run();
+
+  // The submission comes back to the caller and nothing was sent.
+  ASSERT_TRUE(entry);
+  EXPECT_EQ(entry->text, "What is this?");
+  ASSERT_TRUE(entry->uploaded_files);
+  EXPECT_EQ(entry->uploaded_files->size(), 1u);
+  EXPECT_FALSE(conversation_handler_->IsRequestInProgress());
+  EXPECT_TRUE(conversation_handler_->GetConversationHistory().empty());
+  EXPECT_FALSE(GetState()->vision_model_switch_key);
+  EXPECT_EQ(conversation_handler_->GetCurrentModel().key, kNonVisionModelKey);
+
+  // Responding after cancelling does nothing.
+  conversation_handler_->RespondToVisionModelSwitch(
+      mojom::VisionModelSwitchDecision::kSwitch);
+  EXPECT_EQ(conversation_handler_->GetCurrentModel().key, kNonVisionModelKey);
+  EXPECT_TRUE(conversation_handler_->GetConversationHistory().empty());
 }
 
 // Test that screenshots are NOT taken when there's no associated content
@@ -6589,6 +6846,7 @@ struct SkillImageUploadScenario {
   std::optional<const char*> skill_pinned_model;
   const char* expected_final_model_key;
   bool expects_model_change_during_submit;
+  bool expects_vision_model_switch_request;
 };
 
 class ConversationHandlerSkillImageUploadTest
@@ -6643,6 +6901,9 @@ TEST_P(ConversationHandlerSkillImageUploadTest, ResolvesModelAndPlumbsImage) {
   // Model change notification expectations during submit.
   EXPECT_CALL(client, OnModelDataChanged)
       .Times(test_params.expects_model_change_during_submit ? 1 : 0);
+  EXPECT_CALL(client, OnVisionModelSwitchChanged(testing::Optional(
+                          std::string(kChatAutomaticModelKey))))
+      .Times(test_params.expects_vision_model_switch_request ? 1 : 0);
 
   // Mock successful response. AtMost(1) because a ChangeModel inside submit
   // replaces the mock engine, in which case the original mock never fires
@@ -6675,6 +6936,21 @@ TEST_P(ConversationHandlerSkillImageUploadTest, ResolvesModelAndPlumbsImage) {
       "/describe photo", skill_id, std::move(uploaded_files));
 
   run_loop.Run();
+  testing::Mock::VerifyAndClearExpectations(&client);
+
+  if (test_params.expects_vision_model_switch_request) {
+    // Nothing is sent until the user accepts the switch to the vision model.
+    EXPECT_FALSE(conversation_handler_->GetCurrentModel().vision_support);
+    EXPECT_TRUE(conversation_handler_->GetConversationHistory().empty());
+
+    base::RunLoop switch_loop;
+    EXPECT_CALL(client, OnModelDataChanged)
+        .WillOnce(
+            testing::InvokeWithoutArgs(&switch_loop, &base::RunLoop::Quit));
+    conversation_handler_->RespondToVisionModelSwitch(
+        mojom::VisionModelSwitchDecision::kSwitch);
+    switch_loop.Run();
+  }
 
   // Verify final model resolution and that vision support is guaranteed.
   EXPECT_EQ(conversation_handler_->GetCurrentModel().key,
@@ -6686,7 +6962,10 @@ TEST_P(ConversationHandlerSkillImageUploadTest, ResolvesModelAndPlumbsImage) {
   // never completes, so only the human turn is present in those cases.
   const auto& history = conversation_handler_->GetConversationHistory();
   const size_t expected_size =
-      test_params.expects_model_change_during_submit ? 1u : 2u;
+      test_params.expects_model_change_during_submit ||
+              test_params.expects_vision_model_switch_request
+          ? 1u
+          : 2u;
   EXPECT_EQ(history.size(), expected_size);
   EXPECT_EQ(history[0]->text, "/describe photo");
   ASSERT_TRUE(history[0]->skill);
@@ -6702,30 +6981,31 @@ INSTANTIATE_TEST_SUITE_P(
     All,
     ConversationHandlerSkillImageUploadTest,
     testing::Values(
-        // Unmodeled skill + image, starting non-vision: switch to vision.
+        // Unmodeled skill + image, starting non-vision: ask to switch.
         SkillImageUploadScenario{"UnmodeledFromNonVision", kNonVisionModelKey,
-                                 std::nullopt, kChatAutomaticModelKey, true},
+                                 std::nullopt, kChatAutomaticModelKey, false,
+                                 true},
         // Unmodeled skill + image, already on vision: no switch.
         SkillImageUploadScenario{"UnmodeledFromVision", kChatAutomaticModelKey,
-                                 std::nullopt, kChatAutomaticModelKey, false},
-        // Pinned non-vision + image, on vision: vision wins, no switch
-        // (validates the no-double-switch path).
+                                 std::nullopt, kChatAutomaticModelKey, false,
+                                 false},
+        // Pinned non-vision + image, on vision: switch to the pin, then ask
+        // to switch.
         SkillImageUploadScenario{"PinnedNonVisionFromVision",
                                  kChatAutomaticModelKey, kNonVisionModelKey,
-                                 kChatAutomaticModelKey, false},
-        // Pinned non-vision + image, on non-vision: switch once to vision
-        // (NOT to the pinned non-vision model).
+                                 kChatAutomaticModelKey, true, true},
+        // Pinned non-vision + image, on non-vision: ask to switch.
         SkillImageUploadScenario{"PinnedNonVisionFromNonVision",
                                  kNonVisionModelKey, kNonVisionModelKey,
-                                 kChatAutomaticModelKey, true},
+                                 kChatAutomaticModelKey, false, true},
         // Pinned vision equals current + image: no switch.
         SkillImageUploadScenario{"PinnedVisionEqualsCurrent",
                                  kChatAutomaticModelKey, kChatAutomaticModelKey,
-                                 kChatAutomaticModelKey, false},
+                                 kChatAutomaticModelKey, false, false},
         // Pinned vision different from current + image: switch to pin once.
         SkillImageUploadScenario{"PinnedVisionDifferentFromCurrent",
                                  kNonVisionModelKey, kChatAutomaticModelKey,
-                                 kChatAutomaticModelKey, true}),
+                                 kChatAutomaticModelKey, true, false}),
     [](const testing::TestParamInfo<SkillImageUploadScenario>& info) {
       return std::string(info.param.test_name);
     });
