@@ -62,17 +62,15 @@ void OnDeviceSpeechModelPermissionRequest::PermissionDecided(
     return;
   }
 
-  // There is no "Allow this time": the request has no content setting.
-  const bool allowed = decision.overall_decision == PermissionDecision::kAllow;
-  if (allowed) {
+  if (decision.overall_decision == PermissionDecision::kAllow) {
     local_state_->SetBoolean(local_ai::prefs::kOnDeviceSpeechModelEnabled,
                              true);
-  } else if (decision.overall_decision == PermissionDecision::kDeny &&
-             get_dont_ask_again()) {
+  } else if (decision.overall_decision == PermissionDecision::kDeny) {
     profile_prefs_->SetBoolean(local_ai::prefs::kAskEnableOnDeviceSpeechModel,
-                               false);
+                               !get_dont_ask_again());
   }
-  std::move(callback_).Run(allowed);
+  std::move(callback_).Run(decision.overall_decision ==
+                           PermissionDecision::kAllow);
 }
 
 }  // namespace speech

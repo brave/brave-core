@@ -66,6 +66,18 @@ TEST_F(OnDeviceSpeechModelPermissionRequestUnitTest, DenyWithDontAskAgain) {
   EXPECT_FALSE(IsAskEnabled());
 }
 
+// A plain block must not stop the prompt for good.
+TEST_F(OnDeviceSpeechModelPermissionRequestUnitTest,
+       DenyWithoutDontAskAgainKeepsAsking) {
+  auto request = CreateRequest();
+  request->PermissionDenied();
+
+  ASSERT_TRUE(allowed_.IsReady());
+  EXPECT_FALSE(allowed_.Get());
+  EXPECT_FALSE(IsEnabled());
+  EXPECT_TRUE(IsAskEnabled());
+}
+
 // Dismissing saves nothing, even with the checkbox checked.
 TEST_F(OnDeviceSpeechModelPermissionRequestUnitTest, DismissSavesNothing) {
   auto request = CreateRequest();
