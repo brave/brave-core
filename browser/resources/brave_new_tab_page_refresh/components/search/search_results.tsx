@@ -20,7 +20,8 @@ function MatchImage(props: { match: AutocompleteMatch }) {
   const imageUrl = suggestTemplate.image?.url
 
   if (
-    suggestTemplate.secondaryText === getString(S.OMNIBOX_ASK_LEO_DESCRIPTION)
+    suggestTemplate.secondaryText.text
+    === getString(S.OMNIBOX_ASK_LEO_DESCRIPTION)
   ) {
     return (
       <Icon
@@ -55,8 +56,8 @@ function MatchText(props: { match: AutocompleteMatch }) {
   const { primaryText, secondaryText } = props.match.suggestTemplate
   return (
     <>
-      {primaryText}
-      <span className='description'>{secondaryText}</span>
+      {primaryText.text}
+      <span className='description'>{secondaryText.text}</span>
     </>
   )
 }
