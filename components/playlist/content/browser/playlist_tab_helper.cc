@@ -17,6 +17,7 @@
 #include "brave/components/playlist/content/browser/playlist_service.h"
 #include "brave/components/playlist/content/browser/playlist_tab_helper_observer.h"
 #include "brave/components/playlist/core/common/pref_names.h"
+#include "components/tabs/public/tab_interface.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_handle.h"
@@ -26,19 +27,30 @@
 
 namespace playlist {
 
+DEFINE_USER_DATA(PlaylistTabHelper);
+
 // static
-void PlaylistTabHelper::CreateForWebContents(content::WebContents* web_contents,
-                                             PlaylistService* service) {
-  content::WebContentsUserData<PlaylistTabHelper>::CreateForWebContents(
-      web_contents, service);
+PlaylistTabHelper* PlaylistTabHelper::From(tabs::TabInterface* tab) {
+  return tab ? Get(tab->GetUnownedUserDataHost()) : nullptr;
+}
+
+// static
+std::unique_ptr<PlaylistTabHelper> PlaylistTabHelper::Create(
+    tabs::TabInterface& tab,
+    content::WebContents* web_contents,
+    PlaylistService* service) {
   PlaylistMediaHandler::CreateForWebContents(
       web_contents, base::BindRepeating(&PlaylistService::OnMediaDetected,
                                         service->GetWeakPtr()));
+  return std::make_unique<PlaylistTabHelper>(tab, web_contents, service);
 }
 
-PlaylistTabHelper::PlaylistTabHelper(content::WebContents* contents,
+PlaylistTabHelper::PlaylistTabHelper(tabs::TabInterface& tab,
+                                     content::WebContents* contents,
                                      PlaylistService* service)
-    : WebContentsUserData(*contents), service_(service) {
+    : contents_(*contents),
+      service_(service),
+      scoped_unowned_user_data_(tab.GetUnownedUserDataHost(), *this) {
   CHECK(service_);
 
   Observe(contents);
@@ -361,13 +373,11 @@ void PlaylistTabHelper::OnAddedItems(
 void PlaylistTabHelper::OnPlaylistEnabledPrefChanged() {
   if (*playlist_enabled_) {
     // It's okay to call Observe() repeatedly.
-    Observe(&GetWebContents());
+    Observe(&*contents_);
   } else {
     Observe(nullptr);
     ResetFoundItems();
   }
 }
-
-WEB_CONTENTS_USER_DATA_KEY_IMPL(PlaylistTabHelper);
 
 }  // namespace playlist

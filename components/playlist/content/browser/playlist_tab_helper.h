@@ -6,36 +6,56 @@
 #ifndef BRAVE_COMPONENTS_PLAYLIST_CONTENT_BROWSER_PLAYLIST_TAB_HELPER_H_
 #define BRAVE_COMPONENTS_PLAYLIST_CONTENT_BROWSER_PLAYLIST_TAB_HELPER_H_
 
+#include <memory>
 #include <string>
 #include <vector>
 
+#include "base/memory/raw_ref.h"
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
 #include "brave/components/playlist/core/common/mojom/playlist.mojom.h"
 #include "components/prefs/pref_member.h"
 #include "content/public/browser/web_contents_observer.h"
-#include "content/public/browser/web_contents_user_data.h"
 #include "mojo/public/cpp/bindings/receiver.h"
+#include "ui/base/unowned_user_data/scoped_unowned_user_data.h"
 
 namespace content {
 class NavigationHandle;
 class WebContents;
 }  // namespace content
 
+namespace tabs {
+class TabInterface;
+}  // namespace tabs
+
 namespace playlist {
 
 class PlaylistService;
 class PlaylistTabHelperObserver;
 
-class PlaylistTabHelper
-    : public content::WebContentsUserData<PlaylistTabHelper>,
-      public content::WebContentsObserver,
-      public mojom::PlaylistServiceObserver {
+// Finds and saves the media of the page shown in a tab. Owned by the tab's
+// features, and recreated when the tab's contents is replaced.
+class PlaylistTabHelper : public content::WebContentsObserver,
+                          public mojom::PlaylistServiceObserver {
  public:
-  static void CreateForWebContents(content::WebContents* web_contents,
-                                   PlaylistService* service);
+  DECLARE_USER_DATA(PlaylistTabHelper);
+
+  static PlaylistTabHelper* From(tabs::TabInterface* tab);
+
+  // Also starts detecting the media of `web_contents`.
+  static std::unique_ptr<PlaylistTabHelper> Create(
+      tabs::TabInterface& tab,
+      content::WebContents* web_contents,
+      PlaylistService* service);
+
+  PlaylistTabHelper(tabs::TabInterface& tab,
+                    content::WebContents* web_contents,
+                    PlaylistService* service);
 
   ~PlaylistTabHelper() override;
+
+  // The contents this was created for, observed or not.
+  content::WebContents& GetWebContents() const { return *contents_; }
 
   const std::vector<mojom::PlaylistItemPtr>& saved_items() const {
     return saved_items_;
@@ -94,11 +114,6 @@ class PlaylistTabHelper
                            std::vector<mojom::PlaylistItemPtr> items) override;
 
  private:
-  friend class content::WebContentsUserData<PlaylistTabHelper>;
-  using content::WebContentsUserData<PlaylistTabHelper>::CreateForWebContents;
-
-  PlaylistTabHelper(content::WebContents* contents, PlaylistService* service);
-
   void ResetSavedItems();
   void ResetFoundItems();
   void UpdateSavedItemFromCurrentContents();
@@ -106,6 +121,9 @@ class PlaylistTabHelper
 
   void OnPlaylistEnabledPrefChanged();
 
+  // The contents this was created for, which stays observed while Playlist is
+  // enabled.
+  const raw_ref<content::WebContents> contents_;
   raw_ptr<PlaylistService> service_;
 
   bool is_adding_items_ = false;
@@ -120,9 +138,9 @@ class PlaylistTabHelper
 
   BooleanPrefMember playlist_enabled_;
 
-  base::WeakPtrFactory<PlaylistTabHelper> weak_ptr_factory_{this};
+  ui::ScopedUnownedUserData<PlaylistTabHelper> scoped_unowned_user_data_;
 
-  WEB_CONTENTS_USER_DATA_KEY_DECL();
+  base::WeakPtrFactory<PlaylistTabHelper> weak_ptr_factory_{this};
 };
 
 }  // namespace playlist

@@ -24,6 +24,7 @@
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/playlist/content/browser/media_detector_component_manager.h"
 #include "brave/components/playlist/content/browser/playlist_constants.h"
+#include "brave/components/playlist/content/browser/playlist_media_handler.h"
 #include "brave/components/playlist/content/browser/playlist_service.h"
 #include "brave/components/playlist/content/browser/playlist_tab_helper.h"
 #include "brave/components/playlist/core/common/features.h"
@@ -32,6 +33,9 @@
 #include "brave/components/sidebar/browser/sidebar_service.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/resource_coordinator/lifecycle_unit_state.mojom.h"
+#include "chrome/browser/resource_coordinator/tab_lifecycle_unit_external.h"
+#include "chrome/browser/resource_coordinator/tab_lifecycle_unit_source.h"
 #include "chrome/browser/ui/actions/chrome_action_id.h"
 #include "chrome/browser/ui/browser_command_controller.h"
 #include "chrome/browser/ui/side_panel/side_panel_entry_id.h"
@@ -43,11 +47,13 @@
 #include "chrome/browser/ui/views/tabs/tab.h"
 #include "chrome/test/base/platform_browser_test.h"
 #include "components/prefs/pref_service.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/content_mock_cert_verifier.h"
 #include "net/dns/mock_host_resolver.h"
 #include "testing/gmock/include/gmock/gmock.h"
+#include "ui/base/page_transition_types.h"
 #include "ui/views/controls/scroll_view.h"
 #include "ui/views/view_utils.h"
 
@@ -233,8 +239,8 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, AddItemsToList) {
 
   // The test page is simple video url. So we expect it to be found without
   // necessity of extracting media from background web contents.
-  auto* tab_helper =
-      playlist::PlaylistTabHelper::FromWebContents(GetActiveWebContents());
+  auto* tab_helper = playlist::PlaylistTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(GetActiveWebContents()));
   ASSERT_EQ(tab_helper->found_items().size(), 1u);
   ASSERT_FALSE(tab_helper->found_items()[0]->is_blob_from_media_source);
 
@@ -301,6 +307,29 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, DISABLED_ApiFunctions) {
 IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, DISABLED_CreateAndRemovePlaylist) {
   // TODO(sko) Test the actual UI, once the spec and the implementation for it
   // are done https://github.com/brave/brave-browser/issues/25829.
+}
+
+// Discarding a tab replaces its contents, for which the tab's features build a
+// new tab helper that detects the new contents' media.
+IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, FollowsDiscardedContents) {
+  TabStripModel* const tab_strip_model = browser()->tab_strip_model();
+  tabs::TabInterface* const tab = tab_strip_model->GetActiveTab();
+  ASSERT_TRUE(playlist::PlaylistTabHelper::From(tab));
+
+  ASSERT_TRUE(AddTabAtIndex(1, GURL("about:blank"), ui::PAGE_TRANSITION_TYPED));
+  auto* const lifecycle_unit =
+      resource_coordinator::TabLifecycleUnitSource::GetTabLifecycleUnitExternal(
+          tab->GetContents());
+  ASSERT_TRUE(lifecycle_unit);
+  ASSERT_TRUE(
+      lifecycle_unit->DiscardTab(::mojom::LifecycleUnitDiscardReason::URGENT));
+
+  auto* const tab_helper = playlist::PlaylistTabHelper::From(tab);
+  ASSERT_TRUE(tab_helper);
+  EXPECT_EQ(&tab_helper->GetWebContents(), tab->GetContents());
+  EXPECT_TRUE(tab_helper->found_items().empty());
+  EXPECT_TRUE(
+      playlist::PlaylistMediaHandler::FromWebContents(tab->GetContents()));
 }
 
 IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, RemoveAndRestoreLocalData) {
@@ -402,8 +431,8 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, UIHiddenWhenDisabled) {
 }
 
 IN_PROC_BROWSER_TEST_F(PlaylistBrowserTest, PlaylistTabHelper) {
-  auto* playlist_tab_helper =
-      playlist::PlaylistTabHelper::FromWebContents(GetActiveWebContents());
+  auto* playlist_tab_helper = playlist::PlaylistTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(GetActiveWebContents()));
   EXPECT_TRUE(playlist_tab_helper);
   EXPECT_TRUE(playlist_tab_helper->found_items().empty());
 
@@ -498,8 +527,8 @@ IN_PROC_BROWSER_TEST_F(
   auto* location_bar_view = views::AsViewClass<BraveLocationBarView>(
       browser_view->GetLocationBarView());
   auto* playlist_icon = GetPlaylistIcon();
-  auto* playlist_tab_helper =
-      playlist::PlaylistTabHelper::FromWebContents(GetActiveWebContents());
+  auto* playlist_tab_helper = playlist::PlaylistTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(GetActiveWebContents()));
 
   EXPECT_FALSE(playlist_icon->GetVisible());
   const GURL url = https_server()->GetURL("www.youtube.com", "/watch?v=12345");
@@ -546,8 +575,8 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTestWithSitesUsingMediaSource,
   auto* location_bar_view = views::AsViewClass<BraveLocationBarView>(
       browser_view->GetLocationBarView());
   auto* playlist_icon = GetPlaylistIcon();
-  auto* playlist_tab_helper =
-      playlist::PlaylistTabHelper::FromWebContents(GetActiveWebContents());
+  auto* playlist_tab_helper = playlist::PlaylistTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(GetActiveWebContents()));
 
   EXPECT_FALSE(playlist_icon->GetVisible());
   const GURL url = https_server()->GetURL("www.youtube.com", "/watch?v=12345");
@@ -599,8 +628,8 @@ IN_PROC_BROWSER_TEST_F(
   auto* location_bar_view = views::AsViewClass<BraveLocationBarView>(
       browser_view->GetLocationBarView());
   auto* playlist_icon = GetPlaylistIcon();
-  auto* playlist_tab_helper =
-      playlist::PlaylistTabHelper::FromWebContents(GetActiveWebContents());
+  auto* playlist_tab_helper = playlist::PlaylistTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(GetActiveWebContents()));
 
   EXPECT_FALSE(playlist_icon->GetVisible());
   const GURL url = https_server()->GetURL("www.ted.com", "/v12345");
@@ -649,8 +678,8 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTestWithSitesUsingMediaSource,
   const GURL url = https_server()->GetURL("www.youtube.com", "/watch?v=12345");
   ASSERT_TRUE(content::NavigateToURL(GetActiveWebContents(), url));
 
-  auto* playlist_tab_helper =
-      playlist::PlaylistTabHelper::FromWebContents(GetActiveWebContents());
+  auto* playlist_tab_helper = playlist::PlaylistTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(GetActiveWebContents()));
   WaitUntil(base::BindLambdaForTesting(
       [&] { return playlist_tab_helper->found_items().size() == 1; }));
   EXPECT_TRUE(playlist_tab_helper->found_items()[0]->is_blob_from_media_source);
@@ -705,8 +734,8 @@ IN_PROC_BROWSER_TEST_F(
   const GURL url = https_server()->GetURL("www.youtube.com", "/watch?v=12345");
   ASSERT_TRUE(content::NavigateToURL(GetActiveWebContents(), url));
 
-  auto* playlist_tab_helper =
-      playlist::PlaylistTabHelper::FromWebContents(GetActiveWebContents());
+  auto* playlist_tab_helper = playlist::PlaylistTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(GetActiveWebContents()));
   WaitUntil(base::BindLambdaForTesting(
       [&] { return playlist_tab_helper->found_items().size() == 1; }));
   EXPECT_TRUE(playlist_tab_helper->found_items()[0]->is_blob_from_media_source);

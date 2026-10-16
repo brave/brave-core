@@ -8,6 +8,7 @@ import("//brave/components/brave_ads/buildflags/buildflags.gni")
 import("//brave/components/brave_news/common/buildflags/buildflags.gni")
 import("//brave/components/brave_rewards/core/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
+import("//brave/components/playlist/core/common/buildflags/buildflags.gni")
 import("//brave/components/web_discovery/buildflags/buildflags.gni")
 import("//third_party/widevine/cdm/widevine.gni")
 
@@ -98,6 +99,7 @@ source_set("tabs_impl") {
     "//brave/components/brave_wallet/common/buildflags",
     "//brave/components/image_metadata_stripper/common",
     "//brave/components/misc_metrics",
+    "//brave/components/playlist/core/common/buildflags",
     "//brave/components/web_discovery/buildflags",
     "//chrome/browser/profiles:profile",
     "//content/public/browser",
@@ -129,5 +131,14 @@ source_set("tabs_impl") {
 
   if (enable_brave_wallet) {
     deps += [ "//brave/browser/brave_wallet:tab_helper" ]
+  }
+
+  if (enable_playlist) {
+    deps += [
+      "//brave/browser/playlist",
+      "//brave/components/playlist/content/browser",
+      "//brave/components/playlist/core/browser",
+      "//components/user_prefs",
+    ]
   }
 }

@@ -172,6 +172,15 @@ if (!is_android) {
       deps += [ "//brave/components/brave_wayback_machine" ]
     }
 
+    if (enable_playlist) {
+      deps += [
+        "//brave/browser/playlist",
+        "//brave/components/playlist/content/browser",
+        "//brave/components/playlist/core/browser",
+        "//components/user_prefs",
+      ]
+    }
+
     if (enable_playlist_webui) {
       # This is necessary for the time being, because
       # PlaylistPageActionController lives in //brave/browser/ui as it needs

@@ -17,6 +17,10 @@ class TabDataWebContentsObserver;
 class WebMcpInjector;
 }  // namespace ai_chat
 
+namespace playlist {
+class PlaylistTabHelper;
+}  // namespace playlist
+
 namespace brave_perf_predictor {
 class PerfPredictorTabHelper;
 }  // namespace brave_perf_predictor
@@ -71,6 +75,8 @@ class BraveTabFeatures : public TabFeatures_Chromium {
   // Estimates the bandwidth that Shields saves.
   std::unique_ptr<brave_perf_predictor::PerfPredictorTabHelper>
       perf_predictor_tab_helper_;
+  // Finds and saves the page's media. Null when Playlist is unavailable.
+  std::unique_ptr<playlist::PlaylistTabHelper> playlist_tab_helper_;
   // Enters fullscreen and Picture-in-Picture for YouTube videos.
   std::unique_ptr<ContentsObservingTabFeature> youtube_script_injector_;
 

@@ -24,6 +24,7 @@
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/image_metadata_stripper/common/features.h"
 #include "brave/components/misc_metrics/features.h"
+#include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/web_discovery/buildflags/buildflags.h"
 #include "build/build_config.h"
@@ -56,6 +57,13 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
 #include "brave/components/brave_wayback_machine/brave_wayback_machine_tab_helper.h"
+#endif
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+#include "brave/browser/playlist/playlist_service_factory.h"
+#include "brave/components/playlist/content/browser/playlist_tab_helper.h"
+#include "brave/components/playlist/core/browser/utils.h"
+#include "components/user_prefs/user_prefs.h"
 #endif
 
 #if BUILDFLAG(ENABLE_WIDEVINE)
@@ -116,6 +124,28 @@
 #endif
 
 namespace tabs {
+
+namespace {
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+// Returns nullptr when Playlist is disallowed or unavailable for the profile.
+std::unique_ptr<playlist::PlaylistTabHelper> MaybeCreatePlaylistTabHelper(
+    tabs::TabInterface& tab,
+    content::WebContents* contents) {
+  content::BrowserContext* const context = contents->GetBrowserContext();
+  if (!playlist::IsPlaylistAllowed(user_prefs::UserPrefs::Get(context))) {
+    return nullptr;
+  }
+  auto* const playlist_service =
+      playlist::PlaylistServiceFactory::GetForBrowserContext(context);
+  if (!playlist_service) {
+    return nullptr;
+  }
+  return playlist::PlaylistTabHelper::Create(tab, contents, playlist_service);
+}
+#endif  // BUILDFLAG(ENABLE_PLAYLIST)
+
+}  // namespace
 
 // static
 BraveTabFeatures* BraveTabFeatures::FromTabFeatures(TabFeatures* tab_features) {
@@ -294,6 +324,11 @@ void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
       std::make_unique<brave_perf_predictor::PerfPredictorTabHelper>(
           tab, tab.GetContents());
 
+#if BUILDFLAG(ENABLE_PLAYLIST)
+  // Created before the page action controller, which observes it.
+  playlist_tab_helper_ = MaybeCreatePlaylistTabHelper(tab, tab.GetContents());
+#endif
+
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   rewards_tab_helper_ = std::make_unique<brave_rewards::RewardsTabHelper>(tab);
 #endif
@@ -336,6 +371,12 @@ void BraveTabFeatures::WillDiscardContents(TabInterface* tab,
   perf_predictor_tab_helper_ =
       std::make_unique<brave_perf_predictor::PerfPredictorTabHelper>(
           *tab, new_contents);
+#if BUILDFLAG(ENABLE_PLAYLIST)
+  if (playlist_tab_helper_) {
+    playlist_tab_helper_.reset();
+    playlist_tab_helper_ = MaybeCreatePlaylistTabHelper(*tab, new_contents);
+  }
+#endif
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
   if (wayback_machine_tab_helper_) {
     wayback_machine_tab_helper_.reset();
