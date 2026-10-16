@@ -14,6 +14,7 @@
 #include "brave/components/brave_wayback_machine/brave_wayback_machine_utils.h"
 #include "brave/components/brave_wayback_machine/pref_names.h"
 #include "brave/components/constants/brave_switches.h"
+#include "components/tabs/public/tab_interface.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_controller.h"
@@ -23,33 +24,34 @@
 #include "net/http/http_response_headers.h"
 
 // static
-void BraveWaybackMachineTabHelper::CreateIfNeeded(
-    content::WebContents* web_contents) {
+std::unique_ptr<BraveWaybackMachineTabHelper>
+BraveWaybackMachineTabHelper::MaybeCreate(tabs::TabInterface& tab,
+                                          content::WebContents* web_contents) {
   if (base::CommandLine::ForCurrentProcess()->HasSwitch(
           switches::kDisableBraveWaybackMachineExtension)) {
-    return;
+    return nullptr;
   }
 
-  BraveWaybackMachineTabHelper::CreateForWebContents(web_contents);
+  return std::make_unique<BraveWaybackMachineTabHelper>(tab, web_contents);
 }
 
 BraveWaybackMachineTabHelper::BraveWaybackMachineTabHelper(
+    tabs::TabInterface& tab,
     content::WebContents* contents)
     : WebContentsObserver(contents),
-      content::WebContentsUserData<BraveWaybackMachineTabHelper>(*contents),
       pref_service_(*user_prefs::UserPrefs::Get(contents->GetBrowserContext())),
       wayback_machine_url_fetcher_(
           this,
           contents->GetBrowserContext()
               ->GetDefaultStoragePartition()
-              ->GetURLLoaderFactoryForBrowserProcess()) {
+              ->GetURLLoaderFactoryForBrowserProcess()),
+      scoped_unowned_user_data_(tab.GetUnownedUserDataHost(), *this) {
   // Unretained() is safe as |wayback_enabled_| is owned by this class.
   wayback_enabled_.Init(
       kBraveWaybackMachineEnabled, &*pref_service_,
       base::BindRepeating(
           &BraveWaybackMachineTabHelper::OnWaybackEnabledChanged,
           base::Unretained(this)));
-
 }
 
 BraveWaybackMachineTabHelper::~BraveWaybackMachineTabHelper() = default;
@@ -175,4 +177,10 @@ void BraveWaybackMachineTabHelper::ResetState() {
   SetWaybackState(WaybackState::kInitial);
 }
 
-WEB_CONTENTS_USER_DATA_KEY_IMPL(BraveWaybackMachineTabHelper);
+DEFINE_USER_DATA(BraveWaybackMachineTabHelper);
+
+// static
+BraveWaybackMachineTabHelper* BraveWaybackMachineTabHelper::From(
+    tabs::TabInterface* tab) {
+  return tab ? Get(tab->GetUnownedUserDataHost()) : nullptr;
+}

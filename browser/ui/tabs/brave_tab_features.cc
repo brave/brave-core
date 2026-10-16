@@ -54,6 +54,10 @@
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
+#include "brave/components/brave_wayback_machine/brave_wayback_machine_tab_helper.h"
+#endif
+
 #if BUILDFLAG(ENABLE_WIDEVINE)
 #include "brave/browser/widevine/brave_drm_tab_helper.h"
 #endif
@@ -210,6 +214,8 @@ void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
+  wayback_machine_tab_helper_ =
+      BraveWaybackMachineTabHelper::MaybeCreate(tab, tab.GetContents());
   if (page_action_controller()->ActionExists(kActionShowWaybackMachine)) {
     wayback_machine_page_action_controller_ =
         std::make_unique<page_actions::WaybackMachinePageActionController>(
@@ -330,6 +336,13 @@ void BraveTabFeatures::WillDiscardContents(TabInterface* tab,
   perf_predictor_tab_helper_ =
       std::make_unique<brave_perf_predictor::PerfPredictorTabHelper>(
           *tab, new_contents);
+#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
+  if (wayback_machine_tab_helper_) {
+    wayback_machine_tab_helper_.reset();
+    wayback_machine_tab_helper_ =
+        std::make_unique<BraveWaybackMachineTabHelper>(*tab, new_contents);
+  }
+#endif
 #if BUILDFLAG(ENABLE_TOR)
   if (tor_tab_helper_) {
     tor_tab_helper_ = std::make_unique<tor::TorTabHelper>(new_contents);

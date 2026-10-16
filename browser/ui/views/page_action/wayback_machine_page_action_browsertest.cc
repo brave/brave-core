@@ -21,6 +21,9 @@
 #include "brave/components/brave_wayback_machine/wayback_state.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/resource_coordinator/lifecycle_unit_state.mojom.h"
+#include "chrome/browser/resource_coordinator/tab_lifecycle_unit_external.h"
+#include "chrome/browser/resource_coordinator/tab_lifecycle_unit_source.h"
 #include "chrome/browser/ui/actions/chrome_action_id.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
@@ -61,8 +64,9 @@ constexpr char kSnapshotURL[] =
 class WaybackMachinePageActionBrowserTest : public InProcessBrowserTest {
  protected:
   BraveWaybackMachineTabHelper* GetTabHelper() {
-    return BraveWaybackMachineTabHelper::FromWebContents(
-        browser()->tab_strip_model()->GetActiveWebContents());
+    return BraveWaybackMachineTabHelper::From(
+        tabs::TabInterface::MaybeGetFromContents(
+            browser()->tab_strip_model()->GetActiveWebContents()));
   }
 
   WaybackMachinePageActionController* GetController() {
@@ -165,6 +169,33 @@ IN_PROC_BROWSER_TEST_F(WaybackMachinePageActionBrowserTest, BubbleLaunchTest) {
   // Check bubble is launched.
   ClickButton(icon);
   EXPECT_NE(GetBubbleView(), nullptr);
+}
+
+// Discarding a tab replaces its contents, for which the tab's features build a
+// new tab helper that the page action follows.
+IN_PROC_BROWSER_TEST_F(WaybackMachinePageActionBrowserTest,
+                       FollowsDiscardedContents) {
+  SetWaybackState(WaybackState::kNeedToCheck);
+  ASSERT_TRUE(GetIcon()->GetVisible());
+
+  TabStripModel* const tab_strip_model = browser()->tab_strip_model();
+  content::WebContents* const discarded_contents =
+      tab_strip_model->GetActiveWebContents();
+  ASSERT_TRUE(AddTabAtIndex(1, GURL("about:blank"), ui::PAGE_TRANSITION_TYPED));
+  auto* const lifecycle_unit =
+      resource_coordinator::TabLifecycleUnitSource::GetTabLifecycleUnitExternal(
+          discarded_contents);
+  ASSERT_TRUE(lifecycle_unit);
+  ASSERT_TRUE(
+      lifecycle_unit->DiscardTab(::mojom::LifecycleUnitDiscardReason::URGENT));
+
+  tab_strip_model->ActivateTabAt(0);
+  ASSERT_TRUE(GetTabHelper());
+  EXPECT_EQ(GetTabHelper()->wayback_state(), WaybackState::kInitial);
+  EXPECT_FALSE(GetIcon()->GetVisible());
+
+  SetWaybackState(WaybackState::kNeedToCheck);
+  EXPECT_TRUE(GetIcon()->GetVisible());
 }
 
 IN_PROC_BROWSER_TEST_F(WaybackMachinePageActionBrowserTest,
@@ -412,7 +443,8 @@ IN_PROC_BROWSER_TEST_F(WaybackMachineAutoShowBubbleBrowserTest,
   ASSERT_TRUE(AddTabAtIndex(1, GURL("about:blank"), ui::PAGE_TRANSITION_TYPED));
   ASSERT_EQ(1, browser()->tab_strip_model()->active_index());
 
-  BraveWaybackMachineTabHelper::FromWebContents(first_tab)
+  BraveWaybackMachineTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(first_tab))
       ->SetWaybackStateForTesting(WaybackState::kNeedToCheck);
   EXPECT_EQ(GetBubbleView(), nullptr);
 

@@ -51,6 +51,7 @@ class PartitionedStoragePageActionController;
 
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
 #include "brave/browser/ui/views/page_action/wayback_machine_page_action_controller.h"
+class BraveWaybackMachineTabHelper;
 #endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
@@ -196,6 +197,11 @@ class BraveTabFeatures : public TabFeatures {
   // Estimates the bandwidth that Shields saves.
   std::unique_ptr<brave_perf_predictor::PerfPredictorTabHelper>
       perf_predictor_tab_helper_;
+#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
+  // Looks up Wayback Machine snapshots. Null when disabled. Declared before
+  // the page action controller that observes it.
+  std::unique_ptr<BraveWaybackMachineTabHelper> wayback_machine_tab_helper_;
+#endif
 #if BUILDFLAG(ENABLE_TOR)
   // Retries Tor navigations while the Tor process is not ready. Null outside
   // Tor profiles.
