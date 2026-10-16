@@ -508,7 +508,7 @@ void DreamingRun::OnSentenceDecisions(
                       static_cast<uint32_t>(sentence_indexes[i])};
     if (config_.review_changes) {
       review_sources_[candidate.link] = {
-          sentences[i], turn().conversation_uuid,
+          sentences[i], turn().conversation_uuid, turn().entry_uuid,
           conversation_titles_[turn().conversation_uuid], turn().date};
     }
     candidate.text = std::move(sentences[i]);

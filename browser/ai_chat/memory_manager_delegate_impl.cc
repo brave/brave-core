@@ -253,7 +253,7 @@ void MemoryManagerDelegateImpl::GetDreamingReview(
       std::vector<mojom::LearnedMemorySourcePtr> sources;
       for (const DreamingSource& source : proposal.sources) {
         sources.push_back(mojom::LearnedMemorySource::New(
-            source.sentence, source.conversation_uuid,
+            source.sentence, source.conversation_uuid, source.entry_uuid,
             source.conversation_title, source.date));
       }
       proposals.push_back(mojom::LearnedMemoryProposal::New(

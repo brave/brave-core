@@ -2071,20 +2071,20 @@
   <message name="IDS_SETTINGS_LEO_ASSISTANT_DREAM_REVIEW_EMPTY_ERROR" desc="The error under the text box of a memory in the review dialog when the user left it empty">
     Enter some text, or clear the checkbox to skip this memory.
   </message>
-  <message name="IDS_SETTINGS_LEO_ASSISTANT_DREAM_REVIEW_SOURCE" desc="The line under a memory in the review dialog that tells the chat that the memory came from, and the date of the message. The user selects it to show the sentences that Leo read.">
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_DREAM_REVIEW_SOURCE" desc="The line under a memory in the review dialog that tells the chat that the memory came from, and the date of the message. The chat title is a link that opens the chat at that message.">
     From “<ph name="CHAT_TITLE">$1<ex>Dog food ideas</ex></ph>” · <ph name="DATE">$2<ex>10/12/2026</ex></ph>
   </message>
-  <message name="IDS_SETTINGS_LEO_ASSISTANT_DREAM_REVIEW_SOURCE_UNTITLED" desc="The line under a memory in the review dialog when the chat that the memory came from has no title. The date is the date of the message.">
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_DREAM_REVIEW_SOURCE_UNTITLED" desc="The line under a memory in the review dialog when the chat that the memory came from has no title. The date is the date of the message. The whole line is a link that opens the chat at that message.">
     From a chat · <ph name="DATE">$1<ex>10/12/2026</ex></ph>
   </message>
   <message name="IDS_SETTINGS_LEO_ASSISTANT_DREAM_REVIEW_SOURCE_SEVERAL" desc="The line under a memory in the review dialog when the memory came from more than one chat. The date is the date of the last message.">
     From several chats · <ph name="DATE">$1<ex>10/12/2026</ex></ph>
   </message>
-  <message name="IDS_SETTINGS_LEO_ASSISTANT_DREAM_REVIEW_SOURCE_CAPTION" desc="The text under a sentence that Leo read, in the review dialog, when the memory came from more than one chat. It tells the chat and the date of the message.">
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_DREAM_REVIEW_SOURCE_CAPTION" desc="The text under a sentence that Leo read, in the review dialog, when the memory came from more than one chat. It tells the chat and the date of the message. The chat title is a link that opens the chat at that message.">
     <ph name="CHAT_TITLE">$1<ex>Dog food ideas</ex></ph> · <ph name="DATE">$2<ex>10/12/2026</ex></ph>
   </message>
-  <message name="IDS_SETTINGS_LEO_ASSISTANT_DREAM_REVIEW_UNTITLED_CHAT" desc="The name of a chat that has no title, under a sentence that Leo read, in the review dialog">
-    Chat
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_DREAM_REVIEW_SOURCE_CAPTION_UNTITLED" desc="The text under a sentence that Leo read, in the review dialog, when the memory came from more than one chat and this chat has no title. The date is the date of the message. The whole text is a link that opens the chat at that message.">
+    Untitled chat · <ph name="DATE">$1<ex>10/12/2026</ex></ph>
   </message>
   <message name="IDS_SETTINGS_LEO_ASSISTANT_DREAM_REVIEW_SHOW_SOURCES" desc="The tooltip and accessible name of the button that shows the sentences of the user's chat that a memory came from, in the review dialog">
     Show what you wrote

@@ -60,6 +60,7 @@ enum class DreamingStatus {
 struct DreamingSource {
   std::string sentence;
   std::string conversation_uuid;
+  std::string entry_uuid;
   // The title of the chat when the run read it. It can be empty.
   std::string conversation_title;
   // The date of the message.

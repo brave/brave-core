@@ -1597,15 +1597,15 @@ TEST_F(UserMemoryManagerTest, ReviewHasTheSentencesOfTheRun) {
   EXPECT_EQ(merged.kind, DreamingProposal::Kind::kChanged);
   EXPECT_EQ(merged.memory.links.size(), 2u);
   EXPECT_THAT(merged.sources,
-              ElementsAre(DreamingSource{dog, "chat-1", "title",
-                                         merged.memory.updated_date}));
+              ElementsAre(DreamingSource{dog, "chat-1", "chat-1-entry-0",
+                                         "title", merged.memory.updated_date}));
   // The source is the sentence that the link names, not the whole turn.
   const DreamingProposal& added = review->proposals[1];
   EXPECT_EQ(added.kind, DreamingProposal::Kind::kNew);
   EXPECT_EQ(added.memory.text, "Likes tea");
-  EXPECT_THAT(added.sources,
-              ElementsAre(DreamingSource{"I like tea.", "chat-2", "title",
-                                         added.memory.created_date}));
+  EXPECT_THAT(added.sources, ElementsAre(DreamingSource{
+                                 "I like tea.", "chat-2", "chat-2-entry-0",
+                                 "title", added.memory.created_date}));
   EXPECT_FALSE(added.memory.created_date.is_null());
 }
 

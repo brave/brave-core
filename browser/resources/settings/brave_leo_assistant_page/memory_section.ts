@@ -79,12 +79,22 @@ export interface MemoryGroup {
 // What is wrong with the text of a change of the review.
 type ReviewTextError = '' | 'empty' | 'tooLong'
 
+// A line with a part that opens a chat. The translated line stays whole: the
+// page puts the link in place of a placeholder. Without `url` the line has no
+// link, and all its text is in `before`.
+interface LinkedText {
+  before: string
+  link: string
+  after: string
+  url: string
+}
+
 // A sentence that Leo read, under a change of the review.
 interface ReviewQuote {
   sentence: string
-  // The chat and the date of the sentence. Empty when all the sentences come
+  // The chat and the date of the sentence. Null when all the sentences come
   // from one chat: the line above them tells it.
-  caption: string
+  caption: LinkedText | null
 }
 
 // A change of the Dreaming review, as the user edits it.
@@ -99,8 +109,8 @@ interface ReviewItem {
   error: ReviewTextError
   // The first change of its kind, which has the heading of the kind above it.
   firstOfKind: boolean
-  // The line that tells where the change came from. Empty without sources.
-  sourceSummary: string
+  // The line that tells where the change came from. Null without sources.
+  source: LinkedText | null
   quotes: ReviewQuote[]
   // The sentences show under the line. They show at first for a change of a
   // saved memory: the user needs them to decide.
@@ -116,6 +126,10 @@ const REVIEW_KIND_ORDER = [
   LearnedMemoryChange.kChanged,
   LearnedMemoryChange.kSeenAgain
 ]
+
+// Takes the place of a chat title in a translated line. The title itself never
+// goes through i18n(), which reads HTML: a title can contain "<".
+const CHAT_TITLE_MARKER = 'LEO_CHAT_TITLE_MARKER'
 
 const MemorySectionBase = PrefsMixin(I18nMixin(BaseMixin(PolymerElement))) as {
   new (): PolymerElement & PrefsMixinInterface & I18nMixinInterface &
@@ -390,39 +404,57 @@ class MemorySection extends MemorySectionBase {
   }
 
   // The line under a change of the review: the chat and the date of the last
-  // sentence. When the sentences come from more than one chat, the line does
-  // not name a chat, and each sentence tells its own.
+  // sentence, with a link that opens the chat at the sentence. When the
+  // sentences come from more than one chat, the line does not name a chat, and
+  // each sentence tells and links its own.
   getReviewSources_(sources: LearnedMemorySource[]):
-      { sourceSummary: string, quotes: ReviewQuote[] } {
+      { source: LinkedText | null, quotes: ReviewQuote[] } {
     if (sources.length === 0) {
-      return { sourceSummary: '', quotes: [] }
+      return { source: null, quotes: [] }
     }
     const last = sources.reduce((a, b) =>
       b.date.internalValue > a.date.internalValue ? b : a)
-    const date = this.formatDate_(last.date)
     const severalChats =
       new Set(sources.map(source => source.conversationUuid)).size > 1
-    let sourceSummary: string
-    if (severalChats) {
-      sourceSummary =
-        this.i18n('braveLeoAssistantDreamReviewSourceSeveral', date)
-    } else if (last.conversationTitle) {
-      sourceSummary = this.i18n('braveLeoAssistantDreamReviewSource',
-                                last.conversationTitle, date)
-    } else {
-      sourceSummary =
-        this.i18n('braveLeoAssistantDreamReviewSourceUntitled', date)
-    }
+    const source = severalChats
+      ? {
+          before: this.i18n('braveLeoAssistantDreamReviewSourceSeveral',
+                            this.formatDate_(last.date)),
+          link: '', after: '', url: ''
+        }
+      : this.linkChat_('braveLeoAssistantDreamReviewSource',
+                       'braveLeoAssistantDreamReviewSourceUntitled', last)
     const quotes = sources.map((source): ReviewQuote => ({
       sentence: source.sentence,
       caption: severalChats
-        ? this.i18n('braveLeoAssistantDreamReviewSourceCaption',
-                    source.conversationTitle ||
-                      this.i18n('braveLeoAssistantDreamReviewUntitledChat'),
-                    this.formatDate_(source.date))
-        : ''
+        ? this.linkChat_('braveLeoAssistantDreamReviewSourceCaption',
+                         'braveLeoAssistantDreamReviewSourceCaptionUntitled',
+                         source)
+        : null
     }))
-    return { sourceSummary, quotes }
+    return { source, quotes }
+  }
+
+  // The line |id| with the title of the chat of |source| as a link. A chat
+  // without a title gets the line |untitledId|, all of it a link.
+  linkChat_(id: string, untitledId: string,
+            source: LearnedMemorySource): LinkedText {
+    const date = this.formatDate_(source.date)
+    const url = this.getChatUrl_(source)
+    if (!source.conversationTitle) {
+      return { before: '', link: this.i18n(untitledId, date), after: '', url }
+    }
+    const [before, after = ''] =
+      this.i18n(id, CHAT_TITLE_MARKER, date).split(CHAT_TITLE_MARKER)
+    return { before, link: source.conversationTitle, after, url }
+  }
+
+  // The chat at the message of the sentence. The Leo page scrolls to the
+  // message and marks it.
+  getChatUrl_(source: LearnedMemorySource): string {
+    const fragment = new URLSearchParams({ entry: source.entryUuid })
+    return `chrome://leo-ai/${encodeURIComponent(source.conversationUuid)}` +
+      `#${fragment}`
   }
 
   // Without a search, one part with all the memories. With a search, the
@@ -1056,8 +1088,10 @@ class MemorySection extends MemorySectionBase {
              !this.reviewItems_[index].sourcesOpen)
   }
 
-  getSourcesButtonClass_(open: boolean): string {
-    return open ? 'review-sources-button open' : 'review-sources-button'
+  // The chevron points to where the sentences go: down to open them, up to
+  // close them.
+  getSourcesButtonIcon_(open: boolean): string {
+    return open ? 'carat-up' : 'carat-down'
   }
 
   // The Leo button does not pass aria-expanded to its inner button, so the
