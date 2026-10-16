@@ -97,6 +97,10 @@ if (!is_android) {
       deps += [ "//brave/browser/web_discovery" ]
     }
 
+    if (is_win || is_mac || is_linux) {
+      deps += [ "//brave/browser/ui/geolocation" ]
+    }
+
     if (enable_brave_ads) {
       deps += [
         "//brave/browser/brave_ads/creatives/search_result_ad",
