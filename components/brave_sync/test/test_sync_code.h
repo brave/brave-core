@@ -8,7 +8,7 @@
 
 namespace brave_sync {
 
-constexpr char kValidSyncCode[] =
+inline constexpr char kValidSyncCode[] =
     "fringe digital begin feed equal output proof cheap "
     "exotic ill sure question trial squirrel glove celery "
     "awkward push jelly logic broccoli almost grocery drift";
