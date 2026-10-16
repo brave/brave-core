@@ -86,7 +86,7 @@ export const MarketView = () => {
           const { payload } = message as SelectBuyMessage
           const symbolLower = payload.symbol.toLowerCase()
           const foundMeldTokens = buyAssets?.filter(
-            (t) => t.symbol === symbolLower,
+            (t) => t.symbol.toLowerCase() === symbolLower,
           )
           if (foundMeldTokens) {
             openOrPushRoute(makeBuyRoute(foundMeldTokens[0]))
