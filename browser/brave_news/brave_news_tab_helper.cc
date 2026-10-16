@@ -23,6 +23,7 @@
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/page.h"
@@ -61,22 +62,29 @@ BraveNewsTabHelper::FeedDetails::FeedDetails(FeedDetails&&) = default;
 BraveNewsTabHelper::FeedDetails& BraveNewsTabHelper::FeedDetails::operator=(
     BraveNewsTabHelper::FeedDetails&&) = default;
 
-// static
-void BraveNewsTabHelper::MaybeCreateForWebContents(
-    content::WebContents* contents) {
-  if (contents->GetBrowserContext()->IsOffTheRecord()) {
-    return;
-  }
+DEFINE_USER_DATA(BraveNewsTabHelper);
 
-  CreateForWebContents(contents);
+// static
+BraveNewsTabHelper* BraveNewsTabHelper::From(tabs::TabInterface* tab) {
+  return tab ? Get(tab->GetUnownedUserDataHost()) : nullptr;
 }
 
-BraveNewsTabHelper::BraveNewsTabHelper(content::WebContents* contents)
-    : content::WebContentsUserData<BraveNewsTabHelper>(*contents),
-      content::WebContentsObserver(contents),
+// static
+std::unique_ptr<BraveNewsTabHelper> BraveNewsTabHelper::MaybeCreate(
+    tabs::TabInterface& tab) {
+  if (tab.GetContents()->GetBrowserContext()->IsOffTheRecord()) {
+    return nullptr;
+  }
+
+  return std::make_unique<BraveNewsTabHelper>(tab);
+}
+
+BraveNewsTabHelper::BraveNewsTabHelper(tabs::TabInterface& tab)
+    : tabs::ContentsObservingTabFeature(tab),
       controller_(brave_news::BraveNewsControllerFactory::GetForBrowserContext(
-          contents->GetBrowserContext())) {
-  CHECK(!contents->GetBrowserContext()->IsOffTheRecord());
+          tab.GetContents()->GetBrowserContext())),
+      scoped_unowned_user_data_(tab.GetUnownedUserDataHost(), *this) {
+  CHECK(!tab.GetContents()->GetBrowserContext()->IsOffTheRecord());
 
   if (controller_) {
     pref_observation_.Observe(&controller_->prefs());
@@ -207,7 +215,7 @@ void BraveNewsTabHelper::ToggleSubscription(const GURL& feed_url) {
 
 void BraveNewsTabHelper::OnReceivedRssUrls(const GURL& site_url,
                                            std::vector<GURL> feed_urls) {
-  if (site_url != GetWebContents().GetLastCommittedURL()) {
+  if (site_url != web_contents()->GetLastCommittedURL()) {
     return;
   }
 
@@ -257,7 +265,7 @@ void BraveNewsTabHelper::OnFoundFeedData(
     const GURL& feed_url,
     const GURL& site_url,
     std::vector<brave_news::mojom::FeedSearchResultItemPtr> feeds) {
-  if (site_url != GetWebContents().GetLastCommittedURL()) {
+  if (site_url != web_contents()->GetLastCommittedURL()) {
     return;
   }
 
@@ -312,13 +320,26 @@ void BraveNewsTabHelper::AvailableFeedsChanged() {
 }
 
 void BraveNewsTabHelper::PrimaryPageChanged(content::Page& page) {
+  ResetPageFeeds();
+  UpdatePageFeed();
+  AvailableFeedsChanged();
+}
+
+void BraveNewsTabHelper::OnDiscardContents(tabs::TabInterface* tab,
+                                           content::WebContents* old_contents,
+                                           content::WebContents* new_contents) {
+  tabs::ContentsObservingTabFeature::OnDiscardContents(tab, old_contents,
+                                                       new_contents);
+  // The new contents has no page until it reloads.
+  ResetPageFeeds();
+  AvailableFeedsChanged();
+}
+
+void BraveNewsTabHelper::ResetPageFeeds() {
   // Invalidate all weak pointers - we're on a new page now.
   weak_ptr_factory_.InvalidateWeakPtrs();
   rss_page_feeds_.clear();
   default_feed_ = nullptr;
-
-  UpdatePageFeed();
-  AvailableFeedsChanged();
 }
 
 void BraveNewsTabHelper::UpdatePageFeed() {
@@ -327,7 +348,7 @@ void BraveNewsTabHelper::UpdatePageFeed() {
     return;
   }
   controller_->GetPublisherForSite(
-      GetWebContents().GetLastCommittedURL(),
+      web_contents()->GetLastCommittedURL(),
       base::BindOnce(
           [](base::WeakPtr<BraveNewsTabHelper> tab_helper,
              brave_news::mojom::PublisherPtr publisher) {
@@ -348,7 +369,7 @@ void BraveNewsTabHelper::UpdatePageFeed() {
 }
 
 void BraveNewsTabHelper::DOMContentLoaded(content::RenderFrameHost* rfh) {
-  if (GetWebContents().GetPrimaryMainFrame() != rfh) {
+  if (web_contents()->GetPrimaryMainFrame() != rfh) {
     return;
   }
 
@@ -357,10 +378,10 @@ void BraveNewsTabHelper::DOMContentLoaded(content::RenderFrameHost* rfh) {
   }
 
   brave_news::FetchRssLinks(
-      GetWebContents().GetLastCommittedURL(), &GetWebContents(),
+      web_contents()->GetLastCommittedURL(), web_contents(),
       base::BindOnce(&BraveNewsTabHelper::OnReceivedRssUrls,
                      weak_ptr_factory_.GetWeakPtr(),
-                     GetWebContents().GetLastCommittedURL()));
+                     web_contents()->GetLastCommittedURL()));
 }
 
 void BraveNewsTabHelper::OnPublishersChanged() {
@@ -378,5 +399,3 @@ void BraveNewsTabHelper::OnPublishersChanged() {
       base::BindOnce(&BraveNewsTabHelper::OnReceivedNewPublishers,
                      weak_ptr_factory_.GetWeakPtr()));
 }
-
-WEB_CONTENTS_USER_DATA_KEY_IMPL(BraveNewsTabHelper);

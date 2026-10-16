@@ -21,10 +21,12 @@ source_set("brave_news") {
     "//brave/components/brave_news/common",
     "//brave/components/brave_news/common:mojom",
     "//brave/components/brave_news/common/buildflags",
+    "//chrome/browser/ui/tabs:tabs_public",
     "//components/keyed_service/content",
     "//components/keyed_service/core",
     "//content/public/browser",
     "//mojo/public/cpp/bindings",
+    "//ui/base/unowned_user_data",
     "//url",
   ]
 }
@@ -65,6 +67,7 @@ source_set("impl") {
     "//chrome/browser/profiles:profile",
     "//components/keyed_service/content",
     "//components/policy/core/common",
+    "//components/tabs:public",
     "//content/public/browser",
     "//mojo/public/cpp/bindings",
     "//services/network/public/cpp",
