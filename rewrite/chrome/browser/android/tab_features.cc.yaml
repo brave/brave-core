@@ -1,0 +1,15 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Do not create NetErrorTabHelper
+
+      It sends DNS probes when a page fails with a DNS error, which Brave
+      blocks.
+    regex:
+      re_pattern: '^( *)(net_error_tab_helper_ =[^;]*;)'
+      re_flags: [MULTILINE]
+      replace: '\1/* \2 */'

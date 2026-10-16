@@ -1,5 +1,5 @@
 diff --git a/chrome/android/chrome_public_apk_tmpl.gni b/chrome/android/chrome_public_apk_tmpl.gni
-index 6b9413f634e59624356f64429523af6502f78fd3..ad3e7de3cfc31539834eae8462cb285ebaa8b858 100644
+index b91c331206b51869318675bd2d30319dc0b93063..b51cf19d5c242792c507a933fa4026d1109fca30 100644
 --- a/chrome/android/chrome_public_apk_tmpl.gni
 +++ b/chrome/android/chrome_public_apk_tmpl.gni
 @@ -299,6 +299,7 @@ template("chrome_common_apk_or_module_tmpl") {
@@ -18,7 +18,7 @@ index 6b9413f634e59624356f64429523af6502f78fd3..ad3e7de3cfc31539834eae8462cb285e
      }
  
      # Java and native targets form two independent compile graphs. Deps from
-@@ -699,6 +701,14 @@ template("chrome_common_apk_or_module_tmpl") {
+@@ -693,6 +695,14 @@ template("chrome_common_apk_or_module_tmpl") {
                                   "version_code",
                                   "version_name",
                                 ])

@@ -72,17 +72,17 @@ void DocumentFetchJavaScriptFeature::ScriptMessageReceived(
   auto callback = std::move(it->second);
   pending_callbacks_.erase(it);
 
-  const base::DictValue* dict =
-      message.legacy_body() ? message.legacy_body()->GetIfDict() : nullptr;
-  if (!dict) {
+  const web::ScriptMessageValue& message_body = message.body();
+  if (message_body.type() != base::Value::Type::DICT) {
     std::move(callback).Run(0, "");
     return;
   }
+  const web::ScriptMessageDictValue& dict = message_body.GetDict();
 
   // All numbers from the WKWebView JS bridge arrive as doubles regardless of
   // their type on the JS side, so read as double and cast to int.
-  std::optional<double> status_code = dict->FindDouble(kStatusCodeKey);
-  const std::string* base64_data = dict->FindString(kBase64DataKey);
+  std::optional<double> status_code = dict.FindDouble(kStatusCodeKey);
+  std::optional<std::string> base64_data = dict.FindString(kBase64DataKey);
   std::move(callback).Run(status_code ? static_cast<int>(*status_code) : 0,
                           base64_data ? *base64_data : "");
 }

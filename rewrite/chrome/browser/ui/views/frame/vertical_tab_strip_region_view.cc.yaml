@@ -9,10 +9,10 @@ substitutions:
       function_name: 'VerticalTabStripRegionView::VerticalTabStripRegionView'
       code: 'ObserveHideCompletelyPref();'
 
-  - description: Replace kCollapsedWidth with dynamic getter
+  - description: Replace kVerticalTabStripCollapsedWidth with dynamic getter
     count: 0
     regex:
-      pattern: 'kCollapsedWidth'
+      pattern: 'tabs::kVerticalTabStripCollapsedWidth'
       replace: 'GetCollapsedWidth()'
 
   - description: |-

@@ -1,0 +1,16 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Don't track the Tor profile as the primary OTR profile.
+
+      Brave's Profile::IsPrimaryOTRProfile() is true for Tor, so the watcher
+      would observe it and then DCHECK when the real primary OTR is created.
+    regex:
+      pattern: 'if (!off_the_record->IsPrimaryOTRProfile()) {'
+      replace:
+        'if (!off_the_record->IsPrimaryOTRProfile() || off_the_record->IsTor())
+        {'

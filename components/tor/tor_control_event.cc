@@ -5,29 +5,23 @@
 
 #include "brave/components/tor/tor_control_event.h"
 
+#include <ostream>
+
+#include "base/notreached.h"
+
 namespace tor {
 
-// TODO(https://github.com/brave/brave-browser/issues/48713): This is a case of
-// `-Wexit-time-destructors` violation and `[[clang::no_destroy]]` has been
-// added in the meantime to fix the build error. Remove this attribute and
-// provide a proper fix.
-[[clang::no_destroy]] const std::map<std::string, TorControlEvent>
-    kTorControlEventByName = {
-#define TOR_EVENT(N) {#N, TorControlEvent::N},
+std::ostream& operator<<(std::ostream& os, TorControlEvent event) {
+  switch (event) {
+    case TorControlEvent::INVALID:
+      return os << "(invalid)";
+#define TOR_EVENT(N)       \
+  case TorControlEvent::N: \
+    return os << #N;
 #include "tor_control_event_list.h"  // NOLINT
 #undef TOR_EVENT
-};
-
-// TODO(https://github.com/brave/brave-browser/issues/48713): This is a case of
-// `-Wexit-time-destructors` violation and `[[clang::no_destroy]]` has been
-// added in the meantime to fix the build error. Remove this attribute and
-// provide a proper fix.
-[[clang::no_destroy]] const std::map<TorControlEvent, std::string>
-    kTorControlEventByEnum = {
-        {TorControlEvent::INVALID, "(invalid)"},
-#define TOR_EVENT(N) {TorControlEvent::N, #N},
-#include "tor_control_event_list.h"  // NOLINT
-#undef TOR_EVENT
-};
+  }
+  NOTREACHED();
+}
 
 }  // namespace tor

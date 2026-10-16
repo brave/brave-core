@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/views/side_panel/side_panel_utils.h"
 
+#include "brave/browser/ui/views/brave_layout_provider.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/common/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
@@ -14,9 +15,6 @@
 #include "ui/views/layout/layout_provider.h"
 #include "ui/views/view.h"
 
-using views::ShapeContextTokensOverride::kRoundedCornersBorderRadius;
-using views::ShapeContextTokensOverride::
-    kRoundedCornersBorderRadiusAtWindowCorner;
 
 namespace brave {
 

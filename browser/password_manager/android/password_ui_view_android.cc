@@ -180,7 +180,7 @@ ScopedJavaLocalRef<jobject> PasswordUiViewAndroid::GetSavedPasswordEntry(
   return Java_PasswordUiView_createSavedPasswordEntry(
       env, password_manager::GetShownOrigin(passwords_[index]),
       password_manager::GetShownUrl(passwords_[index]).spec(),
-      passwords_[index].username, passwords_[index].password);
+      passwords_[index].username, passwords_[index].password.value());
 }
 
 std::string PasswordUiViewAndroid::GetSavedPasswordException(JNIEnv* env,

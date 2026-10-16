@@ -4,50 +4,10 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
-  - description: |-
-      side_panel/internal and windowing/internal only assert
-      enable_extensions_core themselves, with nothing specific to desktop;
-      build them for non-desktop Android too. enable_extensions_core alone
-      isn't enough here (it's also true on true desktop), so this still
-      needs is_android.
-    regex:
-      pattern: 'if (is_desktop_android) {'
-      replace:
-        'if (is_desktop_android || (is_android && enable_extensions_core)) {'
-
-  - description: Depend on the Brave UI.
-    insert_into_list:
-      target: ui
-      list_name: public_deps
-      values:
-        - //brave/browser/ui
-
-  - description: Add the Brave UI deps.
-    add_literal_to_list:
-      target: ui
-      list_name: deps
-      literal: brave_chrome_browser_ui_deps
-      import: //brave/browser/sources.gni
-
-  - description:
-      Depend on the targets the Brave UI allows circular includes from.
-    add_literal_to_list:
-      target: ui
-      list_name: deps
-      literal: brave_chrome_browser_ui_allow_circular_includes_from
-      import: //brave/browser/sources.gni
-
-  - description: Allow circular includes from the Brave UI targets.
-    add_literal_to_list:
-      target: ui
-      list_name: allow_circular_includes_from
-      literal: brave_chrome_browser_ui_allow_circular_includes_from
-      import: //brave/browser/sources.gni
-
   - description: |
       Let //brave/browser/ui:brave_browser_header depend on :browser_header.
 
-      Upstream restricted browser.h to :ui, but BraveBrowser subclasses
+      Upstream restricted browser.h to :core, but BraveBrowser subclasses
       Browser. Only brave_browser.h includes browser.h, so only the leaf target
       holding it is added to the visibility.
     add_literal_to_list:
@@ -63,3 +23,12 @@ substitutions:
       values:
         - //brave/browser/ui:ui_public_dependencies
         - //components/saved_tab_groups/public
+
+  - description: |-
+      accelerator_table.cc chromium_src override uses ENABLE_COMMANDER build
+      flag. The dependency for the flag needs to be added.
+    insert_into_list:
+      target: accelerator_table
+      list_name: deps
+      values:
+        - //brave/components/commander/common/buildflags

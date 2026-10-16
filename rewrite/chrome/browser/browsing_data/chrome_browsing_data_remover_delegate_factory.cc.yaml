@@ -9,3 +9,20 @@ substitutions:
     rename_class:
       class_name: ChromeBrowsingDataRemoverDelegate
       rename: BraveBrowsingDataRemoverDelegate
+  - description: |
+      Depend on the Brave services the delegate reaches
+
+      BraveBrowsingDataRemoverDelegate clears data in these services. Without the
+      edges they can be destroyed first, and a removal still running during
+      profile teardown (clear on exit) would touch them.
+    add_after_line:
+      line: 'DependsOn(ZeroSuggestCacheServiceFactory::GetInstance());'
+      code: |2-
+          DependsOn(misc_metrics::ProfileMiscMetricsServiceFactory::GetInstance());
+          DependsOn(serp_metrics::SerpMetricsServiceFactory::GetInstance());
+        #if BUILDFLAG(ENABLE_AI_CHAT)
+          DependsOn(ai_chat::AIChatServiceFactory::GetInstance());
+        #endif
+        #if BUILDFLAG(ENABLE_BRAVE_NEWS)
+          DependsOn(brave_news::BraveNewsControllerFactory::GetInstance());
+        #endif

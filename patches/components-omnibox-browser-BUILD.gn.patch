@@ -1,5 +1,5 @@
 diff --git a/components/omnibox/browser/BUILD.gn b/components/omnibox/browser/BUILD.gn
-index 33ab90430580047c42694479187f225db202fb1f..15cf4ee97f8cb4b071e9d3a2d7fd4cd67791a810 100644
+index 7446880df947183029ac05c5e1783064be8026cd..2e87c48db81976e44edd74f9ddc9ff589042bb26 100644
 --- a/components/omnibox/browser/BUILD.gn
 +++ b/components/omnibox/browser/BUILD.gn
 @@ -376,6 +376,7 @@ static_library("browser") {
@@ -26,19 +26,27 @@ index 33ab90430580047c42694479187f225db202fb1f..15cf4ee97f8cb4b071e9d3a2d7fd4cd6
  
    configs += [ "//build/config/compiler:wexit_time_destructors" ]
  
-@@ -1145,6 +1148,7 @@ mojom("mojo_bindings") {
-     sources += [ "searchbox.mojom" ]
-     public_deps += [ ":fusebox_action_mojo_bindings" ]
+@@ -1151,6 +1154,7 @@ mojom("mojo_bindings") {
+       ":suggest_template_info_mojo_bindings",
+     ]
    }
 +  generate_legacy_js_bindings = true
  }
  
  if (!is_ios) {
-@@ -1165,6 +1169,7 @@ if (!is_ios) {
+@@ -1171,6 +1175,7 @@ if (!is_ios) {
          traits_deps = [ "//third_party/omnibox_proto" ]
        },
      ]
 +    generate_legacy_js_bindings = true
    }
  
-   source_set("fusebox_action_mojo_utils") {
+   mojom("suggest_template_info_mojo_bindings") {
+@@ -1180,6 +1185,7 @@ if (!is_ios) {
+       "//mojo/public/mojom/base",
+       "//url/mojom:url_mojom_gurl",
+     ]
++    generate_legacy_js_bindings = true
+   }
+ 
+   source_set("suggest_template_info_mojo_utils") {

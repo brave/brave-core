@@ -9,3 +9,4 @@ substitutions:
       target: infoplist_strings_util
       list_name: configs
       literal: '[ "//brave/common:constants_configs($default_toolchain)" ]'
+      assume_defined: true

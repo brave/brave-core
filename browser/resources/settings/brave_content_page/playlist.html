@@ -11,16 +11,16 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
 
   <settings-toggle-button
     class="cr-row first"
-    pref="{{prefs.brave.playlist.enabled}}"
+    pref-key="brave.playlist.enabled"
     label="$i18n{bravePlaylistEnablePlaylistLabel}"
-    hidden="[[isPlaylistManaged_(prefs.brave.playlist.enabled)]]">
+    hidden="[[isPlaylistManaged_(playlistEnabledPref_)]]">
   </settings-toggle-button>
   <template
     is="dom-if"
-    if="[[prefs.brave.playlist.enabled.value]]">
+    if="[[playlistEnabledPref_.value]]">
     <settings-toggle-button
       class="cr-row"
-      pref="{{prefs.brave.playlist.cache}}"
+      pref-key="brave.playlist.cache"
       label="$i18n{bravePlaylistCacheByDefaultLabel}"
       sub-label="$i18n{bravePlaylistCacheByDefaultSubLabel}">
     </settings-toggle-button>

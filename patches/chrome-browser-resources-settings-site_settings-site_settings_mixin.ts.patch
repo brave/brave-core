@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/site_settings/site_settings_mixin.ts b/chrome/browser/resources/settings/site_settings/site_settings_mixin.ts
-index 791395deef184d3d87b632a142f4a8a16e24db51..2c6ba7746485873c97b30b5a76e840eaf4b3a9a1 100644
+index a2712cad4def38dc2e359c74c2726d71567d5a07..d5f625cddda07ae5444d568267604058ff7a5a2e 100644
 --- a/chrome/browser/resources/settings/site_settings/site_settings_mixin.ts
 +++ b/chrome/browser/resources/settings/site_settings/site_settings_mixin.ts
-@@ -156,6 +156,7 @@ export const SiteSettingsMixin = dedupingMixin(
+@@ -144,6 +144,7 @@ export const SiteSettingsMixin = dedupingMixin(
              description: exception.description,
              enforcement: enforcement,
              controlledBy: controlledBy,

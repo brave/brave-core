@@ -6,7 +6,6 @@
 import 'chrome://resources/cr_elements/cr_button/cr_button.js'
 import 'chrome://resources/cr_elements/icons.html.js'
 
-import {PrefsMixin} from '/shared/settings/prefs/prefs_mixin.js';
 import {I18nMixin} from 'chrome://resources/cr_elements/i18n_mixin.js'
 import {WebUiListenerMixin} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js'
 import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
@@ -18,7 +17,7 @@ import {BraveDefaultExtensionsBrowserProxyImpl, ExtensionV2} from './brave_defau
 import {getTemplate} from './brave_extensions_manifest_v2_subpage.html.js'
 
 const BraveExtensionsV2SubpageBase =
-  WebUiListenerMixin(PrefsMixin(I18nMixin(BaseMixin(PolymerElement))))
+  WebUiListenerMixin(I18nMixin(BaseMixin(PolymerElement)))
 
 class BraveExtensionsV2Subpage extends BraveExtensionsV2SubpageBase {
   static get is() {

@@ -5,14 +5,22 @@
 
 #include <string>
 
+#include "base/path_service.h"
+#include "base/strings/escape.h"
+#include "base/strings/strcat.h"
 #include "base/test/run_until.h"
+#include "base/threading/thread_restrictions.h"
 #include "base/types/expected.h"
 #include "brave/browser/ai_chat/ai_chat_conversation_ui_browsertest_base.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/ui/tabs/tab_enums.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "content/public/test/browser_test.h"
+#include "content/public/test/browser_test_utils.h"
+#include "net/test/embedded_test_server/embedded_test_server.h"
+#include "url/gurl.h"
 
 namespace ai_chat {
 
@@ -91,6 +99,47 @@ IN_PROC_BROWSER_TEST_F(AIChatConversationEntriesBrowserTest,
   EXPECT_TRUE(VerifyConversationFrameElementState("edit-question-button"))
       << "Edit question button not found after reloading conversation - "
          "canSubmitUserEntries may not be properly initialized";
+}
+
+// The image sources the conversation entries frame loads from must allow it, as
+// WebUIURLLoaderFactory rejects cross-origin loads between chrome-untrusted://
+// hosts otherwise.
+IN_PROC_BROWSER_TEST_F(AIChatConversationEntriesBrowserTest,
+                       LoadsUntrustedImages) {
+  {
+    base::ScopedAllowBlockingForTesting allow_blocking;
+    embedded_https_test_server().ServeFilesFromDirectory(
+        base::PathService::CheckedGet(brave::DIR_TEST_DATA));
+  }
+  ASSERT_TRUE(embedded_https_test_server().Start());
+
+  CreateConversationWithMockEngine();
+  NavigateToConversationUI(conversation_handler_->get_conversation_uuid());
+  content::RenderFrameHost* frame = GetConversationEntriesFrame();
+  ASSERT_TRUE(frame);
+
+  constexpr char kLoadImageScript[] = R"(
+    new Promise(resolve => {
+      const img = new Image();
+      img.onload = () => resolve('loaded');
+      img.onerror = () => resolve('error');
+      img.src = $1;
+    });
+  )";
+  const GURL image_urls[] = {
+      GURL(base::StrCat(
+          {"chrome-untrusted://image?url=",
+           base::EscapeQueryParamValue(
+               embedded_https_test_server().GetURL("/logo.png").spec(),
+               /*use_plus=*/false)})),
+      GURL("chrome-untrusted://favicon2?size=64&pageUrl=https%3A%2F%2Fa.com"),
+  };
+  for (const GURL& image_url : image_urls) {
+    SCOPED_TRACE(image_url);
+    EXPECT_EQ("loaded",
+              content::EvalJs(frame,
+                              content::JsReplace(kLoadImageScript, image_url)));
+  }
 }
 
 }  // namespace ai_chat

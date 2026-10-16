@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/browsing_data/BUILD.gn b/chrome/browser/browsing_data/BUILD.gn
-index a1c17bda2bab66127448ae0f4394f500cf606eed..118cc519bb02451cb33756b801b8c75e838caee4 100644
+index 58f0f40459fb844c5262b1634b37b1f636973c2d..be4a0c4982585e1990528c67404db4d57890b7ee 100644
 --- a/chrome/browser/browsing_data/BUILD.gn
 +++ b/chrome/browser/browsing_data/BUILD.gn
 @@ -7,6 +7,7 @@ import("//ui/webui/webui_features.gni")
@@ -10,3 +10,11 @@ index a1c17bda2bab66127448ae0f4394f500cf606eed..118cc519bb02451cb33756b801b8c75e
    deps = [
      "//chrome/common:buildflags",
      "//content/public/browser",
+@@ -99,6 +100,7 @@ source_set("impl") {
+   deps = [
+     ":browsing_data",
+     ":constants",
++    "//brave/components/brave_news/common/buildflags",
+     "//chrome/browser:browser_process",
+     "//chrome/browser:browser_process_platform_part",
+     "//chrome/browser/autocomplete",

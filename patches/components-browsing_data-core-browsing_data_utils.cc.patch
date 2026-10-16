@@ -1,8 +1,8 @@
 diff --git a/components/browsing_data/core/browsing_data_utils.cc b/components/browsing_data/core/browsing_data_utils.cc
-index 719853994a76580bc071ad2d3c5795d57b2797bb..e919bff83e9d4137bee2b9d62d94250317119cb5 100644
+index 28f19decb3732e511cdd9fef185ab162caadd9fc..ae7854bbcf9065ba34b7d714731b3c3d9225cec6 100644
 --- a/components/browsing_data/core/browsing_data_utils.cc
 +++ b/components/browsing_data/core/browsing_data_utils.cc
-@@ -387,6 +387,11 @@ bool GetDeletionPreferenceFromDataType(
+@@ -396,6 +396,11 @@ bool GetDeletionPreferenceFromDataType(
      BrowsingDataType data_type,
      std::string* out_pref) {
    switch (data_type) {
@@ -14,7 +14,7 @@ index 719853994a76580bc071ad2d3c5795d57b2797bb..e919bff83e9d4137bee2b9d62d942503
      case BrowsingDataType::HISTORY:
        *out_pref = prefs::kDeleteBrowsingHistory;
        return true;
-@@ -420,6 +425,12 @@ bool GetDeletionPreferenceFromDataType(
+@@ -432,6 +437,12 @@ bool GetDeletionPreferenceFromDataType(
  
  std::optional<BrowsingDataType> GetDataTypeFromDeletionPreference(
      const std::string& pref_name) {

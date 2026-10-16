@@ -19,10 +19,6 @@ bool NodeFilter::IsNodeAdFilter() const {
   return false;
 }
 
-bool NodeFilter::IsNodeFingerprintingFilter() const {
-  return false;
-}
-
 bool NodeFilter::IsNodeTrackerFilter() const {
   return false;
 }

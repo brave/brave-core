@@ -132,7 +132,7 @@ void EthereumProviderTabHelper::MaybeCreateForWebState(
   BraveWalletService* brave_wallet_service =
       BraveWalletServiceFactory::GetServiceForState(profile);
   HostContentSettingsMap* settings_map =
-      ios::HostContentSettingsMapFactory::GetForProfile(profile);
+      ios::HostContentSettingsMapFactory::GetForProfile(profile).get();
   if (!brave_wallet_service || !settings_map) {
     return;
   }
