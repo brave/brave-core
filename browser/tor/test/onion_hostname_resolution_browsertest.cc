@@ -5,6 +5,7 @@
 
 #include <string>
 #include <string_view>
+#include <utility>
 
 #include "base/strings/strcat.h"
 #include "brave/browser/tor/tor_profile_manager.h"
@@ -24,6 +25,7 @@
 #include "net/base/net_errors.h"
 #include "net/base/network_anonymization_key.h"
 #include "net/dns/mock_host_resolver.h"
+#include "services/network/public/mojom/host_resolver.mojom.h"
 #include "services/network/public/mojom/network_context.mojom.h"
 #include "services/network/test/test_dns_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -48,11 +50,16 @@ std::string OnionResolutionScenarioName(
        scenario.expect_blocked ? "_Blocked" : "_Allowed"});
 }
 
+// Skips the host cache, so the result reflects whether the lookup would reach
+// a DNS resolver.
 int Resolve(network::mojom::NetworkContext* network_context,
             std::string_view host) {
+  auto params = network::mojom::ResolveHostParameters::New();
+  params->cache_usage =
+      network::mojom::ResolveHostParameters::CacheUsage::DISALLOWED;
   return network::BlockingDnsLookup(
-             network_context, net::HostPortPair(host, 80),
-             /*params=*/nullptr, net::NetworkAnonymizationKey())
+             network_context, net::HostPortPair(host, 80), std::move(params),
+             net::NetworkAnonymizationKey())
       .error;
 }
 
