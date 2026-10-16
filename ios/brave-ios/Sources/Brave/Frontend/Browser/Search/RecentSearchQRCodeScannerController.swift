@@ -163,7 +163,7 @@ extension RecentSearchQRCodeScannerController {
             ]
           )
 
-          scannedDisplayButton.configuration?.titleLineBreakMode = truncationMode
+          scannedDisplayButton.titleLabel?.lineBreakMode = truncationMode
           scannedDisplayButton.setAttributedTitle(title, for: .normal)
         } else {
           scannedDisplayButton.setTitle(nil, for: .normal)
@@ -172,22 +172,9 @@ extension RecentSearchQRCodeScannerController {
     }
 
     let scannedDisplayButton = UIButton().then {
-      var configuration = UIButton.Configuration.plain()
-      configuration.baseBackgroundColor = .clear
-      configuration.contentInsets = NSDirectionalEdgeInsets(
-        top: 12,
-        leading: 16,
-        bottom: 12,
-        trailing: 16
-      )
-      configuration.titleLineBreakMode = .byTruncatingTail
-      configuration.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer {
-        incoming in
-        var outgoing = incoming
-        outgoing.font = UIFont.preferredFont(forTextStyle: .body)
-        return outgoing
-      }
-      $0.configuration = configuration
+      $0.contentEdgeInsets = UIEdgeInsets(top: 12, left: 16, bottom: 12, right: 16)
+      $0.titleLabel?.font = UIFont.preferredFont(forTextStyle: .body)
+      $0.titleLabel?.lineBreakMode = .byTruncatingTail
       $0.setTitleColor(UIColor(braveSystemName: .schemesOnPrimary), for: .normal)
       $0.backgroundColor = UIColor(braveSystemName: .buttonBackground)
       $0.layer.cornerRadius = 10
