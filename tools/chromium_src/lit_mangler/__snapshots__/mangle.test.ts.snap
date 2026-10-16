@@ -927,7 +927,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 "===================================================================
 --- ../chrome/browser/resources/settings/autofill_page/contact_info/contact_info_page.html.ts
 +++ gen/chrome/browser/resources/settings/preprocessed/autofill_page/contact_info/contact_info_page.html.ts
-@@ -3,44 +3,26 @@
+@@ -3,46 +3,26 @@
  import type {SettingsContactInfoPageElement} from './contact_info_page.js';
  
  export function getHtml(this: SettingsContactInfoPageElement) {
@@ -940,9 +940,10 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 -      <settings-toggle-button id="autofillProfileToggle"
 -          no-extension-indicator label="$i18n{enableProfilesLabel}"
 -          sub-label="$i18n{enableProfilesSublabel}"
--          .pref="\${this.profileEnabledSyntheticPref_}"
+-          pref-key="synthetic.settings.autofill.profile_enabled"
+-          no-set-pref
 -          @settings-boolean-control-change="\${
-+      <settings-toggle-button id="autofillProfileToggle" no-extension-indicator="" label="$i18n{enableProfilesLabel}" sub-label="$i18n{enableProfilesSublabel}" .pref="\${this.profileEnabledSyntheticPref_}" @settings-boolean-control-change="\${
++      <settings-toggle-button id="autofillProfileToggle" no-extension-indicator="" label="$i18n{enableProfilesLabel}" sub-label="$i18n{enableProfilesSublabel}" pref-key="synthetic.settings.autofill.profile_enabled" no-set-pref="" @settings-boolean-control-change="\${
                this.onAutofillProfileToggleSettingsBooleanControlChange_}">
        </settings-toggle-button>
 -      <div id="otpFillingLoadingRow" class="cr-row hr cr-padded-text"
@@ -971,16 +972,16 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 -              this.onGmailOtpFillingSubLabelLinkClicked_}"
 -          @settings-boolean-control-change="\${
 -              this.onAutofillOtpFillingToggleSettingsBooleanControlChange_}"
--          .pref="\${this.otpFillingTogglePref_}"
+-          pref-key="synthetic.settings.autofill.otp_filling"
 -          no-set-pref>
 +      <settings-toggle-button id="autofillOtpFillingToggle" class="hr" ?hidden="\${!this.shouldShowOtpFillingToggle_()}" label="$i18n{enableGmailOtpFillingTitle}" sub-label-with-link="$i18n{enableGmailOtpFillingDescription}" @sub-label-link-clicked="\${
 +              this.onGmailOtpFillingSubLabelLinkClicked_}" @settings-boolean-control-change="\${
-+              this.onAutofillOtpFillingToggleSettingsBooleanControlChange_}" .pref="\${this.otpFillingTogglePref_}" no-set-pref="">
++              this.onAutofillOtpFillingToggleSettingsBooleanControlChange_}" pref-key="synthetic.settings.autofill.otp_filling" no-set-pref="">
        </settings-toggle-button>
        \${this.profileEnabledSyntheticPref_?.extensionId ? html\`
          <div class="cr-row continuation">
            <extension-controlled-indicator class="flex"
-@@ -57,17 +39,13 @@
+@@ -59,17 +39,13 @@
      </div>
      <div class="card">
        <div class="cr-row continuation">
@@ -1000,7 +1001,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
            \${this.addresses.map((item, index) => html\`
              <div class="list-item" role="listitem">
                <div class="start">
-@@ -94,10 +72,9 @@
+@@ -96,10 +72,9 @@
                </cr-icon-button>
              </div>
            \`)}
@@ -1012,7 +1013,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
          </div>
        </div>
        <cr-action-menu id="addressSharedMenu" role-description="$i18n{menu}">
-@@ -152,9 +129,9 @@
+@@ -154,9 +129,9 @@
              @close="\${this.onEmailRemoveConfirmationDialogClose_}">
          </settings-simple-confirmation-dialog>
        \` : ''}
@@ -1023,7 +1024,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
          <h2 class="flex">$i18n{emailVerificationSectionTitle}</h2>
        </div>
        \${this.isEmailVerificationProtocolEnabled_ ? html\`
-@@ -181,10 +158,9 @@
+@@ -236,10 +211,9 @@
            $i18n{emailVerificationEmptyLabel}
          </div>
        \` : ''}
@@ -2379,7 +2380,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 "===================================================================
 --- ../chrome/browser/resources/settings/safety_hub/safety_hub_page.html.ts
 +++ gen/chrome/browser/resources/settings/preprocessed/safety_hub/safety_hub_page.html.ts
-@@ -46,29 +46,20 @@
+@@ -42,29 +42,20 @@
      <settings-safety-hub-extensions-module class="module box">
      </settings-safety-hub-extensions-module>
    \` : ''}
@@ -2439,7 +2440,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
            </a>
          </div>
          <div class="cr-row first">
-@@ -27,21 +22,15 @@
+@@ -27,24 +22,15 @@
              <cr-policy-pref-indicator
                  .pref="\${this.defaultSearchProviderDataPref_}">
              </cr-policy-pref-indicator>
@@ -2455,15 +2456,18 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
        \${this.showSearchEngineListDialog_ ? html\`
 -        <settings-search-engine-list-dialog
 -            .searchEngines="\${this.searchEngines_}"
+-            .saveGuestChoice="\${this.saveGuestChoice_}"
 -            @close="\${this.onSearchEngineListDialogClose_}"
+-            @more-engines-click="\${this.onMoreEnginesClick_}"
+-            @save-guest-choice-changed="\${this.onSaveGuestChoiceChanged_}"
 -            @search-engine-changed="\${this.onSearchEngineChanged_}">
 -        </settings-search-engine-list-dialog>
 +        <settings-normal-search-engine-list-dialog .searchEngines="\${this.searchEngines_}" @close="\${this.onSearchEngineListDialogClose_}" @search-engine-changed="\${this.onSearchEngineChanged_}"></settings-normal-search-engine-list-dialog>
        \` : ''}
-       <cr-toast id="confirmationToast" duration="10000">
-         <div>\${this.confirmationToastLabel_}</div>
-       </cr-toast>
-@@ -75,12 +64,9 @@
+       \${this.showMoreEnginesDialog_ ? html\`
+         <settings-search-engine-more-engines-dialog
+             .saveGuestChoice="\${this.saveGuestChoice_}"
+@@ -86,12 +72,9 @@
      \` : ''}
  
      \${!this.searchSettingsUpdateEnabled_ ? html\`
@@ -3198,7 +3202,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 -      back-button-aria-label="$i18n{backButton}"
 -      back-button-title="$i18n{backButton}">
 -    <h2 slot="heading">$i18n{toolbarHeader}</h2>
-+  <sp-heading id="heading" @back-button-click="\${this.onBackButtonClick_}" back-button-aria-label="$i18n{backButton}" back-button-title="$i18n{backButton}" hide-back-button="true">
++  <sp-heading id="heading" @back-button-click="\${this.onBackButtonClick_}" back-button-aria-label="$i18n{backButton}" back-button-title="$i18n{backButton}" hide-back-button="">
 +        <close-panel-button id="closeButton" iron-icon="close" slot="buttons"></close-panel-button>
 +    <h2 slot="heading"><leo-icon name="window-edit"></leo-icon>$i18n{toolbarHeader}</h2>
    </sp-heading>
@@ -3255,7 +3259,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 "===================================================================
 --- ../chrome/browser/resources/signin/profile_customization/profile_customization_app.html.ts
 +++ gen/chrome/browser/resources/signin/preprocessed/profile_customization/profile_customization_app.html.ts
-@@ -86,27 +86,25 @@
+@@ -83,27 +83,25 @@
  
    \${this.isLocalProfileCreation_ ? html\`
      <div id="selectAvatarDialog" slot="view">
@@ -3298,7 +3302,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 "===================================================================
 --- ../chrome/browser/resources/signin/profile_picker/profile_card.html.ts
 +++ gen/chrome/browser/resources/signin/profile_picker/preprocessed/profile_card.html.ts
-@@ -5,59 +5,40 @@
+@@ -5,61 +5,39 @@
  
  export function getHtml(this: ProfileCardElement) {
    return html\`<!--_html_template_start_-->
@@ -3308,12 +3312,14 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 -      aria-label="\${this.profileState.profileCardButtonLabel}">
 +  <cr-button id="profileCardButton" @click="\${this.onProfileClick_}" ?disabled="\${this.disabled}" aria-label="\${this.profileState.profileCardButtonLabel}" class="plain">
      <div id="avatarContainer">
-       <img class="profile-avatar \${
--      this.profileState.hasAvatarRing ? 'with-avatar-ring' : ''}"
+-      <img
+-          class="profile-avatar \${
+-              this.profileState.hasAvatarRing ? 'with-avatar-ring' : ''}"
 -          alt="" .src="\${this.profileState.avatarIcon}">
 -      <div id="iconContainer"
 -          ?hidden="\${!this.profileState.avatarBadge.length}">
-+      this.profileState.hasAvatarRing ? 'with-avatar-ring' : ''}" alt="" .src="\${this.profileState.avatarIcon}">
++      <img class="profile-avatar \${
++              this.profileState.hasAvatarRing ? 'with-avatar-ring' : ''}" alt="" .src="\${this.profileState.avatarIcon}">
 +      <div id="iconContainer" ?hidden="\${!this.profileState.avatarBadge.length}">
          <cr-icon icon="\${this.profileState.avatarBadge}"></cr-icon>
        </div>
@@ -3328,10 +3334,10 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 +    <div id="forceSigninContainer" class="profile-card-info secondary-text" ?hidden="\${!this.profileState.needsSignin}">
        <div>$i18n{needsSigninPrompt}</div>
 -      <cr-icon id="forceSigninIcon"
--          icon="\${
-+      <cr-icon id="forceSigninIcon" icon="\${
-       this.webuiRoundedIconsEnabled_ ? 'profiles:lock-filled' :
-                                        'profiles:lock-old'}"></cr-icon>
+-          icon="\${this.webuiRoundedIconsEnabled_ ? 'profiles:lock-filled' :
++      <cr-icon id="forceSigninIcon" icon="\${this.webuiRoundedIconsEnabled_ ? 'profiles:lock-filled' :
+                                                    'profiles:lock-old'}">
+       </cr-icon>
      </div>
    </cr-button>
    <div id="profileNameInputWrapper">
@@ -3344,13 +3350,14 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 -        auto-validate spellcheck="false"
 -        @pointerenter="\${this.onNameInputPointerenter_}"
 -        @pointerleave="\${this.onNameInputPointerleave_}"
--        ?disabled="\${
--      isGlicVersion() || this.profileState.hasEnterpriseLabel}" required>
-+    <cr-input class="profile-card-info prominent-text" id="nameInput" aria-label="$i18n{profileCardInputLabel}" .value="\${this.profileState.localProfileName}" @change="\${this.onProfileNameChange_}" @keydown="\${this.onProfileNameKeydown_}" @blur="\${this.onProfileNameInputBlur_}" pattern="\${this.pattern_}" auto-validate="" spellcheck="false" @pointerenter="\${this.onNameInputPointerenter_}" @pointerleave="\${this.onNameInputPointerleave_}" ?disabled="\${
-+      isGlicVersion() || this.profileState.hasEnterpriseLabel}" required="">
+-        ?disabled="\${isGlicVersion() || this.profileState.hasEnterpriseLabel}"
+-        required>
++    <cr-input class="profile-card-info prominent-text" id="nameInput" aria-label="$i18n{profileCardInputLabel}" .value="\${this.profileState.localProfileName}" @change="\${this.onProfileNameChange_}" @keydown="\${this.onProfileNameKeydown_}" @blur="\${this.onProfileNameInputBlur_}" pattern="\${this.pattern_}" auto-validate="" spellcheck="false" @pointerenter="\${this.onNameInputPointerenter_}" @pointerleave="\${this.onNameInputPointerleave_}" ?disabled="\${isGlicVersion() || this.profileState.hasEnterpriseLabel}" required="">
      </cr-input>
-     <div id="hoverUnderline" ?hidden="\${
-       isGlicVersion() || this.profileState.hasEnterpriseLabel}"></div>
+-    <div id="hoverUnderline"
+-        ?hidden="\${isGlicVersion() || this.profileState.hasEnterpriseLabel}">
++    <div id="hoverUnderline" ?hidden="\${isGlicVersion() || this.profileState.hasEnterpriseLabel}">
+     </div>
    </div>
 -  <profile-card-menu .profileState="\${this.profileState}"
 -      ?hidden="\${isGlicVersion()}">
@@ -3376,8 +3383,8 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 "===================================================================
 --- ../chrome/browser/resources/signin/profile_picker/profile_picker_main_view.html.ts
 +++ gen/chrome/browser/resources/signin/profile_picker/preprocessed/profile_picker_main_view.html.ts
-@@ -10,10 +10,9 @@
-   <link href="glic_profile_branding.css" rel="stylesheet" />
+@@ -9,10 +9,9 @@
+   <link href="glic_profile_branding.css" rel="stylesheet">
  \` : ''}
  <div class="flex-container">
    <div class="title-container">
@@ -3388,7 +3395,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
      <div class="subtitle" .innerHTML="\${this.getSubtitle_()}"></div>
    </div>
    <div id="profilesWrapper" ?hidden="\${(this.shouldHideProfilesWrapper_())}">
-@@ -24,33 +23,23 @@
+@@ -23,35 +22,24 @@
              @toggle-drag="\${this.onToggleDrag_}"
              @disable-all-picker-buttons="\${this.onDisableAllPickerButtons_}">
          </profile-card>
@@ -3420,13 +3427,16 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 -      ?hidden="\${!this.guestModeEnabled_}"
 -      ?disabled="\${this.pickerButtonsDisabled_}">
 -    <cr-icon
--        icon="\${this.webuiRoundedIconsEnabled_
+-        icon="\${this.webuiRoundedIconsEnabled_ ? 'profiles:account-box' :
+-                                                 'profiles:account-box-old'}"
+-        slot="prefix-icon">
 +  <cr-button id="browseAsGuestButton" @click="\${this.onLaunchGuestProfileClick_}" ?hidden="\${!this.guestModeEnabled_}" ?disabled="\${this.pickerButtonsDisabled_}">
-+    <cr-icon icon="\${this.webuiRoundedIconsEnabled_
-             ? 'profiles:account-box'
-             : 'profiles:account-box-old'}" slot="prefix-icon"></cr-icon>
++    <cr-icon icon="\${this.webuiRoundedIconsEnabled_ ? 'profiles:account-box' :
++                                                 'profiles:account-box-old'}" slot="prefix-icon">
+     </cr-icon>
      $i18n{browseAsGuestButton}
    </cr-button>
+ 
 "
 `;
 
