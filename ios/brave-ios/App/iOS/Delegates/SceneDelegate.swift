@@ -508,7 +508,7 @@ extension SceneDelegate {
     browserViewController: BrowserViewController
   ) {
     guard let intent = appIntent as? OpenControlWidgetShortcutIntent else { return }
-    browserViewController.handleNavigationPath(path: .widgetShortcutURL(intent.shortcut))
+    browserViewController.handleNavigationPath(path: .widgetShortcutURL(intent.resolvedShortcut))
   }
 
   private func sendDAUPingIfNeeded() {
