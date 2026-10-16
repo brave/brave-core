@@ -40,7 +40,7 @@ class TestObserver : public infobars::InfoBarManager::Observer {
 IN_PROC_BROWSER_TEST_F(WebDiscoveryTest, InfobarAddedTest) {
   auto* model = browser()->tab_strip_model();
   auto* contents = model->GetActiveWebContents();
-  auto* tab_helper = WebDiscoveryTabHelper::FromWebContents(contents);
+  auto* tab_helper = WebDiscoveryTabHelper::From(model->GetActiveTab());
   auto* infobar_manager =
       infobars::ContentInfoBarManager::FromWebContents(contents);
 

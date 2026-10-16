@@ -237,37 +237,37 @@ IN_PROC_BROWSER_TEST_F(WebDiscoveryContentScraperTest, RustParseAndScrape) {
   auto prev_scrape_result = std::make_unique<PageScrapeResult>(url, "ex1");
   scraper_->ParseAndScrapePage(
       url, true, std::move(prev_scrape_result), page_content_,
-      base::BindLambdaForTesting(
-          [&](std::unique_ptr<PageScrapeResult> scrape_result) {
-            [&] {
-              ASSERT_TRUE(scrape_result);
-              EXPECT_EQ(scrape_result->url, url);
-              EXPECT_EQ(scrape_result->fields.size(), 2u);
-              EXPECT_EQ(scrape_result->id, "ex1");
+      base::BindLambdaForTesting([&](std::unique_ptr<PageScrapeResult>
+                                         scrape_result) {
+        [&] {
+          ASSERT_TRUE(scrape_result);
+          EXPECT_EQ(scrape_result->url, url);
+          EXPECT_EQ(scrape_result->fields.size(), 2u);
+          EXPECT_EQ(scrape_result->id, "ex1");
 
-              EXPECT_FALSE(scrape_result->query);
+          EXPECT_FALSE(scrape_result->query);
 
-              auto field_map_it = scrape_result->fields.find("#b #result2");
-              ASSERT_TRUE(field_map_it != scrape_result->fields.end());
-              const auto* fields = &field_map_it->second;
+          auto field_map_it = scrape_result->fields.find("#b #result2");
+          ASSERT_TRUE(field_map_it != scrape_result->fields.end());
+          const auto* fields = &field_map_it->second;
 
-              ASSERT_EQ(fields->size(), 1u);
+          ASSERT_EQ(fields->size(), 1u);
 
-              EXPECT_THAT((*fields)[0],
-                          IsSupersetOfValue(base::DictValue()
-                                                .Set("text", "Foo3")
-                                                .Set("input", "Foo4")));
+          EXPECT_THAT(
+              (*fields)[0],
+              IsSupersetOfValue(
+                  base::DictValue().Set("text", "Foo3").Set("input", "Foo4")));
 
-              field_map_it = scrape_result->fields.find("dont>match");
-              ASSERT_TRUE(field_map_it != scrape_result->fields.end());
-              fields = &field_map_it->second;
+          field_map_it = scrape_result->fields.find("dont>match");
+          ASSERT_TRUE(field_map_it != scrape_result->fields.end());
+          fields = &field_map_it->second;
 
-              ASSERT_EQ(fields->size(), 1u);
-              EXPECT_THAT((*fields)[0], IsSupersetOfValue(base::DictValue().Set(
-                                            "ctry", "us")));
-            }();
-            run_loop_->Quit();
-          }));
+          ASSERT_EQ(fields->size(), 1u);
+          EXPECT_THAT((*fields)[0],
+                      IsSupersetOfValue(base::DictValue().Set("ctry", "us")));
+        }();
+        run_loop_->Quit();
+      }));
   run_loop_->Run();
 }
 

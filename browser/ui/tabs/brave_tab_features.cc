@@ -21,6 +21,7 @@
 #include "brave/components/image_metadata_stripper/common/features.h"
 #include "brave/components/misc_metrics/features.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
+#include "brave/components/web_discovery/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/page_action/action_ids.h"
@@ -34,6 +35,10 @@
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
 #include "brave/browser/brave_ads/creatives/search_result_ad/creative_search_result_ad_tab_helper.h"
 #include "brave/browser/brave_ads/tabs/ads_tab_helper.h"
+#endif
+
+#if BUILDFLAG(ENABLE_WEB_DISCOVERY)
+#include "brave/browser/web_discovery/web_discovery_tab_helper.h"
 #endif
 
 #if BUILDFLAG(ENABLE_REQUEST_OTR)
@@ -232,6 +237,11 @@ void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
   ads_tab_helper_ = std::make_unique<brave_ads::AdsTabHelper>(tab);
   creative_search_result_ad_tab_helper_ =
       brave_ads::CreativeSearchResultAdTabHelper::MaybeCreate(tab);
+#endif
+
+#if BUILDFLAG(ENABLE_WEB_DISCOVERY)
+  web_discovery_tab_helper_ =
+      web_discovery::WebDiscoveryTabHelper::MaybeCreate(tab);
 #endif
 
 #if BUILDFLAG(ENABLE_REQUEST_OTR)
