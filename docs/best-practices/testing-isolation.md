@@ -1038,3 +1038,61 @@ target back in; edit `.env`/`package.json` if you need the branding to match.
 
 The same "matches nothing, still succeeds" failure mode applies to parameterized
 suites; see [TI-042](#TI-042).
+
+---
+
+<a id="TI-044"></a>
+
+## ✅ Test Shared Behavior at Its Owning Layer
+
+**Test a shared class's behavioral contract directly with unit tests instead of
+retesting that class through each feature that consumes it.** Choose a browser
+test when it verifies a distinct integration behavior that the unit test cannot
+cover, such as registration, renderer policy enforcement, or a user journey. Do
+not add a browser test solely because the bug was observed in a WebUI.
+
+For example, the review of
+[PR #40363](https://github.com/brave/brave-core/pull/40363#discussion_r4299648645)
+called for tests of `BraveSanitizedImageSource` in general and direct coverage
+of `GetAccessControlAllowOriginForOrigin`, rather than a Brave News browser test
+whose purpose was to prove that the shared source works for that consumer.
+
+```cpp
+// ❌ WRONG scope for testing only the shared source's origin policy:
+// navigate to Brave News, fetch an image, and only assert that it loads.
+
+// ✅ CORRECT - unit-test the public policy with independent expectations.
+// Fixture setup supplies sources in untrusted and trusted modes.
+EXPECT_EQ("chrome-untrusted://news",
+          untrusted_source.GetAccessControlAllowOriginForOrigin(
+              "chrome-untrusted://news"));
+EXPECT_EQ("", untrusted_source.GetAccessControlAllowOriginForOrigin(
+                  "https://example.com"));
+EXPECT_EQ("", trusted_source.GetAccessControlAllowOriginForOrigin(
+                  "chrome-untrusted://news"));
+```
+
+Cover common and edge cases from the API contract: allowed origins, unrelated
+origins, lookalike hosts or different schemes, and relevant source modes. Use
+explicit expected results; do not reproduce the production condition to
+calculate the answer. Keep shared image-processing coverage with the source, not
+in every consumer's test suite.
+
+An image-load browser test can still be useful when it specifically covers
+wiring or enforcement that direct method tests miss. State that distinct purpose
+rather than treating every browser test, or every direct return-value assertion,
+as a change detector.
+
+Related: [ARCH-062b: Avoid Change Detector Tests](architecture.md#ARCH-062b),
+[TI-002: Test the API, Not Implementation](#TI-002),
+[TI-016: Bad/Invalid Input](#TI-016),
+[TI-026: Both Sides of Guard Conditions](#TI-026), and
+[TI-029: Observable Side Effects in Browser Tests](#TI-029).
+
+Sources:
+[review of the image-load test](https://github.com/brave/brave-core/pull/40363#discussion_r4299623274),
+[review of test placement](https://github.com/brave/brave-core/pull/40363#discussion_r4299648645),
+and
+[Chrome browser design principles](https://chromium.googlesource.com/chromium/src/+/main/docs/chrome_browser_design_principles.md).
+
+---
