@@ -8,9 +8,9 @@ import { SearchActions, defaultSearchStore } from '../state/search_store'
 
 function suggestTemplate(primaryText: string, secondaryText: string) {
   return {
-    primaryText,
+    primaryText: { text: primaryText, fragments: [], a11yText: null },
     primaryTextClass: [],
-    secondaryText,
+    secondaryText: { text: secondaryText, fragments: [], a11yText: null },
     secondaryTextClass: [],
     secondaryTextPlacement: SecondaryTextPlacement.kUnspecified,
     image: null,
