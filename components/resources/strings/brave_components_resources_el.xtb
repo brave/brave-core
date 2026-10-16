@@ -1881,6 +1881,18 @@
 <translation id="2737084171727561244">Μετάβαση στο Χαρτοφυλάκιο</translation>
 <translation id="3499452861061048987">Προσθήκη token</translation>
 <translation id="5046066249040287308">Υπηρεσία βοηθητικών προγραμμάτων Πορτοφολιού Brave</translation>
+<translation id="8767749833522980474">Κρυπτονομίσματα</translation>
+<translation id="4509084261025090951">Αποκτήστε την κάρτα σας</translation>
+<translation id="3624463584770657372">Επαληθεύστε την ταυτότητά σας για να δείτε τους αριθμούς κάρτας και να ξεκινήσετε να ξοδεύετε.</translation>
+<translation id="2508337767012636987">Πατήστε για επαλήθευση</translation>
+<translation id="703964541421486259">Απόκρυψη υπολοίπων</translation>
+<translation id="302114796458112924">Εμφάνιση υπολοίπων</translation>
+<translation id="9083210401924577263">Κάρτα Επιβραβεύσεων Brave</translation>
+<translation id="2433507940547922241">Εμφάνιση</translation>
+<translation id="3435738964857648380">Ασφάλεια</translation>
+<translation id="6700561332544287722">Να απαιτείται ξεκλείδωμα την επόμενη φορά</translation>
+<translation id="5605360570977617291">Απόκρυψη του <ph name="CARD_NAME"/> από την αρχική;</translation>
+<translation id="2721464457853369512">Το υπόλοιπο του <ph name="CARD_NAME"/> σας παραμένει αμετάβλητο. Αυτό αποκρύπτει απλώς την κάρτα από την αρχική. Μπορείτε να την εμφανίσετε ξανά ανά πάσα στιγμή στις Ρυθμίσεις, στην ενότητα Πορτοφόλι.</translation>
 <translation id="3155170474926428993">Άνοιγμα Tor</translation>
 <translation id="3745016858329272300">Γενικές πληροφορίες</translation>
 <translation id="4045404575593562245">Συμβάντα ελέγχου Tor</translation>
@@ -1920,7 +1932,6 @@
 <translation id="6261915643960475695">Επιχειρήσεις</translation>
 <translation id="8265589281845759879">Αυτοκίνητο</translation>
 <translation id="7726519849288907308">Διασημότητες</translation>
-<translation id="8767749833522980474">Κρυπτονομίσματα</translation>
 <translation id="7577010593836079522">Πολιτισμός</translation>
 <translation id="6807791860691150411">Εκπαίδευση</translation>
 <translation id="3706423975342040244">Ψυχαγωγία</translation>
@@ -2099,9 +2110,6 @@
 <translation id="3067105725259639716">Διαμόρφωση Brave News</translation>
 <translation id="6286510487460330478">Διαμόρφωση συντομεύσεων</translation>
 <translation id="9214819486716388964">Εμφάνιση Συνομιλίας Brave</translation>
-<translation id="5950760360751948276">Πάντα εμφάνιση της γραμμής σελιδοδεικτών</translation>
-<translation id="2960757369920422313">Εμφάνιση γραμμής σελιδοδεικτών στο NTP</translation>
-<translation id="522953399371747698">Απόκρυψη γραμμής σελιδοδεικτών</translation>
 <translation id="9079813619990532635">Εξαγωγή όλων των σελιδοδεικτών</translation>
 <translation id="134184943774258988">Εμφάνιση ή απόκρυψη του κουμπιού «Όλοι οι σελιδοδείκτες»</translation>
 <translation id="2158862020143233462">Εναλλαγή ασπίδων</translation>
@@ -2216,6 +2224,7 @@
 <translation id="5820497878628354073">Κωδικός κατάστασης: <ph name="STATUS_CODE"/>, εσωτερικός κωδικός κατάστασης: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">Συμπληρώσατε το όριο ρυθμού premium. Δοκιμάστε ξανά σε λίγες ώρες.</translation>
 <translation id="6873128487002733717">Συμπληρώσατε το όριο Premium για αυτό το μοντέλο. Επιλέξτε ένα διαφορετικό μοντέλο ή προσπαθήστε ξανά αργότερα.</translation>
+<translation id="2688661132468689309">Συμπληρώσατε το όριο Premium για αυτό το μοντέλο. Μηδενίζεται σε <ph name="RESET_DURATION"/> (στις <ph name="RESET_TIME"/>). Επιλέξτε ένα διαφορετικό μοντέλο ή προσπαθήστε ξανά τότε.</translation>
 <translation id="3683964919745779766">Συμπληρώσατε το όριο ρυθμού για αυτό το μοντέλο ή δεν έχετε πια πίστωση. Προσπαθήστε ξανά αργότερα.</translation>
 <translation id="7692501701960747469">Το κλειδί API που έχει ρυθμιστεί για αυτό το μοντέλο δεν είναι έγκυρο. Ελέγξτε τη διαμόρφωσή σας και προσπαθήστε ξανά.</translation>
 <translation id="7905602379229309187">Το τελικό σημείο είναι επί του παρόντος υπερφορτωμένο. Προσπαθήστε ξανά αργότερα.</translation>
@@ -2224,12 +2233,12 @@
 <translation id="3852808100039989429">Γεια σας, είμαι ο Leo. Είμαι ένας βοηθός AI από το Brave. Χρησιμοποιώ το Qwen VL 30B, ένα μοντέλο που δημιουργήθηκε από την Alibaba Cloud για χρήση και εφαρμογή σε πολλαπλά σενάρια. Το Qwen φιλοξενείται από το Brave μέσω της δικής μας ασφαλούς υποδομής.<ph name="LINK_BEFORE"/>Μάθετε περισσότερα<ph name="LINK_AFTER"/></translation>
 <translation id="8659225822055186905">Γεια σας, είμαι ο Leo. Είμαι ένας βοηθός AI από το Brave. Χρησιμοποιώ το GLM-5.3 Flash, ένα μοντέλο που δημιουργήθηκε από τη Zhipu AI για χρήση και εφαρμογή σε πολλαπλά σενάρια. Το GLM-5.3 Flash φιλοξενείται από το NEAR μέσω της δικής τους επαληθευόμενης ασφαλούς υποδομής.<ph name="LINK_BEFORE"/>Μάθετε περισσότερα<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">Γεια σου, είμαι ο Leo. Είμαι ο AI βοηθός της Brave. Τροφοδοτούμαι από το Claude Instant, ένα μοντέλο της Anthropic για συνομιλία και επεξεργασία κειμένου. Το Claude Instant φιλοξενείται από την Brave στη δική της ασφαλή υποδομή.<ph name="LINK_BEFORE"/>Μάθετε περισσότερα<ph name="LINK_AFTER"/></translation>
-<translation id="3789772321824682783">Γεια σας, είμαι ο Leo. Είμαι ένας βοηθός AI από το Brave. Χρησιμοποιώ το Claude Haiku, ένα μοντέλο που δημιουργήθηκε από την Anthropic για να υποστηρίζει εργασίες συνομιλίας και επεξεργασίας κειμένου. Το Claude Haiku φιλοξενείται από το Brave μέσω της δικής μας ασφαλούς υποδομής.<ph name="LINK_BEFORE"/>Μάθετε περισσότερα<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Γεια σας, είμαι ο Leo. Είμαι ένας βοηθός AI από το Brave. Χρησιμοποιώ το Claude Sonnet, ένα μοντέλο που δημιουργήθηκε από την Anthropic για να υποστηρίζει εργασίες συνομιλίας και επεξεργασίας κειμένου. Το Claude Sonnet φιλοξενείται από το Brave μέσω της δικής μας ασφαλούς υποδομής.<ph name="LINK_BEFORE"/>Μάθετε περισσότερα<ph name="LINK_AFTER"/></translation>
-<translation id="3399141352144059821">Γεια σας, είμαι ο Leo. Είμαι ένας βοηθός AI από το Brave. Χρησιμοποιώ το Grok 4.3, ένα μοντέλο που δημιουργήθηκε από την xAI για χρήση και εφαρμογή σε πολλαπλά σενάρια. Το Grok 4.3 φιλοξενείται από το Brave μέσω της δικής μας ασφαλούς υποδομής.<ph name="LINK_BEFORE"/>Μάθετε περισσότερα<ph name="LINK_AFTER"/></translation>
-<translation id="8868813509973985458">Γεια σας, είμαι ο Leo. Είμαι ένας βοηθός AI από το Brave. Χρησιμοποιώ το GPT 5.4, ένα μοντέλο που δημιουργήθηκε από την OpenAI για χρήση και εφαρμογή σε πολλαπλά σενάρια. Το GPT 5.4 φιλοξενείται από το Brave μέσω της δικής μας ασφαλούς υποδομής.<ph name="LINK_BEFORE"/>Μάθετε περισσότερα<ph name="LINK_AFTER"/></translation>
+<translation id="6676306995311143470">Γεια σας, είμαι ο Leo. Είμαι ένας βοηθός AI από το Brave. Χρησιμοποιώ το Grok 4.6, το μοντέλο συλλογιστικής αιχμής της xAI στο Amazon Bedrock Mantle. Το Grok 4.6 εξυπηρετείται μέσω της ασφαλούς υποδομής AWS του Brave.<ph name="LINK_BEFORE"/>Μάθετε περισσότερα<ph name="LINK_AFTER"/></translation>
+<translation id="2394656730986208060">Γεια σας, είμαι ο Leo. Είμαι ένας βοηθός AI από το Brave. Χρησιμοποιώ το GPT 5.6 Luna, το γρήγορο μοντέλο χαμηλής καθυστέρησης της OpenAI στο Amazon Bedrock Mantle. Το GPT 5.6 Luna εξυπηρετείται μέσω της ασφαλούς υποδομής AWS του Brave.<ph name="LINK_BEFORE"/>Μάθετε περισσότερα<ph name="LINK_AFTER"/></translation>
+<translation id="5278969721580944810">Γεια σας, είμαι ο Leo. Είμαι ένας βοηθός AI από το Brave. Χρησιμοποιώ το GPT 5.6 Terra, το ισορροπημένο μοντέλο παραγωγής της OpenAI στο Amazon Bedrock Mantle. Το GPT 5.6 Terra εξυπηρετείται μέσω της ασφαλούς υποδομής AWS του Brave.<ph name="LINK_BEFORE"/>Μάθετε περισσότερα<ph name="LINK_AFTER"/></translation>
 <translation id="5037359072717016032">Γεια σας, είμαι ο Leo. Είμαι ένας βοηθός AI από το Brave. Χρησιμοποιώ το Mistral Large, ένα μοντέλο που δημιουργήθηκε από την Mistral για χρήση και εφαρμογή σε πολλαπλά σενάρια. Το Mistral Large φιλοξενείται από το Brave μέσω της δικής μας ασφαλούς υποδομής.<ph name="LINK_BEFORE"/>Μάθετε περισσότερα<ph name="LINK_AFTER"/></translation>
-<translation id="4026902371301997261">Γεια σας, είμαι ο Leo. Είμαι ένας βοηθός AI από το Brave. Χρησιμοποιώ το Qwen 3 235B, ένα μοντέλο που δημιουργήθηκε από την Alibaba Cloud για χρήση και εφαρμογή σε πολλαπλά σενάρια. Το Qwen 3 235B φιλοξενείται από το Brave μέσω της δικής μας ασφαλούς υποδομής.<ph name="LINK_BEFORE"/>Μάθετε περισσότερα<ph name="LINK_AFTER"/></translation>
+<translation id="5475035333915581972">Γεια σας, είμαι ο Leo. Είμαι ένας βοηθός AI από το Brave. Χρησιμοποιώ το Qwen 3.8 Flash Next, ένα μοντέλο που δημιουργήθηκε από την Alibaba Cloud για χρήση και εφαρμογή σε πολλαπλά σενάρια. Το Qwen 3.8 Flash Next φιλοξενείται από το Brave μέσω της δικής μας ασφαλούς υποδομής.<ph name="LINK_BEFORE"/>Μάθετε περισσότερα<ph name="LINK_AFTER"/></translation>
 <translation id="8720758690351028307">Γεια σας, είμαι ο Leo. Είμαι ένας βοηθός AI από το Brave. Χρησιμοποιώ το Deepseek V3.2, ένα μοντέλο που δημιουργήθηκε από τη Deepseek για χρήση και εφαρμογή σε πολλαπλά σενάρια. Το Deepseek V3.2 φιλοξενείται από το Brave μέσω της δικής μας ασφαλούς υποδομής.<ph name="LINK_BEFORE"/>Μάθετε περισσότερα<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">Γεια σας, είμαι ο Leo. Είμαι ένας βοηθός AI από το Brave. Χρησιμοποιώ το Claude Opus, ένα μοντέλο που δημιουργήθηκε από την Anthropic για να υποστηρίζει εργασίες συνομιλίας και επεξεργασίας κειμένου. Το Claude Opus φιλοξενείται από το Brave μέσω της δικής μας ασφαλούς υποδομής.<ph name="LINK_BEFORE"/>Μάθετε περισσότερα<ph name="LINK_AFTER"/></translation>
 <translation id="7238858567393403597">Γεία σας, είμαι ο Leo. Είμαι ένας βοηθός AI από το Brave. Χρησιμοποιώ το GLM-4-7-Flash, ένα μοντέλο που δημιουργήθηκε από τη Zhipu AI για χρήση και εφαρμογή σε πολλαπλά σενάρια. Το GLM-4-7-Flash φιλοξενείται από το Brave μέσω της δικής μας ασφαλούς υποδομής.<ph name="LINK_BEFORE"/>Μάθετε περισσότερα<ph name="LINK_AFTER"/></translation>
@@ -2242,7 +2251,6 @@
 <translation id="4773408460773097271">Ollama</translation>
 <translation id="631371844654031449">Συνιστώμενα μοντέλα</translation>
 <translation id="6568044140836233369">Εμφάνιση όλων των μοντέλων</translation>
-<translation id="6187065185557150870">Συνομιλία</translation>
 <translation id="4685048769603134644">Άνοιγμα πλήρους σελίδας</translation>
 <translation id="2961040541145689181">Νέα συνομιλία</translation>
 <translation id="7557539689487606886">Επιλέξτε το Premium</translation>
@@ -2366,13 +2374,13 @@
 <translation id="887511360213807449">Το ιστορικό είναι απενεργοποιημένο</translation>
 <translation id="5380979378058584412">Για να δείτε τις προηγούμενες συνομιλίες σας με το Leo, πρέπει να ενεργοποιήσετε το ιστορικό συνομιλιών.</translation>
 <translation id="3185367320601718531">Δημιουργία συζήτησης και κειμένου</translation>
-<translation id="2793458212460902934">Ταχύτητα • Αναζήτηση • Εργαλεία</translation>
 <translation id="8506027496671575183">Αναζήτηση • Όραση • Εργαλεία</translation>
 <translation id="3184606955650139158">Ταχύτητα • Αναζήτηση • Όραση</translation>
 <translation id="7465032796278724624">Επαληθευμένα Ιδιωτικό με NEAR AI TEE</translation>
 <translation id="8782867266498869301">Το μοντέλο αλλάζει δυναμικά για να χρησιμοποιηθεί το καλύτερο για την εργασία</translation>
 <translation id="7348809809749151120">Ταχύτητα • Αναζήτηση</translation>
 <translation id="3213834013136637671">Αναζήτηση • Όραση</translation>
+<translation id="2793458212460902934">Ταχύτητα • Αναζήτηση • Εργαλεία</translation>
 <translation id="5276681919620506371">Αναζήτηση • Εργαλεία</translation>
 <translation id="7434375176361995333">Περιλήψεις • Ταχύτητα</translation>
 <translation id="3965507912994218570">Ρυθμίσεις Leo</translation>
@@ -2935,9 +2943,7 @@
 <translation id="3750210661641549834">Για να δημιουργήσετε τον λογαριασμό σας, παρακαλούμε επαληθεύστε τη διεύθυνση email σας.</translation>
 <translation id="4351175281479794167">Εισαγωγή κωδικού επαλήθευσης</translation>
 <translation id="1672793037892810340">Θα πρέπει να έχετε λάβει ένα email με έναν κωδικό που θα χρειαστεί να εισαγάγετε.</translation>
-<translation id="4821255729182569254">Αποστολή email επιβεβαίωσης ξανά</translation>
 <translation id="5837679375142747484">Δεν βλέπετε το email; Ελέγξτε τον φάκελο spam ή <ph name="BEGIN_LINK"/>στείλτε το ξανά<ph name="END_LINK"/>.</translation>
-<translation id="1080588816740959885">Δεν βλέπετε το email; Ελέγξτε τον φάκελο spam ή στείλτε το ξανά.</translation>
 <translation id="1020730839570724178">Ακύρωση εγγραφής</translation>
 <translation id="7155125570724238786">Για να επαναφέρετε τον κωδικό πρόσβασής σας, παρακαλούμε επαληθεύστε τη διεύθυνση email σας.</translation>
 <translation id="816074628631172140">Το email σας έχει επαληθευτεί. Ορίστε έναν νέο κωδικό πρόσβασης για να ολοκληρώσετε την επαναφορά του κωδικού πρόσβασής σας.</translation>

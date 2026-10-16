@@ -3,18 +3,14 @@
 <translationbundle lang="zh-CN">
 <translation id="1751249301761991853">个人</translation>
 <translation id="3333887201479867589">Brave 奖励</translation>
-<translation id="7561196759112975576">始终</translation>
-<translation id="7961015016161918242">一律不</translation>
 <translation id="8507663778530179003">显示所有书签按钮</translation>
 <translation id="9018648632047670921">显示所有书签按钮</translation>
 <translation id="7630214457764713113">复制干净的链接</translation>
 <translation id="7973394300052703468">打开新的无痕窗口(&amp;I)</translation>
 <translation id="4615489450165434530">报告损坏的网站</translation>
 <translation id="8097438084542431276">复制干净的链接</translation>
-<translation id="4678672101289648246">只在新标签页</translation>
 <translation id="6516243500644829484">打开新的无痕窗口(&amp;I)</translation>
 <translation id="1209739344687072997">报告损坏的网站</translation>
-<translation id="8294286161128352783">只在新标签页</translation>
 <translation id="6406506848690869874">同步</translation>
 <translation id="1544192797660353713">钱包</translation>
 <translation id="2361906291514218784">Leo AI</translation>
@@ -194,7 +190,9 @@
 <translation id="5977931179408079967">位置</translation>
 <translation id="3790384768741064842">移到右边</translation>
 <translation id="7444424316576061724">移到左边</translation>
+<translation id="7561196759112975576">始终</translation>
 <translation id="7060352228894039151">鼠标悬停时</translation>
+<translation id="7961015016161918242">一律不</translation>
 <translation id="8981254605840444865">显示设置</translation>
 <translation id="59174027418879706">已启用</translation>
 <translation id="4176463684765177261">已停用</translation>
@@ -220,6 +218,7 @@
 <translation id="4515057635283480525">Internet Archive 保存了许多网页的历史版本。您想在存档中查找此页面吗？</translation>
 <translation id="8252977752585110703">抱歉，我们检查了 Internet Archive，没有找到此页面的存档版本。</translation>
 <translation id="8748778103033196270">在存档中查找</translation>
+<translation id="7369915833843501413">正在存档中查找</translation>
 <translation id="191143826155037518">根据 <ph name="BEGIN_LINK_MPL"/>Mozilla Public License 2.0<ph name="END_LINK_MPL"/> (MPL)，您可以使用 Brave（这里有 <ph name="BEGIN_LINK_OSS"/>根据各种其他许可获得的开源软件）<ph name="END_LINK_OSS"/>。
         您可以自己阅读一下 <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>有关如何自行下载和构建<ph name="END_LINK_BUILD_INSTRUCTIONS"/>用来创建此副本的特定 <ph name="BEGIN_LINK_SOURCE_CODE"/>源代码的说明<ph name="END_LINK_SOURCE_CODE"/>。</translation>
 <translation id="4474155171896946103">为所有标签页添加书签...</translation>
@@ -370,7 +369,7 @@
 <translation id="7985042437720138349">此功能会将已打开的标签页的数据发送给 Leo，即 Brave 的 AI 驱动浏览器助手。</translation>
 <translation id="6165508094623778733">了解更多</translation>
 <translation id="7557539689487606886">订阅 Premium</translation>
-<translation id="1035309871698658326">开启后，这会自动将所有非无痕标签页的标题和来源发送给 Leo 以进行分类。</translation>
+<translation id="7103144720752576727">打开后，这将自动将所有非隐私标签页的标题和来源发送给 Leo 进行分类。如果你同时开启了发送页面内容，则每个标签页文本的简短摘录也会一并发送。</translation>
 <translation id="3435896845095436175">启用</translation>
 <translation id="9031526219709160683">Brave可以帮助你优化此网站的隐私设置。你想查看Brave的建议吗？</translation>
 <translation id="5739953050957336013">查阅建议</translation>
@@ -385,8 +384,6 @@
 <translation id="8570228839666486945">设备端AI</translation>
 <translation id="7447041379556102185">设备端语音识别</translation>
 <translation id="3456536577668402695">您的搜索和页面内容在此设备上处理。不会发送任何内容给 Brave 或被人工审核员看到。</translation>
-<translation id="4751537843966994505">语义历史记录搜索</translation>
-<translation id="6175973371938222040">在本地为您访问的页面建立索引，以便您可以按含义搜索历史记录。所有处理都在本设备上进行。</translation>
 <translation id="9156965752763025780">您所做的更改会在下次重新启动 Brave 时生效。</translation>
 <translation id="7179921470347911571">立即重新启动</translation>
 <translation id="1426410128494586442">是</translation>
@@ -424,6 +421,7 @@
 <translation id="4328541188421002379">给您的容器命名，如“工作”或“个人”</translation>
 <translation id="4976989127264491396">错误：<ph name="ERROR_MESSAGE"/></translation>
 <translation id="5436069931267876389">未找到容器</translation>
+<translation id="5831840958001766835">重新排序项目。使用方向键移动。</translation>
 <translation id="6055154402239241620">流量控制</translation>
 <translation id="8134521925475508805">配置特定网站自动在特定上下文中打开，从而在您的浏览会话之间创建隔离。<ph name="BEGIN_LINK"/>了解更多<ph name="END_LINK"/></translation>
 <translation id="6944848312867106540">启用流量控制</translation>
@@ -476,10 +474,6 @@
 <translation id="7310387888625228830">Leo 人工智能助手</translation>
 <translation id="5222974844674487962">显示 Brave 新闻按钮</translation>
 <translation id="2085436423511121572">显示 Leo AI 按钮</translation>
-<translation id="6156323911414505561">显示书签栏</translation>
-<translation id="4054323497808446566">所有页面均可见书签栏</translation>
-<translation id="8693858092251192712">除了新标签页，书签栏已在所有页面上隐藏</translation>
-<translation id="7158817046543187970">书签栏已在所有页面上隐藏</translation>
 <translation id="3416468988018290825">始终显示完整的URL</translation>
 <translation id="5529693968082667490">显示标签页搜索按钮</translation>
 <translation id="1013121820689882118">Speedreader</translation>
@@ -611,6 +605,8 @@
 <translation id="5825943197137337319">仅限默认公共接口</translation>
 <translation id="1689062823386843231">禁用无代理的 UDP</translation>
 <translation id="3540231253392253941">使用 Google 服务进行推送消息传递</translation>
+<translation id="2224032129673914306">语义历史记录搜索</translation>
+<translation id="6045998903985162478">为您访问的页面建立索引，以便您可以在历史记录、打开的标签页和 Leo 中轻松找到它们。</translation>
 <translation id="5813105074916486721">本地历史记录保留时间</translation>
 <translation id="5671611745062206644">Brave 在本地存储您浏览历史记录的时长</translation>
 <translation id="7184510058087008090">1 天</translation>
@@ -875,6 +871,7 @@
 <translation id="2618193846561624884">要更新现有网络吗？</translation>
 <translation id="1643029991199044105">通过 Ctrl-Tab 循环浏览最近使用的标签页</translation>
 <translation id="2775956301559569472">显示 404 页上的 Wayback Machine 提示</translation>
+<translation id="8485716275262929774">在 404 页面上自动从 Wayback Machine 加载已保存的版本</translation>
 <translation id="3095201688102519917">关闭已开启多个标签页的视窗前显示警告消息</translation>
 <translation id="7120553802660696133">关闭最后一个标签页时关闭窗口</translation>
 <translation id="3394171693948989253">显示全屏提醒，退出时按 Esc 键</translation>
@@ -884,6 +881,8 @@
 <translation id="1529674267267221673">当你右键点击网站时，Leo 将出现在上下文菜单中。这将把当前网页的上下文发送到 Leo。</translation>
 <translation id="5226020406479918122">标签页聚合模式</translation>
 <translation id="3705539672403311123">在“标签页搜索”页面启用标签页整理功能。开启后，这会自动将所有非无痕标签页的标题和来源发送给 Leo 以进行分类。 <ph name="BEGIN_LINK"/>了解更多<ph name="END_LINK"/></translation>
+<translation id="2002238795517052616">为标签聚焦发送页面内容</translation>
+<translation id="2276823422122514441">同时发送每个标签页的简短文本摘录，以便标签页根据页面内容而非标题进行分组。摘录将发送给 Leo，或者如果您为标签聚焦选择了自己的模型，则发送给该模型。这需要 <ph name="BEGIN_LINK"/><ph name="SEMANTIC_HISTORY_SEARCH"/><ph name="END_LINK"/>，它在您的设备上构建摘录。</translation>
 <translation id="9049433973274198706">标签焦点的默认模型</translation>
 <translation id="2161546758719933059">用于在标签聚焦模式下整理标签页的模型。<ph name="BEGIN_LINK"/>了解更多<ph name="END_LINK"/></translation>
 <translation id="8172263161008556851">在对话中显示建议提示</translation>
@@ -965,9 +964,6 @@
 <translation id="1838374766361614909">清除搜索</translation>
 <translation id="5126255551970171328">搜索记忆</translation>
 <translation id="7402116145895962069">同步您的 Ollama 本地模型</translation>
-<translation id="5985516785067818307">跟踪调查</translation>
-<translation id="8347743943525229984">允许 Brave 进行调查</translation>
-<translation id="3204080538332044581">允许 Brave 在新标签页中显示隐私调查链接。这些调查可以帮助我们开发更好的功能，以及衡量浏览器广告活动的有效性。<ph name="BEGIN_LINK"/>了解更多<ph name="END_LINK"/></translation>
 <translation id="349846214503465941">启用播放列表</translation>
 <translation id="7903608716704052878">自动添加文件，以便离线查看</translation>
 <translation id="384666453982355633">该选项会自动缓存媒体文件，这样您就可以在没有互联网连接的情况下播放这些文件。</translation>

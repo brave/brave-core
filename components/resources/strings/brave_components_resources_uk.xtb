@@ -1885,6 +1885,18 @@
 <translation id="2737084171727561244">Перейти до Портфеля</translation>
 <translation id="3499452861061048987">Додати токен</translation>
 <translation id="5046066249040287308">Служба утиліти гаманця Brave</translation>
+<translation id="8767749833522980474">Крипто</translation>
+<translation id="4509084261025090951">Отримати картку</translation>
+<translation id="3624463584770657372">Підтвердьте особу, щоб побачити номери картки й почати витрачати кошти.</translation>
+<translation id="2508337767012636987">Торкніться, щоб підтвердити</translation>
+<translation id="703964541421486259">Приховати баланси</translation>
+<translation id="302114796458112924">Показати баланси</translation>
+<translation id="9083210401924577263">Картка Винагород Brave</translation>
+<translation id="2433507940547922241">Зовнішній вигляд</translation>
+<translation id="3435738964857648380">Безпека</translation>
+<translation id="6700561332544287722">Вимагати розблокування наступного разу</translation>
+<translation id="5605360570977617291">Приховати <ph name="CARD_NAME"/> з головного екрана?</translation>
+<translation id="2721464457853369512">Баланс <ph name="CARD_NAME"/> залишається без змін. Це лише приховує картку з головного екрана. Ви можете знову показати її будь-коли в розділі «Налаштування» → «Гаманець».</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
 <translation id="3745016858329272300">Загальна інформація</translation>
 <translation id="4045404575593562245">Події управління Tor</translation>
@@ -1924,7 +1936,6 @@
 <translation id="6261915643960475695">Бізнес</translation>
 <translation id="8265589281845759879">Автомобілі</translation>
 <translation id="7726519849288907308">Знаменитості</translation>
-<translation id="8767749833522980474">Крипто</translation>
 <translation id="7577010593836079522">Культура</translation>
 <translation id="6807791860691150411">Освіта</translation>
 <translation id="3706423975342040244">Розваги</translation>
@@ -2103,9 +2114,6 @@
 <translation id="3067105725259639716">Налаштувати Новини Brave</translation>
 <translation id="6286510487460330478">Налаштувати ярлики</translation>
 <translation id="9214819486716388964">Показати Brave Talk</translation>
-<translation id="5950760360751948276">Завжди показувати панель закладок</translation>
-<translation id="2960757369920422313">Показати панель закладок на новій вкладці</translation>
-<translation id="522953399371747698">Приховати панель закладок</translation>
 <translation id="9079813619990532635">Експортувати всі закладки</translation>
 <translation id="134184943774258988">Змінити видимість кнопки «Усі закладки»</translation>
 <translation id="2158862020143233462">Увімкнути / вимкнути щити</translation>
@@ -2222,6 +2230,7 @@
 <translation id="5820497878628354073">Код статусу: <ph name="STATUS_CODE"/>, внутрішній код статусу: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">Досягнуто ліміту для рівня преміум. Повторіть спробу за кілька годин.</translation>
 <translation id="6873128487002733717">Вичерпано ліміт Premium для цієї моделі. Виберіть іншу модель або спробуйте пізніше.</translation>
+<translation id="2688661132468689309">Вичерпано ліміт Premium для цієї моделі. Він скидається через <ph name="RESET_DURATION"/> (о <ph name="RESET_TIME"/>). Виберіть іншу модель або спробуйте знову пізніше.</translation>
 <translation id="3683964919745779766">Вичерпано ліміт запитів для цієї моделі або баланс кредитів. Спробуйте пізніше.</translation>
 <translation id="7692501701960747469">API-ключ для цієї моделі недійсний. Перевірте налаштування та спробуйте ще раз.</translation>
 <translation id="7905602379229309187">Сервер зараз перевантажений. Повторіть спробу пізніше.</translation>
@@ -2230,12 +2239,12 @@
 <translation id="3852808100039989429">Привіт, я — Лео, вбудований AI-асистент від Brave. Мене створено на базі моделі Qwen VL 30B від Alibaba Cloud для високої продуктивності та широкого спектру застосування. Brave розміщує Qwen на власній захищеній інфраструктурі.<ph name="LINK_BEFORE"/>Дізнатися більше<ph name="LINK_AFTER"/></translation>
 <translation id="8659225822055186905">Привіт, я — Лео, вбудований AI-асистент від Brave. Я працюю на базі моделі GLM-5.3 Flash, створеної компанією Zhipu AI для ефективної роботи й застосування в багатьох сценаріях використання. GLM-5.3 Flash розміщено на NEAR через їхню власну верифіковану приватну безпечну інфраструктуру.<ph name="LINK_BEFORE"/>Докладніше<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">Привіт, я Лео. Я AI-помічник від Brave. Мене підтримує Claude Instant — модель, створена компанією Anthropic для виконання завдань у розмовній та текстовій формі. Claude Instant працює на сервері Brave через нашу власну безпечну інфраструктуру.<ph name="LINK_BEFORE"/>Дізнатися більше<ph name="LINK_AFTER"/></translation>
-<translation id="3789772321824682783">Привіт, я — Лео, вбудований AI-асистент від Brave. Працюю на моделі Claude Haiku від Anthropic, яка оптимізована для діалогів та обробки тексту. Brave розміщує її через власну інфраструктуру.<ph name="LINK_BEFORE"/>Дізнатися більше<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Привіт, я — Лео, вбудований AI-асистент від Brave. Працюю на моделі Claude Sonnet від Anthropic, яка оптимізована для діалогів та обробки тексту. Brave розміщує її через власну інфраструктуру.<ph name="LINK_BEFORE"/>Дізнатися більше<ph name="LINK_AFTER"/></translation>
-<translation id="3399141352144059821">Привіт, я — Лео, вбудований AI-асистент від Brave. Я працюю на базі моделі Grok 4.3, створеної компанією xAI для ефективної роботи й широкого спектра застосування. Brave розміщує Grok 4.3 на власній безпечній інфраструктурі.<ph name="LINK_BEFORE"/>Докладніше<ph name="LINK_AFTER"/></translation>
-<translation id="8868813509973985458">Привіт, я — Лео, вбудований AI-асистент від Brave. Я працюю на базі моделі GPT 5.4, створеної компанією OpenAI для ефективної роботи й широкого спектра застосування. Brave розміщує GPT 5.4 на власній безпечній інфраструктурі.<ph name="LINK_BEFORE"/>Докладніше<ph name="LINK_AFTER"/></translation>
+<translation id="6676306995311143470">Привіт, я — Лео, вбудований AI-асистент від Brave. Я працюю на базі Grok 4.6 — передової моделі логічного мислення від xAI на Amazon Bedrock Mantle. Grok 4.6 обслуговується через безпечну інфраструктуру AWS від Brave.<ph name="LINK_BEFORE"/>Докладніше<ph name="LINK_AFTER"/></translation>
+<translation id="2394656730986208060">Привіт, я — Лео, вбудований AI-асистент від Brave. Я працюю на базі GPT 5.6 Luna — швидкої моделі з низькою затримкою від OpenAI на Amazon Bedrock Mantle. GPT 5.6 Luna обслуговується через безпечну інфраструктуру AWS від Brave.<ph name="LINK_BEFORE"/>Докладніше<ph name="LINK_AFTER"/></translation>
+<translation id="5278969721580944810">Привіт, я — Лео, вбудований AI-асистент від Brave. Я працюю на базі GPT 5.6 Terra — збалансованої продакшн-моделі від OpenAI на Amazon Bedrock Mantle. GPT 5.6 Terra обслуговується через безпечну інфраструктуру AWS від Brave.<ph name="LINK_BEFORE"/>Докладніше<ph name="LINK_AFTER"/></translation>
 <translation id="5037359072717016032">Привіт, я — Лео, вбудований AI-асистент від Brave. Я працюю на базі моделі Mistral Large, створеної компанією Mistral для ефективної роботи й широкого спектра застосування. Brave розміщує Mistral Large на власній безпечній інфраструктурі.<ph name="LINK_BEFORE"/>Докладніше<ph name="LINK_AFTER"/></translation>
-<translation id="4026902371301997261">Привіт, я — Лео, вбудований AI-асистент від Brave. Мене створено на базі моделі Qwen 3 235B від Alibaba Cloud для високої продуктивності та широкого спектра застосування. Brave розміщує Qwen 3 235B на власній захищеній інфраструктурі.<ph name="LINK_BEFORE"/>Дізнатися більше<ph name="LINK_AFTER"/></translation>
+<translation id="5475035333915581972">Привіт, я — Лео, вбудований AI-асистент від Brave. Я працюю на базі моделі Qwen 3.8 Flash Next, створеної компанією Alibaba Cloud для ефективної роботи й широкого спектра застосування. Brave розміщує Qwen 3.8 Flash Next на власній безпечній інфраструктурі.<ph name="LINK_BEFORE"/>Докладніше<ph name="LINK_AFTER"/></translation>
 <translation id="8720758690351028307">Привіт, я — Лео, вбудований AI-асистент від Brave. Я працюю на базі моделі Deepseek V3.2, створеної компанією Deepseek для ефективної роботи й широкого спектра застосування. Brave розміщує Deepseek V3.2 на власній безпечній інфраструктурі.<ph name="LINK_BEFORE"/>Дізнатися більше<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">Привіт, я — Лео, вбудований AI-асистент від Brave. Працюю на моделі Claude Opus від Anthropic, яка оптимізована для діалогів та обробки тексту. Brave розміщує її через власну інфраструктуру.<ph name="LINK_BEFORE"/>Дізнатися більше<ph name="LINK_AFTER"/></translation>
 <translation id="7238858567393403597">Привіт, я — Лео, вбудований AI-асистент від Brave. Я працюю на базі моделі GLM-4-7-Flash, створеної компанією Zhipu AI для ефективної роботи й застосування в багатьох сценаріях використання. Brave розміщує GLM-4-7-Flash на власній безпечній інфраструктурі.<ph name="LINK_BEFORE"/>Докладніше<ph name="LINK_AFTER"/></translation>
@@ -2248,7 +2257,6 @@
 <translation id="4773408460773097271">Ollama</translation>
 <translation id="631371844654031449">Рекомендовані моделі</translation>
 <translation id="6568044140836233369">Показати всі моделі</translation>
-<translation id="6187065185557150870">Чат</translation>
 <translation id="4685048769603134644">Відкрити повну сторінку</translation>
 <translation id="2961040541145689181">Новий чат</translation>
 <translation id="7557539689487606886">Перейти на версію Premium</translation>
@@ -2373,13 +2381,13 @@
 <translation id="887511360213807449">Історія вимкнена</translation>
 <translation id="5380979378058584412">Щоб переглянути ваші попередні розмови з Leo, вам потрібно увімкнути історію розмов.</translation>
 <translation id="3185367320601718531">Розмова й генерація тексту</translation>
-<translation id="2793458212460902934">Швидко • Пошук • Інструменти</translation>
 <translation id="8506027496671575183">Пошук • Зір • Інструменти</translation>
 <translation id="3184606955650139158">Швидко • Пошук • Бачення</translation>
 <translation id="7465032796278724624">Конфіденційність із підтвердженням на базі NEAR AI TEE</translation>
 <translation id="8782867266498869301">Модель змінюється динамічно для використання найкращої для завдання</translation>
 <translation id="7348809809749151120">Швидко • Пошук</translation>
 <translation id="3213834013136637671">Пошук • Зір</translation>
+<translation id="2793458212460902934">Швидко • Пошук • Інструменти</translation>
 <translation id="5276681919620506371">Пошук • Інструменти</translation>
 <translation id="7434375176361995333">Підсумки • Швидко</translation>
 <translation id="3965507912994218570">Налаштування Leo</translation>
@@ -2944,9 +2952,7 @@ Brave має допоміжну службу, яка захищає вас ві�
 <translation id="3750210661641549834">Щоб створити обліковий запис, підтвердьте свою адресу електронної пошти.</translation>
 <translation id="4351175281479794167">Ввести код підтвердження</translation>
 <translation id="1672793037892810340">Ви маєте отримати електронний лист із кодом, який потрібно ввести.</translation>
-<translation id="4821255729182569254">Переслати підтвердження електронною поштою</translation>
 <translation id="5837679375142747484">Не бачите листа? Перевірте папку зі спамом або <ph name="BEGIN_LINK"/>надішліть його повторно<ph name="END_LINK"/>.</translation>
-<translation id="1080588816740959885">Не бачите листа? Перевірте папку зі спамом або надішліть його повторно.</translation>
 <translation id="1020730839570724178">Скасувати реєстрацію</translation>
 <translation id="7155125570724238786">Щоб скинути пароль, підтвердьте свою адресу електронної пошти.</translation>
 <translation id="816074628631172140">Вашу електронну пошту підтверджено. Установіть новий пароль, щоб завершити його скидання.</translation>

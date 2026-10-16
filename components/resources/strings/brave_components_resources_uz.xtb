@@ -1878,6 +1878,18 @@
 <translation id="2737084171727561244">Portfelingizga kiring</translation>
 <translation id="3499452861061048987">Token qo'shish</translation>
 <translation id="5046066249040287308">Brave Hamyon Kommunal Xizmati</translation>
+<translation id="8767749833522980474">Kripto</translation>
+<translation id="4509084261025090951">Kartangizni oling</translation>
+<translation id="3624463584770657372">Karta raqamlarini koʻrish va sarflashni boshlash uchun shaxsingizni tasdiqlang.</translation>
+<translation id="2508337767012636987">Tasdiqlash uchun bosing</translation>
+<translation id="703964541421486259">Balanslarni yashirish</translation>
+<translation id="302114796458112924">Balanslarni koʻrsatish</translation>
+<translation id="9083210401924577263">Brave Mukofotlar kartasi</translation>
+<translation id="2433507940547922241">Qiyofa</translation>
+<translation id="3435738964857648380">Xavfsizlik</translation>
+<translation id="6700561332544287722">Keyingi safar qulfdan chiqarishni talab qilish</translation>
+<translation id="5605360570977617291"><ph name="CARD_NAME"/> bosh sahifadan yashirilsinmi?</translation>
+<translation id="2721464457853369512"><ph name="CARD_NAME"/> balansingiz oʻzgarmaydi. Bu faqat kartani bosh sahifadan yashiradi. Uni istalgan vaqtda Sozlamalar &gt; Wallet boʻlimida qayta koʻrsatishingiz mumkin.</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
 <translation id="3745016858329272300">Umumiy ma'lumotlar</translation>
 <translation id="4045404575593562245">Tor nazorat voqealari</translation>
@@ -1917,7 +1929,6 @@
 <translation id="6261915643960475695">Biznes</translation>
 <translation id="8265589281845759879">Avtomobillar</translation>
 <translation id="7726519849288907308">Mashhurlar</translation>
-<translation id="8767749833522980474">Kripto</translation>
 <translation id="7577010593836079522">Madaniyat</translation>
 <translation id="6807791860691150411">Taʼlim</translation>
 <translation id="3706423975342040244">Ko‘ngilochar</translation>
@@ -2096,9 +2107,6 @@
 <translation id="3067105725259639716">Brave Yangiliklarini sozlash</translation>
 <translation id="6286510487460330478">Yorliq sozlamalari</translation>
 <translation id="9214819486716388964">Brave Talk ni ko'rsatish</translation>
-<translation id="5950760360751948276">Belgilamalar panelini har doim koʻrsatish</translation>
-<translation id="2960757369920422313">NTP da belgilamalar panelini koʻrsatish</translation>
-<translation id="522953399371747698">Belgilamalar panelini berkitish</translation>
 <translation id="9079813619990532635">Barcha xatcho‘plarni eksport qilish</translation>
 <translation id="134184943774258988">Belgilamalar tugmasi koʻrinishini sozlash</translation>
 <translation id="2158862020143233462">Qalqonni sozlash</translation>
@@ -2213,6 +2221,7 @@
 <translation id="5820497878628354073">Holat kodi: <ph name="STATUS_CODE"/>, ichki holat kodi: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">Siz premium chegara limitiga yetdingiz. Iltimos, bir necha soatdan so'ng qayta urinib ko'ring.</translation>
 <translation id="6873128487002733717">Siz ushbu model uchun premium limitiga yetib keldingiz. Boshqa modelni tanlang yoki keyinroq qayta urinib koʻring.</translation>
+<translation id="2688661132468689309">Siz ushbu model uchun premium limitiga yetib keldingiz. U <ph name="RESET_DURATION"/> dan soʻng (<ph name="RESET_TIME"/> da) tiklanadi. Boshqa modelni tanlang yoki oʻshanda qayta urinib koʻring.</translation>
 <translation id="3683964919745779766">Siz ushbu model uchun stavka limitiga yetib keldingiz yoki kreditlaringiz tugadi. Iltimos, keyinroq qayta urinib ko‘ring.</translation>
 <translation id="7692501701960747469">Ushbu model uchun sozlangan API kaliti yaroqsiz. Iltimos, sozlamalaringizni tekshiring va qayta urinib ko‘ring.</translation>
 <translation id="7905602379229309187">Ayni paytda endpoint yuklangan. Iltimos, keyinroq qayta urinib ko‘ring.</translation>
@@ -2221,12 +2230,12 @@
 <translation id="3852808100039989429">Salom, mening ismim Leo. Men Brave tomonidan taqdim etilgan AI yordamchisiman. Meni Alibaba Cloud tomonidan turli xil foydalanish holatlariga mos va yuqori samarali bo‘lishi uchun yaratilgan Qwen VL 30B modeli ishlaydi. Qwen Brave tomonidan o‘z xavfsiz infratuzilmasi orqali joylashtirilgan.<ph name="LINK_BEFORE"/>Ko‘proq bilib oling<ph name="LINK_AFTER"/></translation>
 <translation id="8659225822055186905">Salom, mening ismim Leo. Men Brave tomonidan taqdim etilgan AI yordamchisiman. Meni GLM-5.3 Flash modeli ishlaydi, u Zhipu AI tomonidan turli xil foydalanish holatlariga mos va yuqori samarali bo‘lishi uchun yaratilgan. GLM-5.3 Flash Zhipu AI tomonidan o‘zining isbotli shaxsiy xavfsiz infratuzilmasi orqali NEAR tomonidan joylashtirilgan.<ph name="LINK_BEFORE"/>Ko‘proq bilib oling<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">Salom, men Leo. Men Brave tomonidan taqdim etilgan sunʼiy intellekt yordamchisiman. Meni Claude Instant ishlatadi — bu Antropic tomonidan muloqot va matnni qayta ishlash vazifalari uchun yaratilgan model. Claude Instant Brave’ning xavfsiz infratuzilmasida joylashgan.<ph name="LINK_BEFORE"/>Batafsil maʼlumot<ph name="LINK_AFTER"/></translation>
-<translation id="3789772321824682783">Salom, mening ismim Leo. Men Brave tomonidan taqdim etilgan AI yordamchisiman. Meni Anthropic tomonidan suhbat va matnni qayta ishlash vazifalarini bajarish uchun yaratilgan Claude Haiku modeli ishlaydi. Claude Haiku Brave tomonidan o'z xavfsiz infratuzilmasi orqali joylashtirilgan.<ph name="LINK_BEFORE"/>Ko'proq bilib oling<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Salom, mening ismim Leo. Men Brave tomonidan taqdim etilgan AI yordamchisiman. Meni Anthropic tomonidan suhbat va matnni qayta ishlash vazifalarini bajarish uchun yaratilgan Claude Sonnet modeli ishlaydi. Claude Sonnet Brave tomonidan o'z xavfsiz infratuzilmasi orqali joylashtirilgan.<ph name="LINK_BEFORE"/>Ko'proq bilib oling<ph name="LINK_AFTER"/></translation>
-<translation id="3399141352144059821">Salom, mening ismim Leo. Men Brave tomonidan taqdim etilgan AI yordamchisiman. Meni xAI tomonidan turli xil foydalanish holatlariga mos va yuqori samarali bo'lish uchun yaratilgan Grok 4.3 modeli ishlaydi. Grok 4.3 Brave tomonidan o'z xavfsiz infratuzilmasi orqali joylashtirilgan.<ph name="LINK_BEFORE"/>Ko'proq bilib oling<ph name="LINK_AFTER"/></translation>
-<translation id="8868813509973985458">Salom, mening ismim Leo. Men Brave tomonidan taqdim etilgan AI yordamchisiman. Meni OpenAI tomonidan turli xil foydalanish holatlariga mos va yuqori samarali bo'lish uchun yaratilgan GPT 5.4 modeli ishlaydi. GPT 5.4 Brave tomonidan o'z xavfsiz infratuzilmasi orqali joylashtirilgan.<ph name="LINK_BEFORE"/>Ko'proq bilib oling<ph name="LINK_AFTER"/></translation>
+<translation id="6676306995311143470">Salom, mening ismim Leo. Men Brave tomonidan taqdim etilgan AI yordamchisiman. Meni Amazon Bedrock Mantle’dagi xAI’ning ilgʻor reasoning modeli Grok 4.6 ishlaydi. Grok 4.6 Brave’ning xavfsiz AWS infratuzilmasi orqali taqdim etiladi.<ph name="LINK_BEFORE"/>Koʻproq bilib oling<ph name="LINK_AFTER"/></translation>
+<translation id="2394656730986208060">Salom, mening ismim Leo. Men Brave tomonidan taqdim etilgan AI yordamchisiman. Meni Amazon Bedrock Mantle’dagi OpenAI’ning tez, past kechikishli modeli GPT 5.6 Luna ishlaydi. GPT 5.6 Luna Brave’ning xavfsiz AWS infratuzilmasi orqali taqdim etiladi.<ph name="LINK_BEFORE"/>Koʻproq bilib oling<ph name="LINK_AFTER"/></translation>
+<translation id="5278969721580944810">Salom, mening ismim Leo. Men Brave tomonidan taqdim etilgan AI yordamchisiman. Meni Amazon Bedrock Mantle’dagi OpenAI’ning muvozanatli ishlab chiqarish modeli GPT 5.6 Terra ishlaydi. GPT 5.6 Terra Brave’ning xavfsiz AWS infratuzilmasi orqali taqdim etiladi.<ph name="LINK_BEFORE"/>Koʻproq bilib oling<ph name="LINK_AFTER"/></translation>
 <translation id="5037359072717016032">Salom, mening ismim Leo. Men Brave tomonidan taqdim etilgan AI yordamchisiman. Meni Mistral tomonidan turli xil foydalanish holatlariga mos va yuqori samarali bo'lish uchun yaratilgan Mistral Large modeli ishlaydi. Mistral Large Brave tomonidan o'z xavfsiz infratuzilmasi orqali joylashtirilgan.<ph name="LINK_BEFORE"/>Ko'proq bilib oling<ph name="LINK_AFTER"/></translation>
-<translation id="4026902371301997261">Salom, mening ismim Leo. Men Brave tomonidan taqdim etilgan AI yordamchisiman. Meni Alibaba Cloud tomonidan turli xil foydalanish holatlariga mos va yuqori samarali bo'lish uchun yaratilgan Qwen 3 235B modeli ishlaydi. Qwen 3 235B Brave tomonidan o'z xavfsiz infratuzilmasi orqali joylashtirilgan.<ph name="LINK_BEFORE"/>Ko'proq bilib oling<ph name="LINK_AFTER"/></translation>
+<translation id="5475035333915581972">Salom, mening ismim Leo. Men Brave tomonidan taqdim etilgan AI yordamchisiman. Meni Alibaba Cloud tomonidan turli xil foydalanish holatlariga mos va yuqori samarali boʻlish uchun yaratilgan Qwen 3.8 Flash Next modeli ishlaydi. Qwen 3.8 Flash Next Brave tomonidan oʻz xavfsiz infratuzilmasi orqali joylashtirilgan.<ph name="LINK_BEFORE"/>Koʻproq bilib oling<ph name="LINK_AFTER"/></translation>
 <translation id="8720758690351028307">Salom, mening ismim Leo. Men Brave tomonidan taqdim etilgan AI yordamchisiman. Meni Deepseek tomonidan turli xil foydalanish holatlariga mos va yuqori samarali bo'lish uchun yaratilgan Deepseek V3.2 modeli ishlaydi. Deepseek V3.2 Brave tomonidan o'z xavfsiz infratuzilmasi orqali joylashtirilgan.<ph name="LINK_BEFORE"/>Ko'proq bilib oling<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">Salom, mening ismim Leo. Men Brave tomonidan taqdim etilgan AI yordamchisiman. Meni Anthropic tomonidan suhbat va matnni qayta ishlash vazifalarini bajarish uchun yaratilgan Claude Opus modeli ishlaydi. Claude Opus Brave tomonidan o'z xavfsiz infratuzilmasi orqali joylashtirilgan.<ph name="LINK_BEFORE"/>Ko'proq bilib oling<ph name="LINK_AFTER"/></translation>
 <translation id="7238858567393403597">Salom, mening ismim Leo. Men Brave tomonidan taqdim etilgan AI yordamchisiman. Meni OpenAI tomonidan turli xil foydalanish holatlariga mos va yuqori samarali bo'lish uchun yaratilgan GPT OSS 20B modeli ishlaydi. GPT OSS 20B Brave tomonidan o'z xavfsiz infratuzilmasi orqali joylashtirilgan.<ph name="LINK_BEFORE"/>Ko'proq bilib oling<ph name="LINK_AFTER"/></translation>
@@ -2239,7 +2248,6 @@
 <translation id="4773408460773097271">Ollama</translation>
 <translation id="631371844654031449">Tavsiya etilgan modellar</translation>
 <translation id="6568044140836233369">Barcha modellarni koʻrsatish</translation>
-<translation id="6187065185557150870">Chat</translation>
 <translation id="4685048769603134644">To'liq sahifani oching</translation>
 <translation id="2961040541145689181">Yangi chat</translation>
 <translation id="7557539689487606886">Premium obuna qilish</translation>
@@ -2363,13 +2371,13 @@
 <translation id="887511360213807449">Tarix o‘chirilgan</translation>
 <translation id="5380979378058584412">Leo bilan oldingi suhbatlaringizni ko‘rish uchun siz suhbat tarixini yoqishingiz kerak.</translation>
 <translation id="3185367320601718531">Muloqot va matn yaratish</translation>
-<translation id="2793458212460902934">Tez • Qidiruv • Asboblar</translation>
 <translation id="8506027496671575183">Qidiruv • Ko‘rish • Asboblar</translation>
 <translation id="3184606955650139158">Tez • Qidiruv • Ko‘rish</translation>
 <translation id="7465032796278724624">NEAR AI TEE bilan tekshirilgan maxfiylik</translation>
 <translation id="8782867266498869301">Model vazifani bajarish uchun eng yaxshisiga o'zgartiriladi</translation>
 <translation id="7348809809749151120">Tez • Qidiruv</translation>
 <translation id="3213834013136637671">Qidiruv • Ko‘rish</translation>
+<translation id="2793458212460902934">Tez • Qidiruv • Asboblar</translation>
 <translation id="5276681919620506371">Qidiruv • Asboblar</translation>
 <translation id="7434375176361995333">Jami ma'lumotlar • Tez</translation>
 <translation id="3965507912994218570">Leo sozlamalari</translation>
@@ -2932,9 +2940,7 @@ Sizni ulanishga tayyorlaylik!</translation>
 <translation id="3750210661641549834">Hisobingizni yaratish uchun email manzilingizni tasdiqlang.</translation>
 <translation id="4351175281479794167">Tasdiqlash kodini kiriting</translation>
 <translation id="1672793037892810340">Sizga kiritishingiz kerak boʻlgan kodli email yuborilgan boʻlishi kerak.</translation>
-<translation id="4821255729182569254">Tasdiqlash emailini qayta yuborish</translation>
 <translation id="5837679375142747484">Email koʻrinmayaptimi? Spam jildingizni tekshiring yoki uni <ph name="BEGIN_LINK"/>qayta yuboring<ph name="END_LINK"/>.</translation>
-<translation id="1080588816740959885">Email koʻrinmayaptimi? Spam jildingizni tekshiring yoki uni qayta yuboring.</translation>
 <translation id="1020730839570724178">Roʻyxatdan oʻtishni bekor qilish</translation>
 <translation id="7155125570724238786">Parolingizni tiklash uchun email manzilingizni tasdiqlang.</translation>
 <translation id="816074628631172140">Email manzilingiz tasdiqlandi. Parolni tiklashni yakunlash uchun yangi parol oʻrnating.</translation>

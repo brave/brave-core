@@ -1881,6 +1881,18 @@
 <translation id="2737084171727561244">Doties uz Portfeli</translation>
 <translation id="3499452861061048987">Pievienot tokenu</translation>
 <translation id="5046066249040287308">Brave maka ērtības pakalpojums</translation>
+<translation id="8767749833522980474">Kriptovalūta</translation>
+<translation id="4509084261025090951">Iegūstiet savu karti</translation>
+<translation id="3624463584770657372">Verificējiet savu identitāti, lai redzētu kartes numurus un sāktu tērēt.</translation>
+<translation id="2508337767012636987">Pieskarieties, lai verificētu</translation>
+<translation id="703964541421486259">Paslēpt atlikumus</translation>
+<translation id="302114796458112924">Rādīt atlikumus</translation>
+<translation id="9083210401924577263">Brave atlīdzību karte</translation>
+<translation id="2433507940547922241">Izskats</translation>
+<translation id="3435738964857648380">Drošība</translation>
+<translation id="6700561332544287722">Nākamreiz pieprasīt atbloķēšanu</translation>
+<translation id="5605360570977617291">Paslēpt <ph name="CARD_NAME"/> no sākuma lapas?</translation>
+<translation id="2721464457853369512">Jūsu <ph name="CARD_NAME"/> atlikums nemainās. Tādējādi karte tiek tikai paslēpta no sākuma lapas. To var jebkurā brīdī atkal parādīt sadaļā Iestatījumi zem Maks.</translation>
 <translation id="3155170474926428993">Tor palaidējs</translation>
 <translation id="3745016858329272300">Vispārīga informācija</translation>
 <translation id="4045404575593562245">Tor kontroles notikumi</translation>
@@ -1920,7 +1932,6 @@
 <translation id="6261915643960475695">Bizness</translation>
 <translation id="8265589281845759879">Auto</translation>
 <translation id="7726519849288907308">Slavenības</translation>
-<translation id="8767749833522980474">Kriptovalūta</translation>
 <translation id="7577010593836079522">Kultūra</translation>
 <translation id="6807791860691150411">Izglītība</translation>
 <translation id="3706423975342040244">Izklaide</translation>
@@ -2099,9 +2110,6 @@
 <translation id="3067105725259639716">Konfigurēt Brave ziņas</translation>
 <translation id="6286510487460330478">Konfigurēt saīsnes</translation>
 <translation id="9214819486716388964">Rādīt Brave Talk</translation>
-<translation id="5950760360751948276">Vienmēr rādīt grāmatzīmju joslu</translation>
-<translation id="2960757369920422313">Rādīt grāmatzīmju joslu jaunā cilnes lapā</translation>
-<translation id="522953399371747698">Slēpt grāmatzīmju cilni</translation>
 <translation id="9079813619990532635">Eksportēt visas grāmatzīmes</translation>
 <translation id="134184943774258988">Komandas Visas grāmatzīmes pogas redzamība</translation>
 <translation id="2158862020143233462">Ieslēgt/izslēgt aizsargus</translation>
@@ -2216,6 +2224,7 @@
 <translation id="5820497878628354073">Statusa kods: <ph name="STATUS_CODE"/>, iekšējais statusa kods: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">Esat sasniedzis augstākās likmes ierobežojumu. Lūdzu, mēģiniet vēlreiz pēc dažām stundām.</translation>
 <translation id="6873128487002733717">Jūs esat sasnieguši šī modeļa premium ierobežojumu. Atlasiet citu modeli vai mēģiniet vēlreiz vēlāk.</translation>
+<translation id="2688661132468689309">Jūs esat sasnieguši šī modeļa premium ierobežojumu. Tas tiks atiestatīts pēc <ph name="RESET_DURATION"/> (plkst. <ph name="RESET_TIME"/>). Atlasiet citu modeli vai mēģiniet vēlreiz tad.</translation>
 <translation id="3683964919745779766">Jūs esat sasnieguši pieprasījumu ierobežojumu vai jums ir beigušies kredīti. Lūdzu, mēģiniet vēlreiz vēlāk.</translation>
 <translation id="7692501701960747469">Šim modelim konfigurētā API atslēga nav derīga. Lūdzu, pārbaudiet konfigurāciju un mēģiniet vēlreiz.</translation>
 <translation id="7905602379229309187">Galapunkts pašlaik ir pārslogots. Lūdzu, vēlāk mēģiniet vēlreiz.</translation>
@@ -2224,12 +2233,12 @@
 <translation id="3852808100039989429">Sveiki! Mani sauc Leo. Es esmu pilnībā mitināts Brave mākslīgā intelekta asistents. Mani darbina Qwen VL 30B – Alibaba Cloud izstrādāts modelis dažādu uzdevumu risināšanai. Brave mitina Qwen savā drošajā infrastruktūrā.<ph name="LINK_BEFORE"/>Uzzināt vairāk<ph name="LINK_AFTER"/></translation>
 <translation id="8659225822055186905">Sveiki! Mani sauc Leo. Es esmu pilnībā mitināts Brave mākslīgā intelekta asistents. Mani darbina GLM-5.3 Flash – Zhipu AI izstrādāts modelis dažādu uzdevumu risināšanai. GLM-5.3 Flash modelis tiek mitināts NEAR serveros caur viņu pārbaudāmo privāto drošo infrastruktūru.<ph name="LINK_BEFORE"/>Uzzināt vairāk<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">Sveiki, esmu Leo. Esmu Brave mākslīgā intelekta palīgs. Mani darbina Claude Instant — Anthropic radīts modelis, kas paredzēts sarunu un teksta apstrādes uzdevumiem. Claude Instant darbojas Brave infrastruktūrā, kas ir droša un pārvaldīta pašu spēkiem.<ph name="LINK_BEFORE"/>Uzzināt vairāk<ph name="LINK_AFTER"/></translation>
-<translation id="3789772321824682783">Sveiki! Mani sauc Leo. Es esmu pilnībā mitināts Brave mākslīgā intelekta asistents. Mani darbina Anthropic izstrādātais modelis "Claude Haiku" sarunu un teksta apstrādes uzdevumu risināšanai. Brave mitina modeli "Claude Haiku" savā, drošā infrastruktūrā.<ph name="LINK_BEFORE"/>Uzzināt vairāk<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Sveiki! Mani sauc Leo. Es esmu pilnībā mitināts Brave mākslīgā intelekta asistents. Mani darbina Anthropic izstrādātais modelis "Claude Sonnet" sarunu un teksta apstrādes uzdevumu risināšanai. Brave mitina modeli "Claude Sonnet" savā, drošā infrastruktūrā.<ph name="LINK_BEFORE"/>Uzzināt vairāk<ph name="LINK_AFTER"/></translation>
-<translation id="3399141352144059821">Sveiki! Mani sauc Leo. Es esmu pilnībā mitināts Brave mākslīgā intelekta asistents. Mani darbina Grok 4.3 – xAI izstrādāts modelis dažādu uzdevumu risināšanai. Brave mitina Grok 4.3 modeli savā, drošā infrastruktūrā.<ph name="LINK_BEFORE"/>Uzzināt vairāk<ph name="LINK_AFTER"/></translation>
-<translation id="8868813509973985458">Sveiki! Mani sauc Leo. Es esmu pilnībā mitināts Brave mākslīgā intelekta asistents. Mani darbina GPT 5.4 – OpenAI izstrādāts modelis dažādu uzdevumu risināšanai. Brave mitina GPT 5.4 modeli savā, drošā infrastruktūrā.<ph name="LINK_BEFORE"/>Uzzināt vairāk<ph name="LINK_AFTER"/></translation>
+<translation id="6676306995311143470">Sveiki! Mani sauc Leo. Es esmu Brave mākslīgā intelekta asistents. Mani darbina Grok 4.6 – xAI progresīvais spriešanas modelis platformā Amazon Bedrock Mantle. Grok 4.6 tiek piedāvāts, izmantojot Brave drošo AWS infrastruktūru.<ph name="LINK_BEFORE"/>Uzzināt vairāk<ph name="LINK_AFTER"/></translation>
+<translation id="2394656730986208060">Sveiki! Mani sauc Leo. Es esmu Brave mākslīgā intelekta asistents. Mani darbina GPT 5.6 Luna – OpenAI ātrais, zemas aizkaves modelis platformā Amazon Bedrock Mantle. GPT 5.6 Luna tiek piedāvāts, izmantojot Brave drošo AWS infrastruktūru.<ph name="LINK_BEFORE"/>Uzzināt vairāk<ph name="LINK_AFTER"/></translation>
+<translation id="5278969721580944810">Sveiki! Mani sauc Leo. Es esmu Brave mākslīgā intelekta asistents. Mani darbina GPT 5.6 Terra – OpenAI līdzsvarotais ražošanas modelis platformā Amazon Bedrock Mantle. GPT 5.6 Terra tiek piedāvāts, izmantojot Brave drošo AWS infrastruktūru.<ph name="LINK_BEFORE"/>Uzzināt vairāk<ph name="LINK_AFTER"/></translation>
 <translation id="5037359072717016032">Sveiki! Mani sauc Leo. Es esmu pilnībā mitināts Brave mākslīgā intelekta asistents. Mani darbina Mistral Large – Mistral izstrādāts modelis dažādu uzdevumu risināšanai. Brave mitina Mistral Large modeli savā, drošā infrastruktūrā.<ph name="LINK_BEFORE"/>Uzzināt vairāk<ph name="LINK_AFTER"/></translation>
-<translation id="4026902371301997261">Sveiki! Mani sauc Leo. Es esmu pilnībā mitināts Brave mākslīgā intelekta asistents. Mani darbina Alibaba Cloud izstrādātais modelis "Qwen 3 235B" dažādu uzdevumu risināšanai. Brave mitina modeli "Qwen 3 235B" savā, drošā infrastruktūrā.<ph name="LINK_BEFORE"/>Uzzināt vairāk<ph name="LINK_AFTER"/></translation>
+<translation id="5475035333915581972">Sveiki! Mani sauc Leo. Es esmu Brave mākslīgā intelekta asistents. Mani darbina Alibaba Cloud izstrādātais modelis "Qwen 3.8 Flash Next" dažādu uzdevumu risināšanai. Brave mitina modeli "Qwen 3.8 Flash Next" savā, drošā infrastruktūrā.<ph name="LINK_BEFORE"/>Uzzināt vairāk<ph name="LINK_AFTER"/></translation>
 <translation id="8720758690351028307">Sveiki! Mani sauc Leo. Es esmu pilnībā mitināts Brave mākslīgā intelekta asistents. Mani darbina Deepseek V3.2 – Deepseek izstrādāts modelis dažādu uzdevumu risināšanai. Brave mitina Deepseek V3.2 modeli savā, drošā infrastruktūrā.<ph name="LINK_BEFORE"/>Uzzināt vairāk<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">Sveiki! Mani sauc Leo. Es esmu pilnībā mitināts Brave mākslīgā intelekta asistents. Mani darbina Anthropic izstrādātais modelis "Claude Opus" sarunu un teksta apstrādes uzdevumu risināšanai. Brave mitina modeli "Claude Opus" savā, drošā infrastruktūrā.<ph name="LINK_BEFORE"/>Uzzināt vairāk<ph name="LINK_AFTER"/></translation>
 <translation id="7238858567393403597">Sveiki! Mani sauc Leo. Es esmu pilnībā mitināts Brave mākslīgā intelekta asistents. Mani darbina GLM-4-7-Flash – Zhipu AI izstrādāts modelis dažādu uzdevumu risināšanai. Brave mitina GLM-4-7-Flash modeli savā, drošā infrastruktūrā.<ph name="LINK_BEFORE"/>Uzzināt vairāk<ph name="LINK_AFTER"/></translation>
@@ -2242,7 +2251,6 @@
 <translation id="4773408460773097271">Ollama</translation>
 <translation id="631371844654031449">Ieteicamie modeļi</translation>
 <translation id="6568044140836233369">Rādīt visus modeļus</translation>
-<translation id="6187065185557150870">Tērzēt</translation>
 <translation id="4685048769603134644">Atvērt pilnā lapā</translation>
 <translation id="2961040541145689181">Jauna tērzēšana</translation>
 <translation id="7557539689487606886">Pāriet uz Premium</translation>
@@ -2366,13 +2374,13 @@
 <translation id="887511360213807449">Vēstures saglabāšana ir atspējota</translation>
 <translation id="5380979378058584412">Lai skatītu iepriekšējās sarunas ar Leo, jums jāiespējo sarunu vēstures saglabāšana.</translation>
 <translation id="3185367320601718531">Sarunas un teksta ģenerēšana</translation>
-<translation id="2793458212460902934">Ātri • Meklēt • Rīki</translation>
 <translation id="8506027496671575183">Meklēt • Vision • Rīki</translation>
 <translation id="3184606955650139158">Ātrais • Meklēšana • Redze</translation>
 <translation id="7465032796278724624">Pārbaudīta konfidencialitāte ar NEAR AI TEE</translation>
 <translation id="8782867266498869301">Modelis dinamiski mainās, lai izmantotu labāko modeli uzdevumam</translation>
 <translation id="7348809809749151120">Ātri • Meklēt</translation>
 <translation id="3213834013136637671">Meklēšana • Redze</translation>
+<translation id="2793458212460902934">Ātri • Meklēt • Rīki</translation>
 <translation id="5276681919620506371">Meklēt • Rīki</translation>
 <translation id="7434375176361995333">Kopsavilkumi • Ātri</translation>
 <translation id="3965507912994218570">Leo iestatījumi</translation>
@@ -2936,9 +2944,7 @@ esošo cilni.</translation>
 <translation id="3750210661641549834">Lai izveidotu kontu, lūdzu, apstipriniet savu e-pasta adresi.</translation>
 <translation id="4351175281479794167">Ievadiet verifikācijas kodu</translation>
 <translation id="1672793037892810340">Jums vajadzēja saņemt e-pastu ar kodu, kas būs jāievada.</translation>
-<translation id="4821255729182569254">Atkārtoti nosūtīt apstiprinājuma e-pastu</translation>
 <translation id="5837679375142747484">Neredzat e-pastu? Pārbaudiet surogātpasta mapi vai <ph name="BEGIN_LINK"/>nosūtiet to atkārtoti<ph name="END_LINK"/>.</translation>
-<translation id="1080588816740959885">Neredzat e-pastu? Pārbaudiet surogātpasta mapi vai nosūtiet to atkārtoti.</translation>
 <translation id="1020730839570724178">Atcelt reģistrāciju</translation>
 <translation id="7155125570724238786">Lai atiestatītu paroli, lūdzu, apstipriniet savu e-pasta adresi.</translation>
 <translation id="816074628631172140">Jūsu e-pasts ir apstiprināts. Iestatiet jaunu paroli, lai pabeigtu paroles atiestatīšanu.</translation>

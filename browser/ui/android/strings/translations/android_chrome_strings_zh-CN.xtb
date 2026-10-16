@@ -34,7 +34,6 @@
 <translation id="1111673857033749125">您在其他设备上保存的书签将列在此处。</translation>
 <translation id="1123537484474186311"><ph name="TAB_TITLE"/>，画中画标签页</translation>
 <translation id="1126696498560056882">管理此设备上的账号</translation>
-<translation id="9171525955914564119">如需在您的所有设备上获取书签等信息，请以 <ph name="EMAIL"/> 的身份登录 Brave</translation>
 <translation id="1138458427267715730">当网络中任一网站上的商品降价时，您会收到提醒</translation>
 <translation id="1140317858355046628">如果删除，所有人将立即失去对标签页分组“<ph name="GROUP_NAME"/>”的访问权限，并且该分组将从所有设备中删除。</translation>
 <translation id="1142732900304639782">不询问是否翻译这些网站</translation>
@@ -198,7 +197,6 @@
 <translation id="1812027881030482584"><ph name="SITE_ETLD_PLUS_ONE"/> 无法继续使用 <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/></translation>
 <translation id="1815975907734103433"><ph name="TAB_TITLE"/>，正在录制内容的标签页</translation>
 <translation id="1820408774134375111">用于选择登录账号的底部动作条</translation>
-<translation id="1823492026305965829">以<ph name="USER_FULL_NAME"/>的身份登录</translation>
 <translation id="1824902652744048041">点按“删除浏览数据”</translation>
 <translation id="1829244130665387512">在网页中查找</translation>
 <translation id="1832459821645506983">立即开启</translation>
@@ -296,8 +294,7 @@
 <translation id="4075202346699640887">如果在不设置个人资料锁定的情况下打开 Brave，您已保存的密码和付款方式将会从这部车载设备中移除。使用个人资料锁定功能可确保此类数据安全。</translation>
 <translation id="2226826835915474236">未使用的快捷字词</translation>
 <translation id="2227179592712503583">移除推荐内容</translation>
-<translation id="2227444325776770048">以<ph name="USER_FULL_NAME"/>的身份继续</translation>
-<translation id="2230411774874187555">获取所有已保存的信息</translation>
+<translation id="2227444325776770048">以“<ph name="USER_FULL_NAME"/>”的身份继续</translation>
 <translation id="2230777942707397948">空白窗口</translation>
 <translation id="223356358902285214">网络与应用活动记录</translation>
 <translation id="2233735624724508540">选择时间范围，然后点按“删除数据”</translation>
@@ -347,11 +344,10 @@
 <translation id="2413014528833954543">无法在此设备上检查密码</translation>
 <translation id="2414886740292270097">深色调</translation>
 <translation id="2415037988255164008">要恢复窗口吗？</translation>
-<translation id="2426805022920575512">选择其他账号</translation>
 <translation id="2427025860753516072">{FILE_COUNT,plural, =1{视频，列表中有 1 个视频}other{视频，列表中有 # 个视频}}</translation>
 <translation id="2433507940547922241">外观</translation>
 <translation id="6209052069534739007">当某个 Brave 网站或应用请求以私密方式预加载其网页上的链接时，Brave 会通过 Brave 服务器（而不使用 Cookie）加密和预加载网页。这样一来，预加载的网站便无法得知您的身份。</translation>
-<translation id="7174054574169352743">Brave 钱包中的支付方式和其他信息</translation>
+<translation id="2450019289047528273">Brave 钱包中的支付方式和其他信息</translation>
 <translation id="2450083983707403292">要重新开始下载 <ph name="FILE_NAME"/> 吗？</translation>
 <translation id="2451607499823206582">正在跟踪</translation>
 <translation id="2453860139492968684">完成</translation>
@@ -423,7 +419,6 @@
 <translation id="2723001399770238859">音频</translation>
 <translation id="2739887572830526131">您可以保留此分组，以便日后添加标签页；如果不再需要，也可以将其删除。</translation>
 <translation id="2742373789128106053">目前无法使用 <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/>。</translation>
-<translation id="2751271371269891762">如需在您的所有设备上获取书签等信息，请以 <ph name="EMAIL"/> 的身份登录</translation>
 <translation id="2760805590727089264">MM / YY</translation>
 <translation id="2761162135224472056">要在沉浸式播放模式下观看吗？</translation>
 <translation id="2762000892062317888">刚刚</translation>
@@ -493,7 +488,6 @@
 <translation id="2996291259634659425">创建密码</translation>
 <translation id="2996682533106928201">点按即可忽略</translation>
 <translation id="2996809686854298943">必须提供网址</translation>
-<translation id="3007318536447999974">想与 Gemini 对话？请开启麦克风权限。您也可以在<ph name="BEGIN_LINK"/>设置<ph name="END_LINK"/>中进行管理</translation>
 <translation id="3024215143424744261">已关闭阅读模式偏好设置</translation>
 <translation id="3024277805447899099">预览图片</translation>
 <translation id="3026955690410463085">包括链接</translation>
@@ -585,7 +579,6 @@
 <translation id="3435738964857648380">安全</translation>
 <translation id="3435914367318771664">将标签页添加到新分组</translation>
 <translation id="3436118221454753036">问问 AI 模式</translation>
-<translation id="3830890663494219270">如需将密码等信息同步到您的所有设备上，请登录 Brave</translation>
 <translation id="3439276997620616816">此处会显示您近期关闭的标签页</translation>
 <translation id="3443221991560634068">重新加载当前网页</translation>
 <translation id="3444179773590444986">针对为网站开启深色主题分享反馈？</translation>
@@ -667,7 +660,7 @@
 <translation id="3749289110408117711">文件名</translation>
 <translation id="3756823472711156529">恢复分组</translation>
 <translation id="3759306015475526475">管理使用情况和崩溃数据设置</translation>
-<translation id="7338686239886724619">使用此卡结账时，系统会填写虚拟卡号，以保护您的真实详细信息。在 Brave 钱包中管理。<ph name="BEGIN_LINK1"/>详细了解虚拟卡<ph name="END_LINK1"/></translation>
+<translation id="3763110477555836428">使用此卡结账时，系统会填写虚拟卡号，以保护您的真实详细信息。在 Brave 钱包中管理。<ph name="BEGIN_LINK1"/>详细了解虚拟卡<ph name="END_LINK1"/></translation>
 <translation id="376561056759077985">部分数据尚未保存</translation>
 <translation id="3770620323585347665">为窗口命名</translation>
 <translation id="3771290962915251154">此设置已被停用，因为开启了“家长控制”功能</translation>
@@ -724,7 +717,6 @@
 <translation id="4000212216660919741">离线版首页</translation>
 <translation id="4694008025405984126">通过突出显示的项目自定义和控制 Brave</translation>
 <translation id="5267293611589304570">{NUM_PASSWORDS,plural, =1{您的 Brave 账号中有 1 个密码已泄露}other{您的 Brave 账号中有 # 个密码已泄露}}</translation>
-<translation id="7002462047122704254">如需在您的所有设备上获取书签等信息，请登录 Brave</translation>
 <translation id="4024768890073681126">您的浏览器由您的家长管理</translation>
 <translation id="4027569221211770437">“<ph name="FOLDER_TITLE"/>”文件夹</translation>
 <translation id="4034817413553209278">{HOURS,plural, =1{# 小时}other{# 小时}}</translation>
@@ -860,7 +852,6 @@
 <translation id="4535755320005483982">共享“<ph name="GROUP_TITLE"/>”标签页分组</translation>
 <translation id="4537137366307982887">提示通知选择启用底部动作条已以最大高度显示</translation>
 <translation id="4537987892902330164">目前登录的账号是“<ph name="NAME_OR_EMAIL"/>”</translation>
-<translation id="4543131175509360848">无通行密钥表格</translation>
 <translation id="4558311620361989323">网页快捷键</translation>
 <translation id="4572422548854449519">请登录受管理的账号</translation>
 <translation id="4577115723294378384">按从 A 到 Z 排序</translation>
@@ -895,7 +886,6 @@
 <translation id="4685741273709472646">从下拉列表中选择</translation>
 <translation id="468924408576231679">复制指向“<ph name="PAGE_TITLE"/>”网页的链接。来源：<ph name="PAGE_URL"/></translation>
 <translation id="4692623383562244444">搜索引擎</translation>
-<translation id="469286762610133730">获得更合乎需求的内容</translation>
 <translation id="4695891336199304370">{SHIPPING_OPTIONS,plural, =1{<ph name="SHIPPING_OPTION_PREVIEW"/>\u2026以及另外 <ph name="NUMBER_OF_ADDITIONAL_SHIPPING_OPTIONS"/> 种送货方式}other{<ph name="SHIPPING_OPTION_PREVIEW"/>\u2026以及另外 <ph name="NUMBER_OF_ADDITIONAL_SHIPPING_OPTIONS"/> 种送货方式}}</translation>
 <translation id="4698757800236023795">活跃（<ph name="ITEM_COUNT"/> 个）</translation>
 <translation id="4699172675775169585">缓存的图片和文件</translation>
@@ -903,6 +893,7 @@
 <translation id="4719927025381752090">提供翻译</translation>
 <translation id="4720556299488643018">退订</translation>
 <translation id="4732120983431207637">堆栈展开程序</translation>
+<translation id="4734965478015604180">横向</translation>
 <translation id="4736934858538408121">虚拟卡</translation>
 <translation id="473775607612524610">更新</translation>
 <translation id="4738065825338914557">正在退订…</translation>
@@ -950,11 +941,11 @@
 <translation id="488187801263602086">重命名文件</translation>
 <translation id="1248710015876067820">Brave 实例数量已超出上限。</translation>
 <translation id="8743324804589176795">您的 Brave 账号中没有保存任何密码</translation>
+<translation id="490375751687810070">纵向</translation>
 <translation id="4905823827770127520">包含页面链接</translation>
 <translation id="4910889077668685004">付款应用</translation>
 <translation id="4911042367886397055"><ph name="USER_NAME"/>，欢迎回来！</translation>
 <translation id="4913169188695071480">停止刷新</translation>
-<translation id="367116267716122258">如需在您的所有设备上获取密码等信息，请以 <ph name="EMAIL"/> 的身份登录 Brave</translation>
 <translation id="4923173329789776645">您的组织不建议下载</translation>
 <translation id="4925120120285606924">屏幕截图 <ph name="CURRENT_DATE_ISO"/></translation>
 <translation id="4926901776383726965">您可保存图片和文件以供离线查看或在其他应用中分享</translation>
@@ -1108,7 +1099,6 @@
 <translation id="6894318537270274409">如需更多使用数据来提升 Brave 体验的设置，请前往 <ph name="BEGIN_LINK"/>Brave 服务<ph name="END_LINK"/>。</translation>
 <translation id="5601924940067278327">在您的所有设备上获取标签页等信息</translation>
 <translation id="5611398002774823980">保存到账号</translation>
-<translation id="7769309869030290448">如需在您的所有设备上获取标签页等信息，请以 <ph name="EMAIL"/> 的身份登录 Brave</translation>
 <translation id="5614625640221885312">登录后即可在任何设备上使用您的书签、密码等信息</translation>
 <translation id="5619633276517849615">您的组织已开启“安全浏览”功能</translation>
 <translation id="5620163320393916465">尚未保存任何密码</translation>
@@ -1191,7 +1181,6 @@
 <translation id="5978661847409534366">{ITEMS_COUNT,plural, =1{您的阅读清单中有 1 个页面}other{您的阅读清单中有 # 个页面}}</translation>
 <translation id="2373832261299530145"><ph name="PERMISSION_1"/>、<ph name="PERMISSION_2"/> <ph name="SEPARATOR"/> 由于您近期未访问过此网站，Brave 已移除这些权限</translation>
 <translation id="5995726099713306770">再次下载此页面？</translation>
-<translation id="7074956098903074365">根据贵单位的要求，您必须登录才能使用 Brave。</translation>
 <translation id="6456271171669383967">继续使用 Brave</translation>
 <translation id="6002122790816966947">您的设备</translation>
 <translation id="6011308810877101166">改进搜索建议</translation>
@@ -1246,8 +1235,8 @@
 <translation id="6192907950379606605">获取图片说明</translation>
 <translation id="6193448654517602979">选择标签页</translation>
 <translation id="8367262879301982880">系统会将密码保存到此设备上的 Brave 密码管理工具中</translation>
+<translation id="6200780647297916498">标签页位置</translation>
 <translation id="7766137781166927396">Brave 检测到 <ph name="DOMAIN"/> 可能发送了垃圾内容。</translation>
-<translation id="6210748933810148297">不是 <ph name="EMAIL"/>？</translation>
 <translation id="6211386937064921208">正在预览此页</translation>
 <translation id="6212567362666004597">向分组添加标签页</translation>
 <translation id="6225572914528673855">地址栏</translation>
@@ -1394,12 +1383,10 @@
 <translation id="6738867403308150051">正在下载…</translation>
 <translation id="6745063744988317486">Mono</translation>
 <translation id="6746338529702829275">检查您的账号数据</translation>
-<translation id="6746834324024491643">如需将您的密码等信息同步到您的所有设备上，请以 <ph name="EMAIL"/> 的身份登录</translation>
 <translation id="6751521182688001123">快速打开一个新标签页。若要修改此快捷方式，请轻触并按住这里。</translation>
 <translation id="6754359471209693699">开始新的搜索</translation>
 <translation id="6756507620369789050">分享反馈</translation>
 <translation id="6762511428368667596"><ph name="NAME"/>，<ph name="EMAIL"/>。</translation>
-<translation id="676305334223455055">登录即可获取系统根据您的兴趣推荐的内容</translation>
 <translation id="6764137532716892442">有新活动的共享“<ph name="GROUP_TITLE"/>”标签页分组</translation>
 <translation id="8174975477247159780">Brave 和 Brave 操作系统附加服务条款</translation>
 <translation id="6786747875388722282">扩展程序</translation>
@@ -1514,7 +1501,7 @@
 <translation id="7159399361248977424">图片另存为…</translation>
 <translation id="2679203756569766105">详细了解 Brave 为何屏蔽某些文件</translation>
 <translation id="7168323970702333693">您已使用<ph name="USER_NAME"/>的身份登录。打开设置。</translation>
-<translation id="6390064556944765055">您的设备和 Brave 钱包中保存的所有安全码都将删除</translation>
+<translation id="7170930892977483182">您的设备和 Brave 钱包中保存的所有安全码都将删除</translation>
 <translation id="7173114856073700355">打开“设置”</translation>
 <translation id="7173338713290252554">网上的既往价格</translation>
 <translation id="7177466738963138057">以后，您可以在“设置”中更改此设置。</translation>
@@ -1638,6 +1625,7 @@
 <translation id="7630202231528827509">提供商网址</translation>
 <translation id="7638584964844754484">密码不正确</translation>
 <translation id="7541787837661872168">已关闭 Brave 查找功能选择启用底部动作条</translation>
+<translation id="7645712301713737707">自定义标签页布局，使其显示在浏览器顶部或侧边。</translation>
 <translation id="7646499124171960488">在您访问不安全的公共网站时发出警告</translation>
 <translation id="7655240423373329753">过去 7 天</translation>
 <translation id="7656721520530864426">尚未访问任何网站</translation>
@@ -1686,7 +1674,6 @@
 <translation id="8439902729344548970">当您登录后，这些数据将与您的 Brave 账号关联，以便在各种 Brave 服务中保护您，例如：在安全事件发生后加强 Gmail 的保护力度。</translation>
 <translation id="7824665136384946951">您的组织已关闭“安全浏览”功能</translation>
 <translation id="7825973332242257878">标签页分组</translation>
-<translation id="802130069867035673">您的专属 Brave 浏览器，走到哪带到哪</translation>
 <translation id="7845155831233417403">您最多只能打开 <ph name="MAX_INSTANCE_COUNT"/> 个窗口。请关闭一个窗口以继续。</translation>
 <translation id="7846161022626028328">出错了，请重试。</translation>
 <translation id="7068829570137757602">Brave 服务</translation>
@@ -1759,7 +1746,6 @@
 <translation id="2919733817273403520">帮助改进 Brave 的功能和性能</translation>
 <translation id="4565206163201411670">在“数字健康”应用中显示您的 Brave 活动记录？</translation>
 <translation id="8118117428362942925">如需帮助，请找家长（<ph name="PARENT_NAME"/>）帮忙</translation>
-<translation id="3018959290664438109">如需在您的所有设备上获取标签页等信息，请登录 Brave</translation>
 <translation id="8120286190326371840">此设备上没有任何已泄露的密码</translation>
 <translation id="8122623268651408616">按从新到旧排序</translation>
 <translation id="8127542551745560481">修改主页</translation>
@@ -1883,7 +1869,6 @@
 <translation id="8570677896027847510">无法安全地下载文件</translation>
 <translation id="8571213806525832805">过去 4 周</translation>
 <translation id="8580435650274205305">失效日期（必填）</translation>
-<translation id="8582529315803410153">您在其他设备上打开的标签页会显示在此处</translation>
 <translation id="8585103689515290060">自动填充服务</translation>
 <translation id="3154071202318585486">点按即可删除 Brave 中的浏览数据</translation>
 <translation id="859046281437143747">通过“更多选项”按钮跟踪价格</translation>
@@ -1937,6 +1922,7 @@
 <translation id="8816556050903368450">包含链接：<ph name="ORIGIN"/></translation>
 <translation id="881688628773363275">无法查看标签页的预览内容。</translation>
 <translation id="8820817407110198400">书签</translation>
+<translation id="8822533681006532064">想与 Gemini 对话？请开启麦克风权限。您也可以在<ph name="BEGIN_LINK"/>设置<ph name="END_LINK"/>中进行管理。</translation>
 <translation id="8840953339110955557">此网页可能与在线版本有所不同。</translation>
 <translation id="8847988622838149491">USB</translation>
 <translation id="8849001918648564819">已隐藏</translation>
@@ -2039,7 +2025,6 @@
 <translation id="9218430445555521422">设为默认</translation>
 <translation id="9219103736887031265">图片</translation>
 <translation id="142389341645668510">自定义 Brave</translation>
-<translation id="9222198206152536936">如需在您的所有设备上获取标签页等信息，请以 <ph name="EMAIL"/> 的身份登录</translation>
 <translation id="7625138338483121345">将 Brave 设置为您的默认浏览器</translation>
 <translation id="4596514158372210596">从“数字健康”应用中移除您的 Brave 活动记录</translation>
 <translation id="2830145431802238213">使用 Brave 的精简模式</translation>
@@ -2051,6 +2036,7 @@
 <translation id="945522503751344254">发送反馈</translation>
 <translation id="948276827484905248">创建二维码</translation>
 <translation id="5406914950576900927">在中国，Brave 可以使用<ph name="BEGIN_BOLD"/>搜狗<ph name="END_BOLD"/>作为搜索引擎。如果需要，您可以在<ph name="BEGIN_LINK"/>设置<ph name="END_LINK"/>中进行更改。</translation>
+<translation id="738722687801342563">根据您所在组织的要求，您必须登录才能使用 Brave</translation>
 <translation id="961856697154696964">删除浏览数据</translation>
 <translation id="963246339335003378">打开任务管理器</translation>
 <translation id="966337994629449077">您目前登录的账号为 <ph name="FROM_EMAIL"/>。\n\n如需在电脑上继续操作，请切换到 <ph name="TO_EMAIL"/>。您将可以使用此账号的密码、书签等信息。</translation>

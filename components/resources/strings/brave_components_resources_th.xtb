@@ -1882,6 +1882,18 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="2737084171727561244">ไปที่ Portfolio</translation>
 <translation id="3499452861061048987">เพิ่มโทเค็น</translation>
 <translation id="5046066249040287308">บริการยูทิลิตีของ Brave Wallet</translation>
+<translation id="8767749833522980474">คริปโต</translation>
+<translation id="4509084261025090951">รับการ์ดของคุณ</translation>
+<translation id="3624463584770657372">ยืนยันตัวตนของคุณเพื่อดูหมายเลขการ์ดและเริ่มใช้จ่าย</translation>
+<translation id="2508337767012636987">แตะเพื่อยืนยัน</translation>
+<translation id="703964541421486259">ซ่อนยอดคงเหลือ</translation>
+<translation id="302114796458112924">แสดงยอดคงเหลือ</translation>
+<translation id="9083210401924577263">การ์ด Brave Rewards</translation>
+<translation id="2433507940547922241">ลักษณะที่ปรากฏ</translation>
+<translation id="3435738964857648380">ความปลอดภัย</translation>
+<translation id="6700561332544287722">ต้องปลดล็อกในครั้งถัดไป</translation>
+<translation id="5605360570977617291">ซ่อน <ph name="CARD_NAME"/> จากหน้าหลักหรือไม่</translation>
+<translation id="2721464457853369512">ยอดคงเหลือ <ph name="CARD_NAME"/> ของคุณจะไม่เปลี่ยนแปลง การดำเนินการนี้เพียงซ่อนการ์ดจากหน้าหลักเท่านั้น คุณสามารถแสดงอีกครั้งได้ทุกเมื่อในการตั้งค่า ภายใต้วอลเล็ท</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
 <translation id="3745016858329272300">ข้อมูลทั่วไป</translation>
 <translation id="4045404575593562245">เหตุการณ์การควบคุม Tor</translation>
@@ -1921,7 +1933,6 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="6261915643960475695">ธุรกิจ</translation>
 <translation id="8265589281845759879">รถ</translation>
 <translation id="7726519849288907308">เซเลบริตี</translation>
-<translation id="8767749833522980474">คริปโต</translation>
 <translation id="7577010593836079522">วัฒนธรรม</translation>
 <translation id="6807791860691150411">การศึกษา</translation>
 <translation id="3706423975342040244">ความบันเทิง</translation>
@@ -2100,9 +2111,6 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="3067105725259639716">กำหนดค่า Brave News</translation>
 <translation id="6286510487460330478">กำหนดค่าทางลัด</translation>
 <translation id="9214819486716388964">แสดง Brave Talk</translation>
-<translation id="5950760360751948276">แสดงแถบบุ๊กมาร์กทุกครั้ง</translation>
-<translation id="2960757369920422313">แสดงแถบบุ๊กมาร์กบนหน้าแท็บใหม่</translation>
-<translation id="522953399371747698">ซ่อนแถบบุ๊กมาร์ก</translation>
 <translation id="9079813619990532635">ส่งออกบุ๊คมาร์คทั้งหมด</translation>
 <translation id="134184943774258988">สลับการมองเห็นปุ่มบุ๊กมาร์กทั้งหมด</translation>
 <translation id="2158862020143233462">สลับการป้องกัน</translation>
@@ -2217,6 +2225,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="5820497878628354073">รหัสสถานะ: <ph name="STATUS_CODE"/>, รหัสสถานะภายใน: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">คุณได้ถึงขีดจำกัดอัตราแบบ Premium แล้วโปรดลองอีกครั้งใน 2-3 ชั่วโมง</translation>
 <translation id="6873128487002733717">คุณถึงขีดจำกัด Premium สำหรับโมเดลนี้แล้ว เลือกโมเดลอื่นหรือลองใหม่ภายหลัง</translation>
+<translation id="2688661132468689309">คุณถึงขีดจำกัด Premium สำหรับโมเดลนี้แล้ว จะรีเซ็ตใน <ph name="RESET_DURATION"/> (เวลา <ph name="RESET_TIME"/>) เลือกโมเดลอื่นหรือลองใหม่หลังจากนั้น</translation>
 <translation id="3683964919745779766">คุณถึงขีดจำกัดการใช้งานของโมเดลนี้หรือหมดเครดิตแล้ว กรุณาลองใหม่ภายหลัง</translation>
 <translation id="7692501701960747469">คีย์ API ที่ตั้งค่าสำหรับโมเดลนี้ไม่ถูกต้อง กรุณาตรวจสอบการตั้งค่าและลองใหม่อีกครั้ง</translation>
 <translation id="7905602379229309187">ขณะนี้เอนด์พอยต์มีภาระงานมากเกินไป กรุณาลองใหม่ภายหลัง</translation>
@@ -2225,12 +2234,12 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="3852808100039989429">สวัสดี ผมชื่อ Leo ผมเป็นผู้ช่วย AI ที่โฮสต์โดย Brave ผมได้รับการสนับสนุนจาก Qwen VL 30B ซึ่งเป็นโมเดลที่สร้างโดย Alibaba Cloud เพื่อให้มีประสิทธิภาพและใช้งานได้กับทุกกรณีที่ต้องการใช้ Qwen โฮสต์โดย Brave ผ่านโครงสร้างพื้นฐานที่ปลอดภัยของเราเอง <ph name="LINK_BEFORE"/>เรียนรู้เพิ่มเติม<ph name="LINK_AFTER"/></translation>
 <translation id="8659225822055186905">สวัสดี ผมชื่อ Leo ผมเป็นผู้ช่วย AI ที่โฮสต์โดย Brave ผมได้รับการสนับสนุนจาก GLM-5.3 Flash ซึ่งเป็นโมเดลที่สร้างโดย Zhipu AI เพื่อให้มีประสิทธิภาพและใช้งานได้กับทุกกรณีที่ต้องการใช้ GLM-5.3 Flash โฮสต์โดยผ่านโครงสร้างพื้นฐานที่ปลอดภัยและสามารถตรวจสอบได้ของตนเอง <ph name="LINK_BEFORE"/>เรียนรู้เพิ่มเติม<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">สวัสดี ฉันคือ Leo ผู้ช่วย AI จาก Brave ขับเคลื่อนโดย Claude Instant ซึ่งเป็นโมเดลที่พัฒนาโดย Anthropic สำหรับงานสนทนาและการประมวลผลข้อความ Claude Instant โฮสต์โดย Brave ผ่านโครงสร้างพื้นฐานที่ปลอดภัยของเราเอง <ph name="LINK_BEFORE"/>เรียนรู้เพิ่มเติม<ph name="LINK_AFTER"/></translation>
-<translation id="3789772321824682783">สวัสดี ผมชื่อ Leo ผมเป็นผู้ช่วย AI ที่โฮสต์โดย Brave ผมได้รับการสนับสนุนจาก Claude Haiku ซึ่งเป็นโมเดลที่สร้างโดย Anthropic เพื่อขับเคลื่อนงานด้านการสนทนาและการประมวลผลข้อความ Claude Haiku โฮสต์โดย Brave ผ่านโครงสร้างพื้นฐานที่ปลอดภัยของเราเอง <ph name="LINK_BEFORE"/>เรียนรู้เพิ่มเติม<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">สวัสดี ผมชื่อ Leo ผมเป็นผู้ช่วย AI ที่โฮสต์โดย Brave ผมได้รับการสนับสนุนจาก Claude Sonnet ซึ่งเป็นโมเดลที่สร้างโดย Anthropic เพื่อขับเคลื่อนงานด้านการสนทนาและการประมวลผลข้อความ Claude Sonnet โฮสต์โดย Brave ผ่านโครงสร้างพื้นฐานที่ปลอดภัยของเราเอง <ph name="LINK_BEFORE"/>เรียนรู้เพิ่มเติม<ph name="LINK_AFTER"/></translation>
-<translation id="3399141352144059821">สวัสดี ผมชื่อ Leo ผมเป็นผู้ช่วย AI ที่โฮสต์โดย Brave ผมได้รับการสนับสนุนจาก Grok 4.3 ซึ่งเป็นโมเดลที่สร้างโดย xAI เพื่อให้มีประสิทธิภาพและใช้งานได้กับทุกกรณีที่ต้องการใช้ Grok 4.3 โฮสต์โดย Brave ผ่านโครงสร้างพื้นฐานที่ปลอดภัยของเราเอง <ph name="LINK_BEFORE"/>เรียนรู้เพิ่มเติม<ph name="LINK_AFTER"/></translation>
-<translation id="8868813509973985458">สวัสดี ผมชื่อ Leo ผมเป็นผู้ช่วย AI ที่โฮสต์โดย Brave ผมได้รับการสนับสนุนจาก GPT 5.4 ซึ่งเป็นโมเดลที่สร้างโดย OpenAI เพื่อให้มีประสิทธิภาพและใช้งานได้กับทุกกรณีที่ต้องการใช้ GPT 5.4 โฮสต์โดย Brave ผ่านโครงสร้างพื้นฐานที่ปลอดภัยของเราเอง <ph name="LINK_BEFORE"/>เรียนรู้เพิ่มเติม<ph name="LINK_AFTER"/></translation>
+<translation id="6676306995311143470">สวัสดี ผมชื่อ Leo ผมเป็นผู้ช่วย AI โดย Brave ผมได้รับการสนับสนุนจาก Grok 4.6 ซึ่งเป็นโมเดลการให้เหตุผลล้ำสมัยของ xAI บน Amazon Bedrock Mantle Grok 4.6 ให้บริการผ่านโครงสร้างพื้นฐาน AWS ที่ปลอดภัยของ Brave <ph name="LINK_BEFORE"/>เรียนรู้เพิ่มเติม<ph name="LINK_AFTER"/></translation>
+<translation id="2394656730986208060">สวัสดี ผมชื่อ Leo ผมเป็นผู้ช่วย AI โดย Brave ผมได้รับการสนับสนุนจาก GPT 5.6 Luna ซึ่งเป็นโมเดลที่รวดเร็วและมีความหน่วงต่ำของ OpenAI บน Amazon Bedrock Mantle GPT 5.6 Luna ให้บริการผ่านโครงสร้างพื้นฐาน AWS ที่ปลอดภัยของ Brave <ph name="LINK_BEFORE"/>เรียนรู้เพิ่มเติม<ph name="LINK_AFTER"/></translation>
+<translation id="5278969721580944810">สวัสดี ผมชื่อ Leo ผมเป็นผู้ช่วย AI โดย Brave ผมได้รับการสนับสนุนจาก GPT 5.6 Terra ซึ่งเป็นโมเดลการผลิตที่สมดุลของ OpenAI บน Amazon Bedrock Mantle GPT 5.6 Terra ให้บริการผ่านโครงสร้างพื้นฐาน AWS ที่ปลอดภัยของ Brave <ph name="LINK_BEFORE"/>เรียนรู้เพิ่มเติม<ph name="LINK_AFTER"/></translation>
 <translation id="5037359072717016032">สวัสดี ผมชื่อ Leo ผมเป็นผู้ช่วย AI ที่โฮสต์โดย Brave ผมได้รับการสนับสนุนจาก Mistral Large ซึ่งเป็นโมเดลที่สร้างโดย Mistral เพื่อให้มีประสิทธิภาพและใช้งานได้กับทุกกรณีที่ต้องการใช้ Mistral Large โฮสต์โดย Brave ผ่านโครงสร้างพื้นฐานที่ปลอดภัยของเราเอง <ph name="LINK_BEFORE"/>เรียนรู้เพิ่มเติม<ph name="LINK_AFTER"/></translation>
-<translation id="4026902371301997261">สวัสดี ผมชื่อ Leo ผมเป็นผู้ช่วย AI ที่โฮสต์โดย Brave ผมได้รับการสนับสนุนจาก Qwen 3 235B ซึ่งเป็นโมเดลที่สร้างโดย Alibaba Cloud เพื่อให้มีประสิทธิภาพและใช้งานได้กับทุกกรณีที่ต้องการใช้ Qwen 3 235B โฮสต์โดย Brave ผ่านโครงสร้างพื้นฐานที่ปลอดภัยของเราเอง <ph name="LINK_BEFORE"/>เรียนรู้เพิ่มเติม<ph name="LINK_AFTER"/></translation>
+<translation id="5475035333915581972">สวัสดี ผมชื่อ Leo ผมเป็นผู้ช่วย AI โดย Brave ผมได้รับการสนับสนุนจาก Qwen 3.8 Flash Next ซึ่งเป็นโมเดลที่สร้างโดย Alibaba Cloud เพื่อให้มีประสิทธิภาพและใช้งานได้กับทุกกรณีที่ต้องการใช้ Qwen 3.8 Flash Next โฮสต์โดย Brave ผ่านโครงสร้างพื้นฐานที่ปลอดภัยของเราเอง <ph name="LINK_BEFORE"/>เรียนรู้เพิ่มเติม<ph name="LINK_AFTER"/></translation>
 <translation id="8720758690351028307">สวัสดี ผมชื่อ Leo ผมเป็นผู้ช่วย AI ที่โฮสต์โดย Brave ผมได้รับการสนับสนุนจาก Deepseek V3.2 ซึ่งเป็นโมเดลที่สร้างโดย Deepseek เพื่อให้มีประสิทธิภาพและใช้งานได้กับทุกกรณีที่ต้องการใช้ Deepseek V3.2 โฮสต์โดย Brave ผ่านโครงสร้างพื้นฐานที่ปลอดภัยของเราเอง <ph name="LINK_BEFORE"/>เรียนรู้เพิ่มเติม<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">สวัสดี ผมชื่อ Leo ผมเป็นผู้ช่วย AI ที่โฮสต์โดย Brave ผมได้รับการสนับสนุนจาก Claude Opus ซึ่งเป็นโมเดลที่สร้างโดย Anthropic เพื่อขับเคลื่อนงานด้านการสนทนาและการประมวลผลข้อความ Claude Opus โฮสต์โดย Brave ผ่านโครงสร้างพื้นฐานที่ปลอดภัยของเราเอง <ph name="LINK_BEFORE"/>เรียนรู้เพิ่มเติม<ph name="LINK_AFTER"/></translation>
 <translation id="7238858567393403597">สวัสดี ผมชื่อ Leo ผมเป็นผู้ช่วย AI ที่โฮสต์โดย Brave ผมได้รับการสนับสนุนจาก GLM-4-7-Flash ซึ่งเป็นโมเดลที่สร้างโดย Zhipu AI เพื่อให้มีประสิทธิภาพและใช้งานได้กับทุกกรณีที่ต้องการใช้ GLM-4-7-Flash โฮสต์โดย Brave ผ่านโครงสร้างพื้นฐานที่ปลอดภัยของเราเอง <ph name="LINK_BEFORE"/>เรียนรู้เพิ่มเติม<ph name="LINK_AFTER"/></translation>
@@ -2243,7 +2252,6 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="4773408460773097271">Ollama</translation>
 <translation id="631371844654031449">โมเดลที่แนะนำ</translation>
 <translation id="6568044140836233369">แสดงโมเดลทั้งหมด</translation>
-<translation id="6187065185557150870">แชท</translation>
 <translation id="4685048769603134644">เปิดหน้าเต็ม</translation>
 <translation id="2961040541145689181">แชทใหม่</translation>
 <translation id="7557539689487606886">ใช้งาน Premium</translation>
@@ -2367,13 +2375,13 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="887511360213807449">ประวัติถูกปิดใช้งาน</translation>
 <translation id="5380979378058584412">ในการดูการสนทนาก่อนหน้าของคุณกับ Leo คุณต้องเปิดใช้งานประวัติการสนทนา</translation>
 <translation id="3185367320601718531">การสนทนาและการสร้างข้อความ</translation>
-<translation id="2793458212460902934">เร็ว • Search • เครื่องมือ</translation>
 <translation id="8506027496671575183">Search • วิสัยทัศน์ • เครื่องมือ</translation>
 <translation id="3184606955650139158">เร็ว • Search • วิสัยทัศน์</translation>
 <translation id="7465032796278724624">ตรวจสอบได้อย่างเป็นส่วนตัวด้วย NEAR AI TEE</translation>
 <translation id="8782867266498869301">โมเดลเปลี่ยนเองอย่างไดนามิกเพื่อใช้ที่ดีที่สุดในงานนั้นๆ</translation>
 <translation id="7348809809749151120">เร็ว • Search</translation>
 <translation id="3213834013136637671">Search • วิสัยทัศน์</translation>
+<translation id="2793458212460902934">เร็ว • Search • เครื่องมือ</translation>
 <translation id="5276681919620506371">Search • เครื่องมือ</translation>
 <translation id="7434375176361995333">สรุป • เร็ว</translation>
 <translation id="3965507912994218570">การตั้งค่า Leo</translation>
@@ -2937,9 +2945,7 @@ Brave มีบริการช่วยเหลือที่ปกป้�
 <translation id="3750210661641549834">กรุณายืนยันที่อยู่อีเมลของคุณเพื่อสร้างบัญชี</translation>
 <translation id="4351175281479794167">ป้อนรหัสยืนยัน</translation>
 <translation id="1672793037892810340">คุณควรได้รับอีเมลพร้อมรหัสที่คุณจะต้องป้อน</translation>
-<translation id="4821255729182569254">ส่งอีเมลยืนยันอีกครั้ง</translation>
 <translation id="5837679375142747484">ไม่เห็นอีเมลใช่ไหม ตรวจสอบโฟลเดอร์สแปมหรือ <ph name="BEGIN_LINK"/>ส่งใหม่<ph name="END_LINK"/>.</translation>
-<translation id="1080588816740959885">ไม่เห็นอีเมลใช่ไหม ตรวจสอบโฟลเดอร์สแปมหรือส่งใหม่</translation>
 <translation id="1020730839570724178">ยกเลิกการลงทะเบียน</translation>
 <translation id="7155125570724238786">เพื่อรีเซ็ตรหัสผ่านของคุณ โปรดยืนยันที่อยู่อีเมลของคุณ</translation>
 <translation id="816074628631172140">อีเมลของคุณได้รับการยืนยันแล้ว ตั้งรหัสผ่านใหม่เพื่อดำเนินการรีเซ็ตรหัสผ่านให้เสร็จสมบูรณ์</translation>

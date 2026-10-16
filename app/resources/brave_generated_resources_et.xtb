@@ -3,18 +3,14 @@
 <translationbundle lang="et">
 <translation id="1751249301761991853">Isiklik</translation>
 <translation id="3333887201479867589">Brave Rewards</translation>
-<translation id="7561196759112975576">Alati</translation>
-<translation id="7961015016161918242">Mitte kunagi</translation>
 <translation id="8507663778530179003">Näita nuppu Kõik järjehoidjad</translation>
 <translation id="9018648632047670921">Näita kõigi järjehoidjate nuppu</translation>
 <translation id="7630214457764713113">Kopeeri puhas link</translation>
 <translation id="7973394300052703468">Uus &amp;privaatne aken</translation>
 <translation id="4615489450165434530">Teata mittetoimivast veebisaidist</translation>
 <translation id="8097438084542431276">Kopeeri puhas link</translation>
-<translation id="4678672101289648246">Ainult uuel vahelehel</translation>
 <translation id="6516243500644829484">Uus &amp;privaatne aken</translation>
 <translation id="1209739344687072997">Teata mittetoimivast veebisaidist</translation>
-<translation id="8294286161128352783">Ainult uuel vahelehel</translation>
 <translation id="6406506848690869874">Sünkroonimine</translation>
 <translation id="1544192797660353713">Rahakott</translation>
 <translation id="2361906291514218784">Leo AI</translation>
@@ -195,7 +191,9 @@ Saate muuta ka hiljem veebilehel <ph name="SETTINGS_EXTENIONS_LINK"/>.</translat
 <translation id="5977931179408079967">Asukoht</translation>
 <translation id="3790384768741064842">Teisalda paremale</translation>
 <translation id="7444424316576061724">Teisalda vasakule</translation>
+<translation id="7561196759112975576">Alati</translation>
 <translation id="7060352228894039151">Hiire peale liikumisel</translation>
+<translation id="7961015016161918242">Mitte kunagi</translation>
 <translation id="8981254605840444865">Kuva seaded</translation>
 <translation id="59174027418879706">Lubatud</translation>
 <translation id="4176463684765177261">Keelatud</translation>
@@ -221,6 +219,7 @@ Saate muuta ka hiljem veebilehel <ph name="SETTINGS_EXTENIONS_LINK"/>.</translat
 <translation id="4515057635283480525">Interneti Arhiiv salvestab paljude veebilehtede varasemad versioonid. Kas soovid seda lehte arhiivist otsida?</translation>
 <translation id="8252977752585110703">Vabandust, kontrollisime Interneti Arhiivi ja sellel puudub selle lehe arhiveeritud versioon.</translation>
 <translation id="8748778103033196270">Otsi arhiivist</translation>
+<translation id="7369915833843501413">Otsin arhiivist</translation>
 <translation id="191143826155037518">Brave’i pakutakse teile <ph name="BEGIN_LINK_MPL"/>Mozilla avaliku litsentsi 2.0<ph name="END_LINK_MPL"/> (MPL) alusel ja see sisaldab <ph name="BEGIN_LINK_OSS"/>avatud lähtekoodiga tarkvara<ph name="END_LINK_OSS"/> erinevate teiste litsentside alusel.
         Saate lugeda <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>juhiseid selle kohta, kuidas laadida alla ja luua endale<ph name="END_LINK_BUILD_INSTRUCTIONS"/> spetsiifiline <ph name="BEGIN_LINK_SOURCE_CODE"/>lähtekood, mida kasutati selle koopia loomiseks<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">Lisa kõik vahelehed järjehoidjatesse...</translation>
@@ -371,7 +370,7 @@ Saate muuta ka hiljem veebilehel <ph name="SETTINGS_EXTENIONS_LINK"/>.</translat
 <translation id="7985042437720138349">See funktsioon saadab andmed teie avatud vahekaartide kohta Brave'i tehisintellektipõhisele brauseri assistendile Leo.</translation>
 <translation id="6165508094623778733">Loe lisaks</translation>
 <translation id="7557539689487606886">Telli Premium</translation>
-<translation id="1035309871698658326">Kui see on avatud, saadab see automaatselt kõigi mitte-privaatsete vahekaartide pealkirjad ja päritolu Leole, et neid klassifitseerida.</translation>
+<translation id="7103144720752576727">Avamisel saadab see automaatselt kõigi mitteprivaatsete vahekaartide pealkirjad ja päritolu Leole nende klassifitseerimiseks. Kui lülitate sisse ka lehesisu saatmise, saadetakse ka iga vahekaardi teksti lühikesed väljavõtted.</translation>
 <translation id="3435896845095436175">Luba</translation>
 <translation id="9031526219709160683">Brave saab aidata optimeerimist sellel saidil. Kas soovite vaadata Brave soovitusi?</translation>
 <translation id="5739953050957336013">Vaata soovitusi</translation>
@@ -386,8 +385,6 @@ Saate muuta ka hiljem veebilehel <ph name="SETTINGS_EXTENIONS_LINK"/>.</translat
 <translation id="8570228839666486945">Seadmega AI</translation>
 <translation id="7447041379556102185">Seadmes toimuv kõnetuvastus</translation>
 <translation id="3456536577668402695">Sinu otsinguid ja lehe sisu töödeldakse selles seadmes. Mitte midagi ei saadeta Brave'ile ega näe inimülevaatajad.</translation>
-<translation id="4751537843966994505">Semantiline ajaloo otsing</translation>
-<translation id="6175973371938222040">Indekseeri külastatavaid lehti lokaalselt, et saaksid otsida oma ajalugu tähenduse järgi. Kogu töötlemine jääb sellesse seadmesse.</translation>
 <translation id="9156965752763025780">Teie muudatused jõustuvad järgmine kord, kui Bravei taaskäivitate.</translation>
 <translation id="7179921470347911571">Taaskäivita kohe</translation>
 <translation id="1426410128494586442">Jah</translation>
@@ -425,6 +422,7 @@ Saate muuta ka hiljem veebilehel <ph name="SETTINGS_EXTENIONS_LINK"/>.</translat
 <translation id="4328541188421002379">Andke ümbrisele nimi, näiteks Töö või Isiklik</translation>
 <translation id="4976989127264491396">Tõrge: <ph name="ERROR_MESSAGE"/></translation>
 <translation id="5436069931267876389">Ümbrist ei leitud</translation>
+<translation id="5831840958001766835">Järjesta üksus ümber. Kasuta liigutamiseks nooleklahve.</translation>
 <translation id="6055154402239241620">Liikluse juhtimine</translation>
 <translation id="8134521925475508805">Seadista konkreetsed saidid avanema automaatselt kindlas kontekstis, eraldades sellega sirvimisseansid. <ph name="BEGIN_LINK"/>Loe lähemalt<ph name="END_LINK"/></translation>
 <translation id="6944848312867106540">Luba liikluse juhtimine</translation>
@@ -477,10 +475,6 @@ Saate muuta ka hiljem veebilehel <ph name="SETTINGS_EXTENIONS_LINK"/>.</translat
 <translation id="7310387888625228830">Tehisintellektist assistent Leo</translation>
 <translation id="5222974844674487962">Kuva Brave’i uudiste nupp</translation>
 <translation id="2085436423511121572">Kuva Leo AI nupp</translation>
-<translation id="6156323911414505561">Kuva järjehoidjariba</translation>
-<translation id="4054323497808446566">Järjehoidjariba on nähtav kõigil lehtedel</translation>
-<translation id="8693858092251192712">Järjehoidjariba on peidetud kõigil lehtedel, v.a uuel vahelehel</translation>
-<translation id="7158817046543187970">Järjehoidjariba on peidetud kõigil lehtedel</translation>
 <translation id="3416468988018290825">Kuva alati täielikud URL-id</translation>
 <translation id="5529693968082667490">Kuva vahelehtede otsingu nupp</translation>
 <translation id="1013121820689882118">Speedreader</translation>
@@ -612,6 +606,8 @@ Saate muuta ka hiljem veebilehel <ph name="SETTINGS_EXTENIONS_LINK"/>.</translat
 <translation id="5825943197137337319">Ainult vaikimisi määratud avalik liides</translation>
 <translation id="1689062823386843231">Keela puhverserverita UDP</translation>
 <translation id="3540231253392253941">Kasuta tõukesõnumite saatmiseks Google’i teenuseid</translation>
+<translation id="2224032129673914306">Semantiline ajaloo otsing</translation>
+<translation id="6045998903985162478">Indekseeri külastatud lehed, et leiaksid need hõlpsalt ajaloost, avatud kaartidelt ja Leolt.</translation>
 <translation id="5813105074916486721">Lokaalse ajaloo säilitamine</translation>
 <translation id="5671611745062206644">Kui kaua Brave sinu sirvimisajalugu lokaalselt säilitab</translation>
 <translation id="7184510058087008090">1 päev</translation>
@@ -877,6 +873,7 @@ Loe Brave'i plaane Manifest V2 jaoks <ph name="BEGIN_LINK"/>siit<ph name="END_LI
 <translation id="2618193846561624884">Kas soovite olemasolevat võrku uuendada?</translation>
 <translation id="1643029991199044105">Liigu hiljuti kasutatud vahekaartide vahel klahvidega Ctrl-Tab</translation>
 <translation id="2775956301559569472">Näita ajamasina viibet 404 veateatega lehtedel</translation>
+<translation id="8485716275262929774">Laadi 404-lehtedel automaatselt salvestatud versioonid teenusest Wayback Machine</translation>
 <translation id="3095201688102519917">Hoiata mind enne mitme vahelehega akna sulgemist</translation>
 <translation id="7120553802660696133">Viimase vahelehe sulgemisel sule aken</translation>
 <translation id="3394171693948989253">Näita täisekraanil meeldetuletus vajutada väljumisel Esc</translation>
@@ -886,6 +883,8 @@ Loe Brave'i plaane Manifest V2 jaoks <ph name="BEGIN_LINK"/>siit<ph name="END_LI
 <translation id="1529674267267221673">Leo ilmub kontekstmenüüsse, kui teete veebisaidil paremklõpsu. See saadab praeguse veebisaidi konteksti Leole.</translation>
 <translation id="5226020406479918122">Vahelehtede fookusrežiim</translation>
 <translation id="3705539672403311123">Lubage vahekaartide organiseerimine vahekaartide otsingu lehel. Kui see on avatud, saadab see automaatselt kõigi mitte-privaatsete vahekaartide pealkirjad ja päritolu Leole, et neid klassifitseerida. <ph name="BEGIN_LINK"/>Lisateave<ph name="END_LINK"/></translation>
+<translation id="2002238795517052616">Saada kaardifookuse jaoks lehe sisu</translation>
+<translation id="2276823422122514441">Saada ka iga kaardi teksti lühikesed väljavõtted, et kaardid grupeeritaks lehe sisu, mitte pealkirja järgi. Väljavõtted lähevad Leole või sinu enda mudelile, kui valisid selle kaardifookuse jaoks. See vajab <ph name="BEGIN_LINK"/><ph name="SEMANTIC_HISTORY_SEARCH"/><ph name="END_LINK"/>, mis koostab väljavõtted sinu seadmes.</translation>
 <translation id="9049433973274198706">Uute vestluste vaikemudel</translation>
 <translation id="2161546758719933059">Mudel, mida kasutatakse teie vahekaartide korraldamiseks vahekaardile keskendumise režiimis. <ph name="BEGIN_LINK"/>Lisateave<ph name="END_LINK"/></translation>
 <translation id="8172263161008556851">Kuva vestluses soovitatud viibad</translation>
@@ -967,9 +966,6 @@ Loe Brave'i plaane Manifest V2 jaoks <ph name="BEGIN_LINK"/>siit<ph name="END_LI
 <translation id="1838374766361614909">Tühjenda otsing</translation>
 <translation id="5126255551970171328">Otsi mälestust</translation>
 <translation id="7402116145895962069">Sünkrooni oma kohaliku Ollama mudelid</translation>
-<translation id="5985516785067818307">Uuringu paneeli liige</translation>
-<translation id="8347743943525229984">Lubage Brave'i uuringud</translation>
-<translation id="3204080538332044581">Võimaldab Brave'il näidata uuel vahekaardil linke privaatsetele küsitlustele. Küsitlused aitavad meil luua paremaid funktsioone ja mõõta brauseripõhiste reklaamikampaaniate tõhusust. <ph name="BEGIN_LINK"/>Lisateave<ph name="END_LINK"/></translation>
 <translation id="349846214503465941">Luba esitusloend</translation>
 <translation id="7903608716704052878">Lisa failid automaatselt ühenduseta vaatamiseks</translation>
 <translation id="384666453982355633">See suvand salvestab meediumifailid automaatselt vahemällu, et saaksite neid esitada ilma internetiühenduseta</translation>

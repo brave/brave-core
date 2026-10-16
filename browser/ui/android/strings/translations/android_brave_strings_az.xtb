@@ -195,9 +195,6 @@ Yalnız etibar etdiyiniz varlıqlardan olan siyahılara abunə olun. Brauzeriniz
 <translation id="5668852698659986622">Sponsorlu Reklamları aktivləşdir</translation>
 <translation id="431194936581466649">Sponsorlu Reklamlar ilə Brave-in müstəqil, istifadəçi-birinci Veb qurma missiyasını dəstəkləyin. Biz reklamların performansını sizi tanımadan, məxfi şəkildə ölçürük.</translation>
 <translation id="1939813747486101115">Sponsorlaşdırılmış Reklamlar haqqında ətraflı məlumat</translation>
-<translation id="8347743943525229984">Brave sorğularına icazə ver</translation>
-<translation id="6022939994702081659">Brave-ə keçidləri yeni tab-vərəqə səhifəsində məxfi sorğulara göstərməyə icazə verir. Sorğular daha yaxşı xüsusiyyətlər yaratmağımıza və brauzer əsaslı reklam kampaniyalarının effektivliyini ölçməyimizə kömək edir.</translation>
-<translation id="7746496306508543965">Brave sorğuları haqqında ətraflı məlumat</translation>
 <translation id="410351446219883937">Avtomatik işə salınma</translation>
 <translation id="7445411102860286510">Saytlara səssiz videoları avtomatik oynatmağa icazə verin (məsləhət görülür)</translation>
 <translation id="7837721118676387834">Müəyyən bir sayt üçün səssiz videoların avtomatik oynadılmasına icazə verin.</translation>
@@ -225,6 +222,7 @@ Yalnız etibar etdiyiniz varlıqlardan olan siyahılara abunə olun. Brauzeriniz
 <translation id="9040069796107003510">Brave Mükafatlarının ikonu</translation>
 <translation id="6333347122924254968">Ünvan çubuğunda Brave Mükafatlarının ikonunu göstərin</translation>
 <translation id="4393974575368329991">Alt naviqasiya alət çubuğu</translation>
+<translation id="8727059712928806451">Aşağı paneli aktivləşdir</translation>
 <translation id="1834226716203076292">Ana səhifə, əlfəcinlər və axtarışa cəld giriş üçün alt çubuğu göstərin</translation>
 <translation id="1422686363939271829">Alt ünvan çubuğu mövqesi seçildiyində bu parametr deaktiv ediləcək</translation>
 <translation id="6587448235155023666">Dəyişiklikləriniz növbəti dəfə Brave-ni yenidən başlatdığınız zaman qüvvəyə minəcək.</translation>
@@ -396,6 +394,12 @@ Yalnız etibar etdiyiniz varlıqlardan olan siyahılara abunə olun. Brauzeriniz
 <translation id="8793108040181436796">Widget-lar</translation>
 <translation id="8643377320501056697">Ən Çox Seçilən Saytlar</translation>
 <translation id="7275773481201277457">Brave statistikasını göstər</translation>
+<translation id="8516804522688861636">Tez-tez ziyarət olunan saytları göstər</translation>
+<translation id="4546260624932151782">Seçilmişləri göstər</translation>
+<translation id="5313967007315987356">Sayt əlavə et</translation>
+<translation id="1773147648972887693">Tez-tez ziyarət edilənlər</translation>
+<translation id="752098910262610337">Qısayolları göstər</translation>
+<translation id="7134741506051403308">Widget'i gizlət</translation>
 <translation id="7462178177755090262">Açılış ekranı</translation>
 <translation id="5365434987337264071">Son açılan vərəq</translation>
 <translation id="6019856124237323989">{HOURS, plural, =1 {İnatkarlıqdan sonra <ph name="HOURS_ONE"/> saatdan sonra yeni vərəq aç} other {İnatkarlıqdan sonra <ph name="HOURS_MANY"/> saatdan sonra yeni vərəq aç}}</translation>
@@ -1000,6 +1004,13 @@ Lütfən, bizimlə bölüşməyə rahat olduğunuz məlumatları seçin.
 <translation id="7530313002494358590">Brave xüsusiyyətini aktivləşdirmək və ya deaktiv etmək dəyişiklikləri tətbiq etmək üçün brauzerin yenidən başladılmasını tələb edir. Zəhmət olmasa <ph name="BEGIN_BOLD"/>İndi yenidən başlat<ph name="END_BOLD"/> düyməsinə toxunun Brave Origin yeniləməni tamamladıqdan sonra.</translation>
 <translation id="1028940738207645746">Bütün parametrləri standarta sıfırlamaq istədiyinizə əminsiniz?</translation>
 <translation id="5939518447894949180">Başdan başla</translation>
+<translation id="3222790865318305905">Aktivləşdirmə həddinə çatdı</translation>
+<translation id="3787857711016546034">Dələduzluğun qarşısını almaq üçün Origin aktivləşdirmələri məhdudlaşdırılıb. Lakin siz həmişə Origin lisenziyanızı daha çox cihazda istifadə etmək üçün əlavə aktivləşdirmələr tələb edə bilərsiniz. Sadəcə Daha çox aktivləşdirmə tələb et seçimini klikləyin və ya kömək üçün <ph name="CONTACT_SUPPORT"/>.</translation>
+<translation id="6760819753412779585">dəstək ilə əlaqə saxlayın</translation>
+<translation id="571697836019670200">Daha çox aktivləşdirmə tələb et</translation>
+<translation id="9019545131475425538">İşlənir…</translation>
+<translation id="7242700630179071243">Aktivləşdirməyə hazırdır</translation>
+<translation id="5463918917265356202">Brave Origin indi bu cihazda aktivdir. Funksiyadan istifadəyə başlamaq üçün brauzeri yenidən başlatmalısınız. İndi yenidən başlatmaq istəyirsiniz?</translation>
 <translation id="8554205386170195281">Almaq</translation>
 <translation id="8613144770663526433">Brave Wallet ilə daxil olun</translation>
 <translation id="3696514931437952995">Siz hazırda <ph name="ORIGIN"/> daxil olursunuz. Brave cüzdanınız <ph name="ORIGIN"/> ilə paylaşılacaq.</translation>

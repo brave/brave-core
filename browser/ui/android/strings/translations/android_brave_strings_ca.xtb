@@ -193,9 +193,6 @@
 <translation id="5668852698659986622">Activa els anuncis patrocinats</translation>
 <translation id="431194936581466649">Ajuda a donar suport a la missió de Brave de construir una web independent i centrada en l'usuari amb els anuncis patrocinats. Mesurem el rendiment dels anuncis de manera privada, sense identificar-te.</translation>
 <translation id="1939813747486101115">Més informació sobre els anuncis patrocinats</translation>
-<translation id="8347743943525229984">Permetre les enquestes de Brave</translation>
-<translation id="6022939994702081659">Permet que Brave et mostri enllaços a enquestes privades a la pàgina de nova pestanya. Les enquestes ens ajuden a desenvolupar millors característiques i mesurar l'efectivitat de les campanyes publicitàries basades en el navegador.</translation>
-<translation id="7746496306508543965">Més informació sobre les enquestes de Brave</translation>
 <translation id="410351446219883937">Reproducció automàtica</translation>
 <translation id="7445411102860286510">Permet que els llocs web reprodueixin automàticament vídeos silenciats (opció recomanada)</translation>
 <translation id="7837721118676387834">Permet la reproducció automàtica de vídeos silenciats d'un lloc web concret.</translation>
@@ -223,6 +220,7 @@
 <translation id="9040069796107003510">Icona de Recompenses de Brave</translation>
 <translation id="6333347122924254968">Mostra la icona de Recompenses de Brave a la barra d'adreces</translation>
 <translation id="4393974575368329991">Barra d'eines de navegació inferior</translation>
+<translation id="8727059712928806451">Activa la barra inferior</translation>
 <translation id="1834226716203076292">Mostra una barra inferior per accedir ràpidament a l'inici, les adreces d'interès i el cercador</translation>
 <translation id="1422686363939271829">Quan se selecciona la posició inferior per a la barra d'adreces, aquesta configuració es deshabilita</translation>
 <translation id="6587448235155023666">Els canvis s'aplicaran la propera vegada que reiniciïs Brave</translation>
@@ -398,6 +396,12 @@ Segur que vols continuar?</translation>
 <translation id="8793108040181436796">Ginys</translation>
 <translation id="8643377320501056697">Mostra llocs destacats</translation>
 <translation id="7275773481201277457">Mostra estadístiques de Brave</translation>
+<translation id="8516804522688861636">Mostra els llocs visitats freqüentment</translation>
+<translation id="4546260624932151782">Mostra els preferits</translation>
+<translation id="5313967007315987356">Afegeix un lloc web</translation>
+<translation id="1773147648972887693">Mostra els visitats freqüentment</translation>
+<translation id="752098910262610337">Mostra les dreceres</translation>
+<translation id="7134741506051403308">Amaga el giny</translation>
 <translation id="7462178177755090262">Pantalla d'inici</translation>
 <translation id="5365434987337264071">Darrera pestanya oberta</translation>
 <translation id="6019856124237323989">{HOURS, plural, =1 {Nova pestanya després d’<ph name="HOURS_ONE"/> hora d’inactivitat} other {Nova pestanya després de <ph name="HOURS_MANY"/> hores d’inactivitat}}</translation>
@@ -998,6 +1002,13 @@ Si no acceptes la sol·licitud, la VPN no es tornarà a connectar i la teva conn
 <translation id="7530313002494358590">Habilitar o inhabilitar una funció de Brave requereix que reinicieu el navegador per aplicar els canvis. Feu clic a <ph name="BEGIN_BOLD"/>Reinicia ara<ph name="END_BOLD"/> una vegada que Brave Origin hagi acabat d'actualitzar-se.</translation>
 <translation id="1028940738207645746">Esteu segur que voleu reiniciar tota la configuració als valors per defecte?</translation>
 <translation id="5939518447894949180">Restableix</translation>
+<translation id="3222790865318305905">S'ha assolit el límit d'activacions</translation>
+<translation id="3787857711016546034">Per evitar fraus, les activacions d'Origin tenen un límit. Però sempre podeu sol·licitar més activacions per utilitzar la vostra llicència d'Origin en més aparells. Només cal fer clic a l'opció Sol·licita més activacions, o <ph name="CONTACT_SUPPORT"/> per obtenir ajuda.</translation>
+<translation id="6760819753412779585">contacta amb l'equip de suport</translation>
+<translation id="571697836019670200">Sol·licita més activacions</translation>
+<translation id="9019545131475425538">Processant…</translation>
+<translation id="7242700630179071243">A punt per activar</translation>
+<translation id="5463918917265356202">Brave Origin ja està actiu en aquest aparell. Per començar a utilitzar la funció, cal que reinicieu el navegador. Voleu reiniciar-lo ara?</translation>
 <translation id="8554205386170195281">Compra</translation>
 <translation id="8613144770663526433">Inicia la sessió amb la cartera de Brave</translation>
 <translation id="3696514931437952995">Estàs iniciant la sessió a <ph name="ORIGIN"/>. La cartera de Brave compartirà l'adreça de la teva cartera amb <ph name="ORIGIN"/>.</translation>

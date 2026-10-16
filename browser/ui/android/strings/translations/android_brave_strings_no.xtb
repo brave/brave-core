@@ -193,9 +193,6 @@
 <translation id="5668852698659986622">Aktiver sponsede annonser</translation>
 <translation id="431194936581466649">Bidra til å støtte Braves mål om å bygge et uavhengig, brukerorientert nett med sponsede annonser. Vi måler annonseytelse privat, uten å identifisere deg.</translation>
 <translation id="1939813747486101115">Les mer om sponsede annonser</translation>
-<translation id="8347743943525229984">Tillat undersøkelser fra Brave</translation>
-<translation id="6022939994702081659">Lar Brave vise linker til private spørreundersøkelser i nye faner. Undersøkelsene hjelper oss med å utvikle funksjoner og måle effekten av annonsene i nettleseren.</translation>
-<translation id="7746496306508543965">Finn ut mer om Braves undersøkelser</translation>
 <translation id="410351446219883937">Autoavspilling</translation>
 <translation id="7445411102860286510">Gi nettsteder tillatelse til automatisk avspilling av videoer med kuttet lyd (anbefales)</translation>
 <translation id="7837721118676387834">Tillat automatisk avspilling av videoer med dempet lyd for et bestemt nettsted.</translation>
@@ -223,6 +220,7 @@
 <translation id="9040069796107003510">Brave Rewards-ikon</translation>
 <translation id="6333347122924254968">Vis Brave Rewards-ikonet i adresselinjen</translation>
 <translation id="4393974575368329991">Navigasjonslinje nederst</translation>
+<translation id="8727059712928806451">Aktiver bunnlinje</translation>
 <translation id="1834226716203076292">Vis en linje nederst for rask tilgang til hjem, bokmerker og søk</translation>
 <translation id="1422686363939271829">Denne innstillingen deaktiveres når navigasjonslinjen er valgt</translation>
 <translation id="6587448235155023666">Endringene trer i kraft neste gang du starter Brave på nytt</translation>
@@ -398,6 +396,12 @@ Er du sikker på at du vil gjøre dette?</translation>
 <translation id="8793108040181436796">Widgeter</translation>
 <translation id="8643377320501056697">Vis toppnettsteder</translation>
 <translation id="7275773481201277457">Vis Brave-statistikk</translation>
+<translation id="8516804522688861636">Vis ofte besøkte nettsteder</translation>
+<translation id="4546260624932151782">Vis favoritter</translation>
+<translation id="5313967007315987356">Legg til et nettsted</translation>
+<translation id="1773147648972887693">Vis ofte besøkte</translation>
+<translation id="752098910262610337">Vis snarveier</translation>
+<translation id="7134741506051403308">Skjul widget</translation>
 <translation id="7462178177755090262">Startskjerm</translation>
 <translation id="5365434987337264071">Siste åpne fane</translation>
 <translation id="6019856124237323989">{HOURS, plural, =1 {Ny fane etter <ph name="HOURS_ONE"/> time med inaktivitet} other {Ny fane etter <ph name="HOURS_MANY"/> timer med inaktivitet}}</translation>
@@ -998,6 +1002,13 @@ Hvis du ikke godtar forespørselen, kobler ikke VPN seg opp igjen, og internetti
 <translation id="7530313002494358590">Aktivering eller deaktivering av en Brave-funksjon krever en omstart av nettleseren for å bruke endringer. Vennligst trykk <ph name="BEGIN_BOLD"/>Start på nytt nå<ph name="END_BOLD"/> når Brave Origin har fullført oppdateringen.</translation>
 <translation id="1028940738207645746">Er du sikker på at du vil tilbakestille alle innstillinger til standard?</translation>
 <translation id="5939518447894949180">Tilbakestill</translation>
+<translation id="3222790865318305905">Aktiveringsgrensen er nådd</translation>
+<translation id="3787857711016546034">For å forhindre svindel er Origin-aktiveringer begrenset. Men du kan alltid be om flere aktiveringer for å bruke Origin-lisensen din på flere enheter. Bare klikk på alternativet Be om flere aktiveringer, eller <ph name="CONTACT_SUPPORT"/> for hjelp.</translation>
+<translation id="6760819753412779585">kontakt brukerstøtten</translation>
+<translation id="571697836019670200">Be om flere aktiveringer</translation>
+<translation id="9019545131475425538">Behandler …</translation>
+<translation id="7242700630179071243">Klar til å aktivere</translation>
+<translation id="5463918917265356202">Brave Origin er nå aktiv på denne enheten. For å begynne å bruke funksjonen må du starte nettleseren på nytt. Vil du starte på nytt nå?</translation>
 <translation id="8554205386170195281">Kjøp</translation>
 <translation id="8613144770663526433">Logg på med Brave-lommeboken</translation>
 <translation id="3696514931437952995">Du logger på <ph name="ORIGIN"/>. Brave-lommeboken vil dele lommebok-adressen din med <ph name="ORIGIN"/>.</translation>

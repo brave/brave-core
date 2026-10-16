@@ -193,9 +193,6 @@
 <translation id="5668852698659986622">Activează Reclame sponsorizate</translation>
 <translation id="431194936581466649">Ajutați la susținerea misiunii Brave de a construi un Web independent, centrat pe utilizator, cu Reclame sponsorizate. Măsurăm performanța reclamelor în mod privat, fără a vă identifica.</translation>
 <translation id="1939813747486101115">Află mai multe despre reclamele sponsorizate</translation>
-<translation id="8347743943525229984">Permite sondaje Brave</translation>
-<translation id="6022939994702081659">Permite Brave să afișeze linkuri către sondaje private în pagina noii file. Sondajele ne ajută să creăm funcții mai bune și să măsurăm eficiența campaniilor publicitare bazate pe browser.</translation>
-<translation id="7746496306508543965">Află mai multe despre Brave Rewards</translation>
 <translation id="410351446219883937">Redare automată</translation>
 <translation id="7445411102860286510">Permite site-urilor să redea automat videoclipuri cu sunetul dezactivat (recomandat)</translation>
 <translation id="7837721118676387834">Permite unui anumit site să redea automat videoclipuri cu sunetul dezactivat.</translation>
@@ -223,6 +220,7 @@
 <translation id="9040069796107003510">Pictograma de Recompense Brave</translation>
 <translation id="6333347122924254968">Afișați pictograma Recompense Brave în bara de adrese</translation>
 <translation id="4393974575368329991">Bara de navigare de jos</translation>
+<translation id="8727059712928806451">Activați bara de jos</translation>
 <translation id="1834226716203076292">Afișează o bară de jos pentru acces rapid la pagina de pornire, marcaje și căutare</translation>
 <translation id="1422686363939271829">Această setare este dezactivată atunci când poziția barei de adrese este poziționată în partea de jos</translation>
 <translation id="6587448235155023666">Modificările dvs. vor intra în vigoare la următoarea pornire a Brave</translation>
@@ -398,6 +396,12 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="8793108040181436796">Widgeturi</translation>
 <translation id="8643377320501056697">Afișare site-uri de top</translation>
 <translation id="7275773481201277457">Afișare date statistice Brave</translation>
+<translation id="8516804522688861636">Afișați site-urile accesate frecvent</translation>
+<translation id="4546260624932151782">Afișați favoritele</translation>
+<translation id="5313967007315987356">Adaugă un site</translation>
+<translation id="1773147648972887693">Afișați paginile accesate frecvent</translation>
+<translation id="752098910262610337">Afișați scurtăturile</translation>
+<translation id="7134741506051403308">Ascundeți widgetul</translation>
 <translation id="7462178177755090262">Ecran de pornire</translation>
 <translation id="5365434987337264071">Ultima filă deschisă</translation>
 <translation id="6019856124237323989">{HOURS, plural,
@@ -1001,6 +1005,13 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="7530313002494358590">Activarea sau dezactivarea unei caracteristici Brave necesită o repornire a browserului pentru a aplica modificările. Te rog să dai tap pe <ph name="BEGIN_BOLD"/>Repornire acum<ph name="END_BOLD"/> după ce Brave Origin a terminat actualizarea.</translation>
 <translation id="1028940738207645746">Ești sigur(ă) că vrei să resetezi toate setările la implicit?</translation>
 <translation id="5939518447894949180">Resetează</translation>
+<translation id="3222790865318305905">Limita de activări atinsă</translation>
+<translation id="3787857711016546034">Pentru a preveni frauda, activările Origin sunt limitate ca rată. Dar puteți oricând solicita mai multe activări pentru a vă folosi licența Origin pe mai multe dispozitive. Trebuie doar să faceți clic pe opțiunea Solicitați mai multe activări sau <ph name="CONTACT_SUPPORT"/> pentru ajutor.</translation>
+<translation id="6760819753412779585">contactați echipa de asistență</translation>
+<translation id="571697836019670200">Solicitați mai multe activări</translation>
+<translation id="9019545131475425538">Se prelucrează…</translation>
+<translation id="7242700630179071243">Gata de activare</translation>
+<translation id="5463918917265356202">Brave Origin este acum activ pe acest dispozitiv. Pentru a începe să folosiți funcția, trebuie să reporniți browserul. Doriți să reporniți acum?</translation>
 <translation id="8554205386170195281">Achiziție</translation>
 <translation id="8613144770663526433">Conectați-vă cu Brave Wallet</translation>
 <translation id="3696514931437952995">Vă conectați la <ph name="ORIGIN"/>. Brave Wallet va partaja adresa portofelului dvs. cu <ph name="ORIGIN"/>.</translation>
