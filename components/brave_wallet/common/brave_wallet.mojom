@@ -2800,9 +2800,6 @@ interface BraveWalletServiceObserver {
   // Fired when the default base currency changes (e.g. USD -> CAD)
   OnDefaultBaseCurrencyChanged(string currency);
 
-  // Fired when the default base currency changes (e.g. BTC -> ETH)
-  OnDefaultBaseCryptocurrencyChanged(string cryptocurrency);
-
   // Fired when the list of networks changes
   OnNetworkListChanged();
 
@@ -3020,12 +3017,6 @@ interface BraveWalletService {
 
   // Sets the default base currency
   SetDefaultBaseCurrency(string currency);
-
-  // Obtains the default base cryptocurrency
-  GetDefaultBaseCryptocurrency() => (string cryptocurrency);
-
-  // Sets the default base cryptocurrency
-  SetDefaultBaseCryptocurrency(string cryptocurrency);
 
   // This selects account which supports coin and chain_id pair. Nothing is
   // changed if such account is already selected. Returns null if no such

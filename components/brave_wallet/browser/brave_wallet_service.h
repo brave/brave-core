@@ -159,9 +159,6 @@ class BraveWalletService : public KeyedService,
 
   void GetDefaultBaseCurrency(GetDefaultBaseCurrencyCallback callback) override;
   void SetDefaultBaseCurrency(const std::string& currency) override;
-  void GetDefaultBaseCryptocurrency(
-      GetDefaultBaseCryptocurrencyCallback callback) override;
-  void SetDefaultBaseCryptocurrency(const std::string& cryptocurrency) override;
   void EnsureSelectedAccountForChain(
       mojom::CoinType coin,
       const std::string& chain_id,
@@ -445,7 +442,6 @@ class BraveWalletService : public KeyedService,
   void OnDefaultCardanoWalletChanged();
 
   void OnDefaultBaseCurrencyChanged();
-  void OnDefaultBaseCryptocurrencyChanged();
   void OnNetworkListChanged();
   void OnBraveWalletNftDiscoveryEnabled();
 
