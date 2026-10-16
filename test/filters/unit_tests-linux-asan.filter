@@ -10,5 +10,7 @@
 # uploader that this test allocates with `new` never deletes itself and
 # LeakSanitizer reports it. ASAN/LSAN-only: other builds do not check for
 # leaks. Brave's own ResetReportUploaderTest.NoFetch covers this code without
-# leaking. https://github.com/brave/brave-browser/issues/59254
+# leaking. Stable upstream: 0.0% flake rate over 30 days per LUCI Analysis
+# (check-upstream-flake.py), so this is Brave-specific.
+# https://github.com/brave/brave-browser/issues/59254
 -ResetReportUploaderTest.NoCrash
