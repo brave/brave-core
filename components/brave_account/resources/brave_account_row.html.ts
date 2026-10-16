@@ -14,17 +14,17 @@ import {
 import { BraveAccountRowElement } from './brave_account_row.js'
 
 export function getHtml(this: BraveAccountRowElement) {
-  return html`${this.state === undefined
-    ? nothing
-    : whichAccountState(this.state) === AccountStateFieldTags.LOGGED_IN
-      ? html` <brave-account-details
-          .browserProxy=${this.browserProxy}
-          .state=${this.state.loggedIn}
-        >
-        </brave-account-details>`
-      : html` <brave-account-logged-out-row
-          .browserProxy=${this.browserProxy}
-          .state=${this.state.loggedOut}
-        >
-        </brave-account-logged-out-row>`}`
+  return html`${this.state !== undefined
+    ? html`${whichAccountState(this.state) === AccountStateFieldTags.LOGGED_IN
+        ? html` <brave-account-details
+            .browserProxy=${this.browserProxy}
+            .state=${this.state.loggedIn}
+          >
+          </brave-account-details>`
+        : html` <brave-account-logged-out-row
+            .browserProxy=${this.browserProxy}
+            .state=${this.state.loggedOut}
+          >
+          </brave-account-logged-out-row>`}`
+    : nothing}`
 }
