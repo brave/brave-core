@@ -84,24 +84,28 @@ void ImageMetadataStripperMetrics::MaybeReport() {
   const base::Time last_recorded_time =
       local_state_->GetTime(kLastRecordedTimePref);
 
-  base::Time next_report = now + kReportInterval;
+  // A last recorded time in the future (e.g. the clock was moved back) is
+  // treated as an expired window, otherwise reporting would stall until the
+  // clock catches up.
   const bool within_last_report_window =
-      !last_recorded_time.is_null() &&
+      !last_recorded_time.is_null() && last_recorded_time <= now &&
       now - last_recorded_time < kReportInterval;
 
-  // We are still in the previous window so adjust the next report time to the
-  // end of the previous window.
+  // We are still in the previous window, so wait for it to end. The window
+  // start must not be moved, otherwise every restart would push the report
+  // further out.
   if (within_last_report_window) {
-    next_report = last_recorded_time + kReportInterval;
+    report_timer_.Start(FROM_HERE, last_recorded_time + kReportInterval, this,
+                        &ImageMetadataStripperMetrics::MaybeReport);
+    return;
   }
 
   local_state_->SetTime(kLastRecordedTimePref, now);
-  report_timer_.Start(FROM_HERE, next_report, this,
+  report_timer_.Start(FROM_HERE, now + kReportInterval, this,
                       &ImageMetadataStripperMetrics::MaybeReport);
 
-  // First run or still inside the prior window. First run would not have any
-  // data to emit and the latter is handled above.
-  if (last_recorded_time.is_null() || within_last_report_window) {
+  // First run would not have any data to emit.
+  if (last_recorded_time.is_null()) {
     return;
   }
 

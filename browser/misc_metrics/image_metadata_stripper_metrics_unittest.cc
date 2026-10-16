@@ -74,6 +74,53 @@ TEST_F(ImageMetadataStripperMetricsTest,
   ExpectNoSamples();
 }
 
+TEST_F(ImageMetadataStripperMetricsTest,
+       RestartWithinIntervalKeepsOriginalWindow) {
+  RecordFbmd(StrippingClient::kDownloadManager);
+  task_environment_.FastForwardBy(base::Days(6));
+
+  CreateReporter();
+  ExpectNoSamples();
+
+  // The report still fires at the end of the original window.
+  task_environment_.FastForwardBy(base::Days(1));
+  histogram_tester_.ExpectTotalCount(kDownloadFBMDCountStrippedHistogramName,
+                                     1);
+
+  // And the following window reports on schedule as well.
+  RecordFbmd(StrippingClient::kDownloadManager);
+  task_environment_.FastForwardBy(base::Days(7));
+  histogram_tester_.ExpectTotalCount(kDownloadFBMDCountStrippedHistogramName,
+                                     2);
+}
+
+TEST_F(ImageMetadataStripperMetricsTest, ClockMovedBackStartsNewWindow) {
+  RecordFbmd(StrippingClient::kDownloadManager);
+
+  // Mock time cannot run backwards, so simulate the clock having been moved
+  // back by storing a last recorded time that lies in the future.
+  pref_service_.SetTime(kLastRecordedTimePref,
+                        base::Time::Now() + base::Days(30));
+  CreateReporter();
+
+  // The future window is treated as expired: pending counts are reported and
+  // a new window starts now.
+  histogram_tester_.ExpectTotalCount(kDownloadFBMDCountStrippedHistogramName,
+                                     1);
+  EXPECT_EQ(pref_service_.GetTime(kLastRecordedTimePref), base::Time::Now());
+  EXPECT_TRUE(pref_service_.GetDict(kRootPrefKey).empty());
+
+  // The next report follows the new window rather than waiting for the
+  // future timestamp.
+  RecordFbmd(StrippingClient::kDownloadManager);
+  task_environment_.FastForwardBy(base::Days(6));
+  histogram_tester_.ExpectTotalCount(kDownloadFBMDCountStrippedHistogramName,
+                                     1);
+  task_environment_.FastForwardBy(base::Days(1));
+  histogram_tester_.ExpectTotalCount(kDownloadFBMDCountStrippedHistogramName,
+                                     2);
+}
+
 TEST_F(ImageMetadataStripperMetricsTest, ReportsDownloadCount) {
   RecordFbmd(StrippingClient::kDownloadManager);
   task_environment_.FastForwardBy(base::Days(7));
