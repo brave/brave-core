@@ -16,11 +16,12 @@
 BraveWalletPermissionPrompt::BraveWalletPermissionPrompt(
     content::WebContents* web_contents,
     std::unique_ptr<Delegate> delegate,
-    brave_wallet::mojom::CoinType coin_type)
+    brave_wallet::mojom::CoinType coin_type,
+    const url::Origin& requesting_origin)
     : web_contents_(web_contents), delegate_(std::move(delegate)) {
   dialog_controller_ =
       std::make_unique<BraveDappPermissionPromptDialogController>(
-          this, web_contents_, coin_type);
+          this, web_contents_, coin_type, requesting_origin);
   dialog_controller_->ShowDialog();
 }
 

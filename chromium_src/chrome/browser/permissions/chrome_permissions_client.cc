@@ -19,6 +19,7 @@
 
 #if BUILDFLAG(IS_ANDROID) && BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/browser/permissions/brave_wallet_permission_prompt_android.h"
+#include "brave/components/brave_wallet/browser/permission_utils.h"
 #include "components/permissions/android/permission_prompt/permission_prompt_android.h"
 #endif
 
@@ -75,10 +76,23 @@ ChromePermissionsClient::MaybeCreateMessageUI(
       if (request_type == permissions::RequestType::kBravePolkadot) {
         coin_type = brave_wallet::mojom::CoinType::DOT;
       }
+      // The request origin has the account address appended to its host.
+      // Parse it out to get the origin that receives the grant, which the
+      // prompt shows. For a request from an iframe it differs from the tab's
+      // origin.
+      url::Origin requesting_origin =
+          url::Origin::Create(requests[0]->requesting_origin());
+      url::Origin parsed_origin;
+      std::string account;
+      if (brave_wallet::ParseRequestingOriginFromSubRequest(
+              request_type, requesting_origin, &parsed_origin, &account)) {
+        requesting_origin = std::move(parsed_origin);
+      }
+
       auto delegate = std::make_unique<BraveWalletPermissionPrompt::Delegate>(
           std::move(prompt));
       return std::make_unique<BraveWalletPermissionPrompt>(
-          web_contents, std::move(delegate), coin_type);
+          web_contents, std::move(delegate), coin_type, requesting_origin);
     }
   }
 #endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
