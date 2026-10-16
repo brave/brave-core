@@ -5,6 +5,7 @@
 
 #include <memory>
 
+#include "base/command_line.h"
 #include "base/test/run_until.h"
 #include "brave/components/sync/service/brave_sync_service_impl.h"
 #include "chrome/browser/profiles/profile.h"
