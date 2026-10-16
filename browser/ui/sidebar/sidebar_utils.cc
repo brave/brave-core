@@ -31,6 +31,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search/search.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
 #include "chrome/browser/ui/side_panel/side_panel_entry_id.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/ui_features.h"
@@ -403,6 +404,20 @@ views::BubbleBorder::Arrow GetBubbleArrowForSidebar(PrefService* prefs) {
   // When sidebar is on the left, bubble appears to the right with LEFT arrow.
   return on_right ? views::BubbleBorder::RIGHT_TOP
                   : views::BubbleBorder::LEFT_TOP;
+}
+
+void CloseAllWebPanels() {
+  ForEachCurrentBrowserWindowInterfaceOrderedByActivation(
+      [](BrowserWindowInterface* browser) {
+        MaybeCloseWebPanel(browser);
+        return true;
+      });
+}
+
+void MaybeCloseWebPanel(BrowserWindowInterface* browser) {
+  if (auto* sidebar_controller = sidebar::SidebarController::From(browser)) {
+    sidebar_controller->CloseWebPanel();
+  }
 }
 
 }  // namespace sidebar
