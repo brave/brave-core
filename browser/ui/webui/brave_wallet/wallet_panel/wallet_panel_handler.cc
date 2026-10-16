@@ -17,6 +17,7 @@
 #include "chrome/browser/ui/side_panel/side_panel_entry_id.h"
 #include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #include "chrome/browser/ui/webui/webui_embedding_context.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui.h"
@@ -92,8 +93,8 @@ void WalletPanelHandler::IsSolanaAccountConnected(
   // the rationale.
   content::RenderFrameHost* rfh = active_web_contents_->GetPrimaryMainFrame();
 
-  auto* tab_helper =
-      brave_wallet::BraveWalletTabHelper::FromWebContents(active_web_contents_);
+  auto* tab_helper = brave_wallet::BraveWalletTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(active_web_contents_));
   if (!tab_helper) {
     std::move(callback).Run(false);
     return;
