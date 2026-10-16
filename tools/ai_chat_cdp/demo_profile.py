@@ -37,8 +37,11 @@ import search_profile
 PROFILE_NAME = 'leo-demo'
 HERE = os.path.dirname(os.path.abspath(__file__))
 CHAT_SET = os.path.join(HERE, 'demo', 'leo_demo.json')
-# Leo's model for the chats that are typed in the demo.
-CHAT_MODEL = 'chat-automatic'
+# The model for the chats that are typed in the demo: the local qwen3.5:9b
+# that ../learned_memory_eval/run_eval.py writes into the profile, with the
+# key MODEL_KEY there. It is also the Dreaming LLM, so Ollama loads one model
+# for both. 'chat-automatic' is Leo's server model.
+CHAT_MODEL = 'custom:e0a1b2c3'
 # The decision model must be this sure (the feature default is 0.8) before it
 # changes an old memory. With 0.8 it gives 0.79 for "merge" in step 4, and the
 # kitten becomes a second memory. The eval log has the measurements.
@@ -160,7 +163,7 @@ def forget_learning(demo):
 
 
 def set_prefs(demo):
-    """The prefs that a user of the demo has: Leo's own model for new chats,
+    """The prefs that a user of the demo has: the local model for new chats,
     the New Tab page at start, and the daily Dreaming one day away, so that
     only "Learn from chats" learns."""
     path = os.path.join(demo.path, 'Default', 'Preferences')
@@ -169,6 +172,9 @@ def set_prefs(demo):
     ai_chat = prefs.setdefault('brave', {}).setdefault('ai_chat', {})
     ai_chat['learned_memory_last_dreaming_time'] = chrome_time_now()
     ai_chat['default_model_key'] = CHAT_MODEL
+    # Step 2 needs the conversation search tool in the local model.
+    for model in ai_chat.get('custom_models', []):
+        model['supports_tools'] = True
     prefs.setdefault('session', {})['restore_on_startup'] = 5
     with open(path, 'w', encoding='utf-8') as f:
         json.dump(prefs, f)

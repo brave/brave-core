@@ -94,6 +94,9 @@ The chats come in through the eval mode of the browser, which writes them with
 their dates. Its Dreaming run is removed afterwards, so the profile has no
 learned memory, and the daily run is a day away.
 
+The demo chats use the local `qwen3.5:9b` of Ollama (`demo_profile.CHAT_MODEL`),
+the same model as the Dreaming LLM, with its tool support on.
+
 The demo browser starts with `certain_threshold` 0.75 (`demo_profile.SWITCHES`;
 the feature default is 0.8). With 0.8 the decision model gives 0.79 for "merge"
 in step 4, it is not certain, and the kitten becomes a second memory instead of
