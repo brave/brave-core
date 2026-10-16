@@ -234,7 +234,6 @@
       "browser/ui/webui/brave_wallet/line_chart/line_chart_ui\\.cc",
       "browser/ui/webui/brave_rewards/rewards_page_data_source\\.cc",
       "browser/ui/webui/brave_wallet/wallet_page/wallet_page_ui\\.cc",
-      "common/importer/chrome_importer_utils\\.cc",
     ],
   },
 }
