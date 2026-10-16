@@ -5,7 +5,7 @@
 
 from argparse import ArgumentParser
 from os import getcwd
-from os.path import basename, dirname
+from os.path import abspath, basename, dirname
 from subprocess import check_call
 
 from brave_chromium_utils import sys_path
@@ -100,7 +100,8 @@ def parse_args():
 
 
 def create_patch(zucchini, old_file, new_file, patch_file, packed_patch_file):
-    check_call([zucchini, '-gen', old_file, new_file, patch_file])
+    # abspath because NoDefaultCurrentDirectoryInExePath may be set.
+    check_call([abspath(zucchini), '-gen', old_file, new_file, patch_file])
     compress_with_7z(patch_file, packed_patch_file)
 
 
