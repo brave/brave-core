@@ -87,9 +87,14 @@ public class OnboardingSecurePasswordFragment extends BaseOnboardingWalletFragme
     private void goToTheNextPage(@NonNull final String passwordInput) {
         mOnboardingViewModel.setPassword(passwordInput);
         if (mOnNextPage != null) {
-            // If biometric authentication is not supported, we should skip
-            // the fingerprint setup screen, incrementing by 2 pages.
-            final int numberOfPages = Utils.isBiometricSupported(requireContext()) ? 1 : 2;
+            // If biometric authentication is not supported and fingerprint is the next page, skip
+            // that screen. Unlock-screen recovery runs recovery before fingerprint, so never skip
+            // from the password page in that flow.
+            final int numberOfPages =
+                    mOnNextPage.isFingerprintSetupAfterPassword()
+                                    && !Utils.isBiometricSupported(requireContext())
+                            ? 2
+                            : 1;
             mOnNextPage.incrementPages(numberOfPages);
         }
     }

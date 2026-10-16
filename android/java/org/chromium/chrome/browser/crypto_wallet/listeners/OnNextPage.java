@@ -19,6 +19,16 @@ public interface OnNextPage {
 
     void gotoRestorePage(final boolean isOnboarding);
 
+    /** Returns to the recovery phrase page of the unlock-screen restore flow. */
+    void showRestorePhrasePage();
+
+    /**
+     * Returns {@code true} when the fingerprint setup screen follows the password screen. Unlock
+     * screen recovery runs recovery first, so callers must not skip pages from the password screen
+     * in that flow.
+     */
+    boolean isFingerprintSetupAfterPassword();
+
     void showCloseButton(final boolean show);
 
     void showBackButton(final boolean show);

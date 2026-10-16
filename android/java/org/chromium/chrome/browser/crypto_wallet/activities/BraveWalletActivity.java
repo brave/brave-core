@@ -330,6 +330,22 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
     }
 
     @Override
+    public void showRestorePhrasePage() {
+        if (mWalletOnboardingPagerAdapter != null
+                && mWalletOnboardingPagerAdapter.getWalletAction() == WalletAction.RESTORE) {
+            // Unlock-screen restore order: unlock (0), phrase (1), password (2), recover (3), ...
+            mCryptoWalletOnboardingViewPager.setCurrentItem(1, false);
+        }
+    }
+
+    @Override
+    public boolean isFingerprintSetupAfterPassword() {
+        // Unlock-screen restore recovers before offering fingerprint setup.
+        return mWalletOnboardingPagerAdapter == null
+                || mWalletOnboardingPagerAdapter.getWalletAction() != WalletAction.RESTORE;
+    }
+
+    @Override
     public void showCloseButton(final boolean show) {
         mOnboardingCloseButton.setVisibility(show ? View.VISIBLE : View.GONE);
     }

@@ -556,6 +556,7 @@ android_resources("java_resources") {
     "java/brave-res/layout/custom_layout_preference.xml",
     "java/brave-res/layout/dapps_dialog.xml",
     "java/brave-res/layout/dialog_skip_onboarding.xml",
+    "java/brave-res/layout/dialog_wallet_recovery_imported_accounts.xml",
     "java/brave-res/layout/fragment_ad_free_callout_dialog.xml",
     "java/brave-res/layout/fragment_add_custom_filter_lists.xml",
     "java/brave-res/layout/fragment_add_switch_ethereum_chain.xml",
