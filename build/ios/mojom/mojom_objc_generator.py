@@ -85,6 +85,42 @@ class TimeMojoTypemap(MojoTypemap):
         return "%s.ToNSDate()" % accessor
 
 
+class JSTimeMojoTypemap(MojoTypemap):
+    @staticmethod
+    def IsMojoType(kind):
+        return (
+            mojom.IsStructKind(kind)
+            and kind.qualified_name == 'mojo_base.mojom.JSTime'
+        )
+
+    def ObjCWrappedType(self):
+        return "NSDate*"
+
+    def ExpectedCppType(self):
+        return "base::Time"
+
+    # Mirrors mojo's JSTime traits: a plain linear mapping with no null
+    # sentinel, so a null base::Time is the Windows epoch on both sides.
+    def DefaultObjCValue(self, default):
+        return (
+            "[NSDate dateWithTimeIntervalSince1970:"
+            "(base::Time() - base::Time::UnixEpoch()).InSecondsF()]"
+        )
+
+    def ObjCToCpp(self, accessor):
+        return (
+            "base::Time::FromMillisecondsSinceUnixEpoch("
+            "%s.timeIntervalSince1970 * 1000.0)" % accessor
+        )
+
+    def CppToObjC(self, accessor):
+        return (
+            "[NSDate dateWithTimeIntervalSince1970:"
+            "%s.InMillisecondsFSinceUnixEpochIgnoringNull() / 1000.0]"
+            % accessor
+        )
+
+
 class TimeDeltaMojoTypemap(MojoTypemap):
     @staticmethod
     def IsMojoType(kind):
@@ -572,6 +608,7 @@ class UnionMojoTypemap(MojoTypemap):
 _mojo_typemaps = [
     StringMojoTypemap,
     TimeMojoTypemap,
+    JSTimeMojoTypemap,
     TimeDeltaMojoTypemap,
     URLMojoTypemap,
     OriginMojoTypemap,

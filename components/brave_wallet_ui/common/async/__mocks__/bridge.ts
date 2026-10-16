@@ -721,11 +721,11 @@ export class MockedWalletApiProxy {
         success: true,
         values: [
           {
-            date: { microseconds: BigInt(0) },
+            date: { msec: 0 },
             price: isBat ? '0.09' : '3500',
           },
           {
-            date: { microseconds: BigInt(1) },
+            date: { msec: 1 },
             price: isBat ? '0.10' : '3873.78',
           },
         ],

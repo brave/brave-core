@@ -3095,9 +3095,9 @@ TEST_F(BraveWalletServiceUnitTest, DisplayTxNotification) {
                                "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
                                "0x0", std::vector<uint8_t>())),
         test_case.status, mojom::TransactionType::ETHSend,
-        std::vector<std::string>(), std::vector<std::string>(),
-        base::Milliseconds(0), base::Milliseconds(0), base::Milliseconds(0),
-        nullptr, mojom::kMainnetChainId, std::nullopt, false, nullptr, nullptr);
+        std::vector<std::string>(), std::vector<std::string>(), base::Time(),
+        base::Time(), base::Time(), nullptr, mojom::kMainnetChainId,
+        std::nullopt, false, nullptr, nullptr);
 
     EXPECT_CALL(*delegate_ptr,
                 DisplayTxNotification(test_case.status, account->name,

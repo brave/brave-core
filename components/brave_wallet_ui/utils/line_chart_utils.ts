@@ -4,11 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 // types
-import {
-  LineChartIframeData,
-  SerializableTimeDelta,
-  TokenPriceHistory,
-} from '../constants/types'
+import { LineChartIframeData, TokenPriceHistory } from '../constants/types'
 
 const DANGEROUS_KEYS = ['__proto__', 'constructor', 'prototype']
 
@@ -16,25 +12,6 @@ const DANGEROUS_KEYS = ['__proto__', 'constructor', 'prototype']
 // (not inherited from the prototype chain)
 export const hasDangerousKeys = (obj: object): boolean => {
   return DANGEROUS_KEYS.some((key) => Object.hasOwn(obj, key))
-}
-
-// Validates and sanitizes a SerializableTimeDelta (microseconds as number)
-export const sanitizeTimeDelta = (
-  date: unknown,
-): SerializableTimeDelta | undefined => {
-  if (typeof date !== 'object' || date === null || Array.isArray(date)) {
-    return undefined
-  }
-  if (hasDangerousKeys(date)) {
-    return undefined
-  }
-  const dateObj = date as Record<string, unknown>
-  // SerializableTimeDelta should have microseconds as a number
-  if (typeof dateObj.microseconds !== 'number') {
-    return undefined
-  }
-  // Return a clean object with only the expected property
-  return { microseconds: dateObj.microseconds }
 }
 
 // Validates and sanitizes a TokenPriceHistory entry
@@ -48,15 +25,14 @@ export const sanitizeTokenPriceHistory = (
     return undefined
   }
   const obj = item as Record<string, unknown>
-  if (typeof obj.close !== 'number') {
+  if (typeof obj.close !== 'number' || !Number.isFinite(obj.close)) {
     return undefined
   }
-  const date = sanitizeTimeDelta(obj.date)
-  if (!date) {
+  if (typeof obj.date !== 'number' || !Number.isFinite(obj.date)) {
     return undefined
   }
   // Return a clean object with only expected properties
-  return { date, close: obj.close }
+  return { date: obj.date, close: obj.close }
 }
 
 // Validates and sanitizes LineChartIframeData, returning a clean object
