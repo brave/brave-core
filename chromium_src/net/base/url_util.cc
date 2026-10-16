@@ -35,7 +35,7 @@ std::string URLToEphemeralStorageDomain(const GURL& url) {
 
 bool IsOnion(const GURL& url) {
   return (url.SchemeIsWSOrWSS() || url.SchemeIsHTTPOrHTTPS()) &&
-         url.DomainIs(kOnionDomain);
+         IsOnionHostname(url.host());
 }
 
 bool IsOnion(const url::Origin& origin) {
