@@ -28,6 +28,7 @@ export default function AIChatContextsProvider(props: {
       updateSelectedConversationId: () => {},
       openMainConversation: () => {},
       createNewConversation: () => {},
+      createNewConversationWithWorkspace: () => {},
       isMainConversation: false,
     }
   }, [])

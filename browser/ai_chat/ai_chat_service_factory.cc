@@ -136,10 +136,10 @@ AIChatServiceFactory::BuildServiceInstanceForBrowserContext(
 
   if (base::FeatureList::IsEnabled(ai_chat::features::kAIChatWorkspaceTools)) {
     service->SetWorkspaceContentRestorer(base::BindRepeating(
-        [](content::BrowserContext* context,
-           GURL url) -> std::unique_ptr<AssociatedContentDelegate> {
+        [](content::BrowserContext* context, GURL url, std::string content_uuid)
+            -> std::unique_ptr<AssociatedContentDelegate> {
           return WorkspaceAssociatedContent::CreateFromUrl(
-              std::move(url), context,
+              std::move(url), std::move(content_uuid), context,
               base::BindOnce(&brave::AttachPrivacySensitiveTabHelpers));
         },
         context));

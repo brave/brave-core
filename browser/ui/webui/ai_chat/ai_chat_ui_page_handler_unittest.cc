@@ -9,6 +9,7 @@
 #include <optional>
 #include <string>
 #include <string_view>
+#include <tuple>
 #include <utility>
 #include <vector>
 
@@ -46,6 +47,7 @@
 #include "content/public/test/web_contents_tester.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
+#include "mojo/public/cpp/bindings/remote.h"
 #include "pdf/buildflags.h"
 #include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -409,6 +411,62 @@ TEST_F(AIChatUIPageHandlerWorkspaceTest,
   last_dialog()->SelectFolder(base::FilePath(FILE_PATH_LITERAL("/tmp/nope")));
 
   EXPECT_EQ(std::nullopt, future.Get());
+}
+
+constexpr char kWorkspaceUrl[] =
+    "workspace://1b4e28ba-2fa1-41d2-883f-0016d3cca427";
+
+// Returns the workspaces attached to the new conversation.
+std::vector<mojom::AssociatedContentPtr> NewConversationWithWorkspace(
+    AIChatUIPageHandler& page_handler,
+    const GURL& workspace_url,
+    mojo::Remote<mojom::ConversationHandler>& conversation) {
+  mojo::PendingRemote<mojom::ConversationUI> conversation_ui;
+  std::ignore = conversation_ui.InitWithNewPipeAndPassReceiver();
+  page_handler.NewConversation(conversation.BindNewPipeAndPassReceiver(),
+                               std::move(conversation_ui), workspace_url);
+
+  base::test::TestFuture<std::vector<mojom::AssociatedContentPtr>> content;
+  conversation->GetAssociatedContentInfo(content.GetCallback());
+  std::vector<mojom::AssociatedContentPtr> workspaces;
+  for (auto& item : content.Take()) {
+    if (item->content_type == mojom::ContentType::Workspace) {
+      workspaces.push_back(std::move(item));
+    }
+  }
+  return workspaces;
+}
+
+TEST_F(AIChatUIPageHandlerTest, NewConversation_WorkspaceFeatureDisabled) {
+  mojo::Remote<mojom::ConversationHandler> conversation;
+  EXPECT_TRUE(NewConversationWithWorkspace(*page_handler(), GURL(kWorkspaceUrl),
+                                           conversation)
+                  .empty());
+}
+
+TEST_F(AIChatUIPageHandlerWorkspaceTest, NewConversation_AttachesWorkspace) {
+  mojo::Remote<mojom::ConversationHandler> conversation;
+  auto workspaces = NewConversationWithWorkspace(
+      *page_handler(), GURL(kWorkspaceUrl), conversation);
+
+  ASSERT_EQ(1u, workspaces.size());
+  EXPECT_EQ(GURL(kWorkspaceUrl), workspaces[0]->url);
+  EXPECT_NE("1b4e28ba-2fa1-41d2-883f-0016d3cca427", workspaces[0]->uuid);
+  EXPECT_FALSE(workspaces[0]->conversation_turn_uuid);
+
+  // Drop the workspace page's WebContents.
+  base::test::TestFuture<mojom::ConversationStatePtr> state;
+  conversation->GetState(state.GetCallback());
+  page_handler()->DisassociateContent(std::move(workspaces[0]),
+                                      state.Get()->conversation_uuid);
+}
+
+TEST_F(AIChatUIPageHandlerWorkspaceTest,
+       NewConversation_IgnoresInvalidWorkspaceUrl) {
+  mojo::Remote<mojom::ConversationHandler> conversation;
+  EXPECT_TRUE(NewConversationWithWorkspace(
+                  *page_handler(), GURL("https://example.com"), conversation)
+                  .empty());
 }
 
 TEST_F(AIChatUIPageHandlerTest, ProcessImageFile) {

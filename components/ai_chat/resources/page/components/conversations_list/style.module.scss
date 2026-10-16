@@ -171,9 +171,23 @@
 .workspaceHeader {
   font: var(--leo-font-default-regular);
   color: var(--leo-color-text-primary);
-  padding: var(--leo-spacing-l) var(--leo-spacing-xl);
+  padding: var(--leo-spacing-l) 40px var(--leo-spacing-l) var(--leo-spacing-xl);
   // Avoid the title pushing the icons out when it overflows.
   min-width: 0;
+}
+
+.workspaceRow {
+  position: relative;
+}
+
+.workspaceNewButton {
+  --leo-icon-size: 20px;
+  color: var(--leo-color-icon-default);
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 0;
+  padding: 4px;
 }
 
 .collapseIcon {

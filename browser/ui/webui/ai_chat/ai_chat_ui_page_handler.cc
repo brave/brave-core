@@ -29,6 +29,7 @@
 #include "brave/components/ai_chat/content/browser/associated_url_content.h"
 #include "brave/components/ai_chat/content/browser/workspace_associated_content.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
+#include "brave/components/ai_chat/core/browser/associated_content_manager.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/ai_chat_urls.h"
@@ -774,7 +775,8 @@ void AIChatUIPageHandler::DisassociateContent(
 
 void AIChatUIPageHandler::NewConversation(
     mojo::PendingReceiver<mojom::ConversationHandler> receiver,
-    mojo::PendingRemote<mojom::ConversationUI> conversation_ui_handler) {
+    mojo::PendingRemote<mojom::ConversationUI> conversation_ui_handler,
+    const std::optional<GURL>& workspace_url) {
   ConversationHandler* conversation;
   if (active_chat_tab_helper_ && conversations_are_content_associated_) {
     conversation =
@@ -792,6 +794,18 @@ void AIChatUIPageHandler::NewConversation(
             &active_chat_tab_helper_->web_contents_content())) {
       conversation->associated_content_manager()->AddContent(
           &active_chat_tab_helper_->web_contents_content());
+    }
+  }
+
+  // Content uuids are unique across conversations, so the workspace gets a new
+  // one.
+  if (workspace_url &&
+      base::FeatureList::IsEnabled(features::kAIChatWorkspaceTools)) {
+    if (auto workspace = WorkspaceAssociatedContent::CreateFromUrl(
+            *workspace_url, /*content_uuid=*/std::nullopt, profile_,
+            base::BindOnce(&brave::AttachPrivacySensitiveTabHelpers))) {
+      conversation->associated_content_manager()->AddOwnedContent(
+          std::move(workspace));
     }
   }
 

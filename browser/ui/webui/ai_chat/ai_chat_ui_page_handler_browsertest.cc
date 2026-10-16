@@ -646,7 +646,8 @@ IN_PROC_BROWSER_TEST_F(AIChatGlobalSidePanelPageHandlerBrowserTest,
       &fake_conversation_ui);
   mojo::Remote<mojom::ConversationHandler> conversation;
   handler->NewConversation(conversation.BindNewPipeAndPassReceiver(),
-                           conversation_ui_receiver.BindNewPipeAndPassRemote());
+                           conversation_ui_receiver.BindNewPipeAndPassRemote(),
+                           /*workspace_url=*/std::nullopt);
 
   // The new conversation should not be associated with any content.
   base::test::TestFuture<std::vector<mojom::AssociatedContentPtr>>

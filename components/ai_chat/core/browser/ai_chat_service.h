@@ -260,7 +260,8 @@ class AIChatService : public KeyedService,
   bool IsAIChatHistoryEnabled();
 
   std::unique_ptr<AssociatedContentDelegate>
-  RestoreWorkspaceAssociatedContentFromUrl(const GURL& url);
+  RestoreWorkspaceAssociatedContentFromUrl(const GURL& url,
+                                           const std::string& content_uuid);
 
   std::unique_ptr<EngineConsumer> GetDefaultAIEngine();
   std::unique_ptr<EngineConsumer> GetEngineForModel(
@@ -305,7 +306,8 @@ class AIChatService : public KeyedService,
   }
 
   void SetWorkspaceContentRestorer(
-      base::RepeatingCallback<std::unique_ptr<AssociatedContentDelegate>(GURL)>
+      base::RepeatingCallback<
+          std::unique_ptr<AssociatedContentDelegate>(GURL, std::string)>
           workspace_content_restorer) {
     workspace_content_restorer_ = std::move(workspace_content_restorer);
   }
@@ -461,7 +463,8 @@ class AIChatService : public KeyedService,
   ConversationMap conversations_;
 
   // Used to restore a WorkspaceAssociatedContent from a url.
-  base::RepeatingCallback<std::unique_ptr<AssociatedContentDelegate>(GURL)>
+  base::RepeatingCallback<
+      std::unique_ptr<AssociatedContentDelegate>(GURL, std::string)>
       workspace_content_restorer_;
 
   // Only keep ConversationHandlers around that are being
