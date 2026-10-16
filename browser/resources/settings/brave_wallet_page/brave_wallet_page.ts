@@ -83,13 +83,6 @@ class SettingsBraveWalletPage extends SettingsBraveWalletPageBase {
         }
       },
 
-      cryptocurrency_list_: {
-        type: Array,
-        value() {
-          return []
-        }
-      },
-
       currency_list_: {
         type: Array,
         value() {
@@ -128,7 +121,6 @@ class SettingsBraveWalletPage extends SettingsBraveWalletPageBase {
   private declare solana_provider_options_: SolanaProvider[]
   private declare cardano_provider_options_: CardanoProvider[]
   private declare transaction_simulation_opt_in_options_: Option[]
-  private declare cryptocurrency_list_: CurrencyType[]
   private declare currency_list_: CurrencyType[]
   private declare isTransactionSimulationsFeatureEnabled: boolean
   private declare isPrivateWindowsEnabled_: chrome.settingsPrivate.PrefObject<boolean>
@@ -175,22 +167,6 @@ class SettingsBraveWalletPage extends SettingsBraveWalletPageBase {
     this.browserProxy_.isCardanoDAppSupportEnabled().then(val => {
       this.isCardanoDAppSupportEnabled_ = val
     })
-
-    this.cryptocurrency_list_ = [
-      { value: 'BTC', name: 'BTC' },
-      { value: 'ETH', name: 'ETH' },
-      { value: 'LTC', name: 'LTC' },
-      { value: 'BCH', name: 'BCH' },
-      { value: 'BNB', name: 'BNB' },
-      { value: 'EOS', name: 'EOS' },
-      { value: 'XRP', name: 'XRP' },
-      { value: 'XLM', name: 'XLM' },
-      { value: 'LINK', name: 'LINK' },
-      { value: 'DOT', name: 'DOT' },
-      { value: 'YFI', name: 'YFI' }
-    ]
-    this.cryptocurrency_list_.
-      every((item: CurrencyType) => assert(item.name === item.value))
 
     this.currency_list_ = [
       { value: 'AED', name: 'AED' },

@@ -16,7 +16,6 @@ class MockBraveWalletService: BraveWalletBraveWalletService {
     BraveWallet.SepoliaChainId: [.previewToken],
   ]
   private var defaultCurrency = CurrencyCode.usd
-  private var defaultCryptocurrency = "eth"
   private var coin: BraveWallet.CoinType = .eth
 
   func userAssets(
@@ -102,14 +101,6 @@ class MockBraveWalletService: BraveWalletBraveWalletService {
 
   func setDefaultBaseCurrency(_ currency: String) {
     defaultCurrency = CurrencyCode(code: currency)
-  }
-
-  func defaultBaseCryptocurrency(completion: @escaping (String) -> Void) {
-    completion(defaultCryptocurrency)
-  }
-
-  func setDefaultBaseCryptocurrency(_ cryptocurrency: String) {
-    defaultCryptocurrency = cryptocurrency
   }
 
   func isExternalWalletInstalled(
