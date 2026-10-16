@@ -31,6 +31,7 @@ export default function createConversationApi(
         'submitHumanConversationEntryWithAction',
         'submitHumanConversationEntryWithSkill',
         'submitHumanConversationEntry',
+        'setVoiceConversationActive',
         'stopGenerationAndMaybeGetHumanEntry',
         'pauseTask',
         'resumeTask',

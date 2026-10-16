@@ -333,6 +333,15 @@ const InputBox = React.forwardRef<InputBoxHandle, InputBoxProps>(
     const isVoiceWaiting = voiceConversation.isWaiting
 
     React.useEffect(() => {
+      const handler = conversationContext.api.conversationHandler
+      handler.setVoiceConversationActive(voiceConversation.isActive)
+      return () => handler.setVoiceConversationActive(false)
+    }, [
+      conversationContext.api.conversationHandler,
+      voiceConversation.isActive,
+    ])
+
+    React.useEffect(() => {
       if (!isVoiceWaiting || !voiceReplyPending.current) {
         return
       }

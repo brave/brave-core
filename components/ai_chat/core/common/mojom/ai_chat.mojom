@@ -404,6 +404,9 @@ interface ConversationHandler {
   // Get all visible history entries in main conversation, including in-progress responses.
   GetConversationHistory() => (array<ConversationTurn> conversation_history);
 
+  // Transient response style for the active voice session; never persisted.
+  SetVoiceConversationActive(bool active);
+
   SubmitHumanConversationEntry(
       string input, array<UploadedFile>? uploaded_files, string? thread_uuid);
   SubmitHumanConversationEntryWithAction(

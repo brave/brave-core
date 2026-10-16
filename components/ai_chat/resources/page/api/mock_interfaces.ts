@@ -133,6 +133,7 @@ export function createMockConversationHandler(
     submitHumanConversationEntryWithAction: () => {},
     submitHumanConversationEntryWithSkill: () => {},
     submitHumanConversationEntry: () => {},
+    setVoiceConversationActive: () => {},
     pauseTask: () => {},
     resumeTask: () => {},
     stopTask: () => {},

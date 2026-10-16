@@ -508,6 +508,49 @@ MATCHER_P(HistoryTextsAre, expected_texts, "") {
   return true;
 }
 
+TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
+       VoiceResponseStyleIsTransient) {
+  auto* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+  NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
+
+  for (bool voice_active : {false, true, true, false}) {
+    conversation_handler_->SetVoiceConversationActive(voice_active);
+    base::RunLoop run_loop;
+    EXPECT_CALL(*engine, GenerateAssistantResponse)
+        .WillOnce(testing::WithArgs<1, 7>(
+            [&](const EngineConsumer::ConversationHistoryView& history,
+                EngineConsumer::GenerationCompletedCallback callback) {
+              const auto* turn = history.back();
+              EXPECT_EQ(turn->text, "Tell me about walking");
+              const auto prompt = EngineConsumer::GetPromptForEntry(*turn);
+              EXPECT_EQ(
+                  prompt.find("live voice conversation") != std::string::npos,
+                  voice_active);
+              if (!voice_active) {
+                EXPECT_EQ(prompt, turn->text);
+              }
+              // Earlier messages never retain the voice instruction.
+              for (size_t i = 0; i + 1 < history.size(); ++i) {
+                EXPECT_FALSE(history[i]->prompt.has_value());
+              }
+              std::move(callback).Run(
+                  base::ok(EngineConsumer::GenerationResultData(
+                      mojom::ConversationEntryEvent::NewCompletionEvent(
+                          mojom::CompletionEvent::New("Walking helps.")),
+                      std::nullopt)));
+              run_loop.Quit();
+            }));
+    conversation_handler_->SubmitHumanConversationEntry("Tell me about walking",
+                                                        std::nullopt);
+    run_loop.Run();
+    for (const auto& turn : conversation_handler_->GetConversationHistory()) {
+      EXPECT_FALSE(turn->prompt.has_value());
+    }
+    testing::Mock::VerifyAndClearExpectations(engine);
+  }
+}
+
 TEST_F(ConversationHandlerUnitTest, State) {
   NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
   NiceMock<MockUntrustedConversationHandlerClient> entries_client(

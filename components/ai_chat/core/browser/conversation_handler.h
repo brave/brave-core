@@ -219,6 +219,7 @@ class ConversationHandler : public mojom::ConversationHandler,
   void GetModels(GetModelsCallback callback) override;
   void ChangeModel(const std::string& model_key) override;
   void GetIsRequestInProgress(GetIsRequestInProgressCallback callback) override;
+  void SetVoiceConversationActive(bool active) override;
   void SubmitHumanConversationEntry(
       const std::string& input,
       std::optional<std::vector<mojom::UploadedFilePtr>> uploaded_files,
@@ -671,6 +672,8 @@ class ConversationHandler : public mojom::ConversationHandler,
   // or if we have some kind of dynamic ToolProvider-led user toggle choices.
   // If we keep it, should it be part of mojom::Conversation?
   absl::flat_hash_set<mojom::ConversationCapability> conversation_capabilities_;
+
+  bool voice_conversation_active_ = false;
 
   // Set of tab IDs that have been part of tasks whilst this conversation is
   // in-memory. Since conversations are finite (limited by context size) and not

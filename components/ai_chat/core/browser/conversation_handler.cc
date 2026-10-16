@@ -1593,12 +1593,50 @@ void ConversationHandler::PerformAssistantGenerationWithPossibleContent(
   }
 }
 
+void ConversationHandler::SetVoiceConversationActive(bool active) {
+  voice_conversation_active_ = active;
+}
+
 void ConversationHandler::PerformAssistantGeneration(
     const std::optional<std::string>& thread_uuid) {
   auto history = BuildConversationHistoryViewForRequest(thread_uuid);
   if (history.empty()) {
     DLOG(ERROR) << "Cannot generate assistant response without any history";
     return;
+  }
+
+  // Keep voice guidance out of stored history and model settings. Apply it to
+  // the latest human turn, including when continuing after a tool response.
+  mojom::ConversationTurnPtr voice_turn;
+  if (voice_conversation_active_) {
+    for (auto it = history.rbegin(); it != history.rend(); ++it) {
+      if ((*it)->character_type != mojom::CharacterType::HUMAN) {
+        continue;
+      }
+      voice_turn = (*it)->Clone();
+      auto& prompt_turn = voice_turn->edits && !voice_turn->edits->empty()
+                              ? *voice_turn->edits->back()
+                              : *voice_turn;
+      prompt_turn.prompt = base::StrCat(
+          {EngineConsumer::GetPromptForEntry(*voice_turn),
+           "\n\nFor this reply, we are speaking in a live voice conversation. "
+           "Use natural everyday language and contractions. Answer directly in "
+           "a few short, complete sentences, explaining one main idea at a "
+           "time. In explanatory prose, avoid unnecessary headings, bullet "
+           "lists, tables, and decorative separators unless I explicitly "
+           "request structured content. These style preferences do not "
+           "restrict tools or visual content. Use available search tools and "
+           "inline search/image widgets when I ask to see pictures or search "
+           "results. Preserve the widget directives, image markup, links, and "
+           "citations needed to display those results in the chat. Do not "
+           "invent search results or widget data. Keep the surrounding prose "
+           "conversational. Use clear punctuation for natural speech. "
+           "Give longer explanations when requested. Ask a follow-up question "
+           "only when "
+           "it helps the conversation."});
+      *it = voice_turn.get();
+      break;
+    }
   }
 
   // When the next response is generated, create a new entry instead of
@@ -2613,6 +2651,9 @@ ConversationHandler::GetStateForConversationEntries() {
 }
 
 void ConversationHandler::OnClientConnectionChanged() {
+  if (!IsAnyClientConnected()) {
+    voice_conversation_active_ = false;
+  }
   DVLOG(2) << metadata_->uuid << " has " << receivers_.size()
            << " RECEIVERS and " << conversation_ui_handlers_.size()
            << " UI HANDLERS";

@@ -665,11 +665,14 @@ it('automatically submits the final voice transcript from the updated composer',
     return instance
   })
   const submit = jest.fn()
+  const setVoiceConversationActive = jest.fn()
+  let finishGeneration!: () => void
   function Composer() {
     const [inputText, setInputText] = React.useState<
       InputBoxProps['context']['inputText']
     >(['Draft'])
     const [isGenerating, setIsGenerating] = React.useState(false)
+    finishGeneration = () => setIsGenerating(false)
     return (
       <InputBox
         context={{
@@ -688,8 +691,8 @@ it('automatically submits the final voice transcript from the updated composer',
     )
   }
   try {
-    await renderInputBox(
-      <MockContext>
+    const view = await renderInputBox(
+      <MockContext conversationHandler={{ setVoiceConversationActive }}>
         <Composer />
       </MockContext>,
     )
@@ -699,6 +702,7 @@ it('automatically submits the final voice transcript from the updated composer',
         .shadowRoot!.querySelector('button')!
         .click()
     })
+    expect(setVoiceConversationActive).toHaveBeenLastCalledWith(true)
     act(() =>
       instances[0].onresult!({ results: [{ 0: { transcript: 'hello' } }] }),
     )
@@ -707,6 +711,9 @@ it('automatically submits the final voice transcript from the updated composer',
       instances[0].onresult!({ results: [{ 0: { transcript: 'hello Leo' } }] })
       instances[0].onend!()
     })
+    expect(
+      setVoiceConversationActive.mock.calls.filter(([active]) => active),
+    ).toHaveLength(1)
     expect(submit).toHaveBeenCalledTimes(1)
     expect(submit).toHaveBeenCalledWith(['Draft', ' hello Leo'])
     expect(screen.queryByText('Draft hello Leo')).not.toBeInTheDocument()
@@ -720,6 +727,17 @@ it('automatically submits the final voice transcript from the updated composer',
     expect(
       screen.queryByTestId('voice-conversation-status'),
     ).not.toBeInTheDocument()
+    expect(setVoiceConversationActive).toHaveBeenLastCalledWith(false)
+    act(() => finishGeneration())
+    await act(async () => {
+      screen
+        .getByTestId('voice-conversation-button')
+        .shadowRoot!.querySelector('button')!
+        .click()
+    })
+    expect(setVoiceConversationActive).toHaveBeenLastCalledWith(true)
+    view.unmount()
+    expect(setVoiceConversationActive).toHaveBeenLastCalledWith(false)
   } finally {
     window.SpeechRecognition = original
     window.AudioContext = originalAudioContext
