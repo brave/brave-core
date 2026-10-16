@@ -84,7 +84,7 @@ namespace ai_chat {
 
 namespace {
 
-inline constexpr char kNonVisionModelKey[] = "chat-nemotron-nano-3-30b";
+inline constexpr char kNonVisionModelKey[] = "chat-glm-5-3";
 
 class MockAIChatCredentialManager : public AIChatCredentialManager {
  public:
