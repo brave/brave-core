@@ -26,6 +26,9 @@ constexpr char kScriptName[] = "request_blocking";
 constexpr char kScriptHandlerName[] = "RequestBlockingMessageHandler";
 constexpr char kMessageResourceTypeKey[] = "resourceType";
 constexpr char kMessageResourceURLKey[] = "resourceURL";
+constexpr char kReplyBlockedKey[] = "blocked";
+constexpr char kReplyRedirectKey[] = "redirect";
+constexpr char kReplyRewrittenURLKey[] = "rewrittenURL";
 
 }  // namespace
 
@@ -61,8 +64,16 @@ void RequestBlockingJavaScriptFeature::ScriptMessageReceivedWithReply(
     const web::ScriptMessage& message,
     ScriptMessageReplyCallback callback) {
   auto reply_handler = base::BindOnce(
-      [](ScriptMessageReplyCallback handler, bool should_redirect) {
-        base::Value value(should_redirect);
+      [](ScriptMessageReplyCallback handler, RequestBlockingResult result) {
+        base::DictValue dict;
+        dict.Set(kReplyBlockedKey, result.should_block);
+        if (result.redirect) {
+          dict.Set(kReplyRedirectKey, std::move(*result.redirect));
+        }
+        if (result.rewritten_url && result.rewritten_url->is_valid()) {
+          dict.Set(kReplyRewrittenURLKey, result.rewritten_url->spec());
+        }
+        base::Value value(std::move(dict));
         std::move(handler).Run(&value, nil);
       },
       std::move(callback));
@@ -70,7 +81,7 @@ void RequestBlockingJavaScriptFeature::ScriptMessageReceivedWithReply(
   const base::DictValue* script_dict =
       message.legacy_body() ? message.legacy_body()->GetIfDict() : nullptr;
   if (!script_dict) {
-    std::move(reply_handler).Run(false);
+    std::move(reply_handler).Run(RequestBlockingResult());
     return;
   }
 
@@ -79,25 +90,25 @@ void RequestBlockingJavaScriptFeature::ScriptMessageReceivedWithReply(
   const std::string* resource_url_string =
       script_dict->FindString(kMessageResourceURLKey);
   if (!resource_type_string || !resource_url_string) {
-    std::move(reply_handler).Run(false);
+    std::move(reply_handler).Run(RequestBlockingResult());
     return;
   }
 
   const GURL resource_url(*resource_url_string);
   if (!resource_url.is_valid()) {
-    std::move(reply_handler).Run(false);
+    std::move(reply_handler).Run(RequestBlockingResult());
     return;
   }
 
   auto* tab_helper = RequestBlockingTabHelper::FromWebState(web_state);
   if (!tab_helper) {
-    std::move(reply_handler).Run(false);
+    std::move(reply_handler).Run(RequestBlockingResult());
     return;
   }
 
   const GURL window_origin_url = message.security_origin().GetURL();
   if (!window_origin_url.is_valid()) {
-    std::move(reply_handler).Run(false);
+    std::move(reply_handler).Run(RequestBlockingResult());
     return;
   }
 

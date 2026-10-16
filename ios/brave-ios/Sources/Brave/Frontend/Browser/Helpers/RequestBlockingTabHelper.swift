@@ -43,7 +43,25 @@ public class RequestBlockingTabHelper: TabObserver {
 extension RequestBlockingTabHelper: RequestBlockingTabHelperBridge {
 
   @MainActor
-  public func shouldBlock(requestURL: URL, sourceURL: URL, resourceType: String) async -> Bool {
+  public func shouldBlock(
+    requestURL: URL,
+    sourceURL: URL,
+    resourceType: String
+  ) async -> (Bool, String?, URL?) {
+    let result = await requestResult(
+      requestURL: requestURL,
+      sourceURL: sourceURL,
+      resourceType: resourceType
+    )
+    return (result.shouldBlock, result.redirect, result.rewrittenURL)
+  }
+
+  @MainActor
+  private func requestResult(
+    requestURL: URL,
+    sourceURL: URL,
+    resourceType: String
+  ) async -> AdblockRequestResult {
     guard let tab,
       let resourceType = AdblockResourceType(rawValue: resourceType),
       let adblockMode = tab.braveShieldsHelper?.shieldLevel(
@@ -51,15 +69,16 @@ extension RequestBlockingTabHelper: RequestBlockingTabHelperBridge {
         considerAllShieldsOption: true
       ).adBlockMode
     else {
-      return false
+      return .none
     }
-    let shouldBlock = await AdBlockGroupsManager.shared.shouldBlock(
+    let result = await AdBlockGroupsManager.shared.requestResult(
       requestURL: requestURL,
       sourceURL: sourceURL,
       resourceType: resourceType,
       isAdBlockEnabled: adblockMode.shieldLevel.isEnabled,
       isAdBlockModeAggressive: adblockMode.shieldLevel.isAggressive
     )
+    let shouldBlock = result.shouldBlock
 
     // Ensure we check that the stats we're tracking is still for the same page
     // Some web pages (like youtube) like to rewrite their main frame urls
@@ -70,7 +89,7 @@ extension RequestBlockingTabHelper: RequestBlockingTabHelperBridge {
       currentTabURL.baseDomain == sourceURL.baseDomain
         || tab.currentPageData?.allSubframeURLs.contains(sourceURL) == true
     else {
-      return shouldBlock
+      return result
     }
 
     if shouldBlock, Preferences.PrivacyReports.captureShieldsData.value,
@@ -102,6 +121,6 @@ extension RequestBlockingTabHelper: RequestBlockingTabHelperBridge {
       )
     }
 
-    return shouldBlock
+    return result
   }
 }

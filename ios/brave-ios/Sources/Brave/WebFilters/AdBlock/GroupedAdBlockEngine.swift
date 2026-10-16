@@ -118,7 +118,7 @@ public actor GroupedAdBlockEngine {
   /// We cache the models so that they load faster when we need to poll information about the frame
   private var cachedCosmeticFilterModels = FifoDict<URL, CosmeticFilterModel?>()
   /// We cache the models so that they load faster when doing stats tracking or request blocking
-  private var cachedShouldBlockResult = FifoDict<String, Bool>()
+  private var cachedShouldBlockResult = FifoDict<String, AdblockRequestResult>()
   /// We cache the user scripts so that they load faster on refreshes and back and forth
   private var cachedFrameScriptTypes = FifoDict<URL, Set<UserScriptType>>()
 
@@ -171,6 +171,21 @@ public actor GroupedAdBlockEngine {
     resourceType: AdblockResourceType,
     isAggressiveMode: Bool
   ) -> Bool {
+    requestResult(
+      requestURL: requestURL,
+      sourceURL: sourceURL,
+      resourceType: resourceType,
+      isAggressiveMode: isAggressiveMode
+    ).shouldBlock
+  }
+
+  /// Checks the engine for a block decision along with any redirect resource or rewritten URL
+  func requestResult(
+    requestURL: URL,
+    sourceURL: URL,
+    resourceType: AdblockResourceType,
+    isAggressiveMode: Bool
+  ) -> AdblockRequestResult {
     let key = [
       requestURL.absoluteString, sourceURL.absoluteString, resourceType.rawValue,
       "\(isAggressiveMode)",
@@ -182,15 +197,15 @@ public actor GroupedAdBlockEngine {
       return cachedResult
     }
 
-    let shouldBlock = engine.shouldBlock(
+    let result = engine.requestResult(
       requestURL: requestURL,
       sourceURL: sourceURL,
       resourceType: resourceType,
       isAggressive: isAggressiveMode || self.type.isAlwaysAggressive
     )
 
-    cachedShouldBlockResult.addElement(shouldBlock, forKey: key)
-    return shouldBlock
+    cachedShouldBlockResult.addElement(result, forKey: key)
+    return result
   }
 
   /// This returns all the user script types for the given frame

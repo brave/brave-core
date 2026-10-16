@@ -6,17 +6,31 @@
 #ifndef BRAVE_IOS_BROWSER_BRAVE_SHIELDS_REQUEST_BLOCKING_REQUEST_BLOCKING_TAB_HELPER_H_
 #define BRAVE_IOS_BROWSER_BRAVE_SHIELDS_REQUEST_BLOCKING_REQUEST_BLOCKING_TAB_HELPER_H_
 
+#include <optional>
 #include <string>
 
 #include "base/functional/callback_forward.h"
 #include "ios/web/public/web_state_user_data.h"
+#include "url/gurl.h"
 
-class GURL;
 @protocol RequestBlockingTabHelperBridge;
 
 namespace web {
 class WebState;
 }
+
+struct RequestBlockingResult {
+  RequestBlockingResult();
+  RequestBlockingResult(const RequestBlockingResult&);
+  RequestBlockingResult& operator=(const RequestBlockingResult&);
+  ~RequestBlockingResult();
+
+  bool should_block = false;
+  // A `data:` URL containing replacement content for the resource.
+  std::optional<std::string> redirect;
+  // The request URL with params removed by `$removeparam` rules.
+  std::optional<GURL> rewritten_url;
+};
 
 class RequestBlockingTabHelper
     : public web::WebStateUserData<RequestBlockingTabHelper> {
@@ -28,7 +42,7 @@ class RequestBlockingTabHelper
   void ShouldBlock(const GURL& request_url,
                    const GURL& source_url,
                    const std::string& resource_type,
-                   base::OnceCallback<void(bool)> callback);
+                   base::OnceCallback<void(RequestBlockingResult)> callback);
 
  private:
   friend class web::WebStateUserData<RequestBlockingTabHelper>;
