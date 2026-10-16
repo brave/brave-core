@@ -58,6 +58,7 @@ static_library("ai_chat") {
   deps = [
     "//brave/brave_domains",
     "//brave/browser:browser_process",
+    "//brave/browser:tab_helpers_header",
     "//brave/browser/misc_metrics",
     "//brave/browser/skus",
     "//brave/common:webui_url_constants",

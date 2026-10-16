@@ -61,6 +61,7 @@ if (!is_android) {
 
     deps = [
       ":tabs_public",
+      "//brave/browser:tab_helpers_header",
       "//brave/browser/brave_shields",
       "//brave/browser/drag_drop",
       "//brave/browser/image_metadata_stripper",

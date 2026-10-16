@@ -9,7 +9,9 @@
 
 #include "base/check.h"
 #include "base/feature_list.h"
+#include "base/functional/bind.h"
 #include "brave/browser/brave_shields/brave_shields_tab_helper.h"
+#include "brave/browser/brave_tab_helpers.h"
 #include "brave/browser/image_metadata_stripper/file_upload_controller.h"
 #include "brave/browser/misc_metrics/captcha_metrics.h"
 #include "brave/browser/misc_metrics/page_metrics_tab_helper.h"
@@ -119,8 +121,22 @@ BraveTabFeatures* BraveTabFeatures::FromTabFeatures(TabFeatures* tab_features) {
 BraveTabFeatures::BraveTabFeatures() = default;
 BraveTabFeatures::~BraveTabFeatures() = default;
 
+void BraveTabFeatures::OnWillDiscardContents(
+    TabInterface* tab,
+    content::WebContents* old_contents,
+    content::WebContents* new_contents) {
+  brave::AttachTabHelpers(new_contents);
+}
+
 void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
   TabFeatures::Init(tab, profile);
+
+  brave::AttachTabHelpers(tab.GetContents());
+  // Upstream's discard path no longer calls `AttachTabHelpers` on the
+  // replacement contents.
+  will_discard_contents_subscription_ =
+      tab.RegisterWillDiscardContents(base::BindRepeating(
+          &BraveTabFeatures::OnWillDiscardContents, base::Unretained(this)));
 
   // Expect upstream's Init to create the registry.
   auto* side_panel_registry = SidePanelRegistry::From(&tab);
