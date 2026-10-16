@@ -125,7 +125,7 @@ export function getHtml(this: TabFocusPageElement) {
                     ${this.getSuggestedTopicsSubtitle_()}
                   </div>
                   ${this.isLoadingTopics
-                    ? [1, 2, 3, 4, 5].map(
+                    ? html`${[1, 2, 3, 4, 5].map(
                         (key) => html`
                           <leo-button
                             key=${key}
@@ -144,8 +144,8 @@ export function getHtml(this: TabFocusPageElement) {
                             </div>
                           </leo-button>
                         `,
-                      )
-                    : this.topics_.map(
+                      )}`
+                    : html`${this.topics_.map(
                         (entry, index) => html`
                           <leo-button
                             id="${this.getTopicId_(index)}"
@@ -163,7 +163,7 @@ export function getHtml(this: TabFocusPageElement) {
                             </div>
                           </leo-button>
                         `,
-                      )}
+                      )}`}
                 </div>
               `
             : html`
