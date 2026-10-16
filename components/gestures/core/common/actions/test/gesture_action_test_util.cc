@@ -7,24 +7,42 @@
 
 #include <utility>
 
-#include "brave/components/gestures/core/common/actions/navigate_to_url_params_info.h"
-#include "brave/components/gestures/core/common/actions/switch_to_tab_params_info.h"
+#include "brave/components/gestures/core/common/actions/gesture_command_constants.h"
+#include "brave/components/gestures/core/common/actions/int_param_info.h"
+#include "brave/components/gestures/core/common/actions/text_param_info.h"
 
 namespace gestures::test {
 
+namespace {
+
+// This component must not depend on `IDC_*` headers; mirrors the real
+// `IDC_OPTIONS` value from chrome/app/chrome_command_ids.h.
+constexpr int kIdcOptions = 40015;
+
+}  // namespace
+
 GestureActionInfo MakeNavigateToUrlGestureAction(std::string url_spec) {
-  GestureActionInfo action;
-  action.command = GestureCommandType::kNavigateToUrl;
-  action.command_params =
-      NavigateToUrlParamsInfo{.url_spec = std::move(url_spec)};
-  return action;
+  GestureActionInfo gesture_action;
+  gesture_action.command = kNavigateToUrl;
+  gesture_action.command_params =
+      TextParamInfo{.text_param = std::move(url_spec)};
+  return gesture_action;
 }
 
 GestureActionInfo MakeSwitchToTabGestureAction(std::string pattern) {
-  GestureActionInfo action;
-  action.command = GestureCommandType::kSwitchToTab;
-  action.command_params = SwitchToTabParamsInfo{.pattern = std::move(pattern)};
-  return action;
+  GestureActionInfo gesture_action;
+  gesture_action.command = kSwitchToTab;
+  gesture_action.command_params =
+      TextParamInfo{.text_param = std::move(pattern)};
+  return gesture_action;
+}
+
+GestureActionInfo MakeOpenSettingsGestureAction(OpenSettingsPage settings_page) {
+  GestureActionInfo gesture_action;
+  gesture_action.command = kIdcOptions;
+  gesture_action.command_params =
+      IntParamInfo{.value_param = static_cast<int>(settings_page)};
+  return gesture_action;
 }
 
 }  // namespace gestures::test

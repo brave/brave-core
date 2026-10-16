@@ -13,8 +13,10 @@
 
 namespace gestures {
 
-DirectionalGestureMapping::DirectionalGestureMapping()
-    : mappings_(DefaultMappings()) {}
+DirectionalGestureMapping::DirectionalGestureMapping(
+    DirectionalGestureDefaultCommands default_commands)
+    : default_commands_(default_commands),
+      mappings_(DefaultMappings(default_commands_)) {}
 
 DirectionalGestureMapping::~DirectionalGestureMapping() = default;
 
@@ -44,7 +46,7 @@ void DirectionalGestureMapping::Remove(std::string_view gesture_key) {
 }
 
 void DirectionalGestureMapping::ResetToDefaults() {
-  mappings_ = DefaultMappings();
+  mappings_ = DefaultMappings(default_commands_);
 }
 
 }  // namespace gestures

@@ -16,14 +16,37 @@
 #include "brave/components/gestures/core/browser/pref_names.h"
 #include "brave/components/gestures/core/common/actions/gesture_action_pref_parser.h"
 #include "brave/components/gestures/core/common/actions/gesture_action_util.h"
-#include "brave/components/gestures/core/common/actions/gesture_command_types.h"
 #include "brave/components/gestures/core/common/custom/custom_gesture_info.h"
+#include "brave/components/gestures/core/common/custom/custom_gesture_pref_parser.h"
+#include "brave/components/gestures/core/common/directional/directional_gesture_default_commands.h"
 #include "brave/components/gestures/core/common/mouse/wheel/mouse_wheel_modifier_button_util.h"
+#include "chrome/app/chrome_command_ids.h"
 #include "components/prefs/pref_service.h"
 
 namespace gestures {
 
-GestureConfigTracker::GestureConfigTracker(PrefService& prefs) : prefs_(prefs) {
+namespace {
+
+DirectionalGestureDefaultCommands DefaultDirectionalGestureCommands() {
+  return {
+      .new_tab = IDC_NEW_TAB,
+      .back = IDC_BACK,
+      .forward = IDC_FORWARD,
+      .close_tab = IDC_CLOSE_TAB,
+      .new_window = IDC_NEW_WINDOW,
+      .previous_tab = IDC_SELECT_PREVIOUS_TAB,
+      .duplicate_tab = IDC_DUPLICATE_TAB,
+      .next_tab = IDC_SELECT_NEXT_TAB,
+      .reload = IDC_RELOAD,
+      .reopen_closed_tab = IDC_RESTORE_TAB,
+  };
+}
+
+}  // namespace
+
+GestureConfigTracker::GestureConfigTracker(PrefService& prefs)
+    : prefs_(prefs),
+      directional_gesture_mapping_(DefaultDirectionalGestureCommands()) {
   LoadDirectionalGestures();
   LoadCustomGestures();
   LoadMouseRockerSettings();
@@ -89,9 +112,9 @@ void GestureConfigTracker::LoadDirectionalGestures() {
 
   for (const auto [gesture_key, actions_value] :
        prefs_->GetDict(prefs::kDirectionalGestures)) {
-    const base::ListValue* actions_list = actions_value.GetIfList();
+    const base::ListValue* list = actions_value.GetIfList();
     std::optional<std::vector<GestureActionInfo>> actions =
-        actions_list ? MaybeParseGestureActions(*actions_list) : std::nullopt;
+        list ? MaybeParseGestureActions(*list) : std::nullopt;
     if (actions) {
       directional_gesture_mapping_.SetChainedActions(gesture_key,
                                                      std::move(*actions));
@@ -141,19 +164,19 @@ double GestureConfigTracker::MouseWheelSensitivityInPixels() const {
 void GestureConfigTracker::LoadMouseRockerSettings() {
   mouse_rocker_left_actions_ =
       MaybeParseGestureActions(prefs_->GetList(prefs::kMouseRockerLeftAction))
-          .value_or(MakeGestureActions(GestureCommandType::kBack));
+          .value_or(std::vector{MakeGestureAction(IDC_BACK)});
   mouse_rocker_right_actions_ =
       MaybeParseGestureActions(prefs_->GetList(prefs::kMouseRockerRightAction))
-          .value_or(MakeGestureActions(GestureCommandType::kForward));
+          .value_or(std::vector{MakeGestureAction(IDC_FORWARD)});
 }
 
 void GestureConfigTracker::LoadMouseWheelSettings() {
   mouse_wheel_up_actions_ =
       MaybeParseGestureActions(prefs_->GetList(prefs::kMouseWheelUpAction))
-          .value_or(MakeGestureActions(GestureCommandType::kPreviousTab));
+          .value_or(std::vector{MakeGestureAction(IDC_SELECT_PREVIOUS_TAB)});
   mouse_wheel_down_actions_ =
       MaybeParseGestureActions(prefs_->GetList(prefs::kMouseWheelDownAction))
-          .value_or(MakeGestureActions(GestureCommandType::kNextTab));
+          .value_or(std::vector{MakeGestureAction(IDC_SELECT_NEXT_TAB)});
 }
 
 }  // namespace gestures

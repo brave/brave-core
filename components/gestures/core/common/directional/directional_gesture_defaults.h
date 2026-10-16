@@ -12,6 +12,7 @@
 
 #include "base/containers/flat_map.h"
 #include "brave/components/gestures/core/common/actions/gesture_action_info.h"
+#include "brave/components/gestures/core/common/directional/directional_gesture_default_commands.h"
 
 namespace gestures {
 
@@ -20,7 +21,7 @@ namespace gestures {
 // commonly
 // used actions are assigned to the simplest strokes.
 base::flat_map<std::string, std::vector<GestureActionInfo>, std::less<>>
-DefaultMappings();
+DefaultMappings(const DirectionalGestureDefaultCommands& commands);
 
 }  // namespace gestures
 

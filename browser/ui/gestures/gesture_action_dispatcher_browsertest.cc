@@ -13,8 +13,8 @@
 #include "base/task/sequenced_task_runner.h"
 #include "brave/components/gestures/core/common/actions/gesture_action_info.h"
 #include "brave/components/gestures/core/common/actions/gesture_action_util.h"
-#include "brave/components/gestures/core/common/actions/gesture_command_types.h"
 #include "brave/components/gestures/core/common/actions/test/gesture_action_test_util.h"
+#include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
@@ -76,8 +76,7 @@ IN_PROC_BROWSER_TEST_F(GestureActionDispatcherBrowserTest,
 
   GestureActionDispatcher action_dispatcher(
       *chrome_test_utils::GetActiveTab(this));
-  RunDispatcherAndWait(action_dispatcher,
-                       MakeGestureActions(GestureCommandType::kBack));
+  RunDispatcherAndWait(action_dispatcher, {MakeGestureAction(IDC_BACK)});
 
   EXPECT_EQ(url, web_contents()->GetLastCommittedURL());
 }
@@ -89,8 +88,7 @@ IN_PROC_BROWSER_TEST_F(GestureActionDispatcherBrowserTest,
 
   GestureActionDispatcher action_dispatcher(
       *chrome_test_utils::GetActiveTab(this));
-  RunDispatcherAndWait(action_dispatcher,
-                       MakeGestureActions(GestureCommandType::kForward));
+  RunDispatcherAndWait(action_dispatcher, {MakeGestureAction(IDC_FORWARD)});
 
   EXPECT_EQ(url, web_contents()->GetLastCommittedURL());
 }
@@ -105,8 +103,7 @@ IN_PROC_BROWSER_TEST_F(GestureActionDispatcherBrowserTest,
   GestureActionDispatcher action_dispatcher(
       *chrome_test_utils::GetActiveTab(this));
   content::TestNavigationObserver navigation_observer(web_contents());
-  action_dispatcher.DispatchActionsAsync(
-      MakeGestureActions(GestureCommandType::kBack));
+  action_dispatcher.DispatchActionsAsync({MakeGestureAction(IDC_BACK)});
   navigation_observer.Wait();
 
   EXPECT_EQ(first_url, web_contents()->GetLastCommittedURL());
@@ -126,8 +123,7 @@ IN_PROC_BROWSER_TEST_F(GestureActionDispatcherBrowserTest,
   GestureActionDispatcher action_dispatcher(
       *chrome_test_utils::GetActiveTab(this));
   content::TestNavigationObserver navigation_observer(web_contents());
-  action_dispatcher.DispatchActionsAsync(
-      MakeGestureActions(GestureCommandType::kForward));
+  action_dispatcher.DispatchActionsAsync({MakeGestureAction(IDC_FORWARD)});
   navigation_observer.Wait();
 
   EXPECT_EQ(second_url, web_contents()->GetLastCommittedURL());
@@ -139,10 +135,39 @@ IN_PROC_BROWSER_TEST_F(GestureActionDispatcherBrowserTest,
 
   GestureActionDispatcher action_dispatcher(
       *chrome_test_utils::GetActiveTab(this));
-  RunDispatcherAndWait(action_dispatcher,
-                       MakeGestureActions(GestureCommandType::kNewTab));
+  RunDispatcherAndWait(action_dispatcher, {MakeGestureAction(IDC_NEW_TAB)});
 
   EXPECT_EQ(tab_count_before + 1, browser()->tab_strip_model()->count());
+}
+
+// `ShowSettingsSubPage` may reuse the current tab, an already-open settings
+// tab, or open a brand new one, so the observer below watches for the
+// target URL across every tab rather than binding to a specific
+// `WebContents` captured before the dispatch.
+IN_PROC_BROWSER_TEST_F(GestureActionDispatcherBrowserTest,
+                       OpenSettingsNavigatesToTheRequestedSubPage) {
+  GestureActionDispatcher action_dispatcher(
+      *chrome_test_utils::GetActiveTab(this));
+  content::TestNavigationObserver navigation_observer(
+      GURL("chrome://settings/appearance"));
+  navigation_observer.WatchExistingWebContents();
+  navigation_observer.StartWatchingNewWebContents();
+  action_dispatcher.DispatchActionsAsync(
+      {test::MakeOpenSettingsGestureAction(OpenSettingsPage::kAppearance)});
+  navigation_observer.Wait();
+}
+
+IN_PROC_BROWSER_TEST_F(GestureActionDispatcherBrowserTest,
+                       OpenSettingsWithBasicPageNavigatesToTheTopLevelPage) {
+  GestureActionDispatcher action_dispatcher(
+      *chrome_test_utils::GetActiveTab(this));
+  content::TestNavigationObserver navigation_observer(
+      GURL("chrome://settings/"));
+  navigation_observer.WatchExistingWebContents();
+  navigation_observer.StartWatchingNewWebContents();
+  action_dispatcher.DispatchActionsAsync(
+      {test::MakeOpenSettingsGestureAction(OpenSettingsPage::kBasic)});
+  navigation_observer.Wait();
 }
 
 class GestureActionDispatcherDisallowedSchemeBrowserTest
@@ -241,6 +266,25 @@ IN_PROC_BROWSER_TEST_F(GestureActionDispatcherBrowserTest,
       *chrome_test_utils::GetActiveTab(this));
   RunDispatcherAndWait(action_dispatcher,
                        {test::MakeSwitchToTabGestureAction("*title2*")});
+
+  EXPECT_EQ(expected_web_contents, web_contents());
+}
+
+IN_PROC_BROWSER_TEST_F(GestureActionDispatcherBrowserTest,
+                       SwitchToTabActivatesTabMatchingRegexPattern) {
+  const GURL target_url = embedded_test_server()->GetURL("/title2.html");
+  content::WebContents* const expected_web_contents =
+      chrome::AddAndReturnTabAt(browser(), target_url, /*index=*/-1,
+                                /*foreground=*/false);
+  ASSERT_TRUE(content::WaitForLoadStop(expected_web_contents));
+  chrome::AddTabAt(browser(), embedded_test_server()->GetURL("/title3.html"),
+                   /*index=*/-1, /*foreground=*/true);
+
+  GestureActionDispatcher action_dispatcher(
+      *chrome_test_utils::GetActiveTab(this));
+  // `$` isn't valid in a glob, so this is detected and matched as regex.
+  RunDispatcherAndWait(action_dispatcher,
+                       {test::MakeSwitchToTabGestureAction("title2\\.html$")});
 
   EXPECT_EQ(expected_web_contents, web_contents());
 }

@@ -5,16 +5,11 @@
 
 import {Point} from './custom_gesture_geometry.js'
 
-// Mirrors `ResampleAtInterval`/`ClassifyDirectionalStrokes` in
-// brave/components/gestures/core/common/directional/directional_gesture_util.cc,
-// which `GestureDrawSession::ClassifyResampledDirectionalStrokes` runs
-// against the raw traced path at gesture-finish time. Used only for a
-// pre-save "this looks like a mapped directional gesture, so it would never
-// actually run" warning; actual directional matching is always done in C++
-// at gesture time.
+// Mirrors `ResampleAtInterval`/`ClassifyDirectionalStrokes`; used only for
+// a pre-save warning, not actual matching, which is always done in C++.
 
 // Clockwise angular order starting from "right" (screen angle 0), matching
-// `kDirectionsByAngle` in directional_gesture_util.cc.
+// `kDirectionsByAngle`.
 const DIRECTIONS_BY_ANGLE = ['→', '↘', '↓', '↙', '←', '↖', '↑', '↗']
 
 function maybeMovementDirection(
@@ -32,12 +27,8 @@ function maybeMovementDirection(
   return DIRECTIONS_BY_ANGLE[octant]
 }
 
-// Mirrors `ResampleAtInterval`: resamples `path` to points evenly spaced
-// `intervalPixels` apart by arc length, so classification doesn't depend on
-// how unevenly the original points happened to be sampled (e.g. a brief
-// slowdown mid-drag producing two unusually close consecutive points, which
-// could otherwise fail a sustain check that a steadier draw of the exact
-// same shape would have passed).
+// Mirrors `ResampleAtInterval`, resampling `path` evenly by arc length,
+// so classification does not depend on how unevenly points were sampled.
 function resampleAtInterval(path: Point[], intervalPixels: number): Point[] {
   if (path.length === 0) {
     return []
@@ -47,9 +38,8 @@ function resampleAtInterval(path: Point[], intervalPixels: number): Point[] {
     return resampled
   }
 
-  // Carries over leftover distance from one original segment to the next, so
-  // intervals stay consistent across the original points' own boundaries,
-  // not just within each one.
+  // Carries over leftover distance, so intervals stay consistent across
+  // the original points' own boundaries.
   let accumulated = 0
   let lastPoint = path[0]
   for (let i = 1; i < path.length; ++i) {
@@ -66,10 +56,8 @@ function resampleAtInterval(path: Point[], intervalPixels: number): Point[] {
       }
       resampled.push(newPoint)
       segmentLength -= remaining
-      // Advances from the newly interpolated point, not the original
-      // segment's start, so a single long original segment resamples into
-      // several evenly-spaced points rather than repeatedly interpolating
-      // from the same fixed start.
+      // Advances from the interpolated point, not the original segment's
+      // start, so a long segment resamples into evenly-spaced points.
       lastPoint = newPoint
       accumulated = 0
     }
@@ -84,15 +72,8 @@ function resampleAtInterval(path: Point[], intervalPixels: number): Point[] {
   return resampled
 }
 
-// Mirrors `ClassifyDirectionalStrokes`: classifies `path` into a sequence of
-// directional strokes, capped at `maxStrokes`. `origin` is always either the
-// start of the current committed stroke or the start of the current pending
-// candidate -- it advances every time the candidate direction changes, not
-// just on commit. Measuring from a stale anchor left over from several
-// direction-changes ago reads a slowly-drifting aggregate bearing on a
-// curved path, which can disagree with the real local tangent for the
-// entire rest of the path and prevent any further stroke from ever
-// committing -- e.g. a hand-drawn oval collapsing to a single stroke.
+// Mirrors `ClassifyDirectionalStrokes`. `origin` advances on every
+// direction change, or a hand-drawn oval could collapse to one stroke.
 function classifyDirectionalStrokes(
     path: Point[], minStrokePixels: number, maxStrokes: number): string[] {
   const strokes: string[] = []
@@ -130,9 +111,8 @@ function classifyDirectionalStrokes(
   return strokes
 }
 
-// Classifies `rawPoints` (in the same raw pixel units `minStrokePixels` is
-// calibrated in, not normalized) into the stroke-key string
-// `DirectionalGestureMapping` looks mappings up by, e.g. "←" or "↓→".
+// Classifies `rawPoints`, in the same raw pixel units `minStrokePixels`
+// uses, into a mapping lookup key such as "←" or "↓→".
 export function classifyDirectionalStrokeKey(
     rawPoints: Point[], minStrokePixels: number, maxStrokes: number):
     string {

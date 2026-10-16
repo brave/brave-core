@@ -5,8 +5,10 @@
 
 #include "brave/components/gestures/core/browser/prefs_registration.h"
 
+#include "brave/components/gestures/core/browser/mouse_rocker_default_commands.h"
+#include "brave/components/gestures/core/browser/mouse_wheel_default_commands.h"
 #include "brave/components/gestures/core/browser/pref_names.h"
-#include "brave/components/gestures/core/common/actions/gesture_command_types.h"
+#include "brave/components/gestures/core/browser/test/fake_mouse_rocker_wheel_default_commands.h"
 #include "brave/components/gestures/core/common/features.h"
 #include "brave/components/gestures/core/common/mouse/wheel/mouse_wheel_modifier_button_types.h"
 #include "components/pref_registry/pref_registry_syncable.h"
@@ -23,19 +25,21 @@ bool IsSyncable(sync_preferences::TestingPrefServiceSyncable* prefs,
           user_prefs::PrefRegistrySyncable::SYNCABLE_PREF) != 0;
 }
 
-GestureCommandType FirstActionCommand(
-    sync_preferences::TestingPrefServiceSyncable* prefs,
-    std::string_view path) {
-  const base::DictValue& action_dict = prefs->GetList(path).front().GetDict();
-  return static_cast<GestureCommandType>(
-      action_dict.FindInt("command").value());
+int FirstActionCommand(sync_preferences::TestingPrefServiceSyncable* prefs,
+                       std::string_view path) {
+  const base::DictValue& dict = prefs->GetList(path).front().GetDict();
+  return dict.FindInt("command").value();
 }
 
 }  // namespace
 
 class PrefsRegistrationTest : public testing::Test {
  public:
-  PrefsRegistrationTest() { RegisterProfilePrefs(prefs_.registry()); }
+  PrefsRegistrationTest() {
+    RegisterProfilePrefs(prefs_.registry(),
+                         test::FakeMouseRockerDefaultCommands(),
+                         test::FakeMouseWheelDefaultCommands());
+  }
 
  protected:
   sync_preferences::TestingPrefServiceSyncable prefs_;
@@ -86,13 +90,13 @@ TEST_F(PrefsRegistrationTest, RockerGesturesEnabledDefaultsToTrue) {
   EXPECT_TRUE(prefs_.GetBoolean(prefs::kMouseRockerGesturesEnabled));
 }
 
-TEST_F(PrefsRegistrationTest, RockLeftActionDefaultsToBack) {
-  EXPECT_EQ(GestureCommandType::kBack,
+TEST_F(PrefsRegistrationTest, RockLeftActionDefaultsToTheCallerSuppliedLeft) {
+  EXPECT_EQ(test::FakeMouseRockerDefaultCommands().left,
             FirstActionCommand(&prefs_, prefs::kMouseRockerLeftAction));
 }
 
-TEST_F(PrefsRegistrationTest, RockRightActionDefaultsToForward) {
-  EXPECT_EQ(GestureCommandType::kForward,
+TEST_F(PrefsRegistrationTest, RockRightActionDefaultsToTheCallerSuppliedRight) {
+  EXPECT_EQ(test::FakeMouseRockerDefaultCommands().right,
             FirstActionCommand(&prefs_, prefs::kMouseRockerRightAction));
 }
 
@@ -113,13 +117,13 @@ TEST_F(PrefsRegistrationTest, WheelModifierButtonDefaultsToRight) {
             prefs_.GetInteger(prefs::kMouseWheelModifierButton));
 }
 
-TEST_F(PrefsRegistrationTest, WheelUpActionDefaultsToPreviousTab) {
-  EXPECT_EQ(GestureCommandType::kPreviousTab,
+TEST_F(PrefsRegistrationTest, WheelUpActionDefaultsToTheCallerSuppliedUp) {
+  EXPECT_EQ(test::FakeMouseWheelDefaultCommands().up,
             FirstActionCommand(&prefs_, prefs::kMouseWheelUpAction));
 }
 
-TEST_F(PrefsRegistrationTest, WheelDownActionDefaultsToNextTab) {
-  EXPECT_EQ(GestureCommandType::kNextTab,
+TEST_F(PrefsRegistrationTest, WheelDownActionDefaultsToTheCallerSuppliedDown) {
+  EXPECT_EQ(test::FakeMouseWheelDefaultCommands().down,
             FirstActionCommand(&prefs_, prefs::kMouseWheelDownAction));
 }
 

@@ -13,30 +13,61 @@ import type {DomRepeatEvent} from 'chrome://resources/polymer/v3_0/polymer/polym
 import {SettingsViewMixin} from '../settings_page/settings_view_mixin.js'
 
 import {getTemplate} from './gestures_page.html.js'
-import {GestureCommand, COMMAND_ORDER, COMMAND_I18N_KEYS,
-  DEFAULT_GESTURE_MAPPINGS, gestureKeyToIconNames, withUrlScheme}
-  from './gesture_command.js'
-import {closestCustomGestureDistance, smoothedSvgPath, fitToViewBox,
-  CUSTOM_GESTURE_SIMILARITY_WARNING_THRESHOLD}
-  from './custom_gesture_geometry.js'
-import {classifyDirectionalStrokeKey} from './directional_gesture_classifier.js'
-import {buildActionEntries, textParamFromEntry} from './gesture_rows.js'
-import type {ChainedActionRow, ChainedActionEntry, MappingRow,
-  CommandOption, DisallowedSiteRow, CustomGestureRow, CustomGesturePoint,
-  CustomGestureEntry, RockerWheelRow} from './gesture_rows.js'
+import {GestureCommand, SPECIAL_COMMAND_I18N_KEYS} from './gesture_command.js'
+import {CommandsCache} from './commands_cache.js'
+import type { Command } from '../commands.mojom-webui.js'
+import {svgPathData} from './custom_gesture_svg_path.js'
+import {
+  OpenSettingsPage, OPEN_SETTINGS_PAGE_ORDER, OPEN_SETTINGS_PAGE_PATHS
+} from './open_settings_page.js'
+import {
+  toActionDicts, defaultActionRow, actionRowsFromDicts, moveAction,
+  applyCommandToActionRows, IDC_OPTIONS
+} from './gesture_rows.js'
+import { withUrlScheme } from './url_scheme_util.js'
+import type {
+  ActionRow, ActionDict, DirectionalGestureMappingActionRow,
+  CommandOption, DisallowedSiteRow, CustomGestureActionRow,
+  CustomGestureEntry, MouseRockerActionRow,
+  MouseWheelActionRow
+} from './gesture_rows.js'
+import {
+  rowCommandSequence, findConflictingGestures, conflictDescription
+} from './gesture_command_conflict.js'
+import {
+  anyCustomGestureMatchesDirectionalGestureKey,
+  customGestureShapeConflictDescription
+} from './gesture_shape_conflict.js'
+import {
+  GESTURES_DIRECTIONAL_GESTURE_MAPPINGS_PREF,
+  buildDirectionalGestureMappingActionRows
+} from './directional_gesture_mapping_util.js'
+import {
+  GESTURES_CUSTOM_GESTURES_PREF, DRAWN_CUSTOM_GESTURE_ROW,
+  buildCustomGestureActionRows
+} from './custom_gesture_util.js'
+import type {Point} from './custom_gesture_geometry.js'
 
-const GESTURES_MAPPINGS_PREF = 'brave.gestures.directional_gestures'
+// Shown as the page's literal relative path (see `OPEN_SETTINGS_PAGE_PATHS`),
+// not a translated label.
+const OPEN_SETTINGS_PAGE_OPTIONS: Array<{ name: string, value: OpenSettingsPage }> =
+  OPEN_SETTINGS_PAGE_ORDER.map(
+    (value: OpenSettingsPage) => ({ name: OPEN_SETTINGS_PAGE_PATHS[value], value }))
+
+// One instance per page load is fine, since the backend just adds
+// another listener remote.
+const commandsCache = new CommandsCache()
+
 const GESTURES_DISALLOWED_SITES_PREF = 'brave.gestures.disallowed_sites'
 const GESTURES_SENSITIVITY_IN_PIXELS_PREF =
   'brave.gestures.sensitivity_in_pixels'
-const GESTURES_CUSTOM_GESTURES_PREF = 'brave.gestures.custom_gestures'
-const GESTURES_ROCK_LEFT_PREF = 'brave.gestures.mouse_rocker_left_action'
-const GESTURES_ROCK_RIGHT_PREF = 'brave.gestures.mouse_rocker_right_action'
-const GESTURES_WHEEL_MODIFIER_BUTTON_PREF =
+const GESTURES_MOUSE_ROCKER_LEFT_PREF = 'brave.gestures.mouse_rocker_left_action'
+const GESTURES_MOUSE_ROCKER_RIGHT_PREF = 'brave.gestures.mouse_rocker_right_action'
+const GESTURES_MOUSE_WHEEL_MODIFIER_BUTTON_PREF =
   'brave.gestures.mouse_wheel_modifier_button'
-const GESTURES_WHEEL_UP_PREF = 'brave.gestures.mouse_wheel_up_action'
-const GESTURES_WHEEL_DOWN_PREF = 'brave.gestures.mouse_wheel_down_action'
-const GESTURES_WHEEL_SENSITIVITY_IN_PIXELS_PREF =
+const GESTURES_MOUSE_WHEEL_UP_PREF = 'brave.gestures.mouse_wheel_up_action'
+const GESTURES_MOUSE_WHEEL_DOWN_PREF = 'brave.gestures.mouse_wheel_down_action'
+const GESTURES_MOUSE_WHEEL_SENSITIVITY_IN_PIXELS_PREF =
   'brave.gestures.mouse_wheel_sensitivity_in_pixels'
 
 // Keep in sync with features::kMinStrokePixels's default in
@@ -50,15 +81,12 @@ const MAX_DIRECTIONAL_STROKES = 4
 
 // Keep in sync with features::kMinWheelDelta's default in
 // brave/components/gestures/core/common/features.cc.
-const DEFAULT_WHEEL_SENSITIVITY_IN_PIXELS = 0
-const WHEEL_SENSITIVITY_SNAP_THRESHOLD_IN_PIXELS = 2
+const DEFAULT_MOUSE_WHEEL_SENSITIVITY_IN_PIXELS = 0
+const MOUSE_WHEEL_SENSITIVITY_SNAP_THRESHOLD_IN_PIXELS = 2
 
 // Keep in sync with `kMouseWheelModifierButton`'s registered default in
-// brave/components/gestures/core/browser/prefs_registration.cc.
-const DEFAULT_WHEEL_MODIFIER_BUTTON = 2 // MouseWheelModifierButtonType::kRight
-
-const CUSTOM_GESTURE_PREVIEW_SIZE = 32
-const CUSTOM_GESTURE_PREVIEW_PADDING = 4
+// `prefs_registration.cc`.
+const DEFAULT_MOUSE_WHEEL_MODIFIER_BUTTON = 2 /* MouseWheelModifierButtonType::kRight */
 
 const SettingsGesturesPageBase =
   SettingsViewMixin(PrefsMixin(I18nMixin(PolymerElement)))
@@ -79,142 +107,163 @@ class SettingsGesturesPage extends SettingsGesturesPageBase {
   // dependency is first defined, and again on every subsequent change.
   static get observers() {
     return [
-      'onMappingsPrefChanged_(' +
+      'onDirectionalGestureMappingsPrefChanged_(' +
       'prefs.brave.gestures.directional_gestures.value)',
       'onDisallowedSitesPrefChanged_(' +
       'prefs.brave.gestures.disallowed_sites.value)',
       'onCustomGesturesPrefChanged_(' +
       'prefs.brave.gestures.custom_gestures.value)',
-      'onRockLeftActionPrefChanged_(' +
+      'onMouseRockerLeftActionPrefChanged_(' +
       'prefs.brave.gestures.mouse_rocker_left_action.value)',
-      'onRockRightActionPrefChanged_(' +
+      'onMouseRockerRightActionPrefChanged_(' +
       'prefs.brave.gestures.mouse_rocker_right_action.value)',
-      'onWheelUpActionPrefChanged_(' +
+      'onMouseWheelUpActionPrefChanged_(' +
       'prefs.brave.gestures.mouse_wheel_up_action.value)',
-      'onWheelDownActionPrefChanged_(' +
+      'onMouseWheelDownActionPrefChanged_(' +
       'prefs.brave.gestures.mouse_wheel_down_action.value)',
     ]
   }
 
   static get properties() {
     return {
-      mappingRows_: { type: Array, value: () => [] },
+      directionalGestureMappingActionRows_: { type: Array, value: () => [] },
+      showDirectionalGestureMappingsResetConfirmDialog_: { type: Boolean, value: false },
+
+      customGestureActionRows_: { type: Array, value: () => [] },
+      drawnCustomGestureActionRows_: {
+        type: Array, value: () => [defaultActionRow(GestureCommand.UNASSIGNED)]
+      },
+      hasDrawnCustomGesture_: { type: Boolean, value: false },
+      drawnCustomGestureSvgPathData_: { type: String, value: '' },
+      showClearCustomGestureConfirmDialog_: { type: Boolean, value: false },
+
+      mouseRockerLeftActionRow_: {
+        type: Object, value: () => (
+          {
+            prefName: GESTURES_MOUSE_ROCKER_LEFT_PREF,
+            ...defaultActionRow(33000 /* IDC_BACK */),
+            chainedActionRows: []
+          })
+      },
+      mouseRockerRightActionRow_: {
+        type: Object, value: () => (
+          {
+            prefName: GESTURES_MOUSE_ROCKER_RIGHT_PREF,
+            ...defaultActionRow(33001 /* IDC_FORWARD */),
+            chainedActionRows: []
+          })
+      },
+      showMouseRockerResetConfirmDialog_: { type: Boolean, value: false },
+
+      mouseWheelUpActionRow_: {
+        type: Object, value: () => (
+          {
+            prefName: GESTURES_MOUSE_WHEEL_UP_PREF,
+            ...defaultActionRow(34017 /* IDC_SELECT_PREVIOUS_TAB */),
+            chainedActionRows: []
+          })
+      },
+      mouseWheelDownActionRow_: {
+        type: Object, value: () => (
+          {
+            prefName: GESTURES_MOUSE_WHEEL_DOWN_PREF,
+            ...defaultActionRow(34016 /* IDC_SELECT_NEXT_TAB */),
+            chainedActionRows: []
+          })
+      },
+      showMouseWheelResetConfirmDialog_: { type: Boolean, value: false },
+
       disallowedSiteRows_: { type: Array, value: () => [] },
-      customGestureRows_: { type: Array, value: () => [] },
-      selectedCaptureCommand_:
-        { type: Number, value: GestureCommand.UNASSIGNED },
-      selectedCaptureNavigateToUrl_: { type: String, value: '' },
-      capturedChainedActions_: { type: Array, value: () => [] },
-      hasCapturedGesture_: { type: Boolean, value: false },
+      showAddDisallowedSiteDialog_: { type: Boolean, value: false },
+      addDisallowedSiteInput_: { type: String, value: '' },
+      editingDisallowedSiteOrigin_: { type: String, value: null },
+
       commandOptions_: { type: Array, value: () => [] },
-      capturedPathData_: { type: String, value: '' },
-      showResetConfirmDialog_: { type: Boolean, value: false },
-      showRockerResetConfirmDialog_: { type: Boolean, value: false },
-      showWheelResetConfirmDialog_: { type: Boolean, value: false },
-      showAddSiteDialog_: { type: Boolean, value: false },
-      addSiteInput_: { type: String, value: '' },
-      isEditingSite_: { type: Boolean, value: false },
-      showClearGestureConfirmDialog_: { type: Boolean, value: false },
-      showUrlDialog_: { type: Boolean, value: false },
       urlDialogInput_: { type: String, value: '' },
-      rockLeftRow_: { type: Object, value: () => (
-        { prefName: GESTURES_ROCK_LEFT_PREF, gestureCommand: GestureCommand.BACK,
-          navigateToUrl: '', chainedActions: [] }) },
-      rockRightRow_: { type: Object, value: () => (
-        { prefName: GESTURES_ROCK_RIGHT_PREF,
-          gestureCommand: GestureCommand.FORWARD, navigateToUrl: '',
-          chainedActions: [] }) },
-      wheelUpRow_: { type: Object, value: () => (
-        { prefName: GESTURES_WHEEL_UP_PREF,
-          gestureCommand: GestureCommand.PREVIOUS_TAB, navigateToUrl: '',
-          chainedActions: [] }) },
-      wheelDownRow_: { type: Object, value: () => (
-        { prefName: GESTURES_WHEEL_DOWN_PREF,
-          gestureCommand: GestureCommand.NEXT_TAB, navigateToUrl: '',
-          chainedActions: [] }) },
     }
   }
 
-  declare private mappingRows_: MappingRow[]
+  declare private directionalGestureMappingActionRows_: DirectionalGestureMappingActionRow[]
+  declare private showDirectionalGestureMappingsResetConfirmDialog_: boolean
+
+  declare private customGestureActionRows_: CustomGestureActionRow[]
+
+  private isDrawingCustomGesture_ = false
+  private drawnCustomGesturePoints_: Point[] = []
+  declare private drawnCustomGestureSvgPathData_: string
+  declare private hasDrawnCustomGesture_: boolean
+  declare private drawnCustomGestureActionRows_: ActionRow[]
+  declare private showClearCustomGestureConfirmDialog_: boolean
+
+  declare private mouseRockerLeftActionRow_: MouseRockerActionRow
+  declare private mouseRockerRightActionRow_: MouseRockerActionRow
+  declare private showMouseRockerResetConfirmDialog_: boolean
+
+  declare private mouseWheelUpActionRow_: MouseWheelActionRow
+  declare private mouseWheelDownActionRow_: MouseWheelActionRow
+  declare private showMouseWheelResetConfirmDialog_: boolean
+
   declare private disallowedSiteRows_: DisallowedSiteRow[]
-  declare private customGestureRows_: CustomGestureRow[]
-  declare private selectedCaptureCommand_: GestureCommand
-  declare private selectedCaptureNavigateToUrl_: string
-  declare private capturedChainedActions_: ChainedActionRow[]
-  declare private hasCapturedGesture_: boolean
+  declare private showAddDisallowedSiteDialog_: boolean
+  declare private addDisallowedSiteInput_: string
+  declare private editingDisallowedSiteOrigin_: string | null
+
   declare private commandOptions_: CommandOption[]
-  declare private capturedPathData_: string
-  declare private showResetConfirmDialog_: boolean
-  declare private showRockerResetConfirmDialog_: boolean
-  declare private showWheelResetConfirmDialog_: boolean
-  declare private showAddSiteDialog_: boolean
-  declare private addSiteInput_: string
-  declare private isEditingSite_: boolean
-  declare private showClearGestureConfirmDialog_: boolean
-  declare private showUrlDialog_: boolean
   declare private urlDialogInput_: string
-  declare private rockLeftRow_: RockerWheelRow
-  declare private rockRightRow_: RockerWheelRow
-  declare private wheelUpRow_: RockerWheelRow
-  declare private wheelDownRow_: RockerWheelRow
 
-  private capturedPoints_: CustomGesturePoint[] = []
-  private isCapturing_ = false
+  private openSettingsPageOptions_ = OPEN_SETTINGS_PAGE_OPTIONS
 
-  // The origin being edited, or null when the dialog is adding a new one.
-  private editingSiteOrigin_: string|null = null
-
-  // Which row/chained-action the URL/pattern dialog is currently editing,
-  // set when it opens and consulted only on confirm; chainedAction is
-  // undefined when editing a row's own primary action rather than one of
-  // its chained ones. `gestureCommand` is the action's own command at the
-  // time the dialog opened, since the same dialog is shared between
-  // Navigate to URL and Switch to Tab (see `hasTextParam_`), which need
-  // different title/placeholder text and whether the input is treated as
-  // a URL (schemed) or a glob pattern (left as-is).
+  // One dialog shared across row types; `row` identifies which row may
+  // confirm it, `write` persists the result back to that row.
   private urlDialogContext_: {
-    mappingRow?: MappingRow
-    customGestureRow?: CustomGestureRow
-    isCapture?: boolean
-    chainedAction?: ChainedActionRow
-    rockerWheelRow?: RockerWheelRow
-    gestureCommand: GestureCommand
+    row: unknown
+    actionRows: ActionRow[]
+    targetAction: ActionRow
+    write: (actionRows: ActionRow[]) => void
   } | null = null
 
-  // Set on dragstart, consulted and cleared on drop (or dragend, if the
-  // drag was abandoned without a drop). `draggedAction` is null when the
-  // primary action itself (rather than one of its chained actions) is
-  // being dragged.
-  private dragContext_: {
-    mappingRow?: MappingRow
-    customGestureRow?: CustomGestureRow
-    isCapture?: boolean
-    rockerWheelRow?: RockerWheelRow
-    draggedAction: ChainedActionRow | null
+  // See `urlDialogContext_`; set on dragstart, read and cleared on drop.
+  private actionDragContext_: {
+    row: unknown
+    actionRows: ActionRow[]
+    draggedAction: ActionRow
+    write: (actionRows: ActionRow[]) => void
   } | null = null
 
-  override ready() {
-    super.ready()
-    this.commandOptions_ = COMMAND_ORDER.map(
-      (value) => ({ name: this.i18n(COMMAND_I18N_KEYS[value]), value }))
+  // Bound once so `removeListener` in `disconnectedCallback` removes the
+  // exact same function reference `connectedCallback` added.
+  private boundOnCommandsChanged_ = this.onCommandsChanged_.bind(this)
+
+  override connectedCallback() {
+    super.connectedCallback()
+    commandsCache.addListener(this.boundOnCommandsChanged_)
   }
 
-  private onMappingsPrefChanged_(
-    overrides: Record<string, ChainedActionEntry[]> | undefined) {
-    this.mappingRows_ = DEFAULT_GESTURE_MAPPINGS.map(
-      ([key, defaultCommand]) => {
-        const actions = (overrides ?? {})[key]
-        return {
-          key,
-          icons: gestureKeyToIconNames(key),
-          gestureCommand: actions?.[0]?.command ?? defaultCommand,
-          navigateToUrl: actions?.[0] ? textParamFromEntry(actions[0]) : '',
-          chainedActions: (actions ?? []).slice(1).map((entry) => ({
-            gestureCommand: entry.command,
-            navigateToUrl: textParamFromEntry(entry),
-          })),
-        }
-      })
+  override disconnectedCallback() {
+    super.disconnectedCallback()
+    commandsCache.removeListener(this.boundOnCommandsChanged_)
+  }
+
+  // Sentinels first, in declaration order, since `UNASSIGNED` is the
+  // default; then every real browser command alphabetically by name.
+  private onCommandsChanged_(commands: { [id: number]: Command }) {
+    const sentinelOptions = [
+      GestureCommand.UNASSIGNED,
+      GestureCommand.NAVIGATE_TO_URL,
+      GestureCommand.SCROLL_TO_TOP,
+      GestureCommand.SWITCH_TO_TAB,
+    ].map((value) => (
+      { name: this.i18n(SPECIAL_COMMAND_I18N_KEYS[value]), value }))
+    const browserCommandOptions = Object.values(commands)
+      .map((command) => ({ name: command.name, value: command.id }))
+      .sort((a, b) => a.name.localeCompare(b.name))
+    this.commandOptions_ = [...sentinelOptions, ...browserCommandOptions]
+  }
+
+  private onDirectionalGestureMappingsPrefChanged_(
+    overrides: Record<string, ActionDict[]> | undefined) {
+    this.directionalGestureMappingActionRows_ =
+      buildDirectionalGestureMappingActionRows(overrides)
   }
 
   private onDisallowedSitesPrefChanged_(
@@ -225,335 +274,461 @@ class SettingsGesturesPage extends SettingsGesturesPageBase {
 
   private onCustomGesturesPrefChanged_(
     customGestures: CustomGestureEntry[] | undefined) {
-    this.customGestureRows_ = (customGestures ?? []).map((customGesture) => ({
-      id: customGesture.id,
-      gestureCommand:
-        customGesture.actions?.[0]?.command ?? GestureCommand.UNASSIGNED,
-      previewPath: customGesture.points.length >= 2
-        ? smoothedSvgPath(
-          fitToViewBox(customGesture.points, CUSTOM_GESTURE_PREVIEW_SIZE,
-            CUSTOM_GESTURE_PREVIEW_PADDING))
-        : '',
-      navigateToUrl: customGesture.actions?.[0]
-        ? textParamFromEntry(customGesture.actions[0]) : '',
-      chainedActions: (customGesture.actions ?? []).slice(1).map((entry) => ({
-        gestureCommand: entry.command,
-        navigateToUrl: textParamFromEntry(entry),
-      })),
-    }))
+    this.customGestureActionRows_ = buildCustomGestureActionRows(customGestures)
   }
 
-  private buildRockerWheelRow_(
-      prefName: string, actions: ChainedActionEntry[] | undefined,
-      defaultCommand: GestureCommand): RockerWheelRow {
-    return {
-      prefName,
-      gestureCommand: actions?.[0]?.command ?? defaultCommand,
-      navigateToUrl: actions?.[0] ? textParamFromEntry(actions[0]) : '',
-      chainedActions: (actions ?? []).slice(1).map((entry) => ({
-        gestureCommand: entry.command,
-        navigateToUrl: textParamFromEntry(entry),
-      })),
-    }
+  private buildMouseRockerRow_(
+      prefName: string, actions: ActionDict[] | undefined,
+    defaultCommand: number): MouseRockerActionRow {
+    return { prefName, actionRows: actionRowsFromDicts(actions, defaultCommand) }
   }
 
-  private onRockLeftActionPrefChanged_(
-    actions: ChainedActionEntry[] | undefined) {
-    this.rockLeftRow_ = this.buildRockerWheelRow_(
-      GESTURES_ROCK_LEFT_PREF, actions, GestureCommand.BACK)
+  private buildMouseWheelRow_(
+    prefName: string, actions: ActionDict[] | undefined,
+    defaultCommand: number): MouseWheelActionRow {
+    return { prefName, actionRows: actionRowsFromDicts(actions, defaultCommand) }
   }
 
-  private onRockRightActionPrefChanged_(
-    actions: ChainedActionEntry[] | undefined) {
-    this.rockRightRow_ = this.buildRockerWheelRow_(
-      GESTURES_ROCK_RIGHT_PREF, actions, GestureCommand.FORWARD)
+  private onMouseRockerLeftActionPrefChanged_(
+    actions: ActionDict[] | undefined) {
+    this.mouseRockerLeftActionRow_ = this.buildMouseRockerRow_(
+      GESTURES_MOUSE_ROCKER_LEFT_PREF, actions, 33000 /* IDC_BACK */)
   }
 
-  private onWheelUpActionPrefChanged_(
-    actions: ChainedActionEntry[] | undefined) {
-    this.wheelUpRow_ = this.buildRockerWheelRow_(
-      GESTURES_WHEEL_UP_PREF, actions, GestureCommand.PREVIOUS_TAB)
+  private onMouseRockerRightActionPrefChanged_(
+    actions: ActionDict[] | undefined) {
+    this.mouseRockerRightActionRow_ = this.buildMouseRockerRow_(
+      GESTURES_MOUSE_ROCKER_RIGHT_PREF, actions, 33001 /* IDC_FORWARD */)
   }
 
-  private onWheelDownActionPrefChanged_(
-    actions: ChainedActionEntry[] | undefined) {
-    this.wheelDownRow_ = this.buildRockerWheelRow_(
-      GESTURES_WHEEL_DOWN_PREF, actions, GestureCommand.NEXT_TAB)
+  private onMouseWheelUpActionPrefChanged_(
+    actions: ActionDict[] | undefined) {
+    this.mouseWheelUpActionRow_ = this.buildMouseWheelRow_(
+      GESTURES_MOUSE_WHEEL_UP_PREF, actions, 34017 /* IDC_SELECT_PREVIOUS_TAB */)
   }
 
-  // All 4 rocker/wheel rows are each their own standalone list pref (not an
-  // entry in a shared dict/array like mappings/custom gestures), so a single
-  // writer parameterized by `prefName` covers all of them.
-  private writeRockerWheelActions_(
-    prefName: string, gestureCommand: GestureCommand, navigateToUrl: string,
-    chainedActions: ChainedActionRow[]) {
-    this.setPrefValue(
-      prefName,
-      buildActionEntries({ gestureCommand, navigateToUrl }, chainedActions))
+  private onMouseWheelDownActionPrefChanged_(
+    actions: ActionDict[] | undefined) {
+    this.mouseWheelDownActionRow_ = this.buildMouseWheelRow_(
+      GESTURES_MOUSE_WHEEL_DOWN_PREF, actions, 34016 /* IDC_SELECT_NEXT_TAB */)
   }
 
-  // The 4 rows share identical behavior, so a `data-pref` attribute on each
-  // row's container (set to its `prefName`) identifies which one dispatched,
-  // rather than needing 4 near-duplicate handlers per interaction.
-  private getRockerWheelRow_(prefName: string): RockerWheelRow {
+  // The rocker's 2 rows are each their own standalone list pref, so a
+  // single writer parameterized by `prefName` covers both.
+  private writeMouseRockerActions_(prefName: string, actionRows: ActionRow[]) {
+    this.setPrefValue(prefName, toActionDicts(actionRows))
+  }
+
+  // Kept separate from `writeMouseRockerActions_` since the two features'
+  // prefs and reset behavior are otherwise independent.
+  private writeMouseWheelActions_(prefName: string, actionRows: ActionRow[]) {
+    this.setPrefValue(prefName, toActionDicts(actionRows))
+  }
+
+  private getMouseRockerRow_(prefName: string): MouseRockerActionRow {
     switch (prefName) {
-      case GESTURES_ROCK_LEFT_PREF: return this.rockLeftRow_
-      case GESTURES_ROCK_RIGHT_PREF: return this.rockRightRow_
-      case GESTURES_WHEEL_UP_PREF: return this.wheelUpRow_
-      case GESTURES_WHEEL_DOWN_PREF: return this.wheelDownRow_
-      default: throw new Error(`Unknown rocker/wheel pref: ${prefName}`)
+      case GESTURES_MOUSE_ROCKER_LEFT_PREF: return this.mouseRockerLeftActionRow_
+      case GESTURES_MOUSE_ROCKER_RIGHT_PREF: return this.mouseRockerRightActionRow_
+      default: throw new Error(`Unknown mouse rocker pref: ${prefName}`)
     }
   }
 
-  private getRockerWheelPref_(e: Event): string {
+  // See `getMouseRockerRow_`; the wheel's 2 rows (up/down) dispatch the
+  // same way.
+  private getMouseWheelRow_(prefName: string): MouseWheelActionRow {
+    switch (prefName) {
+      case GESTURES_MOUSE_WHEEL_UP_PREF: return this.mouseWheelUpActionRow_
+      case GESTURES_MOUSE_WHEEL_DOWN_PREF: return this.mouseWheelDownActionRow_
+      default: throw new Error(`Unknown mouse wheel pref: ${prefName}`)
+    }
+  }
+
+  // The rocker and wheel rows share identical dispatch, each container
+  // carrying a `data-pref` attribute naming its own pref.
+  private getPrefFromDataAttribute_(e: Event): string {
     return (e.currentTarget as HTMLElement).closest<HTMLElement>(
       '[data-pref]')!.dataset['pref']!
   }
 
-  private onRockerWheelCommandChanged_(e: Event) {
-    const prefName = this.getRockerWheelPref_(e)
-    const row = this.getRockerWheelRow_(prefName)
-    this.writeRockerWheelActions_(
-      prefName, Number((e.target as HTMLSelectElement).value) as
-        GestureCommand, row.navigateToUrl, row.chainedActions)
+  private onMouseRockerCommandChanged_(e: Event) {
+    const prefName = this.getPrefFromDataAttribute_(e)
+    const row = this.getMouseRockerRow_(prefName)
+    const command = Number((e.target as HTMLSelectElement).value)
+    this.writeMouseRockerActions_(prefName, [
+      { ...row.actionRows[0], command }, ...this.chainedActionRows_(row.actionRows)])
   }
 
-  private onWheelModifierButtonChanged_(e: Event) {
+  private onMouseWheelCommandChanged_(e: Event) {
+    const prefName = this.getPrefFromDataAttribute_(e)
+    const row = this.getMouseWheelRow_(prefName)
+    const command = Number((e.target as HTMLSelectElement).value)
+    this.writeMouseWheelActions_(prefName, [
+      { ...row.actionRows[0], command }, ...this.chainedActionRows_(row.actionRows)])
+  }
+
+  private onMouseRockerOpenSettingsPageChanged_(e: Event) {
+    const prefName = this.getPrefFromDataAttribute_(e)
+    const row = this.getMouseRockerRow_(prefName)
+    const openSettingsPage = Number((e.target as HTMLSelectElement).value)
+    this.writeMouseRockerActions_(prefName, [
+      { ...row.actionRows[0], openSettingsPage }, ...this.chainedActionRows_(row.actionRows)])
+  }
+
+  private onMouseWheelOpenSettingsPageChanged_(e: Event) {
+    const prefName = this.getPrefFromDataAttribute_(e)
+    const row = this.getMouseWheelRow_(prefName)
+    const openSettingsPage = Number((e.target as HTMLSelectElement).value)
+    this.writeMouseWheelActions_(prefName, [
+      { ...row.actionRows[0], openSettingsPage }, ...this.chainedActionRows_(row.actionRows)])
+  }
+
+  private onMouseWheelModifierButtonChanged_(e: Event) {
     this.setPrefValue(
-      GESTURES_WHEEL_MODIFIER_BUTTON_PREF,
+      GESTURES_MOUSE_WHEEL_MODIFIER_BUTTON_PREF,
       Number((e.target as HTMLSelectElement).value))
   }
 
-  private onWheelSensitivityChanged_(e: Event) {
-    const input = e.target as HTMLInputElement
-    const value = Number(input.value)
-    // Snap to the default when released close to it, so it's easy to land
-    // back on exactly the out-of-the-box sensitivity.
-    const snapped =
-      Math.abs(value - DEFAULT_WHEEL_SENSITIVITY_IN_PIXELS) <=
-          WHEEL_SENSITIVITY_SNAP_THRESHOLD_IN_PIXELS
-        ? DEFAULT_WHEEL_SENSITIVITY_IN_PIXELS
-        : value
-    this.setPrefValue(GESTURES_WHEEL_SENSITIVITY_IN_PIXELS_PREF, snapped)
+  private onMouseWheelSensitivityChanged_(e: Event) {
+    const value = Number((e.target as HTMLInputElement).value)
+    const snapped = this.snapToDefault_(
+      value, MOUSE_WHEEL_SENSITIVITY_SNAP_THRESHOLD_IN_PIXELS,
+      DEFAULT_MOUSE_WHEEL_SENSITIVITY_IN_PIXELS)
+    this.setPrefValue(GESTURES_MOUSE_WHEEL_SENSITIVITY_IN_PIXELS_PREF, snapped)
   }
 
-  private onEditRockerWheelUrlClick_(e: Event) {
-    const row = this.getRockerWheelRow_(this.getRockerWheelPref_(e))
-    this.urlDialogContext_ =
-      { rockerWheelRow: row, gestureCommand: row.gestureCommand }
-    this.urlDialogInput_ = row.navigateToUrl
-    this.showUrlDialog_ = true
+  private onEditMouseRockerUrlClick_(e: Event) {
+    const prefName = this.getPrefFromDataAttribute_(e)
+    const row = this.getMouseRockerRow_(prefName)
+    this.urlDialogContext_ = {
+      row, actionRows: row.actionRows, targetAction: row.actionRows[0],
+      write: (actionRows) => this.writeMouseRockerActions_(prefName, actionRows),
+    }
+    this.urlDialogInput_ = row.actionRows[0].textParam
   }
 
-  private onAddRockerWheelChainedActionClick_(e: Event) {
+  private onEditMouseWheelUrlClick_(e: Event) {
+    const prefName = this.getPrefFromDataAttribute_(e)
+    const row = this.getMouseWheelRow_(prefName)
+    this.urlDialogContext_ = {
+      row, actionRows: row.actionRows, targetAction: row.actionRows[0],
+      write: (actionRows) => this.writeMouseWheelActions_(prefName, actionRows),
+    }
+    this.urlDialogInput_ = row.actionRows[0].textParam
+  }
+
+  private onAddMouseRockerChainedActionClick_(e: Event) {
     // Rebuilding the row below replaces this row's DOM; blur first so focus
     // settles on the body instead of wherever it lands afterward.
     ;(e.target as HTMLElement).blur()
-    const prefName = this.getRockerWheelPref_(e)
-    const row = this.getRockerWheelRow_(prefName)
-    this.writeRockerWheelActions_(
-      prefName, row.gestureCommand, row.navigateToUrl, [
-        ...row.chainedActions,
-        { gestureCommand: GestureCommand.UNASSIGNED, navigateToUrl: '' },
-      ])
+    const prefName = this.getPrefFromDataAttribute_(e)
+    const row = this.getMouseRockerRow_(prefName)
+    this.writeMouseRockerActions_(prefName, [
+      ...row.actionRows,
+      defaultActionRow(GestureCommand.UNASSIGNED),
+    ])
+  }
+
+  private onAddMouseWheelChainedActionClick_(e: Event) {
+    ; (e.target as HTMLElement).blur()
+    const prefName = this.getPrefFromDataAttribute_(e)
+    const row = this.getMouseWheelRow_(prefName)
+    this.writeMouseWheelActions_(prefName, [
+      ...row.actionRows,
+      defaultActionRow(GestureCommand.UNASSIGNED),
+    ])
   }
 
   // Only shown when there's at least one chained action, so there's always
   // a next action to promote into the primary slot this one vacates.
-  private onRemoveRockerWheelPrimaryActionClick_(e: Event) {
-    const prefName = this.getRockerWheelPref_(e)
-    const row = this.getRockerWheelRow_(prefName)
-    const [newPrimary, ...rest] = row.chainedActions
-    this.writeRockerWheelActions_(
-      prefName, newPrimary.gestureCommand, newPrimary.navigateToUrl, rest)
+  private onRemoveMouseRockerPrimaryActionClick_(e: Event) {
+    const prefName = this.getPrefFromDataAttribute_(e)
+    const row = this.getMouseRockerRow_(prefName)
+    this.writeMouseRockerActions_(prefName, this.chainedActionRows_(row.actionRows))
   }
 
-  private onRockerWheelChainedActionCommandChanged_(e: Event &
-    { model: { chainedAction: ChainedActionRow } }) {
-    const prefName = this.getRockerWheelPref_(e)
-    const row = this.getRockerWheelRow_(prefName)
-    const gestureCommand =
-      Number((e.target as HTMLSelectElement).value) as GestureCommand
-    this.writeRockerWheelActions_(
-      prefName, row.gestureCommand, row.navigateToUrl, row.chainedActions.map(
+  // See `onRemoveMouseRockerPrimaryActionClick_`.
+  private onRemoveMouseWheelPrimaryActionClick_(e: Event) {
+    const prefName = this.getPrefFromDataAttribute_(e)
+    const row = this.getMouseWheelRow_(prefName)
+    this.writeMouseWheelActions_(prefName, this.chainedActionRows_(row.actionRows))
+  }
+
+  private onMouseRockerChainedActionCommandChanged_(e: Event &
+    { model: { chainedAction: ActionRow } }) {
+    const prefName = this.getPrefFromDataAttribute_(e)
+    const row = this.getMouseRockerRow_(prefName)
+    const command = Number((e.target as HTMLSelectElement).value)
+    this.writeMouseRockerActions_(
+      prefName, row.actionRows.map(
         (action) => action === e.model.chainedAction
-          ? { ...action, gestureCommand }
+          ? { ...action, command }
           : action))
   }
 
-  private onRemoveRockerWheelChainedActionClick_(e: Event &
-    { model: { chainedAction: ChainedActionRow } }) {
-    const prefName = this.getRockerWheelPref_(e)
-    const row = this.getRockerWheelRow_(prefName)
-    this.writeRockerWheelActions_(
-      prefName, row.gestureCommand, row.navigateToUrl,
-      row.chainedActions.filter(
+  private onMouseWheelChainedActionCommandChanged_(e: Event &
+    { model: { chainedAction: ActionRow } }) {
+    const prefName = this.getPrefFromDataAttribute_(e)
+    const row = this.getMouseWheelRow_(prefName)
+    const command = Number((e.target as HTMLSelectElement).value)
+    this.writeMouseWheelActions_(
+      prefName, row.actionRows.map(
+        (action) => action === e.model.chainedAction
+          ? { ...action, command }
+          : action))
+  }
+
+  private onMouseRockerChainedActionOpenSettingsPageChanged_(e: Event &
+  { model: { chainedAction: ActionRow } }) {
+    const prefName = this.getPrefFromDataAttribute_(e)
+    const row = this.getMouseRockerRow_(prefName)
+    const openSettingsPage = Number((e.target as HTMLSelectElement).value)
+    this.writeMouseRockerActions_(
+      prefName, row.actionRows.map(
+        (action) => action === e.model.chainedAction
+          ? { ...action, openSettingsPage }
+          : action))
+  }
+
+  private onMouseWheelChainedActionOpenSettingsPageChanged_(e: Event &
+  { model: { chainedAction: ActionRow } }) {
+    const prefName = this.getPrefFromDataAttribute_(e)
+    const row = this.getMouseWheelRow_(prefName)
+    const openSettingsPage = Number((e.target as HTMLSelectElement).value)
+    this.writeMouseWheelActions_(
+      prefName, row.actionRows.map(
+        (action) => action === e.model.chainedAction
+          ? { ...action, openSettingsPage }
+          : action))
+  }
+
+  private onRemoveMouseRockerChainedActionClick_(e: Event &
+  { model: { chainedAction: ActionRow } }) {
+    const prefName = this.getPrefFromDataAttribute_(e)
+    const row = this.getMouseRockerRow_(prefName)
+    this.writeMouseRockerActions_(
+      prefName,
+      row.actionRows.filter(
         (action) => action !== e.model.chainedAction))
   }
 
-  private onEditRockerWheelChainedUrlClick_(e: Event &
-    { model: { chainedAction: ChainedActionRow } }) {
-    const row = this.getRockerWheelRow_(this.getRockerWheelPref_(e))
+  private onRemoveMouseWheelChainedActionClick_(e: Event &
+    { model: { chainedAction: ActionRow } }) {
+    const prefName = this.getPrefFromDataAttribute_(e)
+    const row = this.getMouseWheelRow_(prefName)
+    this.writeMouseWheelActions_(
+      prefName,
+      row.actionRows.filter(
+        (action) => action !== e.model.chainedAction))
+  }
+
+  private onEditMouseRockerChainedUrlClick_(e: Event &
+  { model: { chainedAction: ActionRow } }) {
+    const prefName = this.getPrefFromDataAttribute_(e)
+    const row = this.getMouseRockerRow_(prefName)
     this.urlDialogContext_ = {
-      rockerWheelRow: row,
-      chainedAction: e.model.chainedAction,
-      gestureCommand: e.model.chainedAction.gestureCommand,
+      row, actionRows: row.actionRows, targetAction: e.model.chainedAction,
+      write: (actionRows) => this.writeMouseRockerActions_(prefName, actionRows),
     }
-    this.urlDialogInput_ = e.model.chainedAction.navigateToUrl
-    this.showUrlDialog_ = true
+    this.urlDialogInput_ = e.model.chainedAction.textParam
   }
 
-  private onRockerWheelPrimaryActionDragStart_(e: DragEvent) {
-    this.dragContext_ = {
-      rockerWheelRow: this.getRockerWheelRow_(this.getRockerWheelPref_(e)),
-      draggedAction: null,
+  private onEditMouseWheelChainedUrlClick_(e: Event &
+  { model: { chainedAction: ActionRow } }) {
+    const prefName = this.getPrefFromDataAttribute_(e)
+    const row = this.getMouseWheelRow_(prefName)
+    this.urlDialogContext_ = {
+      row, actionRows: row.actionRows, targetAction: e.model.chainedAction,
+      write: (actionRows) => this.writeMouseWheelActions_(prefName, actionRows),
+    }
+    this.urlDialogInput_ = e.model.chainedAction.textParam
+  }
+
+  private onMouseRockerPrimaryActionDragStart_(e: DragEvent) {
+    const prefName = this.getPrefFromDataAttribute_(e)
+    const row = this.getMouseRockerRow_(prefName)
+    this.actionDragContext_ = {
+      row, actionRows: row.actionRows, draggedAction: row.actionRows[0],
+      write: (actionRows) => this.writeMouseRockerActions_(prefName, actionRows),
     }
     e.dataTransfer!.effectAllowed = 'move'
     e.dataTransfer!.setData('text/plain', '')
   }
 
-  private onRockerWheelPrimaryActionDrop_(e: DragEvent) {
-    e.preventDefault()
-    const prefName = this.getRockerWheelPref_(e)
-    const row = this.getRockerWheelRow_(prefName)
-    const context = this.dragContext_
-    this.dragContext_ = null
-    if (!context?.rockerWheelRow ||
-        context.rockerWheelRow.prefName !== prefName ||
-        context.draggedAction === null) {
-      return
-    }
-    const swapped = this.swapPrimaryWithChainedAction_(
-      row, row.chainedActions, context.draggedAction)
-    this.writeRockerWheelActions_(
-      prefName, swapped.primary.gestureCommand, swapped.primary.navigateToUrl,
-      swapped.chainedActions)
-  }
-
-  private onRockerWheelChainedActionDragStart_(e: DragEvent &
-    { model: { chainedAction: ChainedActionRow } }) {
-    this.dragContext_ = {
-      rockerWheelRow: this.getRockerWheelRow_(this.getRockerWheelPref_(e)),
-      draggedAction: e.model.chainedAction,
+  private onMouseWheelPrimaryActionDragStart_(e: DragEvent) {
+    const prefName = this.getPrefFromDataAttribute_(e)
+    const row = this.getMouseWheelRow_(prefName)
+    this.actionDragContext_ = {
+      row, actionRows: row.actionRows, draggedAction: row.actionRows[0],
+      write: (actionRows) => this.writeMouseWheelActions_(prefName, actionRows),
     }
     e.dataTransfer!.effectAllowed = 'move'
     e.dataTransfer!.setData('text/plain', '')
   }
 
-  private onRockerWheelChainedActionDrop_(e: DragEvent &
-    { model: { chainedAction: ChainedActionRow } }) {
+  private onMouseRockerPrimaryActionDrop_(e: DragEvent) {
     e.preventDefault()
-    const prefName = this.getRockerWheelPref_(e)
-    const row = this.getRockerWheelRow_(prefName)
-    const context = this.dragContext_
-    this.dragContext_ = null
-    if (!context?.rockerWheelRow ||
-        context.rockerWheelRow.prefName !== prefName) {
+    const prefName = this.getPrefFromDataAttribute_(e)
+    const row = this.getMouseRockerRow_(prefName)
+    const context = this.actionDragContext_
+    this.actionDragContext_ = null
+    if (context?.row !== row) {
       return
     }
-    if (context.draggedAction === null) {
-      const swapped = this.swapPrimaryWithChainedAction_(
-        row, row.chainedActions, e.model.chainedAction)
-      this.writeRockerWheelActions_(
-        prefName, swapped.primary.gestureCommand,
-        swapped.primary.navigateToUrl, swapped.chainedActions)
+    context.write(moveAction(
+      context.actionRows, context.draggedAction, row.actionRows[0]))
+  }
+
+  private onMouseWheelPrimaryActionDrop_(e: DragEvent) {
+    e.preventDefault()
+    const prefName = this.getPrefFromDataAttribute_(e)
+    const row = this.getMouseWheelRow_(prefName)
+    const context = this.actionDragContext_
+    this.actionDragContext_ = null
+    if (context?.row !== row) {
       return
     }
-    this.writeRockerWheelActions_(
-      prefName, row.gestureCommand, row.navigateToUrl,
-      this.reorderChainedActions_(
-        row.chainedActions, context.draggedAction, e.model.chainedAction))
+    context.write(moveAction(
+      context.actionRows, context.draggedAction, row.actionRows[0]))
+  }
+
+  private onMouseRockerChainedActionDragStart_(e: DragEvent &
+    { model: { chainedAction: ActionRow } }) {
+    const prefName = this.getPrefFromDataAttribute_(e)
+    const row = this.getMouseRockerRow_(prefName)
+    this.actionDragContext_ = {
+      row, actionRows: row.actionRows, draggedAction: e.model.chainedAction,
+      write: (actionRows) => this.writeMouseRockerActions_(prefName, actionRows),
+    }
+    e.dataTransfer!.effectAllowed = 'move'
+    e.dataTransfer!.setData('text/plain', '')
+  }
+
+  private onMouseWheelChainedActionDragStart_(e: DragEvent &
+  { model: { chainedAction: ActionRow } }) {
+    const prefName = this.getPrefFromDataAttribute_(e)
+    const row = this.getMouseWheelRow_(prefName)
+    this.actionDragContext_ = {
+      row, actionRows: row.actionRows, draggedAction: e.model.chainedAction,
+      write: (actionRows) => this.writeMouseWheelActions_(prefName, actionRows),
+    }
+    e.dataTransfer!.effectAllowed = 'move'
+    e.dataTransfer!.setData('text/plain', '')
+  }
+
+  private onMouseRockerChainedActionDrop_(e: DragEvent &
+    { model: { chainedAction: ActionRow } }) {
+    e.preventDefault()
+    const row = this.getMouseRockerRow_(this.getPrefFromDataAttribute_(e))
+    const context = this.actionDragContext_
+    this.actionDragContext_ = null
+    if (context?.row !== row) {
+      return
+    }
+    context.write(moveAction(
+      context.actionRows, context.draggedAction, e.model.chainedAction))
+  }
+
+  private onMouseWheelChainedActionDrop_(e: DragEvent &
+  { model: { chainedAction: ActionRow } }) {
+    e.preventDefault()
+    const row = this.getMouseWheelRow_(this.getPrefFromDataAttribute_(e))
+    const context = this.actionDragContext_
+    this.actionDragContext_ = null
+    if (context?.row !== row) {
+      return
+    }
+    context.write(moveAction(
+      context.actionRows, context.draggedAction, e.model.chainedAction))
   }
 
   // True for any command whose destination/pattern is edited via the
   // shared URL/pattern dialog (see `urlDialogContext_`'s own comment).
-  private hasTextParam_(gestureCommand: GestureCommand): boolean {
-    return gestureCommand === GestureCommand.NAVIGATE_TO_URL ||
-      gestureCommand === GestureCommand.SWITCH_TO_TAB
+  private hasTextParam_(command: number): boolean {
+    return command === GestureCommand.NAVIGATE_TO_URL ||
+      command === GestureCommand.SWITCH_TO_TAB
   }
 
-  private getCommandName_(gestureCommand: GestureCommand): string {
-    return this.i18n(COMMAND_I18N_KEYS[gestureCommand])
+  private isOpenSettingsCommand_(command: number): boolean {
+    return command === IDC_OPTIONS
   }
 
   private getCommandSelectClass_(
-      gestureCommand: GestureCommand, navigateToUrl: string): string {
+    command: number, textParam: string): string {
     const classes = ['md-select']
-    if (gestureCommand === GestureCommand.UNASSIGNED) {
+    if (command === GestureCommand.UNASSIGNED) {
       classes.push('command-unassigned')
     }
-    if (this.isActionIncomplete_(gestureCommand, navigateToUrl)) {
+    if (this.isActionIncomplete_(command, textParam)) {
       classes.push('action-incomplete')
     }
     return classes.join(' ')
   }
 
-  // An action with no command set, or one needing a URL/pattern not set
-  // yet, won't do anything if the gesture runs right now.
+  // Only `textParam` has an "unset" state; every other param type defaults
+  // to a value that is already valid on its own.
   private isActionIncomplete_(
-      gestureCommand: GestureCommand, navigateToUrl: string): boolean {
-    return gestureCommand === GestureCommand.UNASSIGNED ||
-      (this.hasTextParam_(gestureCommand) && !navigateToUrl)
+    command: number, textParam: string): boolean {
+    return command === GestureCommand.UNASSIGNED ||
+      (this.hasTextParam_(command) && !textParam)
   }
 
-  private getUrlAttachClass_(navigateToUrl: string): string {
-    return navigateToUrl ? 'param-attach' : 'param-attach action-incomplete'
+  private getUrlAttachClass_(textParam: string): string {
+    return textParam ? 'param-attach' : 'param-attach action-incomplete'
   }
 
-  // Native `<option>` has no one-way `value` binding of its own; the
-  // `selected` attribute on each option is how the `<select>`'s current
-  // value is reflected.
+  // Native `<option>` reflects the `<select>`'s value via its own
+  // `selected` attribute, not a one-way binding.
   private optionMatchesCommand_(
-      optionValue: GestureCommand, gestureCommand: GestureCommand): boolean {
-    return optionValue === gestureCommand
+    optionValue: number, command: number): boolean {
+    return optionValue === command
   }
 
   private onCommandChanged_(
-    e: DomRepeatEvent<MappingRow>) {
+    e: DomRepeatEvent<DirectionalGestureMappingActionRow>) {
     const row = e.model.item
     this.reassignCommand_(
-      Number((e.target as HTMLSelectElement).value) as GestureCommand,
-      { mappingKey: row.key })
+      Number((e.target as HTMLSelectElement).value),
+      { directionalGestureMappingKey: row.key })
   }
 
   private onCustomGestureCommandChanged_(
-    e: DomRepeatEvent<CustomGestureRow>) {
+    e: DomRepeatEvent<CustomGestureActionRow>) {
     const row = e.model.item
     this.reassignCommand_(
-      Number((e.target as HTMLSelectElement).value) as GestureCommand,
+      Number((e.target as HTMLSelectElement).value),
       { customGestureId: row.id })
   }
 
-  private onEditMappingUrlClick_(e: DomRepeatEvent<MappingRow>) {
+  private onEditDirectionalGestureMappingUrlClick_(e: DomRepeatEvent<DirectionalGestureMappingActionRow>) {
     const row = e.model.item
-    this.urlDialogContext_ = { mappingRow: row, gestureCommand: row.gestureCommand }
-    this.urlDialogInput_ = row.navigateToUrl
-    this.showUrlDialog_ = true
+    this.urlDialogContext_ = {
+      row, actionRows: row.actionRows, targetAction: row.actionRows[0],
+      write: (actionRows) =>
+        this.writeDirectionalGestureMappingActions_(row.key, actionRows),
+    }
+    this.urlDialogInput_ = row.actionRows[0].textParam
   }
 
-  private onEditCustomGestureUrlClick_(e: DomRepeatEvent<CustomGestureRow>) {
+  private onEditCustomGestureUrlClick_(e: DomRepeatEvent<CustomGestureActionRow>) {
     const row = e.model.item
-    this.urlDialogContext_ =
-      { customGestureRow: row, gestureCommand: row.gestureCommand }
-    this.urlDialogInput_ = row.navigateToUrl
-    this.showUrlDialog_ = true
+    this.urlDialogContext_ = {
+      row, actionRows: row.actionRows, targetAction: row.actionRows[0],
+      write: (actionRows) => this.writeCustomGestureActions_(row.id, actionRows),
+    }
+    this.urlDialogInput_ = row.actionRows[0].textParam
   }
 
   // Only shown when there's at least one chained action, so there's always
   // a next action to promote into the primary slot this one vacates.
-  private onRemoveMappingPrimaryActionClick_(e: DomRepeatEvent<MappingRow>) {
+  private onRemoveDirectionalGestureMappingPrimaryActionClick_(e: DomRepeatEvent<DirectionalGestureMappingActionRow>) {
     const row = e.model.item
-    const [newPrimary, ...rest] = row.chainedActions
-    this.writeMappingActions_(
-      row.key, newPrimary.gestureCommand, newPrimary.navigateToUrl, rest)
+    this.writeDirectionalGestureMappingActions_(row.key, this.chainedActionRows_(row.actionRows))
   }
 
   private onRemoveCustomGesturePrimaryActionClick_(
-    e: DomRepeatEvent<CustomGestureRow>) {
+    e: DomRepeatEvent<CustomGestureActionRow>) {
     const row = e.model.item
-    const [newPrimary, ...rest] = row.chainedActions
-    this.writeCustomGestureActions_(
-      row.id, newPrimary.gestureCommand, newPrimary.navigateToUrl, rest)
+    this.writeCustomGestureActions_(row.id, this.chainedActionRows_(row.actionRows))
   }
 
   private onUrlDialogInputChanged_(e: Event) {
@@ -561,7 +736,6 @@ class SettingsGesturesPage extends SettingsGesturesPageBase {
   }
 
   private onUrlDialogClose_() {
-    this.showUrlDialog_ = false
     this.urlDialogContext_ = null
   }
 
@@ -570,93 +744,47 @@ class SettingsGesturesPage extends SettingsGesturesPageBase {
     if (!context) {
       return
     }
-    // A Switch to Tab pattern is matched literally (see
-    // `MatchesGlobPattern`), not navigated to, so it shouldn't get an
-    // `https://` scheme prepended the way a URL does.
+    // A Switch to Tab pattern is matched literally, not navigated to, so it
+    // does not get an `https://` scheme prepended the way a URL does.
     const input = this.urlDialogInput_.trim()
-    const url = context.gestureCommand === GestureCommand.SWITCH_TO_TAB
+    const url = context.targetAction.command === GestureCommand.SWITCH_TO_TAB
       ? input : withUrlScheme(input)
-    if (context.mappingRow) {
-      const row = context.mappingRow
-      this.writeMappingActions_(
-        row.key, row.gestureCommand,
-        context.chainedAction ? row.navigateToUrl : url,
-        context.chainedAction
-          ? row.chainedActions.map((action) => action === context.chainedAction
-            ? { ...action, navigateToUrl: url }
-            : action)
-          : row.chainedActions)
-    } else if (context.customGestureRow) {
-      const row = context.customGestureRow
-      this.writeCustomGestureActions_(
-        row.id, row.gestureCommand,
-        context.chainedAction ? row.navigateToUrl : url,
-        context.chainedAction
-          ? row.chainedActions.map((action) => action === context.chainedAction
-            ? { ...action, navigateToUrl: url }
-            : action)
-          : row.chainedActions)
-    } else if (context.isCapture) {
-      if (context.chainedAction) {
-        this.capturedChainedActions_ = this.capturedChainedActions_.map(
-          (action) => action === context.chainedAction
-            ? { ...action, navigateToUrl: url }
-            : action)
-      } else {
-        this.selectedCaptureNavigateToUrl_ = url
-      }
-    } else if (context.rockerWheelRow) {
-      const row = context.rockerWheelRow
-      this.writeRockerWheelActions_(
-        row.prefName, row.gestureCommand,
-        context.chainedAction ? row.navigateToUrl : url,
-        context.chainedAction
-          ? row.chainedActions.map((action) => action === context.chainedAction
-            ? { ...action, navigateToUrl: url }
-            : action)
-          : row.chainedActions)
-    }
-    this.showUrlDialog_ = false
+    context.write(context.actionRows.map((action) =>
+      action === context.targetAction ? { ...action, textParam: url } : action))
     this.urlDialogContext_ = null
   }
 
-  // Displayed on the attached URL/pattern button; the chosen value once
-  // set, with its scheme stripped for a URL (always http/https) and left
-  // as-is for a pattern, or a placeholder prompting the user to set one.
-  // Display only; the stored value is unchanged.
+  // A pattern is shown as stored; a URL has its scheme stripped for
+  // display only, since it is always http/https.
   private getUrlButtonLabel_(
-      gestureCommand: GestureCommand, navigateToUrl: string): string {
-    if (navigateToUrl) {
-      return gestureCommand === GestureCommand.SWITCH_TO_TAB
-        ? navigateToUrl : navigateToUrl.replace(/^https?:\/\//, '')
+    command: number, textParam: string): string {
+    if (textParam) {
+      return command === GestureCommand.SWITCH_TO_TAB
+        ? textParam : textParam.replace(/^https?:\/\//, '')
     }
-    return this.i18n(gestureCommand === GestureCommand.SWITCH_TO_TAB
+    return this.i18n(command === GestureCommand.SWITCH_TO_TAB
       ? 'braveGesturesSetPattern' : 'braveGesturesSetUrl')
   }
 
-  // Title/placeholder for the shared URL/pattern dialog (see
-  // `urlDialogContext_`'s own comment), based on which command is being
-  // edited.
   private urlDialogTitle_(): string {
     return this.i18n(
-      this.urlDialogContext_?.gestureCommand === GestureCommand.SWITCH_TO_TAB
-        ? 'braveGesturesCommandSwitchToTab'
-        : 'braveGesturesCommandNavigateToUrl')
+      this.urlDialogContext_?.targetAction.command === GestureCommand.SWITCH_TO_TAB
+        ? 'braveGesturesSpecialCommandSwitchToTab'
+        : 'braveGesturesSpecialCommandNavigateToUrl')
   }
 
   private urlDialogPlaceholder_(): string {
     return this.i18n(
-      this.urlDialogContext_?.gestureCommand === GestureCommand.SWITCH_TO_TAB
+      this.urlDialogContext_?.targetAction.command === GestureCommand.SWITCH_TO_TAB
         ? 'braveGesturesSwitchToTabPlaceholder'
         : 'braveGesturesNavigateToUrlPlaceholder')
   }
 
-  private writeMappingActions_(
-    key: string, gestureCommand: GestureCommand, navigateToUrl: string,
-    chainedActions: ChainedActionRow[]) {
+  private writeDirectionalGestureMappingActions_(
+    key: string, actionRows: ActionRow[]) {
     this.setPrefDictEntry(
-      GESTURES_MAPPINGS_PREF, key,
-      buildActionEntries({ gestureCommand, navigateToUrl }, chainedActions))
+      GESTURES_DIRECTIONAL_GESTURE_MAPPINGS_PREF, key,
+      toActionDicts(actionRows))
   }
 
   private existingCustomGestures_(): CustomGestureEntry[] {
@@ -664,137 +792,125 @@ class SettingsGesturesPage extends SettingsGesturesPageBase {
       GESTURES_CUSTOM_GESTURES_PREF).value ?? []
   }
 
-  private writeCustomGestureActions_(
-    id: string, gestureCommand: GestureCommand, navigateToUrl: string,
-    chainedActions: ChainedActionRow[]) {
+  private writeCustomGestureActions_(id: string, actionRows: ActionRow[]) {
     const existingCustomGestures = this.existingCustomGestures_()
     this.setPrefValue(
       GESTURES_CUSTOM_GESTURES_PREF,
       existingCustomGestures.map((customGesture) => customGesture.id === id
-        ? {
-          ...customGesture,
-          actions: buildActionEntries(
-            { gestureCommand, navigateToUrl }, chainedActions),
-        }
+        ? { ...customGesture, actions: toActionDicts(actionRows) }
         : customGesture))
   }
 
-  private onAddMappingChainedActionClick_(e: DomRepeatEvent<MappingRow>) {
-    // Rebuilding mappingRows_ below replaces this row's DOM; blur first so
-    // focus settles on the body instead of wherever it lands afterward.
+  private onAddDirectionalGestureMappingChainedActionClick_(e: DomRepeatEvent<DirectionalGestureMappingActionRow>) {
+    // Rebuilding the row below replaces this button's DOM, so blur it
+    // first or focus would land wherever the replacement happens to be.
     ;(e.target as HTMLElement).blur()
     const row = e.model.item
-    this.writeMappingActions_(row.key, row.gestureCommand, row.navigateToUrl, [
-      ...row.chainedActions,
-      { gestureCommand: GestureCommand.UNASSIGNED, navigateToUrl: '' },
+    this.writeDirectionalGestureMappingActions_(row.key, [
+      ...row.actionRows,
+      defaultActionRow(GestureCommand.UNASSIGNED),
     ])
   }
 
-  private onRemoveMappingChainedActionClick_(e: Event &
-    { model: { chainedAction: ChainedActionRow,
-               parentModel: { item: MappingRow } } }) {
+  private onRemoveDirectionalGestureMappingChainedActionClick_(e: Event &
+    { model: { chainedAction: ActionRow,
+      parentModel: { item: DirectionalGestureMappingActionRow }
+    }
+    }) {
     const row = e.model.parentModel.item
-    this.writeMappingActions_(
-      row.key, row.gestureCommand, row.navigateToUrl,
-      row.chainedActions.filter(
+    this.writeDirectionalGestureMappingActions_(
+      row.key,
+      row.actionRows.filter(
         (action) => action !== e.model.chainedAction))
   }
 
-  private onMappingChainedActionCommandChanged_(e: Event &
-    { model: { chainedAction: ChainedActionRow,
-               parentModel: { item: MappingRow } } }) {
+  private onDirectionalGestureMappingChainedActionCommandChanged_(e: Event &
+    { model: { chainedAction: ActionRow,
+      parentModel: { item: DirectionalGestureMappingActionRow }
+    }
+    }) {
     const row = e.model.parentModel.item
-    const gestureCommand =
-      Number((e.target as HTMLSelectElement).value) as GestureCommand
-    this.writeMappingActions_(
-      row.key, row.gestureCommand, row.navigateToUrl, row.chainedActions.map(
+    const command = Number((e.target as HTMLSelectElement).value)
+    this.writeDirectionalGestureMappingActions_(
+      row.key, row.actionRows.map(
         (action) => action === e.model.chainedAction
-          ? { ...action, gestureCommand }
+          ? { ...action, command }
           : action))
   }
 
-  private onEditMappingChainedUrlClick_(e: Event &
-    { model: { chainedAction: ChainedActionRow,
-               parentModel: { item: MappingRow } } }) {
-    this.urlDialogContext_ = {
-      mappingRow: e.model.parentModel.item,
-      chainedAction: e.model.chainedAction,
-      gestureCommand: e.model.chainedAction.gestureCommand,
-    }
-    this.urlDialogInput_ = e.model.chainedAction.navigateToUrl
-    this.showUrlDialog_ = true
+  private onDirectionalGestureMappingOpenSettingsPageChanged_(e: Event &
+  { model: { item: DirectionalGestureMappingActionRow } }) {
+    const row = e.model.item
+    const openSettingsPage = Number((e.target as HTMLSelectElement).value)
+    this.writeDirectionalGestureMappingActions_(row.key, [
+      { ...row.actionRows[0], openSettingsPage }, ...this.chainedActionRows_(row.actionRows)])
   }
 
-  // Allows a drop; without this, the browser rejects the drop entirely.
-  // Shared across mapping, custom gesture, and capture chained actions,
-  // since it doesn't need to know which one is being dragged. Deliberately
-  // does nothing else: two different "update the view mid-drag" approaches
-  // (reassigning the bound array, and a dom-repeat `sort`-based preview)
-  // both reproduced a browser-process crash on tab close after a drag, so
-  // the reorder only ever happens once, in the drop handler, after the
-  // native drag session has fully ended. Do not add live preview behavior
-  // here without first confirming it doesn't reintroduce that crash.
-  private onChainedActionDragOver_(e: DragEvent) {
+  private onDirectionalGestureMappingChainedActionOpenSettingsPageChanged_(e: Event &
+  {
+    model: {
+      chainedAction: ActionRow,
+      parentModel: { item: DirectionalGestureMappingActionRow }
+    }
+  }) {
+    const row = e.model.parentModel.item
+    const openSettingsPage = Number((e.target as HTMLSelectElement).value)
+    this.writeDirectionalGestureMappingActions_(
+      row.key, row.actionRows.map(
+        (action) => action === e.model.chainedAction
+          ? { ...action, openSettingsPage }
+          : action))
+  }
+
+  private onEditDirectionalGestureMappingChainedUrlClick_(e: Event &
+    { model: { chainedAction: ActionRow,
+      parentModel: { item: DirectionalGestureMappingActionRow }
+    }
+    }) {
+    const row = e.model.parentModel.item
+    this.urlDialogContext_ = {
+      row, actionRows: row.actionRows, targetAction: e.model.chainedAction,
+      write: (actionRows) =>
+        this.writeDirectionalGestureMappingActions_(row.key, actionRows),
+    }
+    this.urlDialogInput_ = e.model.chainedAction.textParam
+  }
+
+  // Allows a drop; without this, the browser rejects it. Do not add
+  // mid-drag reordering here; it has twice crashed the browser process.
+  private onActionDragOver_(e: DragEvent) {
     e.preventDefault()
     if (e.dataTransfer) {
       e.dataTransfer.dropEffect = 'move'
     }
   }
 
-  // Clears a drag that didn't end in a drop (e.g. released outside any
-  // valid target). A drop also clears dragContext_ itself, so this is a
-  // no-op in that case.
-  private onChainedActionDragEnd_() {
-    this.dragContext_ = null
+  // A no-op if a drop already cleared `actionDragContext_`; otherwise
+  // clears a drag that ended outside any valid target.
+  private onActionDragEnd_() {
+    this.actionDragContext_ = null
   }
 
-  // Moves `dragged` to `target`'s slot: after it when `dragged` started
-  // earlier in the list, before it when `dragged` started later. Using a
-  // fixed "always insert before" rule would make dropping onto the very
-  // next item a no-op, since that's already its position relative to
-  // `dragged`.
-  private reorderChainedActions_(
-      chainedActions: ChainedActionRow[], dragged: ChainedActionRow,
-      target: ChainedActionRow): ChainedActionRow[] {
-    if (dragged === target) {
-      return chainedActions
+  // Template helpers so markup can split a row's `actionRows` (index 0
+  // primary) without a dedicated field for each half.
+  private primaryActionRow_(actionRows: ActionRow[]): ActionRow {
+    return actionRows[0]
+  }
+
+  private chainedActionRows_(actionRows: ActionRow[]): ActionRow[] {
+    return actionRows.slice(1)
+  }
+
+  private onDirectionalGestureMappingChainedActionDragStart_(e: DragEvent &
+    { model: { chainedAction: ActionRow,
+      parentModel: { item: DirectionalGestureMappingActionRow }
     }
-    const movingDown =
-      chainedActions.indexOf(dragged) < chainedActions.indexOf(target)
-    const withoutDragged = chainedActions.filter((action) => action !== dragged)
-    const targetIndex = withoutDragged.indexOf(target)
-    const insertAt = movingDown ? targetIndex + 1 : targetIndex
-    return [
-      ...withoutDragged.slice(0, insertAt),
-      dragged,
-      ...withoutDragged.slice(insertAt),
-    ]
-  }
-
-  // Promotes `chainedAction` into the primary slot, demoting the current
-  // primary into `chainedAction`'s old slot.
-  private swapPrimaryWithChainedAction_(
-      primary: { gestureCommand: GestureCommand, navigateToUrl: string },
-      chainedActions: ChainedActionRow[], chainedAction: ChainedActionRow):
-      { primary: ChainedActionRow, chainedActions: ChainedActionRow[] } {
-    return {
-      primary: {
-        gestureCommand: chainedAction.gestureCommand,
-        navigateToUrl: chainedAction.navigateToUrl,
-      },
-      chainedActions: chainedActions.map((action) => action === chainedAction
-        ? { gestureCommand: primary.gestureCommand,
-            navigateToUrl: primary.navigateToUrl }
-        : action),
-    }
-  }
-
-  private onMappingChainedActionDragStart_(e: DragEvent &
-    { model: { chainedAction: ChainedActionRow,
-               parentModel: { item: MappingRow } } }) {
-    this.dragContext_ = {
-      mappingRow: e.model.parentModel.item,
-      draggedAction: e.model.chainedAction,
+    }) {
+    const row = e.model.parentModel.item
+    this.actionDragContext_ = {
+      row, actionRows: row.actionRows, draggedAction: e.model.chainedAction,
+      write: (actionRows) =>
+        this.writeDirectionalGestureMappingActions_(row.key, actionRows),
     }
     e.dataTransfer!.effectAllowed = 'move'
     // Some drag implementations only treat the drag as valid, and fire
@@ -802,109 +918,132 @@ class SettingsGesturesPage extends SettingsGesturesPageBase {
     e.dataTransfer!.setData('text/plain', '')
   }
 
-  private onMappingChainedActionDrop_(e: DragEvent &
-    { model: { chainedAction: ChainedActionRow,
-               parentModel: { item: MappingRow } } }) {
+  private onDirectionalGestureMappingChainedActionDrop_(e: DragEvent &
+    { model: { chainedAction: ActionRow,
+      parentModel: { item: DirectionalGestureMappingActionRow }
+    }
+    }) {
     e.preventDefault()
-    const context = this.dragContext_
     const row = e.model.parentModel.item
-    this.dragContext_ = null
-    if (!context?.mappingRow || context.mappingRow !== row) {
+    const context = this.actionDragContext_
+    this.actionDragContext_ = null
+    if (context?.row !== row) {
       return
     }
-    if (context.draggedAction === null) {
-      const swapped = this.swapPrimaryWithChainedAction_(
-        row, row.chainedActions, e.model.chainedAction)
-      this.writeMappingActions_(
-        row.key, swapped.primary.gestureCommand,
-        swapped.primary.navigateToUrl, swapped.chainedActions)
-      return
-    }
-    this.writeMappingActions_(
-      row.key, row.gestureCommand, row.navigateToUrl,
-      this.reorderChainedActions_(
-        row.chainedActions, context.draggedAction, e.model.chainedAction))
+    context.write(moveAction(
+      context.actionRows, context.draggedAction, e.model.chainedAction))
   }
 
-  private onMappingPrimaryActionDragStart_(
-      e: DragEvent & { model: { item: MappingRow } }) {
-    this.dragContext_ = { mappingRow: e.model.item, draggedAction: null }
+  private onDirectionalGestureMappingPrimaryActionDragStart_(
+    e: DragEvent & { model: { item: DirectionalGestureMappingActionRow } }) {
+    const row = e.model.item
+    this.actionDragContext_ = {
+      row, actionRows: row.actionRows, draggedAction: row.actionRows[0],
+      write: (actionRows) =>
+        this.writeDirectionalGestureMappingActions_(row.key, actionRows),
+    }
     e.dataTransfer!.effectAllowed = 'move'
     e.dataTransfer!.setData('text/plain', '')
   }
 
-  private onMappingPrimaryActionDrop_(
-      e: DragEvent & { model: { item: MappingRow } }) {
+  private onDirectionalGestureMappingPrimaryActionDrop_(
+    e: DragEvent & { model: { item: DirectionalGestureMappingActionRow } }) {
     e.preventDefault()
-    const context = this.dragContext_
     const row = e.model.item
-    this.dragContext_ = null
-    if (!context?.mappingRow || context.mappingRow !== row ||
-        context.draggedAction === null) {
+    const context = this.actionDragContext_
+    this.actionDragContext_ = null
+    if (context?.row !== row) {
       return
     }
-    const swapped = this.swapPrimaryWithChainedAction_(
-      row, row.chainedActions, context.draggedAction)
-    this.writeMappingActions_(
-      row.key, swapped.primary.gestureCommand, swapped.primary.navigateToUrl,
-      swapped.chainedActions)
+    context.write(moveAction(
+      context.actionRows, context.draggedAction, row.actionRows[0]))
   }
 
   private onAddCustomGestureChainedActionClick_(
-    e: DomRepeatEvent<CustomGestureRow>) {
-    // Rebuilding customGestureRows_ below replaces this row's DOM; blur
-    // first so focus settles on the body instead of wherever it lands
-    // afterward.
+    e: DomRepeatEvent<CustomGestureActionRow>) {
+    // Rebuilding the row below replaces this button's DOM, so blur it
+    // first or focus would land wherever the replacement happens to be.
     ;(e.target as HTMLElement).blur()
     const row = e.model.item
     this.writeCustomGestureActions_(
-      row.id, row.gestureCommand, row.navigateToUrl, [
-        ...row.chainedActions,
-        { gestureCommand: GestureCommand.UNASSIGNED, navigateToUrl: '' },
+      row.id, [
+      ...row.actionRows,
+      defaultActionRow(GestureCommand.UNASSIGNED),
       ])
   }
 
   private onRemoveCustomGestureChainedActionClick_(e: Event &
-    { model: { chainedAction: ChainedActionRow,
-               parentModel: { item: CustomGestureRow } } }) {
+    { model: { chainedAction: ActionRow,
+      parentModel: { item: CustomGestureActionRow }
+    }
+    }) {
     const row = e.model.parentModel.item
     this.writeCustomGestureActions_(
-      row.id, row.gestureCommand, row.navigateToUrl,
-      row.chainedActions.filter(
+      row.id,
+      row.actionRows.filter(
         (action) => action !== e.model.chainedAction))
   }
 
   private onCustomGestureChainedActionCommandChanged_(e: Event &
-    { model: { chainedAction: ChainedActionRow,
-               parentModel: { item: CustomGestureRow } } }) {
+    { model: { chainedAction: ActionRow,
+      parentModel: { item: CustomGestureActionRow }
+    }
+    }) {
     const row = e.model.parentModel.item
-    const gestureCommand =
-      Number((e.target as HTMLSelectElement).value) as GestureCommand
+    const command = Number((e.target as HTMLSelectElement).value)
     this.writeCustomGestureActions_(
-      row.id, row.gestureCommand, row.navigateToUrl, row.chainedActions.map(
+      row.id, row.actionRows.map(
         (action) => action === e.model.chainedAction
-          ? { ...action, gestureCommand }
+          ? { ...action, command }
+          : action))
+  }
+
+  private onCustomGestureOpenSettingsPageChanged_(e: Event &
+  { model: { item: CustomGestureActionRow } }) {
+    const row = e.model.item
+    const openSettingsPage = Number((e.target as HTMLSelectElement).value)
+    this.writeCustomGestureActions_(row.id, [
+      { ...row.actionRows[0], openSettingsPage }, ...this.chainedActionRows_(row.actionRows)])
+  }
+
+  private onCustomGestureChainedActionOpenSettingsPageChanged_(e: Event &
+  {
+    model: {
+      chainedAction: ActionRow,
+      parentModel: { item: CustomGestureActionRow }
+    }
+  }) {
+    const row = e.model.parentModel.item
+    const openSettingsPage = Number((e.target as HTMLSelectElement).value)
+    this.writeCustomGestureActions_(
+      row.id, row.actionRows.map(
+        (action) => action === e.model.chainedAction
+          ? { ...action, openSettingsPage }
           : action))
   }
 
   private onEditCustomGestureChainedUrlClick_(e: Event &
-    { model: { chainedAction: ChainedActionRow,
-               parentModel: { item: CustomGestureRow } } }) {
-    this.urlDialogContext_ = {
-      customGestureRow: e.model.parentModel.item,
-      chainedAction: e.model.chainedAction,
-      gestureCommand: e.model.chainedAction.gestureCommand,
+    { model: { chainedAction: ActionRow,
+      parentModel: { item: CustomGestureActionRow }
     }
-    this.urlDialogInput_ = e.model.chainedAction.navigateToUrl
-    this.showUrlDialog_ = true
+    }) {
+    const row = e.model.parentModel.item
+    this.urlDialogContext_ = {
+      row, actionRows: row.actionRows, targetAction: e.model.chainedAction,
+      write: (actionRows) => this.writeCustomGestureActions_(row.id, actionRows),
+    }
+    this.urlDialogInput_ = e.model.chainedAction.textParam
   }
 
   private onCustomGestureChainedActionDragStart_(e: DragEvent &
-    { model: { chainedAction: ChainedActionRow,
-               parentModel: { item: CustomGestureRow } } }) {
-    this.dragContext_ = {
-      customGestureRow: e.model.parentModel.item,
-      draggedAction: e.model.chainedAction,
+    { model: { chainedAction: ActionRow,
+      parentModel: { item: CustomGestureActionRow }
+    }
+    }) {
+    const row = e.model.parentModel.item
+    this.actionDragContext_ = {
+      row, actionRows: row.actionRows, draggedAction: e.model.chainedAction,
+      write: (actionRows) => this.writeCustomGestureActions_(row.id, actionRows),
     }
     e.dataTransfer!.effectAllowed = 'move'
     // Some drag implementations only treat the drag as valid, and fire
@@ -913,346 +1052,228 @@ class SettingsGesturesPage extends SettingsGesturesPageBase {
   }
 
   private onCustomGestureChainedActionDrop_(e: DragEvent &
-    { model: { chainedAction: ChainedActionRow,
-               parentModel: { item: CustomGestureRow } } }) {
+    { model: { chainedAction: ActionRow,
+      parentModel: { item: CustomGestureActionRow }
+    }
+    }) {
     e.preventDefault()
-    const context = this.dragContext_
     const row = e.model.parentModel.item
-    this.dragContext_ = null
-    if (!context?.customGestureRow || context.customGestureRow !== row) {
+    const context = this.actionDragContext_
+    this.actionDragContext_ = null
+    if (context?.row !== row) {
       return
     }
-    if (context.draggedAction === null) {
-      const swapped = this.swapPrimaryWithChainedAction_(
-        row, row.chainedActions, e.model.chainedAction)
-      this.writeCustomGestureActions_(
-        row.id, swapped.primary.gestureCommand,
-        swapped.primary.navigateToUrl, swapped.chainedActions)
-      return
-    }
-    this.writeCustomGestureActions_(
-      row.id, row.gestureCommand, row.navigateToUrl,
-      this.reorderChainedActions_(
-        row.chainedActions, context.draggedAction, e.model.chainedAction))
+    context.write(moveAction(
+      context.actionRows, context.draggedAction, e.model.chainedAction))
   }
 
   private onCustomGesturePrimaryActionDragStart_(
-      e: DragEvent & { model: { item: CustomGestureRow } }) {
-    this.dragContext_ = { customGestureRow: e.model.item, draggedAction: null }
+    e: DragEvent & { model: { item: CustomGestureActionRow } }) {
+    const row = e.model.item
+    this.actionDragContext_ = {
+      row, actionRows: row.actionRows, draggedAction: row.actionRows[0],
+      write: (actionRows) => this.writeCustomGestureActions_(row.id, actionRows),
+    }
     e.dataTransfer!.effectAllowed = 'move'
     e.dataTransfer!.setData('text/plain', '')
   }
 
   private onCustomGesturePrimaryActionDrop_(
-      e: DragEvent & { model: { item: CustomGestureRow } }) {
+    e: DragEvent & { model: { item: CustomGestureActionRow } }) {
     e.preventDefault()
-    const context = this.dragContext_
     const row = e.model.item
-    this.dragContext_ = null
-    if (!context?.customGestureRow || context.customGestureRow !== row ||
-        context.draggedAction === null) {
+    const context = this.actionDragContext_
+    this.actionDragContext_ = null
+    if (context?.row !== row) {
       return
     }
-    const swapped = this.swapPrimaryWithChainedAction_(
-      row, row.chainedActions, context.draggedAction)
-    this.writeCustomGestureActions_(
-      row.id, swapped.primary.gestureCommand, swapped.primary.navigateToUrl,
-      swapped.chainedActions)
+    context.write(moveAction(
+      context.actionRows, context.draggedAction, row.actionRows[0]))
   }
 
-  private rowCommandSequence_(
-      row: { gestureCommand: GestureCommand,
-             chainedActions: ChainedActionRow[] }): GestureCommand[] {
-    return [row.gestureCommand,
-      ...row.chainedActions.map((action) => action.gestureCommand)]
-  }
-
-  // Returns the other gestures whose full ordered command sequence matches
-  // `commands` exactly, excluding `target` itself. A gesture chained
-  // differently (even if it shares the same first command) isn't a
-  // conflict. `UNASSIGNED` as the first command is the default, unbound
-  // state that many gestures legitimately share, so it's never treated as
-  // a conflict.
-  private findConflictingGestures_(
-      commands: GestureCommand[],
-    target: { mappingKey?: string, customGestureId?: string }): { keys: string[], customGestureIds: string[] } {
-    if (commands[0] === GestureCommand.UNASSIGNED) {
-      return { keys: [], customGestureIds: [] }
-    }
-    const matches = (sequence: GestureCommand[]) =>
-      sequence.length === commands.length &&
-      sequence.every((command, i) => command === commands[i])
-    return {
-      keys: this.mappingRows_
-        .filter((row) =>
-          row.key !== target.mappingKey &&
-          matches(this.rowCommandSequence_(row)))
-        .map((row) => row.key),
-      customGestureIds: this.customGestureRows_
-        .filter((row) =>
-          row.id !== target.customGestureId &&
-          matches(this.rowCommandSequence_(row)))
-        .map((row) => row.id),
-    }
-  }
-
-  // Sets `gestureCommand` on the gesture identified by `target`, either a
-  // fixed direction-key mapping via `mappingKey` or a custom gesture via
-  // `customGestureId`. Both gestures are allowed to share the same action;
-  // the clashing rows are flagged instead (see `mappingRowClashClass_` and
-  // `customGestureRowClashClass_`), nothing is cleared or blocked.
+  // A gesture may share its command with another; the conflict is flagged in
+  // the UI rather than cleared or blocked here.
   private reassignCommand_(
-      gestureCommand: GestureCommand,
-    target: { mappingKey?: string, customGestureId?: string }) {
-    this.applyCommand_(gestureCommand, target)
-  }
-
-  private applyCommand_(
-      gestureCommand: GestureCommand,
-    target: { mappingKey?: string, customGestureId?: string }) {
-    if (target.mappingKey !== undefined) {
-      const row = this.mappingRows_.find((r) => r.key === target.mappingKey)
-      this.writeMappingActions_(
-        target.mappingKey, gestureCommand, row?.navigateToUrl ?? '',
-        row?.chainedActions ?? [])
+    command: number,
+    gestureTarget:
+        { directionalGestureMappingKey?: string, customGestureId?: string }) {
+    if (gestureTarget.directionalGestureMappingKey !== undefined) {
+      const row = this.directionalGestureMappingActionRows_.find(
+        (mappingRow) => mappingRow.key === gestureTarget.directionalGestureMappingKey)
+      this.writeDirectionalGestureMappingActions_(
+        gestureTarget.directionalGestureMappingKey,
+        applyCommandToActionRows(command, row?.actionRows))
     }
-    if (target.customGestureId !== undefined) {
-      const row =
-        this.customGestureRows_.find((r) => r.id === target.customGestureId)
+    if (gestureTarget.customGestureId !== undefined) {
+      const row = this.customGestureActionRows_.find(
+        (customGestureRow) => customGestureRow.id === gestureTarget.customGestureId)
       this.writeCustomGestureActions_(
-        target.customGestureId, gestureCommand, row?.navigateToUrl ?? '',
-        row?.chainedActions ?? [])
+        gestureTarget.customGestureId,
+        applyCommandToActionRows(command, row?.actionRows))
     }
   }
 
-  // Highlights a mapping whose full command sequence is also used by
-  // another gesture or custom gesture, or that a custom gesture's drawn
-  // path would resolve to instead of running as a custom gesture. Takes
-  // `mappingRows_` and `customGestureRows_` as explicit, otherwise-unused
-  // parameters so this recomputes whenever either changes; a clash with a
-  // custom gesture otherwise wouldn't be re-checked when only
-  // `customGestureRows_` changes, since Polymer only tracks `item` as this
-  // binding's dependency.
-  private mappingRowClashClass_(
-      row: MappingRow, _mappingRows: MappingRow[],
-      _customGestureRows: CustomGestureRow[]): string {
-    const { keys, customGestureIds } = this.findConflictingGestures_(
-      this.rowCommandSequence_(row), { mappingKey: row.key })
-    const hasClash = keys.length > 0 || customGestureIds.length > 0 ||
-      this.anyCustomGestureMatchesDirectionalKey_(row.key)
-    return hasClash ? 'command-clash' : ''
+  // Both action-row arrays are explicit, otherwise-unused parameters so
+  // this recomputes when either changes, not just `row`.
+  private directionalGestureMappingRowConflictClass_(
+    row: DirectionalGestureMappingActionRow, _directionalGestureMappingRows: DirectionalGestureMappingActionRow[],
+    _customGestureRows: CustomGestureActionRow[]): string {
+    const { keys, customGestureIds } = findConflictingGestures(
+      rowCommandSequence(row), { directionalGestureMappingKey: row.key },
+      this.directionalGestureMappingActionRows_, this.customGestureActionRows_)
+    const hasConflict = keys.length > 0 || customGestureIds.length > 0 ||
+      this.anyCustomGestureMatchesDirectionalGestureKey_(row.key)
+    return hasConflict ? 'command-conflict' : ''
   }
 
-  // True if any saved custom gesture's drawn path would resolve to the
-  // directional mapping keyed by `key` instead of running as a custom
-  // gesture, making that custom gesture unreachable.
-  private anyCustomGestureMatchesDirectionalKey_(key: string): boolean {
-    const existingCustomGestures = this.existingCustomGestures_()
-    const minStrokePixels = this.getPref<number>(
+  private anyCustomGestureMatchesDirectionalGestureKey_(key: string): boolean {
+    return anyCustomGestureMatchesDirectionalGestureKey(
+      key, this.existingCustomGestures_(), this.minStrokePixels_(),
+      MAX_DIRECTIONAL_STROKES, this.directionalGestureMappingActionRows_)
+  }
+
+  // Both action-row arrays are explicit, otherwise-unused parameters so
+  // this recomputes when either changes, not just `row`.
+  private customGestureRowConflictClass_(
+    row: CustomGestureActionRow, _directionalGestureMappingRows: DirectionalGestureMappingActionRow[],
+    _customGestureRows: CustomGestureActionRow[]): string {
+    const { keys, customGestureIds } = findConflictingGestures(
+      rowCommandSequence(row), { customGestureId: row.id },
+      this.directionalGestureMappingActionRows_, this.customGestureActionRows_)
+    const hasConflict = keys.length > 0 || customGestureIds.length > 0 ||
+      this.customGestureShapeConflictDescription_(row.id) !== ''
+    return hasConflict ? 'command-conflict' : ''
+  }
+
+  private customGestureShapeConflictDescription_(id: string): string {
+    return customGestureShapeConflictDescription(
+      id, this.existingCustomGestures_(), this.minStrokePixels_(),
+      MAX_DIRECTIONAL_STROKES, this.directionalGestureMappingActionRows_,
+      this.i18n.bind(this))
+  }
+
+  private minStrokePixels_(): number {
+    return this.getPref<number>(
       GESTURES_SENSITIVITY_IN_PIXELS_PREF).value ?? DEFAULT_SENSITIVITY_IN_PIXELS
-    return existingCustomGestures.some((gesture) => classifyDirectionalStrokeKey(
-      gesture.points, minStrokePixels, MAX_DIRECTIONAL_STROKES) === key)
   }
 
-  // Highlights a custom gesture whose full command sequence is also used by
-  // another gesture or custom gesture, or whose drawn path looks similar
-  // enough to another custom gesture's that the recognizer could confuse
-  // them. See `mappingRowClashClass_` for why both arrays are taken
-  // explicitly.
-  private customGestureRowClashClass_(
-      row: CustomGestureRow, _mappingRows: MappingRow[],
-      _customGestureRows: CustomGestureRow[]): string {
-    const { keys, customGestureIds } = this.findConflictingGestures_(
-      this.rowCommandSequence_(row), { customGestureId: row.id })
-    const hasClash = keys.length > 0 || customGestureIds.length > 0 ||
-      this.shapeClashDescription_(row.id) !== ''
-    return hasClash ? 'command-clash' : ''
-  }
-
-  // Describes why this custom gesture's drawn path clashes with another's,
-  // or '' if it doesn't: either it would resolve to a mapped directional
-  // gesture instead, which always wins over a custom gesture at dispatch
-  // time and makes this one unreachable, or it's similar enough to another
-  // custom gesture's that the recognizer could confuse them (the same
-  // check as the live-capture similarity warning). Independent of whether
-  // their actions also clash.
-  private shapeClashDescription_(customGestureId: string): string {
-    const existingCustomGestures = this.existingCustomGestures_()
-    const entry =
-      existingCustomGestures.find((e) => e.id === customGestureId)
-    if (!entry) {
-      return ''
+  private directionalGestureMappingConflictDescription_(
+    row: DirectionalGestureMappingActionRow, _directionalGestureMappingRows: DirectionalGestureMappingActionRow[],
+    _customGestureRows: CustomGestureActionRow[]): string {
+    const { keys, customGestureIds } = findConflictingGestures(
+      rowCommandSequence(row), { directionalGestureMappingKey: row.key },
+      this.directionalGestureMappingActionRows_, this.customGestureActionRows_)
+    const commandConflict = conflictDescription(keys, customGestureIds, this.i18n.bind(this))
+    if (!this.anyCustomGestureMatchesDirectionalGestureKey_(row.key)) {
+      return commandConflict
     }
-    if (this.matchesMappedDirectionalGesture_(entry.points)) {
-      return this.i18n('braveGesturesShapeClashDirectionalSublabel')
+    const shapeConflict = this.i18n('braveGesturesShapeConflictCustomSublabel')
+    return commandConflict ? `${commandConflict}. ${shapeConflict}` : shapeConflict
+  }
+
+  private customGestureConflictDescription_(
+    row: CustomGestureActionRow, _directionalGestureMappingRows: DirectionalGestureMappingActionRow[],
+    _customGestureRows: CustomGestureActionRow[]): string {
+    const { keys, customGestureIds } = findConflictingGestures(
+      rowCommandSequence(row), { customGestureId: row.id },
+      this.directionalGestureMappingActionRows_, this.customGestureActionRows_)
+    const commandConflict = conflictDescription(keys, customGestureIds, this.i18n.bind(this))
+    const shapeConflict = this.customGestureShapeConflictDescription_(row.id)
+    if (!shapeConflict) {
+      return commandConflict
     }
-    const others =
-      existingCustomGestures.filter((e) => e.id !== customGestureId)
-    const distance = closestCustomGestureDistance(entry.points, others)
-    if (distance !== null &&
-      distance < CUSTOM_GESTURE_SIMILARITY_WARNING_THRESHOLD) {
-      return this.i18n('braveGesturesShapeClashSublabel')
+    return commandConflict ? `${commandConflict}. ${shapeConflict}` : shapeConflict
+  }
+
+  private onResetDirectionalGestureMappingsClick_() {
+    this.showDirectionalGestureMappingsResetConfirmDialog_ = true
+  }
+
+  private onDirectionalGestureMappingsResetDialogClose_() {
+    this.showDirectionalGestureMappingsResetConfirmDialog_ = false
+  }
+
+  private onConfirmDirectionalGestureMappingsResetClick_() {
+    for (const row of this.directionalGestureMappingActionRows_) {
+      this.deletePrefDictEntry(GESTURES_DIRECTIONAL_GESTURE_MAPPINGS_PREF, row.key)
     }
-    return ''
+    this.showDirectionalGestureMappingsResetConfirmDialog_ = false
   }
 
-  // True if `points`, drawn as a custom gesture, would actually resolve to
-  // a mapped directional gesture instead: `FinishDrawing` always tries
-  // directional-stroke matching before falling back to custom gestures, so
-  // a custom gesture whose path classifies to a mapped stroke key would
-  // never actually run.
-  private matchesMappedDirectionalGesture_(
-      points: CustomGesturePoint[]): boolean {
-    const minStrokePixels = this.getPref<number>(
-      GESTURES_SENSITIVITY_IN_PIXELS_PREF).value ?? DEFAULT_SENSITIVITY_IN_PIXELS
-    const key = classifyDirectionalStrokeKey(
-      points, minStrokePixels, MAX_DIRECTIONAL_STROKES)
-    if (!key) {
-      return false
-    }
-    const row = this.mappingRows_.find((r) => r.key === key)
-    return row !== undefined &&
-      row.gestureCommand !== GestureCommand.UNASSIGNED
+  private onResetMouseRockerClick_() {
+    this.showMouseRockerResetConfirmDialog_ = true
   }
 
-  // Names which other gesture(s)/custom gesture(s) a clash is against.
-  // Mapping keys (e.g. "←", "↓→") are shown as-is; custom gestures have no
-  // readable name, so they're just counted.
-  private clashDescription_(keys: string[], customGestureIds: string[]):
-      string {
-    if (!keys.length && !customGestureIds.length) {
-      return ''
-    }
-    const parts = [...keys]
-    if (customGestureIds.length === 1) {
-      parts.push(this.i18n('braveGesturesClashCustomGestureSingular'))
-    } else if (customGestureIds.length > 1) {
-      parts.push(this.i18n(
-        'braveGesturesClashCustomGesturePlural', customGestureIds.length))
-    }
-    return this.i18n('braveGesturesCommandClashSublabel', parts.join(', '))
+  private onMouseRockerResetDialogClose_() {
+    this.showMouseRockerResetConfirmDialog_ = false
   }
 
-  private mappingClashDescription_(
-      row: MappingRow, _mappingRows: MappingRow[],
-      _customGestureRows: CustomGestureRow[]): string {
-    const { keys, customGestureIds } = this.findConflictingGestures_(
-      this.rowCommandSequence_(row), { mappingKey: row.key })
-    const commandClash = this.clashDescription_(keys, customGestureIds)
-    if (!this.anyCustomGestureMatchesDirectionalKey_(row.key)) {
-      return commandClash
-    }
-    const shapeClash = this.i18n('braveGesturesShapeClashDirectionalSublabel')
-    return commandClash ? `${commandClash}. ${shapeClash}` : shapeClash
+  // Each row is its own standalone pref, so resetting writes each one
+  // back to its single-action default.
+  private onConfirmMouseRockerResetClick_() {
+    this.writeMouseRockerActions_(
+      GESTURES_MOUSE_ROCKER_LEFT_PREF, [defaultActionRow(33000 /* IDC_BACK */)])
+    this.writeMouseRockerActions_(
+      GESTURES_MOUSE_ROCKER_RIGHT_PREF, [defaultActionRow(33001 /* IDC_FORWARD */)])
+    this.showMouseRockerResetConfirmDialog_ = false
   }
 
-  private customGestureClashDescription_(
-      row: CustomGestureRow, _mappingRows: MappingRow[],
-      _customGestureRows: CustomGestureRow[]): string {
-    const { keys, customGestureIds } = this.findConflictingGestures_(
-      this.rowCommandSequence_(row), { customGestureId: row.id })
-    const commandClash = this.clashDescription_(keys, customGestureIds)
-    const shapeClash = this.shapeClashDescription_(row.id)
-    if (!shapeClash) {
-      return commandClash
-    }
-    return commandClash ? `${commandClash}. ${shapeClash}` : shapeClash
+  private onResetMouseWheelClick_() {
+    this.showMouseWheelResetConfirmDialog_ = true
   }
 
-  private onResetMappingsClick_() {
-    this.showResetConfirmDialog_ = true
+  private onMouseWheelResetDialogClose_() {
+    this.showMouseWheelResetConfirmDialog_ = false
   }
 
-  private onResetDialogClose_() {
-    this.showResetConfirmDialog_ = false
-  }
-
-  private onConfirmResetClick_() {
-    for (const row of this.mappingRows_) {
-      this.deletePrefDictEntry(GESTURES_MAPPINGS_PREF, row.key)
-    }
-    this.showResetConfirmDialog_ = false
-  }
-
-  private onResetRockerClick_() {
-    this.showRockerResetConfirmDialog_ = true
-  }
-
-  private onRockerResetDialogClose_() {
-    this.showRockerResetConfirmDialog_ = false
-  }
-
-  // Each row is its own standalone list pref rather than a dict entry, so
-  // resetting means writing each one back to its single-action default,
-  // matching `prefs_registration.cc`'s registered defaults.
-  private onConfirmRockerResetClick_() {
-    this.writeRockerWheelActions_(
-      GESTURES_ROCK_LEFT_PREF, GestureCommand.BACK, '', [])
-    this.writeRockerWheelActions_(
-      GESTURES_ROCK_RIGHT_PREF, GestureCommand.FORWARD, '', [])
-    this.showRockerResetConfirmDialog_ = false
-  }
-
-  private onResetWheelClick_() {
-    this.showWheelResetConfirmDialog_ = true
-  }
-
-  private onWheelResetDialogClose_() {
-    this.showWheelResetConfirmDialog_ = false
-  }
-
-  // Also resets the modifier button and sensitivity, unlike
-  // `onConfirmRockerResetClick_`: wheel gestures have no fixed left/right
-  // mapping the way rocker gestures do, so which button modifies the wheel
-  // and how far it must scroll are themselves configurable, with their own
-  // registered defaults in `prefs_registration.cc`.
-  private onConfirmWheelResetClick_() {
-    this.writeRockerWheelActions_(
-      GESTURES_WHEEL_UP_PREF, GestureCommand.PREVIOUS_TAB, '', [])
-    this.writeRockerWheelActions_(
-      GESTURES_WHEEL_DOWN_PREF, GestureCommand.NEXT_TAB, '', [])
+  // Also resets the modifier button and sensitivity, since those are
+  // themselves configurable for the wheel, unlike the rocker's fixed sides.
+  private onConfirmMouseWheelResetClick_() {
+    this.writeMouseWheelActions_(
+      GESTURES_MOUSE_WHEEL_UP_PREF,
+      [defaultActionRow(34017 /* IDC_SELECT_PREVIOUS_TAB */)])
+    this.writeMouseWheelActions_(
+      GESTURES_MOUSE_WHEEL_DOWN_PREF,
+      [defaultActionRow(34016 /* IDC_SELECT_NEXT_TAB */)])
     this.setPrefValue(
-      GESTURES_WHEEL_MODIFIER_BUTTON_PREF, DEFAULT_WHEEL_MODIFIER_BUTTON)
+      GESTURES_MOUSE_WHEEL_MODIFIER_BUTTON_PREF, DEFAULT_MOUSE_WHEEL_MODIFIER_BUTTON)
     this.setPrefValue(
-      GESTURES_WHEEL_SENSITIVITY_IN_PIXELS_PREF,
-      DEFAULT_WHEEL_SENSITIVITY_IN_PIXELS)
-    this.showWheelResetConfirmDialog_ = false
+      GESTURES_MOUSE_WHEEL_SENSITIVITY_IN_PIXELS_PREF,
+      DEFAULT_MOUSE_WHEEL_SENSITIVITY_IN_PIXELS)
+    this.showMouseWheelResetConfirmDialog_ = false
   }
 
-  private onAddSiteClick_() {
-    this.editingSiteOrigin_ = null
-    this.isEditingSite_ = false
-    this.addSiteInput_ = ''
-    this.showAddSiteDialog_ = true
+  private onAddDisallowedSiteClick_() {
+    this.editingDisallowedSiteOrigin_ = null
+    this.addDisallowedSiteInput_ = ''
+    this.showAddDisallowedSiteDialog_ = true
   }
 
-  private onEditSiteClick_(e: DomRepeatEvent<DisallowedSiteRow>) {
+  private onEditDisallowedSiteClick_(e: DomRepeatEvent<DisallowedSiteRow>) {
     const row = e.model.item
-    this.editingSiteOrigin_ = row.origin
-    this.isEditingSite_ = true
-    this.addSiteInput_ = row.origin
-    this.showAddSiteDialog_ = true
+    this.editingDisallowedSiteOrigin_ = row.origin
+    this.addDisallowedSiteInput_ = row.origin
+    this.showAddDisallowedSiteDialog_ = true
   }
 
-  private getAddSiteDialogTitle_(isEditingSite: boolean): string {
-    return isEditingSite
+  private getAddDisallowedSiteDialogTitle_(editingSiteOrigin: string | null): string {
+    return editingSiteOrigin !== null
       ? this.i18n('braveGesturesEditSite')
       : this.i18n('braveGesturesAddSite')
   }
 
   private onAddSiteDialogClose_() {
-    this.showAddSiteDialog_ = false
+    this.showAddDisallowedSiteDialog_ = false
   }
 
   private onAddSiteInputChanged_(e: Event) {
-    this.addSiteInput_ = (e.target as HTMLInputElement).value
+    this.addDisallowedSiteInput_ = (e.target as HTMLInputElement).value
   }
 
   private onConfirmAddSiteClick_() {
-    // Matched by bare hostname (see
-    // GestureController::IsEnabledForCurrentSite()), so a pasted full
-    // URL is normalized down to just its hostname.
-    const input = this.addSiteInput_.trim()
+    // Matched by bare hostname, so a pasted full URL is normalized down
+    // to just its hostname.
+    const input = this.addDisallowedSiteInput_.trim()
     if (!input) {
       return
     }
@@ -1263,95 +1284,120 @@ class SettingsGesturesPage extends SettingsGesturesPageBase {
     } catch {
       // Not a parseable URL; fall back to using the trimmed input as-is.
     }
-    if (this.editingSiteOrigin_ !== null &&
-        this.editingSiteOrigin_ !== host) {
+    if (this.editingDisallowedSiteOrigin_ !== null &&
+        this.editingDisallowedSiteOrigin_ !== host) {
       this.deletePrefDictEntry(
-        GESTURES_DISALLOWED_SITES_PREF, this.editingSiteOrigin_)
+        GESTURES_DISALLOWED_SITES_PREF, this.editingDisallowedSiteOrigin_)
     }
     this.setPrefDictEntry(GESTURES_DISALLOWED_SITES_PREF, host, true)
-    this.showAddSiteDialog_ = false
+    this.showAddDisallowedSiteDialog_ = false
   }
 
-  private onRemoveSiteClick_(e: DomRepeatEvent<DisallowedSiteRow>) {
+  private onRemoveDisallowedSiteClick_(e: DomRepeatEvent<DisallowedSiteRow>) {
     const row = e.model.item
     this.deletePrefDictEntry(GESTURES_DISALLOWED_SITES_PREF, row.origin)
   }
 
   private onSensitivityChanged_(e: Event) {
-    const input = e.target as HTMLInputElement
-    const value = Number(input.value)
-    // Snap to the default when released close to it, so it's easy to land
-    // back on exactly the out-of-the-box sensitivity.
-    const snapped =
-      Math.abs(value - DEFAULT_SENSITIVITY_IN_PIXELS) <=
-          SENSITIVITY_SNAP_THRESHOLD_IN_PIXELS
-        ? DEFAULT_SENSITIVITY_IN_PIXELS
-        : value
+    const value = Number((e.target as HTMLInputElement).value)
+    const snapped = this.snapToDefault_(
+      value, SENSITIVITY_SNAP_THRESHOLD_IN_PIXELS, DEFAULT_SENSITIVITY_IN_PIXELS)
     this.setPrefValue(GESTURES_SENSITIVITY_IN_PIXELS_PREF, snapped)
   }
 
-  private onCaptureCommandChanged_(e: Event) {
-    this.selectedCaptureCommand_ =
-      Number((e.target as HTMLSelectElement).value)
+  // Lands exactly on the default when released within `threshold` of it, so
+  // it is easy to return to the out-of-the-box value.
+  private snapToDefault_(
+    value: number, threshold: number, defaultValue: number): number {
+    return Math.abs(value - defaultValue) <= threshold ? defaultValue : value
   }
 
-  private onEditCaptureUrlClick_() {
-    this.urlDialogContext_ =
-      { isCapture: true, gestureCommand: this.selectedCaptureCommand_ }
-    this.urlDialogInput_ = this.selectedCaptureNavigateToUrl_
-    this.showUrlDialog_ = true
-  }
-
-  private onAddCaptureChainedActionClick_(e: Event) {
-    // Rebuilding capturedChainedActions_ below replaces this row's DOM;
-    // blur first so focus settles on the body instead of wherever it lands
-    // afterward.
-    ;(e.target as HTMLElement).blur()
-    this.capturedChainedActions_ = [
-      ...this.capturedChainedActions_,
-      { gestureCommand: GestureCommand.UNASSIGNED, navigateToUrl: '' },
+  private onDrawnCustomGestureCommandChanged_(e: Event) {
+    const [primaryActionRow, ...chainedActionRows] = this.drawnCustomGestureActionRows_
+    this.drawnCustomGestureActionRows_ = [
+      { ...primaryActionRow, command: Number((e.target as HTMLSelectElement).value) },
+      ...chainedActionRows,
     ]
   }
 
-  private onRemoveCapturePrimaryActionClick_() {
-    const [newPrimary, ...rest] = this.capturedChainedActions_
-    this.selectedCaptureCommand_ = newPrimary.gestureCommand
-    this.selectedCaptureNavigateToUrl_ = newPrimary.navigateToUrl
-    this.capturedChainedActions_ = rest
+  private onEditDrawnCustomGestureUrlClick_() {
+    this.urlDialogContext_ = {
+      row: DRAWN_CUSTOM_GESTURE_ROW,
+      actionRows: this.drawnCustomGestureActionRows_,
+      targetAction: this.drawnCustomGestureActionRows_[0],
+      write: (actionRows) => this.drawnCustomGestureActionRows_ = actionRows,
+    }
+    this.urlDialogInput_ = this.drawnCustomGestureActionRows_[0].textParam
   }
 
-  private onCaptureChainedActionCommandChanged_(
-    e: Event & { model: { chainedAction: ChainedActionRow } }) {
-    const gestureCommand =
-      Number((e.target as HTMLSelectElement).value) as GestureCommand
-    this.capturedChainedActions_ = this.capturedChainedActions_.map(
+  private onAddDrawnCustomGestureChainedActionClick_(e: Event) {
+    // Rebuilding the row below replaces this button's DOM, so blur it
+    // first or focus would land wherever the replacement happens to be.
+    ;(e.target as HTMLElement).blur()
+    this.drawnCustomGestureActionRows_ = [
+      ...this.drawnCustomGestureActionRows_,
+      defaultActionRow(GestureCommand.UNASSIGNED),
+    ]
+  }
+
+  private onRemoveDrawnCustomGesturePrimaryActionClick_() {
+    this.drawnCustomGestureActionRows_ =
+      this.chainedActionRows_(this.drawnCustomGestureActionRows_)
+  }
+
+  private onDrawnCustomGestureChainedActionCommandChanged_(
+    e: Event & { model: { chainedAction: ActionRow } }) {
+    const command = Number((e.target as HTMLSelectElement).value)
+    this.drawnCustomGestureActionRows_ = this.drawnCustomGestureActionRows_.map(
       (action) => action === e.model.chainedAction
-        ? { ...action, gestureCommand }
+        ? { ...action, command }
         : action)
   }
 
-  private onEditCaptureChainedUrlClick_(
-    e: Event & { model: { chainedAction: ChainedActionRow } }) {
-    this.urlDialogContext_ = {
-      isCapture: true,
-      chainedAction: e.model.chainedAction,
-      gestureCommand: e.model.chainedAction.gestureCommand,
-    }
-    this.urlDialogInput_ = e.model.chainedAction.navigateToUrl
-    this.showUrlDialog_ = true
+  private onDrawnCustomGestureOpenSettingsPageChanged_(e: Event) {
+    const [primaryActionRow, ...chainedActionRows] = this.drawnCustomGestureActionRows_
+    this.drawnCustomGestureActionRows_ = [
+      {
+        ...primaryActionRow,
+        openSettingsPage: Number((e.target as HTMLSelectElement).value),
+      },
+      ...chainedActionRows,
+    ]
   }
 
-  private onRemoveCaptureChainedActionClick_(
-    e: Event & { model: { chainedAction: ChainedActionRow } }) {
-    this.capturedChainedActions_ = this.capturedChainedActions_.filter(
+  private onDrawnCustomGestureChainedActionOpenSettingsPageChanged_(
+    e: Event & { model: { chainedAction: ActionRow } }) {
+    const openSettingsPage = Number((e.target as HTMLSelectElement).value)
+    this.drawnCustomGestureActionRows_ = this.drawnCustomGestureActionRows_.map(
+      (action) => action === e.model.chainedAction
+        ? { ...action, openSettingsPage }
+        : action)
+  }
+
+  private onEditDrawnCustomGestureChainedUrlClick_(
+    e: Event & { model: { chainedAction: ActionRow } }) {
+    this.urlDialogContext_ = {
+      row: DRAWN_CUSTOM_GESTURE_ROW,
+      actionRows: this.drawnCustomGestureActionRows_,
+      targetAction: e.model.chainedAction,
+      write: (actionRows) => this.drawnCustomGestureActionRows_ = actionRows,
+    }
+    this.urlDialogInput_ = e.model.chainedAction.textParam
+  }
+
+  private onRemoveDrawnCustomGestureChainedActionClick_(
+    e: Event & { model: { chainedAction: ActionRow } }) {
+    this.drawnCustomGestureActionRows_ = this.drawnCustomGestureActionRows_.filter(
       (action) => action !== e.model.chainedAction)
   }
 
-  private onCaptureChainedActionDragStart_(
-    e: DragEvent & { model: { chainedAction: ChainedActionRow } }) {
-    this.dragContext_ = {
-      isCapture: true,
+  private onDrawnCustomGestureChainedActionDragStart_(
+    e: DragEvent & { model: { chainedAction: ActionRow } }) {
+    this.actionDragContext_ = {
+      row: DRAWN_CUSTOM_GESTURE_ROW,
+      actionRows: this.drawnCustomGestureActionRows_,
       draggedAction: e.model.chainedAction,
+      write: (actionRows) => this.drawnCustomGestureActionRows_ = actionRows,
     }
     e.dataTransfer!.effectAllowed = 'move'
     // Some drag implementations only treat the drag as valid, and fire
@@ -1359,159 +1405,136 @@ class SettingsGesturesPage extends SettingsGesturesPageBase {
     e.dataTransfer!.setData('text/plain', '')
   }
 
-  private onCaptureChainedActionDrop_(
-    e: DragEvent & { model: { chainedAction: ChainedActionRow } }) {
+  private onDrawnCustomGestureChainedActionDrop_(
+    e: DragEvent & { model: { chainedAction: ActionRow } }) {
     e.preventDefault()
-    const context = this.dragContext_
-    this.dragContext_ = null
-    if (!context?.isCapture) {
+    const context = this.actionDragContext_
+    this.actionDragContext_ = null
+    if (context?.row !== DRAWN_CUSTOM_GESTURE_ROW) {
       return
     }
-    if (context.draggedAction === null) {
-      const swapped = this.swapPrimaryWithChainedAction_(
-        { gestureCommand: this.selectedCaptureCommand_,
-          navigateToUrl: this.selectedCaptureNavigateToUrl_ },
-        this.capturedChainedActions_, e.model.chainedAction)
-      this.selectedCaptureCommand_ = swapped.primary.gestureCommand
-      this.selectedCaptureNavigateToUrl_ = swapped.primary.navigateToUrl
-      this.capturedChainedActions_ = swapped.chainedActions
-      return
-    }
-    this.capturedChainedActions_ = this.reorderChainedActions_(
-      this.capturedChainedActions_, context.draggedAction,
-      e.model.chainedAction)
+    context.write(moveAction(
+      context.actionRows, context.draggedAction, e.model.chainedAction))
   }
 
-  private onCapturePrimaryActionDragStart_(e: DragEvent) {
-    this.dragContext_ = { isCapture: true, draggedAction: null }
+  private onDrawnCustomGesturePrimaryActionDragStart_(e: DragEvent) {
+    this.actionDragContext_ = {
+      row: DRAWN_CUSTOM_GESTURE_ROW,
+      actionRows: this.drawnCustomGestureActionRows_,
+      draggedAction: this.drawnCustomGestureActionRows_[0],
+      write: (actionRows) => this.drawnCustomGestureActionRows_ = actionRows,
+    }
     e.dataTransfer!.effectAllowed = 'move'
     e.dataTransfer!.setData('text/plain', '')
   }
 
-  private onCapturePrimaryActionDrop_(e: DragEvent) {
+  private onDrawnCustomGesturePrimaryActionDrop_(e: DragEvent) {
     e.preventDefault()
-    const context = this.dragContext_
-    this.dragContext_ = null
-    if (!context?.isCapture || context.draggedAction === null) {
+    const context = this.actionDragContext_
+    this.actionDragContext_ = null
+    if (context?.row !== DRAWN_CUSTOM_GESTURE_ROW) {
       return
     }
-    const swapped = this.swapPrimaryWithChainedAction_(
-      { gestureCommand: this.selectedCaptureCommand_,
-        navigateToUrl: this.selectedCaptureNavigateToUrl_ },
-      this.capturedChainedActions_, context.draggedAction)
-    this.selectedCaptureCommand_ = swapped.primary.gestureCommand
-    this.selectedCaptureNavigateToUrl_ = swapped.primary.navigateToUrl
-    this.capturedChainedActions_ = swapped.chainedActions
+    context.write(moveAction(
+      context.actionRows, context.draggedAction,
+      this.drawnCustomGestureActionRows_[0]))
   }
 
-  private onCaptureMouseDown_(e: MouseEvent) {
-    this.isCapturing_ = true
-    this.capturedPoints_ = [this.toCaptureBoxPoint_(e)]
-    this.hasCapturedGesture_ = false
-    this.updateCapturedPointsString_()
+  private onDrawnCustomGestureMouseDown_(e: MouseEvent) {
+    this.isDrawingCustomGesture_ = true
+    this.drawnCustomGesturePoints_ = [this.toDrawnCustomGestureBoxPoint_(e)]
+    this.hasDrawnCustomGesture_ = false
+    this.updateDrawnCustomGesturePointsString_()
   }
 
-  private onCaptureMouseMove_(e: MouseEvent) {
-    if (!this.isCapturing_) {
+  private onDrawnCustomGestureMouseMove_(e: MouseEvent) {
+    if (!this.isDrawingCustomGesture_) {
       return
     }
-    this.capturedPoints_.push(this.toCaptureBoxPoint_(e))
-    this.updateCapturedPointsString_()
+    this.drawnCustomGesturePoints_.push(this.toDrawnCustomGestureBoxPoint_(e))
+    this.updateDrawnCustomGesturePointsString_()
   }
 
-  private onCaptureMouseUp_() {
-    this.isCapturing_ = false
-    this.hasCapturedGesture_ = this.capturedPoints_.length >= 2
+  private onDrawnCustomGestureMouseUp_() {
+    this.isDrawingCustomGesture_ = false
+    this.hasDrawnCustomGesture_ = this.drawnCustomGesturePoints_.length >= 2
   }
 
-  // Dragging out of the box means the shape was drawn incorrectly; discard the
-  // in-progress capture immediately rather than keeping a truncated shape or
-  // requiring the confirm dialog used for the explicit Clear button.
-  private onCaptureMouseLeave_() {
-    if (!this.isCapturing_) {
+  // Discards the in-progress capture immediately, bypassing the confirm
+  // dialog the explicit Clear button uses.
+  private onDrawnCustomGestureMouseLeave_() {
+    if (!this.isDrawingCustomGesture_) {
       return
     }
-    this.isCapturing_ = false
-    this.capturedPoints_ = []
-    this.hasCapturedGesture_ = false
-    this.updateCapturedPointsString_()
+    this.isDrawingCustomGesture_ = false
+    this.drawnCustomGesturePoints_ = []
+    this.hasDrawnCustomGesture_ = false
+    this.updateDrawnCustomGesturePointsString_()
   }
 
-  private onClearCaptureClick_() {
-    this.showClearGestureConfirmDialog_ = true
+  private onClearDrawnCustomGestureClick_() {
+    this.showClearCustomGestureConfirmDialog_ = true
   }
 
-  private onClearGestureDialogClose_() {
-    this.showClearGestureConfirmDialog_ = false
+  private onClearCustomGestureDialogClose_() {
+    this.showClearCustomGestureConfirmDialog_ = false
   }
 
-  private onConfirmClearGestureClick_() {
-    this.capturedPoints_ = []
-    this.hasCapturedGesture_ = false
-    this.selectedCaptureCommand_ = GestureCommand.UNASSIGNED
-    this.selectedCaptureNavigateToUrl_ = ''
-    this.capturedChainedActions_ = []
-    this.updateCapturedPointsString_()
-    this.showClearGestureConfirmDialog_ = false
+  private onConfirmClearCustomGestureClick_() {
+    this.drawnCustomGesturePoints_ = []
+    this.hasDrawnCustomGesture_ = false
+    this.drawnCustomGestureActionRows_ =
+      [defaultActionRow(GestureCommand.UNASSIGNED)]
+    this.updateDrawnCustomGesturePointsString_()
+    this.showClearCustomGestureConfirmDialog_ = false
   }
 
-  private updateCapturedPointsString_() {
-    this.capturedPathData_ = smoothedSvgPath(this.capturedPoints_)
+  private updateDrawnCustomGesturePointsString_() {
+    this.drawnCustomGestureSvgPathData_ =
+      svgPathData(this.drawnCustomGesturePoints_)
   }
 
-  private toCaptureBoxPoint_(e: MouseEvent): CustomGesturePoint {
-    const box = this.shadowRoot!.querySelector('#captureBox') as HTMLElement
+  private toDrawnCustomGestureBoxPoint_(e: MouseEvent): Point {
+    const box =
+      this.shadowRoot!.querySelector('#drawCustomGestureBox') as HTMLElement
     const rect = box.getBoundingClientRect()
     return { x: e.clientX - rect.left, y: e.clientY - rect.top }
   }
 
-  private onSaveCapturedGestureClick_() {
-    if (this.capturedPoints_.length < 2) {
+  private onSaveDrawnCustomGestureClick_() {
+    if (this.drawnCustomGesturePoints_.length < 2) {
       return
     }
 
     const entry: CustomGestureEntry = {
       id: `${Date.now()}`,
-      points: this.capturedPoints_,
-      actions: buildActionEntries(
-        {
-          gestureCommand: this.selectedCaptureCommand_,
-          navigateToUrl: this.selectedCaptureNavigateToUrl_,
-        },
-        this.capturedChainedActions_),
+      points: this.drawnCustomGesturePoints_,
+      actions: toActionDicts(this.drawnCustomGestureActionRows_),
     }
 
     this.trySaveCustomGesture_(entry)
   }
 
-  // Saves `entry` immediately. A shape clash with another custom or
-  // directional gesture (see `shapeClashDescription_`/
-  // `anyCustomGestureMatchesDirectionalKey_`) doesn't block the save; the
-  // saved list highlights it afterward instead of gating the save itself
-  // behind a confirmation dialog. Both gestures are allowed to share the
-  // same action; a command already used elsewhere is flagged the same way.
+  // A conflict never blocks the save; the saved list highlights it
+  // afterward instead of gating the save behind a confirmation dialog.
   private trySaveCustomGesture_(entry: CustomGestureEntry) {
     this.commitSavedCustomGesture_(entry)
   }
 
   private commitSavedCustomGesture_(entry: CustomGestureEntry) {
     const existingCustomGestures = this.existingCustomGestures_()
-    // Write the whole array back via setPrefValue rather than
-    // appendPrefListItem: the latter uses Polymer's push(), which only
-    // fires array-splice notifications, not the plain
-    // prefs.<path>.value-changed notification our complex observers
-    // (onCustomGesturesPrefChanged_) depend on.
+    // `appendPrefListItem` uses Polymer's push(), which only fires a
+    // splice notification, not the value-changed one observers depend on.
     this.setPrefValue(
       GESTURES_CUSTOM_GESTURES_PREF, [...existingCustomGestures, entry])
-    this.capturedPoints_ = []
-    this.hasCapturedGesture_ = false
-    this.selectedCaptureCommand_ = GestureCommand.UNASSIGNED
-    this.selectedCaptureNavigateToUrl_ = ''
-    this.capturedChainedActions_ = []
-    this.updateCapturedPointsString_()
+    this.drawnCustomGesturePoints_ = []
+    this.hasDrawnCustomGesture_ = false
+    this.drawnCustomGestureActionRows_ =
+      [defaultActionRow(GestureCommand.UNASSIGNED)]
+    this.updateDrawnCustomGesturePointsString_()
   }
 
-  private onRemoveCustomGestureClick_(e: DomRepeatEvent<CustomGestureRow>) {
+  private onRemoveCustomGestureClick_(e: DomRepeatEvent<CustomGestureActionRow>) {
     const row = e.model.item
     const customGestures = this.existingCustomGestures_()
     this.setPrefValue(

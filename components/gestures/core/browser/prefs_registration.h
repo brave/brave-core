@@ -6,13 +6,22 @@
 #ifndef BRAVE_COMPONENTS_GESTURES_CORE_BROWSER_PREFS_REGISTRATION_H_
 #define BRAVE_COMPONENTS_GESTURES_CORE_BROWSER_PREFS_REGISTRATION_H_
 
+#include "brave/components/gestures/core/browser/mouse_rocker_default_commands.h"
+#include "brave/components/gestures/core/browser/mouse_wheel_default_commands.h"
+
 namespace user_prefs {
 class PrefRegistrySyncable;
 }  // namespace user_prefs
 
 namespace gestures {
 
-void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
+// `mouse_rocker_defaults`/`mouse_wheel_defaults` are real `IDC_*` ids,
+// supplied by the caller since this component must not depend on `IDC_*`
+// headers.
+void RegisterProfilePrefs(
+    user_prefs::PrefRegistrySyncable* registry,
+    const MouseRockerDefaultCommands& mouse_rocker_defaults,
+    const MouseWheelDefaultCommands& mouse_wheel_defaults);
 
 }  // namespace gestures
 

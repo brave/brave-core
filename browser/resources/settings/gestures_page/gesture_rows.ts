@@ -3,94 +3,142 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import {GestureCommand} from './gesture_command.js'
+import { OpenSettingsPage } from './open_settings_page.js'
 import type {Point} from './custom_gesture_geometry.js'
 
-export interface ChainedActionRow {
-  gestureCommand: GestureCommand
-  navigateToUrl: string
+// Mirrors Chromium's real `IDC_OPTIONS`, which TS cannot import directly
+// from the generated `chrome_command_ids.h`. Keep in sync with it.
+export const IDC_OPTIONS = 40015
+
+// One action in a gesture's chain. Only one of `textParam`/
+// `openSettingsPage` is meaningful at a time, depending on `command`.
+export interface ActionRow {
+  command: number
+  textParam: string
+  openSettingsPage: OpenSettingsPage
 }
 
 // Mirrors the JSON pref dict entry's wire format; the `command` key must
 // match what `MaybeParseGestureActions` reads with `FindInt`.
-export interface ChainedActionEntry {
-  command: GestureCommand
-  navigate_to_url?: string
-  switch_to_tab_pattern?: string
+export interface ActionDict {
+  command: number
+  text_param?: string
+  open_settings_page?: OpenSettingsPage
 }
 
-// `navigateToUrl` on the row types below is shared storage for either a
-// Navigate to URL destination or a Switch to Tab glob pattern, since a
-// given action's `gestureCommand` is only ever one of the two; which wire
-// key it serializes to and parses from depends on that command, kept in
-// sync here and in the parsing/dialog code in gestures_page.ts.
-export function textParamFromEntry(entry: ChainedActionEntry): string {
-  return entry.navigate_to_url ?? entry.switch_to_tab_pattern ?? ''
+function textParamFromDict(dict: ActionDict): string {
+  return dict.text_param ?? ''
 }
 
-export interface MappingRow {
+// Open Settings' target page has its own wire key, since it is a bounded
+// enum rather than free text and does not share `textParam`'s storage.
+function openSettingsPageParamFromDict(dict: ActionDict): OpenSettingsPage {
+  return dict.open_settings_page ?? OpenSettingsPage.BASIC
+}
+
+// A row with no URL/pattern and no Open Settings page, either because
+// `command` takes no params or because no command is assigned yet.
+export function defaultActionRow(command: number): ActionRow {
+  return {
+    command, textParam: '',
+    openSettingsPage: OpenSettingsPage.BASIC
+  }
+}
+
+// Converts a pref's stored dicts into a full `actionRows` (index 0
+// primary), falling back to a single default primary action when empty.
+export function actionRowsFromDicts(
+  actions: ActionDict[] | undefined, defaultCommand: number): ActionRow[] {
+  return actions?.length
+    ? actions.map((entry) => ({
+      command: entry.command,
+      textParam: textParamFromDict(entry),
+      openSettingsPage: openSettingsPageParamFromDict(entry),
+    }))
+    : [defaultActionRow(defaultCommand)]
+}
+
+// Inserts after target if dragged started earlier, before if later, so
+// dropping on the adjacent item is never a no-op.
+export function moveAction(
+  actionRows: ActionRow[], dragged: ActionRow,
+  target: ActionRow): ActionRow[] {
+  if (dragged === target) {
+    return actionRows
+  }
+  const movingDown =
+    actionRows.indexOf(dragged) < actionRows.indexOf(target)
+  const withoutDragged = actionRows.filter((action) => action !== dragged)
+  const targetIndex = withoutDragged.indexOf(target)
+  const insertAt = movingDown ? targetIndex + 1 : targetIndex
+  return [
+    ...withoutDragged.slice(0, insertAt),
+    dragged,
+    ...withoutDragged.slice(insertAt),
+  ]
+}
+
+// Applies `command` to the primary action, keeping any chained actions.
+export function applyCommandToActionRows(
+  command: number, actionRows: ActionRow[] | undefined): ActionRow[] {
+  const [primaryActionRow, ...chainedActionRows] =
+    actionRows ?? [defaultActionRow(command)]
+  return [{ ...primaryActionRow, command }, ...chainedActionRows]
+}
+
+export interface DirectionalGestureMappingActionRow {
   key: string
   icons: string[]
-  gestureCommand: GestureCommand
-  navigateToUrl: string
-  chainedActions: ChainedActionRow[]
+  actionRows: ActionRow[]
 }
 
 export interface CommandOption {
   name: string
-  value: GestureCommand
+  value: number
 }
 
 export interface DisallowedSiteRow {
   origin: string
 }
 
-// A rocker/wheel action row (rock left/right, wheel up/down). Unlike
-// `MappingRow`/`CustomGestureRow`, which are entries in a dict/array pref
-// keyed by a gesture key or id, each of these is its own standalone list
-// pref holding exactly this row's chain, so `prefName` identifies which pref
-// to persist back to instead of a key/id.
-export interface RockerWheelRow {
+// A mouse rocker action row (rock left/right); unlike other action rows,
+// each is its own standalone list pref, named by `prefName`.
+export interface MouseRockerActionRow {
   prefName: string
-  gestureCommand: GestureCommand
-  navigateToUrl: string
-  chainedActions: ChainedActionRow[]
+  actionRows: ActionRow[]
 }
 
-export interface CustomGestureRow {
+// A mouse wheel action row (wheel up/down); see `MouseRockerActionRow`.
+export interface MouseWheelActionRow {
+  prefName: string
+  actionRows: ActionRow[]
+}
+
+export interface CustomGestureActionRow {
   id: string
-  gestureCommand: GestureCommand
-  previewPath: string
-  navigateToUrl: string
-  chainedActions: ChainedActionRow[]
+  previewSvgPathData: string
+  actionRows: ActionRow[]
 }
-
-export type CustomGesturePoint = Point
 
 export interface CustomGestureEntry {
   id: string
-  points: CustomGesturePoint[]
-  actions?: ChainedActionEntry[]
+  points: Point[]
+  actions?: ActionDict[]
 }
 
-// Serializes `navigateToUrl`'s shared storage (see its own comment) to
-// whichever wire key `gestureCommand` actually dispatches with.
-function toActionEntry(
-    action: { gestureCommand: GestureCommand, navigateToUrl: string }):
-    ChainedActionEntry {
-  if (action.gestureCommand === GestureCommand.SWITCH_TO_TAB) {
+// Serializes to whichever wire key `command` actually dispatches with.
+function toActionDict(action: ActionRow): ActionDict {
+  if (action.command === IDC_OPTIONS) {
     return {
-      command: action.gestureCommand,
-      switch_to_tab_pattern: action.navigateToUrl,
+      command: action.command,
+      open_settings_page: action.openSettingsPage,
     }
   }
-  return { command: action.gestureCommand, navigate_to_url: action.navigateToUrl }
+  return { command: action.command, text_param: action.textParam }
 }
 
-// Combines a row's primary command/URL with its chained actions into the
-// full ordered action list the backend persists.
-export function buildActionEntries(
-  primary: { gestureCommand: GestureCommand, navigateToUrl: string },
-  chainedActions: ChainedActionRow[]): ChainedActionEntry[] {
-  return [toActionEntry(primary), ...chainedActions.map(toActionEntry)]
+// Serializes a row's full action list (index 0 primary, the rest chained)
+// into the ordered action list stored in the pref.
+export function toActionDicts(actionRows: ActionRow[]): ActionDict[] {
+  return actionRows.map(toActionDict)
 }

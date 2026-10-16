@@ -8,11 +8,12 @@
 #include "base/values.h"
 #include "brave/components/gestures/core/browser/pref_names.h"
 #include "brave/components/gestures/core/browser/prefs_registration.h"
+#include "brave/components/gestures/core/browser/test/fake_mouse_rocker_wheel_default_commands.h"
 #include "brave/components/gestures/core/common/actions/gesture_action_info.h"
-#include "brave/components/gestures/core/common/actions/gesture_command_types.h"
 #include "brave/components/gestures/core/common/custom/custom_gesture_info.h"
 #include "brave/components/gestures/core/common/directional/directional_gesture_types.h"
 #include "brave/components/gestures/core/common/mouse/wheel/mouse_wheel_modifier_button_types.h"
+#include "chrome/app/chrome_command_ids.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -21,7 +22,11 @@ namespace gestures {
 
 class GestureConfigTrackerTest : public testing::Test {
  public:
-  GestureConfigTrackerTest() { RegisterProfilePrefs(pref_service_.registry()); }
+  GestureConfigTrackerTest() {
+    RegisterProfilePrefs(pref_service_.registry(),
+                         test::FakeMouseRockerDefaultCommands(),
+                         test::FakeMouseWheelDefaultCommands());
+  }
 
  protected:
   GestureConfigTracker MakeConfigTracker() {
@@ -96,11 +101,13 @@ TEST_F(GestureConfigTrackerTest, RockerSettingsDefaultToBackAndForward) {
 
   EXPECT_TRUE(config_tracker.IsMouseRockerGesturesEnabled());
   EXPECT_THAT(config_tracker.mouse_rocker_left_actions(),
-              testing::ElementsAre(testing::Field(&GestureActionInfo::command,
-                                                  GestureCommandType::kBack)));
+              testing::ElementsAre(
+                  testing::Field(&GestureActionInfo::command,
+                                 test::FakeMouseRockerDefaultCommands().left)));
   EXPECT_THAT(config_tracker.mouse_rocker_right_actions(),
               testing::ElementsAre(testing::Field(
-                  &GestureActionInfo::command, GestureCommandType::kForward)));
+                  &GestureActionInfo::command,
+                  test::FakeMouseRockerDefaultCommands().right)));
 }
 
 TEST_F(GestureConfigTrackerTest, RockerSettingsUpdateLiveWhenPrefsChange) {
@@ -118,13 +125,14 @@ TEST_F(GestureConfigTrackerTest,
   EXPECT_TRUE(config_tracker.IsMouseWheelGesturesEnabled());
   EXPECT_EQ(MouseWheelModifierButtonType::kRight,
             config_tracker.MouseWheelModifierButton());
-  EXPECT_THAT(
-      config_tracker.mouse_wheel_up_actions(),
-      testing::ElementsAre(testing::Field(&GestureActionInfo::command,
-                                          GestureCommandType::kPreviousTab)));
+  EXPECT_THAT(config_tracker.mouse_wheel_up_actions(),
+              testing::ElementsAre(
+                  testing::Field(&GestureActionInfo::command,
+                                 test::FakeMouseWheelDefaultCommands().up)));
   EXPECT_THAT(config_tracker.mouse_wheel_down_actions(),
-              testing::ElementsAre(testing::Field(
-                  &GestureActionInfo::command, GestureCommandType::kNextTab)));
+              testing::ElementsAre(
+                  testing::Field(&GestureActionInfo::command,
+                                 test::FakeMouseWheelDefaultCommands().down)));
 }
 
 TEST_F(GestureConfigTrackerTest, WheelSettingsUpdateLiveWhenPrefsChange) {
@@ -142,22 +150,21 @@ TEST_F(GestureConfigTrackerTest,
        DirectionalGesturesOverrideJustTheRemappedKeyAndKeepOtherDefaults) {
   pref_service_.SetDict(
       prefs::kDirectionalGestures,
-      base::DictValue().Set(
-          "↓", base::ListValue().Append(base::DictValue().Set(
-                   "command", static_cast<int>(GestureCommandType::kBack)))));
+      base::DictValue().Set("↓", base::ListValue().Append(base::DictValue().Set(
+                                     "command", IDC_BACK))));
   GestureConfigTracker config_tracker = MakeConfigTracker();
 
   EXPECT_THAT(config_tracker.directional_gesture_mapping().ActionsForStrokes(
                   {DirectionalGestureDirectionType::kDown}),
-              testing::ElementsAre(testing::Field(&GestureActionInfo::command,
-                                                  GestureCommandType::kBack)));
+              testing::ElementsAre(
+                  testing::Field(&GestureActionInfo::command, IDC_BACK)));
   // The default for "↓→" is untouched by the "↓" override set in
   // `prefs::kDirectionalGestures`.
   EXPECT_THAT(config_tracker.directional_gesture_mapping().ActionsForStrokes(
                   {DirectionalGestureDirectionType::kDown,
                    DirectionalGestureDirectionType::kRight}),
-              testing::ElementsAre(testing::Field(
-                  &GestureActionInfo::command, GestureCommandType::kCloseTab)));
+              testing::ElementsAre(
+                  testing::Field(&GestureActionInfo::command, IDC_CLOSE_TAB)));
 }
 
 TEST_F(GestureConfigTrackerTest, CustomGesturesAreParsedFromThePref) {
@@ -170,10 +177,8 @@ TEST_F(GestureConfigTrackerTest, CustomGesturesAreParsedFromThePref) {
                    base::ListValue()
                        .Append(base::DictValue().Set("x", 0.0).Set("y", 0.0))
                        .Append(base::DictValue().Set("x", 1.0).Set("y", 1.0)))
-              .Set("actions",
-                   base::ListValue().Append(base::DictValue().Set(
-                       "command",
-                       static_cast<int>(GestureCommandType::kBack))))));
+              .Set("actions", base::ListValue().Append(base::DictValue().Set(
+                                  "command", IDC_BACK)))));
   GestureConfigTracker config_tracker = MakeConfigTracker();
 
   EXPECT_THAT(config_tracker.custom_gesture_recognizer().custom_gestures(),

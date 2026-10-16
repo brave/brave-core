@@ -12,8 +12,9 @@
 #include "brave/browser/ui/gestures/gesture_config_tracker.h"
 #include "brave/components/gestures/core/browser/pref_names.h"
 #include "brave/components/gestures/core/browser/prefs_registration.h"
-#include "brave/components/gestures/core/common/actions/gesture_command_types.h"
+#include "brave/components/gestures/core/browser/test/fake_mouse_rocker_wheel_default_commands.h"
 #include "brave/components/gestures/core/common/features.h"
+#include "chrome/app/chrome_command_ids.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "content/public/browser/web_contents.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -37,7 +38,9 @@ class GestureDrawSessionTest : public testing::Test {
   GestureDrawSessionTest() {
     scoped_feature_list_.InitAndEnableFeatureWithParameters(
         features::kGesturesFeature, {{"MinStrokePixels", "30"}});
-    RegisterProfilePrefs(pref_service_.registry());
+    RegisterProfilePrefs(pref_service_.registry(),
+                         test::FakeMouseRockerDefaultCommands(),
+                         test::FakeMouseWheelDefaultCommands());
     pref_service_.SetBoolean(prefs::kShowTrail, false);
     pref_service_.SetBoolean(prefs::kShowMatchedGesture, false);
     config_tracker_ = std::make_unique<GestureConfigTracker>(pref_service_);
@@ -123,9 +126,8 @@ TEST_F(GestureDrawSessionTest,
 
   EXPECT_FALSE(session.is_drawing());
   ASSERT_TRUE(actions.has_value());
-  EXPECT_THAT(*actions,
-              testing::ElementsAre(testing::Field(
-                  &GestureActionInfo::command, GestureCommandType::kNewTab)));
+  EXPECT_THAT(*actions, testing::ElementsAre(testing::Field(
+                            &GestureActionInfo::command, IDC_NEW_TAB)));
 }
 
 TEST_F(GestureDrawSessionTest,
@@ -158,10 +160,8 @@ TEST_F(GestureDrawSessionTest,
                        .Append(base::DictValue().Set("x", 0.0).Set("y", 0.0))
                        .Append(
                            base::DictValue().Set("x", 100.0).Set("y", -100.0)))
-              .Set("actions",
-                   base::ListValue().Append(base::DictValue().Set(
-                       "command",
-                       static_cast<int>(GestureCommandType::kBack))))));
+              .Set("actions", base::ListValue().Append(base::DictValue().Set(
+                                  "command", IDC_BACK)))));
   GestureDrawSession session = MakeDrawSession();
 
   session.Start(gfx::PointF(0, 0), /*via_touch=*/false,
@@ -171,9 +171,8 @@ TEST_F(GestureDrawSessionTest,
       session.MaybeFinish();
 
   ASSERT_TRUE(actions.has_value());
-  EXPECT_THAT(*actions,
-              testing::ElementsAre(testing::Field(&GestureActionInfo::command,
-                                                  GestureCommandType::kBack)));
+  EXPECT_THAT(*actions, testing::ElementsAre(testing::Field(
+                            &GestureActionInfo::command, IDC_BACK)));
 }
 
 TEST_F(GestureDrawSessionTest, ContinueRunsTheMovementCallbackWhileDrawing) {

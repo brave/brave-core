@@ -5,17 +5,22 @@
 
 #include "brave/components/gestures/core/common/actions/gesture_command_util.h"
 
-#include <utility>
+#include "brave/components/gestures/core/common/actions/gesture_command_constants.h"
 
-#include "brave/components/gestures/core/common/actions/gesture_command_types.h"
+namespace {
+
+// Smallest `IDC_*` command id defined anywhere in Chromium or Brave. Kept in
+// sync by inspection, not by including the `IDC_*` headers this component
+// must not depend on.
+constexpr int kMinRealCommandId = 30000;
+
+}  // namespace
 
 namespace gestures {
 
-bool IsValidGestureCommand(int raw_gesture_command) {
-  return raw_gesture_command >=
-             std::to_underlying(GestureCommandType::kUnassigned) &&
-         raw_gesture_command <=
-             std::to_underlying(GestureCommandType::kMaxValue);
+bool IsValidGestureCommand(int gesture_command) {
+  return (gesture_command >= kUnassigned && gesture_command <= kSwitchToTab) ||
+         gesture_command >= kMinRealCommandId;
 }
 
 }  // namespace gestures

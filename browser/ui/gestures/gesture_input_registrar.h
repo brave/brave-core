@@ -70,6 +70,11 @@ class GestureInputRegistrar final
                     const blink::WebInputEvent& event,
                     InputEventSource source) override;
 
+  // Removes `widget`'s callback/observer registration. Doesn't touch
+  // `observed_widgets_`; callers remove their own entry however suits their
+  // own loop (`std::erase`, `std::erase_if`, or a full-container iteration).
+  void DetachFromWidget(content::RenderWidgetHost& widget);
+
   content::RenderWidgetHost::MouseEventCallback mouse_event_callback_;
   base::RepeatingCallback<void(const blink::WebInputEvent&,
                                input::InputEventSource)>

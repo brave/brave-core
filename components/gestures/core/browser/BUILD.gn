@@ -5,6 +5,8 @@
 
 static_library("browser") {
   public = [
+    "mouse_rocker_default_commands.h",
+    "mouse_wheel_default_commands.h",
     "pref_names.h",
     "prefs_registration.h",
   ]
@@ -20,12 +22,23 @@ static_library("browser") {
   ]
 }
 
+source_set("test_support") {
+  testonly = true
+  sources = [
+    "test/fake_mouse_rocker_wheel_default_commands.cc",
+    "test/fake_mouse_rocker_wheel_default_commands.h",
+  ]
+
+  public_deps = [ ":browser" ]
+}
+
 source_set("unit_tests") {
   testonly = true
   sources = [ "prefs_registration_unittest.cc" ]
 
   deps = [
     ":browser",
+    ":test_support",
     "//base",
     "//brave/components/gestures/core/common",
     "//brave/components/gestures/core/common:features",

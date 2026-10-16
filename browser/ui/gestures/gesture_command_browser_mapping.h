@@ -9,17 +9,16 @@
 #include <optional>
 #include <string>
 
-#include "brave/components/gestures/core/common/actions/gesture_command_types.h"
-
 namespace gestures {
 
-// Maps the Brave-owned command enum to the browser's underlying `IDC_*`
-// command id, defined in chrome/app or brave/app.
-std::optional<int> MaybeToGestureCommandId(GestureCommandType gesture_command);
+// Maps `command` to the browser's underlying `IDC_*` command id, or
+// `nullopt` if `command` isn't dispatched through `chrome::ExecuteCommand`
+// (one of the 4 sentinels in `gesture_command_constants.h`, each handled
+// directly by `GestureActionDispatcher` instead).
+std::optional<int> MaybeToGestureCommandId(int command);
 
-// Localized display name for `gesture_command`, e.g. for the gesture overlay
-// label.
-std::u16string ToDisplayName(GestureCommandType gesture_command);
+// Localized display name for `command`, e.g. for the gesture overlay label.
+std::u16string ToDisplayName(int command);
 
 }  // namespace gestures
 

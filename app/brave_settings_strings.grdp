@@ -800,7 +800,7 @@
   <message name="IDS_SETTINGS_BRAVE_GESTURES_CLOSED_SHAPE_HELP" desc="Help text shown above the list of saved custom gestures once at least one exists, explaining closed shapes like a circle can be started from anywhere on the shape">
     For closed gestures, you can start drawing from any point.
   </message>
-  <message name="IDS_SETTINGS_BRAVE_GESTURES_CAPTURE_HELP" desc="Help text shown above the row where a new custom gesture's action is chosen, explaining how to draw it">
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_DRAW_CUSTOM_GESTURE_HELP" desc="Help text shown above the row where a new custom gesture's action is chosen, explaining how to draw it">
     Hold the right mouse button and draw a gesture in the area below. Release the button when finished, assign one or more actions to run when it's drawn, then click Save.
   </message>
   <message name="IDS_SETTINGS_BRAVE_GESTURES_SAVE_CUSTOM_GESTURE_LABEL" desc="The label for the button that saves a newly-drawn custom gesture">
@@ -824,20 +824,23 @@
   <message name="IDS_SETTINGS_BRAVE_GESTURES_SET_PATTERN_LABEL" desc="Label shown on the button that opens the dialog for setting a switch-to-tab gesture's pattern, before a pattern has been set">
     Set pattern
   </message>
-  <message name="IDS_SETTINGS_BRAVE_GESTURES_COMMAND_CLASH_SUBLABEL" desc="Sub-label under a gesture naming which other gesture(s) also perform the same action">
-    Conflicts with <ph name="CLASH_LIST">$1<ex>←, ↓→</ex></ph>
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_COMMAND_CONFLICT_SUBLABEL" desc="Sub-label under a gesture naming which other gesture(s) also perform the same action">
+    Conflicts with <ph name="CONFLICT_LIST">$1<ex>←, ↓→</ex></ph>
   </message>
-  <message name="IDS_SETTINGS_BRAVE_GESTURES_CLASH_CUSTOM_GESTURE_SINGULAR" desc="Names a single conflicting custom gesture in the clash sub-label, since custom gestures have no readable name">
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_CONFLICT_CUSTOM_GESTURE_SINGULAR" desc="Names a single conflicting custom gesture in the conflict sub-label, since custom gestures have no readable name">
     a custom gesture
   </message>
-  <message name="IDS_SETTINGS_BRAVE_GESTURES_CLASH_CUSTOM_GESTURE_PLURAL" desc="Names multiple conflicting custom gestures in the clash sub-label">
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_CONFLICT_CUSTOM_GESTURE_PLURAL" desc="Names multiple conflicting custom gestures in the conflict sub-label">
     <ph name="COUNT">$1<ex>2</ex></ph> custom gestures
   </message>
-  <message name="IDS_SETTINGS_BRAVE_GESTURES_SHAPE_CLASH_SUBLABEL" desc="Sub-label shown when a custom gesture's drawn path looks similar enough to another custom gesture's that the recognizer could confuse them">
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_SHAPE_CONFLICT_SUBLABEL" desc="Sub-label shown when a custom gesture's drawn path looks similar enough to another custom gesture's that the recognizer could confuse them">
     Looks similar to another custom gesture
   </message>
-  <message name="IDS_SETTINGS_BRAVE_GESTURES_SHAPE_CLASH_DIRECTIONAL_SUBLABEL" desc="Sub-label shown when a custom gesture's drawn path would resolve to a mapped directional gesture instead, making it unreachable">
-    Looks similar to a directional gesture
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_SHAPE_CONFLICT_DIRECTIONAL_SUBLABEL" desc="Sub-label shown on a custom gesture row when its drawn path would resolve to the named directional gesture instead, making it unreachable">
+    Looks similar to <ph name="KEY">$1<ex>↑↓</ex></ph>
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_GESTURES_SHAPE_CONFLICT_CUSTOM_SUBLABEL" desc="Sub-label shown on a directional gesture row when a saved custom gesture's drawn path would resolve to it instead, making that custom gesture unreachable">
+    Looks similar to a custom gesture
   </message>
 
   <!-- Settings / Brave Origin -->

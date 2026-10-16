@@ -14,11 +14,15 @@
 #include "brave/browser/ui/gestures/gesture_command_browser_mapping.h"
 #include "brave/browser/ui/gestures/gesture_tab_match_info.h"
 #include "brave/browser/ui/gestures/gesture_tab_match_util.h"
-#include "brave/components/gestures/core/common/actions/gesture_command_types.h"
-#include "brave/components/gestures/core/common/actions/navigate_to_url_params_info.h"
-#include "brave/components/gestures/core/common/actions/switch_to_tab_params_info.h"
+#include "brave/browser/ui/gestures/open_settings_page_web_ui_path_util.h"
+#include "brave/components/gestures/core/common/actions/gesture_command_constants.h"
+#include "brave/components/gestures/core/common/actions/int_param_info.h"
+#include "brave/components/gestures/core/common/actions/open_settings_page_types.h"
+#include "brave/components/gestures/core/common/actions/text_param_info.h"
+#include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+#include "chrome/browser/ui/chrome_pages.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/navigation_controller.h"
@@ -60,31 +64,34 @@ void GestureActionDispatcher::DispatchActions(
 }
 
 void GestureActionDispatcher::RunGestureAction(
-    const GestureActionInfo& action) {
-  switch (action.command) {
-    case GestureCommandType::kNavigateToUrl:
-      RunNavigateToUrl(action);
+    const GestureActionInfo& gesture_action) {
+  switch (gesture_action.command) {
+    case kNavigateToUrl:
+      RunNavigateToUrl(gesture_action);
       return;
-    case GestureCommandType::kScrollToTop:
+    case kScrollToTop:
       RunScrollToTop();
       return;
-    case GestureCommandType::kSwitchToTab:
-      RunSwitchToTab(action);
+    case kSwitchToTab:
+      RunSwitchToTab(gesture_action);
+      return;
+    case IDC_OPTIONS:
+      RunOpenSettings(gesture_action);
       return;
     default:
       break;
   }
-  RunBrowserCommand(action);
+  RunBrowserCommand(gesture_action);
 }
 
 void GestureActionDispatcher::RunNavigateToUrl(
-    const GestureActionInfo& action) {
+    const GestureActionInfo& gesture_action) {
   const auto* navigate_to_url_action =
-      std::get_if<NavigateToUrlParamsInfo>(&action.command_params);
+      std::get_if<TextParamInfo>(&gesture_action.command_params);
   if (!navigate_to_url_action) {
     return;
   }
-  const GURL url(navigate_to_url_action->url_spec);
+  const GURL url(navigate_to_url_action->text_param);
   // Treated as untrusted, synced, user-entered text, so restricted to
   // http/https for ordinary web pages and `brave:` for any of Brave's own
   // internal pages (settings, wallet, etc. are all browser-trusted surfaces,
@@ -104,46 +111,70 @@ void GestureActionDispatcher::RunScrollToTop() {
   }
 }
 
-void GestureActionDispatcher::RunSwitchToTab(const GestureActionInfo& action) {
+void GestureActionDispatcher::RunSwitchToTab(
+    const GestureActionInfo& gesture_action) {
   const auto* switch_to_tab_action =
-      std::get_if<SwitchToTabParamsInfo>(&action.command_params);
+      std::get_if<TextParamInfo>(&gesture_action.command_params);
   if (switch_to_tab_action) {
-    SwitchToMatchingTab(switch_to_tab_action->pattern);
+    SwitchToMatchingTab(switch_to_tab_action->text_param);
   }
 }
 
-void GestureActionDispatcher::RunBrowserCommand(
-    const GestureActionInfo& action) {
-  const std::optional<int> command_id = MaybeToGestureCommandId(action.command);
-  if (!command_id) {
-    return;
-  }
-  // A tab can move between browser windows, so, as in `sad_tab.cc`, look up
-  // the current one at dispatch time rather than caching it. Null only
-  // during the brief window where a tab is detached while being dragged to
-  // another window; see `TabInterface::GetBrowserWindowInterface()`.
+void GestureActionDispatcher::RunOpenSettings(
+    const GestureActionInfo& gesture_action) {
+  const auto* int_param_info =
+      std::get_if<IntParamInfo>(&gesture_action.command_params);
+  // An out-of-range cast just falls through `PageToWebUIPath`'s switch to
+  // the basic page, so a corrupted pref value cannot crash here.
+  const OpenSettingsPage settings_page = int_param_info
+      ? static_cast<OpenSettingsPage>(int_param_info->value_param)
+      : OpenSettingsPage::kBasic;
   BrowserWindowInterface* const browser_window =
       tab_->GetBrowserWindowInterface();
   if (!browser_window) {
     return;
   }
+  chrome::ShowSettingsSubPage(browser_window, PageToWebUIPath(settings_page));
+}
+
+void GestureActionDispatcher::RunBrowserCommand(
+    const GestureActionInfo& gesture_action) {
+  if (!ShouldRunBrowserCommand(gesture_action.command)) {
+    return;
+  }
+  // Looked up fresh each time since a tab can move between browser windows
+  // (see `TabInterface::GetBrowserWindowInterface()`). Null only mid-drag.
+  BrowserWindowInterface* const browser_window =
+      tab_->GetBrowserWindowInterface();
+  if (!browser_window) {
+    return;
+  }
+  const std::optional<int> command_id =
+      MaybeToGestureCommandId(gesture_action.command);
+  if (!command_id) {
+    return;
+  }
+  // A false return means the command is currently disabled, the same as a
+  // greyed-out toolbar button, not a gesture-detection failure.
+  chrome::ExecuteCommand(browser_window, *command_id);
+}
+
+bool GestureActionDispatcher::ShouldRunBrowserCommand(
+    int browser_command_id) const {
   // `ExecuteCommand`'s own enabled check for `IDC_BACK`/`IDC_FORWARD` relies
   // on the toolbar's `CommandUpdater`, which only refreshes on a navigation
   // state notification; checking the `NavigationController` directly here
   // instead avoids acting on a momentarily stale cached enabled bit.
-  if (action.command == GestureCommandType::kBack &&
-      !chrome::CanGoBack(browser_window)) {
-    return;
+  if (browser_command_id != IDC_BACK && browser_command_id != IDC_FORWARD) {
+    return true;
   }
-  if (action.command == GestureCommandType::kForward &&
-      !chrome::CanGoForward(browser_window)) {
-    return;
+  BrowserWindowInterface* const browser_window =
+      tab_->GetBrowserWindowInterface();
+  if (!browser_window) {
+    return false;
   }
-  // `ExecuteCommand` returns false if the command is currently disabled (e.g.
-  // `IDC_BACK`/`IDC_FORWARD` with no history in that direction), the same as
-  // if the real toolbar button were greyed out, not a gesture-detection
-  // failure.
-  chrome::ExecuteCommand(browser_window, *command_id);
+  return browser_command_id == IDC_BACK ? chrome::CanGoBack(browser_window)
+                                        : chrome::CanGoForward(browser_window);
 }
 
 content::WebContents* GestureActionDispatcher::GetActiveWebContents() {

@@ -8,12 +8,15 @@
 
 namespace gestures {
 
-// `GestureCommandType` is persisted directly in prefs and synced across
+// A gesture's command is persisted directly in prefs and synced across
 // devices and Brave versions, so a raw int read back from a pref must be
-// checked against the enum's current range before it is cast. An older
-// Brave version has no notion of commands appended since, and a newer one
-// may have appended commands this version doesn't know about yet.
-bool IsValidGestureCommand(int raw_gesture_command);
+// sanity-checked first. It must be one of the reserved sentinel values in
+// `gesture_command_constants.h`, or look like a real `IDC_*` command id
+// (which this component can't name directly, since it must not depend on
+// `IDC_*` headers). An id that passes this check but isn't actually
+// registered in the current browser version is handled later, at dispatch
+// time, as a no-op.
+bool IsValidGestureCommand(int gesture_command);
 
 }  // namespace gestures
 

@@ -6,20 +6,14 @@
 #ifndef BRAVE_COMPONENTS_GESTURES_CORE_COMMON_ACTIONS_GESTURE_ACTION_UTIL_H_
 #define BRAVE_COMPONENTS_GESTURES_CORE_COMMON_ACTIONS_GESTURE_ACTION_UTIL_H_
 
-#include <vector>
-
 #include "brave/components/gestures/core/common/actions/gesture_action_info.h"
-#include "brave/components/gestures/core/common/actions/gesture_command_types.h"
 
 namespace gestures {
 
-// Builds a `GestureActionInfo` for a command that takes no parameters.
-GestureActionInfo MakeGestureAction(GestureCommandType gesture_command_type);
-
-// Builds a single-action list for a command that takes no parameters, for
-// gesture mappings that trigger just the one command.
-std::vector<GestureActionInfo> MakeGestureActions(
-    GestureCommandType gesture_command_type);
+// Builds a `GestureActionInfo` for a command that takes no parameters. For a
+// single-action list (a gesture mapping that just triggers the one
+// command), wrap the call in braces: `{MakeGestureAction(command)}`.
+GestureActionInfo MakeGestureAction(int command);
 
 }  // namespace gestures
 

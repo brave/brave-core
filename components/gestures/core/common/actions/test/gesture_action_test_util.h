@@ -9,12 +9,15 @@
 #include <string>
 
 #include "brave/components/gestures/core/common/actions/gesture_action_info.h"
+#include "brave/components/gestures/core/common/actions/open_settings_page_types.h"
 
 namespace gestures::test {
 
 GestureActionInfo MakeNavigateToUrlGestureAction(std::string url_spec);
 
 GestureActionInfo MakeSwitchToTabGestureAction(std::string pattern);
+
+GestureActionInfo MakeOpenSettingsGestureAction(OpenSettingsPage settings_page);
 
 }  // namespace gestures::test
 

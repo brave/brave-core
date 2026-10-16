@@ -5,36 +5,38 @@
 
 #include "brave/components/gestures/core/common/actions/gesture_command_util.h"
 
-#include <utility>
-
-#include "brave/components/gestures/core/common/actions/gesture_command_types.h"
+#include "brave/components/gestures/core/common/actions/gesture_command_constants.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace gestures {
 
-TEST(GestureCommandUtilTest, ValueWithinRangeIsValid) {
-  EXPECT_TRUE(
-      IsValidGestureCommand(std::to_underlying(GestureCommandType::kBack)));
+namespace {
+
+// Mirrors the real `kMinRealCommandId` in gesture_command_util.cc, which
+// this test can't reference since it's in that file's anonymous namespace.
+constexpr int kMinRealCommandId = 30000;
+
+}  // namespace
+
+TEST(GestureCommandUtilTest, EachSentinelIsValid) {
+  EXPECT_TRUE(IsValidGestureCommand(kUnassigned));
+  EXPECT_TRUE(IsValidGestureCommand(kNavigateToUrl));
+  EXPECT_TRUE(IsValidGestureCommand(kScrollToTop));
+  EXPECT_TRUE(IsValidGestureCommand(kSwitchToTab));
 }
 
-TEST(GestureCommandUtilTest, MinimumValueIsValid) {
-  EXPECT_TRUE(IsValidGestureCommand(
-      std::to_underlying(GestureCommandType::kUnassigned)));
+TEST(GestureCommandUtilTest,
+     ValueAboveTheSentinelsButBelowRealCommandIdsIsInvalid) {
+  EXPECT_FALSE(IsValidGestureCommand(kSwitchToTab + 1));
 }
 
-TEST(GestureCommandUtilTest, MaximumValueIsValid) {
-  EXPECT_TRUE(
-      IsValidGestureCommand(std::to_underlying(GestureCommandType::kMaxValue)));
+TEST(GestureCommandUtilTest, NegativeValueIsInvalid) {
+  EXPECT_FALSE(IsValidGestureCommand(kUnassigned - 1));
 }
 
-TEST(GestureCommandUtilTest, ValueBelowTheMinimumIsInvalid) {
-  EXPECT_FALSE(IsValidGestureCommand(
-      std::to_underlying(GestureCommandType::kUnassigned) - 1));
-}
-
-TEST(GestureCommandUtilTest, ValueAboveTheMaximumIsInvalid) {
-  EXPECT_FALSE(IsValidGestureCommand(
-      std::to_underlying(GestureCommandType::kMaxValue) + 1));
+TEST(GestureCommandUtilTest, ValueThatLooksLikeARealCommandIdIsValid) {
+  EXPECT_TRUE(IsValidGestureCommand(kMinRealCommandId));
+  EXPECT_TRUE(IsValidGestureCommand(kMinRealCommandId + 10000));
 }
 
 }  // namespace gestures

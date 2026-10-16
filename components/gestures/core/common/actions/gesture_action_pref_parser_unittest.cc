@@ -5,186 +5,146 @@
 
 #include "brave/components/gestures/core/common/actions/gesture_action_pref_parser.h"
 
+#include <utility>
+
 #include "brave/components/gestures/core/common/actions/gesture_action_info.h"
 #include "brave/components/gestures/core/common/actions/gesture_action_util.h"
+#include "brave/components/gestures/core/common/actions/gesture_command_constants.h"
+#include "brave/components/gestures/core/common/actions/int_param_info.h"
+#include "brave/components/gestures/core/common/actions/open_settings_page_types.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "ui/gfx/geometry/point_f.h"
 
 namespace gestures {
 
+namespace {
+
+// Stands in for a real browser `IDC_*` command id in tests. This component
+// must not depend on `IDC_*` headers, and the exact value doesn't matter
+// here, only that it's recognized as a real command (>= 30000).
+constexpr int kSomeRealCommand = 33000;
+constexpr int kAnotherRealCommand = 33001;
+constexpr int kYetAnotherRealCommand = 34014;
+
+// Stands in for the real `IDC_OPTIONS` id (40015), same reasoning as
+// `kSomeRealCommand`.
+constexpr int kOpenSettingsCommand = 40015;
+
+}  // namespace
+
 TEST(GestureActionPrefParserTest,
      MaybeParseGestureActionsReturnsNulloptForEmptyList) {
-  base::ListValue actions_list;
+  base::ListValue list;
 
-  EXPECT_FALSE(MaybeParseGestureActions(actions_list));
+  EXPECT_FALSE(MaybeParseGestureActions(list));
 }
 
 TEST(GestureActionPrefParserTest,
      MaybeParseGestureActionsReturnsNulloptWhenEntryMissingCommand) {
-  base::ListValue actions_list;
-  actions_list.Append(base::DictValue());
+  base::ListValue list;
+  list.Append(base::DictValue());
 
-  EXPECT_FALSE(MaybeParseGestureActions(actions_list));
+  EXPECT_FALSE(MaybeParseGestureActions(list));
 }
 
 TEST(GestureActionPrefParserTest,
      MaybeParseGestureActionsParsesSwitchToTabCommand) {
-  base::ListValue actions_list;
-  actions_list.Append(
-      base::DictValue()
-          .Set("command", static_cast<int>(GestureCommandType::kSwitchToTab))
-          .Set("switch_to_tab_pattern", "*gmail*"));
+  base::ListValue list;
+  list.Append(base::DictValue()
+                  .Set("command", kSwitchToTab)
+                  .Set("text_param", "*gmail*"));
 
   const std::optional<std::vector<GestureActionInfo>> actions =
-      MaybeParseGestureActions(actions_list);
+      MaybeParseGestureActions(list);
+  ASSERT_THAT(actions, testing::Optional(testing::SizeIs(1)));
 
-  ASSERT_TRUE(actions);
-  ASSERT_THAT(*actions, testing::SizeIs(1));
-  EXPECT_EQ(GestureCommandType::kSwitchToTab, actions->at(0).command);
+  const GestureActionInfo& action = actions->at(0);
+  EXPECT_EQ(kSwitchToTab, action.command);
   const auto* switch_to_tab_params =
-      std::get_if<SwitchToTabParamsInfo>(&actions->at(0).command_params);
+      std::get_if<TextParamInfo>(&action.command_params);
   ASSERT_TRUE(switch_to_tab_params);
-  EXPECT_EQ("*gmail*", switch_to_tab_params->pattern);
+  EXPECT_EQ("*gmail*", switch_to_tab_params->text_param);
 }
 
 TEST(GestureActionPrefParserTest,
      MaybeParseGestureActionsReturnsNulloptWhenEntryHasInvalidCommand) {
-  base::ListValue actions_list;
-  actions_list.Append(base::DictValue().Set("command", 9999));
+  base::ListValue list;
+  list.Append(base::DictValue().Set("command", 9999));
 
-  EXPECT_FALSE(MaybeParseGestureActions(actions_list));
+  EXPECT_FALSE(MaybeParseGestureActions(list));
 }
 
 TEST(GestureActionPrefParserTest,
      MaybeParseGestureActionsParsesACommandWithNoParams) {
-  base::ListValue actions_list;
-  actions_list.Append(base::DictValue().Set(
-      "command", static_cast<int>(GestureCommandType::kBack)));
+  base::ListValue list;
+  list.Append(base::DictValue().Set("command", kSomeRealCommand));
 
-  EXPECT_THAT(MaybeParseGestureActions(actions_list),
+  EXPECT_THAT(MaybeParseGestureActions(list),
               testing::Optional(testing::ElementsAre(
-                  testing::Eq(MakeGestureAction(GestureCommandType::kBack)))));
+                  testing::Eq(MakeGestureAction(kSomeRealCommand)))));
 }
 
 TEST(GestureActionPrefParserTest,
      MaybeParseGestureActionsParsesANavigateToUrlCommand) {
-  base::ListValue actions_list;
-  actions_list.Append(
-      base::DictValue()
-          .Set("command", static_cast<int>(GestureCommandType::kNavigateToUrl))
-          .Set("navigate_to_url", "https://brave.com"));
+  base::ListValue list;
+  list.Append(base::DictValue()
+                  .Set("command", kNavigateToUrl)
+                  .Set("text_param", "https://brave.com"));
 
   const std::optional<std::vector<GestureActionInfo>> actions =
-      MaybeParseGestureActions(actions_list);
+      MaybeParseGestureActions(list);
+  ASSERT_THAT(actions, testing::Optional(testing::SizeIs(1)));
 
-  ASSERT_TRUE(actions);
-  ASSERT_THAT(*actions, testing::SizeIs(1));
-  EXPECT_EQ(GestureCommandType::kNavigateToUrl, actions->at(0).command);
+  const GestureActionInfo& action = actions->at(0);
+  EXPECT_EQ(kNavigateToUrl, action.command);
   const auto* navigate_to_url_params =
-      std::get_if<NavigateToUrlParamsInfo>(&actions->at(0).command_params);
+      std::get_if<TextParamInfo>(&action.command_params);
   ASSERT_TRUE(navigate_to_url_params);
-  EXPECT_EQ("https://brave.com", navigate_to_url_params->url_spec);
+  EXPECT_EQ("https://brave.com", navigate_to_url_params->text_param);
+}
+
+TEST(GestureActionPrefParserTest,
+     MaybeParseGestureActionsParsesAnOpenSettingsCommand) {
+  base::ListValue list;
+  list.Append(base::DictValue()
+                  .Set("command", kOpenSettingsCommand)
+                  .Set("value_param",
+                       static_cast<int>(OpenSettingsPage::kPrivacy)));
+
+  const std::optional<std::vector<GestureActionInfo>> actions =
+      MaybeParseGestureActions(list);
+  ASSERT_THAT(actions, testing::Optional(testing::SizeIs(1)));
+
+  const GestureActionInfo& action = actions->at(0);
+  EXPECT_EQ(kOpenSettingsCommand, action.command);
+  const auto* int_param_info =
+      std::get_if<IntParamInfo>(&action.command_params);
+  ASSERT_TRUE(int_param_info);
+  EXPECT_EQ(std::to_underlying(OpenSettingsPage::kPrivacy),
+            int_param_info->value_param);
 }
 
 TEST(GestureActionPrefParserTest,
      MaybeParseGestureActionsSkipsInvalidEntryKeepingOthers) {
-  base::ListValue actions_list;
-  actions_list.Append(base::DictValue());
-  actions_list.Append(base::DictValue().Set(
-      "command", static_cast<int>(GestureCommandType::kForward)));
+  base::ListValue list;
+  list.Append(base::DictValue());
+  list.Append(base::DictValue().Set("command", kAnotherRealCommand));
 
-  EXPECT_THAT(MaybeParseGestureActions(actions_list),
-              testing::Optional(testing::ElementsAre(testing::Eq(
-                  MakeGestureAction(GestureCommandType::kForward)))));
+  EXPECT_THAT(MaybeParseGestureActions(list),
+              testing::Optional(testing::ElementsAre(
+                  testing::Eq(MakeGestureAction(kAnotherRealCommand)))));
 }
 
 TEST(GestureActionPrefParserTest,
      MaybeParseGestureActionsParsesEveryStoredChainedAction) {
-  base::ListValue actions_list;
-  actions_list.Append(base::DictValue().Set(
-      "command", static_cast<int>(GestureCommandType::kForward)));
-  actions_list.Append(base::DictValue().Set(
-      "command", static_cast<int>(GestureCommandType::kNewTab)));
+  base::ListValue list;
+  list.Append(base::DictValue().Set("command", kAnotherRealCommand));
+  list.Append(base::DictValue().Set("command", kYetAnotherRealCommand));
 
-  EXPECT_THAT(
-      MaybeParseGestureActions(actions_list),
-      testing::Optional(testing::ElementsAre(
-          testing::Eq(MakeGestureAction(GestureCommandType::kForward)),
-          testing::Eq(MakeGestureAction(GestureCommandType::kNewTab)))));
-}
-
-TEST(GestureActionPrefParserTest,
-     MaybeParseCustomGestureReturnsNulloptMissingId) {
-  base::DictValue custom_gesture_dict;
-  custom_gesture_dict.Set("points", base::ListValue());
-  custom_gesture_dict.Set(
-      "actions", base::ListValue().Append(base::DictValue().Set(
-                     "command", static_cast<int>(GestureCommandType::kBack))));
-
-  EXPECT_FALSE(MaybeParseCustomGesture(custom_gesture_dict));
-}
-
-TEST(GestureActionPrefParserTest,
-     MaybeParseCustomGestureReturnsNulloptMissingPoints) {
-  base::DictValue custom_gesture_dict;
-  custom_gesture_dict.Set("id", "id");
-  custom_gesture_dict.Set(
-      "actions", base::ListValue().Append(base::DictValue().Set(
-                     "command", static_cast<int>(GestureCommandType::kBack))));
-
-  EXPECT_FALSE(MaybeParseCustomGesture(custom_gesture_dict));
-}
-
-TEST(GestureActionPrefParserTest,
-     MaybeParseCustomGestureReturnsNulloptWithNoValidActions) {
-  base::DictValue custom_gesture_dict;
-  custom_gesture_dict.Set("id", "id");
-  custom_gesture_dict.Set(
-      "points", base::ListValue()
-                    .Append(base::DictValue().Set("x", 0.0).Set("y", 0.0))
-                    .Append(base::DictValue().Set("x", 1.0).Set("y", 1.0)));
-  custom_gesture_dict.Set("actions", base::ListValue());
-
-  EXPECT_FALSE(MaybeParseCustomGesture(custom_gesture_dict));
-}
-
-TEST(GestureActionPrefParserTest,
-     MaybeParseCustomGestureReturnsNulloptWithFewerThanTwoPoints) {
-  base::DictValue custom_gesture_dict;
-  custom_gesture_dict.Set("id", "id");
-  custom_gesture_dict.Set(
-      "points",
-      base::ListValue().Append(base::DictValue().Set("x", 0.0).Set("y", 0.0)));
-  custom_gesture_dict.Set(
-      "actions", base::ListValue().Append(base::DictValue().Set(
-                     "command", static_cast<int>(GestureCommandType::kBack))));
-
-  EXPECT_FALSE(MaybeParseCustomGesture(custom_gesture_dict));
-}
-
-TEST(GestureActionPrefParserTest, MaybeParseCustomGestureParsesAValidEntry) {
-  base::DictValue custom_gesture_dict;
-  custom_gesture_dict.Set("id", "id");
-  custom_gesture_dict.Set(
-      "points", base::ListValue()
-                    .Append(base::DictValue().Set("x", 0.0).Set("y", 0.0))
-                    .Append(base::DictValue().Set("x", 1.0).Set("y", 1.0)));
-  custom_gesture_dict.Set(
-      "actions", base::ListValue().Append(base::DictValue().Set(
-                     "command", static_cast<int>(GestureCommandType::kBack))));
-
-  const std::optional<CustomGestureInfo> custom_gesture =
-      MaybeParseCustomGesture(custom_gesture_dict);
-
-  ASSERT_TRUE(custom_gesture);
-  EXPECT_EQ("id", custom_gesture->id);
-  EXPECT_THAT(
-      custom_gesture->stroke_points,
-      testing::ElementsAre(gfx::PointF(0.0, 0.0), gfx::PointF(1.0, 1.0)));
-  EXPECT_THAT(custom_gesture->actions,
-              testing::ElementsAre(
-                  testing::Eq(MakeGestureAction(GestureCommandType::kBack))));
+  EXPECT_THAT(MaybeParseGestureActions(list),
+              testing::Optional(testing::ElementsAre(
+                  testing::Eq(MakeGestureAction(kAnotherRealCommand)),
+                  testing::Eq(MakeGestureAction(kYetAnotherRealCommand)))));
 }
 
 }  // namespace gestures

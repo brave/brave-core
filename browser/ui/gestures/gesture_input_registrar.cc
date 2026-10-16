@@ -49,8 +49,7 @@ void GestureInputRegistrar::SyncWithFrameTree(
     if (std::ranges::contains(current_widgets, widget)) {
       return false;
     }
-    widget->RemoveMouseEventCallback(mouse_event_callback_);
-    widget->RemoveInputEventObserver(this);
+    DetachFromWidget(*widget);
     return true;
   });
 
@@ -69,17 +68,21 @@ void GestureInputRegistrar::UnregisterWidget(
   if (!std::ranges::contains(observed_widgets_, &widget)) {
     return;
   }
-  widget.RemoveMouseEventCallback(mouse_event_callback_);
-  widget.RemoveInputEventObserver(this);
+  DetachFromWidget(widget);
   std::erase(observed_widgets_, &widget);
 }
 
 void GestureInputRegistrar::UnregisterAll() {
   for (content::RenderWidgetHost* const widget : observed_widgets_) {
-    widget->RemoveMouseEventCallback(mouse_event_callback_);
-    widget->RemoveInputEventObserver(this);
+    DetachFromWidget(*widget);
   }
   observed_widgets_.clear();
+}
+
+void GestureInputRegistrar::DetachFromWidget(
+    content::RenderWidgetHost& widget) {
+  widget.RemoveMouseEventCallback(mouse_event_callback_);
+  widget.RemoveInputEventObserver(this);
 }
 
 bool GestureInputRegistrar::IsObservingWidget(

@@ -13,6 +13,7 @@
 
 #include "base/containers/flat_map.h"
 #include "brave/components/gestures/core/common/actions/gesture_action_info.h"
+#include "brave/components/gestures/core/common/directional/directional_gesture_default_commands.h"
 #include "brave/components/gestures/core/common/directional/directional_gesture_types.h"
 
 namespace gestures {
@@ -21,7 +22,11 @@ namespace gestures {
 // `StrokesToGestureKey` string form, such as `←` or `↓→`.
 class DirectionalGestureMapping final {
  public:
-  DirectionalGestureMapping();
+  // `default_commands` seeds the initial table and is reused by
+  // `ResetToDefaults()`, since this component can't look up real `IDC_*`
+  // ids itself.
+  explicit DirectionalGestureMapping(
+      DirectionalGestureDefaultCommands default_commands);
 
   DirectionalGestureMapping(const DirectionalGestureMapping&) = delete;
   DirectionalGestureMapping& operator=(const DirectionalGestureMapping&) =
@@ -47,6 +52,8 @@ class DirectionalGestureMapping final {
   void ResetToDefaults();
 
  private:
+  const DirectionalGestureDefaultCommands default_commands_;
+
   // `std::less<>` makes lookup and erase transparent, so `Remove()` and
   // `ActionsForStrokes()` can query with a `std::string_view` without
   // constructing a `std::string` first; inserting a new key still requires one,

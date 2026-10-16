@@ -6,25 +6,26 @@
 #include "brave/components/gestures/core/common/directional/directional_gesture_defaults.h"
 
 #include "brave/components/gestures/core/common/actions/gesture_action_util.h"
+#include "brave/components/gestures/core/common/actions/gesture_command_constants.h"
 
 namespace gestures {
 
 // Chosen so the most commonly used actions are assigned to the simplest
 // strokes.
 base::flat_map<std::string, std::vector<GestureActionInfo>, std::less<>>
-DefaultMappings() {
+DefaultMappings(const DirectionalGestureDefaultCommands& commands) {
   return {
-      {"↓", MakeGestureActions(GestureCommandType::kNewTab)},
-      {"←", MakeGestureActions(GestureCommandType::kBack)},
-      {"→", MakeGestureActions(GestureCommandType::kForward)},
-      {"↑", MakeGestureActions(GestureCommandType::kScrollToTop)},
-      {"↓→", MakeGestureActions(GestureCommandType::kCloseTab)},
-      {"↓↑", MakeGestureActions(GestureCommandType::kNewWindow)},
-      {"←↑", MakeGestureActions(GestureCommandType::kPreviousTab)},
-      {"→↓", MakeGestureActions(GestureCommandType::kDuplicateTab)},
-      {"→↑", MakeGestureActions(GestureCommandType::kNextTab)},
-      {"↑↓", MakeGestureActions(GestureCommandType::kReload)},
-      {"↑→", MakeGestureActions(GestureCommandType::kReopenClosedTab)},
+      {"↓", {MakeGestureAction(commands.new_tab)}},
+      {"←", {MakeGestureAction(commands.back)}},
+      {"→", {MakeGestureAction(commands.forward)}},
+      {"↑", {MakeGestureAction(kScrollToTop)}},
+      {"↓→", {MakeGestureAction(commands.close_tab)}},
+      {"↓↑", {MakeGestureAction(commands.new_window)}},
+      {"←↑", {MakeGestureAction(commands.previous_tab)}},
+      {"→↓", {MakeGestureAction(commands.duplicate_tab)}},
+      {"→↑", {MakeGestureAction(commands.next_tab)}},
+      {"↑↓", {MakeGestureAction(commands.reload)}},
+      {"↑→", {MakeGestureAction(commands.reopen_closed_tab)}},
   };
 }
 

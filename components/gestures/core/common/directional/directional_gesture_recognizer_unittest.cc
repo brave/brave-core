@@ -189,7 +189,7 @@ TEST(DirectionalGestureRecognizerTest,
     const float angle = 2 * std::numbers::pi_v<float> * i / kPointCount;
     gesture_recognizer.OnMouseMoved(
         gfx::PointF(100 + kRadius * std::cos(angle),
-                   100 + kRadius * std::sin(angle)),
+                    100 + kRadius * std::sin(angle)),
         base::TimeTicks());
   }
 

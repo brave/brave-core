@@ -8,9 +8,9 @@
 
 #include <variant>
 
-#include "brave/components/gestures/core/common/actions/gesture_command_types.h"
-#include "brave/components/gestures/core/common/actions/navigate_to_url_params_info.h"
-#include "brave/components/gestures/core/common/actions/switch_to_tab_params_info.h"
+#include "brave/components/gestures/core/common/actions/gesture_command_constants.h"
+#include "brave/components/gestures/core/common/actions/int_param_info.h"
+#include "brave/components/gestures/core/common/actions/text_param_info.h"
 
 namespace gestures {
 
@@ -20,15 +20,16 @@ namespace gestures {
 struct GestureActionInfo {
   bool operator==(const GestureActionInfo&) const = default;
 
-  // Which command this action runs. `kUnassigned` means no command has been
-  // configured yet, e.g. a newly-added chain entry in the settings UI.
-  GestureCommandType command = GestureCommandType::kUnassigned;
+  // Which command this action runs: one of the sentinels in
+  // `gesture_command_constants.h`, or a raw browser `IDC_*` command id.
+  // `kUnassigned` means no command has been configured yet, e.g. a
+  // newly-added chain entry in the settings UI.
+  int command = kUnassigned;
 
   // Parameters specific to `command`. `std::monostate` for commands that take
   // none. Adding a parameterized command means adding its own type here, not a
   // new field on this struct.
-  std::variant<std::monostate, NavigateToUrlParamsInfo, SwitchToTabParamsInfo>
-      command_params;
+  std::variant<std::monostate, TextParamInfo, IntParamInfo> command_params;
 };
 
 }  // namespace gestures

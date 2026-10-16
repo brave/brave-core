@@ -3,17 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-// `normalizeScaleAndTranslation` and the resample/distance logic built on it
-// must stay in sync with their counterparts in
-// brave/components/gestures/core/common/custom/custom_gesture_geometry_util.cc,
-// used by `CustomGestureRecognizer` for actual matching. `centerInUnitSquare`
-// has no C++ counterpart; it's display-only, for the preview icon. This file
-// is used only for a pre-save "this looks like an existing gesture" warning,
-// not for actual gesture matching (which is always done in C++ at gesture
-// time).
+// Must stay in sync with its C++ counterpart, used for actual gesture
+// matching; this file only drives a pre-save similarity warning.
 const CUSTOM_GESTURE_RESAMPLE_POINT_COUNT = 32
 export const CUSTOM_GESTURE_SIMILARITY_WARNING_THRESHOLD = 0.12
-const LIVE_DRAW_RESAMPLE_POINT_COUNT = 24
 
 export interface Point {
   x: number
@@ -28,7 +21,7 @@ function pathLength(path: Point[]): number {
   return length
 }
 
-function resampleToCount(path: Point[], count: number): Point[] {
+export function resampleToCount(path: Point[], count: number): Point[] {
   const totalLength = pathLength(path)
   if (totalLength === 0) {
     return new Array(count).fill(path[0])
@@ -64,7 +57,7 @@ function resampleToCount(path: Point[], count: number): Point[] {
   return resampled
 }
 
-function normalizeScaleAndTranslation(path: Point[]): Point[] {
+export function normalizeScaleAndTranslation(path: Point[]): Point[] {
   const minX = Math.min(...path.map((point) => point.x))
   const minY = Math.min(...path.map((point) => point.y))
   const maxX = Math.max(...path.map((point) => point.x))
@@ -77,24 +70,6 @@ function normalizeScaleAndTranslation(path: Point[]): Point[] {
   return path.map((point) => ({
     x: (point.x - minX) / scale,
     y: (point.y - minY) / scale,
-  }))
-}
-
-// A non-square bounding box's shorter axis has a scaled extent less than 1;
-// splitting the leftover space evenly on both sides centers it in the unit
-// square instead of leaving it anchored to the top-left corner. Kept
-// separate from `normalizeScaleAndTranslation` itself, which the similarity
-// warning also depends on: centering based on each draw's own (noisy,
-// hand-drawn) bounding box would add per-draw variance to that distance
-// metric, pushing genuine near-duplicates past the threshold.
-function centerInUnitSquare(path: Point[]): Point[] {
-  const maxX = Math.max(...path.map((point) => point.x))
-  const maxY = Math.max(...path.map((point) => point.y))
-  const offsetX = (1 - maxX) / 2
-  const offsetY = (1 - maxY) / 2
-  return path.map((point) => ({
-    x: offsetX + point.x,
-    y: offsetY + point.y,
   }))
 }
 
@@ -112,9 +87,8 @@ function averagePerPointDistance(firstPath: Point[], secondPath: Point[]):
   return total / firstPath.length
 }
 
-// Used to warn before saving a new custom gesture that looks too similar to
-// one already recorded. Returns the smallest average distance from `path`
-// to any of `customGestures`, or null if there are none to compare against.
+// The smallest average distance from `path` to any of `customGestures`,
+// or null if there are none to compare against.
 export function closestCustomGestureDistance(
   path: Point[],
   customGestures: Array<{ points: Point[] }>): number | null {
@@ -135,65 +109,4 @@ export function closestCustomGestureDistance(
       averagePerPointDistance(normalizedPath, normalizedCustomGesture))
   }
   return smallestAverageDistance
-}
-
-// Approximates a Catmull-Rom spline with cubic-bezier control points.
-function catmullRomControlPoints(
-  previousPoint: Point, segmentStart: Point, segmentEnd: Point,
-  nextPoint: Point): { controlPoint1: Point, controlPoint2: Point } {
-  // Standard tangent scale for approximating a uniform Catmull-Rom spline
-  // with cubic-bezier control points.
-  const CATMULL_ROM_TANGENT_SCALE = 6
-  const controlPoint1 = {
-    x: segmentStart.x +
-      (segmentEnd.x - previousPoint.x) / CATMULL_ROM_TANGENT_SCALE,
-    y: segmentStart.y +
-      (segmentEnd.y - previousPoint.y) / CATMULL_ROM_TANGENT_SCALE,
-  }
-  const controlPoint2 = {
-    x: segmentEnd.x -
-      (nextPoint.x - segmentStart.x) / CATMULL_ROM_TANGENT_SCALE,
-    y: segmentEnd.y -
-      (nextPoint.y - segmentStart.y) / CATMULL_ROM_TANGENT_SCALE,
-  }
-  return { controlPoint1, controlPoint2 }
-}
-
-// Raw captured points would render as a jagged polyline with sharp corners,
-// which looks poor in the preview shown to the user.
-export function smoothedSvgPath(path: Point[]): string {
-  if (path.length < 2) {
-    return ''
-  }
-  if (path.length === 2) {
-    return `M ${path[0].x} ${path[0].y} L ${path[1].x} ${path[1].y}`
-  }
-
-  let d = `M ${path[0].x} ${path[0].y}`
-  for (let i = 0; i < path.length - 1; ++i) {
-    const previousPoint = path[Math.max(i - 1, 0)]
-    const segmentStart = path[i]
-    const segmentEnd = path[i + 1]
-    const nextPoint = path[Math.min(i + 2, path.length - 1)]
-    const { controlPoint1, controlPoint2 } = catmullRomControlPoints(
-      previousPoint, segmentStart, segmentEnd, nextPoint)
-    d += ` C ${controlPoint1.x} ${controlPoint1.y}, ` +
-      `${controlPoint2.x} ${controlPoint2.y}, ${segmentEnd.x} ${segmentEnd.y}`
-  }
-  return d
-}
-
-// Preserves aspect ratio, so a tall or wide shape doesn't get stretched to
-// fill the square preview.
-export function fitToViewBox(
-    path: Point[], size: number, padding: number): Point[] {
-  // Resample before normalizing, so the preview's curve doesn't inherit any
-  // jitter in the originally-recorded raw points.
-  const resampled = resampleToCount(path, LIVE_DRAW_RESAMPLE_POINT_COUNT)
-  const normalized = centerInUnitSquare(normalizeScaleAndTranslation(resampled))
-  const available = size - padding * 2
-  return normalized.map((point) => ({
-    x: padding + point.x * available,
-    y: padding + point.y * available,
-  }))
 }

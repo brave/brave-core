@@ -14,6 +14,15 @@
 
 namespace gestures {
 
+namespace {
+
+// Fake command ids, distinct from any real `IDC_*` value; these tests only
+// exercise shape matching, not command dispatch.
+constexpr int kFakeNewTab = 1000001;
+constexpr int kFakeCloseTab = 1000002;
+
+}  // namespace
+
 TEST(CustomGestureRecognizerTest, ReturnsEmptyWithNoCustomGestures) {
   CustomGestureRecognizer custom_gesture_recognizer;
 
@@ -26,7 +35,7 @@ TEST(CustomGestureRecognizerTest, ReturnsEmptyForPathWithFewerThanTwoPoints) {
   CustomGestureRecognizer custom_gesture_recognizer;
   custom_gesture_recognizer.Add(test::MakeCustomGesture(
       /*id=*/"id", test::MakeVStrokePoints(),
-      {MakeGestureAction(GestureCommandType::kNewTab)}));
+      {MakeGestureAction(kFakeNewTab)}));
 
   EXPECT_THAT(custom_gesture_recognizer.ActionsForMatch({gfx::PointF()}),
               testing::IsEmpty());
@@ -36,34 +45,33 @@ TEST(CustomGestureRecognizerTest, MatchesIdenticalPath) {
   CustomGestureRecognizer custom_gesture_recognizer;
   custom_gesture_recognizer.Add(test::MakeCustomGesture(
       /*id=*/"id", test::MakeVStrokePoints(),
-      {MakeGestureAction(GestureCommandType::kNewTab)}));
+      {MakeGestureAction(kFakeNewTab)}));
 
   EXPECT_THAT(
       custom_gesture_recognizer.ActionsForMatch(test::MakeVStrokePoints()),
-      testing::ElementsAre(
-          testing::Eq(MakeGestureAction(GestureCommandType::kNewTab))));
+      testing::ElementsAre(testing::Eq(MakeGestureAction(kFakeNewTab))));
 }
 
 TEST(CustomGestureRecognizerTest, MatchesPathScaledAndTranslated) {
   CustomGestureRecognizer custom_gesture_recognizer;
   custom_gesture_recognizer.Add(test::MakeCustomGesture(
       /*id=*/"id", test::MakeVStrokePoints(),
-      {MakeGestureAction(GestureCommandType::kNewTab)}));
+      {MakeGestureAction(kFakeNewTab)}));
 
   std::vector<gfx::PointF> scaled_and_moved = {gfx::PointF(100.0, 150.0),
                                                gfx::PointF(140.0, 190.0),
                                                gfx::PointF(220.0, 50.0)};
 
-  EXPECT_THAT(custom_gesture_recognizer.ActionsForMatch(scaled_and_moved),
-              testing::ElementsAre(
-                  testing::Eq(MakeGestureAction(GestureCommandType::kNewTab))));
+  EXPECT_THAT(
+      custom_gesture_recognizer.ActionsForMatch(scaled_and_moved),
+      testing::ElementsAre(testing::Eq(MakeGestureAction(kFakeNewTab))));
 }
 
 TEST(CustomGestureRecognizerTest, DoesNotMatchDissimilarShape) {
   CustomGestureRecognizer custom_gesture_recognizer;
   custom_gesture_recognizer.Add(test::MakeCustomGesture(
       /*id=*/"id", test::MakeVStrokePoints(),
-      {MakeGestureAction(GestureCommandType::kNewTab)}));
+      {MakeGestureAction(kFakeNewTab)}));
 
   // A straight horizontal line looks nothing like the V-shaped gesture.
   std::vector<gfx::PointF> straight_line = {gfx::PointF(),
@@ -77,7 +85,7 @@ TEST(CustomGestureRecognizerTest, RemoveStopsMatching) {
   CustomGestureRecognizer custom_gesture_recognizer;
   custom_gesture_recognizer.Add(test::MakeCustomGesture(
       /*id=*/"id", test::MakeVStrokePoints(),
-      {MakeGestureAction(GestureCommandType::kNewTab)}));
+      {MakeGestureAction(kFakeNewTab)}));
 
   custom_gesture_recognizer.Remove("id");
 
@@ -90,15 +98,14 @@ TEST(CustomGestureRecognizerTest, AddOverwritesExistingId) {
   CustomGestureRecognizer custom_gesture_recognizer;
   custom_gesture_recognizer.Add(test::MakeCustomGesture(
       /*id=*/"id", test::MakeVStrokePoints(),
-      {MakeGestureAction(GestureCommandType::kNewTab)}));
+      {MakeGestureAction(kFakeNewTab)}));
   custom_gesture_recognizer.Add(test::MakeCustomGesture(
       /*id=*/"id", test::MakeVStrokePoints(),
-      {MakeGestureAction(GestureCommandType::kCloseTab)}));
+      {MakeGestureAction(kFakeCloseTab)}));
 
   EXPECT_THAT(
       custom_gesture_recognizer.ActionsForMatch(test::MakeVStrokePoints()),
-      testing::ElementsAre(
-          testing::Eq(MakeGestureAction(GestureCommandType::kCloseTab))));
+      testing::ElementsAre(testing::Eq(MakeGestureAction(kFakeCloseTab))));
   EXPECT_THAT(custom_gesture_recognizer.custom_gestures(), testing::SizeIs(1));
 }
 
@@ -113,14 +120,14 @@ TEST(CustomGestureRecognizerTest,
   CustomGestureRecognizer custom_gesture_recognizer;
   custom_gesture_recognizer.Add(test::MakeCustomGesture(
       /*id=*/"id", test::MakeTriangleStrokePoints(/*start_vertex=*/0),
-      {MakeGestureAction(GestureCommandType::kNewTab)}));
+      {MakeGestureAction(kFakeNewTab)}));
 
   // Same triangle, same direction, but traced starting from a different
   // vertex than the custom gesture was recorded with.
-  EXPECT_THAT(custom_gesture_recognizer.ActionsForMatch(
-                  test::MakeTriangleStrokePoints(/*start_vertex=*/1)),
-              testing::ElementsAre(
-                  testing::Eq(MakeGestureAction(GestureCommandType::kNewTab))));
+  EXPECT_THAT(
+      custom_gesture_recognizer.ActionsForMatch(
+          test::MakeTriangleStrokePoints(/*start_vertex=*/1)),
+      testing::ElementsAre(testing::Eq(MakeGestureAction(kFakeNewTab))));
 }
 
 TEST(CustomGestureRecognizerTest,
@@ -128,7 +135,7 @@ TEST(CustomGestureRecognizerTest,
   CustomGestureRecognizer custom_gesture_recognizer;
   custom_gesture_recognizer.Add(test::MakeCustomGesture(
       /*id=*/"id", test::MakeVStrokePoints(),
-      {MakeGestureAction(GestureCommandType::kNewTab)}));
+      {MakeGestureAction(kFakeNewTab)}));
 
   // The V shape is open, so unlike a closed shape, retracing it starting
   // from a different point produces a genuinely different path and should
@@ -157,15 +164,14 @@ TEST(CustomGestureRecognizerTest, ActionsForMatchReturnsAllChainedActions) {
   CustomGestureRecognizer custom_gesture_recognizer;
   custom_gesture_recognizer.Add(test::MakeCustomGesture(
       /*id=*/"id", test::MakeVStrokePoints(),
-      {MakeGestureAction(GestureCommandType::kNewTab),
+      {MakeGestureAction(kFakeNewTab),
        test::MakeNavigateToUrlGestureAction("https://brave.com")}));
 
   EXPECT_THAT(
       custom_gesture_recognizer.ActionsForMatch(test::MakeVStrokePoints()),
-      testing::ElementsAre(
-          testing::Eq(MakeGestureAction(GestureCommandType::kNewTab)),
-          testing::Eq(
-              test::MakeNavigateToUrlGestureAction("https://brave.com"))));
+      testing::ElementsAre(testing::Eq(MakeGestureAction(kFakeNewTab)),
+                           testing::Eq(test::MakeNavigateToUrlGestureAction(
+                               "https://brave.com"))));
 }
 
 }  // namespace gestures

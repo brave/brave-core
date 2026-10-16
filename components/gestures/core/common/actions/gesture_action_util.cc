@@ -7,15 +7,10 @@
 
 namespace gestures {
 
-GestureActionInfo MakeGestureAction(GestureCommandType gesture_command_type) {
-  GestureActionInfo action;
-  action.command = gesture_command_type;
-  return action;
-}
-
-std::vector<GestureActionInfo> MakeGestureActions(
-    GestureCommandType gesture_command_type) {
-  return {MakeGestureAction(gesture_command_type)};
+GestureActionInfo MakeGestureAction(int command) {
+  GestureActionInfo gesture_action;
+  gesture_action.command = command;
+  return gesture_action;
 }
 
 }  // namespace gestures

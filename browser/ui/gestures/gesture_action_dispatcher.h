@@ -46,14 +46,20 @@ class GestureActionDispatcher final {
   // so a later chained action resolving "the active tab" immediately
   // afterward can still see the pre-command state.
   void DispatchActions(std::vector<GestureActionInfo> actions);
-  void RunGestureAction(const GestureActionInfo& action);
-  void RunNavigateToUrl(const GestureActionInfo& action);
+  void RunGestureAction(const GestureActionInfo& gesture_action);
+  void RunNavigateToUrl(const GestureActionInfo& gesture_action);
   void RunScrollToTop();
-  void RunSwitchToTab(const GestureActionInfo& action);
+  void RunSwitchToTab(const GestureActionInfo& gesture_action);
+  void RunOpenSettings(const GestureActionInfo& gesture_action);
+
+  // Whether `browser_command_id` should actually run right now, for the
+  // commands whose own `chrome::ExecuteCommand` enabled check can't be
+  // relied on (see this function's own comment in the .cc for why).
+  bool ShouldRunBrowserCommand(int browser_command_id) const;
 
   // Every command not specially handled above, run as a plain `IDC_*`
   // browser command.
-  void RunBrowserCommand(const GestureActionInfo& action);
+  void RunBrowserCommand(const GestureActionInfo& gesture_action);
 
   // The current tab's `WebContents`, read fresh each time rather than
   // cached, since an earlier action in the same chain (e.g. opening a new
