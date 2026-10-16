@@ -52,39 +52,40 @@ export function getHtml(this: BraveAccountPasswordInputElement) {
         ${freezeWhen(
           this.password.length === 0,
           this.config.mode === 'confirmation'
-            ? this.password === this.confirmPassword()
-              ? html`
-                  <div class="dropdown-content">
-                    <leo-icon name="check-circle-filled"></leo-icon>
-                    <div>
-                      $i18n{BRAVE_ACCOUNT_CONFIRM_PASSWORD_INPUT_SUCCESS_MESSAGE}
+            ? html`${this.password === this.confirmPassword()
+                ? html`
+                    <div class="dropdown-content">
+                      <leo-icon name="check-circle-filled"></leo-icon>
+                      <div>
+                        $i18n{BRAVE_ACCOUNT_CONFIRM_PASSWORD_INPUT_SUCCESS_MESSAGE}
+                      </div>
                     </div>
-                  </div>
-                `
-              : html`
-                  <div class="dropdown-content">
-                    <leo-icon name="warning-triangle-filled"></leo-icon>
-                    <div>
-                      $i18n{BRAVE_ACCOUNT_CONFIRM_PASSWORD_INPUT_ERROR_MESSAGE}
+                  `
+                : html`
+                    <div class="dropdown-content">
+                      <leo-icon name="warning-triangle-filled"></leo-icon>
+                      <div>
+                        $i18n{BRAVE_ACCOUNT_CONFIRM_PASSWORD_INPUT_ERROR_MESSAGE}
+                      </div>
                     </div>
-                  </div>
-                `
-            : this.config.mode === 'strength' && this.isValid()
-              ? html`<div class="dropdown-content">
-                  <brave-account-password-strength-meter
-                    password=${this.password}
-                    @password-strength-changed=${this.onPasswordStrengthChanged}
-                  >
-                  </brave-account-password-strength-meter>
-                </div>`
-              : html`
-                  <div class="dropdown-content">
-                    <leo-icon name="warning-triangle-filled"></leo-icon>
-                    <div>
-                      $i18n{BRAVE_ACCOUNT_PASSWORD_INPUT_WHITESPACE_ERROR_MESSAGE}
+                  `}`
+            : html`${this.config.mode === 'strength' && this.isValid()
+                ? html`<div class="dropdown-content">
+                    <brave-account-password-strength-meter
+                      password=${this.password}
+                      @password-strength-changed=${this
+                        .onPasswordStrengthChanged}
+                    >
+                    </brave-account-password-strength-meter>
+                  </div>`
+                : html`
+                    <div class="dropdown-content">
+                      <leo-icon name="warning-triangle-filled"></leo-icon>
+                      <div>
+                        $i18n{BRAVE_ACCOUNT_PASSWORD_INPUT_WHITESPACE_ERROR_MESSAGE}
+                      </div>
                     </div>
-                  </div>
-                `,
+                  `}`,
         )}
       </div>
     </leo-input>
