@@ -96,10 +96,7 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
     @VisibleForTesting static final String PREF_BRAVE_NEWS_V2 = "brave_news_v2";
     private static final String PREF_BRAVE_PLAYLIST = "brave_playlist";
     private static final String PREF_SYNC = "brave_sync_layout";
-    private static final String PREF_PASSWORDS = "passwords";
     private static final String PREF_NOTIFICATIONS = "notifications";
-    private static final String PREF_PAYMENT_METHODS = "autofill_payment_methods";
-    private static final String PREF_ADDRESSES = "autofill_addresses";
     private static final String PREF_TABS = "tabs";
     private static final String PREF_MEDIA = "media";
     private static final String PREF_APPEARANCE = "brave_appearance";
@@ -414,19 +411,8 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         setPreferenceOrder(PREF_BRAVE_LANGUAGES, ++displaySectionOrder);
 
         int passwordsAndAutofillSectionOrder = displaySectionOrder;
-        // MainSettings removes the separate autofill rows when the flag is on.
-        if (ChromeFeatureList.isEnabled(ChromeFeatureList.YOUR_SAVED_INFO_SETTINGS_PAGE_ANDROID)) {
-            setPreferenceOrder(
-                    MainSettings.PREF_AUTOFILL_AND_PASSWORDS, ++passwordsAndAutofillSectionOrder);
-        } else {
-            setPreferenceOrder(
-                    MainSettings.PREF_AUTOFILL_SECTION, ++passwordsAndAutofillSectionOrder);
-            setPreferenceOrder(PREF_PASSWORDS, ++passwordsAndAutofillSectionOrder);
-            setPreferenceOrder(
-                    MainSettings.PREF_AUTOFILL_OPTIONS, ++passwordsAndAutofillSectionOrder);
-            setPreferenceOrder(PREF_PAYMENT_METHODS, ++passwordsAndAutofillSectionOrder);
-            setPreferenceOrder(PREF_ADDRESSES, ++passwordsAndAutofillSectionOrder);
-        }
+        setPreferenceOrder(
+                MainSettings.PREF_AUTOFILL_AND_PASSWORDS, ++passwordsAndAutofillSectionOrder);
 
         int supportSectionOrder = passwordsAndAutofillSectionOrder;
         setPreferenceOrder(PREF_SUPPORT_SECTION, ++supportSectionOrder);
@@ -497,16 +483,13 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
     }
 
     private void updatePreferenceIcons() {
-        updatePreferenceIcon(PREF_PASSWORDS, R.drawable.ic_key);
         updatePreferenceIcon(PREF_CONTENT_SETTINGS, R.drawable.ic_tune);
-        updatePreferenceIcon(PREF_PAYMENT_METHODS, R.drawable.ic_credit_card);
         updatePreferenceIcon(PREF_DOWNLOADS, R.drawable.ic_download);
         updatePreferenceIcon(PREF_LANGUAGES, R.drawable.ic_product_translate);
         updatePreferenceIcon(PREF_BRAVE_LANGUAGES, R.drawable.ic_product_translate);
         updatePreferenceIcon(PREF_ABOUT_CHROME, R.drawable.ic_info_outline);
         updatePreferenceIcon(PREF_ACCESSIBILITY, R.drawable.ic_accessibility);
         updatePreferenceIcon(PREF_PRIVACY, R.drawable.ic_bar_chart_search);
-        updatePreferenceIcon(PREF_ADDRESSES, R.drawable.ic_location_on);
         updatePreferenceIcon(PREF_NOTIFICATIONS, R.drawable.ic_notification);
         updatePreferenceIcon(MainSettings.PREF_DEVELOPER, R.drawable.ic_code);
         updatePreferenceIcon(MainSettings.PREF_HOMEPAGE, R.drawable.ic_browser_home);
@@ -518,7 +501,6 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
                 BottomToolbarConfiguration.isToolbarTopAnchored()
                         ? R.drawable.ic_browser_mobile_tabs_top
                         : R.drawable.ic_browser_mobile_tabs_bottom);
-        updatePreferenceIcon(MainSettings.PREF_AUTOFILL_OPTIONS, R.drawable.ic_autofill);
         updatePreferenceIcon(MainSettings.PREF_AUTOFILL_AND_PASSWORDS, R.drawable.ic_autofill);
         updatePreferenceIcon(PREF_TOOLBAR_SHORTCUT, R.drawable.ic_browser_customizable_shortcut);
     }
@@ -807,7 +789,6 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
             new SettingsRoutes(
                     MainSettings.class.getName(),
                     MainSettings.PREF_AUTOFILL_AND_PASSWORDS,
-                    MainSettings.PREF_AUTOFILL_OPTIONS,
                     AutofillAndPasswordsFragment.class.getName(),
                     AutofillAndPasswordsFragment.PREF_AUTOFILL_SETTINGS,
                     AutofillAndPasswordsFragment.EXTRA_REFERRER,
