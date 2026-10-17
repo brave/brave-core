@@ -311,6 +311,8 @@ void MyService::Shutdown() {
 
 ## ❌ Don't Pass `BrowserContext` to Component Services
 
+**File Patterns:** `components/**`
+
 **Component-level services should take specific dependencies (`PrefService*`,
 `URLLoaderFactory`) rather than `BrowserContext`.** Passing `BrowserContext`
 prevents reuse on iOS and creates content-layer dependencies.
@@ -492,6 +494,9 @@ std::vector<tabs::TabHandle> tabs_to_close_;
 <a id="CSM-027"></a>
 
 ## ✅ Security Review for Unrestricted URL Inputs in Mojom
+
+**File Patterns:** `**/*.mojom`, `**/*.{cc,h,mm}`. Mojom interfaces and
+implementations accepting URLs across privilege boundaries.
 
 **When creating mojom interfaces that accept URL parameters from less-privileged
 processes, consider restricting to an allowlist or enum** rather than accepting

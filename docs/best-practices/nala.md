@@ -15,6 +15,9 @@ inconsistency, duplicates, and maintenance burden.
 
 ### Android
 
+**File Patterns:** `android/nala/icons.gni`, `**/{res,brave-res}/drawable*/**`.
+Android icon additions, not just the icon-catalog destination.
+
 Add icons to `android/nala/icons.gni` instead of creating new drawable
 resources.
 
@@ -35,6 +38,9 @@ nala_icons = [
 
 ### WebUI
 
+**File Patterns:** `ui/webui/resources/BUILD.gn`, `**/*.svg`. WebUI icon
+additions, not just the icon-catalog destination.
+
 Add the icon name to the `leo_icons` array in `ui/webui/resources/BUILD.gn`
 instead of adding a new `.svg` file.
 
@@ -49,6 +55,9 @@ instead of adding a new `.svg` file.
 <a id="NA-011"></a>
 
 ### C++ browser UI
+
+**File Patterns:** `components/vector_icons/BUILD.gn`, `**/*.icon`. C++ UI icon
+additions, not just the icon-catalog destination.
 
 Add to the `leo_icons` array in `components/vector_icons/BUILD.gn` instead of
 creating a new `.icon` file.
@@ -70,6 +79,9 @@ leo_icons = [
 <a id="NA-002"></a>
 
 ## ❌ Don't Add New Android Color Tokens — Use Existing Nala Color Tokens
+
+**File Patterns:** `**/{res,brave-res}/values*/*.xml`. Android color
+definitions.
 
 **When adding color values on Android, use existing Nala/Leo color tokens
 instead of defining new color resources.** New color definitions in
@@ -93,6 +105,9 @@ inconsistency across themes and platforms.
 <a id="NA-005"></a> <a id="NA-006"></a>
 
 ## ❌ Don't Use HTML Elements or Custom Components When Leo Provides Them
+
+**File Patterns:** `**/*.{tsx,jsx,ts,js}`. React-bearing code; verify React
+usage rather than requiring a component filename.
 
 **In WebUI React code, use Leo components from `@brave/leo/react/*` instead of
 native HTML elements or custom re-implementations.** Leo components are
@@ -265,6 +280,10 @@ import SegmentedControlItem from '@brave/leo/react/segmentedControlItem'
 <a id="NA-012"></a>
 
 ## ❌ Don't Create Intermediate Color Tokens — Use Nala Tokens Directly
+
+**File Patterns:** `**/*color_mixer*.{cc,h}`, `**/*color_id*.h`, `**/*.{cc,h}`.
+C++ color-token definitions and call sites, including files without
+color-specific names.
 
 **When referencing Nala/Leo color tokens in C++ color mixers, use the Nala token
 directly at the call site instead of creating an intermediate `kColor*` token

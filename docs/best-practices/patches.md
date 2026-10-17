@@ -4,6 +4,8 @@
 
 ## ❌ Patches Must Contain Only Functional Changes
 
+**File Patterns:** `patches/**/*.patch`
+
 **Patches should contain only the minimal functional changes needed.** Never add
 comments, empty lines, whitespace changes, or any other non-functional
 modifications. Leave whitespace intact to minimize diff size. Unnecessary
@@ -16,6 +18,8 @@ Chromium upgrades.
 
 ## ❌ No Multiline Patches - Use Defines
 
+**File Patterns:** `patches/**/*.patch`
+
 **Never create multiline patches. Use `#define` macros or chromium_src overrides
 instead.**
 
@@ -24,6 +28,8 @@ instead.**
 <a id="PATCH-005"></a>
 
 ## ✅ Use `include` for Extensible Patches
+
+**File Patterns:** `patches/**/*.patch`
 
 **When a patch adds to a list or block, use an `include` directive to make the
 patch extensible.** This way additional items can be added in brave-core without
@@ -34,6 +40,8 @@ modifying the patch.
 <a id="PATCH-006"></a>
 
 ## ✅ Patches Should Use `define` for Extensibility
+
+**File Patterns:** `patches/**/*.patch`
 
 **Patches should use `#define` macros to be extensible.** This allows adding
 behavior in brave-core without changing the patch.
@@ -54,6 +62,8 @@ Convention for define names: `BRAVE_ALL_CAPS_ORIGINAL_METHOD_NAME`.
 <a id="PATCH-007"></a>
 
 ## Patch Style Guidelines
+
+**File Patterns:** `patches/**/*.patch`
 
 - **Keep patches to one line** even if it violates lint character line limits
   (lint doesn't run on patched files)
@@ -84,6 +94,8 @@ Convention for define names: `BRAVE_ALL_CAPS_ORIGINAL_METHOD_NAME`.
 
 ## ✅ Use `-=` for List Removal in Patches
 
+**File Patterns:** `patches/**/*.{gn,gni}.patch`
+
 **When removing items from GN lists, use `-=` instead of modifying the original
 line.** This makes the patch an addition rather than a modification.
 
@@ -100,6 +112,8 @@ line.** This makes the patch an addition rather than a modification.
 <a id="PATCH-009"></a>
 
 ## ✅ Use `deps +=` with a Variable for Extensible GN Patches
+
+**File Patterns:** `patches/**/*.{gn,gni}.patch`
 
 **When a patch adds dependencies to a Chromium BUILD.gn target, define a
 variable in Brave code and patch only the variable reference.** This allows
@@ -122,6 +136,8 @@ brave_browser_window_deps = [
 <a id="PATCH-010"></a>
 
 ## ❌ Don't Patch Python Build Scripts
+
+**File Patterns:** `patches/**/*.py.patch`
 
 **Do not add patches to Python build scripts (e.g., `java_cpp_enum.py` or
 similar build tools).** These patches prevent correct incremental rebuilds and
