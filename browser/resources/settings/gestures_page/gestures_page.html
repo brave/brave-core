@@ -1,0 +1,1532 @@
+<style include="settings-shared md-select">
+  .gestures-content {
+    box-sizing: border-box;
+    padding: var(--cr-section-vertical-margin, 12px) var(--cr-section-padding, 20px);
+    width: 100%;
+  }
+
+  .header {
+    padding: var(--leo-spacing-2xl);
+  }
+
+  .gestures-row {
+    align-items: center;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    padding-block: 8px;
+    width: 100%;
+  }
+
+  .gestures-label {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding-inline-end: 16px;
+  }
+
+  .gestures-site-origin {
+    overflow: hidden;
+    padding-inline-end: 16px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .gestures-sublabel {
+    color: var(--leo-color-text-secondary);
+    font: var(--leo-font-small-regular);
+  }
+
+  /* Aligns under the `.action-chain-group` it describes, which is itself
+     right-aligned. */
+  .gestures-sublabel.command-conflict-sublabel {
+    display: block;
+    text-align: end;
+  }
+
+  .gestures-sublabel.action-chain-group-help {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-bottom: var(--leo-spacing-l);
+  }
+
+  .gestures-sublabel.directional-help {
+    display: block;
+    margin-bottom: var(--leo-spacing-l);
+  }
+
+  .gestures-sublabel.custom-gestures-help {
+    display: block;
+  }
+
+  .gestures-sublabel.closed-shape-help {
+    display: block;
+    margin-top: var(--leo-spacing-l);
+    margin-bottom: var(--leo-spacing-l);
+  }
+
+  .gestures-sublabel.draw-custom-gesture-help {
+    display: block;
+    margin-bottom: var(--leo-spacing-l);
+  }
+
+  .gestures-sublabel.action-chain-group-help leo-icon {
+    --leo-icon-size: 16px;
+  }
+
+  /* Avoids stacking with this span's own `gap`, which would widen this
+     icon's trailing space versus every other icon's. */
+  .gestures-sublabel.action-chain-group-help .action-drag-handle {
+    margin-inline-end: 0;
+  }
+
+  #drawCustomGestureBox {
+    aspect-ratio: 4 / 3;
+    background: var(--leo-color-container-background);
+    border: 1px dashed var(--leo-color-divider-strong);
+    border-radius: var(--leo-radius-m);
+    cursor: crosshair;
+    margin: 8px 0;
+    position: relative;
+    width: 100%;
+  }
+
+  .draw-custom-gesture-actions {
+    display: flex;
+    gap: 8px;
+  }
+
+  #drawCustomGestureBox svg {
+    height: 100%;
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+  }
+
+  .gesture-icons {
+    align-items: center;
+    display: flex;
+    gap: 4px;
+    --leo-icon-size: 24px;
+  }
+
+  .custom-gesture-preview {
+    aspect-ratio: 1 / 1;
+    background: var(--leo-color-container-background);
+    border-radius: var(--leo-radius-s);
+    flex-shrink: 0;
+    /* Fixed size so chained actions stacking taller doesn't balloon this
+       via aspect-ratio; centered to still line up with taller rows. */
+    align-self: center;
+    height: 40px;
+    width: 40px;
+  }
+
+  /* Replaying as a drawing animation on hover shows stroke direction/order
+     that a static icon can't. 500 exceeds any possible path length here. */
+  .custom-gesture-preview path {
+    stroke-dasharray: 500;
+    stroke-dashoffset: 0;
+  }
+
+  .custom-gesture-item:hover .custom-gesture-preview path {
+    animation: brave-gestures-draw-preview 10s linear infinite;
+  }
+
+  /* 95%/100% hold the finished shape for the last half second of each
+     10s loop, giving a brief pause before it redraws from scratch. */
+  @keyframes brave-gestures-draw-preview {
+    0% {
+      stroke-dashoffset: 500;
+    }
+    95% {
+      stroke-dashoffset: 0;
+    }
+    100% {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  .custom-gesture-actions {
+    align-items: center;
+    display: flex;
+    gap: 8px;
+  }
+
+  .gestures-divider {
+    border: none;
+    border-top: 1px solid var(--leo-color-divider-subtle);
+    margin: 0;
+    margin-bottom: var(--leo-spacing-l);
+  }
+
+  /* Avoids stacking with `.gestures-content`'s own top padding, which
+     would make this gap bigger than any other divider's on this page. */
+  .gestures-divider:has(+ .gestures-content) {
+    margin-bottom: 0;
+  }
+
+  .gestures-mapping-item + .gestures-mapping-item,
+  .custom-gesture-item + .custom-gesture-item,
+  .gestures-row + .gestures-row {
+    border-top: 1px solid var(--leo-color-divider-subtle);
+    margin-top: var(--leo-spacing-m);
+    padding-top: var(--leo-spacing-m);
+  }
+
+  /* `!important` needed to beat `md-select`'s own `color` rule, which has
+     higher specificity (`select.md-select:not(.z)`). */
+  .command-unassigned {
+    color: var(--leo-color-text-secondary) !important;
+  }
+
+  /* Warns when a command is also used by another gesture. The
+     systemfeedback-warning token flips to near-black brown in dark mode. */
+  .command-conflict select {
+    border: 2px solid var(--leo-color-primitive-yellow-70) !important;
+  }
+
+  .action-chain-group {
+    align-items: center;
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+    margin-inline-start: auto;
+  }
+
+  .action-chain {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: flex-end;
+  }
+
+  .action-buttons {
+    display: flex;
+    flex-shrink: 0;
+    gap: 4px;
+  }
+
+  /* No gap, so the select and its `.action-param` controls sit flush as
+     one group; stretch so `.action-param` matches the select's height. */
+  .action-row {
+    align-items: stretch;
+    display: flex;
+  }
+
+  .chain-connector {
+    --leo-icon-size: 16px;
+    align-self: center;
+    color: var(--leo-color-icon-secondary);
+  }
+
+  .action-drag-handle {
+    --leo-icon-size: 16px;
+    color: var(--leo-color-icon-secondary);
+    cursor: grab;
+    margin-inline-end: 4px;
+  }
+
+  /* Shrinks each action's select to its command's text width; the
+     dropdown's own option list still sizes to fit the widest option. */
+  .action-row select {
+    --md-select-width: auto;
+  }
+
+  /* Same as above: "Left"/"Middle"/"Right" shouldn't stretch to
+     `md-select`'s wide default. */
+  .mouse-wheel-modifier-button-select {
+    --md-select-width: auto;
+  }
+
+  /* `md-select`'s own `:focus` always shows an outline, even after a
+     mouse click; keep it for keyboard navigation only. */
+  .action-row select:focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  /* Squares the trailing corner wherever a visible `.action-param`
+     follows, so the row's visible controls read as one joined group. */
+  .action-row select:has(~ .action-param:not([hidden])),
+  .action-param:has(~ .action-param:not([hidden])) {
+    border-start-end-radius: 0;
+    border-end-end-radius: 0;
+  }
+
+  /* Counterpart to the rule above: a visible `.action-param` always
+     follows the row's select, so its leading corner is always squared. */
+  .action-param:not([hidden]) {
+    border-start-start-radius: 0;
+    border-end-start-radius: 0;
+  }
+
+  /* Shares the select's border so a command param reads as part of the
+     same control, not a separate field next to it. */
+  .action-param {
+    align-items: center;
+    border: solid 1px var(--leo-color-divider-subtle);
+    border-start-start-radius: 0;
+    border-end-start-radius: 0;
+    border-start-end-radius: 8px;
+    border-end-end-radius: 8px;
+    box-sizing: border-box;
+    display: flex;
+    gap: 4px;
+    margin-inline-start: -1px;
+    padding-inline-end: 6px;
+    padding-inline-start: 10px;
+  }
+
+  .action-param-label {
+    font-size: 12px;
+    max-width: 160px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* No label, just an icon, so needs less side padding than
+     `.action-param`'s default. */
+  .remove-action-param {
+    padding-inline: 6px;
+  }
+
+  .action-param cr-icon-button {
+    --cr-icon-button-margin-end: 0;
+    --cr-icon-button-margin-start: 0;
+    --cr-icon-button-size: 24px;
+  }
+</style>
+
+<settings-section page-title="$i18n{braveGesturesPage}">
+  <settings-toggle-button
+      pref="{{prefs.brave.gestures.enabled}}"
+      label="$i18n{braveGesturesEnable}"
+      sub-label="$i18n{braveGesturesAboutDesc}">
+  </settings-toggle-button>
+
+  <template is="dom-if" if="[[prefs.brave.gestures.enabled.value]]">
+    <settings-toggle-button class="cr-row"
+        pref="{{prefs.brave.gestures.show_trail}}"
+        label="$i18n{braveGesturesShowTrail}"
+        sub-label="$i18n{braveGesturesShowTrailDesc}">
+    </settings-toggle-button>
+
+    <settings-toggle-button class="cr-row"
+        pref="{{prefs.brave.gestures.show_matched_gesture}}"
+        label="$i18n{braveGesturesShowMatchedGesture}"
+        sub-label="$i18n{braveGesturesShowMatchedGestureDesc}">
+    </settings-toggle-button>
+
+    <label class="gestures-row settings-box">
+      <div class="gestures-label">
+        <span>$i18n{braveGesturesSensitivity}</span>
+        <span class="gestures-sublabel">
+          $i18n{braveGesturesSensitivityDesc}
+        </span>
+      </div>
+      <input type="range" min="0" max="60"
+          value="[[prefs.brave.gestures.sensitivity_in_pixels.value]]"
+          on-change="onSensitivityChanged_">
+    </label>
+  </template>
+</settings-section>
+
+<template is="dom-if" if="[[prefs.brave.gestures.enabled.value]]">
+<settings-section page-title="$i18n{braveGesturesMappings}">
+  <div class="gestures-content">
+    <span class="gestures-sublabel directional-help">
+      $i18n{braveGesturesMappingsHelp}
+    </span>
+    <span class="gestures-sublabel action-chain-group-help">
+      $i18n{braveGesturesChainedActionsHelpDragPrefix}
+      <leo-icon name="drag" class="action-drag-handle"></leo-icon>
+      $i18n{braveGesturesChainedActionsHelpDragSuffix}
+      $i18n{braveGesturesChainedActionsHelpAddPrefix}
+      <leo-icon name="plus-add"></leo-icon>
+      $i18n{braveGesturesChainedActionsHelpAddSuffix}
+      $i18n{braveGesturesChainedActionsHelpRemovePrefix}
+      <leo-icon name="minus"></leo-icon>
+      $i18n{braveGesturesChainedActionsHelpRemoveSuffix}
+    </span>
+    <template is="dom-repeat" items="[[directionalGestureMappingActionRows_]]">
+      <div class$="gestures-mapping-item
+          [[directionalGestureMappingRowConflictClass_(item, directionalGestureMappingActionRows_, customGestureActionRows_)]]">
+        <div class="gestures-row">
+          <div class="gesture-icons">
+            <template is="dom-repeat" items="[[item.icons]]" as="iconName">
+              <leo-icon name="[[iconName]]"></leo-icon>
+            </template>
+          </div>
+          <div class="action-chain-group">
+            <div class="action-chain">
+              <div class="action-row"
+                  on-dragover="onActionDragOver_"
+                  on-drop="onDirectionalGestureMappingPrimaryActionDrop_">
+                <leo-icon name="drag" class="action-drag-handle"
+                    hidden$="[[!hasChainedActions_(item.actionRows)]]"
+                    draggable="true"
+                    on-dragstart="onDirectionalGestureMappingPrimaryActionDragStart_"
+                    on-dragend="onActionDragEnd_">
+                </leo-icon>
+                <select on-change="onCommandChanged_"
+                    class$="[[primaryCommandSelectClass_(item.actionRows)]]">
+                  <template is="dom-repeat" items="[[commandOptions_]]"
+                      as="option">
+                    <option value$="[[option.value]]"
+                        selected="[[optionMatchesPrimaryCommand_(
+                            option.value, item.actionRows)]]">
+                      [[option.name]]
+                    </option>
+                  </template>
+                </select>
+                <select class="md-select"
+                    on-change="onDirectionalGestureMappingOpenSettingsPageChanged_"
+                    hidden$="[[!isPrimaryOpenSettingsCommand_(item.actionRows)]]">
+                  <template is="dom-repeat" items="[[openSettingsPageOptions_]]"
+                      as="pageOption">
+                    <option value$="[[pageOption.value]]"
+                        selected="[[optionMatchesPrimaryOpenSettingsPage_(
+                            pageOption.value, item.actionRows)]]">
+                      [[pageOption.name]]
+                    </option>
+                  </template>
+                </select>
+                <div class$="[[primaryUrlAttachClass_(item.actionRows)]]"
+                    hidden$="[[!primaryHasTextParam_(item.actionRows)]]">
+                  <span class="action-param-label">
+                    [[primaryUrlButtonLabel_(item.actionRows)]]
+                  </span>
+                  <cr-icon-button iron-icon="edit-pencil"
+                      on-click="onEditDirectionalGestureMappingUrlClick_">
+                  </cr-icon-button>
+                </div>
+                <div class="action-param remove-action-param"
+                    hidden$="[[!hasChainedActions_(item.actionRows)]]">
+                  <cr-icon-button iron-icon="minus"
+                      on-click="onRemoveDirectionalGestureMappingPrimaryActionClick_">
+                  </cr-icon-button>
+                </div>
+              </div>
+              <template is="dom-repeat" items="[[chainedActionRows_(item.actionRows)]]"
+                  as="chainedAction">
+                <leo-icon name="arrow-small-right" class="chain-connector">
+                </leo-icon>
+                <div class="action-row"
+                    on-dragover="onActionDragOver_"
+                    on-drop="onDirectionalGestureMappingChainedActionDrop_">
+                  <leo-icon name="drag" class="action-drag-handle"
+                      draggable="true"
+                      on-dragstart="onDirectionalGestureMappingChainedActionDragStart_"
+                      on-dragend="onActionDragEnd_">
+                  </leo-icon>
+                  <select
+                      on-change="onDirectionalGestureMappingChainedActionCommandChanged_"
+                      class$="[[getCommandSelectClass_(
+                          chainedAction.command,
+                          chainedAction.textParam)]]">
+                    <template is="dom-repeat" items="[[commandOptions_]]"
+                        as="option">
+                      <option value$="[[option.value]]"
+                          selected="[[optionMatchesCommand_(
+                              option.value, chainedAction.command)]]">
+                        [[option.name]]
+                      </option>
+                    </template>
+                  </select>
+                  <select class="md-select"
+                      on-change="onDirectionalGestureMappingChainedActionOpenSettingsPageChanged_"
+                      hidden$="[[!isOpenSettingsCommand_(
+                          chainedAction.command)]]">
+                    <template is="dom-repeat" items="[[openSettingsPageOptions_]]"
+                        as="pageOption">
+                      <option value$="[[pageOption.value]]"
+                          selected="[[optionMatchesCommand_(
+                              pageOption.value,
+                              chainedAction.openSettingsPage)]]">
+                        [[pageOption.name]]
+                      </option>
+                    </template>
+                  </select>
+                  <div
+                      class$="[[getUrlAttachClass_(
+                          chainedAction.textParam)]]"
+                      hidden$="[[!hasTextParam_(
+                          chainedAction.command)]]">
+                    <span class="action-param-label">
+                      [[getUrlButtonLabel_(chainedAction.command, chainedAction.textParam)]]
+                    </span>
+                    <cr-icon-button iron-icon="edit-pencil"
+                        on-click="onEditDirectionalGestureMappingChainedUrlClick_">
+                    </cr-icon-button>
+                  </div>
+                  <div class="action-param remove-action-param">
+                    <cr-icon-button iron-icon="minus"
+                        on-click="onRemoveDirectionalGestureMappingChainedActionClick_">
+                    </cr-icon-button>
+                  </div>
+                </div>
+              </template>
+            </div>
+            <div class="action-buttons">
+              <cr-icon-button iron-icon="plus-add"
+                  on-click="onAddDirectionalGestureMappingChainedActionClick_">
+              </cr-icon-button>
+            </div>
+          </div>
+        </div>
+        <span class="gestures-sublabel command-conflict-sublabel"
+            hidden$="[[!directionalGestureMappingConflictDescription_(
+                item, directionalGestureMappingActionRows_, customGestureActionRows_)]]">
+          [[directionalGestureMappingConflictDescription_(item, directionalGestureMappingActionRows_, customGestureActionRows_)]]
+        </span>
+      </div>
+    </template>
+    <cr-button on-click="onResetDirectionalGestureMappingsClick_">
+      $i18n{braveGesturesReset}
+    </cr-button>
+  </div>
+</settings-section>
+
+<settings-section page-title="$i18n{braveGesturesCustomGestures}">
+  <div class="gestures-content">
+    <span class="gestures-sublabel custom-gestures-help">
+      $i18n{braveGesturesCustomGesturesHelp}
+    </span>
+    <span class="gestures-sublabel closed-shape-help"
+        hidden$="[[!customGestureActionRows_.length]]">
+      $i18n{braveGesturesClosedShapeHelp}
+    </span>
+    <span class="gestures-sublabel action-chain-group-help"
+        hidden$="[[!customGestureActionRows_.length]]">
+      $i18n{braveGesturesChainedActionsHelpDragPrefix}
+      <leo-icon name="drag" class="action-drag-handle"></leo-icon>
+      $i18n{braveGesturesChainedActionsHelpDragSuffix}
+      $i18n{braveGesturesChainedActionsHelpAddPrefix}
+      <leo-icon name="plus-add"></leo-icon>
+      $i18n{braveGesturesChainedActionsHelpAddSuffix}
+      $i18n{braveGesturesChainedActionsHelpRemovePrefix}
+      <leo-icon name="minus"></leo-icon>
+      $i18n{braveGesturesChainedActionsHelpRemoveSuffix}
+      $i18n{braveGesturesCustomGestureHelpRemovePrefix}
+      <leo-icon name="close"></leo-icon>
+      $i18n{braveGesturesCustomGestureHelpRemoveSuffix}
+    </span>
+    <template is="dom-repeat" items="[[customGestureActionRows_]]">
+      <div class$="custom-gesture-item
+          [[customGestureRowConflictClass_(item, directionalGestureMappingActionRows_, customGestureActionRows_)]]">
+      <div class="gestures-row">
+        <svg class="custom-gesture-preview" viewBox="0 0 32 32">
+          <path d$="[[item.previewSvgPathData]]"
+              fill="none"
+              stroke="var(--leo-color-icon-interactive)"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round">
+          </path>
+        </svg>
+        <div class="action-chain-group">
+          <div class="action-chain">
+            <div class="action-row"
+                on-dragover="onActionDragOver_"
+                on-drop="onCustomGesturePrimaryActionDrop_">
+              <leo-icon name="drag" class="action-drag-handle"
+                  hidden$="[[!hasChainedActions_(item.actionRows)]]"
+                  draggable="true"
+                  on-dragstart="onCustomGesturePrimaryActionDragStart_"
+                  on-dragend="onActionDragEnd_">
+              </leo-icon>
+              <select on-change="onCustomGestureCommandChanged_"
+                  class$="[[primaryCommandSelectClass_(item.actionRows)]]">
+                <template is="dom-repeat" items="[[commandOptions_]]"
+                    as="option">
+                  <option value$="[[option.value]]"
+                      selected="[[optionMatchesPrimaryCommand_(
+                          option.value, item.actionRows)]]">
+                    [[option.name]]
+                  </option>
+                </template>
+              </select>
+              <select class="md-select"
+                  on-change="onCustomGestureOpenSettingsPageChanged_"
+                  hidden$="[[!isPrimaryOpenSettingsCommand_(item.actionRows)]]">
+                <template is="dom-repeat" items="[[openSettingsPageOptions_]]"
+                    as="pageOption">
+                  <option value$="[[pageOption.value]]"
+                      selected="[[optionMatchesPrimaryOpenSettingsPage_(
+                          pageOption.value, item.actionRows)]]">
+                    [[pageOption.name]]
+                  </option>
+                </template>
+              </select>
+              <div class$="[[primaryUrlAttachClass_(item.actionRows)]]"
+                  hidden$="[[!primaryHasTextParam_(item.actionRows)]]">
+                <span class="action-param-label">
+                  [[primaryUrlButtonLabel_(item.actionRows)]]
+                </span>
+                <cr-icon-button iron-icon="edit-pencil"
+                    on-click="onEditCustomGestureUrlClick_">
+                </cr-icon-button>
+              </div>
+              <div class="action-param remove-action-param"
+                  hidden$="[[!hasChainedActions_(item.actionRows)]]">
+                <cr-icon-button iron-icon="minus"
+                    on-click="onRemoveCustomGesturePrimaryActionClick_">
+                </cr-icon-button>
+              </div>
+            </div>
+            <template is="dom-repeat" items="[[chainedActionRows_(item.actionRows)]]"
+                as="chainedAction">
+              <leo-icon name="arrow-small-right" class="chain-connector">
+              </leo-icon>
+              <div class="action-row"
+                  on-dragover="onActionDragOver_"
+                  on-drop="onCustomGestureChainedActionDrop_">
+                <leo-icon name="drag" class="action-drag-handle"
+                    draggable="true"
+                    on-dragstart="onCustomGestureChainedActionDragStart_"
+                    on-dragend="onActionDragEnd_">
+                </leo-icon>
+                <select
+                    on-change="onCustomGestureChainedActionCommandChanged_"
+                    class$="[[getCommandSelectClass_(
+                        chainedAction.command,
+                        chainedAction.textParam)]]">
+                  <template is="dom-repeat" items="[[commandOptions_]]"
+                      as="option">
+                    <option value$="[[option.value]]"
+                        selected="[[optionMatchesCommand_(
+                            option.value, chainedAction.command)]]">
+                      [[option.name]]
+                    </option>
+                  </template>
+                </select>
+                <select class="md-select"
+                    on-change="onCustomGestureChainedActionOpenSettingsPageChanged_"
+                    hidden$="[[!isOpenSettingsCommand_(
+                        chainedAction.command)]]">
+                  <template is="dom-repeat" items="[[openSettingsPageOptions_]]"
+                      as="pageOption">
+                    <option value$="[[pageOption.value]]"
+                        selected="[[optionMatchesCommand_(
+                            pageOption.value,
+                            chainedAction.openSettingsPage)]]">
+                      [[pageOption.name]]
+                    </option>
+                  </template>
+                </select>
+                <div
+                    class$="[[getUrlAttachClass_(
+                        chainedAction.textParam)]]"
+                    hidden$="[[!hasTextParam_(
+                        chainedAction.command)]]">
+                  <span class="action-param-label">
+                    [[getUrlButtonLabel_(chainedAction.command, chainedAction.textParam)]]
+                  </span>
+                  <cr-icon-button iron-icon="edit-pencil"
+                      on-click="onEditCustomGestureChainedUrlClick_">
+                  </cr-icon-button>
+                </div>
+                <div class="action-param remove-action-param">
+                  <cr-icon-button iron-icon="minus"
+                      on-click="onRemoveCustomGestureChainedActionClick_">
+                  </cr-icon-button>
+                </div>
+              </div>
+            </template>
+          </div>
+          <div class="action-buttons">
+            <cr-icon-button iron-icon="plus-add"
+                on-click="onAddCustomGestureChainedActionClick_">
+            </cr-icon-button>
+            <cr-icon-button iron-icon="close"
+                on-click="onRemoveCustomGestureClick_">
+            </cr-icon-button>
+          </div>
+        </div>
+      </div>
+      <span class="gestures-sublabel command-conflict-sublabel"
+          hidden$="[[!customGestureConflictDescription_(
+              item, directionalGestureMappingActionRows_, customGestureActionRows_)]]">
+        [[customGestureConflictDescription_(
+            item, directionalGestureMappingActionRows_, customGestureActionRows_)]]
+      </span>
+      </div>
+    </template>
+  </div>
+</settings-section>
+
+<settings-section page-title="$i18n{braveGesturesAddCustomGesture}">
+  <div class="gestures-content">
+    <span class="gestures-sublabel draw-custom-gesture-help">
+      $i18n{braveGesturesDrawCustomGestureHelp}
+    </span>
+    <span class="gestures-sublabel action-chain-group-help">
+      $i18n{braveGesturesChainedActionsHelpDragPrefix}
+      <leo-icon name="drag" class="action-drag-handle"></leo-icon>
+      $i18n{braveGesturesChainedActionsHelpDragSuffix}
+      $i18n{braveGesturesChainedActionsHelpAddPrefix}
+      <leo-icon name="plus-add"></leo-icon>
+      $i18n{braveGesturesChainedActionsHelpAddSuffix}
+      $i18n{braveGesturesChainedActionsHelpRemovePrefix}
+      <leo-icon name="minus"></leo-icon>
+      $i18n{braveGesturesChainedActionsHelpRemoveSuffix}
+    </span>
+    <div class="gestures-row">
+      <div class="action-chain-group">
+        <div class="action-chain">
+          <div class="action-row"
+              on-dragover="onActionDragOver_"
+              on-drop="onDrawnCustomGesturePrimaryActionDrop_">
+            <leo-icon name="drag" class="action-drag-handle"
+                hidden$="[[!hasChainedActions_(drawnCustomGestureActionRows_)]]"
+                draggable="true"
+                on-dragstart="onDrawnCustomGesturePrimaryActionDragStart_"
+                on-dragend="onActionDragEnd_">
+            </leo-icon>
+            <select on-change="onDrawnCustomGestureCommandChanged_"
+                class$="[[primaryCommandSelectClass_(drawnCustomGestureActionRows_)]]">
+              <template is="dom-repeat" items="[[commandOptions_]]"
+                  as="option">
+                <option value$="[[option.value]]"
+                    selected="[[optionMatchesPrimaryCommand_(
+                        option.value, drawnCustomGestureActionRows_)]]">
+                  [[option.name]]
+                </option>
+              </template>
+            </select>
+            <select class="md-select"
+                on-change="onDrawnCustomGestureOpenSettingsPageChanged_"
+                hidden$="[[!isPrimaryOpenSettingsCommand_(drawnCustomGestureActionRows_)]]">
+              <template is="dom-repeat" items="[[openSettingsPageOptions_]]"
+                  as="pageOption">
+                <option value$="[[pageOption.value]]"
+                    selected="[[optionMatchesPrimaryOpenSettingsPage_(
+                        pageOption.value, drawnCustomGestureActionRows_)]]">
+                  [[pageOption.name]]
+                </option>
+              </template>
+            </select>
+            <div
+                class$="[[primaryUrlAttachClass_(drawnCustomGestureActionRows_)]]"
+                hidden$="[[!primaryHasTextParam_(drawnCustomGestureActionRows_)]]">
+              <span class="action-param-label">
+                [[primaryUrlButtonLabel_(drawnCustomGestureActionRows_)]]
+              </span>
+              <cr-icon-button iron-icon="edit-pencil"
+                  on-click="onEditDrawnCustomGestureUrlClick_">
+              </cr-icon-button>
+            </div>
+            <div class="action-param remove-action-param"
+                hidden$="[[!hasChainedActions_(drawnCustomGestureActionRows_)]]">
+              <cr-icon-button iron-icon="minus"
+                  on-click="onRemoveDrawnCustomGesturePrimaryActionClick_">
+              </cr-icon-button>
+            </div>
+          </div>
+          <template is="dom-repeat" items="[[chainedActionRows_(drawnCustomGestureActionRows_)]]"
+              as="chainedAction">
+            <leo-icon name="arrow-small-right" class="chain-connector">
+            </leo-icon>
+            <div class="action-row"
+                on-dragover="onActionDragOver_"
+                on-drop="onDrawnCustomGestureChainedActionDrop_">
+              <leo-icon name="drag" class="action-drag-handle"
+                  draggable="true"
+                  on-dragstart="onDrawnCustomGestureChainedActionDragStart_"
+                  on-dragend="onActionDragEnd_">
+              </leo-icon>
+              <select on-change="onDrawnCustomGestureChainedActionCommandChanged_"
+                  class$="[[getCommandSelectClass_(
+                      chainedAction.command,
+                      chainedAction.textParam)]]">
+                <template is="dom-repeat" items="[[commandOptions_]]"
+                    as="option">
+                  <option value$="[[option.value]]"
+                      selected="[[optionMatchesCommand_(
+                          option.value, chainedAction.command)]]">
+                    [[option.name]]
+                  </option>
+                </template>
+              </select>
+              <select class="md-select"
+                  on-change="onDrawnCustomGestureChainedActionOpenSettingsPageChanged_"
+                  hidden$="[[!isOpenSettingsCommand_(
+                      chainedAction.command)]]">
+                <template is="dom-repeat" items="[[openSettingsPageOptions_]]"
+                    as="pageOption">
+                  <option value$="[[pageOption.value]]"
+                      selected="[[optionMatchesCommand_(
+                          pageOption.value, chainedAction.openSettingsPage)]]">
+                    [[pageOption.name]]
+                  </option>
+                </template>
+              </select>
+              <div class$="[[getUrlAttachClass_(chainedAction.textParam)]]"
+                  hidden$="[[!hasTextParam_(chainedAction.command)]]">
+                <span class="action-param-label">
+                  [[getUrlButtonLabel_(chainedAction.command, chainedAction.textParam)]]
+                </span>
+                <cr-icon-button iron-icon="edit-pencil"
+                    on-click="onEditDrawnCustomGestureChainedUrlClick_">
+                </cr-icon-button>
+              </div>
+              <div class="action-param remove-action-param">
+                <cr-icon-button iron-icon="minus"
+                    on-click="onRemoveDrawnCustomGestureChainedActionClick_">
+                </cr-icon-button>
+              </div>
+            </div>
+          </template>
+        </div>
+        <div class="action-buttons">
+          <cr-icon-button iron-icon="plus-add"
+              on-click="onAddDrawnCustomGestureChainedActionClick_">
+          </cr-icon-button>
+        </div>
+      </div>
+    </div>
+    <div id="drawCustomGestureBox"
+        on-mousedown="onDrawnCustomGestureMouseDown_"
+        on-mousemove="onDrawnCustomGestureMouseMove_"
+        on-mouseup="onDrawnCustomGestureMouseUp_"
+        on-mouseleave="onDrawnCustomGestureMouseLeave_">
+      <svg>
+        <path d$="[[drawnCustomGestureSvgPathData_]]"
+            fill="none"
+            stroke="var(--leo-color-icon-interactive)"
+            stroke-width="3"
+            stroke-linecap="round"
+            stroke-linejoin="round">
+        </path>
+      </svg>
+    </div>
+    <div class="draw-custom-gesture-actions">
+      <cr-button class="action-button"
+          disabled="[[!hasDrawnCustomGesture_]]"
+          on-click="onSaveDrawnCustomGestureClick_">
+        $i18n{braveGesturesSaveCustomGesture}
+      </cr-button>
+      <cr-button
+          hidden$="[[!hasDrawnCustomGesture_]]"
+          on-click="onClearDrawnCustomGestureClick_">
+        $i18n{braveGesturesClearCustomGesture}
+      </cr-button>
+    </div>
+  </div>
+</settings-section>
+
+<settings-section page-title="$i18n{braveGesturesRocker}">
+  <settings-toggle-button
+      pref="{{prefs.brave.gestures.mouse_rocker_gestures_enabled}}"
+      label="$i18n{braveGesturesRockerEnable}"
+      sub-label="$i18n{braveGesturesRockerAboutDesc}">
+  </settings-toggle-button>
+
+  <template is="dom-if"
+      if="[[prefs.brave.gestures.mouse_rocker_gestures_enabled.value]]">
+  <hr class="gestures-divider">
+  <div class="gestures-content">
+    <span class="gestures-sublabel action-chain-group-help">
+      $i18n{braveGesturesChainedActionsHelpDragPrefix}
+      <leo-icon name="drag" class="action-drag-handle"></leo-icon>
+      $i18n{braveGesturesChainedActionsHelpDragSuffix}
+      $i18n{braveGesturesChainedActionsHelpAddPrefix}
+      <leo-icon name="plus-add"></leo-icon>
+      $i18n{braveGesturesChainedActionsHelpAddSuffix}
+      $i18n{braveGesturesChainedActionsHelpRemovePrefix}
+      <leo-icon name="minus"></leo-icon>
+      $i18n{braveGesturesChainedActionsHelpRemoveSuffix}
+    </span>
+
+    <label class="gestures-row"
+        data-pref$="[[mouseRockerLeftActionRow_.prefName]]">
+      <div class="gestures-label">
+        <span>$i18n{braveGesturesRockLeft}</span>
+      </div>
+      <div class="action-chain-group">
+        <div class="action-chain">
+          <div class="action-row"
+              on-dragover="onActionDragOver_"
+              on-drop="onMouseRockerPrimaryActionDrop_">
+            <leo-icon name="drag" class="action-drag-handle"
+                hidden$="[[!hasChainedActions_(mouseRockerLeftActionRow_.actionRows)]]"
+                draggable="true"
+                on-dragstart="onMouseRockerPrimaryActionDragStart_"
+                on-dragend="onActionDragEnd_">
+            </leo-icon>
+            <select on-change="onMouseRockerCommandChanged_"
+                class$="[[primaryCommandSelectClass_(mouseRockerLeftActionRow_.actionRows)]]">
+              <template is="dom-repeat" items="[[commandOptions_]]"
+                  as="option">
+                <option value$="[[option.value]]"
+                    selected="[[optionMatchesPrimaryCommand_(
+                        option.value, mouseRockerLeftActionRow_.actionRows)]]">
+                  [[option.name]]
+                </option>
+              </template>
+            </select>
+            <select class="md-select"
+                on-change="onMouseRockerOpenSettingsPageChanged_"
+                hidden$="[[!isPrimaryOpenSettingsCommand_(
+                    mouseRockerLeftActionRow_.actionRows)]]">
+              <template is="dom-repeat" items="[[openSettingsPageOptions_]]"
+                  as="pageOption">
+                <option value$="[[pageOption.value]]"
+                    selected="[[optionMatchesPrimaryOpenSettingsPage_(
+                        pageOption.value, mouseRockerLeftActionRow_.actionRows)]]">
+                  [[pageOption.name]]
+                </option>
+              </template>
+            </select>
+            <div class$="[[primaryUrlAttachClass_(mouseRockerLeftActionRow_.actionRows)]]"
+                hidden$="[[!primaryHasTextParam_(mouseRockerLeftActionRow_.actionRows)]]">
+              <span class="action-param-label">
+                [[primaryUrlButtonLabel_(mouseRockerLeftActionRow_.actionRows)]]
+              </span>
+              <cr-icon-button iron-icon="edit-pencil"
+                  on-click="onEditMouseRockerUrlClick_">
+              </cr-icon-button>
+            </div>
+            <div class="action-param remove-action-param"
+                hidden$="[[!hasChainedActions_(mouseRockerLeftActionRow_.actionRows)]]">
+              <cr-icon-button iron-icon="minus"
+                  on-click="onRemoveMouseRockerPrimaryActionClick_">
+              </cr-icon-button>
+            </div>
+          </div>
+          <template is="dom-repeat" items="[[chainedActionRows_(mouseRockerLeftActionRow_.actionRows)]]"
+              as="chainedAction">
+            <leo-icon name="arrow-small-right" class="chain-connector">
+            </leo-icon>
+            <div class="action-row"
+                on-dragover="onActionDragOver_"
+                on-drop="onMouseRockerChainedActionDrop_">
+              <leo-icon name="drag" class="action-drag-handle"
+                  draggable="true"
+                  on-dragstart="onMouseRockerChainedActionDragStart_"
+                  on-dragend="onActionDragEnd_">
+              </leo-icon>
+              <select on-change="onMouseRockerChainedActionCommandChanged_"
+                  class$="[[getCommandSelectClass_(
+                      chainedAction.command,
+                      chainedAction.textParam)]]">
+                <template is="dom-repeat" items="[[commandOptions_]]"
+                    as="option">
+                  <option value$="[[option.value]]"
+                      selected="[[optionMatchesCommand_(
+                          option.value, chainedAction.command)]]">
+                    [[option.name]]
+                  </option>
+                </template>
+              </select>
+              <select class="md-select"
+                  on-change="onMouseRockerChainedActionOpenSettingsPageChanged_"
+                  hidden$="[[!isOpenSettingsCommand_(
+                      chainedAction.command)]]">
+                <template is="dom-repeat" items="[[openSettingsPageOptions_]]"
+                    as="pageOption">
+                  <option value$="[[pageOption.value]]"
+                      selected="[[optionMatchesCommand_(
+                          pageOption.value, chainedAction.openSettingsPage)]]">
+                    [[pageOption.name]]
+                  </option>
+                </template>
+              </select>
+              <div
+                  class$="[[getUrlAttachClass_(chainedAction.textParam)]]"
+                  hidden$="[[!hasTextParam_(
+                      chainedAction.command)]]">
+                <span class="action-param-label">
+                  [[getUrlButtonLabel_(chainedAction.command, chainedAction.textParam)]]
+                </span>
+                <cr-icon-button iron-icon="edit-pencil"
+                    on-click="onEditMouseRockerChainedUrlClick_">
+                </cr-icon-button>
+              </div>
+              <div class="action-param remove-action-param">
+                <cr-icon-button iron-icon="minus"
+                    on-click="onRemoveMouseRockerChainedActionClick_">
+                </cr-icon-button>
+              </div>
+            </div>
+          </template>
+        </div>
+        <div class="action-buttons">
+          <cr-icon-button iron-icon="plus-add"
+              on-click="onAddMouseRockerChainedActionClick_">
+          </cr-icon-button>
+        </div>
+      </div>
+    </label>
+
+    <label class="gestures-row"
+        data-pref$="[[mouseRockerRightActionRow_.prefName]]">
+      <div class="gestures-label">
+        <span>$i18n{braveGesturesRockRight}</span>
+      </div>
+      <div class="action-chain-group">
+        <div class="action-chain">
+          <div class="action-row"
+              on-dragover="onActionDragOver_"
+              on-drop="onMouseRockerPrimaryActionDrop_">
+            <leo-icon name="drag" class="action-drag-handle"
+                hidden$="[[!hasChainedActions_(mouseRockerRightActionRow_.actionRows)]]"
+                draggable="true"
+                on-dragstart="onMouseRockerPrimaryActionDragStart_"
+                on-dragend="onActionDragEnd_">
+            </leo-icon>
+            <select on-change="onMouseRockerCommandChanged_"
+                class$="[[primaryCommandSelectClass_(mouseRockerRightActionRow_.actionRows)]]">
+              <template is="dom-repeat" items="[[commandOptions_]]"
+                  as="option">
+                <option value$="[[option.value]]"
+                    selected="[[optionMatchesPrimaryCommand_(
+                        option.value, mouseRockerRightActionRow_.actionRows)]]">
+                  [[option.name]]
+                </option>
+              </template>
+            </select>
+            <select class="md-select"
+                on-change="onMouseRockerOpenSettingsPageChanged_"
+                hidden$="[[!isPrimaryOpenSettingsCommand_(
+                    mouseRockerRightActionRow_.actionRows)]]">
+              <template is="dom-repeat" items="[[openSettingsPageOptions_]]"
+                  as="pageOption">
+                <option value$="[[pageOption.value]]"
+                    selected="[[optionMatchesPrimaryOpenSettingsPage_(
+                        pageOption.value, mouseRockerRightActionRow_.actionRows)]]">
+                  [[pageOption.name]]
+                </option>
+              </template>
+            </select>
+            <div class$="[[primaryUrlAttachClass_(mouseRockerRightActionRow_.actionRows)]]"
+                hidden$="[[!primaryHasTextParam_(mouseRockerRightActionRow_.actionRows)]]">
+              <span class="action-param-label">
+                [[primaryUrlButtonLabel_(mouseRockerRightActionRow_.actionRows)]]
+              </span>
+              <cr-icon-button iron-icon="edit-pencil"
+                  on-click="onEditMouseRockerUrlClick_">
+              </cr-icon-button>
+            </div>
+            <div class="action-param remove-action-param"
+                hidden$="[[!hasChainedActions_(mouseRockerRightActionRow_.actionRows)]]">
+              <cr-icon-button iron-icon="minus"
+                  on-click="onRemoveMouseRockerPrimaryActionClick_">
+              </cr-icon-button>
+            </div>
+          </div>
+          <template is="dom-repeat" items="[[chainedActionRows_(mouseRockerRightActionRow_.actionRows)]]"
+              as="chainedAction">
+            <leo-icon name="arrow-small-right" class="chain-connector">
+            </leo-icon>
+            <div class="action-row"
+                on-dragover="onActionDragOver_"
+                on-drop="onMouseRockerChainedActionDrop_">
+              <leo-icon name="drag" class="action-drag-handle"
+                  draggable="true"
+                  on-dragstart="onMouseRockerChainedActionDragStart_"
+                  on-dragend="onActionDragEnd_">
+              </leo-icon>
+              <select on-change="onMouseRockerChainedActionCommandChanged_"
+                  class$="[[getCommandSelectClass_(
+                      chainedAction.command,
+                      chainedAction.textParam)]]">
+                <template is="dom-repeat" items="[[commandOptions_]]"
+                    as="option">
+                  <option value$="[[option.value]]"
+                      selected="[[optionMatchesCommand_(
+                          option.value, chainedAction.command)]]">
+                    [[option.name]]
+                  </option>
+                </template>
+              </select>
+              <select class="md-select"
+                  on-change="onMouseRockerChainedActionOpenSettingsPageChanged_"
+                  hidden$="[[!isOpenSettingsCommand_(
+                      chainedAction.command)]]">
+                <template is="dom-repeat" items="[[openSettingsPageOptions_]]"
+                    as="pageOption">
+                  <option value$="[[pageOption.value]]"
+                      selected="[[optionMatchesCommand_(
+                          pageOption.value, chainedAction.openSettingsPage)]]">
+                    [[pageOption.name]]
+                  </option>
+                </template>
+              </select>
+              <div
+                  class$="[[getUrlAttachClass_(chainedAction.textParam)]]"
+                  hidden$="[[!hasTextParam_(
+                      chainedAction.command)]]">
+                <span class="action-param-label">
+                  [[getUrlButtonLabel_(chainedAction.command, chainedAction.textParam)]]
+                </span>
+                <cr-icon-button iron-icon="edit-pencil"
+                    on-click="onEditMouseRockerChainedUrlClick_">
+                </cr-icon-button>
+              </div>
+              <div class="action-param remove-action-param">
+                <cr-icon-button iron-icon="minus"
+                    on-click="onRemoveMouseRockerChainedActionClick_">
+                </cr-icon-button>
+              </div>
+            </div>
+          </template>
+        </div>
+        <div class="action-buttons">
+          <cr-icon-button iron-icon="plus-add"
+              on-click="onAddMouseRockerChainedActionClick_">
+          </cr-icon-button>
+        </div>
+      </div>
+    </label>
+
+    <cr-button on-click="onResetMouseRockerClick_">
+      $i18n{braveGesturesReset}
+    </cr-button>
+  </div>
+  </template>
+</settings-section>
+
+<settings-section page-title="$i18n{braveGesturesWheel}">
+  <settings-toggle-button
+      pref="{{prefs.brave.gestures.mouse_wheel_gestures_enabled}}"
+      label="$i18n{braveGesturesWheelEnable}"
+      sub-label="$i18n{braveGesturesWheelAboutDesc}">
+  </settings-toggle-button>
+
+  <template is="dom-if"
+      if="[[prefs.brave.gestures.mouse_wheel_gestures_enabled.value]]">
+  <label class="gestures-row settings-box">
+    <div class="gestures-label">
+      <span>$i18n{braveGesturesWheelModifierButton}</span>
+    </div>
+    <select class="md-select mouse-wheel-modifier-button-select"
+        on-change="onMouseWheelModifierButtonChanged_">
+      <option value="0"
+          selected="[[optionMatchesCommand_(
+              0, prefs.brave.gestures.mouse_wheel_modifier_button.value)]]">
+        $i18n{braveGesturesWheelModifierLeft}
+      </option>
+      <option value="1"
+          selected="[[optionMatchesCommand_(
+              1, prefs.brave.gestures.mouse_wheel_modifier_button.value)]]">
+        $i18n{braveGesturesWheelModifierMiddle}
+      </option>
+      <option value="2"
+          selected="[[optionMatchesCommand_(
+              2, prefs.brave.gestures.mouse_wheel_modifier_button.value)]]">
+        $i18n{braveGesturesWheelModifierRight}
+      </option>
+    </select>
+  </label>
+
+  <label class="gestures-row settings-box">
+    <div class="gestures-label">
+      <span>$i18n{braveGesturesWheelSensitivity}</span>
+      <span class="gestures-sublabel">
+        $i18n{braveGesturesWheelSensitivityDesc}
+      </span>
+    </div>
+    <input type="range" min="0" max="60"
+        value="[[prefs.brave.gestures.mouse_wheel_sensitivity_in_pixels.value]]"
+        on-change="onMouseWheelSensitivityChanged_">
+  </label>
+  <hr class="gestures-divider">
+
+  <div class="gestures-content">
+    <span class="gestures-sublabel action-chain-group-help">
+      $i18n{braveGesturesChainedActionsHelpDragPrefix}
+      <leo-icon name="drag" class="action-drag-handle"></leo-icon>
+      $i18n{braveGesturesChainedActionsHelpDragSuffix}
+      $i18n{braveGesturesChainedActionsHelpAddPrefix}
+      <leo-icon name="plus-add"></leo-icon>
+      $i18n{braveGesturesChainedActionsHelpAddSuffix}
+      $i18n{braveGesturesChainedActionsHelpRemovePrefix}
+      <leo-icon name="minus"></leo-icon>
+      $i18n{braveGesturesChainedActionsHelpRemoveSuffix}
+    </span>
+
+    <label class="gestures-row"
+        data-pref$="[[mouseWheelUpActionRow_.prefName]]">
+      <div class="gestures-label">
+        <span>$i18n{braveGesturesWheelUp}</span>
+      </div>
+      <div class="action-chain-group">
+        <div class="action-chain">
+          <div class="action-row"
+              on-dragover="onActionDragOver_"
+              on-drop="onMouseWheelPrimaryActionDrop_">
+            <leo-icon name="drag" class="action-drag-handle"
+                hidden$="[[!hasChainedActions_(mouseWheelUpActionRow_.actionRows)]]"
+                draggable="true"
+                on-dragstart="onMouseWheelPrimaryActionDragStart_"
+                on-dragend="onActionDragEnd_">
+            </leo-icon>
+            <select on-change="onMouseWheelCommandChanged_"
+                class$="[[primaryCommandSelectClass_(mouseWheelUpActionRow_.actionRows)]]">
+              <template is="dom-repeat" items="[[commandOptions_]]"
+                  as="option">
+                <option value$="[[option.value]]"
+                    selected="[[optionMatchesPrimaryCommand_(
+                        option.value, mouseWheelUpActionRow_.actionRows)]]">
+                  [[option.name]]
+                </option>
+              </template>
+            </select>
+            <select class="md-select"
+                on-change="onMouseWheelOpenSettingsPageChanged_"
+                hidden$="[[!isPrimaryOpenSettingsCommand_(
+                    mouseWheelUpActionRow_.actionRows)]]">
+              <template is="dom-repeat" items="[[openSettingsPageOptions_]]"
+                  as="pageOption">
+                <option value$="[[pageOption.value]]"
+                    selected="[[optionMatchesPrimaryOpenSettingsPage_(
+                        pageOption.value, mouseWheelUpActionRow_.actionRows)]]">
+                  [[pageOption.name]]
+                </option>
+              </template>
+            </select>
+            <div class$="[[primaryUrlAttachClass_(mouseWheelUpActionRow_.actionRows)]]"
+                hidden$="[[!primaryHasTextParam_(mouseWheelUpActionRow_.actionRows)]]">
+              <span class="action-param-label">
+                [[primaryUrlButtonLabel_(mouseWheelUpActionRow_.actionRows)]]
+              </span>
+              <cr-icon-button iron-icon="edit-pencil"
+                  on-click="onEditMouseWheelUrlClick_">
+              </cr-icon-button>
+            </div>
+            <div class="action-param remove-action-param"
+                hidden$="[[!hasChainedActions_(mouseWheelUpActionRow_.actionRows)]]">
+              <cr-icon-button iron-icon="minus"
+                  on-click="onRemoveMouseWheelPrimaryActionClick_">
+              </cr-icon-button>
+            </div>
+          </div>
+          <template is="dom-repeat" items="[[chainedActionRows_(mouseWheelUpActionRow_.actionRows)]]"
+              as="chainedAction">
+            <leo-icon name="arrow-small-right" class="chain-connector">
+            </leo-icon>
+            <div class="action-row"
+                on-dragover="onActionDragOver_"
+                on-drop="onMouseWheelChainedActionDrop_">
+              <leo-icon name="drag" class="action-drag-handle"
+                  draggable="true"
+                  on-dragstart="onMouseWheelChainedActionDragStart_"
+                  on-dragend="onActionDragEnd_">
+              </leo-icon>
+              <select on-change="onMouseWheelChainedActionCommandChanged_"
+                  class$="[[getCommandSelectClass_(
+                      chainedAction.command,
+                      chainedAction.textParam)]]">
+                <template is="dom-repeat" items="[[commandOptions_]]"
+                    as="option">
+                  <option value$="[[option.value]]"
+                      selected="[[optionMatchesCommand_(
+                          option.value, chainedAction.command)]]">
+                    [[option.name]]
+                  </option>
+                </template>
+              </select>
+              <select class="md-select"
+                  on-change="onMouseWheelChainedActionOpenSettingsPageChanged_"
+                  hidden$="[[!isOpenSettingsCommand_(
+                      chainedAction.command)]]">
+                <template is="dom-repeat" items="[[openSettingsPageOptions_]]"
+                    as="pageOption">
+                  <option value$="[[pageOption.value]]"
+                      selected="[[optionMatchesCommand_(
+                          pageOption.value, chainedAction.openSettingsPage)]]">
+                    [[pageOption.name]]
+                  </option>
+                </template>
+              </select>
+              <div
+                  class$="[[getUrlAttachClass_(chainedAction.textParam)]]"
+                  hidden$="[[!hasTextParam_(
+                      chainedAction.command)]]">
+                <span class="action-param-label">
+                  [[getUrlButtonLabel_(chainedAction.command, chainedAction.textParam)]]
+                </span>
+                <cr-icon-button iron-icon="edit-pencil"
+                    on-click="onEditMouseWheelChainedUrlClick_">
+                </cr-icon-button>
+              </div>
+              <div class="action-param remove-action-param">
+                <cr-icon-button iron-icon="minus"
+                    on-click="onRemoveMouseWheelChainedActionClick_">
+                </cr-icon-button>
+              </div>
+            </div>
+          </template>
+        </div>
+        <div class="action-buttons">
+          <cr-icon-button iron-icon="plus-add"
+              on-click="onAddMouseWheelChainedActionClick_">
+          </cr-icon-button>
+        </div>
+      </div>
+    </label>
+
+    <label class="gestures-row"
+        data-pref$="[[mouseWheelDownActionRow_.prefName]]">
+      <div class="gestures-label">
+        <span>$i18n{braveGesturesWheelDown}</span>
+      </div>
+      <div class="action-chain-group">
+        <div class="action-chain">
+          <div class="action-row"
+              on-dragover="onActionDragOver_"
+              on-drop="onMouseWheelPrimaryActionDrop_">
+            <leo-icon name="drag" class="action-drag-handle"
+                hidden$="[[!hasChainedActions_(mouseWheelDownActionRow_.actionRows)]]"
+                draggable="true"
+                on-dragstart="onMouseWheelPrimaryActionDragStart_"
+                on-dragend="onActionDragEnd_">
+            </leo-icon>
+            <select on-change="onMouseWheelCommandChanged_"
+                class$="[[primaryCommandSelectClass_(mouseWheelDownActionRow_.actionRows)]]">
+              <template is="dom-repeat" items="[[commandOptions_]]"
+                  as="option">
+                <option value$="[[option.value]]"
+                    selected="[[optionMatchesPrimaryCommand_(
+                        option.value, mouseWheelDownActionRow_.actionRows)]]">
+                  [[option.name]]
+                </option>
+              </template>
+            </select>
+            <select class="md-select"
+                on-change="onMouseWheelOpenSettingsPageChanged_"
+                hidden$="[[!isPrimaryOpenSettingsCommand_(
+                    mouseWheelDownActionRow_.actionRows)]]">
+              <template is="dom-repeat" items="[[openSettingsPageOptions_]]"
+                  as="pageOption">
+                <option value$="[[pageOption.value]]"
+                    selected="[[optionMatchesPrimaryOpenSettingsPage_(
+                        pageOption.value, mouseWheelDownActionRow_.actionRows)]]">
+                  [[pageOption.name]]
+                </option>
+              </template>
+            </select>
+            <div class$="[[primaryUrlAttachClass_(mouseWheelDownActionRow_.actionRows)]]"
+                hidden$="[[!primaryHasTextParam_(mouseWheelDownActionRow_.actionRows)]]">
+              <span class="action-param-label">
+                [[primaryUrlButtonLabel_(mouseWheelDownActionRow_.actionRows)]]
+              </span>
+              <cr-icon-button iron-icon="edit-pencil"
+                  on-click="onEditMouseWheelUrlClick_">
+              </cr-icon-button>
+            </div>
+            <div class="action-param remove-action-param"
+                hidden$="[[!hasChainedActions_(mouseWheelDownActionRow_.actionRows)]]">
+              <cr-icon-button iron-icon="minus"
+                  on-click="onRemoveMouseWheelPrimaryActionClick_">
+              </cr-icon-button>
+            </div>
+          </div>
+          <template is="dom-repeat" items="[[chainedActionRows_(mouseWheelDownActionRow_.actionRows)]]"
+              as="chainedAction">
+            <leo-icon name="arrow-small-right" class="chain-connector">
+            </leo-icon>
+            <div class="action-row"
+                on-dragover="onActionDragOver_"
+                on-drop="onMouseWheelChainedActionDrop_">
+              <leo-icon name="drag" class="action-drag-handle"
+                  draggable="true"
+                  on-dragstart="onMouseWheelChainedActionDragStart_"
+                  on-dragend="onActionDragEnd_">
+              </leo-icon>
+              <select on-change="onMouseWheelChainedActionCommandChanged_"
+                  class$="[[getCommandSelectClass_(
+                      chainedAction.command,
+                      chainedAction.textParam)]]">
+                <template is="dom-repeat" items="[[commandOptions_]]"
+                    as="option">
+                  <option value$="[[option.value]]"
+                      selected="[[optionMatchesCommand_(
+                          option.value, chainedAction.command)]]">
+                    [[option.name]]
+                  </option>
+                </template>
+              </select>
+              <select class="md-select"
+                  on-change="onMouseWheelChainedActionOpenSettingsPageChanged_"
+                  hidden$="[[!isOpenSettingsCommand_(
+                      chainedAction.command)]]">
+                <template is="dom-repeat" items="[[openSettingsPageOptions_]]"
+                    as="pageOption">
+                  <option value$="[[pageOption.value]]"
+                      selected="[[optionMatchesCommand_(
+                          pageOption.value, chainedAction.openSettingsPage)]]">
+                    [[pageOption.name]]
+                  </option>
+                </template>
+              </select>
+              <div
+                  class$="[[getUrlAttachClass_(chainedAction.textParam)]]"
+                  hidden$="[[!hasTextParam_(
+                      chainedAction.command)]]">
+                <span class="action-param-label">
+                  [[getUrlButtonLabel_(chainedAction.command, chainedAction.textParam)]]
+                </span>
+                <cr-icon-button iron-icon="edit-pencil"
+                    on-click="onEditMouseWheelChainedUrlClick_">
+                </cr-icon-button>
+              </div>
+              <div class="action-param remove-action-param">
+                <cr-icon-button iron-icon="minus"
+                    on-click="onRemoveMouseWheelChainedActionClick_">
+                </cr-icon-button>
+              </div>
+            </div>
+          </template>
+        </div>
+        <div class="action-buttons">
+          <cr-icon-button iron-icon="plus-add"
+              on-click="onAddMouseWheelChainedActionClick_">
+          </cr-icon-button>
+        </div>
+      </div>
+    </label>
+
+    <cr-button on-click="onResetMouseWheelClick_">
+      $i18n{braveGesturesReset}
+    </cr-button>
+  </div>
+  </template>
+</settings-section>
+
+<template is="dom-if" if="[[showMouseRockerResetConfirmDialog_]]" restamp>
+  <cr-dialog id="rockerResetConfirmDialog" show-on-attach
+      on-close="onMouseRockerResetDialogClose_">
+    <div slot="title">$i18n{braveGesturesReset}</div>
+    <div slot="body">$i18n{braveGesturesRockerResetConfirm}</div>
+    <div slot="button-container">
+      <cr-button class="cancel-button"
+          on-click="onMouseRockerResetDialogClose_">
+        $i18n{cancel}
+      </cr-button>
+      <cr-button class="action-button"
+          on-click="onConfirmMouseRockerResetClick_">
+        $i18n{braveGesturesReset}
+      </cr-button>
+    </div>
+  </cr-dialog>
+</template>
+
+<template is="dom-if" if="[[showMouseWheelResetConfirmDialog_]]" restamp>
+  <cr-dialog id="wheelResetConfirmDialog" show-on-attach
+      on-close="onMouseWheelResetDialogClose_">
+    <div slot="title">$i18n{braveGesturesReset}</div>
+    <div slot="body">$i18n{braveGesturesWheelResetConfirm}</div>
+    <div slot="button-container">
+      <cr-button class="cancel-button"
+          on-click="onMouseWheelResetDialogClose_">
+        $i18n{cancel}
+      </cr-button>
+      <cr-button class="action-button"
+          on-click="onConfirmMouseWheelResetClick_">
+        $i18n{braveGesturesReset}
+      </cr-button>
+    </div>
+  </cr-dialog>
+</template>
+
+<template is="dom-if" if="[[showDirectionalGestureMappingsResetConfirmDialog_]]" restamp>
+  <cr-dialog id="resetConfirmDialog" show-on-attach
+      on-close="onDirectionalGestureMappingsResetDialogClose_">
+    <div slot="title">$i18n{braveGesturesReset}</div>
+    <div slot="body">$i18n{braveGesturesResetConfirm}</div>
+    <div slot="button-container">
+      <cr-button class="cancel-button" on-click="onDirectionalGestureMappingsResetDialogClose_">
+        $i18n{cancel}
+      </cr-button>
+      <cr-button class="action-button" on-click="onConfirmDirectionalGestureMappingsResetClick_">
+        $i18n{braveGesturesReset}
+      </cr-button>
+    </div>
+  </cr-dialog>
+</template>
+
+<template is="dom-if" if="[[showClearCustomGestureConfirmDialog_]]" restamp>
+  <cr-dialog id="clearGestureConfirmDialog" show-on-attach
+      on-close="onClearCustomGestureDialogClose_">
+    <div slot="title">$i18n{braveGesturesClearCustomGesture}</div>
+    <div slot="body">$i18n{braveGesturesClearCustomGestureConfirm}</div>
+    <div slot="button-container">
+      <cr-button class="cancel-button" on-click="onClearCustomGestureDialogClose_">
+        $i18n{cancel}
+      </cr-button>
+      <cr-button class="action-button" on-click="onConfirmClearCustomGestureClick_">
+        $i18n{braveGesturesClearCustomGesture}
+      </cr-button>
+    </div>
+  </cr-dialog>
+</template>
+
+<settings-section page-title="$i18n{braveGesturesDisallowedSites}">
+  <div class="gestures-content">
+    <template is="dom-repeat" items="[[disallowedSiteRows_]]">
+      <div class="gestures-row">
+        <span class="gestures-site-origin">[[item.origin]]</span>
+        <div class="custom-gesture-actions">
+          <cr-icon-button iron-icon="edit-pencil"
+              on-click="onEditDisallowedSiteClick_">
+          </cr-icon-button>
+          <cr-icon-button iron-icon="close"
+              on-click="onRemoveDisallowedSiteClick_">
+          </cr-icon-button>
+        </div>
+      </div>
+    </template>
+    <cr-button on-click="onAddDisallowedSiteClick_">
+      $i18n{braveGesturesAddSite}
+    </cr-button>
+  </div>
+</settings-section>
+
+<template is="dom-if" if="[[showAddDisallowedSiteDialog_]]" restamp>
+  <cr-dialog id="addSiteDialog" show-on-attach
+      on-close="onAddSiteDialogClose_">
+    <div slot="title">[[getAddDisallowedSiteDialogTitle_(editingDisallowedSiteOrigin_)]]</div>
+    <div slot="body">
+      <cr-input value="[[addDisallowedSiteInput_]]"
+          label="$i18n{braveGesturesAddSitePrompt}"
+          on-input="onAddSiteInputChanged_">
+      </cr-input>
+    </div>
+    <div slot="button-container">
+      <cr-button class="cancel-button" on-click="onAddSiteDialogClose_">
+        $i18n{cancel}
+      </cr-button>
+      <cr-button class="action-button" on-click="onConfirmAddSiteClick_">
+        [[getAddDisallowedSiteDialogTitle_(editingDisallowedSiteOrigin_)]]
+      </cr-button>
+    </div>
+  </cr-dialog>
+</template>
+
+<template is="dom-if" if="[[urlDialogContext_]]" restamp>
+  <cr-dialog id="urlDialog" show-on-attach on-close="onUrlDialogClose_">
+    <div slot="title">[[urlDialogTitle_()]]</div>
+    <div slot="body">
+      <cr-input value="[[urlDialogInput_]]"
+          placeholder="[[urlDialogPlaceholder_()]]"
+          on-input="onUrlDialogInputChanged_">
+      </cr-input>
+    </div>
+    <div slot="button-container">
+      <cr-button class="cancel-button" on-click="onUrlDialogClose_">
+        $i18n{cancel}
+      </cr-button>
+      <cr-button class="action-button" on-click="onConfirmUrlDialogClick_">
+        $i18n{save}
+      </cr-button>
+    </div>
+  </cr-dialog>
+</template>
+</template>

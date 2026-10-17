@@ -85,6 +85,7 @@ source_set("ui") {
     "//brave/browser/ui/views/page_action:unit_tests",
     "//chrome/browser:core",
     "//chrome/browser/ui",
+    "//chrome/browser/ui/views/tab_contents",
     "//chrome/browser/ui/webui:configs",
   ]
 
@@ -877,6 +878,17 @@ source_set("ui") {
       deps += [ "//chrome/browser/ui/views/renderer_context_menu" ]
     }
 
+    if (is_mac) {
+      sources += [
+        "views/renderer_context_menu/brave_render_view_context_menu_mac_cocoa.h",
+        "views/renderer_context_menu/brave_render_view_context_menu_mac_cocoa.mm",
+        "views/renderer_context_menu/brave_render_view_context_menu_mac_remote_cocoa.h",
+        "views/renderer_context_menu/brave_render_view_context_menu_mac_remote_cocoa.mm",
+      ]
+
+      deps += [ "//chrome/browser/ui/cocoa" ]
+    }
+
     if (enable_sparkle) {
       sources += [
         "views/update_recommended_message_box_mac.h",
@@ -966,7 +978,10 @@ source_set("ui") {
       "geolocation/geolocation_utils.h",
     ]
 
-    deps += [ "//brave/components/brave_geolocation_permission/common:brave_geolocation_permission" ]
+    deps += [
+      "//brave/browser/ui/gestures",
+      "//brave/components/brave_geolocation_permission/common:brave_geolocation_permission",
+    ]
 
     if (is_win) {
       sources += [ "geolocation/geolocation_utils_win.cc" ]
@@ -1667,6 +1682,10 @@ source_set("unit_tests") {
       "//ui/base:test_support",
       "//ui/gfx",
     ]
+
+    if (is_win || is_mac || is_linux) {
+      deps += [ "//brave/browser/ui/gestures:unit_tests" ]
+    }
 
     if (enable_brave_vpn) {
       sources += [ "views/toolbar/brave_vpn_button_unittest.cc" ]

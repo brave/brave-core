@@ -22,6 +22,7 @@
 #include "brave/components/debounce/core/common/pref_names.h"
 #include "brave/components/decentralized_dns/core/pref_names.h"
 #include "brave/components/email_aliases/buildflags/buildflags.h"
+#include "brave/components/gestures/core/browser/pref_names.h"
 #include "brave/components/local_ai/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
@@ -451,6 +452,41 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   (*s_brave_allowlist)[traffic_control::prefs::kTrafficControlEnabled] =
       settings_api::PrefType::kBoolean;
 #endif
+
+  (*s_brave_allowlist)[std::string(gestures::prefs::kEnabled)] =
+      settings_api::PrefType::kBoolean;
+  (*s_brave_allowlist)[std::string(gestures::prefs::kShowTrail)] =
+      settings_api::PrefType::kBoolean;
+  (*s_brave_allowlist)[std::string(gestures::prefs::kSensitivityInPixels)] =
+      settings_api::PrefType::kNumber;
+  (*s_brave_allowlist)[std::string(gestures::prefs::kDirectionalGestures)] =
+      settings_api::PrefType::kDictionary;
+  (*s_brave_allowlist)[std::string(gestures::prefs::kDisallowedSites)] =
+      settings_api::PrefType::kDictionary;
+  (*s_brave_allowlist)[std::string(gestures::prefs::kCustomGestures)] =
+      settings_api::PrefType::kList;
+  (*s_brave_allowlist)[std::string(gestures::prefs::kShowMatchedGesture)] =
+      settings_api::PrefType::kBoolean;
+  (*s_brave_allowlist)[std::string(
+      gestures::prefs::kMouseRockerGesturesEnabled)] =
+      settings_api::PrefType::kBoolean;
+  (*s_brave_allowlist)[std::string(gestures::prefs::kMouseRockerLeftAction)] =
+      settings_api::PrefType::kList;
+  (*s_brave_allowlist)[std::string(gestures::prefs::kMouseRockerRightAction)] =
+      settings_api::PrefType::kList;
+  (*s_brave_allowlist)[std::string(
+      gestures::prefs::kMouseWheelGesturesEnabled)] =
+      settings_api::PrefType::kBoolean;
+  (*s_brave_allowlist)[std::string(
+      gestures::prefs::kMouseWheelModifierButton)] =
+      settings_api::PrefType::kNumber;
+  (*s_brave_allowlist)[std::string(
+      gestures::prefs::kMouseWheelSensitivityInPixels)] =
+      settings_api::PrefType::kNumber;
+  (*s_brave_allowlist)[std::string(gestures::prefs::kMouseWheelUpAction)] =
+      settings_api::PrefType::kList;
+  (*s_brave_allowlist)[std::string(gestures::prefs::kMouseWheelDownAction)] =
+      settings_api::PrefType::kList;
 
   return *s_brave_allowlist;
 }

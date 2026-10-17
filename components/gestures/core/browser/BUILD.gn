@@ -1,0 +1,49 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+static_library("browser") {
+  public = [
+    "mouse_rocker_default_commands.h",
+    "mouse_wheel_default_commands.h",
+    "pref_names.h",
+    "prefs_registration.h",
+  ]
+
+  sources = [ "prefs_registration.cc" ]
+
+  deps = [
+    "//base",
+    "//brave/components/gestures/core/common",
+    "//brave/components/gestures/core/common:features",
+    "//components/pref_registry",
+    "//components/prefs",
+  ]
+}
+
+source_set("test_support") {
+  testonly = true
+  sources = [
+    "test/fake_mouse_rocker_wheel_default_commands.cc",
+    "test/fake_mouse_rocker_wheel_default_commands.h",
+  ]
+
+  public_deps = [ ":browser" ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [ "prefs_registration_unittest.cc" ]
+
+  deps = [
+    ":browser",
+    ":test_support",
+    "//base",
+    "//brave/components/gestures/core/common",
+    "//brave/components/gestures/core/common:features",
+    "//components/pref_registry",
+    "//components/sync_preferences:test_support",
+    "//testing/gtest",
+  ]
+}

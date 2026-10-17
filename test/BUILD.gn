@@ -615,11 +615,13 @@ test("brave_unit_tests") {
     deps += [
       "//brave/browser/onboarding:unit_tests",
       "//brave/browser/ui/darker_theme:unit_tests",
+      "//brave/browser/ui/gestures:unit_tests",
       "//brave/browser/ui/sidebar:unit_tests",
       "//brave/browser/ui/views/brave_tooltips",
       "//brave/browser/ui/views/frame/edge_reveal:unit_tests",
       "//brave/browser/ui/views/page_info:unit_tests",
       "//brave/browser/ui/views/side_panel:unit_tests",
+      "//brave/components/gestures/core/common:unit_tests",
       "//brave/components/sidebar/browser:unit_tests",
     ]
   }
@@ -1490,6 +1492,7 @@ test("brave_browser_tests") {
     deps += [
       "//brave/browser/ui/darker_theme:browser_tests",
       "//brave/browser/ui/focus_mode",
+      "//brave/browser/ui/gestures:browser_tests",
       "//brave/browser/ui/sidebar:browser_tests",
       "//brave/browser/ui/tabs:browser_tests",
       "//brave/browser/ui/tabs:tab_model",
