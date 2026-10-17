@@ -2480,6 +2480,147 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 "
 `;
 
+exports[`mangled files should have up to date snapshots ./chromium_src/chrome/browser/resources/settings/settings_main/settings_main.html.lit_mangler.ts should match snapshot 1`] = `
+"===================================================================
+--- ../chrome/browser/resources/settings/settings_main/settings_main.html
++++ gen/chrome/browser/resources/settings/preprocessed/settings_main/settings_main.html
+@@ -42,14 +42,9 @@
+     </div>
+   \` : '')}
+ 
+   \${cache(this.showPage_(this.pageVisibility_?.performance) ? html\`
+-    <div slot="view" id="performance">
+-      \${cache(this.renderPlugin_(this.routes_.PERFORMANCE) ? html\`
+-        <settings-performance-page-index ?in-search-mode="\${this.inSearchMode_}">
+-        </settings-performance-page-index>
+-      \` : '')}
+-    </div>
++    
+   \` : '')}
+ 
+   \${cache(this.showAiPage_(this.pageVisibility_?.ai) ? html\`
+     <div slot="view" id="ai">
+@@ -75,18 +70,18 @@
+       </settings-search-page-index>
+     \` : '')}
+   </div>
+ 
+-<if expr="not is_chromeos">
++
+   \${cache(this.showPage_(this.pageVisibility_?.defaultBrowser) ? html\`
+     <div slot="view" id="defaultBrowser">
+       \${cache(this.renderPlugin_(this.routes_.DEFAULT_BROWSER) ? html\`
+         <settings-default-browser-page></settings-default-browser-page>
+       \` : '')}
+     </div>
+   \` : '')}
+-</if>
+ 
++
+   \${cache(this.showPage_(this.pageVisibility_?.onStartup) ? html\`
+     <div slot="view" id="onStartup">
+       \${cache(this.renderPlugin_(this.routes_.ON_STARTUP) ? html\`
+         <settings-on-startup-page></settings-on-startup-page>
+@@ -96,17 +91,14 @@
+ 
+   \${cache(this.showPage_(this.pageVisibility_?.languages) ? html\`
+     <div slot="view" id="languages">
+       \${cache(this.renderPlugin_(this.routes_.LANGUAGES) ? html\`
+-<if expr="is_chromeos">
+-        <settings-languages-page-index-cros>
+-        </settings-languages-page-index-cros>
+-</if>
+-<if expr="not is_chromeos">
++
++
+         <settings-languages-page-index
+             ?in-search-mode="\${this.inSearchMode_}">
+         </settings-languages-page-index>
+-</if>
++
+       \` : '')}
+     </div>
+   \` : '')}
+ 
+@@ -126,18 +118,18 @@
+       \` : '')}
+     </div>
+   \` : '')}
+ 
+-<if expr="not is_chromeos">
++
+   \${cache(this.showPage_(this.pageVisibility_?.system) ? html\`
+     <div slot="view" id="system">
+       \${cache(this.renderPlugin_(this.routes_.SYSTEM) ? html\`
+-        <settings-system-page></settings-system-page>
++        <settings-brave-system-page-index></settings-brave-system-page-index>
+       \` : '')}
+     </div>
+   \` : '')}
+-</if>
+ 
++
+   \${cache(this.showPage_(this.pageVisibility_?.reset) ? html\`
+     <div slot="view" id="reset">
+       \${cache(this.renderPlugin_(this.routes_.RESET) ? html\`
+         <settings-reset-page></settings-reset-page>
+@@ -150,5 +142,52 @@
+       <settings-about-page role="main" class="cr-centered-card-container">
+       </settings-about-page>
+     \` : '')}
+   </div>
+-</cr-view-manager>
++\${cache(this.showPage_(this.pageVisibility_?.getStarted) ? html\`
++    <div slot="view" id="getStarted">
++      \${cache(this.renderPlugin_(this.routes_.GET_STARTED) ? html\`
++        <settings-getting-started-page-index ?in-search-mode="\${this.inSearchMode_}"></settings-getting-started-page-index>
++      \` : '')}
++    </div>
++  \` : '')}\${cache(this.showPage_(this.pageVisibility_?.origin) ? html\`
++    <div slot="view" id="origin">
++      \${cache(this.renderPlugin_(this.routes_.ORIGIN) ? html\`
++        <settings-brave-origin-page ?in-search-mode="\${this.inSearchMode_}"></settings-brave-origin-page>
++      \` : '')}
++    </div>
++  \` : '')}\${cache(this.showPage_(this.pageVisibility_?.content) ? html\`
++    <div slot="view" id="content">
++      \${cache(this.renderPlugin_(this.routes_.BRAVE_CONTENT) ? html\`
++        <settings-brave-content-page-index ?in-search-mode="\${this.inSearchMode_}"></settings-brave-content-page-index>
++      \` : '')}
++    </div>
++  \` : '')}\${cache(this.showPage_(this.pageVisibility_?.shields) ? html\`
++    <div slot="view" id="shields">
++      \${cache(this.renderPlugin_(this.routes_.SHIELDS) ? html\`
++        <settings-shields-page-index ?in-search-mode="\${this.inSearchMode_}"></settings-shields-page-index>
++      \` : '')}
++    </div>
++  \` : '')}\${cache(this.showPage_(this.pageVisibility_?.braveWallet) ? html\`
++    <div slot="view" id="web3">
++      \${cache(this.renderPlugin_(this.routes_.BRAVE_WEB3) ? html\`
++        <settings-wallet-page-index ?in-search-mode="\${this.inSearchMode_}"></settings-wallet-page-index>
++      \` : '')}
++    </div>
++  \` : '')}\${cache(this.showPage_(this.pageVisibility_?.leoAssistant) ? html\`
++    <div slot="view" id="leoAssistant">
++      \${cache(this.renderPlugin_(this.routes_.BRAVE_LEO_ASSISTANT) ? html\`
++        <settings-brave-leo-assistant-page-index ?in-search-mode="\${this.inSearchMode_}"></settings-brave-leo-assistant-page-index>
++      \` : '')}
++    </div>
++  \` : '')}\${cache(this.showPage_(this.pageVisibility_?.braveSync) ? html\`
++    <div slot="view" id="braveSync">
++      \${cache(this.renderPlugin_(this.routes_.BRAVE_SYNC) ? html\`
++        <settings-brave-sync-page-index ?in-search-mode="\${this.inSearchMode_}"></settings-brave-sync-page-index>
++      \` : '')}
++    </div>
++  \` : '')}\${cache(this.showPage_(this.pageVisibility_?.extensions) ? html\`
++      <div slot="view" id="extensions">
++        <settings-brave-extensions-page-index ?in-search-mode="\${this.inSearchMode_}">
++        </settings-brave-extensions-page-index>
++      </div>
++    \` : '')}</cr-view-manager>
+"
+`;
+
 exports[`mangled files should have up to date snapshots ./chromium_src/chrome/browser/resources/settings/settings_menu/settings_menu.html.lit_mangler.ts should match snapshot 1`] = `
 "===================================================================
 --- ../chrome/browser/resources/settings/settings_menu/settings_menu.html
