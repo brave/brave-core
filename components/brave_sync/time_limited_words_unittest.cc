@@ -10,6 +10,7 @@
 
 #include "base/strings/strcat.h"
 #include "base/time/time_override.h"
+#include "brave/components/brave_sync/test/test_sync_code.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 using base::subtle::ScopedTimeClockOverrides;
@@ -17,11 +18,6 @@ using base::subtle::ScopedTimeClockOverrides;
 namespace brave_sync {
 
 namespace {
-
-constexpr char kValidSyncCode[] =
-    "fringe digital begin feed equal output proof cheap "
-    "exotic ill sure question trial squirrel glove celery "
-    "awkward push jelly logic broccoli almost grocery drift";
 
 constexpr char kInvalidSyncCode[] =
     "fringe digital begin feed equal output proof cheap "
