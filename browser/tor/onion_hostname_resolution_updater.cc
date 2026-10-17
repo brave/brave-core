@@ -6,8 +6,8 @@
 #include "brave/browser/tor/onion_hostname_resolution_updater.h"
 
 #include "base/functional/bind.h"
-#include "brave/browser/tor/util.h"
 #include "brave/components/tor/pref_names.h"
+#include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/storage_partition.h"
@@ -29,11 +29,12 @@ OnionHostnameResolutionUpdater::OnionHostnameResolutionUpdater(
 OnionHostnameResolutionUpdater::~OnionHostnameResolutionUpdater() = default;
 
 void OnionHostnameResolutionUpdater::UpdateNetworkContexts() {
-  const bool block = ShouldBlockOnionHostnameResolution(context_);
+  const bool onion_only =
+      pref_change_registrar_.prefs()->GetBoolean(prefs::kOnionOnlyInTorWindows);
   context_->ForEachLoadedStoragePartition(
-      [block](content::StoragePartition* storage_partition) {
-        storage_partition->GetNetworkContext()->SetBlockOnionHostnameResolution(
-            block);
+      [onion_only](content::StoragePartition* storage_partition) {
+        storage_partition->GetNetworkContext()->SetOnionOnlyInTorWindows(
+            onion_only);
       });
 }
 

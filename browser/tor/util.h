@@ -12,11 +12,6 @@ class BrowserContext;
 
 namespace tor {
 bool IsIncognitoDisabledOrForced(content::BrowserContext* context);
-
-// Returns whether host resolution of .onion hostnames should fail in
-// `context`'s network contexts. That is everywhere except Tor windows and
-// profiles that allow .onion outside Tor windows.
-bool ShouldBlockOnionHostnameResolution(content::BrowserContext* context);
 }  // namespace tor
 
 #endif  // BRAVE_BROWSER_TOR_UTIL_H_

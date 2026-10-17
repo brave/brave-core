@@ -6,12 +6,10 @@
 #include "brave/browser/tor/util.h"
 
 #include "base/check.h"
-#include "brave/components/tor/pref_names.h"
 #include "chrome/browser/prefs/incognito_mode_prefs.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/policy/core/common/policy_pref_names.h"
 #include "components/prefs/pref_service.h"
-#include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
 
 namespace tor {
@@ -33,11 +31,6 @@ bool IsIncognitoDisabledOrForced(content::BrowserContext* context) {
   }
   return availability == policy::IncognitoModeAvailability::kDisabled ||
          availability == policy::IncognitoModeAvailability::kForced;
-}
-
-bool ShouldBlockOnionHostnameResolution(content::BrowserContext* context) {
-  return !context->IsTor() && user_prefs::UserPrefs::Get(context)->GetBoolean(
-                                  prefs::kOnionOnlyInTorWindows);
 }
 
 }  // namespace tor

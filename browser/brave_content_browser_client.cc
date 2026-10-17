@@ -283,7 +283,6 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/tor/tor_profile_service_factory.h"
-#include "brave/browser/tor/util.h"
 #include "brave/components/tor/onion_location_navigation_throttle.h"
 #include "brave/components/tor/pref_names.h"
 #include "brave/components/tor/tor_navigation_throttle.h"
@@ -1343,11 +1342,13 @@ void BraveContentBrowserClient::ConfigureNetworkContextParams(
   ChromeContentBrowserClient::ConfigureNetworkContextParams(
       context, in_memory, relative_partition_path, network_context_params,
       cert_verifier_creation_params);
+  network_context_params->is_tor = context->IsTor();
 #if BUILDFLAG(ENABLE_TOR)
-  network_context_params->block_onion_hostname_resolution =
-      tor::ShouldBlockOnionHostnameResolution(context);
+  network_context_params->onion_only_in_tor_windows =
+      user_prefs::UserPrefs::Get(context)->GetBoolean(
+          tor::prefs::kOnionOnlyInTorWindows);
 #else
-  network_context_params->block_onion_hostname_resolution = false;
+  network_context_params->onion_only_in_tor_windows = false;
 #endif
 }
 
