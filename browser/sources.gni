@@ -14,7 +14,6 @@ import("//brave/browser/ephemeral_storage/sources.gni")
 import("//brave/browser/gcm_driver/sources.gni")
 import("//brave/browser/misc_metrics/sources.gni")
 import("//brave/browser/net/sources.gni")
-import("//brave/browser/onboarding/sources.gni")
 import("//brave/browser/perf/sources.gni")
 import("//brave/browser/permissions/sources.gni")
 import("//brave/browser/profiles/sources.gni")
@@ -707,10 +706,9 @@ if (is_android) {
 }
 
 if (toolkit_views) {
-  brave_chrome_browser_sources += brave_browser_onboarding_sources
-
-  brave_chrome_browser_deps += brave_browser_onboarding_deps
   brave_chrome_browser_deps += [
+    "//brave/browser/onboarding",
+    "//brave/browser/onboarding:impl",
     "//brave/browser/ui/darker_theme",
     "//brave/components/sidebar/browser",
   ]

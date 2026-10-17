@@ -3,12 +3,52 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//build/config/ui.gni")
+
+assert(toolkit_views)
+
+source_set("onboarding") {
+  sources = [
+    "onboarding_tab_helper.h",
+    "pref_names.h",
+  ]
+  public_deps = [
+    "//base",
+    "//content/public/browser",
+  ]
+}
+
+source_set("impl") {
+  visibility = [ "//brave/browser:core" ]
+
+  sources = [ "onboarding_tab_helper.cc" ]
+
+  deps = [
+    ":onboarding",
+    "//base",
+    "//brave/browser:browser_process",
+    "//brave/browser/brave_shields",
+    "//brave/browser/ui:brave_browser_window_header",
+    "//brave/components/resources:strings",
+    "//chrome/browser:browser_process",
+    "//chrome/browser/first_run",
+    "//chrome/browser/ui:browser_window_header",
+    "//chrome/browser/ui/browser_window",
+    "//chrome/browser/ui/tabs:tab_strip",
+    "//components/permissions",
+    "//components/prefs",
+    "//content/public/browser",
+    "//ui/base",
+  ]
+}
+
 source_set("unit_tests") {
   testonly = true
 
   sources = [ "onboarding_unittest.cc" ]
 
   deps = [
+    ":onboarding",
     "//base",
     "//brave/browser",
     "//chrome/browser",
