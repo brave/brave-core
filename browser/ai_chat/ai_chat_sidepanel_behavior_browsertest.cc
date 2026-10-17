@@ -3,13 +3,23 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+#include <optional>
+#include <string>
+#include <string_view>
 #include <tuple>
+#include <utility>
+#include <vector>
 
+#include "base/containers/span.h"
+#include "base/location.h"
 #include "base/memory/scoped_refptr.h"
+#include "base/strings/strcat.h"
+#include "base/strings/string_split.h"
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/test_future.h"
 #include "base/time/time.h"
+#include "base/types/expected.h"
 #include "brave/browser/ai_chat/ai_chat_agent_profile_helper.h"
 #include "brave/browser/ai_chat/ai_chat_conversation_ui_browsertest_base.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
@@ -17,11 +27,14 @@
 #include "brave/browser/ui/views/side_panel/ai_chat/ai_chat_movable_side_panel_web_view.h"
 #include "brave/browser/ui/views/side_panel/ai_chat/ai_chat_side_panel_web_view.h"
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
+#include "brave/browser/ui/webui/ai_chat/ai_chat_untrusted_conversation_ui.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
+#include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/ai_chat_urls.h"
 #include "brave/components/ai_chat/core/common/features.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/animation/browser_animation_controller.h"
@@ -34,19 +47,23 @@
 #include "chrome/browser/ui/views/side_panel/side_panel.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_coordinator.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_web_ui_view.h"
+#include "chrome/common/chrome_isolated_world_ids.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_delegate.h"
 #include "content/public/browser/web_ui.h"
+#include "content/public/browser/web_ui_controller.h"
 #include "content/public/common/url_constants.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/test_navigation_observer.h"
+#include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "printing/buildflags/buildflags.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "third_party/blink/public/mojom/window_features/window_features.mojom.h"
 #include "ui/gfx/animation/animation_container.h"
 #include "ui/gfx/animation/animation_test_api.h"
 #include "ui/views/controls/webview/webview.h"
@@ -198,16 +215,15 @@ IN_PROC_BROWSER_TEST_P(AIChatGlobalSidePanelBrowserTest,
 // enabled, or in a new tab when it is disabled.
 IN_PROC_BROWSER_TEST_P(AIChatGlobalSidePanelBrowserTest,
                        AddNewContentsUsesCorrectDisposition) {
+  ASSERT_TRUE(embedded_test_server()->Start());
+
   auto* side_panel_coordinator = SidePanelCoordinator::From(browser());
   ASSERT_TRUE(side_panel_coordinator);
 
   side_panel_coordinator->Show(SidePanelEntry::Id::kChatUI);
 
-  // GetWebContentsForTest calls entry->GetContent() which, after Show() has
-  // consumed the content view, invokes the factory again and returns a fresh
-  // unattached view. Its WebContents has no widget, so calling AddNewContents
-  // on it would crash. Instead, find the WebContents from the view that is
-  // actually attached to the browser window.
+  // GetWebContentsForTest returns a fresh unattached view, so use the view
+  // that is actually attached to the browser window.
   auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
   ASSERT_TRUE(browser_view);
   auto* side_panel = browser_view->side_panel();
@@ -220,23 +236,35 @@ IN_PROC_BROWSER_TEST_P(AIChatGlobalSidePanelBrowserTest,
   ASSERT_TRUE(side_panel_web_contents);
   content::WaitForLoadStop(side_panel_web_contents);
 
-  int initial_tab_count = browser()->tab_strip_model()->count();
+  auto* tab_strip = browser()->tab_strip_model();
+  const int initial_tab_count = tab_strip->count();
+  content::WebContents* initial_tab = tab_strip->GetActiveWebContents();
 
-  blink::mojom::WindowFeatures window_features;
-  bool was_blocked = false;
-  side_panel_web_contents->GetDelegate()->AddNewContents(
-      side_panel_web_contents, nullptr, GURL("chrome://version/"),
-      WindowOpenDisposition::NEW_FOREGROUND_TAB, window_features,
-      /*user_gesture=*/true, &was_blocked);
+  // Follow a link the way the conversation renders it.
+  const GURL link_url = embedded_test_server()->GetURL("/title1.html");
+  content::TestNavigationObserver observer(link_url);
+  observer.StartWatchingNewWebContents();
+  observer.WatchExistingWebContents();
+  ASSERT_TRUE(content::ExecJs(
+      side_panel_web_contents,
+      content::JsReplace("const link = document.createElement('a');"
+                         "link.href = $1;"
+                         "link.target = '_blank';"
+                         "link.rel = 'noopener noreferrer';"
+                         "document.body.appendChild(link);"
+                         "link.click();",
+                         link_url)));
+  observer.Wait();
 
-  int final_tab_count = browser()->tab_strip_model()->count();
-
+  EXPECT_EQ(tab_strip->GetActiveWebContents()->GetLastCommittedURL(), link_url);
   if (IsGlobalFlagEnabled()) {
     // Global side panel enabled: link navigates the current tab, no new tab.
-    EXPECT_EQ(final_tab_count, initial_tab_count);
+    EXPECT_EQ(tab_strip->count(), initial_tab_count);
+    EXPECT_EQ(tab_strip->GetActiveWebContents(), initial_tab);
   } else {
     // Global side panel disabled: link opens in a new foreground tab.
-    EXPECT_EQ(final_tab_count, initial_tab_count + 1);
+    EXPECT_EQ(tab_strip->count(), initial_tab_count + 1);
+    EXPECT_NE(tab_strip->GetActiveWebContents(), initial_tab);
   }
 }
 
@@ -886,6 +914,295 @@ INSTANTIATE_TEST_SUITE_P(
     testing::Combine(testing::Bool(), testing::Bool()),
     [](const testing::TestParamInfo<
         AIChatGlobalSidePanelBrowserTest::ParamType>& info) {
+      return absl::StrFormat(
+          "GlobalSidePanel_%s_MoveToSidePanel_%s",
+          std::get<0>(info.param) ? "Enabled" : "NotEnabled",
+          std::get<1>(info.param) ? "Enabled" : "NotEnabled");
+    });
+
+// Links followed from the side panel must reach the linked site (B) as
+// cross-site navigations initiated by AI Chat, not as browser-initiated ones
+// (which would send SameSite=Strict cookies and `Sec-Fetch-Site: none`).
+// Mirrors `SplitViewLinkTest.CrossSiteTargetBlankLinkRedirectKeepsInitiator`.
+class AIChatSidePanelLinkBrowserTest : public AIChatGlobalSidePanelBrowserTest {
+ public:
+  void SetUpOnMainThread() override {
+    AIChatGlobalSidePanelBrowserTest::SetUpOnMainThread();
+    service_ = ai_chat::AIChatServiceFactory::GetForBrowserContext(
+        browser()->GetProfile());
+    ASSERT_TRUE(service_);
+
+    host_resolver()->AddRule("*", "127.0.0.1");
+    // Sec-Fetch-* headers are only sent over HTTPS.
+    ASSERT_TRUE(embedded_https_test_server().Start());
+  }
+
+ protected:
+  struct EchoedHeaders {
+    std::string cookie;
+    std::string sec_fetch_site;
+  };
+
+  // Site A: the tab next to the side panel.
+  GURL GetSiteAURL() {
+    return embedded_https_test_server().GetURL("a.com", "/title1.html");
+  }
+
+  // Site B: echoes the `Cookie` and `Sec-Fetch-Site` headers, one per line.
+  GURL GetSiteBEchoURL() {
+    return embedded_https_test_server().GetURL(
+        "b.com", "/echoheader?Cookie&Sec-Fetch-Site");
+  }
+
+  void SetSameSiteCookies(const GURL& url) {
+    ASSERT_TRUE(
+        content::SetCookie(browser()->GetProfile(), url,
+                           "strict=1; SameSite=Strict; Secure; Path=/"));
+    ASSERT_TRUE(content::SetCookie(browser()->GetProfile(), url,
+                                   "lax=1; SameSite=Lax; Secure; Path=/"));
+    ASSERT_TRUE(content::SetCookie(browser()->GetProfile(), url,
+                                   "none=1; SameSite=None; Secure; Path=/"));
+  }
+
+  static EchoedHeaders GetEchoedHeaders(content::WebContents* contents) {
+    const std::string body =
+        content::EvalJs(contents, "document.body.innerText",
+                        content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+                        ISOLATED_WORLD_ID_BRAVE_INTERNAL)
+            .ExtractString();
+    const std::vector<std::string> lines = base::SplitString(
+        body, "\n", base::TRIM_WHITESPACE, base::SPLIT_WANT_ALL);
+    EXPECT_EQ(lines.size(), 2u) << body;
+    if (lines.size() != 2u) {
+      return {};
+    }
+    return {lines[0], lines[1]};
+  }
+
+  // Shows a mock-engine conversation in the side panel next to site A and
+  // returns its conversation entries frame.
+  content::RenderFrameHost* ShowConversationInSidePanel() {
+    // Open site A first, since a non-global panel belongs to the active tab.
+    EXPECT_TRUE(ui_test_utils::NavigateToURL(browser(), GetSiteAURL()));
+
+    auto* coordinator = SidePanelCoordinator::From(browser());
+    EXPECT_TRUE(coordinator);
+    if (!coordinator) {
+      return nullptr;
+    }
+    coordinator->Show(SidePanelEntry::Id::kChatUI);
+
+    content::WebContents* panel_contents = nullptr;
+    EXPECT_TRUE(base::test::RunUntil([&]() {
+      panel_contents = ai_chat::GetSidePanelWebContents(browser());
+      return IsSidePanelOpen(browser()) && panel_contents != nullptr &&
+             panel_contents->GetWebUI() != nullptr &&
+             !panel_contents->IsLoading();
+    }));
+    if (!panel_contents) {
+      return nullptr;
+    }
+
+    CreateConversationWithMockEngine();
+    EXPECT_TRUE(content::NavigateToURL(
+        panel_contents, ai_chat::ConversationUrl(
+                            conversation_handler_->get_conversation_uuid())));
+
+    content::RenderFrameHost* entries_frame = nullptr;
+    EXPECT_TRUE(base::test::RunUntil([&]() {
+      panel_contents->ForEachRenderFrameHost(
+          [&](content::RenderFrameHost* frame) {
+            if (frame->GetWebUI() &&
+                frame->GetWebUI()
+                    ->GetController()
+                    ->GetAs<AIChatUntrustedConversationUI>()) {
+              entries_frame = frame;
+            }
+          });
+      return entries_frame != nullptr;
+    }));
+    return entries_frame;
+  }
+
+  // Has the mock engine answer with `completion`, citing `sources`.
+  void Respond(const std::string& completion, base::span<const GURL> sources) {
+    auto generate_future = SetupMockGenerateAssistantResponse();
+    conversation_handler_->SubmitHumanConversationEntry("Question",
+                                                        std::nullopt);
+    auto callbacks = generate_future->Take();
+
+    if (!sources.empty()) {
+      std::vector<ai_chat::mojom::WebSourcePtr> web_sources;
+      for (const GURL& url : sources) {
+        web_sources.push_back(ai_chat::mojom::WebSource::New(
+            "Source", url, GURL(), std::nullopt, std::nullopt));
+      }
+      callbacks.data_callback.Run(ai_chat::EngineConsumer::GenerationResultData(
+          ai_chat::mojom::ConversationEntryEvent::NewSourcesEvent(
+              ai_chat::mojom::WebSourcesEvent::New(std::move(web_sources),
+                                                   std::vector<std::string>())),
+          std::nullopt));
+    }
+    callbacks.data_callback.Run(ai_chat::EngineConsumer::GenerationResultData(
+        ai_chat::mojom::ConversationEntryEvent::NewCompletionEvent(
+            ai_chat::mojom::CompletionEvent::New(completion)),
+        std::nullopt));
+    std::move(callbacks.completed_callback)
+        .Run(base::ok(ai_chat::EngineConsumer::GenerationResultData(
+            nullptr, std::nullopt)));
+  }
+
+  // Waits for the response in `frame` to render a link with `text` to `url`.
+  bool WaitForLink(content::RenderFrameHost* frame,
+                   const GURL& url,
+                   std::string_view text,
+                   base::Location location = base::Location::Current()) {
+    SCOPED_TRACE(location.ToString());
+    // Resolves once the link exists, now or after a later DOM change.
+    constexpr char kWaitForLinkScript[] = R"(
+      new Promise((resolve) => {
+        const hasLink = () =>
+            [...document.querySelectorAll('a[target=_blank]')].some(
+                (a) => a.href === $1 && a.textContent.trim() === $2);
+        if (hasLink()) {
+          resolve(true);
+          return;
+        }
+        const observer = new MutationObserver(() => {
+          if (hasLink()) {
+            observer.disconnect();
+            resolve(true);
+          }
+        });
+        // `document`, as the body may not exist yet.
+        observer.observe(document,
+            {childList: true, subtree: true, characterData: true,
+             attributes: true});
+      })
+    )";
+    const content::EvalJsResult result = content::EvalJs(
+        frame, content::JsReplace(kWaitForLinkScript, url, text),
+        content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+        ISOLATED_WORLD_ID_BRAVE_INTERNAL);
+    EXPECT_EQ(true, result);
+    return result == true;
+  }
+
+  // Clicks the link and returns the tab it loaded in.
+  content::WebContents* FollowLink(
+      content::RenderFrameHost* frame,
+      const GURL& url,
+      std::string_view text,
+      base::Location location = base::Location::Current()) {
+    SCOPED_TRACE(location.ToString());
+    constexpr char kClickLinkScript[] = R"(
+      [...document.querySelectorAll('a[target=_blank]')]
+          .find((a) => a.href === $1 && a.textContent.trim() === $2)
+          .click()
+    )";
+    content::TestNavigationObserver observer(url);
+    observer.StartWatchingNewWebContents();
+    observer.WatchExistingWebContents();
+    EXPECT_TRUE(content::ExecJs(frame,
+                                content::JsReplace(kClickLinkScript, url, text),
+                                content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+                                ISOLATED_WORLD_ID_BRAVE_INTERNAL));
+    observer.Wait();
+    content::WebContents* active =
+        browser()->tab_strip_model()->GetActiveWebContents();
+    EXPECT_EQ(active->GetLastCommittedURL(), url);
+    return active;
+  }
+
+  // Checks where the link opened and that B saw a cross-site request.
+  void ExpectCrossSiteNavigation(
+      content::WebContents* site_a_tab,
+      int initial_tab_count,
+      content::WebContents* opened,
+      base::Location location = base::Location::Current()) {
+    SCOPED_TRACE(location.ToString());
+    auto* tab_strip = browser()->tab_strip_model();
+    if (IsGlobalFlagEnabled()) {
+      // The tab next to the panel navigated from A to B.
+      EXPECT_EQ(opened, site_a_tab);
+      EXPECT_EQ(tab_strip->count(), initial_tab_count);
+    } else {
+      EXPECT_NE(opened, site_a_tab);
+      EXPECT_EQ(tab_strip->count(), initial_tab_count + 1);
+    }
+
+    const EchoedHeaders headers = GetEchoedHeaders(opened);
+    const std::string context =
+        base::StrCat({"Cookie: ", headers.cookie,
+                      ", Sec-Fetch-Site: ", headers.sec_fetch_site,
+                      ", URL: ", opened->GetLastCommittedURL().spec()});
+    EXPECT_EQ(headers.sec_fetch_site, "cross-site") << context;
+    EXPECT_THAT(headers.cookie, testing::Not(testing::HasSubstr("strict=1")))
+        << context;
+    EXPECT_THAT(headers.cookie, testing::HasSubstr("lax=1")) << context;
+    EXPECT_THAT(headers.cookie, testing::HasSubstr("none=1")) << context;
+  }
+};
+
+// Control: a typed navigation to B does send the Strict cookie.
+IN_PROC_BROWSER_TEST_P(AIChatSidePanelLinkBrowserTest,
+                       TypedNavigationSendsStrictCookie) {
+  const GURL echo_url = GetSiteBEchoURL();
+  SetSameSiteCookies(echo_url);
+
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), echo_url));
+  const EchoedHeaders headers =
+      GetEchoedHeaders(browser()->tab_strip_model()->GetActiveWebContents());
+  EXPECT_EQ(headers.sec_fetch_site, "none") << "Cookie: " << headers.cookie;
+  EXPECT_THAT(headers.cookie, testing::HasSubstr("strict=1"));
+  EXPECT_THAT(headers.cookie, testing::HasSubstr("lax=1"));
+  EXPECT_THAT(headers.cookie, testing::HasSubstr("none=1"));
+}
+
+IN_PROC_BROWSER_TEST_P(AIChatSidePanelLinkBrowserTest,
+                       CrossSiteAnswerLinkKeepsInitiator) {
+  const GURL echo_url = GetSiteBEchoURL();
+  SetSameSiteCookies(echo_url);
+
+  content::RenderFrameHost* entries_frame = ShowConversationInSidePanel();
+  ASSERT_TRUE(entries_frame);
+  content::WebContents* site_a_tab =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  const int initial_tab_count = browser()->tab_strip_model()->count();
+
+  constexpr char kLinkText[] = "Answer link";
+  Respond(base::StrCat({"See [", kLinkText, "](", echo_url.spec(), ")."}),
+          /*sources=*/{});
+  ASSERT_TRUE(WaitForLink(entries_frame, echo_url, kLinkText));
+
+  ExpectCrossSiteNavigation(site_a_tab, initial_tab_count,
+                            FollowLink(entries_frame, echo_url, kLinkText));
+}
+
+IN_PROC_BROWSER_TEST_P(AIChatSidePanelLinkBrowserTest,
+                       CrossSiteCitationLinkKeepsInitiator) {
+  const GURL echo_url = GetSiteBEchoURL();
+  SetSameSiteCookies(echo_url);
+
+  content::RenderFrameHost* entries_frame = ShowConversationInSidePanel();
+  ASSERT_TRUE(entries_frame);
+  content::WebContents* site_a_tab =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  const int initial_tab_count = browser()->tab_strip_model()->count();
+
+  Respond("A cited claim [1].", /*sources=*/{echo_url});
+  ASSERT_TRUE(WaitForLink(entries_frame, echo_url, "1"));
+
+  ExpectCrossSiteNavigation(site_a_tab, initial_tab_count,
+                            FollowLink(entries_frame, echo_url, "1"));
+}
+
+INSTANTIATE_TEST_SUITE_P(
+    ,
+    AIChatSidePanelLinkBrowserTest,
+    testing::Combine(testing::Bool(), testing::Bool()),
+    [](const testing::TestParamInfo<AIChatSidePanelLinkBrowserTest::ParamType>&
+           info) {
       return absl::StrFormat(
           "GlobalSidePanel_%s_MoveToSidePanel_%s",
           std::get<0>(info.param) ? "Enabled" : "NotEnabled",
