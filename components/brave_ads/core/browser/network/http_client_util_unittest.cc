@@ -9,8 +9,6 @@
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 
-// pnpm test brave_unit_tests --filter=BraveAds*
-
 namespace brave_ads {
 
 TEST(BraveAdsHttpclientUtilTest, ObliviousHttpKeyConfigUrl) {
