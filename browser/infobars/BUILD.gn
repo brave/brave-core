@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/request_otr/common/buildflags/buildflags.gni")
 
 if (!is_android) {
@@ -24,9 +25,18 @@ if (!is_android) {
     if (enable_request_otr) {
       sources += [ "request_otr_infobar_delegate.h" ]
     }
+
+    if (enable_brave_wayback_machine) {
+      sources += [
+        "wayback_machine_infobar_creator.h",
+        "wayback_machine_infobar_delegate.h",
+      ]
+      public_deps += [ "//brave/components/brave_wayback_machine" ]
+    }
   }
 
-  # CreateBraveConfirmInfoBar() is implemented in //brave/browser/ui, not here.
+  # CreateBraveConfirmInfoBar() and CreateWaybackMachineInfoBar() are
+  # implemented in //brave/browser/ui, not here.
   source_set("impl") {
     visibility = [ "//brave/browser:core" ]
 
@@ -68,6 +78,16 @@ if (!is_android) {
         "//chrome/app:generated_resources",
         "//components/vector_icons",
         "//content/public/browser",
+      ]
+    }
+
+    if (enable_brave_wayback_machine) {
+      sources += [ "wayback_machine_infobar_delegate.cc" ]
+      deps += [
+        "//base:i18n",
+        "//content/public/browser",
+        "//content/public/common",
+        "//third_party/icu",
       ]
     }
   }
