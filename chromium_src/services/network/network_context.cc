@@ -7,8 +7,8 @@
 
 namespace network {
 
-void NetworkContext::SetBlockOnionHostnameResolution(bool block) {
-  url_request_context_->set_block_onion_hostname_resolution(block);
+void NetworkContext::SetOnionOnlyInTorWindows(bool onion_only) {
+  url_request_context_->set_onion_only_in_tor_windows(onion_only);
 }
 
 }  // namespace network

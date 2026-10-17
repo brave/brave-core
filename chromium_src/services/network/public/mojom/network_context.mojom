@@ -7,14 +7,18 @@ module network.mojom;
 
 [BraveExtend]
 struct NetworkContextParams {
-  // Whether host resolution of .onion hostnames fails. Blocked by default so
-  // that only contexts the embedder explicitly allows can send .onion names
-  // to a DNS resolver.
-  bool block_onion_hostname_resolution = true;
+  // Whether the context belongs to a Tor profile.
+  bool is_tor = false;
+
+  // Whether .onion hostnames may only be resolved in Tor contexts. Host
+  // resolution of .onion fails in non-Tor contexts while this is set. True by
+  // default so that only contexts the embedder explicitly allows can send
+  // .onion names to a DNS resolver.
+  bool onion_only_in_tor_windows = true;
 };
 
 [BraveExtend]
 interface NetworkContext {
-  // Sets whether host resolution of .onion hostnames fails.
-  SetBlockOnionHostnameResolution(bool block);
+  // Sets whether .onion hostnames may only be resolved in Tor contexts.
+  SetOnionOnlyInTorWindows(bool onion_only);
 };

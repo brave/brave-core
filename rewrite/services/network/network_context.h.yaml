@@ -6,7 +6,7 @@
 blank_macros_for_ast_parsing: true
 
 substitutions:
-  - description: Declare the Brave .onion hostname resolution setter.
+  - description: Declare the Brave .onion-only-in-Tor-windows setter.
     add_to_public:
       class_name: NetworkContext
-      code: 'void SetBlockOnionHostnameResolution(bool block) override;'
+      code: 'void SetOnionOnlyInTorWindows(bool onion_only) override;'

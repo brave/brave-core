@@ -4,7 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
-  - description: Stub the Brave .onion hostname resolution setter.
+  - description: Stub the Brave .onion-only-in-Tor-windows setter.
     add_to_public:
       class_name: TestNetworkContext
-      code: 'void SetBlockOnionHostnameResolution(bool block) override {}'
+      code: 'void SetOnionOnlyInTorWindows(bool onion_only) override {}'
