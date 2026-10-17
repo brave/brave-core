@@ -29,9 +29,10 @@ BraveWalletRenderFrameObserver::BraveWalletRenderFrameObserver(
 
 BraveWalletRenderFrameObserver::~BraveWalletRenderFrameObserver() = default;
 
-bool BraveWalletRenderFrameObserver::CanCreateProvider() {
+bool BraveWalletRenderFrameObserver::CanCreateProviders() {
   auto* web_frame = render_frame()->GetWebFrame();
 
+  // Only allow HTTP or HTTPS schemes for the document URL.
   if (!GURL(web_frame->GetDocument().Url()).SchemeIsHTTPOrHTTPS()) {
     return false;
   }
@@ -46,11 +47,17 @@ bool BraveWalletRenderFrameObserver::CanCreateProvider() {
     return false;
   }
 
+  // Wallet provider objects are not exposed to third party iframes
+  if (!render_frame()->IsMainFrame() &&
+      web_frame->IsCrossOriginToOutermostMainFrame()) {
+    return false;
+  }
+
   return true;
 }
 
 void BraveWalletRenderFrameObserver::DidClearWindowObject() {
-  if (!CanCreateProvider()) {
+  if (!CanCreateProviders()) {
     return;
   }
 
@@ -80,31 +87,23 @@ void BraveWalletRenderFrameObserver::DidClearWindowObject() {
     NOTREACHED();
   }
 
-  if (dynamic_params.install_window_brave_ethereum_provider &&
-      web_frame->GetDocument().IsDOMFeaturePolicyEnabled(isolate, context,
-                                                         "ethereum")) {
+  if (dynamic_params.install_window_brave_ethereum_provider) {
     JSEthereumProvider::Install(
         dynamic_params.install_window_ethereum_provider,
         dynamic_params.allow_overwrite_window_ethereum_provider,
         render_frame());
   }
 
-  if (web_frame->GetDocument().IsDOMFeaturePolicyEnabled(isolate, context,
-                                                         "solana") &&
-      dynamic_params.brave_use_native_solana_wallet) {
+  if (dynamic_params.brave_use_native_solana_wallet) {
     JSSolanaProvider::Install(
         dynamic_params.allow_overwrite_window_solana_provider, render_frame());
   }
 
-  if (web_frame->GetDocument().IsDOMFeaturePolicyEnabled(isolate, context,
-                                                         "cardano") &&
-      dynamic_params.install_window_brave_cardano_provider) {
+  if (dynamic_params.install_window_brave_cardano_provider) {
     JSCardanoProvider::Install(render_frame());
   }
 
-  if (web_frame->GetDocument().IsDOMFeaturePolicyEnabled(isolate, context,
-                                                         "polkadot") &&
-      dynamic_params.install_window_brave_polkadot_provider) {
+  if (dynamic_params.install_window_brave_polkadot_provider) {
     JSPolkadotProvider::Install(render_frame());
   }
 }

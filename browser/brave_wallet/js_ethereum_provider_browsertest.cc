@@ -573,12 +573,6 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, Iframe3P) {
   } ethereum_undefined_cases[] =
       {{// 3p iframe
         "true", secure_top_url, iframe_url_3p},
-       {// 1st party iframe with allow="ethereum 'none'"
-        R"(
-      document.querySelector('iframe').setAttribute('allow', 'ethereum \'none\'');
-      true
-      )",
-        secure_top_url, iframe_url_1p},
        {// 1st party iframe with sandbox="allow-scripts"
         R"(
       document.querySelector('iframe').removeAttribute('allow');
@@ -598,6 +592,28 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, Iframe3P) {
         R"(
       document.querySelector('iframe').removeAttribute('sandbox');
       document.querySelector('iframe').setAttribute('allow', 'solana');
+      true
+      )",
+        secure_top_url, iframe_url_3p},
+       {// 3p iframe with allow="ethereum", which is no longer honored
+        R"(
+      document.querySelector('iframe').removeAttribute('sandbox');
+      document.querySelector('iframe').setAttribute('allow', 'ethereum');
+      true
+      )",
+        secure_top_url, iframe_url_3p},
+       {// 3p iframe with allow="solana; ethereum", which is no longer honored
+        R"(
+      document.querySelector('iframe').removeAttribute('sandbox');
+      document.querySelector('iframe')
+          .setAttribute('allow', 'solana; ethereum');
+      true
+      )",
+        secure_top_url, iframe_url_3p},
+       {// 3p iframe with sandbox="allow-scripts" allow="ethereum"
+        R"(
+      document.querySelector('iframe').setAttribute('allow', 'ethereum');
+      document.querySelector('iframe').setAttribute('sandbox', 'allow-scripts');
       true
       )",
         secure_top_url, iframe_url_3p},
@@ -636,6 +652,7 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, Iframe3P) {
       true
       )",
         data_top_url, data_simple_url}},
+
     ethereum_defined_cases[] = {
         {// 1st party iframe
          "true", secure_top_url, iframe_url_1p},
@@ -647,28 +664,15 @@ IN_PROC_BROWSER_TEST_F(JSEthereumProviderBrowserTest, Iframe3P) {
       true
       )",
          secure_top_url, iframe_url_1p},
-        {// 3p iframe with allow="ethereum"
-         R"(
-      document.querySelector('iframe').removeAttribute('sandbox');
-      document.querySelector('iframe').setAttribute('allow', 'ethereum');
-      true
-      )",
-         secure_top_url, iframe_url_3p},
-        {// 3p iframe with allow="solana; ethereum"
+        {// 1st party iframe with allow="ethereum 'none'", which is no longer
+         // honored
          R"(
       document.querySelector('iframe').removeAttribute('sandbox');
       document.querySelector('iframe')
-          .setAttribute('allow', 'solana; ethereum');
+          .setAttribute('allow', 'ethereum \'none\'');
       true
       )",
-         secure_top_url, iframe_url_3p},
-        {// 3rd party iframe with sandbox="allow-scripts" allow="ethereum"
-         R"(
-      document.querySelector('iframe').setAttribute('allow', 'ethereum');
-      document.querySelector('iframe').setAttribute('sandbox', 'allow-scripts');
-      true
-      )",
-         secure_top_url, iframe_url_3p}};
+         secure_top_url, iframe_url_1p}};
 
   for (auto& c : ethereum_undefined_cases) {
     SCOPED_TRACE(testing::Message() << c.script << c.top_url << c.iframe_url);

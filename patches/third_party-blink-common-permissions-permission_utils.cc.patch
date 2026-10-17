@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/common/permissions/permission_utils.cc b/third_party/blink/common/permissions/permission_utils.cc
-index 9c1b4762fe932618ec85a86a8367dce706d23c0b..b8ded5061caed370f6d934e06bc70182709d048e 100644
+index 9c1b4762fe932618ec85a86a8367dce706d23c0b..a71bc088a23359bbbde696d6329bd3a983f15855 100644
 --- a/third_party/blink/common/permissions/permission_utils.cc
 +++ b/third_party/blink/common/permissions/permission_utils.cc
 @@ -30,6 +30,7 @@ mojom::PermissionStatus ToPermissionStatus(const std::string& status) {
@@ -10,7 +10,15 @@ index 9c1b4762fe932618ec85a86a8367dce706d23c0b..b8ded5061caed370f6d934e06bc70182
      case PermissionType::GEOLOCATION:
        return "Geolocation";
      case PermissionType::GEOLOCATION_APPROXIMATE:
-@@ -267,6 +268,7 @@ std::optional<PermissionType> PermissionDescriptorInfoToPermissionType(
+@@ -119,6 +120,7 @@ std::string GetPermissionString(PermissionType permission) {
+ std::optional<network::mojom::PermissionsPolicyFeature>
+ PermissionTypeToPermissionsPolicyFeature(PermissionType permission) {
+   switch (permission) {
++    BRAVE_PERMISSION_UTIL_PERMISSION_TYPE_TO_PERMISSIONS_POLICY_FEATURE
+     case PermissionType::GEOLOCATION:
+     // TODO(crbug.com/465377576): Change this when we implement the new
+     // policy-controlled feature "geolocation-approximate".
+@@ -267,6 +269,7 @@ std::optional<PermissionType> PermissionDescriptorInfoToPermissionType(
      bool clipboard_has_user_gesture,
      bool fullscreen_allow_without_user_gesture) {
    switch (name) {
