@@ -821,6 +821,15 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabMigrationChoices[] = {
           FEATURE_VALUE_TYPE(ai_chat::features::kAIChatAgentProfile),          \
       },                                                                       \
       {                                                                        \
+          "brave-ai-chat-content-agent-main-profiles",                         \
+          "Brave's AI browsing in main profiles",                              \
+          "Lets conversations in main profiles offer AI browsing, not only "   \
+          "the separate built-in AI browsing profile.",                        \
+          kOsWin | kOsMac | kOsLinux,                                          \
+          FEATURE_VALUE_TYPE(                                                  \
+              ai_chat::features::kAIChatContentAgentMainProfiles),             \
+      },                                                                       \
+      {                                                                        \
           "brave-ai-host-specific-distillation",                               \
           "Brave AI Host-Specific Distillation",                               \
           "Enables support for host-specific distillation scripts",            \
