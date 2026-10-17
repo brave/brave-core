@@ -7,7 +7,8 @@ import {GestureCommand} from './gesture_command.js'
 import {classifyDirectionalStrokeKey} from './directional_gesture_classifier.js'
 import {closestCustomGestureDistance, CUSTOM_GESTURE_SIMILARITY_WARNING_THRESHOLD} from './custom_gesture_geometry.js'
 import type {Point} from './custom_gesture_geometry.js'
-import type {CustomGestureEntry, DirectionalGestureMappingActionRow} from './gesture_rows.js'
+import type {CustomGestureEntry} from './custom_gesture_util.js'
+import type {DirectionalGestureMappingActionRow} from './directional_gesture_mapping_util.js'
 
 // The mapped directional key `points` would classify to instead, if any,
 // since directional matching always takes priority over a custom gesture.

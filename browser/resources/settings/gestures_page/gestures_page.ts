@@ -16,6 +16,7 @@ import {getTemplate} from './gestures_page.html.js'
 import {GestureCommand, SPECIAL_COMMAND_I18N_KEYS} from './gesture_command.js'
 import {CommandsCache} from './commands_cache.js'
 import type { Command } from '../commands.mojom-webui.js'
+import type {CommandOption} from './commands_cache.js'
 import {svgPathData} from './custom_gesture_svg_path.js'
 import {
   OpenSettingsPage, OPEN_SETTINGS_PAGE_ORDER, OPEN_SETTINGS_PAGE_PATHS
@@ -23,13 +24,11 @@ import {
 import {
   toActionDicts, defaultActionRow, actionRowsFromDicts, moveAction,
   applyCommandToActionRows, IDC_OPTIONS
-} from './gesture_rows.js'
+} from './gesture_action_util.js'
+import type {ActionDict} from './gesture_action_util.js'
 import { withUrlScheme } from './url_scheme_util.js'
 import type {
-  ActionRow, ActionDict, DirectionalGestureMappingActionRow,
-  CommandOption, DisallowedSiteRow, CustomGestureActionRow,
-  CustomGestureEntry, MouseRockerActionRow,
-  MouseWheelActionRow
+  ActionRow, DisallowedSiteRow, MouseRockerActionRow, MouseWheelActionRow
 } from './gesture_rows.js'
 import {
   rowCommandSequence, findConflictingGestures, conflictDescription
@@ -42,10 +41,12 @@ import {
   GESTURES_DIRECTIONAL_GESTURE_MAPPINGS_PREF,
   buildDirectionalGestureMappingActionRows
 } from './directional_gesture_mapping_util.js'
+import type {DirectionalGestureMappingActionRow} from './directional_gesture_mapping_util.js'
 import {
   GESTURES_CUSTOM_GESTURES_PREF, DRAWN_CUSTOM_GESTURE_ROW,
   buildCustomGestureActionRows
 } from './custom_gesture_util.js'
+import type {CustomGestureActionRow, CustomGestureEntry} from './custom_gesture_util.js'
 import type {Point} from './custom_gesture_geometry.js'
 
 // Shown as the page's literal relative path (see `OPEN_SETTINGS_PAGE_PATHS`),
@@ -180,6 +181,10 @@ class SettingsGesturesPage extends SettingsGesturesPageBase {
 
       commandOptions_: { type: Array, value: () => [] },
       urlDialogInput_: { type: String, value: '' },
+      urlDialogContext_: { type: Object, value: () => null },
+      openSettingsPageOptions_: {
+        type: Array, value: () => OPEN_SETTINGS_PAGE_OPTIONS
+      },
     }
   }
 
@@ -210,17 +215,17 @@ class SettingsGesturesPage extends SettingsGesturesPageBase {
 
   declare private commandOptions_: CommandOption[]
   declare private urlDialogInput_: string
-
-  private openSettingsPageOptions_ = OPEN_SETTINGS_PAGE_OPTIONS
+  declare private openSettingsPageOptions_:
+    Array<{ name: string, value: OpenSettingsPage }>
 
   // One dialog shared across row types; `row` identifies which row may
   // confirm it, `write` persists the result back to that row.
-  private urlDialogContext_: {
+  declare private urlDialogContext_: {
     row: unknown
     actionRows: ActionRow[]
     targetAction: ActionRow
     write: (actionRows: ActionRow[]) => void
-  } | null = null
+  } | null
 
   // See `urlDialogContext_`; set on dragstart, read and cleared on drop.
   private actionDragContext_: {

@@ -4,7 +4,9 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import {GestureCommand} from './gesture_command.js'
-import type {ActionRow, CustomGestureActionRow, DirectionalGestureMappingActionRow} from './gesture_rows.js'
+import type {ActionRow} from './gesture_rows.js'
+import type {CustomGestureActionRow} from './custom_gesture_util.js'
+import type {DirectionalGestureMappingActionRow} from './directional_gesture_mapping_util.js'
 
 export function rowCommandSequence(row: { actionRows: ActionRow[] }): number[] {
   return row.actionRows.map((action) => action.command)

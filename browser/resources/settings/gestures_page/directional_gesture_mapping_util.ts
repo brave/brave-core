@@ -5,11 +5,18 @@
 
 import {GestureCommand} from './gesture_command.js'
 import {gestureKeyToIconNames} from './directional_gesture_icons.js'
-import type {ActionDict, DirectionalGestureMappingActionRow} from './gesture_rows.js'
-import {actionRowsFromDicts} from './gesture_rows.js'
+import type {ActionRow} from './gesture_rows.js'
+import type {ActionDict} from './gesture_action_util.js'
+import {actionRowsFromDicts} from './gesture_action_util.js'
 
 export const GESTURES_DIRECTIONAL_GESTURE_MAPPINGS_PREF =
   'brave.gestures.directional_gestures'
+
+export interface DirectionalGestureMappingActionRow {
+  key: string
+  icons: string[]
+  actionRows: ActionRow[]
+}
 
 // Keep in sync with `DefaultDirectionalGestureCommands` in
 // `gesture_config_tracker.cc`.

@@ -128,6 +128,7 @@ brave_settings_ts_files = [
   "gestures_page/directional_gesture_classifier.ts",
   "gestures_page/directional_gesture_icons.ts",
   "gestures_page/directional_gesture_mapping_util.ts",
+  "gestures_page/gesture_action_util.ts",
   "gestures_page/gesture_command.ts",
   "gestures_page/gesture_command_conflict.ts",
   "gestures_page/gesture_rows.ts",

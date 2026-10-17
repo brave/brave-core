@@ -11,6 +11,11 @@ type CacheListener = (
   newValue: Record<string, Command>,
   oldValue: Record<string, Command>) => void
 
+export interface CommandOption {
+  name: string
+  value: number
+}
+
 // A read-only live command list (name, id); not imported from elsewhere,
 // since the shared caching base lives behind a path alias unavailable here.
 export class CommandsCache implements CommandsListenerInterface {

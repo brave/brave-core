@@ -5,10 +5,24 @@
 
 import {GestureCommand} from './gesture_command.js'
 import {svgPathData, fitToViewBox} from './custom_gesture_svg_path.js'
-import type {CustomGestureActionRow, CustomGestureEntry} from './gesture_rows.js'
-import {actionRowsFromDicts} from './gesture_rows.js'
+import type {ActionRow} from './gesture_rows.js'
+import type {ActionDict} from './gesture_action_util.js'
+import {actionRowsFromDicts} from './gesture_action_util.js'
+import type {Point} from './custom_gesture_geometry.js'
 
 export const GESTURES_CUSTOM_GESTURES_PREF = 'brave.gestures.custom_gestures'
+
+export interface CustomGestureActionRow {
+  id: string
+  previewSvgPathData: string
+  actionRows: ActionRow[]
+}
+
+export interface CustomGestureEntry {
+  id: string
+  points: Point[]
+  actions?: ActionDict[]
+}
 
 const CUSTOM_GESTURE_PREVIEW_SIZE = 32
 const CUSTOM_GESTURE_PREVIEW_PADDING = 4
