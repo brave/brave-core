@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/browser/traffic_control/traffic_control_apply.h"
+#include "brave/browser/traffic_control/traffic_control_applier.h"
 
 #include <string>
 #include <utility>
@@ -25,21 +25,13 @@
 #include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/storage_partition_config.h"
 #include "content/public/browser/web_contents.h"
-#include "ui/base/page_transition_types.h"
 #include "ui/base/window_open_disposition.h"
 
 namespace traffic_control {
 
-TrafficControlApplier::TrafficControlApplier(
-    content::WebContents* source,
-    const GURL& url,
-    mojom::TargetPtr target,
-    std::optional<url::Origin> initiator_origin,
-    ui::PageTransition page_transition)
-    : url_(url),
-      target_(std::move(target)),
-      initiator_origin_(std::move(initiator_origin)),
-      page_transition_(page_transition) {
+TrafficControlApplier::TrafficControlApplier(content::WebContents* source,
+                                             NavigationIntent navigation_intent)
+    : navigation_intent_(std::move(navigation_intent)) {
   if (tabs::TabInterface* source_tab =
           tabs::TabInterface::MaybeGetFromContents(source)) {
     source_tab_ = source_tab->GetHandle();
@@ -93,27 +85,24 @@ bool TrafficControlApplier::AlreadyAtTarget(content::WebContents* web_contents,
 
 // static
 void TrafficControlApplier::Apply(base::WeakPtr<content::WebContents> source,
-                                  const GURL& url,
-                                  mojom::TargetPtr target,
-                                  std::optional<url::Origin> initiator_origin,
-                                  ui::PageTransition page_transition) {
+                                  NavigationIntent navigation_intent) {
   if (!source) {
     return;
   }
-  TrafficControlApplier(source.get(), url, std::move(target),
-                        std::move(initiator_origin), page_transition)
-      .Run();
+  TrafficControlApplier(source.get(), std::move(navigation_intent)).Run();
 }
 
 void TrafficControlApplier::Run() {
-  CHECK(target_);
-  if (!url_.is_valid()) {
+  CHECK(navigation_intent_.target);
+  if (!navigation_intent_.url.is_valid()) {
     return;
   }
   if (!Initialize()) {
+    LOG(ERROR) << "Traffic Control: failed to initialize";
     return;
   }
   if (!OpenTargetTab()) {
+    LOG(ERROR) << "Traffic Control: failed to open target tab";
     return;
   }
   MaybeCloseEmptySourceTab();
@@ -150,49 +139,52 @@ bool TrafficControlApplier::OpenTargetTab() {
     return false;
   }
 
-  if (target_->temporary_container) {
-    OpenUrl(containers_service->CreateAndPersistTemporaryContainer());
-    return true;
+  if (navigation_intent_.target->temporary_container) {
+    return OpenUrl(containers_service->CreateAndPersistTemporaryContainer());
   }
 
-  if (!target_->container_id.has_value()) {
+  // A non-temporary target must explicitly name its destination partition.
+  if (!navigation_intent_.target->container_id.has_value()) {
+    LOG(ERROR) << "Traffic Control: target container ID not specified";
     return false;
   }
 
-  if (target_->container_id->empty()) {
-    OpenUrl({});
-    return true;
+  // An empty ID intentionally targets the default, non-container partition.
+  if (navigation_intent_.target->container_id->empty()) {
+    return OpenUrl({});
   }
 
   containers::mojom::ContainerPtr container =
-      containers_service->GetRuntimeContainerById(*target_->container_id);
+      containers_service->GetRuntimeContainerById(
+          *navigation_intent_.target->container_id);
+  // Never fall back to the default partition for an unknown container.
   if (!container) {
     LOG(WARNING) << "Traffic Control: unknown container id "
-                 << *target_->container_id;
+                 << *navigation_intent_.target->container_id;
     return false;
   }
 
-  OpenUrl(container);
-  return true;
+  return OpenUrl(container);
 }
 
-void TrafficControlApplier::OpenUrl(
+bool TrafficControlApplier::OpenUrl(
     const containers::mojom::ContainerPtr& container) {
-  const bool is_link =
-      ui::PageTransitionCoreTypeIs(page_transition_, ui::PAGE_TRANSITION_LINK);
-  NavigateParams params(
-      browser_window_, url_,
-      is_link ? ui::PAGE_TRANSITION_LINK : ui::PAGE_TRANSITION_TYPED);
+  NavigateParams params(browser_window_, navigation_intent_.url,
+                        navigation_intent_.page_transition);
   params.disposition = source_was_active_
                            ? WindowOpenDisposition::NEW_FOREGROUND_TAB
                            : WindowOpenDisposition::NEW_BACKGROUND_TAB;
-  params.initiator_origin = initiator_origin_;
+  params.initiator_origin = navigation_intent_.initiator_origin;
+  // NavigateParams defaults these to true, which would manufacture activation.
+  params.user_gesture = navigation_intent_.user_gesture;
+  params.original_user_gesture = navigation_intent_.user_gesture;
   if (container) {
     params.storage_partition_config = content::StoragePartitionConfig::Create(
         profile_, containers::kContainersStoragePartitionDomain, container->id,
         profile_->IsOffTheRecord());
   }
   Navigate(&params);
+  return params.navigated_or_inserted_contents;
 }
 
 void TrafficControlApplier::MaybeCloseEmptySourceTab() {
@@ -202,6 +194,18 @@ void TrafficControlApplier::MaybeCloseEmptySourceTab() {
 
   tabs::TabInterface* source_tab = source_tab_.Get();
   if (!source_tab) {
+    return;
+  }
+
+  content::WebContents* source_contents = source_tab->GetContents();
+  // The source may have been changed after the initial empty-tab snapshot.
+  if (!IsDiscardableEmptyTab(source_contents)) {
+    return;
+  }
+  // The cancelled reroute remains visible while its replacement opens. Keep the
+  // source only when a different pending navigation has superseded it.
+  if (source_contents->IsLoading() &&
+      source_contents->GetVisibleURL() != navigation_intent_.url) {
     return;
   }
 
