@@ -7,24 +7,29 @@ blank_macros_for_ast_parsing: true
 
 substitutions:
   - description: |-
-      Add accessors for blocking .onion hostname resolution.
+      Add accessors for whether the context is Tor and its .onion policy.
 
-      The host resolver reads this to refuse .onion lookups for contexts where
-      .onion is only reachable through Tor.
+      The host resolver reads these to refuse .onion lookups outside Tor
+      contexts when .onion is only allowed in Tor windows.
     add_to_public:
       class_name: URLRequestContext
       code: |-
-        void set_block_onion_hostname_resolution(bool block) {
-          block_onion_hostname_resolution_ = block;
+        void set_is_tor(bool is_tor) { is_tor_ = is_tor; }
+        bool is_tor() const { return is_tor_; }
+        void set_onion_only_in_tor_windows(bool onion_only) {
+          onion_only_in_tor_windows_ = onion_only;
         }
-        bool block_onion_hostname_resolution() const {
-          return block_onion_hostname_resolution_;
+        bool onion_only_in_tor_windows() const {
+          return onion_only_in_tor_windows_;
         }
 
   - description: |-
-      Add the bool block_onion_hostname_resolution_ member, true by default.
+      Add the is_tor_ and onion_only_in_tor_windows_ members.
 
-      A context that is never configured fails .onion lookups.
+      A context that is never configured is not Tor and allows .onion only in
+      Tor windows, so it fails .onion lookups.
     add_to_protected:
       class_name: URLRequestContext
-      code: bool block_onion_hostname_resolution_ = true;
+      code: |-
+        bool is_tor_ = false;
+        bool onion_only_in_tor_windows_ = true;
