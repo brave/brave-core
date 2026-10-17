@@ -1,47 +1,48 @@
-Total size 111674K
+Total size 109746K
 
-GROUP Adblock [9697K total]
+GROUP Adblock [9755K total]
    264K Brave Ad Block Updater (Brave First Party Adblock Filters (plaintext)) 1.0.482 [adcocjohghhfpidemphmcmlmhnfgikei]
-    50K Brave Ad Block Updater (Mobile app promo blocker (plaintext)) 1.0.16884 [bfpgedeaaibpoidldhjcknekahbikncb]
-  1572K Brave Ad Block Updater (Cookie notice blocker (plaintext)) 1.0.20094 [cdbbhgbmjhfnhnmgeddbliobbofkgdhe]
+    50K Brave Ad Block Updater (Mobile app promo blocker (plaintext)) 1.0.16885 [bfpgedeaaibpoidldhjcknekahbikncb]
+  1574K Brave Ad Block Updater (Cookie notice blocker (plaintext)) 1.0.20115 [cdbbhgbmjhfnhnmgeddbliobbofkgdhe]
      1K Brave Ad Block Updater (Allow X/Twitter Embeds (plaintext)) 1.0.0 [dkpggglmbjhgjhachikgmohmecomjndo]
    108K Brave Ad Block Updater (Regional Catalog) 1.0.97 [gkboaolpopklhgplhaaiboijnklogmbc]
-  5047K Brave Ad Block Updater (Brave Default Adblock Filters (plaintext)) 1.0.22618 [iodkpdagapdfkphljnddpjlldadblomo]
+  5101K Brave Ad Block Updater (Brave Default Adblock Filters (plaintext)) 1.0.22768 [iodkpdagapdfkphljnddpjlldadblomo]
      3K Brave Ad Block Updater (Experimental ad blocker (plaintext)) 1.0.91 [jcfckfokjmopfomnoebdkdhbhcgjfnbi]
      1K Brave Ad Block Updater (Allow Facebook Embeds (plaintext)) 1.0.0 [jmfhneobcdckobmonkfjkbknnjjnegoh]
-  1648K Brave Ad Block Updater (Brave Default Privacy Filters (plaintext)) 1.0.8196 [kihnoaefogbkmblfimmibknnmkllbhlf]
+  1649K Brave Ad Block Updater (Brave Default Privacy Filters (plaintext)) 1.0.8346 [kihnoaefogbkmblfimmibknnmkllbhlf]
    998K Brave Ad Block Updater (Resources) 1.0.155 [mfddibmblmbccpadfndgakiopmmhebop]
 
 GROUP Ads [22954K total]
     50K Brave Ads Resources 1.0.110 [iblokdlgekdjophgeonmanpnjihcjkjj]
  22903K Brave Ads Resources 1.0.68 [ocilmpijebaopmdifcomolmpigakocmo]
 
-GROUP Ntp [22446K total]
+GROUP Ntp [20387K total]
  19117K Brave NTP background images 1.0.25 [aoojcmojmmcbpfgoecoadbdpnagfchel]
-  3328K Brave NTP sponsored images 1.0.2615 [gccbbckogglekeggclmmekihdgdpdgoe]
+  1270K Brave NTP sponsored images 1.0.2623 [gccbbckogglekeggclmmekihdgdpdgoe]
 
-GROUP Other [158K total]
-    50K Brave Local Data Files Updater 1.0.1530 [afalakplffnnnlkncjhbmahjfjhmlkal]
-     2K Query Filter 1.0.169 [cemdlagocoimleflkfkjoihojfainiho]
+GROUP Other [189K total]
+    50K Brave Local Data Files Updater 1.0.1532 [afalakplffnnnlkncjhbmahjfjhmlkal]
+    30K Brave Privacy Settings Selection for Sites Tool (PSST) Files 1.0.2 [bchfnigamfmpeanhekjggkphjfobpipo]
+     2K Query Filter 1.0.176 [cemdlagocoimleflkfkjoihojfainiho]
    100K Brave WebMCP Tool Scripts 1.0.2 [eingdhelnaolbpcdkgddekhifcjfkalf]
-     4K Brave User Agent 1.0.573 [nlpaeekllejnmhoonlpcefpfnpbajbpe]
+     4K Brave User Agent 1.0.580 [nlpaeekllejnmhoonlpcefpfnpbajbpe]
 
-GROUP chromium [11673K total]
-  1330K crl-set-1633103923137597111.data 10808 [CertificateRevocation]
-   330K Crowd Deny 2026.9.28.1389 [Crowd Deny]
+GROUP chromium [11626K total]
+  1329K crl-set-3347867936798982602.data 10822 [CertificateRevocation]
+   282K Crowd Deny 2026.10.5.75 [Crowd Deny]
      9K fileTypePolicies 145.0.7584.0 [FileTypePolicies]
      9K MEI Preload 1.1.0.3 [MEIPreload]
   7744K OnDeviceHeadSuggestENUS500000 20251024.824731831.14 [OnDeviceHeadSuggestModel]
      0K P3A Configuration 1.0.5 [P3AConfig]
-   419K pkiMetadata 1788 [PKIMetadata]
+   421K pkiMetadata 1798 [PKIMetadata]
      4K sslErrorAssistant 7 [SSLErrorAssistant]
    181K safetyTips 3091 [SafetyTips]
   1642K zxcvbnData 3 [ZxcvbnData]
 
-GROUP large_files [38414K total]
+GROUP large_files [38487K total]
   3262K Default/Local Extension Settings/mnojpmjdmbbfmejpflffifhffcmidifd/000003.log
   6561K Default/RewardsCreators.db
   8358K Default/adblock_cache/engine0.dat
   2173K Default/adblock_cache/engine1.dat
-  1873K Safe Browsing/ChromeExtMalware.store.32_13435172408740397
- 16184K Safe Browsing/UrlSoceng.store.4_13435172408930371
+  1873K Safe Browsing/ChromeExtMalware.store.32_13435777184679530
+ 16257K Safe Browsing/UrlSoceng.store.4_13435777184873927
