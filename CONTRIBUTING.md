@@ -62,7 +62,7 @@ Brave does consider volunteer translators on a case-by-case basis. If you repres
 Once you've cloned [`brave-core`](https://github.com/brave/brave-core) into `src/brave` in a directory of your choice, you're ready to start making edits!
 
 You'll need to add your fork to the remotes list. By default, `origin` is set to upstream.
-For example, here's how GitHub user `bsclifton` would and `brave-core`:
+For example, here's how GitHub user `bsclifton` would fork `brave-core`:
 ```sh
 # root for the `brave-core` repo
 cd src/brave
