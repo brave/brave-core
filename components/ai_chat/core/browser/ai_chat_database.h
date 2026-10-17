@@ -11,6 +11,7 @@
 #include <string_view>
 #include <vector>
 
+#include "base/containers/flat_set.h"
 #include "base/gtest_prod_util.h"
 #include "base/sequence_checker.h"
 #include "base/thread_annotations.h"
@@ -68,6 +69,21 @@ class AIChatDatabase : public syncer::SyncMetadataStore {
   // uuid.
   virtual std::vector<mojom::ConversationTurnPtr> GetConversationThreadEntries(
       std::string_view thread_uuid);
+
+  // Returns the uuid of the conversation owning |conversation_entry_uuid|, or
+  // nullopt if no such entry exists.
+  virtual std::optional<std::string> GetConversationUuidForEntry(
+      std::string_view conversation_entry_uuid);
+
+  // Returns the entry with its edit revisions attached, or null if there is no
+  // such entry. Reads only the one entry, unlike GetConversationData.
+  virtual mojom::ConversationTurnPtr GetConversationEntryWithEdits(
+      std::string_view conversation_entry_uuid);
+
+  // Returns the uuids of every entry that has edit revisions. Nothing is
+  // indexed on editing_entry_uuid, so callers that would otherwise ask per
+  // entry should ask once and test against the result.
+  virtual base::flat_set<std::string> GetEntryUuidsWithEditRevisions();
 
   // Returns new ID for the provided entry and any provided associated content
   virtual bool AddConversation(mojom::ConversationPtr conversation,
@@ -177,6 +193,9 @@ class AIChatDatabase : public syncer::SyncMetadataStore {
  private:
   friend class AIChatDatabaseTest;
   friend class AIChatDatabaseMigrationTest;
+  // For GetArchiveContentsForConversation(), used to rebuild the local copy
+  // of an entry when restoring fields the remote sender omitted.
+  friend class AIChatSyncBridge;
   FRIEND_TEST_ALL_PREFIXES(AIChatDatabaseTest, ConversationThreadEntries);
 
   sql::Database& GetDB();
