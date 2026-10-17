@@ -219,13 +219,30 @@ class BraveShieldsPage extends BraveShieldsPageBase {
   private browserProxy_: DefaultBraveShieldsBrowserProxy =
     DefaultBraveShieldsBrowserProxyImpl.getInstance()
 
-  override ready () {
-    super.ready()
+  private hasConnectedBefore_ = false
 
+  override connectedCallback () {
+    super.connectedCallback()
+
+    // WebUiListenerMixin drops its listeners on disconnect, so re-register
+    // and refresh on every connect to pick up changes made while detached.
     this.onShieldsSettingsChanged_()
-
     this.addWebUiListener('brave-shields-settings-changed',
       () => { this.onShieldsSettingsChanged_() })
+
+    // dom-repeat re-inserts its <option>s on reconnect, which resets each
+    // <select> to its last option without Polymer's `selected` bindings
+    // noticing. Wait for the re-insertion, then resync.
+    if (this.hasConnectedBefore_) {
+      queueMicrotask(() => {
+        this.$.adControlType.value = this.adControlType_
+        this.$.httpsUpgradeControlType.value = this.httpsUpgradeControlType_
+        this.$.fingerprintingSelectControlType.value =
+          this.fingerprintingControlType_
+        this.$.cookieControlType.value = this.cookieControlType_
+      })
+    }
+    this.hasConnectedBefore_ = true
   }
 
   override getAssociatedControlFor(childViewId: string): HTMLElement {

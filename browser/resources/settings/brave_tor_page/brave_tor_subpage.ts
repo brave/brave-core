@@ -29,6 +29,7 @@ import {getTemplate} from './brave_tor_subpage.html.js'
 interface SettingsBraveTorPageElement {
   $: {
     bridgesGroup: CrRadioGroupElement,
+    builtInBridgesType: HTMLSelectElement,
   }
 }
 
@@ -210,29 +211,22 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
   private browserProxy_: BraveTorBrowserProxy =
     BraveTorBrowserProxyImpl.getInstance()
 
-  override ready() {
-    super.ready()
+  private hasConnectedBefore_ = false
 
-    if (loadTimeData.getBoolean('shouldExposeElementsForTesting')) {
-      window.testing = window.testing || {}
-      window.testing['torSubpage'] = this.shadowRoot
+  override connectedCallback() {
+    super.connectedCallback()
+    // dom-repeat re-inserts its <option>s on reconnect, which resets the
+    // <select> to its last option without Polymer's `selected` bindings
+    // noticing. Wait for the re-insertion, then resync.
+    if (this.hasConnectedBefore_ && this.builtinBridges_ !== undefined) {
+      queueMicrotask(() => {
+        this.$.builtInBridgesType.value = String(this.builtinBridges_)
+      })
     }
+    this.hasConnectedBefore_ = true
 
-    this.browserProxy_.getBridgesConfig().then((config) => {
-      this.loadedConfig_ = config
-      this.isUsingBridgesPref_ = {
-        key: '',
-        type: chrome.settingsPrivate.PrefType.BOOLEAN,
-        value: config.use_bridges !== Usage.NOT_USED,
-      }
-      this.useBridges_ = config.use_bridges
-      this.builtinBridges_ = config.use_builtin_bridges
-      this.requestedBridges_ = config.requested_bridges.join('\n')
-      this.providedBridges_ = config.provided_bridges.join('\n')
-    })
-
-    // PrefControlMixin checks for a pref being valid, so have to fake it,
-    // same as upstream.
+    // WebUiListenerMixin drops its listeners on disconnect, so re-register
+    // and refresh on every connect.
     this.addWebUiListener('tor-enabled-changed', (enabled: boolean) => {
       this.setTorEnabledPref_(enabled)
     })
@@ -257,6 +251,28 @@ class SettingsBraveTorPageElement extends SettingBraveTorPageElementBase {
           this.setTorSnowflakeExtensionEnabledPref_(enabled)
       })
     }
+  }
+
+  override ready() {
+    super.ready()
+
+    if (loadTimeData.getBoolean('shouldExposeElementsForTesting')) {
+      window.testing = window.testing || {}
+      window.testing['torSubpage'] = this.shadowRoot
+    }
+
+    this.browserProxy_.getBridgesConfig().then((config) => {
+      this.loadedConfig_ = config
+      this.isUsingBridgesPref_ = {
+        key: '',
+        type: chrome.settingsPrivate.PrefType.BOOLEAN,
+        value: config.use_bridges !== Usage.NOT_USED,
+      }
+      this.useBridges_ = config.use_bridges
+      this.builtinBridges_ = config.use_builtin_bridges
+      this.requestedBridges_ = config.requested_bridges.join('\n')
+      this.providedBridges_ = config.provided_bridges.join('\n')
+    })
   }
 
   override currentRouteChanged() {
