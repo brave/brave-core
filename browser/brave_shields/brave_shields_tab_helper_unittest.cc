@@ -15,6 +15,9 @@
 #include "chrome/test/base/testing_profile.h"
 #include "components/favicon/content/content_favicon_driver.h"
 #include "components/favicon/core/test/mock_favicon_service.h"
+#include "components/infobars/content/content_infobar_manager.h"
+#include "components/infobars/core/confirm_infobar_delegate.h"
+#include "components/infobars/core/infobar.h"
 #include "components/prefs/testing_pref_service.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/test/navigation_simulator.h"
@@ -54,6 +57,7 @@ class BraveShieldsTabHelperUnitTest
 
     favicon::ContentFaviconDriver::CreateForWebContents(web_contents(),
                                                         &favicon_service_);
+    infobars::ContentInfoBarManager::CreateForWebContents(web_contents());
     BraveShieldsTabHelper::CreateForWebContents(web_contents());
     brave_shields_tab_helper_ =
         BraveShieldsTabHelper::FromWebContents(web_contents());
@@ -329,6 +333,67 @@ TEST_F(BraveShieldsTabHelperUnitTest,
   brave_shields_tab_helper_->SetBraveShieldsEnabled(false);
   EXPECT_TRUE(brave_shields_tab_helper_
                   ->ShouldShowShieldsDisabledAdBlockOnlyModePrompt());
+}
+
+TEST_F(BraveShieldsTabHelperUnitTest,
+       DeferredReloadWhenDisablingShieldsDoesNotReloadAndShowsInfobar) {
+  NavigateTo(GURL("https://example.com"));
+
+  auto* infobar_manager =
+      infobars::ContentInfoBarManager::FromWebContents(web_contents());
+  ASSERT_TRUE(infobar_manager);
+  EXPECT_TRUE(infobar_manager->infobars().empty());
+
+  // Default is true (enabled).
+  EXPECT_TRUE(brave_shields_tab_helper_->IsBraveShieldsEnabled());
+
+  // Disabling Shields with reload_contents = false (e.g. from Shields panel).
+  brave_shields_tab_helper_->SetBraveShieldsEnabled(false,
+                                                    /*reload_contents=*/false);
+
+  // 1. Setting should be updated immediately.
+  EXPECT_FALSE(brave_shields_tab_helper_->IsBraveShieldsEnabled());
+
+  // 2. No navigation/reload should be scheduled.
+  EXPECT_FALSE(web_contents()->GetController().GetPendingEntry());
+
+  // 3. A reload infobar should be added to the WebContents.
+  EXPECT_EQ(1u, infobar_manager->infobars().size());
+  auto* infobar = infobar_manager->infobars()[0];
+  EXPECT_EQ(infobars::InfoBarDelegate::BRAVE_SHIELDS_RELOAD_INFOBAR_DELEGATE,
+            infobar->delegate()->GetIdentifier());
+
+  // 4. Repeated toggles while deferred should not add duplicate infobars.
+  brave_shields_tab_helper_->SetBraveShieldsEnabled(false,
+                                                    /*reload_contents=*/false);
+  EXPECT_EQ(1u, infobar_manager->infobars().size());
+
+  // 5. Accepting the infobar triggers a reload.
+  auto* confirm_delegate = infobar->delegate()->AsConfirmInfoBarDelegate();
+  ASSERT_TRUE(confirm_delegate);
+  confirm_delegate->Accept();
+  EXPECT_TRUE(web_contents()->GetController().GetPendingEntry());
+  content::NavigationSimulator::Reload(web_contents());
+}
+
+TEST_F(BraveShieldsTabHelperUnitTest,
+       ImmediateReloadWhenEnabledOrExplicitlyRequested) {
+  NavigateTo(GURL("https://example.com"));
+
+  // Disabling with reload_contents = true should immediately initiate reload.
+  brave_shields_tab_helper_->SetBraveShieldsEnabled(false,
+                                                    /*reload_contents=*/true);
+  EXPECT_FALSE(brave_shields_tab_helper_->IsBraveShieldsEnabled());
+  EXPECT_TRUE(web_contents()->GetController().GetPendingEntry());
+
+  // Complete reload navigation.
+  content::NavigationSimulator::Reload(web_contents());
+  EXPECT_FALSE(web_contents()->GetController().GetPendingEntry());
+
+  // Enabling with default reload_contents = true should initiate reload.
+  brave_shields_tab_helper_->SetBraveShieldsEnabled(true);
+  EXPECT_TRUE(brave_shields_tab_helper_->IsBraveShieldsEnabled());
+  EXPECT_TRUE(web_contents()->GetController().GetPendingEntry());
 }
 
 }  // namespace brave_shields
