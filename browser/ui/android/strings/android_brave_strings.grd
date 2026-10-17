@@ -399,6 +399,9 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_MENU_EXIT" desc="Menu item for exit browser. [CHAR-LIMIT=27]">
         Exit
       </message>
+      <message name="IDS_BRAVE_MENU_ADD_TO_HOME_SCREEN" desc="Menu item for adding the current site to the device Home screen. [CHAR-LIMIT=27]">
+        Add to Home screen
+      </message>
       <message name="IDS_UNSTOPPABLE_DOMAINS_TITLE" desc="Title for Unstoppable Domains settings.">
         Unstoppable Domains
       </message>

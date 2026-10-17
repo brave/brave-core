@@ -48,4 +48,6 @@ public abstract class BraveFeatureList {
     public static final String BRAVE_CUSTOM_SEARCH_ENGINES = "BraveCustomSearchEngines";
     public static final String BRAVE_SYNC_AI_CHAT = "BraveSyncAIChat";
     public static final String BRAVE_ANDROID_TAB_GROUPS_SETTINGS = "BraveAndroidTabGroupsSettings";
+    public static final String BRAVE_ANDROID_MERGE_INSTALL_PWA_AND_CREATE_SHORTCUT =
+            "BraveAndroidMergeInstallPwaAndCreateShortcut";
 }

@@ -7,6 +7,8 @@ package org.chromium.chrome.browser.tabbed_mode;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -499,6 +501,36 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
     }
 
     @Override
+    protected MVCListAdapter.ListItem buildAddToHomescreenListItem(
+            Tab currentTab, boolean showIcon) {
+        MVCListAdapter.ListItem item = super.buildAddToHomescreenListItem(currentTab, showIcon);
+        if (!isMergeInstallPwaAndCreateShortcutEnabled()) return item;
+
+        // Keep the disabled styling upstream applies while a WebAPK install is pending.
+        CharSequence oldTitle = item.model.get(AppMenuItemProperties.TITLE);
+        SpannableString title =
+                new SpannableString(mContext.getString(R.string.brave_menu_add_to_home_screen));
+        if (oldTitle instanceof Spanned spanned) {
+            for (Object span : spanned.getSpans(0, spanned.length(), Object.class)) {
+                title.setSpan(span, 0, title.length(), spanned.getSpanFlags(span));
+            }
+        }
+        item.model.set(AppMenuItemProperties.TITLE, title);
+
+        if (showIcon) {
+            item.model.set(
+                    AppMenuItemProperties.ICON,
+                    AppCompatResources.getDrawable(mBraveContext, R.drawable.ic_smartphone_home));
+        }
+        return item;
+    }
+
+    private static boolean isMergeInstallPwaAndCreateShortcutEnabled() {
+        return ChromeFeatureList.isEnabled(
+                BraveFeatureList.BRAVE_ANDROID_MERGE_INSTALL_PWA_AND_CREATE_SHORTCUT);
+    }
+
+    @Override
     public boolean shouldShowNewWindow() {
         return BraveMultiWindowUtils.shouldEnableMultiWindows() && super.shouldShowNewWindow();
     }
@@ -903,7 +935,9 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                                     mContext,
                                     mAppMenuItemTheme,
                                     R.id.universal_install,
-                                    R.string.menu_install_create_shortcut,
+                                    isMergeInstallPwaAndCreateShortcutEnabled()
+                                            ? R.string.brave_menu_add_to_home_screen
+                                            : R.string.menu_install_create_shortcut,
                                     0,
                                     isMenuIconAtStart())));
         }

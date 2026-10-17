@@ -381,6 +381,11 @@ public class CustomizeBraveMenu {
      */
     @DrawableRes
     public static int getDrawableResFromMenuItemId(@IdRes final int menuItemId) {
+        if (menuItemId == R.id.universal_install
+                && ChromeFeatureList.isEnabled(
+                        BraveFeatureList.BRAVE_ANDROID_MERGE_INSTALL_PWA_AND_CREATE_SHORTCUT)) {
+            return R.drawable.ic_smartphone_home;
+        }
         final int drawableRes = MENU_ICON_MAP.get(menuItemId, 0);
 
         assert drawableRes != 0 : "Unexpected value for menu item ID: " + menuItemId;

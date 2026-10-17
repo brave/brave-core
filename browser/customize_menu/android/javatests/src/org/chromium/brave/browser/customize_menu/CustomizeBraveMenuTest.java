@@ -42,6 +42,7 @@ import java.util.ArrayList;
 
 @DisableFeatures({
     BraveFeatureList.BRAVE_SHRED,
+    BraveFeatureList.BRAVE_ANDROID_MERGE_INSTALL_PWA_AND_CREATE_SHORTCUT,
 })
 
 /** Unit tests for {@link CustomizeBraveMenu}. */
