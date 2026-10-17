@@ -10,9 +10,8 @@
 #include <utility>
 #include <vector>
 
-#include "base/files/file_util.h"
-#include "base/files/scoped_temp_dir.h"
 #include "base/strings/strcat.h"
+#include "base/test/run_until.h"
 #include "base/test/test_future.h"
 #include "chrome/test/base/testing_profile.h"
 #include "content/public/test/test_renderer_host.h"
@@ -21,6 +20,13 @@
 #include "ui/base/l10n/l10n_util.h"
 
 namespace ai_chat {
+
+class TestTextFileExtractor : public TextFileExtractor {
+ public:
+  content::WebContents* GetWebContentsForTesting() {
+    return GetWebContents();
+  }
+};
 
 class TextFileExtractorTest : public content::RenderViewHostTestHarness {
  public:
@@ -35,7 +41,7 @@ class TextFileExtractorTest : public content::RenderViewHostTestHarness {
 
 // Without a real renderer producing text content, the extraction should
 // time out and return nullopt.
-TEST_F(TextFileExtractorTest, BytesOverload_TimeoutReturnsNullopt) {
+TEST_F(TextFileExtractorTest, TimeoutReturnsNullopt) {
   auto extractor = std::make_unique<TextFileExtractor>();
   base::test::TestFuture<std::optional<std::string>> future;
 
@@ -49,50 +55,26 @@ TEST_F(TextFileExtractorTest, BytesOverload_TimeoutReturnsNullopt) {
   EXPECT_FALSE(result.has_value());
 }
 
-// Same timeout test but using the file-path overload (no temp file).
-TEST_F(TextFileExtractorTest, PathOverload_TimeoutReturnsNullopt) {
-  base::ScopedTempDir temp_dir;
-  ASSERT_TRUE(temp_dir.CreateUniqueTempDir());
-  base::FilePath txt_path = temp_dir.GetPath().AppendASCII("test.txt");
-  ASSERT_TRUE(base::WriteFile(txt_path, "hello world"));
-
-  auto extractor = std::make_unique<TextFileExtractor>();
+// Destroying after the hidden WebContents starts loading must not invoke the
+// extraction callback.
+TEST_F(TextFileExtractorTest, DestroyAfterLoadStarts_DoesNotRunCallback) {
+  auto extractor = std::make_unique<TestTextFileExtractor>();
   base::test::TestFuture<std::optional<std::string>> future;
 
-  extractor->ExtractText(browser_context(), txt_path, future.GetCallback());
+  std::vector<uint8_t> text_bytes = {'h', 'e', 'l', 'l', 'o'};
+  extractor->ExtractText(browser_context(), std::move(text_bytes),
+                         FILE_PATH_LITERAL("txt"), future.GetCallback());
 
-  task_environment()->FastForwardBy(base::Seconds(31));
-
-  auto result = future.Take();
-  EXPECT_FALSE(result.has_value());
-}
-
-// Destroying the extractor while an extraction is in-flight must not crash
-// or leak.
-TEST_F(TextFileExtractorTest, DestroyDuringExtraction_NoCrash) {
-  auto extractor = std::make_unique<TextFileExtractor>();
-
-  base::ScopedTempDir temp_dir;
-  ASSERT_TRUE(temp_dir.CreateUniqueTempDir());
-  base::FilePath txt_path = temp_dir.GetPath().AppendASCII("test.txt");
-  ASSERT_TRUE(base::WriteFile(txt_path, "hello world"));
-
-  bool callback_called = false;
-  extractor->ExtractText(
-      browser_context(), txt_path,
-      base::BindOnce(
-          [](bool* called, std::optional<std::string>) { *called = true; },
-          &callback_called));
-
-  // Destroy while extraction is in progress — should not crash.
+  ASSERT_TRUE(base::test::RunUntil([&] {
+    return extractor->GetWebContentsForTesting() != nullptr;
+  }));
   extractor.reset();
 
-  EXPECT_FALSE(callback_called);
+  EXPECT_FALSE(future.IsReady());
 }
 
-// The bytes overload writes to a temp file. Verify cleanup completes
-// without crashing after timeout.
-TEST_F(TextFileExtractorTest, BytesOverload_CleanupAfterTimeout) {
+// Verify cleanup completes without crashing after timeout.
+TEST_F(TextFileExtractorTest, CleanupAfterTimeout) {
   auto extractor = std::make_unique<TextFileExtractor>();
   base::test::TestFuture<std::optional<std::string>> future;
 
@@ -103,26 +85,6 @@ TEST_F(TextFileExtractorTest, BytesOverload_CleanupAfterTimeout) {
   task_environment()->FastForwardBy(base::Seconds(31));
 
   ASSERT_TRUE(future.Wait());
-}
-
-// The file-path overload should NOT delete the original file after extraction.
-TEST_F(TextFileExtractorTest, PathOverload_OriginalFileNotDeleted) {
-  base::ScopedTempDir temp_dir;
-  ASSERT_TRUE(temp_dir.CreateUniqueTempDir());
-  base::FilePath txt_path = temp_dir.GetPath().AppendASCII("keep_me.txt");
-  ASSERT_TRUE(base::WriteFile(txt_path, "this file should persist"));
-
-  auto extractor = std::make_unique<TextFileExtractor>();
-  base::test::TestFuture<std::optional<std::string>> future;
-
-  extractor->ExtractText(browser_context(), txt_path, future.GetCallback());
-
-  task_environment()->FastForwardBy(base::Seconds(31));
-
-  ASSERT_TRUE(future.Wait());
-
-  // The original file must still exist — only temp files are cleaned up.
-  EXPECT_TRUE(base::PathExists(txt_path));
 }
 
 // Unit tests for OnTextExtracted view-source stripping logic.
