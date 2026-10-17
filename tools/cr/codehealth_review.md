@@ -170,11 +170,14 @@ Brave-relevant part: `git show <hash> -- <overridden paths>`. Look for:
   upstream `.h` and `.cc` at both tags; a different count means a different
   reach (`#define AppMenu BraveAppMenu` also rewrote `GetAppMenu()` after
   upstream moved it; M157, 8094.1: a new internal `FormatUrlOrigin()` call
-  skipped Brave's scheme swap). For `Foo` → `Foo_ChromiumImpl` renames, look for
-  upstream calls to `Foo()` inside the same file: those skip Brave's wrapper,
-  and a default flip can make a dormant one live (M158:
-  `ShouldTypeExpireActively()` and `kActiveContentSettingExpiry`). A private
-  method may never reach the wrapper at all (`CancelBrowserClose`). When
+  skipped Brave's scheme swap). A count of 0 at the new tag means upstream
+  renamed the function, and the `#define` now matches nothing (M158, 8109.1:
+  `CreateLocalBlockingJsonRuleList` → `CreateAppSpecificURLsJsonRuleList` on
+  iOS, which re-enabled the rule list Brave empties). For `Foo` →
+  `Foo_ChromiumImpl` renames, look for upstream calls to `Foo()` inside the same
+  file: those skip Brave's wrapper, and a default flip can make a dormant one
+  live (M158: `ShouldTypeExpireActively()` and `kActiveContentSettingExpiry`). A
+  private method may never reach the wrapper at all (`CancelBrowserClose`). When
   upstream adds a post-processing pass inside a function Brave extends, check
   whether Brave's additions land before or after it (a miss, found in the
   rebase: accelerators got action IDs in a loop that runs before Brave's
@@ -388,11 +391,12 @@ line each.
   `br/privacy_page.ts` during the rebase, and the element went Lit in the next
   range (M157, 8093.0: `settings-privacy-page`, `category-reference-card`;
   8094.1: `settings-ui`, `settings-menu` and the autofill page, right after the
-  rebase had fixed the last two). `polymer_overriding` only hooks Polymer
-  elements, so an override of a Lit element silently does nothing (payments and
-  contact-info pages). Check all of them, not just the ones that changed in the
-  range: earlier lifts left some dead (sync controls, performance page,
-  bookmarks side panel).
+  rebase had fixed the last two; M158, 8109.1: `settings-main`, whose `br/`
+  override kept registering Polymer modifications). `polymer_overriding` only
+  hooks Polymer elements, so an override of a Lit element silently does nothing
+  (payments and contact-info pages). Check all of them, not just the ones that
+  changed in the range: earlier lifts left some dead (sync controls, performance
+  page, bookmarks side panel).
 - **Check selectors.** For tags still on Polymer, check each `querySelector`
   target against the template at the new tag. A query on the template fragment
   doesn't reach into nested `<template>` (`dom-if`) content. Attribute selectors
@@ -470,14 +474,17 @@ Cluster the range by `Bug:` id, and by subject tag (`[Bedrock]`,
 `[dcheck-to-check]`) and verb ("Migrate X to Y", "Replace", "Convert"). For
 clusters of three or more commits, read a representative diff and write down the
 old → new idiom. Measure the trend with `git grep -c '<old idiom>'` at both
-tags. A falling count means an active campaign (`CreateForWebContents(` lines in
-`chrome/browser/ui/tab_helpers.cc`: 111 at 155, 36 at 157.0.8090.1, 24 at
-157.0.8093.0; state the command with the numbers); a flat count means a stale
-deprecation that isn't worth an item. Headers that say "Do not add more public
-accessors" or carry a `TODO(crbug)` confirm the direction. Then grep Brave,
-including `browser/resources/**/br/`, `rewrite/` and platform-only sources.
-Report the count, the list of sites (or the grep command when there are many)
-and one upstream example of the new idiom.
+tags. Intersect the files a scripted campaign touches with `chromium_src/` files
+that replace the whole upstream file: the script only fixes upstream's text
+(M158, 8109.1: the typed-factory conversion broke Brave's
+`GoogleGroupsManagerFactory` stub on iOS). A falling count means an active
+campaign (`CreateForWebContents(` lines in `chrome/browser/ui/tab_helpers.cc`:
+111 at 155, 36 at 157.0.8090.1, 24 at 157.0.8093.0; state the command with the
+numbers); a flat count means a stale deprecation that isn't worth an item.
+Headers that say "Do not add more public accessors" or carry a `TODO(crbug)`
+confirm the direction. Then grep Brave, including `browser/resources/**/br/`,
+`rewrite/` and platform-only sources. Report the count, the list of sites (or
+the grep command when there are many) and one upstream example of the new idiom.
 
 Skip ash/ChromeOS, roll, gardening and large feature-bug clusters (Glic, Actor)
 unless Brave touches the code.
@@ -492,9 +499,11 @@ unless Brave touches the code.
   added them for the same symptom (`ViewShadow::OnLayerRecreated`;
   single-process `ScopedChromeExtensionsClient` sharing).
 - **Workarounds added during this lift.** Developers lift against intermediate
-  versions, so the upstream fix can land later in the same range. Re-check every
-  patch the rebase commits added (a Widevine dep was added a day after upstream
-  added the same line).
+  versions, so the upstream fix can land later in the same range. A patch the
+  rebase regenerated can also duplicate work upstream now does (M158, 8109.1:
+  `html_capability_element_base.cc` computed the descriptor a second time).
+  Re-check every patch the rebase commits added (a Widevine dep was added a day
+  after upstream added the same line).
 - **Hooks made unreachable by an upstream early return** ("Disable X if flag is
   off": the offer-notification promo-code exclusion).
 - **Brave changes that upstream adopted.** For each patch, count how often each
@@ -532,8 +541,10 @@ unless Brave touches the code.
   target into an aggregator ("no sources, allow_circular_includes_from or
   deps"), Brave's `deps +=` and `allow_circular_includes_from` patches on it
   stop doing anything or move deps after the lock (M157, 8093.0:
-  `//chrome/browser/ui:ui`). Read the target's upstream comment at the new tag
-  for each Brave `patches/**/BUILD.gn.patch`.
+  `//chrome/browser/ui:ui`; M158, 8109.1: a `sources` plaster on the
+  `sources = []` `//chrome/test:test_support`). Grep the range for
+  `sources = \[\]` and "Do not add new sources". Read the target's upstream
+  comment at the new tag for each Brave `patches/**/BUILD.gn.patch`.
 - **Dead overrides:** `chromium_src` files, Polymer modifications, lit manglers
   and `build/chromium/resources/` files whose target no longer exists upstream;
   `chromium_src` files that replace a header outright and still define what
@@ -684,12 +695,13 @@ parameter (`AutocompleteMediator`). The overlap join and the removed-token grep
 were noise. In 8093.0..8094.1 it gave none out of 445, in 8094.1..8097.1 none
 out of 727, in 8097.1..8101.1 none out of 313, in 8101.1..8103.1 none out of 292
 (one about:flags entry extended an existing item), and in M158, 8103.3..8104.1,
-none out of 226. In 8104.1..8107.2 it gave one out of 972: a mechanical "Use
-gin's compile-time `SetMethod<&T::M>()` form" campaign, found by skimming
-subjects, not by the basename match; the basename match only re-found a Java
-signature change sweep [h](#h-android-and-ios) had found. Keep it short there,
-and drop `BUILD.gn`, `DEPS`, `*.xml` and `features.*` before the basename match;
-they make up nearly all of its hits.
+none out of 226. In 8107.2..8109.1 it gave none out of 815. In 8104.1..8107.2 it
+gave one out of 972: a mechanical "Use gin's compile-time `SetMethod<&T::M>()`
+form" campaign, found by skimming subjects, not by the basename match; the
+basename match only re-found a Java signature change sweep
+[h](#h-android-and-ios) had found. Keep it short there, and drop `BUILD.gn`,
+`DEPS`, `*.xml` and `features.*` before the basename match; they make up nearly
+all of its hits.
 
 Items found here meet the same ground rules as any other. Each one is a
 mechanism no sweep describes, so record it in the method notes for step 5 (the

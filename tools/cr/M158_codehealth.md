@@ -1,6 +1,6 @@
 # M158 code health follow-ups
 
-Tasks found by reviewing upstream changes in `157.0.8103.3..158.0.8107.2` (2083
+Tasks found by reviewing upstream changes in `157.0.8103.3..158.0.8109.1` (3252
 commits) for regressions, deprecations and code-health migrations that apply to
 Brave. Tick items off as they land.
 
@@ -29,17 +29,18 @@ their constructors, have to be created after it.
 
 - [x] Desktop Ads and Rewards: "[cr158] Attach tab helpers from
       `BraveTabFeatures::Init` on desktop", with browser tests
+- [x] Desktop: `BraveTabFeatures::Init` calls `brave::AttachTabHelpers()`, and
+      `OnWillDiscardContents` calls it on the replacement contents
 - [ ] `browser/brave_tab_helpers.cc:121` `AttachTabHelpers()`: move the helpers
-      into `BraveTabFeatures::Init`
-      (`browser/ui/tabs/brave_tab_features.cc:93`), following the per-helper
-      list and idiom in M157's "TabHelpers → TabFeatures", or call it from there
-      until they move
+      into `BraveTabFeatures::Init` (`browser/ui/tabs/brave_tab_features.cc`),
+      following the per-helper list and idiom in M157's "TabHelpers →
+      TabFeatures"; the call from `Init` is only a stopgap
 - [ ] Android: same, in `browser/android/brave_tab_features.cc:24`, including
       Ads and Rewards
-- [ ] `browser/ui/tabs/brave_tab_features.cc:93-107`: upstream's
-      `TabFeatures::WillDiscardContents` recreates its helpers on the new
-      contents, but Brave's Ads and Rewards helpers keep the old one; make them
-      follow discards (`ContentsObservingTabFeature`)
+- [ ] `browser/ui/tabs/brave_tab_features.cc:94-125`: the other helpers follow
+      discards through `OnWillDiscardContents`, but `ads_tab_helper_` and
+      `rewards_tab_helper_` stay bound to the old contents; make them follow
+      discards (`ContentsObservingTabFeature`)
 - [ ] `browser/brave_tab_helpers.cc:219` `AttachPrivacySensitiveTabHelpers()`:
       decide which non-tab WebContents that upstream used to cover still need it
       (prerender, no-state prefetch, extension host, thin webview, overlay
@@ -52,6 +53,78 @@ their constructors, have to be created after it.
       `docs/best-practices/architecture.md:1875-1902` (ARCH-074),
       `browser/ui/tabs/brave_tab_features.cc:98` and
       `browser/ui/views/side_panel/ai_chat/ai_chat_side_panel_tab_transfer_bridge.cc:230`
+
+### `settings-main` became Lit, so Brave's settings pages are no longer injected
+
+`settings-main` now extends `CrLitElement`
+([27dedb341b69](https://chromium.googlesource.com/chromium/src/+/27dedb341b6920c473f03e59011992e1b8010ae7)).
+`polymer_overriding` only hooks Polymer elements, so the
+`RegisterPolymerTemplateModifications({'settings-main': …})` call in
+`browser/resources/settings/br/settings_main.ts` is a silent no-op. Brave's
+pages (get started, origin, content, shields, web3, leo, sync, extensions,
+system) aren't added to `#switcher`, the privacy page isn't forced visible, and
+the performance page isn't removed. Upstream's template is now
+`cache(this.showPage_(this.pageVisibility_?.X) ? html\`<div slot="view" id="X">…\`)`, and `renderPlugin\_`
+takes only a route.
+
+- [ ] Replace `br/settings_main.ts` with
+      `chromium_src/chrome/browser/resources/settings/settings_main/settings_main.html.ts.lit_mangler.ts`,
+      as `settings_menu.html.lit_mangler.ts` does; drop the import at
+      `br/index.ts:34`
+- [ ] Check that `pageVisibility_` still carries Brave's keys
+      (`br/page_visibility.ts`) in the Lit `pageVisibility_?.X` access
+- [ ] `br/settings_ui.ts:156`: check that `this.$.main` still works as the
+      scroll target
+- [ ] Re-check the Brave wrapper in
+      `chromium_src/chrome/test/data/webui/settings/settings_main_test.ts`
+      against the rewritten upstream test
+
+### iOS: upstream's app-specific-pages rule list applies again
+
+Upstream renamed `CreateLocalBlockingJsonRuleList()` to
+`CreateAppSpecificURLsJsonRuleList()`, dropped `file://` from it and added the
+`document` resource type
+([e7777f06181e1](https://chromium.googlesource.com/chromium/src/+/e7777f06181e1e1a023dc309eee11da3bd9ec362)).
+`chromium_src/ios/web/web_state/ui/wk_content_rule_list_util.mm` still defines
+the old name to return an empty list, so it matches nothing and WebUIs are
+blocked from loading external resources and documents again. The same commit
+makes `favicon_util.mm` reject http(s) favicons on app-specific pages.
+
+- [ ] Retarget the `#define` to `CreateAppSpecificURLsJsonRuleList`
+- [ ] An iOS owner confirms that blocking `document` loads and http(s) favicons
+      is acceptable on Brave's app-specific pages
+
+### iOS: `GoogleGroupsManagerFactory` override no longer matches the header
+
+A scripted series of about 30 commits converts `ProfileKeyedServiceFactoryIOS`
+subclasses to `TypedProfileKeyedServiceFactoryIOS`
+([3cc80ea5bcdc3](https://chromium.googlesource.com/chromium/src/+/3cc80ea5bcdc3),
+Bug 570433691). `GoogleGroupsManagerFactory` now has
+`explicit GoogleGroupsManagerFactory(PassKey)` and generated `GetInstance()` and
+`GetForProfile()`, but
+`chromium_src/ios/chrome/browser/metrics/model/google_groups_manager_factory.mm`
+replaces the whole upstream file with the old default constructor and
+hand-written accessors. This breaks the iOS build; Linux doesn't compile it.
+
+- [ ] Rewrite the override for the typed template; keep
+      `BuildServiceInstanceFor` returning null and `RegisterProfilePrefs` empty
+- [ ] `chromium_src/ios/chrome/browser/signin/model/about_signin_internals_factory.cc`
+      shadows another factory the same way; check it when upstream converts it
+      (about 135 factories remain)
+
+### `html_capability_element_base.cc` patch registers the control twice
+
+The patch for `MaybeRegisterPageEmbeddedPermissionControl()` was adjusted by the
+rebase, but upstream now computes `descriptor` before `Bind()`
+([6563f89211c48](https://chromium.googlesource.com/chromium/src/+/6563f89211c484d3cfb7866d875045d806e505a4)).
+Brave's hunk adds a second `CreateEmbeddedPermissionRequestDescriptor()` after
+`Bind()`, which forces another layout, and its `kUserMedia` early `return false`
+leaves a bound receiver. The second hunk also rewrites an upstream comment.
+
+- [ ] `patches/third_party-blink-renderer-core-html-html_capability_element_base.cc.patch`:
+      check `descriptor->detail->which() == kUserMedia` before `Bind()`, using
+      the existing `descriptor`
+- [ ] Drop the comment edit
 
 ### Component updater crashes on Brave's ECDSA CUP key
 
@@ -108,7 +181,7 @@ Drop the kFewerUpdateConfirmations pin" dropped the pin without replacing it.
 
 - [ ] Test "Relaunch to update" on Mac (Sparkle) and Windows. If the old failure
       is back, hook `chrome::MaybeUpdateChrome` to show the dialog
-- [ ] `browser/ui/views/frame/brave_browser_view.cc:667`
+- [ ] `browser/ui/views/frame/brave_browser_view.cc:652`
       `ShowUpdateChromeDialog()`: unreachable on desktop; remove it with
       `browser/ui/views/update_recommended_message_box_mac.{h,mm}` and
       `patches/chrome-browser-ui-views-update_recommended_message_box.h.patch`,
@@ -141,14 +214,11 @@ not behind a flag). Brave's Trezor bridge relies on exactly that path:
 `window.open('')` plus `.location.href = url`, so that Trezor Connect keeps an
 opener to `postMessage` to. Trezor hardware wallet flows break.
 
-- [ ] Give the bridge a channel to the popup that doesn't need a
-      `chrome-untrusted://` → web opener (e.g. the browser opens the popup and
-      relays messages). Don't reopen what upstream closed
-- [ ] `components/brave_wallet_ui/trezor/trezor_patches.ts`: drop the
-      `window.open` proxy once replaced
-- [ ] `browser/ui/webui/brave_wallet/trezor/trezor_ui_browsertest.cc:63`:
-      `CheckOpenerInPopup` asserts `!!window.opener` and should now fail; update
-      it to the new design
+- [x] Fixed by "[cr158] Keep opener for the Trezor popup opened from
+      trezor-bridge", which exempts `chrome-untrusted://trezor-bridge` →
+      `https://connect.trezor.io` in a `render_frame_host_manager.cc` plaster.
+      The `window.open` proxy in `trezor_patches.ts` is still needed, and
+      `CheckOpenerInPopup` stays as is
 
 ### iOS: deleting history crashes without Google history sync
 
@@ -161,9 +231,13 @@ the getter's result unconditionally, so `BrowsingHistoryService::RemoveVisits()`
 (called at `ios/browser/api/history/brave_history_api.mm:303`) reaches
 `WebHistoryService::ExpireHistory` and crashes.
 
-- [ ] `ios/browser/api/history/history_driver_ios.mm:65`
-      `GetWebHistoryService()`: return the service only when `IsEnabled()`, as
-      upstream's `ios_browsing_history_driver.mm` now does
+- [x] `ios/browser/api/history/history_driver_ios.mm:65`
+      `GetWebHistoryService()`: obsolete as of 8109.1. Upstream removed the
+      driver getter
+      ([40b8a4857367](https://chromium.googlesource.com/chromium/src/+/40b8a4857367b5f402578e83406784553840b212)),
+      `BrowsingHistoryService` takes the service in its constructor and checks
+      `IsEnabled()` itself, and the rebase commit "[cr158] Inject
+      `WebHistoryService` into `BrowsingHistoryService`" dropped Brave's getter
 
 ### Pre-existing: iOS web pages can navigate a tab to the NTP URL
 
@@ -343,13 +417,43 @@ e.g.
 `.SetMethod("x", &…` fell from 314 to 34 in 8104.1..8107.2
 (`git grep -E '\.SetMethod\("[^"]+", *&' <tag> -- '*.cc' | wc -l`).
 
-- [ ] `components/brave_wallet/renderer/js_cardano_provider.cc:76-82`
+- [ ] `components/brave_wallet/renderer/js_cardano_provider.cc:76-77`
 - [ ] `components/brave_wallet/renderer/js_cardano_wallet_api.cc:76-87`
 - [ ] `components/brave_wallet/renderer/js_ethereum_provider.cc:305`, `:403-413`
 - [ ] `components/brave_wallet/renderer/js_polkadot_provider.cc:61`
-- [ ] `components/brave_wallet/renderer/js_solana_provider.cc:181-197`
-- [ ] `components/skus/renderer/skus_js_handler.cc:322-327`
+- [ ] `components/brave_wallet/renderer/js_solana_provider.cc:185-197`
+- [ ] `components/skus/renderer/skus_js_handler.cc:315-320`
 - [ ] `components/speedreader/renderer/speedreader_js_handler.cc:76-77`
+
+### iOS: `TypedProfileKeyedServiceFactoryIOS`
+
+`ProfileKeyedServiceFactoryIOS` now says "Prefer inheriting from
+TypedProfileKeyedServiceFactoryIOS instead", and a script is converting upstream
+factories
+([3cc80ea5bcdc3](https://chromium.googlesource.com/chromium/src/+/3cc80ea5bcdc3)).
+Classic factories fell from 234 to 135 and typed ones rose from 7 to 106 between
+8107.2 and 8109.1
+(`git grep -l 'public ProfileKeyedServiceFactoryIOS' <tag> -- ios components`;
+the typed count uses `TypedProfileKeyedServiceFactoryIOS<`). The idiom is
+`explicit Factory(PassKey key)` calling
+`TypedProfileKeyedServiceFactoryIOS(std::move(key), "Name")`, with generated
+`GetForProfile()` and `GetInstance()`. Brave has 15 classic factories and no
+typed ones, all under `ios/browser/`:
+
+- [ ] `ai_chat/ai_chat_service_factory.h`, `ai_chat/model_service_factory.h`,
+      `ai_chat/tab_tracker_service_factory.h`
+- [ ] `api/webcompat_reporter/webcompat_reporter_service_factory.h`
+- [ ] `brave_account/brave_account_service_factory_ios.h`
+- [ ] `brave_ads/ads_service_factory_ios.h`
+- [ ] `brave_origin/brave_origin_service_factory.h`
+- [ ] `brave_shields/brave_shields_settings_service_factory.h`
+- [ ] `brave_wallet/brave_wallet_service_factory.h`
+- [ ] `debounce/debounce_service_factory+private.h`
+- [ ] `favicon/brave_ios_favicon_loader_factory.h`
+- [ ] `misc_metrics/profile_misc_metrics_service_factory.h`
+- [ ] `serp_metrics/serp_metrics_service_factory_ios.h`
+- [ ] `skus/skus_service_factory.h`
+- [ ] `url_sanitizer/url_sanitizer_service_factory+private.h`
 
 ### `ui_public_dependencies` → direct deps
 
@@ -399,7 +503,12 @@ warning the filter comment cites.
       `ExactLatency_HighHardwareBufferSize_CapsAtMaxBufferSize`
       ([296a38e06f1e7](https://chromium.googlesource.com/chromium/src/+/296a38e06f1e75eb3b1b36054c185098a3130cde))
       and `HorizontalTabViewTest.HorizontalSeparators_RTL`
-      ([22cdddd858c56](https://chromium.googlesource.com/chromium/src/+/22cdddd858c5676db8e2ec079c93897f45911f70))
+      ([22cdddd858c56](https://chromium.googlesource.com/chromium/src/+/22cdddd858c5676db8e2ec079c93897f45911f70)),
+      `GlicMetricsTest.BasicStopReasonByUser`
+      (`unit_tests-linux-ubsan.filter:132`,
+      [d557ccb21387c](https://chromium.googlesource.com/chromium/src/+/d557ccb21387c))
+      and `IncognitoApiTest.IncognitoPopup` (`browser_tests-linux.filter:3666`;
+      the suite became `All/…`)
 
 ### Test filters that stopped matching
 
@@ -439,12 +548,43 @@ so Brave's filters silently re-enable them. Other tests were renamed.
       (`client_update_protocol/ecdsa.h`,
       [e4bbdd3a03a5e](https://chromium.googlesource.com/chromium/src/+/e4bbdd3a03a5e6c5c3372e31adde5485fc1bee96));
       delete it
-- [ ] `browser/ephemeral_storage/browsing_history_cleaner.cc:29`: the comment
+- [ ] `browser/ephemeral_storage/browsing_history_cleaner.cc:30`: the comment
       names `GetAllSyncedClientsGroupedByName`, now
       `GetSyncedDevicesForFiltering`
       ([dcad9dc93cef3](https://chromium.googlesource.com/chromium/src/+/dcad9dc93cef3785818cbc7e38d4bbc56f8e7ca8))
 
+- [ ] `browser/resources/settings/br/autofill_section.ts`: pre-existing, from
+      "[cr153][Settings] Fixes autofill page". It targets
+      `settings-autofill-section`, a tag that no longer exists upstream, and
+      `contact_info_page.html.ts.lit_mangler.ts` already hides
+      `#emailSharedMenu`. Delete it and its import
+- [ ] `rewrite/chrome/test/BUILD.gn.yaml`: upstream locked
+      `//chrome/test:test_support` down to `sources = []` ("Do not add new
+      sources",
+      [4d744283243d4](https://chromium.googlesource.com/chromium/src/+/4d744283243d4),
+      [9f5bf17f489fb](https://chromium.googlesource.com/chromium/src/+/9f5bf17f489fb)),
+      but the "Add the Brave test support sources" substitution still appends
+      `testing_brave_browser_process.{cc,h}` to it, and
+      `//brave/test:test_support` (`test/BUILD.gn:55`) already compiles them.
+      Drop that substitution (unverified: `gn check` on the header without the
+      circular-include allowance)
+
 ## 5. Optional
+
+### `kUniversalOptOut` is on by default
+
+Upstream enabled `kUniversalOptOut` and set `target_locations` to `us-ca`
+([66049b03adbb3](https://chromium.googlesource.com/chromium/src/+/66049b03adbb3)).
+`UniversalOptOutServiceFactory` now creates the service in Brave, which records
+location history from the variations country and account capabilities. The UI
+stays hidden because `kUniversalOptOutSettings` is still off, and Brave has its
+own Sec-GPC. Brave only pins `ReadIsSubjectToUniversalOptOutCapability` off
+(`base/compile_overridden_features.inc:153`). On iOS,
+`IsUniversalOptOutEnabled()` follows `kUniversalOptOut` alone.
+
+- [ ] Pin `universal_optout::features::kUniversalOptOut` disabled with a
+      `set_feature_flag_default_state` plaster, and add it to
+      `app/feature_defaults_unittest.cc`
 
 ### Unpinned flags that switch to parallel implementations
 
@@ -457,6 +597,37 @@ submenu into a new app menu entry
 skipping Brave's `RecentTabsSubMenuModel` plasters.
 
 - [ ] Pin `kCrossDeviceTabsInAppMenu` disabled, or port the customizations
+
+Brave pins `kContextualTasks` and `kContextualTasksCookiePrefetch` disabled, but
+two newer flags switch to a rearchitected implementation without checking them.
+`IsContextualTasksSidePanelRearchitectureEnabled()` doesn't read
+`kContextualTasks`, and `kContextualTasksSidePanelRearchitecture` adds an "AI
+Mode" submenu to the tab menu
+([87f2181418af6](https://chromium.googlesource.com/chromium/src/+/87f2181418af6)).
+`kContextualTasksRearchitecture` makes `TabFeatures::Init` create
+`ContextualTasksTabNavigationObserver`. Both are off today.
+
+- [ ] Pin `kContextualTasksSidePanelRearchitecture` and
+      `kContextualTasksRearchitecture` disabled
+
+### Android: "On startup" settings row
+
+`kOnStartupSettingsUi` (off) adds an `on_startup` row to the main settings on
+desktop-class devices
+([8af360c5308aa](https://chromium.googlesource.com/chromium/src/+/8af360c5308aa)).
+`BraveMainPreferencesBase` removes upstream rows by key and has no entry for it.
+
+- [ ] Remove `on_startup` there before the flag launches
+
+### Linux: `kLinuxPerProfileAppId`
+
+The flag is off by default. It adds per-profile `.desktop` entries and a
+per-profile `WM_CLASS`
+([2237b5ee29980](https://chromium.googlesource.com/chromium/src/+/2237b5ee29980),
+[bb9e4e4cacce1](https://chromium.googlesource.com/chromium/src/+/bb9e4e4cacce1)).
+Brave's `shell_integration_linux.cc` patch only changes `GetIconName()`.
+
+- [ ] Before it launches, check the packaged desktop file name and icon
 
 ### Pre-existing: Brave's empty temporary-grant list misses `ShouldTypeExpireActively()`
 
@@ -580,3 +751,17 @@ made the target URL argument non-null.
   ([afff432d76ede](https://chromium.googlesource.com/chromium/src/+/afff432d76ede098d6638042dacdd39e71c47e19)).
 - History can be filtered by synced device
   ([d6b17880fcaf9](https://chromium.googlesource.com/chromium/src/+/d6b17880fcaf94dc6536e01ec62f6aa0c47264ef)).
+- Universal opt-out location history (see "`kUniversalOptOut` is on by
+  default").
+- Contextual tasks: `kContextualTasksSidePanelTabState` and
+  `kContextualTasksTabBasedSuggestions`, plus the tab-menu "AI Mode" submenu.
+- `kHappinessTrackingSurveysForDesktopScheduledRestart` and the OTP-dismissal
+  HaTS survey in `AutofillExternalDelegate::OnSuggestionsHidden`
+  ([4af54e9ea1b7](https://chromium.googlesource.com/chromium/src/+/4af54e9ea1b7)).
+- `kClientSideDetectionServerModelMultimodal`.
+- Private AI TLS certificate downloader, fetching from Google's static content
+  service, with no consumer yet
+  ([89c7d49fbb0a3](https://chromium.googlesource.com/chromium/src/+/89c7d49fbb0a3)).
+- Android: `kSecondaryGoogleAccountsSigninAllowedOnAndroid` (off), and the
+  "Aurora" AI Mode tile in Most Visited
+  ([ce7727efc0c6c](https://chromium.googlesource.com/chromium/src/+/ce7727efc0c6c)).
