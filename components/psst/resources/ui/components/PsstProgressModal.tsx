@@ -93,7 +93,7 @@ export const PsstProgressModal = () => {
       uid: item.uid,
       description: item.description,
       error: null,
-      checked: true,
+      checked: item.checked,
       disabled: false,
       settingState: SettingState.Selection,
     }))

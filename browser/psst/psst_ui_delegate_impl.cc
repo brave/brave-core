@@ -5,6 +5,8 @@
 
 #include "brave/browser/psst/psst_ui_delegate_impl.h"
 
+#include <algorithm>
+
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
 #include "brave/components/psst/core/browser/pref_names.h"
@@ -129,10 +131,20 @@ psst::mojom::SettingCardDataPtr PsstUiDelegateImpl::GetShowDialogData() {
     return nullptr;
   }
 
+  auto current_website_settings =
+      GetPsstWebsiteSettings(origin_.value(), user_script_result_->user_id);
+
   std::vector<mojom::SettingCardDataItemPtr> items;
   for (const auto& task : user_script_result_->tasks) {
-    items.push_back(
-        psst::mojom::SettingCardDataItem::New(task.description, task.uid));
+    // We should mark all checkboxes as checked when psst website settings
+    // doesn't exist, or use saved state for them
+    const bool is_checked =
+        !current_website_settings.has_value() ||
+        std::ranges::contains(current_website_settings->uids_to_perform,
+                              task.uid);
+
+    items.push_back(psst::mojom::SettingCardDataItem::New(
+        task.description, task.uid, is_checked));
   }
 
   return psst::mojom::SettingCardData::New(origin_->GetURL().spec(),
