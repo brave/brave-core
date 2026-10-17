@@ -10,6 +10,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/theme_source.h"
 #include "components/grit/brave_components_resources.h"
+#include "components/grit/brave_components_webui_strings.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/common/url_constants.h"
@@ -31,14 +32,16 @@ EmailAliasesPromoUI::EmailAliasesPromoUI(content::WebUI* web_ui)
   auto* profile = Profile::FromWebUI(web_ui);
   auto* source =
       content::WebUIDataSource::CreateAndAdd(profile, kEmailAliasesPromoHost);
-  settings::BraveAddLocalizedStrings(source, profile);
   // Allow styled-components and theming in the Top Chrome panel.
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::StyleSrc,
       "style-src 'self' 'unsafe-inline' chrome://resources chrome://theme;");
+#if !BUILDFLAG(IS_ANDROID)
   content::URLDataSource::Add(profile, std::make_unique<ThemeSource>(profile));
+#endif
   webui::SetupWebUIDataSource(source, kEmailAliasesPromoResources,
                               IDR_EMAIL_ALIASES_PROMO_HTML);
+  source->AddLocalizedStrings(webui::kEmailAliasesStrings);
 }
 
 EmailAliasesPromoUI::~EmailAliasesPromoUI() = default;
