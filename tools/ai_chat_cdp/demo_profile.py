@@ -92,6 +92,28 @@ SINGLE_MEMORY_OLD = 'Has a Maine Coon cat named Mochi'
 FOLLOW_UP_CHAT = (
     'We are away for a long weekend. What should the cat sitter know?'
 )
+# The preference of the chats: it goes with every chat turn, with no question,
+# and the follow-up shows it next to the memory that the question chose.
+PREFERENCE_WORD = 'bullet'
+# The memory that the demo locks after the first review. The follow-up is not
+# about it, so step 5 shows that a locked memory still needs a yes to go.
+LOCK_WORD = 'cello'
+LOCK_BUTTON = """
+  for (const row of sec.shadowRoot.querySelectorAll('.memory')) {{
+    const label = row.querySelector('.label');
+    if (row.getClientRects().length && label &&
+        label.textContent.toLowerCase().includes({word})) {{
+      const lock = [...row.querySelectorAll('.memory-actions leo-button')]
+          .find(b => b.querySelector('leo-icon[name="lock-open"]'));
+      if (!lock) return false;
+      lock.click();
+      return true;
+    }}
+  }}
+  return false;"""
+# mojom.LearnedMemoryCategory.kPreference and LearnedMemoryType.kPermanent.
+PREFERENCE = 0
+PERMANENT = 0
 
 
 def chrome_time_now():
@@ -424,14 +446,21 @@ def internals_tab(browser, tab_index):
 
 
 def learn_all(browser, problems):
-    """Step 3: Learn from chats finds the seven facts and none of the
-    traps, and the user keeps them all."""
+    """Step 3: Learn from chats finds the seven facts, the preference and
+    none of the traps, and the user keeps them all. Then the user locks the
+    memory about the cello."""
     ws, tab = leo.open_customization(browser)
     lme.dream_now(ws)
     items = lme.open_review(ws)['items']
     lme.handle_review(ws, lambda items: (set(), {}))
     memories = lme.learned(ws)['memories']
+    lock_one(ws, problems)
     browser.close_tab(tab)
+    preferences = [m['text'] for m in memories if m['category'] == PREFERENCE]
+    if not (
+        len(preferences) == 1 and PREFERENCE_WORD in preferences[0].lower()
+    ):
+        problems.append(f'step 3: the preferences are {preferences}')
     cdp.log('learn from chats, review:')
     for item in items:
         cdp.log('  ', item['change'], item['text'])
@@ -448,6 +477,28 @@ def learn_all(browser, problems):
             problems.append(f'step 3: {kind} {label}: {hit}')
     if any(item['change'] != 'New' for item in items):
         problems.append('step 3: a change of the review is not new')
+
+
+def lock_one(ws, problems):
+    """Selects the lock of the memory about the cello, and checks that it is
+    the only locked memory."""
+    try:
+        lme.wait_for(
+            lambda: lme.in_section(
+                ws, lme.LEARNED, LOCK_BUTTON.format(word=json.dumps(LOCK_WORD))
+            ),
+            limit=10,
+        )
+    except RuntimeError:
+        problems.append(f'step 3: no lock button for the {LOCK_WORD}')
+        return
+    time.sleep(1)
+    locked = [
+        m['text'] for m in lme.learned(ws)['memories'] if m['type'] == PERMANENT
+    ]
+    cdp.log('locked:', locked)
+    if not (len(locked) == 1 and LOCK_WORD in locked[0].lower()):
+        problems.append(f'step 3: the locked memories are {locked}')
 
 
 def learn_one(browser, problems):
@@ -483,8 +534,9 @@ def learn_one(browser, problems):
 
 
 def use_memory(browser, problems):
-    """Step 5: a follow-up sends the new memory; the reply lists it, and the
-    Chat turns tab shows the lookup."""
+    """Step 5: a follow-up sends the new memory, which the relevance question
+    chose, and the preference, which goes with no question. The reply lists
+    both, and the Chat turns tab shows the lookup."""
     conversation = leo.Conversation(browser)
     conversation.send(FOLLOW_UP_CHAT)
     time.sleep(2)
@@ -493,18 +545,42 @@ def use_memory(browser, problems):
     leo.wait_for_reply(conversation, [FOLLOW_UP_CHAT], 0)
     sent = conversation.frame().eval(MEMORIES_SENT) or ''
     conversation.close()
-    done = json.loads(
-        internals_tab(browser, 1).eval(
-            "document.querySelector('.step-done pre').innerText"
+    turns = internals_tab(browser, 1)
+
+    def step(name):
+        """The fields of a step of the lookup, or {} without the step."""
+        return json.loads(
+            turns.eval(
+                f"document.querySelector('.step-{name} pre')"
+                "?.innerText ?? '{}'"
+            )
         )
-    )
-    chosen = done['relevant'] + done['permanent']
+
+    done = step('done')
+    preferences = step('preferences').get('memories', [])
+    # Each asked memory, and whether it went.
+    asked = {
+        m['text']: m['kept'] for m in step('relevance').get('memories', [])
+    }
+    chosen = done.get('relevant', []) + done.get('permanent', [])
+    cdp.log('follow-up, preferences with no question:', preferences)
     cdp.log('follow-up, the lookup sends:', chosen)
     cdp.log('follow-up, under the reply:', ' | '.join(sent.splitlines()))
     if not any(SINGLE_MEMORY_WORD in m.lower() for m in chosen):
         problems.append(f'step 5: the lookup did not send Luna: {chosen}')
     if SINGLE_MEMORY_WORD not in sent.lower():
         problems.append('step 5: the list under the reply has no Luna')
+    if not any(PREFERENCE_WORD in m.lower() for m in preferences):
+        problems.append(f'step 5: the preference did not go: {preferences}')
+    if any(PREFERENCE_WORD in m.lower() for m in asked):
+        problems.append('step 5: the relevance question asked the preference')
+    if PREFERENCE_WORD not in sent.lower():
+        problems.append('step 5: the list under the reply has no preference')
+    locked = [text for text in asked if LOCK_WORD in text.lower()]
+    if not locked or any(asked[text] for text in locked):
+        problems.append(f'step 5: the locked {LOCK_WORD} did not get a no')
+    if done.get('permanent'):
+        problems.append(f'step 5: a locked memory went: {done["permanent"]}')
 
 
 def rehearse(demo):

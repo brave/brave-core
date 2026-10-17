@@ -78,9 +78,11 @@ and the eval reviews a waiting one before it selects "Learn from chats".
 `demo/leo_demo.json` is Maya, an ICU nurse in Barcelona, over four months: 15
 chats on many topics, some with several turns that each cover something else.
 Seven facts are in her messages (her job, home, husband Tomas, daughter Ines,
-Maine Coon cat Mochi, pescatarian diet, cello), and five things must not be
-learned: a card number, a medicine, a child's fever, an order to always answer
-in Catalan, and a week of night shifts.
+Maine Coon cat Mochi, pescatarian diet, cello), and one preference for the
+answers (short, in bullet points). Five things must not be learned: a card
+number, a medicine, a child's fever, an order to always answer in Catalan, and a
+week of night shifts. The preference shows the two rules of a chat turn: a
+preference goes with every message, and a fact only when it fits the message.
 
 ```sh
 ./demo_profile.py build      # the profile, about 2 minutes
@@ -117,8 +119,9 @@ Demo steps, in brave://leo-ai:
    `Find my old chat about the radiators in our apartment.`, select Allow once,
    and select the card: the radiator turn again.
 3. **Learn from chats.** brave://settings/leo-ai/customization, Learn from chats
-   (about 10 s): the review shows the seven facts and none of the five traps.
-   Save.
+   (about 10 s): the review shows the seven facts, the preference for short
+   answers in bullet points, and none of the five traps. Save. Then select the
+   lock of the memory about the cello: Leo keeps it as it is.
 4. **One memory changes.** In a new chat, type
    `We adopted a second cat last weekend, a rescued black kitten named Luna. How do we introduce her to Mochi?`
    Learn from chats again: the review has one change, "Changed": the memory
@@ -127,10 +130,13 @@ Demo steps, in brave://leo-ai:
    steps of that run, with each request to the local models and its answer; the
    relation step shows why the kitten joined the memory about Mochi.
 5. **The memory in a chat.** Ask
-   `We are away for a long weekend. What should the cat sitter know?` Under the
-   reply, "Customization and memories sent" lists the memory about Mochi and
-   Luna. The Chat turns tab of brave://leo-memory-internals shows how the turn
-   chose it.
+   `We are away for a long weekend. What should the cat sitter know?` The reply
+   is short, in bullet points. Under it, "Customization and memories sent" lists
+   the preference and the memory about Mochi and Luna. The Chat turns tab of
+   brave://leo-memory-internals shows how the turn chose them: the preference in
+   the step `preferences`, with no question, and the memory about Mochi and Luna
+   in the step `relevance`, where the other memories got a no. The locked cello
+   got a no too: a lock does not send a memory every time.
 
 `rehearse` runs steps 2 to 5 on a copy and stops when one of them gives
 something else. `verify` checks step 1. The models answer with temperature 0, so

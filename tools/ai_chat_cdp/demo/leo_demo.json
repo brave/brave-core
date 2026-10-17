@@ -1,6 +1,6 @@
 {
   "name": "leo_demo",
-  "description": "Demo profile. One user, Maya, over about four months: an ICU nurse in Barcelona with a husband (Tomas), a daughter (Ines, 6), a Maine Coon cat (Mochi), a pescatarian diet and a cello in a community orchestra. The chats cover many topics, some with several turns on different subtopics, for the search of conversations. The user turns also hold things that must not be learned: a one-off state, a card number, a medicine, an order to the assistant, and task questions.",
+  "description": "Demo profile. One user, Maya, over about four months: an ICU nurse in Barcelona with a husband (Tomas), a daughter (Ines, 6), a Maine Coon cat (Mochi), a pescatarian diet, a cello in a community orchestra, and one preference for the answers of Leo: short, in bullet points. The preference goes with every message, and the facts only when they fit, so the demo shows both rules. The chats cover many topics, some with several turns on different subtopics, for the search of conversations. The user turns also hold things that must not be learned: a one-off state, a card number, a medicine, an order to the assistant, and task questions.",
   "chats": [
     {
       "title": "Renovating a 1920s apartment",
@@ -49,6 +49,10 @@
         {
           "user": "How often should I descale it, and is vinegar fine?",
           "assistant": "It depends on your water. With hard water, descale every one to two months; with soft or filtered water, every three to four months. White crust around the steam wand or a slower flow are signs it is due.\n\nAvoid vinegar. It is hard to rinse out, leaves a taste, and the acetic acid can damage rubber seals and some metals. Use a citric acid or lactic acid descaler made for espresso machines, at the strength on the pack.\n\nRun the solution through the group head and the steam wand in small amounts, let it sit for about twenty minutes, then flush with at least two full tanks of fresh water. If your machine has a boiler with a brass or aluminium part, check the manual, because some makers name the descaler you should use."
+        },
+        {
+          "user": "That was a lot to read. I prefer short answers in bullet points.",
+          "assistant": "Sure. From now on:\n\n- Short answers\n- Bullet points\n- More detail only when you ask for it"
         }
       ]
     },
@@ -222,6 +226,10 @@
       {
         "label": "plays the cello in an orchestra",
         "all": ["cello"]
+      },
+      {
+        "label": "prefers short answers in bullet points",
+        "all": ["bullet"]
       }
     ],
     "absent": [
@@ -245,6 +253,10 @@
       {
         "label": "one memory for Ines",
         "all": ["ines"]
+      },
+      {
+        "label": "one memory for the style of the answers",
+        "all": ["bullet"]
       }
     ]
   }
