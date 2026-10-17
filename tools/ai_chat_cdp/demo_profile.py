@@ -290,30 +290,62 @@ def type_search(ws, query):
     )
 
 
+def clear_search(ws):
+    """Empties the search box, and waits until the list shows no result. The
+    list keeps the results of the last query until it renders the next one,
+    and it is slow to do so while a chat opens: without this, the results of
+    the last query read as those of the next."""
+    type_search(ws, '')
+    for _ in range(20):
+        if not ws.eval(SEARCH_RESULTS):
+            break
+        time.sleep(0.25)
+    # The delayed query of the list (useSearchDelay) becomes empty too.
+    time.sleep(0.5)
+
+
 def search(ws, query, tries=2):
     """Types |query| into the conversation search and gives the semantic
     results: the chat title and the entry that a click opens. A search that
     starts while the page loads finds nothing, so it is typed again."""
     for _ in range(tries):
+        clear_search(ws)
         type_search(ws, query)
         for _ in range(20):
             time.sleep(0.5)
             cards = ws.eval(SEARCH_RESULTS)
             if cards:
                 return cards
-        type_search(ws, '')
         time.sleep(1)
     return []
 
 
-# The turns that the frame shows from the top of the view down, and the turn
-# that it highlights after a click on a search result.
+# The place of each turn in the frame, the turns that start in the view from
+# the top down, and the turn that it highlights after a click on a search
+# result (for 2 s).
 FRAME_VIEW = """(()=>{const h=window.innerHeight;
-  const shown=[...document.querySelectorAll('[data-entry-uuids]')]
-    .filter(e=>{const r=e.getBoundingClientRect();return r.top>=-5&&r.top<h})
-    .map(e=>e.getAttribute('data-entry-uuids').split(',')[0]);
+  const turns=[...document.querySelectorAll('[data-entry-uuids]')].map(e=>{
+    const r=e.getBoundingClientRect();
+    return {id: e.getAttribute('data-entry-uuids').split(',')[0],
+            top: r.top, bottom: r.bottom}});
   const lit=document.querySelector('[data-highlighted]');
-  return {shown, highlighted: lit&&lit.getAttribute('data-entry-uuids')}})()"""
+  return {height: h, turns,
+          shown: turns.filter(t=>t.top>=-5&&t.top<h).map(t=>t.id),
+          highlighted: lit&&lit.getAttribute('data-entry-uuids')}})()"""
+
+
+def in_view(view, prefix):
+    """Whether the whole turn of |prefix| is in the view. The frame puts the
+    turn in the center, so the end of the entry above it can show too: a
+    shorter reply, as from a model without the actions row, starts lower. A
+    turn that is taller than the view counts when it fills the view."""
+    height = view['height']
+    for turn in view['turns']:
+        if turn['id'].startswith(prefix):
+            if turn['bottom'] - turn['top'] > height:
+                return turn['top'] <= 0 and turn['bottom'] >= height
+            return turn['top'] >= 0 and turn['bottom'] <= height
+    return False
 
 
 def laptop_window(ws):
@@ -343,7 +375,7 @@ def open_first_result(ws, tab):
 
 def verify(demo):
     """Every demo search finds its chat first, and a click on it opens the
-    chat at that turn, in the size of a laptop window."""
+    chat with the whole turn in the view, in the size of a laptop window."""
     failures = 0
     with demo.browser('verify') as browser:
         ws, tab = browser.new_tab('brave://leo-ai/', settle=8)
@@ -354,12 +386,13 @@ def verify(demo):
             top = cards[0] if cards else {'title': None, 'entry': ''}
             ok = top['title'] == title and top['entry'].startswith(prefix)
             view = open_first_result(ws, tab) if ok else {}
-            ok = ok and (view['shown'] or [''])[0].startswith(prefix)
+            shows = ok and in_view(view, prefix)
+            ok = ok and shows
             failures += not ok
             cdp.log(
                 f'  {"ok  " if ok else "FAIL"} {query!r:44} -> '
-                f'{top["title"]} ({top["entry"] or "no entry"}), shows '
-                f'{(view.get("shown") or ["nothing"])[0]}'
+                f'{top["title"]} ({top["entry"] or "no entry"}), the turn is '
+                f'{"in" if shows else "not in"} the view'
             )
         browser.close_tab(tab)
     if failures:
