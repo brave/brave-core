@@ -90,6 +90,7 @@
 -DevToolsTest.TestOpenSearchResultsInNewTab
 -ExtensionControllingSearchExplicitChoiceParamsBrowserTest.NewExtensionOrPreviousGoogleSearch
 -ExtensionControllingSearchExplicitChoiceParamsBrowserTest.PrepopulatedSearches
+-OmniboxAimPopupDeferCreationPendingBrowserTest.LocationBarActionCreatesAimContent
 -OmniboxMetricsTest.LogSearchEngineUsed
 -WebUIHomeControlBrowserTest.DropPlainText_From*
 -WebUIToolbarWebViewBrowserTest.DropSearchTextOnToolbar
@@ -461,6 +462,7 @@
 -LoginProxyBrowserTest.ProxyAuthHTTPS
 -NotificationPermissionBrowserTest.DisablePermissionRecordsUkms
 -NotificationPermissionBrowserTest.NonPersistentNotificationRecordsUkms
+-OriginKeyedProcessByDefaultBrowserTest.AdTagDuringProcessSelection
 -PaymentHandlerWebFlowViewUseInitiatorInUrlLoadEnabledTest.InitiatorOriginSet
 -ReadabilityDistillerTest.*
 -UnifiedAutoplayBrowserTest.*
@@ -1676,6 +1678,7 @@
 -All/LensOverlayController*.*/*
 -ContextualTasksNoMockBrowserTest.InitSidePanelWithGhostLoader_WaitUntilPanelOpen
 -ContextualTasksUiServiceRearchitectureEnabledTest.SidePanelNavigation_*
+-ContextualTasksUiServiceRearchitectureEnabledTest.StartTaskUiInSidePanel_*
 -LensComposeboxControllerBrowserTest.*
 -LensOverlayController*.*
 -LensSearchController*.*
