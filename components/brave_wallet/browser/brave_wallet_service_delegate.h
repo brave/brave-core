@@ -15,6 +15,7 @@
 #include "base/types/expected.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "url/origin.h"
 
 namespace content {
@@ -22,6 +23,8 @@ class BrowserContext;
 }
 
 namespace brave_wallet {
+
+class SnapHostBridgeController;
 
 class BraveWalletServiceDelegate {
  public:
@@ -92,6 +95,13 @@ class BraveWalletServiceDelegate {
   // Must return true in production. Might return false in tests to disable
   // autolock functionality.
   virtual bool IsAutolockEnabled() = 0;
+
+#if BUILDFLAG(ENABLE_SNAP)
+  // Returns the snap execution environment for this profile. The default is
+  // the wallet-page host; the browser layer may return a content-backed host.
+  virtual std::unique_ptr<SnapHostBridgeController>
+  CreateSnapHostBridgeController();
+#endif
 
   static std::unique_ptr<BraveWalletServiceDelegate> Create(
       content::BrowserContext* browser_context);

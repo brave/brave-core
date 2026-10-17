@@ -51,6 +51,22 @@ bool FakeSnapHostBridgeController::IsBound() const {
   return bound_;
 }
 
+void FakeSnapHostBridgeController::EnsureBridgeReady(
+    base::OnceClosure on_ready) {
+  ++ensure_bridge_ready_count;
+  if (defer_ready_) {
+    pending_ready_ = std::move(on_ready);
+    return;
+  }
+  std::move(on_ready).Run();
+}
+
+void FakeSnapHostBridgeController::RunPendingReady() {
+  if (pending_ready_) {
+    std::move(pending_ready_).Run();
+  }
+}
+
 void FakeSnapHostBridgeController::LoadSnap(const std::string& snap_id,
                                             const std::string& source_code,
                                             LoadSnapCallback cb) {
@@ -61,5 +77,17 @@ void FakeSnapHostBridgeController::LoadSnap(const std::string& snap_id,
 }
 
 void FakeSnapHostBridgeController::UnloadSnap(const std::string& snap_id) {}
+
+std::string FakeSnapHostBridgeController::GetUnavailableError() const {
+  return "Snap host unavailable";
+}
+
+void FakeSnapHostBridgeController::Shutdown() {
+  ++shutdown_count;
+  bound_ = false;
+  if (pending_ready_) {
+    std::move(pending_ready_).Run();
+  }
+}
 
 }  // namespace brave_wallet
