@@ -98,6 +98,21 @@ final class ReaderModeUtilsTests: XCTestCase {
     XCTAssertEqual(countOccurrences(of: "</script>", in: html), 1)
   }
 
+  /// The language is substituted into `<html lang="...">`, so breakout characters must be encoded
+  func testPageLanguageAttributeInjectionIsEntityEncoded() async throws {
+    let result = try makeReadabilityResult(
+      documentLanguage: "en-US\" onfocus=\"alert(1)\"><script>alert(2)</script>"
+    )
+    let html = try await generateReaderContent(result)
+    XCTAssertTrue(
+      html.contains(
+        "<html lang=\"en-US&quot; onfocus=&quot;alert(1)&quot;&gt;&lt;script&gt;alert(2)"
+          + "&lt;/script&gt;\">"
+      )
+    )
+    XCTAssertEqual(countOccurrences(of: "</script>", in: html), 1)
+  }
+
   // MARK: - %READER-TITLE% / %READER-CREDITS%
 
   /// Titles and credits are substituted into JavaScript string literals inside the nonce'd script
