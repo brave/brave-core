@@ -49,6 +49,187 @@ const HIDDEN_FIELDS = new Set([
 type Json = null | boolean | number | string | Json[] | { [key: string]: Json }
 type Step = { [key: string]: Json }
 
+// Who does a step: the colors are those of the parts in the Loco Moco slides.
+type Role = 'decision' | 'llm' | 'embedding' | 'code' | 'user'
+
+const ROLE_NAMES: { [role in Role]: string } = {
+  decision: 'Decision model',
+  llm: 'LLM',
+  embedding: 'Embedding model',
+  code: 'Code',
+  user: 'User',
+}
+
+// What a step does, in plain words, so that the trace reads without the code.
+// |about| is empty for a step whose note (stepNote()) tells it already.
+interface StepInfo {
+  role: Role
+  about?: string
+}
+
+// The steps of a Dreaming run, from dreaming_run.cc and user_memory_manager.cc.
+const RUN_STEPS: { [step: string]: StepInfo } = {
+  index_current: {
+    role: 'code',
+    about:
+      'The memory index is up to date, so the run compares with all saved memories.',
+  },
+  loaded: {
+    role: 'code',
+    about:
+      'The saved memories at the start of the run. watermarks: the number of chats with a mark at the last message read.',
+  },
+  turn: {
+    role: 'code',
+    about:
+      'A new message of the user. The steps under it are about this message only.',
+  },
+  gate: {
+    role: 'decision',
+    about:
+      'Is this message worth reading: does it tell something about the user that can help later? Below the threshold, the run skips the whole message.',
+  },
+  split: {
+    role: 'code',
+    about:
+      'The message, cut into sentences. A sentence that matches the denylist (for example a card number) never goes to a model.',
+  },
+  sentence_decisions: {
+    role: 'decision',
+    about:
+      'Questions for each sentence alone: a fact about the user? Private (sensitive)? An order to Leo (instruction)? True for days only (short_lived)? result: keep, or drop with the probability and its limit.',
+  },
+  rewrite_parsed: {
+    role: 'code',
+    about:
+      'The memories that the code reads from the LLM answer. A memory that is too long is dropped. no_new_details is a flag for the trace only.',
+  },
+  rewrite_checked: {
+    role: 'embedding',
+    about:
+      'The memories of this message, with the labels of the decision model. Each one has a vector now, to compare with the old memories.',
+  },
+  fact: {
+    role: 'code',
+    about: 'One new memory. The next steps compare it with the old memories.',
+  },
+  embed: {
+    role: 'embedding',
+    about: 'The embedding model makes a vector for each text, on the device.',
+  },
+  neighbors: {
+    role: 'embedding',
+    about:
+      'The old memories nearest by meaning, at the floor or above. Only these go to the decision model. With none, the memory is new.',
+  },
+  relations: {
+    role: 'decision',
+    about:
+      'For each near old memory: same, replace, merge or different? answer is not_certain when no answer is clear. Then the LLM can break the tie.',
+  },
+  // The text of an LLM call depends on its purpose (LLM_PURPOSES).
+  llm_call: { role: 'llm' },
+  llm_relation: {
+    role: 'llm',
+    about:
+      'The tie-break answer of the LLM. With it, only same has an effect: the LLM cannot change the text of a memory.',
+  },
+  relation_applied: {
+    role: 'code',
+    about:
+      'What the run does with the relation. A replace or a merge changes the old text only when decision_model_certain is true and the rules allow it.',
+  },
+  merge_parsed: {
+    role: 'code',
+    about:
+      'The merged text that the code reads from the LLM answer. If it is empty or too long, both memories stay.',
+  },
+  fact_dropped: {
+    role: 'code',
+    about:
+      'The run does not add this memory. reason tells why. A later chat can bring it again.',
+  },
+  store: {
+    role: 'code',
+    about:
+      'The change of the run: add a new memory, or update an old one. With the review, it waits for the user.',
+  },
+  watermark: {
+    role: 'code',
+    about:
+      'The run read this message. The next run starts after it. With the review, the mark moves when the user saves.',
+  },
+  review: {
+    role: 'user',
+    about:
+      'The changes that wait for the review of the user. Leo saves nothing before the review.',
+  },
+  review_applied: {
+    role: 'user',
+    about:
+      'The user saved the review. written: the changes that Leo saved. discarded_by_user: the number of changes that the user cleared.',
+  },
+  keep_forever: { role: 'user' },
+  release_keep_forever: { role: 'user' },
+  edited_by_user: { role: 'user' },
+  done: {
+    role: 'code',
+    about: 'The end of the run: its status and its total time.',
+  },
+}
+
+// The LLM calls of a run, by purpose.
+const LLM_PURPOSES: { [purpose: string]: string } = {
+  rewrite:
+    'The LLM writes the kept sentences as short memories. It gets only the sentences that the decision model kept.',
+  merge:
+    'The LLM writes one memory from the old memory and the new one. The decision model chose the merge. The LLM only writes it.',
+  relation:
+    'The decision model was not certain, so the LLM breaks the tie. Its answer cannot change the text of a memory.',
+}
+
+// The steps of a chat turn lookup, from turn_memory_lookup.cc.
+const LOOKUP_STEPS: { [step: string]: StepInfo } = {
+  messages: {
+    role: 'code',
+    about: 'The last two messages of the user. The search uses them.',
+  },
+  preferences: { role: 'code' },
+  search: {
+    role: 'embedding',
+    about:
+      'The embedding model finds the memories nearest by meaning to the messages.',
+  },
+  candidates: {
+    role: 'code',
+    about:
+      'The nearest memories, at most max. The preferences are not here: they always go.',
+  },
+  relevance: {
+    role: 'decision',
+    about:
+      'One question for each memory: is it relevant to this message? kept: at the threshold or above, the best max_results. Only those go to the chat model.',
+  },
+  done: {
+    role: 'code',
+    about:
+      'What goes with the request to the chat model: relevant, and the memories that the user keeps (permanent). reason tells how the lookup ended.',
+  },
+}
+
+// Whether the step is in a Dreaming run or in a chat turn lookup: both have a
+// "done" step.
+type TraceKind = 'run' | 'lookup'
+
+function stepInfo(step: Step, kind: TraceKind): StepInfo | undefined {
+  const name = asString(step.step)
+  const info = (kind === 'run' ? RUN_STEPS : LOOKUP_STEPS)[name]
+  if (info && name === 'llm_call') {
+    return { ...info, about: LLM_PURPOSES[asString(step.purpose)] }
+  }
+  return info
+}
+
 interface DecisionRequest {
   request: string
   response: string | null
@@ -258,13 +439,14 @@ function stepNote(step: Step): string | null {
   }
 }
 
-function StepView(props: { step: Step }) {
+function StepView(props: { step: Step; kind: TraceKind }) {
   const { step } = props
   const fields = Object.entries(step).filter(([key]) => !HIDDEN_FIELDS.has(key))
   const requests = step.decision_requests as unknown as
     | DecisionRequest[]
     | undefined
   const note = stepNote(step)
+  const info = stepInfo(step, props.kind)
   const blocked =
     step.step === 'relation_applied'
     && typeof step.text_change_blocked_by === 'string'
@@ -274,6 +456,11 @@ function StepView(props: { step: Step }) {
     >
       <div className='step-header'>
         <span className='step-name'>{asString(step.step)}</span>
+        {info && (
+          <span className={`role role-${info.role}`}>
+            {ROLE_NAMES[info.role]}
+          </span>
+        )}
         <span className='muted'>
           {asString(step.t_ms)} ms
           {step.latency_ms !== undefined
@@ -281,6 +468,7 @@ function StepView(props: { step: Step }) {
             && ` · took ${asString(step.latency_ms)} ms`}
         </span>
       </div>
+      {info?.about && <div className='about'>{info.about}</div>}
       {note && <div className='note'>{note}</div>}
       {fields.length > 0 && (
         <pre className='fields'>
@@ -335,6 +523,7 @@ function RunView(props: { run: Run; modelStepsOnly: boolean }) {
               <StepView
                 key={j}
                 step={step}
+                kind='run'
               />
             ))}
           </section>
@@ -520,6 +709,10 @@ function LookupView(props: { lookup: Lookup }) {
         </a>
       </div>
       <h3>Decision model</h3>
+      <p className='about'>
+        What the lookup sent to the decision model, and its answer: one
+        relevance for each memory. The step relevance below reads it.
+      </p>
       {requests.length === 0 ? (
         <p className='muted'>No request (or no answer yet).</p>
       ) : (
@@ -534,6 +727,7 @@ function LookupView(props: { lookup: Lookup }) {
         <StepView
           key={i}
           step={step}
+          kind='lookup'
         />
       ))}
     </div>
@@ -621,7 +815,14 @@ function App() {
 }
 
 const CSS = `
-  .page { padding: 16px 24px; }
+  .page {
+    padding: 16px 24px;
+    --decision: light-dark(#6f1bdb, #c6a8ff);
+    --llm: light-dark(#a33400, #ffb08a);
+    --embedding: light-dark(#206a77, #7fd3e3);
+    --code: light-dark(#464649, #c9c9ca);
+    --user: light-dark(#1c713d, #8bdba5);
+  }
   h1 { font-size: 20px; margin: 0 0 4px; }
   h2 { font-size: 16px; margin: 0; }
   h3 { font-size: 14px; margin: 16px 0 8px; }
@@ -661,9 +862,9 @@ const CSS = `
   }
   .step-gate, .step-sentence_decisions, .step-relations,
   .step-relevance {
-    border-left-color: #c80;
+    border-left-color: var(--decision);
   }
-  .step-llm_call, .step-llm_relation { border-left-color: #66f; }
+  .step-llm_call, .step-llm_relation { border-left-color: var(--llm); }
   .step-review, .step-store, .step-review_applied { border-left-color: #2a7; }
   .step-fact_dropped { border-left-color: #d33; }
   .step-keep_forever, .step-release_keep_forever, .step-preferences,
@@ -678,6 +879,16 @@ const CSS = `
     border-left-color: #c80;
   }
   .note { margin: 2px 0; font-size: 12px; }
+  .about { margin: 2px 0; font-size: 13px; max-width: 110ch; }
+  .role {
+    font-size: 11px; font-weight: 600; padding: 0 6px; border-radius: 999px;
+    border: 1px solid currentColor;
+  }
+  .role-decision { color: var(--decision); }
+  .role-llm { color: var(--llm); }
+  .role-embedding { color: var(--embedding); }
+  .role-code { color: var(--code); }
+  .role-user { color: var(--user); }
   .step-header { display: flex; gap: 8px; align-items: baseline; }
   .step-name { font-weight: 600; font-family: monospace; }
   pre {
