@@ -17,6 +17,7 @@ import androidx.lifecycle.ViewModel;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
+import org.chromium.brave_wallet.mojom.RecoverWalletResult;
 import org.chromium.chrome.browser.app.domain.KeyringModel;
 import org.chromium.chrome.browser.crypto_wallet.fragments.onboarding.OnboardingVerifyRecoveryPhraseFragment.VerificationStep;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
@@ -76,11 +77,17 @@ public class OnboardingViewModel extends ViewModel {
     @Nullable private String mNetworkSelectionSearchQuery;
 
     // Wallet creation request, owned by the model so it survives configuration changes and keeps
-    // running while the activity is in the background. Triggered only once.
+    // running while the activity is in the background. Triggered only once per attempt; reset when
+    // the user goes back to edit the phrase or confirms imported-account removal.
     private boolean mWalletCreationRequested;
 
     @NonNull
     private final MutableLiveData<Boolean> mWalletCreationSucceeded = new MutableLiveData<>();
+
+    // Outcome of unlock-screen recovery. Null while no result is available. Values are
+    // RecoverWalletResult constants.
+    @NonNull
+    private final MutableLiveData<Integer> mWalletRecoveryResult = new MutableLiveData<>();
 
     /** Stores the unlock password text so it survives a configuration change such as a rotation. */
     public void setUnlockPassword(@Nullable final String unlockPassword) {
@@ -217,26 +224,79 @@ public class OnboardingViewModel extends ViewModel {
     }
 
     /**
+     * Live outcome of unlock-screen wallet recovery. Values are {@link RecoverWalletResult}
+     * constants. Observers are notified once the request completes, including observers that
+     * subscribe after completion.
+     */
+    @NonNull
+    public LiveData<Integer> getWalletRecoveryResult() {
+        return mWalletRecoveryResult;
+    }
+
+    /**
+     * Allows another create/restore/recover attempt after the user goes back to edit the phrase or
+     * confirms imported-account removal.
+     */
+    public void prepareWalletCreationRetry() {
+        mWalletCreationRequested = false;
+        mWalletCreationSucceeded.setValue(null);
+        mWalletRecoveryResult.setValue(null);
+    }
+
+    /**
      * Creates or restores the Wallet exactly once, based on the state captured during onboarding.
      * Repeat calls (for example from a fragment recreated by a rotation) are ignored while the
      * request is running or after it has completed. The request is owned by the model, so it is not
      * cancelled when the activity is recreated or sent to the background; its outcome is delivered
-     * through {@link #getWalletCreationSucceeded()}.
+     * through {@link #getWalletCreationSucceeded()} or {@link #getWalletRecoveryResult()}.
      */
     public void createOrRestoreWallet(
             @NonNull final KeyringModel keyringModel,
             @NonNull final JsonRpcService jsonRpcService,
             @Nullable final KeyringService keyringService,
             final boolean overridePreviousWallet) {
+        createOrRestoreWallet(
+                keyringModel, jsonRpcService, keyringService, overridePreviousWallet, false);
+    }
+
+    /**
+     * Same as {@link #createOrRestoreWallet(KeyringModel, JsonRpcService, KeyringService,
+     * boolean)}, with an option to allow removing imported accounts during unlock-screen recovery.
+     */
+    public void createOrRestoreWallet(
+            @NonNull final KeyringModel keyringModel,
+            @NonNull final JsonRpcService jsonRpcService,
+            @Nullable final KeyringService keyringService,
+            final boolean overridePreviousWallet,
+            final boolean allowImportedAccountRemoval) {
         if (mWalletCreationRequested) {
             return;
         }
         mWalletCreationRequested = true;
         keyringModel.isWalletCreated(
                 isCreated -> {
-                    // Skip creation when a wallet already exists, unless restoring over it from the
-                    // unlock screen button.
-                    if (isCreated && !overridePreviousWallet) {
+                    // Unlock-screen restore recovers the existing locked wallet instead of
+                    // recreating it from a possibly different seed.
+                    if (isCreated && overridePreviousWallet) {
+                        if (mRecoveryPhrase == null) {
+                            mWalletRecoveryResult.setValue(RecoverWalletResult.INTERNAL_ERROR);
+                            return;
+                        }
+                        keyringModel.recoverWallet(
+                                getPassword(),
+                                requireRecoveryPhrase(),
+                                mLegacyRestoreEnabled,
+                                allowImportedAccountRemoval,
+                                result -> {
+                                    if (result == RecoverWalletResult.SUCCESS) {
+                                        Utils.setCryptoOnboarding(false);
+                                    }
+                                    mWalletRecoveryResult.setValue(result);
+                                });
+                        return;
+                    }
+                    // Skip creation when a wallet already exists during onboarding restore.
+                    if (isCreated) {
                         mWalletCreationSucceeded.setValue(true);
                         return;
                     }
@@ -291,6 +351,7 @@ public class OnboardingViewModel extends ViewModel {
         mNetworkSelectionSearchQuery = null;
         mWalletCreationRequested = false;
         mWalletCreationSucceeded.setValue(null);
+        mWalletRecoveryResult.setValue(null);
     }
 
     public void setLegacyRestoreEnabled(final boolean legacyRestoreEnabled) {

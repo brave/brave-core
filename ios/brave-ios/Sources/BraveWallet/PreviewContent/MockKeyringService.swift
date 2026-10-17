@@ -190,6 +190,22 @@ class MockKeyringService: BraveWalletKeyringService {
     completion(true)
   }
 
+  func recoverWallet(
+    mnemonic: String,
+    newPassword: String,
+    isLegacyEthSeedFormat: Bool,
+    allowImportedAccountRemoval: Bool,
+    completion: @escaping (BraveWallet.RecoverWalletResult) -> Void
+  ) {
+    // Preview store does not validate the phrase.
+    self.password = newPassword
+    isLocked = false
+    observers.allObjects.forEach {
+      $0.unlocked()
+    }
+    completion(.success)
+  }
+
   func validatePassword(_ password: String, completion: @escaping (Bool) -> Void) {
     completion(password == self.password)
   }

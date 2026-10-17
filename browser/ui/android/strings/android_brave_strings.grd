@@ -1980,6 +1980,27 @@ Are you sure you want to do this?
     <message name="IDS_ACCOUNT_RECOVERY_FAILED" desc="Brave Wallet text">
       Account recovery failed. Please try again.
     </message>
+    <message name="IDS_WALLET_RECOVERY_INVALID_PHRASE" desc="Brave Wallet unlock recovery invalid phrase error">
+      Invalid recovery phrase
+    </message>
+    <message name="IDS_WALLET_RECOVERY_PHRASE_MISMATCH" desc="Brave Wallet unlock recovery phrase mismatch error">
+      This recovery phrase doesn't match your wallet. Check the phrase and try again.
+    </message>
+    <message name="IDS_WALLET_RECOVERY_IMPORTED_ACCOUNTS_WARNING_TITLE" desc="Brave Wallet unlock recovery imported accounts warning title">
+      Remove imported accounts?
+    </message>
+    <message name="IDS_WALLET_RECOVERY_IMPORTED_ACCOUNTS_WARNING_DESCRIPTION" desc="Brave Wallet unlock recovery imported accounts warning description">
+      Imported accounts are not backed up by your recovery phrase. They will be removed from Brave Wallet, and you may permanently lose access to their funds unless you have backed up their private keys.
+    </message>
+    <message name="IDS_WALLET_RECOVERY_IMPORTED_ACCOUNTS_WARNING_CONFIRM" desc="Brave Wallet unlock recovery imported accounts confirm button">
+      Remove accounts
+    </message>
+    <message name="IDS_WALLET_RECOVERY_IMPORTED_ACCOUNTS_CONFIRMATION" desc="Label above confirmation field for imported account removal">
+      Type "<ph name="CONFIRMATION_PHRASE">%1$s<ex>Yes</ex></ph>" to confirm.
+    </message>
+    <message name="IDS_WALLET_RECOVERY_IMPORTED_ACCOUNTS_CONFIRMATION_PHRASE" desc="Phrase users must type to confirm imported account removal" translateable="false">
+      Yes
+    </message>
     <message name="IDS_MAINNET" desc="Brave Wallet network selection button text(network name)" translateable="false">
       Ethereum Mainnet
     </message>
