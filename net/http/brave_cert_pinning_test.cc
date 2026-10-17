@@ -216,6 +216,8 @@ constexpr auto kSkippedHosts = std::to_array<std::string_view>({
     "sepolia-infura.brave.com",
     "translate-static.brave.com",
     "wallet.brave.com",
+    // 2026-09-22: devtools.brave.com is particularly unreliable (flaky)
+    "devtools.brave.com",
 });
 
 // Test page served by a CA outside the pinset, so it is expected to fail
