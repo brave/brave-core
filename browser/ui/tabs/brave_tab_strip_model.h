@@ -31,9 +31,14 @@ class BraveTabStripModel : public TabStripModel {
   BraveTabStripModel(const BraveTabStripModel&) = delete;
   BraveTabStripModel operator=(const BraveTabStripModel&) = delete;
 
-  // Set the next tab when doing a MRU cycling with Ctrl-tab
-  void SelectMRUTab(
-      TabRelativeDirection direction,
+  // Walks the MRU order by one step. The first call snapshots the order and
+  // starts a cycling session; later calls rotate within that frozen snapshot
+  // until StopMRUCycling(). Callers are responsible for checking
+  // prefs::kCtrlTabMru first.
+  void CycleToNextMRUTab(
+      TabStripUserGestureDetails detail = TabStripUserGestureDetails(
+          TabStripUserGestureDetails::GestureType::kOther));
+  void CycleToPreviousMRUTab(
       TabStripUserGestureDetails detail = TabStripUserGestureDetails(
           TabStripUserGestureDetails::GestureType::kOther));
 
@@ -83,9 +88,6 @@ class BraveTabStripModel : public TabStripModel {
   bool IsOnlyActiveTabAndTreeDescendantsSelected();
 
   // TabStripModel:
-  void SelectRelativeTab(TabRelativeDirection direction,
-                         TabStripUserGestureDetails detail) override;
-
   std::vector<std::variant<std::unique_ptr<DetachedTab>,
                            std::unique_ptr<DetachedTabCollection>>>
   DetachTabsAndCollectionsForInsertion(
@@ -93,6 +95,9 @@ class BraveTabStripModel : public TabStripModel {
 
  private:
   friend class TreeTabsBrowserTest;
+
+  void SelectMRUTab(TabRelativeDirection direction,
+                    TabStripUserGestureDetails detail);
 
   void OnTreeTabRelatedPrefChanged();
   void BuildTreeTabs();
