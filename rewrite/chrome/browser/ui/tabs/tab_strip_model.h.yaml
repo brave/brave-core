@@ -9,11 +9,6 @@ substitutions:
       class_name: TabStripModel
       method_name: '~TabStripModel'
 
-  - description: Make the SelectRelativeTab virtual for subclassing.
-    make_virtual:
-      class_name: TabStripModel
-      method_name: 'SelectRelativeTab'
-
   - description: |
       Rename `DraggingTabsSession` to `DraggingTabsSessionChromium`.
 

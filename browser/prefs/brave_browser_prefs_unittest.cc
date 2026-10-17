@@ -5,10 +5,12 @@
 
 #include "base/files/file_path.h"
 #include "brave/browser/ui/bookmark/bookmark_helper.h"
+#include "brave/components/constants/pref_names.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/prefs/browser_prefs.h"
 #include "chrome/browser/profiles/chrome_browser_main_extra_parts_profiles.h"
 #include "chrome/browser/profiles/pref_service_builder_utils.h"
+#include "chrome/common/pref_names.h"
 #include "components/bookmarks/common/bookmark_bar_visibility_state.h"
 #include "components/bookmarks/common/bookmark_pref_names.h"
 #include "components/prefs/pref_service.h"
@@ -104,6 +106,41 @@ TEST_F(BraveBrowserPrefsTest, BookmarkBarState_Never_Migrates) {
   EXPECT_TRUE(
       prefs_.FindPreference(bookmarks::prefs::kAlwaysShowBookmarkBarOnNTP)
           ->IsDefaultValue());
+}
+
+// The deprecated `kMRUCyclingEnabled` was never set by the user, so the
+// migration must leave the upstream `prefs::kCtrlTabMru` at its default.
+TEST_F(BraveBrowserPrefsTest, MRUCycling_Untouched_KeepsUpstreamDefault) {
+  ASSERT_TRUE(prefs_.FindPreference(kMRUCyclingEnabled)->IsDefaultValue());
+
+  MigrateObsoletePrefs();
+
+  EXPECT_TRUE(prefs_.FindPreference(prefs::kCtrlTabMru)->IsDefaultValue());
+  EXPECT_FALSE(prefs_.GetBoolean(prefs::kCtrlTabMru));
+  EXPECT_TRUE(prefs_.FindPreference(kMRUCyclingEnabled)->IsDefaultValue());
+}
+
+// An enabled deprecated pref carries over to the upstream pref, and the
+// deprecated one is cleared.
+TEST_F(BraveBrowserPrefsTest, MRUCycling_Enabled_Migrates) {
+  prefs_.SetBoolean(kMRUCyclingEnabled, true);
+
+  MigrateObsoletePrefs();
+
+  EXPECT_TRUE(prefs_.GetBoolean(prefs::kCtrlTabMru));
+  EXPECT_TRUE(prefs_.FindPreference(kMRUCyclingEnabled)->IsDefaultValue());
+}
+
+// An explicitly disabled deprecated pref carries over too, overwriting an
+// already enabled upstream pref rather than leaving it on.
+TEST_F(BraveBrowserPrefsTest, MRUCycling_Disabled_Migrates) {
+  prefs_.SetBoolean(prefs::kCtrlTabMru, true);
+  prefs_.SetBoolean(kMRUCyclingEnabled, false);
+
+  MigrateObsoletePrefs();
+
+  EXPECT_FALSE(prefs_.GetBoolean(prefs::kCtrlTabMru));
+  EXPECT_TRUE(prefs_.FindPreference(kMRUCyclingEnabled)->IsDefaultValue());
 }
 
 }  // namespace

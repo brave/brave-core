@@ -1633,6 +1633,7 @@ source_set("brave_tab_prefs") {
   ]
   deps = [
     "//brave/browser/ui/tabs:tabs_public",
+    "//brave/components/constants",
     "//chrome/common:constants",
     "//components/prefs",
   ]

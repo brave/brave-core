@@ -16,7 +16,6 @@
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/brave_tree_tab_strip_collection_delegate.h"
 #include "brave/browser/ui/tabs/tree_tab_model.h"
-#include "brave/components/constants/pref_names.h"
 #include "brave/components/tabs/public/brave_tab_strip_collection.h"
 #include "brave/components/tabs/public/tree_tab_node.h"
 #include "brave/components/tabs/public/tree_tab_node_tab_collection.h"
@@ -68,21 +67,6 @@ void BraveTabStripModel::SetTreeTabNodeCollapsed(
     auto change =
         TreeTabChange(id, TreeTabChange::CollapsedStateChangedChange(*node));
     observers_.Notify(&TabStripModelObserver::OnTreeTabChanged, change);
-  }
-}
-
-void BraveTabStripModel::SelectRelativeTab(TabRelativeDirection direction,
-                                           TabStripUserGestureDetails detail) {
-  if (count() == 0) {
-    return;
-  }
-
-  bool is_mru_enabled = profile()->GetPrefs()->GetBoolean(kMRUCyclingEnabled);
-
-  if (is_mru_enabled) {
-    SelectMRUTab(direction, detail);
-  } else {
-    TabStripModel::SelectRelativeTab(direction, detail);
   }
 }
 
@@ -141,8 +125,21 @@ bool BraveTabStripModel::IsOnlyActiveTabAndTreeDescendantsSelected() {
   return selected_indices == expected_indices;
 }
 
+void BraveTabStripModel::CycleToNextMRUTab(TabStripUserGestureDetails detail) {
+  SelectMRUTab(TabRelativeDirection::kNext, detail);
+}
+
+void BraveTabStripModel::CycleToPreviousMRUTab(
+    TabStripUserGestureDetails detail) {
+  SelectMRUTab(TabRelativeDirection::kPrevious, detail);
+}
+
 void BraveTabStripModel::SelectMRUTab(TabRelativeDirection direction,
                                       TabStripUserGestureDetails detail) {
+  if (empty()) {
+    return;
+  }
+
   if (mru_cycle_list_.empty()) {
     // Start cycling
 

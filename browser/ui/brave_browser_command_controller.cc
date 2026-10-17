@@ -12,6 +12,7 @@
 #include "base/containers/fixed_flat_set.h"
 #include "base/feature_list.h"
 #include "base/logging.h"
+#include "base/metrics/user_metrics.h"
 #include "base/notreached.h"
 #include "base/types/to_address.h"
 #include "brave/app/brave_command_ids.h"
@@ -20,6 +21,7 @@
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/focus_mode/focus_mode_utils.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
+#include "brave/browser/ui/tabs/brave_tab_strip_model.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "brave/browser/ui/views/toolbar/screenshot_button.h"
@@ -51,6 +53,7 @@
 #include "chrome/browser/ui/tabs/tab_change_type.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
+#include "chrome/browser/ui/tabs/tab_strip_user_gesture_details.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/common/pref_names.h"
 #include "components/prefs/pref_service.h"
@@ -125,7 +128,7 @@ bool IsBraveCommands(int id) {
   return id >= IDC_BRAVE_COMMANDS_START && id <= IDC_BRAVE_COMMANDS_LAST;
 }
 
-bool IsBraveOverrideCommands(int id) {
+bool IsBraveOverrideCommands(int id, const PrefService& pref_service) {
   if (id == IDC_TOGGLE_VERTICAL_TABS &&
       tabs::IsUpstreamVerticalTabsForceEnabled()) {
     // The upstream vertical tab strip is active, so the toggle must go through
@@ -133,6 +136,13 @@ bool IsBraveOverrideCommands(int id) {
     // VerticalTabStripStateController). brave::ToggleVerticalTabStrip() would
     // toggle Brave's own pref, which has no effect on the upstream strip.
     return false;
+  }
+  if (id == IDC_CYCLE_TO_NEXT_TAB || id == IDC_CYCLE_TO_PREV_TAB) {
+    // Brave cycles through the whole MRU list while Ctrl is held, whereas
+    // upstream's CycleToMruTab() toggles between two tabs. When the pref is
+    // off, let upstream handle it so Ctrl-Tab falls back to adjacent-tab
+    // navigation.
+    return pref_service.GetBoolean(prefs::kCtrlTabMru);
   }
   static constexpr auto kOverrideCommands = base::MakeFixedFlatSet<int>({
       IDC_NEW_WINDOW,
@@ -252,7 +262,8 @@ bool BraveBrowserCommandController::ExecuteCommandWithDispositionAndContext(
     WindowOpenDisposition disposition,
     std::optional<actions::ActionInvocationContext> context,
     base::TimeTicks time_stamp) {
-  return IsBraveCommands(id) || IsBraveOverrideCommands(id)
+  return IsBraveCommands(id) || IsBraveOverrideCommands(
+                                    id, *browser_->GetProfile()->GetPrefs())
              ? ExecuteBraveCommandWithDisposition(id, disposition, time_stamp)
              : BrowserCommandController::
                    ExecuteCommandWithDispositionAndContext(
@@ -953,6 +964,18 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
     }
     case IDC_TOGGLE_FOCUS_MODE:
       brave::ToggleFocusMode(base::to_address(browser_));
+      break;
+    case IDC_CYCLE_TO_NEXT_TAB:
+      base::RecordAction(base::UserMetricsAction("Accel_CycleToNextTab"));
+      static_cast<BraveTabStripModel*>(browser_->tab_strip_model())
+          ->CycleToNextMRUTab(TabStripUserGestureDetails(
+              TabStripUserGestureDetails::GestureType::kKeyboard, time_stamp));
+      break;
+    case IDC_CYCLE_TO_PREV_TAB:
+      base::RecordAction(base::UserMetricsAction("Accel_CycleToPrevTab"));
+      static_cast<BraveTabStripModel*>(browser_->tab_strip_model())
+          ->CycleToPreviousMRUTab(TabStripUserGestureDetails(
+              TabStripUserGestureDetails::GestureType::kKeyboard, time_stamp));
       break;
     default:
       LOG(WARNING) << "Received Unimplemented Command: " << id;

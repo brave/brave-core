@@ -415,6 +415,9 @@ void RegisterProfilePrefsForMigration(
   registry->RegisterBooleanPref(::bookmarks::prefs::kAlwaysShowBookmarkBarOnNTP,
                                 true);
 #endif
+
+  // Added 10/2026.
+  registry->RegisterBooleanPref(kMRUCyclingEnabled, false);
 }
 
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
@@ -433,7 +436,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
                                 !BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED));
   registry->RegisterBooleanPref(kShowScreenshotButton, false);
   registry->RegisterBooleanPref(kLocationBarIsWide, false);
-  registry->RegisterBooleanPref(kMRUCyclingEnabled, false);
   registry->RegisterBooleanPref(kTabMuteIndicatorNotClickable, false);
 
   brave_sync::Prefs::RegisterProfilePrefs(registry);
