@@ -1,0 +1,17 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Extend array size to COPY_DOWNLOAD_LINK.
+
+      Brave adds COPY_DOWNLOAD_LINK command to the download context menu. The
+      download_commands_executed_recorded_ array uses kMaxValue from
+      DownloadCommands as its upper bound. By redefining kMaxValue to
+      COPY_DOWNLOAD_LINK, the array is sized to include Brave's additional
+      command.
+    regex:
+      pattern: 'DownloadCommands::kMaxValue'
+      replace: 'DownloadCommands::COPY_DOWNLOAD_LINK'
