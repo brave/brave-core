@@ -105,7 +105,7 @@ are declared in tools/grit/grit_args.gni.
       <part file="settings_strings_override.grdp" />
       <if expr="not is_android">
         <part file="shared_settings_strings_override.grdp" />
-      </if>
+        </if>
 
       <if expr="chrome_root_store_cert_management_ui">
         </if>
@@ -866,10 +866,6 @@ are declared in tools/grit/grit_args.gni.
       <if expr="use_titlecase">
         </if>
 
-      <if expr="is_macosx">
-        </if>
-      <if expr="not is_macosx">
-        </if>
       <if expr="not use_titlecase">
         </if>
       <if expr="use_titlecase">
@@ -1243,6 +1239,11 @@ are declared in tools/grit/grit_args.gni.
         {COUNT, plural,
           =1 {Your Private window won't reopen.}
           other {Your # Private windows won't reopen.}}
+      </message>
+      <message name="IDS_IDLE_TIMEOUT_INCOGNITO_AND_ISOLATED" desc="The text in the Idle Timeout dialog variant when there are Private and Isolated windows open. This warns the user that Private and Isolated windows will close automatically, and their content will be lost.">
+        {COUNT, plural,
+          =1 {There is Private or Isolated window open. It won't reopen.}
+          other {There are # Private and Isolated windows open across profiles. They won't reopen.}}
       </message>
       </if>
 

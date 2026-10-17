@@ -1831,6 +1831,16 @@ Brave is unable to recover your settings.
           =1 {A new update for Brave is available and will be applied as soon as you relaunch. Your Private window won't reopen.}
           other {A new update for Brave is available and will be applied as soon as you relaunch. Your # Private windows won't reopen.}}
         </message>
+        <message name="IDS_UPDATE_RECOMMENDED_ISOLATED" desc="The main text of the Update Recommended dialog variant with a count of open Isolated windows.">
+          {COUNT, plural,
+          =1 {A new update for Brave is available and will be applied as soon as you relaunch. Your Isolated window won't reopen.}
+          other {A new update for Brave is available and will be applied as soon as you relaunch. Your # Isolated windows won't reopen.}}
+        </message>
+        <message name="IDS_UPDATE_RECOMMENDED_INCOGNITO_AND_ISOLATED" desc="The main text of the Update Recommended dialog variant with a count of open Private and Isolated windows.">
+          {COUNT, plural,
+          =1 {A new update for Brave is available and will be applied as soon as you relaunch. There is Private or Isolated window open. It won't reopen after you relaunch.}
+          other {A new update for Brave is available and will be applied as soon as you relaunch. There are # Private and Isolated windows open across profiles. They won't reopen after you relaunch.}}
+        </message>
         <message name="IDS_RELAUNCH_AND_UPDATE" desc="The button in the Update Recommended dialog which updates and relaunches Brave.">
           Relaunch
         </message>
@@ -1852,6 +1862,12 @@ Brave is unable to recover your settings.
           Not used in Brave. Placeholder to keep resource maps in sync.
         </message>
         <message name="IDS_UPDATE_RECOMMENDED_ALT" desc="Alternate main text of the Update Recommended dialog with a count of open Private windows." translateable="false">
+          Not used in Brave. Placeholder to keep resource maps in sync.
+        </message>
+        <message name="IDS_UPDATE_RECOMMENDED_ALT_ISOLATED" desc="Alternate main text of the Update Recommended dialog variant with a count of open Isolated windows." translateable="false">
+          Not used in Brave. Placeholder to keep resource maps in sync.
+        </message>
+        <message name="IDS_UPDATE_RECOMMENDED_ALT_INCOGNITO_AND_ISOLATED" desc="Alternate main text of the Update Recommended dialog variant with a count of open Private and Isolated windows." translateable="false">
           Not used in Brave. Placeholder to keep resource maps in sync.
         </message>
       </if>
@@ -2382,6 +2398,16 @@ Brave is unable to recover your settings.
               =1 {Your administrator asks that you relaunch Brave to apply this update. Your Private window won't reopen.}
               other {Your administrator asks that you relaunch Brave to apply this update. Your # Private windows won't reopen.}}
           </message>
+          <message name="IDS_RELAUNCH_RECOMMENDED_BODY_ISOLATED" desc="The body text of a dialog variant that tells users that a browser relaunch is recommended for an update with Isolated counter.">
+             {COUNT, plural,
+              =1 {Your administrator asks that you relaunch Brave to apply this update. Your Isolated window won't reopen.}
+              other {Your administrator asks that you relaunch Brave to apply this update. Your # Isolated windows won't reopen.}}
+          </message>
+          <message name="IDS_RELAUNCH_RECOMMENDED_BODY_INCOGNITO_AND_ISOLATED" desc="The body text of a dialog variant that tells users that a browser relaunch is recommended for an update with Private and Isolated counter.">
+             {COUNT, plural,
+              =1 {Your administrator asks that you relaunch Brave to apply this update. There is Private or Isolated window open. It won't reopen after you relaunch.}
+              other {Your administrator asks that you relaunch Brave to apply this update. There are # Private and Isolated windows open across profiles. They won't reopen after you relaunch.}}
+          </message>
           <message name="IDS_RELAUNCH_RECOMMENDED_SCHEDULED_IDLE_TOAST" desc="Toast notification message shown after scheduling an idle restart.">
             Brave will update when you're away
           </message>
@@ -2418,11 +2444,31 @@ Brave is unable to recover your settings.
               =1 {Your administrator requires that you relaunch Brave to apply an update. Your Private window won't reopen.}
               other {Your administrator requires that you relaunch Brave to apply an update. Your # Private windows won't reopen.}}
           </message>
-             <message name="IDS_ADVANCED_PROTECTION_RELAUNCH_REQUIRED_BODY" desc="The body text of a dialog that tells Advanced Protection users the browser must be relaunched with Private counter">
+          <message name="IDS_RELAUNCH_REQUIRED_BODY_ISOLATED" desc="The body text of a dialog variant that tells users the browser must be relaunched with Isolated counter.">
+             {COUNT, plural,
+              =1 {Your administrator requires that you relaunch Brave to apply an update. Your Isolated window won't reopen.}
+              other {Your administrator requires that you relaunch Brave to apply an update. Your # Isolated windows won't reopen.}}
+          </message>
+          <message name="IDS_RELAUNCH_REQUIRED_BODY_INCOGNITO_AND_ISOLATED" desc="The body text of a dialog variant that tells users the browser must be relaunched with Private and Isolated counter.">
+             {COUNT, plural,
+              =1 {Your administrator requires that you relaunch Brave to apply an update. There is Private or Isolated window open. It won't reopen after you relaunch.}
+              other {Your administrator requires that you relaunch Brave to apply an update. There are # Private and Isolated windows open across profiles. They won't reopen after you relaunch.}}
+          </message>
+          <message name="IDS_ADVANCED_PROTECTION_RELAUNCH_REQUIRED_BODY" desc="The body text of a dialog that tells Advanced Protection users the browser must be relaunched with Private counter">
              {COUNT, plural,
               =0 {Advanced Protection requires that you relaunch Brave to apply an update}
               =1 {Advanced Protection requires that you relaunch Brave to apply an update. Your Private window won't reopen.}
               other {Advanced Protection requires that you relaunch Brave to apply an update. Your # Private windows won't reopen.}}
+          </message>
+          <message name="IDS_ADVANCED_PROTECTION_RELAUNCH_REQUIRED_BODY_ISOLATED" desc="The body text of a dialog variant that tells Advanced Protection users the browser must be relaunched with Isolated counter">
+             {COUNT, plural,
+              =1 {Advanced Protection requires that you relaunch Brave to apply an update. Your Isolated window won't reopen.}
+              other {Advanced Protection requires that you relaunch Brave to apply an update. Your # Isolated windows won't reopen.}}
+          </message>
+          <message name="IDS_ADVANCED_PROTECTION_RELAUNCH_REQUIRED_BODY_INCOGNITO_AND_ISOLATED" desc="The body text of a dialog variant that tells Advanced Protection users the browser must be relaunched with Private and Isolated counter">
+             {COUNT, plural,
+              =1 {Advanced Protection requires that you relaunch Brave to apply an update. There is Private or Isolated window open. It won't reopen after you relaunch.}
+              other {Advanced Protection requires that you relaunch Brave to apply an update. There are # Private and Isolated windows open across profiles. They won't reopen after you relaunch.}}
           </message>
         </if>
       </if>
@@ -3429,9 +3475,6 @@ If this page isn’t working as expected, try allowing optimization.
       </message>
       <message name="IDS_SEND_TAB_TO_SELF_SIGN_IN_PROMO_BUTTON_LABEL" desc="Label of the sign-in button in the send-tab-to-self sign-in promo bubble.">
         Sign in to Brave
-      </message>
-      <message name="IDS_SEND_TAB_TO_SELF_SIGN_IN_PROMO_LABEL" desc="Text when a signed out user attempts to use send-tab-to-self, then sees a sign-in promo.">
-        To send this tab to another device, sign in to Brave on both devices
       </message>
       <message name="IDS_SEND_TAB_TO_SELF_NO_TARGET_DEVICE_LABEL" desc="Text shown when a user with no available target devices attempts to use send-tab-to-self.">
         To send this tab to another device, sign in to Brave there

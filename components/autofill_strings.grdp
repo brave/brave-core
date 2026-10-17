@@ -420,9 +420,6 @@
   <message name="IDS_AUTOFILL_PAYMENT_METHODS" desc="Title for the list of saved payment methods that can be used to fill in forms. Also used as the title for the Autofill settings page that allows user to manage their list of saved payment methods and Autofill preferences for payment methods. Sentence-Cased." formatter_data="android_java">
     Payment methods
   </message>
-  <message name="IDS_AUTOFILL_PAYMENT_METHODS_KEYWORDS" desc="Keyword list for search in settings" formatter_data="android_java">
-    Credit,Card,Debit
-  </message>
   <message name="IDS_AUTOFILL_PAYMENT_METHODS_TABLE_ARIA_LABEL" is_accessibility_with_no_ui="true" desc="Aria label for the list of saved payment methods that can be used to fill in forms.">
     Saved payment methods table
   </message>
@@ -547,8 +544,8 @@
     <message name="IDS_AUTOFILL_ADDRESS_SHEET_EMPTY_MESSAGE" desc="Message indicating that no addresses are available for filling.">
       No saved addresses
     </message>
-    <message name="IDS_AUTOFILL_ADDRESS_SHEET_ALL_ADDRESSES_LINK" desc="The text of the link in the address sheet that opens the address management section.">
-      Manage addresses
+    <message name="IDS_AUTOFILL_ADDRESS_SHEET_ALL_ADDRESSES_LINK" desc="The text of the link in the address sheet that opens the contact info management section.">
+      Manage contact info
     </message>
     <message name="IDS_AUTOFILL_LOYALTY_CARDS_ALL_YOUR_CARDS_SUGGESTION" desc="The keyboard accessory suggestion to open the loyalty cards bottom sheet containing all the user loyalty cards.">
       Your loyalty cards

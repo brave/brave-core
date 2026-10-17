@@ -1800,6 +1800,14 @@ To hide pay later options, go to <ph name="BEGIN_LINK">&lt;link&gt;</ph>payment 
       Card info saved
     </message>
   </if>
+  <if expr="not is_android and not is_ios">
+    <message name="IDS_AUTOFILL_SAVE_CARDHOLDER_NAME_CONFIRMATION_SUCCESS_TITLE_TEXT" desc="Title text for confirmation shown after cardholder name is successfully uploaded and saved to Google Wallet.">
+      Cardholder name updated
+    </message>
+    <message name="IDS_AUTOFILL_SAVE_CARDHOLDER_NAME_CONFIRMATION_SUCCESS_DESCRIPTION_TEXT" desc="Description text for confirmation shown after cardholder name is successfully uploaded and saved to Google Wallet.">
+      It's saved with your card info so it will be automatically filled at checkout
+    </message>
+  </if>
 
   <!-- Omnibox Autofill strings -->
   <message name="IDS_AUTOFILL_PAYMENT_TEXT" desc="Text for the 'Autofill payment' chip displayed on the omnibox. The implied action is a verb, as in 'Click here to automatically fill in your payment information'.">

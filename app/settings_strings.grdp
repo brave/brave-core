@@ -38,6 +38,16 @@
         =1 {Your Private window won't open after you relaunch}
         other {Your {COUNT} Private windows won't reopen after you relaunch}}
       </message>
+      <message name="IDS_RELAUNCH_CONFIRMATION_DIALOG_BODY_ISOLATED" desc="The body of the modal dialog variant that we show when users click on relaunch and they have open Isolated windows. The dialog serves to warn the users about losing their Isolated windows if they proceed with the relaunch.">
+        {COUNT, plural,
+        =1 {Your Isolated window won't open after you relaunch}
+        other {Your {COUNT} Isolated windows won't reopen after you relaunch}}
+      </message>
+      <message name="IDS_RELAUNCH_CONFIRMATION_DIALOG_BODY_INCOGNITO_AND_ISOLATED" desc="The body of the modal dialog variant that we show when users click on relaunch and they have open Private and Isolated windows. The dialog serves to warn the users about losing their Private and Isolated windows if they proceed with the relaunch.">
+        {COUNT, plural,
+        =1 {There is {COUNT} Private or Isolated window open. It won't reopen after you relaunch}
+        other {There are {COUNT} Private and Isolated windows open across profiles. They won't reopen after you relaunch}}
+      </message>
     </if>
 
     <!-- About Page -->
@@ -286,9 +296,6 @@
     </message>
     <message name="IDS_SETTINGS_SHOW_TAB_SEARCH_BUTTON" desc="Label for the checkbox which enables or disables showing the tab search button in the tab strip.">
       Show tab search button
-    </message>
-    <message name="IDS_SETTINGS_SHOW_ORGANIZER_PANEL_BUTTON" desc="Label for the checkbox which enables or disables showing the organizer panel button in the tab strip.">
-      Show organizer button
     </message>
     <message name="IDS_SETTINGS_SHOW_EVERYTHING_MENU_BUTTON" desc="Label for the checkbox which enables or disables showing the saved tab groups button in the tab strip.">
       Show saved tab groups button
@@ -3949,14 +3956,6 @@
       <message name="IDS_SETTINGS_SYSTEM_HARDWARE_ACCELERATION_LABEL" desc="Label for the checkbox that forces Brave to render via graphics acceleration (GPU) when available.">
         Use graphics acceleration when available
       </message>
-      <if expr="is_win">
-        <message name="IDS_SETTINGS_SYSTEM_ISOLATION_STATE_LABEL" desc="Label for the Enable process isolation toggle.">
-          Enable Process Isolation
-        </message>
-        <message name="IDS_SETTINGS_SYSTEM_ISOLATION_STATE_SUBLABEL" desc="Sublabel for the Enable process isolation toggle.">
-          Process Isolation prevents other applications from tampering with <ph name="IDS_SHORT_PRODUCT_NAME">$1<ex>Brave</ex></ph>.
-        </message>
-      </if>
       <message name="IDS_SETTINGS_SYSTEM_FEATURE_NOTIFICATIONS_LABEL" desc="Label for the toggle that enables Brave system notifications about features.">
         Show system notifications about Brave features and tips
       </message>

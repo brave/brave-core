@@ -6,6 +6,9 @@
   <message name="IDS_HISTORY_ACTION_MENU_DESCRIPTION" desc="Text used to identify the history entry drop-down menu for screen readers">
     Actions
   </message>
+  <message name="IDS_HISTORY_ACTOR_FILTER_ALL_ACTORS" desc="The default option in the actor filter dropdown on the Brave history page that shows browsing history from all actors (both the user and AI assistants).">
+    All actors
+  </message>
   <message name="IDS_HISTORY_ACTOR_TASK_TOOLTIP" desc="This string indicates entries in Brave history that are the result of Gemini in Brave browsing while performing an auto browse task for the user. When users view their Brave history, this string appears as a tooltip on an auto browse history entry. This is a shortened version of the sentence: 'Auto browse worked on this task for you'. The tone should be short and telegraphic.">
     Auto browse task
   </message>
@@ -26,6 +29,9 @@
   </message>
   <message name="IDS_HISTORY_DELETE_SELECTED_ENTRIES_BUTTON" desc="Text for the button to delete selected history entries [Length: 16em].">
     Delete
+  </message>
+  <message name="IDS_HISTORY_DEVICE_FILTER_ALL_DEVICES" desc="The default option in the device filter dropdown on the Brave history page that shows browsing history from all synced devices.">
+    All devices
   </message>
   <message name="IDS_HISTORY_ENTRY_ACCESSIBILITY_DELETE" desc="Name for the accessibility action to delete a single history entry.">
     Delete
@@ -309,9 +315,6 @@
   <!-- TODO(b/538113758): Make translatable when strings are finalized. -->
   <message name="IDS_HISTORY_SOURCE_FILTER_CHIP_ACTOR_GEMINI" desc="This string is found on a chip that filters the history results when the user selects it; it sits next to its opposite filter: 'You' (the user's browsing activity). It is at the top of the Brave history page, where users can see their browsing history when Gemini performs tasks." translateable="false">
     Gemini
-  </message>
-  <message name="IDS_HISTORY_ACTOR_TASK_TOOLTIP_GEMINI" desc="This string indicates entries in Brave history that are the result of Gemini in Brave browsing while performing a task for the user. When users view their Brave history, this string appears as a tooltip on a Gemini history entry." translateable="false">
-    Gemini task
   </message>
   <message name="IDS_HISTORY_REVIEW_GEMINI_ACTIVITY" desc="Command in the history entry drop-down menu. Opens Gemini Apps Activity page." translateable="false">
     Review Gemini activity

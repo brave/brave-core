@@ -321,6 +321,7 @@ are declared in tools/grit/grit_args.gni.
       <part file="settings_strings.grdp" />
       <if expr="not is_android">
         <part file="shared_settings_strings.grdp" />
+        <part file="settings_search_tag_strings.grdp" />
       </if>
 
       <if expr="chrome_root_store_cert_management_ui">
@@ -1548,6 +1549,9 @@ are declared in tools/grit/grit_args.gni.
           </message>
           <message name="IDS_RELAUNCH_TO_UPDATE_ALT_MINOR_TEXT" desc="Minor text for the alternate text label of the relaunch to update Brave menu item">
             Your tabs will reopen
+          </message>
+          <message name="IDS_SCHEDULED_RESTART_MENU_ITEM" desc="The text label of the relaunch later menu item in the 3-dot app menu. Selecting it opens a dialog where the user can schedule Brave to relaunch later to apply a pending update. &quot;Relaunch&quot; is an imperative verb.">
+            Relaunch later...
           </message>
         </if>
         <if expr="not use_titlecase">
@@ -6552,13 +6556,13 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
 
       <!-- Remote Actor Credential Sharing Dialog -->
-      <message name="IDS_REMOTE_ACTOR_SHARING_DIALOG_TITLE" desc="Title of the dialog asking the user to share credentials with Gemini.">
-        Allow Gemini to sign in to <ph name="DOMAIN">$1<ex>example.com</ex></ph> for you?
+      <message name="IDS_REMOTE_ACTOR_SHARING_DIALOG_TITLE" desc="Title of the dialog asking the user to share credentials with a remote actor.">
+        Allow <ph name="ACTOR_NAME">$1<ex>Gemini</ex></ph> to sign in to <ph name="DOMAIN">$2<ex>example.com</ex></ph> for you?
       </message>
-      <message name="IDS_REMOTE_ACTOR_SHARING_DIALOG_SUBTITLE" desc="Subtitle of the dialog asking the user to share credentials with Gemini.">
-        Gemini can use Brave Password Manager to sign in for you. <ph name="BEGIN_LINK">$1</ph>Learn how Gemini handles your data<ph name="END_LINK">$2</ph>
+      <message name="IDS_REMOTE_ACTOR_SHARING_DIALOG_SUBTITLE" desc="Subtitle of the dialog asking the user to share credentials with a remote actor.">
+        <ph name="ACTOR_NAME">$3<ex>Gemini</ex></ph> can use Brave Password Manager to sign in for you. <ph name="BEGIN_LINK">$1</ph>Learn how <ph name="ACTOR_NAME">$3<ex>Gemini</ex></ph> handles your data<ph name="END_LINK">$2</ph>
       </message>
-      <message name="IDS_REMOTE_ACTOR_SHARING_DIALOG_ALLOW_BUTTON" desc="Button label to allow password sharing for Gemini this time.">
+      <message name="IDS_REMOTE_ACTOR_SHARING_DIALOG_ALLOW_BUTTON" desc="Button label to allow password sharing for the remote actor this time.">
         Allow this time
       </message>
 
@@ -7188,6 +7192,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_WEBUI_OMNIBOX_COMPOSE_ASK_ABOUT_YOUR_TABS" desc="Label for a button that guides the user to composebox's context menu using a suggestion like label.">
         Ask about your tabs
+      </message>
+      <message name="IDS_OMNIBOX_ASKG_LENS_ICON_IPH_ACCESSIBLE_TEXT" desc="Screen reader text announced when the promo highlighting the Google Lens button in the address bar dropdown appears. The visible promo text is 'Select any text or image to search with Google Lens'.">
+        Use Google Lens to ask about any text or image on the page
       </message>
       <if expr="is_macosx">
         <message name="IDS_OMNIBOX_EVERYWHERE_STATUS_ICON_MENU_CUSTOMIZE_KEYBOARD_SHORTCUT" desc="In Title Case: Label for customizing keyboard shortcut item in the Search in Brave status tray context menu.">
@@ -9828,12 +9835,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_READING_MODE_MENU_ITEM_OPENS_DIALOG" desc="Visible text for a menu item in the Reading mode Audio menu that opens a dialog. Uses the existing title (MENU_ITEM) and appends an ellipsis.">
         <ph name="MENU_ITEM">$1<ex>Change voice accent</ex></ph>...
       </message>
-      <message name="IDS_READING_MODE_SIDE_PANEL_PROMO" desc="Text for the in-product-help bubble shown for the reading mode bubble.">
-        To show a simplified view of this page, open the side panel and select Reading mode
-      </message>
-      <message name="IDS_READING_MODE_SIDE_PANEL_PROMO_PINNING" desc="Text for the in-product-help bubble shown for the reading mode bubble when Side Panel Pinning is enabled.">
-        To see a simplified view of this page, go to More Tools &gt; Reading Mode
-      </message>
       <message name="IDS_READING_MODE_OMNIBOX_ENTRY_POINT_PROMO" desc="Text for the in-product-help bubble shown for the reading mode omnibox entry point.">
         Read comfortably with minimal distractions
       </message>
@@ -10333,34 +10334,40 @@ Keep your key file in a safe place. You will need it to create new versions of y
           <message name="IDS_VIEW_ORGANIZER_PANEL" desc="In Title Case: The tooltip for the button in the top container that shows the organizer panel.">
             View Organizer
           </message>
-          <message name="IDS_HIDE_ORGANIZER_PANEL" desc="In Title Case: The tooltip for the button in the top container that hides the organizer panel.">
-            Hide Organizer
-          </message>
           <message name="IDS_TAB_GROUP_MORE_OPTIONS" desc="In Title Case: The tooltip for the button in a tab group item that opens the options menu.">
             More options
           </message>
-          <message name="IDS_ORGANIZER_PANEL_CLOSE_TAB_SEARCH" desc="In Title Case: The label for the context menu item in the organizer panel to close tab search.">
+          <message name="IDS_ORGANIZER_PANEL_CLOSE_TAB_SEARCH" desc="In Title Case: The label for the close button and context menu item in the organizer panel to close tab search.">
             Close Tab Search
+          </message>
+          <message name="IDS_ORGANIZER_PANEL_GO_BACK_TO_OPEN_TABS" desc="In Title Case: The label for the context menu item in the organizer panel to go back to open tabs.">
+            Go Back to Open Tabs
           </message>
           <message name="IDS_ORGANIZER_PANEL_EXPAND_ALL" desc="In Title Case: The label for the context menu item in the organizer panel that expands all sections.">
             Expand All
+          </message>
+          <message name="IDS_ORGANIZER_PANEL_COLLAPSE_ALL" desc="In Title Case: The label for the context menu item in the organizer panel that collapses all sections.">
+            Collapse All
           </message>
         </then>
         <else>
           <message name="IDS_VIEW_ORGANIZER_PANEL" desc="The tooltip for the button in the top container that shows the organizer panel.">
             View organizer
           </message>
-          <message name="IDS_HIDE_ORGANIZER_PANEL" desc="The tooltip for the button in the top container that hides the organizer panel.">
-            Hide organizer
-          </message>
           <message name="IDS_TAB_GROUP_MORE_OPTIONS" desc="The tooltip for the button in a tab group item that opens the options menu.">
             More options
           </message>
-          <message name="IDS_ORGANIZER_PANEL_CLOSE_TAB_SEARCH" desc="The label for the context menu item in the organizer panel to close tab search.">
+          <message name="IDS_ORGANIZER_PANEL_CLOSE_TAB_SEARCH" desc="The label for the close button and context menu item in the organizer panel to close tab search.">
             Close tab search
+          </message>
+          <message name="IDS_ORGANIZER_PANEL_GO_BACK_TO_OPEN_TABS" desc="The label for the context menu item in the organizer panel to go back to open tabs.">
+            Go back to open tabs
           </message>
           <message name="IDS_ORGANIZER_PANEL_EXPAND_ALL" desc="The label for the context menu item in the organizer panel that expands all sections.">
             Expand all
+          </message>
+          <message name="IDS_ORGANIZER_PANEL_COLLAPSE_ALL" desc="The label for the context menu item in the organizer panel that collapses all sections.">
+            Collapse all
           </message>
         </else>
       </if>
@@ -10380,7 +10387,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Show some
       </message>
       <message name="IDS_ORGANIZER_PANEL_SPLIT_VIEW" desc="The title for a split view item in an organizer panel list section.">
-        Split View
+        Split view
       </message>
       <message name="IDS_ORGANIZER_PANEL_TAB_GROUPS" desc="The label on the organizer panel list section corresponding to tab groups.">
         Tab Groups
@@ -10390,6 +10397,12 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_ORGANIZER_PANEL_CROSS_DEVICE_TABS" desc="The label on the organizer panel list section corresponding to tabs on other devices.">
         Tabs on other devices
+      </message>
+      <message name="IDS_ORGANIZER_PANEL_RECENTLY_VISITED" desc="The label on the organizer panel list section corresponding to recently visited tabs.">
+        Recently visited
+      </message>
+      <message name="IDS_ORGANIZER_PANEL_CURRENTLY_PLAYING" desc="The description text shown in the organizer panel for a tab or split view that is currently playing audio.">
+        Currently playing
       </message>
       <message name="IDS_TAB_STRIP_BUTTON_TOOLTIP" desc="The tooltip for the tab strip button.">
         Tab strip
@@ -12004,6 +12017,17 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         <message name="IDS_TAB_CXMENU_ADD_TAB_TO_NEW_COMPARISON_TABLE" desc="The label for the tab context menu item to add the current tab to a new comparison table">
           Add tab to new comparison table
         </message>
+        <message name="IDS_TAB_CXMENU_AI_MODE_SHARE" desc="The label of the tab context menu submenu for sharing the selected tab or tabs with AI Mode. [ICU Syntax]" translateable="false">
+          {NUM_TABS, plural,
+            =1 {Share tab with AI Mode}
+            other {Share # tabs with AI Mode}}
+        </message>
+        <message name="IDS_TAB_CXMENU_AI_MODE_START_NEW_THREAD" desc="The label of the 'Start new thread with AI Mode' item in the AI Mode tab context submenu." translateable="false">
+          Start new thread with AI Mode
+        </message>
+        <message name="IDS_TAB_CXMENU_AI_MODE_UNSHARE" desc="The label of the tab context menu item for unsharing the selected tab or tabs with AI Mode." translateable="false">
+          Unshare with AI Mode
+        </message>
         <if expr="is_chromeos">
           <message name="IDS_TAB_CXMENU_GROUPED_BY_DESK_MENU_ITEM_A11Y" desc="The a11y message for menu items in 'Move tabs to another window' when grouped by desk.">
             <ph name="TAB_TITLE">$1<ex>Brave News</ex></ph> belongs to desk <ph name="DESK_TITLE">$2<ex>School</ex></ph>
@@ -12131,6 +12155,17 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         </message>
         <message name="IDS_TAB_CXMENU_ADD_TAB_TO_NEW_COMPARISON_TABLE" desc="In Title Case: The label for the tab context menu item to add the current tab to a new comparison table">
           Add Tab to New Comparison Table
+        </message>
+        <message name="IDS_TAB_CXMENU_AI_MODE_SHARE" desc="In Title Case: The label of the tab context menu submenu for sharing the selected tab or tabs with AI Mode. [ICU Syntax]" translateable="false">
+          {NUM_TABS, plural,
+            =1 {Share Tab with AI Mode}
+            other {Share # Tabs with AI Mode}}
+        </message>
+        <message name="IDS_TAB_CXMENU_AI_MODE_START_NEW_THREAD" desc="In Title Case: The label of the 'Start New Thread with AI Mode' item in the AI Mode tab context submenu." translateable="false">
+          Start New Thread with AI Mode
+        </message>
+        <message name="IDS_TAB_CXMENU_AI_MODE_UNSHARE" desc="In Title Case: The label of the tab context menu item for unsharing the selected tab or tabs with AI Mode." translateable="false">
+          Unshare with AI Mode
         </message>
       </if>
 
@@ -12295,22 +12330,6 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
       </if>
 
       <!-- Tab Search -->
-      <message name="IDS_TAB_SEARCH_COMBO_BUTTON_PROMO_TITLE" desc="The body text for a bubble that appears on the tab search button in the tab strip when the user has previously used tab search from the toolbar.">
-        Tab search has moved
-      </message>
-      <message name="IDS_TAB_SEARCH_COMBO_BUTTON_PROMO_BODY" desc="The body text for a bubble that appears on the tab search button in the tab strip when the user has previously used tab search from the toolbar.">
-        From now on, you can search and close your tabs here. You can unpin this at any time.
-      </message>
-      <if expr="is_macosx">
-        <message name="IDS_TAB_SEARCH_COMBO_BUTTON_PROMO_SCREENREADER" is_accessibility_with_no_ui="true" desc="Message announced to screen reader users when the tab search combo button IPH is shown.">
-          Press ⌘ + Shift + A to open tab search. From now on, you can search and close your tabs here. You can unpin this at any time.
-        </message>
-      </if>
-      <if expr="not is_macosx">
-        <message name="IDS_TAB_SEARCH_COMBO_BUTTON_PROMO_SCREENREADER" is_accessibility_with_no_ui="true" desc="Message announced to screen reader users when the tab search combo button IPH is shown.">
-          Press Ctrl + Shift + A to open tab search. From now on, you can search and close your tabs here. You can unpin this at any time.
-        </message>
-      </if>
       <message name="IDS_TAB_SEARCH_SEARCH_TABS" desc="The label on the tab search search filed when user input is empty.">
         Search Tabs
       </message>
@@ -12667,13 +12686,19 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         Ungroup
       </message>
       <message name="IDS_TAB_GROUP_HEADER_CXMENU_FOCUS_GROUP" desc="The label for focus group in the tab group editor bubble.">
-        Focus on Tab Group
+        Focus on group
       </message>
       <message name="IDS_TAB_GROUP_HEADER_CXMENU_UNFOCUS_GROUP" desc="The label for unfocus group in the tab group editor bubble.">
-        Unfocus Tab Group
+        Unfocus group
       </message>
       <message name="IDS_TAB_GROUP_HEADER_UNFOCUS_BUTTON" desc="The label for the unfocus button header attached to a focused tab group.">
         Unfocus
+      </message>
+      <message name="IDS_TAB_GROUP_FOCUS_EXITED_TOAST_BODY" desc="Text shown in a toast when focus mode is exited because a tab outside of the focused tab group was activated.">
+        Unfocused tab group
+      </message>
+      <message name="IDS_NON_GROUP_FOCUS_EXITED_TOAST_BODY" desc="Text shown in a toast when non-group focus mode is exited because a tab outside of focus mode was activated. [ICU Syntax]">
+        {NUM_TABS, plural, =1 {Unfocused tab} other {Unfocused tabs}}
       </message>
       <message name="IDS_TAB_GROUP_HEADER_CXMENU_CREATE_GROUP" desc="The label for create button in the tab group editor bubble when creating a permanent tab group from an ephemeral one.">
         Create
@@ -13761,23 +13786,11 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
       <message name="IDS_SEND_TAB_TO_SELF_SEND_BUTTON_LABEL" desc="The label of the Send button in the Send Tab to Self bubble.">
         Send
       </message>
-      <message name="IDS_TOOLBAR_BUTTON_SEND_TAB_TO_SELF_FROM_DEVICE" desc="The label for the device a received tab was sent from. Shown in the toolbar bubble.">
-        Shared from <ph name="DEVICE_NAME">$1<ex>Ted's Pixel2</ex></ph>
-      </message>
-      <message name="IDS_TOOLBAR_BUTTON_SEND_TAB_TO_SELF_TITLE" desc="The title for the received tab dialog shown from the toolbar button.">
-        Page shared from another device
-      </message>
       <message name="IDS_SEND_TAB_TO_SELF_DEVICE_PICKER_TITLE" desc="Title for the Send Tab To Self device picker bubble.">
         Choose a device
       </message>
       <message name="IDS_SEND_TAB_TO_SELF_DEVICE_PICKER_SUBTITLE" desc="Subtitle for the Send Tab To Self device picker bubble.">
         Select the device where you want to get this link.
-      </message>
-      <message name="IDS_TOOLBAR_BUTTON_SEND_TAB_TO_SELF_BUTTON_LABEL" desc="The label for the button in the received tab dialog shown from the toolbar button.">
-        Open in New Tab
-      </message>
-      <message name="IDS_TOOLBAR_BUTTON_SEND_TAB_TO_SELF_BUTTON_HINT_TEXT" desc="The hint text shown on received tab dialog shown from the toolbar button. Where 'THERE' is the device the user selected.">
-        Choose a device. Then, to see the page, open Brave there.
       </message>
       <message name="IDS_MENU_SEND_TAB_TO_SELF" desc="The label of a menu entry to share the current tab to another device">
         Send to your &amp;device
@@ -13812,9 +13825,6 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
       </message>
       <message name="IDS_SEND_TAB_TO_SELF_SENDING_ANNOUNCE" desc="Text read by a screenreader when a tab is sent to a target device." is_accessibility_with_no_ui="true">
         Sending link to <ph name="DEVICE_NAME">$1<ex>Ted's Pixel2</ex></ph>
-      </message>
-       <message name="IDS_SEND_TAB_TO_SELF_MANAGE_DEVICES_LINK" desc="Text with a link to a page where the user can manage the devices they can share a tab to.">
-        <ph name="BEGIN_LINK">$1</ph>Your devices<ph name="END_LINK">$2</ph> · <ph name="EMAIL">$3<ex>foo@gmail.com</ex></ph>
       </message>
       <message name="IDS_SEND_TAB_TO_SELF_NO_TARGET_DEVICE_BODY_QR" desc="Subtitle of the QR code bubble shown when a user with no available target devices attempts to use send-tab-to-self, prompting to sign in with the same account.">
         To send links between devices, sign in with the same account.
@@ -14134,6 +14144,16 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         </message>
         <message name="IDS_ACCNAME_INFOBAR" desc="The accessible name for an infobar.">
           Infobar
+        </message>
+        <message name="IDS_INFOBAR_PENDING_COUNT" desc="Label on the count badge shown in an infobar next to its close button when more infobars are queued behind it, waiting to be shown. Indicates how many more infobars are queued, e.g. '+2'.">
+          {COUNT, plural,
+           =1 {+1}
+           other {+#}}
+        </message>
+        <message name="IDS_INFOBAR_PENDING_COUNT_TOOLTIP" desc="Tooltip and accessible name for the count badge shown in an infobar when more infobars are queued behind it. Explains that the queued notifications appear once the current infobar is closed.">
+          {COUNT, plural,
+           =1 {1 more infobar will appear when this one is closed}
+           other {# more infobars will appear when this one is closed}}
         </message>
       </if>
 
@@ -15067,6 +15087,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
 
       <message name="IDS_HISTORY_MENU" desc="The text label of the History (and recent tabs) sub-menu in the wrench menu.">
         &amp;History
+      </message>
+      <message name="IDS_OTHER_DEVICE_TABS_MENU" desc="The text label of the 'Other device tabs' sub-menu in the wrench menu that lists the tabs currently open on the user's other devices.">
+        Other device tabs
       </message>
       <message name="IDS_DEFAULT_DOWNLOAD_FILENAME" desc="Default name for downloaded files when we have no idea what they could be.">
         download
@@ -17778,6 +17801,16 @@ Please help our engineers fix this problem. Tell us what happened right before y
         {COUNT, plural,
           =1 {Your Private window won't reopen.}
           other {Your # Private windows won't reopen.}}
+      </message>
+      <message name="IDS_IDLE_TIMEOUT_ISOLATED" desc="The text in the Idle Timeout dialog variant when there are Isolated windows open. This warns the user that Isolated windows will close automatically, and their content will be lost.">
+        {COUNT, plural,
+          =1 {Your Isolated window won't reopen.}
+          other {Your # Isolated windows won't reopen.}}
+      </message>
+      <message name="IDS_IDLE_TIMEOUT_INCOGNITO_AND_ISOLATED" desc="The text in the Idle Timeout dialog variant when there are Private and Isolated windows open. This warns the user that Private and Isolated windows will close automatically, and their content will be lost.">
+        {COUNT, plural,
+          =1 {There is Private or Isolated window open. It won't reopen.}
+          other {There are # Private and Isolated windows open across profiles. They won't reopen.}}
       </message>
       <message name="IDS_IDLE_TIMEOUT_CLOSE_COUNTDOWN" desc="In the Idle Timeout dialog, a countdown that ticks every second. When it reaches zero, Brave closes all browsers.">
         {0, plural,

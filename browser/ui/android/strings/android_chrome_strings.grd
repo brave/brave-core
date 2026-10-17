@@ -492,9 +492,6 @@ For more settings that use data to improve your Brave experience, go to <ph name
       <message name="IDS_MANAGE_SEARCH_ENGINES" desc="Title shown in the menu item that takes the user to 'Manage search engines' in Settings.">
         Manage search engines
       </message>
-      <message name="IDS_ALWAYS_SHOW_AI_MODE" desc="Label for the right-click menu item that toggles whether the AI Mode button is always shown.">
-        Always Show AI Mode
-      </message>
       <message name="IDS_SITE_SEARCH_KEYBOARD_SHORTCUT_HEADER" desc="Header for the 'Keyboard Shortcut' section.">
         Keyboard shortcut
       </message>
@@ -754,9 +751,6 @@ For more settings that use data to improve your Brave experience, go to <ph name
         Turn off
       </message>
 
-      <message name="IDS_PREFS_SECTION_AUTOFILL" desc="Title for the Passwords and Autofill preferences. [CHAR_LIMIT=32]">
-        Passwords and Autofill
-      </message>
       <message name="IDS_AUTOFILL_AND_PASSWORDS_SETTINGS_TITLE" desc="Title for the settings menu item leading to the Autofill and passwords UI surface. [CHAR_LIMIT=32]">
         Autofill and passwords
       </message>
@@ -1004,6 +998,20 @@ For more settings that use data to improve your Brave experience, go to <ph name
       <!-- TODO(crbug.com/556961273): Make translateable once the copy is final. -->
       <message name="IDS_BOTTOM_BAR_SETTING_SUMMARY" desc="Summary shown under the 'Show bottom toolbar' switch in the Appearance settings page. The bottom toolbar is a row of navigation and tool buttons (for example new tab, tab switcher and menu) anchored to the bottom of the screen so they are easier to reach with one hand. It is separate from the 'Address bar' setting, which only moves the address bar between the top and bottom of the screen." translateable="false">
         Keep navigation and tools to the bottom for easy reach
+      </message>
+
+      <!-- On startup settings -->
+      <message name="IDS_ON_STARTUP_TITLE" desc="Title for the On startup settings page and preference row.">
+        On startup
+      </message>
+      <message name="IDS_ON_STARTUP_PREF_NEW_TAB" desc="Label for the option to open the Homepage on startup.">
+        Open the Homepage
+      </message>
+      <message name="IDS_ON_STARTUP_PREF_LAST" desc="Label for the option to continue where the user left off on startup.">
+        Continue where you left off
+      </message>
+      <message name="IDS_ON_STARTUP_PREF_URLS" desc="Label for the option to open a specific page or set of pages on startup.">
+        Open a specific page or set of pages
       </message>
       <if expr="enable_extensions_core">
         <message name="IDS_EXTENSIONS_PIN_TO_TOOLBAR_SETTING" desc="Title Text of the button that pins the extensions menu icon (the puzzle piece icon) to the toolbar.">
@@ -1833,25 +1841,34 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_HISTORY_FILTER_BY_APP" desc="Text used in the app filter button and in the header of app filter sheet.">
         Filter by app
       </message>
-      <message name="IDS_HISTORY_FILTER_BY_HOST" desc="Text used in the host filter button and in the header of host filter sheet." translateable="false">
+      <message name="IDS_HISTORY_APP_FILTER_CHIP_TEXT" desc="Text used in the app filter chip when no option is selected.">
+        App
+      </message>
+      <message name="IDS_HISTORY_FILTER_BY_HOST" desc="Text used in the header of host filter sheet.">
         Filter by host
       </message>
-      <message name="IDS_HISTORY_FILTER_BY_CLIENT" desc="Text used in the client filter button and in the header of client filter sheet." translateable="false">
+      <message name="IDS_HISTORY_HOST_FILTER_CHIP_TEXT" desc="Text used in the host filter chip when no option is selected.">
+        Host
+      </message>
+      <message name="IDS_HISTORY_FILTER_BY_CLIENT" desc="Text used in the header of client filter sheet.">
         Filter by device
       </message>
-      <message name="IDS_HISTORY_ACTOR_FILTER_CHIP_TEXT" desc="Text used in the actor filter chip when no option is selected." translateable="false">
+      <message name="IDS_HISTORY_CLIENT_FILTER_CHIP_TEXT" desc="Text used in the client filter chip when no option is selected.">
+        Device
+      </message>
+      <message name="IDS_HISTORY_ACTOR_FILTER_CHIP_TEXT" desc="Text used in the actor filter chip when no option is selected.">
         Who browsed
       </message>
-      <message name="IDS_HISTORY_ACTOR_FILTER_SHEET_HEADER" desc="Text used in the header of the actor filter sheet." translateable="false">
+      <message name="IDS_HISTORY_ACTOR_FILTER_SHEET_HEADER" desc="Text used in the header of the actor filter sheet.">
         Filter by who browsed
       </message>
-      <message name="IDS_HISTORY_ACTOR_FILTER_USER" desc="Label of the item in the actor filter sheet, short for the longer phrase 'Browsing history that YOU performed.'. " translateable="false">
+      <message name="IDS_HISTORY_ACTOR_FILTER_USER" desc="Label of the item in the actor filter sheet, short for the longer phrase 'Browsing history that YOU performed.'. ">
         You
       </message>
-      <message name="IDS_HISTORY_ACTOR_FILTER_ACTOR" desc="Label of the item in the actor filter sheet, when selected restricts the history results to entries in Brave history that are the result of Gemini in Brave browsing while performing an auto browse task for the user." translateable="false">
+      <message name="IDS_HISTORY_ACTOR_FILTER_ACTOR" desc="Label of the item in the actor filter sheet, when selected restricts the history results to entries in Brave history that are the result of Gemini in Brave browsing while performing an auto browse task for the user.">
         Gemini
       </message>
-      <message name="IDS_HISTORY_RESET_FILTERS" desc="Text used in the button to reset all applied history filters." translateable="false">
+      <message name="IDS_HISTORY_RESET_FILTERS" desc="Text used in the button to reset all applied history filters.">
         Clear all
       </message>
       <message name="IDS_HISTORY_IPH_BUBBLE_TEXT" desc="The message on the text bubble shown to educate users about the app history filter.">
@@ -3820,8 +3837,8 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_SIGNIN_DEVICE_TYPE_TABLET" desc="Device type string to be inserted as a placeholder into sign-in promo and web sign-in subtitle messages.">
         your tablet
       </message>
-      <message name="IDS_SIGNIN_DEVICE_TYPE_LAPTOP" desc="Device type string to be inserted as a placeholder into sign-in promo and web sign-in subtitle messages.">
-        your laptop
+      <message name="IDS_SIGNIN_DEVICE_TYPE_COMPUTER" desc="Device type string to be inserted as a placeholder into sign-in promo and web sign-in subtitle messages.">
+        your computer
       </message>
       <message name="IDS_SIGNIN_ACCOUNT_PICKER_BOTTOM_SHEET_SUBTITLE_ON_ALL_DEVICES_SAVED_INFO" desc="This string is the subtitle of a promotional bottom sheet about signing in to Brave with the user's Brave sync chain. It explains the user benefit of signing in to get data on all devices.">
         Sign in to get your saved info and more on all your devices
@@ -3981,6 +3998,9 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_MOST_VISITED_ADD_NEW" desc="Name of the Tile-like button to add new shortcut by opening the Custom Links Edit Shortcut dialog.">
         Add new
+      </message>
+      <message name="IDS_ACCESSIBILITY_AI_MODE_MVT_TILE" desc="Accessibility description for the AI Mode shortcut tile in the Most Visited Tiles section in the New Tab Page.">
+        AI Mode shortcut
       </message>
       <message name="IDS_ACCESSIBILITY_GOOGLE_DOODLE" desc="Content description for the Brave Doodle (the fun, alternative Brave logo) shown on the new tab page.">
         Brave doodle: <ph name="DOODLE_DESCRIPTION">%1$s<ex>Einstein’s birthday</ex></ph>
@@ -4185,6 +4205,10 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_TOOLBAR_SHORTCUT" desc="Title for toolbar shortcut toggle button in adaptive toolbar button preference page.">
         Toolbar shortcut
+      </message>
+      <!-- TODO(crbug.com/556961273): Make translateable once the copy is final. -->
+      <message name="IDS_ADDRESS_BAR_SHORTCUT" desc="Title for the address bar shortcut setting and toggle button in the adaptive toolbar button preference page." translateable="false">
+        Address bar shortcut
       </message>
       <message name="IDS_TOOLBAR_LONG_PRESS_OPTIONS_IPH" desc="The in-product-help message shown to inform the user they can change placement of the address bar from a long-press menu.">
         You can touch and hold to move the address bar to the bottom
@@ -4540,6 +4564,9 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_MENU_HELP_CENTER" desc="Menu item for opening the help center. [CHAR_LIMIT=27]">
         Help center
+      </message>
+      <message name="IDS_MENU_REPORT_ISSUE" desc="Menu item for reporting an issue. [CHAR_LIMIT=27]">
+        Report an issue
       </message>
       <message name="IDS_MENU_EMPTY_SUBMENU" desc="Menu item to show when a folder doesn't contain any items.">
         (empty)
@@ -6440,9 +6467,6 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
 
       <!-- SendTabToSelf -->
-      <message name="IDS_SEND_TAB_TO_SELF_TOAST" desc="Text for a toast indicating that the tab is being shared on the user's other synced devices.">
-        Sending to <ph name="device_name">%1$s<ex>Tanya's Pixel 2</ex></ph>...
-      </message>
       <message name="IDS_SEND_TAB_TO_SELF_MESSAGE_BANNER_TITLE" desc="The title for the message banner shown on Android when links are received in the background. [ICU Syntax]">
         {NUM_TABS, plural,
           =1 {Link received}
@@ -6474,9 +6498,6 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_SEND_TAB_TO_SELF_SHEET_CLOSED" desc="Accessibility string read when the bottom sheet showing a list of the user's devices is closed.">
         "Choose a device" is closed.
-      </message>
-      <message name="IDS_SEND_TAB_TO_SELF_SHEET_TOOLBAR" desc="Header for device picker sheet where users can pick a device to send a tab to.">
-        Send to
       </message>
       <message name="IDS_SEND_TAB_TO_SELF_ENHANCED_TITLE" desc="Header for the enhanced device picker sheet where users can pick a device to send a tab to.">
         Choose a device

@@ -331,6 +331,14 @@
     <message name="IDS_SETTINGS_SYSTEM_BACKGROUND_APPS_LABEL" desc="Label for the checkbox to allow apps to run in the background, when Brave is closed.">
       Continue running background apps when Brave is closed
     </message>
+    <if expr="is_win">
+      <message name="IDS_SETTINGS_SYSTEM_ISOLATION_STATE_LABEL" desc="Label for the Enable process isolation toggle.">
+        Isolate Brave from other apps
+      </message>
+      <message name="IDS_SETTINGS_SYSTEM_ISOLATION_STATE_SUBLABEL" desc="Sublabel for the Enable process isolation toggle.">
+        Protects Brave's memory from other applications on your computer.
+      </message>
+    </if>
   </if>
 
   <!-- Reset Page -->
