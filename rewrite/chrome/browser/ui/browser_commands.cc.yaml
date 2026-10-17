@@ -24,6 +24,26 @@ substitutions:
       re_flags: [DOTALL, MULTILINE]
       replace: \1chrome::kChromeUINewTabURL\3
 
+  - description: |-
+      Consider Container when performing NewSplitTab()
+
+      When source tab is in a Container, the new split tab should also be opened
+      with the Container. In order to achieve this, replaces AddTabAt() with
+      other tab insertion methods that respect the Container context.
+    regex:
+      re_pattern:
+        '(void
+        NewSplitTab\(.*?)(tab_strip_model->delegate\(\)->AddTabAt\(.*?\);)'
+      re_flags: [DOTALL]
+      replace: |-
+        \1#if BUILDFLAG(ENABLE_CONTAINERS)
+          if (!brave::MaybeAddTabAtInheritingActiveContainer(
+              browser, new_tab_url, active_index + 1, true,
+              tab_strip_model->GetTabGroupForTab(active_index),
+              tab_strip_model->IsTabPinned(active_index)))
+        #endif  // BUILDFLAG(ENABLE_CONTAINERS)
+          \2
+
   - description:
       Nullify toast controller in CloseTab() not to show toast when closing a
       pinned tab
