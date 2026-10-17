@@ -26,6 +26,7 @@ struct ReaderModeUtils {
       let tmpl = await AsyncFileManager.default.utf8Contents(at: tmplPath)
     else { return nil }
     let languageCode = Locale.LanguageCode(readabilityResult.documentLanguage)
+    let pageLanguage = languageCode.isISOLanguage ? languageCode.identifier : ""
 
     let substitutions = [
       "%READER-TITLE-NONCE%": titleNonce,
@@ -33,7 +34,7 @@ struct ReaderModeUtils {
       "%READER-STYLE%": initialStyle.encode(),
       "%READER-DOMAIN%": simplifyDomain(readabilityResult.domain),
       "%READER-URL%": readabilityResult.url,
-      "%READER-PAGE-LANGUAGE%": languageCode.isISOLanguage ? languageCode.identifier : "",
+      "%READER-PAGE-LANGUAGE%": pageLanguage.htmlEntityEncodedString,
       "%READER-TITLE%": readabilityResult.title.javaScriptEscapedString?.unquotedIfNecessary
         ?? readabilityResult.title.htmlEntityEncodedString,
       "%READER-CREDITS%": readabilityResult.credits.javaScriptEscapedString?.unquotedIfNecessary
