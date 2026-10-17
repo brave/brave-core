@@ -3,10 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/common/importer/chrome_importer_utils.h"
+
 #include <Cocoa/Cocoa.h>
 #include <sys/param.h>
 
-#include "brave/common/importer/chrome_importer_utils.h"
+#include <string>
 
 #include "base/apple/foundation_util.h"
 
@@ -60,9 +62,10 @@ base::FilePath GetWhaleUserDataFolder() {
   return result.Append("Application Support").Append("Naver").Append("Whale");
 }
 
-base::FilePath GetBraveUserDataFolder() {
+base::FilePath GetBraveUserDataFolder(BraveImporterProduct product,
+                                      version_info::Channel channel) {
   base::FilePath result = base::apple::GetUserLibraryPath();
   return result.Append("Application Support")
       .Append("BraveSoftware")
-      .Append("Brave-Browser");
+      .Append(GetBraveUserDataDirName(product, channel));
 }
