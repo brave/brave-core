@@ -103,7 +103,7 @@ class BottomToolbarView: UIView, ToolbarProtocol {
 
   func updateObservedProperties() {
     backButton.isEnabled = toolbarState.canGoBack
-    shareButton.isEnabled = toolbarState.isWebPage
+    shareButton.isEnabled = toolbarState.isPageSharable
     tabsButton.updateTabCount(toolbarState.tabCount)
 
     // The forward button replaces the share button when available
