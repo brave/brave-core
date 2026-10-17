@@ -18,3 +18,8 @@ enable_pseudolocales = false
 
 # Our copy of signature_generator.py doesn't support --ignore_missing_cert:
 ignore_missing_widevine_signing_cert = false
+
+# Brave doesn't report activity via //components/activity_reporter. The value
+# upstream is currently gated on is_chrome_branded, but if that ever changes
+# we want to make sure no reporting to the Google endpoint can happen.
+report_activity = false
