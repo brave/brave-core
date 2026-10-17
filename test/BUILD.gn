@@ -538,6 +538,7 @@ test("brave_unit_tests") {
       "//brave/app/theme:brave_theme_resources_grit",
       "//brave/browser/download/bubble:unit_tests",
       "//brave/browser/prefs:unit_tests",
+      "//build/config/linux/dbus:buildflags",
       "//brave/browser/renderer_context_menu/test:unit_tests",
       "//brave/browser/ui",
       "//brave/browser/ui/color:unit_tests",
