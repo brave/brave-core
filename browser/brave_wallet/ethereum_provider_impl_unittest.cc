@@ -204,6 +204,24 @@ class TestEventsListener : public brave_wallet::mojom::EventsListener {
   mojo::Receiver<brave_wallet::mojom::EventsListener> observer_receiver_{this};
 };
 
+std::string AbiEncodeUint(int value) {
+  return absl::StrFormat("0x%064x", value);
+}
+
+std::string AbiEncodeString(std::string_view value) {
+  std::string encoded = "0x";
+  absl::StrAppendFormat(&encoded, "%064x", 32);
+  absl::StrAppendFormat(&encoded, "%064x", static_cast<unsigned>(value.size()));
+  const size_t header_size = encoded.size();
+  for (unsigned char c : value) {
+    absl::StrAppendFormat(&encoded, "%02x", c);
+  }
+  while ((encoded.size() - header_size) % 64 != 0) {
+    encoded.push_back('0');
+  }
+  return encoded;
+}
+
 }  // namespace
 
 class EthereumProviderImplUnitTest : public testing::Test {
@@ -274,6 +292,36 @@ class EthereumProviderImplUnitTest : public testing::Test {
         [&, content](const network::ResourceRequest& request) {
           url_loader_factory_.ClearResponses();
           url_loader_factory_.AddResponse(request.url.spec(), content);
+        }));
+  }
+
+  void SetSuggestedTokenMetadataInterceptor(const std::string& symbol,
+                                            int decimals) {
+    const std::string symbol_result = AbiEncodeString(symbol);
+    const std::string decimals_result = AbiEncodeUint(decimals);
+    url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
+        [=, this](const network::ResourceRequest& request) {
+          if (!request.request_body ||
+              request.request_body->elements()->empty()) {
+            return;
+          }
+          std::string_view request_string(request.request_body->elements()
+                                              ->at(0)
+                                              .As<network::DataElementBytes>()
+                                              .AsStringPiece());
+          url_loader_factory_.ClearResponses();
+          if (request_string.find("0x95d89b41") != std::string::npos) {
+            url_loader_factory_.AddResponse(
+                request.url.spec(),
+                "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"" + symbol_result +
+                    "\"}");
+          }
+          if (request_string.find("0x313ce567") != std::string::npos) {
+            url_loader_factory_.AddResponse(
+                request.url.spec(),
+                "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"" +
+                    decimals_result + "\"}");
+          }
         }));
   }
 
@@ -880,6 +928,9 @@ class EthereumProviderImplUnitTest : public testing::Test {
                        bool* approved_out,
                        mojom::ProviderError* error_out,
                        std::string* error_message_out) {
+    if (token) {
+      SetSuggestedTokenMetadataInterceptor(token->symbol, token->decimals);
+    }
     base::RunLoop run_loop;
     provider_->AddSuggestToken(
         token.Clone(),
@@ -894,12 +945,22 @@ class EthereumProviderImplUnitTest : public testing::Test {
               run_loop.Quit();
             }),
         base::Value());
+    if (token) {
+      // Decimals and symbol are read from the contract before the suggestion
+      // is queued and the panel opens.
+      ASSERT_TRUE(base::test::RunUntil([&] {
+        return GetPendingAddSuggestTokenRequests().size() == 1u &&
+               brave_wallet_tab_helper()->IsShowingBubble();
+      }));
+    }
     auto requests = GetPendingAddSuggestTokenRequests();
     if (!token) {
       ASSERT_TRUE(requests.empty());
     } else {
       ASSERT_EQ(requests.size(), 1u);
       EXPECT_EQ(requests[0]->token->contract_address, token->contract_address);
+      EXPECT_EQ(requests[0]->token->symbol, token->symbol);
+      EXPECT_EQ(requests[0]->token->decimals, token->decimals);
       EXPECT_TRUE(brave_wallet_tab_helper()->IsShowingBubble());
       brave_wallet_service_->NotifyAddSuggestTokenRequestsProcessed(
           approved, {token->contract_address});

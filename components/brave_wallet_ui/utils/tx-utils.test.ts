@@ -378,6 +378,47 @@ describe('parseSwapInfo', () => {
     expect(provider).toBe(BraveWallet.SwapProvider.kZeroEx)
   })
 
+  it('should ignore a same-address token from another chain', () => {
+    const networksRegistry = createMockNetworksRegistry()
+    const baseBat = {
+      ...mockBasicAttentionToken,
+      chainId: BraveWallet.BASE_MAINNET_CHAIN_ID,
+      decimals: 6,
+      symbol: 'NOTBAT',
+    }
+    const baseBtc = {
+      ...mockBitcoinErc20Token,
+      chainId: BraveWallet.BASE_MAINNET_CHAIN_ID,
+      decimals: 18,
+      symbol: 'NOTBTC',
+    }
+    const { sourceToken, destinationToken } = parseSwapInfo({
+      tokensList: [
+        baseBat,
+        baseBtc,
+        mockBasicAttentionToken,
+        mockBitcoinErc20Token,
+      ],
+      swapInfo: {
+        sourceCoin: mockBasicAttentionToken.coin,
+        sourceChainId: mockBasicAttentionToken.chainId,
+        sourceTokenAddress: mockBasicAttentionToken.contractAddress,
+        sourceAmount: '1000000000000000000',
+        destinationCoin: mockBitcoinErc20Token.coin,
+        destinationChainId: mockBitcoinErc20Token.chainId,
+        destinationTokenAddress: mockBitcoinErc20Token.contractAddress,
+        destinationAmount: '2000000000000000000',
+        destinationAmountMin: '1900000000000000000',
+        recipient: '0x1234567890123456789012345678901234567890',
+        provider: BraveWallet.SwapProvider.kZeroEx,
+      },
+      networksRegistry,
+    })
+
+    expect(sourceToken).toBe(mockBasicAttentionToken)
+    expect(destinationToken).toBe(mockBitcoinErc20Token)
+  })
+
   it('should handle undefined swapInfo', () => {
     const networksRegistry = createMockNetworksRegistry()
     const {
@@ -1092,6 +1133,31 @@ describe('findTransactionToken', () => {
           [mockEthToken, mockBasicAttentionToken],
         )?.symbol,
       ).toBe('BAT')
+    })
+
+    it('should ignore a same-address token from another chain', () => {
+      const baseShadow = {
+        ...mockBasicAttentionToken,
+        chainId: BraveWallet.BASE_MAINNET_CHAIN_ID,
+        decimals: 6,
+        symbol: 'NOTBAT',
+      }
+      const token = findTransactionToken(
+        createMockTransactionInfo({
+          chainId: BraveWallet.MAINNET_CHAIN_ID,
+          coinType: BraveWallet.CoinType.ETH,
+          fromAccount: mockEthAccount,
+          sendApproveOrSellAmount: '1000',
+          sendApproveOrSellAssetContractAddress:
+            mockBasicAttentionToken.contractAddress,
+          toAddress: mockAccount.address,
+          isERC20Send: true,
+        }),
+        [baseShadow, mockBasicAttentionToken],
+      )
+
+      expect(token).toBe(mockBasicAttentionToken)
+      expect(token?.decimals).toBe(18)
     })
 
     it('should detect sent ERC721 tokens', () => {

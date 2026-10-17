@@ -16,6 +16,7 @@ import {
   searchNftCollectionsAndGetTotalNftsFound,
   getTokenCollectionName,
   dedupeAssetsByIdKey,
+  findTokenByChainAndContractAddress,
   getAssetIdKey,
   isTokenWatchOnly,
   getDoesCoinSupportSwap,
@@ -316,5 +317,34 @@ describe('dedupeAssetsByIdKey', () => {
     const assets = [nftTokenOne, nftTokenTwo, ethToken, batToken]
 
     expect(dedupeAssetsByIdKey(assets)).toEqual(assets)
+  })
+})
+
+describe('findTokenByChainAndContractAddress', () => {
+  const mainnetUsdcAddress = '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48'
+  const mainnetUsdc = {
+    contractAddress: mainnetUsdcAddress,
+    chainId: BraveWallet.MAINNET_CHAIN_ID,
+    coin: BraveWallet.CoinType.ETH,
+    decimals: 6,
+  }
+  // Same contract address watched on another chain, listed first the way user
+  // assets precede registry tokens.
+  const baseShadowUsdc = {
+    contractAddress: mainnetUsdcAddress.toLowerCase(),
+    chainId: BraveWallet.BASE_MAINNET_CHAIN_ID,
+    coin: BraveWallet.CoinType.ETH,
+    decimals: 18,
+  }
+
+  it('matches the token on the requested chain', () => {
+    expect(
+      findTokenByChainAndContractAddress(
+        mainnetUsdcAddress,
+        BraveWallet.MAINNET_CHAIN_ID,
+        BraveWallet.CoinType.ETH,
+        [baseShadowUsdc, mainnetUsdc],
+      ),
+    ).toBe(mainnetUsdc)
   })
 })
