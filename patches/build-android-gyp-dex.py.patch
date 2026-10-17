@@ -1,5 +1,5 @@
 diff --git a/build/android/gyp/dex.py b/build/android/gyp/dex.py
-index 97647b898624729bc4aaf75d251cb31c2ed32833..73d7a42f1af97e0088cfb5165fd77bea2932bc90 100755
+index 1770a3d394d9859953e269fb678122b0f13a2b10..b8842f57e63a55045434acf475ecf13b3dbb39c1 100755
 --- a/build/android/gyp/dex.py
 +++ b/build/android/gyp/dex.py
 @@ -38,6 +38,7 @@ _GRAALVM_MAX_MERGE_INPUT_SIZE = 20 * 1024 * 1024
@@ -10,7 +10,7 @@ index 97647b898624729bc4aaf75d251cb31c2ed32833..73d7a42f1af97e0088cfb5165fd77bea
      # Warning: Running R8 version main (build engineering), which cannot be
      # represented as a semantic version. Using an artificial version newer than
      # any known version for selecting Proguard configurations embedded under
-@@ -712,6 +713,9 @@ def MergeDexAndServices(
+@@ -710,6 +711,9 @@ def MergeDexAndServices(
  def main(args):
      build_utils.InitLogging('DEX_DEBUG')
      options = _ParseArgs(args)

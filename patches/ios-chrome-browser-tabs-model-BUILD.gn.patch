@@ -1,5 +1,5 @@
 diff --git a/ios/chrome/browser/tabs/model/BUILD.gn b/ios/chrome/browser/tabs/model/BUILD.gn
-index a4e33a20bcdd5abc563ea23ced3d287de34a9712..c32a39a83036dea7d092f177fec7228b131ecbe0 100644
+index 8d1391203f5e0714d16dce4b54c93d6306b420f9..24dc2fe34f27bc0658a845016e1630791972c2df 100644
 --- a/ios/chrome/browser/tabs/model/BUILD.gn
 +++ b/ios/chrome/browser/tabs/model/BUILD.gn
 @@ -48,6 +48,7 @@ source_set("tabs_internal") {

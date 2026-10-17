@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/webui/favicon_source.cc b/chrome/browser/ui/webui/favicon_source.cc
-index a7d485ecdab8aacc73ba99a2507618e79a52be01..11d80c5ba1ebc0c8cc96318c4eae2046309be81b 100644
+index 0be5d68e7e41b450d40b92f71abb324d1fd348e4..8065266987bf1393f504a8094171963929646123 100644
 --- a/chrome/browser/ui/webui/favicon_source.cc
 +++ b/chrome/browser/ui/webui/favicon_source.cc
 @@ -249,6 +249,9 @@ bool FaviconSource::ShouldServiceRequest(

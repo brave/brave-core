@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/tabs/tab_features.cc b/chrome/browser/ui/tabs/tab_features.cc
-index 54fa43467e9c850ed3642bcc64feea84e527da64..616058bee1dd1f607467ef175186bed2da8854e3 100644
+index ca6784918ddf5c0a69c96c8bcfdb863ef16d4d31..55fdfc420daa68f2a37566cc4e0b034de832d4f8 100644
 --- a/chrome/browser/ui/tabs/tab_features.cc
 +++ b/chrome/browser/ui/tabs/tab_features.cc
-@@ -923,8 +923,8 @@ void TabFeatures::Init(TabInterface& tab, Profile* profile) {
+@@ -942,8 +942,8 @@ void TabFeatures::Init(TabInterface& tab, Profile* profile) {
    commit_limit_oom_recovery_tracker_ =
        GetUserDataFactory().CreateInstance<CommitLimitOOMRecoveryTracker>(tab,
                                                                           tab);
@@ -13,7 +13,7 @@ index 54fa43467e9c850ed3642bcc64feea84e527da64..616058bee1dd1f607467ef175186bed2
  #endif
  
    if (base::FeatureList::IsEnabled(net::features::kVerifyQWACs)) {
-@@ -1266,10 +1266,10 @@ void TabFeatures::Init(TabInterface& tab, Profile* profile) {
+@@ -1286,10 +1286,10 @@ void TabFeatures::Init(TabInterface& tab, Profile* profile) {
        GetUserDataFactory().CreateInstance<SearchEngineTabHelper>(
            tab, tab, tab.GetContents());
  
@@ -26,7 +26,7 @@ index 54fa43467e9c850ed3642bcc64feea84e527da64..616058bee1dd1f607467ef175186bed2
  
  #if BUILDFLAG(IS_CHROMEOS)
    // Do not create for Incognito and Isolated mode.
-@@ -1728,8 +1728,8 @@ void TabFeatures::WillDiscardContents(tabs::TabInterface* tab,
+@@ -1758,8 +1758,8 @@ void TabFeatures::WillDiscardContents(tabs::TabInterface* tab,
  #endif
  
  #if BUILDFLAG(IS_WIN)
@@ -37,7 +37,7 @@ index 54fa43467e9c850ed3642bcc64feea84e527da64..616058bee1dd1f607467ef175186bed2
  #endif
  
  #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
-@@ -1943,10 +1943,10 @@ void TabFeatures::WillDiscardContents(tabs::TabInterface* tab,
+@@ -1973,10 +1973,10 @@ void TabFeatures::WillDiscardContents(tabs::TabInterface* tab,
                                                                   new_contents);
  
    net_error_tab_helper_.reset();

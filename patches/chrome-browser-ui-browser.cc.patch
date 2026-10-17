@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/browser.cc b/chrome/browser/ui/browser.cc
-index 99041fad5cbaa7224ce7862dc23c628459e8173f..2b97f15218e302402b8745f9e25ba9af1d5c46d0 100644
+index 73263d95567778f4b7eae16d92040443ff627510..8147f00968ca11edb8c1f2b57c81e0b09db5ed24 100644
 --- a/chrome/browser/ui/browser.cc
 +++ b/chrome/browser/ui/browser.cc
-@@ -238,7 +238,7 @@ Browser* Browser::Create(BrowserWindowCreateParams params) {
+@@ -237,7 +237,7 @@ Browser* Browser::Create(BrowserWindowCreateParams params) {
  
    Profile* const profile_ptr = &*params.profile;
    std::unique_ptr<Browser> browser =
@@ -11,7 +11,7 @@ index 99041fad5cbaa7224ce7862dc23c628459e8173f..2b97f15218e302402b8745f9e25ba9af
    Browser* const browser_ptr = browser.get();
    BrowserManagerServiceFactory::GetForProfile(profile_ptr)
        ->AddBrowser(std::move(browser));
-@@ -257,7 +257,7 @@ std::unique_ptr<Browser> Browser::DeprecatedCreateOwnedForTesting(
+@@ -256,7 +256,7 @@ std::unique_ptr<Browser> Browser::DeprecatedCreateOwnedForTesting(
  
    Profile* const profile_ptr = &*params.profile;
    std::unique_ptr<Browser> browser =
@@ -20,7 +20,7 @@ index 99041fad5cbaa7224ce7862dc23c628459e8173f..2b97f15218e302402b8745f9e25ba9af
    BrowserManagerServiceFactory::GetForProfile(profile_ptr)
        ->AddBrowserForTesting(browser.get());
    return browser;
-@@ -268,8 +268,8 @@ Browser::Browser(BrowserWindowCreateParams params)
+@@ -267,8 +267,8 @@ Browser::Browser(BrowserWindowCreateParams params)
        profile_(&*params.profile),
        window_(nullptr),
        tab_strip_model_delegate_(
@@ -31,7 +31,7 @@ index 99041fad5cbaa7224ce7862dc23c628459e8173f..2b97f15218e302402b8745f9e25ba9af
            tab_strip_model_delegate_.get(),
            profile_,
            // Tab groups are disabled for app browsers.
-@@ -679,6 +679,7 @@ void Browser::OnTabInsertedAt(WebContents* contents, int index) {
+@@ -678,6 +678,7 @@ void Browser::OnTabInsertedAt(WebContents* contents, int index) {
  
  void Browser::OnTabClosing(tabs::TabInterface* tab,
                             bool* had_active_modal_dialog) {
@@ -39,7 +39,7 @@ index 99041fad5cbaa7224ce7862dc23c628459e8173f..2b97f15218e302402b8745f9e25ba9af
    WebContents* contents = tab->GetContents();
    // When this function is called |contents| has been removed from the
    // TabStripModel. Some of the following code may trigger calling to the
-@@ -703,6 +704,8 @@ void Browser::OnTabClosing(tabs::TabInterface* tab,
+@@ -702,6 +703,8 @@ void Browser::OnTabClosing(tabs::TabInterface* tab,
    metrics_observer->WebContentsWillSoonBeDestroyed();
  
    ExclusiveAccessManager::From(this)->OnTabClosing(contents);

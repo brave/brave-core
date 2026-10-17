@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/actor/execution_engine.cc b/chrome/browser/actor/execution_engine.cc
-index 2727934b64980bb28c95657b0dd108fcd6fb210a..ce0efbce84e72b1594d0fea29bbef72db26cd32e 100644
+index 91e73a56ac1f1dc5ce6f06adc930759b905fe385..2747ce4b0c17ca56bf232e193fa7a3c88ece3f6c 100644
 --- a/chrome/browser/actor/execution_engine.cc
 +++ b/chrome/browser/actor/execution_engine.cc
-@@ -1489,6 +1489,14 @@ void ExecutionEngine::SafetyChecksForNextAction() {
+@@ -1487,6 +1487,14 @@ void ExecutionEngine::SafetyChecksForNextAction() {
    content::RenderFrameHost* main_frame = web_contents.GetPrimaryMainFrame();
    const GURL url = GetEffectiveUrlForGating(
        main_frame->GetLastCommittedURL(), main_frame->GetLastCommittedOrigin());
@@ -17,7 +17,7 @@ index 2727934b64980bb28c95657b0dd108fcd6fb210a..ce0efbce84e72b1594d0fea29bbef72d
    GetOriginGatingChecker().ComputeGatingDecision(
        std::make_unique<PageActionGatingContext>(web_contents.GetWeakPtr()),
        GateableEvent(origin_gating::PageActionEvent{
-@@ -1803,6 +1811,7 @@ const EnterprisePolicyChecker& ExecutionEngine::GetEnterprisePolicyChecker()
+@@ -1795,6 +1803,7 @@ const EnterprisePolicyChecker& ExecutionEngine::GetEnterprisePolicyChecker()
  void ExecutionEngine::IsAcceptableNavigationDestination(
      const GURL& url,
      DecisionCallbackWithReason callback) {

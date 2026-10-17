@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/browser_window/internal/browser_window_features.cc b/chrome/browser/ui/browser_window/internal/browser_window_features.cc
-index 6c1c78d4341e72f815fed35a8a808e60333876ac..d646745a177124060821db659f34bfa035071058 100644
+index 4da284b44f32cd32eaf2fb1d9f6dbf0e49efe073..d5f82268e403136c97f8627e24fe643c6ecb6799 100644
 --- a/chrome/browser/ui/browser_window/internal/browser_window_features.cc
 +++ b/chrome/browser/ui/browser_window/internal/browser_window_features.cc
-@@ -248,6 +248,10 @@ BrowserWindowFeatures::BrowserWindowFeatures() = default;
+@@ -247,6 +247,10 @@ BrowserWindowFeatures::BrowserWindowFeatures() = default;
  BrowserWindowFeatures::~BrowserWindowFeatures() = default;
  
  void BrowserWindowFeatures::Init(BrowserWindowInterface* browser) {
@@ -13,7 +13,7 @@ index 6c1c78d4341e72f815fed35a8a808e60333876ac..d646745a177124060821db659f34bfa0
    // This is used only for the controllers which will be created on demand
    // later.
    browser_ = browser;
-@@ -334,11 +338,11 @@ void BrowserWindowFeatures::Init(BrowserWindowInterface* browser) {
+@@ -329,11 +333,11 @@ void BrowserWindowFeatures::Init(BrowserWindowInterface* browser) {
    // initializes the default enabled states for UI commands
    // (InitCommandState). If BrowserActions is not built first, those initial
    // enabled updates will be completely dropped.
@@ -27,7 +27,7 @@ index 6c1c78d4341e72f815fed35a8a808e60333876ac..d646745a177124060821db659f34bfa0
  
    browser_animation_controller_ =
        GetUserDataFactory().CreateInstance<BrowserAnimationController>(*browser,
-@@ -384,7 +388,7 @@ void BrowserWindowFeatures::Init(BrowserWindowInterface* browser) {
+@@ -373,7 +377,7 @@ void BrowserWindowFeatures::Init(BrowserWindowInterface* browser) {
  
    content_setting_bubble_model_delegate_ =
        GetUserDataFactory()
@@ -36,7 +36,7 @@ index 6c1c78d4341e72f815fed35a8a808e60333876ac..d646745a177124060821db659f34bfa0
                                                                      browser);
  
    context_highlight_window_feature_ =
-@@ -811,7 +815,7 @@ void BrowserWindowFeatures::InitPostWindowConstruction(
+@@ -787,7 +791,7 @@ void BrowserWindowFeatures::InitPostWindowConstruction(
  
    // Must be after exclusive_access_manager_,
    // desktop_browser_window_capabilities_, and browser_ui_controller_.
@@ -45,7 +45,7 @@ index 6c1c78d4341e72f815fed35a8a808e60333876ac..d646745a177124060821db659f34bfa0
        browser, *exclusive_access_manager_, *browser_command_controller_,
        *unload_controller_, app_browser_controller_.get(),
        *BrowserWindow::FromBrowser(browser),
-@@ -907,7 +911,7 @@ void BrowserWindowFeatures::InitPostWindowConstruction(
+@@ -883,7 +887,7 @@ void BrowserWindowFeatures::InitPostWindowConstruction(
    // this for most browser.h types, we should also stop making the side_panel_.
    if (browser_view) {
      side_panel_coordinator_ =

@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/settings/MainSettings.java b/chrome/android/java/src/org/chromium/chrome/browser/settings/MainSettings.java
-index c52e633f062aa87228621060b2c604e066c378ec..16acc6ecf762be57a8e9d259ca21c44d1440cfc6 100644
+index 708cfc0f4ec8e21582a5719ae4050a3a0ee788da..25ad5542ffe6e53f0115b1b13ced12688c08ab54 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/settings/MainSettings.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/settings/MainSettings.java
-@@ -860,6 +860,7 @@ public class MainSettings extends ChromeBaseSettingsFragment
+@@ -773,6 +773,7 @@ public class MainSettings extends ChromeBaseSettingsFragment
      }
  
      private static boolean shouldShowAddressBarPref(Context context) {

@@ -1,5 +1,5 @@
 diff --git a/third_party/lit/v3_0/BUILD.gn b/third_party/lit/v3_0/BUILD.gn
-index 3a69f710c4019cc96e59f8191b718631001c3503..766a43618f37499ac2bfe9064896522896c73f81 100644
+index fcfc8722de38b2587f30b7cfedd1218f2508c300..2f2257c3779ae74ab92e69edb304cb1843928a58 100644
 --- a/third_party/lit/v3_0/BUILD.gn
 +++ b/third_party/lit/v3_0/BUILD.gn
 @@ -2,6 +2,7 @@

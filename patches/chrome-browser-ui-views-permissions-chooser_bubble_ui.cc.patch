@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/permissions/chooser_bubble_ui.cc b/chrome/browser/ui/views/permissions/chooser_bubble_ui.cc
-index 6f672ac21a9f8ddeda625683c37fa6b23c3e41a1..beaf5ac2bf95745878056405ed45ce7eae4da0ea 100644
+index 8f83923548c460024bfadb5e9f5926e5f46298b9..94a4b2d3374f27ec1d9320f8163d8964e4f6186c 100644
 --- a/chrome/browser/ui/views/permissions/chooser_bubble_ui.cc
 +++ b/chrome/browser/ui/views/permissions/chooser_bubble_ui.cc
 @@ -122,6 +122,7 @@ ChooserBubbleUiViewDelegate::ChooserBubbleUiViewDelegate(

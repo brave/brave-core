@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/renderer_context_menu/render_view_context_menu.h b/chrome/browser/renderer_context_menu/render_view_context_menu.h
-index d6c71f3d6ed1fbbc4fb11247ff8d724fad2183f3..15c45da6eef7d142278049acb2ca70ab68f0dc9b 100644
+index 4b1e69721041da8649719baadaf6d1c5eb81a984..c363f6c17d30e41ed17c4d41c204a664a4297b46 100644
 --- a/chrome/browser/renderer_context_menu/render_view_context_menu.h
 +++ b/chrome/browser/renderer_context_menu/render_view_context_menu.h
 @@ -116,7 +116,7 @@ enum class SplitTabLayout;
@@ -66,7 +66,7 @@ index d6c71f3d6ed1fbbc4fb11247ff8d724fad2183f3..15c45da6eef7d142278049acb2ca70ab
    void AppendSaveToMemoryBanksItem();
    bool CanSaveImageToMemoryBanks() const;
    void AppendGlicItems();
-@@ -663,7 +664,7 @@ class RenderViewContextMenu
+@@ -666,7 +667,7 @@ class RenderViewContextMenu
    // out if the tab navigated while the menu was open.
    const content::WeakDocumentPtr source_document_at_menu_open_;
  

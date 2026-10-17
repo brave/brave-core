@@ -1,5 +1,5 @@
 diff --git a/components/feature_engagement/public/feature_constants.cc b/components/feature_engagement/public/feature_constants.cc
-index 959b1ac8e0425e9b306f5e062e4cd95fba192269..6d411393de3c4f65a65ecb13b4e502ab3e53c61a 100644
+index a49456d9ea39516486494fbe66d8594a33c7ba25..a628d900d0b91c8ca3bf35efcf3dbc0650ad7569 100644
 --- a/components/feature_engagement/public/feature_constants.cc
 +++ b/components/feature_engagement/public/feature_constants.cc
 @@ -75,9 +75,9 @@ BASE_FEATURE(kIPHDesktopCustomizeChromeAutoOpenFeature,
@@ -26,7 +26,7 @@ index 959b1ac8e0425e9b306f5e062e4cd95fba192269..6d411393de3c4f65a65ecb13b4e502ab
  BASE_FEATURE(kIPHGMCLocalMediaCastingFeature,
               "IPH_GMCLocalMediaCasting",
               base::FEATURE_ENABLED_BY_DEFAULT);
-@@ -177,9 +177,9 @@ BASE_FEATURE(kIPHPasswordsSavePrimingPromoFeature,
+@@ -180,9 +180,9 @@ BASE_FEATURE(kIPHPasswordsSavePrimingPromoFeature,
  BASE_FEATURE(kIPHPasswordsSaveRecoveryPromoFeature,
               "IPH_PasswordsSaveRecoveryPromo",
               base::FEATURE_ENABLED_BY_DEFAULT);
@@ -38,7 +38,7 @@ index 959b1ac8e0425e9b306f5e062e4cd95fba192269..6d411393de3c4f65a65ecb13b4e502ab
  BASE_FEATURE(kIPHPasswordsManagementBubbleDuringSigninFeature,
               "IPH_PasswordsManagementBubbleDuringSignin",
               base::FEATURE_ENABLED_BY_DEFAULT);
-@@ -195,9 +195,9 @@ BASE_FEATURE(kIPHPasswordSharingFeature,
+@@ -198,9 +198,9 @@ BASE_FEATURE(kIPHPasswordSharingFeature,
  BASE_FEATURE(kIPHPdfGlicSummarizeFeature,
               "IPH_PdfGlicSummarizeFeature",
               base::FEATURE_ENABLED_BY_DEFAULT);
@@ -50,7 +50,7 @@ index 959b1ac8e0425e9b306f5e062e4cd95fba192269..6d411393de3c4f65a65ecb13b4e502ab
  BASE_FEATURE(kIPHPdfSearchifyFeature,
               "IPH_PdfSearchifyFeature",
               base::FEATURE_ENABLED_BY_DEFAULT);
-@@ -228,7 +228,7 @@ BASE_FEATURE(kIPHReadingListDiscoveryFeature,
+@@ -231,7 +231,7 @@ BASE_FEATURE(kIPHReadingListDiscoveryFeature,
  BASE_FEATURE(kIPHReadingListEntryPointFeature,
               "IPH_ReadingListEntryPoint",
               base::FEATURE_DISABLED_BY_DEFAULT);
@@ -101,7 +101,7 @@ index 959b1ac8e0425e9b306f5e062e4cd95fba192269..6d411393de3c4f65a65ecb13b4e502ab
  BASE_FEATURE(kIPHTabGroupsSaveV2CloseGroupFeature,
               "IPH_TabGroupsSaveV2CloseGroup",
               base::FEATURE_ENABLED_BY_DEFAULT);
-@@ -339,9 +339,9 @@ BASE_FEATURE(kIPHPriceTrackingInSidePanelFeature,
+@@ -336,9 +336,9 @@ BASE_FEATURE(kIPHPriceTrackingInSidePanelFeature,
  BASE_FEATURE(kIPHBackNavigationMenuFeature,
               "IPH_BackNavigationMenu",
               base::FEATURE_DISABLED_BY_DEFAULT);
@@ -113,7 +113,7 @@ index 959b1ac8e0425e9b306f5e062e4cd95fba192269..6d411393de3c4f65a65ecb13b4e502ab
  #endif  // BUILDFLAG(IS_WIN) || BUILDFLAG(IS_APPLE) || BUILDFLAG(IS_LINUX) ||
          // BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_FUCHSIA)
  
-@@ -1028,9 +1028,9 @@ BASE_FEATURE(kIPHAutofillExternalAccountProfileSuggestionFeature,
+@@ -1036,9 +1036,9 @@ BASE_FEATURE(kIPHAutofillExternalAccountProfileSuggestionFeature,
  BASE_FEATURE(kIPHAutofillHomeWorkProfileSuggestionFeature,
               "IPH_AutofillHomeWorkProfileSuggestion",
               base::FEATURE_ENABLED_BY_DEFAULT);

@@ -1,5 +1,5 @@
 diff --git a/ios/chrome/browser/profile/model/keyed_service_factories.mm b/ios/chrome/browser/profile/model/keyed_service_factories.mm
-index 87b349119b51446db0b9c35878f357461b790fda..432b4c4bdfa7dfe9df32d2cea74d7a7f3662937a 100644
+index c38934b8a3703bd2649a12300ba6a82b0e2a8348..907c3aa5eca33053cffdcb1b85c2681dca2f3ece 100644
 --- a/ios/chrome/browser/profile/model/keyed_service_factories.mm
 +++ b/ios/chrome/browser/profile/model/keyed_service_factories.mm
 @@ -3,6 +3,7 @@

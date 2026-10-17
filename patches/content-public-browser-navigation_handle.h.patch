@@ -1,8 +1,8 @@
 diff --git a/content/public/browser/navigation_handle.h b/content/public/browser/navigation_handle.h
-index e692a94273d3a674a20c3b55c13aa53656a935a5..eb0c93f36ba399f9b9ae13275bb249b1956771e2 100644
+index bee90d04954603f3b5e3f3b6edced4d0e0d7f45e..30d647d2c47648448985b7800e609e3cd60f8c8d 100644
 --- a/content/public/browser/navigation_handle.h
 +++ b/content/public/browser/navigation_handle.h
-@@ -980,6 +980,12 @@ class CONTENT_EXPORT NavigationHandle : public base::SupportsUserData {
+@@ -981,6 +981,12 @@ class CONTENT_EXPORT NavigationHandle : public base::SupportsUserData {
    // Returns true if the next redirect should bypass redirect checks, and resets
    // the flag to false.
    virtual bool ConsumeBypassRedirectChecksForNextRedirect() = 0;

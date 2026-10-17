@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/BUILD.gn b/chrome/browser/resources/settings/BUILD.gn
-index 931e7086371b88c79907dd2201f49ef71fd4a974..3a0b9ce6a16731b9b6a1a04874a535edc62b3d6c 100644
+index 97e56bebe049dc71076a791d87494aa2450d276c..16fd9f78a38b294aae498a36c0f701cb6bccefdf 100644
 --- a/chrome/browser/resources/settings/BUILD.gn
 +++ b/chrome/browser/resources/settings/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -37,7 +37,7 @@ index 931e7086371b88c79907dd2201f49ef71fd4a974..3a0b9ce6a16731b9b6a1a04874a535ed
  
    if (is_chromeos) {
      ts_files += [
-@@ -712,9 +719,12 @@ build_webui("build") {
+@@ -714,9 +721,12 @@ build_webui("build") {
      "site_settings/site_settings_shared_lit.css",
      "system_page/system_page.css",
    ]
@@ -50,7 +50,7 @@ index 931e7086371b88c79907dd2201f49ef71fd4a974..3a0b9ce6a16731b9b6a1a04874a535ed
  
    ts_composite = true
    ts_definitions = [
-@@ -728,6 +738,7 @@ build_webui("build") {
+@@ -729,6 +739,7 @@ build_webui("build") {
      "//tools/typescript/definitions/pending.d.ts",
      "//tools/typescript/definitions/settings_private.d.ts",
    ]
@@ -58,7 +58,7 @@ index 931e7086371b88c79907dd2201f49ef71fd4a974..3a0b9ce6a16731b9b6a1a04874a535ed
    if (is_chromeos) {
      ts_definitions +=
          [ "//tools/typescript/definitions/quick_unlock_private.d.ts" ]
-@@ -749,6 +760,7 @@ build_webui("build") {
+@@ -750,6 +761,7 @@ build_webui("build") {
      "//ui/webui/resources/js:build_ts",
      "//ui/webui/resources/mojo:build_ts",
    ]
@@ -66,7 +66,7 @@ index 931e7086371b88c79907dd2201f49ef71fd4a974..3a0b9ce6a16731b9b6a1a04874a535ed
  
    if (!is_chromeos) {
      ts_deps +=
-@@ -785,4 +797,9 @@ build_webui("build") {
+@@ -786,4 +798,9 @@ build_webui("build") {
                "$root_gen_dir/chrome/browser/resources/settings_shared/tsc",
                root_build_dir) ]
    }

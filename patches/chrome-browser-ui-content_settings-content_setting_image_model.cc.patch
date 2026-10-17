@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/content_settings/content_setting_image_model.cc b/chrome/browser/ui/content_settings/content_setting_image_model.cc
-index d48d0c006c6a33ba46289a9027112608bb16d36c..5d41a8b85104c6da88d512d92acd7d19c1889aa0 100644
+index c2ba56a52209a4d300ced4a9b694bd60eca5be42..fece2aef0dd737858acb606faef4612c92e0d250 100644
 --- a/chrome/browser/ui/content_settings/content_setting_image_model.cc
 +++ b/chrome/browser/ui/content_settings/content_setting_image_model.cc
 @@ -644,6 +644,7 @@ void GetIconFromType(ContentSettingsType type,

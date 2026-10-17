@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/chrome_content_browser_client.cc b/chrome/browser/chrome_content_browser_client.cc
-index 1f44103b0a85b21a9c347131dfdd70bee2c86425..66c047ebab2820b186563a4b0e59faa3d6aad07b 100644
+index 68bdad5ace525d4aaf6b4ffab63de72c46f233ee..ec598305b67f8e3eb4cc9b5650f58ae948dd3fac 100644
 --- a/chrome/browser/chrome_content_browser_client.cc
 +++ b/chrome/browser/chrome_content_browser_client.cc
-@@ -9083,6 +9083,7 @@ base::FilePath ChromeContentBrowserClient::GetChildProcessPath(int flags) {
+@@ -9122,6 +9122,7 @@ base::FilePath ChromeContentBrowserClient::GetChildProcessPath(int flags) {
  
  bool ChromeContentBrowserClient::ShouldUseFirstPartyStorageKey(
      const url::Origin& origin) {

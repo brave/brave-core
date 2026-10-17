@@ -1,5 +1,5 @@
 diff --git a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-index 14d507bcb782cf096cf4e2f4bfd2e76c715b1329..d179ef4ad3a3f764a0ea4fd3b1f7675e87bdd228 100644
+index 8996edf81736e5a63aeda524504cef5a0ded9c39..da614db2ccd18db29bceabe90c580a5fb008bdcc 100644
 --- a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
 +++ b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
 @@ -492,6 +492,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
@@ -10,7 +10,7 @@ index 14d507bcb782cf096cf4e2f4bfd2e76c715b1329..d179ef4ad3a3f764a0ea4fd3b1f7675e
  }
  
  void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
-@@ -942,6 +943,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
+@@ -947,6 +948,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
    // Deprecated 09/2026.
    registry->RegisterDictionaryPref(kSigninHasAcceptedManagementDialog);
    registry->RegisterBooleanPref(kFingerprintingProtectionEnabled, false);
@@ -18,7 +18,7 @@ index 14d507bcb782cf096cf4e2f4bfd2e76c715b1329..d179ef4ad3a3f764a0ea4fd3b1f7675e
  }
  
  // This method should be periodically pruned of year+ old migrations.
-@@ -973,6 +975,7 @@ void MigrateObsoleteLocalStatePrefs(PrefService* prefs) {
+@@ -978,6 +980,7 @@ void MigrateObsoleteLocalStatePrefs(PrefService* prefs) {
  
    // Added 08/2026.
    prefs->ClearPref(kWaitingForMultiProfileForcedMigrationTimestamp);
@@ -26,7 +26,7 @@ index 14d507bcb782cf096cf4e2f4bfd2e76c715b1329..d179ef4ad3a3f764a0ea4fd3b1f7675e
  }
  
  // This method should be periodically pruned of year+ old migrations.
-@@ -1027,6 +1030,7 @@ void MigrateObsoleteProfilePrefs(PrefService* prefs) {
+@@ -1032,6 +1035,7 @@ void MigrateObsoleteProfilePrefs(PrefService* prefs) {
    // Deprecated 09/2026.
    prefs->ClearPref(kSigninHasAcceptedManagementDialog);
    prefs->ClearPref(kFingerprintingProtectionEnabled);

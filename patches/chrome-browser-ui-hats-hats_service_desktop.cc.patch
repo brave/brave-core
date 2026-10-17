@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/hats/hats_service_desktop.cc b/chrome/browser/ui/hats/hats_service_desktop.cc
-index f499ca5631ae7d2c3b3ba9ead416e5eb62ed44e4..b9aeba03c9462d746767dfc144d61718b7c6f2ee 100644
+index ef0046be155ef2314c51d3a622ebb8cfb6171b58..580f6a990da9ef35e98cc5021b4581ec87394b59 100644
 --- a/chrome/browser/ui/hats/hats_service_desktop.cc
 +++ b/chrome/browser/ui/hats/hats_service_desktop.cc
 @@ -436,6 +436,7 @@ bool HatsServiceDesktop::CanShowSurvey(const std::string& trigger) const {

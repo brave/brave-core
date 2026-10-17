@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/policy/profile_policy_connector.cc b/chrome/browser/policy/profile_policy_connector.cc
-index a6d89d00e1a2fde8a654f7ff2176c823c60608d1..dd91ed7af00322128b2e569071eae2870da4ec01 100644
+index 5b07f9f070648ea696fd761dd4259f89e6df1feb..be834883d7a181afcb39c1ca9b01c5a4e5673947 100644
 --- a/chrome/browser/policy/profile_policy_connector.cc
 +++ b/chrome/browser/policy/profile_policy_connector.cc
 @@ -581,6 +581,7 @@ void ProfilePolicyConnector::Init(

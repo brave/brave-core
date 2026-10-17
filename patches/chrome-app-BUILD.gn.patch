@@ -1,5 +1,5 @@
 diff --git a/chrome/app/BUILD.gn b/chrome/app/BUILD.gn
-index 472b43a6f44ab329c18c7ca8c21d219880f49ec9..2fd3cc10d9c0ac6678c63b3b2f157128b3f09de4 100644
+index 534e97a9d07fd59a7c5e815f5a162bb2c7484244..7c8167813ea91f3d5d43360250a0b900d0507b80 100644
 --- a/chrome/app/BUILD.gn
 +++ b/chrome/app/BUILD.gn
 @@ -61,6 +61,7 @@ source_set("chrome_dll_resources") {

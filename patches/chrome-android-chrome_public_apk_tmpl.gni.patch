@@ -1,8 +1,8 @@
 diff --git a/chrome/android/chrome_public_apk_tmpl.gni b/chrome/android/chrome_public_apk_tmpl.gni
-index b91c331206b51869318675bd2d30319dc0b93063..b51cf19d5c242792c507a933fa4026d1109fca30 100644
+index 0236199d5121439ba4bf4e7c937e5a9103f38ba4..6d5a50717730bb683b9b93c1f7f7fe441701d160 100644
 --- a/chrome/android/chrome_public_apk_tmpl.gni
 +++ b/chrome/android/chrome_public_apk_tmpl.gni
-@@ -299,6 +299,7 @@ template("chrome_common_apk_or_module_tmpl") {
+@@ -307,6 +307,7 @@ template("chrome_common_apk_or_module_tmpl") {
  
      resource_exclusion_regex = common_resource_exclusion_regex
      resource_exclusion_exceptions = common_resource_exclusion_exceptions
@@ -10,7 +10,7 @@ index b91c331206b51869318675bd2d30319dc0b93063..b51cf19d5c242792c507a933fa4026d1
  
      # Exceptions (rationale in https://crbug.com/41301595):
      resource_exclusion_exceptions += [
-@@ -337,6 +338,7 @@ template("chrome_common_apk_or_module_tmpl") {
+@@ -339,6 +340,7 @@ template("chrome_common_apk_or_module_tmpl") {
        if (!_is_bundle && optimize_android_resources) {
          resources_config_paths = [ "//chrome/android/aapt2.config" ]
        }
@@ -18,7 +18,7 @@ index b91c331206b51869318675bd2d30319dc0b93063..b51cf19d5c242792c507a933fa4026d1
      }
  
      # Java and native targets form two independent compile graphs. Deps from
-@@ -693,6 +695,14 @@ template("chrome_common_apk_or_module_tmpl") {
+@@ -703,6 +705,14 @@ template("chrome_common_apk_or_module_tmpl") {
                                   "version_code",
                                   "version_name",
                                 ])

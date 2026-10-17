@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/bookmarks/bookmark_utils.cc b/chrome/browser/ui/bookmarks/bookmark_utils.cc
-index bbb39ea6755c83c275349a9cf911e237a7327141..dcac7fdeda5b4fe15be0511f763f1b0416648b52 100644
+index 3e7c4f60802da108e976923c07cd715fe354ae10..0922bf1a82a6c771b401f644261a2a922b28a639 100644
 --- a/chrome/browser/ui/bookmarks/bookmark_utils.cc
 +++ b/chrome/browser/ui/bookmarks/bookmark_utils.cc
 @@ -256,6 +256,7 @@ void UpdateBookmarkBarVisibilityPrefOnUserAction(Profile* profile) {

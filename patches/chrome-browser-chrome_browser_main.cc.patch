@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/chrome_browser_main.cc b/chrome/browser/chrome_browser_main.cc
-index 1651c5defa7c0e4e43c43097dc5148a35d93da77..6693427f0473b58eb78ee3d96802624fc527bd81 100644
+index 23a80b954b64e96e84ca3ba937fe909eb609136e..f1d4919542f3844bea62c2bcf00431f7d4c69f0d 100644
 --- a/chrome/browser/chrome_browser_main.cc
 +++ b/chrome/browser/chrome_browser_main.cc
 @@ -1061,6 +1061,7 @@ void ChromeBrowserMainParts::ToolkitInitialized() {
