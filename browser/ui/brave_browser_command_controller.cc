@@ -37,6 +37,7 @@
 #include "brave/components/email_aliases/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
+#include "build/build_config.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
@@ -117,6 +118,10 @@
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
 #include "brave/browser/containers/containers_service_factory.h"
+#endif
+
+#if BUILDFLAG(IS_MAC)
+#include "chrome/browser/ui/window_feature_controller/window_feature_controller.h"
 #endif
 
 namespace {
@@ -449,14 +454,28 @@ void BraveBrowserCommandController::InitBraveCommandState() {
 void BraveBrowserCommandController::UpdateCommandsForFullscreenMode() {
   BrowserCommandController::UpdateCommandsForFullscreenMode();
 
-// On macOS, we block vertical tab mode toggling in fullscreen.
-// Immersive fullscreen feeature is enabled by default but
-// it's not compatible with vertical tab. See the comments in
-// WindowFeatureController::UsesImmersiveFullscreenMode() for more detail.
-// Otherwise, crash happens when turn on vertical tab while fullscreen.
+// On macOS, immersive fullscreen is not compatible with vertical tabs (see
+// WindowFeatureController::UsesImmersiveFullscreenMode()), and turning on
+// vertical tabs while in immersive fullscreen crashes. So vertical tab mode
+// toggling is blocked only while the current fullscreen session uses
+// immersive mode. In non-immersive fullscreen (e.g. it was entered with
+// vertical tabs on) the immersive decision is frozen for the whole session,
+// so toggling in either direction doesn't switch immersive mode on mid-session.
 #if BUILDFLAG(IS_MAC)
-  UpdateCommandEnabled(IDC_TOGGLE_VERTICAL_TABS,
-                       window() && !window()->IsFullscreen());
+  const bool is_fullscreen = window() && window()->IsFullscreen();
+  auto* window_feature_controller =
+      WindowFeatureController::From(base::to_address(browser_));
+  // Keep the toggle blocked in fullscreen if the decision can't be checked.
+  bool uses_immersive_fullscreen = true;
+  if (window_feature_controller) {
+    window_feature_controller->SetImmersiveDecisionFrozenForFullscreen(
+        is_fullscreen);
+    uses_immersive_fullscreen =
+        window_feature_controller->UsesImmersiveFullscreenMode();
+  }
+  UpdateCommandEnabled(
+      IDC_TOGGLE_VERTICAL_TABS,
+      window() && !(is_fullscreen && uses_immersive_fullscreen));
 #endif
 }
 

@@ -1273,6 +1273,8 @@ test("brave_browser_tests") {
     deps += [
       "//brave/components/commands/common",
       "//chrome/browser/ui/browser_active_state_manager",
+      "//chrome/browser/ui/immersive:immersive_mode_controller",
+      "//chrome/browser/ui/window_feature_controller",
     ]
   }
 
