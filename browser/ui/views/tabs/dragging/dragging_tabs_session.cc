@@ -13,6 +13,7 @@
 #include "chrome/browser/ui/views/tabs/dragging/tab_drag_context.h"
 #include "chrome/browser/ui/views/tabs/tab.h"
 #include "ui/gfx/geometry/point.h"
+#include "ui/views/view.h"
 
 DraggingTabsSession::DraggingTabsSession(
     DragSessionData drag_data,
@@ -67,7 +68,7 @@ DraggingTabsSession::CalculateGroupForDraggedTabs(int to_index) {
 
   // If a group is moved, the drag cannot be inserted into another group.
   for (const TabDragData& tab_drag_datum : drag_data_.tab_drag_data_) {
-    if (tab_drag_datum.view_type == TabSlotView::ViewType::kTabGroupHeader) {
+    if (tab_drag_datum.is_group_header) {
       return std::nullopt;
     }
   }
@@ -113,13 +114,13 @@ DraggingTabsSession::CalculateGroupForDraggedTabs(int to_index) {
   // next of the gap. If the tab is centered in the gap, make the tab
   // ungrouped.
 
-  const TabSlotView* top_most_selected_tab =
+  const views::View* top_most_selected_tab =
       drag_position_delegate_->GetTabAt(selected_unpinned[0]);
 
   const int buffer = top_most_selected_tab->height() / 4;
 
   const auto tab_bounds_in_drag_context_coords = [this](int model_index) {
-    const TabSlotView* const tab =
+    const views::View* const tab =
         drag_position_delegate_->GetTabAt(model_index);
     return ToEnclosingRect(views::View::ConvertRectToTarget(
         tab->parent(), base::to_address(attached_context_),
