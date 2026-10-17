@@ -5,42 +5,31 @@
 
 #include "brave/components/cosmetic_filters/common/scriptlet_constants.h"
 
-#include "third_party/abseil-cpp/absl/strings/str_format.h"
+#include "base/check.h"
+#include "base/strings/strcat.h"
+#include "base/strings/string_util.h"
+#include "brave/components/cosmetic_filters/resources/grit/cosmetic_filters_scriptlet_globals_generated.h"
+#include "ui/base/resource/resource_bundle.h"
 
 namespace cosmetic_filters {
 
 namespace {
 
-// Defines `scriptletGlobals`, a `Map` wrapped in a `Proxy` that some of uBlock
-// Origin's scriptlet resources rely on. It contains a single `%s` placeholder
-// for the `Map` constructor arguments (`canDebug` used on non-iOS platforms).
-constexpr char kScriptletGlobalsScript[] = R"js(
-  const scriptletGlobals = (() => {
-    const forwardedMapMethods = ["has", "get", "set"];
-    const handler = {
-      get(target, prop) {
-        if (forwardedMapMethods.includes(prop)) {
-          return Map.prototype[prop].bind(target)
-        }
-        return target.get(prop);
-      },
-      set(target, prop, value) {
-        if (!forwardedMapMethods.includes(prop)) {
-          target.set(prop, value);
-        }
-      }
-    };
-    return new Proxy(new Map(%s), handler);
-  })();
-  let deAmpEnabled = %s;
-)js";
+constexpr char kScriptletGlobalsConfigPlaceholder[] =
+    "__BRAVE_SCRIPTLET_GLOBALS_CONFIG__";
 
 }  // namespace
 
 std::string GetScriptletGlobalsScript(bool is_de_amp_enabled, bool can_debug) {
-  return absl::StrFormat(kScriptletGlobalsScript,
-                         can_debug ? R"([["canDebug", true]])" : "",
-                         is_de_amp_enabled ? "true" : "false");
+  std::string script =
+      ui::ResourceBundle::GetSharedInstance().LoadDataResourceString(
+          IDR_COSMETIC_FILTERS_SCRIPTLET_GLOBALS_SCRIPTLET_GLOBALS_BUNDLE_JS);
+  CHECK_NE(script.find(kScriptletGlobalsConfigPlaceholder), std::string::npos);
+  base::ReplaceSubstringsAfterOffset(
+      &script, 0, kScriptletGlobalsConfigPlaceholder,
+      base::StrCat({"[", can_debug ? "true" : "false", ",",
+                    is_de_amp_enabled ? "true" : "false", "]"}));
+  return script;
 }
 
 }  // namespace cosmetic_filters
