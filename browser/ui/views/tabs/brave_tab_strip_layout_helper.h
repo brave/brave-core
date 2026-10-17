@@ -61,12 +61,12 @@ std::pair<std::vector<gfx::Rect>, LayoutDomain> CalculateVerticalTabBounds(
 // area width and floating state. Exposed separately from the TabStrip*
 // overload below so it can be unit tested without a live TabStrip.
 std::vector<gfx::Rect> CalculateBoundsForVerticalDraggedViews(
-    const std::vector<TabSlotView*>& views,
+    const std::vector<views::View*>& views,
     int drag_area_width,
     bool is_vertical_tabs_floating);
 
 std::vector<gfx::Rect> CalculateBoundsForVerticalDraggedViews(
-    const std::vector<TabSlotView*>& views,
+    const std::vector<views::View*>& views,
     TabStrip* tab_strip);
 
 // `views` must already be children of `parent`. Reorders them so that
@@ -76,7 +76,7 @@ std::vector<gfx::Rect> CalculateBoundsForVerticalDraggedViews(
 // computes bounds for. Pinned tabs are left untouched since they fan out
 // horizontally instead of stacking.
 void ReorderDraggedViewsForStacking(views::View* parent,
-                                    const std::vector<TabSlotView*>& views);
+                                    const std::vector<views::View*>& views);
 
 void UpdateInsertionIndexForVerticalTabs(
     const gfx::Rect& dragged_bounds,
