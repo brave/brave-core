@@ -11,6 +11,8 @@ source_set("download") {
 
   deps = [
     "//base",
+    "//brave/browser:browser_process",
+    "//brave/browser/misc_metrics",
     "//brave/components/image_metadata_stripper",
     "//brave/components/image_metadata_stripper/common",
     "//chrome/browser/download",
@@ -27,6 +29,8 @@ source_set("browser_tests") {
     ":download",
     "//base",
     "//base/test:test_support",
+    "//brave/browser/misc_metrics",
+    "//brave/browser/misc_metrics:test_support",
     "//brave/components/image_metadata_stripper/common",
     "//chrome/browser/download",
     "//chrome/browser/profiles:profile",

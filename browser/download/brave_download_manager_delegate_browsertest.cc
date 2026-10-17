@@ -22,7 +22,10 @@
 #include "base/test/scoped_feature_list.h"
 #include "base/test/test_future.h"
 #include "base/threading/thread_restrictions.h"
+#include "brave/browser/misc_metrics/image_metadata_stripper_metrics.h"
+#include "brave/browser/misc_metrics/image_metadata_stripper_metrics_test_util.h"
 #include "brave/components/image_metadata_stripper/common/features.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/download/download_core_service.h"
 #include "chrome/browser/download/download_core_service_factory.h"
 #include "chrome/browser/download/download_prefs.h"
@@ -243,6 +246,13 @@ class BraveDownloadManagerDelegateBrowserTestBase : public PlatformBrowserTest {
     return downloads.empty() ? nullptr : downloads[0];
   }
 
+  // Reads an FBMD stripped count recorded in local state for |count_key|
+  // (kDownloadStrippedPrefKey or kUploadStrippedPrefKey).
+  int GetFbmdStrippedCountInLocalState(std::string_view count_key) {
+    return image_metadata_stripper::metrics::GetFbmdStrippedCountInLocalState(
+        g_browser_process->local_state(), count_key);
+  }
+
  protected:
   explicit BraveDownloadManagerDelegateBrowserTestBase(bool strip_metadata) {
     feature_list_.InitWithFeatureState(
@@ -341,4 +351,34 @@ IN_PROC_BROWSER_TEST_F(
     NON_ANDROID_TEST(DoesNotStripMetadataWhenFeatureDisabled)) {
   DownloadAndExpectIptcStripping(kJpegExtAndJpegMimeFile,
                                  /*should_strip=*/false);
+}
+
+// Downloading a JPEG that carries an FBMD record bumps the stripped count in
+// local state under the download flow (and leaves the upload flow untouched).
+IN_PROC_BROWSER_TEST_F(BraveDownloadManagerDelegateBrowserTest,
+                       NON_ANDROID_TEST(RecordsStrippedCountInLocalState)) {
+  // Nothing recorded before the download.
+  EXPECT_EQ(0, GetFbmdStrippedCountInLocalState(
+                   image_metadata_stripper::metrics::kDownloadStrippedPrefKey));
+
+  DownloadAndExpectIptcStripping(kRealJpegImageAndJpegMimeFile,
+                                 /*should_strip=*/true);
+
+  EXPECT_EQ(1, GetFbmdStrippedCountInLocalState(
+                   image_metadata_stripper::metrics::kDownloadStrippedPrefKey));
+  EXPECT_EQ(0, GetFbmdStrippedCountInLocalState(
+                   image_metadata_stripper::metrics::kUploadStrippedPrefKey));
+}
+
+// Stripping runs for a .jpeg served with a non-image MIME type, but the fake
+// contents carry no FBMD record, so nothing is stripped and the local state
+// stripped count stays at zero.
+IN_PROC_BROWSER_TEST_F(
+    BraveDownloadManagerDelegateBrowserTest,
+    NON_ANDROID_TEST(DoesNotCountDownloadWithoutFbmdAsStripped)) {
+  DownloadAndExpectIptcStripping(kJpegExtAndOctetMimeFile,
+                                 /*should_strip=*/true);
+
+  EXPECT_EQ(0, GetFbmdStrippedCountInLocalState(
+                   image_metadata_stripper::metrics::kDownloadStrippedPrefKey));
 }

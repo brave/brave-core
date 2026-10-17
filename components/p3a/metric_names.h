@@ -244,6 +244,9 @@ inline constexpr auto kCollectedTypicalHistograms =
     {"Brave.Wallet.UsageWeekly", MetricConfig{.ephemeral = true}},
     {"Brave.Web3.DappVisited", MetricConfig{.ephemeral = true}},
     {"Brave.WebTorrent.UsageWeekly", MetricConfig{.ephemeral = true}},
+     // Keep the image metadata metrics in sync with browser/misc_metrics/image_metadata_stripper_metrics.h.
+    {"Brave.Shields.DownloadFBMDStripped", MetricConfig{.ephemeral=true}},
+    {"Brave.Shields.UploadFBMDStripped", MetricConfig{.ephemeral=true}},
 });
 
 inline constexpr auto kCollectedSlowHistograms =
