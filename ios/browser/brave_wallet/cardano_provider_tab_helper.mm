@@ -12,6 +12,7 @@
 #include "base/functional/bind.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_provider_impl.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/ios/browser/api/brave_wallet/brave_wallet_provider_delegate_ios+private.h"
 #include "brave/ios/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/ios/browser/brave_wallet/brave_wallet_utils.h"
@@ -90,6 +91,11 @@ void CardanoProviderTabHelper::CreateProvider() {
     return;
   }
 
+  url::Origin origin = url::Origin::Create(web_state_->GetLastCommittedURL());
+  if (!IsValidDappOrigin(origin)) {
+    return;
+  }
+
   provider_ = std::make_unique<CardanoProviderImpl>(
       *brave_wallet_service_,
       base::BindRepeating(
@@ -98,7 +104,7 @@ void CardanoProviderTabHelper::CreateProvider() {
             return std::make_unique<BraveWalletProviderDelegateBridge>(bridge);
           },
           bridge_),
-      url::Origin::Create(web_state_->GetLastCommittedURL()));
+      origin);
 }
 
 void CardanoProviderTabHelper::DidFinishNavigation(

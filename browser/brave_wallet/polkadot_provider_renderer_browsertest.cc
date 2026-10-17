@@ -323,7 +323,16 @@ IN_PROC_BROWSER_TEST_F(PolkadotProviderRendererTest, Iframe3P) {
             .setAttribute('allow', 'polkadot; ethereum');
         true
         )",
-        data_top_url, data_simple_url}},
+        data_top_url, data_simple_url},
+       {// 3p iframe with sandbox="allow-scripts" allow="polkadot": sandboxing
+        // without allow-same-origin yields an opaque origin
+        R"(
+        document.querySelector('iframe').setAttribute('allow', 'polkadot');
+        document.querySelector('iframe').setAttribute('sandbox',
+          'allow-scripts');
+        true
+        )",
+        secure_top_url, iframe_url_3p}},
     polkadot_defined_cases[] = {
         {// 1st party iframe
          "true", secure_top_url, iframe_url_1p},
@@ -347,13 +356,6 @@ IN_PROC_BROWSER_TEST_F(PolkadotProviderRendererTest, Iframe3P) {
         document.querySelector('iframe').removeAttribute('sandbox');
         document.querySelector('iframe').setAttribute('allow',
           'ethereum; polkadot');
-        true
-        )",
-         secure_top_url, iframe_url_3p},
-        {// 3rd party iframe with sandbox="allow-scripts" allow="polkadot"
-         R"(
-        document.querySelector('iframe').setAttribute('allow', 'polkadot');
-        document.querySelector('iframe').setAttribute('sandbox', 'allow-scripts');
         true
         )",
          secure_top_url, iframe_url_3p}};

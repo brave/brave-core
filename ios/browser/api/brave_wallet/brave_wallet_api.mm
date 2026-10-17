@@ -13,6 +13,7 @@
 #include "brave/components/brave_wallet/browser/cardano/cardano_provider_impl.h"
 #include "brave/components/brave_wallet/browser/ethereum_provider_impl.h"
 #include "brave/components/brave_wallet/browser/solana_provider_impl.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/resources/grit/brave_wallet_script_generated.h"
 #include "brave/ios/browser/api/brave_wallet/brave_wallet.mojom.objc+private.h"
 #include "brave/ios/browser/api/brave_wallet/brave_wallet_provider_delegate_ios+private.h"
@@ -88,6 +89,9 @@ BraveWalletProviderScriptKey const BraveWalletProviderScriptKeyWalletStandard =
   }
 
   url::Origin committed_origin([origin underlyingOrigin]);
+  if (!brave_wallet::IsValidDappOrigin(committed_origin)) {
+    return nil;
+  }
 
   auto provider = std::make_unique<brave_wallet::EthereumProviderImpl>(
       ios::HostContentSettingsMapFactory::GetForProfile(profile),
@@ -125,6 +129,9 @@ BraveWalletProviderScriptKey const BraveWalletProviderScriptKeyWalletStandard =
   }
 
   url::Origin committed_origin([origin underlyingOrigin]);
+  if (!brave_wallet::IsValidDappOrigin(committed_origin)) {
+    return nil;
+  }
 
   auto provider = std::make_unique<brave_wallet::SolanaProviderImpl>(
       *host_content_settings_map, brave_wallet_service,
@@ -155,6 +162,9 @@ BraveWalletProviderScriptKey const BraveWalletProviderScriptKeyWalletStandard =
   }
 
   url::Origin committed_origin([origin underlyingOrigin]);
+  if (!brave_wallet::IsValidDappOrigin(committed_origin)) {
+    return nil;
+  }
 
   auto provider = std::make_unique<brave_wallet::CardanoProviderImpl>(
       *brave_wallet_service,
