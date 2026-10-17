@@ -5,6 +5,7 @@
 
 use std::collections::HashSet;
 use std::str::Utf8Error;
+use std::sync::OnceLock;
 
 use crate::resource_storage::BraveCoreResourceStorage;
 use adblock::lists::FilterSet as InnerFilterSet;
@@ -12,6 +13,7 @@ use adblock::url_parser::ResolvesDomain;
 use adblock::Engine as InnerEngine;
 use cxx::{let_cxx_string, CxxString, CxxVector};
 
+use crate::convert::to_blocker_result;
 use crate::ffi::{
     resolve_domain_position, BlockerResult, BoxEngineResult, ContentBlockingRulesResult, DebugInfo,
     FilterListMetadata, RegexManagerDiscardPolicy, VecStringResult,
@@ -24,6 +26,9 @@ use crate::ffi::ContentBlockingRules;
 
 pub struct Engine {
     engine: InnerEngine,
+    /// Indexed by `SourceLocation::source_index`. Filled on first use, so
+    /// engines that record no source locations never build it.
+    source_titles: OnceLock<Vec<String>>,
 }
 
 impl Default for Box<Engine> {
@@ -32,8 +37,12 @@ impl Default for Box<Engine> {
     }
 }
 
+fn wrap_engine(engine: InnerEngine) -> Box<Engine> {
+    Box::new(Engine { engine, source_titles: OnceLock::new() })
+}
+
 pub fn new_engine() -> Box<Engine> {
-    Box::new(Engine { engine: InnerEngine::default() })
+    wrap_engine(InnerEngine::default())
 }
 
 pub fn engine_with_rules(rules: &CxxVector<u8>) -> BoxEngineResult {
@@ -43,8 +52,7 @@ pub fn engine_with_rules(rules: &CxxVector<u8>) -> BoxEngineResult {
             std::str::from_utf8(rules.as_slice())?.to_string(),
             Default::default(),
         );
-        let engine = InnerEngine::new_with_filter_set(filter_set);
-        Ok(Box::new(Engine { engine }))
+        Ok(wrap_engine(InnerEngine::new_with_filter_set(filter_set)))
     }()
     .into()
 }
@@ -52,8 +60,7 @@ pub fn engine_with_rules(rules: &CxxVector<u8>) -> BoxEngineResult {
 /// Creates a new engine with rules from a given filter set.
 pub fn engine_from_filter_set(filter_set: Box<FilterSet>) -> BoxEngineResult {
     || -> Result<Box<Engine>, InternalError> {
-        let engine = InnerEngine::new_with_filter_set(filter_set.0);
-        Ok(Box::new(Engine { engine }))
+        Ok(wrap_engine(InnerEngine::new_with_filter_set(filter_set.0)))
     }()
     .into()
 }
@@ -140,20 +147,34 @@ impl Engine {
     ) -> BlockerResult {
         // The following strings are guaranteed to be
         // UTF-8, so unwrapping directly should be okay.
-        self.engine
-            .check_network_request_subset(
-                &adblock::request::Request::preparsed(
-                    url.to_str().unwrap(),
-                    hostname.to_str().unwrap(),
-                    initiator_hostname.to_str().unwrap(),
-                    request_type.to_str().unwrap(),
-                    third_party_request,
-                    method.to_str().unwrap_or_default(),
-                ),
-                previously_matched_rule,
-                force_check_exceptions,
-            )
-            .into()
+        let result = self.engine.check_network_request_subset(
+            &adblock::request::Request::preparsed(
+                url.to_str().unwrap(),
+                hostname.to_str().unwrap(),
+                initiator_hostname.to_str().unwrap(),
+                request_type.to_str().unwrap(),
+                third_party_request,
+                method.to_str().unwrap_or_default(),
+            ),
+            previously_matched_rule,
+            force_check_exceptions,
+        );
+        to_blocker_result(result, &|source_index| self.source_title(source_index))
+    }
+
+    fn source_title(&self, source_index: u32) -> String {
+        self.source_titles
+            .get_or_init(|| {
+                self.engine
+                    .get_debug_info()
+                    .source_info
+                    .into_iter()
+                    .map(|source| source.title.unwrap_or_default())
+                    .collect()
+            })
+            .get(source_index as usize)
+            .cloned()
+            .unwrap_or_default()
     }
 
     pub fn get_csp_directives(
@@ -185,7 +206,9 @@ impl Engine {
     }
 
     pub fn deserialize(&mut self, serialized: &CxxVector<u8>) -> bool {
-        self.engine.deserialize(serialized.as_slice()).is_ok()
+        let result = self.engine.deserialize(serialized.as_slice());
+        self.source_titles = OnceLock::new();
+        result.is_ok()
     }
 
     pub fn use_resource_storage(&mut self, storage: &BraveCoreResourceStorage) {

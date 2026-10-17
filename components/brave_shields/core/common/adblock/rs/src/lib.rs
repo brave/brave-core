@@ -146,8 +146,9 @@ mod ffi {
     #[derive(Default)]
     struct FilterRuleInfo {
         raw_line: String,
-        source_index: i32, // -1 if not available
-        line_number: i32,  // -1 if not available
+        source_index: i32,  // -1 if not available
+        line_number: i32,   // -1 if not available
+        list_title: String, // empty if not available
     }
 
     struct RegexDebugEntry {
