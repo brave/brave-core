@@ -1,0 +1,28 @@
+<?xml version="1.0" ?>
+<!DOCTYPE translationbundle>
+<translationbundle lang="es-419">
+<translation id="5725339460980108526">Cuando usas el modo Incógnito, Brave impide que los sitios usen cookies de terceros.</translation>
+<translation id="1365023215312302966">Los sitios no pueden usar las cookies de terceros para personalizar contenido o anuncios, ni para obtener información sobre las acciones que realizas en otros sitios.</translation>
+<translation id="7271018957317922139">Cuando estás en el modo Incógnito, los sitios no pueden usar las cookies de terceros. Si un sitio que depende de estas cookies no funciona, puedes <ph name="BEGIN_LINK"/>intentar otorgarle acceso temporal a las cookies de terceros<ph name="END_LINK"/>.</translation>
+<translation id="2004697686368036666">Es posible que algunas funciones no se ejecuten correctamente en algunos sitios.</translation>
+<translation id="2183376768278472507">Si un sitio no funciona como debería, puedes permitir las cookies de terceros para el sitio específico que visites.</translation>
+<translation id="2235344399760031203">Se bloquearon las cookies de terceros</translation>
+<translation id="2360633687155619995">Los sitios no pueden usar las cookies de terceros para personalizar contenido o anuncios, ni para obtener información sobre las acciones que realizas en otros sitios. Es posible que algunas funciones del sitio no se ejecuten correctamente.</translation>
+<translation id="2496115946829713659">Los sitios pueden usar las cookies de terceros para personalizar contenido y anuncios, así como también conocer las acciones que realizas en otros sitios.</translation>
+<translation id="7220743783949410550">Cuando estás en el modo Incógnito, los sitios no pueden usar las cookies de terceros. Si un sitio que depende de estas cookies no funciona, puedes <ph name="START_LINK"/>intentar otorgarle acceso temporal a las cookies de terceros<ph name="END_LINK"/>.</translation>
+<translation id="3425311689852411591">Los sitios que dependen de las cookies de terceros deberían funcionar según lo previsto.</translation>
+<translation id="3624583033347146597">Elige tus preferencias de cookies de terceros</translation>
+<translation id="3918378745482005425">Es posible que algunas funciones no se ejecuten correctamente. Los sitios relacionados también pueden usar las cookies de terceros.</translation>
+<translation id="4278390842282768270">Permitidas</translation>
+<translation id="4412992751769744546">Permitir las cookies de terceros</translation>
+<translation id="4711259472133554310">Puedes crear excepciones en la Configuración para permitir que sitios específicos usen las cookies de terceros en todo momento.</translation>
+<translation id="5677928146339483299">Bloqueadas</translation>
+<translation id="6196640612572343990">Bloquear cookies de terceros</translation>
+<translation id="6308169245546905162">Los sitios pueden usar las cookies de terceros para conocer las acciones que realizas en otros sitios.</translation>
+<translation id="7315780377187123731">Más información sobre la opción Bloquear cookies de terceros</translation>
+<translation id="7374493521304367420">Los sitios aún pueden usar cookies para ver la actividad de navegación en su propio sitio.</translation>
+<translation id="7453144832830554937">Es posible que las funciones del sitio que dependen de las cookies de terceros no se ejecuten correctamente.</translation>
+<translation id="7538480403395139206">Más información sobre la opción Permitir las cookies de terceros</translation>
+<translation id="8200078544056087897">Las funciones del sitio que dependen de las cookies de terceros deberían funcionar según lo previsto.</translation>
+<translation id="839994149685752920">Los sitios pueden usar las cookies de terceros para personalizar el contenido y los anuncios.</translation>
+</translationbundle>

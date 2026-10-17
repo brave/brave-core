@@ -1,0 +1,28 @@
+<?xml version="1.0" ?>
+<!DOCTYPE translationbundle>
+<translationbundle lang="zh-TW">
+<translation id="5725339460980108526">在無痕模式下，Brave 會禁止網站使用第三方 Cookie</translation>
+<translation id="1365023215312302966">網站無法運用第三方 Cookie 提供個人化內容和廣告，也無法瞭解你在其他網站的活動</translation>
+<translation id="7271018957317922139">在無痕模式下，網站無法使用第三方 Cookie。如果依賴這些 Cookie 的網站無法運作，可以<ph name="BEGIN_LINK"/>嘗試允許該網站暫時存取第三方 Cookie<ph name="END_LINK"/>。</translation>
+<translation id="2004697686368036666">某些網站的功能可能無法運作</translation>
+<translation id="2183376768278472507">如果網站無法正常運作，建議允許該網站使用第三方 Cookie</translation>
+<translation id="2235344399760031203">第三方 Cookie 已封鎖</translation>
+<translation id="2360633687155619995">網站無法運用第三方 Cookie 提供個人化內容和廣告，也無法瞭解你在其他網站的活動。某些網站功能可能無法正常運作。</translation>
+<translation id="2496115946829713659">網站可以運用第三方 Cookie 提供個人化內容和廣告，並且瞭解你在其他網站的操作</translation>
+<translation id="7220743783949410550">在無痕模式下，網站無法使用第三方 Cookie。如果依賴這些 Cookie 的網站無法運作，可以<ph name="START_LINK"/>嘗試允許該網站暫時存取第三方 Cookie<ph name="END_LINK"/>。</translation>
+<translation id="3425311689852411591">依賴第三方 Cookie 的網站應該都能正常運作</translation>
+<translation id="3624583033347146597">選擇第三方 Cookie 偏好設定</translation>
+<translation id="3918378745482005425">某些功能可能無法運作，相關網站仍可使用第三方 Cookie。</translation>
+<translation id="4278390842282768270">已允許</translation>
+<translation id="4412992751769744546">允許第三方 Cookie</translation>
+<translation id="4711259472133554310">你可以前往「設定」建立例外網站清單，一律允許特定網站使用第三方 Cookie</translation>
+<translation id="5677928146339483299">已封鎖</translation>
+<translation id="6196640612572343990">封鎖第三方 Cookie</translation>
+<translation id="6308169245546905162">網站可以透過第三方 Cookie，瞭解你在其他網站的操作</translation>
+<translation id="7315780377187123731">進一步瞭解「封鎖第三方 Cookie」選項</translation>
+<translation id="7374493521304367420">網站仍可使用 Cookie 查看你在該網站上的瀏覽活動</translation>
+<translation id="7453144832830554937">依賴第三方 Cookie 的網站功能可能無法運作</translation>
+<translation id="7538480403395139206">進一步瞭解「允許第三方 Cookie」選項</translation>
+<translation id="8200078544056087897">依賴第三方 Cookie 的網站功能應該能正常運作</translation>
+<translation id="839994149685752920">網站可以運用第三方 Cookie 提供個人化內容和廣告</translation>
+</translationbundle>
