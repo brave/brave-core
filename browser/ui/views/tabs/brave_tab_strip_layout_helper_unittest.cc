@@ -519,7 +519,7 @@ TEST_F(CalculateBoundsForVerticalDraggedViewsTest,
   constexpr int kDragAreaWidth = 200;
   constexpr int kExpectedOffset = kBaseOffsetPerLevel;
 
-  std::vector<TabSlotView*> views = {root, child};
+  std::vector<views::View*> views = {root, child};
   std::vector<gfx::Rect> bounds = CalculateBoundsForVerticalDraggedViews(
       views, kDragAreaWidth, /*is_vertical_tabs_floating=*/false);
 
@@ -550,7 +550,7 @@ TEST_F(CalculateBoundsForVerticalDraggedViewsTest,
   grouped->SetGroup(tab_groups::TabGroupId::GenerateNew());
 
   constexpr int kDragAreaWidth = 200;
-  std::vector<TabSlotView*> views = {ungrouped, grouped};
+  std::vector<views::View*> views = {ungrouped, grouped};
   std::vector<gfx::Rect> bounds = CalculateBoundsForVerticalDraggedViews(
       views, kDragAreaWidth, /*is_vertical_tabs_floating=*/false);
 
@@ -585,7 +585,7 @@ TEST_F(CalculateBoundsForVerticalDraggedViewsTest,
   sibling->SetBoundsRect({0, 0, 0, kVerticalTabHeight});
   sibling->set_nesting_info({});
 
-  std::vector<TabSlotView*> views = {root, child, sibling};
+  std::vector<views::View*> views = {root, child, sibling};
   std::vector<gfx::Rect> bounds = CalculateBoundsForVerticalDraggedViews(
       views, /*drag_area_width=*/200, /*is_vertical_tabs_floating=*/false);
 
