@@ -109,7 +109,6 @@ void ShieldsPanelDataHandler::SetAdBlockMode(
 
   brave_shields_settings_->SetAdBlockMode(
       mode, active_shields_data_controller_->GetCurrentSiteURL());
-  active_shields_data_controller_->ReloadWebContents();
 }
 
 void ShieldsPanelDataHandler::SetFingerprintMode(
@@ -120,7 +119,6 @@ void ShieldsPanelDataHandler::SetFingerprintMode(
 
   brave_shields_settings_->SetFingerprintMode(
       mode, active_shields_data_controller_->GetCurrentSiteURL());
-  active_shields_data_controller_->ReloadWebContents();
 }
 
 void ShieldsPanelDataHandler::SetCookieBlockMode(
@@ -148,7 +146,6 @@ void ShieldsPanelDataHandler::SetIsNoScriptsEnabled(bool is_enabled) {
 
   brave_shields_settings_->SetNoScriptEnabled(
       is_enabled, active_shields_data_controller_->GetCurrentSiteURL());
-  active_shields_data_controller_->ReloadWebContents();
 }
 
 void ShieldsPanelDataHandler::AllowScriptsOnce(
@@ -296,9 +293,8 @@ void ShieldsPanelDataHandler::UpdateSiteBlockInfo() {
     return;
   }
 
-  const GURL current_site_url =
-      active_shields_data_controller_->GetCurrentSiteURL();
-  site_block_info_.host = current_site_url.host();
+  site_block_info_.host =
+      active_shields_data_controller_->GetCurrentSiteURL().host();
   site_block_info_.total_blocked_resources =
       active_shields_data_controller_->GetTotalBlockedCount();
   site_block_info_.ads_list =
@@ -320,7 +316,8 @@ void ShieldsPanelDataHandler::UpdateSiteBlockInfo() {
       active_shields_data_controller_
           ->ShouldShowShieldsDisabledAdBlockOnlyModePrompt();
   site_block_info_.is_brave_shields_managed =
-      brave_shields_settings_->IsBraveShieldsManaged(current_site_url);
+      brave_shields_settings_->IsBraveShieldsManaged(
+          active_shields_data_controller_->GetCurrentSiteURL());
   const auto& invoked_webcompat_set =
       active_shields_data_controller_->GetInvokedWebcompatFeatures();
   site_block_info_.invoked_webcompat_list = std::vector<ContentSettingsType>(

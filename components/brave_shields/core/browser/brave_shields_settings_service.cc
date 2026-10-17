@@ -18,6 +18,7 @@
 #include "components/content_settings/core/common/content_settings_types.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_service.h"
+#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/base/url_util.h"
 #include "url/gurl.h"
 
@@ -97,6 +98,7 @@ void BraveShieldsSettingsService::SetBraveShieldsEnabled(bool is_enabled,
                                                          const GURL& url) {
   brave_shields::SetBraveShieldsEnabled(&*host_content_settings_map_,
                                         is_enabled, url, local_state_);
+  NotifySettingsChanged(url);
 }
 
 bool BraveShieldsSettingsService::IsBraveShieldsEnabled(const GURL& url) {
@@ -145,6 +147,7 @@ void BraveShieldsSettingsService::SetAdBlockMode(mojom::AdBlockMode mode,
   brave_shields::SetCosmeticFilteringControlType(&*host_content_settings_map_,
                                                  control_type_cosmetic, url,
                                                  local_state_, profile_prefs_);
+  NotifySettingsChanged(url);
 }
 
 mojom::AdBlockMode BraveShieldsSettingsService::GetAdBlockMode(
@@ -198,6 +201,7 @@ void BraveShieldsSettingsService::SetFingerprintMode(
   brave_shields::SetFingerprintingControlType(&*host_content_settings_map_,
                                               control_type, url, local_state_,
                                               profile_prefs_);
+  NotifySettingsChanged(url);
 }
 
 mojom::FingerprintMode BraveShieldsSettingsService::GetFingerprintMode(
@@ -234,6 +238,24 @@ void BraveShieldsSettingsService::SetNoScriptEnabled(bool is_enabled,
       is_enabled ? ControlType::BLOCK : ControlType::ALLOW;
   brave_shields::SetNoScriptControlType(&*host_content_settings_map_,
                                         control_type, url, local_state_);
+  NotifySettingsChanged(url);
+}
+
+void BraveShieldsSettingsService::AddObserver(Observer* observer) {
+  observers_.AddObserver(observer);
+}
+
+void BraveShieldsSettingsService::RemoveObserver(Observer* observer) {
+  observers_.RemoveObserver(observer);
+}
+
+void BraveShieldsSettingsService::NotifySettingsChanged(const GURL& url) {
+  const std::string etld_plus_one =
+      net::registry_controlled_domains::GetDomainAndRegistry(
+          url, net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
+  for (Observer& observer : observers_) {
+    observer.OnShieldsSettingsChanged(etld_plus_one);
+  }
 }
 
 bool BraveShieldsSettingsService::IsNoScriptEnabled(const GURL& url) {
