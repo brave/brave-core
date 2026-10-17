@@ -59,7 +59,9 @@ section links to a detailed document.
 - **[Navigation and Timing](./best-practices/testing-navigation.md)** -
   Same-document navigation, timeouts, page distillation
 - **[Test Isolation and Specific Patterns](./best-practices/testing-isolation.md)** -
-  Fakes, API testing, HTTP request testing, throttle testing, Chromium patterns
+  Fake dependencies, behavior assertions, injected/scoped factories, async
+  creation, observers, delegates, unit vs integration tests, API testing, HTTP
+  requests, throttle testing, Chromium patterns
 - **[Upstream Test Failures](./best-practices/testing-upstream-failures.md)** -
   When to use filter files vs fix tests, checking upstream flakiness via LUCI
   Analysis, filter file conventions
@@ -86,8 +88,5 @@ Before writing async tests, verify:
 
 - [Chromium Browser Design Principles](https://chromium.googlesource.com/chromium/src/+/main/docs/chrome_browser_design_principles.md) -
   Feature scoping, modularity, UI patterns, lifetime management
-- [Chromium C++ Testing Best Practices](https://www.chromium.org/chromium-os/developer-library/guides/testing/cpp-writing-tests/)
 - [Chromium C++ Style Guide](https://chromium.googlesource.com/chromium/src/+/HEAD/styleguide/c++/c++.md)
-- [Chromium Smart Pointer Guidelines](https://www.chromium.org/developers/smart-pointer-guidelines/)
 - [Chromium Container Guidelines](https://chromium.googlesource.com/chromium/src/+/HEAD/base/containers/README.md)
-- [Chromium Componentization Cookbook](https://www.chromium.org/developers/design-documents/cookbook/)
