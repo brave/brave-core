@@ -879,6 +879,10 @@ public class BrowserViewController: UIViewController {
       return
     }
 
+    // WebKit pauses video only once the scene is in the background. So to ensure the video playback continues
+    // in the background we need to record which tab video is still playing while this scene is resigning active.
+    markPlayingVideosBeforeBackground()
+
     tabManager.saveAllTabs()
 
     // If we are displaying a private tab, hide any elements in the tab that we wouldn't want shown
@@ -939,10 +943,25 @@ public class BrowserViewController: UIViewController {
     showContentHiddenInBackground()
   }
 
+  /// Stamp videos that are playing before WebKit's background pause. A video the user already paused stays unmarked
+  private func markPlayingVideosBeforeBackground() {
+    for tab in tabManager.allTabs {
+      tab.videoBackgroundPlayback?.markPlayingVideos()
+    }
+  }
+
+  /// Resumes videos marked while this scene was resigning active.
+  private func resumePlayingVideoAfterBackground() {
+    for tab in tabManager.allTabs {
+      tab.videoBackgroundPlayback?.resumePlayingVideos()
+    }
+  }
+
   @objc private func sceneDidEnterBackgroundNotification(_ notification: NSNotification) {
     guard let scene = notification.object as? UIScene, scene == currentScene else {
       return
     }
+    resumePlayingVideoAfterBackground()
     guard Preferences.Privacy.privateBrowsingLock.value,
       privateBrowsingManager.isPrivateBrowsing
     else {
