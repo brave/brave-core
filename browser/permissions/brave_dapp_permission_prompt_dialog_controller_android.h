@@ -7,12 +7,14 @@
 #define BRAVE_BROWSER_PERMISSIONS_BRAVE_DAPP_PERMISSION_PROMPT_DIALOG_CONTROLLER_ANDROID_H_
 
 #include <jni.h>
+
 #include <string>
 #include <vector>
 
 #include "base/android/scoped_java_ref.h"
 #include "base/memory/raw_ptr.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "url/origin.h"
 
 namespace content {
 class WebContents;
@@ -32,7 +34,8 @@ class BraveDappPermissionPromptDialogController {
   BraveDappPermissionPromptDialogController(
       Delegate* delegate,
       content::WebContents* web_contents_,
-      brave_wallet::mojom::CoinType coin_type_);
+      brave_wallet::mojom::CoinType coin_type_,
+      const url::Origin& requesting_origin);
   ~BraveDappPermissionPromptDialogController();
 
   void ShowDialog();
@@ -51,6 +54,7 @@ class BraveDappPermissionPromptDialogController {
   raw_ptr<Delegate> delegate_ = nullptr;
   raw_ptr<content::WebContents> web_contents_ = nullptr;
   brave_wallet::mojom::CoinType coin_type_;
+  url::Origin requesting_origin_;
 
   // The corresponding java object.
   base::android::ScopedJavaGlobalRef<jobject> java_object_;

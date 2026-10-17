@@ -78,7 +78,7 @@ ChromePermissionsClient::MaybeCreateMessageUI(
       auto delegate = std::make_unique<BraveWalletPermissionPrompt::Delegate>(
           std::move(prompt));
       return std::make_unique<BraveWalletPermissionPrompt>(
-          web_contents, std::move(delegate), coin_type);
+          web_contents, std::move(delegate), coin_type, *requests[0]);
     }
   }
 #endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
