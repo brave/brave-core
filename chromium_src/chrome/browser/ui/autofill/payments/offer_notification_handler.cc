@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "components/autofill/core/browser/payments/offer_notification_handler.h"
+#include "chrome/browser/ui/autofill/payments/offer_notification_handler.h"
 
 #include "components/autofill/core/browser/data_model/payments/autofill_offer_data.h"
 #include "components/autofill/core/browser/payments/autofill_offer_manager.h"
@@ -31,4 +31,4 @@ bool BraveIsOfferValid(const AutofillOfferData* offer) {
 
 }  // namespace autofill
 
-#include <components/autofill/core/browser/payments/offer_notification_handler.cc>
+#include <chrome/browser/ui/autofill/payments/offer_notification_handler.cc>
