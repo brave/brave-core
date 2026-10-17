@@ -206,8 +206,7 @@ void PageContentExtractor::ExtractPageContent(
 void PageContentExtractor::BindReceiver(
     mojo::PendingReceiver<mojom::PageContentExtractor> receiver) {
   VLOG(1) << "AIChat PageContentExtractor handler bound.";
-  receiver_.reset();
-  receiver_.Bind(std::move(receiver));
+  receivers_.Add(this, std::move(receiver));
 }
 
 void PageContentExtractor::OnDistillResult(
