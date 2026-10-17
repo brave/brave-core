@@ -96,6 +96,35 @@ mojom::ContainerPtr ContainersService::GetOrCreateTemporaryContainerByName(
   return container;
 }
 
+void ContainersService::MaybeDeleteTemporaryContainer(
+    const std::string& id,
+    base::OnceCallback<void(bool)> done) {
+  // Only a temporary container this profile has used and that the synced list
+  // doesn't claim may be deleted - anything else is a container the user can
+  // still pick. Requiring the used-container snapshot also makes a repeated
+  // call a no-op instead of a second recursive directory removal.
+  const bool is_deletable = IsTemporaryContainerId(id) &&
+                            HasLocallyUsedContainerInPrefs(*prefs_, id) &&
+                            !GetContainerFromPrefs(*prefs_, id);
+  const bool is_being_deleted =
+      orphaned_containers_pending_removal_.contains(id) ||
+      temporary_containers_pending_removal_.contains(id);
+  // Clearing the storage and removing the partition directory under a live
+  // WebContents would wipe its session mid-browse and leave a directory the
+  // partition then recreates, so a container still holding a tab is left for
+  // the orphan sweep on the next launch.
+  if (!is_deletable || is_being_deleted ||
+      delegate_->HasOpenTabInContainer(id)) {
+    std::move(done).Run(/*deleted=*/false);
+    return;
+  }
+
+  temporary_containers_pending_removal_.insert(id);
+  delegate_->DeleteContainerStorage(
+      id, base::BindOnce(&ContainersService::OnTemporaryContainerStorageDeleted,
+                         weak_factory_.GetWeakPtr(), id, std::move(done)));
+}
+
 mojom::ContainerPtr ContainersService::GetRuntimeContainerById(
     std::string_view id) const {
   if (auto container = GetContainerFromPrefs(*prefs_, id)) {
@@ -134,12 +163,14 @@ std::vector<std::string> ContainersService::GetUsedContainerIds() const {
 
   auto used_ids = base::ToVector(GetLocallyUsedContainersFromPrefs(*prefs_),
                                  [](const auto& c) { return c->id; });
-  if (orphaned_cleanup_state_ ==
-      OrphanedContainersCleanupState::kRemovingOrphans) {
-    std::erase_if(used_ids, [&](const std::string& id) {
-      return orphaned_containers_pending_removal_.contains(id);
-    });
-  }
+  const bool is_removing_orphans =
+      orphaned_cleanup_state_ ==
+      OrphanedContainersCleanupState::kRemovingOrphans;
+  std::erase_if(used_ids, [&](const std::string& id) {
+    return temporary_containers_pending_removal_.contains(id) ||
+           (is_removing_orphans &&
+            orphaned_containers_pending_removal_.contains(id));
+  });
   return used_ids;
 }
 
@@ -234,9 +265,13 @@ void ContainersService::OnReferencedContainerIdsReady(
   for (const auto& locally_used_container :
        GetLocallyUsedContainersFromPrefs(*prefs_)) {
     const std::string& id = locally_used_container->id;
+    // A container whose storage `MaybeDeleteTemporaryContainer` is already
+    // removing
+    // must not be handed to a second, concurrent deletion.
     if (std::ranges::any_of(synced_containers,
                             [&](const auto& c) { return c->id == id; }) ||
-        referenced_container_ids.contains(id)) {
+        referenced_container_ids.contains(id) ||
+        temporary_containers_pending_removal_.contains(id)) {
       continue;
     }
 
@@ -271,6 +306,23 @@ void ContainersService::OnContainerStorageDeleted(const std::string& id,
   if (!GetContainerFromPrefs(*prefs_, id)) {
     RemoveLocallyUsedContainerFromPrefs(id, *prefs_);
   }
+}
+
+void ContainersService::OnTemporaryContainerStorageDeleted(
+    const std::string& id,
+    base::OnceCallback<void(bool)> done,
+    bool success) {
+  temporary_containers_pending_removal_.erase(id);
+
+  if (success) {
+    RemoveLocallyUsedContainerFromPrefs(id, *prefs_);
+  } else {
+    // Keep the used-container snapshot so the orphan sweep retries.
+    LOG(WARNING) << "Failed to delete temporary container storage for " << id
+                 << " will retry on next launch";
+  }
+
+  std::move(done).Run(success);
 }
 
 }  // namespace containers
