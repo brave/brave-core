@@ -6,14 +6,12 @@
 #ifndef BRAVE_IOS_BROWSER_SERP_METRICS_SERP_METRICS_TAB_HELPER_H_
 #define BRAVE_IOS_BROWSER_SERP_METRICS_SERP_METRICS_TAB_HELPER_H_
 
-#include <optional>
+#include <memory>
 
 #include "base/memory/raw_ptr.h"
 #include "base/memory/raw_ref.h"
-#include "components/search_engines/search_engine_type.h"
 #include "ios/web/public/web_state_observer.h"
 #include "ios/web/public/web_state_user_data.h"
-#include "url/gurl.h"
 
 namespace web {
 class NavigationContext;
@@ -23,6 +21,7 @@ class WebState;
 namespace serp_metrics {
 
 class SerpMetrics;
+class SerpMetricsNavigationTracker;
 
 // Observes navigations and records search engine result page visits.
 class SerpMetricsTabHelper : public web::WebStateUserData<SerpMetricsTabHelper>,
@@ -40,10 +39,6 @@ class SerpMetricsTabHelper : public web::WebStateUserData<SerpMetricsTabHelper>,
 
   SerpMetricsTabHelper(web::WebState* web_state, SerpMetrics& serp_metrics);
 
-  bool IsSameSerpAsLastRecorded(const GURL& url) const;
-  void MaybeClassifyAndRecordSearchEngineForUrl(const GURL& url);
-  void RecordSearchEngine(SearchEngineType search_engine_type);
-
   // web::WebStateObserver:
   void DidFinishNavigation(web::WebState* web_state,
                            web::NavigationContext* navigation_context) override;
@@ -52,7 +47,7 @@ class SerpMetricsTabHelper : public web::WebStateUserData<SerpMetricsTabHelper>,
   raw_ptr<web::WebState> web_state_;
   const raw_ref<SerpMetrics> serp_metrics_;
 
-  std::optional<GURL> last_recorded_serp_url_;
+  std::unique_ptr<SerpMetricsNavigationTracker> navigation_tracker_;
 };
 
 }  // namespace serp_metrics
