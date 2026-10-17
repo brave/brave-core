@@ -1007,7 +1007,35 @@ void PolkadotSubstrateRpc::OnGetEvents(GetEventsCallback callback,
 }
 
 GURL PolkadotSubstrateRpc::GetNetworkURL(std::string_view chain_id) {
-  return network_manager_->GetNetworkURL(chain_id, mojom::CoinType::DOT);
+  auto url = network_manager_->GetNetworkURL(chain_id, mojom::CoinType::DOT);
+  if (url.is_empty()) {
+    url = GetRpcUrlFromChainId(chain_id);
+  }
+  return url;
+}
+
+GURL PolkadotSubstrateRpc::GetRpcUrlFromChainId(std::string_view chain_id) {
+  if (chain_id == mojom::kPolkadotAcala) {
+    return GURL("https://acala-rpc-0.aca-api.network");
+  }
+
+  if (chain_id == mojom::kPolkadotBifrost) {
+    return GURL("https://hk.p.bifrost-rpc.liebi.com");
+  }
+
+  if (chain_id == mojom::kPolkadotHydration) {
+    return GURL("https://hydration-rpc.n.dwellir.com");
+  }
+
+  if (chain_id == mojom::kPolkadotNeuroWeb) {
+    return GURL("https://parachain-rpc.origin-trail.network");
+  }
+
+  if (chain_id == mojom::kPolkadotJamton) {
+    return GURL("https://rpc.jamton.network");
+  }
+
+  return GURL();
 }
 
 void PolkadotSubstrateRpc::MakePostRequestInternal(

@@ -134,6 +134,9 @@ class PolkadotWalletService : public mojom::PolkadotWalletService,
       base::span<const uint8_t, kPolkadotSubstrateAccountIdSize> recipient,
       GetFeeEstimateCallback callback);
 
+  static std::optional<std::string_view> GetChainIdFromGenesisHash(
+      std::string_view genesis_hash);
+
  private:
   // KeyringServiceObserverBase:
   void Unlocked() override;
