@@ -16,7 +16,7 @@
 #include "content/public/renderer/render_frame.h"
 #include "content/public/renderer/render_frame_observer.h"
 #include "content/public/renderer/render_frame_observer_tracker.h"
-#include "mojo/public/cpp/bindings/receiver.h"
+#include "mojo/public/cpp/bindings/receiver_set.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "services/service_manager/public/cpp/binder_registry.h"
 #include "third_party/blink/public/web/web_local_frame_observer.h"
@@ -95,7 +95,9 @@ class PageContentExtractor
   void BindReceiver(
       mojo::PendingReceiver<mojom::PageContentExtractor> receiver);
 
-  mojo::Receiver<mojom::PageContentExtractor> receiver_{this};
+  // The browser binds a new connection per request and keeps a long-lived one
+  // for content tool changes, so every connection needs its own receiver.
+  mojo::ReceiverSet<mojom::PageContentExtractor> receivers_;
 
   mojo::Remote<mojom::ContentToolsListener> content_tools_listener_;
 
