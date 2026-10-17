@@ -118,6 +118,13 @@ brave_chrome_all_java_deps = [
   "//brave/browser/ui/android/brave_account:java",
 ]
 
+brave_chrome_extensions_internal_java_deps = [
+  "//chrome/browser/ui/android/extensions/side_panel/internal:java",
+  "//chrome/browser/ui/android/extensions/windowing/internal:java",
+]
+
+brave_browser_ui_extensions_java_sources = [ "//brave/chrome/browser/ui/android/extensions/java/src/org/chromium/chrome/browser/ui/extensions/BraveExtensionUiBackendUtil.java" ]
+
 brave_chrome_java_srcjar_deps = [
   "//brave/android:brave_android_java_enums_srcjar",
   "//brave/android:brave_config_java",

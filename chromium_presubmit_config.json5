@@ -221,9 +221,19 @@
     ],
     "IS_DESKTOP_ANDROID": [
       "chromium_src/chrome/browser/ui/webui/favicon_source\\.cc",
+      "browser/extensions/android/brave_extension_management\\.cc",
     ],
     "/(?i)is_desktop_android": [
       "browser/sources\\.gni",
+      "android/android_browser_tests\\.gni",
+    ],
+    "//\\s*nogncheck(\\s|$)": [
+      "browser/ui/webui/ai_chat/ai_chat_ui\\.cc",
+      "browser/ui/webui/ai_chat/ai_chat_untrusted_conversation_ui\\.cc",
+      "browser/ui/webui/brave_wallet/market/market_ui\\.cc",
+      "browser/ui/webui/brave_wallet/line_chart/line_chart_ui\\.cc",
+      "browser/ui/webui/brave_rewards/rewards_page_data_source\\.cc",
+      "browser/ui/webui/brave_wallet/wallet_page/wallet_page_ui\\.cc",
     ],
   },
 }

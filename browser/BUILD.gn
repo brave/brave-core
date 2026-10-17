@@ -55,6 +55,18 @@ source_set("brave_global_features") {
   public_deps = [ "//extensions/buildflags" ]
 }
 
+source_set("brave_browser_features") {
+  sources = [ "brave_browser_features.h" ]
+
+  # //brave/browser/extensions:extensions' Android implementation includes
+  # this header without otherwise depending on :core (which depends back on
+  # :extensions), so it's split out to avoid a dependency cycle.
+  public_deps = [
+    "//base",
+    "//brave/components/v8/buildflags",
+  ]
+}
+
 source_set("brave_global_features_impl") {
   visibility = [ "//brave/browser:core" ]
   sources = [ "brave_global_features.cc" ]

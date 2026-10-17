@@ -109,7 +109,8 @@
     &brave_shields::features::kBraveShredFeature,                              \
     &brave_origin::features::kBraveOrigin,                                     \
     &features::kBraveCustomSearchEngines,                                      \
-    &features::kBraveAndroidTabGroupsSettings
+    &features::kBraveAndroidTabGroupsSettings,                                 \
+    &features::kBraveAndroidExtensions
 
 // clang-format on
 
