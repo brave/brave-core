@@ -1,0 +1,16 @@
+diff --git a/net/dns/host_resolver_manager.cc b/net/dns/host_resolver_manager.cc
+index ab286b869b864d0c8f4f7c6c98374f93d686a7f7..78ea5b9d390293f9321e780a48c7607ac339e896 100644
+--- a/net/dns/host_resolver_manager.cc
++++ b/net/dns/host_resolver_manager.cc
+@@ -987,6 +987,11 @@ HostCache::Entry HostResolverManager::ResolveLocally(
+     }
+   }
+ 
++  if (IsOnionHostnameResolutionBlocked(job_key)) {
++    out_tasks->clear();
++    return HostCache::Entry(ERR_NAME_NOT_RESOLVED,
++                            HostCache::Entry::SOURCE_UNKNOWN);
++  }
+   return HostCache::Entry(ERR_DNS_CACHE_MISS, HostCache::Entry::SOURCE_UNKNOWN);
+ }
+ 

@@ -148,6 +148,7 @@
 #include "net/base/net_errors.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/cookies/site_for_cookies.h"
+#include "services/network/public/mojom/network_context.mojom.h"
 #include "services/network/public/mojom/web_transport.mojom.h"
 #include "services/network/public/mojom/websocket.mojom.h"
 #include "services/service_manager/public/cpp/binder_registry.h"
@@ -1359,6 +1360,26 @@ void BraveContentBrowserClient::WillCreateWebTransport(
   ChromeContentBrowserClient::WillCreateWebTransport(
       process_id, frame_routing_id, url, initiator_origin,
       std::move(handshake_client), std::move(callback));
+}
+
+void BraveContentBrowserClient::ConfigureNetworkContextParams(
+    content::BrowserContext* context,
+    bool in_memory,
+    const base::FilePath& relative_partition_path,
+    network::mojom::NetworkContextParams* network_context_params,
+    cert_verifier::mojom::CertVerifierCreationParams*
+        cert_verifier_creation_params) {
+  ChromeContentBrowserClient::ConfigureNetworkContextParams(
+      context, in_memory, relative_partition_path, network_context_params,
+      cert_verifier_creation_params);
+  network_context_params->is_tor = context->IsTor();
+#if BUILDFLAG(ENABLE_TOR)
+  network_context_params->onion_only_in_tor_windows =
+      user_prefs::UserPrefs::Get(context)->GetBoolean(
+          tor::prefs::kOnionOnlyInTorWindows);
+#else
+  network_context_params->onion_only_in_tor_windows = false;
+#endif
 }
 
 template <template <typename> class T>
