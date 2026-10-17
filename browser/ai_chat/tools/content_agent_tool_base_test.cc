@@ -74,9 +74,9 @@ ContentAgentToolBaseTest::RunWithExpectedSuccess(
   EXPECT_EQ(tool_request->JournalEvent(), expected_tool_name);
 
   if (uses_tab) {
-    EXPECT_EQ(tool_request->GetActorSurfaceHandle(),
-              actor::ActorSurfaceHandle::FromRawValue(
-                  test_tab_handle_.raw_value()));
+    EXPECT_EQ(
+        tool_request->GetActorSurfaceHandle(),
+        actor::ActorSurfaceHandle::FromRawValue(test_tab_handle_.raw_value()));
   } else {
     EXPECT_EQ(tool_request->GetActorSurfaceHandle(),
               actor::ActorSurfaceHandle::Null());
