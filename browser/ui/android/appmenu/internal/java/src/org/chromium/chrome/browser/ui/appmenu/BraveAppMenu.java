@@ -27,9 +27,8 @@ public class BraveAppMenu extends BraveAppMenuDummySuper {
     BraveAppMenu(
             AppMenuVisibilityDelegate visibilityDelegate,
             Resources res,
-            HierarchicalMenuController<AppMenu.AppMenuPopup> hierarchicalMenuController,
-            boolean disableVerticalScrollbar) {
-        super(visibilityDelegate, res, hierarchicalMenuController, disableVerticalScrollbar);
+            HierarchicalMenuController<AppMenu.AppMenuPopup> hierarchicalMenuController) {
+        super(visibilityDelegate, res, hierarchicalMenuController);
 
         final float scale = res.getDisplayMetrics().density;
         sNegativeVerticalOffsetNotTopAnchored =
