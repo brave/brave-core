@@ -60,10 +60,14 @@ source_set("browser_tests") {
 source_set("unit_tests") {
   testonly = true
 
-  sources = [ "brave_sanitized_image_source_unittest.cc" ]
+  sources = [
+    "brave_sanitized_image_source_unittest.cc",
+    "untrusted_sanitized_image_source_unittest.cc",
+  ]
   deps = [
     "//base",
     "//base/test:test_support",
+    "//brave/components/brave_wallet/common/buildflags",
     "//chrome/browser/ui",
     "//chrome/test:test_support",
     "//content/test:test_support",

@@ -100,6 +100,10 @@ source_set("unit_tests") {
   if (is_android) {
     deps += [ "//chrome/test:test_support_ui_android" ]
   } else {
-    deps += [ "//chrome/test:test_support_ui" ]
+    sources += [ "playlist_data_source_unittest.cc" ]
+    deps += [
+      "//chrome/browser",
+      "//chrome/test:test_support_ui",
+    ]
   }
 }

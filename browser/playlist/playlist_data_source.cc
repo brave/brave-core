@@ -26,6 +26,7 @@
 #include "base/strings/escape.h"
 #include "base/strings/string_split.h"
 #include "base/task/thread_pool.h"
+#include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/playlist/content/browser/mime_util.h"
 #include "brave/components/playlist/content/browser/playlist_service.h"
 #include "components/favicon_base/favicon_url_parser.h"
@@ -33,6 +34,7 @@
 #include "content/public/browser/url_data_source.h"
 #include "net/base/filename_util.h"
 #include "url/gurl.h"
+#include "url/origin.h"
 
 namespace playlist {
 
@@ -310,6 +312,18 @@ bool PlaylistDataSource::SupportsRangeRequests(const GURL& url) const {
   }
 
   return DataRequest(url).type == DataRequest::Type::kMedia;
+}
+
+std::string PlaylistDataSource::GetAccessControlAllowOriginForOrigin(
+    const std::string& origin) {
+  // The Playlist pages are cross-origin to this chrome-untrusted:// source.
+  const url::Origin requesting_origin = url::Origin::Create(GURL(origin));
+  if (requesting_origin == url::Origin::Create(GURL(kPlaylistURL)) ||
+      requesting_origin == url::Origin::Create(GURL(kPlaylistPlayerURL))) {
+    return origin;
+  }
+  // Skips FaviconSource, whose allowances are for chrome-untrusted://favicon2.
+  return content::URLDataSource::GetAccessControlAllowOriginForOrigin(origin);
 }
 
 }  // namespace playlist

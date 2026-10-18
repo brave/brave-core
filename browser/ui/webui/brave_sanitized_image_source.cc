@@ -19,6 +19,7 @@
 #include "brave/brave_domains/service_domains.h"
 #include "brave/components/brave_private_cdn/headers.h"
 #include "brave/components/brave_private_cdn/private_cdn_helper.h"
+#include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/storage_partition.h"
@@ -34,6 +35,7 @@
 #include "ui/gfx/geometry/size.h"
 #include "ui/gfx/image/image.h"
 #include "ui/gfx/image/image_skia_operations.h"
+#include "url/origin.h"
 #include "url/url_constants.h"
 #include "url/url_util.h"
 
@@ -219,6 +221,17 @@ std::string BraveSanitizedImageSource::GetSource() {
                          "/"});
   }
   return kChromeUIBraveImageHost;
+}
+
+std::string BraveSanitizedImageSource::GetAccessControlAllowOriginForOrigin(
+    const std::string& origin) {
+  // chrome-untrusted:// pages are cross-origin to this source, so each one that
+  // loads images from it must be allowed explicitly.
+  if (serve_untrusted_ && url::Origin::Create(GURL(origin)) ==
+                              url::Origin::Create(GURL(kBraveNewsURL))) {
+    return origin;
+  }
+  return content::URLDataSource::GetAccessControlAllowOriginForOrigin(origin);
 }
 
 void BraveSanitizedImageSource::EncodeAndReplyStaticImage(

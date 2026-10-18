@@ -5,13 +5,35 @@
 
 #include "brave/browser/ui/webui/untrusted_sanitized_image_source.h"
 
+#include <algorithm>
+#include <array>
 #include <string>
+#include <string_view>
 #include <utility>
 
 #include "base/strings/strcat.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/common/webui_url_constants.h"
 #include "url/origin.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/components/brave_wallet/common/web_ui_constants.h"
+#endif
+
+namespace {
+
+// Every chrome-untrusted:// page is cross-origin to this source, so each one
+// that loads images from it must be allowed explicitly.
+constexpr auto kAllowedOriginURLs = std::to_array<std::string_view>({
+    kAIChatUntrustedConversationUIURL,
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+    kUntrustedMarketURL,
+    kUntrustedNftURL,
+#endif
+});
+
+}  // namespace
 
 std::string UntrustedSanitizedImageSource::GetSource() {
   return base::StrCat({content::kChromeUIUntrustedScheme,
@@ -38,10 +60,10 @@ void UntrustedSanitizedImageSource::StartDataRequest(
 
 std::string UntrustedSanitizedImageSource::GetAccessControlAllowOriginForOrigin(
     const std::string& origin) {
-  // Every chrome-untrusted:// page is cross-origin to this source, so each one
-  // that loads images from it must be allowed explicitly.
-  if (url::Origin::Create(GURL(origin)) ==
-      url::Origin::Create(GURL(kAIChatUntrustedConversationUIURL))) {
+  const url::Origin requesting_origin = url::Origin::Create(GURL(origin));
+  if (std::ranges::any_of(kAllowedOriginURLs, [&](std::string_view url) {
+        return requesting_origin == url::Origin::Create(GURL(url));
+      })) {
     return origin;
   }
   return SanitizedImageSource::GetAccessControlAllowOriginForOrigin(origin);
