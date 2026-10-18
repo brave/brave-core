@@ -70,6 +70,11 @@ public class BraveSingleWebsiteSettings extends BaseSiteSettingsFragment {
                             ? ContentSetting.ALLOW
                             : ContentSetting.BLOCK;
         }
+
+        @Nullable
+        PermissionSetting permissionSetting =
+                mSite.getPermissionSetting(browserContextHandle, ContentSettingsType.AUTOPLAY);
+
         // Not possible to embargo AUTOPLAY.
         BraveReflectionUtil.invokeMethod(
                 SingleWebsiteSettings.class,
@@ -79,6 +84,8 @@ public class BraveSingleWebsiteSettings extends BaseSiteSettingsFragment {
                 preference,
                 Integer.class,
                 currentValue,
+                PermissionSetting.class,
+                permissionSetting,
                 boolean.class,
                 false,
                 boolean.class,
@@ -101,6 +108,12 @@ public class BraveSingleWebsiteSettings extends BaseSiteSettingsFragment {
                             ? ContentSetting.ASK
                             : ContentSetting.BLOCK;
         }
+
+        @Nullable
+        PermissionSetting permissionSetting =
+                mSite.getPermissionSetting(
+                        browserContextHandle, ContentSettingsType.BRAVE_GOOGLE_SIGN_IN);
+
         BraveReflectionUtil.invokeMethod(
                 SingleWebsiteSettings.class,
                 this,
@@ -109,6 +122,8 @@ public class BraveSingleWebsiteSettings extends BaseSiteSettingsFragment {
                 preference,
                 Integer.class,
                 currentValue,
+                PermissionSetting.class,
+                permissionSetting,
                 boolean.class,
                 false,
                 boolean.class,
