@@ -2216,8 +2216,7 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/ui/appmenu/AppMenu",
                         BraveAppMenu.getAppMenuVisibilityDelegateClass(),
                         Resources.class,
-                        HierarchicalMenuController.class,
-                        boolean.class));
+                        HierarchicalMenuController.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/components/external_intents/ExternalNavigationHandler",
