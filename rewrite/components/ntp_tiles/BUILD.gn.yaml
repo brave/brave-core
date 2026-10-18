@@ -1,0 +1,16 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Let //brave/browser:core see the popular sites pref names.
+
+      brave_profile_prefs.cc registers the popular sites prefs itself, so it
+      needs this header from outside //components/ntp_tiles.
+    insert_into_list:
+      target: popular_sites_pref_names
+      list_name: visibility
+      values:
+        - //brave/browser:core
