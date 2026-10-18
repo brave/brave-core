@@ -771,12 +771,6 @@ public class BytecodeTest {
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/components/browser_ui/site_settings/SingleCategorySettings",
-                        "getAddExceptionDialogMessageResourceId",
-                        MethodModifier.REGULAR,
-                        int.class));
-        Assert.assertTrue(
-                methodExists(
-                        "org/chromium/components/browser_ui/site_settings/SingleCategorySettings",
                         "resetList",
                         MethodModifier.REGULAR,
                         void.class));
