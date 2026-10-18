@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.settings;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -30,6 +31,7 @@ import org.chromium.base.test.util.DoNotBatch;
 import org.chromium.base.test.util.Features.EnableFeatures;
 import org.chromium.chrome.browser.partnercustomizations.CloseBraveManager;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
+import org.chromium.chrome.browser.tab.TabArchiveSettings;
 import org.chromium.chrome.test.ChromeJUnit4ClassRunner;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.ui.modaldialog.ModalDialogManager;
@@ -186,6 +188,23 @@ public class BraveTabsAndTabGroupsSettingsTest {
         assertNull(getModalDialogManager().getCurrentDialogForTest());
         assertFalse(enableTabGroupsSwitch.isChecked());
         assertFalse(isTabGroupsEnabled());
+    }
+
+    @Test
+    @SmallTest
+    @EnableFeatures(BraveFeatureList.BRAVE_ANDROID_TAB_GROUPS_SETTINGS)
+    public void testArchiveSummaryLeavesTabArchiveSettingsUsable() {
+        startSettings();
+
+        // Showing this screen must not destroy the process-wide TabArchiveSettings. A destroyed
+        // instance is never recreated, stops accepting counts, and nulls the archived tab count
+        // supplier that upstream unboxes unchecked.
+        ThreadUtils.runOnUiThreadBlocking(
+                () -> {
+                    TabArchiveSettings archiveSettings = TabArchiveSettings.getInstance();
+                    archiveSettings.setArchivedTabCount(3);
+                    assertEquals(3, archiveSettings.getArchivedTabCount());
+                });
     }
 
     /** Turns the tab groups switch off and answers the confirmation dialog with {@code button}. */
