@@ -13,6 +13,7 @@
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/test/base/chrome_test_utils.h"
 #include "chrome/test/base/platform_browser_test.h"
+#include "content/public/browser/global_routing_id.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
@@ -71,10 +72,12 @@ class AIChatUntrustedConversationUIBrowserTest : public PlatformBrowserTest {
     ASSERT_EQ(true,
               content::EvalJs(web_contents,
                               content::JsReplace(kAddIframeScript, frame_url)));
-    conversation_frame_ = content::FrameMatchingPredicate(
-        web_contents->GetPrimaryPage(),
-        base::BindRepeating(&content::FrameHasSourceUrl, frame_url));
-    ASSERT_TRUE(conversation_frame_);
+    content::RenderFrameHost* conversation_frame =
+        content::FrameMatchingPredicate(
+            web_contents->GetPrimaryPage(),
+            base::BindRepeating(&content::FrameHasSourceUrl, frame_url));
+    ASSERT_TRUE(conversation_frame);
+    conversation_frame_id_ = conversation_frame->GetGlobalId();
   }
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
@@ -93,14 +96,16 @@ class AIChatUntrustedConversationUIBrowserTest : public PlatformBrowserTest {
   }
 
   content::EvalJsResult LoadImage(const std::string& src) {
-    return content::EvalJs(conversation_frame_,
-                           content::JsReplace(kLoadImageScript, src));
+    return content::EvalJs(
+        content::RenderFrameHost::FromID(conversation_frame_id_),
+        content::JsReplace(kLoadImageScript, src));
   }
 
  protected:
   net::EmbeddedTestServer https_server_;
   content::ContentMockCertVerifier mock_cert_verifier_;
-  raw_ptr<content::RenderFrameHost> conversation_frame_ = nullptr;
+  // By id, since the frame is destroyed before the fixture at shutdown.
+  content::GlobalRenderFrameHostId conversation_frame_id_;
 };
 
 IN_PROC_BROWSER_TEST_F(AIChatUntrustedConversationUIBrowserTest,
