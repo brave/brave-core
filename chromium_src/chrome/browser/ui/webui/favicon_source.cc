@@ -5,23 +5,12 @@
 
 #include <string>
 
-#include "brave/components/constants/webui_url_constants.h"
 #include "build/android_buildflags.h"
 #include "build/build_config.h"
 #include "ui/resources/grit/ui_resources.h"
-#include "url/gurl.h"
-#include "url/origin.h"
 
-namespace {
-
-// Brave's chrome-untrusted:// WebUIs that load chrome-untrusted://favicon2,
-// which is cross-origin to them.
-bool IsBraveUntrustedFaviconOrigin(const std::string& origin) {
-  return url::Origin::Create(GURL(origin)) ==
-         url::Origin::Create(GURL(kAIChatUntrustedConversationUIURL));
-}
-
-}  // namespace
+// Defined in brave/browser/ui/webui/favicon_source.cc.
+bool IsBraveUntrustedFaviconOrigin(const std::string& origin);
 
 // Only used where favicon_source.cc's own SendDefaultResponse() references
 // the 32/64 sizes: desktop and desktop Android.
