@@ -23,10 +23,6 @@ public class BraveSingleCategorySettingsClassAdapter extends BraveClassVisitor {
                 sBraveSingleCategorySettingsClassName);
         changeMethodOwner(
                 sSingleCategorySettingsClassName,
-                "getAddExceptionDialogMessageResourceId",
-                sBraveSingleCategorySettingsClassName);
-        changeMethodOwner(
-                sSingleCategorySettingsClassName,
                 "resetList",
                 sBraveSingleCategorySettingsClassName);
     }
