@@ -43,3 +43,12 @@ substitutions:
       re_pattern: 'mScrimModel\.set\(\s*ScrimProperties\.BOTTOM_MARGIN,.*?\);'
       re_flags: [DOTALL]
       replace: 'mScrimModel.set(ScrimProperties.BOTTOM_MARGIN, 0);'
+  - description: |-
+      Remove obsolete bottom-chin usage.
+
+      The bottom margin is forced to zero above, so the computed value is dead.
+    regex:
+      re_pattern: |-
+        ^[ \t]*int bottomMargin =\s*mBottomControlsStacker\.isLayerVisible\(\s*LayerType\.BOTTOM_TOOLBAR\)\s*\?\s*mBottomControlsStacker\.getHeightFromLayerToBottom\(\s*LayerType\.BOTTOM_TOOLBAR\)\s*:\s*0;\n
+      re_flags: [MULTILINE]
+      replace: ''

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/LocationBarFocusScrimHandler.java b/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/LocationBarFocusScrimHandler.java
-index 24fa3dccf8fcd82d2167591f852da7d7a0d77924..daf9343000ce53befec6957e54c3db046970c1d9 100644
+index 24fa3dccf8fcd82d2167591f852da7d7a0d77924..07aeef294fb89b9745aaa7e2a71f42d4d3440ce4 100644
 --- a/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/LocationBarFocusScrimHandler.java
 +++ b/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/LocationBarFocusScrimHandler.java
 @@ -73,7 +73,6 @@ public class LocationBarFocusScrimHandler {
@@ -26,10 +26,15 @@ index 24fa3dccf8fcd82d2167591f852da7d7a0d77924..daf9343000ce53befec6957e54c3db04
      }
  
      /** Compute and apply property updates needed for accurate visual representation of scrim. */
-@@ -165,7 +164,7 @@ public class LocationBarFocusScrimHandler {
-                         ? mBottomControlsStacker.getHeightFromLayerToBottom(
-                                 LayerType.BOTTOM_TOOLBAR)
-                         : 0;
+@@ -160,12 +159,7 @@ public class LocationBarFocusScrimHandler {
+         // the toolbar at the top, the bottom inset is covered by the keyboard or the suggestions
+         // list, and cropping the scrim would only reveal an unscrimmed band above the keyboard
+         // when the scrim's container is resized to end at the keyboard.
+-        int bottomMargin =
+-                mBottomControlsStacker.isLayerVisible(LayerType.BOTTOM_TOOLBAR)
+-                        ? mBottomControlsStacker.getHeightFromLayerToBottom(
+-                                LayerType.BOTTOM_TOOLBAR)
+-                        : 0;
 -        mScrimModel.set(ScrimProperties.BOTTOM_MARGIN, bottomMargin);
 +        mScrimModel.set(ScrimProperties.BOTTOM_MARGIN, 0);
      }
