@@ -1006,15 +1006,6 @@ public class BytecodeTest {
                         Context.class));
         Assert.assertTrue(
                 methodExists(
-                        "org/chromium/chrome/browser/undo_tab_close_snackbar/UndoBarController",
-                        "showUndoBar",
-                        MethodModifier.REGULAR,
-                        void.class,
-                        List.class,
-                        List.class,
-                        boolean.class));
-        Assert.assertTrue(
-                methodExists(
                         "org/chromium/chrome/browser/notifications/NotificationPlatformBridge",
                         "dispatchNotificationEvent",
                         MethodModifier.STATIC,
