@@ -35,7 +35,6 @@
 #include "ui/gfx/geometry/size.h"
 #include "ui/gfx/image/image.h"
 #include "ui/gfx/image/image_skia_operations.h"
-#include "url/origin.h"
 #include "url/url_constants.h"
 #include "url/url_util.h"
 
@@ -227,8 +226,7 @@ std::string BraveSanitizedImageSource::GetAccessControlAllowOriginForOrigin(
     const std::string& origin) {
   // chrome-untrusted:// pages are cross-origin to this source, so each one that
   // loads images from it must be allowed explicitly.
-  if (serve_untrusted_ && url::Origin::Create(GURL(origin)) ==
-                              url::Origin::Create(GURL(kBraveNewsURL))) {
+  if (serve_untrusted_ && base::StrCat({origin, "/"}) == kBraveNewsURL) {
     return origin;
   }
   return content::URLDataSource::GetAccessControlAllowOriginForOrigin(origin);

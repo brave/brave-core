@@ -5,6 +5,7 @@
 
 #include <string>
 
+#include "base/command_line.h"
 #include "base/functional/bind.h"
 #include "base/path_service.h"
 #include "base/strings/escape.h"
@@ -19,6 +20,7 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/content_mock_cert_verifier.h"
+#include "net/base/net_errors.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "testing/gtest/include/gtest/gtest.h"

@@ -11,8 +11,8 @@ import("//brave/ui/webui/custom_profile_image/buildflags/buildflags.gni")
 source_set("favicon_source_chromium_impl") {
   sources = [ "favicon_source.cc" ]
   deps = [
+    "//base",
     "//brave/components/constants",
-    "//url",
   ]
 }
 

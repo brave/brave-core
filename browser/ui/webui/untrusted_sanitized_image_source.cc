@@ -15,7 +15,6 @@
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/common/webui_url_constants.h"
-#include "url/origin.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/components/brave_wallet/common/web_ui_constants.h"
@@ -60,10 +59,7 @@ void UntrustedSanitizedImageSource::StartDataRequest(
 
 std::string UntrustedSanitizedImageSource::GetAccessControlAllowOriginForOrigin(
     const std::string& origin) {
-  const url::Origin requesting_origin = url::Origin::Create(GURL(origin));
-  if (std::ranges::any_of(kAllowedOriginURLs, [&](std::string_view url) {
-        return requesting_origin == url::Origin::Create(GURL(url));
-      })) {
+  if (std::ranges::contains(kAllowedOriginURLs, base::StrCat({origin, "/"}))) {
     return origin;
   }
   return SanitizedImageSource::GetAccessControlAllowOriginForOrigin(origin);
