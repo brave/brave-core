@@ -26,7 +26,7 @@ bool IsOnionHostnameResolutionBlocked(
   }
   const URLRequestContext* url_request_context =
       resolve_context->url_request_context();
-  return url_request_context && !url_request_context->is_tor() &&
+  return url_request_context && !url_request_context->enable_tor() &&
          url_request_context->onion_only_in_tor_windows() &&
          IsOnionHostname(job_key.host.GetHostname());
 }

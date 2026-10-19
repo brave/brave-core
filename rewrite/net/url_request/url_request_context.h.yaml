@@ -14,8 +14,8 @@ substitutions:
     add_to_public:
       class_name: URLRequestContext
       code: |-
-        void set_is_tor(bool is_tor) { is_tor_ = is_tor; }
-        bool is_tor() const { return is_tor_; }
+        void set_enable_tor(bool enable_tor) { enable_tor_ = enable_tor; }
+        bool enable_tor() const { return enable_tor_; }
         void set_onion_only_in_tor_windows(bool onion_only) {
           onion_only_in_tor_windows_ = onion_only;
         }
@@ -24,12 +24,12 @@ substitutions:
         }
 
   - description: |-
-      Add the is_tor_ and onion_only_in_tor_windows_ members.
+      Add the enable_tor_ and onion_only_in_tor_windows_ members.
 
       A context that is never configured is not Tor and allows .onion only in
       Tor windows, so it fails .onion lookups.
     add_to_protected:
       class_name: URLRequestContext
       code: |-
-        bool is_tor_ = false;
+        bool enable_tor_ = false;
         bool onion_only_in_tor_windows_ = true;

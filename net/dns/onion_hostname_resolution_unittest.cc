@@ -72,7 +72,7 @@ class OnionHostnameResolutionTest : public testing::Test {
 };
 
 TEST_F(OnionHostnameResolutionTest, BlocksByDefault) {
-  EXPECT_FALSE(context_->is_tor());
+  EXPECT_FALSE(context_->enable_tor());
   EXPECT_TRUE(context_->onion_only_in_tor_windows());
 
   EXPECT_EQ(ERR_NAME_NOT_RESOLVED, Resolve("example.onion"));
@@ -87,7 +87,7 @@ TEST_F(OnionHostnameResolutionTest, ResolvesOnionWhenAllowedOutsideTor) {
 }
 
 TEST_F(OnionHostnameResolutionTest, ResolvesOnionInTorContext) {
-  context_->set_is_tor(true);
+  context_->set_enable_tor(true);
 
   EXPECT_EQ(OK, Resolve("example.onion"));
   EXPECT_EQ(1u, NumSystemResolves());
