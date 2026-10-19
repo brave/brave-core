@@ -19,6 +19,7 @@
 #include "components/prefs/pref_member.h"
 
 class TreeTabModel;
+class VerticalTabController;
 
 class BraveTabStripModel : public TabStripModel {
  public:
@@ -95,11 +96,14 @@ class BraveTabStripModel : public TabStripModel {
 
  private:
   friend class TreeTabsBrowserTest;
+  friend class VerticalTabController;
 
   void SelectMRUTab(TabRelativeDirection direction,
                     TabStripUserGestureDetails detail);
 
   void OnTreeTabRelatedPrefChanged();
+  bool IsVerticalTabsEnabledForWindow() const;
+  void SyncTreeTabsWithWindowVerticalTabs();
   void BuildTreeTabs();
   void FlattenTreeTabs();
 

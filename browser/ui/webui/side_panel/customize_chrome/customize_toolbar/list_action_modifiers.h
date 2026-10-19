@@ -10,6 +10,8 @@
 
 #include "chrome/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/customize_toolbar.mojom.h"
 
+class BrowserWindowInterface;
+
 namespace content {
 class WebContents;
 }  // namespace content
@@ -48,13 +50,15 @@ FilterUnsupportedChromiumActions(
 std::vector<side_panel::customize_chrome::mojom::ActionPtr>
 ApplyBraveSpecificModifications(
     content::WebContents* web_contents,
+    BrowserWindowInterface* browser,
     std::vector<side_panel::customize_chrome::mojom::ActionPtr> actions);
 
 // Returns a list of Brave-specific actions that could be added to the toolbar.
 // Use to check if the prefs are touched by user customization or reset them to
 // default.
 std::vector<BraveAction> ListBraveSpecificActions(
-    content::WebContents* web_contents);
+    content::WebContents* web_contents,
+    BrowserWindowInterface* browser);
 
 }  // namespace customize_chrome
 

@@ -6,8 +6,7 @@
 #ifndef BRAVE_BROWSER_SESSIONS_BRAVE_SESSION_KEYS_H_
 #define BRAVE_BROWSER_SESSIONS_BRAVE_SESSION_KEYS_H_
 
-// Keys used in SessionTab::extra_data to persist tree-tab node structure.
-// All values are stored as plain strings.
+// Keys used in session extra data. All values are stored as plain strings.
 
 // The TreeTabNodeId of the tree node that owns this tab, serialized as a
 // base::Token 128-bit hex string.
@@ -22,5 +21,11 @@ inline constexpr char kBraveTreeParentNodeIdKey[] = "brave_tree_parent_node_id";
 // their TreeTabNodeTabCollection.
 inline constexpr char kBraveTreeNodeCollapsedKey[] =
     "brave_tree_node_collapsed";
+
+// Window extra data. "true" or "false" when this window has its own
+// vertical-tab choice. Absent or empty means the window follows
+// brave.tabs.vertical_tabs_enabled.
+inline constexpr char kBraveVerticalTabsEnabledKey[] =
+    "brave_vertical_tabs_enabled";
 
 #endif  // BRAVE_BROWSER_SESSIONS_BRAVE_SESSION_KEYS_H_

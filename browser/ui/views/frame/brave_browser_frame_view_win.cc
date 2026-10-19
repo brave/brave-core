@@ -37,10 +37,12 @@ BraveBrowserFrameViewWin::BraveBrowserFrameViewWin(
       std::make_unique<BraveWindowFrameGraphic>(browser->GetProfile());
 
   auto* prefs = browser->GetProfile()->GetPrefs();
-  using_vertical_tabs_.Init(
-      brave_tabs::kVerticalTabsEnabled, prefs,
-      base::BindRepeating(&BraveBrowserFrameViewWin::OnVerticalTabsPrefsChanged,
-                          base::Unretained(this)));
+  if (auto* controller = VerticalTabController::From(browser)) {
+    vertical_tabs_enabled_changed_subscription_ =
+        controller->AddEnabledChangedCallback(base::BindRepeating(
+            &BraveBrowserFrameViewWin::OnVerticalTabsPrefsChanged,
+            base::Unretained(this)));
+  }
   showing_window_title_for_vertical_tabs_.Init(
       brave_tabs::kVerticalTabsShowTitleOnWindow, prefs,
       base::BindRepeating(&BraveBrowserFrameViewWin::OnVerticalTabsPrefsChanged,

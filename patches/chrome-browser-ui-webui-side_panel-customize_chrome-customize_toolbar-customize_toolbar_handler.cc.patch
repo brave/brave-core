@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/customize_toolbar_handler.cc b/chrome/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/customize_toolbar_handler.cc
-index 7f51aadbe7ca492a928817a016de74bb9a2cc300..160dc94a1a840509e70360495770018c1c32f5fb 100644
+index 7f51aadbe7ca492a928817a016de74bb9a2cc300..c8cbdb81cd998f488660e3046ebf71b2b7e1f62c 100644
 --- a/chrome/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/customize_toolbar_handler.cc
 +++ b/chrome/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/customize_toolbar_handler.cc
 @@ -196,6 +196,7 @@ CustomizeToolbarHandler::CustomizeToolbarHandler(
@@ -10,20 +10,21 @@ index 7f51aadbe7ca492a928817a016de74bb9a2cc300..160dc94a1a840509e70360495770018c
  }
  
  CustomizeToolbarHandler::~CustomizeToolbarHandler() = default;
-@@ -369,7 +370,11 @@ void CustomizeToolbarHandler::ListActions(ListActionsCallback callback) {
+@@ -369,7 +370,12 @@ void CustomizeToolbarHandler::ListActions(ListActionsCallback callback) {
    add_action(kActionShowChromeLabs,
               side_panel::customize_chrome::mojom::CategoryId::kTools);
  
 -  std::move(callback).Run(std::move(actions));
 +  base::BindOnce(&customize_chrome::FilterUnsupportedChromiumActions)
 +      .Then(base::BindOnce(&customize_chrome::ApplyBraveSpecificModifications,
-+                           web_contents_.get()))
++                           web_contents_.get(),
++                           BrowserForCustomizeToolbar(web_contents_.get())))
 +      .Then(std::move(callback))
 +      .Run(std::move(actions));
  }
  
  void CustomizeToolbarHandler::ListCategories(ListCategoriesCallback callback) {
-@@ -381,18 +386,24 @@ void CustomizeToolbarHandler::ListCategories(ListCategoriesCallback callback) {
+@@ -381,18 +387,24 @@ void CustomizeToolbarHandler::ListCategories(ListCategoriesCallback callback) {
    categories.push_back(side_panel::customize_chrome::mojom::Category::New(
        side_panel::customize_chrome::mojom::CategoryId::kYourChrome,
        l10n_util::GetStringUTF8(
@@ -50,7 +51,7 @@ index 7f51aadbe7ca492a928817a016de74bb9a2cc300..160dc94a1a840509e70360495770018c
    const std::optional<actions::ActionId> chrome_action =
        ChromeActionForMojoAction(action_id);
    if (!chrome_action.has_value()) {
-@@ -426,10 +437,15 @@ void CustomizeToolbarHandler::PinAction(
+@@ -426,10 +438,15 @@ void CustomizeToolbarHandler::PinAction(
  
  void CustomizeToolbarHandler::GetIsCustomized(
      GetIsCustomizedCallback callback) {

@@ -55,7 +55,7 @@ class BraveBrowserFrameViewMac : public BrowserFrameViewMac,
 
   std::unique_ptr<BraveWindowFrameGraphic> frame_graphic_;
 
-  BooleanPrefMember show_vertical_tabs_;
+  base::CallbackListSubscription vertical_tabs_enabled_changed_subscription_;
   BooleanPrefMember show_title_bar_on_vertical_tabs_;
   BooleanPrefMember compact_horizontal_tabs_;
 

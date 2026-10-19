@@ -4,6 +4,16 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
+  - description: |-
+      A restored normal window keeps the vertical-tab override saved in its
+      session.
+    add_before_line:
+      line: '    BrowserWindowInterface* browser_window ='
+      code: |2-
+            [[maybe_unused]] auto brave_inherit_vertical_tabs =
+                VerticalTabController::InheritEnabledOverrideFromSession(type,
+                                                                         extra_data);
+
   - description: 'Modify navigation params before Navigate call for startup tab'
     regex:
       re_pattern: |-

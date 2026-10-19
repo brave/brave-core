@@ -12,6 +12,7 @@
 #include "base/test/test_future.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
+#include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
 #include "brave/browser/ui/tabs/tree_tab_model.h"
 #include "brave/components/tabs/public/tree_tab_node_id.h"
 #include "brave/components/tabs/public/tree_tab_node_tab_collection.h"
@@ -700,6 +701,25 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
     EXPECT_EQ(parent_collection->GetParentCollection(), &unpinned_collection());
     EXPECT_EQ(parent_collection->ChildCount(), 1u);
   }
+}
+
+IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
+                       PerWindowVerticalTabsFlattensOnlyThatWindow) {
+  profile()->GetPrefs()->SetBoolean(brave_tabs::kTreeTabsEnabled, true);
+  profile()->GetPrefs()->SetBoolean(brave_tabs::kVerticalTabsEnabled, true);
+  ASSERT_TRUE(tab_strip_model().tree_model());
+
+  BrowserWindowInterface* other = CreateBrowser(profile());
+  auto* other_model =
+      static_cast<BraveTabStripModel*>(other->tab_strip_model());
+  ASSERT_TRUE(other_model->tree_model());
+
+  VerticalTabController::From(browser())->SetVerticalTabsEnabledForWindow(
+      false);
+  EXPECT_FALSE(tab_strip_model().tree_model());
+  EXPECT_TRUE(other_model->tree_model());
+  EXPECT_TRUE(
+      profile()->GetPrefs()->GetBoolean(brave_tabs::kVerticalTabsEnabled));
 }
 
 IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,

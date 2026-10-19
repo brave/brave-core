@@ -33,7 +33,7 @@ std::unique_ptr<VerticalTabController> CreateBraveVerticalTabController(
     BrowserWindowInterface* browser,
     FocusModeController* focus_mode_controller) {
   return factory.CreateInstance<VerticalTabController>(
-      *browser, browser->GetUnownedUserDataHost(), browser->GetType(),
+      *browser, browser->GetUnownedUserDataHost(), browser, browser->GetType(),
       browser->GetProfile()->GetPrefs(), focus_mode_controller);
 }
 

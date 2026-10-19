@@ -7,14 +7,37 @@
 
 <!-- Vertical Tab strip -->
 <settings-toggle-button
-  class="cr-row first"
-  pref-key="[[verticalTabsEnabledPrefKey_]]"
-  label="$i18n{appearanceSettingsTabsUseVerticalTabs}"
-  disabled="[[!verticalTabsToggleEnabled_]]">
+    class="cr-row first"
+    pref-key="[[verticalTabsEnabledPrefKey_]]"
+    label="$i18n{appearanceSettingsTabsUseVerticalTabs}"
+    sub-label="[[verticalTabsSwitchSublabel_(hasVerticalTabsWindowOverride_, verticalTabsEnabledForWindow_, verticalTabsEnabledPref_.value)]]"
+    disabled="[[!verticalTabsToggleEnabled_]]">
 </settings-toggle-button>
+<template is="dom-if" if="[[showVerticalTabsWindowStatus_(hasVerticalTabsWindowOverride_, verticalTabsEnabledForWindow_, verticalTabsEnabledPref_.value)]]">
+  <div class="cr-row continuation two-line">
+    <div class="flex cr-padded-text">
+      <div>
+        [[verticalTabsWindowTitle_(verticalTabsEnabledForWindow_)]]
+      </div>
+      <div class="secondary">
+        $i18n{appearanceSettingsTabsVerticalTabsThisWindow}
+      </div>
+    </div>
+    <div class="separator"></div>
+    <cr-button id="followVerticalTabsSetting"
+        on-click="onFollowVerticalTabsSetting_">
+      [[verticalTabsWindowAction_(verticalTabsEnabledForWindow_)]]
+    </cr-button>
+  </div>
+</template>
 <template
   is="dom-if"
-  if="[[verticalTabsEnabledPref_.value]]">
+  if="[[showVerticalTabsOptions_(verticalTabsEnabledPref_.value, verticalTabsEnabledForWindow_)]]">
+  <template is="dom-if" if="[[showVerticalTabsOptionsHeading_(hasVerticalTabsWindowOverride_, verticalTabsEnabledForWindow_, verticalTabsEnabledPref_.value)]]">
+    <div class="cr-row continuation">
+      $i18n{appearanceSettingsTabsVerticalTabsWindows}
+    </div>
+  </template>
   <div class="cr-row continuation list-frame">
     <settings-checkbox
       class="list-item"
@@ -91,7 +114,7 @@
       </controlled-radio-button>
     </settings-radio-group>
   </div>
-</template> <!-- vertical_tabs_enabled.value -->
+</template> <!-- vertical tabs options -->
 
 <!-- Tab speaker icons function  -->
 <settings-toggle-button

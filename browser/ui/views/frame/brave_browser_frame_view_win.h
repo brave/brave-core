@@ -47,7 +47,7 @@ class BraveBrowserFrameViewWin : public BrowserFrameViewWin,
 
   std::unique_ptr<BraveWindowFrameGraphic> frame_graphic_;
 
-  BooleanPrefMember using_vertical_tabs_;
+  base::CallbackListSubscription vertical_tabs_enabled_changed_subscription_;
   BooleanPrefMember showing_window_title_for_vertical_tabs_;
 
   base::ScopedObservation<FocusModeController, FocusModeController::Observer>

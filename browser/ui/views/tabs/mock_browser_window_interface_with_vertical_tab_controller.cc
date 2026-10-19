@@ -15,8 +15,8 @@ MockBrowserWindowInterfaceWithVerticalTabController::
     MockBrowserWindowInterfaceWithVerticalTabController(PrefService* prefs)
     : focus_mode_controller_(GetUnownedUserDataHost()) {
   vertical_tab_controller_ = std::make_unique<VerticalTabController>(
-      GetUnownedUserDataHost(), BrowserWindowInterface::TYPE_NORMAL, prefs,
-      &focus_mode_controller_);
+      GetUnownedUserDataHost(), nullptr, BrowserWindowInterface::TYPE_NORMAL,
+      prefs, &focus_mode_controller_);
   ON_CALL(*this, GetFeatures()).WillByDefault(testing::ReturnRef(features_));
   ON_CALL(testing::Const(*this), GetFeatures())
       .WillByDefault(testing::ReturnRef(features_));

@@ -121,6 +121,7 @@ static_library("misc_metrics_impl") {
     deps += [
       "//brave/browser/extensions/manifest_v2",
       "//brave/browser/themes",
+      "//brave/browser/ui/tabs:tabs_public",
       "//chrome/browser/themes",
       "//chrome/browser/ui/tabs:tab_strip",
       "//extensions/browser",

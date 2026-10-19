@@ -23,11 +23,12 @@ BraveRoundedOmniboxResultsFrame::BraveRoundedOmniboxResultsFrame(
       browser_(location_bar->browser()) {
   UpdateShadowBorder();
 
-  show_vertical_tabs_.Init(
-      brave_tabs::kVerticalTabsEnabled,
-      browser_->GetProfile()->GetOriginalProfile()->GetPrefs(),
-      base::BindRepeating(&BraveRoundedOmniboxResultsFrame::UpdateShadowBorder,
-                          base::Unretained(this)));
+  if (auto* controller = VerticalTabController::From(browser_)) {
+    vertical_tabs_enabled_changed_subscription_ =
+        controller->AddEnabledChangedCallback(base::BindRepeating(
+            &BraveRoundedOmniboxResultsFrame::UpdateShadowBorder,
+            base::Unretained(this)));
+  }
   show_window_title_for_vertical_tabs_.Init(
       brave_tabs::kVerticalTabsShowTitleOnWindow,
       browser_->GetProfile()->GetOriginalProfile()->GetPrefs(),

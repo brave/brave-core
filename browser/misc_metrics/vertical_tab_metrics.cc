@@ -8,7 +8,8 @@
 #include <utility>
 
 #include "base/check.h"
-#include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#include "base/functional/bind.h"
+#include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
 #include "brave/components/misc_metrics/pref_names.h"
 #include "brave/components/p3a_utils/bucket.h"
 #include "chrome/browser/profiles/profile.h"
@@ -66,17 +67,17 @@ void RecordMaxToHistogramBucket(TabCountType count_type, uint64_t max_value) {
 }  // namespace
 
 VerticalTabBrowserMetrics::VerticalTabBrowserMetrics(
-    PrefService* profile_prefs,
+    BrowserWindowInterface* browser,
     base::RepeatingClosure change_callback)
-    : profile_prefs_(profile_prefs), change_callback_(change_callback) {
+    : browser_(browser), change_callback_(change_callback) {
   for (TabCountType count_type : kAllTabCountTypes) {
     counts_[count_type] = 0;
   }
-  pref_change_registrar_.Init(profile_prefs);
-  pref_change_registrar_.Add(
-      brave_tabs::kVerticalTabsEnabled,
-      base::BindRepeating(&VerticalTabBrowserMetrics::UpdateEnabledStatus,
-                          base::Unretained(this)));
+  if (auto* controller = VerticalTabController::From(browser_)) {
+    enabled_changed_subscription_ = controller->AddEnabledChangedCallback(
+        base::BindRepeating(&VerticalTabBrowserMetrics::UpdateEnabledStatus,
+                            base::Unretained(this)));
+  }
   UpdateEnabledStatus();
 }
 
@@ -110,8 +111,9 @@ size_t VerticalTabBrowserMetrics::GetTabCount(TabCountType count_type) const {
 }
 
 void VerticalTabBrowserMetrics::UpdateEnabledStatus() {
+  auto* controller = VerticalTabController::From(browser_);
   vertical_tabs_enabled_ =
-      profile_prefs_->GetBoolean(brave_tabs::kVerticalTabsEnabled);
+      controller && controller->ShouldShowBraveVerticalTabs();
 }
 
 VerticalTabMetrics::VerticalTabMetrics(PrefService* local_state) {
@@ -161,12 +163,10 @@ void VerticalTabMetrics::OnBrowserCreated(BrowserWindowInterface* browser) {
     // Do not monitor incognito windows.
     return;
   }
-  PrefService* profile_prefs = profile->GetPrefs();
-  CHECK(profile_prefs);
   SessionID session_id = browser->GetSessionID();
   browser_metrics_[session_id] = std::make_unique<VerticalTabBrowserMetrics>(
-      profile_prefs, base::BindRepeating(&VerticalTabMetrics::UpdateMetrics,
-                                         base::Unretained(this)));
+      browser, base::BindRepeating(&VerticalTabMetrics::UpdateMetrics,
+                                   base::Unretained(this)));
   browser->GetTabStripModel()->AddObserver(browser_metrics_[session_id].get());
 }
 

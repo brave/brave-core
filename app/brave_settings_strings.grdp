@@ -227,6 +227,27 @@
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_TAB_VERTICAL_TAB_EXPANDED_STATE_PER_WINDOW" desc="Title for checkbox to set expanded state per window">
     Auto expand vertical tabs independently per window
   </message>
+  <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_TAB_VERTICAL_TABS_THIS_WINDOW" desc="Note shown when this window's tab layout differs from the shared switch">
+    This window keeps this layout until it matches the switch. New windows follow the switch.
+  </message>
+  <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_TAB_VERTICAL_TABS_WINDOWS" desc="Heading above vertical tab options when this window's tabs do not match the shared setting">
+    Applies to windows using vertical tabs
+  </message>
+  <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_TAB_VERTICAL_TABS_THIS_WINDOW_VERTICAL_TITLE" desc="Title shown when this window uses vertical tabs and the shared setting is off">
+    This window uses vertical tabs
+  </message>
+  <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_TAB_VERTICAL_TABS_THIS_WINDOW_HORIZONTAL_TITLE" desc="Title shown when this window uses horizontal tabs and the shared setting is on">
+    This window uses horizontal tabs
+  </message>
+  <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_TAB_VERTICAL_TABS_SWITCH_SUBLABEL" desc="Sub-label for the shared vertical tabs switch while this window uses a different layout">
+    Other windows.
+  </message>
+  <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_TAB_VERTICAL_TABS_USE_HORIZONTAL_FOR_WINDOW" desc="Button that makes this vertical window follow the shared setting and become horizontal">
+    Use horizontal tabs for this window
+  </message>
+  <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_TAB_VERTICAL_TABS_USE_VERTICAL_FOR_WINDOW" desc="Button that makes this horizontal window follow the shared setting and become vertical">
+    Use vertical tabs for this window
+  </message>
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_TAB_VERTICAL_TAB_SHOW_SCROLLBAR" desc="Title for checkbox to show scrollbar on vertical tabs">
     Show scrollbar
   </message>
