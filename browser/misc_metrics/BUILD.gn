@@ -9,8 +9,6 @@ import("//extensions/buildflags/buildflags.gni")
 
 source_set("misc_metrics") {
   sources = [
-    "//brave/browser/misc_metrics/image_metadata_stripper_metrics.cc",
-    "//brave/browser/misc_metrics/image_metadata_stripper_metrics.h",
     "//brave/browser/misc_metrics/media_session_metrics_impl.h",
     "//brave/browser/misc_metrics/process_misc_metrics.h",
     "//brave/browser/misc_metrics/profile_misc_metrics_service.h",
@@ -20,7 +18,6 @@ source_set("misc_metrics") {
   deps = [
     "//base",
     "//brave/components/ai_chat/core/common/buildflags",
-    "//brave/components/image_metadata_stripper",
     "//brave/components/misc_metrics",
     "//brave/components/p3a_utils",
     "//brave/components/time_period_storage",
@@ -164,8 +161,8 @@ source_set("test_support") {
   public_deps = [ "//components/prefs" ]
 
   deps = [
-    ":misc_metrics",
     "//base",
+    "//brave/components/misc_metrics",
   ]
 }
 
@@ -176,7 +173,6 @@ source_set("unit_tests") {
     "captcha_metrics_unittest.cc",
     "doh_metrics_unittest.cc",
     "fingerprint_frequency_metrics_unittest.cc",
-    "image_metadata_stripper_metrics_unittest.cc",
     "media_session_metrics_impl_unittest.cc",
     "page_metrics_unittest.cc",
     "uptime_monitor_impl_unittest.cc",
@@ -189,7 +185,6 @@ source_set("unit_tests") {
     "//brave/browser/misc_metrics",
     "//brave/browser/misc_metrics:misc_metrics_impl",
     "//brave/components/brave_rewards/core",
-    "//brave/components/image_metadata_stripper",
     "//brave/components/misc_metrics",
     "//brave/components/p3a_utils:test_support",
     "//chrome/browser",

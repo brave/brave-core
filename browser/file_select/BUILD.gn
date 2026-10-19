@@ -38,6 +38,7 @@ if (!is_android) {
       "//brave/browser/misc_metrics",
       "//brave/browser/misc_metrics:test_support",
       "//brave/components/image_metadata_stripper/common",
+      "//brave/components/misc_metrics",
       "//chrome/browser/ui",
       "//chrome/browser/ui/tabs",
       "//chrome/browser/ui/tabs:tab_enums",

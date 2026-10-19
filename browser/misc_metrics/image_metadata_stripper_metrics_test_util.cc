@@ -6,7 +6,7 @@
 #include "brave/browser/misc_metrics/image_metadata_stripper_metrics_test_util.h"
 
 #include "base/values.h"
-#include "brave/browser/misc_metrics/image_metadata_stripper_metrics.h"
+#include "brave/components/misc_metrics/image_metadata_stripper_metrics.h"
 #include "components/prefs/pref_service.h"
 
 namespace image_metadata_stripper::metrics {
