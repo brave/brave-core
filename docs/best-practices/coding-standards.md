@@ -27,6 +27,21 @@ files.
 headers for the underlying types. Same principle as class inheritance — if class
 B inherits from A, include B's header, not A's.
 
+**Exception — GN-private headers:** don't include a header that is private to
+its GN target (not in the target's `public` list, and your target isn't on its
+`friend`/`visibility` allowlist) — the GN header check will fail. Include the
+header the owner exports for that purpose instead, often a `*_test_util.h` or
+`mock_*.h` from a test-support target. Check the owning target in `BUILD.gn`
+first, and do NOT flag the missing private include in review.
+
+```cpp
+// ❌ WRONG - net/dns/host_resolver.h is private to //net/dns:host_resolver
+#include "net/dns/host_resolver.h"
+
+// ✅ CORRECT - exported by the test header upstream intends for this
+#include "net/dns/mock_host_resolver.h"
+```
+
 ---
 
 <a id="CS-002"></a>
