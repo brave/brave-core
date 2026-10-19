@@ -3,8 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/misc_metrics/image_metadata_stripper_metrics.h"
+#include "brave/components/misc_metrics/image_metadata_stripper_metrics.h"
 
+#include <array>
 #include <memory>
 
 #include "base/test/metrics/histogram_tester.h"
@@ -29,8 +30,6 @@ class ImageMetadataStripperMetricsTest : public testing::Test {
     CreateReporter();
   }
 
-  // (Re)creates the reporter sharing the same local state. This mirrors a
-  // browser process restart, which re-runs the construction-time MaybeReport().
   void CreateReporter() {
     reporter_ = std::make_unique<ImageMetadataStripperMetrics>(&pref_service_);
   }
@@ -75,7 +74,7 @@ TEST_F(ImageMetadataStripperMetricsTest,
 }
 
 TEST_F(ImageMetadataStripperMetricsTest,
-       RestartWithinIntervalKeepsOriginalWindow) {
+       CheckWeeklyMetricsRecordedForTwoConsecutiveWeek) {
   RecordFbmd(StrippingClient::kDownloadManager);
   task_environment_.FastForwardBy(base::Days(6));
 
@@ -94,6 +93,12 @@ TEST_F(ImageMetadataStripperMetricsTest,
                                      2);
 }
 
+// This tests an edge case where the current time might be shown before
+// the last recorded time pref. This can happen if a user rewinds their system
+// clock. Travelling could also give rise to this issue, but it's quite rare to
+// reach a destination timezone in the west faster than the actual total
+// timezone difference between. If it's a small hop between two tz then it's
+// probably possible, or if it's a very high speed plane for example.
 TEST_F(ImageMetadataStripperMetricsTest, ClockMovedBackStartsNewWindow) {
   RecordFbmd(StrippingClient::kDownloadManager);
 
@@ -108,15 +113,19 @@ TEST_F(ImageMetadataStripperMetricsTest, ClockMovedBackStartsNewWindow) {
   histogram_tester_.ExpectTotalCount(kDownloadFBMDCountStrippedHistogramName,
                                      1);
   EXPECT_EQ(pref_service_.GetTime(kLastRecordedTimePref), base::Time::Now());
+  // The underlying local state is cleared.
   EXPECT_TRUE(pref_service_.GetDict(kRootPrefKey).empty());
 
   // The next report follows the new window rather than waiting for the
   // future timestamp.
   RecordFbmd(StrippingClient::kDownloadManager);
   task_environment_.FastForwardBy(base::Days(6));
+  // This one is still from the previous emission.
   histogram_tester_.ExpectTotalCount(kDownloadFBMDCountStrippedHistogramName,
                                      1);
+  // The current week is getting ended.
   task_environment_.FastForwardBy(base::Days(1));
+  // We should now have recorded two instances of the histogram by now.
   histogram_tester_.ExpectTotalCount(kDownloadFBMDCountStrippedHistogramName,
                                      2);
 }
@@ -131,29 +140,45 @@ TEST_F(ImageMetadataStripperMetricsTest, ReportsDownloadCount) {
   histogram_tester_.ExpectTotalCount(kUploadFBMDCountStrippedHistogramName, 0);
 }
 
-TEST_F(ImageMetadataStripperMetricsTest,
-       ReportsUploadCountFromBothUploadFlows) {
+TEST_F(ImageMetadataStripperMetricsTest, ReportsUploadCountFromFileSelectFlow) {
   // Both the file-select and drag-drop flows aggregate into the upload count.
   RecordFbmd(StrippingClient::kFileSelect);
-  RecordFbmd(StrippingClient::kDragDrop);
+
   task_environment_.FastForwardBy(base::Days(7));
 
-  // Two stripped uploads fall in the 1-5 bucket (index 0).
   histogram_tester_.ExpectBucketCount(kUploadFBMDCountStrippedHistogramName, 0,
                                       1);
+  // Ensure we didn't touch downloads.
+  histogram_tester_.ExpectTotalCount(kDownloadFBMDCountStrippedHistogramName,
+                                     0);
+}
+
+TEST_F(ImageMetadataStripperMetricsTest,
+       ReportsUploadCountFromDragAndDropFlow) {
+  RecordFbmd(StrippingClient::kDragDrop);
+
+  task_environment_.FastForwardBy(base::Days(7));
+
+  histogram_tester_.ExpectBucketCount(kUploadFBMDCountStrippedHistogramName, 0,
+                                      1);
+  // Ensure we didn't touch downloads.
   histogram_tester_.ExpectTotalCount(kDownloadFBMDCountStrippedHistogramName,
                                      0);
 }
 
 TEST_F(ImageMetadataStripperMetricsTest, BucketsCounts) {
-  // 6 stripped downloads fall in the 6-10 bucket (index 1).
-  for (int i = 0; i < 6; ++i) {
-    RecordFbmd(StrippingClient::kDownloadManager);
+  // Buckets: 1-5, 6-10, 11-20, 21-30, 31+
+  constexpr std::array<int, 5> kCountsPerWindow = {1, 6, 11, 21, 31};
+  for (size_t bucket = 0; bucket < 5; ++bucket) {
+    for (int i = 0; i < kCountsPerWindow[bucket]; ++i) {
+      RecordFbmd(StrippingClient::kDownloadManager);
+    }
+    task_environment_.FastForwardBy(base::Days(7));
+    histogram_tester_.ExpectBucketCount(kDownloadFBMDCountStrippedHistogramName,
+                                        bucket, 1);
   }
-  task_environment_.FastForwardBy(base::Days(7));
-
-  histogram_tester_.ExpectBucketCount(kDownloadFBMDCountStrippedHistogramName,
-                                      1, 1);
+  histogram_tester_.ExpectTotalCount(kDownloadFBMDCountStrippedHistogramName,
+                                     std::size(kCountsPerWindow));
 }
 
 TEST_F(ImageMetadataStripperMetricsTest, StoresCountsInFbmdDict) {
