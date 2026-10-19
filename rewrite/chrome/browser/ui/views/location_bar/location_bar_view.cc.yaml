@@ -1,0 +1,94 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: 'Use the primary style for the omnibox chip font.'
+    regex:
+      pattern: 'STYLE_BODY_4_EMPHASIS'
+      replace: 'STYLE_PRIMARY'
+
+  - description: 'Create the Brave omnibox client.'
+    regex:
+      pattern: 'std::make_unique<ChromeOmniboxClient>'
+      replace: 'std::make_unique<BraveOmniboxClientImpl>'
+
+  - description: 'Create the Brave omnibox view.'
+    regex:
+      pattern: 'std::make_unique<OmniboxViewViews>'
+      replace: 'std::make_unique<BraveOmniboxViewViews>'
+
+  - description: 'Create the Brave omnibox popup view.'
+    regex:
+      pattern: 'std::make_unique<OmniboxPopupViewViews>'
+      replace: 'std::make_unique<BraveOmniboxPopupViewViews>'
+
+  - description: |-
+      Use location bar colors for an unfocused omnibox with user input.
+
+      We don't use different colors when the omnibox doesn't have focus but
+      still contains in-progress user input.
+    regex:
+      re_pattern:
+        'normal =
+        color_provider->GetColor\(kColorOmniboxResultsBackground\);\s*hovered =
+        color_provider->GetColor\(kColorOmniboxResultsBackgroundHovered\);'
+      replace: |-
+        normal = color_provider->GetColor(kColorLocationBarBackground);
+            hovered = color_provider->GetColor(kColorLocationBarBackgroundHovered);
+
+  - description: |-
+      Adjust the leading decoration padding.
+
+      |icon_left| is the padding between the left border of the location bar
+      and the first decoration; use the element padding. |text_left| is the
+      padding between the omnibox view and the last leading decoration. If the
+      last decoration has a label it has sufficient padding inside, and if
+      custom padding is provided (text_left is not null) it is respected.
+      Otherwise, use our design value of 5px. Both values may be updated again
+      when |should_indent| is true.
+    regex:
+      re_pattern: '(\n)(\s*)(if \(should_indent\) \{)'
+      replace: |-
+        \1\2icon_left = GetLayoutConstant(LayoutConstant::kLocationBarElementPadding);
+        \2if (text_left == 0 && !location_icon_view_->ShouldShowLabel()) {
+        \2  text_left = 5;
+        \2}
+        \2\3
+
+  - description: 'Lay out the search promotion button as a leading decoration.'
+    regex:
+      re_pattern: '(\} else if \(location_icon_view_->GetShowText\(\) &&)'
+      replace: |-
+        } else if (GetSearchPromotionButton() &&
+                   GetSearchPromotionButton()->GetVisible()) {
+            leading_decorations.AddDecoration(
+                vertical_padding, location_height, false,
+                kLeadingDecorationMaxFraction, /*intra_item_padding=*/0, 0,
+                GetSearchPromotionButton());
+          \1
+
+  - description: 'Lay out the Brave right-most trailing views.'
+    regex:
+      re_pattern: '(\n)(\s*)(add_trailing_decoration\(\s*page_action_container_,)'
+      replace: |-
+        \1\2auto right_most_trailing_views = GetRightMostTrailingViews();
+        \2for (auto* item : std::views::reverse(right_most_trailing_views)) {
+        \2  add_trailing_decoration(
+        \2      item, /*intra_item_padding=*/0,
+        \2      /*edge_padding=*/trailing_decorations_edge_padding);
+        \2}
+        \2\3
+
+  - description: 'Lay out the Brave left-most trailing views.'
+    regex:
+      re_pattern: '(add_trailing_decoration\(clear_all_button_,[^;]*;)'
+      replace: |-
+        \1
+          auto left_most_trailing_views = GetLeftMostTrailingViews();
+          for (auto* item : std::views::reverse(left_most_trailing_views)) {
+            add_trailing_decoration(
+                item, /*intra_item_padding=*/0,
+                /*edge_padding=*/trailing_decorations_edge_padding);
+          }

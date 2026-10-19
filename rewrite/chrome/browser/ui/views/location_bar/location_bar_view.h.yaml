@@ -1,0 +1,44 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: 'Let BraveLocationBarView reach private members.'
+    add_friend:
+      class_name: LocationBarView
+      friend_type: class BraveLocationBarView
+
+  - description: 'Add Brave hooks for extra location bar decorations.'
+    add_to_public:
+      class_name: LocationBarView
+      code: |-
+        virtual views::View* GetSearchPromotionButton() const;
+        virtual std::vector<views::View*> GetRightMostTrailingViews();
+        virtual std::vector<views::View*> GetLeftMostTrailingViews();
+
+  - description:
+      'Make GetMinimumTrailingWidth virtual for BraveLocationBarView.'
+    make_virtual:
+      class_name: LocationBarView
+      method_name: GetMinimumTrailingWidth
+
+  - description: 'Make Init virtual.'
+    make_virtual:
+      class_name: LocationBarView
+      method_name: Init
+
+  - description: 'Make OnOmniboxBlurred virtual.'
+    make_virtual:
+      class_name: LocationBarView
+      method_name: OnOmniboxBlurred
+
+  - description: 'Make GetBorderRadius virtual.'
+    make_virtual:
+      class_name: LocationBarView
+      method_name: GetBorderRadius
+
+  - description: 'Make RefreshBackground virtual.'
+    make_virtual:
+      class_name: LocationBarView
+      method_name: RefreshBackground
