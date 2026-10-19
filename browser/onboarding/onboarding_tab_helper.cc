@@ -5,14 +5,14 @@
 
 #include "brave/browser/onboarding/onboarding_tab_helper.h"
 
+#include <memory>
 #include <string>
-#include <utility>
 #include <vector>
 
 #include "base/check.h"
 #include "base/check_is_test.h"
 #include "base/functional/bind.h"
-#include "base/functional/callback.h"
+#include "base/no_destructor.h"
 #include "base/strings/string_util.h"
 #include "base/task/thread_pool.h"
 #include "brave/browser/brave_shields/brave_shields_tab_helper.h"
@@ -20,15 +20,12 @@
 #include "brave/browser/ui/brave_browser_window.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/first_run/first_run.h"
-#include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
-#include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
-#include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/permissions/permission_request_manager.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
-#include "content/public/browser/navigation_handle.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/base/l10n/l10n_util.h"
 
@@ -39,26 +36,33 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
 }
 }  // namespace onboarding
 
+namespace {
+
+OnboardingTabHelper::WebContentsCallback& CanHighlightCallbackForTesting() {
+  static base::NoDestructor<OnboardingTabHelper::WebContentsCallback> callback;
+  return *callback;
+}
+
+OnboardingTabHelper::WebContentsCallback& DidStopLoadingCallbackForTesting() {
+  static base::NoDestructor<OnboardingTabHelper::WebContentsCallback> callback;
+  return *callback;
+}
+
+}  // namespace
+
 // static
 bool OnboardingTabHelper::IsSevenDaysPassedSinceFirstRun() {
-  base::Time time_first_run = s_sentinel_time_for_testing_.value_or(
-      first_run::GetFirstRunSentinelCreationTime());
-  base::Time time_now = s_time_now_for_testing_.value_or(base::Time::Now());
-
-  base::Time time_7_days_ago = time_now - base::Days(7);
+  base::Time time_first_run = first_run::GetFirstRunSentinelCreationTime();
+  base::Time time_7_days_ago = base::Time::Now() - base::Days(7);
   return time_first_run < time_7_days_ago;
 }
 
 // static
-std::optional<base::Time> OnboardingTabHelper::s_time_now_for_testing_;
-std::optional<base::Time> OnboardingTabHelper::s_sentinel_time_for_testing_;
-
-// static
-void OnboardingTabHelper::MaybeCreateForWebContents(
-    content::WebContents* web_contents,
-    base::OnceClosure creation_callback_for_test) {
-  if (creation_callback_for_test) {
+std::unique_ptr<OnboardingTabHelper> OnboardingTabHelper::MaybeCreate(
+    tabs::TabInterface& tab) {
+  if (!g_browser_process->local_state()) {
     CHECK_IS_TEST();
+    return nullptr;
   }
 
   base::Time last_shields_icon_highlight_time =
@@ -67,18 +71,13 @@ void OnboardingTabHelper::MaybeCreateForWebContents(
 
   // Shields highlight is aleady shown. We use it only once.
   if (!last_shields_icon_highlight_time.is_null()) {
-    if (creation_callback_for_test) {
-      std::move(creation_callback_for_test).Run();
-    }
-    return;
+    return nullptr;
   }
 
+  auto helper = std::make_unique<OnboardingTabHelper>(tab);
   if (first_run::IsChromeFirstRun()) {
-    OnboardingTabHelper::CreateForWebContents(web_contents);
-    if (creation_callback_for_test) {
-      std::move(creation_callback_for_test).Run();
-    }
-    return;
+    helper->SetCanHighlight();
+    return helper;
   }
 
   // Don't show highlight if already 7 days passed for non first run.
@@ -87,37 +86,71 @@ void OnboardingTabHelper::MaybeCreateForWebContents(
       FROM_HERE, {base::MayBlock()},
       base::BindOnce(&OnboardingTabHelper::IsSevenDaysPassedSinceFirstRun),
       base::BindOnce(
-          [](base::WeakPtr<content::WebContents> contents,
-             base::OnceCallback<void()> creation_callback_for_test,
-             bool passed) {
-            if (!passed && contents) {
-              OnboardingTabHelper::CreateForWebContents(contents.get());
-            }
-            if (creation_callback_for_test) {
-              std::move(creation_callback_for_test).Run();
-            }
-          },
-          web_contents->GetWeakPtr(), std::move(creation_callback_for_test)));
+          &OnboardingTabHelper::OnSevenDaysPassedSinceFirstRunChecked,
+          helper->weak_factory_.GetWeakPtr()));
+  return helper;
 }
 
-OnboardingTabHelper::OnboardingTabHelper(content::WebContents* web_contents)
-    : content::WebContentsObserver(web_contents),
-      content::WebContentsUserData<OnboardingTabHelper>(*web_contents) {}
+OnboardingTabHelper::OnboardingTabHelper(tabs::TabInterface& tab)
+    : tabs::ContentsObservingTabFeature(tab) {}
 
 OnboardingTabHelper::~OnboardingTabHelper() = default;
 
-void OnboardingTabHelper::DidStopLoading() {
-  BrowserWindowInterface* browser =
-      GlobalBrowserCollection::GetInstance()->FindBrowserWithTab(
-          web_contents());
-  if (!browser) {
+void OnboardingTabHelper::OnSevenDaysPassedSinceFirstRunChecked(bool passed) {
+  if (passed) {
+    CleanUp();
     return;
   }
+  SetCanHighlight();
+}
 
-  auto* active_tab_web_contents =
-      browser->GetTabStripModel()->GetActiveWebContents();
+void OnboardingTabHelper::SetCanHighlight() {
+  can_highlight_ = true;
+  if (CanHighlightCallbackForTesting()) {
+    CHECK_IS_TEST();
+    CanHighlightCallbackForTesting().Run(web_contents());
+  }
+}
 
-  if (web_contents() != active_tab_web_contents) {
+// static
+base::AutoReset<OnboardingTabHelper::WebContentsCallback>
+OnboardingTabHelper::SetCanHighlightCallbackForTesting(
+    WebContentsCallback callback) {
+  return base::AutoReset<WebContentsCallback>(&CanHighlightCallbackForTesting(),
+                                              std::move(callback));
+}
+
+// static
+base::AutoReset<OnboardingTabHelper::WebContentsCallback>
+OnboardingTabHelper::SetDidStopLoadingCallbackForTesting(
+    WebContentsCallback callback) {
+  return base::AutoReset<WebContentsCallback>(
+      &DidStopLoadingCallbackForTesting(), std::move(callback));
+}
+
+void OnboardingTabHelper::OnDiscardContents(
+    tabs::TabInterface* tab,
+    content::WebContents* old_contents,
+    content::WebContents* new_contents) {
+  tabs::ContentsObservingTabFeature::OnDiscardContents(tab, old_contents,
+                                                       new_contents);
+  if (cleaned_up_) {
+    Observe(nullptr);
+  }
+}
+
+void OnboardingTabHelper::DidStopLoading() {
+  // Showing the highlight stops observing the contents.
+  content::WebContents* const contents = web_contents();
+  MaybeHighlightShields();
+  if (DidStopLoadingCallbackForTesting()) {
+    CHECK_IS_TEST();
+    DidStopLoadingCallbackForTesting().Run(contents);
+  }
+}
+
+void OnboardingTabHelper::MaybeHighlightShields() {
+  if (!can_highlight_ || !tab().IsActivated()) {
     return;
   }
 
@@ -174,14 +207,9 @@ bool OnboardingTabHelper::CanHighlightBraveShields() {
 }
 
 void OnboardingTabHelper::ShowBraveHelpBubbleView() {
-  BrowserWindow* browser_window =
-      BrowserWindow::FindBrowserWindowWithWebContents(web_contents());
-  DCHECK(browser_window);
-  if (!browser_window) {
-    return;
-  }
-
-  auto* brave_browser_window = BraveBrowserWindow::From(browser_window);
+  BrowserWindowInterface* browser = tab().GetBrowserWindowInterface();
+  auto* brave_browser_window =
+      browser ? BraveBrowserWindow::FromBrowser(browser) : nullptr;
   if (!brave_browser_window || !brave_browser_window->ShowBraveHelpBubbleView(
                                    GetTextForOnboardingShieldsBubble())) {
     return;
@@ -212,7 +240,7 @@ std::string OnboardingTabHelper::GetTextForOnboardingShieldsBubble() {
 }
 
 void OnboardingTabHelper::CleanUp() {
+  can_highlight_ = false;
+  cleaned_up_ = true;
   Observe(nullptr);
 }
-
-WEB_CONTENTS_USER_DATA_KEY_IMPL(OnboardingTabHelper);

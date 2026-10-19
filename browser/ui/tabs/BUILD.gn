@@ -58,6 +58,7 @@ if (!is_android) {
       "//brave/browser/image_metadata_stripper",
       "//brave/browser/misc_metrics:misc_metrics_impl",
       "//brave/browser/new_tab",
+      "//brave/browser/onboarding",
       "//brave/browser/ui:brave_tab_prefs",
       "//brave/browser/ui:ui_features",
       "//brave/browser/ui/focus_mode",
