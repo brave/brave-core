@@ -7,6 +7,8 @@ package org.chromium.chrome.browser.ntp;
 
 import android.app.Activity;
 
+import androidx.annotation.DrawableRes;
+
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.build.annotations.Initializer;
 import org.chromium.build.annotations.NullMarked;
@@ -170,6 +172,26 @@ public class BraveNewTabPageCoordinator extends NewTabPageCoordinator {
         @Override
         public void initAndroidPrerenderManager(AndroidPrerenderManager androidPrerenderManager) {
             mDelegate.initAndroidPrerenderManager(androidPrerenderManager);
+        }
+
+        @Override
+        public @Nullable String getAiModeTileTitle() {
+            return mDelegate.getAiModeTileTitle();
+        }
+
+        @Override
+        public @Nullable GURL getAiModeTileUrl() {
+            return mDelegate.getAiModeTileUrl();
+        }
+
+        @Override
+        public @Nullable String getAiModeTileContentDescription() {
+            return mDelegate.getAiModeTileContentDescription();
+        }
+
+        @Override
+        public @DrawableRes int getAiModeTileIconDrawableId() {
+            return mDelegate.getAiModeTileIconDrawableId();
         }
 
         @Override
