@@ -70,10 +70,15 @@ TEST_F(MemorySemanticSearchToolTest, ReportsUnavailableSearch) {
             "Error: searching memories is unavailable");
 }
 
-TEST_F(MemorySemanticSearchToolTest, AsksForNoPermission) {
+TEST_F(MemorySemanticSearchToolTest, AsksForPermissionOnce) {
   mojom::ToolUseEvent event(tool_.Name().data(), "1", "{}", std::nullopt,
                             std::nullopt, nullptr, false);
   auto result = tool_.RequiresUserInteractionBeforeHandling(event);
+  ASSERT_TRUE(std::holds_alternative<mojom::PermissionChallengePtr>(result));
+  EXPECT_TRUE(std::get<mojom::PermissionChallengePtr>(result));
+
+  tool_.UserPermissionGranted("1");
+  result = tool_.RequiresUserInteractionBeforeHandling(event);
   ASSERT_TRUE(std::holds_alternative<bool>(result));
   EXPECT_FALSE(std::get<bool>(result));
 }

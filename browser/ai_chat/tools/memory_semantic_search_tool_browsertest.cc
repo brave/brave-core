@@ -94,6 +94,7 @@ IN_PROC_BROWSER_TEST_F(MemorySemanticSearchToolBrowserTest, SearchesMemories) {
   ASSERT_TRUE(flushed.Wait());
 
   base::test::TestFuture<Tool::ToolResult, Tool::ToolArtifacts> result;
+  tool->UserPermissionGranted("tool_use");
   tool->UseTool(R"({"query": "dog"})", result.GetCallback());
   const Tool::ToolResult& output = result.Get<Tool::ToolResult>();
   ASSERT_EQ(output.size(), 1u);

@@ -9,6 +9,7 @@
 #include <optional>
 #include <string>
 #include <string_view>
+#include <variant>
 #include <vector>
 
 #include "base/memory/weak_ptr.h"
@@ -33,10 +34,11 @@ std::string BuildMemorySearchResultJson(
 }  // namespace internal
 
 // Lets the assistant search by meaning the memories the user asked it to keep,
-// and the ones it learned from past chats. The memories the user asked it to
-// keep already go with every request that this tool is offered for, and the
-// learned ones that fit a request go with it too, so it asks for no
-// permission.
+// and the ones it learned from past chats. The search runs on device, but the
+// matching memories are sent to the model as the tool's output. A learned
+// memory can match the query of the model, but not fit the request, so it
+// would not go with the request otherwise. So the user is asked for
+// permission first, once in each conversation, as for ConversationSearchTool.
 class MemorySemanticSearchTool : public Tool {
  public:
   explicit MemorySemanticSearchTool(
@@ -58,6 +60,10 @@ class MemorySemanticSearchTool : public Tool {
                             bool has_untrusted_content,
                             const ConversationCapabilitySet&
                                 conversation_capabilities) const override;
+  std::variant<bool, mojom::PermissionChallengePtr>
+  RequiresUserInteractionBeforeHandling(
+      const mojom::ToolUseEvent& tool_use) const override;
+  void UserPermissionGranted(const std::string& tool_use_id) override;
   void UseTool(const std::string& input_json,
                UseToolCallback callback) override;
 
@@ -67,6 +73,7 @@ class MemorySemanticSearchTool : public Tool {
                        std::vector<MemorySearchResult> results);
 
   const base::WeakPtr<AIChatEmbeddingsService> service_;
+  bool user_has_granted_permission_ = false;
 
   base::WeakPtrFactory<MemorySemanticSearchTool> weak_ptr_factory_{this};
 };

@@ -118,6 +118,24 @@ bool MemorySemanticSearchTool::SupportsConversation(
   return !is_temporary;
 }
 
+std::variant<bool, mojom::PermissionChallengePtr>
+MemorySemanticSearchTool::RequiresUserInteractionBeforeHandling(
+    const mojom::ToolUseEvent& tool_use) const {
+  if (user_has_granted_permission_) {
+    return false;
+  }
+  // The search runs on device, but what it finds is sent to the model. The
+  // user-facing wording is in `get_tool_permission_implications.tsx`.
+  return mojom::PermissionChallenge::New(
+      /*assessment=*/std::nullopt, /*plan=*/std::nullopt,
+      /*description=*/std::nullopt, /*supports_allow_session=*/false);
+}
+
+void MemorySemanticSearchTool::UserPermissionGranted(
+    const std::string& tool_use_id) {
+  user_has_granted_permission_ = true;
+}
+
 void MemorySemanticSearchTool::UseTool(const std::string& input_json,
                                        UseToolCallback callback) {
   std::optional<base::DictValue> input = base::JSONReader::ReadDict(

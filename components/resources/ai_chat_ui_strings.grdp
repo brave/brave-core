@@ -1044,6 +1044,9 @@
   <message name="IDS_CHAT_UI_TOOL_LABEL_MEMORY_SEMANTIC_SEARCH_GENERIC" desc="Label shown while the assistant is searching the memories the user asked it to keep when the query is not yet known." formatter_data="webui=AiChat">
     Searching your memories
   </message>
+  <message name="IDS_CHAT_UI_TOOL_MEMORY_SEMANTIC_SEARCH_PERMISSION_IMPLICATIONS" desc="Explanation shown in the permission prompt when the assistant wants to search the memories the user asked it to keep and the ones it learned from the user's past chats. Calls out that the search itself is on-device and only the matched memories flow to Brave AI." formatter_data="webui=AiChat">
+    Brave AI wants to search your memories. The search runs locally on your device, so your memories aren't all sent. Only the matching memories, including the ones learned from your past chats, will be sent to Brave AI as part of this conversation.
+  </message>
   <message name="IDS_CHAT_UI_CODE_EXECUTION_CODE_LABEL" desc="Label for code section in code execution tool" formatter_data="webui=AiChat">
     Code:
   </message>

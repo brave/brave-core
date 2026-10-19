@@ -61,13 +61,13 @@ The index is derived data that can be rebuilt at any time.
   since an embedding can give away the text it was computed from.
 - Deleting conversations, or turning storage off, removes them from the index.
   Turning the Semantic history search setting off deletes the index.
-- `conversation_search` sends the passages it finds to the model, so it asks for
-  permission once per conversation. `memory_semantic_search` doesn't, since
-  memories go with every request it is offered for, and the learned memories
-  that fit a request go with it too. It finds both kinds of memory, and returns
-  the learned ones under their own key, `learned_memories`. Both the tool and
-  the memory settings search leave out the learned ones while the
-  `AIChatLearnedMemory` feature is off.
+- `conversation_search` and `memory_semantic_search` send what they find to the
+  model, so each asks for permission once per conversation. A learned memory
+  can match the model's query without fitting the request, so it would not go
+  with the request otherwise. `memory_semantic_search` finds both kinds of
+  memory, and returns the learned ones under their own key, `learned_memories`.
+  Both the tool and the memory settings search leave out the learned ones while
+  the `AIChatLearnedMemory` feature is off.
 
 ## Gating
 
