@@ -6,13 +6,11 @@
 #ifndef BRAVE_BROWSER_SERP_METRICS_SERP_METRICS_TAB_HELPER_H_
 #define BRAVE_BROWSER_SERP_METRICS_SERP_METRICS_TAB_HELPER_H_
 
-#include <optional>
+#include <memory>
 
 #include "base/memory/raw_ref.h"
-#include "components/search_engines/search_engine_type.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
-#include "url/gurl.h"
 
 namespace content {
 class WebContents;
@@ -21,6 +19,7 @@ class WebContents;
 namespace serp_metrics {
 
 class SerpMetrics;
+class SerpMetricsNavigationTracker;
 
 class SerpMetricsTabHelper final
     : public content::WebContentsObserver,
@@ -38,18 +37,13 @@ class SerpMetricsTabHelper final
 
   SerpMetricsTabHelper(content::WebContents*, SerpMetrics& serp_metrics);
 
-  bool IsSameSerpAsLastRecorded(const GURL& url) const;
-
-  void MaybeClassifyAndRecordSearchEngineForUrl(const GURL& url);
-  void RecordSearchEngine(SearchEngineType search_engine_type);
-
   // content::WebContentsObserver:
   void DidFinishNavigation(
       content::NavigationHandle* navigation_handle) override;
 
   const raw_ref<SerpMetrics> serp_metrics_;
 
-  std::optional<GURL> last_recorded_serp_url_;
+  std::unique_ptr<SerpMetricsNavigationTracker> navigation_tracker_;
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 };
