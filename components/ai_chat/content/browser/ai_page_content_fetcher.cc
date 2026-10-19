@@ -57,7 +57,7 @@ void AIPageContentFetcher::OnAIPageContentReceived(
     FetchPageContentCallback callback,
     optimization_guide::AIPageContentResultOrError result) {
   if (!result.has_value()) {
-    DVLOG(1) << "Error getting AI page content: " << result.error();
+    DVLOG(1) << "Error getting AI page content: " << result.error().message;
     std::move(callback).Run("", false, "");
     return;
   }
