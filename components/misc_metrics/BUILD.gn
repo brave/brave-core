@@ -83,6 +83,22 @@ static_library("misc_metrics") {
   ]
 }
 
+source_set("test_support") {
+  testonly = true
+
+  sources = [
+    "image_metadata_stripper_metrics_test_util.cc",
+    "image_metadata_stripper_metrics_test_util.h",
+  ]
+
+  public_deps = [ "//components/prefs" ]
+
+  deps = [
+    ":misc_metrics",
+    "//base",
+  ]
+}
+
 source_set("unit_tests") {
   testonly = true
 
