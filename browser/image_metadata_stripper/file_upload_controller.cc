@@ -15,9 +15,9 @@
 #include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"
 #include "brave/browser/brave_browser_process.h"
-#include "brave/browser/misc_metrics/image_metadata_stripper_metrics.h"
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/components/image_metadata_stripper/common/features.h"
+#include "brave/components/misc_metrics/image_metadata_stripper_metrics.h"
 #include "chrome/common/chrome_paths.h"
 #include "components/tabs/public/tab_interface.h"
 

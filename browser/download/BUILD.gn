@@ -15,6 +15,7 @@ source_set("download") {
     "//brave/browser/misc_metrics",
     "//brave/components/image_metadata_stripper",
     "//brave/components/image_metadata_stripper/common",
+    "//brave/components/misc_metrics",
     "//chrome/browser/download",
     "//chrome/browser/profiles:profile",
   ]
@@ -32,6 +33,7 @@ source_set("browser_tests") {
     "//brave/browser/misc_metrics",
     "//brave/browser/misc_metrics:test_support",
     "//brave/components/image_metadata_stripper/common",
+    "//brave/components/misc_metrics",
     "//chrome/browser/download",
     "//chrome/browser/profiles:profile",
     "//chrome/common",
