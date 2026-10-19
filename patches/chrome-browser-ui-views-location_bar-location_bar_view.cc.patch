@@ -1,36 +1,95 @@
 diff --git a/chrome/browser/ui/views/location_bar/location_bar_view.cc b/chrome/browser/ui/views/location_bar/location_bar_view.cc
-index ee034457280e7064db94d4828f086c3b3ae769de..9178f0aafa1d3a0d6ad6dccd586808cf814fdf2d 100644
+index ee034457280e7064db94d4828f086c3b3ae769de..63718945e74274a6ca660930c56decd088058cd5 100644
 --- a/chrome/browser/ui/views/location_bar/location_bar_view.cc
 +++ b/chrome/browser/ui/views/location_bar/location_bar_view.cc
-@@ -801,6 +801,7 @@ void LocationBarView::Layout(PassKey) {
+@@ -326,7 +326,7 @@ void LocationBarView::Init() {
+       CONTEXT_OMNIBOX_PRIMARY, views::style::STYLE_PRIMARY);
+ 
+   const gfx::FontList& omnibox_chip_font_list = typography_provider.GetFont(
+-      CONTEXT_OMNIBOX_PRIMARY, views::style::STYLE_BODY_4_EMPHASIS);
++      CONTEXT_OMNIBOX_PRIMARY, views::style::STYLE_PRIMARY);
+   const gfx::FontList& page_action_font_list = typography_provider.GetFont(
+       CONTEXT_OMNIBOX_PRIMARY, views::style::STYLE_BODY_3_EMPHASIS);
+ 
+@@ -343,9 +343,9 @@ void LocationBarView::Init() {
+ 
+   // Create the controller and the view and wire them together.
+   omnibox_controller_ =
+-      std::make_unique<OmniboxController>(std::make_unique<ChromeOmniboxClient>(
++      std::make_unique<OmniboxController>(std::make_unique<BraveOmniboxClientImpl>(
+           /*location_bar=*/this, browser_, profile_));
+-  auto omnibox_view = std::make_unique<OmniboxViewViews>(
++  auto omnibox_view = std::make_unique<BraveOmniboxViewViews>(
+       is_popup_mode_, omnibox_controller_.get(),
+       /*location_bar_view=*/this, font_list);
+ 
+@@ -399,7 +399,7 @@ void LocationBarView::Init() {
+   // ensure that a null `omnibox_popup_view_` doesn't cause any issues (or aim
+   // for a cleaner solution).
+   if (!omnibox_popup_view_) {
+-    omnibox_popup_view_ = std::make_unique<OmniboxPopupViewViews>(
++    omnibox_popup_view_ = std::make_unique<BraveOmniboxPopupViewViews>(
+         /*omnibox_view=*/omnibox_view_, omnibox_controller_.get(),
+         /*location_bar_view=*/this);
+   }
+@@ -801,6 +801,10 @@ void LocationBarView::Layout(PassKey) {
                                    .indent_input_when_popup_closed) &&
                               !location_icon_view_->ShouldShowLabel() &&
                               !ShouldShowKeywordBubble();
-+  BRAVE_LOCATION_BAR_VIEW_LAYOUT_LEADING_DECORATIONS
++  icon_left = GetLayoutConstant(LayoutConstant::kLocationBarElementPadding);
++  if (text_left == 0 && !location_icon_view_->ShouldShowLabel()) {
++    text_left = 5;
++  }
    if (should_indent) {
      icon_left += GetLayoutConstant(LayoutConstant::kLocationBarInputIconIndent);
      icon_left += omnibox_feature_configs::AdjustOmniboxIndent()
-@@ -856,6 +857,7 @@ void LocationBarView::Layout(PassKey) {
+@@ -856,6 +860,12 @@ void LocationBarView::Layout(PassKey) {
          vertical_padding, location_height, false, kLeadingDecorationMaxFraction,
          /*intra_item_padding=*/0, icon_left, selected_keyword_view_);
      selected_keyword_view_->SetKeyword(keyword);
-+  BRAVE_LOCATION_BAR_VIEW_LAYOUT_HANDLE_SEARCH_PROMOTION_BUTTON_VISIBILITY
++  } else if (GetSearchPromotionButton() &&
++           GetSearchPromotionButton()->GetVisible()) {
++    leading_decorations.AddDecoration(
++        vertical_padding, location_height, false,
++        kLeadingDecorationMaxFraction, /*intra_item_padding=*/0, 0,
++        GetSearchPromotionButton());
    } else if (location_icon_view_->GetShowText() &&
               !ShouldChipOverrideLocationIcon()) {
      location_icon_view_->SetVisible(true);
-@@ -901,6 +903,7 @@ void LocationBarView::Layout(PassKey) {
+@@ -901,6 +911,12 @@ void LocationBarView::Layout(PassKey) {
      // When the AIM page action is shown as the right-most page action in the
      // location bar, it should be positioned flush against the right edge of the
      // location bar.
-+    BRAVE_LOCATION_BAR_VIEW_LAYOUT_RIGHT_MOST_TRAILING_DECORATIONS
++    auto right_most_trailing_views = GetRightMostTrailingViews();
++    for (auto* item : std::views::reverse(right_most_trailing_views)) {
++      add_trailing_decoration(
++          item, /*intra_item_padding=*/0,
++          /*edge_padding=*/trailing_decorations_edge_padding);
++    }
      add_trailing_decoration(
          page_action_container_,
          /*intra_item_padding=*/0,
-@@ -921,6 +924,7 @@ void LocationBarView::Layout(PassKey) {
+@@ -921,6 +937,12 @@ void LocationBarView::Layout(PassKey) {
  
    add_trailing_decoration(clear_all_button_, /*intra_item_padding=*/0,
                            /*edge_padding=*/trailing_decorations_edge_padding);
-+  BRAVE_LOCATION_BAR_VIEW_LAYOUT_LEFT_MOST_TRAILING_DECORATIONS
++  auto left_most_trailing_views = GetLeftMostTrailingViews();
++  for (auto* item : std::views::reverse(left_most_trailing_views)) {
++    add_trailing_decoration(
++        item, /*intra_item_padding=*/0,
++        /*edge_padding=*/trailing_decorations_edge_padding);
++  }
  
    // Perform layout.
    int entry_width = width();
+@@ -1409,8 +1431,8 @@ void LocationBarView::RefreshBackground() {
+     // Under CR23 guidelines, if the Omnibox is unfocused, but still contains
+     // in-progress user input, the background color matches the popup (unless
+     // high-contrast mode is enabled).
+-    normal = color_provider->GetColor(kColorOmniboxResultsBackground);
+-    hovered = color_provider->GetColor(kColorOmniboxResultsBackgroundHovered);
++    normal = color_provider->GetColor(kColorLocationBarBackground);
++    hovered = color_provider->GetColor(kColorLocationBarBackgroundHovered);
+     background_color_ = gfx::Tween::ColorValueBetween(opacity, normal, hovered);
+   }
+ 
