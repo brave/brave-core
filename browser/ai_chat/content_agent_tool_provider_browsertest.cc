@@ -365,8 +365,10 @@ IN_PROC_BROWSER_TEST_F(ContentAgentToolProviderBrowserTest,
   ASSERT_TRUE(tab_handle_future.Wait());
 
   base::test::TestFuture<Tool::ToolResult, Tool::ToolArtifacts> result_future;
-  ReceivedAnnotatedPageContent(result_future.GetCallback(),
-                               base::unexpected("Uninitialized"));
+  ReceivedAnnotatedPageContent(
+      result_future.GetCallback(),
+      base::unexpected(
+          optimization_guide::AIPageContentError{.message = "Uninitialized"}));
   auto [result, artifacts] = result_future.Take();
   EXPECT_TRUE(artifacts.empty());
   EXPECT_THAT(result, ContentBlockText(
