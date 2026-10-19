@@ -471,6 +471,16 @@ public class AppearancePreferences extends AppearanceSettingsFragment
                         SettingsIndexData indexData,
                         Map<String, SearchIndexProvider> providerMap) {
                     super.initPreferenceXml(context, profile, indexData, providerMap);
+                    // Brave's appearance XML carries its own "Address bar" row, which upstream
+                    // also has now. Drop the upstream entry so re-parsing the key below is not a
+                    // duplicate ID.
+                    indexData.removeEntryForKey(
+                            AppearancePreferences.class.getName(), PREF_ADDRESS_BAR);
+                    // Brave keeps the "Homepage" row in main settings, so the upstream copy here
+                    // would be a second search result for the same screen.
+                    indexData.removeEntryForKey(
+                            AppearancePreferences.class.getName(),
+                            AppearanceSettingsFragment.PREF_HOMEPAGE);
                     PreferenceParser.parseAndPopulate(
                             context,
                             R.xml.brave_appearance_preferences,
