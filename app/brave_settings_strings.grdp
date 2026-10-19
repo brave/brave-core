@@ -2080,17 +2080,32 @@
   <message name="IDS_SETTINGS_LEO_ASSISTANT_DREAM_REVIEW_SOURCE_SEVERAL" desc="The line under a memory in the review dialog when the memory came from more than one chat. The date is the date of the last message.">
     From several chats · <ph name="DATE">$1<ex>10/12/2026</ex></ph>
   </message>
-  <message name="IDS_SETTINGS_LEO_ASSISTANT_DREAM_REVIEW_SOURCE_CAPTION" desc="The text under a sentence that Leo read, in the review dialog, when the memory came from more than one chat. It tells the chat and the date of the message. The chat title is a link that opens the chat at that message.">
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_DREAM_REVIEW_SOURCE_CAPTION" desc="The text under a sentence that Leo read, in the review dialog or in the list of memories, when the memory came from more than one chat. It tells the chat and the date of the message. The chat title is a link that opens the chat at that message.">
     <ph name="CHAT_TITLE">$1<ex>Dog food ideas</ex></ph> · <ph name="DATE">$2<ex>10/12/2026</ex></ph>
   </message>
-  <message name="IDS_SETTINGS_LEO_ASSISTANT_DREAM_REVIEW_SOURCE_CAPTION_UNTITLED" desc="The text under a sentence that Leo read, in the review dialog, when the memory came from more than one chat and this chat has no title. The date is the date of the message. The whole text is a link that opens the chat at that message.">
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_DREAM_REVIEW_SOURCE_CAPTION_UNTITLED" desc="The text under a sentence that Leo read, in the review dialog or in the list of memories, when the memory came from more than one chat and this chat has no title. The date is the date of the message. The whole text is a link that opens the chat at that message.">
     Untitled chat · <ph name="DATE">$1<ex>10/12/2026</ex></ph>
   </message>
-  <message name="IDS_SETTINGS_LEO_ASSISTANT_DREAM_REVIEW_SHOW_SOURCES" desc="The tooltip and accessible name of the button that shows the sentences of the user's chat that a memory came from, in the review dialog">
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_DREAM_REVIEW_SHOW_SOURCES" desc="The tooltip and accessible name of the button that shows the sentences of the user's chat that a memory came from, in the review dialog or in the list of memories">
     Show what you wrote
   </message>
-  <message name="IDS_SETTINGS_LEO_ASSISTANT_DREAM_REVIEW_HIDE_SOURCES" desc="The tooltip and accessible name of the button that hides the sentences of the user's chat that a memory came from, in the review dialog">
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_DREAM_REVIEW_HIDE_SOURCES" desc="The tooltip and accessible name of the button that hides the sentences of the user's chat that a memory came from, in the review dialog or in the list of memories">
     Hide what you wrote
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_LEARNED_MEMORY_SOURCE" desc="The line under a learned memory in the list of memories that tells the chat that the memory came from. The chat title is a link that opens the chat at the message.">
+    From “<ph name="CHAT_TITLE">$1<ex>Dog food ideas</ex></ph>”
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_LEARNED_MEMORY_SOURCE_UNTITLED" desc="The line under a learned memory in the list of memories when the chat that the memory came from has no title. The whole line is a link that opens the chat at the message.">
+    From a chat
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_LEARNED_MEMORY_SOURCE_SEVERAL" desc="The line under a learned memory in the list of memories when the memory came from more than one chat. The chat title is the chat of the newest message, and it is a link that opens the chat at that message.">
+    From “<ph name="CHAT_TITLE">$1<ex>Dog food ideas</ex></ph>” and other chats
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_LEARNED_MEMORY_SOURCE_SEVERAL_UNTITLED" desc="The line under a learned memory in the list of memories when the memory came from more than one chat, and the chat of the newest message has no title. The whole line is a link that opens that chat at the message.">
+    From several chats
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_LEARNED_MEMORY_SOURCES_GONE" desc="The text in place of the sentences of a learned memory in the list of memories, when the messages were deleted or edited since Leo learned the memory">
+    These messages are no longer in your chats.
   </message>
   <message name="IDS_SETTINGS_LEO_ASSISTANT_MEMORY_EDIT_LABEL" desc="The tooltip and accessible name of the button that edits a memory">
     Edit memory

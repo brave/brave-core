@@ -27,6 +27,8 @@ class MemoryManagerDelegate {
       mojom::CustomizationSettingsHandler::SearchMemoriesCallback;
   using GetLearnedMemoriesCallback =
       mojom::CustomizationSettingsHandler::GetLearnedMemoriesCallback;
+  using GetLearnedMemorySourcesCallback =
+      mojom::CustomizationSettingsHandler::GetLearnedMemorySourcesCallback;
   using DeleteLearnedMemoryCallback =
       mojom::CustomizationSettingsHandler::DeleteLearnedMemoryCallback;
   using DeleteAllLearnedMemoriesCallback =
@@ -50,9 +52,16 @@ class MemoryManagerDelegate {
   virtual void SearchMemories(const std::string& query,
                               SearchMemoriesCallback callback) = 0;
 
-  // The learned memories, newest first. `available` is false when learned
-  // memory is off or the chat database is not ready.
+  // The learned memories, newest first, each with the chats that it came
+  // from. `available` is false when learned memory is off or the chat
+  // database is not ready.
   virtual void GetLearnedMemories(GetLearnedMemoriesCallback callback) = 0;
+
+  // The sentences of the chats that a learned memory came from. `callback`
+  // gets an empty list when there are none, or when learned memory is off.
+  virtual void GetLearnedMemorySources(
+      const std::string& uuid,
+      GetLearnedMemorySourcesCallback callback) = 0;
 
   // Deletes a learned memory for good. `callback` gets false when it could not.
   virtual void DeleteLearnedMemory(const std::string& uuid,

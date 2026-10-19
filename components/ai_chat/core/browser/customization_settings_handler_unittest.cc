@@ -65,6 +65,13 @@ class FakeMemoryManagerDelegate : public MemoryManagerDelegate {
     std::move(callback).Run(learned_available, mojo::Clone(learned));
   }
 
+  void GetLearnedMemorySources(
+      const std::string& uuid,
+      GetLearnedMemorySourcesCallback callback) override {
+    source_requests.push_back(uuid);
+    std::move(callback).Run(mojo::Clone(sources));
+  }
+
   void DeleteLearnedMemory(const std::string& uuid,
                            DeleteLearnedMemoryCallback callback) override {
     forgotten.push_back(uuid);
@@ -113,6 +120,8 @@ class FakeMemoryManagerDelegate : public MemoryManagerDelegate {
   std::vector<mojom::MemorySearchResultPtr> results;
   bool learned_available = true;
   std::vector<mojom::LearnedMemoryItemPtr> learned;
+  std::vector<std::string> source_requests;
+  std::vector<mojom::LearnedMemorySourcePtr> sources;
   std::vector<std::string> forgotten;
   std::vector<std::pair<std::string, bool>> permanent_calls;
   std::vector<std::pair<std::string, std::string>> edits;
@@ -540,7 +549,11 @@ TEST_F(CustomizationSettingsHandlerTest, LearnedMemoriesGoThroughTheDelegate) {
   delegate_->learned.push_back(mojom::LearnedMemoryItem::New(
       "uuid-1", "Lives in Berlin.", mojom::LearnedMemoryCategory::kPersonalFact,
       mojom::LearnedMemoryType::kLongTerm, base::Time(), base::Time(),
-      std::nullopt, std::nullopt));
+      std::nullopt, std::nullopt, std::vector<mojom::LearnedMemoryChatPtr>()));
+  delegate_->learned[0]->chats.push_back(
+      mojom::LearnedMemoryChat::New("chat-1", "entry-1", "Moving"));
+  delegate_->sources.push_back(mojom::LearnedMemorySource::New(
+      "I live in Berlin.", "chat-1", "entry-1", "Moving", base::Time()));
 
   base::test::TestFuture<bool, std::vector<mojom::LearnedMemoryItemPtr>>
       memories;
@@ -548,6 +561,14 @@ TEST_F(CustomizationSettingsHandlerTest, LearnedMemoriesGoThroughTheDelegate) {
   EXPECT_TRUE(memories.Get<0>());
   ASSERT_EQ(memories.Get<1>().size(), 1u);
   EXPECT_EQ(memories.Get<1>()[0]->text, "Lives in Berlin.");
+  ASSERT_EQ(memories.Get<1>()[0]->chats.size(), 1u);
+  EXPECT_EQ(memories.Get<1>()[0]->chats[0]->conversation_title, "Moving");
+
+  base::test::TestFuture<std::vector<mojom::LearnedMemorySourcePtr>> sources;
+  handler_->GetLearnedMemorySources("uuid-1", sources.GetCallback());
+  ASSERT_EQ(sources.Get().size(), 1u);
+  EXPECT_EQ(sources.Get()[0]->sentence, "I live in Berlin.");
+  EXPECT_EQ(delegate_->source_requests, std::vector<std::string>{"uuid-1"});
 
   base::test::TestFuture<bool> forgotten;
   handler_->DeleteLearnedMemory("uuid-1", forgotten.GetCallback());
@@ -595,6 +616,10 @@ TEST(CustomizationSettingsHandlerNoDelegateTest, LearnedMemoryIsNotAvailable) {
   handler.GetLearnedMemories(memories.GetCallback());
   EXPECT_FALSE(memories.Get<0>());
   EXPECT_TRUE(memories.Get<1>().empty());
+
+  base::test::TestFuture<std::vector<mojom::LearnedMemorySourcePtr>> sources;
+  handler.GetLearnedMemorySources("uuid", sources.GetCallback());
+  EXPECT_TRUE(sources.Get().empty());
 
   base::test::TestFuture<bool> forgotten;
   handler.DeleteLearnedMemory("uuid", forgotten.GetCallback());

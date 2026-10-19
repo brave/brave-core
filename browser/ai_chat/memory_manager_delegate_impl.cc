@@ -72,22 +72,47 @@ mojom::DreamNowStatus ToMojom(DreamingStatus status) {
 
 void OnGotLearnedMemories(
     MemoryManagerDelegate::GetLearnedMemoriesCallback callback,
-    std::vector<LearnedMemory> memories) {
+    std::vector<LearnedMemory> memories,
+    std::vector<std::vector<LearnedMemoryChat>> chats) {
   std::vector<mojom::LearnedMemoryItemPtr> items;
   items.reserve(memories.size());
-  for (const auto& memory : memories) {
+  for (size_t i = 0; i < memories.size(); ++i) {
+    const LearnedMemory& memory = memories[i];
     std::optional<std::string> previous_text;
     if (memory.previous) {
       previous_text = memory.previous->text;
     }
+    std::vector<mojom::LearnedMemoryChatPtr> memory_chats;
+    for (const LearnedMemoryChat& chat : chats[i]) {
+      memory_chats.push_back(mojom::LearnedMemoryChat::New(
+          chat.conversation_uuid, chat.entry_uuid, chat.title));
+    }
     items.push_back(mojom::LearnedMemoryItem::New(
         memory.uuid, memory.text, ToMojom(memory.category),
         ToMojom(memory.type), memory.created_date, memory.updated_date,
-        std::move(previous_text), GetLearnedMemoryExpiryTime(memory)));
+        std::move(previous_text), GetLearnedMemoryExpiryTime(memory),
+        std::move(memory_chats)));
   }
   // The newest memory is the first in the list.
   std::ranges::reverse(items);
   std::move(callback).Run(true, std::move(items));
+}
+
+std::vector<mojom::LearnedMemorySourcePtr> ToMojom(
+    const std::vector<DreamingSource>& sources) {
+  std::vector<mojom::LearnedMemorySourcePtr> items;
+  for (const DreamingSource& source : sources) {
+    items.push_back(mojom::LearnedMemorySource::New(
+        source.sentence, source.conversation_uuid, source.entry_uuid,
+        source.conversation_title, source.date));
+  }
+  return items;
+}
+
+void OnGotLearnedMemorySources(
+    MemoryManagerDelegate::GetLearnedMemorySourcesCallback callback,
+    std::vector<DreamingSource> sources) {
+  std::move(callback).Run(ToMojom(sources));
 }
 
 void OnLearnedMemoryEdited(
@@ -167,8 +192,22 @@ void MemoryManagerDelegateImpl::GetLearnedMemories(
     std::move(callback).Run(false, {});
     return;
   }
-  manager->GetLearnedMemories(
+  manager->GetLearnedMemoriesWithChats(
       base::BindOnce(&OnGotLearnedMemories, std::move(callback)));
+}
+
+void MemoryManagerDelegateImpl::GetLearnedMemorySources(
+    const std::string& uuid,
+    GetLearnedMemorySourcesCallback callback) {
+  AIChatService* service = AIChatServiceFactory::GetForBrowserContext(context_);
+  UserMemoryManager* manager =
+      service ? service->GetUserMemoryManager() : nullptr;
+  if (!manager || !manager->is_storage_ready()) {
+    std::move(callback).Run({});
+    return;
+  }
+  manager->GetLearnedMemorySources(
+      uuid, base::BindOnce(&OnGotLearnedMemorySources, std::move(callback)));
 }
 
 void MemoryManagerDelegateImpl::DeleteLearnedMemory(
@@ -250,16 +289,10 @@ void MemoryManagerDelegateImpl::GetDreamingReview(
       if (proposal.stored) {
         stored_text = proposal.stored->text;
       }
-      std::vector<mojom::LearnedMemorySourcePtr> sources;
-      for (const DreamingSource& source : proposal.sources) {
-        sources.push_back(mojom::LearnedMemorySource::New(
-            source.sentence, source.conversation_uuid, source.entry_uuid,
-            source.conversation_title, source.date));
-      }
       proposals.push_back(mojom::LearnedMemoryProposal::New(
           proposal.memory.uuid, ToMojom(proposal.kind), proposal.memory.text,
           std::move(stored_text), ToMojom(proposal.memory.category),
-          ToMojom(proposal.memory.type), std::move(sources)));
+          ToMojom(proposal.memory.type), ToMojom(proposal.sources)));
     }
   }
   std::move(callback).Run(std::move(proposals));

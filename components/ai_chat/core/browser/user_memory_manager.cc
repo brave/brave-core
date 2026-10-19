@@ -6,6 +6,8 @@
 #include "brave/components/ai_chat/core/browser/user_memory_manager.h"
 
 #include <algorithm>
+#include <map>
+#include <set>
 #include <utility>
 
 #include "base/barrier_callback.h"
@@ -42,6 +44,51 @@ MemoryEventRecord::MemoryEventRecord() = default;
 MemoryEventRecord::MemoryEventRecord(MemoryEventRecord&&) = default;
 MemoryEventRecord& MemoryEventRecord::operator=(MemoryEventRecord&&) = default;
 MemoryEventRecord::~MemoryEventRecord() = default;
+
+namespace {
+
+// The title of each stored chat.
+std::map<std::string, std::string> GetChatTitles(
+    const std::vector<mojom::ConversationPtr>& conversations) {
+  std::map<std::string, std::string> titles;
+  for (const mojom::ConversationPtr& conversation : conversations) {
+    titles[conversation->uuid] = conversation->title;
+  }
+  return titles;
+}
+
+// The chats of |links|, oldest link first: each chat at its newest link, and
+// the chat of the newest link last. A chat that is not in |titles| is left
+// out.
+std::vector<LearnedMemoryChat> GetChatsOfLinks(
+    const std::vector<MemorySourceLink>& links,
+    const std::map<std::string, std::string>& titles) {
+  std::vector<LearnedMemoryChat> chats;
+  for (const MemorySourceLink& link : links) {
+    auto title = titles.find(link.conversation_uuid);
+    if (title == titles.end()) {
+      continue;
+    }
+    std::erase_if(chats, [&link](const LearnedMemoryChat& chat) {
+      return chat.conversation_uuid == link.conversation_uuid;
+    });
+    chats.push_back({link.conversation_uuid, link.entry_uuid, title->second});
+  }
+  return chats;
+}
+
+}  // namespace
+
+// The sentences of one memory, while its chats are read one at a time.
+struct UserMemoryManager::SourcesRequest {
+  std::vector<MemorySourceLink> links;
+  LearnedMemorySourcesCallback callback;
+  std::map<std::string, std::string> titles;
+  // The chats that are left to read.
+  std::vector<std::string> chats_to_read;
+  // The learnable text and the date of each message that a link names.
+  std::map<std::string, std::pair<std::string, base::Time>> messages;
+};
 
 // static
 DreamingConfig UserMemoryManager::GetDreamingConfigFromFeatures() {
@@ -192,6 +239,129 @@ void UserMemoryManager::DreamNow(DreamingCallback callback) {
 
 void UserMemoryManager::GetLearnedMemories(LearnedMemoriesCallback callback) {
   data_source_->GetLearnedMemories(std::move(callback));
+}
+
+void UserMemoryManager::GetLearnedMemoriesWithChats(
+    LearnedMemoriesWithChatsCallback callback) {
+  data_source_->GetLearnedMemories(
+      base::BindOnce(&UserMemoryManager::OnMemoriesForChats,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void UserMemoryManager::OnMemoriesForChats(
+    LearnedMemoriesWithChatsCallback callback,
+    std::vector<LearnedMemory> memories) {
+  if (memories.empty()) {
+    std::move(callback).Run({}, {});
+    return;
+  }
+  data_source_->GetStoredConversations(base::BindOnce(
+      [](std::vector<LearnedMemory> memories,
+         LearnedMemoriesWithChatsCallback callback,
+         std::vector<mojom::ConversationPtr> conversations) {
+        const std::map<std::string, std::string> titles =
+            GetChatTitles(conversations);
+        std::vector<std::vector<LearnedMemoryChat>> chats;
+        chats.reserve(memories.size());
+        for (const LearnedMemory& memory : memories) {
+          chats.push_back(GetChatsOfLinks(memory.links, titles));
+        }
+        std::move(callback).Run(std::move(memories), std::move(chats));
+      },
+      std::move(memories), std::move(callback)));
+}
+
+void UserMemoryManager::GetLearnedMemorySources(
+    const std::string& uuid,
+    LearnedMemorySourcesCallback callback) {
+  // The data source gives the sources only with all memories. They are few.
+  data_source_->GetLearnedMemories(base::BindOnce(
+      &UserMemoryManager::OnMemoriesForSources, weak_ptr_factory_.GetWeakPtr(),
+      uuid, std::move(callback)));
+}
+
+void UserMemoryManager::OnMemoriesForSources(
+    const std::string& uuid,
+    LearnedMemorySourcesCallback callback,
+    std::vector<LearnedMemory> memories) {
+  auto it = std::ranges::find(memories, uuid, &LearnedMemory::uuid);
+  if (it == memories.end() || it->links.empty()) {
+    std::move(callback).Run({});
+    return;
+  }
+  auto request = std::make_unique<SourcesRequest>();
+  request->links = std::move(it->links);
+  request->callback = std::move(callback);
+  data_source_->GetStoredConversations(
+      base::BindOnce(&UserMemoryManager::OnConversationsForSources,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(request)));
+}
+
+void UserMemoryManager::OnConversationsForSources(
+    std::unique_ptr<SourcesRequest> request,
+    std::vector<mojom::ConversationPtr> conversations) {
+  request->titles = GetChatTitles(conversations);
+  // Each stored chat of the links, once.
+  std::set<std::string> chats;
+  for (const MemorySourceLink& link : request->links) {
+    if (request->titles.contains(link.conversation_uuid) &&
+        chats.insert(link.conversation_uuid).second) {
+      request->chats_to_read.push_back(link.conversation_uuid);
+    }
+  }
+  ReadNextSourceChat(std::move(request));
+}
+
+void UserMemoryManager::ReadNextSourceChat(
+    std::unique_ptr<SourcesRequest> request) {
+  if (request->chats_to_read.empty()) {
+    // The sentence of a link is its place in the learnable text of the
+    // message, as Dreaming split it.
+    std::vector<DreamingSource> sources;
+    for (const MemorySourceLink& link : request->links) {
+      auto message = request->messages.find(link.entry_uuid);
+      if (message == request->messages.end()) {
+        continue;
+      }
+      std::vector<std::string> sentences =
+          SplitIntoSentences(message->second.first);
+      if (link.sentence_index >= sentences.size()) {
+        continue;
+      }
+      sources.push_back({std::move(sentences[link.sentence_index]),
+                         link.conversation_uuid, link.entry_uuid,
+                         request->titles[link.conversation_uuid],
+                         message->second.second});
+    }
+    std::move(request->callback).Run(std::move(sources));
+    return;
+  }
+  std::string uuid = std::move(request->chats_to_read.back());
+  request->chats_to_read.pop_back();
+  data_source_->GetStoredConversationData(
+      uuid, base::BindOnce(&UserMemoryManager::OnSourceChat,
+                           weak_ptr_factory_.GetWeakPtr(), std::move(request)));
+}
+
+void UserMemoryManager::OnSourceChat(std::unique_ptr<SourcesRequest> request,
+                                     mojom::ConversationArchivePtr archive) {
+  if (archive) {
+    std::set<std::string> linked;
+    for (const MemorySourceLink& link : request->links) {
+      linked.insert(link.entry_uuid);
+    }
+    for (const mojom::ConversationTurnPtr& entry : archive->entries) {
+      if (!entry->uuid || !linked.contains(*entry->uuid)) {
+        continue;
+      }
+      if (std::optional<std::string> text =
+              DreamingRun::GetLearnableText(*entry)) {
+        request->messages[*entry->uuid] = {std::move(*text),
+                                           entry->created_time};
+      }
+    }
+  }
+  ReadNextSourceChat(std::move(request));
 }
 
 void UserMemoryManager::DeleteLearnedMemory(

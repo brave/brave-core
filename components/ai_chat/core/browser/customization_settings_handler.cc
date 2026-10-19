@@ -134,6 +134,16 @@ void CustomizationSettingsHandler::GetLearnedMemories(
   delegate_->GetLearnedMemories(std::move(callback));
 }
 
+void CustomizationSettingsHandler::GetLearnedMemorySources(
+    const std::string& uuid,
+    GetLearnedMemorySourcesCallback callback) {
+  if (!delegate_) {
+    std::move(callback).Run({});
+    return;
+  }
+  delegate_->GetLearnedMemorySources(uuid, std::move(callback));
+}
+
 void CustomizationSettingsHandler::DeleteLearnedMemory(
     const std::string& uuid,
     DeleteLearnedMemoryCallback callback) {

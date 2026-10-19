@@ -116,6 +116,17 @@ struct MemoryEventRecord {
   base::DictValue details;
 };
 
+// A chat that a learned memory came from, for the list of memories in
+// Settings: the chat, and the newest message of the memory in it.
+struct LearnedMemoryChat {
+  std::string conversation_uuid;
+  std::string entry_uuid;
+  // The title of the chat now. It can be empty.
+  std::string title;
+
+  bool operator==(const LearnedMemoryChat& other) const = default;
+};
+
 // Why an edit of a learned memory failed.
 enum class LearnedMemoryEditError {
   // The text is empty or too long.
@@ -137,6 +148,12 @@ class UserMemoryManager : public AIChatService::Observer {
   using DreamingCallback = base::OnceCallback<void(DreamingResult)>;
   using LearnedMemoriesCallback =
       base::OnceCallback<void(std::vector<LearnedMemory>)>;
+  // The learned memories, and the chats of each one, in the same order.
+  using LearnedMemoriesWithChatsCallback =
+      base::OnceCallback<void(std::vector<LearnedMemory>,
+                              std::vector<std::vector<LearnedMemoryChat>>)>;
+  using LearnedMemorySourcesCallback =
+      base::OnceCallback<void(std::vector<DreamingSource>)>;
   using TurnMemoriesCallback =
       base::OnceCallback<void(EngineConsumer::LearnedMemories)>;
   // Makes the engine of the local LLM for one run. Gives null when the LLM is
@@ -226,6 +243,20 @@ class UserMemoryManager : public AIChatService::Observer {
   // when storage is not ready.
   void GetLearnedMemories(LearnedMemoriesCallback callback);
 
+  // Same as GetLearnedMemories(), with the chats that each memory came from,
+  // for the list in Settings. The chats come from the links of the current
+  // text: one for each chat, at its newest link, and the chat of the newest
+  // link last. A chat that is not stored is left out. Reads no message.
+  void GetLearnedMemoriesWithChats(LearnedMemoriesWithChatsCallback callback);
+
+  // The sentences of the chats that the learned memory |uuid| came from, in
+  // the order of the links of its current text, each with its chat, message
+  // and date. They are read from the chats as they are now, so a link whose
+  // chat, message or sentence is gone is left out. |callback| gets an empty
+  // list for a memory that is not stored.
+  void GetLearnedMemorySources(const std::string& uuid,
+                               LearnedMemorySourcesCallback callback);
+
   // Deletes the memory for good. Nothing remembers it, so Dreaming can learn
   // the same fact again from another chat. Its change in the review goes too.
   // |callback| gets false when storage is not ready or the delete failed.
@@ -233,7 +264,8 @@ class UserMemoryManager : public AIChatService::Observer {
                            base::OnceCallback<void(bool)> callback);
 
   // Keeps the memory as it is (|permanent| true): Dreaming never replaces or
-  // merges it, it never expires, and Leo sends it in every chat. With false,
+  // merges it, and it never expires. It still goes to a chat only when it is
+  // relevant to the turn, or when it is a preference. With false,
   // the memory is long-term again. A change of the last run's review that
   // waits for the memory is dropped when it is kept, and the run's steps tell
   // that. |callback| gets false when the memory is not stored, a review is
@@ -358,6 +390,19 @@ class UserMemoryManager : public AIChatService::Observer {
   bool DropPendingChange(const std::string& uuid,
                          std::string_view step,
                          base::DictValue data);
+  struct SourcesRequest;
+  void OnMemoriesForChats(LearnedMemoriesWithChatsCallback callback,
+                          std::vector<LearnedMemory> memories);
+  void OnMemoriesForSources(const std::string& uuid,
+                            LearnedMemorySourcesCallback callback,
+                            std::vector<LearnedMemory> memories);
+  void OnConversationsForSources(
+      std::unique_ptr<SourcesRequest> request,
+      std::vector<mojom::ConversationPtr> conversations);
+  // Reads the next chat of the request, or ends it when none is left.
+  void ReadNextSourceChat(std::unique_ptr<SourcesRequest> request);
+  void OnSourceChat(std::unique_ptr<SourcesRequest> request,
+                    mojom::ConversationArchivePtr archive);
   void OnMemoriesForPermanent(const std::string& uuid,
                               bool permanent,
                               base::OnceCallback<void(bool)> callback,

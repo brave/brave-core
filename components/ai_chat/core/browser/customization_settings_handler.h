@@ -58,6 +58,9 @@ class CustomizationSettingsHandler
 
   // learned memories
   void GetLearnedMemories(GetLearnedMemoriesCallback callback) override;
+  void GetLearnedMemorySources(
+      const std::string& uuid,
+      GetLearnedMemorySourcesCallback callback) override;
   void DeleteLearnedMemory(const std::string& uuid,
                            DeleteLearnedMemoryCallback callback) override;
   void DeleteAllLearnedMemories(

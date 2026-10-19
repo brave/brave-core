@@ -1189,6 +1189,101 @@ TEST_F(UserMemoryManagerTest, LearnedMemoriesNeedTheDatabase) {
   EXPECT_FALSE(forgotten.Get());
 }
 
+TEST_F(UserMemoryManagerTest, LearnedMemoriesHaveTheChatsOfTheirLinks) {
+  AddChat("chat-1", {"I live in Berlin.", "We moved in May."});
+  AddChat("chat-2", {"Berlin is cold."});
+  LearnedMemory memory;
+  memory.uuid = "uuid-1";
+  memory.text = "Lives in Berlin";
+  // The links in the order that Dreaming read them. The chat that is not
+  // stored was deleted.
+  memory.links = {{"chat-1", "chat-1-entry-0", 0},
+                  {"chat-2", "chat-2-entry-0", 0},
+                  {"gone", "gone-entry-0", 0},
+                  {"chat-1", "chat-1-entry-1", 0}};
+  base::test::TestFuture<bool> added;
+  db_.AsyncCall(&AIChatDatabase::AddOrUpdateLearnedMemory)
+      .WithArgs(memory)
+      .Then(added.GetCallback());
+  ASSERT_TRUE(added.Get());
+  StorageReady();
+
+  base::test::TestFuture<std::vector<LearnedMemory>,
+                         std::vector<std::vector<LearnedMemoryChat>>>
+      future;
+  manager_->GetLearnedMemoriesWithChats(future.GetCallback());
+
+  ASSERT_EQ(future.Get<0>().size(), 1u);
+  EXPECT_EQ(future.Get<0>()[0].text, "Lives in Berlin");
+  // One for each chat, at its newest link, and the chat of the newest link
+  // last.
+  EXPECT_THAT(future.Get<1>(),
+              ElementsAre(ElementsAre(
+                  LearnedMemoryChat{"chat-2", "chat-2-entry-0", "title"},
+                  LearnedMemoryChat{"chat-1", "chat-1-entry-1", "title"})));
+}
+
+TEST_F(UserMemoryManagerTest, LearnedMemorySourcesAreTheSentencesOfTheLinks) {
+  AddChat("chat-1", {"Hello there. I like tea.", "I play the cello."});
+  AddChat("chat-2", {"We moved to Berlin."}, /*hours_ago=*/5);
+  LearnedMemory memory;
+  memory.uuid = "uuid-1";
+  memory.text = "Likes tea";
+  // The sentence is the place in the message. The link of a deleted chat,
+  // of a deleted message, and of a sentence that the message no longer has
+  // give nothing.
+  memory.links = {{"chat-1", "chat-1-entry-0", 1},
+                  {"gone", "gone-entry-0", 0},
+                  {"chat-2", "chat-2-entry-0", 0},
+                  {"chat-2", "chat-2-entry-9", 0},
+                  {"chat-1", "chat-1-entry-1", 3}};
+  base::test::TestFuture<bool> added;
+  db_.AsyncCall(&AIChatDatabase::AddOrUpdateLearnedMemory)
+      .WithArgs(memory)
+      .Then(added.GetCallback());
+  ASSERT_TRUE(added.Get());
+  StorageReady();
+  // The dates of the messages, as the database has them.
+  std::map<std::string, base::Time> dates;
+  for (const char* chat : {"chat-1", "chat-2"}) {
+    base::test::TestFuture<mojom::ConversationArchivePtr> archive;
+    db_.AsyncCall(&AIChatDatabase::GetConversationData)
+        .WithArgs(chat)
+        .Then(archive.GetCallback());
+    for (const auto& entry : archive.Get()->entries) {
+      dates[*entry->uuid] = entry->created_time;
+    }
+  }
+
+  base::test::TestFuture<std::vector<DreamingSource>> sources;
+  manager_->GetLearnedMemorySources("uuid-1", sources.GetCallback());
+
+  EXPECT_THAT(
+      sources.Get(),
+      ElementsAre(
+          DreamingSource{"I like tea.", "chat-1", "chat-1-entry-0", "title",
+                         dates["chat-1-entry-0"]},
+          DreamingSource{"We moved to Berlin.", "chat-2", "chat-2-entry-0",
+                         "title", dates["chat-2-entry-0"]}));
+
+  base::test::TestFuture<std::vector<DreamingSource>> unknown;
+  manager_->GetLearnedMemorySources("uuid-2", unknown.GetCallback());
+  EXPECT_THAT(unknown.Get(), IsEmpty());
+}
+
+TEST_F(UserMemoryManagerTest, LearnedMemorySourcesNeedTheDatabase) {
+  base::test::TestFuture<std::vector<DreamingSource>> sources;
+  manager_->GetLearnedMemorySources("uuid-1", sources.GetCallback());
+  EXPECT_THAT(sources.Get(), IsEmpty());
+
+  base::test::TestFuture<std::vector<LearnedMemory>,
+                         std::vector<std::vector<LearnedMemoryChat>>>
+      memories;
+  manager_->GetLearnedMemoriesWithChats(memories.GetCallback());
+  EXPECT_THAT(memories.Get<0>(), IsEmpty());
+  EXPECT_THAT(memories.Get<1>(), IsEmpty());
+}
+
 TEST_F(UserMemoryManagerTest, KeepsCertainFactsOnly) {
   const std::string turn =
       "We just moved to Berlin. My SSN is 123-45-6789. I love hiking. "

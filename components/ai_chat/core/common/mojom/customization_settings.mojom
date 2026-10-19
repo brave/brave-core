@@ -38,6 +38,15 @@ enum LearnedMemoryCategory {
   kTopic,
 };
 
+// A chat that a learned memory came from, for the list of memories.
+struct LearnedMemoryChat {
+  string conversation_uuid;
+  // The newest message of the memory in the chat, to open the chat at it.
+  string entry_uuid;
+  // The title of the chat now. It can be empty.
+  string conversation_title;
+};
+
 struct LearnedMemoryItem {
   string uuid;
   string text;
@@ -50,6 +59,9 @@ struct LearnedMemoryItem {
   // The date when Leo forgets the memory if it does not use it before. Null
   // for a memory that the user keeps.
   mojo_base.mojom.Time? expire_time;
+  // The chats that the current text came from, the chat of the newest
+  // message last. A deleted chat is not here.
+  array<LearnedMemoryChat> chats;
 };
 
 // A change that a Dreaming run wants to make. Nothing is stored before the
@@ -63,7 +75,8 @@ enum LearnedMemoryChange {
   kSeenAgain,
 };
 
-// A sentence of a chat that a change of the review came from.
+// A sentence of a chat that a change of the review, or a learned memory, came
+// from.
 struct LearnedMemorySource {
   string sentence;
   // The chat and the message of the sentence, to open the chat at it.
@@ -173,6 +186,12 @@ interface CustomizationSettingsHandler {
   GetLearnedMemories() =>
     (bool available, array<LearnedMemoryItem> memories);
 
+  // The sentences of the chats that a learned memory came from, read from the
+  // chats as they are now, in the order of its links. A sentence whose chat or
+  // message is gone is not here. Empty for a memory that is not stored.
+  GetLearnedMemorySources(string uuid) =>
+    (array<LearnedMemorySource> sources);
+
   // Deletes a learned memory for good. Nothing remembers it, so Dreaming can
   // learn the same fact again from another chat.
   DeleteLearnedMemory(string uuid) => (bool success);
@@ -190,9 +209,10 @@ interface CustomizationSettingsHandler {
 
   // Keeps a learned memory as it is (|permanent| true), or lets Dreaming change
   // it again (false). Dreaming never replaces or merges a permanent memory,
-  // and Leo sends it in every chat. A memory that is not permanent any more is
-  // long-term. |success| is false when the memory is not stored, or a write
-  // failed.
+  // and it never expires. It still goes to a chat only when it is relevant to
+  // the turn, or when it is a preference. A memory that is not permanent any
+  // more is long-term. |success| is false when the memory is not stored, or a
+  // write failed.
   SetLearnedMemoryPermanent(string uuid, bool permanent) =>
     (bool success);
 

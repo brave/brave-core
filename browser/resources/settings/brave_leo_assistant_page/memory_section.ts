@@ -22,6 +22,7 @@ import {
   DreamNowResult,
   DreamNowStatus,
   LearnedMemoryChange,
+  LearnedMemoryChat,
   LearnedMemoryItem,
   LearnedMemoryProposal,
   LearnedMemoryReviewDecision,
@@ -67,6 +68,21 @@ export interface MemoryRow {
   // The date when Leo forgets a learned memory that it does not use. Empty for
   // a memory that is kept, and for the memories that the user wrote.
   expires: string
+  // The line that tells the chat that a learned memory came from, with a link
+  // that opens it. Null for a memory without a chat, and for the memories that
+  // the user wrote.
+  source: LinkedText | null
+  // The sentences of the chats show under the line.
+  sourcesOpen: boolean
+  // The sentences, null until they are read.
+  quotes: ReviewQuote[] | null
+}
+
+// The sentences of a learned memory in the list. They are read from the chats
+// when the user opens them.
+interface RowSources {
+  open: boolean
+  quotes: ReviewQuote[] | null
 }
 
 // A part of the list. The memories that the search found by meaning come in a
@@ -181,9 +197,16 @@ class MemorySection extends MemorySectionBase {
         type: Array,
         value: () => []
       },
+      // The sentences of the learned memories, by uuid.
+      rowSources_: {
+        type: Object,
+        value: () => ({})
+      },
       rows_: {
         type: Array,
-        computed: 'computeRows_(memoriesList_, learnedMemories_, available_)'
+        computed:
+          'computeRows_(memoriesList_, learnedMemories_, available_, ' +
+          'rowSources_)'
       },
       groups_: {
         type: Array,
@@ -276,6 +299,7 @@ class MemorySection extends MemorySectionBase {
   declare memoriesList_: string[]
   declare available_: boolean
   declare learnedMemories_: LearnedMemoryItem[]
+  declare rowSources_: { [uuid: string]: RowSources }
   declare rows_: MemoryRow[]
   declare groups_: MemoryGroup[]
   declare editingRow_: MemoryRow | null
@@ -335,6 +359,27 @@ class MemorySection extends MemorySectionBase {
       (result: { available: boolean, memories: LearnedMemoryItem[] }) => {
         this.available_ = result.available
         this.learnedMemories_ = result.memories
+        // A change of a memory can change its sources too. The sentences that
+        // are open are read again, and the others are forgotten.
+        const open = result.memories
+          .map(memory => memory.uuid)
+          .filter(uuid => this.rowSources_[uuid]?.open)
+        this.rowSources_ = Object.fromEntries(
+          open.map(uuid => [uuid, { open: true, quotes: null }]))
+        open.forEach(uuid => this.loadRowSources_(uuid))
+      })
+  }
+
+  loadRowSources_(uuid: string) {
+    const handler = this.browserProxy_.getCustomizationSettingsHandler()
+    handler.getLearnedMemorySources(uuid).then(
+      (result: { sources: LearnedMemorySource[] }) => {
+        const state = this.rowSources_[uuid]
+        if (!state) {
+          return
+        }
+        const quotes = this.getReviewSources_(result.sources).quotes
+        this.rowSources_ = { ...this.rowSources_, [uuid]: { ...state, quotes } }
       })
   }
 
@@ -371,7 +416,8 @@ class MemorySection extends MemorySectionBase {
   // the user wrote, then the learned ones that the user keeps. The other
   // learned memories follow, the newest first.
   computeRows_(memories: string[], learned: LearnedMemoryItem[],
-               available: boolean): MemoryRow[] {
+               available: boolean,
+               sources: { [uuid: string]: RowSources }): MemoryRow[] {
     const written = memories.map((text): MemoryRow => ({
       key: `written:${text}`,
       text,
@@ -381,7 +427,10 @@ class MemorySection extends MemorySectionBase {
       shortTerm: false,
       previousText: '',
       date: '',
-      expires: ''
+      expires: '',
+      source: null,
+      sourcesOpen: false,
+      quotes: null
     }))
     const learnedRows = (available ? learned : []).map((item): MemoryRow => ({
       key: `learned:${item.uuid}`,
@@ -392,7 +441,10 @@ class MemorySection extends MemorySectionBase {
       shortTerm: item.type === LearnedMemoryType.kShortTerm,
       previousText: item.previousText ?? '',
       date: this.formatDate_(item.updatedTime),
-      expires: item.expireTime ? this.formatDate_(item.expireTime) : ''
+      expires: item.expireTime ? this.formatDate_(item.expireTime) : '',
+      source: this.getChatsLine_(item.chats),
+      sourcesOpen: sources[item.uuid]?.open ?? false,
+      quotes: sources[item.uuid]?.quotes ?? null
     }))
     return [
       ...written,
@@ -443,21 +495,48 @@ class MemorySection extends MemorySectionBase {
   // without a title gets the line |untitledId|, all of it a link.
   linkChat_(id: string, untitledId: string,
             source: LearnedMemorySource): LinkedText {
-    const date = this.formatDate_(source.date)
-    const url = this.getChatUrl_(source)
-    if (!source.conversationTitle) {
-      return { before: '', link: this.i18n(untitledId, date), after: '', url }
-    }
-    const [before, after = ''] =
-      this.i18n(id, CHAT_TITLE_MARKER, date).split(CHAT_TITLE_MARKER)
-    return { before, link: source.conversationTitle, after, url }
+    return this.linkTitle_(
+      id, untitledId, source.conversationTitle,
+      this.getChatUrl_(source.conversationUuid, source.entryUuid),
+      this.formatDate_(source.date))
   }
 
-  // The chat at the message of the sentence. The Leo page scrolls to the
-  // message and marks it.
-  getChatUrl_(source: LearnedMemorySource): string {
-    const fragment = new URLSearchParams({ entry: source.entryUuid })
-    return `chrome://leo-ai/${encodeURIComponent(source.conversationUuid)}` +
+  // The line |id| with |title| as a link to |url|, and |args| after the title.
+  // Without a title, the line |untitledId|, all of it a link.
+  linkTitle_(id: string, untitledId: string, title: string, url: string,
+             ...args: string[]): LinkedText {
+    if (!title) {
+      return { before: '', link: this.i18n(untitledId, ...args), after: '',
+               url }
+    }
+    const [before, after = ''] =
+      this.i18n(id, CHAT_TITLE_MARKER, ...args).split(CHAT_TITLE_MARKER)
+    return { before, link: title, after, url }
+  }
+
+  // The line under a learned memory in the list: the chat that it came from,
+  // with a link that opens the chat at the message. When the memory came from
+  // more than one chat, the line names and links the chat of the newest
+  // message, which is the last.
+  getChatsLine_(chats: LearnedMemoryChat[]): LinkedText | null {
+    const newest = chats.at(-1)
+    if (!newest) {
+      return null
+    }
+    const several = chats.length > 1
+    return this.linkTitle_(
+      several ? 'braveLeoAssistantLearnedMemorySourceSeveral'
+              : 'braveLeoAssistantLearnedMemorySource',
+      several ? 'braveLeoAssistantLearnedMemorySourceSeveralUntitled'
+              : 'braveLeoAssistantLearnedMemorySourceUntitled',
+      newest.conversationTitle,
+      this.getChatUrl_(newest.conversationUuid, newest.entryUuid))
+  }
+
+  // The chat at a message. The Leo page scrolls to the message and marks it.
+  getChatUrl_(conversationUuid: string, entryUuid: string): string {
+    const fragment = new URLSearchParams({ entry: entryUuid })
+    return `chrome://leo-ai/${encodeURIComponent(conversationUuid)}` +
       `#${fragment}`
   }
 
@@ -1133,6 +1212,38 @@ class MemorySection extends MemorySectionBase {
   // again when the user opens or closes the sentences.
   showReviewQuotes_(item: ReviewItem, open: boolean): boolean {
     return open && item.quotes.length > 0
+  }
+
+  // Opens or closes the sentences of a learned memory in the list. The
+  // sentences are read the first time.
+  onRowSourcesToggle_(e: { model: { row: MemoryRow } }) {
+    const uuid = e.model.row.uuid
+    const state = this.rowSources_[uuid]
+    if (state?.open) {
+      this.rowSources_ = {
+        ...this.rowSources_,
+        [uuid]: { ...state, open: false }
+      }
+      return
+    }
+    this.rowSources_ = {
+      ...this.rowSources_,
+      [uuid]: { open: true, quotes: state?.quotes ?? null }
+    }
+    if (!state?.quotes) {
+      this.loadRowSources_(uuid)
+    }
+  }
+
+  // The arguments are the fields, not only the row, so that the page asks
+  // again when the sentences open or come.
+  showRowQuotes_(open: boolean, quotes: ReviewQuote[] | null): boolean {
+    return open && !!quotes && quotes.length > 0
+  }
+
+  // The sentences were read, and none is left in the chats.
+  showRowSourcesGone_(open: boolean, quotes: ReviewQuote[] | null): boolean {
+    return open && !!quotes && quotes.length === 0
   }
 
   onReviewSourcesToggle_(e: { model: { index: number } }) {

@@ -14,6 +14,9 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
 
   .memory {
     display: flex;
+    /* The sentences of a learned memory take a line of their own, under the
+       text and the buttons. */
+    flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
     padding: var(--leo-spacing-l) var(--leo-spacing-xl);
@@ -177,6 +180,24 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
   .previous {
     font: var(--leo-font-small-regular);
     color: var(--leo-color-text-tertiary);
+  }
+
+  /* The chat that a learned memory came from, and the button that shows the
+     sentences. The button does not make the row taller than its text. */
+  .memory-source {
+    display: flex;
+    align-items: center;
+    gap: var(--leo-spacing-xs);
+    margin-block: calc(-1 * var(--leo-spacing-s));
+  }
+
+  /* The sentences of a learned memory, in the list. */
+  .memory-quotes {
+    flex-basis: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: var(--leo-spacing-s);
+    padding-block: var(--leo-spacing-s);
   }
 
   /* The lock of a memory that Leo keeps as it is. */
@@ -459,6 +480,24 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
               <template is="dom-if" if="[[hasPreviousText_(row)]]">
                 <div class="previous">[[getPreviousText_(row)]]</div>
               </template>
+              <template is="dom-if" if="[[row.source]]">
+                <div class="memory-source">
+                  <span class="details"
+                    ><span>[[row.source.before]]</span
+                    ><a href$="[[row.source.url]]" target="_blank"
+                      >[[row.source.link]]</a
+                    ><span>[[row.source.after]]</span
+                  ></span>
+                  <leo-button class="memory-sources-button"
+                      kind="plain-faint" fab size="small"
+                      title$="[[getSourcesButtonLabel_(row.sourcesOpen)]]"
+                      aria-label$="[[getSourcesButtonLabel_(row.sourcesOpen)]]"
+                      on-click="onRowSourcesToggle_">
+                    <leo-icon name$="[[getSourcesButtonIcon_(row.sourcesOpen)]]">
+                    </leo-icon>
+                  </leo-button>
+                </div>
+              </template>
             </div>
             <div class="memory-actions">
               <leo-button
@@ -496,6 +535,26 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
                 <leo-icon name="trash"></leo-icon>
               </leo-button>
             </div>
+            <template is="dom-if" if="[[showRowQuotes_(row.sourcesOpen, row.quotes)]]">
+              <div class="memory-quotes">
+                <template is="dom-repeat" items="[[row.quotes]]" as="quote">
+                  <div class="review-quote">
+                    <div class="review-quote-text">[[quote.sentence]]</div>
+                    <template is="dom-if" if="[[quote.caption]]">
+                      <div class="review-quote-caption"
+                        ><span>[[quote.caption.before]]</span
+                        ><a href$="[[quote.caption.url]]" target="_blank"
+                          >[[quote.caption.link]]</a
+                        ><span>[[quote.caption.after]]</span
+                      ></div>
+                    </template>
+                  </div>
+                </template>
+              </div>
+            </template>
+            <template is="dom-if" if="[[showRowSourcesGone_(row.sourcesOpen, row.quotes)]]">
+              <div class="details memory-quotes">$i18n{braveLeoAssistantLearnedMemorySourcesGone}</div>
+            </template>
           </div>
         </template>
       </div>
