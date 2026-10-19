@@ -1372,7 +1372,7 @@ void BraveContentBrowserClient::ConfigureNetworkContextParams(
   ChromeContentBrowserClient::ConfigureNetworkContextParams(
       context, in_memory, relative_partition_path, network_context_params,
       cert_verifier_creation_params);
-  network_context_params->is_tor = context->IsTor();
+  network_context_params->enable_tor = context->IsTor();
 #if BUILDFLAG(ENABLE_TOR)
   network_context_params->onion_only_in_tor_windows =
       user_prefs::UserPrefs::Get(context)->GetBoolean(
