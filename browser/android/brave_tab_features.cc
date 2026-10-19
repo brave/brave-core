@@ -9,6 +9,7 @@
 #include "brave/browser/ai_chat/ai_chat_utils.h"
 #include "brave/browser/ai_chat/tab_data_web_contents_observer.h"
 #include "brave/browser/ai_chat/web_mcp_injection/web_mcp_injector.h"
+#include "brave/browser/brave_tab_helpers.h"
 #include "brave/browser/image_metadata_stripper/file_upload_controller.h"
 #include "brave/browser/misc_metrics/captcha_metrics.h"
 #include "brave/browser/misc_metrics/page_metrics_tab_helper.h"
@@ -41,6 +42,8 @@ namespace tabs {
 BraveTabFeatures::BraveTabFeatures(content::WebContents* web_contents,
                                    Profile* profile)
     : TabFeatures_Chromium(web_contents, profile) {
+  brave::AttachTabHelpers(web_contents);
+
   // Clients should rely on this for observing web contents based changes.
   tabs::TabInterface& tab_interface =
       *TabInterface::GetFromContents(web_contents);

@@ -83,6 +83,7 @@ source_set("tabs_impl") {
   deps = [
     ":tabs_public",
     "//base",
+    "//brave/browser:tab_helpers_header",
     "//brave/browser/ai_chat",
     "//brave/browser/image_metadata_stripper",
     "//brave/browser/misc_metrics:misc_metrics_impl",
