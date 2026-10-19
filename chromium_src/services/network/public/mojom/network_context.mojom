@@ -8,7 +8,7 @@ module network.mojom;
 [BraveExtend]
 struct NetworkContextParams {
   // Whether the context belongs to a Tor profile.
-  bool is_tor = false;
+  bool enable_tor = false;
 
   // Whether .onion hostnames may only be resolved in Tor contexts. Host
   // resolution of .onion fails in non-Tor contexts while this is set. True by

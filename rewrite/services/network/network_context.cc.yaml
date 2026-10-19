@@ -12,5 +12,5 @@ substitutions:
         'url_request_context_ =
         url_request_context_owner_.url_request_context.get();'
       code: |2-
-          url_request_context_->set_is_tor(params_->is_tor);
+          url_request_context_->set_enable_tor(params_->enable_tor);
           SetOnionOnlyInTorWindows(params_->onion_only_in_tor_windows);
