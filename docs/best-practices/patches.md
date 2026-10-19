@@ -1,5 +1,10 @@
 # Patches
 
+> These rules are for hand-written patches. **They do not apply to
+> plaster-generated patches** — a patch whose upstream file (the `diff --git`
+> path) has a matching `rewrite/<path>.yaml`. Never ask for edits to a generated
+> patch; review the yaml against [plaster.md](./plaster.md) instead.
+
 <a id="PATCH-001"></a> <a id="PATCH-002"></a> <a id="PATCH-003"></a>
 
 ## ❌ Patches Must Contain Only Functional Changes
@@ -18,6 +23,10 @@ Chromium upgrades.
 
 **Never create multiline patches. Use `#define` macros or chromium_src overrides
 instead.**
+
+Does not apply to plaster-generated patches: they are multiline by design, and
+new macros that edit upstream code are banned
+([PLSTR-003](./plaster.md#PLSTR-003)).
 
 ---
 
