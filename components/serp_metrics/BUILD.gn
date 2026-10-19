@@ -9,6 +9,7 @@ static_library("serp_metrics") {
     "serp_classifier_utils.h",
     "serp_metric_type.h",
     "serp_metrics.h",
+    "serp_metrics_navigation_tracker.h",
     "serp_metrics_service.h",
   ]
 
@@ -18,6 +19,7 @@ static_library("serp_metrics") {
     "serp_metrics.cc",
     "serp_metrics_migration.cc",
     "serp_metrics_migration.h",
+    "serp_metrics_navigation_tracker.cc",
     "serp_metrics_service.cc",
   ]
 
@@ -75,6 +77,7 @@ source_set("unit_tests") {
     "serp_classifier_unittest.cc",
     "serp_classifier_utils_unittest.cc",
     "serp_metrics_last_reported_at_pref_migration_unittest.cc",
+    "serp_metrics_navigation_tracker_unittest.cc",
     "serp_metrics_timezone_unittest.cc",
     "serp_metrics_travel_unittest.cc",
     "serp_metrics_unittest.cc",
