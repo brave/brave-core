@@ -144,6 +144,21 @@ TEST(BraveAdsUrlUtilInternalTest,
   EXPECT_FALSE(ShouldSupportInternalUrl(GURL("chrome://settings/foobar")));
 }
 
+TEST(BraveAdsUrlUtilInternalTest,
+     ShouldSupportInternalUrlWithChromeSchemeAndSettingsHostAndGesturesPath) {
+  // Act & Assert
+  EXPECT_TRUE(
+      ShouldSupportInternalUrl(GURL("chrome://settings/system/gestures")));
+}
+
+TEST(
+    BraveAdsUrlUtilInternalTest,
+    ShouldNotSupportInternalUrlWithChromeSchemeAndSettingsHostAndGesturesPathAndQuery) {
+  // Act & Assert
+  EXPECT_FALSE(ShouldSupportInternalUrl(
+      GURL("chrome://settings/system/gestures?foo=bar")));
+}
+
 TEST(
     BraveAdsUrlUtilInternalTest,
     ShouldSupportInternalUrlWithChromeSchemeAndSettingsHostAndSearchEnginesPath) {

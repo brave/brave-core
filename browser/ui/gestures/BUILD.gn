@@ -1,0 +1,142 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+assert(is_win || is_mac || is_linux)
+
+source_set("gestures") {
+  sources = [
+    "gesture_action_dispatcher.cc",
+    "gesture_action_dispatcher.h",
+    "gesture_command_browser_mapping.cc",
+    "gesture_command_browser_mapping.h",
+    "gesture_config_tracker.cc",
+    "gesture_config_tracker.h",
+    "gesture_context_menu_util.cc",
+    "gesture_context_menu_util.h",
+    "gesture_controller.cc",
+    "gesture_controller.h",
+    "gesture_draw_session.cc",
+    "gesture_draw_session.h",
+    "gesture_input_registrar.cc",
+    "gesture_input_registrar.h",
+    "gesture_mouse_rocker_recognizer.cc",
+    "gesture_mouse_rocker_recognizer.h",
+    "gesture_mouse_wheel_recognizer.cc",
+    "gesture_mouse_wheel_recognizer.h",
+    "gesture_overlay_widget.cc",
+    "gesture_overlay_widget.h",
+    "gesture_profile_prefs.cc",
+    "gesture_profile_prefs.h",
+    "gesture_tab_match_info.h",
+    "gesture_tab_match_util.cc",
+    "gesture_tab_match_util.h",
+    "open_settings_page_web_ui_path_util.cc",
+    "open_settings_page_web_ui_path_util.h",
+    "touch_centroid_util.cc",
+    "touch_centroid_util.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/app:command_ids",
+    "//brave/browser/ui/tabs:tabs_public",
+    "//brave/components/gestures/core/browser",
+    "//brave/components/gestures/core/common",
+    "//brave/components/gestures/core/common:features",
+    "//brave/components/resources:strings_grit",
+    "//cc/paint",
+    "//chrome/app:command_ids",
+    "//chrome/browser/profiles:profile",
+    "//chrome/browser/ui:browser_commands",
+    "//chrome/browser/ui:chrome_pages",
+    "//chrome/browser/ui/browser_window",
+    "//chrome/browser/ui/tabs:tab_strip",
+    "//chrome/browser/ui/tabs:tabs_public",
+    "//components/input",
+    "//components/prefs",
+    "//components/tabs:public",
+    "//components/user_prefs",
+    "//content/public/browser",
+    "//content/public/common",
+    "//skia",
+    "//third_party/blink/public/common",
+    "//third_party/re2",
+    "//ui/base",
+    "//ui/gfx",
+    "//ui/gfx/geometry",
+    "//ui/views",
+    "//url",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [
+    "gesture_command_browser_mapping_unittest.cc",
+    "gesture_config_tracker_unittest.cc",
+    "gesture_draw_session_unittest.cc",
+    "open_settings_page_web_ui_path_util_unittest.cc",
+    "touch_centroid_util_unittest.cc",
+  ]
+
+  deps = [
+    ":gestures",
+    "//base/test:test_support",
+    "//brave/app:command_ids",
+    "//brave/components/gestures/core/browser",
+    "//brave/components/gestures/core/browser:test_support",
+    "//brave/components/gestures/core/common",
+    "//brave/components/gestures/core/common:features",
+    "//brave/components/resources:strings_grit",
+    "//chrome/app:command_ids",
+    "//components/prefs",
+    "//components/sync_preferences:test_support",
+    "//content/public/browser",
+    "//skia",
+    "//testing/gmock",
+    "//testing/gtest",
+    "//third_party/blink/public/common",
+    "//ui/base",
+    "//ui/gfx/geometry",
+  ]
+}
+
+source_set("browser_tests") {
+  testonly = true
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+
+  sources = [
+    "gesture_action_dispatcher_browsertest.cc",
+    "gesture_context_menu_util_browsertest.cc",
+    "gesture_input_registrar_browsertest.cc",
+    "gesture_mouse_rocker_recognizer_browsertest.cc",
+    "gesture_mouse_wheel_recognizer_browsertest.cc",
+    "gesture_overlay_widget_browsertest.cc",
+  ]
+
+  deps = [
+    ":gestures",
+    "//brave/components/gestures/core/browser",
+    "//brave/components/gestures/core/common",
+    "//brave/components/gestures/core/common:test_support",
+    "//chrome/app:command_ids",
+    "//chrome/browser/profiles:profile",
+    "//chrome/browser/ui",
+    "//chrome/browser/ui/browser_window",
+    "//chrome/browser/ui/tabs:tab_strip",
+    "//chrome/test:test_support",
+    "//chrome/test/base:chrome_test_utils",
+    "//components/input",
+    "//components/prefs",
+    "//components/tabs:public",
+    "//content/public/browser",
+    "//content/test:test_support",
+    "//net",
+    "//net:test_support",
+    "//third_party/blink/public/common",
+    "//url",
+  ]
+}

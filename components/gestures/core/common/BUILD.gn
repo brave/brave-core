@@ -1,0 +1,113 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+component("features") {
+  defines = [ "IS_GESTURES_FEATURES_IMPL" ]
+
+  sources = [
+    "features.cc",
+    "features.h",
+  ]
+
+  deps = [ "//base" ]
+}
+
+static_library("common") {
+  public = [
+    "actions/gesture_action_info.h",
+    "actions/gesture_action_pref_parser.h",
+    "actions/gesture_action_util.h",
+    "actions/gesture_command_constants.h",
+    "actions/gesture_command_util.h",
+    "actions/int_param_info.h",
+    "actions/int_param_util.h",
+    "actions/open_settings_page_types.h",
+    "actions/text_param_info.h",
+    "actions/text_param_util.h",
+    "custom/custom_gesture_geometry_util.h",
+    "custom/custom_gesture_info.h",
+    "custom/custom_gesture_pref_parser.h",
+    "custom/custom_gesture_recognizer.h",
+    "directional/directional_gesture_default_commands.h",
+    "directional/directional_gesture_defaults.h",
+    "directional/directional_gesture_mapping.h",
+    "directional/directional_gesture_recognizer.h",
+    "directional/directional_gesture_types.h",
+    "directional/directional_gesture_util.h",
+    "mouse/wheel/mouse_wheel_modifier_button_types.h",
+    "mouse/wheel/mouse_wheel_modifier_button_util.h",
+    "smoothed_path_util.h",
+  ]
+
+  sources = [
+    "actions/gesture_action_pref_parser.cc",
+    "actions/gesture_action_util.cc",
+    "actions/gesture_command_util.cc",
+    "actions/int_param_util.cc",
+    "actions/text_param_util.cc",
+    "custom/custom_gesture_geometry_util.cc",
+    "custom/custom_gesture_info.cc",
+    "custom/custom_gesture_pref_parser.cc",
+    "custom/custom_gesture_recognizer.cc",
+    "directional/directional_gesture_defaults.cc",
+    "directional/directional_gesture_mapping.cc",
+    "directional/directional_gesture_recognizer.cc",
+    "directional/directional_gesture_util.cc",
+    "mouse/wheel/mouse_wheel_modifier_button_util.cc",
+    "smoothed_path_util.cc",
+  ]
+
+  deps = [
+    ":features",
+    "//base",
+    "//skia",
+    "//ui/gfx/geometry",
+  ]
+}
+
+source_set("test_support") {
+  testonly = true
+  sources = [
+    "actions/test/gesture_action_test_util.cc",
+    "actions/test/gesture_action_test_util.h",
+    "custom/test/custom_gesture_test_util.cc",
+    "custom/test/custom_gesture_test_util.h",
+  ]
+
+  public_deps = [ ":common" ]
+  deps = [ "//ui/gfx/geometry" ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [
+    "actions/gesture_action_pref_parser_unittest.cc",
+    "actions/gesture_action_util_unittest.cc",
+    "actions/gesture_command_util_unittest.cc",
+    "actions/int_param_util_unittest.cc",
+    "actions/text_param_util_unittest.cc",
+    "custom/custom_gesture_geometry_util_unittest.cc",
+    "custom/custom_gesture_pref_parser_unittest.cc",
+    "custom/custom_gesture_recognizer_unittest.cc",
+    "directional/directional_gesture_defaults_unittest.cc",
+    "directional/directional_gesture_mapping_unittest.cc",
+    "directional/directional_gesture_recognizer_unittest.cc",
+    "directional/directional_gesture_util_unittest.cc",
+    "mouse/wheel/mouse_wheel_modifier_button_util_unittest.cc",
+    "smoothed_path_util_unittest.cc",
+  ]
+
+  deps = [
+    ":common",
+    ":features",
+    ":test_support",
+    "//base",
+    "//base/test:test_support",
+    "//skia",
+    "//testing/gmock",
+    "//testing/gtest",
+    "//ui/gfx/geometry",
+  ]
+}
