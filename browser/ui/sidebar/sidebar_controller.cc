@@ -31,6 +31,7 @@
 #include "chrome/browser/ui/navigator/browser_navigator_params.h"
 #include "chrome/browser/ui/navigator/browser_navigator_params_utils.h"
 #include "chrome/browser/ui/side_panel/side_panel_entry.h"
+#include "chrome/browser/ui/side_panel/side_panel_enums.h"
 #include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #include "chrome/browser/ui/singleton_tabs.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
@@ -142,8 +143,13 @@ void SidebarController::OnItemPressed(size_t index,
     CHECK(web_panel_controller);
 
     // Try to close side panel as we could open web panel.
-    // Otherwise, it's no-op.
-    GetSidePanelUI()->Close();
+    // Otherwise, it's no-op. The side panel shouldn't animate out while the
+    // web panel takes over its space - the two should swap in one frame.
+    // Unlike the open direction (ShouldSuppressSidePanelOpenAnimation()), the
+    // coordinator can't decide this: Close() runs for every close reason and
+    // the web panel isn't open yet, so only this call site knows it's a swap.
+    GetSidePanelUI()->Close(SidePanelEntryHideReason::kSidePanelClosed,
+                            /*suppress_animations=*/true);
     web_panel_controller->ToggleWebPanel(item);
     return;
   }
@@ -325,6 +331,12 @@ void SidebarController::HandleSidePanelOpened(SidePanelEntryId id) {
 
 void SidebarController::HandleSidePanelClosed() {
   sidebar_model_->SetActiveIndex(std::nullopt);
+}
+
+bool SidebarController::ShouldSuppressSidePanelOpenAnimation() const {
+  // The side panel shouldn't animate in over a web panel already occupying its
+  // space.
+  return web_panel_controller_ && web_panel_controller_->HasOpenPanel();
 }
 
 void SidebarController::OnWebPanelStateChanged() {

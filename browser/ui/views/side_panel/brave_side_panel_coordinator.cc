@@ -55,13 +55,18 @@ void BraveSidePanelCoordinator::Show(
   sidebar::AddItemForSidePanelIdIfNeeded(browser_->GetProfile(),
                                          entry.key.id());
 
-  SidePanelCoordinator::Show(entry, open_trigger, suppress_animations);
-
   // SidebarContainerView does not monitor panel show/hide events, so the
   // coordinator must update the active item state directly here.
   auto* controller =
       sidebar::SidebarController::From(base::to_address(browser_));
   CHECK(controller);
+
+  // The sidebar owns the surfaces this panel is mutually exclusive with, so it
+  // decides whether the transition into this panel should animate.
+  const bool suppress =
+      suppress_animations || controller->ShouldSuppressSidePanelOpenAnimation();
+  SidePanelCoordinator::Show(entry, open_trigger, suppress);
+
   controller->HandleSidePanelOpened(entry.key.id());
 }
 
