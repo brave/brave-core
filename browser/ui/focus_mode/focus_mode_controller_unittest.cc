@@ -5,8 +5,12 @@
 
 #include "brave/browser/ui/focus_mode/focus_mode_controller.h"
 
+#include "base/callback_list.h"
+#include "brave/browser/ui/focus_mode/focus_mode_prefs.h"
+#include "chrome/browser/ui/browser_window/test/mock_browser_window_interface.h"
+#include "components/prefs/testing_pref_service.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "ui/base/unowned_user_data/unowned_user_data_host.h"
 
 namespace {
 
@@ -30,15 +34,22 @@ class TestObserver : public FocusModeController::Observer {
 
 }  // namespace
 
-TEST(FocusModeControllerTest, DefaultsToDisabled) {
-  ui::UnownedUserDataHost user_data_host;
-  FocusModeController controller(user_data_host);
+class FocusModeControllerTest : public testing::Test {
+ public:
+  void SetUp() override { focus_mode::RegisterProfilePrefs(prefs_.registry()); }
+
+ protected:
+  TestingPrefServiceSimple prefs_;
+  testing::NiceMock<MockBrowserWindowInterface> browser_window_;
+};
+
+TEST_F(FocusModeControllerTest, DefaultsToDisabled) {
+  FocusModeController controller(browser_window_, prefs_);
   EXPECT_FALSE(controller.IsEnabled());
 }
 
-TEST(FocusModeControllerTest, SetEnabledNotifiesObserversOnChange) {
-  ui::UnownedUserDataHost user_data_host;
-  FocusModeController controller(user_data_host);
+TEST_F(FocusModeControllerTest, SetEnabledNotifiesObserversOnChange) {
+  FocusModeController controller(browser_window_, prefs_);
   TestObserver observer;
   controller.AddObserver(&observer);
 
@@ -57,9 +68,8 @@ TEST(FocusModeControllerTest, SetEnabledNotifiesObserversOnChange) {
   controller.RemoveObserver(&observer);
 }
 
-TEST(FocusModeControllerTest, SetEnabledIsNoOpWhenUnchanged) {
-  ui::UnownedUserDataHost user_data_host;
-  FocusModeController controller(user_data_host);
+TEST_F(FocusModeControllerTest, SetEnabledIsNoOpWhenUnchanged) {
+  FocusModeController controller(browser_window_, prefs_);
   TestObserver observer;
   controller.AddObserver(&observer);
 
@@ -77,9 +87,8 @@ TEST(FocusModeControllerTest, SetEnabledIsNoOpWhenUnchanged) {
   controller.RemoveObserver(&observer);
 }
 
-TEST(FocusModeControllerTest, ToggleEnabledFlipsStateAndNotifies) {
-  ui::UnownedUserDataHost user_data_host;
-  FocusModeController controller(user_data_host);
+TEST_F(FocusModeControllerTest, ToggleEnabledFlipsStateAndNotifies) {
+  FocusModeController controller(browser_window_, prefs_);
   TestObserver observer;
   controller.AddObserver(&observer);
 
@@ -96,9 +105,8 @@ TEST(FocusModeControllerTest, ToggleEnabledFlipsStateAndNotifies) {
   controller.RemoveObserver(&observer);
 }
 
-TEST(FocusModeControllerTest, RemovedObserverIsNotNotified) {
-  ui::UnownedUserDataHost user_data_host;
-  FocusModeController controller(user_data_host);
+TEST_F(FocusModeControllerTest, RemovedObserverIsNotNotified) {
+  FocusModeController controller(browser_window_, prefs_);
   TestObserver observer;
   controller.AddObserver(&observer);
   controller.RemoveObserver(&observer);
@@ -109,9 +117,8 @@ TEST(FocusModeControllerTest, RemovedObserverIsNotNotified) {
   EXPECT_EQ(0, observer.call_count());
 }
 
-TEST(FocusModeControllerTest, NotifiesAllRegisteredObservers) {
-  ui::UnownedUserDataHost user_data_host;
-  FocusModeController controller(user_data_host);
+TEST_F(FocusModeControllerTest, NotifiesAllRegisteredObservers) {
+  FocusModeController controller(browser_window_, prefs_);
   TestObserver observer_a;
   TestObserver observer_b;
   controller.AddObserver(&observer_a);
@@ -126,4 +133,57 @@ TEST(FocusModeControllerTest, NotifiesAllRegisteredObservers) {
 
   controller.RemoveObserver(&observer_a);
   controller.RemoveObserver(&observer_b);
+}
+
+TEST_F(FocusModeControllerTest, InitializesFromPrefAndUpdatesOnSetEnabled) {
+  prefs_.SetBoolean(focus_mode::kFocusModeLastWindowState, true);
+
+  FocusModeController controller(browser_window_, prefs_);
+  EXPECT_TRUE(controller.IsEnabled());
+
+  controller.SetEnabled(false);
+  EXPECT_FALSE(controller.IsEnabled());
+  EXPECT_FALSE(prefs_.GetBoolean(focus_mode::kFocusModeLastWindowState));
+
+  controller.ToggleEnabled();
+  EXPECT_TRUE(controller.IsEnabled());
+  EXPECT_TRUE(prefs_.GetBoolean(focus_mode::kFocusModeLastWindowState));
+}
+
+TEST_F(FocusModeControllerTest, DidBecomeActiveSyncsPrefWithWindowState) {
+  testing::NiceMock<MockBrowserWindowInterface> browser_a;
+  BrowserWindowInterface::DidBecomeActiveCallback activate_a;
+  ON_CALL(browser_a, RegisterDidBecomeActive(testing::_))
+      .WillByDefault(
+          [&](BrowserWindowInterface::DidBecomeActiveCallback callback) {
+            activate_a = std::move(callback);
+            return base::CallbackListSubscription();
+          });
+
+  testing::NiceMock<MockBrowserWindowInterface> browser_b;
+  BrowserWindowInterface::DidBecomeActiveCallback activate_b;
+  ON_CALL(browser_b, RegisterDidBecomeActive(testing::_))
+      .WillByDefault(
+          [&](BrowserWindowInterface::DidBecomeActiveCallback callback) {
+            activate_b = std::move(callback);
+            return base::CallbackListSubscription();
+          });
+
+  FocusModeController controller_a(browser_a, prefs_);
+  controller_a.SetEnabled(true);
+  EXPECT_TRUE(prefs_.GetBoolean(focus_mode::kFocusModeLastWindowState));
+
+  FocusModeController controller_b(browser_b, prefs_);
+  EXPECT_TRUE(controller_b.IsEnabled());
+
+  controller_b.SetEnabled(false);
+  EXPECT_FALSE(controller_b.IsEnabled());
+  EXPECT_TRUE(controller_a.IsEnabled());
+  EXPECT_FALSE(prefs_.GetBoolean(focus_mode::kFocusModeLastWindowState));
+
+  activate_a.Run(&browser_a);
+  EXPECT_TRUE(prefs_.GetBoolean(focus_mode::kFocusModeLastWindowState));
+
+  activate_b.Run(&browser_b);
+  EXPECT_FALSE(prefs_.GetBoolean(focus_mode::kFocusModeLastWindowState));
 }

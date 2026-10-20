@@ -16,12 +16,14 @@ substitutions:
       friend_type: class BraveBrowserWindowFeatures
 
   - description: |-
-      Own the controllers Brave needs before the other window features.
+      Own the controllers Brave needs before the immersive mode controller.
 
       On macOS the immersive mode controller is created during Init(), and
       choosing which kind depends on whether vertical tabs are in use, so the
       vertical tab controller (and the focus mode controller it points to) has
-      to exist before the other window features.
+      to exist before the immersive mode controller. The focus mode controller
+      registers for browser activation, so it can't be created before
+      BrowserActiveStateManager.
     add_to_protected:
       class_name: BrowserWindowFeatures
       code: |-

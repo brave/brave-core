@@ -1,19 +1,8 @@
 diff --git a/chrome/browser/ui/browser_window/internal/browser_window_features.cc b/chrome/browser/ui/browser_window/internal/browser_window_features.cc
-index 6c1c78d4341e72f815fed35a8a808e60333876ac..d646745a177124060821db659f34bfa035071058 100644
+index 6c1c78d4341e72f815fed35a8a808e60333876ac..dc10eeebe0455af61fb34c5a94af253d38142671 100644
 --- a/chrome/browser/ui/browser_window/internal/browser_window_features.cc
 +++ b/chrome/browser/ui/browser_window/internal/browser_window_features.cc
-@@ -248,6 +248,10 @@ BrowserWindowFeatures::BrowserWindowFeatures() = default;
- BrowserWindowFeatures::~BrowserWindowFeatures() = default;
- 
- void BrowserWindowFeatures::Init(BrowserWindowInterface* browser) {
-+  brave_focus_mode_controller_ =
-+      CreateBraveFocusModeController(GetUserDataFactory(), browser);
-+  brave_vertical_tab_controller_ = CreateBraveVerticalTabController(
-+      GetUserDataFactory(), browser, brave_focus_mode_controller_.get());
-   // This is used only for the controllers which will be created on demand
-   // later.
-   browser_ = browser;
-@@ -334,11 +338,11 @@ void BrowserWindowFeatures::Init(BrowserWindowInterface* browser) {
+@@ -334,11 +334,11 @@ void BrowserWindowFeatures::Init(BrowserWindowInterface* browser) {
    // initializes the default enabled states for UI commands
    // (InitCommandState). If BrowserActions is not built first, those initial
    // enabled updates will be completely dropped.
@@ -27,7 +16,7 @@ index 6c1c78d4341e72f815fed35a8a808e60333876ac..d646745a177124060821db659f34bfa0
  
    browser_animation_controller_ =
        GetUserDataFactory().CreateInstance<BrowserAnimationController>(*browser,
-@@ -384,7 +388,7 @@ void BrowserWindowFeatures::Init(BrowserWindowInterface* browser) {
+@@ -384,7 +384,7 @@ void BrowserWindowFeatures::Init(BrowserWindowInterface* browser) {
  
    content_setting_bubble_model_delegate_ =
        GetUserDataFactory()
@@ -36,6 +25,17 @@ index 6c1c78d4341e72f815fed35a8a808e60333876ac..d646745a177124060821db659f34bfa0
                                                                      browser);
  
    context_highlight_window_feature_ =
+@@ -430,6 +430,10 @@ void BrowserWindowFeatures::Init(BrowserWindowInterface* browser) {
+   }
+ 
+   // Must be after window_feature_controller_.
++brave_focus_mode_controller_ =
++    CreateBraveFocusModeController(GetUserDataFactory(), browser);
++brave_vertical_tab_controller_ = CreateBraveVerticalTabController(
++    GetUserDataFactory(), browser, brave_focus_mode_controller_.get());
+   immersive_mode_controller_ =
+       GetUserDataFactory()
+           .CreateInstanceWithFactoryMethod<ImmersiveModeController,
 @@ -811,7 +815,7 @@ void BrowserWindowFeatures::InitPostWindowConstruction(
  
    // Must be after exclusive_access_manager_,

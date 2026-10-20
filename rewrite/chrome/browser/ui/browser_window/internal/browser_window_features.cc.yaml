@@ -5,12 +5,14 @@
 
 substitutions:
   - description: |-
-      Create Brave's early window features first.
+      Create Brave's early window features before immersive_mode_controller_.
 
       See the members added in browser_window_features.h for why they have to
-      exist before the rest of Init() runs.
-    preempt_function_impl:
-      function_name: BrowserWindowFeatures::Init
+      exist before immersive_mode_controller_ is created. They can't be created
+      at the start of Init() because the focus mode controller needs
+      BrowserActiveStateManager, which is created later.
+    add_before_line:
+      line: 'immersive_mode_controller_ ='
       code: |-
         brave_focus_mode_controller_ =
             CreateBraveFocusModeController(GetUserDataFactory(), browser);
