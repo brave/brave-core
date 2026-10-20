@@ -38,7 +38,6 @@ source_set("brave_transfer") {
     "//chrome/browser/ui:singleton_tabs",
     "//chrome/browser/ui/navigator",
     "//chrome/browser/ui/select_file_policy",
-    "//chrome/browser/ui/webui:theme_source",
     "//chrome/common",
     "//components/prefs",
     "//services/network/public/mojom",

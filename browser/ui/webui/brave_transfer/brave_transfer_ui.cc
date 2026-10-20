@@ -14,11 +14,9 @@
 #include "brave/components/brave_transfer/core/pref_names.h"
 #include "brave/components/brave_transfer/resources/page/grit/brave_transfer_generated_map.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/webui/theme_source.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_webui_strings.h"
 #include "components/prefs/pref_service.h"
-#include "content/public/browser/url_data_source.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
@@ -37,7 +35,7 @@ void CreateAndAddDataSource(Profile* profile) {
       network::mojom::CSPDirectiveName::TrustedTypes, "trusted-types;");
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::StyleSrc,
-      "style-src 'self' 'unsafe-inline' chrome://resources chrome://theme;");
+      "style-src 'self' 'unsafe-inline' chrome://resources;");
 
   source->UseStringsJs();
   source->SetDefaultResource(IDR_BRAVE_TRANSFER_HTML);
@@ -46,8 +44,6 @@ void CreateAndAddDataSource(Profile* profile) {
   source->AddLocalizedStrings(webui::kBraveTransferStrings);
   source->AddBoolean("isIOS", false);
   source->AddBoolean("isMobile", false);
-
-  content::URLDataSource::Add(profile, std::make_unique<ThemeSource>(profile));
 }
 
 }  // namespace
