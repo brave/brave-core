@@ -1,11 +1,43 @@
 diff --git a/chrome/browser/media/webrtc/webrtc_log_uploader.cc b/chrome/browser/media/webrtc/webrtc_log_uploader.cc
-index a6887b09db4104ea29907d64dcb0f57635d6d9bf..002736e196cb1262f4895b308579dc883feed4e5 100644
+index a6887b09db4104ea29907d64dcb0f57635d6d9bf..d9d3be76771c557086cbb68cef553da4e50cf093 100644
 --- a/chrome/browser/media/webrtc/webrtc_log_uploader.cc
 +++ b/chrome/browser/media/webrtc/webrtc_log_uploader.cc
-@@ -444,6 +444,7 @@ std::string WebRtcLogUploader::CompressLog(WebRtcLogBuffer* buffer) {
+@@ -176,6 +176,12 @@ void WebRtcLogUploader::OnLoggingStopped(
+     std::unique_ptr<WebRtcLogMetaDataMap> meta_data,
+     WebRtcLogUploader::UploadDoneData upload_done_data,
+     bool is_text_log_upload_allowed) {
++  DeleteRtpDumps(upload_done_data.paths);
++  main_task_runner_->PostTask(
++      FROM_HERE, base::BindOnce(&WebRtcLogUploader::NotifyUploadDisabled,
++                                base::Unretained(this),
++                                std::move(upload_done_data)));
++  return;
+   CHECK(background_task_runner_->RunsTasksInCurrentSequence(),
+         base::NotFatalUntil::M161);
+   CHECK(log_buffer.get(), base::NotFatalUntil::M161);
+@@ -255,6 +261,17 @@ void WebRtcLogUploader::LoggingStoppedDoStore(
+     std::unique_ptr<WebRtcLogBuffer> log_buffer,
+     std::unique_ptr<WebRtcLogMetaDataMap> meta_data,
+     GenericDoneCallback done_callback) {
++  DeleteRtpDumps(log_paths);
++  if (done_callback) {
++    main_task_runner_->PostTask(
++        FROM_HERE,
++        base::BindOnce(std::move(done_callback), false,
++                       std::string(kLogStorageDisabledMsg)));
++  }
++  main_task_runner_->PostTask(
++      FROM_HERE, base::BindOnce(&WebRtcLogUploader::DecreaseLogCount,
++                                base::Unretained(this)));
++  return;
+   CHECK(background_task_runner_->RunsTasksInCurrentSequence(),
+         base::NotFatalUntil::M161);
+   CHECK(!log_id.empty(), base::NotFatalUntil::M161);
+@@ -444,6 +461,8 @@ std::string WebRtcLogUploader::CompressLog(WebRtcLogBuffer* buffer) {
  void WebRtcLogUploader::UploadCompressedLog(
      WebRtcLogUploader::UploadDoneData upload_done_data,
      std::unique_ptr<std::string> post_data) {
++  NotifyUploadDisabled(std::move(upload_done_data));
 +  return;
    DCHECK_CALLED_ON_VALID_SEQUENCE(main_sequence_checker_);
  

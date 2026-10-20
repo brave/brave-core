@@ -692,10 +692,20 @@
 -OmniboxEditModelTest.*
 -WebUIReadOnlyOmniboxTest.*
 
-# These tests fail because we disable uploading these event logs
-# See WebRtcLogUploader::UploadCompressedLog patch as well as
+# These tests read the diagnostic logs back from the local log directory, but
+# we do not store them. See rewrite/chrome/browser/media/webrtc/
+# webrtc_log_uploader.cc.yaml.
+-RTCDiagnosticLoggingTest.AddMessagesAuthorized
+-RTCDiagnosticLoggingTest.AddMessagesUnauthorized
+-RTCDiagnosticLoggingTest.StoreDiagnosticLogging
+
+# These tests fail because we disable uploading these logs. See the
+# webrtc_log_uploader.cc.yaml and webrtc_event_log_uploader.cc.yaml plasters
+# under rewrite/chrome/browser/media/webrtc/, as well as
 # prefs::kWebRtcEventLogCollectionAllowed and
-# prefs::kWebRtcTextLogCollectionAllowed.
+# prefs::kWebRtcTextLogCollectionAllowed. The tests that cover the disabled
+# behaviour are the WebRtc*DisabledTest suites in the chromium_src overrides of
+# the upstream test files.
 -RTCDiagnosticLoggingTest.EventLogUuidNotOverwrittenInFinish
 -RTCDiagnosticLoggingTest.MetadataMerged
 -RTCDiagnosticLoggingTest.StartFinishAndUploadDiagnosticLogging
@@ -704,6 +714,7 @@
 -UploadSupportingConnectionTypes/WebRtcEventLogManagerTestForNetworkConnectivity.*
 -WebRtcEventLogManagerTestPolicy.*
 -WebRtcEventLogUploaderImplTest.*
+-WebRtcLogUploaderTest.*
 -WebRtcLoggingControllerTest.ManagedProfileWithUnsetPolicy
 -WebRtcLoggingControllerTest.UnmanagedProfileWithUnsetPolicy
 
