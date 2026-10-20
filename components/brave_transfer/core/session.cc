@@ -236,8 +236,8 @@ void TransferSession::FinishIncoming(TransferEvents& events,
   const std::string id = incoming_->offer.transfer_id();
   finished_ids_.insert(id);
   incoming_.reset();
-  events.push_back(TransferFinished{
-      {id, /*is_outgoing=*/false, status, reason, decision}});
+  events.push_back(
+      TransferFinished{{id, /*is_outgoing=*/false, status, reason, decision}});
 }
 
 void TransferSession::FinishOutgoing(TransferEvents& events,
@@ -247,8 +247,8 @@ void TransferSession::FinishOutgoing(TransferEvents& events,
   const std::string id = outgoing_->transfer_id;
   finished_ids_.insert(id);
   outgoing_.reset();
-  events.push_back(TransferFinished{
-      {id, /*is_outgoing=*/true, status, reason, decision}});
+  events.push_back(
+      TransferFinished{{id, /*is_outgoing=*/true, status, reason, decision}});
 }
 
 Result<TransferEvents> TransferSession::WriteFailed(

@@ -160,8 +160,7 @@ TEST(BraveTransferChainKeysTest, TxtRecordMatching) {
   EXPECT_FALSE(keys.MatchTxtRecord(keys.TxtRecord(now - 2 * epoch), now));
   EXPECT_FALSE(keys.MatchTxtRecord(other.TxtRecord(now), now));
   EXPECT_FALSE(keys.MatchTxtRecord(
-      {{"v", "2"}, {"c", test::HexString(keys.TagForEpoch(0))}},
-      UnixTime(0)));
+      {{"v", "2"}, {"c", test::HexString(keys.TagForEpoch(0))}}, UnixTime(0)));
   EXPECT_FALSE(keys.MatchTxtRecord({{"v", "1"}, {"c", "zz"}}, now));
   EXPECT_FALSE(keys.MatchTxtRecord({{"v", "1"}}, now));
   EXPECT_FALSE(keys.MatchTxtRecord(

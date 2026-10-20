@@ -100,9 +100,8 @@ Result<void> ValidateOffer(const proto::Offer& offer,
     if (textual && item.size() == 0) {
       return base::unexpected("empty text item");
     }
-    const bool must_inline =
-        item.kind() == proto::ITEM_KIND_URL ||
-        (textual && item.size() <= kMaxInlineBytes);
+    const bool must_inline = item.kind() == proto::ITEM_KIND_URL ||
+                             (textual && item.size() <= kMaxInlineBytes);
     if (!item.inline_data().empty()) {
       if (!must_inline || item.inline_data().size() != item.size()) {
         return base::unexpected("bad inline data");

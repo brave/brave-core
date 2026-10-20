@@ -92,7 +92,8 @@ proto::Cancel CancelFromJson(const base::DictValue& value) {
 proto::Done DoneFromJson(const base::DictValue& value) {
   proto::Done message;
   message.set_transfer_id(BytesField(value, "transfer_id"));
-  message.set_status(static_cast<proto::DoneStatus>(EnumField(value, "status")));
+  message.set_status(
+      static_cast<proto::DoneStatus>(EnumField(value, "status")));
   return message;
 }
 

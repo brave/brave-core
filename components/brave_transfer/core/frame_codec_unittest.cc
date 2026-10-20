@@ -77,8 +77,8 @@ TEST(BraveTransferFrameCodecTest, InvalidVectors) {
     // wire format itself.
     if (v.FindBool("protobuf_accepts").value_or(false)) {
       auto raw = test::NewMessage(type);
-      EXPECT_TRUE(raw->ParseFromString(std::string(encoded.begin(),
-                                                   encoded.end())));
+      EXPECT_TRUE(
+          raw->ParseFromString(std::string(encoded.begin(), encoded.end())));
     }
   }
 }

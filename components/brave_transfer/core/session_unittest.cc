@@ -226,10 +226,10 @@ TEST(BraveTransferSessionTest, TranscriptVectors) {
     for (const base::Value& id : *scenario.FindList("accepted_item_ids")) {
       accepted_ids.push_back(static_cast<uint32_t>(id.GetInt()));
     }
-    ScenarioRun run = RunScenario(
-        test::TranscriptItems(vectors), transfer_id,
-        static_cast<proto::Decision>(*scenario.FindInt("decision")),
-        accepted_ids);
+    ScenarioRun run =
+        RunScenario(test::TranscriptItems(vectors), transfer_id,
+                    static_cast<proto::Decision>(*scenario.FindInt("decision")),
+                    accepted_ids);
 
     const base::ListValue* expected = scenario.FindList("frames");
     ASSERT_EQ(run.frames.size(), expected->size());
@@ -316,8 +316,8 @@ TEST(BraveTransferSessionTest, SecondIncomingOfferIsBusy) {
 }
 
 TEST(BraveTransferSessionTest, HashMismatch) {
-  OutgoingItem bad = OutgoingItem::FromBytes(
-      proto::ITEM_KIND_FILE, "f", "", Bytes(100000, 0x78));
+  OutgoingItem bad = OutgoingItem::FromBytes(proto::ITEM_KIND_FILE, "f", "",
+                                             Bytes(100000, 0x78));
   const uint8_t one[] = {1};
   bad.sha256 = base::ToVector(crypto::hash::Sha256(one));
   TransferSession s(kZero);
@@ -420,8 +420,8 @@ TEST(BraveTransferSessionTest, Timeouts) {
   std::vector<proto::Frame> pings = Drain(idle, At(kPingInterval));
   ASSERT_EQ(pings.size(), 1u);
   EXPECT_EQ(Encoded(pings[0]), Encoded(PingFrame(1)));
-  EXPECT_FALSE(idle.Poll(At(kIdleTimeout + base::Milliseconds(500)))
-                   .has_value());
+  EXPECT_FALSE(
+      idle.Poll(At(kIdleTimeout + base::Milliseconds(500))).has_value());
 }
 
 TEST(BraveTransferSessionTest, ResponderSendsConfirmationPing) {
@@ -497,8 +497,8 @@ TEST(BraveTransferSessionTest, OneOutgoingTransferAtATime) {
 }
 
 TEST(BraveTransferSessionTest, ReadFailureIsAnError) {
-  OutgoingItem item = OutgoingItem::FromBytes(
-      proto::ITEM_KIND_FILE, "f.bin", "", test::Pattern(1000));
+  OutgoingItem item = OutgoingItem::FromBytes(proto::ITEM_KIND_FILE, "f.bin",
+                                              "", test::Pattern(1000));
   item.read = base::BindRepeating(
       [](uint64_t, size_t) -> std::optional<Bytes> { return std::nullopt; });
   TransferSession s(kZero);

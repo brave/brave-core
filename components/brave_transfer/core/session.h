@@ -110,8 +110,7 @@ class TransferSession {
                         proto::CancelReason reason = proto::CANCEL_REASON_USER);
 
   Result<std::optional<proto::Frame>> NextFrame(base::TimeTicks now);
-  Result<TransferEvents> Handle(const proto::Frame& frame,
-                                base::TimeTicks now);
+  Result<TransferEvents> Handle(const proto::Frame& frame, base::TimeTicks now);
   // Runs timers. Fails on idle timeout.
   Result<TransferEvents> Poll(base::TimeTicks now);
 

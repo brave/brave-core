@@ -75,8 +75,8 @@ ChainKeys::~ChainKeys() = default;
 bool ChainKeys::operator==(const ChainKeys& other) const = default;
 
 Tag ChainKeys::TagForEpoch(uint64_t epoch) const {
-  const auto mac = crypto::hmac::SignSha256(discovery_key_,
-                                            base::U64ToBigEndian(epoch));
+  const auto mac =
+      crypto::hmac::SignSha256(discovery_key_, base::U64ToBigEndian(epoch));
   Tag tag;
   base::span(tag).copy_from(base::span(mac).first<kTagSize>());
   return tag;

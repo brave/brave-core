@@ -32,8 +32,12 @@ TEST(BraveTransferFilenameSanitizerTest, Vectors) {
 }
 
 TEST(BraveTransferFilenameSanitizerTest, MalformedUtf8) {
-  const std::string output = SanitizeFilename("a\xff" "b.txt");
-  EXPECT_EQ(output, "a\xEF\xBF\xBD" "b.txt");
+  const std::string output = SanitizeFilename(
+      "a\xff"
+      "b.txt");
+  EXPECT_EQ(output,
+            "a\xEF\xBF\xBD"
+            "b.txt");
   EXPECT_EQ(SanitizeFilename("\xc3"), "\xEF\xBF\xBD");
 }
 

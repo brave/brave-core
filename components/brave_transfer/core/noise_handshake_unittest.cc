@@ -351,8 +351,8 @@ TEST(BraveTransferNoiseTest, OversizedControlFrameIsRejected) {
 
 TEST(BraveTransferNoiseTest, TakeChannelBeforeCompletionFails) {
   auto initiator =
-      InitiatorHandshake::Create(static_key::GeneratePrivateKey(),
-                                 FilledKey(3), Bytes(kTagSize, 1), Info("Mac"));
+      InitiatorHandshake::Create(static_key::GeneratePrivateKey(), FilledKey(3),
+                                 Bytes(kTagSize, 1), Info("Mac"));
   ASSERT_TRUE(initiator.has_value());
   EXPECT_FALSE((*initiator)->TakeChannel().has_value());
   EXPECT_FALSE(InitiatorHandshake::Create(static_key::GeneratePrivateKey(),

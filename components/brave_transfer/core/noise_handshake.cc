@@ -315,7 +315,8 @@ void NoiseHandshake::Advance() {
   if (!IsComplete()) {
     return;
   }
-  const auto [k1, k2] = NoiseHkdf<2>(chaining_key_, base::span<const uint8_t>());
+  const auto [k1, k2] =
+      NoiseHkdf<2>(chaining_key_, base::span<const uint8_t>());
   if (initiator_) {
     send_cipher_.emplace(k1);
     receive_cipher_.emplace(k2);

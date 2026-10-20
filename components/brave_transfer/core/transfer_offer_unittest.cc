@@ -79,9 +79,9 @@ TEST(BraveTransferOfferTest, ReceiveLimits) {
 
 TEST(BraveTransferOfferTest, OutgoingItemFromBytes) {
   const std::string text = "https://brave.com";
-  OutgoingItem url = OutgoingItem::FromBytes(
-      proto::ITEM_KIND_URL, "brave.com", "text/uri-list",
-      Bytes(text.begin(), text.end()));
+  OutgoingItem url =
+      OutgoingItem::FromBytes(proto::ITEM_KIND_URL, "brave.com",
+                              "text/uri-list", Bytes(text.begin(), text.end()));
   EXPECT_EQ(url.size, text.size());
   EXPECT_EQ(test::HexString(url.sha256),
             test::HexString(crypto::hash::Sha256(base::as_byte_span(text))));
@@ -97,9 +97,9 @@ TEST(BraveTransferOfferTest, OutgoingItemFromBytes) {
   EXPECT_EQ(*chunk, Bytes(2, 'a'));
   EXPECT_FALSE(big_text.read.Run(kMaxInlineBytes, 2));
 
-  OutgoingItem file = OutgoingItem::FromBytes(
-      proto::ITEM_KIND_FILE, "f.bin", "application/octet-stream",
-      test::Pattern(10));
+  OutgoingItem file =
+      OutgoingItem::FromBytes(proto::ITEM_KIND_FILE, "f.bin",
+                              "application/octet-stream", test::Pattern(10));
   EXPECT_TRUE(file.inline_data.empty());
   ASSERT_TRUE(file.read);
   EXPECT_EQ(*file.read.Run(0, 10), test::Pattern(10));

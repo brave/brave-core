@@ -174,8 +174,8 @@ bool ScanMessage(MessageType type,
           return false;
         }
         if (spec && IsVarintKind(spec->kind)) {
-          known.append(base::as_string_view(bytes.subspan(
-              field_start, reader.num_read() - field_start)));
+          known.append(base::as_string_view(
+              bytes.subspan(field_start, reader.num_read() - field_start)));
         }
         break;
       }

@@ -77,9 +77,8 @@ constexpr char kUsage[] =
 constexpr size_t kMaxBufferedOutput = 1 << 18;
 
 void Log(std::string_view message) {
-  base::WriteFileDescriptor(STDERR_FILENO,
-                            "brave_transfer_peer: " + std::string(message) +
-                                "\n");
+  base::WriteFileDescriptor(
+      STDERR_FILENO, "brave_transfer_peer: " + std::string(message) + "\n");
 }
 
 [[noreturn]] void Fail(std::string_view message) {
@@ -169,7 +168,8 @@ Options ParseOptions(base::span<char*> argv) {
       if (colon == std::string::npos) {
         Fail("--connect needs HOST:PORT");
       }
-      options.connect.emplace(target.substr(0, colon), target.substr(colon + 1));
+      options.connect.emplace(target.substr(0, colon),
+                              target.substr(colon + 1));
     } else if (flag == "--listen") {
       int port = 0;
       if (!base::StringToInt(value(), &port) || port < 0 || port > 65535) {
@@ -552,8 +552,8 @@ class Receiver {
             .Set("name", item.name())
             .Set("size", static_cast<double>(item.size()))
             .Set("sha256", base::HexEncodeLower(item.sha256()))
-            .Set("saved_as", saved_as ? base::Value(saved_as->value())
-                                      : base::Value())
+            .Set("saved_as",
+                 saved_as ? base::Value(saved_as->value()) : base::Value())
             .Set("inline_data",
                  inline_text ? base::Value(*inline_text) : base::Value()));
   }
@@ -587,8 +587,8 @@ class Peer {
 
     std::vector<OutgoingItem> items;
     for (const std::string& text : options_.texts) {
-      items.push_back(OutgoingItem::FromBytes(proto::ITEM_KIND_TEXT,
-                                              "text.txt", "text/plain",
+      items.push_back(OutgoingItem::FromBytes(proto::ITEM_KIND_TEXT, "text.txt",
+                                              "text/plain",
                                               Bytes(text.begin(), text.end())));
     }
     for (const std::string& url : options_.urls) {
@@ -604,11 +604,10 @@ class Peer {
     std::unique_ptr<SecureChannel> channel;
     if (options_.initiator) {
       const base::Time now = base::Time::Now();
-      ASSIGN_OR_RETURN(
-          auto handshake,
-          InitiatorHandshake::Create(private_key, keys.psk(),
-                                     keys.TagForEpoch(EpochForTime(now)),
-                                     info));
+      ASSIGN_OR_RETURN(auto handshake,
+                       InitiatorHandshake::Create(
+                           private_key, keys.psk(),
+                           keys.TagForEpoch(EpochForTime(now)), info));
       ASSIGN_OR_RETURN(Bytes m1, handshake->Message1());
       RETURN_IF_ERROR(SendPrefixed(m1));
       ASSIGN_OR_RETURN(Bytes m2, io_->ReadMessage());
@@ -645,8 +644,8 @@ class Peer {
     while (true) {
       if (channel->is_confirmed() && !io_->output_closed()) {
         if (!offer_sent && !items.empty()) {
-          RETURN_IF_ERROR(session.SendOffer(std::move(items),
-                                            base::TimeTicks::Now()));
+          RETURN_IF_ERROR(
+              session.SendOffer(std::move(items), base::TimeTicks::Now()));
           offer_sent = true;
         }
         while (io_->buffered_output() < kMaxBufferedOutput) {
@@ -694,7 +693,8 @@ class Peer {
                        .Set("protocol_version",
                             static_cast<int>(remote.protocol_version()))
                        .Set("device_name", remote.device_name())
-                       .Set("device_type", static_cast<int>(remote.device_type()))
+                       .Set("device_type",
+                            static_cast<int>(remote.device_type()))
                        .Set("sync_device_guid", remote.sync_device_guid())
                        .Set("capabilities",
                             static_cast<double>(remote.capabilities())))
@@ -736,22 +736,21 @@ class Peer {
           decision = proto::DECISION_ACCEPT_SOME;
           ids.push_back(offer->offer.items(0).item_id());
         }
-        ASSIGN_OR_RETURN(TransferEvents more,
-                         session_->Respond(offer->offer.transfer_id(),
-                                           decision, ids));
+        ASSIGN_OR_RETURN(
+            TransferEvents more,
+            session_->Respond(offer->offer.transfer_id(), decision, ids));
         RETURN_IF_ERROR(HandleEvents(std::move(more)));
       } else if (auto* inline_item = std::get_if<InlineItemReceived>(&event)) {
         RETURN_IF_ERROR(receiver_.SaveWhole(
             inline_item->transfer_id, inline_item->item,
             base::as_byte_span(inline_item->item.inline_data())));
       } else if (auto* chunk = std::get_if<ChunkReceived>(&event)) {
-        RETURN_IF_ERROR(
-            receiver_.WriteChunk(chunk->transfer_id, chunk->item_id,
-                                 chunk->data));
+        RETURN_IF_ERROR(receiver_.WriteChunk(chunk->transfer_id, chunk->item_id,
+                                             chunk->data));
       } else if (auto* item = std::get_if<ItemReceived>(&event)) {
         RETURN_IF_ERROR(receiver_.FinishItem(item->transfer_id, item->item));
-      } else if (auto* finished = std::get_if<brave_transfer::TransferFinished>(
-                     &event)) {
+      } else if (auto* finished =
+                     std::get_if<brave_transfer::TransferFinished>(&event)) {
         receiver_.TransferFinished(finished->result);
         if (finished->result.is_outgoing) {
           outgoing_done_ = true;
