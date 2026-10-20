@@ -12,6 +12,7 @@
 #include "brave/components/brave_rewards/core/features.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_sync/features.h"
+#include "brave/components/brave_transfer/core/features.h"
 #include "brave/components/brave_user_agent/common/features.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/de_amp/common/features.h"
@@ -325,6 +326,15 @@ const flags_ui::FeatureEntry::FeatureVariation
           flags_ui::kOsIos,                                                    \
           FEATURE_VALUE_TYPE(                                                  \
               brave_sync::features::kBraveSyncDefaultPasswords),               \
+      },                                                                       \
+      {                                                                        \
+          "brave-transfer",                                                    \
+          "Brave Transfer",                                                    \
+          "Send files, photos, text and links to and from your other Brave "   \
+          "devices in the same Sync chain over the local network, from "       \
+          "brave://transfer and the share sheet.",                             \
+          flags_ui::kOsIos,                                                    \
+          FEATURE_VALUE_TYPE(brave_transfer::features::kBraveTransfer),        \
       },                                                                       \
       {                                                                        \
           "brave-use-chromium-webviews-autofill",                              \

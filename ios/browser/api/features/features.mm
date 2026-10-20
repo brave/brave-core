@@ -16,6 +16,7 @@
 #include "brave/components/brave_search_conversion/features.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_sync/features.h"
+#include "brave/components/brave_transfer/core/features.h"
 #include "brave/components/brave_user_agent/common/features.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/de_amp/common/features.h"
@@ -228,6 +229,11 @@
 
 + (Feature*)kBraveSync {
   return [[Feature alloc] initWithFeature:&brave_sync::features::kBraveSync];
+}
+
++ (Feature*)kBraveTransfer {
+  return [[Feature alloc]
+      initWithFeature:&brave_transfer::features::kBraveTransfer];
 }
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)

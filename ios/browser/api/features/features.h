@@ -56,6 +56,7 @@ OBJC_EXPORT
 @property(class, nonatomic, readonly)
     Feature* kBraveShowStrictFingerprintingMode;
 @property(class, nonatomic, readonly) Feature* kBraveSync;
+@property(class, nonatomic, readonly) Feature* kBraveTransfer;
 @property(class, nonatomic, readonly, nullable)
     Feature* kBraveWalletAnkrBalancesFeature;
 @property(class, nonatomic, readonly, nullable)
