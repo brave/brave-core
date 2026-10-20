@@ -31,6 +31,7 @@
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/brave_perf_predictor/browser/named_third_party_registry_factory.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
+#include "brave/components/brave_transfer/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/commander/common/buildflags/buildflags.h"
@@ -127,6 +128,11 @@
 
 #if BUILDFLAG(ENABLE_TRAFFIC_CONTROL)
 #include "brave/browser/traffic_control/traffic_control_service_factory.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_TRANSFER)
+#include "brave/browser/brave_transfer/brave_transfer_service_factory.h"
+#include "brave/components/brave_transfer/core/features.h"
 #endif
 
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
@@ -247,6 +253,12 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
   if (brave_account::features::IsBraveAccountEnabled()) {
     brave_account::BraveAccountServiceFactory::GetInstance();
   }
+
+#if BUILDFLAG(ENABLE_BRAVE_TRANSFER)
+  if (brave_transfer::features::IsBraveTransferEnabled()) {
+    brave_transfer::BraveTransferServiceFactory::GetInstance();
+  }
+#endif
 
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
   if (email_aliases::features::IsEmailAliasesEnabled()) {

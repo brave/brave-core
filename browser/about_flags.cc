@@ -21,6 +21,7 @@
 #include "brave/components/brave_rewards/core/features.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_sync/features.h"
+#include "brave/components/brave_transfer/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
@@ -151,6 +152,10 @@
 
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
 #include "brave/components/email_aliases/features.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_TRANSFER)
+#include "brave/components/brave_transfer/core/features.h"
 #endif
 
 #if defined(TOOLKIT_VIEWS)
@@ -1060,6 +1065,19 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabMigrationChoices[] = {
           FEATURE_VALUE_TYPE(email_aliases::features::kEmailAliases),         \
       }))
 
+#define BRAVE_TRANSFER_FEATURE_ENTRIES                                      \
+  IF_BUILDFLAG(                                                             \
+      ENABLE_BRAVE_TRANSFER,                                                \
+      EXPAND_FEATURE_ENTRIES({                                              \
+          "brave-transfer",                                                 \
+          "Brave Transfer",                                                 \
+          "Send files, photos, text and links to your other Brave devices " \
+          "in the same Sync chain over the local network, from "            \
+          "brave://transfer and a toolbar button.",                         \
+          kOsMac,                                                           \
+          FEATURE_VALUE_TYPE(brave_transfer::features::kBraveTransfer),     \
+      }))
+
 #if !BUILDFLAG(IS_ANDROID)
 #define BRAVE_WORKSPACE_FEATURE_ENTRY                            \
   EXPAND_FEATURE_ENTRIES({                                       \
@@ -1727,6 +1745,7 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabMigrationChoices[] = {
   WAYBACK_MACHINE_FEATURE_ENTRIES                                              \
   BRAVE_FORCE_POPUP_TO_BE_OPENED_IN_NEW_TAB_FEATURE_ENTRY                      \
   EMAIL_ALIASES_FEATURE_ENTRIES                                                \
+  BRAVE_TRANSFER_FEATURE_ENTRIES                                               \
   BRAVE_WORKSPACE_FEATURE_ENTRY                                                \
   EXPAND_FEATURE_ENTRIES({                                                     \
       "brave-origin",                                                          \
