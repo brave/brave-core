@@ -75,8 +75,18 @@ public class BraveToolbarLongPressMenuHandler extends ToolbarLongPressMenuHandle
             return itemList;
         }
 
+        // Insert right after "Copy link" instead of a fixed index, as the number of items
+        // preceding it varies (e.g. "Move address bar to" is omitted on tablets).
+        int insertIndex = itemList.size();
+        for (int i = 0; i < itemList.size(); i++) {
+            int itemID = itemList.get(i).model.get(ListMenuItemProperties.MENU_ITEM_ID);
+            if (itemID == MenuItemType.COPY_LINK) {
+                insertIndex = i + 1;
+                break;
+            }
+        }
         itemList.add(
-                2,
+                insertIndex,
                 new ListItemBuilder()
                         .withTitleRes(R.string.contextmenu_copy_clean_link)
                         .withMenuId(R.id.contextmenu_copy_clean_link)
