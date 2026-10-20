@@ -380,6 +380,7 @@ type CustomArgs = {
   isNewConversation: boolean
   ratingTurnUuid: { isLiked: boolean; turnUuid: string } | undefined
   isTemporaryChat: boolean
+  isWaitingForVisionModelSwitch: boolean
   isDragActive: boolean
   isDragOver: boolean
   skillDialog: Mojom.Skill | null
@@ -431,6 +432,7 @@ const args: CustomArgs = {
   isNewConversation: false,
   ratingTurnUuid: undefined,
   isTemporaryChat: false,
+  isWaitingForVisionModelSwitch: false,
   isDragActive: false,
   isDragOver: false,
   skillDialog: null,
@@ -669,6 +671,10 @@ function StoryContext(
               capabilitiesEnabled: argsRef.current.capabilitiesEnabled.map(
                 (value) => Mojom.ConversationCapability[value],
               ),
+              visionModelSwitchKey: argsRef.current
+                .isWaitingForVisionModelSwitch
+                ? MODELS.find((model) => model.visionSupport)?.key
+                : undefined,
             },
           })
         },
@@ -785,6 +791,11 @@ export const _Panel = GetPanelStory({
 export const _WithAttachedTools = GetPanelStory({
   conversation_content: 'ALL',
   hasAttachedTools: true,
+})
+
+export const _WithVisionModelSwitch = GetPanelStory({
+  conversation_content: 'ALL',
+  isWaitingForVisionModelSwitch: true,
 })
 
 export const _WithSearch = GetPanelStory({
