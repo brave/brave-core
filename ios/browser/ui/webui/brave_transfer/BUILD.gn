@@ -1,0 +1,66 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# Kept separate from ":brave_transfer" so BraveWebView can attach the bridge
+# without depending on the WebUI controller.
+source_set("bridge_holder") {
+  sources = [
+    "brave_transfer_page_handler_bridge_holder.h",
+    "brave_transfer_page_handler_bridge_holder.mm",
+  ]
+
+  public_deps = [ "//ios/web/public" ]
+}
+
+source_set("brave_transfer") {
+  sources = [
+    "brave_transfer_page_handler.h",
+    "brave_transfer_page_handler.mm",
+    "brave_transfer_ui.h",
+    "brave_transfer_ui.mm",
+  ]
+
+  public_deps = [
+    "//brave/components/brave_transfer/common:mojom",
+    "//ios/web/public/webui",
+    "//mojo/public/cpp/bindings",
+  ]
+
+  deps = [
+    ":bridge_holder",
+    "//base",
+    "//brave/components/brave_transfer/common:mojom_objc",
+    "//brave/components/brave_transfer/ios/browser",
+    "//brave/components/brave_transfer/resources/page:brave_transfer_page_generated",
+    "//brave/components/resources:static_resources_grit",
+    "//brave/components/resources:strings",
+    "//brave/ios/web/webui",
+    "//ios/web/public",
+    "//services/network/public/mojom",
+    "//url",
+  ]
+
+  frameworks = [ "Foundation.framework" ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "brave_transfer_page_handler_unittest.mm" ]
+
+  deps = [
+    ":bridge_holder",
+    ":brave_transfer",
+    "//base",
+    "//base/test:test_support",
+    "//brave/components/brave_transfer/common:mojom",
+    "//brave/components/brave_transfer/common:mojom_objc",
+    "//brave/components/brave_transfer/ios/browser",
+    "//ios/web/public/test",
+    "//ios/web/public/test/fakes",
+    "//mojo/public/cpp/bindings",
+    "//testing/gtest",
+  ]
+}

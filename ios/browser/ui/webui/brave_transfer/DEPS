@@ -1,0 +1,5 @@
+include_rules = [
+  "+brave/components/brave_transfer/common",
+  "+brave/components/brave_transfer/ios/browser",
+  "+brave/components/brave_transfer/resources/page/grit",
+]

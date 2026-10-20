@@ -30,6 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol AIChatUIHandlerBridge;
 @protocol BraveAccountDialogOpenerBridge;
 @protocol WalletPageHandlerBridge;
+@protocol TransferPageHandlerBridge;
 @protocol AIChatAssociatedContentPageFetcher;
 @protocol ProfileBridge;
 @protocol LoginsTabHelperBridge;
@@ -203,6 +204,13 @@ CWV_EXPORT
 /// A bridge for handling wallet provider actions
 @property(nonatomic, weak, nullable) id<BraveWalletProviderDelegate>
     walletProviderDelegate;
+@end
+
+CWV_EXPORT
+@interface BraveWebView (BraveTransfer)
+/// A bridge for handling brave://transfer page requests
+@property(nonatomic, weak, nullable) id<TransferPageHandlerBridge>
+    transferPageHandler;
 @end
 
 CWV_EXPORT

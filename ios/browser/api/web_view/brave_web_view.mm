@@ -43,6 +43,7 @@
 #include "brave/ios/browser/favicon/brave_ios_web_favicon_driver.h"
 #include "brave/ios/browser/serp_metrics/serp_metrics_tab_helper.h"
 #include "brave/ios/browser/ui/web_view/features.h"
+#include "brave/ios/browser/ui/webui/brave_transfer/brave_transfer_page_handler_bridge_holder.h"
 #include "brave/ios/browser/ui/webui/brave_wallet/wallet_page_handler_bridge_holder.h"
 #include "brave/ios/browser/web/document_fetch/document_fetch_javascript_feature.h"
 #include "brave/ios/browser/web/force_paste/force_paste_javascript_feature.h"
@@ -285,6 +286,7 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
 @property(nonatomic, weak) id<BraveAccountDialogOpenerBridge>
     braveAccountDialogOpener;
 @property(nonatomic, weak) id<WalletPageHandlerBridge> walletPageHandler;
+@property(nonatomic, weak) id<TransferPageHandlerBridge> transferPageHandler;
 @property(nonatomic, weak) id<LoginsTabHelperBridge> loginsHelper;
 #if BUILDFLAG(ENABLE_BRAVE_TALK)
 @property(nonatomic, weak) id<BraveTalkTabHelperBridge> braveTalkHelper;
@@ -422,6 +424,10 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
   brave_wallet::PageHandlerBridgeHolder::CreateForWebState(self.webState);
   brave_wallet::PageHandlerBridgeHolder::FromWebState(self.webState)
       ->SetBridge(self.walletPageHandler);
+
+  brave_transfer::PageHandlerBridgeHolder::CreateForWebState(self.webState);
+  brave_transfer::PageHandlerBridgeHolder::FromWebState(self.webState)
+      ->SetBridge(self.transferPageHandler);
 
   ProfileIOS* profile =
       ProfileIOS::FromBrowserState(self.webState->GetBrowserState());
@@ -788,6 +794,17 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
           brave_wallet::CardanoProviderTabHelper::FromWebState(self.webState)) {
     tabHelper->SetBridge(_walletProviderDelegate);
   }
+}
+
+@end
+
+@implementation BraveWebView (BraveTransfer)
+
+- (void)setTransferPageHandler:(id<TransferPageHandlerBridge>)bridge {
+  _transferPageHandler = bridge;
+  brave_transfer::PageHandlerBridgeHolder::CreateForWebState(self.webState);
+  brave_transfer::PageHandlerBridgeHolder::FromWebState(self.webState)
+      ->SetBridge(bridge);
 }
 
 @end
