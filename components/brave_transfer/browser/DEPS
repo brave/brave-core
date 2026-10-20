@@ -1,0 +1,9 @@
+include_rules = [
+  "+brave/components/brave_transfer/common",
+  "+brave/components/brave_transfer/core",
+  "+components/keyed_service/core",
+  "+components/os_crypt/async",
+  "+components/prefs",
+  "+sql",
+  "+url",
+]

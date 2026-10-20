@@ -1,0 +1,92 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//testing/test.gni")
+
+# Builds on every platform; only the desktop glue in //brave/browser is behind
+# enable_brave_transfer.
+static_library("browser") {
+  sources = [
+    "brave_transfer_service.cc",
+    "brave_transfer_service.h",
+    "byte_stream.h",
+    "connector.h",
+    "directory_file_sink.cc",
+    "directory_file_sink.h",
+    "inbox_store.cc",
+    "inbox_store.h",
+    "incoming_file_sink.h",
+    "peer_connection.cc",
+    "peer_connection.h",
+    "trust_source.h",
+  ]
+
+  public_deps = [
+    "//base",
+    "//brave/components/brave_transfer/common:mojom",
+    "//brave/components/brave_transfer/core",
+    "//components/keyed_service/core",
+    "//components/prefs",
+    "//sql",
+  ]
+
+  deps = [
+    "//components/os_crypt/async/browser",
+    "//components/os_crypt/async/common",
+    "//url",
+  ]
+}
+
+source_set("test_support") {
+  testonly = true
+
+  sources = [
+    "test/fake_byte_stream.cc",
+    "test/fake_byte_stream.h",
+    "test/fakes.cc",
+    "test/fakes.h",
+    "test/run_until.cc",
+    "test/run_until.h",
+  ]
+
+  public_deps = [ ":browser" ]
+  deps = [
+    "//base",
+    "//base/test:test_support",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [
+    "brave_transfer_service_unittest.cc",
+    "directory_file_sink_unittest.cc",
+    "inbox_store_unittest.cc",
+    "peer_connection_unittest.cc",
+  ]
+
+  deps = [
+    ":browser",
+    ":test_support",
+    "//base",
+    "//base/test:test_support",
+    "//brave/components/brave_transfer/core",
+    "//components/os_crypt/async/browser",
+    "//components/os_crypt/async/browser:test_support",
+    "//components/prefs:test_support",
+    "//sql",
+    "//testing/gtest",
+  ]
+}
+
+# Standalone runner for quick iteration; CI runs these tests in
+# brave_components_unittests.
+test("brave_transfer_browser_unittests") {
+  deps = [
+    ":unit_tests",
+    "//base/test:run_all_unittests",
+  ]
+}
