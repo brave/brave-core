@@ -74,9 +74,7 @@ v8::Local<v8::Promise> RejectedPromise(v8::Isolate* isolate,
 }  // namespace
 
 JSPolkadotProvider::JSPolkadotProvider(content::RenderFrame* render_frame)
-    : RenderFrameObserver(render_frame) {
-  EnsureConnected();
-}
+    : RenderFrameObserver(render_frame) {}
 
 JSPolkadotProvider::~JSPolkadotProvider() = default;
 
@@ -238,6 +236,7 @@ void JSPolkadotProvider::EnableImpl(
 
   info.GetReturnValue().Set(provider->Enable(isolate));
 }
+
 v8::Local<v8::Function> JSPolkadotProvider::GetConnectObject(
     v8::Isolate* isolate) {
   v8::Local<v8::Object> self;
