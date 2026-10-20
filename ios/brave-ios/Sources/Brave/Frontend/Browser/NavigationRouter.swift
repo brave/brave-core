@@ -109,7 +109,39 @@ public enum NavigationPath: Equatable {
     }
   }
 
+  /// Replaces a search URL from one of the OS built-in search engines (e.g. Spotlight or Siri
+  /// searches) with a search URL for the user's default search engine.
+  ///
+  /// The URL is returned unmodified if the URL is not a known search URL, or the user's default
+  /// search engine is the same engine the URL belongs to.
+  @MainActor
+  static func replacingSystemSearchURL(
+    _ url: URL,
+    isPrivate: Bool,
+    searchEngines: SearchEngines
+  ) -> URL {
+    guard let match = SystemSearchURLMatcher.match(url),
+      let defaultEngine = searchEngines.defaultEngine(
+        forType: isPrivate ? .privateMode : .standard
+      ),
+      !defaultEngine.isSameEngine(as: match.engine, url: url),
+      let replacementURL = defaultEngine.searchURLForQuery(match.query)
+    else {
+      return url
+    }
+    return replacementURL
+  }
+
+  @MainActor
   private static func handleURL(url: URL?, isPrivate: Bool, with bvc: BrowserViewController) {
+    var url = url
+    if Preferences.General.replaceSystemSearchEngineURLs.value, let originalURL = url {
+      url = replacingSystemSearchURL(
+        originalURL,
+        isPrivate: isPrivate,
+        searchEngines: bvc.profile.searchEngines
+      )
+    }
     // Skip private-tab auth when app passcode lock is on; the user must unlock the app first.
     if isPrivate,
       Preferences.Privacy.privateBrowsingLock.value,

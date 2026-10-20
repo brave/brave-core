@@ -110,6 +110,13 @@ extension Preferences {
       default: true
     )
 
+    /// Whether or not search URLs from the OS built-in search engines (e.g. Spotlight or Siri
+    /// searches) are replaced with the user's default search engine
+    public static let replaceSystemSearchEngineURLs = Option<Bool>(
+      key: "general.replace-system-search-engine-urls",
+      default: true
+    )
+
     /// Whether or not the app will always load YouTube in Brave
     public static let keepYouTubeInBrave = Option<Bool>(
       key: "general.follow-universal-links.youtube",

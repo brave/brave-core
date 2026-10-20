@@ -3175,6 +3175,16 @@ extension BrowserViewController {
     }
   }
 
+  /// Replaces a search URL from one of the OS built-in search engines with a search URL for the
+  /// user's default search engine.
+  public func replacingSystemSearchURL(_ url: URL, isPrivate: Bool) -> URL {
+    NavigationPath.replacingSystemSearchURL(
+      url,
+      isPrivate: isPrivate,
+      searchEngines: profile.searchEngines
+    )
+  }
+
   public func submitSearchText(_ text: String, isBraveSearchPromotion: Bool = false) {
     var engine = profile.searchEngines.defaultEngine(
       forType: privateBrowsingManager.isPrivateBrowsing ? .privateMode : .standard

@@ -2457,6 +2457,22 @@ extension Strings {
     value: "Allow universal links to open in external apps",
     comment: "Setting to follow universal links"
   )
+  public static let replaceSystemSearchEngineURLs = NSLocalizedString(
+    "ReplaceSystemSearchEngineURLs",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Use Default Search Engine for External Searches",
+    comment: "Setting to replace searches opened from other apps with the default search engine"
+  )
+  public static let replaceSystemSearchEngineURLsDescription = NSLocalizedString(
+    "ReplaceSystemSearchEngineURLsDescription",
+    tableName: "BraveShared",
+    bundle: .module,
+    value:
+      "Searches opened from Spotlight, Siri or other apps that use another search engine will be sent to your default search engine instead.",
+    comment:
+      "Description for the setting that replaces searches opened from other apps with the default search engine"
+  )
   public static let mediaAutoBackgrounding = NSLocalizedString(
     "MediaAutoBackgrounding",
     tableName: "BraveShared",
