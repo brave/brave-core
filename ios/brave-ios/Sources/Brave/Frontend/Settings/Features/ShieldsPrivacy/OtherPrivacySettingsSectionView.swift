@@ -8,6 +8,7 @@ import BraveShared
 import BraveShields
 import BraveUI
 import Data
+import ExternalLinks
 import Growth
 import OSLog
 import Preferences
@@ -141,6 +142,10 @@ struct OtherPrivacySettingsSectionView: View {
         title: Strings.followUniversalLinks,
         subtitle: nil,
         option: Preferences.General.followUniversalLinks
+      )
+      ExternalLinkSettingsRow(
+        mode: $settings.defaultExternalLinkMode,
+        onReset: settings.clearRememberedExternalLinkChoices
       )
       OptionToggleView(
         title: Strings.googleSafeBrowsing,

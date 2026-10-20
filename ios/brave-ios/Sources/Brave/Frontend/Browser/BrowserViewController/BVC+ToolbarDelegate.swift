@@ -607,6 +607,7 @@ extension BrowserViewController: TopToolbarDelegate, SearchContainerViewControll
           historyAPI: profileController.historyAPI,
           serpMetrics: SerpMetricsServiceFactory.get(profile: profile),
           prefs: profile.prefs,
+          defaultHostContentSettings: profileController.defaultHostContentSettings,
           p3aUtils: braveCore.p3aUtils,
           localState: braveCore.localState,
           rewards: rewards,

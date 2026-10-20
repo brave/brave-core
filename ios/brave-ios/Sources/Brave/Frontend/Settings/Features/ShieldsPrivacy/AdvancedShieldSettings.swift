@@ -189,7 +189,18 @@ import os
   private let clearDataCallback: ClearDataCallback
   private let braveStats: BraveStats
   private let webcompatReporterHandler: WebcompatReporterWebcompatReporterHandler?
+  private let defaultHostContentSettings: DefaultHostContentSettings
   let tabManager: TabManager
+
+  @Published var defaultExternalLinkMode: ExternalLinkMode {
+    didSet {
+      defaultHostContentSettings.defaultExternalLinkMode = defaultExternalLinkMode
+    }
+  }
+
+  func clearRememberedExternalLinkChoices() {
+    defaultHostContentSettings.clearAllExternalLinkModes()
+  }
 
   init(
     profile: any Profile,
@@ -201,6 +212,7 @@ import os
     historyAPI: BraveHistoryAPI,
     serpMetrics: (any SerpMetrics)?,
     prefs: any PrefService,
+    defaultHostContentSettings: DefaultHostContentSettings,
     p3aUtils: BraveP3AUtils,
     localState: any PrefService,
     rewards: BraveRewards?,
@@ -224,6 +236,8 @@ import os
     self.clearDataCallback = clearDataCallback
     self.braveStats = braveStats
     self.prefs = prefs
+    self.defaultHostContentSettings = defaultHostContentSettings
+    self.defaultExternalLinkMode = defaultHostContentSettings.defaultExternalLinkMode
     self.adBlockAndTrackingPreventionLevel =
       braveShieldsSettings?.defaultAdBlockMode.shieldLevel ?? .standard
     self.isBlockScriptsEnabled = braveShieldsSettings?.isBlockScriptsEnabledByDefault ?? false

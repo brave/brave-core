@@ -11,6 +11,7 @@
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/core/common/brave_shields_settings_values.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+#include "brave/components/content_settings/core/common/external_link_mode.h"
 #include "brave/components/psst/buildflags/buildflags.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings.mojom.h"
@@ -405,6 +406,17 @@ void ContentSettingsRegistry::BraveInit() {
           WebsiteSettingsRegistry::PLATFORM_ANDROID |
           WebsiteSettingsRegistry::PLATFORM_IOS,
       WebsiteSettingsInfo::INHERIT_IN_INCOGNITO);
+
+  website_settings_registry_->Register(
+      ContentSettingsType::BRAVE_EXTERNAL_LINK_MODE, "braveExternalLinkMode",
+      base::Value(
+          static_cast<int>(content_settings::ExternalLinkMode::kCurrent)),
+      WebsiteSettingsInfo::SYNCABLE, WebsiteSettingsInfo::NOT_LOSSY,
+      WebsiteSettingsInfo::TOP_ORIGIN_ONLY_SCOPE,
+      WebsiteSettingsRegistry::DESKTOP |
+          WebsiteSettingsRegistry::PLATFORM_ANDROID |
+          WebsiteSettingsRegistry::PLATFORM_IOS,
+      WebsiteSettingsInfo::DONT_INHERIT_IN_INCOGNITO);
 
 #if BUILDFLAG(ENABLE_PSST)
   website_settings_registry_->Register(

@@ -55,4 +55,6 @@ enum ContentSettingsType {
   BRAVE_CARDANO,
   BRAVE_PSST,
   BRAVE_POLKADOT,
+  // iOS: per-site choice for how links opened from other apps are loaded.
+  BRAVE_EXTERNAL_LINK_MODE,
 };

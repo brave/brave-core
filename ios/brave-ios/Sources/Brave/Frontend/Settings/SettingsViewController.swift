@@ -409,6 +409,7 @@ class SettingsViewController: TableViewController {
                   historyAPI: braveCore.historyAPI,
                   serpMetrics: SerpMetricsServiceFactory.get(profile: profile),
                   prefs: profile.prefs,
+                  defaultHostContentSettings: braveCore.defaultHostContentSettings,
                   p3aUtils: p3aUtilities,
                   localState: localState,
                   rewards: rewards,
