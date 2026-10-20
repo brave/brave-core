@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grit-part>
+
+  <!-- Page -->
+  <message name="IDS_BRAVE_TRANSFER_TITLE" desc="Title of the Brave Transfer page, where users send files, photos, text and links between their devices" formatter_data="webui=BraveTransfer">
+    Brave Transfer
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_DESCRIPTION" desc="Short explanation of Brave Transfer shown under the page title" formatter_data="webui=BraveTransfer">
+    Send files, photos, text and links between your devices on the same Wi-Fi network.
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_DESKTOP_TAB_NOTE" desc="Note on the desktop Brave Transfer page explaining that devices are only found while the page is open" formatter_data="webui=BraveTransfer">
+    Keep this tab open to find your devices.
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_IOS_FOREGROUND_NOTE" desc="Note on the iOS Brave Transfer page explaining that transfers only work while Brave is open" formatter_data="webui=BraveTransfer">
+    Keep Brave open to send and receive.
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_TAB_DEVICES" desc="Label of the tab that lists the user's devices" formatter_data="webui=BraveTransfer">
+    Devices
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_TAB_INBOX" desc="Label of the tab that lists received items" formatter_data="webui=BraveTransfer">
+    Inbox
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_TAB_SETTINGS" desc="Label of the tab with Brave Transfer settings" formatter_data="webui=BraveTransfer">
+    Settings
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_CANCEL" desc="Label of a button that closes a dialog without doing anything" formatter_data="webui=BraveTransfer">
+    Cancel
+  </message>
+
+  <!-- Sync off -->
+  <message name="IDS_BRAVE_TRANSFER_SYNC_OFF_TITLE" desc="Title of the notice shown when Sync is off, so devices in the Sync chain cannot connect" formatter_data="webui=BraveTransfer">
+    Turn on Sync to connect
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_SYNC_OFF_TEXT" desc="Text of the notice shown when Sync is off" formatter_data="webui=BraveTransfer">
+    Brave Transfer connects to the devices in your Sync chain. Turn on Sync on this device to send and receive.
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_SYNC_OFF_BUTTON" desc="Label of a button that opens Sync settings" formatter_data="webui=BraveTransfer">
+    Turn on Sync
+  </message>
+
+  <!-- Devices -->
+  <message name="IDS_BRAVE_TRANSFER_DEVICES_TITLE" desc="Heading of the list of the user's devices" formatter_data="webui=BraveTransfer">
+    Your devices
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_DEVICES_EMPTY_TITLE" desc="Title shown when no devices have been found" formatter_data="webui=BraveTransfer">
+    No devices yet
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_DEVICES_EMPTY_TEXT" desc="Text shown when no devices have been found, explaining when devices appear" formatter_data="webui=BraveTransfer">
+    Devices in your Sync chain appear here when they're on the same Wi-Fi network with Brave Transfer open.
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_DEVICE_CONNECTED" desc="Status of a device that items can be sent to right now" formatter_data="webui=BraveTransfer">
+    Ready
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_DEVICE_NOT_NEARBY" desc="Status of a device that is not reachable right now" formatter_data="webui=BraveTransfer">
+    Not nearby
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_DEVICE_LAST_SEEN" desc="Status of a device that is not reachable, with the date and time it was last connected" formatter_data="webui=BraveTransfer">
+    Last seen <ph name="DATE_TIME">$1<ex>Oct 20, 9:41 AM</ex></ph>
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_DEVICE_SEND_BUTTON" desc="Label of a button that starts sending items to a device" formatter_data="webui=BraveTransfer">
+    Send
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_DEVICE_DROP_HINT" desc="Hint shown on a device while files are dragged over it" formatter_data="webui=BraveTransfer">
+    Drop to send
+  </message>
+
+  <!-- Send -->
+  <message name="IDS_BRAVE_TRANSFER_SEND_TITLE" desc="Title of the dialog for sending items to a device" formatter_data="webui=BraveTransfer">
+    Send to <ph name="DEVICE_NAME">$1<ex>James's iPhone</ex></ph>
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_SEND_TEXT_LABEL" desc="Label of the text field for text or a link to send" formatter_data="webui=BraveTransfer">
+    Text or link
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_SEND_TEXT_PLACEHOLDER" desc="Placeholder of the text field for text or a link to send" formatter_data="webui=BraveTransfer">
+    Type or paste text or a link
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_SEND_TEXT_BUTTON" desc="Label of a button that sends the entered text or link" formatter_data="webui=BraveTransfer">
+    Send text
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_SEND_CHOOSE_FILES" desc="Label of a button that opens a file picker to choose files to send" formatter_data="webui=BraveTransfer">
+    Choose files
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_SEND_CHOOSE_PHOTOS_OR_FILES" desc="Label of a button on iOS that opens a picker to choose photos or files to send" formatter_data="webui=BraveTransfer">
+    Choose photos or files
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_SEND_DROP_ZONE" desc="Text of the area where files can be dropped to send them" formatter_data="webui=BraveTransfer">
+    Drop files here
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_SEND_ERROR_UNAVAILABLE" desc="Error shown when the device to send to is no longer reachable" formatter_data="webui=BraveTransfer">
+    This device isn't available right now.
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_SEND_ERROR_TOO_LARGE" desc="Error shown when dropped files are too large to send that way" formatter_data="webui=BraveTransfer">
+    These files are too large to drop here. Use Choose files instead.
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_SEND_ERROR_FAILED" desc="Error shown when sending failed for another reason" formatter_data="webui=BraveTransfer">
+    Couldn't send. Try again.
+  </message>
+
+  <!-- Incoming offers -->
+  <message name="IDS_BRAVE_TRANSFER_OFFERS_TITLE" desc="Heading of the list of incoming transfers waiting to be accepted or declined" formatter_data="webui=BraveTransfer">
+    Waiting for you
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_OFFER_FROM" desc="Text introducing the items another device wants to send" formatter_data="webui=BraveTransfer">
+    <ph name="DEVICE_NAME">$1<ex>James's iPhone</ex></ph> wants to send you
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_OFFER_EXPIRES" desc="Seconds left to answer an incoming transfer before it is declined automatically" formatter_data="webui=BraveTransfer">
+    Expires in <ph name="SECONDS">$1<ex>45</ex></ph>s
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_OFFER_ACCEPT" desc="Label of a button that accepts an incoming transfer" formatter_data="webui=BraveTransfer">
+    Accept
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_OFFER_DECLINE" desc="Label of a button that declines an incoming transfer" formatter_data="webui=BraveTransfer">
+    Decline
+  </message>
+
+  <!-- Transfers -->
+  <message name="IDS_BRAVE_TRANSFER_TRANSFERS_TITLE" desc="Heading of the list of current and recent transfers" formatter_data="webui=BraveTransfer">
+    Transfers
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_TRANSFER_TO" desc="Describes an outgoing transfer by its destination device" formatter_data="webui=BraveTransfer">
+    To <ph name="DEVICE_NAME">$1<ex>James's iPhone</ex></ph>
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_TRANSFER_FROM" desc="Describes an incoming transfer by its source device" formatter_data="webui=BraveTransfer">
+    From <ph name="DEVICE_NAME">$1<ex>James's MacBook</ex></ph>
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_STATE_WAITING" desc="Status of a transfer waiting for the other device to accept it" formatter_data="webui=BraveTransfer">
+    Waiting to be accepted
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_STATE_PROGRESS" desc="Progress of a transfer as an amount of data out of the total" formatter_data="webui=BraveTransfer">
+    <ph name="DONE">$1<ex>1.2 MB</ex></ph> of <ph name="TOTAL">$2<ex>4.8 MB</ex></ph>
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_STATE_COMPLETED" desc="Status of a finished transfer" formatter_data="webui=BraveTransfer">
+    Done
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_STATE_DECLINED" desc="Status of a transfer the other device declined" formatter_data="webui=BraveTransfer">
+    Declined
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_STATE_EXPIRED" desc="Status of a transfer the other device did not answer in time" formatter_data="webui=BraveTransfer">
+    Not answered
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_STATE_CANCELLED" desc="Status of a cancelled transfer" formatter_data="webui=BraveTransfer">
+    Cancelled
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_STATE_FAILED" desc="Status of a failed transfer" formatter_data="webui=BraveTransfer">
+    Failed
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_TRANSFER_CANCEL" desc="Label of a button that cancels a transfer in progress" formatter_data="webui=BraveTransfer">
+    Cancel transfer
+  </message>
+
+  <!-- Inbox -->
+  <message name="IDS_BRAVE_TRANSFER_INBOX_TITLE" desc="Heading of the table of received items" formatter_data="webui=BraveTransfer">
+    Received items
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_INBOX_EMPTY_TITLE" desc="Title shown when nothing has been received yet" formatter_data="webui=BraveTransfer">
+    Nothing received yet
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_INBOX_EMPTY_TEXT" desc="Text shown when nothing has been received yet" formatter_data="webui=BraveTransfer">
+    Items you receive from your devices appear here.
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_INBOX_COLUMN_TIME" desc="Header of the inbox column with the time an item was received" formatter_data="webui=BraveTransfer">
+    Time
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_INBOX_COLUMN_FROM" desc="Header of the inbox column with the device that sent an item" formatter_data="webui=BraveTransfer">
+    From
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_INBOX_COLUMN_ITEM" desc="Header of the inbox column with the received item" formatter_data="webui=BraveTransfer">
+    Item
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_KIND_TEXT" desc="Type of a received item that is text" formatter_data="webui=BraveTransfer">
+    Text
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_KIND_LINK" desc="Type of a received item that is a link" formatter_data="webui=BraveTransfer">
+    Link
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_KIND_IMAGE" desc="Type of a received item that is an image" formatter_data="webui=BraveTransfer">
+    Image
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_KIND_FILE" desc="Type of a received item that is a file" formatter_data="webui=BraveTransfer">
+    File
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_COPY" desc="Label of a button that copies received text or a link to the clipboard" formatter_data="webui=BraveTransfer">
+    Copy
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_COPIED" desc="Confirmation that text was copied to the clipboard" formatter_data="webui=BraveTransfer">
+    Copied
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_EXPAND" desc="Label of a button that shows all of a long received text" formatter_data="webui=BraveTransfer">
+    Show more
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_COLLAPSE" desc="Label of a button that shortens a long received text again" formatter_data="webui=BraveTransfer">
+    Show less
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_OPEN" desc="Label of a button that opens a received file" formatter_data="webui=BraveTransfer">
+    Open
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_SHOW_IN_FOLDER" desc="Label of a button that shows a received file in its folder" formatter_data="webui=BraveTransfer">
+    Show in folder
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_OPEN_IN_FILES" desc="Label of a button on iOS that shows a received file in the Files app" formatter_data="webui=BraveTransfer">
+    Open in Files
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_FILE_MISSING" desc="Shown on a received file that has been moved or deleted since" formatter_data="webui=BraveTransfer">
+    File moved or deleted
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_SAVED_TO_FALLBACK" desc="Shown on a received file that was saved to the download folder because the chosen folder was not available" formatter_data="webui=BraveTransfer">
+    Saved to your download folder because the chosen folder wasn't available
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_SAVED_TO_FALLBACK_IOS" desc="Shown on iOS on a received photo that was saved to the Files app because Photos access is not allowed" formatter_data="webui=BraveTransfer">
+    Saved to Files because Photos access is off
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_LOAD_MORE" desc="Label of a button that loads older received items" formatter_data="webui=BraveTransfer">
+    Show older items
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_CLEAR_HISTORY" desc="Label of a button that removes all items from the inbox" formatter_data="webui=BraveTransfer">
+    Clear history
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_CLEAR_HISTORY_CONFIRM_TITLE" desc="Title of the dialog confirming that all items should be removed from the inbox" formatter_data="webui=BraveTransfer">
+    Clear transfer history?
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_CLEAR_HISTORY_CONFIRM_TEXT" desc="Text of the dialog confirming that all items should be removed from the inbox" formatter_data="webui=BraveTransfer">
+    This removes all items from the inbox. Files you received stay where they were saved.
+  </message>
+
+  <!-- Settings -->
+  <message name="IDS_BRAVE_TRANSFER_SETTINGS_RECEIVE" desc="Label of the setting that controls who can send items to this device" formatter_data="webui=BraveTransfer">
+    Receive items
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_SETTINGS_RECEIVE_OFF" desc="Option of the receive setting: nobody can send items" formatter_data="webui=BraveTransfer">
+    Off
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_SETTINGS_RECEIVE_TRUSTED" desc="Option of the receive setting: only trusted devices can send items" formatter_data="webui=BraveTransfer">
+    From trusted devices
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_SETTINGS_AUTO_ACCEPT" desc="Label of the setting that accepts transfers from trusted devices without asking" formatter_data="webui=BraveTransfer">
+    Auto-accept from trusted devices
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_SETTINGS_AUTO_ACCEPT_DESC" desc="Explanation of the auto-accept setting" formatter_data="webui=BraveTransfer">
+    When off, you're asked to accept each transfer. Received files are never opened automatically.
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_SETTINGS_AUTO_TRUST" desc="Label of the setting that trusts devices in the user's Sync chain" formatter_data="webui=BraveTransfer">
+    Auto-trust devices in my Sync chain
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_SETTINGS_AUTO_TRUST_DESC" desc="Explanation of the auto-trust setting" formatter_data="webui=BraveTransfer">
+    Your Sync devices can connect without pairing while Sync is on.
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_SETTINGS_AUTO_TRUST_SYNC_OFF" desc="Shown under the auto-trust setting when Sync is off" formatter_data="webui=BraveTransfer">
+    Turn on Sync to auto-trust your Sync devices.
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_SETTINGS_NOTIFY" desc="Label of the setting that shows a notification when an item is received" formatter_data="webui=BraveTransfer">
+    Show a notification when an item arrives
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_SETTINGS_SAVE_LOCATION" desc="Label of the setting for the folder received files and images are saved to" formatter_data="webui=BraveTransfer">
+    Save received files and images to
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_SETTINGS_SAVE_LOCATION_DEFAULT" desc="Shown as the save folder when received files follow the browser's download folder" formatter_data="webui=BraveTransfer">
+    Same as browser downloads
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_SETTINGS_SAVE_LOCATION_CHANGE" desc="Label of a button that opens a folder picker for the save folder" formatter_data="webui=BraveTransfer">
+    Change…
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_SETTINGS_SAVE_LOCATION_RESET" desc="Label of a button that makes received files follow the browser's download folder again" formatter_data="webui=BraveTransfer">
+    Use browser downloads
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_SETTINGS_SAVE_LOCATION_IOS_FILES" desc="On iOS, where received files are saved" formatter_data="webui=BraveTransfer">
+    Files: On My iPhone › Brave › Downloads
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_SETTINGS_SAVE_LOCATION_IOS_PHOTOS" desc="On iOS, where received photos and videos are saved" formatter_data="webui=BraveTransfer">
+    Photos and videos: Photos
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_SETTINGS_TRUSTED_DEVICES" desc="Heading of the list of trusted devices" formatter_data="webui=BraveTransfer">
+    Trusted devices
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_SETTINGS_TRUSTED_DEVICES_EMPTY" desc="Shown when there are no trusted devices" formatter_data="webui=BraveTransfer">
+    No trusted devices yet.
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_SOURCE_SYNC" desc="Shown on a device trusted because it is in the user's Sync chain" formatter_data="webui=BraveTransfer">
+    Sync chain
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_SOURCE_PAIRED" desc="Shown on a device trusted because it was paired directly" formatter_data="webui=BraveTransfer">
+    Paired
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_KEY_FINGERPRINT" desc="Fingerprint of a device's security key" formatter_data="webui=BraveTransfer">
+    Key <ph name="FINGERPRINT">$1<ex>3F2A 91C0 7B1E</ex></ph>
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_NEVER_CONNECTED" desc="Shown on a trusted device that has never connected" formatter_data="webui=BraveTransfer">
+    Never connected
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_DEVICE_POLICY_LABEL" desc="Accessible label of the per-device setting for accepting transfers" formatter_data="webui=BraveTransfer">
+    When this device sends items
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_POLICY_DEFAULT" desc="Per-device setting option: follow the auto-accept setting" formatter_data="webui=BraveTransfer">
+    Use default
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_POLICY_ALWAYS_ACCEPT" desc="Per-device setting option: always accept transfers from this device" formatter_data="webui=BraveTransfer">
+    Always accept
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_POLICY_ALWAYS_ASK" desc="Per-device setting option: always ask before accepting transfers from this device" formatter_data="webui=BraveTransfer">
+    Always ask
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_POLICY_BLOCK" desc="Per-device setting option: never accept transfers from this device" formatter_data="webui=BraveTransfer">
+    Block
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_REMOVE_DEVICE" desc="Label of a button that stops trusting a device" formatter_data="webui=BraveTransfer">
+    Remove
+  </message>
+
+  <!-- iOS permissions -->
+  <message name="IDS_BRAVE_TRANSFER_PERMISSIONS_TITLE" desc="Heading of the card with the iOS permissions Brave Transfer needs" formatter_data="webui=BraveTransfer">
+    Permissions
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_PERMISSIONS_TEXT" desc="Explanation of why Brave Transfer needs iOS permissions" formatter_data="webui=BraveTransfer">
+    Brave needs these to find your devices and to save photos you receive.
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_PERMISSION_LOCAL_NETWORK" desc="Name of the iOS Local Network permission" formatter_data="webui=BraveTransfer">
+    Local Network
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_PERMISSION_PHOTOS" desc="Name of the iOS Photos permission, which Brave requests with add-only access" formatter_data="webui=BraveTransfer">
+    Photos (add only)
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_PERMISSION_GRANTED" desc="Status of a permission that is allowed" formatter_data="webui=BraveTransfer">
+    Allowed
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_PERMISSION_LIMITED" desc="Status of a permission that is allowed with limits" formatter_data="webui=BraveTransfer">
+    Limited
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_PERMISSION_DENIED" desc="Status of a permission that is not allowed" formatter_data="webui=BraveTransfer">
+    Not allowed
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_PERMISSION_NOT_DETERMINED" desc="Status of a permission the user has not been asked for yet" formatter_data="webui=BraveTransfer">
+    Not asked yet
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_PERMISSIONS_ALLOW" desc="Label of a button that shows the iOS permission prompts" formatter_data="webui=BraveTransfer">
+    Allow access
+  </message>
+  <message name="IDS_BRAVE_TRANSFER_PERMISSIONS_OPEN_SETTINGS" desc="Label of a button that opens the iOS Settings app to change permissions" formatter_data="webui=BraveTransfer">
+    Open Settings
+  </message>
+
+</grit-part>

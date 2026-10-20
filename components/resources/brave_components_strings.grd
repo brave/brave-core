@@ -940,6 +940,7 @@
         <part file="containers_strings.grdp" />
       </if>
       <part file="brave_origin_startup_strings.grdp" />
+      <part file="brave_transfer_strings.grdp" />
       <part file="../brave_account/resources/brave_account_strings.grdp" />
       <if expr="enable_psst">
         <part file="psst_ui_strings.grdp" />
