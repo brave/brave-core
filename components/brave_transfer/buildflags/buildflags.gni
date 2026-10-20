@@ -1,0 +1,11 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+declare_args() {
+  # Desktop browser glue, brave://transfer and the toolbar button. The
+  # protocol core and the browser service build on every platform. Requires
+  # enable_service_discovery. macOS only in M1.
+  enable_brave_transfer = is_mac
+}
