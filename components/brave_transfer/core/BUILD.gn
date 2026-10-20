@@ -124,3 +124,17 @@ test("brave_transfer_core_unittests") {
     "//base/test:run_all_unittests",
   ]
 }
+
+# Plays one device over stdin/stdout or TCP for interop tests with the Python
+# reference peer (tools/brave_transfer/tests/test_cpp_interop.py). Not shipped.
+executable("brave_transfer_peer") {
+  testonly = true
+
+  sources = [ "peer/brave_transfer_peer.cc" ]
+
+  deps = [
+    ":core",
+    "//base",
+    "//crypto",
+  ]
+}
