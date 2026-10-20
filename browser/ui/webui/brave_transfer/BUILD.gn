@@ -1,0 +1,48 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_transfer/buildflags/buildflags.gni")
+
+assert(enable_brave_transfer)
+
+source_set("brave_transfer") {
+  sources = [
+    "brave_transfer_page_handler.cc",
+    "brave_transfer_page_handler.h",
+    "brave_transfer_ui.cc",
+    "brave_transfer_ui.h",
+  ]
+
+  public_deps = [
+    "//brave/components/brave_transfer/browser",
+    "//brave/components/brave_transfer/common:mojom",
+    "//brave/components/constants",
+    "//content/public/browser",
+    "//mojo/public/cpp/bindings",
+    "//ui/shell_dialogs",
+    "//ui/webui",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/app:brave_generated_resources_grit",
+    "//brave/browser/brave_transfer",
+    "//brave/components/brave_transfer/core:features",
+    "//brave/components/brave_transfer/resources/page:brave_transfer_page_generated",
+    "//brave/components/resources:static_resources_grit",
+    "//brave/components/resources:strings_grit",
+    "//chrome/browser:primitives",
+    "//chrome/browser/profiles:profile",
+    "//chrome/browser/ui:singleton_tabs",
+    "//chrome/browser/ui/navigator",
+    "//chrome/browser/ui/select_file_policy",
+    "//chrome/browser/ui/webui:theme_source",
+    "//chrome/common",
+    "//components/prefs",
+    "//services/network/public/mojom",
+    "//ui/base",
+    "//url",
+  ]
+}

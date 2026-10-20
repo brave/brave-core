@@ -83,6 +83,11 @@
         <include name="IDR_EMAIL_ALIASES_PROMO_HTML" file="../email_aliases/resources/email_aliases_promo.html" type="BINDATA" />
       </if>
 
+      <!-- Brave Transfer -->
+      <if expr="enable_brave_transfer">
+        <include name="IDR_BRAVE_TRANSFER_HTML" file="../brave_transfer/resources/page/brave_transfer.html" type="BINDATA" />
+      </if>
+
       <!-- WebUI Local AI resources -->
       <include name="IDR_ON_DEVICE_SPEECH_RECOGNITION_WORKER_HTML" file="../local_ai/resources/speech_worker/speech_worker.html" type="BINDATA" />
 

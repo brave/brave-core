@@ -71,6 +71,7 @@
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_shields/core/common/shields_settings.mojom.h"
+#include "brave/components/brave_transfer/buildflags/buildflags.h"
 #include "brave/components/brave_user_agent/browser/brave_user_agent_exceptions.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
@@ -344,6 +345,11 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 
 #if BUILDFLAG(ENABLE_BRAVE_EDUCATION)
 #include "brave/browser/ui/webui/brave_education/brave_education_page_ui.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_TRANSFER)
+#include "brave/browser/ui/webui/brave_transfer/brave_transfer_ui.h"
+#include "brave/components/brave_transfer/common/brave_transfer.mojom.h"
 #endif
 
 #if BUILDFLAG(ENABLE_PSST)
@@ -1137,6 +1143,12 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
   content::RegisterWebUIControllerInterfaceBinder<
       brave_browser_command::mojom::BraveBrowserCommandHandlerFactory,
       BraveEducationPageUI>(map);
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_TRANSFER)
+  content::RegisterWebUIControllerInterfaceBinder<
+      brave_transfer::mojom::PageHandlerFactory,
+      brave_transfer::BraveTransferUI>(map);
 #endif
 }
 
