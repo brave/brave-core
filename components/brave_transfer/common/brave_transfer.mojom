@@ -1,0 +1,271 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+// Interface between the brave://transfer page and its host. The same
+// interface is implemented by the desktop page handler (backed by
+// BraveTransferService) and by the iOS page handler (backed by the Swift
+// engine through a bridge). Methods that one host does not support return a
+// failure result instead of being left unbound.
+//
+// All times are milliseconds since the Unix epoch, and all sizes are in bytes.
+module brave_transfer.mojom;
+
+enum DeviceType {
+  kUnknown,
+  kDesktop,
+  kLaptop,
+  kPhone,
+  kTablet,
+};
+
+// How this device came to trust a peer.
+enum TrustSource {
+  // The peer is in the same Brave Sync chain. Only effective while Sync is on.
+  kSyncChain,
+  // The peer was paired directly (QR pairing, M2).
+  kPaired,
+};
+
+// Per-device override of the global auto-accept setting.
+enum DevicePolicy {
+  // Follow Settings.auto_accept_trusted.
+  kDefault,
+  kAlwaysAccept,
+  kAlwaysAsk,
+  kBlock,
+};
+
+struct Device {
+  string id;
+  string name;
+  DeviceType type;
+  TrustSource source;
+  // Whether there is an authenticated session with the device right now, so
+  // that items can be sent to it.
+  bool is_connected;
+  // When a session with the device was last active, or 0 if never.
+  double last_seen_time;
+  // Fingerprint of the pinned static key, or empty if the device has not
+  // connected yet.
+  string key_fingerprint;
+  DevicePolicy policy;
+};
+
+// State of the service that does not belong to a single device.
+struct ServiceState {
+  // Whether Sync is active on this device. Sync-chain devices can only connect
+  // while it is.
+  bool sync_enabled;
+  // Whether discovery is running (desktop: browsing for peers; iOS:
+  // advertising). False while receiving is off or permissions are missing.
+  bool discovery_active;
+};
+
+enum ItemKind {
+  kText,
+  kLink,
+  kImage,
+  kFile,
+};
+
+// An item that is part of an offer or transfer.
+struct TransferItem {
+  string id;
+  ItemKind kind;
+  // File name for images and files; empty for text and links.
+  string name;
+  string mime_type;
+  uint64 size;
+  // Text or URL for text and link items; empty otherwise.
+  string text;
+};
+
+// An offer from a peer waiting for this device to accept or decline it.
+struct IncomingOffer {
+  string id;
+  string device_id;
+  string device_name;
+  array<TransferItem> items;
+  // When the offer is declined automatically if not answered.
+  double expiry_time;
+};
+
+enum TransferDirection {
+  kSend,
+  kReceive,
+};
+
+enum TransferState {
+  kWaitingForResponse,
+  kInProgress,
+  kCompleted,
+  kDeclined,
+  kExpired,
+  kCancelled,
+  kFailed,
+};
+
+// An outgoing transfer, or an incoming one that has been accepted. Finished
+// transfers are kept only for the lifetime of the service; received items
+// are recorded in the inbox.
+struct Transfer {
+  string id;
+  string device_id;
+  string device_name;
+  TransferDirection direction;
+  TransferState state;
+  array<TransferItem> items;
+  uint64 bytes_transferred;
+  uint64 bytes_total;
+};
+
+enum SendResult {
+  kSuccess,
+  kDeviceUnavailable,
+  kTooLarge,
+  // The user dismissed the file picker.
+  kCancelled,
+  // The host does not support the method.
+  kNotSupported,
+  kFailed,
+};
+
+// A file the user dropped on, or picked from, the page. Desktop only; iOS
+// sends files through PickAndSend.
+struct FileData {
+  string name;
+  string mime_type;
+  array<uint8> data;
+};
+
+// A received and accepted item, as shown in the inbox table.
+struct InboxItem {
+  string id;
+  double received_time;
+  // Name of the sending device when the item was received.
+  string device_name;
+  ItemKind kind;
+  // Text or URL for text and link items; empty otherwise.
+  string text;
+  // Display name of the saved file for image and file items.
+  string file_name;
+  string mime_type;
+  uint64 size;
+  // Thumbnail for image items as a data: URL, or empty.
+  string thumbnail_url;
+  // Whether the saved file has been moved or deleted since it was received.
+  bool file_missing;
+  // Whether the item was saved to a fallback location: the browser download
+  // folder when the chosen save folder was unavailable, or Files when Photos
+  // access was denied on iOS.
+  bool saved_to_fallback;
+};
+
+enum ReceiveMode {
+  kOff,
+  kTrustedDevices,
+};
+
+struct Settings {
+  ReceiveMode receive_mode = kTrustedDevices;
+  // Auto-accept transfers from trusted devices. Off by default, so every
+  // transfer is prompted for unless a device policy says otherwise.
+  bool auto_accept_trusted = false;
+  // Trust devices in this device's Sync chain. Only effective while Sync is
+  // on.
+  bool auto_trust_sync_chain = true;
+  bool notify_on_receive = true;
+  // Folder received files are saved to. Empty means the browser download
+  // folder, resolved when each file is received. Ignored on iOS, which saves
+  // files to Files and images to Photos.
+  string save_directory;
+  // The current browser download folder, for display.
+  string default_save_directory;
+};
+
+enum PermissionStatus {
+  kNotDetermined,
+  kGranted,
+  // Access was granted with limits, such as add-only Photos access.
+  kLimited,
+  kDenied,
+};
+
+// iOS system permissions the feature depends on.
+struct Permissions {
+  PermissionStatus local_network;
+  PermissionStatus photos;
+};
+
+// Notifications from the host to the page.
+interface Page {
+  OnServiceStateChanged(ServiceState state);
+  OnDevicesChanged(array<Device> devices);
+  OnOfferReceived(IncomingOffer offer);
+  // The offer was answered, expired or was withdrawn by the sender.
+  OnOfferRemoved(string offer_id);
+  OnTransferUpdated(Transfer transfer);
+  // Items were added to the inbox, or it was cleared.
+  OnInboxChanged();
+  OnSettingsChanged(Settings settings);
+  OnPermissionsChanged(Permissions permissions);
+};
+
+// Requests from the page to the host.
+interface PageHandler {
+  GetServiceState() => (ServiceState state);
+  // Opens Sync settings, so the user can turn Sync on.
+  OpenSyncSettings();
+
+  GetDevices() => (array<Device> devices);
+  SetDevicePolicy(string device_id, DevicePolicy policy) => (bool success);
+  // Stops trusting a device and drops its pinned key.
+  RemoveDevice(string device_id) => (bool success);
+
+  // Sends text to a device. Text that is a single http(s) URL is sent as a
+  // link.
+  SendText(string device_id, string text) => (SendResult result);
+  // Sends files dropped on, or picked from, the page. Desktop only.
+  SendFiles(string device_id, array<FileData> files) => (SendResult result);
+  // Shows the native picker and sends what the user picks. Used on iOS, where
+  // the page cannot read local files.
+  PickAndSend(string device_id) => (SendResult result);
+  CancelTransfer(string transfer_id);
+  GetTransfers() => (array<Transfer> transfers);
+
+  GetPendingOffers() => (array<IncomingOffer> offers);
+  RespondToOffer(string offer_id, bool accept) => (bool success);
+
+  // Returns inbox items, newest first.
+  GetInbox(uint32 offset, uint32 count)
+      => (array<InboxItem> items, bool has_more);
+  // Opens a saved file with the system default app (Quick Look on iOS).
+  OpenItem(string item_id) => (bool success);
+  // Reveals a saved file in Finder or Explorer ("Open in Files" on iOS).
+  ShowItemInFolder(string item_id) => (bool success);
+  // Opens a link item in a new regular tab.
+  OpenLink(string item_id) => (bool success);
+  // Removes all inbox entries. Saved files are never deleted.
+  ClearHistory() => (bool success);
+
+  GetSettings() => (Settings settings);
+  UpdateSettings(Settings settings) => (bool success);
+  // Shows a folder picker and stores the choice as Settings.save_directory.
+  // Desktop only.
+  ChooseSaveDirectory() => (bool changed);
+
+  // iOS only. Desktop hosts return default values.
+  GetPermissions() => (Permissions permissions);
+  // Triggers the Local Network and Photos (add-only) permission prompts.
+  RequestPermissions() => (Permissions permissions);
+  // Opens the app's page in the iOS Settings app.
+  OpenSystemSettings();
+};
+
+// Bound on the page's main frame by both hosts.
+interface PageHandlerFactory {
+  CreatePageHandler(pending_remote<Page> page,
+                    pending_receiver<PageHandler> handler);
+};
