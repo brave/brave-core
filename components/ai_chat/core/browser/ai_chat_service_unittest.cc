@@ -184,6 +184,11 @@ class MockConversationHandlerClient : public mojom::ConversationUI {
                std::vector<mojom::ToolInfoPtr> tools),
               (override));
 
+  MOCK_METHOD(void,
+              OnVisionModelSwitchChanged,
+              (const std::optional<std::string>& model_key),
+              (override));
+
   MOCK_METHOD(void, OnConversationDeleted, (), (override));
 
  private:

@@ -37,6 +37,7 @@ export default function createConversationApi(
         'stopTask',
         'setToolsAttached',
         'setContentToolPermission',
+        'respondToVisionModelSwitch',
       ]),
     },
 
@@ -68,6 +69,7 @@ export default function createConversationApi(
             temporary: false,
             toolUseTaskState: Mojom.TaskState.kNone,
             capabilitiesEnabled: [],
+            visionModelSwitchKey: undefined,
           } as Mojom.ConversationState,
         },
         getConversationHistory: {
@@ -180,6 +182,12 @@ export default function createConversationApi(
           // itself - that could return a different list mid-interaction.
           onContentToolsChanged: (contentUuid, tools) => {
             api.getContentTools.update(contentUuid, tools)
+          },
+
+          onVisionModelSwitchChanged: (visionModelSwitchKey) => {
+            api.getState.update({
+              visionModelSwitchKey: visionModelSwitchKey ?? undefined,
+            })
           },
 
           // This event is subscribable by the UI
