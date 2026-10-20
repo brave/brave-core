@@ -75,6 +75,12 @@
 #include "brave/browser/ui/screenshot/features.h"
 #include "brave/browser/ui/views/toolbar/screenshot_button.h"
 
+#if BUILDFLAG(ENABLE_BRAVE_TRANSFER)
+#include "brave/browser/ui/views/toolbar/brave_transfer_button.h"
+#include "brave/components/brave_transfer/core/features.h"
+#include "brave/components/brave_transfer/core/pref_names.h"
+#endif
+
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
 #include "brave/browser/ui/views/toolbar/brave_vpn_button.h"
@@ -428,6 +434,24 @@ void BraveToolbarView::Init() {
     screenshot_button_->SetVisible(show_screenshot_button_.GetValue());
   }
 
+#if BUILDFLAG(ENABLE_BRAVE_TRANSFER)
+  if (brave_transfer::features::IsBraveTransferEnabled() &&
+      profile->IsRegularProfile()) {
+    brave_transfer_button_ =
+        AddChildViewAt(std::make_unique<BraveTransferButton>(browser()),
+                       *GetIndexOf(app_menu_button()) - 1);
+    SetBraveButtonFlexBehavior(brave_transfer_button_);
+    const auto update_visibility = base::BindRepeating(
+        &BraveToolbarView::UpdateBraveTransferButtonVisibility,
+        base::Unretained(this));
+    show_brave_transfer_button_.Init(brave_transfer::prefs::kShowToolbarButton,
+                                     profile->GetPrefs(), update_visibility);
+    brave_transfer_enabled_.Init(brave_transfer::prefs::kEnabled,
+                                 profile->GetPrefs(), update_visibility);
+    UpdateBraveTransferButtonVisibility();
+  }
+#endif
+
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   if (brave_vpn::BraveVpnServiceFactory::GetForProfile(profile)) {
     brave_vpn_ = AddChildViewAt(std::make_unique<BraveVPNButton>(browser()),
@@ -487,6 +511,14 @@ void BraveToolbarView::OnShowScreenshotButtonChanged() {
   CHECK(screenshot_button_);
   screenshot_button_->SetVisible(show_screenshot_button_.GetValue());
 }
+
+#if BUILDFLAG(ENABLE_BRAVE_TRANSFER)
+void BraveToolbarView::UpdateBraveTransferButtonVisibility() {
+  CHECK(brave_transfer_button_);
+  brave_transfer_button_->SetVisible(show_brave_transfer_button_.GetValue() &&
+                                     brave_transfer_enabled_.GetValue());
+}
+#endif
 
 void BraveToolbarView::OnLocationBarIsWideChanged() {
   DCHECK_EQ(DisplayMode::kNormal, display_mode_);

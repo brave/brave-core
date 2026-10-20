@@ -10,6 +10,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/scoped_observation.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/brave_transfer/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile_attributes_storage.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_view.h"
@@ -22,6 +23,10 @@ class AIChatButton;
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 class BraveVPNButton;
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_TRANSFER)
+class BraveTransferButton;
 #endif
 
 class BraveBookmarkButton;
@@ -55,6 +60,11 @@ class BraveToolbarView : public ToolbarView,
   TabStripComboButton* combo_button() const { return combo_button_; }
 #if BUILDFLAG(ENABLE_AI_CHAT)
   AIChatButton* ai_chat_button() const { return ai_chat_button_; }
+#endif
+#if BUILDFLAG(ENABLE_BRAVE_TRANSFER)
+  BraveTransferButton* brave_transfer_button() const {
+    return brave_transfer_button_;
+  }
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
@@ -104,6 +114,9 @@ class BraveToolbarView : public ToolbarView,
 #if BUILDFLAG(ENABLE_AI_CHAT)
   void UpdateAIChatButtonVisibility();
 #endif
+#if BUILDFLAG(ENABLE_BRAVE_TRANSFER)
+  void UpdateBraveTransferButtonVisibility();
+#endif
   void UpdateWalletButtonVisibility();
 
   ToolbarDivider* toolbar_divider_for_testing() { return toolbar_divider_; }
@@ -135,6 +148,12 @@ class BraveToolbarView : public ToolbarView,
 
   raw_ptr<ScreenshotButton> screenshot_button_ = nullptr;
   BooleanPrefMember show_screenshot_button_;
+
+#if BUILDFLAG(ENABLE_BRAVE_TRANSFER)
+  raw_ptr<BraveTransferButton> brave_transfer_button_ = nullptr;
+  BooleanPrefMember show_brave_transfer_button_;
+  BooleanPrefMember brave_transfer_enabled_;
+#endif
 
   BooleanPrefMember show_wallet_button_;
   BooleanPrefMember wallet_disabled_by_policy_;
