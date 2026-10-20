@@ -224,6 +224,16 @@ const flags_ui::FeatureEntry::FeatureVariation kBraveFocusModeVariations[] = {
     {"- No URL display", kFocusModeNoUrl, nullptr}};
 #endif  // defined(TOOLKIT_VIEWS)
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
+const flags_ui::FeatureEntry::FeatureParam kAIChatWorkspaceNativeDirectories[] =
+    {{"workspace_native_directories", "true"}};
+
+const flags_ui::FeatureEntry::FeatureVariation
+    kAIChatWorkspaceToolsVariations[] = {{"- with native directories",
+                                          kAIChatWorkspaceNativeDirectories,
+                                          nullptr}};
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
+
 namespace {
 const char* const kBraveSyncImplLink[1] = {"https://github.com/brave/go-sync"};
 }  // namespace
@@ -811,6 +821,18 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabMigrationChoices[] = {
           "conversation.",                                                     \
           kOsAll,                                                              \
           FEATURE_VALUE_TYPE(ai_chat::features::kAIChatUserChoiceTool),        \
+      },                                                                       \
+      {                                                                        \
+          "brave-ai-chat-workspace-tools",                                     \
+          "Brave AI Chat Workspace Tools",                                     \
+          "Enables experimental workspace tools that let Leo view, search, "   \
+          "and edit files within a user-selected local folder. Requires the "  \
+          "\"WebMCP for testing\" (#enable-webmcp-testing) flag to also be "   \
+          "enabled.",                                                          \
+          kOsWin | kOsMac | kOsLinux | kOsAndroid,                             \
+          FEATURE_WITH_PARAMS_VALUE_TYPE(                                      \
+              ai_chat::features::kAIChatWorkspaceTools,                        \
+              kAIChatWorkspaceToolsVariations, "AIChatWorkspaceTools"),        \
       },                                                                       \
       {                                                                        \
           "brave-ai-chat-agent-profile",                                       \
