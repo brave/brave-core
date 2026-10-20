@@ -75,20 +75,15 @@ const DEFAULT_ASSET: MeldCryptoCurrency = {
   'currencyCode': 'ETH',
   'name': 'Ethereum',
   'chainCode': 'ETH',
-  'chainName': 'Ethereum',
   'contractAddress': '0x0000000000000000000000000000000000000000',
   'symbolImageUrl': 'https://images-currency.meld.io/crypto/ETH/symbol.png',
 }
 
 const DEFAULT_PAYMENT_METHOD: MeldPaymentMethod = {
-  logoImages: {
-    darkShortUrl: '',
-    darkUrl:
-      'https://images-paymentMethod.meld.io/CREDIT_DEBIT_CARD/logo_dark.png',
-    lightShortUrl: '',
-    lightUrl:
-      'https://images-paymentMethod.meld.io/CREDIT_DEBIT_CARD/logo_light.png',
-  },
+  darkUrl:
+    'https://images-paymentMethod.meld.io/CREDIT_DEBIT_CARD/logo_dark.png',
+  lightUrl:
+    'https://images-paymentMethod.meld.io/CREDIT_DEBIT_CARD/logo_light.png',
   name: 'Credit & Debit Card',
   paymentMethod: 'CREDIT_DEBIT_CARD',
   paymentType: 'CARD',
