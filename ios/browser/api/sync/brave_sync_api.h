@@ -76,6 +76,9 @@ OBJC_EXPORT
 @property(nonatomic) bool isSyncAccountDeletedNoticePending;
 @property(nonatomic, readonly) bool isFailedDecryptSeedNoticeDismissed;
 @property(readonly) bool isInSyncGroup;
+/// Brave Transfer's 32-byte chain root key, derived from the Sync chain seed.
+/// nil unless Sync is active. Reading it never creates a sync chain.
+@property(nonatomic, readonly, nullable) NSData* transferRootKey;
 
 - (instancetype)init NS_UNAVAILABLE;
 

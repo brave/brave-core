@@ -8,6 +8,7 @@
 
 #include <functional>
 #include <memory>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -15,6 +16,7 @@
 #include "base/scoped_multi_source_observation.h"
 #include "base/scoped_observation.h"
 #include "brave/components/brave_sync/time_limited_words.h"
+#include "brave/components/brave_transfer/core/trust_keys.h"
 #include "components/sync/engine/sync_protocol_error.h"
 #include "components/sync/service/sync_service.h"
 #include "components/sync/service/sync_service_observer.h"
@@ -96,6 +98,9 @@ class BraveSyncWorker : public syncer::SyncServiceObserver {
   std::vector<syncer::DeviceInfo> GetDeviceList();
   bool CanSyncFeatureStart();
   bool IsSyncFeatureActive();
+  // Brave Transfer's chain root key (PROTOCOL.md §3), or nullopt unless Sync
+  // is active. Only reads the stored sync code; never creates a chain.
+  std::optional<brave_transfer::Key> GetTransferRootKey();
   bool IsInitialSyncFeatureSetupComplete();
   bool SetSetupComplete();
   void ResetSync();

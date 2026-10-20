@@ -1,5 +1,7 @@
 include_rules = [
   "+brave/components/brave_sync",
+  "+brave/components/brave_transfer/core/sync_code.h",
+  "+brave/components/brave_transfer/core/trust_keys.h",
   "+brave/components/sync_device_info",
   "+brave/components/sync/service",
 ]

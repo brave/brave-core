@@ -23,6 +23,7 @@
 #include "brave/components/brave_sync/qr_code_validator.h"
 #include "brave/components/brave_sync/sync_service_impl_helper.h"
 #include "brave/components/brave_sync/time_limited_words.h"
+#include "brave/components/brave_transfer/core/sync_code.h"
 #include "brave/components/sync/service/brave_sync_service_impl.h"
 #include "components/sync/engine/sync_protocol_error.h"
 #include "components/sync/service/sync_service.h"
@@ -268,6 +269,29 @@ std::string BraveSyncWorker::GetHexSeedFromQrCodeJson(const std::string& json) {
 
   DCHECK(!GetSyncCodeFromHexSeed(json).empty());
   return json;
+}
+
+std::optional<brave_transfer::Key> BraveSyncWorker::GetTransferRootKey() {
+  DCHECK_CURRENTLY_ON(web::WebThread::UI);
+  syncer::BraveSyncServiceImpl* sync_service = GetSyncService();
+  if (!sync_service || !sync_service->IsSyncFeatureActive()) {
+    return std::nullopt;
+  }
+  auto sync_code = sync_service->GetSeed();
+  if (!sync_code.has_value() || sync_code->empty()) {
+    return std::nullopt;
+  }
+  std::optional<brave_transfer::Key> seed =
+      brave_transfer::SeedFromSyncCode(*sync_code);
+  if (!seed) {
+    return std::nullopt;
+  }
+  std::optional<brave_transfer::ChainKeys> keys =
+      brave_transfer::ChainKeys::FromSeed(*seed);
+  if (!keys) {
+    return std::nullopt;
+  }
+  return keys->root_key();
 }
 
 bool BraveSyncWorker::IsInitialSyncFeatureSetupComplete() {

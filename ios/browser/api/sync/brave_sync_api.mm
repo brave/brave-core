@@ -7,6 +7,7 @@
 
 #import <CoreImage/CoreImage.h>
 
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -195,6 +196,14 @@ BraveSyncAPIWordsValidationStatus const
 
 - (bool)isInitialSyncFeatureSetupComplete {
   return _worker->IsInitialSyncFeatureSetupComplete();
+}
+
+- (nullable NSData*)transferRootKey {
+  std::optional<brave_transfer::Key> key = _worker->GetTransferRootKey();
+  if (!key) {
+    return nil;
+  }
+  return [NSData dataWithBytes:key->data() length:key->size()];
 }
 
 - (void)setSetupComplete {
