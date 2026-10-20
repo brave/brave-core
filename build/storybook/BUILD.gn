@@ -26,6 +26,7 @@ group("storybook_deps") {
     "//brave/components/brave_rewards/core/mojom:mojom_js",
     "//brave/components/brave_rewards/core/mojom:webui_js",
     "//brave/components/brave_shields/core/common:mojom_js",
+    "//brave/components/brave_transfer/common:mojom_js",
     "//brave/components/brave_vpn/common/mojom:mojom_js",
     "//brave/components/brave_welcome_ui:welcome_background",
     "//brave/components/brave_welcome_ui:welcome_hill",
