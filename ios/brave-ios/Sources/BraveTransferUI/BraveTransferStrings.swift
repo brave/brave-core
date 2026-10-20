@@ -270,5 +270,12 @@ extension Strings {
       value: "Couldn't hand these items to Brave.",
       comment: "Shown when copying the items for the Brave app failed."
     )
+    public static let shareUnavailable = NSLocalizedString(
+      "braveTransfer.shareUnavailable",
+      bundle: .module,
+      value: "Brave Transfer isn't ready yet. Open brave://transfer in Brave to set it up.",
+      comment:
+        "Shown in the share sheet when Brave Transfer cannot start, for example before Brave was opened once."
+    )
   }
 }

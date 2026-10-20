@@ -249,6 +249,43 @@ public struct TransferShareView: View {
   }
 
   private func message(symbol: String, text: String) -> some View {
+    TransferShareMessage(symbol: symbol, text: text)
+  }
+}
+
+/// Shown instead of `TransferShareView` when the engine cannot start (no
+/// app group container or no static key yet).
+public struct TransferShareUnavailableView: View {
+  var onClose: () -> Void
+
+  public init(onClose: @escaping () -> Void) {
+    self.onClose = onClose
+  }
+
+  public var body: some View {
+    NavigationStack {
+      TransferShareMessage(
+        symbol: "exclamationmark.triangle",
+        text: Strings.BraveTransfer.shareUnavailable
+      )
+      .frame(maxWidth: .infinity, maxHeight: .infinity)
+      .background(Color(braveSystemName: .pageBackground))
+      .navigationTitle(Strings.BraveTransfer.shareTitle)
+      .navigationBarTitleDisplayMode(.inline)
+      .toolbar {
+        ToolbarItem(placement: .cancellationAction) {
+          Button(Strings.BraveTransfer.shareCancel, action: onClose)
+        }
+      }
+    }
+  }
+}
+
+private struct TransferShareMessage: View {
+  var symbol: String
+  var text: String
+
+  var body: some View {
     VStack(spacing: 16) {
       Image(systemName: symbol)
         .font(.system(size: 44))

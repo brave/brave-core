@@ -101,6 +101,9 @@
 		E6231C011B90A44F005ABB0D /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E6231C001B90A44F005ABB0D /* libz.tbd */; };
 		E6231C051B90A472005ABB0D /* libxml2.2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E6231C041B90A472005ABB0D /* libxml2.2.tbd */; };
 		F84B22041A0910F600AAB793 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84B21E51A0910F600AAB793 /* AppDelegate.swift */; };
+		B7A4F0012E9A1C0000A5DAAB /* TransferShareExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = B7A4F0052E9A1C0000A5DAAB /* TransferShareExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		B7A4F0022E9A1C0000A5DAAB /* BraveTransfer in Frameworks */ = {isa = PBXBuildFile; productRef = B7A4F0142E9A1C0000A5DAAB /* BraveTransfer */; };
+		B7A4F0032E9A1C0000A5DAAB /* BraveTransferUI in Frameworks */ = {isa = PBXBuildFile; productRef = B7A4F0152E9A1C0000A5DAAB /* BraveTransferUI */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -146,6 +149,13 @@
 			remoteGlobalIDString = CA0391B1271E1023000EB13C;
 			remoteInfo = BraveWidgetsExtension;
 		};
+		B7A4F0042E9A1C0000A5DAAB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F84B21B61A090F8100AAB793 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B7A4F0092E9A1C0000A5DAAB;
+			remoteInfo = TransferShareExtension;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -171,6 +181,7 @@
 				2FD860CA29C3D686005AADD1 /* BraveWireGuard.appex in Embed App Extensions */,
 				2FE7D5292B509DA50039FBA4 /* ActionExtension.appex in Embed App Extensions */,
 				2F6931BB260CFB3700ECEB38 /* BrowserIntents.appex in Embed App Extensions */,
+				B7A4F0012E9A1C0000A5DAAB /* TransferShareExtension.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -515,6 +526,7 @@
 		F84B21E51A0910F600AAB793 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F84B22431A09165600AAB793 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = SupportingFiles/Info.plist; sourceTree = "<group>"; };
 		F926647A234D4EF400359492 /* CoreNFC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreNFC.framework; path = System/Library/Frameworks/CoreNFC.framework; sourceTree = SDKROOT; };
+		B7A4F0052E9A1C0000A5DAAB /* TransferShareExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = TransferShareExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -525,11 +537,20 @@
 			);
 			target = 2749F5B62D088E0100A5DAAB /* WebShell */;
 		};
+		B7A4F0062E9A1C0000A5DAAB /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Entitlements/TransferShareExtension.entitlements,
+				Info.plist,
+			);
+			target = B7A4F0092E9A1C0000A5DAAB /* TransferShareExtension */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		272B79CE2E71D9D10034698E /* AppIcons */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = AppIcons; sourceTree = "<group>"; };
 		2749F5B82D088E0100A5DAAB /* WebShell */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (2749F5CC2D08904200A5DAAB /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = WebShell; sourceTree = "<group>"; };
+		B7A4F0072E9A1C0000A5DAAB /* TransferShareExtension */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (B7A4F0062E9A1C0000A5DAAB /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = TransferShareExtension; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -630,6 +651,15 @@
 				2787B06A2B7ED260004796F8 /* BraveCore in Frameworks */,
 				27D5907129B7BA1B00AE9989 /* Preferences in Frameworks */,
 				CA0391B4271E1023000EB13C /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B7A4F0082E9A1C0000A5DAAB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B7A4F0022E9A1C0000A5DAAB /* BraveTransfer in Frameworks */,
+				B7A4F0032E9A1C0000A5DAAB /* BraveTransferUI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -873,6 +903,7 @@
 				CA0391B7271E1023000EB13C /* BraveWidgets */,
 				2FD860C329C3D686005AADD1 /* BraveWireGuard */,
 				2714EE6C2AF2D4CD002090A9 /* AutoFillProvider */,
+				B7A4F0072E9A1C0000A5DAAB /* TransferShareExtension */,
 				2749F5B82D088E0100A5DAAB /* WebShell */,
 				7B604FC11C496005006EEEC3 /* Frameworks */,
 				F84B21BF1A090F8100AAB793 /* Products */,
@@ -893,6 +924,7 @@
 				2FE7D51B2B509DA40039FBA4 /* ActionExtension.appex */,
 				2714EE692AF2D4CD002090A9 /* AutoFillProvider.appex */,
 				2749F5B72D088E0100A5DAAB /* WebShell.app */,
+				B7A4F0052E9A1C0000A5DAAB /* TransferShareExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1083,6 +1115,7 @@
 				2FD860C929C3D686005AADD1 /* PBXTargetDependency */,
 				2FE7D5282B509DA50039FBA4 /* PBXTargetDependency */,
 				2714EE752AF2D4CD002090A9 /* PBXTargetDependency */,
+				B7A4F00C2E9A1C0000A5DAAB /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				272B79CE2E71D9D10034698E /* AppIcons */,
@@ -1108,6 +1141,30 @@
 			productReference = F84B21BE1A090F8100AAB793 /* Client.app */;
 			productType = "com.apple.product-type.application";
 		};
+		B7A4F0092E9A1C0000A5DAAB /* TransferShareExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B7A4F0132E9A1C0000A5DAAB /* Build configuration list for PBXNativeTarget "TransferShareExtension" */;
+			buildPhases = (
+				B7A4F00B2E9A1C0000A5DAAB /* Sources */,
+				B7A4F0082E9A1C0000A5DAAB /* Frameworks */,
+				B7A4F00A2E9A1C0000A5DAAB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				B7A4F0072E9A1C0000A5DAAB /* TransferShareExtension */,
+			);
+			name = TransferShareExtension;
+			packageProductDependencies = (
+				B7A4F0142E9A1C0000A5DAAB /* BraveTransfer */,
+				B7A4F0152E9A1C0000A5DAAB /* BraveTransferUI */,
+			);
+			productName = TransferShareExtension;
+			productReference = B7A4F0052E9A1C0000A5DAAB /* TransferShareExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -1124,6 +1181,9 @@
 						CreatedOnToolsVersion = 15.0.1;
 					};
 					2749F5B62D088E0100A5DAAB = {
+						CreatedOnToolsVersion = 16.2;
+					};
+					B7A4F0092E9A1C0000A5DAAB = {
 						CreatedOnToolsVersion = 16.2;
 					};
 					27F443942135E11200296C58 = {
@@ -1232,6 +1292,7 @@
 				2FD860C029C3D676005AADD1 /* BraveWireGuard */,
 				2714EE682AF2D4CD002090A9 /* AutoFillProvider */,
 				2749F5B62D088E0100A5DAAB /* WebShell */,
+				B7A4F0092E9A1C0000A5DAAB /* TransferShareExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -1305,6 +1366,13 @@
 				0A5E04FB23FEB53700E5A3E9 /* LaunchScreen.xcassets in Resources */,
 				4493D2EC2BA33BA900E063BB /* PrivacyInfo.xcprivacy in Resources */,
 				27D6761A282DA10700BCE16E /* Icons.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B7A4F00A2E9A1C0000A5DAAB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1419,6 +1487,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B7A4F00B2E9A1C0000A5DAAB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -1451,6 +1526,11 @@
 			isa = PBXTargetDependency;
 			target = CA0391B1271E1023000EB13C /* BraveWidgetsExtension */;
 			targetProxy = CA8B4AE3276A830F002120F7 /* PBXContainerItemProxy */;
+		};
+		B7A4F00C2E9A1C0000A5DAAB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B7A4F0092E9A1C0000A5DAAB /* TransferShareExtension */;
+			targetProxy = B7A4F0042E9A1C0000A5DAAB /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -3901,6 +3981,217 @@
 			};
 			name = Debug;
 		};
+		B7A4F00D2E9A1C0000A5DAAB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = TransferShareExtension/Entitlements/TransferShareExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = TransferShareExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Brave Transfer";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(inherited).$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		B7A4F00E2E9A1C0000A5DAAB /* Debug (AppStore) */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = TransferShareExtension/Entitlements/TransferShareExtension.entitlements;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = TransferShareExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Brave Transfer";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(inherited).$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "Brave iOS - Development Transfer Share Extension";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Debug (AppStore)";
+		};
+		B7A4F00F2E9A1C0000A5DAAB /* Nightly */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = TransferShareExtension/Entitlements/TransferShareExtension.entitlements;
+				CODE_SIGN_STYLE = Manual;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = TransferShareExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Brave Transfer";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(inherited).$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "Brave iOS Nightly Transfer Share Extension";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Nightly;
+		};
+		B7A4F0102E9A1C0000A5DAAB /* Release (AppStore) */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = TransferShareExtension/Entitlements/TransferShareExtension.entitlements;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = TransferShareExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Brave Transfer";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(inherited).$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "Brave iOS Release Transfer Share Extension";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = "Release (AppStore)";
+		};
+		B7A4F0112E9A1C0000A5DAAB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = TransferShareExtension/Entitlements/TransferShareExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = TransferShareExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Brave Transfer";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(inherited).$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		B7A4F0122E9A1C0000A5DAAB /* Beta */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = TransferShareExtension/Entitlements/TransferShareExtension.entitlements;
+				CODE_SIGN_STYLE = Manual;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = TransferShareExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Brave Transfer";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(inherited).$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "Brave iOS Beta Transfer Share Extension";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Beta;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -4017,6 +4308,19 @@
 				E448FC9E1AEE7A6000869B6C /* Release (AppStore) */,
 				27EEEDA62507CDF900024038 /* Release */,
 				E6FCC42A1C40562400DF6113 /* Beta */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		B7A4F0132E9A1C0000A5DAAB /* Build configuration list for PBXNativeTarget "TransferShareExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B7A4F00D2E9A1C0000A5DAAB /* Debug */,
+				B7A4F00E2E9A1C0000A5DAAB /* Debug (AppStore) */,
+				B7A4F00F2E9A1C0000A5DAAB /* Nightly */,
+				B7A4F0102E9A1C0000A5DAAB /* Release (AppStore) */,
+				B7A4F0112E9A1C0000A5DAAB /* Release */,
+				B7A4F0122E9A1C0000A5DAAB /* Beta */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
@@ -4180,6 +4484,14 @@
 		D522706330375C3200BC8DCD /* BraveStrings */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = BraveStrings;
+		};
+		B7A4F0142E9A1C0000A5DAAB /* BraveTransfer */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = BraveTransfer;
+		};
+		B7A4F0152E9A1C0000A5DAAB /* BraveTransferUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = BraveTransferUI;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
