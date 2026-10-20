@@ -5,12 +5,24 @@
 
 #include "brave/browser/ui/focus_mode/focus_mode_controller.h"
 
+#include "base/functional/bind.h"
+#include "brave/browser/ui/focus_mode/focus_mode_prefs.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+#include "components/prefs/pref_service.h"
 
 DEFINE_USER_DATA(FocusModeController);
 
-FocusModeController::FocusModeController(ui::UnownedUserDataHost& host)
-    : scoped_unowned_user_data_(host, *this) {}
+FocusModeController::FocusModeController(BrowserWindowInterface& browser,
+                                         PrefService* prefs)
+    : did_become_active_subscription_(browser.RegisterDidBecomeActive(
+          base::BindRepeating(&FocusModeController::OnDidBecomeActive,
+                              base::Unretained(this)))),
+      scoped_unowned_user_data_(browser.GetUnownedUserDataHost(), *this),
+      prefs_(prefs) {
+  if (prefs_) {
+    enabled_ = prefs_->GetBoolean(focus_mode::kFocusModeEnabled);
+  }
+}
 
 FocusModeController::~FocusModeController() = default;
 
@@ -43,9 +55,20 @@ void FocusModeController::SetEnabled(bool enabled) {
     return;
   }
   enabled_ = enabled;
+  UpdatePref();
   observers_.Notify(&Observer::OnFocusModeToggled, enabled);
 }
 
 void FocusModeController::ToggleEnabled() {
   SetEnabled(!enabled_);
+}
+
+void FocusModeController::OnDidBecomeActive(BrowserWindowInterface* browser) {
+  UpdatePref();
+}
+
+void FocusModeController::UpdatePref() {
+  if (prefs_) {
+    prefs_->SetBoolean(focus_mode::kFocusModeEnabled, enabled_);
+  }
 }
