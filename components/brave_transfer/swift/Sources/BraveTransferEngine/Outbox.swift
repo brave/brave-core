@@ -13,6 +13,9 @@ public struct HandoffPolicy: Sendable {
     case tooLarge
     case noDevice
     case localNetworkUnavailable
+    /// Sync is off or the app has not exported the chain yet, so no computer
+    /// can connect. The app's brave://transfer page explains what to do.
+    case notSetUp
     case userRequested
   }
 
