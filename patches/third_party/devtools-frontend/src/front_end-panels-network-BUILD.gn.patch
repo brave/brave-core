@@ -18,11 +18,3 @@ index 267e82d168d92dd2effb6ecb11f74b58509eb689..ab688b6eb3f508be0dfbdc156aa7b4b8
  
    ts_deps = [
      "../../core/common:bundle",
-@@ -116,6 +118,7 @@ devtools_ui_module("network") {
-     "./components:bundle",
-     "./forward:bundle",
-   ]
-+  ts_deps += brave_devtools_front_end_panels_network_ts_deps
-   deps = [
-     ":css_files",
-     "../../ui/legacy/components/data_grid:css_files",
