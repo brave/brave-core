@@ -102,3 +102,41 @@ source_set("unit_tests") {
     "//testing/gtest",
   ]
 }
+
+source_set("browser_tests") {
+  testonly = true
+
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+
+  sources = [ "brave_transfer_browsertest.cc" ]
+
+  deps = [
+    ":brave_transfer",
+    ":transport",
+    "//base",
+    "//base/test:test_support",
+    "//brave/components/brave_transfer/browser",
+    "//brave/components/brave_transfer/browser:test_support",
+    "//brave/components/brave_transfer/core",
+    "//brave/components/brave_transfer/core:features",
+    "//brave/components/constants",
+    "//chrome/browser",
+    "//chrome/browser/profiles:profile",
+    "//chrome/browser/ui",
+    "//chrome/browser/ui/views/frame:browser_view_header",
+    "//chrome/test:test_support",
+    "//chrome/test:test_support_ui",
+    "//components/os_crypt/async/browser:test_support",
+    "//components/prefs",
+    "//content/public/browser",
+    "//content/test:test_support",
+    "//mojo/public/cpp/bindings",
+    "//net",
+    "//services/network/public/mojom",
+    "//testing/gmock",
+    "//testing/gtest",
+    "//ui/views",
+    "//ui/views:test_support",
+    "//url",
+  ]
+}

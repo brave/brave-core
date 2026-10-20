@@ -14,6 +14,7 @@ import("//brave/components/brave_news/common/buildflags/buildflags.gni")
 import("//brave/components/brave_origin/buildflags/buildflags.gni")
 import("//brave/components/brave_rewards/core/buildflags/buildflags.gni")
 import("//brave/components/brave_talk/buildflags/buildflags.gni")
+import("//brave/components/brave_transfer/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
@@ -355,6 +356,10 @@ test("brave_unit_tests") {
 
   if (enable_email_aliases) {
     deps += [ "//brave/browser/email_aliases:unit_tests" ]
+  }
+
+  if (enable_brave_transfer) {
+    deps += [ "//brave/browser/brave_transfer:unit_tests" ]
   }
 
   if (is_win) {
@@ -1446,6 +1451,10 @@ test("brave_browser_tests") {
 
   if (enable_email_aliases) {
     deps += [ "//brave/browser/email_aliases:browser_tests" ]
+  }
+
+  if (enable_brave_transfer) {
+    deps += [ "//brave/browser/brave_transfer:browser_tests" ]
   }
 
   if (is_win || is_linux) {
