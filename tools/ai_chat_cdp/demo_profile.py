@@ -92,8 +92,9 @@ SINGLE_MEMORY_OLD = 'Has a Maine Coon cat named Mochi'
 FOLLOW_UP_CHAT = (
     'We are away for a long weekend. What should the cat sitter know?'
 )
-# The preference of the chats: it goes with every chat turn, with no question,
-# and the follow-up shows it next to the memory that the question chose.
+# The preference of the chats: the follow-up must send it, because the decision
+# model says that the answer must follow it ("follow it?"), next to the memory
+# that the question "relevant?" chose.
 PREFERENCE_WORD = 'bullet'
 # The memory that the demo locks after the first review. The follow-up is not
 # about it, so step 5 shows that a locked memory still needs a yes to go.
@@ -568,8 +569,8 @@ def learn_one(browser, problems):
 
 def use_memory(browser, problems):
     """Step 5: a follow-up sends the new memory, which the relevance question
-    chose, and the preference, which goes with no question. The reply lists
-    both, and the Chat turns tab shows the lookup."""
+    chose, and the preference, which the question "follow it?" chose. The
+    reply lists both, and the Chat turns tab shows the lookup."""
     conversation = leo.Conversation(browser)
     conversation.send(FOLLOW_UP_CHAT)
     time.sleep(2)
@@ -590,23 +591,32 @@ def use_memory(browser, problems):
         )
 
     done = step('done')
-    preferences = step('preferences').get('memories', [])
-    # Each asked memory, and whether it went.
-    asked = {
-        m['text']: m['kept'] for m in step('relevance').get('memories', [])
+    relevance = step('relevance')
+    # Each asked memory and each asked preference, and whether it went.
+    asked = {m['text']: m['kept'] for m in relevance.get('memories', [])}
+    preferences = {
+        p['text']: p['kept'] for p in relevance.get('preferences', [])
     }
     chosen = done.get('relevant', []) + done.get('permanent', [])
-    cdp.log('follow-up, preferences with no question:', preferences)
+    cdp.log(
+        'follow-up, preferences and "follow it?":',
+        relevance.get('preferences', []),
+    )
     cdp.log('follow-up, the lookup sends:', chosen)
     cdp.log('follow-up, under the reply:', ' | '.join(sent.splitlines()))
     if not any(SINGLE_MEMORY_WORD in m.lower() for m in chosen):
         problems.append(f'step 5: the lookup did not send Luna: {chosen}')
     if SINGLE_MEMORY_WORD not in sent.lower():
         problems.append('step 5: the list under the reply has no Luna')
-    if not any(PREFERENCE_WORD in m.lower() for m in preferences):
+    if not any(
+        kept and PREFERENCE_WORD in text.lower()
+        for text, kept in preferences.items()
+    ):
         problems.append(f'step 5: the preference did not go: {preferences}')
     if any(PREFERENCE_WORD in m.lower() for m in asked):
-        problems.append('step 5: the relevance question asked the preference')
+        problems.append(
+            'step 5: the preference got "relevant?", not "follow it?"'
+        )
     if PREFERENCE_WORD not in sent.lower():
         problems.append('step 5: the list under the reply has no preference')
     locked = [text for text in asked if LOCK_WORD in text.lower()]

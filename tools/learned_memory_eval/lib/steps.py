@@ -603,15 +603,26 @@ class Relevance(Step):
 
     def __init__(self, args):
         super().__init__(args)
-        self.memories = {
-            m["id"]: m["text"]
-            for m in read_jsonl(DATASETS / "relevance" / "memories.jsonl")
+        rows = read_jsonl(DATASETS / "relevance" / "memories.jsonl")
+        self.memories = {m["id"]: m["text"] for m in rows}
+        # The preferences get the question "follow it?" (p0, p1, ...), as in
+        # TurnMemoryLookup. A memory with "category": "preference" is one; until
+        # the dataset has that field, a memory with the tag style_wish is one.
+        self.preferences = {
+            m["id"]
+            for m in rows
+            if m.get(
+                "category", "preference" if "style_wish" in m["tags"] else ""
+            )
+            == "preference"
         }
 
     def params(self):
         return {
             "relevance_threshold": self.args.relevance_threshold,
             "max_turn_memories": self.args.max_turn_memories,
+            "preference_threshold": self.args.preference_threshold,
+            "max_turn_preferences": self.args.max_turn_preferences,
             "thresholds": self.args.thresholds,
         }
 
@@ -627,50 +638,83 @@ class Relevance(Step):
         )
         return [mid for _, mid in (kept[:cap] if cap else kept)]
 
+    def split(self, ids: list) -> tuple:
+        """(facts, preferences) of |ids|, in their order."""
+        return (
+            [m for m in ids if m not in self.preferences],
+            [m for m in ids if m in self.preferences],
+        )
+
+    def pick(self, probs: dict, threshold: float | None, cap: bool) -> set:
+        """The memories that go: the best facts and the best preferences,
+        each kind with its own threshold and limit, as in TurnMemoryLookup.
+        A |threshold| (the sweep) replaces both thresholds."""
+        a = self.args
+        facts, prefs = self.split(list(probs))
+        return set(
+            self.select(
+                {m: probs[m] for m in facts},
+                a.relevance_threshold if threshold is None else threshold,
+                a.max_turn_memories if cap else None,
+            )
+        ) | set(
+            self.select(
+                {m: probs[m] for m in prefs},
+                a.preference_threshold if threshold is None else threshold,
+                a.max_turn_preferences if cap else None,
+            )
+        )
+
     def run(self, case, variant, repeat, ctx):
-        texts = [self.memories[m] for m in case["memories"]]
+        facts, prefs = self.split(case["memories"])
         body = rq.relevance_body(
             ctx.model,
             case["message"],
             case.get("previous_message", ""),
-            texts,
+            [self.memories[m] for m in facts],
             variant,
+            preferences=[self.memories[m] for m in prefs],
         )
         res = ctx.dm.ask(ctx.model, body, repeat)
         probs = None
         if res.get("answers"):
             probs = {
                 m: rq.parse_noul(res["answers"], f"m{i}")
-                for i, m in enumerate(case["memories"])
+                for i, m in enumerate(facts)
+            } | {
+                m: rq.parse_noul(res["answers"], f"p{i}")
+                for i, m in enumerate(prefs)
             }
         rec = {"probs": probs, **_common(res)}
         if probs is None:
             rec["ok"] = False if case["must"] else None
             return rec
-        sel = set(
-            self.select(
-                probs,
-                self.args.relevance_threshold,
-                self.args.max_turn_memories,
-            )
-        )
+        sel = self.pick(probs, None, True)
         rec["selected"] = sorted(sel)
         rec["ok"] = set(case["must"]) <= sel and not (
             set(case["forbidden"]) & sel
         )
         return rec
 
-    def _at(self, records, cases, threshold, cap):
+    def _at(self, records, cases, threshold, cap, only=None):
+        """|threshold| None: the thresholds of the pipeline. |only| "fact" or
+        "preference": count the must and forbidden memories of that kind."""
         found = total = bad = bad_total = kept = 0
+        keep = lambda ids: [
+            m
+            for m in ids
+            if only is None or (m in self.preferences) == (only == "preference")
+        ]
         for r in records:
             c = cases[r["id"]]
-            total += len(c["must"])
-            bad_total += len(c["forbidden"])
+            must, forbidden = set(keep(c["must"])), set(keep(c["forbidden"]))
+            total += len(must)
+            bad_total += len(forbidden)
             if r["probs"] is None:
                 continue
-            sel = set(self.select(r["probs"], threshold, cap))
-            found += len(set(c["must"]) & sel)
-            bad += len(set(c["forbidden"]) & sel)
+            sel = set(keep(self.pick(r["probs"], threshold, cap)))
+            found += len(must & sel)
+            bad += len(forbidden & sel)
             kept += len(sel)
         return {
             "threshold": threshold,
@@ -682,18 +726,21 @@ class Relevance(Step):
 
     def score(self, records, cases):
         a = self.args
-        main = self._at(
-            records, cases, a.relevance_threshold, a.max_turn_memories
-        )
+        main = self._at(records, cases, None, True)
+        facts = self._at(records, cases, None, True, "fact")
+        prefs = self._at(records, cases, None, True, "preference")
         return {
             "must_recall": main["must"],
             "forbidden_rate": main["forbidden"],
             "mean_kept": main["mean_kept"],
+            "fact_must_recall": facts["must"],
+            "fact_forbidden_rate": facts["forbidden"],
+            "preference_must_recall": prefs["must"],
+            "preference_forbidden_rate": prefs["forbidden"],
             "hard_gates": {"forbidden_rate<=baseline": None},
-            "sweep": [self._at(records, cases, t, None) for t in a.thresholds],
+            "sweep": [self._at(records, cases, t, False) for t in a.thresholds],
             "sweep_capped": [
-                self._at(records, cases, t, a.max_turn_memories)
-                for t in a.thresholds
+                self._at(records, cases, t, True) for t in a.thresholds
             ],
             "status": _status_counts(records),
             "latency": sc.latency(
@@ -704,15 +751,21 @@ class Relevance(Step):
     def render(self, variant, m):
         a = self.args
         md = [
-            f"Pipeline: yes >= {a.relevance_threshold}, best {a.max_turn_memories}.",
+            f"Pipeline: facts yes >= {a.relevance_threshold}, best {a.max_turn_memories}; "
+            f"preferences (follow it?) yes >= {a.preference_threshold}, best {a.max_turn_preferences}.",
             "",
             "| Must recall | Forbidden rate | Mean kept | Status | Latency |",
             "|---|---|---|---|---|",
             f"| {sc.fmt_rate(m['must_recall'])} | {sc.fmt_rate(m['forbidden_rate'], False)} | "
             f"{m['mean_kept']:.1f} | {_status(m['status'])} | {sc.fmt_latency(m['latency'])} |",
             "",
-            "| Threshold | Must found (no cap) | Forbidden found | Mean kept | "
-            f"Must found (best {a.max_turn_memories}) | Forbidden | Mean kept |",
+            "| Kind | Must recall | Forbidden rate |",
+            "|---|---|---|",
+            f"| fact | {sc.fmt_rate(m['fact_must_recall'])} | {sc.fmt_rate(m['fact_forbidden_rate'], False)} |",
+            f"| preference | {sc.fmt_rate(m['preference_must_recall'])} | {sc.fmt_rate(m['preference_forbidden_rate'], False)} |",
+            "",
+            "| Threshold (both kinds) | Must found (no cap) | Forbidden found | Mean kept | "
+            f"Must found (best {a.max_turn_memories} + {a.max_turn_preferences}) | Forbidden | Mean kept |",
             "|---|---|---|---|---|---|---|",
         ]
         for s, c in zip(m["sweep"], m["sweep_capped"]):

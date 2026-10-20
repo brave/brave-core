@@ -824,6 +824,24 @@ RELEVANCE = {"A": _relevance_a, "B": _relevance_b, "C": _relevance_c}
 RELEVANCE_VARIANTS = {
     k: dict(desc=f"relevance wording {k}", relevance=k) for k in RELEVANCE
 }
+
+
+# The question for each preference at chat time: not "relevant?", because a
+# style preference is about how to answer, not about a topic.
+def _preference_a(preference: str) -> Noul:
+    return Noul(
+        f"Preference: {preference}\nShould the answer to the user's message "
+        "follow this preference?",
+        "The preference changes how this answer should be written or what it "
+        "should suggest: its length, format, language, units, tone, or a "
+        "choice that the message asks about.",
+        "The preference has nothing to do with this answer.",
+    )
+
+
+PREFERENCE = {"A": _preference_a}
+# The wording in C++.
+CURRENT_PREFERENCE = "A"
 MAX_RELEVANCE_MESSAGE_BYTES = 1000
 
 # ---- local LLM prompts ------------------------------------------------------
@@ -1075,11 +1093,21 @@ def relation_questions(variant: str = "current") -> list:
     ]
 
 
-def relevance_questions(memories: list, variant: str = "current") -> list:
+def relevance_questions(
+    memories: list,
+    variant: str = "current",
+    preferences: list = (),
+    preference_variant: str = CURRENT_PREFERENCE,
+) -> list:
+    """The memories (m0, m1, ...), then the preferences (p0, p1, ...): the
+    order of OllamaDecisionClient::AskRelevance()."""
     make = RELEVANCE[
         RELEVANCE_VARIANTS[resolve("relevance", variant)]["relevance"]
     ]
-    return [(f"m{i}", make(m)) for i, m in enumerate(memories)]
+    follow = PREFERENCE[preference_variant]
+    return [(f"m{i}", make(m)) for i, m in enumerate(memories)] + [
+        (f"p{i}", follow(p)) for i, p in enumerate(preferences)
+    ]
 
 
 def truncate_utf8(text: str, max_bytes: int) -> str:
@@ -1121,11 +1149,12 @@ def relevance_body(
     previous: str,
     memories: list,
     variant: str = "current",
+    preferences: list = (),
 ) -> str:
     return systemone_body(
         model,
         relevance_state(message, previous),
-        relevance_questions(memories, variant),
+        relevance_questions(memories, variant, preferences),
     )
 
 

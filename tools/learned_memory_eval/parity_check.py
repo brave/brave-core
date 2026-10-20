@@ -39,6 +39,10 @@ DM_KINDS = ["gate", "sentence", "relation", "relevance"]
 LLM_KINDS = ["rewrite", "relation-llm", "merge"]
 RELEVANCE_PREFIX = "Memory: "
 RELEVANCE_SUFFIX = "\nIs this memory relevant to the user's message?"
+PREFERENCE_PREFIX = "Preference: "
+PREFERENCE_SUFFIX = (
+    "\nShould the answer to the user's message follow this preference?"
+)
 
 
 def _messages(body: dict) -> tuple:
@@ -87,22 +91,24 @@ def rebuild(kind: str, body: dict) -> str:
     if kind == "relation":
         return rq.relation_body(model, state["new_memory"], state["old_memory"])
     if kind == "relevance":
-        memories = []
+        # m0, m1, ... are the memories, p0, p1, ... the preferences.
+        memories, preferences = [], []
         for name, q in body["questions"].items():
             text = q["instructions"]
-            if not (
-                text.startswith(RELEVANCE_PREFIX)
-                and text.endswith(RELEVANCE_SUFFIX)
-            ):
-                raise ValueError(f"question {name} has another wording")
-            memories.append(
-                text[len(RELEVANCE_PREFIX) : -len(RELEVANCE_SUFFIX)]
+            prefix, suffix, into = (
+                (PREFERENCE_PREFIX, PREFERENCE_SUFFIX, preferences)
+                if name.startswith("p")
+                else (RELEVANCE_PREFIX, RELEVANCE_SUFFIX, memories)
             )
+            if not (text.startswith(prefix) and text.endswith(suffix)):
+                raise ValueError(f"question {name} has another wording")
+            into.append(text[len(prefix) : -len(suffix)])
         return rq.relevance_body(
             model,
             state["user_message"],
             state.get("previous_message", ""),
             memories,
+            preferences=preferences,
         )
     user = _messages(body)[1]
     if kind == "rewrite":

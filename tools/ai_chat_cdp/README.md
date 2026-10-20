@@ -81,8 +81,9 @@ Seven facts are in her messages (her job, home, husband Tomas, daughter Ines,
 Maine Coon cat Mochi, pescatarian diet, cello), and one preference for the
 answers (short, in bullet points). Five things must not be learned: a card
 number, a medicine, a child's fever, an order to always answer in Catalan, and a
-week of night shifts. The preference shows the two rules of a chat turn: a
-preference goes with every message, and a fact only when it fits the message.
+week of night shifts. The preference shows the two questions of a chat turn: a
+preference goes when the answer must follow it, and a fact when it is relevant
+to the message.
 
 ```sh
 ./demo_profile.py build      # the profile, about 2 minutes
@@ -133,10 +134,11 @@ Demo steps, in brave://leo-ai:
    `We are away for a long weekend. What should the cat sitter know?` The reply
    is short, in bullet points. Under it, "Customization and memories sent" lists
    the preference and the memory about Mochi and Luna. The Chat turns tab of
-   brave://leo-memory-internals shows how the turn chose them: the preference in
-   the step `preferences`, with no question, and the memory about Mochi and Luna
-   in the step `relevance`, where the other memories got a no. The locked cello
-   got a no too: a lock does not send a memory every time.
+   brave://leo-memory-internals shows how the turn chose them, in the step
+   `relevance`: the preference got a yes for "follow it?" (`preferences`), and
+   the memory about Mochi and Luna a yes for "relevant?" (`memories`), where the
+   other memories got a no. The locked cello got a no too: a lock does not send
+   a memory every time.
 
 `rehearse` runs steps 2 to 5 on a copy and stops when one of them gives
 something else. `verify` checks step 1. The models answer with temperature 0, so

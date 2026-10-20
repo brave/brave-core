@@ -139,6 +139,8 @@ def parse_args(argv=None):
     s.add_argument("--margin", type=float, default=0.2, help="certain_margin")
     s.add_argument("--relevance-threshold", type=float, default=0.3)
     s.add_argument("--max-turn-memories", type=int, default=5)
+    s.add_argument("--preference-threshold", type=float, default=0.3)
+    s.add_argument("--max-turn-preferences", type=int, default=5)
     s.add_argument(
         "--thresholds",
         type=float,
