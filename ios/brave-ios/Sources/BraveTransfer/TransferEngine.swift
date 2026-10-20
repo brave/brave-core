@@ -22,6 +22,7 @@ public final class TransferEngine {
   public let keyStore: TransferKeyStore
   public let localNetwork: LocalNetworkAuthorization
   public let service: TransferService
+  public let scheduler: TransferScheduler
 
   private let trustSource: SnapshotTrustSource
   private let advertiser: BonjourAdvertiser
@@ -50,6 +51,7 @@ public final class TransferEngine {
       throw Error.staticKeyUnavailable
     }
     let scheduler = DispatchQueueScheduler(queue: queue)
+    self.scheduler = scheduler
     trustSource = SnapshotTrustSource(
       snapshot: ChainSnapshot.read(from: appGroup.chainSnapshotURL) ?? .inactive,
       rootKey: keyStore.rootKey

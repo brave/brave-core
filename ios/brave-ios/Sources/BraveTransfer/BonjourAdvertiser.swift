@@ -109,7 +109,8 @@ public final class BonjourAdvertiser: TransferAdvertiser {
     case .waiting(let error):
       state = .waiting(localNetworkDenied: Self.isLocalNetworkDenied(error))
     case .failed(let error):
-      state = Self.isLocalNetworkDenied(error)
+      state =
+        Self.isLocalNetworkDenied(error)
         ? .waiting(localNetworkDenied: true) : .failed(String(describing: error))
       listener?.cancel()
       listener = nil

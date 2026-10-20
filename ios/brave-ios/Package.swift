@@ -52,6 +52,8 @@ var package = Package(
     .library(name: "Web", targets: ["Web"]),
     .library(name: "BraveTalk", targets: ["BraveTalk"]),
     .library(name: "Origin", targets: ["Origin"]),
+    .library(name: "BraveTransfer", targets: ["BraveTransfer"]),
+    .library(name: "BraveTransferUI", targets: ["BraveTransferUI"]),
     .plugin(name: "IntentBuilderPlugin", targets: ["IntentBuilderPlugin"]),
     .plugin(name: "LoggerPlugin", targets: ["LoggerPlugin"]),
   ],
@@ -74,6 +76,7 @@ var package = Package(
       revision: "622a6804d39515600ead16e6259cb5d5e50f40df"
     ),
     .package(name: "JitsiMeet", path: "../third_party/JitsiMeet"),
+    .package(name: "BraveTransferCore", path: "../../components/brave_transfer/swift"),
   ],
   targets: [
     .target(
@@ -116,6 +119,8 @@ var package = Package(
         "BraveShields",
         "BraveTalk",
         "Origin",
+        "BraveTransfer",
+        "BraveTransferUI",
       ],
       exclude: [
         "Frontend/UserContent/UserScripts/AllFrames",
@@ -620,6 +625,33 @@ var package = Package(
         "BraveCore",
         "BraveStore",
         .product(name: "SwiftUIIntrospect", package: "SwiftUI-Introspect"),
+      ]
+    ),
+    // Brave Transfer's engine and UI. Neither depends on BraveCore, so the
+    // "Brave Transfer" share extension can link them.
+    .target(
+      name: "BraveTransfer",
+      dependencies: [
+        .product(name: "BraveTransferCore", package: "BraveTransferCore"),
+        .product(name: "BraveTransferEngine", package: "BraveTransferCore"),
+      ]
+    ),
+    .target(
+      name: "BraveTransferUI",
+      dependencies: [
+        "BraveTransfer",
+        "DesignSystem",
+        "Strings",
+        .product(name: "BraveTransferEngine", package: "BraveTransferCore"),
+      ]
+    ),
+    .testTarget(
+      name: "BraveTransferTests",
+      dependencies: [
+        "BraveTransfer",
+        "BraveTransferUI",
+        .product(name: "BraveTransferCore", package: "BraveTransferCore"),
+        .product(name: "BraveTransferEngine", package: "BraveTransferCore"),
       ]
     ),
   ],
