@@ -930,6 +930,8 @@ public class BrowserViewController: UIViewController {
       collapsedURLBarView.isKeyboardVisible = false
     }
 
+    setUpBraveTransfer()
+
     // Request only once the scene is active. `willEnterForeground` runs before that, and
     // `WindowProtection` replaces its `LAContext` there, which cancels biometrics/passcode.
     if requiresPrivateBrowsingUnlock {
@@ -1113,6 +1115,7 @@ public class BrowserViewController: UIViewController {
     header.isHidden = false
     footer.isHidden = false
     observePrivateBrowsingUnlock()
+    setUpBraveTransfer()
 
     NotificationCenter.default.do {
       $0.addObserver(

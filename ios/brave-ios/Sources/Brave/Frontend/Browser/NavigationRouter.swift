@@ -2,6 +2,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveTransferEngine
 import BraveWidgetsModels
 import Foundation
 import Intents
@@ -26,6 +27,9 @@ public enum NavigationPath: Equatable {
   case deepLink(DeepLink)
   case text(String)
   case widgetShortcutURL(WidgetShortcut)
+  /// `<scheme>://transfer/send?outbox=<uuid>`: the Brave Transfer share
+  /// extension handed items to the app to send.
+  case transferHandoff(UUID)
 
   public init?(url: URL, isPrivateBrowsing: Bool) {
     let urlString = url.absoluteString
@@ -73,6 +77,10 @@ public enum NavigationPath: Equatable {
       let path = WidgetShortcut(rawValue: value)
     {
       self = .widgetShortcutURL(path)
+    } else if urlString.starts(with: "\(scheme)://transfer/send"),
+      let id = Outbox.outboxID(fromHandoffURL: url)
+    {
+      self = .transferHandoff(id)
     } else {
       return nil
     }
@@ -86,6 +94,7 @@ public enum NavigationPath: Equatable {
       NavigationPath.handleURL(url: url, isPrivate: isPrivate, with: bvc)
     case .text(let text): NavigationPath.handleText(text: text, with: bvc)
     case .widgetShortcutURL(let path): NavigationPath.handleWidgetShortcut(path, with: bvc)
+    case .transferHandoff(let id): bvc.handleTransferHandoff(id)
     }
   }
 

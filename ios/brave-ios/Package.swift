@@ -121,6 +121,8 @@ var package = Package(
         "Origin",
         "BraveTransfer",
         "BraveTransferUI",
+        .product(name: "BraveTransferCore", package: "BraveTransferCore"),
+        .product(name: "BraveTransferEngine", package: "BraveTransferCore"),
       ],
       exclude: [
         "Frontend/UserContent/UserScripts/AllFrames",

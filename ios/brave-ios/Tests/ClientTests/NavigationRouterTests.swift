@@ -141,4 +141,16 @@ class NavigationRouterTests: XCTestCase {
     // Should be regular due to specified argument in the URL
     XCTAssertEqual(path, NavigationPath.url(webURL: url, isPrivate: false))
   }
+
+  func testTransferHandoff() {
+    let id = UUID()
+    let appURL = URL(string: "\(appScheme)://transfer/send?outbox=\(id.uuidString)")!
+    XCTAssertEqual(
+      NavigationPath(url: appURL, isPrivateBrowsing: false),
+      NavigationPath.transferHandoff(id)
+    )
+
+    let badID = URL(string: "\(appScheme)://transfer/send?outbox=not-a-uuid")!
+    XCTAssertNil(NavigationPath(url: badID, isPrivateBrowsing: false))
+  }
 }

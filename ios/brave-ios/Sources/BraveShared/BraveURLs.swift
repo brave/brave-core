@@ -106,6 +106,7 @@ extension URL {
       public static let activity = URL(string: "brave://wallet/crypto/portfolio/activity")!
     }
     public static let wallet = Wallet.self
+    public static let transfer = URL(string: "brave://transfer")!
   }
   public static let brave = Brave.self
   public static let apple = Apple.self

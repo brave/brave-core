@@ -90,6 +90,7 @@ extension BrowserViewController: TabManagerDelegate {
         self?.scanAddressQRCode(completion: completion)
       }
     )
+    tab.transferWebUIHelper = .init(tab: tab, coordinator: setUpBraveTransfer())
     let braveShieldsHelper: BraveShieldsTabHelper = .init(
       tab: tab,
       braveShieldsSettings: BraveShieldsSettingsServiceFactory.get(profile: tab.profile)
