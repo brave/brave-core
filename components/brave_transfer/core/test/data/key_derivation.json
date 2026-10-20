@@ -1,0 +1,91 @@
+{
+  "description": "seed = PassphraseToBytes32(sync_code) (BIP39 English, 24 words); root = HKDF-SHA256(salt=\"brave-transfer\", ikm=seed, info=\"v1/root\"); psk = HKDF-SHA256(salt=\"\", ikm=root, info=\"v1/chain-psk\"); discovery = HKDF-SHA256(salt=\"\", ikm=root, info=\"v1/discovery\"). See PROTOCOL.md section 3.",
+  "valid": [
+    {
+      "name": "all zero entropy",
+      "sync_code": "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon art",
+      "seed": "0000000000000000000000000000000000000000000000000000000000000000",
+      "root_key": "70c4ed1c8d4c26882442f049f5bb98c22c88e3409f62c6909d7c3c20707ff7ab",
+      "psk": "26495112e54f34e6380042faa322bfa59e2ec56ca8b553701a75eef0c8925b4c",
+      "discovery_key": "fa33072f4f08fe9b5f92e6d1514b123bec29496f848634c790fab488bb9ae7ec"
+    },
+    {
+      "name": "all 0xff entropy",
+      "sync_code": "zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo zoo vote",
+      "seed": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "root_key": "2bd4c5e4653fb35ed885bcf7e91a27ab1ae738b3cb30fef930a4c72c843f2c5c",
+      "psk": "a405be5a36145cfdfa1737935a65c24ea8b1c2615838e9d83051a231c5adece9",
+      "discovery_key": "4aa27fe98e728610760050437fd7a3448fdd3f556bc536733dc491d097350bcc"
+    },
+    {
+      "name": "counting bytes",
+      "sync_code": "abandon amount liar amount expire adjust cage candy arch gather drum bullet absurd math era live bid rhythm alien crouch range attend journey unaware",
+      "seed": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f",
+      "root_key": "e86ddfd801e3486b950bde04d6048d1797ece4e3c0f89478aea980a7b16c7c64",
+      "psk": "60b06bb6381b992c9ee024e76d3f3382bb7997cfe8e76c50ece7e166a7816e5f",
+      "discovery_key": "78cca214a337a118d988e7707ff230243db83fc26d738b4a371e14fd76473ffd"
+    },
+    {
+      "name": "labelled",
+      "sync_code": "flavor near deal fortune snack injury robust devote awesome erode gaze board comic frozen increase guide trust assault rail farm wife draw nephew sound",
+      "seed": "58b270e0adccd0e86ed1e6108991828c52e4bb5cab3ce9a1b2c3a99fae84e516",
+      "root_key": "7e2d2dc6843d54a78318bdcc2dc3c482c985f5eda025cba33d3bada39ecc471f",
+      "psk": "1db34bbe28d0f960cddffd662de5ba47d9fed7839523572fca7837bd89e9bec3",
+      "discovery_key": "95b2964b48817e15f3c2a5d4858eae377f662f6bd253b9868733384abd010d81"
+    },
+    {
+      "name": "brave_sync crypto_unittest passphrase",
+      "sync_code": "magic vacuum wide review love peace century egg burden clutch heart cycle annual mixed pink awesome extra client cry brisk priority maple mountain jelly",
+      "seed": "85de13eadc484743895a361e8591a91b60971c694084510558d48e2aaf0f2423",
+      "root_key": "fb5bc6792e226bb67ef88033b137d1de0a44f03b7f05dfbad2dac65c752bf960",
+      "psk": "cac2ab25ccb207de1e36f15a3c391dd70ac5518cc5a629f926386c6b3c97adec",
+      "discovery_key": "c972575853a55c152a28a7e12e8641d8170c8e3524f0d38ba9858561c73a5a36"
+    }
+  ],
+  "invalid_sync_codes": [
+    {
+      "name": "empty",
+      "sync_code": ""
+    },
+    {
+      "name": "23 words",
+      "sync_code": "flavor near deal fortune snack injury robust devote awesome erode gaze board comic frozen increase guide trust assault rail farm wife draw nephew"
+    },
+    {
+      "name": "25 words (time-limited code format)",
+      "sync_code": "flavor near deal fortune snack injury robust devote awesome erode gaze board comic frozen increase guide trust assault rail farm wife draw nephew sound abandon"
+    },
+    {
+      "name": "12-word BIP39 code",
+      "sync_code": "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about"
+    },
+    {
+      "name": "bad checksum",
+      "sync_code": "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon"
+    },
+    {
+      "name": "brave_sync crypto_unittest invalid passphrase",
+      "sync_code": "magic vacuum wide review love peace century egg burden clutch heart cycle annual mixed pink awesome extra client cry brisk priority maple mountain brave"
+    },
+    {
+      "name": "unknown word",
+      "sync_code": "flavor near deal fortune snack injury robust devote awesome erode gaze board comic frozen increase guide trust assault rail farm wife draw nephew bravely"
+    },
+    {
+      "name": "upper case",
+      "sync_code": "FLAVOR NEAR DEAL FORTUNE SNACK INJURY ROBUST DEVOTE AWESOME ERODE GAZE BOARD COMIC FROZEN INCREASE GUIDE TRUST ASSAULT RAIL FARM WIFE DRAW NEPHEW SOUND"
+    },
+    {
+      "name": "double space",
+      "sync_code": "flavor  near deal fortune snack injury robust devote awesome erode gaze board comic frozen increase guide trust assault rail farm wife draw nephew sound"
+    },
+    {
+      "name": "leading space",
+      "sync_code": " flavor near deal fortune snack injury robust devote awesome erode gaze board comic frozen increase guide trust assault rail farm wife draw nephew sound"
+    },
+    {
+      "name": "trailing newline",
+      "sync_code": "flavor near deal fortune snack injury robust devote awesome erode gaze board comic frozen increase guide trust assault rail farm wife draw nephew sound\n"
+    }
+  ]
+}

@@ -1,0 +1,100 @@
+{
+  "description": "One complete Brave Transfer connection: the XXpsk3 handshake with the Brave prologue and payloads, then three transport messages. \"message\" is the Noise message; \"wire\" adds the 2-byte big-endian length prefix. See PROTOCOL.md sections 4 and 6.",
+  "protocol_name": "Noise_XXpsk3_25519_ChaChaPoly_SHA256",
+  "prologue": "62726176652d7472616e736665722f31",
+  "unix_time": 1792054400,
+  "seed": "58b270e0adccd0e86ed1e6108991828c52e4bb5cab3ce9a1b2c3a99fae84e516",
+  "psk": "1db34bbe28d0f960cddffd662de5ba47d9fed7839523572fca7837bd89e9bec3",
+  "trust_tag": "d88ff21a5d0ed6a7",
+  "initiator_static": "577da5ef7e1ba96f38c515b29794b4c430d34502af52c70d111fce174ae7707f",
+  "initiator_static_public": "bfc400652b191c477d4df0ac86385fe9b32cf64ef16e83223e4944510e2caf49",
+  "initiator_fingerprint": "c9d9 1d0b a01d 92a4 1556 449c 4221 f914",
+  "initiator_ephemeral": "3a88ce18d7c0b5ad64bd574e5cbbba3193f235516380e57b3cb0702d8f6051c8",
+  "responder_static": "f5f9f474ac6b5a78b306347f2800d9b8ac7e04e29c82470c3cbb3bea156d0864",
+  "responder_static_public": "fc6a789c40e8f2f1e03eade679be31ca546e3bf09d86eb59ceaa76de802d550f",
+  "responder_fingerprint": "1740 1c0a 7c71 c755 847e d47f 984c 8ba2",
+  "responder_ephemeral": "5665a3cf64b92fb1cc70e73386f0202ff05f4f3ea12111e07dff0a7d13a30c48",
+  "handshake_messages": [
+    {
+      "sender": "initiator",
+      "payload_message": {
+        "protocol_version": 1,
+        "trust_tag": "d88ff21a5d0ed6a7"
+      },
+      "payload": "08011208d88ff21a5d0ed6a7",
+      "message": "35e855aa249ac4c4f08d582b2a835647021df602bedf8e32296c4b0989c01238044e29094df7dcd83bc23dcff0d34065756f3b012f6890342baca9ac"
+    },
+    {
+      "sender": "responder",
+      "payload_message": {
+        "protocol_version": 1,
+        "device_name": "James's iPhone",
+        "device_type": 2,
+        "sync_device_guid": "f0a1b2c3-0000-4000-8000-000000000002",
+        "capabilities": 3
+      },
+      "payload": "0801120e4a616d65732773206950686f6e651802222466306131623263332d303030302d343030302d383030302d3030303030303030303030322803",
+      "message": "f0488ab5f811188cec41bf51a11c8ed1bf65e2c2fb9d0038531376c9083b7d440bf3856448fe9ed760b3a1570972192c9723df71606cc85a4b34c0def0aca9d471ccc66cb58156e2c0492d88ebb657cca21d48a6cf34602dfc710e770b61c6e1f78049eca7796dde2a13ea168dcab615a6795b6d584f6ce815712dc328c111c6ce699ceee5a86dc0a0c2bd9fa7ea3fbf35c0d0604e50ccc77ecb05f3"
+    },
+    {
+      "sender": "initiator",
+      "payload_message": {
+        "protocol_version": 1,
+        "device_name": "MacBook Pro",
+        "device_type": 1,
+        "sync_device_guid": "f0a1b2c3-0000-4000-8000-000000000001",
+        "capabilities": 3
+      },
+      "payload": "0801120b4d6163426f6f6b2050726f1801222466306131623263332d303030302d343030302d383030302d3030303030303030303030312803",
+      "message": "719e2ea5ae91283aaf5d2b0f6f4e635a76a8988a0aef2d6a76718370da4aac37561425a2bf903c4dd6170ad15ae8c35609fc48f8a6dacefc35c398bd4a18cd9cf55bb43b4ba7a71343610e52313ab848bd20d5511a88cb84b60d3add581d6be7a6c6bf2266a6942d6edaace49ffedd5cc67b651a5258dabbd6"
+    }
+  ],
+  "handshake_hash": "08a90517aeaf34ecaf398023ec5ae91eeaacee2d4d69f9e1d8a16fedd1dbb779",
+  "initiator_to_responder_key": "814363b456d67e52644f4a0584a6ff448f9c9e62d6fc1f0fc115d0da5f1ff198",
+  "responder_to_initiator_key": "51f31493989e4f04bf3f2da23feeceaa1afce8805a68a6313c38d466128a6aae",
+  "transport_messages": [
+    {
+      "sender": "responder",
+      "frame": {
+        "ping": {
+          "sequence": 0
+        }
+      },
+      "plaintext": "2a00",
+      "wire": "0012e4d29dfcb0ad9975a316cb5bdc5647d390ec"
+    },
+    {
+      "sender": "initiator",
+      "frame": {
+        "offer": {
+          "transfer_id": "aaad8631906d4062dca0e592e4d4b50e",
+          "items": [
+            {
+              "item_id": 1,
+              "kind": 3,
+              "name": "text.txt",
+              "mime_type": "text/plain",
+              "size": 25,
+              "sha256": "c367357bb641b1de0974f7ba7fc2acf7c33f03f20fad048528b83e499ccecca1",
+              "inline_data": "48656c6c6f2066726f6d204272617665205472616e73666572"
+            }
+          ]
+        }
+      },
+      "plaintext": "0a6d0a10aaad8631906d4062dca0e592e4d4b50e1259080110031a08746578742e747874220a746578742f706c61696e28193220c367357bb641b1de0974f7ba7fc2acf7c33f03f20fad048528b83e499ccecca13a1948656c6c6f2066726f6d204272617665205472616e73666572",
+      "wire": "007ffcb6502185c4870eb1d68c6e0dc3a25faf79348610af7efc3b025429c6ca5074b08832b861b2e8ae1bd5bd5551f50369c3c0e2571f0b071cb8962fbdd15f567e0660eec46b24022c0c9791c70c53ee87b9d558d8bfe4951bad56c216194fb730bb2055113a1ebc45c7f60ed9f3c182653869d1ebf2b60f7535a37cd6231f71"
+    },
+    {
+      "sender": "responder",
+      "frame": {
+        "response": {
+          "transfer_id": "aaad8631906d4062dca0e592e4d4b50e",
+          "decision": 1,
+          "accepted_item_ids": []
+        }
+      },
+      "plaintext": "12140a10aaad8631906d4062dca0e592e4d4b50e1001",
+      "wire": "0026b4d982253823f0f473864efb7c6015f07c1c7d44314bdb6aa47cbf7ad988b7f334d026e758e0"
+    }
+  ]
+}

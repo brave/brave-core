@@ -1,0 +1,79 @@
+{
+  "description": "epoch = floor(unix_time / 900); tag = HMAC-SHA256(discovery_key, uint64_be(epoch))[0:8]; TXT c = lowercase hex(tag). A responder accepts tags for epochs t-1, t and t+1. See PROTOCOL.md section 3.3.",
+  "seed": "58b270e0adccd0e86ed1e6108991828c52e4bb5cab3ce9a1b2c3a99fae84e516",
+  "discovery_key": "95b2964b48817e15f3c2a5d4858eae377f662f6bd253b9868733384abd010d81",
+  "tags": [
+    {
+      "unix_time": 0,
+      "epoch": 0,
+      "tag": "6b3de83dbdd17c23"
+    },
+    {
+      "unix_time": 899,
+      "epoch": 0,
+      "tag": "6b3de83dbdd17c23"
+    },
+    {
+      "unix_time": 900,
+      "epoch": 1,
+      "tag": "4d98dc645c7d8af0"
+    },
+    {
+      "unix_time": 1792054399,
+      "epoch": 1991171,
+      "tag": "d88ff21a5d0ed6a7"
+    },
+    {
+      "unix_time": 1792054400,
+      "epoch": 1991171,
+      "tag": "d88ff21a5d0ed6a7"
+    },
+    {
+      "unix_time": 1792055299,
+      "epoch": 1991172,
+      "tag": "1b3be296917fd8b3"
+    },
+    {
+      "unix_time": 1792055300,
+      "epoch": 1991172,
+      "tag": "1b3be296917fd8b3"
+    },
+    {
+      "unix_time": 4102444800,
+      "epoch": 4558272,
+      "tag": "7ae7a02d9b269700"
+    }
+  ],
+  "accepted": [
+    {
+      "unix_time": 0,
+      "tags": [
+        "6b3de83dbdd17c23",
+        "4d98dc645c7d8af0"
+      ]
+    },
+    {
+      "unix_time": 1792054400,
+      "tags": [
+        "8cedae851816ce50",
+        "d88ff21a5d0ed6a7",
+        "1b3be296917fd8b3"
+      ]
+    },
+    {
+      "unix_time": 1792054850,
+      "tags": [
+        "d88ff21a5d0ed6a7",
+        "1b3be296917fd8b3",
+        "8183dda7ee30be9a"
+      ]
+    }
+  ],
+  "txt_record": {
+    "unix_time": 1792054400,
+    "entries": [
+      "v=1",
+      "c=d88ff21a5d0ed6a7"
+    ]
+  }
+}

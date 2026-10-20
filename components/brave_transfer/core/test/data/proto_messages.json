@@ -1,0 +1,476 @@
+{
+  "description": "Wire encoding of brave_transfer.proto (PROTOCOL.md section 5). \"encode\": value <-> canonical encoding, both directions. \"decode\": non-canonical input that must decode, shown with its canonical re-encoding. \"invalid\": input that must be rejected; \"protobuf_accepts\" marks rules stricter than the protobuf runtime. In \"value\", bytes are hex and all fields are present.",
+  "encode": [
+    {
+      "name": "empty ClientHello",
+      "type": "ClientHello",
+      "value": {
+        "protocol_version": 0,
+        "trust_tag": ""
+      },
+      "encoded": ""
+    },
+    {
+      "name": "ClientHello",
+      "type": "ClientHello",
+      "value": {
+        "protocol_version": 1,
+        "trust_tag": "55e25250f5a8d857"
+      },
+      "encoded": "0801120855e25250f5a8d857"
+    },
+    {
+      "name": "PeerInfo",
+      "type": "PeerInfo",
+      "value": {
+        "protocol_version": 1,
+        "device_name": "James's iPhone",
+        "device_type": 2,
+        "sync_device_guid": "f0a1b2c3-0000-4000-8000-000000000002",
+        "capabilities": 3
+      },
+      "encoded": "0801120e4a616d65732773206950686f6e651802222466306131623263332d303030302d343030302d383030302d3030303030303030303030322803"
+    },
+    {
+      "name": "PeerInfo with large capabilities",
+      "type": "PeerInfo",
+      "value": {
+        "protocol_version": 1,
+        "device_name": "",
+        "device_type": 0,
+        "sync_device_guid": "",
+        "capabilities": 1099511627776
+      },
+      "encoded": "080128808080808020"
+    },
+    {
+      "name": "OfferItem",
+      "type": "OfferItem",
+      "value": {
+        "item_id": 2,
+        "kind": 2,
+        "name": "Café photo 📷.jpg",
+        "mime_type": "image/jpeg",
+        "size": 5000000000,
+        "sha256": "d81ed1057b044dc23332e004894b53cbb36c367c9a846dbfbe94f922504f2f64",
+        "inline_data": ""
+      },
+      "encoded": "080210021a14436166c3a92070686f746f20f09f93b72e6a7067220a696d6167652f6a7065672880e497d0123220d81ed1057b044dc23332e004894b53cbb36c367c9a846dbfbe94f922504f2f64"
+    },
+    {
+      "name": "Offer",
+      "type": "Offer",
+      "value": {
+        "transfer_id": "aaad8631906d4062dca0e592e4d4b50e",
+        "items": [
+          {
+            "item_id": 1,
+            "kind": 3,
+            "name": "text.txt",
+            "mime_type": "text/plain",
+            "size": 25,
+            "sha256": "c367357bb641b1de0974f7ba7fc2acf7c33f03f20fad048528b83e499ccecca1",
+            "inline_data": "48656c6c6f2066726f6d204272617665205472616e73666572"
+          },
+          {
+            "item_id": 2,
+            "kind": 2,
+            "name": "Café photo 📷.jpg",
+            "mime_type": "image/jpeg",
+            "size": 5000000000,
+            "sha256": "d81ed1057b044dc23332e004894b53cbb36c367c9a846dbfbe94f922504f2f64",
+            "inline_data": ""
+          }
+        ]
+      },
+      "encoded": "0a10aaad8631906d4062dca0e592e4d4b50e1259080110031a08746578742e747874220a746578742f706c61696e28193220c367357bb641b1de0974f7ba7fc2acf7c33f03f20fad048528b83e499ccecca13a1948656c6c6f2066726f6d204272617665205472616e73666572124e080210021a14436166c3a92070686f746f20f09f93b72e6a7067220a696d6167652f6a7065672880e497d0123220d81ed1057b044dc23332e004894b53cbb36c367c9a846dbfbe94f922504f2f64"
+    },
+    {
+      "name": "Response ACCEPT_ALL",
+      "type": "Response",
+      "value": {
+        "transfer_id": "aaad8631906d4062dca0e592e4d4b50e",
+        "decision": 1,
+        "accepted_item_ids": []
+      },
+      "encoded": "0a10aaad8631906d4062dca0e592e4d4b50e1001"
+    },
+    {
+      "name": "Response ACCEPT_SOME",
+      "type": "Response",
+      "value": {
+        "transfer_id": "aaad8631906d4062dca0e592e4d4b50e",
+        "decision": 2,
+        "accepted_item_ids": [
+          1,
+          3,
+          200,
+          70000
+        ]
+      },
+      "encoded": "0a10aaad8631906d4062dca0e592e4d4b50e10021a070103c801f0a204"
+    },
+    {
+      "name": "Cancel",
+      "type": "Cancel",
+      "value": {
+        "transfer_id": "aaad8631906d4062dca0e592e4d4b50e",
+        "reason": 2
+      },
+      "encoded": "0a10aaad8631906d4062dca0e592e4d4b50e1002"
+    },
+    {
+      "name": "Done",
+      "type": "Done",
+      "value": {
+        "transfer_id": "aaad8631906d4062dca0e592e4d4b50e",
+        "status": 1
+      },
+      "encoded": "0a10aaad8631906d4062dca0e592e4d4b50e1001"
+    },
+    {
+      "name": "Ping 0",
+      "type": "Ping",
+      "value": {
+        "sequence": 0
+      },
+      "encoded": ""
+    },
+    {
+      "name": "Ping",
+      "type": "Ping",
+      "value": {
+        "sequence": 300
+      },
+      "encoded": "08ac02"
+    },
+    {
+      "name": "Chunk",
+      "type": "Chunk",
+      "value": {
+        "transfer_id": "aaad8631906d4062dca0e592e4d4b50e",
+        "item_id": 2,
+        "offset": 61440,
+        "data": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f2021222324252627"
+      },
+      "encoded": "0a10aaad8631906d4062dca0e592e4d4b50e10021880e0032228000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f2021222324252627"
+    },
+    {
+      "name": "Frame with empty Ping",
+      "type": "Frame",
+      "value": {
+        "ping": {
+          "sequence": 0
+        }
+      },
+      "encoded": "2a00"
+    },
+    {
+      "name": "Frame with Ping",
+      "type": "Frame",
+      "value": {
+        "ping": {
+          "sequence": 7
+        }
+      },
+      "encoded": "2a020807"
+    },
+    {
+      "name": "Frame with Offer",
+      "type": "Frame",
+      "value": {
+        "offer": {
+          "transfer_id": "aaad8631906d4062dca0e592e4d4b50e",
+          "items": [
+            {
+              "item_id": 1,
+              "kind": 3,
+              "name": "text.txt",
+              "mime_type": "text/plain",
+              "size": 25,
+              "sha256": "c367357bb641b1de0974f7ba7fc2acf7c33f03f20fad048528b83e499ccecca1",
+              "inline_data": "48656c6c6f2066726f6d204272617665205472616e73666572"
+            },
+            {
+              "item_id": 2,
+              "kind": 2,
+              "name": "Café photo 📷.jpg",
+              "mime_type": "image/jpeg",
+              "size": 5000000000,
+              "sha256": "d81ed1057b044dc23332e004894b53cbb36c367c9a846dbfbe94f922504f2f64",
+              "inline_data": ""
+            }
+          ]
+        }
+      },
+      "encoded": "0abd010a10aaad8631906d4062dca0e592e4d4b50e1259080110031a08746578742e747874220a746578742f706c61696e28193220c367357bb641b1de0974f7ba7fc2acf7c33f03f20fad048528b83e499ccecca13a1948656c6c6f2066726f6d204272617665205472616e73666572124e080210021a14436166c3a92070686f746f20f09f93b72e6a7067220a696d6167652f6a7065672880e497d0123220d81ed1057b044dc23332e004894b53cbb36c367c9a846dbfbe94f922504f2f64"
+    },
+    {
+      "name": "Frame with Response",
+      "type": "Frame",
+      "value": {
+        "response": {
+          "transfer_id": "aaad8631906d4062dca0e592e4d4b50e",
+          "decision": 3,
+          "accepted_item_ids": []
+        }
+      },
+      "encoded": "12140a10aaad8631906d4062dca0e592e4d4b50e1003"
+    },
+    {
+      "name": "Frame with Cancel",
+      "type": "Frame",
+      "value": {
+        "cancel": {
+          "transfer_id": "aaad8631906d4062dca0e592e4d4b50e",
+          "reason": 1
+        }
+      },
+      "encoded": "1a140a10aaad8631906d4062dca0e592e4d4b50e1001"
+    },
+    {
+      "name": "Frame with Done",
+      "type": "Frame",
+      "value": {
+        "done": {
+          "transfer_id": "aaad8631906d4062dca0e592e4d4b50e",
+          "status": 2
+        }
+      },
+      "encoded": "22140a10aaad8631906d4062dca0e592e4d4b50e1002"
+    },
+    {
+      "name": "Frame with Chunk",
+      "type": "Frame",
+      "value": {
+        "chunk": {
+          "transfer_id": "aaad8631906d4062dca0e592e4d4b50e",
+          "item_id": 1,
+          "offset": 0,
+          "data": "000102"
+        }
+      },
+      "encoded": "32190a10aaad8631906d4062dca0e592e4d4b50e10012203000102"
+    }
+  ],
+  "decode": [
+    {
+      "name": "unknown varint field is skipped",
+      "type": "Ping",
+      "encoded": "08075005",
+      "canonical": "0807"
+    },
+    {
+      "name": "unknown LEN field is skipped",
+      "type": "Ping",
+      "encoded": "08075a03616263",
+      "canonical": "0807"
+    },
+    {
+      "name": "unknown I64 field is skipped",
+      "type": "Ping",
+      "encoded": "5101020304050607080807",
+      "canonical": "0807"
+    },
+    {
+      "name": "unknown I32 field is skipped",
+      "type": "Ping",
+      "encoded": "5d010203040807",
+      "canonical": "0807"
+    },
+    {
+      "name": "large unknown field number is skipped",
+      "type": "Ping",
+      "encoded": "f8ffffff0f010807",
+      "canonical": "0807"
+    },
+    {
+      "name": "known field with the wrong wire type is skipped",
+      "type": "Ping",
+      "encoded": "0a01010807",
+      "canonical": "0807"
+    },
+    {
+      "name": "last value wins",
+      "type": "Ping",
+      "encoded": "08010807",
+      "canonical": "0807"
+    },
+    {
+      "name": "fields out of order",
+      "type": "Done",
+      "encoded": "10010a10aaad8631906d4062dca0e592e4d4b50e",
+      "canonical": "0a10aaad8631906d4062dca0e592e4d4b50e1001"
+    },
+    {
+      "name": "explicit default value",
+      "type": "Ping",
+      "encoded": "0800",
+      "canonical": ""
+    },
+    {
+      "name": "non-minimal varint",
+      "type": "Ping",
+      "encoded": "088700",
+      "canonical": "0807"
+    },
+    {
+      "name": "uint32 keeps the low 32 bits",
+      "type": "Chunk",
+      "encoded": "108180808010",
+      "canonical": "1001"
+    },
+    {
+      "name": "unpacked repeated uint32",
+      "type": "Response",
+      "encoded": "100218011803",
+      "canonical": "10021a020103"
+    },
+    {
+      "name": "packed repeated uint32 split in two runs",
+      "type": "Response",
+      "encoded": "10021a01011a020304",
+      "canonical": "10021a03010304"
+    },
+    {
+      "name": "mixed packed and unpacked",
+      "type": "Response",
+      "encoded": "1a01011802",
+      "canonical": "1a020102"
+    },
+    {
+      "name": "max uint64 offset",
+      "type": "Chunk",
+      "encoded": "18ffffffffffffffffff01",
+      "canonical": "18ffffffffffffffffff01"
+    },
+    {
+      "name": "bits above 2^64 in a 10-byte varint are dropped",
+      "type": "Ping",
+      "encoded": "08ffffffffffffffff877f",
+      "canonical": "08ffffffffffffffff8701"
+    },
+    {
+      "name": "Frame with unknown field and a body",
+      "type": "Frame",
+      "encoded": "38022a020807",
+      "canonical": "2a020807"
+    },
+    {
+      "name": "Frame body field with unknown wire type is skipped",
+      "type": "Frame",
+      "encoded": "08052a020807",
+      "canonical": "2a020807"
+    }
+  ],
+  "invalid": [
+    {
+      "name": "truncated varint",
+      "type": "Ping",
+      "encoded": "0880",
+      "protobuf_accepts": false
+    },
+    {
+      "name": "truncated key",
+      "type": "Ping",
+      "encoded": "80",
+      "protobuf_accepts": false
+    },
+    {
+      "name": "varint longer than 10 bytes",
+      "type": "Ping",
+      "encoded": "08ffffffffffffffffffff01",
+      "protobuf_accepts": false
+    },
+    {
+      "name": "LEN past the end",
+      "type": "Chunk",
+      "encoded": "2205616263",
+      "protobuf_accepts": false
+    },
+    {
+      "name": "truncated I64",
+      "type": "Ping",
+      "encoded": "510102",
+      "protobuf_accepts": false
+    },
+    {
+      "name": "field number 0",
+      "type": "Ping",
+      "encoded": "0001",
+      "protobuf_accepts": false
+    },
+    {
+      "name": "start group wire type",
+      "type": "Ping",
+      "encoded": "0b",
+      "protobuf_accepts": false
+    },
+    {
+      "name": "end group wire type",
+      "type": "Ping",
+      "encoded": "0c",
+      "protobuf_accepts": false
+    },
+    {
+      "name": "wire type 6",
+      "type": "Ping",
+      "encoded": "0e",
+      "protobuf_accepts": false
+    },
+    {
+      "name": "wire type 7",
+      "type": "Ping",
+      "encoded": "0f",
+      "protobuf_accepts": false
+    },
+    {
+      "name": "invalid UTF-8 in a string",
+      "type": "OfferItem",
+      "encoded": "1a02c328",
+      "protobuf_accepts": false
+    },
+    {
+      "name": "UTF-8 encoded surrogate in a string",
+      "type": "PeerInfo",
+      "encoded": "1203eda080",
+      "protobuf_accepts": false
+    },
+    {
+      "name": "invalid nested OfferItem",
+      "type": "Offer",
+      "encoded": "12031a01ff",
+      "protobuf_accepts": false
+    },
+    {
+      "name": "truncated packed uint32",
+      "type": "Response",
+      "encoded": "1a0180",
+      "protobuf_accepts": false
+    },
+    {
+      "name": "Frame with no body",
+      "type": "Frame",
+      "encoded": "",
+      "protobuf_accepts": true
+    },
+    {
+      "name": "Frame with only unknown fields",
+      "type": "Frame",
+      "encoded": "3801",
+      "protobuf_accepts": true
+    },
+    {
+      "name": "Frame with two bodies",
+      "type": "Frame",
+      "encoded": "2a002a020801",
+      "protobuf_accepts": true
+    },
+    {
+      "name": "Frame with two different bodies",
+      "type": "Frame",
+      "encoded": "2a002200",
+      "protobuf_accepts": true
+    }
+  ]
+}

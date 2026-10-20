@@ -1,0 +1,132 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+// Brave Transfer wire messages, protocol version 1. See PROTOCOL.md.
+//
+// The Swift (components/brave_transfer/swift) and Python
+// (tools/brave_transfer) implementations use hand-written codecs for these
+// messages. Keep field numbers, types and the encoding rules in PROTOCOL.md §5
+// in sync with them and with test/data/proto_messages.json.
+
+syntax = "proto3";
+
+option optimize_for = LITE_RUNTIME;
+
+package brave_transfer.proto;
+
+// Payload of Noise handshake message 1 (initiator -> responder). Message 1 is
+// encrypted with a key derived only from public values, so nothing in here is
+// confidential.
+message ClientHello {
+  uint32 protocol_version = 1;
+  // The 8-byte discovery tag that made the initiator dial. Tells the responder
+  // which PSK to use.
+  bytes trust_tag = 2;
+}
+
+enum DeviceType {
+  DEVICE_TYPE_UNSPECIFIED = 0;
+  DEVICE_TYPE_DESKTOP = 1;
+  DEVICE_TYPE_PHONE = 2;
+  DEVICE_TYPE_TABLET = 3;
+}
+
+// Payload of Noise handshake messages 2 (responder) and 3 (initiator).
+message PeerInfo {
+  uint32 protocol_version = 1;
+  string device_name = 2;
+  DeviceType device_type = 3;
+  string sync_device_guid = 4;
+  // Bit set, see PROTOCOL.md §5.3.
+  uint64 capabilities = 5;
+}
+
+enum ItemKind {
+  ITEM_KIND_UNSPECIFIED = 0;
+  ITEM_KIND_FILE = 1;
+  ITEM_KIND_IMAGE = 2;
+  ITEM_KIND_TEXT = 3;
+  ITEM_KIND_URL = 4;
+}
+
+message OfferItem {
+  uint32 item_id = 1;
+  ItemKind kind = 2;
+  string name = 3;
+  string mime_type = 4;
+  uint64 size = 5;
+  bytes sha256 = 6;
+  // TEXT and URL items up to 8192 bytes travel here and are not chunked.
+  bytes inline_data = 7;
+}
+
+message Offer {
+  bytes transfer_id = 1;
+  repeated OfferItem items = 2;
+}
+
+enum Decision {
+  DECISION_UNSPECIFIED = 0;
+  DECISION_ACCEPT_ALL = 1;
+  DECISION_ACCEPT_SOME = 2;
+  DECISION_DECLINE = 3;
+  DECISION_BUSY = 4;
+  DECISION_NO_SPACE = 5;
+}
+
+message Response {
+  bytes transfer_id = 1;
+  Decision decision = 2;
+  // Only for DECISION_ACCEPT_SOME.
+  repeated uint32 accepted_item_ids = 3;
+}
+
+enum CancelReason {
+  CANCEL_REASON_UNSPECIFIED = 0;
+  CANCEL_REASON_USER = 1;
+  CANCEL_REASON_TIMEOUT = 2;
+  CANCEL_REASON_ERROR = 3;
+}
+
+message Cancel {
+  bytes transfer_id = 1;
+  CancelReason reason = 2;
+}
+
+enum DoneStatus {
+  DONE_STATUS_UNSPECIFIED = 0;
+  DONE_STATUS_OK = 1;
+  DONE_STATUS_HASH_MISMATCH = 2;
+  DONE_STATUS_WRITE_FAILED = 3;
+  DONE_STATUS_INTERRUPTED = 4;
+}
+
+message Done {
+  bytes transfer_id = 1;
+  DoneStatus status = 2;
+}
+
+message Ping {
+  uint64 sequence = 1;
+}
+
+message Chunk {
+  bytes transfer_id = 1;
+  uint32 item_id = 2;
+  uint64 offset = 3;
+  bytes data = 4;
+}
+
+// The plaintext of every Noise transport message.
+message Frame {
+  oneof body {
+    Offer offer = 1;
+    Response response = 2;
+    Cancel cancel = 3;
+    Done done = 4;
+    Ping ping = 5;
+    Chunk chunk = 6;
+  }
+}
