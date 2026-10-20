@@ -805,6 +805,10 @@ class NewTabPageViewController: UIViewController {
   ) {
     guard let section = layout.braveNewsSection, parent != nil else { return }
 
+    // This uses `reloadData` instead of `reloadSections` throughout: `reloadSections` validates the
+    // item counts of sections that aren't being reloaded, which raises a consistency assertion when
+    // the feed publishes a new state before a previous update has been committed. Same workaround
+    // as `observableProvider.sectionDidChange`.
     func _completeLoading() {
       if Preferences.BraveNews.isShowingOptIn.value {
         Preferences.BraveNews.isShowingOptIn.value = false
@@ -841,7 +845,7 @@ class NewTabPageViewController: UIViewController {
           )
         }
       } else {
-        collectionView.reloadSections(IndexSet(integer: section))
+        collectionView.reloadData()
       }
     }
 
@@ -873,15 +877,14 @@ class NewTabPageViewController: UIViewController {
         feedOverlayView.loaderView.isHidden = false
         feedOverlayView.loaderView.start()
 
-        let numberOfItems = collectionView.numberOfItems(inSection: section)
-        if numberOfItems > 0 {
-          collectionView.reloadSections(IndexSet(integer: section))
+        if collectionView.numberOfItems(inSection: section) > 0 {
+          collectionView.reloadData()
         }
       }
     case (.loading, _):
       _completeLoading()
     default:
-      collectionView.reloadSections(IndexSet(integer: section))
+      collectionView.reloadData()
     }
   }
 
