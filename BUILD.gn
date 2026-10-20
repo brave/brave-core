@@ -5,6 +5,7 @@
 
 import("//brave/build/config.gni")
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+import("//brave/components/brave_transfer/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/tools/crates/build_crate.gni")
 import("//build/config/locales.gni")
@@ -788,6 +789,12 @@ if (is_mac) {
         "--enable_updater",
         "--update_check_url=$update_check_url",
       ]
+    }
+
+    if (enable_brave_transfer) {
+      # Brave Transfer browses for its peers with Bonjour, which macOS only
+      # allows for service types listed in NSBonjourServices.
+      args += [ "--add_bonjour_service=_brave-xfer._tcp" ]
     }
 
     deps = [ "//chrome:chrome_app_plist" ]

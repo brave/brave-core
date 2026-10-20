@@ -118,6 +118,14 @@ def Main():
         '--enable_updater', dest='enable_updater', action='store_true'
     )
     parser.add_argument(
+        '--add_bonjour_service',
+        dest='bonjour_services',
+        action='append',
+        default=[],
+        help='A DNS-SD service type to add to NSBonjourServices, '
+        + 'e.g. _brave-xfer._tcp. May be repeated.',
+    )
+    parser.add_argument(
         '--update_check_url',
         dest='update_check_url',
         action='store',
@@ -171,6 +179,12 @@ def Main():
         # matter: it gets passed to `ksadmin --register` but is never used
         # there. We still provide a real value for forward compatibility.
         plist['KSUpdateURL'] = args.update_check_url
+
+    if args.bonjour_services:
+        services = plist.setdefault('NSBonjourServices', [])
+        for service in args.bonjour_services:
+            if service not in services:
+                services.append(service)
 
     # Now that all keys have been mutated, rewrite the file.
     # Convert Info.plist to the format requested by the --format flag. Any
