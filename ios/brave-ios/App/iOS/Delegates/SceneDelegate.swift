@@ -660,9 +660,13 @@ extension SceneDelegate {
         break
       }
 
-      let isPrivateBrowsing =
-        scene.browserViewController?.privateBrowsingManager.isPrivateBrowsing == true
-      scene.browserViewController?.switchToTabForURLOrOpen(
+      guard let browserViewController = scene.browserViewController else { return }
+      let isPrivateBrowsing = browserViewController.privateBrowsingManager.isPrivateBrowsing
+      var url = url
+      if Preferences.General.replaceSystemSearchEngineURLs.value {
+        url = browserViewController.replacingSystemSearchURL(url, isPrivate: isPrivateBrowsing)
+      }
+      browserViewController.switchToTabForURLOrOpen(
         url,
         isPrivate: isPrivateBrowsing,
         isPrivileged: false
