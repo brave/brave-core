@@ -33,6 +33,7 @@ static_library("browser") {
   ]
 
   deps = [
+    "//brave/components/brave_transfer/core:features",
     "//components/os_crypt/async/browser",
     "//components/os_crypt/async/common",
     "//url",
@@ -74,6 +75,7 @@ source_set("unit_tests") {
     "//base",
     "//base/test:test_support",
     "//brave/components/brave_transfer/core",
+    "//brave/components/brave_transfer/core:features",
     "//components/os_crypt/async/browser",
     "//components/os_crypt/async/browser:test_support",
     "//components/prefs:test_support",
