@@ -1,0 +1,126 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//testing/test.gni")
+import("//third_party/protobuf/proto_library.gni")
+
+proto_library("proto") {
+  sources = [ "brave_transfer.proto" ]
+}
+
+# Protocol core (PROTOCOL.md). Depends only on //base, //crypto, BoringSSL and
+# protobuf, so it can be shared by desktop, Android and a utility process.
+static_library("core") {
+  sources = [
+    "discovery_provider.cc",
+    "discovery_provider.h",
+    "filename_sanitizer.cc",
+    "filename_sanitizer.h",
+    "frame_codec.cc",
+    "frame_codec.h",
+    "noise_handshake.cc",
+    "noise_handshake.h",
+    "proximity_provider.h",
+    "secure_channel.cc",
+    "secure_channel.h",
+    "session.cc",
+    "session.h",
+    "transfer_offer.cc",
+    "transfer_offer.h",
+    "trust_keys.cc",
+    "trust_keys.h",
+  ]
+
+  public_deps = [
+    ":proto",
+    "//base",
+  ]
+
+  deps = [
+    "//crypto",
+    "//third_party/boringssl",
+  ]
+}
+
+# Turns a Brave Sync code into the chain seed. Separate from :core so that the
+# protocol does not depend on brave_sync.
+static_library("sync_code") {
+  sources = [
+    "sync_code.cc",
+    "sync_code.h",
+  ]
+
+  public_deps = [ ":core" ]
+
+  deps = [
+    "//base",
+    "//brave/components/brave_sync:crypto",
+  ]
+}
+
+static_library("features") {
+  sources = [
+    "features.cc",
+    "features.h",
+    "pref_names.h",
+  ]
+
+  public_deps = [ "//base" ]
+}
+
+source_set("test_support") {
+  testonly = true
+
+  sources = [
+    "test/test_vectors.cc",
+    "test/test_vectors.h",
+  ]
+
+  public_deps = [
+    ":core",
+    "//base",
+  ]
+
+  deps = [
+    "//base/test:test_support",
+    "//testing/gtest",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [
+    "filename_sanitizer_unittest.cc",
+    "frame_codec_unittest.cc",
+    "noise_handshake_unittest.cc",
+    "session_unittest.cc",
+    "transfer_offer_unittest.cc",
+    "trust_keys_unittest.cc",
+  ]
+
+  data = [ "test/data/" ]
+
+  deps = [
+    ":core",
+    ":features",
+    ":sync_code",
+    ":test_support",
+    "//base",
+    "//base/test:test_support",
+    "//crypto",
+    "//testing/gtest",
+    "//third_party/boringssl",
+  ]
+}
+
+# The core tests alone, without the rest of brave_components_unittests, for
+# quick iteration on the protocol.
+test("brave_transfer_core_unittests") {
+  deps = [
+    ":unit_tests",
+    "//base/test:run_all_unittests",
+  ]
+}

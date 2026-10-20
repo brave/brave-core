@@ -1,0 +1,10 @@
+include_rules = [
+  "+crypto",
+  "+third_party/boringssl/src/include",
+]
+
+specific_include_rules = {
+  "sync_code\.cc": [
+    "+brave/components/brave_sync/crypto",
+  ],
+}
