@@ -21,6 +21,16 @@ public enum SharedItem: Equatable, Sendable {
     case .file(_, _, _, let size): return size
     }
   }
+
+  /// The item to send. Hashes file items, so call it off the main thread.
+  public func outgoingItem() throws -> OutgoingItem? {
+    switch self {
+    case .text(let text), .link(let text):
+      return OutgoingItems.text(text)
+    case .file(let url, let name, let mimeType, _):
+      return try OutgoingItems.file(at: url, name: name, mimeType: mimeType)
+    }
+  }
 }
 
 /// Reads the share sheet's `NSItemProvider`s. Files are copied out of the
@@ -99,6 +109,18 @@ public enum SharedItemLoader {
         continuation.resume(returning: copy(url, name: name, type: type, into: directory))
       }
     }
+  }
+
+  /// Copies a file the caller can read (for example from the document
+  /// picker) into `directory` as a file item, whatever its type.
+  public static func fileItem(copying source: URL, into directory: URL) -> SharedItem? {
+    try? FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+    return copy(
+      source,
+      name: source.lastPathComponent,
+      type: UTType(filenameExtension: source.pathExtension),
+      into: directory
+    )
   }
 
   private static func copy(

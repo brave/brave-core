@@ -96,16 +96,11 @@ public final class TransferShareModel: ObservableObject {
 
   nonisolated private static func outgoingItems(_ items: [SharedItem]) -> [OutgoingItem] {
     items.compactMap { item in
-      switch item {
-      case .text(let text), .link(let text):
-        return OutgoingItems.text(text)
-      case .file(let url, let name, let mimeType, _):
-        do {
-          return try OutgoingItems.file(at: url, name: name, mimeType: mimeType)
-        } catch {
-          log.error("Could not read a shared file: \(error.localizedDescription)")
-          return nil
-        }
+      do {
+        return try item.outgoingItem()
+      } catch {
+        log.error("Could not read a shared file: \(error.localizedDescription)")
+        return nil
       }
     }
   }

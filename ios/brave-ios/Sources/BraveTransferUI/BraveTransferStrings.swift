@@ -113,6 +113,21 @@ extension Strings {
         "Toast when a device in the user's Sync chain presented a different key than before and was rejected. %@ is the device name."
     )
 
+    // MARK: Picking items to send (brave://transfer)
+
+    public static let pickPhotos = NSLocalizedString(
+      "braveTransfer.pickPhotos",
+      bundle: .module,
+      value: "Photos & Videos",
+      comment: "Option for choosing photos and videos to send to a computer."
+    )
+    public static let pickFiles = NSLocalizedString(
+      "braveTransfer.pickFiles",
+      bundle: .module,
+      value: "Files",
+      comment: "Option for choosing files to send to a computer."
+    )
+
     // MARK: Share extension
 
     public static let shareTitle = NSLocalizedString(

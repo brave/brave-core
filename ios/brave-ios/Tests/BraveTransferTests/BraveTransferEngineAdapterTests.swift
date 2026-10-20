@@ -72,7 +72,12 @@ final class BraveTransferEngineAdapterTests: XCTestCase {
     let temporary = directory.appendingPathComponent("item.part")
     try Data("hello".utf8).write(to: temporary)
     let file = IncomingFile(
-      key: "t/1", name: "notes.txt", kind: .file, mimeType: "text/plain", size: 5, sha256: []
+      key: "t/1",
+      name: "notes.txt",
+      kind: .file,
+      mimeType: "text/plain",
+      size: 5,
+      sha256: []
     )
 
     let saved = expectation(description: "saved")
