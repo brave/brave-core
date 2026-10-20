@@ -131,6 +131,7 @@ import java.util.List;
     ChromeFeatureList.LENS_OVERLAY_ANDROID,
     ChromeFeatureList.SUBMENUS_IN_APP_MENU,
     ChromeFeatureList.SUBMENUS_IN_APP_MENU_LFF,
+    BraveFeatureList.BRAVE_ANDROID_EXTENSIONS,
     BraveFeatureList.BRAVE_SHRED,
 })
 @EnableFeatures({

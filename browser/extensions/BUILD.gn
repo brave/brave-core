@@ -286,6 +286,23 @@ source_set("extensions") {
     }
 
     allow_circular_includes_from = [ ":brave_prefs_util_impl" ]
+  } else if (enable_extensions_core) {
+    # Android's extension management policy, standing in for the desktop
+    # brave_extension_management.{cc,h} from the enable_extensions branch.
+    sources += [
+      "android/brave_extension_field_trials.cc",
+      "android/brave_extension_management.cc",
+      "android/brave_extension_management.h",
+    ]
+
+    deps += [
+      "//brave/browser:brave_browser_features",
+      "//chrome/browser/extensions:chrome_extensions_browser_client",
+      "//chrome/browser/flags:flags_android",
+      "//components/variations",
+      "//content/public/common",
+      "//extensions/strings",
+    ]
   }
 }
 
