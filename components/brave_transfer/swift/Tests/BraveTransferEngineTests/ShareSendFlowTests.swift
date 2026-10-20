@@ -71,6 +71,10 @@ final class ShareSendFlowTests: XCTestCase {
     flow.begin(totalBytes: HandoffPolicy().maxDirectBytes + 1, localNetwork: .granted)
     XCTAssertEqual(flow.phase, .handoff(.tooLarge))
     XCTAssertEqual(advertiser.startCount, 0)
+    let changes = snapshots.count
+    flow.setItems([OutgoingItems.text("late")!])
+    XCTAssertEqual(flow.phase, .handoff(.tooLarge))
+    XCTAssertEqual(snapshots.count, changes)
   }
 
   func testUndeterminedLocalNetworkHandsOff() {

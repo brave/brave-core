@@ -104,6 +104,12 @@ public final class ShareSendFlow: TransferServiceObserver {
 
   /// The items, once hashed. The user can pick a computer before this.
   public func setItems(_ items: [OutgoingItem]) {
+    switch phase {
+    case .sending, .finished, .handoff:
+      return
+    case .preparing, .searching, .choosing:
+      break
+    }
     guard !items.isEmpty else {
       phase = .finished(.failed)
       stopListening()
