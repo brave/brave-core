@@ -50,8 +50,8 @@ importers:
         specifier: 0.40.6
         version: 0.40.6(react@19.2.7)(styled-components@6.4.3(react-dom@19.2.7(react@19.2.7))(react@19.2.7))
       '@brave/leo':
-        specifier: github:brave/leo#ff620e4e53b70dc9868c2215c5cb56e8145e92df
-        version: https://codeload.github.com/brave/leo/tar.gz/ff620e4e53b70dc9868c2215c5cb56e8145e92df(@babel/core@7.29.7(supports-color@8.1.1))(@typescript-eslint/types@8.65.0)(less@3.13.1)(postcss-load-config@6.0.1(jiti@1.21.7)(postcss@8.5.23)(tsx@4.19.2))(postcss@8.5.23)(react@19.2.7)(sass@1.102.0)(storybook@8.6.17(bufferutil@4.1.0)(prettier@3.5.3)(supports-color@8.1.1)(utf-8-validate@6.0.6))(stylus@0.62.0(supports-color@8.1.1))(tsx@4.19.2)(typescript@5.9.3)
+        specifier: github:brave/leo#7cacfef7134a605e35de9bb95db4e85540b941bc
+        version: https://codeload.github.com/brave/leo/tar.gz/7cacfef7134a605e35de9bb95db4e85540b941bc(@babel/core@7.29.7(supports-color@8.1.1))(@typescript-eslint/types@8.65.0)(less@3.13.1)(postcss-load-config@6.0.1(jiti@1.21.7)(postcss@8.5.23)(tsx@4.19.2))(postcss@8.5.23)(react@19.2.7)(sass@1.102.0)(storybook@8.6.17(bufferutil@4.1.0)(prettier@3.5.3)(supports-color@8.1.1)(utf-8-validate@6.0.6))(stylus@0.62.0(supports-color@8.1.1))(tsx@4.19.2)(typescript@5.9.3)
       '@brave/leo-sf-symbols':
         specifier: github:brave/leo-sf-symbols#b5a6139df7ebd3f7d55aa8d6af60a524edab87b0
         version: https://codeload.github.com/brave/leo-sf-symbols/tar.gz/b5a6139df7ebd3f7d55aa8d6af60a524edab87b0
@@ -713,14 +713,14 @@ packages:
     resolution: {gitHosted: true, integrity: sha512-tq9Nyc0kd7dlV/1a2/WSn9xRwH38FY+F8VfsH/LvBpphLdDBC/+oAqKyPuF+tVfnS5fAuBesZOqZXdPWklGV+A==, tarball: https://codeload.github.com/brave/leo-sf-symbols/tar.gz/b5a6139df7ebd3f7d55aa8d6af60a524edab87b0}
     version: 1.0.103
 
-  '@brave/leo@https://codeload.github.com/brave/leo/tar.gz/ff620e4e53b70dc9868c2215c5cb56e8145e92df':
-    resolution: {gitHosted: true, integrity: sha512-tccekQOl3UNR5fFoOLRWYatdWiWZUU0d7w4OAHM4i/EH7XOMBuayr4Eo8ABhY2YDRo/n8OIqGFEjwb0rP6hNSA==, tarball: https://codeload.github.com/brave/leo/tar.gz/ff620e4e53b70dc9868c2215c5cb56e8145e92df}
+  '@brave/leo@https://codeload.github.com/brave/leo/tar.gz/7cacfef7134a605e35de9bb95db4e85540b941bc':
+    resolution: {gitHosted: true, integrity: sha512-Ht5MKMZw4G8TyJO5XQVuFIkhlx5GIiS4x35ltfaI48n0+jmmkGdt0hfgSzFmrLU0MPSTHnm/J7GE67Mlmes8LA==, tarball: https://codeload.github.com/brave/leo/tar.gz/7cacfef7134a605e35de9bb95db4e85540b941bc}
     version: 0.0.1
     hasBin: true
     peerDependencies:
       '@material/material-color-utilities': '>= 0.2.7'
       react: 19.2.7
-      typescript: '>= 4.7.0'
+      typescript: '>= 4.7.0 < 7.0.0'
     peerDependenciesMeta:
       '@material/material-color-utilities':
         optional: true
@@ -1317,6 +1317,9 @@ packages:
 
   '@jridgewell/sourcemap-codec@1.5.5':
     resolution: {integrity: sha512-cYQ9310grqxueWbl+WuIUIaiUaDcj7WOq5fVhEljNVgRfOUhY9fy2zTvfoqWsnebh8Sl70VScFbICvJnLKB0Og==}
+
+  '@jridgewell/sourcemap-codec@1.6.0':
+    resolution: {integrity: sha512-T7jf+5zgsZHwNJ4lvQ7/aezbyk0nNX+zJVWpmHA7VYsEx7a7qr5Rg5IbtJFqkgze5Y2sruq1RUY8Q837Od7iFw==}
 
   '@jridgewell/trace-mapping@0.3.31':
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
@@ -2360,8 +2363,8 @@ packages:
   '@substrate/ss58-registry@1.51.0':
     resolution: {integrity: sha512-TWDurLiPxndFgKjVavCniytBIw+t4ViOi7TYp9h/D0NMmkEc9klFTo+827eyEJ0lELpqO207Ey7uGxUa+BS1jQ==}
 
-  '@sveltejs/acorn-typescript@1.0.11':
-    resolution: {integrity: sha512-LFuZUkjJ9iF7JZye/aG5XM0SFcQ5VyL0oVX4WJ9dc0Va3R3s0OauX1BESVCb+YN/ol8TAfqGDDAQsTG627Y5kw==}
+  '@sveltejs/acorn-typescript@1.0.13':
+    resolution: {integrity: sha512-wgKggnhZVL9Bfx1OaKKTrYY9BFRk6C8UAkQNUcIv1+llzYrIqy+RZm5HPKzn0NpEBvTVhTqB4kQyllZywsRBRQ==}
     peerDependencies:
       acorn: ^8.9.0
 
@@ -4544,8 +4547,8 @@ packages:
     resolution: {integrity: sha512-Ap6G0WQwcU/LHsvLwON1fAQX9Zp0A2Y6Y/cJBl9r/JbW90Zyg4/zbG6zzKa2OTALELarYHmKu0GhpM5EO+7T0g==}
     engines: {node: '>=0.10'}
 
-  esrap@2.3.0:
-    resolution: {integrity: sha512-GQ/7RN8uOtEfNpzZzBMTzW9JBcX42oaSVtPzdF+6cEL8pqIL094iUpr9jzYGn4O4P/1S60dJ6izyT8F4LYARng==}
+  esrap@2.4.0:
+    resolution: {integrity: sha512-CQPcneEHw/czj32uwQC52nYnax8H4SXt25FCM+LIwGZ49cMIxpOj3bP8wmzcI+Z0HIy5KkClaPhRLfCySzwHPA==}
     peerDependencies:
       '@typescript-eslint/types': ^8.2.0
     peerDependenciesMeta:
@@ -7455,8 +7458,8 @@ packages:
     resolution: {integrity: sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==}
     engines: {node: '>= 0.4'}
 
-  svelte-preprocess@6.0.3:
-    resolution: {integrity: sha512-PLG2k05qHdhmRG7zR/dyo5qKvakhm8IJ+hD2eFRQmMLHp7X3eJnjeupUtvuRpbNiF31RjVw45W+abDwHEmP5OA==}
+  svelte-preprocess@6.0.5:
+    resolution: {integrity: sha512-sgwew5yV/2eMeQobIWgAxCNarKwiTUDIc3siAUbq3sp0G6ONtzk0W+wJihMdqjbYb3iGU3ubpGv0usnnuXT3qg==}
     engines: {node: '>= 18.0.0'}
     peerDependencies:
       '@babel/core': ^7.10.2
@@ -7469,7 +7472,7 @@ packages:
       stylus: '>=0.55'
       sugarss: ^2.0.0 || ^3.0.0 || ^4.0.0
       svelte: ^4.0.0 || ^5.0.0-next.100 || ^5.0.0
-      typescript: ^5.0.0
+      typescript: ^5.0.0 || ^6.0.0
     peerDependenciesMeta:
       '@babel/core':
         optional: true
@@ -7492,8 +7495,8 @@ packages:
       typescript:
         optional: true
 
-  svelte@5.55.7:
-    resolution: {integrity: sha512-ymI5ykLPwIHW839E053FQbI1G+jnRFJEw3Kv5Y4njixVWywQBx+NUFpkkKyk5LIb36Fg9DVXSYpqiGekLD0hyw==}
+  svelte@5.57.1:
+    resolution: {integrity: sha512-Uqj49lWKB+iSSnneuwiYYJ7MZgkB+eXr0LXBhv4uDuAkXqnWmq65Sxflfvp0Lc6MdKjMUxGaeOKWJqz5SNiVIA==}
     engines: {node: '>=18'}
 
   symbol-tree@3.2.4:
@@ -8436,11 +8439,11 @@ snapshots:
 
   '@brave/leo-sf-symbols@https://codeload.github.com/brave/leo-sf-symbols/tar.gz/b5a6139df7ebd3f7d55aa8d6af60a524edab87b0': {}
 
-  '@brave/leo@https://codeload.github.com/brave/leo/tar.gz/ff620e4e53b70dc9868c2215c5cb56e8145e92df(@babel/core@7.29.7(supports-color@8.1.1))(@typescript-eslint/types@8.65.0)(less@3.13.1)(postcss-load-config@6.0.1(jiti@1.21.7)(postcss@8.5.23)(tsx@4.19.2))(postcss@8.5.23)(react@19.2.7)(sass@1.102.0)(storybook@8.6.17(bufferutil@4.1.0)(prettier@3.5.3)(supports-color@8.1.1)(utf-8-validate@6.0.6))(stylus@0.62.0(supports-color@8.1.1))(tsx@4.19.2)(typescript@5.9.3)':
+  '@brave/leo@https://codeload.github.com/brave/leo/tar.gz/7cacfef7134a605e35de9bb95db4e85540b941bc(@babel/core@7.29.7(supports-color@8.1.1))(@typescript-eslint/types@8.65.0)(less@3.13.1)(postcss-load-config@6.0.1(jiti@1.21.7)(postcss@8.5.23)(tsx@4.19.2))(postcss@8.5.23)(react@19.2.7)(sass@1.102.0)(storybook@8.6.17(bufferutil@4.1.0)(prettier@3.5.3)(supports-color@8.1.1)(utf-8-validate@6.0.6))(stylus@0.62.0(supports-color@8.1.1))(tsx@4.19.2)(typescript@5.9.3)':
     dependencies:
       '@storybook/test': 8.6.15(storybook@8.6.17(bufferutil@4.1.0)(prettier@3.5.3)(supports-color@8.1.1)(utf-8-validate@6.0.6))
-      svelte: 5.55.7(@typescript-eslint/types@8.65.0)
-      svelte-preprocess: 6.0.3(@babel/core@7.29.7(supports-color@8.1.1))(less@3.13.1)(postcss-load-config@6.0.1(jiti@1.21.7)(postcss@8.5.23)(tsx@4.19.2))(postcss@8.5.23)(sass@1.102.0)(stylus@0.62.0(supports-color@8.1.1))(svelte@5.55.7(@typescript-eslint/types@8.65.0))(typescript@5.9.3)
+      svelte: 5.57.1(@typescript-eslint/types@8.65.0)
+      svelte-preprocess: 6.0.5(@babel/core@7.29.7(supports-color@8.1.1))(less@3.13.1)(postcss-load-config@6.0.1(jiti@1.21.7)(postcss@8.5.23)(tsx@4.19.2))(postcss@8.5.23)(sass@1.102.0)(stylus@0.62.0(supports-color@8.1.1))(svelte@5.57.1(@typescript-eslint/types@8.65.0))(typescript@5.9.3)
       tailwindcss: 3.4.19(tsx@4.19.2)
       tslib: 2.8.1
     optionalDependencies:
@@ -9231,6 +9234,8 @@ snapshots:
       '@jridgewell/trace-mapping': 0.3.31
 
   '@jridgewell/sourcemap-codec@1.5.5': {}
+
+  '@jridgewell/sourcemap-codec@1.6.0': {}
 
   '@jridgewell/trace-mapping@0.3.31':
     dependencies:
@@ -10672,7 +10677,7 @@ snapshots:
 
   '@substrate/ss58-registry@1.51.0': {}
 
-  '@sveltejs/acorn-typescript@1.0.11(acorn@8.18.0)':
+  '@sveltejs/acorn-typescript@1.0.13(acorn@8.18.0)':
     dependencies:
       acorn: 8.18.0
 
@@ -13264,7 +13269,7 @@ snapshots:
     dependencies:
       estraverse: 5.3.0
 
-  esrap@2.3.0(@typescript-eslint/types@8.65.0):
+  esrap@2.4.0(@typescript-eslint/types@8.65.0):
     dependencies:
       '@jridgewell/sourcemap-codec': 1.5.5
     optionalDependencies:
@@ -16956,9 +16961,9 @@ snapshots:
 
   supports-preserve-symlinks-flag@1.0.0: {}
 
-  svelte-preprocess@6.0.3(@babel/core@7.29.7(supports-color@8.1.1))(less@3.13.1)(postcss-load-config@6.0.1(jiti@1.21.7)(postcss@8.5.23)(tsx@4.19.2))(postcss@8.5.23)(sass@1.102.0)(stylus@0.62.0(supports-color@8.1.1))(svelte@5.55.7(@typescript-eslint/types@8.65.0))(typescript@5.9.3):
+  svelte-preprocess@6.0.5(@babel/core@7.29.7(supports-color@8.1.1))(less@3.13.1)(postcss-load-config@6.0.1(jiti@1.21.7)(postcss@8.5.23)(tsx@4.19.2))(postcss@8.5.23)(sass@1.102.0)(stylus@0.62.0(supports-color@8.1.1))(svelte@5.57.1(@typescript-eslint/types@8.65.0))(typescript@5.9.3):
     dependencies:
-      svelte: 5.55.7(@typescript-eslint/types@8.65.0)
+      svelte: 5.57.1(@typescript-eslint/types@8.65.0)
     optionalDependencies:
       '@babel/core': 7.29.7(supports-color@8.1.1)
       less: 3.13.1
@@ -16968,20 +16973,19 @@ snapshots:
       stylus: 0.62.0(supports-color@8.1.1)
       typescript: 5.9.3
 
-  svelte@5.55.7(@typescript-eslint/types@8.65.0):
+  svelte@5.57.1(@typescript-eslint/types@8.65.0):
     dependencies:
       '@jridgewell/remapping': 2.3.5
-      '@jridgewell/sourcemap-codec': 1.5.5
-      '@sveltejs/acorn-typescript': 1.0.11(acorn@8.18.0)
+      '@jridgewell/sourcemap-codec': 1.6.0
+      '@sveltejs/acorn-typescript': 1.0.13(acorn@8.18.0)
       '@types/estree': 1.0.9
-      '@types/trusted-types': 2.0.7
       acorn: 8.18.0
       aria-query: 5.3.1
       axobject-query: 4.1.0
       clsx: 2.1.1
       devalue: 5.9.4
       esm-env: 1.2.2
-      esrap: 2.3.0(@typescript-eslint/types@8.65.0)
+      esrap: 2.4.0(@typescript-eslint/types@8.65.0)
       is-reference: 3.0.3
       locate-character: 3.0.0
       magic-string: 0.30.21
