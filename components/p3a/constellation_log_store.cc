@@ -11,6 +11,7 @@
 
 #include "base/check.h"
 #include "base/logging.h"
+#include "base/no_destructor.h"
 #include "base/notreached.h"
 #include "base/rand_util.h"
 #include "base/strings/string_number_conversions.h"
@@ -243,8 +244,9 @@ void ConstellationLogStore::LoadPersistedUnsentLogs() {
   }
 }
 
-const metrics::LogMetadata ConstellationLogStore::staged_log_metadata() const {
-  return {};
+const metrics::LogMetadata& ConstellationLogStore::staged_log_metadata() const {
+  static const base::NoDestructor<metrics::LogMetadata> kEmptyMetadata;
+  return *kEmptyMetadata;
 }
 
 }  // namespace p3a
