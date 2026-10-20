@@ -1,0 +1,18 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Let Brave's chrome-untrusted:// WebUIs load chrome-untrusted://favicon2.
+
+      Cross-origin chrome-untrusted:// subresource requests fail unless the
+      target source allows the initiator, and upstream only allows the Data
+      Sharing page.
+    preempt_function_impl:
+      function_name: FaviconSource::GetAccessControlAllowOriginForOrigin
+      code: |-
+        if (BraveIsFavicon2AllowedOnOrigin(serve_untrusted_, origin)) {
+          return origin;
+        }

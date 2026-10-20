@@ -3,7 +3,13 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
+#include <string>
+
 #include "build/build_config.h"
+
+// Defined in brave/browser/ui/webui/favicon_source.cc.
+bool BraveIsFavicon2AllowedOnOrigin(bool serve_untrusted,
+                                    const std::string& origin);
 
 #if BUILDFLAG(IS_ANDROID)
 
