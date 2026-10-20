@@ -23,9 +23,22 @@ seconds without a Chromium checkout.
 | `FilenameSanitizer.swift` | receiver file name sanitizer |
 | `Sources/BraveTransferPeer` | a stdio CLI peer for interop tests; not for the app |
 
-Everything is I/O-free. The iOS engine (`ios/brave-ios/Sources/BraveTransfer`,
-to be written) owns the `NWListener`, Bonjour advertising and file access,
-and drives these types from one queue.
+Everything in `BraveTransferCore` is I/O-free.
+
+`Sources/BraveTransferEngine` builds the iPhone side on top of it, still with
+Foundation only, so it is tested here on Linux as well:
+
+| File | Contents |
+|---|---|
+| `TransferService.swift` | the Swift counterpart of the desktop `BraveTransferService`: listening, Sync-chain trust and key pinning, offers, accept/decline, saving, inbox, sending |
+| `PeerConnection.swift` | drives a handshake and a `TransferSession` over a `ByteStream` |
+| `TrustSource.swift`, `TrustStore.swift` | the Sync snapshot shared with the share extension, and pinned keys |
+| `FileSink.swift`, `InboxStore.swift` | received files (temporary file, then a finalizer) and the inbox |
+| `OutgoingItems.swift`, `Outbox.swift` | items to send, and the share extension's hand-off to the app |
+| `Discovery.swift`, `Scheduler.swift`, `ByteStream.swift` | the protocols the platform implements |
+
+The Apple-only pieces (`NWListener` and Bonjour, keychain, Photos, UI) are in
+`ios/brave-ios/Sources/BraveTransfer` and `BraveTransferUI`.
 
 ## Tests
 
@@ -48,4 +61,5 @@ Add the package to `ios/brave-ios/Package.swift`:
 .package(name: "BraveTransferCore", path: "../../components/brave_transfer/swift"),
 ```
 
-and depend on `.product(name: "BraveTransferCore", package: "BraveTransferCore")`.
+and depend on `.product(name: "BraveTransferCore", package: "BraveTransferCore")`
+and `.product(name: "BraveTransferEngine", package: "BraveTransferCore")`.

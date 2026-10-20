@@ -26,12 +26,20 @@ let package = Package(
   platforms: [.iOS(.v17), .macOS(.v14)],
   products: [
     .library(name: "BraveTransferCore", targets: ["BraveTransferCore"]),
+    .library(name: "BraveTransferEngine", targets: ["BraveTransferEngine"]),
     .executable(name: "BraveTransferPeer", targets: ["BraveTransferPeer"]),
   ],
   dependencies: packageDependencies,
   targets: [
     .target(name: "BraveTransferCore", dependencies: coreDependencies),
+    // Connections, trust, transfers, inbox and outbox on top of the core,
+    // with the platform pieces (sockets, Bonjour, Photos, keychain) behind
+    // protocols. Foundation only, so it is tested here on Linux too.
+    .target(name: "BraveTransferEngine", dependencies: ["BraveTransferCore"]),
     .executableTarget(name: "BraveTransferPeer", dependencies: ["BraveTransferCore"]),
     .testTarget(name: "BraveTransferCoreTests", dependencies: ["BraveTransferCore"]),
+    .testTarget(
+      name: "BraveTransferEngineTests", dependencies: ["BraveTransferEngine", "BraveTransferCore"]
+    ),
   ]
 )
