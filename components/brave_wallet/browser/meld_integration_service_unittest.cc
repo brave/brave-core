@@ -66,10 +66,11 @@ class MeldIntegrationServiceUnitTest : public testing::Test {
   void SetInterceptor(
       const std::string& content,
       const net::HttpStatusCode http_status,
-      const std::optional<std::string>& expected_request = std::nullopt) {
+      std::optional<std::string> expected_request = std::nullopt) {
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
         [&, content, http_status,
-         expected_request](const network::ResourceRequest& request) {
+         expected_request = std::move(expected_request)](
+            const network::ResourceRequest& request) {
           url_loader_factory_.ClearResponses();
           auto header =
               request.headers.GetHeader(brave_wallet::kMeldRpcVersionHeader);
@@ -169,9 +170,9 @@ class MeldIntegrationServiceUnitTest : public testing::Test {
       const std::string& content,
       mojom::CryptoBuySessionDataPtr session_data,
       mojom::CryptoWidgetCustomerDataPtr customer_data,
-      const std::optional<std::string>& expected_request,
+      std::optional<std::string> expected_request,
       const net::HttpStatusCode http_status = net::HTTP_OK) {
-    SetInterceptor(content, http_status, expected_request);
+    SetInterceptor(content, http_status, std::move(expected_request));
 
     TestFuture<CryptoWidget, Errors> future;
     meld_integration_service_->CryptoBuyWidgetCreate(
@@ -184,9 +185,9 @@ class MeldIntegrationServiceUnitTest : public testing::Test {
       const std::string& content,
       mojom::CryptoSellSessionDataPtr session_data,
       mojom::CryptoWidgetCustomerDataPtr customer_data,
-      const std::optional<std::string>& expected_request,
+      std::optional<std::string> expected_request,
       const net::HttpStatusCode http_status = net::HTTP_OK) {
-    SetInterceptor(content, http_status, expected_request);
+    SetInterceptor(content, http_status, std::move(expected_request));
 
     TestFuture<CryptoWidget, Errors> future;
     meld_integration_service_->CryptoSellWidgetCreate(
@@ -199,9 +200,9 @@ class MeldIntegrationServiceUnitTest : public testing::Test {
       const std::string& content,
       mojom::CryptoTransferSessionDataPtr session_data,
       mojom::CryptoWidgetCustomerDataPtr customer_data,
-      const std::optional<std::string>& expected_request,
+      std::optional<std::string> expected_request,
       const net::HttpStatusCode http_status = net::HTTP_OK) {
-    SetInterceptor(content, http_status, expected_request);
+    SetInterceptor(content, http_status, std::move(expected_request));
 
     TestFuture<CryptoWidget, Errors> future;
     meld_integration_service_->CryptoTransferWidgetCreate(
@@ -876,6 +877,7 @@ TEST_F(MeldIntegrationServiceUnitTest, CryptoBuyWidgetCreate) {
 })",
       session_data.Clone(), customer_data.Clone(), kRequestWithCustomer);
   EXPECT_FALSE(errors.has_value());
+  ASSERT_TRUE(crypto_widget);
   EXPECT_EQ("WXDpzmm2cNmtJWLDHgu1GT", crypto_widget->id);
   EXPECT_EQ("external_customer_id", crypto_widget->external_customer_id);
   EXPECT_EQ("external_session_id", crypto_widget->external_session_id);
