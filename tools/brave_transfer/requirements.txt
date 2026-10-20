@@ -1,0 +1,7 @@
+cryptography>=41
+pytest>=7
+# mDNS discovery (--advertise / --discover); not needed by the tests.
+zeroconf>=0.130
+# Only for tests/test_proto_conformance.py, which is skipped without them.
+grpcio-tools>=1.60
+protobuf>=4.25
