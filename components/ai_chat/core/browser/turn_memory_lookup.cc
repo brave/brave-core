@@ -27,8 +27,12 @@ TurnMemoryConfig TurnMemoryConfig::FromFeatures() {
   config.max_results = static_cast<size_t>(
       std::max(1, features::kLearnedMemoryMaxTurnMemories.Get()));
   config.timeout = features::kLearnedMemoryRelevanceTimeout.Get();
-  config.max_always = static_cast<size_t>(
-      std::max(0, features::kLearnedMemoryMaxAlwaysMemories.Get()));
+  config.max_preference_candidates = static_cast<size_t>(
+      std::max(0, features::kLearnedMemoryMaxPreferenceCandidates.Get()));
+  config.preference_threshold =
+      features::kLearnedMemoryPreferenceThreshold.Get();
+  config.max_preferences = static_cast<size_t>(
+      std::max(0, features::kLearnedMemoryMaxTurnPreferences.Get()));
   return config;
 }
 
@@ -101,8 +105,9 @@ void TurnMemoryLookup::Start() {
                              static_cast<int>(config_.timeout.InMilliseconds()))
                         .Set("search", !!search_));
   data_source_->GetPreferenceLearnedMemories(
-      config_.max_always, base::BindOnce(&TurnMemoryLookup::OnPreferences,
-                                         weak_ptr_factory_.GetWeakPtr()));
+      config_.max_preference_candidates,
+      base::BindOnce(&TurnMemoryLookup::OnPreferences,
+                     weak_ptr_factory_.GetWeakPtr()));
 }
 
 void TurnMemoryLookup::OnPreferences(std::vector<LearnedMemory> memories) {
@@ -110,26 +115,33 @@ void TurnMemoryLookup::OnPreferences(std::vector<LearnedMemory> memories) {
     return;
   }
   preferences_time_ = base::TimeTicks::Now();
-  always_ = std::move(memories);
-  base::ListValue texts;
-  for (const LearnedMemory& memory : always_) {
-    texts.Append(memory.text);
+  preferences_ = std::move(memories);
+  base::ListValue preferences;
+  for (const LearnedMemory& memory : preferences_) {
+    preferences.Append(
+        base::DictValue()
+            .Set("text", memory.text)
+            .Set("kept_forever", memory.type == LearnedMemoryType::kPermanent));
   }
   Trace("preferences",
         base::DictValue()
             .Set("latency_ms",
                  static_cast<int>(
                      (preferences_time_ - start_time_).InMilliseconds()))
-            .Set("max", static_cast<int>(config_.max_always))
-            .Set("memories", std::move(texts)));
-  if (!search_ || passages_.empty()) {
-    Finish(!search_ ? "no search" : "no message");
+            .Set("max", static_cast<int>(config_.max_preference_candidates))
+            .Set("preferences", std::move(preferences)));
+  if (passages_.empty()) {
+    Finish("no message");
+    return;
+  }
+  if (!search_) {
+    AskModel();
     return;
   }
   // The index has the preferences too. They are left out of the candidates,
   // so ask for more.
   search_->SearchLearnedMemories(
-      passages_, config_.max_candidates + always_.size(),
+      passages_, config_.max_candidates + preferences_.size(),
       base::BindOnce(&TurnMemoryLookup::OnMatches,
                      weak_ptr_factory_.GetWeakPtr()));
 }
@@ -147,7 +159,7 @@ void TurnMemoryLookup::OnMatches(std::vector<LearnedMemoryMatch> matches) {
                      (searched_time_ - preferences_time_).InMilliseconds()))
             .Set("found", static_cast<int>(matches.size())));
   if (matches.empty()) {
-    Finish("no match");
+    AskModel();
     return;
   }
   std::vector<std::string> uuids;
@@ -166,14 +178,14 @@ void TurnMemoryLookup::OnCandidates(std::vector<LearnedMemory> memories) {
   }
   candidates_time_ = base::TimeTicks::Now();
   // The memories come in the order of the matches, the closest first. A
-  // memory deleted after the search is not there. A preference that always
-  // goes is not asked about.
-  std::set<std::string> always_uuids;
-  for (const LearnedMemory& memory : always_) {
-    always_uuids.insert(memory.uuid);
+  // memory deleted after the search is not there. A preference of
+  // |preferences_| gets its own question, so it is not a candidate.
+  std::set<std::string> preference_uuids;
+  for (const LearnedMemory& memory : preferences_) {
+    preference_uuids.insert(memory.uuid);
   }
   for (auto& memory : memories) {
-    if (!always_uuids.contains(memory.uuid) &&
+    if (!preference_uuids.contains(memory.uuid) &&
         candidates_.size() < config_.max_candidates) {
       candidates_.push_back(std::move(memory));
     }
@@ -187,7 +199,14 @@ void TurnMemoryLookup::OnCandidates(std::vector<LearnedMemory> memories) {
   Trace("candidates", base::DictValue()
                           .Set("max", static_cast<int>(config_.max_candidates))
                           .Set("candidates", std::move(candidates)));
-  if (candidates_.empty()) {
+  AskModel();
+}
+
+void TurnMemoryLookup::AskModel() {
+  if (candidates_time_.is_null()) {
+    candidates_time_ = base::TimeTicks::Now();
+  }
+  if (candidates_.empty() && preferences_.empty()) {
     Finish("no candidate");
     return;
   }
@@ -195,44 +214,77 @@ void TurnMemoryLookup::OnCandidates(std::vector<LearnedMemory> memories) {
   for (const auto& candidate : candidates_) {
     texts.push_back(candidate.text);
   }
+  std::vector<std::string> preference_texts;
+  for (const auto& preference : preferences_) {
+    preference_texts.push_back(preference.text);
+  }
   // The message that |passages_| holds first is the newest one.
   decision_client_->AskRelevance(
       passages_[0], passages_.size() > 1 ? passages_[1] : std::string(),
-      std::move(texts),
+      std::move(texts), std::move(preference_texts),
       base::BindOnce(&TurnMemoryLookup::OnRelevance,
                      weak_ptr_factory_.GetWeakPtr()),
       std::move(on_exchange_));
 }
 
-void TurnMemoryLookup::OnRelevance(
-    std::optional<std::vector<double>> relevance) {
-  if (!done_) {
-    return;
-  }
-  if (!relevance || relevance->size() != candidates_.size()) {
-    DVLOG(1) << "Learned memory: no relevance answer for the chat turn";
-    Finish("relevance request failed");
-    return;
-  }
+namespace {
+
+// The indexes of the |probabilities| at |threshold| or above, the best first,
+// at most |max|.
+std::vector<size_t> BestAtThreshold(const std::vector<double>& probabilities,
+                                    double threshold,
+                                    size_t max) {
   std::vector<size_t> order;
-  for (size_t i = 0; i < relevance->size(); ++i) {
-    if ((*relevance)[i] >= config_.relevance_threshold) {
+  for (size_t i = 0; i < probabilities.size(); ++i) {
+    if (probabilities[i] >= threshold) {
       order.push_back(i);
     }
   }
   std::ranges::stable_sort(order, [&](size_t a, size_t b) {
-    return (*relevance)[a] > (*relevance)[b];
+    return probabilities[a] > probabilities[b];
   });
-  order.resize(std::min(order.size(), config_.max_results));
+  order.resize(std::min(order.size(), max));
+  return order;
+}
+
+}  // namespace
+
+void TurnMemoryLookup::OnRelevance(
+    std::optional<MemoryDecisionClient::RelevanceAnswers> answers) {
+  if (!done_) {
+    return;
+  }
+  if (!answers || answers->memories.size() != candidates_.size() ||
+      answers->preferences.size() != preferences_.size()) {
+    DVLOG(1) << "Learned memory: no relevance answer for the chat turn";
+    Finish("relevance request failed");
+    return;
+  }
+  const std::vector<size_t> order = BestAtThreshold(
+      answers->memories, config_.relevance_threshold, config_.max_results);
   for (size_t index : order) {
     selected_.push_back(candidates_[index]);
   }
-  base::ListValue answers;
+  const std::vector<size_t> preference_order =
+      BestAtThreshold(answers->preferences, config_.preference_threshold,
+                      config_.max_preferences);
+  for (size_t index : preference_order) {
+    selected_preferences_.push_back(preferences_[index]);
+  }
+  base::ListValue memory_answers;
   for (size_t i = 0; i < candidates_.size(); ++i) {
-    answers.Append(base::DictValue()
-                       .Set("text", candidates_[i].text)
-                       .Set("relevance", (*relevance)[i])
-                       .Set("kept", std::ranges::contains(order, i)));
+    memory_answers.Append(base::DictValue()
+                              .Set("text", candidates_[i].text)
+                              .Set("relevance", answers->memories[i])
+                              .Set("kept", std::ranges::contains(order, i)));
+  }
+  base::ListValue preference_answers;
+  for (size_t i = 0; i < preferences_.size(); ++i) {
+    preference_answers.Append(
+        base::DictValue()
+            .Set("text", preferences_[i].text)
+            .Set("follow", answers->preferences[i])
+            .Set("kept", std::ranges::contains(preference_order, i)));
   }
   Trace("relevance",
         base::DictValue()
@@ -241,7 +293,10 @@ void TurnMemoryLookup::OnRelevance(
                                       .InMilliseconds()))
             .Set("threshold", config_.relevance_threshold)
             .Set("max_results", static_cast<int>(config_.max_results))
-            .Set("memories", std::move(answers)));
+            .Set("memories", std::move(memory_answers))
+            .Set("preference_threshold", config_.preference_threshold)
+            .Set("max_preferences", static_cast<int>(config_.max_preferences))
+            .Set("preferences", std::move(preference_answers)));
   Finish("completed");
 }
 
@@ -269,7 +324,7 @@ void TurnMemoryLookup::Finish(std::string_view reason) {
   };
   // The best of the relevant memories first, then the preferences. A memory
   // that the user keeps goes with the memories that the user wrote.
-  for (const auto* memories : {&selected_, &always_}) {
+  for (const auto* memories : {&selected_, &selected_preferences_}) {
     for (const LearnedMemory& memory : *memories) {
       if (memory.type == LearnedMemoryType::kPermanent) {
         result_.permanent.push_back(memory.text);
@@ -291,7 +346,8 @@ void TurnMemoryLookup::Finish(std::string_view reason) {
           << step_ms(candidates_time_, now) << " ms, total "
           << (now - start_time_).InMilliseconds() << " ms, relevant "
           << result_.relevant.size() << ", kept " << result_.permanent.size()
-          << ", preferences " << always_.size();
+          << ", preferences " << selected_preferences_.size() << " of "
+          << preferences_.size();
   base::ListValue relevant;
   for (const std::string& memory : result_.relevant) {
     relevant.Append(memory);

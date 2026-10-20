@@ -5,6 +5,8 @@
 
 #include "brave/components/ai_chat/core/browser/memory_decision_client.h"
 
+#include <utility>
+
 namespace ai_chat {
 
 SentenceDecisions::SentenceDecisions() = default;
@@ -14,5 +16,21 @@ SentenceDecisions& SentenceDecisions::operator=(const SentenceDecisions&) =
 SentenceDecisions::SentenceDecisions(SentenceDecisions&&) = default;
 SentenceDecisions& SentenceDecisions::operator=(SentenceDecisions&&) = default;
 SentenceDecisions::~SentenceDecisions() = default;
+
+MemoryDecisionClient::RelevanceAnswers::RelevanceAnswers() = default;
+MemoryDecisionClient::RelevanceAnswers::RelevanceAnswers(
+    std::vector<double> memories,
+    std::vector<double> preferences)
+    : memories(std::move(memories)), preferences(std::move(preferences)) {}
+MemoryDecisionClient::RelevanceAnswers::RelevanceAnswers(
+    const RelevanceAnswers&) = default;
+MemoryDecisionClient::RelevanceAnswers::RelevanceAnswers(RelevanceAnswers&&) =
+    default;
+MemoryDecisionClient::RelevanceAnswers&
+MemoryDecisionClient::RelevanceAnswers::operator=(const RelevanceAnswers&) =
+    default;
+MemoryDecisionClient::RelevanceAnswers&
+MemoryDecisionClient::RelevanceAnswers::operator=(RelevanceAnswers&&) = default;
+MemoryDecisionClient::RelevanceAnswers::~RelevanceAnswers() = default;
 
 }  // namespace ai_chat

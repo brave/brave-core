@@ -112,10 +112,27 @@ class MemoryDecisionClient {
   // request fails.
   using RelationsCallback = base::OnceCallback<void(
       std::optional<std::vector<AnswerProbabilities<RelationAnswer>>>)>;
-  // The probability that each memory is relevant to the message, in the order
-  // of the memories. std::nullopt when the request fails.
+  // The answers of one relevance request. std::nullopt when the request
+  // fails.
+  struct RelevanceAnswers {
+    RelevanceAnswers();
+    RelevanceAnswers(std::vector<double> memories,
+                     std::vector<double> preferences);
+    RelevanceAnswers(const RelevanceAnswers&);
+    RelevanceAnswers(RelevanceAnswers&&);
+    RelevanceAnswers& operator=(const RelevanceAnswers&);
+    RelevanceAnswers& operator=(RelevanceAnswers&&);
+    ~RelevanceAnswers();
+
+    // The probability that each memory is relevant to the message, in the
+    // order of the memories.
+    std::vector<double> memories;
+    // The probability that the answer must follow each preference, in the
+    // order of the preferences.
+    std::vector<double> preferences;
+  };
   using RelevanceCallback =
-      base::OnceCallback<void(std::optional<std::vector<double>>)>;
+      base::OnceCallback<void(std::optional<RelevanceAnswers>)>;
 
   // A Dreaming request to the decision model, as sent, and its answer as
   // received. |response| is null when the request failed, and |error| says
@@ -151,7 +168,9 @@ class MemoryDecisionClient {
                             RelationsCallback callback) = 0;
 
   // Chat time. Asks, for each memory, if it is relevant to the last user
-  // message of a chat. |previous_message| is the user message before it, or
+  // message of a chat, and for each preference, if the answer to the message
+  // must follow it. One request has all the questions: the memories first,
+  // then the preferences. |previous_message| is the user message before it, or
   // empty. This question comes before the Dreaming questions: while it is
   // active, the client holds back the Dreaming questions that are not sent yet.
   // |on_exchange|, when not null, gets the request and its answer, also when
@@ -159,6 +178,7 @@ class MemoryDecisionClient {
   virtual void AskRelevance(const std::string& message,
                             const std::string& previous_message,
                             std::vector<std::string> memories,
+                            std::vector<std::string> preferences,
                             RelevanceCallback callback,
                             ExchangeCallback on_exchange) = 0;
 };

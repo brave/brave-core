@@ -56,6 +56,7 @@ class OllamaDecisionClient : public MemoryDecisionClient {
   void AskRelevance(const std::string& message,
                     const std::string& previous_message,
                     std::vector<std::string> memories,
+                    std::vector<std::string> preferences,
                     RelevanceCallback callback,
                     ExchangeCallback on_exchange) override;
   void SetDreamingExchangeObserver(ExchangeObserver observer) override;

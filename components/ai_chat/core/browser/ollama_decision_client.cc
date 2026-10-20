@@ -196,6 +196,10 @@ std::string RelevanceQuestionName(size_t index) {
   return base::StrCat({"m", base::NumberToString(index)});
 }
 
+std::string PreferenceQuestionName(size_t index) {
+  return base::StrCat({"p", base::NumberToString(index)});
+}
+
 std::optional<AnswerProbabilities<bool>> ParseNoul(
     const base::DictValue& answers,
     std::string_view name) {
@@ -458,11 +462,13 @@ void OllamaDecisionClient::AskRelations(const std::string& new_memory,
 void OllamaDecisionClient::AskRelevance(const std::string& message,
                                         const std::string& previous_message,
                                         std::vector<std::string> memories,
+                                        std::vector<std::string> preferences,
                                         RelevanceCallback callback,
                                         ExchangeCallback on_exchange) {
-  if (memories.empty()) {
+  if (memories.empty() && preferences.empty()) {
     base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-        FROM_HERE, base::BindOnce(std::move(callback), std::vector<double>()));
+        FROM_HERE, base::BindOnce(std::move(callback),
+                                  std::make_optional<RelevanceAnswers>()));
     return;
   }
   base::DictValue state;
@@ -474,8 +480,9 @@ void OllamaDecisionClient::AskRelevance(const std::string& message,
   state.Set("user_message", std::string(base::TruncateUTF8ToByteSize(
                                 message, kMaxRelevanceMessageLength)));
 
-  // One request holds one question for each memory, because a request for each
-  // memory is much slower.
+  // One request holds one question for each memory and each preference,
+  // because a request for each one is much slower. The memories go first, as
+  // before the preferences had a question: the order changes the answers.
   std::vector<std::pair<std::string, std::string>> named_questions;
   for (size_t i = 0; i < memories.size(); ++i) {
     named_questions.emplace_back(
@@ -486,27 +493,49 @@ void OllamaDecisionClient::AskRelevance(const std::string& message,
             "The memory would change or improve the answer to the message",
             "The memory has nothing to do with the message"));
   }
-  const size_t count = memories.size();
+  // A style preference is about how to answer, not about a topic, so the
+  // question is not "relevant?" but "follow it?".
+  for (size_t i = 0; i < preferences.size(); ++i) {
+    named_questions.emplace_back(
+        PreferenceQuestionName(i),
+        NoulQuestion(
+            base::StrCat({"Preference: ", preferences[i],
+                          "\nShould the answer to the user's message follow "
+                          "this preference?"}),
+            "The preference changes how this answer should be written or what "
+            "it should suggest: its length, format, language, units, tone, or "
+            "a choice that the message asks about.",
+            "The preference has nothing to do with this answer."));
+  }
   Ask(base::Value(std::move(state)), JoinQuestions(named_questions),
       base::BindOnce(
-          [](size_t count, RelevanceCallback callback,
+          [](size_t memory_count, size_t preference_count,
+             RelevanceCallback callback,
              std::optional<base::DictValue> answers) {
             if (!answers) {
               std::move(callback).Run(std::nullopt);
               return;
             }
-            std::vector<double> relevance;
-            for (size_t i = 0; i < count; ++i) {
+            RelevanceAnswers result;
+            for (size_t i = 0; i < memory_count; ++i) {
               auto yes = ParseNoul(*answers, RelevanceQuestionName(i));
               if (!yes) {
                 std::move(callback).Run(std::nullopt);
                 return;
               }
-              relevance.push_back(yes->at(true));
+              result.memories.push_back(yes->at(true));
             }
-            std::move(callback).Run(std::move(relevance));
+            for (size_t i = 0; i < preference_count; ++i) {
+              auto yes = ParseNoul(*answers, PreferenceQuestionName(i));
+              if (!yes) {
+                std::move(callback).Run(std::nullopt);
+                return;
+              }
+              result.preferences.push_back(yes->at(true));
+            }
+            std::move(callback).Run(std::move(result));
           },
-          count, std::move(callback)),
+          memories.size(), preferences.size(), std::move(callback)),
       Priority::kChatTime, std::move(on_exchange));
 }
 

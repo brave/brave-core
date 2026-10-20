@@ -43,29 +43,35 @@ struct TurnMemoryConfig {
   double relevance_threshold = 0.3;
   // The most learned memories that go in one request.
   size_t max_results = 5;
-  // The most preferences that go in every request, without a question to the
-  // decision model.
-  size_t max_always = 5;
-  // The lookup gives up after this time. The turn then has no relevant learned
-  // memories, and the request goes on. The preferences still go.
+  // The most preferences that the decision model is asked about. The ones that
+  // the user keeps come first, then the newest. They are not searched.
+  size_t max_preference_candidates = 20;
+  // A preference needs at least this "yes" probability for "follow it?".
+  double preference_threshold = 0.3;
+  // The most preferences that go in one request.
+  size_t max_preferences = 5;
+  // The lookup gives up after this time. The turn then has no learned
+  // memory, and the request goes on.
   base::TimeDelta timeout = base::Seconds(3);
   // The longest part of a user message that the search reads.
   size_t max_message_length = 1000;
 };
 
 // Finds the learned memories for one chat turn (Track B):
-//  1. read the preferences: they always go, at most |max_always|. The ones that
-//     the user keeps (permanent) come first, then the newest
+//  1. read the preferences, at most |max_preference_candidates|: the ones that
+//     the user keeps (permanent) first, then the newest
 //  2. search the index for the memories closest to the last user messages
-//     (the search embeds the messages at the priority of the user)
+//     (the search embeds the messages at the priority of the user). The
+//     preferences of step 1 are left out: they are not searched
 //  3. read the found memories from the chat database
-//  4. ask the decision model if each candidate is relevant, and keep the best
+//  4. ask the decision model, in one request, if each candidate is relevant
+//     and if the answer must follow each preference, and keep the best of each
 //  5. give the memories text with the date of the last mention
-// Without the search (semantic search is off), only the preferences go. A
-// memory that the user keeps is not sent for that reason: it goes when it is a
-// preference, or when the decision model says that it is relevant.
+// Without the search (semantic search is off), only the preferences are asked
+// about. A memory that the user keeps is not sent for that reason: it goes
+// when the decision model says that it fits.
 // The lookup never fails: when a step fails or takes too long, the result has
-// only the permanent memories. It records each step in trace(), for
+// no learned memory. It records each step in trace(), for
 // brave://leo-memory-internals.
 class TurnMemoryLookup {
  public:
@@ -105,7 +111,10 @@ class TurnMemoryLookup {
   void OnPreferences(std::vector<LearnedMemory> memories);
   void OnMatches(std::vector<LearnedMemoryMatch> matches);
   void OnCandidates(std::vector<LearnedMemory> memories);
-  void OnRelevance(std::optional<std::vector<double>> relevance);
+  // Asks the decision model about the candidates and the preferences.
+  void AskModel();
+  void OnRelevance(
+      std::optional<MemoryDecisionClient::RelevanceAnswers> answers);
   // Runs |done_| with the result so far. The result has relevant memories only
   // after the relevance answer. |reason| says why the lookup ends.
   void Finish(std::string_view reason);
@@ -126,12 +135,15 @@ class TurnMemoryLookup {
   // The last user messages that the search and the decision model read, the
   // newest first.
   std::vector<std::string> passages_;
-  // The preferences that always go.
-  std::vector<LearnedMemory> always_;
-  // The closest learned memories that are not in |always_|, the closest first.
+  // The preferences that the decision model is asked about.
+  std::vector<LearnedMemory> preferences_;
+  // The closest learned memories that are not in |preferences_|, the closest
+  // first.
   std::vector<LearnedMemory> candidates_;
   // The candidates that the decision model said are relevant, the best first.
   std::vector<LearnedMemory> selected_;
+  // The preferences that the answer must follow, the best first.
+  std::vector<LearnedMemory> selected_preferences_;
   EngineConsumer::LearnedMemories result_;
   std::vector<std::string> used_uuids_;
   // For the log (--vmodule=turn_memory_lookup=1).

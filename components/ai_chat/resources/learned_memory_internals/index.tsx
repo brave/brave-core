@@ -194,7 +194,11 @@ const LOOKUP_STEPS: { [step: string]: StepInfo } = {
     role: 'code',
     about: 'The last two messages of the user. The search uses them.',
   },
-  preferences: { role: 'code' },
+  preferences: {
+    role: 'code',
+    about:
+      'The preferences that the decision model is asked about, at most max: the ones that the user keeps (kept_forever) first, then the newest. They are not searched.',
+  },
   search: {
     role: 'embedding',
     about:
@@ -203,17 +207,17 @@ const LOOKUP_STEPS: { [step: string]: StepInfo } = {
   candidates: {
     role: 'code',
     about:
-      'The nearest memories, at most max. The preferences are not here: they always go.',
+      'The nearest memories, at most max. The preferences are not here: they get their own question.',
   },
   relevance: {
     role: 'decision',
     about:
-      'One question for each memory: is it relevant to this message? kept: at the threshold or above, the best max_results. Only those go to the chat model.',
+      'One request. memories: is each one relevant to this message? kept: at threshold or above, the best max_results. preferences: should the answer follow each one? kept: at preference_threshold or above, the best max_preferences. Only the kept ones go to the chat model.',
   },
   done: {
     role: 'code',
     about:
-      'What goes with the request to the chat model: relevant, and the memories that the user keeps (permanent). reason tells how the lookup ended.',
+      'What goes with the request to the chat model: relevant, and the memories that the user keeps (permanent). reason tells how the lookup ended. Without an answer of the decision model (timed out, relevance request failed), no learned memory goes.',
   },
 }
 
@@ -711,7 +715,8 @@ function LookupView(props: { lookup: Lookup }) {
       <h3>Decision model</h3>
       <p className='about'>
         What the lookup sent to the decision model, and its answer: one
-        relevance for each memory. The step relevance below reads it.
+        relevance for each memory (m0, m1, ...), and one "follow it?" for each
+        preference (p0, p1, ...). The step relevance below reads it.
       </p>
       {requests.length === 0 ? (
         <p className='muted'>No request (or no answer yet).</p>

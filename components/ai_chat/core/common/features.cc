@@ -320,8 +320,14 @@ const base::FeatureParam<double> kLearnedMemoryRelevanceThreshold{
 const base::FeatureParam<int> kLearnedMemoryMaxTurnMemories{
     &kAIChatLearnedMemory, "max_turn_memories", 5};
 
-const base::FeatureParam<int> kLearnedMemoryMaxAlwaysMemories{
-    &kAIChatLearnedMemory, "max_always_memories", 5};
+const base::FeatureParam<int> kLearnedMemoryMaxPreferenceCandidates{
+    &kAIChatLearnedMemory, "max_preference_candidates", 20};
+
+const base::FeatureParam<double> kLearnedMemoryPreferenceThreshold{
+    &kAIChatLearnedMemory, "preference_threshold", 0.3};
+
+const base::FeatureParam<int> kLearnedMemoryMaxTurnPreferences{
+    &kAIChatLearnedMemory, "max_turn_preferences", 5};
 #endif  // BUILDFLAG(ENABLE_LOCAL_AI)
 
 }  // namespace ai_chat::features

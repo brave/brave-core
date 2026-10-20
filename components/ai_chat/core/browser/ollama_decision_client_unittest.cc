@@ -24,6 +24,8 @@ namespace ai_chat {
 
 namespace {
 
+using RelevanceAnswers = MemoryDecisionClient::RelevanceAnswers;
+
 constexpr char kEndpoint[] = "http://localhost:11434/v1/systemone";
 
 // A System One response for one sentence. |fact| is p(true).
@@ -41,14 +43,14 @@ std::string SentenceResponse(double fact) {
       fact);
 }
 
-// A System One response for the relevance question. The first memory is
-// relevant (0.9), the others are not (0.1).
+// A System One response for the relevance question. The first memory and the
+// first preference (m0 and p0) get 0.9, the others 0.1.
 std::string RelevanceResponse(const base::DictValue& request) {
   std::string answers;
-  const size_t count = request.FindDict("questions")->size();
-  for (size_t i = 0; i < count; ++i) {
-    answers += base::StringPrintf(R"(%s"m%zu": {"type": "noul", "noul": %f})",
-                                  i ? "," : "", i, i == 0 ? 0.9 : 0.1);
+  for (const auto [name, question] : *request.FindDict("questions")) {
+    answers += base::StringPrintf(R"(%s"%s": {"type": "noul", "noul": %f})",
+                                  answers.empty() ? "" : ",", name.c_str(),
+                                  name.substr(1) == "0" ? 0.9 : 0.1);
   }
   return "{\"answers\": {" + answers + "}}";
 }
@@ -148,8 +150,9 @@ TEST_F(OllamaDecisionClientTest, ObserverGetsDreamingRequestsAndAnswers) {
   client_->AskSentenceDecisions({"first"}, future.GetCallback());
   ASSERT_TRUE(future.Take());
   // A chat time question is not Dreaming.
-  base::test::TestFuture<std::optional<std::vector<double>>> relevance;
-  client_->AskRelevance("message", "", {"memory"}, relevance.GetCallback(), {});
+  base::test::TestFuture<std::optional<RelevanceAnswers>> relevance;
+  client_->AskRelevance("message", "", {"memory"}, {}, relevance.GetCallback(),
+                        {});
   ASSERT_TRUE(relevance.Take());
 
   ASSERT_EQ(exchanges.size(), 1u);
@@ -161,8 +164,8 @@ TEST_F(OllamaDecisionClientTest, ObserverGetsDreamingRequestsAndAnswers) {
 
 TEST_F(OllamaDecisionClientTest, RelevanceGivesItsRequestAndAnswer) {
   base::test::TestFuture<MemoryDecisionClient::Exchange> exchange;
-  base::test::TestFuture<std::optional<std::vector<double>>> relevance;
-  client_->AskRelevance("Suggest a dinner.", "", {"Is vegetarian."},
+  base::test::TestFuture<std::optional<RelevanceAnswers>> relevance;
+  client_->AskRelevance("Suggest a dinner.", "", {"Is vegetarian."}, {},
                         relevance.GetCallback(), exchange.GetCallback());
   ASSERT_TRUE(relevance.Take());
 
@@ -185,16 +188,17 @@ TEST_F(OllamaDecisionClientTest, BadResponseFailsTheRequest) {
 }
 
 TEST_F(OllamaDecisionClientTest, RelevanceAsksOneQuestionForEachMemory) {
-  base::test::TestFuture<std::optional<std::vector<double>>> future;
+  base::test::TestFuture<std::optional<RelevanceAnswers>> future;
   client_->AskRelevance("Suggest a dinner.", "Hello",
-                        {"Is vegetarian.", "Has a dog."}, future.GetCallback(),
-                        {});
+                        {"Is vegetarian.", "Has a dog."}, {},
+                        future.GetCallback(), {});
   auto relevance = future.Take();
 
   ASSERT_TRUE(relevance);
-  ASSERT_EQ(relevance->size(), 2u);
-  EXPECT_DOUBLE_EQ((*relevance)[0], 0.9);
-  EXPECT_DOUBLE_EQ((*relevance)[1], 0.1);
+  ASSERT_EQ(relevance->memories.size(), 2u);
+  EXPECT_DOUBLE_EQ(relevance->memories[0], 0.9);
+  EXPECT_DOUBLE_EQ(relevance->memories[1], 0.1);
+  EXPECT_TRUE(relevance->preferences.empty());
   // One request for all memories, with the two messages and the memory texts.
   EXPECT_EQ(relevance_requests_, 1);
   auto body = base::JSONReader::ReadDict(last_body_,
@@ -207,10 +211,61 @@ TEST_F(OllamaDecisionClientTest, RelevanceAsksOneQuestionForEachMemory) {
   EXPECT_LT(last_body_.find("\"m0\""), last_body_.find("\"m1\""));
 }
 
+TEST_F(OllamaDecisionClientTest, PreferencesGetTheirOwnQuestionAfterMemories) {
+  base::test::TestFuture<std::optional<RelevanceAnswers>> future;
+  client_->AskRelevance("Suggest a dinner.", "", {"Is vegetarian."},
+                        {"Prefers short answers.", "Likes jazz."},
+                        future.GetCallback(), {});
+  auto answers = future.Take();
+
+  ASSERT_TRUE(answers);
+  ASSERT_EQ(answers->memories.size(), 1u);
+  ASSERT_EQ(answers->preferences.size(), 2u);
+  EXPECT_DOUBLE_EQ(answers->preferences[0], 0.9);
+  EXPECT_DOUBLE_EQ(answers->preferences[1], 0.1);
+  // One request: the memories first, then the preferences.
+  EXPECT_EQ(relevance_requests_, 1);
+  EXPECT_LT(last_body_.find("\"m0\""), last_body_.find("\"p0\""));
+  EXPECT_LT(last_body_.find("\"p0\""), last_body_.find("\"p1\""));
+  auto body = base::JSONReader::ReadDict(last_body_,
+                                         base::JSON_PARSE_CHROMIUM_EXTENSIONS);
+  ASSERT_TRUE(body);
+  const std::string* question =
+      body->FindDict("questions")->FindDict("p0")->FindString("instructions");
+  ASSERT_TRUE(question);
+  EXPECT_EQ(*question,
+            "Preference: Prefers short answers.\nShould the answer to the "
+            "user's message follow this preference?");
+}
+
+TEST_F(OllamaDecisionClientTest, OnlyPreferencesAreAskedWithoutMemories) {
+  base::test::TestFuture<std::optional<RelevanceAnswers>> future;
+  client_->AskRelevance("Suggest a dinner.", "", {}, {"Prefers short answers."},
+                        future.GetCallback(), {});
+  auto answers = future.Take();
+
+  ASSERT_TRUE(answers);
+  EXPECT_TRUE(answers->memories.empty());
+  EXPECT_THAT(answers->preferences, testing::ElementsAre(0.9));
+  EXPECT_EQ(relevance_requests_, 1);
+}
+
+TEST_F(OllamaDecisionClientTest, NothingToAskSendsNoRequest) {
+  base::test::TestFuture<std::optional<RelevanceAnswers>> future;
+  client_->AskRelevance("Suggest a dinner.", "", {}, {}, future.GetCallback(),
+                        {});
+  auto answers = future.Take();
+
+  ASSERT_TRUE(answers);
+  EXPECT_TRUE(answers->memories.empty());
+  EXPECT_TRUE(answers->preferences.empty());
+  EXPECT_EQ(relevance_requests_, 0);
+}
+
 TEST_F(OllamaDecisionClientTest, DreamingQuestionWaitsForChatTimeQuestion) {
   answer_relevance_ = false;
-  base::test::TestFuture<std::optional<std::vector<double>>> relevance;
-  client_->AskRelevance("Suggest a dinner.", "", {"Is vegetarian."},
+  base::test::TestFuture<std::optional<RelevanceAnswers>> relevance;
+  client_->AskRelevance("Suggest a dinner.", "", {"Is vegetarian."}, {},
                         relevance.GetCallback(), {});
   base::test::TestFuture<std::optional<AnswerProbabilities<bool>>> gate;
   client_->AskGate("a turn", gate.GetCallback());
@@ -232,8 +287,8 @@ TEST_F(OllamaDecisionClientTest, DreamingQuestionWaitsForChatTimeQuestion) {
 
 TEST_F(OllamaDecisionClientTest, FailedRelevanceRequestGivesNothing) {
   answer_relevance_ = false;
-  base::test::TestFuture<std::optional<std::vector<double>>> future;
-  client_->AskRelevance("Suggest a dinner.", "", {"Is vegetarian."},
+  base::test::TestFuture<std::optional<RelevanceAnswers>> future;
+  client_->AskRelevance("Suggest a dinner.", "", {"Is vegetarian."}, {},
                         future.GetCallback(), {});
   task_environment_.RunUntilIdle();
   ASSERT_TRUE(url_loader_factory_.SimulateResponseForPendingRequest(

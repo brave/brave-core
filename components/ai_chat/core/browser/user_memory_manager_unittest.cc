@@ -135,9 +135,11 @@ class FakeDecisionClient : public MemoryDecisionClient {
   void AskRelevance(const std::string& message,
                     const std::string& previous_message,
                     std::vector<std::string> memories,
+                    std::vector<std::string> preferences,
                     RelevanceCallback callback,
                     ExchangeCallback on_exchange) override {
-    relevance_requests.push_back({message, previous_message, memories});
+    relevance_requests.push_back(
+        {message, previous_message, memories, preferences});
     if (on_relevance_asked) {
       std::move(on_relevance_asked).Run();
     }
@@ -152,12 +154,16 @@ class FakeDecisionClient : public MemoryDecisionClient {
     if (on_exchange) {
       std::move(on_exchange).Run(std::move(exchange));
     }
-    std::optional<std::vector<double>> answer;
+    std::optional<RelevanceAnswers> answer;
     if (!fail_relevance) {
-      answer = std::vector<double>();
+      answer.emplace();
       for (const auto& memory : memories) {
         auto it = relevance.find(memory);
-        answer->push_back(it != relevance.end() ? it->second : 0.05);
+        answer->memories.push_back(it != relevance.end() ? it->second : 0.05);
+      }
+      for (const auto& preference : preferences) {
+        auto it = follow.find(preference);
+        answer->preferences.push_back(it != follow.end() ? it->second : 0.05);
       }
     }
     base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
@@ -168,9 +174,12 @@ class FakeDecisionClient : public MemoryDecisionClient {
     std::string message;
     std::string previous_message;
     std::vector<std::string> memories;
+    std::vector<std::string> preferences;
   };
   // The probability that a memory is relevant, by memory text.
   std::map<std::string, double> relevance;
+  // The probability that the answer must follow a preference, by its text.
+  std::map<std::string, double> follow;
   bool hold_relevance = false;
   // While |hold_relevance|: gives the exchange of the held request.
   base::OnceClosure held_exchange;
@@ -776,11 +785,12 @@ TEST_F(UserMemoryManagerTurnTest, TheChatGetsTheTextAndTheDateOfEachMemory) {
   };
   write("Is vegetarian.", LearnedMemoryType::kLongTerm,
         LearnedMemoryCategory::kPersonalFact, created, mentioned);
-  // A preference that the user keeps goes without a question. Without a date
-  // of the last mention, the date of the memory counts.
+  // A preference that the user keeps goes with the memories that the user
+  // wrote. Without a date of the last mention, the date of the memory counts.
   write("Prefers metric units.", LearnedMemoryType::kPermanent,
         LearnedMemoryCategory::kPreference, created, base::Time());
   client_->relevance = {{"Is vegetarian.", 0.9}, {"Writes TypeScript.", 0.1}};
+  client_->follow = {{"Prefers metric units.", 0.9}};
 
   EngineConsumer::LearnedMemories memories =
       GetMemoriesForTurn({"Suggest a dinner."});
@@ -823,25 +833,33 @@ TEST_F(UserMemoryManagerTurnTest, BestMemoriesFirstAndOnlyAboveTheThreshold) {
               ElementsAre("Has a beagle named Luna.", "Is vegetarian."));
 }
 
-TEST_F(UserMemoryManagerTurnTest, PreferencesAlwaysGo) {
+TEST_F(UserMemoryManagerTurnTest, APreferenceGoesWhenTheModelSaysToFollowIt) {
   AddMemory("Prefers short answers.", LearnedMemoryType::kLongTerm,
             base::Time(), LearnedMemoryCategory::kPreference);
+  AddMemory("Likes jazz.", LearnedMemoryType::kLongTerm, base::Time(),
+            LearnedMemoryCategory::kPreference);
+  client_->follow = {{"Prefers short answers.", 0.9}, {"Likes jazz.", 0.1}};
 
   EngineConsumer::LearnedMemories memories =
       GetMemoriesForTurn({"Suggest a dinner."});
 
-  // The message has nothing to do with it, and it goes. It is not asked about.
   EXPECT_THAT(memories.relevant, ElementsAre("Prefers short answers."));
+  // Each preference gets the question "follow it?", in the same request as
+  // the memories. A preference is never asked "relevant?".
   ASSERT_EQ(client_->relevance_requests.size(), 1u);
-  for (const auto& memory : client_->relevance_requests[0].memories) {
-    EXPECT_NE(memory, "Prefers short answers.");
-  }
+  EXPECT_THAT(
+      client_->relevance_requests[0].preferences,
+      testing::UnorderedElementsAre("Prefers short answers.", "Likes jazz."));
+  EXPECT_THAT(
+      client_->relevance_requests[0].memories,
+      testing::AllOf(testing::Not(testing::Contains("Prefers short answers.")),
+                     testing::Not(testing::Contains("Likes jazz."))));
 }
 
 TEST_F(UserMemoryManagerTurnTest,
-       PreferencesAreLimitedAndTheKeptOnesComeFirst) {
+       TheBestPreferencesGoAndTheKeptOnesAreAskedFirst) {
   const base::Time now = base::Time::Now();
-  // Seven preferences, and the limit is five.
+  // Seven preferences, and five can go.
   for (int i = 0; i < 6; ++i) {
     AddMemory(base::StrCat({"Prefers style ", base::NumberToString(i), "."}),
               LearnedMemoryType::kLongTerm, base::Time(),
@@ -850,29 +868,48 @@ TEST_F(UserMemoryManagerTurnTest,
   AddMemory("Prefers metric units.", LearnedMemoryType::kPermanent,
             base::Time(), LearnedMemoryCategory::kPreference,
             now - base::Days(100));
+  client_->follow = {{"Prefers style 0.", 0.95},    {"Prefers style 1.", 0.9},
+                     {"Prefers style 2.", 0.85},    {"Prefers style 3.", 0.8},
+                     {"Prefers style 4.", 0.2},     {"Prefers style 5.", 0.75},
+                     {"Prefers metric units.", 0.7}};
 
   EngineConsumer::LearnedMemories memories =
       GetMemoriesForTurn({"Suggest a dinner."});
 
-  // The one that the user keeps, then the four newest. The kept one goes with
-  // the memories that the user wrote.
-  EXPECT_THAT(memories.permanent, ElementsAre("Prefers metric units."));
+  // The question gets the kept one first, then the newest.
+  ASSERT_EQ(client_->relevance_requests.size(), 1u);
+  EXPECT_THAT(
+      client_->relevance_requests[0].preferences,
+      ElementsAre("Prefers metric units.", "Prefers style 5.",
+                  "Prefers style 4.", "Prefers style 3.", "Prefers style 2.",
+                  "Prefers style 1.", "Prefers style 0."));
+  // The five best answers go, the best first. "Prefers style 4." is below the
+  // threshold, and "Prefers metric units." is the sixth.
   std::vector<std::string> texts;
   for (const auto& info : memories.relevant_info) {
     texts.push_back(info.text);
   }
-  EXPECT_THAT(texts, ElementsAre("Prefers style 5.", "Prefers style 4.",
-                                 "Prefers style 3.", "Prefers style 2."));
-  // A preference over the limit is a normal candidate: the model can still
-  // pick it. The ones that go are not asked about.
-  ASSERT_EQ(client_->relevance_requests.size(), 1u);
-  const auto& asked = client_->relevance_requests[0].memories;
-  EXPECT_THAT(asked, testing::Contains("Prefers style 1."));
-  EXPECT_THAT(asked, testing::Contains("Prefers style 0."));
-  EXPECT_THAT(asked, testing::Not(testing::Contains("Prefers style 5.")));
+  EXPECT_THAT(texts, ElementsAre("Prefers style 0.", "Prefers style 1.",
+                                 "Prefers style 2.", "Prefers style 3.",
+                                 "Prefers style 5."));
+  EXPECT_THAT(memories.permanent, IsEmpty());
 }
 
-TEST_F(UserMemoryManagerTurnTest, ShortTermPreferencesAreNotSentAlways) {
+TEST_F(UserMemoryManagerTurnTest, AKeptPreferenceGoesWhenTheModelSaysYes) {
+  AddMemory("Prefers metric units.", LearnedMemoryType::kPermanent,
+            base::Time(), LearnedMemoryCategory::kPreference);
+
+  // A lock does not send it: it gets the question too.
+  EngineConsumer::LearnedMemories memories =
+      GetMemoriesForTurn({"Suggest a dinner."});
+  EXPECT_THAT(memories.permanent, IsEmpty());
+
+  client_->follow = {{"Prefers metric units.", 0.9}};
+  memories = GetMemoriesForTurn({"Suggest a dinner."});
+  EXPECT_THAT(memories.permanent, ElementsAre("Prefers metric units."));
+}
+
+TEST_F(UserMemoryManagerTurnTest, ShortTermPreferencesAreNotAskedToFollow) {
   AddMemory("Wants a quick dinner tonight.", LearnedMemoryType::kShortTerm,
             base::Time(), LearnedMemoryCategory::kPreference);
 
@@ -880,6 +917,8 @@ TEST_F(UserMemoryManagerTurnTest, ShortTermPreferencesAreNotSentAlways) {
       GetMemoriesForTurn({"Write a poem."});
 
   EXPECT_THAT(memories.relevant, IsEmpty());
+  ASSERT_EQ(client_->relevance_requests.size(), 1u);
+  EXPECT_THAT(client_->relevance_requests[0].preferences, IsEmpty());
 }
 
 TEST_F(UserMemoryManagerTurnTest, AFactThatTheUserKeepsIsAskedAbout) {
@@ -926,26 +965,35 @@ TEST_F(UserMemoryManagerTurnTest, MemoryDeletedAfterTheSyncIsNotSent) {
               ElementsAre("Has a beagle named Luna.", "Writes TypeScript."));
 }
 
-TEST_F(UserMemoryManagerTurnTest, WithoutTheSearchOnlyPreferencesGo) {
+TEST_F(UserMemoryManagerTurnTest, WithoutTheSearchOnlyPreferencesAreAsked) {
   AddMemory("Prefers short answers.", LearnedMemoryType::kLongTerm,
             base::Time(), LearnedMemoryCategory::kPreference);
   AddMemory("Allergic to nuts.", LearnedMemoryType::kPermanent);
   manager_->SetLearnedMemorySearch(nullptr);
+  client_->follow = {{"Prefers short answers.", 0.9}};
+  client_->relevance = {{"Allergic to nuts.", 0.9}};
 
   EngineConsumer::LearnedMemories memories =
       GetMemoriesForTurn({"Suggest a dinner."});
 
   EXPECT_THAT(memories.relevant, ElementsAre("Prefers short answers."));
   EXPECT_THAT(memories.permanent, IsEmpty());
-  EXPECT_THAT(client_->relevance_requests, IsEmpty());
+  ASSERT_EQ(client_->relevance_requests.size(), 1u);
+  EXPECT_THAT(client_->relevance_requests[0].memories, IsEmpty());
+  EXPECT_THAT(client_->relevance_requests[0].preferences,
+              ElementsAre("Prefers short answers."));
 }
 
-TEST_F(UserMemoryManagerTurnTest, TimeOutGivesOnlyPreferences) {
+TEST_F(UserMemoryManagerTurnTest, TimeOutGivesNoLearnedMemory) {
   AddMemory("Prefers short answers.", LearnedMemoryType::kLongTerm,
+            base::Time(), LearnedMemoryCategory::kPreference);
+  AddMemory("Prefers metric units.", LearnedMemoryType::kPermanent,
             base::Time(), LearnedMemoryCategory::kPreference);
   AddMemory("Allergic to nuts.", LearnedMemoryType::kPermanent);
   client_->hold_relevance = true;
   client_->relevance = {{"Is vegetarian.", 0.9}};
+  client_->follow = {{"Prefers short answers.", 0.9},
+                     {"Prefers metric units.", 0.9}};
 
   base::test::TestFuture<void> asked;
   client_->on_relevance_asked = asked.GetCallback();
@@ -957,21 +1005,75 @@ TEST_F(UserMemoryManagerTurnTest, TimeOutGivesOnlyPreferences) {
   EXPECT_FALSE(future.IsReady());
   task_environment_.FastForwardBy(TurnMemoryConfig::FromFeatures().timeout);
 
-  EngineConsumer::LearnedMemories memories = future.Take();
-  EXPECT_THAT(memories.relevant, ElementsAre("Prefers short answers."));
-  EXPECT_THAT(memories.permanent, IsEmpty());
+  // Without an answer, no learned memory goes: not a preference, and not one
+  // that the user keeps.
+  EXPECT_TRUE(future.Take().empty());
+}
+
+TEST_F(UserMemoryManagerTurnTest, FailedModelGivesNoPreferences) {
+  AddMemory("Prefers short answers.", LearnedMemoryType::kLongTerm,
+            base::Time(), LearnedMemoryCategory::kPreference);
+  client_->fail_relevance = true;
+
+  EXPECT_TRUE(GetMemoriesForTurn({"Suggest a dinner."}).empty());
 }
 
 TEST_F(UserMemoryManagerTurnTest, PreferencesThatGoAreUsed) {
   AddMemory("Prefers short answers.", LearnedMemoryType::kLongTerm,
             base::Time(), LearnedMemoryCategory::kPreference);
+  AddMemory("Likes jazz.", LearnedMemoryType::kLongTerm, base::Time(),
+            LearnedMemoryCategory::kPreference);
+  client_->follow = {{"Prefers short answers.", 0.9}};
 
   GetMemoriesForTurn({"Write a poem."});
   task_environment_.RunUntilIdle();
 
-  // A preference that goes in every request must not expire as unused.
-  EXPECT_FALSE(
-      MemoriesByText()["Prefers short answers."].last_used_date.is_null());
+  // A preference that goes must not expire as unused. One that the model
+  // left out is not used.
+  std::map<std::string, LearnedMemory> memories = MemoriesByText();
+  EXPECT_FALSE(memories["Prefers short answers."].last_used_date.is_null());
+  EXPECT_TRUE(memories["Likes jazz."].last_used_date.is_null());
+}
+
+TEST_F(UserMemoryManagerTurnTest, TheTraceHasTheAnswerForEachPreference) {
+  AddMemory("Prefers short answers.", LearnedMemoryType::kLongTerm,
+            base::Time(), LearnedMemoryCategory::kPreference);
+  AddMemory("Likes jazz.", LearnedMemoryType::kPermanent, base::Time(),
+            LearnedMemoryCategory::kPreference);
+  client_->follow = {{"Prefers short answers.", 0.9}, {"Likes jazz.", 0.1}};
+  GetMemoriesForTurn({"Suggest a dinner."});
+
+  std::vector<TurnLookupRecord> records = manager_->GetTurnLookupRecords();
+  ASSERT_EQ(records.size(), 1u);
+  const base::DictValue* preferences = nullptr;
+  const base::DictValue* relevance = nullptr;
+  for (const auto& step : records[0].trace) {
+    const std::string& name = *step.GetDict().FindString("step");
+    if (name == "preferences") {
+      preferences = &step.GetDict();
+    } else if (name == "relevance") {
+      relevance = &step.GetDict();
+    }
+  }
+  ASSERT_TRUE(preferences);
+  ASSERT_TRUE(relevance);
+  // The preferences to ask about: the kept one first.
+  const base::ListValue* asked = preferences->FindList("preferences");
+  ASSERT_TRUE(asked);
+  ASSERT_EQ(asked->size(), 2u);
+  EXPECT_EQ(*(*asked)[0].GetDict().FindString("text"), "Likes jazz.");
+  EXPECT_EQ((*asked)[0].GetDict().FindBool("kept_forever"), true);
+  // The answer of each one, and whether it went.
+  const base::ListValue* answers = relevance->FindList("preferences");
+  ASSERT_TRUE(answers);
+  ASSERT_EQ(answers->size(), 2u);
+  EXPECT_EQ(*(*answers)[0].GetDict().FindString("text"), "Likes jazz.");
+  EXPECT_EQ((*answers)[0].GetDict().FindDouble("follow"), 0.1);
+  EXPECT_EQ((*answers)[0].GetDict().FindBool("kept"), false);
+  EXPECT_EQ(*(*answers)[1].GetDict().FindString("text"),
+            "Prefers short answers.");
+  EXPECT_EQ((*answers)[1].GetDict().FindBool("kept"), true);
+  EXPECT_EQ(relevance->FindDouble("preference_threshold"), 0.3);
 }
 
 TEST_F(UserMemoryManagerTurnTest, KeepsTheLookupsWithTheirSteps) {

@@ -297,10 +297,16 @@ COMPONENT_EXPORT(AI_CHAT_COMMON)
 extern const base::FeatureParam<double> kLearnedMemoryRelevanceThreshold;
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 extern const base::FeatureParam<int> kLearnedMemoryMaxTurnMemories;
-// The most preferences that go in every request, without a question to the
-// decision model. The ones that the user keeps come first, then the newest.
+// Chat time, the preferences: the most that the decision model is asked about
+// (the ones that the user keeps first, then the newest), the "yes" probability
+// that a preference needs, and the most that go in the request. The
+// preferences are not searched: each one gets the question "follow it?".
 COMPONENT_EXPORT(AI_CHAT_COMMON)
-extern const base::FeatureParam<int> kLearnedMemoryMaxAlwaysMemories;
+extern const base::FeatureParam<int> kLearnedMemoryMaxPreferenceCandidates;
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+extern const base::FeatureParam<double> kLearnedMemoryPreferenceThreshold;
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+extern const base::FeatureParam<int> kLearnedMemoryMaxTurnPreferences;
 #endif  // BUILDFLAG(ENABLE_LOCAL_AI)
 
 }  // namespace ai_chat::features
