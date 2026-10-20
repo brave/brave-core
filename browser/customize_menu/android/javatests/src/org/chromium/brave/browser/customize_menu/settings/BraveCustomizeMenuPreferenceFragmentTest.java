@@ -41,6 +41,7 @@ import java.util.Locale;
 /** Unit tests for {@link BraveCustomizeMenuPreferenceFragment}. */
 @RunWith(BaseRobolectricTestRunner.class)
 @Config(manifest = Config.NONE)
+@DisableFeatures(BraveFeatureList.BRAVE_ANDROID_MERGE_INSTALL_PWA_AND_CREATE_SHORTCUT)
 public class BraveCustomizeMenuPreferenceFragmentTest {
 
     private BraveCustomizeMenuPreferenceFragment mFragment;

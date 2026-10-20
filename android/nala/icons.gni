@@ -424,6 +424,7 @@ nala_icons = [
   "ic_shield_done.xml",
   "ic_shred_data.xml",
   "ic_smartphone.xml",
+  "ic_smartphone_home.xml",
   "ic_smartphone_laptop.xml",
   "ic_social_brave_carved_favicon_fullheight.xml",
   "ic_social_brave_monochrome_favicon_fullheight_color.xml",
