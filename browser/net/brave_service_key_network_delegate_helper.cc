@@ -32,6 +32,8 @@ namespace {
 constexpr char kBraveServiceSignatureHeader[] = "BraveServiceSignature";
 constexpr auto kSearchDomains = base::MakeFixedFlatSet<std::string_view>(
     {"search.brave.com", "search.brave.software"});
+constexpr auto kTranslateDomains = base::MakeFixedFlatSet<std::string_view>(
+    {"translate.brave.com", "translate.bravesoftware.com"});
 
 }  // namespace
 
@@ -54,21 +56,30 @@ int OnBeforeStartTransaction_BraveServiceKey(
 
   const GURL& url = ctx->request_url();
 
-  if (url.SchemeIs(url::kHttpsScheme)) {
-    const bool is_search_domain = kSearchDomains.contains(url.host());
-    if (is_search_domain ||
-        std::any_of(
-            allowed_domains->begin(), allowed_domains->end(),
-            [&url](const auto& domain) { return url.DomainIs(domain); })) {
-      headers->SetHeader(kBraveServicesKeyHeader,
-                         BUILDFLAG(BRAVE_SERVICES_KEY));
-    }
-    if (is_search_domain) {
-      const auto [_, signature] = brave_service_keys::GetAuthorizationHeader(
-          BUILDFLAG(SERVICE_KEY_SEARCH), /*headers=*/{}, url, ctx->method(),
-          {"(request-target)"});
-      headers->SetHeader(kBraveServiceSignatureHeader, signature);
-    }
+  if (!url.SchemeIs(url::kHttpsScheme)) {
+    return net::OK;
+  }
+
+  const bool is_search_domain = kSearchDomains.contains(url.host());
+  const bool is_translate_domain =
+      kTranslateDomains.contains(url.host()) &&
+      ctx->method() == net::HttpRequestHeaders::kPostMethod;
+  if (is_search_domain || is_translate_domain ||
+      std::any_of(allowed_domains->begin(), allowed_domains->end(),
+                  [&url](const auto& domain) { return url.DomainIs(domain); })) {
+    headers->SetHeader(kBraveServicesKeyHeader, BUILDFLAG(BRAVE_SERVICES_KEY));
+  }
+  if (is_search_domain) {
+    const auto [_, signature] = brave_service_keys::GetAuthorizationHeader(
+        BUILDFLAG(SERVICE_KEY_SEARCH), /*headers=*/{}, url, ctx->method(),
+        {"(request-target)"});
+    headers->SetHeader(kBraveServiceSignatureHeader, signature);
+  }
+  if (is_translate_domain) {
+    const auto [name, value] = brave_service_keys::GetAuthorizationHeader(
+        BUILDFLAG(SERVICE_KEY_SEARCH), /*headers=*/{}, url, ctx->method(),
+        {"(request-target)"});
+    headers->SetHeader(name, value);
   }
   return net::OK;
 }

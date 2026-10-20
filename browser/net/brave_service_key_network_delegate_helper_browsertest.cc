@@ -7,6 +7,8 @@
 
 #include "base/containers/map_util.h"
 #include "brave/components/constants/network_constants.h"
+#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/test/browser_test.h"
@@ -30,6 +32,7 @@ class BraveServiceKeyNetworkDelegateBrowserTest : public InProcessBrowserTest {
     https_server_.RegisterRequestMonitor(base::BindRepeating(
         &BraveServiceKeyNetworkDelegateBrowserTest::HandleRequest,
         base::Unretained(this)));
+    https_server_.ServeFilesFromSourceDirectory(GetChromeTestDataDir());
 
     ASSERT_TRUE(https_server_.Start());
   }
@@ -41,6 +44,28 @@ class BraveServiceKeyNetworkDelegateBrowserTest : public InProcessBrowserTest {
     const std::string* auth =
         base::FindOrNull(request.headers, "BraveServiceSignature");
     authorization_header_ = auth ? *auth : std::string();
+    const std::string* standard_auth =
+        base::FindOrNull(request.headers, "Authorization");
+    standard_authorization_header_ =
+        standard_auth ? *standard_auth : std::string();
+
+    if (request.method == net::test_server::METHOD_POST) {
+      post_header_result_ = header_result_;
+      post_authorization_header_ = standard_authorization_header_;
+    }
+  }
+
+  void NavigateAndPost(const std::string& host) {
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(
+        browser(), https_server().GetURL(host, "/simple.html")));
+    {
+      base::AutoLock auto_lock(header_result_lock_);
+      post_header_result_ = false;
+      post_authorization_header_.clear();
+    }
+    ASSERT_TRUE(content::ExecJs(
+        browser()->tab_strip_model()->GetActiveWebContents(),
+        "fetch('/translate', {method: 'POST'})"));
   }
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
@@ -70,12 +95,30 @@ class BraveServiceKeyNetworkDelegateBrowserTest : public InProcessBrowserTest {
     return authorization_header_;
   }
 
+  std::string standard_authorization_header() {
+    base::AutoLock auto_lock(header_result_lock_);
+    return standard_authorization_header_;
+  }
+
+  bool post_header_result() {
+    base::AutoLock auto_lock(header_result_lock_);
+    return post_header_result_;
+  }
+
+  std::string post_authorization_header() {
+    base::AutoLock auto_lock(header_result_lock_);
+    return post_authorization_header_;
+  }
+
  private:
   content::ContentMockCertVerifier mock_cert_verifier_;
   net::test_server::EmbeddedTestServer https_server_;
   mutable base::Lock header_result_lock_;
   bool header_result_ = false;
   std::string authorization_header_;
+  std::string standard_authorization_header_;
+  bool post_header_result_ = false;
+  std::string post_authorization_header_;
 };
 
 IN_PROC_BROWSER_TEST_F(BraveServiceKeyNetworkDelegateBrowserTest,
@@ -118,6 +161,36 @@ IN_PROC_BROWSER_TEST_F(BraveServiceKeyNetworkDelegateBrowserTest,
   target = https_server().GetURL("search.brave.software", "/index.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), target));
   EXPECT_TRUE(header_result());
+}
+
+IN_PROC_BROWSER_TEST_F(BraveServiceKeyNetworkDelegateBrowserTest,
+                       IncludesHeadersForTranslatePostRequests) {
+  for (const auto* host :
+       {"translate.brave.com", "translate.bravesoftware.com"}) {
+    SCOPED_TRACE(host);
+    NavigateAndPost(host);
+    EXPECT_TRUE(post_header_result());
+    EXPECT_THAT(post_authorization_header(),
+                ::testing::StartsWith("Signature keyId="));
+    EXPECT_THAT(post_authorization_header(),
+                ::testing::HasSubstr("headers=\"(request-target)\""));
+  }
+
+  NavigateAndPost("brave.com");
+  EXPECT_FALSE(post_header_result());
+  EXPECT_TRUE(post_authorization_header().empty());
+}
+
+IN_PROC_BROWSER_TEST_F(BraveServiceKeyNetworkDelegateBrowserTest,
+                       NotIncludesHeadersForTranslateGetRequests) {
+  for (const auto* host :
+       {"translate.brave.com", "translate.bravesoftware.com"}) {
+    SCOPED_TRACE(host);
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(
+        browser(), https_server().GetURL(host, "/index.html")));
+    EXPECT_FALSE(header_result());
+    EXPECT_TRUE(standard_authorization_header().empty());
+  }
 }
 
 IN_PROC_BROWSER_TEST_F(BraveServiceKeyNetworkDelegateBrowserTest,
