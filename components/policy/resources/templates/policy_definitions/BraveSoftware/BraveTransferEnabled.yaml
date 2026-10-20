@@ -1,0 +1,33 @@
+caption: Enable Brave Transfer
+default: null
+desc: |-
+  Enable Brave Transfer in Brave.
+
+  Brave Transfer sends files, photos, text and links between the user's devices in the same Brave Sync chain over the local network.
+
+  If this policy is set to true or left unset, Brave Transfer is available when the feature is enabled.
+
+  If this policy is set to false, Brave Transfer is disabled: brave://transfer and the toolbar button are unavailable, and the browser neither discovers nor accepts connections from other devices.
+
+  If you set this policy, users cannot change or override it.
+example_value: false
+features:
+  can_be_mandatory: true
+  can_be_recommended: false
+  dynamic_refresh: false
+  per_profile: true
+items:
+- caption: Enable Brave Transfer
+  value: true
+- caption: Disable Brave Transfer
+  value: false
+- caption: Allow the user to decide
+  value: null
+owners:
+- file://brave/components/brave_transfer/OWNERS
+schema:
+  type: boolean
+supported_on:
+- chrome.mac:156-
+tags: []
+type: main

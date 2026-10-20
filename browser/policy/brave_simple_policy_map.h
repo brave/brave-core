@@ -12,6 +12,7 @@
 #include "brave/components/brave_shields/core/common/pref_names.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_talk/buildflags/buildflags.h"
+#include "brave/components/brave_transfer/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
@@ -34,6 +35,10 @@
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/components/ai_chat/core/common/pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_TRANSFER)
+#include "brave/components/brave_transfer/core/pref_names.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
@@ -159,6 +164,10 @@ inline constexpr PolicyToPreferenceMapEntry kBraveSimplePolicyMap[] = {
 #endif
 #if BUILDFLAG(ENABLE_PSST)
     {policy::key::kPsstEnabled, psst::prefs::kPsstEnabled,
+     base::Value::Type::BOOLEAN},
+#endif
+#if BUILDFLAG(ENABLE_BRAVE_TRANSFER)
+    {policy::key::kBraveTransferEnabled, brave_transfer::prefs::kEnabled,
      base::Value::Type::BOOLEAN},
 #endif
     {policy::key::kBraveReduceLanguageEnabled,

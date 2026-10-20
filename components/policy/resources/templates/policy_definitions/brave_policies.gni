@@ -23,6 +23,7 @@ brave_policies = [
   "BraveSoftware/BraveSyncUrl.yaml",
   "BraveSoftware/BraveTalkDisabled.yaml",
   "BraveSoftware/BraveTrackingQueryParametersFilteringEnabled.yaml",
+  "BraveSoftware/BraveTransferEnabled.yaml",
   "BraveSoftware/BraveVPNDisabled.yaml",
   "BraveSoftware/BraveWebDiscoveryEnabled.yaml",
   "BraveSoftware/BraveWalletDisabled.yaml",
