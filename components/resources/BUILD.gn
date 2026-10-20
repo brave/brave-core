@@ -81,7 +81,7 @@ brave_grit("static_resources") {
   defines = [
     "enable_ai_chat=$enable_ai_chat",
     "enable_brave_vpn=$enable_brave_vpn",
-    "enable_brave_transfer=$enable_brave_transfer",
+    "enable_brave_transfer_webui=$enable_brave_transfer_webui",
     "enable_brave_wallet=$enable_brave_wallet",
     "enable_email_aliases=$enable_email_aliases",
     "enable_playlist_webui=$enable_playlist_webui",
@@ -202,7 +202,7 @@ repack("resources") {
     ]
   }
 
-  if (enable_brave_transfer) {
+  if (enable_brave_transfer_webui) {
     deps += [ "//brave/components/brave_transfer/resources/page:brave_transfer_page_generated" ]
     sources += [ "$root_gen_dir/brave/components/brave_transfer/resources/page/brave_transfer_generated.pak" ]
   }

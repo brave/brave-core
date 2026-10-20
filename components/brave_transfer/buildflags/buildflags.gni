@@ -9,3 +9,8 @@ declare_args() {
   # enable_service_discovery. macOS only in M1.
   enable_brave_transfer = is_mac
 }
+
+# brave://transfer's page resources. The desktop host is gated by
+# enable_brave_transfer; the iOS host (ios/browser/ui/webui/brave_transfer)
+# serves the same page and is gated at runtime by the BraveTransfer feature.
+enable_brave_transfer_webui = enable_brave_transfer || is_ios

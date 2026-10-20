@@ -84,7 +84,7 @@
       </if>
 
       <!-- Brave Transfer -->
-      <if expr="enable_brave_transfer">
+      <if expr="enable_brave_transfer_webui">
         <include name="IDR_BRAVE_TRANSFER_HTML" file="../brave_transfer/resources/page/brave_transfer.html" type="BINDATA" />
       </if>
 
