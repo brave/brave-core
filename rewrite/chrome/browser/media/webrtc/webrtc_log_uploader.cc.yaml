@@ -5,9 +5,51 @@
 
 substitutions:
   - description: |-
+      Disable storing and uploading of WebRTC logs.
+
+      Brave never uploads WebRTC logs to Google, nor stores them. A stopped log
+      is dropped, its RTP dumps are deleted, and the caller is told that the
+      upload is disabled. This also gives the log slot back, which the
+      upstream flow does as part of reporting the result.
+    preempt_function_impl:
+      function_name: WebRtcLogUploader::OnLoggingStopped
+      code: |-
+        DeleteRtpDumps(upload_done_data.paths);
+        main_task_runner_->PostTask(
+            FROM_HERE, base::BindOnce(&WebRtcLogUploader::NotifyUploadDisabled,
+                                      base::Unretained(this),
+                                      std::move(upload_done_data)));
+        return;
+
+  - description: |-
+      Disable storing of WebRTC logs.
+
+      The log is dropped along with its RTP dumps, and the caller is told that
+      storing failed. The log slot is given back as upstream does once a log
+      has been stored.
+    preempt_function_impl:
+      function_name: WebRtcLogUploader::LoggingStoppedDoStore
+      code: |-
+        DeleteRtpDumps(log_paths);
+        if (done_callback) {
+          main_task_runner_->PostTask(
+              FROM_HERE,
+              base::BindOnce(std::move(done_callback), false,
+                             std::string(kLogStorageDisabledMsg)));
+        }
+        main_task_runner_->PostTask(
+            FROM_HERE, base::BindOnce(&WebRtcLogUploader::DecreaseLogCount,
+                                      base::Unretained(this)));
+        return;
+
+  - description: |-
       Disable WebRTC log uploads.
 
-      Brave never uploads WebRTC logs to Google.
+      Nothing reaches this function once stopped logs are dropped. Should
+      anything do so, the caller still gets the upload disabled result, and the
+      log slot is given back.
     preempt_function_impl:
       function_name: WebRtcLogUploader::UploadCompressedLog
-      code: return;
+      code: |-
+        NotifyUploadDisabled(std::move(upload_done_data));
+        return;
