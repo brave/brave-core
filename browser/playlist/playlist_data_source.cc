@@ -321,8 +321,7 @@ std::string PlaylistDataSource::GetAccessControlAllowOriginForOrigin(
   if (origin_url == kPlaylistURL || origin_url == kPlaylistPlayerURL) {
     return origin;
   }
-  // Skips FaviconSource, whose allowances are for chrome-untrusted://favicon2.
-  return content::URLDataSource::GetAccessControlAllowOriginForOrigin(origin);
+  return FaviconSource::GetAccessControlAllowOriginForOrigin(origin);
 }
 
 }  // namespace playlist

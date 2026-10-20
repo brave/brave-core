@@ -40,5 +40,7 @@ substitutions:
       Sharing page.
     preempt_function_impl:
       function_name: FaviconSource::GetAccessControlAllowOriginForOrigin
-      return_if: 'serve_untrusted_ && IsBraveUntrustedFaviconOrigin(origin)'
-      return_value: 'origin'
+      code: |-
+        if (BraveIsFavicon2AllowedOnOrigin(serve_untrusted_, origin)) {
+          return origin;
+        }

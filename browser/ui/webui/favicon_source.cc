@@ -8,8 +8,11 @@
 #include "base/strings/strcat.h"
 #include "brave/components/constants/webui_url_constants.h"
 
-// Brave's chrome-untrusted:// WebUIs that load chrome-untrusted://favicon2,
-// which is cross-origin to them.
-bool IsBraveUntrustedFaviconOrigin(const std::string& origin) {
-  return base::StrCat({origin, "/"}) == kAIChatUntrustedConversationUIURL;
+// Whether `origin` may load from a FaviconSource. Only the
+// chrome-untrusted://favicon2 variant (`serve_untrusted`) needs this, as it is
+// cross-origin to every chrome-untrusted:// WebUI that uses it.
+bool BraveIsFavicon2AllowedOnOrigin(bool serve_untrusted,
+                                    const std::string& origin) {
+  return serve_untrusted &&
+         base::StrCat({origin, "/"}) == kAIChatUntrustedConversationUIURL;
 }

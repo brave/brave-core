@@ -10,7 +10,8 @@
 #include "ui/resources/grit/ui_resources.h"
 
 // Defined in brave/browser/ui/webui/favicon_source.cc.
-bool IsBraveUntrustedFaviconOrigin(const std::string& origin);
+bool BraveIsFavicon2AllowedOnOrigin(bool serve_untrusted,
+                                    const std::string& origin);
 
 // Only used where favicon_source.cc's own SendDefaultResponse() references
 // the 32/64 sizes: desktop and desktop Android.
