@@ -206,7 +206,18 @@ import os
   private let clearDataCallback: ClearDataCallback
   private let braveStats: BraveStats
   private let webcompatReporterHandler: WebcompatReporterWebcompatReporterHandler?
+  private let defaultHostContentSettings: DefaultHostContentSettings
   let tabManager: TabManager
+
+  @Published var defaultExternalLinkMode: ExternalLinkMode {
+    didSet {
+      defaultHostContentSettings.defaultExternalLinkMode = defaultExternalLinkMode
+    }
+  }
+
+  func clearRememberedExternalLinkChoices() {
+    defaultHostContentSettings.clearAllExternalLinkModes()
+  }
 
   init(
     profile: LegacyBrowserProfile,
@@ -234,6 +245,8 @@ import os
     self.clearDataCallback = clearDataCallback
     self.braveStats = braveStats
     self.prefs = braveCore.profile.prefs
+    self.defaultHostContentSettings = braveCore.defaultHostContentSettings
+    self.defaultExternalLinkMode = braveCore.defaultHostContentSettings.defaultExternalLinkMode
     if FeatureList.kBraveShieldsContentSettings.enabled {
       self.adBlockAndTrackingPreventionLevel =
         braveShieldsSettings?.defaultAdBlockMode.shieldLevel ?? .standard

@@ -16,6 +16,16 @@ typedef NS_ENUM(NSUInteger, DefaultPageMode) {
   DefaultPageModeDesktop,
 };
 
+/// How a link opened from another app should be loaded.
+typedef NS_ENUM(NSInteger, ExternalLinkMode) {
+  /// Opens in the current browsing mode.
+  ExternalLinkModeCurrent = 0,
+  ExternalLinkModeAsk,
+  ExternalLinkModeRegular,
+  ExternalLinkModePrivateBrowsing,
+  ExternalLinkModeQuickView,
+};
+
 /// A list of default website preferences.
 OBJC_EXPORT
 @interface DefaultHostContentSettings : NSObject
@@ -25,6 +35,20 @@ OBJC_EXPORT
 
 /// Whether or not popups are allowed by default
 @property(nonatomic) BOOL popupsAllowed;
+
+/// How links opened from other apps are loaded by default.
+@property(nonatomic) ExternalLinkMode defaultExternalLinkMode;
+
+/// The external link mode for the given URL, falling back to
+/// `defaultExternalLinkMode` when no per-site mode is remembered.
+- (ExternalLinkMode)externalLinkModeForURL:(NSURL*)url;
+
+/// Remembers the external link mode for the given URL's base domain (eTLD+1)
+/// and its subdomains.
+- (void)setExternalLinkMode:(ExternalLinkMode)mode forURL:(NSURL*)url;
+
+/// Removes all remembered per-site external link modes, keeping the default.
+- (void)clearAllExternalLinkModes;
 
 @end
 

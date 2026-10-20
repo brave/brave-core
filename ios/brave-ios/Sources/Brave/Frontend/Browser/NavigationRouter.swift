@@ -110,6 +110,21 @@ public enum NavigationPath: Equatable {
   }
 
   private static func handleURL(url: URL?, isPrivate: Bool, with bvc: BrowserViewController) {
+    if let url,
+      bvc.handleExternalLink(
+        url,
+        open: { [weak bvc] isPrivate in
+          guard let bvc else { return }
+          openURL(url: url, isPrivate: isPrivate, with: bvc)
+        }
+      )
+    {
+      return
+    }
+    openURL(url: url, isPrivate: isPrivate, with: bvc)
+  }
+
+  private static func openURL(url: URL?, isPrivate: Bool, with bvc: BrowserViewController) {
     // Skip private-tab auth when app passcode lock is on; the user must unlock the app first.
     if isPrivate,
       Preferences.Privacy.privateBrowsingLock.value,

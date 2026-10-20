@@ -12,5 +12,8 @@ source_set("content_settings") {
   deps = [
     "//base",
     "//components/content_settings/core/browser",
+    "//components/content_settings/core/common",
+    "//net",
+    "//url",
   ]
 }

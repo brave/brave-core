@@ -165,71 +165,7 @@ extension BrowserViewController: TabManagerDelegate {
       show(toast: searchResultClickedInfobar, duration: nil)
     }
     tab.braveSearch?.presentInQuickView = { [weak self] url, tab in
-      guard let self else { return }
-      let quickViewController = QuickViewController(
-        url: url,
-        profile: tab.profile,
-        syncAPI: profileController.syncAPI,
-        sendTabAPI: profileController.sendTabAPI,
-        historyAPI: profileController.historyAPI,
-        httpsUpgradeExceptionsService: braveCore.httpsUpgradeExceptionsService,
-        onOpenInNewTab: { [weak self] request, isPrivateMode in
-          guard let self else { return }
-          self.tabManager.addTabAndSelect(
-            request,
-            isPrivate: isPrivateMode
-          )
-        },
-        onOpenInNewWindow: { [weak self] url, isPrivateMode in
-          guard let self else { return }
-          self.openInNewWindow(url: url, isPrivate: isPrivateMode)
-        },
-        onAttachTab: { [weak self] tab in
-          guard let self else { return }
-          let request = tab.visibleURL.map { URLRequest(url: $0) }
-          self.tabManager.configureTab(tab, request: request, flushToDisk: false, zombie: true)
-          self.tabManager.saveTab(tab, saveOrder: true)
-          self.tabManager.selectTab(tab)
-        },
-        onShowConfirmationAlert: { [weak self] in
-          let alert = UIAlertController(
-            title: Strings.quickViewConfirmationAlertTitle,
-            message: Strings.quickViewConfirmationAlertMessage,
-            preferredStyle: .alert
-          )
-          alert.addAction(
-            .init(title: Strings.quickViewConfirmationAlertKeepButtonTitle, style: .default)
-          )
-          alert.addAction(
-            .init(
-              title: Strings.quickViewConfirmationAlertTurnOffButtonTitle,
-              style: .cancel,
-              handler: { _ in
-                Preferences.General.openLinkInQuickViewMode.value = false
-              }
-            )
-          )
-          self?.present(alert, animated: true)
-        }
-      )
-      if let sheet = quickViewController.sheetPresentationController {
-        sheet.prefersGrabberVisible = true
-
-        let customDetentId = "customDetent"
-        let customDetent = UISheetPresentationController.Detent.custom(
-          identifier: .init(customDetentId)
-        ) { context in
-          context.maximumDetentValue * 0.95
-        }
-        sheet.detents = [
-          customDetent,
-          .large(),
-        ]
-        sheet.selectedDetentIdentifier = .init(customDetentId)
-
-        sheet.prefersEdgeAttachedInCompactHeight = true
-      }
-      self.present(quickViewController, animated: true)
+      self?.presentQuickView(url: url, profile: tab.profile, showsConfirmationAlert: true)
     }
     tab.blockedDomainTabHelper = .init(tab: tab)
   }
@@ -459,5 +395,76 @@ extension BrowserViewController: TabManagerDelegate {
       return
     }
     show(toast: toast, afterWaiting: ButtonToastUX.toastDelay)
+  }
+}
+
+extension BrowserViewController {
+  func presentQuickView(url: URL, profile: any Profile, showsConfirmationAlert: Bool) {
+    let quickViewController = QuickViewController(
+      url: url,
+      profile: profile,
+      syncAPI: profileController.syncAPI,
+      sendTabAPI: profileController.sendTabAPI,
+      historyAPI: profileController.historyAPI,
+      httpsUpgradeExceptionsService: braveCore.httpsUpgradeExceptionsService,
+      onOpenInNewTab: { [weak self] request, isPrivateMode in
+        guard let self else { return }
+        self.tabManager.addTabAndSelect(
+          request,
+          isPrivate: isPrivateMode
+        )
+      },
+      onOpenInNewWindow: { [weak self] url, isPrivateMode in
+        guard let self else { return }
+        self.openInNewWindow(url: url, isPrivate: isPrivateMode)
+      },
+      onAttachTab: { [weak self] tab in
+        guard let self else { return }
+        let request = tab.visibleURL.map { URLRequest(url: $0) }
+        self.tabManager.configureTab(tab, request: request, flushToDisk: false, zombie: true)
+        self.tabManager.saveTab(tab, saveOrder: true)
+        self.tabManager.selectTab(tab)
+      },
+      onShowConfirmationAlert: !showsConfirmationAlert
+        ? nil
+        : { [weak self] in
+          let alert = UIAlertController(
+            title: Strings.quickViewConfirmationAlertTitle,
+            message: Strings.quickViewConfirmationAlertMessage,
+            preferredStyle: .alert
+          )
+          alert.addAction(
+            .init(title: Strings.quickViewConfirmationAlertKeepButtonTitle, style: .default)
+          )
+          alert.addAction(
+            .init(
+              title: Strings.quickViewConfirmationAlertTurnOffButtonTitle,
+              style: .cancel,
+              handler: { _ in
+                Preferences.General.openLinkInQuickViewMode.value = false
+              }
+            )
+          )
+          self?.present(alert, animated: true)
+        }
+    )
+    if let sheet = quickViewController.sheetPresentationController {
+      sheet.prefersGrabberVisible = true
+
+      let customDetentId = "customDetent"
+      let customDetent = UISheetPresentationController.Detent.custom(
+        identifier: .init(customDetentId)
+      ) { context in
+        context.maximumDetentValue * 0.95
+      }
+      sheet.detents = [
+        customDetent,
+        .large(),
+      ]
+      sheet.selectedDetentIdentifier = .init(customDetentId)
+
+      sheet.prefersEdgeAttachedInCompactHeight = true
+    }
+    presentOnTop(quickViewController)
   }
 }

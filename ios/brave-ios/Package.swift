@@ -52,6 +52,7 @@ var package = Package(
     .library(name: "Web", targets: ["Web"]),
     .library(name: "BraveTalk", targets: ["BraveTalk"]),
     .library(name: "Origin", targets: ["Origin"]),
+    .library(name: "ExternalLinks", targets: ["ExternalLinks"]),
     .plugin(name: "IntentBuilderPlugin", targets: ["IntentBuilderPlugin"]),
     .plugin(name: "LoggerPlugin", targets: ["LoggerPlugin"]),
   ],
@@ -116,6 +117,7 @@ var package = Package(
         "BraveShields",
         "BraveTalk",
         "Origin",
+        "ExternalLinks",
       ],
       exclude: [
         "Frontend/UserContent/UserScripts/AllFrames",
@@ -620,6 +622,12 @@ var package = Package(
         "BraveCore",
         "BraveStore",
         .product(name: "SwiftUIIntrospect", package: "SwiftUI-Introspect"),
+      ]
+    ),
+    .target(
+      name: "ExternalLinks",
+      dependencies: [
+        "BraveCore", "BraveShared", "BraveStrings", "BraveUI", "DesignSystem", "Strings",
       ]
     ),
   ],

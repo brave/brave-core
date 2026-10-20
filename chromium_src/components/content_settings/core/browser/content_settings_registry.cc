@@ -406,6 +406,16 @@ void ContentSettingsRegistry::BraveInit() {
           WebsiteSettingsRegistry::PLATFORM_IOS,
       WebsiteSettingsInfo::INHERIT_IN_INCOGNITO);
 
+  website_settings_registry_->Register(
+      ContentSettingsType::BRAVE_EXTERNAL_LINK_MODE, "braveExternalLinkMode",
+      base::Value(0), WebsiteSettingsInfo::SYNCABLE,
+      WebsiteSettingsInfo::NOT_LOSSY,
+      WebsiteSettingsInfo::TOP_ORIGIN_ONLY_SCOPE,
+      WebsiteSettingsRegistry::DESKTOP |
+          WebsiteSettingsRegistry::PLATFORM_ANDROID |
+          WebsiteSettingsRegistry::PLATFORM_IOS,
+      WebsiteSettingsInfo::DONT_INHERIT_IN_INCOGNITO);
+
 #if BUILDFLAG(ENABLE_PSST)
   website_settings_registry_->Register(
       ContentSettingsType::BRAVE_PSST, psst::kBravePsst, base::Value(),
