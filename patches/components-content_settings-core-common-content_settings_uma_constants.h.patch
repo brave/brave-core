@@ -2,7 +2,7 @@ diff --git a/components/content_settings/core/common/content_settings_uma_consta
 index b078a2f16f95436014dbd5dbb9b2a68ce704523f..b2b4bb2a8653110de191c352b571b7fec7326c52 100644
 --- a/components/content_settings/core/common/content_settings_uma_constants.h
 +++ b/components/content_settings/core/common/content_settings_uma_constants.h
-@@ -171,6 +171,52 @@ inline constexpr auto kContentSettingsTypeToHistogramValue =
+@@ -171,6 +171,53 @@ inline constexpr auto kContentSettingsTypeToHistogramValue =
  
          // As mentioned at the top, please don't forget to update ContentType in
          // enums.xml when you add entries here!
@@ -52,6 +52,7 @@ index b078a2f16f95436014dbd5dbb9b2a68ce704523f..b2b4bb2a8653110de191c352b571b7fe
 +        {ContentSettingsType::BRAVE_CARDANO, GetBraveHistogramValue(71)},
 +        {ContentSettingsType::BRAVE_PSST, GetBraveHistogramValue(72)},
 +        {ContentSettingsType::BRAVE_POLKADOT, GetBraveHistogramValue(73)},
++        {ContentSettingsType::BRAVE_EXTERNAL_LINK_MODE, GetBraveHistogramValue(74)},
      });
  // LINT.ThenChange(//tools/metrics/histograms/enums.xml:ContentType)
  

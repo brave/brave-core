@@ -57,4 +57,5 @@ substitutions:
                 {ContentSettingsType::BRAVE_SHIELDS_METADATA, GetBraveHistogramValue(70)},
                 {ContentSettingsType::BRAVE_CARDANO, GetBraveHistogramValue(71)},
                 {ContentSettingsType::BRAVE_PSST, GetBraveHistogramValue(72)},
-                {ContentSettingsType::BRAVE_POLKADOT, GetBraveHistogramValue(73)},\2
+                {ContentSettingsType::BRAVE_POLKADOT, GetBraveHistogramValue(73)},
+                {ContentSettingsType::BRAVE_EXTERNAL_LINK_MODE, GetBraveHistogramValue(74)},\2
