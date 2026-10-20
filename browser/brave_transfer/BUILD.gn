@@ -1,0 +1,104 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_transfer/buildflags/buildflags.gni")
+import("//chrome/common/features.gni")
+
+assert(enable_brave_transfer)
+assert(enable_service_discovery)
+
+# Network transport for Brave Transfer: TCP sockets from the network service
+# exposed as brave_transfer::ByteStream.
+source_set("transport") {
+  sources = [
+    "mojo_byte_stream.cc",
+    "mojo_byte_stream.h",
+    "tcp_connector.cc",
+    "tcp_connector.h",
+  ]
+
+  public_deps = [
+    "//brave/components/brave_transfer/browser",
+    "//mojo/public/cpp/bindings",
+    "//mojo/public/cpp/system",
+    "//net",
+    "//services/network/public/mojom",
+  ]
+
+  deps = [ "//base" ]
+}
+
+source_set("brave_transfer") {
+  sources = [
+    "brave_transfer_service_delegate_impl.cc",
+    "brave_transfer_service_delegate_impl.h",
+    "brave_transfer_service_factory.cc",
+    "brave_transfer_service_factory.h",
+    "mdns_discovery_provider.cc",
+    "mdns_discovery_provider.h",
+    "sync_trust_source.cc",
+    "sync_trust_source.h",
+  ]
+
+  public_deps = [
+    ":transport",
+    "//brave/components/brave_transfer/browser",
+    "//chrome/browser/local_discovery",
+    "//chrome/browser/profiles:profile",
+    "//components/sync/service",
+    "//components/sync_device_info",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/app:brave_generated_resources_grit",
+    "//brave/components/brave_transfer/core",
+    "//brave/components/brave_transfer/core:features",
+    "//brave/components/brave_transfer/core:sync_code",
+    "//brave/components/constants",
+    "//brave/components/resources:strings_grit",
+    "//chrome/browser:browser_process",
+    "//chrome/browser/download",
+    "//chrome/browser/notifications",
+    "//chrome/browser/sync:factories",
+    "//chrome/browser/ui:singleton_tabs",
+    "//components/keyed_service/content",
+    "//components/prefs",
+    "//components/services/quarantine",
+    "//content/public/browser",
+    "//services/network/public/mojom",
+    "//ui/base",
+    "//ui/message_center/public/cpp",
+    "//url",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [
+    "mdns_discovery_provider_unittest.cc",
+    "mojo_byte_stream_unittest.cc",
+    "sync_trust_source_unittest.cc",
+    "tcp_connector_unittest.cc",
+  ]
+
+  deps = [
+    ":brave_transfer",
+    ":transport",
+    "//base",
+    "//base/test:test_support",
+    "//brave/components/brave_transfer/core",
+    "//chrome/browser/local_discovery",
+    "//components/sync_device_info",
+    "//components/sync_device_info:test_support",
+    "//mojo/public/cpp/bindings",
+    "//mojo/public/cpp/system",
+    "//net",
+    "//services/network:test_support",
+    "//services/network/public/mojom",
+    "//testing/gtest",
+  ]
+}

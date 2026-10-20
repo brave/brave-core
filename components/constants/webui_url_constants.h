@@ -14,6 +14,8 @@
 
 inline constexpr char kBraveAccountHost[] = "account";
 inline constexpr char kBraveAccountURL[] = "chrome://account/";
+inline constexpr char kBraveTransferHost[] = "transfer";
+inline constexpr char kBraveTransferURL[] = "chrome://transfer/";
 inline constexpr char kAdblockHost[] = "adblock";
 inline constexpr char kAdblockInternalsHost[] = "adblock-internals";
 inline constexpr char kAdblockJS[] = "brave_adblock.js";

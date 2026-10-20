@@ -634,6 +634,27 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         Copy to clipboard
       </message>
 
+      <!-- Brave Transfer strings -->
+      <message name="IDS_BRAVE_TRANSFER_TOOLBAR_BUTTON_TOOLTIP" desc="Tooltip for the toolbar button that opens the Brave Transfer page, where users send files, photos, text and links between their devices">
+        Brave Transfer
+      </message>
+      <message name="IDS_BRAVE_TRANSFER_CHOOSE_FOLDER_TITLE" desc="Title of the folder picker where the user chooses the folder that files received with Brave Transfer are saved to">
+        Save received files to
+      </message>
+      <message name="IDS_BRAVE_TRANSFER_NOTIFICATION_OFFER" desc="Notification text shown when one of the user's devices wants to send items with Brave Transfer. The notification title is the name of the sending device.">
+        {COUNT, plural,
+          =1 {Wants to send you 1 item. Open Brave Transfer to accept or decline.}
+          other {Wants to send you # items. Open Brave Transfer to accept or decline.}}
+      </message>
+      <message name="IDS_BRAVE_TRANSFER_NOTIFICATION_RECEIVED" desc="Notification text shown when items from one of the user's devices were received with Brave Transfer. The notification title is the name of the sending device.">
+        {COUNT, plural,
+          =1 {Sent you 1 item}
+          other {Sent you # items}}
+      </message>
+      <message name="IDS_BRAVE_TRANSFER_NOTIFICATION_KEY_MISMATCH" desc="Notification text shown when one of the user's Sync devices was blocked by Brave Transfer because its security key changed. The notification title is the name of the device.">
+        Brave Transfer blocked this device because its security key changed. To use it again, remove it from your Sync chain and add it back.
+      </message>
+
       <!-- Extensions page strings -->
       <message name="IDS_EXTENSIONS_BRAVE_ITEM_SOURCE_WEBSTORE" desc="The text to indicate that an extension is from the Web Extensions Store.">
         Web Extensions Store
