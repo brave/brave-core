@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/platform/runtime_enabled_features.json5 b/third_party/blink/renderer/platform/runtime_enabled_features.json5
-index be2ad46e1e6497eef0200afc6258dcd9a7ae5ad6..0050de55bda74821ef13f4f30ca7803efbd887d0 100644
+index 32931ee250b8285cc8b798120e4ee3b8261d1fba..ec2f2b195302ce849db07b5f0f8d9fcb8e9c4624 100644
 --- a/third_party/blink/renderer/platform/runtime_enabled_features.json5
 +++ b/third_party/blink/renderer/platform/runtime_enabled_features.json5
 @@ -319,6 +319,7 @@
@@ -129,7 +129,7 @@ index be2ad46e1e6497eef0200afc6258dcd9a7ae5ad6..0050de55bda74821ef13f4f30ca7803e
        copied_from_base_feature_if: "overridden",
      },
      {
-@@ -4274,6 +4284,7 @@
+@@ -4279,6 +4289,7 @@
      // "experimental" is the support on other platforms.
      {
        name: "MiddleClickAutoscroll",
@@ -137,7 +137,7 @@ index be2ad46e1e6497eef0200afc6258dcd9a7ae5ad6..0050de55bda74821ef13f4f30ca7803e
        status: "test",
      },
      // Killswitch for crbug.com/40062462 fix.
-@@ -4773,6 +4784,7 @@
+@@ -4778,6 +4789,7 @@
      {
        // PARAKEET ad serving runtime flag/JS API.
        name: "Parakeet",
@@ -145,7 +145,7 @@ index be2ad46e1e6497eef0200afc6258dcd9a7ae5ad6..0050de55bda74821ef13f4f30ca7803e
        origin_trial_feature_name: "Parakeet",
      },
      {
-@@ -4984,6 +4996,7 @@
+@@ -4989,6 +5001,7 @@
        //
        // It also has some feature params defined throughout the codebase.
        name: "Prerender2",
@@ -153,7 +153,7 @@ index be2ad46e1e6497eef0200afc6258dcd9a7ae5ad6..0050de55bda74821ef13f4f30ca7803e
        status: "stable",
      },
      {
-@@ -5181,6 +5194,7 @@
+@@ -5186,6 +5199,7 @@
      // but we still keep this flag for future phase tests.
      {
        name: "ReduceUserAgentMinorVersion",
@@ -161,7 +161,7 @@ index be2ad46e1e6497eef0200afc6258dcd9a7ae5ad6..0050de55bda74821ef13f4f30ca7803e
        status: "stable",
      },
      {
-@@ -6605,7 +6619,7 @@
+@@ -6610,7 +6624,7 @@
          "ChromeOS": "stable",
          "default": "",
        },
@@ -170,7 +170,7 @@ index be2ad46e1e6497eef0200afc6258dcd9a7ae5ad6..0050de55bda74821ef13f4f30ca7803e
        copied_from_base_feature_if: "overridden",
      },
      {
-@@ -6777,6 +6791,7 @@
+@@ -6782,6 +6796,7 @@
      },
      {
        name: "UserMediaElement",
@@ -178,7 +178,7 @@ index be2ad46e1e6497eef0200afc6258dcd9a7ae5ad6..0050de55bda74821ef13f4f30ca7803e
        status: "stable",
        public: true,
      },
-@@ -7625,5 +7640,10 @@
+@@ -7630,5 +7645,10 @@
        // crbug.com/435623334.
        name: "XSLTSpecialTrial",
      },

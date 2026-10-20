@@ -1,5 +1,5 @@
 diff --git a/content/browser/web_contents/web_contents_impl.cc b/content/browser/web_contents/web_contents_impl.cc
-index 3bdd2490dc5aeaabdd80237278e79634dae09977..9d299c7c5d3738fd757590aee491995e8ca4dfa1 100644
+index f038e08ea02c4f60ccad698018fa7505b3dc10bd..5f063d576df2d51d8536d4214f64010e86f704ad 100644
 --- a/content/browser/web_contents/web_contents_impl.cc
 +++ b/content/browser/web_contents/web_contents_impl.cc
 @@ -3118,7 +3118,11 @@ int WebContentsImpl::GetVirtualKeyboardResizeHeight() {

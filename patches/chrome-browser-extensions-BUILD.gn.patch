@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/extensions/BUILD.gn b/chrome/browser/extensions/BUILD.gn
-index 5adb9b06a080086c1ad618cfaa8787d0a9e839aa..7daf193e782461669d632def7449f7145211b4bd 100644
+index 2acb4ecd06cd42f46a473bfa3cef87b1ce153baa..bf7fcc8a456175aaa59f6aed49c55b8eabbc4398 100644
 --- a/chrome/browser/extensions/BUILD.gn
 +++ b/chrome/browser/extensions/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -52,7 +52,7 @@ index 5adb9b06a080086c1ad618cfaa8787d0a9e839aa..7daf193e782461669d632def7449f714
  source_set("browser_tests") {
    testonly = true
  
-@@ -3212,6 +3216,7 @@ source_set("browser_tests") {
+@@ -3214,6 +3218,7 @@ source_set("browser_tests") {
      deps += [ "//chrome/browser/ui/views/web_apps:launch_dialogs" ]
    }
  }
