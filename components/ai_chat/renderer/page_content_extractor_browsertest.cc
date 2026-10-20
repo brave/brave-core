@@ -10,7 +10,6 @@
 
 #include "base/test/test_future.h"
 #include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
-#include "content/public/renderer/render_frame.h"
 #include "content/public/test/render_view_test.h"
 #include "mojo/public/cpp/bindings/callback_helpers.h"
 #include "mojo/public/cpp/bindings/remote.h"

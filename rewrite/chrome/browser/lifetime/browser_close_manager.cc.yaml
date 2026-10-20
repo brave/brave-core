@@ -1,0 +1,19 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Close sidebar web panels before the session services shut down
+
+      Panels are pinned tabs, and `BrowserCloseManager::CloseBrowsers()`
+      finalizes the session before any window starts closing, so they would be
+      restored as regular pinned tabs.
+
+      The call only has any effect immediately before the session services go
+      down, hence the anchor: should upstream move or drop that call, this
+      match is meant to fail and be looked at again.
+    add_before_line:
+      line: 'ProfileManager::ShutdownSessionServices();'
+      code: '  sidebar::CloseAllWebPanels();'

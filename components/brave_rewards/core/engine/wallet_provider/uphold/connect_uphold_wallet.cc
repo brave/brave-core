@@ -8,16 +8,12 @@
 #include <utility>
 
 #include "base/check.h"
-#include "base/strings/strcat.h"
 #include "brave/components/brave_rewards/core/engine/endpoints/brave/post_connect_uphold.h"
 #include "brave/components/brave_rewards/core/engine/endpoints/request_for.h"
 #include "brave/components/brave_rewards/core/engine/global_constants.h"
-#include "brave/components/brave_rewards/core/engine/logging/event_log_keys.h"
-#include "brave/components/brave_rewards/core/engine/notifications/notification_keys.h"
 #include "brave/components/brave_rewards/core/engine/rewards_engine.h"
 #include "brave/components/brave_rewards/core/engine/uphold/uphold.h"
 #include "brave/components/brave_rewards/core/engine/util/environment_config.h"
-#include "brave/components/brave_rewards/core/engine/util/random_util.h"
 #include "brave/components/brave_rewards/core/engine/util/url_helpers.h"
 
 namespace brave_rewards::internal {

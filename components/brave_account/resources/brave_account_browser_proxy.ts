@@ -8,7 +8,6 @@ import {
   AuthenticationObserverCallbackRouter,
   DialogController,
   DialogMode,
-  Service,
 } from './brave_account.mojom-webui.js'
 import type {
   AuthenticationInterface,
@@ -16,7 +15,6 @@ import type {
 } from './brave_account.mojom-webui.js'
 import { PasswordStrengthMeter } from './password_strength_meter.mojom-webui.js'
 import type { PasswordStrengthMeterInterface } from './password_strength_meter.mojom-webui.js'
-import { loadTimeData } from '//resources/js/load_time_data.js'
 
 export interface BraveAccountBrowserProxy {
   authentication: AuthenticationInterface
@@ -25,7 +23,6 @@ export interface BraveAccountBrowserProxy {
   password_strength_meter: PasswordStrengthMeterInterface
   closeDialog: () => void
   getDialogMode: () => Promise<DialogMode>
-  getInitiatingService: () => Service
 }
 
 export class BraveAccountBrowserProxyImpl implements BraveAccountBrowserProxy {
@@ -58,13 +55,6 @@ export class BraveAccountBrowserProxyImpl implements BraveAccountBrowserProxy {
     return (this.dialogMode ??= this.dialog_controller
       .getDialogMode()
       .then(({ dialogMode }) => dialogMode))
-  }
-
-  getInitiatingService(): Service {
-    const id = 'initiatingService'
-    return loadTimeData.valueExists(id)
-      ? (loadTimeData.getInteger(id) as Service)
-      : Service.kAccounts
   }
 
   static getInstance(): BraveAccountBrowserProxy {

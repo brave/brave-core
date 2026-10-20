@@ -5,7 +5,6 @@
 
 #include "brave/components/web_discovery/browser/ecdh_aes.h"
 
-#include <algorithm>
 #include <array>
 
 #include "base/base64.h"

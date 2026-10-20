@@ -28,6 +28,8 @@ source_set("core") {
     "browser_identity.h",
     "browser_registry.cc",
     "browser_registry.h",
+    "connection_manager.cc",
+    "connection_manager.h",
     "shutdown_handlers.cc",
     "shutdown_handlers.h",
     "single_instance.h",
@@ -180,6 +182,8 @@ source_set("test_support") {
     "test/fake_browser_endpoint.h",
     "test/fake_browser_identity.cc",
     "test/fake_browser_identity.h",
+    "test/fake_connection_manager.cc",
+    "test/fake_connection_manager.h",
   ]
 
   public_deps = [
@@ -199,6 +203,7 @@ source_set("unit_tests") {
     "browser_host_provider_impl_unittest.cc",
     "browser_identity_unittest.cc",
     "browser_registry_unittest.cc",
+    "connection_manager_unittest.cc",
     "shutdown_handlers_unittest.cc",
     "single_instance_unittest.cc",
   ]

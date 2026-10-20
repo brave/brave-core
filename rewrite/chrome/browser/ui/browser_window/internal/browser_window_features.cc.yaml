@@ -4,14 +4,18 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
-  - description: |
-      Rename BrowserWindowFeatures to BrowserWindowFeatures_ChromiumImpl.
+  - description: |-
+      Create Brave's early window features first.
 
-      Matches the rename in browser_window_features.h so these definitions
-      target the class Brave's BrowserWindowFeatures subclass wraps.
-    rename_class:
-      class_name: BrowserWindowFeatures
-      rename: BrowserWindowFeatures_ChromiumImpl
+      See the members added in browser_window_features.h for why they have to
+      exist before the rest of Init() runs.
+    preempt_function_impl:
+      function_name: BrowserWindowFeatures::Init
+      code: |-
+        brave_focus_mode_controller_ =
+            CreateBraveFocusModeController(GetUserDataFactory(), browser);
+        brave_vertical_tab_controller_ = CreateBraveVerticalTabController(
+            GetUserDataFactory(), browser, brave_focus_mode_controller_.get());
 
   - description: 'Construct BraveBrowserActions instead of BrowserActions.'
     rename_class:

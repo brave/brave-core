@@ -57,19 +57,21 @@ class FakeBraveVpnService : public BraveVpnService {
                            CreateSupportTicketCallback callback) override {}
   void GetSupportData(GetSupportDataCallback callback) override {}
   void ResetConnectionState() override {}
-  void EnableOnDemand(bool enable) override {}
-  void GetOnDemandState(GetOnDemandStateCallback callback) override {}
+  void EnableAutoReconnect(bool enable) override {}
+  void GetAutoReconnectState(GetAutoReconnectStateCallback callback) override {}
   void EnableSmartProxyRouting(bool enable) override {}
   void GetSmartProxyRoutingState(
       GetSmartProxyRoutingStateCallback callback) override {}
   void AllowLanTraffic(bool allow) override {}
   void GetAllowLanTraffic(GetAllowLanTrafficCallback callback) override {}
+  void ReconnectToAgent() override {}
 
   void SetConnectionStateForTesting(mojom::ConnectionState state) override {}
   void SetPurchasedStateForTesting(const std::string& env,
                                    mojom::PurchasedState state) override {}
 
   // Re-expose the protected notification helpers and Shutdown for tests.
+  using BraveVpnService::NotifyAgentFailure;
   using BraveVpnService::NotifyConnectionStateChanged;
   using BraveVpnService::NotifySelectedRegionChanged;
   using BraveVpnService::NotifySmartProxyRoutingStateChanged;

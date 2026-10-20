@@ -26,11 +26,6 @@ import { useGetNetworksQuery } from '$wallet/common/slices/api.slice'
 import { BraveWallet, MeldCryptoCurrency } from '../../../../../constants/types'
 
 // Utils
-import {
-  getAssetSymbol,
-  getAssetIdKey,
-  getMeldTokensCoinType,
-} from '../../../../../utils/meld_utils'
 import { getLocale } from '../../../../../../common/locale'
 
 // Components
@@ -84,6 +79,12 @@ interface AssetListItemProps {
   network?: BraveWallet.NetworkInfo
 }
 
+const getAssetIdKey = (asset: MeldCryptoCurrency) => {
+  return `${asset.coin}-${asset.chainId}-${asset.currencyCode}-${
+    asset.contractAddress
+  }`
+}
+
 const assetItemHeight = 64
 
 export const AssetListItem = ({
@@ -97,7 +98,7 @@ export const AssetListItem = ({
   const { symbolImageUrl, currencyCode, chainName } = asset
 
   // Computed
-  const assetSymbol = getAssetSymbol(asset)
+  const assetSymbol = asset.symbol
   const networkDescription =
     currencyCode !== ''
       ? getLocale(S.BRAVE_WALLET_PORTFOLIO_ASSET_NETWORK_DESCRIPTION)
@@ -189,7 +190,7 @@ export const SelectAsset = (props: SelectAssetProps) => {
     if (searchText === '') return assetsFilteredByNetwork
 
     return assetsFilteredByNetwork.filter((asset) => {
-      const assetSymbol = getAssetSymbol(asset).toLowerCase()
+      const assetSymbol = asset.symbol.toLowerCase()
       const assetName = asset.name?.toLowerCase() ?? ''
       return (
         assetName.startsWith(searchText.toLowerCase())
@@ -236,8 +237,8 @@ export const SelectAsset = (props: SelectAssetProps) => {
     (asset: MeldCryptoCurrency) => {
       return networkList.find(
         (network) =>
-          network.chainId.toLowerCase() === asset.chainId?.toLowerCase()
-          && getMeldTokensCoinType(asset) === network.coin,
+          network.chainId.toLowerCase() === asset.chainId.toLowerCase()
+          && asset.coin === network.coin,
       )
     },
     [networkList],

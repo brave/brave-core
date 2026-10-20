@@ -61,7 +61,6 @@ import {
   isBridgeTransaction,
   getTransactionMemo,
 } from '../../../../utils/tx-utils'
-import { serializedTimeDeltaToJSDate } from '../../../../utils/datetime-utils'
 import { getCoinFromTxDataUnion } from '../../../../utils/network-utils'
 import { copyToClipboard } from '../../../../utils/copy-to-clipboard'
 import {
@@ -615,9 +614,7 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
                 textSize='12px'
                 textAlign='right'
               >
-                {serializedTimeDeltaToJSDate(
-                  transaction.createdTime,
-                ).toUTCString()}
+                {new Date(transaction.createdTime.msec).toUTCString()}
               </DateText>
               <NetworkNameText
                 textSize='12px'

@@ -5,7 +5,6 @@
 
 #include "brave/components/tor/brave_tor_client_updater.h"
 
-#include <memory>
 #include <string>
 #include <utility>
 
@@ -15,7 +14,6 @@
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/logging.h"
-#include "base/task/task_runner.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/tor/constants.h"
 #include "brave/components/tor/pref_names.h"

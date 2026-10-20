@@ -14,7 +14,6 @@
 #include "base/logging.h"
 #include "base/values.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
-#include "brave/components/version_info/version_info.h"
 #include "brave/components/webcompat_reporter/browser/fields.h"
 #include "brave/components/webcompat_reporter/buildflags/buildflags.h"
 #include "net/base/load_flags.h"

@@ -13,7 +13,27 @@ source_set("image_metadata_stripper") {
     "//base",
     "//brave/components/image_metadata_stripper",
     "//chrome/browser/ui/tabs:tabs_public",
+    "//ui/base/unowned_user_data",
   ]
 
-  deps = [ "//components/tabs:public" ]
+  deps = [
+    "//brave/components/image_metadata_stripper/common",
+    "//chrome/common:constants",
+    "//components/tabs:public",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "file_upload_controller_unittest.cc" ]
+
+  deps = [
+    ":image_metadata_stripper",
+    "//base",
+    "//base/test:test_support",
+    "//brave/components/image_metadata_stripper/common",
+    "//chrome/common:constants",
+    "//testing/gtest",
+  ]
 }

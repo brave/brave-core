@@ -163,6 +163,12 @@ class BraveAdsAdsServiceImplTest : public testing::Test {
     ads_service_->IsNetworkConnectionAvailable(std::move(callback));
   }
 
+  void ParseAndSaveNewTabPageAds(base::DictValue dict,
+                                 ResultCallback callback) {
+    ads_service_->ParseAndSaveNewTabPageAds(std::move(dict),
+                                            std::move(callback));
+  }
+
   void NotifyBrowserWillShutdown() {
     shutdown_monitor_->NotifyAppTerminating();
   }
@@ -1165,5 +1171,38 @@ TEST_F(BraveAdsAdsServiceImplTest,
             bat_ads_service_factory_->trigger_notification_ad_event_count());
 }
 #endif  // !BUILDFLAG(IS_ANDROID)
+
+TEST_F(BraveAdsAdsServiceImplTest,
+       ParseAndSaveNewTabPageAdsSucceedsWhenServiceIsNotRunning) {
+  // Arrange
+  ASSERT_EQ(0U, bat_ads_service_factory_->launch_count());
+
+  // Act
+  base::test::TestFuture<bool> test_future;
+  ParseAndSaveNewTabPageAds(base::DictValue(), test_future.GetCallback());
+
+  // Assert
+  EXPECT_TRUE(test_future.Get());
+}
+
+TEST_F(
+    BraveAdsAdsServiceImplTest,
+    ParseAndSaveNewTabPageAdsSucceedsWhenServiceShutsDownBeforeReplyArrives) {
+  // Arrange
+  prefs_.SetBoolean(prefs::kSponsoredEnabled, true);
+  Startup();
+  ASSERT_TRUE(base::test::RunUntil(
+      [&] { return bat_ads_service_factory_->initialize_count() == 1U; }));
+
+  base::test::TestFuture<bool> test_future;
+  ParseAndSaveNewTabPageAds(base::DictValue(), test_future.GetCallback());
+
+  // Act
+  prefs_.SetBoolean(prefs::kSponsoredEnabled, false);
+
+  // Assert
+  EXPECT_TRUE(test_future.IsReady());
+  EXPECT_TRUE(test_future.Get());
+}
 
 }  // namespace brave_ads

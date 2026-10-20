@@ -15,7 +15,7 @@ function installProxy(cb) {
     return new Proxy(target, {
       get: function () {
         cb()
-        return wrap(Reflect.get(...arguments))
+        return Reflect.get(...arguments)
       },
       apply: function () {
         cb()

@@ -7,9 +7,9 @@
 
 #include "base/test/run_until.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
-#include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "chrome/browser/picture_in_picture/picture_in_picture_occlusion_tracker.h"
 #include "chrome/browser/picture_in_picture/picture_in_picture_window_manager.h"
+#include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/test/test_browser_dialog.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "content/public/browser/web_contents.h"
@@ -28,13 +28,7 @@ namespace brave_wallet {
 
 class WalletButtonButtonBrowserTest : public InProcessBrowserTest {
  public:
-  BrowserView* browser_view() {
-    return BrowserView::GetBrowserViewForBrowser(browser());
-  }
-
-  WalletButton* wallet_button() {
-    return BraveBrowserView::From(browser_view())->GetWalletButton();
-  }
+  WalletButton* wallet_button() { return WalletButton::From(browser()); }
 };
 
 // Regression test: SetBraveButtonFlexBehavior previously used the two-argument
@@ -107,8 +101,7 @@ class WalletButtonBrowserUITest : public DialogBrowserTest {
  public:
   // DialogBrowserTest:
   void ShowUi(const std::string& name) override {
-    auto* wallet_button = BraveBrowserView::GetBrowserViewForBrowser(browser())
-                              ->GetWalletButton();
+    auto* wallet_button = WalletButton::From(browser());
     views::test::ButtonTestApi(wallet_button).NotifyClick(GetDummyEvent());
   }
 };

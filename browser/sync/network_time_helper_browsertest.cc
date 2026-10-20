@@ -10,6 +10,7 @@
 #include "base/test/bind.h"
 #include "base/test/gtest_util.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
+#include "brave/components/brave_sync/test/test_sync_code.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/test/base/platform_browser_test.h"
@@ -21,15 +22,6 @@
 #include "content/public/browser/browser_context.h"
 #include "content/public/test/browser_test.h"
 #include "testing/gtest/include/gtest/gtest.h"
-
-namespace {
-
-constexpr char kValidSyncCode[] =
-    "fringe digital begin feed equal output proof cheap "
-    "exotic ill sure question trial squirrel glove celery "
-    "awkward push jelly logic broccoli almost grocery drift";
-
-}  // namespace
 
 // This test ensures that the browser doesn't crashes as it is described at
 // https://github.com/brave/brave-browser/issues/43727
@@ -68,7 +60,7 @@ class BraveSyncNetworkTimeHelperBrowserTest : public PlatformBrowserTest {
     g_browser_process->os_crypt_async()->GetInstance(base::BindLambdaForTesting(
         [context](scoped_refptr<os_crypt_async::Encryptor> e) {
           std::string encrypted_seed;
-          if (e->EncryptString(kValidSyncCode, &encrypted_seed)) {
+          if (e->EncryptString(brave_sync::kValidSyncCode, &encrypted_seed)) {
             static_cast<Profile*>(context)->GetPrefs()->SetString(
                 brave_sync::Prefs::GetSeedPath(),
                 base::Base64Encode(encrypted_seed));

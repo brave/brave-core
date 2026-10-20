@@ -45,8 +45,7 @@ std::vector<std::string> BraveSodaInstaller::GetLiveCaptionEnabledLanguages()
   // Brave's model serves English only, and only while Brave may install it.
   // `SpeechRecognition.install()` rejects anything outside this list before it
   // reaches `InstallLanguage`.
-  if (!local_ai::IsOnDeviceSpeechRecognitionAllowed(
-          g_browser_process->local_state())) {
+  if (!local_ai::CanOfferOnDeviceSpeech(g_browser_process->local_state())) {
     return {};
   }
   return {GetLanguageName(LanguageCode::kEnUs)};

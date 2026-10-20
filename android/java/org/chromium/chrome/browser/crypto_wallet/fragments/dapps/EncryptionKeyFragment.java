@@ -16,8 +16,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.fragment.app.Fragment;
-
 import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AccountId;
 import org.chromium.brave_wallet.mojom.AccountInfo;
@@ -36,7 +34,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class EncryptionKeyFragment extends Fragment implements View.OnClickListener {
+public class EncryptionKeyFragment extends BaseDAppsFragment implements View.OnClickListener {
     private static final String TAG = "ConnectAccount";
 
     private static final String ACTIVITY_TYPE = "param1";
@@ -131,6 +129,16 @@ public class EncryptionKeyFragment extends Fragment implements View.OnClickListe
                         });
     }
 
+    private void showEncryptionPublicKeyRequest(final GetEncryptionPublicKeyRequest request) {
+        mEncryptionPublicKeyRequest = request;
+        updateAccount(request.accountId);
+        final String description =
+                getString(
+                        R.string.brave_wallet_provide_encryption_key_description,
+                        Utils.geteTldHtmlString(request.originInfo));
+        mTvMessageDesc.setText(AndroidUtils.formatHTML(description));
+    }
+
     private void initState() {
         if (mWalletModel == null) {
             return;
@@ -158,24 +166,29 @@ public class EncryptionKeyFragment extends Fragment implements View.OnClickListe
                     .getCryptoModel()
                     .getPublicEncryptionRequest(
                             encryptionPublicKeyRequest -> {
-                                if (encryptionPublicKeyRequest != null) {
-                                    mEncryptionPublicKeyRequest = encryptionPublicKeyRequest;
-                                    updateAccount(mEncryptionPublicKeyRequest.accountId);
-                                    String formattedeTLD =
-                                            String.format(
-                                                    getString(
-                                                            R.string
-                                                                    .brave_wallet_provide_encryption_key_description),
-                                                    Utils.geteTldHtmlString(
-                                                            encryptionPublicKeyRequest.originInfo));
-                                    mTvMessageDesc.setText(AndroidUtils.formatHTML(formattedeTLD));
+                                if (!isAdded()) {
+                                    return;
                                 }
+                                // The queue can empty before the panel reads it.
+                                if (encryptionPublicKeyRequest == null) {
+                                    getWalletFragmentCallback().onAllRequestsHandled();
+                                    return;
+                                }
+                                showEncryptionPublicKeyRequest(encryptionPublicKeyRequest);
                             });
         } else if (mActivityType == BraveWalletDAppsActivity.ActivityType.DECRYPT_REQUEST) {
             mWalletModel
                     .getCryptoModel()
                     .getDecryptMessageRequest(
                             decryptRequest -> {
+                                if (!isAdded()) {
+                                    return;
+                                }
+                                // The queue can empty before the panel reads it.
+                                if (decryptRequest == null) {
+                                    getWalletFragmentCallback().onAllRequestsHandled();
+                                    return;
+                                }
                                 mDecryptRequest = decryptRequest;
                                 updateAccount(mDecryptRequest.accountId);
                                 mTveTldPlusOne.setVisibility(View.VISIBLE);
@@ -202,11 +215,27 @@ public class EncryptionKeyFragment extends Fragment implements View.OnClickListe
             mWalletModel
                     .getDappsModel()
                     .processPublicEncryptionKey(
-                            mEncryptionPublicKeyRequest.requestId, isPositiveActionTriggered(v));
+                            mEncryptionPublicKeyRequest.requestId,
+                            isPositiveActionTriggered(v),
+                            this::onRequestProcessed);
         } else if (mActivityType == BraveWalletDAppsActivity.ActivityType.DECRYPT_REQUEST) {
             mWalletModel
                     .getDappsModel()
-                    .processDecryptRequest(mDecryptRequest.requestId, isPositiveActionTriggered(v));
+                    .processDecryptRequest(
+                            mDecryptRequest.requestId,
+                            isPositiveActionTriggered(v),
+                            this::onRequestProcessed);
+        }
+    }
+
+    private void onRequestProcessed(final boolean hasMoreRequests) {
+        if (!isAdded()) {
+            return;
+        }
+        if (hasMoreRequests) {
+            getWalletFragmentCallback().showPanel(mActivityType);
+        } else {
+            getWalletFragmentCallback().onAllRequestsHandled();
         }
     }
 

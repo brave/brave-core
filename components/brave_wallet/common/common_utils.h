@@ -28,7 +28,6 @@ bool IsBitcoinImportEnabled();
 bool IsBitcoinLedgerEnabled();
 bool IsZCashEnabled();
 bool IsPolkadotEnabled();
-bool IsPolkadotAssetDiscoveryEnabled();
 bool IsPolkadotDAppSupportEnabled();
 bool IsCardanoEnabled();
 bool IsCardanoDAppSupportEnabled();
@@ -84,6 +83,7 @@ std::string GetNetworkForCardanoAccount(const mojom::AccountIdPtr& account_id);
 
 bool IsPolkadotKeyring(mojom::KeyringId keyring_id);
 bool IsPolkadotImportKeyring(mojom::KeyringId keyring_id);
+bool IsPolkadotAccount(const mojom::AccountIdPtr& account_id);
 std::vector<mojom::KeyringId> GetPolkadotKeyrings();
 bool IsPolkadotRelayNetwork(std::string_view network_id);
 

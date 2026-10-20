@@ -768,6 +768,7 @@
 -ContextMenuForSupervisedUsersBrowserTest.SaveLinkAsEntryIsEnabledForUrlsAllowedByAsyncCheckerForChild
 -ContextualSearchboxHandlerDriveSigninPromoBrowserTest.OnDriveUploadClicked_*
 -DogfoodOptimizationGuideKeyedServiceBrowserTest.LoggingDisabledByEnterprisePolicy_Dogfood_*
+-CrossDeviceSigninQrBubbleUIPixelTest.InvokeUi_default/Rtl
 -EnclaveAuthenticatorBrowserTest.*
 -EnclaveAuthenticatorImmediateMediationBrowserTest.*
 -ExtensionPostInstallDialogViewUtilsSignInBrowserTest.BubbleExplicitSignin
@@ -2140,14 +2141,6 @@
 -LocalNetworkAccessBrowserTest.HtmlScriptSrcAllowPermission
 -LocalNetworkAccessHtmlScriptBrowserTest.HtmlScriptSrcAllowPermission
 
-# Disabled due to crash with tab group dragging.
-# https://github.com/brave/brave-browser/issues/49752
--MultiContentsViewBrowserTest.DragAndDropEnabledPref
--MultiContentsViewBrowserTest.DropTargetLayout
--MultiContentsViewBrowserTest.HandleDropTargetViewLinkDrop_IsSupported
--MultiContentsViewBrowserTest.HandleTabDrop_EndDropTarget
--MultiContentsViewBrowserTest.HandleTabDrop_StartDropTarget
-
 # These tests fail because we don't currently support having our vertical tabs
 # support and upstream's vertical tab support active simultaneously (see
 # https://github.com/brave/brave-browser/issues/48373)
@@ -2764,6 +2757,13 @@
 # WebRequestAPI code unconditionally rebinds the already-bound PendingRemote via
 # InitWithNewPipeAndPassReceiver(), which DCHECKs !is_valid() and crashes.
 -SiteTokenBrowserTest.PreservesExistingHeaderClient
+
+# These tests fail because we disable kContextualTasks.
+-ContextualTasksAskGoogleEnabledTest.*
+-ContextualTasksAskGoogleSubmenuTest.*
+-ContextualTasksContextMenuAskGoogleBrowserTest.AskGoogleItemShownWhenFeatureEnabled
+-ContextualTasksContextMenuAskGoogleBrowserTest.HistogramRecordedOnAskGoogleClick
+-ContextualTasksContextMenuSubmenuBrowserTest.SubmenuShownWhenSubmenuFeatureEnabled
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -All/DeclarativeNetRequestBrowserTest.RendererCacheCleared/*

@@ -9,13 +9,11 @@
 #include "base/memory/weak_ptr.h"
 #include "brave/browser/brave_account/brave_account_dialog_mode_holder.h"
 #include "brave/browser/ui/brave_account/brave_account_dialog_opener.h"
-#include "brave/components/brave_account/brave_account_constants.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/constrained_web_dialog_ui.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_user_data.h"
-#include "net/base/url_util.h"
 #include "ui/compositor/layer.h"
 #include "ui/gfx/geometry/rounded_corners_f.h"
 #include "ui/gfx/geometry/size.h"
@@ -53,18 +51,12 @@ WEB_CONTENTS_USER_DATA_KEY_IMPL(BraveAccountDialogTracker);
 
 class BraveAccountDialogDelegate : public ui::WebDialogDelegate {
  public:
-  BraveAccountDialogDelegate(content::WebContents* web_contents,
-                             const std::string& initiating_service_name)
+  explicit BraveAccountDialogDelegate(content::WebContents* web_contents)
       : web_contents_(CHECK_DEREF(web_contents).GetWeakPtr()) {
     BraveAccountDialogTracker::CreateForWebContents(web_contents);
 
     set_delete_on_close(false);
-    const GURL url(kBraveAccountURL);
-    set_dialog_content_url(
-        initiating_service_name.empty()
-            ? url
-            : net::AppendQueryParameter(url, kInitiatingServiceNameQueryParam,
-                                        initiating_service_name));
+    set_dialog_content_url(GURL(kBraveAccountURL));
     set_show_dialog_title(false);
   }
 
@@ -81,7 +73,6 @@ class BraveAccountDialogDelegate : public ui::WebDialogDelegate {
 }  // namespace
 
 void OpenBraveAccountDialog(content::WebContents& web_contents,
-                            const std::string& initiating_service_name,
                             mojom::DialogMode dialog_mode) {
   if (BraveAccountDialogTracker::FromWebContents(&web_contents)) {
     return;
@@ -89,8 +80,7 @@ void OpenBraveAccountDialog(content::WebContents& web_contents,
 
   auto& delegate = CHECK_DEREF(ShowConstrainedWebDialogWithAutoResize(
       Profile::FromBrowserContext(web_contents.GetBrowserContext()),
-      std::make_unique<BraveAccountDialogDelegate>(&web_contents,
-                                                   initiating_service_name),
+      std::make_unique<BraveAccountDialogDelegate>(&web_contents),
       &web_contents, kDialogMinSize, kDialogMaxSize));
 
   // On the dialog's own `WebContents` - the one that hosts brave://account,

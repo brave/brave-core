@@ -6,7 +6,6 @@
 #include "brave/components/ai_chat/content/browser/ai_chat_brave_search_throttle.h"
 
 #include <string>
-#include <type_traits>
 #include <utility>
 
 #include "base/check.h"
@@ -24,7 +23,6 @@
 #include "content/public/browser/permission_result.h"
 #include "content/public/browser/web_contents.h"
 #include "third_party/blink/public/common/permissions/permission_utils.h"
-#include "third_party/blink/public/mojom/permissions/permission_status.mojom-shared.h"
 
 namespace content {
 class RenderFrameHost;

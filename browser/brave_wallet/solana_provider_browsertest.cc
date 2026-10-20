@@ -366,6 +366,24 @@ class TestContentBrowserClient : public BraveContentBrowserClient {
   base::WeakPtrFactory<TestContentBrowserClient> weak_ptr_factory_{this};
 };
 
+// Registers a listener, emits to it, then unregisters it. `provider_expr` is a
+// JS expression for the provider to exercise.
+std::string EmitterScript(std::string_view provider_expr) {
+  return absl::StrFormat(R"(
+      (() => {
+        const provider = %s;
+        let received = '';
+        const listener = (arg) => { received = arg; };
+        provider.on('accountChanged', listener);
+        provider.emit('accountChanged', 'emitted');
+        provider.off('accountChanged', listener);
+        provider.emit('accountChanged', 'ignored');
+        return received;
+      })();
+    )",
+                         provider_expr);
+}
+
 }  // namespace
 
 class SolanaProviderTest : public InProcessBrowserTest {
@@ -1597,6 +1615,19 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, CallViaProxy) {
 
   EXPECT_TRUE(GetIsBraveWalletViaProxy());
   CallSolanaDisconnectViaProxy();
+}
+
+IN_PROC_BROWSER_TEST_F(SolanaProviderTest, EventEmitter) {
+  RestoreWallet();
+  GURL url =
+      https_server_for_files()->GetURL("a.test", "/solana_provider.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+
+  for (const std::string& provider : {"window.solana", "window.braveSolana"}) {
+    SCOPED_TRACE(provider);
+    EXPECT_EQ(base::Value("emitted"),
+              EvalJs(web_contents(), EmitterScript(provider)));
+  }
 }
 
 }  // namespace brave_wallet

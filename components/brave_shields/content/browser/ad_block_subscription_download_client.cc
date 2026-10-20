@@ -6,7 +6,6 @@
 #include "brave/components/brave_shields/content/browser/ad_block_subscription_download_client.h"
 
 #include <map>
-#include <memory>
 #include <set>
 #include <string>
 #include <utility>
@@ -17,7 +16,6 @@
 #include "brave/components/brave_shields/content/browser/ad_block_subscription_download_manager.h"
 #include "brave/components/brave_shields/content/browser/ad_block_subscription_service_manager.h"
 #include "components/download/public/background_service/download_metadata.h"
-#include "services/network/public/cpp/resource_request_body.h"
 
 namespace brave_shields {
 

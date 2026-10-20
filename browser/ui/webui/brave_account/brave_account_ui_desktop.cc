@@ -22,7 +22,6 @@
 
 BraveAccountUIDesktop::BraveAccountUIDesktop(content::WebUI* web_ui)
     : BraveAccountUIBase(Profile::FromWebUI(web_ui),
-                         web_ui->GetWebContents()->GetVisibleURL(),
                          base::BindOnce(&webui::SetupWebUIDataSource)),
       ConstrainedWebDialogUI(web_ui) {}
 

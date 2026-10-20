@@ -5,11 +5,8 @@
 
 #include "brave/components/tor/tor_navigation_throttle.h"
 
-#include <utility>
-
 #include "brave/components/tor/tor_launcher_factory.h"
 #include "content/public/browser/navigation_handle.h"
-#include "content/public/browser/web_contents.h"
 #include "content/public/common/url_constants.h"
 #include "extensions/common/constants.h"
 

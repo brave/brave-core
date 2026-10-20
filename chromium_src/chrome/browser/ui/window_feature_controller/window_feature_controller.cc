@@ -27,8 +27,10 @@ bool BraveShouldShowTitlebar(const ui::UnownedUserDataHost& host);
 bool WindowFeatureController::UsesImmersiveFullscreenMode() const {
   // Disable immersive when vertical tabs(or compact mode) were on at startup:
   // overlay_widget_ is not created in that case, so immersive would crash. The
-  // first call happens during BrowserView construction (before the user can
-  // toggle vertical tabs), so this captures the startup state.
+  // first call is made while BrowserWindowFeatures::Init() creates the
+  // immersive mode controller, before the user can toggle vertical tabs, so
+  // this captures the startup state. The vertical tab controller must already
+  // exist then (see BrowserWindowFeatures::brave_vertical_tab_controller_).
   if (!disabled_at_startup_.has_value()) {
     disabled_at_startup_ =
         BraveDisablesImmersiveFullscreenMode(*unowned_user_data_host_);

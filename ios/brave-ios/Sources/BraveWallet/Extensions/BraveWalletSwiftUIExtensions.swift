@@ -180,24 +180,6 @@ extension BraveWallet.CoinMarket: @retroactive Identifiable {
   }
 }
 
-extension BraveWallet.MeldFiatCurrency: @retroactive Identifiable {
-  public var id: String {
-    currencyCode
-  }
-}
-
-extension BraveWallet.MeldServiceProvider: @retroactive Identifiable {
-  public var id: String {
-    serviceProvider
-  }
-}
-
-extension BraveWallet.MeldCryptoCurrency: @retroactive Identifiable {
-  public var id: String {
-    currencyCode
-  }
-}
-
 extension View {
   func readSize(onChange: @escaping (CGSize) -> Void) -> some View {
     background(

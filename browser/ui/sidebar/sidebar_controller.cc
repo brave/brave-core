@@ -22,7 +22,6 @@
 #include "brave/components/sidebar/browser/pref_names.h"
 #include "brave/components/sidebar/browser/sidebar_service.h"
 #include "brave/components/sidebar/common/features.h"
-#include "chrome/browser/history/history_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window.h"
@@ -125,6 +124,12 @@ void SidebarController::TearDownPreBrowserWindowDestruction() {
   web_panel_controller_.reset();
   sidebar_service_observed_.Reset();
   sidebar_ = nullptr;
+}
+
+void SidebarController::CloseWebPanel() {
+  if (web_panel_controller_) {
+    web_panel_controller_->CloseWebPanel();
+  }
 }
 
 void SidebarController::OnItemPressed(size_t index,
@@ -287,11 +292,9 @@ void SidebarController::AddItemWithCurrentTab() {
   DCHECK(active_contents);
   const GURL url = active_contents->GetVisibleURL();
   const std::u16string title = active_contents->GetTitle();
-  GetSidebarService()->AddItem(SidebarItem::Create(
-      url, title, SidebarItem::Type::kTypeWeb,
-      SidebarItem::BuiltInItemType::kNone,
-      IsWebPanelFeatureEnabled() ? SidebarItem::PanelType::kWebPanel
-                                 : SidebarItem::PanelType::kNone));
+  GetSidebarService()->AddItem(IsWebPanelFeatureEnabled()
+                                   ? SidebarItem::CreateWebPanelItem(url, title)
+                                   : SidebarItem::CreateWebTabItem(url, title));
 }
 
 void SidebarController::HandleSidePanelOpened(SidePanelEntryId id) {
@@ -342,15 +345,9 @@ void SidebarController::OnWebPanelStateChanged() {
   }
 }
 
-void SidebarController::SetSidebar(Sidebar* sidebar) {
+void SidebarController::SetSidebar(Sidebar& sidebar) {
   DCHECK(!sidebar_);
-  // |sidebar| can be null in unit test.
-  if (!sidebar)
-    return;
-  sidebar_ = sidebar;
-
-  sidebar_model_->Init(HistoryServiceFactory::GetForProfile(
-      profile_, ServiceAccessType::EXPLICIT_ACCESS));
+  sidebar_ = &sidebar;
 }
 
 SidebarWebPanelController* SidebarController::GetWebPanelController() {

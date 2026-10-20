@@ -11,16 +11,11 @@
 
 #include "base/base64.h"
 #include "base/check.h"
-#include "base/functional/bind.h"
-#include "base/functional/callback_helpers.h"
 #include "base/json/values_util.h"
 #include "base/logging.h"
 #include "base/path_service.h"
-#include "base/strings/escape.h"
-#include "base/task/sequenced_task_runner.h"
 #include "brave/components/brave_rewards/core/pref_registry.h"
 #include "net/http/http_status_code.h"
-#include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_rewards::internal {
 

@@ -108,7 +108,7 @@ function Conversation(props: ConversationProps) {
       case Mojom.APIError.ConnectionIssue:
         currentErrorElement = (
           <ErrorConnection
-            onRetry={() => context.conversationHandler.retryAPIRequest()}
+            onRetry={() => context.conversationHandler.retryAPIRequest(null)}
             errorDetails={state.currentErrorDetails}
             isNearModel={!!currentModel?.isNearModel}
           />
@@ -117,14 +117,14 @@ function Conversation(props: ConversationProps) {
       case Mojom.APIError.InvalidAPIKey:
         currentErrorElement = (
           <ErrorInvalidAPIKey
-            onRetry={() => context.conversationHandler.retryAPIRequest()}
+            onRetry={() => context.conversationHandler.retryAPIRequest(null)}
           />
         )
         break
       case Mojom.APIError.ServiceOverloaded:
         currentErrorElement = (
           <ErrorServiceOverloaded
-            onRetry={() => context.conversationHandler.retryAPIRequest()}
+            onRetry={() => context.conversationHandler.retryAPIRequest(null)}
           />
         )
         break

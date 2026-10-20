@@ -57,6 +57,7 @@ if (enable_brave_vpn_v1) {
       "//brave/browser/brave_vpn/win:wireguard_utils",
       "//brave/browser/brave_vpn/win/brave_vpn_helper:common",
       "//brave/components/brave_vpn/common/win",
+      "//chrome/browser/ui:browser_window_header",
       "//chrome/common:constants",
       "//components/prefs",
       "//net",

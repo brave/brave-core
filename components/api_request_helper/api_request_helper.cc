@@ -5,12 +5,10 @@
 
 #include "brave/components/api_request_helper/api_request_helper.h"
 
-#include <algorithm>
 #include <string_view>
 #include <utility>
 
 #include "base/check.h"
-#include "base/check_op.h"
 #include "base/debug/alias.h"
 #include "base/debug/dump_without_crashing.h"
 #include "base/functional/callback_helpers.h"
@@ -25,7 +23,6 @@
 #include "base/trace_event/trace_event.h"
 #include "brave/components/api_request_helper/utils.h"
 #include "net/base/load_flags.h"
-#include "net/http/http_status_code.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"

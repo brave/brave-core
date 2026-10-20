@@ -84,6 +84,7 @@ source_set("tabs_impl") {
     "//brave/browser/ai_chat",
     "//brave/browser/image_metadata_stripper",
     "//brave/browser/misc_metrics:misc_metrics_impl",
+    "//brave/browser/serp_metrics",
     "//brave/components/image_metadata_stripper/common",
     "//brave/components/misc_metrics",
     "//chrome/browser/profiles:profile",

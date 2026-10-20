@@ -14,7 +14,6 @@
 #include "base/logging.h"
 #include "base/metrics/histogram_samples.h"
 #include "base/metrics/statistics_recorder.h"
-#include "base/trace_event/trace_event.h"
 #include "brave/components/brave_origin/buildflags/buildflags.h"
 #include "brave/components/p3a/component_installer.h"
 #include "brave/components/p3a/message_manager.h"
@@ -131,6 +130,7 @@ void P3AService::StartTeardown() {
 #endif  // !BUILDFLAG(IS_IOS)
   dynamic_metric_sample_callbacks_.clear();
   pref_change_registrar_.RemoveAll();
+  component_update_service_ = nullptr;
 }
 
 void P3AService::RegisterDynamicMetric(const std::string& histogram_name,

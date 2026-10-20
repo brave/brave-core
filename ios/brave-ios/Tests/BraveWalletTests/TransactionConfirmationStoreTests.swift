@@ -150,7 +150,8 @@ class TransactionConfirmationStoreTests: XCTestCase {
           selectedAccount: accountInfos.first,
           ethDappSelectedAccount: accountInfos.first(where: { $0.coin == .eth }),
           solDappSelectedAccount: accountInfos.first(where: { $0.coin == .sol }),
-          adaDappSelectedAccount: nil
+          adaDappSelectedAccount: nil,
+          dotDappSelectedAccount: nil
         )
       )
     }

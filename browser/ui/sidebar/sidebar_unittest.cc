@@ -18,6 +18,7 @@
 #include "brave/components/brave_talk/buildflags/buildflags.h"
 #include "brave/components/sidebar/browser/constants.h"
 #include "brave/components/sidebar/browser/sidebar_service.h"
+#include "chrome/browser/history/history_service_factory.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/prefs/pref_service.h"
@@ -77,6 +78,10 @@ class SidebarModelTest : public testing::Test {
     // Instantiate SidebarServiceFactory before creating TestingProfile
     // as SidebarServiceFactory registers profile prefs.
     SidebarServiceFactory::GetInstance();
+    // SidebarModel's ctor asks for the HistoryService. Instantiating the
+    // factory before the profile is what makes it hand back null here
+    // (ServiceIsNULLWhileTesting) instead of building a real service.
+    HistoryServiceFactory::GetInstance();
     profile_ = std::make_unique<TestingProfile>();
     service_ = SidebarServiceFactory::GetForProfile(profile_.get());
     model_ = std::make_unique<SidebarModel>(profile_.get());
@@ -97,8 +102,6 @@ class SidebarModelTest : public testing::Test {
 };
 
 TEST_F(SidebarModelTest, ItemsChangedTest) {
-  model()->Init(nullptr);
-
   EXPECT_THAT(model()->active_index(), Eq(std::nullopt));
 
   // Record the initial item count before adding custom items.
@@ -106,10 +109,8 @@ TEST_F(SidebarModelTest, ItemsChangedTest) {
 
   // Add custom items to ensure we have enough items for testing moves.
   // We need at least 4 items to test all the move scenarios.
-  SidebarItem new_item = SidebarItem::Create(
-      GURL("https://www.brave.com/"), u"brave software",
-      SidebarItem::Type::kTypeWeb, SidebarItem::BuiltInItemType::kNone,
-      SidebarItem::PanelType::kNone);
+  SidebarItem new_item = SidebarItem::CreateWebTabItem(
+      GURL("https://www.brave.com/"), u"brave software");
 
   service()->AddItem(new_item);
 
@@ -118,11 +119,10 @@ TEST_F(SidebarModelTest, ItemsChangedTest) {
 
   // Add more custom items if needed to reach at least 4 items total.
   while (service()->items().size() < 4) {
-    SidebarItem extra_item = SidebarItem::Create(
+    SidebarItem extra_item = SidebarItem::CreateWebTabItem(
         GURL("https://extra" + base::NumberToString(service()->items().size()) +
              ".com/"),
-        u"extra item", SidebarItem::Type::kTypeWeb,
-        SidebarItem::BuiltInItemType::kNone, SidebarItem::PanelType::kNone);
+        u"extra item");
     service()->AddItem(extra_item);
   }
 
@@ -216,19 +216,15 @@ TEST_F(SidebarModelTest, ActiveIndexChangedAfterItemAdded) {
   model()->SetActiveIndex(1);
   EXPECT_THAT(model()->active_index(), Optional(1u));
 
-  SidebarItem item_1 = SidebarItem::Create(
-      GURL("https://www.brave.com/"), u"brave software",
-      SidebarItem::Type::kTypeWeb, SidebarItem::BuiltInItemType::kNone,
-      SidebarItem::PanelType::kNone);
+  SidebarItem item_1 = SidebarItem::CreateWebTabItem(
+      GURL("https://www.brave.com/"), u"brave software");
 
   // Check active index is still 1 when new item is added at 2.
   model()->AddItem(item_1, 2, true);
   EXPECT_THAT(model()->active_index(), Optional(1u));
 
-  SidebarItem item_2 = SidebarItem::Create(
-      GURL("https://www.braves.com/"), u"brave software",
-      SidebarItem::Type::kTypeWeb, SidebarItem::BuiltInItemType::kNone,
-      SidebarItem::PanelType::kNone);
+  SidebarItem item_2 = SidebarItem::CreateWebTabItem(
+      GURL("https://www.braves.com/"), u"brave software");
 
   // Check active index is changed to 2 when new item is added at 1.
   model()->AddItem(item_2, 1, true);

@@ -36,6 +36,16 @@ namespace {
 class FakeBrowserHost : public mojom::BrowserHost {
  public:
   ~FakeBrowserHost() override = default;
+
+  void Connect() override {}
+  void Disconnect() override {}
+  void ResetConnectionState() override {}
+  void GetAllRegions(GetAllRegionsCallback callback) override {
+    std::move(callback).Run({});
+  }
+  void SetSelectedRegion(mojom::VpnRegionPtr region) override {}
+  void SetSmartProxyRoutingState(bool enable) override {}
+  void SetAllowLanTrafficState(bool enable) override {}
 };
 
 // Records what the provider forwards, then answers from a separate task. For

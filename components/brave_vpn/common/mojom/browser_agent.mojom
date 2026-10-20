@@ -16,9 +16,45 @@ module brave_vpn.mojom;
 // handshake is only reachable between binaries sharing that salt.
 const uint32 kProtocolVersion = 1;
 
+// VPN connection state maintained by the agent.
+enum VpnConnectionState {
+  kDisconnected,
+  kConnected,
+  kDisconnecting,
+  kConnecting,
+  kConnectFailed,
+  kInternalError,
+};
+
+// VPN region information. Intentionally decoupled from V1 and UI Region
+// structure, as it is not intended to be compatible.
+struct VpnRegion {
+  string name;
+};
+
 // Browser's subordinate surface, passed to the agent's BrowserHost, so the
-// agent can call back into the browser once it accepts.
+// agent can call back into the browser once it accepts. Members passing the
+// current state are called as soon as the BrowserHost is bound, then on
+// every change.
 interface BrowserEndpoint {
+  // Updates the current VPN connection state. |error_message| is set for error
+  // states, and null is passed otherwise.
+  OnConnectionStateChanged(VpnConnectionState state, string? error_message);
+
+  // Updates the currently selected VPN region.
+  OnSelectedRegionChanged(VpnRegion region);
+
+  // Updates the current Smart Proxy routing state.
+  OnSmartProxyRoutingStateChanged(bool enabled);
+
+  // Updates the current Allow Lan Traffic state. |available| means that the
+  // feature is available for the current platform and version.
+  OnAllowLanTrafficStateChanged(bool available, bool enabled);
+
+  // Updates the last hostname the VPN was connected to, or was trying to
+  // connect to; can be used for submitting technical support tickets and for
+  // debugging purposes.
+  OnLastHostnameChanged(string hostname);
 };
 
 enum InitializeResult {
@@ -63,6 +99,33 @@ interface BrowserHostProvider {
 };
 
 // Agent browser-facing real API surface, owns the VPN related functionality
-// passed to the authenticanted browsers.
+// passed to the authenticated browsers.
 interface BrowserHost {
+  // Starts connecting the VPN.
+  Connect();
+
+  // Disconnects the VPN.
+  Disconnect();
+
+  // Clears a failure state and its error message, returning to kDisconnected
+  // without connecting.
+  ResetConnectionState();
+
+  // Gets information about all available regions from an internal cache which
+  // is fetched from the VPN provider.
+  GetAllRegions() => (array<VpnRegion> regions);
+
+  // Sets the desired region to connect to. The agent may decline; an actual
+  // change is reported through the corresponding BrowserEndpoint callback.
+  SetSelectedRegion(VpnRegion region);
+
+  // Requests a Smart Proxy routing state change. The agent may decline; an
+  // actual change is reported through the corresponding BrowserEndpoint
+  // callback.
+  SetSmartProxyRoutingState(bool enable);
+
+  // Requests an Allow LAN traffic state change. The agent may decline; an
+  // actual change is reported through the corresponding BrowserEndpoint
+  // callback.
+  SetAllowLanTrafficState(bool enable);
 };

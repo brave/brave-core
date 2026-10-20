@@ -34,6 +34,9 @@ class FakeBrowser {
   mojo::PendingRemote<mojom::BrowserEndpoint> BindEndpoint();
   mojo::PendingReceiver<mojom::BrowserHost> BindHost();
 
+  FakeBrowserEndpoint& endpoint() { return endpoint_impl_; }
+  mojom::BrowserHost* host() { return host_remote_.get(); }
+
   // The channel to pass into an Initialize-style request, as the browser
   // handing over something for the agent to answer on. A valid handle whose
   // other end this object keeps open, so it stays distinguishable from the

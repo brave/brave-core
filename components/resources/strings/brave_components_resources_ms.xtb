@@ -1881,6 +1881,18 @@
 <translation id="2737084171727561244">Pergi ke Portfolio</translation>
 <translation id="3499452861061048987">Tambah token</translation>
 <translation id="5046066249040287308">Perkhidmatan Utiliti Brave Wallet</translation>
+<translation id="8767749833522980474">Kripto</translation>
+<translation id="4509084261025090951">Dapatkan kad anda</translation>
+<translation id="3624463584770657372">Sahkan identiti anda untuk melihat nombor kad dan mula berbelanja.</translation>
+<translation id="2508337767012636987">Ketik untuk sahkan</translation>
+<translation id="703964541421486259">Sembunyikan baki</translation>
+<translation id="302114796458112924">Paparkan baki</translation>
+<translation id="9083210401924577263">Kad Ganjaran Brave</translation>
+<translation id="2433507940547922241">Tampilan</translation>
+<translation id="3435738964857648380">Sekuriti</translation>
+<translation id="6700561332544287722">Perlukan buka kunci kali seterusnya</translation>
+<translation id="5605360570977617291">Sembunyikan <ph name="CARD_NAME"/> daripada laman utama?</translation>
+<translation id="2721464457853369512">Baki <ph name="CARD_NAME"/> anda tidak berubah. Ini hanya menyembunyikan kad daripada laman utama. Anda boleh memaparkannya semula pada bila-bila masa dalam Tetapan, di bawah Dompet.</translation>
 <translation id="3155170474926428993">Pelancar Tor</translation>
 <translation id="3745016858329272300">Maklumat Umum</translation>
 <translation id="4045404575593562245">Acara Kawalan Tor</translation>
@@ -1920,7 +1932,6 @@
 <translation id="6261915643960475695">Perniagaan</translation>
 <translation id="8265589281845759879">Kereta</translation>
 <translation id="7726519849288907308">Selebriti</translation>
-<translation id="8767749833522980474">Kripto</translation>
 <translation id="7577010593836079522">Budaya</translation>
 <translation id="6807791860691150411">Pendidikan</translation>
 <translation id="3706423975342040244">Hiburan</translation>
@@ -2099,9 +2110,6 @@
 <translation id="3067105725259639716">Konfigurasikan Brave News</translation>
 <translation id="6286510487460330478">Konfigurasikan pintasan</translation>
 <translation id="9214819486716388964">Paparkan Brave Talk</translation>
-<translation id="5950760360751948276">Sentiasa paparkan bar penanda halaman</translation>
-<translation id="2960757369920422313">Paparkan bar penanda halaman pada NTP</translation>
-<translation id="522953399371747698">Sembunyikan bar penanda halaman</translation>
 <translation id="9079813619990532635">Eksport semua penanda halaman</translation>
 <translation id="134184943774258988">Togolkan Semua ketampakan butang penanda halaman</translation>
 <translation id="2158862020143233462">Togol pelindung</translation>
@@ -2216,6 +2224,7 @@
 <translation id="5820497878628354073">Kod status: <ph name="STATUS_CODE"/>, kod status dalaman: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">Anda telah mencapai had kadar premium. Sila cuba lagi dalam beberapa jam.</translation>
 <translation id="6873128487002733717">Anda telah mencapai had premium untuk model ini. Pilih model yang berbeza atau cuba lagi nanti.</translation>
+<translation id="2688661132468689309">Anda telah mencapai had premium untuk model ini. Ia ditetapkan semula dalam <ph name="RESET_DURATION"/> (pada <ph name="RESET_TIME"/>). Pilih model yang berbeza atau cuba lagi ketika itu.</translation>
 <translation id="3683964919745779766">Anda telah mencapai had kadar untuk model ini atau kehabisan kredit. Sila cuba lagi nanti.</translation>
 <translation id="7692501701960747469">Kunci API yang dikonfigurasi untuk model ini tidak sah. Sila semak konfigurasi anda dan cuba lagi.</translation>
 <translation id="7905602379229309187">Titik akhir sedang mengalami beban tinggi. Sila cuba lagi nanti.</translation>
@@ -2224,12 +2233,12 @@
 <translation id="3852808100039989429">Hai, saya Leo. Saya pembantu AI yang dihoskan sepenuhnya oleh Brave. Saya dikuasakan oleh Qwen VL 30B, model ciptaan Alibaba Cloud yang berprestasi tinggi dan sesuai untuk pelbagai kegunaan. Qwen dihoskan secara selamat oleh Brave melalui infrastruktur kami sendiri.<ph name="LINK_BEFORE"/>Ketahui lebih lanjut<ph name="LINK_AFTER"/></translation>
 <translation id="8659225822055186905">Hai, saya Leo. Saya pembantu AI oleh Brave. Saya dikuasakan oleh GLM-5.3 Flash, model ciptaan Zhipu AI yang berprestasi tinggi dan sesuai untuk pelbagai kegunaan. GLM-5.3 Flash dihoskan secara selamat oleh NEAR melalui infrastruktur peribadi yang boleh disahkan.<ph name="LINK_BEFORE"/>Ketahui lebih lanjut<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">Hai, saya Leo. Saya pembantu AI oleh Brave. Saya dikuasakan oleh Claude Instant, model yang dicipta oleh Anthropic untuk tugas perbualan dan pemprosesan teks. Claude Instant dihoskan oleh Brave melalui infrastruktur selamat kami sendiri.<ph name="LINK_BEFORE"/>Ketahui lebih lanjut<ph name="LINK_AFTER"/></translation>
-<translation id="3789772321824682783">Hai, saya Leo. Saya pembantu AI yang dihoskan sepenuhnya oleh Brave. Saya dikuasakan oleh Claude Haiku, model ciptaan Anthropic untuk menjalankan tugasan perbualan dan pemprosesan teks. Claude Haiku dihoskan secara selamat oleh Brave melalui infrastruktur kami sendiri.<ph name="LINK_BEFORE"/>Ketahui lebih lanjut<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Hai, saya Leo. Saya pembantu AI yang dihoskan sepenuhnya oleh Brave. Saya dikuasakan oleh Claude Sonnet, model ciptaan Anthropic untuk menjalankan tugasan perbualan dan pemprosesan teks. Claude Sonnet dihoskan secara selamat oleh Brave melalui infrastruktur kami sendiri.<ph name="LINK_BEFORE"/>Ketahui lebih lanjut<ph name="LINK_AFTER"/></translation>
-<translation id="3399141352144059821">Hai, saya Leo. Saya pembantu AI yang dihoskan sepenuhnya oleh Brave. Saya dikuasakan oleh Grok 4.3, model ciptaan xAI yang berprestasi tinggi dan sesuai untuk pelbagai kegunaan. Grok 4.3 dihoskan secara selamat oleh Brave melalui infrastruktur kami sendiri.<ph name="LINK_BEFORE"/>Ketahui lebih lanjut<ph name="LINK_AFTER"/></translation>
-<translation id="8868813509973985458">Hai, saya Leo. Saya pembantu AI yang dihoskan sepenuhnya oleh Brave. Saya dikuasakan oleh GPT 5.4, model ciptaan OpenAI yang berprestasi tinggi dan sesuai untuk pelbagai kegunaan. GPT 5.4 dihoskan secara selamat oleh Brave melalui infrastruktur kami sendiri.<ph name="LINK_BEFORE"/>Ketahui lebih lanjut<ph name="LINK_AFTER"/></translation>
+<translation id="6676306995311143470">Hai, saya Leo. Saya pembantu AI oleh Brave. Saya dikuasakan oleh Grok 4.6, model penaakulan terkini xAI pada Amazon Bedrock Mantle. Grok 4.6 disediakan melalui infrastruktur AWS selamat Brave.<ph name="LINK_BEFORE"/>Ketahui lebih lanjut<ph name="LINK_AFTER"/></translation>
+<translation id="2394656730986208060">Hai, saya Leo. Saya pembantu AI oleh Brave. Saya dikuasakan oleh GPT 5.6 Luna, model pantas dan rendah-latensi OpenAI pada Amazon Bedrock Mantle. GPT 5.6 Luna disediakan melalui infrastruktur AWS selamat Brave.<ph name="LINK_BEFORE"/>Ketahui lebih lanjut<ph name="LINK_AFTER"/></translation>
+<translation id="5278969721580944810">Hai, saya Leo. Saya pembantu AI oleh Brave. Saya dikuasakan oleh GPT 5.6 Terra, model pengeluaran seimbang OpenAI pada Amazon Bedrock Mantle. GPT 5.6 Terra disediakan melalui infrastruktur AWS selamat Brave.<ph name="LINK_BEFORE"/>Ketahui lebih lanjut<ph name="LINK_AFTER"/></translation>
 <translation id="5037359072717016032">Hai, saya Leo. Saya pembantu AI yang dihoskan sepenuhnya oleh Brave. Saya dikuasakan oleh Mistral Large, model ciptaan Mistral yang berprestasi tinggi dan sesuai untuk pelbagai kegunaan. Mistral Large dihoskan secara selamat oleh Brave melalui infrastruktur kami sendiri.<ph name="LINK_BEFORE"/>Ketahui lebih lanjut<ph name="LINK_AFTER"/></translation>
-<translation id="4026902371301997261">Hai, saya Leo. Saya pembantu AI yang dihoskan sepenuhnya oleh Brave. Saya dikuasakan oleh Qwen 3 235B, model ciptaan Alibaba Cloud yang berprestasi tinggi dan sesuai untuk pelbagai kegunaan. Qwen 3 235B dihoskan secara selamat oleh Brave melalui infrastruktur kami sendiri.<ph name="LINK_BEFORE"/>Ketahui lebih lanjut<ph name="LINK_AFTER"/></translation>
+<translation id="5475035333915581972">Hai, saya Leo. Saya pembantu AI oleh Brave. Saya dikuasakan oleh Qwen 3.8 Flash Next, model ciptaan Alibaba Cloud yang berprestasi tinggi dan sesuai untuk pelbagai kegunaan. Qwen 3.8 Flash Next dihoskan secara selamat oleh Brave melalui infrastruktur kami sendiri.<ph name="LINK_BEFORE"/>Ketahui lebih lanjut<ph name="LINK_AFTER"/></translation>
 <translation id="8720758690351028307">Hai, saya Leo. Saya pembantu AI yang dihoskan sepenuhnya oleh Brave. Saya dikuasakan oleh Deepseek V3.2, model ciptaan Deepseek yang berprestasi tinggi dan sesuai untuk pelbagai kegunaan. Deepseek V3.2 dihoskan secara selamat oleh Brave melalui infrastruktur kami sendiri.<ph name="LINK_BEFORE"/>Ketahui lebih lanjut<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">Hai, saya Leo. Saya pembantu AI yang dihoskan sepenuhnya oleh Brave. Saya dikuasakan oleh Claude Opus, model ciptaan Anthropic untuk menjalankan tugasan perbualan dan pemprosesan teks. Claude Opus dihoskan secara selamat oleh Brave melalui infrastruktur kami sendiri.<ph name="LINK_BEFORE"/>Ketahui lebih lanjut<ph name="LINK_AFTER"/></translation>
 <translation id="7238858567393403597">Hai, saya Leo. Saya pembantu AI yang dihoskan sepenuhnya oleh Brave. Saya dikuasakan oleh GLM-4-7-Flash, model ciptaan Zhipu AI yang berprestasi tinggi dan sesuai untuk pelbagai kegunaan. GLM-4-7-Flash dihoskan secara selamat oleh Brave melalui infrastruktur kami sendiri.<ph name="LINK_BEFORE"/>Ketahui lebih lanjut<ph name="LINK_AFTER"/></translation>
@@ -2242,7 +2251,6 @@
 <translation id="4773408460773097271">Ollama</translation>
 <translation id="631371844654031449">Model yang disyorkan</translation>
 <translation id="6568044140836233369">Tunjukkan semua model</translation>
-<translation id="6187065185557150870">Sembang</translation>
 <translation id="4685048769603134644">Buka halaman penuh</translation>
 <translation id="2961040541145689181">Sembang baharu</translation>
 <translation id="7557539689487606886">Sertai Premium</translation>
@@ -2366,13 +2374,13 @@
 <translation id="887511360213807449">Sejarah dimatikan</translation>
 <translation id="5380979378058584412">Untuk melihat perbualan anda sebelum ini dengan Leo, anda perlu menghidupkan sejarah perbualan.</translation>
 <translation id="3185367320601718531">Perbualan dan penjanaan teks</translation>
-<translation id="2793458212460902934">Pantas • Carian • Alat</translation>
 <translation id="8506027496671575183">Carian • Visi • Alat</translation>
 <translation id="3184606955650139158">Pantas • Carian • Vision</translation>
 <translation id="7465032796278724624">Disahkan Secara Peribadi Dengan NEAR AI TEE</translation>
 <translation id="8782867266498869301">Model berubah secara dinamik untuk menggunakan yang terbaik bagi tugasan tersebut</translation>
 <translation id="7348809809749151120">Pantas • Carian</translation>
 <translation id="3213834013136637671">Carian • Visi</translation>
+<translation id="2793458212460902934">Pantas • Carian • Alat</translation>
 <translation id="5276681919620506371">Carian • Alat</translation>
 <translation id="7434375176361995333">Ringkasan • Pantas</translation>
 <translation id="3965507912994218570">Tetapan Leo</translation>
@@ -2936,9 +2944,7 @@ Mari sambungkan anda!</translation>
 <translation id="3750210661641549834">Untuk mencipta akaun anda, sila sahkan alamat e-mel anda.</translation>
 <translation id="4351175281479794167">Masukkan kod pengesahan</translation>
 <translation id="1672793037892810340">Anda sepatutnya menerima e-mel dengan kod yang perlu anda masukkan.</translation>
-<translation id="4821255729182569254">Hantar semula e-mel pengesahan</translation>
 <translation id="5837679375142747484">Tidak nampak e-mel tersebut? Periksa folder spam anda atau <ph name="BEGIN_LINK"/>hantar semula<ph name="END_LINK"/> ia.</translation>
-<translation id="1080588816740959885">Tidak nampak e-mel tersebut? Periksa folder spam anda atau hantar semula ia.</translation>
 <translation id="1020730839570724178">Batalkan pendaftaran</translation>
 <translation id="7155125570724238786">Untuk menetapkan semula kata laluan anda, sila sahkan alamat e-mel anda.</translation>
 <translation id="816074628631172140">E-mel anda telah disahkan. Tetapkan kata laluan baharu untuk melengkapkan penetapan semula kata laluan anda.</translation>

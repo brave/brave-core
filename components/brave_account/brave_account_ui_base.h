@@ -10,14 +10,12 @@
 
 #include "base/check.h"
 #include "base/check_deref.h"
-#include "base/containers/map_util.h"
 #include "base/containers/span.h"
 #include "base/functional/callback_forward.h"
 #include "base/functional/callback_helpers.h"
 #include "base/memory/raw_ref.h"
 #include "brave/components/brave_account/brave_account_constants.h"
 #include "brave/components/brave_account/brave_account_service.h"
-#include "brave/components/brave_account/brave_account_utils.h"
 #include "brave/components/brave_account/features.h"
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
 #include "brave/components/brave_account/resources/grit/brave_account_resources.h"
@@ -29,10 +27,8 @@
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_webui_strings.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
-#include "net/base/url_util.h"
 #include "services/network/public/mojom/content_security_policy.mojom.h"
 #include "ui/base/webui/resource_path.h"
-#include "url/gurl.h"
 
 // Template base class for Brave Account WebUI controllers.
 //
@@ -48,7 +44,6 @@ class BraveAccountUIBase {
   template <typename Profile>
   explicit BraveAccountUIBase(
       Profile* profile,
-      const GURL& url,
       base::OnceCallback<void(WebUIDataSource*,
                               base::span<const webui::ResourcePath>,
                               int)> setup_webui_data_source = base::DoNothing())
@@ -60,7 +55,7 @@ class BraveAccountUIBase {
     std::move(setup_webui_data_source)
         .Run(source, kBraveAccountResources,
              IDR_BRAVE_ACCOUNT_BRAVE_ACCOUNT_PAGE_HTML);
-    SetupWebUIDataSource(source, url);
+    SetupWebUIDataSource(source);
   }
 
   void BindInterface(mojo::PendingReceiver<brave_account::mojom::Authentication>
@@ -75,7 +70,7 @@ class BraveAccountUIBase {
   }
 
  private:
-  void SetupWebUIDataSource(WebUIDataSource* source, const GURL& url) {
+  void SetupWebUIDataSource(WebUIDataSource* source) {
     source->OverrideContentSecurityPolicy(
         network::mojom::CSPDirectiveName::ScriptSrc,
         "script-src chrome://resources 'self' 'wasm-unsafe-eval';");
@@ -109,15 +104,6 @@ class BraveAccountUIBase {
                             IDR_BRAVE_ACCOUNT_IMAGES_FULL_BRAVE_BRAND_SVG);
     source->AddResourcePath("full_brave_brand_dark.svg",
                             IDR_BRAVE_ACCOUNT_IMAGES_FULL_BRAVE_BRAND_DARK_SVG);
-
-    if (std::string initiating_service_name; net::GetValueForKeyInQuery(
-            url, brave_account::kInitiatingServiceNameQueryParam,
-            &initiating_service_name)) {
-      source->AddInteger(
-          "initiatingService",
-          static_cast<int32_t>(CHECK_DEREF(base::FindOrNull(
-              brave_account::kServiceFromString, initiating_service_name))));
-    }
   }
 
  private:

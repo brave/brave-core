@@ -9,6 +9,7 @@
 #include <optional>
 #include <string>
 #include <utility>
+#include <vector>
 
 #include "base/base64.h"
 #include "base/functional/bind.h"
@@ -68,6 +69,37 @@ std::optional<base::DictValue> DecodePurchaseToken(const std::string& encoded) {
                                     base::JSONParserOptions::JSON_PARSE_RFC);
 }
 #endif  // !BUILDFLAG(IS_ANDROID)
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
+// Records the observer events the agent retry flow depends on: connection
+// state changes and agent failures.
+class ConnectionStateRecorder : public mojom::ServiceObserver {
+ public:
+  void Observe(mojom::ServiceHandler* service) {
+    service->AddObserver(receiver_.BindNewPipeAndPassRemote());
+  }
+
+  const std::vector<mojom::ConnectionState>& states() const { return states_; }
+
+  size_t agent_failures() const { return agent_failures_; }
+
+  // mojom::ServiceObserver:
+  void OnConnectionStateChanged(mojom::ConnectionState state) override {
+    states_.push_back(state);
+  }
+  void OnPurchasedStateChanged(
+      mojom::PurchasedState state,
+      const std::optional<std::string>& description) override {}
+  void OnSelectedRegionChanged(mojom::RegionPtr region) override {}
+  void OnSmartProxyRoutingStateChanged(bool enabled) override {}
+  void OnAgentFailure() override { ++agent_failures_; }
+
+ private:
+  std::vector<mojom::ConnectionState> states_;
+  size_t agent_failures_ = 0;
+  mojo::Receiver<mojom::ServiceObserver> receiver_{this};
+};
+#endif  // BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
 }  // namespace
 
 class BraveVpnServiceImplTest : public testing::Test {
@@ -233,6 +265,8 @@ TEST_F(BraveVpnServiceImplTest, SafeDefaultsAfterShutdown) {
   // The agent client is gone; the mapping must not dereference it.
   UpdateAgentConnection(mojom::PurchasedState::PURCHASED);
   UpdateAgentConnection(mojom::PurchasedState::NOT_PURCHASED);
+
+  service_->ReconnectToAgent();
 
   NotifyAgentConnected();
   NotifyAgentNotRunning();
@@ -524,6 +558,79 @@ TEST_F(BraveVpnServiceImplTest, LosingThePurchaseClearsConnectFailure) {
 
   UpdateAgentConnection(mojom::PurchasedState::NOT_PURCHASED);
 
+  EXPECT_EQ(connection_state(), mojom::ConnectionState::DISCONNECTED);
+  EXPECT_TRUE(service_->GetLastConnectionError().empty());
+}
+
+// Every agent failure is an answer the UI may be waiting for, so each one fires
+// OnAgentFailure(). The connection state event stays reserved for real changes:
+// a repeated failure must not resend it.
+TEST_F(BraveVpnServiceImplTest, AgentFailureNotifiesObservers) {
+  CreateService();
+  ConnectionStateRecorder recorder;
+  recorder.Observe(service_.get());
+
+  // Both events share the observer pipe and the failure is sent last, so
+  // waiting for it means every earlier state change has been delivered.
+  auto wait_for_failures = [&](size_t count) {
+    return base::test::RunUntil(
+        [&] { return recorder.agent_failures() >= count; });
+  };
+
+  NotifyAgentConnectionFailed(AgentClient::Error::kAgentUnreachable);
+  ASSERT_TRUE(wait_for_failures(1u));
+  EXPECT_THAT(recorder.states(),
+              testing::ElementsAre(mojom::ConnectionState::CONNECT_NO_AGENT));
+
+  // Same state, same error: a failure event, but no state event.
+  NotifyAgentConnectionFailed(AgentClient::Error::kAgentUnreachable);
+  ASSERT_TRUE(wait_for_failures(2u))
+      << "a repeated connection failure was not reported";
+  EXPECT_EQ(recorder.states().size(), 1u);
+
+  // A new error is a state update, even though the state itself is the same.
+  NotifyAgentLaunchFailed(AgentLauncher::LaunchError::kAppNotFound);
+  ASSERT_TRUE(wait_for_failures(3u));
+  EXPECT_EQ(recorder.states().size(), 2u);
+
+  // A repeated launch failure behaves like a repeated connection failure.
+  NotifyAgentLaunchFailed(AgentLauncher::LaunchError::kAppNotFound);
+  ASSERT_TRUE(wait_for_failures(4u))
+      << "a repeated launch failure was not reported";
+  EXPECT_EQ(recorder.states().size(), 2u);
+}
+
+// A launch failure stops the retry loop, so the user's retry is the only way
+// back. It must restart the client without touching the error: only a stable
+// session proves the agent is healthy.
+TEST_F(BraveVpnServiceImplTest, ReconnectToAgentRestartsStoppedClient) {
+  CreateService();
+  UpdateAgentConnection(mojom::PurchasedState::PURCHASED);
+  NotifyAgentLaunchFailed(AgentLauncher::LaunchError::kAppNotFound);
+  ASSERT_EQ(agent_client()->state(), AgentClient::State::kDisconnected);
+  ASSERT_EQ(connection_state(), mojom::ConnectionState::CONNECT_NO_AGENT);
+
+  service_->ReconnectToAgent();
+
+  EXPECT_EQ(agent_client()->state(), AgentClient::State::kConnecting);
+  EXPECT_EQ(connection_state(), mojom::ConnectionState::CONNECT_NO_AGENT);
+  EXPECT_FALSE(service_->GetLastConnectionError().empty());
+}
+
+// The full recovery path exercised from the UI.
+TEST_F(BraveVpnServiceImplTest, ReconnectToAgentRecoversAfterStableSession) {
+  CreateService();
+  UpdateAgentConnection(mojom::PurchasedState::PURCHASED);
+  NotifyAgentLaunchFailed(AgentLauncher::LaunchError::kAppNotFound);
+  ASSERT_EQ(connection_state(), mojom::ConnectionState::CONNECT_NO_AGENT);
+
+  service_->ReconnectToAgent();
+
+  ASSERT_TRUE(base::test::RunUntil([&] {
+    return agent_client()->state() == AgentClient::State::kConnected;
+  })) << "the fake agent never accepted the connection";
+
+  NotifyAgentSessionStable();
   EXPECT_EQ(connection_state(), mojom::ConnectionState::DISCONNECTED);
   EXPECT_TRUE(service_->GetLastConnectionError().empty());
 }

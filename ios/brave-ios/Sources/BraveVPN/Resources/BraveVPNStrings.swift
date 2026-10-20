@@ -72,27 +72,11 @@ extension Strings {
       comment: "Whether the VPN is enabled or not"
     )
 
-    public static let popupCheckboxBlockAds = NSLocalizedString(
-      "vpn.popupCheckboxBlockAds",
-      tableName: "BraveShared",
-      bundle: .module,
-      value: "Blocks unwanted network connections",
-      comment: "Text for a checkbox to present the user benefits for using Brave VPN"
-    )
-
     public static let popupCheckboxBlockAdsAlternate = NSLocalizedString(
       "vpn.popupCheckboxBlockAdsAlternate",
       tableName: "BraveShared",
       bundle: .module,
       value: "Block ads & trackers across all apps ",
-      comment: "Text for a checkbox to present the user benefits for using Brave VPN"
-    )
-
-    public static let popupCheckboxFast = NSLocalizedString(
-      "vpn.popupCheckboxFast",
-      tableName: "BraveShared",
-      bundle: .module,
-      value: "Supports speeds of up to 100 Mbps",
       comment: "Text for a checkbox to present the user benefits for using Brave VPN"
     )
 
@@ -335,28 +319,12 @@ extension Strings {
         "Button subtitle for VPN region selection in menu. %@ will be replaced with country name or automatic ex: Current Setting: Automatic"
     )
 
-    public static let vpnUpdatePaymentMethodDescriptionText = NSLocalizedString(
-      "vpn.vpnUpdatePaymentMethodDescriptionText",
-      tableName: "BraveShared",
-      bundle: .module,
-      value: "Please update your payment method",
-      comment: "Text description of VPN subscription needs a method of payment update"
-    )
-
     public static let settingsVPNExpired = NSLocalizedString(
       "vpn.settingsVPNExpired",
       tableName: "BraveShared",
       bundle: .module,
       value: "Expired",
       comment: "Whether the VPN plan has expired"
-    )
-
-    public static let vpnRegionSelectorButtonTitle = NSLocalizedString(
-      "vpn.vpnRegionSelectorButtonTitle",
-      tableName: "BraveShared",
-      bundle: .module,
-      value: "VPN Region",
-      comment: "Button title for VPN region selection in menu"
     )
 
     public static let regionPickerAutomaticModeCellText = NSLocalizedString(
@@ -467,14 +435,6 @@ extension Strings {
       comment: "One year length vpn subcription"
     )
 
-    public static let yearlySubDetail = NSLocalizedString(
-      "vpn.yearlySubDetail",
-      bundle: .module,
-      value: "Renew annually save %@",
-      comment:
-        "Used in context: 'yearly subscription, renew annually (to) save 16%'. The placeholder is for percent value"
-    )
-
     public static let yearlySubDisclaimer = NSLocalizedString(
       "vpn.yearlySubDisclaimer",
       bundle: .module,
@@ -484,48 +444,6 @@ extension Strings {
     )
 
     // MARK: Checkboxes
-
-    public static let checkboxProtectYourDevices = NSLocalizedString(
-      "vpn.checkboxProtectYourDevices",
-      bundle: .module,
-      value: "Protect every app & your whole device",
-      comment: "Text for a checkbox to present the user benefits for using Brave VPN"
-    )
-
-    public static let checkboxSaferWifi = NSLocalizedString(
-      "vpn.checkboxSaferWifi",
-      bundle: .module,
-      value: "Safer for home or public Wi-Fi",
-      comment: "Text for a checkbox to present the user benefits for using Brave VPN"
-    )
-
-    public static let checkboxSpeedFast = NSLocalizedString(
-      "vpn.checkboxSpeedFast",
-      bundle: .module,
-      value: "Lightning-fast, up to 100 Mbps",
-      comment: "Text for a checkbox to present the user benefits for using Brave VPN"
-    )
-
-    public static let checkboxGeoLocation = NSLocalizedString(
-      "vpn.checkboxGeoLocation",
-      bundle: .module,
-      value: "Choose your geo/country location",
-      comment: "Text for a checkbox to present the user benefits for using Brave VPN"
-    )
-
-    public static let checkboxNoIPLog = NSLocalizedString(
-      "vpn.checkboxNoIPLog",
-      bundle: .module,
-      value: "Brave never logs your activity",
-      comment: "Text for a checkbox to present the user benefits for using Brave VPN"
-    )
-
-    public static let checkboxDevicesProtect = NSLocalizedString(
-      "vpn.checkboxDevicesProtect",
-      bundle: .module,
-      value: "Protect 5 devices on 1 subscription",
-      comment: "Text for a checkbox to present the user benefits for using Brave VPN"
-    )
 
     public static let installTitle = NSLocalizedString(
       "vpn.installTitle",
@@ -620,20 +538,6 @@ extension Strings {
       comment: "Button to allow the user to view the App Store receipt."
     )
 
-    public static let settingsServerHost = NSLocalizedString(
-      "vpn.settingsServerHost",
-      bundle: .module,
-      value: "Host",
-      comment: "Table cell title for vpn's server host"
-    )
-
-    public static let settingsServerLocation = NSLocalizedString(
-      "vpn.settingsServerLocation",
-      bundle: .module,
-      value: "Location",
-      comment: "Table cell title for vpn's server location and which open opens location select"
-    )
-
     public static let settingsResetConfiguration = NSLocalizedString(
       "vpn.settingsResetConfiguration",
       bundle: .module,
@@ -670,13 +574,6 @@ extension Strings {
       comment: "Button text to enable Brave VPN"
     )
 
-    public static let buyButton = NSLocalizedString(
-      "vpn.buyButton",
-      bundle: .module,
-      value: "Buy",
-      comment: "Button text to buy Brave VPN"
-    )
-
     public static let tryForFreeButton = NSLocalizedString(
       "vpn.learnMore",
       bundle: .module,
@@ -707,28 +604,6 @@ extension Strings {
       comment: "Message for an alert when the VPN can't be configured."
     )
 
-    public static let vpnConfigPermissionDeniedErrorTitle = NSLocalizedString(
-      "vpn.vpnConfigPermissionDeniedErrorTitle",
-      bundle: .module,
-      value: "Permission denied",
-      comment: "Title for an alert when the user didn't allow to install VPN profile"
-    )
-
-    public static let vpnRedeemCodeButtonActionTitle = NSLocalizedString(
-      "vpn.vpnRedeemCodeButtonActionTitle",
-      bundle: .module,
-      value: "Redeem Code",
-      comment: "Title for a button for enabling the Redeem Code flow"
-    )
-
-    public static let vpnConfigPermissionDeniedErrorBody = NSLocalizedString(
-      "vpn.vpnConfigPermissionDeniedErrorBody",
-      bundle: .module,
-      value:
-        "The Brave VPN requires a VPN profile to be installed on your device to work. ",
-      comment: "Title for an alert when the user didn't allow to install VPN profile"
-    )
-
     public static let vpnSettingsMonthlySubName = NSLocalizedString(
       "vpn.vpnSettingsMonthlySubName",
       bundle: .module,
@@ -756,14 +631,6 @@ extension Strings {
       value:
         "Unable to complete purchase. Please try again, or check your payment details on Apple and try again.",
       comment: "Message for error when VPN could not be purchased."
-    )
-
-    public static let vpnErrorOfferCodeFailedBody = NSLocalizedString(
-      "vpn.vpnErrorOfferCodeFailedBody",
-      bundle: .module,
-      value:
-        "Unable to redeem offer code. Please try again, or check your offer code details and try again.",
-      comment: "Message for error when VPN offer code could not be redeemed."
     )
 
     public static let vpnResetAlertTitle = NSLocalizedString(
@@ -909,13 +776,6 @@ extension Strings {
       comment: "Website problem for contact form issue field."
     )
 
-    public static let contactFormIssueConnectionReliability = NSLocalizedString(
-      "vpn.contactFormIssueConnectionReliability",
-      bundle: .module,
-      value: "Connection reliability problem",
-      comment: "Connection problems for contact form issue field."
-    )
-
     public static let contactFormIssueOther = NSLocalizedString(
       "vpn.contactFormIssueOther",
       bundle: .module,
@@ -981,13 +841,6 @@ extension Strings {
       comment: "Title for contact form email."
     )
 
-    public static let iapDisclaimer = NSLocalizedString(
-      "vpn.iapDisclaimer",
-      bundle: .module,
-      value: "All subscriptions are auto-renewed but can be cancelled before renewal.",
-      comment: "Disclaimer about in app subscription"
-    )
-
     public static let installSuccessPopup = NSLocalizedString(
       "vpn.installSuccessPopup",
       bundle: .module,
@@ -1007,29 +860,6 @@ extension Strings {
       bundle: .module,
       value: "Even in the background, Brave will continue to protect you.",
       comment: "Notification title to tell user that the vpn is turned on even in background"
-    )
-
-    public static let vpnIAPBoilerPlate = NSLocalizedString(
-      "vpn.vpnIAPBoilerPlate",
-      bundle: .module,
-      value:
-        "Subscriptions will be charged via your iTunes account.\n\nAny unused portion of the free trial, if offered, is forfeited when you buy a subscription.\n\nYour subscription will renew automatically unless it is cancelled at least 24 hours before the end of the current period.\n\nYou can manage your subscriptions in Settings.\n\nBy using Brave, you agree to the Terms of Use and Privacy Policy.",
-      comment: "Disclaimer for user purchasing the VPN plan."
-    )
-
-    public static let regionPickerTitle = NSLocalizedString(
-      "vpn.regionPickerTitle",
-      bundle: .module,
-      value: "Server Region",
-      comment: "Title for vpn region selector screen"
-    )
-
-    public static let regionPickerAutomaticDescription = NSLocalizedString(
-      "vpn.regionPickerAutomaticDescription",
-      bundle: .module,
-      value:
-        "A server region most proximate to you will be automatically selected, based on your system timezone. This is recommended in order to ensure fast internet speeds.",
-      comment: "Description of what automatic server selection does."
     )
 
     public static let regionPickerErrorTitle = NSLocalizedString(
@@ -1061,13 +891,6 @@ extension Strings {
       comment: "Description of vpn tunnel protocol"
     )
 
-    public static let regionSwitchSuccessPopupText = NSLocalizedString(
-      "vpn.regionSwitchSuccessPopupText",
-      bundle: .module,
-      value: "VPN region changed.",
-      comment: "Message that we show after successfully changing vpn region."
-    )
-
     public static let protocolPickerErrorTitle =
       NSLocalizedString(
         "vpn.protocolPickerErrorTitle",
@@ -1088,13 +911,6 @@ extension Strings {
       bundle: .module,
       value: "VPN Tunnel Protocol changed.",
       comment: "Message that we show after successfully changing tunnel protocol."
-    )
-
-    public static let settingsFailedToFetchServerList = NSLocalizedString(
-      "vpn.settingsFailedToFetchServerList",
-      bundle: .module,
-      value: "Failed to retrieve server list, please try again later.",
-      comment: "Error message shown if we failed to retrieve vpn server list."
     )
 
     public static let contactFormEmailNotConfiguredBody = NSLocalizedString(

@@ -72,6 +72,10 @@
 #include "brave/components/brave_news/common/features.h"
 #endif
 
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+#include "brave/components/local_ai/core/features.h"
+#endif
+
 #if BUILDFLAG(ENABLE_CUSTOM_PROFILE_IMAGE)
 #include "brave/browser/ui/webui/custom_profile_image/features.h"
 #endif
@@ -191,12 +195,6 @@ const flags_ui::FeatureEntry::FeatureVariation kZCashFeatureVariations[] = {
     {"- Shielded support enabled", kZCashShieldedTransactionsEnabled, nullptr},
     {"- Ironwood support enabled", kZCashIronwoodEnabled, nullptr}};
 
-const flags_ui::FeatureEntry::FeatureParam kPolkadotAssetDiscoveryDisabled[] = {
-    {"polkadot_asset_discovery", "false"}};
-
-const flags_ui::FeatureEntry::FeatureParam kPolkadotAssetDiscoveryEnabled[] = {
-    {"polkadot_asset_discovery", "true"}};
-
 const flags_ui::FeatureEntry::FeatureParam kPolkadotDappSupportDisabled[] = {
     {"polkadot_dapp_support", "false"}};
 
@@ -204,8 +202,6 @@ const flags_ui::FeatureEntry::FeatureParam kPolkadotDappSupportEnabled[] = {
     {"polkadot_dapp_support", "true"}};
 
 const flags_ui::FeatureEntry::FeatureVariation kPolkadotFeatureVariations[] = {
-    {"- Asset discovery disabled", kPolkadotAssetDiscoveryDisabled, nullptr},
-    {"- Asset discovery enabled", kPolkadotAssetDiscoveryEnabled, nullptr},
     {"- dApp support disabled", kPolkadotDappSupportDisabled, nullptr},
     {"- dApp support enabled", kPolkadotDappSupportEnabled, nullptr},
 };
@@ -930,6 +926,19 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabMigrationChoices[] = {
 #else
 #define BRAVE_HISTORY_EMBEDDINGS_FLAG
 #endif
+
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+#define BRAVE_ON_DEVICE_SPEECH_RECOGNITION_FLAG                       \
+  EXPAND_FEATURE_ENTRIES({                                            \
+      "brave-on-device-speech-recognition",                           \
+      "Brave On-Device Speech Recognition",                           \
+      "Enables on-device speech recognition for the Web Speech API.", \
+      kOsDesktop,                                                     \
+      FEATURE_VALUE_TYPE(local_ai::kBraveOnDeviceSpeechRecognition),  \
+  })
+#else
+#define BRAVE_ON_DEVICE_SPEECH_RECOGNITION_FLAG
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
 
 #define BRAVE_OMNIBOX_FEATURES                                                \
   EXPAND_FEATURE_ENTRIES(                                                     \
@@ -1703,6 +1712,7 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabMigrationChoices[] = {
   BRAVE_AI_CHAT_FEATURE_ENTRIES                                                \
   BRAVE_AI_CHAT_TAB_MANAGEMENT_TOOL_ENTRY                                      \
   BRAVE_HISTORY_EMBEDDINGS_FLAG                                                \
+  BRAVE_ON_DEVICE_SPEECH_RECOGNITION_FLAG                                      \
   BRAVE_OMNIBOX_FEATURES                                                       \
   BRAVE_MIDDLE_CLICK_AUTOSCROLL_FEATURE_ENTRY                                  \
   BRAVE_UPGRADE_WHEN_IDLE_FEATURE_ENTRY                                        \

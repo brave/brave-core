@@ -7,7 +7,6 @@
 
 #include <array>
 #include <string_view>
-#include <utility>
 
 #include "base/check.h"
 #include "base/functional/bind.h"

@@ -404,6 +404,8 @@ class FakeConversationUI : public mojom::ConversationUI {
       std::vector<mojom::AssociatedContentPtr> associated_content) override {}
   void OnContentToolsChanged(const std::string& content_uuid,
                              std::vector<mojom::ToolInfoPtr> tools) override {}
+  void OnVisionModelSwitchChanged(
+      const std::optional<std::string>& model_key) override {}
   void OnConversationDeleted() override {}
 };
 
@@ -644,7 +646,8 @@ IN_PROC_BROWSER_TEST_F(AIChatGlobalSidePanelPageHandlerBrowserTest,
       &fake_conversation_ui);
   mojo::Remote<mojom::ConversationHandler> conversation;
   handler->NewConversation(conversation.BindNewPipeAndPassReceiver(),
-                           conversation_ui_receiver.BindNewPipeAndPassRemote());
+                           conversation_ui_receiver.BindNewPipeAndPassRemote(),
+                           /*workspace_url=*/std::nullopt);
 
   // The new conversation should not be associated with any content.
   base::test::TestFuture<std::vector<mojom::AssociatedContentPtr>>

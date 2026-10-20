@@ -3,18 +3,14 @@
 <translationbundle lang="es">
 <translation id="1751249301761991853">Personal</translation>
 <translation id="3333887201479867589">Recompensas de Brave</translation>
-<translation id="7561196759112975576">Siempre</translation>
-<translation id="7961015016161918242">Nunca</translation>
 <translation id="8507663778530179003">Mostrar el botón "Todos los marcadores"</translation>
 <translation id="9018648632047670921">Mostrar el botón "Todos los marcadores"</translation>
 <translation id="7630214457764713113">Copiar enlace limpio</translation>
 <translation id="7973394300052703468">Nueva ventana de &amp;incógnito</translation>
 <translation id="4615489450165434530">Informar de un sitio roto</translation>
 <translation id="8097438084542431276">Copiar enlace limpio</translation>
-<translation id="4678672101289648246">Solo en la página de la nueva pestaña</translation>
 <translation id="6516243500644829484">Nueva ventana de &amp;incógnito</translation>
 <translation id="1209739344687072997">Informar de un sitio roto</translation>
-<translation id="8294286161128352783">Solo en la página de la nueva pestaña</translation>
 <translation id="6406506848690869874">Brave Sync</translation>
 <translation id="1544192797660353713">Wallet</translation>
 <translation id="2361906291514218784">Leo IA</translation>
@@ -195,7 +191,9 @@ También puedes cambiar los permisos más adelante en <ph name="SETTINGS_EXTENIO
 <translation id="5977931179408079967">Colocar</translation>
 <translation id="3790384768741064842">Mover a la derecha</translation>
 <translation id="7444424316576061724">Mover a la izquierda</translation>
+<translation id="7561196759112975576">Siempre</translation>
 <translation id="7060352228894039151">Pasar el puntero del ratón</translation>
+<translation id="7961015016161918242">Nunca</translation>
 <translation id="8981254605840444865">Mostrar configuración</translation>
 <translation id="59174027418879706">Habilitado</translation>
 <translation id="4176463684765177261">Deshabilitado</translation>
@@ -221,6 +219,7 @@ También puedes cambiar los permisos más adelante en <ph name="SETTINGS_EXTENIO
 <translation id="4515057635283480525">Internet Archive guarda versiones anteriores de muchas páginas web. ¿Quieres buscar esta página en el Archive?</translation>
 <translation id="8252977752585110703">Lo sentimos, comprobamos Internet Archive y no tiene una versión archivada de esta página.</translation>
 <translation id="8748778103033196270">Buscar en el Archive</translation>
+<translation id="7369915833843501413">Buscando en el Archive</translation>
 <translation id="191143826155037518">Brave está disponible para el usuario bajo la <ph name="BEGIN_LINK_MPL"/>Mozilla Public License 2.0<ph name="END_LINK_MPL"/> (MPL) e incluye <ph name="BEGIN_LINK_OSS"/>software de código abierto<ph name="END_LINK_OSS"/> con una variedad de otras licencias.
         Puede leer las <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instrucciones sobre cómo descargar y compilar por uno mismo<ph name="END_LINK_BUILD_INSTRUCTIONS"/> el <ph name="BEGIN_LINK_SOURCE_CODE"/>código fuente específico usado para crear esta copia<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">Añadir todas las pestañas a marcadores...</translation>
@@ -371,7 +370,7 @@ También puedes cambiar los permisos más adelante en <ph name="SETTINGS_EXTENIO
 <translation id="7985042437720138349">Esta función envía datos sobre tus pestañas abiertas a Leo, el asistente del navegador con tecnología de IA de Brave.</translation>
 <translation id="6165508094623778733">Más información</translation>
 <translation id="7557539689487606886">Hazte Premium</translation>
-<translation id="1035309871698658326">Cuando se abre, esto enviará automáticamente los títulos y el origen de todas las pestañas que no son de incógnito a Leo para clasificarlas.</translation>
+<translation id="7103144720752576727">Al abrirse, esto enviará automáticamente los títulos y el origen de todas las pestañas que no sean de Incógnito a Leo para clasificarlas. Si también activas el envío del contenido de la página, se enviarán también breves fragmentos del texto de cada pestaña.</translation>
 <translation id="3435896845095436175">Habilitar</translation>
 <translation id="9031526219709160683">Brave puede ayudarte a optimizar la configuración de privacidad de este sitio. ¿Te gustaría revisar las sugerencias de Brave?</translation>
 <translation id="5739953050957336013">Revisar sugerencias</translation>
@@ -386,8 +385,6 @@ También puedes cambiar los permisos más adelante en <ph name="SETTINGS_EXTENIO
 <translation id="8570228839666486945">IA en el dispositivo</translation>
 <translation id="7447041379556102185">Reconocimiento de voz en el dispositivo</translation>
 <translation id="3456536577668402695">Tus búsquedas y el contenido de las páginas se procesan en este dispositivo. No se envía nada a Brave ni lo ven revisores humanos.</translation>
-<translation id="4751537843966994505">Búsqueda semántica en el historial</translation>
-<translation id="6175973371938222040">Indexa localmente las páginas que visitas para que puedas buscar en tu historial por significado. Todo el procesamiento permanece en este dispositivo.</translation>
 <translation id="9156965752763025780">Tus cambios se aplicarán la próxima vez que reinicies Brave.</translation>
 <translation id="7179921470347911571">Relanzar Ahora</translation>
 <translation id="1426410128494586442">Sí</translation>
@@ -425,6 +422,7 @@ También puedes cambiar los permisos más adelante en <ph name="SETTINGS_EXTENIO
 <translation id="4328541188421002379">Pon un nombre a tu contenedor, como Trabajo o Personal</translation>
 <translation id="4976989127264491396">Error: <ph name="ERROR_MESSAGE"/></translation>
 <translation id="5436069931267876389">No se ha encontrado el contenedor</translation>
+<translation id="5831840958001766835">Reordenar elemento. Usa las teclas de flecha para mover.</translation>
 <translation id="6055154402239241620">Control de Tráfico</translation>
 <translation id="8134521925475508805">Configura sitios específicos para que se abran automáticamente en un contexto particular, creando una separación entre tus sesiones de navegación. <ph name="BEGIN_LINK"/>Más información<ph name="END_LINK"/></translation>
 <translation id="6944848312867106540">Habilitar Control de Tráfico</translation>
@@ -477,10 +475,6 @@ También puedes cambiar los permisos más adelante en <ph name="SETTINGS_EXTENIO
 <translation id="7310387888625228830">Asistente de IA (Leo)</translation>
 <translation id="5222974844674487962">Mostrar botón de Noticias de Brave</translation>
 <translation id="2085436423511121572">Mostrar el botón de Leo IA</translation>
-<translation id="6156323911414505561">Mostrar barra de marcadores</translation>
-<translation id="4054323497808446566">La barra de marcadores está visible en todas las páginas</translation>
-<translation id="8693858092251192712">La barra de marcadores está oculta en todas las páginas salvo en la página de la nueva pestaña</translation>
-<translation id="7158817046543187970">La barra de marcadores está oculta en todas las páginas</translation>
 <translation id="3416468988018290825">Mostrar siempre las URL completas</translation>
 <translation id="5529693968082667490">Mostrar el botón de búsqueda de pestañas</translation>
 <translation id="1013121820689882118">Lector de velocidad</translation>
@@ -612,6 +606,8 @@ También puedes cambiar los permisos más adelante en <ph name="SETTINGS_EXTENIO
 <translation id="5825943197137337319">Solo interfaz pública por defecto</translation>
 <translation id="1689062823386843231">Desactivar el UDP sin proxy</translation>
 <translation id="3540231253392253941">Utiliza los servicios de Google para la mensajería push</translation>
+<translation id="2224032129673914306">Búsqueda semántica en el historial</translation>
+<translation id="6045998903985162478">Indexa las páginas que visitas para que puedas encontrarlas fácilmente en el historial, las pestañas abiertas y Leo.</translation>
 <translation id="5813105074916486721">Retención del historial local</translation>
 <translation id="5671611745062206644">Cuánto tiempo almacena Brave tu historial de navegación localmente</translation>
 <translation id="7184510058087008090">1 día</translation>
@@ -876,6 +872,7 @@ Comprueba que un dispositivo tuyo haya generado estas palabras clave.
 <translation id="2618193846561624884">¿Deseas actualizar la red actual?</translation>
 <translation id="1643029991199044105">Recorrer las pestañas más recientes con Ctrl-Tab</translation>
 <translation id="2775956301559569472">Mostrar el mensaje de Wayback Machine en las páginas con error 404</translation>
+<translation id="8485716275262929774">Cargar automáticamente versiones guardadas de Wayback Machine en páginas 404</translation>
 <translation id="3095201688102519917">Avisarme antes de cerrar una ventana con varias pestañas</translation>
 <translation id="7120553802660696133">Cerrar la ventana al cerrar la última pestaña</translation>
 <translation id="3394171693948989253">Mostrar el recordatorio a pantalla completa para pulsar Esc al salir</translation>
@@ -885,6 +882,8 @@ Comprueba que un dispositivo tuyo haya generado estas palabras clave.
 <translation id="1529674267267221673">Leo aparecerá en el menú contextual cuando hagas clic con el botón derecho en un sitio web. Al hacerlo, Leo recibirá el contexto de la página web en cuestión.</translation>
 <translation id="5226020406479918122">Modo de enfoque de pestaña</translation>
 <translation id="3705539672403311123">Habilitar la organización de pestañas en la página de Búsqueda de pestañas. Cuando se abre, esto enviará automáticamente los títulos y orígenes de todas las pestañas que no son de incógnito a Leo para clasificarlas. <ph name="BEGIN_LINK"/>Saber más<ph name="END_LINK"/></translation>
+<translation id="2002238795517052616">Enviar contenido de la página para el enfoque de pestañas</translation>
+<translation id="2276823422122514441">Envía también breves extractos del texto de cada pestaña, para que las pestañas se agrupen según el tema de una página en lugar de su título. Los extractos van a Leo, o a tu propio modelo si elegiste uno para el enfoque de pestañas. Esto requiere <ph name="BEGIN_LINK"/><ph name="SEMANTIC_HISTORY_SEARCH"/><ph name="END_LINK"/>, que crea los extractos en tu dispositivo.</translation>
 <translation id="9049433973274198706">Modelo predeterminado para tab focus</translation>
 <translation id="2161546758719933059">El modelo utilizado para organizar tus pestañas en el Modo de enfoque de pestañas. <ph name="BEGIN_LINK"/>Más información<ph name="END_LINK"/></translation>
 <translation id="8172263161008556851">Mostrar sugerencias en la conversación</translation>
@@ -966,9 +965,6 @@ Comprueba que un dispositivo tuyo haya generado estas palabras clave.
 <translation id="1838374766361614909">Borrar buscador</translation>
 <translation id="5126255551970171328">Buscar una memoria</translation>
 <translation id="7402116145895962069">Sincronizar sus modelos locales de Ollama</translation>
-<translation id="5985516785067818307">Participante de encuesta</translation>
-<translation id="8347743943525229984">Permitir encuestas Brave</translation>
-<translation id="3204080538332044581">Permite a Brave mostrar enlaces a encuestas privadas en la página de nueva pestaña. Las encuestas nos ayudan a crear mejores funciones y a medir la eficacia de las campañas publicitarias basadas en el navegador. <ph name="BEGIN_LINK"/>Más información<ph name="END_LINK"/></translation>
 <translation id="349846214503465941">Activar Lista de reproducción</translation>
 <translation id="7903608716704052878">Añadir archivos de forma automática para visualizarlos sin conexión</translation>
 <translation id="384666453982355633">Esta opción guardará los archivos multimedia en caché de forma automática para que puedas reproducirlos sin conexión a Internet</translation>

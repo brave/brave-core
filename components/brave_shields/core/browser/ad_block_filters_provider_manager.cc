@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider_manager.h"
 
-#include <memory>
 #include <string>
 #include <utility>
 

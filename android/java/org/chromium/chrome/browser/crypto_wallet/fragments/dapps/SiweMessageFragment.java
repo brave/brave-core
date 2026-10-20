@@ -5,8 +5,6 @@
 
 package org.chromium.chrome.browser.crypto_wallet.fragments.dapps;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -39,8 +37,10 @@ import org.chromium.brave_wallet.mojom.SiweMessage;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.app.domain.DappsModel;
 import org.chromium.chrome.browser.app.helpers.ImageLoader;
 import org.chromium.chrome.browser.crypto_wallet.BlockchainRegistryFactory;
+import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletDAppsActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.TwoLineItemRecyclerViewAdapter;
 import org.chromium.chrome.browser.crypto_wallet.fragments.TwoLineItemBottomSheetFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.WalletBottomSheetDialogFragment;
@@ -115,6 +115,9 @@ public class SiweMessageFragment extends WalletBottomSheetDialogFragment {
         getWalletModel()
                 .getDappsModel()
                 .notifySignMessageRequestProcessed(isApproved, mCurrentSignMessageRequest.id);
+        // Nothing on screen is actionable until the next request is bound.
+        mCurrentSignMessageRequest = null;
+        mSiweMessageData = null;
         fillSignMessageInfo(false);
     }
 
@@ -123,48 +126,49 @@ public class SiweMessageFragment extends WalletBottomSheetDialogFragment {
                 .getDappsModel()
                 .getPendingSignMessageRequests(
                         requests -> {
+                            if (!isAdded()) {
+                                return;
+                            }
                             if (requests == null || requests.length == 0) {
-                                Intent intent = new Intent();
-                                final Activity activity = getActivity();
-                                if (activity != null) {
-                                    activity.setResult(Activity.RESULT_OK, intent);
-                                    activity.finish();
-                                }
+                                getWalletFragmentCallback().onAllRequestsHandled();
                                 return;
                             }
 
-                            mCurrentSignMessageRequest = requests[0];
-                            if (mCurrentSignMessageRequest.signData.which()
-                                    == SignDataUnion.Tag.EthSiweData) {
-                                mSiweMessageData =
-                                        mCurrentSignMessageRequest.signData.getEthSiweData();
+                            final SignMessageRequest request = requests[0];
+                            final BraveWalletDAppsActivity.ActivityType panel =
+                                    DappsModel.getSignMessagePanel(request);
+                            if (panel != BraveWalletDAppsActivity.ActivityType.SIWE_MESSAGE) {
+                                // Only sign-in requests are shown here, the generic sign panel
+                                // shows the rest.
+                                getWalletFragmentCallback().showPanel(panel);
+                                return;
                             }
+                            mCurrentSignMessageRequest = request;
+                            mSiweMessageData = request.signData.getEthSiweData();
                             if (init) {
                                 mBtCancel.setOnClickListener(
                                         v -> notifySignMessageRequestProcessed(false));
                                 mBtSign.setOnClickListener(
                                         v -> notifySignMessageRequestProcessed(true));
                             }
-                            if (mCurrentSignMessageRequest.originInfo != null
-                                    && URLUtil.isValidUrl(
-                                            mCurrentSignMessageRequest.originInfo.originSpec)) {
-                                mTvOrigin.setText(
-                                        mCurrentSignMessageRequest.originInfo.eTldPlusOne);
-                                mTvUrl.setText(
-                                        Utils.geteTldSpanned(
-                                                mCurrentSignMessageRequest.originInfo));
+                            if (request.originInfo != null
+                                    && URLUtil.isValidUrl(request.originInfo.originSpec)) {
+                                mTvOrigin.setText(request.originInfo.eTldPlusOne);
+                                mTvUrl.setText(Utils.geteTldSpanned(request.originInfo));
+                            } else {
+                                // Remove the previous request's origin.
+                                mTvOrigin.setText("");
+                                mTvUrl.setText("");
                             }
-                            updateDetails(
-                                    mCurrentSignMessageRequest.chainId,
-                                    mCurrentSignMessageRequest.accountId);
-                            updateNetwork(mCurrentSignMessageRequest.chainId);
-                            updateFavIcon(
-                                    mCurrentSignMessageRequest.originInfo,
-                                    mCurrentSignMessageRequest.accountId.address);
+                            updateDetails(request.chainId, request.accountId);
+                            updateNetwork(request.chainId);
+                            updateFavIcon(request);
                         });
     }
 
     private void updateDetails(String chainId, AccountId accountId) {
+        // Remove the previous request's details, in case this one cannot be described.
+        setDetails(Collections.emptyList());
         if (TextUtils.isEmpty(chainId)) {
             return;
         }
@@ -223,8 +227,15 @@ public class SiweMessageFragment extends WalletBottomSheetDialogFragment {
             }
         }
         mTwoLineAdapter.mDividerMargin = 12;
+        setDetails(items);
+    }
+
+    /** Replaces the whole detail list, which has no stable item identity to diff against. */
+    private void setDetails(final List<TwoLineItemRecyclerViewAdapter.TwoLineItem> items) {
+        final int previousCount = mTwoLineAdapter.getItemCount();
         mTwoLineAdapter.setValues(items);
-        mTwoLineAdapter.notifyItemRangeChanged(0, items.size());
+        mTwoLineAdapter.notifyItemRangeRemoved(0, previousCount);
+        mTwoLineAdapter.notifyItemRangeInserted(0, items.size());
     }
 
     @SuppressWarnings("NoStreams")
@@ -236,31 +247,50 @@ public class SiweMessageFragment extends WalletBottomSheetDialogFragment {
                 .collect(Collectors.joining(System.getProperty(WalletConstants.LINE_SEPARATOR)));
     }
 
-    private void updateFavIcon(OriginInfo originInfo, String accountAddress) {
-        if (originInfo == null || !URLUtil.isValidUrl(originInfo.originSpec)) return;
+    private void updateFavIcon(final SignMessageRequest request) {
+        // Remove the previous request's icon while this one loads.
+        mIvFav.setImageDrawable(null);
+        final OriginInfo originInfo = request.originInfo;
+        if (originInfo == null || !URLUtil.isValidUrl(originInfo.originSpec)) {
+            setAccountBlockies(request.accountId.address);
+            return;
+        }
         ImageLoader.fetchFavIcon(
                 originInfo.originSpec,
                 false,
                 new WeakReference<>(getContext()),
                 bitmap -> {
+                    // The icon can arrive after the panel has moved on.
+                    if (request != mCurrentSignMessageRequest) {
+                        return;
+                    }
                     if (bitmap != null) {
                         mIvFav.setImageBitmap(bitmap);
-                    } else if (accountAddress != null) {
-                        Utils.setTextGeneratedBlockies(
-                                mExecutor, mHandler, mIvFav, accountAddress, true);
+                    } else {
+                        setAccountBlockies(request.accountId.address);
                     }
                 });
     }
 
+    private void setAccountBlockies(@Nullable final String accountAddress) {
+        if (accountAddress != null) {
+            Utils.setTextGeneratedBlockies(mExecutor, mHandler, mIvFav, accountAddress, true);
+        }
+    }
+
     private void updateNetwork(String chainId) {
-        if (TextUtils.isEmpty(chainId)) {
+        final NetworkInfo network =
+                TextUtils.isEmpty(chainId)
+                        ? null
+                        : getWalletModel().getNetworkModel().getNetwork(chainId);
+        mNetworkName.setText(network != null ? network.chainName : "");
+        final String logo = network != null ? Utils.getNetworkIconName(network) : null;
+        if (TextUtils.isEmpty(logo)) {
+            // Remove the previous request's network icon.
+            mIvFavNetworkContainer.setVisibility(View.GONE);
             return;
         }
-        NetworkInfo network = getWalletModel().getNetworkModel().getNetwork(chainId);
-        if (network == null) return;
         String tokensPath = BlockchainRegistryFactory.getInstance().getTokensIconsLocation();
-        String logo = Utils.getNetworkIconName(network);
-        if (TextUtils.isEmpty(logo)) return;
         Utils.setBitmapResource(
                 mExecutor,
                 mHandler,
@@ -270,8 +300,7 @@ public class SiweMessageFragment extends WalletBottomSheetDialogFragment {
                 mIvFavNetwork,
                 null,
                 true);
-        AndroidUtils.show(mIvFavNetworkContainer);
-        mNetworkName.setText(network.chainName);
+        mIvFavNetworkContainer.setVisibility(View.VISIBLE);
     }
 
     private void showSiweDetails() {

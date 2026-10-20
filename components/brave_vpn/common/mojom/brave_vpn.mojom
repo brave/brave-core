@@ -36,6 +36,12 @@ interface ServiceObserver {
   OnSmartProxyRoutingStateChanged(bool enabled);
 
   OnPurchasedStateChanged(PurchasedState state, string? description);
+
+  // V2-specific: fired on every agent connection or launch failure, including
+  // repeated ones. Lets the UI finish a pending agent reconnection even when
+  // the connection state doesn't change.
+  [EnableIfNot=is_android]
+  OnAgentFailure();
 };
 
 // Browser-side handler for vpn service things
@@ -78,15 +84,15 @@ interface ServiceHandler {
   [EnableIfNot=is_android]
   ResetConnectionState();
 
-  // on demand and automatic reconnect both have same meaning.
-  // When on demand is enabled, vpn is connected(automatically) at anytime when network request is made.
+  // When auto-reconnect is enabled, the VPN is automatically re-established
+  // when the connection drops or the network changes.
   [EnableIfNot=is_android]
-  EnableOnDemand(bool enable);
+  EnableAutoReconnect(bool enable);
 
-  // true to |available| when on demand feature is supported.
-  // |enabled| is only valid when |available| is true.
+  // |available| is true when auto-reconnect is supported on this platform
+  // and version. |enabled| is only valid when |available| is true.
   [EnableIfNot=is_android]
-  GetOnDemandState() => (bool available, bool enabled);
+  GetAutoReconnectState() => (bool available, bool enabled);
 
   [EnableIf=is_android]
   GetPurchaseToken() => (string token);
@@ -105,6 +111,12 @@ interface ServiceHandler {
   // |allowed|: LAN traffic is allowed.
   [EnableIfNot=is_android]
   GetAllowLanTraffic() => (bool available, bool allowed);
+
+  // V2-specific: drops the current agent connection and reconnects. A stable
+  // session is reported as a connection state change to DISCONNECTED, a failure
+  // through observer's OnAgentFailure. No-op in V1.
+  [EnableIfNot=is_android]
+  ReconnectToAgent();
 };
 
 // WebUI-side handler for requests from the browser.

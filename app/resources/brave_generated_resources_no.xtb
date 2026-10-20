@@ -3,18 +3,14 @@
 <translationbundle lang="no">
 <translation id="1751249301761991853">Personlig</translation>
 <translation id="3333887201479867589">Brave-belønninger</translation>
-<translation id="7561196759112975576">Alltid</translation>
-<translation id="7961015016161918242">Aldri</translation>
 <translation id="8507663778530179003">Vis Alle bokmerker-knapp</translation>
 <translation id="9018648632047670921">Vis Alle bokmerker-knapp</translation>
 <translation id="7630214457764713113">Kopier ren link</translation>
 <translation id="7973394300052703468">Nytt &amp;privat vindu</translation>
 <translation id="4615489450165434530">Rapporter et nettsted som ikke fungerer</translation>
 <translation id="8097438084542431276">Kopier ren link</translation>
-<translation id="4678672101289648246">Bare på Ny fane-siden</translation>
 <translation id="6516243500644829484">Ny &amp;privat vindu</translation>
 <translation id="1209739344687072997">Rapporter et nettsted som ikke fungerer</translation>
-<translation id="8294286161128352783">Bare på ny fane-siden</translation>
 <translation id="6406506848690869874">Synkroniser</translation>
 <translation id="1544192797660353713">Lommebok</translation>
 <translation id="2361906291514218784">Leo AI</translation>
@@ -195,7 +191,9 @@ Eller endre dette senere på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="5977931179408079967">Posisjoner</translation>
 <translation id="3790384768741064842">Flytt til høyre</translation>
 <translation id="7444424316576061724">Flytt til venstre</translation>
+<translation id="7561196759112975576">Alltid</translation>
 <translation id="7060352228894039151">Når musemarkøren beveges over</translation>
+<translation id="7961015016161918242">Aldri</translation>
 <translation id="8981254605840444865">Vis innstillinger</translation>
 <translation id="59174027418879706">Aktivert</translation>
 <translation id="4176463684765177261">Deaktivert</translation>
@@ -221,6 +219,7 @@ Eller endre dette senere på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="4515057635283480525">Internet Archive lagrer tidligere versjoner av mange nettsider. Vil du lete etter denne siden i arkivet?</translation>
 <translation id="8252977752585110703">Beklager, vi sjekket Internet Archive, og det har ingen arkivert versjon av denne siden.</translation>
 <translation id="8748778103033196270">Se i arkivet</translation>
+<translation id="7369915833843501413">Ser i arkivet</translation>
 <translation id="191143826155037518">Brave gjøres tilgjengelig for deg under <ph name="BEGIN_LINK_MPL"/>Mozilla Public License 2.0<ph name="END_LINK_MPL"/> (MPL) og inneholder <ph name="BEGIN_LINK_OSS"/>programvare med åpen kildekode<ph name="END_LINK_OSS"/> under en rekke andre lisenser.
         Du kan lese <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>hvordan du laster ned <ph name="END_LINK_BUILD_INSTRUCTIONS"/> den spesifikke <ph name="BEGIN_LINK_SOURCE_CODE"/>kildekoden som ble brukt til å lage dette eksemplaret<ph name="END_LINK_SOURCE_CODE"/>, og bygge den selv.</translation>
 <translation id="4474155171896946103">Bokmerk alle fanene</translation>
@@ -371,7 +370,7 @@ Eller endre dette senere på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="7985042437720138349">Denne funksjonen sender data om de åpne fanene dine til Leo, som er Braves KI-drevne assistent.</translation>
 <translation id="6165508094623778733">Finn ut mer</translation>
 <translation id="7557539689487606886">Oppgrader til Premium</translation>
-<translation id="1035309871698658326">Når det er åpent, sendes navnene og adressene til de ikke-private fanene dine automatisk til Leo, slik at Leo kan sortere dem.</translation>
+<translation id="7103144720752576727">Når denne åpnes, sendes titlene og opprinnelsen til alle ikke-private faner automatisk til Leo for å klassifisere dem. Hvis du også slår på sending av sideinnhold, sendes korte utdrag av teksten i hver fane også.</translation>
 <translation id="3435896845095436175">Slå på</translation>
 <translation id="9031526219709160683">Brave kan hjelpe deg med å optimalisere personverninnstillingene for dette nettstedet. Vil du gjennomgå Brave sine forslag?</translation>
 <translation id="5739953050957336013">Gjennomgå forslag</translation>
@@ -386,8 +385,6 @@ Eller endre dette senere på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="8570228839666486945">AI på enheten</translation>
 <translation id="7447041379556102185">Talegjenkjenning på enheten</translation>
 <translation id="3456536577668402695">Søkene dine og sideinnhold behandles på denne enheten. Ingenting sendes til Brave eller sees av menneskelige korrekturlesere.</translation>
-<translation id="4751537843966994505">Semantisk historikksøk</translation>
-<translation id="6175973371938222040">Indekser sidene du besøker lokalt slik at du kan søke i historikken din etter betydning. All behandling forblir på denne enheten.</translation>
 <translation id="9156965752763025780">Endringene dine trer i kraft neste gang du starter Brave.</translation>
 <translation id="7179921470347911571">Start på nytt nå</translation>
 <translation id="1426410128494586442">Ja</translation>
@@ -425,6 +422,7 @@ Eller endre dette senere på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="4328541188421002379">Gi beholderen et navn, f. eks. «jobb» eller «privat»</translation>
 <translation id="4976989127264491396">Feil: <ph name="ERROR_MESSAGE"/></translation>
 <translation id="5436069931267876389">Beholderen ble ikke funnet</translation>
+<translation id="5831840958001766835">Endre rekkefølge på elementet. Bruk piltastene for å flytte.</translation>
 <translation id="6055154402239241620">Trafikkontroll</translation>
 <translation id="8134521925475508805">Konfigurer bestemte nettsteder til automatisk å åpnes i en bestemt kontekst, slik at du skiller mellom nettleserøktene dine. <ph name="BEGIN_LINK"/>Finn ut mer<ph name="END_LINK"/></translation>
 <translation id="6944848312867106540">Aktiver trafikkontroll</translation>
@@ -477,10 +475,6 @@ Eller endre dette senere på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="7310387888625228830">Leo KI-assistent</translation>
 <translation id="5222974844674487962">Vis Brave News-knappen</translation>
 <translation id="2085436423511121572">Vis Leo AI-knapp</translation>
-<translation id="6156323911414505561">Vis bokmerkeraden</translation>
-<translation id="4054323497808446566">Bokmerkefeltet er synlig på alle sider</translation>
-<translation id="8693858092251192712">Bokmerker-fanen skjules på alle sider, unntatt ny fane-siden</translation>
-<translation id="7158817046543187970">Bokmerkefeltet skjules på alle sider</translation>
 <translation id="3416468988018290825">Vis alltid fullstendige nettadresser</translation>
 <translation id="5529693968082667490">Vis knapp for å søke i faner</translation>
 <translation id="1013121820689882118">Hurtigleser</translation>
@@ -612,6 +606,8 @@ Eller endre dette senere på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="5825943197137337319">Kun standard offentlig grensesnitt</translation>
 <translation id="1689062823386843231">Deaktiver ikke-proxied UDP</translation>
 <translation id="3540231253392253941">Bruk Google-tjenester til pushmeldinger</translation>
+<translation id="2224032129673914306">Semantisk historikksøk</translation>
+<translation id="6045998903985162478">Indekser sider du besøker, slik at du enkelt kan finne dem i historikken, i åpne faner og i Leo.</translation>
 <translation id="5813105074916486721">Lokal lagring av historikk</translation>
 <translation id="5671611745062206644">Hvor lenge Brave lagrer nettleserhistorikken din lokalt</translation>
 <translation id="7184510058087008090">1 dag</translation>
@@ -876,6 +872,7 @@ Hvis du bestemmer deg for at du vil begynne å bruke Sync igjen, må du opprette
 <translation id="2618193846561624884">Vil du oppdatere det eksisterende nettverket?</translation>
 <translation id="1643029991199044105">Bla gjennom de sist brukte fanene med Ctrl-Tab</translation>
 <translation id="2775956301559569472">Vis Wayback Machine-beskjed på 404-sider</translation>
+<translation id="8485716275262929774">Last automatisk lagrede versjoner fra Wayback Machine på 404-sider</translation>
 <translation id="3095201688102519917">Advar meg før vinduer med flere faner lukkes</translation>
 <translation id="7120553802660696133">Lukk vinduet når siste fane lukkes</translation>
 <translation id="3394171693948989253">Vis påminnelse i full skjerm for å trykke Esc ved avslutning</translation>
@@ -885,6 +882,8 @@ Hvis du bestemmer deg for at du vil begynne å bruke Sync igjen, må du opprette
 <translation id="1529674267267221673">Leo vises i kontekstmenyen når du høyreklikker på et nettsted. Dette sender kontekst fra den gjeldende nettsiden til Leo.</translation>
 <translation id="5226020406479918122">Fanefokus-modus</translation>
 <translation id="3705539672403311123">Aktiver fanesortering på søkesiden. Når den er åpen, sendes navnene og adressene til de ikke-private fanene dine automatisk til Leo, slik at Leo kan sortere dem. <ph name="BEGIN_LINK"/>Les mer<ph name="END_LINK"/>.</translation>
+<translation id="2002238795517052616">Send sideinnhold for fanefokus</translation>
+<translation id="2276823422122514441">Send også korte utdrag av teksten i hver fane, slik at fanene grupperes etter hva en side handler om i stedet for tittelen. Utdragene sendes til Leo, eller til din egen modell hvis du valgte en for fanefokus. Dette krever <ph name="BEGIN_LINK"/><ph name="SEMANTIC_HISTORY_SEARCH"/><ph name="END_LINK"/>, som bygger utdragene på enheten din.</translation>
 <translation id="9049433973274198706">Standardmodell for tab-fokus</translation>
 <translation id="2161546758719933059">Modellen som brukes til å organisere fanene dine i Fanefokus-modus. <ph name="BEGIN_LINK"/>Finn ut mer<ph name="END_LINK"/></translation>
 <translation id="8172263161008556851">Vis foreslåtte spørsmål i samtalen</translation>
@@ -967,9 +966,6 @@ Leo AI i fremtiden. Samtaleloggen, tilpasningene og minnene dine blir også slet
 <translation id="1838374766361614909">Fjern søk</translation>
 <translation id="5126255551970171328">Søk etter et minne</translation>
 <translation id="7402116145895962069">Synkroniser dine lokale Ollama-modeller</translation>
-<translation id="5985516785067818307">Spørreundersøkelser</translation>
-<translation id="8347743943525229984">Tillat undersøkelser fra Brave</translation>
-<translation id="3204080538332044581">Lar Brave vise linker til private spørreundersøkelser i nye faner. Undersøkelsene hjelper oss med å utvikle funksjoner og måle effekten av annonsene i nettleseren. <ph name="BEGIN_LINK"/>Les mer<ph name="END_LINK"/>.</translation>
 <translation id="349846214503465941">Aktiver spillelisten</translation>
 <translation id="7903608716704052878">Legg automatisk til filer for offlinetilgang</translation>
 <translation id="384666453982355633">Dette alternativet bufrer automatisk mediefiler, slik at du kan spille dem av uten å være koblet til internett</translation>

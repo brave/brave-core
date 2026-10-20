@@ -7,12 +7,15 @@
 
 namespace sidebar {
 
-// static
-SidebarItem SidebarItem::Create(const std::u16string& title,
-                                Type type,
-                                BuiltInItemType built_in_item_type,
-                                PanelType panel_type) {
+namespace {
+
+SidebarItem MakeItem(const GURL& url,
+                     const std::u16string& title,
+                     SidebarItem::Type type,
+                     SidebarItem::BuiltInItemType built_in_item_type,
+                     SidebarItem::PanelType panel_type) {
   SidebarItem item;
+  item.url = url;
   item.title = title;
   item.type = type;
   item.built_in_item_type = built_in_item_type;
@@ -20,15 +23,29 @@ SidebarItem SidebarItem::Create(const std::u16string& title,
   return item;
 }
 
+}  // namespace
+
 // static
-SidebarItem SidebarItem::Create(const GURL& url,
-                                const std::u16string& title,
-                                Type type,
-                                BuiltInItemType built_in_item_type,
-                                PanelType panel_type) {
-  SidebarItem item = Create(title, type, built_in_item_type, panel_type);
-  item.url = url;
-  return item;
+SidebarItem SidebarItem::CreateBuiltInItem(BuiltInItemType built_in_item_type,
+                                           const std::u16string& title,
+                                           PanelType panel_type,
+                                           const GURL& url) {
+  return MakeItem(url, title, Type::kTypeBuiltIn, built_in_item_type,
+                  panel_type);
+}
+
+// static
+SidebarItem SidebarItem::CreateWebPanelItem(const GURL& url,
+                                            const std::u16string& title) {
+  return MakeItem(url, title, Type::kTypeWeb, BuiltInItemType::kNone,
+                  PanelType::kWebPanel);
+}
+
+// static
+SidebarItem SidebarItem::CreateWebTabItem(const GURL& url,
+                                          const std::u16string& title) {
+  return MakeItem(url, title, Type::kTypeWeb, BuiltInItemType::kNone,
+                  PanelType::kNone);
 }
 
 SidebarItem::SidebarItem() = default;

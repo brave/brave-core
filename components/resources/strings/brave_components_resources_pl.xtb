@@ -1889,6 +1889,18 @@
 <translation id="2737084171727561244">Przejdź do portfela</translation>
 <translation id="3499452861061048987">Dodaj token</translation>
 <translation id="5046066249040287308">Usługi portfela Brave</translation>
+<translation id="8767749833522980474">Krypto</translation>
+<translation id="4509084261025090951">Odbierz swoją kartę</translation>
+<translation id="3624463584770657372">Zweryfikuj swoją tożsamość, aby zobaczyć numery karty i zacząć wydawać środki.</translation>
+<translation id="2508337767012636987">Kliknij, aby zweryfikować</translation>
+<translation id="703964541421486259">Ukryj salda</translation>
+<translation id="302114796458112924">Pokaż salda</translation>
+<translation id="9083210401924577263">Karta Nagród Brave</translation>
+<translation id="2433507940547922241">Wygląd</translation>
+<translation id="3435738964857648380">Bezpieczeństwo</translation>
+<translation id="6700561332544287722">Wymagaj odblokowania następnym razem</translation>
+<translation id="5605360570977617291">Ukryć kartę <ph name="CARD_NAME"/> z ekranu głównego?</translation>
+<translation id="2721464457853369512">Twoje saldo <ph name="CARD_NAME"/> pozostaje niezmienione. Spowoduje to jedynie ukrycie karty z ekranu głównego. Możesz ją ponownie wyświetlić w dowolnym momencie w Ustawieniach, w sekcji Portfel.</translation>
 <translation id="3155170474926428993">Oprogramowanie Tor</translation>
 <translation id="3745016858329272300">Ogólne informacje</translation>
 <translation id="4045404575593562245">Wydarzenia kontrolne sieci Tor</translation>
@@ -1930,7 +1942,6 @@
 <translation id="6261915643960475695">Biznes</translation>
 <translation id="8265589281845759879">Samochody</translation>
 <translation id="7726519849288907308">Celebryci</translation>
-<translation id="8767749833522980474">Krypto</translation>
 <translation id="7577010593836079522">Kultura</translation>
 <translation id="6807791860691150411">Edukacja</translation>
 <translation id="3706423975342040244">Rozrywka</translation>
@@ -2109,9 +2120,6 @@
 <translation id="3067105725259639716">Konfiguruj Aktualności Brave</translation>
 <translation id="6286510487460330478">Konfiguruj skróty</translation>
 <translation id="9214819486716388964">Pokaż Brave Talk</translation>
-<translation id="5950760360751948276">Zawsze pokazuj pasek zakładek</translation>
-<translation id="2960757369920422313">Pokaż pasek zakładek na stronie w nowym oknie</translation>
-<translation id="522953399371747698">Ukryj pasek zakładek</translation>
 <translation id="9079813619990532635">Eksportuj wszystkie zakładki</translation>
 <translation id="134184943774258988">Włącz widoczność przycisku zakładek</translation>
 <translation id="2158862020143233462">Włącz Tarczę</translation>
@@ -2226,6 +2234,7 @@
 <translation id="5820497878628354073">Kod statusu: <ph name="STATUS_CODE"/>, wewnętrzny kod statusu: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">Osiągnięto limit częstości w wersji premium. Spróbuj ponownie za kilka godzin.</translation>
 <translation id="6873128487002733717">Osiągnięto limit Premium dla tego modelu. Wybierz inny model lub spróbuj ponownie później.</translation>
+<translation id="2688661132468689309">Osiągnięto limit Premium dla tego modelu. Zresetuje się za <ph name="RESET_DURATION"/> (o <ph name="RESET_TIME"/>). Wybierz inny model lub spróbuj ponownie wtedy.</translation>
 <translation id="3683964919745779766">Osiągnięto limit zapytań dla tego modelu lub skończyły się kredyty. Spróbuj ponownie później.</translation>
 <translation id="7692501701960747469">Klucz API skonfigurowany dla tego modelu jest nieprawidłowy. Sprawdź konfigurację i spróbuj ponownie.</translation>
 <translation id="7905602379229309187">Punkt końcowy jest obecnie przeciążony. Spróbuj ponownie później.</translation>
@@ -2234,12 +2243,12 @@
 <translation id="3852808100039989429">Cześć, jestem Leo. Jestem asystentem AI firmy Brave. Opieram się na modelu Qwen VL 30B opracowanym przez firmę Alibaba Cloud z myślą o wydajności i zastosowaniu w wielu różnych przypadkach. Qwen jest hostowany przez Brave za pośrednictwem naszej własnej, bezpiecznej infrastruktury.<ph name="LINK_BEFORE"/>Dowiedz się więcej<ph name="LINK_AFTER"/></translation>
 <translation id="8659225822055186905">Cześć, jestem Leo. Jestem asystentem AI firmy Brave. Opieram się na modelu GLM-5.3 Flash opracowanym przez firmę Zhipu AI z myślą o wydajności i zastosowaniu w wielu różnych przypadkach. GLM-5.3 Flash jest hostowany przez NEAR na podstawie ich własnej, zweryfikowanej infrastruktury prywatności.<ph name="LINK_BEFORE"/>Dowiedz się więcej<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">Cześć, jestem Leo. Jestem asystentem AI przeglądarki Brave. Działam dzięki modelowi Claude Instant, opracowanemu przez firmę Anthropic do prowadzenia rozmów i przetwarzania tekstu. Claude Instant działa na infrastrukturze Brave i jest przez nas hostowany.<ph name="LINK_BEFORE"/>Dowiedz się więcej<ph name="LINK_AFTER"/></translation>
-<translation id="3789772321824682783">Cześć, jestem Leo. Jestem asystentem AI firmy Brave. Opieram się na modelu Claude Haiku opracowanym przez firmę Anthropic do obsługi zadań konwersacyjnych i przetwarzania tekstu. Claude Haiku jest hostowany przez Brave za pośrednictwem naszej własnej, bezpiecznej infrastruktury.<ph name="LINK_BEFORE"/>Dowiedz się więcej<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Cześć, jestem Leo. Jestem asystentem AI firmy Brave. Opieram się na modelu Claude Sonnet opracowanym przez firmę Anthropic do obsługi zadań konwersacyjnych i przetwarzania tekstu. Claude Sonnet jest hostowany przez Brave za pośrednictwem naszej własnej, bezpiecznej infrastruktury.<ph name="LINK_BEFORE"/>Dowiedz się więcej<ph name="LINK_AFTER"/></translation>
-<translation id="3399141352144059821">Cześć, jestem Leo. Jestem asystentem AI firmy Brave. Opieram się na modelu Grok 4.3 opracowanym przez firmę xAI z myślą o wydajności i zastosowaniu w wielu różnych przypadkach. Grok 4.3 jest hostowany przez Brave za pośrednictwem naszej własnej, bezpiecznej infrastruktury.<ph name="LINK_BEFORE"/>Dowiedz się więcej<ph name="LINK_AFTER"/></translation>
-<translation id="8868813509973985458">Cześć, jestem Leo. Jestem asystentem AI firmy Brave. Opieram się na modelu GPT 5.4 opracowanym przez firmę OpenAI z myślą o wydajności i zastosowaniu w wielu różnych przypadkach. GPT 5.4 jest hostowany przez Brave za pośrednictwem naszej własnej, bezpiecznej infrastruktury.<ph name="LINK_BEFORE"/>Dowiedz się więcej<ph name="LINK_AFTER"/></translation>
+<translation id="6676306995311143470">Cześć, jestem Leo. Jestem asystentem AI firmy Brave. Opieram się na modelu Grok 4.6, czołowym modelu rozumowania firmy xAI w Amazon Bedrock Mantle. Grok 4.6 jest udostępniany za pośrednictwem bezpiecznej infrastruktury AWS firmy Brave.<ph name="LINK_BEFORE"/>Dowiedz się więcej<ph name="LINK_AFTER"/></translation>
+<translation id="2394656730986208060">Cześć, jestem Leo. Jestem asystentem AI firmy Brave. Opieram się na modelu GPT 5.6 Luna, szybkim modelu o niskich opóźnieniach firmy OpenAI w Amazon Bedrock Mantle. GPT 5.6 Luna jest udostępniany za pośrednictwem bezpiecznej infrastruktury AWS firmy Brave.<ph name="LINK_BEFORE"/>Dowiedz się więcej<ph name="LINK_AFTER"/></translation>
+<translation id="5278969721580944810">Cześć, jestem Leo. Jestem asystentem AI firmy Brave. Opieram się na modelu GPT 5.6 Terra, zrównoważonym modelu produkcyjnym firmy OpenAI w Amazon Bedrock Mantle. GPT 5.6 Terra jest udostępniany za pośrednictwem bezpiecznej infrastruktury AWS firmy Brave.<ph name="LINK_BEFORE"/>Dowiedz się więcej<ph name="LINK_AFTER"/></translation>
 <translation id="5037359072717016032">Cześć, jestem Leo. Jestem asystentem AI firmy Brave. Opieram się na modelu Mistral Large opracowanym przez firmę Mistral z myślą o wydajności i zastosowaniu w wielu różnych przypadkach. Mistral Large jest hostowany przez Brave za pośrednictwem naszej własnej, bezpiecznej infrastruktury.<ph name="LINK_BEFORE"/>Dowiedz się więcej<ph name="LINK_AFTER"/></translation>
-<translation id="4026902371301997261">Cześć, jestem Leo. Jestem asystentem AI firmy Brave. Opieram się na modelu Qwen 3 235B opracowanym przez firmę Alibaba Cloud z myślą o wydajności i zastosowaniu w wielu różnych przypadkach. Qwen 3 235B jest hostowany przez Brave za pośrednictwem naszej własnej, bezpiecznej infrastruktury.<ph name="LINK_BEFORE"/>Dowiedz się więcej<ph name="LINK_AFTER"/></translation>
+<translation id="5475035333915581972">Cześć, jestem Leo. Jestem asystentem AI firmy Brave. Opieram się na modelu Qwen 3.8 Flash Next opracowanym przez firmę Alibaba Cloud z myślą o wydajności i zastosowaniu w wielu różnych przypadkach. Qwen 3.8 Flash Next jest hostowany przez Brave za pośrednictwem naszej własnej, bezpiecznej infrastruktury.<ph name="LINK_BEFORE"/>Dowiedz się więcej<ph name="LINK_AFTER"/></translation>
 <translation id="8720758690351028307">Cześć, jestem Leo. Jestem asystentem Brave opartym na sztucznej inteligencji. Korzystam z modelu Deepseek V3.2 opracowanym przez firmę Deepseek z myślą o wydajności i zastosowaniu w wielu różnych przypadkach. Deepseek V3.2 jest hostowany przez Brave za pośrednictwem naszej własnej, bezpiecznej infrastruktury.<ph name="LINK_BEFORE"/>Dowiedz się więcej<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">Cześć, jestem Leo. Jestem asystentem AI firmy Brave. Opieram się na modelu Claude Opus opracowanym przez firmę Anthropic do obsługi zadań konwersacyjnych i przetwarzania tekstu. Claude Opus jest hostowany przez Brave za pośrednictwem naszej własnej, bezpiecznej infrastruktury.<ph name="LINK_BEFORE"/>Dowiedz się więcej<ph name="LINK_AFTER"/></translation>
 <translation id="7238858567393403597">Cześć, jestem Leo. Jestem asystentem AI firmy Brave. Opieram się na modelu GLM-4-7-Flash opracowanym przez firmę Zhipu AI z myślą o wydajności i zastosowaniu w wielu różnych przypadkach. GLM-4-7-Flash jest hostowany przez Brave za pośrednictwem naszej własnej, bezpiecznej infrastruktury.<ph name="LINK_BEFORE"/>Dowiedz się więcej<ph name="LINK_AFTER"/></translation>
@@ -2252,7 +2261,6 @@
 <translation id="4773408460773097271">Ollama</translation>
 <translation id="631371844654031449">Zalecane modele</translation>
 <translation id="6568044140836233369">Pokaż wszystkie modele</translation>
-<translation id="6187065185557150870">Czat</translation>
 <translation id="4685048769603134644">Otwórz całą stronę</translation>
 <translation id="2961040541145689181">Nowy czat</translation>
 <translation id="7557539689487606886">Przejdź do Premium</translation>
@@ -2376,13 +2384,13 @@
 <translation id="887511360213807449">Historia jest wyłączona</translation>
 <translation id="5380979378058584412">Aby zobaczyć poprzednie rozmowy z Leo, musisz włączyć historię rozmów.</translation>
 <translation id="3185367320601718531">Rozmowa i generowanie tekstu</translation>
-<translation id="2793458212460902934">Fast • Search • Tools</translation>
 <translation id="8506027496671575183">Search • Vision • Tools</translation>
 <translation id="3184606955650139158">Szybki • Search • Vision</translation>
 <translation id="7465032796278724624">Zweryfikowana prywatność dzięki NEAR AI TEE</translation>
 <translation id="8782867266498869301">Model jest dynamicznie zmieniany, by dopasować się do specyfiki zadania.</translation>
 <translation id="7348809809749151120">Fast • Search</translation>
 <translation id="3213834013136637671">Wyszukaj • Wizja</translation>
+<translation id="2793458212460902934">Fast • Search • Tools</translation>
 <translation id="5276681919620506371">Wyszukaj • Narzędzia</translation>
 <translation id="7434375176361995333">Podsumowania • Szybko</translation>
 <translation id="3965507912994218570">Ustawienia Leo</translation>
@@ -2945,9 +2953,7 @@ Zaraz Cię połączymy!</translation>
 <translation id="3750210661641549834">Aby utworzyć konto, zweryfikuj swój adres e-mail.</translation>
 <translation id="4351175281479794167">Wprowadź kod weryfikacyjny</translation>
 <translation id="1672793037892810340">Powinieneś otrzymać wiadomość e-mail z kodem, który należy wprowadzić.</translation>
-<translation id="4821255729182569254">Wyślij ponownie email potwierdzający</translation>
 <translation id="5837679375142747484">Nie widzisz e-maila? Sprawdź folder spam lub <ph name="BEGIN_LINK"/>wyślij ponownie<ph name="END_LINK"/>.</translation>
-<translation id="1080588816740959885">Nie widzisz e-maila? Sprawdź folder spam lub wyślij ponownie.</translation>
 <translation id="1020730839570724178">Anuluj rejestrację</translation>
 <translation id="7155125570724238786">Aby zresetować hasło, zweryfikuj swój adres e-mail.</translation>
 <translation id="816074628631172140">Twój adres e-mail został zweryfikowany. Ustaw nowe hasło, aby dokończyć resetowanie hasła.</translation>

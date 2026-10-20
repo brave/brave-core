@@ -796,14 +796,8 @@ public class BraveSettingsSearchTest {
         clearAndTypeIntoSearch("Night");
         assertSearchResult("Night Mode");
 
-        clearAndTypeIntoSearch("Only open links in current tab group");
-        assertSearchResult("Only open links in current tab group");
-
         clearAndTypeIntoSearch("Multiple windows");
         assertSearchResult("Multiple windows");
-
-        clearAndTypeIntoSearch("Show undo button when tabs are closed");
-        assertSearchResult("Show undo button when tabs are closed");
     }
 
     /**

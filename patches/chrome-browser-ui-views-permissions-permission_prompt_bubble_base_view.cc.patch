@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/permissions/permission_prompt_bubble_base_view.cc b/chrome/browser/ui/views/permissions/permission_prompt_bubble_base_view.cc
-index f827abf5fcb02c6dfa9625bd8bd67aae60b891c1..cabd9ae93b50f979fe0b08161f407362ad76f75f 100644
+index f827abf5fcb02c6dfa9625bd8bd67aae60b891c1..93b198b57403d8bb5c8d0b95ab13678988fafffc 100644
 --- a/chrome/browser/ui/views/permissions/permission_prompt_bubble_base_view.cc
 +++ b/chrome/browser/ui/views/permissions/permission_prompt_bubble_base_view.cc
 @@ -88,6 +88,7 @@ PermissionPromptBubbleBaseView::~PermissionPromptBubbleBaseView() = default;
@@ -16,7 +16,7 @@ index f827abf5fcb02c6dfa9625bd8bd67aae60b891c1..cabd9ae93b50f979fe0b08161f407362
    }
 +  }();
 +  BrowserWindowInterface* const brave_browser = GetBrowser();
-+  AddAdditionalWidevineViewControlsIfNeeded(this, delegate_->Requests());
++  AddAdditionalPermissionViewControlsIfNeeded(this, delegate_->Requests());
 +  auto* permission_lifetime_view =
 +      AddPermissionLifetimeComboboxIfNeeded(this, delegate_.get());
 +  AddFootnoteViewIfNeeded(this, delegate_->Requests(), brave_browser);

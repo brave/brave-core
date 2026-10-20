@@ -1882,6 +1882,18 @@
 <translation id="2737084171727561244">Ir ao perfil</translation>
 <translation id="3499452861061048987">Engadir token</translation>
 <translation id="5046066249040287308">Servizo de ferramentas da Carteira de Brave</translation>
+<translation id="8767749833522980474">Cripto</translation>
+<translation id="4509084261025090951">Obtén a túa tarxeta</translation>
+<translation id="3624463584770657372">Verifica a túa identidade para ver os números da tarxeta e comezar a gastar.</translation>
+<translation id="2508337767012636987">Toca para verificar</translation>
+<translation id="703964541421486259">Ocultar saldos</translation>
+<translation id="302114796458112924">Mostrar saldos</translation>
+<translation id="9083210401924577263">Tarxeta de Recompensas de Brave</translation>
+<translation id="2433507940547922241">Aparencia</translation>
+<translation id="3435738964857648380">Seguranza</translation>
+<translation id="6700561332544287722">Requirir desbloqueo a próxima vez</translation>
+<translation id="5605360570977617291">Ocultar <ph name="CARD_NAME"/> da páxina de inicio?</translation>
+<translation id="2721464457853369512">O teu saldo de <ph name="CARD_NAME"/> non muda. Isto só oculta a tarxeta da páxina de inicio. Podes mostrala de novo en calquera momento en Configuración, baixo Carteira.</translation>
 <translation id="3155170474926428993">Lanzador Tor</translation>
 <translation id="3745016858329272300">Información xeral</translation>
 <translation id="4045404575593562245">Eventos de control de Tor</translation>
@@ -1921,7 +1933,6 @@
 <translation id="6261915643960475695">Negocios</translation>
 <translation id="8265589281845759879">Coches</translation>
 <translation id="7726519849288907308">Famosos</translation>
-<translation id="8767749833522980474">Cripto</translation>
 <translation id="7577010593836079522">Cultura</translation>
 <translation id="6807791860691150411">Ensino</translation>
 <translation id="3706423975342040244">Entretemento</translation>
@@ -2100,9 +2111,6 @@
 <translation id="3067105725259639716">Configurar Noticias de Brave</translation>
 <translation id="6286510487460330478">Configurar atallos</translation>
 <translation id="9214819486716388964">Mostrar Conversas de Brave</translation>
-<translation id="5950760360751948276">Mostrar sempre a barra de marcadores</translation>
-<translation id="2960757369920422313">Mostrar a barra de marcadores no novo separador</translation>
-<translation id="522953399371747698">Ocultar barra de marcadores</translation>
 <translation id="9079813619990532635">Exportar todos os marcadores</translation>
 <translation id="134184943774258988">Alterna a visibilidade do botón Todos os marcadores</translation>
 <translation id="2158862020143233462">Activar/desactivar escudos</translation>
@@ -2217,6 +2225,7 @@
 <translation id="5820497878628354073">Código de estado: <ph name="STATUS_CODE"/>, código de estado interno: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">Alcanzaches o límite de taxa para Premium. Téntao de novo nunhas horas.</translation>
 <translation id="6873128487002733717">Alcanzaches o límite premium para este modelo. Selecciona un modelo diferente ou téntao de novo máis tarde.</translation>
+<translation id="2688661132468689309">Alcanzaches o límite premium para este modelo. Restablécese en <ph name="RESET_DURATION"/> (ás <ph name="RESET_TIME"/>). Selecciona un modelo diferente ou téntao de novo daquela.</translation>
 <translation id="3683964919745779766">Superaches o límite de uso para este modelo ou non che quedan créditos. Inténtao de novo máis tarde.</translation>
 <translation id="7692501701960747469">A clave API configurada para este modelo non é válido. Comproba a configuración e téntao de novo.</translation>
 <translation id="7905602379229309187">O punto de enlace está sobrecargado neste momento. Inténtao de novo máis tarde.</translation>
@@ -2225,12 +2234,12 @@
 <translation id="3852808100039989429">Ola, son Leo. Son un asistente de IA de Brave. Teño tecnoloxía de Qwen VL 30B, un modelo creado por Alibaba Cloud para ser eficiente e aplicable a moitos casos de uso. Qwen é hospedado por Brave a través da nosa propia infraestrutura segura.<ph name="LINK_BEFORE"/>Máis información<ph name="LINK_AFTER"/></translation>
 <translation id="8659225822055186905">Ola, son Leo. Son un asistente de IA de Brave. Teño tecnoloxía de GLM-5.3 Flash, un modelo creado por Zhipu AI para ser eficiente e aplicable a moitos casos de uso. GLM-5.3 Flash está aloxado en NEAR a través da súa infraestrutura verificablemente privada e segura.<ph name="LINK_BEFORE"/>Máis información<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">Ola, son Leo. Son un asistente de IA de Brave. Estou impulsado por Claude Instant, un modelo creado por Anthropic para tarefas conversacionais e de procesamento de texto. Claude Instant está aloxado en Brave mediante a nosa propia infraestrutura segura.<ph name="LINK_BEFORE"/>Máis información<ph name="LINK_AFTER"/></translation>
-<translation id="3789772321824682783">Ola, son Leo. Son un asistente de IA de Brave. Teño tecnoloxía de Claude Haiku, un modelo creado por Anthropic para tarefas conversacionais e de procesamento de texto. Claude Haiku está aloxado en Brave a través da nosa propia infraestrutura segura.<ph name="LINK_BEFORE"/>Máis información<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Ola, son Leo. Son un asistente de IA de Brave. Teño tecnoloxía de Claude Sonnet, un modelo creado por Anthropic para tarefas conversacionais e de procesamento de texto. Claude Sonnet está aloxado en Brave a través da nosa propia infraestrutura segura.<ph name="LINK_BEFORE"/>Máis información<ph name="LINK_AFTER"/></translation>
-<translation id="3399141352144059821">Ola, son Leo. Son un asistente de IA de Brave. Teño tecnoloxía de Grok 4.3, un modelo creado por xAI para ser eficiente e aplicable a moitos casos de uso. Grok 4.3 está aloxado en Brave a través da nosa propia infraestrutura segura.<ph name="LINK_BEFORE"/>Máis información<ph name="LINK_AFTER"/></translation>
-<translation id="8868813509973985458">Ola, son Leo. Son un asistente de IA de Brave. Teño tecnoloxía de GPT 5.4, un modelo creado por OpenAI para ser eficiente e aplicable a moitos casos de uso. GPT 5.4 está aloxado en Brave a través da nosa propia infraestrutura segura.<ph name="LINK_BEFORE"/>Máis información<ph name="LINK_AFTER"/></translation>
+<translation id="6676306995311143470">Ola, son Leo. Son un asistente de IA de Brave. Teño tecnoloxía de Grok 4.6, o modelo de razoamento de fronteira de xAI en Amazon Bedrock Mantle. Grok 4.6 ofrécese a través da infraestrutura segura de AWS de Brave.<ph name="LINK_BEFORE"/>Máis información<ph name="LINK_AFTER"/></translation>
+<translation id="2394656730986208060">Ola, son Leo. Son un asistente de IA de Brave. Teño tecnoloxía de GPT 5.6 Luna, o modelo rápido e de baixa latencia de OpenAI en Amazon Bedrock Mantle. GPT 5.6 Luna ofrécese a través da infraestrutura segura de AWS de Brave.<ph name="LINK_BEFORE"/>Máis información<ph name="LINK_AFTER"/></translation>
+<translation id="5278969721580944810">Ola, son Leo. Son un asistente de IA de Brave. Teño tecnoloxía de GPT 5.6 Terra, o modelo de produción equilibrado de OpenAI en Amazon Bedrock Mantle. GPT 5.6 Terra ofrécese a través da infraestrutura segura de AWS de Brave.<ph name="LINK_BEFORE"/>Máis información<ph name="LINK_AFTER"/></translation>
 <translation id="5037359072717016032">Ola, son Leo. Son un asistente de IA de Brave. Teño tecnoloxía de Mistral Large, un modelo creado por Mistral para ser eficiente e aplicable a moitos casos de uso. Mistral Large está aloxado en Brave a través da nosa propia infraestrutura segura.&amp;<ph name="LINK_BEFORE"/>Máis información<ph name="LINK_AFTER"/></translation>
-<translation id="4026902371301997261">Ola, son Leo. Son un asistente de IA de Brave. Teño tecnoloxía de Qwen 3 235B, un modelo creado por Alibaba Cloud para ser eficiente e aplicable a moitos casos de uso. Qwen 3 235B é hospedado por Brave a través da nosa propia infraestrutura segura.&amp;<ph name="LINK_BEFORE"/>Máis información<ph name="LINK_AFTER"/></translation>
+<translation id="5475035333915581972">Ola, son Leo. Son un asistente de IA de Brave. Teño tecnoloxía de Qwen 3.8 Flash Next, un modelo creado por Alibaba Cloud para ser eficiente e aplicable a moitos casos de uso. Qwen 3.8 Flash Next está aloxado en Brave a través da nosa propia infraestrutura segura.<ph name="LINK_BEFORE"/>Máis información<ph name="LINK_AFTER"/></translation>
 <translation id="8720758690351028307">Ola, son Leo. Son un asistente de IA de Brave. Teño tecnoloxía de Deepseek V3.2, un modelo creado por Deepseek para ser eficiente e aplicable a moitos casos de uso. Deepseek V3.2 está aloxado en Brave a través da nosa propia infraestrutura segura.&amp;<ph name="LINK_BEFORE"/>Máis información<ph name="LINK_AFTER"/></translation>
 <translation id="3369866806475938617">Ola, son Leo. Son un asistente de IA de Brave. Teño tecnoloxía de Claude Opus, un modelo creado por Anthropic para tarefas conversacionais e de procesamento de texto. Claude Opus está aloxado en Brave a través da nosa propia infraestrutura segura.&amp;<ph name="LINK_BEFORE"/>Máis información<ph name="LINK_AFTER"/></translation>
 <translation id="7238858567393403597">Ola, son Leo. Son un asistente de IA de Brave. Teño tecnoloxía de GLM-4-7-Flash, un modelo creado por Zhipu AI para ser eficiente e aplicable a moitos casos de uso. GLM-4-7-Flash está aloxado en Brave a través da nosa propia infraestrutura segura.<ph name="LINK_BEFORE"/>Máis información<ph name="LINK_AFTER"/></translation>
@@ -2243,7 +2252,6 @@
 <translation id="4773408460773097271">Ollama</translation>
 <translation id="631371844654031449">Modelos recomendados</translation>
 <translation id="6568044140836233369">Mostrar todos os modelos</translation>
-<translation id="6187065185557150870">Chat</translation>
 <translation id="4685048769603134644">Abrir páxina completa</translation>
 <translation id="2961040541145689181">Novo chat</translation>
 <translation id="7557539689487606886">Subscribirse á versión Premium</translation>
@@ -2367,13 +2375,13 @@
 <translation id="887511360213807449">O historial está desactivado</translation>
 <translation id="5380979378058584412">Para consultar antigas conversas con Leo, tes que activar o historial de conversas.</translation>
 <translation id="3185367320601718531">Xeración de conversas e texto</translation>
-<translation id="2793458212460902934">Rápido • Busca • Ferramentas</translation>
 <translation id="8506027496671575183">Busca • Visión • Ferramentas</translation>
 <translation id="3184606955650139158">Rápido • Busca • Visión</translation>
 <translation id="7465032796278724624">Verificable e privado con NEAR AI TEE</translation>
 <translation id="8782867266498869301">O modelo cambia dinámicamente para usar o mellor para a tarefa</translation>
 <translation id="7348809809749151120">Rápido • Busca</translation>
 <translation id="3213834013136637671">Busca • Visión</translation>
+<translation id="2793458212460902934">Rápido • Busca • Ferramentas</translation>
 <translation id="5276681919620506371">Busca • Ferramentas</translation>
 <translation id="7434375176361995333">Resumos • Rápido</translation>
 <translation id="3965507912994218570">Configuración de Leo</translation>
@@ -2937,9 +2945,7 @@ Non perdas a conexión!</translation>
 <translation id="3750210661641549834">Para crear a túa conta, verifica o teu enderezo de correo electrónico.</translation>
 <translation id="4351175281479794167">Introducir código de verificación</translation>
 <translation id="1672793037892810340">Deberías ter recibido un correo cun código que necesitarás introducir.</translation>
-<translation id="4821255729182569254">Reenviar correo de confirmación</translation>
 <translation id="5837679375142747484">Non ves o correo? Comproba o teu cartafol de correo non desexado ou <ph name="BEGIN_LINK"/>reenvíao<ph name="END_LINK"/>.</translation>
-<translation id="1080588816740959885">Non ves o correo? Comproba o teu cartafol de correo non desexado ou reenvíao.</translation>
 <translation id="1020730839570724178">Cancelar rexistro</translation>
 <translation id="7155125570724238786">Para restablecer o teu contrasinal, verifica o teu enderezo de correo electrónico.</translation>
 <translation id="816074628631172140">Verificouse o teu correo electrónico. Define un novo contrasinal para completar o restablecemento do contrasinal.</translation>

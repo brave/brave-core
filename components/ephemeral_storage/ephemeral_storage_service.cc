@@ -296,6 +296,12 @@ void EphemeralStorageService::RemoveObserver(
 
 #if BUILDFLAG(IS_ANDROID)
 void EphemeralStorageService::TriggerCurrentAppStateNotification() {
+  if (!delegate_) {
+    // Shutdown() may have already run (e.g. a JNI call racing with profile
+    // teardown) while this KeyedService is still alive.
+    return;
+  }
+
   // Register again, as on Android the EphemeralStorageService may remain alive
   // across multiple app states, requiring the callback to be re-registered.
   RegisterFirstWindowOpenedCallback(base::BindOnce(
@@ -310,6 +316,12 @@ void EphemeralStorageService::CleanupTLDFirstPartyStorage(
     const GURL& url,
     const content::StoragePartitionConfig& storage_partition_config,
     const bool enforced_by_user) {
+  if (!delegate_) {
+    // Shutdown() may have already run (e.g. a tab-bound caller racing with
+    // profile teardown) while this KeyedService is still alive.
+    return;
+  }
+
   if (!base::FeatureList::IsEnabled(
           brave_shields::features::kBraveShredFeature)) {
     return;
@@ -325,35 +337,6 @@ void EphemeralStorageService::CleanupTLDFirstPartyStorage(
   const auto ephemeral_domain = net::URLToEphemeralStorageDomain(url);
   delegate_->PrepareTabsForFirstPartyStorageCleanup(
       {std::move(ephemeral_domain)}, enforced_by_user);
-}
-
-bool EphemeralStorageService::IsScheduledForCleanup(
-    const std::string& ephemeral_domain) {
-  // Do nothing for OTR profile
-  if (context_->IsOffTheRecord()) {
-    return false;
-  }
-
-  for (const base::Value& area_to_cleanup :
-       prefs_->GetList(kFirstPartyStorageOriginsToCleanup)) {
-    const auto url_and_storage_partition_config =
-        GetFirstPartyStorageURLAndStoragePartitionConfig(area_to_cleanup,
-                                                         context_);
-    if (!url_and_storage_partition_config) {
-      continue;
-    }
-
-    const auto& [url, storage_partition_config] =
-        *url_and_storage_partition_config;
-    if (!url.is_valid()) {
-      continue;
-    }
-
-    if (url == GetFirstPartyStorageURL(ephemeral_domain)) {
-      return true;
-    }
-  }
-  return false;
 }
 
 void EphemeralStorageService::FirstPartyStorageAreaInUse(

@@ -13,6 +13,7 @@
 #include "base/memory/raw_ptr.h"
 #include "brave/browser/ui/views/toolbar/wallet_button_notification_source.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_button.h"
+#include "ui/base/interaction/element_identifier.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/views/controls/button/menu_button_controller.h"
 
@@ -21,12 +22,20 @@ FORWARD_DECLARE_TEST(WalletButtonButtonBrowserTest,
                      SizeIsNotEmptyWithAndWithoutBadge);
 }  // namespace brave_wallet
 
+class BrowserWindowInterface;
 class PrefService;
 
 class WalletButton : public ToolbarButton {
   METADATA_HEADER(WalletButton, ToolbarButton)
 
  public:
+  DECLARE_CLASS_ELEMENT_IDENTIFIER_VALUE(kWalletButtonElementId);
+
+  // Returns the wallet button of `browser`, or nullptr when its window has
+  // none, such as popup and app windows. The button exists, even when hidden,
+  // in normal windows.
+  static WalletButton* From(BrowserWindowInterface* browser);
+
   WalletButton(View* backup_anchor_view, Profile* profile);
   ~WalletButton() override;
 

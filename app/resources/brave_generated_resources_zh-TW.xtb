@@ -3,18 +3,14 @@
 <translationbundle lang="zh-TW">
 <translation id="1751249301761991853">個人</translation>
 <translation id="3333887201479867589">Brave Rewards</translation>
-<translation id="7561196759112975576">總是</translation>
-<translation id="7961015016161918242">一律不要</translation>
 <translation id="8507663778530179003">顯示所有書籤按鈕</translation>
 <translation id="9018648632047670921">顯示所有書籤按鈕</translation>
 <translation id="7630214457764713113">複製潔淨連結</translation>
 <translation id="7973394300052703468">新增無痕式視窗(&amp;I)</translation>
 <translation id="4615489450165434530">回報壞掉的網站</translation>
 <translation id="8097438084542431276">複製清除連結</translation>
-<translation id="4678672101289648246">僅在新索引標籤頁面</translation>
 <translation id="6516243500644829484">新增無痕式視窗(&amp;I)</translation>
 <translation id="1209739344687072997">回報壞掉的網站</translation>
-<translation id="8294286161128352783">僅在新索引標籤頁面</translation>
 <translation id="6406506848690869874">同步</translation>
 <translation id="1544192797660353713">錢包</translation>
 <translation id="2361906291514218784">Leo AI</translation>
@@ -195,7 +191,9 @@
 <translation id="5977931179408079967">位置</translation>
 <translation id="3790384768741064842">移至右側</translation>
 <translation id="7444424316576061724">移至左側</translation>
+<translation id="7561196759112975576">總是</translation>
 <translation id="7060352228894039151">滑鼠游標懸停其上時</translation>
+<translation id="7961015016161918242">一律不要</translation>
 <translation id="8981254605840444865">顯示設定</translation>
 <translation id="59174027418879706">已啟用</translation>
 <translation id="4176463684765177261">已停用</translation>
@@ -221,6 +219,7 @@
 <translation id="4515057635283480525">Internet Archive 儲存了許多網頁的過往版本。您想在 Archive 中尋找此頁面嗎？</translation>
 <translation id="8252977752585110703">抱歉，我們檢查了 Internet Archive，但沒有此頁面的封存版本。</translation>
 <translation id="8748778103033196270">在 Archive 中尋找</translation>
+<translation id="7369915833843501413">正在 Archive 中尋找</translation>
 <translation id="191143826155037518">Brave 是以 <ph name="BEGIN_LINK_MPL"/>Mozilla 公眾授權條款 2.0<ph name="END_LINK_MPL"/> (MPL) 提供，其包含了其他多種授權條款的 <ph name="BEGIN_LINK_OSS"/>開放原始碼軟體<ph name="END_LINK_OSS"/>。
         您可以閱讀 <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>如何下載並自行建構<ph name="END_LINK_BUILD_INSTRUCTIONS"/> 特定 <ph name="BEGIN_LINK_SOURCE_CODE"/>原始碼來建立此副本<ph name="END_LINK_SOURCE_CODE"/> 的說明。</translation>
 <translation id="4474155171896946103">將所有分頁加入書籤...</translation>
@@ -371,7 +370,7 @@
 <translation id="7985042437720138349">此功能會將您開啟的標籤頁資料傳送給 Brave 的 AI 驅動瀏覽器助理 Leo。</translation>
 <translation id="6165508094623778733">深入瞭解</translation>
 <translation id="7557539689487606886">訂閱 Premium</translation>
-<translation id="1035309871698658326">開啟時，這會自動將所有非無痕標籤頁的標題和來源傳送至 Leo，以便將它們分類。</translation>
+<translation id="7103144720752576727">開啟時，這會自動將所有非隱私分頁的標題和來源傳送給 Leo 進行分類。若您同時開啟傳送頁面內容，每個分頁文字的簡短摘錄也會一併傳送。</translation>
 <translation id="3435896845095436175">啟用</translation>
 <translation id="9031526219709160683">Brave 可以幫助您優化此網站的隱私設定。您想要檢閱 Brave 的建議嗎?</translation>
 <translation id="5739953050957336013">檢閱建議</translation>
@@ -386,8 +385,6 @@
 <translation id="8570228839666486945">裝置內AI</translation>
 <translation id="7447041379556102185">裝置端語音辨識</translation>
 <translation id="3456536577668402695">您的搜尋和頁面內容會在此裝置上處理。不會傳送至 Brave 或被人工審查員看到。</translation>
-<translation id="4751537843966994505">語意記錄搜尋</translation>
-<translation id="6175973371938222040">在本機為您造訪的頁面建立索引，讓您能依語意搜尋您的記錄。所有處理都保留在此裝置上。</translation>
 <translation id="9156965752763025780">你的變更將於下次重新啟動 Brave 時生效。</translation>
 <translation id="7179921470347911571">立刻重新啟動</translation>
 <translation id="1426410128494586442">是</translation>
@@ -425,6 +422,7 @@
 <translation id="4328541188421002379">為您的容器命名，例如「工作」或「個人」</translation>
 <translation id="4976989127264491396">錯誤： <ph name="ERROR_MESSAGE"/></translation>
 <translation id="5436069931267876389">找不到容器</translation>
+<translation id="5831840958001766835">重新排序項目。使用方向鍵移動。</translation>
 <translation id="6055154402239241620">流量控制</translation>
 <translation id="8134521925475508805">設定特定網站自動在特定情境中開啟，讓您的瀏覽工作階段彼此區隔。<ph name="BEGIN_LINK"/>瞭解詳情<ph name="END_LINK"/></translation>
 <translation id="6944848312867106540">啟用流量控制</translation>
@@ -477,10 +475,6 @@
 <translation id="7310387888625228830">Leo 人工智慧助理</translation>
 <translation id="5222974844674487962">顯示 Brave News 按鈕</translation>
 <translation id="2085436423511121572">顯示 Leo AI 按鈕</translation>
-<translation id="6156323911414505561">顯示書籤列</translation>
-<translation id="4054323497808446566">書籤列在所有頁面上都可見</translation>
-<translation id="8693858092251192712">書籤列在除索引標籤頁面之外的所有頁面上都為隱藏</translation>
-<translation id="7158817046543187970">書籤在所有頁面上都為隱藏</translation>
 <translation id="3416468988018290825">一律顯示完整 URL</translation>
 <translation id="5529693968082667490">顯示分頁搜尋按鈕</translation>
 <translation id="1013121820689882118">Speedreader</translation>
@@ -612,6 +606,8 @@
 <translation id="5825943197137337319">僅限預設公用介面</translation>
 <translation id="1689062823386843231">停用非代理 UDP</translation>
 <translation id="3540231253392253941">使用 Google 服務來推播訊息</translation>
+<translation id="2224032129673914306">語意式歷史記錄搜尋</translation>
+<translation id="6045998903985162478">為您造訪的頁面建立索引，讓您可以在歷史記錄、開啟的分頁和 Leo 中輕鬆找到它們。</translation>
 <translation id="5813105074916486721">本機記錄保留期限</translation>
 <translation id="5671611745062206644">Brave 在本機儲存您的瀏覽記錄的時間長度</translation>
 <translation id="7184510058087008090">1 天</translation>
@@ -877,6 +873,7 @@
 <translation id="2618193846561624884">要更新現有網路嗎？</translation>
 <translation id="1643029991199044105">使用 Ctrl-Tab 循環瀏覽最近使用的分頁</translation>
 <translation id="2775956301559569472">在 404 頁面上顯示 Wayback Machine 提示</translation>
+<translation id="8485716275262929774">在 404 頁面上自動從 Wayback Machine 載入已儲存的版本</translation>
 <translation id="3095201688102519917">關閉已開啟多個分頁的視窗前顯示警告訊息</translation>
 <translation id="7120553802660696133">關閉最後一個分頁時關閉視窗</translation>
 <translation id="3394171693948989253">顯示全螢幕提醒，按 Esc 即可結束</translation>
@@ -886,6 +883,8 @@
 <translation id="1529674267267221673">以滑鼠右鍵按一下網站，Leo 就會出現在內容選單中。這會將目前網頁的內容傳送給 Leo。</translation>
 <translation id="5226020406479918122">標籤頁焦點模式</translation>
 <translation id="3705539672403311123">在「標籤頁搜尋」頁啟用標籤頁組織。開啟後，這會自動將所有非無痕標籤頁的標題和來源傳送至 Leo 進行分類。 <ph name="BEGIN_LINK"/>了解更多<ph name="END_LINK"/></translation>
+<translation id="2002238795517052616">為分頁焦點傳送頁面內容</translation>
+<translation id="2276823422122514441">同時傳送每個分頁文字的簡短摘錄，讓分頁依據頁面的內容而非標題進行分組。摘錄會傳送給 Leo，或若您為分頁焦點選擇了自己的模型，則傳送給該模型。這需要啟用 <ph name="BEGIN_LINK"/><ph name="SEMANTIC_HISTORY_SEARCH"/><ph name="END_LINK"/>，它會在您的裝置上建立摘錄。</translation>
 <translation id="9049433973274198706">標籤頁焦點的預設模式</translation>
 <translation id="2161546758719933059">用於在分頁聚焦模式下整理您分頁的模型。<ph name="BEGIN_LINK"/>瞭解詳情<ph name="END_LINK"/></translation>
 <translation id="8172263161008556851">在對話中顯示建議的提示語</translation>
@@ -967,9 +966,6 @@
 <translation id="1838374766361614909">清除搜尋</translation>
 <translation id="5126255551970171328">搜尋記憶項目</translation>
 <translation id="7402116145895962069">同步您的 Ollama 本機模型</translation>
-<translation id="5985516785067818307">調查小組成員</translation>
-<translation id="8347743943525229984">允許 Brave 調查</translation>
-<translation id="3204080538332044581">允許 Brave 在新分頁中顯示私人調查的連結。調查有助於我們建立更好的功能，並衡量基於瀏覽器的廣告活動其有效性。 <ph name="BEGIN_LINK"/>進一步了解<ph name="END_LINK"/></translation>
 <translation id="349846214503465941">啟用播放清單</translation>
 <translation id="7903608716704052878">自動加入檔案以供離線檢視</translation>
 <translation id="384666453982355633">此選項將自動快取媒體檔，以讓您在沒有網路連線的情況下播放媒體檔。</translation>

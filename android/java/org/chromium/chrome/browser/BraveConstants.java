@@ -18,6 +18,9 @@ public final class BraveConstants {
     // used in BravseSetDefaultBrowserUtils
     public static final int DEFAULT_BROWSER_ROLE_REQUEST_CODE = 37;
 
+    // used in BraveActivity, for the DApps panels
+    public static final int DAPPS_PANEL_REQUEST_CODE = 38;
+
     public static final String BRAVE_PRODUCTION_PACKAGE_NAME = "com.brave.browser";
     public static final String BRAVE_BETA_PACKAGE_NAME = "com.brave.browser_beta";
     public static final String BRAVE_NIGHTLY_PACKAGE_NAME = "com.brave.browser_nightly";

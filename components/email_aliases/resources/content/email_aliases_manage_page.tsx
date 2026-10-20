@@ -54,11 +54,13 @@ export const SignInPage = ({
 
 export const ManagePage = ({
   aliasesUpdate,
+  aliasLimit,
   authEmail,
   emailAliasesService,
   metrics,
 }: {
   aliasesUpdate: AliasesUpdate
+  aliasLimit: number
   authEmail: string
   emailAliasesService: EmailAliasesServiceInterface
   metrics?: EmailAliasesMetricsRemote
@@ -70,6 +72,7 @@ export const ManagePage = ({
       <AliasList
         aliases={aliasesUpdate.aliases!}
         authEmail={authEmail}
+        aliasLimit={aliasLimit}
         emailAliasesService={emailAliasesService}
         metrics={metrics}
       />

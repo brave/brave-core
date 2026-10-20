@@ -9,11 +9,7 @@ import { assert } from 'chrome://resources/js/assert.js'
 import type { AnyAction } from 'redux'
 
 // types
-import {
-  BraveWallet,
-  MeldCryptoCurrency,
-  MeldFiatCurrency,
-} from '../../../constants/types'
+import { BraveWallet } from '../../../constants/types'
 import { WalletActions } from '../../actions'
 import type WalletApiProxy from '../../wallet_api_proxy'
 
@@ -504,10 +500,7 @@ export class MockedWalletApiProxy {
   meldIntegrationService: Partial<
     InstanceType<typeof BraveWallet.MeldIntegrationServiceInterface>
   > = {
-    getFiatCurrencies: async (): Promise<{
-      fiatCurrencies: MeldFiatCurrency[] | null
-      error: string[] | null
-    }> => ({
+    getFiatCurrencies: async () => ({
       fiatCurrencies: [
         {
           currencyCode: 'usd',
@@ -517,11 +510,8 @@ export class MockedWalletApiProxy {
       ],
       error: null,
     }),
-    getCryptoCurrencies: async (): Promise<{
-      fiatCurrencies: MeldCryptoCurrency[] | null
-      error: string[] | null
-    }> => ({
-      fiatCurrencies: [],
+    getCryptoCurrencies: async () => ({
+      cryptoCurrencies: [],
       error: null,
     }),
   }
@@ -543,6 +533,7 @@ export class MockedWalletApiProxy {
         ethDappSelectedAccount: selectedAccount,
         solDappSelectedAccount: mockSolanaAccount,
         adaDappSelectedAccount: mockCardanoAccount,
+        dotDappSelectedAccount: undefined,
       }
       return { allAccounts }
     },
@@ -705,29 +696,37 @@ export class MockedWalletApiProxy {
     getPrice: async (requests, vsCurrency) => {
       return {
         success: true,
-        values: requests.map((request) => ({
-          percentageChange24h: '1',
-          coin: request.coin,
-          chainId: request.chainId,
-          address: request.address || '',
-          vsCurrency: vsCurrency,
-          cacheStatus: BraveWallet.Gate3CacheStatus.kHit,
-          source: BraveWallet.AssetPriceSource.kCoingecko,
-          price: '3873.78',
-        })),
+        values: requests.map((request) => {
+          const isBat =
+            (request.address || '').toLowerCase()
+            === mockBasicAttentionToken.contractAddress.toLowerCase()
+          return {
+            percentageChange24h: '1',
+            coin: request.coin,
+            chainId: request.chainId,
+            address: request.address || '',
+            vsCurrency,
+            cacheStatus: BraveWallet.Gate3CacheStatus.kHit,
+            source: BraveWallet.AssetPriceSource.kCoingecko,
+            price: isBat ? '0.10' : '3873.78',
+          }
+        }),
       }
     },
     getPriceHistory: async (_asset, _vsAsset, _timeframe) => {
+      const isBat =
+        (_asset || '').toLowerCase()
+        === mockBasicAttentionToken.contractAddress.toLowerCase()
       return {
         success: true,
         values: [
           {
-            date: { microseconds: BigInt(0) },
-            price: '3500',
+            date: { msec: 0 },
+            price: isBat ? '0.09' : '3500',
           },
           {
-            date: { microseconds: BigInt(1) },
-            price: '3873.78',
+            date: { msec: 1 },
+            price: isBat ? '0.10' : '3873.78',
           },
         ],
       }
@@ -1333,6 +1332,7 @@ export class MockedWalletApiProxy {
             BraveWallet.CoinType.DOT,
           ],
           isCardanoDappSupportEnabled: false,
+          isPolkadotDappSupportEnabled: false,
         },
       }
     },

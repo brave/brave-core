@@ -102,8 +102,6 @@ void ChangePassword::Step3(
   auto request = MakeRequest<WithHeaders<endpoints::PasswordInit::Request>>();
   SetBearerToken(request, *verification_token);
   request.body.blinded_message = blinded_message;
-  request.body.initiating_service_name =
-      kServiceToString.at(mojom::Service::kAccounts);
   request.body.serialize_response = true;
 
   SendFlowOwnedRequest<endpoints::PasswordInit>(

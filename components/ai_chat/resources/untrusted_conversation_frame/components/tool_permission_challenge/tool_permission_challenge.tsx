@@ -147,7 +147,8 @@ export default function ToolPermissionChallenge(props: Props) {
           className={styles.headerIcon}
         />
         <span className={styles.headerText}>
-          {getLocale(S.CHAT_UI_PERMISSION_CHALLENGE_HEADER)}
+          {permissionChallenge.title
+            ?? getLocale(S.CHAT_UI_PERMISSION_CHALLENGE_HEADER)}
         </span>
       </div>
 
@@ -163,7 +164,14 @@ export default function ToolPermissionChallenge(props: Props) {
           </>
         )}
 
-        {toolPermissionImplications && <p>{toolPermissionImplications}</p>}
+        {permissionChallenge.implications ? (
+          <MarkdownRenderer
+            text={permissionChallenge.implications}
+            shouldShowTextCursor={false}
+          />
+        ) : (
+          toolPermissionImplications && <p>{toolPermissionImplications}</p>
+        )}
         {permissionChallenge.plan && (
           <p className={styles.assessment}>{permissionChallenge.plan}</p>
         )}

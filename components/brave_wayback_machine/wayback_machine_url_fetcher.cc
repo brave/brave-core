@@ -7,18 +7,14 @@
 
 #include <algorithm>
 #include <string>
-#include <utility>
 
 #include "base/functional/bind.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_wayback_machine/brave_wayback_machine_utils.h"
 #include "brave/components/brave_wayback_machine/url_constants.h"
-#include "net/base/load_flags.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
-#include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
-#include "services/network/public/mojom/fetch_api.mojom-shared.h"
 #include "url/gurl.h"
 #include "url/url_constants.h"
 
@@ -81,9 +77,7 @@ void WaybackMachineURLFetcher::Cancel() {
 
 void WaybackMachineURLFetcher::OnWaybackURLFetched(
     api_request_helper::APIRequestResult api_request_result) {
-  auto notify_not_found = [&]() {
-    client_->OnWaybackURLFetched(GURL::EmptyGURL(), base::Time());
-  };
+  auto notify_not_found = [&]() { client_->OnWaybackURLFetched(std::nullopt); };
 
   auto& value_body = api_request_result.value_body();
   if (!value_body.is_dict()) {
@@ -109,9 +103,10 @@ void WaybackMachineURLFetcher::OnWaybackURLFetched(
   }
 
   const std::string* timestamp = closest->FindString(kTimestampKey);
-  client_->OnWaybackURLFetched(
-      wayback_url,
-      timestamp ? ParseSnapshotTimestamp(*timestamp) : base::Time());
+  client_->OnWaybackURLFetched(WaybackSnapshotInfo{
+      .url = std::move(wayback_url),
+      .time = timestamp ? ParseSnapshotTimestamp(*timestamp) : base::Time(),
+  });
 }
 
 // static

@@ -7,8 +7,6 @@
 
 #include <memory>
 #include <string>
-#include <tuple>
-#include <utility>
 
 #include "base/files/scoped_temp_dir.h"
 #include "base/functional/bind.h"

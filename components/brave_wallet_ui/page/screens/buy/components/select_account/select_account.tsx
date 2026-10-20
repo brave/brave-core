@@ -36,7 +36,6 @@ import {
   ScrollableColumn,
 } from '../../../../../components/shared/style'
 import { AccountAddress, AccountName } from './select_account.style'
-import { getMeldTokensCoinType } from '../../../../../utils/meld_utils'
 
 const testnetAccountKeyringIds = [
   BraveWallet.KeyringId.kBitcoin84Testnet,
@@ -95,7 +94,7 @@ export const SelectAccount = (props: SelectAccountProps) => {
     if (selectedAsset) {
       return accounts.filter(
         (account) =>
-          account.accountId.coin === getMeldTokensCoinType(selectedAsset)
+          account.accountId.coin === selectedAsset.coin
           && !testnetAccountKeyringIds.includes(account.accountId.keyringId),
       )
     }

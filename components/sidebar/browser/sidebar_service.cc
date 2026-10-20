@@ -6,7 +6,6 @@
 #include "brave/components/sidebar/browser/sidebar_service.h"
 
 #include <algorithm>
-#include <codecvt>
 #include <iterator>
 #include <optional>
 #include <utility>
@@ -24,9 +23,7 @@
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/brave_talk/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
-#include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"
-#include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/sidebar/browser/constants.h"
 #include "brave/components/sidebar/browser/pref_names.h"
@@ -36,7 +33,6 @@
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
 #include "ui/base/l10n/l10n_util.h"
-#include "ui/base/resource/resource_bundle.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_TALK)
 #include "brave/components/brave_talk/pref_names.h"
@@ -603,17 +599,16 @@ void SidebarService::LoadSidebarItems() {
       } else {
         continue;
       }
-      auto panel_type = SidebarItem::PanelType::kNone;
-      if (item.FindBool(kSidebarItemWebPanelKey).value_or(false)) {
-        panel_type = SidebarItem::PanelType::kWebPanel;
-      }
+      const bool is_web_panel =
+          item.FindBool(kSidebarItemWebPanelKey).value_or(false);
       std::string title;
       if (const auto* value = item.FindString(kSidebarItemTitleKey)) {
         title = *value;
       }
-      items_.push_back(
-          SidebarItem::Create(GURL(url), base::UTF8ToUTF16(title), type,
-                              SidebarItem::BuiltInItemType::kNone, panel_type));
+      items_.push_back(is_web_panel ? SidebarItem::CreateWebPanelItem(
+                                          GURL(url), base::UTF8ToUTF16(title))
+                                    : SidebarItem::CreateWebTabItem(
+                                          GURL(url), base::UTF8ToUTF16(title)));
     }
   }
 
@@ -681,12 +676,10 @@ SidebarItem SidebarService::GetBuiltInItemForType(
 #if BUILDFLAG(ENABLE_BRAVE_TALK)
     case SidebarItem::BuiltInItemType::kBraveTalk:
       if (!prefs_->GetBoolean(brave_talk::prefs::kDisabledByPolicy)) {
-        return SidebarItem::Create(
-            GURL(kBraveTalkURL),
-            l10n_util::GetStringUTF16(IDS_SIDEBAR_BRAVE_TALK_ITEM_TITLE),
-            SidebarItem::Type::kTypeBuiltIn,
+        return SidebarItem::CreateBuiltInItem(
             SidebarItem::BuiltInItemType::kBraveTalk,
-            SidebarItem::PanelType::kWebPanel);
+            l10n_util::GetStringUTF16(IDS_SIDEBAR_BRAVE_TALK_ITEM_TITLE),
+            SidebarItem::PanelType::kWebPanel, GURL(kBraveTalkURL));
       }
       return SidebarItem();
 #endif  // BUILDFLAG(ENABLE_BRAVE_TALK)
@@ -698,47 +691,39 @@ SidebarItem SidebarService::GetBuiltInItemForType(
           // Keep the wallet page URL so IsURLAlreadyAddedToSidebar() /
           // HiddenDefaultSidebarItemsContains() match brave://wallet and the
           // + bubble does not offer a duplicate web-type shortcut.
-          return SidebarItem::Create(
-              GURL(kBraveUIWalletPageURL),
-              l10n_util::GetStringUTF16(IDS_SIDEBAR_WALLET_ITEM_TITLE),
-              SidebarItem::Type::kTypeBuiltIn,
+          return SidebarItem::CreateBuiltInItem(
               SidebarItem::BuiltInItemType::kWallet,
-              SidebarItem::PanelType::kSidePanel);
+              l10n_util::GetStringUTF16(IDS_SIDEBAR_WALLET_ITEM_TITLE),
+              SidebarItem::PanelType::kSidePanel, GURL(kBraveUIWalletPageURL));
         }
-        return SidebarItem::Create(
-            GURL(kBraveUIWalletPageURL),
-            l10n_util::GetStringUTF16(IDS_SIDEBAR_WALLET_ITEM_TITLE),
-            SidebarItem::Type::kTypeBuiltIn,
+        return SidebarItem::CreateBuiltInItem(
             SidebarItem::BuiltInItemType::kWallet,
-            SidebarItem::PanelType::kNone);
+            l10n_util::GetStringUTF16(IDS_SIDEBAR_WALLET_ITEM_TITLE),
+            SidebarItem::PanelType::kNone, GURL(kBraveUIWalletPageURL));
       }
       return SidebarItem();
     }
 #endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
     case SidebarItem::BuiltInItemType::kBookmarks:
-      return SidebarItem::Create(
-          l10n_util::GetStringUTF16(IDS_SIDEBAR_BOOKMARKS_ITEM_TITLE),
-          SidebarItem::Type::kTypeBuiltIn,
+      return SidebarItem::CreateBuiltInItem(
           SidebarItem::BuiltInItemType::kBookmarks,
+          l10n_util::GetStringUTF16(IDS_SIDEBAR_BOOKMARKS_ITEM_TITLE),
           SidebarItem::PanelType::kSidePanel);
     case SidebarItem::BuiltInItemType::kReadingList:
-      return SidebarItem::Create(
+      return SidebarItem::CreateBuiltInItem(
+          SidebarItem::BuiltInItemType::kReadingList,
           // TODO(petemill): Have these items created under brave/browser
           // so that we can access common strings, like IDS_READ_LATER_TITLE.
           l10n_util::GetStringUTF16(IDS_SIDEBAR_READING_LIST_ITEM_TITLE),
-          SidebarItem::Type::kTypeBuiltIn,
-          SidebarItem::BuiltInItemType::kReadingList,
           SidebarItem::PanelType::kSidePanel);
     case SidebarItem::BuiltInItemType::kHistory: {
       // TODO(sko) When should we show history item?
       constexpr bool kShowHistoryButton = false;
       if constexpr (kShowHistoryButton) {
-        return SidebarItem::Create(
-            GURL("chrome://history/"),
-            l10n_util::GetStringUTF16(IDS_SIDEBAR_HISTORY_ITEM_TITLE),
-            SidebarItem::Type::kTypeBuiltIn,
+        return SidebarItem::CreateBuiltInItem(
             SidebarItem::BuiltInItemType::kHistory,
-            SidebarItem::PanelType::kNone);
+            l10n_util::GetStringUTF16(IDS_SIDEBAR_HISTORY_ITEM_TITLE),
+            SidebarItem::PanelType::kNone, GURL("chrome://history/"));
       } else {
         return SidebarItem();
       }
@@ -746,12 +731,10 @@ SidebarItem SidebarService::GetBuiltInItemForType(
 #if BUILDFLAG(ENABLE_PLAYLIST)
     case SidebarItem::BuiltInItemType::kPlaylist: {
       if (playlist::IsPlaylistAllowed(prefs_)) {
-        return SidebarItem::Create(
-            GURL(kPlaylistURL),
-            l10n_util::GetStringUTF16(IDS_SIDEBAR_PLAYLIST_ITEM_TITLE),
-            SidebarItem::Type::kTypeBuiltIn,
+        return SidebarItem::CreateBuiltInItem(
             SidebarItem::BuiltInItemType::kPlaylist,
-            SidebarItem::PanelType::kSidePanel);
+            l10n_util::GetStringUTF16(IDS_SIDEBAR_PLAYLIST_ITEM_TITLE),
+            SidebarItem::PanelType::kSidePanel, GURL(kPlaylistURL));
       }
 
       return SidebarItem();
@@ -760,10 +743,10 @@ SidebarItem SidebarService::GetBuiltInItemForType(
 #if BUILDFLAG(ENABLE_AI_CHAT)
     case SidebarItem::BuiltInItemType::kChatUI: {
       if (ai_chat::IsAIChatEnabled(prefs_)) {
-        return SidebarItem::Create(l10n_util::GetStringUTF16(IDS_CHAT_UI_TITLE),
-                                   SidebarItem::Type::kTypeBuiltIn,
-                                   SidebarItem::BuiltInItemType::kChatUI,
-                                   SidebarItem::PanelType::kSidePanel);
+        return SidebarItem::CreateBuiltInItem(
+            SidebarItem::BuiltInItemType::kChatUI,
+            l10n_util::GetStringUTF16(IDS_CHAT_UI_TITLE),
+            SidebarItem::PanelType::kSidePanel);
       }
       return SidebarItem();
     }
@@ -775,12 +758,10 @@ SidebarItem SidebarService::GetBuiltInItemForType(
       if (base::FeatureList::IsEnabled(
               brave_news::features::kBraveNewsSidebar) &&
           prefs_->GetBoolean(brave_news::prefs::kBraveNewsOptedIn)) {
-        return SidebarItem::Create(
-            GURL(kBraveNewsURL),
-            l10n_util::GetStringUTF16(IDS_BRAVE_NEWS_TITLE),
-            SidebarItem::Type::kTypeBuiltIn,
+        return SidebarItem::CreateBuiltInItem(
             SidebarItem::BuiltInItemType::kBraveNews,
-            SidebarItem::PanelType::kSidePanel);
+            l10n_util::GetStringUTF16(IDS_BRAVE_NEWS_TITLE),
+            SidebarItem::PanelType::kSidePanel, GURL(kBraveNewsURL));
       }
       return SidebarItem();
     }

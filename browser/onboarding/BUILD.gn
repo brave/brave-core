@@ -3,17 +3,83 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//build/config/ui.gni")
+
+assert(toolkit_views)
+
+source_set("onboarding") {
+  sources = [
+    "onboarding_tab_helper.h",
+    "pref_names.h",
+  ]
+  public_deps = [
+    "//base",
+    "//chrome/browser/ui/tabs:tabs_public",
+  ]
+}
+
+source_set("impl") {
+  visibility = [ "//brave/browser:core" ]
+
+  sources = [ "onboarding_tab_helper.cc" ]
+
+  deps = [
+    ":onboarding",
+    "//base",
+    "//brave/browser:browser_process",
+    "//brave/browser/brave_shields",
+    "//brave/browser/ui:brave_browser_window_header",
+    "//brave/components/resources:strings",
+    "//chrome/browser:browser_process",
+    "//chrome/browser/first_run",
+    "//chrome/browser/ui/browser_window",
+    "//components/permissions",
+    "//components/prefs",
+    "//components/tabs:public",
+    "//content/public/browser",
+    "//ui/base",
+  ]
+}
+
 source_set("unit_tests") {
   testonly = true
 
   sources = [ "onboarding_unittest.cc" ]
 
   deps = [
+    ":onboarding",
     "//base",
     "//brave/browser",
     "//chrome/browser",
     "//chrome/test:test_support",
+    "//components/prefs",
+    "//components/tabs:test_support",
     "//content/test:test_support",
+    "//testing/gmock",
     "//testing/gtest",
+  ]
+}
+
+source_set("browser_tests") {
+  testonly = true
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+
+  sources = [ "onboarding_browsertest.cc" ]
+
+  deps = [
+    ":onboarding",
+    "//base",
+    "//brave/browser/brave_shields",
+    "//brave/components/brave_shields/core/common",
+    "//chrome/browser:browser_process",
+    "//chrome/browser/ui/browser_window",
+    "//chrome/test:test_support",
+    "//chrome/test:test_support_ui",
+    "//components/prefs",
+    "//content/public/browser",
+    "//content/test:test_support",
+    "//net:test_support",
+    "//ui/base",
+    "//url",
   ]
 }

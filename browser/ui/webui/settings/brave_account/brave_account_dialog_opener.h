@@ -6,8 +6,6 @@
 #ifndef BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_ACCOUNT_BRAVE_ACCOUNT_DIALOG_OPENER_H_
 #define BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_ACCOUNT_BRAVE_ACCOUNT_DIALOG_OPENER_H_
 
-#include <string>
-
 #include "base/memory/raw_ref.h"
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
 
@@ -28,8 +26,7 @@ class BraveAccountDialogOpener : public mojom::DialogOpener {
 
  private:
   // brave_account::mojom::DialogOpener:
-  void OpenDialog(const std::string& initiating_service_name,
-                  mojom::DialogMode dialog_mode) override;
+  void OpenDialog(mojom::DialogMode dialog_mode) override;
 
   const raw_ref<content::WebUI> web_ui_;
 };

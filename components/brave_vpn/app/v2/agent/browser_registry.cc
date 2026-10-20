@@ -71,8 +71,10 @@ bool IsCapturedPeerExpired(const base::ElapsedTimer& time_since_capture) {
 }  // namespace
 
 BrowserRegistry::BrowserRegistry(
+    ConnectionManager& connection_manager,
     mojo::NamedPlatformChannel::ServerName server_name)
-    : host_server_(std::make_unique<named_mojo_ipc_server::NamedMojoIpcServer<
+    : connection_manager_(connection_manager),
+      host_server_(std::make_unique<named_mojo_ipc_server::NamedMojoIpcServer<
                        brave_vpn::mojom::BrowserHostProvider>>(
           GetEndpointOptions(std::move(server_name)),
           base::BindRepeating(&BrowserRegistry::OnBrowserConnecting,
@@ -81,8 +83,10 @@ BrowserRegistry::BrowserRegistry(
 }
 
 BrowserRegistry::BrowserRegistry(
+    ConnectionManager& connection_manager,
     std::unique_ptr<named_mojo_ipc_server::IpcServer> host_server)
-    : host_server_(std::move(host_server)) {
+    : connection_manager_(connection_manager),
+      host_server_(std::move(host_server)) {
   StartHostServer();
 }
 
@@ -90,8 +94,10 @@ BrowserRegistry::~BrowserRegistry() = default;
 
 // static
 std::unique_ptr<BrowserRegistry> BrowserRegistry::CreateForTesting(  // IN-TEST
+    ConnectionManager& connection_manager,
     std::unique_ptr<named_mojo_ipc_server::IpcServer> host_server) {
-  return base::WrapUnique(new BrowserRegistry(std::move(host_server)));
+  return base::WrapUnique(
+      new BrowserRegistry(connection_manager, std::move(host_server)));
 }
 
 void BrowserRegistry::StartHostServer() {
@@ -285,7 +291,7 @@ void BrowserRegistry::BindBrowserHost(
   }
 
   connection->host_session = std::make_unique<BrowserHostImpl>(
-      std::move(browser_endpoint), std::move(host),
+      *connection_manager_, std::move(browser_endpoint), std::move(host),
       base::BindOnce(&BrowserRegistry::OnHostDisconnected,
                      weak_factory_.GetWeakPtr(), receiver_id));
 

@@ -111,6 +111,12 @@ gfx::Size SidebarItemsContentsView::CalculatePreferredSize(
   return views::View::CalculatePreferredSize(available_size);
 }
 
+void SidebarItemsContentsView::AddedToWidget() {
+  View::AddedToWidget();
+
+  BuildItemViews();
+}
+
 void SidebarItemsContentsView::OnThemeChanged() {
   View::OnThemeChanged();
 
@@ -286,6 +292,20 @@ void SidebarItemsContentsView::OnItemMoved(const sidebar::SidebarItem& item,
                                            int to) {
   views::View* source_view = children()[from];
   ReorderChildView(source_view, to);
+}
+
+void SidebarItemsContentsView::BuildItemViews() {
+  CHECK(children().empty());
+
+  // Start with saved item list.
+  int index = 0;
+  for (const auto& item : sidebar_model_->GetAllSidebarItems()) {
+    AddItemView(item, index, /*user_gesture=*/false);
+    if (item.is_web_type()) {
+      sidebar_model_->FetchFavicon(item);
+    }
+    index++;
+  }
 }
 
 void SidebarItemsContentsView::AddItemView(const sidebar::SidebarItem& item,

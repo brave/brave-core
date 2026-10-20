@@ -6,7 +6,6 @@
 #include "brave/components/brave_ads/browser/ads_service_impl.h"
 
 #include <algorithm>
-#include <atomic>
 #include <memory>
 #include <optional>
 #include <utility>
@@ -21,11 +20,9 @@
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
 #include "base/functional/callback_helpers.h"
-#include "base/functional/callback_tags.h"
 #include "base/location.h"
 #include "base/logging.h"
 #include "base/metrics/field_trial_params.h"
-#include "base/metrics/histogram_base.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/numerics/safe_math.h"
 #include "base/observer_list.h"
@@ -66,7 +63,6 @@
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_types.h"
-#include "components/content_settings/core/common/content_settings_types.mojom-shared.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/history/core/browser/history_types.h"
 #include "components/history/core/browser/url_row.h"
@@ -1273,13 +1269,15 @@ void AdsServiceImpl::GetStatementOfAccounts(
 
 void AdsServiceImpl::ParseAndSaveNewTabPageAds(base::DictValue dict,
                                                ResultCallback callback) {
+  // Neither the service not being bound nor it shutting down before a reply
+  // arrives is a failure, so report `success` as `true` in both cases.
   if (!bat_ads_associated_remote_.is_bound()) {
-    return std::move(callback).Run(/*success*/ false);
+    return std::move(callback).Run(/*success=*/true);
   }
 
   bat_ads_associated_remote_->ParseAndSaveNewTabPageAds(
       std::move(dict), mojo::WrapCallbackWithDefaultInvokeIfNotRun(
-                           std::move(callback), /*success=*/false));
+                           std::move(callback), /*success=*/true));
 }
 
 void AdsServiceImpl::MaybeServeNewTabPageAd(

@@ -375,6 +375,17 @@ describe('Amount class', () => {
       },
     )
 
+    it('should keep a fixed number of decimal places', () => {
+      expect(Amount.empty().formatFixed(3)).toBe('')
+      expect(Amount.zero().formatFixed(3)).toBe('0.000')
+      expect(new Amount('1958.56').formatFixed(3)).toBe('1,958.560')
+    })
+
+    it('should mask hidden assets with a suffix symbol', () => {
+      expect(Amount.formatHiddenAsAsset('BAT')).toBe('•••• BAT')
+      expect(Amount.formatHiddenAsAsset()).toBe('••••')
+    })
+
     it('should mask hidden fiat without dropping the currency symbol', () => {
       expect(Amount.formatHiddenAsFiat('USD')).toBe('$••••')
       expect(Amount.formatHiddenAsFiat()).toBe('••••')

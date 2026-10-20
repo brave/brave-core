@@ -63,8 +63,12 @@ inline constexpr char kCaptchaHCaptchaCountHistogramName[] =
 inline constexpr char kCaptchaHCaptchaCountUserActivatedHistogramName[] =
     "Brave.CaptchaCount.hCaptcha.UserActivated";
 
-// This class provides the back-end implementation to record a captcha metrics
-// once the captcha was detected by the BraveCaptchaPageLoadMetricsObserver.
+// Keep this attibute name consistent with metric_names.h
+inline constexpr char kCaptchaCustomAttributeBotName[] = "likely_bot";
+
+// This class provides the back-end implementation to record a captcha
+// metrics once the captcha was detected by the
+// BraveCaptchaPageLoadMetricsObserver.
 class CaptchaMetrics {
  public:
   // Observes Cloudflare javascript-detection script loads. A same-origin

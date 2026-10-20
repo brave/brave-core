@@ -507,8 +507,18 @@ extension SceneDelegate {
     _ appIntent: (any UISceneAppIntent)?,
     browserViewController: BrowserViewController
   ) {
-    guard let intent = appIntent as? OpenControlWidgetShortcutIntent else { return }
-    browserViewController.handleNavigationPath(path: .widgetShortcutURL(intent.shortcut))
+    let shortcut: WidgetShortcut?
+    if appIntent is OpenAskBraveControlIntent {
+      shortcut = .askBrave
+    } else if appIntent is OpenBraveSearchControlIntent {
+      shortcut = .search
+    } else if let intent = appIntent as? OpenControlWidgetShortcutIntent {
+      shortcut = intent.shortcut
+    } else {
+      shortcut = nil
+    }
+    guard let shortcut else { return }
+    browserViewController.handleNavigationPath(path: .widgetShortcutURL(shortcut))
   }
 
   private func sendDAUPingIfNeeded() {

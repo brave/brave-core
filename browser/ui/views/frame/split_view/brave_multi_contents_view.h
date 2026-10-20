@@ -6,7 +6,6 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_FRAME_SPLIT_VIEW_BRAVE_MULTI_CONTENTS_VIEW_H_
 #define BRAVE_BROWSER_UI_VIEWS_FRAME_SPLIT_VIEW_BRAVE_MULTI_CONTENTS_VIEW_H_
 
-#include <memory>
 #include <vector>
 
 #include "base/gtest_prod_util.h"
@@ -31,11 +30,9 @@ class BraveMultiContentsView : public MultiContentsView {
  public:
   static BraveMultiContentsView* From(MultiContentsView* view);
 
-  BraveMultiContentsView(BrowserView* browser_view,
-                         std::unique_ptr<MultiContentsViewDelegate> delegate);
+  using MultiContentsView::MultiContentsView;
   ~BraveMultiContentsView() override;
 
-  void UseContentsContainerViewForWebPanel();
   void SetWebPanelContents(content::WebContents* web_contents);
   bool IsWebPanelVisible() const;
 
@@ -78,6 +75,8 @@ class BraveMultiContentsView : public MultiContentsView {
   void ExecuteOnEachVisibleContentsView(
       base::RepeatingCallback<void(ContentsWebView*)> callback) override;
 
+  // Creates the web panel's container on first use.
+  void UseContentsContainerViewForWebPanel();
   int GetWebPanelWidth() const;
 
   std::vector<ContentsContainerView*> contents_container_views_for_testing()

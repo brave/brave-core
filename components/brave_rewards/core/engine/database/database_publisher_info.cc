@@ -10,7 +10,6 @@
 
 #include "brave/components/brave_rewards/core/engine/constants.h"
 #include "brave/components/brave_rewards/core/engine/database/database_util.h"
-#include "brave/components/brave_rewards/core/engine/global_constants.h"
 #include "brave/components/brave_rewards/core/engine/publisher/publisher.h"
 #include "brave/components/brave_rewards/core/engine/rewards_engine.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"

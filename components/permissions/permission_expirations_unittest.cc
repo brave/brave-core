@@ -5,22 +5,15 @@
 
 #include "brave/components/permissions/permission_expirations.h"
 
-#include <algorithm>
 #include <memory>
 #include <string_view>
 
-#include "base/stl_util.h"
-#include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/test/bind.h"
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/permissions/permission_lifetime_pref_names.h"
-#include "components/content_settings/core/browser/content_settings_utils.h"
-#include "components/content_settings/core/browser/website_settings_info.h"
-#include "components/content_settings/core/browser/website_settings_registry.h"
-#include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_service.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "testing/gtest/include/gtest/gtest.h"

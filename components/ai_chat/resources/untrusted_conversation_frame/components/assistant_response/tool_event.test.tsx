@@ -128,7 +128,9 @@ describe('ToolEvent', () => {
             permissionChallenge: {
               assessment: 'This is an assessment',
               plan: 'This is a plan',
+              title: undefined,
               description: undefined,
+              implications: undefined,
               supportsAllowSession: false,
             },
           }}
@@ -184,7 +186,9 @@ describe('ToolEvent', () => {
               // permission challenge UI.
               assessment: undefined,
               plan: undefined,
+              title: undefined,
               description: undefined,
+              implications: undefined,
               supportsAllowSession: false,
             },
           }}
@@ -227,9 +231,11 @@ describe('ToolEvent', () => {
             permissionChallenge: {
               assessment: undefined,
               plan: undefined,
+              title: undefined,
               description:
                 'Brave AI would like to execute **get_stock_price** '
                 + 'on **https://example.com**',
+              implications: undefined,
               supportsAllowSession: true,
             },
           }}
@@ -244,6 +250,72 @@ describe('ToolEvent', () => {
     expect(screen.getByText('https://example.com')).toBeInTheDocument()
     expect(
       screen.queryByText(S.CHAT_UI_PERMISSION_CHALLENGE_SUMMARY),
+    ).not.toBeInTheDocument()
+  })
+
+  it("should show the challenge's implications instead of the tool's", () => {
+    render(
+      <MockContext>
+        <ToolEvent
+          toolUseEvent={{
+            toolName: Mojom.SEMANTIC_HISTORY_SEARCH_TOOL_NAME,
+            id: '123',
+            argumentsJson: '{}',
+            output: undefined,
+            permissionChallenge: {
+              assessment: undefined,
+              plan: undefined,
+              title: undefined,
+              description: undefined,
+              implications: 'Allowing this will send **page text**',
+              supportsAllowSession: false,
+            },
+          }}
+          isEntryActive={true}
+        />
+      </MockContext>,
+    )
+    // The summary is still the usual one.
+    expect(
+      screen.getByText(S.CHAT_UI_PERMISSION_CHALLENGE_SUMMARY, {
+        exact: false,
+      }),
+    ).toBeInTheDocument()
+    // The challenge's implications are rendered as markdown, replacing the
+    // tool's own.
+    expect(screen.getByText('page text').tagName).toBe('STRONG')
+    expect(
+      screen.queryByText(
+        S.CHAT_UI_TOOL_SEMANTIC_HISTORY_SEARCH_PERMISSION_IMPLICATIONS,
+      ),
+    ).not.toBeInTheDocument()
+  })
+
+  it('should show the challenge title instead of the default header', () => {
+    render(
+      <MockContext>
+        <ToolEvent
+          toolUseEvent={{
+            toolName: 'web_example_com_get_stock_price',
+            id: '123',
+            argumentsJson: '{}',
+            output: undefined,
+            permissionChallenge: {
+              assessment: undefined,
+              plan: undefined,
+              title: 'Tool permission request',
+              description: undefined,
+              implications: undefined,
+              supportsAllowSession: true,
+            },
+          }}
+          isEntryActive={true}
+        />
+      </MockContext>,
+    )
+    expect(screen.getByText('Tool permission request')).toBeInTheDocument()
+    expect(
+      screen.queryByText(S.CHAT_UI_PERMISSION_CHALLENGE_HEADER),
     ).not.toBeInTheDocument()
   })
 
@@ -264,7 +336,9 @@ describe('ToolEvent', () => {
             permissionChallenge: {
               assessment: undefined,
               plan: undefined,
+              title: undefined,
               description: undefined,
+              implications: undefined,
               supportsAllowSession: true,
             },
           }}
@@ -301,7 +375,9 @@ describe('ToolEvent', () => {
               // permission challenge UI.
               assessment: undefined,
               plan: undefined,
+              title: undefined,
               description: undefined,
+              implications: undefined,
               supportsAllowSession: false,
             },
           }}
@@ -337,7 +413,9 @@ describe('ToolEvent', () => {
               permissionChallenge: {
                 assessment: undefined,
                 plan: undefined,
+                title: undefined,
                 description: undefined,
+                implications: undefined,
                 supportsAllowSession: false,
               },
             }}

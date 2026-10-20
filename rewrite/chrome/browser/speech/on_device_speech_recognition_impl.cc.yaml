@@ -8,25 +8,45 @@
 blank_macros_for_ast_parsing: true
 
 substitutions:
-  - description: |
-      Brave's policy already answers `kDictation`, but upstream refuses it
-      before asking unless `kOnDeviceWebSpeechSmallExpertModel` is enabled.
-      Treating it as `kCommand` gets past that gate, so `available()` reaches
-      the policy as `kCommand`.
+  - description: |-
+      Take upstream's SODA branch for `kDictation` in `available()`.
+
+      Upstream otherwise refuses `kDictation` before it asks Brave's policy,
+      unless `kOnDeviceWebSpeechSmallExpertModel` is enabled. The SODA branch
+      also reads the same language names that `install()` records for the
+      origin. The mapping only selects the branch: Brave's policy answers
+      `kCommand` and `kDictation` alike.
     preempt_function_impl:
       function_name: OnDeviceSpeechRecognitionImpl::Available
       code: |-
-        if (quality == media::mojom::SpeechRecognitionQuality::kDictation) {
-          quality = media::mojom::SpeechRecognitionQuality::kCommand;
-        }
+        quality = ToBraveOnDeviceSpeechQuality(quality);
 
-  - description: |
-      The same rewrite, so the quality reaches the SODA branch where
-      `BraveSodaInstaller` installs Brave's own model, rather than the
-      optimization guide branch that asks for a model Brave does not ship.
+  - description: |-
+      Take upstream's SODA branch for `kDictation` in `install()`.
+
+      The SODA branch is where `BraveSodaInstaller` installs Brave's model.
+      Upstream otherwise uses the optimization guide branch, which asks for a
+      model Brave does not ship. The mapping only selects the branch: Brave's
+      model is the same for `kCommand` and `kDictation`.
     preempt_function_impl:
       function_name: OnDeviceSpeechRecognitionImpl::Install
       code: |-
-        if (quality == media::mojom::SpeechRecognitionQuality::kDictation) {
-          quality = media::mojom::SpeechRecognitionQuality::kCommand;
-        }
+        quality = ToBraveOnDeviceSpeechQuality(quality);
+
+  - description: |-
+      Ask before `install()` downloads Brave's model.
+
+      The prompt comes before upstream can start a download. Once the user
+      allows it, `Install` runs again from the top, so every upstream check
+      runs again.
+
+      Each preempt lands at the top of the body, so this one runs before the
+      `ToBraveOnDeviceSpeechQuality` mapping. That is safe, because the mapping
+      only selects upstream's branch. The prompt asks Brave's policy directly,
+      and `Install` maps the quality again when it runs again.
+    preempt_function_impl:
+      function_name: OnDeviceSpeechRecognitionImpl::Install
+      return_if: |-
+        MaybePromptForBraveOnDeviceSpeechModel(
+                CanRenderFrameHostUseOnDeviceSpeechRecognition(),
+                weak_ptr_factory_.GetWeakPtr(), languages, quality, callback)

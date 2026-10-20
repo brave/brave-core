@@ -6,7 +6,6 @@
 package org.chromium.chrome.browser.crypto_wallet.fragments.dapps;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -87,11 +86,11 @@ public class AddTokenFragment extends BaseDAppsFragment {
         getBraveWalletService()
                 .getPendingAddSuggestTokenRequests(
                         requests -> {
+                            if (!isAdded()) {
+                                return;
+                            }
                             if (requests == null || requests.length == 0) {
-                                Intent intent = new Intent();
-                                getActivity().setResult(Activity.RESULT_OK, intent);
-                                getActivity().finish();
-
+                                getWalletFragmentCallback().onAllRequestsHandled();
                                 return;
                             }
                             mCurrentAddSuggestTokenRequest = requests[0];

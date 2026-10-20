@@ -18,7 +18,7 @@ interface Props {
 }
 
 function SettingsPanel(props: Props) {
-  const [onDemand, setOnDemand] = React.useState({
+  const [autoReconnect, setAutoReconnect] = React.useState({
     available: false,
     enabled: false
   })
@@ -26,7 +26,7 @@ function SettingsPanel(props: Props) {
   const smartProxyRoutingEnabled = useSelector((state) => state.smartProxyRoutingEnabled)
 
   React.useEffect(() => {
-    getPanelBrowserAPI().serviceHandler.getOnDemandState().then(setOnDemand)
+    getPanelBrowserAPI().serviceHandler.getAutoReconnectState().then(setAutoReconnect)
   }, [])
 
   const handleClick = (entry: ManageURLType) => {
@@ -48,8 +48,8 @@ function SettingsPanel(props: Props) {
   }
 
   const handleToggleChange = ({ checked }: { checked: boolean }) => {
-    setOnDemand({ ...onDemand, enabled: checked })
-    getPanelBrowserAPI().serviceHandler.enableOnDemand(checked)
+    setAutoReconnect({ ...autoReconnect, enabled: checked })
+    getPanelBrowserAPI().serviceHandler.enableAutoReconnect(checked)
   }
 
   const handleSmartProxyRoutingChange = ({ checked }: { checked: boolean }) => {
@@ -68,11 +68,11 @@ function SettingsPanel(props: Props) {
         />
         <Styles.Divider />
         <Styles.SettingsList>
-          {onDemand.available && (
+          {autoReconnect.available && (
             <>
               <Styles.Setting
                 onClick={
-                  e => handleToggleChange({ checked: !onDemand.enabled })
+                  e => handleToggleChange({ checked: !autoReconnect.enabled })
                 }
               >
                 <Styles.StyledIcon name='refresh'></Styles.StyledIcon>
@@ -82,10 +82,10 @@ function SettingsPanel(props: Props) {
                   </Styles.SettingLabel>
                 </Styles.SettingLabelBox>
                 <Toggle
-                  checked={onDemand.enabled}
+                  checked={autoReconnect.enabled}
                   onChange={handleToggleChange}
                   size='small'
-                  aria-label='Reconnect automatically'
+                  aria-label={getLocale(S.BRAVE_VPN_RECONNECT_AUTOMATICALLY)}
                 />
               </Styles.Setting>
             </>
@@ -120,7 +120,7 @@ function SettingsPanel(props: Props) {
               checked={smartProxyRoutingEnabled}
               onChange={handleSmartProxyRoutingChange}
               size='small'
-              area-label={getLocale(S.BRAVE_VPN_SMART_PROXY_ROUTING)}
+              aria-label={getLocale(S.BRAVE_VPN_SMART_PROXY_ROUTING)}
             />
           </Styles.Setting>
           <Styles.Setting

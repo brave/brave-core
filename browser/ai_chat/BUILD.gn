@@ -176,17 +176,29 @@ if (enable_ai_chat_tab_management_tool) {
       "//base",
       "//brave/components/ai_chat/core/browser",
       "//brave/components/ai_chat/core/common/mojom",
+      "//brave/components/local_ai/buildflags",
+      "//brave/components/resources:strings_grit",
+      "//chrome/browser/history",
+      "//chrome/browser/history_embeddings",
       "//chrome/browser/profiles:profile",
       "//chrome/browser/profiles:profile_util",
       "//chrome/browser/ui",
       "//chrome/browser/ui/browser_window",
       "//chrome/browser/ui/browser_window:create_browser_window",
       "//chrome/browser/ui/tabs:tab_strip",
+      "//components/history_embeddings/content",
+      "//components/keyed_service/core",
       "//components/tab_groups",
       "//components/tabs:public",
       "//content/public/browser",
       "//services/data_decoder/public/cpp",
+      "//ui/base",
+      "//url",
     ]
+
+    if (enable_local_ai) {
+      deps += [ "//brave/components/history_embeddings:open_tab_passages" ]
+    }
   }
 }
 
@@ -433,6 +445,7 @@ source_set("browser_tests") {
       deps += [
         "//brave/components/history_embeddings:test_support",
         "//brave/components/local_ai/core",
+        "//components/prefs",
       ]
     }
 
@@ -440,6 +453,7 @@ source_set("browser_tests") {
       sources += [ "tools/tab_management_tool_browsertest.cc" ]
       deps += [
         ":ai_chat_tab_management_tool_impl",
+        "//brave/components/local_ai/buildflags",
         "//chrome/browser/ui:browser_window_header",
         "//chrome/browser/ui/tabs:tabs_public",
         "//components/tab_groups",

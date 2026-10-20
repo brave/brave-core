@@ -10,6 +10,7 @@
 #include "base/command_line.h"
 #include "base/feature_list.h"
 #include "brave/browser/ui/tabs/public/switches.h"
+#include "brave/components/constants/pref_names.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/common/pref_names.h"
 #include "components/prefs/pref_registry_simple.h"
@@ -30,10 +31,12 @@ void RegisterBraveProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(kVerticalTabsShowTitleOnWindow, false);
 #endif
 
+#if !BUILDFLAG(IS_ANDROID)
   if (base::FeatureList::IsEnabled(tabs::kBraveVerticalTabHideCompletely)) {
     registry->RegisterBooleanPref(kVerticalTabsHideCompletelyWhenCollapsed,
                                   false);
   }
+#endif
 
   registry->RegisterBooleanPref(kVerticalTabsFloatingEnabled, true);
   registry->RegisterBooleanPref(kVerticalTabsShowToggleButton, true);
@@ -61,6 +64,13 @@ void MigrateBraveProfilePrefs(PrefService* prefs) {
       pref && pref->IsDefaultValue() &&
       base::FeatureList::IsEnabled(tabs::kBraveVerticalTabScrollBar)) {
     prefs->SetBoolean(kVerticalTabsShowScrollbar, true);
+  }
+
+  // Added 10/2026.
+  if (auto* pref = prefs->FindPreference(kMRUCyclingEnabled);
+      pref && !pref->IsDefaultValue()) {
+    prefs->SetBoolean(prefs::kCtrlTabMru, pref->GetValue()->GetBool());
+    prefs->ClearPref(kMRUCyclingEnabled);
   }
 }
 

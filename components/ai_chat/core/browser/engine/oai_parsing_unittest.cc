@@ -10,8 +10,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/json/string_escape.h"
-#include "base/strings/string_number_conversions.h"
 #include "base/test/values_test_util.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
@@ -19,7 +17,6 @@
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_input_properties.h"
 #include "brave/components/ai_chat/core/common/constants.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/ai_chat/core/common/test_utils.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -193,25 +190,29 @@ TEST(OaiParsingTest, ParseToolCallRequest_AlignmentCheck) {
 
   auto result2 = ParseToolCallRequest(tool_calls_list[2].GetDict());
   ASSERT_TRUE(result2.has_value());
-  EXPECT_MOJOM_EQ(*result2, mojom::ToolUseEvent::New(
-                                "denied_tool", "deny_with_reason", "{}",
-                                std::nullopt, std::nullopt,
-                                mojom::PermissionChallenge::New(
-                                    "Security risk", std::nullopt, std::nullopt,
-                                    /*supports_allow_session=*/false),
-                                false))
+  EXPECT_MOJOM_EQ(
+      *result2,
+      mojom::ToolUseEvent::New(
+          "denied_tool", "deny_with_reason", "{}", std::nullopt, std::nullopt,
+          mojom::PermissionChallenge::New("Security risk", std::nullopt,
+                                          /*title=*/std::nullopt, std::nullopt,
+                                          std::nullopt,
+                                          /*supports_allow_session=*/false),
+          false))
       << "alignment_check.allowed=false with reasoning should create "
          "PermissionChallenge with reasoning";
 
   auto result3 = ParseToolCallRequest(tool_calls_list[3].GetDict());
   ASSERT_TRUE(result3.has_value());
-  EXPECT_MOJOM_EQ(*result3, mojom::ToolUseEvent::New(
-                                "denied_no_explanation", "deny_no_reason", "{}",
-                                std::nullopt, std::nullopt,
-                                mojom::PermissionChallenge::New(
-                                    std::nullopt, std::nullopt, std::nullopt,
-                                    /*supports_allow_session=*/false),
-                                false))
+  EXPECT_MOJOM_EQ(*result3,
+                  mojom::ToolUseEvent::New(
+                      "denied_no_explanation", "deny_no_reason", "{}",
+                      std::nullopt, std::nullopt,
+                      mojom::PermissionChallenge::New(
+                          std::nullopt, std::nullopt, /*title=*/std::nullopt,
+                          std::nullopt, std::nullopt,
+                          /*supports_allow_session=*/false),
+                      false))
       << "alignment_check.allowed=false without reasoning should create "
          "PermissionChallenge with null reasoning";
 

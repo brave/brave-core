@@ -5,7 +5,6 @@
 
 #include "brave/components/p3a/constellation_helper.h"
 
-#include <algorithm>
 #include <utility>
 #include <vector>
 
@@ -15,7 +14,6 @@
 #include "base/logging.h"
 #include "base/rand_util.h"
 #include "base/strings/string_split.h"
-#include "brave/components/p3a/features.h"
 #include "brave/components/p3a/metric_log_type.h"
 #include "brave/components/p3a/p3a_config.h"
 #include "brave/components/p3a/p3a_message.h"

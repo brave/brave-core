@@ -11,12 +11,18 @@ import {
 } from 'gen/brave/components/brave_account/mojom/brave_account.mojom.m'
 import {
   AliasesUpdate,
+  AliasesAccountUpdate,
+  DEFAULT_MAX_ALIASES,
   EmailAliasesServiceObserverInterface,
 } from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
 
 const emptyAliasesUpdate = {
   aliases: [],
   error: undefined,
+}
+
+const defaultAliasesAccountInfo: AliasesAccountUpdate = {
+  maxAliasesCount: DEFAULT_MAX_ALIASES,
 }
 
 export function isAccountLoggedIn(
@@ -64,13 +70,17 @@ export function useEmailAliases(
 ) {
   const [aliasesUpdate, setAliasesUpdate] =
     React.useState<AliasesUpdate>(emptyAliasesUpdate)
+  const [accountInfo, setAccountInfo] = React.useState<AliasesAccountUpdate>(
+    defaultAliasesAccountInfo,
+  )
 
   React.useEffect(() => {
     const observer: EmailAliasesServiceObserverInterface = {
       onAliasesUpdated: setAliasesUpdate,
+      onAliasesAccountUpdated: setAccountInfo,
     }
     return bindObserver(observer)
   }, [])
 
-  return { aliasesUpdate }
+  return { aliasesUpdate, accountInfo }
 }

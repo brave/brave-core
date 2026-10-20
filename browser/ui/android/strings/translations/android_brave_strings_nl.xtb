@@ -193,9 +193,6 @@
 <translation id="5668852698659986622">Schakel gesponsorde Ads in</translation>
 <translation id="431194936581466649">Help Brave's missie ondersteunen om een onafhankelijk, gebruikersgericht web te bouwen met gesponsorde Ads. We meten advertentieprestaties privé, zonder je te identificeren.</translation>
 <translation id="1939813747486101115">Meer informatie over gesponsorde advertenties</translation>
-<translation id="8347743943525229984">Brave-enquêtes toestaan</translation>
-<translation id="6022939994702081659">Hiermee sta je toe dat Brave links naar privé-enquêtes weergeeft op het nieuwe tabblad. Deze enquêtes helpen ons betere functies te ontwikkelen en de effectiviteit van advertentiecampagnes in de browser te meten.</translation>
-<translation id="7746496306508543965">Meer informatie over Brave-enquêtes</translation>
 <translation id="410351446219883937">Automatisch afspelen</translation>
 <translation id="7445411102860286510">Sites toestaan gedempte video's automatisch af te spelen (aanbevolen)</translation>
 <translation id="7837721118676387834">Automatisch afspelen van gedempte video's toestaan voor een specifieke site.</translation>
@@ -223,6 +220,7 @@
 <translation id="9040069796107003510">Brave Beloningen-pictogram</translation>
 <translation id="6333347122924254968">Het Brave Beloningen-pictogram tonen in de adresbalk</translation>
 <translation id="4393974575368329991">Onderste navigatiebalk</translation>
+<translation id="8727059712928806451">Onderste balk inschakelen</translation>
 <translation id="1834226716203076292">Toon een onderste balk voor snelle toegang tot home, bladwijzers en zoeken</translation>
 <translation id="1422686363939271829">Deze instelling is uitgeschakeld wanneer de adresbalk onderaan wordt weergegeven</translation>
 <translation id="6587448235155023666">Je veranderingen zullen de volgende keer dat je Brave opstart in effect gaan</translation>
@@ -398,6 +396,12 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="8793108040181436796">Widgets</translation>
 <translation id="8643377320501056697">Topsites Weergeven</translation>
 <translation id="7275773481201277457">Brave Statistieken Weergeven</translation>
+<translation id="8516804522688861636">Toon veel bezochte sites</translation>
+<translation id="4546260624932151782">Toon favorieten</translation>
+<translation id="5313967007315987356">Site toevoegen</translation>
+<translation id="1773147648972887693">Toon veel bezocht</translation>
+<translation id="752098910262610337">Toon shortcuts</translation>
+<translation id="7134741506051403308">Widget verbergen</translation>
 <translation id="7462178177755090262">Startscherm</translation>
 <translation id="5365434987337264071">Laatst geopend tabblad</translation>
 <translation id="6019856124237323989">{HOURS, plural, =1 {Nieuw tabblad na <ph name="HOURS_ONE"/> uur inactiviteit} other {Nieuw tabblad na <ph name="HOURS_MANY"/> uur inactiviteit}}</translation>
@@ -998,6 +1002,13 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="7530313002494358590">Het in- of uitschakelen van een Brave-functie vereist dat de browser opnieuw wordt gestart om wijzigingen toe te passen. Tik op <ph name="BEGIN_BOLD"/>Nu opnieuw starten<ph name="END_BOLD"/> zodra Brave Origin klaar is met bijwerken.</translation>
 <translation id="1028940738207645746">Weet je zeker dat je alle instellingen op standaard wilt herstellen?</translation>
 <translation id="5939518447894949180">Resetten</translation>
+<translation id="3222790865318305905">Activeringslimiet bereikt</translation>
+<translation id="3787857711016546034">Om fraude te voorkomen, zijn Origin-activeringen gelimiteerd. Maar je kunt altijd meer activeringen aanvragen om je Origin-licentie op meer devices te gebruiken. Klik gewoon op de optie Meer activeringen aanvragen, of <ph name="CONTACT_SUPPORT"/> voor hulp.</translation>
+<translation id="6760819753412779585">contact opnemen met ondersteuning</translation>
+<translation id="571697836019670200">Meer activeringen aanvragen</translation>
+<translation id="9019545131475425538">Verwerken…</translation>
+<translation id="7242700630179071243">Klaar om te activeren</translation>
+<translation id="5463918917265356202">Brave Origin is nu actief op dit device. Om de functie te gaan gebruiken, moet je de browser opnieuw opstarten. Wil je nu opnieuw opstarten?</translation>
 <translation id="8554205386170195281">Aankoop</translation>
 <translation id="8613144770663526433">Inloggen bij Brave Wallet</translation>
 <translation id="3696514931437952995">U logt in bij <ph name="ORIGIN"/>. Brave-wallet deelt uw wallet-adres met <ph name="ORIGIN"/>.</translation>

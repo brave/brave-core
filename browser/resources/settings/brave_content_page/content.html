@@ -34,7 +34,7 @@
 <settings-toggle-button
     class="hr"
     id="mru-cycling"
-    pref="{{prefs.brave.mru_cycling_enabled}}"
+    pref="{{prefs.browser.ctrl_tab_mru}}"
     label="$i18n{mruCyclingSettingLabel}">
 </settings-toggle-button>
 <if expr="is_macosx">
@@ -44,7 +44,6 @@
     </settings-toggle-button>
 </if>
 <settings-toggle-button class="hr" id="splitViewDragAndDrop"
-    hidden="[[!showSplitViewDragAndDropSetting_]]"
     pref="{{prefs.browser.split_view_drag_and_drop_enabled}}"
     label="$i18n{allowSplitViewDragAndDrop}">
 </settings-toggle-button>

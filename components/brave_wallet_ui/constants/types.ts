@@ -5,13 +5,11 @@
 
 import { EntityId } from '@reduxjs/toolkit'
 
-import { TimeDelta } from 'gen/mojo/public/mojom/base/time.mojom.m.js'
 import * as BraveWallet from './brave_wallet'
 import {
   ExternalWallet,
   ExternalWalletProvider,
 } from '../../brave_rewards/resources/shared/lib/external_wallet'
-import * as MeldTypes from 'gen/brave/components/brave_wallet/common/meld_integration.mojom.m.js'
 
 import Amount from '../utils/amount'
 
@@ -26,6 +24,7 @@ export {
   MeldServiceProvider,
   MeldPaymentMethod,
   MeldCryptoWidget,
+  MeldCryptoCurrency,
   CryptoBuySessionData,
   CryptoWidgetCustomerData,
 } from 'gen/brave/components/brave_wallet/common/meld_integration.mojom.m.js'
@@ -34,7 +33,6 @@ export type NftDropdownOptionId = 'collected' | 'hidden'
 export type DAppConnectionOptionsType = 'networks' | 'accounts' | 'main'
 
 export { Origin } from 'gen/url/mojom/origin.mojom.m.js'
-export { TimeDelta }
 
 export type HardwareWalletResponseCodeType =
   | 'deviceNotConnected'
@@ -43,7 +41,7 @@ export type HardwareWalletResponseCodeType =
   | 'transactionRejected'
 
 export type TokenPriceHistory = {
-  date: SerializableTimeDelta
+  date: number
   close: number
 }
 
@@ -297,12 +295,6 @@ export interface SendPolkadotTransactionParams extends BaseTransactionParams {
   assetId: number | undefined
 }
 
-/**
- * Used to properly store BraveWallet.TransactionInfo in redux store,
- * since bigints are not serializable by default
- */
-export type SerializableTimeDelta = Record<keyof TimeDelta, number>
-
 export type Defined<T> = Exclude<T, undefined>
 
 export type SerializableSolanaTxDataMaxRetries = {
@@ -345,11 +337,8 @@ export type SerializableTxDataUnion = {
  */
 export type SerializableTransactionInfo = Omit<
   BraveWallet.TransactionInfo,
-  'confirmedTime' | 'createdTime' | 'submittedTime' | 'txDataUnion'
+  'txDataUnion'
 > & {
-  confirmedTime: SerializableTimeDelta
-  createdTime: SerializableTimeDelta
-  submittedTime: SerializableTimeDelta
   txDataUnion: SerializableTxDataUnion
 }
 
@@ -1075,10 +1064,6 @@ export type zcashAddressTypes = 'unified' | 'shielded' | 'transparent'
 export type zcashAddressOptionType = {
   addressType: zcashAddressTypes
   label: string
-}
-
-export type MeldCryptoCurrency = MeldTypes.MeldCryptoCurrency & {
-  coingeckoId?: string
 }
 
 export type MaxPriorityFeeTypes = 'slow' | 'average' | 'fast'

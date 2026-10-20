@@ -8,6 +8,7 @@
 
 #include <string_view>
 
+#include "base/byte_size.h"
 #include "base/files/file_path.h"
 #include "base/no_destructor.h"
 #include "base/observer_list.h"
@@ -20,6 +21,10 @@ namespace local_ai {
 // installer policy verifies the directory this class hands out.
 inline constexpr std::string_view kModelDirName =
     "nemotron-speech-streaming-en-0.6b-int4-onnx";
+
+// About how much the model takes on disk, for telling a user what they would
+// download. Only has to be close, so it need not follow every model update.
+inline constexpr base::ByteSize kApproxModelSize = base::MiB(636);
 
 // Singleton holding the install directory of Brave's on-device speech
 // recognition model. The component installer populates it on `ComponentReady`.

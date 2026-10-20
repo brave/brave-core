@@ -328,8 +328,9 @@ void BraveVpnServiceImpl::ResetConnectionState() {
   connection_manager_->ResetConnectionState();
 }
 
-void BraveVpnServiceImpl::EnableOnDemand(bool enable) {
+void BraveVpnServiceImpl::EnableAutoReconnect(bool enable) {
 #if BUILDFLAG(IS_MAC)
+  // On macOS, auto-reconnect is implemented with NEVPNManager OnDemand rules.
   local_prefs_->SetBoolean(prefs::kBraveVPNOnDemandEnabled, enable);
 
   // If not connected, do nothing because on-demand bit will
@@ -343,7 +344,8 @@ void BraveVpnServiceImpl::EnableOnDemand(bool enable) {
 #endif
 }
 
-void BraveVpnServiceImpl::GetOnDemandState(GetOnDemandStateCallback callback) {
+void BraveVpnServiceImpl::GetAutoReconnectState(
+    GetAutoReconnectStateCallback callback) {
 #if BUILDFLAG(IS_MAC)
   std::move(callback).Run(
       /*available*/ true,

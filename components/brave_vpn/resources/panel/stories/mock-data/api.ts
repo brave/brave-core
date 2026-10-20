@@ -57,10 +57,11 @@ BraveVPN.setPanelBrowserApiForTesting({
       allowed: true
     }),
     allowLanTraffic: (allow: boolean) => {},
-    getOnDemandState: () => Promise.resolve({
+    getAutoReconnectState: () => Promise.resolve({
       available: true,
       enabled: false
     }),
-    enableOnDemand: (enable: boolean) => {}
+    enableAutoReconnect: (enable: boolean) => {},
+    reconnectToAgent: doNothing
   }
 })

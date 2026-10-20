@@ -25,3 +25,23 @@ public struct OpenControlWidgetShortcutIntent: UISceneAppIntent {
     self.shortcut = shortcut
   }
 }
+
+/// Static Search control. Control Center restores an intent with `init()` and does not keep a stored shortcut, so the intent type is the shortcut.
+@available(iOS 26.0, *)
+public struct OpenBraveSearchControlIntent: UISceneAppIntent {
+  public static let title: LocalizedStringResource = "Brave Search"
+  public static let openAppWhenRun: Bool = true
+  public static let isDiscoverable: Bool = false
+
+  public init() {}
+}
+
+/// Static Ask Brave control. Separate from Search so a restored empty intent cannot open Search.
+@available(iOS 26.0, *)
+public struct OpenAskBraveControlIntent: UISceneAppIntent {
+  public static let title: LocalizedStringResource = "Ask Brave"
+  public static let openAppWhenRun: Bool = true
+  public static let isDiscoverable: Bool = false
+
+  public init() {}
+}

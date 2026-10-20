@@ -5,8 +5,6 @@
 
 #include "brave/components/ntp_background_images/browser/features.h"
 
-#include "base/feature_list.h"
-
 namespace ntp_background_images::features {
 
 BASE_FEATURE(kBraveNTPNewTabTakeoverWallpaper,

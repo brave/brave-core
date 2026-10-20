@@ -8,7 +8,6 @@
 #include <variant>
 
 #include "base/functional/callback_helpers.h"
-#include "base/logging.h"
 #include "base/memory/ptr_util.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/tabs/public/tree_tab_node_id.h"

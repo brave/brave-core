@@ -25,7 +25,10 @@
 #include "brave/components/sidebar/browser/sidebar_item.h"
 #include "brave/components/sidebar/browser/sidebar_service.h"
 #include "brave/components/sidebar/common/features.h"
+#include "chrome/browser/prefs/session_startup_pref.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/sessions/session_restore.h"
+#include "chrome/browser/sessions/tab_restore_service_factory.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/side_panel/side_panel_entry_id.h"
 #include "chrome/browser/ui/side_panel/side_panel_ui.h"
@@ -34,13 +37,28 @@
 #include "chrome/browser/ui/views/side_panel/side_panel.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/prefs/pref_service.h"
+#include "components/sessions/core/serialized_navigation_entry.h"
+#include "components/sessions/core/tab_restore_service.h"
+#include "components/sessions/core/tab_restore_types.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
+#include "content/public/test/browser_test_utils.h"
 #include "ui/views/animation/ink_drop.h"
 #include "ui/views/view_utils.h"
 #include "url/gurl.h"
 
 namespace sidebar {
+
+namespace {
+
+// Shared by the PRE_/main WebPanelIsNotRestoredAfterShutdown pair, which run in
+// separate processes.
+constexpr char kTestWebPanelURL[] = "https://brave.com/";
+// A WebUI URL commits reliably without a test server and is distinguishable
+// from the tabs a launch creates on its own.
+constexpr char kRegularTabURL[] = "chrome://version/";
+
+}  // namespace
 
 class WebPanelBrowserTest : public SidebarBrowserTest {
  public:
@@ -66,6 +84,17 @@ class WebPanelDisabledBrowserTest : public SidebarBrowserTest {
 
  private:
   base::test::ScopedFeatureList scoped_features_;
+};
+
+// Setting the startup preference to LAST makes the relaunch in the non-PRE_
+// test restore the previous session.
+class WebPanelSessionRestoreBrowserTest : public WebPanelBrowserTest {
+ protected:
+  void SetUpOnMainThread() override {
+    WebPanelBrowserTest::SetUpOnMainThread();
+    SessionStartupPref::SetStartupPref(
+        browser()->GetProfile(), SessionStartupPref(SessionStartupPref::LAST));
+  }
 };
 
 #if BUILDFLAG(ENABLE_BRAVE_TALK)
@@ -249,10 +278,7 @@ IN_PROC_BROWSER_TEST_F(WebPanelBrowserTest, WebPanelItemActiveStateTest) {
   const GURL url_a("https://brave.com/");
   const GURL url_b("https://basicattentiontoken.com/");
   for (const auto& url : {url_a, url_b}) {
-    service->AddItem(SidebarItem::Create(url, u"title",
-                                         SidebarItem::Type::kTypeWeb,
-                                         SidebarItem::BuiltInItemType::kNone,
-                                         SidebarItem::PanelType::kWebPanel));
+    service->AddItem(SidebarItem::CreateWebPanelItem(url, u"title"));
   }
   const size_t index_b = model()->GetAllSidebarItems().size() - 1;
   const size_t index_a = index_b - 1;
@@ -316,6 +342,118 @@ IN_PROC_BROWSER_TEST_F(WebPanelBrowserTest, WebPanelItemActiveStateTest) {
   controller()->ToggleSidebarPinning();
   ASSERT_TRUE(sidebar->IsSidebarVisible());
   EXPECT_EQ(views::InkDropState::ACTIVATED, ink_drop_state_at(index_b));
+}
+
+// The web panel is backed by a pinned tab, so it has to be closed while the
+// window is closing - before the session service and the tab restore service
+// snapshot the window - or it reappears as an ordinary pinned tab. This covers
+// the UnloadController hook; quitting the browser takes a different path, see
+// WebPanelIsNotRestoredAfterShutdown.
+IN_PROC_BROWSER_TEST_F(WebPanelBrowserTest, WebPanelClosesWithItsWindow) {
+  auto* profile = browser()->GetProfile();
+  auto* service = SidebarServiceFactory::GetForProfile(profile);
+
+  const GURL panel_url(kTestWebPanelURL);
+  service->AddItem(SidebarItem::CreateWebPanelItem(panel_url, u"title"));
+  controller()->OnItemPressed(model()->GetAllSidebarItems().size() - 1);
+  ASSERT_TRUE(web_panel_controller()->HasOpenPanel());
+  ASSERT_EQ(2, tab_model()->count());
+
+  // The panel's navigation has to commit, or the tab restore service would have
+  // no URL to compare against and this test would pass even without the
+  // window-closing hook. The load itself fails - there is no network - but the
+  // error page still commits |panel_url|.
+  auto* panel_contents = tab_model()->GetTabAtIndex(0)->GetContents();
+  ASSERT_EQ(panel_contents, web_panel_controller()->panel_contents());
+  content::WaitForLoadStopWithoutSuccessCheck(panel_contents);
+  ASSERT_EQ(panel_url, panel_contents->GetLastCommittedURL());
+
+  // Keep the browser process alive so the closing window gets recorded.
+  ASSERT_TRUE(CreateBrowser(profile));
+
+  auto* tab_restore_service = TabRestoreServiceFactory::GetForProfile(profile);
+  ASSERT_TRUE(tab_restore_service);
+  CloseBrowserSynchronously(browser());
+
+  ASSERT_FALSE(tab_restore_service->entries().empty());
+  const auto& entry = *tab_restore_service->entries().front();
+  ASSERT_EQ(sessions::tab_restore::WINDOW, entry.type);
+  for (const auto& tab :
+       static_cast<const sessions::tab_restore::Window&>(entry).tabs) {
+    const auto& navigation =
+        tab->navigations[tab->normalized_navigation_index()];
+    EXPECT_NE(panel_url, navigation.virtual_url())
+        << "the web panel's pinned tab is restorable";
+  }
+}
+
+// Quitting shuts the session services down before any window starts closing, so
+// the per-window UnloadController hook covered by WebPanelClosesWithItsWindow
+// never runs too late to affect the persisted session. Leaves an open web panel
+// behind for WebPanelIsNotRestoredAfterShutdown to look for after a real
+// relaunch.
+IN_PROC_BROWSER_TEST_F(WebPanelSessionRestoreBrowserTest,
+                       PRE_WebPanelIsNotRestoredAfterShutdown) {
+  // Navigate the active tab so the session records a committed entry for it.
+  // WebPanelIsNotRestoredAfterShutdown looks for this URL to tell that the
+  // restore has landed.
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL(kRegularTabURL)));
+  ASSERT_FALSE(web_panel_controller()->HasOpenPanel());
+
+  auto* service = SidebarServiceFactory::GetForProfile(browser()->GetProfile());
+
+  const GURL panel_url(kTestWebPanelURL);
+  service->AddItem(SidebarItem::CreateWebPanelItem(panel_url, u"title"));
+  controller()->OnItemPressed(model()->GetAllSidebarItems().size() - 1);
+
+  ASSERT_TRUE(web_panel_controller()->HasOpenPanel());
+  ASSERT_EQ(2, tab_model()->count());
+  ASSERT_TRUE(tab_model()->GetTabAtIndex(0)->IsPinned());
+  auto* panel_contents = tab_model()->GetTabAtIndex(0)->GetContents();
+  ASSERT_EQ(panel_contents, web_panel_controller()->panel_contents());
+
+  // The panel's navigation has to commit, or the session would have nothing to
+  // restore and WebPanelIsNotRestoredAfterShutdown would pass even without the
+  // shutdown hook. The load itself fails - there is no network - but the error
+  // page still commits the panel URL.
+  content::WaitForLoadStopWithoutSuccessCheck(panel_contents);
+  ASSERT_EQ(panel_url, panel_contents->GetLastCommittedURL());
+
+  // The session is written by the fixture's teardown, which quits via
+  // chrome::AttemptExit() - the path under test. Don't snapshot it here.
+}
+
+IN_PROC_BROWSER_TEST_F(WebPanelSessionRestoreBrowserTest,
+                       WebPanelIsNotRestoredAfterShutdown) {
+  auto has_tab_with_url = [&](const GURL& url) {
+    for (int i = 0; i < tab_model()->count(); ++i) {
+      if (tab_model()->GetWebContentsAt(i)->GetVisibleURL() == url) {
+        return true;
+      }
+    }
+    return false;
+  };
+
+  // Session restore fills a window's tabs in one pass, so once the regular tab
+  // from the previous session is here, the window's tab set is final. Don't
+  // assert on the tab count instead: a launch appends its own startup tabs to
+  // the restored window (see SessionRestoreImpl::AppendURLsToBrowser), so the
+  // total depends on plumbing this test doesn't care about.
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    return !SessionRestore::IsRestoring(browser()->GetProfile()) &&
+           has_tab_with_url(GURL(kRegularTabURL));
+  }));
+
+  EXPECT_EQ(0, tab_model()->IndexOfFirstNonPinnedTab())
+      << "nothing should have been restored as a pinned tab";
+  EXPECT_FALSE(has_tab_with_url(GURL(kTestWebPanelURL)))
+      << "the web panel's pinned tab was restored";
+
+  // Only the panel's tab is dropped - the sidebar item itself persists.
+  const auto& items = model()->GetAllSidebarItems();
+  ASSERT_FALSE(items.empty());
+  EXPECT_TRUE(items.back().is_web_panel_type());
+  EXPECT_EQ(GURL(kTestWebPanelURL), items.back().url);
 }
 
 }  // namespace sidebar

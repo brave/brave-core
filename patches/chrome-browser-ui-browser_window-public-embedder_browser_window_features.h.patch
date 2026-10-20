@@ -1,0 +1,15 @@
+diff --git a/chrome/browser/ui/browser_window/public/embedder_browser_window_features.h b/chrome/browser/ui/browser_window/public/embedder_browser_window_features.h
+index 67af5a42c04eec3fec5364b13d7715fac7bf5e68..15fa53719fa5b990bb29553f2560acbfeead4bb4 100644
+--- a/chrome/browser/ui/browser_window/public/embedder_browser_window_features.h
++++ b/chrome/browser/ui/browser_window/public/embedder_browser_window_features.h
+@@ -42,6 +42,10 @@ class EmbedderBrowserWindowFeatures {
+   // Called exactly once to tear down state that depends on the window object.
+   void TearDownPreBrowserWindowDestruction();
+ 
++ protected:
++  std::unique_ptr<BraveBrowserWindowFeatures>
++      brave_browser_window_features_;
++
+  private:
+   // Embedder-specific feature members:
+ };

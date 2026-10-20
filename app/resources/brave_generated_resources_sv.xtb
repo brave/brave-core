@@ -3,18 +3,14 @@
 <translationbundle lang="sv">
 <translation id="1751249301761991853">Personlig</translation>
 <translation id="3333887201479867589">Brave Rewards</translation>
-<translation id="7561196759112975576">Alltid</translation>
-<translation id="7961015016161918242">Aldrig</translation>
 <translation id="8507663778530179003">Visa knappen Alla bokmärken</translation>
 <translation id="9018648632047670921">Visa knappen Alla bokmärken</translation>
 <translation id="7630214457764713113">Kopiera ren länk</translation>
 <translation id="7973394300052703468">Nytt &amp;privat fönster</translation>
 <translation id="4615489450165434530">Rapportera en trasig webbplats</translation>
 <translation id="8097438084542431276">Kopiera ren länk</translation>
-<translation id="4678672101289648246">Endast på sidan Ny flik</translation>
 <translation id="6516243500644829484">Nytt &amp;inkognitofönster</translation>
 <translation id="1209739344687072997">Rapportera en trasig webbplats</translation>
-<translation id="8294286161128352783">Endast på sidan Ny flik</translation>
 <translation id="6406506848690869874">Synka</translation>
 <translation id="1544192797660353713">Plånbok</translation>
 <translation id="2361906291514218784">Leo AI</translation>
@@ -195,7 +191,9 @@ Eller ändra senare på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="5977931179408079967">Placering</translation>
 <translation id="3790384768741064842">Flytta till höger</translation>
 <translation id="7444424316576061724">Flytta till vänster</translation>
+<translation id="7561196759112975576">Alltid</translation>
 <translation id="7060352228894039151">Vid musöverdragning</translation>
+<translation id="7961015016161918242">Aldrig</translation>
 <translation id="8981254605840444865">Visa inställningar</translation>
 <translation id="59174027418879706">Aktiverat</translation>
 <translation id="4176463684765177261">Inaktiverad</translation>
@@ -221,6 +219,7 @@ Eller ändra senare på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="4515057635283480525">Internet Archive sparar tidigare versioner av många webbsidor. Vill du leta efter den här sidan i arkivet?</translation>
 <translation id="8252977752585110703">Tyvärr, vi kontrollerade Internet Archive och det finns ingen arkiverad version av den här sidan.</translation>
 <translation id="8748778103033196270">Sök i arkivet</translation>
+<translation id="7369915833843501413">Söker i arkivet</translation>
 <translation id="191143826155037518">Brave görs tillgängligt för dig under <ph name="BEGIN_LINK_MPL"/>Mozilla Public License 2.0<ph name="END_LINK_MPL"/> (MPL) och inkluderar <ph name="BEGIN_LINK_OSS"/>öppen källkod<ph name="END_LINK_OSS"/> under flera andra licenser.
         Du kan läsa <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hur du laddar ner och själv kan bygga<ph name="END_LINK_BUILD_INSTRUCTIONS"/> den specifika <ph name="BEGIN_LINK_SOURCE_CODE"/>källkod som använts för att skapa denna version<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">Skapa bokmärken för alla flikar ...</translation>
@@ -371,7 +370,7 @@ Eller ändra senare på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="7985042437720138349">Den här funktionen skickar data om dina öppna flikar till Leo, Braves AI-drivna webbläsarassistent.</translation>
 <translation id="6165508094623778733">Lär dig mer</translation>
 <translation id="7557539689487606886">Välj Premium</translation>
-<translation id="1035309871698658326">När den öppnas kommer detta automatiskt att skicka titlar och ursprung för alla icke-privata flikar till Leo för att klassificera dem.</translation>
+<translation id="7103144720752576727">När du öppnar detta skickas automatiskt titlar och ursprung för alla icke-privata flikar till Leo för att klassificera dem. Om du även aktiverar sändning av sidinnehåll skickas även korta utdrag av texten från varje flik.</translation>
 <translation id="3435896845095436175">Aktivera</translation>
 <translation id="9031526219709160683">Brave kan hjälpa dig att optimera denna webbplats integritetsinställningar. Vill du granska Braves förslag?</translation>
 <translation id="5739953050957336013">Sökförslag</translation>
@@ -386,8 +385,6 @@ Eller ändra senare på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="8570228839666486945">AI på enheten</translation>
 <translation id="7447041379556102185">Taligenkänning på enheten</translation>
 <translation id="3456536577668402695">Dina sökningar och sidinnehåll bearbetas på den här enheten. Inget skickas till Brave eller ses av mänskliga granskare.</translation>
-<translation id="4751537843966994505">Semantisk historiksökning</translation>
-<translation id="6175973371938222040">Indexera sidor du besöker lokalt så att du kan söka i din historik efter innebörd. All bearbetning stannar på denna enhet.</translation>
 <translation id="9156965752763025780">Ändringarna tillämpas nästa gång du startar om Brave.</translation>
 <translation id="7179921470347911571">Starta om nu</translation>
 <translation id="1426410128494586442">Ja</translation>
@@ -425,6 +422,7 @@ Eller ändra senare på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="4328541188421002379">Ge din container ett namn, t.ex. Arbete eller Privat</translation>
 <translation id="4976989127264491396">Fel: <ph name="ERROR_MESSAGE"/></translation>
 <translation id="5436069931267876389">Behållaren hittades inte</translation>
+<translation id="5831840958001766835">Ändra ordning på objekt. Använd piltangenterna för att flytta.</translation>
 <translation id="6055154402239241620">Trafikkontroll</translation>
 <translation id="8134521925475508805">Konfigurera specifika webbplatser så att de automatiskt öppnas i ett visst sammanhang, vilket skapar en åtskillnad mellan dina surfningssessioner. <ph name="BEGIN_LINK"/>Läs mer<ph name="END_LINK"/></translation>
 <translation id="6944848312867106540">Aktivera Trafikkontroll</translation>
@@ -477,10 +475,6 @@ Eller ändra senare på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="7310387888625228830">Leo AI-assistent</translation>
 <translation id="5222974844674487962">Visa Brave News-knapp</translation>
 <translation id="2085436423511121572">Visa Leo AI-knappen</translation>
-<translation id="6156323911414505561">Visa bokmärkesfältet</translation>
-<translation id="4054323497808446566">Bokmärkesfältet är synligt på alla sidor</translation>
-<translation id="8693858092251192712">Bokmärkesfältet är dolt på alla sidor utom på sidan Ny flik</translation>
-<translation id="7158817046543187970">Bokmärkesfältet är dolt på alla sidor</translation>
 <translation id="3416468988018290825">Visa alltid fullständiga URL:er</translation>
 <translation id="5529693968082667490">Visa knappen fliksök</translation>
 <translation id="1013121820689882118">Speedreader</translation>
@@ -612,6 +606,8 @@ Eller ändra senare på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="5825943197137337319">Endast offentligt standardgränssnitt</translation>
 <translation id="1689062823386843231">Inaktivera icke-proxad UDP</translation>
 <translation id="3540231253392253941">Använd Googles tjänster för push-meddelanden</translation>
+<translation id="2224032129673914306">Semantisk historiksökning</translation>
+<translation id="6045998903985162478">Indexera sidor du besöker så att du enkelt kan hitta dem i historik, öppna flikar och Leo.</translation>
 <translation id="5813105074916486721">Lokal historiklagring</translation>
 <translation id="5671611745062206644">Hur länge Brave lagrar din webbhistorik lokalt</translation>
 <translation id="7184510058087008090">1 dag</translation>
@@ -876,6 +872,7 @@ börja använda Sync igen måste du skapa ett nytt konto och lägga till varje e
 <translation id="2618193846561624884">Vill du uppdatera det befintliga nätverket?</translation>
 <translation id="1643029991199044105">Bläddra igenom de senast använda flikarna med Ctrl-Tab</translation>
 <translation id="2775956301559569472">Visa  Wayback Machine-prompt på 404-sidor</translation>
+<translation id="8485716275262929774">Ladda automatiskt sparade versioner från Wayback Machine på 404-sidor</translation>
 <translation id="3095201688102519917">Varna mig innan fönster med flera flikar stängs</translation>
 <translation id="7120553802660696133">Stäng fönstret när du stänger den sista fliken</translation>
 <translation id="3394171693948989253">Visa påminnelse i helskärm om att trycka på Esc vid avslutning</translation>
@@ -885,6 +882,8 @@ börja använda Sync igen måste du skapa ett nytt konto och lägga till varje e
 <translation id="1529674267267221673">Leo visas i snabbmenyn när du högerklickar på en webbplats. Detta kommer att skicka kontext från den aktuella webbsidan till Leo.</translation>
 <translation id="5226020406479918122">Fliken Fokusläge</translation>
 <translation id="3705539672403311123">Aktivera flikorganisation i fliksöksidan. När den öppnas skickar detta automatiskt titlar och ursprung till alla icke-privata flikar till Leo för att klassificera dem. <ph name="BEGIN_LINK"/>Läs mer<ph name="END_LINK"/></translation>
+<translation id="2002238795517052616">Skicka sidinnehåll för flikfokus</translation>
+<translation id="2276823422122514441">Skicka även korta utdrag av texten på varje flik, så att flikar grupperas efter vad en sida handlar om i stället för dess titel. Utdrag skickas till Leo, eller till din egen modell om du valt en för flikfokus. Detta kräver <ph name="BEGIN_LINK"/><ph name="SEMANTIC_HISTORY_SEARCH"/><ph name="END_LINK"/>, som bygger upp utdragen på din enhet.</translation>
 <translation id="9049433973274198706">Standardmodell för tabbfokus</translation>
 <translation id="2161546758719933059">Modellen som används för att organisera dina flikar i Flikfokusläge. <ph name="BEGIN_LINK"/>Läs mer<ph name="END_LINK"/></translation>
 <translation id="8172263161008556851">Visa föreslagna uppmaningar i konversationen</translation>
@@ -966,9 +965,6 @@ börja använda Sync igen måste du skapa ett nytt konto och lägga till varje e
 <translation id="1838374766361614909">Rensa sökningar</translation>
 <translation id="5126255551970171328">Sök efter ett minne</translation>
 <translation id="7402116145895962069">Synkronisera dina lokala modeller från Ollama</translation>
-<translation id="5985516785067818307">Undersökningspanel</translation>
-<translation id="8347743943525229984">Tillåt Brave-undersökningar</translation>
-<translation id="3204080538332044581">Tillåter Brave att visa länkar till privata undersökningar i den nya fliken. Undersökningar hjälper oss att bygga bättre funktioner och mäta effektiviteten i webbläsarbaserade annonskampanjer. <ph name="BEGIN_LINK"/>Läs mer<ph name="END_LINK"/></translation>
 <translation id="349846214503465941">Aktivera spellista</translation>
 <translation id="7903608716704052878">Lägg automatiskt till filer för offlinevisning</translation>
 <translation id="384666453982355633">Med det här alternativet cachas mediefiler automatiskt så att du kan spela upp dem utan Internetanslutning</translation>

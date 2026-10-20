@@ -3,18 +3,14 @@
 <translationbundle lang="lo">
 <translation id="1751249301761991853">ສ່ວນຕົວ</translation>
 <translation id="3333887201479867589">Brave Rewards</translation>
-<translation id="7561196759112975576">ເສົາ່ເປັນປົກກະຕິ</translation>
-<translation id="7961015016161918242">ບໍ່ເລີຍ</translation>
 <translation id="8507663778530179003">ສະແດງປຸ່ມຄົ້ນຫາເມືອງຢ່າງເຕັມທີ</translation>
 <translation id="9018648632047670921">ສະແດງປຸ່ມລາຍການທີ່ເກັບໄວ້ທັງໝົດ</translation>
 <translation id="7630214457764713113">ຄັດລອກລິ້ງທີ່ສະອາດ</translation>
 <translation id="7973394300052703468">ໜ້າສ່ວນຕົວໃໝ່</translation>
 <translation id="4615489450165434530">ລາຍງານເວັບໄຊທ໌ທີ່ມີບັນຫາ</translation>
 <translation id="8097438084542431276">ຄັດລອກລິ້ງທີ່ສະອາດ</translation>
-<translation id="4678672101289648246">ເຉົ້າຢູ່ເທົ່ານັ້ນໃນໜ້າແທບໃໝ່</translation>
 <translation id="6516243500644829484">ໜ້າສ່ວນຕົວໃໝ່</translation>
 <translation id="1209739344687072997">ລາຍງານເວັບໄຊທ໌ທີ່ມີບັນຫາ</translation>
-<translation id="8294286161128352783">ເຉົ້າຢູ່ເທົ່ານັ້ນໃນໜ້າແທບໃໝ່</translation>
 <translation id="6406506848690869874">ເຊື່ອມຂໍ້ມູນ</translation>
 <translation id="1544192797660353713">Wallet</translation>
 <translation id="2361906291514218784">Leo AI</translation>
@@ -195,7 +191,9 @@
 <translation id="5977931179408079967">ຕຳແໜ່ງ</translation>
 <translation id="3790384768741064842">ຍ້າຍໄປທາງຂວາ</translation>
 <translation id="7444424316576061724">ຍ້າຍໄປທາງຊາຍ</translation>
+<translation id="7561196759112975576">ເສົາ່ເປັນປົກກະຕິ</translation>
 <translation id="7060352228894039151">ແລ່ນຜ່ານເມົ້າສ໌ໂອເວີ</translation>
+<translation id="7961015016161918242">ບໍ່ເລີຍ</translation>
 <translation id="8981254605840444865">ສະແດງການຕັ້ງຄ່າ</translation>
 <translation id="59174027418879706">ເປີດໃຊ້ົງານ</translation>
 <translation id="4176463684765177261">ປິດໃຊ້ົງານ</translation>
@@ -221,6 +219,7 @@
 <translation id="4515057635283480525">Internet Archive ບັນທຶກເວີຊັນທີ່ຜ່ານມາຂອງໜ້າເວັບຫຼາຍໜ້າ. ທ່ານຕ້ອງການຄົ້ນຫາໜ້ານີ້ໃນ Archive ບໍ?</translation>
 <translation id="8252977752585110703">ຂໍອະໄພ, ພວກເຮົາໄດ້ກວດເບິ່ງ Internet Archive ແລ້ວ ແລະ ມັນບໍ່ມີເວີຊັນທີ່ຈັດເກັບໄວ້ຂອງໜ້ານີ້.</translation>
 <translation id="8748778103033196270">ຄົ້ນຫາໃນ Archive</translation>
+<translation id="7369915833843501413">ກຳລັງຄົ້ນຫາໃນ Archive</translation>
 <translation id="191143826155037518">Brave ຖືກມີພ້ອມໃຫ້ທ່ານພາຍໃຕ້ <ph name="BEGIN_LINK_MPL"/>Mozilla Public License 2.0<ph name="END_LINK_MPL"/> (MPL) ແລະມີ <ph name="BEGIN_LINK_OSS"/>ໂປແກຼມເປີດເທົາ<ph name="END_LINK_OSS"/>ໃຕ້ພາບໃຫຍ່ຂອງໃບອະນຸຍາດອື່ນໆ ທ່ານສາມາດອ່ານ <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>ຄູ່ມືການດາວໂຫລດແລະກໍ່ສ້າງດ້ວຍຕົນເອງ<ph name="END_LINK_BUILD_INSTRUCTIONS"/> ຊອດໂຄດສ້າງຕົ້ນສະບັບນີ້ <ph name="BEGIN_LINK_SOURCE_CODE"/>ທີ່ຖືກນຳໃຊ້ເພື່ອສ້າງສຳເນົານີ້<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">ບຸກມາກທຸກແຖບ...</translation>
 <translation id="3987546108749866209">ໃຊ້ແຖບແນວນອນ</translation>
@@ -370,7 +369,7 @@
 <translation id="7985042437720138349">ເລືອກນີ້ຈະສົ່ງຂໍ້ມູນເກັຒມາກດຸນໝິດຟ້າຖ້າທ່ານເປີດແນ້ວຫາທັດແພ</translation>
 <translation id="6165508094623778733">ຮຽນຮູ້ເພີ່ມເຕີມ</translation>
 <translation id="7557539689487606886">ອັບເກຣດເປັນ Premium</translation>
-<translation id="1035309871698658326">ເມື່ອເປີດແລ້ວ, ນີ້ຈະສົ່ງຫົວຂໍ້ ແລະ ຕົ້ນກຳເນີດຂອງແຖບທີ່ບໍ່ແມ່ນສ່ວນຕົວທັງໝົດໄປຫາ Leo ໂດຍອັດຕະໂນມັດເພື່ອຈັດປະເພດພວກມັນ.</translation>
+<translation id="7103144720752576727">ເມື່ອເປີດ, ສິ່ງນີ້ຈະສົ່ງຫົວຂໍ້ ແລະ ຕົ້ນກຳເນີດ origin ຂອງແຖບທັງໝົດທີ່ບໍ່ແມ່ນແຖບສ່ວນຕົວໄປຫາ Leo ໂດຍອັດຕະໂນມັດເພື່ອຈັດປະເພດພວກມັນ. ຖ້າທ່ານເປີດການສົ່ງເນື້ອຫາໜ້າເວັບນຳ, ບົດຄັດຫຍໍ້ສັ້ນໆຂອງຂໍ້ຄວາມໃນແຕ່ລະແຖບກໍຈະຖືກສົ່ງໄປຄືກັນ.</translation>
 <translation id="3435896845095436175">ເປີດໃຊ້ງານ</translation>
 <translation id="9031526219709160683">ກະທັດລາວໂອ Brave ສາມາດຊ່ວຍທ່ານໃຫ້ໄດ້ສະັກ​ວາດຕັ້ງຄ່າກາຍເປັນສ່ວນຕົວຂອງ​ໂຣກ​ເວ​ບໄຊ​ທ​ໄ​ທ​ນີ້. ທ່ານຕ້ອງການ​ທົ່ວ​ລຽ​ມ​ຂໍ້ສະເໜີອື່ນໆ​ຂອງ Brave ບໍ?</translation>
 <translation id="5739953050957336013">ທົ່ວ​ລຽ​ມ​ຂໍ້ສະເໜີ</translation>
@@ -385,8 +384,6 @@
 <translation id="8570228839666486945">AI ໃນອຸປະກອນ</translation>
 <translation id="7447041379556102185">ການຮັບຮູ້ສຽງເວົ້າຢູ່ໃນອຸປະກອນ</translation>
 <translation id="3456536577668402695">ການຄົ້ນຫາ ແລະ ເນື້ອຫາໜ້າເວັບຂອງທ່ານຖືກປະມວນຜົນຢູ່ໃນອຸປະກອນນີ້. ບໍ່ມີຫຍັງຖືກສົ່ງໄປຫາ Brave ຫຼື ຖືກເບິ່ງໂດຍຜູ້ກວດສອບທີ່ເປັນມະນຸດ.</translation>
-<translation id="4751537843966994505">ການຄົ້ນຫາ History ຕາມຄວາມໝາຍ</translation>
-<translation id="6175973371938222040">ຈັດດັດຊະນີໜ້າທີ່ທ່ານເຂົ້າຢ້ຽມຢາມໄວ້ໃນເຄື່ອງເພື່ອໃຫ້ທ່ານສາມາດຄົ້ນຫາ history ຂອງທ່ານຕາມຄວາມໝາຍໄດ້. ການປະມວນຜົນທັງໝົດຢູ່ໃນ device ນີ້.</translation>
 <translation id="9156965752763025780">ການປ່ຽນແປງຂອງທ່ານຈະມີຜົນໃນຄັ້ງຕໍ່ໄປທີ່ທ່ານເປີດໃຊ້ງານ Brave   ໃໝ່.</translation>
 <translation id="7179921470347911571">ເປີດໃໝ່ດຽວນີ້</translation>
 <translation id="1426410128494586442">ແມ່ນ</translation>
@@ -424,6 +421,7 @@
 <translation id="4328541188421002379">ໃຫ້ເອີ້ນຊື່ຊອກເດິນຄ້າດການເປີດໂຊໂບງເເລະບແບບບຸກຕົງ</translation>
 <translation id="4976989127264491396">ຜົງຄ້າ: <ph name="ERROR_MESSAGE"/></translation>
 <translation id="5436069931267876389">ບໍ່ພົບຄອນເທນເນີ</translation>
+<translation id="5831840958001766835">ຈັດລຳດັບລາຍການຄືນໃໝ່. ໃຊ້ປຸ່ມລູກສອນເພື່ອຍ້າຍ.</translation>
 <translation id="6055154402239241620">ການຄວບຄຸມ Traffic</translation>
 <translation id="8134521925475508805">ຕັ້ງຄ່າ site ສະເພາະໃຫ້ເປີດອັດຕະໂນມັດໃນ context ໃດໜຶ່ງ, ສ້າງການແຍກລະຫວ່າງ session ການທ່ອງເວັບຂອງທ່ານ. <ph name="BEGIN_LINK"/>ຮຽນຮູ້ເພີ່ມເຕີມ<ph name="END_LINK"/></translation>
 <translation id="6944848312867106540">ເປີດໃຊ້ການຄວບຄຸມ Traffic</translation>
@@ -476,10 +474,6 @@
 <translation id="7310387888625228830">Leo AI Assistant</translation>
 <translation id="5222974844674487962">ສະແດງປຸ່ມ Brave News</translation>
 <translation id="2085436423511121572">ສະແດງປຸ່ມ Leo AI</translation>
-<translation id="6156323911414505561">ສະແດງແຖບບຸກມາກ</translation>
-<translation id="4054323497808446566">ແຖບບຸ໊ກມາກເປິດເຫັນໄດ້ທຸກໜ້າ</translation>
-<translation id="8693858092251192712">ແຖບບຸ໊ກມາກຖືກເຊື່ອງເມື່ອນອນໃຫມ່ຫນ້າເເທັບ</translation>
-<translation id="7158817046543187970">ແຖບບຸ໊ກມາກເປີດເຫັນບໍ່ໄດ້ທຸກໜ້າ</translation>
 <translation id="3416468988018290825">ສະແດງ URL ໂຕເຕັມຕະຫຼອດ</translation>
 <translation id="5529693968082667490">ສະແດງປຸ່ມຄົ້ນຫາແຖບ</translation>
 <translation id="1013121820689882118">Speedreader</translation>
@@ -611,6 +605,8 @@
 <translation id="5825943197137337319">ໄອທີເທົ່າກັບຂອງສາທາເທົ່ານັ້ນ</translation>
 <translation id="1689062823386843231">ປິດ UDP ບໍ່ຜ່ານ Proxy</translation>
 <translation id="3540231253392253941">ໃຊ້ບໍລິການ Google ສໍາຫັດຂໍ້ຄວາມ Push</translation>
+<translation id="2224032129673914306">ການຄົ້ນຫາ history ຕາມຄວາມໝາຍ</translation>
+<translation id="6045998903985162478">ຈັດດັດຊະນີໜ້າເວັບທີ່ທ່ານໄດ້ເຂົ້າເບິ່ງ ເພື່ອໃຫ້ທ່ານສາມາດຄົ້ນຫາມັນໄດ້ຢ່າງງ່າຍດາຍໃນ history, ແຖບທີ່ເປີດຢູ່ ແລະ Leo.</translation>
 <translation id="5813105074916486721">ການເກັບຮັກສາ history ໃນເຄື່ອງ</translation>
 <translation id="5671611745062206644">Brave ເກັບຮັກສາ browsing history ຂອງທ່ານໄວ້ໃນເຄື່ອງດົນເທົ່າໃດ</translation>
 <translation id="7184510058087008090">1 ວັນ</translation>
@@ -870,6 +866,7 @@
 <translation id="2618193846561624884">ທ່ານຕ້ອງການທີ່ຈະແກ້ໄຂເຄືອຂ່າຍທີ່ມີຢູ່ຢ່າງໃດ?</translation>
 <translation id="1643029991199044105">ໃຊ້ Ctrl-Tab ເພື່ອປ່ຽນຊ່ໍຟ້າອາດນີ້</translation>
 <translation id="2775956301559569472">ສະແດງ Wayback Machine ຢູ່ໜ້າ 404</translation>
+<translation id="8485716275262929774">ໂຫຼດ version ທີ່ບັນທຶກໄວ້ຈາກ Wayback Machine ໂດຍອັດຕະໂນມັດໃນໜ້າ 404</translation>
 <translation id="3095201688102519917">ແຈ້ງເຕືອນຂ້ອຍກ່ອນທີ່ສິນດູຝືນສະບາຍຫລາຍຂ້າງ</translation>
 <translation id="7120553802660696133">ປິດໜ້າງານທັງໝົດເມື່ອປິດແທັບສຸດທ້າຍ</translation>
 <translation id="3394171693948989253">ສະແດງການເຕືອນຄວາມຈໍາເທິນເຕີມເມື່ອທ່ານໃຊ້ Esc ເມື່ອອອກ</translation>
@@ -879,6 +876,8 @@
 <translation id="1529674267267221673">Leo ຈະປາກົດໃນ context menu ເມື່ອທ່ານກົດຂວາເວັບໄຊທ໌. ນີ້ຈະສົ່ງ context ຈາກໜ້າເວັບປະຈຸບັນໄປໃຫ້ Leo.</translation>
 <translation id="5226020406479918122">ໂ່່ນເມືອງໂໝດຟັງເປີ</translation>
 <translation id="3705539672403311123">ເປີດໃຊ້ການຈັດລຽງແທບໃນໜ້າຄົ້ນຫາແທບ. ເມື່ອເປີດ, ລະບົບຈະສົ່ງຊື່ເລື່ອງແລະທີ່ມາຂອງແທບທັງໝົດ (ທີ່ບໍ່ແມ່ນແທບສ່ວນຕົວ) ໃຫ້ກັບ Leo ສໍາລັບຈັດໝວດ. <ph name="BEGIN_LINK"/>ຮຽນຮູ້ເພີ່ມເຕີມ<ph name="END_LINK"/></translation>
+<translation id="2002238795517052616">ສົ່ງເນື້ອຫາໜ້າເວັບສຳລັບການເນັ້ນແຖບ</translation>
+<translation id="2276823422122514441">ສົ່ງຂໍ້ຄວາມຕັດຕອນສັ້ນໆຂອງຂໍ້ຄວາມໃນແຕ່ລະແຖບນຳ, ເພື່ອໃຫ້ແຖບຖືກຈັດກຸ່ມຕາມສິ່ງທີ່ໜ້າເວັບກ່ຽວຂ້ອງແທນທີ່ຈະຕາມຫົວຂໍ້ຂອງມັນ. ຂໍ້ຄວາມຕັດຕອນຖືກສົ່ງໄປຍັງ Leo, ຫຼື ໄປຍັງ model ຂອງທ່ານເອງຖ້າທ່ານເລືອກໜຶ່ງສຳລັບການເນັ້ນແຖບ. ສິ່ງນີ້ຕ້ອງການ <ph name="BEGIN_LINK"/><ph name="SEMANTIC_HISTORY_SEARCH"/><ph name="END_LINK"/>, ເຊິ່ງສ້າງຂໍ້ຄວາມຕັດຕອນຢູ່ໃນ device ຂອງທ່ານ.</translation>
 <translation id="9049433973274198706">ໂມເດວເລີ່ມຕົ້ນສຳລັບບຸmaurice ກຸນ້ອມປະເຕັກ</translation>
 <translation id="2161546758719933059">ໂມເດລທີ່ໃຊ້ເພື່ອຈັດລະບຽບແຖບຂອງທ່ານໃນໂໝດ Tab Focus. <ph name="BEGIN_LINK"/>ສຶກສາເພີ່ມເຕີມ<ph name="END_LINK"/></translation>
 <translation id="8172263161008556851">ສະແດງການສະແນະນຳໃນການສົນທະນາ</translation>
@@ -960,9 +959,6 @@
 <translation id="1838374766361614909">ລ້າງການຄົ້ນຫາ</translation>
 <translation id="5126255551970171328">ຄົ້ນຫາຂໍ້ມູນຄວາມຈໍາ</translation>
 <translation id="7402116145895962069">ຊິງໂມເດລໃນຄອມພິວເຕີຂອງ Ollama ຂອງທ່ານ</translation>
-<translation id="5985516785067818307">ຜູ້ຮ່ວມກອງສຳພາດ</translation>
-<translation id="8347743943525229984">ອະນຸຍາດການສໍານັນການສຳພາດ Brave</translation>
-<translation id="3204080538332044581">ອະນຸຍາດໃຫ້ Brave ສະແດງລິ້ງໄປຫາແບບສຳຫຼວດສ່ວນຕົວໃນໜ້າແຖບໃໝ່. ແບບສຳຫຼວດຊ່ວຍໃຫ້ພວກເຮົາສ້າງຄຸນສົມບັດທີ່ດີຂຶ້ນ ແລະ ວັດແທກປະສິດທິພາບຂອງແຄມເປນໂຄສະນາທີ່ອີງໃສ່ໂປຣແກຣມທ່ອງເວັບ. <ph name="BEGIN_LINK"/>ຮຽນຮູ້ເພີ່ມເຕີມ<ph name="END_LINK"/></translation>
 <translation id="349846214503465941">ເປັດເປັນ Playlist</translation>
 <translation id="7903608716704052878">ເພິ່ມໂຕເອົາໄວ້ເພື່ອເບິ່ງໄດ້ອອຟໄລນ</translation>
 <translation id="384666453982355633">ຕົວເລືອກນີ້ຈະຈະໄດ້ເກັບເອກະສານໄຟໃນ cache ດັ່ງນັ້ນທ່ານເປີດໄດ້ໂດຍບໍ່ມີໄຊໂຄແນໍ</translation>

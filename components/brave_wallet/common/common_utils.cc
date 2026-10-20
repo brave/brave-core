@@ -66,10 +66,6 @@ bool IsPolkadotEnabled() {
   return base::FeatureList::IsEnabled(features::kBraveWalletPolkadotFeature);
 }
 
-bool IsPolkadotAssetDiscoveryEnabled() {
-  return IsPolkadotEnabled() && features::kPolkadotAssetDiscovery.Get();
-}
-
 bool IsPolkadotDAppSupportEnabled() {
   return IsPolkadotEnabled() && features::kPolkadotDAppSupport.Get();
 }
@@ -433,7 +429,8 @@ std::vector<mojom::KeyringId> GetEnabledKeyrings() {
 
 bool CoinSupportsDapps(mojom::CoinType coin) {
   return coin == mojom::CoinType::ETH || coin == mojom::CoinType::SOL ||
-         coin == mojom::CoinType::ADA;
+         coin == mojom::CoinType::ADA ||
+         (coin == mojom::CoinType::DOT && IsPolkadotDAppSupportEnabled());
 }
 
 bool IsDeprecatedAddressBasedCoin(mojom::CoinType coin) {

@@ -39,9 +39,6 @@ BASE_FEATURE(kBraveWalletPolkadotFeature,
 #endif
 );
 
-const base::FeatureParam<bool> kPolkadotAssetDiscovery{
-    &kBraveWalletPolkadotFeature, "polkadot_asset_discovery", false};
-
 const base::FeatureParam<bool> kPolkadotDAppSupport{
     &kBraveWalletPolkadotFeature, "polkadot_dapp_support", false};
 

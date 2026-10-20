@@ -19,7 +19,6 @@
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_types.h"
 #include "components/permissions/permission_manager.h"
-#include "components/permissions/permission_prompt_decision.h"
 #include "components/permissions/permission_request.h"
 #include "components/permissions/permission_request_data.h"
 #include "components/permissions/permission_request_id.h"
@@ -82,6 +81,8 @@ std::optional<RequestType> GetWalletRequestType(
       return RequestType::kBraveSolana;
     case ContentSettingsType::BRAVE_CARDANO:
       return RequestType::kBraveCardano;
+    case ContentSettingsType::BRAVE_POLKADOT:
+      return RequestType::kBravePolkadot;
     default:
       return std::nullopt;
   }
@@ -479,6 +480,7 @@ void BraveWalletPermissionContext::ResetAllPermissions(
   map->ClearSettingsForOneType(ContentSettingsType::BRAVE_ETHEREUM);
   map->ClearSettingsForOneType(ContentSettingsType::BRAVE_SOLANA);
   map->ClearSettingsForOneType(ContentSettingsType::BRAVE_CARDANO);
+  map->ClearSettingsForOneType(ContentSettingsType::BRAVE_POLKADOT);
 }
 
 }  // namespace permissions

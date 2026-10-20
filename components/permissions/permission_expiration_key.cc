@@ -5,8 +5,6 @@
 
 #include "brave/components/permissions/permission_expiration_key.h"
 
-#include <utility>
-
 #include "base/check.h"
 #include "base/strings/string_number_conversions.h"
 

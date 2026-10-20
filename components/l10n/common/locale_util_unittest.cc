@@ -6,7 +6,6 @@
 #include "brave/components/l10n/common/locale_util.h"
 
 #include "brave/components/l10n/common/test/scoped_default_locale.h"
-#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=LocaleUtilTest*

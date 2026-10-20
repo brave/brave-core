@@ -99,13 +99,14 @@ class BraveVpnServiceImpl : public BraveVpnService,
                            CreateSupportTicketCallback callback) override;
   void GetSupportData(GetSupportDataCallback callback) override;
   void ResetConnectionState() override;
-  void EnableOnDemand(bool enable) override;
-  void GetOnDemandState(GetOnDemandStateCallback callback) override;
+  void EnableAutoReconnect(bool enable) override;
+  void GetAutoReconnectState(GetAutoReconnectStateCallback callback) override;
   void EnableSmartProxyRouting(bool enable) override;
   void GetSmartProxyRoutingState(
       GetSmartProxyRoutingStateCallback callback) override;
   void AllowLanTraffic(bool allow) override;
   void GetAllowLanTraffic(GetAllowLanTrafficCallback callback) override;
+  void ReconnectToAgent() override {}
 #else   // !BUILDFLAG(IS_ANDROID)
   void GetPurchaseToken(GetPurchaseTokenCallback callback) override;
 #endif  // !BUILDFLAG(IS_ANDROID)

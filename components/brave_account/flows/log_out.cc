@@ -10,7 +10,6 @@
 #include "brave/components/brave_account/endpoint_client/with_headers.h"
 #include "brave/components/brave_account/endpoints/auth_logout.h"
 #include "brave/components/brave_account/flows/make_request.h"
-#include "brave/components/brave_account/state_internal.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
 namespace brave_account {

@@ -10,7 +10,6 @@
 #include "components/bookmarks/browser/bookmark_model.h"
 #include "components/bookmarks/test/test_bookmark_client.h"
 #include "components/omnibox/browser/shortcuts_backend.h"
-#include "components/prefs/pref_registry_simple.h"
 
 BraveFakeAutocompleteProviderClient::BraveFakeAutocompleteProviderClient()
     : bookmark_model_(bookmarks::TestBookmarkClient::CreateModel()),

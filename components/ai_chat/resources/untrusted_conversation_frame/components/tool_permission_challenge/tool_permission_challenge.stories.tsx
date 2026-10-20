@@ -62,9 +62,11 @@ export const _ToolPermissionChallenge = {
         plan: args.hasPlan
           ? 'I am going to group your tabs by category.'
           : undefined,
+        title: args.isWebTool ? 'Tool permission request' : undefined,
         description: args.isWebTool
           ? 'Brave AI would like to execute **get_stock_price** on **https://example.com**'
           : undefined,
+        implications: undefined,
         supportsAllowSession: args.isWebTool,
       },
     }

@@ -18,7 +18,6 @@
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
-#include "brave/browser/serp_metrics/serp_metrics_tab_helper.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
@@ -27,7 +26,6 @@
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
-#include "brave/components/serp_metrics/serp_metrics_feature.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/web_discovery/buildflags/buildflags.h"
@@ -104,10 +102,6 @@
 #include "brave/browser/web_discovery/web_discovery_tab_helper.h"
 #endif
 
-#if defined(TOOLKIT_VIEWS)
-#include "brave/browser/onboarding/onboarding_tab_helper.h"
-#endif
-
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #endif
@@ -166,10 +160,6 @@ void AttachTabHelpers(content::WebContents* web_contents) {
   brave_perf_predictor::PerfPredictorTabHelper::CreateForWebContents(
       web_contents);
 
-  if (base::FeatureList::IsEnabled(serp_metrics::kSerpMetricsFeature)) {
-    serp_metrics::SerpMetricsTabHelper::MaybeCreateForWebContents(web_contents);
-  }
-
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
   brave_ads::AdsTabHelper::CreateForWebContents(web_contents);
   brave_ads::CreativeSearchResultAdTabHelper::MaybeCreateForWebContents(
@@ -191,10 +181,6 @@ void AttachTabHelpers(content::WebContents* web_contents) {
 
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
   BraveNewsTabHelper::MaybeCreateForWebContents(web_contents);
-#endif
-
-#if defined(TOOLKIT_VIEWS)
-  OnboardingTabHelper::MaybeCreateForWebContents(web_contents);
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)

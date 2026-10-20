@@ -11,7 +11,6 @@
 #include "base/check_deref.h"
 #include "base/functional/bind.h"
 #include "base/types/expected.h"
-#include "brave/components/brave_account/brave_account_utils.h"
 #include "brave/components/brave_account/endpoint_client/with_headers.h"
 #include "brave/components/brave_account/flows/make_request.h"
 #include "brave/components/brave_account/mojom/login.mojom.h"
@@ -33,8 +32,7 @@ Login::Login(AccountStatePrefs& account_state_prefs,
 
 Login::~Login() = default;
 
-void Login::Step1(mojom::Service initiating_service,
-                  const std::string& email,
+void Login::Step1(const std::string& email,
                   const std::string& serialized_ke1,
                   mojom::Authentication::LoginStep1Callback callback) {
   CHECK(!email.empty());
@@ -42,8 +40,6 @@ void Login::Step1(mojom::Service initiating_service,
 
   auto request = MakeRequest<endpoints::LoginInit::Request>();
   request.body.email = email;
-  request.body.initiating_service_name =
-      kServiceToString.at(initiating_service);
   request.body.serialized_ke1 = serialized_ke1;
 
   SendFlowOwnedRequest<endpoints::LoginInit>(

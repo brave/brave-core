@@ -3,7 +3,11 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+#include <vector>
+
 #include "base/functional/bind.h"
+#include "base/strings/strcat.h"
+#include "base/test/bind.h"
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/app/brave_command_ids.h"
@@ -28,6 +32,7 @@
 #include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
+#include "content/public/test/test_navigation_observer.h"
 #include "content/public/test/url_loader_interceptor.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/page_transition_types.h"
@@ -45,6 +50,13 @@
 #include "url/gurl.h"
 
 namespace page_actions {
+
+namespace {
+
+constexpr char kSnapshotURL[] =
+    "https://web.archive.org/web/20240226123456/https://example.com/";
+
+}  // namespace
 
 class WaybackMachinePageActionBrowserTest : public InProcessBrowserTest {
  protected:
@@ -293,6 +305,53 @@ IN_PROC_BROWSER_TEST_F(WaybackMachinePageActionBrowserTest,
     SCOPED_TRACE("kNotAvailable");
     ExpectNotAvailableUI(bubble);
   }
+}
+
+IN_PROC_BROWSER_TEST_F(WaybackMachinePageActionBrowserTest,
+                       CheckNavigatesToSnapshot) {
+  content::URLLoaderInterceptor interceptor(base::BindRepeating(
+      [](content::URLLoaderInterceptor::RequestParams* params) {
+        const GURL& url = params->url_request.url;
+        if (url.host() == GURL(kWaybackQueryURL).host()) {
+          content::URLLoaderInterceptor::WriteResponse(
+              "HTTP/1.1 200 OK\nContent-Type: application/json\n\n",
+              base::StrCat({R"({"archived_snapshots":{"closest":{"url":")",
+                            kSnapshotURL, R"("}}})"}),
+              params->client.get());
+          return true;
+        }
+        if (url == GURL(kSnapshotURL)) {
+          content::URLLoaderInterceptor::WriteResponse(
+              "HTTP/1.1 200 OK\nContent-Type: text/html\n\n",
+              "<html>Snapshot</html>", params->client.get());
+          return true;
+        }
+        return false;
+      }));
+
+  std::vector<WaybackState> states;
+  auto subscription = GetTabHelper()->RegisterWaybackStateChangedCallback(
+      base::BindLambdaForTesting(
+          [&](WaybackState state) { states.push_back(state); }));
+
+  SetWaybackState(WaybackState::kNeedToCheck);
+  WaybackMachineBubbleView* bubble = ClickIconAndGetBubble();
+  ASSERT_NE(bubble, nullptr);
+  bubble->GetDialogClientView()->ResetViewShownTimeStampForTesting();
+  ASSERT_NE(bubble->GetOkButton(), nullptr);
+
+  content::TestNavigationObserver observer{GURL(kSnapshotURL)};
+  observer.WatchExistingWebContents();
+  ClickButton(bubble->GetOkButton());
+  observer.Wait();
+
+  EXPECT_EQ(states, (std::vector<WaybackState>{
+                        WaybackState::kNeedToCheck, WaybackState::kFetching,
+                        WaybackState::kFound, WaybackState::kLoaded}));
+  EXPECT_EQ(GetTabHelper()->wayback_state(), WaybackState::kLoaded);
+  ASSERT_TRUE(GetTabHelper()->snapshot_info());
+  EXPECT_EQ(GetTabHelper()->snapshot_info()->url, GURL(kSnapshotURL));
+  EXPECT_TRUE(base::test::RunUntil([&] { return !GetBubbleView(); }));
 }
 
 class WaybackMachineAutoShowBubbleBrowserTest

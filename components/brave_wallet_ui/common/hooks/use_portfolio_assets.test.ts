@@ -28,7 +28,7 @@ import { WalletApiDataOverrides } from '../../constants/testing_types'
 import { LOCAL_STORAGE_KEYS } from '../constants/local-storage-keys'
 
 const mockBatBalance = '1000000000000000000' // 1 BAT
-const mockSpotPrice = '3873.78'
+const mockSpotPrice = '0.10'
 
 const createTokenBalanceRegistry = () => {
   const tokenBalancesRegistry = createEmptyTokenBalancesRegistry()

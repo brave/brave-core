@@ -7,10 +7,7 @@
 
 #include <stdint.h>
 
-#include <algorithm>
-#include <cmath>
 #include <ctime>
-#include <memory>
 #include <optional>
 #include <utility>
 #include <vector>

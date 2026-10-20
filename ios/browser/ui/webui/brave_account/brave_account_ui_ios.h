@@ -6,8 +6,6 @@
 #ifndef BRAVE_IOS_BROWSER_UI_WEBUI_BRAVE_ACCOUNT_BRAVE_ACCOUNT_UI_IOS_H_
 #define BRAVE_IOS_BROWSER_UI_WEBUI_BRAVE_ACCOUNT_BRAVE_ACCOUNT_UI_IOS_H_
 
-#include <string>
-
 #include "brave/components/brave_account/brave_account_ui_base.h"
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
 #include "brave/ios/browser/brave_account/brave_account_service_factory_ios.h"
@@ -41,8 +39,7 @@ class BraveAccountUIIOS
   void GetDialogMode(GetDialogModeCallback callback) override;
 
   // brave_account::mojom::DialogOpener:
-  void OpenDialog(const std::string& initiating_service_name,
-                  brave_account::mojom::DialogMode dialog_mode) override;
+  void OpenDialog(brave_account::mojom::DialogMode dialog_mode) override;
 
   void BindInterface(
       mojo::PendingReceiver<brave_account::mojom::DialogController>

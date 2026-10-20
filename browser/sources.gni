@@ -14,7 +14,6 @@ import("//brave/browser/ephemeral_storage/sources.gni")
 import("//brave/browser/gcm_driver/sources.gni")
 import("//brave/browser/misc_metrics/sources.gni")
 import("//brave/browser/net/sources.gni")
-import("//brave/browser/onboarding/sources.gni")
 import("//brave/browser/perf/sources.gni")
 import("//brave/browser/permissions/sources.gni")
 import("//brave/browser/profiles/sources.gni")
@@ -149,6 +148,7 @@ brave_chrome_browser_deps = [
   "//brave/browser/download",
   "//brave/browser/drag_drop",
   "//brave/browser/file_select",
+  "//brave/browser/image_metadata_stripper",
   "//brave/browser/metrics/buildflags",
   "//brave/browser/misc_metrics",
   "//brave/browser/misc_metrics:misc_metrics_impl",
@@ -158,6 +158,7 @@ brave_chrome_browser_deps = [
   "//brave/browser/serp_metrics",
   "//brave/browser/serp_metrics:impl",
   "//brave/browser/skus",
+  "//brave/browser/speech:chromium_impl",
   "//brave/browser/sync",
   "//brave/browser/themes",
   "//brave/browser/ui",
@@ -414,7 +415,6 @@ if (enable_local_ai) {
     "//brave/browser/history_embeddings",
     "//brave/browser/history_embeddings:status",
     "//brave/browser/speech",
-    "//brave/browser/speech:chromium_impl",
     "//brave/browser/ui/webui/local_ai",
     "//brave/components/local_ai/core",
     "//brave/components/local_ai/core:features",
@@ -706,10 +706,9 @@ if (is_android) {
 }
 
 if (toolkit_views) {
-  brave_chrome_browser_sources += brave_browser_onboarding_sources
-
-  brave_chrome_browser_deps += brave_browser_onboarding_deps
   brave_chrome_browser_deps += [
+    "//brave/browser/onboarding",
+    "//brave/browser/onboarding:impl",
     "//brave/browser/ui/darker_theme",
     "//brave/components/sidebar/browser",
   ]
@@ -737,6 +736,7 @@ if (enable_tor) {
     "//brave/components/tor",
     "//brave/components/tor:common",
     "//brave/components/tor:pref_names",
+    "//brave/components/tor/common",
   ]
 }
 

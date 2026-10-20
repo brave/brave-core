@@ -6,9 +6,6 @@
 // types
 import { BraveWallet } from '../../constants/types'
 
-// utils
-import { getAssetSymbol } from '../../utils/meld_utils'
-
 // hooks
 import { useGetMeldCryptoCurrenciesQuery } from '../slices/api.slice'
 
@@ -29,7 +26,7 @@ export const useFindBuySupportedToken = (
     && options?.find(
       (asset) =>
         asset.chainId?.toLowerCase() === token.chainId.toLowerCase()
-        && getAssetSymbol(asset).toLowerCase() === token.symbol.toLowerCase(),
+        && asset.symbol.toLowerCase() === token.symbol.toLowerCase(),
     )
 
   const foundTokenByContractAddress =
@@ -44,8 +41,7 @@ export const useFindBuySupportedToken = (
   const foundTokenBySymbol =
     token
     && options?.find(
-      (asset) =>
-        getAssetSymbol(asset).toLowerCase() === token.symbol.toLowerCase(),
+      (asset) => asset.symbol.toLowerCase() === token.symbol.toLowerCase(),
     )
 
   // render

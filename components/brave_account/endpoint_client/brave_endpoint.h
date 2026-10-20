@@ -26,7 +26,8 @@ struct BraveEndpoint {
 
   static GURL URL() {
     return GURL(base::StrCat({url::kHttpsScheme, url::kStandardSchemeSeparator,
-                              brave_domains::GetServicesDomain(Prefix.value)}))
+                              brave_domains::GetServicesDomain(
+                                  Prefix.value, brave_domains::STAGING)}))
         .Resolve(Path.value);
   }
 };

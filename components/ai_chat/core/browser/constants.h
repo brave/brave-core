@@ -93,6 +93,10 @@ inline constexpr size_t kTabListChunkSize = 75;
 // `kTabListChunkSize` tabs.
 inline constexpr size_t kMaxPassagesPerTab = 2;
 inline constexpr size_t kMaxPassageBytes = 256;
+// Bounds the page excerpts one tab list carries when it isn't sent in chunks,
+// at what a single `kTabListChunkSize` chunk can carry.
+inline constexpr size_t kMaxPassageBytesPerTabList =
+    kTabListChunkSize * kMaxPassagesPerTab * kMaxPassageBytes;
 
 // Model name to send to the server for Claude Haiku model.
 inline constexpr char kClaudeHaikuModelName[] = "claude-3-haiku";

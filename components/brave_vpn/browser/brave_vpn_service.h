@@ -124,6 +124,7 @@ class BraveVpnService : public mojom::ServiceHandler, public KeyedService {
   void NotifyConnectionStateChanged(mojom::ConnectionState state);
   void NotifySelectedRegionChanged(mojom::RegionPtr region);
   void NotifySmartProxyRoutingStateChanged(bool enabled);
+  void NotifyAgentFailure();
 #endif  // !BUILDFLAG(IS_ANDROID)
 
   SEQUENCE_CHECKER(sequence_checker_);

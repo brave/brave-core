@@ -6,7 +6,6 @@
 #include "brave/components/ai_chat/content/browser/content_tool.h"
 
 #include <string>
-#include <vector>
 
 #include "base/functional/callback_helpers.h"
 #include "base/test/test_future.h"
@@ -228,6 +227,10 @@ TEST_F(ContentToolTest, RequiresPermissionChallengeUntilGranted) {
   auto& challenge = std::get<mojom::PermissionChallengePtr>(result);
   ASSERT_TRUE(challenge);
 
+  // Website tool challenges get their own heading rather than the default
+  // "Security warning".
+  EXPECT_EQ(challenge->title, "Tool permission request");
+
   // The challenge describes the site-registered tool name and site origin in
   // a human-readable, markdown-formatted way (instead of the mangled
   // model-facing tool name).
@@ -236,7 +239,8 @@ TEST_F(ContentToolTest, RequiresPermissionChallengeUntilGranted) {
             "**https\\:\\/\\/example\\.com**");
   EXPECT_TRUE(challenge->supports_allow_session);
 
-  tool.UserPermissionGranted(/*tool_use_id=*/"any");
+  tool.UserPermissionGranted(/*tool_use_id=*/"any",
+                             *mojom::PermissionChallenge::New());
 
   auto after = tool.RequiresUserInteractionBeforeHandling(*tool_use);
   ASSERT_TRUE(std::holds_alternative<bool>(after));
@@ -347,7 +351,8 @@ TEST_F(ContentToolTest,
   // by the server's alignment check).
   auto mojo_tool = MakeScriptTool("echo", "");
   ContentTool tool(*mojo_tool, weak_document());
-  tool.UserPermissionGranted(/*tool_use_id=*/"any");
+  tool.UserPermissionGranted(/*tool_use_id=*/"any",
+                             *mojom::PermissionChallenge::New());
 
   auto tool_use = mojom::ToolUseEvent::New();
   EXPECT_EQ(tool.GetPermissionChallengeDescription(*tool_use),

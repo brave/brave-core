@@ -6,33 +6,25 @@
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 
 #include <algorithm>
-#include <compare>
 #include <functional>
-#include <ios>
 #include <iterator>
 #include <memory>
 #include <optional>
 #include <string>
 #include <string_view>
-#include <type_traits>
 #include <utility>
 #include <vector>
 
 #include "base/check.h"
 #include "base/check_deref.h"
-#include "base/containers/adapters.h"
-#include "base/containers/fixed_flat_set.h"
 #include "base/containers/map_util.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
 #include "base/logging.h"
-#include "base/numerics/clamped_math.h"
-#include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"
 #include "base/time/time.h"
-#include "base/types/strong_alias.h"
 #include "base/uuid.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_database.h"
@@ -67,7 +59,6 @@
 #include "ui/base/clipboard/clipboard_buffer.h"
 #include "ui/base/clipboard/scoped_clipboard_writer.h"
 #include "url/gurl.h"
-#include "url/url_constants.h"
 
 namespace ai_chat {
 namespace {
@@ -1164,14 +1155,16 @@ bool AIChatService::IsAIChatHistoryEnabled() {
 }
 
 std::unique_ptr<AssociatedContentDelegate>
-AIChatService::RestoreWorkspaceAssociatedContentFromUrl(const GURL& url) {
+AIChatService::RestoreWorkspaceAssociatedContentFromUrl(
+    const GURL& url,
+    const std::string& content_uuid) {
   // Note: This can happen if there's a workspace in the DB but the flag has
   // been disabled.
   if (!workspace_content_restorer_) {
     return nullptr;
   }
 
-  return workspace_content_restorer_.Run(url);
+  return workspace_content_restorer_.Run(url, content_uuid);
 }
 
 void AIChatService::OnRequestInProgressChanged(ConversationHandler* handler,

@@ -54,6 +54,10 @@ class BraveWalletTabHelper
       content::RenderFrameHost* const frame_host,
       mojo::PendingReceiver<mojom::CardanoProvider> receiver);
 
+  static void BindPolkadotProvider(
+      content::RenderFrameHost* const frame_host,
+      mojo::PendingReceiver<mojom::PolkadotProvider> receiver);
+
   void AddSolanaConnectedAccount(const content::GlobalRenderFrameHostId& id,
                                  const std::string& account);
   void RemoveSolanaConnectedAccount(const content::GlobalRenderFrameHostId& id,
@@ -111,6 +115,7 @@ class BraveWalletTabHelper
   mojo::UniqueReceiverSet<mojom::EthereumProvider> ethereum_provider_receivers_;
   mojo::UniqueReceiverSet<mojom::SolanaProvider> solana_provider_receivers_;
   mojo::UniqueReceiverSet<mojom::CardanoProvider> cardano_provider_receivers_;
+  mojo::UniqueReceiverSet<mojom::PolkadotProvider> polkadot_provider_receivers_;
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 };

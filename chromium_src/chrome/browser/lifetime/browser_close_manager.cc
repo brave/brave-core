@@ -5,6 +5,17 @@
 
 #include "chrome/browser/lifetime/browser_close_manager.h"
 
+namespace sidebar {
+
+// Web panels are backed by pinned tabs, so they have to be closed before
+// ProfileManager::ShutdownSessionServices() finalizes the session. Otherwise
+// they come back as ordinary pinned tabs on the next launch. The per-window
+// hook in UnloadController::OnWindowClosing() runs too late here, as quitting
+// shuts the session services down before any window starts closing.
+void CloseAllWebPanels();
+
+}  // namespace sidebar
+
 #define StartClosingBrowsers StartClosingBrowsers_ChromiumImpl
 #define CancelBrowserClose CancelBrowserClose_ChromiumImpl
 

@@ -3,8 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_account/flows/update_email.h"
-
 #include <optional>
 #include <string>
 
@@ -19,7 +17,6 @@
 #include "brave/components/brave_account/brave_account_service_test.h"
 #include "brave/components/brave_account/brave_account_state_prefs.h"
 #include "brave/components/brave_account/endpoints/auth_validate.h"
-#include "brave/components/brave_account/mojom/brave_account.mojom.h"
 #include "components/prefs/pref_service.h"
 #include "net/http/http_status_code.h"
 #include "testing/gtest/include/gtest/gtest.h"

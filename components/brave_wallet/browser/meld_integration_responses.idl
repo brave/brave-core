@@ -20,12 +20,12 @@ namespace meld_integration_responses {
 
     dictionary CryptoCurrency {
         DOMString currencyCode;
-        DOMString? name;
-        DOMString? chainCode;
-        DOMString? chainName;
+        DOMString name;
+        DOMString chainCode;
+        DOMString chainName;
         DOMString? chainId;
         DOMString? contractAddress;
-        DOMString? symbolImageUrl;
+        DOMString symbolImageUrl;
     };
 
     dictionary FiatCurrency {

@@ -6,7 +6,6 @@
 #include "brave/components/ntp_background_images/browser/wallpapers/ntp_new_tab_takeover_wallpaper_provider.h"
 
 #include <memory>
-#include <utility>
 
 #include "base/memory/scoped_refptr.h"
 #include "base/test/gmock_callback_support.h"

@@ -45,6 +45,7 @@ substitutions:
             case RequestType::kBraveCardano:
             case RequestType::kBravePolkadot:
             case RequestType::kBraveGoogleSignInPermission:
+            case RequestType::kBraveOnDeviceSpeechModel:
             case RequestType::kBraveOpenAIChat:
               return IDR_ANDROID_INFOBAR_PERMISSION_COOKIE;\2
 
@@ -60,6 +61,7 @@ substitutions:
             case RequestType::kBraveCardano:
             case RequestType::kBravePolkadot:
             case RequestType::kBraveGoogleSignInPermission:
+            case RequestType::kBraveOnDeviceSpeechModel:
             case RequestType::kBraveOpenAIChat:
               return vector_icons::kExtensionOldIcon;\2
 
@@ -87,6 +89,7 @@ substitutions:
             case RequestType::kBraveOpenAIChat:
               return ContentSettingsType::BRAVE_OPEN_AI_CHAT;\2
             case RequestType::kWidevine:
+            case RequestType::kBraveOnDeviceSpeechModel:
         #if !BUILDFLAG(ENABLE_BRAVE_WALLET)
             case RequestType::kBraveEthereum:
             case RequestType::kBraveSolana:
@@ -120,5 +123,7 @@ substitutions:
         #endif
             case permissions::RequestType::kBraveGoogleSignInPermission:
               return "brave_google_sign_in";
+            case permissions::RequestType::kBraveOnDeviceSpeechModel:
+              return "brave_on_device_speech_model";
             case permissions::RequestType::kBraveOpenAIChat:
               return "brave_ai_chat";\2

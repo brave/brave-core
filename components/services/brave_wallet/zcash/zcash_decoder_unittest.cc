@@ -10,7 +10,6 @@
 #include <vector>
 
 #include "base/strings/string_number_conversions.h"
-#include "base/test/bind.h"
 #include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_wallet/common/features.h"

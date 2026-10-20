@@ -193,9 +193,6 @@
 <translation id="5668852698659986622">Włącz reklamy sponsorowane</translation>
 <translation id="431194936581466649">Wesprzyj misję Brave, aby zbudować niezależny, stawiający użytkownika na pierwszym miejscu Web, dzięki reklamom sponsorowanym. Mierzymy skuteczność reklam w sposób prywatny, bez identyfikowania Ciebie.</translation>
 <translation id="1939813747486101115">Dowiedz się więcej o sponsorowanych reklamach</translation>
-<translation id="8347743943525229984">Zezwalaj na ankiety Brave</translation>
-<translation id="6022939994702081659">Umożliwia Brave wyświetlanie linków do prywatnych ankiet na stronie nowej karty. Ankiety pomagają nam tworzyć lepsze funkcje i mierzyć skuteczność kampanii reklamowych w przeglądarce.</translation>
-<translation id="7746496306508543965">Dowiedz się więcej o ankietach Brave</translation>
 <translation id="410351446219883937">Autoodtwarzanie</translation>
 <translation id="7445411102860286510">Zezwalaj witrynom na automatyczne odtwarzanie wyciszonych filmów (zalecane)</translation>
 <translation id="7837721118676387834">Zezwalaj określonej stronie na automatyczne odtwarzanie wyciszonych filmów.</translation>
@@ -223,6 +220,7 @@
 <translation id="9040069796107003510">Ikona nagród Brave</translation>
 <translation id="6333347122924254968">Pokaż ikonę Nagród Brave w pasku adresu</translation>
 <translation id="4393974575368329991">Pasek nawigacji na dole</translation>
+<translation id="8727059712928806451">Włącz dolny pasek</translation>
 <translation id="1834226716203076292">Wyświetlaj dolny pasek zapewniający szybki dostęp do strony głównej, zakładek i wyszukiwania</translation>
 <translation id="1422686363939271829">To ustawienie jest wyłączone, gdy wybrana jest dolna pozycja paska adresu</translation>
 <translation id="6587448235155023666">Zmiany zostaną zastosowane po ponownym uruchomieniu Brave</translation>
@@ -398,6 +396,12 @@ Czy na pewno chcesz to zrobić?</translation>
 <translation id="8793108040181436796">Widżety</translation>
 <translation id="8643377320501056697">Pokaż popularne strony</translation>
 <translation id="7275773481201277457">Pokaż statystyki Brave</translation>
+<translation id="8516804522688861636">Pokaż często odwiedzane strony</translation>
+<translation id="4546260624932151782">Pokaż ulubione</translation>
+<translation id="5313967007315987356">Dodaj stronę</translation>
+<translation id="1773147648972887693">Pokaż często odwiedzane</translation>
+<translation id="752098910262610337">Pokaż skróty</translation>
+<translation id="7134741506051403308">Ukryj widżet</translation>
 <translation id="7462178177755090262">Ekran startowy</translation>
 <translation id="5365434987337264071">Ostatnia otwarta karta</translation>
 <translation id="6019856124237323989">{HOURS, plural,
@@ -1001,6 +1005,13 @@ Jeżeli nie zaakceptujesz tego żądania, połączenie z VPN nie zostanie ponown
 <translation id="7530313002494358590">Włączenie lub wyłączenie funkcji przeglądarki Brave wymaga ponownego uruchomienia w celu zastosowania zmian. Kliknij <ph name="BEGIN_BOLD"/>Uruchom ponownie teraz<ph name="END_BOLD"/> po zakończeniu aktualizacji Brave Origin.</translation>
 <translation id="1028940738207645746">Na pewno chcesz zresetować wszystkie ustawienia do domyślnych?</translation>
 <translation id="5939518447894949180">Resetuj</translation>
+<translation id="3222790865318305905">Osiągnięto limit aktywacji</translation>
+<translation id="3787857711016546034">Aby zapobiegać oszustwom, aktywacje Origin są ograniczone. Zawsze jednak możesz poprosić o więcej aktywacji, aby używać licencji Origin na większej liczbie urządzeń. Wystarczy kliknąć opcję Poproś o więcej aktywacji lub <ph name="CONTACT_SUPPORT"/>, aby uzyskać pomoc.</translation>
+<translation id="6760819753412779585">skontaktuj się z pomocą techniczną</translation>
+<translation id="571697836019670200">Poproś o więcej aktywacji</translation>
+<translation id="9019545131475425538">Przetwarzanie…</translation>
+<translation id="7242700630179071243">Gotowe do aktywacji</translation>
+<translation id="5463918917265356202">Brave Origin jest teraz aktywny na tym urządzeniu. Aby zacząć korzystać z tej funkcji, musisz ponownie uruchomić przeglądarkę. Czy chcesz uruchomić ją ponownie teraz?</translation>
 <translation id="8554205386170195281">Zakup</translation>
 <translation id="8613144770663526433">Zaloguj się za pomocą portfela Brave</translation>
 <translation id="3696514931437952995">Logujesz się do <ph name="ORIGIN"/>. Portfel Brave udostępni adres Twojego portfela <ph name="ORIGIN"/>.</translation>

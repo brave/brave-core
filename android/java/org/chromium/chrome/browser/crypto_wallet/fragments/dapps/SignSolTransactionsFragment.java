@@ -291,7 +291,16 @@ public class SignSolTransactionsFragment extends WalletBottomSheetDialogFragment
 
         getWalletModel()
                 .getDappsModel()
-                .notifySignSolTransactionsRequestProcessed(isApproved, mSignSolTransactionsRequest);
+                .notifySignSolTransactionsRequestProcessed(
+                        isApproved,
+                        mSignSolTransactionsRequest,
+                        hasMoreRequests -> {
+                            // The next request arrives through fetchSignSolTransactionsRequests().
+                            if (!isAdded() || hasMoreRequests) {
+                                return;
+                            }
+                            getWalletFragmentCallback().onAllRequestsHandled();
+                        });
     }
 
     private void updateAccount(AccountId fromAccountId) {

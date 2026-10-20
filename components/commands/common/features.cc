@@ -4,7 +4,6 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #include "brave/components/commands/common/features.h"
-#include "base/feature_list.h"
 
 namespace commands::features {
 

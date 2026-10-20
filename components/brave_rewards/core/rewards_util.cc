@@ -8,7 +8,6 @@
 #include <string>
 
 #include "base/check.h"
-#include "base/no_destructor.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/l10n/common/ofac_sanction_util.h"

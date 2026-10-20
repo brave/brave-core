@@ -7,7 +7,7 @@ vars = {
 
 deps = {
   "vendor/omaha": {
-    "url": "https://github.com/brave/omaha.git@32383a4dc9c50a88e42be0e03e5b2f2ba7ad058b",
+    "url": "https://github.com/brave/omaha.git@846b535b45365499c9097059502aaae2ed69fc85",
     "condition": "checkout_win",
   },
   "vendor/sparkle": {

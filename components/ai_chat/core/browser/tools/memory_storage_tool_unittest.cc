@@ -6,22 +6,14 @@
 #include "brave/components/ai_chat/core/browser/tools/memory_storage_tool.h"
 
 #include <memory>
-#include <optional>
 #include <string>
 
-#include "base/functional/bind.h"
-#include "base/functional/callback.h"
-#include "base/run_loop.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
-#include "base/test/values_test_util.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-data-view.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
-#include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
-#include "brave/components/ai_chat/core/common/prefs.h"
 #include "build/build_config.h"
 #include "build/buildflag.h"
 #include "components/prefs/testing_pref_service.h"

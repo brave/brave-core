@@ -29,3 +29,13 @@ substitutions:
     regex:
       pattern: 'std::make_unique<chrome::BrowserTabStripModelDelegate>'
       replace: 'std::make_unique<chrome::BraveTabStripModelDelegate>'
+
+  - description: |-
+      Close windows left with only shared pinned tabs.
+
+      Shared pinned tabs are mirrored in every window of the profile, so a
+      window whose last regular tab closes is closed when another window has
+      the same tabs.
+    after_function_impl:
+      function_name: Browser::OnTabClosing
+      code: 'brave_tabs::MaybeCloseWindowWithOnlySharedPinnedTabs(this);'

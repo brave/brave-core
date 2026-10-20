@@ -5,12 +5,10 @@
 
 #include "brave/components/ai_chat/core/browser/ollama/ollama_model_fetcher.h"
 
-#include <algorithm>
 #include <set>
 #include <string>
 #include <utility>
 
-#include "base/json/json_reader.h"
 #include "base/logging.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/values.h"

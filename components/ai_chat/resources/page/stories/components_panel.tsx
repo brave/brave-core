@@ -30,13 +30,24 @@ import {
   SelectedChatDetails,
 } from '../state/active_chat_context'
 
+const makeWorkspaceContent = (uuid: string): Mojom.AssociatedContent => ({
+  uuid,
+  contentType: Mojom.ContentType.Workspace,
+  title: 'Workspace',
+  contentId: 0,
+  url: { url: `workspace://${uuid}` },
+  contentUsedPercentage: 100,
+  conversationTurnUuid: 'turn-uuid',
+  toolsAttached: true,
+})
+
 const CONVERSATIONS: Mojom.Conversation[] = [
   {
     title: 'Star Trek Poem',
     uuid: '1',
     hasContent: true,
     updatedTime: { internalValue: BigInt('13278618001000000') },
-    associatedContent: [],
+    associatedContent: [makeWorkspaceContent('workspace-1')],
     modelKey: undefined,
     totalTokens: BigInt(0),
     trimmedTokens: BigInt(0),
@@ -48,7 +59,7 @@ const CONVERSATIONS: Mojom.Conversation[] = [
     uuid: '2',
     hasContent: true,
     updatedTime: { internalValue: BigInt('13278618001000001') },
-    associatedContent: [],
+    associatedContent: [makeWorkspaceContent('workspace-2')],
     modelKey: undefined,
     totalTokens: BigInt(0),
     trimmedTokens: BigInt(0),
@@ -364,6 +375,7 @@ type CustomArgs = {
   suggestionStatus: keyof typeof Mojom.SuggestionGenerationStatus
   isMobile: boolean
   isHistoryEnabled: boolean
+  isWorkspaceToolsEnabled: boolean
   isAIChatAgentProfileFeatureEnabled: boolean
   isAIChatAgentProfile: boolean
   isStandalone: boolean
@@ -380,6 +392,7 @@ type CustomArgs = {
   isNewConversation: boolean
   ratingTurnUuid: { isLiked: boolean; turnUuid: string } | undefined
   isTemporaryChat: boolean
+  isWaitingForVisionModelSwitch: boolean
   isDragActive: boolean
   isDragOver: boolean
   skillDialog: Mojom.Skill | null
@@ -415,6 +428,7 @@ const args: CustomArgs = {
   model: MODELS[0].key,
   isMobile: false,
   isHistoryEnabled: true,
+  isWorkspaceToolsEnabled: true,
   isAIChatAgentProfileFeatureEnabled: false,
   isAIChatAgentProfile: false,
   isStandalone: false,
@@ -431,6 +445,7 @@ const args: CustomArgs = {
   isNewConversation: false,
   ratingTurnUuid: undefined,
   isTemporaryChat: false,
+  isWaitingForVisionModelSwitch: false,
   isDragActive: false,
   isDragOver: false,
   skillDialog: null,
@@ -580,6 +595,7 @@ function StoryContext(
     selectedConversationId: CONVERSATIONS[0].uuid,
     updateSelectedConversationId: () => {},
     createNewConversation: () => {},
+    createNewConversationWithWorkspace: () => {},
     isMainConversation: argsRef.current.isDefaultConversation,
     openMainConversation: () => {},
   }
@@ -660,6 +676,10 @@ function StoryContext(
               capabilitiesEnabled: argsRef.current.capabilitiesEnabled.map(
                 (value) => Mojom.ConversationCapability[value],
               ),
+              visionModelSwitchKey: argsRef.current
+                .isWaitingForVisionModelSwitch
+                ? MODELS.find((model) => model.visionSupport)?.key
+                : undefined,
             },
           })
         },
@@ -685,6 +705,7 @@ function StoryContext(
         isAIChatAgentProfile: args.isAIChatAgentProfile,
         isMobile: args.isMobile,
         isHistoryFeatureEnabled: args.isHistoryEnabled,
+        isWorkspaceToolsEnabled: args.isWorkspaceToolsEnabled,
         isConversationShareEnabled: true,
         isAIChatExportJSONEnabled: true,
         skillDialog: args.skillDialog,
@@ -791,6 +812,11 @@ export const _Panel = GetPanelStory({
 export const _WithAttachedTools = GetPanelStory({
   conversation_content: 'ALL',
   hasAttachedTools: true,
+})
+
+export const _WithVisionModelSwitch = GetPanelStory({
+  conversation_content: 'ALL',
+  isWaitingForVisionModelSwitch: true,
 })
 
 export const _WithSearch = GetPanelStory({

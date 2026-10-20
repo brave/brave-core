@@ -77,6 +77,9 @@ class KeyringService : public mojom::KeyringService {
                  PrefService* local_state);
   ~KeyringService() override;
 
+  KeyringService(const KeyringService&) = delete;
+  KeyringService& operator=(const KeyringService&) = delete;
+
   void SetDelegate(BraveWalletServiceDelegate* delegate);
 
   void Bind(mojo::PendingReceiver<mojom::KeyringService> receiver);
@@ -346,6 +349,7 @@ class KeyringService : public mojom::KeyringService {
   mojom::AccountInfoPtr GetSelectedEthereumDappAccount();
   mojom::AccountInfoPtr GetSelectedSolanaDappAccount();
   mojom::AccountInfoPtr GetSelectedCardanoDappAccount();
+  mojom::AccountInfoPtr GetSelectedPolkadotDappAccount();
   void MaybeFixAccountSelection();
 
  private:
@@ -541,9 +545,6 @@ class KeyringService : public mojom::KeyringService {
   mojo::ReceiverSet<mojom::KeyringService> receivers_;
 
   base::WeakPtrFactory<KeyringService> weak_ptr_factory_{this};
-
-  KeyringService(const KeyringService&) = delete;
-  KeyringService& operator=(const KeyringService&) = delete;
 };
 
 }  // namespace brave_wallet

@@ -281,11 +281,6 @@ void OverrideDefaultPrefValues(user_prefs::PrefRegistrySyncable* registry) {
   // against it (see components/omnibox/browser/omnibox_prefs.cc).
   registry->SetDefaultPrefValue(omnibox::kAIModeSettings, base::Value(-1));
 
-  // Disabled due to crash with tab group dragging.
-  // TODO(https://github.com/brave/brave-browser/issues/49752): Re-enable.
-  registry->SetDefaultPrefValue(prefs::kSplitViewDragAndDropEnabled,
-                                base::Value(false));
-
   // Disables WebRTC logs collection.
   registry->SetDefaultPrefValue(prefs::kWebRtcEventLogCollectionAllowed,
                                 base::Value(false));
@@ -420,6 +415,9 @@ void RegisterProfilePrefsForMigration(
   registry->RegisterBooleanPref(::bookmarks::prefs::kAlwaysShowBookmarkBarOnNTP,
                                 true);
 #endif
+
+  // Added 10/2026.
+  registry->RegisterBooleanPref(kMRUCyclingEnabled, false);
 }
 
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
@@ -438,7 +436,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
                                 !BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED));
   registry->RegisterBooleanPref(kShowScreenshotButton, false);
   registry->RegisterBooleanPref(kLocationBarIsWide, false);
-  registry->RegisterBooleanPref(kMRUCyclingEnabled, false);
   registry->RegisterBooleanPref(kTabMuteIndicatorNotClickable, false);
 
   brave_sync::Prefs::RegisterProfilePrefs(registry);
