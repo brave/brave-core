@@ -1,0 +1,26 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/common/typescript.gni")
+
+transpile_web_ui("resources") {
+  entry_points = [ [
+        "brave_transfer",
+        rebase_path("brave_transfer.tsx"),
+      ] ]
+  resource_name = "brave_transfer"
+  imports_from = [ "//brave/components/brave_transfer/resources/page/" ]
+  deps = [
+    "//brave/components/brave_transfer/common:mojom_js",
+    "//brave/components/resources:strings",
+    "//ui/webui/resources/cr_components/color_change_listener:build_ts",
+  ]
+}
+
+pack_web_resources("brave_transfer_page_generated") {
+  resource_name = "brave_transfer"
+  output_dir = "$root_gen_dir/brave/components/brave_transfer/resources/page"
+  deps = [ ":resources" ]
+}
