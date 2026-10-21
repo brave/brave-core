@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grit-part>
+  <message name="IDS_BRAVE_WRAPPED_TITLE" desc="Title of the Brave Wrapped page" formatter_data="webui=BraveWrapped">
+    Brave Wrapped
+  </message>
+  <message name="IDS_BRAVE_WRAPPED_INTRO_HEADING" desc="Heading of the first Brave Wrapped slide" formatter_data="webui=BraveWrapped">
+    Your Brave, wrapped
+  </message>
+  <message name="IDS_BRAVE_WRAPPED_INTRO_SINCE" desc="Text on the first slide. $1 is a month and year, e.g. 'October 2024'." formatter_data="webui=BraveWrapped">
+    Since <ph name="MONTH_YEAR">$1<ex>October 2024</ex></ph>, Brave Shields has been keeping you safe by blocking third-party ads and trackers.
+  </message>
+  <message name="IDS_BRAVE_WRAPPED_INTRO_DAYS" desc="Text on the first slide. $1 is a number of days." formatter_data="webui=BraveWrapped">
+    That's <ph name="DAYS">$1<ex>731</ex></ph> days of browsing with peace of mind.
+  </message>
+  <message name="IDS_BRAVE_WRAPPED_INTRO_NO_DATE" desc="Text on the first slide when the install date is unknown." formatter_data="webui=BraveWrapped">
+    Brave Shields has been keeping you safe by blocking third-party ads and trackers.
+  </message>
+  <message name="IDS_BRAVE_WRAPPED_BLOCKED_HEADING" desc="Label under the number of ads and trackers blocked" formatter_data="webui=BraveWrapped">
+    ads &amp; trackers blocked
+  </message>
+  <message name="IDS_BRAVE_WRAPPED_BLOCKED_TEXT" desc="Explanation on the ads and trackers blocked slide" formatter_data="webui=BraveWrapped">
+    Each one wanted to watch, profile, or interrupt you. Brave stopped them before they loaded.
+  </message>
+  <message name="IDS_BRAVE_WRAPPED_TIME_HEADING" desc="Label under the amount of time saved" formatter_data="webui=BraveWrapped">
+    of waiting saved
+  </message>
+  <message name="IDS_BRAVE_WRAPPED_TIME_TEXT" desc="Fun comparison for time saved. $1 is a number of feature-length movies." formatter_data="webui=BraveWrapped">
+    Pages load faster without the junk. That's about <ph name="MOVIES">$1<ex>21</ex></ph> movies you could have watched instead.
+  </message>
+  <message name="IDS_BRAVE_WRAPPED_TIME_TEXT_ONE" desc="Fun comparison for time saved when it is about one feature-length movie" formatter_data="webui=BraveWrapped">
+    Pages load faster without the junk. That's about a whole movie you could have watched instead.
+  </message>
+  <message name="IDS_BRAVE_WRAPPED_TIME_TEXT_SHORT" desc="Explanation of time saved when it is less than one movie" formatter_data="webui=BraveWrapped">
+    Pages load faster without the junk, and it adds up.
+  </message>
+  <message name="IDS_BRAVE_WRAPPED_DATA_HEADING" desc="Label under the amount of data saved" formatter_data="webui=BraveWrapped">
+    of data saved
+  </message>
+  <message name="IDS_BRAVE_WRAPPED_DATA_TEXT" desc="Fun comparison for data saved. $1 is a number of hours of HD video." formatter_data="webui=BraveWrapped">
+    Bandwidth you didn't spend downloading ads and trackers. That's about <ph name="HOURS">$1<ex>2</ex></ph> hours of HD video.
+  </message>
+  <message name="IDS_BRAVE_WRAPPED_DATA_TEXT_ONE" desc="Fun comparison for data saved when it is about one hour of HD video" formatter_data="webui=BraveWrapped">
+    Bandwidth you didn't spend downloading ads and trackers. That's about an hour of HD video.
+  </message>
+  <message name="IDS_BRAVE_WRAPPED_DATA_TEXT_SHORT" desc="Explanation of data saved when it is less than one hour of video" formatter_data="webui=BraveWrapped">
+    Bandwidth you didn't spend downloading ads and trackers.
+  </message>
+  <message name="IDS_BRAVE_WRAPPED_SHARE_HEADING" desc="Heading of the share slide" formatter_data="webui=BraveWrapped">
+    Share your Brave Wrapped
+  </message>
+  <message name="IDS_BRAVE_WRAPPED_SHARE_TEXT" desc="Text on the share slide" formatter_data="webui=BraveWrapped">
+    Show your friends what Brave blocked for you. Copy the image, then paste it into your post.
+  </message>
+  <message name="IDS_BRAVE_WRAPPED_PRIVACY_NOTE" desc="Note on the first and last slides that the stats are stored only on the device and Brave never receives them" formatter_data="webui=BraveWrapped">
+    Brave never sees your browsing. These rough counts stay on your device.
+  </message>
+  <message name="IDS_BRAVE_WRAPPED_COPY_IMAGE" desc="Button to copy the share image" formatter_data="webui=BraveWrapped">
+    Copy image
+  </message>
+  <message name="IDS_BRAVE_WRAPPED_COPIED" desc="Confirmation after copying" formatter_data="webui=BraveWrapped">
+    Copied
+  </message>
+  <message name="IDS_BRAVE_WRAPPED_DOWNLOAD" desc="Button to download the share image" formatter_data="webui=BraveWrapped">
+    Download
+  </message>
+  <message name="IDS_BRAVE_WRAPPED_POST_ON_X" desc="Button to share on X" formatter_data="webui=BraveWrapped">
+    Post on X
+  </message>
+  <message name="IDS_BRAVE_WRAPPED_POST_ON_REDDIT" desc="Button to share on Reddit" formatter_data="webui=BraveWrapped">
+    Reddit
+  </message>
+  <message name="IDS_BRAVE_WRAPPED_COPY_LINK" desc="Button to copy the share text and link" formatter_data="webui=BraveWrapped">
+    Copy text
+  </message>
+  <message name="IDS_BRAVE_WRAPPED_SHARE_POST_TEXT" desc="Prefilled social post. $1 is a count of ads and trackers, $2 a duration, $3 an amount of data." formatter_data="webui=BraveWrapped">
+    Brave has blocked <ph name="BLOCKED">$1<ex>184,213</ex></ph> ads and trackers for me, saving <ph name="TIME_SAVED">$2<ex>2.14 days</ex></ph> and <ph name="DATA_SAVED">$3<ex>6.9 GB</ex></ph> of data. Try it:
+  </message>
+  <message name="IDS_BRAVE_WRAPPED_SHARE_POST_TITLE" desc="Prefilled Reddit post title. $1 is a count of ads and trackers." formatter_data="webui=BraveWrapped">
+    Brave has blocked <ph name="BLOCKED">$1<ex>184,213</ex></ph> ads and trackers for me
+  </message>
+  <message name="IDS_BRAVE_WRAPPED_CARD_TITLE" desc="Title on the share image" formatter_data="webui=BraveWrapped">
+    My Brave Wrapped
+  </message>
+  <message name="IDS_BRAVE_WRAPPED_CARD_SINCE" desc="Subtitle on the share image. $1 is a month and year." formatter_data="webui=BraveWrapped">
+    Since <ph name="MONTH_YEAR">$1<ex>October 2024</ex></ph>
+  </message>
+  <message name="IDS_BRAVE_WRAPPED_CARD_CTA" desc="Call to action at the bottom of the share image" formatter_data="webui=BraveWrapped">
+    Get Brave at brave.com
+  </message>
+  <message name="IDS_BRAVE_WRAPPED_NEXT" desc="Button to go to the next slide" formatter_data="webui=BraveWrapped">
+    Next
+  </message>
+  <message name="IDS_BRAVE_WRAPPED_BACK" desc="Button to go to the previous slide" formatter_data="webui=BraveWrapped">
+    Back
+  </message>
+  <message name="IDS_BRAVE_WRAPPED_START_OVER" desc="Button to restart the slides" formatter_data="webui=BraveWrapped">
+    Start over
+  </message>
+  <message name="IDS_BRAVE_WRAPPED_SLIDES_LABEL" desc="Accessible label for the row of dots that shows which slide is open" formatter_data="webui=BraveWrapped">
+    Slides
+  </message>
+  <message name="IDS_BRAVE_WRAPPED_SLIDE_LABEL" desc="Accessible label for one dot in the slide indicator. $1 is the slide number, $2 the number of slides." formatter_data="webui=BraveWrapped">
+    Slide <ph name="NUMBER">$1<ex>2</ex></ph> of <ph name="COUNT">$2<ex>5</ex></ph>
+  </message>
+  <message name="IDS_BRAVE_WRAPPED_EMPTY_HEADING" desc="Heading when there are no stats yet" formatter_data="webui=BraveWrapped">
+    Still unwrapping
+  </message>
+  <message name="IDS_BRAVE_WRAPPED_EMPTY_TEXT" desc="Text when there are no stats yet" formatter_data="webui=BraveWrapped">
+    Brave hasn't blocked much yet. Browse for a while and come back to see what Shields has done for you.
+  </message>
+</grit-part>

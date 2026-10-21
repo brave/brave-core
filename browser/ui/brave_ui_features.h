@@ -19,6 +19,8 @@ BASE_DECLARE_FEATURE(kBraveWorkaroundNewWindowFlash);
 
 BASE_DECLARE_FEATURE(kForcePopupToBeOpenedAsTab);
 
+BASE_DECLARE_FEATURE(kBraveWrapped);
+
 }  // namespace features
 
 #endif  // BRAVE_BROWSER_UI_BRAVE_UI_FEATURES_H_
