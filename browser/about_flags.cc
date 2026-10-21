@@ -224,6 +224,16 @@ const flags_ui::FeatureEntry::FeatureVariation kBraveFocusModeVariations[] = {
     {"- No URL display", kFocusModeNoUrl, nullptr}};
 #endif  // defined(TOOLKIT_VIEWS)
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
+const flags_ui::FeatureEntry::FeatureParam kAIChatWorkspaceNativeDirectories[] =
+    {{"workspace_native_directories", "true"}};
+
+const flags_ui::FeatureEntry::FeatureVariation
+    kAIChatWorkspaceToolsVariations[] = {
+        {"- with user-selected local directories",
+         kAIChatWorkspaceNativeDirectories, nullptr}};
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
+
 namespace {
 const char* const kBraveSyncImplLink[1] = {"https://github.com/brave/go-sync"};
 }  // namespace
@@ -822,6 +832,18 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabMigrationChoices[] = {
           "conversation.",                                                     \
           kOsAll,                                                              \
           FEATURE_VALUE_TYPE(ai_chat::features::kAIChatUserChoiceTool),        \
+      },                                                                       \
+      {                                                                        \
+          "brave-ai-chat-workspace-tools",                                     \
+          "Brave AI Chat Workspace Tools",                                     \
+          "Enables AI Tools that let AI Conversation view, search, "           \
+          "and edit files within an isolated virtual file system. Requires "   \
+          "the \"WebMCP for testing\" (#enable-webmcp-testing) flag to also "  \
+          "be enabled.",                                                       \
+          kOsAll,                                                              \
+          FEATURE_WITH_PARAMS_VALUE_TYPE(                                      \
+              ai_chat::features::kAIChatWorkspaceTools,                        \
+              kAIChatWorkspaceToolsVariations, "AIChatWorkspaceTools"),        \
       },                                                                       \
       {                                                                        \
           "brave-ai-chat-agent-profile",                                       \
