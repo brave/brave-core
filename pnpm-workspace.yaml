@@ -79,6 +79,7 @@ overrides:
   # Scoped: ethers pins ws exactly, but jayson needs ws 7.x.
   'ethers>ws': '8.22.0'
   'fast-uri': '3.1.8'
+  'follow-redirects': '1.16.1'
   'handlebars': '4.7.10'
   'ip-address': '10.7.2'
   # Bumped instead of overriding stream-json, whose fixes only exist in 3.x --
@@ -90,6 +91,7 @@ overrides:
   'js-yaml@4': '4.3.2'
   # micromark-extension-math still pins ^0.16.0, which no longer gets fixes.
   'katex': '0.18.2'
+  'launch-editor': '2.14.2'
   'nanoid@3': '3.3.19'
   'postcss': '8.5.23'
   'prismjs': '1.30.0'
