@@ -1,6 +1,6 @@
 # Nala / Leo Design System Best Practices
 
-For tokens, components, icons, and Storybook references, see Leo's own
+For tokens, components, icons, and Storybook references, see the Nala / Leo
 [AGENTS.md](https://github.com/brave/leo/blob/main/AGENTS.md) (also available
 locally at `node_modules/@brave/leo/AGENTS.md`).
 

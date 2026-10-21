@@ -24,9 +24,8 @@ at docs/best_practices.md
 For any UI or visual work (WebUI, desktop views, Android, iOS), use Leo/Nala as
 the design reference and quality bar:
 
-- Read `node_modules/@brave/leo/AGENTS.md` (the pinned Leo version; fall back to
-  https://github.com/brave/leo/blob/main/AGENTS.md if `node_modules` is missing)
-  for tokens, components, icons, and Storybook references.
+- Read `node_modules/@brave/leo/AGENTS.md` (the pinned Leo version) for tokens,
+  components, icons, and Storybook references.
 - Check the result against docs/best-practices/nala.md before finishing or
   reviewing.
 
