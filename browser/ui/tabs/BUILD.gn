@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+import("//brave/components/brave_ads/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/containers/buildflags/buildflags.gni")
 import("//brave/components/playlist/core/common/buildflags/buildflags.gni")
@@ -66,6 +67,7 @@ if (!is_android) {
       "//brave/browser/ui/side_panel",
       "//brave/browser/ui/sidebar",
       "//brave/browser/ui/views/page_action",
+      "//brave/components/brave_ads/buildflags",
       "//brave/components/image_metadata_stripper/common",
       "//brave/components/misc_metrics",
       "//brave/components/request_otr/common/buildflags",
@@ -87,6 +89,10 @@ if (!is_android) {
 
     if (enable_ai_chat) {
       deps += [ "//brave/browser/ai_chat" ]
+    }
+
+    if (enable_brave_ads) {
+      deps += [ "//brave/browser/brave_ads/tabs" ]
     }
 
     if (enable_request_otr) {
