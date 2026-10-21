@@ -7,9 +7,9 @@
 
 #include "base/functional/bind.h"
 #include "brave/browser/brave_browser_process.h"
-#include "brave/components/brave_shields/content/browser/ad_block_service.h"
-#include "brave/components/brave_shields/content/browser/ad_block_subscription_download_client.h"
-#include "brave/components/brave_shields/content/browser/ad_block_subscription_service_manager.h"
+#include "brave/components/brave_shields/core/browser/ad_block_service.h"
+#include "brave/components/brave_shields/core/browser/ad_block_subscription_download_client.h"
+#include "brave/components/brave_shields/core/browser/ad_block_subscription_service_manager.h"
 #include "chrome/browser/download/deferred_client_wrapper.h"
 #include "components/download/content/factory/download_service_factory_helper.h"
 #include "components/download/public/background_service/background_download_service.h"

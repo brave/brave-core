@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/components/brave_shields/content/browser/ad_block_custom_filters_provider.h"
+#include "brave/components/brave_shields/core/browser/ad_block_custom_filters_provider.h"
 
 #include <optional>
 #include <string>
@@ -14,7 +14,7 @@
 #include "base/strings/strcat.h"
 #include "base/task/single_thread_task_runner.h"
 #include "base/trace_event/trace_event.h"
-#include "brave/components/brave_shields/content/browser/ad_block_custom_filter_reset_util.h"
+#include "brave/components/brave_shields/core/browser/ad_block_custom_filter_reset_util.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider_manager.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"

@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_CONTENT_BROWSER_AD_BLOCK_SUBSCRIPTION_SERVICE_MANAGER_H_
-#define BRAVE_COMPONENTS_BRAVE_SHIELDS_CONTENT_BROWSER_AD_BLOCK_SUBSCRIPTION_SERVICE_MANAGER_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_CORE_BROWSER_AD_BLOCK_SUBSCRIPTION_SERVICE_MANAGER_H_
+#define BRAVE_COMPONENTS_BRAVE_SHIELDS_CORE_BROWSER_AD_BLOCK_SUBSCRIPTION_SERVICE_MANAGER_H_
 
 #include <map>
 #include <memory>
@@ -19,9 +19,9 @@
 #include "base/sequence_checker.h"
 #include "base/time/time.h"
 #include "base/values.h"
-#include "brave/components/brave_shields/content/browser/ad_block_subscription_download_manager.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider_manager.h"
 #include "brave/components/brave_shields/core/browser/ad_block_list_p3a.h"
+#include "brave/components/brave_shields/core/browser/ad_block_subscription_download_manager.h"
 #include "brave/components/brave_shields/core/common/adblock/rs/src/lib.rs.h"
 #include "components/component_updater/timer_update_scheduler.h"
 #include "components/prefs/pref_service.h"
@@ -167,4 +167,4 @@ class AdBlockSubscriptionServiceManager {
 
 }  // namespace brave_shields
 
-#endif  // BRAVE_COMPONENTS_BRAVE_SHIELDS_CONTENT_BROWSER_AD_BLOCK_SUBSCRIPTION_SERVICE_MANAGER_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_SHIELDS_CORE_BROWSER_AD_BLOCK_SUBSCRIPTION_SERVICE_MANAGER_H_

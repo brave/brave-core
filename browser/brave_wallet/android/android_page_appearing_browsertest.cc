@@ -16,7 +16,7 @@
 #include "base/test/bind.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_page/wallet_page_ui.h"
-#include "brave/components/brave_shields/content/browser/ad_block_service.h"
+#include "brave/components/brave_shields/core/browser/ad_block_service.h"
 #include "brave/components/brave_wallet/browser/asset_ratio_service.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"

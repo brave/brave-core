@@ -14,7 +14,7 @@
 #include "base/json/string_escape.h"
 #include "base/strings/string_util.h"
 #include "base/values.h"
-#include "brave/components/brave_shields/content/browser/ad_block_engine_wrapper.h"
+#include "brave/components/brave_shields/core/browser/ad_block_engine_wrapper.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"

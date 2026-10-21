@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/components/brave_shields/content/browser/ad_block_subscription_service_manager.h"
+#include "brave/components/brave_shields/core/browser/ad_block_subscription_service_manager.h"
 
 #include <memory>
 #include <optional>
@@ -22,10 +22,10 @@
 #include "base/task/thread_pool.h"
 #include "base/time/time.h"
 #include "base/values.h"
-#include "brave/components/brave_shields/content/browser/ad_block_subscription_filters_provider.h"
-#include "brave/components/brave_shields/content/browser/ad_block_subscription_service_manager_observer.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider_manager.h"
 #include "brave/components/brave_shields/core/browser/ad_block_list_p3a.h"
+#include "brave/components/brave_shields/core/browser/ad_block_subscription_filters_provider.h"
+#include "brave/components/brave_shields/core/browser/ad_block_subscription_service_manager_observer.h"
 #include "brave/components/brave_shields/core/common/adblock/rs/src/lib.rs.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
