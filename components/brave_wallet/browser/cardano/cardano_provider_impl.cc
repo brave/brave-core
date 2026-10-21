@@ -8,11 +8,13 @@
 #include <utility>
 #include <vector>
 
+#include "base/check.h"
 #include "base/notreached.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_provider_delegate.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_api_impl.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_dapp_utils.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "components/grit/brave_components_strings.h"
 #include "ui/base/l10n/l10n_util.h"
 
@@ -34,6 +36,8 @@ CardanoProviderImpl::CardanoProviderImpl(
     : brave_wallet_service_(brave_wallet_service),
       delegate_factory_(std::move(delegate_factory)),
       origin_(origin) {
+  CHECK(IsValidDappOrigin(origin_));
+
   brave_wallet_service_->keyring_service()->AddObserver(
       keyring_observer_receiver_.BindNewPipeAndPassRemote());
   delegate_ = delegate_factory_.Run();
