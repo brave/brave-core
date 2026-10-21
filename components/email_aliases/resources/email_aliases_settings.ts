@@ -15,5 +15,7 @@ customElements.whenDefined('brave-account-row').then(() => {
   mount(signInRoot, manageRoot, {
     onLoggedInChange: () => {},
     styleTarget: document.head,
+    // Re-enable once the Brave Account row is ready for mobile platforms.
+    showAccountRow: false,
   })
 })

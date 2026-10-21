@@ -12,7 +12,7 @@ import androidx.preference.Preference;
 import org.chromium.base.BraveFeatureList;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
-import org.chromium.chrome.browser.customtabs.FullScreenCustomTabActivity;
+import org.chromium.chrome.browser.customtabs.BraveEmailAliasesCustomTabActivity;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.components.user_prefs.UserPrefs;
@@ -22,7 +22,6 @@ import org.chromium.components.user_prefs.UserPrefs;
 public class BraveEmailAliasesSectionController {
     public static final String PREF_EMAIL_ALIASES = "email_aliases";
 
-    private static final String EMAIL_ALIASES_URL = "brave://email-aliases";
     private static final String EMAIL_ALIASES_ENABLED_PREF = "brave.email_aliases.enabled";
 
     private final ChromeBaseSettingsFragment mFragment;
@@ -61,7 +60,7 @@ public class BraveEmailAliasesSectionController {
             return false;
         }
 
-        FullScreenCustomTabActivity.showPage(activity, EMAIL_ALIASES_URL);
+        BraveEmailAliasesCustomTabActivity.openEmailAliases(activity);
         return true;
     }
 }

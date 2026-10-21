@@ -34,8 +34,10 @@ const BraveAccountSignIn = () => {
 
 export const SignInPage = ({
   onLoggedInChange,
+  showAccountRow = true,
 }: {
   onLoggedInChange?: (loggedIn: boolean) => void
+  showAccountRow?: boolean
 } = {}) => {
   const accountState = useBraveAccountState()
   const loggedIn = isAccountLoggedIn(accountState)
@@ -47,7 +49,7 @@ export const SignInPage = ({
   return (
     <PageCol>
       <Introduction />
-      <BraveAccountSignIn />
+      {showAccountRow && <BraveAccountSignIn />}
     </PageCol>
   )
 }

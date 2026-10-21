@@ -77,6 +77,7 @@ export const EmailAliasesManagePage = ({
 export type EmailAliasesMountOptions = {
   onLoggedInChange: (loggedIn: boolean) => void
   styleTarget?: HTMLElement | ShadowRoot
+  showAccountRow?: boolean
 }
 
 export const mount = (
@@ -106,7 +107,10 @@ export const mount = (
       target={styleTarget}
       shouldForwardProp={shouldForwardProp}
     >
-      <SignInPage onLoggedInChange={options.onLoggedInChange} />
+      <SignInPage
+        onLoggedInChange={options.onLoggedInChange}
+        showAccountRow={options.showAccountRow}
+      />
     </StyleSheetManager>,
   )
 
