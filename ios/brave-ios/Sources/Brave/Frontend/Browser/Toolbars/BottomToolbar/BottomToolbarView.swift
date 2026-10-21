@@ -93,6 +93,7 @@ class BottomToolbarView: UIView, ToolbarProtocol {
   private var privateModeCancellable: AnyCancellable?
   private func updateColors() {
     backgroundColor = privateBrowsingManager.browserColors.chromeBackground
+    line.backgroundColor = privateBrowsingManager.browserColors.dividerStrong
   }
 
   @available(iOS 26.0, *)
