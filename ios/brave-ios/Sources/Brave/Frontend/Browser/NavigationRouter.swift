@@ -113,6 +113,7 @@ public enum NavigationPath: Equatable {
     if let url,
       bvc.handleExternalLink(
         url,
+        isPrivate: isPrivate,
         open: { [weak bvc] isPrivate in
           guard let bvc else { return }
           openURL(url: url, isPrivate: isPrivate, with: bvc)

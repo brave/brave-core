@@ -99,6 +99,39 @@ extension Strings {
       value: "Opens this link in QuickView, a preview sheet that doesn't open a new tab.",
       comment: "Description in the prompt for opening a link from another app in QuickView"
     )
+    public static let onboardingTitle = NSLocalizedString(
+      "OnboardingTitle",
+      bundle: .module,
+      value: "Choose How Links Open",
+      comment: "Title of the onboarding shown the first time a link is opened from another app"
+    )
+    public static let onboardingMessage = NSLocalizedString(
+      "onboardingMessage",
+      bundle: .module,
+      value:
+        "Brave can ask whether to open links from other apps in a regular tab, private tab or QuickView. You can change this anytime in Settings > Shields & Privacy.",
+      comment: "Message of the onboarding shown the first time a link is opened from another app"
+    )
+    public static let onboardingMessageQuickViewDisabled = NSLocalizedString(
+      "onboardingMessageQuickViewDisabled",
+      bundle: .module,
+      value:
+        "Brave can ask whether to open links from other apps in a regular or private tab. You can change this anytime in Settings > Shields & Privacy.",
+      comment: "Message of the onboarding shown the first time a link is opened from another app"
+    )
+    public static let onboardingEnableButtonTitle = NSLocalizedString(
+      "OnboardingEnableButtonTitle",
+      bundle: .module,
+      value: "Ask Me Each Time",
+      comment: "Button in the onboarding that turns on asking how to open links from other apps"
+    )
+    public static let onboardingDeclineButtonTitle = NSLocalizedString(
+      "OnboardingDeclineButtonTitle",
+      bundle: .module,
+      value: "No, Don't Ask Again",
+      comment:
+        "Button in the onboarding that keeps opening links from other apps in the current browsing mode and doesn't show the onboarding again"
+    )
     public static let promptTitle = NSLocalizedString(
       "PromptTitle",
       bundle: .module,
