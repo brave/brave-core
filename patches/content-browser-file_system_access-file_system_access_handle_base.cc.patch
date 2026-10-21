@@ -1,8 +1,8 @@
 diff --git a/content/browser/file_system_access/file_system_access_handle_base.cc b/content/browser/file_system_access/file_system_access_handle_base.cc
-index 62ee829c3e280bba9db1b3301c7e0b93cc455f1d..aa0c7ac386eb26b8e02cb000de1fca9ccf5bd6bd 100644
+index bce86174d1de389bbbdec0abd3e6ce5f31babbe8..64d1dafa3fbaf4a8c10e282abb0a1228c2a9e492 100644
 --- a/content/browser/file_system_access/file_system_access_handle_base.cc
 +++ b/content/browser/file_system_access/file_system_access_handle_base.cc
-@@ -310,6 +310,11 @@ void FileSystemAccessHandleBase::DoMove(
+@@ -348,6 +348,11 @@ void FileSystemAccessHandleBase::DoMove(
      const std::string& new_entry_name,
      bool has_transient_user_activation,
      base::OnceCallback<void(blink::mojom::FileSystemAccessErrorPtr)> callback) {
@@ -14,7 +14,7 @@ index 62ee829c3e280bba9db1b3301c7e0b93cc455f1d..aa0c7ac386eb26b8e02cb000de1fca9c
    DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
    CHECK_EQ(GetEffectiveWritePermissionStatus(),
             blink::mojom::PermissionStatus::GRANTED, base::NotFatalUntil::M159);
-@@ -423,6 +428,11 @@ void FileSystemAccessHandleBase::DoRename(
+@@ -461,6 +466,11 @@ void FileSystemAccessHandleBase::DoRename(
      const std::string& new_entry_name,
      bool has_transient_user_activation,
      base::OnceCallback<void(blink::mojom::FileSystemAccessErrorPtr)> callback) {
@@ -26,7 +26,7 @@ index 62ee829c3e280bba9db1b3301c7e0b93cc455f1d..aa0c7ac386eb26b8e02cb000de1fca9c
    DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
    // To get this far, we must have write access to the entry being moved.
    CHECK_EQ(GetEffectiveWritePermissionStatus(),
-@@ -524,6 +534,11 @@ void FileSystemAccessHandleBase::DidResolveTokenToMove(
+@@ -562,6 +572,11 @@ void FileSystemAccessHandleBase::DidResolveTokenToMove(
    storage::FileSystemURL dest_url;
    blink::mojom::FileSystemAccessErrorPtr error =
        dir_handle->GetChildURL(new_entry_name, &dest_url);
