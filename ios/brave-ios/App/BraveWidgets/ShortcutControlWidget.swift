@@ -11,10 +11,12 @@ import SwiftUI
 import WidgetKit
 
 struct ShortcutControlWidget: ControlWidget {
+  static let kind = "ShortcutControlWidget"
+
   var body: some ControlWidgetConfiguration {
     if #available(iOS 26.0, *) {
       return AppIntentControlConfiguration(
-        kind: "ShortcutControlWidget",
+        kind: Self.kind,
         provider: ShortcutControlValueProvider()
       ) { shortcut in
         ControlWidgetButton(
