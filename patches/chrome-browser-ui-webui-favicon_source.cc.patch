@@ -1,0 +1,14 @@
+diff --git a/chrome/browser/ui/webui/favicon_source.cc b/chrome/browser/ui/webui/favicon_source.cc
+index 41c17c3fee32931c3d6579bd772d67c643b02d4d..3dec0598de27a50f8359afe5696cab3a9c822b21 100644
+--- a/chrome/browser/ui/webui/favicon_source.cc
++++ b/chrome/browser/ui/webui/favicon_source.cc
+@@ -245,6 +245,9 @@ bool FaviconSource::ShouldServiceRequest(
+ 
+ std::string FaviconSource::GetAccessControlAllowOriginForOrigin(
+     const std::string& origin) {
++  if (BraveIsFavicon2AllowedOnOrigin(serve_untrusted_, origin)) {
++    return origin;
++  }
+   // chrome-untrusted://favicon2 serves the favicons that the Data Sharing
+   // page renders for the tabs of a shared tab group.
+   if (serve_untrusted_ &&

@@ -26,6 +26,8 @@ class UntrustedSanitizedImageSource : public SanitizedImageSource {
       const GURL& url,
       const content::WebContents::Getter& wc_getter,
       content::URLDataSource::GotDataCallback callback) override;
+  std::string GetAccessControlAllowOriginForOrigin(
+      const std::string& origin) override;
 };
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_UNTRUSTED_SANITIZED_IMAGE_SOURCE_H_
