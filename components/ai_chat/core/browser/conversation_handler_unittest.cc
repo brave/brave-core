@@ -8856,7 +8856,7 @@ TEST_F(ConversationHandlerUnitTest,
 TEST_F(ConversationHandlerUnitTest, ConversationCapabilities) {
   struct TestCase {
     std::string name;
-    bool is_content_agent_allowed;
+    bool content_agent_tools_allowed;
     bool deep_research_enabled;
     bool math_rendering_enabled;
     ConversationCapabilitySet expected_capabilities;
@@ -8865,14 +8865,14 @@ TEST_F(ConversationHandlerUnitTest, ConversationCapabilities) {
   const std::vector<TestCase> test_paramss = {
       {
           "Chat",
-          /*is_content_agent_allowed=*/false,
+          /*content_agent_tools_allowed=*/false,
           /*deep_research_enabled=*/false,
           /*math_rendering_enabled=*/true,
           {mojom::ConversationCapability::MATH_ML},
       },
       {
           "ChatWithDeepResearch",
-          /*is_content_agent_allowed=*/false,
+          /*content_agent_tools_allowed=*/false,
           /*deep_research_enabled=*/true,
           /*math_rendering_enabled=*/true,
           {mojom::ConversationCapability::DEEP_RESEARCH,
@@ -8880,7 +8880,7 @@ TEST_F(ConversationHandlerUnitTest, ConversationCapabilities) {
       },
       {
           "ContentAgent",
-          /*is_content_agent_allowed=*/true,
+          /*content_agent_tools_allowed=*/true,
           /*deep_research_enabled=*/false,
           /*math_rendering_enabled=*/true,
           {mojom::ConversationCapability::CONTENT_AGENT,
@@ -8888,7 +8888,7 @@ TEST_F(ConversationHandlerUnitTest, ConversationCapabilities) {
       },
       {
           "ContentAgentWithDeepResearch",
-          /*is_content_agent_allowed=*/true,
+          /*content_agent_tools_allowed=*/true,
           /*deep_research_enabled=*/true,
           /*math_rendering_enabled=*/true,
           {mojom::ConversationCapability::CONTENT_AGENT,
@@ -8899,7 +8899,7 @@ TEST_F(ConversationHandlerUnitTest, ConversationCapabilities) {
       // off, or responses come back as raw LaTeX.
       {
           "MathRenderingDisabled",
-          /*is_content_agent_allowed=*/false,
+          /*content_agent_tools_allowed=*/false,
           /*deep_research_enabled=*/false,
           /*math_rendering_enabled=*/false,
           {},
@@ -8914,8 +8914,8 @@ TEST_F(ConversationHandlerUnitTest, ConversationCapabilities) {
         {{features::kAIChatDeepResearch, test_params.deep_research_enabled},
          {features::kAIChatMathRendering, test_params.math_rendering_enabled}});
 
-    ai_chat_service_->SetIsContentAgentAllowed(
-        test_params.is_content_agent_allowed);
+    ai_chat_service_->set_content_agent_tools_allowed(
+        test_params.content_agent_tools_allowed);
 
     mock_tool_provider_ = nullptr;
     std::vector<std::unique_ptr<ToolProvider>> tool_providers;

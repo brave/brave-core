@@ -109,7 +109,7 @@ class AIChatConversationTaskBrowserTest
     ASSERT_TRUE(service_);
 
     // Verify content agent is allowed for agent profiles
-    EXPECT_TRUE(service_->GetIsContentAgentAllowed());
+    EXPECT_TRUE(service_->content_agent_tools_allowed());
   }
 
   void TearDownOnMainThread() override {

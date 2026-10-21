@@ -250,8 +250,19 @@ class AIChatService : public KeyedService,
   void BindUntrustedService(
       mojo::PendingReceiver<mojom::UntrustedService> receiver);
 
-  bool GetIsContentAgentAllowed() const;
-  void SetIsContentAgentAllowed(bool is_allowed);
+  bool content_agent_tools_allowed() const {
+    return content_agent_tools_allowed_;
+  }
+  void set_content_agent_tools_allowed(bool allowed) {
+    content_agent_tools_allowed_ = allowed;
+  }
+
+  bool content_agent_user_selectable() const {
+    return content_agent_user_selectable_;
+  }
+  void set_content_agent_user_selectable(bool user_selectable) {
+    content_agent_user_selectable_ = user_selectable;
+  }
 
   bool HasUserOptedIn();
   bool IsPremiumStatus();
@@ -509,9 +520,16 @@ class AIChatService : public KeyedService,
   // often (whenever UI is focused).
   mojom::PremiumStatus last_premium_status_ = mojom::PremiumStatus::Unknown;
 
-  // Whether conversations can utilize content agent capabilities. For now,
-  // this is profile-specific.
-  bool is_content_agent_allowed_ = false;
+  // Whether conversations can utilize content agent capabilities, i.e. whether
+  // the content agent's tools are registered for this profile. For now, this is
+  // profile-specific.
+  bool content_agent_tools_allowed_ = false;
+
+  // Whether the user decides, per conversation, if the content agent is used.
+  // Independent of |content_agent_tools_allowed_|: main profiles offer the
+  // choice before the tools are registered there, and the dedicated agent
+  // profile registers the tools without offering a choice.
+  bool content_agent_user_selectable_ = false;
 
   // Background task runner for the database and sync bridge. Created
   // synchronously the first time MaybeInitStorage() succeeds so that a

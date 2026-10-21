@@ -10,6 +10,7 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/no_destructor.h"
 #include "brave/browser/ai_chat/ai_chat_utils.h"
@@ -97,11 +98,22 @@ AIChatServiceFactory::BuildServiceInstanceForBrowserContext(
   std::vector<std::unique_ptr<ToolProviderFactory>> tool_provider_factories;
 
 #if BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE)
-  bool is_actor_allowed =
+  // Whether the content agent's tools may be registered for this profile. Main
+  // profiles are excluded until the agent's browsing is isolated from the
+  // user's own storage.
+  const bool content_agent_tools_allowed =
       features::IsAIChatAgentProfileEnabled() && context->IsAIChatAgent();
 
+  // Whether the user decides, per conversation, if the content agent is used.
+  // Independent of tool registration, so the choice can exist in the main
+  // profile before the tools do. False in the dedicated agent profile, where
+  // the content agent is the profile's purpose and is always on.
+  const bool content_agent_user_selectable =
+      !context->IsAIChatAgent() &&
+      base::FeatureList::IsEnabled(features::kAIChatContentAgentMainProfiles);
+
   actor::ActorKeyedService* actor_service =
-      is_actor_allowed
+      content_agent_tools_allowed
           ? actor::ActorKeyedServiceFactory::GetActorKeyedService(context)
           : nullptr;
 
@@ -131,7 +143,8 @@ AIChatServiceFactory::BuildServiceInstanceForBrowserContext(
   // This configuration is not part of the AIChatService constructor because it
   // is experimental and might not always be per-profile and is not needed in
   // the AIChatService constructor.
-  service->SetIsContentAgentAllowed(is_actor_allowed);
+  service->set_content_agent_tools_allowed(content_agent_tools_allowed);
+  service->set_content_agent_user_selectable(content_agent_user_selectable);
 #endif
 
   if (base::FeatureList::IsEnabled(ai_chat::features::kAIChatWorkspaceTools)) {
