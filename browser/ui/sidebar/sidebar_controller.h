@@ -69,6 +69,11 @@ class SidebarController : public SidebarService::Observer,
   void HandleSidePanelOpened(SidePanelEntryId id);
   void HandleSidePanelClosed();
 
+  // Called by BraveSidePanelCoordinator before showing an entry. True when a
+  // surface the side panel is about to replace is already on screen, so the
+  // open should not animate.
+  bool ShouldSuppressSidePanelOpenAnimation() const;
+
   // Toggles a session-only "pin" that forces the sidebar control view
   // visible regardless of the current show option. Pinned state is cleared
   // when the show option changes (via OnShowSidebarOptionChanged) and when
