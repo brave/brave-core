@@ -11,6 +11,8 @@
 #include "base/functional/bind.h"
 #include "base/run_loop.h"
 #include "base/test/bind.h"
+#include "base/test/run_until.h"
+#include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/test/shared_pinned_tab_service_browsertest.h"
@@ -184,6 +186,45 @@ IN_PROC_BROWSER_TEST_F(SharedPinnedTabServiceBrowserTest, PinAndUnpinTabs) {
       tab_strip_model_2->GetWebContentsAt(0)));
   EXPECT_FALSE(shared_pinned_tab_service->IsDummyContents(
       tab_strip_model_2->GetWebContentsAt(0)));
+}
+
+class SharedPinnedTreeTabServiceBrowserTest
+    : public SharedPinnedTabServiceBrowserTest {
+ public:
+  SharedPinnedTreeTabServiceBrowserTest() {
+    tree_feature_list_.InitAndEnableFeature(tabs::kBraveTreeTab);
+  }
+
+ private:
+  base::test::ScopedFeatureList tree_feature_list_;
+};
+
+IN_PROC_BROWSER_TEST_F(SharedPinnedTreeTabServiceBrowserTest,
+                       UnpinSharedTabViaContextMenu_KeepsTabAndRemovesDummy) {
+  auto* prefs = browser()->GetProfile()->GetPrefs();
+  prefs->SetBoolean(brave_tabs::kVerticalTabsEnabled, true);
+  prefs->SetBoolean(brave_tabs::kTreeTabsEnabled, true);
+
+  auto* model = browser()->tab_strip_model();
+  auto* other_model = CreateNewBrowser()->GetTabStripModel();
+  auto* contents = model->GetWebContentsAt(0);
+  auto* service = GetForBrowser(browser());
+
+  BrowserWindow::FromBrowser(browser())->Show();
+  model->SetTabPinned(0, true);
+  ASSERT_TRUE(service->IsSharedContents(contents));
+  ASSERT_EQ(2, other_model->count());
+
+  // The context-menu command moves the tab through a detached tree node.
+  model->ExecuteContextMenuCommand(0, TabStripModel::CommandTogglePinned);
+  EXPECT_EQ(contents, model->GetWebContentsAt(0));
+  EXPECT_FALSE(model->IsTabPinned(0));
+
+  ASSERT_TRUE(
+      base::test::RunUntil([&]() { return other_model->count() == 1; }));
+  EXPECT_EQ(contents, model->GetWebContentsAt(0));
+  EXPECT_FALSE(service->IsSharedContents(contents));
+  EXPECT_FALSE(service->IsDummyContents(contents));
 }
 
 IN_PROC_BROWSER_TEST_F(SharedPinnedTabServiceBrowserTest, ActivatePinnedTab) {
