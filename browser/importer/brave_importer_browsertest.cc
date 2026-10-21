@@ -7,7 +7,6 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/path_service.h"
 #include "base/run_loop.h"
-#include "base/task/sequenced_task_runner.h"
 #include "base/test/bind.h"
 #include "base/threading/thread_restrictions.h"
 #include "brave/browser/importer/brave_external_process_importer_host.h"
@@ -19,6 +18,7 @@
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/profiles/profile_test_util.h"
 #include "chrome/test/base/in_process_browser_test.h"
+#include "components/prefs/pref_service.h"
 #include "components/value_store/test_value_store_factory.h"
 #include "components/value_store/value_store.h"
 #include "content/public/test/browser_test.h"
@@ -54,13 +54,6 @@ class BraveImporterBrowserTest : public InProcessBrowserTest {
     base::FilePath profile_path =
         profile_manager->GenerateNextProfileDirectoryPath();
     return &profiles::testing::CreateProfileSync(profile_manager, profile_path);
-  }
-
-  void NonBlockingDelay(base::TimeDelta delay) {
-    base::RunLoop run_loop(base::RunLoop::Type::kNestableTasksAllowed);
-    base::SingleThreadTaskRunner::GetCurrentDefault()->PostDelayedTask(
-        FROM_HERE, run_loop.QuitWhenIdleClosure(), delay);
-    run_loop.Run();
   }
 
   std::string ReadStore(Profile* profile, const extensions::ExtensionId& id) {
@@ -127,8 +120,8 @@ class BraveImporterBrowserTest : public InProcessBrowserTest {
             .Append(extensions::kLocalExtensionSettingsDirectoryName)
             .AppendASCII(id);
 
-    // Simulate pref data. Scope the store so it's destroyed before the polling
-    // loop below, preventing memory dump DCHECKs from the LeveldbValueStore.
+    // Simulate pref data. Scope the store so it's destroyed before flushing
+    // prefs below, preventing memory dump DCHECKs from the LeveldbValueStore.
     {
       auto store_factory =
           base::MakeRefCounted<value_store::TestValueStoreFactory>(
@@ -142,12 +135,14 @@ class BraveImporterBrowserTest : public InProcessBrowserTest {
     base::CreateDirectory(indexeddb_path);
     base::WriteFile(indexeddb_path.AppendASCII("test"), id);
 
-    // Wait for prefs are written on the disk.
-    while (GetImportableChromeExtensionsList(profile->GetPath())
-               .value_or(std::vector<std::string>())
-               .size() != count + 1) {
-      NonBlockingDelay(base::Milliseconds(10));
-    }
+    // Flush prefs to disk instead of waiting for the delayed write, which can
+    // push the test past its timeout.
+    base::RunLoop run_loop(base::RunLoop::Type::kNestableTasksAllowed);
+    profile->GetPrefs()->CommitPendingWrite(run_loop.QuitClosure());
+    run_loop.Run();
+    ASSERT_EQ(count + 1, GetImportableChromeExtensionsList(profile->GetPath())
+                             .value_or(std::vector<std::string>())
+                             .size());
   }
 };
 
