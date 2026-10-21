@@ -17,6 +17,7 @@
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "url/gurl.h"
+#include "url/origin.h"
 
 static_assert(BUILDFLAG(ENABLE_BRAVE_WALLET));
 
@@ -121,6 +122,9 @@ mojom::AccountIdPtr MakeIndexBasedAccountId(mojom::CoinType coin,
                                             uint32_t account_index);
 
 bool IsHTTPSOrLocalhostURL(const std::string& url);
+
+// True for non-opaque http/https origins.
+bool IsValidDappOrigin(const url::Origin& origin);
 
 template <typename T>
 std::vector<T> CloneVector(const std::vector<T>& v) {

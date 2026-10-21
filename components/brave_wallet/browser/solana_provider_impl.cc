@@ -27,6 +27,7 @@
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/encoding_utils.h"
 #include "brave/components/brave_wallet/common/solana_utils.h"
 #include "components/grit/brave_components_strings.h"
@@ -66,6 +67,8 @@ SolanaProviderImpl::SolanaProviderImpl(
       delegate_(std::move(delegate)),
       origin_(origin),
       weak_factory_(this) {
+  CHECK(IsValidDappOrigin(origin_));
+
   DCHECK(keyring_service_);
   keyring_service_->AddObserver(
       keyring_observer_receiver_.BindNewPipeAndPassRemote());

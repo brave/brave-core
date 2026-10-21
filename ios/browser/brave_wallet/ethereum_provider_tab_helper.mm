@@ -22,6 +22,7 @@
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/ethereum_provider_impl.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/web_ui_constants.h"
 #include "brave/ios/browser/api/brave_wallet/brave_wallet_provider_delegate_ios+private.h"
 #include "brave/ios/browser/brave_wallet/brave_wallet_service_factory.h"
@@ -282,11 +283,15 @@ void EthereumProviderTabHelper::CreateProvider() {
     return;
   }
 
+  url::Origin origin = url::Origin::Create(web_state_->GetLastCommittedURL());
+  if (!IsValidDappOrigin(origin)) {
+    return;
+  }
+
   provider_ = std::make_unique<EthereumProviderImpl>(
       host_content_settings_map_, brave_wallet_service_,
       std::make_unique<BraveWalletProviderDelegateBridge>(bridge_),
-      profile->GetPrefs(),
-      url::Origin::Create(web_state_->GetLastCommittedURL()));
+      profile->GetPrefs(), origin);
 
   // Register this tab helper as the provider's events listener so the provider
   // can emit `chainChanged` / `accountsChanged` / `message` events to the page.

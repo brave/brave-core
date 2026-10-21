@@ -13,6 +13,7 @@
 #include "brave/components/brave_wallet/common/test_utils.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "url/origin.h"
 
 using testing::ElementsAreArray;
 
@@ -973,6 +974,34 @@ TEST(CommonUtils, IsSnapFeatureEnabled) {
 #else
   EXPECT_FALSE(IsSnapFeatureEnabled());
 #endif
+}
+
+TEST(CommonUtils, IsValidDappOrigin) {
+  EXPECT_TRUE(IsValidDappOrigin(
+      url::Origin::CreateFromNormalizedTuple("https", "a.com", 443)));
+  EXPECT_TRUE(IsValidDappOrigin(
+      url::Origin::CreateFromNormalizedTuple("https", "a.com", 8443)));
+  EXPECT_TRUE(IsValidDappOrigin(
+      url::Origin::CreateFromNormalizedTuple("http", "a.com", 80)));
+  EXPECT_TRUE(IsValidDappOrigin(
+      url::Origin::CreateFromNormalizedTuple("http", "localhost", 80)));
+
+  // Opaque origins, including the one a sandboxed frame without
+  // allow-same-origin gets.
+  EXPECT_FALSE(IsValidDappOrigin(url::Origin()));
+  EXPECT_FALSE(IsValidDappOrigin(
+      url::Origin::CreateFromNormalizedTuple("https", "a.com", 443)
+          .DeriveNewOpaqueOrigin()));
+
+  // Non-HTTP(S) schemes.
+  EXPECT_FALSE(IsValidDappOrigin(
+      url::Origin::CreateFromNormalizedTuple("wss", "a.com", 443)));
+  EXPECT_FALSE(IsValidDappOrigin(
+      url::Origin::CreateFromNormalizedTuple("chrome", "wallet", 0)));
+  EXPECT_FALSE(IsValidDappOrigin(
+      url::Origin::CreateFromNormalizedTuple("chrome-extension", "abc", 0)));
+  EXPECT_FALSE(
+      IsValidDappOrigin(url::Origin::CreateFromNormalizedTuple("file", "", 0)));
 }
 
 }  // namespace brave_wallet
