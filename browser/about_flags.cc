@@ -229,9 +229,9 @@ const flags_ui::FeatureEntry::FeatureParam kAIChatWorkspaceNativeDirectories[] =
     {{"workspace_native_directories", "true"}};
 
 const flags_ui::FeatureEntry::FeatureVariation
-    kAIChatWorkspaceToolsVariations[] = {{"- with native directories",
-                                          kAIChatWorkspaceNativeDirectories,
-                                          nullptr}};
+    kAIChatWorkspaceToolsVariations[] = {
+        {"- with user-selected local directories",
+         kAIChatWorkspaceNativeDirectories, nullptr}};
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 namespace {
@@ -825,11 +825,11 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabMigrationChoices[] = {
       {                                                                        \
           "brave-ai-chat-workspace-tools",                                     \
           "Brave AI Chat Workspace Tools",                                     \
-          "Enables experimental workspace tools that let Leo view, search, "   \
-          "and edit files within a user-selected local folder. Requires the "  \
-          "\"WebMCP for testing\" (#enable-webmcp-testing) flag to also be "   \
-          "enabled.",                                                          \
-          kOsWin | kOsMac | kOsLinux | kOsAndroid,                             \
+          "Enables AI Tools that let AI Conversation view, search, "           \
+          "and edit files within an isolated virtual file system. Requires "   \
+          "the \"WebMCP for testing\" (#enable-webmcp-testing) flag to also "  \
+          "be enabled.",                                                       \
+          kOsAll,                                                              \
           FEATURE_WITH_PARAMS_VALUE_TYPE(                                      \
               ai_chat::features::kAIChatWorkspaceTools,                        \
               kAIChatWorkspaceToolsVariations, "AIChatWorkspaceTools"),        \
