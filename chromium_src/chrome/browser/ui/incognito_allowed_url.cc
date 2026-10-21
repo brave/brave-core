@@ -8,6 +8,7 @@
 #include <string>
 #include <string_view>
 
+#include "brave/components/brave_recap/common/webui_constants.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/common/webui_url_constants.h"
 #include "content/public/common/url_constants.h"
@@ -23,7 +24,8 @@ bool IsURLAllowedInIncognitoBraveImpl(const GURL& url) {
   std::string_view host = url.host();
   if (host == kRewardsPageHost || host == chrome::kChromeUISyncInternalsHost ||
       host == chrome::kBraveUISyncHost || host == kAdblockHost ||
-      host == kWelcomeHost || host == kBraveGettingStartedHost) {
+      host == kWelcomeHost || host == kBraveGettingStartedHost ||
+      host == kBraveRecapHost) {
     return false;
   }
 
