@@ -97,6 +97,11 @@ bool IsAIChatAgentProfileEnabled() {
 #endif
 }
 
+// Allows conversations in the user's main profiles - every profile other than
+// the dedicated agent profile - to offer the content agent tools to the user.
+BASE_FEATURE(kAIChatContentAgentMainProfiles,
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
 BASE_FEATURE(kAIChatDetailedPageContentExtraction,
              base::FEATURE_DISABLED_BY_DEFAULT);
 

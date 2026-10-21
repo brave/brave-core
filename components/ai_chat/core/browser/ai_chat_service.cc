@@ -1495,14 +1495,6 @@ void AIChatService::BindUntrustedService(
   untrusted_service_receivers_.Add(this, std::move(receiver));
 }
 
-bool AIChatService::GetIsContentAgentAllowed() const {
-  return is_content_agent_allowed_;
-}
-
-void AIChatService::SetIsContentAgentAllowed(bool is_allowed) {
-  is_content_agent_allowed_ = is_allowed;
-}
-
 bool AIChatService::HasUserOptedIn() {
   return ai_chat::HasUserOptedIn(profile_prefs_);
 }
