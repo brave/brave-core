@@ -24,7 +24,6 @@ import("//brave/browser/themes/sources.gni")
 import("//brave/browser/ui/config.gni")
 import("//brave/browser/updater/buildflags.gni")
 import("//brave/browser/url_sanitizer/sources.gni")
-import("//brave/browser/web_discovery/sources.gni")
 import("//brave/browser/webcompat_reporter/sources.gni")
 import("//brave/build/config.gni")
 import("//brave/chromium_src/chrome/browser/prefs/sources.gni")
@@ -606,9 +605,15 @@ if (enable_request_otr) {
   ]
 }
 
-if (enable_web_discovery_native) {
+if (enable_web_discovery) {
   brave_chrome_browser_deps += [
     "//brave/browser/web_discovery",
+    "//brave/browser/web_discovery:impl",
+  ]
+}
+
+if (enable_web_discovery_native) {
+  brave_chrome_browser_deps += [
     "//brave/components/web_discovery/browser",
     "//brave/components/web_discovery/common",
   ]
@@ -835,7 +840,6 @@ brave_chrome_browser_sources += brave_browser_search_engines_sources
 brave_chrome_browser_sources += brave_browser_sync_sources
 brave_chrome_browser_sources += brave_browser_themes_sources
 brave_chrome_browser_sources += brave_browser_url_sanitizer_sources
-brave_chrome_browser_sources += brave_browser_web_discovery_sources
 brave_chrome_browser_sources += brave_browser_webcompat_reporter_sources
 
 brave_chrome_browser_deps += brave_browser_autocomplete_deps
@@ -855,7 +859,6 @@ brave_chrome_browser_deps += brave_browser_search_engines_deps
 brave_chrome_browser_deps += brave_browser_sync_deps
 brave_chrome_browser_deps += brave_browser_themes_deps
 brave_chrome_browser_deps += brave_browser_url_sanitizer_deps
-brave_chrome_browser_deps += brave_browser_web_discovery_deps
 brave_chrome_browser_deps += brave_browser_webcompat_reporter_deps
 brave_chrome_browser_deps += brave_chromium_src_chrome_browser_deps
 brave_chrome_browser_deps += brave_chromium_src_chrome_browser_prefs_deps
