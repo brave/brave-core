@@ -395,4 +395,48 @@ TEST(BlockchainListParseUnitTest, ParseRestrictedAddressesList) {
             "0xe41d2489571d322189246dafa5ebde1f4699f498");
 }
 
+TEST(BlockchainListParseUnitTest, ParsePolkadotRpcUrls) {
+  const std::string json = R"({
+    "polkadot_acala": ["https://acala-rpc-0.aca-api.network"],
+    "polkadot_bifrost": ["https://hk.p.bifrost-rpc.liebi.com"],
+    "polkadot_hydration": ["https://hydration-rpc.n.dwellir.com"],
+    "polkadot_neuroweb": ["https://parachain-rpc.origin-trail.network"],
+    "polkadot_jamton": ["https://rpc.jamton.network"],
+    "kusama_asset_hub": [
+      "https://rpc-asset-hub-kusama.luckyfriday.io",
+      "https://kusama-asset-hub-rpc.polkadot.io"
+    ]
+  })";
+
+  auto rpc_urls = ParsePolkadotRpcUrls(json);
+  ASSERT_TRUE(rpc_urls);
+
+  EXPECT_EQ(rpc_urls->size(), 6U);
+  EXPECT_THAT(rpc_urls->at(mojom::kPolkadotAcala),
+              ElementsAreArray({GURL("https://acala-rpc-0.aca-api.network")}));
+  EXPECT_THAT(rpc_urls->at(mojom::kPolkadotBifrost),
+              ElementsAreArray({GURL("https://hk.p.bifrost-rpc.liebi.com")}));
+  EXPECT_THAT(rpc_urls->at(mojom::kPolkadotHydration),
+              ElementsAreArray({GURL("https://hydration-rpc.n.dwellir.com")}));
+  EXPECT_THAT(
+      rpc_urls->at(mojom::kPolkadotNeuroWeb),
+      ElementsAreArray({GURL("https://parachain-rpc.origin-trail.network")}));
+  EXPECT_THAT(rpc_urls->at(mojom::kPolkadotJamton),
+              ElementsAreArray({GURL("https://rpc.jamton.network")}));
+  EXPECT_THAT(
+      rpc_urls->at(mojom::kPolkadotKusamaHub),
+      ElementsAreArray({GURL("https://rpc-asset-hub-kusama.luckyfriday.io"),
+                        GURL("https://kusama-asset-hub-rpc.polkadot.io")}));
+
+  EXPECT_FALSE(rpc_urls->contains(mojom::kPolkadotMainnet));
+
+  EXPECT_TRUE(ParsePolkadotRpcUrls("{}")->empty());
+
+  EXPECT_FALSE(ParsePolkadotRpcUrls(""));
+  EXPECT_FALSE(ParsePolkadotRpcUrls("[]"));
+  EXPECT_FALSE(ParsePolkadotRpcUrls(R"({"polkadot_acala": "https://a.com"})"));
+  EXPECT_FALSE(ParsePolkadotRpcUrls(R"({"polkadot_acala": [42]})"));
+  EXPECT_FALSE(ParsePolkadotRpcUrls(R"({"polkadot_acala": ["not a url"]})"));
+}
+
 }  // namespace brave_wallet
