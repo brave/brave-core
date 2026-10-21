@@ -7,6 +7,7 @@
 #include "base/android/jni_android.h"
 #include "base/android/jni_array.h"
 #include "base/android/jni_string.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "chrome/android/chrome_jni_headers/BraveDappPermissionPromptDialog_jni.h"
 #include "content/public/browser/web_contents.h"
 #include "third_party/blink/public/mojom/favicon/favicon_url.mojom.h"
@@ -34,8 +35,12 @@ BraveDappPermissionPromptDialogController::
     BraveDappPermissionPromptDialogController(
         Delegate* delegate,
         content::WebContents* web_contents,
-        brave_wallet::mojom::CoinType coin_type)
-    : delegate_(delegate), web_contents_(web_contents), coin_type_(coin_type) {}
+        brave_wallet::mojom::CoinType coin_type,
+        const url::Origin& requesting_origin)
+    : delegate_(delegate),
+      web_contents_(web_contents),
+      coin_type_(coin_type),
+      requesting_origin_(requesting_origin) {}
 
 BraveDappPermissionPromptDialogController::
     ~BraveDappPermissionPromptDialogController() {
@@ -89,12 +94,19 @@ BraveDappPermissionPromptDialogController::GetOrCreateJavaObject() {
   GURL fav_icon_url = GetFavIconURL(web_contents_->GetFaviconURLs());
   JNIEnv* env = base::android::AttachCurrentThread();
   ui::ViewAndroid* view_android = web_contents_->GetNativeView();
+  // Pass the origin that receives the grant, so the dialog always shows the
+  // site the user is actually granting access to.
+  auto origin_info = brave_wallet::MakeOriginInfo(requesting_origin_);
   return java_object_ = Java_BraveDappPermissionPromptDialog_create(
              env, reinterpret_cast<intptr_t>(this),
              view_android->GetWindowAndroid()->GetJavaObject(),
              base::android::ConvertUTF8ToJavaString(
                  env, fav_icon_url.is_valid() ? fav_icon_url.spec() : ""),
-             static_cast<int32_t>(coin_type_));
+             static_cast<int32_t>(coin_type_),
+             base::android::ConvertUTF8ToJavaString(env,
+                                                    origin_info->origin_spec),
+             base::android::ConvertUTF8ToJavaString(
+                 env, origin_info->e_tld_plus_one));
 }
 
 DEFINE_JNI(BraveDappPermissionPromptDialog)
