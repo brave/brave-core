@@ -19,6 +19,7 @@ source_set("search_result_ad") {
     "//base",
     "//brave/components/brave_ads/core/mojom",
     "//brave/components/infobars/core",
+    "//chrome/browser/ui/tabs:tabs_public",
     "//components/infobars/core",
     "//content/public/browser",
   ]
@@ -38,6 +39,7 @@ source_set("search_result_ad") {
     "//components/infobars/content",
     "//components/infobars/core",
     "//components/prefs",
+    "//components/tabs:public",
     "//components/vector_icons",
     "//ui/base",
     "//url",
