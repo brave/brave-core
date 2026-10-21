@@ -21,7 +21,8 @@ class WebContents;
 
 namespace permissions {
 class PermissionPromptAndroid;
-}
+class PermissionRequest;
+}  // namespace permissions
 
 class BraveWalletPermissionPrompt
     : public BraveDappPermissionPromptDialogController::Delegate,
@@ -41,7 +42,8 @@ class BraveWalletPermissionPrompt
 
   BraveWalletPermissionPrompt(content::WebContents* web_contents,
                               std::unique_ptr<Delegate> delegate,
-                              brave_wallet::mojom::CoinType coin_type);
+                              brave_wallet::mojom::CoinType coin_type,
+                              const permissions::PermissionRequest& request);
   ~BraveWalletPermissionPrompt() override;
 
  protected:

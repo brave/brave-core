@@ -11,16 +11,37 @@
 #include "brave/components/brave_wallet/browser/permission_utils.h"
 #include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
 #include "components/permissions/android/permission_prompt/permission_prompt_android.h"
+#include "components/permissions/permission_request.h"
 #include "content/public/browser/web_contents.h"
+#include "url/origin.h"
+
+namespace {
+
+// The request origin has the account address appended to its host. Parse it
+// out to get the origin that receives the grant, which the prompt shows. For a
+// request from an iframe it differs from the tab's origin.
+url::Origin GetRequestingOrigin(const permissions::PermissionRequest& request) {
+  const url::Origin origin = url::Origin::Create(request.requesting_origin());
+  url::Origin requesting_origin;
+  if (brave_wallet::ParseRequestingOriginFromSubRequest(
+          request.request_type(), origin, &requesting_origin,
+          /*account=*/nullptr)) {
+    return requesting_origin;
+  }
+  return origin;
+}
+
+}  // namespace
 
 BraveWalletPermissionPrompt::BraveWalletPermissionPrompt(
     content::WebContents* web_contents,
     std::unique_ptr<Delegate> delegate,
-    brave_wallet::mojom::CoinType coin_type)
+    brave_wallet::mojom::CoinType coin_type,
+    const permissions::PermissionRequest& request)
     : web_contents_(web_contents), delegate_(std::move(delegate)) {
   dialog_controller_ =
       std::make_unique<BraveDappPermissionPromptDialogController>(
-          this, web_contents_, coin_type);
+          this, web_contents_, coin_type, GetRequestingOrigin(request));
   dialog_controller_->ShowDialog();
 }
 
