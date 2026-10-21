@@ -49,10 +49,6 @@
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 #endif
 
-#if BUILDFLAG(ENABLE_BRAVE_ADS)
-#include "brave/browser/brave_ads/creatives/search_result_ad/creative_search_result_ad_tab_helper.h"
-#endif
-
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
 #include "brave/browser/brave_rewards/rewards_tab_helper.h"
 #endif
@@ -158,11 +154,6 @@ void AttachTabHelpers(content::WebContents* web_contents) {
 
   brave_perf_predictor::PerfPredictorTabHelper::CreateForWebContents(
       web_contents);
-
-#if BUILDFLAG(ENABLE_BRAVE_ADS)
-  brave_ads::CreativeSearchResultAdTabHelper::MaybeCreateForWebContents(
-      web_contents);
-#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
 #if BUILDFLAG(ENABLE_WEB_DISCOVERY)
   web_discovery::WebDiscoveryTabHelper::MaybeCreateForWebContents(web_contents);

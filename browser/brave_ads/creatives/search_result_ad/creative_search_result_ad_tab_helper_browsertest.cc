@@ -63,13 +63,6 @@ constexpr auto kCreativeAdPlacementIdToIndex =
         {{"824657d0-eaed-4b80-8a42-a18c12f2977d", 1},
          {"fE%22%27%2B%2A%26-._~", 2}});
 
-CreativeSearchResultAdTabHelper* GetCreativeSearchResultAdTabHelper(
-    BrowserWindowInterface* browser) {
-  content::WebContents* web_contents =
-      browser->GetActiveTabInterface()->GetContents();
-  return CreativeSearchResultAdTabHelper::FromWebContents(web_contents);
-}
-
 bool HasSearchResultAdClickedInfoBar(content::WebContents* web_contents) {
   infobars::ContentInfoBarManager* info_bar_manager =
       infobars::ContentInfoBarManager::FromWebContents(web_contents);
@@ -280,7 +273,9 @@ IN_PROC_BROWSER_TEST_F(BraveAdsCreativeSearchResultAdTabHelperTest,
   const GURL url = GetURL(kAllowedDomain, kSearchResultUrlPath);
   BrowserWindowInterface* incognito_browser =
       OpenURLOffTheRecord(browser()->GetProfile(), url);
-  EXPECT_FALSE(GetCreativeSearchResultAdTabHelper(incognito_browser));
+  // Off the record, no tab helper is created.
+  EXPECT_FALSE(CreativeSearchResultAdTabHelper::MaybeCreate(
+      *incognito_browser->GetActiveTabInterface()));
 
   ASSERT_TRUE(ui_test_utils::NavigateToURL(incognito_browser, url));
   content::WebContents* web_contents =
