@@ -3,17 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_wallet/content/browser/snaps/hidden_web_contents_snap_host_bridge_controller.h"
+#include "brave/browser/brave_wallet/hidden_web_contents_snap_host_bridge_controller.h"
 
 #include <optional>
 #include <utility>
 
 #include "base/check.h"
 #include "base/functional/bind.h"
-#include "base/process/kill.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_controller.h"
-#include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/web_contents.h"
 #include "mojo/public/cpp/bindings/callback_helpers.h"
 #include "services/network/public/cpp/web_sandbox_flags.h"
@@ -32,13 +30,12 @@ HiddenWebContentsSnapHostBridgeController::
 
 HiddenWebContentsSnapHostBridgeController::
     ~HiddenWebContentsSnapHostBridgeController() {
-  if (host_) {
-    // Stop observing and detach before |host_| is destroyed as a member
-    // below: its teardown dispatches observer and delegate callbacks, and by
-    // then this object is partly destroyed (members are torn down in reverse
-    // declaration order, and weak_ptr_factory_ is declared last).
-    Observe(nullptr);
-    host_->SetDelegate(nullptr);
+  if (host_web_contents_) {
+    // Detach before |host_web_contents_| is destroyed. Its teardown calls the
+    // delegate, and by then this object is partly destroyed (members are torn
+    // down in reverse declaration order, and weak_ptr_factory_ is declared
+    // last).
+    host_web_contents_->SetDelegate(nullptr);
   }
 }
 
@@ -50,7 +47,6 @@ void HiddenWebContentsSnapHostBridgeController::BindNewBridge(
       base::BindOnce(&HiddenWebContentsSnapHostBridgeController::OnDisconnect,
                      weak_ptr_factory_.GetWeakPtr()));
   host_start_inflight_ = false;
-  host_start_navigation_id_.reset();
   DrainReadyCallbacks();
 }
 
@@ -69,12 +65,10 @@ void HiddenWebContentsSnapHostBridgeController::EnsureBridgeReady(
 }
 
 void HiddenWebContentsSnapHostBridgeController::EnsureHostStarted() {
-  // A crash before the page binds leaves no pipe, so OnDisconnect does not
-  // run. Treat that host as idle and reload it in place.
-  if (host_start_inflight_ && host_ && !host_->IsCrashed()) {
+  if (host_start_inflight_) {
     return;
   }
-  if (!host_) {
+  if (!host_web_contents_) {
     content::WebContents::CreateParams params(browser_context_);
     params.is_never_composited = true;
     // Scripts are needed to evaluate bundles and origin for the Mojo WebUI
@@ -82,78 +76,27 @@ void HiddenWebContentsSnapHostBridgeController::EnsureHostStarted() {
     params.starting_sandbox_flags = network::mojom::WebSandboxFlags::kAll &
                                     ~network::mojom::WebSandboxFlags::kScripts &
                                     ~network::mojom::WebSandboxFlags::kOrigin;
-    host_ = content::WebContents::Create(params);
-    host_->SetOwnerLocationForDebug(FROM_HERE);
-    host_->SetDelegate(this);
-    Observe(host_.get());
+    host_web_contents_ = content::WebContents::Create(params);
+    host_web_contents_->SetOwnerLocationForDebug(FROM_HERE);
+    host_web_contents_->SetDelegate(this);
   }
   host_start_inflight_ = true;
-  // Cleared so a cancelled previous navigation can't be mistaken for this
-  // attempt's; DidStartNavigation sets the new id.
-  host_start_navigation_id_.reset();
-  host_->GetController().LoadURL(host_url_, content::Referrer(),
-                                 ui::PAGE_TRANSITION_AUTO_TOPLEVEL,
-                                 std::string());
+  host_web_contents_->GetController().LoadURL(host_url_, content::Referrer(),
+                                              ui::PAGE_TRANSITION_AUTO_TOPLEVEL,
+                                              std::string());
 }
 
 void HiddenWebContentsSnapHostBridgeController::OnDisconnect() {
   snap_host_bridge_.reset();
   host_start_inflight_ = false;
-  host_start_navigation_id_.reset();
-}
-
-void HiddenWebContentsSnapHostBridgeController::DidStartNavigation(
-    content::NavigationHandle* navigation_handle) {
-  if (!host_start_inflight_ || host_start_navigation_id_ ||
-      !navigation_handle->IsInPrimaryMainFrame() ||
-      navigation_handle->IsSameDocument()) {
-    return;
-  }
-  host_start_navigation_id_ = navigation_handle->GetNavigationId();
-}
-
-void HiddenWebContentsSnapHostBridgeController::DidFinishNavigation(
-    content::NavigationHandle* navigation_handle) {
-  // Only the navigation this start attempt is waiting on matters. Others —
-  // notably the one a restart cancelled — report "did not commit" and would
-  // otherwise abandon an attempt that is still running.
-  if (!host_start_inflight_ ||
-      navigation_handle->GetNavigationId() != host_start_navigation_id_) {
-    return;
-  }
-  // The page binds asynchronously once its script runs, so a successful
-  // commit is not yet a bound bridge — keep waiting for BindNewBridge(). A
-  // failed or error-page commit will never bind, so release the callers now
-  // instead of leaving their mojo responders queued forever.
-  if (navigation_handle->HasCommitted() && !navigation_handle->IsErrorPage()) {
-    return;
-  }
-  AbandonHostStart();
-}
-
-void HiddenWebContentsSnapHostBridgeController::
-    PrimaryMainFrameRenderProcessGone(base::TerminationStatus status) {
-  // A crash before the page bound its pipe leaves no disconnect handler to
-  // run, so release queued callers here. The WebContents is kept so the next
-  // EnsureBridgeReady reloads it in place.
-  AbandonHostStart();
-}
-
-void HiddenWebContentsSnapHostBridgeController::AbandonHostStart() {
-  snap_host_bridge_.reset();
-  host_start_inflight_ = false;
-  host_start_navigation_id_.reset();
-  DrainReadyCallbacks();
 }
 
 void HiddenWebContentsSnapHostBridgeController::TearDown() {
   snap_host_bridge_.reset();
   host_start_inflight_ = false;
-  host_start_navigation_id_.reset();
-  if (host_) {
-    Observe(nullptr);
-    host_->SetDelegate(nullptr);
-    host_.reset();
+  if (host_web_contents_) {
+    host_web_contents_->SetDelegate(nullptr);
+    host_web_contents_.reset();
   }
   DrainReadyCallbacks();
 }

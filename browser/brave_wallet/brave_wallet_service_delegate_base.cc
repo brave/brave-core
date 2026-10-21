@@ -15,9 +15,9 @@
 #include "content/public/browser/browser_context.h"
 
 #if BUILDFLAG(ENABLE_SNAP)
+#include "brave/browser/brave_wallet/hidden_web_contents_snap_host_bridge_controller.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/web_ui_constants.h"
-#include "brave/components/brave_wallet/content/browser/snaps/hidden_web_contents_snap_host_bridge_controller.h"
 #include "url/gurl.h"
 #endif  // BUILDFLAG(ENABLE_SNAP)
 

@@ -305,7 +305,7 @@ IN_PROC_BROWSER_TEST_F(SnapServiceHiddenWebContentsBrowserTest,
 }
 
 // With the hidden host running, the wallet page must not inject its own
-// snaps-container frame — a second host would steal the profile-wide bridge
+// snaps-container frame. A second host would steal the profile-wide bridge
 // and orphan the snaps already loaded into the hidden host.
 IN_PROC_BROWSER_TEST_F(SnapServiceHiddenWebContentsBrowserTest,
                        WalletPageDoesNotStealBridge) {

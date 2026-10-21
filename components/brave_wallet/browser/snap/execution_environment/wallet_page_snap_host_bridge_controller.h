@@ -17,7 +17,7 @@
 namespace brave_wallet {
 
 // SnapHostBridgeController implementation backed by an already-open
-// chrome://snaps-container/ page — either the wallet page's hidden iframe or a
+// chrome://snaps-container/ page, either the wallet page's hidden iframe or a
 // manually-opened tab. Does not open a page; IsBound() is true while a
 // SnapHostBridge remote is bound (the page creates the pipe and passes the
 // remote end).

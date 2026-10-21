@@ -1,6 +1,7 @@
 include_rules = [
   "+brave/components/api_request_helper",
   "+brave/components/permissions",
+  "+brave/components/restricted_web_contents_delegate",
   "+brave/components/version_info",
 ]
 

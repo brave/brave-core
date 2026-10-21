@@ -38,7 +38,7 @@ class SnapHostBridgeController {
 
   // Ensures a bridge is bound or being established, then runs |on_ready|.
   // |on_ready| also runs when the bridge could not be established, so bound
-  // mojo responders are never silently dropped — callers must re-check
+  // mojo responders are never silently dropped. Callers must re-check
   // IsBound() inside it.
   virtual void EnsureBridgeReady(base::OnceClosure on_ready) = 0;
 

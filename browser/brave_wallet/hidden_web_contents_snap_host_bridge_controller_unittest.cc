@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_wallet/content/browser/snaps/hidden_web_contents_snap_host_bridge_controller.h"
+#include "brave/browser/brave_wallet/hidden_web_contents_snap_host_bridge_controller.h"
 
 #include <memory>
 #include <optional>
@@ -13,27 +13,23 @@
 #include "base/test/test_future.h"
 #include "brave/components/brave_wallet/browser/snap/execution_environment/snap_host_bridge_test_utils.h"
 #include "brave/components/brave_wallet/common/web_ui_constants.h"
+#include "chrome/test/base/chrome_render_view_host_test_harness.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_entry.h"
-#include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
-#include "content/public/test/mock_render_process_host.h"
-#include "content/public/test/navigation_simulator.h"
-#include "content/public/test/test_renderer_host.h"
-#include "net/base/net_errors.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 
 namespace brave_wallet {
 
 class HiddenWebContentsSnapHostBridgeControllerUnitTest
-    : public content::RenderViewHostTestHarness {
+    : public ChromeRenderViewHostTestHarness {
  protected:
   void TearDown() override {
     // The controller's hidden WebContents must be destroyed before the
     // harness tears down its RenderProcessHost/RenderWidgetHost bookkeeping.
     controller_.reset();
-    content::RenderViewHostTestHarness::TearDown();
+    ChromeRenderViewHostTestHarness::TearDown();
   }
 
   void CreateController() {
@@ -84,103 +80,20 @@ TEST_F(HiddenWebContentsSnapHostBridgeControllerUnitTest,
 }
 
 TEST_F(HiddenWebContentsSnapHostBridgeControllerUnitTest,
-       InFlightHostReloadsOnlyWhenCrashed) {
+       InFlightHostIsNotReloaded) {
   CreateController();
   controller_->EnsureBridgeReady(base::DoNothing());
   auto* host = controller_->host_for_testing();
   ASSERT_NE(nullptr, host);
-  ASSERT_FALSE(host->IsCrashed());
   auto* pending = host->GetController().GetPendingEntry();
   ASSERT_NE(nullptr, pending);
   const int pending_entry_id = pending->GetUniqueID();
 
-  // Start is in flight and the renderer is alive: do not navigate again.
   controller_->EnsureBridgeReady(base::DoNothing());
   EXPECT_EQ(host, controller_->host_for_testing());
   ASSERT_NE(nullptr, host->GetController().GetPendingEntry());
   EXPECT_EQ(pending_entry_id,
             host->GetController().GetPendingEntry()->GetUniqueID());
-
-  static_cast<content::MockRenderProcessHost*>(
-      host->GetPrimaryMainFrame()->GetProcess())
-      ->SimulateCrash();
-  ASSERT_TRUE(host->IsCrashed());
-  EXPECT_EQ(host, controller_->host_for_testing());
-  auto* crashed_pending = host->GetController().GetPendingEntry();
-  const int crashed_entry_id =
-      crashed_pending ? crashed_pending->GetUniqueID() : -1;
-
-  // No pipe was bound, so the crash does not disconnect. Reload this host.
-  controller_->EnsureBridgeReady(base::DoNothing());
-  EXPECT_EQ(host, controller_->host_for_testing());
-  auto* reloaded = host->GetController().GetPendingEntry();
-  ASSERT_NE(nullptr, reloaded);
-  EXPECT_NE(crashed_entry_id, reloaded->GetUniqueID());
-}
-
-// A load that ends in an error page will never bind, so queued callers must
-// be released rather than left waiting for a BindNewBridge() that can't come.
-TEST_F(HiddenWebContentsSnapHostBridgeControllerUnitTest,
-       FailedLoadRunsPendingCallbacks) {
-  CreateController();
-  base::test::TestFuture<void> ready;
-  controller_->EnsureBridgeReady(ready.GetCallback());
-  auto* host = controller_->host_for_testing();
-  ASSERT_NE(nullptr, host);
-  EXPECT_FALSE(ready.IsReady());
-
-  auto navigation =
-      content::NavigationSimulator::CreateFromPending(host->GetController());
-  navigation->Fail(net::ERR_FAILED);
-  navigation->CommitErrorPage();
-
-  EXPECT_TRUE(ready.Wait());
-  EXPECT_FALSE(controller_->IsBound());
-}
-
-// A successful commit is not yet a bound bridge: the page binds later, once
-// its script runs. Callers must keep waiting instead of failing here.
-TEST_F(HiddenWebContentsSnapHostBridgeControllerUnitTest,
-       CommittedLoadKeepsCallbacksPending) {
-  CreateController();
-  base::test::TestFuture<void> ready;
-  controller_->EnsureBridgeReady(ready.GetCallback());
-  auto* host = controller_->host_for_testing();
-  ASSERT_NE(nullptr, host);
-
-  content::NavigationSimulator::CreateFromPending(host->GetController())
-      ->Commit();
-  EXPECT_FALSE(ready.IsReady());
-
-  FakeSnapHostBridge bridge;
-  controller_->BindNewBridge(bridge.BindNewPipeAndPassRemote());
-  EXPECT_TRUE(ready.Wait());
-}
-
-// A crash before the page binds leaves no pipe, so the remote's disconnect
-// handler never runs. Queued callers must still be released — each holds a
-// live mojo responder that would otherwise never reply.
-TEST_F(HiddenWebContentsSnapHostBridgeControllerUnitTest,
-       CrashBeforeBindRunsPendingCallbacks) {
-  CreateController();
-  base::test::TestFuture<void> ready1;
-  base::test::TestFuture<void> ready2;
-  controller_->EnsureBridgeReady(ready1.GetCallback());
-  controller_->EnsureBridgeReady(ready2.GetCallback());
-  auto* host = controller_->host_for_testing();
-  ASSERT_NE(nullptr, host);
-  EXPECT_FALSE(ready1.IsReady());
-  EXPECT_FALSE(ready2.IsReady());
-
-  static_cast<content::MockRenderProcessHost*>(
-      host->GetPrimaryMainFrame()->GetProcess())
-      ->SimulateCrash();
-
-  EXPECT_TRUE(ready1.Wait());
-  EXPECT_TRUE(ready2.Wait());
-  EXPECT_FALSE(controller_->IsBound());
-  // The host is kept so the next EnsureBridgeReady reloads it in place.
-  EXPECT_EQ(host, controller_->host_for_testing());
 }
 
 TEST_F(HiddenWebContentsSnapHostBridgeControllerUnitTest,

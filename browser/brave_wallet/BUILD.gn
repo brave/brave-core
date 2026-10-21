@@ -104,7 +104,33 @@ source_set("brave_wallet_delegate") {
   }
 
   if (enable_snap) {
-    deps += [ "//brave/components/brave_wallet/content/browser/snaps" ]
+    deps += [ ":hidden_web_contents_snap_host" ]
+  }
+}
+
+if (enable_snap) {
+  source_set("hidden_web_contents_snap_host") {
+    visibility = [ ":*" ]
+    sources = [
+      "hidden_web_contents_snap_host_bridge_controller.cc",
+      "hidden_web_contents_snap_host_bridge_controller.h",
+    ]
+
+    deps = [
+      "//content/public/browser",
+      "//services/network/public/cpp",
+      "//services/network/public/mojom",
+      "//ui/base",
+    ]
+
+    public_deps = [
+      "//base",
+      "//brave/components/brave_wallet/browser/snap/execution_environment",
+      "//brave/components/brave_wallet/common:mojom",
+      "//brave/components/restricted_web_contents_delegate",
+      "//mojo/public/cpp/bindings",
+      "//url",
+    ]
   }
 }
 
@@ -239,6 +265,19 @@ source_set("unit_tests") {
       sources += [ "external_wallets_importer_unittest.cc" ]
       deps += [ ":external_wallets_importer" ]
     }
+  }
+
+  if (enable_snap) {
+    sources += [
+      "hidden_web_contents_snap_host_bridge_controller_unittest.cc",
+    ]
+    deps += [
+      ":hidden_web_contents_snap_host",
+      "//brave/components/brave_wallet/browser/snap/execution_environment:test_support",
+      "//chrome/test/base:chrome_render_view_host_test_harness",
+      "//content/public/browser",
+      "//url",
+    ]
   }
 }
 
