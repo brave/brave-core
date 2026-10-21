@@ -1,0 +1,26 @@
+diff --git a/infra/config/generated/testing/gn_isolate_map.pyl b/infra/config/generated/testing/gn_isolate_map.pyl
+index 9fd9a0c8ea4662f04e6c8f4bf3490e0549d6da18..37b6bbc5d0fb952ebaa0d5ce7f4967fbd3bec047 100644
+--- a/infra/config/generated/testing/gn_isolate_map.pyl
++++ b/infra/config/generated/testing/gn_isolate_map.pyl
+@@ -813,6 +813,21 @@
+     "type": "windowed_test_launcher",
+     "module_scheme": "gtest",
+   },
++  "brave_components_unittests": {
++    "label": "//brave/components:brave_components_unittests",
++    "type": "windowed_test_launcher",
++    "module_scheme": "gtest",
++  },
++  "brave_unit_tests": {
++    "label": "//brave/test:brave_unit_tests",
++    "type": "windowed_test_launcher",
++    "module_scheme": "gtest",
++  },
++  "brave_browser_tests": {
++    "label": "//brave/test:brave_browser_tests",
++    "type": "windowed_test_launcher",
++    "module_scheme": "gtest",
++  },
+   "compositor_unittests": {
+     "label": "//ui/compositor:compositor_unittests",
+     "type": "windowed_test_launcher",

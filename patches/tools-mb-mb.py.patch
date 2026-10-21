@@ -1,0 +1,70 @@
+diff --git a/tools/mb/mb.py b/tools/mb/mb.py
+index 1b7dd70f2a914b8a006639127cb4c6e5564ed325..be6a9f8f62afc495864404d66e6088bf714b5cc4 100755
+--- a/tools/mb/mb.py
++++ b/tools/mb/mb.py
+@@ -1663,6 +1663,44 @@ class MetaBuildWrapper:
+       self.platform == 'darwin' and not is_ios
+     ) or 'target_os="mac"' in vals['gn_args']
+ 
++    # Brave renames the Mac bundles that Chromium allowlists below. Same
++    # exception as those bundles until crbug.com/1000667 is fixed. Names come
++    # from brave/app/theme/*/BRANDING*.
++    brave_product_names = (
++      'Brave Browser',
++      'Brave Browser Beta',
++      'Brave Browser Dev',
++      'Brave Browser Development',
++      'Brave Browser Nightly',
++      'Brave Origin',
++      'Brave Origin Beta',
++      'Brave Origin Development',
++      'Brave Origin Nightly',
++    )
++    brave_bundle_suffixes = (
++      '.app/',
++      ' Framework.framework/',
++      ' Helper.app/',
++      ' Helper (Alerts).app/',
++      ' Helper (Aperitif).app/',
++      ' Helper (Aperitif Alerts).app/',
++      ' Helper (Aperitif GPU).app/',
++      ' Helper (Aperitif Renderer).app/',
++      ' Helper (GPU).app/',
++      ' Helper (Renderer).app/',
++    )
++    brave_mac_bundles = {
++      name + suffix
++      for name in brave_product_names
++      for suffix in brave_bundle_suffixes
++    }
++    brave_mac_bundles.update(
++      (
++        'BraveUpdater.app/',
++        'BraveUpdater_test.app/',
++      )
++    )
++
+     err = ''
+     for f in files:
+       # Skip a few configs that need extra cleanup for now.
+@@ -1708,8 +1746,10 @@ class MetaBuildWrapper:
+         )
+         or (
+           is_mac
+-          and f
+-          in (  # https://crbug.com/1000667
++          and (
++            f in brave_mac_bundles
++            or f
++            in (  # https://crbug.com/1000667
+             'ChromeEnterpriseCompanion.app/',
+             'ChromeEnterpriseCompanion_test.app/',
+             'Chromium Framework.framework/',
+@@ -1750,6 +1790,7 @@ class MetaBuildWrapper:
+             'ppapi_tests.plugin/',
+             'registration_test_app_bundle.app/',
+             'ui_unittests Framework.framework/',
++            )
+           )
+         )
+       ):
