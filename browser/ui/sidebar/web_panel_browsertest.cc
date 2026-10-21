@@ -43,6 +43,8 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
+#include "ui/gfx/animation/animation.h"
+#include "ui/gfx/animation/animation_test_api.h"
 #include "ui/views/animation/ink_drop.h"
 #include "ui/views/view_utils.h"
 #include "url/gurl.h"
@@ -342,6 +344,68 @@ IN_PROC_BROWSER_TEST_F(WebPanelBrowserTest, WebPanelItemActiveStateTest) {
   controller()->ToggleSidebarPinning();
   ASSERT_TRUE(sidebar->IsSidebarVisible());
   EXPECT_EQ(views::InkDropState::ACTIVATED, ink_drop_state_at(index_b));
+}
+
+// The side panel must not animate when it swaps with the web panel, as the two
+// share the same space and should exchange in a single frame.
+//
+// Both directions are asserted through SidePanel::state(), which outlives the
+// call that starts the animation: a suppressed transition lands on kOpen /
+// kClosed, an animated one on kOpening / kClosing.
+IN_PROC_BROWSER_TEST_F(WebPanelBrowserTest,
+                       SidePanelDoesNotAnimateWhenSwappingWithWebPanel) {
+  // Suppression is only observable if the side panel would otherwise animate.
+  // SidebarBrowserTest force-disables rich animations, and
+  // SetRichAnimationRenderMode() silently does nothing while another force is
+  // in effect, so the base scoper has to be dropped first.
+  animation_resetter_.reset();
+  auto scoped_mode = gfx::AnimationTestApi::SetRichAnimationRenderMode(
+      gfx::Animation::RichAnimationRenderMode::FORCE_ENABLED);
+  ASSERT_TRUE(scoped_mode);
+
+  auto* panel_ui = SidePanelUI::From(browser());
+  // Resolve side panel entries synchronously, so Show() reaches
+  // SidePanel::Open() before it returns.
+  panel_ui->SetNoDelaysForTesting(true);
+
+  auto* side_panel = GetSidePanel();
+  SidebarServiceFactory::GetForProfile(browser()->GetProfile())
+      ->AddItem(SidebarItem::CreateWebPanelItem(GURL("https://brave.com/"),
+                                                u"title"));
+  const size_t web_panel_index = model()->GetAllSidebarItems().size() - 1;
+
+  // Baseline: with no web panel on screen the open animates. Having the item
+  // is not enough - only a visible panel suppresses.
+  panel_ui->Show(SidePanelEntryId::kBookmarks);
+  ASSERT_EQ(SidePanel::State::kOpening, side_panel->state());
+  ASSERT_TRUE(side_panel->GetVisible());
+
+  // The web panel replaces it, so the close must not animate. An animated
+  // close would land on kClosing and stay on screen instead.
+  controller()->OnItemPressed(web_panel_index);
+  EXPECT_EQ(SidePanel::State::kClosed, side_panel->state());
+  EXPECT_FALSE(side_panel->GetVisible());
+  ASSERT_TRUE(GetBraveMultiContentsView()->IsWebPanelVisible());
+
+  // The same open now skips the animation, because it replaces the web panel.
+  panel_ui->Show(SidePanelEntryId::kBookmarks);
+  EXPECT_EQ(SidePanel::State::kOpen, side_panel->state());
+  ASSERT_TRUE(side_panel->GetVisible());
+  // Showing the side panel is what closed the web panel.
+  ASSERT_FALSE(GetBraveMultiContentsView()->IsWebPanelVisible());
+
+  // Closing on its own animates out and stays on screen meanwhile.
+  panel_ui->Close();
+  ASSERT_EQ(SidePanel::State::kClosing, side_panel->state());
+  ASSERT_TRUE(side_panel->GetVisible());
+
+  // A panel already animating closed has to be forced shut rather than left
+  // animating behind the new web panel - suppression also bypasses the
+  // IsClosing() early return in SidePanelCoordinator::Close().
+  controller()->OnItemPressed(web_panel_index);
+  EXPECT_EQ(SidePanel::State::kClosed, side_panel->state());
+  EXPECT_FALSE(side_panel->GetVisible());
+  EXPECT_TRUE(GetBraveMultiContentsView()->IsWebPanelVisible());
 }
 
 // The web panel is backed by a pinned tab, so it has to be closed while the
