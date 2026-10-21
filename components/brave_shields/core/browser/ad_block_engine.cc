@@ -7,6 +7,7 @@
 
 #include <optional>
 #include <string>
+#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -25,70 +26,35 @@ using net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES;
 
 namespace {
 
-std::string ResourceTypeToString(blink::mojom::ResourceType resource_type) {
-  std::string filter_option = "";
-  switch (resource_type) {
-    // top level page
-    case blink::mojom::ResourceType::kMainFrame:
-      filter_option = "main_frame";
-      break;
-    // frame or iframe
-    case blink::mojom::ResourceType::kSubFrame:
-      filter_option = "sub_frame";
-      break;
-    // a CSS stylesheet
-    case blink::mojom::ResourceType::kStylesheet:
-      filter_option = "stylesheet";
-      break;
-    // an external script
-    case blink::mojom::ResourceType::kScript:
-      filter_option = "script";
-      break;
-    // an image (jpg/gif/png/etc)
-    case blink::mojom::ResourceType::kFavicon:
-    case blink::mojom::ResourceType::kImage:
-      filter_option = "image";
-      break;
-    // a font
-    case blink::mojom::ResourceType::kFontResource:
-      filter_option = "font";
-      break;
-    // an "other" subresource.
-    case blink::mojom::ResourceType::kSubResource:
-      filter_option = "other";
-      break;
-    // an object (or embed) tag for a plugin.
-    case blink::mojom::ResourceType::kObject:
-      filter_option = "object";
-      break;
-    // a media resource.
-    case blink::mojom::ResourceType::kMedia:
-      filter_option = "media";
-      break;
-    // a XMLHttpRequest
-    case blink::mojom::ResourceType::kXhr:
-      filter_option = "xhr";
-      break;
-    // a ping request for <a ping>/sendBeacon.
-    case blink::mojom::ResourceType::kPing:
-      filter_option = "ping";
-      break;
-    // the main resource of a dedicated worker.
-    case blink::mojom::ResourceType::kWorker:
-    // the main resource of a shared worker.
-    case blink::mojom::ResourceType::kSharedWorker:
-    // an explicitly requested prefetch
-    case blink::mojom::ResourceType::kPrefetch:
-    // the main resource of a service worker.
-    case blink::mojom::ResourceType::kServiceWorker:
-    // a report of Content Security Policy violations.
-    case blink::mojom::ResourceType::kCspReport:
-    // a resource that a plugin requested.
-    case blink::mojom::ResourceType::kPluginResource:
-    default:
-      break;
+std::string_view RequestTypeToString(
+    brave_shields::AdBlockRequestType request_type) {
+  using brave_shields::AdBlockRequestType;
+  switch (request_type) {
+    case AdBlockRequestType::kMainFrame:
+      return "main_frame";
+    case AdBlockRequestType::kSubFrame:
+      return "sub_frame";
+    case AdBlockRequestType::kStylesheet:
+      return "stylesheet";
+    case AdBlockRequestType::kScript:
+      return "script";
+    case AdBlockRequestType::kImage:
+      return "image";
+    case AdBlockRequestType::kFont:
+      return "font";
+    case AdBlockRequestType::kObject:
+      return "object";
+    case AdBlockRequestType::kMedia:
+      return "media";
+    case AdBlockRequestType::kXhr:
+      return "xhr";
+    case AdBlockRequestType::kPing:
+      return "ping";
+    case AdBlockRequestType::kOther:
+      return "other";
+    case AdBlockRequestType::kUnknown:
+      return "";
   }
-  return filter_option;
 }
 
 }  // namespace
@@ -105,7 +71,7 @@ AdBlockEngine::~AdBlockEngine() = default;
 
 adblock::BlockerResult AdBlockEngine::ShouldStartRequest(
     const GURL& url,
-    blink::mojom::ResourceType resource_type,
+    AdBlockRequestType request_type,
     const url::Origin& request_initiator,
     const std::string& method,
     bool previously_matched_rule,
@@ -118,7 +84,7 @@ adblock::BlockerResult AdBlockEngine::ShouldStartRequest(
   const auto initiator_hostname = request_initiator.host();
   return ad_block_client_->matches(
       url.spec(), std::string(url.host()), initiator_hostname,
-      ResourceTypeToString(resource_type), is_third_party, method,
+      std::string(RequestTypeToString(request_type)), is_third_party, method,
       // Checking normal rules is skipped if a normal rule or exception rule was
       // found previously
       previously_matched_rule || previously_matched_exception,
@@ -128,7 +94,7 @@ adblock::BlockerResult AdBlockEngine::ShouldStartRequest(
 
 std::optional<std::string> AdBlockEngine::GetCspDirectives(
     const GURL& url,
-    blink::mojom::ResourceType resource_type,
+    AdBlockRequestType request_type,
     const url::Origin& first_party_origin,
     const std::string& method) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
@@ -138,7 +104,7 @@ std::optional<std::string> AdBlockEngine::GetCspDirectives(
 
   auto result = ad_block_client_->get_csp_directives(
       url.spec(), std::string(url.host()), first_party_origin.host(),
-      ResourceTypeToString(resource_type), is_third_party, method);
+      std::string(RequestTypeToString(request_type)), is_third_party, method);
 
   if (result.empty()) {
     return std::nullopt;

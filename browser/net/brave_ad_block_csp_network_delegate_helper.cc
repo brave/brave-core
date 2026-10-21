@@ -13,6 +13,7 @@
 #include "base/memory/scoped_refptr.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/net/url_context.h"
+#include "brave/components/brave_shields/content/browser/ad_block_request_type_util.h"
 #include "brave/components/brave_shields/core/browser/ad_block_engine_wrapper.h"
 #include "brave/components/brave_shields/core/browser/ad_block_service.h"
 #include "brave/components/brave_shields/core/browser/ad_block_service_helper.h"
@@ -31,7 +32,8 @@ std::optional<std::string> GetCspDirectivesOnTaskRunner(
     std::optional<std::string> original_csp,
     brave_shields::AdBlockEngineWrapper* engine_wrapper) {
   std::optional<std::string> csp_directives = engine_wrapper->GetCspDirectives(
-      request_url, resource_type, first_party_origin, method);
+      request_url, brave_shields::ToAdBlockRequestType(resource_type),
+      first_party_origin, method);
 
   brave_shields::MergeCspDirectiveInto(original_csp, &csp_directives);
   return csp_directives;
