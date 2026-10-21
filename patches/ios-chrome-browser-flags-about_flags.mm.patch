@@ -1,5 +1,5 @@
 diff --git a/ios/chrome/browser/flags/about_flags.mm b/ios/chrome/browser/flags/about_flags.mm
-index 20a91e1e2741f8fe89cf752ea84b95977492c4ba..b584d3d952b6b188b1b6aae40707106e0b0c403a 100644
+index 3575f6e7978248e51049d75bbeca23fc179b2b0b..150ba2e7096e1527fbef6d83b372ac7c4d31b014 100644
 --- a/ios/chrome/browser/flags/about_flags.mm
 +++ b/ios/chrome/browser/flags/about_flags.mm
 @@ -1385,6 +1385,7 @@ const FeatureEntry::FeatureVariation kPageClassificationVariations[] = {
