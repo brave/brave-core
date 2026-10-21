@@ -258,105 +258,36 @@ IN_PROC_BROWSER_TEST_F(PolkadotProviderRendererTest, Iframe3P) {
     GURL iframe_url;
   } polkadot_undefined_cases[] =
       {{// 3p iframe
-        "true", secure_top_url, iframe_url_3p},
-       {// 1st party iframe with allow="polkadot 'none'"
-        R"(
-        document.querySelector('iframe').setAttribute(
-          'allow', 'polkadot \'none\'');
-        true
-        )",
-        secure_top_url, iframe_url_1p},
+        "", secure_top_url, iframe_url_3p},
        {// 1st party iframe with sandbox="allow-scripts"
         R"(
-        document.querySelector('iframe').removeAttribute('allow');
         document.querySelector('iframe').setAttribute(
           'sandbox', 'allow-scripts');
-        true
         )",
         secure_top_url, iframe_url_1p},
        {// 3p iframe with sandbox="allow-scripts allow-same-origin"
         R"(
-        document.querySelector('iframe').removeAttribute('allow');
         document.querySelector('iframe')
           .setAttribute('sandbox', 'allow-scripts allow-same-origin');
-        true
         )",
         secure_top_url, iframe_url_3p},
-       {// 3p iframe with allow="ethereum"
-        R"(
-        document.querySelector('iframe').removeAttribute('sandbox');
-        document.querySelector('iframe').setAttribute('allow', 'ethereum');
-        true
-        )",
-        secure_top_url, iframe_url_3p},
-       {// 3p iframe with allow="polkadot; ethereum" but insecure top level
-        R"(
-        document.querySelector('iframe').removeAttribute('sandbox');
-        document.querySelector('iframe')
-            .setAttribute('allow', 'polkadot; ethereum');
-        true
-        )",
-        insecure_top_url, iframe_url_3p},
-
-       {// 3p iframe with allow="polkadot; ethereum" but insecure top level
-        // (data URI)
-        R"(
-        document.querySelector('iframe').removeAttribute('sandbox');
-        document.querySelector('iframe')
-            .setAttribute('allow', 'polkadot; ethereum');
-        true
-        )",
-        data_top_url, iframe_url_3p},
-
-       {// 3p iframe with allow="polkadot; ethereum" but insecure iframe
-        R"(
-        document.querySelector('iframe').removeAttribute('sandbox');
-        document.querySelector('iframe')
-            .setAttribute('allow', 'polkadot; ethereum');
-        true
-        )",
-        secure_top_url, data_simple_url},
-       {// insecure top level and insecure iframe allow="polkadot; ethereum"
-        R"(
-        document.querySelector('iframe').removeAttribute('sandbox');
-        document.querySelector('iframe')
-            .setAttribute('allow', 'polkadot; ethereum');
-        true
-        )",
-        data_top_url, data_simple_url}},
+       {// 3p iframe with insecure top level
+        "", insecure_top_url, iframe_url_3p},
+       {// 3p iframe with insecure top level (data URI)
+        "", data_top_url, iframe_url_3p},
+       {// insecure iframe
+        "", secure_top_url, data_simple_url},
+       {// insecure top level and insecure iframe
+        "", data_top_url, data_simple_url}},
     polkadot_defined_cases[] = {
         {// 1st party iframe
-         "true", secure_top_url, iframe_url_1p},
+         "", secure_top_url, iframe_url_1p},
         {// 1st party iframe sandbox="allow-scripts allow-same-origin"
          R"(
-        document.querySelector('iframe').removeAttribute('allow');
         document.querySelector('iframe')
             .setAttribute('sandbox', 'allow-scripts allow-same-origin');
-        true
         )",
-         secure_top_url, iframe_url_1p},
-        {// 3p iframe with allow="polkadot"
-         R"(
-        document.querySelector('iframe').removeAttribute('sandbox');
-        document.querySelector('iframe').setAttribute('allow', 'polkadot');
-        true
-        )",
-         secure_top_url, iframe_url_3p},
-        {// 3p iframe with allow="ethereum; polkadot"
-         R"(
-        document.querySelector('iframe').removeAttribute('sandbox');
-        document.querySelector('iframe').setAttribute('allow',
-          'ethereum; polkadot');
-        true
-        )",
-         secure_top_url, iframe_url_3p},
-        {// 3rd party iframe with sandbox="allow-scripts" allow="polkadot"
-         R"(
-        document.querySelector('iframe').setAttribute('allow', 'polkadot');
-        document.querySelector('iframe').setAttribute('sandbox', 'allow-scripts');
-        true
-        )",
-         secure_top_url, iframe_url_3p}};
+         secure_top_url, iframe_url_1p}};
 
   for (auto& c : polkadot_undefined_cases) {
     SCOPED_TRACE(testing::Message()
@@ -365,7 +296,7 @@ IN_PROC_BROWSER_TEST_F(PolkadotProviderRendererTest, Iframe3P) {
     ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), c.top_url));
     content::RenderFrameHost* main_frame =
         web_contents(browser())->GetPrimaryMainFrame();
-    ASSERT_TRUE(content::EvalJs(main_frame, c.script).ExtractBool());
+    ASSERT_TRUE(content::ExecJs(main_frame, c.script));
     ASSERT_TRUE(
         NavigateIframeToURL(web_contents(browser()), "test", c.iframe_url));
     EXPECT_FALSE(content::EvalJs(ChildFrameAt(main_frame, 0),
@@ -379,7 +310,7 @@ IN_PROC_BROWSER_TEST_F(PolkadotProviderRendererTest, Iframe3P) {
     ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), c.top_url));
     content::RenderFrameHost* main_frame =
         web_contents(browser())->GetPrimaryMainFrame();
-    ASSERT_TRUE(content::EvalJs(main_frame, c.script).ExtractBool());
+    ASSERT_TRUE(content::ExecJs(main_frame, c.script));
     ASSERT_TRUE(
         NavigateIframeToURL(web_contents(browser()), "test", c.iframe_url));
     EXPECT_TRUE(content::EvalJs(ChildFrameAt(main_frame, 0),

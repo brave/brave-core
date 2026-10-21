@@ -287,7 +287,7 @@ std::string SignMessageScript(std::string_view args) {
       args, expected_result);
 }
 
-std ::string RequestScript(std::string_view args) {
+std::string RequestScript(std::string_view args) {
   const std::string expected_result = content::JsReplace(
       R"({ publicKey: $1, signature: $2})", kTestPublicKey, kTestSignature);
   return absl::StrFormat(
@@ -1094,110 +1094,42 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, Iframe3P) {
     GURL iframe_url;
   } solana_undefined_cases[] =
       {{// 3p iframe
-        "true", secure_top_url, iframe_url_3p},
-       {// 1st party iframe with allow="solana 'none'"
-        R"(
-        document.querySelector('iframe').setAttribute('allow', 'solana \'none\'');
-        true
-        )",
-        secure_top_url, iframe_url_1p},
+        "", secure_top_url, iframe_url_3p},
        {// 1st party iframe with sandbox="allow-scripts"
         R"(
-        document.querySelector('iframe').removeAttribute('allow');
         document.querySelector('iframe').setAttribute('sandbox', 'allow-scripts');
-        true
         )",
         secure_top_url, iframe_url_1p},
        {// 3p iframe with sandbox="allow-scripts allow-same-origin"
         R"(
-        document.querySelector('iframe').removeAttribute('allow');
         document.querySelector('iframe')
           .setAttribute('sandbox', 'allow-scripts allow-same-origin');
-        true
         )",
         secure_top_url, iframe_url_3p},
-       {// 3p iframe with allow="ethereum"
-        R"(
-        document.querySelector('iframe').removeAttribute('sandbox');
-        document.querySelector('iframe').setAttribute('allow', 'ethereum');
-        true
-        )",
-        secure_top_url, iframe_url_3p},
-
-       {// 3p iframe with allow="solana; ethereum" but insecure top level
-        R"(
-      document.querySelector('iframe').removeAttribute('sandbox');
-      document.querySelector('iframe')
-          .setAttribute('allow', 'solana; ethereum');
-      true
-      )",
-        insecure_top_url, iframe_url_3p},
-
-       {// 3p iframe with allow="solana; ethereum" but insecure top level (data
-        // URI)
-        R"(
-      document.querySelector('iframe').removeAttribute('sandbox');
-      document.querySelector('iframe')
-          .setAttribute('allow', 'solana; ethereum');
-      true
-      )",
-        data_top_url, iframe_url_3p},
-
-       {// 3p iframe with allow="solana; ethereum" but insecure iframe
-        R"(
-      document.querySelector('iframe').removeAttribute('sandbox');
-      document.querySelector('iframe')
-          .setAttribute('allow', 'solana; ethereum');
-      true
-      )",
-        secure_top_url, data_simple_url},
-       {// insecure top level and insecure iframe allow="solana; ethereum"
-        R"(
-      document.querySelector('iframe').removeAttribute('sandbox');
-      document.querySelector('iframe')
-          .setAttribute('allow', 'solana; ethereum');
-      true
-      )",
-        data_top_url, data_simple_url}},
+       {// 3p iframe with insecure top level
+        "", insecure_top_url, iframe_url_3p},
+       {// 3p iframe with insecure top level (data URI)
+        "", data_top_url, iframe_url_3p},
+       {// insecure iframe
+        "", secure_top_url, data_simple_url},
+       {// insecure top level and insecure iframe
+        "", data_top_url, data_simple_url}},
     solana_defined_cases[] = {
         {// 1st party iframe
-         "true", secure_top_url, iframe_url_1p},
+         "", secure_top_url, iframe_url_1p},
         {// 1st party iframe sandbox="allow-scripts allow-same-origin"
          R"(
-      document.querySelector('iframe').removeAttribute('allow');
       document.querySelector('iframe')
           .setAttribute('sandbox', 'allow-scripts allow-same-origin');
-      true
       )",
-         secure_top_url, iframe_url_1p},
-        {// 3p iframe with allow="solana"
-         R"(
-      document.querySelector('iframe').removeAttribute('sandbox');
-      document.querySelector('iframe').setAttribute('allow', 'solana');
-      true
-      )",
-         secure_top_url, iframe_url_3p},
-        {// 3p iframe with allow="ethereum; solana"
-         R"(
-      document.querySelector('iframe').removeAttribute('sandbox');
-      document.querySelector('iframe').setAttribute('allow', 'ethereum; solana');
-      true
-      )",
-         secure_top_url, iframe_url_3p},
-        {// 3rd party iframe with sandbox="allow-scripts" allow="solana"
-         R"(
-      document.querySelector('iframe').setAttribute('allow', 'solana');
-      document.querySelector('iframe').setAttribute('sandbox', 'allow-scripts');
-      true
-      )",
-         secure_top_url, iframe_url_3p}};
+         secure_top_url, iframe_url_1p}};
 
   for (auto& c : solana_undefined_cases) {
     SCOPED_TRACE(testing::Message() << c.script << c.iframe_url);
     ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), c.top_url));
     content::RenderFrameHost* main_frame =
         web_contents(browser())->GetPrimaryMainFrame();
-    EXPECT_TRUE(content::EvalJs(main_frame, c.script).ExtractBool());
+    EXPECT_TRUE(content::ExecJs(main_frame, c.script));
     EXPECT_TRUE(
         NavigateIframeToURL(web_contents(browser()), "test", c.iframe_url));
     EXPECT_TRUE(
@@ -1209,7 +1141,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, Iframe3P) {
     ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), c.top_url));
     content::RenderFrameHost* main_frame =
         web_contents(browser())->GetPrimaryMainFrame();
-    EXPECT_TRUE(content::EvalJs(main_frame, c.script).ExtractBool());
+    EXPECT_TRUE(content::ExecJs(main_frame, c.script));
     EXPECT_TRUE(
         NavigateIframeToURL(web_contents(browser()), "test", c.iframe_url));
     EXPECT_FALSE(

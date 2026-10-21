@@ -573,11 +573,10 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, GetUsedAddresses_Error) {
         std::move(callback).Run(std::move(pending_remote), nullptr);
       });
   ON_CALL(*cardano_api, GetUsedAddresses(_))
-      .WillByDefault(
-          [&](TestCardanoApi::GetUsedAddressesCallback callback) {
-            std::move(callback).Run({}, mojom::CardanoProviderErrorBundle::New(
-                                            -4, "Account change", nullptr));
-          });
+      .WillByDefault([&](TestCardanoApi::GetUsedAddressesCallback callback) {
+        std::move(callback).Run({}, mojom::CardanoProviderErrorBundle::New(
+                                        -4, "Account change", nullptr));
+      });
   auto result = EvalJs(web_contents(browser()),
                        "(async () => { try { return await (await "
                        "window.cardano.brave.enable()).getUsedAddresses() } "
@@ -628,11 +627,10 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, GetUnusedAddresses_Error) {
         std::move(callback).Run(std::move(pending_remote), nullptr);
       });
   ON_CALL(*cardano_api, GetUnusedAddresses(_))
-      .WillByDefault(
-          [&](TestCardanoApi::GetUnusedAddressesCallback callback) {
-            std::move(callback).Run({}, mojom::CardanoProviderErrorBundle::New(
-                                            -2, "Internal", nullptr));
-          });
+      .WillByDefault([&](TestCardanoApi::GetUnusedAddressesCallback callback) {
+        std::move(callback).Run({}, mojom::CardanoProviderErrorBundle::New(
+                                        -2, "Internal", nullptr));
+      });
   auto result = EvalJs(web_contents(browser()),
                        "(async () => { try { return await (await "
                        "window.cardano.brave.enable()).getUnusedAddresses() } "
@@ -679,12 +677,11 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, GetBalance_Error) {
         std::move(callback).Run(std::move(pending_remote), nullptr);
       });
   ON_CALL(*cardano_api, GetBalance(_))
-      .WillByDefault(
-          [&](TestCardanoApi::GetBalanceCallback callback) {
-            std::move(callback).Run(std::nullopt,
-                                    mojom::CardanoProviderErrorBundle::New(
-                                        -2, "Internal", nullptr));
-          });
+      .WillByDefault([&](TestCardanoApi::GetBalanceCallback callback) {
+        std::move(callback).Run(
+            std::nullopt,
+            mojom::CardanoProviderErrorBundle::New(-2, "Internal", nullptr));
+      });
   auto result = EvalJs(web_contents(browser()),
                        "(async () => { try { return await (await "
                        "window.cardano.brave.enable()).getBalance() } "
@@ -732,12 +729,11 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, GetChangeAddress_Error) {
         std::move(callback).Run(std::move(pending_remote), nullptr);
       });
   ON_CALL(*cardano_api, GetChangeAddress(_))
-      .WillByDefault(
-          [&](TestCardanoApi::GetChangeAddressCallback callback) {
-            std::move(callback).Run(std::nullopt,
-                                    mojom::CardanoProviderErrorBundle::New(
-                                        -2, "Internal", nullptr));
-          });
+      .WillByDefault([&](TestCardanoApi::GetChangeAddressCallback callback) {
+        std::move(callback).Run(
+            std::nullopt,
+            mojom::CardanoProviderErrorBundle::New(-2, "Internal", nullptr));
+      });
   auto result = EvalJs(web_contents(browser()),
                        "(async () => { try{ return await (await "
                        "window.cardano.brave.enable()).getChangeAddress() } "
@@ -791,11 +787,10 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, GetRewardAddresses_Error) {
         std::move(callback).Run(std::move(pending_remote), nullptr);
       });
   ON_CALL(*cardano_api, GetRewardAddresses(_))
-      .WillByDefault(
-          [&](TestCardanoApi::GetRewardAddressesCallback callback) {
-            std::move(callback).Run({}, mojom::CardanoProviderErrorBundle::New(
-                                            -2, "Internal", nullptr));
-          });
+      .WillByDefault([&](TestCardanoApi::GetRewardAddressesCallback callback) {
+        std::move(callback).Run({}, mojom::CardanoProviderErrorBundle::New(
+                                        -2, "Internal", nullptr));
+      });
 
   auto result = EvalJs(web_contents(browser()),
                        "(async () => { try { return await (await "
@@ -1118,16 +1113,15 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, GetUtxos_WrongPagination) {
         std::move(callback).Run(std::move(pending_remote), nullptr);
       });
   ON_CALL(*cardano_api, GetUtxos(_, _, _))
-      .WillByDefault(
-          [&](const std::optional<std::string>& amount,
-              mojom::CardanoProviderPaginationPtr paginate,
-              TestCardanoApi::GetUtxosCallback callback) {
-            std::move(callback).Run(
-                std::vector<std::string>(),
-                mojom::CardanoProviderErrorBundle::New(
-                    0, "error",
-                    mojom::CardanoProviderPaginationErrorPayload::New(2)));
-          });
+      .WillByDefault([&](const std::optional<std::string>& amount,
+                         mojom::CardanoProviderPaginationPtr paginate,
+                         TestCardanoApi::GetUtxosCallback callback) {
+        std::move(callback).Run(
+            std::vector<std::string>(),
+            mojom::CardanoProviderErrorBundle::New(
+                0, "error",
+                mojom::CardanoProviderPaginationErrorPayload::New(2)));
+      });
 
   {
     auto result = EvalJs(web_contents(browser()),
@@ -1207,15 +1201,14 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, SignTx_Error) {
         std::move(callback).Run(std::move(pending_remote), nullptr);
       });
   ON_CALL(*cardano_api, SignTx(_, _, _))
-      .WillByDefault(
-          [&](const std::string& tx, bool partial_sign,
-              TestCardanoApi::SignTxCallback callback) {
-            EXPECT_EQ(partial_sign, true);
-            EXPECT_EQ(tx, "tx");
-            std::move(callback).Run(std::nullopt,
-                                    mojom::CardanoProviderErrorBundle::New(
-                                        1, "Proof error", nullptr));
-          });
+      .WillByDefault([&](const std::string& tx, bool partial_sign,
+                         TestCardanoApi::SignTxCallback callback) {
+        EXPECT_EQ(partial_sign, true);
+        EXPECT_EQ(tx, "tx");
+        std::move(callback).Run(
+            std::nullopt,
+            mojom::CardanoProviderErrorBundle::New(1, "Proof error", nullptr));
+      });
 
   auto result = EvalJs(web_contents(browser()),
                        "(async () => { try { return await (await "
@@ -1413,15 +1406,14 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, SignData_Error) {
         std::move(callback).Run(std::move(pending_remote), nullptr);
       });
   ON_CALL(*cardano_api, SignData(_, _, _))
-      .WillByDefault(
-          [&](const std::string& address, const std::string& data,
-              TestCardanoApi::SignDataCallback callback) {
-            EXPECT_EQ("addr", address);
-            EXPECT_EQ("data", data);
-            std::move(callback).Run(std::nullopt,
-                                    mojom::CardanoProviderErrorBundle::New(
-                                        2, "Data sign error", nullptr));
-          });
+      .WillByDefault([&](const std::string& address, const std::string& data,
+                         TestCardanoApi::SignDataCallback callback) {
+        EXPECT_EQ("addr", address);
+        EXPECT_EQ("data", data);
+        std::move(callback).Run(std::nullopt,
+                                mojom::CardanoProviderErrorBundle::New(
+                                    2, "Data sign error", nullptr));
+      });
 
   auto result = EvalJs(web_contents(browser()),
                        "(async () => { try { return await (await "
@@ -1447,13 +1439,12 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, SubmitTx_Error) {
         std::move(callback).Run(std::move(pending_remote), nullptr);
       });
   ON_CALL(*cardano_api, SubmitTx(_, _))
-      .WillByDefault(
-          [&](const std::string& tx,
-              TestCardanoApi::SubmitTxCallback callback) {
-            std::move(callback).Run(
-                std::nullopt,
-                mojom::CardanoProviderErrorBundle::New(1, "Refused", nullptr));
-          });
+      .WillByDefault([&](const std::string& tx,
+                         TestCardanoApi::SubmitTxCallback callback) {
+        std::move(callback).Run(
+            std::nullopt,
+            mojom::CardanoProviderErrorBundle::New(1, "Refused", nullptr));
+      });
 
   auto result = EvalJs(web_contents(browser()),
                        "(async () => { try { return await (await "
@@ -1630,114 +1621,44 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, Iframe3P) {
     GURL iframe_url;
   } cardano_undefined_cases[] =
       {{// 3p iframe
-        "true", secure_top_url, iframe_url_3p},
-       {// 1st party iframe with allow="cardano 'none'"
-        R"(
-        document.querySelector('iframe').setAttribute(
-          'allow', 'cardano \'none\'');
-        true
-        )",
-        secure_top_url, iframe_url_1p},
+        "", secure_top_url, iframe_url_3p},
        {// 1st party iframe with sandbox="allow-scripts"
         R"(
-        document.querySelector('iframe').removeAttribute('allow');
         document.querySelector('iframe').setAttribute(
           'sandbox', 'allow-scripts');
-        true
         )",
         secure_top_url, iframe_url_1p},
        {// 3p iframe with sandbox="allow-scripts allow-same-origin"
         R"(
-        document.querySelector('iframe').removeAttribute('allow');
         document.querySelector('iframe')
           .setAttribute('sandbox', 'allow-scripts allow-same-origin');
-        true
         )",
         secure_top_url, iframe_url_3p},
-       {// 3p iframe with allow="ethereum"
-        R"(
-        document.querySelector('iframe').removeAttribute('sandbox');
-        document.querySelector('iframe').setAttribute('allow', 'ethereum');
-        true
-        )",
-        secure_top_url, iframe_url_3p},
-
-       {// 3p iframe with allow="cardano; ethereum" but insecure top level
-        R"(
-      document.querySelector('iframe').removeAttribute('sandbox');
-      document.querySelector('iframe')
-          .setAttribute('allow', 'cardano; ethereum');
-      true
-      )",
-        insecure_top_url, iframe_url_3p},
-
-       {// 3p iframe with allow="cardano; ethereum" but insecure top level (data
-        // URI)
-        R"(
-      document.querySelector('iframe').removeAttribute('sandbox');
-      document.querySelector('iframe')
-          .setAttribute('allow', 'cardano; ethereum');
-      true
-      )",
-        data_top_url, iframe_url_3p},
-
-       {// 3p iframe with allow="cardano; ethereum" but insecure iframe
-        R"(
-      document.querySelector('iframe').removeAttribute('sandbox');
-      document.querySelector('iframe')
-          .setAttribute('allow', 'cardano; ethereum');
-      true
-      )",
-        secure_top_url, data_simple_url},
-       {// insecure top level and insecure iframe allow="cardano; ethereum"
-        R"(
-      document.querySelector('iframe').removeAttribute('sandbox');
-      document.querySelector('iframe')
-          .setAttribute('allow', 'cardano; ethereum');
-      true
-      )",
-        data_top_url, data_simple_url}},
+       {// 3p iframe with insecure top level
+        "", insecure_top_url, iframe_url_3p},
+       {// 3p iframe with insecure top level (data URI)
+        "", data_top_url, iframe_url_3p},
+       {// insecure iframe
+        "", secure_top_url, data_simple_url},
+       {// insecure top level and insecure iframe
+        "", data_top_url, data_simple_url}},
 
     cardano_defined_cases[] = {
         {// 1st party iframe
-         "true", secure_top_url, iframe_url_1p},
+         "", secure_top_url, iframe_url_1p},
         {// 1st party iframe sandbox="allow-scripts allow-same-origin"
          R"(
-      document.querySelector('iframe').removeAttribute('allow');
       document.querySelector('iframe')
           .setAttribute('sandbox', 'allow-scripts allow-same-origin');
-      true
       )",
-         secure_top_url, iframe_url_1p},
-        {// 3p iframe with allow="cardano"
-         R"(
-      document.querySelector('iframe').removeAttribute('sandbox');
-      document.querySelector('iframe').setAttribute('allow', 'cardano');
-      true
-      )",
-         secure_top_url, iframe_url_3p},
-        {// 3p iframe with allow="ethereum; cardano"
-         R"(
-      document.querySelector('iframe').removeAttribute('sandbox');
-      document.querySelector('iframe').setAttribute('allow',
-        'ethereum; cardano');
-      true
-      )",
-         secure_top_url, iframe_url_3p},
-        {// 3rd party iframe with sandbox="allow-scripts" allow="cardano"
-         R"(
-      document.querySelector('iframe').setAttribute('allow', 'cardano');
-      document.querySelector('iframe').setAttribute('sandbox', 'allow-scripts');
-      true
-      )",
-         secure_top_url, iframe_url_3p}};
+         secure_top_url, iframe_url_1p}};
 
   for (auto& c : cardano_undefined_cases) {
     SCOPED_TRACE(testing::Message() << c.script << c.iframe_url);
     ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), c.top_url));
     content::RenderFrameHost* main_frame =
         web_contents(browser())->GetPrimaryMainFrame();
-    EXPECT_TRUE(content::EvalJs(main_frame, c.script).ExtractBool());
+    EXPECT_TRUE(content::ExecJs(main_frame, c.script));
     EXPECT_TRUE(
         NavigateIframeToURL(web_contents(browser()), "test", c.iframe_url));
     EXPECT_FALSE(content::EvalJs(ChildFrameAt(main_frame, 0),
@@ -1749,7 +1670,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, Iframe3P) {
     ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), c.top_url));
     content::RenderFrameHost* main_frame =
         web_contents(browser())->GetPrimaryMainFrame();
-    EXPECT_TRUE(content::EvalJs(main_frame, c.script).ExtractBool());
+    EXPECT_TRUE(content::ExecJs(main_frame, c.script));
     EXPECT_TRUE(
         NavigateIframeToURL(web_contents(browser()), "test", c.iframe_url));
     EXPECT_TRUE(content::EvalJs(ChildFrameAt(main_frame, 0),
