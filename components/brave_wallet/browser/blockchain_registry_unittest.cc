@@ -19,6 +19,7 @@
 #include "brave/components/brave_wallet/browser/blockchain_list_parser.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "url/gurl.h"
 
 using testing::ElementsAreArray;
 
@@ -566,6 +567,9 @@ TEST(BlockchainRegistryUnitTest, ParseLists) {
   ASSERT_TRUE(base::WriteFile(
       path.AppendASCII(BlockchainRegistry::kRestrictedAddressFileName),
       R"({"addresses": ["0xb9ef770b6a5e12e45983c5d80545258aa38f3b78"]})"));
+  ASSERT_TRUE(base::WriteFile(
+      path.AppendASCII(BlockchainRegistry::kPolkadotRpcUrlsFileName),
+      R"({"polkadot_acala": ["https://acala-rpc-0.aca-api.network"]})"));
 
   auto* registry = BlockchainRegistry::GetInstance();
   auto run_loop = std::make_unique<base::RunLoop>();
@@ -608,6 +612,13 @@ TEST(BlockchainRegistryUnitTest, ParseLists) {
   // kRestrictedAddressFileName
   EXPECT_TRUE(registry->IsRestrictedAddress(
       "0xb9ef770b6a5e12e45983c5d80545258aa38f3b78"));
+
+  // kPolkadotRpcUrlsFileName
+  EXPECT_THAT(
+      registry->GetPolkadotRpcUrls(),
+      testing::ElementsAre(testing::Pair(
+          mojom::kPolkadotAcala,
+          ElementsAreArray({GURL("https://acala-rpc-0.aca-api.network")}))));
 }
 
 }  // namespace brave_wallet
