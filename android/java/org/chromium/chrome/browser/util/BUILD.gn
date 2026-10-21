@@ -1,0 +1,32 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//build/config/android/rules.gni")
+
+# Only the sources of this package that depend on nothing inside chrome_java
+# live here; the rest stay in brave_java_sources.gni.
+android_library("java") {
+  sources = [ "BraveProfileUtils.java" ]
+
+  deps = [
+    "//base:base_java",
+    "//build/android:build_java",
+    "//chrome/browser/profiles/android:java",
+  ]
+}
+
+robolectric_library("junit") {
+  testonly = true
+  sources = [ "BraveProfileUtilsTest.java" ]
+
+  deps = [
+    ":java",
+    "//base:base_java",
+    "//base:base_junit_test_support",
+    "//chrome/browser/profiles/android:java",
+    "//third_party/junit",
+    "//third_party/mockito:mockito_java",
+  ]
+}
