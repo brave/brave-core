@@ -200,7 +200,6 @@ test("brave_unit_tests") {
     "//brave/browser/ui/brave_tooltips",
     "//brave/browser/ui/startup:unit_tests",
     "//brave/browser/ui/webui:unit_tests",
-    "//brave/browser/web_discovery:unit_tests",
     "//brave/chromium_src/components/webui/flags:unit_tests",
     "//brave/chromium_src/net/base:unit_tests",
     "//brave/components/brave_adaptive_captcha/test:brave_adaptive_captcha_unit_tests",
@@ -474,6 +473,10 @@ test("brave_unit_tests") {
 
   if (toolkit_views) {
     deps += [ "//chrome/browser/ui/views" ]
+  }
+
+  if (enable_web_discovery) {
+    deps += [ "//brave/browser/web_discovery:unit_tests" ]
   }
 
   if (enable_web_discovery_native) {
@@ -1081,7 +1084,6 @@ test("brave_browser_tests") {
     "//brave/browser/ui/views/tabs:browser_tests",
     "//brave/browser/ui/webui:browser_tests",
     "//brave/browser/ui/webui/settings:browser_tests",
-    "//brave/browser/web_discovery:browser_tests",
     "//brave/common",
     "//brave/components/brave_ads/buildflags",
     "//brave/components/brave_component_updater/browser",
@@ -1099,6 +1101,10 @@ test("brave_browser_tests") {
     "//chrome/browser/ui/views/translate",
     "//chrome/test/base:chrome_test_utils",
   ]
+
+  if (enable_web_discovery) {
+    deps += [ "//brave/browser/web_discovery:browser_tests" ]
+  }
 
   if (enable_session_service) {
     deps += [ "//brave/browser/sessions:browser_tests" ]
