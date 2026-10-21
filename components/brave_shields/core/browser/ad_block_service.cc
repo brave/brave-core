@@ -151,6 +151,17 @@ AdBlockCustomResourceProvider* AdBlockService::custom_resource_provider() {
   return custom_resource_provider_.get();
 }
 
+AdBlockFiltersProviderManager* AdBlockService::filters_provider_manager() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  return filters_provider_manager_.get();
+}
+
+AdBlockFilterListCatalogProvider*
+AdBlockService::filter_list_catalog_provider() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  return filter_list_catalog_provider_.get();
+}
+
 AdBlockSubscriptionServiceManager*
 AdBlockService::subscription_service_manager() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);

@@ -37,6 +37,7 @@ BASE_DECLARE_FEATURE(kBraveShredFeature);
 BASE_DECLARE_FEATURE(kBraveShredCacheData);
 BASE_DECLARE_FEATURE(kBraveShieldsContentSettingsIOS);
 BASE_DECLARE_FEATURE(kBraveIOSDebugAdblock);
+BASE_DECLARE_FEATURE(kBraveIOSSharedAdBlockService);
 BASE_DECLARE_FEATURE(kBraveIOSEnableFarblingPlugins);
 BASE_DECLARE_FEATURE(kBraveShowStrictFingerprintingMode);
 BASE_DECLARE_FEATURE(kCosmeticFilteringExtraPerfMetrics);

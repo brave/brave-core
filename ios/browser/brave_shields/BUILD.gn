@@ -62,6 +62,31 @@ source_set("brave_shields") {
   frameworks = [ "Foundation.framework" ]
 }
 
+source_set("ad_block_service") {
+  sources = [
+    "ad_block_service_factory.h",
+    "ad_block_service_factory.mm",
+    "ad_block_subscription_download_client_ios.h",
+    "ad_block_subscription_download_client_ios.mm",
+    "ad_block_subscription_download_manager_factory.h",
+    "ad_block_subscription_download_manager_factory.mm",
+  ]
+  deps = [
+    "//base",
+    "//brave/components/brave_shields/core/browser",
+    "//brave/components/brave_shields/core/common",
+    "//components/application_locale_storage",
+    "//components/download/public/background_service:public",
+    "//components/keyed_service/core",
+    "//ios/chrome/browser/download/model/background_service",
+    "//ios/chrome/browser/shared/model/application_context",
+    "//ios/chrome/browser/shared/model/profile",
+  ]
+  public_deps = [
+    "//ios/chrome/browser/shared/model/profile:profile_keyed_service_factory",
+  ]
+}
+
 optimize_ts("cookie_control_js") {
   visibility = [ ":brave_shields" ]
   sources = [ "resources/cookie_control.ts" ]

@@ -6,6 +6,8 @@
 #include <Foundation/Foundation.h>
 
 #include "base/apple/foundation_util.h"
+#include "base/containers/flat_map.h"
+#include "base/feature_list.h"
 #include "base/memory/raw_ptr.h"
 #include "base/strings/sys_string_conversions.h"
 #include "base/task/thread_pool.h"
@@ -16,11 +18,14 @@
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider_manager.h"
 #include "brave/components/brave_shields/core/browser/ad_block_list_p3a.h"
 #include "brave/components/brave_shields/core/browser/ad_block_resource_provider.h"
+#include "brave/components/brave_shields/core/browser/ad_block_service.h"
 #include "brave/components/brave_shields/core/browser/filter_list_catalog_entry.h"
+#include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/cosmetic_filters/common/scriptlet_constants.h"
 #include "brave/components/cosmetic_filters/resources/grit/cosmetic_filters_generated.h"
 #include "brave/ios/browser/api/brave_shields/adblock_filter_list_catalog_entry+private.h"
 #include "brave/ios/browser/api/brave_shields/adblock_service+private.h"
+#include "brave/ios/browser/brave_shields/ad_block_service_factory.h"
 #include "components/application_locale_storage/application_locale_storage.h"
 #include "components/component_updater/component_updater_service.h"
 #include "components/grit/brave_components_resources.h"
@@ -98,19 +103,30 @@ void AdBlockResourceObserver::OnResourcesLoaded(
 
 @interface AdblockService () {
   raw_ptr<component_updater::ComponentUpdateService> _cus;  // NOT OWNED
-  std::unique_ptr<brave_shields::AdBlockListP3A> _adblockListP3A;
+  // Only owned when the shared AdBlockService is disabled.
+  std::unique_ptr<brave_shields::AdBlockListP3A> _ownedAdblockListP3A;
   std::unique_ptr<brave_shields::AdBlockFilterListCatalogProvider>
-      _catalogProvider;
+      _ownedCatalogProvider;
   std::unique_ptr<brave_shields::AdBlockFiltersProviderManager>
-      _filtersProviderManager;
+      _ownedFiltersProviderManager;
   std::unique_ptr<brave_shields::AdBlockComponentServiceManager>
-      _serviceManager;
+      _ownedServiceManager;
   std::unique_ptr<brave_shields::AdBlockDefaultResourceProvider>
-      _resourceProvider;
+      _ownedResourceProvider;
+
+  raw_ptr<brave_shields::AdBlockFilterListCatalogProvider> _catalogProvider;
+  raw_ptr<brave_shields::AdBlockFiltersProviderManager> _filtersProviderManager;
+  raw_ptr<brave_shields::AdBlockComponentServiceManager> _serviceManager;
+  raw_ptr<brave_shields::AdBlockDefaultResourceProvider> _resourceProvider;
+
   std::vector<std::unique_ptr<brave_shields::AdBlockServiceObserver>>
       _serviceObservers;
   std::unique_ptr<brave_shields::AdBlockCatalogObserver> _catalogObserver;
   std::unique_ptr<brave_shields::AdBlockResourceObserver> _resourceObserver;
+
+  // Calls made before the shared AdBlockService is attached.
+  base::flat_map<std::string, bool> _pendingFilterListStates;
+  std::vector<base::OnceCallback<void(bool)>> _pendingUpdateCallbacks;
 }
 
 @property(nonatomic)
@@ -124,49 +140,118 @@ void AdBlockResourceObserver::OnResourcesLoaded(
     (component_updater::ComponentUpdateService*)componentUpdaterService {
   if ((self = [super init])) {
     _cus = componentUpdaterService;
-    _adblockListP3A = std::make_unique<brave_shields::AdBlockListP3A>(
-        GetApplicationContext()->GetLocalState());
-    _catalogProvider =
-        std::make_unique<brave_shields::AdBlockFilterListCatalogProvider>(_cus);
-    _filtersProviderManager =
-        std::make_unique<brave_shields::AdBlockFiltersProviderManager>();
-    _serviceManager =
-        std::make_unique<brave_shields::AdBlockComponentServiceManager>(
-            GetApplicationContext()->GetLocalState(),
-            _filtersProviderManager.get(),
-            std::string(GetApplicationContext()
-                            ->GetApplicationLocaleStorage()
-                            ->GetTag()
-                            .tag_string()),
-            _cus, _catalogProvider.get(), _adblockListP3A.get());
-    _resourceProvider =
-        std::make_unique<brave_shields::AdBlockDefaultResourceProvider>(_cus);
+    // The shared AdBlockService is profile-keyed and is attached in
+    // `-attachToProfile:`.
+    if (!base::FeatureList::IsEnabled(
+            brave_shields::features::kBraveIOSSharedAdBlockService)) {
+      _ownedAdblockListP3A = std::make_unique<brave_shields::AdBlockListP3A>(
+          GetApplicationContext()->GetLocalState());
+      _ownedCatalogProvider =
+          std::make_unique<brave_shields::AdBlockFilterListCatalogProvider>(
+              _cus);
+      _ownedFiltersProviderManager =
+          std::make_unique<brave_shields::AdBlockFiltersProviderManager>();
+      _ownedServiceManager =
+          std::make_unique<brave_shields::AdBlockComponentServiceManager>(
+              GetApplicationContext()->GetLocalState(),
+              _ownedFiltersProviderManager.get(),
+              std::string(GetApplicationContext()
+                              ->GetApplicationLocaleStorage()
+                              ->GetTag()
+                              .tag_string()),
+              _cus, _ownedCatalogProvider.get(), _ownedAdblockListP3A.get());
+      _ownedResourceProvider =
+          std::make_unique<brave_shields::AdBlockDefaultResourceProvider>(_cus);
+
+      _catalogProvider = _ownedCatalogProvider.get();
+      _filtersProviderManager = _ownedFiltersProviderManager.get();
+      _serviceManager = _ownedServiceManager.get();
+      _resourceProvider = _ownedResourceProvider.get();
+    }
   }
   return self;
+}
+
+- (void)attachToProfile:(ProfileIOS*)profile {
+  brave_shields::AdBlockService* adBlockService =
+      brave_shields::AdBlockServiceFactory::GetForProfile(profile);
+  if (!adBlockService || _serviceManager) {
+    return;
+  }
+  _catalogProvider = adBlockService->filter_list_catalog_provider();
+  _filtersProviderManager = adBlockService->filters_provider_manager();
+  _serviceManager = adBlockService->component_service_manager();
+  _resourceProvider = adBlockService->default_resource_provider();
+
+  for (const auto& observer : _serviceObservers) {
+    _filtersProviderManager->AddObserver(observer.get());
+  }
+  if (_catalogObserver) {
+    _catalogProvider->AddObserver(_catalogObserver.get());
+  }
+  if (_resourceObserver) {
+    _resourceProvider->AddObserver(_resourceObserver.get());
+  }
+
+  for (const auto& [uuid, enabled] : _pendingFilterListStates) {
+    _serviceManager->EnableFilterList(uuid, enabled);
+  }
+  _pendingFilterListStates.clear();
+  for (auto& callback : _pendingUpdateCallbacks) {
+    _serviceManager->UpdateFilterLists(std::move(callback));
+  }
+  _pendingUpdateCallbacks.clear();
+}
+
+- (void)detachFromProfile {
+  if (_ownedServiceManager || !_serviceManager) {
+    return;
+  }
+  for (const auto& observer : _serviceObservers) {
+    _filtersProviderManager->RemoveObserver(observer.get());
+  }
+  if (_catalogObserver) {
+    _catalogProvider->RemoveObserver(_catalogObserver.get());
+  }
+  if (_resourceObserver) {
+    _resourceProvider->RemoveObserver(_resourceObserver.get());
+  }
+  _catalogProvider = nullptr;
+  _filtersProviderManager = nullptr;
+  _serviceManager = nullptr;
+  _resourceProvider = nullptr;
 }
 
 - (void)registerFilterListChanges:(void (^)(bool isDefaultEngine))callback {
   auto _serviceObserver =
       std::make_unique<brave_shields::AdBlockServiceObserver>(
           base::BindRepeating(callback));
-  _filtersProviderManager->AddObserver(_serviceObserver.get());
+  if (_filtersProviderManager) {
+    _filtersProviderManager->AddObserver(_serviceObserver.get());
+  }
   _serviceObservers.push_back(std::move(_serviceObserver));
 }
 
 - (void)registerCatalogChanges:(void (^)())callback {
   _catalogObserver = std::make_unique<brave_shields::AdBlockCatalogObserver>(
       base::BindRepeating(callback));
-  _catalogProvider->AddObserver(_catalogObserver.get());
+  if (_catalogProvider) {
+    _catalogProvider->AddObserver(_catalogObserver.get());
+  }
 }
 
 - (void)registerResourcesChanges:(void (^)())callback {
   _resourceObserver = std::make_unique<brave_shields::AdBlockResourceObserver>(
       base::BindRepeating(callback));
-
-  _resourceProvider->AddObserver(_resourceObserver.get());
+  if (_resourceProvider) {
+    _resourceProvider->AddObserver(_resourceObserver.get());
+  }
 }
 
 - (NSArray<AdblockFilterListCatalogEntry*>*)filterListCatalogEntries {
+  if (!_serviceManager) {
+    return @[];
+  }
   auto catalog = _serviceManager->GetFilterListCatalog();
   NSMutableArray* lists = [[NSMutableArray alloc] init];
 
@@ -182,7 +267,9 @@ void AdBlockResourceObserver::OnResourcesLoaded(
 }
 
 - (NSURL*)resourcesPath {
-  _resourceProvider->GetResourcesPath();
+  if (!_resourceProvider) {
+    return nil;
+  }
   base::FilePath file_path = _resourceProvider->GetResourcesPath();
   if (file_path.empty()) {
     return nil;
@@ -191,6 +278,9 @@ void AdBlockResourceObserver::OnResourcesLoaded(
 }
 
 - (NSURL*)installPathForFilterListUUID:(NSString*)uuid {
+  if (!_serviceManager) {
+    return nil;
+  }
   base::FilePath file_path =
       _serviceManager->GetFilterSetPath(base::SysNSStringToUTF8(uuid));
   if (file_path.empty()) {
@@ -200,18 +290,34 @@ void AdBlockResourceObserver::OnResourcesLoaded(
 }
 
 - (void)enableFilterListForUUID:(NSString*)uuid isEnabled:(bool)isEnabled {
+  if (!_serviceManager) {
+    _pendingFilterListStates[base::SysNSStringToUTF8(uuid)] = isEnabled;
+    return;
+  }
   _serviceManager->EnableFilterList(base::SysNSStringToUTF8(uuid), isEnabled);
 }
 
 - (bool)isFilterListAvailableForUUID:(NSString*)uuid {
+  if (!_serviceManager) {
+    return false;
+  }
   return _serviceManager->IsFilterListAvailable(base::SysNSStringToUTF8(uuid));
 }
 
 - (bool)isFilterListEnabledForUUID:(NSString*)uuid {
+  if (!_serviceManager) {
+    const auto it =
+        _pendingFilterListStates.find(base::SysNSStringToUTF8(uuid));
+    return it != _pendingFilterListStates.end() && it->second;
+  }
   return _serviceManager->IsFilterListEnabled(base::SysNSStringToUTF8(uuid));
 }
 
 - (void)updateFilterLists:(void (^)(bool))callback {
+  if (!_serviceManager) {
+    _pendingUpdateCallbacks.push_back(base::BindOnce(callback));
+    return;
+  }
   _serviceManager->UpdateFilterLists(base::BindOnce(callback));
 }
 

@@ -216,6 +216,7 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
 }
 
 - (void)dealloc {
+  [_adblockService detachFromProfile];
   _profileController = nil;
 
   _webMain.reset();
@@ -325,12 +326,14 @@ static bool CustomLogHandler(int severity,
 - (void)profileLoaded:(ScopedProfileKeepAliveIOS)profileKeepAlive
     completionHandler:(void (^)(BraveProfileController*))completionHandler {
   CHECK(profileKeepAlive.profile()) << "A default profile must be loaded.";
+  ProfileIOS* profile = profileKeepAlive.profile();
   self.profileController = [[BraveProfileController alloc]
       initWithProfileKeepAlive:std::move(profileKeepAlive)];
   // Desktop/Android call `StartBraveServices` during their main setup after the
   // initial profile is created/loaded, but that setup does not exist on iOS.
   static_cast<BraveApplicationContextImpl*>(GetApplicationContext())
       ->StartBraveServices();
+  [_adblockService attachToProfile:profile];
   completionHandler(self.profileController);
 }
 
