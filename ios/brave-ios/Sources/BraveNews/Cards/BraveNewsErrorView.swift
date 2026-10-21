@@ -22,8 +22,9 @@ public class BraveNewsErrorView: UIView, FeedCardContent {
   }
 
   public let refreshButton = ActionButton().then {
-    var configuration = UIButton.Configuration.plain()
-    configuration.baseBackgroundColor = .clear
+    var configuration = UIButton.Configuration.borderedProminent()
+    configuration.baseBackgroundColor = UIColor(braveSystemName: .buttonBackground)
+    configuration.baseForegroundColor = UIColor(braveSystemName: .schemesOnPrimary)
     configuration.contentInsets = NSDirectionalEdgeInsets(
       top: 6,
       leading: 12,
@@ -36,10 +37,8 @@ public class BraveNewsErrorView: UIView, FeedCardContent {
       outgoing.font = .systemFont(ofSize: 15.0, weight: .semibold)
       return outgoing
     }
+    configuration.title = Strings.BraveNews.refresh
     $0.configuration = configuration
-    $0.backgroundColor = UIColor(braveSystemName: .buttonBackground)
-    $0.setTitle(Strings.BraveNews.refresh, for: .normal)
-    $0.setTitleColor(UIColor(braveSystemName: .schemesOnPrimary), for: .normal)
     $0.layer.borderWidth = 0
     $0.loaderView = LoaderView(size: .small).then {
       $0.tintColor = .white

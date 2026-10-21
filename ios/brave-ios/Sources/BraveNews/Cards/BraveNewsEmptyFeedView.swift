@@ -22,8 +22,9 @@ public class BraveNewsEmptyFeedView: UIView, FeedCardContent {
   }
 
   private let sourcesAndSettingsButton = ActionButton(type: .system).then {
-    var configuration = UIButton.Configuration.plain()
-    configuration.baseBackgroundColor = .clear
+    var configuration = UIButton.Configuration.borderedProminent()
+    configuration.baseBackgroundColor = UIColor.white.withAlphaComponent(0.2)
+    configuration.baseForegroundColor = .white
     configuration.contentInsets = NSDirectionalEdgeInsets(
       top: 10,
       leading: 20,
@@ -36,10 +37,9 @@ public class BraveNewsEmptyFeedView: UIView, FeedCardContent {
       outgoing.font = .systemFont(ofSize: 16.0, weight: .semibold)
       return outgoing
     }
+    configuration.title = Strings.BraveNews.sourcesAndSettings
     $0.configuration = configuration
     $0.layer.borderWidth = 0
-    $0.setTitle(Strings.BraveNews.sourcesAndSettings, for: .normal)
-    $0.backgroundColor = UIColor.white.withAlphaComponent(0.2)
   }
 
   private let titleLabel = UILabel().then {

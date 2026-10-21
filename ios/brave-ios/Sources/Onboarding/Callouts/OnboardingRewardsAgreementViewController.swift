@@ -88,8 +88,6 @@ extension OnboardingRewardsAgreementViewController {
 
     let turnOnButton = OnboardingCommon.Views.primaryButton(text: Strings.yes).then {
       $0.accessibilityIdentifier = "OnboardingRewardsAgreementViewController.OBTurnOnButton"
-      $0.backgroundColor = UIColor(braveSystemName: .buttonBackground)
-      $0.setTitleColor(UIColor(braveSystemName: .schemesOnPrimary), for: .normal)
       $0.titleLabel?.minimumScaleFactor = 0.75
     }
 

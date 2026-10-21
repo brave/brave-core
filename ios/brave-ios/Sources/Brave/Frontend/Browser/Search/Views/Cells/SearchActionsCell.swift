@@ -131,11 +131,10 @@ class SearchActionsCell: UICollectionViewCell, CollectionViewReusable {
       weight: .semibold,
       traitCollection: traitCollection
     )
-    var primaryConfiguration = UIButton.Configuration.plain()
+    var primaryConfiguration = UIButton.Configuration.borderedProminent()
     primaryConfiguration.baseBackgroundColor = UIColor(braveSystemName: .buttonBackground)
     primaryConfiguration.baseForegroundColor = UIColor(braveSystemName: .schemesOnPrimary)
     primaryConfiguration.cornerStyle = .capsule
-    primaryConfiguration.background.backgroundColor = UIColor(braveSystemName: .buttonBackground)
     primaryConfiguration.contentInsets = NSDirectionalEdgeInsets(
       top: 12,
       leading: 12,
@@ -151,7 +150,6 @@ class SearchActionsCell: UICollectionViewCell, CollectionViewReusable {
     primaryButton.configuration = primaryConfiguration
 
     var secondaryConfiguration = UIButton.Configuration.plain()
-    secondaryConfiguration.baseBackgroundColor = .clear
     secondaryConfiguration.baseForegroundColor = UIColor(braveSystemName: .textInteractive)
     secondaryConfiguration.contentInsets = primaryConfiguration.contentInsets
     secondaryConfiguration.titleTextAttributesTransformer =
