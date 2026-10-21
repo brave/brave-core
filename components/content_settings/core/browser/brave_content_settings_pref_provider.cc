@@ -397,10 +397,6 @@ void BravePrefProvider::MigrateShieldsSettingsFromResourceIdsForOneType(
     const base::Time& last_modified,
     content_settings::mojom::SessionModel session_model,
     int setting) {
-  // Non-supported preference paths should have been filtered out already.
-  CHECK(prefs_->HasPrefPath(preference_path))
-      << "Attempted to migrate unsupported shields setting.";
-
   ScopedDictPrefUpdate update(prefs_, preference_path);
 
   base::DictValue* shield_settings = update->EnsureDict(patterns_string);
