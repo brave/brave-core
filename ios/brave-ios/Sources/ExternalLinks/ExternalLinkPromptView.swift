@@ -9,7 +9,6 @@ import BraveUI
 import DesignSystem
 import Strings
 import SwiftUI
-import UIKit
 
 public struct ExternalLinkPromptView: View {
   var url: URL
@@ -17,8 +16,6 @@ public struct ExternalLinkPromptView: View {
 
   @State private var rememberChoice = false
   @Environment(\.dismiss) private var dismiss
-
-  var onContentHeightChanged: ((CGFloat) -> Void)?
 
   public init(url: URL, onChoice: @escaping (ExternalLinkChoice, _ remember: Bool) -> Void) {
     self.url = url
@@ -74,14 +71,7 @@ public struct ExternalLinkPromptView: View {
       }
       .listSectionSpacing(.compact)
       .contentMargins(.top, 8, for: .scrollContent)
-      // A `Form` has no usable ideal size, so measure the underlying scroll view. The top inset
-      // covers the navigation bar; the bottom safe area is excluded since sheet detents already
-      // account for it, and including it feeds back into the measured height.
-      .onScrollGeometryChange(for: CGFloat.self) { geometry in
-        geometry.contentSize.height + geometry.contentInsets.top
-      } action: { _, height in
-        onContentHeightChanged?(height)
-      }
+      .reportsSheetContentHeight()
       .navigationTitle(Strings.ExternalLinks.promptTitle)
       .navigationBarTitleDisplayMode(.inline)
       .toolbar {
@@ -116,60 +106,6 @@ public struct ExternalLinkPromptView: View {
     }
     return label
   }
-}
-
-public class ExternalLinkPromptViewController: UIHostingController<ExternalLinkPromptView> {
-  public init(url: URL, onChoice: @escaping (ExternalLinkChoice, _ remember: Bool) -> Void) {
-    super.init(rootView: ExternalLinkPromptView(url: url, onChoice: onChoice))
-    rootView.onContentHeightChanged = { [weak self] height in
-      self?.updateContentHeight(height)
-    }
-  }
-
-  @MainActor required dynamic init?(coder aDecoder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
-  }
-
-  /// The height the prompt's contents need, as measured by SwiftUI. Zero until the first
-  /// measurement lands.
-  private var contentHeight: CGFloat = 0
-
-  private func updateContentHeight(_ height: CGFloat) {
-    // Ignore rounding differences during a resize to avoid needlessly invalidating detents
-    guard height > 0, abs(height - contentHeight) > 1 else { return }
-    let isFirstMeasurement = contentHeight == 0
-    contentHeight = height
-    guard let sheetController = sheetPresentationController else { return }
-    if isFirstMeasurement {
-      sheetController.invalidateDetents()
-    } else {
-      sheetController.animateChanges {
-        sheetController.invalidateDetents()
-      }
-    }
-  }
-
-  public override func viewIsAppearing(_ animated: Bool) {
-    super.viewIsAppearing(animated)
-
-    if let sheetController = sheetPresentationController {
-      sheetController.detents = [
-        .custom(identifier: .fitsContent) { [weak self] context in
-          guard let height = self?.contentHeight, height > 0 else {
-            return context.maximumDetentValue
-          }
-          return min(context.maximumDetentValue, height)
-        },
-        .large(),
-      ]
-      sheetController.prefersGrabberVisible = true
-      sheetController.prefersEdgeAttachedInCompactHeight = true
-    }
-  }
-}
-
-extension UISheetPresentationController.Detent.Identifier {
-  fileprivate static let fitsContent: Self = .init("fitsContent")
 }
 
 #if DEBUG
