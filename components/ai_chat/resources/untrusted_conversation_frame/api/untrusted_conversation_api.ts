@@ -158,6 +158,7 @@ export default function createUntrustedConversationApi(
         isStoragePrefEnabled: false,
         isStorageNoticeDismissed: false,
         canShowPremiumPrompt: false,
+        isContentAgentUserSelectable: false,
       }),
 
       // Premium status - fetched from service

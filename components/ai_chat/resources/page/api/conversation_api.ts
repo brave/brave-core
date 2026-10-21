@@ -38,6 +38,7 @@ export default function createConversationApi(
         'setToolsAttached',
         'setContentToolPermission',
         'respondToVisionModelSwitch',
+        'setContentAgentChosen',
       ]),
     },
 
@@ -70,6 +71,7 @@ export default function createConversationApi(
             toolUseTaskState: Mojom.TaskState.kNone,
             capabilitiesEnabled: [],
             visionModelSwitchKey: undefined,
+            isContentAgentChosen: false,
           } as Mojom.ConversationState,
         },
         getConversationHistory: {
@@ -187,6 +189,18 @@ export default function createConversationApi(
           onVisionModelSwitchChanged: (visionModelSwitchKey) => {
             api.getState.update({
               visionModelSwitchKey: visionModelSwitchKey ?? undefined,
+            })
+          },
+
+          // Pushed by the browser so that every open UI for this conversation
+          // agrees on the choice, and on the capabilities it amounts to.
+          onContentAgentChanged: (
+            isContentAgentChosen,
+            capabilitiesEnabled,
+          ) => {
+            api.getState.update({
+              isContentAgentChosen,
+              capabilitiesEnabled,
             })
           },
 

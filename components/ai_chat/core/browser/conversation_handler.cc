@@ -197,18 +197,19 @@ ConversationHandler::ThreadContainer::ThreadContainer(ThreadContainer&&) =
 ConversationHandler::ThreadContainer&
 ConversationHandler::ThreadContainer::operator=(ThreadContainer&&) = default;
 
+bool ConversationHandler::IsContentAgentEnabled() const {
+  if (!ai_chat_service_->content_agent_tools_allowed()) {
+    return false;
+  }
+  // Where the user chooses, their choice decides. Where they do not, the
+  // content agent is the profile's purpose, so it is always on.
+  return !ai_chat_service_->content_agent_user_selectable() ||
+         content_agent_chosen_;
+}
+
 void ConversationHandler::BuildCapabilitiesSet() {
   conversation_capabilities_.clear();
-  // Set conversation capability based on profile-global state.
-  // TODO(https://github.com/brave/brave-browser/issues/49261): This is
-  // temporary whilst content agent conversations are
-  // 1) not toggleable by the user and
-  // 2) only for specific profiles.
-  // When this is toggleable by the user,
-  // we should have some client function that changes the conversation
-  // capability. And when this is not global to a Profile, we should not have
-  // the service make the determination.
-  if (ai_chat_service_->content_agent_tools_allowed()) {
+  if (IsContentAgentEnabled()) {
     conversation_capabilities_.insert(
         mojom::ConversationCapability::CONTENT_AGENT);
   }
@@ -644,7 +645,8 @@ void ConversationHandler::GetState(GetStateCallback callback) {
       current_error_.api_error,
       current_error_.details ? current_error_.details->Clone() : nullptr,
       metadata_->temporary, tool_use_task_state_,
-      base::ToVector(conversation_capabilities_), vision_model_switch_key_);
+      base::ToVector(conversation_capabilities_), vision_model_switch_key_,
+      content_agent_chosen_);
 
   std::move(callback).Run(std::move(state));
 }
@@ -3081,6 +3083,22 @@ bool ConversationHandler::should_send_page_contents() const {
 
 mojom::APIError ConversationHandler::current_error() const {
   return current_error_.api_error;
+}
+
+void ConversationHandler::SetContentAgentChosen(bool chosen) {
+  if (!ai_chat_service_->content_agent_user_selectable() ||
+      content_agent_chosen_ == chosen) {
+    return;
+  }
+
+  content_agent_chosen_ = chosen;
+  BuildCapabilitiesSet();
+
+  for (auto& client : conversation_ui_handlers_) {
+    client->OnContentAgentChanged(content_agent_chosen_,
+                                  base::ToVector(conversation_capabilities_));
+  }
+  OnStateForConversationEntriesChanged();
 }
 
 void ConversationHandler::SetTemporary(bool temporary) {

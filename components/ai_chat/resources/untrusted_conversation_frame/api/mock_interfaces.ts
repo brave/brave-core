@@ -49,6 +49,7 @@ export const defaultServiceState: Mojom.ServiceState = {
   isStoragePrefEnabled: false,
   isStorageNoticeDismissed: false,
   canShowPremiumPrompt: false,
+  isContentAgentUserSelectable: false,
 }
 
 /**

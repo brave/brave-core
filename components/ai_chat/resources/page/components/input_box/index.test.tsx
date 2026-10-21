@@ -5,10 +5,19 @@
 
 /* eslint-disable jest/no-conditional-expect */
 
+// Leave the Leo custom elements unupgraded, otherwise a click on a
+// <leo-button> host never reaches the React onClick handler.
+import '$test-utils/disable_custom_elements'
+
 import * as React from 'react'
 import { render, screen, fireEvent, waitFor, act } from '@testing-library/react'
 import { clearAllDataForTesting } from '$web-common/api'
-import { ContentType, UploadedFileType, TaskState } from '../../../common/mojom'
+import {
+  ContentType,
+  UploadedFileType,
+  TaskState,
+  ConversationCapability,
+} from '../../../common/mojom'
 import { MockContext } from '../../state/mock_context'
 import InputBox, { InputBoxProps, type InputBoxHandle } from '.'
 
@@ -527,18 +536,22 @@ describe('input box', () => {
     })
   })
 
+  // The warning follows the capability rather than the profile, so a
+  // main-profile conversation that has the content agent in force gets it too.
+  const contentAgentEnabledState = {
+    conversationState: {
+      capabilitiesEnabled: [ConversationCapability.CONTENT_AGENT],
+    },
+  }
+
   it(
     'Content Agent warning is shown if the conversation has not started'
-      + ' and isAIChatAgentProfile is true',
+      + ' and the Content Agent capability is enabled',
     async () => {
       const { container } = await renderInputBox(
-        <MockContext>
+        <MockContext initialState={contentAgentEnabledState}>
           <InputBox
-            context={{
-              ...testContext,
-              isAIChatAgentProfileFeatureEnabled: true,
-              isAIChatAgentProfile: true,
-            }}
+            context={testContext}
             conversationStarted={false}
           />
         </MockContext>,
@@ -551,16 +564,12 @@ describe('input box', () => {
 
   it(
     'Content Agent warning is not shown after the conversation has started'
-      + ' and isAIChatAgentProfile is true',
+      + ' and the Content Agent capability is enabled',
     async () => {
       const { container } = await renderInputBox(
-        <MockContext>
+        <MockContext initialState={contentAgentEnabledState}>
           <InputBox
-            context={{
-              ...testContext,
-              isAIChatAgentProfileFeatureEnabled: true,
-              isAIChatAgentProfile: true,
-            }}
+            context={testContext}
             conversationStarted={true}
           />
         </MockContext>,
@@ -571,23 +580,78 @@ describe('input box', () => {
     },
   )
 
-  it(
-    'Content Agent warning is not shown if isAIChatAgentProfile'
-      + 'is not true',
-    async () => {
-      const { container } = await renderInputBox(
-        <MockContext>
+  it('Content Agent warning is not shown without the Content Agent capability', async () => {
+    const { container } = await renderInputBox(
+      <MockContext>
+        <InputBox
+          context={testContext}
+          conversationStarted={false}
+        />
+      </MockContext>,
+    )
+    expect(
+      container.querySelector('.contentAgentWarning'),
+    ).not.toBeInTheDocument()
+  })
+
+  it.each([false, true])(
+    'Content Agent button toggles the conversation choice when the user'
+      + ' chooses (already chosen: %s)',
+    async (isContentAgentChosen: boolean) => {
+      const setContentAgentChosen = jest.fn()
+      const openAIChatAgentProfile = jest.fn()
+      await renderInputBox(
+        <MockContext
+          conversationHandler={{ setContentAgentChosen }}
+          initialState={{
+            serviceState: { isContentAgentUserSelectable: true },
+            conversationState: { isContentAgentChosen },
+          }}
+        >
           <InputBox
             context={{
               ...testContext,
+              // Both affordances are eligible; the per-conversation choice
+              // must win, otherwise the user is sent to another profile
+              // instead of getting what they asked for.
+              isAIChatAgentProfileFeatureEnabled: true,
+              openAIChatAgentProfile,
             }}
-            conversationStarted={true}
+            conversationStarted={false}
           />
         </MockContext>,
       )
-      expect(
-        container.querySelector('.contentAgentWarning'),
-      ).not.toBeInTheDocument()
+
+      fireEvent.click(screen.getByTestId('content-agent-button'))
+
+      expect(setContentAgentChosen).toHaveBeenCalledWith(!isContentAgentChosen)
+      expect(openAIChatAgentProfile).not.toHaveBeenCalled()
+    },
+  )
+
+  it(
+    'Content Agent button opens the agent profile when the user does not'
+      + ' choose per conversation',
+    async () => {
+      const setContentAgentChosen = jest.fn()
+      const openAIChatAgentProfile = jest.fn()
+      await renderInputBox(
+        <MockContext conversationHandler={{ setContentAgentChosen }}>
+          <InputBox
+            context={{
+              ...testContext,
+              isAIChatAgentProfileFeatureEnabled: true,
+              openAIChatAgentProfile,
+            }}
+            conversationStarted={false}
+          />
+        </MockContext>,
+      )
+
+      fireEvent.click(screen.getByTestId('content-agent-button'))
+
+      expect(openAIChatAgentProfile).toHaveBeenCalled()
+      expect(setContentAgentChosen).not.toHaveBeenCalled()
     },
   )
 
