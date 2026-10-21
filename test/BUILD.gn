@@ -1920,6 +1920,7 @@ if (is_android) {
     ]
 
     deps = [
+      "//brave/android/java/org/chromium/chrome/browser/util:junit",
       "//brave/android/junit:brave_junit_tests_org.chromium.base",
       "//brave/android/junit:brave_junit_tests_org.chromium.chrome.browser",
       "//brave/android/junit:brave_junit_tests_org.chromium.chrome.browser.app",
