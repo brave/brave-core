@@ -393,6 +393,12 @@ struct ConversationState {
   // Set while a submission waits for the user to decide whether to switch to
   // this vision model, because it has images the current model can't read.
   string? vision_model_switch_key;
+
+  // The user's choice, only meaningful when
+  // |ServiceState.is_content_agent_user_selectable|. Distinct from
+  // CONTENT_AGENT being in |capabilities_enabled|: the choice is recorded even
+  // where the content agent cannot yet take effect.
+  bool is_content_agent_chosen;
 };
 
 // How the user answered the prompt to switch to a vision model.
@@ -491,6 +497,12 @@ interface ConversationHandler {
   // lifetime of this conversation.
   SetContentToolPermission(string content_uuid, string tool_name,
                            ToolPermission permission);
+
+  // Records whether the user wants the content agent for this conversation.
+  // A no-op unless |ServiceState.is_content_agent_user_selectable|. The
+  // choice lasts as long as the conversation is loaded and is not persisted,
+  // and takes effect from the next turn, not the one in progress.
+  SetContentAgentChosen(bool chosen);
 };
 
 interface ConversationUI {
@@ -532,6 +544,11 @@ interface ConversationUI {
   // A submission started or stopped waiting for the user to decide whether
   // to switch to the vision model |model_key|.
   OnVisionModelSwitchChanged(string? model_key);
+  // The user's content agent choice changed, with the capability set it now
+  // amounts to. Pushed rather than invalidated so that every open UI for this
+  // conversation agrees on the choice.
+  OnContentAgentChanged(bool is_content_agent_chosen,
+                        array<ConversationCapability> capabilities_enabled);
 
   OnConversationDeleted();
 };

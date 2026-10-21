@@ -181,6 +181,13 @@ class MockConversationHandlerClient : public mojom::ConversationUI {
               (const std::optional<std::string>& model_key),
               (override));
 
+  MOCK_METHOD(
+      void,
+      OnContentAgentChanged,
+      (bool is_content_agent_chosen,
+       const std::vector<mojom::ConversationCapability>& capabilities_enabled),
+      (override));
+
   MOCK_METHOD(void, OnConversationDeleted, (), (override));
 
  private:
@@ -1775,6 +1782,23 @@ TEST_P(AIChatServiceUnitTest, GetSkills) {
   EXPECT_EQ(result[0]->shortcut, "test");
   EXPECT_EQ(result[0]->prompt, "Test prompt");
   EXPECT_EQ(result[0]->model, "model");
+}
+
+TEST_P(AIChatServiceUnitTest, ServiceStateHasContentAgentUserSelectable) {
+  for (bool is_user_selectable : {false, true}) {
+    SCOPED_TRACE(testing::Message()
+                 << "is_user_selectable: " << is_user_selectable);
+    ai_chat_service_->set_content_agent_user_selectable(is_user_selectable);
+
+    mojo::PendingRemote<mojom::ServiceObserver> observer;
+    auto observer_receiver = observer.InitWithNewPipeAndPassReceiver();
+    base::test::TestFuture<mojom::ServiceStatePtr> state_future;
+    ai_chat_service_->BindObserver(std::move(observer),
+                                   state_future.GetCallback());
+
+    EXPECT_EQ(state_future.Take()->is_content_agent_user_selectable,
+              is_user_selectable);
+  }
 }
 
 TEST_P(AIChatServiceUnitTest, CreateSkill) {

@@ -156,6 +156,10 @@ struct ServiceState {
   bool is_storage_pref_enabled;
   bool is_storage_notice_dismissed;
   bool can_show_premium_prompt;
+  // Whether the user decides, per conversation, if the content agent is used.
+  // False where the content agent is unavailable, and also in the dedicated
+  // agent profile, where it is always on.
+  bool is_content_agent_user_selectable;
 };
 
 // Represents the content that is associated with a conversation.
