@@ -1,8 +1,8 @@
 diff --git a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-index 14d507bcb782cf096cf4e2f4bfd2e76c715b1329..d179ef4ad3a3f764a0ea4fd3b1f7675e87bdd228 100644
+index ab84947efcc503fa4d990035af44dab0f8c02cf4..22f24ea64e6a12351bd9ae2ef7cb863ffa179e14 100644
 --- a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
 +++ b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-@@ -492,6 +492,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
+@@ -501,6 +501,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
    // Deprecated 08/2026.
    registry->RegisterTimePref(kWaitingForMultiProfileForcedMigrationTimestamp,
                               base::Time());
@@ -10,15 +10,15 @@ index 14d507bcb782cf096cf4e2f4bfd2e76c715b1329..d179ef4ad3a3f764a0ea4fd3b1f7675e
  }
  
  void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
-@@ -942,6 +943,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
-   // Deprecated 09/2026.
-   registry->RegisterDictionaryPref(kSigninHasAcceptedManagementDialog);
-   registry->RegisterBooleanPref(kFingerprintingProtectionEnabled, false);
+@@ -961,6 +962,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
+   registry->RegisterStringPref(kSyncEncryptionBootstrapToken, std::string());
+   registry->RegisterBooleanPref(
+       kSyncEncryptionBootstrapTokenPerAccountMigrationDone, false);
 +  brave::RegisterBrowserStatePrefs(registry);
  }
  
  // This method should be periodically pruned of year+ old migrations.
-@@ -973,6 +975,7 @@ void MigrateObsoleteLocalStatePrefs(PrefService* prefs) {
+@@ -992,6 +994,7 @@ void MigrateObsoleteLocalStatePrefs(PrefService* prefs) {
  
    // Added 08/2026.
    prefs->ClearPref(kWaitingForMultiProfileForcedMigrationTimestamp);
@@ -26,10 +26,10 @@ index 14d507bcb782cf096cf4e2f4bfd2e76c715b1329..d179ef4ad3a3f764a0ea4fd3b1f7675e
  }
  
  // This method should be periodically pruned of year+ old migrations.
-@@ -1027,6 +1030,7 @@ void MigrateObsoleteProfilePrefs(PrefService* prefs) {
-   // Deprecated 09/2026.
-   prefs->ClearPref(kSigninHasAcceptedManagementDialog);
-   prefs->ClearPref(kFingerprintingProtectionEnabled);
+@@ -1050,6 +1053,7 @@ void MigrateObsoleteProfilePrefs(PrefService* prefs) {
+   // Added 10/2026.
+   prefs->ClearPref(kSyncEncryptionBootstrapToken);
+   prefs->ClearPref(kSyncEncryptionBootstrapTokenPerAccountMigrationDone);
 +  brave::MigrateObsoleteProfilePrefs(prefs);
  }
  
