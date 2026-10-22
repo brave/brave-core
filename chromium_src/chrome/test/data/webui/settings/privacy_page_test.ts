@@ -86,10 +86,7 @@ suite('BravePrivacyPage', () => {
   })
 
   test('the personalization options follow the site settings row', () => {
-    const siteSettings =
-        page.shadowRoot.querySelector<HTMLElement>('#siteSettingsLinkRow')
-    assertTrue(!!siteSettings)
-    const options = siteSettings.nextElementSibling
+    const options = page.$.siteSettingsLinkRow.nextElementSibling
     assertTrue(!!options)
     assertEquals(
         'settings-brave-personalization-options',
