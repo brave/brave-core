@@ -25,10 +25,13 @@ PolkadotWalletService::PolkadotWalletService(
     KeyringService& keyring_service,
     NetworkManager& network_manager,
     ::PrefService& profile_prefs,
-    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+    PolkadotRpcUrlMapCallback rpc_url_callback)
     : keyring_service_(keyring_service),
       network_manager_(network_manager),
-      polkadot_substrate_rpc_(network_manager, std::move(url_loader_factory)),
+      polkadot_substrate_rpc_(network_manager,
+                              std::move(url_loader_factory),
+                              std::move(rpc_url_callback)),
       chain_metadata_prefs_(profile_prefs),
       metadata_provider_(network_manager,
                          chain_metadata_prefs_,
