@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/route.ts b/chrome/browser/resources/settings/route.ts
-index d733ae8b320e3e6c609189056b9832bb136446ed..80e88da764506bea883e7db440885c107d6c0175 100644
+index 257eee5f0e7f7b9a14f56041384ddd7b0ee0ba9d..44b4922a7b4e7c6b6e096b27a73410abb93428d6 100644
 --- a/chrome/browser/resources/settings/route.ts
 +++ b/chrome/browser/resources/settings/route.ts
 @@ -2,6 +2,7 @@
@@ -10,7 +10,7 @@ index d733ae8b320e3e6c609189056b9832bb136446ed..80e88da764506bea883e7db440885c10
  import {assert} from 'chrome://resources/js/assert.js';
  
  import {loadTimeData} from './i18n_setup.js';
-@@ -309,6 +310,7 @@ function createRoutes(): SettingsRoutes {
+@@ -308,6 +309,7 @@ function createRoutes(): SettingsRoutes {
          loadTimeData.getString('performancePageTitle'));
    }
  
@@ -18,7 +18,7 @@ index d733ae8b320e3e6c609189056b9832bb136446ed..80e88da764506bea883e7db440885c10
    return r as unknown as SettingsRoutes;
  }
  
-@@ -342,7 +344,7 @@ export let routes: SettingsRoutes = Router.getInstance().getRoutes();
+@@ -341,7 +343,7 @@ export let routes: SettingsRoutes = Router.getInstance().getRoutes();
  // Returns the "effective" route when at chrome://settings/.
  export function getTopLevelRoute(): Route {
    if (!loadTimeData.getBoolean('isGuest')) {

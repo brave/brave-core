@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/history/app.html.ts b/chrome/browser/resources/history/app.html.ts
-index 1655c0a467527c1b2463f33a252732cb2a2a4453..b7b3c0d031025f180e2015e9845b5517fe6c2ea0 100644
+index dda655fcd97658e03d1931fb60578be92a56caf7..90d138cddf2a096bc45d0706f22ac3d89f2707c2 100644
 --- a/chrome/browser/resources/history/app.html.ts
 +++ b/chrome/browser/resources/history/app.html.ts
 @@ -51,13 +51,6 @@ export function getHtml(this: HistoryAppElement) {

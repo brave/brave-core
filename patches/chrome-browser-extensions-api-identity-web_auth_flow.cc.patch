@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/extensions/api/identity/web_auth_flow.cc b/chrome/browser/extensions/api/identity/web_auth_flow.cc
-index 7f5c460e087e03d8219b0a1cfb102e9d417de767..74c89e714378b69370700b11903974ca185c8214 100644
+index 8b1c4b0899f952d29a3b820cc43ba70934d1e415..7fada281db26c47798e997501ccc1e749311d878 100644
 --- a/chrome/browser/extensions/api/identity/web_auth_flow.cc
 +++ b/chrome/browser/extensions/api/identity/web_auth_flow.cc
 @@ -53,7 +53,7 @@
@@ -11,7 +11,7 @@ index 7f5c460e087e03d8219b0a1cfb102e9d417de767..74c89e714378b69370700b11903974ca
  #include "base/functional/callback_forward.h"
  #include "base/functional/callback_helpers.h"
  #include "chrome/browser/android/tab_android.h"
-@@ -253,7 +253,7 @@ void WebAuthFlow::CloseInfoBar() {
+@@ -255,7 +255,7 @@ void WebAuthFlow::CloseInfoBar() {
    }
  }
  
@@ -20,7 +20,7 @@ index 7f5c460e087e03d8219b0a1cfb102e9d417de767..74c89e714378b69370700b11903974ca
  void WebAuthFlow::OnBrowserWindowInterfaceInitialized(
      BrowserWindowInterface* browser) {
    if (!browser) {
-@@ -304,7 +304,7 @@ bool WebAuthFlow::DisplayAuthPageInPopupWindow() {
+@@ -306,7 +306,7 @@ bool WebAuthFlow::DisplayAuthPageInPopupWindow() {
  
    browser->GetWindow()->Show();
  #else
