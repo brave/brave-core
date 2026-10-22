@@ -39,15 +39,20 @@ source_set("browser_tests") {
   if (!is_android) {
     sources += [
       "brave_settings_ui_browsertest.cc",
+      "history/brave_history_sync_promo_browsertest.cc",
       "searchbox/brave_realbox_handler_browsertest.cc",
       "webui_service_worker_browsertest.cc",
     ]
 
     deps += [
+      "//base/test:test_support",
       "//brave/components/ai_chat/core/common/buildflags",
       "//brave/components/brave_search/common",
+      "//chrome/browser/ui/tabs:tab_strip",
       "//chrome/browser/ui/webui/searchbox",
       "//chrome/browser/ui/webui/searchbox:searchbox_test_utils",
+      "//chrome/common:constants",
+      "//components/sync/base",
       "//content/public/browser",
       "//third_party/blink/public/common",
       "//ui/webui",
