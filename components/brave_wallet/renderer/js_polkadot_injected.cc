@@ -222,7 +222,7 @@ void JSPolkadotInjected::SignerSignRaw(
 v8::Local<v8::Promise> JSPolkadotInjected::GetAccounts(v8::Isolate* isolate,
                                                        bool any_type) {
   // If our remote disconnects, return an error.
-  if (!polkadot_api_.is_bound()) {
+  if (!polkadot_api_.is_bound() || !polkadot_api_.is_connected()) {
     return RejectedPromise(isolate, kRequestFailedError);
   }
 
