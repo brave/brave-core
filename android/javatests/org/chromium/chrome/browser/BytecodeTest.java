@@ -1912,7 +1912,7 @@ public class BytecodeTest {
                         BrowserControlsStateProvider.class,
                         boolean.class,
                         PageZoomManager.class,
-                        Function.class,
+                        OmniboxResourceProvider.class,
                         SnackbarManager.class,
                         View.class,
                         OmniboxChipManager.class,
