@@ -95,9 +95,11 @@ class QuickViewController: UIViewController {
 
   override func viewDidDisappear(_ animated: Bool) {
     super.viewDidDisappear(animated)
-    if !Preferences.General.openLinkInQuickViewModeConfirmationShown.value {
+    if let onShowConfirmationAlert,
+      !Preferences.General.openLinkInQuickViewModeConfirmationShown.value
+    {
       Preferences.General.openLinkInQuickViewModeConfirmationShown.value = true
-      onShowConfirmationAlert?()
+      onShowConfirmationAlert()
     }
   }
 

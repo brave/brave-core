@@ -103,7 +103,35 @@ extension BrowserViewController {
     case .privateMode:
       open(true)
     case .quickView:
+      presentExternalLinkQuickView(url: url)
+    }
+  }
+
+  private func presentExternalLinkQuickView(url: URL) {
+    guard Preferences.General.externalLinkQuickViewPrivateStorage.value else {
       presentQuickView(url: url, profile: profileController.profile, showsConfirmationAlert: false)
+      return
+    }
+    let present = { [weak self] in
+      guard let self else { return }
+      self.presentQuickView(
+        url: url,
+        profile: self.profileController.profile.offTheRecordProfile,
+        showsConfirmationAlert: false
+      )
+    }
+    // Skip private-tab auth when app passcode lock is on; the user must unlock the app first.
+    guard Preferences.Privacy.privateBrowsingLock.value,
+      !Preferences.Privacy.lockWithPasscode.value
+    else {
+      present()
+      return
+    }
+    guard let windowProtection else { return }
+    askForLocalAuthentication(using: windowProtection, viewType: .external) { success, _ in
+      if success {
+        present()
+      }
     }
   }
 
