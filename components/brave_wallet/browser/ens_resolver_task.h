@@ -25,6 +25,10 @@
 static_assert(BUILDFLAG(ENABLE_BRAVE_WALLET));
 namespace brave_wallet {
 
+// https://docs.ens.domains/resolvers/universal/
+inline constexpr char kEnsUniversalResolverAddress[] =
+    "0xeEeEEEeE14D718C2B47D9923Deab1335E144EeEe";
+
 // Selector for `OffchainLookup(address,string[],bytes,bytes4,bytes)`
 inline constexpr uint8_t kOffchainLookupSelector[] = {0x55, 0x6f, 0x18, 0x30};
 
@@ -125,22 +129,15 @@ class EnsResolverTask {
   void ScheduleWorkOnTask();
   void WorkOnTask();
 
-  void FetchEnsResolver();
-  void OnFetchEnsResolverDone(APIRequestResult api_request_result);
-  void FetchEnsip10Support();
-  void OnFetchEnsip10SupportDone(APIRequestResult api_request_result);
-
-  void FetchEnsRecord();
-  void OnFetchEnsRecordDone(APIRequestResult api_request_result);
-
-  void FetchWithEnsip10Resolve();
-  void OnFetchWithEnsip10ResolveDone(APIRequestResult api_request_result);
+  void FetchWithUniversalResolver();
 
   void FetchOffchainData();
   void OnFetchOffchainDone(APIRequestResult api_request_result);
 
   void FetchOffchainCallback();
-  void OnFetchOffchainCallbackDone(APIRequestResult api_request_result);
+
+  void CallUniversalResolver(eth_abi::Span call);
+  void OnCallUniversalResolverDone(APIRequestResult api_request_result);
 
   void RequestInternal(const std::string& json_payload,
                        RequestIntermediateCallback callback);
@@ -150,17 +147,12 @@ class EnsResolverTask {
   raw_ptr<APIRequestHelper> api_request_helper_ens_offchain_;
   std::vector<uint8_t> ens_call_;
   std::string domain_;
-  std::string resolver_domain_;
-  std::optional<std::vector<uint8_t>> dns_encoded_name_;
   GURL network_url_;
   std::optional<bool> allow_offchain_;
   int offchain_lookup_attemps_left_ = 4;
 
   std::optional<EnsResolverTaskResult> task_result_;
   std::optional<EnsResolverTaskError> task_error_;
-
-  std::optional<EthAddress> resolver_address_;
-  std::optional<bool> supports_ensip_10_;
 
   std::optional<std::vector<uint8_t>> offchain_callback_call_;
   std::optional<OffchainLookupData> offchain_lookup_data_;
