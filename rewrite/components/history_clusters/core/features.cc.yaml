@@ -14,11 +14,6 @@ substitutions:
       feature_name: kHistoryClustersNavigationContextClustering
       value: base::FEATURE_DISABLED_BY_DEFAULT
 
-  - description: 'Ship kJourneys disabled.'
-    set_feature_flag_default_state:
-      feature_name: kJourneys
-      value: base::FEATURE_DISABLED_BY_DEFAULT
-
   - description: 'Ship kJourneysImages disabled.'
     set_feature_flag_default_state:
       feature_name: kJourneysImages
