@@ -643,10 +643,10 @@ The `Function<Tab, Bitmap> tabFaviconFunction` parameter became
 ([c66ae8711c3c](https://chromium.googlesource.com/chromium/src/+/c66ae8711c3cd1264fd0da880a2b7a88d3aeea06)).
 Brave's `redirectConstructor` target still takes the `Function`.
 
-- [ ] `android/java/org/chromium/chrome/browser/omnibox/BraveLocationBarCoordinator.java:93,136`:
+- [x] `android/java/org/chromium/chrome/browser/omnibox/BraveLocationBarCoordinator.java:93,136`:
       take and pass the provider; drop the `Bitmap` (`:10`) and `Function`
       (`:44`) imports
-- [ ] `android/javatests/org/chromium/chrome/browser/BytecodeTest.java:1915`:
+- [x] `android/javatests/org/chromium/chrome/browser/BytecodeTest.java:1915`:
       `Function.class` → `OmniboxResourceProvider.class` in `constructorsMatch`
 
 ### Android: `SEND_TAB_TO_SELF_EXTRA_ENTRY_POINTS` removed
