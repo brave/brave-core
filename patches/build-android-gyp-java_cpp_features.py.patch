@@ -1,5 +1,5 @@
 diff --git a/build/android/gyp/java_cpp_features.py b/build/android/gyp/java_cpp_features.py
-index 620371c33982a5edbed8811cd5e296555a997438..090b602b62bb8c9713850adfee9fdbdf2df195e5 100755
+index bd27272aa4c47caa0efd87208bd7067b7c74f927..6808f1a90b19ea830f6c8ba2b9ccb81884959a74 100755
 --- a/build/android/gyp/java_cpp_features.py
 +++ b/build/android/gyp/java_cpp_features.py
 @@ -23,7 +23,7 @@ class FeatureParserDelegate(java_cpp_utils.CppConstantParser.Delegate):

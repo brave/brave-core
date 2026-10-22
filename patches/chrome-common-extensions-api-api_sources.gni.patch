@@ -1,8 +1,8 @@
 diff --git a/chrome/common/extensions/api/api_sources.gni b/chrome/common/extensions/api/api_sources.gni
-index 3f933694eafda218d4637bd997ab130dca930e2c..4965d983a0d2022651e84f438d0bc724b220a199 100644
+index acdc60b6758544aabf434ead3a754b9b1c74e4c3..1cfdad00ca60d4ac6d750e0725db90cfc7761af7 100644
 --- a/chrome/common/extensions/api/api_sources.gni
 +++ b/chrome/common/extensions/api/api_sources.gni
-@@ -49,7 +49,7 @@ schema_sources_ = [
+@@ -48,7 +48,7 @@ schema_sources_ = [
    "windows.json",
  ]
  

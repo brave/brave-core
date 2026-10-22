@@ -1,8 +1,8 @@
 diff --git a/components/tabs/public/tab_collection.h b/components/tabs/public/tab_collection.h
-index a885c829a1e01f09c8a4445388788eb42fbc3142..ae6886c548a69a78ab11e26950e80aa713e9bada 100644
+index ea97e9085389e6ef40f27231256bcca39cd69ab2..5ce5c9729b8098b86d4646272cdb52e622c782a1 100644
 --- a/components/tabs/public/tab_collection.h
 +++ b/components/tabs/public/tab_collection.h
-@@ -263,7 +263,7 @@ class TabCollection : public SupportsHandles<TabCollectionHandleFactory> {
+@@ -264,7 +264,7 @@ class TabCollection : public SupportsHandles<TabCollectionHandleFactory> {
    // This should be called either when this collection is added to another
    // collection or it is removed from another collection. The child collection
    // should not try to call this internally and set its parent.

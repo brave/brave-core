@@ -1,5 +1,5 @@
 diff --git a/content/public/browser/webui_config_map.cc b/content/public/browser/webui_config_map.cc
-index e74da278fedbfbc7a1b12bb8fb082bf5eebdba81..a0090ac48b444da1ec0d55ae6303ff127b8fcc0c 100644
+index 1ea7d0262f50d4e69acba8037951ed36fc3307f3..66f8b1b421192d6717221936b09319536465c59b 100644
 --- a/content/public/browser/webui_config_map.cc
 +++ b/content/public/browser/webui_config_map.cc
 @@ -100,6 +100,9 @@ WebUIConfig* WebUIConfigMap::GetConfig(BrowserContext* browser_context,
