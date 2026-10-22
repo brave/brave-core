@@ -106,7 +106,6 @@ public class BraveClassAdapter {
         chain = new BraveNotificationPermissionRationaleDialogControllerClassAdapter(chain);
         chain = new BraveNotificationPlatformBridgeClassAdapter(chain);
         chain = new BraveNullAccountManagerDelegateAdapter(chain);
-        chain = new BraveOmniboxResourceProviderClassAdapter(chain);
         chain = new BraveOmniboxViewHolderFactoryClassAdapter(chain);
         chain = new BravePartialCustomTabBottomSheetStrategyClassAdapter(chain);
         chain = new BravePasswordManagerHelperClassAdapter(chain);
