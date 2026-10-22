@@ -11,6 +11,7 @@ import("//brave/components/playlist/core/common/buildflags/buildflags.gni")
 import("//brave/components/psst/buildflags/buildflags.gni")
 import("//brave/components/request_otr/common/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
+import("//brave/components/web_discovery/buildflags/buildflags.gni")
 import("//build/config/ui.gni")
 
 assert(is_win || is_mac || is_linux || is_chromeos || is_android)
@@ -71,6 +72,7 @@ if (!is_android) {
       "//brave/components/image_metadata_stripper/common",
       "//brave/components/misc_metrics",
       "//brave/components/request_otr/common/buildflags",
+      "//brave/components/web_discovery/buildflags",
       "//chrome/browser/content_settings:content_settings_factory",
       "//chrome/browser/profiles",
       "//chrome/browser/ui:browser_commands",
@@ -89,6 +91,10 @@ if (!is_android) {
 
     if (enable_ai_chat) {
       deps += [ "//brave/browser/ai_chat" ]
+    }
+
+    if (enable_web_discovery) {
+      deps += [ "//brave/browser/web_discovery" ]
     }
 
     if (enable_brave_ads) {
