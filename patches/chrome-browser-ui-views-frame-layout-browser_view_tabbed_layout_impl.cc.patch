@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/frame/layout/browser_view_tabbed_layout_impl.cc b/chrome/browser/ui/views/frame/layout/browser_view_tabbed_layout_impl.cc
-index 7764d4a4728973dc075efb308daa3d67ba2e10b6..dcf10b0309dcb95f9755e9b1518c3610be7d536c 100644
+index d85cb9b202e3466fad6b53f2d027cff104be912a..9139fed8416561067c2caeb9a2f776c8589e2650 100644
 --- a/chrome/browser/ui/views/frame/layout/browser_view_tabbed_layout_impl.cc
 +++ b/chrome/browser/ui/views/frame/layout/browser_view_tabbed_layout_impl.cc
-@@ -824,7 +824,7 @@ BrowserViewTabbedLayoutImpl::CalculateProposedLayout(
+@@ -837,7 +837,7 @@ BrowserViewTabbedLayoutImpl::CalculateProposedLayout(
    }
  
    BrowserLayoutParams params = layout_data_->revised_params;
@@ -11,16 +11,16 @@ index 7764d4a4728973dc075efb308daa3d67ba2e10b6..dcf10b0309dcb95f9755e9b1518c3610
    const HorizontalLayout& horizontal_layout = layout_data_->horizontal_layout;
  
    const int target_organizer_width =
-@@ -968,7 +968,7 @@ BrowserViewTabbedLayoutImpl::CalculateProposedLayout(
-             vertical_tab_strip_animation.current_motion ==
-                 TabStripAnimations::kCollapse;
+@@ -978,7 +978,7 @@ BrowserViewTabbedLayoutImpl::CalculateProposedLayout(
+         clip_content_for_animation =
+             vertical_tab_strip_animation.is_expanding_or_collapsing();
          unclipped_contents_region.Inset(
 -            gfx::Insets::TLBR(0, tabs::kVerticalTabStripCollapsedWidth, 0, 0));
 +            gfx::Insets::TLBR(0, views().vertical_tab_strip_region_view->GetCollapsedWidth(), 0, 0));
        } else {
          unclipped_contents_region.Inset(gfx::Insets::TLBR(
              0, horizontal_layout.vertical_tab_strip_width, 0, 0));
-@@ -976,7 +976,7 @@ BrowserViewTabbedLayoutImpl::CalculateProposedLayout(
+@@ -986,7 +986,7 @@ BrowserViewTabbedLayoutImpl::CalculateProposedLayout(
      }
      layout.AddChild(views().vertical_tab_strip_region_view,
                      vertical_tab_strip_bounds,
