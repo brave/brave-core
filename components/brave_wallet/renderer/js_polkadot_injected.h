@@ -23,6 +23,8 @@
 
 namespace brave_wallet {
 
+// This object is created by the JSPolkadotProvider when Enable() completes
+// successfully (i.e. permissions were granted for the selected account).
 // https://github.com/polkadot-js/extension/blob/master/packages/extension-inject/src/types.ts
 class JSPolkadotInjected final : public gin::Wrappable<JSPolkadotInjected>,
                                  public content::RenderFrameObserver {
