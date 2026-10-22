@@ -970,10 +970,6 @@
     public <init>(...);
 }
 
--keep class org.chromium.chrome.browser.omnibox.styles.OmniboxResourceProvider {
-    *** getToolbarSidePaddingForNtp(...);
-}
-
 -keep class org.chromium.chrome.browser.password_manager.PasswordManagerHelper {
     *** getForProfile(...);
     *** sProfileMap;
