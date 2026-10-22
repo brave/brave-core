@@ -10,8 +10,6 @@ const NSSVG = 'http://www.w3.org/2000/svg'
 
 let pickerDiv: HTMLDivElement | null
 let shadowRoot: ShadowRoot | null
-let isAndroid: boolean | null
-let isIOS: boolean | null
 let isMobile: boolean | null
 let btnCreateEnabledText: string
 let btnCreateDisabledText: string
@@ -908,9 +906,8 @@ export const showElementPicker = (platformApi: ElementPickerAPI) => {
     return
   }
 
-  isAndroid = api.getPlatform() === 'android'
-  isIOS = api.getPlatform() === 'ios'
-  isMobile = isAndroid || isIOS
+  const platform = api.getPlatform()
+  isMobile = platform === 'android' || platform === 'ios'
   const root = attachElementPicker()
   api.getLocalizedTexts(
     (
