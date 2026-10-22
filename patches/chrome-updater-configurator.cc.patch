@@ -1,0 +1,14 @@
+diff --git a/chrome/updater/configurator.cc b/chrome/updater/configurator.cc
+index 6d968f61f5a480cb4ab1dba11736ceec333de624..2987139e576211ffa3c727775f2ca1e72bd7f3ff 100644
+--- a/chrome/updater/configurator.cc
++++ b/chrome/updater/configurator.cc
+@@ -231,6 +231,9 @@ bool Configurator::EnabledBackgroundDownloader() const {
+ }
+ 
+ bool Configurator::EnabledCupSigning() const {
++  if ((true)) {
++    return false;
++  }
+   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+   return external_constants_->UseCUP();
+ }

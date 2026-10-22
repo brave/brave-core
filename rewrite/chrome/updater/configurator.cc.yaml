@@ -1,0 +1,20 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Disable CUP signing for the updater.
+
+      Our CUP key is still ECDSA, but upstream's verification path now only
+      accepts ML-DSA-44 signatures (see
+      patches/components-client_update_protocol-cup.cc.patch), so a signed
+      response can never validate. Force this off until we have an ML-DSA-44
+      key of our own.
+    preempt_function_impl:
+      function_name: Configurator::EnabledCupSigning
+      code: |-
+        if ((true)) {
+          return false;
+        }
