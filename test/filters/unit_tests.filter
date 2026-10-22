@@ -784,7 +784,7 @@
 -ActionChipGeneratorTests/*.*/*
 
 # These tests fail because we don't show the history sync promo
--BrowsingHistoryHandlerHistorySyncPromoTest.ShouldShowHistoryPageHistorySyncPromo*/SignedIn
+-BrowsingHistoryHandlerHistorySyncPromoTest.ShouldShowHistoryPageHistorySyncPromo*/*
 
 # This test fails because we disable kDestroyProfileOnBrowserClose feature.
 -BookmarkDictImporterTest.FailsIfProfileIsDestroyed

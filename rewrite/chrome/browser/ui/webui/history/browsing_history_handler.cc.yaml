@@ -1,0 +1,32 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Never show the history sync promo on brave://history.
+
+      Upstream only consults the shown/dismissed pref counters here, so a
+      signed-out profile (which reports history sync as kTurnedOff) gets the
+      promo up to five times. Its button reaches
+      `SigninViewController::ShowDiceSigninTab()`, which NOTREACHED()s in
+      DCHECK builds: `chromium_src/chrome/browser/signin/
+      account_consistency_mode_manager.cc` pins account consistency to
+      kDisabled, so the promo offers a sign-in Brave cannot perform. Suppress it
+      the way upstream already does on Android, where the promo is unsupported
+      but the Mojo method must still reply for the shared WebUI resources.
+
+      `preempt_function_impl` cannot be used: the `#if BUILDFLAG(IS_ANDROID)`
+      definition has the same signature, so the AST matcher hits both, and the
+      Android one already returns false. The regex anchors on the first
+      statement of the desktop body to pick it out.
+    regex:
+      re_pattern: |-
+        (void BrowsingHistoryHandler::ShouldShowHistoryPageHistorySyncPromo\(\s+ShouldShowHistoryPageHistorySyncPromoCallback callback\) \{)(\s+const int promo_shown_count)
+      replace: |-
+        \1
+          if ((true)) {
+            std::move(callback).Run(false);
+            return;
+          }\2
