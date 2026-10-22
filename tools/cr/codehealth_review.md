@@ -267,6 +267,11 @@ Brave turns upstream things off in many places, and upstream keeps moving them:
     chip next to Speedreader). For WebUI promos, read the element's show
     condition against a signed-out Brave profile. Android Java safe defaults
     (`newMutableFlagWithSafeDefault`) flip together with C++.
+  - An `app/feature_defaults_unittest.cc` entry with no override behind it only
+    records upstream's default, and a flip makes the test fail while the feature
+    ships. Check each entry against the plasters and `chromium_src` (M158,
+    8117.1: `kAndroidPageInfoAsAppMenuItem` moved page info into the Android app
+    menu).
   - An override that now equals upstream's default is allowed as a pin against
     upstream sliding back (`rewriters.pyl`), so it isn't an item by itself. Flag
     it only when the override was meant as temporary (Brave reverted
@@ -433,7 +438,9 @@ line each.
   Check Brave's `{{prefs.…}}` bindings inside them, and any `prefs` they pass
   down to Brave children (the email aliases toggle broke two levels down; M157:
   `settings-privacy-page` stayed Polymer, and Brave's personalization toggles
-  lost their prefs). The fix is `pref-key`.
+  lost their prefs). The fix is `pref-key`. Grep Brave's templates for
+  `{{prefs.` every lift: master commits keep adding the old binding after the
+  branch migrated an element (M158, 8117.1: the on-device speech model toggle).
 - **A removed ancestor property or element.** When a commit removes an element
   or property from an ancestor (`<settings-prefs>` and `prefs` on
   `settings-ui`/`settings-main`), grep Brave for every consumer reached through
@@ -446,7 +453,10 @@ line each.
   (`git grep -l 'PrefKeyObserverMixinLit(' $B -- chrome/browser/resources`),
   grep Brave's templates for a `pref=` binding on its tag, including attributes
   on later lines: the mixin asserts (M158, 8113.1: the Tor bridges radios bound
-  a fake pref).
+  a fake pref). Commits that move upstream's clients of a Polymer control to
+  `prefKey` "in preparation for migrating" it announce the next one; list
+  Brave's `pref=` bindings on that tag as a deprecation (M158, 8117.1:
+  `settings-toggle-button`, 17 Brave toggles).
 - **Allowlists in shared WebUI code.** When upstream adds a hard-coded list of
   enum values to shared infrastructure, compare it with the values Brave's
   patches add to that enum (M158, 8113.1: `CATEGORY_DEFAULT_SYNTHETIC_PREFS`
@@ -559,12 +569,15 @@ unless Brave touches the code.
   `git log -S<name> $A..$B` finds the commit; read it, because a renamed test
   needs its filter retargeted, not deleted. A negative filter matches the full
   name exactly, so upstream turning a `TEST_F` into a `TEST_P` silently
-  re-enables a filtered test (`All/…/0`), and the reverse leaves a `/1` entry
-  matching nothing. The `TEST*` macros on the `+`/`-` lines of
-  `git diff $A $B -U0 -- '*.cc' '*.mm'` are a cheaper index than both trees, but
-  miss macros split across lines: also flag each filtered test name that occurs
-  only on `-` lines (M157: renamed `TransportSecurityStateTest` cases). Include
-  `test/filters/generated/`, which is fixed by rerunning
+  re-enables a filtered test (`All/…/0`), and the reverse does too: the `All/…`
+  entry matches nothing (M158, 8117.1: flag clean-ups turned
+  `ForceSigninProfilePickerCreationFlowBrowserTest` into `_F` and folded
+  `CanOfferSigninWithSigninToSyncFeatureTest` into `CanOfferSigninTest`). The
+  `TEST*` macros on the `+`/`-` lines of `git diff $A $B -U0 -- '*.cc' '*.mm'`
+  are a cheaper index than both trees, but miss macros split across lines: also
+  flag each filtered test name that occurs only on `-` lines (M157: renamed
+  `TransportSecurityStateTest` cases). Include `test/filters/generated/`, which
+  is fixed by rerunning
   `tools/chromium_tests_analysis/update-upstream-flake-filters.py` rather than
   by hand (the payment handler camera test). Tests whose `DISABLED_` prefix was
   removed in the range (`git log -p -U0 -G'DISABLED_' $A..$B -- '*test*.cc'`)
@@ -594,10 +607,13 @@ unless Brave touches the code.
   Brave still uses (M158, 8115.1: 6 real out of 9, all Android and iOS build
   breaks such as `OriginalProfileSupplier` and
   `CSPDirectiveName::TreatAsPublicAddress`). Also grep all of Brave for the
-  basename of each file deleted in the range
-  (`git diff --name-status --diff-filter=D $A $B`): plain includes in
-  platform-only sources break only that platform's build (M157, 8101.1:
-  `target_device_info.h` in iOS `brave_sendtab_api.mm`, found by three sweeps).
+  basename of each file deleted or moved in the range
+  (`git diff --name-status --diff-filter=DR $A $B`; git detects renames by
+  default, so `D` alone misses moves): plain includes in platform-only sources
+  break only that platform's build (M157, 8101.1: `target_device_info.h` in iOS
+  `brave_sendtab_api.mm`, found by three sweeps; M158, 8117.1:
+  `profile_keyed_service_factory_ios.h` moved into a restricted `internal/`
+  target, which every Brave iOS factory includes).
 
 #### h. Android and iOS
 
@@ -758,10 +774,11 @@ none out of 226. In 8107.2..8109.1 it gave none out of 815, and in
 out of 972: a mechanical "Use gin's compile-time `SetMethod<&T::M>()` form"
 campaign, found by skimming subjects, not by the basename match; the basename
 match only re-found a Java signature change sweep [h](#h-android-and-ios) had
-found. In 8111.1..8113.1 it gave none out of 647 (486 after noise), and in
-8113.1..8115.1 none out of 707 (480 after noise). Keep it short there, and drop
-`BUILD.gn`, `DEPS`, `*.xml` and `features.*` before the basename match; they
-make up nearly all of its hits.
+found. In 8111.1..8113.1 it gave none out of 647 (486 after noise), in
+8113.1..8115.1 none out of 707 (480 after noise), and in 8115.1..8117.1 none out
+of 535 (346 after noise). Keep it short there, and drop `BUILD.gn`, `DEPS`,
+`*.xml` and `features.*` before the basename match; they make up nearly all of
+its hits.
 
 Items found here meet the same ground rules as any other. Each one is a
 mechanism no sweep describes, so record it in the method notes for step 5 (the

@@ -1,6 +1,6 @@
 # M158 code health follow-ups
 
-Tasks found by reviewing upstream changes in `157.0.8103.3..158.0.8115.1` (6050
+Tasks found by reviewing upstream changes in `157.0.8103.3..158.0.8117.1` (6793
 commits) for regressions, deprecations and code-health migrations that apply to
 Brave. Tick items off as they land.
 
@@ -31,19 +31,21 @@ their constructors, have to be created after it.
       `BraveTabFeatures::Init` on desktop", with browser tests
 - [x] Desktop: `BraveTabFeatures::Init` calls `brave::AttachTabHelpers()`, and
       `OnWillDiscardContents` calls it on the replacement contents
-- [ ] `browser/brave_tab_helpers.cc:110` `AttachTabHelpers()`: move the helpers
+- [ ] `browser/brave_tab_helpers.cc:105` `AttachTabHelpers()`: move the helpers
       into `BraveTabFeatures::Init` (`browser/ui/tabs/brave_tab_features.cc`),
       following the per-helper list and idiom in M157's "TabHelpers →
-      TabFeatures"; the call from `Init` is only a stopgap
+      TabFeatures"; the call from `Init` is only a stopgap. Master has moved the
+      Onboarding, SerpMetrics, Ads, CreativeSearchResultAd and WebDiscovery
+      helpers so far (`[bedrock]` commits)
 - [x] Android: same, in `browser/android/brave_tab_features.cc:35`, including
       Ads and Rewards. "[cr158][Android] Attach Brave tab helpers from
       BraveTabFeatures" calls `brave::AttachTabHelpers()` from the constructor,
       after `CreateSessionServiceTabHelper()`; the same stopgap as desktop
-- [ ] `browser/ui/tabs/brave_tab_features.cc:121-122`: the other helpers follow
+- [ ] `browser/ui/tabs/brave_tab_features.cc:126-127`: the other helpers follow
       discards through `OnWillDiscardContents`, but `rewards_tab_helper_` stays
       bound to the old contents; make it follow discards
       (`ContentsObservingTabFeature`, as `AdsTabHelper` already is)
-- [ ] `browser/brave_tab_helpers.cc:192` `AttachPrivacySensitiveTabHelpers()`:
+- [ ] `browser/brave_tab_helpers.cc:183` `AttachPrivacySensitiveTabHelpers()`:
       decide which non-tab WebContents that upstream used to cover still need it
       (prerender, no-state prefetch, extension host, thin webview, overlay
       panel). Only AI Chat calls it now. M157 skipped moving
@@ -53,7 +55,7 @@ their constructors, have to be created after it.
       and `EphemeralStorageTabHelper`, on desktop and Android
 - [ ] Stale references: `browser/PRESUBMIT.py:27,99`,
       `docs/best-practices/architecture.md:1875-1902` (ARCH-074),
-      `browser/ui/tabs/brave_tab_features.cc:108,116` and
+      `browser/ui/tabs/brave_tab_features.cc:117-118,124-125` and
       `browser/ui/views/side_panel/ai_chat/ai_chat_side_panel_tab_transfer_bridge.cc:230`
 
 ### `settings-main` became Lit, so Brave's settings pages are no longer injected
@@ -104,7 +106,7 @@ the element.
       Never show the history sync promo on brave://history"
 - [x] Add a test that brave://history doesn't render `history-sync-promo` for a
       signed-out profile. `BraveHistorySyncPromoBrowserTest`
-- [x] `test/filters/unit_tests.filter:765-766`: the "we don't show the history
+- [x] `test/filters/unit_tests.filter:777-778`: the "we don't show the history
       sync promo" comment holds only once the hook lands. Broadened to both
       parameterisations, since the hook also fails the `SignedOut` cases
 
@@ -157,10 +159,29 @@ which asserts that `pref` is only ever set through `prefKey`.
 options, a workaround for the removed `PrefControlMixin`, so they throw in
 `willUpdate`.
 
-- [ ] `browser/resources/settings/brave_tor_page/brave_tor_subpage.html:77,90,100`:
-      drop the `pref` bindings
-- [ ] `browser/resources/settings/brave_tor_page/brave_tor_subpage.ts:135-142`:
-      drop `useBridgesValuePref_` and its comment
+- [x] `browser/resources/settings/brave_tor_page/brave_tor_subpage.html:77,90,100`:
+      drop the `pref` bindings. Fixed by "[cr158][Settings] Drop fake pref
+      bindings from Tor bridges radio buttons"
+- [x] `browser/resources/settings/brave_tor_page/brave_tor_subpage.ts:135-142`:
+      drop `useBridgesValuePref_` and its comment. Same commit; the page's
+      toggles are in "`settings-toggle-button` is moving to Lit"
+
+### On-device speech model toggle doesn't reflect or save its pref
+
+`brave_personalization_options.html:33` binds
+`pref="{{prefs.brave.local_ai.on_device_speech_model_enabled}}"`, but the
+element has no `prefs` property: "[cr157][settings] Bind privacy toggles by
+pref-key" moved it off `prefs`, and the binding came in later from master's
+3a7aaa6f005 ("[On-Device AI] [WebSpeech] Require user consent for downloading
+speech model"). The toggle shows off and doesn't save. It's the last `{{prefs.`
+binding in Brave, and the range removed the last `<settings-prefs>`
+([ff55acf07c8a](https://chromium.googlesource.com/chromium/src/+/ff55acf07c8abb6e502e34fdefb75fd5486f3bed)).
+
+- [ ] `browser/resources/settings/brave_privacy_page/brave_personalization_options.html:33`:
+      `pref-key="brave.local_ai.on_device_speech_model_enabled"` (already
+      allowlisted at
+      `browser/extensions/api/settings_private/brave_prefs_util.cc:341`)
+- [ ] Add a WebUI test that the toggle reflects and saves the pref
 
 ### iOS: upstream's app-specific-pages rule list applies again
 
@@ -230,6 +251,46 @@ Brave's calls still pass an access type, which breaks the iOS build.
       `IMPLICIT_ACCESS` call never returns null now; check that
       `BraveSyncServiceImplDelegate` doesn't rely on null
 
+### iOS: Brave's 15 service factories include a header that moved to `internal/`
+
+[cd096f96fa7e](https://chromium.googlesource.com/chromium/src/+/cd096f96fa7ef101cee8adea5571ca810aac2dda)
+moved `profile_keyed_service_factory_ios.h`, the refcounted factory,
+`profile_dependency_manager_ios.h` and `profile_keyed_service_utils.h` to
+`ios/chrome/browser/shared/model/profile/internal/`, whose target is visible
+only to `:profile_keyed_service_factory`, `profile/test` and its tests.
+`:profile_keyed_service_factory` now holds only the typed headers. Every Brave
+iOS factory includes the old path, so the iOS build breaks, and moving to
+`TypedProfileKeyedServiceFactoryIOS` is now required. Upstream finished its own
+conversion in this milestone (3cc80ea5bcdc3, Bug 570433691; 3 classic and 239
+typed at 8117.1), and
+[f274634e4a1c](https://chromium.googlesource.com/chromium/src/+/f274634e4a1c0229f06413ba8731f0768a80f6c2)
+marked typed factories `final`. The idiom is `explicit Factory(PassKey key)`
+calling `TypedProfileKeyedServiceFactoryIOS(std::move(key), "Name")`, with
+generated `GetForProfile()` and `GetInstance()`. Re-check with
+`git grep -n 'profile/profile_keyed_service_factory_ios.h' -- ios chromium_src/ios`.
+All paths are under `ios/browser/`:
+
+- [ ] `ai_chat/ai_chat_service_factory.h:13`,
+      `ai_chat/model_service_factory.h:12`,
+      `ai_chat/tab_tracker_service_factory.h:12`
+- [ ] `api/webcompat_reporter/webcompat_reporter_service_factory.h:12`
+- [ ] `brave_account/brave_account_service_factory_ios.h:12`
+- [ ] `brave_ads/ads_service_factory_ios.h:11`; `brave_ads/ads_tab_helper.mm:19`
+      includes the old header without using it
+- [ ] `brave_origin/brave_origin_service_factory.h:12`
+- [ ] `brave_shields/brave_shields_settings_service_factory.h:13`
+- [ ] `brave_wallet/brave_wallet_service_factory.h:12`
+- [ ] `debounce/debounce_service_factory+private.h:12`
+- [ ] `favicon/brave_ios_favicon_loader_factory.h:12`; also name its testing
+      factory (`.h:26`, `.mm:49-51`) as the typed factory's `TestingFactory` or
+      `KeyedServiceTestingFactoryIOS`
+      ([992f5e4dc610](https://chromium.googlesource.com/chromium/src/+/992f5e4dc6105b0f41c4db84775ea4c5169b86f8),
+      [c89e7d662d1eb](https://chromium.googlesource.com/chromium/src/+/c89e7d662d1eb0d80fb16e4835b2371171ed3fa5))
+- [ ] `misc_metrics/profile_misc_metrics_service_factory.h:12`
+- [ ] `serp_metrics/serp_metrics_service_factory_ios.h:11`
+- [ ] `skus/skus_service_factory.h:12`
+- [ ] `url_sanitizer/url_sanitizer_service_factory+private.h:12`
+
 ### iOS: `CSPDirectiveName::TreatAsPublicAddress` removed
 
 [62b4de517e442](https://chromium.googlesource.com/chromium/src/+/62b4de517e442f164d27559461fcfd1fa9f3616b)
@@ -284,7 +345,7 @@ though Brave doesn't sign requests.
 - [ ] `chromium_src/components/update_client/request_sender_unittest.cc`: the
       `cup2key=1:` expectations and `BraveKeyIgnoresPqcCupSigningFlag` refer to
       the old format and the deleted flag
-- [ ] `test/filters/components_unittests.filter:263-267`: re-evaluate
+- [ ] `test/filters/components_unittests.filter:265-269`: re-evaluate
       `-All/RequestSenderTest.CupKeySelection/*` and its comment
 
 ### The geolocation permission prediction model is fetched through the component updater
@@ -422,6 +483,29 @@ confirm the visible effect.
 - [ ] Add a test that `location = 'about://newtab'` and
       `window.open('about://newtab')` from a page don't show the NTP
 
+### Android: page info moves into the app menu
+
+[a034bd17f266](https://chromium.googlesource.com/chromium/src/+/a034bd17f2667dd904986037f42f84ce937e655c)
+enabled `kAndroidPageInfoAsAppMenuItem` and `IPH_SiteControls`, and the Java
+`newCachedFlag(ANDROID_PAGE_INFO_AS_APP_MENU_ITEM, true)` default with them.
+Brave never pinned the flag: master 75f3596e528 only asserted upstream's default
+in `app/feature_defaults_unittest.cc:163`, because the page info icon "gets
+lost" once it leaves the toolbar. The icon now leaves the address bar for a
+"Site controls" menu item, the IPH highlights it, and that Android test fails.
+`base/compile_overridden_features.inc:16` lists the feature, but nothing
+overrides it.
+
+- [ ] Pin it disabled: a `set_feature_flag_default_state` plaster on
+      `chrome/browser/flags/android/chrome_feature_list.cc:713`, and the cached
+      flag default in
+      `rewrite/chrome/browser/flags/android/java/src/org/chromium/chrome/browser/flags/ChromeFeatureList.java.yaml`
+      (as for `ANDROID_TIPS_NOTIFICATIONS`). If Android product wants it
+      instead, move the test entry to the enabled list and drop the `.inc` line
+- [ ] Decide on `kIPHSiteControlsFeature`
+      (`components/feature_engagement/public/feature_constants.cc:623`)
+- [ ] `android/junit/src/org/chromium/chrome/browser/tabbed_mode/BraveTabbedAppMenuPropertiesDelegateUnitTest.java:128,473-475`:
+      the "disabled for the whole class" comment holds only with the pin
+
 ### Android: Brave's NTP toolbar side padding no longer applies
 
 Upstream removed `OmniboxResourceProvider.getToolbarSidePaddingForNtp()`, and
@@ -490,10 +574,10 @@ profile per process
 Brave uses it to apply its default search engine once the regular profile
 exists, which breaks the Android build.
 
-- [ ] `android/java/org/chromium/chrome/browser/BraveApplicationImplBase.java:19,71`
-- [ ] `android/java/org/chromium/chrome/browser/referrer/BraveReferrer.java:29,223-232`
-- The replacement is a `ProfileManager.Observer` that acts on the first non-OTR
-  `onProfileAdded()`, which is what the upstream class did
+- [x] `android/java/org/chromium/chrome/browser/BraveApplicationImplBase.java:19,71`
+- [x] `android/java/org/chromium/chrome/browser/referrer/BraveReferrer.java:29,223-232`
+- Both fixed by "[cr158] Replace removed OriginalProfileSupplier with
+  BraveProfileUtils" (`BraveProfileUtils.onRegularProfileAvailable`)
 
 ### Android: `GlicButtonDelegate` moved to `glic.toolbar_button`
 
@@ -501,11 +585,12 @@ exists, which breaks the Android build.
 split `//chrome/browser/glic/android` into subpackages. `GlicEnabling` stayed,
 and no Brave XML names a moved class.
 
-- [ ] Update the import in
+- [x] Update the import in
       `android/java/org/chromium/chrome/browser/tabbed_mode/BraveTabbedAdaptiveToolbarBehavior.java:20`,
       `android/java/org/chromium/chrome/browser/toolbar/BraveToolbarManager.java:53`,
       `android/javatests/org/chromium/chrome/browser/BytecodeTest.java:86` and
-      `android/junit/src/org/chromium/chrome/browser/tabbed_mode/BraveTabbedAdaptiveToolbarBehaviorTest.java:31`
+      `android/junit/src/org/chromium/chrome/browser/tabbed_mode/BraveTabbedAdaptiveToolbarBehaviorTest.java:31`.
+      Fixed by "[cr158][Android] GlicButtonDelegate moved"
 
 ### Android: `product_config_java_packages` no longer exists
 
@@ -513,7 +598,9 @@ and no Brave XML names a moved class.
 folded `ProductConfig` into `BuildConfig`, and `ResourceBundle` reads
 `BuildConfig.LOCALES` itself. GN fails on the unused assignment.
 
-- [ ] `test/BUILD.gn:1661-1666`: drop the assignment and its comment
+- [x] `test/BUILD.gn:1661-1666`: drop the assignment and its comment. Fixed by
+      "[cr158][Android] Drop product_config_java_packages from
+      brave_browser_tests"
 
 ### Android: `AppMenu` constructor lost its `boolean` parameter
 
@@ -548,6 +635,33 @@ added `browserControlsVisibilityManager`, `scrimManager`, `controlContainer` and
 - [x] Fixed by "[Android][cr158] Wire BottomBarEducationCoordinator into
       BottomBarCoordinator"
 
+### Android: `LocationBarCoordinator` takes an `OmniboxResourceProvider`
+
+The `Function<Tab, Bitmap> tabFaviconFunction` parameter became
+`OmniboxResourceProvider resourceProvider`, which `ToolbarManager` and
+`SearchUiCoordinator` now own
+([c66ae8711c3c](https://chromium.googlesource.com/chromium/src/+/c66ae8711c3cd1264fd0da880a2b7a88d3aeea06)).
+Brave's `redirectConstructor` target still takes the `Function`.
+
+- [ ] `android/java/org/chromium/chrome/browser/omnibox/BraveLocationBarCoordinator.java:93,136`:
+      take and pass the provider; drop the `Bitmap` (`:10`) and `Function`
+      (`:44`) imports
+- [ ] `android/javatests/org/chromium/chrome/browser/BytecodeTest.java:1915`:
+      `Function.class` → `OmniboxResourceProvider.class` in `constructorsMatch`
+
+### Android: `SEND_TAB_TO_SELF_EXTRA_ENTRY_POINTS` removed
+
+[28139893f60a](https://chromium.googlesource.com/chromium/src/+/28139893f60ac3376d29a00c244941a55ffa6861)
+removed the flag, which was on, and its `ChromeFeatureList` constant. Brave's
+behaviour doesn't change, but two junit tests disable the constant.
+
+- [ ] `android/junit/src/org/chromium/chrome/browser/tasks/tab_management/BraveTabGridContextMenuCoordinatorTest.java:66`:
+      drop the `@DisableFeatures`
+- [ ] `android/junit/src/org/chromium/chrome/browser/toolbar/BraveToolbarLongPressMenuHandlerUnitTest.java:51`:
+      drop it; the handler is built with `url -> true` (`:94`), so
+      `testbuildMenuItemsWithUrl` (`:126`) now gets a fourth, "Send to devices"
+      item
+
 ### Android: `kPopularSitesJsonPref` moved to a private header
 
 The popular sites prefs moved to
@@ -558,11 +672,11 @@ Brave's override is likely redundant:
 `chromium_src/components/ntp_tiles/most_visited_sites.cc` already forces
 `popular_sites_` to null.
 
-- [ ] `browser/brave_profile_prefs.cc:135,190-191`: drop the
+- [ ] `browser/brave_profile_prefs.cc:73,191-192`: drop the
       `kPopularSitesJsonPref` default and the include. "[Android][cr158] Ntp
       tiles pref names moved and restricted visibility" kept it by widening the
       target's visibility with a `components/ntp_tiles/BUILD.gn` plaster; drop
-      that plaster and dep too
+      that plaster and the dep (`browser/BUILD.gn:94`) too
 
 ### Android: per-site Autoplay and Google Sign-In rows aren't set up
 
@@ -630,11 +744,50 @@ matches fall back to `SECTION_DEFAULT` with no header.
 Upstream removed `document.requestStorageAccessFor()` and says the rest of the
 `top_level_storage_access` code follows
 ([064bca2b1e8bc](https://chromium.googlesource.com/chromium/src/+/064bca2b1e8bc9dfdd45d6f6175b67df938e52b7)).
-Removing the enum value will break the build.
+Removing the enum value will break the build. At 8117.1 the value is still
+there, after
+[75b7b36f86d9](https://chromium.googlesource.com/chromium/src/+/75b7b36f86d948a0210e2f75ed6d5dd968508ec0)
+removed its network plumbing and
+[845d377ebe5d](https://chromium.googlesource.com/chromium/src/+/845d377ebe5dc8e48537ff830fcc60e85585b072)
+the Related Website Sets internals, which says the remaining stubs follow.
 
-- [ ] `chromium_src/components/content_settings/core/browser/content_settings_registry.cc:334-348`:
+- [ ] `chromium_src/components/content_settings/core/browser/content_settings_registry.cc:334-357`:
       drop Brave's re-registration of
       `ContentSettingsType::TOP_LEVEL_STORAGE_ACCESS` when the type goes
+- [ ] `components/privacy_sandbox/brave_privacy_sandbox_settings.h:42` and
+      `.cc:21-50`: drop the `AreRelatedWebsiteSetsEnabled()` override and the
+      `kPrivacySandboxRelatedWebsiteSetsEnabled` write when upstream removes
+      them
+
+### `settings-toggle-button` is moving to Lit
+
+[9bc6c56d8e5f](https://chromium.googlesource.com/chromium/src/+/9bc6c56d8e5fcbae96ae3c4f9a83192d4fb22b3c)
+and
+[58d00cfef76d](https://chromium.googlesource.com/chromium/src/+/58d00cfef76d0a9b78ce3e666fc325ad42f4e806)
+moved upstream's remaining toggles that bound a fake `pref` object to
+`pref-key="synthetic.settings.…"`, "in preparation for migrating
+settings-toggle-button to Lit". Upstream `pref=` toggles fell from 188 to 161,
+and `pref-key` rose from 86 to 114. The Lit `PrefKeyObserverMixinLit` asserts
+that `pref` is only set through `prefKey`, so each of Brave's fake-`pref`
+toggles will throw, as the Tor bridges radios did. Move them to real
+`pref-key`s, to synthetic prefs (a plaster on `getSyntheticPrefs()` in
+`chrome/browser/resources/settings_shared/prefs2/pref_service.ts:57`, which can
+share the site-settings plaster; e.g. `secure_dns.ts:289`), or to a plain
+`cr-toggle`, as upstream did for the metrics toggle Brave copied
+([368fed8692bd](https://chromium.googlesource.com/chromium/src/+/368fed8692bdaca0c7cd873208f61abda378c02d),
+M153). All paths are under `browser/resources/settings/`:
+
+- [ ] `brave_data_collection_page/brave_data_collection_page.html:4,13,21`; the
+      metrics toggle follows upstream's `cr-toggle`
+      (`brave_data_collection_page.ts:153-175`)
+- [ ] `brave_default_extensions_page/brave_default_extensions_page.html:83`
+- [ ] `brave_default_extensions_page/brave_extensions_manifest_v2_subpage.html:58`
+- [ ] `brave_leo_assistant_page/brave_leo_assistant_page.html:35`
+- [ ] `brave_privacy_page/brave_personalization_options.html:122`
+- [ ] `brave_system_page/brave_vpn_page.html:22`
+- [ ] `brave_tor_page/brave_tor_subpage.html:48,58,66`
+- [ ] `brave_wallet_page/brave_wallet_page.html:128`
+- [ ] `default_brave_shields_page/default_brave_shields_page.html:92,112,138,147,154`
 
 ### Android: `OmniboxResourceProvider` static methods
 
@@ -668,7 +821,7 @@ Upstream is passing maps and arrays to `cbor::Writer::Write` directly through
 `ValueView` (e.g.
 [970f30a9b8ff7](https://chromium.googlesource.com/chromium/src/+/970f30a9b8ff76dc186b58a2ca0510643c1c0bda):
 `cbor::Writer::Write(map)`). `Writer::Write(cbor::Value(` fell from 69 to 28 at
-8104.1, and 25 at 8107.2 through 8115.1
+8104.1, and 25 at 8107.2 through 8117.1
 (`git grep -E 'Writer::Write\(cbor::Value\(' <tag> -- '*.cc' '*.mm' | wc -l`).
 
 - [ ] `components/brave_wallet/browser/cardano/cardano_cip30_serializer.cc:35,56,83,105`
@@ -683,7 +836,7 @@ that isn't a bound callback; they skip the per-call callback holder
 e.g.
 [50940ba33265f](https://chromium.googlesource.com/chromium/src/+/50940ba33265fcd8808b860d6f3869b60a052ce2)).
 `.SetMethod("x", &…` fell from 314 to 34 in 8104.1..8107.2, and to 31 at 8111.0
-through 8115.1
+through 8117.1
 ([0ade64b5d6157](https://chromium.googlesource.com/chromium/src/+/0ade64b5d6157e247ff7978a0e570746a88a7aae))
 (`git grep -E '\.SetMethod\("[^"]+", *&' <tag> -- '*.cc' | wc -l`).
 
@@ -695,40 +848,17 @@ through 8115.1
 - [ ] `components/skus/renderer/skus_js_handler.cc:315-320`
 - [ ] `components/speedreader/renderer/speedreader_js_handler.cc:76-77`
 
-### iOS: `TypedProfileKeyedServiceFactoryIOS`
+### gtest `InvokeWithoutArgs(f)` → `f`
 
-`ProfileKeyedServiceFactoryIOS` now says "Prefer inheriting from
-TypedProfileKeyedServiceFactoryIOS instead", and a script is converting upstream
-factories
-([3cc80ea5bcdc3](https://chromium.googlesource.com/chromium/src/+/3cc80ea5bcdc3)).
-Classic factories fell from 234 to 135 and typed ones rose from 7 to 106 between
-8107.2 and 8109.1, to 127 and 114 at 8111.0, to 50 and 191 at 8113.1, and to 3
-(the factory infrastructure) and 238 at 8115.1
-(`git grep -l 'public ProfileKeyedServiceFactoryIOS' <tag> -- ios components`;
-the typed count uses `TypedProfileKeyedServiceFactoryIOS<`). The idiom is
-`explicit Factory(PassKey key)` calling
-`TypedProfileKeyedServiceFactoryIOS(std::move(key), "Name")`, with generated
-`GetForProfile()` and `GetInstance()`. Brave has 15 classic factories and no
-typed ones, all under `ios/browser/`:
+The single-argument `InvokeWithoutArgs` is deprecated in upstream googletest,
+and nine scripted commits under Bug 575681193 pass the callable directly (e.g.
+[1de614befad5](https://chromium.googlesource.com/chromium/src/+/1de614befad52e0cd014a65377e444523bdb7761):
+`.WillOnce(InvokeWithoutArgs([&] {…}))` → `.WillOnce([&] {…})`). The
+two-argument `(obj, &Method)` form stays. Single-argument uses fell from 460 to
+260 in 8115.1..8117.1 (a balanced-paren scan of `*.cc *.mm *.h`).
 
-- [ ] `ai_chat/ai_chat_service_factory.h`, `ai_chat/model_service_factory.h`,
-      `ai_chat/tab_tracker_service_factory.h`
-- [ ] `api/webcompat_reporter/webcompat_reporter_service_factory.h`
-- [ ] `brave_account/brave_account_service_factory_ios.h`
-- [ ] `brave_ads/ads_service_factory_ios.h`
-- [ ] `brave_origin/brave_origin_service_factory.h`
-- [ ] `brave_shields/brave_shields_settings_service_factory.h`
-- [ ] `brave_wallet/brave_wallet_service_factory.h`
-- [ ] `debounce/debounce_service_factory+private.h`
-- [ ] `favicon/brave_ios_favicon_loader_factory.h`
-- [ ] `misc_metrics/profile_misc_metrics_service_factory.h`
-- [ ] `serp_metrics/serp_metrics_service_factory_ios.h`
-- [ ] `skus/skus_service_factory.h`
-- [ ] `url_sanitizer/url_sanitizer_service_factory+private.h`
-- [ ] `favicon/brave_ios_favicon_loader_factory.mm:49-51`: name the testing
-      factory as `BraveIOSFaviconLoaderFactory::TestingFactory` with
-      `base::BindOnce`, as upstream does ahead of restricting the base headers
-      ([c89e7d662d1eb](https://chromium.googlesource.com/chromium/src/+/c89e7d662d1eb0d80fb16e4835b2371171ed3fa5))
+- [ ] `components/ai_chat/core/browser/conversation_handler_unittest.cc:3663,3971,3996,4416,4430,5292,7367,7831,7963`
+- [ ] `components/brave_vpn/browser/brave_vpn_service_impl_unittest.cc:1186`
 
 ### `ui_public_dependencies` → direct deps
 
@@ -739,7 +869,7 @@ The rebase routed Brave's UI deps through a new group with the same role
 ("[cr158] Route the Brave UI public deps through `browser`").
 
 - [ ] `browser/ui/BUILD.gn:39` `ui_public_dependencies` and
-      `browser/sources.gni:787` `brave_chrome_browser_public_deps`: move the
+      `browser/sources.gni:792` `brave_chrome_browser_public_deps`: move the
       entries to the targets that use them, and verify with `gn check`
 
 ## 4. Obsolete Brave code
@@ -758,20 +888,32 @@ deleted `PromoBubbleAccept_OpensDiceSignInTab`,
 `MaterialTabStripColorMixerTest`, and
 [c101b64eff937](https://chromium.googlesource.com/chromium/src/+/c101b64eff9374cf0f5fa30a35a818bf55f670ff)
 rewrote `BrowserActionRuntimeError` as an MV3 test without the deprecation
-warning the filter comment cites.
+warning the filter comment cites. In 8115.1..8117.1,
+[845d377ebe5d](https://chromium.googlesource.com/chromium/src/+/845d377ebe5dc8e48537ff830fcc60e85585b072)
+deleted the Related Website Sets suites, and the signin flag clean-up
+(Bug 411329731) deleted `turn_sync_on_helper_browsertest.cc`
+([bd29e0fac755](https://chromium.googlesource.com/chromium/src/+/bd29e0fac7556de0f99e1022fa945d80f702b5e1))
+and `DiceBrowserTestWithoutReplaceSyncPromosWithSignInPromos`
+([1b9ece651400](https://chromium.googlesource.com/chromium/src/+/1b9ece6514006ea60278bbca003ddcffe7d98573)).
 
-- [ ] `test/filters/browser_tests.filter:917` and `:1618-1622`
+- [ ] `test/filters/browser_tests.filter:919` and `:1620-1624`
       (`RequestStorageAccessFor*`)
-- [ ] `test/filters/browser_tests.filter:2042`
+- [ ] `test/filters/browser_tests.filter:2044`
       (`TopLevelStorageExemptionReasonMetricTest`, with its comment)
-- [ ] `test/filters/browser_tests.filter:438`
+- [ ] `test/filters/browser_tests.filter:440`
       (`ErrorConsoleBrowserTest.BrowserActionRuntimeError`, now
-      `ActionRuntimeError`) and `:1231` (`PromoBubbleAccept_OpensDiceSignInTab`)
-- [ ] `test/filters/browser_tests.filter:93`
+      `ActionRuntimeError`) and `:1233` (`PromoBubbleAccept_OpensDiceSignInTab`)
+- [ ] `test/filters/browser_tests.filter:94`
       (`OmniboxAimPopupDeferCreationPendingBrowserTest.LocationBarActionCreatesAimContent`,
       deleted by
       [8060af6aee203](https://chromium.googlesource.com/chromium/src/+/8060af6aee2032c615a7be3cfb92120b54980a74))
-- [ ] `test/filters/unit_tests.filter:200` (`MaterialTabStripColorMixerTest.*`)
+- [ ] `test/filters/unit_tests.filter:212` (`MaterialTabStripColorMixerTest.*`)
+- [ ] Related Website Sets: `test/filters/unit_tests.filter:225-226`, `:233-235`
+      (with the comment), `:240-241` and `:579-580`, and
+      `test/filters/browser_tests.filter:927-928` and `:3352`
+- [ ] Signin: `test/filters/browser_tests.filter:858-862`, `:1807-1809`
+      (`TurnSyncOnHelperBrowserTest*`) and `:1217`
+      (`DiceBrowserTestWithoutReplaceSyncPromosWithSignInPromos.*`)
 - [ ] Generated filters (`test/filters/generated/`): rerun
       `tools/chromium_tests_analysis/update-upstream-flake-filters.py`. Entries
       that should drop out: `GlicMetricsTest.BasicUkm` and `BasicVisible`
@@ -801,7 +943,23 @@ warning the filter comment cites.
       At 8115.1, also `GlicButtonThemeTest.CustomThemeFallback`
       (`browser_tests-linux.filter:3618`, `browser_tests-win.filter:3939`),
       fixed and re-enabled by
-      [dd9b3c1acc142](https://chromium.googlesource.com/chromium/src/+/dd9b3c1acc1423c6d8de2f8adb0fdbb84b1057af)
+      [dd9b3c1acc142](https://chromium.googlesource.com/chromium/src/+/dd9b3c1acc1423c6d8de2f8adb0fdbb84b1057af).
+      At 8117.1, also
+      `PrintPreviewScalingSettingsTest.InputNotDisabledOnValidityChange`
+      (`browser_tests-linux.filter:3921`, `browser_tests-win.filter:4296`),
+      moved to interactive_ui_tests
+      ([51220aea6e2b](https://chromium.googlesource.com/chromium/src/+/51220aea6e2b7f9276f6e90d399d0e9cd510ab59)),
+      `SystemNetworkContextManagerWithFirstPartySetComponentBrowserTest`
+      (`browser_tests-win.filter:4767`),
+      `HistoryClustersConfigTest.LocaleOrLanguage*`
+      (`components_unittests-linux-asan.filter:66,69`,
+      [6ebcee1b6615](https://chromium.googlesource.com/chromium/src/+/6ebcee1b6615b7e29c965960716554874aa7c7da)),
+      `HatsHandlerTest.*SecurityPage*V2*`
+      (`unit_tests-linux-asan.filter:318,321`,
+      [add1f2b27660](https://chromium.googlesource.com/chromium/src/+/add1f2b276601423187b9ad56cdcf67fa96754f7)),
+      and `DictationGlicBrowserTest.BasicStreamFunctions`
+      (`browser_tests-linux-msan.filter:636`), which became `All/…/*`
+      ([eba365f6e996](https://chromium.googlesource.com/chromium/src/+/eba365f6e9969ee770a91f9080927edc22fe18fb))
 
 ### Test filters that stopped matching
 
@@ -816,21 +974,39 @@ so Brave's filters silently re-enable them. Other tests were renamed.
       and `LoadsAccountAwareDesign`
       ([1f3e03da28c3a](https://chromium.googlesource.com/chromium/src/+/1f3e03da28c3a6b766026f70cf55bb3183a77b8e)):
       fixed by "[cr158] Filter upstream tests as needed"
-- [ ] `test/filters/browser_tests.filter:3088,3090`: the old
+- [ ] `test/filters/browser_tests.filter:3089,3091`: the old
       `IndigoHighDsfBrowserTest.*` and `IndigoOnboardingBrowserTest.*` entries
-      match nothing now that `:743-744` cover the `All/…` suites; drop them
-- [ ] `test/filters/browser_tests.filter:1745`:
+      match nothing now that `:745-746` cover the `All/…` suites; drop them
+- [x] `test/filters/browser_tests.filter:1745`:
       `ExtensionOpenSidePanelViewsToolbarBrowserTest.PinExtensionViaSidePanelJourneyCompletion`
       ([301a9d992e895](https://chromium.googlesource.com/chromium/src/+/301a9d992e895117f69cb54a48ff21a6787f2cc3))
-- [ ] `test/filters/browser_tests.filter:1963`:
+- [x] `test/filters/browser_tests.filter:1963`:
       `TtcSessionJournalImplBrowserTest.JournalFollowsTheSessionTask`
-      ([70ef0900441d9](https://chromium.googlesource.com/chromium/src/+/70ef0900441d902273eb3326fe9a3e861fdc4697))
-- [ ] `test/filters/browser_tests.filter:1396`:
+      ([70ef0900441d9](https://chromium.googlesource.com/chromium/src/+/70ef0900441d902273eb3326fe9a3e861fdc4697)).
+      This and the one above were fixed by "[cr158] Filter upstream tests as
+      needed"
+- [ ] `test/filters/browser_tests.filter:1398`:
       `SendTabToSelfBubbleControllerBrowserTest.ScrollPositionPropagated_ScrolledPage`
       ([65d99b0dbd18e](https://chromium.googlesource.com/chromium/src/+/65d99b0dbd18ef70fc023a727bae6f7a4afcd4b9))
-- [ ] `test/filters/components_unittests.filter:282-284`:
+- [ ] `test/filters/components_unittests.filter:284-286`:
       `GetPreferredAccountForPromo*` → `GetPreferredAccountForSignin*`
       ([69060d1c866bc](https://chromium.googlesource.com/chromium/src/+/69060d1c866bca1bcd1784e0b9c1bf43626f94c1))
+- [ ] `test/filters/unit_tests.filter:25`:
+      `All/CanOfferSigninWithSigninToSyncFeatureTest.*` was folded into
+      `CanOfferSigninTest.OtherProfileAlready*`
+      ([bd29e0fac755](https://chromium.googlesource.com/chromium/src/+/bd29e0fac7556de0f99e1022fa945d80f702b5e1)),
+      which now runs; retarget it
+- [ ] `test/filters/browser_tests.filter:1257`:
+      `ForceSigninProfilePickerCreationFlowBrowserTest` became `_F`
+      ([7ffe36f6c57b](https://chromium.googlesource.com/chromium/src/+/7ffe36f6c57b0c0d9d833dd79b9a2274f16293a8));
+      drop the `All/` prefix
+- [ ] `test/filters/browser_tests.filter:874`: now
+      `SigninUiUtilExtensionsTest.ShowExtensionSigninPrompt`
+      ([1b9ece651400](https://chromium.googlesource.com/chromium/src/+/1b9ece6514006ea60278bbca003ddcffe7d98573))
+- [ ] `test/filters/browser_tests.filter:1743`: the comment names `kJourneys`,
+      which upstream removed; Brave now disables Journeys through `Config`
+      ("[cr158] Ship Journeys disabled via Config instead of the removed
+      kJourneys")
 
 ### Dead files and stale references
 
@@ -877,6 +1053,15 @@ so Brave's filters silently re-enable them. Other tests were renamed.
 - [ ] "[WIP][cr158][Android] Drop Nala icons orphaned by the main settings
       cleanup": decide whether `ic_credit_card` and `ic_location_on` belong on
       upstream's `AutofillAndPasswordsFragment` rows, then drop the WIP tag
+- [ ] `base/compile_overridden_features.inc`: pre-existing names that aren't
+      upstream features at either tag: `:38` `CommerceDeveloper`, `:62`
+      `EnableForceDownloadToOneDrive`, `:138` `PlusAddressesEnabled`, and `:179`
+      `VerticalTabsLaunch` (only a What's New module name)
+- [ ] `chromium_src/components/component_updater/component_installer.cc:46`:
+      nothing registers the First Party Sets component
+      (`gonpemdgkjcecdgbnaabipppbmgfggbe`) since
+      [845d377ebe5d](https://chromium.googlesource.com/chromium/src/+/845d377ebe5dc8e48537ff830fcc60e85585b072);
+      drop the entry, or keep it as a pin while the installer policy remains
 
 ## 5. Optional
 
@@ -915,17 +1100,37 @@ skipping Brave's `RecentTabsSubMenuModel` plasters.
 
 - [ ] Pin `kCrossDeviceTabsInAppMenu` disabled, or port the customizations
 
+[d744b45d1485](https://chromium.googlesource.com/chromium/src/+/d744b45d148585827d888b02747317094177e877)
+reverted the clean-up of the "Tabs from other devices" side panel, which
+upstream now plans to launch. Under `features::kTabsFromOtherDevicesSidePanel`
+(off) it adds `IDC_SHOW_TABS_FROM_OTHER_DEVICES_SIDE_PANEL` to
+`RecentTabsSubMenuModel::Build()`, a WebUI side panel and a toolbar action, all
+bypassing Brave's synced-tabs override in
+`chromium_src/chrome/browser/ui/tabs/recent_tabs_sub_menu_model.cc`.
+
+- [ ] `rewrite/chrome/browser/ui/ui_features.cc.yaml`: pin
+      `kTabsFromOtherDevicesSidePanel` and
+      `kTabsFromOtherDevicesSidePanelPinnedByDefault` disabled
+
 `ntp_features::kNtpComponentExtension` (off) loads a component extension whose
 manifest overrides `chrome://newtab`
 ([d58babee2acb6](https://chromium.googlesource.com/chromium/src/+/d58babee2acb62c4e9323743b929b05e74921f7f)).
 `BraveComponentLoader` calls through to upstream's loader and the extension is
-allowlisted, so it would replace Brave's NTP if the flag flips.
+allowlisted, so it would replace Brave's NTP if the flag flips. Since 8117.1 it
+is also downloaded through the component updater, under the
+`use_component_updater` param (default true), as
+`pkohanfffhahpakjbppgjidngeadjcfj`
+([51602f3c1839](https://chromium.googlesource.com/chromium/src/+/51602f3c18392d7fe76d12f22c23040146bd6270)).
 
 - [ ] `rewrite/components/search/ntp_features.cc.yaml`: pin
       `kNtpComponentExtension` disabled, and add it to
       `app/feature_defaults_unittest.cc`; optionally deny
       `extension_misc::kNewTabPageExtensionId` in
       `chromium_src/chrome/browser/extensions/component_extensions_allowlist/allowlist.cc:34`
+- [ ] `chromium_src/components/component_updater/component_installer.cc:38`: add
+      `pkohanfffhahpakjbppgjidngeadjcfj` to `kDisallowedComponents`, and the AIM
+      eligibility component (`kabpfonokkamggpgbldambnmkliehlbh`, behind
+      `kAimEligibilityComponentExtension`, off)
 
 Brave pins `kContextualTasks` and `kContextualTasksCookiePrefetch` disabled, but
 two newer flags switch to a rearchitected implementation without checking them.
@@ -942,6 +1147,20 @@ Both are off today.
 
 - [ ] Pin `kContextualTasksSidePanelRearchitecture` and
       `kContextualTasksRearchitecture` disabled
+
+`features::kTopChromeWebUISharedRenderer` (off) creates
+`TopChromeWebUIProfileImpl`, a new `BrowserProfileType::kTopChromeWebUIProfile`
+that is off-the-record, its own original profile, and has no keyed services
+([f28aa18be961](https://chromium.googlesource.com/chromium/src/+/f28aa18be961c4deafc774f7fa10b611dc8f71c8)).
+Follow-up CLs will host Top Chrome WebUIs in it. Brave's
+`DefaultTopChromeWebUIConfig` UIs (AI Chat, Wallet, Shields, VPN, Playlist,
+Speedreader, Rewards and News panels, tab search, bookmarks) would then get a
+profile without Brave's prefs and services, and Brave's
+`IsPrimaryOTRProfile`/`BrowserProfileType` checks don't know the type.
+
+- [ ] Pin `kTopChromeWebUISharedRenderer`
+      (`chrome/common/chrome_features.cc:2009`) disabled, and add it to
+      `app/feature_defaults_unittest.cc`
 
 ### Windows 11: modal default-browser prompt and OS notification
 
@@ -1085,7 +1304,7 @@ none of Brave's 14 has it, so the tab keeps the previous page's title.
       `brave_wallet_page/wallet_page_index.html:23`,
       `brave_sync_page/brave_sync_page_index.html:15`, the Leo, Shields and
       extensions indexes, and `settings-email-aliases-page` in
-      `chromium_src/chrome/browser/resources/settings/autofill_page/autofill_page_index.html.ts.lit_mangler.ts:16`
+      `chromium_src/chrome/browser/resources/settings/autofill_page/autofill_page_index.html.ts.lit_mangler.ts:30`
 
 ### WebGL on WebGPU skips Brave's WebGL farbling
 
@@ -1102,6 +1321,36 @@ Brave only hooks `webgl_rendering_context_base.cc` and
 - [ ] Before it ships, farble the WebGPU-backed contexts, or
       `EnableFeatureFromString("WebGLOnWebGPU", false)` in
       `renderer/brave_content_renderer_client.cc`
+
+### Nothing tests that Journeys stays off
+
+"[cr158] Ship Journeys disabled via Config instead of the removed kJourneys"
+replaces the `kJourneys` pin
+([6ebcee1b6615](https://chromium.googlesource.com/chromium/src/+/6ebcee1b6615b7e29c965960716554874aa7c7da)
+hard-codes Journeys on for desktop). Both non-test readers of
+`is_journeys_enabled_no_locale_check` go through `GetConfig()`, so the plaster
+covers them, but the commit dropped `kJourneys` from
+`app/feature_defaults_unittest.cc`.
+
+- [ ] Add a test that
+      `history_clusters::GetConfig().is_journeys_enabled_no_locale_check` is
+      false
+
+### Android: JNI native pointers as `JniUniquePtr` / `JniRawPtr`
+
+36 commits under Bug 40794873 replace `long mNativeX` with
+`JniUniquePtr<NativeX>` (owning) or `JniRawPtr<NativeX>`, and
+`reinterpret_cast<intptr_t>(this)` with `jni_zero::MakeUnique/MakeRaw(this)`
+(e.g.
+[c16e504f0fde](https://chromium.googlesource.com/chromium/src/+/c16e504f0fde7cb85f23e19f5f8331b907b9bdfa)).
+Java files using `JniUniquePtr<` rose from 16 to 38 in 8115.1..8117.1, and
+`JniRawPtr<` from 9 to 31. Brave has 12
+(`git grep -nE 'private (final )?long mNative\w+' -- '*.java'`).
+
+- [ ] Migrate them, starting with the backported
+      `browser/password_entry_edit/.../CredentialEditBridge.java` and
+      `browser/password_manager/.../PasswordUiView.java`, which should follow
+      upstream's originals
 
 ### Script the Android names-in-strings check
 
@@ -1125,7 +1374,7 @@ Upstream re-added "Report an issue" under `help_parent_menu_id`
 Brave removes only `help_id`, and doesn't pin `kSubmenusInAppMenu` or
 `kSubmenusInAppMenuLff`, both off by default. Predates the range.
 
-- [ ] `android/java/org/chromium/chrome/browser/tabbed_mode/BraveTabbedAppMenuPropertiesDelegate.java:1010`:
+- [ ] `android/java/org/chromium/chrome/browser/tabbed_mode/BraveTabbedAppMenuPropertiesDelegate.java:1044`:
       also handle the submenu item, or pin both flags off
 
 ### Android: `MultiWindowUtils` redirect now catches a private overload
@@ -1139,7 +1388,7 @@ the private upstream method, which works only by luck.
 
 - [ ] `build/android/bytecode/java/org/brave/bytecode/BraveMultiWindowUtilsClassAdapter.java:32`
       and
-      `android/javatests/org/chromium/chrome/browser/BytecodeTest.java:980-985`:
+      `android/javatests/org/chromium/chrome/browser/BytecodeTest.java:974-985`:
       redirect only the descriptor Brave overrides
 
 ### Android: upstream's Play in-app update flow
@@ -1256,3 +1505,26 @@ made the target URL argument non-null.
   behind `kGlicBackgroundTriggering` (off); Brave's `GlicEnabling.java` plaster
   keeps Glic off
   ([50c1ee33a159d](https://chromium.googlesource.com/chromium/src/+/50c1ee33a159d2926be88ac60b1ecdf95bd1fcf3)).
+- `kThreeDSecureTelemetry` is on: `WebPaymentsObserver`, in every tab's
+  `TabFeatures`, parses POST form bodies on submission and records 3DS UMA/UKM
+  ([36ac4be459c5](https://chromium.googlesource.com/chromium/src/+/36ac4be459c52942566731f4daf6df6bff8cc21c)).
+- Desktop HaTS surveys carry the channel and version
+  (`kHappinessTrackingSurveysDefaultProductSpecificData`, on); Brave's plaster
+  still blocks every launch
+  ([e9d5d887188d](https://chromium.googlesource.com/chromium/src/+/e9d5d887188d9c90dfaf314895a949ed1bff0ddc)).
+- Android: the NTP "plus" (Fusebox) menu is on by default, gated by a Google
+  default search engine and Brave's `kAimEnabled` pin
+  ([4dd2354d3b6e](https://chromium.googlesource.com/chromium/src/+/4dd2354d3b6edefdc445dfa7701ea01cf53b2ce0)).
+- Device Bound Session Credentials JS API, behind the experimental
+  `DeviceBoundSessionJsApi` Blink feature
+  ([38e23936ced2](https://chromium.googlesource.com/chromium/src/+/38e23936ced21293ac47a9a44fb2de0669c716fb)).
+- Cross-device sign-in QR bubble from the What's New page,
+  `kCrossDeviceSigninFromDesktopFollowup` (off)
+  ([566635fe3ce2](https://chromium.googlesource.com/chromium/src/+/566635fe3ce2912169a6ca76a00a7ee1d8e400e9)).
+- Context Hub skill recording service, `kRecordReplay` (off)
+  ([e0d30d508324](https://chromium.googlesource.com/chromium/src/+/e0d30d508324a3b6e6855bd089f0316b9df7d727)).
+- Android: an intranet-redirect prompt after a single-word omnibox HEAD probe
+  ([2d6abd1080a8](https://chromium.googlesource.com/chromium/src/+/2d6abd1080a8bcf040da05bd97725cd00b540f38)).
+- Related Website Sets were removed and `first_party_sets.db` is deleted on
+  startup
+  ([845d377ebe5d](https://chromium.googlesource.com/chromium/src/+/845d377ebe5dc8e48537ff830fcc60e85585b072)).
