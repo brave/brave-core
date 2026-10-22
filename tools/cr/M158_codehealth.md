@@ -97,14 +97,16 @@ history sync as `kTurnedOff`, so the promo shows up to five times, and its
 button starts Google sign-in. Brave pins nothing here, and no Brave file hides
 the element.
 
-- [ ] `chrome/browser/ui/webui/history/browsing_history_handler.cc`: plaster the
+- [x] `chrome/browser/ui/webui/history/browsing_history_handler.cc`: plaster the
       desktop `ShouldShowHistoryPageHistorySyncPromo()` to run the callback with
       `false`, as upstream's Android branch does. Pinning `kUnoPhase2FollowUp`
-      off also works, but other sign-in code reads that flag
-- [ ] Add a test that brave://history doesn't render `history-sync-promo` for a
-      signed-out profile
-- [ ] `test/filters/unit_tests.filter:765-766`: the "we don't show the history
-      sync promo" comment holds only once the hook lands
+      off also works, but other sign-in code reads that flag. Fixed by "[cr158]
+      Never show the history sync promo on brave://history"
+- [x] Add a test that brave://history doesn't render `history-sync-promo` for a
+      signed-out profile. `BraveHistorySyncPromoBrowserTest`
+- [x] `test/filters/unit_tests.filter:765-766`: the "we don't show the history
+      sync promo" comment holds only once the hook lands. Broadened to both
+      parameterisations, since the hook also fails the `SignedOut` cases
 
 ### Reading mode chip shows in the omnibox next to Speedreader
 
