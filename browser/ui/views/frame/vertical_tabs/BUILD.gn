@@ -49,6 +49,7 @@ source_set("browser_tests") {
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
   sources = [
+    "upstream_tree_tabs_browsertest.cc",
     "vertical_tab_strip_browsertest.cc",
     "vertical_tab_strip_root_view_browsertest.cc",
   ]
@@ -57,10 +58,13 @@ source_set("browser_tests") {
     ":vertical_tabs",
     "//base/i18n:test_support",
     "//brave/browser/ui/tabs:tab_menu",
+    "//brave/browser/ui/tabs:tab_strip",
     "//brave/browser/ui/tabs:tabs_public",
+    "//brave/browser/ui/tabs:tree_tab",
     "//brave/browser/ui/views/frame",
     "//brave/browser/ui/views/sidebar",
     "//brave/components/sidebar/browser",
+    "//brave/components/tabs",
     "//cc/paint",
     "//chrome/browser",
     "//chrome/browser/tab_group_sync:factories",
@@ -110,12 +114,18 @@ source_set("interactive_ui_tests") {
   testonly = true
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
-  sources = [ "vertical_tab_strip_interactive_ui_tests.cc" ]
+  sources = [
+    "upstream_tree_tabs_interactive_uitest.cc",
+    "vertical_tab_strip_interactive_ui_tests.cc",
+  ]
 
   deps = [
     ":vertical_tabs",
+    "//brave/browser/ui/tabs:tab_strip",
     "//brave/browser/ui/tabs:tabs_public",
+    "//brave/browser/ui/tabs:tree_tab",
     "//brave/browser/ui/views/frame",
+    "//brave/components/tabs",
     "//chrome/browser",
     "//chrome/browser/ui",
     "//chrome/browser/ui/exclusive_access",

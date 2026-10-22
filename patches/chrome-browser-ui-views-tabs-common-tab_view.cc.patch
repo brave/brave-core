@@ -1,0 +1,28 @@
+diff --git a/chrome/browser/ui/views/tabs/common/tab_view.cc b/chrome/browser/ui/views/tabs/common/tab_view.cc
+index 5292c13b13a551016bddf54ceb5928f9aeeff62a..9f0f4997ba752a38aad72efacf5d79e7d6122c08 100644
+--- a/chrome/browser/ui/views/tabs/common/tab_view.cc
++++ b/chrome/browser/ui/views/tabs/common/tab_view.cc
+@@ -363,6 +363,7 @@ TabView::TabView(TabCollectionNode* collection_node)
+     }
+   }
+ 
++  BRAVE_TAB_VIEW_CONSTRUCTOR
+   title_->SetProperty(views::kElementIdentifierKey, kVerticalTabTitleElementId);
+   SetProperty(views::kElementIdentifierKey, kTabElementId);
+   // Layout manager must be set after child views are created because the
+@@ -657,6 +658,7 @@ bool TabView::OnMousePressed(const ui::MouseEvent& event) {
+       controller->SelectTab(GetTabInterface(), GetGestureDetail(event));
+       base::RecordAction(base::UserMetricsAction("SwitchTab_Click"));
+     }
++    BRAVE_TAB_VIEW_ON_MOUSE_PRESSED
+     // Potentially start the drag for the mouse press.
+     // Follow-up mouse-movement events will update the drag controller and
+     // eventually kick off the drag-loop.
+@@ -1224,6 +1226,7 @@ void TabView::UpdateColors() {
+   title_->SetEnabledColor(colors.foreground_color);
+   close_button_->SetColors(colors);
+   alert_indicator_->OnParentTabButtonColorChanged();
++  BRAVE_TAB_VIEW_UPDATE_COLORS
+ 
+   UpdateBorder();
+ 

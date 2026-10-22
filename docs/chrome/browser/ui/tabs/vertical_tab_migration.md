@@ -358,6 +358,34 @@ See `docs/chrome/browser/ui/tabs/tree_tabs_architecture.md` and
 
 ### Reimplementation plan
 
+**Status (upstream backend):** implemented, without the plan below's new view
+type. The tree tab model (`TreeTabNodeTabCollection`, `TreeTabModel`,
+`BraveTreeTabStripCollectionDelegate`, `TreeTabSessionManager`) is reused as-is;
+`BraveTabStripModel` builds it when `kTreeTabsEnabled` and either Brave's or
+upstream's vertical tabs pref is on. On the view side:
+
+- Tree tab node collections are **not mirrored** in the `TabCollectionNode` view
+  model; their children are hoisted into the unpinned container
+  (`brave/browser/ui/views/tabs/tree_tab_view_utils.h`), so upstream's views,
+  layout and drag code keep seeing only tabs/groups/splits.
+- The tree tab delegate restructures the hierarchy without
+  `TabCollectionObserver` notifications, so `RootTabCollectionNode`
+  (chromium_src) syncs its view model with the collection hierarchy instead of
+  applying notifications while tree tabs are on.
+- `UnpinnedTabContainerViewLayout` indents tabs by tree level (expanded strip
+  only) and hides descendants of collapsed nodes. Pinned tabs are never in a
+  tree.
+- `TabView` has a collapse/expand button in the close button's slot, shown for
+  tabs with descendants when collapsed, hovered or active.
+- Pressing a tree parent selects its descendants, so dragging it moves the
+  subtree; the delegate's `MoveTabsRecursive` decides the resulting hierarchy.
+  Activating a tab hidden in a collapsed tree expands its ancestors.
+
+Tests: `upstream_tree_tabs_browsertest.cc`,
+`upstream_tree_tabs_interactive_uitest.cc`. Remaining: tree toggle for groups
+and splits wrapped by a tree node (legacy shows it on the group header), the
+coexistence gate (step 6), and visual polish.
+
 1. Add a new `TabCollection::Type::TREE_TAB_NODE` (and mirrored
    `TabCollectionNode::Type`) on top of the **new, unified**
    `BaseTabStripRegionView`/`TabCollectionNode` infra, following the same

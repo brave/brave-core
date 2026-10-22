@@ -779,6 +779,8 @@ source_set("ui") {
       "views/tabs/dragging/tab_drag_controller.h",
       "views/tabs/shared_pinned_tab_dummy_view_views.cc",
       "views/tabs/shared_pinned_tab_dummy_view_views.h",
+      "views/tabs/tree_tab_view_utils.cc",
+      "views/tabs/tree_tab_view_utils.h",
       "views/tabs/vertical_tab_utils.cc",
       "views/tabs/vertical_tab_utils.h",
       "views/toolbar/bookmark_button.cc",

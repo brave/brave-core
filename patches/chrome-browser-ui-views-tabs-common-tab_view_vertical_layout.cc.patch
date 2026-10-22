@@ -1,0 +1,20 @@
+diff --git a/chrome/browser/ui/views/tabs/common/tab_view_vertical_layout.cc b/chrome/browser/ui/views/tabs/common/tab_view_vertical_layout.cc
+index 6641560e2f254670b98975cfd02c81c3ed5ceea7..afb19679e50eec65df4f5f0f8c2b54cbab7d407c 100644
+--- a/chrome/browser/ui/views/tabs/common/tab_view_vertical_layout.cc
++++ b/chrome/browser/ui/views/tabs/common/tab_view_vertical_layout.cc
+@@ -42,6 +42,7 @@ void TabViewVerticalLayout::OnInstalled(views::View* host) {
+       TabChildConfig(TabView().title_, kTitleMinWidth, kDefaultPadding,
+                      /*align_leading=*/true,
+                      /*expand=*/true)};
++  BRAVE_TAB_VIEW_VERTICAL_LAYOUT_ON_INSTALLED
+ }
+ 
+ views::ProposedLayout TabViewVerticalLayout::CalculateProposedLayout(
+@@ -143,6 +144,7 @@ gfx::Rect TabViewVerticalLayout::GetChildBounds(const gfx::Rect& container,
+ 
+ bool TabViewVerticalLayout::IsChildVisible(const views::View* child_view,
+                                            const int width) const {
++  BRAVE_TAB_VIEW_VERTICAL_LAYOUT_IS_CHILD_VISIBLE
+   if (child_view == TabView().title_) {
+     // Pinned titles should be visible in the expand on hover state when the
+     // width is sufficient to show the title.
