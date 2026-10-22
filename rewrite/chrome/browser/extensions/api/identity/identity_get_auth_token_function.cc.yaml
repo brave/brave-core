@@ -4,12 +4,6 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
-  - description: Build the Android extensions code with the core.
-    count: 5
-    regex:
-      pattern: 'BUILDFLAG(ENABLE_DESKTOP_ANDROID_EXTENSIONS)'
-      replace: 'BUILDFLAG(IS_ANDROID) && BUILDFLAG(ENABLE_EXTENSIONS_CORE)'
-
   - description:
       Use the web OAuth flow unless the Google Chrome API key is used.
     regex:
