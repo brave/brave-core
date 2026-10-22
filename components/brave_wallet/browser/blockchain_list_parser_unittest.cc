@@ -430,7 +430,9 @@ TEST(BlockchainListParseUnitTest, ParsePolkadotRpcUrls) {
 
   EXPECT_FALSE(rpc_urls->contains(mojom::kPolkadotMainnet));
 
-  EXPECT_TRUE(ParsePolkadotRpcUrls("{}")->empty());
+  auto result = ParsePolkadotRpcUrls("{}");
+  ASSERT_TRUE(result.has_value());
+  EXPECT_TRUE(result->empty());
 
   EXPECT_FALSE(ParsePolkadotRpcUrls(""));
   EXPECT_FALSE(ParsePolkadotRpcUrls("[]"));
