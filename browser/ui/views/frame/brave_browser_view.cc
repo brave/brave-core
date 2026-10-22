@@ -94,8 +94,12 @@
 #include "components/permissions/permission_request_manager.h"
 #include "components/tabs/public/tab_interface.h"
 #include "components/web_modal/web_contents_modal_dialog_manager.h"
+#include "content/public/browser/navigation_controller.h"
+#include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/page_navigator.h"
 #include "content/public/browser/web_contents.h"
+#include "content/public/common/page_type.h"
+#include "content/public/common/url_constants.h"
 #include "extensions/buildflags/buildflags.h"
 #include "third_party/blink/public/common/input/web_mouse_event.h"
 #include "ui/base/accelerators/accelerator.h"
@@ -1400,7 +1404,7 @@ void BraveBrowserView::UpdateFocusModeState() {
   }
 }
 
-bool BraveBrowserView::ShouldDisableFocusModeForActiveTab() const {
+bool BraveBrowserView::ShouldDisableFocusModeForActiveTab() {
   auto* location_bar = GetLocationBar();
   if (!location_bar) {
     return true;
@@ -1410,7 +1414,19 @@ bool BraveBrowserView::ShouldDisableFocusModeForActiveTab() const {
     return true;
   }
   auto level = model->GetSecurityLevel();
-  return level != security_state::SecurityLevel::SECURE;
+  if (level == security_state::SecurityLevel::SECURE) {
+    return false;
+  }
+  if (level == security_state::SecurityLevel::NONE) {
+    if (auto* web_contents = GetActiveWebContents()) {
+      auto* entry = web_contents->GetController().GetLastCommittedEntry();
+      if (entry && entry->GetPageType() == content::PAGE_TYPE_NORMAL &&
+          entry->GetURL().SchemeIs(content::kChromeUIScheme)) {
+        return false;
+      }
+    }
+  }
+  return true;
 }
 
 void BraveBrowserView::StartTabCycling() {
