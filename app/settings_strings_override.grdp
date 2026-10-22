@@ -8,6 +8,11 @@
         =1 {Your Private window won't open after you relaunch}
         other {Your {COUNT} Private windows won't reopen after you relaunch}}
       </message>
+      <message name="IDS_RELAUNCH_CONFIRMATION_DIALOG_BODY_INCOGNITO_AND_ISOLATED" desc="The body of the modal dialog variant that we show when users click on relaunch and they have open Private and Isolated windows. The dialog serves to warn the users about losing their Private and Isolated windows if they proceed with the relaunch.">
+        {COUNT, plural,
+        =1 {There is {COUNT} Private or Isolated window open. It won't reopen after you relaunch}
+        other {There are {COUNT} Private and Isolated windows open across profiles. They won't reopen after you relaunch}}
+      </message>
     </if>
 
     <if expr="not is_chromeos">
@@ -127,8 +132,6 @@
     <if expr="not is_chromeos">
       </if>
     <if expr="not is_chromeos">
-      <if expr="is_win">
-        </if>
       </if>
     <if expr="_google_chrome">
       </if>

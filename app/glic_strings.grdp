@@ -586,6 +586,12 @@
   <message name="IDS_GLIC_SELECTION_ASK_ABOUT" desc="Label for the nudge asking about the selected text.">
     Ask about <ph name="TEXT">$1<ex>something</ex></ph>
   </message>
+  <message name="IDS_GLIC_SELECTION_ASK_GEMINI_MORE" desc="Label for the button in the explanation card that opens Gemini to ask more about the selection.">
+    Ask Gemini more about this
+  </message>
+  <message name="IDS_GLIC_SELECTION_SHARING_DISCLAIMER" desc="Notice at the bottom of the explanation card telling the user that the current page and the highlighted text are shared with Brave.">
+    This page and highlighted text are shared with Brave
+  </message>
   <message name="IDS_GLIC_SELECTION_MENU_HIDE_FOR_SITE" desc="Label for the menu item to hide the selection widget on the current website.">
     Hide for this site
   </message>

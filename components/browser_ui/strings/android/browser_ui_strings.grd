@@ -1012,12 +1012,6 @@
       <message name="IDS_ACCESSIBILITY_CAPTIONS_TITLE" desc="Title of the preference that allows the user to update caption settings.">
         Captions
       </message>
-      <message name="IDS_JUMP_START_OMNIBOX_TITLE" desc="When this preference is enabled, Brave start-up time is reduced, and the user is taken directly to an active Omnibox">
-        Jump-start Omnibox
-      </message>
-      <message name="IDS_JUMP_START_OMNIBOX_SUMMARY" desc="When this preference is enabled, Brave start-up time is reduced, and the user is taken directly to an active Omnibox">
-        Launch Brave with the Omnibox focused, reducing start-up time on low-end devices.
-      </message>
       <message name="IDS_TOUCHPAD_OVERSCROLL_HISTORY_NAVIGATION_TITLE" desc="Title of the preference to enable swipe-to-navigate by touchpad horizontal overscroll">
         Swipe between pages using a touchpad
       </message>
@@ -1354,9 +1348,6 @@
       </message>
       <message name="IDS_SAFETY_HUB_MAGIC_STACK_HIDE_TEXT" desc="Text that appears in the context menu when the Safety Check Magic Stack cards are long pressed. Hides and disables the Safety Check Magic Stack module when pressed.">
         Hide Safety Check card
-      </message>
-      <message name="IDS_SAFETY_HUB_MAGIC_STACK_NOTIFICATIONS_TITLE" desc="Title for the notification review Safety Check module on the Magic Stack. Shown when Safety Check has identified several sites that sent lots of notifications.">
-        Stop lots of notifications
       </message>
       <message name="IDS_SAFETY_HUB_MAGIC_STACK_SAFE_STATE_BUTTON_TEXT" desc="Action button for the safe state modules of Safety Check in the Magic Stack. Shown in the notification or permissions review modules. Opens Safety Check when clicked.">
         Review

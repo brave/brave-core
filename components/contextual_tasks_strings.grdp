@@ -6,7 +6,7 @@
     Browse with AI
   </message>
   <message name="IDS_CONTEXTUAL_TASKS_CUSTOMIZE_CHROME_LABEL" desc="The label shown in the Customize Brave settings menu to pin Contextual Tasks to the toolbar.">
-    Brave Search AI Mode
+    Brave Search in side panel
   </message>
   <message name="IDS_CONTEXTUAL_TASKS_ENTRY_POINT_TOOLTIP" desc="The tooltip text used for contextual task entry points.">
     Browse with AI
