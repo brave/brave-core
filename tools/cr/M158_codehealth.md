@@ -516,19 +516,19 @@ Brave's `changeMethodOwner` redirect to `BraveOmniboxResourceProvider` (8dp,
 `methodExists` check fails. This is what M158's "`OmniboxResourceProvider`
 static methods" deprecation item expected.
 
-- [ ] Restore the 8dp padding: plaster `mToolbarSidePaddingForNtp` in
+- [x] Restore the 8dp padding: plaster `mToolbarSidePaddingForNtp` in
       `chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java:360`
       to use `R.dimen.brave_toolbar_edge_padding_ntp`
       (`android/java/res/values/brave_dimens.xml:52`)
-- [ ] Delete
+- [x] Delete
       `build/android/bytecode/java/org/brave/bytecode/BraveOmniboxResourceProviderClassAdapter.java`,
       its entries in `build/android/bytecode/BUILD.gn:109` and
       `BraveClassAdapter.java:109`,
       `android/java/org/chromium/chrome/browser/omnibox/styles/BraveOmniboxResourceProvider.java`
       and `android/brave_java_sources.gni:297`
-- [ ] `android/javatests/org/chromium/chrome/browser/BytecodeTest.java:1000-1006`:
+- [x] `android/javatests/org/chromium/chrome/browser/BytecodeTest.java:1000-1006`:
       drop the assertion
-- [ ] `android/java/apk_for_test.flags:974-976`: drop the keep rule
+- [x] `android/java/apk_for_test.flags:974-976`: drop the keep rule
 
 ### Android: the Homepage row moved to Appearance
 
