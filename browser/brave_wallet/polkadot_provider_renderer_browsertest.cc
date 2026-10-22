@@ -354,6 +354,64 @@ IN_PROC_BROWSER_TEST_F(PolkadotProviderRendererTest,
   EXPECT_EQ(base::Value(true), result);
 }
 
+IN_PROC_BROWSER_TEST_F(PolkadotProviderRendererTest,
+                       ConnectEnableNonConfigurable) {
+  // Prove that a script cannot overrride our enable/connect methods.
+
+  auto result = content::EvalJs(web_contents(browser()), R"(
+    (function() {
+      'use strict';
+      const provider = window.injectedWeb3['brave-wallet'];
+      const original = {
+        enable: provider.enable,
+        connect: provider.connect,
+        version: provider.version,
+      };
+
+      for (const property of ['enable', 'connect', 'version']) {
+        const desc = Object.getOwnPropertyDescriptor(provider, property);
+        if (desc.writable || desc.configurable) {
+          return false;
+        }
+
+        let assignThrew = false;
+        try {
+          provider[property] = () => {};
+        } catch (e) {
+          assignThrew = true;
+        }
+
+        let defineThrew = false;
+        try {
+          Object.defineProperty(provider, property, {
+            configurable: true,
+            writable: true,
+            value: {},
+          });
+        } catch (e) {
+          defineThrew = true;
+        }
+
+        let deleteThrew = false;
+        try {
+          delete provider[property];
+        } catch (e) {
+          deleteThrew = true;
+        }
+
+        if (!assignThrew || !defineThrew || !deleteThrew) {
+          return false;
+        }
+      }
+
+      return provider.enable === original.enable &&
+          provider.connect === original.connect &&
+          provider.version === original.version;
+    })()
+  )");
+  EXPECT_EQ(base::Value(true), result);
+}
+
 IN_PROC_BROWSER_TEST_F(PolkadotProviderRendererTest, Iframe3P) {
   GURL secure_top_url(https_server_.GetURL("a.com", "/iframe.html"));
   GURL insecure_top_url =

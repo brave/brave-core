@@ -60,6 +60,20 @@ v8::Local<v8::Value> ToV8Error(v8::Isolate* isolate, std::string_view message) {
   return v8::Exception::Error(gin::StringToV8(isolate, message));
 }
 
+void SealOwnProperty(v8::Local<v8::Context> context,
+                     v8::Local<v8::Object> object,
+                     v8::Local<v8::String> name) {
+  v8::Local<v8::Value> value;
+  if (!object->Get(context, name).ToLocal(&value)) {
+    return;
+  }
+
+  v8::PropertyDescriptor desc(value, /*writable=*/false);
+  desc.set_enumerable(true);
+  desc.set_configurable(false);
+  object->DefineProperty(context, name, desc).Check();
+}
+
 v8::Local<v8::Promise> RejectedPromise(v8::Isolate* isolate,
                                        std::string_view message) {
   v8::Local<v8::Context> context = isolate->GetCurrentContext();
@@ -165,9 +179,11 @@ void JSPolkadotProvider::Install(content::RenderFrame* render_frame) {
       context, injected_web3_object, polkadot_provider_object,
       gin::StringToV8(isolate, kBraveWallet), /*is_enumerable=*/true);
 
-  for (const std::string& method : {"enable", "connect"}) {
-    SetOwnPropertyWritable(context, polkadot_provider_object,
-                           gin::StringToV8(isolate, method), false);
+  // Seal our own properties so that a script sharing the page can't swap out
+  // `enable`/`connect` to intercept a dApp's permission request.
+  for (std::string_view property : {"enable", "connect", "version"}) {
+    SealOwnProperty(context, polkadot_provider_object,
+                    gin::StringToV8(isolate, property));
   }
 }
 
