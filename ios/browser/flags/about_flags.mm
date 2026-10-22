@@ -179,6 +179,14 @@ const flags_ui::FeatureEntry::FeatureVariation
           FEATURE_VALUE_TYPE(brave_shields::features::kBlockAllCookiesToggle), \
       },                                                                       \
       {                                                                        \
+          "block-element-feature",                                             \
+          "Enable Block Element feature",                                      \
+          "Allows to block selected HTML element on the page",                 \
+          flags_ui::kOsIos,                                                    \
+          FEATURE_VALUE_TYPE(                                                  \
+              brave_shields::features::kBraveShieldsElementPicker),            \
+      },                                                                       \
+      {                                                                        \
           "ios-debug-adblock",                                                 \
           "Enable Debug Adblock views",                                        \
           "Enable debug view for adblock features in Shields panel",           \
