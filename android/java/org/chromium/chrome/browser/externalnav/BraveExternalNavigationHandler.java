@@ -9,6 +9,8 @@ import android.content.Intent;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
+import org.chromium.build.annotations.NullMarked;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.BraveConstants;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
@@ -19,9 +21,8 @@ import org.chromium.components.external_intents.ExternalNavigationHandler.Overri
 import org.chromium.components.external_intents.ExternalNavigationParams;
 import org.chromium.url.GURL;
 
-/**
- * Extends Chromium's ExternalNavigationHandler
- */
+/** Extends Chromium's ExternalNavigationHandler */
+@NullMarked
 public class BraveExternalNavigationHandler extends ExternalNavigationHandler {
     private static final String TAG = "BraveUrlHandler";
 
@@ -48,9 +49,9 @@ public class BraveExternalNavigationHandler extends ExternalNavigationHandler {
             Intent intent,
             ExternalNavigationParams params,
             boolean requiresIntentChooser,
-            QueryIntentActivitiesSupplier resolvingInfos,
-            ResolveActivitySupplier resolveActivity,
-            GURL browserFallbackUrl,
+            @Nullable QueryIntentActivitiesSupplier resolvingInfos,
+            @Nullable ResolveActivitySupplier resolveActivity,
+            @Nullable GURL browserFallbackUrl,
             GURL intentTargetUrl) {
         boolean isYoutubeDomain = intentTargetUrl.domainIs(BraveConstants.YOUTUBE_DOMAIN);
         if ((isYoutubeDomain
