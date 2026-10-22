@@ -185,7 +185,7 @@
     "redux": "4.1.0",
     "sass-loader": "17.0.1",
     "semver": "7.6.2",
-    "storybook": "8.6.17",
+    "storybook": "8.6.19",
     "stream-browserify": "3.0.0",
     "stream-http": "3.2.0",
     "style-loader": "2.0.0",
