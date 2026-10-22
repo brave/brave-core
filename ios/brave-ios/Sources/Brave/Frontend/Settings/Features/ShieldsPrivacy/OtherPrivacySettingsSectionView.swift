@@ -33,6 +33,8 @@ struct OtherPrivacySettingsSectionView: View {
   @State private var showBlockAllCookies = false
 
   @Environment(\.openURL) private var openSettingsURL
+  @ObservedObject private var usesPrivateQuickView = Preferences.General
+    .externalLinkQuickViewPrivateStorage
 
   var body: some View {
     Section {
@@ -145,6 +147,7 @@ struct OtherPrivacySettingsSectionView: View {
       )
       ExternalLinkSettingsRow(
         mode: $settings.defaultExternalLinkMode,
+        usesPrivateQuickView: $usesPrivateQuickView.value,
         onReset: settings.clearRememberedExternalLinkChoices
       )
       OptionToggleView(

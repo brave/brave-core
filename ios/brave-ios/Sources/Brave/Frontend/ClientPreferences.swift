@@ -110,6 +110,12 @@ extension Preferences {
       default: true
     )
 
+    /// Whether QuickView opened for links from other apps uses private storage
+    static let externalLinkQuickViewPrivateStorage = Option<Bool>(
+      key: "general.external-link-quickview-private-storage",
+      default: true
+    )
+
     /// Whether the onboarding for how links from other apps open has been shown
     static let externalLinkOnboardingShown = Option<Bool>(
       key: "general.external-link-onboarding-shown",

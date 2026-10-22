@@ -11,16 +11,26 @@ import SwiftUI
 
 public struct ExternalLinkSettingsRow: View {
   @Binding var mode: ExternalLinkMode
+  @Binding var usesPrivateQuickView: Bool
   var onReset: () -> Void
 
-  public init(mode: Binding<ExternalLinkMode>, onReset: @escaping () -> Void) {
+  public init(
+    mode: Binding<ExternalLinkMode>,
+    usesPrivateQuickView: Binding<Bool>,
+    onReset: @escaping () -> Void
+  ) {
     self._mode = mode
+    self._usesPrivateQuickView = usesPrivateQuickView
     self.onReset = onReset
   }
 
   public var body: some View {
     NavigationLink {
-      ExternalLinkSettingsView(mode: $mode, onReset: onReset)
+      ExternalLinkSettingsView(
+        mode: $mode,
+        usesPrivateQuickView: $usesPrivateQuickView,
+        onReset: onReset
+      )
     } label: {
       LabeledContent(
         Strings.ExternalLinks.settingTitle,
@@ -32,6 +42,7 @@ public struct ExternalLinkSettingsRow: View {
 
 struct ExternalLinkSettingsView: View {
   @Binding var mode: ExternalLinkMode
+  @Binding var usesPrivateQuickView: Bool
   var onReset: () -> Void
 
   @State private var isShowingResetConfirmation = false
@@ -53,6 +64,17 @@ struct ExternalLinkSettingsView: View {
         .pickerStyle(.inline)
       } header: {
         Text(Strings.ExternalLinks.defaultSectionTitle)
+      }
+      if ExternalLinkChoice.quickView.isAvailable {
+        Section {
+          Toggle(isOn: $usesPrivateQuickView) {
+            LabelView(
+              title: Strings.ExternalLinks.usePrivateStorageQuickViewTitle,
+              subtitle: Strings.ExternalLinks.usePrivateStorageQuickViewDescription
+            )
+          }
+          .tint(Color(braveSystemName: .primary40))
+        }
       }
       Section {
         Button(Strings.ExternalLinks.resetRememberedChoices, role: .destructive) {
@@ -82,7 +104,7 @@ struct ExternalLinkSettingsView: View {
   @Previewable @State var mode: ExternalLinkMode = .ask
   NavigationStack {
     Form {
-      ExternalLinkSettingsRow(mode: $mode, onReset: {})
+      ExternalLinkSettingsRow(mode: $mode, usesPrivateQuickView: .constant(false), onReset: {})
     }
   }
 }
@@ -90,7 +112,7 @@ struct ExternalLinkSettingsView: View {
 #Preview("Settings Detail") {
   @Previewable @State var mode: ExternalLinkMode = .current
   NavigationStack {
-    ExternalLinkSettingsView(mode: $mode, onReset: {})
+    ExternalLinkSettingsView(mode: $mode, usesPrivateQuickView: .constant(false), onReset: {})
   }
 }
 #endif

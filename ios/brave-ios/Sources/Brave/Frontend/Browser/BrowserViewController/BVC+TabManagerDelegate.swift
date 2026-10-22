@@ -399,7 +399,11 @@ extension BrowserViewController: TabManagerDelegate {
 }
 
 extension BrowserViewController {
-  func presentQuickView(url: URL, profile: any Profile, showsConfirmationAlert: Bool) {
+  func presentQuickView(
+    url: URL,
+    profile: any Profile,
+    showsConfirmationAlert: Bool
+  ) {
     let quickViewController = QuickViewController(
       url: url,
       profile: profile,

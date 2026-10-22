@@ -145,6 +145,21 @@ extension Strings {
       comment:
         "Toggle to remember the selected way of opening links for a website. %@ is replaced with the website's domain (e.g. 'brave.com')"
     )
+    public static let usePrivateStorageQuickViewTitle = NSLocalizedString(
+      "usePrivateStorageQuickViewTitle",
+      bundle: .module,
+      value: "Use Private Storage in QuickView",
+      comment:
+        "Title of the setting that makes QuickView, when opened for links from other apps, use private browsing storage"
+    )
+    public static let usePrivateStorageQuickViewDescription = NSLocalizedString(
+      "usePrivateStorageQuickViewDescription",
+      bundle: .module,
+      value:
+        "Links from other apps opened in QuickView won't use your regular cookies or site data, and nothing is kept after private browsing ends.",
+      comment:
+        "Description of the setting that makes QuickView, when opened for links from other apps, use private browsing storage"
+    )
     public static let resetRememberedChoices = NSLocalizedString(
       "ResetRememberedChoices",
       bundle: .module,
