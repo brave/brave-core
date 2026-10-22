@@ -5,31 +5,9 @@
 import UIKit
 
 open class ActionButton: BraveButton {
+  override open func updateConfiguration() {
+    super.updateConfiguration()
 
-  override public init(frame: CGRect) {
-    super.init(frame: frame)
-
-    backgroundColor = .clear
-    layer.borderWidth = 1.0
-    layer.cornerCurve = .continuous
-    tintColor = .white
-  }
-
-  @available(*, unavailable)
-  required public init(coder: NSCoder) {
-    fatalError()
-  }
-
-  override open func layoutSubviews() {
-    super.layoutSubviews()
-
-    layer.cornerRadius = bounds.height / 2.0
-  }
-
-  override open var tintColor: UIColor! {
-    didSet {
-      setTitleColor(tintColor, for: .normal)
-      layer.borderColor = tintColor.withAlphaComponent(0.5).cgColor
-    }
+    configuration?.cornerStyle = .capsule
   }
 }

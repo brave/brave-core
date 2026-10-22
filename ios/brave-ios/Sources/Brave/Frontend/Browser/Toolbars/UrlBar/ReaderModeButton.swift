@@ -20,10 +20,9 @@ class ReaderModeButton: UIButton {
   override init(frame: CGRect) {
     super.init(frame: frame)
     var configuration = UIButton.Configuration.plain()
-    configuration.baseBackgroundColor = .clear
     configuration.contentInsets = .zero
+    configuration.image = UIImage(braveSystemNamed: "leo.product.speedreader")
     self.configuration = configuration
-    setImage(UIImage(braveSystemNamed: "leo.product.speedreader"), for: .normal)
     updateIconSize()
 
     registerForTraitChanges([UITraitPreferredContentSizeCategory.self]) { (self: Self, _) in

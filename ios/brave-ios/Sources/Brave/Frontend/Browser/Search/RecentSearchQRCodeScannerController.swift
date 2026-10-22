@@ -173,11 +173,10 @@ extension RecentSearchQRCodeScannerController {
     }
 
     let scannedDisplayButton = UIButton().then {
-      var configuration = UIButton.Configuration.plain()
+      var configuration = UIButton.Configuration.borderedProminent()
       configuration.baseForegroundColor = UIColor(braveSystemName: .schemesOnPrimary)
-      configuration.background.backgroundColor = UIColor(braveSystemName: .buttonBackground)
-      configuration.background.cornerRadius = 10
-      configuration.cornerStyle = .fixed
+      configuration.baseBackgroundColor = UIColor(braveSystemName: .buttonBackground)
+      configuration.cornerStyle = .capsule
       configuration.contentInsets = NSDirectionalEdgeInsets(
         top: 12,
         leading: 16,

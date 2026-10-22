@@ -64,8 +64,10 @@ class NTPNotificationView: UIStackView {
   }
 
   lazy var primaryButton = RoundInterfaceButton(type: .system).then {
-    var configuration = UIButton.Configuration.plain()
-    configuration.baseBackgroundColor = .clear
+    var configuration = UIButton.Configuration.borderedProminent()
+    configuration.baseBackgroundColor = UIColor(braveSystemName: .buttonBackground)
+    configuration.cornerStyle = .capsule
+    configuration.baseForegroundColor = UIColor(braveSystemName: .schemesOnPrimary)
     configuration.contentInsets = NSDirectionalEdgeInsets(
       top: 12,
       leading: 25,
@@ -80,11 +82,9 @@ class NTPNotificationView: UIStackView {
       )!
       configuration.imagePadding = 10
     }
+    configuration.title = config.primaryButtonConfig?.text
     $0.configuration = configuration
-    $0.setTitle(config.primaryButtonConfig?.text, for: .normal)
-    $0.backgroundColor = UIColor(braveSystemName: .buttonBackground)
     $0.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
-    $0.setTitleColor(UIColor(braveSystemName: .schemesOnPrimary), for: .normal)
   }
 
   lazy var secondaryButton = RoundInterfaceButton(type: .system).then {

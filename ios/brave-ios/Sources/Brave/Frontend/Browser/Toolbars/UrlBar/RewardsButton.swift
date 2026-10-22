@@ -31,7 +31,6 @@ class RewardsButton: UIButton {
     super.init(frame: frame)
 
     var configuration = UIButton.Configuration.plain()
-    configuration.baseBackgroundColor = .clear
     configuration.contentInsets = .zero
     self.configuration = configuration
     imageView?.contentMode = .scaleAspectFit

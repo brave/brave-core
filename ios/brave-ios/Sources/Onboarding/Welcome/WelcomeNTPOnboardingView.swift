@@ -42,8 +42,10 @@ public class WelcomeNTPOnboardingController: UIViewController, PopoverContentCom
   }
 
   private let button = RoundInterfaceButton(type: .custom).then {
-    var configuration = UIButton.Configuration.plain()
-    configuration.baseBackgroundColor = .clear
+    var configuration = UIButton.Configuration.borderedProminent()
+    configuration.baseBackgroundColor = UIColor(braveSystemName: .buttonBackground)
+    configuration.cornerStyle = .capsule
+    configuration.baseForegroundColor = UIColor(braveSystemName: .schemesOnPrimary)
     configuration.contentInsets = NSDirectionalEdgeInsets(
       top: 0,
       leading: 16,
@@ -51,8 +53,6 @@ public class WelcomeNTPOnboardingController: UIViewController, PopoverContentCom
       trailing: 16
     )
     $0.configuration = configuration
-    $0.setTitleColor(UIColor(braveSystemName: .schemesOnPrimary), for: .normal)
-    $0.backgroundColor = UIColor(braveSystemName: .buttonBackground)
     $0.titleLabel?.numberOfLines = 0
     $0.titleLabel?.minimumScaleFactor = 0.7
     $0.titleLabel?.adjustsFontSizeToFitWidth = true
