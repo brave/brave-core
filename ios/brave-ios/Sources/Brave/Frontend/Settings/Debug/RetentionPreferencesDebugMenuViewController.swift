@@ -25,6 +25,8 @@ struct RetentionPreferencesDebugMenuView: View {
     .rewardsCalloutCompleted
   @ObservedObject private var defaultBrowserIntroCompleted = Preferences.DefaultBrowserIntro
     .completed
+  @ObservedObject private var externalLinkOnboardingShown = Preferences.General
+    .externalLinkOnboardingShown
 
   init(
     p3aUtilities: BraveP3AUtils,
@@ -75,6 +77,16 @@ struct RetentionPreferencesDebugMenuView: View {
             Text("Flag determining if Rewards callout is shown to user.")
               .foregroundStyle(.secondary)
               .font(.footnote)
+          }
+        }
+        Toggle(isOn: $externalLinkOnboardingShown.value) {
+          VStack(alignment: .leading) {
+            Text("External Link Onboarding Shown")
+            Text(
+              "Flag determining if the onboarding for opening links from other apps has been shown. It will only show while the setting is Current."
+            )
+            .foregroundStyle(.secondary)
+            .font(.footnote)
           }
         }
         Toggle(isOn: $defaultBrowserIntroCompleted.value) {
