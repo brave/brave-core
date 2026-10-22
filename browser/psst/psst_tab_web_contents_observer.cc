@@ -5,6 +5,7 @@
 
 #include "brave/browser/psst/psst_tab_web_contents_observer.h"
 
+#include <algorithm>
 #include <memory>
 #include <utility>
 
@@ -12,6 +13,7 @@
 #include "base/json/json_writer.h"
 #include "base/logging.h"
 #include "base/strings/strcat.h"
+#include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
@@ -103,6 +105,18 @@ void PrepareParametersForPolicyExecution(
   }
 
   user_script_result.Set(kUserScriptResultInitialExecutionPropName, is_initial);
+}
+
+bool IsFlowOnTheWrongStep(
+    const std::optional<UserScriptResult>& user_script_result,
+    const GURL& current_url) {
+  return (!user_script_result->initial_execution.has_value() ||
+          !user_script_result->initial_execution.value()) &&
+         std::ranges::none_of(
+             user_script_result->tasks, [&](const UserScriptTask& item) {
+               const GURL task_url(item.url);
+               return task_url.is_valid() && task_url == current_url;
+             });
 }
 
 }  // namespace
@@ -300,6 +314,13 @@ void PsstTabWebContentsObserver::OnUserScriptResult(
     DVLOG(1) << __func__
              << " Stop the execution of the logical flow, as it was cancelled";
     // Stop the logical flow
+    return;
+  }
+
+  if (IsFlowOnTheWrongStep(user_script_result_parsed,
+                           web_contents()->GetLastCommittedURL())) {
+    ui_delegate_->UpdateTasks(100, {}, mojom::PsstStatus::kFailed);
+    DVLOG(1) << __func__ << " Flow is broken, unexpected step detected";
     return;
   }
 
