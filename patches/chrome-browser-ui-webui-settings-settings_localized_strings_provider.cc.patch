@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/webui/settings/settings_localized_strings_provider.cc b/chrome/browser/ui/webui/settings/settings_localized_strings_provider.cc
-index 25138503199acc9163f72374dc9945697f3fc48e..1e1d3162f90ece927dbc1816c65a07cff56505e6 100644
+index 4dea485b450d03228acdf0400b11743bc7a3f563..76b186a95a379e28554406791956fc2e9f36747b 100644
 --- a/chrome/browser/ui/webui/settings/settings_localized_strings_provider.cc
 +++ b/chrome/browser/ui/webui/settings/settings_localized_strings_provider.cc
-@@ -4699,6 +4699,7 @@ void AddLocalizedStrings(content::WebUIDataSource* html_source,
+@@ -4697,6 +4697,7 @@ void AddLocalizedStrings(content::WebUIDataSource* html_source,
    policy_indicator::AddLocalizedStrings(html_source);
    AddSecurityKeysStrings(html_source);
  

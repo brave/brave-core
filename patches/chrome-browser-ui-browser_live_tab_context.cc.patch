@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/browser_live_tab_context.cc b/chrome/browser/ui/browser_live_tab_context.cc
-index d48ee3c659d7e03939882b28ae5c1f74be5c92dc..9b43e19cbd02c00e74c8a31d550a7d4076720d65 100644
+index c005e48dae7d448fd46bd2e703fadc423d76822b..bb554f331c2c1baa34ff0a6ae582fa888506c81d 100644
 --- a/chrome/browser/ui/browser_live_tab_context.cc
 +++ b/chrome/browser/ui/browser_live_tab_context.cc
 @@ -197,6 +197,7 @@ sessions::LiveTab* BrowserLiveTabContext::GetActiveLiveTab() const {

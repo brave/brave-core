@@ -1,8 +1,8 @@
 diff --git a/chrome/android/chrome_public_apk_tmpl.gni b/chrome/android/chrome_public_apk_tmpl.gni
-index 54cad896044004c258d11603f543e42f203c6b6a..27d63e2ec8fa9ca03b4a8f0307b400339dcaa9ef 100644
+index 8f7f0d6dd477b922f84b24ca7eec6e32f4f01aca..2134d3b885cf816543abe8a9fb1e92fab648adbd 100644
 --- a/chrome/android/chrome_public_apk_tmpl.gni
 +++ b/chrome/android/chrome_public_apk_tmpl.gni
-@@ -307,6 +307,7 @@ template("chrome_common_apk_or_module_tmpl") {
+@@ -304,6 +304,7 @@ template("chrome_common_apk_or_module_tmpl") {
  
      resource_exclusion_regex = common_resource_exclusion_regex
      resource_exclusion_exceptions = common_resource_exclusion_exceptions
@@ -10,7 +10,7 @@ index 54cad896044004c258d11603f543e42f203c6b6a..27d63e2ec8fa9ca03b4a8f0307b40033
  
      # Exceptions (rationale in https://crbug.com/41301595):
      resource_exclusion_exceptions += [
-@@ -344,6 +345,7 @@ template("chrome_common_apk_or_module_tmpl") {
+@@ -341,6 +342,7 @@ template("chrome_common_apk_or_module_tmpl") {
        if (!_is_bundle && !_is_test) {
          disallowed_library_classes = chrome_disallowed_library_classes
        }
@@ -18,7 +18,7 @@ index 54cad896044004c258d11603f543e42f203c6b6a..27d63e2ec8fa9ca03b4a8f0307b40033
      }
  
      # Java and native targets form two independent compile graphs. Deps from
-@@ -708,6 +710,14 @@ template("chrome_common_apk_or_module_tmpl") {
+@@ -705,6 +707,14 @@ template("chrome_common_apk_or_module_tmpl") {
                                   "version_code",
                                   "version_name",
                                 ])

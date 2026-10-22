@@ -1,5 +1,5 @@
 diff --git a/chrome/common/BUILD.gn b/chrome/common/BUILD.gn
-index 6f5f891dc689a2e7628cf731b7863264cc0ac0ab..7b697c06b9b787ba0249c9fa82de092a87970eb8 100644
+index 59bf31b925c2f42b4392e3b4b4a56489e41bc26b..f95c0c1c5e0d72580461a4eec169e676affd1d78 100644
 --- a/chrome/common/BUILD.gn
 +++ b/chrome/common/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -50,7 +50,7 @@ index 6f5f891dc689a2e7628cf731b7863264cc0ac0ab..7b697c06b9b787ba0249c9fa82de092a
  }
  
  component("chrome_features") {
-@@ -588,6 +594,7 @@ static_library("constants") {
+@@ -589,6 +595,7 @@ static_library("constants") {
      "//printing/buildflags",
      "//third_party/widevine/cdm:buildflags",
    ]

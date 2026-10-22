@@ -1,5 +1,5 @@
 diff --git a/content/public/browser/BUILD.gn b/content/public/browser/BUILD.gn
-index 4ff52ee45512799037285e60d4d8f571c2058edf..784ba06fe9f863a1b317d0eb8e03b37135d1c729 100644
+index cd071153825a1276b4a9f46bb00e197d3889c209..bd924b9bc6357ad90e989c85da7cac7e2e5a3876 100644
 --- a/content/public/browser/BUILD.gn
 +++ b/content/public/browser/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -10,7 +10,7 @@ index 4ff52ee45512799037285e60d4d8f571c2058edf..784ba06fe9f863a1b317d0eb8e03b371
  import("//build/config/ui.gni")
  import("//content/common/features.gni")
  import("//content/public/common/features.gni")
-@@ -554,6 +555,7 @@ source_set("browser_sources") {
+@@ -553,6 +554,7 @@ source_set("browser_sources") {
      "webui_config_map.h",
      "zoom_level_delegate.h",
    ]

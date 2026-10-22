@@ -1,8 +1,8 @@
 diff --git a/content/public/browser/content_browser_client.h b/content/public/browser/content_browser_client.h
-index 42a04c54b65ddcf0905c7d527de950303bcf8ab7..2226a7b7b602ca8b73746461efec22e0c0028e55 100644
+index a65c03cf1d94784ec965638826017f0659aeaa0c..88fff17f62408c981a8ae6dcec343ec7bbfe997b 100644
 --- a/content/public/browser/content_browser_client.h
 +++ b/content/public/browser/content_browser_client.h
-@@ -3446,6 +3446,20 @@ class CONTENT_EXPORT ContentBrowserClient {
+@@ -3450,6 +3450,20 @@ class CONTENT_EXPORT ContentBrowserClient {
    // Returns true if `web_contents` is used for NoStatePrefetch and will not be
    // rendered.
    virtual bool IsNoStatePrefetch(WebContents* web_contents);

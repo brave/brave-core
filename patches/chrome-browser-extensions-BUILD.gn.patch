@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/extensions/BUILD.gn b/chrome/browser/extensions/BUILD.gn
-index 88d68857e7327d85800e75b03bf113fd2537608b..7f6e9b8c7eca2e378557e97134f56b93f04e3b97 100644
+index 484ed42496ba507b2c3384f6e82a0052e417c6b4..7e26cbdb92c27b1b7f0643935b89213c2a1ab9aa 100644
 --- a/chrome/browser/extensions/BUILD.gn
 +++ b/chrome/browser/extensions/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -10,7 +10,7 @@ index 88d68857e7327d85800e75b03bf113fd2537608b..7f6e9b8c7eca2e378557e97134f56b93
  import("//build/config/chromebox_for_meetings/buildflags.gni")
  import("//build/config/features.gni")
  import("//build/config/ozone.gni")
-@@ -655,6 +656,7 @@ source_set("extensions") {
+@@ -654,6 +655,7 @@ source_set("extensions") {
      "//ui/native_window_tracker",
      "//ui/shell_dialogs",
    ]
@@ -18,7 +18,7 @@ index 88d68857e7327d85800e75b03bf113fd2537608b..7f6e9b8c7eca2e378557e97134f56b93
    public_deps = [
      "//chrome/browser/extensions/api/messaging",
      "//chrome/browser/media/webrtc",
-@@ -703,7 +705,7 @@ source_set("extensions") {
+@@ -709,7 +711,7 @@ source_set("extensions") {
        "//components/optimization_guide/core:features",
      ]
  
@@ -27,7 +27,7 @@ index 88d68857e7327d85800e75b03bf113fd2537608b..7f6e9b8c7eca2e378557e97134f56b93
        sources += [
          # These files are temporary workarounds to allow for a lightweight
          # extensions runtime in desktop-android builds. They should be removed
-@@ -2060,6 +2062,7 @@ source_set("unit_tests") {
+@@ -2094,6 +2096,7 @@ source_set("unit_tests") {
      "//base",
      "//base/test:test_config",
      "//base/test:test_support",
@@ -35,7 +35,7 @@ index 88d68857e7327d85800e75b03bf113fd2537608b..7f6e9b8c7eca2e378557e97134f56b93
      "//chrome/browser:browser_process_impl",
      "//chrome/browser:global_features",
      "//chrome/browser/background",
-@@ -2229,7 +2232,7 @@ source_set("unit_tests") {
+@@ -2269,7 +2272,7 @@ source_set("unit_tests") {
        ]
      }
  
@@ -44,7 +44,7 @@ index 88d68857e7327d85800e75b03bf113fd2537608b..7f6e9b8c7eca2e378557e97134f56b93
        sources += [ "api/mdns/mdns_api_unittest.cc" ]
        deps += [ "//chrome/browser/extensions/api/mdns" ]
      }
-@@ -2332,6 +2335,7 @@ source_set("unit_tests") {
+@@ -2373,6 +2376,7 @@ source_set("unit_tests") {
  }
  
  # By default these tests run on Win, Mac, Linux, Chrome OS and desktop Android.
@@ -52,7 +52,7 @@ index 88d68857e7327d85800e75b03bf113fd2537608b..7f6e9b8c7eca2e378557e97134f56b93
  source_set("browser_tests") {
    testonly = true
  
-@@ -3266,6 +3270,7 @@ source_set("browser_tests") {
+@@ -3313,6 +3317,7 @@ source_set("browser_tests") {
      deps += [ "//chrome/browser/ui/views/web_apps:launch_dialogs" ]
    }
  }

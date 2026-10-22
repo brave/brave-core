@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/profiles/profile.cc b/chrome/browser/profiles/profile.cc
-index f5c9ae68aaf4a9f6f2288d9c4a7e0b249d67dcea..f9e53f32824e08529b6f6e664e26f92b70cc2b2e 100644
+index 82b9a6f4010bcffe31e2c30c680761dee80c88e9..dd477e6aa2f6d62400a35a7d5fd51814b3b9a1da 100644
 --- a/chrome/browser/profiles/profile.cc
 +++ b/chrome/browser/profiles/profile.cc
 @@ -124,7 +124,7 @@ bool Profile::OTRProfileID::AllowsBrowserWindows() const {
@@ -21,7 +21,7 @@ index f5c9ae68aaf4a9f6f2288d9c4a7e0b249d67dcea..f9e53f32824e08529b6f6e664e26f92b
    return profile_metrics::GetBrowserProfileType(this) ==
           profile_metrics::BrowserProfileType::kIncognito;
  }
-@@ -454,6 +457,9 @@ bool Profile::IsSystemProfile() const {
+@@ -460,6 +463,9 @@ bool Profile::IsTopChromeWebUIProfile() const {
  }
  
  bool Profile::IsPrimaryOTRProfile() const {

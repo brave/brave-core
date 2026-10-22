@@ -1,5 +1,5 @@
 diff --git a/chrome/test/data/webui/settings/BUILD.gn b/chrome/test/data/webui/settings/BUILD.gn
-index 65daf233dc27544d662121cb69ec8ce6197148d5..7f2f8be11905a271d4d2f1cc66f01afcac15fe8a 100644
+index b4faa4a5067885a775a089bdbbfd1a0e3eb6b20c..866dd6eaa53c9d323bd45cf8a1ad949197cc49b2 100644
 --- a/chrome/test/data/webui/settings/BUILD.gn
 +++ b/chrome/test/data/webui/settings/BUILD.gn
 @@ -2,6 +2,7 @@

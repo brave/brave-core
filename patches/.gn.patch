@@ -1,5 +1,5 @@
 diff --git a/.gn b/.gn
-index 3af2022171dbdebf4d1d2564f8f159124cb68c7c..da2d5d2f90c03418deb53422b1266b54e0dfacfa 100644
+index c2a5600e10ccab009471555fd2d1883d767c2418..9ee452691de74fcc052de95cb8f9614b9415f8ed 100644
 --- a/.gn
 +++ b/.gn
 @@ -2,6 +2,7 @@
@@ -10,7 +10,7 @@ index 3af2022171dbdebf4d1d2564f8f159124cb68c7c..da2d5d2f90c03418deb53422b1266b54
  import("//build/circular_includes_bedrock.gni")
  import("//build/circular_includes_untriaged.gni")
  import("//build/dotfile_settings.gni")
-@@ -477,3 +478,4 @@ expand_directory_allowlist =
+@@ -486,3 +487,4 @@ expand_directory_allowlist =
  allow_circular_includes_from_allowlist =
      allow_circular_includes_from_untriaged + project_bedrock_circular_includes +
      []

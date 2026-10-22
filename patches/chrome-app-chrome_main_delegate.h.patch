@@ -1,8 +1,8 @@
 diff --git a/chrome/app/chrome_main_delegate.h b/chrome/app/chrome_main_delegate.h
-index 6ea55af3da1c521eae17d32456da7d103d770757..3b706fd11a03cafcab1bf2bffbcc57089863caec 100644
+index 5fc1e70bb354e7cdf871c7f32f6fde51c80d57c7..ecca99506e773e3c1e2fd4938664954964472625 100644
 --- a/chrome/app/chrome_main_delegate.h
 +++ b/chrome/app/chrome_main_delegate.h
-@@ -107,7 +107,7 @@ class ChromeMainDelegate : public content::ContentMainDelegate {
+@@ -114,7 +114,7 @@ class ChromeMainDelegate : public content::ContentMainDelegate {
  #endif  // !defined(BUILDING_CHROME_RENDERER)
    std::unique_ptr<tracing::TracingSamplerProfiler> tracing_sampler_profiler_;
  

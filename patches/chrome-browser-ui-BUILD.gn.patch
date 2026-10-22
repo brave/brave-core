@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/BUILD.gn b/chrome/browser/ui/BUILD.gn
-index 752a83ef133c49030a4379d1855da3c757efcc81..796e89bcbc096d24cc1529ea299fc80397c02b3f 100644
+index 0d14966a1bd7fb1bad5c5137403d683efce0231d..4548d7dc57caeaf3216c4678ae5d7d5cd90a5870 100644
 --- a/chrome/browser/ui/BUILD.gn
 +++ b/chrome/browser/ui/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -10,7 +10,7 @@ index 752a83ef133c49030a4379d1855da3c757efcc81..796e89bcbc096d24cc1529ea299fc803
  import("//build/config/buildflags_paint_preview.gni")
  import("//build/config/chrome_build.gni")
  import("//build/config/compiler/compiler.gni")
-@@ -1111,6 +1112,7 @@ source_set("accelerator_table") {
+@@ -1118,6 +1119,7 @@ source_set("accelerator_table") {
    sources = [ "accelerator_table.cc" ]
    public_deps = [ "//ui/actions:actions_headers" ]
    deps = [
@@ -18,7 +18,7 @@ index 752a83ef133c49030a4379d1855da3c757efcc81..796e89bcbc096d24cc1529ea299fc803
      "//build:branding_buildflags",
      "//chrome/app:command_ids",
      "//chrome/browser/ui/actions:command_id_to_action_id",
-@@ -1480,6 +1482,7 @@ if (!is_android) {
+@@ -1348,6 +1350,7 @@ if (!is_android) {
        ":core",
        "//chrome/browser/ui/browser_window/internal",
      ]

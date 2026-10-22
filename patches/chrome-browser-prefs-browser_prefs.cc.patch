@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/prefs/browser_prefs.cc b/chrome/browser/prefs/browser_prefs.cc
-index 7e7c0d01570a8c49b2ae20c36211d031664f29a5..061b38a07d56dcb40aab1ae3502d410ef7cd52fe 100644
+index 7c4fb26f92c7345d60b0702aabcb90e7666a18dc..5f8e78c7687a5279fe512d542f6e6aaae1b53f39 100644
 --- a/chrome/browser/prefs/browser_prefs.cc
 +++ b/chrome/browser/prefs/browser_prefs.cc
-@@ -1160,6 +1160,7 @@ inline constexpr char kTabSearchUsed[] = "tab_search.used";
+@@ -1164,6 +1164,7 @@ inline constexpr char kSyncEncryptionBootstrapTokenPerAccountMigrationDone[] =
  // Register local state used only for migration (clearing or moving to a new
  // key).
  void RegisterLocalStatePrefsForMigration(PrefRegistrySimple* registry) {
@@ -10,7 +10,7 @@ index 7e7c0d01570a8c49b2ae20c36211d031664f29a5..061b38a07d56dcb40aab1ae3502d410e
    // Deprecated 11/2025.
    registry->RegisterStringPref(kFpfRulesetContent, std::string());
    registry->RegisterIntegerPref(kFpfRulesetFormat, 0);
-@@ -1995,6 +1996,7 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
+@@ -2002,6 +2003,7 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
  // Register prefs applicable to all profiles.
  void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
                            const std::string& locale) {
@@ -18,7 +18,7 @@ index 7e7c0d01570a8c49b2ae20c36211d031664f29a5..061b38a07d56dcb40aab1ae3502d410e
    TRACE_EVENT0("browser", "chrome::RegisterProfilePrefs");
    // User prefs. Please keep this list alphabetized.
    AccessibilityLabelsService::RegisterProfilePrefs(registry);
-@@ -2532,6 +2534,8 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
+@@ -2539,6 +2541,8 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
  #endif  // BUILDFLAG(IS_ANDROID)
  
    registry->RegisterBooleanPref(prefs::kStaticStorageQuotaEnabled, false);
@@ -27,7 +27,7 @@ index 7e7c0d01570a8c49b2ae20c36211d031664f29a5..061b38a07d56dcb40aab1ae3502d410e
  }
  
  void RegisterUserProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
-@@ -2571,6 +2575,7 @@ void RegisterSigninProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
+@@ -2578,6 +2582,7 @@ void RegisterSigninProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
  // This method should be periodically pruned of year+ old migrations.
  // See chrome/browser/prefs/README.md for details.
  void MigrateObsoleteLocalStatePrefs(PrefService* local_state) {
@@ -35,7 +35,7 @@ index 7e7c0d01570a8c49b2ae20c36211d031664f29a5..061b38a07d56dcb40aab1ae3502d410e
    // IMPORTANT NOTE: This code is *not* run on iOS Chrome. If a pref is migrated
    // or cleared here, and that pref is also used in iOS Chrome, it may also need
    // to be migrated or cleared specifically for iOS as well. This could be by
-@@ -2696,12 +2701,16 @@ void MigrateObsoleteLocalStatePrefs(PrefService* local_state) {
+@@ -2703,12 +2708,16 @@ void MigrateObsoleteLocalStatePrefs(PrefService* local_state) {
    // doing the migration in feature code that's called by all platforms instead
    // of here, or by calling migration code in the appropriate place for iOS
    // specifically, e.g. ios/chrome/browser/shared/model/prefs/browser_prefs.mm.
@@ -52,7 +52,7 @@ index 7e7c0d01570a8c49b2ae20c36211d031664f29a5..061b38a07d56dcb40aab1ae3502d410e
    // IMPORTANT NOTE: This code is *not* run on iOS Chrome. If a pref is migrated
    // or cleared here, and that pref is also used in iOS Chrome, it may also need
    // to be migrated or cleared specifically for iOS as well. This could be by
-@@ -2740,6 +2749,7 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
+@@ -2751,6 +2760,7 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
    profile_prefs->ClearPref(kObsoletePasswordsUseUPMLocalAndSeparateStores);
    profile_prefs->ClearPref(kObsoleteEmptyProfileStoreLoginDatabase);
    profile_prefs->ClearPref(kObsoleteUpmAutoExportCsvNeedsDeletion);
@@ -60,7 +60,7 @@ index 7e7c0d01570a8c49b2ae20c36211d031664f29a5..061b38a07d56dcb40aab1ae3502d410e
    base::DeleteFile(profile_path.Append(FILE_PATH_LITERAL("Login Data")));
    base::DeleteFile(
        profile_path.Append(FILE_PATH_LITERAL("Login Data For Account")));
-@@ -2747,6 +2757,7 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
+@@ -2758,6 +2768,7 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
        profile_path.Append(FILE_PATH_LITERAL("Login Data-journal")));
    base::DeleteFile(
        profile_path.Append(FILE_PATH_LITERAL("Login Data For Account-journal")));
@@ -68,7 +68,7 @@ index 7e7c0d01570a8c49b2ae20c36211d031664f29a5..061b38a07d56dcb40aab1ae3502d410e
  #endif  // BUILDFLAG(IS_ANDROID)
  
    // Added 09/2025.
-@@ -3096,4 +3107,7 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
+@@ -3109,4 +3120,7 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
    // doing the migration in feature code that's called by all platforms instead
    // of here, or by calling migration code in the appropriate place for iOS
    // specifically, e.g. ios/chrome/browser/shared/model/prefs/browser_prefs.mm.

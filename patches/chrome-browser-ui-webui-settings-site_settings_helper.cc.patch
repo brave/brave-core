@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/webui/settings/site_settings_helper.cc b/chrome/browser/ui/webui/settings/site_settings_helper.cc
-index 5f970bd6209e402f077b0cfe6af20309c332173b..79d3573e07115858d6eac1f3d57d5071aa5ec792 100644
+index c030c3a2881e9cc204ff883d71cd24c587b837c5..0e43e5ae7ecca1c263ec7bf2324c4ca98d84a0da 100644
 --- a/chrome/browser/ui/webui/settings/site_settings_helper.cc
 +++ b/chrome/browser/ui/webui/settings/site_settings_helper.cc
 @@ -262,6 +262,53 @@ constexpr auto kContentSettingsTypeGroupNames = std::to_array<
@@ -56,7 +56,7 @@ index 5f970bd6209e402f077b0cfe6af20309c332173b..79d3573e07115858d6eac1f3d57d5071
  });
  
  static_assert(
-@@ -525,7 +572,7 @@ constexpr UrlIdentity::TypeSet kUrlIdentityAllowedTypes = {
+@@ -527,7 +574,7 @@ constexpr UrlIdentity::TypeSet kUrlIdentityAllowedTypes = {
  
  }  // namespace
  
@@ -65,7 +65,7 @@ index 5f970bd6209e402f077b0cfe6af20309c332173b..79d3573e07115858d6eac1f3d57d5071
    for (auto kContentSettingsTypeGroupName : kContentSettingsTypeGroupNames) {
      if (type == kContentSettingsTypeGroupName.type &&
          kContentSettingsTypeGroupName.name) {
-@@ -536,6 +583,9 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
+@@ -538,6 +585,9 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
  }
  
  ContentSettingsType ContentSettingsTypeFromGroupName(std::string_view name) {
@@ -75,7 +75,7 @@ index 5f970bd6209e402f077b0cfe6af20309c332173b..79d3573e07115858d6eac1f3d57d5071
    for (const auto& entry : kContentSettingsTypeGroupNames) {
      // Content setting types that aren't represented in the settings UI
      // will have `nullptr` as their `name`. However, converting `nullptr`
-@@ -550,6 +600,9 @@ ContentSettingsType ContentSettingsTypeFromGroupName(std::string_view name) {
+@@ -552,6 +602,9 @@ ContentSettingsType ContentSettingsTypeFromGroupName(std::string_view name) {
  }
  
  std::string_view ContentSettingsTypeToGroupName(ContentSettingsType type) {
@@ -85,7 +85,7 @@ index 5f970bd6209e402f077b0cfe6af20309c332173b..79d3573e07115858d6eac1f3d57d5071
    for (const auto& entry : kContentSettingsTypeGroupNames) {
      if (type == entry.type) {
        // Content setting types that aren't represented in the settings UI
-@@ -569,7 +622,7 @@ std::string_view ContentSettingsTypeToGroupName(ContentSettingsType type) {
+@@ -571,7 +624,7 @@ std::string_view ContentSettingsTypeToGroupName(ContentSettingsType type) {
                 << " is not a recognized content settings type.";
  }
  
@@ -94,7 +94,7 @@ index 5f970bd6209e402f077b0cfe6af20309c332173b..79d3573e07115858d6eac1f3d57d5071
      const std::string& origin,
      Profile* profile) {
    // First build the list of permissions that will be shown regardless of
-@@ -711,6 +764,8 @@ std::string SiteSettingSourceToString(const SiteSettingSource source) {
+@@ -713,6 +766,8 @@ std::string SiteSettingSourceToString(const SiteSettingSource source) {
        return "policy";
      case SiteSettingSource::kPreference:
        return "preference";
@@ -103,7 +103,7 @@ index 5f970bd6209e402f077b0cfe6af20309c332173b..79d3573e07115858d6eac1f3d57d5071
      case SiteSettingSource::kNumSources:
        NOTREACHED();
    }
-@@ -719,6 +774,8 @@ std::string SiteSettingSourceToString(const SiteSettingSource source) {
+@@ -721,6 +776,8 @@ std::string SiteSettingSourceToString(const SiteSettingSource source) {
  SiteSettingSource ProviderTypeToSiteSettingsSource(
      const ProviderType provider_type) {
    switch (provider_type) {
@@ -112,7 +112,7 @@ index 5f970bd6209e402f077b0cfe6af20309c332173b..79d3573e07115858d6eac1f3d57d5071
      case ProviderType::kWebuiAllowlistProvider:
      case ProviderType::kComponentExtensionProvider:
        return SiteSettingSource::kAllowlist;
-@@ -748,6 +805,8 @@ SiteSettingSource ProviderTypeToSiteSettingsSource(
+@@ -750,6 +807,8 @@ SiteSettingSource ProviderTypeToSiteSettingsSource(
  std::string_view ProviderToDefaultSettingSourceString(
      const ProviderType provider) {
    switch (provider) {
@@ -121,7 +121,7 @@ index 5f970bd6209e402f077b0cfe6af20309c332173b..79d3573e07115858d6eac1f3d57d5071
      case ProviderType::kPolicyProvider:
        return "policy";
      case ProviderType::kSupervisedProvider:
-@@ -839,7 +898,7 @@ std::u16string GetExpirationDescription(const base::Time& expiration) {
+@@ -841,7 +900,7 @@ std::u16string GetExpirationDescription(const base::Time& expiration) {
  
  // Create a base::DictValue that will act as a data source for a single row
  // in a HostContentSettingsMap-controlled exceptions table (e.g., cookies).

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/devtools/features.cc b/chrome/browser/devtools/features.cc
-index 0e41d8d63cb5a66b861748959e8069301e2a3276..2342884bccb7054b578e0464ae9777426ff90f29 100644
+index 2661439ade74fedbe72eaef6da017820a71c7ef8..065a6be5db572de92c3f47073a9e99d87861ff26 100644
 --- a/chrome/browser/devtools/features.cc
 +++ b/chrome/browser/devtools/features.cc
 @@ -12,7 +12,13 @@ namespace features {

@@ -1,5 +1,5 @@
 diff --git a/BUILD.gn b/BUILD.gn
-index 3385349b0edb384dd43ed2f3c34ee907202ef1cd..091de7f43971466c7a8a6efc60c97a39361a1498 100644
+index 0e0277b6bc6494fafbbd62d3b5c2c33132d39bb4..4d200ddb9fea33914f4a63a1e4beac10d33cf00c 100644
 --- a/BUILD.gn
 +++ b/BUILD.gn
 @@ -4,6 +4,8 @@
@@ -11,7 +11,7 @@ index 3385349b0edb384dd43ed2f3c34ee907202ef1cd..091de7f43971466c7a8a6efc60c97a39
  import("//build/config/android/config.gni")
  import("//build/config/arm.gni")
  import("//build/config/c++/c++.gni")
-@@ -985,6 +987,9 @@ config("internal_config_base") {
+@@ -1000,6 +1002,9 @@ config("internal_config_base") {
      "$target_gen_dir",
      "$target_gen_dir/include",
    ]
@@ -21,7 +21,7 @@ index 3385349b0edb384dd43ed2f3c34ee907202ef1cd..091de7f43971466c7a8a6efc60c97a39
  }
  
  config("internal_config") {
-@@ -2541,6 +2546,7 @@ if (v8_use_metagen) {
+@@ -2567,6 +2572,7 @@ if (v8_use_metagen) {
      # define must re-run the driver even though the action command is
      # unchanged.
      deps = [ ":v8_dump_build_config" ]
@@ -29,7 +29,7 @@ index 3385349b0edb384dd43ed2f3c34ee907202ef1cd..091de7f43971466c7a8a6efc60c97a39
  
      if (v8_generate_external_defines_header) {
        # v8config.h includes the generated v8-gn.h in this configuration.
-@@ -3919,6 +3925,7 @@ v8_header_set("v8_headers") {
+@@ -4076,6 +4082,7 @@ v8_header_set("v8_headers") {
      "include/v8-weak-callback-info.h",
      "include/v8.h",
    ]
@@ -37,7 +37,7 @@ index 3385349b0edb384dd43ed2f3c34ee907202ef1cd..091de7f43971466c7a8a6efc60c97a39
  
    sources += [
      # The following headers cannot be platform-specific. The include validation
-@@ -3929,6 +3936,7 @@ v8_header_set("v8_headers") {
+@@ -4086,6 +4093,7 @@ v8_header_set("v8_headers") {
    ]
  
    public_deps = [ ":v8_config_headers" ]
@@ -45,7 +45,7 @@ index 3385349b0edb384dd43ed2f3c34ee907202ef1cd..091de7f43971466c7a8a6efc60c97a39
  
    deps = [
      ":cppgc_headers",
-@@ -8779,6 +8787,9 @@ if (is_component_build) {
+@@ -8965,6 +8973,9 @@ if (is_component_build) {
        ":v8_libplatform",
        "src/inspector:inspector_headers",
      ]
@@ -55,7 +55,7 @@ index 3385349b0edb384dd43ed2f3c34ee907202ef1cd..091de7f43971466c7a8a6efc60c97a39
  
      configs = [ ":internal_config" ]
      v8_add_configs += [ "//build/config/compiler:thinlto_optimize_max" ]
-@@ -8860,6 +8871,9 @@ if (is_component_build) {
+@@ -9046,6 +9057,9 @@ if (is_component_build) {
        ":v8_libplatform",
        "src/inspector:inspector_headers",
      ]

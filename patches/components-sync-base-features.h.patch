@@ -1,8 +1,8 @@
 diff --git a/components/sync/base/features.h b/components/sync/base/features.h
-index d893d9e71c7459464841d7bd0cbc4a8bf6171861..480a85cf0771caa481338db2120108a282f705e8 100644
+index 97024c5af436b8995e5e2375af5de969bc7145b9..efdf02d1b978731f58a457b6dc3162c4f25e08b3 100644
 --- a/components/sync/base/features.h
 +++ b/components/sync/base/features.h
-@@ -114,7 +114,7 @@ DECLARE_SYNC_AUTOFILL_AI_FEATURE(kSyncAutofillValuable);
+@@ -116,7 +116,7 @@ DECLARE_SYNC_AUTOFILL_AI_FEATURE(kSyncAutofillValuable);
  #endif
  
  // Enables syncing of usage metadata from Google Wallet passes.

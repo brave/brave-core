@@ -1,5 +1,5 @@
 diff --git a/services/preferences/tracked/BUILD.gn b/services/preferences/tracked/BUILD.gn
-index aae16eebf1285d7a11b887f538dfcbb3ed29cd15..971fb5c3ac1d86c6a5199c39a5271fe26a30d131 100644
+index dbb17669cf76569f84aede2a5119d085f5c72054..347f6bdffd6618fd7db009996fd918bb51fc1551 100644
 --- a/services/preferences/tracked/BUILD.gn
 +++ b/services/preferences/tracked/BUILD.gn
 @@ -2,6 +2,8 @@
@@ -11,7 +11,7 @@ index aae16eebf1285d7a11b887f538dfcbb3ed29cd15..971fb5c3ac1d86c6a5199c39a5271fe2
  source_set("tracked") {
    sources = [
      "device_id.h",
-@@ -66,6 +68,7 @@ source_set("tracked") {
+@@ -63,6 +65,7 @@ source_set("tracked") {
      "//components/safe_browsing/core/common:features",
      "//crypto",
    ]

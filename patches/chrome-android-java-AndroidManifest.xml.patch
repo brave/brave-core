@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/AndroidManifest.xml b/chrome/android/java/AndroidManifest.xml
-index 252473589ea6d2010c985518c061469bb63e7d41..3471be11760526add8bc0557525ca79254e40db6 100644
+index 04cc4ef7cbe7960a9e76a849d33fba10db389e22..40ca281f6172d2c7936135bd289676aa32f7e393 100644
 --- a/chrome/android/java/AndroidManifest.xml
 +++ b/chrome/android/java/AndroidManifest.xml
 @@ -62,7 +62,9 @@ by a child template that "extends" this file.
@@ -86,7 +86,7 @@ index 252473589ea6d2010c985518c061469bb63e7d41..3471be11760526add8bc0557525ca792
      {% block extra_uses_permissions %}
      {% endblock %}
  
-@@ -397,6 +414,7 @@ by a child template that "extends" this file.
+@@ -398,6 +415,7 @@ by a child template that "extends" this file.
              <intent-filter>
                  <action android:name="com.sec.android.airview.HOVER" />
              </intent-filter>
@@ -94,7 +94,7 @@ index 252473589ea6d2010c985518c061469bb63e7d41..3471be11760526add8bc0557525ca792
              <meta-data android:name="android.app.searchable"
                  android:resource="@xml/searchable" />
          </activity-alias>
-@@ -1012,6 +1030,7 @@ by a child template that "extends" this file.
+@@ -1013,6 +1031,7 @@ by a child template that "extends" this file.
          </service>
  
          <!-- Quick Action Search widget -->
@@ -102,7 +102,7 @@ index 252473589ea6d2010c985518c061469bb63e7d41..3471be11760526add8bc0557525ca792
          <receiver
              android:name="org.chromium.chrome.browser.quickactionsearchwidget.QuickActionSearchWidgetProvider$QuickActionSearchWidgetProviderSearch"
              android:label="@string/quick_action_search_widget_title"
-@@ -1042,6 +1061,8 @@ by a child template that "extends" this file.
+@@ -1043,6 +1062,8 @@ by a child template that "extends" this file.
                  android:resource="@xml/quick_action_search_widget_dino_info" />
          </receiver>
  
@@ -111,7 +111,7 @@ index 252473589ea6d2010c985518c061469bb63e7d41..3471be11760526add8bc0557525ca792
          <!-- Bookmarks widget -->
          <receiver android:name="com.google.android.apps.chrome.appwidget.bookmarks.BookmarkThumbnailWidgetProvider"
              android:label="@string/bookmark_widget_title"
-@@ -1263,7 +1284,7 @@ by a child template that "extends" this file.
+@@ -1264,7 +1285,7 @@ by a child template that "extends" this file.
  
          <service android:name="org.chromium.chrome.browser.media.MediaCaptureNotificationService"
              {% if enable_screen_capture == "true" %}
@@ -120,7 +120,7 @@ index 252473589ea6d2010c985518c061469bb63e7d41..3471be11760526add8bc0557525ca792
              {% else %}
              android:foregroundServiceType="camera|microphone"
              {% endif %}
-@@ -1356,6 +1377,7 @@ by a child template that "extends" this file.
+@@ -1357,6 +1378,7 @@ by a child template that "extends" this file.
            </activity>
          {% endif %}
  

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/tabs/vertical_tab_strip_state_controller_impl.cc b/chrome/browser/ui/tabs/vertical_tab_strip_state_controller_impl.cc
-index 931bdaed37f0499849338174e718b6fc23a49765..37afbd23ceabf633df149a89265f0034843ca5e7 100644
+index 5f08c1c033385187af4382744631cae2cfd8359a..164f11bdd8e63e3f72c5adac2530beb50dc5304e 100644
 --- a/chrome/browser/ui/tabs/vertical_tab_strip_state_controller_impl.cc
 +++ b/chrome/browser/ui/tabs/vertical_tab_strip_state_controller_impl.cc
 @@ -225,6 +225,7 @@ void VerticalTabStripStateControllerImpl::SetUncollapsedWidth(int width) {

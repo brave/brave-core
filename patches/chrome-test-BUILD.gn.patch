@@ -1,5 +1,5 @@
 diff --git a/chrome/test/BUILD.gn b/chrome/test/BUILD.gn
-index 15fecf43db04f94ac0c3c8e09213c830edd99000..d8a67abb1e9fa0ce4d87f3e3f33c854feca369c6 100644
+index ac3cea5d5e36e47e958a249bdd44ce3355dd1846..0985b833b4fa46b258992f76546fec16dc7de53c 100644
 --- a/chrome/test/BUILD.gn
 +++ b/chrome/test/BUILD.gn
 @@ -14,6 +14,7 @@
@@ -26,7 +26,7 @@ index 15fecf43db04f94ac0c3c8e09213c830edd99000..d8a67abb1e9fa0ce4d87f3e3f33c854f
  }
  
  if (is_android) {
-@@ -2738,6 +2741,7 @@ test("unit_tests") {
+@@ -2736,6 +2739,7 @@ test("unit_tests") {
      "//ui/strings:app_locale_settings_grit",
      "//ui/strings:ui_strings_grit",
    ]

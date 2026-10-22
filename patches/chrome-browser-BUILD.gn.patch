@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/BUILD.gn b/chrome/browser/BUILD.gn
-index 9bb7c6a239353b622471c22ebcfeedc5ca7fe975..6023a4c9b566f83cd08f5f411ed059811b252843 100644
+index 448022dc6d6300f1631090fcb5c7ca264f53ddb5..c820b3a814f7aab24d73909adc45e10cd820a5d0 100644
 --- a/chrome/browser/BUILD.gn
 +++ b/chrome/browser/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -10,7 +10,7 @@ index 9bb7c6a239353b622471c22ebcfeedc5ca7fe975..6023a4c9b566f83cd08f5f411ed05981
  import("//base/allocator/allocator.gni")
  import("//build/buildflag_header.gni")
  import("//build/config/buildflags_paint_preview.gni")
-@@ -2209,6 +2210,7 @@ source_set("browser") {
+@@ -2217,6 +2218,7 @@ source_set("browser") {
    public_deps = [
      ":browser_features",
      ":buildflags",
@@ -18,7 +18,7 @@ index 9bb7c6a239353b622471c22ebcfeedc5ca7fe975..6023a4c9b566f83cd08f5f411ed05981
      "//chrome/browser/accessibility/accessibility_prefs",
      "//chrome/browser/browsing_data",
      "//chrome/browser/download",
-@@ -2259,6 +2261,7 @@ source_set("browser") {
+@@ -2267,6 +2269,7 @@ source_set("browser") {
      "//components/webapps/browser",
      "//components/webui/chrome_urls/mojom:mojo_bindings",
    ]
@@ -26,7 +26,7 @@ index 9bb7c6a239353b622471c22ebcfeedc5ca7fe975..6023a4c9b566f83cd08f5f411ed05981
  
    # :core must appear after //chrome/common in public_deps so that on Windows,
    # //chrome/common/win:delay_load_hooks is linked before
-@@ -4124,7 +4127,7 @@ source_set("browser") {
+@@ -4132,7 +4135,7 @@ source_set("browser") {
  
    # TODO(https://crbug.com/356905053): Add more dependencies here and merge this
    # block with the `enable_extensions` block above.

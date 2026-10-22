@@ -1,8 +1,8 @@
 diff --git a/components/sync_device_info/device_info.h b/components/sync_device_info/device_info.h
-index 12d3a857c225bc7a3ac6764cf56fc7c68d668f2b..b26638439e931b3cf19a02fa9aee3c484a69fe95 100644
+index dec308afee1009c13dcdb0ecb7870411b9f5a46f..51b2d2f0feada05dee9b1d28e0c539a1bb242e77 100644
 --- a/components/sync_device_info/device_info.h
 +++ b/components/sync_device_info/device_info.h
-@@ -236,7 +236,9 @@ class DeviceInfo {
+@@ -235,7 +235,9 @@ class DeviceInfo {
        std::optional<int> glic_experimental_triggering_version,
        base::flat_set<std::string> glic_experimental_triggering_capabilities,
        std::optional<std::string> android_os_build_fingerprint_prefix,
@@ -13,7 +13,7 @@ index 12d3a857c225bc7a3ac6764cf56fc7c68d668f2b..b26638439e931b3cf19a02fa9aee3c48
  
    DeviceInfo& operator=(const DeviceInfo&) = delete;
  
-@@ -386,6 +388,22 @@ class DeviceInfo {
+@@ -379,6 +381,22 @@ class DeviceInfo {
    void set_glic_experimental_triggering_capabilities(
        const base::flat_set<std::string>& capabilities);
  
@@ -36,7 +36,7 @@ index 12d3a857c225bc7a3ac6764cf56fc7c68d668f2b..b26638439e931b3cf19a02fa9aee3c48
   private:
    // Used by DeepCopyForTesting().
    DeviceInfo(const DeviceInfo& other);
-@@ -470,6 +488,7 @@ class DeviceInfo {
+@@ -461,6 +479,7 @@ class DeviceInfo {
    // |IsStoredLocalDeviceInfoStillAccurate| in device_info_sync_bridge.cc or
    // else changes in that member might not trigger uploads of updated
    // DeviceInfos.

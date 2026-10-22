@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/about_flags.cc b/chrome/browser/about_flags.cc
-index c0e6e970db8005cf216db5b70ece68286b477325..23afd48806125b13f511cb378a4284bc1c7ddb97 100644
+index 079b3d80567282f9731c8eea57206fa0bba55018..8340428dbfbbb45ec66678ad7aa820142ba46e69 100644
 --- a/chrome/browser/about_flags.cc
 +++ b/chrome/browser/about_flags.cc
-@@ -5142,6 +5142,7 @@ constexpr char kEnterpriseIsolatedModeInternalName[] =
+@@ -5347,6 +5347,7 @@ constexpr char kEnterpriseIsolatedModeInternalName[] =
  
  // When adding a new choice, add it to the end of the list.
  const FeatureEntry kFeatureEntries[] = {

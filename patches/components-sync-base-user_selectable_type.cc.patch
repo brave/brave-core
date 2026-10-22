@@ -1,5 +1,5 @@
 diff --git a/components/sync/base/user_selectable_type.cc b/components/sync/base/user_selectable_type.cc
-index f0b7fb20c009381ed4d2963038adf06185081898..3faccc055d6375e9d7cde6135f656659a999761c 100644
+index 9bfeb556e840f6dca39415fcf4284eea2c005a2f..a47fc4682709e5acf7c14e610cd82712f8ee4aca 100644
 --- a/components/sync/base/user_selectable_type.cc
 +++ b/components/sync/base/user_selectable_type.cc
 @@ -51,7 +51,7 @@ UserSelectableTypeInfo GetUserSelectableTypeInfo(
@@ -11,7 +11,7 @@ index f0b7fb20c009381ed4d2963038adf06185081898..3faccc055d6375e9d7cde6135f656659
                  "Almost always when adding a new Data, you must tie it to "
                  "a UserSelectableType below (new or existing) so the user can "
                  "disable syncing of that data. Today you must also update the "
-@@ -142,6 +142,8 @@ UserSelectableTypeInfo GetUserSelectableTypeInfo(
+@@ -138,6 +138,8 @@ UserSelectableTypeInfo GetUserSelectableTypeInfo(
            kProductComparisonTypeName, PRODUCT_COMPARISON, {PRODUCT_COMPARISON}};
      case UserSelectableType::kCookies:
        return {kCookiesTypeName, COOKIES, {COOKIES}};
@@ -20,7 +20,7 @@ index f0b7fb20c009381ed4d2963038adf06185081898..3faccc055d6375e9d7cde6135f656659
    }
    NOTREACHED();
  }
-@@ -197,6 +199,7 @@ std::optional<UserSelectableType> GetUserSelectableTypeFromString(
+@@ -193,6 +195,7 @@ std::optional<UserSelectableType> GetUserSelectableTypeFromString(
            {kSavedTabGroupsTypeName, UserSelectableType::kSavedTabGroups},
            {kProductComparisonTypeName, UserSelectableType::kProductComparison},
            {kCookiesTypeName, UserSelectableType::kCookies},

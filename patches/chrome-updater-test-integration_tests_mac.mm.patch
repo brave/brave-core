@@ -1,5 +1,5 @@
 diff --git a/chrome/updater/test/integration_tests_mac.mm b/chrome/updater/test/integration_tests_mac.mm
-index 792451636ce1bdc2d89b09460ea2dcba5233932c..90f979ffaffaab5496abfafd853301f1c4f4d03c 100644
+index afc19d139a98507b199a7f9161cffb6cacfc695e..ab166ea7bfb12ca460caf2b9ebc6fcfe3ece5776 100644
 --- a/chrome/updater/test/integration_tests_mac.mm
 +++ b/chrome/updater/test/integration_tests_mac.mm
 @@ -84,7 +84,7 @@ std::optional<base::FilePath> GetActiveFile(UpdaterScope /*scope*/,

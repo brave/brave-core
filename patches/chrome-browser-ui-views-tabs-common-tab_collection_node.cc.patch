@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/tabs/common/tab_collection_node.cc b/chrome/browser/ui/views/tabs/common/tab_collection_node.cc
-index 37b753fbc73505e362121892730490c825efccdb..0e832e4498c79515724f0b201f50ce5029ea3a23 100644
+index 30479cd6255027baeb168f2c07e277f1f3d4eedb..c1576bc208889410fe19fd8a7e24e018a75b56f9 100644
 --- a/chrome/browser/ui/views/tabs/common/tab_collection_node.cc
 +++ b/chrome/browser/ui/views/tabs/common/tab_collection_node.cc
 @@ -37,6 +37,7 @@ TabCollectionNode::Type GetTypeFromNode(tabs::ConstChildPtr node_data_) {
