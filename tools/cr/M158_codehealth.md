@@ -655,9 +655,9 @@ Brave's `redirectConstructor` target still takes the `Function`.
 removed the flag, which was on, and its `ChromeFeatureList` constant. Brave's
 behaviour doesn't change, but two junit tests disable the constant.
 
-- [ ] `android/junit/src/org/chromium/chrome/browser/tasks/tab_management/BraveTabGridContextMenuCoordinatorTest.java:66`:
+- [x] `android/junit/src/org/chromium/chrome/browser/tasks/tab_management/BraveTabGridContextMenuCoordinatorTest.java:66`:
       drop the `@DisableFeatures`
-- [ ] `android/junit/src/org/chromium/chrome/browser/toolbar/BraveToolbarLongPressMenuHandlerUnitTest.java:51`:
+- [x] `android/junit/src/org/chromium/chrome/browser/toolbar/BraveToolbarLongPressMenuHandlerUnitTest.java:51`:
       drop it; the handler is built with `url -> true` (`:94`), so
       `testbuildMenuItemsWithUrl` (`:126`) now gets a fourth, "Send to devices"
       item
