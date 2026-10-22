@@ -77,7 +77,7 @@ takes only a route.
 - [x] `pageVisibility_` carries Brave's keys: the mangler reads
       `pageVisibility_?.{getStarted,origin,content,shields,braveWallet,…}`, all
       in `br/page_visibility.ts`
-- [ ] The Polymer override forced `#privacy`'s template to always render; the
+- [x] The Polymer override forced `#privacy`'s template to always render; the
       Lit port doesn't override `renderPlugin_(routes_.PRIVACY)`. Confirm that's
       no longer needed
 - [x] `br/settings_ui.ts:156-161`: `this.$.main` as the scroll target. Closed:
@@ -342,7 +342,7 @@ though Brave doesn't sign requests.
       key. Drop that patch with the fix
 - [ ] `rewrite/components/update_client/request_sender.cc.yaml`: update the
       description, which still describes upstream's ECDSA/ML-DSA flag
-- [ ] `chromium_src/components/update_client/request_sender_unittest.cc`: the
+- [x] `chromium_src/components/update_client/request_sender_unittest.cc`: the
       `cup2key=1:` expectations and `BraveKeyIgnoresPqcCupSigningFlag` refer to
       the old format and the deleted flag
 - [ ] `test/filters/components_unittests.filter:265-269`: re-evaluate
