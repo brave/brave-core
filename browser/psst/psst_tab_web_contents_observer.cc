@@ -110,7 +110,8 @@ void PrepareParametersForPolicyExecution(
 bool IsFlowOnTheWrongStep(
     const std::optional<UserScriptResult>& user_script_result,
     const GURL& current_url) {
-  return (!user_script_result->initial_execution.has_value() ||
+  return user_script_result.has_value() &&
+         (!user_script_result->initial_execution.has_value() ||
           !user_script_result->initial_execution.value()) &&
          std::ranges::none_of(
              user_script_result->tasks, [&](const UserScriptTask& item) {
