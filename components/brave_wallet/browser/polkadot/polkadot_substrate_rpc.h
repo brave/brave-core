@@ -34,9 +34,10 @@ struct PolkadotRuntimeVersion {
 // the Substrate-based parachains.
 class PolkadotSubstrateRpc {
  public:
-  explicit PolkadotSubstrateRpc(
+  PolkadotSubstrateRpc(
       NetworkManager& network_manager,
-      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+      PolkadotRpcUrlMapCallback rpc_url_callback);
   virtual ~PolkadotSubstrateRpc();
 
   using GetChainNameCallback =
@@ -82,8 +83,6 @@ class PolkadotSubstrateRpc {
 
   using GetEventsCallback = base::OnceCallback<void(
       base::expected<std::vector<uint8_t>, std::string>)>;
-
-  void SetParachainUrlMapCallback(PolkadotRpcUrlMapCallback rpc_url_callback);
 
   // Get the name of the chain pointed to by the current network
   // configuration. "Westend" or "Paseo" for the testnets, "Polkadot" for
@@ -226,7 +225,7 @@ class PolkadotSubstrateRpc {
   void OnGetPaymentInfo(GetPaymentInfoCallback callback, APIRequestResult res);
   void OnGetEvents(GetEventsCallback callback, APIRequestResult res);
 
-  PolkadotRpcUrlMapCallback rpc_url_callback_;
+  const PolkadotRpcUrlMapCallback rpc_url_callback_;
   const raw_ref<NetworkManager> network_manager_;
   api_request_helper::APIRequestHelper api_request_helper_;
   base::WeakPtrFactory<PolkadotSubstrateRpc> weak_ptr_factory_{this};

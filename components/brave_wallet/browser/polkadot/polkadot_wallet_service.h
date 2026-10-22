@@ -50,7 +50,8 @@ class PolkadotWalletService : public mojom::PolkadotWalletService,
       KeyringService& keyring_service,
       NetworkManager& network_manager,
       ::PrefService& profile_prefs,
-      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+      PolkadotRpcUrlMapCallback rpc_url_callback);
 
   ~PolkadotWalletService() override;
 

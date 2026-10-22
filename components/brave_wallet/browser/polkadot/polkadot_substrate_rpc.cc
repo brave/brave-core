@@ -368,12 +368,13 @@ std::optional<std::vector<std::string>> ParseExtrinsics(
 
 PolkadotSubstrateRpc::PolkadotSubstrateRpc(
     NetworkManager& network_manager,
-    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
-    : network_manager_(network_manager),
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+    PolkadotRpcUrlMapCallback rpc_url_callback)
+    : rpc_url_callback_(std::move(rpc_url_callback)),
+      network_manager_(network_manager),
       api_request_helper_(GetNetworkTrafficAnnotationTag(),
                           url_loader_factory) {
-  rpc_url_callback_ = base::BindRepeating(
-      [](std::string_view chain_id) -> std::vector<GURL> { return {}; });
+  CHECK(rpc_url_callback_);
 }
 
 PolkadotSubstrateRpc::~PolkadotSubstrateRpc() = default;
@@ -389,10 +390,6 @@ base::DictValue PolkadotSubstrateRpc::MakeRpcRequestJson(
   return req;
 }
 
-void PolkadotSubstrateRpc::SetParachainUrlMapCallback(
-    PolkadotRpcUrlMapCallback rpc_url_callback) {
-  rpc_url_callback_ = std::move(rpc_url_callback);
-}
 void PolkadotSubstrateRpc::GetChainName(std::string_view chain_id,
                                         GetChainNameCallback callback) {
   auto url = GetNetworkURL(chain_id);

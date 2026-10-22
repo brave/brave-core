@@ -15,6 +15,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/network_manager.h"
+#include "brave/components/brave_wallet/browser/polkadot/polkadot_test_utils.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
@@ -44,10 +45,23 @@ class PolkadotSubstrateRpcUnitTest : public testing::Test {
 
     network_manager_ = std::make_unique<NetworkManager>(&prefs_);
     polkadot_substrate_rpc_ = std::make_unique<PolkadotSubstrateRpc>(
-        *network_manager_, url_loader_factory_.GetSafeWeakWrapper());
+        *network_manager_, url_loader_factory_.GetSafeWeakWrapper(),
+        NoParachainUrlMap());
   }
 
  protected:
+  std::unique_ptr<PolkadotSubstrateRpc> MakeRpcWithUrlMap(
+      base::flat_map<std::string, std::vector<GURL>> url_map) {
+    return std::make_unique<PolkadotSubstrateRpc>(
+        *network_manager_, url_loader_factory_.GetSafeWeakWrapper(),
+        base::BindLambdaForTesting(
+            [url_map = std::move(url_map)](
+                std::string_view chain_id) -> std::vector<GURL> {
+              const auto* urls = base::FindOrNull(url_map, chain_id);
+              return urls ? *urls : std::vector<GURL>();
+            }));
+  }
+
   base::test::ScopedFeatureList feature_list_;
   base::test::TaskEnvironment task_environment_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
@@ -2397,15 +2411,7 @@ TEST_F(PolkadotSubstrateRpcUnitTest, DappParachainRpcUrls) {
     url_map.emplace(tc.chain_id, std::vector<GURL>{GURL(tc.rpc_url)});
   }
 
-  polkadot_substrate_rpc_->SetParachainUrlMapCallback(
-      base::BindLambdaForTesting(
-          [=](std::string_view chain_id) -> std::vector<GURL> {
-            const auto* urls = base::FindOrNull(url_map, chain_id);
-            if (!urls) {
-              return {};
-            }
-            return *urls;
-          }));
+  auto rpc = MakeRpcWithUrlMap(std::move(url_map));
 
   base::MockCallback<PolkadotSubstrateRpc::GetMetadataCallback> callback;
   auto* reqs = url_loader_factory_.pending_requests();
@@ -2417,7 +2423,7 @@ TEST_F(PolkadotSubstrateRpcUnitTest, DappParachainRpcUrls) {
                     ->GetNetworkURL(test_case.chain_id, mojom::CoinType::DOT)
                     .is_empty());
 
-    polkadot_substrate_rpc_->GetMetadata(test_case.chain_id, callback.Get());
+    rpc->GetMetadata(test_case.chain_id, callback.Get());
 
     ASSERT_EQ(reqs->size(), 1u);
     EXPECT_EQ(reqs->front().request.url, test_case.rpc_url);
@@ -2426,8 +2432,7 @@ TEST_F(PolkadotSubstrateRpcUnitTest, DappParachainRpcUrls) {
   }
 
   // We route Asset Hub through the same URL our wallet natively uses.
-  polkadot_substrate_rpc_->GetMetadata(mojom::kPolkadotMainnetAssetHub,
-                                       callback.Get());
+  rpc->GetMetadata(mojom::kPolkadotMainnetAssetHub, callback.Get());
   ASSERT_EQ(reqs->size(), 1u);
   EXPECT_EQ(reqs->front().request.url,
             "https://polkadot-asset-hub.wallet.brave.com/");
@@ -2437,8 +2442,7 @@ TEST_F(PolkadotSubstrateRpcUnitTest, DappParachainRpcUrls) {
   network_manager_->SetNetworkURLForTesting(
       mojom::kPolkadotMainnetAssetHub,
       GURL("https://asset-hub.example.com/rpc"));
-  polkadot_substrate_rpc_->GetMetadata(mojom::kPolkadotMainnetAssetHub,
-                                       callback.Get());
+  rpc->GetMetadata(mojom::kPolkadotMainnetAssetHub, callback.Get());
   ASSERT_EQ(reqs->size(), 1u);
   EXPECT_EQ(reqs->front().request.url, "https://asset-hub.example.com/rpc");
   reqs->clear();
@@ -2459,7 +2463,7 @@ TEST_F(PolkadotSubstrateRpcUnitTest, DappRequestEmptyMap) {
   base::test::TestFuture<base::expected<std::vector<uint8_t>, std::string>>
       future;
 
-  // The map hasn't been loaded yet, so there's no endpoint to talk to.
+  // An empty map resolves nothing, so there's no endpoint to talk to.
   polkadot_substrate_rpc_->GetMetadata(mojom::kPolkadotAcala,
                                        future.GetCallback());
 
@@ -2475,18 +2479,9 @@ TEST_F(PolkadotSubstrateRpcUnitTest, DappRequestEmptyMap) {
       mojom::kPolkadotBifrost,
       std::vector<GURL>{GURL("https://hk.p.bifrost-rpc.liebi.com/")});
 
-  polkadot_substrate_rpc_->SetParachainUrlMapCallback(
-      base::BindLambdaForTesting(
-          [=](std::string_view chain_id) -> std::vector<GURL> {
-            const auto* urls = base::FindOrNull(url_map, chain_id);
-            if (!urls) {
-              return {};
-            }
-            return *urls;
-          }));
+  auto rpc = MakeRpcWithUrlMap(std::move(url_map));
 
-  polkadot_substrate_rpc_->GetMetadata(mojom::kPolkadotAcala,
-                                       future.GetCallback());
+  rpc->GetMetadata(mojom::kPolkadotAcala, future.GetCallback());
 
   metadata = future.Take();
   ASSERT_FALSE(metadata.has_value());
