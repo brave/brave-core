@@ -177,7 +177,7 @@ private func detailLinkLabel(with text: String) -> LinkLabel {
 private func secondaryButton(title: String?) -> UIButton {
   UIButton().then {
     var configuration = UIButton.Configuration.plain()
-    configuration.baseBackgroundColor = .clear
+    configuration.baseForegroundColor = .black
     configuration.contentInsets = NSDirectionalEdgeInsets(
       top: 0,
       leading: 32,
@@ -190,11 +190,8 @@ private func secondaryButton(title: String?) -> UIButton {
       outgoing.font = UIFont.systemFont(ofSize: 17, weight: .regular)
       return outgoing
     }
+    configuration.title = title
     $0.configuration = configuration
-    if let title = title {
-      $0.setTitle(title, for: .normal)
-    }
-    $0.setTitleColor(.black, for: .normal)
     $0.contentHorizontalAlignment = .left
     $0.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
     $0.titleLabel?.adjustsFontSizeToFitWidth = true

@@ -25,7 +25,6 @@ class EmptyStateOverlayView: UIView {
       bottom: 10.0,
       trailing: 35.0
     )
-    static let buttonHeight = 40.0
   }
 
   private let iconImageView = UIImageView().then {
@@ -47,14 +46,12 @@ class EmptyStateOverlayView: UIView {
   }
 
   private let actionButton = UIButton().then {
-    var configuration = UIButton.Configuration.plain()
-    configuration.baseBackgroundColor = .clear
+    var configuration = UIButton.Configuration.borderedProminent()
+    configuration.baseBackgroundColor = UIColor(braveSystemName: .buttonBackground)
+    configuration.cornerStyle = .capsule
+    configuration.baseForegroundColor = UIColor(braveSystemName: .schemesOnPrimary)
     configuration.contentInsets = UX.contentInsets
     $0.configuration = configuration
-    $0.setTitleColor(UIColor(braveSystemName: .schemesOnPrimary), for: .normal)
-    $0.layer.cornerCurve = .continuous
-    $0.layer.cornerRadius = UX.buttonHeight / 2.0
-    $0.backgroundColor = UIColor(braveSystemName: .buttonBackground)
   }
 
   private let actionDescriptionLabel = UILabel().then {

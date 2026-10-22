@@ -37,7 +37,6 @@ class ToolbarButton: UIButton {
   init() {
     super.init(frame: .zero)
     var configuration = UIButton.Configuration.plain()
-    configuration.baseBackgroundColor = .clear
     configuration.contentInsets = .zero
     self.configuration = configuration
     imageView?.contentMode = .scaleAspectFit

@@ -47,8 +47,9 @@ public class BraveNewsOptInView: UIView, FeedCardContent {
   }
 
   public let turnOnBraveNewsButton = ActionButton().then {
-    var configuration = UIButton.Configuration.plain()
-    configuration.baseBackgroundColor = .clear
+    var configuration = UIButton.Configuration.borderedProminent()
+    configuration.baseBackgroundColor = UIColor(braveSystemName: .buttonBackground)
+    configuration.baseForegroundColor = UIColor(braveSystemName: .schemesOnPrimary)
     configuration.contentInsets = NSDirectionalEdgeInsets(
       top: 10,
       leading: 20,
@@ -61,11 +62,9 @@ public class BraveNewsOptInView: UIView, FeedCardContent {
       outgoing.font = .systemFont(ofSize: 16.0, weight: .semibold)
       return outgoing
     }
+    configuration.title = Strings.BraveNews.turnOnBraveNews
     $0.configuration = configuration
     $0.layer.borderWidth = 0
-    $0.setTitleColor(UIColor(braveSystemName: .schemesOnPrimary), for: .normal)
-    $0.setTitle(Strings.BraveNews.turnOnBraveNews, for: .normal)
-    $0.backgroundColor = UIColor(braveSystemName: .buttonBackground)
     $0.loaderView = LoaderView(size: .small).then {
       $0.tintColor = .white
     }
