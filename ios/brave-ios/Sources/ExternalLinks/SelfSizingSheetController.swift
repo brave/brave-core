@@ -6,8 +6,15 @@
 import SwiftUI
 import UIKit
 
+private struct SheetContentHeightChangedKey: EnvironmentKey {
+  static let defaultValue: ((CGFloat) -> Void)? = nil
+}
+
 extension EnvironmentValues {
-  @Entry fileprivate var sheetContentHeightChanged: ((CGFloat) -> Void)?
+  fileprivate var sheetContentHeightChanged: ((CGFloat) -> Void)? {
+    get { self[SheetContentHeightChangedKey.self] }
+    set { self[SheetContentHeightChangedKey.self] = newValue }
+  }
 }
 
 extension View {
@@ -40,9 +47,12 @@ public class SelfSizingSheetController: UIHostingController<AnyView> {
   public init(rootView: some View) {
     super.init(rootView: AnyView(EmptyView()))
     self.rootView = AnyView(
-      rootView.environment(\.sheetContentHeightChanged) { [weak self] height in
-        self?.updateContentHeight(height)
-      }
+      rootView.environment(
+        \.sheetContentHeightChanged,
+        { [weak self] height in
+          self?.updateContentHeight(height)
+        }
+      )
     )
   }
 
