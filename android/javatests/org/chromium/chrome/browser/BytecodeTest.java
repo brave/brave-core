@@ -999,13 +999,6 @@ public class BytecodeTest {
                         int.class));
         Assert.assertTrue(
                 methodExists(
-                        "org/chromium/chrome/browser/omnibox/styles/OmniboxResourceProvider",
-                        "getToolbarSidePaddingForNtp",
-                        MethodModifier.STATIC,
-                        int.class,
-                        Context.class));
-        Assert.assertTrue(
-                methodExists(
                         "org/chromium/chrome/browser/notifications/NotificationPlatformBridge",
                         "dispatchNotificationEvent",
                         MethodModifier.STATIC,
