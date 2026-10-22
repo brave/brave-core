@@ -211,7 +211,7 @@
     "@brave/leo-sf-symbols": "github:brave/leo-sf-symbols#b5a6139df7ebd3f7d55aa8d6af60a524edab87b0",
     "@brave/wallet-standard-brave": "0.0.16",
     "@dnd-kit/core": "6.3.1",
-    "@dnd-kit/sortable": "7.0.1",
+    "@dnd-kit/sortable": "7.0.2",
     "@emotion/is-prop-valid": "1.4.0",
     "@glif/filecoin-wallet-provider": "3.0.15",
     "@ledgerhq/hw-app-btc": "10.3.0",
