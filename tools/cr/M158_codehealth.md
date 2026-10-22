@@ -35,7 +35,7 @@ their constructors, have to be created after it.
       into `BraveTabFeatures::Init` (`browser/ui/tabs/brave_tab_features.cc`),
       following the per-helper list and idiom in M157's "TabHelpers →
       TabFeatures"; the call from `Init` is only a stopgap
-- [ ] Android: same, in `browser/android/brave_tab_features.cc:35`, including
+- [x] Android: same, in `browser/android/brave_tab_features.cc:35`, including
       Ads and Rewards. "[cr158][Android] Attach Brave tab helpers from
       BraveTabFeatures" calls `brave::AttachTabHelpers()` from the constructor,
       after `CreateSessionServiceTabHelper()`; the same stopgap as desktop
