@@ -76,8 +76,6 @@ mojom::DefaultWallet GetDefaultCardanoWallet(PrefService* prefs);
 void SetDefaultBaseCurrency(PrefService* prefs, std::string_view currency);
 std::string GetDefaultBaseCurrency(PrefService* prefs);
 
-std::string GetEnsRegistryContractAddress(std::string_view chain_id);
-
 mojom::BlockchainTokenPtr GetUserAsset(
     PrefService* prefs,
     mojom::CoinType coin,
