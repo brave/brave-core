@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//build/buildflag_header.gni")
+import("//build/config/features.gni")
 import("//testing/test.gni")
 
 static_library("p3a") {
@@ -130,9 +131,9 @@ source_set("unit_tests") {
     "//testing/gtest",
   ]
   if (!is_ios) {
-    deps += [
-      "//brave/components/brave_referrals/common",
-      "//content/test:test_support",
-    ]
+    deps += [ "//brave/components/brave_referrals/common" ]
+  }
+  if (use_blink) {
+    deps += [ "//content/test:test_support" ]
   }
 }

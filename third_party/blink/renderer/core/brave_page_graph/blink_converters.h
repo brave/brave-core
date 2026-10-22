@@ -14,15 +14,20 @@
 #include "base/auto_reset.h"
 #include "base/containers/span.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/blink_probe_types.h"
+#include "build/build_config.h"
 #include "third_party/blink/renderer/bindings/core/v8/native_value_traits_impl.h"
 #include "third_party/blink/renderer/bindings/core/v8/script_promise.h"
 #include "third_party/blink/renderer/bindings/core/v8/script_value.h"
 #include "third_party/blink/renderer/bindings/core/v8/to_v8_traits.h"
 #include "third_party/blink/renderer/bindings/modules/v8/v8_handwriting_recognizer_query_result.h"
-#include "third_party/blink/renderer/bindings/modules/v8/v8_related_application.h"  // IWYU pragma: keep
 #include "third_party/blink/renderer/core/core_export.h"
 #include "third_party/blink/renderer/core/dom/events/event_listener.h"
 #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
+
+// Upstream excludes the installedapp IDLs on iOS.
+#if !BUILDFLAG(IS_IOS)
+#include "third_party/blink/renderer/bindings/modules/v8/v8_related_application.h"  // IWYU pragma: keep
+#endif
 
 namespace blink {
 

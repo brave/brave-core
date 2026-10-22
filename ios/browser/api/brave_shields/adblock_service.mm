@@ -19,6 +19,7 @@
 #include "brave/components/brave_shields/core/browser/filter_list_catalog_entry.h"
 #include "brave/components/cosmetic_filters/common/scriptlet_constants.h"
 #include "brave/components/cosmetic_filters/resources/grit/cosmetic_filters_generated.h"
+#include "build/blink_buildflags.h"
 #include "brave/ios/browser/api/brave_shields/adblock_filter_list_catalog_entry+private.h"
 #include "brave/ios/browser/api/brave_shields/adblock_service+private.h"
 #include "components/application_locale_storage/application_locale_storage.h"
@@ -26,6 +27,12 @@
 #include "components/grit/brave_components_resources.h"
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
 #include "ui/base/resource/resource_bundle.h"
+
+#if BUILDFLAG(USE_BLINK)
+#include "brave/ios/browser/api/brave_shields/blink_ad_blocker.h"
+#include "net/base/apple/url_conversions.h"
+#include "url/gurl.h"
+#endif
 
 namespace brave_shields {
 using OnFilterListUpdatedCallback =
@@ -111,6 +118,9 @@ void AdBlockResourceObserver::OnResourcesLoaded(
       _serviceObservers;
   std::unique_ptr<brave_shields::AdBlockCatalogObserver> _catalogObserver;
   std::unique_ptr<brave_shields::AdBlockResourceObserver> _resourceObserver;
+#if BUILDFLAG(USE_BLINK)
+  std::unique_ptr<brave_shields::BlinkAdBlocker> _blinkAdBlocker;
+#endif
 }
 
 @property(nonatomic)
@@ -141,6 +151,10 @@ void AdBlockResourceObserver::OnResourcesLoaded(
             _cus, _catalogProvider.get(), _adblockListP3A.get());
     _resourceProvider =
         std::make_unique<brave_shields::AdBlockDefaultResourceProvider>(_cus);
+#if BUILDFLAG(USE_BLINK)
+    _blinkAdBlocker = std::make_unique<brave_shields::BlinkAdBlocker>(
+        _filtersProviderManager.get());
+#endif
   }
   return self;
 }
@@ -164,6 +178,16 @@ void AdBlockResourceObserver::OnResourcesLoaded(
       base::BindRepeating(callback));
 
   _resourceProvider->AddObserver(_resourceObserver.get());
+}
+
+- (void)registerBlockedRequests:(void (^)(NSURL* requestURL))callback {
+#if BUILDFLAG(USE_BLINK)
+  _blinkAdBlocker->SetOnBlocked(base::BindRepeating(
+      [](void (^callback)(NSURL*), const GURL& url) {
+        callback(net::NSURLWithGURL(url));
+      },
+      callback));
+#endif
 }
 
 - (NSArray<AdblockFilterListCatalogEntry*>*)filterListCatalogEntries {

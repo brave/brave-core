@@ -3,6 +3,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import("//build/config/features.gni")
+
 source_set("brave_shields") {
   sources = [
     "adblock_engine.h",
@@ -24,10 +26,25 @@ source_set("brave_shields") {
     "//brave/components/cosmetic_filters/common",
     "//brave/components/cosmetic_filters/resources/data:generated_resources",
     "//brave/components/resources:static_resources",
+    "//build:blink_buildflags",
     "//components/application_locale_storage",
     "//components/component_updater",
     "//components/crx_file",
     "//ios/chrome/browser/shared/model/application_context",
     "//ui/base",
   ]
+
+  if (use_blink) {
+    sources += [
+      "blink_ad_blocker.cc",
+      "blink_ad_blocker.h",
+    ]
+    deps += [
+      "//ios/web/content/init",
+      "//net",
+      "//services/network/public/cpp",
+      "//services/network/public/mojom",
+      "//url",
+    ]
+  }
 }

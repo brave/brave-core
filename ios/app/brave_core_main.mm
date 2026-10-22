@@ -172,6 +172,26 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
       }
     }
     [arguments addObjectsFromArray:switches];
+#if BUILDFLAG(USE_BLINK)
+    // The app doesn't bundle the BrowserEngineKit process extensions yet.
+    [arguments addObject:@"--single-process"];
+    [arguments addObject:@"--in-process-gpu"];
+    // ios/web's network contexts live on the IO thread; keep content's network
+    // service there too so shared net state stays on one sequence.
+    NSString* disableFeatures = @"--disable-features=";
+    NSUInteger existing = [arguments
+        indexOfObjectPassingTest:^BOOL(NSString* arg, NSUInteger, BOOL*) {
+          return [arg hasPrefix:disableFeatures];
+        }];
+    if (existing == NSNotFound) {
+      [arguments addObject:[disableFeatures
+                               stringByAppendingString:
+                                   @"NetworkServiceDedicatedThread"]];
+    } else {
+      arguments[existing] = [arguments[existing]
+          stringByAppendingString:@",NetworkServiceDedicatedThread"];
+    }
+#endif
 
     // Build params.args
     params.args.clear();

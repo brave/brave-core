@@ -6,9 +6,10 @@
 #ifndef BRAVE_CHROMIUM_SRC_CONTENT_PUBLIC_COMMON_URL_CONSTANTS_H_
 #define BRAVE_CHROMIUM_SRC_CONTENT_PUBLIC_COMMON_URL_CONSTANTS_H_
 
+#include "build/blink_buildflags.h"
 #include "build/build_config.h"
 
-#if BUILDFLAG(IS_IOS)
+#if BUILDFLAG(IS_IOS) && !BUILDFLAG(USE_BLINK)
 // ios cannot include content deps
 namespace content {
 inline constexpr char kChromeUIScheme[] = "chrome";

@@ -93,9 +93,22 @@ BraveWebClient::BraveWebClient() {}
 BraveWebClient::~BraveWebClient() {}
 
 std::unique_ptr<web::WebMainParts> BraveWebClient::CreateWebMainParts() {
+#if BUILDFLAG(USE_BLINK)
+  CHECK(main_parts_);
+  return std::move(main_parts_);
+#else
   return std::make_unique<BraveWebMainParts>(
       *base::CommandLine::ForCurrentProcess());
+#endif
 }
+
+#if BUILDFLAG(USE_BLINK)
+void BraveWebClient::InitializeFieldTrialAndFeatureList() {
+  main_parts_ = std::make_unique<BraveWebMainParts>(
+      *base::CommandLine::ForCurrentProcess());
+  main_parts_->InitializeFieldTrialAndFeatureList();
+}
+#endif
 
 std::string BraveWebClient::GetUserAgent(web::UserAgentType type) const {
   if (!legacy_user_agent_.empty()) {

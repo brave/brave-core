@@ -9,6 +9,7 @@
 #include "base/json/json_writer.h"
 #include "base/strings/sys_string_conversions.h"
 #include "brave/ios/web_view/internal/cwv_favicon_status_internal.h"
+#include "build/blink_buildflags.h"
 #include "ios/web/common/user_agent.h"
 #include "ios/web/js_messaging/java_script_feature_manager.h"
 #include "ios/web/js_messaging/web_frame_internal.h"
@@ -240,9 +241,14 @@ const CWVUserAgentType CWVUserAgentTypeDesktop =
 }
 
 - (WKWebView*)internalWebView {
+#if BUILDFLAG(USE_BLINK)
+  // The WebState is a ContentWebState backed by Blink; there is no WKWebView.
+  return nil;
+#else
   CRWWebController* web_controller =
       web::WebStateImpl::FromWebState(self.webState)->GetWebController();
   return base::apple::ObjCCast<WKWebView>(web_controller.webView);
+#endif
 }
 
 - (NSURL*)originalRequestURLForLastCommitedNavigation {

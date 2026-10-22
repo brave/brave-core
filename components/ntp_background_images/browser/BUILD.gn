@@ -93,6 +93,9 @@ static_library("browser") {
 
   if (is_ios) {
     deps += [ "//brave/extensions:common" ]
+    if (use_blink) {
+      deps += [ "//content/public/common" ]
+    }
   } else {
     deps += [
       "//content/public/browser",

@@ -31,8 +31,8 @@
 #include "ios/web/public/thread/web_task_traits.h"
 #include "ios/web/public/thread/web_thread.h"
 #else
-#include "content/public/browser/browser_task_traits.h"
-#include "content/public/browser/browser_thread.h"
+#include "content/public/browser/browser_task_traits.h"  // nogncheck
+#include "content/public/browser/browser_thread.h"       // nogncheck
 #endif  // BUILDFLAG(IS_IOS)
 
 namespace p3a {

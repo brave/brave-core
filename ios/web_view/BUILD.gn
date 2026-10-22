@@ -48,6 +48,7 @@ source_set("web_view") {
   ]
   deps = [
     "//base",
+    "//build:blink_buildflags",
     "//components/autofill/core/browser",
     "//components/password_manager/core/browser",
     "//components/ssl_errors",

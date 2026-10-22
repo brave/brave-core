@@ -52,6 +52,7 @@
 #include "brave/ios/browser/web/reader_mode/reader_mode_javascript_feature.h"
 #include "brave/ios/browser/web/text_content_distiller/text_content_distiller_javascript_feature.h"
 #include "brave/ios/browser/youtube/youtube_network_change_observer.h"
+#include "build/blink_buildflags.h"
 #include "components/autofill/core/browser/logging/log_manager.h"
 #include "components/autofill/core/browser/logging/log_router.h"
 #include "components/autofill/ios/browser/autofill_agent.h"
@@ -375,6 +376,14 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
     BraveWebViewHolder::RemoveFromWebState(self.webState);
   }
 
+#if BUILDFLAG(USE_BLINK)
+  // ContentWebState neither detaches from its delegate on destruction nor has
+  // a WKWebView to create from a WebKit configuration.
+  if (self.webState) {
+    self.webState->SetDelegate(nullptr);
+  }
+  wkConfiguration = nil;
+#endif
   [super resetWebStateWithCoder:coder
                 WKConfiguration:wkConfiguration
                  createdWebView:createdWebView];

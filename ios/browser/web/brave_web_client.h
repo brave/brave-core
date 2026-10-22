@@ -10,9 +10,11 @@
 #include <string>
 #include <vector>
 
+#include "build/blink_buildflags.h"
 #include "ios/chrome/browser/web/model/chrome_web_client.h"
 
 @class WKWebViewConfiguration;
+class BraveWebMainParts;
 
 class BraveWebClient : public ChromeWebClient {
  public:
@@ -25,6 +27,9 @@ class BraveWebClient : public ChromeWebClient {
 
   // WebClient implementation.
   std::unique_ptr<web::WebMainParts> CreateWebMainParts() override;
+#if BUILDFLAG(USE_BLINK)
+  void InitializeFieldTrialAndFeatureList() override;
+#endif
   std::string GetUserAgent(web::UserAgentType type) const override;
 
   void AddAdditionalSchemes(Schemes* schemes) const override;
@@ -69,6 +74,11 @@ class BraveWebClient : public ChromeWebClient {
 
  private:
   std::string legacy_user_agent_;
+#if BUILDFLAG(USE_BLINK)
+  // Content creates the main parts after the feature list, which needs the
+  // application context these parts own.
+  std::unique_ptr<BraveWebMainParts> main_parts_;
+#endif
 };
 
 #endif  // BRAVE_IOS_BROWSER_WEB_BRAVE_WEB_CLIENT_H_

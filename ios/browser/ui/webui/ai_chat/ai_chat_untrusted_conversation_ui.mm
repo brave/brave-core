@@ -37,6 +37,7 @@
 #include "brave/ios/web/webui/brave_webui_utils.h"
 #include "components/favicon_base/favicon_url_parser.h"
 #include "components/grit/brave_components_resources.h"
+#include "build/blink_buildflags.h"
 #include "components/grit/brave_components_webui_strings.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
@@ -125,6 +126,10 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
   void BindParentPage(mojo::PendingReceiver<ai_chat::mojom::ParentUIFrame>
                           parent_ui_frame_receiver) override {
     // Route the receiver to the parent frame
+#if BUILDFLAG(USE_BLINK)
+    // ContentWebState doesn't expose the main frame WebUIIOS.
+    return;
+#else
     // We should not be embedded on a non-WebUI page
     auto* main_web_ui = web::WebStateImpl::FromWebState(web_ui_->GetWebState())
                             ->GetMainFrameWebUI();
@@ -139,6 +144,7 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
 
     ai_chat_ui_controller->BindInterfaceParentUIFrame(
         std::move(parent_ui_frame_receiver));
+#endif
   }
 
   void DeleteMemory(const std::string& memory) override {

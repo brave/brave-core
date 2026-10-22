@@ -8,6 +8,7 @@
 #include <optional>
 
 #include "base/check.h"
+#include "build/blink_buildflags.h"
 #import "base/values.h"
 #import "brave/ios/browser/api/web/web_state/web_state+private.h"
 #import "brave/ios/browser/favicon/brave_ios_web_favicon_driver.h"
@@ -166,6 +167,8 @@ void FaviconDriverObserver::OnFaviconUpdated(
         }));
     driver->AddObserver(driver_observer_.get());
 
+    // Faking navigations relies on WebStateImpl, which ContentWebState isn't.
+#if !BUILDFLAG(USE_BLINK)
     web::WebState* web_state = [self.webState internalWebState].get();
     DCHECK(web_state);
 
@@ -180,6 +183,7 @@ void FaviconDriverObserver::OnFaviconUpdated(
     static_cast<web::WebStateImpl*>(web_state)->OnNavigationFinished(
         context.get());
     static_cast<web::WebStateImpl*>(web_state)->OnFaviconUrlUpdated(urls);
+#endif
   }
 }
 @end

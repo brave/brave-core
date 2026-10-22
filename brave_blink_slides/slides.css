@@ -1,0 +1,325 @@
+/* Copyright (c) 2026 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+:root {
+  --ink: #2b2a33;
+  --ink-soft: #5c5a66;
+  --paper: #fbf8f1;
+  --orange: #fb542b;
+  --blue: #3b6fe0;
+  --marker: #ffe36e;
+  --serif: "Iowan Old Style", "Palatino", Georgia, serif;
+  --hand: "Bradley Hand", "Marker Felt", "Comic Sans MS", cursive;
+  --mono: ui-monospace, "SF Mono", Menlo, monospace;
+  --noise: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .35  0 0 0 0 .3  0 0 0 0 .2  0 0 0 .09 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  background: var(--noise), radial-gradient(circle at 50% 40%, #6b5d4b, #3b3229);
+  font-family: var(--serif);
+  color: var(--ink);
+}
+
+/* Designed at 1600x900 and scaled to the window. */
+#deck {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 1600px;
+  height: 900px;
+  transform: translate(-50%, -50%) scale(var(--scale, 1));
+  perspective: 2600px;
+}
+
+/* The pages left underneath the current one. */
+#deck::before, #deck::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--paper);
+  border-radius: 6px;
+  box-shadow: 0 2px 10px #0004;
+}
+#deck::before { transform: rotate(-1.3deg) translate(-6px, 8px); filter: brightness(.93); }
+#deck::after { transform: rotate(.8deg) translate(5px, 4px); filter: brightness(.97); }
+
+.slide {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  padding: 90px 120px;
+  border-radius: 6px;
+  background:
+    var(--noise),
+    linear-gradient(90deg, #0000 96px, #fb542b33 96px 98px, #0000 98px),
+    repeating-linear-gradient(#0000 0 59px, #3b6fe014 59px 60px),
+    var(--paper);
+  box-shadow: 0 1px 2px #0003, 0 18px 50px #0006, inset 0 0 120px #b8a07a22;
+  visibility: hidden;
+  transform-origin: left center;
+  backface-visibility: hidden;
+}
+.slide.active { visibility: visible; z-index: 2; }
+.slide.turn-out, .slide.turn-in { visibility: visible; z-index: 3; }
+.slide.turn-out { animation: page-turn .9s cubic-bezier(.55, .05, .4, 1) forwards; }
+.slide.turn-in { animation: page-turn .9s cubic-bezier(.55, .05, .4, 1) reverse forwards; }
+
+@keyframes page-turn {
+  0% { transform: rotateY(0); box-shadow: 0 18px 50px #0006; filter: brightness(1); }
+  60% { filter: brightness(.85); }
+  100% { transform: rotateY(-105deg); box-shadow: 40px 18px 80px #0000; filter: brightness(.7); }
+}
+
+/* Ink appears line by line once a page is in front. */
+.reveal { opacity: 0; }
+.slide.in .reveal {
+  animation: ink-in .7s cubic-bezier(.2, .7, .2, 1) forwards;
+  animation-delay: calc(var(--i, 0) * 140ms + 250ms);
+}
+@keyframes ink-in {
+  from { opacity: 0; transform: translateY(14px) rotate(-.4deg); filter: blur(3px); }
+  to { opacity: 1; transform: none; filter: none; }
+}
+
+mark {
+  color: inherit;
+  padding: 0 .12em;
+  background: linear-gradient(100deg, #0000 .5%, var(--marker) 2%, var(--marker) 97%, #0000 99%)
+    no-repeat 0 70% / 0% 55%;
+}
+.slide.in mark {
+  animation: highlight .8s ease-out forwards;
+  animation-delay: calc(var(--i, 0) * 140ms + 900ms);
+}
+@keyframes highlight { to { background-size: 100% 55%; } }
+
+h1, h2, h3 { font-weight: 600; letter-spacing: -.01em; margin: 0; }
+h1 { font-size: 120px; line-height: 1.02; }
+h2 { font-size: 64px; margin-bottom: 40px; }
+h2::after {
+  content: "";
+  display: block;
+  width: 180px;
+  height: 10px;
+  margin-top: 10px;
+  background: var(--orange);
+  border-radius: 6px 2px 8px 3px;
+  transform: rotate(-1deg);
+  filter: url(#sketch);
+}
+h3 { font-size: 34px; margin-bottom: 14px; }
+p, li { font-size: 34px; line-height: 1.45; }
+code { font-family: var(--mono); font-size: .78em; background: #2b2a330d; padding: .05em .3em; border-radius: 5px; }
+
+.title { display: flex; flex-direction: column; justify-content: center; }
+.title h1 mark { padding: 0 .08em; }
+.kicker { font-family: var(--hand); font-size: 32px; color: var(--orange); margin: 0 0 18px; }
+.lede { font-size: 44px; color: var(--ink-soft); margin: 30px 0 0; }
+.note { font-family: var(--hand); font-size: 26px; color: var(--ink-soft); }
+.title .note { position: absolute; bottom: 70px; }
+
+ul.ink { padding: 0; margin: 0; list-style: none; }
+ul.ink li { padding-left: 46px; position: relative; margin-bottom: 14px; }
+ul.ink li::before {
+  content: "";
+  position: absolute;
+  left: 6px;
+  top: .62em;
+  width: 18px;
+  height: 18px;
+  border-radius: 50% 40% 55% 45%;
+  background: var(--orange);
+  filter: url(#sketch);
+}
+
+.sticky {
+  font-family: var(--hand);
+  font-size: 30px;
+  line-height: 1.35;
+  width: 340px;
+  padding: 28px 28px 34px;
+  background: linear-gradient(#0000 85%, #0000000d), #fff1a8;
+  box-shadow: 0 10px 20px #0003, 0 2px 3px #0002;
+  rotate: var(--tilt, 0deg);
+}
+.sticky.blue { background: linear-gradient(#0000 85%, #0000000d), #cfe0ff; }
+.sticky.green { background: linear-gradient(#0000 85%, #0000000d), #d4f2d0; }
+.sticky.small { font-size: 24px; width: 420px; margin-top: 30px; }
+.sticky code { font-size: .7em; }
+.slide > .sticky { position: absolute; right: 150px; bottom: 120px; }
+
+.notes { display: flex; gap: 50px; align-items: flex-start; margin-top: 30px; }
+.notes .sticky { width: 400px; }
+.notes .sticky:nth-child(2) { margin-top: 60px; }
+
+.cards { display: flex; gap: 36px; }
+.card {
+  flex: 1;
+  padding: 34px;
+  background: #fffdf8;
+  border: 2px solid var(--ink);
+  border-radius: 12px 18px 10px 16px;
+  box-shadow: 6px 6px 0 #2b2a3322;
+}
+.card p { font-size: 27px; margin: 0 0 18px; }
+.card code { font-size: 18px; display: inline-block; }
+
+.checklist { list-style: none; padding: 0; margin: 0; }
+.checklist li { padding-left: 64px; position: relative; margin-bottom: 18px; }
+.checklist li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: .2em;
+  width: 34px;
+  height: 34px;
+  border: 3px solid var(--blue);
+  border-radius: 4px 7px 5px 8px;
+  filter: url(#sketch);
+}
+
+.diagram { width: 100%; height: 600px; }
+.diagram rect { fill: #fffdf8; stroke: var(--ink); stroke-width: 2.5; filter: url(#sketch); }
+.diagram .muted rect { stroke: var(--ink-soft); stroke-dasharray: 10 8; }
+.diagram .hot rect { stroke: var(--orange); stroke-width: 4; fill: #fff3ee; }
+.diagram text { font-family: var(--serif); font-size: 28px; text-anchor: middle; fill: var(--ink); }
+.diagram text.small { font-family: var(--hand); font-size: 22px; fill: var(--ink-soft); }
+.draw {
+  fill: none;
+  stroke: var(--blue);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-dasharray: 300;
+  stroke-dashoffset: 300;
+  filter: url(#sketch);
+}
+.slide.in .draw { animation: draw 1s ease-out forwards; animation-delay: calc(var(--i, 0) * 140ms + 400ms); }
+@keyframes draw { to { stroke-dashoffset: 0; } }
+
+/* Demo slides: text on the left, the live simulator on the right. */
+.demo { display: flex; gap: 70px; align-items: center; }
+.demo .col { flex: 1; }
+.demo h2 { font-size: 56px; }
+.demo p, .demo li { font-size: 30px; }
+
+.buttons { display: flex; gap: 18px; margin: 34px 0 10px; }
+button {
+  font-family: var(--hand);
+  font-size: 28px;
+  color: var(--paper);
+  background: var(--orange);
+  border: none;
+  border-radius: 14px 10px 16px 8px;
+  padding: 14px 30px;
+  box-shadow: 0 5px 0 #b8381a, 0 8px 18px #0003;
+  cursor: pointer;
+  transition: transform .15s, box-shadow .15s;
+}
+button:hover { transform: translateY(-2px) rotate(-1deg); }
+button:active, button.busy { transform: translateY(4px); box-shadow: 0 1px 0 #b8381a, 0 3px 8px #0003; }
+button.quiet { background: #e9e3d6; color: var(--ink); box-shadow: 0 5px 0 #bfb6a3, 0 8px 18px #0002; }
+
+.log {
+  font-family: var(--mono);
+  font-size: 15px;
+  line-height: 1.5;
+  height: 300px;
+  margin: 24px 0 0;
+  padding: 18px 22px;
+  overflow: hidden;
+  white-space: pre-wrap;
+  word-break: break-all;
+  background: var(--noise), #fffef9;
+  border-left: 3px dashed #d8cfbd;
+  box-shadow: 0 6px 16px #0002;
+  rotate: -.5deg;
+  display: flex;
+  flex-direction: column-reverse;
+}
+.log:empty::before { content: "Nothing running yet."; font-family: var(--hand); font-size: 24px; color: var(--ink-soft); }
+
+.phone {
+  position: relative;
+  flex: none;
+  width: 348px;
+  height: 756px;
+  padding: 12px;
+  background: #1c1b20;
+  border-radius: 56px;
+  box-shadow: 0 0 0 3px #48464f, 0 30px 60px #0006;
+  rotate: 1.5deg;
+}
+.phone img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 44px;
+  background: #2a2930;
+}
+.phone img:not([src]) { visibility: hidden; }
+.phone .offline {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-family: var(--hand);
+  font-size: 26px;
+  color: #9a97a3;
+  pointer-events: none;
+}
+.phone.live .offline { display: none; }
+
+/* Printed faintly into the paper, behind the ink. */
+.watermark {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 560px;
+  translate: -50% -50%;
+  z-index: 4;
+  pointer-events: none;
+  opacity: .16;
+  mix-blend-mode: multiply;
+  rotate: -8deg;
+}
+.watermark svg { display: block; width: 100%; height: auto; overflow: visible; }
+.watermark path { stroke-dasharray: var(--len); stroke-dashoffset: 0; }
+.watermark.drawing path { animation: draw-lion 2.4s ease-in-out both; }
+.watermark.drawing .frame-inner { animation-delay: .4s; }
+.watermark.drawing .feature { animation-delay: .9s; }
+@keyframes draw-lion { from { stroke-dashoffset: var(--len); } to { stroke-dashoffset: 0; } }
+
+#progress {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  height: 4px;
+  width: calc(var(--progress, 0) * 100%);
+  background: var(--orange);
+  transition: width .6s ease;
+}
+#counter {
+  position: absolute;
+  right: 44px;
+  bottom: 28px;
+  z-index: 4;
+  font-family: var(--hand);
+  font-size: 22px;
+  color: var(--ink-soft);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slide.turn-out, .slide.turn-in { animation-duration: .01s; }
+  .slide.in .reveal, .slide.in mark, .slide.in .draw, .watermark.drawing path {
+    animation-duration: .01s;
+    animation-delay: 0s;
+  }
+}

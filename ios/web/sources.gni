@@ -10,3 +10,6 @@ brave_ios_web_web_state_ui_deps =
 # This list is added to //ios/web/public/test:test_fixture
 # DO NOT add anything from `//brave/ios/browser` to this list.
 brave_ios_web_test_fixture_visibility = [ "//brave/ios/web/*" ]
+
+# Additional deps for the //ios/web/content/init target (Blink builds only)
+brave_ios_web_content_init_deps = [ "//brave/ios/web/content:shields" ]

@@ -1,0 +1,498 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Brave on Blink for iOS</title>
+<style>
+  :root {
+    color-scheme: dark;
+    font-family: -apple-system, system-ui, sans-serif;
+    --ok: #3ddc84;
+    --no: #ff5a5f;
+  }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: radial-gradient(circle at 30% 0%, #fb542b55, transparent 60%),
+                radial-gradient(circle at 100% 100%, #6b3cff55, transparent 60%),
+                #111;
+    color: #eee;
+    padding: env(safe-area-inset-top) 18px 40px;
+  }
+  header { text-align: center; padding: 16px 0 12px; }
+  #lion {
+    width: min(80vw, 320px); aspect-ratio: 1; display: block; margin: 0 auto;
+    touch-action: none;
+  }
+  h1 { font-size: 30px; margin: 8px 0 4px; }
+  #engine { font-size: 18px; opacity: .85; }
+  #engine b { color: var(--ok); }
+  ul { list-style: none; padding: 0; margin: 20px 0 0; }
+  li {
+    display: flex; align-items: center; gap: 12px;
+    background: #ffffff10; border-radius: 14px;
+    padding: 12px 14px; margin-bottom: 10px;
+  }
+  .mark { font-size: 22px; width: 24px; text-align: center; }
+  .ok .mark { color: var(--ok); }
+  .no .mark { color: var(--no); }
+  .name { font-weight: 600; }
+  .detail { font-size: 13px; opacity: .7; word-break: break-word; }
+  footer { text-align: center; font-size: 13px; opacity: .6; margin-top: 20px; }
+  h2 { font-size: 22px; margin: 36px 0 0; text-align: center; }
+  .blocked .mark { color: #fb542b; }
+</style>
+</head>
+<body>
+<section data-part="apis">
+<header>
+  <canvas id="lion"></canvas>
+  <div id="drawn" class="detail">Tap the lion</div>
+  <h1>Brave on Blink</h1>
+  <div id="engine">Detecting engine...</div>
+</header>
+<ul id="checks"></ul>
+<footer>Apart from WebGPU, these are Chromium-only APIs. Brave keeps Google's
+  ad-targeting ones off.</footer>
+</section>
+
+<section data-part="proof">
+<h2>How do we know?</h2>
+<ul id="proof"></ul>
+<footer>None of these read the User-Agent string. They test how the engine
+  behaves, which a browser can't fake with a setting.</footer>
+</section>
+
+<section data-part="shields">
+<h2>Shields on Blink's network stack</h2>
+<ul id="shields"></ul>
+<footer>Ad and tracker requests are blocked before they leave the browser.</footer>
+</section>
+
+<section data-part="farbling">
+<h2>Fingerprinting protection</h2>
+<ul id="farbling"></ul>
+<footer>Brave adds tiny per-site noise to these values, so trackers get a
+  different fingerprint on every site and every launch. Open this page via
+  127.0.0.1 instead of localhost to compare.</footer>
+</section>
+
+<script>
+const checks = [
+  ["User-Agent Client Hints", () => {
+    const d = navigator.userAgentData;
+    return d && d.brands.map(b => `${b.brand} ${b.version}`).join(", ");
+  }],
+  ["WebGPU", async () => {
+    if (!navigator.gpu) return false;
+    const adapter = await navigator.gpu.requestAdapter();
+    if (!adapter) return false;
+    const info = adapter.info || {};
+    return [info.vendor, info.architecture].filter(Boolean).join(" ") ||
+           "adapter available";
+  }],
+  ["Prioritized Task Scheduling", () =>
+    typeof scheduler !== "undefined" && "postTask" in scheduler &&
+    "scheduler.postTask()"],
+  ["Compute Pressure", () =>
+    "PressureObserver" in window && "PressureObserver"],
+  ["Battery Status", async () => {
+    if (!navigator.getBattery) return false;
+    const b = await navigator.getBattery();
+    return `${Math.round(b.level * 100)}%${b.charging ? ", charging" : ""}`;
+  }],
+  ["Shared Storage (Privacy Sandbox)", () =>
+    !("sharedStorage" in window) && "turned off by Brave"],
+];
+
+async function runChecks() {
+  const ua = navigator.userAgentData;
+  const blink = ua?.brands.some(b => /Chromium/.test(b.brand));
+  document.getElementById("engine").innerHTML = blink
+    ? "Rendering engine: <b>Blink</b>"
+    : "Rendering engine: WebKit";
+
+  const list = document.getElementById("checks");
+  for (const [name, test] of checks) {
+    let result;
+    try { result = await test(); } catch (e) { result = false; }
+    const li = document.createElement("li");
+    li.className = result ? "ok" : "no";
+    li.innerHTML = `<span class="mark">${result ? "✓" : "✗"}</span>
+      <span><div class="name"></div><div class="detail"></div></span>`;
+    li.querySelector(".name").textContent = name;
+    li.querySelector(".detail").textContent =
+      result ? String(result) : "not available";
+    list.appendChild(li);
+  }
+}
+
+// ---- Proof of engine and platform -------------------------------------------
+
+// Each returns [passed, detail].
+const proofs = [
+  ["JavaScript engine is V8", () => {
+    // V8 writes "at fn (url:line:col)"; JavaScriptCore writes "fn@url:line:col".
+    const frame = (function probe() { return new Error().stack; })()
+      .split("\n").find(line => line.includes("probe")) ?? "";
+    const v8 = /^\s+at probe \(/.test(frame);
+    return [v8, frame.trim() || "no stack"];
+  }],
+  ["Blink-only APIs present", () => {
+    const apis = {
+      "navigator.userAgentData": "userAgentData" in navigator,
+      "navigator.deviceMemory": "deviceMemory" in navigator,
+      "scheduler.postTask": typeof scheduler !== "undefined",
+      "PressureObserver": "PressureObserver" in window,
+    };
+    const have = Object.keys(apis).filter(k => apis[k]);
+    return [have.length === Object.keys(apis).length, have.join(", ") || "none"];
+  }],
+  ["WebKit-only APIs absent", () => {
+    const apis = {
+      "window.webkit": "webkit" in window,
+      "ApplePaySession": "ApplePaySession" in window,
+      "GestureEvent": "GestureEvent" in window,
+      "navigator.standalone": "standalone" in navigator,
+    };
+    const found = Object.keys(apis).filter(k => apis[k]);
+    return [found.length === 0,
+            found.length ? `found ${found.join(", ")}` : Object.keys(apis).join(", ")];
+  }],
+  ["Running on iOS", async () => {
+    const d = await navigator.userAgentData?.getHighEntropyValues(
+      ["platform", "platformVersion", "model"]);
+    if (!d) return [false, "no client hints"];
+    return [d.platform === "iOS",
+            [d.platform, d.platformVersion, d.model].filter(Boolean).join(" ")];
+  }],
+  ["iPhone screen and touch", () => {
+    const touch = navigator.maxTouchPoints;
+    return [touch > 0,
+            `${screen.width}×${screen.height} @${devicePixelRatio}x, ` +
+            `${touch} touch points`];
+  }],
+];
+
+async function runProofs() {
+  const list = document.getElementById("proof");
+  for (const [name, test] of proofs) {
+    let passed, detail;
+    try { [passed, detail] = await test(); }
+    catch (e) { [passed, detail] = [false, e.message]; }
+    const li = document.createElement("li");
+    li.className = passed ? "ok" : "no";
+    li.innerHTML = `<span class="mark">${passed ? "✓" : "✗"}</span>
+      <span><div class="name"></div><div class="detail"></div></span>`;
+    li.querySelector(".name").textContent = name;
+    li.querySelector(".detail").textContent = detail;
+    list.appendChild(li);
+  }
+}
+
+// ---- Dotted lion with waves -------------------------------------------------
+
+const GRID = 56;          // dots across the logo
+const MAX_RIPPLES = 4;
+const ripples = [];       // {x, y, t} in clip space / seconds
+const start = performance.now();
+const now = () => (performance.now() - start) / 1000;
+
+function addRipple(x, y) {
+  ripples.unshift({ x, y, t: now() });
+  ripples.length = Math.min(ripples.length, MAX_RIPPLES);
+}
+
+// Rasterizes the logo and returns one dot per opaque grid cell, in clip space.
+async function loadDots() {
+  const img = new Image();
+  img.src = "/lion.svg";
+  await img.decode();
+  const c = new OffscreenCanvas(GRID, GRID);
+  const g = c.getContext("2d");
+  g.drawImage(img, 0, 0, GRID, GRID);
+  const px = g.getImageData(0, 0, GRID, GRID).data;
+  const dots = [];
+  for (let y = 0; y < GRID; y++) {
+    for (let x = 0; x < GRID; x++) {
+      const i = (y * GRID + x) * 4;
+      if (px[i + 3] < 128) continue;
+      dots.push((x + 0.5) / GRID * 1.8 - 0.9, 0.9 - (y + 0.5) / GRID * 1.8,
+                px[i] / 255, px[i + 1] / 255, px[i + 2] / 255);
+    }
+  }
+  return new Float32Array(dots);
+}
+
+const WGSL = `
+struct U { time: f32, size: f32, count: f32, pad: f32,
+           ripples: array<vec4f, ${MAX_RIPPLES}> };
+@group(0) @binding(0) var<uniform> u: U;
+
+struct VOut {
+  @builtin(position) pos: vec4f,
+  @location(0) uv: vec2f,
+  @location(1) color: vec3f,
+};
+
+fn height(p: vec2f) -> f32 {
+  // Ambient diagonal swell plus tap ripples that fade as they spread.
+  var h = 0.55 * sin(dot(p, vec2f(0.8, 0.6)) * 7.0 - u.time * 3.0);
+  for (var i = 0u; i < u32(u.count); i++) {
+    let r = u.ripples[i];
+    let age = u.time - r.z;
+    let d = length(p - r.xy) - age * 1.4;
+    h += 1.6 * exp(-d * d * 60.0) * exp(-age * 1.1);
+  }
+  return h;
+}
+
+@vertex fn vs(@builtin(vertex_index) v: u32,
+              @location(0) center: vec2f,
+              @location(1) color: vec3f) -> VOut {
+  var corners = array<vec2f, 6>(vec2f(-1, -1), vec2f(1, -1), vec2f(-1, 1),
+                                vec2f(-1, 1), vec2f(1, -1), vec2f(1, 1));
+  let h = height(center);
+  let c = corners[v];
+  var o: VOut;
+  o.pos = vec4f(center + vec2f(0.0, h * 0.02) + c * u.size * (0.75 + 0.35 * h),
+                0.0, 1.0);
+  o.uv = c;
+  o.color = color * (0.75 + 0.4 * h) + vec3f(max(h - 0.8, 0.0) * 0.6);
+  return o;
+}
+
+@fragment fn fs(in: VOut) -> @location(0) vec4f {
+  let r = length(in.uv);
+  let a = 1.0 - smoothstep(0.8, 1.0, r);
+  return vec4f(in.color * a, a);
+}
+`;
+
+function fitCanvas(canvas) {
+  const dpr = devicePixelRatio || 1;
+  canvas.width = canvas.clientWidth * dpr;
+  canvas.height = canvas.clientHeight * dpr;
+}
+
+function listenForTaps(canvas) {
+  canvas.addEventListener("pointerdown", (e) => {
+    const r = canvas.getBoundingClientRect();
+    addRipple((e.clientX - r.left) / r.width * 2 - 1,
+              1 - (e.clientY - r.top) / r.height * 2);
+  });
+  // Keep it moving when nobody is touching it.
+  setInterval(() => addRipple(Math.random() - 0.5, Math.random() - 0.5), 2500);
+}
+
+async function drawWebGPU(canvas, dots) {
+  const adapter = await navigator.gpu?.requestAdapter();
+  const device = await adapter?.requestDevice();
+  if (!device) throw new Error("no WebGPU");
+  const ctx = canvas.getContext("webgpu");
+  const format = navigator.gpu.getPreferredCanvasFormat();
+  ctx.configure({ device, format, alphaMode: "premultiplied" });
+
+  const vbuf = device.createBuffer({
+    size: dots.byteLength,
+    usage: GPUBufferUsage.VERTEX | GPUBufferUsage.COPY_DST });
+  device.queue.writeBuffer(vbuf, 0, dots);
+  const ubuf = device.createBuffer({
+    size: 16 + 16 * MAX_RIPPLES,
+    usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST });
+
+  const module = device.createShaderModule({ code: WGSL });
+  const pipeline = device.createRenderPipeline({
+    layout: "auto",
+    vertex: {
+      module, entryPoint: "vs",
+      buffers: [{
+        arrayStride: 20, stepMode: "instance",
+        attributes: [
+          { shaderLocation: 0, offset: 0, format: "float32x2" },
+          { shaderLocation: 1, offset: 8, format: "float32x3" },
+        ],
+      }],
+    },
+    fragment: {
+      module, entryPoint: "fs",
+      targets: [{
+        format,
+        blend: {
+          color: { srcFactor: "one", dstFactor: "one-minus-src-alpha" },
+          alpha: { srcFactor: "one", dstFactor: "one-minus-src-alpha" },
+        },
+      }],
+    },
+  });
+  const bind = device.createBindGroup({
+    layout: pipeline.getBindGroupLayout(0),
+    entries: [{ binding: 0, resource: { buffer: ubuf } }] });
+
+  const count = dots.length / 5;
+  const uniforms = new Float32Array(4 + 4 * MAX_RIPPLES);
+  const frame = () => {
+    uniforms[0] = now();
+    uniforms[1] = 0.9 / GRID;
+    uniforms[2] = ripples.length;
+    ripples.forEach((r, i) => uniforms.set([r.x, r.y, r.t, 0], 4 + i * 4));
+    device.queue.writeBuffer(ubuf, 0, uniforms);
+
+    const enc = device.createCommandEncoder();
+    const pass = enc.beginRenderPass({ colorAttachments: [{
+      view: ctx.getCurrentTexture().createView(),
+      loadOp: "clear", storeOp: "store", clearValue: [0, 0, 0, 0] }] });
+    pass.setPipeline(pipeline);
+    pass.setBindGroup(0, bind);
+    pass.setVertexBuffer(0, vbuf);
+    pass.draw(6, count);
+    pass.end();
+    device.queue.submit([enc.finish()]);
+    requestAnimationFrame(frame);
+  };
+  requestAnimationFrame(frame);
+  return `${count} dots rendered with WebGPU · tap the lion`;
+}
+
+function draw2D(canvas, dots) {
+  const g = canvas.getContext("2d");
+  const height = (x, y, t) => {
+    let h = 0.55 * Math.sin((x * 0.8 + y * 0.6) * 7 - t * 3);
+    for (const r of ripples) {
+      const age = t - r.t;
+      const d = Math.hypot(x - r.x, y - r.y) - age * 1.4;
+      h += 1.6 * Math.exp(-d * d * 60) * Math.exp(-age * 1.1);
+    }
+    return h;
+  };
+  const frame = () => {
+    const t = now(), w = canvas.width, s = w / 2;
+    g.clearRect(0, 0, w, w);
+    for (let i = 0; i < dots.length; i += 5) {
+      const h = height(dots[i], dots[i + 1], t);
+      const k = 0.75 + 0.4 * h;
+      g.fillStyle = `rgb(${dots[i + 2] * k * 255},${dots[i + 3] * k * 255},` +
+                    `${dots[i + 4] * k * 255})`;
+      g.beginPath();
+      g.arc((dots[i] + 1) * s, (1 - dots[i + 1] - h * 0.02) * s,
+            Math.max(0.1, 0.9 / GRID * (0.75 + 0.35 * h) * s), 0, 7);
+      g.fill();
+    }
+    requestAnimationFrame(frame);
+  };
+  requestAnimationFrame(frame);
+  return `${dots.length / 5} dots rendered with Canvas 2D · tap the lion`;
+}
+
+async function drawLion() {
+  const canvas = document.getElementById("lion");
+  const caption = document.getElementById("drawn");
+  fitCanvas(canvas);
+  listenForTaps(canvas);
+  const dots = await loadDots();
+  try {
+    caption.textContent = await drawWebGPU(canvas, dots);
+  } catch (e) {
+    caption.textContent = draw2D(canvas, dots);
+  }
+}
+
+// ---- Shields ----------------------------------------------------------------
+
+const requests = [
+  ["Google Ads", "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"],
+  ["DoubleClick", "https://securepubads.g.doubleclick.net/tag/js/gpt.js"],
+  ["Google Analytics", "https://www.google-analytics.com/analytics.js"],
+  ["Facebook Pixel", "https://connect.facebook.net/en_US/fbevents.js"],
+  ["Regular site (control)", "https://www.example.com/"],
+];
+
+async function runShields() {
+  const list = document.getElementById("shields");
+  for (const [name, url] of requests) {
+    const li = document.createElement("li");
+    li.innerHTML = `<span class="mark">…</span>
+      <span><div class="name"></div><div class="detail"></div></span>`;
+    li.querySelector(".name").textContent = name;
+    li.querySelector(".detail").textContent = new URL(url).host;
+    list.appendChild(li);
+    const start = performance.now();
+    let loaded;
+    try {
+      await fetch(url, { mode: "no-cors", cache: "no-store" });
+      loaded = true;
+    } catch (e) {
+      loaded = false;
+    }
+    const ms = Math.round(performance.now() - start);
+    li.className = loaded ? "ok" : "blocked";
+    li.querySelector(".mark").textContent = loaded ? "✓" : "✕";
+    li.querySelector(".detail").textContent +=
+      loaded ? ` · loaded in ${ms} ms` : ` · blocked by Shields`;
+  }
+}
+
+async function sha256(data) {
+  const digest = await crypto.subtle.digest("SHA-256", data);
+  return [...new Uint8Array(digest)].slice(0, 8)
+    .map(b => b.toString(16).padStart(2, "0")).join("");
+}
+
+const fingerprints = [
+  ["Canvas", () => {
+    const c = document.createElement("canvas");
+    c.width = 220; c.height = 40;
+    const ctx = c.getContext("2d");
+    ctx.fillStyle = "#fb542b";
+    ctx.fillRect(0, 0, 220, 40);
+    ctx.fillStyle = "#fff";
+    ctx.font = "18px sans-serif";
+    ctx.fillText("Brave fingerprint", 8, 26);
+    return sha256(ctx.getImageData(0, 0, 220, 40).data);
+  }],
+  ["Web Audio", async () => {
+    const ctx = new OfflineAudioContext(1, 5000, 44100);
+    const osc = ctx.createOscillator();
+    osc.type = "triangle";
+    osc.frequency.value = 1000;
+    osc.connect(ctx.destination);
+    osc.start();
+    const buffer = await ctx.startRendering();
+    return sha256(buffer.getChannelData(0).slice(4000));
+  }],
+  ["CPU cores", () => `${navigator.hardwareConcurrency}`],
+  ["Language", () => navigator.languages.join(", ")],
+];
+
+async function runFarbling() {
+  const list = document.getElementById("farbling");
+  for (const [name, test] of fingerprints) {
+    let result;
+    try { result = await test(); } catch (e) { result = `error: ${e.message}`; }
+    const li = document.createElement("li");
+    li.className = "ok";
+    li.innerHTML = `<span class="mark">◈</span>
+      <span><div class="name"></div><div class="detail"></div></span>`;
+    li.querySelector(".name").textContent = name;
+    li.querySelector(".detail").textContent = result;
+    list.appendChild(li);
+  }
+}
+
+// ?apis, ?proof, ?shields or ?farbling shows just that part, for the slides' mirror.
+const only = new URLSearchParams(location.search).keys().next().value ?? "";
+if (document.querySelector(`[data-part="${CSS.escape(only)}"]`)) {
+  for (const part of document.querySelectorAll("[data-part]")) {
+    part.hidden = part.dataset.part !== only;
+  }
+}
+
+runChecks();
+runProofs();
+drawLion();
+runFarbling();
+runShields();
+</script>
+</body>
+</html>

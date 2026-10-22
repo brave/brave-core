@@ -39,6 +39,10 @@ OBJC_EXPORT
 /// Listen to downloaded version changes of resources
 - (void)registerResourcesChanges:(void (^)())callback;
 
+/// Listen to subresource requests blocked by the Blink network stack. Never
+/// called in WebKit builds, which block through content rule lists.
+- (void)registerBlockedRequests:(void (^)(NSURL* requestURL))callback;
+
 /// Update the filter lists
 - (void)updateFilterLists:(void (^)(bool))callback;
 

@@ -6,6 +6,7 @@
 #include "brave/ios/browser/api/web/web_state/web_state_native.h"
 
 #include "base/check.h"
+#include "build/blink_buildflags.h"
 #include "ios/chrome/browser/shared/model/browser/browser.h"
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
 #include "ios/chrome/browser/shared/model/web_state_list/web_state_list.h"
@@ -81,6 +82,8 @@ NativeWebState::~NativeWebState() {
 void NativeWebState::SetTitle(const std::u16string& title) {
   DCHECK(web_state_);
 
+  // Faking navigations relies on WebStateImpl, which ContentWebState isn't.
+#if !BUILDFLAG(USE_BLINK)
   if (web_state_) {
     web::NavigationManager* navigation_manager =
         web_state_->GetNavigationManager();
@@ -101,11 +104,13 @@ void NativeWebState::SetTitle(const std::u16string& title) {
       static_cast<web::WebStateImpl*>(web_state_)->OnTitleChanged();
     }
   }
+#endif
 }
 
 void NativeWebState::SetURL(const GURL& url) {
   DCHECK(web_state_);
 
+#if !BUILDFLAG(USE_BLINK)
   if (web_state_) {
     web::NavigationManagerImpl* navigation_manager =
         static_cast<web::NavigationManagerImpl*>(
@@ -121,6 +126,7 @@ void NativeWebState::SetURL(const GURL& url) {
     navigation_manager->CommitPendingItem();
     static_cast<web::WebStateImpl*>(web_state_)->OnPageLoaded(url, true);
   }
+#endif
 }
 
 base::WeakPtr<web::WebState> NativeWebState::GetWeakWebState() {

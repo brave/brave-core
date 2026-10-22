@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Brave on Blink for iOS</title>
+<link rel="stylesheet" href="/slides.css">
+</head>
+<body>
+<svg width="0" height="0" aria-hidden="true">
+  <filter id="sketch">
+    <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="4"/>
+    <feDisplacementMap in="SourceGraphic" scale="3.5"/>
+  </filter>
+</svg>
+
+<main id="deck">
+
+<section class="slide title">
+  <p class="kicker reveal">Brave Together 2026 · Hack Session</p>
+  <h1 class="reveal">Brave on <mark>Blink</mark><br>for iOS</h1>
+  <p class="lede reveal">Same Brave iOS app. Chromium's engine underneath.</p>
+  <p class="note reveal">← → to move · F for fullscreen</p>
+</section>
+
+<section class="slide">
+  <h2 class="reveal">Why now</h2>
+  <ul class="ink">
+    <li class="reveal">Until iOS 17.4, every iOS browser had to be <mark>WebKit</mark> inside.</li>
+    <li class="reveal">The EU's Digital Markets Act opened the door to other engines
+      through <code>BrowserEngineKit</code>.</li>
+    <li class="reveal">Chromium already builds its iOS content layer on Blink behind
+      <code>use_blink=true</code>.</li>
+    <li class="reveal">So: how much of Brave works if we flip that switch?</li>
+  </ul>
+  <aside class="sticky reveal" style="--tilt: 3deg">One GN flag:<br><code>--gn=use_blink:true</code></aside>
+</section>
+
+<section class="slide">
+  <h2 class="reveal">Where Blink slots in</h2>
+  <svg class="diagram" viewBox="0 0 1200 560">
+    <g class="box reveal"><rect x="250" y="20" width="700" height="80" rx="14"/>
+      <text x="600" y="70">Brave iOS · Swift UI, Shields, NTP, Wallet</text></g>
+    <path class="draw" d="M600 100 V150"/>
+    <g class="box reveal"><rect x="250" y="150" width="700" height="80" rx="14"/>
+      <text x="600" y="200">brave-core · ios/browser (adblock-rust, components)</text></g>
+    <path class="draw" d="M600 230 V280"/>
+    <g class="box reveal"><rect x="250" y="280" width="700" height="80" rx="14"/>
+      <text x="600" y="330">ios/web · the WebState API</text></g>
+    <path class="draw" d="M500 360 L300 430"/>
+    <path class="draw" d="M700 360 L900 430"/>
+    <g class="box muted reveal"><rect x="80" y="430" width="440" height="100" rx="14"/>
+      <text x="300" y="475">today: WKWebView</text>
+      <text x="300" y="510" class="small">content rule lists, user scripts</text></g>
+    <g class="box hot reveal"><rect x="680" y="430" width="440" height="100" rx="14"/>
+      <text x="900" y="475">use_blink: //content + Blink</text>
+      <text x="900" y="510" class="small">network service, renderer, mojo</text></g>
+  </svg>
+</section>
+
+<section class="slide demo">
+  <div class="col">
+    <h2 class="reveal">Let's launch it</h2>
+    <p class="reveal">Brave iOS, built with <code>use_blink</code>, starting
+      up in the simulator.</p>
+    <div class="buttons reveal">
+      <button data-action="launch">Launch the demo</button>
+      <button data-action="stop" class="quiet">Stop</button>
+    </div>
+    <pre class="log reveal" aria-live="polite"></pre>
+  </div>
+  <div class="phone reveal"><img alt="Live simulator screen"><span class="offline">simulator idle</span></div>
+</section>
+
+<section class="slide demo">
+  <div class="col">
+    <h2 class="reveal">The web, as Chromium sees it</h2>
+    <ul class="ink">
+      <li class="reveal"><b>WebGPU</b> renders the lion</li>
+      <li class="reveal"><b>User-Agent Client Hints</b> report Brave</li>
+      <li class="reveal"><b>scheduler.postTask</b>, <b>Compute Pressure</b></li>
+      <li class="reveal">Google's ad APIs stay <mark>off</mark>, as on desktop</li>
+    </ul>
+    <div class="buttons reveal"><button data-open="apis">Show the APIs</button></div>
+  </div>
+  <div class="phone reveal"><img alt="Live simulator screen"><span class="offline">simulator idle</span></div>
+</section>
+
+<section class="slide demo">
+  <div class="col">
+    <h2 class="reveal">Is it really Blink on iOS?</h2>
+    <ul class="ink">
+      <li class="reveal">The User-Agent can lie, so we don't read it.</li>
+      <li class="reveal">Error stacks come out in <mark>V8's</mark> format, not
+        JavaScriptCore's.</li>
+      <li class="reveal">Blink-only APIs are there; WebKit-only ones are not.</li>
+      <li class="reveal">The device reports iOS, an iPhone screen and touch.</li>
+    </ul>
+    <div class="buttons reveal"><button data-open="proof">Prove it</button></div>
+  </div>
+  <div class="phone reveal"><img alt="Live simulator screen"><span class="offline">simulator idle</span></div>
+</section>
+
+<section class="slide demo">
+  <div class="col">
+    <h2 class="reveal">Shields in the network stack</h2>
+    <ul class="ink">
+      <li class="reveal">Every subresource goes through a Brave
+        <code>URLLoaderFactory</code>.</li>
+      <li class="reveal">adblock-rust decides, with the same lists as desktop.</li>
+      <li class="reveal">Blocked requests feed the NTP counter.</li>
+    </ul>
+    <div class="buttons reveal"><button data-open="shields">Show Shields</button></div>
+    <aside class="sticky small reveal" style="--tilt: -2deg">WebKit only gets
+      compiled content rule lists. Here we see every request.</aside>
+  </div>
+  <div class="phone reveal"><img alt="Live simulator screen"><span class="offline">simulator idle</span></div>
+</section>
+
+<section class="slide demo">
+  <div class="col">
+    <h2 class="reveal">Fingerprinting protection</h2>
+    <p class="reveal">Brave's farbling lives inside Blink, so it simply
+      <mark>was not possible</mark> on WebKit.</p>
+    <ul class="ink">
+      <li class="reveal">Canvas and audio get per-site noise</li>
+      <li class="reveal">CPU core count is randomised</li>
+    </ul>
+    <div class="buttons reveal">
+      <button data-open="farbling">localhost</button>
+      <button data-open="farblingOtherSite">127.0.0.1</button>
+    </div>
+    <p class="note reveal">Same page, two sites, two fingerprints.</p>
+  </div>
+  <div class="phone reveal"><img alt="Live simulator screen"><span class="offline">simulator idle</span></div>
+</section>
+
+<section class="slide">
+  <h2 class="reveal">What it took</h2>
+  <div class="cards">
+    <article class="card reveal"><h3>Startup</h3>
+      <p>Upstream dropped Brave's main delegate, so the updater, sync and
+        variations switches never applied.</p>
+      <code>chromium_src/…/ios_content_main_runner.cc</code></article>
+    <article class="card reveal"><h3>Blocking</h3>
+      <p>A URLLoaderFactory wrapper asks adblock-rust before each request.</p>
+      <code>BlinkAdBlocker · WillCreateURLLoaderFactory</code></article>
+    <article class="card reveal"><h3>Farbling</h3>
+      <p>Settings go to each frame over mojo before commit.</p>
+      <code>ShieldsSettingsSender → ShieldsSettingsAgent</code></article>
+  </div>
+</section>
+
+<section class="slide">
+  <h2 class="reveal">Things that bit us</h2>
+  <div class="notes">
+    <aside class="sticky reveal" style="--tilt: -3deg"><b>No components.</b>
+      Lists were requested from Google's updater:
+      <code>error-unknownApplication</code>.</aside>
+    <aside class="sticky blue reveal" style="--tilt: 2deg"><b>Farbling silently off.</b>
+      Blink ignores settings clients whose <code>HasContentSettingsRules()</code>
+      is false.</aside>
+    <aside class="sticky green reveal" style="--tilt: -1deg"><b>Cold-start race.</b>
+      The first request can beat the engine build.</aside>
+  </div>
+</section>
+
+<section class="slide">
+  <h2 class="reveal">Next</h2>
+  <ul class="checklist">
+    <li class="reveal">Per-site Shields toggles and fingerprinting levels</li>
+    <li class="reveal">Per-tab blocked counts in the Shields panel</li>
+    <li class="reveal">Load a cached engine at startup</li>
+    <li class="reveal">Redirect rules and cosmetic filtering</li>
+    <li class="reveal">Memory, battery and binary size</li>
+  </ul>
+</section>
+
+<section class="slide title">
+  <h1 class="reveal">Thank you</h1>
+  <p class="lede reveal">Questions?</p>
+</section>
+
+</main>
+
+<div class="watermark" aria-hidden="true"></div>
+<div id="progress"></div>
+<div id="counter"></div>
+<script type="module" src="/slides.js"></script>
+</body>
+</html>

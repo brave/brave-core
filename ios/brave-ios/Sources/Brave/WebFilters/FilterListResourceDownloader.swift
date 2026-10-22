@@ -40,6 +40,10 @@ import os.log
 
     subscribeToResourceChanges(with: adBlockService)
     subscribeToFilterListChanges(with: adBlockService)
+    // Called on the main thread.
+    adBlockService.registerBlockedRequests { _ in
+      BraveGlobalShieldStats.shared.adblock += 1
+    }
   }
 
   private func subscribeToResourceChanges(with adBlockService: AdblockService) {

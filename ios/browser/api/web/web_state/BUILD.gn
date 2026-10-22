@@ -17,6 +17,7 @@ source_set("web_state") {
 
   deps = [
     "//base",
+    "//build:blink_buildflags",
     "//components/keyed_service/ios",
     "//ios/chrome/browser/sessions/model",
     "//ios/chrome/browser/shared/model/browser",

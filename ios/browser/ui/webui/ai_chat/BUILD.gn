@@ -49,6 +49,7 @@ source_set("ai_chat") {
     "//brave/ios/browser/misc_metrics",
     "//brave/ios/browser/ui/webui:data_sources",
     "//brave/ios/web/webui",
+    "//build:blink_buildflags",
     "//components/favicon/core",
     "//components/favicon_base",
     "//components/keyed_service/core",

@@ -67,7 +67,7 @@
     break;
 
 namespace {
-#if BUILDFLAG(IS_ANDROID)
+#if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_IOS)
 const unsigned int IDS_VR_INFOBAR_TEXT_OVERRIDE = IDS_VR_INFOBAR_TEXT;
 #else
 const unsigned int IDS_VR_PERMISSION_FRAGMENT_OVERRIDE =
@@ -75,7 +75,7 @@ const unsigned int IDS_VR_PERMISSION_FRAGMENT_OVERRIDE =
 #endif
 }  // namespace
 
-#if BUILDFLAG(IS_ANDROID)
+#if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_IOS)
 // For PermissionRequest::GetDialogMessageText
 #undef IDS_VR_INFOBAR_TEXT
 #define IDS_VR_INFOBAR_TEXT     \
@@ -153,7 +153,7 @@ bool PermissionRequest::SupportsLifetime() const {
        RequestType::kBraveOnDeviceSpeechModel,
 #if BUILDFLAG(IS_ANDROID)
        RequestType::kProtectedMediaIdentifier,
-#else
+#elif !BUILDFLAG(IS_IOS)
     RequestType::kRegisterProtocolHandler,
 #endif  // BUILDFLAG(IS_ANDROID)
 #if BUILDFLAG(ENABLE_WIDEVINE)

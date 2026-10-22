@@ -1,0 +1,27 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//build/config/features.gni")
+
+assert(use_blink)
+
+source_set("shields") {
+  sources = [
+    "shields_settings_agent.cc",
+    "shields_settings_agent.h",
+    "shields_settings_sender.cc",
+    "shields_settings_sender.h",
+  ]
+  deps = [
+    "//base",
+    "//brave/components/brave_shields/core/common:mojom",
+    "//content/public/browser",
+    "//content/public/renderer",
+    "//mojo/public/cpp/bindings",
+    "//net",
+    "//third_party/blink/public/common",
+    "//url",
+  ]
+}

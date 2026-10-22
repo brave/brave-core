@@ -1,0 +1,18 @@
+diff --git a/ios/web/content/init/BUILD.gn b/ios/web/content/init/BUILD.gn
+index b27d35da86e092a881a9ba8debc04c44cc9ef188..3d305bceed5235bedfb9f4943d3df49b78d14c3f 100644
+--- a/ios/web/content/init/BUILD.gn
++++ b/ios/web/content/init/BUILD.gn
+@@ -2,6 +2,7 @@
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
+ 
++import("//brave/ios/web/sources.gni")
+ import("//build/config/ios/ios_sdk.gni")
+ 
+ source_set("init") {
+@@ -41,4 +42,5 @@ source_set("init") {
+     "//ios/web/public",
+     "//ios/web/public/init",
+   ]
++  deps += brave_ios_web_content_init_deps
+ }
