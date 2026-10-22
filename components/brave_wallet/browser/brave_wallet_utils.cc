@@ -11,7 +11,6 @@
 #include <utility>
 
 #include "base/check.h"
-#include "base/check_op.h"
 #include "base/containers/span.h"
 #include "base/notreached.h"
 #include "base/strings/strcat.h"
@@ -53,9 +52,6 @@ bool IsDisabledByPolicy(PrefService* prefs) {
   return prefs->IsManagedPreference(kBraveWalletDisabledByPolicy) &&
          prefs->GetBoolean(kBraveWalletDisabledByPolicy);
 }
-
-constexpr const char kEnsRegistryContractAddress[] =
-    "0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e";
 
 mojom::BlockchainTokenPtr NetworkToNativeToken(
     const mojom::NetworkInfo& network) {
@@ -658,12 +654,6 @@ void SetDefaultBaseCryptocurrency(PrefService* prefs,
 
 std::string GetDefaultBaseCryptocurrency(PrefService* prefs) {
   return prefs->GetString(kDefaultBaseCryptocurrency);
-}
-
-std::string GetEnsRegistryContractAddress(std::string_view chain_id) {
-  std::string chain_id_lower = base::ToLowerASCII(chain_id);
-  DCHECK_EQ(chain_id_lower, mojom::kMainnetChainId);
-  return kEnsRegistryContractAddress;
 }
 
 std::vector<mojom::BlockchainTokenPtr> GetAllUserAssets(PrefService* prefs) {

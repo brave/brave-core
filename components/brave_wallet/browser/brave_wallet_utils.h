@@ -77,8 +77,6 @@ void SetDefaultBaseCryptocurrency(PrefService* prefs,
                                   std::string_view cryptocurrency);
 std::string GetDefaultBaseCryptocurrency(PrefService* prefs);
 
-std::string GetEnsRegistryContractAddress(std::string_view chain_id);
-
 mojom::BlockchainTokenPtr GetUserAsset(
     PrefService* prefs,
     mojom::CoinType coin,
