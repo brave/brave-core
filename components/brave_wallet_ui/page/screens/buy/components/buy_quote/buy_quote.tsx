@@ -104,8 +104,8 @@ export const BuyQuote = ({
     (provider) => provider.serviceProvider === serviceProvider,
   )
   const providerImageUrl = useMediaQuery('(prefers-color-scheme: dark)')
-    ? quoteServiceProvider?.logoImages?.darkShortUrl
-    : quoteServiceProvider?.logoImages?.lightShortUrl
+    ? quoteServiceProvider?.darkShortUrl
+    : quoteServiceProvider?.lightShortUrl
 
   return (
     <StyledWrapper

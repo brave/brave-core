@@ -8,13 +8,6 @@ module brave_wallet.mojom;
 import "brave/components/brave_wallet/common/mojom/brave_wallet_common.mojom";
 import "mojo/public/mojom/base/time.mojom";
 
-struct MeldLogoImages {
-  string? dark_url;
-  string? dark_short_url;
-  string? light_url;
-  string? light_short_url;
-};
-
 struct MeldServiceProvider {
   string? name;
   string service_provider;
@@ -22,7 +15,8 @@ struct MeldServiceProvider {
   string? web_site_url;
   array<string> categories;
   map<string, string> category_statuses;
-  MeldLogoImages? logo_images;
+  string? dark_short_url;
+  string? light_short_url;
 };
 
 struct MeldCryptoQuote {
@@ -48,7 +42,8 @@ struct MeldPaymentMethod {
   string payment_method;
   string? name;
   string? payment_type;
-  MeldLogoImages? logo_images;
+  string? dark_url;
+  string? light_url;
 };
 
 struct MeldFiatCurrency {
@@ -65,7 +60,6 @@ struct MeldCryptoCurrency {
   string currency_code;
   string name;
   string chain_code;
-  string chain_name;
   string? contract_address;
   string symbol_image_url;
 };
@@ -73,7 +67,6 @@ struct MeldCryptoCurrency {
 struct MeldCountry {
   string country_code;
   string? name;
-  string? flag_image_url;
 };
 
 struct CryptoBuySessionData {

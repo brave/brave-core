@@ -95,15 +95,16 @@ export const AssetListItem = ({
   onSelect,
   network,
 }: AssetListItemProps) => {
-  const { symbolImageUrl, currencyCode, chainName } = asset
+  const { symbolImageUrl, currencyCode } = asset
 
   // Computed
   const assetSymbol = asset.symbol
+  const chainName = network?.chainName ?? ''
   const networkDescription =
     currencyCode !== ''
       ? getLocale(S.BRAVE_WALLET_PORTFOLIO_ASSET_NETWORK_DESCRIPTION)
           .replace('$1', assetSymbol ?? '')
-          .replace('$2', chainName ?? '')
+          .replace('$2', chainName)
       : chainName
 
   // Methods

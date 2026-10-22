@@ -238,8 +238,8 @@ export const Buy = () => {
                   <div slot='value'>{selectedPaymentMethod.name}</div>
                   {paymentMethods?.map((paymentMethod) => {
                     const logoUrl = isDarkMode
-                      ? paymentMethod.logoImages?.darkUrl
-                      : paymentMethod.logoImages?.lightUrl
+                      ? paymentMethod.darkUrl
+                      : paymentMethod.lightUrl
                     return (
                       <leo-option
                         key={paymentMethod.paymentMethod}
