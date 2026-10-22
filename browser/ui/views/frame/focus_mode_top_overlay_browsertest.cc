@@ -26,6 +26,7 @@
 #include "chrome/browser/ui/views/location_bar/location_bar_view.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_view.h"
+#include "chrome/common/webui_url_constants.h"
 #include "chrome/test/base/chrome_test_path_utils.h"
 #include "chrome/test/base/chrome_test_utils.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -282,6 +283,23 @@ IN_PROC_BROWSER_TEST_F(FocusModeTopOverlayBrowserTest,
   observer.Wait();
   ASSERT_TRUE(observer.last_navigation_succeeded());
   ASSERT_TRUE(active_web_contents()->GetLastCommittedURL().SchemeIsBlob());
+  EXPECT_TRUE(WaitForOverlayActive(false));
+  EXPECT_EQ(top_container->parent(), browser_view());
+
+  // chrome:// (brave://) pages keep the overlay active.
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(),
+                                           GURL(chrome::kChromeUINewTabURL)));
+  EXPECT_TRUE(WaitForOverlayActive(true));
+  EXPECT_EQ(top_container->parent(), overlay);
+
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(),
+                                           GURL(chrome::kChromeUISettingsURL)));
+  EXPECT_TRUE(WaitForOverlayActive(true));
+  EXPECT_EQ(top_container->parent(), overlay);
+
+  // Error pages on chrome:// URLs deactivate the overlay.
+  ASSERT_TRUE(
+      ui_test_utils::NavigateToURL(browser(), GURL("chrome://invalid")));
   EXPECT_TRUE(WaitForOverlayActive(false));
   EXPECT_EQ(top_container->parent(), browser_view());
 }
