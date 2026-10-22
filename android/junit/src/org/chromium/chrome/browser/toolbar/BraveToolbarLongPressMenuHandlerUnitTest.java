@@ -28,10 +28,8 @@ import org.robolectric.shadows.ShadowPackageManager;
 import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.base.supplier.ObservableSuppliers;
 import org.chromium.base.test.BaseRobolectricTestRunner;
-import org.chromium.base.test.util.Features.DisableFeatures;
 import org.chromium.base.test.util.Restriction;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.ui.base.DeviceFormFactor;
@@ -48,7 +46,6 @@ import java.util.function.BooleanSupplier;
 
 /** Unit tests for {@link BraveToolbarLongPressMenuHandler}. */
 @RunWith(BaseRobolectricTestRunner.class)
-@DisableFeatures(ChromeFeatureList.SEND_TAB_TO_SELF_EXTRA_ENTRY_POINTS)
 public final class BraveToolbarLongPressMenuHandlerUnitTest {
     @Rule public MockitoRule mockitoRule = MockitoJUnit.rule();
 
@@ -123,7 +120,7 @@ public final class BraveToolbarLongPressMenuHandlerUnitTest {
 
         ModelList list = mToolbarLongPressMenuHandler.buildMenuItems(true);
 
-        assertEquals(3, list.size());
+        assertEquals(4, list.size());
         assertEquals(
                 ToolbarLongPressMenuHandler.MenuItemType.MOVE_ADDRESS_BAR_TO,
                 list.get(0).model.get(ListMenuItemProperties.MENU_ITEM_ID));
@@ -138,5 +135,8 @@ public final class BraveToolbarLongPressMenuHandlerUnitTest {
         assertEquals(
                 R.id.contextmenu_copy_clean_link,
                 list.get(2).model.get(ListMenuItemProperties.MENU_ITEM_ID));
+        assertEquals(
+                ToolbarLongPressMenuHandler.MenuItemType.SEND_TAB_TO_SELF,
+                list.get(3).model.get(ListMenuItemProperties.MENU_ITEM_ID));
     }
 }
