@@ -52,8 +52,7 @@ public class BraveExternalNavigationHandler extends ExternalNavigationHandler {
             ResolveActivitySupplier resolveActivity,
             GURL browserFallbackUrl,
             GURL intentTargetUrl) {
-        boolean isYoutubeDomain =
-                intentTargetUrl != null && intentTargetUrl.domainIs(BraveConstants.YOUTUBE_DOMAIN);
+        boolean isYoutubeDomain = intentTargetUrl.domainIs(BraveConstants.YOUTUBE_DOMAIN);
         if ((isYoutubeDomain
                         && !BravePrefServiceBridge.getInstance().getPlayYTVideoInBrowserEnabled())
                 || (!isYoutubeDomain
