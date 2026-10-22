@@ -1407,8 +1407,8 @@ made the target URL argument non-null. The check was live before it: the
 two-argument `startActivity()` overload passed a literal null, reaching Brave's
 override from seven internal call sites. The CL changed that argument to
 `GURL.emptyGURL()` and routed the other caller through the new
-`getTargetUrlFromIntent()`, which is non-null on both paths — dropping `@Nullable`
-only documented the result. Behaviour is unchanged either way, since
+`getTargetUrlFromIntent()`, which is non-null on both paths — dropping
+`@Nullable` only documented the result. Behaviour is unchanged either way, since
 `GURL::DomainIs()` returns false for an invalid URL.
 
 - [x] `android/java/org/chromium/chrome/browser/externalnav/BraveExternalNavigationHandler.java:56`:
