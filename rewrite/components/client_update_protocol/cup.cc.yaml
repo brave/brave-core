@@ -12,5 +12,5 @@ substitutions:
       comment, rather than removed, so the guard stays visible. Revert once we
       rotate to an ML-DSA-44 key of our own.
     regex:
-      pattern: "CHECK(public_key->IsMldsa44());"
-      replace: "// CHECK(public_key->IsMldsa44());"
+      pattern: 'CHECK(public_key->IsMldsa44());'
+      replace: '// CHECK(public_key->IsMldsa44());'
