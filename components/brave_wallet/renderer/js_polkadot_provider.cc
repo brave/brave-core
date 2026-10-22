@@ -190,6 +190,7 @@ bool JSPolkadotProvider::EnsureConnected() {
 std::string JSPolkadotProvider::GetVersion() {
   return kVersion;
 }
+
 JSPolkadotProvider* JSPolkadotProvider::ProviderFromCallbackData(
     const v8::FunctionCallbackInfo<v8::Value>& info) {
   JSPolkadotProvider* provider = nullptr;
