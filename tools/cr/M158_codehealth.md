@@ -1403,10 +1403,19 @@ the app menu "Update" item keeps its old intent fallback.
 ### Android: dead null check in `BraveExternalNavigationHandler`
 
 [543e673b21d3](https://chromium.googlesource.com/chromium/src/+/543e673b21d3d65611e526f308562626d08aa824)
-made the target URL argument non-null.
+made the target URL argument non-null. The check was live before it: the
+two-argument `startActivity()` overload passed a literal null, reaching Brave's
+override from seven internal call sites. The CL changed that argument to
+`GURL.emptyGURL()` and routed the other caller through the new
+`getTargetUrlFromIntent()`, which is non-null on both paths — dropping `@Nullable`
+only documented the result. Behaviour is unchanged either way, since
+`GURL::DomainIs()` returns false for an invalid URL.
 
-- [ ] `android/java/org/chromium/chrome/browser/externalnav/BraveExternalNavigationHandler.java:56`:
-      drop `intentTargetUrl != null`
+- [x] `android/java/org/chromium/chrome/browser/externalnav/BraveExternalNavigationHandler.java:56`:
+      drop `intentTargetUrl != null` — done
+- [x] marked the class `@NullMarked`, so the override's nullability is actually
+      checked; needs the three upstream-nullable `startActivity()` parameters
+      annotated to match the supermethod
 
 ## For privacy review
 
