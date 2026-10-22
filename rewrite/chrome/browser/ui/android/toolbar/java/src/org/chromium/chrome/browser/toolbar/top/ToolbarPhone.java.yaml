@@ -79,3 +79,8 @@ substitutions:
     regex:
       re_pattern: '\bprivate\s+final\s+(@ColorInt\s+int\s+mLocationBarBackgroundColorForNtp\b)'
       replace: '\1'
+  - description: |
+      Use Brave's value for mToolbarSidePaddingForNtp
+    regex:
+      pattern: 'R.dimen.toolbar_edge_padding_ntp'
+      replace: 'R.dimen.brave_toolbar_edge_padding_ntp'
