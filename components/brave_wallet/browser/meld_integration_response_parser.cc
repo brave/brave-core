@@ -24,17 +24,6 @@
 
 namespace {
 
-brave_wallet::mojom::MeldLogoImagesPtr ParseMeldLogos(
-    const std::optional<brave_wallet::meld_integration_responses::Logos>&
-        logos) {
-  if (!logos) {
-    return nullptr;
-  }
-
-  return brave_wallet::mojom::MeldLogoImages::New(
-      logos->dark, logos->dark_short, logos->light, logos->light_short);
-}
-
 base::flat_map<std::string, std::string> ParseOptionalMapOfStrings(
     const base::Value& val) {
   base::flat_map<std::string, std::string> result;
@@ -120,13 +109,14 @@ std::optional<std::vector<mojom::MeldServiceProviderPtr>> ParseServiceProviders(
       return std::nullopt;
     }
 
-    auto logos = ParseMeldLogos(service_provider_value->logos);
+    const auto& logos = service_provider_value->logos;
     auto sp = mojom::MeldServiceProvider::New(
         service_provider_value->name, service_provider_value->service_provider,
         service_provider_value->status, service_provider_value->website_url,
         service_provider_value->categories,
         ParseOptionalMapOfStrings(service_provider_value->category_statuses),
-        std::move(logos));
+        logos ? logos->dark_short : std::nullopt,
+        logos ? logos->light_short : std::nullopt);
 
     service_providers.emplace_back(std::move(sp));
   }
@@ -257,10 +247,11 @@ std::optional<std::vector<mojom::MeldPaymentMethodPtr>> ParsePaymentMethods(
       return std::nullopt;
     }
 
-    auto logos = ParseMeldLogos(payment_method_value->logos);
+    const auto& logos = payment_method_value->logos;
     auto pm = mojom::MeldPaymentMethod::New(
         payment_method_value->payment_method, payment_method_value->name,
-        payment_method_value->payment_type, std::move(logos));
+        payment_method_value->payment_type, logos ? logos->dark : std::nullopt,
+        logos ? logos->light : std::nullopt);
 
     payment_methods.emplace_back(std::move(pm));
   }
@@ -348,7 +339,7 @@ std::optional<std::vector<mojom::MeldCryptoCurrencyPtr>> ParseCryptoCurrencies(
         brave_chain->first, std::string(brave_chain->second),
         GetCurrencySymbol(*crypto_currency_value),
         crypto_currency_value->currency_code, crypto_currency_value->name,
-        crypto_currency_value->chain_code, crypto_currency_value->chain_name,
+        crypto_currency_value->chain_code,
         crypto_currency_value->contract_address,
         crypto_currency_value->symbol_image_url);
 
@@ -387,8 +378,7 @@ std::optional<std::vector<mojom::MeldCountryPtr>> ParseCountries(
     }
 
     auto country = mojom::MeldCountry::New(country_value->country_code,
-                                           country_value->name,
-                                           country_value->flag_image_url);
+                                           country_value->name);
 
     countries.emplace_back(std::move(country));
   }
