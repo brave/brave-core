@@ -90,3 +90,16 @@ export const InputColumn = styled.div`
   width: 250px;
   margin-bottom: 28px;
 `
+
+export const WarningModalContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${leo.spacing.xl};
+  padding: ${leo.spacing.xl};
+`
+
+export const WarningModalButtons = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  gap: ${leo.spacing.m};
+`
