@@ -1446,6 +1446,12 @@ void BraveContentBrowserClient::MaybeHideReferrer(
   }
 }
 
+bool BraveContentBrowserClient::IsHandledURL(const GURL& url) {
+  // Keep the brave:// alias out of the external-protocol permission fallback.
+  return url.SchemeIs(content::kBraveUIScheme) ||
+         ChromeContentBrowserClient::IsHandledURL(url);
+}
+
 std::optional<GURL> BraveContentBrowserClient::GetEffectiveURL(
     content::BrowserContext* browser_context,
     const GURL& url) {
