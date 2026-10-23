@@ -213,8 +213,7 @@ DomainMetricTypeIOS const DomainMetricTypeIOSLast28DayMetric =
     DCHECK_CURRENTLY_ON(web::WebThread::UI);
     _profile = profile;
 
-    history_service_ = ios::HistoryServiceFactory::GetForProfile(
-        _profile, ServiceAccessType::EXPLICIT_ACCESS);
+    history_service_ = ios::HistoryServiceFactory::GetForProfile(_profile);
     web_history_service_ =
         ios::WebHistoryServiceFactory::GetForProfile(_profile);
 
@@ -222,8 +221,7 @@ DomainMetricTypeIOS const DomainMetricTypeIOSLast28DayMetric =
 
     _browsingHistoryService = std::make_unique<history::BrowsingHistoryService>(
         _browsingHistoryDriver.get(),
-        ios::HistoryServiceFactory::GetForProfile(
-            _profile, ServiceAccessType::EXPLICIT_ACCESS),
+        ios::HistoryServiceFactory::GetForProfile(_profile),
         web_history_service_, SyncServiceFactory::GetForProfile(_profile),
         /*device_info_tracker=*/nullptr);
   }
