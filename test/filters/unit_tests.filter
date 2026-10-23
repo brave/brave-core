@@ -29,7 +29,7 @@
 -AppMenuModelTest.ProfileSyncBookmarkLimitExceededErrorHiddenTest_*
 -BrowsingHistoryHandlerTest.RequestAccountInfo
 -BrowsingHistoryHandlerTest.SendsUpdatedInfoOnAccountChange
--CanOfferSigninTest.ProfileConnected
+-CanOfferSigninTest.*
 -GlicButtonControllerTest.*
 -GlicEnablingAnchorEntryPointTestBase.*
 -GlicEnablingCombinedObserverTest.*
@@ -49,6 +49,9 @@
 -TabStripActionContainerTest.Glic*
 -TabStripActionContainerTest.SeparatorVisibilityFollowsGlicButton
 -TabStripActionContainerWithToolbarButtonTest.SeparatorHiddenWhenToolbarButtonEnabled
+-WhatsNewHandlerTest.GetServerUrlWithCrossDeviceSigninPromo
+-WhatsNewHandlerTest.NoReloadOnSignoutWithoutCrossDeviceSigninPromo
+-WhatsNewHandlerTest.ReloadsOnSignoutWithCrossDeviceSigninPromo
 
 # These tests fail because we don't use kChromeUINewTabPageThirdPartyURL
 -All/PermissionSubscriptionGeolocationTest.SubscribeUnsubscribeForNewTabPage/*
@@ -764,9 +767,12 @@
 -All/RenderViewContextMenuReadAnythingTest.AppendPageItems/*
 -RenderViewContextMenuExtensionsTest.*
 -RenderViewContextMenuListenToThisPageTest.MenuItemPresentWhenEnabled
--RenderViewContextMenuMenuSimplificationTest.PageMenuSeparators
--RenderViewContextMenuMenuSimplificationTest.PureSelectionLayout
--RenderViewContextMenuMenuSimplificationTest.ReadAnythingOnlyOnceWhenMenuSimplificationAndShuffleExperimentPlaceAtBottom
+
+# These tests don't account for our added context menu items
+# (e.g. Open Link with Tor, Open Link in Container Tab).
+-RenderViewContextMenuOrderTest.*
+-RenderViewContextMenuSimplifiedOrderTest.*
+-RenderViewContextMenuMenuSimplificationTest.*
 
 # These tests fail because it's expected that the generated tabs have
 # suggestions like "Ask Google about this tab", whereas our results have

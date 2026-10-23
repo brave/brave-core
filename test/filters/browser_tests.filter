@@ -534,6 +534,7 @@
 -TabbedMode/NavCaptureParameterizedBrowserTest.VerifyNavCapture/*
 -TabbedMode/NavCaptureTestWith*.VerifyNavCapture/*
 -WebAppNavigationCapturingIntentPickerBrowserTest.*
+-WebAppOriginAssociationLifecycleTest.CancelledLaunchNavigationStillRevalidates
 
 # These tests fail because kPrerender2 feature is disabled.
 -All/AmpPageLoadMetricsBrowserTest.*
@@ -872,7 +873,7 @@
 -All/OidcAuthenticationSigninInterceptorTest.PolicyRecoveryFromPref/1
 -All/OidcAuthenticationSigninInterceptorTest.ProfileCreationThenSwitch/1
 -All/SigninUiUtilExtensionsTest_ReplaceSyncPromosWithSignInPromos.ShowExtensionSigninPrompt/*
--SigninUiUtilExtensionsTest.ShowExtensionSigninPromptReauth
+-SigninUiUtilExtensionsTest.ShowExtensionSigninPrompt*
 -SigninViewControllerSignInBanner*.*
 
 # These tests fail because they expect being signed into the primary account on
@@ -1745,6 +1746,7 @@
 -CopySearchJourneyTabFeatureBrowserTest.*
 -CopyTextJourneysContextMenuBrowserTest.*
 -ExtensionOpenSidePanelViewsToolbarBrowserTest.PinExtensionViaSidePanelJourneyCompletion
+-HistoryClustersHandlerBrowserTest.*
 -HistoryClustersPolicyTest.HistoryClustersVisible
 -HistoryClustersSidePanelCoordinatorBrowserTest.*
 -HistoryClustersSidePanelCoordinatorBrowserTest.ShowRespectsManagedPolicy
