@@ -50,6 +50,13 @@ bool HasLocallyUsedContainerInPrefs(const PrefService& prefs,
 void RemoveLocallyUsedContainerFromPrefs(std::string_view id,
                                          PrefService& prefs);
 
+// Never null; an empty container_id with temporary_container == false means
+// "no container" (the registered default).
+mojom::NewTabDefaultPtr GetNewTabDefaultFromPrefs(const PrefService& prefs);
+
+void SetNewTabDefaultToPrefs(const mojom::NewTabDefaultPtr& new_tab_default,
+                             PrefService& prefs);
+
 // Converts a list of containers to a base::ListValue.
 base::ListValue ConvertContainersToListValue(
     const std::vector<mojom::ContainerPtr>& containers);

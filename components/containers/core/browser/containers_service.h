@@ -94,6 +94,12 @@ class ContainersService : public KeyedService {
   // Whether the Containers controls (menus, management UI) should be shown.
   bool ShouldShowContainerControls() const;
 
+  // The user's "open new tabs in" choice (prefs::kNewTabDefault). The
+  // container_id is cleared whenever that container leaves the synced list,
+  // but callers must still resolve it (GetContainerIdFromContainerSpecifier)
+  // rather than trust it.
+  mojom::NewTabDefaultPtr GetNewTabDefault() const;
+
   // Returns the container id for the given container specifier.
   std::optional<std::string> GetContainerIdFromContainerSpecifier(
       const ContainerSpecifier& container_specifier) const;
@@ -108,6 +114,9 @@ class ContainersService : public KeyedService {
   // do not stay stale (names, icons, etc.). This is called when the synced
   // containers list changes.
   void RefreshLocallyUsedContainersFromSyncedList();
+  // Drops the new-tab default when its container is no longer in the
+  // synced list. Called when the synced containers list changes.
+  void ClearNewTabDefaultIfContainerRemoved();
 
   // Schedules the cleanup of orphaned containers. Orphaned containers are
   // containers that are not referenced by any tab restore or session service.
