@@ -15,7 +15,8 @@ namespace {
 // The Brave publisher key that is accepted in addition to upstream's
 // kPublisherKeyHash. This key may be used to verify updates of the browser
 // itself. If you change this constant, then you will likely also need to change
-// the associated file crx-private-key.der, which is not in Git.
+// the associated file crx-private-key.der, which is not in Git, and crx_pkhash
+// in chromium_src/chrome/updater/branding.gni.
 // Until May 2024, components were only signed with 0x93, 0x74, 0xd6... Since
 // then, they are also signed with this new key. Now, the value here ensures
 // that only binaries signed with the new key are accepted.

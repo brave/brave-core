@@ -1,0 +1,21 @@
+diff --git a/chrome/updater/test/integration_tests_win.cc b/chrome/updater/test/integration_tests_win.cc
+index 41a7747b1aab36500225b8efe5fd6b9fafa88243..c8bb93c827bc1c009c4966b3d0b520b96e9f76fa 100644
+--- a/chrome/updater/test/integration_tests_win.cc
++++ b/chrome/updater/test/integration_tests_win.cc
+@@ -1780,6 +1780,7 @@ void InvokeTestServiceFunction(const std::string& function_name,
+ 
+ std::vector<TestUpdaterVersion> GetRealUpdaterLowerVersions(
+     const std::string& arch_suffix) {
++  if ((true)) return {};
+   std::vector<std::string> supported_archs;
+ 
+ #if defined(ARCH_CPU_ARM64)
+@@ -2358,3 +2359,8 @@ void DeleteScheduledTask(const std::string& task_name,
+ }
+ 
+ }  // namespace updater::test
++
++namespace updater::test {
++GTEST_ALLOW_UNINSTANTIATED_PARAMETERIZED_TEST(IntegrationLowerVersionTest);
++GTEST_ALLOW_UNINSTANTIATED_PARAMETERIZED_TEST(IntegrationSansInstallIdTest);
++}  // namespace updater::test

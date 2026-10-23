@@ -1,0 +1,24 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Name the legacy shutdown event the way our Omaha 3 fork does
+
+      Upstream builds it as "Global\G<name>[<SID>]", like all of its kernel
+      objects. Our fork expects "Global\BraveSoftware[<SID>]<name>". Without
+      this, Omaha 3 processes never see the event and Omaha 4 kills them after
+      a timeout instead of letting them exit.
+    count: 2
+    add_after_line:
+      line:
+        'NamedObjectAttributes attr = GetNamedObjectAttributes(kShutdownEvent,
+        scope);'
+      code: '  attr.name = GetLegacyShutdownEventName(scope);'
+
+  - description: Migrate Omaha 3's `ap` value to a cohort
+    add_before_line:
+      line: 'register_callback.Run(registration);'
+      code: '      MigrateApToCohort(registration);'
