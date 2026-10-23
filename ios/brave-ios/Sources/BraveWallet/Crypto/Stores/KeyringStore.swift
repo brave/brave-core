@@ -594,6 +594,50 @@ public class KeyringStore: ObservableObject, WalletObserverStore {
     return isMnemonicValid
   }
 
+  /// Recovers access to an existing locked wallet using its mnemonic and a new
+  /// password. Unlike `restoreWallet`, this never recreates the wallet from a
+  /// different seed.
+  @MainActor func recoverWallet(
+    words: [String],
+    password: String,
+    isLegacyEthSeedFormat: Bool,
+    allowImportedAccountRemoval: Bool
+  ) async -> BraveWallet.RecoverWalletResult {
+    await recoverWallet(
+      phrase: words.joined(separator: " "),
+      password: password,
+      isLegacyEthSeedFormat: isLegacyEthSeedFormat,
+      allowImportedAccountRemoval: allowImportedAccountRemoval
+    )
+  }
+
+  @MainActor func recoverWallet(
+    phrase: String,
+    password: String,
+    isLegacyEthSeedFormat: Bool,
+    allowImportedAccountRemoval: Bool
+  ) async -> BraveWallet.RecoverWalletResult {
+    guard !isRestoringWallet else {
+      return .internalError
+    }
+    isRestoringWallet = true
+    let result = await keyringService.recoverWallet(
+      mnemonic: phrase,
+      newPassword: password,
+      isLegacyEthSeedFormat: isLegacyEthSeedFormat,
+      allowImportedAccountRemoval: allowImportedAccountRemoval
+    )
+    isRestoringWallet = false
+    if result == .success {
+      passwordToSaveInBiometric = password
+      // Unlike restore, the backup state is owned by the browser side, which marks the wallet
+      // backed up when recovery re-encrypts it.
+      await updateInfo()
+      resetKeychainStoredPassword()
+    }
+    return result
+  }
+
   @MainActor func addPrimaryAccount(
     _ name: String,
     coin: BraveWallet.CoinType,

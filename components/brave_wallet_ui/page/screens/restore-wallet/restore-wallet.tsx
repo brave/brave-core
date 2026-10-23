@@ -6,14 +6,19 @@
 import * as React from 'react'
 import { useHistory, useLocation } from 'react-router'
 import Checkbox from '@brave/leo/react/checkbox'
+import Button from '@brave/leo/react/button'
+import Input, { type InputEventDetail } from '@brave/leo/react/input'
 
 // Types
 import { WalletRoutes } from '../../../constants/types'
 
 // Utils
-import { getLocale } from '../../../../common/locale'
+import { formatLocale, getLocale } from '../../../../common/locale'
 import { copyToClipboard } from '../../../utils/copy-to-clipboard'
-import { useRestoreWalletMutation } from '../../../common/slices/api.slice'
+import {
+  useRecoverWalletMutation,
+  useRestoreWalletMutation,
+} from '../../../common/slices/api.slice'
 import { WalletSelectors } from '../../../common/selectors'
 import { useSafeWalletSelector } from '../../../common/hooks/use-safe-selector'
 
@@ -21,6 +26,7 @@ import { useSafeWalletSelector } from '../../../common/hooks/use-safe-selector'
 import { BackButton } from '../../../components/shared/back-button'
 import { PasswordInput } from '../../../components/shared/password-input'
 import { NavButton } from '../../../components/extension/buttons/nav-button/index'
+import { PopupModal } from '../../../components/desktop/popup-modals'
 
 // Styles
 import {
@@ -32,6 +38,8 @@ import {
   FormWrapper,
   InputColumn,
   FormText,
+  WarningModalButtons,
+  WarningModalContent,
 } from './restore-wallet.style'
 import { Column, Row, Text } from '../../../components/shared/style'
 
@@ -45,28 +53,40 @@ export const RestoreWallet = () => {
 
   // redux
   const isWalletLocked = useSafeWalletSelector(WalletSelectors.isWalletLocked)
+  const isWalletCreated = useSafeWalletSelector(WalletSelectors.isWalletCreated)
 
   // custom hooks
   const {
     hasConfirmedPasswordError,
     hasPasswordError,
     password,
-    onPasswordChanged: handlePasswordChanged,
-    setConfirmedPassword: handleConfirmPasswordChanged,
+    onPasswordChanged,
+    setConfirmedPassword,
     isValid: isPasswordValid,
   } = usePasswordStrength()
 
   // mutations
-  const [restoreWallet, { data: restoreWalletResults }] =
-    useRestoreWalletMutation()
-  const { invalidMnemonic, success: isWalletCreated } =
-    restoreWalletResults || {}
-
+  const [
+    restoreWallet,
+    { data: restoreWalletResults, reset: resetRestoreWallet },
+  ] = useRestoreWalletMutation()
+  const [
+    recoverWallet,
+    { data: recoverWalletResults, reset: resetRecoverWallet },
+  ] = useRecoverWalletMutation()
+  const invalidMnemonic =
+    restoreWalletResults?.invalidMnemonic
+    || recoverWalletResults?.invalidMnemonic
+  const mnemonicMismatch = recoverWalletResults?.mnemonicMismatch
   // state
   const [showRecoveryPhrase, setShowRecoveryPhrase] =
     React.useState<boolean>(false)
   const [isLegacyWallet, setIsLegacyWallet] = React.useState<boolean>(false)
   const [recoveryPhrase, setRecoveryPhrase] = React.useState<string>('')
+  const [showImportedAccountsWarning, setShowImportedAccountsWarning] =
+    React.useState<boolean>(false)
+  const [importedAccountsConfirmation, setImportedAccountsConfirmation] =
+    React.useState<string>('')
 
   // memos
   const isValidRecoveryPhrase = React.useMemo(() => {
@@ -79,6 +99,7 @@ export const RestoreWallet = () => {
 
   // computed
   const isDisabled = !isValidRecoveryPhrase || !isPasswordValid
+  const isRecoveringLockedWallet = isWalletCreated && isWalletLocked
 
   // methods
   const toggleShowRestore = React.useCallback(() => {
@@ -104,7 +125,52 @@ export const RestoreWallet = () => {
     setRecoveryPhrase('')
   }, [toggleShowRestore])
 
+  const clearSubmitResults = React.useCallback(() => {
+    resetRestoreWallet()
+    resetRecoverWallet()
+  }, [resetRestoreWallet, resetRecoverWallet])
+
+  const handlePasswordChanged = React.useCallback(
+    (value: string) => {
+      clearSubmitResults()
+      onPasswordChanged(value)
+    },
+    [clearSubmitResults, onPasswordChanged],
+  )
+
+  const handleConfirmPasswordChanged = React.useCallback(
+    (value: string) => {
+      clearSubmitResults()
+      setConfirmedPassword(value)
+    },
+    [clearSubmitResults, setConfirmedPassword],
+  )
+
+  const performRecover = React.useCallback(
+    async (allowImportedAccountRemoval: boolean) => {
+      const { success, importedAccountsPresent } = await recoverWallet({
+        mnemonic: recoveryPhrase.trimEnd(),
+        password,
+        isLegacy: isLegacyWallet,
+        allowImportedAccountRemoval,
+      }).unwrap()
+      if (importedAccountsPresent) {
+        setShowImportedAccountsWarning(true)
+        return
+      }
+      if (success) {
+        history.push(WalletRoutes.PortfolioAssets)
+      }
+    },
+    [recoverWallet, recoveryPhrase, password, isLegacyWallet, history],
+  )
+
   const onSubmitRestore = React.useCallback(async () => {
+    if (isRecoveringLockedWallet) {
+      await performRecover(false)
+      return
+    }
+
     const { success } = await restoreWallet({
       // added an additional trim here in case the phrase length is
       // 12, 15, 18 or 21 long and has a space at the end.
@@ -117,10 +183,39 @@ export const RestoreWallet = () => {
     if (success) {
       history.push(WalletRoutes.PortfolioAssets)
     }
-  }, [restoreWallet, recoveryPhrase, password, isLegacyWallet, history])
+  }, [
+    isRecoveringLockedWallet,
+    performRecover,
+    restoreWallet,
+    recoveryPhrase,
+    password,
+    isLegacyWallet,
+    history,
+  ])
+
+  const importedAccountsConfirmationPhrase = getLocale(
+    S.BRAVE_WALLET_RECOVERY_IMPORTED_ACCOUNTS_CONFIRMATION_PHRASE,
+  )
+  const hasConfirmedImportedAccountsRemoval =
+    importedAccountsConfirmation === importedAccountsConfirmationPhrase
+
+  const onConfirmImportedAccountsWarning = React.useCallback(() => {
+    if (!hasConfirmedImportedAccountsRemoval) {
+      return
+    }
+    setShowImportedAccountsWarning(false)
+    setImportedAccountsConfirmation('')
+    performRecover(true)
+  }, [hasConfirmedImportedAccountsRemoval, performRecover])
+
+  const onCloseImportedAccountsWarning = React.useCallback(() => {
+    setShowImportedAccountsWarning(false)
+    setImportedAccountsConfirmation('')
+  }, [])
 
   const handleRecoveryPhraseChanged = React.useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
+      clearSubmitResults()
       const value = event.target.value
 
       // This prevents there from being a space at the begining of the phrase.
@@ -144,7 +239,7 @@ export const RestoreWallet = () => {
         setRecoveryPhrase(removePeriod)
       }
     },
-    [recoveryPhrase],
+    [recoveryPhrase, clearSubmitResults],
   )
 
   const handleKeyDown = React.useCallback(
@@ -203,7 +298,14 @@ export const RestoreWallet = () => {
               {getLocale(S.BRAVE_WALLET_RESTORE_ERROR)}
             </ErrorText>
           )}
-
+          {mnemonicMismatch && (
+            <ErrorText
+              textColor='error'
+              variant='small.regular'
+            >
+              {getLocale(S.BRAVE_WALLET_RECOVERY_PHRASE_MISMATCH_ERROR)}
+            </ErrorText>
+          )}
           <Column
             gap='10px'
             margin='0px 0px 50px 0px'
@@ -214,7 +316,10 @@ export const RestoreWallet = () => {
               <Row justifyContent='flex-start'>
                 <Checkbox
                   checked={isLegacyWallet}
-                  onChange={(e) => setIsLegacyWallet(e.checked)}
+                  onChange={(e) => {
+                    clearSubmitResults()
+                    setIsLegacyWallet(e.checked)
+                  }}
                 >
                   <Text
                     textColor='secondary'
@@ -279,6 +384,57 @@ export const RestoreWallet = () => {
           onSubmit={onSubmitRestore}
         />
       </StyledWrapper>
+
+      {showImportedAccountsWarning && (
+        <PopupModal
+          title={getLocale(
+            S.BRAVE_WALLET_RECOVERY_IMPORTED_ACCOUNTS_WARNING_TITLE,
+          )}
+          width='480px'
+          onClose={onCloseImportedAccountsWarning}
+        >
+          <WarningModalContent>
+            <Text
+              textColor='secondary'
+              textAlign='left'
+              variant='default.regular'
+            >
+              {getLocale(
+                S.BRAVE_WALLET_RECOVERY_IMPORTED_ACCOUNTS_WARNING_DESCRIPTION,
+              )}
+            </Text>
+            <Input
+              value={importedAccountsConfirmation}
+              placeholder={importedAccountsConfirmationPhrase}
+              onInput={(detail: InputEventDetail) =>
+                setImportedAccountsConfirmation(detail.value)
+              }
+              size='large'
+            >
+              {formatLocale(
+                S.BRAVE_WALLET_RECOVERY_IMPORTED_ACCOUNTS_CONFIRMATION,
+                { $1: importedAccountsConfirmationPhrase },
+              )}
+            </Input>
+            <WarningModalButtons>
+              <Button
+                kind='plain-faint'
+                onClick={onCloseImportedAccountsWarning}
+              >
+                {getLocale(S.BRAVE_WALLET_BUTTON_CANCEL)}
+              </Button>
+              <Button
+                isDisabled={!hasConfirmedImportedAccountsRemoval}
+                onClick={onConfirmImportedAccountsWarning}
+              >
+                {getLocale(
+                  S.BRAVE_WALLET_RECOVERY_IMPORTED_ACCOUNTS_WARNING_CONFIRM,
+                )}
+              </Button>
+            </WarningModalButtons>
+          </WarningModalContent>
+        </PopupModal>
+      )}
     </Column>
   )
 }

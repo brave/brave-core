@@ -8,6 +8,7 @@ package org.chromium.chrome.browser.crypto_wallet.fragments.onboarding;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatButton;
@@ -66,6 +67,15 @@ public abstract class BaseOnboardingWalletFragment extends BaseWalletNextPageFra
         if (mDialog != null && mDialog.isShowing()) {
             mDialog.dismiss();
         }
+    }
+
+    /**
+     * Shows the given dialog and keeps a reference to it, so that it is dismissed when the fragment
+     * is paused instead of leaking its window across a configuration change.
+     */
+    protected void showDialog(@NonNull final AlertDialog dialog) {
+        mDialog = dialog;
+        dialog.show();
     }
 
     protected void showSkipDialog(final boolean isOnboarding, final int incrementCount) {
