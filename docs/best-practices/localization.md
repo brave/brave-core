@@ -8,6 +8,8 @@ writing style, see the [Brave Style Guide](./style-guide.md).
 
 ## ❌ Don't Add `translateable="true"` on GRD Strings
 
+**File Patterns:** `**/*.{grd,grdp}`
+
 **In `.grdp` string resource files, `translateable="true"` is the default.**
 Never add it explicitly. The tooling only looks for `translateable="false"` when
 excluding strings from translation.
@@ -27,6 +29,8 @@ for UI text.
 <a id="L10N-003"></a>
 
 ## ✅ Provide Sufficient Context in Localization String Descriptions
+
+**File Patterns:** `**/*.{grd,grdp}`
 
 **Localization string descriptions should contain enough context for translators
 who only see the description.** For example, "History" alone might be ambiguous
@@ -58,6 +62,8 @@ Additional requirements for `desc` attributes:
 
 ## ✅ Use `I18nMixinLit` for Localization in Lit Components
 
+**File Patterns:** `**/*.{ts,js}`. WebUI Lit components.
+
 **In Lit-based WebUI components, use `I18nMixinLit` instead of calling
 `loadTimeData.getString()` directly.** The mixin provides consistent i18n
 patterns and is the standard approach.
@@ -67,6 +73,9 @@ patterns and is the standard approach.
 <a id="L10N-005"></a>
 
 ## ❌ Never Modify Upstream GRD/GRDP Files Directly
+
+**File Patterns:** `**/*.{grd,grdp}`,
+`script/lib/l10n/grd_string_replacements.py`
 
 **Never add or modify strings in upstream Chromium GRD/GRDP files** (e.g.,
 `app/generated_resources.grd`, `app/settings_strings.grdp`,
@@ -95,6 +104,9 @@ To customize an upstream string:
 
 ## ✅ Use `grd_string_replacements.py` for Simple Upstream Text Substitutions
 
+**File Patterns:** `**/*.{grd,grdp}`,
+`script/lib/l10n/grd_string_replacements.py`
+
 **For simple word/phrase substitutions across upstream strings in all locales,
 use `brave/script/lib/l10n/grd_string_replacements.py`** with
 `default_replacements` and run `pnpm run chromium_rebase_l10n`. This applies the
@@ -106,6 +118,8 @@ manually edit GRD files or create chromium_src overrides.
 <a id="L10N-007"></a>
 
 ## ✅ Include `formatter_data="webui=X"` Matching the WebUI Component
+
+**File Patterns:** `**/*.{grd,grdp}`
 
 **When adding strings to a WebUI GRDP file, include the
 `formatter_data="webui=ComponentName"` attribute.** The value must exactly match
@@ -127,6 +141,8 @@ constants for the right bundle.
 <a id="L10N-008"></a>
 
 ## ✅ Use SCREAMING_SNAKE_CASE Placeholder Names with Example Tags
+
+**File Patterns:** `**/*.{grd,grdp}`
 
 **Placeholders in GRD/GRDP strings must have descriptive `name` attributes in
 SCREAMING_SNAKE_CASE and include `<ex>` example tags** showing translators what
@@ -192,6 +208,8 @@ hierarchy level.
 
 ## ❌ Never Add Unused Strings to GRD/GRDP Files
 
+**File Patterns:** `**/*.{grd,grdp}`
+
 **Only add strings to GRD/GRDP files when they are actively referenced in the
 codebase.** Every string in a GRD/GRDP file gets sent to translators and
 translated into all supported languages, which costs time and money. If a string
@@ -203,6 +221,9 @@ verify the `IDS_` constant is actually used in the code.
 <a id="L10N-012"></a>
 
 ## ✅ Replace Upstream Product Names with Brave Equivalents During Rebases
+
+**File Patterns:** `**/*.{grd,grdp}`,
+`script/lib/l10n/grd_string_replacements.py`
 
 **During Chromium rebases, review all new strings in upstream GRD/GRDP files for
 Google product references** (Gemini, Google Pay, Chrome, etc.) that need to be
