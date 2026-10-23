@@ -8,44 +8,32 @@
 
 #include <memory>
 
+#include "brave/components/skus/browser/skus_service_impl.h"
 #include "brave/components/skus/common/skus_sdk.mojom.h"
-#include "ios/chrome/browser/shared/model/profile/profile_keyed_service_factory_ios.h"
+#include "ios/chrome/browser/shared/model/profile/typed_profile_keyed_service_factory_ios.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 
 class ProfileIOS;
 class KeyedService;
 
-namespace base {
-template <typename T>
-class NoDestructor;
-}  // namespace base
-
 namespace skus {
 
-class SkusService;
-
-class SkusServiceFactory : public ProfileKeyedServiceFactoryIOS {
+class SkusServiceFactory
+    : public TypedProfileKeyedServiceFactoryIOS<SkusServiceFactory,
+                                                SkusServiceImpl> {
  public:
+  explicit SkusServiceFactory(PassKey key);
+
   // Creates the service if it doesn't exist already for |profile|.
   static mojo::PendingRemote<mojom::SkusService> GetForProfile(
       ProfileIOS* profile);
 
-  static SkusServiceFactory* GetInstance();
-
  private:
-  friend base::NoDestructor<SkusServiceFactory>;
-
-  SkusServiceFactory();
-  ~SkusServiceFactory() override;
-
-  // ProfileKeyedServiceFactoryIOS implementation.
+  // TypedProfileKeyedServiceFactoryIOS:
   std::unique_ptr<KeyedService> BuildServiceInstanceFor(
       ProfileIOS* profile) const override;
   void RegisterProfilePrefs(
       user_prefs::PrefRegistrySyncable* registry) override;
-
-  SkusServiceFactory(const SkusServiceFactory&) = delete;
-  SkusServiceFactory& operator=(const SkusServiceFactory&) = delete;
 };
 
 }  // namespace skus
