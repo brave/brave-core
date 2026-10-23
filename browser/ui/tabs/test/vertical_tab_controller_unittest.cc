@@ -9,11 +9,14 @@
 
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/focus_mode/focus_mode_controller.h"
+#include "brave/browser/ui/focus_mode/focus_mode_prefs.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+#include "chrome/browser/ui/browser_window/test/mock_browser_window_interface.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/tabs/tab_strip_prefs.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/unowned_user_data/unowned_user_data_host.h"
 
@@ -22,6 +25,7 @@ class VerticalTabControllerUnitTest : public testing::Test {
   void SetUp() override {
     tabs::RegisterProfilePrefs(pref_service_.registry());
     brave_tabs::RegisterBraveProfilePrefs(pref_service_.registry());
+    focus_mode::RegisterProfilePrefs(pref_service_.registry());
   }
 
  protected:
@@ -85,7 +89,9 @@ TEST_F(VerticalTabControllerUnitTest, ShouldShowWindowTitleFalseInFocusMode) {
   pref_service_.SetBoolean(brave_tabs::kVerticalTabsEnabled, true);
   pref_service_.SetBoolean(brave_tabs::kVerticalTabsShowTitleOnWindow, true);
 
-  FocusModeController focus_mode_controller(user_data_host_);
+  testing::NiceMock<MockBrowserWindowInterface> mock_browser_window;
+  FocusModeController focus_mode_controller(mock_browser_window,
+                                            &pref_service_);
   auto controller = MakeController(BrowserWindowInterface::TYPE_NORMAL,
                                    &focus_mode_controller);
   EXPECT_TRUE(controller->ShouldShowWindowTitleForVerticalTabs());
