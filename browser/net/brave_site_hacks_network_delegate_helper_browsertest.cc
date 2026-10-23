@@ -110,6 +110,11 @@ class BraveSiteHacksNetworkDelegateBrowserTest : public InProcessBrowserTest {
     } else {
       last_origin_[request.GetURL()] = origin_it->second;
     }
+
+    if (request.method == net::test_server::METHOD_OPTIONS) {
+      last_preflight_origin_[request.GetURL()] =
+          origin_it == request.headers.end() ? "" : origin_it->second;
+    }
   }
 
   HostContentSettingsMap* content_settings() {
@@ -195,6 +200,10 @@ class BraveSiteHacksNetworkDelegateBrowserTest : public InProcessBrowserTest {
   const GURL& onion_iframe_inner_url() { return onion_iframe_inner_url_; }
   const GURL& onion_iframe_outer_url() { return onion_iframe_outer_url_; }
 
+  GURL cross_origin_test_url(std::string_view path) {
+    return https_server_.GetURL("a.com", path);
+  }
+
   const std::string& last_referrer(const GURL& url) {
     base::AutoLock auto_lock(last_headers_lock_);
     GURL::Replacements replacements;
@@ -209,6 +218,14 @@ class BraveSiteHacksNetworkDelegateBrowserTest : public InProcessBrowserTest {
     replacements.SetHostStr("127.0.0.1");
     const GURL internal_url = url.ReplaceComponents(replacements);
     return last_origin_[internal_url];
+  }
+
+  const std::string& last_preflight_origin(const GURL& url) {
+    base::AutoLock auto_lock(last_headers_lock_);
+    GURL::Replacements replacements;
+    replacements.SetHostStr("127.0.0.1");
+    const GURL internal_url = url.ReplaceComponents(replacements);
+    return last_preflight_origin_[internal_url];
   }
 
   content::WebContents* contents(BrowserWindowInterface* browser) {
@@ -246,6 +263,7 @@ class BraveSiteHacksNetworkDelegateBrowserTest : public InProcessBrowserTest {
   GURL onion_iframe_outer_url_;
   std::map<GURL, std::string> last_referrer_;
   std::map<GURL, std::string> last_origin_;
+  std::map<GURL, std::string> last_preflight_origin_;
   mutable base::Lock last_headers_lock_;
 
   base::FilePath test_data_dir_;
@@ -506,6 +524,37 @@ IN_PROC_BROWSER_TEST_F(BraveSiteHacksNetworkDelegateBrowserTest,
   EXPECT_EQ(last_origin(image_url("7")), "");  // nocors
   EXPECT_EQ(last_referrer(image_url("8")), "");
   EXPECT_EQ(last_origin(image_url("8")), "null");
+}
+
+IN_PROC_BROWSER_TEST_F(BraveSiteHacksNetworkDelegateBrowserTest,
+                       OnionPreflightOrigin) {
+  net::ProxyConfigServiceTor::SetBypassTorProxyConfigForTesting(true);
+  tor::TorNavigationThrottle::SetSkipWaitForTorConnectedForTesting(true);
+  BrowserWindowInterface* tor_browser =
+      TorProfileManager::SwitchToTorProfile(browser()->GetProfile());
+
+  GURL::Replacements replacements;
+  replacements.SetQueryStr("preflight");
+  const GURL cross_origin_url =
+      reflect_referrer_cross_origin_url().ReplaceComponents(replacements);
+
+  NavigateToURLAndWaitForRedirects(tor_browser, images_url(), images_url());
+  EXPECT_EQ("blocked", content::EvalJs(contents(tor_browser),
+                                       content::JsReplace(
+                                           "fetch($1, {method: 'PUT'}).then("
+                                           "() => 'allowed', () => 'blocked')",
+                                           cross_origin_url)));
+  EXPECT_EQ(last_preflight_origin(cross_origin_url), "null");
+
+  // The CORS check runs against the same opaque origin the request sent.
+  const GURL allow_null_origin_url =
+      cross_origin_test_url("/set-header?Access-Control-Allow-Origin: null");
+  EXPECT_EQ("allowed", content::EvalJs(contents(tor_browser),
+                                       content::JsReplace(
+                                           "fetch($1).then("
+                                           "() => 'allowed', () => 'blocked')",
+                                           allow_null_origin_url)));
+  EXPECT_EQ(last_origin(allow_null_origin_url), "null");
 }
 
 IN_PROC_BROWSER_TEST_F(BraveSiteHacksNetworkDelegateBrowserTest,

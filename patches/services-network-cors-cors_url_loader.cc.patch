@@ -1,13 +1,25 @@
 diff --git a/services/network/cors/cors_url_loader.cc b/services/network/cors/cors_url_loader.cc
-index 237985a6c1563facaa22fa58f60c4e75408cbb3b..e53212e8460a9d12a78de6e89118bc0aa0adba44 100644
+index 237985a6c1563facaa22fa58f60c4e75408cbb3b..42abdcd2fef3a5ea4f1ae0904afa155c024013ca 100644
 --- a/services/network/cors/cors_url_loader.cc
 +++ b/services/network/cors/cors_url_loader.cc
-@@ -1230,7 +1230,7 @@ void CorsURLLoader::MaybeSetOriginHeader(
-     return;
-   }
+@@ -930,6 +930,10 @@ void CorsURLLoader::OnReceiveResponse(
+ }
  
--  std::string origin_value = tainted_
-+  std::string origin_value = tainted_ || IsCrossOriginOnionRequest(request_)
-                                  ? url::Origin().Serialize()
-                                  : request_.request_initiator->Serialize();
-   if (headers_update_params) {
+ void CorsURLLoader::CheckTainted(const net::RedirectInfo& redirect_info) {
++  if (IsCrossOriginOnionRequest(request_.request_initiator,
++                                redirect_info.new_url)) {
++    tainted_ = true;
++  }
+   // If `actualResponse`’s location URL’s origin is not same origin with
+   // `request`’s current url’s origin and `request`’s origin is not same origin
+   // with `request`’s current url’s origin, then set `request`’s tainted origin
+@@ -1243,6 +1247,9 @@ void CorsURLLoader::MaybeSetOriginHeader(
+ }
+ 
+ void CorsURLLoader::StartRequest() {
++  if (IsCrossOriginOnionRequest(request_.request_initiator, request_.url)) {
++    tainted_ = true;
++  }
+   TRACE_EVENT("loading", "CorsURLLoader::StartRequest",
+               net::NetLogWithSourceToFlow(net_log_));
+   if (fetch_cors_flag_ && !skip_cors_enabled_scheme_check_ &&
