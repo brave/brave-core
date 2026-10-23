@@ -9,32 +9,24 @@
 #include <memory>
 
 #include "brave/ios/browser/keyed_service/keyed_service_factory_wrapper.h"
-#include "ios/chrome/browser/shared/model/profile/profile_keyed_service_factory_ios.h"
-
-namespace base {
-template <typename T>
-class NoDestructor;
-}  // namespace base
+#include "brave/components/url_sanitizer/core/browser/url_sanitizer_service.h"
+#include "ios/chrome/browser/shared/model/profile/typed_profile_keyed_service_factory_ios.h"
 
 class KeyedService;
 class ProfileIOS;
 
 namespace brave {
-class URLSanitizerService;
 
-class URLSanitizerServiceFactory : public ProfileKeyedServiceFactoryIOS {
+class URLSanitizerServiceFactory
+    : public TypedProfileKeyedServiceFactoryIOS<URLSanitizerServiceFactory,
+                                                URLSanitizerService> {
  public:
   static brave::URLSanitizerService* GetServiceForState(ProfileIOS* profile);
 
-  static URLSanitizerServiceFactory* GetInstance();
+  explicit URLSanitizerServiceFactory(PassKey key);
 
  private:
-  friend base::NoDestructor<URLSanitizerServiceFactory>;
-
-  URLSanitizerServiceFactory();
-  ~URLSanitizerServiceFactory() override;
-
-  // ProfileKeyedServiceFactoryIOS implementation.
+  // TypedProfileKeyedServiceFactoryIOS implementation.
   std::unique_ptr<KeyedService> BuildServiceInstanceFor(
       ProfileIOS* profile) const override;
 };
