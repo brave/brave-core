@@ -73,16 +73,19 @@ jobs:
           This PR is created to run CI on the changes proposed in PR #$pr_number by @$headRepositoryOwnerLogin.
 
           **This PR should not be merged.**")
-            ci_pr_number=$(gh pr list -H "$contribHeadRefName" --json number -q '.[0].number')
+            ci_pr_number="${ci_pr_url##*/}"
 
             if ! pr_body=$(gh pr view "$pr_number" --json body -q '.body // ""'); then
               echo "Failed to get body for PR #$pr_number"
               exit 1
             fi
-            if ! gh pr edit "$pr_number" --body \
-          "$pr_body
 
-          Resolves $ci_pr_url"; then
+            # gh pr edit queries reviewRequests and fails when the token cannot
+            # read a requested reviewer. The issues API updates the body only.
+            pr_body_file="$(mktemp)"
+            printf '%s\n\nResolves %s\n' "$pr_body" "$ci_pr_url" > "$pr_body_file"
+            if ! jq -n --rawfile body "$pr_body_file" '{body: $body}' \
+              | gh api --method PATCH "repos/${GITHUB_REPOSITORY}/issues/${pr_number}" --input - > /dev/null; then
               echo "Failed to add CI PR link to PR #$pr_number"
               exit 1
             fi
