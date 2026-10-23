@@ -11,7 +11,11 @@ source_set("common") {
     "scriptlet_constants.h",
   ]
 
-  deps = [ "//third_party/abseil-cpp:absl" ]
+  deps = [
+    "//base",
+    "//brave/components/cosmetic_filters/resources/data:scriptlet_globals_generated_resources",
+    "//ui/base",
+  ]
 }
 
 mojom("mojom") {
