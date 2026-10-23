@@ -1,0 +1,12 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+blank_macros_for_ast_parsing: true
+
+substitutions:
+  - description: Declare the Brave TorMode setter.
+    add_to_public:
+      class_name: NetworkContext
+      code: 'void SetTorMode(mojom::TorMode tor_mode) override;'

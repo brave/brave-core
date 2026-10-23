@@ -9,6 +9,8 @@ assert(enable_tor)
 
 source_set("tor") {
   sources = [
+    "onion_hostname_resolution_updater.h",
+    "onion_hostname_resolution_updater_factory.h",
     "tor_profile_manager.h",
     "tor_profile_service_factory.h",
   ]
@@ -18,12 +20,17 @@ source_set("tor") {
     "//brave/components/tor:common",
     "//chrome/browser/profiles:profile",
     "//components/keyed_service/content",
+    "//components/keyed_service/core",
+    "//components/prefs",
+    "//services/network/public/mojom",
     "//url",
   ]
 }
 
 source_set("impl") {
   sources = [
+    "onion_hostname_resolution_updater.cc",
+    "onion_hostname_resolution_updater_factory.cc",
     "tor_profile_manager.cc",
     "tor_profile_service_factory.cc",
   ]
@@ -50,6 +57,7 @@ source_set("impl") {
     "//components/safe_browsing/core/common:safe_browsing_prefs",
     "//components/user_prefs",
     "//content/public/browser",
+    "//services/network/public/mojom",
     "//url",
   ]
 }

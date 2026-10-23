@@ -1,0 +1,39 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module network.mojom;
+
+// How a network context treats Tor and .onion hostnames. Mirrors
+// net::URLRequestContext::TorMode. This describes the context only; it is
+// unrelated to the policy that disables Brave's Tor windows, which leaves a
+// context's TorMode as it is.
+[BraveAdd]
+enum TorMode {
+  // The context belongs to a Tor profile. .onion requests go through the Tor
+  // proxy, so the host resolver does not block them.
+  kEnabled,
+  // The context is not Tor, and .onion may only be reached from Tor windows
+  // ("Only resolve .onion addresses in Tor windows" on). .onion lookups fail
+  // before they reach the system resolver or DoH.
+  kDisabled,
+  // The context is not Tor, and .onion is allowed outside Tor windows, e.g.
+  // through a Tor proxy running outside Brave. .onion hostnames resolve like
+  // any other.
+  kPassthrough,
+};
+
+[BraveExtend]
+struct NetworkContextParams {
+  // kDisabled by default so that only contexts the embedder explicitly allows
+  // can send .onion names to a DNS resolver.
+  TorMode tor_mode = TorMode.kDisabled;
+};
+
+[BraveExtend]
+interface NetworkContext {
+  // Sets the context's TorMode, e.g. when the "Only resolve .onion addresses
+  // in Tor windows" setting changes.
+  SetTorMode(TorMode tor_mode);
+};

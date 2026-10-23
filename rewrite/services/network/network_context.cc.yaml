@@ -1,0 +1,13 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: Apply the TorMode param to the new request context.
+    add_after_line:
+      line:
+        'url_request_context_ =
+        url_request_context_owner_.url_request_context.get();'
+      code: |2-
+          SetTorMode(params_->tor_mode);
