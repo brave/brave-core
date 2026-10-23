@@ -174,7 +174,11 @@ void ShieldsPanelDataHandler::SetBraveShieldsEnabled(bool is_enabled) {
     return;
   }
 
-  active_shields_data_controller_->SetBraveShieldsEnabled(is_enabled);
+  // When disabling Shields, defer page reload and show a reload infobar
+  // to avoid destructive reload on stateful sites (issue #57989).
+  // When enabling Shields, reload immediately to apply full protections.
+  active_shields_data_controller_->SetBraveShieldsEnabled(
+      is_enabled, /*reload_contents=*/is_enabled);
 }
 
 void ShieldsPanelDataHandler::SetBraveShieldsAdBlockOnlyModeEnabled(

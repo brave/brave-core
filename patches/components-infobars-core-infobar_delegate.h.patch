@@ -18,6 +18,7 @@ index 5c0c180b10215c9f809b40d6e78e90ff2949021a..e672f8009ba71f0dfeb6bab94d88e008
 +    SEARCH_RESULT_AD_CLICKED_INFOBAR_DELEGATE = 510,
 +    NEW_TAB_TAKEOVER_INFOBAR_DELEGATE = 511,
 +    BRAVE_PSST_INFOBAR_DELEGATE = 512,
++    BRAVE_SHIELDS_RELOAD_INFOBAR_DELEGATE = 513,
    };
    // LINT.ThenChange(//tools/metrics/histograms/metadata/browser/enums.xml:InfoBarIdentifier)
  
