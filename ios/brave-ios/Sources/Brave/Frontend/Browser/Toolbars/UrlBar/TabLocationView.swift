@@ -485,6 +485,12 @@ class TabLocationView: UIView {
       for: 44,
       compatibleWith: toolbarTraitCollection
     )
+    walletButton.snp.remakeConstraints {
+      $0.width.equalTo(width)
+    }
+    playlistButton.snp.remakeConstraints {
+      $0.width.equalTo(width)
+    }
     reloadButton.snp.remakeConstraints {
       $0.width.equalTo(width)
     }
