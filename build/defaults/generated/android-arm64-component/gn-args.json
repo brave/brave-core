@@ -1,0 +1,26 @@
+{
+  "gn_args": {
+    "branding_path_component": "brave",
+    "branding_path_product": "brave",
+    "disable_android_lint": false,
+    "disable_fieldtrial_testing_config": true,
+    "enable_hevc_parser_and_hw_decoder": true,
+    "enable_mdns": true,
+    "enable_platform_hevc": true,
+    "enable_precompiled_headers": false,
+    "enable_pseudolocales": false,
+    "enable_widevine": true,
+    "ffmpeg_branding": "Chrome",
+    "ignore_missing_widevine_signing_cert": false,
+    "is_component_build": true,
+    "is_debug": false,
+    "proprietary_codecs": true,
+    "root_extra_deps": [
+      "//brave"
+    ],
+    "safe_browsing_mode": 2,
+    "target_cpu": "arm64",
+    "target_os": "android",
+    "translate_genders": false
+  }
+}
