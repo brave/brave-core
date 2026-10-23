@@ -158,6 +158,27 @@ public class CustomizeBraveMenuTest {
     }
 
     @Test
+    public void testApplyCustomization_PreservesSiteControlsItem() {
+        PropertyModel siteControlsItem =
+                new PropertyModel.Builder(AppMenuItemProperties.ALL_KEYS)
+                        .with(AppMenuItemProperties.MENU_ITEM_ID, R.id.info_menu_id)
+                        .with(AppMenuItemProperties.TITLE, "Site controls")
+                        .build();
+        mModelList.add(
+                new MVCListAdapter.ListItem(
+                        AppMenuHandler.AppMenuItemType.STANDARD, siteControlsItem));
+
+        // Site controls is not offered as a customizable item, so a hidden preference can only
+        // come from a stale or hand-edited value; it must not drop the item.
+        ChromeSharedPreferences.getInstance()
+                .writeBoolean(getMenuItemPrefKey(R.id.info_menu_id), false);
+
+        CustomizeBraveMenu.applyCustomization(mResources, mModelList);
+
+        assertEquals(1, mModelList.size());
+    }
+
+    @Test
     public void testSanitizeSeparators_RemovesLeadingSeparators() {
         // Add leading separators.
         mModelList.add(

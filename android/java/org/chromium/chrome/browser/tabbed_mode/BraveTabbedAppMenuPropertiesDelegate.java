@@ -1098,8 +1098,7 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
      * Puts Brave's share icon into the app menu icon row.
      *
      * <p>The row renders five icons at most. Forward is the navigation icon Brave keeps, as back is
-     * already served by the system back gesture. The page info icon is dropped as well, as Brave
-     * keeps page info in the menu list instead.
+     * already served by the system back gesture.
      */
     private void putShareIconIntoIconRow(MVCListAdapter.ModelList modelList) {
         for (int i = 0; i < modelList.size(); ++i) {
@@ -1108,7 +1107,7 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
 
             MVCListAdapter.ModelList icons =
                     modelList.get(i).model.get(AppMenuItemProperties.ADDITIONAL_ICONS);
-            maybeRemoveMenuItems(icons, R.id.back_menu_id, R.id.info_menu_id);
+            maybeRemoveMenuItems(icons, R.id.back_menu_id);
 
             PropertyModel shareIcon =
                     AppMenuItemUtils.buildModelForIcon(
