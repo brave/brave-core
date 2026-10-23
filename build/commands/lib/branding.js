@@ -98,8 +98,70 @@ const update = () => {
     path.join(chromeComponentsDir, 'strings'),
   ])
   fileMap.add([
+    path.join(config.braveCoreDir, 'extensions', 'strings'),
+    path.join(config.srcDir, 'extensions', 'strings'),
+  ])
+  fileMap.add([
     braveAndroidJavaStringsTranslationsDir,
     chromeAndroidJavaStringsTranslationsDir,
+  ])
+  fileMap.add([
+    path.join(
+      config.braveCoreDir,
+      'ui',
+      'android',
+      'java',
+      'strings',
+      'translations',
+    ),
+    path.join(
+      config.srcDir,
+      'ui',
+      'android',
+      'java',
+      'strings',
+      'translations',
+    ),
+  ])
+  fileMap.add([
+    path.join(
+      config.braveCoreDir,
+      'components',
+      'permissions',
+      'android',
+      'translations',
+    ),
+    path.join(
+      config.srcDir,
+      'components',
+      'permissions',
+      'android',
+      'translations',
+    ),
+  ])
+  fileMap.add([
+    path.join(
+      config.braveCoreDir,
+      'chrome',
+      'browser',
+      'keyboard_accessory',
+      'android',
+      'internal',
+      'java',
+      'strings',
+      'translations',
+    ),
+    path.join(
+      config.srcDir,
+      'chrome',
+      'browser',
+      'keyboard_accessory',
+      'android',
+      'internal',
+      'java',
+      'strings',
+      'translations',
+    ),
   ])
   fileMap.add([
     braveAndroidTabUiJavaStringsTranslationsDir,

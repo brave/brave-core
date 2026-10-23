@@ -1,0 +1,28 @@
+<?xml version="1.0" ?>
+<!DOCTYPE translationbundle>
+<translationbundle lang="fr-CA">
+<translation id="5725339460980108526">Lorsque vous êtes en mode Navigation privée, Brave empêche les sites d'utiliser des témoins tiers</translation>
+<translation id="1365023215312302966">Les sites ne peuvent pas utiliser de témoins tiers pour personnaliser le contenu et les annonces ni pour connaître les actions que vous effectuez sur d'autres sites.</translation>
+<translation id="7271018957317922139">Lorsque vous êtes en mode Navigation privée, les sites ne peuvent pas utiliser de témoins tiers. Si un site qui dépend de ces témoins ne fonctionne pas, vous pouvez <ph name="BEGIN_LINK"/>essayer de lui accorder un accès temporaire aux témoins tiers<ph name="END_LINK"/>.</translation>
+<translation id="2004697686368036666">Les fonctionnalités de certains sites peuvent ne pas fonctionner.</translation>
+<translation id="2183376768278472507">Si un site ne fonctionne pas comme prévu, vous pouvez essayer d'autoriser les témoins tiers pour celui-ci en particulier.</translation>
+<translation id="2235344399760031203">Les témoins tiers sont bloqués</translation>
+<translation id="2360633687155619995">Les sites ne peuvent pas utiliser de témoins tiers pour personnaliser le contenu et les annonces ni pour connaître les actions que vous effectuez sur d'autres sites. Certaines fonctionnalités du site peuvent ne pas fonctionner comme prévu.</translation>
+<translation id="2496115946829713659">Les sites peuvent utiliser des témoins tiers pour personnaliser le contenu et les annonces, et connaître les actions que vous effectuez sur d'autres sites.</translation>
+<translation id="7220743783949410550">Lorsque vous êtes en mode Navigation privée, les sites ne peuvent pas utiliser de témoins tiers. Si un site qui dépend de ces témoins ne fonctionne pas, vous pouvez <ph name="START_LINK"/>essayer de lui accorder un accès temporaire aux témoins tiers<ph name="END_LINK"/>.</translation>
+<translation id="3425311689852411591">Les sites qui font appel à des témoins tiers devraient fonctionner comme prévu.</translation>
+<translation id="3624583033347146597">Choisissez vos préférences en matière de témoins tiers</translation>
+<translation id="3918378745482005425">Certaines fonctionnalités peuvent ne pas fonctionner. Les sites connexes peuvent toujours utiliser des témoins tiers.</translation>
+<translation id="4278390842282768270">Autorisés</translation>
+<translation id="4412992751769744546">Autoriser les témoins tiers</translation>
+<translation id="4711259472133554310">Vous pouvez créer des exceptions dans les paramètres pour toujours autoriser des sites en particulier à utiliser des témoins tiers.</translation>
+<translation id="5677928146339483299">Bloqués</translation>
+<translation id="6196640612572343990">Bloquer les témoins de tiers</translation>
+<translation id="6308169245546905162">Les sites peuvent utiliser des témoins tiers pour connaître les actions que vous effectuez sur d'autres sites.</translation>
+<translation id="7315780377187123731">En savoir plus sur l'option Bloquer les témoins tiers</translation>
+<translation id="7374493521304367420">Les sites peuvent toujours utiliser des témoins pour voir l'activité de navigation sur leur propre site.</translation>
+<translation id="7453144832830554937">Les fonctionnalités du site qui font appel à des témoins tiers peuvent ne pas fonctionner.</translation>
+<translation id="7538480403395139206">En savoir plus sur l'option Autoriser les témoins tiers</translation>
+<translation id="8200078544056087897">Les fonctionnalités du site qui font appel à des témoins tiers devraient fonctionner comme prévu.</translation>
+<translation id="839994149685752920">Les sites peuvent utiliser des témoins tiers pour personnaliser le contenu et les annonces.</translation>
+</translationbundle>

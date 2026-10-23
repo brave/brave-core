@@ -76,6 +76,74 @@ fixup_replacements = [
 ]
 
 
+# Declined or mistyped brand forms that the language-agnostic rules above miss,
+# keyed by locale. Applied to XTB translations after the rules above.
+language_branding_replacements = {
+    'cs': [(r'\bChromu\b', r'Brave')],
+    # Skip chrome:// and chrome-untrusted:// URLs and paths such as /chrome.
+    'fa': [(r'(?<![/.\-])\bchrome\b(?![:\-./])', r'Brave')],
+    # Chromium's translation starts with a Cyrillic C.
+    'ky': [(r'\u0421hrome', r'Brave')],
+    'sl': [
+        (r'Brave Chroma\b', r'Brave'),
+        (r'\bChroma\b', r'Brave'),
+        (r'\bChromov\b', r'Braveov'),
+    ],
+}
+
+
+# Descriptions for messages that Chromium leaves without one, so translators
+# get context. Descriptions do not affect translation ids.
+missing_descriptions = {
+    'IDS_EXTENSION_EXTERNAL_INITIAL_INSTALL_PROMPT_TITLE_EXTENSION': (
+        'Title of the prompt window for an extension added by a partner program'
+    ),
+    'IDS_EXTENSION_BAD_FILE_ENCODING': (
+        'Error shown when a content script file of an extension is not UTF-8 '
+        'encoded and cannot be loaded'
+    ),
+    'IDS_EXTENSION_LOAD_ABOUT_PAGE_FAILED': (
+        'Error shown when the about page declared by an extension cannot be '
+        'loaded'
+    ),
+    'IDS_EXTENSION_LOAD_BACKGROUND_SCRIPT_FAILED': (
+        'Error shown when the background script declared by an extension '
+        'cannot be loaded'
+    ),
+    'IDS_EXTENSION_LOAD_BACKGROUND_PAGE_FAILED': (
+        'Error shown when the background page declared by an extension '
+        'cannot be loaded'
+    ),
+    'IDS_EXTENSION_LOAD_CSS_FAILED': (
+        'Error shown when a CSS file that an extension lists for a content '
+        'script cannot be loaded'
+    ),
+    'IDS_EXTENSION_LOAD_JAVASCRIPT_FAILED': (
+        'Error shown when a JavaScript file that an extension lists for a '
+        'content script cannot be loaded'
+    ),
+    'IDS_EXTENSION_LOAD_OPTIONS_PAGE_FAILED': (
+        'Error shown when the options page declared by an extension cannot be '
+        'loaded'
+    ),
+    'IDS_EXTENSION_LOCALES_NO_DEFAULT_LOCALE_SPECIFIED': (
+        'Error shown when an extension uses localization but its manifest '
+        'does not specify a default locale'
+    ),
+    'IDS_EXTENSION_MANIFEST_UNREADABLE': (
+        'Error shown when the manifest file of an extension is missing or '
+        'cannot be read'
+    ),
+    'IDS_EXTENSION_MANIFEST_INVALID': (
+        'Error shown when the manifest file of an extension is not valid'
+    ),
+    'IDS_EXTENSION_MOVE_DIRECTORY_TO_PROFILE_FAILED': (
+        'Error shown when the directory of an extension cannot be moved into '
+        'the user profile during installation'
+    ),
+}
+
+
 # Replacements for text nodes and neither for inside descriptions nor comments
 main_text_only_replacements = [
     # By converting it back first, it makes this idempotent

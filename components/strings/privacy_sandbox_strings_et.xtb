@@ -1,0 +1,28 @@
+<?xml version="1.0" ?>
+<!DOCTYPE translationbundle>
+<translationbundle lang="et">
+<translation id="5725339460980108526">Kui olete inkognito režiimis, blokeerib Brave saitidel kolmanda osapoole küpsisefailide kasutamise</translation>
+<translation id="1365023215312302966">Saidid ei või kasutada kolmanda osapoole küpsisefaile sisu ja reklaamide isikupärastamiseks ega teistel saitidel tehtavate toimingute kohta teabe saamiseks.</translation>
+<translation id="7271018957317922139">Kui olete inkognito režiimis, ei saa saidid kolmanda osapoole küpsisefaile kasutada. Kui nendele küpsisefailidele tuginev sait ei tööta, võite <ph name="BEGIN_LINK"/>proovida anda sellele saidile ajutise juurdepääsu kolmanda osapoole küpsisefailidele<ph name="END_LINK"/>.</translation>
+<translation id="2004697686368036666">Funktsioonid ei pruugi mõnel saidil toimida</translation>
+<translation id="2183376768278472507">Kui sait ei tööta ootuspäraselt, võite proovida kolmanda osapoole küpsisefailid konkreetsel külastataval saidil lubada.</translation>
+<translation id="2235344399760031203">Kolmanda osapoole küpsisefailid on blokeeritud</translation>
+<translation id="2360633687155619995">Saidid ei või kasutada kolmanda osapoole küpsisefaile sisu ja reklaamide isikupärastamiseks ega teistel saitidel tehtavate toimingute kohta teabe saamiseks. Mõned saidi funktsioonid ei pruugi ootuspäraselt töötada.</translation>
+<translation id="2496115946829713659">Saidid võivad kasutada kolmanda osapoole küpsisefaile, et isikupärastada sisu ja reklaame ning saada teavet teistel saitidel tehtavate toimingute kohta</translation>
+<translation id="7220743783949410550">Kui olete inkognito režiimis, ei saa saidid kolmanda osapoole küpsisefaile kasutada. Kui nendele küpsisefailidele tuginev sait ei tööta, võite <ph name="START_LINK"/>proovida anda sellele saidile ajutise juurdepääsu kolmanda osapoole küpsisefailidele<ph name="END_LINK"/>.</translation>
+<translation id="3425311689852411591">Kolmanda osapoole küpsisefailidele tuginevad saidid peaksid töötama ootuspäraselt</translation>
+<translation id="3624583033347146597">Valige oma kolmanda osapoole küpsisefailide eelistused</translation>
+<translation id="3918378745482005425">Mõned funktsioonid ei pruugi töötada. Seotud saidid saavad siiski kolmanda osapoole küpsisefaile kasutada.</translation>
+<translation id="4278390842282768270">Lubatud</translation>
+<translation id="4412992751769744546">Luba kolmanda osapoole küpsisefailid</translation>
+<translation id="4711259472133554310">Saate seadetes luua erandeid, et lubada teatud saitidel alati kolmanda osapoole küpsisefaile kasutada</translation>
+<translation id="5677928146339483299">Blokeeritud</translation>
+<translation id="6196640612572343990">Blokeeri kolmanda osapoole küpsisefailid</translation>
+<translation id="6308169245546905162">Saidid võivad kasutada kolmanda osapoole küpsisefaile, et saada teavet teie toimingute kohta teistel saitidel</translation>
+<translation id="7315780377187123731">Lisateave valiku „Blokeeri kolmanda osapoole küpsisefailid” kohta</translation>
+<translation id="7374493521304367420">Saidid võivad endiselt kasutada küpsisefaile, et näha oma saidil teie sirvimistegevust</translation>
+<translation id="7453144832830554937">Kolmanda osapoole küpsisefailidele tuginevad saidi funktsioonid ei pruugi töötada</translation>
+<translation id="7538480403395139206">Lisateave valiku „Luba kolmanda osapoole küpsisefailid” kohta</translation>
+<translation id="8200078544056087897">Kolmanda osapoole küpsisefailidele tuginevad saidi funktsioonid peaksid töötama ootuspäraselt</translation>
+<translation id="839994149685752920">Saidid võivad sisu ja reklaamide isikupärastamiseks kasutada kolmanda osapoole küpsisefaile</translation>
+</translationbundle>

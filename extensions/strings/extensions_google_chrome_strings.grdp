@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Extensions-specific Brave strings (included from extensions_strings.grd). -->
+<!--This file is created by l10nUtil.js. Do not edit manually.-->
+<grit-part>
+  <message name="IDS_EXTENSION_EXTERNAL_INSTALL_PROMPT_TITLE_APP" desc="Titlebar of the prompt window for an externally installed app">
+    Another program on your computer added an app that may change the way Brave works.
+
+<ph name="EXTENSION_NAME">$1<ex>Babylon Toolbar</ex></ph>
+  </message>
+  <message name="IDS_EXTENSION_EXTERNAL_INSTALL_PROMPT_TITLE_EXTENSION" desc="Titlebar of the prompt window for an externally installed extension">
+    Another program on your computer added an extension that may change the way Brave works.
+
+<ph name="EXTENSION_NAME">$1<ex>Babylon Toolbar</ex></ph>
+  </message>
+  <message name="IDS_EXTENSION_EXTERNAL_INSTALL_PROMPT_TITLE_THEME" desc="Titlebar of the prompt window for an externally installed theme">
+    Another program on your computer added a theme that may change the way Brave works.
+
+<ph name="EXTENSION_NAME">$1<ex>Babylon Toolbar</ex></ph>
+  </message>
+  <message name="IDS_EXTENSION_EXTERNAL_INITIAL_INSTALL_PROMPT_TITLE_EXTENSION" desc="Title of the prompt window for an extension added by a partner program">
+    <ph name="PARTNER_NAME">$1<ex>Brave</ex></ph> has added an extension that may change the way Brave works.
+
+<ph name="EXTENSION_NAME">$2<ex>Babylon Toolbar</ex></ph>
+  </message>
+  <message name="IDS_EXTENSION_EXTERNAL_INSTALL_PROMPT_ABORT_BUTTON" desc="Button on the external install prompt to remove an extension installed by a third party.">
+    Remove from Brave
+  </message>
+</grit-part>

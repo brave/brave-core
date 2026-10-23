@@ -1,0 +1,28 @@
+<?xml version="1.0" ?>
+<!DOCTYPE translationbundle>
+<translationbundle lang="sr-Latn">
+<translation id="5725339460980108526">Kada ste u režimu bez arhiviranja, Brave sprečava sajtove da koriste kolačiće trećih strana</translation>
+<translation id="1365023215312302966">Sajtovi ne mogu da koriste kolačiće trećih strana za personalizaciju sadržaja i oglasa i da bi saznali više o radnjama koje preduzimate na drugim sajtovima</translation>
+<translation id="7271018957317922139">Kada ste u režimu bez arhiviranja, sajtovi ne mogu da koriste kolačiće trećih strana. Ako sajt koji se oslanja na ove kolačiće ne radi, možete da <ph name="BEGIN_LINK"/>probate da date tom sajtu privremeni pristup kolačićima trećih strana<ph name="END_LINK"/>.</translation>
+<translation id="2004697686368036666">Funkcije na nekim sajtovima mogu da ne rade</translation>
+<translation id="2183376768278472507">Ako sajt ne radi na očekivani način, možete da probate da dozvolite kolačiće trećih strana za određeni sajt koji posećujete</translation>
+<translation id="2235344399760031203">Kolačići trećih strana su blokirani</translation>
+<translation id="2360633687155619995">Sajtovi ne mogu da koriste kolačiće trećih strana za personalizaciju sadržaja i oglasa i da bi saznali više o radnjama koje preduzimate na drugim sajtovima. Neke funkcije sajta možda neće raditi kao što se očekuje.</translation>
+<translation id="2496115946829713659">Sajtovi mogu da koriste kolačiće trećih strana za personalizaciju sadržaja i oglasa i da bi saznali više o radnjama koje preduzimate na drugim sajtovima</translation>
+<translation id="7220743783949410550">Kada ste u režimu bez arhiviranja, sajtovi ne mogu da koriste kolačiće trećih strana. Ako sajt koji se oslanja na ove kolačiće ne radi, možete da <ph name="START_LINK"/>probate da date tom sajtu privremeni pristup kolačićima trećih strana<ph name="END_LINK"/>.</translation>
+<translation id="3425311689852411591">Sajtovi koji se oslanjaju na kolačiće trećih strana bi trebalo da rade na očekivani način</translation>
+<translation id="3624583033347146597">Odaberite podešavanja kolačića trećih strana</translation>
+<translation id="3918378745482005425">Neke funkcije možda neće raditi. Srodni sajtovi i dalje mogu da koriste kolačiće trećih strana.</translation>
+<translation id="4278390842282768270">Dozvoljeno</translation>
+<translation id="4412992751769744546">Dozvoli kolačiće trećih strana</translation>
+<translation id="4711259472133554310">Možete da napravite izuzetke u Podešavanjima da biste određenim sajtovima uvek dozvoljavali da koriste kolačiće trećih strana</translation>
+<translation id="5677928146339483299">Blokirano</translation>
+<translation id="6196640612572343990">Blokiraj kolačiće trećih strana</translation>
+<translation id="6308169245546905162">Sajtovi mogu da koriste kolačiće trećih strana da bi saznali nešto o radnjama koje preduzimate na drugim sajtovima</translation>
+<translation id="7315780377187123731">Više o opciji Blokiraj kolačiće trećih strana</translation>
+<translation id="7374493521304367420">Sajtovi i dalje mogu da koriste kolačiće da bi videli aktivnosti pregledanja na svom sajtu</translation>
+<translation id="7453144832830554937">Funkcije sajta koje se oslanjaju na kolačiće trećih strana možda neće raditi</translation>
+<translation id="7538480403395139206">Više o opciji Dozvoli kolačiće trećih strana</translation>
+<translation id="8200078544056087897">Funkcije sajta koje se oslanjaju na kolačiće trećih strana treba da rade na očekivani način</translation>
+<translation id="839994149685752920">Sajtovi mogu da koriste kolačiće trećih strana za personalizaciju sadržaja i oglasa</translation>
+</translationbundle>
