@@ -40,6 +40,9 @@ bool IsAccountHidingEnabled();
 bool IsWalletDebugEnabled();
 bool IsMojoForLedgerEnabled();
 bool IsSnapFeatureEnabled();
+// True when snaps are evaluated in a browser-owned hidden WebContents rather
+// than in the wallet page's hidden iframe.
+bool IsSnapHiddenHostEnabled();
 
 bool IsEthereumKeyring(mojom::KeyringId keyring_id);
 bool IsEthereumAccount(const mojom::AccountIdPtr& account_id);

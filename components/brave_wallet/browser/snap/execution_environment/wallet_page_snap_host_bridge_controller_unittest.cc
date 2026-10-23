@@ -110,4 +110,13 @@ TEST_F(WalletPageSnapHostBridgeControllerUnitTest, DisconnectUnbinds) {
   EXPECT_FALSE(controller_.IsBound());
 }
 
+TEST_F(WalletPageSnapHostBridgeControllerUnitTest, ShutdownUnbinds) {
+  FakeSnapHostBridge bridge;
+  controller_.BindNewBridge(bridge.BindNewPipeAndPassRemote());
+  EXPECT_TRUE(controller_.IsBound());
+
+  controller_.Shutdown();
+  EXPECT_FALSE(controller_.IsBound());
+}
+
 }  // namespace brave_wallet
