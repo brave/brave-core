@@ -2,28 +2,64 @@
 
 <a id="TI-001"></a>
 
-## Test in Isolation with Fakes
+## ✅ Isolate Unit Tests with Fake Dependencies
 
-**Prefer fakes over real dependencies:**
+**Exercise the real component through its public API; inject fakes for external
+dependencies.** Reuse existing interfaces and fakes; put reusable doubles in a
+[`test_support` target](build-system.md#BS-022). Prefer
+[constructor injection](architecture.md#ARCH-025), not virtual methods
+everywhere.
 
-- Prevents cascading test failures
-- Produces more maintainable, modular code
-- Makes tests faster and more deterministic
-
-**Example: Use MockTool instead of real navigation tool:**
+These examples omit includes and unrelated definitions. `ReportStore`, its
+implementations, and `ReportService` below are reused in the factory examples.
 
 ```cpp
-// ✅ GOOD - Control exact timing with MockTool
-auto mock_tool = std::make_unique<MockTool>();
-EXPECT_CALL(*mock_tool, Execute(_, _))
-    .WillOnce([&](auto data, auto callback) {
-      tool_callback = std::move(callback);
-    });
-
-// Now we can control exactly when the tool completes
-ClickPauseButton();
-std::move(tool_callback).Run(/* result */);
+// ❌ WRONG - starts production storage to test its consumer
+ReportService service(std::make_unique<ReportStoreImpl>(database_path));
+EXPECT_EQ(service.ReadReport(), "saved report");  // Depends on disk state.
 ```
+
+```cpp
+// ✅ CORRECT - real consumer, controlled dependency through a shared interface
+class ReportStore {
+ public:
+  virtual ~ReportStore() = default;
+  virtual std::string ReadReport() const = 0;
+};
+
+class ReportStoreImpl : public ReportStore {
+ public:
+  std::string ReadReport() const override;  // Reads production storage.
+};
+
+class FakeReportStore : public ReportStore {
+ public:
+  explicit FakeReportStore(std::string report) : report_(std::move(report)) {}
+  std::string ReadReport() const override { return report_; }
+
+ private:
+  std::string report_;
+};
+
+class ReportService {
+ public:
+  explicit ReportService(std::unique_ptr<ReportStore> store)
+      : store_(std::move(store)) {}
+  std::string ReadReport() const { return store_->ReadReport(); }
+
+ private:
+  std::unique_ptr<ReportStore> store_;
+};
+
+TEST(ReportServiceTest, ReadsSavedReport) {
+  ReportService service(std::make_unique<FakeReportStore>("saved report"));
+  EXPECT_EQ(service.ReadReport(), "saved report");
+}
+```
+
+Keep integration/browser tests for real component wiring. A storage
+implementation's own tests may use real storage; isolate dependencies outside
+the unit under test, not the unit itself or simple value objects.
 
 ---
 
@@ -769,8 +805,7 @@ weighs the coverage of the lines a change touches more heavily than the
 project-wide number. Chasing coverage past ~90% is counterproductive: the
 remaining lines are usually `NOTREACHED()`/`CHECK()`/`LOG(FATAL)` paths that
 take contrived abuse to reach and yield little beyond what the check already
-guarantees. See
-[Chromium C++ testing best practices](https://www.chromium.org/chromium-os/developer-library/guides/testing/cpp-writing-tests/).
+guarantees.
 
 **Exception:** Don't require a dedicated test when the change is trivial UI with
 no meaningful logic to test (e.g. a toggle wired to a pref), or when it follows
@@ -867,9 +902,6 @@ TEST_P(MyFeatureTest, BehaviorIsCorrectForAllFlagCombinations) {
 
 Place `kTestFeatures` in an unnamed namespace per Chromium C++ style. Use `int`
 instead of `size_t` for masks with more than 16 flags to avoid overflow.
-
-See
-[Chromium C++ Testing Best Practices](https://www.chromium.org/chromium-os/developer-library/guides/testing/cpp-writing-tests/).
 
 ---
 
@@ -1038,3 +1070,292 @@ target back in; edit `.env`/`package.json` if you need the branding to match.
 
 The same "matches nothing, still succeeds" failure mode applies to parameterized
 suites; see [TI-042](#TI-042).
+
+---
+
+<a id="TI-044"></a>
+
+## ✅ Prefer Fakes and Observable Behavior over Incidental Mock Expectations
+
+**Prefer fakes over gMock:** assert results rather than incidental calls or
+ordering. Mocks are not banned; assert call counts when they are contractual.
+Configure fakes with data, errors, or pending callbacks as needed.
+
+```cpp
+// ❌ WRONG - couples the test to exactly one read, not the public contract
+// Caching or batching may change this without changing the service's behavior.
+auto store = std::make_unique<MockReportStore>();
+EXPECT_CALL(*store, ReadReport()).Times(1).WillOnce(Return("saved report"));
+ReportService service(std::move(store));
+EXPECT_EQ(service.ReadReport(), "saved report");
+
+// ✅ CORRECT - observable behavior, using the fake from TI-001
+ReportService service(std::make_unique<FakeReportStore>("saved report"));
+EXPECT_EQ(service.ReadReport(), "saved report");
+EXPECT_EQ(service.ReadReport(), "saved report");
+```
+
+---
+
+<a id="TI-045"></a>
+
+## ✅ Inject Factories for Dependencies Created on Demand
+
+**Inject creation instead of hard-coding production dependencies.** Reuse the
+`ReportStore` types from [TI-001](#TI-001); production supplies a factory that
+creates `ReportStoreImpl` instances.
+
+```cpp
+// ❌ WRONG - consumer constructs production storage directly
+std::string ReportReader::ReadReport() {
+  return ReportStoreImpl(database_path_).ReadReport();
+}
+```
+
+```cpp
+// ✅ CORRECT - injected factory isolates creation as well as usage
+class ReportStoreFactory {
+ public:
+  virtual ~ReportStoreFactory() = default;
+  virtual std::unique_ptr<ReportStore> Create() = 0;
+};
+
+class FakeReportStoreFactory : public ReportStoreFactory {
+ public:
+  std::unique_ptr<ReportStore> Create() override {
+    return std::make_unique<FakeReportStore>("saved report");
+  }
+};
+
+class ReportReader {
+ public:
+  explicit ReportReader(std::unique_ptr<ReportStoreFactory> factory)
+      : factory_(std::move(factory)) {}
+  std::string ReadReport() { return factory_->Create()->ReadReport(); }
+
+ private:
+  std::unique_ptr<ReportStoreFactory> factory_;
+};
+
+TEST(ReportReaderTest, ReadsReportFromCreatedStore) {
+  ReportReader reader(std::make_unique<FakeReportStoreFactory>());
+  EXPECT_EQ(reader.ReadReport(), "saved report");
+}
+```
+
+---
+
+<a id="TI-046"></a>
+
+## ✅ Scope Static Factory Overrides
+
+**Prefer [injected factories](#TI-045); use a scoped override when an existing
+static API cannot support injection.** Restore the previous factory before the
+fake is destroyed, even on an early return. These excerpts reuse
+`ReportStoreFactory` from TI-045; global overrides must not race concurrent
+users.
+
+```cpp
+// ❌ WRONG - leaves a dangling factory pointer for later tests
+FakeReportStoreFactory factory;
+ReportStores::SetFactoryForTesting(&factory);  // No scoped restoration.
+```
+
+```cpp
+// ✅ CORRECT - RAII restores the prior factory before the fake is destroyed
+class ReportStores {
+ public:
+  static std::unique_ptr<ReportStore> Create() {
+    if (factory_for_testing_) {
+      return factory_for_testing_->Create();
+    }
+    return std::make_unique<ReportStoreImpl>();
+  }
+
+  [[nodiscard]] static base::AutoReset<ReportStoreFactory*> OverrideForTesting(
+      ReportStoreFactory* factory) {
+    return base::AutoReset<ReportStoreFactory*>(&factory_for_testing_, factory);
+  }
+
+ private:
+  inline static ReportStoreFactory* factory_for_testing_ = nullptr;
+};
+
+TEST(ReportStoresTest, UsesScopedFakeFactory) {
+  FakeReportStoreFactory factory;
+  auto reset_factory = ReportStores::OverrideForTesting(&factory);
+  EXPECT_EQ(ReportStores::Create()->ReadReport(), "saved report");
+  // reset_factory restores the old pointer before factory is destroyed.
+}
+```
+
+---
+
+<a id="TI-047"></a>
+
+## ✅ Use Factory Methods for Async or Fallible Creation
+
+**Do not block constructors or expose partially initialized objects.** Deliver
+an explicit result and ownership asynchronously: success has a non-null
+connection, failure has none. For isolated consumer tests, inject a
+connector/factory whose fake controls the result and completion time.
+
+```cpp
+// ❌ WRONG - blocks construction and leaves failure handling ambiguous
+Connection::Connection() {
+  socket_ = ConnectAndWait();
+}
+```
+
+```cpp
+// ✅ CORRECT - factory method delivers ownership only after creation completes
+class Connection {
+ public:
+  enum class Result { kSuccess, kTimeout, kRejected };
+  using ConnectCallback =
+      base::OnceCallback<void(Result, std::unique_ptr<Connection>)>;
+
+  static void Connect(ConnectCallback callback);
+  ~Connection();
+
+ private:
+  Connection();  // Only Connect() creates a fully established connection.
+};
+
+// Example consumer callback; no blocking wait in the production constructor.
+Connection::Connect(base::BindOnce(
+    [](Connection::Result result, std::unique_ptr<Connection> connection) {
+      if (result != Connection::Result::kSuccess) {
+        // Report the failure; no connection is available to use.
+        return;
+      }
+      // Transfer the established connection to its owner here.
+    }));
+```
+
+---
+
+<a id="TI-048"></a>
+
+## ✅ Record Observer Events with Scoped Observation
+
+**Publish through an observer interface and assert recorded event data.** Use
+`base::ScopedObservation` for cleanup; the publisher must outlive the
+observation.
+
+```cpp
+// ❌ WRONG - early exits skip cleanup and leave a registered observer
+publisher.AddObserver(&observer);
+ASSERT_TRUE(TriggerSave());
+publisher.RemoveObserver(&observer);
+```
+
+```cpp
+// ✅ CORRECT - scoped registration and a recording fake check observable event data
+class ReportPublisher {
+ public:
+  class Observer : public base::CheckedObserver {
+   public:
+    virtual void OnReportSaved(const std::string& report) = 0;
+  };
+
+  void AddObserver(Observer* observer) { observers_.AddObserver(observer); }
+  void RemoveObserver(Observer* observer) { observers_.RemoveObserver(observer); }
+  void SaveReport(const std::string& report) {
+    observers_.Notify(&Observer::OnReportSaved, report);
+  }
+
+ private:
+  base::ObserverList<Observer> observers_;
+};
+
+class RecordingReportObserver : public ReportPublisher::Observer {
+ public:
+  void OnReportSaved(const std::string& report) override { report_ = report; }
+  const std::string& report() const { return report_; }
+
+ private:
+  std::string report_;
+};
+
+TEST(ReportPublisherTest, NotifiesSubscriberOfSavedReport) {
+  ReportPublisher publisher;
+  RecordingReportObserver observer;
+  base::ScopedObservation<ReportPublisher, ReportPublisher::Observer>
+      observation(&observer);
+  observation.Observe(&publisher);
+
+  publisher.SaveReport("saved report");
+  EXPECT_EQ(observer.report(), "saved report");
+}
+```
+
+---
+
+<a id="TI-049"></a>
+
+## ✅ Inject Delegates without Reversing Dependency Direction
+
+**Declare the delegate interface in the lower-level component.** Higher-level
+code implements it; the lower-level code must not depend on the concrete
+consumer. Inject a fake to test both permission and saved data.
+
+```cpp
+// ❌ WRONG - lower-level component depends on its higher-level consumer
+#include "brave/browser/reports/report_page.h"
+class ReportController {
+  raw_ptr<ReportPage> page_;
+};
+```
+
+```cpp
+// ✅ CORRECT - lower-level interface supports production consumers and test fakes
+// Declared in the lower-level component, not in its higher-level consumer.
+class ReportController {
+ public:
+  class Delegate {
+   public:
+    virtual ~Delegate() = default;
+    virtual bool CanSaveReport() const = 0;
+    virtual void SaveReport(const std::string& report) = 0;
+  };
+
+  explicit ReportController(Delegate& delegate) : delegate_(delegate) {}
+  bool SaveReport(const std::string& report) {
+    if (!delegate_->CanSaveReport()) {
+      return false;
+    }
+    delegate_->SaveReport(report);
+    return true;
+  }
+
+ private:
+  const raw_ref<Delegate> delegate_;  // Delegate must outlive the controller.
+};
+
+class FakeReportDelegate : public ReportController::Delegate {
+ public:
+  bool CanSaveReport() const override { return can_save_; }
+  void SaveReport(const std::string& report) override { report_ = report; }
+  void set_can_save(bool can_save) { can_save_ = can_save; }
+  const std::string& report() const { return report_; }
+
+ private:
+  bool can_save_ = false;
+  std::string report_;
+};
+
+TEST(ReportControllerTest, SavesOnlyWhenDelegateAllowsIt) {
+  FakeReportDelegate delegate;
+  ReportController controller(delegate);
+  EXPECT_FALSE(controller.SaveReport("blocked report"));
+  EXPECT_TRUE(delegate.report().empty());
+
+  delegate.set_can_save(true);
+  EXPECT_TRUE(controller.SaveReport("saved report"));
+  EXPECT_EQ(delegate.report(), "saved report");
+}
+```
+
+Related: [TI-001](#TI-001) introduces the shared fake dependency;
+[TI-044](#TI-044) explains behavior assertions.
