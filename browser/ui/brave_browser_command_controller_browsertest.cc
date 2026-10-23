@@ -16,6 +16,7 @@
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/focus_mode/focus_mode_controller.h"
 #include "brave/browser/ui/focus_mode/focus_mode_features.h"
+#include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
@@ -818,13 +819,17 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
   auto* vtc = VerticalTabController::From(browser());
   ASSERT_FALSE(vtc->ShouldShowBraveVerticalTabs());
 
-  // Enable Vertical tabs
+  // Enable vertical tabs for this window. The shared pref stays off.
   command_controller->ExecuteCommand(IDC_TOGGLE_VERTICAL_TABS);
   ASSERT_TRUE(vtc->ShouldShowBraveVerticalTabs());
+  EXPECT_FALSE(browser()->GetProfile()->GetPrefs()->GetBoolean(
+      brave_tabs::kVerticalTabsEnabled));
 
   // Toggle back
   command_controller->ExecuteCommand(IDC_TOGGLE_VERTICAL_TABS);
   ASSERT_FALSE(vtc->ShouldShowBraveVerticalTabs());
+  EXPECT_FALSE(browser()->GetProfile()->GetPrefs()->GetBoolean(
+      brave_tabs::kVerticalTabsEnabled));
 }
 
 #if BUILDFLAG(IS_MAC)

@@ -782,7 +782,7 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       break;
     case IDC_TOGGLE_VERTICAL_TABS:
       CHECK(!tabs::IsUpstreamVerticalTabsForceEnabled());
-      brave::ToggleVerticalTabStrip(&*browser_);
+      brave::ToggleVerticalTabStripForWindow(&*browser_);
       break;
     case IDC_SHARING_HUB_SCREENSHOT: {
       auto* browser_view =

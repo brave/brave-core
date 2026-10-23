@@ -116,10 +116,12 @@ BraveTabContainer::BraveTabContainer(
     return;
   }
 
-  show_vertical_tabs_.Init(
-      brave_tabs::kVerticalTabsEnabled, prefs,
-      base::BindRepeating(&BraveTabContainer::UpdateLayoutOrientation,
-                          base::Unretained(this)));
+  if (auto* vertical_tabs = VerticalTabController::From(browser)) {
+    vertical_tabs_enabled_changed_subscription_ =
+        vertical_tabs->AddEnabledChangedCallback(
+            base::BindRepeating(&BraveTabContainer::UpdateLayoutOrientation,
+                                base::Unretained(this)));
+  }
   if (base::FeatureList::IsEnabled(tabs::kBraveTreeTab)) {
     tree_tabs_enabled_.Init(
         brave_tabs::kTreeTabsEnabled, prefs,

@@ -1070,8 +1070,8 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         <message name="IDS_TAB_CXMENU_BOOKMARK_ALL_TABS" desc="The label of the tab context menu item for creating a bookmark folder containing an entry for each open tab.">
           Bookmark all tabs...
         </message>
-        <message name="IDS_TAB_CXMENU_SHOW_VERTICAL_TABS" desc="The label of the tab context menu item for showing tabs vertically">
-          Use vertical tabs
+        <message name="IDS_TAB_CXMENU_SHOW_VERTICAL_TABS" desc="The label of the tab context menu item for showing tabs vertically in this window">
+          Use vertical tabs for this window
         </message>
         <message name="IDS_SYSTEM_MENU_FOCUS_MODE" desc="The label of the system menu item for toggling focus mode">
           Focus mode
@@ -1116,8 +1116,8 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         <message name="IDS_TAB_CXMENU_BOOKMARK_ALL_TABS" desc="In Title Case: The label of the tab context menu item for creating a bookmark folder containing an entry for each open tab.">
           Bookmark All Tabs...
         </message>
-        <message name="IDS_TAB_CXMENU_SHOW_VERTICAL_TABS" desc="The label of the tab context menu item for showing tabs vertically">
-          Use Vertical Tabs
+        <message name="IDS_TAB_CXMENU_SHOW_VERTICAL_TABS" desc="The label of the tab context menu item for showing tabs vertically in this window">
+          Use Vertical Tabs for This Window
         </message>
         <message name="IDS_SYSTEM_MENU_FOCUS_MODE" desc="The label of the system menu item for toggling focus mode">
           Focus Mode

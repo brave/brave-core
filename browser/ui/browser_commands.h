@@ -76,7 +76,11 @@ void CopyLinkWithStrictCleaning(BrowserWindowInterface* browser,
 
 void ToggleWindowTitleVisibilityForVerticalTabs(
     BrowserWindowInterface* browser);
+// Writes the shared vertical-tabs pref. A window with its own override keeps
+// that override.
 void ToggleVerticalTabStrip(BrowserWindowInterface* browser);
+// Toggles vertical tabs for this window only. Never writes the shared pref.
+void ToggleVerticalTabStripForWindow(BrowserWindowInterface* browser);
 void ToggleVerticalTabStripFloatingMode(BrowserWindowInterface* browser);
 void ToggleVerticalTabStripExpanded(BrowserWindowInterface* browser);
 

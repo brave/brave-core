@@ -164,7 +164,7 @@ class BraveVerticalTabStripRegionView : public views::View,
 
   void UpdateStateAfterDragAndDropFinished(State original_state);
 
-  void OnShowVerticalTabsPrefChanged();
+  void OnVerticalTabsEnabledChanged();
   void OnBrowserPanelsMoved();
 
   void UpdateLayout();
@@ -245,7 +245,7 @@ class BraveVerticalTabStripRegionView : public views::View,
   std::optional<State> floating_restore_state_;
 
   BooleanPrefMember sidebar_side_;
-  BooleanPrefMember show_vertical_tabs_;
+  base::CallbackListSubscription vertical_tabs_enabled_changed_subscription_;
   BooleanPrefMember collapsed_pref_;
   BooleanPrefMember expanded_state_per_window_pref_;
   BooleanPrefMember floating_mode_pref_;

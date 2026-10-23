@@ -11,6 +11,8 @@
 #include "base/metrics/histogram_macros.h"
 #include "brave/browser/new_tab/new_tab_shows_options.h"
 #include "brave/browser/profiles/profile_util.h"
+#include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "chrome/app/chrome_command_ids.h"
@@ -64,6 +66,15 @@ void BraveAppearanceHandler::RegisterMessages() {
       base::BindRepeating(
           &BraveAppearanceHandler::GetIsVerticalTabsToggleEnabled,
           base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "getVerticalTabsWindowState",
+      base::BindRepeating(&BraveAppearanceHandler::GetVerticalTabsWindowState,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "clearVerticalTabsWindowOverride",
+      base::BindRepeating(
+          &BraveAppearanceHandler::ClearVerticalTabsWindowOverride,
+          base::Unretained(this)));
 
   if (auto* tab = tabs::TabInterface::MaybeGetFromContents(
           web_ui()->GetWebContents())) {
@@ -77,6 +88,14 @@ void BraveAppearanceHandler::RegisterMessages() {
         base::BindRepeating(
             &BraveAppearanceHandler::GetIsCompactModeToggleEnabled,
             base::Unretained(this)));
+
+    if (auto* controller =
+            VerticalTabController::From(browser_window_interface)) {
+      vertical_tabs_enabled_subscription_ =
+          controller->AddEnabledChangedCallback(base::BindRepeating(
+              &BraveAppearanceHandler::OnVerticalTabsEnabledForWindowChanged,
+              base::Unretained(this)));
+    }
 
 #if BUILDFLAG(IS_MAC)
     // Unretained() is safe: |fullscreen_subscription_| is a member, so it
@@ -177,4 +196,54 @@ void BraveAppearanceHandler::GetIsVerticalTabsToggleEnabled(
   const bool enabled = !command_updater_ || command_updater_->IsCommandEnabled(
                                                 IDC_TOGGLE_VERTICAL_TABS);
   ResolveJavascriptCallback(args[0], base::Value(enabled));
+}
+
+void BraveAppearanceHandler::GetVerticalTabsWindowState(
+    const base::ListValue& args) {
+  CHECK_EQ(args.size(), 1U);
+  AllowJavascript();
+  ResolveJavascriptCallback(args[0], base::Value(VerticalTabsWindowState()));
+}
+
+void BraveAppearanceHandler::ClearVerticalTabsWindowOverride(
+    const base::ListValue& args) {
+  CHECK_EQ(args.size(), 0U);
+  if (auto* controller = VerticalTabController::From(GetBrowser())) {
+    controller->FollowProfilePref();
+  }
+}
+
+void BraveAppearanceHandler::OnVerticalTabsEnabledForWindowChanged() {
+  if (!IsJavascriptAllowed()) {
+    return;
+  }
+  FireWebUIListener("vertical-tabs-window-state-changed",
+                    base::Value(VerticalTabsWindowState()));
+}
+
+BrowserWindowInterface* BraveAppearanceHandler::GetBrowser() {
+  auto* tab =
+      tabs::TabInterface::MaybeGetFromContents(web_ui()->GetWebContents());
+  return tab ? tab->GetBrowserWindowInterface() : nullptr;
+}
+
+bool BraveAppearanceHandler::IsVerticalTabsEnabledForWindow() {
+  if (auto* controller = VerticalTabController::From(GetBrowser())) {
+    return controller->ShouldShowBraveVerticalTabs();
+  }
+  return profile_->GetPrefs()->GetBoolean(brave_tabs::kVerticalTabsEnabled);
+}
+
+bool BraveAppearanceHandler::HasVerticalTabsWindowOverride() {
+  if (auto* controller = VerticalTabController::From(GetBrowser())) {
+    return controller->vertical_tabs_enabled_override().has_value();
+  }
+  return false;
+}
+
+base::DictValue BraveAppearanceHandler::VerticalTabsWindowState() {
+  base::DictValue state;
+  state.Set("enabled", IsVerticalTabsEnabledForWindow());
+  state.Set("hasOverride", HasVerticalTabsWindowOverride());
+  return state;
 }

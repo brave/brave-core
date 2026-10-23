@@ -369,6 +369,7 @@ class BraveBrowserView : public BrowserView,
       browser_window_mouse_event_handler_;
 
   PrefChangeRegistrar pref_change_registrar_;
+  base::CallbackListSubscription vertical_tabs_enabled_changed_subscription_;
   BooleanPrefMember compact_horizontal_tabs_;
   base::ScopedObservation<commands::AcceleratorService,
                           commands::AcceleratorService::Observer>

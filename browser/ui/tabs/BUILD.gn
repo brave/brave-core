@@ -27,6 +27,7 @@ source_set("tabs_public") {
   ]
 
   public_deps = [
+    "//base",
     "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/psst/buildflags",
     "//chrome/browser/ui/browser_window",
@@ -55,12 +56,14 @@ if (!is_android) {
     ]
 
     deps = [
+      ":tab_strip",
       ":tabs_public",
       "//brave/browser/drag_drop",
       "//brave/browser/image_metadata_stripper",
       "//brave/browser/misc_metrics:misc_metrics_impl",
       "//brave/browser/new_tab",
       "//brave/browser/onboarding",
+      "//brave/browser/sessions",
       "//brave/browser/serp_metrics",
       "//brave/browser/ui:brave_tab_prefs",
       "//brave/browser/ui:ui_features",
@@ -75,6 +78,7 @@ if (!is_android) {
       "//brave/components/web_discovery/buildflags",
       "//chrome/browser/content_settings:content_settings_factory",
       "//chrome/browser/profiles",
+      "//chrome/browser/sessions",
       "//chrome/browser/ui:browser_commands",
       "//chrome/browser/ui:ui_features",
       "//chrome/browser/ui:unload_controller",
@@ -152,6 +156,7 @@ if (!is_android) {
     ]
 
     deps = [
+      ":tabs_public",
       "//brave/browser/ui:brave_browser_window_header",
       "//brave/components/tabs",
       "//chrome/browser/ui:browser_window_header",
