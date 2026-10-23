@@ -5,7 +5,6 @@
 
 #include "brave/ios/browser/serp_metrics/serp_metrics_service_factory_ios.h"
 
-#include "base/no_destructor.h"
 #include "brave/components/serp_metrics/serp_metrics_service.h"
 #include "brave/components/serp_metrics/time_period_storage/serp_metrics_pref_time_period_store_factory.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -20,27 +19,13 @@ namespace {
 constexpr char kSerpMetricsTimePeriodStorage[] = "brave.stats.serp_metrics";
 }  // namespace
 
-// static
-SerpMetricsServiceFactoryIOS* SerpMetricsServiceFactoryIOS::GetInstance() {
-  static base::NoDestructor<SerpMetricsServiceFactoryIOS> instance;
-  return instance.get();
-}
-
-// static
-SerpMetricsService* SerpMetricsServiceFactoryIOS::GetForProfile(
-    ProfileIOS* profile) {
-  return GetInstance()->GetServiceForProfileAs<SerpMetricsService>(
-      profile,
-      /*create=*/true);
-}
-
-SerpMetricsServiceFactoryIOS::SerpMetricsServiceFactoryIOS()
-    : ProfileKeyedServiceFactoryIOS("SerpMetricsService",
-                                    ProfileSelection::kNoInstanceInIncognito,
-                                    ServiceCreation::kCreateLazily,
-                                    TestingCreation::kNoServiceForTests) {}
-
-SerpMetricsServiceFactoryIOS::~SerpMetricsServiceFactoryIOS() = default;
+SerpMetricsServiceFactoryIOS::SerpMetricsServiceFactoryIOS(PassKey key)
+    : TypedProfileKeyedServiceFactoryIOS(
+          std::move(key),
+          "SerpMetricsService",
+          ProfileSelection::kNoInstanceInIncognito,
+          ServiceCreation::kCreateLazily,
+          TestingCreation::kNoServiceForTests) {}
 
 void SerpMetricsServiceFactoryIOS::RegisterProfilePrefs(
     user_prefs::PrefRegistrySyncable* registry) {
