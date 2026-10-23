@@ -1,13 +1,12 @@
 diff --git a/services/network/cors/cors_url_loader.cc b/services/network/cors/cors_url_loader.cc
-index 237985a6c1563facaa22fa58f60c4e75408cbb3b..e53212e8460a9d12a78de6e89118bc0aa0adba44 100644
+index 237985a6c1563facaa22fa58f60c4e75408cbb3b..c267b519f4b565f5ece7264bf9d8c3e03738d2ed 100644
 --- a/services/network/cors/cors_url_loader.cc
 +++ b/services/network/cors/cors_url_loader.cc
-@@ -1230,7 +1230,7 @@ void CorsURLLoader::MaybeSetOriginHeader(
+@@ -1217,6 +1217,7 @@ bool CorsURLLoader::ShouldIncludeOriginHeader() const {
+ 
+ void CorsURLLoader::MaybeSetOriginHeader(
+     network::HttpRequestHeadersUpdateParams* headers_update_params) {
++  tainted_ |= ShouldTaintOnionOrigin(request_);
+   if (!ShouldIncludeOriginHeader()) {
      return;
    }
- 
--  std::string origin_value = tainted_
-+  std::string origin_value = tainted_ || IsCrossOriginOnionRequest(request_)
-                                  ? url::Origin().Serialize()
-                                  : request_.request_initiator->Serialize();
-   if (headers_update_params) {

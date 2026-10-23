@@ -3,19 +3,19 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "base/strings/string_util.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "url/origin.h"
 
 namespace {
 
-// A cross-origin request initiated by a .onion page must not disclose the
-// address it came from, so its Origin header is nullified.
-bool IsCrossOriginOnionRequest(const network::ResourceRequest& request) {
-  return base::EndsWith(request.request_initiator->host(), ".onion",
-                        base::CompareCase::INSENSITIVE_ASCII) &&
-         !request.request_initiator->IsSameOriginWith(
-             url::Origin::Create(request.url));
+// A .onion page must not disclose its address to other origins. Upstream
+// taints a request's origin only after a cross-origin redirect, so a direct
+// cross-origin request from a .onion page is tainted too, giving it an
+// opaque origin in its Origin header, its CORS preflight and the CORS checks.
+bool ShouldTaintOnionOrigin(const network::ResourceRequest& request) {
+  return request.request_initiator &&
+         request.request_initiator->DomainIs("onion") &&
+         !request.request_initiator->IsSameOriginWith(request.url);
 }
 
 }  // namespace
