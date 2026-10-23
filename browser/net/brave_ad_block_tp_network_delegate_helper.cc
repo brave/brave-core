@@ -304,7 +304,22 @@ void OnShouldBlockRequestResult(bool then_check_uncloaked,
     return;
   }
   ctx->set_blocked_by(result.blocked_by);
-  ctx->set_mock_data_url(std::move(result.mock_data_url));
+  // Only when this pass has a body of its own to name.
+  //
+  // The CNAME re-check asks about a canonical hostname, and a
+  // `$redirect-rule` written against the host that was actually requested does
+  // not match that - so taking this pass's answer unconditionally takes the
+  // body away from the one case the rule is there for: a request that turns
+  // out to be blocked only once its alias is known. What the page gets then is
+  // an empty block where uBO serves the stub, which is the breakage
+  // `$redirect-rule` exists to prevent. `rewritten_url` is read on the first
+  // pass only for the same reason, over in ShouldBlockRequestOnTaskRunner.
+  //
+  // A canonical name with a redirect of its own still wins, because that pass
+  // then has something to say.
+  if (!result.mock_data_url.empty()) {
+    ctx->set_mock_data_url(std::move(result.mock_data_url));
+  }
   if (!result.new_url_spec.empty()) {
     ctx->set_new_url_spec(std::move(result.new_url_spec));
   }

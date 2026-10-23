@@ -1859,6 +1859,54 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, RedirectWithoutBlockIsNoop) {
   EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
 }
 
+// A request that turns out to be blocked only once its CNAME is known should
+// still be answered with the body a `$redirect-rule` named for it. The rule
+// here is written against the host that was requested, which the canonical
+// name is not, so the only pass that can produce that body is the first one -
+// and the second pass used to take it away again.
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
+                       CnameCloakedRequestKeepsItsRedirectRule) {
+  UpdateAdBlockResources(R"(
+      [
+        {
+          "name": "noop.js",
+          "aliases": ["noopjs"],
+          "kind": {
+            "mime":"application/javascript"
+          },
+          "content": "KGZ1bmN0aW9uKCkgewogICAgJ3VzZSBzdHJpY3QnOwp9KSgpOwo="
+        }
+      ])");
+  UpdateAdBlockInstanceWithRules(
+      "||cname-cloak-endpoint.tracking.com^\n"
+      "||a83idbka2e.a.com/js_mock_me.js$redirect-rule=noopjs");
+
+  GURL tab_url = embedded_test_server()->GetURL("a.com", kAdBlockTestPage);
+  GURL cloaked_resource_url =
+      embedded_test_server()->GetURL("a83idbka2e.a.com", "/js_mock_me.js");
+
+  auto inner_resolver = std::make_unique<net::MockHostResolver>();
+  inner_resolver->rules()->AddIPLiteralRuleWithDnsAliases(
+      "a83idbka2e.a.com", "127.0.0.1",
+      std::set<std::string>({"cname-cloak-endpoint.tracking.com"}));
+  inner_resolver->rules()->AddIPLiteralRuleWithDnsAliases(
+      "a.com", "127.0.0.1", std::set<std::string>({"assets.cdn.net"}));
+  network::HostResolver resolver(inner_resolver.get(), net::NetLog::Get());
+  brave::SetAdblockCnameHostResolverForTesting(&resolver);
+
+  NavigateToURL(tab_url);
+  content::WebContents* contents = web_contents();
+
+  // The request is allowed on its own name, blocked on its canonical one, and
+  // what arrives is the stub rather than an empty body.
+  const std::string noopjs = "(function() {\\n    \\'use strict\\';\\n})();\\n";
+  ASSERT_EQ(true, EvalJs(contents, absl::StrFormat(
+                                       "setExpectations(0, 0, 1, 0);"
+                                       "xhr_expect_content('%s', '%s');",
+                                       cloaked_resource_url.spec(), noopjs)));
+  EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
+}
+
 std::unique_ptr<net::test_server::HttpResponse> NoParamHandler(
     const net::test_server::HttpRequest& request) {
   const GURL request_url = request.GetURL();
