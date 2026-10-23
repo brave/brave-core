@@ -13,6 +13,12 @@
     android:exported="false"/>
 
 <activity
+    android:name="org.chromium.chrome.browser.customtabs.BraveEmailAliasesCustomTabActivity"
+    android:configChanges="orientation|keyboardHidden|keyboard|screenSize|mcc|mnc|screenLayout|smallestScreenSize|uiMode|navigation"
+    android:theme="@style/BraveAccountTheme"
+    android:exported="false"/>
+
+<activity
     android:name="org.chromium.chrome.browser.customtabs.FullScreenCustomTabActivity"
     android:configChanges="orientation|keyboardHidden|keyboard|screenSize|mcc|mnc|screenLayout|smallestScreenSize|uiMode|navigation"
     android:theme="@style/BottomSheetActivityTheme"

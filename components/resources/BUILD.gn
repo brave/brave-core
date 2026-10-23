@@ -69,6 +69,10 @@ brave_grit("static_resources") {
     deps += [ "//brave/components/brave_extension/extension/brave_extension" ]
   }
 
+  if (enable_email_aliases) {
+    deps += [ "//brave/components/email_aliases/resources:email_aliases_ui" ]
+  }
+
   if (enable_tor) {
     deps += [ "//brave/components/tor/resources" ]
   }
