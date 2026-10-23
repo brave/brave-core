@@ -9,12 +9,19 @@
 #include "base/memory/raw_ptr.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_change_registrar.h"
+#include "services/network/public/mojom/network_context.mojom-forward.h"
 
 namespace content {
 class BrowserContext;
 }  // namespace content
 
 namespace tor {
+
+// Returns the TorMode for `context`'s network contexts: kEnabled for a Tor
+// profile, otherwise kDisabled or kPassthrough depending on whether
+// "Only resolve .onion addresses in Tor windows" is on.
+network::mojom::TorMode GetNetworkContextTorMode(
+    content::BrowserContext* context);
 
 // Pushes changes of the "Only resolve .onion addresses in Tor windows" pref to
 // the network context of every loaded storage partition. Network contexts

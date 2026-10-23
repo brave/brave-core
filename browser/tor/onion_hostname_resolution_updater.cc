@@ -15,6 +15,17 @@
 
 namespace tor {
 
+network::mojom::TorMode GetNetworkContextTorMode(
+    content::BrowserContext* context) {
+  if (context->IsTor()) {
+    return network::mojom::TorMode::kEnabled;
+  }
+  return user_prefs::UserPrefs::Get(context)->GetBoolean(
+             prefs::kOnionOnlyInTorWindows)
+             ? network::mojom::TorMode::kDisabled
+             : network::mojom::TorMode::kPassthrough;
+}
+
 OnionHostnameResolutionUpdater::OnionHostnameResolutionUpdater(
     content::BrowserContext* context)
     : context_(context) {
@@ -33,12 +44,10 @@ void OnionHostnameResolutionUpdater::Shutdown() {
 }
 
 void OnionHostnameResolutionUpdater::UpdateNetworkContexts() {
-  const bool onion_only =
-      pref_change_registrar_.prefs()->GetBoolean(prefs::kOnionOnlyInTorWindows);
+  const network::mojom::TorMode tor_mode = GetNetworkContextTorMode(context_);
   context_->ForEachLoadedStoragePartition(
-      [onion_only](content::StoragePartition* storage_partition) {
-        storage_partition->GetNetworkContext()->SetOnionOnlyInTorWindows(
-            onion_only);
+      [tor_mode](content::StoragePartition* storage_partition) {
+        storage_partition->GetNetworkContext()->SetTorMode(tor_mode);
       });
 }
 

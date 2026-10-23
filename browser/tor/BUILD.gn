@@ -22,6 +22,7 @@ source_set("tor") {
     "//components/keyed_service/content",
     "//components/keyed_service/core",
     "//components/prefs",
+    "//services/network/public/mojom",
     "//url",
   ]
 }
