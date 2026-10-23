@@ -8,24 +8,20 @@
 
 #include <memory>
 
+#include "brave/ios/browser/misc_metrics/profile_misc_metrics_service.h"
 #include "components/keyed_service/core/keyed_service.h"
-#include "ios/chrome/browser/shared/model/profile/profile_keyed_service_factory_ios.h"
+#include "ios/chrome/browser/shared/model/profile/typed_profile_keyed_service_factory_ios.h"
 
 class ProfileIOS;
 
-namespace base {
-template <typename T>
-class NoDestructor;
-}  // namespace base
-
 namespace misc_metrics {
 
-class ProfileMiscMetricsService;
-
-class ProfileMiscMetricsServiceFactory : public ProfileKeyedServiceFactoryIOS {
+class ProfileMiscMetricsServiceFactory
+    : public TypedProfileKeyedServiceFactoryIOS<
+          ProfileMiscMetricsServiceFactory,
+          ProfileMiscMetricsService> {
  public:
-  static ProfileMiscMetricsService* GetForProfile(ProfileIOS* profile);
-  static ProfileMiscMetricsServiceFactory* GetInstance();
+  explicit ProfileMiscMetricsServiceFactory(PassKey key);
 
   ProfileMiscMetricsServiceFactory(const ProfileMiscMetricsServiceFactory&) =
       delete;
@@ -33,11 +29,6 @@ class ProfileMiscMetricsServiceFactory : public ProfileKeyedServiceFactoryIOS {
       const ProfileMiscMetricsServiceFactory&) = delete;
 
  private:
-  friend base::NoDestructor<ProfileMiscMetricsServiceFactory>;
-
-  ProfileMiscMetricsServiceFactory();
-  ~ProfileMiscMetricsServiceFactory() override;
-
   std::unique_ptr<KeyedService> BuildServiceInstanceFor(
       ProfileIOS* profile) const override;
 };
