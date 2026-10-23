@@ -36,8 +36,7 @@ void AddHistoryItems(const std::vector<history::URLRow>& history_items) {
   std::vector<ProfileIOS*> profiles =
       GetApplicationContext()->GetProfileManager()->GetLoadedProfiles();
   ProfileIOS* last_used_profile = profiles.at(0);
-  ios::HistoryServiceFactory::GetForProfile(last_used_profile,
-                                            ServiceAccessType::EXPLICIT_ACCESS)
+  ios::HistoryServiceFactory::GetForProfile(last_used_profile)
       ->AddPagesWithDetails(history_items, VisitSource::SOURCE_SAFARI_IMPORTED);
 }
 }  // namespace history

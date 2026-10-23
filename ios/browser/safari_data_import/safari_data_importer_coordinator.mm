@@ -51,8 +51,7 @@
     autofill::PersonalDataManager* personalDataManager =
         autofill::PersonalDataManagerFactory::GetForProfile(profile);
     history::HistoryService* historyService =
-        ios::HistoryServiceFactory::GetForProfile(
-            profile, ServiceAccessType::EXPLICIT_ACCESS);
+        ios::HistoryServiceFactory::GetForProfile(profile);
     bookmarks::BookmarkModel* bookmarkModel =
         ios::BookmarkModelFactory::GetForProfile(profile);
     ReadingListModel* readingListModel =
