@@ -7,29 +7,36 @@ blank_macros_for_ast_parsing: true
 
 substitutions:
   - description: |-
-      Add accessors for whether the context is Tor and its .onion policy.
+      Add the TorMode of the context and its accessors.
 
-      The host resolver reads these to refuse .onion lookups outside Tor
-      contexts when .onion is only allowed in Tor windows.
+      The host resolver reads it to refuse .onion lookups in contexts that may
+      only reach .onion through Brave's Tor windows.
     add_to_public:
       class_name: URLRequestContext
       code: |-
-        void set_enable_tor(bool enable_tor) { enable_tor_ = enable_tor; }
-        bool enable_tor() const { return enable_tor_; }
-        void set_onion_only_in_tor_windows(bool onion_only) {
-          onion_only_in_tor_windows_ = onion_only;
-        }
-        bool onion_only_in_tor_windows() const {
-          return onion_only_in_tor_windows_;
-        }
+        // How the context treats Tor and .onion hostnames. This describes the
+        // context only; it is unrelated to the policy that disables Brave's
+        // Tor windows, which leaves a context's TorMode as it is.
+        enum class TorMode {
+          // The context belongs to a Tor profile. .onion requests go through
+          // the Tor proxy, so the host resolver does not block them.
+          kEnabled,
+          // The context is not Tor, and .onion may only be reached from Tor
+          // windows ("Only resolve .onion addresses in Tor windows" on). .onion
+          // lookups fail before they reach the system resolver or DoH.
+          kDisabled,
+          // The context is not Tor, and .onion is allowed outside Tor windows,
+          // e.g. through a Tor proxy running outside Brave. .onion hostnames
+          // resolve like any other.
+          kPassthrough,
+        };
+        void set_tor_mode(TorMode tor_mode) { tor_mode_ = tor_mode; }
+        TorMode tor_mode() const { return tor_mode_; }
 
   - description: |-
-      Add the enable_tor_ and onion_only_in_tor_windows_ members.
+      Add the tor_mode_ member, kDisabled by default.
 
-      A context that is never configured is not Tor and allows .onion only in
-      Tor windows, so it fails .onion lookups.
+      A context that is never configured fails .onion lookups.
     add_to_protected:
       class_name: URLRequestContext
-      code: |-
-        bool enable_tor_ = false;
-        bool onion_only_in_tor_windows_ = true;
+      code: TorMode tor_mode_ = TorMode::kDisabled;

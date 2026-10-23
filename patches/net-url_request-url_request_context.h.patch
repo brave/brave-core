@@ -1,23 +1,32 @@
 diff --git a/net/url_request/url_request_context.h b/net/url_request/url_request_context.h
-index f1676812dabbade4be96e9d17ce74313c663e45e..20e92fa297e4377a5505527cb3e1964f9be437af 100644
+index f1676812dabbade4be96e9d17ce74313c663e45e..d88e6907ea01c64651ea4afb3ab2c5340631b842 100644
 --- a/net/url_request/url_request_context.h
 +++ b/net/url_request/url_request_context.h
-@@ -270,6 +270,19 @@ class NET_EXPORT URLRequestContext final {
+@@ -270,6 +270,28 @@ class NET_EXPORT URLRequestContext final {
      job_factory_ = job_factory;
    }
  
-+  void set_enable_tor(bool enable_tor) { enable_tor_ = enable_tor; }
-+  bool enable_tor() const { return enable_tor_; }
-+  void set_onion_only_in_tor_windows(bool onion_only) {
-+    onion_only_in_tor_windows_ = onion_only;
-+  }
-+  bool onion_only_in_tor_windows() const {
-+    return onion_only_in_tor_windows_;
-+  }
++  // How the context treats Tor and .onion hostnames. This describes the
++  // context only; it is unrelated to the policy that disables Brave's
++  // Tor windows, which leaves a context's TorMode as it is.
++  enum class TorMode {
++    // The context belongs to a Tor profile. .onion requests go through
++    // the Tor proxy, so the host resolver does not block them.
++    kEnabled,
++    // The context is not Tor, and .onion may only be reached from Tor
++    // windows ("Only resolve .onion addresses in Tor windows" on). .onion
++    // lookups fail before they reach the system resolver or DoH.
++    kDisabled,
++    // The context is not Tor, and .onion is allowed outside Tor windows,
++    // e.g. through a Tor proxy running outside Brave. .onion hostnames
++    // resolve like any other.
++    kPassthrough,
++  };
++  void set_tor_mode(TorMode tor_mode) { tor_mode_ = tor_mode; }
++  TorMode tor_mode() const { return tor_mode_; }
 +
 + protected:
-+  bool enable_tor_ = false;
-+  bool onion_only_in_tor_windows_ = true;
++  TorMode tor_mode_ = TorMode::kDisabled;
 +
   private:
    friend class URLRequestContextBuilder;

@@ -72,22 +72,21 @@ class OnionHostnameResolutionTest : public testing::Test {
 };
 
 TEST_F(OnionHostnameResolutionTest, BlocksByDefault) {
-  EXPECT_FALSE(context_->enable_tor());
-  EXPECT_TRUE(context_->onion_only_in_tor_windows());
+  EXPECT_EQ(URLRequestContext::TorMode::kDisabled, context_->tor_mode());
 
   EXPECT_EQ(ERR_NAME_NOT_RESOLVED, Resolve("example.onion"));
   EXPECT_EQ(0u, NumSystemResolves());
 }
 
-TEST_F(OnionHostnameResolutionTest, ResolvesOnionWhenAllowedOutsideTor) {
-  context_->set_onion_only_in_tor_windows(false);
+TEST_F(OnionHostnameResolutionTest, ResolvesOnionInPassthroughMode) {
+  context_->set_tor_mode(URLRequestContext::TorMode::kPassthrough);
 
   EXPECT_EQ(OK, Resolve("example.onion"));
   EXPECT_EQ(1u, NumSystemResolves());
 }
 
 TEST_F(OnionHostnameResolutionTest, ResolvesOnionInTorContext) {
-  context_->set_enable_tor(true);
+  context_->set_tor_mode(URLRequestContext::TorMode::kEnabled);
 
   EXPECT_EQ(OK, Resolve("example.onion"));
   EXPECT_EQ(1u, NumSystemResolves());
@@ -113,11 +112,11 @@ TEST_F(OnionHostnameResolutionTest, ResolvesOtherHostsWhenBlocked) {
 }
 
 TEST_F(OnionHostnameResolutionTest, ServesCachedOnionResultsWhenBlocked) {
-  context_->set_onion_only_in_tor_windows(false);
+  context_->set_tor_mode(URLRequestContext::TorMode::kPassthrough);
   EXPECT_EQ(OK, Resolve("example.onion"));
   EXPECT_EQ(1u, NumSystemResolves());
 
-  context_->set_onion_only_in_tor_windows(true);
+  context_->set_tor_mode(URLRequestContext::TorMode::kDisabled);
   EXPECT_EQ(OK, Resolve("example.onion"));
 
   HostResolver::ResolveHostParameters parameters;

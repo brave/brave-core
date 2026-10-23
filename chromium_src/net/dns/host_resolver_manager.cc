@@ -14,8 +14,8 @@ namespace net {
 namespace {
 
 // Returns whether a lookup of `job_key` that would go to the system resolver
-// or DoH must fail: the host is .onion and its request context is not Tor
-// but allows .onion only in Tor windows. Called from
+// or DoH must fail: the host is .onion and its request context's TorMode is
+// kDisabled. Called from
 // HostResolverManager::ResolveLocally() through a plaster, once the cache,
 // hosts file and config presets have no answer.
 bool IsOnionHostnameResolutionBlocked(
@@ -26,8 +26,9 @@ bool IsOnionHostnameResolutionBlocked(
   }
   const URLRequestContext* url_request_context =
       resolve_context->url_request_context();
-  return url_request_context && !url_request_context->enable_tor() &&
-         url_request_context->onion_only_in_tor_windows() &&
+  return url_request_context &&
+         url_request_context->tor_mode() ==
+             URLRequestContext::TorMode::kDisabled &&
          IsOnionHostname(job_key.host.GetHostname());
 }
 
