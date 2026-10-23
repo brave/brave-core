@@ -5,22 +5,35 @@
 
 substitutions:
   - description: |-
-      Add member public methods for "Hide completely when collapsed" feature
+      Rename VerticalTabStripRegionView to VerticalTabStripRegionView_ChromiumImpl
 
-    add_to_public:
+      We provide our own VerticalTabStripRegionView inheriting Chromium's 
+      implementation.
+    rename_class:
       class_name: 'VerticalTabStripRegionView'
-      code: |-
-        int GetCollapsedWidth() const;
-        void HandleMouseMoveEvent(const gfx::PointF& point_int_screen);
+      rename: 'VerticalTabStripRegionView_ChromiumImpl'
 
   - description: |-
-      Add methods and member variables for "Hide completely when collapsed"
-      feature
+      Drop 'final' from VerticalTabStripRegionView_ChromiumImpl so that we can subclass
+    drop_final:
+      class_name: 'VerticalTabStripRegionView_ChromiumImpl'
 
+  - description: Add GetCollapsedWidth()
+    add_to_public:
+      class_name: 'VerticalTabStripRegionView_ChromiumImpl'
+      code: 'int GetCollapsedWidth() const;'
+
+  - description: Add IsMouseInHotCorner()
     add_to_protected:
-      class_name: 'VerticalTabStripRegionView'
-      code: |-
-        void ObserveHideCompletelyPref();
-        void OnHideCompletelyPrefChanged();
-        bool IsMouseInHotCorner() const;
-        PrefChangeRegistrar hide_completely_pref_registrar_;
+      class_name: 'VerticalTabStripRegionView_ChromiumImpl'
+      code: 'bool IsMouseInHotCorner() const;'
+
+  - description: 'Add VerticalTabStripRegionView as a friend'
+    add_friend:
+      class_name: 'VerticalTabStripRegionView_ChromiumImpl'
+      friend_type: 'class VerticalTabStripRegionView'
+
+  - description: 'Make AnimationProgressed virtual'
+    make_virtual:
+      class_name: 'VerticalTabStripRegionView_ChromiumImpl'
+      method_name: 'OnAnimationProgressed'

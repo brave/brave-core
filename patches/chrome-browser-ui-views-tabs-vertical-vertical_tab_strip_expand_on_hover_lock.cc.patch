@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/views/tabs/vertical/vertical_tab_strip_expand_on_hover_lock.cc b/chrome/browser/ui/views/tabs/vertical/vertical_tab_strip_expand_on_hover_lock.cc
+index e67d43d2adedd33f45f5225506c8c3e6beb42e04..49da4072974655b9e37ce913d503bd27847bc66b 100644
+--- a/chrome/browser/ui/views/tabs/vertical/vertical_tab_strip_expand_on_hover_lock.cc
++++ b/chrome/browser/ui/views/tabs/vertical/vertical_tab_strip_expand_on_hover_lock.cc
+@@ -7,7 +7,7 @@
+ #include "chrome/browser/ui/views/frame/vertical_tab_strip_region_view.h"
+ 
+ VerticalTabStripExpandOnHoverLock::VerticalTabStripExpandOnHoverLock(
+-    VerticalTabStripRegionView* region_view,
++    VerticalTabStripRegionView_ChromiumImpl* region_view,
+     ExpandOnHoverLockType lock_type)
+     : lock_type_(lock_type), region_view_(region_view) {
+   if (region_view_) {
