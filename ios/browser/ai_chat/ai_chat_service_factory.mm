@@ -37,8 +37,6 @@ AIChatServiceFactory::AIChatServiceFactory(PassKey key)
   DependsOn(TabTrackerServiceFactory::GetInstance());
 }
 
-AIChatServiceFactory::~AIChatServiceFactory() {}
-
 std::unique_ptr<KeyedService> AIChatServiceFactory::BuildServiceInstanceFor(
     ProfileIOS* profile) const {
   if (!features::IsAIChatEnabled()) {

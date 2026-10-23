@@ -8,8 +8,8 @@
 
 #include <memory>
 
-#include "brave/components/skus/common/skus_sdk.mojom.h"
 #include "brave/components/skus/browser/skus_service_impl.h"
+#include "brave/components/skus/common/skus_sdk.mojom.h"
 #include "ios/chrome/browser/shared/model/profile/typed_profile_keyed_service_factory_ios.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 

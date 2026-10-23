@@ -8,8 +8,8 @@
 
 #include <memory>
 
-#include "brave/ios/browser/keyed_service/keyed_service_factory_wrapper.h"
 #include "brave/components/url_sanitizer/core/browser/url_sanitizer_service.h"
+#include "brave/ios/browser/keyed_service/keyed_service_factory_wrapper.h"
 #include "ios/chrome/browser/shared/model/profile/typed_profile_keyed_service_factory_ios.h"
 
 class KeyedService;

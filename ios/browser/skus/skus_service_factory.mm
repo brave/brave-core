@@ -5,9 +5,9 @@
 
 #include "brave/ios/browser/skus/skus_service_factory.h"
 
-#include "base/feature_list.h"
 #include <utility>
 
+#include "base/feature_list.h"
 #include "brave/components/skus/browser/skus_service_impl.h"
 #include "brave/components/skus/browser/skus_utils.h"
 #include "brave/components/skus/common/features.h"

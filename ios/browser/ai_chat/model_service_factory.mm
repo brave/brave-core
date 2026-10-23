@@ -23,8 +23,6 @@ ModelServiceFactory::ModelServiceFactory(PassKey key)
           ServiceCreation::kCreateLazily,
           TestingCreation::kCreateService) {}
 
-ModelServiceFactory::~ModelServiceFactory() {}
-
 std::unique_ptr<KeyedService> ModelServiceFactory::BuildServiceInstanceFor(
     ProfileIOS* profile) const {
   return std::make_unique<ModelService>(

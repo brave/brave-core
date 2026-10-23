@@ -24,11 +24,10 @@ BraveAccountService* BraveAccountServiceFactoryIOS::GetFor(
 }
 
 BraveAccountServiceFactoryIOS::BraveAccountServiceFactoryIOS(PassKey key)
-    : TypedProfileKeyedServiceFactoryIOS(
-          std::move(key),
-          "BraveAccountService",
-          ServiceCreation::kCreateWithProfile,
-          TestingCreation::kNoServiceForTests) {
+    : TypedProfileKeyedServiceFactoryIOS(std::move(key),
+                                         "BraveAccountService",
+                                         ServiceCreation::kCreateWithProfile,
+                                         TestingCreation::kNoServiceForTests) {
   CHECK(features::IsBraveAccountEnabled());
 }
 
