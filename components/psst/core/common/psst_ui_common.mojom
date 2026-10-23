@@ -33,6 +33,7 @@ interface PsstConsentHelper {
 struct SettingCardDataItem {
     string description;
     string uid;
+    bool checked;
 };
 
 struct SettingCardData {
