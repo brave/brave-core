@@ -3,15 +3,34 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "base/notreached.h"
+#include "net/url_request/url_request_context.h"
+
 #include <services/network/network_context.cc>
 
 namespace network {
 
-// Brave addition to mojom::NetworkContext. Applies runtime changes of the
-// "Only resolve .onion addresses in Tor windows" pref to the request context,
-// which the host resolver reads to block .onion lookups.
-void NetworkContext::SetOnionOnlyInTorWindows(bool onion_only) {
-  url_request_context_->set_onion_only_in_tor_windows(onion_only);
+namespace {
+
+net::URLRequestContext::TorMode ToURLRequestContextTorMode(
+    mojom::TorMode tor_mode) {
+  switch (tor_mode) {
+    case mojom::TorMode::kEnabled:
+      return net::URLRequestContext::TorMode::kEnabled;
+    case mojom::TorMode::kDisabled:
+      return net::URLRequestContext::TorMode::kDisabled;
+    case mojom::TorMode::kPassthrough:
+      return net::URLRequestContext::TorMode::kPassthrough;
+  }
+  NOTREACHED();
+}
+
+}  // namespace
+
+// Brave addition to mojom::NetworkContext. Applies the context's TorMode to
+// the request context, which the host resolver reads to block .onion lookups.
+void NetworkContext::SetTorMode(mojom::TorMode tor_mode) {
+  url_request_context_->set_tor_mode(ToURLRequestContextTorMode(tor_mode));
 }
 
 }  // namespace network

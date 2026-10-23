@@ -4,13 +4,10 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
-  - description: |-
-      Apply the Tor and .onion hostname resolution params to the new request
-      context.
+  - description: Apply the TorMode param to the new request context.
     add_after_line:
       line:
         'url_request_context_ =
         url_request_context_owner_.url_request_context.get();'
       code: |2-
-          url_request_context_->set_enable_tor(params_->enable_tor);
-          SetOnionOnlyInTorWindows(params_->onion_only_in_tor_windows);
+          SetTorMode(params_->tor_mode);
