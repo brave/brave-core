@@ -111,6 +111,12 @@ template("brave_extra_paks") {
       deps += [ "//brave/components/brave_rewards/resources" ]
     }
 
+    if (!is_android) {
+      sources += [ "$root_gen_dir/brave/browser/resources/brave_wrapped/brave_wrapped_all.pak" ]
+
+      deps += [ "//brave/browser/resources/brave_wrapped" ]
+    }
+
     if (is_brave_origin_branded) {
       sources += [ "$root_gen_dir/brave/browser/resources/brave_origin_startup/brave_origin_startup_all.pak" ]
 
