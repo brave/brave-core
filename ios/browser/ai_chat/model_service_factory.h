@@ -8,37 +8,24 @@
 
 #include <memory>
 
-#include "base/no_destructor.h"
-#include "ios/chrome/browser/shared/model/profile/profile_keyed_service_factory_ios.h"
+#include "brave/components/ai_chat/core/browser/model_service.h"
+#include "ios/chrome/browser/shared/model/profile/typed_profile_keyed_service_factory_ios.h"
 
 class ProfileIOS;
 
-namespace base {
-
-template <typename T>
-class NoDestructor;
-}  // namespace base
-
 namespace ai_chat {
 
-class ModelService;
-
-class ModelServiceFactory : public ProfileKeyedServiceFactoryIOS {
+class ModelServiceFactory
+    : public TypedProfileKeyedServiceFactoryIOS<ModelServiceFactory,
+                                                ModelService> {
  public:
-  static ModelService* GetForProfile(ProfileIOS* profile);
-  static ModelService* GetForProfileIfExists(ProfileIOS* profile);
-  static ModelServiceFactory* GetInstance();
+  explicit ModelServiceFactory(PassKey key);
 
   ModelServiceFactory(const ModelServiceFactory&) = delete;
   ModelServiceFactory& operator=(const ModelServiceFactory&) = delete;
 
  private:
-  friend class base::NoDestructor<ModelServiceFactory>;
-
-  ModelServiceFactory();
-  ~ModelServiceFactory() override;
-
-  // ProfileKeyedServiceFactoryIOS implementation.
+  // TypedProfileKeyedServiceFactoryIOS implementation.
   std::unique_ptr<KeyedService> BuildServiceInstanceFor(
       ProfileIOS* profile) const override;
 };
