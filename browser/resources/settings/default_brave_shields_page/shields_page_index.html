@@ -11,16 +11,16 @@
 
 <cr-view-manager id="viewManager" class="cr-centered-card-container"
     show-all$="[[shouldShowAll]]">
-  <settings-default-brave-shields-page slot="view" id="parent" prefs="{{prefs}}">
+  <settings-default-brave-shields-page slot="view" id="parent">
   </settings-default-brave-shields-page>
 
-  <settings-ad-block-only-mode-page slot="view" id="adBlockOnlyMode" prefs="{{prefs}}">
+  <settings-ad-block-only-mode-page slot="view" id="adBlockOnlyMode">
   </settings-ad-block-only-mode-page>
 
-  <settings-social-blocking-page slot="view" id="socialBlocking" prefs="{{prefs}}">
+  <settings-social-blocking-page slot="view" id="socialBlocking">
   </settings-social-blocking-page>
 
   <adblock-subpage slot="view" id="adblock"
-      data-parent-view-id="parent" prefs="{{prefs}}">
+      data-parent-view-id="parent">
   </adblock-subpage>
 </cr-view-manager>

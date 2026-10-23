@@ -11,6 +11,7 @@
 #include "base/functional/bind.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/tabs/features.h"
+#include "chrome/browser/ui/tabs/vertical_tab_strip_state.h"
 #include "chrome/browser/ui/tabs/vertical_tab_strip_state_controller.h"
 #include "chrome/browser/ui/views/frame/vertical_tab_strip_region_view.h"
 #include "chrome/common/pref_names.h"
@@ -47,7 +48,7 @@ void MaybeUpdateVisibility(
 int VerticalTabStripRegionView::GetCollapsedWidth() const {
   return state_controller_->ShouldHideCompletelyWhenCollapsed()
              ? 0
-             : kCollapsedWidth;
+             : tabs::kVerticalTabStripCollapsedWidth;
 }
 
 void VerticalTabStripRegionView::ObserveHideCompletelyPref() {

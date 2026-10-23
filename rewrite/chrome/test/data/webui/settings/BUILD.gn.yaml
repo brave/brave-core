@@ -10,3 +10,13 @@ substitutions:
       list_name: ts_definitions
       literal: brave_settings_ts_definitions
       import: //brave/browser/resources/settings/sources.gni
+
+  - description: |-
+      Pass the Brave buildflags to the settings test preprocessor
+
+      Brave's settings tests use <if expr="..."> with them.
+    append_to_target:
+      target: build
+      type: build_webui_tests
+      code: |-
+        preprocessor_defines = brave_settings_preprocessor_defines

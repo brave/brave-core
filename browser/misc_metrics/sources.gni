@@ -21,6 +21,7 @@ brave_browser_misc_metrics_deps = [
   "//brave/components/ntp_background_images/common",
   "//chrome/browser:browser_process",
   "//chrome/browser/bookmarks",
+  "//chrome/browser/history",
   "//chrome/browser/profiles",
   "//chrome/browser/profiles:profile_util",
   "//chrome/browser/themes",

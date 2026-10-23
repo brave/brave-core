@@ -19,6 +19,12 @@
 -SubCapture*.*
 -WebRtcScreenCaptureBrowserTestUserRejection.*
 
+# The fixture's mocked Time::Now() starts at the Unix epoch and advances 1 ms
+# per call. On 32-bit, DiscardableSharedMemory stores timestamps as whole Unix
+# seconds, so a sub-second time serializes to null and
+# DiscardableSharedMemory::Unlock fails its non-null timestamp DCHECK.
+-*ExtensionWebRequestMockedClockTest.*
+
 # These PDF JS tests time out (32 s) on x86.
 -All/PDFExtensionJSTest.*/*
 -All/PDFExtensionPacificTimeZoneJSTest.*

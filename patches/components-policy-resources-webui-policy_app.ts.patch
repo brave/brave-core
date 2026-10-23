@@ -1,5 +1,5 @@
 diff --git a/components/policy/resources/webui/policy_app.ts b/components/policy/resources/webui/policy_app.ts
-index b4560cc7ea3f55e3a6e0118eed35424e2361e07e..10ea73c1c459e2046fd242305893cd84998d556b 100644
+index ed3ddde8f11c8cd584c3187d999d41133e046db4..2be6acfaf9123833069fa6d33369cdfc4a2f8f54 100644
 --- a/components/policy/resources/webui/policy_app.ts
 +++ b/components/policy/resources/webui/policy_app.ts
 @@ -173,7 +173,7 @@ export class PolicyAppElement extends CrLitElement {

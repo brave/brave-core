@@ -14,7 +14,7 @@
 #include "base/containers/span.h"
 #include "brave/components/ntp_background_images/browser/component_ready_callback.h"
 #include "components/component_updater/component_installer.h"
-#include "crypto/sha2.h"
+#include "crypto/hash.h"
 
 namespace base {
 class FilePath;
@@ -30,7 +30,7 @@ class NTPSponsoredImagesComponentInstallerPolicy
     : public component_updater::ComponentInstallerPolicy {
  public:
   NTPSponsoredImagesComponentInstallerPolicy(
-      base::span<const uint8_t, crypto::kSHA256Length> public_key_sha256,
+      base::span<const uint8_t, crypto::hash::kSha256Size> public_key_sha256,
       const std::string& component_name,
       ComponentReadyCallback callback);
 
@@ -62,12 +62,12 @@ class NTPSponsoredImagesComponentInstallerPolicy
  private:
   const std::string component_name_;
   ComponentReadyCallback ready_callback_;
-  std::array<uint8_t, crypto::kSHA256Length> component_hash_;
+  std::array<uint8_t, crypto::hash::kSha256Size> component_hash_;
 };
 
 void RegisterNTPSponsoredImagesComponent(
     component_updater::ComponentUpdateService* component_update_service,
-    base::span<const uint8_t, crypto::kSHA256Length> public_key_sha256,
+    base::span<const uint8_t, crypto::hash::kSha256Size> public_key_sha256,
     const std::string& component_name,
     ComponentReadyCallback callback);
 

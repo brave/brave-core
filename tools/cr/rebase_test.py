@@ -338,6 +338,7 @@ class PatternMatchTest(unittest.TestCase):
             ('iwyu', '[cr149] IWYU fixes.'),
             ('resource_ids', '[cr149] Bump resource_ids'),
             ('lit_mangler', '[cr149] Update Lit mangler snapshot'),
+            ('codehealth_tracker', '[cr149] Version CodeHealth tracker'),
             ('disable_tests', '[cr149] Disable failing upstream tests'),
             ('disable_tests', '[cr149] Filter upstream tests as needed'),
             (
@@ -584,14 +585,54 @@ class RewritePlanTest(unittest.TestCase):
 
         rebase.rewrite_plan(todo_file=path, pinned_squashed=True)
 
-        # The fixup line is in the version group as `squash`; its original
-        # `fixup -C` command is replaced by `squash` (it is no longer the
-        # first commit in the group).
+        # The amend line joins the version group but keeps `fixup -C`, so
+        # its message still replaces the target's.
         self.assertEqual(
             path.read_text(),
             'pick aaa # Update from Chromium 1.0.0.0 to Chromium 1.0.0.1\n'
-            'squash bbb # amend! Update from Chromium 1.0.0.0 to '
+            'fixup -C bbb # amend! Update from Chromium 1.0.0.0 to '
             'Chromium 1.0.0.1\n'
+            'pick ccc # [cr148] Feature A\n',
+        )
+
+    def test_squashed_keeps_attached_autosquash_commands(self):
+        """Attached `fixup`, `fixup -C` and `squash` markers keep git's
+        command inside a pinned group; only the plain pinned commits after
+        the first are forced to `squash`. Rewriting a plain `fixup` to
+        `squash` would make git keep the fixup's body (e.g. a trailer) as
+        part of the squashed message."""
+        path = self._todo(
+            'pick aaa # Apply-fixed 🩹 patches from Chromium 1.0.0.0 to '
+            'Chromium 1.0.0.1.\n'
+            'fixup bbb # fixup! Apply-fixed 🩹 patches from Chromium 1.0.0.0 '
+            'to Chromium 1.0.0.1.\n'
+            'pick ccc # [cr148] Feature A\n'
+            'pick ddd # Apply-fixed 🩹 patches from Chromium 1.0.0.1 to '
+            'Chromium 1.0.0.2.\n'
+            'fixup -C eee # amend! Apply-fixed 🩹 patches from Chromium '
+            '1.0.0.1 to Chromium 1.0.0.2.\n'
+            'squash fff # squash! Apply-fixed 🩹 patches from Chromium '
+            '1.0.0.1 to Chromium 1.0.0.2.\n'
+            'fixup -C ggg # amend! Apply-fixed 🩹 patches from Chromium '
+            '1.0.0.1 to Chromium 1.0.0.2. # empty\n'
+        )
+
+        rebase.rewrite_plan(todo_file=path, pinned_squashed=True)
+
+        self.assertEqual(
+            path.read_text(),
+            'pick aaa # Apply-fixed 🩹 patches from Chromium 1.0.0.0 to '
+            'Chromium 1.0.0.1.\n'
+            'fixup bbb # fixup! Apply-fixed 🩹 patches from Chromium 1.0.0.0 '
+            'to Chromium 1.0.0.1.\n'
+            'squash ddd # Apply-fixed 🩹 patches from Chromium 1.0.0.1 to '
+            'Chromium 1.0.0.2.\n'
+            'fixup -C eee # amend! Apply-fixed 🩹 patches from Chromium '
+            '1.0.0.1 to Chromium 1.0.0.2.\n'
+            'squash fff # squash! Apply-fixed 🩹 patches from Chromium '
+            '1.0.0.1 to Chromium 1.0.0.2.\n'
+            'fixup -C ggg # amend! Apply-fixed 🩹 patches from Chromium '
+            '1.0.0.1 to Chromium 1.0.0.2. # empty\n'
             'pick ccc # [cr148] Feature A\n',
         )
 
@@ -1117,6 +1158,70 @@ class MessageWriterTest(unittest.TestCase):
             ],
         )
 
+    def test_fixup_block_with_body_is_skipped(self):
+        """A `fixup!` commit with a body (e.g. a `Co-Authored-By` trailer)
+        that ends up in a squash block must not contribute its body -- git
+        discards a fixup's message -- and must never become the trailing
+        message."""
+        path = self._file(
+            '# This is a combination of 2 commits.\n'
+            '# This is the 1st commit message:\n'
+            '\n'
+            'Apply-fixed 🩹 patches from Chromium 1.0.0.0 to '
+            'Chromium 1.0.0.1.\n'
+            '\n'
+            '# This is the commit message #2:\n'
+            '\n'
+            '# fixup! Apply-fixed 🩹 patches from Chromium 1.0.0.0 to '
+            'Chromium 1.0.0.1.\n'
+            '\n'
+            'Co-Authored-By: Someone <someone@example.com>\n'
+        )
+
+        writer = rebase.MessageWriter.parse(path)
+
+        self.assertEqual(
+            self._messages(writer),
+            [
+                'Apply-fixed 🩹 patches from Chromium 1.0.0.0 to '
+                'Chromium 1.0.0.1.'
+            ],
+        )
+        writer.rewrite_with_last_message()
+        self.assertEqual(
+            path.read_text(),
+            'Apply-fixed 🩹 patches from Chromium 1.0.0.0 to '
+            'Chromium 1.0.0.1.\n',
+        )
+
+    def test_amend_block_becomes_trailing_message(self):
+        """An `amend!` (also produced by `--fixup=reword:`) block carries
+        the replacement message, so it is kept and wins as the last
+        block."""
+        path = self._file(
+            '# This is the 1st commit message:\n'
+            '\n'
+            'Update from Chromium 1.0.0.0 to Chromium 1.0.0.1\n'
+            '\n'
+            '# This is the commit message #2:\n'
+            '\n'
+            '# amend! Update from Chromium 1.0.0.0 to Chromium 1.0.0.1\n'
+            '\n'
+            'Update from Chromium 1.0.0.0 to Chromium 1.0.0.1\n'
+            '\n'
+            'Reworded body.\n'
+        )
+
+        writer = rebase.MessageWriter.parse(path)
+        writer.rewrite_with_last_message()
+
+        self.assertEqual(
+            path.read_text(),
+            'Update from Chromium 1.0.0.0 to Chromium 1.0.0.1\n'
+            '\n'
+            'Reworded body.\n',
+        )
+
     def test_git_footer_terminates_parsing(self):
         """Anything after `# Please enter the commit message ...` is
         ignored, including stale `# This is ...` lines from git's status
@@ -1438,6 +1543,109 @@ class RebaseExecuteTest(unittest.TestCase):
                 'Chromium 1.0.0.3.',
                 'Add brave-only feature.txt',
             ],
+        )
+
+    def _seed_two_apply_fixed(self) -> dict:
+        """Seeds the bump branch plus two `Apply-fixed` pinned commits that
+        `squash_minor_bumps` collapses into one."""
+        scenario = self._seed_bump_branch()
+        scenario['first'] = self._commit_with_file(
+            'Apply-fixed 🩹 patches from Chromium 1.0.0.1 to Chromium 1.0.0.2.'
+        )
+        scenario['last'] = self._commit_with_file(
+            'Apply-fixed 🩹 patches from Chromium 1.0.0.2 to Chromium 1.0.0.3.'
+        )
+        return scenario
+
+    def _subject_of(self, ref: str) -> str:
+        return self.repo._run_git_command(
+            ['log', '-1', '--format=%s', ref], self.repo.brave
+        )
+
+    def _squash_and_get_pinned_message(self, scenario: dict) -> str:
+        """Runs `squash_minor_bumps` and returns the full message of the
+        squashed pinned commit, which lands right on top of `v102`."""
+        brockit.Rebase().execute(
+            from_ref=scenario['v101'],
+            to_ref=scenario['v102'],
+            recommit=False,
+            discard_regen_changes=False,
+            squash_minor_bumps=True,
+        )
+        first_rebased = self.repo._run_git_command(
+            ['rev-list', '--reverse', scenario['v102'] + '..HEAD'],
+            self.repo.brave,
+        ).splitlines()[0]
+        return self.repo._run_git_command(
+            ['log', '-1', '--format=%B', first_rebased], self.repo.brave
+        )
+
+    def test_squash_minor_bumps_ignores_fixup_body(self):
+        """Regression: `git commit --fixup=<pinned> -m <trailer>` gives the
+        fixup a body. That body must be discarded like git does for any
+        fixup, not become the squashed pinned commit's message."""
+        scenario = self._seed_two_apply_fixed()
+        self._commit_counter += 1
+        self.repo.write_and_stage_file(
+            f'gen-{self._commit_counter}.txt', 'fixup\n', self.repo.brave
+        )
+        self.repo._run_git_command(
+            [
+                'commit',
+                f'--fixup={scenario["last"]}',
+                '-m',
+                'Co-Authored-By: Someone <someone@example.com>',
+            ],
+            self.repo.brave,
+        )
+
+        self.assertEqual(
+            self._squash_and_get_pinned_message(scenario),
+            'Apply-fixed 🩹 patches from Chromium 1.0.0.2 to Chromium 1.0.0.3.',
+        )
+
+    def test_squash_minor_bumps_applies_amend_message(self):
+        """`git commit --fixup=amend:<pinned>` replaces the target's message,
+        and that replacement survives the pinned squash."""
+        scenario = self._seed_two_apply_fixed()
+        self._commit_counter += 1
+        self.repo.write_and_stage_file(
+            f'gen-{self._commit_counter}.txt', 'amend\n', self.repo.brave
+        )
+        # Same message `--fixup=amend:` produces, without needing an editor.
+        self.repo.commit(
+            f'amend! {self._subject_of(scenario["last"])}\n\n'
+            'Apply-fixed 🩹 patches from Chromium 1.0.0.2 to Chromium 1.0.0.3.'
+            '\n\nAmended body.',
+            self.repo.brave,
+        )
+
+        self.assertEqual(
+            self._squash_and_get_pinned_message(scenario),
+            'Apply-fixed 🩹 patches from Chromium 1.0.0.2 to Chromium 1.0.0.3.'
+            '\n\nAmended body.',
+        )
+
+    def test_squash_minor_bumps_applies_reword_message(self):
+        """`git commit --fixup=reword:<pinned>` is an empty `amend!` commit;
+        its message also replaces the target's through the pinned squash."""
+        scenario = self._seed_two_apply_fixed()
+        self.repo._run_git_command(
+            [
+                'commit',
+                '--allow-empty',
+                '-m',
+                f'amend! {self._subject_of(scenario["last"])}\n\n'
+                'Apply-fixed 🩹 patches from Chromium 1.0.0.2 to Chromium '
+                '1.0.0.3.\n\nReworded body.',
+            ],
+            self.repo.brave,
+        )
+
+        self.assertEqual(
+            self._squash_and_get_pinned_message(scenario),
+            'Apply-fixed 🩹 patches from Chromium 1.0.0.2 to Chromium 1.0.0.3.'
+            '\n\nReworded body.',
         )
 
     def test_recommit_amends_first_commit(self):

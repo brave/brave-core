@@ -8,8 +8,8 @@ import { I18nMixin, I18nMixinInterface } from
 import { PolymerElement } from
   'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 
-import { PrefsMixin, PrefsMixinInterface } from
-  '/shared/settings/prefs/prefs_mixin.js'
+import {PrefServiceObserverMixin, PrefServiceObserverMixinInterface} from
+  '/shared/settings/prefs2/pref_service_observer_mixin.js'
 import { RouteObserverMixin, RouteObserverMixinInterface } from '../router.js'
 import { SettingsViewMixin } from '../settings_page/settings_view_mixin.js'
 import {
@@ -27,8 +27,8 @@ import { getTemplate } from './customization_subpage.html.js'
 import './memory_section.js'
 
 const BraveLeoCustomizationSubpageBase =
-    SettingsViewMixin(PrefsMixin(I18nMixin(RouteObserverMixin(PolymerElement)))) as {
-      new (): PolymerElement & PrefsMixinInterface & I18nMixinInterface &
+    SettingsViewMixin(PrefServiceObserverMixin(I18nMixin(RouteObserverMixin(PolymerElement)))) as {
+      new (): PolymerElement & PrefServiceObserverMixinInterface & I18nMixinInterface &
         RouteObserverMixinInterface
     }
 
@@ -68,6 +68,7 @@ class BraveLeoCustomizationSubpage extends BraveLeoCustomizationSubpageBase {
         type: Boolean,
         value: true,
       },
+      userCustomizationEnabledPref_: Object,
     }
   }
 
@@ -81,6 +82,14 @@ class BraveLeoCustomizationSubpage extends BraveLeoCustomizationSubpageBase {
   declare otherInput_: string
   declare changesSaved_: boolean
   declare isSaveDisabled_: boolean
+  private declare userCustomizationEnabledPref_:
+    chrome.settingsPrivate.PrefObject<boolean> | undefined
+
+  override connectedCallback() {
+    super.connectedCallback()
+    this.mirrorPref('brave.ai_chat.user_customization_enabled',
+                    'userCustomizationEnabledPref_')
+  }
 
   override ready() {
     super.ready()

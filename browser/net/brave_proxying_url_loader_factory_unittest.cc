@@ -128,6 +128,32 @@ TEST_F(BraveProxyingURLLoaderFactoryTest, BlocksUnsafeNetworkRedirect) {
 }
 
 TEST_F(BraveProxyingURLLoaderFactoryTest,
+       AllowsUnsafeRedirectWithFactoryBypassRedirectChecks) {
+  // Mimics an inner proxy (e.g. WebRequest) authorizing a redirect to a
+  // non-navigation request, signaled via the factory-level flag.
+  const GURL request_url("https://example.com/source");
+  const GURL unsafe_url("data:text/plain,unsafe");
+  network::ResourceRequest request = CreateRequest(
+      request_url, url::Origin::Create(GURL("https://initiator.example")));
+  network::TestURLLoaderFactory::Redirects redirects;
+  redirects.emplace_back(CreateRedirectInfo(request, unsafe_url),
+                         CreateRedirectHead(unsafe_url));
+  test_factory_.AddResponse(request_url, network::mojom::URLResponseHead::New(),
+                            "", network::URLLoaderCompletionStatus(net::OK),
+                            std::move(redirects));
+
+  auto factory = CreateFactory();
+  proxy_->set_bypass_redirect_checks(true);
+  network::TestURLLoaderClient client;
+  mojo::Remote<network::mojom::URLLoader> loader;
+  CreateLoaderAndStart(factory, loader, request, client);
+  client.RunUntilRedirectReceived();
+
+  EXPECT_EQ(unsafe_url, client.redirect_info().new_url);
+  EXPECT_FALSE(client.has_received_completion());
+}
+
+TEST_F(BraveProxyingURLLoaderFactoryTest,
        TaintsInitiatorOnCrossOriginBraveRedirect) {
   // When the handler rewrites a request to a cross-origin URL (mimicking a
   // Brave static/adblock redirect), the outgoing request's initiator must be

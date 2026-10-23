@@ -13,7 +13,6 @@
 #include "chrome/browser/preloading/preloading_features.h"
 #include "chrome/browser/ttc/core/features.h"
 #include "chrome/browser/ui/omnibox/omnibox_next_features.h"
-#include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/common/chrome_features.h"
 #include "components/attribution_reporting/features.h"
@@ -154,6 +153,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &blink::features::kBackgroundResourceFetch,
       &blink::features::kFencedFrames,
       &blink::features::kPreloadingEagerViewportHeuristics,
+      &blink::features::kPreloadingModerateViewportHeuristics,
       &browser_actuator::kBrowserActuator,
       &browser_actuator::kBrowserActuatorProtoStreamTransport,
 #if !BUILDFLAG(IS_ANDROID)
@@ -321,6 +321,10 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
       &switches::kFirstRunDesktopRefresh,
 #endif
+#if BUILDFLAG(IS_ANDROID)
+      &switches::kProfileDiscOnAllPages,
+      &switches::kSigninLevelUpButton,
+#endif
       &switches::kSyncEnableBookmarksInTransportMode,
       &syncer::kSyncAutofillValuableMetadata,
       &ttc::kTtc,
@@ -355,9 +359,6 @@ TEST(FeatureDefaultsTest, EnabledFeatures) {
 #if !BUILDFLAG(IS_ANDROID)
       &sharing_hub::kDesktopScreenshots,
 #endif
-#if !BUILDFLAG(IS_ANDROID)
-      &tabs::kVerticalTabsExpandOnHover,
-#endif  // !BUILDFLAG(IS_ANDROID)
       &network::features::kLocalNetworkAccessChecksWebSockets,
   };
 

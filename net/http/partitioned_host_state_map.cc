@@ -12,7 +12,7 @@
 #include "base/check.h"
 #include "base/compiler_specific.h"
 #include "base/containers/span.h"
-#include "crypto/sha2.h"
+#include "crypto/hash.h"
 #include "net/base/network_isolation_key.h"
 
 namespace {
@@ -54,12 +54,12 @@ PartitionedHostStateMapBase::GetKeyWithPartitionHash(
   }
 
   HashedHost result;
-  static_assert(result.size() == crypto::kSHA256Length,
+  static_assert(result.size() == crypto::hash::kSha256Size,
                 "Unexpected HashedHost size");
-  base::span(result).first<crypto::kSHA256Length / 2>().copy_from(
-      base::span(k).first<crypto::kSHA256Length / 2>());
-  base::span(result).last<crypto::kSHA256Length / 2>().copy_from(
-      base::span(*partition_hash_).first<crypto::kSHA256Length / 2>());
+  base::span(result).first<crypto::hash::kSha256Size / 2>().copy_from(
+      base::span(k).first<crypto::hash::kSha256Size / 2>());
+  base::span(result).last<crypto::hash::kSha256Size / 2>().copy_from(
+      base::span(*partition_hash_).first<crypto::hash::kSha256Size / 2>());
   return result;
 }
 

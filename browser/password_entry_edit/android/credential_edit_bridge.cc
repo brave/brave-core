@@ -76,7 +76,7 @@ CredentialEditBridge::~CredentialEditBridge() {
 void CredentialEditBridge::GetCredential(JNIEnv* env) {
   Java_CredentialEditBridge_setCredential(
       env, java_bridge_, GetDisplayURLOrAppName(), credential_.username,
-      credential_.password, GetDisplayFederationOrigin(),
+      credential_.password.value(), GetDisplayFederationOrigin(),
       is_insecure_credential_.value());
 }
 
@@ -91,7 +91,8 @@ void CredentialEditBridge::SaveChanges(JNIEnv* env,
                                        const std::u16string& password) {
   password_manager::CredentialUIEntry updated_credential = credential_;
   updated_credential.username = username;
-  updated_credential.password = password;
+  updated_credential.password =
+      password_manager::PasswordString(std::u16string(password));
   saved_passwords_presenter_->EditSavedCredentials(credential_,
                                                    updated_credential);
 }

@@ -244,7 +244,8 @@ class BraveProxyingURLLoaderFactory : public network::mojom::URLLoaderFactory {
 
   ~BraveProxyingURLLoaderFactory() override;
 
-  static void MaybeProxyRequest(
+  // Returns the created proxy, if any.
+  static BraveProxyingURLLoaderFactory* MaybeProxyRequest(
       content::BrowserContext* browser_context,
       content::RenderFrameHost* render_frame_host,
       network::URLLoaderFactoryBuilder& factory_builder,
@@ -267,6 +268,12 @@ class BraveProxyingURLLoaderFactory : public network::mojom::URLLoaderFactory {
   void Clone(mojo::PendingReceiver<network::mojom::URLLoaderFactory>
                  loader_receiver) override;
 
+  // Set when an inner proxy (e.g. WebRequest) may authorize redirects that
+  // would otherwise be unsafe. Navigations use NavigationHandle instead.
+  void set_bypass_redirect_checks(bool bypass) {
+    bypass_redirect_checks_ = bypass;
+  }
+
  private:
   friend class base::DeleteHelper<BraveProxyingURLLoaderFactory>;
   friend class base::RefCountedDeleteOnSequence<BraveProxyingURLLoaderFactory>;
@@ -285,6 +292,7 @@ class BraveProxyingURLLoaderFactory : public network::mojom::URLLoaderFactory {
   const url::Origin request_initiator_;
   const net::IsolationInfo isolation_info_;
   const std::optional<int64_t> navigation_id_;
+  bool bypass_redirect_checks_ = false;
 
   mojo::ReceiverSet<network::mojom::URLLoaderFactory> proxy_receivers_;
   mojo::Remote<network::mojom::URLLoaderFactory> target_factory_;

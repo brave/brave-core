@@ -143,7 +143,10 @@ void BraveContentRendererClient::
 
   // These features don't have dedicated WebRuntimeFeatures wrappers.
   blink::WebRuntimeFeatures::EnableFeatureFromString("AdTagging", false);
-  blink::WebRuntimeFeatures::EnableFeatureFromString("AIClassifierAPI", false);
+  blink::WebRuntimeFeatures::EnableFeatureFromString("AIDecisionModelAPI",
+                                                     false);
+  blink::WebRuntimeFeatures::EnableFeatureFromString(
+      "AIDecisionModelAPIForWorkers", false);
   blink::WebRuntimeFeatures::EnableFeatureFromString(
       "ApproximateGeolocationPermissionAccuracyMode", true);
   blink::WebRuntimeFeatures::EnableFeatureFromString("DigitalGoods", false);

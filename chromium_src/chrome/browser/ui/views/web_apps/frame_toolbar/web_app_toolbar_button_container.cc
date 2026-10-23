@@ -87,14 +87,4 @@ void MaybeAddPwaShieldsToolbarButton(WebAppToolbarButtonContainer* container) {
 
 }  // namespace
 
-#define AddedToWidget AddedToWidget_ChromiumImpl
-
 #include <chrome/browser/ui/views/web_apps/frame_toolbar/web_app_toolbar_button_container.cc>
-
-#undef AddedToWidget
-
-void WebAppToolbarButtonContainer::AddedToWidget() {
-  MaybeAddPwaShieldsToolbarButton(this);
-
-  AddedToWidget_ChromiumImpl();
-}

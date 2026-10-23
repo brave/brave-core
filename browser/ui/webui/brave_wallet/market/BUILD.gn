@@ -20,12 +20,9 @@ source_set("market") {
     "//brave/components/resources:static_resources_grit",
     "//brave/components/resources:strings",
     "//chrome/browser/profiles",
+    "//chrome/browser/ui/webui:theme_source",
     "//content/public/browser",
     "//ui/webui",
     "//ui/webui/resources:resources_grit",
   ]
-
-  if (!is_android) {
-    deps += [ "//chrome/browser/ui/webui:theme_source" ]
-  }
 }
