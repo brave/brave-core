@@ -32,6 +32,10 @@ constexpr char kGetScriptBlockingFlagMockedValue[] =
     "MockedScriptBlockingFlagValue";
 constexpr char kAdblockOnlyModeEnabledMockedValue[] =
     "MockedAdblockOnlyModeEnabledValue";
+#if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
+  constexpr char kAdblockExtensionInstalledMockedValue[] =
+      "MockedAdblockExtensionInstalledValue";
+#endif
 
 class MockWebcompatReportUploader
     : public webcompat_reporter::WebcompatReportUploader {
@@ -70,6 +74,12 @@ class MockWebCompatServiceDelegate : public WebCompatServiceDelegate {
               GetAdblockOnlyModeEnabled,
               (),
               (const));
+  #if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
+    MOCK_METHOD(std::optional<std::string>,
+                GetAdblockExtensionInstalled,
+                (),
+                (const));
+  #endif
 };
 }  // namespace
 
@@ -155,7 +165,9 @@ class WebcompatReporterServiceUnitTest : public testing::Test {
     EXPECT_CALL(*delegate_, GetCookiePolicy).Times(0);
     EXPECT_CALL(*delegate_, GetScriptBlockingFlag).Times(0);
     EXPECT_CALL(*delegate_, GetAdblockOnlyModeEnabled).Times(0);
-
+    #if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
+      EXPECT_CALL(*delegate_, GetAdblockExtensionInstalled).Times(0);
+    #endif
     webcompat_reporter_service_->SubmitWebcompatReport(std::move(report_info));
   }
 
@@ -251,6 +263,10 @@ TEST_F(WebcompatReporterServiceUnitTest, SubmitReportWithNoPropsOverride) {
                   kGetScriptBlockingFlagMockedValue);
         EXPECT_EQ(report->adblock_only_mode_enabled.value(),
                   kAdblockOnlyModeEnabledMockedValue);
+        #if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
+          EXPECT_EQ(report->adblock_extension_installed.value(),
+                    kAdblockExtensionInstalledMockedValue);
+        #endif
         EXPECT_FALSE(report->fp_block_setting);
         EXPECT_FALSE(report->ad_block_setting);
         EXPECT_FALSE(report->language_farbling);
@@ -275,6 +291,11 @@ TEST_F(WebcompatReporterServiceUnitTest, SubmitReportWithNoPropsOverride) {
   EXPECT_CALL(*delegate_, GetAdblockOnlyModeEnabled)
       .Times(1)
       .WillOnce(testing::Return(kAdblockOnlyModeEnabledMockedValue));
+  #if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
+    EXPECT_CALL(*delegate_, GetAdblockExtensionInstalled)
+        .Times(1)
+        .WillOnce(testing::Return(kAdblockExtensionInstalledMockedValue));
+  #endif
 
   webcompat_reporter_service_->SubmitWebcompatReport(std::move(report_info));
 }
