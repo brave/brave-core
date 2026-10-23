@@ -927,18 +927,76 @@ class TabManager: NSObject {
     }
   }
 
+  @MainActor private var tabManagersInOtherWindows: [TabManager] {
+    Self.tabManagersInConnectedWindows.filter { $0 !== self }
+  }
+
+  /// Closes the tabs whose URL matches `shouldClose` in this window.
+  ///
+  /// The selected tab is closed last, otherwise `removeTab` could select another tab that is
+  /// about to be closed, reloading a website whose data is being wiped.
+  @discardableResult
+  @MainActor private func closeTabsToShred(
+    isPrivate: Bool,
+    where shouldClose: @escaping (URL) -> Bool
+  ) -> [any TabState] {
+    var tabsToClose = tabs(isPrivate: isPrivate).filter {
+      $0.visibleURL.map(shouldClose) ?? false
+    }
+    if let index = tabsToClose.firstIndex(where: { $0 === selectedTab }) {
+      tabsToClose.append(tabsToClose.remove(at: index))
+    }
+    for tabToClose in tabsToClose {
+      // The Tab's WebView is not deinitialized immediately, so it's possible the
+      // WebView still stores data after we shred but before the WebView is deinitialized.
+      // Delete the web view to prevent data being stored after data is Shred.
+      tabToClose.deleteWebView()
+      removeTab(tabToClose)
+    }
+    return tabsToClose
+  }
+
+  /// Closes the tabs whose URL matches `shouldClose` in every other window, including windows
+  /// whose scene is dormant.
+  ///
+  /// Website data stores are shared between windows, so a shred would otherwise leave a live tab
+  /// in another window pointing at wiped data, free to write more of it. A dormant window has no
+  /// live tabs, but would restore the shredded site when reconnected, so its persisted tabs are
+  /// deleted instead.
+  @MainActor private func closeTabsToShredInOtherWindows(
+    isPrivate: Bool,
+    where shouldClose: @escaping (URL) -> Bool
+  ) {
+    for tabManager in tabManagersInOtherWindows {
+      tabManager.closeTabsToShred(isPrivate: isPrivate, where: shouldClose)
+    }
+    let dormantWindowIds = Self.dormantWindowIds
+    if !dormantWindowIds.isEmpty {
+      SessionTab.deleteAll(isPrivate: isPrivate, inWindows: dormantWindowIds, where: shouldClose)
+    }
+  }
+
+  /// Closes the tabs whose URL matches `shouldClose` in every window.
+  ///
+  /// - Returns: The tabs closed in this window.
+  @discardableResult
+  @MainActor private func closeTabsToShredInAllWindows(
+    isPrivate: Bool,
+    where shouldClose: @escaping (URL) -> Bool
+  ) -> [any TabState] {
+    let closedTabs = closeTabsToShred(isPrivate: isPrivate, where: shouldClose)
+    closeTabsToShredInOtherWindows(isPrivate: isPrivate, where: shouldClose)
+    return closedTabs
+  }
+
   /// Shreds data for a set of tabs and returns tabs that are to be shredded/removed.
   @MainActor func shredDataForTabs(_ tabs: [any TabState]) -> Set<TabState.ID> {
     let isPrivateBrowsing = privateBrowsingManager.isPrivateBrowsing
     let urlsToShred = Set(tabs.compactMap(\.visibleURL?.urlToShred))
-    let tabsToRemove = self.tabs(isPrivate: isPrivateBrowsing).filter({
-      if let url = $0.visibleURL?.urlToShred {
-        return urlsToShred.contains(url)
-      }
-      return false
-    })
+    let tabsToRemove = closeTabsToShredInAllWindows(isPrivate: isPrivateBrowsing) {
+      $0.urlToShred.map(urlsToShred.contains) ?? false
+    }
     Task {
-      removeTabs(tabsToRemove)
       await forgetData(for: Array(urlsToShred), dataStore: websiteDataStoreForCurrentMode)
     }
     return Set(tabsToRemove.map(\.id))
@@ -946,9 +1004,14 @@ class TabManager: NSObject {
 
   @MainActor func shredAllTabsForCurrentMode() {
     let isPrivateBrowsing = privateBrowsingManager.isPrivateBrowsing
-    let urlsToShred = Set(tabs(isPrivate: isPrivateBrowsing).compactMap(\.visibleURL))
+    let urlsToShred = Set(tabs(isPrivate: isPrivateBrowsing).compactMap(\.visibleURL?.urlToShred))
+    let baseDomainsToShred = Set(urlsToShred.compactMap(\.baseDomain))
+    removeAllTabsForPrivateMode(isPrivate: isPrivateBrowsing)
+    closeTabsToShredInOtherWindows(isPrivate: isPrivateBrowsing) {
+      guard let baseDomain = $0.urlToShred?.baseDomain else { return false }
+      return baseDomainsToShred.contains(baseDomain)
+    }
     Task {
-      removeAllTabsForPrivateMode(isPrivate: isPrivateBrowsing)
       await forgetData(for: Array(urlsToShred), dataStore: websiteDataStoreForCurrentMode)
     }
   }
@@ -958,46 +1021,8 @@ class TabManager: NSObject {
       let baseDomain = url.baseDomain
     else { return }
 
-    // Select the next or previous tab that is not being destroyed
-    if let index = allTabs.firstIndex(where: { $0 === tab }) {
-      var nextTab: (any TabState)?
-      // First seach down or up for a tab that is not being destroyed
-      var increasingIndex = index + 1
-      while nextTab == nil, increasingIndex < allTabs.count {
-        if allTabs[increasingIndex].visibleURL?.urlToShred?.baseDomain != baseDomain
-          && allTabs[increasingIndex].isPrivate == tab.isPrivate
-        {
-          nextTab = allTabs[increasingIndex]
-        }
-        increasingIndex += 1
-      }
-
-      var decreasingIndex = index - 1
-      while nextTab == nil, decreasingIndex > 0 {
-        if allTabs[decreasingIndex].visibleURL?.urlToShred?.baseDomain != baseDomain
-          && allTabs[decreasingIndex].isPrivate == tab.isPrivate
-        {
-          nextTab = allTabs[decreasingIndex]
-        }
-        decreasingIndex -= 1
-      }
-
-      // Select the found tab
-      if let nextTab = nextTab {
-        selectTab(nextTab, previous: tab)
-      }
-    }
-
-    // Remove all unwanted tabs
-    for tabToClose in allTabs
-    where tabToClose.visibleURL?.urlToShred?.baseDomain == baseDomain
-      && tabToClose.isPrivate == tab.isPrivate
-    {
-      // The Tab's WebView is not deinitialized immediately, so it's possible the
-      // WebView still stores data after we shred but before the WebView is deinitialized.
-      // Delete the web view to prevent data being stored after data is Shred.
-      tabToClose.deleteWebView()
-      removeTab(tabToClose)
+    closeTabsToShredInAllWindows(isPrivate: tab.isPrivate) {
+      $0.urlToShred?.baseDomain == baseDomain
     }
 
     Task {
