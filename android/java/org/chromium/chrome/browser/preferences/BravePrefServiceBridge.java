@@ -84,10 +84,6 @@ public class BravePrefServiceBridge {
         BravePrefServiceBridgeJni.get().setOldAdsBlockedCount(profile, count);
     }
 
-    public void setOldHttpsUpgradesCount(Profile profile, long count) {
-        BravePrefServiceBridgeJni.get().setOldHttpsUpgradesCount(profile, count);
-    }
-
     public boolean getBooleanForContentSetting(int contentType) {
         return BravePrefServiceBridgeJni.get().getBooleanForContentSetting(contentType);
     }
@@ -140,8 +136,6 @@ public class BravePrefServiceBridge {
         void setOldTrackersBlockedCount(Profile profile, long count);
 
         void setOldAdsBlockedCount(Profile profile, long count);
-
-        void setOldHttpsUpgradesCount(Profile profile, long count);
 
         void resetPromotionLastFetchStamp();
 

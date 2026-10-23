@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/net/dns/secure_dns_endpoints.h"
+#include "build/build_config.h"
 
 #include <net/base/features.cc>
 
@@ -27,10 +28,16 @@ BASE_FEATURE(kBravePartitionHSTS,
 BASE_FEATURE(kBraveTorWindowsHttpsOnly,
              base::FEATURE_ENABLED_BY_DEFAULT);
 
-// Enabled HTTPS by Default.
+// Enabled HTTPS by Default. Disabled on Android in favor of the upstream
+// HTTPS-First mode.
 BASE_FEATURE(kBraveHttpsByDefault,
              "HttpsByDefault",
-             base::FEATURE_ENABLED_BY_DEFAULT);
+#if BUILDFLAG(IS_ANDROID)
+             base::FEATURE_DISABLED_BY_DEFAULT
+#else
+             base::FEATURE_ENABLED_BY_DEFAULT
+#endif  // BUILDFLAG(IS_ANDROID)
+);
 
 // When enabled, use a fallback DNS over HTTPS (DoH)
 // provider when the current DNS provider does not offer Secure DNS.
