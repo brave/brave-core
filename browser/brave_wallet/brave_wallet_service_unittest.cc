@@ -64,6 +64,7 @@
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "third_party/blink/public/common/storage_key/storage_key.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "url/origin.h"
@@ -175,6 +176,24 @@ const char interface_not_supported_response[] = R"({
   })";
 
 constexpr char kBraveUrl[] = "https://brave.com";
+
+std::string AbiEncodeUint(int value) {
+  return absl::StrFormat("0x%064x", value);
+}
+
+std::string AbiEncodeString(std::string_view value) {
+  std::string encoded = "0x";
+  absl::StrAppendFormat(&encoded, "%064x", 32);
+  absl::StrAppendFormat(&encoded, "%064x", static_cast<unsigned>(value.size()));
+  const size_t header_size = encoded.size();
+  for (unsigned char c : value) {
+    absl::StrAppendFormat(&encoded, "%02x", c);
+  }
+  while ((encoded.size() - header_size) % 64 != 0) {
+    encoded.push_back('0');
+  }
+  return encoded;
+}
 
 class MockDataRemovalObserver : public StoragePartition::DataRemovalObserver {
  public:
@@ -813,15 +832,48 @@ class BraveWalletServiceUnitTest : public testing::Test {
     return result;
   }
 
+  void SetSuggestedTokenMetadataInterceptor(const std::string& symbol,
+                                            int decimals) {
+    const std::string symbol_result = AbiEncodeString(symbol);
+    const std::string decimals_result = AbiEncodeUint(decimals);
+    url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
+        [=, this](const network::ResourceRequest& request) {
+          if (!request.request_body ||
+              request.request_body->elements()->empty()) {
+            return;
+          }
+          std::string_view request_string(request.request_body->elements()
+                                              ->at(0)
+                                              .As<network::DataElementBytes>()
+                                              .AsStringPiece());
+          url_loader_factory_.ClearResponses();
+          if (request_string.find("0x95d89b41") != std::string::npos) {
+            url_loader_factory_.AddResponse(
+                request.url.spec(),
+                "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"" + symbol_result +
+                    "\"}");
+          }
+          if (request_string.find("0x313ce567") != std::string::npos) {
+            url_loader_factory_.AddResponse(
+                request.url.spec(),
+                "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"" +
+                    decimals_result + "\"}");
+          }
+        }));
+  }
+
   void AddSuggestToken(mojom::BlockchainTokenPtr suggested_token,
                        mojom::BlockchainTokenPtr expected_token,
                        bool approve,
                        bool run_switch_network = false) {
+    SetSuggestedTokenMetadataInterceptor(expected_token->symbol,
+                                         expected_token->decimals);
     mojom::AddSuggestTokenRequestPtr request =
         mojom::AddSuggestTokenRequest::New(
             MakeOriginInfo(url::Origin::Create(GURL(kBraveUrl))),
             suggested_token.Clone());
     base::RunLoop run_loop;
+    base::RunLoop added_loop;
     service_->AddSuggestTokenRequest(
         request.Clone(),
         base::BindLambdaForTesting(
@@ -846,7 +898,8 @@ class BraveWalletServiceUnitTest : public testing::Test {
               }
               run_loop.Quit();
             }),
-        base::Value());
+        base::Value(), added_loop.QuitClosure());
+    added_loop.Run();
 
     auto requests = GetPendingAddSuggestTokenRequests();
     ASSERT_EQ(requests.size(), 1u);
@@ -2482,8 +2535,8 @@ TEST_F(BraveWalletServiceUnitTest, AddSuggestToken) {
 
     // Case 1: Suggested token does not exist (no entry with the same contract
     // address) in BlockchainRegistry nor user assets.
-    // Token should be in user asset list and is visible, and the data should be
-    // the same as the one in the request.
+    // The contract reports the same symbol and decimals as the request, so the
+    // stored token matches the request.
     AddSuggestToken(custom_token.Clone(), custom_token.Clone(), true);
     auto token = get_user_asset(chain_id, custom_token->contract_address);
     EXPECT_EQ(token, custom_token);
@@ -2574,6 +2627,78 @@ TEST_F(BraveWalletServiceUnitTest, AddSuggestToken) {
     AddSuggestToken(brb_from_request.Clone(), brb_from_request.Clone(), false);
     token = get_user_asset(chain_id, brb_from_request->contract_address);
     EXPECT_FALSE(token);
+  }
+}
+
+TEST_F(BraveWalletServiceUnitTest, AddSuggestTokenReplacesDappMetadata) {
+  json_rpc_service_->SetNetwork(mojom::kMainnetChainId, mojom::CoinType::ETH,
+                                std::nullopt);
+  mojom::BlockchainTokenPtr suggested = mojom::BlockchainToken::New(
+      "0x1111111111111111111111111111111111111111", "Fake Name", "", false,
+      true, false, false, mojom::SPLTokenProgram::kUnsupported, false, false,
+      "FAKE", 18, true, "", "", mojom::kMainnetChainId, mojom::CoinType::ETH,
+      mojom::ZCashTokenType::kNone);
+  mojom::BlockchainTokenPtr expected = suggested.Clone();
+  expected->symbol = "USDC";
+  expected->decimals = 6;
+
+  AddSuggestToken(suggested.Clone(), expected.Clone(), true);
+
+  std::vector<mojom::BlockchainTokenPtr> tokens;
+  GetUserAssets(mojom::kMainnetChainId, mojom::CoinType::ETH, &tokens);
+  mojom::BlockchainTokenPtr stored;
+  for (auto& token : tokens) {
+    if (token->contract_address == suggested->contract_address) {
+      stored = token.Clone();
+    }
+  }
+  EXPECT_EQ(stored, expected);
+}
+
+TEST_F(BraveWalletServiceUnitTest, AddSuggestTokenRejectsUnreadableContract) {
+  json_rpc_service_->SetNetwork(mojom::kMainnetChainId, mojom::CoinType::ETH,
+                                std::nullopt);
+  url_loader_factory_.SetInterceptor(
+      base::BindLambdaForTesting([&](const network::ResourceRequest& request) {
+        url_loader_factory_.ClearResponses();
+        url_loader_factory_.AddResponse(
+            request.url.spec(),
+            "{\"jsonrpc\":\"2.0\",\"id\":1,\"error\":{"
+            "\"code\":-32000,\"message\":\"execution reverted\"}}");
+      }));
+
+  mojom::BlockchainTokenPtr suggested = mojom::BlockchainToken::New(
+      "0x2222222222222222222222222222222222222222", "Fake Name", "", false,
+      true, false, false, mojom::SPLTokenProgram::kUnsupported, false, false,
+      "FAKE", 18, true, "", "", mojom::kMainnetChainId, mojom::CoinType::ETH,
+      mojom::ZCashTokenType::kNone);
+  bool callback_ran = false;
+  base::RunLoop run_loop;
+  service_->AddSuggestTokenRequest(
+      mojom::AddSuggestTokenRequest::New(
+          MakeOriginInfo(url::Origin::Create(GURL(kBraveUrl))),
+          suggested.Clone()),
+      base::BindLambdaForTesting(
+          [&](mojom::EthereumProviderResponsePtr response) {
+            callback_ran = true;
+            EXPECT_TRUE(response->reject);
+            mojom::ProviderError error = mojom::ProviderError::kSuccess;
+            std::string error_message;
+            GetErrorCodeMessage(std::move(response->formed_response), &error,
+                                &error_message);
+            EXPECT_NE(error, mojom::ProviderError::kSuccess);
+            EXPECT_FALSE(error_message.empty());
+            run_loop.Quit();
+          }),
+      base::Value(), base::DoNothing());
+  run_loop.Run();
+
+  EXPECT_TRUE(callback_ran);
+  EXPECT_TRUE(GetPendingAddSuggestTokenRequests().empty());
+  std::vector<mojom::BlockchainTokenPtr> tokens;
+  GetUserAssets(mojom::kMainnetChainId, mojom::CoinType::ETH, &tokens);
+  for (const auto& token : tokens) {
+    EXPECT_NE(token->contract_address, suggested->contract_address);
   }
 }
 

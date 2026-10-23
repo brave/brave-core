@@ -81,6 +81,26 @@ namespace {
 //                  string buyTokenBalance)")
 constexpr char kCowSwapTypeHash[] =
     "D5A25BA2E97094AD7D83DC28A6572DA797D6B3E7FC6663BD93EFB789FC17E489";
+constexpr char kCowSwapDomainName[] = "Gnosis Protocol";
+constexpr char kCowSwapDomainVersion[] = "v2";
+// GPv2Settlement. Deployed at this address on every supported chain.
+constexpr char kCowSwapVerifyingContract[] =
+    "0x9008D19f58AAbD9eD0D60971565AA8510560ab41";
+
+// The Order type hash is not unique to CoW. Only the settlement domain should
+// get the swap preview, which hides the raw typed data.
+bool IsCowSwapDomain(const base::DictValue& domain) {
+  const std::string* name = domain.FindString("name");
+  const std::string* version = domain.FindString("version");
+  const std::string* verifying_contract =
+      domain.FindString("verifyingContract");
+  if (!name || !version || !verifying_contract) {
+    return false;
+  }
+  return *name == kCowSwapDomainName && *version == kCowSwapDomainVersion &&
+         base::EqualsCaseInsensitiveASCII(*verifying_contract,
+                                          kCowSwapVerifyingContract);
+}
 
 mojom::EthSignTypedDataMetaPtr ParseCowSwapOrder(const base::DictValue& value) {
   const auto cow_swap_order_value =
@@ -480,7 +500,7 @@ mojom::EthSignTypedDataPtr ParseEthSignTypedDataParams(
     return nullptr;
   }
   auto type_hash_hex = base::HexEncode(*type_hash);
-  if (type_hash_hex == kCowSwapTypeHash) {
+  if (type_hash_hex == kCowSwapTypeHash && IsCowSwapDomain(*domain)) {
     result->meta = ParseCowSwapOrder(*message);
   } else {
     result->meta = nullptr;
