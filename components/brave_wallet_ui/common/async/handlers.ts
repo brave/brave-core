@@ -144,13 +144,6 @@ startAppListening({
 })
 
 startAppListening({
-  actionCreator: WalletActions.defaultBaseCryptocurrencyChanged,
-  effect: async (_, listenerApi) => {
-    await refreshWalletInfo(listenerApi)
-  },
-})
-
-startAppListening({
   actionCreator: WalletActions.refreshAll,
   effect: async (_, listenerApi) => {
     const { braveWalletService, walletHandler } = getAPIProxy()

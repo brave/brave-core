@@ -93,7 +93,6 @@ class WalletServiceObserver: BraveWalletBraveWalletServiceObserver {
   var _onDefaultSolanaWalletChanged: ((_ wallet: BraveWallet.DefaultWallet) -> Void)?
   var _onDefaultCardanoWalletChanged: ((_ wallet: BraveWallet.DefaultWallet) -> Void)?
   var _onDefaultBaseCurrencyChanged: ((_ currency: String) -> Void)?
-  var _onDefaultBaseCryptocurrencyChanged: ((_ cryptocurrency: String) -> Void)?
   var _onNetworkListChanged: (() -> Void)?
   var _onDiscoverAssetsStarted: (() -> Void)?
   var _onDiscoverAssetsCompleted: ((_ discoveredAssets: [BraveWallet.BlockchainToken]) -> Void)?
@@ -106,7 +105,6 @@ class WalletServiceObserver: BraveWalletBraveWalletServiceObserver {
     _onDefaultSolanaWalletChanged: ((_ wallet: BraveWallet.DefaultWallet) -> Void)? = nil,
     _onDefaultCardanoWalletChanged: ((_ wallet: BraveWallet.DefaultWallet) -> Void)? = nil,
     _onDefaultBaseCurrencyChanged: ((_ currency: String) -> Void)? = nil,
-    _onDefaultBaseCryptocurrencyChanged: ((_ cryptocurrency: String) -> Void)? = nil,
     _onNetworkListChanged: (() -> Void)? = nil,
     _onDiscoverAssetsStarted: (() -> Void)? = nil,
     _onDiscoverAssetsCompleted: ((_ discoveredAssets: [BraveWallet.BlockchainToken]) -> Void)? =
@@ -118,7 +116,6 @@ class WalletServiceObserver: BraveWalletBraveWalletServiceObserver {
     self._onDefaultSolanaWalletChanged = _onDefaultSolanaWalletChanged
     self._onDefaultCardanoWalletChanged = _onDefaultCardanoWalletChanged
     self._onDefaultBaseCurrencyChanged = _onDefaultBaseCurrencyChanged
-    self._onDefaultBaseCryptocurrencyChanged = _onDefaultBaseCryptocurrencyChanged
     self._onNetworkListChanged = _onNetworkListChanged
     self._onDiscoverAssetsStarted = _onDiscoverAssetsStarted
     self._onDiscoverAssetsCompleted = _onDiscoverAssetsCompleted
@@ -144,10 +141,6 @@ class WalletServiceObserver: BraveWalletBraveWalletServiceObserver {
 
   func onDefaultBaseCurrencyChanged(currency: String) {
     _onDefaultBaseCurrencyChanged?(currency)
-  }
-
-  func onDefaultBaseCryptocurrencyChanged(cryptocurrency: String) {
-    _onDefaultBaseCryptocurrencyChanged?(cryptocurrency)
   }
 
   func onNetworkListChanged() {
