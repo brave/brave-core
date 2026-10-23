@@ -159,9 +159,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
 #if !BUILDFLAG(IS_ANDROID)
       &child_module::features::kDynamicPatching,
 #endif
-#if BUILDFLAG(IS_ANDROID)
-      &chrome::android::kAndroidPageInfoAsAppMenuItem,
-#endif
 #if BUILDFLAG(ENABLE_PDF_SAVE_TO_DRIVE)
       &chrome_pdf::features::kPdfSaveToDrive,
       &chrome_pdf::features::kPdfSaveToDriveSurvey,
