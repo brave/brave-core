@@ -15,6 +15,7 @@
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/interstitials/security_interstitial_page_test_utils.h"
+#include "chrome/common/chrome_isolated_world_ids.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -108,6 +109,60 @@ IN_PROC_BROWSER_TEST_F(DomainBlockTest, ShowInterstitial) {
   BlockDomainByURL(url);
   NavigateTo(url);
   ASSERT_TRUE(IsShowingInterstitial());
+}
+
+// A document rule that names a resource is answered with that resource. The
+// interstitial is the right answer for a plain block rule - it names the site
+// and offers a way through - but a filter that named a resource said what the
+// page should be, which is how uBO answers one.
+IN_PROC_BROWSER_TEST_F(DomainBlockTest, DocumentRedirectServesTheResource) {
+  GURL url = embedded_test_server()->GetURL("a.com", "/simple.html");
+  SetCosmeticFilteringControlType(content_settings(), ControlType::BLOCK, url);
+
+  UpdateAdBlockResources(R"(
+      [
+        {
+          "name": "noop.html",
+          "kind": {
+            "mime":"text/html"
+          },
+          "content": "PGh0bWw+PGJvZHk+bm9vcCByZXNvdXJjZTwvYm9keT48L2h0bWw+"
+        }
+      ])");
+  UpdateAdBlockInstanceWithRules(
+      base::StrCat({"||", url.host(), "^$document,redirect=noop.html"}));
+
+  NavigateTo(url);
+  EXPECT_FALSE(IsShowingInterstitial());
+  EXPECT_EQ("noop resource",
+            content::EvalJs(web_contents(), "document.body.innerText",
+                            content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+                            ISOLATED_WORLD_ID_BRAVE_INTERNAL));
+}
+
+// A resource that is not html keeps the interstitial: a script committed as a
+// document is not what a list meant to happen.
+IN_PROC_BROWSER_TEST_F(DomainBlockTest,
+                       DocumentRedirectToNonHtmlKeepsInterstitial) {
+  GURL url = embedded_test_server()->GetURL("a.com", "/simple.html");
+  SetCosmeticFilteringControlType(content_settings(), ControlType::BLOCK, url);
+
+  UpdateAdBlockResources(R"(
+      [
+        {
+          "name": "noop.js",
+          "aliases": ["noopjs"],
+          "kind": {
+            "mime":"application/javascript"
+          },
+          "content": "KGZ1bmN0aW9uKCkgewogICAgJ3VzZSBzdHJpY3QnOwp9KSgpOwo="
+        }
+      ])");
+  UpdateAdBlockInstanceWithRules(
+      base::StrCat({"||", url.host(), "^$document,redirect=noopjs"}));
+
+  NavigateTo(url);
+  EXPECT_TRUE(IsShowingInterstitial());
 }
 
 IN_PROC_BROWSER_TEST_F(DomainBlockTest, ShowInterstitialAndProceed) {

@@ -61,6 +61,11 @@ class DomainBlockNavigationThrottle : public content::NavigationThrottle {
   void OnShouldBlockDomain(DomainBlockingType domain_blocking_type,
                            BlockResult should_block_domain);
   void ShowInterstitial();
+  // Serves the body of the resource a `$document,redirect=` rule named as the
+  // response to this navigation, in place of the interstitial. Returns whether
+  // it did; a resource that is absent, unparseable or not html leaves the
+  // interstitial to answer instead.
+  bool MaybeServeRedirectResource(const std::string& mock_data_url);
   void Enable1PESAndResume();
   void On1PESState(bool is_1pes_enabled);
   void RestartNavigation(const GURL& url);

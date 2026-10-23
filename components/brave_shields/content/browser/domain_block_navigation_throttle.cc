@@ -34,6 +34,7 @@
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/web_contents.h"
+#include "net/base/data_url.h"
 #include "net/base/net_errors.h"
 #include "url/gurl.h"
 #include "url/origin.h"
@@ -48,6 +49,10 @@ struct DomainBlockNavigationThrottle::BlockResult {
 
   bool should_block = false;
   std::string new_url;
+  // The body of a `$redirect` resource the engine matched, as a data URL, or
+  // empty where no rule named one. A document rule that names a resource is
+  // asking for that resource to be the page, which is how uBO answers one.
+  std::string mock_data_url;
   std::optional<content::devtools_instrumentation::AdblockInfo> info;
 };
 
@@ -75,6 +80,8 @@ ShouldBlockDomainOnTaskRunner(
                              ? std::string(result.rewritten_url.value)
                              : std::string();
 
+  block_result.mock_data_url = std::string(result.redirect.value);
+
   if (block_result.should_block || result.has_exception) {
     content::devtools_instrumentation::AdblockInfo info;
     info.request_url = url;
@@ -86,7 +93,7 @@ ShouldBlockDomainOnTaskRunner(
     info.did_match_important_rule = result.important;
     info.did_match_rule = result.matched;
     info.did_match_exception = result.has_exception;
-    info.has_mock_data = false;
+    info.has_mock_data = !block_result.mock_data_url.empty();
     if (!block_result.new_url.empty()) {
       info.rewritten_url = block_result.new_url;
     }
@@ -245,7 +252,12 @@ void DomainBlockNavigationThrottle::OnShouldBlockDomain(
         Enable1PESAndResume();
         break;
       case DomainBlockingType::kAggressive:
-        ShowInterstitial();
+        // A rule that named a resource asked for that resource, so send it.
+        // Nothing else about the verdict changes: a plain block rule still
+        // gets the interstitial, and so does a resource this cannot serve.
+        if (!MaybeServeRedirectResource(block_result.mock_data_url)) {
+          ShowInterstitial();
+        }
         break;
       case DomainBlockingType::kNone:
         NOTREACHED();
@@ -288,6 +300,42 @@ void DomainBlockNavigationThrottle::ShowInterstitial() {
   CancelDeferredNavigation(content::NavigationThrottle::ThrottleCheckResult(
       content::NavigationThrottle::CANCEL, net::ERR_BLOCKED_BY_CLIENT,
       blocked_page_content));
+}
+
+// Only in aggressive mode, because that is the only mode in which this
+// throttle blocks a document at all - standard mode answers a matched
+// navigation with first-party ephemeral storage and lets the page load, and
+// honouring a redirect there would start blocking documents in a mode that
+// deliberately does not.
+//
+// Only a `text/html` resource. The resources written for documents are html;
+// a script or a stylesheet committed as a document is not what a list meant
+// to happen, and an interstitial is a better answer than a page of source
+// text.
+bool DomainBlockNavigationThrottle::MaybeServeRedirectResource(
+    const std::string& mock_data_url) {
+  if (mock_data_url.empty()) {
+    return false;
+  }
+
+  std::string mime_type;
+  std::string charset;
+  std::string body;
+  if (!net::DataURL::Parse(GURL(mock_data_url), &mime_type, &charset, &body)) {
+    return false;
+  }
+  if (mime_type != "text/html") {
+    return false;
+  }
+
+  // Cancelled with the resource as the response, which is the same mechanism
+  // the interstitial is delivered by - see ShowInterstitial. There is no
+  // "proceed anyway" here, and none is wanted: that button belongs to Brave's
+  // own verdict about a domain, where a filter naming a resource has said what
+  // the page should be.
+  CancelDeferredNavigation(content::NavigationThrottle::ThrottleCheckResult(
+      content::NavigationThrottle::CANCEL, net::ERR_BLOCKED_BY_CLIENT, body));
+  return true;
 }
 
 void DomainBlockNavigationThrottle::Enable1PESAndResume() {
