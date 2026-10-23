@@ -6,9 +6,11 @@
 #include "brave/components/containers/core/browser/containers_service.h"
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <utility>
 
+#include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/containers/core/browser/container_specifier.h"
 #include "brave/components/containers/core/browser/containers_service_observer.h"
@@ -55,10 +57,21 @@ class ContainersServiceTest : public testing::Test {
     ui::ColorProviderManager::ResetForTesting();
   }
 
+  // Calls MaybeDeleteTemporaryContainer, recording the reported outcome in
+  // `last_delete_outcome_`. It stays nullopt until the callback runs, which is
+  // how a deferred deletion is distinguished from a declined one.
+  void MaybeDelete(const std::string& id) {
+    last_delete_outcome_.reset();
+    service_->MaybeDeleteTemporaryContainer(
+        id, base::BindLambdaForTesting(
+                [this](bool deleted) { last_delete_outcome_ = deleted; }));
+  }
+
   base::test::ScopedFeatureList feature_list_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
   std::unique_ptr<ContainersService> service_;
   raw_ptr<MockContainersServiceDelegate> delegate_ = nullptr;
+  std::optional<bool> last_delete_outcome_;
 };
 
 TEST_F(ContainersServiceTest, GetRuntimeContainerById) {
@@ -177,6 +190,178 @@ TEST_F(ContainersServiceTest, GetOrCreateTemporaryContainerByName) {
   ASSERT_TRUE(other);
   EXPECT_TRUE(IsTemporaryContainerId(other->id));
   EXPECT_NE(container->id, other->id);
+}
+
+TEST_F(ContainersServiceTest, MaybeDeleteTemporaryContainer) {
+  auto container = service_->CreateAndPersistTemporaryContainer();
+  ASSERT_TRUE(container);
+
+  MaybeDelete(container->id);
+
+  EXPECT_THAT(last_delete_outcome_, testing::Optional(true));
+  EXPECT_THAT(delegate_->delete_requests(),
+              testing::ElementsAre(container->id));
+  EXPECT_FALSE(GetLocallyUsedContainerFromPrefs(prefs_, container->id));
+  EXPECT_TRUE(service_->GetUsedContainerIds().empty());
+}
+
+TEST_F(ContainersServiceTest,
+       MaybeDeleteTemporaryContainer_DeclinesSyncedContainer) {
+  auto container = service_->CreateAndPersistTemporaryContainer();
+  std::vector<mojom::ContainerPtr> synced_containers;
+  synced_containers.push_back(MakeContainer(container->id, "Synced"));
+  SetContainersToPrefs(std::move(synced_containers), prefs_);
+
+  MaybeDelete(container->id);
+
+  EXPECT_THAT(last_delete_outcome_, testing::Optional(false));
+  EXPECT_TRUE(delegate_->delete_requests().empty());
+  EXPECT_TRUE(GetLocallyUsedContainerFromPrefs(prefs_, container->id));
+}
+
+TEST_F(ContainersServiceTest,
+       MaybeDeleteTemporaryContainer_DeclinesNonTemporaryId) {
+  service_->MarkContainerUsed("container-id");
+
+  MaybeDelete("container-id");
+
+  EXPECT_THAT(last_delete_outcome_, testing::Optional(false));
+  EXPECT_TRUE(delegate_->delete_requests().empty());
+  EXPECT_TRUE(GetLocallyUsedContainerFromPrefs(prefs_, "container-id"));
+}
+
+TEST_F(ContainersServiceTest, MaybeDeleteTemporaryContainer_DeclinesUnusedId) {
+  MaybeDelete("t-never-used");
+
+  EXPECT_THAT(last_delete_outcome_, testing::Optional(false));
+  EXPECT_TRUE(delegate_->delete_requests().empty());
+}
+
+TEST_F(ContainersServiceTest,
+       MaybeDeleteTemporaryContainer_DeclinesWhileTabIsOpen) {
+  auto container = service_->CreateAndPersistTemporaryContainer();
+  delegate_->SetOpenTabContainerIds({container->id});
+
+  MaybeDelete(container->id);
+
+  EXPECT_THAT(last_delete_outcome_, testing::Optional(false));
+  EXPECT_TRUE(delegate_->delete_requests().empty());
+  EXPECT_TRUE(GetLocallyUsedContainerFromPrefs(prefs_, container->id));
+  EXPECT_THAT(service_->GetUsedContainerIds(),
+              testing::ElementsAre(container->id));
+
+  // Once the last tab is gone the same call deletes the storage.
+  delegate_->SetOpenTabContainerIds({});
+  MaybeDelete(container->id);
+
+  EXPECT_THAT(last_delete_outcome_, testing::Optional(true));
+  EXPECT_THAT(delegate_->delete_requests(),
+              testing::ElementsAre(container->id));
+  EXPECT_FALSE(GetLocallyUsedContainerFromPrefs(prefs_, container->id));
+}
+
+TEST_F(ContainersServiceTest,
+       MaybeDeleteTemporaryContainer_SecondCallIsDeclined) {
+  auto container = service_->CreateAndPersistTemporaryContainer();
+
+  MaybeDelete(container->id);
+  ASSERT_THAT(last_delete_outcome_, testing::Optional(true));
+
+  MaybeDelete(container->id);
+
+  EXPECT_THAT(last_delete_outcome_, testing::Optional(false));
+  EXPECT_THAT(delegate_->delete_requests(),
+              testing::ElementsAre(container->id));
+}
+
+TEST_F(ContainersServiceTest,
+       MaybeDeleteTemporaryContainer_FailureKeepsUsedSnapshot) {
+  auto container = service_->CreateAndPersistTemporaryContainer();
+  delegate_->set_delete_result(false);
+
+  MaybeDelete(container->id);
+
+  EXPECT_THAT(last_delete_outcome_, testing::Optional(false));
+  EXPECT_THAT(delegate_->delete_requests(),
+              testing::ElementsAre(container->id));
+  EXPECT_TRUE(GetLocallyUsedContainerFromPrefs(prefs_, container->id));
+  EXPECT_THAT(service_->GetUsedContainerIds(),
+              testing::ElementsAre(container->id));
+}
+
+TEST_F(ContainersServiceTest,
+       MaybeDeleteTemporaryContainer_ExcludedFromUsedIdsWhileDeleting) {
+  auto container = service_->CreateAndPersistTemporaryContainer();
+  service_->MarkContainerUsed("other-id");
+
+  delegate_->set_defer_delete_container_storage_callback(true);
+  MaybeDelete(container->id);
+
+  EXPECT_FALSE(last_delete_outcome_.has_value());
+  EXPECT_THAT(service_->GetUsedContainerIds(),
+              testing::UnorderedElementsAre("other-id"));
+
+  // A second call while the first is in flight is declined rather than racing
+  // it with another recursive directory removal.
+  MaybeDelete(container->id);
+  EXPECT_THAT(last_delete_outcome_, testing::Optional(false));
+  EXPECT_THAT(delegate_->delete_requests(),
+              testing::ElementsAre(container->id));
+
+  delegate_->RunDeferredDeleteContainerStorageCallback(container->id);
+
+  EXPECT_THAT(last_delete_outcome_, testing::Optional(true));
+  EXPECT_THAT(service_->GetUsedContainerIds(),
+              testing::UnorderedElementsAre("other-id"));
+}
+
+TEST_F(ContainersServiceTest,
+       MaybeDeleteTemporaryContainer_OrphanSweepSkipsInFlightDelete) {
+  auto container = service_->CreateAndPersistTemporaryContainer();
+
+  delegate_->set_defer_delete_container_storage_callback(true);
+  MaybeDelete(container->id);
+  ASSERT_THAT(delegate_->delete_requests(),
+              testing::ElementsAre(container->id));
+
+  delegate_->SetReferencedContainersIds({});
+  service_->ScheduleOrphanedContainersCleanupForTesting();
+
+  EXPECT_THAT(delegate_->delete_requests(),
+              testing::ElementsAre(container->id));
+}
+
+TEST_F(ContainersServiceTest,
+       MaybeDeleteTemporaryContainer_DeclinedWhileOrphanSweepIsRemoving) {
+  auto container = service_->CreateAndPersistTemporaryContainer();
+
+  delegate_->SetReferencedContainersIds({});
+  delegate_->set_defer_delete_container_storage_callback(true);
+  service_->ScheduleOrphanedContainersCleanupForTesting();
+  ASSERT_THAT(delegate_->delete_requests(),
+              testing::ElementsAre(container->id));
+
+  MaybeDelete(container->id);
+
+  EXPECT_THAT(last_delete_outcome_, testing::Optional(false));
+  EXPECT_THAT(delegate_->delete_requests(),
+              testing::ElementsAre(container->id));
+}
+
+TEST_F(ContainersServiceTest,
+       MaybeDeleteTemporaryContainer_LeavesOrphanSweepUsable) {
+  auto container = service_->CreateAndPersistTemporaryContainer();
+  MaybeDelete(container->id);
+  ASSERT_THAT(delegate_->delete_requests(),
+              testing::ElementsAre(container->id));
+
+  service_->MarkContainerUsed("orphan-id");
+  delegate_->SetReferencedContainersIds({});
+  service_->ScheduleOrphanedContainersCleanupForTesting();
+
+  EXPECT_THAT(delegate_->delete_requests(),
+              testing::ElementsAre(container->id, "orphan-id"));
+  EXPECT_TRUE(service_->GetUsedContainerIds().empty());
 }
 
 TEST_F(ContainersServiceTest,

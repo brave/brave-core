@@ -60,6 +60,10 @@ class ContainersServiceDelegate
   void GetReferencedContainerIds(
       OnReferencedContainerIdsReadyCallback callback) override;
 
+  // Whether any tab currently open in this profile is browsing in the
+  // container with the given id.
+  bool HasOpenTabInContainer(const std::string& id) override;
+
   // Clears the container's storage partition, then deletes its on-disk
   // directory under the profile. |callback| receives whether deletion
   // succeeded.
