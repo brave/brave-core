@@ -10,8 +10,10 @@
 #include <cstdint>
 #include <functional>
 #include <memory>
+#include <optional>
 #include <string>
 #include <string_view>
+#include <utility>
 #include <vector>
 
 #include "base/containers/flat_map.h"
@@ -133,8 +135,27 @@ class AssociatedContentManager : public ToolProvider,
   // Gets the content for this conversation.
   void GetContent(base::OnceClosure callback);
 
-  void GetScreenshots(
-      mojom::ConversationHandler::GetScreenshotsCallback callback);
+  // Uuids of the pages with no text, which need screenshots to be seen.
+  std::vector<std::string> GetContentUuidsRequiringScreenshots() const;
+
+  // Gets screenshots of the content with |content_uuids|, with the uuid of the
+  // content each set is of. Content that gives no screenshots is left out.
+  using ContentScreenshots =
+      std::vector<std::pair<std::string, std::vector<mojom::UploadedFilePtr>>>;
+  using GetScreenshotsOfContentCallback =
+      base::OnceCallback<void(ContentScreenshots)>;
+  void GetScreenshotsOfContent(const std::vector<std::string>& content_uuids,
+                               GetScreenshotsOfContentCallback callback);
+
+  // The uuid of the human entry holding automatic screenshots of the content
+  // with |content_uuid|, once it is sent and screenshotted.
+  std::optional<std::string> GetScreenshotTurnUuid(
+      std::string_view content_uuid) const;
+  // Records that the human entry with |turn_uuid| holds automatic screenshots
+  // of the content with |content_uuid|. Does nothing if the content isn't
+  // sent with an entry yet.
+  void SetScreenshotTurnUuid(std::string_view content_uuid,
+                             std::string turn_uuid);
   void GetStagedEntriesFromContent(GetStagedEntriesCallback callback);
 
   std::vector<mojom::AssociatedContentPtr> GetAssociatedContent() const;
@@ -273,7 +294,15 @@ class AssociatedContentManager : public ToolProvider,
       content_tool_permissions_;
 
   std::vector<AssociatedContentDelegate*> content_delegates_;
-  base::flat_map<std::string, std::string> content_uuid_to_conversation_turns_;
+
+  // The human entries each content is linked to, by content uuid.
+  struct ContentTurns {
+    // The entry the content was first sent with.
+    std::string turn_uuid;
+    // The entry holding automatic screenshots of the content, if any.
+    std::optional<std::string> screenshot_turn_uuid;
+  };
+  base::flat_map<std::string, ContentTurns> content_uuid_to_conversation_turns_;
 
   // uuids whose tools attachment the user explicitly set.
   base::flat_set<std::string> tools_attachment_overridden_;
