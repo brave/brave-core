@@ -5,7 +5,6 @@
 
 #import "brave/ios/browser/favicon/brave_ios_favicon_loader_factory.h"
 
-#include "base/no_destructor.h"
 #import "brave/ios/browser/favicon/brave_ios_favicon_loader.h"
 #include "components/keyed_service/core/service_access_type.h"
 #include "components/keyed_service/ios/browser_state_keyed_service_factory.h"
@@ -28,39 +27,22 @@ std::unique_ptr<KeyedService> BuildFaviconLoader(ProfileIOS* profile) {
 }  // namespace
 
 namespace brave_favicon {
-BraveFaviconLoader* BraveIOSFaviconLoaderFactory::GetForProfile(
-    ProfileIOS* profile) {
-  return GetInstance()->GetServiceForProfileAs<BraveFaviconLoader>(profile,
-                                                                   true);
-}
-
-BraveFaviconLoader* BraveIOSFaviconLoaderFactory::GetForProfileIfExists(
-    ProfileIOS* profile) {
-  return GetInstance()->GetServiceForProfileAs<BraveFaviconLoader>(profile,
-                                                                   false);
-}
-
-BraveIOSFaviconLoaderFactory* BraveIOSFaviconLoaderFactory::GetInstance() {
-  static base::NoDestructor<BraveIOSFaviconLoaderFactory> instance;
-  return instance.get();
-}
-
 // static
-ProfileKeyedServiceFactoryIOS::TestingFactory
+BraveIOSFaviconLoaderFactory::TestingFactory
 BraveIOSFaviconLoaderFactory::GetDefaultFactory() {
   return base::BindRepeating(&BuildFaviconLoader);
 }
 
-BraveIOSFaviconLoaderFactory::BraveIOSFaviconLoaderFactory()
-    : ProfileKeyedServiceFactoryIOS("BraveFaviconLoader",
-                                    ProfileSelection::kRedirectedInIncognito,
-                                    ServiceCreation::kCreateLazily,
-                                    TestingCreation::kNoServiceForTests) {
+BraveIOSFaviconLoaderFactory::BraveIOSFaviconLoaderFactory(PassKey key)
+    : TypedProfileKeyedServiceFactoryIOS(
+          std::move(key),
+          "BraveFaviconLoader",
+          ProfileSelection::kRedirectedInIncognito,
+          ServiceCreation::kCreateLazily,
+          TestingCreation::kNoServiceForTests) {
   DependsOn(ios::FaviconServiceFactory::GetInstance());
   DependsOn(IOSChromeLargeIconServiceFactory::GetInstance());
 }
-
-BraveIOSFaviconLoaderFactory::~BraveIOSFaviconLoaderFactory() {}
 
 std::unique_ptr<KeyedService>
 BraveIOSFaviconLoaderFactory::BuildServiceInstanceFor(
