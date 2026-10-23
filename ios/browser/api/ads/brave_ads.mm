@@ -209,6 +209,12 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
   return self.profilePrefService->GetBoolean(brave_rewards::prefs::kEnabled);
 }
 
+- (BOOL)isNotificationAdsEnabled {
+  return self.profilePrefService->GetBoolean(brave_rewards::prefs::kEnabled) &&
+         self.profilePrefService->GetBoolean(
+             brave_ads::prefs::kNotificationsEnabled);
+}
+
 - (void)setNotificationsEnabled:(BOOL)notificationsEnabled {
   [self setProfilePref:brave_rewards::prefs::kEnabled
                  value:base::Value(notificationsEnabled)];
