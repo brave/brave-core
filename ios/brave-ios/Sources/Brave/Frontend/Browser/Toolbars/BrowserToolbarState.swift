@@ -75,6 +75,11 @@ final class BrowserToolbarState {
     visibleURL?.isWebPage() ?? false
   }
 
+  var isPageSharable: Bool {
+    guard let visibleURL else { return false }
+    return visibleURL.isWebPage(includeDataURIs: true) || visibleURL.scheme == "blob"
+  }
+
   /// Whether or not the selected tab is displaying the new tab page
   var isNewTabPage: Bool {
     visibleURL?.isNewTabURL ?? false
