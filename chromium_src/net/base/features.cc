@@ -9,6 +9,12 @@
 
 namespace net::features {
 
+// Kill switch for the CookieJar shared-memory fast path. When disabled,
+// RestrictedCookieManager does not hand the renderer a version region, so
+// document.cookie always takes the sync IPC path.
+BASE_FEATURE(kBraveCookieJarSharedVersion,
+             base::FEATURE_ENABLED_BY_DEFAULT);
+
 BASE_FEATURE(kBraveEphemeralStorageKeepAlive,
              base::FEATURE_ENABLED_BY_DEFAULT);
 
