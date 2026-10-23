@@ -166,6 +166,7 @@ class BraveTranslateBrowserTest : public InProcessBrowserTest {
           << "bad brave api key for request " << request.GetURL();
     }
 
+    last_backend_query_ = request.GetURL().query();
     const auto response =
         backend_request_.Call(std::string(request.GetURL().path()));
     if (std::get<0>(response) == 0)
@@ -255,6 +256,7 @@ class BraveTranslateBrowserTest : public InProcessBrowserTest {
   MockFunction<std::tuple<net::HttpStatusCode, std::string, std::string>(
       std::string)>
       backend_request_;
+  std::string last_backend_query_;
 
  private:
   content::ContentMockCertVerifier mock_cert_verifier_;
@@ -300,6 +302,18 @@ IN_PROC_BROWSER_TEST_F(BraveTranslateBrowserTest, InternalTranslation) {
           kXhrPromiseTemplate, "response",
           "https://translate.googleapis.com/translate_a/t?query=something",
           "true")));
+
+  // Check that BCP 47 codes are converted to the legacy codes the backend
+  // expects (e.g. Hebrew "he" -> "iw").
+  EXPECT_CALL(backend_request_, Call("/translate_a/t"))
+      .WillOnce(Return(std::make_tuple(net::HttpStatusCode::HTTP_OK,
+                                       "application/json", "[\"Hello\"]")));
+  EXPECT_EQ("[\"Hello\"]",
+            EvalTranslateJs(absl::StrFormat(
+                kXhrPromiseTemplate, "response",
+                "https://translate.googleapis.com/translate_a/t?sl=he&tl=fil",
+                "true")));
+  EXPECT_EQ("sl=iw&tl=tl", last_backend_query_);
 
   // Check that we haven't tried to update the language lists.
   auto* language_list =
