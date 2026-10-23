@@ -20,12 +20,18 @@ https://docs.google.com/document/d/1ccnBWBV_KkknZpZYxcOXTwtfIiaSzeLS5dMd08N2pbs/
 5. To inform the user that the PSST feature is available for a given website, we
    display an infobar:
    `Brave can help you optimize this site's privacy settings. Would you like to review Brave's suggestions?`
-6. If the user accepts the infobar prompt, we pass the list of URLs further and
-   display a consent modal dialog. In this dialog, the user can choose their
-   preferred privacy settings and track the progress of the operation.
-7. When the user clicks the OK button, we inject the policy script and execute
-   it.
-8. The policy script does the next things:
+   and omnibar icon.
+6. If the user accepts the infobar prompt or clicks left mouse button on the
+   omnibar icon, we pass the list of URLs further and display a consent modal
+   dialog. In this dialog, the user can choose their preferred privacy settings
+   and track the progress of the operation.
+7. By clicking of the right mouse button on the omnibar icon appears the context
+   menu that propose user to disable feature on the current website:
+   `Don't show for this site` or globally with
+   `Disable privacy settings tuning`.
+8. When the user clicks the `Apply Changes` button, we inject the policy script
+   and execute it.
+9. The policy script does the next things:
    - saves the list of URLs (tasks) to local storage to be available after the
      next navigation;
    - calculates current progress;
@@ -36,20 +42,20 @@ https://docs.google.com/document/d/1ccnBWBV_KkknZpZYxcOXTwtfIiaSzeLS5dMd08N2pbs/
      where after deserialization and validation, we update the flow's status on
      the consent dialog, by calling the UI delegate's method:</br>
      `UpdateTasks(long progress,const std::vector<PolicyTask>& applied_tasks)`</br>
-9. When navigation to URL_1 is complete, and it is a supported website, the user
-   script is injected and executed. Then the same happens as in points #3,4.
-10. Since the workflow is running and the consent dialog is visible, we inject
+10. When navigation to URL_1 is complete, and it is a supported website, the
+    user script is injected and executed. Then the same happens as in points
+    #3,4.
+11. Since the workflow is running and the consent dialog is visible, we inject
     the policy script.
-11. Once injected, the policy script loads saved URLs (tasks) from local
-    storage, takes the current' URL (see p. #7), and applies the privacy
-    setting.
-12. Once the privacy setting is applied, the policy script marks the current URL
+12. Once injected, the policy script loads saved URLs (tasks) from local
+    storage, takes the current URL, and applies the privacy setting.
+13. Once the privacy setting is applied, the policy script marks the current URL
     as applied, takes the next one from the available URL (task) list and marks
     it as current, saves all the info to local storage, and navigates to the new
     current one.
-13. Then we enumerate each available URL in the list and do the same as in
-    points #8-11.
-14. When all tasks are completed, the user sees all status and progress
+14. Then we enumerate each available URL in the list and do the same as in
+    points #9-12.
+15. When all tasks are completed, the user sees all status and progress
     information in the consent dialog.
 
 ### Workflow failure cases
@@ -71,18 +77,23 @@ seconds):
 ```
 void PsstTabWebContentsObserver::RunWithTimeout(
     const std::string& script,
+    bool is_async,
     InsertScriptInPageCallback callback) {
   timeout_timer_.Start(
       FROM_HERE, kScriptTimeout,
       base::BindOnce(&PsstTabWebContentsObserver::OnScriptTimeout,
                      page_weak_factory_.GetWeakPtr()));
-  inject_script_callback_.Run(script, std::move(callback));
+  if (is_async) {
+    inject_async_script_callback_.Run(script, std::move(callback));
+  } else {
+    inject_script_callback_.Run(script, std::move(callback));
+  }
 }
 
 ```
 
-Parameters:</br> `const int last_committed_entry_id` - the unique last committed
-entry ID;</br> `const std::string& script` - the script to be injected;</br>
+Parameters:</br> `const std::string& script` - the script to be injected;</br>
+`bool is_async` - type of script execution, async if `true` ;</br>
 `InsertScriptInPageCallback callback` - callback function that handles the
 script result once it executes;
 
