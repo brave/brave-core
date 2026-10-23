@@ -357,4 +357,55 @@ std::optional<std::vector<std::string>> ParseRestrictedAddressesList(
   return restricted_list;
 }
 
+std::optional<PolkadotRpcUrlsMap> ParsePolkadotRpcUrls(
+    const std::string& json) {
+  // Parse the RPC URL lists, keyed per parachain chain_id. If any one entry is
+  // invalid, we return `std::nullopt`.
+  //
+  // Shape of the expected JSON:
+  // {
+  //   "polkadot_acala": ["https://acala-rpc-0.aca-api.network"],
+  //   "kusama_asset_hub": ["https://rpc-asset-hub-kusama.luckyfriday.io"],
+  //   ...
+  // }
+  std::optional<base::DictValue> records_v = ParseJsonToDict(json);
+  if (!records_v) {
+    return std::nullopt;
+  }
+
+  PolkadotRpcUrlsMap rpc_urls_map;
+  for (const auto chain_record : *records_v) {
+    const auto* urls = chain_record.second.GetIfList();
+    // We expect a formal `[...]` style list for RPC URLs.
+    if (!urls) {
+      return std::nullopt;
+    }
+
+    std::vector<GURL> chain_urls;
+    for (const auto& url_value : *urls) {
+      const auto* url_string = url_value.GetIfString();
+
+      // If the presented URL isn't a string, we automatically know it's
+      // invalid.
+      if (!url_string) {
+        return std::nullopt;
+      }
+
+      GURL url(*url_string);
+
+      // If our string fails to parse, we know our file is corrupted in some
+      // way.
+      if (!url.is_valid()) {
+        return std::nullopt;
+      }
+
+      chain_urls.push_back(std::move(url));
+    }
+
+    rpc_urls_map[chain_record.first] = std::move(chain_urls);
+  }
+
+  return rpc_urls_map;
+}
+
 }  // namespace brave_wallet
