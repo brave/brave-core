@@ -33,6 +33,7 @@
         android:layout_width="@dimen/search_accelerator_width"
         android:layout_height="@dimen/search_accelerator_height"
         android:layout_gravity="center"
+        android:background="?attr/selectableItemBackgroundBorderless"
         android:layout_marginStart="@dimen/search_accelerator_width_margin"
         android:layout_marginEnd="@dimen/search_accelerator_width_margin"
         android:paddingTop="@dimen/search_accelerator_height_padding"
