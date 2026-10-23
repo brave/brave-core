@@ -3071,6 +3071,73 @@ IN_PROC_BROWSER_TEST_F(
       << "Unexpected temporary container: " << (*temporary_container)->id;
 }
 
+// Test opening a link in split view where source and destination tabs have
+// different containers - destination should inherit source container
+IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
+                       OpenLinkInSplitViewDifferentContainer) {
+  // Opening split view from a tab without container should still work correctly
+  chrome::NewSplitTab(browser(), split_tabs::SplitTabLayout::kSideBySide,
+                      split_tabs::SplitTabCreatedSource::kLinkClick);
+  auto config = GetStoragePartitionConfigOfTabAt(browser(), 1);
+  ASSERT_TRUE(config.has_value());
+  EXPECT_TRUE(config->partition_name().empty());
+  auto* model = browser()->tab_strip_model();
+  model->delegate()->CloseTab(model->GetTabAtIndex(1),
+                              CloseTabSource::kFromMouse, base::DoNothing());
+
+  // Open tab A in container A
+  OpenUrlInContainerTab(GURL("https://a.test/simple.html"), "container-a");
+  ASSERT_EQ(2, model->count());
+
+  // Open tab B in container B
+  OpenUrlInContainerTab(GURL("https://a.test/simple.html"), "container-b");
+  ASSERT_EQ(3, model->count());
+
+  // Verify both tabs have different containers
+  auto config_a = GetStoragePartitionConfigOfTabAt(browser(), 1);
+  auto config_b = GetStoragePartitionConfigOfTabAt(browser(), 2);
+  ASSERT_TRUE(config_a.has_value());
+  ASSERT_TRUE(config_b.has_value());
+  EXPECT_EQ("container-a", config_a->partition_name());
+  EXPECT_EQ("container-b", config_b->partition_name());
+
+  // Activate tab A (in container A)
+  model->ActivateTabAt(1, TabStripUserGestureDetails(
+                              TabStripUserGestureDetails::GestureType::kOther));
+  ASSERT_TRUE(model->GetActiveTab());
+
+  // Open split view from tab A
+  chrome::NewSplitTab(browser(), split_tabs::SplitTabLayout::kSideBySide,
+                      split_tabs::SplitTabCreatedSource::kLinkClick);
+
+  // Verify split view was created
+  ASSERT_EQ(4, model->count());
+  EXPECT_TRUE(model->GetActiveTab()->IsSplit());
+
+  // Check the active tab's container after split
+  // The newly created destination tab should inherit from source container
+  int active_index = model->active_index();
+  auto active_config =
+      GetStoragePartitionConfigOfTabAt(browser(), active_index);
+  ASSERT_TRUE(active_config.has_value());
+  EXPECT_EQ("container-a", active_config->partition_name());
+
+  // Open split view from tab b
+  model->ActivateTabAt(3);
+  chrome::NewSplitTab(browser(), split_tabs::SplitTabLayout::kSideBySide,
+                      split_tabs::SplitTabCreatedSource::kLinkClick);
+
+  // Verify split view was created
+  ASSERT_EQ(5, model->count());
+  EXPECT_TRUE(model->GetActiveTab()->IsSplit());
+
+  // Check the active tab's container after split
+  active_index = model->active_index();
+  active_config = GetStoragePartitionConfigOfTabAt(browser(), active_index);
+  ASSERT_TRUE(active_config.has_value());
+  EXPECT_EQ("container-b", active_config->partition_name());
+}
+
 // Installing a web app with OS integration requires a blocking registration to
 // be alive for the duration of the test, hence the dedicated fixture.
 class ContainersPwaBrowserTest : public ContainersBrowserTest {

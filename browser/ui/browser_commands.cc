@@ -1226,6 +1226,44 @@ void ForcePasteInWebContents(content::WebContents* web_contents) {
 }
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
+bool MaybeAddTabAtInheritingActiveContainer(
+    BrowserWindowInterface* browser,
+    const GURL& url,
+    int index,
+    bool foreground,
+    std::optional<tab_groups::TabGroupId> group,
+    bool pinned) {
+  auto* tab_strip_model = browser->tab_strip_model();
+  auto* active_web_contents = tab_strip_model->GetActiveWebContents();
+  if (!active_web_contents) {
+    // Fall back to default behavior if no active tab
+    return false;
+  }
+
+  // Get the container ID from the active tab
+  const std::string container_id =
+      containers::GetContainerIdForWebContents(active_web_contents);
+  if (container_id.empty()) {
+    // Fall back to default behavior if no container.
+    return false;
+  }
+
+  // Use Navigate directly to set storage_partition_config
+  NavigateParams params(browser, url, ui::PAGE_TRANSITION_TYPED);
+  params.disposition = foreground ? WindowOpenDisposition::NEW_FOREGROUND_TAB
+                                  : WindowOpenDisposition::NEW_BACKGROUND_TAB;
+  params.tabstrip_index = index;
+  params.group = group;
+  if (pinned) {
+    params.tabstrip_add_types |= AddTabTypes::ADD_PINNED;
+  }
+  params.storage_partition_config = content::StoragePartitionConfig::Create(
+      browser->GetProfile(), containers::kContainersStoragePartitionDomain,
+      container_id, browser->GetProfile()->IsOffTheRecord());
+  Navigate(&params);
+  return true;
+}
+
 void OpenTabUrlsInContainer(BrowserWindowInterface* bwi,
                             const std::vector<tabs::TabHandle>& tabs,
                             const containers::mojom::ContainerPtr& container) {
