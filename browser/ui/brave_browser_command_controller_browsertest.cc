@@ -51,6 +51,11 @@
 #include "content/public/test/test_utils.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 
+#if BUILDFLAG(IS_MAC)
+#include "chrome/browser/ui/immersive/immersive_mode_controller.h"
+#include "chrome/browser/ui/window_feature_controller/window_feature_controller.h"
+#endif
+
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/components/ai_chat/core/browser/utils.h"
 #endif
@@ -828,9 +833,10 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
 }
 
 #if BUILDFLAG(IS_MAC)
-// On macOS, we block vertical tab mode toggling in fullscreen.
-// Immersive fullscreen feeature is enabled by default but
-// it's not compatible with vertical tab now.
+// On macOS, vertical tab mode toggling is blocked while the current fullscreen
+// session uses immersive mode, as immersive fullscreen is not compatible with
+// vertical tabs. With horizontal tabs (default), fullscreen uses immersive
+// mode.
 IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
                        VerticalTabToggleEnabledState) {
   EXPECT_FALSE(BrowserWindow::FromBrowser(browser())->IsFullscreen());
@@ -840,12 +846,72 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
   chrome::ToggleFullscreenMode(browser());
   EXPECT_TRUE(BrowserWindow::FromBrowser(browser())->IsFullscreen());
   chrome::BrowserCommandController::From(browser())->FullscreenStateChanged();
+  EXPECT_TRUE(
+      WindowFeatureController::From(browser())->UsesImmersiveFullscreenMode());
   EXPECT_FALSE(tabs::utils::IsVerticalTabToggleEnabled(browser()));
 
   // Exit fullscreen.
   chrome::ToggleFullscreenMode(browser());
   EXPECT_FALSE(BrowserWindow::FromBrowser(browser())->IsFullscreen());
   chrome::BrowserCommandController::From(browser())->FullscreenStateChanged();
+  EXPECT_TRUE(tabs::utils::IsVerticalTabToggleEnabled(browser()));
+}
+
+// When fullscreen is entered with vertical tabs on, that session doesn't use
+// immersive mode, so vertical tabs can be toggled in both directions. The
+// immersive decision stays frozen until fullscreen exits, so turning vertical
+// tabs off doesn't switch immersive mode on mid-session.
+IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
+                       VerticalTabToggleEnabledInNonImmersiveFullscreen) {
+  auto* command_controller = chrome::BrowserCommandController::From(browser());
+  auto* vertical_tab_controller = VerticalTabController::From(browser());
+  auto* window_feature_controller = WindowFeatureController::From(browser());
+  auto* immersive_mode_controller = ImmersiveModeController::From(browser());
+  ASSERT_TRUE(immersive_mode_controller);
+
+  // Turn on vertical tabs, then enter fullscreen.
+  command_controller->ExecuteCommand(IDC_TOGGLE_VERTICAL_TABS);
+  ASSERT_TRUE(vertical_tab_controller->ShouldShowBraveVerticalTabs());
+  chrome::ToggleFullscreenMode(browser());
+  ASSERT_TRUE(BrowserWindow::FromBrowser(browser())->IsFullscreen());
+  command_controller->FullscreenStateChanged();
+  EXPECT_FALSE(window_feature_controller->UsesImmersiveFullscreenMode());
+  EXPECT_FALSE(immersive_mode_controller->IsEnabled());
+  EXPECT_TRUE(tabs::utils::IsVerticalTabToggleEnabled(browser()));
+
+  // Turn off vertical tabs in fullscreen. Immersive mode stays off.
+  command_controller->ExecuteCommand(IDC_TOGGLE_VERTICAL_TABS);
+  EXPECT_FALSE(vertical_tab_controller->ShouldShowBraveVerticalTabs());
+  command_controller->FullscreenStateChanged();
+  EXPECT_FALSE(window_feature_controller->UsesImmersiveFullscreenMode());
+  EXPECT_FALSE(window_feature_controller->UsesImmersiveFullscreenTabbedMode());
+  EXPECT_FALSE(immersive_mode_controller->IsEnabled());
+  EXPECT_TRUE(tabs::utils::IsVerticalTabToggleEnabled(browser()));
+
+  // Turn vertical tabs back on in fullscreen.
+  command_controller->ExecuteCommand(IDC_TOGGLE_VERTICAL_TABS);
+  EXPECT_TRUE(vertical_tab_controller->ShouldShowBraveVerticalTabs());
+  EXPECT_TRUE(tabs::utils::IsVerticalTabToggleEnabled(browser()));
+
+  // Turn them off again and exit fullscreen. The decision is evaluated again.
+  command_controller->ExecuteCommand(IDC_TOGGLE_VERTICAL_TABS);
+  ASSERT_FALSE(vertical_tab_controller->ShouldShowBraveVerticalTabs());
+  chrome::ToggleFullscreenMode(browser());
+  ASSERT_FALSE(BrowserWindow::FromBrowser(browser())->IsFullscreen());
+  command_controller->FullscreenStateChanged();
+  EXPECT_TRUE(window_feature_controller->UsesImmersiveFullscreenMode());
+  EXPECT_TRUE(tabs::utils::IsVerticalTabToggleEnabled(browser()));
+
+  // The next fullscreen session uses immersive mode, so toggling is blocked.
+  chrome::ToggleFullscreenMode(browser());
+  ASSERT_TRUE(BrowserWindow::FromBrowser(browser())->IsFullscreen());
+  command_controller->FullscreenStateChanged();
+  EXPECT_TRUE(window_feature_controller->UsesImmersiveFullscreenMode());
+  EXPECT_FALSE(tabs::utils::IsVerticalTabToggleEnabled(browser()));
+
+  chrome::ToggleFullscreenMode(browser());
+  ASSERT_FALSE(BrowserWindow::FromBrowser(browser())->IsFullscreen());
+  command_controller->FullscreenStateChanged();
   EXPECT_TRUE(tabs::utils::IsVerticalTabToggleEnabled(browser()));
 }
 #endif
