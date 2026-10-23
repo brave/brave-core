@@ -436,9 +436,14 @@ void SharedPinnedTabService::OnTabChangedAt(tabs::TabInterface* tab,
     return;
   }
 
+  const int index = iter->contents_owner_model->GetIndexOfTab(tab);
+  // Tree-tab moves can notify while the tab is temporarily detached.
+  if (!iter->contents_owner_model->ContainsIndex(index)) {
+    return;
+  }
+
   LOCK_REENTRANCE(iter->contents_owner_model);
 
-  const int index = iter->contents_owner_model->GetIndexOfTab(tab);
   iter->renderer_data = tabs::TabData::FromTabInterface(
       iter->contents_owner_model->GetTabAtIndex(index));
   for (auto* browser : browsers_) {
