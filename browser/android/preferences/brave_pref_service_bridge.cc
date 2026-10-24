@@ -13,6 +13,7 @@
 #include "brave/components/brave_perf_predictor/common/pref_names.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
+#include "brave/components/brave_shields/core/common/pref_names.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/constants/pref_names.h"
 #include "build/build_config.h"
@@ -32,6 +33,9 @@ using base::android::ConvertUTF8ToJavaString;
 using base::android::JavaRef;
 using base::android::ScopedJavaLocalRef;
 using brave_shields::ControlType;
+using brave_shields::prefs::kAdsBlocked;
+using brave_shields::prefs::kHttpsUpgradesStat;
+using brave_shields::prefs::kTrackersBlocked;
 
 namespace {
 

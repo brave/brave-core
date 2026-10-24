@@ -7,8 +7,8 @@
 #include "base/path_service.h"
 #include "base/test/thread_test_helper.h"
 #include "brave/browser/extensions/brave_extension_functional_test.h"
+#include "brave/components/brave_shields/core/common/pref_names.h"
 #include "brave/components/constants/brave_paths.h"
-#include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/url_constants.h"
 #include "chrome/browser/extensions/extension_browsertest.h"
 #include "chrome/browser/profiles/profile.h"
@@ -47,7 +47,9 @@ IN_PROC_BROWSER_TEST_F(BraveExtensionProviderTest,
   EXPECT_EQ(true, content::EvalJs(contents,
                                   "setExpectations(1, 0, 0, 0);"
                                   "addImage('ad_banner.png')"));
-  EXPECT_EQ(browser()->GetProfile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+  EXPECT_EQ(browser()->GetProfile()->GetPrefs()->GetUint64(
+                brave_shields::prefs::kAdsBlocked),
+            0ULL);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveExtensionProviderTest, ExtensionsCanGetCookies) {
