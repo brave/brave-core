@@ -31,7 +31,7 @@ jobs:
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
-          token: ${{ secrets.SOCKET_FIX_PAT_BRAVE }}
+          token: ${{ secrets.BRAVE_WORKFLOWS_AUTHOR_PR_PAT }}
 
       - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
         with:
@@ -67,8 +67,8 @@ jobs:
 
       - name: Configure GPG signing
         env:
-          GPG_PRIVATE_KEY: ${{ secrets.BRAVE_SUPPORT_ADMIN_GPG_KEY }}
-          GPG_PASSPHRASE: ${{ secrets.BRAVE_SUPPORT_ADMIN_COMMIT_SIGNING_KEY_PASSPHRASE }}
+          GPG_PRIVATE_KEY: ${{ secrets.BRAVE_WORKFLOWS_AUTHOR_PR_GPG_KEY }}
+          GPG_PASSPHRASE: ${{ secrets.BRAVE_WORKFLOWS_AUTHOR_PR_GPG_PASSPHRASE }}
         run: |
           set -euo pipefail
 
@@ -112,7 +112,7 @@ jobs:
       - name: Compute PR body
         id: body
         env:
-          GH_TOKEN: ${{ secrets.SOCKET_FIX_PAT_BRAVE }}
+          GH_TOKEN: ${{ secrets.BRAVE_WORKFLOWS_AUTHOR_PR_PAT }}
           GHSA_IDS: ${{ inputs.ghsa_ids }}
           ISSUE_LINK: ${{ inputs.issue_link }}
           WDP_REF: ${{ inputs.wdp_ref }}
@@ -139,13 +139,13 @@ jobs:
 
       - name: Create Pull Request
         env:
-          GH_TOKEN: ${{ secrets.SOCKET_FIX_PAT_BRAVE }}
-          GPG_PASSPHRASE: ${{ secrets.BRAVE_SUPPORT_ADMIN_COMMIT_SIGNING_KEY_PASSPHRASE }}
+          GH_TOKEN: ${{ secrets.BRAVE_WORKFLOWS_AUTHOR_PR_PAT }}
+          GPG_PASSPHRASE: ${{ secrets.BRAVE_WORKFLOWS_AUTHOR_PR_GPG_PASSPHRASE }}
           PR_BRANCH: ${{ steps.branch.outputs.name }}
           PR_BODY: ${{ steps.body.outputs.body }}
         run: |
-          git config user.name "brave-support-admin"
-          git config user.email "138038132+brave-support-admin@users.noreply.github.com"
+          git config user.name "brave-workflows"
+          git config user.email "315916555+brave-workflows@users.noreply.github.com"
           git checkout -b "$PR_BRANCH"
           if git diff --quiet && git diff --cached --quiet && [ -z "$(git status --porcelain)" ]; then
             echo "No changes to commit — skipping PR creation"
