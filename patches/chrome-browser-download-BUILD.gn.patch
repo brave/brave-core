@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/download/BUILD.gn b/chrome/browser/download/BUILD.gn
-index fb1b41b07ca5296f6e62bf69dda53b5431947c0e..748565a9656892c1d8cd0397e0798e91f8d51cd1 100644
+index d9df6c2de2daeb78eeaf21558ef8010db7105282..c4a8cb0b549249273033d5d6ba5b448b22f24842 100644
 --- a/chrome/browser/download/BUILD.gn
 +++ b/chrome/browser/download/BUILD.gn
-@@ -373,7 +373,7 @@ source_set("impl") {
+@@ -374,7 +374,7 @@ source_set("impl") {
      sources += [ "drag_download_item_aura.cc" ]
    }
  

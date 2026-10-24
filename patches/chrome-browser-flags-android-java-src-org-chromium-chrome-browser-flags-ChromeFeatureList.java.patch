@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/flags/android/java/src/org/chromium/chrome/browser/flags/ChromeFeatureList.java b/chrome/browser/flags/android/java/src/org/chromium/chrome/browser/flags/ChromeFeatureList.java
-index 14a783a4dc372c48b14dbc4d6ee0e74caf8624bf..a1963f0fe48e07671f1ca22753c326e8279dd4f3 100644
+index 68dffd1b7e1aa56f01a082337e4043d9a64ff6c8..cef6b5df717a637f5c233f890b46fd06711dc698 100644
 --- a/chrome/browser/flags/android/java/src/org/chromium/chrome/browser/flags/ChromeFeatureList.java
 +++ b/chrome/browser/flags/android/java/src/org/chromium/chrome/browser/flags/ChromeFeatureList.java
-@@ -1733,7 +1733,7 @@ public abstract class ChromeFeatureList {
+@@ -1732,7 +1732,7 @@ public abstract class ChromeFeatureList {
      public static final MutableFlagWithSafeDefault sAndroidTabDeclutterArchiveOnDesktop =
              newMutableFlagWithSafeDefault(ANDROID_TAB_DECLUTTER_ARCHIVE_ON_DESKTOP, false);
      public static final MutableFlagWithSafeDefault sAndroidTipsNotifications =

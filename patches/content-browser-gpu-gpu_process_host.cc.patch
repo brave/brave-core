@@ -1,5 +1,5 @@
 diff --git a/content/browser/gpu/gpu_process_host.cc b/content/browser/gpu/gpu_process_host.cc
-index 23877b74ab64b23227ea5fcce1fdd6a66a19c39c..fe96ed4349b0f58b13ae3e471b9d33436186619b 100644
+index 1b29f20028bf25a1f6fa1084c05b4917f87313e4..c3e180a8b85a85cb01a1f4835f3e5731078e9e80 100644
 --- a/content/browser/gpu/gpu_process_host.cc
 +++ b/content/browser/gpu/gpu_process_host.cc
 @@ -457,6 +457,8 @@ class GpuSandboxedProcessLauncherDelegate

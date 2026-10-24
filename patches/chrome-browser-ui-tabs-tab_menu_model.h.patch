@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/tabs/tab_menu_model.h b/chrome/browser/ui/tabs/tab_menu_model.h
-index 6dcdc78cf4ca6b9b8e83f531c8271ae0f87c3ba6..9657dba59648ed93bba794e20d75dcc8cd4ce306 100644
+index 63f6cd9a0eae9cc1bd5b94144360f70b025ca2e3..18812106a64d99b46d7dcc73b4fa9b063e8a9953 100644
 --- a/chrome/browser/ui/tabs/tab_menu_model.h
 +++ b/chrome/browser/ui/tabs/tab_menu_model.h
 @@ -76,6 +76,7 @@ class TabMenuModel : public ui::SimpleMenuModel {

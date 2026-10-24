@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/renderer_context_menu/render_view_context_menu.h b/chrome/browser/renderer_context_menu/render_view_context_menu.h
-index 08f5dd9888879d04afda2304c0f761d31c8fedcd..e7c61235d9f838923e46c1b00ff0a50f892606b4 100644
+index 4734822d3777401dab1bc4ce4499ffb334bd41c2..6236396388d4b6e2f3fcc0d4e2e60bbb571ab8e5 100644
 --- a/chrome/browser/renderer_context_menu/render_view_context_menu.h
 +++ b/chrome/browser/renderer_context_menu/render_view_context_menu.h
-@@ -120,7 +120,7 @@ enum class SplitTabLayout;
+@@ -116,7 +116,7 @@ enum class SplitTabLayout;
  }
  #endif
  
@@ -11,7 +11,7 @@ index 08f5dd9888879d04afda2304c0f761d31c8fedcd..e7c61235d9f838923e46c1b00ff0a50f
      : public RenderViewContextMenuBase,
        public custom_handlers::ProtocolHandlerRegistry::Observer {
   public:
-@@ -141,15 +141,15 @@ class RenderViewContextMenu
+@@ -138,15 +138,15 @@ class RenderViewContextMenu
        base::OnceCallback<void(content::RenderFrameHost*,
                                blink::mojom::PluginActionType)>;
  
@@ -31,7 +31,7 @@ index 08f5dd9888879d04afda2304c0f761d31c8fedcd..e7c61235d9f838923e46c1b00ff0a50f
  
    void MenuClosed(ui::SimpleMenuModel* source) override;
  
-@@ -171,7 +171,7 @@ class RenderViewContextMenu
+@@ -168,7 +168,7 @@ class RenderViewContextMenu
    // Registers a one-time callback that will be called the next time a context
    // menu is shown.
    static void RegisterMenuShownCallbackForTesting(
@@ -40,7 +40,7 @@ index 08f5dd9888879d04afda2304c0f761d31c8fedcd..e7c61235d9f838923e46c1b00ff0a50f
  
    // Register a one-time callback that will be called the next time a plugin
    // action is executed from a given render frame.
-@@ -277,6 +277,7 @@ class RenderViewContextMenu
+@@ -274,6 +274,7 @@ class RenderViewContextMenu
            navigation_handle_callback) override;
  
   private:
@@ -48,7 +48,7 @@ index 08f5dd9888879d04afda2304c0f761d31c8fedcd..e7c61235d9f838923e46c1b00ff0a50f
    std::u16string GetElidedSelectionText(size_t max_length,
                                          gfx::BreakType break_type);
  
-@@ -338,7 +339,7 @@ class RenderViewContextMenu
+@@ -336,7 +337,7 @@ class RenderViewContextMenu
    bool IsInProgressiveWebApp() const;
    bool IsLinkToIsolatedWebApp() const;
  
