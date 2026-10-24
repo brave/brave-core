@@ -1,5 +1,5 @@
 diff --git a/components/feature_engagement/public/feature_constants.cc b/components/feature_engagement/public/feature_constants.cc
-index 116829771fc1f4722ad22b09dea78eb9ae8998da..c9b09a85207f0f84556e8c334756bc4f5545f3dd 100644
+index 959b1ac8e0425e9b306f5e062e4cd95fba192269..6d411393de3c4f65a65ecb13b4e502ab3e53c61a 100644
 --- a/components/feature_engagement/public/feature_constants.cc
 +++ b/components/feature_engagement/public/feature_constants.cc
 @@ -75,9 +75,9 @@ BASE_FEATURE(kIPHDesktopCustomizeChromeAutoOpenFeature,
@@ -113,7 +113,7 @@ index 116829771fc1f4722ad22b09dea78eb9ae8998da..c9b09a85207f0f84556e8c334756bc4f
  #endif  // BUILDFLAG(IS_WIN) || BUILDFLAG(IS_APPLE) || BUILDFLAG(IS_LINUX) ||
          // BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_FUCHSIA)
  
-@@ -1025,9 +1025,9 @@ BASE_FEATURE(kIPHAutofillExternalAccountProfileSuggestionFeature,
+@@ -1028,9 +1028,9 @@ BASE_FEATURE(kIPHAutofillExternalAccountProfileSuggestionFeature,
  BASE_FEATURE(kIPHAutofillHomeWorkProfileSuggestionFeature,
               "IPH_AutofillHomeWorkProfileSuggestion",
               base::FEATURE_ENABLED_BY_DEFAULT);

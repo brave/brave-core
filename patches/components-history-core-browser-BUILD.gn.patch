@@ -1,5 +1,5 @@
 diff --git a/components/history/core/browser/BUILD.gn b/components/history/core/browser/BUILD.gn
-index 5a50e53793fa4446eecd553b34f137ef2e151f4b..d073c358657c48149847eb5e8ccc2800b193d82b 100644
+index 9820f522cbe8e0f743e24a15df12b18f8905f671..93ebdf0f77805773f6181e80aa4db06f9c5a2fd1 100644
 --- a/components/history/core/browser/BUILD.gn
 +++ b/components/history/core/browser/BUILD.gn
 @@ -2,6 +2,8 @@

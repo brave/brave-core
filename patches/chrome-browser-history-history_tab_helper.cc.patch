@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/history/history_tab_helper.cc b/chrome/browser/history/history_tab_helper.cc
-index cff7c3955c8a1063d8dfdec5b5d0e46afb7b4789..fc78f52360fcaf84de8c219655432794d7b44908 100644
+index 41e33ac73f3cdedf9c9d1b617ccff0cb69c2cc35..653a3fb9f0f0975ee0f96fce15077d9f8956cb0a 100644
 --- a/chrome/browser/history/history_tab_helper.cc
 +++ b/chrome/browser/history/history_tab_helper.cc
-@@ -644,6 +644,9 @@ void HistoryTabHelper::TitleWasSet(NavigationEntry* entry) {
+@@ -648,6 +648,9 @@ void HistoryTabHelper::TitleWasSet(NavigationEntry* entry) {
  }
  
  history::HistoryService* HistoryTabHelper::GetHistoryService() {

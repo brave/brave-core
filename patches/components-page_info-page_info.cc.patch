@@ -1,8 +1,8 @@
 diff --git a/components/page_info/page_info.cc b/components/page_info/page_info.cc
-index 81954bda08be0bb3b69f946514f2c800887488b5..dd336806395b8a243b7b6aa8fe1504a139f3d581 100644
+index e56071dd2f9f036722f940f8fdfacafff091aab9..cd84bdee3a971b2812b669ec6ad1926b9b25af4b 100644
 --- a/components/page_info/page_info.cc
 +++ b/components/page_info/page_info.cc
-@@ -1381,6 +1381,9 @@ void PageInfo::PopulatePermissionInfo(PermissionInfo& permission_info,
+@@ -1420,6 +1420,9 @@ void PageInfo::PopulatePermissionInfo(PermissionInfo& permission_info,
  // second section, the default behavior used when no per-type exception applies.
  bool PageInfo::ShouldShowPermission(
      const PageInfo::PermissionInfo& info) const {
@@ -12,7 +12,7 @@ index 81954bda08be0bb3b69f946514f2c800887488b5..dd336806395b8a243b7b6aa8fe1504a1
  #if BUILDFLAG(IS_ANDROID)
    if (info.type == ContentSettingsType::NOTIFICATIONS) {
      // `is_requested` is only populated if
-@@ -1611,6 +1614,9 @@ void PageInfo::PresentSitePermissions() {
+@@ -1650,6 +1653,9 @@ void PageInfo::PresentSitePermissions() {
  
  std::set<net::SchemefulSite> PageInfo::GetTwoSitePermissionRequesters(
      ContentSettingsType type) {

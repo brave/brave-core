@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
-index af106d0a96ec69cd4ed511e2158888c47e19e578..477d11dc44e0058daaba170f6bf72448e3680329 100644
+index 10fca9f85ad296ad836e55f5a420667d32c50181..742dca3c585c636a8e2972790db4f666149f603b 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
-@@ -982,6 +982,14 @@ public class ChromeTabbedActivity extends ChromeActivity implements PreAttachInt
+@@ -991,6 +991,14 @@ public class ChromeTabbedActivity extends ChromeActivity implements PreAttachInt
  
                          private void closeIfNoTabsAndHomepageEnabled(
                                  boolean isPendingClosure, boolean shouldRemoveWindowWithZeroTabs) {
@@ -17,7 +17,7 @@ index af106d0a96ec69cd4ed511e2158888c47e19e578..477d11dc44e0058daaba170f6bf72448
                              if (getTabModelSelector().getTotalTabCount() == 0) {
                                  if (shouldRemoveWindowWithZeroTabs) {
                                      mMultiInstanceManager.closeChromeWindowIfEmpty(mWindowId);
-@@ -3933,6 +3941,11 @@ public class ChromeTabbedActivity extends ChromeActivity implements PreAttachInt
+@@ -3961,6 +3969,11 @@ public class ChromeTabbedActivity extends ChromeActivity implements PreAttachInt
                  new TabModelSelectorObserver() {
                      @Override
                      public void onTabStateInitialized() {

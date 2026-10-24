@@ -1,8 +1,8 @@
 diff --git a/third_party/updater/BUILD.gn b/third_party/updater/BUILD.gn
-index 3b378d3ba87e5e77dde2376c151fb4cf502289fe..03d073c2cf6292d6ce72ba7051e88fcc7562859b 100644
+index ffad05b34e9175f249e01c4a6ed471196162b8a0..cb665563c5702f579547c88b27f00c4a75558a3e 100644
 --- a/third_party/updater/BUILD.gn
 +++ b/third_party/updater/BUILD.gn
-@@ -12,7 +12,6 @@ if (is_win || is_mac || is_linux) {
+@@ -13,7 +13,6 @@ if (is_win || is_mac || is_linux) {
      foreach(arch_suffix,
              [
                "",
