@@ -21,7 +21,6 @@
 #include "brave/components/brave_shields/core/common/pref_names.h"
 #include "brave/components/brave_shields/core/common/shields_settings.mojom.h"
 #include "brave/components/brave_user_agent/browser/brave_user_agent_exceptions.h"
-#include "brave/components/constants/pref_names.h"
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
@@ -139,22 +138,27 @@ void BraveShieldsWebContentsObserver::DispatchBlockedEvent(
         BraveShieldsWebContentsObserver::FromWebContents(web_contents);
     if (observer && !observer->IsBlockedSubresource(subresource)) {
       observer->AddBlockedSubresource(subresource);
-      PrefService* prefs =
+      PrefService* pref_service =
           Profile::FromBrowserContext(web_contents->GetBrowserContext())
               ->GetOriginalProfile()
               ->GetPrefs();
 
       if (block_type == kAds) {
-        prefs->SetUint64(kAdsBlocked, prefs->GetUint64(kAdsBlocked) + 1);
+        pref_service->SetUint64(
+            prefs::kAdsBlocked,
+            pref_service->GetUint64(prefs::kAdsBlocked) + 1);
       } else if (block_type == kHTTPUpgradableResources) {
-        prefs->SetUint64(kHttpsUpgradesStat,
-                         prefs->GetUint64(kHttpsUpgradesStat) + 1);
+        pref_service->SetUint64(
+            prefs::kHttpsUpgradesStat,
+            pref_service->GetUint64(prefs::kHttpsUpgradesStat) + 1);
       } else if (block_type == kJavaScript) {
-        prefs->SetUint64(kJavascriptBlocked,
-                         prefs->GetUint64(kJavascriptBlocked) + 1);
+        pref_service->SetUint64(
+            prefs::kJavascriptBlocked,
+            pref_service->GetUint64(prefs::kJavascriptBlocked) + 1);
       } else if (block_type == kFingerprintingV2) {
-        prefs->SetUint64(kFingerprintingBlocked,
-                         prefs->GetUint64(kFingerprintingBlocked) + 1);
+        pref_service->SetUint64(
+            prefs::kFingerprintingBlocked,
+            pref_service->GetUint64(prefs::kFingerprintingBlocked) + 1);
       }
     }
   }
@@ -258,11 +262,11 @@ void BraveShieldsWebContentsObserver::OnJavaScriptBlocked(
 // static
 void BraveShieldsWebContentsObserver::RegisterProfilePrefs(
     PrefRegistrySimple* registry) {
-  registry->RegisterUint64Pref(kAdsBlocked, 0);
-  registry->RegisterUint64Pref(kTrackersBlocked, 0);
-  registry->RegisterUint64Pref(kJavascriptBlocked, 0);
-  registry->RegisterUint64Pref(kHttpsUpgradesStat, 0);
-  registry->RegisterUint64Pref(kFingerprintingBlocked, 0);
+  registry->RegisterUint64Pref(prefs::kAdsBlocked, 0);
+  registry->RegisterUint64Pref(prefs::kTrackersBlocked, 0);
+  registry->RegisterUint64Pref(prefs::kJavascriptBlocked, 0);
+  registry->RegisterUint64Pref(prefs::kHttpsUpgradesStat, 0);
+  registry->RegisterUint64Pref(prefs::kFingerprintingBlocked, 0);
 }
 
 void BraveShieldsWebContentsObserver::ReadyToCommitNavigation(
