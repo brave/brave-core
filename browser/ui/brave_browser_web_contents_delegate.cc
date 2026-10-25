@@ -10,10 +10,13 @@
 #include "base/check.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/brave_file_select_utils.h"
+#include "brave/browser/ui/peek/peek_utils.h"
+#include "brave/browser/ui/peek/public/peek_controller.h"
 #include "brave/browser/ui/split_view/split_view_link_redirect_utils.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/unload_controller.h"
 #include "components/tabs/public/tab_interface.h"
+#include "content/public/browser/page_navigator.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/common/url_constants.h"
@@ -44,6 +47,25 @@ BraveBrowserWebContentsDelegate::BraveBrowserWebContentsDelegate(
 
 BraveBrowserWebContentsDelegate::~BraveBrowserWebContentsDelegate() = default;
 
+content::WebContents* BraveBrowserWebContentsDelegate::OpenURLFromTab(
+    content::WebContents* source,
+    const content::OpenURLParams& params,
+    base::OnceCallback<void(content::NavigationHandle&)>
+        navigation_handle_callback) {
+  // While Peek is enabled, Shift+click on a link in a tab opens it in Peek
+  // instead of a new window.
+  if (source && tabs::TabInterface::MaybeGetFromContents(source) &&
+      peek::IsShiftClickOpen(params)) {
+    if (auto* peek_controller = PeekController::From(&*browser_)) {
+      peek_controller->Open(params);
+      return peek_controller->GetWebContents();
+    }
+  }
+
+  return BrowserWebContentsDelegate::OpenURLFromTab(
+      source, params, std::move(navigation_handle_callback));
+}
+
 content::WebContents* BraveBrowserWebContentsDelegate::AddNewContents(
     content::WebContents* source,
     std::unique_ptr<content::WebContents> new_contents,
@@ -52,6 +74,20 @@ content::WebContents* BraveBrowserWebContentsDelegate::AddNewContents(
     const blink::mojom::WindowFeatures& window_features,
     bool user_gesture,
     bool* was_blocked) {
+  // target="_blank" links from pinned tabs to other sites open in Peek.
+  if (disposition == WindowOpenDisposition::NEW_FOREGROUND_TAB && source &&
+      user_gesture && new_contents) {
+    auto* tab = tabs::TabInterface::MaybeGetFromContents(source);
+    auto* peek_controller = PeekController::From(&*browser_);
+    if (tab && peek_controller &&
+        peek::ShouldPeekFromPinnedTab(
+            tab->IsPinned(), source->GetLastCommittedURL(), target_url)) {
+      content::WebContents* raw_contents = new_contents.get();
+      peek_controller->OpenWebContents(std::move(new_contents));
+      return raw_contents;
+    }
+  }
+
   // For NEW_FOREGROUND_TAB disposition (target="_blank" links) from a source
   // in the left pane of a linked split view, set the split tab ID on the new
   // contents so that SplitViewLinkNavigationThrottle can redirect it to the
