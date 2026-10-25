@@ -1228,6 +1228,24 @@ describe('Cardano send token transfer formatting', () => {
     expect(normalized.format(6)).toBe('1')
   })
 
+  it('getTransactionTransferredValue returns empty normalized for an unknown ERC20 token', () => {
+    // An unlisted token has no verifiable decimals; assuming 18 lets a dApp
+    // understate an approve/transfer amount by orders of magnitude.
+    const { normalized, wei } = getTransactionTransferredValue({
+      tx: {
+        ...mockTransactionInfo,
+        txType: BraveWallet.TransactionType.ERC20Approve,
+        txArgs: [mockEthAccount.address, '1000000000000'],
+      },
+      token: undefined,
+      sourceToken: undefined,
+      txAccount: mockEthAccount,
+      txNetwork: mockNetwork,
+    })
+    expect(wei.format()).toBe('1000000000000')
+    expect(normalized.format()).toBe('')
+  })
+
   it('getTransactionFormattedSendCurrencyTotal uses the token symbol', () => {
     expect(
       getTransactionFormattedSendCurrencyTotal({

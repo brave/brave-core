@@ -841,7 +841,9 @@ export function getTransactionTransferredValue(
     const wei = new Amount(amount)
     return {
       wei,
-      normalized: wei.divideByDecimals(token?.decimals ?? 18),
+      normalized: token
+        ? wei.divideByDecimals(token.decimals)
+        : Amount.empty(),
     }
   }
 
