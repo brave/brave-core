@@ -30,6 +30,12 @@ PeekControllerImpl::~PeekControllerImpl() {
   Close();
 }
 
+void PeekControllerImpl::SetShieldsPanelProvider(
+    std::unique_ptr<PeekShieldsPanelProvider> provider) {
+  CHECK(!IsShowing());
+  shields_panel_provider_ = std::move(provider);
+}
+
 void PeekControllerImpl::Open(const content::OpenURLParams& params) {
   std::unique_ptr<content::WebContents> contents =
       PeekContents::CreateWebContents(browser_->GetProfile());
@@ -40,11 +46,6 @@ void PeekControllerImpl::Open(const content::OpenURLParams& params) {
   // The source frame lives in another WebContents.
   load_params.frame_tree_node_id = content::FrameTreeNodeId();
   raw_contents->GetController().LoadURLWithParams(load_params);
-}
-
-void PeekControllerImpl::OpenWebContents(
-    std::unique_ptr<content::WebContents> contents) {
-  Show(std::move(contents));
 }
 
 void PeekControllerImpl::OpenAsTab() {
@@ -134,6 +135,7 @@ void PeekControllerImpl::Show(std::unique_ptr<content::WebContents> contents) {
 }
 
 void PeekControllerImpl::CreateWidget() {
+  CHECK(shields_panel_provider_);
   views::Widget::InitParams params(
       views::Widget::InitParams::CLIENT_OWNS_WIDGET,
       views::Widget::InitParams::TYPE_WINDOW_FRAMELESS);
@@ -147,8 +149,8 @@ void PeekControllerImpl::CreateWidget() {
   widget_->Init(std::move(params));
   widget_->MakeCloseSynchronous(base::BindOnce(
       &PeekControllerImpl::OnWidgetCloseRequested, weak_factory_.GetWeakPtr()));
-  peek_view_ =
-      widget_->SetContentsView(std::make_unique<PeekView>(*this, *browser_));
+  peek_view_ = widget_->SetContentsView(
+      std::make_unique<PeekView>(*this, *browser_, *shields_panel_provider_));
 
   contents_area_observation_.Observe(browser_view_->contents_container());
   browser_widget_observation_.Observe(browser_view_->GetWidget());

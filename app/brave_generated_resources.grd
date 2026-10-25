@@ -527,7 +527,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         <message name="IDS_CONTENT_CONTEXT_OPENLINKTOR_INAPP" desc="Title case: The name of the open a link in private window with Tor command">
           Open Link in Brave Private Window with Tor
         </message>
-        <message name="IDS_CONTENT_CONTEXT_OPENLINKPEEK" desc="Title case: The name of the context menu item that opens a link in a floating preview over the current tab">
+        <message name="IDS_CONTENT_CONTEXT_OPENLINKPEEK" desc="Title case: The name of the context menu item that opens a link in a floating preview over the current tab. &quot;Peek&quot; is the name of this browser feature.">
           Open Link in Peek
         </message>
       </if>
@@ -541,7 +541,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         <message name="IDS_CONTENT_CONTEXT_OPENLINKTOR_INAPP" desc="The name of the open a link in private window with Tor command">
           Open link in Brave private window with Tor
         </message>
-        <message name="IDS_CONTENT_CONTEXT_OPENLINKPEEK" desc="The name of the context menu item that opens a link in a floating preview over the current tab">
+        <message name="IDS_CONTENT_CONTEXT_OPENLINKPEEK" desc="The name of the context menu item that opens a link in a floating preview over the current tab. &quot;Peek&quot; is the name of this browser feature.">
           Open link in Peek
         </message>
       </if>
@@ -842,14 +842,11 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         </message>
 
         <!-- Peek -->
-        <message name="IDS_PEEK_ACCESSIBLE_NAME" desc="The accessible name of the floating preview shown over the current tab">
+        <message name="IDS_PEEK_ACCESSIBLE_NAME" desc="The accessible name of the floating preview shown over the current tab. &quot;Peek&quot; is the name of this browser feature.">
           Peek
         </message>
         <message name="IDS_PEEK_OPEN_AS_TAB" desc="Tooltip and accessible name of the button that moves the floating preview into a regular tab">
           Open as tab
-        </message>
-        <message name="IDS_PEEK_CLOSE" desc="Tooltip and accessible name of the button that closes the floating preview">
-          Close
         </message>
       </if>
 
