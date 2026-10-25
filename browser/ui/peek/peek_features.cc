@@ -8,7 +8,7 @@
 namespace peek::features {
 
 // Opens links in a floating "Peek" card over the current tab. Triggered by
-// cross-site links in pinned tabs, Shift+click, and a context menu item.
+// Shift+click and a context menu item.
 BASE_FEATURE(kBravePeek, base::FEATURE_DISABLED_BY_DEFAULT);
 
 }  // namespace peek::features
