@@ -40,6 +40,7 @@
 
 #if BUILDFLAG(IS_LINUX)
 #include "base/linux_util.h"
+#include "ui/ozone/public/ozone_switches.h"
 #endif
 
 #if BUILDFLAG(IS_ANDROID)
@@ -121,6 +122,28 @@ void BraveMainDelegate::AppendCommandLineOptions() {
   command_line->AppendSwitch(switches::kDisableDomainReliability);
   command_line->AppendSwitch(switches::kEnableDomDistiller);
   command_line->AppendSwitch(switches::kEnableDistillabilityService);
+
+  #if BUILDFLAG(IS_LINUX)
+  // 1. Enable native Wayland auto-detection if no platform was explicitly specified
+  if (!command_line->HasSwitch(switches::kOzonePlatform) &&
+      !command_line->HasSwitch(switches::kOzonePlatformHint)) {
+    command_line->AppendSwitchASCII(switches::kOzonePlatformHint, "auto");
+  }
+  // 2. Enable two-finger touchpad overscroll history navigation
+  if (!command_line->HasSwitch(switches::kEnableFeatures)) {
+    command_line->AppendSwitchASCII(switches::kEnableFeatures,
+                                    "TouchpadOverscrollHistoryNavigation");
+  } else {
+    std::string enabled_features =
+        command_line->GetSwitchValueASCII(switches::kEnableFeatures);
+    if (enabled_features.find("TouchpadOverscrollHistoryNavigation") ==
+        std::string::npos) {
+      enabled_features += ",TouchpadOverscrollHistoryNavigation";
+      command_line->AppendSwitchASCII(switches::kEnableFeatures,
+                                      enabled_features);
+    }
+  }
+#endif
 
   if (!base::CommandLine::ForCurrentProcess()->HasSwitch(
           embedder_support::kOriginTrialPublicKey)) {
