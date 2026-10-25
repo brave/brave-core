@@ -36,11 +36,14 @@ class ShieldsPanelDataHandler
       public brave_shields::BraveShieldsTabHelper::Observer,
       public TabStripModelObserver {
  public:
+  // Follows the active tab of `tab_strip_model`. If `tab_strip_model` is null,
+  // controls `target_contents` instead, which must outlive this handler.
   ShieldsPanelDataHandler(
       mojo::PendingReceiver<brave_shields::mojom::DataHandler>
           data_handler_receiver,
       TopChromeWebUIController* webui_controller,
       TabStripModel* tab_strip_model,
+      content::WebContents* target_contents,
       favicon::FaviconService* favicon_service,
       brave_shields::BraveShieldsSettingsService& brave_shields_settings);
 

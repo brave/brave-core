@@ -509,6 +509,7 @@ source_set("ui") {
       "//brave/browser/ntp_background",
       "//brave/browser/profiles:util",
       "//brave/browser/sessions",
+      "//brave/browser/ui/peek",
       "//brave/browser/ui/sidebar:sidebar_impl",
       "//brave/browser/ui/tabs:tab_menu",
       "//brave/browser/ui/tabs:tab_model",

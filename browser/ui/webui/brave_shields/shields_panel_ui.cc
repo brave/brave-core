@@ -9,6 +9,7 @@
 
 #include "base/check.h"
 #include "base/feature_list.h"
+#include "base/memory/weak_ptr.h"
 #include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
 #include "brave/browser/ui/brave_browser_window.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
@@ -31,12 +32,41 @@
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_webui_strings.h"
 #include "components/prefs/pref_service.h"
+#include "content/public/browser/web_contents.h"
+#include "content/public/browser/web_contents_user_data.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/common/url_constants.h"
 #include "net/base/features.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/webui/webui_util.h"
+
+namespace {
+
+// Attached to a Shields panel WebContents that controls a WebContents other
+// than the active tab.
+class ShieldsPanelTarget
+    : public content::WebContentsUserData<ShieldsPanelTarget> {
+ public:
+  ~ShieldsPanelTarget() override = default;
+
+  content::WebContents* target() { return target_.get(); }
+
+ private:
+  friend WebContentsUserData;
+
+  ShieldsPanelTarget(content::WebContents* panel_contents,
+                     content::WebContents* target)
+      : WebContentsUserData(*panel_contents), target_(target->GetWeakPtr()) {}
+
+  base::WeakPtr<content::WebContents> target_;
+
+  WEB_CONTENTS_USER_DATA_KEY_DECL();
+};
+
+WEB_CONTENTS_USER_DATA_KEY_IMPL(ShieldsPanelTarget);
+
+}  // namespace
 
 // Cache active Browser instance's TabStripModel to give
 // to ShieldsPanelDataHandler when this is created because
@@ -119,9 +149,24 @@ void ShieldsPanelUI::CreatePanelHandler(
   auto* brave_shields_settings =
       BraveShieldsSettingsServiceFactory::GetForProfile(profile);
   CHECK(brave_shields_settings);
+  TabStripModel* tab_strip_model = browser->GetTabStripModel();
+  content::WebContents* target_contents = nullptr;
+  if (auto* target =
+          ShieldsPanelTarget::FromWebContents(web_ui()->GetWebContents())) {
+    tab_strip_model = nullptr;
+    target_contents = target->target();
+  }
   data_handler_ = std::make_unique<ShieldsPanelDataHandler>(
-      std::move(data_handler_receiver), this, browser->GetTabStripModel(),
+      std::move(data_handler_receiver), this, tab_strip_model, target_contents,
       favicon_service, *brave_shields_settings);
+}
+
+// static
+void ShieldsPanelUI::SetTargetWebContents(content::WebContents* panel_contents,
+                                          content::WebContents* target) {
+  CHECK(panel_contents);
+  CHECK(target);
+  ShieldsPanelTarget::CreateForWebContents(panel_contents, target);
 }
 
 ShieldsPanelUIConfig::ShieldsPanelUIConfig()

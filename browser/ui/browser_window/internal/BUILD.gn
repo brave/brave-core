@@ -57,11 +57,13 @@ source_set("internal") {
     deps += [
       "//brave/browser/ui:brave_browser_window_header",
       "//brave/browser/ui/focus_mode",
+      "//brave/browser/ui/peek",
       "//brave/browser/ui/screenshot",
       "//brave/browser/ui/tabs:tab_menu",
       "//brave/browser/ui/tabs:tabs_public",
       "//brave/browser/ui/tabs:tree_tab_session_manager",
       "//brave/browser/ui/views/page_info",
+      "//brave/browser/ui/views/peek",
       "//brave/browser/ui/views/toolbar:screenshot",
       "//brave/browser/ui/views/workspaces",
       "//brave/browser/ui/window_closing_confirm",

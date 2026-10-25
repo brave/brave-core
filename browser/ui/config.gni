@@ -59,6 +59,7 @@ if (toolkit_views) {
     "//brave/browser/ui/views/frame/vertical_tabs",
     "//brave/browser/ui/views/location_bar",
     "//brave/browser/ui/views/page_info",
+    "//brave/browser/ui/views/peek",
     "//brave/browser/ui/views/side_panel:side_panel_impl",
     "//brave/browser/ui/views/workspaces",
   ]
