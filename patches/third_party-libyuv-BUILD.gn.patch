@@ -1,0 +1,13 @@
+diff --git a/third_party/libyuv/BUILD.gn b/third_party/libyuv/BUILD.gn
+index d3fbd33e2559b9012922d3c078d360adb1fea317..53d56fded3bcbde5461c2688b11163c44527da61 100644
+--- a/third_party/libyuv/BUILD.gn
++++ b/third_party/libyuv/BUILD.gn
+@@ -267,7 +267,7 @@ if (libyuv_use_sme) {
+     use_libcxx_modules = false
+ 
+     # SME is an Armv9-A feature.
+-    cflags = [ "-march=armv9-a+i8mm+sme" ]
++    cflags = [ "-march=armv9-a+i8mm+sme+nosve" ]
+   }
+ }
+ 
