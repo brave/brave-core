@@ -7,7 +7,6 @@
 
 #include <utility>
 
-#include "base/check.h"
 #include "base/task/sequenced_task_runner.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/ui/webui/webcompat_reporter/webcompat_reporter_dialog.h"
@@ -17,7 +16,9 @@
 #include "chrome/browser/ui/webui/top_chrome/top_chrome_web_ui_controller.h"
 #include "components/favicon/core/favicon_service.h"
 #include "components/favicon_base/favicon_types.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/navigation_controller.h"
+#include "content/public/browser/web_contents.h"
 
 using brave_shields::BraveShieldsTabHelper;
 using brave_shields::mojom::SiteSettings;
@@ -27,17 +28,24 @@ ShieldsPanelDataHandler::ShieldsPanelDataHandler(
         data_handler_receiver,
     TopChromeWebUIController* webui_controller,
     TabStripModel* tab_strip_model,
+    content::WebContents* target_contents,
     favicon::FaviconService* favicon_service,
     brave_shields::BraveShieldsSettingsService& brave_shields_settings)
     : data_handler_receiver_(this, std::move(data_handler_receiver)),
       webui_controller_(webui_controller),
       favicon_service_(favicon_service),
       brave_shields_settings_(brave_shields_settings) {
-  DCHECK(tab_strip_model);
-  tab_strip_model->AddObserver(this);
+  content::WebContents* web_contents = target_contents;
+  if (tab_strip_model) {
+    tab_strip_model->AddObserver(this);
+    web_contents = tab_strip_model->GetActiveWebContents();
+  }
 
-  auto* shields_data_controller =
-      BraveShieldsTabHelper::From(tab_strip_model->GetActiveTab());
+  if (!web_contents) {
+    return;
+  }
+  auto* shields_data_controller = BraveShieldsTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(web_contents));
   if (!shields_data_controller) {
     return;
   }

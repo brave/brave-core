@@ -66,6 +66,17 @@ class BraveShieldsActionController
   void RefreshButtonImages(views::LabelButton* button);
   ui::ImageModel GetImageModel(const gfx::Size& preferred_size) const;
   std::u16string GetTooltipText() const;
+
+  // Returns the Shields icon, with its blocked count badge, for
+  // `web_contents`.
+  static ui::ImageModel GetImageModelForWebContents(
+      content::WebContents* web_contents,
+      Profile& profile,
+      const gfx::Size& preferred_size,
+      int icon_size);
+  static std::u16string GetTooltipTextForWebContents(
+      content::WebContents* web_contents);
+
   void OnButtonPressed();
   views::Widget* GetBubbleWidget();
 
@@ -83,7 +94,7 @@ class BraveShieldsActionController
   Profile* profile() { return &profile_.get(); }
 
  private:
-  bool IsPageInReaderMode(content::WebContents* web_contents) const;
+  static bool IsPageInReaderMode(content::WebContents* web_contents);
   bool ShouldShowBubbleForContents(content::WebContents* web_contents) const;
   void ShowBubble(GURL webui_url);
   int IconDimensionForLayout() const;
@@ -92,9 +103,14 @@ class BraveShieldsActionController
   void AddObserverToWebContentsIfPresent(content::WebContents* contents);
   void NotifyStateChanged();
 
-  gfx::ImageSkia GetIconImage(bool is_enabled) const;
-  std::unique_ptr<IconWithBadgeImageSource> GetImageSource(
-      const gfx::Size& preferred_size) const;
+  static gfx::ImageSkia GetIconImage(content::WebContents* web_contents,
+                                     bool is_enabled,
+                                     int icon_size);
+  static std::unique_ptr<IconWithBadgeImageSource> GetImageSource(
+      content::WebContents* web_contents,
+      Profile& profile,
+      const gfx::Size& preferred_size,
+      int icon_size);
 
   const raw_ptr<BrowserWindowInterface> browser_window_interface_ = nullptr;
   CreateWebUIBubbleManagerCallback create_bubble_manager_callback_;
