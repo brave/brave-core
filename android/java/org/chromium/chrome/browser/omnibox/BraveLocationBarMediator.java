@@ -212,7 +212,6 @@ public class BraveLocationBarMediator extends LocationBarMediator {
         if (mContext != null && mContext instanceof AppCompatActivity) {
             BraveLocationBarQRDialogFragment braveLocationBarQRDialogFragment =
                     BraveLocationBarQRDialogFragment.newInstance(this);
-            braveLocationBarQRDialogFragment.setCancelable(false);
             braveLocationBarQRDialogFragment.show(
                     ((AppCompatActivity) mContext).getSupportFragmentManager(),
                     "BraveLocationBarQRDialogFragment");
