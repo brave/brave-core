@@ -8,9 +8,8 @@
 #include <utility>
 
 #include "base/functional/bind.h"
+#include "brave/browser/ui/peek/public/peek_shields_panel_provider.h"
 #include "brave/browser/ui/views/brave_actions/brave_shields_action_controller.h"
-#include "brave/browser/ui/webui/brave_shields/shields_panel_ui.h"
-#include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/views/bubble/webui_bubble_manager.h"
@@ -27,7 +26,6 @@
 #include "ui/views/controls/button/button.h"
 #include "ui/views/controls/button/menu_button_controller.h"
 #include "ui/views/controls/highlight_path_generator.h"
-#include "url/gurl.h"
 
 namespace {
 
@@ -36,9 +34,11 @@ constexpr gfx::Size kButtonSize(24, 24);
 
 }  // namespace
 
-PeekShieldsButton::PeekShieldsButton(BrowserWindowInterface& browser)
+PeekShieldsButton::PeekShieldsButton(BrowserWindowInterface& browser,
+                                     PeekShieldsPanelProvider& provider)
     : LabelButton(views::Button::PressedCallback(), std::u16string()),
-      browser_(browser) {
+      browser_(browser),
+      provider_(provider) {
   SetAccessibleName(l10n_util::GetStringUTF16(IDS_BRAVE_SHIELDS));
   SetHorizontalAlignment(gfx::ALIGN_CENTER);
   SetPreferredSize(kButtonSize);
@@ -103,14 +103,13 @@ void PeekShieldsButton::ButtonPressed() {
   }
 
   if (!bubble_manager_) {
-    bubble_manager_ = WebUIBubbleManager::Create<ShieldsPanelUI>(
-        &*browser_, GURL(kShieldsPanelURL), IDS_BRAVE_SHIELDS);
+    bubble_manager_ = provider_->CreateBubbleManager(*browser_);
   }
   bubble_manager_->ShowBubble(this);
 
   // The panel binds its data handler once its page loads, which happens after
   // this task.
-  ShieldsPanelUI::SetTargetWebContents(
+  provider_->SetPanelTarget(
       bubble_manager_->GetContentsWrapper()->web_contents(),
       web_contents_.get());
 

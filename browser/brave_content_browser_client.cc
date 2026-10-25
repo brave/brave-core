@@ -260,7 +260,6 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #endif
 
 #if !BUILDFLAG(IS_ANDROID)
-#include "brave/browser/ui/peek/peek_navigation_throttle.h"
 #include "brave/browser/ui/split_view/split_view_link_navigation_throttle.h"
 #include "brave/browser/ui/webui/brave_account/brave_account_ui_desktop.h"
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
@@ -1564,7 +1563,6 @@ void BraveContentBrowserClient::CreateThrottlesForNavigation(
 #if !BUILDFLAG(IS_ANDROID)
   NewTabShowsNavigationThrottle::MaybeCreateAndAdd(registry);
   SplitViewLinkNavigationThrottle::MaybeCreateAndAdd(registry);
-  PeekNavigationThrottle::MaybeCreateAndAdd(registry);
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)

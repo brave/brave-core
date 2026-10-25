@@ -21,6 +21,7 @@
 #include "ui/views/widget/widget_observer.h"
 
 class BrowserWindowInterface;
+class PeekShieldsPanelProvider;
 class WebUIBubbleManager;
 
 namespace content {
@@ -35,7 +36,8 @@ class PeekShieldsButton : public views::LabelButton,
   METADATA_HEADER(PeekShieldsButton, views::LabelButton)
 
  public:
-  explicit PeekShieldsButton(BrowserWindowInterface& browser);
+  PeekShieldsButton(BrowserWindowInterface& browser,
+                    PeekShieldsPanelProvider& provider);
   PeekShieldsButton(const PeekShieldsButton&) = delete;
   PeekShieldsButton& operator=(const PeekShieldsButton&) = delete;
   ~PeekShieldsButton() override;
@@ -59,6 +61,7 @@ class PeekShieldsButton : public views::LabelButton,
   void OnWidgetDestroying(views::Widget* widget) override;
 
   const raw_ref<BrowserWindowInterface> browser_;
+  const raw_ref<PeekShieldsPanelProvider> provider_;
   raw_ptr<views::MenuButtonController> menu_button_controller_ = nullptr;
   base::WeakPtr<content::WebContents> web_contents_;
   std::unique_ptr<WebUIBubbleManager> bubble_manager_;

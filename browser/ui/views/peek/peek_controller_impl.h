@@ -13,6 +13,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
 #include "brave/browser/ui/peek/public/peek_controller.h"
+#include "brave/browser/ui/peek/public/peek_shields_panel_provider.h"
 #include "brave/browser/ui/views/peek/peek_contents.h"
 #include "brave/browser/ui/views/peek/peek_view.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
@@ -42,8 +43,9 @@ class PeekControllerImpl : public PeekController,
   views::Widget* widget_for_testing() { return widget_.get(); }
 
   // PeekController:
+  void SetShieldsPanelProvider(
+      std::unique_ptr<PeekShieldsPanelProvider> provider) override;
   void Open(const content::OpenURLParams& params) override;
-  void OpenWebContents(std::unique_ptr<content::WebContents> contents) override;
   void OpenAsTab() override;
   void Close() override;
   bool IsShowing() const override;
@@ -83,7 +85,9 @@ class PeekControllerImpl : public PeekController,
 
   void OnWidgetCloseRequested(views::Widget::ClosedReason reason);
 
-  // `contents_` must outlive `widget_`, which shows it.
+  // `contents_` must outlive `widget_`, which shows it, and the provider is
+  // used by the widget's views.
+  std::unique_ptr<PeekShieldsPanelProvider> shields_panel_provider_;
   std::unique_ptr<PeekContents> contents_;
   std::unique_ptr<views::Widget> widget_;
   base::ScopedObservation<views::View, views::ViewObserver>

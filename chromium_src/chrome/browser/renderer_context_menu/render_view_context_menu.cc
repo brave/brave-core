@@ -27,8 +27,6 @@
 #include "brave/browser/ui/brave_pages.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/browser_dialogs.h"
-#include "brave/browser/ui/peek/peek_utils.h"
-#include "brave/browser/ui/peek/public/peek_controller.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/email_aliases/buildflags/buildflags.h"
@@ -85,6 +83,13 @@
 #include "brave/browser/ui/email_aliases/email_aliases_controller.h"
 #include "brave/components/email_aliases/features.h"
 #endif
+
+// Implemented in //brave/browser/ui/peek:context_menu.
+namespace peek {
+bool CanOpenLinkInPeek(BrowserWindowInterface* browser, const GURL& url);
+void OpenLinkInPeek(BrowserWindowInterface* browser,
+                    const content::OpenURLParams& params);
+}  // namespace peek
 
 namespace {
 
@@ -394,8 +399,7 @@ bool RenderViewContextMenu::IsCommandIdEnabled(int id) const {
     case IDC_ADBLOCK_CONTEXT_BLOCK_ELEMENTS:
       return true;
     case IDC_CONTENT_CONTEXT_OPENLINKPEEK:
-      return peek::IsPeekableURL(params_.link_url) &&
-             PeekController::From(GetBrowser());
+      return peek::CanOpenLinkInPeek(GetBrowser(), params_.link_url);
     case IDC_OPEN_IN_CONTAINER:
       return true;
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
@@ -426,13 +430,14 @@ void RenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
       brave::ForcePasteInWebContents(source_web_contents_);
     }; break;
     case IDC_CONTENT_CONTEXT_OPENLINKPEEK:
-      if (auto* peek_controller = PeekController::From(GetBrowser())) {
-        peek_controller->Open(GetOpenURLParamsWithExtraHeaders(
-            params_.link_url, params_.frame_url, params_.frame_origin,
-            WindowOpenDisposition::NEW_FOREGROUND_TAB, ui::PAGE_TRANSITION_LINK,
-            /*extra_headers=*/std::string(),
-            /*started_from_context_menu=*/true));
-      }
+      peek::OpenLinkInPeek(
+          GetBrowser(),
+          GetOpenURLParamsWithExtraHeaders(
+              params_.link_url, params_.frame_url, params_.frame_origin,
+              WindowOpenDisposition::NEW_FOREGROUND_TAB,
+              ui::PAGE_TRANSITION_LINK,
+              /*extra_headers=*/std::string(),
+              /*started_from_context_menu=*/true));
       break;
 #if BUILDFLAG(ENABLE_TOR)
     case IDC_CONTENT_CONTEXT_OPENLINKTOR:
@@ -864,8 +869,7 @@ void RenderViewContextMenu::InitMenu() {
   }
 
   if (content_type_->SupportsGroup(ContextMenuContentType::ITEM_GROUP_LINK) &&
-      peek::IsPeekableURL(params_.link_url) &&
-      PeekController::From(GetBrowser())) {
+      peek::CanOpenLinkInPeek(GetBrowser(), params_.link_url)) {
     index = menu_model_.GetIndexOfCommandId(IDC_CONTENT_CONTEXT_OPENLINKNEWTAB);
     if (index.has_value()) {
       menu_model_.InsertItemWithStringIdAt(index.value() + 1,
