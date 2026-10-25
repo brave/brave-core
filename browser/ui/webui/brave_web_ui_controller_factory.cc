@@ -122,9 +122,7 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
     // For private profiles the webui handling kChromeUINewTabHost is configured
     // with RegisterChromeWebUIConfigs, so we should not get called here with a
     // private profile.
-    DCHECK(!profile->IsIncognitoProfile() && !profile->IsTor() &&
-           !profile->IsGuestSession() &&
-           !profile->IsEnterpriseIsolatedModeProfile());
+    DCHECK(!profile->IsOffTheRecord() && !profile->IsGuestSession());
     // We will need to follow up on transitioning BraveNewTabUI to using
     // WebUIConfig. Currently, we can't add both BravePrivateNewTabUI and
     // BraveNewTabUI configs in RegisterChromeWebUIConfigs because they use the
