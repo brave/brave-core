@@ -18,6 +18,7 @@ import org.chromium.components.browser_ui.settings.search.BaseSearchIndexProvide
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
 /**
@@ -32,7 +33,6 @@ public class BraveLicensePreferences extends BravePreferenceFragment {
     private final SettableMonotonicObservableSupplier<String> mPageTitle =
             ObservableSuppliers.createMonotonic();
 
-    @SuppressWarnings("ScannerUseDelimiter")
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String s) {
         // These strings are not used in Brave, but we get them from automated string translation
@@ -48,10 +48,10 @@ public class BraveLicensePreferences extends BravePreferenceFragment {
                 (BraveLicensePreference) findPreference(PREF_BRAVE_LICENSE_TEXT);
         try {
             InputStream in = getActivity().getAssets().open(ASSET_BRAVE_LICENSE);
-            Scanner scanner = new Scanner(in).useDelimiter("\\A");
-            String summary = scanner.hasNext() ? scanner.next() : "";
-            in.close();
-            licenseText.setSummary(BraveRewardsHelper.spannedFromHtmlString(summary));
+            try (Scanner scanner = new Scanner(in, StandardCharsets.UTF_8).useDelimiter("\\A")) {
+                String summary = scanner.hasNext() ? scanner.next() : "";
+                licenseText.setSummary(BraveRewardsHelper.spannedFromHtmlString(summary));
+            }
         } catch (IOException e) {
             Log.e(TAG, "Could not load license text: " + e);
         }
