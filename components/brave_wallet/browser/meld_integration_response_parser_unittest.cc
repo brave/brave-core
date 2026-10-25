@@ -368,7 +368,7 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_CryptoCurrencies) {
 }
 
 TEST(MeldIntegrationResponseParserUnitTest, Parse_CryptoCurrencies_Chains) {
-  // `ASSETHUB` is gated behind the Polkadot feature, whose default differs per
+  // `DOT` is gated behind the Polkadot feature, whose default differs per
   // platform, so pin it here.
   base::test::ScopedFeatureList feature_list;
   feature_list.InitAndEnableFeature(features::kBraveWalletPolkadotFeature);
@@ -381,8 +381,10 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_CryptoCurrencies_Chains) {
   {"currencyCode": "ZEC", "chainCode": "ZEC"},
   {"currencyCode": "SOL", "chainCode": "SOLANA", "chainId": "101"},
   {"currencyCode": "ADA", "chainCode": "ADA"},
-  {"currencyCode": "DOT", "chainCode": "ASSETHUB", "chainId": "0"},
+  {"currencyCode": "DOT", "chainCode": "DOT"},
+  {"currencyCode": "USDT_DOT", "chainCode": "DOT"},
   {"currencyCode": "ETH", "chainCode": "ETH", "chainId": "1"},
+  {"currencyCode": "USDC_BASE", "chainCode": "BASE", "chainId": "8453"},
   {"currencyCode": "AURORA", "chainCode": "AURORA", "chainId": "1313161554"},
   {"currencyCode": "POL", "chainCode": "POLYGON"},
   {"currencyCode": "USDT_ARB", "chainCode": "ARBITRUM", "chainId": "1"},
@@ -412,7 +414,11 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_CryptoCurrencies_Chains) {
           std::tuple("ADA", mojom::CoinType::ADA, mojom::kCardanoMainnet),
           std::tuple("DOT", mojom::CoinType::DOT,
                      mojom::kPolkadotMainnetAssetHub),
+          std::tuple("USDT_DOT", mojom::CoinType::DOT,
+                     mojom::kPolkadotMainnetAssetHub),
           std::tuple("ETH", mojom::CoinType::ETH, mojom::kMainnetChainId),
+          std::tuple("USDC_BASE", mojom::CoinType::ETH,
+                     mojom::kBaseMainnetChainId),
           std::tuple("AURORA", mojom::CoinType::ETH,
                      mojom::kAuroraMainnetChainId),
           std::tuple("POL", mojom::CoinType::ETH,
@@ -425,7 +431,7 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_CryptoCurrencies_Polkadot) {
     {
       "currencyCode": "DOT",
       "name": "Polkadot",
-      "chainCode": "ASSETHUB",
+      "chainCode": "DOT",
       "chainId": "0",
       "symbol": "https://images-currency.meld.io/crypto/DOT/symbol.png"
     }
