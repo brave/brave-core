@@ -44,6 +44,7 @@
 #include "ui/views/controls/button/image_button.h"
 #include "ui/views/test/button_test_api.h"
 #include "ui/views/test/views_test_utils.h"
+#include "ui/views/view_utils.h"
 #include "ui/views/widget/widget.h"
 #include "url/gurl.h"
 
@@ -74,24 +75,6 @@ class PeekBrowserTest : public InProcessBrowserTest {
     return static_cast<PeekControllerImpl*>(PeekController::From(browser()));
   }
 
-  // ExecJs supplies a user gesture, so this follows the path of a real click.
-  void ClickLinkTo(content::WebContents* contents,
-                   const GURL& url,
-                   bool target_blank = false) {
-    constexpr char kScript[] = R"(
-      const a = document.createElement('a');
-      a.href = $1;
-      if ($2) {
-        a.target = '_blank';
-      }
-      a.textContent = 'link';
-      document.body.appendChild(a);
-      a.click();
-    )";
-    ASSERT_TRUE(content::ExecJs(
-        contents, content::JsReplace(kScript, url, target_blank)));
-  }
-
   // Opens `url` in Peek and waits for it to load.
   void OpenPeek(const GURL& url) {
     content::TestNavigationObserver observer(url);
@@ -108,74 +91,8 @@ class PeekBrowserTest : public InProcessBrowserTest {
         base::test::RunUntil([&] { return !controller()->IsShowing(); }));
   }
 
-  void PinActiveTab() {
-    tab_strip_model()->SetTabPinned(tab_strip_model()->active_index(), true);
-  }
-
   base::test::ScopedFeatureList scoped_features_;
 };
-
-IN_PROC_BROWSER_TEST_F(PeekBrowserTest, PinnedTabCrossSiteLinkOpensPeek) {
-  const GURL source_url = GetURL("a.com", "/title1.html");
-  const GURL target_url = GetURL("b.com", "/title2.html");
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), source_url));
-  PinActiveTab();
-  const int tab_count = tab_strip_model()->count();
-
-  content::TestNavigationObserver observer(target_url);
-  observer.StartWatchingNewWebContents();
-  ClickLinkTo(active_contents(), target_url);
-  observer.Wait();
-
-  ASSERT_TRUE(controller()->IsShowing());
-  EXPECT_EQ(target_url, controller()->GetWebContents()->GetLastCommittedURL());
-  EXPECT_EQ(source_url, active_contents()->GetLastCommittedURL());
-  EXPECT_EQ(tab_count, tab_strip_model()->count());
-}
-
-IN_PROC_BROWSER_TEST_F(PeekBrowserTest, PinnedTabTargetBlankLinkOpensPeek) {
-  const GURL target_url = GetURL("b.com", "/title2.html");
-  ASSERT_TRUE(
-      ui_test_utils::NavigateToURL(browser(), GetURL("a.com", "/title1.html")));
-  PinActiveTab();
-  const int tab_count = tab_strip_model()->count();
-
-  content::TestNavigationObserver observer(target_url);
-  observer.StartWatchingNewWebContents();
-  ClickLinkTo(active_contents(), target_url, /*target_blank=*/true);
-  observer.Wait();
-
-  ASSERT_TRUE(controller()->IsShowing());
-  EXPECT_EQ(target_url, controller()->GetWebContents()->GetLastCommittedURL());
-  EXPECT_EQ(tab_count, tab_strip_model()->count());
-}
-
-IN_PROC_BROWSER_TEST_F(PeekBrowserTest, PinnedTabSameSiteLinkNavigates) {
-  const GURL target_url = GetURL("sub.a.com", "/title2.html");
-  ASSERT_TRUE(
-      ui_test_utils::NavigateToURL(browser(), GetURL("a.com", "/title1.html")));
-  PinActiveTab();
-
-  content::TestNavigationObserver observer(active_contents());
-  ClickLinkTo(active_contents(), target_url);
-  observer.Wait();
-
-  EXPECT_EQ(target_url, active_contents()->GetLastCommittedURL());
-  EXPECT_FALSE(controller()->IsShowing());
-}
-
-IN_PROC_BROWSER_TEST_F(PeekBrowserTest, UnpinnedTabCrossSiteLinkNavigates) {
-  const GURL target_url = GetURL("b.com", "/title2.html");
-  ASSERT_TRUE(
-      ui_test_utils::NavigateToURL(browser(), GetURL("a.com", "/title1.html")));
-
-  content::TestNavigationObserver observer(active_contents());
-  ClickLinkTo(active_contents(), target_url);
-  observer.Wait();
-
-  EXPECT_EQ(target_url, active_contents()->GetLastCommittedURL());
-  EXPECT_FALSE(controller()->IsShowing());
-}
 
 IN_PROC_BROWSER_TEST_F(PeekBrowserTest, ShiftClickOpensPeek) {
   const GURL target_url = GetURL("a.com", "/title2.html");
@@ -306,10 +223,11 @@ IN_PROC_BROWSER_TEST_F(PeekBrowserTest, SiteInfoButtonShowsPageInfoForPeek) {
       controller()->peek_view_for_testing()->site_info_button_for_testing())
       .NotifyDefaultMouseClick();
 
-  EXPECT_EQ(PageInfoBubbleViewBase::BUBBLE_PAGE_INFO,
+  ASSERT_EQ(PageInfoBubbleViewBase::BUBBLE_PAGE_INFO,
             PageInfoBubbleViewBase::GetShownBubbleType());
-  auto* bubble = static_cast<PageInfoBubbleViewBase*>(
+  auto* bubble = views::AsViewClass<PageInfoBubbleViewBase>(
       PageInfoBubbleViewBase::GetPageInfoBubbleForTesting());
+  ASSERT_TRUE(bubble);
   EXPECT_EQ(controller()->GetWebContents(), bubble->web_contents());
 }
 
@@ -367,16 +285,16 @@ class PeekDisabledBrowserTest : public InProcessBrowserTest {
   base::test::ScopedFeatureList scoped_features_;
 };
 
-IN_PROC_BROWSER_TEST_F(PeekDisabledBrowserTest, PinnedTabLinkNavigates) {
+IN_PROC_BROWSER_TEST_F(PeekDisabledBrowserTest,
+                       LinkNavigatesAndHasNoPeekMenuItem) {
   EXPECT_FALSE(PeekController::From(browser()));
 
   const GURL page_url = embedded_test_server()->GetURL("a.com", "/title1.html");
   const GURL target_url =
       embedded_test_server()->GetURL("b.com", "/title2.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), page_url));
-  auto* tab_strip_model = browser()->tab_strip_model();
-  tab_strip_model->SetTabPinned(0, true);
-  content::WebContents* contents = tab_strip_model->GetActiveWebContents();
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
 
   content::TestNavigationObserver observer(contents);
   ASSERT_TRUE(content::ExecJs(contents, content::JsReplace(R"(

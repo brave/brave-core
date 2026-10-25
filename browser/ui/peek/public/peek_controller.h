@@ -11,6 +11,7 @@
 #include "ui/base/unowned_user_data/scoped_unowned_user_data.h"
 
 class BrowserWindowInterface;
+class PeekShieldsPanelProvider;
 
 namespace content {
 struct OpenURLParams;
@@ -32,13 +33,13 @@ class PeekController {
   PeekController& operator=(const PeekController&) = delete;
   virtual ~PeekController();
 
+  // Sets what the Shields button of the Peek card shows. Must be called before
+  // the first `Open()`.
+  virtual void SetShieldsPanelProvider(
+      std::unique_ptr<PeekShieldsPanelProvider> provider) = 0;
+
   // Loads `params.url` in a new Peek. The disposition in `params` is ignored.
   virtual void Open(const content::OpenURLParams& params) = 0;
-
-  // Shows `contents` in a new Peek. Used for contents the renderer already
-  // created, e.g. from a target="_blank" link.
-  virtual void OpenWebContents(
-      std::unique_ptr<content::WebContents> contents) = 0;
 
   // Moves the Peek contents into a tab right after the active tab.
   virtual void OpenAsTab() = 0;
