@@ -23,32 +23,6 @@ TEST(PeekUtilsTest, IsPeekableURL) {
   EXPECT_FALSE(IsPeekableURL(GURL()));
 }
 
-TEST(PeekUtilsTest, IsCrossSite) {
-  EXPECT_FALSE(IsCrossSite(GURL("https://a.example.com/"),
-                           GURL("https://b.example.com/path")));
-  EXPECT_FALSE(
-      IsCrossSite(GURL("https://example.com/"), GURL("http://example.com/")));
-  EXPECT_TRUE(
-      IsCrossSite(GURL("https://example.com/"), GURL("https://example.org/")));
-  // Private registries count as separate sites.
-  EXPECT_TRUE(
-      IsCrossSite(GURL("https://a.github.io/"), GURL("https://b.github.io/")));
-}
-
-TEST(PeekUtilsTest, ShouldPeekFromPinnedTab) {
-  const GURL source("https://mail.example.com/inbox");
-  const GURL cross_site("https://news.example.org/story");
-  const GURL same_site("https://calendar.example.com/");
-
-  EXPECT_TRUE(ShouldPeekFromPinnedTab(true, source, cross_site));
-  EXPECT_FALSE(ShouldPeekFromPinnedTab(false, source, cross_site));
-  EXPECT_FALSE(ShouldPeekFromPinnedTab(true, source, same_site));
-  EXPECT_FALSE(
-      ShouldPeekFromPinnedTab(true, GURL("chrome://newtab/"), cross_site));
-  EXPECT_FALSE(
-      ShouldPeekFromPinnedTab(true, source, GURL("mailto:a@example.org")));
-}
-
 TEST(PeekUtilsTest, IsShiftClickOpen) {
   const GURL url("https://example.org/");
   auto make_params = [&](WindowOpenDisposition disposition,

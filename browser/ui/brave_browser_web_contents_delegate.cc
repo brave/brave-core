@@ -74,20 +74,6 @@ content::WebContents* BraveBrowserWebContentsDelegate::AddNewContents(
     const blink::mojom::WindowFeatures& window_features,
     bool user_gesture,
     bool* was_blocked) {
-  // target="_blank" links from pinned tabs to other sites open in Peek.
-  if (disposition == WindowOpenDisposition::NEW_FOREGROUND_TAB && source &&
-      user_gesture && new_contents) {
-    auto* tab = tabs::TabInterface::MaybeGetFromContents(source);
-    auto* peek_controller = PeekController::From(&*browser_);
-    if (tab && peek_controller &&
-        peek::ShouldPeekFromPinnedTab(
-            tab->IsPinned(), source->GetLastCommittedURL(), target_url)) {
-      content::WebContents* raw_contents = new_contents.get();
-      peek_controller->OpenWebContents(std::move(new_contents));
-      return raw_contents;
-    }
-  }
-
   // For NEW_FOREGROUND_TAB disposition (target="_blank" links) from a source
   // in the left pane of a linked split view, set the split tab ID on the new
   // contents so that SplitViewLinkNavigationThrottle can redirect it to the

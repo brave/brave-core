@@ -17,6 +17,7 @@
 
 class BrowserWindowInterface;
 class PeekShieldsButton;
+class PeekShieldsPanelProvider;
 class ViewShadow;
 
 namespace content {
@@ -46,7 +47,9 @@ class PeekView : public views::View, public views::AnimationDelegateViews {
     virtual ~Delegate() = default;
   };
 
-  PeekView(Delegate& delegate, BrowserWindowInterface& browser);
+  PeekView(Delegate& delegate,
+           BrowserWindowInterface& browser,
+           PeekShieldsPanelProvider& shields_panel_provider);
   PeekView(const PeekView&) = delete;
   PeekView& operator=(const PeekView&) = delete;
   ~PeekView() override;
@@ -75,6 +78,7 @@ class PeekView : public views::View, public views::AnimationDelegateViews {
   bool OnMousePressed(const ui::MouseEvent& event) override;
   bool AcceleratorPressed(const ui::Accelerator& accelerator) override;
   void OnPaintBackground(gfx::Canvas* canvas) override;
+  void OnThemeChanged() override;
 
   // views::AnimationDelegateViews:
   void AnimationProgressed(const gfx::Animation* animation) override;

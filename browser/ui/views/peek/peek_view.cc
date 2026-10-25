@@ -45,6 +45,7 @@
 #include "ui/gfx/geometry/rounded_corners_f.h"
 #include "ui/gfx/geometry/size.h"
 #include "ui/gfx/geometry/size_conversions.h"
+#include "ui/strings/grit/ui_strings.h"
 #include "ui/views/accessibility/view_accessibility.h"
 #include "ui/views/background.h"
 #include "ui/views/bubble/bubble_dialog_delegate_view.h"
@@ -72,11 +73,9 @@ constexpr float kCardInsetRatio = 0.075f;
 constexpr float kOpenInitialScale = 0.9f;
 constexpr base::TimeDelta kOpenDuration = base::Milliseconds(200);
 
-constexpr ViewShadow::ShadowParameters kCardShadow{
-    .offset_x = 0,
-    .offset_y = 4,
-    .blur_radius = 24,
-    .shadow_color = SkColorSetA(SK_ColorBLACK, 0.24 * 255)};
+constexpr int kCardShadowOffsetY = 4;
+constexpr int kCardShadowBlurRadius = 24;
+constexpr float kCardShadowOpacity = 0.24f;
 
 std::unique_ptr<views::ImageButton> CreateToolbarButton(
     views::Button::PressedCallback callback,
@@ -92,7 +91,9 @@ std::unique_ptr<views::ImageButton> CreateToolbarButton(
 
 }  // namespace
 
-PeekView::PeekView(Delegate& delegate, BrowserWindowInterface& browser)
+PeekView::PeekView(Delegate& delegate,
+                   BrowserWindowInterface& browser,
+                   PeekShieldsPanelProvider& shields_panel_provider)
     : AnimationDelegateViews(this), delegate_(delegate), browser_(browser) {
   open_animation_.SetSlideDuration(kOpenDuration);
   open_animation_.SetTweenType(gfx::Tween::EASE_OUT);
@@ -146,8 +147,8 @@ PeekView::PeekView(Delegate& delegate, BrowserWindowInterface& browser)
   auto* spacer = toolbar->AddChildView(std::make_unique<views::View>());
   toolbar->SetFlexForView(spacer, 1);
 
-  shields_button_ =
-      toolbar->AddChildView(std::make_unique<PeekShieldsButton>(browser));
+  shields_button_ = toolbar->AddChildView(
+      std::make_unique<PeekShieldsButton>(browser, shields_panel_provider));
 
   open_as_tab_button_ = toolbar->AddChildView(CreateToolbarButton(
       base::BindRepeating(&Delegate::OnPeekViewOpenAsTabRequested,
@@ -156,17 +157,30 @@ PeekView::PeekView(Delegate& delegate, BrowserWindowInterface& browser)
   close_button_ = toolbar->AddChildView(CreateToolbarButton(
       base::BindRepeating(&Delegate::OnPeekViewCloseRequested,
                           base::Unretained(&delegate)),
-      kLeoCloseIcon, IDS_PEEK_CLOSE));
+      kLeoCloseIcon, IDS_APP_CLOSE));
 
   web_view_ = card_->AddChildView(
       std::make_unique<views::WebView>(browser.GetProfile()));
   card_layout->SetFlexForView(web_view_, 1);
-
-  card_shadow_ = std::make_unique<ViewShadow>(
-      card_, gfx::RoundedCornersF(kCardCornerRadius), kCardShadow);
 }
 
 PeekView::~PeekView() = default;
+
+void PeekView::OnThemeChanged() {
+  views::View::OnThemeChanged();
+
+  // `ViewShadow` takes its color at construction, so rebuild it.
+  card_shadow_.reset();
+  card_shadow_ = std::make_unique<ViewShadow>(
+      card_, gfx::RoundedCornersF(kCardCornerRadius),
+      ViewShadow::ShadowParameters{
+          .offset_x = 0,
+          .offset_y = kCardShadowOffsetY,
+          .blur_radius = kCardShadowBlurRadius,
+          .shadow_color = SkColorSetA(
+              GetColorProvider()->GetColor(nala::kColorSchemesShadow),
+              kCardShadowOpacity * SK_AlphaOPAQUE)});
+}
 
 void PeekView::SetWebContents(content::WebContents* contents) {
   shields_button_->SetWebContents(contents);

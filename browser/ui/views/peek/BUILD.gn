@@ -36,8 +36,8 @@ source_set("peek") {
 
   deps = [
     "//brave/app:brave_generated_resources_grit",
+    "//brave/browser/ui/views:view_shadow",
     "//brave/browser/ui/views/brave_actions",
-    "//brave/components/constants",
     "//brave/components/resources:strings",
     "//brave/components/vector_icons",
     "//brave/ui/color:nala_color_id",
@@ -64,6 +64,7 @@ source_set("peek") {
     "//ui/color",
     "//ui/events",
     "//ui/gfx",
+    "//ui/strings",
     "//ui/views/controls/webview",
   ]
 }
