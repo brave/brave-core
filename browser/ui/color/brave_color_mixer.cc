@@ -416,7 +416,6 @@ void AddBraveLightThemeColorMixer(ui::ColorProvider* provider,
       SkColorSetRGB(0xF0, 0xF2, 0xFF)};
   mixer[kColorSidebarAddBubbleItemTextNormal] = {
       SkColorSetRGB(0x21, 0x25, 0x29)};
-  mixer[kColorSidebarArrowBackgroundHovered] = {kColorToolbarInkDropHover};
   mixer[kColorSidebarSeparator] = {SkColorSetRGB(0xE6, 0xE8, 0xF5)};
 
   mixer[kColorSidebarButtonBase] = {kColorToolbarButtonIcon};
@@ -489,7 +488,6 @@ void AddBraveDarkThemeColorMixer(ui::ColorProvider* provider,
       SkColorSetRGB(0xF0, 0xF0, 0xFF)};
   mixer[kColorSidebarAddBubbleItemTextNormal] = {
       SkColorSetRGB(0xF0, 0xF0, 0xFF)};
-  mixer[kColorSidebarArrowBackgroundHovered] = {kColorToolbarInkDropHover};
   mixer[kColorSidebarSeparator] = {SkColorSetRGB(0x5E, 0x61, 0x75)};
 
   mixer[kColorSidebarButtonBase] = {kColorToolbarButtonIcon};
