@@ -16,6 +16,7 @@ import { cancelHardwareOperation } from '../../common/async/hardware'
 import { startAppListening } from '../../common/async/listenerMiddleware'
 import type { State, Dispatch } from '../../common/async/types'
 
+import { walletApi } from '../../common/slices/api.slice'
 import getWalletPanelApiProxy from '../wallet_panel_api_proxy'
 import { storeCurrentAndPreviousPanel } from '../../utils/local-storage-utils'
 
@@ -27,8 +28,10 @@ function getPanelState(listenerApi: ListenerApi): PanelState {
 
 async function refreshWalletInfo(listenerApi: ListenerApi) {
   const proxy = getWalletPanelApiProxy()
-  const { walletInfo } = await proxy.walletHandler.getWalletInfo()
-  const { allAccounts } = await proxy.keyringService.getAllAccounts()
+  const [{ walletInfo }, { allAccounts }] = await Promise.all([
+    proxy.walletHandler.getWalletInfo(),
+    proxy.keyringService.getAllAccounts(),
+  ])
   listenerApi.dispatch(WalletActions.initialized({ walletInfo, allAccounts }))
   listenerApi.dispatch(WalletActions.refreshAll())
 }
@@ -84,9 +87,24 @@ startAppListening({
     if (!action.payload) {
       return
     }
+    // Show the (possibly cached) panel right away, then refresh.
+    getWalletPanelApiProxy().panelHandler.showUI()
+    // Pending dapp requests aren't pushed by observers, so refetch them in
+    // case they arrived while the panel was hidden.
+    listenerApi.dispatch(
+      walletApi.util.invalidateTags([
+        'PendingAddChainRequests',
+        'PendingSwitchChainRequests',
+        'PendingDecryptRequest',
+        'PendingEncryptRequest',
+        'PendingSignSolTransactionsRequests',
+        'PendingSignCardanoTransactionRequests',
+        'PendingSignMessageRequests',
+        'PendingSignMessageErrors',
+        'TokenSuggestionRequests',
+      ]),
+    )
     await refreshWalletInfo(listenerApi)
-    const apiProxy = getWalletPanelApiProxy()
-    apiProxy.panelHandler.showUI()
   },
 })
 
@@ -108,6 +126,7 @@ startAppListening({
     if (state.hasInitialized) {
       return
     }
+    listenerApi.dispatch(PanelActions.setHasInitialized())
     // Setup external events
     document.addEventListener('visibilitychange', () => {
       listenerApi.dispatch(

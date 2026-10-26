@@ -40,6 +40,9 @@ export const createPanelSlice = (initialState: PanelState = defaultState) => {
     name: 'panel',
     initialState,
     reducers: {
+      setHasInitialized(state) {
+        state.hasInitialized = true
+      },
       navigateTo(state, action: PayloadAction<PanelTypes>) {
         state.selectedPanel = action.payload
       },
