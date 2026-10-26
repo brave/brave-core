@@ -80,14 +80,8 @@ std::optional<SkColor> BraveBrowserAppMenuButton::GetHighlightColor() const {
 
 SkColor BraveBrowserAppMenuButton::GetForegroundColor(ButtonState state) const {
   std::optional<SkColor> color = GetColorForSeverity();
-  if (color.has_value()) {
-    return color.value();
-  }
-  // Match other toolbar buttons while the app menu is open.
-  if (IsActivated() && state != views::Button::STATE_DISABLED) {
-    return GetColorProvider()->GetColor(kColorToolbarButtonActivated);
-  }
-  return BrowserAppMenuButton::GetForegroundColor(state);
+  return color.has_value() ? color.value()
+                           : BrowserAppMenuButton::GetForegroundColor(state);
 }
 
 bool BraveBrowserAppMenuButton::ShouldPaintBorder() const {
@@ -110,10 +104,17 @@ void BraveBrowserAppMenuButton::UpdateLayoutInsets() {
 
 void BraveBrowserAppMenuButton::UpdateIcon() {
   if (!ShowBrandedIcon()) {
+    // Match other toolbar buttons while the app menu is open, unless a
+    // severity color is showing. The branded logo is never tinted.
+    const bool use_activated_color =
+        IsActivated() && !GetColorForSeverity().has_value();
     for (auto state : kButtonStates) {
+      const SkColor color =
+          use_activated_color && state != views::Button::STATE_DISABLED
+              ? GetColorProvider()->GetColor(kColorToolbarButtonActivated)
+              : GetForegroundColor(state);
       SetImageModel(state, ui::ImageModel::FromVectorIcon(
-                               kLeoBrowserMenuIcon, GetForegroundColor(state),
-                               GetIconSize()));
+                               kLeoBrowserMenuIcon, color, GetIconSize()));
     }
     return;
   }
