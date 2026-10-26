@@ -12,6 +12,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/browser/ui/views/brave_actions/brave_icon_with_badge_image_source.h"
+#include "brave/components/brave_origin/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/url_constants.h"
 #include "brave/components/constants/webui_url_constants.h"
@@ -23,16 +24,20 @@
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/bubble/webui_bubble_manager.h"
+#include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/common/url_constants.h"
 #include "extensions/common/constants.h"
+#include "third_party/skia/include/core/SkBitmap.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/models/image_model.h"
+#include "ui/base/resource/resource_bundle.h"
 #include "ui/color/color_provider.h"
 #include "ui/color/color_provider_manager.h"
 #include "ui/gfx/image/image_skia.h"
+#include "ui/gfx/image/image_skia_rep.h"
 #include "ui/gfx/paint_vector_icon.h"
 #include "ui/native_theme/native_theme.h"
 #include "ui/views/controls/button/label_button.h"
@@ -125,14 +130,27 @@ void BraveShieldsActionController::RemoveObserverFromWebContents(
 
 gfx::ImageSkia BraveShieldsActionController::GetIconImage(
     bool is_enabled) const {
-  // Tinted to match the other location bar icons.
+  const int icon_size = IconDimensionForLayout();
+#if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+  // In the Brave Origin standalone build the Shields icon is replaced with the
+  // Brave Origin face icon, tinted to match the other location bar icons.
   const ui::ColorProvider* color_provider =
       GetColorProviderForWebContents(tab_strip_model_->GetActiveWebContents());
   return gfx::CreateVectorIcon(
       is_enabled ? kLeoBraveIconOnlyFaceIcon
                  : kLeoBraveIconOnlyFaceDisabledIcon,
-      IconDimensionForLayout(),
-      color_provider->GetColor(kColorOmniboxResultsIcon));
+      icon_size, color_provider->GetColor(kColorOmniboxResultsIcon));
+#else
+  ui::ResourceBundle& rb = ui::ResourceBundle::GetSharedInstance();
+  gfx::ImageSkia image;
+  const SkBitmap bitmap =
+      rb.GetImageNamed(is_enabled ? IDR_BRAVE_SHIELDS_ICON_64
+                                  : IDR_BRAVE_SHIELDS_ICON_64_DISABLED)
+          .AsBitmap();
+  float scale = static_cast<float>(bitmap.width()) / icon_size;
+  image.AddRepresentation(gfx::ImageSkiaRep(bitmap, scale));
+  return image;
+#endif  // BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
 }
 
 std::unique_ptr<IconWithBadgeImageSource>
