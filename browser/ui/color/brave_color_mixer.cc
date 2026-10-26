@@ -410,7 +410,6 @@ void AddBraveLightThemeColorMixer(ui::ColorProvider* provider,
       nala::kColorButtonBackground};
   mixer[kColorSidebarAddBubbleItemTextHovered] = {nala::kColorSchemesOnPrimary};
   mixer[kColorSidebarAddBubbleItemTextNormal] = {nala::kColorTextPrimary};
-  mixer[kColorSidebarArrowBackgroundHovered] = {kColorToolbarInkDropHover};
   mixer[kColorSidebarSeparator] = {nala::kColorDividerSubtle};
 
   mixer[kColorSidebarButtonBase] = {kColorToolbarButtonIcon};
@@ -483,7 +482,6 @@ void AddBraveDarkThemeColorMixer(ui::ColorProvider* provider,
       nala::kColorButtonBackground};
   mixer[kColorSidebarAddBubbleItemTextHovered] = {nala::kColorSchemesOnPrimary};
   mixer[kColorSidebarAddBubbleItemTextNormal] = {nala::kColorTextPrimary};
-  mixer[kColorSidebarArrowBackgroundHovered] = {kColorToolbarInkDropHover};
   mixer[kColorSidebarSeparator] = {nala::kColorDividerSubtle};
 
   mixer[kColorSidebarButtonBase] = {kColorToolbarButtonIcon};

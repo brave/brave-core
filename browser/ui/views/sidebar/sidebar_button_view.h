@@ -13,8 +13,9 @@
 class SidebarButtonView : public views::LabelButton {
   METADATA_HEADER(SidebarButtonView, views::LabelButton)
  public:
-  // Value ought to follow TOOLBAR_BUTTON_HEIGHT in brave_layout_constants.cc
-  static constexpr int kSidebarButtonSize = 32;
+  // Matches the non-touch kToolbarButtonHeight in layout_constants.cc. The
+  // sidebar width is derived from this.
+  static constexpr int kSidebarButtonSize = 28;
   // Value ought to follow kDefaultIconSize in toolbar_button.h
   static constexpr int kDefaultIconSize = 20;
   // External, meaning favicons for bookmarked pages
