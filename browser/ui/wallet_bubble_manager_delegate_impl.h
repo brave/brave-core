@@ -30,6 +30,7 @@ class WalletBubbleManagerDelegateImpl : public WalletBubbleManagerDelegate {
       const WalletBubbleManagerDelegateImpl&) = delete;
   ~WalletBubbleManagerDelegateImpl() override;
 
+  bool IsReusableFor(const GURL& webui_url) override;
   void ShowBubble() override;
   void CloseBubble() override;
   bool IsShowingBubble() override;

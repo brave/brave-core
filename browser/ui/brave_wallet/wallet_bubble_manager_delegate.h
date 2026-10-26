@@ -34,6 +34,8 @@ class WalletBubbleManagerDelegate {
 
   virtual ~WalletBubbleManagerDelegate() = default;
 
+  // Whether this delegate can show `webui_url` in the tab's current window.
+  virtual bool IsReusableFor(const GURL& webui_url) = 0;
   virtual void ShowBubble() = 0;
   virtual void CloseBubble() = 0;
   virtual bool IsShowingBubble() = 0;
