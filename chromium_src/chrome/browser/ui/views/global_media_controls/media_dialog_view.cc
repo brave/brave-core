@@ -7,7 +7,6 @@
 
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/views/global_media_controls/media_item_ui_helper.h"
-#include "ui/views/layout/layout_provider.h"
 
 #define GetOriginalProfile(...)     \
   GetOriginalProfile(__VA_ARGS__)),\
@@ -16,12 +15,7 @@
 #define BuildDeviceSelector(...) \
   BuildDeviceSelector(__VA_ARGS__, profile_to_check_)
 
-// Use Brave's bubble radius instead of Emphasis::kHigh. See
-// ShapeContextTokensOverride::kHigh.
-#define Emphasis ShapeContextTokensOverride
-
 #include <chrome/browser/ui/views/global_media_controls/media_dialog_view.cc>
 
-#undef Emphasis
 #undef GetOriginalProfile
 #undef BuildDeviceSelector

@@ -15,10 +15,6 @@ enum class ShapeContextTokensOverride {
   kOmniboxExpandedRadius,
   kRoundedCornersBorderRadius,
   kRoundedCornersBorderRadiusAtWindowCorner,
-  // Bubble surfaces that read Emphasis::kHigh upstream. Their chromium_src
-  // overrides redefine `Emphasis` so they land here instead of on kHigh,
-  // which Brave keeps at 4 for Linux window corners.
-  kHigh,
 };
 
 }  // namespace views
