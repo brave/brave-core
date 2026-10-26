@@ -84,7 +84,7 @@ class SidebarItemsArrowView : public views::ImageButton {
                          gfx::Insets::VH(kInset, SidebarButtonView::kMargin),
                          ChromeLayoutProvider::Get()->GetCornerRadiusMetric(
                              views::Emphasis::kMaximum, {})));
-    // Draw above the opaque background painted below.
+    // Draw over the opaque background painted in OnPaintBackground().
     views::InkDrop::Get(this)->SetLayerRegion(views::LayerRegion::kAbove);
   }
 
