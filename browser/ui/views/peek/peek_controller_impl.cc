@@ -10,12 +10,18 @@
 #include "base/functional/bind.h"
 #include "base/location.h"
 #include "base/task/single_thread_task_runner.h"
+#include "brave/browser/ui/peek/peek_utils.h"
+#include "brave/browser/ui/sidebar/sidebar_controller.h"
+#include "brave/browser/ui/sidebar/sidebar_utils.h"
+#include "brave/browser/ui/sidebar/sidebar_web_panel_controller.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/tabs/tab_enums.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/frame_tree_node_id.h"
 #include "content/public/browser/navigation_controller.h"
+#include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/page_navigator.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/gfx/geometry/rect.h"
@@ -36,16 +42,45 @@ void PeekControllerImpl::SetShieldsPanelProvider(
   shields_panel_provider_ = std::move(provider);
 }
 
-void PeekControllerImpl::Open(const content::OpenURLParams& params) {
+bool PeekControllerImpl::CanOpenFrom(content::WebContents* source) {
+  // This also rules out the Peek contents itself, so Peeks don't nest.
+  tabs::TabInterface* tab = tabs::TabInterface::MaybeGetFromContents(source);
+  if (!tab || tab->GetBrowserWindowInterface() != &*browser_) {
+    return false;
+  }
+
+  // Sidebar web panels are tabs too, but shown outside the tab's area.
+  if (auto* sidebar_controller = sidebar::SidebarController::From(&*browser_);
+      sidebar_controller && sidebar::IsWebPanelFeatureEnabled()) {
+    if (auto* web_panel_controller =
+            sidebar_controller->GetWebPanelController();
+        web_panel_controller &&
+        web_panel_controller->panel_contents() == source) {
+      return false;
+    }
+  }
+  return true;
+}
+
+bool PeekControllerImpl::Open(content::WebContents& source,
+                              const content::OpenURLParams& params) {
+  if (!CanOpenFrom(&source) || !peek::CanOpenInPeek(params)) {
+    return false;
+  }
+
   std::unique_ptr<content::WebContents> contents =
-      PeekContents::CreateWebContents(browser_->GetProfile());
+      PeekContents::CreateWebContents(browser_->GetProfile(), params.url,
+                                      source);
   content::WebContents* raw_contents = contents.get();
   Show(std::move(contents));
 
+  // Keeps the initiator origin, so SameSite cookies and fetch metadata treat
+  // this like a link click rather than a browser-initiated navigation.
   content::NavigationController::LoadURLParams load_params(params);
   // The source frame lives in another WebContents.
   load_params.frame_tree_node_id = content::FrameTreeNodeId();
   raw_contents->GetController().LoadURLWithParams(load_params);
+  return true;
 }
 
 void PeekControllerImpl::OpenAsTab() {
@@ -55,12 +90,15 @@ void PeekControllerImpl::OpenAsTab() {
 
   std::unique_ptr<content::WebContents> contents =
       contents_->ReleaseWebContents();
+  content::WebContents* raw_contents = contents.get();
+  SetShowingContents(raw_contents, false);
   Close();
 
   TabStripModel* tab_strip_model = browser_->GetTabStripModel();
   tab_strip_model->InsertWebContentsAt(
       tab_strip_model->active_index() + 1, std::move(contents),
       AddTabTypes::ADD_ACTIVE | AddTabTypes::ADD_INHERIT_OPENER);
+  PeekContents::OnMovedToTab(*raw_contents);
 }
 
 void PeekControllerImpl::Close() {
@@ -90,6 +128,14 @@ void PeekControllerImpl::OnPeekNavigationStateChanged() {
   if (peek_view_) {
     peek_view_->UpdateToolbar();
   }
+}
+
+void PeekControllerImpl::OnPeekMoveToTabRequired() {
+  OpenAsTab();
+}
+
+void PeekControllerImpl::OnPeekMoveToTabOrCloseRequested() {
+  PostTask(&PeekControllerImpl::OpenAsTabOrClose);
 }
 
 void PeekControllerImpl::OnPeekViewCloseRequested() {
@@ -125,6 +171,7 @@ void PeekControllerImpl::OnWidgetBoundsChanged(views::Widget* widget,
 void PeekControllerImpl::Show(std::unique_ptr<content::WebContents> contents) {
   Close();
 
+  SetShowingContents(contents.get(), true);
   contents_ =
       std::make_unique<PeekContents>(*browser_, *this, std::move(contents));
   CreateWidget();
@@ -132,6 +179,21 @@ void PeekControllerImpl::Show(std::unique_ptr<content::WebContents> contents) {
   peek_view_->AnimateOpen();
   widget_->Show();
   peek_view_->FocusContents();
+}
+
+void PeekControllerImpl::OpenAsTabOrClose() {
+  content::WebContents* contents = GetWebContents();
+  if (!contents) {
+    return;
+  }
+  // E.g. a link that's a download: there's no page to keep.
+  content::NavigationEntry* entry =
+      contents->GetController().GetLastCommittedEntry();
+  if (!entry || entry->IsInitialEntry()) {
+    Close();
+    return;
+  }
+  OpenAsTab();
 }
 
 void PeekControllerImpl::CreateWidget() {
@@ -168,6 +230,8 @@ void PeekControllerImpl::UpdateWidgetBounds() {
 }
 
 gfx::Rect PeekControllerImpl::GetTargetBoundsInScreen() const {
+  // The contents container starts right below the toolbar (or the bookmarks
+  // bar), so the card hangs from the browser UI.
   return browser_view_->contents_container()->GetBoundsInScreen();
 }
 

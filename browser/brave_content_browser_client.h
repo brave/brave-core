@@ -184,6 +184,8 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
       content::BrowserContext* browser_context);
   void CreateThrottlesForNavigation(
       content::NavigationThrottleRegistry& registry) override;
+  void CreateThrottlesForCommitWithoutUrlLoader(
+      content::NavigationThrottleRegistry& registry) override;
   std::vector<url::Origin> GetOriginsRequiringDedicatedProcess() override;
   // We use this for the Google Sign-In feature
   bool CanCreateWindow(content::RenderFrameHost* opener,
