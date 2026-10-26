@@ -57,12 +57,12 @@
 #include "ui/views/controls/webview/webview.h"
 #include "ui/views/layout/box_layout.h"
 #include "ui/views/layout/box_layout_view.h"
+#include "ui/views/layout/layout_provider.h"
 #include "ui/views/style/typography.h"
 #include "ui/views/widget/widget.h"
 
 namespace {
 
-constexpr float kCardCornerRadius = 12.f;
 constexpr int kToolbarHeight = 40;
 constexpr int kToolbarHorizontalPadding = 12;
 constexpr int kToolbarSpacing = 8;
@@ -81,6 +81,18 @@ constexpr int kCardShadowBlurRadius = 24;
 constexpr float kCardShadowOpacity = 0.24f;
 
 constexpr int kDividerThickness = 1;
+
+// The card sits inside the contents area, away from the window corners, so it
+// uses the same radius as the browser's rounded contents area.
+float GetCardCornerRadius() {
+  return views::LayoutProvider::Get()->GetCornerRadiusMetric(
+      views::ShapeContextTokensOverride::kRoundedCornersBorderRadius);
+}
+
+gfx::RoundedCornersF GetCardCorners() {
+  const float radius = GetCardCornerRadius();
+  return gfx::RoundedCornersF(0, 0, radius, radius);
+}
 
 std::unique_ptr<views::ImageButton> CreateToolbarButton(
     views::Button::PressedCallback callback,
@@ -112,7 +124,7 @@ PeekView::PeekView(Delegate& delegate,
   card_ = AddChildView(std::make_unique<views::View>());
   card_->SetBackground(views::CreateRoundedRectBackground(
       nala::kColorContainerBackground, /*top_radius=*/0.f,
-      /*bottom_radius=*/kCardCornerRadius));
+      /*bottom_radius=*/GetCardCornerRadius()));
   auto* card_layout =
       card_->SetLayoutManager(std::make_unique<views::BoxLayout>(
           views::BoxLayout::Orientation::kVertical));
@@ -187,7 +199,7 @@ void PeekView::OnThemeChanged() {
   // `ViewShadow` takes its color at construction, so rebuild it.
   card_shadow_.reset();
   card_shadow_ = std::make_unique<ViewShadow>(
-      card_, gfx::RoundedCornersF(0, 0, kCardCornerRadius, kCardCornerRadius),
+      card_, GetCardCorners(),
       ViewShadow::ShadowParameters{
           .offset_x = 0,
           .offset_y = kCardShadowOffsetY,
@@ -201,8 +213,7 @@ void PeekView::SetWebContents(content::WebContents* contents) {
   shields_button_->SetWebContents(contents);
   web_view_->SetWebContents(contents);
   if (contents) {
-    web_view_->holder()->SetNativeViewCornerRadii(
-        gfx::RoundedCornersF(0, 0, kCardCornerRadius, kCardCornerRadius));
+    web_view_->holder()->SetNativeViewCornerRadii(GetCardCorners());
   }
   UpdateToolbar();
 }
