@@ -185,9 +185,10 @@ void WalletButton::OnNotificationUpdate(bool show_suggest_badge,
   UpdateImageAndText();
 }
 
-void WalletButton::InkDropRippleAnimationEnded(views::InkDropState state) {
-  const bool activated = state == views::InkDropState::ACTIVATED;
-  UpdateImageAndText(activated);
+void WalletButton::OnInkDropStateChanged(views::InkDropState state) {
+  ToolbarButton::OnInkDropStateChanged(state);
+  // The icon image is built here, so rebuild it for the activated color.
+  UpdateImageAndText();
 }
 
 void WalletButton::OnThemeChanged() {
@@ -206,7 +207,7 @@ std::string WalletButton::GetBadgeText() {
   return "";
 }
 
-void WalletButton::UpdateImageAndText(bool activated) {
+void WalletButton::UpdateImageAndText() {
   views::HighlightPathGenerator::Install(
       this, std::make_unique<BraveWalletButtonHighlightPathGenerator>(
                 (counter_ > 0)));
@@ -217,8 +218,8 @@ void WalletButton::UpdateImageAndText(bool activated) {
   }
 
   ui::ColorId color_id =
-      activated ? static_cast<ui::ColorId>(kColorToolbarButtonActivated)
-                : static_cast<ui::ColorId>(kColorToolbarButtonIcon);
+      IsActivated() ? static_cast<ui::ColorId>(kColorToolbarButtonActivated)
+                    : static_cast<ui::ColorId>(kColorToolbarButtonIcon);
 
   if (counter_ == 0) {
     SetImageModel(views::Button::STATE_NORMAL,
