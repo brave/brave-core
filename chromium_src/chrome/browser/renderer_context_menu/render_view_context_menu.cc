@@ -86,8 +86,12 @@
 
 // Implemented in //brave/browser/ui/peek:context_menu.
 namespace peek {
-bool CanOpenLinkInPeek(BrowserWindowInterface* browser, const GURL& url);
+bool CanOpenLinkInPeek(BrowserWindowInterface* browser,
+                       content::WebContents* source,
+                       const GURL& url,
+                       const url::Origin& frame_origin);
 void OpenLinkInPeek(BrowserWindowInterface* browser,
+                    content::WebContents* source,
                     const content::OpenURLParams& params);
 }  // namespace peek
 
@@ -399,7 +403,8 @@ bool RenderViewContextMenu::IsCommandIdEnabled(int id) const {
     case IDC_ADBLOCK_CONTEXT_BLOCK_ELEMENTS:
       return true;
     case IDC_CONTENT_CONTEXT_OPENLINKPEEK:
-      return peek::CanOpenLinkInPeek(GetBrowser(), params_.link_url);
+      return peek::CanOpenLinkInPeek(GetBrowser(), embedder_web_contents_,
+                                     params_.link_url, params_.frame_origin);
     case IDC_OPEN_IN_CONTAINER:
       return true;
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
@@ -431,7 +436,7 @@ void RenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
     }; break;
     case IDC_CONTENT_CONTEXT_OPENLINKPEEK:
       peek::OpenLinkInPeek(
-          GetBrowser(),
+          GetBrowser(), embedder_web_contents_,
           GetOpenURLParamsWithExtraHeaders(
               params_.link_url, params_.frame_url, params_.frame_origin,
               WindowOpenDisposition::NEW_FOREGROUND_TAB,
@@ -869,7 +874,8 @@ void RenderViewContextMenu::InitMenu() {
   }
 
   if (content_type_->SupportsGroup(ContextMenuContentType::ITEM_GROUP_LINK) &&
-      peek::CanOpenLinkInPeek(GetBrowser(), params_.link_url)) {
+      peek::CanOpenLinkInPeek(GetBrowser(), embedder_web_contents_,
+                              params_.link_url, params_.frame_origin)) {
     index = menu_model_.GetIndexOfCommandId(IDC_CONTENT_CONTEXT_OPENLINKNEWTAB);
     if (index.has_value()) {
       menu_model_.InsertItemWithStringIdAt(index.value() + 1,

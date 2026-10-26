@@ -9,18 +9,28 @@
 #include "brave/browser/ui/peek/peek_utils.h"
 #include "brave/browser/ui/peek/public/peek_controller.h"
 #include "content/public/browser/page_navigator.h"
+#include "content/public/browser/web_contents.h"
 #include "url/gurl.h"
+#include "url/origin.h"
 
 namespace peek {
 
-bool CanOpenLinkInPeek(BrowserWindowInterface* browser, const GURL& url) {
-  return IsPeekableURL(url) && PeekController::From(browser);
+bool CanOpenLinkInPeek(BrowserWindowInterface* browser,
+                       content::WebContents* source,
+                       const GURL& url,
+                       const url::Origin& frame_origin) {
+  if (!IsPeekableURL(url) || !IsPeekableInitiator(frame_origin)) {
+    return false;
+  }
+  auto* controller = PeekController::From(browser);
+  return controller && controller->CanOpenFrom(source);
 }
 
 void OpenLinkInPeek(BrowserWindowInterface* browser,
+                    content::WebContents* source,
                     const content::OpenURLParams& params) {
-  if (auto* controller = PeekController::From(browser)) {
-    controller->Open(params);
+  if (auto* controller = PeekController::From(browser); controller && source) {
+    controller->Open(*source, params);
   }
 }
 

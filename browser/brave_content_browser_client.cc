@@ -260,6 +260,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #endif
 
 #if !BUILDFLAG(IS_ANDROID)
+#include "brave/browser/ui/peek/peek_navigation_throttle.h"
 #include "brave/browser/ui/split_view/split_view_link_navigation_throttle.h"
 #include "brave/browser/ui/webui/brave_account/brave_account_ui_desktop.h"
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
@@ -1563,6 +1564,7 @@ void BraveContentBrowserClient::CreateThrottlesForNavigation(
 #if !BUILDFLAG(IS_ANDROID)
   NewTabShowsNavigationThrottle::MaybeCreateAndAdd(registry);
   SplitViewLinkNavigationThrottle::MaybeCreateAndAdd(registry);
+  PeekNavigationThrottle::MaybeCreateAndAdd(registry);
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
@@ -1631,6 +1633,15 @@ void BraveContentBrowserClient::CreateThrottlesForNavigation(
 #endif
 
   brave_search::BackupResultsNavigationThrottle::MaybeCreateAndAdd(registry);
+}
+
+void BraveContentBrowserClient::CreateThrottlesForCommitWithoutUrlLoader(
+    content::NavigationThrottleRegistry& registry) {
+  ChromeContentBrowserClient::CreateThrottlesForCommitWithoutUrlLoader(
+      registry);
+#if !BUILDFLAG(IS_ANDROID)
+  PeekNavigationThrottle::MaybeCreateAndAdd(registry);
+#endif
 }
 
 // Updates the global privacy control web preference and returns true if it is

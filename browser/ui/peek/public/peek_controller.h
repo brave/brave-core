@@ -21,6 +21,10 @@ class WebContents;
 // Per-window controller for Peek: a floating card over the active tab that
 // shows a link without leaving the current page. Only one Peek is shown per
 // window; opening another replaces it.
+//
+// Peek only hosts browsing. Anything that needs a tab, e.g. permission
+// prompts, wallet panels, popups or fullscreen, moves the Peek into a tab
+// first. See //brave/browser/ui/peek/SECURITY.md.
 class PeekController {
  public:
   DECLARE_USER_DATA(PeekController);
@@ -28,6 +32,10 @@ class PeekController {
   // Returns the controller of `browser`, or nullptr if Peek isn't available
   // for it (feature disabled or non-normal window).
   static PeekController* From(BrowserWindowInterface* browser);
+
+  // Returns the controller showing `web_contents`, or nullptr if it isn't
+  // shown in Peek.
+  static PeekController* FromPeekContents(content::WebContents* web_contents);
 
   PeekController(const PeekController&) = delete;
   PeekController& operator=(const PeekController&) = delete;
@@ -38,8 +46,15 @@ class PeekController {
   virtual void SetShieldsPanelProvider(
       std::unique_ptr<PeekShieldsPanelProvider> provider) = 0;
 
-  // Loads `params.url` in a new Peek. The disposition in `params` is ignored.
-  virtual void Open(const content::OpenURLParams& params) = 0;
+  // Whether a link in `source` can be opened in Peek: it must be a tab of this
+  // window, other than a sidebar web panel.
+  virtual bool CanOpenFrom(content::WebContents* source) = 0;
+
+  // Loads `params.url` from `source` in a new Peek. The disposition in
+  // `params` is ignored. Returns false, without opening anything, unless
+  // `CanOpenFrom(source)` and `peek::CanOpenInPeek(params)`.
+  virtual bool Open(content::WebContents& source,
+                    const content::OpenURLParams& params) = 0;
 
   // Moves the Peek contents into a tab right after the active tab.
   virtual void OpenAsTab() = 0;
@@ -50,6 +65,10 @@ class PeekController {
 
  protected:
   explicit PeekController(BrowserWindowInterface& browser);
+
+  // Records whether `web_contents` is shown by this controller, for
+  // `FromPeekContents()`.
+  void SetShowingContents(content::WebContents* web_contents, bool showing);
 
  private:
   ui::ScopedUnownedUserData<PeekController> scoped_unowned_user_data_;
