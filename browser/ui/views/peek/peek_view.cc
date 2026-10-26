@@ -56,9 +56,11 @@
 #include "ui/views/controls/label.h"
 #include "ui/views/controls/webview/webview.h"
 #include "ui/views/layout/box_layout.h"
-#include "ui/views/layout/box_layout_view.h"
+#include "ui/views/layout/flex_layout_types.h"
+#include "ui/views/layout/flex_layout_view.h"
 #include "ui/views/layout/layout_provider.h"
 #include "ui/views/style/typography.h"
+#include "ui/views/view_class_properties.h"
 #include "ui/views/widget/widget.h"
 
 namespace {
@@ -131,11 +133,15 @@ PeekView::PeekView(Delegate& delegate,
   card_layout->set_cross_axis_alignment(
       views::BoxLayout::CrossAxisAlignment::kStretch);
 
-  auto* toolbar = card_->AddChildView(std::make_unique<views::BoxLayoutView>());
-  toolbar->SetOrientation(views::BoxLayout::Orientation::kHorizontal);
-  toolbar->SetInsideBorderInsets(gfx::Insets::VH(0, kToolbarHorizontalPadding));
-  toolbar->SetBetweenChildSpacing(kToolbarSpacing);
-  toolbar->SetCrossAxisAlignment(views::BoxLayout::CrossAxisAlignment::kCenter);
+  // A flex layout so the title and host can shrink below their preferred
+  // widths. The buttons keep their size, so they always stay reachable.
+  auto* toolbar =
+      card_->AddChildView(std::make_unique<views::FlexLayoutView>());
+  toolbar->SetOrientation(views::LayoutOrientation::kHorizontal);
+  toolbar->SetInteriorMargin(gfx::Insets::VH(0, kToolbarHorizontalPadding));
+  toolbar->SetCrossAxisAlignment(views::LayoutAlignment::kCenter);
+  toolbar->SetDefault(views::kMarginsKey,
+                      gfx::Insets::TLBR(0, 0, 0, kToolbarSpacing));
   toolbar->SetPreferredSize(gfx::Size(0, kToolbarHeight));
   toolbar->SetBackground(views::CreateSolidBackground(kColorToolbar));
 
@@ -153,6 +159,12 @@ PeekView::PeekView(Delegate& delegate,
   title_->SetHorizontalAlignment(gfx::ALIGN_LEFT);
   title_->SetElideBehavior(gfx::ELIDE_TAIL);
   title_->SetAutoColorReadabilityEnabled(false);
+  // Labels shrink first; the title keeps its space ahead of the host.
+  title_->SetProperty(
+      views::kFlexBehaviorKey,
+      views::FlexSpecification(views::MinimumFlexSizeRule::kScaleToZero,
+                               views::MaximumFlexSizeRule::kPreferred)
+          .WithOrder(1));
 
   host_ = toolbar->AddChildView(std::make_unique<views::Label>(
       std::u16string(), views::style::CONTEXT_LABEL,
@@ -162,9 +174,20 @@ PeekView::PeekView(Delegate& delegate,
   host_->SetElideBehavior(gfx::ELIDE_HEAD);
   host_->SetAutoColorReadabilityEnabled(false);
   host_->SetDirectionalityMode(gfx::DirectionalityMode::DIRECTIONALITY_AS_URL);
+  host_->SetProperty(
+      views::kFlexBehaviorKey,
+      views::FlexSpecification(views::MinimumFlexSizeRule::kScaleToZero,
+                               views::MaximumFlexSizeRule::kPreferred)
+          .WithOrder(2));
 
+  // Pushes the buttons to the trailing edge.
   auto* spacer = toolbar->AddChildView(std::make_unique<views::View>());
-  toolbar->SetFlexForView(spacer, 1);
+  spacer->SetProperty(
+      views::kFlexBehaviorKey,
+      views::FlexSpecification(views::MinimumFlexSizeRule::kScaleToZero,
+                               views::MaximumFlexSizeRule::kUnbounded)
+          .WithOrder(3));
+  spacer->SetProperty(views::kMarginsKey, gfx::Insets());
 
   shields_button_ = toolbar->AddChildView(
       std::make_unique<PeekShieldsButton>(browser, shields_panel_provider));
@@ -177,6 +200,7 @@ PeekView::PeekView(Delegate& delegate,
       base::BindRepeating(&Delegate::OnPeekViewCloseRequested,
                           base::Unretained(&delegate)),
       kLeoCloseIcon, IDS_APP_CLOSE));
+  close_button_->SetProperty(views::kMarginsKey, gfx::Insets());
 
   // Spans the full width of the card, between the toolbar and the page. Faint
   // is almost white in the light theme, so it can't be seen against the toolbar
