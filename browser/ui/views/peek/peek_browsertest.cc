@@ -46,6 +46,7 @@
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/storage_partition_config.h"
 #include "content/public/browser/web_contents.h"
+#include "content/public/browser/web_contents_delegate.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/download_test_observer.h"
@@ -68,6 +69,7 @@
 #include "ui/gfx/geometry/point.h"
 #include "ui/gfx/geometry/point_conversions.h"
 #include "ui/views/controls/button/image_button.h"
+#include "ui/views/focus/focus_manager.h"
 #include "ui/views/test/button_test_api.h"
 #include "ui/views/test/views_test_utils.h"
 #include "ui/views/view_utils.h"
@@ -302,6 +304,22 @@ IN_PROC_BROWSER_TEST_F(PeekBrowserTest, CloseButtonClosesPeek) {
       controller()->peek_view_for_testing()->close_button_for_testing())
       .NotifyDefaultMouseClick();
   WaitForPeekClosed();
+}
+
+IN_PROC_BROWSER_TEST_F(PeekBrowserTest, TabOutOfPageMovesFocusToToolbar) {
+  OpenPeek(GetURL("b.com", "/title2.html"));
+
+  views::FocusManager* focus_manager =
+      controller()->peek_view_for_testing()->GetFocusManager();
+  ASSERT_TRUE(focus_manager);
+  views::View* page_view = focus_manager->GetFocusedView();
+  ASSERT_TRUE(page_view);
+
+  // The page hands focus back when Tab or Shift+Tab leaves it. It must stay
+  // inside Peek instead of being dropped.
+  content::WebContents* contents = peek_contents();
+  EXPECT_TRUE(contents->GetDelegate()->TakeFocus(contents, /*reverse=*/false));
+  EXPECT_NE(page_view, focus_manager->GetFocusedView());
 }
 
 IN_PROC_BROWSER_TEST_F(PeekBrowserTest, ClickOutsideCardClosesPeek) {

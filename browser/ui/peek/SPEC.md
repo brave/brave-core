@@ -179,7 +179,8 @@ separate widget is used.
 - Backdrop: only the contents area is dimmed. The browser toolbar and omnibox are
   not.
 - Toolbar inside the card: 40 px high, 12 px horizontal padding, 8 px between
-  items. Uses the browser toolbar color.
+  items. The title and host shrink (and elide) when space runs out, so the site
+  info, Shields, Open as tab and Close buttons always stay visible. Uses the browser toolbar color.
 - Divider: 1 px, full card width, between the card toolbar and the page.
 - Icons and favicon: 16 px.
 - Shadow: offset y 4 px, blur 24 px, 24% opacity.
@@ -222,7 +223,8 @@ against the toolbar and page, so the divider uses subtle.
 
 The card is sized from the contents area, so it follows window resizes and
 split view. The 24 px minimum inset keeps a visible backdrop on small windows.
-The toolbar does not change with width. The title elides first.
+The toolbar keeps the buttons at a fixed size. When the card is narrow or the
+title is long, the host elides first, then the title.
 
 ### Platform differences
 
@@ -234,12 +236,13 @@ Linux.
 - The Peek view has the dialog role and the accessible name "Peek".
 - Every toolbar button has a tooltip that is also its accessible name.
 - Escape closes Peek.
-- Opening Peek focuses the page inside it.
+- Opening Peek focuses the page inside it. Tab and Shift+Tab leaving the page
+  move focus to the card's toolbar, and focus cycles inside the card.
 - Reduced motion turns the opening animation off.
 - Colors come from Nala tokens, which are designed for contrast in both themes.
 
 Not checked yet: where focus returns to when Peek closes, and screen reader
-announcements when it opens. See open questions.
+announcements when it opens. The Tab-out-of-page test has not been run. See open questions.
 
 ### Strings
 
