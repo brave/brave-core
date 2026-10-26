@@ -59,12 +59,14 @@
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/custom_floating_corner.h"
 #include "chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.h"
+#include "chrome/browser/ui/views/frame/tab_strip_region_view.h"
 #include "chrome/browser/ui/views/frame/vertical_tab_strip_region_view.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_view.h"
 #include "chrome/browser/ui/views/tabs/new_tab_button.h"
 #include "chrome/browser/ui/views/tabs/tab/tab_context_menu_controller.h"
 #include "chrome/browser/ui/views/tabs/tab_group_header.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
+#include "chrome/browser/ui/views/tabs/vertical/vertical_tab_strip_top_container.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/interactive_test_utils.h"
@@ -74,6 +76,7 @@
 #include "content/public/test/browser_test.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/skia/include/core/SkPath.h"
+#include "ui/base/hit_test.h"
 #include "ui/base/test/ui_controls.h"
 #include "ui/compositor/layer.h"
 #include "ui/compositor/paint_context.h"
@@ -2601,6 +2604,40 @@ IN_PROC_BROWSER_TEST_F(UpstreamVerticalTabsPositionTest, PositionFollowsPref) {
   EXPECT_EQ(0, region->bounds().x());
   EXPECT_GE(contents->bounds().x(), region->bounds().right());
   ExpectFloatingCornersAreOnTrailingSide(/*trailing=*/false);
+}
+
+// When the strip on the right is expanded on hover, it floats over the toolbar.
+// Its top container's buttons there must stay clickable instead of being
+// treated as the toolbar's draggable caption area.
+IN_PROC_BROWSER_TEST_F(UpstreamVerticalTabsPositionTest,
+                       ExpandedOnHoverButtonsOverToolbarAreClickable) {
+  auto* region = region_view();
+  ASSERT_TRUE(region);
+  SetOnRight(true);
+  state_controller()->SetExpandOnHoverEnabled(true);
+  state_controller()->RequestCollapse(true);
+  LayoutNow();
+  const int collapsed_x = region->bounds().x();
+
+  auto lock =
+      region->GetExpandOnHoverLock(ExpandOnHoverLockType::kKeepExpanded);
+  LayoutNow();
+  // The strip grows over the toolbar without moving its trailing edge.
+  ASSERT_LT(region->bounds().x(), collapsed_x);
+  ASSERT_EQ(brave_browser_view()->width(), region->bounds().right());
+
+  views::View* collapse_button = region->GetTopContainer()->GetCollapseButton();
+  ASSERT_TRUE(collapse_button);
+  ASSERT_TRUE(collapse_button->IsDrawn());
+
+  // The button is above the toolbar's area.
+  ASSERT_TRUE(brave_browser_view()->toolbar()->GetBoundsInScreen().Contains(
+      collapse_button->GetBoundsInScreen().CenterPoint()));
+
+  gfx::Point point = collapse_button->GetLocalBounds().CenterPoint();
+  views::View::ConvertPointToWidget(collapse_button, &point);
+  auto* frame_view = brave_browser_view()->browser_widget()->GetFrameView();
+  EXPECT_NE(HTCAPTION, frame_view->NonClientHitTest(point));
 }
 
 IN_PROC_BROWSER_TEST_F(UpstreamVerticalTabsPositionTest,

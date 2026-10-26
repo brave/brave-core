@@ -12,6 +12,7 @@
 #include "base/check.h"
 #include "base/check_is_test.h"
 #include "base/i18n/rtl.h"
+#include "base/numerics/safe_conversions.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
 #include "build/build_config.h"
@@ -257,13 +258,50 @@ void BraveBrowserViewTabbedLayoutImpl::
   gfx::Rect bounds = tab_strip_layout->bounds;
   bounds.set_x(params.visual_client_area.right() - bounds.width());
 
-  // Restore the top offset that was applied for the leading exclusion and then
-  // apply the trailing exclusion.
-  bounds.Outset(gfx::Outsets::TLBR(
-      params.leading_exclusion.ContentWithPadding().height(), 0, 0, 0));
+  // Upstream offsets the strip below the leading exclusion only while it's
+  // collapsed (the offset is animated and is 0 when expanded), so undo exactly
+  // the offset it applied. Other offsets (e.g. the separator inset in
+  // fullscreen) are kept. Then always place the strip below the trailing
+  // exclusion (e.g. the caption buttons on Windows/Linux), as the top container
+  // can't lay its buttons out around trailing caption buttons.
+  const int top_offset = bounds.y() - params.visual_client_area.y();
+  if (top_offset > 0 && !params.leading_exclusion.IsEmpty()) {
+    bounds.Outset(gfx::Outsets::TLBR(top_offset, 0, 0, 0));
+  }
   bounds.Inset(gfx::Insets::TLBR(
-      params.trailing_exclusion.ContentWithPadding().height(), 0, 0, 0));
+      base::ClampCeil(params.trailing_exclusion.ContentWithPadding().height()),
+      0, 0, 0));
   tab_strip_layout->bounds = bounds;
+
+  // The strip is below the trailing caption buttons, so extend the top
+  // container's background to the trailing edge to fill the corner above the
+  // strip, so that the caption buttons look laid over it. This mirrors what
+  // upstream does for the leading caption buttons when the strip is collapsed.
+  // Only the container grows; its children keep their bounds.
+  if (!params.trailing_exclusion.IsEmpty()) {
+    if (auto* top_container_layout = layout.GetLayoutFor(views().top_container);
+        top_container_layout && !top_container_layout->bounds.IsEmpty()) {
+      top_container_layout->bounds.set_width(params.visual_client_area.right() -
+                                             top_container_layout->bounds.x());
+    }
+  }
+
+  // Upstream set these while the strip was still on the leading side, so
+  // recompute them for its final bounds:
+  //  * Caption button width: the leading caption buttons are now on the other
+  //    side of the window, so they no longer cover the top container.
+  //  * Toolbar height: measured from the strip's final top so the top
+  //    container's buttons align with the toolbar.
+  //  * Transition button opacity: upstream only fades the collapse/unfocus
+  //    buttons to avoid those caption buttons, so keep them opaque.
+  region_view->SetCaptionButtonWidthForLayout(0);
+  int toolbar_height = 0;
+  if (auto toolbar_bounds =
+          layout.GetBoundsFor(views().toolbar, views().browser_view)) {
+    toolbar_height = toolbar_bounds->bottom() - bounds.y();
+  }
+  region_view->SetToolbarHeightForLayout(std::max(0, toolbar_height));
+  region_view->SetTransitionButtonOpacity(1.0f);
 
   if (auto* const backdrop_layout = layout.GetLayoutFor(
           views().vertical_tab_strip_background_blur_backdrop)) {
