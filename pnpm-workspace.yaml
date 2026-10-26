@@ -8,7 +8,7 @@
 # Packages allowed to run install/build lifecycle scripts.
 allowBuilds:
   '@brave/leo-sf-symbols@https://codeload.github.com/brave/leo-sf-symbols/tar.gz/b5a6139df7ebd3f7d55aa8d6af60a524edab87b0': true
-  '@brave/leo@https://codeload.github.com/brave/leo/tar.gz/ff620e4e53b70dc9868c2215c5cb56e8145e92df': true
+  '@brave/leo@https://codeload.github.com/brave/leo/tar.gz/c5f9c8f78f3df5b767a83ad67babd8b29323266a': true
   # No-op unless npm_config_build_from_source is set; prebuilt binaries ship as optionalDependencies.
   '@parcel/watcher': false
   # Falls back to pure-JS hashing (lib/js.js) if the native binding is unavailable.
@@ -70,6 +70,7 @@ overrides:
   # Scoped to Storybook's copy; webpack-dev-server already uses a patched 7.x.
   '@storybook/builder-webpack5>webpack-dev-middleware': '7.4.5'
   'axios': '1.20.0'
+  'body-parser': '1.20.9'
   # Pinned per major line: consumers span all three and the fixes were backported.
   'brace-expansion@1': '1.1.21'
   'brace-expansion@2': '2.1.7'
@@ -78,10 +79,10 @@ overrides:
   'esbuild': '0.28.1'
   # Scoped: ethers pins ws exactly, but jayson needs ws 7.x.
   'ethers>ws': '8.22.0'
-  'fast-uri': '3.1.8'
+  'fast-uri': '3.1.9'
   'follow-redirects': '1.16.1'
   'handlebars': '4.7.10'
-  'ip-address': '10.7.2'
+  'ip-address': '10.7.4'
   # Bumped instead of overriding stream-json, whose fixes only exist in 3.x --
   # that moved every entry point under src/ and lowercased filenames, so jayson's
   # require('stream-json/streamers/StreamValues') would fail at runtime. jayson 5
@@ -98,6 +99,7 @@ overrides:
   'probe-image-size': '7.4.0'
   'protobufjs': '7.6.5'
   'qs': '6.16.0'
+  'serialize-javascript': '7.1.3'
   'shell-quote': '1.12.0'
   'tiny-secp256k1': '1.1.7'
   'toml': '4.3.0'
