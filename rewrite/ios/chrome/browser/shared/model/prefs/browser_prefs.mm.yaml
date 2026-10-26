@@ -51,3 +51,12 @@ substitutions:
       replace: |-
         \1  brave::MigrateObsoleteProfilePrefs(prefs);
         \2
+
+  - description: |
+      Don't sync the offer translate pref
+
+      Register `translate::prefs::kOfferTranslateEnabled` without the syncable
+      flag so that toggling translate offers stays local to the device.
+    regex:
+      re_pattern: '(translate::prefs::kOfferTranslateEnabled,\s*true,\s*user_prefs::PrefRegistrySyncable::)SYNCABLE_PREF'
+      replace: '\1NO_REGISTRATION_FLAGS'
