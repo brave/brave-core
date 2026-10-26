@@ -8,7 +8,6 @@
 #include <memory>
 #include <optional>
 #include <utility>
-#include <variant>
 
 #include "base/check.h"
 #include "base/check_deref.h"
@@ -27,14 +26,11 @@
 #include "chrome/browser/ui/views/bubble/webui_bubble_manager.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/top_container_view.h"
-#include "chrome/browser/ui/webui/top_chrome/webui_contents_wrapper.h"
-#include "chrome/browser/ui/webui/webui_embedding_context.h"
 #include "components/grit/brave_components_strings.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/views/controls/webview/webview.h"
-#include "ui/views/view_tracker.h"
 #include "ui/views/widget/widget.h"
 #include "url/gurl.h"
 
@@ -118,70 +114,45 @@ class WalletWebUIBubbleDialogView : public WebUIBubbleDialogView,
 BEGIN_METADATA(WalletWebUIBubbleDialogView)
 END_METADATA
 
-// Builds WalletWebUIBubbleDialogView directly on the cached contents wrapper,
-// mirroring WebUIBubbleManagerImpl::CreateWebUIBubbleDialog. Holds the browser
-// and anchor weakly since `this` can outlive them when its tab is moved.
-class WalletWebUIBubbleManager : public WebUIBubbleManager {
+class WalletWebUIBubbleManager : public WebUIBubbleManagerImpl<WalletPanelUI>,
+                                 public views::ViewObserver {
  public:
   WalletWebUIBubbleManager(views::View* anchor_view,
                            BrowserWindowInterface* browser,
                            const GURL& webui_url,
-                           int task_manager_string_id)
-      : browser_(browser->GetWeakPtr()),
-        webui_url_(webui_url),
-        task_manager_string_id_(task_manager_string_id) {
-    anchor_view_tracker_.SetView(anchor_view);
-  }
+                           int task_manager_string_id,
+                           bool force_load_on_create)
+      : WebUIBubbleManagerImpl(browser,
+                               webui_url,
+                               task_manager_string_id,
+                               force_load_on_create),
+        browser_(browser),
+        anchor_view_(anchor_view) {}
 
   bool ShowBubble() {
-    if (!browser_ || !anchor_view_tracker_.view()) {
-      return false;
-    }
-    return WebUIBubbleManager::ShowBubble(anchor_view_tracker_.view());
-  }
-
-  bool IsReusableFor(BrowserWindowInterface* browser,
-                     const GURL& webui_url) const {
-    return browser && browser_.get() == browser &&
-           anchor_view_tracker_.view() && webui_url_ == webui_url;
-  }
-
-  // WebUIBubbleManager:
-  WebUIContentsWrapper* GetContentsWrapper() override {
-    return cached_contents_wrapper();
+    return WebUIBubbleManagerImpl::ShowBubble(anchor_view_.get());
   }
 
   base::WeakPtr<WebUIBubbleDialogView> CreateWebUIBubbleDialog(
       Anchor anchor,
       views::BubbleBorder::Arrow arrow) override {
-    CHECK(browser_);
-    set_bubble_using_cached_web_contents(!!cached_contents_wrapper());
-    if (!cached_contents_wrapper()) {
-      set_cached_contents_wrapper(
-          std::make_unique<WebUIContentsWrapperT<WalletPanelUI>>(
-              webui_url_, browser_->GetProfile(), task_manager_string_id_));
+    // This is prevent duplicate logic of cached_contents_wrapper creation
+    // so we close WebUIBubbleDialogView and re-create bubble with
+    // WalletWebUIBubbleDialogView.
+    auto bubble_view_to_close =
+        WebUIBubbleManagerImpl::CreateWebUIBubbleDialog(anchor, arrow);
+    auto* widget_to_close = bubble_view_to_close->GetWidget();
+    if (widget_to_close) {
+      widget_to_close->CloseNow();
     }
     auto* contents_wrapper = cached_contents_wrapper();
     CHECK(contents_wrapper);
-
-    webui::SetBrowserWindowInterface(contents_wrapper->web_contents(),
-                                     browser_.get());
-
-    views::View* anchor_view = anchor_view_tracker_.view();
     std::optional<gfx::Rect> anchor_rect;
-    if (std::holds_alternative<views::View*>(anchor)) {
-      anchor_view = std::get<views::View*>(anchor);
-    } else {
+    if (std::holds_alternative<gfx::Rect>(anchor)) {
       anchor_rect = std::get<gfx::Rect>(anchor);
     }
-    CHECK(anchor_view);
-
     auto bubble_view = std::make_unique<WalletWebUIBubbleDialogView>(
-        anchor_view, contents_wrapper, anchor_rect, arrow);
-    if (!widget_initialization_callback_.is_null()) {
-      bubble_view->RegisterWidgetInitializedCallback(
-          std::move(widget_initialization_callback_));
-    }
+        anchor_view_, contents_wrapper, anchor_rect, arrow);
     bubble_view_ = bubble_view->GetWeakPtr();
     auto* widget =
         views::BubbleDialogDelegateView::CreateBubble(std::move(bubble_view));
@@ -201,11 +172,12 @@ class WalletWebUIBubbleManager : public WebUIBubbleManager {
     }
     WalletPanelUI* wallet_panel =
         webui->GetController()->template GetAs<WalletPanelUI>();
-    if (!wallet_panel) {
+    if (!wallet_panel || !browser_) {
       return bubble_view_;
     }
     // Redirect popups opened from the panel to open as separate popup windows.
-    contents_wrapper->SetWebContentsAddNewContentsBrowser(browser_);
+    contents_wrapper->SetWebContentsAddNewContentsBrowser(
+        browser_->GetWeakPtr());
 
     return bubble_view_;
   }
@@ -215,7 +187,7 @@ class WalletWebUIBubbleManager : public WebUIBubbleManager {
       contents_wrapper->CloseTrackedPopups();
     }
 
-    WebUIBubbleManager::OnWidgetDestroying(widget);
+    WebUIBubbleManagerImpl::OnWidgetDestroying(widget);
   }
 
   content::WebContents* GetWebContentsForTesting() {
@@ -228,11 +200,10 @@ class WalletWebUIBubbleManager : public WebUIBubbleManager {
   views::Widget* GetBubbleWidgetForTesting() { return GetBubbleWidget(); }
 
  private:
-  base::WeakPtr<BrowserWindowInterface> browser_;
-  views::ViewTracker anchor_view_tracker_;
-  const GURL webui_url_;
-  const int task_manager_string_id_;
+  const raw_ptr<BrowserWindowInterface> browser_;
+  const raw_ptr<views::View> anchor_view_;
   base::WeakPtr<WebUIBubbleDialogView> bubble_view_ = nullptr;
+  base::WeakPtrFactory<WalletWebUIBubbleManager> weak_factory_{this};
 };
 
 // static
@@ -267,21 +238,14 @@ WalletBubbleManagerDelegateImpl::WalletBubbleManagerDelegateImpl(
 
   DCHECK(anchor_view);
   webui_bubble_manager_ = std::make_unique<WalletWebUIBubbleManager>(
-      anchor_view, browser, webui_url, IDS_ACCNAME_BRAVE_WALLET_BUTTON);
+      anchor_view, browser, webui_url, IDS_ACCNAME_BRAVE_WALLET_BUTTON,
+      /*force_load_on_create=*/false);
 }
 
 WalletBubbleManagerDelegateImpl::~WalletBubbleManagerDelegateImpl() {
   if (webui_bubble_manager_) {
     webui_bubble_manager_->CloseBubble();
   }
-}
-
-bool WalletBubbleManagerDelegateImpl::IsReusableFor(const GURL& webui_url) {
-  return IsAllowedForContext(web_contents_->GetBrowserContext()) &&
-         webui_bubble_manager_->IsReusableFor(
-             GlobalBrowserCollection::GetInstance()->FindBrowserWithTab(
-                 web_contents_),
-             webui_url);
 }
 
 void WalletBubbleManagerDelegateImpl::ShowBubble() {

@@ -247,15 +247,8 @@ void BraveWalletTabHelper::ClearSolanaConnectedAccounts(
 void BraveWalletTabHelper::ShowBubbleImpl(GURL url) {
   // Dapp requests always use the bubble for this PoC. Contextual side panel
   // hosting is limited to the base wallet panel URL (no in-panel navigation).
-  // Reuse the delegate so its cached panel WebContents survives between opens.
-  // Recreate for hash routes (only parsed on first load) and when already
-  // showing, so the panel reloads to pick up new requests.
-  if (!wallet_bubble_manager_delegate_ || url.has_ref() ||
-      wallet_bubble_manager_delegate_->IsShowingBubble() ||
-      !wallet_bubble_manager_delegate_->IsReusableFor(url)) {
-    wallet_bubble_manager_delegate_ =
-        WalletBubbleManagerDelegate::MaybeCreate(&GetWebContents(), url);
-  }
+  wallet_bubble_manager_delegate_ =
+      WalletBubbleManagerDelegate::MaybeCreate(&GetWebContents(), url);
   if (!wallet_bubble_manager_delegate_) {
     return;
   }
