@@ -22,9 +22,8 @@ void AddBraveMaterialSidePanelColorMixer(ui::ColorProvider* provider,
   // We don't use upstream's resize handle.
   mixer[kColorSidePanelHoverResizeAreaHandle] = {SK_ColorTRANSPARENT};
 
-  // Use leo color when it's ready.
-  mixer[kColorSidePanelScrollbarThumb] = {
-      is_dark ? SkColorSetRGB(0x58, 0x58, 0x58)
-              : SkColorSetRGB(0xB4, 0xB4, 0xB4)};
+  mixer[kColorSidePanelScrollbarThumb] = {is_dark
+                                              ? nala::kColorPrimitiveNeutral35
+                                              : nala::kColorPrimitiveNeutral70};
   mixer[kColorSidePanelContentBackground] = {nala::kColorContainerBackground};
 }
