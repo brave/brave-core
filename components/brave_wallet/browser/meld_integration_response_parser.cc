@@ -39,8 +39,6 @@ base::flat_map<std::string, std::string> ParseOptionalMapOfStrings(
   return result;
 }
 
-// Meld's chainId is only cross-checked for EVM chains, as Meld's ids of other
-// chains don't follow Brave's format.
 std::optional<std::pair<brave_wallet::mojom::CoinType, std::string_view>>
 GetBraveChain(
     const brave_wallet::meld_integration_responses::CryptoCurrency& currency) {
@@ -55,6 +53,8 @@ GetBraveChain(
     return std::nullopt;
   }
 
+  // Meld's chainId is only cross-checked for EVM chains, as Meld's ids of other
+  // chains don't follow Brave's format.
   if (coin == brave_wallet::mojom::CoinType::ETH && currency.chain_id) {
     uint64_t meld_chain_id = 0;
     if (!base::StringToUint64(*currency.chain_id, &meld_chain_id) ||

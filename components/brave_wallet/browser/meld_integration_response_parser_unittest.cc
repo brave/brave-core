@@ -19,7 +19,7 @@
 #include "testing/gtest/include/gtest/gtest.h"
 
 using base::test::ParseJson;
-using testing::ElementsAre;
+using testing::ElementsAreArray;
 
 namespace brave_wallet {
 
@@ -368,8 +368,6 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_CryptoCurrencies) {
 }
 
 TEST(MeldIntegrationResponseParserUnitTest, Parse_CryptoCurrencies_Chains) {
-  // `ASSETHUB` is gated behind the Polkadot feature, whose default differs per
-  // platform, so pin it here.
   base::test::ScopedFeatureList feature_list;
   feature_list.InitAndEnableFeature(features::kBraveWalletPolkadotFeature);
 
@@ -381,8 +379,10 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_CryptoCurrencies_Chains) {
   {"currencyCode": "ZEC", "chainCode": "ZEC"},
   {"currencyCode": "SOL", "chainCode": "SOLANA", "chainId": "101"},
   {"currencyCode": "ADA", "chainCode": "ADA"},
-  {"currencyCode": "DOT", "chainCode": "ASSETHUB", "chainId": "0"},
+  {"currencyCode": "DOT", "chainCode": "DOT"},
+  {"currencyCode": "USDT_DOT", "chainCode": "DOT"},
   {"currencyCode": "ETH", "chainCode": "ETH", "chainId": "1"},
+  {"currencyCode": "USDC_BASE", "chainCode": "BASE", "chainId": "8453"},
   {"currencyCode": "AURORA", "chainCode": "AURORA", "chainId": "1313161554"},
   {"currencyCode": "POL", "chainCode": "POLYGON"},
   {"currencyCode": "USDT_ARB", "chainCode": "ARBITRUM", "chainId": "1"},
@@ -398,25 +398,26 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_CryptoCurrencies_Chains) {
   }
   auto crypto_currencies = ParseCryptoCurrencies(json_value);
   ASSERT_TRUE(crypto_currencies);
-  std::vector<std::tuple<std::string, mojom::CoinType, std::string>> chains;
+  using ChainTuple = std::tuple<std::string, mojom::CoinType, std::string>;
+  std::vector<ChainTuple> chains;
   for (const auto& item : *crypto_currencies) {
     chains.emplace_back(item->currency_code, item->coin, item->chain_id);
   }
   EXPECT_THAT(
       chains,
-      ElementsAre(
-          std::tuple("BTC", mojom::CoinType::BTC, mojom::kBitcoinMainnet),
-          std::tuple("FIL", mojom::CoinType::FIL, mojom::kFilecoinMainnet),
-          std::tuple("ZEC", mojom::CoinType::ZEC, mojom::kZCashMainnet),
-          std::tuple("SOL", mojom::CoinType::SOL, mojom::kSolanaMainnet),
-          std::tuple("ADA", mojom::CoinType::ADA, mojom::kCardanoMainnet),
-          std::tuple("DOT", mojom::CoinType::DOT,
-                     mojom::kPolkadotMainnetAssetHub),
-          std::tuple("ETH", mojom::CoinType::ETH, mojom::kMainnetChainId),
-          std::tuple("AURORA", mojom::CoinType::ETH,
-                     mojom::kAuroraMainnetChainId),
-          std::tuple("POL", mojom::CoinType::ETH,
-                     mojom::kPolygonMainnetChainId)));
+      ElementsAreArray<ChainTuple>({
+          {"BTC", mojom::CoinType::BTC, mojom::kBitcoinMainnet},
+          {"FIL", mojom::CoinType::FIL, mojom::kFilecoinMainnet},
+          {"ZEC", mojom::CoinType::ZEC, mojom::kZCashMainnet},
+          {"SOL", mojom::CoinType::SOL, mojom::kSolanaMainnet},
+          {"ADA", mojom::CoinType::ADA, mojom::kCardanoMainnet},
+          {"DOT", mojom::CoinType::DOT, mojom::kPolkadotMainnetAssetHub},
+          {"USDT_DOT", mojom::CoinType::DOT, mojom::kPolkadotMainnetAssetHub},
+          {"ETH", mojom::CoinType::ETH, mojom::kMainnetChainId},
+          {"USDC_BASE", mojom::CoinType::ETH, mojom::kBaseMainnetChainId},
+          {"AURORA", mojom::CoinType::ETH, mojom::kAuroraMainnetChainId},
+          {"POL", mojom::CoinType::ETH, mojom::kPolygonMainnetChainId},
+      }));
 }
 
 TEST(MeldIntegrationResponseParserUnitTest, Parse_CryptoCurrencies_Polkadot) {
@@ -425,7 +426,7 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_CryptoCurrencies_Polkadot) {
     {
       "currencyCode": "DOT",
       "name": "Polkadot",
-      "chainCode": "ASSETHUB",
+      "chainCode": "DOT",
       "chainId": "0",
       "symbol": "https://images-currency.meld.io/crypto/DOT/symbol.png"
     }
