@@ -21,7 +21,6 @@
 #include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
 #include "chrome/browser/ui/chrome_pages.h"
 #include "chrome/browser/ui/session_crashed_bubble.h"
-#include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/common/webui_url_constants.h"
 #include "components/constrained_window/constrained_window_views.h"
 #include "components/prefs/pref_service.h"
@@ -98,14 +97,13 @@ CrashReportPermissionAskDialogView::CrashReportPermissionAskDialogView(
       base::BindOnce(&CrashReportPermissionAskDialogView::OnWindowClosing,
                      base::Unretained(this)));
 
-  CreateChildViews(BrowserView::GetBrowserViewForBrowser(browser)->GetWidget());
+  CreateChildViews();
 }
 
 CrashReportPermissionAskDialogView::~CrashReportPermissionAskDialogView() =
     default;
 
-void CrashReportPermissionAskDialogView::CreateChildViews(
-    views::Widget* parent) {
+void CrashReportPermissionAskDialogView::CreateChildViews() {
   constexpr int kPadding = 24;
   constexpr int kChildSpacing = 16;
   constexpr int kIconSize = 24;
@@ -120,16 +118,11 @@ void CrashReportPermissionAskDialogView::CreateChildViews(
       views::BoxLayout::Orientation::kHorizontal, gfx::Insets(),
       kChildSpacing));
 
-  constexpr SkColor kDefaultSadImageColor = SkColorSetRGB(0x49, 0x50, 0x57);
   auto* header_image =
       header->AddChildView(std::make_unique<views::ImageView>());
   header_image->SetImageSize(gfx::Size(kIconSize, kIconSize));
-  SkColor header_image_color = kDefaultSadImageColor;
-  if (parent && parent->GetColorProvider()) {
-    header_image_color = parent->GetColorProvider()->GetColor(kColorIconBase);
-  }
-  header_image->SetImage(ui::ImageModel::FromVectorIcon(
-      kBraveSadIcon, header_image_color, kIconSize));
+  header_image->SetImage(
+      ui::ImageModel::FromVectorIcon(kBraveSadIcon, kColorIconBase, kIconSize));
 
   const std::u16string header_browser_name = l10n_util::GetStringUTF16(
       IDS_CRASH_REPORT_PERMISSION_ASK_DIALOG_HEADER_TEXT_BROWSER_NAME_PART);
