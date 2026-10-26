@@ -110,7 +110,11 @@ void BraveBrowserAppMenuButton::UpdateLayoutInsets() {
 
 void BraveBrowserAppMenuButton::UpdateIcon() {
   if (!ShowBrandedIcon()) {
-    BrowserAppMenuButton::UpdateIcon();
+    for (auto state : kButtonStates) {
+      SetImageModel(state, ui::ImageModel::FromVectorIcon(
+                               kLeoBrowserMenuIcon, GetForegroundColor(state),
+                               GetIconSize()));
+    }
     return;
   }
 
