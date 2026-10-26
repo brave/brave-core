@@ -149,7 +149,6 @@ BraveHelpBubbleDelegateView::BraveHelpBubbleDelegateView(
     : BubbleDialogDelegateView(anchor_view, BubbleBorder::Arrow::TOP_CENTER) {
   SetButtons(static_cast<int>(ui::mojom::DialogButton::kNone));
   set_shadow_config({.shadow_type = BubbleBorder::Shadow::STANDARD_SHADOW});
-  set_corner_radius(10);
   SetBackgroundColor(nala::kColorSchemesPrimary);
   SetLayoutManager(std::make_unique<views::BoxLayout>(
       views::BoxLayout::Orientation::kVertical));

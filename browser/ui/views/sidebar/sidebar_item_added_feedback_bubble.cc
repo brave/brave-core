@@ -44,7 +44,9 @@ views::Widget* SidebarItemAddedFeedbackBubble::Create(
   frame_view->SetContentMargins(gfx::Insets::VH(10, 18));
   frame_view->SetDisplayVisibleArrow(true);
   delegate->SizeToContents();
-  frame_view->SetRoundedCorners(gfx::RoundedCornersF(6));
+  frame_view->SetRoundedCorners(
+      gfx::RoundedCornersF(ChromeLayoutProvider::Get()->GetCornerRadiusMetric(
+          views::ShapeContextTokens::kDialogRadius)));
 
   return bubble;
 }
