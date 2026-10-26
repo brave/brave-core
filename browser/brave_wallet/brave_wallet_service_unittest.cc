@@ -3136,6 +3136,8 @@ TEST_F(BraveWalletServiceUnitTest, AutolockIsDisabledInTests) {
 }
 
 TEST_F(BraveWalletServiceUnitTest, PolkadotParachainRpcUrlsFromRegistry) {
+  BlockchainRegistry::ScopedPolkadotRpcUrlsForTesting scoped_empty_rpc_urls({});
+
   auto* polkadot_rpc = service_->GetPolkadotWalletService()->GetPolkadotRpc();
   ASSERT_TRUE(polkadot_rpc);
 
