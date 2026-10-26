@@ -31,9 +31,9 @@ class Label;
 class WebView;
 }  // namespace views
 
-// Root view of the Peek widget. Dims the area it covers and shows a centered
-// card with a small toolbar and the Peek web contents. Clicking outside the
-// card dismisses Peek.
+// Root view of the Peek widget. Dims the web contents area it covers and shows
+// a card hanging from the browser toolbar, with a small toolbar of its own and
+// the Peek web contents. Clicking outside the card dismisses Peek.
 class PeekView : public views::View, public views::AnimationDelegateViews {
   METADATA_HEADER(PeekView, views::View)
 
