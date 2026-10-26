@@ -327,7 +327,6 @@ void AddBraveColorMixerForAllThemes(ui::ColorProvider* provider,
   mixer[kColorSearchConversionButtonBackground] = {nala::kColorPrimary10};
   mixer[kColorSearchConversionButtonBackgroundHovered] = {
       nala::kColorPrimary20};
-  mixer[kColorSearchConversionButtonText] = {nala::kColorPrimary60};
   mixer[kColorSearchConversionButtonCloseButton] = {
       ui::AlphaBlend({nala::kColorIconInteractive},
                      {kColorSearchConversionButtonBackground}, 0.5 * 0xff)};
