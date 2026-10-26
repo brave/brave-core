@@ -49,6 +49,7 @@ import org.chromium.chrome.browser.toolbar.adaptive.settings.BraveRadioButtonGro
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.chrome.browser.toolbar.settings.AddressBarSettingsFragment;
 import org.chromium.chrome.browser.ui.bottombar.BottomBarConfigUtils;
+import org.chromium.chrome.browser.ui.vertical_tabs.VerticalTabUtils;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
 import org.chromium.components.browser_ui.settings.search.PreferenceParser;
@@ -515,6 +516,14 @@ public class AppearancePreferences extends AppearanceSettingsFragment
                 public void updateDynamicPreferences(
                         Context context, SettingsIndexData indexData, Profile profile) {
                     String frag = AppearancePreferences.class.getName();
+                    // The row is retitled "Address bar shortcut" when the bottom bar brings the
+                    // address bar settings here.
+                    if (BottomBarConfigUtils.shouldMoveToolbarSettingsToAppearance(context)) {
+                        indexData.updateEntryForKey(
+                                frag,
+                                AppearanceSettingsFragment.PREF_TOOLBAR_SHORTCUT,
+                                R.string.address_bar_shortcut);
+                    }
                     AppearanceSettingsFragment.shouldShowToolbarShortcutPrefAsync(
                             context,
                             profile,
@@ -525,7 +534,8 @@ public class AppearancePreferences extends AppearanceSettingsFragment
                                     indexData.resolveIndex();
                                 }
                             });
-                    // The screen keeps at most one of the two bookmark bar rows.
+                    // The screen keeps at most one of the two bookmark bar rows. Upstream also
+                    // puts the visibility state in the summary, but that helper is package-private.
                     if (!BookmarkBarUtils.isDeviceBookmarkBarCompatible(context)) {
                         indexData.removeEntryForKey(
                                 frag, AppearanceSettingsFragment.PREF_BOOKMARK_BAR);
@@ -537,6 +547,11 @@ public class AppearancePreferences extends AppearanceSettingsFragment
                     } else {
                         indexData.removeEntryForKey(
                                 frag, AppearanceSettingsFragment.PREF_BOOKMARK_BAR);
+                    }
+
+                    if (!VerticalTabUtils.isVerticalTabsEligible(context)) {
+                        indexData.removeEntryForKey(
+                                frag, AppearanceSettingsFragment.PREF_TAB_POSITION);
                     }
 
                     if (!BottomBarConfigUtils.shouldShowSettingsToggle(context)) {
