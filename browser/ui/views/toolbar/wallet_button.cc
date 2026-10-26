@@ -17,6 +17,7 @@
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "brave/ui/color/nala/nala_color_id.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
@@ -249,8 +250,10 @@ void WalletButton::UpdateImageAndText(bool activated) {
   image_source->SetIcon(gfx::Image(icon));
 
   auto text = GetBadgeText();
+  // White text on the fixed badge colors in every theme.
   image_source->SetBadge(std::make_unique<IconWithBadgeImageSource::Badge>(
-      text, brave::kBadgeTextColor, brave::kBadgeNotificationBG));
+      text, color_provider->GetColor(nala::kColorPrimitiveNeutral100),
+      brave::kBadgeNotificationBG));
   gfx::ImageSkia badge_image(std::move(image_source), preferred_size);
 
   SetImageModel(views::Button::STATE_NORMAL,

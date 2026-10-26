@@ -23,6 +23,7 @@
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "brave/ui/color/nala/nala_color_id.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/layout_constants.h"
@@ -36,8 +37,10 @@
 #include "extensions/common/constants.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/color/color_provider.h"
 #include "ui/color/color_provider_manager.h"
 #include "ui/gfx/canvas.h"
+#include "ui/gfx/color_palette.h"
 #include "ui/gfx/geometry/rect.h"
 #include "ui/gfx/image/image.h"
 #include "ui/gfx/image/image_skia.h"
@@ -55,9 +58,6 @@ namespace {
 using brave_rewards::RewardsNotificationService;
 using brave_rewards::RewardsServiceFactory;
 using brave_rewards::RewardsTabHelper;
-
-constexpr SkColor kIconColor = SK_ColorBLACK;
-constexpr SkColor kBadgeVerifiedBG = SkColorSetRGB(0x42, 0x3E, 0xEE);
 
 class ButtonHighlightPathGenerator : public views::HighlightPathGenerator {
  public:
@@ -90,9 +90,10 @@ class RewardsBadgeImageSource : public brave::BraveIconWithBadgeImageSource {
                           GetColorProviderCallback get_color_provider_callback)
       : BraveIconWithBadgeImageSource(
             size,
-            std::move(get_color_provider_callback),
+            get_color_provider_callback,
             GetLayoutConstant(LayoutConstant::kLocationBarTrailingIconSize),
-            kBraveActionLeftMarginExtra) {}
+            kBraveActionLeftMarginExtra),
+        get_color_provider_callback_(get_color_provider_callback) {}
 
   void UseVerifiedIcon(bool verified_icon) {
     verified_icon_ = verified_icon;
@@ -116,16 +117,20 @@ class RewardsBadgeImageSource : public brave::BraveIconWithBadgeImageSource {
     outsets.set_bottom(2);
     image_rect.Outset(outsets);
 
+    const ui::ColorProvider* color_provider =
+        get_color_provider_callback_.Run();
     gfx::RectF check_rect(image_rect);
     check_rect.Inset(3);
     cc::PaintFlags check_flags;
     check_flags.setStyle(cc::PaintFlags::kFill_Style);
-    check_flags.setColor(SK_ColorWHITE);
+    check_flags.setColor(
+        color_provider->GetColor(nala::kColorSchemesOnPrimary));
     check_flags.setAntiAlias(true);
     canvas->DrawRoundRect(check_rect, 2, check_flags);
 
-    auto image = gfx::CreateVectorIcon(kLeoVerificationFilledIcon,
-                                       image_rect.width(), kBadgeVerifiedBG);
+    auto image = gfx::CreateVectorIcon(
+        kLeoVerificationFilledIcon, image_rect.width(),
+        color_provider->GetColor(nala::kColorIconInteractive));
 
     cc::PaintFlags image_flags;
     image_flags.setStyle(cc::PaintFlags::kFill_Style);
@@ -133,6 +138,7 @@ class RewardsBadgeImageSource : public brave::BraveIconWithBadgeImageSource {
     canvas->DrawImageInt(image, image_rect.x(), image_rect.y(), image_flags);
   }
 
+  GetColorProviderCallback get_color_provider_callback_;
   bool verified_icon_ = false;
 };
 
@@ -238,15 +244,20 @@ void BraveRewardsActionView::Update() {
   auto weak_contents = web_contents ? web_contents->GetWeakPtr()
                                     : base::WeakPtr<content::WebContents>();
 
+  auto get_color_provider =
+      base::BindRepeating(GetColorProviderForWebContents, weak_contents);
+  const ui::ColorProvider* color_provider = get_color_provider.Run();
   auto image_source = std::make_unique<RewardsBadgeImageSource>(
-      preferred_size,
-      base::BindRepeating(GetColorProviderForWebContents, weak_contents));
+      preferred_size, get_color_provider);
   image_source->SetIcon(gfx::Image(GetRewardsIcon()));
 
   auto [text, background_color] = GetBadgeTextAndBackground();
+  // White text on the fixed badge colors in every theme.
   image_source->SetBadge(std::make_unique<IconWithBadgeImageSource::Badge>(
-      text, brave::kBadgeTextColor, background_color));
-  image_source->UseVerifiedIcon(background_color == kBadgeVerifiedBG);
+      text, color_provider->GetColor(nala::kColorPrimitiveNeutral100),
+      background_color.ResolveToSkColor(color_provider)));
+  image_source->UseVerifiedIcon(background_color ==
+                                ui::ColorId(nala::kColorIconInteractive));
 
   SetImageModel(views::Button::STATE_NORMAL,
                 ui::ImageModel::FromImageSkia(
@@ -415,7 +426,7 @@ gfx::ImageSkia BraveRewardsActionView::GetRewardsIcon() {
   auto* color_provider = GetColorProvider();
   SkColor color = color_provider
                       ? color_provider->GetColor(kColorToolbarButtonIcon)
-                      : kIconColor;
+                      : gfx::kPlaceholderColor;
 
   if (page_info::features::IsShowBraveShieldsInPageInfoEnabled()) {
     return gfx::CreateVectorIcon(kLeoProductBatOutlineIcon, icon_size, color);
@@ -426,7 +437,7 @@ gfx::ImageSkia BraveRewardsActionView::GetRewardsIcon() {
   return gfx::CreateVectorIcon(kBatIcon, icon_size, color);
 }
 
-std::pair<std::string, SkColor>
+std::pair<std::string, ui::ColorVariant>
 BraveRewardsActionView::GetBadgeTextAndBackground() {
   // Display the number of current notifications, if non-zero.
   size_t notifications = GetRewardsNotificationCount();
@@ -439,7 +450,7 @@ BraveRewardsActionView::GetBadgeTextAndBackground() {
 
   // Display a verified checkmark for verified publishers.
   if (std::get<bool>(publisher_registered_)) {
-    return {"", kBadgeVerifiedBG};
+    return {"", ui::ColorId(nala::kColorIconInteractive)};
   }
 
   return {"", brave::kBadgeNotificationBG};
