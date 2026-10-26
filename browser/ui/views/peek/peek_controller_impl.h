@@ -58,6 +58,7 @@ class PeekControllerImpl : public PeekController,
   void OnPeekNavigationStateChanged() override;
   void OnPeekMoveToTabRequired() override;
   void OnPeekMoveToTabOrCloseRequested() override;
+  bool OnPeekTakeFocus(bool reverse) override;
 
   // PeekView::Delegate:
   void OnPeekViewCloseRequested() override;
