@@ -57,7 +57,6 @@ constexpr float kButtonCornerRadius = 48.0;
 constexpr gfx::Font::Weight kBodyFontWeight = gfx::Font::Weight::NORMAL;
 constexpr gfx::Font::Weight kTitleFontWeight = gfx::Font::Weight::SEMIBOLD;
 
-
 constexpr gfx::HorizontalAlignment kTitleHorizontalAlignment = gfx::ALIGN_LEFT;
 constexpr gfx::HorizontalAlignment kBodyHorizontalAlignment = gfx::ALIGN_LEFT;
 

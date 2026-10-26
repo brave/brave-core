@@ -9,8 +9,8 @@
 
 #include "brave/browser/brave_news/brave_news_tab_helper.h"
 #include "brave/browser/ui/views/brave_news/brave_news_feed_item_view.h"
-#include "content/public/browser/web_contents.h"
 #include "brave/ui/color/nala/nala_color_id.h"
+#include "content/public/browser/web_contents.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/gfx/geometry/insets.h"
 #include "ui/gfx/geometry/size.h"

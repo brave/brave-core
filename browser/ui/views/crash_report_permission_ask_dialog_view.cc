@@ -147,8 +147,9 @@ void CrashReportPermissionAskDialogView::CreateChildViews() {
       default_style);
   // If browser name is located in the middle of full text, apply default style
   // all other area.
-  if (offset != 0)
+  if (offset != 0) {
     header_label->AddStyleRange(gfx::Range(0, offset), default_style);
+  }
 
   // Construct contents area that includes main text and checkbox.
   auto* contents = AddChildView(std::make_unique<views::View>());
@@ -202,14 +203,16 @@ void CrashReportPermissionAskDialogView::CreateChildViews() {
   footnote_default_style.custom_font =
       GetFont(kFootnoteFontSize, gfx::Font::Weight::NORMAL);
 
-  if (offset != 0)
+  if (offset != 0) {
     footnote_label->AddStyleRange(gfx::Range(0, offset),
                                   footnote_default_style);
+  }
 
-  if (offset + setting_text.length() != footnote_text.length())
+  if (offset + setting_text.length() != footnote_text.length()) {
     footnote_label->AddStyleRange(
         gfx::Range(offset + setting_text.length(), footnote_text.length()),
         footnote_default_style);
+  }
 }
 
 ui::mojom::ModalType CrashReportPermissionAskDialogView::GetModalType() const {

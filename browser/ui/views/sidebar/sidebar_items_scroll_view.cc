@@ -79,11 +79,11 @@ class SidebarItemsArrowView : public views::ImageButton {
     // Apply toolbar button's ink drop config, like sidebar items do. Ink drop
     // config is reset per theme.
     constexpr int kInset = 2;
-    ConfigureInkDrop(
-        this, std::make_unique<views::RoundRectHighlightPathGenerator>(
-                  gfx::Insets::VH(kInset, SidebarButtonView::kMargin),
-                  ChromeLayoutProvider::Get()->GetCornerRadiusMetric(
-                      views::Emphasis::kMaximum, {})));
+    ConfigureInkDrop(this,
+                     std::make_unique<views::RoundRectHighlightPathGenerator>(
+                         gfx::Insets::VH(kInset, SidebarButtonView::kMargin),
+                         ChromeLayoutProvider::Get()->GetCornerRadiusMetric(
+                             views::Emphasis::kMaximum, {})));
     // Draw above the opaque background painted below.
     views::InkDrop::Get(this)->SetLayerRegion(views::LayerRegion::kAbove);
   }

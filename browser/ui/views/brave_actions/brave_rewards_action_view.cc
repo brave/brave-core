@@ -123,7 +123,8 @@ class RewardsBadgeImageSource : public brave::BraveIconWithBadgeImageSource {
     check_rect.Inset(3);
     cc::PaintFlags check_flags;
     check_flags.setStyle(cc::PaintFlags::kFill_Style);
-    check_flags.setColor(color_provider->GetColor(nala::kColorSchemesOnPrimary));
+    check_flags.setColor(
+        color_provider->GetColor(nala::kColorSchemesOnPrimary));
     check_flags.setAntiAlias(true);
     canvas->DrawRoundRect(check_rect, 2, check_flags);
 
@@ -246,9 +247,8 @@ void BraveRewardsActionView::Update() {
   auto get_color_provider =
       base::BindRepeating(GetColorProviderForWebContents, weak_contents);
   const ui::ColorProvider* color_provider = get_color_provider.Run();
-  auto image_source =
-      std::make_unique<RewardsBadgeImageSource>(preferred_size,
-                                                get_color_provider);
+  auto image_source = std::make_unique<RewardsBadgeImageSource>(
+      preferred_size, get_color_provider);
   image_source->SetIcon(gfx::Image(GetRewardsIcon()));
 
   auto [text, background_color_id] = GetBadgeTextAndBackground();
