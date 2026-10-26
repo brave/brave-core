@@ -18,13 +18,18 @@ source_set("public") {
     "//ui/base/unowned_user_data",
   ]
 
-  deps = [ "//chrome/browser/ui/browser_window" ]
+  deps = [
+    "//chrome/browser/ui/browser_window",
+    "//content/public/browser",
+  ]
 }
 
 source_set("peek") {
   sources = [
     "peek_features.cc",
     "peek_features.h",
+    "peek_navigation_throttle.cc",
+    "peek_navigation_throttle.h",
     "peek_utils.cc",
     "peek_utils.h",
   ]
@@ -32,12 +37,11 @@ source_set("peek") {
   public_deps = [
     ":public",
     "//base",
+    "//content/public/browser",
     "//url",
   ]
 
   deps = [
-    "//components/tabs:public",
-    "//content/public/browser",
     "//content/public/common",
     "//ui/base",
   ]

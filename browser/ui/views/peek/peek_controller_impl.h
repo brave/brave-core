@@ -45,7 +45,9 @@ class PeekControllerImpl : public PeekController,
   // PeekController:
   void SetShieldsPanelProvider(
       std::unique_ptr<PeekShieldsPanelProvider> provider) override;
-  void Open(const content::OpenURLParams& params) override;
+  bool CanOpenFrom(content::WebContents* source) override;
+  bool Open(content::WebContents& source,
+            const content::OpenURLParams& params) override;
   void OpenAsTab() override;
   void Close() override;
   bool IsShowing() const override;
@@ -54,6 +56,8 @@ class PeekControllerImpl : public PeekController,
   // PeekContents::Delegate:
   void OnPeekCloseRequested() override;
   void OnPeekNavigationStateChanged() override;
+  void OnPeekMoveToTabRequired() override;
+  void OnPeekMoveToTabOrCloseRequested() override;
 
   // PeekView::Delegate:
   void OnPeekViewCloseRequested() override;
@@ -75,6 +79,7 @@ class PeekControllerImpl : public PeekController,
 
  private:
   void Show(std::unique_ptr<content::WebContents> contents);
+  void OpenAsTabOrClose();
   void CreateWidget();
   void UpdateWidgetBounds();
   gfx::Rect GetTargetBoundsInScreen() const;

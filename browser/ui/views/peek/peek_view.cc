@@ -19,6 +19,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ssl/chrome_security_state_util.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+#include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/views/page_info/page_info_bubble_specification.h"
 #include "chrome/browser/ui/views/page_info/page_info_bubble_view.h"
 #include "chrome/grit/generated_resources.h"
@@ -68,7 +69,9 @@ constexpr int kToolbarSpacing = 8;
 constexpr int kFaviconSize = 16;
 constexpr int kButtonIconSize = 16;
 constexpr int kMinCardInset = 24;
-// Fraction of the covered area the card leaves on each side.
+// Fraction of the covered area the card leaves on its left, right and bottom.
+// The top is flush with the browser toolbar so the card reads as browser UI
+// hanging from it rather than something drawn by the page.
 constexpr float kCardInsetRatio = 0.075f;
 constexpr float kOpenInitialScale = 0.9f;
 constexpr base::TimeDelta kOpenDuration = base::Milliseconds(200);
@@ -76,6 +79,8 @@ constexpr base::TimeDelta kOpenDuration = base::Milliseconds(200);
 constexpr int kCardShadowOffsetY = 4;
 constexpr int kCardShadowBlurRadius = 24;
 constexpr float kCardShadowOpacity = 0.24f;
+
+constexpr int kDividerThickness = 1;
 
 std::unique_ptr<views::ImageButton> CreateToolbarButton(
     views::Button::PressedCallback callback,
@@ -106,7 +111,8 @@ PeekView::PeekView(Delegate& delegate,
 
   card_ = AddChildView(std::make_unique<views::View>());
   card_->SetBackground(views::CreateRoundedRectBackground(
-      nala::kColorContainerBackground, kCardCornerRadius));
+      nala::kColorContainerBackground, /*top_radius=*/0.f,
+      /*bottom_radius=*/kCardCornerRadius));
   auto* card_layout =
       card_->SetLayoutManager(std::make_unique<views::BoxLayout>(
           views::BoxLayout::Orientation::kVertical));
@@ -119,6 +125,7 @@ PeekView::PeekView(Delegate& delegate,
   toolbar->SetBetweenChildSpacing(kToolbarSpacing);
   toolbar->SetCrossAxisAlignment(views::BoxLayout::CrossAxisAlignment::kCenter);
   toolbar->SetPreferredSize(gfx::Size(0, kToolbarHeight));
+  toolbar->SetBackground(views::CreateSolidBackground(kColorToolbar));
 
   site_info_button_ = toolbar->AddChildView(CreateToolbarButton(
       base::BindRepeating(&PeekView::ShowPageInfo, base::Unretained(this)),
@@ -159,6 +166,14 @@ PeekView::PeekView(Delegate& delegate,
                           base::Unretained(&delegate)),
       kLeoCloseIcon, IDS_APP_CLOSE));
 
+  // Spans the full width of the card, between the toolbar and the page. Faint
+  // is almost white in the light theme, so it can't be seen against the toolbar
+  // and page; subtle is the lightest divider that still shows.
+  auto* divider = card_->AddChildView(std::make_unique<views::View>());
+  divider->SetPreferredSize(gfx::Size(0, kDividerThickness));
+  divider->SetBackground(
+      views::CreateSolidBackground(nala::kColorDividerSubtle));
+
   web_view_ = card_->AddChildView(
       std::make_unique<views::WebView>(browser.GetProfile()));
   card_layout->SetFlexForView(web_view_, 1);
@@ -172,7 +187,7 @@ void PeekView::OnThemeChanged() {
   // `ViewShadow` takes its color at construction, so rebuild it.
   card_shadow_.reset();
   card_shadow_ = std::make_unique<ViewShadow>(
-      card_, gfx::RoundedCornersF(kCardCornerRadius),
+      card_, gfx::RoundedCornersF(0, 0, kCardCornerRadius, kCardCornerRadius),
       ViewShadow::ShadowParameters{
           .offset_x = 0,
           .offset_y = kCardShadowOffsetY,
@@ -274,11 +289,13 @@ void PeekView::Layout(PassKey) {
   const int inset_y = std::max(
       kMinCardInset, static_cast<int>(bounds.height() * kCardInsetRatio));
   gfx::Rect card_bounds = bounds;
-  card_bounds.Inset(gfx::Insets::VH(inset_y, inset_x));
+  card_bounds.Inset(gfx::Insets::TLBR(0, inset_x, inset_y, inset_x));
 
+  // Grow down from the toolbar, keeping the top edge attached to it.
   gfx::Rect initial_bounds = card_bounds;
   initial_bounds.ClampToCenteredSize(
       gfx::ScaleToRoundedSize(card_bounds.size(), kOpenInitialScale));
+  initial_bounds.set_y(card_bounds.y());
   card_->SetBoundsRect(gfx::Tween::RectValueBetween(
       open_animation_.GetCurrentValue(), initial_bounds, card_bounds));
 }
