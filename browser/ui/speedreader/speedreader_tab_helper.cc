@@ -371,6 +371,18 @@ void SpeedreaderTabHelper::ReadyToCommitNavigation(
 
 void SpeedreaderTabHelper::DidStartNavigation(
     content::NavigationHandle* navigation_handle) {
+  // The stored content belongs only to the reload of the page it was distilled
+  // from. Any other navigation which replaces the reload must not receive it.
+  if (!single_show_content_.empty() && navigation_handle->IsInMainFrame() &&
+      !navigation_handle->IsSameDocument() &&
+      (navigation_handle->GetReloadType() == content::ReloadType::NONE ||
+       navigation_handle->GetURL().GetWithoutRef() !=
+           single_show_content_url_.GetWithoutRef())) {
+    single_show_content_.clear();
+    if (IsDistilling(distill_state_)) {
+      TransitStateTo(ViewOriginal(), true);
+    }
+  }
   ProcessNavigation(navigation_handle);
 }
 
@@ -590,6 +602,7 @@ void SpeedreaderTabHelper::OnGetDocumentSource(bool success, std::string html) {
   }
 
   single_show_content_ = std::move(html);
+  single_show_content_url_ = web_contents()->GetLastCommittedURL();
   TransitStateTo(Distilling(Distilling::Reason::kManual));
 }
 
