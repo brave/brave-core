@@ -32,6 +32,9 @@ int LayoutProvider::GetCornerRadiusMetric(ShapeContextTokensOverride id) const {
       }
 #endif
       return 6;
+    case ShapeContextTokensOverride::kHigh:
+      // Matches the tab and tab hover card radius.
+      return 8;
     default:
       break;
   }
