@@ -44,7 +44,7 @@ void BraveBookmarkButton::SetToggled(bool on) {
 
 void BraveBookmarkButton::UpdateImageAndText() {
   const gfx::VectorIcon& icon =
-      active_ ? kLeoBrowserBookmarkCheckedIcon : kLeoBrowserBookmarkNormalIcon;
+      active_ ? kLeoBookmarkAddedIcon : kLeoBrowserBookmarkNormalIcon;
   // Match other toolbar buttons while the bookmark bubble is open.
   const ui::ColorId color_id =
       IsActivated() ? static_cast<ui::ColorId>(kColorToolbarButtonActivated)
