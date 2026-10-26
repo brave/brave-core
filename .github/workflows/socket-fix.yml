@@ -145,7 +145,7 @@ jobs:
           PR_BODY: ${{ steps.body.outputs.body }}
         run: |
           git config user.name "brave-workflows"
-          git config user.email "315916555+brave-workflows@users.noreply.github.com"
+          git config user.email "brave-workflows-devops@brave.com"
           git checkout -b "$PR_BRANCH"
           if git diff --quiet && git diff --cached --quiet && [ -z "$(git status --porcelain)" ]; then
             echo "No changes to commit — skipping PR creation"
