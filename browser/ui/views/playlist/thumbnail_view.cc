@@ -35,6 +35,7 @@ class DefaultThumbnailBackground : public views::Background {
     const ui::ColorProvider* color_provider = view->GetColorProvider();
     cc::PaintFlags flags;
     flags.setBlendMode(SkBlendMode::kSrcOver);
+    // Fixed brand gradient for the placeholder thumbnail.
     flags.setShader(gfx::CreateGradientShader(
         bounds.bottom_right(), bounds.origin(),
         /*start=*/color_provider->GetColor(nala::kColorPrimitiveBlurple35),

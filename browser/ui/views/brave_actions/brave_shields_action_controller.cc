@@ -188,6 +188,7 @@ BraveShieldsActionController::GetImageSource(
     if (!badge_text.empty()) {
       const ui::ColorProvider* color_provider =
           GetColorProviderForWebContents(web_contents);
+      // White text on the fixed badge colors in every theme.
       badge = std::make_unique<IconWithBadgeImageSource::Badge>(
           badge_text, color_provider->GetColor(nala::kColorPrimitiveNeutral100),
           color_provider->GetColor(nala::kColorPrimitiveNeutral40));

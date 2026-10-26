@@ -249,6 +249,7 @@ void WalletButton::UpdateImageAndText() {
   image_source->SetIcon(gfx::Image(icon));
 
   auto text = GetBadgeText();
+  // White text on the fixed badge colors in every theme.
   image_source->SetBadge(std::make_unique<IconWithBadgeImageSource::Badge>(
       text, color_provider->GetColor(nala::kColorPrimitiveNeutral100),
       brave::kBadgeNotificationBG));

@@ -160,9 +160,8 @@ void BraveAvatarToolbarButton::UpdateColorsAndInsets() {
   // Use custom bg/border for private/tor window.
   if (state_manager_.browser()->GetProfile()->IsOffTheRecord()) {
     const bool is_tor = state_manager_.browser()->GetProfile()->IsTor();
-    const ui::ColorId text_color = is_tor
-                                       ? nala::kColorPrimitiveTorWindow80
-                                       : nala::kColorPrimitivePrivateWindow80;
+    const ui::ColorId text_color =
+        is_tor ? nala::kColorTorWindow60 : nala::kColorPrivateWindow60;
     SetEnabledTextColors(text_color);
     SetTextColor(views::Button::STATE_DISABLED, text_color);
 
@@ -181,10 +180,10 @@ void BraveAvatarToolbarButton::UpdateColorsAndInsets() {
     SkColor border_color = gfx::kPlaceholderColor;
     SkColor toolbar_color = gfx::kPlaceholderColor;
     if (ui::ColorProvider* cp = GetColorProvider()) {
-      border_color = SkColorSetA(
-          cp->GetColor(is_tor ? nala::kColorPrimitiveTorWindow50
-                              : nala::kColorPrimitivePrivateWindow50),
-          0x66);
+      border_color =
+          SkColorSetA(cp->GetColor(is_tor ? nala::kColorTorWindow40
+                                          : nala::kColorPrivateWindow40),
+                      0x66);
       toolbar_color = cp->GetColor(kColorToolbar);
     }
     const auto final_border_color =

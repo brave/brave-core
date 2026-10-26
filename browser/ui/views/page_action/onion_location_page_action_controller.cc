@@ -117,6 +117,7 @@ void OnionLocationPageActionController::UpdatePageAction(
   if (profile->IsTor()) {
     page_action_controller_->OverrideImage(
         kActionShowOnionLocation,
+        // White on the Tor chip; there is no semantic white token.
         ui::ImageModel::FromVectorIcon(kLeoProductTorIcon,
                                        nala::kColorPrimitiveTorWindow100));
     page_action_controller_->ShowSuggestionChip(kActionShowOnionLocation);
@@ -131,7 +132,7 @@ void OnionLocationPageActionController::UpdatePageAction(
             onion_location_text));
     page_action_controller_->OverrideChipColors(
         kActionShowOnionLocation,
-        color_provider.GetColor(nala::kColorPrimitiveTorWindow40),
+        color_provider.GetColor(nala::kColorTorWindow30),
         color_provider.GetColor(nala::kColorPrimitiveTorWindow100));
   } else {
     page_action_controller_->OverrideImage(

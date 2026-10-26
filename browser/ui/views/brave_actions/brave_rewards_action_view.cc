@@ -252,6 +252,7 @@ void BraveRewardsActionView::Update() {
   image_source->SetIcon(gfx::Image(GetRewardsIcon()));
 
   auto [text, background_color] = GetBadgeTextAndBackground();
+  // White text on the fixed badge colors in every theme.
   image_source->SetBadge(std::make_unique<IconWithBadgeImageSource::Badge>(
       text, color_provider->GetColor(nala::kColorPrimitiveNeutral100),
       background_color.ResolveToSkColor(color_provider)));
