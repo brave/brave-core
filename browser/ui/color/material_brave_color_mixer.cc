@@ -16,9 +16,6 @@ void AddMaterialBraveColorMixer(ui::ColorProvider* provider,
                                 const ui::ColorProviderKey& key) {
   CHECK(provider);
   ui::ColorMixer& mixer = provider->AddMixer();
-  const bool is_dark = key.color_mode == ui::ColorProviderKey::ColorMode::kDark;
 
-  mixer[kColorTabSearchScrollbarThumb] = {is_dark
-                                              ? nala::kColorPrimitiveNeutral35
-                                              : nala::kColorPrimitiveNeutral70};
+  mixer[kColorTabSearchScrollbarThumb] = {nala::kColorMiscScrollbarThumbColor};
 }

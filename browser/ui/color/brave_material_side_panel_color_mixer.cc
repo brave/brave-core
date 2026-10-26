@@ -14,7 +14,6 @@
 void AddBraveMaterialSidePanelColorMixer(ui::ColorProvider* provider,
                                          const ui::ColorProviderKey& key) {
   ui::ColorMixer& mixer = provider->AddMixer();
-  const bool is_dark = key.color_mode == ui::ColorProviderKey::ColorMode::kDark;
 
   // We don't use card background.
   mixer[kColorSidePanelCardBackground] = {SK_ColorTRANSPARENT};
@@ -22,8 +21,6 @@ void AddBraveMaterialSidePanelColorMixer(ui::ColorProvider* provider,
   // We don't use upstream's resize handle.
   mixer[kColorSidePanelHoverResizeAreaHandle] = {SK_ColorTRANSPARENT};
 
-  mixer[kColorSidePanelScrollbarThumb] = {is_dark
-                                              ? nala::kColorPrimitiveNeutral35
-                                              : nala::kColorPrimitiveNeutral70};
+  mixer[kColorSidePanelScrollbarThumb] = {nala::kColorMiscScrollbarThumbColor};
   mixer[kColorSidePanelContentBackground] = {nala::kColorContainerBackground};
 }

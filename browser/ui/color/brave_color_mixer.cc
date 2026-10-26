@@ -215,10 +215,10 @@ void AddChromeLightThemeColorMixer(ui::ColorProvider* provider,
                                    const ui::ColorProviderKey& key) {
   ui::ColorMixer& mixer = provider->AddMixer();
 
-  mixer[kColorTabThrobber] = {nala::kColorPrimitiveBrandsBat1};
+  mixer[kColorTabThrobber] = {SkColorSetRGB(0xd7, 0x55, 0x26)};
   mixer[kColorBookmarkBarForeground] = {kColorTabForegroundActiveFrameActive};
-  mixer[ui::kColorBadgeBackground] = {nala::kColorPrimitiveBlurple50};
-  mixer[ui::kColorBadgeForeground] = {nala::kColorPrimitiveBlurple95};
+  mixer[ui::kColorBadgeBackground] = {nala::kColorSchemesPrimary};
+  mixer[ui::kColorBadgeForeground] = {nala::kColorSchemesOnPrimary};
   mixer[kColorForTest] = {kLightColorForTest};
   mixer[kColorNewTabButtonBackgroundFrameActive] = {ui::kColorFrameActive};
   mixer[kColorNewTabButtonBackgroundFrameInactive] = {ui::kColorFrameInactive};
@@ -227,10 +227,6 @@ void AddChromeLightThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorTabStrokeFrameInactive] = {kColorTabStrokeFrameActive};
   mixer[kColorToolbarButtonIconInactive] = {
       ui::SetAlpha(kColorToolbarButtonIcon, kBraveDisabledControlAlpha)};
-  mixer[ui::kColorToggleButtonThumbOff] = {SK_ColorWHITE};
-  mixer[ui::kColorToggleButtonThumbOn] = {nala::kColorButtonBackground};
-  mixer[ui::kColorToggleButtonTrackOff] = {nala::kColorPrimitiveNeutral87};
-  mixer[ui::kColorToggleButtonTrackOn] = {nala::kColorPrimary20};
 
   mixer[kColorTabCloseButtonFocusRingActive] = {
       ui::kColorFocusableBorderFocused};
@@ -250,10 +246,10 @@ void AddChromeDarkThemeColorMixer(ui::ColorProvider* provider,
                                   const ui::ColorProviderKey& key) {
   ui::ColorMixer& mixer = provider->AddMixer();
 
-  mixer[kColorTabThrobber] = {nala::kColorPrimitiveBrandsBat1};
+  mixer[kColorTabThrobber] = {SkColorSetRGB(0xd7, 0x55, 0x26)};
   mixer[kColorBookmarkBarForeground] = {kColorTabForegroundActiveFrameActive};
-  mixer[ui::kColorBadgeBackground] = {nala::kColorPrimitiveBlurple60};
-  mixer[ui::kColorBadgeForeground] = {nala::kColorPrimitiveBlurple10};
+  mixer[ui::kColorBadgeBackground] = {nala::kColorSchemesPrimary};
+  mixer[ui::kColorBadgeForeground] = {nala::kColorSchemesOnPrimary};
   mixer[kColorForTest] = {kDarkColorForTest};
   mixer[kColorNewTabButtonBackgroundFrameActive] = {ui::kColorFrameActive};
   mixer[kColorNewTabButtonBackgroundFrameInactive] = {ui::kColorFrameInactive};
@@ -264,11 +260,6 @@ void AddChromeDarkThemeColorMixer(ui::ColorProvider* provider,
       ui::SetAlpha(kColorToolbarButtonIcon, kBraveDisabledControlAlpha)};
   mixer[kColorToolbarTopSeparatorFrameActive] = {kColorToolbar};
   mixer[kColorToolbarTopSeparatorFrameInactive] = {kColorToolbar};
-  mixer[ui::kColorToggleButtonThumbOff] = {SK_ColorWHITE};
-  mixer[ui::kColorToggleButtonThumbOn] = {nala::kColorPrimitiveBlurple35};
-  mixer[ui::kColorToggleButtonTrackOff] = {
-      nala::kColorPrimitiveNeutralVariant40};
-  mixer[ui::kColorToggleButtonTrackOn] = {nala::kColorPrimitiveSecondary50};
 
   mixer[kColorTabCloseButtonFocusRingActive] = {
       ui::kColorFocusableBorderFocused};
@@ -317,6 +308,7 @@ void AddBraveColorMixerForAllThemes(ui::ColorProvider* provider,
 
   // Custom theme will use this color. Other themes could have another
   // color by their color mixers.
+  // A primitive so the accent stays fixed on custom theme colors.
   mixer[kColorToolbarButtonActivated] = {nala::kColorPrimitiveBlurple60};
   mixer[kColorSidebarButtonPressed] = {kColorToolbarButtonActivated};
 
@@ -356,6 +348,7 @@ void AddBravifiedChromeThemeColorMixer(ui::ColorProvider* provider,
   // TODO(simonhong): Move these overriding to
   // AddChromeColorMixerForAllThemes().
   ui::ColorMixer& mixer = provider->AddMixer();
+  // Primitives: picked by contrast with the toolbar, which can be custom.
   mixer[kColorAppMenuHighlightSeverityLow] = {PickColorContrastingToToolbar(
       key, mixer, mixer.GetResultColor(nala::kColorPrimitiveGreen20),
       mixer.GetResultColor(nala::kColorPrimitiveGreen70))};
@@ -376,6 +369,13 @@ void AddBravifiedChromeThemeColorMixer(ui::ColorProvider* provider,
       mixer.GetResultColor(kColorDownloadToolbarButtonActive), 0.3 * 255)};
   mixer[kColorToolbarActionItemEngaged] = {nala::kColorIconInteractive};
 
+  // Match the Leo toggle component. Leo uses plain white for the unchecked
+  // thumb, which has no semantic token.
+  mixer[ui::kColorToggleButtonThumbOff] = {nala::kColorPrimitiveNeutral100};
+  mixer[ui::kColorToggleButtonThumbOn] = {nala::kColorSchemesOnPrimary};
+  mixer[ui::kColorToggleButtonTrackOff] = {nala::kColorSchemesOutlineVariant};
+  mixer[ui::kColorToggleButtonTrackOn] = {nala::kColorSchemesPrimary};
+
   key.color_mode == ui::ColorProviderKey::ColorMode::kDark
       ? AddChromeDarkThemeColorMixer(provider, key)
       : AddChromeLightThemeColorMixer(provider, key);
@@ -387,45 +387,44 @@ void AddBraveLightThemeColorMixer(ui::ColorProvider* provider,
 
   mixer[kColorForTest] = {kLightColorForTest};
 
+  // Primitives: picked by contrast with the toolbar, which can be custom.
   mixer[kColorBookmarkBarInstructionsText] = {PickColorContrastingToToolbar(
       key, mixer, mixer.GetResultColor(nala::kColorPrimitiveNeutral35),
       mixer.GetResultColor(nala::kColorPrimitiveNeutral100))};
-  mixer[kColorMenuItemSubText] = {nala::kColorPrimitiveNeutral60};
+  mixer[kColorMenuItemSubText] = {nala::kColorTextTertiary};
   mixer[kColorSearchConversionBannerTypeBackground] = {nala::kColorBlue10};
-  mixer[kColorSearchConversionBannerTypeDescText] = {
-      nala::kColorPrimitiveNeutralVariant20};
+  mixer[kColorSearchConversionBannerTypeDescText] = {nala::kColorTextPrimary};
   mixer[kColorSearchConversionBannerTypeBackgroundBorder] = {
       nala::kColorPrimary20};
   mixer[kColorSearchConversionBannerTypeBackgroundBorderHovered] = {
-      nala::kColorPrimitiveBlurple60};
+      nala::kColorPrimary30};
   mixer[kColorSearchConversionBannerTypeBackgroundGradientFrom] = {
       ui::SetAlpha(nala::kColorContainerBackground, 104)};
   mixer[kColorSearchConversionBannerTypeBackgroundGradientTo] = {
       nala::kColorPrimary10};
 
-  mixer[kColorDialogDontAskAgainButton] = {nala::kColorPrimitiveNeutral60};
-  mixer[kColorDialogDontAskAgainButtonHovered] = {
-      nala::kColorPrimitiveNeutral35};
+  mixer[kColorDialogDontAskAgainButton] = {nala::kColorTextTertiary};
+  mixer[kColorDialogDontAskAgainButtonHovered] = {nala::kColorTextSecondary};
   mixer[kColorSidebarAddBubbleHeaderText] = {nala::kColorTextPrimary};
   mixer[kColorSidebarAddBubbleItemTextBackgroundHovered] = {
       nala::kColorButtonBackground};
-  mixer[kColorSidebarAddBubbleItemTextHovered] = {
-      nala::kColorPrimitiveSecondary95};
-  mixer[kColorSidebarAddBubbleItemTextNormal] = {
-      nala::kColorPrimitiveNeutral15};
-  mixer[kColorSidebarSeparator] = {nala::kColorPrimitiveBlurple90};
+  mixer[kColorSidebarAddBubbleItemTextHovered] = {nala::kColorSchemesOnPrimary};
+  mixer[kColorSidebarAddBubbleItemTextNormal] = {nala::kColorTextPrimary};
+  mixer[kColorSidebarSeparator] = {nala::kColorDividerSubtle};
 
   mixer[kColorSidebarButtonBase] = {kColorToolbarButtonIcon};
   if (!HasCustomToolbarColor(key)) {
     mixer[kColorSidebarButtonPressed] = {kColorToolbarButtonActivated};
   }
 
+  // Primitives: picked by contrast with the toolbar, which can be custom.
   mixer[kColorSidebarArrowDisabled] = {PickColorContrastingToToolbar(
       key, mixer,
       SkColorSetA(mixer.GetResultColor(nala::kColorPrimitiveNeutral35), 0x8A),
       SkColorSetA(mixer.GetResultColor(nala::kColorPrimitiveNeutralVariant70),
                   0x8A))};
   mixer[kColorSidebarArrowNormal] = {kColorSidebarButtonBase};
+  // Primitives: picked by contrast with the toolbar, which can be custom.
   mixer[kColorSidebarItemDragIndicator] = {PickColorContrastingToToolbar(
       key, mixer, mixer.GetResultColor(nala::kColorPrimitiveNeutral15),
       mixer.GetResultColor(nala::kColorPrimitiveNeutralVariant80))};
@@ -433,15 +432,12 @@ void AddBraveLightThemeColorMixer(ui::ColorProvider* provider,
       nala::kColorContainerBackground};
   mixer[kColorWebDiscoveryInfoBarMessage] = {nala::kColorTextPrimary};
   mixer[kColorWebDiscoveryInfoBarLink] = {nala::kColorTextInteractive};
-  mixer[kColorWebDiscoveryInfoBarNoThanks] = {
-      nala::kColorPrimitiveNeutralVariant50};
-  mixer[kColorWebDiscoveryInfoBarClose] = {
-      nala::kColorPrimitiveNeutralVariant50};
+  mixer[kColorWebDiscoveryInfoBarNoThanks] = {nala::kColorTextTertiary};
+  mixer[kColorWebDiscoveryInfoBarClose] = {nala::kColorIconSecondary};
 
   // Color for download button when all completed and button needs user
   // interaction.
-  mixer[kColorBraveDownloadToolbarButtonActive] = {
-      nala::kColorPrimitiveBlurple50};
+  mixer[kColorBraveDownloadToolbarButtonActive] = {nala::kColorIconInteractive};
 
   mixer[kColorLocationBarHoveredShadow] = {
       SkColorSetA(SK_ColorBLACK, 0.07 * 255)};
@@ -465,63 +461,59 @@ void AddBraveDarkThemeColorMixer(ui::ColorProvider* provider,
 
   mixer[kColorForTest] = {kDarkColorForTest};
 
+  // Primitives: picked by contrast with the toolbar, which can be custom.
   mixer[kColorBookmarkBarInstructionsText] = {PickColorContrastingToToolbar(
       key, mixer, mixer.GetResultColor(nala::kColorPrimitiveNeutral35),
       mixer.GetResultColor(nala::kColorPrimitiveNeutral100))};
-  mixer[kColorMenuItemSubText] = {nala::kColorPrimitiveNeutralVariant60};
+  mixer[kColorMenuItemSubText] = {nala::kColorTextTertiary};
   mixer[kColorSearchConversionBannerTypeDescText] = {nala::kColorTextPrimary};
   mixer[kColorSearchConversionBannerTypeBackgroundBorder] = {
-      nala::kColorPrimitiveBlue30};
+      nala::kColorPrimary20};
   mixer[kColorSearchConversionBannerTypeBackgroundBorderHovered] = {
-      nala::kColorPrimitiveBlurple50};
+      nala::kColorPrimary30};
   mixer[kColorSearchConversionBannerTypeBackgroundGradientFrom] = {
       ui::SetAlpha(nala::kColorContainerBackground, 104)};
   mixer[kColorSearchConversionBannerTypeBackgroundGradientTo] = {
-      ui::SetAlpha(nala::kColorPrimitiveBlue30, 104)};
-  mixer[kColorDialogDontAskAgainButton] = {
-      nala::kColorPrimitiveNeutralVariant60};
-  mixer[kColorDialogDontAskAgainButtonHovered] = {
-      nala::kColorPrimitiveNeutralVariant80};
-  mixer[kColorSidebarAddBubbleHeaderText] = {nala::kColorPrimitiveSecondary95};
+      nala::kColorPrimary10};
+  mixer[kColorDialogDontAskAgainButton] = {nala::kColorTextTertiary};
+  mixer[kColorDialogDontAskAgainButtonHovered] = {nala::kColorTextSecondary};
+  mixer[kColorSidebarAddBubbleHeaderText] = {nala::kColorTextPrimary};
   mixer[kColorSidebarAddBubbleItemTextBackgroundHovered] = {
-      nala::kColorPrimitiveBlurple40};
-  mixer[kColorSidebarAddBubbleItemTextHovered] = {
-      nala::kColorPrimitiveSecondary95};
-  mixer[kColorSidebarAddBubbleItemTextNormal] = {
-      nala::kColorPrimitiveSecondary95};
-  mixer[kColorSidebarSeparator] = {nala::kColorPrimitiveNeutralVariant40};
+      nala::kColorButtonBackground};
+  mixer[kColorSidebarAddBubbleItemTextHovered] = {nala::kColorSchemesOnPrimary};
+  mixer[kColorSidebarAddBubbleItemTextNormal] = {nala::kColorTextPrimary};
+  mixer[kColorSidebarSeparator] = {nala::kColorDividerSubtle};
 
   mixer[kColorSidebarButtonBase] = {kColorToolbarButtonIcon};
   if (!HasCustomToolbarColor(key)) {
     mixer[kColorSidebarButtonPressed] = {kColorToolbarButtonActivated};
   }
+  // Primitives: picked by contrast with the toolbar, which can be custom.
   mixer[kColorSidebarArrowDisabled] = {PickColorContrastingToToolbar(
       key, mixer,
       SkColorSetA(mixer.GetResultColor(nala::kColorPrimitiveNeutral35), 0x8A),
       SkColorSetA(mixer.GetResultColor(nala::kColorPrimitiveNeutralVariant70),
                   0x8A))};
   mixer[kColorSidebarArrowNormal] = {kColorSidebarButtonBase};
+  // Primitives: picked by contrast with the toolbar, which can be custom.
   mixer[kColorSidebarItemDragIndicator] = {PickColorContrastingToToolbar(
       key, mixer, mixer.GetResultColor(nala::kColorPrimitiveNeutral15),
       mixer.GetResultColor(nala::kColorPrimitiveNeutralVariant80))};
   mixer[kColorWebDiscoveryInfoBarBackground] = {
       nala::kColorContainerBackground};
-  mixer[kColorWebDiscoveryInfoBarMessage] = {nala::kColorPrimitiveNeutral100};
-  mixer[kColorWebDiscoveryInfoBarLink] = {nala::kColorPrimitiveBlurple70};
-  mixer[kColorWebDiscoveryInfoBarNoThanks] = {
-      ui::SetAlpha(nala::kColorPrimitiveNeutral94, 0xBF)};
-  mixer[kColorWebDiscoveryInfoBarClose] = {
-      ui::SetAlpha(nala::kColorPrimitiveNeutralVariant60, 0xBF)};
+  mixer[kColorWebDiscoveryInfoBarMessage] = {nala::kColorTextPrimary};
+  mixer[kColorWebDiscoveryInfoBarLink] = {nala::kColorTextInteractive};
+  mixer[kColorWebDiscoveryInfoBarNoThanks] = {nala::kColorTextTertiary};
+  mixer[kColorWebDiscoveryInfoBarClose] = {nala::kColorIconSecondary};
 
-  mixer[kColorBraveDownloadToolbarButtonActive] = {
-      nala::kColorPrimitiveBlurple60};
+  mixer[kColorBraveDownloadToolbarButtonActive] = {nala::kColorIconInteractive};
 
   mixer[kColorLocationBarHoveredShadow] = {
       SkColorSetA(SK_ColorBLACK, 0.4 * 255)};
 
   // Colors for HelpBubble. IDs are defined in
   // chrome/browser/ui/color/chrome_color_id.h
-  mixer[kColorFeaturePromoBubbleBackground] = {nala::kColorNeutral5};
+  mixer[kColorFeaturePromoBubbleBackground] = {nala::kColorContainerBackground};
   mixer[kColorFeaturePromoBubbleForeground] = {nala::kColorTextSecondary};
   mixer[kColorFeaturePromoBubbleCloseButtonInkDrop] = {
       kColorToolbarInkDropHover};
