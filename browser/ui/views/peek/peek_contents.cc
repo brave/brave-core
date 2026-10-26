@@ -211,6 +211,10 @@ void PeekContents::VisibleSecurityStateChanged(content::WebContents* source) {
   delegate_->OnPeekNavigationStateChanged();
 }
 
+bool PeekContents::TakeFocus(content::WebContents* source, bool reverse) {
+  return delegate_->OnPeekTakeFocus(reverse);
+}
+
 bool PeekContents::HandleKeyboardEvent(
     content::WebContents* source,
     const input::NativeWebKeyboardEvent& event) {

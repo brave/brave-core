@@ -25,6 +25,7 @@
 #include "content/public/browser/page_navigator.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/gfx/geometry/rect.h"
+#include "ui/views/focus/focus_manager.h"
 
 PeekControllerImpl::PeekControllerImpl(BrowserWindowInterface& browser,
                                        BrowserView& browser_view)
@@ -136,6 +137,18 @@ void PeekControllerImpl::OnPeekMoveToTabRequired() {
 
 void PeekControllerImpl::OnPeekMoveToTabOrCloseRequested() {
   PostTask(&PeekControllerImpl::OpenAsTabOrClose);
+}
+
+bool PeekControllerImpl::OnPeekTakeFocus(bool reverse) {
+  // Use the Peek widget's focus manager, not the browser's, so focus cycles
+  // between the card's toolbar and the page.
+  views::FocusManager* focus_manager =
+      peek_view_ ? peek_view_->GetFocusManager() : nullptr;
+  if (!focus_manager) {
+    return false;
+  }
+  focus_manager->AdvanceFocus(reverse);
+  return true;
 }
 
 void PeekControllerImpl::OnPeekViewCloseRequested() {

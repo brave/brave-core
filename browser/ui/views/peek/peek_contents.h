@@ -43,6 +43,10 @@ class PeekContents : public content::WebContentsDelegate,
     // ever shown in Peek, closes it instead.
     virtual void OnPeekMoveToTabOrCloseRequested() = 0;
 
+    // Moves focus out of the page into the card's toolbar (or back around).
+    // Returns false if there is nowhere to move it.
+    virtual bool OnPeekTakeFocus(bool reverse) = 0;
+
    protected:
     virtual ~Delegate() = default;
   };
@@ -88,6 +92,7 @@ class PeekContents : public content::WebContentsDelegate,
   void NavigationStateChanged(content::WebContents* source,
                               content::InvalidateTypes changed_flags) override;
   void VisibleSecurityStateChanged(content::WebContents* source) override;
+  bool TakeFocus(content::WebContents* source, bool reverse) override;
   bool HandleKeyboardEvent(content::WebContents* source,
                            const input::NativeWebKeyboardEvent& event) override;
   void RunFileChooser(content::RenderFrameHost* render_frame_host,
