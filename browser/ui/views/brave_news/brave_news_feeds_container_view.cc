@@ -10,9 +10,8 @@
 #include "brave/browser/brave_news/brave_news_tab_helper.h"
 #include "brave/browser/ui/views/brave_news/brave_news_feed_item_view.h"
 #include "content/public/browser/web_contents.h"
-#include "third_party/skia/include/core/SkColor.h"
+#include "brave/ui/color/nala/nala_color_id.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
-#include "ui/color/color_provider_key.h"
 #include "ui/gfx/geometry/insets.h"
 #include "ui/gfx/geometry/size.h"
 #include "ui/views/background.h"
@@ -23,17 +22,8 @@
 #include "ui/views/layout/layout_types.h"
 #include "ui/views/view_class_properties.h"
 
-namespace {
-constexpr SkColor kBackgroundColorLight = SK_ColorWHITE;
-constexpr SkColor kBackgroundColorDark = SkColorSetRGB(36, 37, 45);
-
-constexpr SkColor kBorderColorLight = SkColorSetRGB(233, 233, 244);
-constexpr SkColor kBorderColorDark = SkColorSetRGB(59, 62, 79);
-}  // namespace
-
 BraveNewsFeedsContainerView::BraveNewsFeedsContainerView(
-    content::WebContents* contents)
-    : contents_(contents) {
+    content::WebContents* contents) {
   auto* tab_helper = BraveNewsTabHelper::FromWebContents(contents);
 
   auto available_feeds = tab_helper->GetAvailableFeedUrls();
@@ -54,22 +44,15 @@ BraveNewsFeedsContainerView::BraveNewsFeedsContainerView(
       .SetMainAxisAlignment(views::LayoutAlignment::kStart)
       .SetCrossAxisAlignment(views::LayoutAlignment::kStretch)
       .SetCollapseMargins(false);
-}
-
-BraveNewsFeedsContainerView::~BraveNewsFeedsContainerView() = default;
-
-void BraveNewsFeedsContainerView::OnThemeChanged() {
-  views::View::OnThemeChanged();
-
-  auto is_dark =
-      contents_->GetColorMode() == ui::ColorProviderKey::ColorMode::kDark;
 
   constexpr float kCornerRadius = 12;
   SetBackground(views::CreateRoundedRectBackground(
-      is_dark ? kBackgroundColorDark : kBackgroundColorLight, kCornerRadius));
-  SetBorder(views::CreateRoundedRectBorder(
-      1, kCornerRadius, is_dark ? kBorderColorDark : kBorderColorLight));
+      nala::kColorContainerBackground, kCornerRadius));
+  SetBorder(views::CreateRoundedRectBorder(1, kCornerRadius,
+                                           nala::kColorDividerSubtle));
 }
+
+BraveNewsFeedsContainerView::~BraveNewsFeedsContainerView() = default;
 
 BEGIN_METADATA(BraveNewsFeedsContainerView)
 END_METADATA
