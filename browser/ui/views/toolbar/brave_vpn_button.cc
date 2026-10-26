@@ -324,9 +324,8 @@ void BraveVPNButton::OnThemeChanged() {
   UpdateColorsAndInsets();
 }
 
-void BraveVPNButton::OnInkDropStateChanged(views::InkDropState state) {
-  ToolbarButton::OnInkDropStateChanged(state);
-  // The icon image is built here, so rebuild it for the activated color.
+void BraveVPNButton::UpdateIcon() {
+  // The icon image is built with the background and border.
   UpdateColorsAndInsets();
 }
 

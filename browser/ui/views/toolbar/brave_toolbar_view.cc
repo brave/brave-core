@@ -500,23 +500,6 @@ void BraveToolbarView::OnCompactModePrefChanged() {
   InvalidateLayout();
 }
 
-void BraveToolbarView::OnThemeChanged() {
-  ToolbarView::OnThemeChanged();
-
-  if (!brave_initialized_) {
-    return;
-  }
-
-  if (display_mode_ == DisplayMode::kNormal && bookmark_) {
-    bookmark_->UpdateImageAndText();
-  }
-#if BUILDFLAG(ENABLE_BRAVE_WALLET)
-  if (display_mode_ == DisplayMode::kNormal && wallet_) {
-    wallet_->UpdateImageAndText();
-  }
-#endif
-}
-
 void BraveToolbarView::OnProfileAdded(const base::FilePath& profile_path) {
   Update(nullptr);
 }
@@ -524,18 +507,6 @@ void BraveToolbarView::OnProfileAdded(const base::FilePath& profile_path) {
 void BraveToolbarView::OnProfileWasRemoved(const base::FilePath& profile_path,
                                            const std::u16string& profile_name) {
   Update(nullptr);
-}
-
-void BraveToolbarView::LoadImages() {
-  ToolbarView::LoadImages();
-  if (bookmark_) {
-    bookmark_->UpdateImageAndText();
-  }
-#if BUILDFLAG(ENABLE_BRAVE_WALLET)
-  if (wallet_) {
-    wallet_->UpdateImageAndText();
-  }
-#endif
 }
 
 void BraveToolbarView::Update(content::WebContents* tab) {

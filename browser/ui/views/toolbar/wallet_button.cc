@@ -185,9 +185,7 @@ void WalletButton::OnNotificationUpdate(bool show_suggest_badge,
   UpdateImageAndText();
 }
 
-void WalletButton::OnInkDropStateChanged(views::InkDropState state) {
-  ToolbarButton::OnInkDropStateChanged(state);
-  // The icon image is built here, so rebuild it for the activated color.
+void WalletButton::UpdateIcon() {
   UpdateImageAndText();
 }
 

@@ -65,7 +65,7 @@ class WalletButton : public ToolbarButton {
   void OnNotificationUpdate(bool show_suggest_badge, size_t counter);
 
   // ToolbarButton overrides:
-  void OnInkDropStateChanged(views::InkDropState state) override;
+  void UpdateIcon() override;
   void OnThemeChanged() override;
 
   raw_ptr<PrefService> prefs_ = nullptr;
