@@ -16,7 +16,6 @@ import { cancelHardwareOperation } from '../../common/async/hardware'
 import { startAppListening } from '../../common/async/listenerMiddleware'
 import type { State, Dispatch } from '../../common/async/types'
 
-import { walletApi } from '../../common/slices/api.slice'
 import getWalletPanelApiProxy from '../wallet_panel_api_proxy'
 import { storeCurrentAndPreviousPanel } from '../../utils/local-storage-utils'
 
@@ -87,23 +86,8 @@ startAppListening({
     if (!action.payload) {
       return
     }
-    // Show the (possibly cached) panel right away, then refresh.
+    // Show the panel right away, then refresh.
     getWalletPanelApiProxy().panelHandler.showUI()
-    // Pending dapp requests aren't pushed by observers, so refetch them in
-    // case they arrived while the panel was hidden.
-    listenerApi.dispatch(
-      walletApi.util.invalidateTags([
-        'PendingAddChainRequests',
-        'PendingSwitchChainRequests',
-        'PendingDecryptRequest',
-        'PendingEncryptRequest',
-        'PendingSignSolTransactionsRequests',
-        'PendingSignCardanoTransactionRequests',
-        'PendingSignMessageRequests',
-        'PendingSignMessageErrors',
-        'TokenSuggestionRequests',
-      ]),
-    )
     await refreshWalletInfo(listenerApi)
   },
 })
