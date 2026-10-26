@@ -326,16 +326,6 @@ std::u16string BraveVPNButton::GetRenderedTooltipText(
 
 void BraveVPNButton::OnThemeChanged() {
   ToolbarButton::OnThemeChanged();
-
-  // Configure vpn button specific ink drop config as ink drop is reset
-  // whenever theme changes.
-
-  // Set 0.0f to use same color for activated state.
-  views::InkDrop::Get(this)->SetVisibleOpacity(0.00f);
-
-  // Different base color is set per themes and it has alpha.
-  views::InkDrop::Get(this)->SetHighlightOpacity(1.0f);
-
   UpdateColorsAndInsets();
 }
 
