@@ -29,7 +29,10 @@ const MenuConfig& MenuConfig::instance() {
       mutable_config.item_horizontal_border_padding = 4;
       mutable_config.item_horizontal_padding =
           24 - config.item_horizontal_border_padding;
+      // Keep all menu radii equal, as upstream does.
       mutable_config.corner_radius = 8;
+      mutable_config.auxiliary_corner_radius = 8;
+      mutable_config.touchable_corner_radius = 8;
       mutable_config.use_bubble_border = true;
     }
   } const run_once(config);
