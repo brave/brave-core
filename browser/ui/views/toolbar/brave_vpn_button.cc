@@ -283,14 +283,9 @@ SkColor BraveVPNButton::GetIconColor() {
     return cp->GetColor(kColorBraveVpnButtonIconError);
   }
 
-  const auto ink_drop_state =
-      views::InkDrop::Get(this)->GetInkDrop()->GetTargetInkDropState();
-  ui::ColorId icon_color_id = kColorToolbarButtonIcon;
-  if (ink_drop_state == views::InkDropState::ACTIVATED) {
-    icon_color_id = kColorToolbarButtonActivated;
-  }
-
-  return cp->GetColor(icon_color_id);
+  return cp->GetColor(
+      IsActivated() ? static_cast<ui::ColorId>(kColorToolbarButtonActivated)
+                    : static_cast<ui::ColorId>(kColorToolbarButtonIcon));
 }
 
 SkColor BraveVPNButton::GetBadgeColor() {
@@ -329,8 +324,9 @@ void BraveVPNButton::OnThemeChanged() {
   UpdateColorsAndInsets();
 }
 
-void BraveVPNButton::InkDropRippleAnimationEnded(views::InkDropState state) {
-  // To use different icon color when activated.
+void BraveVPNButton::OnInkDropStateChanged(views::InkDropState state) {
+  ToolbarButton::OnInkDropStateChanged(state);
+  // The icon image is built here, so rebuild it for the activated color.
   UpdateColorsAndInsets();
 }
 
