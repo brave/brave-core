@@ -12,11 +12,13 @@
 #include "base/time/time.h"
 #include "brave/browser/ui/brave_tooltips/bounds_util.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "brave/ui/color/nala/nala_color_id.h"
 #include "build/build_config.h"
 #include "ui/accessibility/ax_enums.mojom.h"
 #include "ui/accessibility/ax_node_data.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/color/color_provider.h"
 #include "ui/compositor/layer.h"
 #include "ui/decoration/shadow.h"
 #include "ui/display/screen.h"
@@ -29,7 +31,6 @@
 #include "ui/gfx/geometry/size.h"
 #include "ui/gfx/geometry/vector2d.h"
 #include "ui/gfx/skia_paint_util.h"
-#include "ui/native_theme/native_theme.h"
 #include "ui/views/accessibility/view_accessibility.h"
 #include "ui/views/border.h"
 #include "ui/views/layout/box_layout.h"
@@ -46,9 +47,6 @@ constexpr gfx::Size kTooltipSize(434 + 15, 104 + 15);
 constexpr int kShadowElevation = 5;
 
 constexpr int kBorderThickness = 6;
-
-constexpr SkColor kLightModeBackgroundColor = SkColorSetRGB(0xFF, 0xFF, 0xFF);
-constexpr SkColor kDarkModeBackgroundColor = SkColorSetRGB(0x3B, 0x3E, 0x4F);
 
 constexpr SkColor kBorderColor = SkColorSetRGB(0xF7, 0x3A, 0x1C);
 
@@ -176,9 +174,8 @@ void BraveTooltipPopup::OnPaintBackground(gfx::Canvas* canvas) {
   gfx::Rect bounds(GetWidget()->GetLayer()->bounds());
   bounds.Inset(-GetShadowMargin());
 
-  const bool should_use_dark_colors =
-      GetNativeTheme()->preferred_color_scheme() ==
-      ui::NativeTheme::PreferredColorScheme::kDark;
+  const ui::ColorProvider* color_provider = GetColorProvider();
+  CHECK(color_provider);
 
   // Draw border
   canvas->FillRect(gfx::Rect(0, 0, kBorderThickness, bounds.bottom()),
@@ -194,8 +191,8 @@ void BraveTooltipPopup::OnPaintBackground(gfx::Canvas* canvas) {
   // Draw background
   cc::PaintFlags background_flags;
   background_flags.setAntiAlias(true);
-  background_flags.setColor(should_use_dark_colors ? kDarkModeBackgroundColor
-                                                   : kLightModeBackgroundColor);
+  background_flags.setColor(
+      color_provider->GetColor(nala::kColorContainerBackground));
   canvas->DrawRect(bounds, background_flags);
 }
 
