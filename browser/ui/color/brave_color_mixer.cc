@@ -215,7 +215,7 @@ void AddChromeLightThemeColorMixer(ui::ColorProvider* provider,
                                    const ui::ColorProviderKey& key) {
   ui::ColorMixer& mixer = provider->AddMixer();
 
-  mixer[kColorTabThrobber] = {SkColorSetRGB(0xd7, 0x55, 0x26)};
+  mixer[kColorTabThrobber] = {nala::kColorPrimitiveBrandsBat1};
   mixer[kColorBookmarkBarForeground] = {kColorTabForegroundActiveFrameActive};
   mixer[ui::kColorBadgeBackground] = {nala::kColorPrimitiveBlurple50};
   mixer[ui::kColorBadgeForeground] = {nala::kColorPrimitiveBlurple95};
@@ -250,7 +250,7 @@ void AddChromeDarkThemeColorMixer(ui::ColorProvider* provider,
                                   const ui::ColorProviderKey& key) {
   ui::ColorMixer& mixer = provider->AddMixer();
 
-  mixer[kColorTabThrobber] = {SkColorSetRGB(0xd7, 0x55, 0x26)};
+  mixer[kColorTabThrobber] = {nala::kColorPrimitiveBrandsBat1};
   mixer[kColorBookmarkBarForeground] = {kColorTabForegroundActiveFrameActive};
   mixer[ui::kColorBadgeBackground] = {nala::kColorPrimitiveBlurple60};
   mixer[ui::kColorBadgeForeground] = {nala::kColorPrimitiveBlurple10};
@@ -268,7 +268,7 @@ void AddChromeDarkThemeColorMixer(ui::ColorProvider* provider,
   mixer[ui::kColorToggleButtonThumbOn] = {nala::kColorPrimitiveBlurple35};
   mixer[ui::kColorToggleButtonTrackOff] = {
       nala::kColorPrimitiveNeutralVariant40};
-  mixer[ui::kColorToggleButtonTrackOn] = {SkColorSetRGB(0x76, 0x79, 0xB1)};
+  mixer[ui::kColorToggleButtonTrackOn] = {nala::kColorPrimitiveSecondary50};
 
   mixer[kColorTabCloseButtonFocusRingActive] = {
       ui::kColorFocusableBorderFocused};
@@ -353,19 +353,18 @@ void AddBravifiedChromeThemeColorMixer(ui::ColorProvider* provider,
   AddMaterialTabStripColorMixer(provider, key);
   AddMaterialSidePanelColorMixer(provider, key);
 
-  // TODO(simonhong): Use leo color when it's ready.
   // TODO(simonhong): Move these overriding to
   // AddChromeColorMixerForAllThemes().
   ui::ColorMixer& mixer = provider->AddMixer();
-  mixer[kColorAppMenuHighlightSeverityLow] = {
-      PickColorContrastingToToolbar(key, mixer, SkColorSetRGB(0x00, 0x46, 0x07),
-                                    SkColorSetRGB(0x58, 0xE1, 0x55))};
-  mixer[kColorAppMenuHighlightSeverityMedium] = {
-      PickColorContrastingToToolbar(key, mixer, SkColorSetRGB(0x4A, 0x39, 0x00),
-                                    SkColorSetRGB(0xF1, 0xC0, 0x0F))};
-  mixer[kColorAppMenuHighlightSeverityHigh] = {
-      PickColorContrastingToToolbar(key, mixer, SkColorSetRGB(0x7D, 0x00, 0x1A),
-                                    SkColorSetRGB(0xFF, 0xB3, 0xB2))};
+  mixer[kColorAppMenuHighlightSeverityLow] = {PickColorContrastingToToolbar(
+      key, mixer, mixer.GetResultColor(nala::kColorPrimitiveGreen20),
+      mixer.GetResultColor(nala::kColorPrimitiveGreen70))};
+  mixer[kColorAppMenuHighlightSeverityMedium] = {PickColorContrastingToToolbar(
+      key, mixer, mixer.GetResultColor(nala::kColorPrimitiveYellow30),
+      mixer.GetResultColor(nala::kColorPrimitiveYellow80))};
+  mixer[kColorAppMenuHighlightSeverityHigh] = {PickColorContrastingToToolbar(
+      key, mixer, mixer.GetResultColor(nala::kColorPrimitiveRed35),
+      mixer.GetResultColor(nala::kColorPrimitiveRed80))};
 
   if (key.custom_theme) {
     return;
@@ -472,13 +471,13 @@ void AddBraveDarkThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorMenuItemSubText] = {nala::kColorPrimitiveNeutralVariant60};
   mixer[kColorSearchConversionBannerTypeDescText] = {nala::kColorTextPrimary};
   mixer[kColorSearchConversionBannerTypeBackgroundBorder] = {
-      SkColorSetRGB(0x1F, 0x25, 0x7A)};
+      nala::kColorPrimitiveBlue30};
   mixer[kColorSearchConversionBannerTypeBackgroundBorderHovered] = {
       nala::kColorPrimitiveBlurple50};
   mixer[kColorSearchConversionBannerTypeBackgroundGradientFrom] = {
       ui::SetAlpha(nala::kColorContainerBackground, 104)};
   mixer[kColorSearchConversionBannerTypeBackgroundGradientTo] = {
-      SkColorSetARGB(104, 0x1F, 0x25, 0x7A)};
+      ui::SetAlpha(nala::kColorPrimitiveBlue30, 104)};
   mixer[kColorDialogDontAskAgainButton] = {
       nala::kColorPrimitiveNeutralVariant60};
   mixer[kColorDialogDontAskAgainButtonHovered] = {
