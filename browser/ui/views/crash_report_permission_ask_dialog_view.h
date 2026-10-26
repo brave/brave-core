@@ -20,7 +20,7 @@ class CrashReportPermissionAskDialogView : public views::DialogDelegateView {
   static void Show(BrowserWindowInterface* browser);
 
  private:
-  explicit CrashReportPermissionAskDialogView(BrowserWindowInterface* browser);
+  CrashReportPermissionAskDialogView();
   ~CrashReportPermissionAskDialogView() override;
 
   CrashReportPermissionAskDialogView(

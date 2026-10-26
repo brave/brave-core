@@ -132,17 +132,6 @@ void BraveTooltipView::OnDeviceScaleFactorChanged(
                                         new_device_scale_factor);
 }
 
-void BraveTooltipView::OnThemeChanged() {
-  views::View::OnThemeChanged();
-
-  UpdateTitleLabelColors();
-  UpdateBodyLabelColors();
-  UpdateOkButtonColors();
-  UpdateCancelButtonColors();
-
-  SchedulePaint();
-}
-
 ///////////////////////////////////////////////////////////////////////////////
 
 void BraveTooltipView::CreateView() {

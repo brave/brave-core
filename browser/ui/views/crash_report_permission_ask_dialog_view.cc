@@ -74,13 +74,12 @@ void OpenSettingPage() {
 // static
 void CrashReportPermissionAskDialogView::Show(BrowserWindowInterface* browser) {
   constrained_window::CreateBrowserModalDialogViews(
-      new CrashReportPermissionAskDialogView(browser),
+      new CrashReportPermissionAskDialogView(),
       BrowserWindow::FromBrowser(browser)->GetNativeWindow())
       ->Show();
 }
 
-CrashReportPermissionAskDialogView::CrashReportPermissionAskDialogView(
-    BrowserWindowInterface* browser) {
+CrashReportPermissionAskDialogView::CrashReportPermissionAskDialogView() {
   set_should_ignore_snapping(true);
 
   SetButtonLabel(ui::mojom::DialogButton::kOk,
