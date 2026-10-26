@@ -2449,7 +2449,7 @@ TEST_F(PolkadotSubstrateRpcUnitTest, DappParachainRpcUrls) {
 }
 
 TEST_F(PolkadotSubstrateRpcUnitTest, DappRequestEmptyMap) {
-  // Want to prove that if our dapp rpc url map is empty that we get an exepcted
+  // Want to prove that if our dapp rpc url map is empty that we get an expected
   // error.
   url_loader_factory_.ClearResponses();
 

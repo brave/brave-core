@@ -332,7 +332,7 @@ void PolkadotWalletService::OnEstimatedFee(
 std::optional<std::string_view>
 PolkadotWalletService::GetChainIdFromGenesisHash(
     std::string_view genesis_hash) {
-  static constexpr auto kGenesisHashChaindIdMap =
+  static constexpr auto kGenesisHashChainIdMap =
       base::MakeFixedFlatMap<std::string_view, std::string_view>({
           {"0x68d56f15f85d3136970ec16946040bc1752654e906147f7e43e9d539d7c3de2f",
            mojom::kPolkadotMainnetAssetHub},
@@ -351,7 +351,7 @@ PolkadotWalletService::GetChainIdFromGenesisHash(
       });
 
   if (const auto* chain_id =
-          base::FindOrNull(kGenesisHashChaindIdMap, genesis_hash)) {
+          base::FindOrNull(kGenesisHashChainIdMap, genesis_hash)) {
     return *chain_id;
   }
 
