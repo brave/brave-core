@@ -119,8 +119,6 @@ aggregate_vector_icons("brave_components_vector_icons") {
     "leo_shred_data.icon",
     "leo_smartphone_laptop.icon",
     "leo_spaces.icon",
-    "leo_star_filled.icon",
-    "leo_star_outline.icon",
     "leo_swap_horizontal.icon",
     "leo_trash.icon",
     "leo_tune_small.icon",

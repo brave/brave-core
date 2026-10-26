@@ -7,12 +7,12 @@
 
 #include <utility>
 
-#include "brave/components/vector_icons/vector_icons.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/view_ids.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_view.h"
 #include "chrome/grit/generated_resources.h"
+#include "components/omnibox/browser/vector_icons.h"
 #include "components/strings/grit/components_strings.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
@@ -42,8 +42,9 @@ void BraveBookmarkButton::SetToggled(bool on) {
 }
 
 void BraveBookmarkButton::UpdateImageAndText() {
-  const gfx::VectorIcon& icon =
-      active_ ? kLeoStarFilledIcon : kLeoStarOutlineIcon;
+  const gfx::VectorIcon& icon = active_
+                                    ? omnibox::kStarActiveChromeRefreshOldIcon
+                                    : omnibox::kStarChromeRefreshOldIcon;
   SetImageModel(views::Button::STATE_NORMAL,
                 ui::ImageModel::FromVectorIcon(icon, kColorToolbarButtonIcon,
                                                GetIconSize()));
