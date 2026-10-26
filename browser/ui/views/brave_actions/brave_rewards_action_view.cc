@@ -251,12 +251,12 @@ void BraveRewardsActionView::Update() {
       preferred_size, get_color_provider);
   image_source->SetIcon(gfx::Image(GetRewardsIcon()));
 
-  auto [text, background_color_id] = GetBadgeTextAndBackground();
+  auto [text, background_color] = GetBadgeTextAndBackground();
   image_source->SetBadge(std::make_unique<IconWithBadgeImageSource::Badge>(
       text, color_provider->GetColor(nala::kColorPrimitiveNeutral100),
-      color_provider->GetColor(background_color_id)));
-  image_source->UseVerifiedIcon(background_color_id ==
-                                nala::kColorIconInteractive);
+      background_color.ResolveToSkColor(color_provider)));
+  image_source->UseVerifiedIcon(background_color ==
+                                ui::ColorId(nala::kColorIconInteractive));
 
   SetImageModel(views::Button::STATE_NORMAL,
                 ui::ImageModel::FromImageSkia(
@@ -436,7 +436,7 @@ gfx::ImageSkia BraveRewardsActionView::GetRewardsIcon() {
   return gfx::CreateVectorIcon(kBatIcon, icon_size, color);
 }
 
-std::pair<std::string, ui::ColorId>
+std::pair<std::string, ui::ColorVariant>
 BraveRewardsActionView::GetBadgeTextAndBackground() {
   // Display the number of current notifications, if non-zero.
   size_t notifications = GetRewardsNotificationCount();
@@ -444,15 +444,15 @@ BraveRewardsActionView::GetBadgeTextAndBackground() {
     std::string text =
         notifications > 99 ? "99+" : base::NumberToString(notifications);
 
-    return {text, nala::kColorPrimitiveBrandsRorange2};
+    return {text, brave::kBadgeNotificationBG};
   }
 
   // Display a verified checkmark for verified publishers.
   if (std::get<bool>(publisher_registered_)) {
-    return {"", nala::kColorIconInteractive};
+    return {"", ui::ColorId(nala::kColorIconInteractive)};
   }
 
-  return {"", nala::kColorPrimitiveBrandsRorange2};
+  return {"", brave::kBadgeNotificationBG};
 }
 
 size_t BraveRewardsActionView::GetRewardsNotificationCount() {

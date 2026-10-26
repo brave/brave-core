@@ -251,7 +251,7 @@ void WalletButton::UpdateImageAndText() {
   auto text = GetBadgeText();
   image_source->SetBadge(std::make_unique<IconWithBadgeImageSource::Badge>(
       text, color_provider->GetColor(nala::kColorPrimitiveNeutral100),
-      color_provider->GetColor(nala::kColorPrimitiveBrandsRorange2)));
+      brave::kBadgeNotificationBG));
   gfx::ImageSkia badge_image(std::move(image_source), preferred_size);
 
   SetImageModel(views::Button::STATE_NORMAL,

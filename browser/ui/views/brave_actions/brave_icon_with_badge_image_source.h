@@ -18,6 +18,8 @@ class Rect;
 
 namespace brave {
 
+inline constexpr SkColor kBadgeNotificationBG = SkColorSetRGB(0xfb, 0x54, 0x2b);
+
 // The purpose of this subclass is to:
 // - Paint the BraveAction badge in a custom location and with a different size
 //   to regular BrowserAction extensions.

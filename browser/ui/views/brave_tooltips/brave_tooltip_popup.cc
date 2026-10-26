@@ -48,6 +48,8 @@ constexpr int kShadowElevation = 5;
 
 constexpr int kBorderThickness = 6;
 
+constexpr SkColor kBorderColor = SkColorSetRGB(0xF7, 0x3A, 0x1C);
+
 #if BUILDFLAG(IS_WIN)
 constexpr int kCornerRadius = 0;
 #elif BUILDFLAG(IS_MAC)
@@ -176,9 +178,8 @@ void BraveTooltipPopup::OnPaintBackground(gfx::Canvas* canvas) {
   CHECK(color_provider);
 
   // Draw border
-  canvas->FillRect(
-      gfx::Rect(0, 0, kBorderThickness, bounds.bottom()),
-      color_provider->GetColor(nala::kColorPrimitiveBrandsRorange2));
+  canvas->FillRect(gfx::Rect(0, 0, kBorderThickness, bounds.bottom()),
+                   kBorderColor);
 
   // Draw drop shadow
   cc::PaintFlags shadow_flags;
