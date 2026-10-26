@@ -16,6 +16,7 @@ export const cancelConnectHardwareWallet =
 
 // Re-export sync actions from slice
 export const {
+  setHasInitialized,
   navigateTo,
   showConnectToSite,
   setHardwareWalletInteractionError,
