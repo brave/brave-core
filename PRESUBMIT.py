@@ -746,27 +746,32 @@ def CheckPlasterFiles(input_api, output_api):
     if not affected_files:
         return []
 
-    # Pass the paths through a response file, as a large change (e.g. a
-    # Chromium rebase) exceeds the Windows command line length limit.
-    with input_api.CreateTemporaryFile(mode='w', suffix='.txt') as f:
-        f.write('\n'.join(affected_files))
-
-    cmd = [
-        input_api.python3_executable,
-        'tools/cr/plaster.py',
-        'check',
-        f'@{f.name}',
-    ]
+    # Paths go through response files, as a large change (e.g. a Chromium
+    # rebase) exceeds the Windows command line length limit. Checking is slow
+    # per file and independent between files, so it is split across processes.
+    batch_count = 1
+    if len(affected_files) >= 40:
+        batch_count = min(8, os.cpu_count() or 1)
     kwargs = {'cwd': input_api.PresubmitLocalPath()}
-    return input_api.RunTests(
-        [
+    commands = []
+    for index in range(batch_count):
+        with input_api.CreateTemporaryFile(mode='w', suffix='.txt') as f:
+            f.write('\n'.join(affected_files[index::batch_count]))
+        commands.append(
             input_api.Command(
-                name='plaster_check',
-                cmd=cmd,
-                kwargs=kwargs,
+                name=f'plaster_check {index + 1}/{batch_count}',
+                cmd=[
+                    input_api.python3_executable,
+                    'tools/cr/plaster.py',
+                    'check',
+                    f'@{f.name}',
+                ],
+                kwargs=dict(kwargs),
                 message=output_api.PresubmitError,
-            ),
-        ]
+            )
+        )
+    return input_api.RunTestsWithProgress(
+        'CheckPlasterFiles', commands, show_progress=False
     )
 
 

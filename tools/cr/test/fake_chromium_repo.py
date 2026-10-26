@@ -9,6 +9,7 @@ from pathlib import Path
 import contextlib
 import json
 import os
+import shutil
 import subprocess
 import tempfile
 
@@ -33,10 +34,21 @@ L10N_VERSION_STAMP = '<!-- Generated for Chromium {version} -->'
 GNRT_VERSION_STAMP = '# Generated for Chromium {version}'
 
 
+_template: FakeChromiumRepo | None = None
+
+
+def _get_template() -> FakeChromiumRepo:
+    """The pristine fixture that every `FakeChromiumRepo` is copied from."""
+    global _template
+    if _template is None:
+        _template = FakeChromiumRepo(_is_template=True)
+    return _template
+
+
 class FakeChromiumRepo:
     """A fake Chromium repository for testing purposes."""
 
-    def __init__(self) -> None:
+    def __init__(self, *, _is_template: bool = False) -> None:
         """Initializes the fake Chromium repository.
 
         Creates a temporary directory and initializes a fake Chromium repository
@@ -54,11 +66,21 @@ class FakeChromiumRepo:
         # symlink to /private/var; without resolving here, equality checks
         # against `Repository.root.resolve()` (which follows the symlink) fail.
         self.base_path: Path = Path(self.temp_dir).resolve() / 'workspace'
-        self._init_repo(self.chromium)
+        if _is_template:
+            self._init_repo(self.chromium)
 
-        # Set a brave repository under src/.
-        self._init_repo(self.brave)
-        self.brave_patches.mkdir(parents=True, exist_ok=True)
+            # Set a brave repository under src/.
+            self._init_repo(self.brave)
+            self.brave_patches.mkdir(parents=True, exist_ok=True)
+        else:
+            # Spawning git is slow on Windows, so the repositories are copied
+            # from one built once per process.
+            template = _get_template()
+            shutil.copytree(template.base_path, self.base_path, symlinks=True)
+            self._repos = [
+                self.base_path / path.relative_to(template.base_path)
+                for path in template._repos
+            ]
         self._original_cwd: Path | None = None
 
     def setup(self) -> None:
@@ -191,15 +213,23 @@ class FakeChromiumRepo:
         """
         path.mkdir(parents=True, exist_ok=True)
         self._run_git_command(['init', '-b', DEFAULT_BRANCH], path)
-        self._run_git_command(['config', 'core.autocrlf', 'false'], path)
+        # Written straight to the repo config, as a `git config` process per
+        # key is slow on Windows. Disables background gc to avoid failures
+        # cleaning up these repos during teardown, and signing, as a
+        # developer's global config would make `git tag` open an editor and
+        # `git commit` request a signature. The default rebase todo format is
+        # pinned too, as an author suffix in it breaks parsing the todo list.
+        with (path / '.git' / 'config').open('a', encoding='utf-8') as config:
+            config.write(
+                '[core]\n\tautocrlf = false\n'
+                '[user]\n\tname = Fake User\n\temail = fake@brave.com\n'
+                '[gc]\n\tauto = 0\n\tautodetach = 0\n\tautopacklimit = 0\n'
+                '[tag]\n\tgpgsign = false\n'
+                '[commit]\n\tgpgsign = false\n'
+                '[rebase]\n\tinstructionFormat = %s\n'
+            )
         (path / 'README.md').write_text(f'# Fake {path.name} repo\n')
         self._run_git_command(['add', 'README.md'], path)
-        self._run_git_command(['config', 'user.name', 'Fake User'], path)
-        self._run_git_command(['config', 'user.email', 'fake@brave.com'], path)
-        # Disable background gc to avoid failures cleaning up these repos during
-        # teardown.
-        for key in ('gc.auto', 'gc.autodetach', 'gc.autopacklimit'):
-            self._run_git_command(['config', key, '0'], path)
         self._run_git_command(['commit', '-m', 'Initial commit'], path)
         self._repos.append(path)
 
