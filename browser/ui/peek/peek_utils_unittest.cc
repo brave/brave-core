@@ -11,6 +11,7 @@
 #include "ui/base/page_transition_types.h"
 #include "ui/base/window_open_disposition.h"
 #include "url/gurl.h"
+#include "url/origin.h"
 
 namespace peek {
 
@@ -51,6 +52,39 @@ TEST(PeekUtilsTest, IsShiftClickOpen) {
                               /*renderer_initiated=*/true);
   non_http.url = GURL("chrome://settings");
   EXPECT_FALSE(IsShiftClickOpen(non_http));
+}
+
+TEST(PeekUtilsTest, IsPeekableInitiator) {
+  EXPECT_TRUE(IsPeekableInitiator(
+      url::Origin::Create(GURL("https://example.com/page"))));
+  EXPECT_TRUE(
+      IsPeekableInitiator(url::Origin::Create(GURL("http://example.com/"))));
+  EXPECT_FALSE(IsPeekableInitiator(url::Origin()));
+  EXPECT_FALSE(
+      IsPeekableInitiator(url::Origin::Create(GURL("chrome://settings"))));
+  EXPECT_FALSE(
+      IsPeekableInitiator(url::Origin::Create(GURL("file:///tmp/a.html"))));
+  EXPECT_FALSE(
+      IsPeekableInitiator(url::Origin::Create(GURL("data:text/html,hi"))));
+}
+
+TEST(PeekUtilsTest, CanOpenInPeek) {
+  content::OpenURLParams params(GURL("https://b.com/"), content::Referrer(),
+                                WindowOpenDisposition::NEW_FOREGROUND_TAB,
+                                ui::PAGE_TRANSITION_LINK,
+                                /*is_renderer_initiated=*/true);
+  // Without an initiator the load would look browser-initiated.
+  EXPECT_FALSE(CanOpenInPeek(params));
+
+  params.initiator_origin = url::Origin::Create(GURL("https://a.com/"));
+  EXPECT_TRUE(CanOpenInPeek(params));
+
+  params.initiator_origin = url::Origin();
+  EXPECT_FALSE(CanOpenInPeek(params));
+
+  params.initiator_origin = url::Origin::Create(GURL("https://a.com/"));
+  params.url = GURL("data:text/html,hi");
+  EXPECT_FALSE(CanOpenInPeek(params));
 }
 
 }  // namespace peek
