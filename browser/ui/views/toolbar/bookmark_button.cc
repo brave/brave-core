@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "brave/browser/ui/color/brave_color_id.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/view_ids.h"
@@ -45,15 +46,22 @@ void BraveBookmarkButton::UpdateImageAndText() {
   const gfx::VectorIcon& icon = active_
                                     ? omnibox::kStarActiveChromeRefreshOldIcon
                                     : omnibox::kStarChromeRefreshOldIcon;
+  // Match other toolbar buttons while the bookmark bubble is open.
+  const ui::ColorId color_id =
+      IsActivated() ? static_cast<ui::ColorId>(kColorToolbarButtonActivated)
+                    : static_cast<ui::ColorId>(kColorToolbarButtonIcon);
   SetImageModel(views::Button::STATE_NORMAL,
-                ui::ImageModel::FromVectorIcon(icon, kColorToolbarButtonIcon,
-                                               GetIconSize()));
+                ui::ImageModel::FromVectorIcon(icon, color_id, GetIconSize()));
   SetImageModel(views::Button::STATE_DISABLED,
                 ui::ImageModel::FromVectorIcon(
                     icon, kColorToolbarButtonIconInactive, GetIconSize()));
 
   int tooltip_id = active_ ? IDS_TOOLTIP_STARRED : IDS_TOOLTIP_STAR;
   SetTooltipText(l10n_util::GetStringUTF16(tooltip_id));
+}
+
+void BraveBookmarkButton::UpdateIcon() {
+  UpdateImageAndText();
 }
 
 BEGIN_METADATA(BraveBookmarkButton)

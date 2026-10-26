@@ -6,6 +6,7 @@
 #include "brave/browser/ui/views/toolbar/brave_browser_app_menu_button.h"
 
 #include "base/check_deref.h"
+#include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/page_info/features.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/vector_icons/vector_icons.h"
@@ -79,8 +80,14 @@ std::optional<SkColor> BraveBrowserAppMenuButton::GetHighlightColor() const {
 
 SkColor BraveBrowserAppMenuButton::GetForegroundColor(ButtonState state) const {
   std::optional<SkColor> color = GetColorForSeverity();
-  return color.has_value() ? color.value()
-                           : BrowserAppMenuButton::GetForegroundColor(state);
+  if (color.has_value()) {
+    return color.value();
+  }
+  // Match other toolbar buttons while the app menu is open.
+  if (IsActivated() && state != views::Button::STATE_DISABLED) {
+    return GetColorProvider()->GetColor(kColorToolbarButtonActivated);
+  }
+  return BrowserAppMenuButton::GetForegroundColor(state);
 }
 
 bool BraveBrowserAppMenuButton::ShouldPaintBorder() const {
