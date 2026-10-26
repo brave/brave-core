@@ -87,8 +87,7 @@ constexpr auto kCommandIcons =
 
         // The `Find and edit` submenu
         {IDC_FIND, &kLeoSearchIcon},
-        // Use when cut icon is ready.
-        // {IDC_CUT, &kLeoCutIcon},
+        {IDC_CUT, &kLeoCutIcon},
         {IDC_COPY, &kLeoCopyIcon},
         {IDC_PASTE, &kLeoClipboardIcon},
 
