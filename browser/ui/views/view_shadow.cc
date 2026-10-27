@@ -96,6 +96,14 @@ void ViewShadow::SetVisible(bool visible) {
   shadow_layer()->SetVisible(visible);
 }
 
+void ViewShadow::SetOpacity(float opacity) {
+  shadow_layer()->SetOpacity(opacity);
+}
+
+void ViewShadow::SetTransform(const gfx::Transform& transform) {
+  shadow_layer()->SetTransform(transform);
+}
+
 void ViewShadow::OnViewLayerBoundsSet(views::View* view) {
   DCHECK(view->layer());
   DCHECK_EQ(view, view_.get());

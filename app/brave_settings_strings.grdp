@@ -46,6 +46,12 @@
   </message>
 
   <!-- Settings / Appearance -->
+  <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_FLOATING_BOOKMARKS_BAR" desc="The label for the setting that shows the bookmarks bar over the page only when hovering over the toolbar." formatter_data="webui=BraveSettings">
+    Auto hiding (floating)
+  </message>
+  <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_FLOATING_BOOKMARKS_BAR_DESC" desc="The description for the floating bookmarks bar setting." formatter_data="webui=BraveSettings">
+    Show the bookmarks bar over the page when you hover over the toolbar
+  </message>
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_THEMES" desc="The label for brave theme change setting options">
     Brave colors
   </message>

@@ -4,6 +4,12 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
+  - description: Center floating bookmark items independently of the toolbar.
+    regex:
+      re_pattern: 'if \(browser_view_ && !browser_view_->IsFullscreen\(\)\) \{'
+      replace: |-
+        if (browser_view_ && parent() != browser_view_ &&
+              !browser_view_->IsFullscreen()) {
   - description: |-
       Inject LayoutBookmarkBarInstructionsView call in the middle of
       BookmarkBarView::Layout

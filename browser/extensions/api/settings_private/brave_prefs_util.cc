@@ -277,6 +277,7 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[kBraveSubtleAppMenuLogo] =
       settings_api::PrefType::kBoolean;
+  (*s_brave_allowlist)[kFloatingBookmarkBar] = settings_api::PrefType::kBoolean;
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
   // Brave Wallet pref

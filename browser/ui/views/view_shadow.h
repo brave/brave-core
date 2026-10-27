@@ -15,6 +15,10 @@
 #include "ui/gfx/shadow_value.h"
 #include "ui/views/view_observer.h"
 
+namespace gfx {
+class Transform;
+}
+
 // Manages a layer that will render a drop shadow under a given view. When an
 // instance is constructed for a view, the view will be set to paint to a layer
 // (if not already set) and a shadow layer will be added below. To remove the
@@ -61,6 +65,8 @@ class ViewShadow : public ui::LayerDelegate, public views::ViewObserver {
   const gfx::Insets& insets() const { return insets_; }
 
   void SetVisible(bool visible);
+  void SetOpacity(float opacity);
+  void SetTransform(const gfx::Transform& transform);
 
  protected:
   ui::Layer* shadow_layer() { return layer_owner_.layer(); }

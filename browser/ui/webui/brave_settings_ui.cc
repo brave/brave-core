@@ -19,6 +19,7 @@
 #include "brave/browser/resources/settings/grit/brave_settings_resources.h"
 #include "brave/browser/resources/settings/grit/brave_settings_resources_map.h"
 #include "brave/browser/shell_integrations/buildflags/buildflags.h"
+#include "brave/browser/ui/brave_ui_features.h"
 #include "brave/browser/ui/commands/accelerator_service_factory.h"
 #include "brave/browser/ui/page_info/features.h"
 #include "brave/browser/ui/webui/settings/brave_account/brave_account_dialog_opener.h"
@@ -372,6 +373,9 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
   html_source->AddBoolean(
       "isShowBraveShieldsInPageInfoEnabled",
       page_info::features::IsShowBraveShieldsInPageInfoEnabled());
+  html_source->AddBoolean(
+      "isFloatingBookmarkBarEnabled",
+      base::FeatureList::IsEnabled(features::kBraveFloatingBookmarkBar));
   html_source->AddBoolean("isUpstreamVerticalTabsFeatureEnabled",
                           tabs::IsUpstreamVerticalTabsForceEnabled());
 }

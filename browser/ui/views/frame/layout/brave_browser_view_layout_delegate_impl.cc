@@ -9,6 +9,14 @@
 #include "chrome/browser/ui/views/frame/browser_frame_view.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 
+bool BraveBrowserViewLayoutDelegateImpl::IsBookmarkBarVisible() const {
+  const auto* bookmark_bar = browser_view().GetBookmarkBarView();
+  if (bookmark_bar && bookmark_bar->parent() == &browser_view()) {
+    return false;
+  }
+  return BrowserViewLayoutDelegateImpl::IsBookmarkBarVisible();
+}
+
 BrowserLayoutParams BraveBrowserViewLayoutDelegateImpl::GetBrowserLayoutParams(
     bool use_browser_bounds) const {
 #if BUILDFLAG(IS_MAC)

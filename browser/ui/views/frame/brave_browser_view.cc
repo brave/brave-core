@@ -20,6 +20,7 @@
 #include "brave/browser/brave_browser_features.h"
 #include "brave/browser/sparkle_buildflags.h"
 #include "brave/browser/translate/brave_translate_utils.h"
+#include "brave/browser/ui/bookmark/bookmark_helper.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/commands/accelerator_service.h"
 #include "brave/browser/ui/commands/accelerator_service_factory.h"
@@ -31,6 +32,7 @@
 #include "brave/browser/ui/sidebar/sidebar_web_panel_controller.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
+#include "brave/browser/ui/views/bookmarks/floating_bookmark_bar_controller.h"
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
 #include "brave/browser/ui/views/brave_help_bubble/brave_help_bubble_host_view.h"
 #include "brave/browser/ui/views/frame/focus_mode_title_bar_view.h"
@@ -64,6 +66,7 @@
 #include "chrome/browser/devtools/devtools_ui_controller.h"
 #include "chrome/browser/devtools/devtools_window.h"
 #include "chrome/browser/ui/actions/chrome_action_id.h"
+#include "chrome/browser/ui/bookmarks/bookmark_bar_controller.h"
 #include "chrome/browser/ui/bookmarks/bookmark_tab_helper.h"
 #include "chrome/browser/ui/browser_actions.h"
 #include "chrome/browser/ui/browser_commands.h"
@@ -339,6 +342,10 @@ BraveBrowserView::BraveBrowserView(BrowserWindowInterface* browser)
                           base::Unretained(this)));
 
   pref_change_registrar_.Init(GetProfile()->GetPrefs());
+  pref_change_registrar_.Add(
+      kFloatingBookmarkBar,
+      base::BindRepeating(&BraveBrowserView::OnFloatingBookmarkBarPrefChanged,
+                          base::Unretained(this)));
 
   pref_change_registrar_.Add(
       kWebViewRoundedCorners,
@@ -471,6 +478,7 @@ void BraveBrowserView::UpdateSideBarHorizontalAlignment() {
 }
 
 BraveBrowserView::~BraveBrowserView() {
+  RestoreBookmarkBarParent();
   tab_cycling_event_handler_.reset();
 
   // Destroying delegate view to clear vertical tab state. See its dtor.
@@ -763,12 +771,89 @@ void BraveBrowserView::AddedToWidget() {
   }
 
   UpdateFocusModeState();
+  UpdateFloatingBookmarkBar();
   EnsureFindBarHostViewIsLastChild();
 }
 
 void BraveBrowserView::RemovedFromWidget() {
+  RestoreBookmarkBarParent();
   focus_mode_observation_.Reset();
   BrowserView::RemovedFromWidget();
+}
+
+bool BraveBrowserView::UsesFloatingBookmarkBar() const {
+  return browser_->GetType() == BrowserWindowInterface::Type::TYPE_NORMAL &&
+         brave::IsFloatingBookmarkBarEnabled(*GetProfile()->GetPrefs());
+}
+
+void BraveBrowserView::OnFloatingBookmarkBarPrefChanged() {
+  // The floating pref keeps the bar populated, so refresh its state first.
+  BookmarkBarController::From(browser_)->UpdateBookmarkBarState(
+      BookmarkBarController::StateChangeReason::kPrefChange);
+  MaybeShowBookmarkBar(GetActiveWebContents());
+  InvalidateLayout();
+}
+
+bool BraveBrowserView::MaybeShowBookmarkBar(content::WebContents* contents) {
+  // The upstream detach path assumes the bookmark view is in top_container_.
+  if (floating_bookmark_bar_) {
+    if (UsesFloatingBookmarkBar() && contents) {
+      floating_bookmark_bar_->UpdateActiveContents(contents);
+      return false;
+    }
+    RestoreBookmarkBarParent();
+  }
+  const bool needs_layout = BrowserView::MaybeShowBookmarkBar(contents);
+  UpdateFloatingBookmarkBar();
+  return needs_layout;
+}
+
+void BraveBrowserView::UpdateFloatingBookmarkBar() {
+  if (!UsesFloatingBookmarkBar()) {
+    RestoreBookmarkBarParent();
+    return;
+  }
+  if (floating_bookmark_bar_ || !GetWidget() || !bookmark_bar_view_ ||
+      bookmark_bar_view_->parent() != top_container_) {
+    return;
+  }
+
+  // Transfer the single native view. BrowserView's cached pointer stays valid.
+  AddChildView(top_container_->RemoveChildViewT(bookmark_bar_view_.get()));
+  bookmark_bar_view_->SetBookmarkBarState(
+      bookmark_bar_state(), BookmarkBar::DONT_ANIMATE_STATE_CHANGE);
+  floating_bookmark_bar_ = std::make_unique<FloatingBookmarkBarController>(
+      *this, *bookmark_bar_view_);
+  EnsureFindBarHostViewIsLastChild();
+  InvalidateLayout();
+}
+
+void BraveBrowserView::RestoreBookmarkBarParent() {
+  if (!floating_bookmark_bar_) {
+    return;
+  }
+  floating_bookmark_bar_.reset();
+  top_container_->AddChildView(RemoveChildViewT(bookmark_bar_view_.get()));
+  top_container_->ReorderChildView(top_container_separator_, -1);
+  InvalidateLayout();
+}
+
+void BraveBrowserView::UpdateFloatingBookmarkBarLayout() {
+  if (floating_bookmark_bar_) {
+    floating_bookmark_bar_->UpdateLayout();
+  }
+}
+
+bool BraveBrowserView::IsBookmarkBarVisible() const {
+  return floating_bookmark_bar_ ? floating_bookmark_bar_->IsRevealed()
+                                : BrowserView::IsBookmarkBarVisible();
+}
+
+void BraveBrowserView::OnFocusBookmarksToolbar() {
+  if (floating_bookmark_bar_) {
+    floating_bookmark_bar_->RevealForKeyboard();
+  }
+  BrowserView::OnFocusBookmarksToolbar();
 }
 
 #if BUILDFLAG(IS_MAC)

@@ -1202,6 +1202,14 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabMigrationChoices[] = {
           FEATURE_VALUE_TYPE(features::kBraveFilledBookmarkFolderIcon),        \
       },                                                                       \
       {                                                                        \
+          "brave-floating-bookmark-bar",                                       \
+          "Floating bookmarks bar",                                            \
+          "Adds a settings option that shows the bookmarks bar over the page " \
+          "when hovering over the toolbar",                                    \
+          kOsDesktop,                                                          \
+          FEATURE_VALUE_TYPE(features::kBraveFloatingBookmarkBar),             \
+      },                                                                       \
+      {                                                                        \
           "brave-ntp-refresh-enabled",                                         \
           "New Tab Page refresh",                                              \
           "Enables the refreshed version of the New Tab Page",                 \
