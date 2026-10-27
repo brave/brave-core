@@ -68,7 +68,8 @@ std::optional<tabs::TabData> MaybeGetSharedPinnedTabData(
   }
   TabStripModel* model = bwi->GetTabStripModel();
   const int index = model->GetIndexOfTab(tab);
-  if (index >= model->IndexOfFirstNonPinnedTab()) {
+  if (!model->ContainsIndex(index) ||
+      index >= model->IndexOfFirstNonPinnedTab()) {
     return std::nullopt;
   }
   auto* shared_pinned_tab_service =
