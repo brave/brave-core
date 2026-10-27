@@ -1,0 +1,466 @@
+components/omnibox/browser/BUILD.gn:import("//brave/components/omnibox/buildflags/buildflags.gni")
+components/omnibox/browser/BUILD.gn:    "//brave/components/omnibox/browser/brave_bookmark_provider_unittest.cc",
+components/omnibox/browser/BUILD.gn:    "//brave/components/omnibox/browser/brave_fake_autocomplete_provider_client.cc",
+components/omnibox/browser/BUILD.gn:    "//brave/components/omnibox/browser/brave_fake_autocomplete_provider_client.h",
+components/omnibox/browser/BUILD.gn:    "//brave/components/omnibox/browser/brave_featured_search_provider_unittest.cc",
+components/omnibox/browser/BUILD.gn:    "//brave/components/omnibox/browser/brave_history_quick_provider_unittest.cc",
+components/omnibox/browser/BUILD.gn:    "//brave/components/omnibox/browser/brave_history_url_provider_unittest.cc",
+components/omnibox/browser/BUILD.gn:    "//brave/components/omnibox/browser/brave_local_history_zero_suggest_provider_unittest.cc",
+components/omnibox/browser/BUILD.gn:    "//brave/components/omnibox/browser/brave_search_provider_unittest.cc",
+components/omnibox/browser/BUILD.gn:    "//brave/components/omnibox/browser/brave_shortcuts_provider_unittest.cc",
+components/omnibox/browser/BUILD.gn:    "//brave/components/omnibox/browser/omnibox_autocomplete_unittest.cc",
+components/omnibox/browser/BUILD.gn:    "//brave/components/omnibox/browser/on_device_head_provider_unittest.cc",
+components/omnibox/browser/BUILD.gn:    sources += [ "//brave/components/omnibox/browser/leo_provider_unittest.cc" ]
+components/omnibox/browser/BUILD.gn:    "//brave/components/omnibox/buildflags",
+components/omnibox/browser/BUILD.gn:    "//components/omnibox/browser",
+components/omnibox/browser/BUILD.gn:    "//components/omnibox/browser:test_support",
+components/omnibox/browser/BUILD.gn:      "//brave/components/omnibox/browser/arithmetic_evaluator_unittest.cc",
+components/omnibox/browser/BUILD.gn:      "//brave/components/omnibox/browser:arithmetic_evaluator",
+components/omnibox/browser/BUILD.gn:      "//brave/components/omnibox/browser/search_suggestions",
+components/omnibox/browser/BUILD.gn:        [ "//brave/components/omnibox/browser/commander_provider_unittest.cc" ]
+components/omnibox/browser/BUILD.gn:  data = [ "//components/test/data/omnibox" ]
+components/omnibox/browser/DEPS:  "+components/omnibox",
+components/omnibox/browser/DEPS:  # For upstream's already-translated omnibox suggestion strings.
+components/omnibox/browser/DEPS:  "+third_party/omnibox_proto",
+components/omnibox/browser/arithmetic_evaluator.cc:#include "brave/components/omnibox/browser/arithmetic_evaluator.h"
+components/omnibox/browser/arithmetic_evaluator.cc:namespace omnibox {
+components/omnibox/browser/arithmetic_evaluator.cc:// Bounds recursion on untrusted omnibox input. Operator runs are folded
+components/omnibox/browser/arithmetic_evaluator.cc:}  // namespace omnibox
+components/omnibox/browser/arithmetic_evaluator.h:#ifndef BRAVE_COMPONENTS_OMNIBOX_BROWSER_ARITHMETIC_EVALUATOR_H_
+components/omnibox/browser/arithmetic_evaluator.h:#define BRAVE_COMPONENTS_OMNIBOX_BROWSER_ARITHMETIC_EVALUATOR_H_
+components/omnibox/browser/arithmetic_evaluator.h:namespace omnibox {
+components/omnibox/browser/arithmetic_evaluator.h:// Declared here rather than with the other omnibox features because this
+components/omnibox/browser/arithmetic_evaluator.h:// The goal here is to handle basic calculator expressions in the omnibox and
+components/omnibox/browser/arithmetic_evaluator.h:}  // namespace omnibox
+components/omnibox/browser/arithmetic_evaluator.h:#endif  // BRAVE_COMPONENTS_OMNIBOX_BROWSER_ARITHMETIC_EVALUATOR_H_
+components/omnibox/browser/arithmetic_evaluator_unittest.cc:#include "brave/components/omnibox/browser/arithmetic_evaluator.h"
+components/omnibox/browser/arithmetic_evaluator_unittest.cc:namespace omnibox {
+components/omnibox/browser/arithmetic_evaluator_unittest.cc:}  // namespace omnibox
+components/omnibox/browser/brave_autocomplete_result_unittest.cc:#include "brave/components/omnibox/browser/open_here_action.h"
+components/omnibox/browser/brave_autocomplete_result_unittest.cc:#include "components/omnibox/browser/actions/omnibox_action_concepts.h"
+components/omnibox/browser/brave_autocomplete_result_unittest.cc:#include "components/omnibox/browser/actions/tab_switch_action.h"
+components/omnibox/browser/brave_autocomplete_result_unittest.cc:#include "components/omnibox/browser/autocomplete_match.h"
+components/omnibox/browser/brave_autocomplete_result_unittest.cc:#include "components/omnibox/browser/autocomplete_match_type.h"
+components/omnibox/browser/brave_autocomplete_result_unittest.cc:#include "components/omnibox/browser/autocomplete_result.h"
+components/omnibox/browser/brave_autocomplete_result_unittest.cc:#include "components/omnibox/common/omnibox_features.h"
+components/omnibox/browser/brave_autocomplete_result_unittest.cc:                           omnibox::AutocompleteMatchType::kHistoryTitle);
+components/omnibox/browser/brave_autocomplete_result_unittest.cc:TEST_F(BraveAutocompleteResultTest, OmniboxTabSwitchByDefaultIsDisabled) {
+components/omnibox/browser/brave_autocomplete_result_unittest.cc:      base::FeatureList::IsEnabled(omnibox::kOmniboxTabSwitchByDefault));
+components/omnibox/browser/brave_autocomplete_result_unittest.cc:  features.InitAndDisableFeature(omnibox::kOmniboxTabSwitchByDefault);
+components/omnibox/browser/brave_autocomplete_result_unittest.cc:    EXPECT_EQ(OmniboxActionId::TAB_SWITCH, match->actions[0]->ActionId());
+components/omnibox/browser/brave_autocomplete_result_unittest.cc:  features.InitAndEnableFeature(omnibox::kOmniboxTabSwitchByDefault);
+components/omnibox/browser/brave_autocomplete_result_unittest.cc:    EXPECT_EQ(OmniboxActionId::OPEN_HERE, match->actions[0]->ActionId());
+components/omnibox/browser/brave_autocomplete_result_unittest.cc:    EXPECT_EQ(OmniboxActionId::TAB_SWITCH, match->takeover_action->ActionId());
+components/omnibox/browser/brave_autocomplete_result_unittest.cc:  features.InitAndEnableFeature(omnibox::kOmniboxTabSwitchByDefault);
+components/omnibox/browser/brave_autocomplete_result_unittest.cc:      EXPECT_EQ(OmniboxActionId::OPEN_HERE, match->actions[0]->ActionId());
+components/omnibox/browser/brave_autocomplete_result_unittest.cc:      EXPECT_EQ(OmniboxActionId::TAB_SWITCH,
+components/omnibox/browser/brave_autocomplete_result_unittest.cc:// GetOmniboxEventResultType must not hit NOTREACHED() when the match has an
+components/omnibox/browser/brave_autocomplete_result_unittest.cc:       GetOmniboxEventResultTypeWithOpenHereActionDoesNotCrash) {
+components/omnibox/browser/brave_autocomplete_result_unittest.cc:                          omnibox::AutocompleteMatchType::kHistoryTitle);
+components/omnibox/browser/brave_autocomplete_result_unittest.cc:  EXPECT_EQ(OmniboxActionId::OPEN_HERE, match.actions[0]->ActionId());
+components/omnibox/browser/brave_autocomplete_result_unittest.cc:  auto result_type = match.GetOmniboxEventResultType(0);
+components/omnibox/browser/brave_autocomplete_result_unittest.cc:  EXPECT_EQ(result_type, metrics::OmniboxEventProto::Suggestion::HISTORY_TITLE);
+components/omnibox/browser/brave_bookmark_provider.cc:#include "brave/components/omnibox/browser/brave_bookmark_provider.h"
+components/omnibox/browser/brave_bookmark_provider.cc:#include "brave/components/omnibox/browser/brave_history_quick_provider.h"
+components/omnibox/browser/brave_bookmark_provider.cc:#include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
+components/omnibox/browser/brave_bookmark_provider.cc:#include "components/omnibox/browser/autocomplete_match.h"
+components/omnibox/browser/brave_bookmark_provider.cc:#include "components/omnibox/browser/bookmark_provider.h"
+components/omnibox/browser/brave_bookmark_provider.cc:  if (!client_->GetPrefs()->GetBoolean(omnibox::kBookmarkSuggestionsEnabled)) {
+components/omnibox/browser/brave_bookmark_provider.h:#ifndef BRAVE_COMPONENTS_OMNIBOX_BROWSER_BRAVE_BOOKMARK_PROVIDER_H_
+components/omnibox/browser/brave_bookmark_provider.h:#define BRAVE_COMPONENTS_OMNIBOX_BROWSER_BRAVE_BOOKMARK_PROVIDER_H_
+components/omnibox/browser/brave_bookmark_provider.h:#include "components/omnibox/browser/bookmark_provider.h"
+components/omnibox/browser/brave_bookmark_provider.h:#endif  // BRAVE_COMPONENTS_OMNIBOX_BROWSER_BRAVE_BOOKMARK_PROVIDER_H_
+components/omnibox/browser/brave_bookmark_provider_unittest.cc:#include "brave/components/omnibox/browser/brave_bookmark_provider.h"
+components/omnibox/browser/brave_bookmark_provider_unittest.cc:#include "brave/components/omnibox/browser/brave_fake_autocomplete_provider_client.h"
+components/omnibox/browser/brave_bookmark_provider_unittest.cc:#include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
+components/omnibox/browser/brave_bookmark_provider_unittest.cc:#include "components/omnibox/browser/autocomplete_input.h"
+components/omnibox/browser/brave_bookmark_provider_unittest.cc:#include "components/omnibox/browser/test_scheme_classifier.h"
+components/omnibox/browser/brave_bookmark_provider_unittest.cc:                            metrics::OmniboxEventProto::OTHER, classifier_);
+components/omnibox/browser/brave_bookmark_provider_unittest.cc:  prefs()->SetBoolean(omnibox::kBookmarkSuggestionsEnabled, false);
+components/omnibox/browser/brave_bookmark_provider_unittest.cc:  prefs()->SetBoolean(omnibox::kBookmarkSuggestionsEnabled, true);
+components/omnibox/browser/brave_bookmark_provider_unittest.cc:  prefs()->SetBoolean(omnibox::kBookmarkSuggestionsEnabled, true);
+components/omnibox/browser/brave_bookmark_provider_unittest.cc:  prefs()->SetBoolean(omnibox::kBookmarkSuggestionsEnabled, true);
+components/omnibox/browser/brave_bookmark_provider_unittest.cc:  prefs()->SetBoolean(omnibox::kBookmarkSuggestionsEnabled, true);
+components/omnibox/browser/brave_bookmark_provider_unittest.cc:  prefs()->SetBoolean(omnibox::kBookmarkSuggestionsEnabled, true);
+components/omnibox/browser/brave_bookmark_provider_unittest.cc:  prefs()->SetBoolean(omnibox::kBookmarkSuggestionsEnabled, true);
+components/omnibox/browser/brave_bookmark_provider_unittest.cc:  prefs()->SetBoolean(omnibox::kBookmarkSuggestionsEnabled, true);
+components/omnibox/browser/brave_bookmark_provider_unittest.cc:  prefs()->SetBoolean(omnibox::kBookmarkSuggestionsEnabled, true);
+components/omnibox/browser/brave_fake_autocomplete_provider_client.cc:#include "brave/components/omnibox/browser/brave_fake_autocomplete_provider_client.h"
+components/omnibox/browser/brave_fake_autocomplete_provider_client.cc:#include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
+components/omnibox/browser/brave_fake_autocomplete_provider_client.cc:#include "components/omnibox/browser/shortcuts_backend.h"
+components/omnibox/browser/brave_fake_autocomplete_provider_client.cc:  omnibox::RegisterBraveProfilePrefs(pref_service_->registry());
+components/omnibox/browser/brave_fake_autocomplete_provider_client.h:#ifndef BRAVE_COMPONENTS_OMNIBOX_BROWSER_BRAVE_FAKE_AUTOCOMPLETE_PROVIDER_CLIENT_H_
+components/omnibox/browser/brave_fake_autocomplete_provider_client.h:#define BRAVE_COMPONENTS_OMNIBOX_BROWSER_BRAVE_FAKE_AUTOCOMPLETE_PROVIDER_CLIENT_H_
+components/omnibox/browser/brave_fake_autocomplete_provider_client.h:#include "components/omnibox/browser/mock_autocomplete_provider_client.h"
+components/omnibox/browser/brave_fake_autocomplete_provider_client.h:#include "components/omnibox/browser/shortcuts_backend.h"
+components/omnibox/browser/brave_fake_autocomplete_provider_client.h:#endif  // BRAVE_COMPONENTS_OMNIBOX_BROWSER_BRAVE_FAKE_AUTOCOMPLETE_PROVIDER_CLIENT_H_
+components/omnibox/browser/brave_featured_search_provider_unittest.cc:#include "components/omnibox/browser/autocomplete_input.h"
+components/omnibox/browser/brave_featured_search_provider_unittest.cc:#include "components/omnibox/browser/autocomplete_match.h"
+components/omnibox/browser/brave_featured_search_provider_unittest.cc:#include "components/omnibox/browser/autocomplete_match_type.h"
+components/omnibox/browser/brave_featured_search_provider_unittest.cc:#include "components/omnibox/browser/autocomplete_result.h"
+components/omnibox/browser/brave_featured_search_provider_unittest.cc:#include "components/omnibox/browser/fake_autocomplete_provider_client.h"
+components/omnibox/browser/brave_featured_search_provider_unittest.cc:#include "components/omnibox/browser/featured_search_provider.h"
+components/omnibox/browser/brave_featured_search_provider_unittest.cc:#include "components/omnibox/browser/test_scheme_classifier.h"
+components/omnibox/browser/brave_featured_search_provider_unittest.cc:#include "third_party/metrics_proto/omnibox_event.pb.h"
+components/omnibox/browser/brave_featured_search_provider_unittest.cc:                              metrics::OmniboxEventProto::OTHER,
+components/omnibox/browser/brave_history_quick_provider.cc:#include "brave/components/omnibox/browser/brave_history_quick_provider.h"
+components/omnibox/browser/brave_history_quick_provider.cc:#include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
+components/omnibox/browser/brave_history_quick_provider.cc:#include "components/omnibox/browser/actions/omnibox_action.h"
+components/omnibox/browser/brave_history_quick_provider.cc:#include "components/omnibox/browser/autocomplete_provider.h"
+components/omnibox/browser/brave_history_quick_provider.cc:#include "components/omnibox/browser/history_quick_provider.h"
+components/omnibox/browser/brave_history_quick_provider.cc:  if (!client()->GetPrefs()->GetBoolean(omnibox::kHistorySuggestionsEnabled)) {
+components/omnibox/browser/brave_history_quick_provider.h:#ifndef BRAVE_COMPONENTS_OMNIBOX_BROWSER_BRAVE_HISTORY_QUICK_PROVIDER_H_
+components/omnibox/browser/brave_history_quick_provider.h:#define BRAVE_COMPONENTS_OMNIBOX_BROWSER_BRAVE_HISTORY_QUICK_PROVIDER_H_
+components/omnibox/browser/brave_history_quick_provider.h:#include "components/omnibox/browser/history_quick_provider.h"
+components/omnibox/browser/brave_history_quick_provider.h:#endif  // BRAVE_COMPONENTS_OMNIBOX_BROWSER_BRAVE_HISTORY_QUICK_PROVIDER_H_
+components/omnibox/browser/brave_history_quick_provider_unittest.cc:#include "brave/components/omnibox/browser/brave_history_quick_provider.h"
+components/omnibox/browser/brave_history_quick_provider_unittest.cc:#include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
+components/omnibox/browser/brave_history_quick_provider_unittest.cc:#include "components/omnibox/browser/fake_autocomplete_provider_client.h"
+components/omnibox/browser/brave_history_quick_provider_unittest.cc:#include "components/omnibox/browser/history_test_util.h"
+components/omnibox/browser/brave_history_quick_provider_unittest.cc:    omnibox::RegisterBraveProfilePrefs(registry);
+components/omnibox/browser/brave_history_quick_provider_unittest.cc:                            metrics::OmniboxEventProto::OTHER,
+components/omnibox/browser/brave_history_quick_provider_unittest.cc:  client().GetPrefs()->SetBoolean(omnibox::kHistorySuggestionsEnabled, true);
+components/omnibox/browser/brave_history_quick_provider_unittest.cc:  client().GetPrefs()->SetBoolean(omnibox::kHistorySuggestionsEnabled, false);
+components/omnibox/browser/brave_history_url_provider.cc:#include "brave/components/omnibox/browser/brave_history_url_provider.h"
+components/omnibox/browser/brave_history_url_provider.cc:#include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
+components/omnibox/browser/brave_history_url_provider.cc:      client()->GetPrefs()->GetBoolean(omnibox::kHistorySuggestionsEnabled);
+components/omnibox/browser/brave_history_url_provider.h:#ifndef BRAVE_COMPONENTS_OMNIBOX_BROWSER_BRAVE_HISTORY_URL_PROVIDER_H_
+components/omnibox/browser/brave_history_url_provider.h:#define BRAVE_COMPONENTS_OMNIBOX_BROWSER_BRAVE_HISTORY_URL_PROVIDER_H_
+components/omnibox/browser/brave_history_url_provider.h:#include "components/omnibox/browser/history_url_provider.h"
+components/omnibox/browser/brave_history_url_provider.h:#endif  // BRAVE_COMPONENTS_OMNIBOX_BROWSER_BRAVE_HISTORY_URL_PROVIDER_H_
+components/omnibox/browser/brave_history_url_provider_unittest.cc:#include "brave/components/omnibox/browser/brave_history_url_provider.h"
+components/omnibox/browser/brave_history_url_provider_unittest.cc:#include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
+components/omnibox/browser/brave_history_url_provider_unittest.cc:#include "components/omnibox/browser/autocomplete_provider.h"
+components/omnibox/browser/brave_history_url_provider_unittest.cc:#include "components/omnibox/browser/autocomplete_provider_listener.h"
+components/omnibox/browser/brave_history_url_provider_unittest.cc:#include "components/omnibox/browser/fake_autocomplete_provider_client.h"
+components/omnibox/browser/brave_history_url_provider_unittest.cc:#include "components/omnibox/browser/history_quick_provider.h"
+components/omnibox/browser/brave_history_url_provider_unittest.cc:#include "components/omnibox/browser/in_memory_url_index.h"
+components/omnibox/browser/brave_history_url_provider_unittest.cc:#include "components/omnibox/browser/test_scheme_classifier.h"
+components/omnibox/browser/brave_history_url_provider_unittest.cc:#include "third_party/metrics_proto/omnibox_event.pb.h"
+components/omnibox/browser/brave_history_url_provider_unittest.cc:                            metrics::OmniboxEventProto::OTHER,
+components/omnibox/browser/brave_history_url_provider_unittest.cc:    input.set_focus_type(metrics::OmniboxFocusType::INTERACTION_DEFAULT);
+components/omnibox/browser/brave_history_url_provider_unittest.cc:    omnibox::RegisterBraveProfilePrefs(registry);
+components/omnibox/browser/brave_history_url_provider_unittest.cc:  client_->GetPrefs()->SetBoolean(omnibox::kHistorySuggestionsEnabled, false);
+components/omnibox/browser/brave_history_url_provider_unittest.cc:  client_->GetPrefs()->SetBoolean(omnibox::kHistorySuggestionsEnabled, true);
+components/omnibox/browser/brave_history_url_provider_unittest.cc:  client_->GetPrefs()->SetBoolean(omnibox::kHistorySuggestionsEnabled, false);
+components/omnibox/browser/brave_local_history_zero_suggest_provider.cc:#include "brave/components/omnibox/browser/brave_local_history_zero_suggest_provider.h"
+components/omnibox/browser/brave_local_history_zero_suggest_provider.cc:#include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
+components/omnibox/browser/brave_local_history_zero_suggest_provider.cc:#include "components/omnibox/browser/autocomplete_input.h"
+components/omnibox/browser/brave_local_history_zero_suggest_provider.cc:#include "components/omnibox/browser/autocomplete_provider_client.h"
+components/omnibox/browser/brave_local_history_zero_suggest_provider.cc:#include "components/omnibox/browser/local_history_zero_suggest_provider.h"
+components/omnibox/browser/brave_local_history_zero_suggest_provider.cc:  if (!client_->GetPrefs()->GetBoolean(omnibox::kHistorySuggestionsEnabled) ||
+components/omnibox/browser/brave_local_history_zero_suggest_provider.cc:      !client_->GetPrefs()->GetBoolean(omnibox::kAutocompleteEnabled)) {
+components/omnibox/browser/brave_local_history_zero_suggest_provider.h:#ifndef BRAVE_COMPONENTS_OMNIBOX_BROWSER_BRAVE_LOCAL_HISTORY_ZERO_SUGGEST_PROVIDER_H_
+components/omnibox/browser/brave_local_history_zero_suggest_provider.h:#define BRAVE_COMPONENTS_OMNIBOX_BROWSER_BRAVE_LOCAL_HISTORY_ZERO_SUGGEST_PROVIDER_H_
+components/omnibox/browser/brave_local_history_zero_suggest_provider.h:#include "components/omnibox/browser/local_history_zero_suggest_provider.h"
+components/omnibox/browser/brave_local_history_zero_suggest_provider.h:#endif  // BRAVE_COMPONENTS_OMNIBOX_BROWSER_BRAVE_LOCAL_HISTORY_ZERO_SUGGEST_PROVIDER_H_
+components/omnibox/browser/brave_local_history_zero_suggest_provider_unittest.cc:#include "brave/components/omnibox/browser/brave_local_history_zero_suggest_provider.h"
+components/omnibox/browser/brave_local_history_zero_suggest_provider_unittest.cc:#include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
+components/omnibox/browser/brave_local_history_zero_suggest_provider_unittest.cc:#include "components/omnibox/browser/autocomplete_provider.h"
+components/omnibox/browser/brave_local_history_zero_suggest_provider_unittest.cc:#include "components/omnibox/browser/autocomplete_provider_listener.h"
+components/omnibox/browser/brave_local_history_zero_suggest_provider_unittest.cc:#include "components/omnibox/browser/fake_autocomplete_provider_client.h"
+components/omnibox/browser/brave_local_history_zero_suggest_provider_unittest.cc:#include "components/omnibox/browser/in_memory_url_index.h"
+components/omnibox/browser/brave_local_history_zero_suggest_provider_unittest.cc:#include "components/omnibox/browser/test_scheme_classifier.h"
+components/omnibox/browser/brave_local_history_zero_suggest_provider_unittest.cc:    AutocompleteInput input(u"", metrics::OmniboxEventProto::NTP_REALBOX,
+components/omnibox/browser/brave_local_history_zero_suggest_provider_unittest.cc:    input.set_focus_type(metrics::OmniboxFocusType::INTERACTION_FOCUS);
+components/omnibox/browser/brave_local_history_zero_suggest_provider_unittest.cc:    omnibox::RegisterBraveProfilePrefs(registry);
+components/omnibox/browser/brave_local_history_zero_suggest_provider_unittest.cc:  client_->GetPrefs()->SetBoolean(omnibox::kHistorySuggestionsEnabled, false);
+components/omnibox/browser/brave_local_history_zero_suggest_provider_unittest.cc:  client_->GetPrefs()->SetBoolean(omnibox::kHistorySuggestionsEnabled, true);
+components/omnibox/browser/brave_omnibox_prefs.cc:#include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
+components/omnibox/browser/brave_omnibox_prefs.cc:namespace omnibox {
+components/omnibox/browser/brave_omnibox_prefs.cc:}  // namespace omnibox
+components/omnibox/browser/brave_omnibox_prefs.h:#ifndef BRAVE_COMPONENTS_OMNIBOX_BROWSER_BRAVE_OMNIBOX_PREFS_H_
+components/omnibox/browser/brave_omnibox_prefs.h:#define BRAVE_COMPONENTS_OMNIBOX_BROWSER_BRAVE_OMNIBOX_PREFS_H_
+components/omnibox/browser/brave_omnibox_prefs.h:namespace omnibox {
+components/omnibox/browser/brave_omnibox_prefs.h:// Determines whether on-device head suggestions show up in the omnibox results.
+components/omnibox/browser/brave_omnibox_prefs.h:// Determines whether history suggestions show up in the omnibox results. This
+components/omnibox/browser/brave_omnibox_prefs.h:    "brave.omnibox.history_suggestions_enabled";
+components/omnibox/browser/brave_omnibox_prefs.h:// Determines whether bookmarks show up in the omnibox results. This controls
+components/omnibox/browser/brave_omnibox_prefs.h:    "brave.omnibox.bookmark_suggestions_enabled";
+components/omnibox/browser/brave_omnibox_prefs.h:// Determines whether commander suggestions show up in normal omnibox results.
+components/omnibox/browser/brave_omnibox_prefs.h:    "brave.omnibox.commander_suggestions_enabled";
+components/omnibox/browser/brave_omnibox_prefs.h:}  // namespace omnibox
+components/omnibox/browser/brave_omnibox_prefs.h:#endif  // BRAVE_COMPONENTS_OMNIBOX_BROWSER_BRAVE_OMNIBOX_PREFS_H_
+components/omnibox/browser/brave_on_device_head_provider.cc:#include "brave/components/omnibox/browser/brave_on_device_head_provider.h"
+components/omnibox/browser/brave_on_device_head_provider.cc:#include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
+components/omnibox/browser/brave_on_device_head_provider.cc:#include "components/omnibox/browser/autocomplete_provider_client.h"
+components/omnibox/browser/brave_on_device_head_provider.cc:#include "components/omnibox/browser/autocomplete_provider_listener.h"
+components/omnibox/browser/brave_on_device_head_provider.cc:  if (!prefs || !prefs->GetBoolean(omnibox::kOnDeviceSuggestionsEnabled)) {
+components/omnibox/browser/brave_on_device_head_provider.h:#ifndef BRAVE_COMPONENTS_OMNIBOX_BROWSER_BRAVE_ON_DEVICE_HEAD_PROVIDER_H_
+components/omnibox/browser/brave_on_device_head_provider.h:#define BRAVE_COMPONENTS_OMNIBOX_BROWSER_BRAVE_ON_DEVICE_HEAD_PROVIDER_H_
+components/omnibox/browser/brave_on_device_head_provider.h:#include "components/omnibox/browser/on_device_head_provider.h"
+components/omnibox/browser/brave_on_device_head_provider.h:#endif  // BRAVE_COMPONENTS_OMNIBOX_BROWSER_BRAVE_ON_DEVICE_HEAD_PROVIDER_H_
+components/omnibox/browser/brave_on_device_head_provider_unittest.cc:#include "brave/components/omnibox/browser/brave_on_device_head_provider.h"
+components/omnibox/browser/brave_on_device_head_provider_unittest.cc:#include "brave/components/omnibox/browser/brave_fake_autocomplete_provider_client.h"
+components/omnibox/browser/brave_on_device_head_provider_unittest.cc:#include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
+components/omnibox/browser/brave_on_device_head_provider_unittest.cc:#include "components/omnibox/browser/autocomplete_input.h"
+components/omnibox/browser/brave_on_device_head_provider_unittest.cc:#include "components/omnibox/browser/autocomplete_provider_listener.h"
+components/omnibox/browser/brave_on_device_head_provider_unittest.cc:#include "components/omnibox/browser/on_device_model_update_listener.h"
+components/omnibox/browser/brave_on_device_head_provider_unittest.cc:#include "components/omnibox/browser/test_scheme_classifier.h"
+components/omnibox/browser/brave_on_device_head_provider_unittest.cc:                            metrics::OmniboxEventProto::OTHER, classifier_);
+components/omnibox/browser/brave_on_device_head_provider_unittest.cc:    file_path = file_path.AppendASCII("components/test/data/omnibox");
+components/omnibox/browser/brave_on_device_head_provider_unittest.cc:  prefs()->SetBoolean(omnibox::kOnDeviceSuggestionsEnabled, false);
+components/omnibox/browser/brave_on_device_head_provider_unittest.cc:  prefs()->SetBoolean(omnibox::kOnDeviceSuggestionsEnabled, true);
+components/omnibox/browser/brave_search_provider.cc:#include "brave/components/omnibox/browser/brave_search_provider.h"
+components/omnibox/browser/brave_search_provider.cc:#include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
+components/omnibox/browser/brave_search_provider.cc:#include "brave/components/omnibox/buildflags/buildflags.h"
+components/omnibox/browser/brave_search_provider.cc:#include "components/omnibox/browser/autocomplete_input.h"
+components/omnibox/browser/brave_search_provider.cc:#include "components/omnibox/browser/autocomplete_match_type.h"
+components/omnibox/browser/brave_search_provider.cc:#include "components/omnibox/browser/autocomplete_provider.h"
+components/omnibox/browser/brave_search_provider.cc:#include "components/omnibox/browser/autocomplete_provider_client.h"
+components/omnibox/browser/brave_search_provider.cc:#include "components/omnibox/browser/omnibox_text_util.h"
+components/omnibox/browser/brave_search_provider.cc:#include "components/omnibox/browser/search_provider.h"
+components/omnibox/browser/brave_search_provider.cc:#include "components/omnibox/browser/search_suggestion_parser.h"
+components/omnibox/browser/brave_search_provider.cc:#include "components/omnibox/common/omnibox_feature_configs.h"
+components/omnibox/browser/brave_search_provider.cc:#include "third_party/omnibox_proto/navigational_intent.pb.h"
+components/omnibox/browser/brave_search_provider.cc:#include "brave/components/omnibox/browser/arithmetic_evaluator.h"
+components/omnibox/browser/brave_search_provider.cc:#include "brave/components/omnibox/browser/search_suggestions/query_check_utils.h"
+components/omnibox/browser/brave_search_provider.cc:// //components/omnibox renders a server-provided one, so a locally computed
+components/omnibox/browser/brave_search_provider.cc:        IDS_OMNIBOX_ONE_LINE_CALCULATOR_SUGGESTION_TEMPLATE, expression,
+components/omnibox/browser/brave_search_provider.cc:      /*suggestion*/ answer, omnibox::AutocompleteMatchType::kCalculator,
+components/omnibox/browser/brave_search_provider.cc:      omnibox::TYPE_CALCULATOR,
+components/omnibox/browser/brave_search_provider.cc:      /*deletion_url*/ {}, from_keyword, omnibox::NAV_INTENT_NONE, relevance,
+components/omnibox/browser/brave_search_provider.cc:  if (base::FeatureList::IsEnabled(omnibox::kBraveLocalCalculator)) {
+components/omnibox/browser/brave_search_provider.cc:      return result.type() == omnibox::AutocompleteMatchType::kCalculator;
+components/omnibox/browser/brave_search_provider.cc:        omnibox_feature_configs::CalcProvider::Get().score,
+components/omnibox/browser/brave_search_provider.cc:  if (input.IsZeroSuggest() || input.type() == metrics::OmniboxInputType::URL) {
+components/omnibox/browser/brave_search_provider.cc:          base::UTF16ToUTF8(omnibox::SanitizeTextForPaste(input.text())))) {
+components/omnibox/browser/brave_search_provider.cc:  return omnibox::EvaluateArithmeticExpression(input.text());
+components/omnibox/browser/brave_search_provider.cc:  if (!client()->GetPrefs()->GetBoolean(omnibox::kHistorySuggestionsEnabled)) {
+components/omnibox/browser/brave_search_provider.cc:          omnibox::SanitizeTextForPaste(input_.text()))) {
+components/omnibox/browser/brave_search_provider.h:#ifndef BRAVE_COMPONENTS_OMNIBOX_BROWSER_BRAVE_SEARCH_PROVIDER_H_
+components/omnibox/browser/brave_search_provider.h:#define BRAVE_COMPONENTS_OMNIBOX_BROWSER_BRAVE_SEARCH_PROVIDER_H_
+components/omnibox/browser/brave_search_provider.h:#include "brave/components/omnibox/buildflags/buildflags.h"
+components/omnibox/browser/brave_search_provider.h:#include "components/omnibox/browser/search_provider.h"
+components/omnibox/browser/brave_search_provider.h:#endif  // BRAVE_COMPONENTS_OMNIBOX_BROWSER_BRAVE_SEARCH_PROVIDER_H_
+components/omnibox/browser/brave_search_provider_unittest.cc:#include "brave/components/omnibox/browser/brave_search_provider.h"
+components/omnibox/browser/brave_search_provider_unittest.cc:#include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
+components/omnibox/browser/brave_search_provider_unittest.cc:#include "brave/components/omnibox/buildflags/buildflags.h"
+components/omnibox/browser/brave_search_provider_unittest.cc:#include "components/omnibox/browser/autocomplete_input.h"
+components/omnibox/browser/brave_search_provider_unittest.cc:#include "components/omnibox/browser/autocomplete_match.h"
+components/omnibox/browser/brave_search_provider_unittest.cc:#include "components/omnibox/browser/autocomplete_match_type.h"
+components/omnibox/browser/brave_search_provider_unittest.cc:#include "components/omnibox/browser/autocomplete_provider.h"
+components/omnibox/browser/brave_search_provider_unittest.cc:#include "components/omnibox/browser/remote_suggestions_service.h"
+components/omnibox/browser/brave_search_provider_unittest.cc:#include "components/omnibox/browser/search_provider.h"
+components/omnibox/browser/brave_search_provider_unittest.cc:#include "third_party/metrics_proto/omnibox_event.pb.h"
+components/omnibox/browser/brave_search_provider_unittest.cc:#include "brave/components/omnibox/browser/arithmetic_evaluator.h"
+components/omnibox/browser/brave_search_provider_unittest.cc:#include "brave/components/omnibox/browser/search_suggestions/query_check_utils.h"
+components/omnibox/browser/brave_search_provider_unittest.cc:    AutocompleteInput input(text, metrics::OmniboxEventProto::OTHER,
+components/omnibox/browser/brave_search_provider_unittest.cc:  profile_->GetPrefs()->SetBoolean(omnibox::kHistorySuggestionsEnabled, true);
+components/omnibox/browser/brave_search_provider_unittest.cc:  profile_->GetPrefs()->SetBoolean(omnibox::kHistorySuggestionsEnabled, false);
+components/omnibox/browser/brave_search_provider_unittest.cc:      return match.type == omnibox::AutocompleteMatchType::kCalculator;
+components/omnibox/browser/brave_search_provider_unittest.cc:  features.InitAndDisableFeature(omnibox::kBraveLocalCalculator);
+components/omnibox/browser/brave_search_provider_unittest.cc:    return match.type == omnibox::AutocompleteMatchType::kCalculator;
+components/omnibox/browser/brave_shortcuts_provider.cc:#include "brave/components/omnibox/browser/brave_shortcuts_provider.h"
+components/omnibox/browser/brave_shortcuts_provider.cc:#include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
+components/omnibox/browser/brave_shortcuts_provider.cc:#include "components/omnibox/browser/autocomplete_provider_client.h"
+components/omnibox/browser/brave_shortcuts_provider.cc:#include "components/omnibox/browser/shortcuts_provider.h"
+components/omnibox/browser/brave_shortcuts_provider.cc:  if (!client_->GetPrefs()->GetBoolean(omnibox::kHistorySuggestionsEnabled)) {
+components/omnibox/browser/brave_shortcuts_provider.h:#ifndef BRAVE_COMPONENTS_OMNIBOX_BROWSER_BRAVE_SHORTCUTS_PROVIDER_H_
+components/omnibox/browser/brave_shortcuts_provider.h:#define BRAVE_COMPONENTS_OMNIBOX_BROWSER_BRAVE_SHORTCUTS_PROVIDER_H_
+components/omnibox/browser/brave_shortcuts_provider.h:#include "components/omnibox/browser/shortcuts_provider.h"
+components/omnibox/browser/brave_shortcuts_provider.h:#endif  // BRAVE_COMPONENTS_OMNIBOX_BROWSER_BRAVE_SHORTCUTS_PROVIDER_H_
+components/omnibox/browser/brave_shortcuts_provider_unittest.cc:#include "brave/components/omnibox/browser/brave_shortcuts_provider.h"
+components/omnibox/browser/brave_shortcuts_provider_unittest.cc:#include "brave/components/omnibox/browser/brave_fake_autocomplete_provider_client.h"
+components/omnibox/browser/brave_shortcuts_provider_unittest.cc:#include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
+components/omnibox/browser/brave_shortcuts_provider_unittest.cc:#include "components/omnibox/browser/autocomplete_input.h"
+components/omnibox/browser/brave_shortcuts_provider_unittest.cc:#include "components/omnibox/browser/autocomplete_match.h"
+components/omnibox/browser/brave_shortcuts_provider_unittest.cc:#include "components/omnibox/browser/shortcuts_backend.h"
+components/omnibox/browser/brave_shortcuts_provider_unittest.cc:#include "components/omnibox/browser/shortcuts_database.h"
+components/omnibox/browser/brave_shortcuts_provider_unittest.cc:#include "components/omnibox/browser/shortcuts_provider.h"
+components/omnibox/browser/brave_shortcuts_provider_unittest.cc:#include "components/omnibox/browser/test_scheme_classifier.h"
+components/omnibox/browser/brave_shortcuts_provider_unittest.cc:                            metrics::OmniboxEventProto::OTHER, classifier_);
+components/omnibox/browser/brave_shortcuts_provider_unittest.cc:    input.set_focus_type(metrics::OmniboxFocusType::INTERACTION_DEFAULT);
+components/omnibox/browser/brave_shortcuts_provider_unittest.cc:  prefs()->SetBoolean(omnibox::kHistorySuggestionsEnabled, false);
+components/omnibox/browser/brave_shortcuts_provider_unittest.cc:  prefs()->SetBoolean(omnibox::kHistorySuggestionsEnabled, true);
+components/omnibox/browser/commander_action.cc:#include "brave/components/omnibox/browser/commander_action.h"
+components/omnibox/browser/commander_action.cc:    : OmniboxAction({}, GURL()),
+components/omnibox/browser/commander_action.h:#ifndef BRAVE_COMPONENTS_OMNIBOX_BROWSER_COMMANDER_ACTION_H_
+components/omnibox/browser/commander_action.h:#define BRAVE_COMPONENTS_OMNIBOX_BROWSER_COMMANDER_ACTION_H_
+components/omnibox/browser/commander_action.h:#include "components/omnibox/browser/actions/omnibox_action.h"
+components/omnibox/browser/commander_action.h:class CommanderAction : public OmniboxAction {
+components/omnibox/browser/commander_action.h:#endif  // BRAVE_COMPONENTS_OMNIBOX_BROWSER_COMMANDER_ACTION_H_
+components/omnibox/browser/commander_provider.cc:#include "brave/components/omnibox/browser/commander_provider.h"
+components/omnibox/browser/commander_provider.cc:#include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
+components/omnibox/browser/commander_provider.cc:#include "brave/components/omnibox/browser/commander_action.h"
+components/omnibox/browser/commander_provider.cc:#include "components/omnibox/browser/autocomplete_match.h"
+components/omnibox/browser/commander_provider.cc:#include "components/omnibox/browser/autocomplete_match_type.h"
+components/omnibox/browser/commander_provider.cc:#include "components/omnibox/browser/autocomplete_provider_client.h"
+components/omnibox/browser/commander_provider.cc:#include "components/omnibox/browser/autocomplete_provider_listener.h"
+components/omnibox/browser/commander_provider.cc:#include "third_party/omnibox_proto/groups.pb.h"
+components/omnibox/browser/commander_provider.cc:           omnibox::kCommanderSuggestionsEnabled) ||
+components/omnibox/browser/commander_provider.cc:       !base::FeatureList::IsEnabled(features::kBraveCommandsInOmnibox))) {
+components/omnibox/browser/commander_provider.cc:                            omnibox::AutocompleteMatchType::kBookmarkTitle);
+components/omnibox/browser/commander_provider.cc:      match.suggestion_group_id = omnibox::GroupId::GROUP_OTHER_NAVS;
+components/omnibox/browser/commander_provider.h:#ifndef BRAVE_COMPONENTS_OMNIBOX_BROWSER_COMMANDER_PROVIDER_H_
+components/omnibox/browser/commander_provider.h:#define BRAVE_COMPONENTS_OMNIBOX_BROWSER_COMMANDER_PROVIDER_H_
+components/omnibox/browser/commander_provider.h:#include "components/omnibox/browser/autocomplete_provider.h"
+components/omnibox/browser/commander_provider.h:#endif  // BRAVE_COMPONENTS_OMNIBOX_BROWSER_COMMANDER_PROVIDER_H_
+components/omnibox/browser/commander_provider_unittest.cc:#include "brave/components/omnibox/browser/commander_provider.h"
+components/omnibox/browser/commander_provider_unittest.cc:#include "brave/components/omnibox/browser/brave_fake_autocomplete_provider_client.h"
+components/omnibox/browser/commander_provider_unittest.cc:#include "components/omnibox/browser/autocomplete_input.h"
+components/omnibox/browser/commander_provider_unittest.cc:#include "components/omnibox/browser/autocomplete_match.h"
+components/omnibox/browser/commander_provider_unittest.cc:#include "components/omnibox/browser/test_scheme_classifier.h"
+components/omnibox/browser/commander_provider_unittest.cc:                           metrics::OmniboxEventProto::PageClassification::
+components/omnibox/browser/commander_provider_unittest.cc:                               OmniboxEventProto_PageClassification_NTP,
+components/omnibox/browser/commander_provider_unittest.cc:    EXPECT_EQ(omnibox::GroupId::GROUP_OTHER_NAVS, match.suggestion_group_id);
+components/omnibox/browser/leo_action.cc:#include "brave/components/omnibox/browser/leo_action.h"
+components/omnibox/browser/leo_action.cc:    : OmniboxAction({}, {}), query_(query) {}
+components/omnibox/browser/leo_action.h:#ifndef BRAVE_COMPONENTS_OMNIBOX_BROWSER_LEO_ACTION_H_
+components/omnibox/browser/leo_action.h:#define BRAVE_COMPONENTS_OMNIBOX_BROWSER_LEO_ACTION_H_
+components/omnibox/browser/leo_action.h:#include "components/omnibox/browser/actions/omnibox_action.h"
+components/omnibox/browser/leo_action.h:class LeoAction : public OmniboxAction {
+components/omnibox/browser/leo_action.h:  // OmniboxAction:
+components/omnibox/browser/leo_action.h:#endif  // BRAVE_COMPONENTS_OMNIBOX_BROWSER_LEO_ACTION_H_
+components/omnibox/browser/leo_provider.cc:#include "brave/components/omnibox/browser/leo_provider.h"
+components/omnibox/browser/leo_provider.cc:#include "brave/components/omnibox/browser/leo_action.h"
+components/omnibox/browser/leo_provider.cc:#include "components/omnibox/browser/autocomplete_input.h"
+components/omnibox/browser/leo_provider.cc:#include "components/omnibox/browser/autocomplete_match.h"
+components/omnibox/browser/leo_provider.cc:#include "components/omnibox/browser/autocomplete_provider_client.h"
+components/omnibox/browser/leo_provider.cc:#include "components/omnibox/browser/keyword_provider.h"
+components/omnibox/browser/leo_provider.cc:#include "third_party/metrics_proto/omnibox_input_type.pb.h"
+components/omnibox/browser/leo_provider.cc:#include "third_party/omnibox_proto/types.pb.h"
+components/omnibox/browser/leo_provider.cc:  // visible from OmniboxResultView.
+components/omnibox/browser/leo_provider.cc:  constexpr omnibox::AutocompleteMatchType kMatchType =
+components/omnibox/browser/leo_provider.cc:      omnibox::AutocompleteMatchType::kSearchSuggestEntity;
+components/omnibox/browser/leo_provider.cc:      l10n_util::GetStringUTF16(IDS_OMNIBOX_ASK_LEO_DESCRIPTION);
+components/omnibox/browser/leo_provider.cc:  match.suggest_type = omnibox::SuggestType::TYPE_ENTITY;
+components/omnibox/browser/leo_provider.h:#ifndef BRAVE_COMPONENTS_OMNIBOX_BROWSER_LEO_PROVIDER_H_
+components/omnibox/browser/leo_provider.h:#define BRAVE_COMPONENTS_OMNIBOX_BROWSER_LEO_PROVIDER_H_
+components/omnibox/browser/leo_provider.h:#include "components/omnibox/browser/autocomplete_provider.h"
+components/omnibox/browser/leo_provider.h:#endif  // BRAVE_COMPONENTS_OMNIBOX_BROWSER_LEO_PROVIDER_H_
+components/omnibox/browser/leo_provider_unittest.cc:#include "brave/components/omnibox/browser/leo_provider.h"
+components/omnibox/browser/leo_provider_unittest.cc:#include "brave/components/omnibox/browser/brave_fake_autocomplete_provider_client.h"
+components/omnibox/browser/leo_provider_unittest.cc:#include "components/omnibox/browser/autocomplete_input.h"
+components/omnibox/browser/leo_provider_unittest.cc:#include "components/omnibox/browser/test_scheme_classifier.h"
+components/omnibox/browser/leo_provider_unittest.cc:    AutocompleteInput input(u"test input", 0, metrics::OmniboxEventProto::OTHER,
+components/omnibox/browser/leo_provider_unittest.cc:    AutocompleteInput input(u"test input", 0, metrics::OmniboxEventProto::OTHER,
+components/omnibox/browser/omnibox_autocomplete_unittest.cc:#include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
+components/omnibox/browser/omnibox_autocomplete_unittest.cc:class OmniboxAutocompleteUnitTest : public testing::Test {
+components/omnibox/browser/omnibox_autocomplete_unittest.cc:  OmniboxAutocompleteUnitTest() {
+components/omnibox/browser/omnibox_autocomplete_unittest.cc:    omnibox::RegisterBraveProfilePrefs(pref_service_->registry());
+components/omnibox/browser/omnibox_autocomplete_unittest.cc:TEST_F(OmniboxAutocompleteUnitTest, OnDeviceSuggestionsEnabledTest) {
+components/omnibox/browser/omnibox_autocomplete_unittest.cc:  EXPECT_TRUE(prefs()->GetBoolean(omnibox::kOnDeviceSuggestionsEnabled));
+components/omnibox/browser/on_device_head_provider_unittest.cc:#include "components/omnibox/browser/on_device_head_provider.h"
+components/omnibox/browser/on_device_head_provider_unittest.cc:#include "components/omnibox/browser/autocomplete_input.h"
+components/omnibox/browser/on_device_head_provider_unittest.cc:#include "components/omnibox/browser/autocomplete_provider_listener.h"
+components/omnibox/browser/on_device_head_provider_unittest.cc:#include "components/omnibox/browser/fake_autocomplete_provider_client.h"
+components/omnibox/browser/on_device_head_provider_unittest.cc:#include "components/omnibox/browser/on_device_model_update_listener.h"
+components/omnibox/browser/on_device_head_provider_unittest.cc:#include "components/omnibox/browser/test_scheme_classifier.h"
+components/omnibox/browser/on_device_head_provider_unittest.cc:    file_path = file_path.AppendASCII("components/test/data/omnibox");
+components/omnibox/browser/on_device_head_provider_unittest.cc:  AutocompleteInput input(u"M", metrics::OmniboxEventProto::OTHER,
+components/omnibox/browser/open_here_action.cc:#include "brave/components/omnibox/browser/open_here_action.h"
+components/omnibox/browser/open_here_action.cc:#include "components/omnibox/browser/buildflags.h"
+components/omnibox/browser/open_here_action.cc:    : OmniboxAction(LabelStrings(IDS_OMNIBOX_OPEN_HERE_HINT,
+components/omnibox/browser/open_here_action.cc:                                 IDS_OMNIBOX_OPEN_HERE_HINT,
+components/omnibox/browser/open_here_action.cc:OmniboxActionId OpenHereAction::ActionId() const {
+components/omnibox/browser/open_here_action.cc:  return OmniboxActionId::OPEN_HERE;
+components/omnibox/browser/open_here_action.h:#ifndef BRAVE_COMPONENTS_OMNIBOX_BROWSER_OPEN_HERE_ACTION_H_
+components/omnibox/browser/open_here_action.h:#define BRAVE_COMPONENTS_OMNIBOX_BROWSER_OPEN_HERE_ACTION_H_
+components/omnibox/browser/open_here_action.h:#include "components/omnibox/browser/actions/omnibox_action.h"
+components/omnibox/browser/open_here_action.h:#include "components/omnibox/browser/actions/omnibox_action_concepts.h"
+components/omnibox/browser/open_here_action.h:class OpenHereAction : public OmniboxAction {
+components/omnibox/browser/open_here_action.h:  OmniboxActionId ActionId() const override;
+components/omnibox/browser/open_here_action.h:#endif  // BRAVE_COMPONENTS_OMNIBOX_BROWSER_OPEN_HERE_ACTION_H_
+components/omnibox/browser/promotion_provider.cc:#include "brave/components/omnibox/browser/promotion_provider.h"
+components/omnibox/browser/promotion_provider.cc:#include "brave/components/omnibox/browser/promotion_utils.h"
+components/omnibox/browser/promotion_provider.cc:#include "components/omnibox/browser/autocomplete_input.h"
+components/omnibox/browser/promotion_provider.cc:#include "components/omnibox/browser/autocomplete_match.h"
+components/omnibox/browser/promotion_provider.cc:#include "components/omnibox/browser/autocomplete_provider_client.h"
+components/omnibox/browser/promotion_provider.cc:  if (input.focus_type() != metrics::OmniboxFocusType::INTERACTION_DEFAULT ||
+components/omnibox/browser/promotion_provider.cc:      input.type() == metrics::OmniboxInputType::EMPTY ||
+components/omnibox/browser/promotion_provider.cc:      input.type() == metrics::OmniboxInputType::URL) {
+components/omnibox/browser/promotion_provider.cc:  // matches as the second or last match based on conversion type in omnibox
+components/omnibox/browser/promotion_provider.cc:                          omnibox::AutocompleteMatchType::kNavsuggest);
+components/omnibox/browser/promotion_provider.cc:  // URL is displayed at omnibox edit box when this match is selected.
+components/omnibox/browser/promotion_provider.h:#ifndef BRAVE_COMPONENTS_OMNIBOX_BROWSER_PROMOTION_PROVIDER_H_
+components/omnibox/browser/promotion_provider.h:#define BRAVE_COMPONENTS_OMNIBOX_BROWSER_PROMOTION_PROVIDER_H_
+components/omnibox/browser/promotion_provider.h:#include "components/omnibox/browser/autocomplete_provider.h"
+components/omnibox/browser/promotion_provider.h:#endif  // BRAVE_COMPONENTS_OMNIBOX_BROWSER_PROMOTION_PROVIDER_H_
+components/omnibox/browser/promotion_unittest.cc:#include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
+components/omnibox/browser/promotion_unittest.cc:#include "brave/components/omnibox/browser/promotion_provider.h"
+components/omnibox/browser/promotion_unittest.cc:#include "brave/components/omnibox/browser/promotion_utils.h"
+components/omnibox/browser/promotion_unittest.cc:#include "components/omnibox/browser/autocomplete_controller.h"
+components/omnibox/browser/promotion_unittest.cc:#include "components/omnibox/browser/autocomplete_input.h"
+components/omnibox/browser/promotion_unittest.cc:#include "components/omnibox/browser/autocomplete_match.h"
+components/omnibox/browser/promotion_unittest.cc:#include "components/omnibox/browser/autocomplete_result.h"
+components/omnibox/browser/promotion_unittest.cc:#include "components/omnibox/browser/fake_autocomplete_provider_client.h"
+components/omnibox/browser/promotion_unittest.cc:#include "components/omnibox/browser/omnibox_prefs.h"
+components/omnibox/browser/promotion_unittest.cc:#include "components/omnibox/browser/test_scheme_classifier.h"
+components/omnibox/browser/promotion_unittest.cc:          omnibox::AutocompleteMatchType::kSearchWhatYouTyped);
+components/omnibox/browser/promotion_unittest.cc:                              omnibox::AutocompleteMatchType::kBookmarkTitle);
+components/omnibox/browser/promotion_unittest.cc:class OmniboxPromotionTest : public testing::Test {
+components/omnibox/browser/promotion_unittest.cc:  OmniboxPromotionTest() = default;
+components/omnibox/browser/promotion_unittest.cc:  ~OmniboxPromotionTest() override = default;
+components/omnibox/browser/promotion_unittest.cc:    omnibox::RegisterProfilePrefs(pref_service->registry());
+components/omnibox/browser/promotion_unittest.cc:    omnibox::RegisterBraveProfilePrefs(pref_service->registry());
+components/omnibox/browser/promotion_unittest.cc:    pref_service->SetBoolean(omnibox::kOnDeviceSuggestionsEnabled, false);
+components/omnibox/browser/promotion_unittest.cc:        omnibox::AutocompleteMatchType::kSearchWhatYouTyped);
+components/omnibox/browser/promotion_unittest.cc:    match.type = omnibox::AutocompleteMatchType::kNavsuggest;
+components/omnibox/browser/promotion_unittest.cc:TEST_F(OmniboxPromotionTest, ProfileTest) {
+components/omnibox/browser/promotion_unittest.cc:      brave_search_conversion::features::kOmniboxBanner,
+components/omnibox/browser/promotion_unittest.cc:  AutocompleteInput input(u"brave", metrics::OmniboxEventProto::OTHER,
+components/omnibox/browser/promotion_unittest.cc:TEST_F(OmniboxPromotionTest, PromotionEntrySortTest) {
+components/omnibox/browser/promotion_unittest.cc:  AutocompleteInput input(u"brave", metrics::OmniboxEventProto::OTHER,
+components/omnibox/browser/promotion_unittest.cc:      brave_search_conversion::features::kOmniboxBanner,
+components/omnibox/browser/promotion_unittest.cc:TEST_F(OmniboxPromotionTest, AutocompleteResultTest) {
+components/omnibox/browser/promotion_unittest.cc:  AutocompleteInput input(u"brave", metrics::OmniboxEventProto::OTHER,
+components/omnibox/browser/promotion_unittest.cc:  result.begin()->type = omnibox::AutocompleteMatchType::kNavsuggest;
+components/omnibox/browser/promotion_utils.cc:#include "brave/components/omnibox/browser/promotion_utils.h"
+components/omnibox/browser/promotion_utils.cc:#include "components/omnibox/browser/autocomplete_match.h"
+components/omnibox/browser/promotion_utils.cc:#include "components/omnibox/browser/autocomplete_result.h"
+components/omnibox/browser/promotion_utils.cc:      omnibox::AutocompleteMatchType::kSearchWhatYouTyped) {
+components/omnibox/browser/promotion_utils.h:#ifndef BRAVE_COMPONENTS_OMNIBOX_BROWSER_PROMOTION_UTILS_H_
+components/omnibox/browser/promotion_utils.h:#define BRAVE_COMPONENTS_OMNIBOX_BROWSER_PROMOTION_UTILS_H_
+components/omnibox/browser/promotion_utils.h:#endif  // BRAVE_COMPONENTS_OMNIBOX_BROWSER_PROMOTION_UTILS_H_
+components/omnibox/browser/search_suggestions/BUILD.gn:import("//brave/components/omnibox/buildflags/buildflags.gni")
+components/omnibox/browser/search_suggestions/query_check_constants.h:#ifndef BRAVE_COMPONENTS_OMNIBOX_BROWSER_SEARCH_SUGGESTIONS_QUERY_CHECK_CONSTANTS_H_
+components/omnibox/browser/search_suggestions/query_check_constants.h:#define BRAVE_COMPONENTS_OMNIBOX_BROWSER_SEARCH_SUGGESTIONS_QUERY_CHECK_CONSTANTS_H_
+components/omnibox/browser/search_suggestions/query_check_constants.h:#endif  // BRAVE_COMPONENTS_OMNIBOX_BROWSER_SEARCH_SUGGESTIONS_QUERY_CHECK_CONSTANTS_H_
+components/omnibox/browser/search_suggestions/query_check_utils.cc:#include "brave/components/omnibox/browser/search_suggestions/query_check_utils.h"
+components/omnibox/browser/search_suggestions/query_check_utils.cc:#include "brave/components/omnibox/browser/search_suggestions/query_check_constants.h"
+components/omnibox/browser/search_suggestions/query_check_utils.h:#ifndef BRAVE_COMPONENTS_OMNIBOX_BROWSER_SEARCH_SUGGESTIONS_QUERY_CHECK_UTILS_H_
+components/omnibox/browser/search_suggestions/query_check_utils.h:#define BRAVE_COMPONENTS_OMNIBOX_BROWSER_SEARCH_SUGGESTIONS_QUERY_CHECK_UTILS_H_
+components/omnibox/browser/search_suggestions/query_check_utils.h:#endif  // BRAVE_COMPONENTS_OMNIBOX_BROWSER_SEARCH_SUGGESTIONS_QUERY_CHECK_UTILS_H_
+components/omnibox/browser/sources.gni:import("//brave/components/omnibox/buildflags/buildflags.gni")
+components/omnibox/browser/sources.gni:brave_components_omnibox_browser_sources = [
+components/omnibox/browser/sources.gni:  "//brave/components/omnibox/browser/brave_bookmark_provider.cc",
+components/omnibox/browser/sources.gni:  "//brave/components/omnibox/browser/brave_bookmark_provider.h",
+components/omnibox/browser/sources.gni:  "//brave/components/omnibox/browser/brave_history_quick_provider.cc",
+components/omnibox/browser/sources.gni:  "//brave/components/omnibox/browser/brave_history_quick_provider.h",
+components/omnibox/browser/sources.gni:  "//brave/components/omnibox/browser/brave_history_url_provider.cc",
+components/omnibox/browser/sources.gni:  "//brave/components/omnibox/browser/brave_history_url_provider.h",
+components/omnibox/browser/sources.gni:  "//brave/components/omnibox/browser/brave_local_history_zero_suggest_provider.cc",
+components/omnibox/browser/sources.gni:  "//brave/components/omnibox/browser/brave_local_history_zero_suggest_provider.h",
+components/omnibox/browser/sources.gni:  "//brave/components/omnibox/browser/brave_omnibox_prefs.cc",
+components/omnibox/browser/sources.gni:  "//brave/components/omnibox/browser/brave_omnibox_prefs.h",
+components/omnibox/browser/sources.gni:  "//brave/components/omnibox/browser/brave_on_device_head_provider.cc",
+components/omnibox/browser/sources.gni:  "//brave/components/omnibox/browser/brave_on_device_head_provider.h",
+components/omnibox/browser/sources.gni:  "//brave/components/omnibox/browser/brave_search_provider.cc",
+components/omnibox/browser/sources.gni:  "//brave/components/omnibox/browser/brave_search_provider.h",
+components/omnibox/browser/sources.gni:  "//brave/components/omnibox/browser/brave_shortcuts_provider.cc",
+components/omnibox/browser/sources.gni:  "//brave/components/omnibox/browser/brave_shortcuts_provider.h",
+components/omnibox/browser/sources.gni:  "//brave/components/omnibox/browser/open_here_action.cc",
+components/omnibox/browser/sources.gni:  "//brave/components/omnibox/browser/open_here_action.h",
+components/omnibox/browser/sources.gni:  "//brave/components/omnibox/browser/promotion_provider.cc",
+components/omnibox/browser/sources.gni:  "//brave/components/omnibox/browser/promotion_provider.h",
+components/omnibox/browser/sources.gni:  "//brave/components/omnibox/browser/promotion_utils.cc",
+components/omnibox/browser/sources.gni:  "//brave/components/omnibox/browser/promotion_utils.h",
+components/omnibox/browser/sources.gni:brave_components_omnibox_browser_deps = [
+components/omnibox/browser/sources.gni:  "//brave/components/omnibox/buildflags",
+components/omnibox/browser/sources.gni:brave_components_omnibox_browser_public_deps = [
+components/omnibox/browser/sources.gni:  brave_components_omnibox_browser_sources += [
+components/omnibox/browser/sources.gni:    "//brave/components/omnibox/browser/leo_action.cc",
+components/omnibox/browser/sources.gni:    "//brave/components/omnibox/browser/leo_action.h",
+components/omnibox/browser/sources.gni:    "//brave/components/omnibox/browser/leo_provider.cc",
+components/omnibox/browser/sources.gni:    "//brave/components/omnibox/browser/leo_provider.h",
+components/omnibox/browser/sources.gni:  brave_components_omnibox_browser_deps += [
+components/omnibox/browser/sources.gni:  brave_components_omnibox_browser_sources += [
+components/omnibox/browser/sources.gni:    "//brave/components/omnibox/browser/commander_action.cc",
+components/omnibox/browser/sources.gni:    "//brave/components/omnibox/browser/commander_action.h",
+components/omnibox/browser/sources.gni:    "//brave/components/omnibox/browser/commander_provider.cc",
+components/omnibox/browser/sources.gni:    "//brave/components/omnibox/browser/commander_provider.h",
+components/omnibox/browser/sources.gni:  brave_components_omnibox_browser_deps +=
+components/omnibox/browser/sources.gni:  brave_components_omnibox_browser_deps += [
+components/omnibox/browser/sources.gni:    "//brave/components/omnibox/browser:arithmetic_evaluator",
+components/omnibox/browser/sources.gni:    "//brave/components/omnibox/browser/search_suggestions",
