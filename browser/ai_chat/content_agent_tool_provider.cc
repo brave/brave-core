@@ -197,7 +197,7 @@ void ContentAgentToolProvider::GetOrCreateTabHandleForTask(
     // of acting on existing tabs.
     NavigateParams params(profile_, GURL(url::kAboutBlankURL),
                           ui::PAGE_TRANSITION_FROM_API);
-    params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+    params.disposition = WindowOpenDisposition::kNewForegroundTab;
 #if BUILDFLAG(ENABLE_CONTAINERS)
     // Navigations from this tab, and tabs it opens, inherit the container.
     if (const std::string& container_id = GetOrCreateContainerId();

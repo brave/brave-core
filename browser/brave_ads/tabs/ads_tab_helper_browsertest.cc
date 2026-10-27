@@ -864,7 +864,7 @@ IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest, NotifyDidCloseTab) {
 IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest, NotifyDidCloseTabWhenDiscarded) {
   ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
       browser(), GURL(url::kAboutBlankURL),
-      WindowOpenDisposition::NEW_BACKGROUND_TAB,
+      WindowOpenDisposition::kNewBackgroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
   TabStripModel* const tab_strip_model = browser()->GetTabStripModel();
   content::WebContents* const web_contents =
