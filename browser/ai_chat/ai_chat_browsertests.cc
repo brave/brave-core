@@ -163,7 +163,7 @@ IN_PROC_BROWSER_TEST_F(AIChatBrowserTest, YoutubeNavigations) {
   const GURL url("https://www.youtube.com/youtube.html?v=video_id_001");
 
   ui_test_utils::NavigateToURLWithDisposition(
-      browser(), url, WindowOpenDisposition::CURRENT_TAB,
+      browser(), url, WindowOpenDisposition::kCurrentTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
   const std::string initial_content = FetchPageContent();
@@ -173,7 +173,7 @@ IN_PROC_BROWSER_TEST_F(AIChatBrowserTest, YoutubeNavigations) {
   const GURL url2(
       "https://www.youtube.com/youtube-fallback.html?v=video_id_002");
   ui_test_utils::NavigateToURLWithDisposition(
-      browser(), url2, WindowOpenDisposition::CURRENT_TAB,
+      browser(), url2, WindowOpenDisposition::kCurrentTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
   const std::string navigated_content = FetchPageContent();
@@ -186,7 +186,7 @@ IN_PROC_BROWSER_TEST_F(AIChatBrowserTest, YoutubeNavigations) {
 IN_PROC_BROWSER_TEST_F(AIChatBrowserTest, AttachingYoutubeTabDetectsVideo) {
   ui_test_utils::NavigateToURLWithDisposition(
       browser(), GURL("https://www.youtube.com/youtube.html?v=video_id_001"),
-      WindowOpenDisposition::CURRENT_TAB,
+      WindowOpenDisposition::kCurrentTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
   auto* ai_chat_service =
@@ -218,7 +218,7 @@ IN_PROC_BROWSER_TEST_F(AIChatBrowserTest, AttachingYoutubeTabDetectsVideo) {
 IN_PROC_BROWSER_TEST_F(AIChatBrowserTest, ExtractsAIPageContent) {
   ui_test_utils::NavigateToURLWithDisposition(
       browser(), GURL("https://example.com/rewrite.html"),
-      WindowOpenDisposition::CURRENT_TAB,
+      WindowOpenDisposition::kCurrentTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
   const std::string content = FetchAIPageContent();
@@ -255,17 +255,17 @@ IN_PROC_BROWSER_TEST_F(AIChatBrowserTest,
   auto* content1 =
       get_associated_content(ui_test_utils::NavigateToURLWithDisposition(
           browser(), GURL("https://example.com/one"),
-          WindowOpenDisposition::NEW_FOREGROUND_TAB,
+          WindowOpenDisposition::kNewForegroundTab,
           ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
   auto* content2 =
       get_associated_content(ui_test_utils::NavigateToURLWithDisposition(
           browser(), GURL("https://example.com/two"),
-          WindowOpenDisposition::NEW_FOREGROUND_TAB,
+          WindowOpenDisposition::kNewForegroundTab,
           ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
   auto* content3 =
       get_associated_content(ui_test_utils::NavigateToURLWithDisposition(
           browser(), GURL("https://example.com/three"),
-          WindowOpenDisposition::NEW_FOREGROUND_TAB,
+          WindowOpenDisposition::kNewForegroundTab,
           ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
 
   auto* ai_chat_service =
@@ -284,7 +284,7 @@ IN_PROC_BROWSER_TEST_F(AIChatBrowserTest,
       browser(),
       GURL(base::StrCat(
           {"chrome://leo-ai/", conversation->get_conversation_uuid()})),
-      WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
   // Close the first tab

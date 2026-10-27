@@ -169,7 +169,7 @@ void NewTabTakeoverUI::NavigateToUrl(const GURL& url) {
   // Set navigation as renderer initiated to open links in their app/PWA (if
   // installed).
   content::OpenURLParams params(
-      url, content::Referrer(), WindowOpenDisposition::CURRENT_TAB,
+      url, content::Referrer(), WindowOpenDisposition::kCurrentTab,
       ui::PAGE_TRANSITION_LINK, /*is_renderer_initiated=*/true);
   params.user_gesture = true;
   params.initiator_origin = url::Origin();

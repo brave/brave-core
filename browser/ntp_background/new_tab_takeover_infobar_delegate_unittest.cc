@@ -158,7 +158,7 @@ TEST_F(NewTabTakeoverInfoBarDelegateTest,
   ASSERT_THAT(GetInfobarManager()->infobars(), ::testing::SizeIs(1));
 
   infobars::InfoBar* infobar = GetInfobarManager()->infobars()[0];
-  infobar->delegate()->LinkClicked(WindowOpenDisposition::CURRENT_TAB);
+  infobar->delegate()->LinkClicked(WindowOpenDisposition::kCurrentTab);
   CloseInfobar();
 
   VerifyInfobarWasNotDisplayedExpectation();

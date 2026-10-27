@@ -176,7 +176,7 @@ bool MaybeRedirectToRightPane(content::NavigationHandle& handle) {
   NavigateParams params(target_tab->GetBrowserWindowInterface(),
                         handle.GetURL(), ui::PAGE_TRANSITION_LINK);
   params.source_contents = target_contents;
-  params.disposition = WindowOpenDisposition::CURRENT_TAB;
+  params.disposition = WindowOpenDisposition::kCurrentTab;
 
   // Preserve original navigation's referrer.
   // As this redirects to existing right pane, orignal navigation's opener

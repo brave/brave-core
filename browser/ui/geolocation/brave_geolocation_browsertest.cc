@@ -91,7 +91,7 @@ IN_PROC_BROWSER_TEST_F(GeolocationPermissionRequestBrowserTest,
 
   // Reload clear high_accuracy bit from tab helper.
   content::TestNavigationObserver observer(active_contents());
-  chrome::Reload(browser(), WindowOpenDisposition::CURRENT_TAB);
+  chrome::Reload(browser(), WindowOpenDisposition::kCurrentTab);
   observer.Wait();
   EXPECT_FALSE(tab_helper->enable_high_accuracy());
 }
@@ -102,7 +102,7 @@ IN_PROC_BROWSER_TEST_F(GeolocationPermissionRequestBrowserTest,
                        SetEnableHighAccuracyAfterDiscard) {
   GURL url = https_server_.GetURL("a.com", "/simple.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
-      browser(), url, WindowOpenDisposition::NEW_BACKGROUND_TAB,
+      browser(), url, WindowOpenDisposition::kNewBackgroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
   TabStripModel* const tab_strip_model = browser()->tab_strip_model();
   const int index = tab_strip_model->count() - 1;

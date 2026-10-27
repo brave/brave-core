@@ -145,7 +145,7 @@ void BraveNewsBubbleView::OpenManageFeeds() {
   auto* browser =
       GlobalBrowserCollection::GetInstance()->FindBrowserWithTab(contents_);
   browser->OpenGURL(GURL("brave://newtab/?openSettings=BraveNews"),
-                    WindowOpenDisposition::NEW_FOREGROUND_TAB);
+                    WindowOpenDisposition::kNewForegroundTab);
 }
 
 void BraveNewsBubbleView::OnWidgetDestroyed(views::Widget*) {

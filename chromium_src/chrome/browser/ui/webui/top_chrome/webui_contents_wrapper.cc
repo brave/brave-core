@@ -11,7 +11,7 @@
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 
 // The bubble doesn't allow opening popups, so we redirect new popup content to
-// the browser window via chrome::AddWebContents() (forcing NEW_POPUP), causing
+// the browser window via chrome::AddWebContents() (forcing kNewPopup), causing
 // it to open as a separate popup window instead of being suppressed.
 // In order to close all popups we also save tab ids of each opened popup window
 // and close all with the bubble together.
@@ -63,7 +63,7 @@ content::WebContents* WebUIContentsWrapper::AddNewContents(
   }
   auto* contents = chrome::AddWebContents(
       browser_.get(), source, std::move(new_contents), target_url,
-      WindowOpenDisposition::NEW_POPUP, window_features,
+      WindowOpenDisposition::kNewPopup, window_features,
       NavigateParams::WindowAction::kShowWindow, user_gesture);
   if (!contents) {
     return nullptr;
