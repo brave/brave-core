@@ -273,9 +273,11 @@ extension BrowserViewController: TabDelegate {
   public func tab(
     _ tab: some TabState,
     runJavaScriptAlertPanelWithMessage message: String,
-    pageURL: URL
+    pageURL: URL?
   ) async {
-    guard case let origin = pageURL.origin, !origin.isOpaque, tab === tabManager.selectedTab else {
+    guard tab === tabManager.selectedTab,
+      case (let origin, let title)? = javaScriptDialogOriginAndTitle(tab: tab, pageURL: pageURL)
+    else {
       return
     }
     await withCheckedContinuation { continuation in
@@ -283,6 +285,7 @@ extension BrowserViewController: TabDelegate {
         continuation.resume()
       }
       var messageAlert = MessageAlert(
+        title: title,
         message: message,
         origin: origin,
         completionHandler: completionHandler,
@@ -298,9 +301,11 @@ extension BrowserViewController: TabDelegate {
   public func tab(
     _ tab: some TabState,
     runJavaScriptConfirmPanelWithMessage message: String,
-    pageURL: URL
+    pageURL: URL?
   ) async -> Bool {
-    guard case let origin = pageURL.origin, !origin.isOpaque, tab === tabManager.selectedTab else {
+    guard tab === tabManager.selectedTab,
+      case (let origin, let title)? = javaScriptDialogOriginAndTitle(tab: tab, pageURL: pageURL)
+    else {
       return false
     }
     return await withCheckedContinuation { continuation in
@@ -308,6 +313,7 @@ extension BrowserViewController: TabDelegate {
         continuation.resume(returning: result)
       }
       var confirmAlert = ConfirmPanelAlert(
+        title: title,
         message: message,
         origin: origin,
         completionHandler: completionHandler,
@@ -324,9 +330,11 @@ extension BrowserViewController: TabDelegate {
     _ tab: some TabState,
     runJavaScriptConfirmPanelWithPrompt prompt: String,
     defaultText: String?,
-    pageURL: URL
+    pageURL: URL?
   ) async -> String? {
-    guard case let origin = pageURL.origin, !origin.isOpaque, tab === tabManager.selectedTab else {
+    guard tab === tabManager.selectedTab,
+      case (let origin, let title)? = javaScriptDialogOriginAndTitle(tab: tab, pageURL: pageURL)
+    else {
       return nil
     }
     return await withCheckedContinuation { continuation in
@@ -334,6 +342,7 @@ extension BrowserViewController: TabDelegate {
         continuation.resume(returning: result)
       }
       var textInputAlert = TextInputAlert(
+        title: title,
         message: prompt,
         origin: origin,
         completionHandler: completionHandler,
@@ -500,6 +509,23 @@ extension BrowserViewController {
       contentWorld: .defaultClient,
       asFunction: false
     )
+  }
+
+  /// Resolves the origin and title to use for a JavaScript dialog. A `nil` `pageURL` means the
+  /// dialog came from an embedded frame with an opaque origin, so it is attributed to the main
+  /// frame's origin but titled generically rather than displaying that origin.
+  private func javaScriptDialogOriginAndTitle(
+    tab: some TabState,
+    pageURL: URL?
+  ) -> (URLOrigin, String?)? {
+    if let pageURL {
+      let origin = pageURL.origin
+      return origin.isOpaque ? nil : (origin, origin.serialized)
+    }
+    guard let origin = tab.lastCommittedURL?.origin, !origin.isOpaque else {
+      return nil
+    }
+    return (origin, Strings.javaScriptDialogEmbeddedPageTitle)
   }
 
   func handleAlert<T: JSAlertInfo>(

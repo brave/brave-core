@@ -112,7 +112,7 @@ class TabCWVUIHandler: NSObject, BraveWebViewUIDelegate {
     pageURL url: URL?,
     completionHandler: @escaping () -> Void
   ) {
-    guard let tab, let url = url ?? webView.lastCommittedURL else {
+    guard let tab else {
       completionHandler()
       return
     }
@@ -128,8 +128,7 @@ class TabCWVUIHandler: NSObject, BraveWebViewUIDelegate {
     pageURL url: URL?,
     completionHandler: @escaping (Bool) -> Void
   ) {
-    guard let tab, let delegate = tab.delegate, let url = url ?? webView.lastCommittedURL
-    else {
+    guard let tab, let delegate = tab.delegate else {
       completionHandler(false)
       return
     }
@@ -150,8 +149,7 @@ class TabCWVUIHandler: NSObject, BraveWebViewUIDelegate {
     pageURL url: URL?,
     completionHandler: @escaping (String?) -> Void
   ) {
-    guard let tab, let delegate = tab.delegate, let url = url ?? webView.lastCommittedURL
-    else {
+    guard let tab, let delegate = tab.delegate else {
       completionHandler(nil)
       return
     }
