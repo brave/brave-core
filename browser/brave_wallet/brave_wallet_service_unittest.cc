@@ -24,6 +24,7 @@
 #include "base/test/test_future.h"
 #include "base/test/values_test_util.h"
 #include "base/time/time.h"
+#include "base/types/expected.h"
 #include "base/values.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_delegate_base.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
@@ -37,7 +38,9 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
+#include "brave/components/brave_wallet/browser/polkadot/polkadot_substrate_rpc.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_test_utils.h"
+#include "brave/components/brave_wallet/browser/polkadot/polkadot_wallet_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
@@ -60,8 +63,11 @@
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "content/public/browser/storage_partition.h"
 #include "content/public/test/browser_task_environment.h"
+#include "net/base/net_errors.h"
+#include "net/http/http_status_code.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
+#include "services/network/test/test_utils.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/blink/public/common/storage_key/storage_key.h"
@@ -3127,6 +3133,63 @@ TEST_F(BraveWalletServiceUnitTest, AutolockIsDisabledInTests) {
   EXPECT_FALSE(another_wallet_service->keyring_service()->IsLockedSync());
   task_environment_.FastForwardBy(base::Minutes(20));
   EXPECT_TRUE(another_wallet_service->keyring_service()->IsLockedSync());
+}
+
+TEST_F(BraveWalletServiceUnitTest, PolkadotParachainRpcUrlsFromRegistry) {
+  BlockchainRegistry::ScopedPolkadotRpcUrlsForTesting scoped_empty_rpc_urls({});
+
+  auto* polkadot_rpc = service_->GetPolkadotWalletService()->GetPolkadotRpc();
+  ASSERT_TRUE(polkadot_rpc);
+
+  auto* registry = BlockchainRegistry::GetInstance();
+  ASSERT_TRUE(registry->GetPolkadotRpcUrls().empty());
+
+  // Parachains have no built-in network entry, so the registry callback
+  // installed by BraveWalletService is the only thing that can resolve them.
+  ASSERT_TRUE(network_manager_
+                  ->GetNetworkURL(mojom::kPolkadotAcala, mojom::CoinType::DOT)
+                  .is_empty());
+
+  // An unresolved chain yields an empty URL, which the real network service
+  // rejects outright.
+  url_loader_factory_.AddResponse(
+      GURL(), network::CreateURLResponseHead(net::HTTP_BAD_REQUEST), "",
+      network::URLLoaderCompletionStatus(net::ERR_INVALID_URL));
+
+  auto* reqs = url_loader_factory_.pending_requests();
+  reqs->clear();
+
+  base::test::TestFuture<base::expected<std::vector<uint8_t>, std::string>>
+      future;
+
+  polkadot_rpc->GetMetadata(mojom::kPolkadotAcala, future.GetCallback());
+  EXPECT_TRUE(reqs->empty());
+  auto metadata = future.Take();
+  ASSERT_FALSE(metadata.has_value());
+  EXPECT_EQ(metadata.error(), WalletInternalErrorMessage());
+
+  // The callback consults the registry per request, so URLs arriving after
+  // BraveWalletService was constructed still resolve.
+  auto rpc_urls = ParsePolkadotRpcUrls(R"({
+    "polkadot_acala": ["https://acala-rpc-0.aca-api.network/"]
+  })");
+  ASSERT_TRUE(rpc_urls);
+
+  BlockchainRegistry::ScopedPolkadotRpcUrlsForTesting scoped_rpc_urls(
+      std::move(*rpc_urls));
+
+  polkadot_rpc->GetMetadata(mojom::kPolkadotAcala, base::DoNothing());
+  ASSERT_EQ(reqs->size(), 1u);
+  EXPECT_EQ(reqs->front().request.url,
+            GURL("https://acala-rpc-0.aca-api.network/"));
+  reqs->clear();
+
+  // A chain the registry doesn't know about stays unresolved.
+  polkadot_rpc->GetMetadata(mojom::kPolkadotBifrost, future.GetCallback());
+  EXPECT_TRUE(reqs->empty());
+  metadata = future.Take();
+  ASSERT_FALSE(metadata.has_value());
+  EXPECT_EQ(metadata.error(), WalletInternalErrorMessage());
 }
 
 }  // namespace brave_wallet

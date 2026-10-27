@@ -37,7 +37,9 @@ class MockPolkadotSubstrateRpc : public PolkadotSubstrateRpc {
   MockPolkadotSubstrateRpc(
       NetworkManager& network_manager,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
-      : PolkadotSubstrateRpc(network_manager, std::move(url_loader_factory)) {}
+      : PolkadotSubstrateRpc(network_manager,
+                             std::move(url_loader_factory),
+                             NoParachainUrlMap()) {}
 
   MOCK_METHOD(void,
               GetRuntimeVersion,

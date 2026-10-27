@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_substrate_rpc.h"
 
+#include "base/containers/map_util.h"
 #include "base/test/bind.h"
 #include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
@@ -14,10 +15,13 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/network_manager.h"
+#include "brave/components/brave_wallet/browser/polkadot/polkadot_test_utils.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
+#include "net/base/net_errors.h"
+#include "net/http/http_status_code.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "services/network/test/test_utils.h"
@@ -41,10 +45,23 @@ class PolkadotSubstrateRpcUnitTest : public testing::Test {
 
     network_manager_ = std::make_unique<NetworkManager>(&prefs_);
     polkadot_substrate_rpc_ = std::make_unique<PolkadotSubstrateRpc>(
-        *network_manager_, url_loader_factory_.GetSafeWeakWrapper());
+        *network_manager_, url_loader_factory_.GetSafeWeakWrapper(),
+        NoParachainUrlMap());
   }
 
  protected:
+  std::unique_ptr<PolkadotSubstrateRpc> MakeRpcWithUrlMap(
+      base::flat_map<std::string, std::vector<GURL>> url_map) {
+    return std::make_unique<PolkadotSubstrateRpc>(
+        *network_manager_, url_loader_factory_.GetSafeWeakWrapper(),
+        base::BindLambdaForTesting(
+            [url_map = std::move(url_map)](
+                std::string_view chain_id) -> std::vector<GURL> {
+              const auto* urls = base::FindOrNull(url_map, chain_id);
+              return urls ? *urls : std::vector<GURL>();
+            }));
+  }
+
   base::test::ScopedFeatureList feature_list_;
   base::test::TaskEnvironment task_environment_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
@@ -2371,6 +2388,105 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetMetadata) {
     ASSERT_FALSE(metadata.has_value());
     EXPECT_EQ(metadata.error(), WalletInternalErrorMessage());
   }
+}
+
+TEST_F(PolkadotSubstrateRpcUnitTest, DappParachainRpcUrls) {
+  url_loader_factory_.ClearResponses();
+
+  const struct {
+    std::string_view chain_id;
+    std::string_view rpc_url;
+  } test_cases[] = {
+      {mojom::kPolkadotAcala, "https://acala-rpc-0.aca-api.network/"},
+      {mojom::kPolkadotBifrost, "https://hk.p.bifrost-rpc.liebi.com/"},
+      {mojom::kPolkadotHydration, "https://hydration-rpc.n.dwellir.com/"},
+      {mojom::kPolkadotNeuroWeb, "https://parachain-rpc.origin-trail.network/"},
+      {mojom::kPolkadotJamton, "https://rpc.jamton.network/"},
+      {mojom::kPolkadotKusamaHub,
+       "https://rpc-asset-hub-kusama.luckyfriday.io/"},
+  };
+
+  base::flat_map<std::string, std::vector<GURL>> url_map;
+  for (const auto& tc : test_cases) {
+    url_map.emplace(tc.chain_id, std::vector<GURL>{GURL(tc.rpc_url)});
+  }
+
+  auto rpc = MakeRpcWithUrlMap(std::move(url_map));
+
+  base::MockCallback<PolkadotSubstrateRpc::GetMetadataCallback> callback;
+  auto* reqs = url_loader_factory_.pending_requests();
+
+  for (const auto& test_case : test_cases) {
+    SCOPED_TRACE(test_case.chain_id);
+
+    ASSERT_TRUE(network_manager_
+                    ->GetNetworkURL(test_case.chain_id, mojom::CoinType::DOT)
+                    .is_empty());
+
+    rpc->GetMetadata(test_case.chain_id, callback.Get());
+
+    ASSERT_EQ(reqs->size(), 1u);
+    EXPECT_EQ(reqs->front().request.url, test_case.rpc_url);
+
+    reqs->clear();
+  }
+
+  // We route Asset Hub through the same URL our wallet natively uses.
+  rpc->GetMetadata(mojom::kPolkadotMainnetAssetHub, callback.Get());
+  ASSERT_EQ(reqs->size(), 1u);
+  EXPECT_EQ(reqs->front().request.url,
+            "https://polkadot-asset-hub.wallet.brave.com/");
+  reqs->clear();
+
+  // Users can also manually set where Asset Hub points.
+  network_manager_->SetNetworkURLForTesting(
+      mojom::kPolkadotMainnetAssetHub,
+      GURL("https://asset-hub.example.com/rpc"));
+  rpc->GetMetadata(mojom::kPolkadotMainnetAssetHub, callback.Get());
+  ASSERT_EQ(reqs->size(), 1u);
+  EXPECT_EQ(reqs->front().request.url, "https://asset-hub.example.com/rpc");
+  reqs->clear();
+}
+
+TEST_F(PolkadotSubstrateRpcUnitTest, DappRequestEmptyMap) {
+  // Want to prove that if our dapp rpc url map is empty that we get an expected
+  // error.
+  url_loader_factory_.ClearResponses();
+
+  // An unknown chain resolves to an empty URL. The real network service fails
+  // such a request outright, so model that here instead of leaving it pending.
+  url_loader_factory_.AddResponse(
+      GURL(), network::CreateURLResponseHead(net::HTTP_BAD_REQUEST), "",
+      network::URLLoaderCompletionStatus(net::ERR_INVALID_URL));
+
+  auto* reqs = url_loader_factory_.pending_requests();
+  base::test::TestFuture<base::expected<std::vector<uint8_t>, std::string>>
+      future;
+
+  // An empty map resolves nothing, so there's no endpoint to talk to.
+  polkadot_substrate_rpc_->GetMetadata(mojom::kPolkadotAcala,
+                                       future.GetCallback());
+
+  ASSERT_TRUE(reqs->empty());
+
+  auto metadata = future.Take();
+  ASSERT_FALSE(metadata.has_value());
+  EXPECT_EQ(metadata.error(), WalletInternalErrorMessage());
+
+  // Same story for a loaded map that simply doesn't know the chain.
+  base::flat_map<std::string, std::vector<GURL>> url_map;
+  url_map.emplace(
+      mojom::kPolkadotBifrost,
+      std::vector<GURL>{GURL("https://hk.p.bifrost-rpc.liebi.com/")});
+
+  auto rpc = MakeRpcWithUrlMap(std::move(url_map));
+
+  rpc->GetMetadata(mojom::kPolkadotAcala, future.GetCallback());
+
+  metadata = future.Take();
+  ASSERT_FALSE(metadata.has_value());
+  EXPECT_EQ(metadata.error(), WalletInternalErrorMessage());
+  EXPECT_TRUE(reqs->empty());
 }
 
 TEST_F(PolkadotSubstrateRpcUnitTest, SubmitExtrinsic) {

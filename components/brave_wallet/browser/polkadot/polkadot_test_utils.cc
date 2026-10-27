@@ -120,6 +120,11 @@ const base::ListValue* FindParamsOrNull(const base::DictValue& req_body) {
 
 }  // namespace
 
+PolkadotRpcUrlMapCallback NoParachainUrlMap() {
+  return base::BindRepeating(
+      [](std::string_view chain_id) -> std::vector<GURL> { return {}; });
+}
+
 base::DictValue RequestBodyToJsonDict(const network::ResourceRequest& req) {
   const auto* body_elems = req.request_body->elements();
   CHECK(body_elems->size() == 1u);

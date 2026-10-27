@@ -55,7 +55,8 @@ class PolkadotBlockTrackerUnitTest : public testing::Test {
     network_manager_ = std::make_unique<NetworkManager>(&prefs_);
 
     polkadot_substrate_rpc_ = std::make_unique<PolkadotSubstrateRpc>(
-        *network_manager_, url_loader_factory_.GetSafeWeakWrapper());
+        *network_manager_, url_loader_factory_.GetSafeWeakWrapper(),
+        NoParachainUrlMap());
 
     polkadot_mock_rpc_ = std::make_unique<PolkadotMockRpc>(
         &url_loader_factory_, network_manager_.get());

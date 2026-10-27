@@ -8,6 +8,9 @@
 #include <algorithm>
 
 #include "base/check.h"
+#include "base/containers/fixed_flat_map.h"
+#include "base/containers/map_util.h"
+#include "base/containers/span.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/task/sequenced_task_runner.h"
@@ -22,10 +25,13 @@ PolkadotWalletService::PolkadotWalletService(
     KeyringService& keyring_service,
     NetworkManager& network_manager,
     ::PrefService& profile_prefs,
-    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+    PolkadotRpcUrlMapCallback rpc_url_callback)
     : keyring_service_(keyring_service),
       network_manager_(network_manager),
-      polkadot_substrate_rpc_(network_manager, std::move(url_loader_factory)),
+      polkadot_substrate_rpc_(network_manager,
+                              std::move(url_loader_factory),
+                              std::move(rpc_url_callback)),
       chain_metadata_prefs_(profile_prefs),
       metadata_provider_(network_manager,
                          chain_metadata_prefs_,
@@ -321,6 +327,35 @@ void PolkadotWalletService::OnEstimatedFee(
 
   std::move(callback).Run(
       FeeEstimate{partial_fee.value(), std::move(signature_payload)});
+}
+
+std::optional<std::string_view>
+PolkadotWalletService::GetChainIdFromGenesisHash(
+    std::string_view genesis_hash) {
+  static constexpr auto kGenesisHashChainIdMap =
+      base::MakeFixedFlatMap<std::string_view, std::string_view>({
+          {"0x68d56f15f85d3136970ec16946040bc1752654e906147f7e43e9d539d7c3de2f",
+           mojom::kPolkadotMainnetAssetHub},
+          {"0xfc41b9bd8ef8fe53d58c7ea67c794c7ec9a73daf05e6d54b14ff6342c99ba64c",
+           mojom::kPolkadotAcala},
+          {"0x262e1b2ad728475fd6fe88e62d34c200abe6fd693931ddad144059b1eb884e5b",
+           mojom::kPolkadotBifrost},
+          {"0xafdc188f45c71dacbaa0b62e16a91f726c7b8699a9748cdf715459de6b7f366d",
+           mojom::kPolkadotHydration},
+          {"0xe7e0962324a3b86c83404dbea483f25fb5dab4c224791c81b756cfc948006174",
+           mojom::kPolkadotNeuroWeb},
+          {"0xbb9233e202ec014707f82ddb90e84ee9efece8fefee287ad4ad646d869a6c24a",
+           mojom::kPolkadotJamton},
+          {"0x48239ef607d7928874027a43a67689209727dfb3d3dc5e5b03a39bdc2eda771a",
+           mojom::kPolkadotKusamaHub},
+      });
+
+  if (const auto* chain_id =
+          base::FindOrNull(kGenesisHashChainIdMap, genesis_hash)) {
+    return *chain_id;
+  }
+
+  return std::nullopt;
 }
 
 void PolkadotWalletService::OnGetChainMetadataForValidateAddress(
