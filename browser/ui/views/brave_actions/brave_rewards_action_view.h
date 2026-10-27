@@ -23,6 +23,7 @@
 #include "chrome/browser/ui/views/toolbar/toolbar_button.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "ui/base/metadata/metadata_header_macros.h"
+#include "ui/color/color_variant.h"
 #include "ui/gfx/geometry/skia_conversions.h"
 #include "ui/views/widget/widget_observer.h"
 
@@ -104,7 +105,7 @@ class BraveRewardsActionView
   bool IsPanelOpen();
   void ToggleRewardsPanel();
   gfx::ImageSkia GetRewardsIcon();
-  std::pair<std::string, SkColor> GetBadgeTextAndBackground();
+  std::pair<std::string, ui::ColorVariant> GetBadgeTextAndBackground();
   size_t GetRewardsNotificationCount();
   bool UpdatePublisherStatus();
   void IsPublisherRegisteredCallback(const std::string& publisher_id,

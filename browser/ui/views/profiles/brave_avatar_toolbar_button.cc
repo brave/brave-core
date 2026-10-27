@@ -16,6 +16,7 @@
 #include "brave/browser/ui/color/color_palette.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "brave/ui/color/nala/nala_color_id.h"
 #include "build/build_config.h"
 #include "chrome/app/vector_icons/vector_icons.h"
 #include "chrome/browser/profiles/profile.h"
@@ -159,8 +160,8 @@ void BraveAvatarToolbarButton::UpdateColorsAndInsets() {
   // Use custom bg/border for private/tor window.
   if (state_manager_.browser()->GetProfile()->IsOffTheRecord()) {
     const bool is_tor = state_manager_.browser()->GetProfile()->IsTor();
-    const auto text_color = is_tor ? SkColorSetRGB(0xE3, 0xB3, 0xFF)
-                                   : SkColorSetRGB(0xcc, 0xBE, 0xFE);
+    const ui::ColorId text_color =
+        is_tor ? nala::kColorTorWindow60 : nala::kColorPrivateWindow60;
     SetEnabledTextColors(text_color);
     SetTextColor(views::Button::STATE_DISABLED, text_color);
 
@@ -176,11 +177,13 @@ void BraveAvatarToolbarButton::UpdateColorsAndInsets() {
                                    kBraveAvatarButtonVerticalSpacing);
     }
 
-    const auto border_color = is_tor ? SkColorSetARGB(0x66, 0x91, 0x5E, 0xAE)
-                                     : SkColorSetARGB(0x66, 0x7B, 0x63, 0xBF);
-
+    SkColor border_color = gfx::kPlaceholderColor;
     SkColor toolbar_color = gfx::kPlaceholderColor;
     if (ui::ColorProvider* cp = GetColorProvider()) {
+      border_color =
+          SkColorSetA(cp->GetColor(is_tor ? nala::kColorTorWindow40
+                                          : nala::kColorPrivateWindow40),
+                      0x66);
       toolbar_color = cp->GetColor(kColorToolbar);
     }
     const auto final_border_color =

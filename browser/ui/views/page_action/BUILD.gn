@@ -87,6 +87,7 @@ source_set("page_action") {
       "//brave/browser/tor",
       "//brave/components/tor",
       "//brave/components/vector_icons",
+      "//brave/ui/color:nala_color_id",
       "//chrome/browser/profiles",
       "//chrome/browser/ui/actions",
       "//chrome/browser/ui/color:mixers",
