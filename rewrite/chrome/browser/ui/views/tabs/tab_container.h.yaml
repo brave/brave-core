@@ -1,0 +1,125 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: 'Make AddTabs virtual'
+    make_virtual:
+      class_name: TabContainer
+      method_name: AddTabs
+
+  - description: 'Make MoveTab virtual'
+    make_virtual:
+      class_name: TabContainer
+      method_name: MoveTab
+
+  - description: 'Make RemoveTab virtual'
+    make_virtual:
+      class_name: TabContainer
+      method_name: RemoveTab
+
+  - description: 'Make SetTabPinned virtual'
+    make_virtual:
+      class_name: TabContainer
+      method_name: SetTabPinned
+
+  - description: 'Make SetActiveTab virtual'
+    make_virtual:
+      class_name: TabContainer
+      method_name: SetActiveTab
+
+  - description: 'Make OnGroupContentsChanged virtual'
+    make_virtual:
+      class_name: TabContainer
+      method_name: OnGroupContentsChanged
+
+  - description: 'Make UpdateTabGroupVisuals virtual'
+    make_virtual:
+      class_name: TabContainer
+      method_name: UpdateTabGroupVisuals
+
+  - description: 'Make OnSplitCreated virtual'
+    make_virtual:
+      class_name: TabContainer
+      method_name: OnSplitCreated
+
+  - description: 'Make OnSplitRemoved virtual'
+    make_virtual:
+      class_name: TabContainer
+      method_name: OnSplitRemoved
+
+  - description: 'Make OnSplitContentsChanged virtual'
+    make_virtual:
+      class_name: TabContainer
+      method_name: OnSplitContentsChanged
+
+  - description: 'Make OnTabSlotAnimationProgressed virtual'
+    make_virtual:
+      class_name: TabContainer
+      method_name: OnTabSlotAnimationProgressed
+
+  - description: 'Make OnTabCloseAnimationCompleted virtual'
+    make_virtual:
+      class_name: TabContainer
+      method_name: OnTabCloseAnimationCompleted
+
+  - description: 'Make InvalidateIdealBounds virtual'
+    make_virtual:
+      class_name: TabContainer
+      method_name: InvalidateIdealBounds
+
+  - description: 'Make AnimateToIdealBounds virtual'
+    make_virtual:
+      class_name: TabContainer
+      method_name: AnimateToIdealBounds
+
+  - description: 'Make CompleteAnimationAndLayout virtual'
+    make_virtual:
+      class_name: TabContainer
+      method_name: CompleteAnimationAndLayout
+
+  - description: 'Make EnterTabClosingMode virtual'
+    make_virtual:
+      class_name: TabContainer
+      method_name: EnterTabClosingMode
+
+  - description: 'Make SetTabSlotVisibility virtual'
+    make_virtual:
+      class_name: TabContainer
+      method_name: SetTabSlotVisibility
+
+  - description: 'Make UpdateIdealBounds virtual'
+    make_virtual:
+      class_name: TabContainer
+      method_name: UpdateIdealBounds
+
+  - description: 'Make StartInsertTabAnimation virtual'
+    make_virtual:
+      class_name: TabContainer
+      method_name: StartInsertTabAnimation
+
+  - description: 'Make GetTargetBoundsForClosingTab virtual'
+    make_virtual:
+      class_name: TabContainer
+      method_name: GetTargetBoundsForClosingTab
+
+  - description: 'Make UpdateClosingModeOnRemovedTab virtual'
+    make_virtual:
+      class_name: TabContainer
+      method_name: UpdateClosingModeOnRemovedTab
+
+  - description: 'Make IsPointInTab virtual'
+    make_virtual:
+      class_name: TabContainer
+      method_name: IsPointInTab
+
+  - description: 'Make ShouldTabBeVisible virtual'
+    make_virtual:
+      class_name: TabContainer
+      method_name: ShouldTabBeVisible
+
+  - description: 'Friend BraveTabContainer'
+    add_friend:
+      class_name: TabContainer
+      friend_type: class BraveTabContainer
