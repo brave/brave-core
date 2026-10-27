@@ -44,6 +44,7 @@ source_set("browser_tests") {
   sources = [
     "brave_local_state_browsertest.cc",
     "brave_tor_browsertest.cc",
+    "onion_cors_origin_browsertest.cc",
     "onion_domain_throttle_browsertest.cc",
     "onion_location_navigation_throttle_browsertest.cc",
     "password_favicon_off_the_record_browsertest.cc",

@@ -5,10 +5,21 @@
 
 substitutions:
   - description: |
-      Send an opaque Origin header for cross-origin requests from .onion pages.
+      Taint cross-origin onion requests before generating Origin.
 
-      A .onion page must not disclose the address it came from, which is the
-      same treatment upstream already gives a request with a tainted origin.
-    regex:
-      re_pattern: '(origin_value = )tainted_'
-      replace: '\1tainted_ || IsCrossOriginOnionRequest(request_)'
+      A .onion page must not disclose its address to other origins. The
+      tainted flag gives these requests an opaque origin in the request, its
+      preflight and the response checks alike, and stays set across redirects.
+
+      Tainting also applies upstream's other rules for a tainted origin, which
+      are accepted trade-offs: preflights are not cached, so each preflighted
+      request sends its own OPTIONS; Timing-Allow-Origin is checked against the
+      opaque origin; and no-cors responses are opaque. Any new upstream reader
+      of tainted_ applies to these requests too.
+
+      A no-cors redirect from the onion origin to another origin does not call
+      MaybeSetOriginHeader(), so it is not tainted. Its Origin is still nulled
+      by net's RedirectUtil; only its Timing-Allow-Origin check differs.
+    preempt_function_impl:
+      function_name: CorsURLLoader::MaybeSetOriginHeader
+      code: 'tainted_ |= ShouldTaintOnionOrigin(request_);'
