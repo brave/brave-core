@@ -1559,7 +1559,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
 }
 
 // BraveTabContainer::PaintChildren() paints slot views from the z-order cache
-// owned by TabContainerImpl. The cache must be refreshed by the paint when it
+// owned by TabContainer. The cache must be refreshed by the paint when it
 // is dirty, so an activation change has to be reflected in the paint order of
 // the very next paint: the active tab is painted last, on top of the others.
 IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
