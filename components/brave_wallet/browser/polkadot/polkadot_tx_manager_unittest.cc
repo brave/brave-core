@@ -204,7 +204,7 @@ class PolkadotTxManagerUnitTest : public testing::Test {
 
     polkadot_wallet_service_ = std::make_unique<PolkadotWalletService>(
         *keyring_service_, *network_manager_, profile_prefs_,
-        url_loader_factory_.GetSafeWeakWrapper());
+        url_loader_factory_.GetSafeWeakWrapper(), NoParachainUrlMap());
 
     auto tx_storage = CreateTxStorageForTest(temp_dir_.GetPath());
     tx_storage_ptr_ = tx_storage.get();

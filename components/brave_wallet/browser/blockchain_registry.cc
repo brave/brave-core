@@ -376,6 +376,19 @@ BlockchainRegistry::ScopedRestrictedAddressesForTesting::
   registry->restricted_addresses_ = std::move(previous_addresses_);
 }
 
+BlockchainRegistry::ScopedPolkadotRpcUrlsForTesting::
+    ScopedPolkadotRpcUrlsForTesting(PolkadotRpcUrlsMap polkadot_rpc_urls) {
+  auto* registry = GetInstance();
+  previous_rpc_urls_ = registry->polkadot_rpc_urls_;
+  registry->UpdatePolkadotRpcUrls(std::move(polkadot_rpc_urls));
+}
+
+BlockchainRegistry::ScopedPolkadotRpcUrlsForTesting::
+    ~ScopedPolkadotRpcUrlsForTesting() {
+  auto* registry = GetInstance();
+  registry->polkadot_rpc_urls_ = std::move(previous_rpc_urls_);
+}
+
 bool BlockchainRegistry::IsEmptyForTesting() {
   return coingecko_ids_map_.empty() && token_list_map_.empty() &&
          chain_list_.empty() && restricted_addresses_.empty() &&

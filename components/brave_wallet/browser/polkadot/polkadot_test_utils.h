@@ -37,6 +37,10 @@ inline constexpr char kPolkadotImportExportPassword[] = "export_pwd";
 std::string MakePolkadotImportJsonExport(mojom::KeyringId keyring_id,
                                          uint32_t key_index);
 
+// Maps every chain id to an empty URL list, for tests that don't exercise
+// parachain URL lookup.
+PolkadotRpcUrlMapCallback NoParachainUrlMap();
+
 base::DictValue RequestBodyToJsonDict(const network::ResourceRequest& req);
 std::string ReadMetadataFixtureJson(std::string_view file_name);
 std::vector<uint8_t> ReadMetadataFixture(std::string_view file_name);

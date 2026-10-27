@@ -50,7 +50,8 @@ class PolkadotWalletService : public mojom::PolkadotWalletService,
       KeyringService& keyring_service,
       NetworkManager& network_manager,
       ::PrefService& profile_prefs,
-      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+      PolkadotRpcUrlMapCallback rpc_url_callback);
 
   ~PolkadotWalletService() override;
 
@@ -133,6 +134,12 @@ class PolkadotWalletService : public mojom::PolkadotWalletService,
       std::optional<uint32_t> asset_id,
       base::span<const uint8_t, kPolkadotSubstrateAccountIdSize> recipient,
       GetFeeEstimateCallback callback);
+
+  // Returns the associated chain id given a prefixed hex string representing
+  // the genesis hash of the associated parachain. Case-sensitive lookup,
+  // leading prefix required as this is what dapps present us.
+  static std::optional<std::string_view> GetChainIdFromGenesisHash(
+      std::string_view genesis_hash);
 
  private:
   // KeyringServiceObserverBase:
