@@ -27,8 +27,10 @@ function getPanelState(listenerApi: ListenerApi): PanelState {
 
 async function refreshWalletInfo(listenerApi: ListenerApi) {
   const proxy = getWalletPanelApiProxy()
-  const { walletInfo } = await proxy.walletHandler.getWalletInfo()
-  const { allAccounts } = await proxy.keyringService.getAllAccounts()
+  const [{ walletInfo }, { allAccounts }] = await Promise.all([
+    proxy.walletHandler.getWalletInfo(),
+    proxy.keyringService.getAllAccounts(),
+  ])
   listenerApi.dispatch(WalletActions.initialized({ walletInfo, allAccounts }))
   listenerApi.dispatch(WalletActions.refreshAll())
 }
@@ -84,9 +86,9 @@ startAppListening({
     if (!action.payload) {
       return
     }
+    // Show the panel right away, then refresh.
+    getWalletPanelApiProxy().panelHandler.showUI()
     await refreshWalletInfo(listenerApi)
-    const apiProxy = getWalletPanelApiProxy()
-    apiProxy.panelHandler.showUI()
   },
 })
 
@@ -108,6 +110,7 @@ startAppListening({
     if (state.hasInitialized) {
       return
     }
+    listenerApi.dispatch(PanelActions.setHasInitialized())
     // Setup external events
     document.addEventListener('visibilitychange', () => {
       listenerApi.dispatch(
