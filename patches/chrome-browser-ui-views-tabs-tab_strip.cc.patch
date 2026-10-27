@@ -1,7 +1,16 @@
 diff --git a/chrome/browser/ui/views/tabs/tab_strip.cc b/chrome/browser/ui/views/tabs/tab_strip.cc
-index 0ac761e5516687aa9f7d4b90cadee3bc209bb664..997dfd4514abd3b031df973574b1b4b357904a92 100644
+index d9564d1213feeb978ba8d8d0dffe64df8b637674..dcb96420be400f8154478fef809f33c57a71ba55 100644
 --- a/chrome/browser/ui/views/tabs/tab_strip.cc
 +++ b/chrome/browser/ui/views/tabs/tab_strip.cc
+@@ -125,7 +125,7 @@ std::unique_ptr<TabContainer> MakeTabContainer(
+     TabStrip* tab_strip,
+     TabHoverCardController* hover_card_controller,
+     TabDragContext* drag_context) {
+-  return std::make_unique<TabContainer>(*tab_strip, hover_card_controller,
++  return std::make_unique<BraveTabContainer>(*tab_strip, hover_card_controller,
+                                         drag_context->GetPositioningDelegate(),
+                                         *tab_strip);
+ }
 @@ -337,7 +337,7 @@ class TabStrip::TabDragContextImpl : public TabDragContext,
             event.type() == ui::EventType::kGestureScrollBegin))
          << "Event type must be suitable for starting a drag.";
@@ -11,7 +20,7 @@ index 0ac761e5516687aa9f7d4b90cadee3bc209bb664..997dfd4514abd3b031df973574b1b4b3
  
      // !!! Init may delete `drag_controller_` on some platforms. !!!
      // Init takes capture, which on some platforms may reenter Chrome, the
-@@ -612,6 +612,7 @@ class TabStrip::TabDragContextImpl : public TabDragContext,
+@@ -618,6 +618,7 @@ class TabStrip::TabDragContextImpl : public TabDragContext,
  
    std::vector<gfx::Rect> CalculateBoundsForDraggedViews(
        const std::vector<views::View*>& views) override {
@@ -19,7 +28,7 @@ index 0ac761e5516687aa9f7d4b90cadee3bc209bb664..997dfd4514abd3b031df973574b1b4b3
      CHECK(!views.empty()) << "The views vector must not be empty.";
  
      std::vector<gfx::Rect> bounds;
-@@ -1003,6 +1004,7 @@ class TabStrip::TabDragContextImpl : public TabDragContext,
+@@ -1009,6 +1010,7 @@ class TabStrip::TabDragContextImpl : public TabDragContext,
          continue;
        }
  
@@ -27,7 +36,7 @@ index 0ac761e5516687aa9f7d4b90cadee3bc209bb664..997dfd4514abd3b031df973574b1b4b3
        // If there's a group header here, and we're dragging a group, we might
        // end up on either side of that header. Check both cases to find the
        // best option.
-@@ -1567,7 +1569,7 @@ void TabStrip::SetSelection(const ui::ListSelectionModel& new_selection) {
+@@ -1573,7 +1575,7 @@ void TabStrip::SetSelection(const ui::ListSelectionModel& new_selection) {
        const tab_groups::TabGroupId new_group = selected_tab->group().value();
        // If the tab that is about to be selected is in a collapsed group,
        // automatically expand the group.
