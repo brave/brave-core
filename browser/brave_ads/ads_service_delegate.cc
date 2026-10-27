@@ -55,7 +55,7 @@ void AdsServiceDelegate::OpenNewTabWithUrl(const GURL& url) {
 #if BUILDFLAG(IS_ANDROID)
   // ServiceTabLauncher can currently only launch new tabs
   const content::OpenURLParams params(url, content::Referrer(),
-                                      WindowOpenDisposition::NEW_FOREGROUND_TAB,
+                                      WindowOpenDisposition::kNewForegroundTab,
                                       ui::PAGE_TRANSITION_LINK, true);
   ServiceTabLauncher::GetInstance()->LaunchTab(
       base::to_address(profile_), params,
@@ -71,7 +71,7 @@ void AdsServiceDelegate::OpenNewTabWithUrl(const GURL& url) {
 
   NavigateParams nav_params(base::to_address(profile_), url,
                             ui::PAGE_TRANSITION_LINK);
-  nav_params.disposition = WindowOpenDisposition::SINGLETON_TAB;
+  nav_params.disposition = WindowOpenDisposition::kSingletonTab;
   nav_params.window_action = NavigateParams::WindowAction::kShowWindow;
   nav_params.path_behavior = NavigateParams::RESPECT;
   Navigate(&nav_params);

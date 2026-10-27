@@ -248,7 +248,7 @@ bool DeAmpBodyHandler::OpenCanonicalURL(const GURL& new_url) {
       new_url,
       content::Referrer::SanitizeForRequest(new_url, entry->GetReferrer()),
       contents->GetPrimaryMainFrame()->GetFrameTreeNodeId(),
-      WindowOpenDisposition::CURRENT_TAB, ui::PAGE_TRANSITION_CLIENT_REDIRECT,
+      WindowOpenDisposition::kCurrentTab, ui::PAGE_TRANSITION_CLIENT_REDIRECT,
       is_renderer_initiated);
 
   params.initiator_origin = request_.request_initiator;
