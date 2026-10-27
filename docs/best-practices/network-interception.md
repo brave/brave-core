@@ -14,14 +14,14 @@ dispatcher for new features.** Do not replace them with another general-purpose
 interception framework. Reuse upstream behavior first, then choose an
 integration that supports the feature's required stage and request types.
 
-| Requirement                                                     | Preferred integration                                                                                                          |
-| --------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
-| Existing Chromium capability                                    | Reuse the upstream implementation.                                                                                             |
-| Navigation decisions, consent, or interstitials                 | `content::NavigationThrottle`. This does not cover subresource requests.                                                       |
-| Resource request checks, header changes, or response processing | A feature-specific `blink::URLLoaderThrottle`, in each process that handles the relevant requests.                             |
-| Renderer-local subresource filtering                            | Rulesets consumed by `DocumentSubresourceFilter`, when its supported actions and rule semantics cover the feature.             |
-| Requests constructed by a browser-owned service                 | Apply the behavior at request construction when that covers the feature.                                                       |
-| WebSocket connection policy                                     | A browser-side connection decision before invoking the network factory; ordinary URL-loader throttles do not cover WebSockets. |
+| Requirement                                                        | Preferred integration                                                                                                                                    |
+| ------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Existing Chromium capability                                       | Reuse the upstream implementation.                                                                                                                       |
+| Navigation decisions, consent, or interstitials                    | `content::NavigationThrottle`. This does not cover subresource requests.                                                                                 |
+| Resource request filtering, header changes, or response processing | A feature-specific `blink::URLLoaderThrottle`, in each process that handles the relevant requests.                                                       |
+| Renderer-local subresource filtering                               | Rulesets consumed by `DocumentSubresourceFilter` when they fit the use case; otherwise use `blink::URLLoaderThrottle` for browser or renderer filtering. |
+| Requests constructed by a browser-owned service                    | Apply the behavior at request construction when that covers the feature.                                                                                 |
+| WebSocket connection policy                                        | A browser-side connection decision before invoking the network factory; ordinary URL-loader throttles do not cover WebSockets.                           |
 
 For examples of choosing replacements for existing helpers, see
 [brave-browser#57532](https://github.com/brave/brave-browser/issues/57532).
