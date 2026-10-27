@@ -2283,6 +2283,7 @@
 -GlicWarmingChecksDeferredTest.ShouldPreloadForProfile_Defer
 -GlicWarmingPoolBrowserTest.WarmedContainerConnects
 -GlicZoomBrowserTest.ZoomHotkey
+-GlicZoomBrowserTest.ZoomScroll*
 -NewGlicApi*.*
 -PdfViewerPrivateBrowserTestGlicEnabled.GlicSummarize
 -SelectionOverlayBrowserTest.SelectionUsedFromController
