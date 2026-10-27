@@ -60,14 +60,24 @@ export const style = scoped.css`
   }
 
   leo-dropdown {
-    flex: 1 1 auto;
+    --leo-control-padding: 10px 6px;
+
+    flex: 1;
+    min-width: 0;
 
     [slot=value] {
-      display: flex;
-      width: 100%;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
       align-items: center;
-      gap: 8px;
+      column-gap: 6px;
+      min-width: 100%;
     }
+  }
+
+  .label {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
 
   .counter {
