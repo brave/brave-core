@@ -5,12 +5,34 @@
 
 assert(!is_android)
 
+if (is_win || is_mac || is_linux) {
+  source_set("geolocation") {
+    sources = [ "brave_geolocation_permission_tab_helper.h" ]
+    public_deps = [
+      "//brave/components/brave_geolocation_permission/common:brave_geolocation_permission",
+      "//content/public/browser",
+    ]
+  }
+
+  source_set("impl") {
+    visibility = [ "//brave/browser:core" ]
+
+    sources = [ "brave_geolocation_permission_tab_helper.cc" ]
+
+    deps = [
+      ":geolocation",
+      "//content/public/browser",
+    ]
+  }
+}
+
 source_set("browser_tests") {
   testonly = true
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
   sources = [ "brave_geolocation_browsertest.cc" ]
   deps = [
+    ":geolocation",
     "//base",
     "//brave/components/constants",
     "//chrome/browser",
