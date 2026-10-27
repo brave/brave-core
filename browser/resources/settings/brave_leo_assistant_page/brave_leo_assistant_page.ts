@@ -3,11 +3,11 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import '//resources/cr_elements/md_select.css.js'
+import '/shared/settings/md_select.css.js'
 import 'chrome://resources/brave/leo.bundle.js'
 import {I18nMixin} from 'chrome://resources/cr_elements/i18n_mixin.js'
 import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
-import {WebUiListenerMixin} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js'
+import {WebUiListenerMixin} from '/shared/settings/web_ui_listener_mixin.js'
 import {PrefServiceObserverMixin} from '/shared/settings/prefs2/pref_service_observer_mixin.js'
 import {Router} from '../router.js'
 import {loadTimeData} from '../i18n_setup.js'
