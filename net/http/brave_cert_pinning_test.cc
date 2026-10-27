@@ -40,6 +40,8 @@
 // "net/http/transport_security_state_source.h", as this file cannot include
 // any headers itself, since it's always included in a nested namespace.
 #include "net/http/transport_security_state_source.h"  // IWYU pragma: keep
+// Defines TransportSecurityStatePinsSource, used by the pins header below.
+#include "net/http/transport_security_state_pins_source.h"  // IWYU pragma: keep
 
 // Only fails on ChromeOS, which we don't build. Just assert.
 static_assert(BUILDFLAG(INCLUDE_TRANSPORT_SECURITY_STATE_PRELOAD_LIST));
