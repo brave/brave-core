@@ -47,9 +47,9 @@ export function getHtml(this: BraveAccountSignInDialogElement) {
       </div>
       <leo-button
         slot="buttons"
-        ?isDisabled=${!this.isEmailValid
+        ?isDisabled="${!this.isEmailValid
         || !this.isPasswordValid
-        || this.isSubmitting}
+        || this.isSubmitting}"
         @click=${this.onSignInButtonClicked}
       >
         $i18n{BRAVE_ACCOUNT_SIGN_IN_BUTTON_LABEL}
