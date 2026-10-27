@@ -79,7 +79,12 @@
 # 0.2% upstream flake rate over 30 days per LUCI Analysis. No Brave-specific code
 # affects this path.
 # https://github.com/brave/brave-browser/issues/53358
--DevToolsProcessPerSiteTest.PausedDebuggerFocus
+# https://github.com/brave/brave-browser/issues/59188
+# The test is parameterized (INSTANTIATE_TEST_SUITE_P prefix "All"), so its
+# full name is All/DevToolsProcessPerSiteTest.PausedDebuggerFocus/<Param>; the
+# previous unparameterized pattern never matched, leaving it enabled. Only the
+# LegacyInfobar instance has been reported failing.
+-All/DevToolsProcessPerSiteTest.PausedDebuggerFocus/LegacyInfobar
 
 # These tests fail on Linux because kPromptForDownload defaults to true,
 # triggering the GTK file chooser dialog which causes g_malloc leaks
