@@ -1,0 +1,18 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Link the Brave passage embedder hook into the passage embeddings tests.
+
+      The chromium_src override of passage_embedder_impl.cc calls a hook
+      defined in //brave/services/passage_embeddings:chromium_impl, which the
+      utility process links. Test binaries that include these tests need it
+      as well.
+    insert_into_list:
+      target: tests
+      list_name: deps
+      values:
+        - //brave/services/passage_embeddings:chromium_impl

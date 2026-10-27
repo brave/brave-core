@@ -1,0 +1,11 @@
+##
+## Upstream tests to disable
+##
+## When adding a new filter to this list, please include a short description of
+## why the filter is required and create an associated tracking issue if needed.
+##
+
+# Brave runs EmbeddingGemma through LiteRT, which returns before the upstream
+# TFLite model load that records these histograms. See
+# chromium_src/services/passage_embeddings/passage_embedder_impl.cc.
+-PassageEmbedderImplTest.RecordsGemmaHistograms
