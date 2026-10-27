@@ -34,6 +34,7 @@
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/models/image_model.h"
 #include "ui/base/resource/resource_bundle.h"
+#include "ui/color/color_provider.h"
 #include "ui/color/color_provider_manager.h"
 #include "ui/gfx/image/image_skia.h"
 #include "ui/gfx/image/image_skia_rep.h"
@@ -185,10 +186,12 @@ BraveShieldsActionController::GetImageSource(
                  !IsPageInReaderMode(web_contents);
 
     if (!badge_text.empty()) {
+      const ui::ColorProvider* color_provider =
+          GetColorProviderForWebContents(web_contents);
+      // White text on the fixed badge colors in every theme.
       badge = std::make_unique<IconWithBadgeImageSource::Badge>(
-          badge_text, SK_ColorWHITE,
-          GetColorProviderForWebContents(web_contents)
-              ->GetColor(nala::kColorPrimitiveNeutral40));
+          badge_text, color_provider->GetColor(nala::kColorPrimitiveNeutral100),
+          color_provider->GetColor(nala::kColorPrimitiveNeutral40));
     }
   }
 

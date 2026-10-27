@@ -13,6 +13,7 @@
 #include "brave/components/tor/onion_location_tab_helper.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "brave/ui/color/nala/nala_color_id.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/actions/chrome_action_id.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
@@ -26,13 +27,6 @@
 #include "url/origin.h"
 
 namespace page_actions {
-
-namespace {
-
-constexpr SkColor kOnionButtonBackground = SkColorSetRGB(0x8c, 0x30, 0xbb);
-constexpr SkColor kOnionButtonTextColor = SK_ColorWHITE;
-
-}  // namespace
 
 OnionLocationPageActionController::OnionLocationPageActionController(
     tabs::TabInterface& tab,
@@ -123,8 +117,9 @@ void OnionLocationPageActionController::UpdatePageAction(
   if (profile->IsTor()) {
     page_action_controller_->OverrideImage(
         kActionShowOnionLocation,
+        // White on the Tor chip; there is no semantic white token.
         ui::ImageModel::FromVectorIcon(kLeoProductTorIcon,
-                                       kOnionButtonTextColor));
+                                       nala::kColorPrimitiveTorWindow100));
     page_action_controller_->ShowSuggestionChip(kActionShowOnionLocation);
     page_action_controller_->SetAlwaysShowLabel(kActionShowOnionLocation, true);
     page_action_controller_->OverrideText(
@@ -135,9 +130,10 @@ void OnionLocationPageActionController::UpdatePageAction(
         l10n_util::GetStringFUTF16(
             IDS_LOCATION_BAR_ONION_AVAILABLE_TOOLTIP_TEXT,
             onion_location_text));
-    page_action_controller_->OverrideChipColors(kActionShowOnionLocation,
-                                                kOnionButtonBackground,
-                                                kOnionButtonTextColor);
+    page_action_controller_->OverrideChipColors(
+        kActionShowOnionLocation,
+        color_provider.GetColor(nala::kColorTorWindow30),
+        color_provider.GetColor(nala::kColorPrimitiveTorWindow100));
   } else {
     page_action_controller_->OverrideImage(
         kActionShowOnionLocation,
