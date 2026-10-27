@@ -30,6 +30,11 @@ substitutions:
         {[\s\S]*if \()(IsGroupCollapsed\(new_group\))'
       replace: '\1\2 && IsTabStripEditable()'
 
+  - description: 'Use BraveTabContainer instead of TabContainer'
+    regex:
+      pattern: 'std::make_unique<TabContainer>('
+      replace: 'std::make_unique<BraveTabContainer>('
+
   - description: 'Use BraveTabDragController instead of TabDragController'
     regex:
       pattern: 'std::make_unique<TabDragController>()'
