@@ -17,7 +17,7 @@ export function getHtml(this: BraveAccountDeletionDialogElement) {
       <div slot="inputs">
         <leo-input
           type="text"
-          ?disabled=${this.isSubmitting}
+          ?disabled="${this.isSubmitting}"
           @input=${this.onInput}
         >
           <div class="label ${this.hasError() ? 'error' : ''}">
@@ -28,7 +28,7 @@ export function getHtml(this: BraveAccountDeletionDialogElement) {
       <leo-button
         slot="buttons"
         class="delete-account-button"
-        ?isDisabled=${!this.isConfirmed() || this.isSubmitting}
+        ?isDisabled="${!this.isConfirmed() || this.isSubmitting}"
         @click=${this.onDeleteAccountButtonClicked}
       >
         $i18n{BRAVE_ACCOUNT_DELETE_ACCOUNT_BUTTON_LABEL}
