@@ -22,6 +22,7 @@
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
+#include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/frame/layout/brave_browser_view_tabbed_layout_impl.h"
@@ -162,9 +163,28 @@ void SidebarContainerView::ShowSidebarOnMouseOver(
     return;
   }
 
+  auto* brave_browser_view =
+      BraveBrowserView::From(BrowserView::GetBrowserViewForBrowser(browser_));
   gfx::RectF mouse_event_detect_bounds(
-      BraveBrowserView::From(BrowserView::GetBrowserViewForBrowser(browser_))
-          ->GetBoundingBoxInScreenForMouseOverHandling());
+      brave_browser_view->GetBoundingBoxInScreenForMouseOverHandling());
+
+  // The vertical tab strip is laid out outside the sidebar when both are on the
+  // same side, so the sidebar's hot corner has to start where the strip ends.
+  auto* vertical_tab_controller = VerticalTabController::From(browser_);
+  if (vertical_tab_controller->ShouldShowBraveVerticalTabs() &&
+      vertical_tab_controller->IsVerticalTabOnRight() != sidebar_on_left_) {
+    const auto vertical_tab_width =
+        brave_browser_view->GetVerticalTabStripWidthAtWindowEdge();
+    if (!vertical_tab_width) {
+      // The strip owns the window edge, and keeps it for its own hover
+      // handling.
+      return;
+    }
+
+    mouse_event_detect_bounds.Inset(
+        sidebar_on_left_ ? gfx::InsetsF::TLBR(0, *vertical_tab_width, 0, 0)
+                         : gfx::InsetsF::TLBR(0, 0, 0, *vertical_tab_width));
+  }
 
   constexpr int kHotCornerWidth = 7;
   const int inset = mouse_event_detect_bounds.width() - kHotCornerWidth;

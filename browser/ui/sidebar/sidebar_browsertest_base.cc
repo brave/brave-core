@@ -52,17 +52,18 @@ SidebarBrowserTest::~SidebarBrowserTest() = default;
 
 void SidebarBrowserTest::SetUpOnMainThread() {
   InProcessBrowserTest::SetUpOnMainThread();
+
+  // Must come before any show option is applied: an animated show/hide
+  // started here would never progress and would stay stuck in that state.
   animation_resetter_ = gfx::AnimationTestApi::SetRichAnimationRenderMode(
       gfx::Animation::RichAnimationRenderMode::FORCE_DISABLED);
-}
 
-void SidebarBrowserTest::PreRunTestOnMainThread() {
-  InProcessBrowserTest::PreRunTestOnMainThread();
-
-  auto* service = SidebarServiceFactory::GetForProfile(browser()->GetProfile());
-  // Enable sidebar explicitely because sidebar option is different based on
-  // channel.
-  service->SetSidebarShowOption(SidebarService::ShowSidebarOption::kShowAlways);
+  if (ShouldForceShowAlwaysOption()) {
+    // Enable sidebar explicitely because sidebar option is different based on
+    // channel.
+    SidebarServiceFactory::GetForProfile(browser()->GetProfile())
+        ->SetSidebarShowOption(SidebarService::ShowSidebarOption::kShowAlways);
+  }
 
   // Start test with visible toolbar button.
   // It's hidden by default in origin build.
@@ -70,6 +71,10 @@ void SidebarBrowserTest::PreRunTestOnMainThread() {
   auto* prefs = browser()->GetProfile()->GetPrefs();
   prefs->SetBoolean(kShowSidePanelButton, true);
 #endif
+}
+
+bool SidebarBrowserTest::ShouldForceShowAlwaysOption() const {
+  return true;
 }
 
 SidePanelButton* SidebarBrowserTest::GetSidePanelToolbarButton() const {
