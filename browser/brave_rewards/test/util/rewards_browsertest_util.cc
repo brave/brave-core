@@ -116,7 +116,7 @@ void NavigateToPublisherPage(BrowserWindowInterface* browser,
   DCHECK(browser && https_server);
   ui_test_utils::NavigateToURLWithDisposition(
       browser, GetUrl(https_server, publisher_key, path),
-      WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 }
 

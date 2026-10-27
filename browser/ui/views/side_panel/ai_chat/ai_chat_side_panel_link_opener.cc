@@ -101,7 +101,7 @@ content::WebContents* OpenSidePanelLinkContents(
   if (!navigate_active_tab && !new_contents->HasOpener()) {
     NavigateParams params(browser, std::move(new_contents));
     params.url = target_url;
-    params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+    params.disposition = WindowOpenDisposition::kNewForegroundTab;
     params.window_features = window_features;
     params.window_action = NavigateParams::WindowAction::kNoAction;
     // Mirrors `chrome::AddWebContents()`.
@@ -126,9 +126,9 @@ content::WebContents* OpenSidePanelLinkContents(
       return nullptr;
     }
     params.source_contents = active_tab->GetContents();
-    params.disposition = WindowOpenDisposition::CURRENT_TAB;
+    params.disposition = WindowOpenDisposition::kCurrentTab;
   } else {
-    params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+    params.disposition = WindowOpenDisposition::kNewForegroundTab;
   }
   params.window_action = NavigateParams::WindowAction::kNoAction;
   params.user_gesture = user_gesture;

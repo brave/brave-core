@@ -44,7 +44,7 @@ IN_PROC_BROWSER_TEST_P(BackgroundColorTabHelperBrowserTest,
                        BackgroundColorIsSet) {
   ui_test_utils::NavigateToURLWithDisposition(
       browser(), GURL(chrome::kChromeUINewTabPageURL),
-      WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
   // Expected colors:

@@ -113,7 +113,7 @@ class BraveActionsContainerTest : public InProcessBrowserTest {
   tabs::TabInterface* AddForegroundTab() {
     EXPECT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
         browser(), GURL("about:blank"),
-        WindowOpenDisposition::NEW_FOREGROUND_TAB,
+        WindowOpenDisposition::kNewForegroundTab,
         ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
     return browser()->tab_strip_model()->GetActiveTab();
   }

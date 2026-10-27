@@ -139,7 +139,7 @@ IN_PROC_BROWSER_TEST_F(OnboardingBrowserTest, HighlightsShieldsInActiveTab) {
                 }));
 
   ASSERT_NO_FATAL_FAILURE(
-      LoadPageWithBlockedAd(WindowOpenDisposition::NEW_FOREGROUND_TAB));
+      LoadPageWithBlockedAd(WindowOpenDisposition::kNewForegroundTab));
 
   ASSERT_TRUE(highlight_future.Wait());
   EXPECT_FALSE(GetLastHighlightTime().is_null());
@@ -148,7 +148,7 @@ IN_PROC_BROWSER_TEST_F(OnboardingBrowserTest, HighlightsShieldsInActiveTab) {
 IN_PROC_BROWSER_TEST_F(OnboardingBrowserTest,
                        DoesNotHighlightShieldsInBackgroundTab) {
   ASSERT_NO_FATAL_FAILURE(
-      LoadPageWithBlockedAd(WindowOpenDisposition::NEW_BACKGROUND_TAB));
+      LoadPageWithBlockedAd(WindowOpenDisposition::kNewBackgroundTab));
 
   EXPECT_TRUE(GetLastHighlightTime().is_null());
 }

@@ -459,7 +459,7 @@ IN_PROC_BROWSER_TEST_F(CreatorDetectionBrowserTest, ClearsCreatorOnDiscard) {
   ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
       browser(),
       embedded_https_test_server().GetURL("example-creator.com", "/"),
-      WindowOpenDisposition::NEW_BACKGROUND_TAB,
+      WindowOpenDisposition::kNewBackgroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
   TabStripModel* const tab_strip_model = browser()->tab_strip_model();
   tabs::TabInterface* const tab =

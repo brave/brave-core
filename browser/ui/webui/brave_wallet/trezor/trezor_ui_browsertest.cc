@@ -43,7 +43,7 @@ class TrezorUIBrowserTest : public InProcessBrowserTest {
 IN_PROC_BROWSER_TEST_F(TrezorUIBrowserTest, CheckOpenerInPopup) {
   auto* trezor_bridge = ui_test_utils::NavigateToURLWithDisposition(
       browser(), GURL(kUntrustedTrezorURL),
-      WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
   {

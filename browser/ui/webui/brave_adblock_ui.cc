@@ -289,7 +289,7 @@ void AdblockDOMHandler::HandleViewSubscriptionSource(
   web_ui()->GetWebContents()->GetDelegate()->OpenURLFromTab(
       web_ui()->GetWebContents(),
       content::OpenURLParams(file_url, content::Referrer(),
-                             WindowOpenDisposition::NEW_FOREGROUND_TAB,
+                             WindowOpenDisposition::kNewForegroundTab,
                              ui::PAGE_TRANSITION_AUTO_TOPLEVEL, false),
       /*navigation_handle_callback=*/{});
 #else

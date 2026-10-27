@@ -92,7 +92,7 @@ void ChromeAutocompleteProviderClient::OpenLeo(const std::u16string& query) {
     conversation_handler = ai_chat_service->CreateConversation();
     browser->OpenURL({ai_chat::ConversationUrl(
                           conversation_handler->get_conversation_uuid()),
-                      content::Referrer(), WindowOpenDisposition::CURRENT_TAB,
+                      content::Referrer(), WindowOpenDisposition::kCurrentTab,
                       ui::PageTransition::PAGE_TRANSITION_GENERATED, false},
                      {});
   } else {
