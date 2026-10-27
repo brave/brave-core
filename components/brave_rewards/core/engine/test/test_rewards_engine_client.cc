@@ -49,8 +49,8 @@ std::optional<std::string> FakeEncryption::Base64DecryptString(
 
 TestNetworkResult::TestNetworkResult(const std::string& url,
                                      mojom::UrlMethod method,
-                                     mojom::UrlResponsePtr response)
-    : url(url), method(method), response(std::move(response)) {}
+                                     Callback callback)
+    : url(url), method(method), callback(std::move(callback)) {}
 
 TestNetworkResult::~TestNetworkResult() = default;
 
@@ -108,7 +108,7 @@ void TestRewardsEngineClient::LoadURL(mojom::UrlRequestPtr request,
   });
 
   if (iter != network_results_.end()) {
-    std::move(callback).Run(std::move(iter->response));
+    std::move(callback).Run(std::move(iter->callback).Run(*request));
     network_results_.erase(iter);
     return;
   }
@@ -245,8 +245,19 @@ void TestRewardsEngineClient::DecryptString(const std::string& value,
 void TestRewardsEngineClient::AddNetworkResultForTesting(
     const std::string& url,
     mojom::UrlMethod method,
+    TestNetworkResult::Callback callback) {
+  network_results_.emplace_back(url, method, std::move(callback));
+}
+
+void TestRewardsEngineClient::AddNetworkResultForTesting(
+    const std::string& url,
+    mojom::UrlMethod method,
     mojom::UrlResponsePtr response) {
-  network_results_.emplace_back(url, method, std::move(response));
+  AddNetworkResultForTesting(
+      url, method,
+      base::BindOnce([](mojom::UrlResponsePtr response,
+                        const mojom::UrlRequest&) { return response; },
+                     std::move(response)));
 }
 
 void TestRewardsEngineClient::AddSPLAccountBalanceResultForTesting(
