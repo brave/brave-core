@@ -1,5 +1,5 @@
 diff --git a/components/permissions/features.cc b/components/permissions/features.cc
-index 4af77bfbb20c9e188b420b9546d5e6900655beba..ed3ba2624b680bf5d6f2f8f22648f10bec337da2 100644
+index 580b338d20c98cf50efcaa70749f4b89437830ca..8c743daae8191d55d141aa0918a7815c913042e9 100644
 --- a/components/permissions/features.cc
 +++ b/components/permissions/features.cc
 @@ -34,7 +34,7 @@ BASE_FEATURE(kPermissionElementPromptPositioning,
@@ -20,13 +20,9 @@ index 4af77bfbb20c9e188b420b9546d5e6900655beba..ed3ba2624b680bf5d6f2f8f22648f10b
  
  // When enabled, use the value of the `allowlist_urls` FeatureParam as the
  // list of origins which would be allowed to access browser permission and
-@@ -90,10 +90,10 @@ BASE_FEATURE(kRecordChooserPermissionLastVisitedTimestamps,
- // When enabled, blocks condition to exclude auto granted permissions for
- // storage access exceptions. This will allow RWS permission grants to be
- // visible in the Embedded content settings page.
--BASE_FEATURE(kShowRelatedWebsiteSetsPermissionGrants,
-+BASE_OVERRIDDEN_FEATURE(kShowRelatedWebsiteSetsPermissionGrants,
-              base::FEATURE_DISABLED_BY_DEFAULT);
+@@ -87,7 +87,7 @@ BASE_FEATURE(kRecordChooserPermissionLastVisitedTimestamps,
+ 
+ #endif  // BUILDFLAG(IS_ANDROID)
  
 -BASE_FEATURE(kCpssUseTfliteSignatureRunner, base::FEATURE_ENABLED_BY_DEFAULT);
 +BASE_OVERRIDDEN_FEATURE(kCpssUseTfliteSignatureRunner, base::FEATURE_DISABLED_BY_DEFAULT);
