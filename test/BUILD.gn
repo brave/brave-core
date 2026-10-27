@@ -1517,6 +1517,7 @@ test("brave_browser_tests") {
       "//brave/components/sidebar/browser",
       "//brave/test/views/snapshot",
       "//brave/ui/base/clipboard/test:test_support",
+      "//brave/ui/color:nala_color_id",
       "//chrome/browser/signin",
       "//chrome/browser/ui/views/bubble",
       "//chrome/browser/ui/views/frame:browser_view_header",
