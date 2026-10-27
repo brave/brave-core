@@ -13,6 +13,9 @@ section links to a detailed document.
 
 - **[Architecture and Code Organization](./best-practices/architecture.md)** -
   Layering violations, dependency injection, factory patterns, pref management
+- **[Network Interception](./best-practices/network-interception.md)** -
+  Feature-specific throttles and hooks, browser-owned policy, request coverage,
+  replacing network-delegate helpers
 - **[C++ Coding Standards](./best-practices/coding-standards.md)** - IWYU,
   naming conventions, CHECK vs DCHECK, style, comments, logging
 - **[C++ Memory, Lifetime & Threading](./best-practices/coding-standards-memory.md)** -
