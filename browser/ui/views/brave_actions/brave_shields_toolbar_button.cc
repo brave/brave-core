@@ -14,21 +14,8 @@
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/gfx/geometry/point.h"
-#include "ui/gfx/geometry/skia_conversions.h"
 #include "ui/views/controls/button/menu_button_controller.h"
-#include "ui/views/controls/highlight_path_generator.h"
 #include "ui/views/view_class_properties.h"
-
-namespace {
-
-class ShieldsToolbarHighlightPathGenerator
-    : public views::HighlightPathGenerator {
-  SkPath GetHighlightPath(const views::View* view) override {
-    return SkPath::Rect(gfx::RectToSkRect(view->GetLocalBounds()));
-  }
-};
-
-}  // namespace
 
 BraveShieldsToolbarButton::BraveShieldsToolbarButton(
     BrowserWindowInterface* browser_window_interface,
@@ -60,9 +47,6 @@ BraveShieldsToolbarButton::BraveShieldsToolbarButton(
   controller_->SetIconStyle(
       BraveShieldsActionController::IconStyle::kWebAppTitleBar);
   controller_->SetAnchorView(this);
-
-  views::HighlightPathGenerator::Install(
-      this, std::make_unique<ShieldsToolbarHighlightPathGenerator>());
 
   Update();
 }

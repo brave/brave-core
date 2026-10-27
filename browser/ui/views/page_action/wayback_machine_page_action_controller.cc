@@ -20,6 +20,7 @@
 #include "chrome/browser/ui/browser_actions.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
+#include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
 #include "components/user_prefs/user_prefs.h"
@@ -42,7 +43,6 @@ namespace page_actions {
 
 namespace {
 
-constexpr int kIconSize = 16;
 constexpr int kBadgeSize = 8;
 
 // Mirrors the legacy WaybackIconImageSource: draws the base icon plus a small
@@ -275,12 +275,15 @@ void WaybackMachinePageActionController::UpdatePageAction(
         kActionShowWaybackMachine,
         ui::ImageModel::FromVectorIcon(
             kLeoCalendarTimeIcon,
-            color_provider.GetColor(kColorToolbarButtonIcon), kIconSize));
+            color_provider.GetColor(kColorToolbarButtonIcon)));
     return;
   }
 
+  // Badged images are drawn as-is, so build them at the size PageActionView
+  // uses for vector icons.
   const gfx::IconDescription icon_description(
-      kLeoCalendarTimeIcon, kIconSize,
+      kLeoCalendarTimeIcon,
+      GetLayoutConstant(LayoutConstant::kLocationBarTrailingIconSize),
       color_provider.GetColor(kColorToolbarButtonIcon));
   const gfx::IconDescription badge_description(
       kLeoDesktopVpnErrorColorIcon, kBadgeSize,
