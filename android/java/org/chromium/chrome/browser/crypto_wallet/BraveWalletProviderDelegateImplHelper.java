@@ -86,19 +86,4 @@ public class BraveWalletProviderDelegateImplHelper {
             Log.e(TAG, "showAccountCreation " + e);
         }
     }
-
-    public static void isSolanaConnected(
-            WebContents webContents, String account, Callback1<Boolean> callback) {
-        Callback<Boolean> callbackWrapper =
-                result -> {
-                    callback.call(result);
-                };
-        BraveWalletProviderDelegateImplHelperJni.get()
-                .isSolanaConnected(webContents, account, callbackWrapper);
-    }
-
-    @NativeMethods
-    interface Natives {
-        void isSolanaConnected(WebContents webContents, String account, Callback<Boolean> callback);
-    }
 }
