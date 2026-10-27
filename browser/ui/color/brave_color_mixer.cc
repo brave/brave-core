@@ -5,6 +5,8 @@
 
 #include "brave/browser/ui/color/brave_color_mixer.h"
 
+#include "base/logging.h"
+//Keep this to see what colors are 
 #include "base/numerics/safe_conversions.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/color/color_palette.h"
@@ -696,6 +698,11 @@ void AddBraveOmniboxPrivateThemeColorMixer(ui::ColorProvider* provider,
       kColorToolbarBackgroundSubtleEmphasis};
 
   mixer[kColorOmniboxResultsBackground] = {kPrivateFrame};
+  // mixer[kColorOmniboxTextDimmed] = {kColorOmniboxText};
+  mixer[kColorOmniboxTextDimmed] = {
+    ui::SetAlpha(kColorOmniboxText,0.9*255)};
+  SkColor debug_color = mixer.GetResultColor(kColorOmniboxTextDimmed);
+  // LOG(INFO)<<"Debug Color 0x"<<std::hex << debug_color;
   if (IsHighContrast()) {
     mixer[kColorOmniboxResultsBackground] = {
         color_utils::HSLShift(kPrivateFrame, {-1, -1, 0.45})};

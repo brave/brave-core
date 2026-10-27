@@ -17,7 +17,7 @@ inline constexpr SkColor kDarkerColorForTest = SkColorSetRGB(0x00, 0x00, 0x00);
 
 inline constexpr SkColor kPrivateFrame = SkColorSetRGB(0x1F, 0x16, 0x29);
 //Check if this works
-inline constexpr SkColor kPrivateFrame_light = SkColorSetRGB(0xFF, 0xFF, 0xFF);
+inline constexpr SkColor kPrivateFrame_light = SkColorSetRGB(0xFF, 0x22, 0x22);
 
 inline constexpr SkColor kPrivateTorFrame = SkColorSetRGB(0x22, 0x15, 0x27);
 
