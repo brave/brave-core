@@ -106,8 +106,9 @@ BraveNewsBubbleView::BraveNewsBubbleView(views::View* action_view,
   subtitle_label_->SetProperty(views::kMarginsKey,
                                gfx::Insets::TLBR(0, 0, 16, 0));
 
-  feeds_container_ =
-      AddChildView(std::make_unique<BraveNewsFeedsContainerView>(contents));
+  feeds_container_ = AddChildView(std::make_unique<BraveNewsFeedsContainerView>(
+      BraveNewsTabHelper::FromWebContents(contents)->GetAvailableFeedUrls(),
+      contents));
 
   SetLayoutManager(std::make_unique<views::FlexLayout>())
       ->SetOrientation(views::LayoutOrientation::kVertical)

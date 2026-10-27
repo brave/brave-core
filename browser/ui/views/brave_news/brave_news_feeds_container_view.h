@@ -6,10 +6,13 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_BRAVE_NEWS_BRAVE_NEWS_FEEDS_CONTAINER_VIEW_H_
 #define BRAVE_BROWSER_UI_VIEWS_BRAVE_NEWS_BRAVE_NEWS_FEEDS_CONTAINER_VIEW_H_
 
+#include <vector>
+
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/gfx/geometry/size.h"
 #include "ui/views/layout/layout_types.h"
 #include "ui/views/view.h"
+#include "url/gurl.h"
 
 namespace content {
 class WebContents;
@@ -18,7 +21,8 @@ class WebContents;
 class BraveNewsFeedsContainerView : public views::View {
   METADATA_HEADER(BraveNewsFeedsContainerView, views::View)
  public:
-  explicit BraveNewsFeedsContainerView(content::WebContents* contents);
+  BraveNewsFeedsContainerView(const std::vector<GURL>& available_feeds,
+                              content::WebContents* contents);
   BraveNewsFeedsContainerView(const BraveNewsFeedsContainerView&) = delete;
   BraveNewsFeedsContainerView& operator=(const BraveNewsFeedsContainerView&) =
       delete;

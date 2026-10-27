@@ -6,8 +6,8 @@
 #include "brave/browser/ui/views/brave_news/brave_news_feeds_container_view.h"
 
 #include <memory>
+#include <vector>
 
-#include "brave/browser/brave_news/brave_news_tab_helper.h"
 #include "brave/browser/ui/views/brave_news/brave_news_feed_item_view.h"
 #include "brave/ui/color/nala/nala_color_id.h"
 #include "content/public/browser/web_contents.h"
@@ -23,11 +23,9 @@
 #include "ui/views/view_class_properties.h"
 
 BraveNewsFeedsContainerView::BraveNewsFeedsContainerView(
+    const std::vector<GURL>& available_feeds,
     content::WebContents* contents) {
-  auto* tab_helper = BraveNewsTabHelper::FromWebContents(contents);
-
-  auto available_feeds = tab_helper->GetAvailableFeedUrls();
-  for (auto& feed_item : available_feeds) {
+  for (const auto& feed_item : available_feeds) {
     auto* child = AddChildView(
         std::make_unique<BraveNewsFeedItemView>(feed_item, contents));
     child->SetProperty(views::kMarginsKey, gfx::Insets::VH(12, 12));

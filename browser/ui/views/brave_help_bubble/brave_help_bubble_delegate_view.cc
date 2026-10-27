@@ -149,7 +149,9 @@ BraveHelpBubbleDelegateView::BraveHelpBubbleDelegateView(
     : BubbleDialogDelegateView(anchor_view, BubbleBorder::Arrow::TOP_CENTER) {
   SetButtons(static_cast<int>(ui::mojom::DialogButton::kNone));
   set_shadow_config({.shadow_type = BubbleBorder::Shadow::STANDARD_SHADOW});
-  SetBackgroundColor(nala::kColorSchemesPrimary);
+  set_corner_radius(10);
+  // Same colors for all themes.
+  SetBackgroundColor(nala::kColorPrimitiveBrandsPrimaryFixed);
   SetLayoutManager(std::make_unique<views::BoxLayout>(
       views::BoxLayout::Orientation::kVertical));
 
@@ -197,7 +199,7 @@ void BraveHelpBubbleDelegateView::SetUpLabel(views::Label* label,
   label->SetMaximumWidth(390);
   label->SetText(text);
   label->SetAutoColorReadabilityEnabled(false);
-  label->SetEnabledColor(nala::kColorSchemesOnPrimary);
+  label->SetEnabledColor(nala::kColorWhite);
 
   const auto& font_list = label->font_list();
   label->SetFontList(

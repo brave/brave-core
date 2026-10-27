@@ -63,7 +63,8 @@ SidebarItemAddedFeedbackBubble::SidebarItemAddedFeedbackBubble(
       .elevation = ChromeLayoutProvider::Get()->GetShadowElevationMetric(
           views::Emphasis::kHigh),
   });
-  SetBackgroundColor(nala::kColorSchemesPrimary);
+  // This bubble uses same color for all themes.
+  SetBackgroundColor(nala::kColorPrimitiveBrandsPrimaryFixed);
   set_margins(gfx::Insets());
   set_title_margins(gfx::Insets());
   SetButtons(static_cast<int>(ui::mojom::DialogButton::kNone));
@@ -128,7 +129,7 @@ void SidebarItemAddedFeedbackBubble::AddChildViews() {
       kChildSpacing));
   auto* image = first_row->AddChildView(std::make_unique<views::ImageView>());
   image->SetImage(ui::ImageModel::FromVectorIcon(kSidebarItemAddedCheckIcon,
-                                                 nala::kColorSchemesOnPrimary));
+                                                 nala::kColorWhite));
   // Use 12pt and 600 weight.
   auto* label = first_row->AddChildView(std::make_unique<views::Label>(
       l10n_util::GetStringUTF16(IDS_SIDEBAR_ADDED_FEEDBACK_TITLE_1),
@@ -136,7 +137,7 @@ void SidebarItemAddedFeedbackBubble::AddChildViews() {
           {views::Label::GetDefaultFontList().DeriveWithWeight(
               gfx::Font::Weight::SEMIBOLD)})));
   label->SetAutoColorReadabilityEnabled(false);
-  label->SetEnabledColor(nala::kColorSchemesOnPrimary);
+  label->SetEnabledColor(nala::kColorWhite);
 
   // 11pt (1 decreased from default(12)) and 500 weight.
   label = AddChildView(std::make_unique<views::Label>(
@@ -146,7 +147,7 @@ void SidebarItemAddedFeedbackBubble::AddChildViews() {
                .DeriveWithSizeDelta(-1)
                .DeriveWithWeight(gfx::Font::Weight::MEDIUM)})));
   label->SetAutoColorReadabilityEnabled(false);
-  label->SetEnabledColor(nala::kColorSchemesOnPrimary);
+  label->SetEnabledColor(nala::kColorWhite);
 }
 
 BEGIN_METADATA(SidebarItemAddedFeedbackBubble)
