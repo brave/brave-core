@@ -48,3 +48,20 @@
 # use-of-uninitialized-value but does not crash in regular builds.
 # https://github.com/brave/brave-browser/issues/55396
 -ServiceWorkerStopTrackingBrowserTest.OnStoppedUpdatesBrowserAndRendererState_AfterRenderStopNotification
+
+# Upstream Chromium test. Has failed on every Brave Linux MSan nightly since
+# 2026-09-16, while Chromium's Linux MSan bots do not list it as flaky and its
+# overall upstream flake rate is below 1%, so the generated filters do not
+# cover it. Already disabled upstream on ChromeOS MSan, Windows and macOS
+# (crbug.com/491012584).
+# The test expects chrome://version to record no samples of
+# Webium.Navigation.DocumentLoader.DidCommitNavigation, but
+# SubprocessMetricsProvider applies that name to deltas merged from any
+# top-chrome WebUI renderer, and HistogramTester takes its baseline without
+# merging subprocess deltas. Samples from the browser window's own top-chrome
+# WebUI renderers that are not yet merged when the test starts are counted.
+# Why Brave's MSan build hits this on every run while Chromium's Linux MSan
+# bots do not is not established; there is no local MSan build to reproduce.
+# https://github.com/brave/brave-browser/issues/54031
+# https://github.com/brave/brave-browser/issues/59078
+-InitialWebUIMetricsMappingBrowserTest.NormalRendererMetricsAreNotMapped
