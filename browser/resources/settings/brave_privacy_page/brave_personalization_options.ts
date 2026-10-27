@@ -12,7 +12,7 @@ import {
 import {
   WebUiListenerMixin,
   WebUiListenerMixinInterface,
-} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js'
+} from '/shared/settings/web_ui_listener_mixin.js'
 import { loadTimeData } from '../i18n_setup.js'
 
 import { getTemplate } from './brave_personalization_options.html.js'
