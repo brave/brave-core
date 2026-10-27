@@ -16,6 +16,7 @@ source_set("browser_tests") {
     "font_browsertest.cc",
     "navigator_connection_attribute_browsertest.cc",
     "subresource_web_bundles_browsertest.cc",
+    "translation_web_apis_browsertest.cc",
   ]
 
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]

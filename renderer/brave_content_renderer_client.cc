@@ -157,9 +157,12 @@ void BraveContentRendererClient::
         "FileSystemAccessAPIExperimental", false);
   }
   blink::WebRuntimeFeatures::EnableFeatureFromString("FledgeMultiBid", false);
+  blink::WebRuntimeFeatures::EnableFeatureFromString("LanguageDetectionAPI",
+                                                     false);
   blink::WebRuntimeFeatures::EnableFeatureFromString("PrivateStateTokens",
                                                      false);
   blink::WebRuntimeFeatures::EnableFeatureFromString("ProfilerAPI", false);
+  blink::WebRuntimeFeatures::EnableFeatureFromString("TranslationAPI", false);
 
 #if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
   if (base::FeatureList::IsEnabled(
