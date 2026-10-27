@@ -54,6 +54,33 @@ TEST(ReportServiceTest, ReadsSavedReport) {
 }
 ```
 
+For one or two independent operations, inject `base::RepeatingCallback`s
+directly instead of introducing a dependency class/interface. Production binds
+the real operation; tests supply controlled behavior. Use an interface when the
+operations form a larger shared contract.
+
+```cpp
+// ✅ CORRECT - inject the read operation itself without a dependency interface
+class CallbackReportService {
+ public:
+  using ReadReportCallback = base::RepeatingCallback<std::string()>;
+
+  explicit CallbackReportService(ReadReportCallback read_report)
+      : read_report_(std::move(read_report)) {}
+  std::string ReadReport() const { return read_report_.Run(); }
+
+ private:
+  ReadReportCallback read_report_;
+};
+
+TEST(CallbackReportServiceTest, ReadsSavedReport) {
+  CallbackReportService service(
+      base::BindRepeating([] { return std::string("saved report"); }));
+  EXPECT_EQ(service.ReadReport(), "saved report");
+  EXPECT_EQ(service.ReadReport(), "saved report");
+}
+```
+
 Keep integration/browser tests for real component wiring. A storage
 implementation's own tests may use real storage; isolate dependencies outside
 the unit under test, not the unit itself or simple value objects.
