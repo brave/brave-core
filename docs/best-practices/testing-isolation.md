@@ -10,9 +10,6 @@ dependencies.** Reuse existing interfaces and fakes; put reusable doubles in a
 [constructor injection](architecture.md#ARCH-025), not virtual methods
 everywhere.
 
-These examples omit includes and unrelated definitions. `ReportStore`, its
-implementations, and `ReportService` below are reused in the factory examples.
-
 ```cpp
 // ❌ WRONG - starts production storage to test its consumer
 ReportService service(std::make_unique<ReportStoreImpl>(database_path));
@@ -1101,7 +1098,7 @@ EXPECT_EQ(service.ReadReport(), "saved report");
 
 ## ✅ Inject Factories for Dependencies Created on Demand
 
-**Inject creation instead of hard-coding production dependencies.** Reuse the
+**Inject factories instead of hard-coding production dependencies.** Reuse the
 `ReportStore` types from [TI-001](#TI-001); production supplies a factory that
 creates `ReportStoreImpl` instances.
 
@@ -1143,6 +1140,33 @@ TEST(ReportReaderTest, ReadsReportFromCreatedStore) {
 }
 ```
 
+A single factory operation can also use a
+`base::RepeatingCallback<std::unique_ptr<ReportStore>()>` instead of a virtual
+interface. Use `base::OnceCallback` if creation is needed only once.
+
+```cpp
+// ✅ CORRECT - a repeating callback supplies a fresh dependency on each read
+class CallbackReportReader {
+ public:
+  using StoreFactory = base::RepeatingCallback<std::unique_ptr<ReportStore>()>;
+
+  explicit CallbackReportReader(StoreFactory factory)
+      : factory_(std::move(factory)) {}
+  std::string ReadReport() { return factory_.Run()->ReadReport(); }
+
+ private:
+  StoreFactory factory_;
+};
+
+TEST(CallbackReportReaderTest, ReadsReportFromCreatedStore) {
+  CallbackReportReader reader(base::BindRepeating(
+      []() -> std::unique_ptr<ReportStore> {
+        return std::make_unique<FakeReportStore>("saved report");
+      }));
+  EXPECT_EQ(reader.ReadReport(), "saved report");
+}
+```
+
 ---
 
 <a id="TI-046"></a>
@@ -1151,9 +1175,10 @@ TEST(ReportReaderTest, ReadsReportFromCreatedStore) {
 
 **Prefer [injected factories](#TI-045); use a scoped override when an existing
 static API cannot support injection.** Restore the previous factory before the
-fake is destroyed, even on an early return. These excerpts reuse
-`ReportStoreFactory` from TI-045; global overrides must not race concurrent
-users.
+fake is destroyed, even on an early return. Chromium also uses override pointers
+with internal linkage in a `.cc` file; scoped restoration applies to those too.
+These excerpts reuse `ReportStoreFactory` from TI-045; global overrides must not
+race concurrent users. Guard the test-only branch with `CHECK_IS_TEST()`.
 
 ```cpp
 // ❌ WRONG - leaves a dangling factory pointer for later tests
@@ -1165,21 +1190,30 @@ ReportStores::SetFactoryForTesting(&factory);  // No scoped restoration.
 // ✅ CORRECT - RAII restores the prior factory before the fake is destroyed
 class ReportStores {
  public:
-  static std::unique_ptr<ReportStore> Create() {
-    if (factory_for_testing_) {
-      return factory_for_testing_->Create();
-    }
-    return std::make_unique<ReportStoreImpl>();
-  }
+  static std::unique_ptr<ReportStore> Create();
 
   [[nodiscard]] static base::AutoReset<ReportStoreFactory*> OverrideForTesting(
-      ReportStoreFactory* factory) {
-    return base::AutoReset<ReportStoreFactory*>(&factory_for_testing_, factory);
-  }
-
- private:
-  inline static ReportStoreFactory* factory_for_testing_ = nullptr;
+      ReportStoreFactory* factory);
 };
+
+// report_stores.cc
+namespace {
+ReportStoreFactory* g_factory_for_testing = nullptr;
+}  // namespace
+
+std::unique_ptr<ReportStore> ReportStores::Create() {
+  if (g_factory_for_testing) {
+    CHECK_IS_TEST();
+    return g_factory_for_testing->Create();
+  }
+  return std::make_unique<ReportStoreImpl>();
+}
+
+base::AutoReset<ReportStoreFactory*> ReportStores::OverrideForTesting(
+    ReportStoreFactory* factory) {
+  CHECK_IS_TEST();
+  return base::AutoReset<ReportStoreFactory*>(&g_factory_for_testing, factory);
+}
 
 TEST(ReportStoresTest, UsesScopedFakeFactory) {
   FakeReportStoreFactory factory;
@@ -1195,10 +1229,12 @@ TEST(ReportStoresTest, UsesScopedFakeFactory) {
 
 ## ✅ Use Factory Methods for Async or Fallible Creation
 
-**Do not block constructors or expose partially initialized objects.** Deliver
-an explicit result and ownership asynchronously: success has a non-null
-connection, failure has none. For isolated consumer tests, inject a
-connector/factory whose fake controls the result and completion time.
+**Do not block constructors or expose partially initialized objects.** Use
+`base::expected` to return either an initialized object or an error from a
+fallible factory. For async creation, deliver that result through a callback:
+success has a non-null connection, failure carries an error. For isolated
+consumer tests, inject a connector/factory whose fake controls the result and
+completion time.
 
 ```cpp
 // ❌ WRONG - blocks construction and leaves failure handling ambiguous
@@ -1211,9 +1247,10 @@ Connection::Connection() {
 // ✅ CORRECT - factory method delivers ownership only after creation completes
 class Connection {
  public:
-  enum class Result { kSuccess, kTimeout, kRejected };
-  using ConnectCallback =
-      base::OnceCallback<void(Result, std::unique_ptr<Connection>)>;
+  enum class ConnectError { kTimeout, kRejected };
+  using ConnectResult =
+      base::expected<std::unique_ptr<Connection>, ConnectError>;
+  using ConnectCallback = base::OnceCallback<void(ConnectResult)>;
 
   static void Connect(ConnectCallback callback);
   ~Connection();
@@ -1224,11 +1261,12 @@ class Connection {
 
 // Example consumer callback; no blocking wait in the production constructor.
 Connection::Connect(base::BindOnce(
-    [](Connection::Result result, std::unique_ptr<Connection> connection) {
-      if (result != Connection::Result::kSuccess) {
-        // Report the failure; no connection is available to use.
+    [](Connection::ConnectResult result) {
+      if (!result.has_value()) {
+        // Report result.error(); no connection is available to use.
         return;
       }
+      std::unique_ptr<Connection> connection = std::move(result).value();
       // Transfer the established connection to its owner here.
     }));
 ```
@@ -1240,8 +1278,13 @@ Connection::Connect(base::BindOnce(
 ## ✅ Record Observer Events with Scoped Observation
 
 **Publish through an observer interface and assert recorded event data.** Use
-`base::ScopedObservation` for cleanup; the publisher must outlive the
-observation.
+`base::ScopedObservation` for cleanup when the publisher outlives the active
+observation. If the publisher can die first, call `Reset()` while it is still
+alive, for example in its destruction notification. Scoped observation does not
+automatically detect source destruction. Manual registration is also valid when
+the observer outlives the publisher and the publisher discards registrations on
+destruction; no `RemoveObserver()` call is then needed from the observer's
+destructor.
 
 ```cpp
 // ❌ WRONG - early exits skip cleanup and leave a registered observer
