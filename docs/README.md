@@ -33,6 +33,8 @@ resources outside this repository, go to:
 
 ### General Development
 
+- [Network Interception Best Practices](best-practices/network-interception.md) -
+  Choosing feature-specific hooks and throttles for network behavior.
 - [Running test suites](running_test_suites.md) - Selectively execute unit,
   browser and typescript tests.
 - [`gni` notes](gni_sources.md) - Brief notes on the use of `source.gni` files
