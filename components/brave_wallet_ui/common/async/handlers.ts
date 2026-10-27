@@ -21,8 +21,10 @@ const onInteractionInterval = () => {
 async function refreshWalletInfo(listenerApi: ListenerApi) {
   const apiProxy = getAPIProxy()
 
-  const { walletInfo } = await apiProxy.walletHandler.getWalletInfo()
-  const { allAccounts } = await apiProxy.keyringService.getAllAccounts()
+  const [{ walletInfo }, { allAccounts }] = await Promise.all([
+    apiProxy.walletHandler.getWalletInfo(),
+    apiProxy.keyringService.getAllAccounts(),
+  ])
   listenerApi.dispatch(WalletActions.initialized({ walletInfo, allAccounts }))
   listenerApi.dispatch(WalletActions.refreshAll())
 
@@ -63,9 +65,11 @@ startAppListening({
   actionCreator: WalletActions.initialize,
   effect: async (_, listenerApi) => {
     const { walletHandler, keyringService } = getAPIProxy()
-    const { walletInfo } = await walletHandler.getWalletInfo()
+    const [{ walletInfo }, { allAccounts }] = await Promise.all([
+      walletHandler.getWalletInfo(),
+      keyringService.getAllAccounts(),
+    ])
     const { isWalletLocked } = walletInfo
-    const { allAccounts } = await keyringService.getAllAccounts()
     if (!isWalletLocked) {
       keyringService.notifyUserInteraction()
     }
