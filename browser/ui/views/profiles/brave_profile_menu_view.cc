@@ -10,6 +10,7 @@
 #include <utility>
 
 #include "brave/browser/profiles/profile_util.h"
+#include "brave/components/vector_icons/vector_icons.h"
 #include "chrome/app/vector_icons/vector_icons.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
@@ -20,7 +21,6 @@
 #include "chrome/browser/ui/profiles/profile_colors_util.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/grit/generated_resources.h"
-#include "components/vector_icons/vector_icons.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/models/image_model.h"
 
@@ -48,7 +48,7 @@ void BraveProfileMenuView::MaybeBuildCloseBrowsersButton() {
       l10n_util::GetPluralStringFUTF16(button_title_id, window_count),
       base::BindRepeating(&ProfileMenuView::OnExitProfileButtonClicked,
                           base::Unretained(this)),
-      vector_icons::kCloseOldIcon);
+      kLeoCloseIcon);
 }
 
 // We don't want feature buttons to manage google account

@@ -12,6 +12,7 @@
 #include "base/check.h"
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/components/tor/buildflags/buildflags.h"
+#include "brave/components/vector_icons/vector_icons.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/app/vector_icons/vector_icons.h"
 #include "chrome/browser/profiles/profile.h"
@@ -56,7 +57,7 @@ void BraveIncognitoMenuView::BuildMenu() {
       l10n_util::GetStringUTF16(GetProfileMenuCloseButtonTextId(profile())),
       base::BindRepeating(&BraveIncognitoMenuView::OnExitButtonClicked,
                           base::Unretained(this)),
-      vector_icons::kCloseOldIcon);
+      kLeoCloseIcon);
 }
 
 void BraveIncognitoMenuView::AddedToWidget() {

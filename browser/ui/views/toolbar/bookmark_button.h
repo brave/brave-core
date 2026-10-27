@@ -24,6 +24,9 @@ class BraveBookmarkButton : public ToolbarButton {
   void SetToggled(bool on);
   void UpdateImageAndText();
 
+  // ToolbarButton:
+  void UpdateIcon() override;
+
  private:
   bool active_ = false;
 };

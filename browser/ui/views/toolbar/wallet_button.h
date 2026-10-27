@@ -49,7 +49,7 @@ class WalletButton : public ToolbarButton {
   bool IsBubbleClosedForTesting();
   views::Widget* GetBubbleWidgetForTesting();
 
-  void UpdateImageAndText(bool activated = false);
+  void UpdateImageAndText();
 
   views::View* GetAsAnchorView();
 
@@ -65,7 +65,7 @@ class WalletButton : public ToolbarButton {
   void OnNotificationUpdate(bool show_suggest_badge, size_t counter);
 
   // ToolbarButton overrides:
-  void InkDropRippleAnimationEnded(views::InkDropState state) override;
+  void UpdateIcon() override;
   void OnThemeChanged() override;
 
   raw_ptr<PrefService> prefs_ = nullptr;

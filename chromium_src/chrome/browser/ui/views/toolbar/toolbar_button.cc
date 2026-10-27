@@ -86,6 +86,10 @@ void ToolbarButton::OnInkDropStateChanged(views::InkDropState state) {
   }
 
   if (!HasVectorIcons()) {
+    // Let buttons that set their own images re-apply them for the new state.
+    if (GetColorProvider()) {
+      UpdateIcon();
+    }
     return;
   }
 

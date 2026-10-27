@@ -6,6 +6,7 @@
 #include "brave/browser/ui/views/toolbar/brave_browser_app_menu_button.h"
 
 #include "base/check_deref.h"
+#include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/page_info/features.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/vector_icons/vector_icons.h"
@@ -103,7 +104,18 @@ void BraveBrowserAppMenuButton::UpdateLayoutInsets() {
 
 void BraveBrowserAppMenuButton::UpdateIcon() {
   if (!ShowBrandedIcon()) {
-    BrowserAppMenuButton::UpdateIcon();
+    // Match other toolbar buttons while the app menu is open, unless a
+    // severity color is showing. The branded logo is never tinted.
+    const bool use_activated_color =
+        IsActivated() && !GetColorForSeverity().has_value();
+    for (auto state : kButtonStates) {
+      const SkColor color =
+          use_activated_color && state != views::Button::STATE_DISABLED
+              ? GetColorProvider()->GetColor(kColorToolbarButtonActivated)
+              : GetForegroundColor(state);
+      SetImageModel(state, ui::ImageModel::FromVectorIcon(
+                               kLeoBrowserMenuIcon, color, GetIconSize()));
+    }
     return;
   }
 
