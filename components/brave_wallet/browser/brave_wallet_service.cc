@@ -1624,10 +1624,15 @@ void BraveWalletService::AddSuggestTokenRequest(
 
   // GetEthTokenInfo reports success when decimals or symbol are missing, so
   // it cannot gate storing dapp-supplied metadata.
+  // `chain_id` is read before `request` is moved into the callback: argument
+  // evaluation order is unspecified, and on Win64 `BindOnce(std::move(request),
+  // ...)` is evaluated before the `request->token->chain_id` argument, which
+  // would dereference the moved-from (null) request.
+  const std::string chain_id = request->token->chain_id;
   add_suggest_token_callbacks_[addr] = std::move(callback);
   add_suggest_token_ids_[addr] = std::move(id);
   json_rpc_service_->GetEthTokenDecimals(
-      addr, request->token->chain_id,
+      addr, chain_id,
       base::BindOnce(&BraveWalletService::OnGetSuggestedTokenDecimals,
                      weak_ptr_factory_.GetWeakPtr(), std::move(request),
                      std::move(on_added)));
