@@ -1,0 +1,14 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Show the session crashed bubble through Brave's wrapper.
+
+      The wrapper asks for crash report permission first when needed, and
+      that dialog shows the session crashed bubble once it closes.
+    regex:
+      pattern: 'ShowSessionCrashedBubbleIfNotOffTheRecordProfile('
+      replace: 'ShowSessionCrashedBubbleIfNotOffTheRecordProfileBrave('

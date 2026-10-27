@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_VIEWS_CRASH_REPORT_PERMISSION_ASK_DIALOG_VIEW_H_
 
 #include "base/memory/raw_ptr.h"
+#include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/views/window/dialog_delegate.h"
 
 class BrowserWindowInterface;
@@ -16,6 +17,8 @@ class Checkbox;
 }  // namespace views
 
 class CrashReportPermissionAskDialogView : public views::DialogDelegateView {
+  METADATA_HEADER(CrashReportPermissionAskDialogView, views::DialogDelegateView)
+
  public:
   static void Show(BrowserWindowInterface* browser);
 
