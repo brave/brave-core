@@ -20,7 +20,7 @@ class CrashReportPermissionAskDialogView : public views::DialogDelegateView {
   static void Show(BrowserWindowInterface* browser);
 
  private:
-  explicit CrashReportPermissionAskDialogView(BrowserWindowInterface* browser);
+  CrashReportPermissionAskDialogView();
   ~CrashReportPermissionAskDialogView() override;
 
   CrashReportPermissionAskDialogView(
@@ -36,7 +36,7 @@ class CrashReportPermissionAskDialogView : public views::DialogDelegateView {
 
   void OnAcceptButtonClicked();
   void OnWindowClosing();
-  void CreateChildViews(views::Widget* parent);
+  void CreateChildViews();
 
   raw_ptr<views::Checkbox> dont_ask_again_checkbox_ = nullptr;
 };

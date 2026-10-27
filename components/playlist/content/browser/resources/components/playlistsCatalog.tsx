@@ -24,8 +24,7 @@ import { color, spacing } from '@brave/leo/tokens/css/variables'
 
 import { Playlist } from 'gen/brave/components/playlist/core/common/mojom/playlist.mojom.m.js'
 
-import PlayLaterCardOverlayImage from '../assets/playlater-card-overlay.svg'
-import PlaylistInfo from './playlistInfo'
+import PlaylistInfo, { PlaylistName } from './playlistInfo'
 import { useSelector } from 'react-redux'
 import {
   ApplicationState,
@@ -67,17 +66,9 @@ const PlaylistCardContainer = styled.div<
       visibility: hidden;
     `}
 
-  /* Default Playlist background */
+  /* Play Later and playlists without a thumbnail share the neutral card. */
   ${p =>
-    p.isDefaultPlaylist &&
-    css`
-      background: linear-gradient(150.64deg, #322fb4 0%, #3835ca 100%);
-    `}
-
-  /* Default background for playlist without thumbnail */
-  ${p =>
-    !p.isDefaultPlaylist &&
-    !p.thumbnailUrl &&
+    (p.isDefaultPlaylist || !p.thumbnailUrl) &&
     css`
       background-color: ${color.container.highlight};
     `}
@@ -113,34 +104,25 @@ const PlaylistCardContainer = styled.div<
   gap: 16px;
 `
 
-const PlayLaterCardOverlay = styled.div`
-  position: absolute;
-  top: 0;
-  right: 0;
-  content: url(${PlayLaterCardOverlayImage});
-`
-
 const ColoredPlaylistInfo = styled(PlaylistInfo)<{ hasBackground: boolean }>`
   color: ${({ hasBackground }) =>
-    hasBackground ? color.primitive.neutral[98] : color.text.primary};
+    hasBackground ? color.primitive.neutral[98] : color.text.secondary};
+
+  ${PlaylistName} {
+    color: ${({ hasBackground }) =>
+      hasBackground ? color.primitive.neutral[98] : color.text.primary};
+  }
 `
 
 const PlaylistThumbnailContainer = styled.div<ThumbnailProps>`
-  /* Default Playlist icon */
+  /* Icon thumbnail for Play Later and playlists without a thumbnail. */
   ${p =>
-    p.isDefaultPlaylist &&
+    (p.isDefaultPlaylist || !p.thumbnailUrl) &&
     css`
-      background-color: ${color.button.background};
-      color: white;
-    `}
-
-  /* Default icon for playlist without thumbnail */
-  ${p =>
-    !p.isDefaultPlaylist &&
-    !p.thumbnailUrl &&
-    css`
+      --leo-icon-size: 20px;
       --leo-icon-color: ${color.icon.default};
       background-color: ${color.container.background};
+      border-radius: 8px;
     `}
 
   /* Playlist with Thumbnail*/
@@ -166,7 +148,7 @@ function PlaylistThumbnail (props: ThumbnailProps) {
   return (
     <PlaylistThumbnailContainer {...props}>
       {(props.isDefaultPlaylist || !props.thumbnailUrl) && (
-        <Icon name={props.isDefaultPlaylist ? 'history' : 'product-playlist'} />
+        <Icon name='product-playlist' />
       )}
     </PlaylistThumbnailContainer>
   )
@@ -179,7 +161,7 @@ function PlaylistCard ({ playlist, shouldBeHidden }: PlaylistCardProps) {
     return playlist.items?.find(item => item.thumbnailPath?.url)?.thumbnailPath
       .url
   }, [playlist])
-  const hasBackground = isDefaultPlaylist || !!thumbnailUrl
+  const hasBackground = !isDefaultPlaylist && !!thumbnailUrl
 
   const totalDuration = useTotalDuration(playlist)
   const totalSize = useTotalSize(playlist)
@@ -191,7 +173,6 @@ function PlaylistCard ({ playlist, shouldBeHidden }: PlaylistCardProps) {
         thumbnailUrl={thumbnailUrl}
         shouldBeHidden={shouldBeHidden}
       >
-        {isDefaultPlaylist && <PlayLaterCardOverlay />}
         <PlaylistThumbnail
           isDefaultPlaylist={isDefaultPlaylist}
           thumbnailUrl={thumbnailUrl}

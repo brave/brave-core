@@ -17,6 +17,7 @@
 #include "brave/browser/ui/views/brave_news/brave_news_feeds_container_view.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/vector_icons/vector_icons.h"
+#include "brave/ui/color/nala/nala_color_id.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
@@ -26,13 +27,11 @@
 #include "content/public/browser/page_navigator.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/common/referrer.h"
-#include "third_party/skia/include/core/SkColor.h"
 #include "ui/accessibility/ax_enums.mojom-shared.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/mojom/dialog_button.mojom.h"
 #include "ui/base/page_transition_types.h"
-#include "ui/color/color_provider_key.h"
 #include "ui/gfx/font.h"
 #include "ui/gfx/font_list.h"
 #include "ui/gfx/geometry/insets.h"
@@ -52,14 +51,6 @@
 #include "ui/views/view.h"
 #include "ui/views/view_class_properties.h"
 #include "ui/views/widget/widget.h"
-
-namespace {
-constexpr SkColor kSubtitleColorLight = SkColorSetRGB(134, 142, 150);
-constexpr SkColor kSubtitleColorDark = SkColorSetRGB(134, 142, 150);
-
-constexpr SkColor kBackgroundColorLight = SkColorSetRGB(248, 249, 250);
-constexpr SkColor kBackgroundColorDark = SkColorSetRGB(30, 32, 41);
-}  // namespace
 
 // static
 base::WeakPtr<views::Widget> BraveNewsBubbleView::Show(
@@ -88,6 +79,7 @@ BraveNewsBubbleView::BraveNewsBubbleView(views::View* action_view,
   SetButtons(static_cast<int>(ui::mojom::DialogButton::kNone));
   SetAccessibleWindowRole(ax::mojom::Role::kDialog);
   set_adjust_if_offscreen(true);
+  SetBackgroundColor(nala::kColorPageBackground);
 
   SetProperty(views::kInternalPaddingKey, gfx::Insets::VH(16, 16));
 
@@ -110,11 +102,13 @@ BraveNewsBubbleView::BraveNewsBubbleView(views::View* action_view,
       l10n_util::GetStringUTF16(IDS_BRAVE_NEWS_BUBBLE_SUBTITLE),
       subtitle_custom_font));
   subtitle_label_->SetHorizontalAlignment(gfx::HorizontalAlignment::ALIGN_LEFT);
+  subtitle_label_->SetEnabledColor(nala::kColorTextTertiary);
   subtitle_label_->SetProperty(views::kMarginsKey,
                                gfx::Insets::TLBR(0, 0, 16, 0));
 
-  feeds_container_ =
-      AddChildView(std::make_unique<BraveNewsFeedsContainerView>(contents));
+  feeds_container_ = AddChildView(std::make_unique<BraveNewsFeedsContainerView>(
+      BraveNewsTabHelper::FromWebContents(contents)->GetAvailableFeedUrls(),
+      contents));
 
   SetLayoutManager(std::make_unique<views::FlexLayout>())
       ->SetOrientation(views::LayoutOrientation::kVertical)
@@ -158,17 +152,6 @@ void BraveNewsBubbleView::OnWidgetDestroyed(views::Widget*) {
   }
 
   controller_->OnBubbleClosed();
-}
-
-void BraveNewsBubbleView::OnThemeChanged() {
-  views::BubbleDialogDelegateView::OnThemeChanged();
-
-  auto is_dark =
-      contents_->GetColorMode() == ui::ColorProviderKey::ColorMode::kDark;
-
-  SetBackgroundColor(is_dark ? kBackgroundColorDark : kBackgroundColorLight);
-  subtitle_label_->SetEnabledColor(is_dark ? kSubtitleColorDark
-                                           : kSubtitleColorLight);
 }
 
 BEGIN_METADATA(BraveNewsBubbleView)
