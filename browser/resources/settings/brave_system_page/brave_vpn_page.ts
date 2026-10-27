@@ -9,7 +9,7 @@ import 'chrome://resources/cr_elements/cr_icon_button/cr_icon_button.js';
 import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 import {BaseMixin} from '../base_mixin.js'
 import {getTemplate} from './brave_vpn_page.html.js'
-import {WebUiListenerMixin, WebUiListenerMixinInterface} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js';
+import {WebUiListenerMixin, WebUiListenerMixinInterface} from '/shared/settings/web_ui_listener_mixin.js';
 import {BraveVPNBrowserProxy, BraveVPNBrowserProxyImpl} from './brave_vpn_browser_proxy.js';
 import {I18nMixin, I18nMixinInterface} from 'chrome://resources/cr_elements/i18n_mixin.js'
 import {SettingsToggleButtonElement} from '../controls/settings_toggle_button.js'

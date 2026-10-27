@@ -8,7 +8,7 @@ import '../settings_shared.css.js'
 import '../settings_vars.css.js'
 
 import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
-import {WebUiListenerMixin} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js'
+import {WebUiListenerMixin} from '/shared/settings/web_ui_listener_mixin.js'
 import {I18nMixin} from 'chrome://resources/cr_elements/i18n_mixin.js'
 import {RouteObserverMixin, Router} from '../router.js'
 import {routes} from '../route.js'

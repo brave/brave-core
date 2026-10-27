@@ -4,11 +4,11 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import './brave_adblock_subpage.js'
-import '//resources/cr_elements/md_select.css.js'
+import '/shared/settings/md_select.css.js'
 
 import {PolymerElement} from '//resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 import {I18nMixin} from 'chrome://resources/cr_elements/i18n_mixin.js'
-import {WebUiListenerMixin} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js'
+import {WebUiListenerMixin} from '/shared/settings/web_ui_listener_mixin.js'
 import {AdBlockOnlyModeMixin} from '../ad_block_only_mode_page/ad_block_only_mode_mixin.js'
 
 import {loadTimeData} from '../i18n_setup.js'
