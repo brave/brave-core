@@ -28,14 +28,14 @@ export function getHtml(this: BraveAccountOtpDialogElement) {
       </div>
       <leo-button
         slot="buttons"
-        ?isDisabled=${!this.isCodeValid || this.isConfirmingCode}
+        ?isDisabled="${!this.isCodeValid || this.isConfirmingCode}"
         @click=${this.onConfirmCodeButtonClicked}
       >
         $i18n{BRAVE_ACCOUNT_CONFIRM_CODE_BUTTON_LABEL}
       </leo-button>
       <leo-button
         slot="buttons"
-        ?isDisabled=${this.isResendingConfirmationEmail}
+        ?isDisabled="${this.isResendingConfirmationEmail}"
         kind="plain"
         @click=${this.onResendEmailCodeButtonClicked}
       >

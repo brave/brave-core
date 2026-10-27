@@ -74,7 +74,7 @@ export function getHtml(this: TabFocusPageElement) {
                 type="text"
                 value=${this.topic}
                 @input=${this.onTopicInputChanged_}
-                ?disabled=${this.errorMessage !== ''}
+                ?disabled="${this.errorMessage !== ''}"
               >
               </leo-input>
               <leo-button
@@ -82,7 +82,7 @@ export function getHtml(this: TabFocusPageElement) {
                 size="medium"
                 fab
                 @click=${this.onFocusTabsClick_}
-                ?isDisabled=${this.errorMessage !== ''}
+                ?isDisabled="${this.errorMessage !== ''}"
               >
                 ${this.getSubmitButtonLabel_()}
               </leo-button>
