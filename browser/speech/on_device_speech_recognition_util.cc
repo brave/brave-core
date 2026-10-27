@@ -15,17 +15,25 @@
 #include "brave/components/local_ai/core/on_device_speech_models_state.h"
 #include "brave/components/local_ai/core/utils.h"
 #include "chrome/browser/browser_process.h"
+#include "chrome/browser/profiles/profile.h"
+#include "content/public/browser/browser_context.h"
 #include "media/mojo/mojom/speech_recognizer.mojom.h"
 
 namespace speech {
 
 // Brave's on-device speech recognition availability, in place of upstream's.
 media::mojom::AvailabilityStatus GetBraveOnDeviceSpeechAvailability(
+    content::BrowserContext* context,
     std::string_view language,
     media::mojom::SpeechRecognitionQuality quality) {
   // With the feature or the master switch off Brave serves nothing, and there
   // is no upstream on-device backend to fall back to.
   if (!local_ai::CanOfferOnDeviceSpeech(g_browser_process->local_state())) {
+    return media::mojom::AvailabilityStatus::kUnavailable;
+  }
+
+  // Private, Tor and Guest profiles get none.
+  if (!Profile::FromBrowserContext(context)->IsRegularProfile()) {
     return media::mojom::AvailabilityStatus::kUnavailable;
   }
 

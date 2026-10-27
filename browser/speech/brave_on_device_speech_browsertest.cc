@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include <array>
 #include <memory>
 #include <optional>
 #include <string>
@@ -24,6 +25,7 @@
 #include "brave/components/local_ai/core/on_device_speech_recognition.mojom.h"
 #include "brave/components/local_ai/core/pref_names.h"
 #include "brave/components/local_ai/core/test/fake_asr_session.h"
+#include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/test/base/chrome_test_utils.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -44,6 +46,12 @@
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+
+#if BUILDFLAG(ENABLE_TOR)
+#include "brave/browser/tor/tor_profile_manager.h"
+#include "brave/components/tor/tor_navigation_throttle.h"
+#include "brave/net/proxy_resolution/proxy_config_service_tor.h"
+#endif
 
 // What a page is told by Web Speech's `available()`, `install()` and
 // `start()`, for each quality and with or without Brave's model on disk. Every
@@ -520,6 +528,87 @@ INSTANTIATE_TEST_SUITE_P(
              (std::get<1>(info.param) ? "ProcessLocally"
                                       : "WithoutProcessLocally");
     });
+
+namespace {
+
+// The profiles that get no on-device speech.
+enum class NonRegularProfile { kPrivate, kGuest, kTor };
+
+std::string NonRegularProfileCaseName(
+    const testing::TestParamInfo<std::tuple<NonRegularProfile, bool, bool>>&
+        info) {
+  constexpr std::array<const char*, 3> kNames = {"Private", "Guest", "Tor"};
+  const auto& [profile, model_on_disk, process_locally] = info.param;
+  return kNames[static_cast<size_t>(profile)] +
+         std::string(model_on_disk ? "WithModel" : "WithoutModel") +
+         (process_locally ? "ProcessLocally" : "WithoutProcessLocally");
+}
+
+}  // namespace
+
+// Runs each such profile with and without the model on disk, and with and
+// without `processLocally`. The user has turned on the model, as in every test
+// in this file.
+class BraveOnDeviceSpeechNonRegularProfileBrowserTest
+    : public BraveOnDeviceSpeechBrowserTest,
+      public testing::WithParamInterface<
+          std::tuple<NonRegularProfile, bool, bool>> {
+ protected:
+  // Opens a window of `profile`, and makes it the one the page calls run in.
+  void OpenWindow(NonRegularProfile profile) {
+    BrowserWindowInterface* opened = nullptr;
+    switch (profile) {
+      case NonRegularProfile::kPrivate:
+        opened = CreateIncognitoBrowser();
+        break;
+      case NonRegularProfile::kGuest:
+        opened = CreateGuestBrowser();
+        break;
+      case NonRegularProfile::kTor:
+#if BUILDFLAG(ENABLE_TOR)
+        net::ProxyConfigServiceTor::SetBypassTorProxyConfigForTesting(true);
+        tor::TorNavigationThrottle::SetSkipWaitForTorConnectedForTesting(true);
+        opened = TorProfileManager::SwitchToTorProfile(browser()->GetProfile());
+#endif
+        break;
+    }
+    ASSERT_TRUE(opened);
+    SetBrowser(opened);
+  }
+};
+
+// Brave offers these profiles nothing, even with the model on disk, and its
+// engine never runs. With `processLocally` the renderer refuses `start()`,
+// because the page reads unavailable. Without it the browser picks the cloud
+// engine, which fails.
+IN_PROC_BROWSER_TEST_P(BraveOnDeviceSpeechNonRegularProfileBrowserTest,
+                       Refused) {
+  const auto& [profile, model_on_disk, process_locally] = GetParam();
+  if (model_on_disk) {
+    PublishModel();
+  }
+  OpenWindow(profile);
+  NavigateToUrl("foo.com");
+
+  ExpectPageIsTold(
+      "command", process_locally,
+      {kUnavailable, false, kUnavailable,
+       process_locally ? "error: language-not-supported" : "error: network"});
+}
+
+INSTANTIATE_TEST_SUITE_P(
+    All,
+    BraveOnDeviceSpeechNonRegularProfileBrowserTest,
+    testing::Combine(testing::Values(NonRegularProfile::kPrivate,
+                                     NonRegularProfile::kGuest
+#if BUILDFLAG(ENABLE_TOR)
+                                     ,
+                                     NonRegularProfile::kTor
+#endif
+                                     ),
+                     testing::Bool(),
+                     testing::Bool()),
+    NonRegularProfileCaseName);
 
 namespace {
 

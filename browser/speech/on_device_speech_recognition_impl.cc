@@ -35,6 +35,7 @@ namespace speech {
 
 // Implemented in on_device_speech_recognition_util.cc.
 media::mojom::AvailabilityStatus GetBraveOnDeviceSpeechAvailability(
+    content::BrowserContext* context,
     std::string_view language,
     media::mojom::SpeechRecognitionQuality quality);
 
@@ -44,16 +45,18 @@ namespace {
 // Once the model is enabled it does not prompt, which lets `Install` run again
 // after the user allows it.
 bool ShouldPromptForBraveOnDeviceSpeechModel(
+    content::BrowserContext* context,
     base::span<const std::string> languages,
     media::mojom::SpeechRecognitionQuality quality) {
   if (languages.empty() || local_ai::ShouldInstallOnDeviceSpeechModel(
                                g_browser_process->local_state())) {
     return false;
   }
-  return std::ranges::all_of(languages, [quality](const std::string& language) {
-    return GetBraveOnDeviceSpeechAvailability(language, quality) ==
-           media::mojom::AvailabilityStatus::kDownloadable;
-  });
+  return std::ranges::all_of(
+      languages, [context, quality](const std::string& language) {
+        return GetBraveOnDeviceSpeechAvailability(context, language, quality) ==
+               media::mojom::AvailabilityStatus::kDownloadable;
+      });
 }
 
 // Answers the prompt that `PromptForBraveOnDeviceSpeechModel` shows. Runs
@@ -71,7 +74,7 @@ void OnPromptAnswered(
 }
 
 // Runs `install` with `callback` once the user allows it, and otherwise answers
-// false. A Tor window and "Don't ask again" are answered without a prompt.
+// false. "Don't ask again" is answered without a prompt.
 void PromptForBraveOnDeviceSpeechModel(
     content::RenderFrameHost& rfh,
     base::OnceCallback<void(base::OnceCallback<void(bool)>)> install,
@@ -79,9 +82,8 @@ void PromptForBraveOnDeviceSpeechModel(
   Profile* profile = Profile::FromBrowserContext(rfh.GetBrowserContext());
   auto* manager = permissions::PermissionRequestManager::FromWebContents(
       content::WebContents::FromRenderFrameHost(&rfh));
-  if (!manager || profile->IsTor() ||
-      !profile->GetPrefs()->GetBoolean(
-          local_ai::prefs::kAskEnableOnDeviceSpeechModel)) {
+  if (!manager || !profile->GetPrefs()->GetBoolean(
+                      local_ai::prefs::kAskEnableOnDeviceSpeechModel)) {
     std::move(callback).Run(false);
     return;
   }
@@ -113,9 +115,10 @@ media::mojom::SpeechRecognitionQuality ToBraveOnDeviceSpeechQuality(
              : quality;
 }
 
-// Prompts before `Install` starts a download of Brave's model, and runs
-// `Install` again once the user allows it. Returns true when it prompts, and
-// only then takes `callback`.
+// Cancels `Install` in a Private, Tor or Guest profile. Otherwise prompts
+// before `Install` starts a download of Brave's model, and runs `Install` again
+// once the user allows it. Returns true when it cancels or prompts, and only
+// then takes `callback`.
 // `frame_can_use_on_device_speech` is what the private
 // `CanRenderFrameHostUseOnDeviceSpeechRecognition` says, so there is no prompt
 // for a frame that upstream refuses.
@@ -123,18 +126,23 @@ media::mojom::SpeechRecognitionQuality ToBraveOnDeviceSpeechQuality(
 // `quality` comes before `ToBraveOnDeviceSpeechQuality`. That is fine, because
 // this asks Brave's policy, not upstream's branches, and `Install` maps the
 // quality again when it runs again.
-bool MaybePromptForBraveOnDeviceSpeechModel(
+bool MaybePromptOrCancelBraveOnDeviceSpeechInstall(
     bool frame_can_use_on_device_speech,
     base::WeakPtr<OnDeviceSpeechRecognitionImpl> impl,
     const std::vector<std::string>& languages,
     media::mojom::SpeechRecognitionQuality quality,
     OnDeviceSpeechRecognitionImpl::InstallCallback& callback) {
+  content::RenderFrameHost& rfh = impl->render_frame_host();
+  content::BrowserContext* context = rfh.GetBrowserContext();
+  // Cancels `Install` in Private, Tor and Guest profiles.
+  if (!Profile::FromBrowserContext(context)->IsRegularProfile()) {
+    std::move(callback).Run(false);
+    return true;
+  }
   if (!frame_can_use_on_device_speech ||
-      !ShouldPromptForBraveOnDeviceSpeechModel(languages, quality)) {
+      !ShouldPromptForBraveOnDeviceSpeechModel(context, languages, quality)) {
     return false;
   }
-  // Read before `impl` moves into the `base::BindOnce` for `Install`.
-  content::RenderFrameHost& rfh = impl->render_frame_host();
   PromptForBraveOnDeviceSpeechModel(
       rfh,
       base::BindOnce(&OnDeviceSpeechRecognitionImpl::Install, std::move(impl),

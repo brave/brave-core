@@ -13,6 +13,7 @@ namespace speech {
 // Forward declared to avoid adding a compile-time dependency.
 // Implementation is provided by //brave/browser/speech:chromium_impl.
 media::mojom::AvailabilityStatus GetBraveOnDeviceSpeechAvailability(
+    content::BrowserContext* context,
     std::string_view language,
     media::mojom::SpeechRecognitionQuality quality);
 #endif
@@ -25,10 +26,11 @@ namespace {
 // downloadable.
 media::mojom::AvailabilityStatus
 GetBraveOnDeviceSpeechRecognitionAvailabilityStatus(
+    content::BrowserContext* context,
     std::string_view language,
     media::mojom::SpeechRecognitionQuality quality) {
 #if BUILDFLAG(ENABLE_LOCAL_AI)
-  return GetBraveOnDeviceSpeechAvailability(language, quality);
+  return GetBraveOnDeviceSpeechAvailability(context, language, quality);
 #else
   return media::mojom::AvailabilityStatus::kUnavailable;
 #endif
