@@ -193,3 +193,22 @@ neighbouring tokens that are not changing — that is what reintroduces fragilit
 and calls for `re_pattern`.
 
 ---
+
+<a id="PLSTR-006"></a>
+
+## ❌ Don't Subclass Classes Instantiated in Multiple Places
+
+**Don't implement a Brave customisation by subclassing an upstream class that
+is instantiated in multiple places.** Replacing the currently known construction
+sites with the Brave subclass is fragile: new upstream sites can still construct
+the original class and silently bypass the customisation. Making methods virtual
+or checking the match count at existing sites does not protect new sites.
+
+Apply the change in the upstream class implementation with a plaster so all
+instances receive the intended behaviour. Prefer an AST rewriter such as
+`preempt_function_impl` or `after_function_impl` where it fits, calling a helper
+in `chromium_src` for substantive C++.
+
+See also [subclassing guidance](../plaster_dos_and_donts.md#when-subclassing-is-appropriate).
+
+---
