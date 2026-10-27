@@ -2607,8 +2607,10 @@ IN_PROC_BROWSER_TEST_F(UpstreamVerticalTabsPositionTest, PositionFollowsPref) {
 }
 
 // When the strip on the right is expanded on hover, it floats over the toolbar.
-// Its top container's buttons there must stay clickable instead of being
-// treated as the toolbar's draggable caption area.
+// Its top container's buttons must stay clickable instead of being treated as
+// the toolbar's draggable caption area. Note that with trailing caption buttons
+// (e.g. Windows) the strip is placed below them, so the buttons may not overlap
+// the toolbar; they must still not be caption area.
 IN_PROC_BROWSER_TEST_F(UpstreamVerticalTabsPositionTest,
                        ExpandedOnHoverButtonsOverToolbarAreClickable) {
   auto* region = region_view();
@@ -2629,10 +2631,6 @@ IN_PROC_BROWSER_TEST_F(UpstreamVerticalTabsPositionTest,
   views::View* collapse_button = region->GetTopContainer()->GetCollapseButton();
   ASSERT_TRUE(collapse_button);
   ASSERT_TRUE(collapse_button->IsDrawn());
-
-  // The button is above the toolbar's area.
-  ASSERT_TRUE(brave_browser_view()->toolbar()->GetBoundsInScreen().Contains(
-      collapse_button->GetBoundsInScreen().CenterPoint()));
 
   gfx::Point point = collapse_button->GetLocalBounds().CenterPoint();
   views::View::ConvertPointToWidget(collapse_button, &point);
