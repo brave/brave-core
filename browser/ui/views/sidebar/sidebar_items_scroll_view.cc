@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/views/sidebar/sidebar_items_scroll_view.h"
 
+#include <memory>
 #include <optional>
 #include <string>
 
@@ -21,11 +22,12 @@
 #include "brave/browser/ui/views/sidebar/sidebar_items_contents_view.h"
 #include "brave/components/sidebar/browser/sidebar_service.h"
 #include "brave/grit/brave_generated_resources.h"
-#include "cc/paint/paint_flags.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
+#include "chrome/browser/ui/views/chrome_layout_provider.h"
+#include "chrome/browser/ui/views/toolbar/toolbar_ink_drop_util.h"
 #include "ui/base/clipboard/clipboard.h"
 #include "ui/base/clipboard/clipboard_format_type.h"
 #include "ui/base/dragdrop/drag_drop_types.h"
@@ -37,11 +39,11 @@
 #include "ui/compositor/layer_tree_owner.h"
 #include "ui/events/event.h"
 #include "ui/gfx/canvas.h"
-#include "ui/gfx/color_palette.h"
 #include "ui/gfx/paint_vector_icon.h"
+#include "ui/views/animation/ink_drop.h"
 #include "ui/views/background.h"
 #include "ui/views/controls/button/image_button.h"
-#include "ui/views/controls/focus_ring.h"
+#include "ui/views/controls/highlight_path_generator.h"
 
 namespace {
 
@@ -55,7 +57,6 @@ class SidebarItemsArrowView : public views::ImageButton {
     SetImageHorizontalAlignment(views::ImageButton::ALIGN_CENTER);
     SetImageVerticalAlignment(views::ImageButton::ALIGN_MIDDLE);
     DCHECK(GetInstallFocusRingOnFocus());
-    views::FocusRing::Get(this)->SetColorId(gfx::kBraveBlurple300);
     SetAccessibleName(accessible_name);
     SetPaintToLayer();
   }
@@ -72,24 +73,25 @@ class SidebarItemsArrowView : public views::ImageButton {
         kArrowHeight};
   }
 
+  void OnThemeChanged() override {
+    views::ImageButton::OnThemeChanged();
+
+    // Apply toolbar button's ink drop config, like sidebar items do. Ink drop
+    // config is reset per theme.
+    constexpr int kInset = 2;
+    ConfigureInkDrop(this,
+                     std::make_unique<views::RoundRectHighlightPathGenerator>(
+                         gfx::Insets::VH(kInset, SidebarButtonView::kMargin),
+                         ChromeLayoutProvider::Get()->GetCornerRadiusMetric(
+                             views::Emphasis::kMaximum, {})));
+    // Draw over the opaque background painted in OnPaintBackground().
+    views::InkDrop::Get(this)->SetLayerRegion(views::LayerRegion::kAbove);
+  }
+
   void OnPaintBackground(gfx::Canvas* canvas) override {
     if (const ui::ColorProvider* color_provider = GetColorProvider()) {
-      const SkColor background_color = color_provider->GetColor(kColorToolbar);
-      gfx::Rect bounds = GetContentsBounds();
-      canvas->FillRect(bounds, background_color);
-
-      // Draw additional rounded rect over background for hover effect.
-      if (GetState() == STATE_HOVERED) {
-        const SkColor hovered_bg_color =
-            color_provider->GetColor(kColorSidebarArrowBackgroundHovered);
-        cc::PaintFlags flags;
-        flags.setColor(hovered_bg_color);
-        flags.setStyle(cc::PaintFlags::kFill_Style);
-        // Use smaller area for hover rounded rect.
-        constexpr int kInset = 2, kRadius = 34;
-        bounds.Inset(gfx::Insets::VH(kInset, 0));
-        canvas->DrawRoundRect(bounds, kRadius, flags);
-      }
+      canvas->FillRect(GetContentsBounds(),
+                       color_provider->GetColor(kColorToolbar));
     }
   }
 };
