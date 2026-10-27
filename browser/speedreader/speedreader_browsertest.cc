@@ -1313,6 +1313,59 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderContentSpoofBrowserTest,
   ExpectVictimPageIsIntact();
 }
 
+// The reload which speedreader triggers to show the distilled content is
+// replaced by another navigation before the reload builds its loader (e.g. the
+// page holds the reload in beforeunload and a cross-site frame navigates the
+// tab). The content stored for the reload must not become the body of the
+// navigation which replaced it, at its url and origin.
+IN_PROC_BROWSER_TEST_F(SpeedReaderContentSpoofBrowserTest,
+                       DistilledContentIsNotSentToNavigationReplacingReload) {
+  ASSERT_NO_FATAL_FAILURE(NavigateToReadablePage(""));
+  const GURL readable_url = ActiveWebContents()->GetLastCommittedURL();
+
+  // Pause the reload at the start of its request, i.e. before its URL loader
+  // (and the throttles which take the stored content) is created.
+  content::TestNavigationManager reload_manager(ActiveWebContents(),
+                                                readable_url);
+  TurnOnReaderMode();
+  ASSERT_TRUE(reload_manager.WaitForRequestStart());
+
+  // Replace the paused reload with a navigation to the victim page.
+  content::TestNavigationManager victim_manager(ActiveWebContents(),
+                                                victim_url());
+  ActiveWebContents()->GetController().LoadURL(
+      victim_url(), content::Referrer(), ui::PAGE_TRANSITION_TYPED,
+      std::string());
+  ASSERT_TRUE(victim_manager.WaitForNavigationFinished());
+  ASSERT_TRUE(content::WaitForLoadStop(ActiveWebContents()));
+
+  ExpectVictimPageIsIntact();
+}
+
+// Same as above, but the replacing navigation is started by the page itself,
+// like the beforeunload handler of a cross-site frame does.
+IN_PROC_BROWSER_TEST_F(
+    SpeedReaderContentSpoofBrowserTest,
+    DistilledContentIsNotSentToRendererNavigationReplacingReload) {
+  ASSERT_NO_FATAL_FAILURE(NavigateToReadablePage(""));
+  const GURL readable_url = ActiveWebContents()->GetLastCommittedURL();
+
+  content::TestNavigationManager reload_manager(ActiveWebContents(),
+                                                readable_url);
+  TurnOnReaderMode();
+  ASSERT_TRUE(reload_manager.WaitForRequestStart());
+
+  content::TestNavigationManager victim_manager(ActiveWebContents(),
+                                                victim_url());
+  content::ExecuteScriptAsync(
+      ActiveWebContents(),
+      content::JsReplace("location.href = $1", victim_url()));
+  ASSERT_TRUE(victim_manager.WaitForNavigationFinished());
+  ASSERT_TRUE(content::WaitForLoadStop(ActiveWebContents()));
+
+  ExpectVictimPageIsIntact();
+}
+
 class SpeedReaderWithSplitViewBrowserTest : public SpeedReaderBrowserTest {
  public:
   SpeedReaderWithSplitViewBrowserTest() = default;
