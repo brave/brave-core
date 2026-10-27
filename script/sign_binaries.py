@@ -10,10 +10,13 @@ import os
 import shutil
 import sys
 
-from gclient_utils import exponential_backoff_retry
+from lib.config import CHROMIUM_ROOT
 from lib.util import execute
 from os.path import abspath, dirname
 from subprocess import CalledProcessError
+
+sys.path.append(os.path.join(CHROMIUM_ROOT, 'third_party', 'depot_tools'))
+from gclient_utils import exponential_backoff_retry  # pylint: disable=wrong-import-position,import-error
 
 cert = os.environ.get('CERT')
 cert_hash = os.environ.get('AUTHENTICODE_HASH')
