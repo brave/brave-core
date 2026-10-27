@@ -22,6 +22,7 @@
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
 #include "mojo/public/cpp/bindings/associated_receiver.h"
+#include "url/gurl.h"
 
 namespace content {
 class NavigationHandle;
@@ -196,6 +197,7 @@ class SpeedreaderTabHelper
   bool is_visible_ = false;
 
   std::string single_show_content_;
+  GURL single_show_content_url_;
 
   DistillState distill_state_{ViewOriginal()};
 
