@@ -59,7 +59,10 @@ section links to a detailed document.
 - **[Navigation and Timing](./best-practices/testing-navigation.md)** -
   Same-document navigation, timeouts, page distillation
 - **[Test Isolation and Specific Patterns](./best-practices/testing-isolation.md)** -
-  Fakes, API testing, HTTP request testing, throttle testing, Chromium patterns
+  Fakes, API testing, HTTP request testing, throttle testing, Chromium patterns,
+  [shared behavior and unit vs browser test scope](./best-practices/testing-isolation.md#TI-044)
+- **[Avoid Change Detector Tests](./best-practices/architecture.md#ARCH-062b)** -
+  Behavioral contracts, common and edge cases, independent expectations
 - **[Upstream Test Failures](./best-practices/testing-upstream-failures.md)** -
   When to use filter files vs fix tests, checking upstream flakiness via LUCI
   Analysis, filter file conventions

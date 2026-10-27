@@ -1453,11 +1453,23 @@ IN_PROC_BROWSER_TEST_F(MyFeatureInteractiveTest, UserCanToggleFeature) {
 
 ## ❌ Avoid Change Detector Tests
 
-**Avoid change detector tests.** A change detector test is easy to spot because
-the test logic mirrors the production logic — it just calls the same method and
-checks the obvious result. These tests break whenever the implementation changes
-but catch no real bugs. The purpose of a unit test is to validate behavior
-across common and edge cases for code that has many possible valid inputs.
+**Avoid change detector tests: test the behavioral contract, not a copy of the
+implementation.** Tests that mirror production logic require matching edits when
+the implementation changes, without independently checking correctness. The
+purpose of a unit test is to validate behavior across common and edge cases for
+code that has many possible valid inputs.
+
+Calling a public method and checking its return value is not, by itself, a
+change detector test. Use independently specified expectations for meaningful
+input classes, boundary cases, and failure paths. A small regression test is
+valuable when it catches a real contract violation; adding more inputs is not a
+substitute for meaningful assertions.
+
+See
+[Chrome browser design principles](https://chromium.googlesource.com/chromium/src/+/main/docs/chrome_browser_design_principles.md)
+and
+[TI-044: Test Shared Behavior at Its Owning Layer](testing-isolation.md#TI-044)
+for choosing between unit and browser tests.
 
 ```cpp
 // ❌ WRONG - change detector test: test logic mirrors production logic
