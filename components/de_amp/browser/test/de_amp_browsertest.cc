@@ -225,13 +225,13 @@ class DeAmpBrowserTest : public InProcessBrowserTest {
 
   void GoBack(BrowserWindowInterface* browser) {
     content::TestNavigationObserver observer(web_contents());
-    chrome::GoBack(browser, WindowOpenDisposition::CURRENT_TAB);
+    chrome::GoBack(browser, WindowOpenDisposition::kCurrentTab);
     observer.Wait();
   }
 
   void GoForward(BrowserWindowInterface* browser) {
     content::TestNavigationObserver observer(web_contents());
-    chrome::GoForward(browser, WindowOpenDisposition::CURRENT_TAB);
+    chrome::GoForward(browser, WindowOpenDisposition::kCurrentTab);
     observer.Wait();
   }
 
@@ -324,7 +324,7 @@ IN_PROC_BROWSER_TEST_F(DeAmpBrowserTest, ContentDispositionAttachment) {
       browser()->GetProfile()->GetDownloadManager(), 1,
       content::DownloadTestObserver::ON_DANGEROUS_DOWNLOAD_ACCEPT);
   ui_test_utils::NavigateToURLWithDisposition(
-      browser(), amp_url, WindowOpenDisposition::CURRENT_TAB,
+      browser(), amp_url, WindowOpenDisposition::kCurrentTab,
       ui_test_utils::BROWSER_TEST_NO_WAIT);
   download_observer.WaitForFinished();
   EXPECT_EQ(1u, download_observer.NumDownloadsSeenInState(

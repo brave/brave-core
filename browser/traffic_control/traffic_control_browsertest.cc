@@ -97,7 +97,7 @@ class TrafficControlBrowserTest : public InProcessBrowserTest {
   content::WebContents* NavigateExpectingReroute(const GURL& url) {
     const int initial_count = browser()->tab_strip_model()->count();
     content::OpenURLParams params(url, content::Referrer(),
-                                  WindowOpenDisposition::CURRENT_TAB,
+                                  WindowOpenDisposition::kCurrentTab,
                                   ui::PAGE_TRANSITION_TYPED, false);
     browser()->OpenURL(params, /*navigation_handle_callback=*/{});
 
@@ -124,7 +124,7 @@ class TrafficControlBrowserTest : public InProcessBrowserTest {
       const containers::mojom::ContainerPtr& container) {
     // Match production OpenUrlInContainer: do not let Traffic Control override.
     NavigateParams params(browser(), url, ui::PAGE_TRANSITION_LINK);
-    params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+    params.disposition = WindowOpenDisposition::kNewForegroundTab;
     params.storage_partition_config = content::StoragePartitionConfig::Create(
         browser()->GetProfile(), containers::kContainersStoragePartitionDomain,
         container->id, browser()->GetProfile()->IsOffTheRecord());
@@ -133,7 +133,7 @@ class TrafficControlBrowserTest : public InProcessBrowserTest {
 
   void NavigateInCurrentTab(const GURL& url, ui::PageTransition transition) {
     content::OpenURLParams params(url, content::Referrer(),
-                                  WindowOpenDisposition::CURRENT_TAB,
+                                  WindowOpenDisposition::kCurrentTab,
                                   transition, false);
     browser()->OpenURL(params, /*navigation_handle_callback=*/{});
   }
@@ -285,7 +285,7 @@ IN_PROC_BROWSER_TEST_F(TrafficControlBrowserTest, TemporaryContainer) {
   SetRules(std::move(rules));
 
   content::OpenURLParams params(TestUrl(), content::Referrer(),
-                                WindowOpenDisposition::CURRENT_TAB,
+                                WindowOpenDisposition::kCurrentTab,
                                 ui::PAGE_TRANSITION_TYPED, false);
   browser()->OpenURL(params, /*navigation_handle_callback=*/{});
 

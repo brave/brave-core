@@ -190,7 +190,7 @@ IN_PROC_BROWSER_TEST_F(WindowClosingConfirmBrowserTest, TestWithTwoNTPTabs) {
   // Two tabs. Need to ask browser closing.
   ui_test_utils::NavigateToURLWithDisposition(
       browser_window, GURL(url::kAboutBlankURL),
-      WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
   EXPECT_TRUE(ShouldAskBeforeClosing(browser_window));
 
@@ -210,7 +210,7 @@ IN_PROC_BROWSER_TEST_F(WindowClosingConfirmBrowserTest, TestWithQuit) {
   BrowserWindowInterface* browser_window = browser();
   ui_test_utils::NavigateToURLWithDisposition(
       browser_window, GURL(url::kAboutBlankURL),
-      WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
   // Should ask closing.
   EXPECT_TRUE(ShouldAskBeforeClosing(browser_window));
@@ -227,7 +227,7 @@ IN_PROC_BROWSER_TEST_F(WindowClosingConfirmBrowserTest,
   // Make two tabs.
   ui_test_utils::NavigateToURLWithDisposition(
       browser(), GURL(url::kAboutBlankURL),
-      WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
   // Should ask closing for this browser window as this has more than one tab.
   EXPECT_TRUE(ShouldAskBeforeClosing(browser()));
@@ -249,7 +249,7 @@ IN_PROC_BROWSER_TEST_F(WindowClosingConfirmBrowserTest,
       browser_window, embedded_test_server()->GetURL("/beforeunload.html"))));
   ui_test_utils::NavigateToURLWithDisposition(
       browser_window, GURL(url::kAboutBlankURL),
-      WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
   PrepareForBeforeUnloadDialog(browser_window);
@@ -284,7 +284,7 @@ IN_PROC_BROWSER_TEST_F(WindowClosingConfirmBrowserTest,
       browser(), embedded_test_server()->GetURL("/beforeunload.html")));
   ui_test_utils::NavigateToURLWithDisposition(
       browser(), GURL(url::kAboutBlankURL),
-      WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
   PrepareForBeforeUnloadDialog(browser());
   EXPECT_FALSE(BrowserCloseManager::BrowserClosingStarted());
@@ -349,7 +349,7 @@ IN_PROC_BROWSER_TEST_F(WindowClosingConfirmBrowserTest,
   // Make browser has two tabs.
   ui_test_utils::NavigateToURLWithDisposition(
       browser_window, GURL(url::kAboutBlankURL),
-      WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
   std::unique_ptr<content::DownloadTestObserver> progress_waiter(
@@ -357,7 +357,7 @@ IN_PROC_BROWSER_TEST_F(WindowClosingConfirmBrowserTest,
 
   // Start downloading a file, wait for it to be created.
   ui_test_utils::NavigateToURLWithDisposition(
-      browser_window, url, WindowOpenDisposition::CURRENT_TAB,
+      browser_window, url, WindowOpenDisposition::kCurrentTab,
       ui_test_utils::BROWSER_TEST_NO_WAIT);
   progress_waiter->WaitForFinished();
 

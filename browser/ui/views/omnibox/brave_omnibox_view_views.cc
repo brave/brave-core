@@ -184,7 +184,7 @@ void BraveOmniboxViewViews::OnClipboardTextForPasteAndSearchRetrieved(
 
   NavigateParams params(location_bar_view_->browser(), url,
                         ui::PAGE_TRANSITION_GENERATED);
-  params.disposition = WindowOpenDisposition::CURRENT_TAB;
+  params.disposition = WindowOpenDisposition::kCurrentTab;
   Navigate(&params);
 }
 

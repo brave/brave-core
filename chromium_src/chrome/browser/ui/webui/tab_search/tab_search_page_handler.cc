@@ -397,7 +397,7 @@ void TabSearchPageHandler::OpenLearnMorePage() {
 void TabSearchPageHandler::OpenURLInNewTab(const GURL& url) {
   NavigateParams params(Profile::FromWebUI(web_ui_), url,
                         ui::PageTransition::PAGE_TRANSITION_LINK);
-  params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+  params.disposition = WindowOpenDisposition::kNewForegroundTab;
   Navigate(&params);
 }
 

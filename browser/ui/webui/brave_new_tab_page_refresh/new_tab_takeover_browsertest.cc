@@ -197,7 +197,7 @@ IN_PROC_BROWSER_TEST_F(NewTabTakeoverBrowserTest,
 
   EXPECT_CALL(ads_service_mock, MaybeServeNewTabPageAd)
       .WillOnce(base::test::RunOnceCallback<0>(/*ad=*/nullptr));
-  chrome::Reload(browser(), WindowOpenDisposition::CURRENT_TAB);
+  chrome::Reload(browser(), WindowOpenDisposition::kCurrentTab);
   WaitForLoadStop();
   VerifyNewTabPageLoadedExpectation();
 }

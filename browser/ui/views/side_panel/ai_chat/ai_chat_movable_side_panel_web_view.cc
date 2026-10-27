@@ -231,10 +231,10 @@ content::WebContents* AIChatMovableSidePanelWebView::OpenURLFromTab(
         navigation_handle_callback) {
   BrowserWindowInterface* browser = webui::GetBrowserWindowInterface(source);
   if (browser &&
-      (params.disposition == WindowOpenDisposition::NEW_FOREGROUND_TAB ||
-       params.disposition == WindowOpenDisposition::NEW_BACKGROUND_TAB ||
-       params.disposition == WindowOpenDisposition::NEW_WINDOW ||
-       params.disposition == WindowOpenDisposition::OFF_THE_RECORD)) {
+      (params.disposition == WindowOpenDisposition::kNewForegroundTab ||
+       params.disposition == WindowOpenDisposition::kNewBackgroundTab ||
+       params.disposition == WindowOpenDisposition::kNewWindow ||
+       params.disposition == WindowOpenDisposition::kOffTheRecord)) {
     return browser->OpenURL(params, std::move(navigation_handle_callback));
   }
   return nullptr;

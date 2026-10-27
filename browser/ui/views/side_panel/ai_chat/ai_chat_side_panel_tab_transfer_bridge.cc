@@ -229,7 +229,7 @@ bool AIChatSidePanelTabTransferBridge::MoveSidePanelContentsToTab(
   // Insert the live contents into a new foreground tab; `Navigate` re-runs the
   // idempotent `AttachTabHelpers`.
   NavigateParams params(browser_, std::move(web_contents));
-  params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+  params.disposition = WindowOpenDisposition::kNewForegroundTab;
   params.transition = ui::PAGE_TRANSITION_LINK;
   Navigate(&params);
 
