@@ -42,27 +42,6 @@ If no existing API supports the required behavior, identify the missing
 capability explicitly and add narrowly scoped support before enabling the
 feature. Follow the [Chromium override practices](chromium-src-overrides.md).
 
-<a id="NET-002"></a>
-
-## Keep Policy Separate from the Request Adapter
-
-**Keep feature policy in the owning component; let the throttle or hook apply
-its result.** Inject the specific services and settings needed by the feature.
-Do not make policy depend on the legacy request context or proxy lifetime.
-
-Resolve profile preferences, Shields settings, and rules in the browser.
-Renderer and worker adapters can receive context-specific settings or defer
-while a context-bound Mojo API asks the browser for a decision. Bind the caller
-to its frame or worker and derive authoritative policy in the browser; a
-renderer-supplied policy flag or "already checked" marker must not bypass
-enforcement. Keep service keys and signing material out of renderers.
-
-Settings transport is part of the feature: handle initialization, preference
-updates, worker lifetimes, provider cloning, and sequence changes. Do not access
-`Profile`, `PrefService`, or frame-only objects from worker sequences. Preserve
-the original policy identity separately from a network initiator that may become
-opaque across redirects.
-
 <a id="NET-003"></a>
 
 ## Respect the Throttle Contract
@@ -136,10 +115,7 @@ with blocked endpoints, delivered response/CSP behavior, and all supported
 decision outcomes. Run formatting, presubmit, and relevant unit and browser
 tests for implementation changes.
 
-When reusing upstream functionality or replacing an existing path, preserve
-effective defaults, user settings, managed-policy precedence and removal, and
-platform differences. Preference migrations must be per-profile, idempotent, and
-tested with persisted upgrade state. Cut over complete request classes only
-after every applicable outcome is supported, with one authoritative policy and
-reporting path. Keep behavior changes separate from transport refactoring and
-remove obsolete proxy handling once coverage is proven.
+When replacing an existing interception path, cut over complete request classes
+only after every applicable outcome is supported. Keep behavior changes separate
+from transport refactoring and remove obsolete proxy handling once coverage is
+proven.
