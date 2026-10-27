@@ -127,33 +127,6 @@ gfx::Rect BraveBrowserViewTabbedLayoutImpl::ComputeAdjustedInfobarBounds(
   return bounds;
 }
 
-int BraveBrowserViewTabbedLayoutImpl::GetIdealSideBarWidth() const {
-  if (!views().sidebar_container) {
-    return 0;
-  }
-
-  return GetIdealSideBarWidth(views().multi_contents_view->width() +
-                              GetContentsMargins().width() +
-                              views().sidebar_container->width());
-}
-
-int BraveBrowserViewTabbedLayoutImpl::GetIdealSideBarWidth(
-    int available_width) const {
-  if (!views().sidebar_container) {
-    return 0;
-  }
-
-  int sidebar_width = views().sidebar_container->GetPreferredSize().width();
-
-  // The sidebar can take up the entire space for fullscreen.
-  if (sidebar_width == std::numeric_limits<int>::max()) {
-    return available_width;
-  }
-
-  // The sidebar should take up no more than 80% of the content area.
-  return std::min<int>(available_width * 0.8, sidebar_width);
-}
-
 gfx::Size BraveBrowserViewTabbedLayoutImpl::GetMinimumSize(
     const views::View* host) const {
   // Start with the parent's minimum size calculation
@@ -460,12 +433,8 @@ void BraveBrowserViewTabbedLayoutImpl::CalculateSideBarLayout(
   const int outer_right =
       browser_bounds.right() - (sidebar_leading ? 0 : vtab_width);
 
-  // Sidebar width capped at 80% of the space shared between contents and
-  // sidebar (contents_bounds.width()), i.e. the available width minus the vtab
-  // and the upstream side panel width. The sidebar control is narrow enough
-  // that the cap never fires.
-  const int sidebar_width = GetIdealSideBarWidth(contents_bounds.width());
-
+  const int sidebar_width =
+      views().sidebar_container->GetPreferredSize().width();
   const gfx::Rect sidebar_bounds = ComputeSidebarBounds(
       sidebar_leading, sidebar_width, outer_left, outer_right,
       contents_bounds.y(), contents_bounds.height());
