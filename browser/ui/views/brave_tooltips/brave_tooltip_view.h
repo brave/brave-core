@@ -48,7 +48,6 @@ class BraveTooltipView : public views::View {
   void OnMouseReleased(const ui::MouseEvent& event) override;
   void OnDeviceScaleFactorChanged(float old_device_scale_factor,
                                   float new_device_scale_factor) override;
-  void OnThemeChanged() override;
 
  private:
   void CreateView();

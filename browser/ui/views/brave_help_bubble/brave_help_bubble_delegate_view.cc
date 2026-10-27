@@ -10,6 +10,7 @@
 
 #include "base/check.h"
 #include "base/strings/utf_string_conversions.h"
+#include "brave/ui/color/nala/nala_color_id.h"
 #include "components/grit/brave_components_strings.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
@@ -29,7 +30,6 @@ using views::BubbleFrameView;
 using views::FrameView;
 
 namespace {
-constexpr SkColor kBgColor = SkColorSetARGB(0xFF, 0x20, 0x4A, 0xE3);
 
 // This class paints a border with only an arrow, skipping the painting of
 // shadow and border around the overall bounds.
@@ -150,7 +150,8 @@ BraveHelpBubbleDelegateView::BraveHelpBubbleDelegateView(
   SetButtons(static_cast<int>(ui::mojom::DialogButton::kNone));
   set_shadow_config({.shadow_type = BubbleBorder::Shadow::STANDARD_SHADOW});
   set_corner_radius(10);
-  SetBackgroundColor(kBgColor);
+  // Same colors for all themes.
+  SetBackgroundColor(nala::kColorPrimitiveBrandsPrimaryFixed);
   SetLayoutManager(std::make_unique<views::BoxLayout>(
       views::BoxLayout::Orientation::kVertical));
 
@@ -198,7 +199,7 @@ void BraveHelpBubbleDelegateView::SetUpLabel(views::Label* label,
   label->SetMaximumWidth(390);
   label->SetText(text);
   label->SetAutoColorReadabilityEnabled(false);
-  label->SetEnabledColor(SK_ColorWHITE);
+  label->SetEnabledColor(nala::kColorWhite);
 
   const auto& font_list = label->font_list();
   label->SetFontList(

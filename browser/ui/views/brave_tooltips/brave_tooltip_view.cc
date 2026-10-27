@@ -13,17 +13,17 @@
 #include "brave/browser/ui/brave_tooltips/bounds_util.h"
 #include "brave/browser/ui/views/brave_tooltips/brave_tooltip_popup.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "brave/ui/color/nala/nala_color_id.h"
 #include "ui/accessibility/ax_enums.mojom.h"
 #include "ui/accessibility/ax_node_data.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/base/models/image_model.h"
 #include "ui/compositor/layer.h"
 #include "ui/gfx/font.h"
 #include "ui/gfx/font_list.h"
 #include "ui/gfx/geometry/rect.h"
 #include "ui/gfx/geometry/vector2d.h"
-#include "ui/gfx/paint_vector_icon.h"
-#include "ui/native_theme/native_theme.h"
 #include "ui/views/accessibility/view_accessibility.h"
 #include "ui/views/background.h"
 #include "ui/views/border.h"
@@ -56,21 +56,6 @@ constexpr float kButtonCornerRadius = 48.0;
 
 constexpr gfx::Font::Weight kBodyFontWeight = gfx::Font::Weight::NORMAL;
 constexpr gfx::Font::Weight kTitleFontWeight = gfx::Font::Weight::SEMIBOLD;
-
-constexpr SkColor kDefaultButtonColor = SkColorSetRGB(0x4C, 0x54, 0xD2);
-constexpr SkColor kLightModeButtonColor = SkColorSetRGB(0xFF, 0xFF, 0xFF);
-constexpr SkColor kDarkModeButtonColor = SkColorSetRGB(0x3B, 0x3E, 0x4F);
-constexpr SkColor kLightModeDefaultButtonTextColor =
-    SkColorSetRGB(0xFF, 0xFF, 0xFF);
-constexpr SkColor kDarkModeDefaultButtonTextColor =
-    SkColorSetRGB(0xFF, 0xFF, 0xFF);
-constexpr SkColor kLightModeButtonTextColor = SkColorSetRGB(0x49, 0x50, 0x57);
-constexpr SkColor kDarkModeButtonTextColor = SkColorSetRGB(0xF0, 0xF2, 0xFF);
-constexpr SkColor kLightModeBodyTextColor = SkColorSetRGB(0x49, 0x50, 0x57);
-constexpr SkColor kDarkModeBodyTextColor = SkColorSetRGB(0xC2, 0xC4, 0xCF);
-constexpr SkColor kLightModeTitleTextColor = SkColorSetRGB(0x21, 0x25, 0x29);
-constexpr SkColor kDarkModeTitleTextColor = SkColorSetRGB(0xFF, 0xFF, 0xFF);
-constexpr SkColor kIconColor = SkColorSetRGB(0xE3, 0x24, 0x44);
 
 constexpr gfx::HorizontalAlignment kTitleHorizontalAlignment = gfx::ALIGN_LEFT;
 constexpr gfx::HorizontalAlignment kBodyHorizontalAlignment = gfx::ALIGN_LEFT;
@@ -147,17 +132,6 @@ void BraveTooltipView::OnDeviceScaleFactorChanged(
                                         new_device_scale_factor);
 }
 
-void BraveTooltipView::OnThemeChanged() {
-  views::View::OnThemeChanged();
-
-  UpdateTitleLabelColors();
-  UpdateBodyLabelColors();
-  UpdateOkButtonColors();
-  UpdateCancelButtonColors();
-
-  SchedulePaint();
-}
-
 ///////////////////////////////////////////////////////////////////////////////
 
 void BraveTooltipView::CreateView() {
@@ -221,8 +195,8 @@ views::View* BraveTooltipView::CreateHeaderView() {
 views::ImageView* BraveTooltipView::CreateIconView() {
   views::ImageView* view = new views::ImageView();
 
-  view->SetImage(ui::ImageModel::FromImageSkia(
-      gfx::CreateVectorIcon(kBraveTooltipsStopwatchIcon, kIconColor)));
+  view->SetImage(ui::ImageModel::FromVectorIcon(
+      kBraveTooltipsStopwatchIcon, nala::kColorSystemfeedbackErrorIcon));
 
   return view;
 }
@@ -258,12 +232,7 @@ void BraveTooltipView::UpdateTitleLabelColors() {
     return;
   }
 
-  const bool should_use_dark_colors =
-      GetNativeTheme()->preferred_color_scheme() ==
-      ui::NativeTheme::PreferredColorScheme::kDark;
-  title_label_->SetEnabledColor(should_use_dark_colors
-                                    ? kDarkModeTitleTextColor
-                                    : kLightModeTitleTextColor);
+  title_label_->SetEnabledColor(nala::kColorTextPrimary);
   title_label_->SetBackgroundColor(SK_ColorTRANSPARENT);
 }
 
@@ -333,12 +302,7 @@ void BraveTooltipView::UpdateBodyLabelColors() {
     return;
   }
 
-  const bool should_use_dark_colors =
-      GetNativeTheme()->preferred_color_scheme() ==
-      ui::NativeTheme::PreferredColorScheme::kDark;
-  body_label_->SetEnabledColor(should_use_dark_colors
-                                   ? kDarkModeBodyTextColor
-                                   : kLightModeBodyTextColor);
+  body_label_->SetEnabledColor(nala::kColorTextSecondary);
   body_label_->SetBackgroundColor(SK_ColorTRANSPARENT);
 }
 
@@ -366,18 +330,11 @@ void BraveTooltipView::UpdateOkButtonColors() {
     return;
   }
 
-  const bool should_use_dark_colors =
-      GetNativeTheme()->preferred_color_scheme() ==
-      ui::NativeTheme::PreferredColorScheme::kDark;
   ok_button_->SetBackground(views::CreateRoundedRectBackground(
-      kDefaultButtonColor, kButtonCornerRadius));
+      nala::kColorButtonBackground, kButtonCornerRadius));
   ok_button_->SetTextColor(views::Button::ButtonState::STATE_DISABLED,
-                           should_use_dark_colors
-                               ? kDarkModeDefaultButtonTextColor
-                               : kLightModeDefaultButtonTextColor);
-  ok_button_->SetEnabledTextColors(should_use_dark_colors
-                                       ? kDarkModeDefaultButtonTextColor
-                                       : kLightModeDefaultButtonTextColor);
+                           nala::kColorSchemesOnPrimary);
+  ok_button_->SetEnabledTextColors(nala::kColorSchemesOnPrimary);
 }
 
 void BraveTooltipView::OnOkButtonPressed() {
@@ -410,19 +367,11 @@ void BraveTooltipView::UpdateCancelButtonColors() {
     return;
   }
 
-  const bool should_use_dark_colors =
-      GetNativeTheme()->preferred_color_scheme() ==
-      ui::NativeTheme::PreferredColorScheme::kDark;
   cancel_button_->SetBackground(views::CreateRoundedRectBackground(
-      should_use_dark_colors ? kDarkModeButtonColor : kLightModeButtonColor,
-      kButtonCornerRadius));
+      nala::kColorContainerBackground, kButtonCornerRadius));
   cancel_button_->SetTextColor(views::Button::ButtonState::STATE_DISABLED,
-                               should_use_dark_colors
-                                   ? kDarkModeButtonTextColor
-                                   : kLightModeButtonTextColor);
-  cancel_button_->SetEnabledTextColors(should_use_dark_colors
-                                           ? kDarkModeButtonTextColor
-                                           : kLightModeButtonTextColor);
+                               nala::kColorTextSecondary);
+  cancel_button_->SetEnabledTextColors(nala::kColorTextSecondary);
 }
 
 void BraveTooltipView::OnCancelButtonPressed() {
