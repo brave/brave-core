@@ -186,6 +186,7 @@ _TABLE_INSERTION_ORDER = [
     'segments',
     'deposits',
     'creative_set_conversions',
+    'campaign_conversions',
     'creative_ad_notifications',
     'creative_new_tab_page_ads',
     'ad_events',

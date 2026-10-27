@@ -31,7 +31,7 @@ export interface TestConditionMatcherFormState {
 // Keys match the literal column labels produced by `BuildAdsInternals` in
 // //brave/components/brave_ads/core/internal/ads_internals/ads_internals_util.cc
 export interface ConversionUrlPattern {
-  'Creative Set ID': string
+  'Campaign ID': string
   'Ad Type': string
   'URL Pattern': string
   'Expires At': number

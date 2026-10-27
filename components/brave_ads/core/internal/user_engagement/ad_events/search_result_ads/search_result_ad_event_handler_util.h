@@ -13,7 +13,7 @@ namespace brave_ads {
 
 struct SearchResultAdInfo;
 
-void MaybeBuildAndSaveCreativeSetConversion(
+void MaybeBuildAndSaveCampaignConversion(
     const mojom::CreativeSearchResultAdInfoPtr& mojom_creative_ad,
     mojom::SearchResultAdEventType mojom_ad_event_type);
 

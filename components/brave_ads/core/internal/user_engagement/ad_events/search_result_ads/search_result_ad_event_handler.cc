@@ -89,8 +89,7 @@ void SearchResultAdEventHandler::MaybeFiredEventCallback(
     const std::string& placement_id,
     mojom::SearchResultAdEventType mojom_ad_event_type) const {
   if (success) {
-    MaybeBuildAndSaveCreativeSetConversion(mojom_creative_ad,
-                                           mojom_ad_event_type);
+    MaybeBuildAndSaveCampaignConversion(mojom_creative_ad, mojom_ad_event_type);
   }
 
   std::move(callback).Run(success, placement_id, mojom_ad_event_type);

@@ -369,11 +369,11 @@ void AdEvents::GetUnexpired(base::TimeDelta time_window,
           FROM
             $1
           WHERE
-            creative_set_id IN (
+            campaign_id IN (
               SELECT
-                creative_set_id
+                campaign_id
               FROM
-                creative_set_conversions
+                campaign_conversions
             )
             OR created_at > $2
           ORDER BY
@@ -411,11 +411,11 @@ void AdEvents::GetUnexpired(mojom::AdType mojom_ad_type,
           WHERE
             type = '$2'
             AND (
-              creative_set_id IN (
+              campaign_id IN (
                 SELECT
-                  creative_set_id
+                  campaign_id
                 FROM
-                  creative_set_conversions
+                  campaign_conversions
               )
               OR created_at > $3
             )
@@ -447,11 +447,11 @@ void AdEvents::PurgeExpired(ResultCallback callback) const {
             DELETE FROM
               $1
             WHERE
-              creative_set_id NOT IN (
+              campaign_id NOT IN (
                 SELECT
-                  creative_set_id
+                  campaign_id
                 FROM
-                  creative_set_conversions
+                  campaign_conversions
               )
               AND (
                 (type != 'new_tab_page_ad' AND created_at <= $2)
