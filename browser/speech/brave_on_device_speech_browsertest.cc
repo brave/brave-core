@@ -3,7 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include <array>
 #include <memory>
 #include <optional>
 #include <string>
@@ -532,15 +531,33 @@ INSTANTIATE_TEST_SUITE_P(
 namespace {
 
 // The profiles that get no on-device speech.
-enum class NonRegularProfile { kPrivate, kGuest, kTor };
+enum class NonRegularProfile {
+  kPrivate,
+  kGuest,
+#if BUILDFLAG(ENABLE_TOR)
+  kTor,
+#endif
+};
 
 std::string NonRegularProfileCaseName(
     const testing::TestParamInfo<std::tuple<NonRegularProfile, bool, bool>>&
         info) {
-  constexpr std::array<const char*, 3> kNames = {"Private", "Guest", "Tor"};
   const auto& [profile, model_on_disk, process_locally] = info.param;
-  return kNames[static_cast<size_t>(profile)] +
-         std::string(model_on_disk ? "WithModel" : "WithoutModel") +
+  std::string name;
+  switch (profile) {
+    case NonRegularProfile::kPrivate:
+      name = "Private";
+      break;
+    case NonRegularProfile::kGuest:
+      name = "Guest";
+      break;
+#if BUILDFLAG(ENABLE_TOR)
+    case NonRegularProfile::kTor:
+      name = "Tor";
+      break;
+#endif
+  }
+  return name + (model_on_disk ? "WithModel" : "WithoutModel") +
          (process_locally ? "ProcessLocally" : "WithoutProcessLocally");
 }
 
@@ -553,6 +570,16 @@ class BraveOnDeviceSpeechNonRegularProfileBrowserTest
     : public BraveOnDeviceSpeechBrowserTest,
       public testing::WithParamInterface<
           std::tuple<NonRegularProfile, bool, bool>> {
+ public:
+  void TearDownOnMainThread() override {
+#if BUILDFLAG(ENABLE_TOR)
+    // Process-wide, so leave them as a fresh browser would have them.
+    net::ProxyConfigServiceTor::SetBypassTorProxyConfigForTesting(false);
+    tor::TorNavigationThrottle::SetSkipWaitForTorConnectedForTesting(false);
+#endif
+    BraveOnDeviceSpeechBrowserTest::TearDownOnMainThread();
+  }
+
  protected:
   // Opens a window of `profile`, and makes it the one the page calls run in.
   void OpenWindow(NonRegularProfile profile) {
@@ -564,13 +591,13 @@ class BraveOnDeviceSpeechNonRegularProfileBrowserTest
       case NonRegularProfile::kGuest:
         opened = CreateGuestBrowser();
         break;
-      case NonRegularProfile::kTor:
 #if BUILDFLAG(ENABLE_TOR)
+      case NonRegularProfile::kTor:
         net::ProxyConfigServiceTor::SetBypassTorProxyConfigForTesting(true);
         tor::TorNavigationThrottle::SetSkipWaitForTorConnectedForTesting(true);
         opened = TorProfileManager::SwitchToTorProfile(browser()->GetProfile());
-#endif
         break;
+#endif
     }
     ASSERT_TRUE(opened);
     SetBrowser(opened);

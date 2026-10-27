@@ -7,6 +7,8 @@
 
 #include <memory>
 #include <string>
+#include <string_view>
+#include <utility>
 #include <vector>
 
 #include "base/files/file_path.h"
@@ -67,17 +69,19 @@ class BraveOnDeviceSpeechInstallPromptUnitTest
     return TestingBrowserProcess::GetGlobal()->local_state();
   }
 
-  // A Private, a Tor and a Guest profile.
-  std::vector<Profile*> NonRegularProfiles() {
+  // A Private, a Tor and a Guest profile, each with its name.
+  std::vector<std::pair<std::string_view, Profile*>> NonRegularProfiles() {
     if (!guest_profile_) {
       TestingProfile::Builder builder;
       builder.SetGuestSession();
       guest_profile_ = builder.Build();
     }
-    return {profile()->GetPrimaryOTRProfile(/*create_if_needed=*/true),
-            profile()->GetOffTheRecordProfile(Profile::OTRProfileID::TorID(),
-                                              /*create_if_needed=*/true),
-            guest_profile_->GetPrimaryOTRProfile(/*create_if_needed=*/true)};
+    return {
+        {"Private", profile()->GetPrimaryOTRProfile(/*create_if_needed=*/true)},
+        {"Tor", profile()->GetOffTheRecordProfile(
+                    Profile::OTRProfileID::TorID(), /*create_if_needed=*/true)},
+        {"Guest",
+         guest_profile_->GetPrimaryOTRProfile(/*create_if_needed=*/true)}};
   }
 
   // Opens the next page in a new tab of `profile`.
@@ -174,7 +178,8 @@ TEST_F(BraveOnDeviceSpeechInstallPromptUnitTest, NoPromptAfterDontAskAgain) {
 // without a prompt.
 TEST_F(BraveOnDeviceSpeechInstallPromptUnitTest,
        NoPromptOutsideRegularProfiles) {
-  for (Profile* profile : NonRegularProfiles()) {
+  for (const auto& [name, profile] : NonRegularProfiles()) {
+    SCOPED_TRACE(name);
     UseProfile(profile);
     EXPECT_FALSE(Install({"en-US"}));
     EXPECT_EQ(0, show_count());
@@ -191,7 +196,8 @@ TEST_F(BraveOnDeviceSpeechInstallPromptUnitTest,
       base::FilePath(FILE_PATH_LITERAL("/brave/speech/models")));
   EXPECT_TRUE(Install({"en-US"}));
 
-  for (Profile* profile : NonRegularProfiles()) {
+  for (const auto& [name, profile] : NonRegularProfiles()) {
+    SCOPED_TRACE(name);
     UseProfile(profile);
     EXPECT_FALSE(Install({"en-US"}));
     EXPECT_EQ(0, show_count());

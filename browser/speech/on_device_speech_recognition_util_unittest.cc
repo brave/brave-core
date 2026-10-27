@@ -5,6 +5,7 @@
 
 #include <memory>
 #include <string_view>
+#include <utility>
 
 #include "base/files/file_path.h"
 #include "base/test/scoped_feature_list.h"
@@ -70,11 +71,13 @@ TEST_F(BraveOnDeviceSpeechAvailabilityUnitTest,
   TestingProfile::Builder guest_builder;
   guest_builder.SetGuestSession();
   std::unique_ptr<TestingProfile> guest = guest_builder.Build();
-  for (Profile* profile :
-       {profile_.GetPrimaryOTRProfile(/*create_if_needed=*/true),
-        profile_.GetOffTheRecordProfile(Profile::OTRProfileID::TorID(),
-                                        /*create_if_needed=*/true),
-        guest->GetPrimaryOTRProfile(/*create_if_needed=*/true)}) {
+  const std::pair<std::string_view, Profile*> profiles[] = {
+      {"Private", profile_.GetPrimaryOTRProfile(/*create_if_needed=*/true)},
+      {"Tor", profile_.GetOffTheRecordProfile(Profile::OTRProfileID::TorID(),
+                                              /*create_if_needed=*/true)},
+      {"Guest", guest->GetPrimaryOTRProfile(/*create_if_needed=*/true)}};
+  for (const auto& [name, profile] : profiles) {
+    SCOPED_TRACE(name);
     EXPECT_EQ(AvailabilityStatus::kUnavailable,
               GetBraveOnDeviceSpeechAvailability(profile, "en-US",
                                                  Quality::kCommand));
