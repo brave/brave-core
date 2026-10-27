@@ -21,7 +21,6 @@ integration that supports the feature's required stage and request types.
 | Resource request checks, header changes, or response processing | A feature-specific `blink::URLLoaderThrottle`, in each process that handles the relevant requests.                             |
 | Renderer-local subresource filtering                            | Rulesets consumed by `DocumentSubresourceFilter`, when its supported actions and rule semantics cover the feature.             |
 | Requests constructed by a browser-owned service                 | Apply the behavior at request construction when that covers the feature.                                                       |
-| Secrets, signing, or network-stack state                        | A narrowly scoped browser/network-service integration at the stage that owns the operation.                                    |
 | WebSocket connection policy                                     | A browser-side connection decision before invoking the network factory; ordinary URL-loader throttles do not cover WebSockets. |
 
 For examples of choosing replacements for existing helpers, see
