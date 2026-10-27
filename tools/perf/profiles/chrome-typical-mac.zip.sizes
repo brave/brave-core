@@ -1,21 +1,21 @@
-Total size 85014K
+Total size 85253K
 
-GROUP chromium [60314K total]
+GROUP chromium [60238K total]
   2575K listdata.json 9.8200.9609 [ActorSafetyLists]
      2K Amount Extraction Heuristic Regexes 4 [AmountExtractionHeuristicRegexes]
      2K captcha_providers.json 8.5419.4434 [CaptchaProviders]
-  1210K crl-set-2075317099275765072.data 10848 [CertificateRevocation]
+  1140K crl-set-6611116812216102480.data 10864 [CertificateRevocation]
     31K chromeCommerceHeuristics 2023.3.30.1305 [CommerceHeuristics]
-   318K Crowd Deny 2026.10.19.62 [Crowd Deny]
+   312K Crowd Deny 2026.10.26.79 [Crowd Deny]
      9K fileTypePolicies 145.0.7584.0 [FileTypePolicies]
     13K First Party Sets 2025.7.24.0 [FirstPartySetsPreloaded]
      7K history_search_strings_farmhashed.binarypb 6.7431.9692 [HistorySearch]
      9K MEI Preload 1.1.0.3 [MEIPreload]
   7744K OnDeviceHeadSuggestENUS500000 20251024.824731831.14 [OnDeviceHeadSuggestModel]
    128K Model Manifest 1.20261018.2 [OptimizationGuideModelsManifest]
-   563K Optimization Hints 762 [OptimizationHints]
+   557K Optimization Hints 767 [OptimizationHints]
      1K Origin Trials Updates 1.0.0.20 [OriginTrials]
-   423K pkiMetadata 1810 [PKIMetadata]
+   429K pkiMetadata 1820 [PKIMetadata]
      4K sslErrorAssistant 7 [SSLErrorAssistant]
    176K safetyTips 3092 [SafetyTips]
    425K Subresource Filtering Rules 9.73.1 [Subresource Filter]
@@ -24,6 +24,6 @@ GROUP chromium [60314K total]
  19942K WidevineCdm 4.10.3112.0 [WidevineCdm]
   1642K zxcvbnData 3 [ZxcvbnData]
 
-GROUP large_files [18169K total]
-  1872K Safe Browsing/ChromeExtMalware.store.32_13436986884972176
- 16297K Safe Browsing/UrlSoceng.store.4_13436986885168634
+GROUP large_files [18417K total]
+  1841K Safe Browsing/ChromeExtMalware.store.32_13437591501334914
+ 16576K Safe Browsing/UrlSoceng.store.4_13437591501561181
