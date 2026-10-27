@@ -28,6 +28,7 @@ struct ParseListsResult {
   TokenListMap token_list_map;
   ChainList chain_list;
   std::vector<std::string> restricted_addresses;
+  PolkadotRpcUrlsMap polkadot_rpc_urls;
 };
 
 base::FilePath ResolveAbsolutePath(const base::FilePath& input_path) {
@@ -114,6 +115,21 @@ void DoParseRestrictedAddressesLists(const base::FilePath& dir,
   out.restricted_addresses = std::move(*list);
 }
 
+void DoParsePolkadotRpcUrls(const base::FilePath& dir, ParseListsResult& out) {
+  auto result =
+      ParseJsonFile(dir, BlockchainRegistry::kPolkadotRpcUrlsFileName);
+  if (!result) {
+    return;
+  }
+
+  std::optional<PolkadotRpcUrlsMap> rpc_urls = ParsePolkadotRpcUrls(*result);
+  if (!rpc_urls) {
+    return;
+  }
+
+  out.polkadot_rpc_urls = std::move(*rpc_urls);
+}
+
 void UpdateRegistry(base::OnceClosure callback, ParseListsResult result) {
   auto* registry = BlockchainRegistry::GetInstance();
   registry->UpdateCoingeckoIdsMap(std::move(result.coingecko_ids_map));
@@ -121,6 +137,7 @@ void UpdateRegistry(base::OnceClosure callback, ParseListsResult result) {
   registry->UpdateChainList(std::move(result.chain_list));
   registry->UpdateRestrictedAddressesList(
       std::move(result.restricted_addresses));
+  registry->UpdatePolkadotRpcUrls(std::move(result.polkadot_rpc_urls));
   std::move(callback).Run();
 }
 
@@ -135,6 +152,7 @@ ParseListsResult DoParseLists(const base::FilePath& install_dir) {
   DoParseTokenList(absolute_install_dir, result);
   DoParseChainList(absolute_install_dir, result);
   DoParseRestrictedAddressesLists(absolute_install_dir, result);
+  DoParsePolkadotRpcUrls(absolute_install_dir, result);
   return result;
 }
 
@@ -185,6 +203,15 @@ void BlockchainRegistry::UpdateRestrictedAddressesList(
     std::vector<std::string> restricted_addresses_list) {
   restricted_addresses_ = base::flat_set<std::string>(
       restricted_addresses_list.begin(), restricted_addresses_list.end());
+}
+
+void BlockchainRegistry::UpdatePolkadotRpcUrls(
+    PolkadotRpcUrlsMap polkadot_rpc_urls) {
+  polkadot_rpc_urls_ = std::move(polkadot_rpc_urls);
+}
+
+const PolkadotRpcUrlsMap& BlockchainRegistry::GetPolkadotRpcUrls() const {
+  return polkadot_rpc_urls_;
 }
 
 void BlockchainRegistry::GetTokenByAddress(const std::string& chain_id,
@@ -351,13 +378,15 @@ BlockchainRegistry::ScopedRestrictedAddressesForTesting::
 
 bool BlockchainRegistry::IsEmptyForTesting() {
   return coingecko_ids_map_.empty() && token_list_map_.empty() &&
-         chain_list_.empty() && restricted_addresses_.empty();
+         chain_list_.empty() && restricted_addresses_.empty() &&
+         polkadot_rpc_urls_.empty();
 }
 
 void BlockchainRegistry::ResetForTesting() {
   coingecko_ids_map_.clear();
   token_list_map_.clear();
   restricted_addresses_.clear();
+  polkadot_rpc_urls_.clear();
   receivers_.Clear();
 }
 
