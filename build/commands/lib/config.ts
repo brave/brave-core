@@ -781,7 +781,6 @@ export class Config {
       ['tools', 'grit', 'grit', 'extern'],
       ['brave', 'vendor', 'requests'],
       ['build'],
-      ['third_party', 'depot_tools'],
     ]
     pythonPaths.forEach((p) => {
       env = this.addPythonPathToEnv(env, path.join(this.srcDir, ...p))
