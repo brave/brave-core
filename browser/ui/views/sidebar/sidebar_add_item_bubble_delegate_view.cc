@@ -113,7 +113,9 @@ views::Widget* SidebarAddItemBubbleDelegateView::Create(
   auto* frame_view = delegate->GetBubbleFrameView();
   frame_view->SetDisplayVisibleArrow(true);
   delegate->SizeToContents();
-  frame_view->SetRoundedCorners(gfx::RoundedCornersF(4));
+  frame_view->SetRoundedCorners(
+      gfx::RoundedCornersF(ChromeLayoutProvider::Get()->GetCornerRadiusMetric(
+          views::ShapeContextTokens::kDialogRadius)));
 
   return bubble;
 }
