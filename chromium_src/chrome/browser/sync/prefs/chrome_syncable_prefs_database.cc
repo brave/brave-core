@@ -9,7 +9,6 @@
 
 #include "base/containers/fixed_flat_map.h"
 
-namespace browser_sync {
 namespace {
 namespace brave_syncable_prefs_ids {
 enum {
@@ -230,13 +229,10 @@ const auto& BraveSyncablePreferences() {
   return kBraveSyncablePrefsAllowList;
 }
 }  // namespace
-}  // namespace browser_sync
 
 #define GetSyncablePrefMetadata GetSyncablePrefMetadata_ChromiumImpl
 #include <chrome/browser/sync/prefs/chrome_syncable_prefs_database.cc>
 #undef GetSyncablePrefMetadata
-
-namespace browser_sync {
 
 const sync_preferences::SyncablePrefMetadata*
 ChromeSyncablePrefsDatabase::GetSyncablePrefMetadata(
@@ -247,5 +243,3 @@ ChromeSyncablePrefsDatabase::GetSyncablePrefMetadata(
   }
   return GetSyncablePrefMetadata_ChromiumImpl(pref_name);
 }
-
-}  // namespace browser_sync
