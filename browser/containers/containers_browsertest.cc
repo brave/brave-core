@@ -392,7 +392,7 @@ class ContainersBrowserTest : public InProcessBrowserTest {
   content::WebContents* OpenUrlInContainerTab(const GURL& url,
                                               const std::string& container_id) {
     NavigateParams params(browser(), url, ui::PAGE_TRANSITION_LINK);
-    params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+    params.disposition = WindowOpenDisposition::kNewForegroundTab;
     params.storage_partition_config = content::StoragePartitionConfig::Create(
         browser()->GetProfile(), kContainersStoragePartitionDomain,
         container_id, browser()->GetProfile()->IsOffTheRecord());
@@ -555,7 +555,7 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest, IsolateCookiesAndStorage) {
 
   // Open a new tab with a different storage partition
   NavigateParams params(browser(), url, ui::PAGE_TRANSITION_LINK);
-  params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+  params.disposition = WindowOpenDisposition::kNewForegroundTab;
   params.storage_partition_config = content::StoragePartitionConfig::Create(
       browser()->GetProfile(), kContainersStoragePartitionDomain, "container-a",
       browser()->GetProfile()->IsOffTheRecord());
@@ -618,7 +618,7 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest, IsolateCookiesAndStorage) {
 
   // Open a new tab with a different storage partition
   NavigateParams params_b(browser(), url, ui::PAGE_TRANSITION_LINK);
-  params_b.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+  params_b.disposition = WindowOpenDisposition::kNewForegroundTab;
   params_b.storage_partition_config = content::StoragePartitionConfig::Create(
       browser()->GetProfile(), kContainersStoragePartitionDomain, "container-b",
       browser()->GetProfile()->IsOffTheRecord());
@@ -648,7 +648,7 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
 
   // Navigate to the page
   NavigateParams params(browser(), url, ui::PAGE_TRANSITION_LINK);
-  params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+  params.disposition = WindowOpenDisposition::kNewForegroundTab;
   params.storage_partition_config = content::StoragePartitionConfig::Create(
       browser()->GetProfile(), kContainersStoragePartitionDomain,
       kTestContainerId, browser()->GetProfile()->IsOffTheRecord());
@@ -685,7 +685,7 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
 
   // Navigate to the page
   NavigateParams params(browser(), url, ui::PAGE_TRANSITION_LINK);
-  params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+  params.disposition = WindowOpenDisposition::kNewForegroundTab;
   params.storage_partition_config = content::StoragePartitionConfig::Create(
       browser()->GetProfile(), kContainersStoragePartitionDomain,
       kTestContainerId, browser()->GetProfile()->IsOffTheRecord());
@@ -724,7 +724,7 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
 
   const GURL url("https://a.test/simple.html");
   NavigateParams params(browser(), url, ui::PAGE_TRANSITION_LINK);
-  params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+  params.disposition = WindowOpenDisposition::kNewForegroundTab;
   params.storage_partition_config = content::StoragePartitionConfig::Create(
       browser()->GetProfile(), kContainersStoragePartitionDomain,
       kTestContainerId, browser()->GetProfile()->IsOffTheRecord());
@@ -794,7 +794,7 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
 
   // Navigate to base URL with a container
   NavigateParams params(browser(), url, ui::PAGE_TRANSITION_LINK);
-  params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+  params.disposition = WindowOpenDisposition::kNewForegroundTab;
   params.storage_partition_config = content::StoragePartitionConfig::Create(
       browser()->GetProfile(), kContainersStoragePartitionDomain,
       kTestContainerId, browser()->GetProfile()->IsOffTheRecord());
@@ -910,7 +910,7 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest, IsolateServiceWorkers) {
 
   // Open a new tab with a different storage partition (container-a)
   NavigateParams params(browser(), url, ui::PAGE_TRANSITION_LINK);
-  params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+  params.disposition = WindowOpenDisposition::kNewForegroundTab;
   params.storage_partition_config = content::StoragePartitionConfig::Create(
       browser()->GetProfile(), kContainersStoragePartitionDomain, "container-a",
       browser()->GetProfile()->IsOffTheRecord());
@@ -955,7 +955,7 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest, IsolateServiceWorkers) {
 
   // Open another container (container-b)
   NavigateParams params_b(browser(), url, ui::PAGE_TRANSITION_LINK);
-  params_b.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+  params_b.disposition = WindowOpenDisposition::kNewForegroundTab;
   params_b.storage_partition_config = content::StoragePartitionConfig::Create(
       browser()->GetProfile(), kContainersStoragePartitionDomain, "container-b",
       browser()->GetProfile()->IsOffTheRecord());
@@ -1766,7 +1766,7 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
 
   // Navigate to the page with a container
   NavigateParams params(browser(), url, ui::PAGE_TRANSITION_LINK);
-  params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+  params.disposition = WindowOpenDisposition::kNewForegroundTab;
   params.storage_partition_config = content::StoragePartitionConfig::Create(
       browser()->GetProfile(), kContainersStoragePartitionDomain,
       kTestContainerId, browser()->GetProfile()->IsOffTheRecord());
@@ -1799,7 +1799,7 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
 
   // Navigate to the page with the same container
   NavigateParams params(browser(), url, ui::PAGE_TRANSITION_LINK);
-  params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+  params.disposition = WindowOpenDisposition::kNewForegroundTab;
   params.storage_partition_config = content::StoragePartitionConfig::Create(
       browser()->GetProfile(), kContainersStoragePartitionDomain,
       kTestContainerId, browser()->GetProfile()->IsOffTheRecord());
@@ -1921,7 +1921,7 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest, GetStoragePartitionKeyToRestore) {
   const GURL url("https://a.test/simple.html");
 
   NavigateParams params(browser(), url, ui::PAGE_TRANSITION_LINK);
-  params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+  params.disposition = WindowOpenDisposition::kNewForegroundTab;
   params.storage_partition_config = content::StoragePartitionConfig::Create(
       browser()->GetProfile(), kContainersStoragePartitionDomain,
       kTestContainerId, browser()->GetProfile()->IsOffTheRecord());
@@ -1947,7 +1947,7 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest, HotRestoreClosedContainerTab) {
 
   // Open container tab
   NavigateParams params(browser(), url, ui::PAGE_TRANSITION_LINK);
-  params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+  params.disposition = WindowOpenDisposition::kNewForegroundTab;
   params.storage_partition_config = content::StoragePartitionConfig::Create(
       browser()->GetProfile(), kContainersStoragePartitionDomain,
       kTestContainerId, browser()->GetProfile()->IsOffTheRecord());
@@ -2005,7 +2005,7 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
 
   // Open a container tab.
   NavigateParams container_params(browser(), url, ui::PAGE_TRANSITION_LINK);
-  container_params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+  container_params.disposition = WindowOpenDisposition::kNewForegroundTab;
   container_params.storage_partition_config =
       content::StoragePartitionConfig::Create(
           browser()->GetProfile(), kContainersStoragePartitionDomain,
@@ -2020,7 +2020,7 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
   // this mirrors opening "Site Settings" from a container tab's page info.
   const GURL webui_url(chrome::kChromeUIVersionURL);
   NavigateParams webui_params(browser(), webui_url, ui::PAGE_TRANSITION_LINK);
-  webui_params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+  webui_params.disposition = WindowOpenDisposition::kNewForegroundTab;
   webui_params.source_site_instance =
       container_web_contents->GetPrimaryMainFrame()->GetSiteInstance();
   ui_test_utils::NavigateToURL(&webui_params);
@@ -2072,7 +2072,7 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
 
   // Open container tab on site A
   NavigateParams params(browser(), url_a, ui::PAGE_TRANSITION_LINK);
-  params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+  params.disposition = WindowOpenDisposition::kNewForegroundTab;
   params.storage_partition_config = content::StoragePartitionConfig::Create(
       browser()->GetProfile(), kContainersStoragePartitionDomain,
       kTestContainerId, browser()->GetProfile()->IsOffTheRecord());
@@ -2167,7 +2167,7 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
 
   // Open first page in container
   NavigateParams params(browser(), urls[0], ui::PAGE_TRANSITION_LINK);
-  params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+  params.disposition = WindowOpenDisposition::kNewForegroundTab;
   params.storage_partition_config = content::StoragePartitionConfig::Create(
       browser()->GetProfile(), kContainersStoragePartitionDomain,
       kTestContainerId, browser()->GetProfile()->IsOffTheRecord());
@@ -2254,7 +2254,7 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest, PRE_MixedTabsPersistence) {
 
   // Tab 2: Container A
   NavigateParams params_a(browser(), url, ui::PAGE_TRANSITION_LINK);
-  params_a.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+  params_a.disposition = WindowOpenDisposition::kNewForegroundTab;
   params_a.storage_partition_config = content::StoragePartitionConfig::Create(
       browser()->GetProfile(), kContainersStoragePartitionDomain, "container-a",
       browser()->GetProfile()->IsOffTheRecord());
@@ -2268,7 +2268,7 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest, PRE_MixedTabsPersistence) {
 
   // Tab 3: Container B
   NavigateParams params_b(browser(), url, ui::PAGE_TRANSITION_LINK);
-  params_b.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+  params_b.disposition = WindowOpenDisposition::kNewForegroundTab;
   params_b.storage_partition_config = content::StoragePartitionConfig::Create(
       browser()->GetProfile(), kContainersStoragePartitionDomain, "container-b",
       browser()->GetProfile()->IsOffTheRecord());
@@ -2282,7 +2282,7 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest, PRE_MixedTabsPersistence) {
 
   // Tab 4: Another default partition tab
   NavigateParams params_d2(browser(), url, ui::PAGE_TRANSITION_LINK);
-  params_d2.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+  params_d2.disposition = WindowOpenDisposition::kNewForegroundTab;
   ui_test_utils::NavigateToURL(&params_d2);
   content::WebContents* default_tab2 =
       browser()->tab_strip_model()->GetActiveWebContents();
@@ -2486,7 +2486,7 @@ IN_PROC_BROWSER_TEST_F(ContainersDisabledAfterRestoreBrowserTest,
 
   // Navigate to the page with a container storage partition
   NavigateParams params(browser(), url, ui::PAGE_TRANSITION_LINK);
-  params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+  params.disposition = WindowOpenDisposition::kNewForegroundTab;
   params.storage_partition_config = content::StoragePartitionConfig::Create(
       browser()->GetProfile(), kContainersStoragePartitionDomain,
       "test-container", browser()->GetProfile()->IsOffTheRecord());
@@ -2610,7 +2610,7 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
 
   // Open a new tab page with a container storage partition config
   NavigateParams params(browser(), new_tab_url, ui::PAGE_TRANSITION_LINK);
-  params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+  params.disposition = WindowOpenDisposition::kNewForegroundTab;
   params.storage_partition_config = content::StoragePartitionConfig::Create(
       browser()->GetProfile(), kContainersStoragePartitionDomain,
       "test-container", browser()->GetProfile()->IsOffTheRecord());

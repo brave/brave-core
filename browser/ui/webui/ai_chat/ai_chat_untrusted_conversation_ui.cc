@@ -411,7 +411,7 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
     BrowserWindowInterface* browser =
         ai_chat::GetBrowserForWebContents(web_ui_->GetWebContents());
     browser->OpenURL(
-        {url, content::Referrer(), WindowOpenDisposition::NEW_FOREGROUND_TAB,
+        {url, content::Referrer(), WindowOpenDisposition::kNewForegroundTab,
          ui::PAGE_TRANSITION_LINK, false},
         /*navigation_handle_callback=*/{});
 #else

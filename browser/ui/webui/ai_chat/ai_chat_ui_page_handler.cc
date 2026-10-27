@@ -459,7 +459,7 @@ void AIChatUIPageHandler::OpenWorkspaceFile(const GURL& workspace_url,
   // From the side panel, the current tab is the one the panel is alongside.
   if (active_chat_tab_helper_) {
     active_chat_tab_helper_->GetWebContents().OpenURL(
-        {*file_url, content::Referrer(), WindowOpenDisposition::CURRENT_TAB,
+        {*file_url, content::Referrer(), WindowOpenDisposition::kCurrentTab,
          ui::PAGE_TRANSITION_LINK, false},
         /*navigation_handle_callback=*/{});
     return;
@@ -509,7 +509,7 @@ void AIChatUIPageHandler::OpenConversationFullPage(
 
   NavigateParams params(profile_, ConversationUrl(conversation_uuid),
                         ui::PAGE_TRANSITION_TYPED);
-  params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+  params.disposition = WindowOpenDisposition::kNewForegroundTab;
   params.referrer = content::Referrer();
   Navigate(&params);
 
@@ -547,12 +547,12 @@ void AIChatUIPageHandler::OpenURL(const GURL& url) {
 void AIChatUIPageHandler::OpenURLInNewTab(const GURL& url) {
 #if BUILDFLAG(IS_ANDROID)
   owner_web_contents_->OpenURL(
-      {url, content::Referrer(), WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      {url, content::Referrer(), WindowOpenDisposition::kNewForegroundTab,
        ui::PAGE_TRANSITION_LINK, false},
       /*navigation_handle_callback=*/{});
 #else
   NavigateParams params(profile_, url, ui::PAGE_TRANSITION_LINK);
-  params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+  params.disposition = WindowOpenDisposition::kNewForegroundTab;
   params.referrer = content::Referrer();
   Navigate(&params);
 #endif  // !BUILDFLAG(IS_ANDROID)

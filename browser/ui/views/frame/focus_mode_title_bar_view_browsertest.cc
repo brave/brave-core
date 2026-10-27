@@ -118,7 +118,7 @@ IN_PROC_BROWSER_TEST_F(FocusModeTitleBarViewBrowserTest, TitleBarWiring) {
   // Opening a new foreground tab updates the title bar to the new active tab.
   ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
       browser(), https_server_.GetURL("b.test", "/empty.html"),
-      WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_TAB |
           ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
   EXPECT_TRUE(WaitForDomainToContain(u"b.test"));

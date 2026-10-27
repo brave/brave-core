@@ -223,7 +223,7 @@ IN_PROC_BROWSER_TEST_F(EventSourcePoolLimitBrowserTest,
                        PoolIsLimitedByDefault) {
   const GURL url(https_server_.GetURL("a.com", "/simple.html"));
   auto* rfh = ui_test_utils::NavigateToURLWithDisposition(
-      browser(), url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      browser(), url, WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
   OpenEventSourcesAndExpectLimited(rfh, kEventSourcesOpenScript,
@@ -241,7 +241,7 @@ IN_PROC_BROWSER_TEST_F(EventSourcePoolLimitBrowserTest,
 
   // Open a.com with nested b.com.
   auto* a_com_rfh = ui_test_utils::NavigateToURLWithDisposition(
-      browser(), a_com_url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      browser(), a_com_url, WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
   auto* b_com0_in_a_com_rfh = GetNthChildFrameWithHost(a_com_rfh, "b.com");
 
@@ -261,7 +261,7 @@ IN_PROC_BROWSER_TEST_F(EventSourcePoolLimitBrowserTest,
 
   // Open b.com with a nested a.com.
   auto* b_com_rfh = ui_test_utils::NavigateToURLWithDisposition(
-      browser(), b_com_url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      browser(), b_com_url, WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
   auto* a_com_in_b_com_rfh = GetNthChildFrameWithHost(b_com_rfh, "a.com");
 
@@ -278,7 +278,7 @@ IN_PROC_BROWSER_TEST_F(EventSourcePoolLimitBrowserTest,
   const GURL url(https_server_.GetURL("a.com", "/simple.html"));
 
   auto* rfh = ui_test_utils::NavigateToURLWithDisposition(
-      browser(), url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      browser(), url, WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
   const std::string& register_sw_script = content::JsReplace(
@@ -308,7 +308,7 @@ IN_PROC_BROWSER_TEST_F(EventSourcePoolLimitBrowserTest,
   const GURL a_com_url(
       https_server_.GetURL("a.com", "/csp_sandboxed_frame.html"));
   auto* a_com_rfh = ui_test_utils::NavigateToURLWithDisposition(
-      browser(), a_com_url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      browser(), a_com_url, WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
   EXPECT_TRUE(a_com_rfh->GetLastCommittedOrigin().opaque());
 
@@ -322,7 +322,7 @@ IN_PROC_BROWSER_TEST_F(EventSourcePoolLimitBrowserTest,
   const GURL b_com_url(
       https_server_.GetURL("b.com", "/csp_sandboxed_frame.html"));
   auto* b_com_rfh = ui_test_utils::NavigateToURLWithDisposition(
-      browser(), b_com_url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      browser(), b_com_url, WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
   EXPECT_TRUE(b_com_rfh->GetLastCommittedOrigin().opaque());
 
@@ -341,7 +341,7 @@ IN_PROC_BROWSER_TEST_F(EventSourcePoolLimitBrowserTest,
   brave_shields::SetBraveShieldsEnabled(content_settings(), false, url);
 
   auto* a_com_rfh = ui_test_utils::NavigateToURLWithDisposition(
-      browser(), url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      browser(), url, WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
   // No limits should be active.
@@ -375,7 +375,7 @@ IN_PROC_BROWSER_TEST_F(EventSourcePoolLimitBrowserTest,
       https_server_.GetURL("a.com", "/"), nullptr);
 
   auto* a_com_rfh = ui_test_utils::NavigateToURLWithDisposition(
-      browser(), url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      browser(), url, WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
   // No limits should be active.
@@ -406,7 +406,7 @@ IN_PROC_BROWSER_TEST_F(EventSourcePoolLimitBrowserTest,
       extension_loader.LoadExtension(test_extension_dir.UnpackedPath());
   const GURL url = extension->ResolveExtensionURL("/empty.html");
   auto* extension_rfh = ui_test_utils::NavigateToURLWithDisposition(
-      browser(), url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      browser(), url, WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
   ASSERT_TRUE(extension_rfh);
   // Run the test script in an isolated world to bypass the MV3 extension page
@@ -433,7 +433,7 @@ IN_PROC_BROWSER_TEST_F(EventSourcePoolLimitDisabledBrowserTest,
                        PoolIsNotLimited) {
   const GURL url(https_server_.GetURL("a.com", "/simple.html"));
   auto* rfh = ui_test_utils::NavigateToURLWithDisposition(
-      browser(), url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      browser(), url, WindowOpenDisposition::kNewForegroundTab,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
   // No limits should be active.

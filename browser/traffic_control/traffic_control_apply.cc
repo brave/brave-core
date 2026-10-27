@@ -184,8 +184,8 @@ void TrafficControlApplier::OpenUrl(
       browser_window_, url_,
       is_link ? ui::PAGE_TRANSITION_LINK : ui::PAGE_TRANSITION_TYPED);
   params.disposition = source_was_active_
-                           ? WindowOpenDisposition::NEW_FOREGROUND_TAB
-                           : WindowOpenDisposition::NEW_BACKGROUND_TAB;
+                           ? WindowOpenDisposition::kNewForegroundTab
+                           : WindowOpenDisposition::kNewBackgroundTab;
   params.initiator_origin = initiator_origin_;
   if (container) {
     params.storage_partition_config = content::StoragePartitionConfig::Create(

@@ -213,7 +213,7 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
     web_ui_->GetWebState()->OpenURL({
         url,
         web::Referrer(),
-        WindowOpenDisposition::NEW_FOREGROUND_TAB,
+        WindowOpenDisposition::kNewForegroundTab,
         ui::PAGE_TRANSITION_LINK,
         false,
     });
