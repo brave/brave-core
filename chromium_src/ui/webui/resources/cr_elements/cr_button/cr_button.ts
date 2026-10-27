@@ -62,13 +62,16 @@ export class CrButtonElement extends CrLitElement {
       size: {
         type: String,
         reflect: true,
-      }
+      },
+      noink: { type: Boolean },
     };
   }
 
   accessor disabled: boolean = false;
   accessor class: string = '';
   accessor size = 'small';
+  // Upstream's CrRippleMixin API; there is no ripple to disable here.
+  accessor noink: boolean = false;
 
   private onClick_(e: Event) {
     if (this.disabled) {
