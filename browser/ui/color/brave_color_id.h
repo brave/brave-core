@@ -57,7 +57,6 @@
     E_CPONLY(kColorSidebarAddBubbleItemTextBackgroundHovered) \
     E_CPONLY(kColorSidebarAddBubbleItemTextHovered)           \
     E_CPONLY(kColorSidebarAddBubbleItemTextNormal)            \
-    E_CPONLY(kColorSidebarArrowBackgroundHovered)             \
     E_CPONLY(kColorSidebarArrowDisabled)                      \
     E_CPONLY(kColorSidebarArrowNormal)                        \
     E_CPONLY(kColorSidebarButtonBase)                         \
