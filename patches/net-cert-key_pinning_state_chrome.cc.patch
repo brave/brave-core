@@ -1,0 +1,22 @@
+diff --git a/net/cert/key_pinning_state_chrome.cc b/net/cert/key_pinning_state_chrome.cc
+index a389467d4905dc8978f8012c91d803c1146c8850..efb3f85f794c421d94b820a0a80f29f769346e58 100644
+--- a/net/cert/key_pinning_state_chrome.cc
++++ b/net/cert/key_pinning_state_chrome.cc
+@@ -27,16 +27,7 @@ struct DefaultOverrides {
+ 
+ std::optional<DefaultOverrides> g_default_state_overrides;
+ 
+-constexpr bool kDefaultEnableStaticPins =
+-// Static pinning is only enabled for official builds to make sure that
+-// others don't end up with pins that cannot be easily updated. The code is
+-// still compiled otherwise so that tests can be run without requiring to do an
+-// official build.
+-#if !BUILDFLAG(GOOGLE_CHROME_BRANDING)
+-    false;
+-#else
+-    true;
+-#endif
++constexpr bool kDefaultEnableStaticPins = true;
+ 
+ class KeyPinningStateChromeCompiledIn : public KeyPinningStateChrome {
+  public:
