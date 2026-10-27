@@ -51,7 +51,7 @@ class BraveVPNButton : public ToolbarButton,
   void UpdateColorsAndInsets() override;
   std::u16string GetRenderedTooltipText(const gfx::Point& p) const override;
   void OnThemeChanged() override;
-  void InkDropRippleAnimationEnded(views::InkDropState state) override;
+  void UpdateIcon() override;
 
   void SetVpnConnectionStateForTesting(
       brave_vpn::mojom::ConnectionState state) {

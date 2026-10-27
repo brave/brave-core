@@ -42,6 +42,12 @@ class ToolbarButton : public ToolbarButton_ChromiumImpl,
 
   virtual void OnInkDropStateChanged(views::InkDropState state);
 
+ protected:
+  // True while the ink drop is ACTIVATED (e.g. an anchored menu or bubble is
+  // open). Buttons that build their own images use this to apply
+  // kColorToolbarButtonActivated from UpdateIcon().
+  bool IsActivated() const { return activated_; }
+
  private:
   // InkDropObserverImpl overrides:
   void InkDropAnimationStarted() override {}

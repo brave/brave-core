@@ -283,14 +283,9 @@ SkColor BraveVPNButton::GetIconColor() {
     return cp->GetColor(kColorBraveVpnButtonIconError);
   }
 
-  const auto ink_drop_state =
-      views::InkDrop::Get(this)->GetInkDrop()->GetTargetInkDropState();
-  ui::ColorId icon_color_id = kColorToolbarButtonIcon;
-  if (ink_drop_state == views::InkDropState::ACTIVATED) {
-    icon_color_id = kColorToolbarButtonActivated;
-  }
-
-  return cp->GetColor(icon_color_id);
+  return cp->GetColor(
+      IsActivated() ? static_cast<ui::ColorId>(kColorToolbarButtonActivated)
+                    : static_cast<ui::ColorId>(kColorToolbarButtonIcon));
 }
 
 SkColor BraveVPNButton::GetBadgeColor() {
@@ -326,21 +321,11 @@ std::u16string BraveVPNButton::GetRenderedTooltipText(
 
 void BraveVPNButton::OnThemeChanged() {
   ToolbarButton::OnThemeChanged();
-
-  // Configure vpn button specific ink drop config as ink drop is reset
-  // whenever theme changes.
-
-  // Set 0.0f to use same color for activated state.
-  views::InkDrop::Get(this)->SetVisibleOpacity(0.00f);
-
-  // Different base color is set per themes and it has alpha.
-  views::InkDrop::Get(this)->SetHighlightOpacity(1.0f);
-
   UpdateColorsAndInsets();
 }
 
-void BraveVPNButton::InkDropRippleAnimationEnded(views::InkDropState state) {
-  // To use different icon color when activated.
+void BraveVPNButton::UpdateIcon() {
+  // The icon image is built with the background and border.
   UpdateColorsAndInsets();
 }
 

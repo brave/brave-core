@@ -68,7 +68,6 @@ class BraveToolbarView : public ToolbarView,
   void Init() override;
   void Layout(PassKey) override;
   void Update(content::WebContents* tab) override;
-  void OnThemeChanged() override;
   void OnEditBookmarksEnabledChanged();
   void OnLocationBarIsWideChanged();
   void OnShowBookmarksButtonChanged();
@@ -80,7 +79,6 @@ class BraveToolbarView : public ToolbarView,
   FRIEND_TEST_ALL_PREFIXES(BraveToolbarViewTest, ToolbarCornerRadiusTest);
   FRIEND_TEST_ALL_PREFIXES(BraveToolbarViewTest, ToolbarDividerNotShownTest);
 
-  void LoadImages() override;
   void ResetLocationBarBounds();
   void ResetBookmarkButtonBounds();
   void UpdateBookmarkVisibility();

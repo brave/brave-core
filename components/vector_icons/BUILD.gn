@@ -23,6 +23,7 @@ aggregate_vector_icons("brave_components_vector_icons") {
   leo_icons = [
     "leo_arrow_right.icon",
     "leo_arrow_small_right.icon",
+    "leo_bookmark_added.icon",
     "leo_brave_icon_monochrome.icon",
     "leo_brave_icon_only_face.icon",
     "leo_brave_icon_only_face_disabled.icon",
@@ -34,6 +35,7 @@ aggregate_vector_icons("brave_components_vector_icons") {
     "leo_browser_extensions_remove.icon",
     "leo_browser_extensions.icon",
     "leo_browser_group.icon",
+    "leo_browser_menu.icon",
     "leo_browser_sidebar_right.icon",
     "leo_browser_split_view_unsplit.icon",
     "leo_browser_split_view_vertical.icon",
@@ -51,6 +53,7 @@ aggregate_vector_icons("brave_components_vector_icons") {
     "leo_copy_plain_text.icon",
     "leo_copy.icon",
     "leo_credit_card.icon",
+    "leo_cut.icon",
     "leo_desktop_vpn_error_color.icon",
     "leo_desktop_vpn_on_color.icon",
     "leo_download.icon",
