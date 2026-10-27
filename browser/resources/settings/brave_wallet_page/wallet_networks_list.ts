@@ -10,7 +10,7 @@ import {BraveWalletBrowserProxyImpl} from './brave_wallet_browser_proxy.js'
 import type {NetworkInfo} from './brave_wallet_browser_proxy.js'
 
 import type {CrActionMenuElement} from 'chrome://resources/cr_elements/cr_action_menu/cr_action_menu.js'
-import type {CrLazyRenderElement} from 'chrome://resources/cr_elements/cr_lazy_render/cr_lazy_render.js'
+import type {CrLazyRenderElement} from '../site_settings/cr_lazy_render.js'
 import type {IronListElement} from 'chrome://resources/polymer/v3_0/iron-list/iron-list.js'
 
 import {I18nMixin} from 'chrome://resources/cr_elements/i18n_mixin.js'
