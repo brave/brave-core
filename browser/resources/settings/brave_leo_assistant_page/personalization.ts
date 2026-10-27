@@ -11,7 +11,7 @@ import { I18nMixin } from 'chrome://resources/cr_elements/i18n_mixin.js'
 import { PolymerElement } from
   'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 
-import '//resources/cr_elements/md_select.css.js'
+import '/shared/settings/md_select.css.js'
 
 import { PrefService } from '/shared/settings/prefs2/pref_service.js'
 import { PrefServiceObserverMixin } from '/shared/settings/prefs2/pref_service_observer_mixin.js'
