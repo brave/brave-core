@@ -15,13 +15,9 @@
 #include "url/gurl.h"
 #include "url/url_util.h"
 
-#define BRAVE_ENABLE_STATIC_PINS enable_static_pins_ = true;
-
 #define TransportSecurityState TransportSecurityState_ChromiumImpl
 
 #include <net/http/transport_security_state.cc>
-
-#undef BRAVE_ENABLE_STATIC_PINS
 
 #undef TransportSecurityState
 
