@@ -348,7 +348,6 @@ void AddBravifiedChromeThemeColorMixer(ui::ColorProvider* provider,
   // TODO(simonhong): Move these overriding to
   // AddChromeColorMixerForAllThemes().
   ui::ColorMixer& mixer = provider->AddMixer();
-  // Primitives: picked by contrast with the toolbar, which can be custom.
   mixer[kColorAppMenuHighlightSeverityLow] = {PickColorContrastingToToolbar(
       key, mixer, mixer.GetResultColor(nala::kColorPrimitiveGreen20),
       mixer.GetResultColor(nala::kColorPrimitiveGreen70))};
@@ -387,7 +386,6 @@ void AddBraveLightThemeColorMixer(ui::ColorProvider* provider,
 
   mixer[kColorForTest] = {kLightColorForTest};
 
-  // Primitives: picked by contrast with the toolbar, which can be custom.
   mixer[kColorBookmarkBarInstructionsText] = {PickColorContrastingToToolbar(
       key, mixer, mixer.GetResultColor(nala::kColorPrimitiveNeutral35),
       mixer.GetResultColor(nala::kColorPrimitiveNeutral100))};
@@ -418,14 +416,12 @@ void AddBraveLightThemeColorMixer(ui::ColorProvider* provider,
     mixer[kColorSidebarButtonPressed] = {kColorToolbarButtonActivated};
   }
 
-  // Primitives: picked by contrast with the toolbar, which can be custom.
   mixer[kColorSidebarArrowDisabled] = {PickColorContrastingToToolbar(
       key, mixer,
       SkColorSetA(mixer.GetResultColor(nala::kColorPrimitiveNeutral35), 0x8A),
       SkColorSetA(mixer.GetResultColor(nala::kColorPrimitiveNeutralVariant70),
                   0x8A))};
   mixer[kColorSidebarArrowNormal] = {kColorSidebarButtonBase};
-  // Primitives: picked by contrast with the toolbar, which can be custom.
   mixer[kColorSidebarItemDragIndicator] = {PickColorContrastingToToolbar(
       key, mixer, mixer.GetResultColor(nala::kColorPrimitiveNeutral15),
       mixer.GetResultColor(nala::kColorPrimitiveNeutralVariant80))};
@@ -462,7 +458,6 @@ void AddBraveDarkThemeColorMixer(ui::ColorProvider* provider,
 
   mixer[kColorForTest] = {kDarkColorForTest};
 
-  // Primitives: picked by contrast with the toolbar, which can be custom.
   mixer[kColorBookmarkBarInstructionsText] = {PickColorContrastingToToolbar(
       key, mixer, mixer.GetResultColor(nala::kColorPrimitiveNeutral35),
       mixer.GetResultColor(nala::kColorPrimitiveNeutral100))};
@@ -490,14 +485,12 @@ void AddBraveDarkThemeColorMixer(ui::ColorProvider* provider,
   if (!HasCustomToolbarColor(key)) {
     mixer[kColorSidebarButtonPressed] = {kColorToolbarButtonActivated};
   }
-  // Primitives: picked by contrast with the toolbar, which can be custom.
   mixer[kColorSidebarArrowDisabled] = {PickColorContrastingToToolbar(
       key, mixer,
       SkColorSetA(mixer.GetResultColor(nala::kColorPrimitiveNeutral35), 0x8A),
       SkColorSetA(mixer.GetResultColor(nala::kColorPrimitiveNeutralVariant70),
                   0x8A))};
   mixer[kColorSidebarArrowNormal] = {kColorSidebarButtonBase};
-  // Primitives: picked by contrast with the toolbar, which can be custom.
   mixer[kColorSidebarItemDragIndicator] = {PickColorContrastingToToolbar(
       key, mixer, mixer.GetResultColor(nala::kColorPrimitiveNeutral15),
       mixer.GetResultColor(nala::kColorPrimitiveNeutralVariant80))};
