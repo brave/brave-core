@@ -10,8 +10,6 @@
 #include <string>
 #include <utility>
 
-#include "base/containers/flat_map.h"
-#include "base/containers/flat_set.h"
 #include "base/gtest_prod_util.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
@@ -58,14 +56,6 @@ class BraveWalletTabHelper
       content::RenderFrameHost* const frame_host,
       mojo::PendingReceiver<mojom::PolkadotProvider> receiver);
 
-  void AddSolanaConnectedAccount(const content::GlobalRenderFrameHostId& id,
-                                 const std::string& account);
-  void RemoveSolanaConnectedAccount(const content::GlobalRenderFrameHostId& id,
-                                    const std::string& account);
-  bool IsSolanaAccountConnected(const content::GlobalRenderFrameHostId& id,
-                                const std::string& account);
-  void ClearSolanaConnectedAccounts(const content::GlobalRenderFrameHostId& id);
-
   // TODO(https://github.com/brave/brave-browser/issues/55073): split this tab
   // helper.
 #if !BUILDFLAG(IS_ANDROID)
@@ -86,21 +76,7 @@ class BraveWalletTabHelper
 
  private:
   FRIEND_TEST_ALL_PREFIXES(BraveWalletTabHelperUnitTest, GetApproveBubbleURL);
-  FRIEND_TEST_ALL_PREFIXES(BraveWalletTabHelperUnitTest,
-                           SolanaConnectedAccount);
   friend class content::WebContentsUserData<BraveWalletTabHelper>;
-
-  // This set is used to maintain connected status for each frame, it is a
-  // separate non persistent status from site permission. It depends on if a
-  // site successfully call connect or not, calling disconnect will remove
-  // itself from this set. Note that site permission is required for a site to
-  // do connect, if an user reject the connect request, connect would fail. On
-  // the other hand, if the user approve the connect request, site permission
-  // will be saved and future connect from the same site will not ask user for
-  // permission again until the permission is removed.
-  // Each RenderFrameHost has its own connection set.
-  base::flat_map<content::GlobalRenderFrameHostId, base::flat_set<std::string>>
-      solana_connected_accounts_;
 
 #if !BUILDFLAG(IS_ANDROID)
   void ShowBubbleImpl(GURL url);

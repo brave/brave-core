@@ -5,11 +5,4 @@
 
 #include "brave/components/brave_wallet/browser/brave_wallet_provider_delegate.h"
 
-namespace brave_wallet {
-
-bool BraveWalletProviderDelegate::IsSolanaAccountConnected(
-    const std::string& account) {
-  return false;
-}
-
-}  // namespace brave_wallet
+namespace brave_wallet {}  // namespace brave_wallet

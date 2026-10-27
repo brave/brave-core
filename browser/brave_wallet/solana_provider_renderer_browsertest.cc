@@ -339,17 +339,6 @@ class TestSolanaProvider final : public brave_wallet::mojom::SolanaProvider {
       events_listener_->AccountChangedEvent(kTestPublicKey);
     }
   }
-  void IsConnected(IsConnectedCallback callback) override {
-    if (error_ == SolanaProviderError::kSuccess) {
-      std::move(callback).Run(true);
-    } else {
-      std::move(callback).Run(false);
-      ClearError();
-    }
-  }
-  void GetPublicKey(GetPublicKeyCallback callback) override {
-    std::move(callback).Run(kTestPublicKey);
-  }
   void SignTransaction(brave_wallet::mojom::SolanaSignTransactionParamPtr param,
                        SignTransactionCallback callback) override {
     EXPECT_EQ(param->encoded_serialized_msg,

@@ -56,8 +56,6 @@ class SolanaProviderImpl final : public mojom::SolanaProvider,
   void Connect(std::optional<base::DictValue> arg,
                ConnectCallback callback) override;
   void Disconnect() override;
-  void IsConnected(IsConnectedCallback callback) override;
-  void GetPublicKey(GetPublicKeyCallback callback) override;
   void SignTransaction(mojom::SolanaSignTransactionParamPtr param,
                        SignTransactionCallback callback) override;
   void SignAllTransactions(
@@ -72,11 +70,14 @@ class SolanaProviderImpl final : public mojom::SolanaProvider,
   void Request(base::DictValue arg, RequestCallback callback) override;
 
  private:
+  friend class SolanaProviderImplUnitTest;
   FRIEND_TEST_ALL_PREFIXES(SolanaProviderImplUnitTest, GetDeserializedMessage);
   FRIEND_TEST_ALL_PREFIXES(SolanaProviderImplUnitTest,
                            ConnectWithNoSolanaAccount);
 
-  bool IsAccountConnected(const mojom::AccountInfo& account);
+  void SetConnectedAccount(mojom::AccountInfoPtr account);
+  mojom::AccountInfoPtr GetAndVerifyConnectedAccount();
+
   void OnConnect(
       const std::vector<mojom::AccountInfoPtr>& requested_accounts,
       ConnectCallback callback,
@@ -161,6 +162,8 @@ class SolanaProviderImpl final : public mojom::SolanaProvider,
   void OnContentSettingChanged(const ContentSettingsPattern& primary_pattern,
                                const ContentSettingsPattern& secondary_pattern,
                                ContentSettingsType content_type) override;
+
+  mojom::AccountInfoPtr connected_account_;
 
   base::flat_map<std::string, SignAndSendTransactionCallback>
       sign_and_send_tx_callbacks_;

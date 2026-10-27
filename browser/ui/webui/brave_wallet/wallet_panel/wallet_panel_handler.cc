@@ -84,25 +84,6 @@ void WalletPanelHandler::Focus() {
   webui_controller_->web_ui()->GetWebContents()->Focus();
 }
 
-void WalletPanelHandler::IsSolanaAccountConnected(
-    const std::string& account,
-    IsSolanaAccountConnectedCallback callback) {
-  // Report the connection state of the frame the panel names, not of whichever
-  // frame happens to hold focus. See WalletPanelHandler::RequestPermission for
-  // the rationale.
-  content::RenderFrameHost* rfh = active_web_contents_->GetPrimaryMainFrame();
-
-  auto* tab_helper =
-      brave_wallet::BraveWalletTabHelper::FromWebContents(active_web_contents_);
-  if (!tab_helper) {
-    std::move(callback).Run(false);
-    return;
-  }
-
-  std::move(callback).Run(
-      tab_helper->IsSolanaAccountConnected(rfh->GetGlobalId(), account));
-}
-
 void WalletPanelHandler::RequestPermission(
     brave_wallet::mojom::AccountIdPtr account_id,
     RequestPermissionCallback callback) {

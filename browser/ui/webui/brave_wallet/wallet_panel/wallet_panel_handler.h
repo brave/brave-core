@@ -36,9 +36,6 @@ class WalletPanelHandler : public brave_wallet::mojom::PanelHandler {
       brave_wallet::mojom::PermissionLifetimeOption option) override;
   void CancelConnectToSite() override;
   void Focus() override;
-  void IsSolanaAccountConnected(
-      const std::string& account,
-      IsSolanaAccountConnectedCallback callback) override;
   void RequestPermission(brave_wallet::mojom::AccountIdPtr account_id,
                          RequestPermissionCallback callback) override;
 

@@ -38,8 +38,6 @@
 namespace {
 
 constexpr char kTestEthAccount[] = "0xaf5Ad1E10926C0Ee4af4eDAC61DD60E853753f8A";
-constexpr char kTestSolAccount[] =
-    "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8";
 
 bool HasEthereumPermission(content::BrowserContext* context,
                            const url::Origin& origin,
@@ -120,9 +118,8 @@ class WalletPanelHandlerBrowserTest : public InProcessBrowserTest {
         ->origin_spec;
   }
 
-  // RequestPermission, ConnectToSite and IsSolanaAccountConnected never touch
-  // the WebUI controller, so the panel does not need to be instantiated to
-  // drive them.
+  // RequestPermission and ConnectToSite never touch the WebUI controller, so
+  // the panel does not need to be instantiated to drive them.
   std::unique_ptr<WalletPanelHandler> CreateHandler() {
     return std::make_unique<WalletPanelHandler>(
         handler_remote_.BindNewPipeAndPassReceiver(),
@@ -173,37 +170,4 @@ IN_PROC_BROWSER_TEST_F(
   EXPECT_FALSE(HasEthereumPermission(context, focused_origin, kTestEthAccount))
       << "granted to focused subframe " << focused_origin
       << ", an origin the panel never named";
-}
-
-// The connected indicator must describe the origin the panel displays, not
-// whichever frame holds the focus.
-IN_PROC_BROWSER_TEST_F(WalletPanelHandlerBrowserTest,
-                       IsSolanaAccountConnected_ReportsMainFrameNotSubframe) {
-  ASSERT_NO_FATAL_FAILURE(LoadPageAndFocusSubframe());
-  ASSERT_EQ(url::Origin::Create(main_frame_url_).Serialize(),
-            GetDisplayedOriginSpec());
-
-  auto* tab_helper =
-      brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents());
-  ASSERT_TRUE(tab_helper);
-  auto handler = CreateHandler();
-
-  auto is_connected = [&] {
-    base::test::TestFuture<bool> future;
-    handler->IsSolanaAccountConnected(kTestSolAccount, future.GetCallback());
-    return future.Get();
-  };
-
-  EXPECT_FALSE(is_connected());
-
-  // A connection held by the focused subframe is not a connection of the top
-  // level site the panel names.
-  tab_helper->AddSolanaConnectedAccount(subframe()->GetGlobalId(),
-                                        kTestSolAccount);
-  EXPECT_FALSE(is_connected());
-
-  // A main frame connection is still reported.
-  tab_helper->AddSolanaConnectedAccount(main_frame()->GetGlobalId(),
-                                        kTestSolAccount);
-  EXPECT_TRUE(is_connected());
 }
