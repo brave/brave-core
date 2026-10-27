@@ -88,7 +88,9 @@ function AdBlockControl(props: { showDetails: () => void }) {
         }}
       >
         <span slot='value'>
-          {getString(getAdBlockModeLabel(adBlockMode))}
+          <span className='label'>
+            {getString(getAdBlockModeLabel(adBlockMode))}
+          </span>
           <Counter count={adsBlocked} />
         </span>
         <leo-option value={String(AdBlockMode.AGGRESSIVE)}>
