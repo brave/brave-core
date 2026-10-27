@@ -64,7 +64,6 @@ static_library("browser") {
     "blockchain_registry.h",
     "brave_wallet_ipfs_service.cc",
     "brave_wallet_ipfs_service.h",
-    "brave_wallet_provider_delegate.cc",
     "brave_wallet_provider_delegate.h",
     "brave_wallet_service.cc",
     "brave_wallet_service.h",

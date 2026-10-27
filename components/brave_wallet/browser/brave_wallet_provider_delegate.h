@@ -46,9 +46,6 @@ class BraveWalletProviderDelegate {
       mojom::CoinType type,
       const std::vector<std::string>& accounts) = 0;
   virtual bool IsPermissionDenied(mojom::CoinType type) = 0;
-  virtual void AddSolanaConnectedAccount(const std::string& account) {}
-  virtual void RemoveSolanaConnectedAccount(const std::string& account) {}
-  virtual bool IsSolanaAccountConnected(const std::string& account);
 };
 
 }  // namespace brave_wallet
