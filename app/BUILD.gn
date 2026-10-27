@@ -158,7 +158,7 @@ source_set("unit_tests") {
     "//chrome/browser/ui/omnibox",
     "//components/attribution_reporting:features",
     "//components/autofill/core/common",
-    "//components/browser_actuator/internal:features",
+    "//components/browser_actuator/internal/transport:features",
     "//components/browser_actuator/public:feature_list",
     "//components/browsing_data/core",
     "//components/commerce/core:feature_list",

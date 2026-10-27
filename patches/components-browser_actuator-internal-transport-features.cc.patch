@@ -1,0 +1,15 @@
+diff --git a/components/browser_actuator/internal/transport/features.cc b/components/browser_actuator/internal/transport/features.cc
+index 29371e609e2d233ad576d85b4f4cc9023363e17a..7712ace86b87fa19db796517fdcc1947d889e1e2 100644
+--- a/components/browser_actuator/internal/transport/features.cc
++++ b/components/browser_actuator/internal/transport/features.cc
+@@ -8,8 +8,8 @@ namespace browser_actuator::transport {
+ 
+ BASE_FEATURE(kBrowserActuatorChannelEnabled, base::FEATURE_ENABLED_BY_DEFAULT);
+ 
+-BASE_FEATURE(kBrowserActuatorProtoStreamTransport,
+-             base::FEATURE_ENABLED_BY_DEFAULT);
++BASE_OVERRIDDEN_FEATURE(kBrowserActuatorProtoStreamTransport,
++             base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ BASE_FEATURE_PARAM(base::TimeDelta,
+                    kProtoStreamBaseReconnectionTime,
