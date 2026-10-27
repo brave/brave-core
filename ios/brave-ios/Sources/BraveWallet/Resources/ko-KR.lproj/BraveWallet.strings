@@ -637,14 +637,8 @@
 /* The title of the button for users to click so that they disconnect wallet account to the dapp site(also permission removed). It will be displayed at the right hand side of each account option in edit site connection screen. */
 "wallet.editSiteConnectionAccountActionDisconnect" = "연결 해제";
 
-/* The title of the button for users to click so that they remove wallet account permission from the Solana Dapp. It will be displayed at the right hand side of each account option in edit site connection screen */
-"wallet.editSiteConnectionAccountActionRevoke" = "취소";
-
 /* The title of the button for users to click so that they disconnect wallet account to the dapp site(also permission removed). It will be displayed at the right hand side of each account option in edit site connection screen. */
 "wallet.editSiteConnectionAccountActionSwitch" = "스위치";
-
-/* The title of the button for users to click so that they grant wallet account permission for the Solana Dapp. It will be displayed at the right hand side of each account option in edit site connection screen. */
-"wallet.editSiteConnectionAccountActionTrust" = "신뢰함";
 
 /* The plural word that will beused in `editSiteConnectionConnectedAccount`. */
 "wallet.editSiteConnectionAccountPlural" = "계정";

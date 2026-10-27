@@ -24,20 +24,16 @@ struct EditSiteConnectionView: View {
   @State private var permittedAccounts: [String] = []
 
   enum EditAction {
-    case connect(_ coin: BraveWallet.CoinType)
-    case disconnect(_ coin: BraveWallet.CoinType)
+    case connect
+    case disconnect
     case `switch`
 
     var title: String {
       switch self {
-      case .connect(let coin):
-        return coin == .eth
-          ? Strings.Wallet.editSiteConnectionAccountActionConnect
-          : Strings.Wallet.editSiteConnectionAccountActionTrust
-      case .disconnect(let coin):
-        return coin == .eth
-          ? Strings.Wallet.editSiteConnectionAccountActionDisconnect
-          : Strings.Wallet.editSiteConnectionAccountActionRevoke
+      case .connect:
+        return Strings.Wallet.editSiteConnectionAccountActionConnect
+      case .disconnect:
+        return Strings.Wallet.editSiteConnectionAccountActionDisconnect
       case .switch:
         return Strings.Wallet.editSiteConnectionAccountActionSwitch
       }
@@ -46,22 +42,19 @@ struct EditSiteConnectionView: View {
 
   private func editAction(for account: BraveWallet.AccountInfo) -> EditAction {
     guard let accountDAppPermissionId = account.dAppPermissionId else {
-      return .connect(coin)
+      return .connect
     }
     if permittedAccounts.contains(accountDAppPermissionId) {
       if keyringStore.selectedAccount.id == account.id {
         // Disconnect - Connected and selected account
-        return .disconnect(coin)
+        return .disconnect
       } else {
-        if coin == .sol || coin == .ada {
-          return .disconnect(coin)
-        }
-        // Switch - Connected but not selected account (only for ethereum)
+        // Switch - Connected but not selected account
         return .`switch`
       }
     } else {
       // Connect - Not connected
-      return .connect(coin)
+      return .connect
     }
   }
 
@@ -94,9 +87,7 @@ struct EditSiteConnectionView: View {
           permittedAccounts.append(accountDAppPermissionId)
         }
 
-        if coin == .eth {  // only for eth dapp connection can be triggered on the wallet side
-          keyringStore.selectedAccount = account
-        }
+        keyringStore.selectedAccount = account
       case .disconnect:
         if let url = origin.url,
           let accountDAppPermissionId = account.dAppPermissionId
@@ -110,18 +101,13 @@ struct EditSiteConnectionView: View {
           permittedAccounts.removeAll(where: { $0 == accountDAppPermissionId })
         }
 
-        if coin == .eth {  // only for eth dapp connection can be triggered on the wallet side
-          if let firstAllowedAdd = permittedAccounts.first,
-            let firstAllowedAccount = accountInfos.first(where: { $0.id == firstAllowedAdd })
-          {
-            keyringStore.selectedAccount = firstAllowedAccount
-          }
+        if let firstAllowedAdd = permittedAccounts.first,
+          let firstAllowedAccount = accountInfos.first(where: { $0.id == firstAllowedAdd })
+        {
+          keyringStore.selectedAccount = firstAllowedAccount
         }
       case .switch:
-        // So far switch should only be an action for eth accounts
-        if coin == .eth {  // only for eth dapp connection can be triggered on the wallet side
-          keyringStore.selectedAccount = account
-        }
+        keyringStore.selectedAccount = account
       }
     } label: {
       Text(action.title)

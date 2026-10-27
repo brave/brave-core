@@ -414,8 +414,6 @@ android_resources("java_resources") {
     "java/brave-res/drawable/rewards_verified_tick_icon.xml",
     "java/brave-res/drawable/rounded_bookmark_import_export_dialog_bg.xml",
     "java/brave-res/drawable/rounded_dark_bg_alpha.xml",
-    "java/brave-res/drawable/rounded_dot_error_status.xml",
-    "java/brave-res/drawable/rounded_dot_success_status.xml",
     "java/brave-res/drawable/rounded_filled.xml",
     "java/brave-res/drawable/rounded_holo_button.xml",
     "java/brave-res/drawable/rounded_set_default_top_corners.xml",

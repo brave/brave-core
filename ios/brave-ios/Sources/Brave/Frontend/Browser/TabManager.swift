@@ -1815,16 +1815,14 @@ extension TabManager: NSFetchedResultsControllerDelegate {
           // iOS does not have `HostContentSettingsMap`, so we must
           // implement `SolanaProviderImpl::OnContentSettingChanged`
           if let selectedSolAccount = allAccounts.solDappSelectedAccount,
-            // currently connected
-            tab.wallet?.isSolanaAccountConnected(selectedSolAccount.address) == true,
             tab.wallet?.isAccountAllowed(.sol, account: selectedSolAccount.address) == false
           {  // user revoked access
             tab.wallet?.walletSolProvider?.disconnect()
           }
 
-          let ethAccountAddressess = allAccounts.accounts.filter { $0.coin == .eth }.map(\.address)
+          let ethAccountAddresses = allAccounts.accounts.filter { $0.coin == .eth }.map(\.address)
           let allowedEthAccountAddresses =
-            tab.wallet?.getAllowedAccounts(.eth, accounts: ethAccountAddressess) ?? []
+            tab.wallet?.getAllowedAccounts(.eth, accounts: ethAccountAddresses) ?? []
           tab.wallet?.accountsChangedEvent(accounts: Array(allowedEthAccountAddresses))
         }
       }

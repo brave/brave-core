@@ -7,9 +7,7 @@ package org.chromium.chrome.browser.crypto_wallet;
 
 import org.jni_zero.CalledByNative;
 import org.jni_zero.JNINamespace;
-import org.jni_zero.NativeMethods;
 
-import org.chromium.base.Callback;
 import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.chrome.browser.app.BraveActivity;
@@ -85,20 +83,5 @@ public class BraveWalletProviderDelegateImplHelper {
         } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "showAccountCreation " + e);
         }
-    }
-
-    public static void isSolanaConnected(
-            WebContents webContents, String account, Callback1<Boolean> callback) {
-        Callback<Boolean> callbackWrapper =
-                result -> {
-                    callback.call(result);
-                };
-        BraveWalletProviderDelegateImplHelperJni.get()
-                .isSolanaConnected(webContents, account, callbackWrapper);
-    }
-
-    @NativeMethods
-    interface Natives {
-        void isSolanaConnected(WebContents webContents, String account, Callback<Boolean> callback);
     }
 }

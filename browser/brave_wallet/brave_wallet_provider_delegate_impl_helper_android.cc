@@ -5,17 +5,10 @@
 
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl_helper.h"
 
-#include "base/android/callback_android.h"
 #include "base/android/jni_android.h"
-#include "base/android/jni_string.h"
-#include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "chrome/android/chrome_jni_headers/BraveWalletProviderDelegateImplHelper_jni.h"
-#include "components/tabs/public/tab_interface.h"
-#include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
-
-using base::android::JavaRef;
 
 namespace brave_wallet {
 
@@ -54,35 +47,6 @@ bool IsWeb3NotificationAllowed() {
 
   return Java_BraveWalletProviderDelegateImplHelper_isWeb3NotificationAllowed(
       env);
-}
-
-static void JNI_BraveWalletProviderDelegateImplHelper_IsSolanaConnected(
-    JNIEnv* env,
-    const JavaRef<jobject>& jweb_contents,
-    const base::android::JavaRef<jstring>& jaccount,
-    const JavaRef<jobject>& jcallback) {
-  content::RenderFrameHost* rfh = nullptr;
-  content::WebContents* web_contents =
-      content::WebContents::FromJavaWebContents(jweb_contents);
-  base::android::ScopedJavaGlobalRef<jobject> callback =
-      base::android::ScopedJavaGlobalRef<jobject>(jcallback);
-  const std::string account =
-      base::android::ConvertJavaStringToUTF8(env, jaccount);
-  if (!(rfh = web_contents->GetPrimaryMainFrame())) {
-    base::android::RunBooleanCallbackAndroid(callback, false);
-    return;
-  }
-
-  auto* tab_helper = brave_wallet::BraveWalletTabHelper::From(
-      tabs::TabInterface::MaybeGetFromContents(web_contents));
-  if (!tab_helper) {
-    base::android::RunBooleanCallbackAndroid(callback, false);
-    return;
-  }
-
-  base::android::RunBooleanCallbackAndroid(
-      callback,
-      tab_helper->IsSolanaAccountConnected(rfh->GetGlobalId(), account));
 }
 
 }  // namespace brave_wallet
