@@ -40,6 +40,7 @@ bool IsAccountHidingEnabled();
 bool IsWalletDebugEnabled();
 bool IsMojoForLedgerEnabled();
 bool IsSnapFeatureEnabled();
+bool IsCardStackUiEnabled();
 
 bool IsEthereumKeyring(mojom::KeyringId keyring_id);
 bool IsEthereumAccount(const mojom::AccountIdPtr& account_id);
