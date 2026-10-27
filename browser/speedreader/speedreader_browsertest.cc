@@ -67,6 +67,10 @@
 #include "net/test/embedded_test_server/http_response.h"
 #include "services/network/public/cpp/network_switches.h"
 #include "ui/events/base_event_utils.h"
+#include "ui/events/event.h"
+#include "ui/events/event_constants.h"
+#include "ui/events/keycodes/keyboard_codes.h"
+#include "ui/views/view.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/components/ai_chat/core/common/features.h"
@@ -931,6 +935,23 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, Toolbar) {
     ASSERT_TRUE(WaitOriginal());
     EXPECT_FALSE(toolbar_view->GetVisible());
   }
+}
+
+IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ToolbarProcessesAccelerators) {
+  EnableSpeedreaderAllowedForAllSites();
+  NavigateToPageSynchronously(kTestPageReadable);
+  ASSERT_TRUE(WaitDistilled());
+
+  auto* toolbar_view = BraveBrowserView::GetBrowserViewForBrowser(browser())
+                           ->reader_mode_toolbar();
+  ASSERT_TRUE(WaitToolbarVisibility(toolbar_view, true));
+  ASSERT_TRUE(toolbar_view->GetWebContentsForTesting());
+
+  // Browser accelerators reach the focus manager before the toolbar's renderer.
+  views::View* toolbar = toolbar_view->toolbar();
+  ui::KeyEvent new_tab(ui::EventType::kKeyPressed, ui::VKEY_T,
+                       ui::EF_PLATFORM_ACCELERATOR);
+  EXPECT_FALSE(toolbar->SkipDefaultKeyEventProcessing(new_tab));
 }
 
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ToolbarLangs) {
