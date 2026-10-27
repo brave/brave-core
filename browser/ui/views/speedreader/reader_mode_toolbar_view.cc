@@ -37,7 +37,7 @@ class Toolbar : public views::WebView {
   Toolbar(ReaderModeToolbarView* owner,
           content::BrowserContext* browser_context)
       : views::WebView(browser_context), owner_(owner) {
-    set_allow_accelerators(true);
+    set_allow_accelerators_deprecated(true);
   }
 
  private:
