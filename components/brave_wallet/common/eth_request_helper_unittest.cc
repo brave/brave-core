@@ -1191,4 +1191,91 @@ TEST(EthResponseHelperUnitTest, ParseEthSendRawTransaction) {
       ParseParamsList(R"({"params": [123]})")));
 }
 
+TEST(EthRequestHelperUnitTest, ParseCowSwapOrderRequiresSettlementDomain) {
+  auto params_for_domain = [](const std::string& domain_json) {
+    return base::test::ParseJsonList(absl::StrFormat(
+        R"([
+      "0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826",
+      {
+        "types": {
+          "EIP712Domain": [
+            {"name": "name", "type": "string"},
+            {"name": "version", "type": "string"},
+            {"name": "chainId", "type": "uint256"},
+            {"name": "verifyingContract", "type": "address"}
+          ],
+          "Order": [
+            {"name": "sellToken", "type": "address"},
+            {"name": "buyToken", "type": "address"},
+            {"name": "receiver", "type": "address"},
+            {"name": "sellAmount", "type": "uint256"},
+            {"name": "buyAmount", "type": "uint256"},
+            {"name": "validTo", "type": "uint32"},
+            {"name": "appData", "type": "bytes32"},
+            {"name": "feeAmount", "type": "uint256"},
+            {"name": "kind", "type": "string"},
+            {"name": "partiallyFillable", "type": "bool"},
+            {"name": "sellTokenBalance", "type": "string"},
+            {"name": "buyTokenBalance", "type": "string"}
+          ]
+        },
+        "primaryType": "Order",
+        "domain": %s,
+        "message": {
+          "sellToken": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+          "buyToken": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+          "receiver": "0x000000000000000000000000000000000000dEaD",
+          "sellAmount": "100000000",
+          "buyAmount": "10000000000000000",
+          "validTo": "1798761600",
+          "appData": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "feeAmount": "0",
+          "kind": "sell",
+          "partiallyFillable": false,
+          "sellTokenBalance": "erc20",
+          "buyTokenBalance": "erc20"
+        }
+      }
+    ])",
+        domain_json));
+  };
+
+  auto typed_data =
+      ParseEthSignTypedDataParams(params_for_domain(R"({
+        "name": "Gnosis Protocol",
+        "version": "v2",
+        "chainId": 1,
+        "verifyingContract": "0x9008d19f58aabd9ed0d60971565aa8510560ab41"
+      })"),
+                                  EthSignTypedDataHelper::Version::kV4);
+  ASSERT_TRUE(typed_data);
+  ASSERT_TRUE(typed_data->meta);
+  ASSERT_TRUE(typed_data->meta->is_cow_swap_order());
+  EXPECT_EQ(typed_data->meta->get_cow_swap_order()->sell_amount, "100000000");
+
+  // Same Order type, different settlement contract.
+  typed_data =
+      ParseEthSignTypedDataParams(params_for_domain(R"({
+        "name": "Gnosis Protocol",
+        "version": "v2",
+        "chainId": 1,
+        "verifyingContract": "0x0000000000000000000000000000000000000001"
+      })"),
+                                  EthSignTypedDataHelper::Version::kV4);
+  ASSERT_TRUE(typed_data);
+  EXPECT_FALSE(typed_data->meta);
+
+  // Same settlement contract, different domain name.
+  typed_data =
+      ParseEthSignTypedDataParams(params_for_domain(R"({
+        "name": "Not CoW",
+        "version": "v2",
+        "chainId": 1,
+        "verifyingContract": "0x9008D19f58AAbD9eD0D60971565AA8510560ab41"
+      })"),
+                                  EthSignTypedDataHelper::Version::kV4);
+  ASSERT_TRUE(typed_data);
+  EXPECT_FALSE(typed_data->meta);
+}
+
 }  // namespace brave_wallet

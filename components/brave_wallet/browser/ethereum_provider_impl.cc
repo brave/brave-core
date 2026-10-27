@@ -1599,8 +1599,15 @@ void EthereumProviderImpl::AddSuggestToken(mojom::BlockchainTokenPtr token,
 
   auto request = mojom::AddSuggestTokenRequest::New(MakeOriginInfo(origin_),
                                                     std::move(token));
+  // The panel reads pending suggestions once, when it opens. Wait until the
+  // request is queued, including the contract lookup for an unknown token.
   brave_wallet_service_->AddSuggestTokenRequest(
-      std::move(request), std::move(callback), std::move(id));
+      std::move(request), std::move(callback), std::move(id),
+      base::BindOnce(&EthereumProviderImpl::OnSuggestTokenAdded,
+                     weak_factory_.GetWeakPtr()));
+}
+
+void EthereumProviderImpl::OnSuggestTokenAdded() {
   delegate_->ShowPanel(origin_);
 }
 

@@ -114,9 +114,9 @@ class EthereumProviderImpl final : public mojom::EthereumProvider,
   // Used for wallet_watchAsset.
   // It will prompt an UI for user to confirm, and add the token into user's
   // visible asset list if user approves.
-  // Note that we will use the token data from BlockchainRegistry (for
-  // mainnet) or from user asset list if there is an existing token with the
-  // same contract address, instead of the token data in the request.
+  // An existing user or registry token on the same chain replaces the request.
+  // An unknown contract is not shown until its decimals and symbol are read
+  // from that chain.
   void AddSuggestToken(mojom::BlockchainTokenPtr token,
                        RequestCallback callback,
                        base::Value id);
@@ -316,6 +316,7 @@ class EthereumProviderImpl final : public mojom::EthereumProvider,
   void OnGetBlockByNumber(base::Value result,
                           mojom::ProviderError,
                           const std::string&);
+  void OnSuggestTokenAdded();
 
   void OnResponse(bool format_json_rpc_response,
                   RequestCallback callback,

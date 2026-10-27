@@ -183,6 +183,29 @@ export const findTokenByContractAddress = <
   )
 }
 
+// Address-only matching can bind a watched asset from another chain, which
+// carries that chain's decimals and network into a signature preview.
+export const findTokenByChainAndContractAddress = <
+  T extends Pick<
+    BraveWallet.BlockchainToken,
+    'contractAddress' | 'chainId' | 'coin'
+  >,
+>(
+  contractAddress: string,
+  chainId: string,
+  coin: BraveWallet.CoinType,
+  tokensList: T[],
+): T | undefined => {
+  const normalizedAddress = contractAddress.toLowerCase()
+  const normalizedChainId = chainId.toLowerCase()
+  return tokensList.find(
+    (token) =>
+      token.coin === coin
+      && token.chainId.toLowerCase() === normalizedChainId
+      && token.contractAddress.toLowerCase() === normalizedAddress,
+  )
+}
+
 export const findTokenBySymbol = (
   tokenSymbol: string,
   tokensList: BraveWallet.BlockchainToken[],
