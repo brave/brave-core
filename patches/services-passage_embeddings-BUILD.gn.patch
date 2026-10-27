@@ -1,0 +1,12 @@
+diff --git a/services/passage_embeddings/BUILD.gn b/services/passage_embeddings/BUILD.gn
+index bef9d3d17b844924caca58911961f2150dde52b6..c59af0f81b515507ad5c1dcd364ed56cf4a903fe 100644
+--- a/services/passage_embeddings/BUILD.gn
++++ b/services/passage_embeddings/BUILD.gn
+@@ -53,6 +53,7 @@ source_set("tests") {
+   deps = [
+     ":passage_embeddings",
+     "//base/test:test_support",
++    "//brave/services/passage_embeddings:chromium_impl",
+     "//testing/gtest",
+   ]
+ }
