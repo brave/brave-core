@@ -7,7 +7,8 @@ redirect, or modify network requests or responses.
 
 ## Choose the Narrowest Supported Integration
 
-**Do not add new `*_network_delegate_helper` callbacks or extend
+**Do not add new `*_network_delegate_helper` callbacks or add functionality to
+existing network-delegate helpers. Do not extend
 `BraveProxyingURLLoaderFactory`, `BraveProxyingWebSocket`, or their shared
 dispatcher for new features.** Do not replace them with another general-purpose
 interception framework. Reuse upstream behavior first, then choose an
@@ -22,6 +23,9 @@ integration that supports the feature's required stage and request types.
 | Requests constructed by a browser-owned service                 | Apply the behavior at request construction when that covers the feature.                                                       |
 | Secrets, signing, or network-stack state                        | A narrowly scoped browser/network-service integration at the stage that owns the operation.                                    |
 | WebSocket connection policy                                     | A browser-side connection decision before invoking the network factory; ordinary URL-loader throttles do not cover WebSockets. |
+
+For examples of choosing replacements for existing helpers, see
+[brave-browser#57532](https://github.com/brave/brave-browser/issues/57532).
 
 Choose based on the traffic the feature must cover. A navigation-only
 integration is insufficient for subresources or worker fetches. Keepalive,
