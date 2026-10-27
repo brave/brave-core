@@ -1,0 +1,15 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Mark JavaScript dialog `pageURL` as nullable
+
+      Dialogs from opaque origins (sandboxed iframes, `data:` URLs) have no
+      URL, which crashes Swift delegates when bridging nil to `URL`.
+    count: 3
+    regex:
+      pattern: 'pageURL:(NSURL*)URL'
+      replace: 'pageURL:(nullable NSURL*)URL'

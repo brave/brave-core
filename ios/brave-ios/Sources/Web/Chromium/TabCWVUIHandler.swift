@@ -109,10 +109,10 @@ class TabCWVUIHandler: NSObject, BraveWebViewUIDelegate {
   func webView(
     _ webView: CWVWebView,
     runJavaScriptAlertPanelWithMessage message: String,
-    pageURL url: URL,
+    pageURL url: URL?,
     completionHandler: @escaping () -> Void
   ) {
-    guard let tab else {
+    guard let tab, let url = url ?? webView.lastCommittedURL else {
       completionHandler()
       return
     }
@@ -125,10 +125,11 @@ class TabCWVUIHandler: NSObject, BraveWebViewUIDelegate {
   func webView(
     _ webView: CWVWebView,
     runJavaScriptConfirmPanelWithMessage message: String,
-    pageURL url: URL,
+    pageURL url: URL?,
     completionHandler: @escaping (Bool) -> Void
   ) {
-    guard let tab, let delegate = tab.delegate else {
+    guard let tab, let delegate = tab.delegate, let url = url ?? webView.lastCommittedURL
+    else {
       completionHandler(false)
       return
     }
@@ -146,10 +147,11 @@ class TabCWVUIHandler: NSObject, BraveWebViewUIDelegate {
     _ webView: CWVWebView,
     runJavaScriptTextInputPanelWithPrompt prompt: String,
     defaultText: String,
-    pageURL url: URL,
+    pageURL url: URL?,
     completionHandler: @escaping (String?) -> Void
   ) {
-    guard let tab, let delegate = tab.delegate else {
+    guard let tab, let delegate = tab.delegate, let url = url ?? webView.lastCommittedURL
+    else {
       completionHandler(nil)
       return
     }

@@ -1,0 +1,30 @@
+diff --git a/ios/web_view/public/cwv_ui_delegate.h b/ios/web_view/public/cwv_ui_delegate.h
+index 32d2c76a61fece47894fcca9b8bb4ef6e617e037..87f4a461184818bdeeda0b1b14ff8946e9f932d6 100644
+--- a/ios/web_view/public/cwv_ui_delegate.h
++++ b/ios/web_view/public/cwv_ui_delegate.h
+@@ -62,14 +62,14 @@ CWV_EXPORT
+ // call.
+ - (void)webView:(CWVWebView*)webView
+     runJavaScriptAlertPanelWithMessage:(NSString*)message
+-                               pageURL:(NSURL*)URL
++                               pageURL:(nullable NSURL*)URL
+                      completionHandler:(void (^)(void))completionHandler;
+ 
+ // Instructs the delegate to show UI in response to window.confirm JavaScript
+ // call.
+ - (void)webView:(CWVWebView*)webView
+     runJavaScriptConfirmPanelWithMessage:(NSString*)message
+-                                 pageURL:(NSURL*)URL
++                                 pageURL:(nullable NSURL*)URL
+                        completionHandler:(void (^)(BOOL))completionHandler;
+ 
+ // Instructs the delegate to show UI in response to window.prompt JavaScript
+@@ -77,7 +77,7 @@ CWV_EXPORT
+ - (void)webView:(CWVWebView*)webView
+     runJavaScriptTextInputPanelWithPrompt:(NSString*)prompt
+                               defaultText:(NSString*)defaultText
+-                                  pageURL:(NSURL*)URL
++                                  pageURL:(nullable NSURL*)URL
+                         completionHandler:
+                             (void (^)(NSString* _Nullable))completionHandler;
+ 
