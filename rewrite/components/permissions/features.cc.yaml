@@ -18,8 +18,3 @@ substitutions:
     set_feature_flag_default_state:
       feature_name: kPermissionsPromptSurvey
       value: base::FEATURE_DISABLED_BY_DEFAULT
-
-  - description: 'Ship kShowRelatedWebsiteSetsPermissionGrants disabled.'
-    set_feature_flag_default_state:
-      feature_name: kShowRelatedWebsiteSetsPermissionGrants
-      value: base::FEATURE_DISABLED_BY_DEFAULT

@@ -291,7 +291,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &permissions::features::kCpssUseTfliteSignatureRunner,
       &permissions::features::kPermissionsPromptSurvey,
       &permissions::features::kPermissionPredictionsV2,
-      &permissions::features::kShowRelatedWebsiteSetsPermissionGrants,
       &personal_context::features::kPersonalContext,
       &privacy_sandbox::kEnforcePrivacySandboxAttestations,
 #if !BUILDFLAG(IS_ANDROID)
