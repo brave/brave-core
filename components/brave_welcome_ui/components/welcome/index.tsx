@@ -8,6 +8,7 @@ import * as S from './style'
 
 import classnames from '$web-common/classnames'
 import { getLocale } from '$web-common/locale'
+import { loadTimeData } from '$web-common/loadTimeData'
 import Button from '@brave/leo/react/button'
 
 import { WelcomeBrowserProxyImpl, DefaultBrowserBrowserProxyImpl, P3APhase } from '../../api/welcome_browser_proxy'
@@ -31,6 +32,9 @@ function Welcome () {
   logoShadowFilter =
     'drop-shadow(7px 2px 5px rgba(0, 0, 0, 0.2)) drop-shadow(14px 3px 10px rgba(0, 0, 0, 0.3)) drop-shadow(20px 3px 15px rgba(0, 0, 0, 0.2)) drop-shadow(25px 5px 30px rgba(0, 0, 0, 0.1)) drop-shadow(50px 4px 50px rgba(0, 0, 0, 0.1))'
   // </if>
+
+  const isDefaultBrowserDisabledByPolicy =
+    loadTimeData.getBoolean('isDefaultBrowserDisabledByPolicy')
 
   const goForward = () => setViewType(forward)
 
@@ -90,20 +94,32 @@ function Welcome () {
           </div>
         </div>
         <S.ActionBox>
-          <Button
-            kind="filled"
-            onClick={handleSetAsDefaultBrowser}
-            size="large"
-          >
-            {getLocale('braveWelcomeSetDefaultButtonLabel')}
-          </Button>
-          <Button
-            kind="plain-faint"
-            onClick={handleSkip}
-            size="large"
-          >
-            {getLocale('braveWelcomeSkipButtonLabel')}
-          </Button>
+          {isDefaultBrowserDisabledByPolicy ? (
+            <Button
+              kind="filled"
+              onClick={handleSkip}
+              size="large"
+            >
+              {getLocale('braveWelcomeNextButtonLabel')}
+            </Button>
+          ) : (
+            <>
+              <Button
+                kind="filled"
+                onClick={handleSetAsDefaultBrowser}
+                size="large"
+              >
+                {getLocale('braveWelcomeSetDefaultButtonLabel')}
+              </Button>
+              <Button
+                kind="plain-faint"
+                onClick={handleSkip}
+                size="large"
+              >
+                {getLocale('braveWelcomeSkipButtonLabel')}
+              </Button>
+            </>
+          )}
         </S.ActionBox>
       </div>
       <div className={classnames({ 'view-backdrop': true, 'initial': shouldPlayAnimations })} />
