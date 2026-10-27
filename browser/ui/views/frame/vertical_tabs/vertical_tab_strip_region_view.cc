@@ -147,13 +147,13 @@ class VerticalTabNewTabButton : public BraveNewTabButton {
 
     SetNotifyEnterExitOnChild(true);
 
-    constexpr int kNewTabVerticalPadding = 8;
-    constexpr int kNewTabHorizontalPadding = 7;
+    constexpr int kNewTabVerticalPadding = 7;
+    constexpr int kNewTabHorizontalPadding = 8;
     SetLayoutManager(std::make_unique<views::FlexLayout>())
         ->SetOrientation(views::LayoutOrientation::kHorizontal)
         .SetCrossAxisAlignment(views::LayoutAlignment::kStretch)
         .SetInteriorMargin(
-            gfx::Insets::VH(kNewTabHorizontalPadding, kNewTabVerticalPadding));
+            gfx::Insets::VH(kNewTabVerticalPadding, kNewTabHorizontalPadding));
 
     plus_icon_ = AddChildView(std::make_unique<views::ImageView>());
     plus_icon_->SetHorizontalAlignment(views::ImageView::Alignment::kCenter);

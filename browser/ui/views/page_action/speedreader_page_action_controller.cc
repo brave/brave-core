@@ -27,12 +27,6 @@
 
 namespace page_actions {
 
-namespace {
-
-constexpr int kIconSize = 16;
-
-}  // namespace
-
 SpeedreaderPageActionController::SpeedreaderPageActionController(
     tabs::TabInterface& tab,
     page_actions::PageActionController& page_action_controller)
@@ -150,8 +144,7 @@ void SpeedreaderPageActionController::UpdatePageAction(
       contents->GetColorProvider().GetColor(icon_color_id);
   page_action_controller_->OverrideImage(
       kActionShowSpeedreader,
-      ui::ImageModel::FromVectorIcon(kLeoProductSpeedreaderIcon, icon_color,
-                                     kIconSize));
+      ui::ImageModel::FromVectorIcon(kLeoProductSpeedreaderIcon, icon_color));
 }
 
 }  // namespace page_actions
