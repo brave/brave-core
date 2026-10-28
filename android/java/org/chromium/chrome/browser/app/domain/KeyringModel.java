@@ -26,6 +26,7 @@ import org.chromium.brave_wallet.mojom.KeyringId;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.KeyringServiceObserver;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
+import org.chromium.brave_wallet.mojom.RecoverWalletResult;
 import org.chromium.chrome.browser.crypto_wallet.observers.KeyringServiceObserverImpl;
 import org.chromium.chrome.browser.crypto_wallet.util.AssetUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletUtils;
@@ -239,6 +240,42 @@ public class KeyringModel implements KeyringServiceObserver {
                 jsonRpcService,
                 null,
                 callback);
+    }
+
+    /**
+     * Recovers access to an existing locked wallet using its mnemonic and a new password. Unlike
+     * {@link #restoreWallet}, this never recreates the wallet from a different seed and does not
+     * change hidden networks or create accounts.
+     *
+     * <p><b>Note:</b> This method must always be called from the main UI thread.
+     *
+     * @param password New password used to unlock or re-encrypt the existing wallet.
+     * @param recoveryPhrase Recovery phrase of the existing wallet.
+     * @param legacyRestoreEnabled Whether to use the legacy Ethereum seed format.
+     * @param allowImportedAccountRemoval Whether imported accounts may be removed when
+     *     re-encrypting.
+     * @param callback Callback fired with a {@link RecoverWalletResult} once recovery finishes.
+     */
+    @MainThread
+    public void recoverWallet(
+            @NonNull final String password,
+            @NonNull final String recoveryPhrase,
+            final boolean legacyRestoreEnabled,
+            final boolean allowImportedAccountRemoval,
+            @NonNull final Callback1<Integer> callback) {
+        assertOnUiThread();
+        synchronized (mLock) {
+            if (mKeyringService == null) {
+                callback.call(RecoverWalletResult.INTERNAL_ERROR);
+                return;
+            }
+            mKeyringService.recoverWallet(
+                    recoveryPhrase,
+                    password,
+                    legacyRestoreEnabled,
+                    allowImportedAccountRemoval,
+                    callback::call);
+        }
     }
 
     /**

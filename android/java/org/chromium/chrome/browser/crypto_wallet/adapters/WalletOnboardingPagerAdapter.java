@@ -206,20 +206,21 @@ public class WalletOnboardingPagerAdapter extends FragmentStateAdapter {
                 return new UnlockWalletFragment();
             }
             case RESTORE -> {
+                // Unlock-screen recovery must not change networks, and biometrics are saved only
+                // after recovery succeeds: unlock, phrase, password, recover, fingerprint,
+                // confirmation.
                 final boolean overridePreviousWallet = true;
                 if (position == 0) {
                     return new UnlockWalletFragment();
                 } else if (position == 1) {
                     return OnboardingRestoreWalletFragment.newInstance();
                 } else if (position == 2) {
-                    return OnboardingNetworkSelectionFragment.newInstance();
-                } else if (position == 3) {
                     return new OnboardingSecurePasswordFragment();
+                } else if (position == 3) {
+                    return OnboardingCreatingWalletFragment.newInstance(overridePreviousWallet);
                 } else if (position == 4) {
                     return new OnboardingFingerprintUnlockFragment();
                 } else if (position == 5) {
-                    return OnboardingCreatingWalletFragment.newInstance(overridePreviousWallet);
-                } else if (position == 6) {
                     return new OnboardingConfirmationFragment();
                 } else {
                     throw new IllegalStateException(
@@ -263,7 +264,7 @@ public class WalletOnboardingPagerAdapter extends FragmentStateAdapter {
         } else if (mWalletAction == WalletAction.UNLOCK) {
             return 1;
         } else if (mWalletAction == WalletAction.RESTORE) {
-            return 7;
+            return 6;
         } else if (mWalletAction == WalletAction.BACKUP) {
             return 5;
         }
