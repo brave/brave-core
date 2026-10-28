@@ -4,6 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
+import '/shared/settings/md_select.css.js'
 import {getTemplate} from './social_blocking_page.html.js'
 import {loadTimeData} from '../i18n_setup.js';
 
