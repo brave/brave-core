@@ -4,11 +4,22 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
+  - description:
+      'Add Brave browser-lock import beneath the package declaration.'
+    regex:
+      re_pattern: '^(package [^;]+;\n)'
+      re_flags: [MULTILINE]
+      replace: |-
+        \1
+        import org.chromium.chrome.browser.privacy.BraveBrowserLockManager;
   - description: |-
-      Widen visibility so BraveScreenshotProtectionController can override
-      this to defer to BraveBrowserLockManager's own FLAG_SECURE decision.
+      Defer to BraveBrowserLockManager's own FLAG_SECURE decision for the
+      "Entire application" lock + "Prevent capture" combination — otherwise
+      this method unconditionally clears FLAG_SECURE whenever its own
+      tab/policy-based decision doesn't require it, fighting with the lock.
     regex:
       re_pattern: |-
-        private (void updateScreenshotProtectionState\(\) \{)
+        ( +)private void updateScreenshotProtectionState\(\) \{
       replace: |-
-        protected \1
+        \1private void updateScreenshotProtectionState() {
+        \1    if (BraveBrowserLockManager.shouldForceSecureWindow()) return;
