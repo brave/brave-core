@@ -6,6 +6,7 @@
 
 from __future__ import annotations
 
+import argparse
 import os
 import subprocess
 import unittest
@@ -1796,6 +1797,45 @@ class MergeTest(unittest.TestCase):
 
         with self.assertRaises(brockit.InvalidInputException):
             brockit.Merge.create().execute(dry_run=True)
+
+
+class ShowTest(unittest.TestCase):
+    def setUp(self):
+        self.solved_refs: list[str] = []
+
+    def _show(self, **kwargs) -> list[str]:
+        args = argparse.Namespace(
+            package_version=None,
+            from_ref_value=None,
+            log_link=False,
+            chromium_version_label=None,
+        )
+        for key, value in kwargs.items():
+            setattr(args, key, value)
+        with (
+            patch.object(
+                brockit, '_solve_brave_ref', side_effect=lambda ref: ref
+            ) as solve,
+            patch.object(
+                brockit.Version,
+                'from_git',
+                side_effect=lambda ref: f'version-at-{ref}',
+            ),
+            patch.object(brockit.console, 'print') as print_mock,
+        ):
+            brockit.show(args)
+        self.solved_refs = [c.args[0] for c in solve.call_args_list]
+        return [c.args[0] for c in print_mock.call_args_list]
+
+    def test_package_version_at_ref(self):
+        self.assertEqual(
+            self._show(package_version='origin/master'),
+            ['upstream version: version-at-origin/master'],
+        )
+        self.assertEqual(self.solved_refs, ['origin/master'])
+
+    def test_package_version_not_requested(self):
+        self.assertEqual(self._show(), [])
 
 
 if __name__ == '__main__':

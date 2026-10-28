@@ -2975,8 +2975,11 @@ def show(args: argparse.Namespace):
     This is a helper command line that allows us to inspect a few things about
     brave-core and how brockit process things.
     """
-    if args.package_version:
-        console.print(f'upstream version: {Version.from_git("HEAD")}')
+    if args.package_version is not None:
+        console.print(
+            'upstream version: '
+            f'{Version.from_git(_solve_brave_ref(args.package_version))}'
+        )
 
     if args.from_ref_value is not None:
         from_ref_value = Version.from_git(_solve_brave_ref(args.from_ref_value))
@@ -3166,8 +3169,12 @@ def main():
     )
     show_parser.add_argument(
         '--package-version',
-        action='store_true',
-        help='Shows the current Chromium version in package.',
+        nargs='?',
+        const='HEAD',
+        default=None,
+        metavar='REF',
+        help='Shows the Chromium version in package.json at REF (default: '
+        'HEAD). REF can be any git reference, or a label such as @upstream.',
     )
     show_parser.add_argument(
         '--from-ref-value',
