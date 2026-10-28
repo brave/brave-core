@@ -3,7 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include <algorithm>
 #include <cstddef>
+#include <optional>
 
 #include "base/check.h"
 #include "base/test/run_until.h"
@@ -35,6 +37,7 @@
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/contents_web_view.h"
 #include "chrome/browser/ui/views/side_panel/side_panel.h"
+#include "chrome/common/pref_names.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/prefs/pref_service.h"
 #include "components/sessions/core/serialized_navigation_entry.h"
@@ -53,12 +56,15 @@ namespace sidebar {
 
 namespace {
 
-// Shared by the PRE_/main WebPanelIsNotRestoredAfterShutdown pair, which run in
-// separate processes.
+// Shared by the PRE_/main restore pairs, which run in separate processes.
 constexpr char kTestWebPanelURL[] = "https://brave.com/";
 // A WebUI URL commits reliably without a test server and is distinguishable
 // from the tabs a launch creates on its own.
 constexpr char kRegularTabURL[] = "chrome://version/";
+// A tab the user pinned themselves, as opposed to the web panel's pinned tab.
+// Like kRegularTabURL this has to commit without redirecting, since the pinned
+// tab pref records the last committed URL.
+constexpr char kUserPinnedTabURL[] = "chrome://gpu/";
 
 }  // namespace
 
@@ -518,6 +524,132 @@ IN_PROC_BROWSER_TEST_F(WebPanelSessionRestoreBrowserTest,
   ASSERT_FALSE(items.empty());
   EXPECT_TRUE(items.back().is_web_panel_type());
   EXPECT_EQ(GURL(kTestWebPanelURL), items.back().url);
+}
+
+// The shutdown hooks snapshot the session on the statement right after they
+// close the panel, so the panel's pinned tab has to be out of the strip by the
+// time the close returns. chrome::CloseWebContents() does not guarantee that:
+// CloseWebContentses() skips the detach and waits for the renderer whenever any
+// frame has a beforeunload, unload, pagehide or visibilitychange handler, which
+// covers most real pages. Any one of them reproduces, so this uses `pagehide`:
+// unlike `beforeunload` it never puts up a dialog that could hang the test.
+IN_PROC_BROWSER_TEST_F(WebPanelBrowserTest,
+                       CloseAllWebPanelsForShutdownIsSynchronous) {
+  ASSERT_TRUE(embedded_test_server()->Start());
+
+  auto* service = SidebarServiceFactory::GetForProfile(browser()->GetProfile());
+  const GURL panel_url = embedded_test_server()->GetURL("/title1.html");
+  service->AddItem(SidebarItem::CreateWebPanelItem(panel_url, u"title"));
+  controller()->OnItemPressed(model()->GetAllSidebarItems().size() - 1);
+
+  ASSERT_TRUE(web_panel_controller()->HasOpenPanel());
+  auto* panel_contents = tab_model()->GetTabAtIndex(0)->GetContents();
+  ASSERT_TRUE(content::WaitForLoadStop(panel_contents));
+
+  ASSERT_TRUE(content::ExecJs(
+      panel_contents, "window.addEventListener('pagehide', () => {});"));
+  // The sudden-termination-disabler state reaches the browser process on its
+  // own IPC, so wait for it rather than assuming ExecJs() was enough.
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    return panel_contents->NeedToFireBeforeUnloadOrUnloadEvents();
+  }));
+
+  const int tab_count_before = tab_model()->count();
+  CloseAllWebPanelsForShutdown();
+
+  // Deliberately no RunLoop here - the point is that the tab is already gone.
+  EXPECT_EQ(tab_count_before - 1, tab_model()->count());
+  EXPECT_FALSE(web_panel_controller()->HasOpenPanel());
+}
+
+// prefs::kPinnedTabs is a second, independent restore path: PinnedTabService
+// snapshots the live tab strips from chrome::OnClosingAllBrowsers(true), which
+// fires at the very start of a quit - long before the hooks that
+// WebPanelIsNotRestoredAfterShutdown covers get to close the panel. That pref
+// is only replayed when the startup pref is *not* LAST, which is why these
+// tests can't use WebPanelSessionRestoreBrowserTest: it would make
+// GetPinnedTabsForState() discard the pref unread.
+class WebPanelPinnedTabPrefBrowserTest : public WebPanelBrowserTest {
+ protected:
+  // Writing the startup pref here only takes effect for the *next* launch,
+  // since the main run restores before SetUpOnMainThread(). That is what makes
+  // it load-bearing: the PRE_ run persists DEFAULT for the main run to launch
+  // with.
+  void SetUpOnMainThread() override {
+    WebPanelBrowserTest::SetUpOnMainThread();
+    SessionStartupPref::SetStartupPref(
+        browser()->GetProfile(),
+        SessionStartupPref(SessionStartupPref::DEFAULT));
+  }
+
+  bool PinnedTabsPrefHasURL(const GURL& url) {
+    return std::ranges::any_of(
+        browser()->GetProfile()->GetPrefs()->GetList(prefs::kPinnedTabs),
+        [&](const base::Value& v) {
+          const auto* dict = v.GetIfDict();
+          const auto* spec = dict ? dict->FindString("url") : nullptr;
+          return spec && *spec == url.spec();
+        });
+  }
+
+  bool HasTabWithURL(const GURL& url) {
+    for (int i = 0; i < tab_model()->count(); ++i) {
+      if (tab_model()->GetWebContentsAt(i)->GetVisibleURL() == url) {
+        return true;
+      }
+    }
+    return false;
+  }
+};
+
+IN_PROC_BROWSER_TEST_F(WebPanelPinnedTabPrefBrowserTest,
+                       PRE_WebPanelIsNotRestoredAsPinnedTab) {
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL(kRegularTabURL)));
+  ASSERT_FALSE(web_panel_controller()->HasOpenPanel());
+
+  auto* service = SidebarServiceFactory::GetForProfile(browser()->GetProfile());
+
+  const GURL panel_url(kTestWebPanelURL);
+  service->AddItem(SidebarItem::CreateWebPanelItem(panel_url, u"title"));
+  controller()->OnItemPressed(model()->GetAllSidebarItems().size() - 1);
+
+  ASSERT_TRUE(web_panel_controller()->HasOpenPanel());
+  ASSERT_TRUE(tab_model()->GetTabAtIndex(0)->IsPinned());
+  auto* panel_contents = tab_model()->GetTabAtIndex(0)->GetContents();
+  ASSERT_EQ(panel_contents, web_panel_controller()->panel_contents());
+
+  // A pinned tab the user really did pin, which must survive the filtering that
+  // drops the panel. It also keeps the main test honest: if the pinned tab
+  // restore path were not running at all, the panel's absence there would prove
+  // nothing.
+  auto* user_pinned_contents = chrome::AddAndReturnTabAt(
+      browser(), GURL(kUserPinnedTabURL), 1, false, std::nullopt, true);
+  ASSERT_TRUE(content::WaitForLoadStop(user_pinned_contents));
+
+  // EncodePinnedTabs() skips tabs with no committed entry, so without this the
+  // pref would stay clean for the wrong reason. The load fails - there is no
+  // network - but the error page still commits the panel URL.
+  content::WaitForLoadStopWithoutSuccessCheck(panel_contents);
+  ASSERT_EQ(panel_url, panel_contents->GetLastCommittedURL());
+
+  // The pref is written by the fixture's teardown, which quits via
+  // chrome::AttemptExit() - the path under test. Don't snapshot it here.
+}
+
+IN_PROC_BROWSER_TEST_F(WebPanelPinnedTabPrefBrowserTest,
+                       WebPanelIsNotRestoredAsPinnedTab) {
+  EXPECT_TRUE(PinnedTabsPrefHasURL(GURL(kUserPinnedTabURL)))
+      << "the user's own pinned tab should still be persisted";
+  EXPECT_FALSE(PinnedTabsPrefHasURL(GURL(kTestWebPanelURL)))
+      << "the web panel was persisted as one of the user's pinned tabs";
+
+  ASSERT_TRUE(base::test::RunUntil(
+      [&]() { return HasTabWithURL(GURL(kUserPinnedTabURL)); }));
+
+  EXPECT_EQ(1, tab_model()->IndexOfFirstNonPinnedTab())
+      << "only the user's own pinned tab should have been restored as pinned";
+  EXPECT_FALSE(HasTabWithURL(GURL(kTestWebPanelURL)))
+      << "the web panel was relaunched as a pinned tab";
 }
 
 }  // namespace sidebar
