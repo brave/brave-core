@@ -222,7 +222,6 @@
 <translation id="9040069796107003510">نماد پاداش‌های Brave</translation>
 <translation id="6333347122924254968">نمایش نماد Brave Rewards در نوار نشانی</translation>
 <translation id="4393974575368329991">نوار ابزار پیمایش پایین</translation>
-<translation id="8727059712928806451">فعال کردن نوار پایین</translation>
 <translation id="1834226716203076292">نمایش نوار پایین برای دسترسی سریع به خانه، نشانک‌ها و جستجو</translation>
 <translation id="1422686363939271829">هنگامی که نوار نشانی سمت پایین انتخاب شده باشد، این تنظیمات غیرفعال می‌شود</translation>
 <translation id="6587448235155023666">دفعه بعدی که Brave را راه‌اندازی می‌کنید، تغییرات شما اجرایی می‌شوند.</translation>
@@ -292,7 +291,7 @@
 <translation id="2569646144216067185">تعداد کلمات: <ph name="WORD_COUNT"/></translation>
 <translation id="7507533586185621084">کد همگام‌سازی اشتباه است</translation>
 <translation id="8284063834901328650">کد QR همگام‌سازی اشتباه است</translation>
-<translation id="859506441384380749">این کد توسط نسخه منسوخ Brave ایجاد شده است، لطفاً ابتدا دستگاه دیگر خود را ارتقا دهید</translation>
+<translation id="4002014583969312635">به نظر می‌رسد این کد روی دستگاهی ساخته شده که نسخه‌ای قدیمی‌تر از Brave را اجرا می‌کند. لطفاً روی دستگاه دیگر خود به آخرین نسخه Brave به‌روزرسانی کنید و سپس یک کد همگام‌سازی جدید بسازید.</translation>
 <translation id="3132642509209154999">این کد منقضی شده است. لطفاً کد جدیدی در دستگاه دیگرتان ایجاد و دوباره تلاش کنید.</translation>
 <translation id="2859229680945501779">این کد نامعتبر است. لطفاً بررسی کنید که زمان و منطقه زمانی در دستگاهتان درست تنظیم شده باشند.</translation>
 <translation id="3149880132460839085">Brave Sync</translation>
@@ -338,8 +337,6 @@
 <translation id="8185825081026121627">با تماشای آگهی‌های «پاداش‌های Brave» که حریم‌خصوصی را رعایت می‌کنند، «توکن توجه پایه» کسب کنید.</translation>
 <translation id="5321518976657560663">خطای بازنشانی</translation>
 <translation id="4114170343590425996">خطایی در بازنشانی «پاداش‌های Brave» رخ داد. لطفاً مرورگر Brave را مجدداً راه‌اندازی و دوباره امتحان کنید.</translation>
-<translation id="6417420737057016607">آگهی‌های Brave</translation>
-<translation id="5611966874859284786">وقتی از Brave استفاده نمی‌شود، آگهی‌های اعلان نشان داده شود</translation>
 <translation id="5717636703619499822"><ph name="BEGIN_LINK1"/>بازنشانی داده‌های پاداش‌ها در Brave…<ph name="END_LINK1"/></translation>
 <translation id="1830919318137227284"><ph name="BEGIN_LINK1"/>پاک کردن داده‌های تبلیغات در Brave…<ph name="END_LINK1"/></translation>
 <translation id="8293206222192510085">افزودن نشانک</translation>
@@ -402,8 +399,9 @@
 <translation id="4546260624932151782">نمایش موارد دلخواه</translation>
 <translation id="5313967007315987356">افزودن سایت</translation>
 <translation id="1773147648972887693">نمایش اغلب بازدیدشده</translation>
-<translation id="752098910262610337">نمایش میانبرها</translation>
 <translation id="7134741506051403308">پنهان کردن ویجت</translation>
+<translation id="1247759249260562308">ویرایش مورد دلخواه</translation>
+<translation id="6387214885349500492">سنجاق کردن این مورد دلخواه</translation>
 <translation id="7462178177755090262">صفحه‌ی آغازین</translation>
 <translation id="5365434987337264071">آخرین تب بازشده</translation>
 <translation id="6019856124237323989">{HOURS, plural, =1 {تب جدید پس از <ph name="HOURS_ONE"/> ساعت عدم فعالیت} other {تب جدید پس از <ph name="HOURS_MANY"/> ساعت عدم فعالیت}}</translation>
@@ -978,6 +976,7 @@
 <translation id="6365389672683343144">اشتراک VPN مرتبط با Brave می‌تواند از حداکثر 5 دستگاه Android،‏ iOS و رایانه محافظت کند. کافی است اشتراک Google Play خود را به حساب Brave مرتبط کنید.</translation>
 <translation id="6610899852831463073">امکان فعال کردن مرور ایمن وجود ندارد</translation>
 <translation id="7954263306665462056">مرور ایمن در دستگاه شما غیرفعال شده است. برای فعال کردن آن، مطمئن شوید که خدمات Google Play نصب شده و به‌روز است.</translation>
+<translation id="6417420737057016607">آگهی‌های Brave</translation>
 <translation id="7748944510530490017">شبکه‌های اصلی</translation>
 <translation id="2781668117338732220">شبکه‌های ثانویه</translation>
 <translation id="282560918037172384">آزمایش شبکه‌ها</translation>

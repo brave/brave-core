@@ -220,7 +220,6 @@
 <translation id="9040069796107003510">Brave-palkinnot-kuvake</translation>
 <translation id="6333347122924254968">Näytä Brave-palkinnot-kuvake osoiterivillä</translation>
 <translation id="4393974575368329991">Alareunan navigointityökalurivi</translation>
-<translation id="8727059712928806451">Ota alalaita käyttöön</translation>
 <translation id="1834226716203076292">Näytä alapalkki, jonka avulla pääset nopeasti aloitussivulle, kirjanmerkkeihin ja hakuun</translation>
 <translation id="1422686363939271829">Tämä asetus ei ole käytössä, kun osoitepalkin alareunan sijainti on valittu</translation>
 <translation id="6587448235155023666">Muutokset tulevat voimaan, kun käynnistät Braven uudelleen seuraavan kerran</translation>
@@ -290,7 +289,7 @@
 <translation id="2569646144216067185">Sanamäärä: <ph name="WORD_COUNT"/></translation>
 <translation id="7507533586185621084">Väärä synkronointikoodi</translation>
 <translation id="8284063834901328650">Väärä synkronointiruutukoodi</translation>
-<translation id="859506441384380749">Tämän koodin on luonut Braven vanhentunut versio. Päivitä ensin toinen laitteesi.</translation>
+<translation id="4002014583969312635">Vaikuttaa siltä, että tämä koodi luotiin vanhaa Brave-versiota käyttävällä laitteella. Päivitä Brave uusimpaan versioon toisella laitteella ja luo uusi synkronointikoodi.</translation>
 <translation id="3132642509209154999">Tämä koodi on vanhentunut. Luo uusi toisella laitteellasi ja yritä uudelleen.</translation>
 <translation id="2859229680945501779">Tämä koodi on virheellinen. Tarkista, että aika ja aikavyöhyke on määritetty oikein laitteessasi.</translation>
 <translation id="3149880132460839085">Brave-synkronointi</translation>
@@ -336,8 +335,6 @@
 <translation id="8185825081026121627">Ansaitse perustason huomiopoletti yksityisyyttä suojelevien Brave Rewards -mainosten katselulla.</translation>
 <translation id="5321518976657560663">Palautusvirhe</translation>
 <translation id="4114170343590425996">Brave Rewards -ohjelmaa nollattaessa ilmeni virhe. Käynnistä Brave uudelleen ja yritä uudestaan.</translation>
-<translation id="6417420737057016607">Brave-mainokset</translation>
-<translation id="5611966874859284786">Näytä ilmoitusmainoksia, kun Brave ei ole käytössä</translation>
 <translation id="5717636703619499822"><ph name="BEGIN_LINK1"/>Nollaa Brave-palkintotiedot…<ph name="END_LINK1"/></translation>
 <translation id="1830919318137227284"><ph name="BEGIN_LINK1"/>Poista Brave-mainostiedot…<ph name="END_LINK1"/></translation>
 <translation id="8293206222192510085">Lisää kirjanmerkki</translation>
@@ -400,8 +397,9 @@ Haluatko varmasti tehdä tämän?</translation>
 <translation id="4546260624932151782">Näytä suosikit</translation>
 <translation id="5313967007315987356">Lisää sivusto</translation>
 <translation id="1773147648972887693">Näytä usein käytetyt</translation>
-<translation id="752098910262610337">Näytä pikavalinnat</translation>
 <translation id="7134741506051403308">Piilota pienoisohjelma</translation>
+<translation id="1247759249260562308">Muokkaa suosikkia</translation>
+<translation id="6387214885349500492">Kiinnitä tämä suosikki</translation>
 <translation id="7462178177755090262">Aloitusnäyttö</translation>
 <translation id="5365434987337264071">Viimeksi avattu välilehti</translation>
 <translation id="6019856124237323989">{HOURS, plural, =1 {Uusi välilehti <ph name="HOURS_ONE"/> tunnin toimettomuuden jälkeen} other {Uusi välilehti <ph name="HOURS_MANY"/> tunnin toimettomuuden jälkeen}}</translation>
@@ -976,6 +974,7 @@ Jos et hyväksy tätä pyyntöä, yhteyttä VPN:ään ei muodosta uudelleen ja I
 <translation id="6365389672683343144">Brave VPN -tilauksesi voi suojata enintään 5 laitetta Androidissa, iOSissa ja työpöydällä. Linkitä Google Play -tilauksesi Brave-tiliisi.</translation>
 <translation id="6610899852831463073">Selaussuojaa ei voi ottaa käyttöön</translation>
 <translation id="7954263306665462056">Selaussuoja on poistettu käytöstä laitteessasi. Jotta voit ottaa sen käyttöön varmista, että Google Play Palvelut on asennettu ja ajan tasalla.</translation>
+<translation id="6417420737057016607">Brave-mainokset</translation>
 <translation id="7748944510530490017">Ensisijaiset verkot</translation>
 <translation id="2781668117338732220">Toissijaiset verkot</translation>
 <translation id="282560918037172384">Testiverkot</translation>

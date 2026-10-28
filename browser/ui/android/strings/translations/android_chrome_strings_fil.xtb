@@ -120,7 +120,6 @@ Para sa higit pang setting na gumagamit ng data para pahusayin ang iyong experie
 <translation id="1432581352905426595">Pamahalaan ang mga search engine</translation>
 <translation id="1435593198351412143">Awtomatikong magbubukas ang mga PDF</translation>
 <translation id="1437543266176261764">Tumatakbo sa <ph name="APP_NAME"/></translation>
-<translation id="1448440926884431741">Ayusin ang mga sinusubaybayan mong produkto sa Mga Bookmark</translation>
 <translation id="1452651021404174820">Pumili ng device</translation>
 <translation id="1455845192930279203">Gusto mo bang i-download pa rin ang "<ph name="FILE_NAME"/>" (<ph name="FILE_SIZE"/>) mula sa <ph name="DOWNLOAD_DOMAIN"/>?</translation>
 <translation id="1460751212339734034">Makatipid ng oras, mag-type ng mas kaunti</translation>
@@ -133,12 +132,14 @@ Para sa higit pang setting na gumagamit ng data para pahusayin ang iyong experie
 <translation id="1485343711570311792">Buksan sa <ph name="NATIVE_APP_NAME"/> • Mula sa <ph name="DEVICE_NAME"/></translation>
 <translation id="1495677929897281669">Bumalik sa tab</translation>
 <translation id="1496514951988037011">username</translation>
+<translation id="1498051468374914325">Buksan ang Console ng Mga Tool ng Developer</translation>
 <translation id="1501480321619201731">I-delete ang pangkat</translation>
 <translation id="1506061864768559482">Search engine</translation>
 <translation id="1513352483775369820">Bookmark at history ng web</translation>
 <translation id="1515901671075971249">Mga shortcut sa pag-navigate sa tab</translation>
 <translation id="152204906462707884">Mabilis na i-delete ang iyong history ng pag-browse at mas kontrolin ang privacy mo</translation>
 <translation id="5840742727909553422">May available na bagong bersyon ng Brave</translation>
+<translation id="1537160738459068682">Buksan ang Mga Element ng Mga Tool ng Developer</translation>
 <translation id="1540012742443808215">Kasalukuyang nasa itaas ang address bar</translation>
 <translation id="1543035591122163372">Mag-sign in para makuha ang iyong mga password at higit pa mula sa <ph name="DEVICE_TYPE"/></translation>
 <translation id="3748360913454941567">Hindi mae-encrypt ang mga paraan ng pagbabayad at address. Hindi masi-sync ang history ng pag-browse mula sa Brave.
@@ -312,13 +313,14 @@ Ang taong may passphrase mo lang ang makakabasa ng iyong naka-encrypt na data. H
 <translation id="2297822946037605517">Ibahagi ang pahinang ito</translation>
 <translation id="230115972905494466">Walang nahanap na tugmang device</translation>
 <translation id="2305798319182970276">I-delete ang iyong history sa isang pag-tap lang ng button</translation>
+<translation id="2307420463693979699">Kailangan ng <ph name="APP_NAME"/> ng pahintulot na i-access ang mga human interface device (mga HID) para sa site na ito.</translation>
 <translation id="2316129865977710310">Hindi, salamat</translation>
 <translation id="232137538351753795">Mag-swipe mula sa kaliwang gilid para bumalik</translation>
 <translation id="2323763861024343754">Storage ng site</translation>
 <translation id="2327445548174191329">Mula sa <ph name="DEVICE_NAME"/></translation>
 <translation id="232757965409810352">I-save ang page bilang…</translation>
 <translation id="2328474416100889417">Mawawalan kaagad ng access ang lahat sa grupo ng tab na “<ph name="GROUP_NAME"/>,” at mao-off ang lahat ng link ng imbitasyon</translation>
-<translation id="3096606216245789753">Ipinapakilala ang AI Mode sa Brave</translation>
+<translation id="2328773543844041445">Awtomatikong i-expand ang mga tab kapag nag-hover</translation>
 <translation id="2330186936255788117">Higit pang bookmark</translation>
 <translation id="2330243730505117832">Isinara ang "Pumili ng device."</translation>
 <translation id="2332515770639153015">Naka-on ang Pinahusay na Ligtas na Pag-browse</translation>
@@ -581,7 +583,6 @@ Ang taong may passphrase mo lang ang makakabasa ng iyong naka-encrypt na data. H
 <translation id="4114256890962999877">Para mapanatili ang access sa iyong mga password, i-export na ngayon ang mga ito, i-update ang Mga Serbisyo ng Google Play, at pagkatapos ay i-import ulit ang mga ito sa Brave Password Manager. <ph name="BEGIN_LINK"/>Tingnan ang mga kumpletong tagubilin<ph name="END_LINK"/>.</translation>
 <translation id="3435738964857648380">Seguridad</translation>
 <translation id="3435914367318771664">Magdagdag ng tab sa bagong grupo</translation>
-<translation id="3436118221454753036">Ask AI Mode</translation>
 <translation id="3439276997620616816">Makikita mo rito ang iyong mga kamakailang tab</translation>
 <translation id="3443221991560634068">I-reload ang kasalukuyang page</translation>
 <translation id="3444179773590444986">Magbahagi ng feedback sa madilim na tema para sa mga site?</translation>
@@ -607,7 +608,6 @@ Ang taong may passphrase mo lang ang makakabasa ng iyong naka-encrypt na data. H
 <translation id="3524334353996115845">Hayaan ang <ph name="ORIGIN"/> na patunayang ikaw ito</translation>
 <translation id="3527085408025491307">Folder</translation>
 <translation id="3542235761944717775"><ph name="KILOBYTES"/> KB ang available</translation>
-<translation id="3547933853190131743">Maghanap gamit ang AI Mode</translation>
 <translation id="719175600387583059">Dahil naka-encrypt ang mga na-preload na page, at ang site o app na nagli-link sa mga page ay site o app ng Brave, hindi nakakatanggap ng bagong impormasyon ang mga server ng Brave kapag pribadong pini-preload ang mga page na ito.</translation>
 <translation id="3549657413697417275">Hanapin sa iyong history</translation>
 <translation id="3557336313807607643">Idagdag sa mga contact</translation>
@@ -740,6 +740,7 @@ Ang taong may passphrase mo lang ang makakabasa ng iyong naka-encrypt na data. H
 <translation id="7268155614575494857">Para makatulong na ma-save ng Brave Password Manager ang iyong impormasyon sa pag-sign in, idagdag ang username mo para sa site na ito</translation>
 <translation id="4095146165863963773">I-delete ang data ng app?</translation>
 <translation id="4095483462103784441">Gumawa ng bagong grupo ng tab</translation>
+<translation id="2967753255515860650">Para ma-secure ang iyong trabaho sa Brave, makikita o mapapamahalaan ng organisasyon mo ang ilang partikular na impormasyon kapag naka-sign in ka sa Brave</translation>
 <translation id="1523634703470981382">Binuksan ang update sa Brave Password Manager</translation>
 <translation id="4107207375883769436">Posibleng kailanganing tingnan at pamahalaan ng organisasyon mo ang data ng pagba-browse sa iyong profile sa trabaho, tulad ng history ng pag-browse at mga password mo</translation>
 <translation id="4113030288477039509">Pinamamahalaan ng iyong administrator</translation>
@@ -749,6 +750,7 @@ Ang taong may passphrase mo lang ang makakabasa ng iyong naka-encrypt na data. H
 <translation id="4136632885151622181"><ph name="TAB_TITLE"/>, Naka-multiselect na Naka-pin at Nagre-record na Tab</translation>
 <translation id="4137746084635924146">Kasalukuyang wika ng device</translation>
 <translation id="414128724510021958">Hinihiling bilang default ang mga pang-desktop na site</translation>
+<translation id="4150837143272125910">May na-download na update</translation>
 <translation id="4162867837470729563">Nakabukas nang buo ang taas ang listahan ng mga opsyon sa pagbabahagi.</translation>
 <translation id="4164642020717536140">Mabilis at secure na pag-browse sa web</translation>
 <translation id="4165077084524712774">Higit pang tool</translation>
@@ -945,7 +947,6 @@ Maaaring may ibang uri ng history ng pag-browse ang iyong Brave account tulad ng
 <translation id="1248710015876067820">Hindi sinusuportahang bilang ng mga instance ng Brave.</translation>
 <translation id="8743324804589176795">Walang naka-save na password sa iyong Brave sync chain</translation>
 <translation id="490375751687810070">Vertical</translation>
-<translation id="4905823827770127520">Magsama ng link sa page</translation>
 <translation id="4910889077668685004">Mga app sa pagbabayad</translation>
 <translation id="4911042367886397055">Maligayang pagbabalik, <ph name="USER_NAME"/>!</translation>
 <translation id="4913169188695071480">Ihinto ang pag-refresh</translation>
@@ -1029,6 +1030,7 @@ Maaaring may ibang uri ng history ng pag-browse ang iyong Brave account tulad ng
 <translation id="5233638681132016545">Bagong tab</translation>
 <translation id="5235196193381275927">Nagkaproblema habang nagsa-sign-in</translation>
 <translation id="5246093389635966745">I-edit ang shortcut ng toolbar</translation>
+<translation id="5257142004843671642">I-resize ang panel sa gilid</translation>
 <translation id="5264813352784073502">nakalipas na 24 na oras</translation>
 <translation id="5267572070504076962">I-on ang Ligtas na Pag-browse para magkaroon ng proteksyon laban sa mga mapanganib na site</translation>
 <translation id="5273031377282080577">Pinapamahalaan ng iyong administrator ang setting na ito.</translation>
@@ -1156,6 +1158,7 @@ Maaaring may ibang uri ng history ng pag-browse ang iyong Brave account tulad ng
 <translation id="5848257610304005265">Buksan ang PDF gamit ang <ph name="APP_NAME"/>?</translation>
 <translation id="5849288995120328556">Ihinto ang pag-share?</translation>
 <translation id="5853623416121554550">naka-pause</translation>
+<translation id="5855375823365231964">Tungkol sa profile na ito</translation>
 <translation id="5855546874025048181">Pinuhin: <ph name="REFINE_TEXT"/></translation>
 <translation id="5857447844686706637">Nagkaproblema. Hindi ma-update ang Subaybayan ang presyo.</translation>
 <translation id="5859968346865909126">Puwede mo itong i-on o i-off sa mga setting</translation>
@@ -1166,6 +1169,7 @@ Maaaring may ibang uri ng history ng pag-browse ang iyong Brave account tulad ng
 <translation id="5869522115854928033">Mga naka-save na password</translation>
 <translation id="5870416898561279542">Ililipat dito ang mga duplicate na tab at grupo o ang mga hindi ginamit sa loob ng <ph name="DAYS_INACTIVE"/> (na) araw<ph name="AUTODELETE_SECTION"/>. Puwede mo itong baguhin anumang oras sa <ph name="DECLUTTER_SETTINGS_TITLE"/>.</translation>
 <translation id="2496394743292988533">Mga Notification <ph name="SEPARATOR"/> Inalis ng Brave ang mga pahintulot na ito dahil mapanganib ang site na ito</translation>
+<translation id="5895138241574237353">I-restart</translation>
 <translation id="5896944002928653773">Isinara ang bottom sheet ng disclaimer ng mga signal ng enterprise</translation>
 <translation id="5899667542927581604">Isinara ang sheet na walang passkey</translation>
 <translation id="5907542076239273525">Na-save ang bookmark sa <ph name="FOLDER_NAME"/></translation>
@@ -1194,6 +1198,7 @@ Maaaring may ibang uri ng history ng pag-browse ang iyong Brave account tulad ng
 <translation id="6039379616847168523">Pumunta sa susunod na tab</translation>
 <translation id="6040143037577758943">Isara</translation>
 <translation id="604124094241169006">Awtomatiko</translation>
+<translation id="6137715785312812573">Pamahalaan ang koneksyon sa pagitan ng mga serbisyo ng search at mga Brave Workspace app, tulad ng Google Drive</translation>
 <translation id="6042308850641462728">Marami pang iba</translation>
 <translation id="6047066316630165190">Buksan ang grid na tab switcher</translation>
 <translation id="604996488070107836">Hindi na-download ang <ph name="FILE_NAME"/> dahil sa isang hindi alam na error.</translation>
@@ -1348,6 +1353,7 @@ Halimbawa, puwedeng tumugon ang ilang website sa kahilingang ito sa pamamagitan 
 <translation id="6565959834589222080">Ginagamit ang Wi-Fi kapag available</translation>
 <translation id="657177046675873214">Para makuha ang iyong mga bookmark sa lahat ng device mo, i-on ang “Mga Bookmark” sa mga setting</translation>
 <translation id="6573096386450695060">Payagan sa lahat ng oras</translation>
+<translation id="1571495184426713852">May available na bagong bersyon ng Brave</translation>
 <translation id="658099107946526506">Protektahan ang iyong pribadong pagba-browse gamit ang isang pin para maiwasan ang hindi gustong pag-access</translation>
 <translation id="6583199322650523874">I-bookmark ang kasalukuyang page</translation>
 <translation id="6588043302623806746">Gamitin ang secure na DNS</translation>
@@ -1624,6 +1630,7 @@ Para baguhin ang setting na ito, <ph name="BEGIN_LINK"/>i-delete ang data sa Bra
 <translation id="3521275212779698128">Binuksan nang buo ang pag-opt in sa mga nahanap ng Brave</translation>
 <translation id="649070405679044769">Naka-sign in sa Brave bilang</translation>
 <translation id="7612989789287281429">Sina-sign in ka…</translation>
+<translation id="1523322630961631757">Pinapamahalaan ang Brave</translation>
 <translation id="7619072057915878432">Hindi na-download ang <ph name="FILE_NAME"/> dahil sa mga problema sa network.</translation>
 <translation id="7207456302801184289">Welcome sa Brave</translation>
 <translation id="7628417132421583481">Pumunta sa Password Manager</translation>
@@ -1702,6 +1709,7 @@ Para baguhin ang setting na ito, <ph name="BEGIN_LINK"/>i-delete ang data sa Bra
 <translation id="6485598694371328620">Awtomatikong inaalis ng Brave ang mga pahintulot sa mga site na inaabuso ang mga notification o hindi mo binisita kamakailan</translation>
 <translation id="7934668619883965330">Hindi ma-download ang file. Hindi sinusuportahan ang format ng file.</translation>
 <translation id="7951102827450076904">Palaging buksan ang mga na-download na PDF</translation>
+<translation id="7952148074468405586">Matuto pa tungkol sa <ph name="BEGIN_LINK"/>impormasyong puwedeng tingnan o pamahalaan ng iyong organisasyon<ph name="END_LINK"/></translation>
 <translation id="7952479614398473176">Para magbukas ng bagong window, bawasan ang kabuuang bilang ng mga aktibong window sa <ph name="MAX_WINDOW_COUNT_MINUS_ONE"/> o mas kaunti.</translation>
 <translation id="7956713633345437162">Mga bookmark sa mobile</translation>
 <translation id="7957413488482743710">Itinatago ng virtual card ang iyong aktwal na card para makatulong na protektahan ka laban sa potensyal na panloloko. <ph name="BEGIN_LINK1"/>Matuto pa tungkol sa mga virtual na card<ph name="END_LINK1"/></translation>
@@ -1883,6 +1891,7 @@ Para baguhin ang setting na ito, <ph name="BEGIN_LINK"/>i-delete ang data sa Bra
 <translation id="860282621117673749">Mga alerto sa pagbaba ng presyo</translation>
 <translation id="8611922158252451755">Mae-edit ng sinumang may link ang lahat ng tab, kaya mag-ingat sa pag-share. Mag-e-expire ang link sa loob ng 48 oras.</translation>
 <translation id="5784514951651328424">Maaaring may iba pang anyo ng history ng pag-browse ang iyong Brave sync chain sa <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
+<translation id="6089523089512126744">Brave Search AI Mode at mga nakakonektang app</translation>
 <translation id="8626572875733549102">Isalin sa <ph name="LANGUAGE"/></translation>
 <translation id="5601608515527024348">Buksan ang menu ng Brave &gt; Mga Setting</translation>
 <translation id="8634050254805484913">Naka-hide sa maliliit na screen</translation>
@@ -1969,13 +1978,13 @@ Para baguhin ang setting na ito, <ph name="BEGIN_LINK"/>i-delete ang data sa Bra
 <translation id="9000089900434778519"><ph name="DSE_NAME"/> ang iyong search engine. Tingnan ang mga tagubilin nito para sa pag-delete sa iyong history ng paghahanap, kung naaangkop.</translation>
 <translation id="9010094279589497751">Mabilis na buksan ang Gemini kapag kailangan mo ito</translation>
 <translation id="9012585441087414258">Nagpoprotekta laban sa mga site, download, at extension na kilalang mapanganib. Kung may kahina-hinalang ginagawa ang isang page, ipinapadala sa Ligtas na Pag-browse sa Brave ang mga URL at bit ng content ng page.</translation>
-<translation id="9014097371980259227">Inilipat ang ilang tool para tulungan kang maghanap gamit ang AI Mode</translation>
 <translation id="9015111999662965458">Para matiyak na magagamit nang ligtas ang device na ito, posibleng kailanganing tingnan ng iyong organisasyon ang impormasyon tungkol sa operating system, browser, mga setting nito, at kung anong software ang naka-install sa device</translation>
 <translation id="9019199799064251516">Magpatuloy nang walang lock ng profile ng kotse?</translation>
 <translation id="9022774213089566801">Madalas na binibisita</translation>
 <translation id="5687542525349822727">Itakda ang Brave bilang iyong default</translation>
 <translation id="9027728231343310283">I-undo ang <ph name="SITE"/></translation>
 <translation id="9035378196785279980">Ilipat sa\u2026</translation>
+<translation id="9038316201889095704">Naka-disable ang Hanapin sa page habang may mga hindi na-save na pagbabago.</translation>
 <translation id="904146253922032365">Pindutin nang matagal para ipakita ang mga tab nang patayo</translation>
 <translation id="9042893549633094279">Privacy at seguridad</translation>
 <translation id="1612219807314383628">Mabilis na magsimula ng paghahanap sa Brave</translation>

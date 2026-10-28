@@ -220,7 +220,6 @@
 <translation id="9040069796107003510">Brave Rewards-ikon</translation>
 <translation id="6333347122924254968">Vis Brave Rewards-ikonet i adresselinjen</translation>
 <translation id="4393974575368329991">Navigasjonslinje nederst</translation>
-<translation id="8727059712928806451">Aktiver bunnlinje</translation>
 <translation id="1834226716203076292">Vis en linje nederst for rask tilgang til hjem, bokmerker og søk</translation>
 <translation id="1422686363939271829">Denne innstillingen deaktiveres når navigasjonslinjen er valgt</translation>
 <translation id="6587448235155023666">Endringene trer i kraft neste gang du starter Brave på nytt</translation>
@@ -290,7 +289,7 @@
 <translation id="2569646144216067185">Antall ord: <ph name="WORD_COUNT"/></translation>
 <translation id="7507533586185621084">Feil synkkode</translation>
 <translation id="8284063834901328650">Feil synk av QR-kode</translation>
-<translation id="859506441384380749">Denne koden ble generert av en utdatert versjon av Brave. Oppgrader den andre enheten din først.</translation>
+<translation id="4002014583969312635">Det ser ut til at denne koden ble opprettet på en enhet som kjører en eldre versjon av Brave. Oppdater til den nyeste versjonen av Brave på den andre enheten din, og opprett deretter en ny synkroniseringskode.</translation>
 <translation id="3132642509209154999">Denne koden har utløpt. Generer en ny kode på den andre enheten din, og prøv på nytt.</translation>
 <translation id="2859229680945501779">Denne koden er ugyldig. Kontroller at klokkeslettet og tidssonen er korrekt angitt på enheten.</translation>
 <translation id="3149880132460839085">Brave-synkronisering</translation>
@@ -336,8 +335,6 @@
 <translation id="8185825081026121627">Få grunnleggende oppmerksomhetstoken for å se på Brave Rewards-annonser som bevarer personvernet.</translation>
 <translation id="5321518976657560663">Tilbakestillingsfeil</translation>
 <translation id="4114170343590425996">En feil oppsto under tilbakestilling av Brave Rewards. Start Brave på nytt, og prøv igjen.</translation>
-<translation id="6417420737057016607">Brave-annonser</translation>
-<translation id="5611966874859284786">Vis varslingsannonser når Brave ikke er i bruk</translation>
 <translation id="5717636703619499822"><ph name="BEGIN_LINK1"/>Tilbakestill Brave Rewards-data …<ph name="END_LINK1"/></translation>
 <translation id="1830919318137227284"><ph name="BEGIN_LINK1"/>Tøm Brave Ads-data …<ph name="END_LINK1"/></translation>
 <translation id="8293206222192510085">Legg til bokmerke</translation>
@@ -400,8 +397,9 @@ Er du sikker på at du vil gjøre dette?</translation>
 <translation id="4546260624932151782">Vis favoritter</translation>
 <translation id="5313967007315987356">Legg til et nettsted</translation>
 <translation id="1773147648972887693">Vis ofte besøkte</translation>
-<translation id="752098910262610337">Vis snarveier</translation>
 <translation id="7134741506051403308">Skjul widget</translation>
+<translation id="1247759249260562308">Rediger favoritt</translation>
+<translation id="6387214885349500492">Fest denne favoritten</translation>
 <translation id="7462178177755090262">Startskjerm</translation>
 <translation id="5365434987337264071">Siste åpne fane</translation>
 <translation id="6019856124237323989">{HOURS, plural, =1 {Ny fane etter <ph name="HOURS_ONE"/> time med inaktivitet} other {Ny fane etter <ph name="HOURS_MANY"/> timer med inaktivitet}}</translation>
@@ -976,6 +974,7 @@ Hvis du ikke godtar forespørselen, kobler ikke VPN seg opp igjen, og internetti
 <translation id="6365389672683343144">Brave VPN-abonnementet kan sikre opptil 5 enheter – på tvers av Android, iOS og PC/Mac. Bare link Google Play-abonnementet til Brave-kontoen, så er du i gang.</translation>
 <translation id="6610899852831463073">Kan ikke aktivere Safe Browsing</translation>
 <translation id="7954263306665462056">Safe Browsing er deaktivert på enheten din. For å aktivere funksjonen må du kontrollere at Google Play-tjenester er installert og oppdatert.</translation>
+<translation id="6417420737057016607">Brave-annonser</translation>
 <translation id="7748944510530490017">Primære nettverk</translation>
 <translation id="2781668117338732220">Sekundære nettverk</translation>
 <translation id="282560918037172384">Testnettverk</translation>

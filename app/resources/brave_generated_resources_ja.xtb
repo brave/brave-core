@@ -117,6 +117,8 @@
 <translation id="2162109630536601963">この拡張機能がネットワーク要求を行う場合、Torまたはプライベートモードは使用されません。</translation>
 <translation id="2725327089319971976">プライベートモードとTorモードでこの拡張機能を無効にするには、このオプションの選択を解除します。</translation>
 <translation id="438106944087726695">Braveがホストする拡張機能</translation>
+<translation id="2265651566599167057">Socketによってマルウェアとしてフラグが付けられました。</translation>
+<translation id="2607395470596637070">BraveのSocketがどのように保護するかについて詳しく見る</translation>
 <translation id="3371343170427636147">Brave Nightly</translation>
 <translation id="4097979995947147464">Brave Beta</translation>
 <translation id="8303432794159193481">Brave Dev</translation>
@@ -724,7 +726,7 @@
 <translation id="4432071071853308688">このコードは空です</translation>
 <translation id="955848693465029904">内部同期の設定でエラーが発生しました</translation>
 <translation id="7456398316301207582">内部アカウント削除エラー</translation>
-<translation id="859506441384380749">このコードは非推奨バージョンのBraveで生成されました。まず他のデバイスをアップグレードしてください</translation>
+<translation id="4002014583969312635">このコードは、古いバージョンのBraveを実行しているデバイスで作成されたようです。他のデバイスでBraveの最新バージョンにアップデートしてから、新しい同期コードを作成してください。</translation>
 <translation id="3132642509209154999">このコードは期限切れです。他のデバイスであたらしいコードを生成してもう一度お試しください。</translation>
 <translation id="2859229680945501779">このコードは無効です。お使いの端末の時刻とタイムゾーンが正しく設定されていることをご確認ください。</translation>
 <translation id="2339730291919608488">同期チェーンから離れる</translation>

@@ -220,7 +220,6 @@
 <translation id="9040069796107003510">Brave Beloningen-pictogram</translation>
 <translation id="6333347122924254968">Het Brave Beloningen-pictogram tonen in de adresbalk</translation>
 <translation id="4393974575368329991">Onderste navigatiebalk</translation>
-<translation id="8727059712928806451">Onderste balk inschakelen</translation>
 <translation id="1834226716203076292">Toon een onderste balk voor snelle toegang tot home, bladwijzers en zoeken</translation>
 <translation id="1422686363939271829">Deze instelling is uitgeschakeld wanneer de adresbalk onderaan wordt weergegeven</translation>
 <translation id="6587448235155023666">Je veranderingen zullen de volgende keer dat je Brave opstart in effect gaan</translation>
@@ -290,7 +289,7 @@
 <translation id="2569646144216067185">Aantal woorden: <ph name="WORD_COUNT"/></translation>
 <translation id="7507533586185621084">Verkeerde synchronisatiecode</translation>
 <translation id="8284063834901328650">Verkeerde synchronisatie QR-code</translation>
-<translation id="859506441384380749">Deze code is gegenereerd door een verouderde versie van Brave; upgrade eerst je andere apparaat</translation>
+<translation id="4002014583969312635">Zo te zien is deze code gecreëerd op een apparaat met een oudere versie van Brave. Werk bij naar de nieuwste versie van Brave op uw andere apparaat en maak dan een nieuwe synchronisatiecode.</translation>
 <translation id="3132642509209154999">Deze code is verlopen. Genereer een nieuwe code op je andere apparaat en probeer het opnieuw.</translation>
 <translation id="2859229680945501779">Deze code is ongeldig. Controleer of de tijd en tijdzone correct zijn ingesteld op uw apparaat.</translation>
 <translation id="3149880132460839085">Brave Sync</translation>
@@ -336,8 +335,6 @@
 <translation id="8185825081026121627">Verdien Basic Attention Token door privacyvriendelijke Brave Rewards advertenties te bekijken.</translation>
 <translation id="5321518976657560663">Resetfout</translation>
 <translation id="4114170343590425996">Er is een fout opgetreden bij het opnieuw instellen van Brave Rewards. Start Brave opnieuw en probeer het opnieuw.</translation>
-<translation id="6417420737057016607">Brave Advertenties</translation>
-<translation id="5611966874859284786">Melding van advertenties weergeven wanneer Brave niet in gebruik is</translation>
 <translation id="5717636703619499822"><ph name="BEGIN_LINK1"/>Brave Rewards-gegevens resetten…<ph name="END_LINK1"/></translation>
 <translation id="1830919318137227284"><ph name="BEGIN_LINK1"/>Brave Ads-gegevens wissen…<ph name="END_LINK1"/></translation>
 <translation id="8293206222192510085">Voeg Bladwijzer toe</translation>
@@ -400,8 +397,9 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="4546260624932151782">Toon favorieten</translation>
 <translation id="5313967007315987356">Site toevoegen</translation>
 <translation id="1773147648972887693">Toon veel bezocht</translation>
-<translation id="752098910262610337">Toon shortcuts</translation>
 <translation id="7134741506051403308">Widget verbergen</translation>
+<translation id="1247759249260562308">Wijzig favoriet</translation>
+<translation id="6387214885349500492">Deze favoriet vastzetten</translation>
 <translation id="7462178177755090262">Startscherm</translation>
 <translation id="5365434987337264071">Laatst geopend tabblad</translation>
 <translation id="6019856124237323989">{HOURS, plural, =1 {Nieuw tabblad na <ph name="HOURS_ONE"/> uur inactiviteit} other {Nieuw tabblad na <ph name="HOURS_MANY"/> uur inactiviteit}}</translation>
@@ -976,6 +974,7 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="6365389672683343144">Uw Brave VPN-abonnement kan tot 5 apparaten beschermen op Android, iOS en desktop. U hoeft alleen uw Google Play-abonnement te koppelen aan uw Brave-account.</translation>
 <translation id="6610899852831463073">Kan veilig browsen niet inschakelen</translation>
 <translation id="7954263306665462056">Veilig browsen is uitgeschakeld op uw apparaat. Zorg ervoor dat Google Play Services is geïnstalleerd om veilig browsen in te schakelen en houd het up-to-date.</translation>
+<translation id="6417420737057016607">Brave Advertenties</translation>
 <translation id="7748944510530490017">Primaire netwerken</translation>
 <translation id="2781668117338732220">Secundaire netwerken</translation>
 <translation id="282560918037172384">Testnetwerken</translation>

@@ -220,7 +220,6 @@
 <translation id="9040069796107003510">Brave jutalom ikon</translation>
 <translation id="6333347122924254968">A Brave-jutalmak ikonjának megjelenítése a címsorban</translation>
 <translation id="4393974575368329991">Alsó navigációs eszköztár</translation>
-<translation id="8727059712928806451">Alsó sáv engedélyezése</translation>
 <translation id="1834226716203076292">Alsó sáv megjelenítése a kezdőlap, a könyvjelzők és a keresés gyors eléréséhez</translation>
 <translation id="1422686363939271829">Ez a beállítás nem elérhető, ha az alsó címsáv van kiválasztva</translation>
 <translation id="6587448235155023666">A változtatásai a Brave következő indításakor lépnek érvénybe</translation>
@@ -290,7 +289,7 @@
 <translation id="2569646144216067185">Szavak száma: <ph name="WORD_COUNT"/></translation>
 <translation id="7507533586185621084">Rossz szinkronizálási kód</translation>
 <translation id="8284063834901328650">Rossz szinkronizálási QR-kód</translation>
-<translation id="859506441384380749">Ezt a kódot a Brave egy elavult verziója generálta; kérjük, előbb frissítse a másik eszközt</translation>
+<translation id="4002014583969312635">Úgy tűnik, ezt a kódot a Brave régebbi verzióját használó eszközön hozták létre. Frissítsen a legújabb Brave-verzióra a másik eszközén, majd hozzon létre új szinkronizálási kódot.</translation>
 <translation id="3132642509209154999">Ez a kód lejárt. Generáljon egy újat a másik eszközén, majd próbálja újra.</translation>
 <translation id="2859229680945501779">Ez a kód érvénytelen. Ellenőrizze, hogy az eszköze idő- és időzóna-beállításai helyesek-e.</translation>
 <translation id="3149880132460839085">Brave szinkronizáció</translation>
@@ -336,8 +335,6 @@
 <translation id="8185825081026121627">Általános figyelmi zsetont szerezhet, ha adatvádelmi Brave Rewards hirdetéseket néz meg.</translation>
 <translation id="5321518976657560663">Újraállítási hiba</translation>
 <translation id="4114170343590425996">Hiba történt a Brave Rewards újraállításakor. Indítsa újra a Brave-et, majd próbálja újra.</translation>
-<translation id="6417420737057016607">Brave hirdetések</translation>
-<translation id="5611966874859284786">Mutasson értesítéseket, amikor a Brave nincs használatban</translation>
 <translation id="5717636703619499822"><ph name="BEGIN_LINK1"/>A Brave-jutalmak adatainak visszaállítása…<ph name="END_LINK1"/></translation>
 <translation id="1830919318137227284"><ph name="BEGIN_LINK1"/>A Brave-jutalmak adatainak törlése…<ph name="END_LINK1"/></translation>
 <translation id="8293206222192510085">Könyvjelző hozzáadása</translation>
@@ -400,8 +397,9 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="4546260624932151782">Kedvencek mutatása</translation>
 <translation id="5313967007315987356">Webhely hozzáadása</translation>
 <translation id="1773147648972887693">Gyakran látogatottak mutatása</translation>
-<translation id="752098910262610337">Parancsikonok mutatása</translation>
 <translation id="7134741506051403308">Modul elrejtése</translation>
+<translation id="1247759249260562308">Kedvenc szerkesztése</translation>
+<translation id="6387214885349500492">Kedvenc rögzítése</translation>
 <translation id="7462178177755090262">Kezdőképernyő</translation>
 <translation id="5365434987337264071">Utoljára megnyitott lap</translation>
 <translation id="6019856124237323989">{HOURS, plural, =1 {Új lap <ph name="HOURS_ONE"/> óra tétlenség után} other {Új lap <ph name="HOURS_MANY"/> óra tétlenség után}}</translation>
@@ -976,6 +974,7 @@ other {<ph name="CITY_COUNT_MANY"/> város - }
 <translation id="6365389672683343144">A Brave VPN-előfizetésével legfeljebb 5 eszközt tud biztonságban, legyen szó Androidos, iOS vagy asztali alkalmazásról. Csak kapcsolja a Google Play-előfizetését a Brave-fiókjához.</translation>
 <translation id="6610899852831463073">Nem engedélyezhető a biztonságos böngészés</translation>
 <translation id="7954263306665462056">A biztonságos böngészés le van tiltva az Ön eszközén. Az engedélyezéshez győződjön meg arról, hogy a Google Play-szolgáltatások telepítve vannak és naprakészek-e!</translation>
+<translation id="6417420737057016607">Brave hirdetések</translation>
 <translation id="7748944510530490017">Elsődleges hálózatok</translation>
 <translation id="2781668117338732220">Másodlagos hálózatok</translation>
 <translation id="282560918037172384">Teszthálózatok</translation>

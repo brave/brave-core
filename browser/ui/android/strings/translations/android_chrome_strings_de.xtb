@@ -120,7 +120,6 @@ Weitere Einstellungen, bei denen Daten zur Verbesserung von Brave verwendet werd
 <translation id="1432581352905426595">Suchmaschinen verwalten</translation>
 <translation id="1435593198351412143">PDFs automatisch öffnen</translation>
 <translation id="1437543266176261764">Wird ausgeführt in <ph name="APP_NAME"/></translation>
-<translation id="1448440926884431741">Du kannst deine beobachteten Produkte in den Lesezeichen organisieren</translation>
 <translation id="1452651021404174820">Gerät auswählen</translation>
 <translation id="1455845192930279203">Möchtest du <ph name="FILE_NAME"/> (<ph name="FILE_SIZE"/>) trotzdem von <ph name="DOWNLOAD_DOMAIN"/> herunterladen?</translation>
 <translation id="1460751212339734034">Weniger tippen und Zeit sparen</translation>
@@ -133,12 +132,14 @@ Weitere Einstellungen, bei denen Daten zur Verbesserung von Brave verwendet werd
 <translation id="1485343711570311792">In <ph name="NATIVE_APP_NAME"/> öffnen • von <ph name="DEVICE_NAME"/></translation>
 <translation id="1495677929897281669">Zurück zum Tab</translation>
 <translation id="1496514951988037011">Nutzername</translation>
+<translation id="1498051468374914325">Entwicklertools-Konsole öffnen</translation>
 <translation id="1501480321619201731">Gruppe löschen</translation>
 <translation id="1506061864768559482">Suchmaschine</translation>
 <translation id="1513352483775369820">Lesezeichen und Webprotokoll</translation>
 <translation id="1515901671075971249">Tastenkombinationen für die Tab-Navigation</translation>
 <translation id="152204906462707884">Browserverlauf schnell löschen und mehr Kontrolle über deine Privatsphäre erhalten</translation>
 <translation id="5840742727909553422">Neue Brave-Version verfügbar</translation>
+<translation id="1537160738459068682">Entwicklertools-Elemente öffnen</translation>
 <translation id="1540012742443808215">Adressleiste derzeit oben</translation>
 <translation id="1543035591122163372">Melde dich an, um auf Passwörter und mehr auf <ph name="DEVICE_TYPE"/> zuzugreifen</translation>
 <translation id="3748360913454941567">Zahlungsmethoden und Adressen werden nicht verschlüsselt. Der Brave-Browserverlauf wird nicht synchronisiert.
@@ -311,13 +312,14 @@ Nur Personen, die deine Passphrase kennen, können deine verschlüsselten Daten 
 <translation id="2297822946037605517">Seite teilen</translation>
 <translation id="230115972905494466">Keine kompatiblen Geräte gefunden</translation>
 <translation id="2305798319182970276">Verlauf mit einem Tippen löschen</translation>
+<translation id="2307420463693979699"><ph name="APP_NAME"/> benötigt für diese Website die Berechtigung, auf Human Interface Devices (HID) zuzugreifen.</translation>
 <translation id="2316129865977710310">Nein, danke</translation>
 <translation id="232137538351753795">Vom linken Rand aus wischen, um zurück­zugehen</translation>
 <translation id="2323763861024343754">Websitespeicher</translation>
 <translation id="2327445548174191329">Von <ph name="DEVICE_NAME"/></translation>
 <translation id="232757965409810352">Seite speichern unter…</translation>
 <translation id="2328474416100889417">Alle Mitglieder verlieren dann sofort den Zugriff auf die Tabgruppe „<ph name="GROUP_NAME"/>“ und alle Einladungslinks werden deaktiviert</translation>
-<translation id="3096606216245789753">Jetzt neu: KI-Modus in Brave</translation>
+<translation id="2328773543844041445">Tabs automatisch maximieren, wenn der Mauszeiger darauf bewegt wird</translation>
 <translation id="2330186936255788117">Weitere Lesezeichen</translation>
 <translation id="2330243730505117832">„Gerät auswählen“ ist geschlossen.</translation>
 <translation id="2332515770639153015">Erweitertes Safe Browsing ist aktiviert</translation>
@@ -578,7 +580,6 @@ Nur Personen, die deine Passphrase kennen, können deine verschlüsselten Daten 
 <translation id="4114256890962999877">Wenn du weiterhin auf deine Passwörter zugreifen möchtest, exportiere sie jetzt, aktualisiere die Google Play-Dienste und importiere sie dann wieder in den Brave Passwortmanager. <ph name="BEGIN_LINK"/>Vollständige Anleitung<ph name="END_LINK"/></translation>
 <translation id="3435738964857648380">Sicherheit</translation>
 <translation id="3435914367318771664">Tab zu neuer Gruppe hinzufügen</translation>
-<translation id="3436118221454753036">Im KI-Modus fragen</translation>
 <translation id="3439276997620616816">Hier werden deine kürzlich geschlossenen Tabs angezeigt</translation>
 <translation id="3443221991560634068">Aktuelle Seite neu laden</translation>
 <translation id="3444179773590444986">Feedback zu dunklem Design für Websites teilen?</translation>
@@ -604,7 +605,6 @@ Nur Personen, die deine Passphrase kennen, können deine verschlüsselten Daten 
 <translation id="3524334353996115845"><ph name="ORIGIN"/> deine Identität bestätigen lassen</translation>
 <translation id="3527085408025491307">Ordner</translation>
 <translation id="3542235761944717775"><ph name="KILOBYTES"/> KB verfügbar</translation>
-<translation id="3547933853190131743">Mit KI-Modus suchen</translation>
 <translation id="719175600387583059">Da die vorab geladenen Seiten verschlüsselt sind und es sich bei der Website oder App, die zu den Seiten verlinkt, um eine Brave-Website oder ‑App handelt, erhalten die Brave-Server beim privaten Vorabladen dieser Seiten keine neuen Informationen.</translation>
 <translation id="3549657413697417275">Im Verlauf suchen</translation>
 <translation id="3557336313807607643">Zu Kontakten hinzufügen</translation>
@@ -737,6 +737,7 @@ Nur Personen, die deine Passphrase kennen, können deine verschlüsselten Daten 
 <translation id="7268155614575494857">Füge deinen Nutzernamen für diese Website hinzu, damit der Brave Passwortmanager deine Anmeldedaten speichern kann</translation>
 <translation id="4095146165863963773">App-Daten löschen?</translation>
 <translation id="4095483462103784441">Neue Tabgruppe erstellen</translation>
+<translation id="2967753255515860650">Zum Schutz deiner Arbeit in Brave kann deine Organisation bestimmte Informationen ansehen oder verwalten, wenn du in Brave angemeldet bist</translation>
 <translation id="1523634703470981382">Update des Brave Passwortmanagers geöffnet</translation>
 <translation id="4107207375883769436">Deine Organisation muss möglicherweise Browserdaten in deinem Arbeitsprofil sehen und verwalten – beispielsweise deinen Browserverlauf und deine Passwörter</translation>
 <translation id="4113030288477039509">Von deinem Administrator verwaltet</translation>
@@ -746,6 +747,7 @@ Nur Personen, die deine Passphrase kennen, können deine verschlüsselten Daten 
 <translation id="4136632885151622181"><ph name="TAB_TITLE"/>, mehrfach ausgewählter, angepinnter Tab zum Aufzeichnen</translation>
 <translation id="4137746084635924146">Aktuelle Gerätesprache</translation>
 <translation id="414128724510021958">Desktopwebsites werden standardmäßig angefordert</translation>
+<translation id="4150837143272125910">Ein Update wurde heruntergeladen</translation>
 <translation id="4162867837470729563">Die Liste der Freigabeoptionen ist vollständig geöffnet.</translation>
 <translation id="4164642020717536140">Schnell und sicher im Web surfen</translation>
 <translation id="4165077084524712774">Weitere Tools</translation>
@@ -942,7 +944,6 @@ Eventuell findest du unter <ph name="BEGIN_LINK"/>history.google.com<ph name="EN
 <translation id="1248710015876067820">Nicht unterstützte Anzahl von Brave-Instanzen</translation>
 <translation id="8743324804589176795">Keine gespeicherten Passwörter in deinem Brave-Konto</translation>
 <translation id="490375751687810070">Vertikal</translation>
-<translation id="4905823827770127520">Link zur Seite hinzufügen</translation>
 <translation id="4910889077668685004">Zahlungs-Apps</translation>
 <translation id="4911042367886397055">Willkommen zurück, <ph name="USER_NAME"/>!</translation>
 <translation id="4913169188695071480">Aktualisierung anhalten</translation>
@@ -1026,6 +1027,7 @@ Eventuell findest du unter <ph name="BEGIN_LINK"/>history.google.com<ph name="EN
 <translation id="5233638681132016545">Neuer Tab</translation>
 <translation id="5235196193381275927">Bei der Anmeldung ist ein Fehler aufgetreten</translation>
 <translation id="5246093389635966745">Verknüpfung auf Symbolleiste bearbeiten</translation>
+<translation id="5257142004843671642">Größe der Seitenleiste anpassen</translation>
 <translation id="5264813352784073502">den letzten 24 Stunden</translation>
 <translation id="5267572070504076962">Du kannst Safe Browsing aktivieren, um den Schutz vor gefährlichen Websites zu verbessern</translation>
 <translation id="5273031377282080577">Diese Einstellung wird von deinem Administrator verwaltet.</translation>
@@ -1153,6 +1155,7 @@ Eventuell findest du unter <ph name="BEGIN_LINK"/>history.google.com<ph name="EN
 <translation id="5848257610304005265">PDF mit <ph name="APP_NAME"/> öffnen?</translation>
 <translation id="5849288995120328556">Freigabe beenden?</translation>
 <translation id="5853623416121554550">pausiert</translation>
+<translation id="5855375823365231964">Informationen zu diesem Profil</translation>
 <translation id="5855546874025048181">Eingrenzen: <ph name="REFINE_TEXT"/></translation>
 <translation id="5857447844686706637">Es gab ein Problem. „Preis beobachten“ konnte nicht aktualisiert werden.</translation>
 <translation id="5859968346865909126">Diese Option lässt sich in den Einstellungen aktivieren oder deaktivieren</translation>
@@ -1163,6 +1166,7 @@ Eventuell findest du unter <ph name="BEGIN_LINK"/>history.google.com<ph name="EN
 <translation id="5869522115854928033">Gespeicherte Passwörter</translation>
 <translation id="5870416898561279542">Doppelte Tabs und Tabgruppen oder solche, die <ph name="DAYS_INACTIVE"/> Tage lang nicht verwendet wurden, werden hierher verschoben<ph name="AUTODELETE_SECTION"/>. Du kannst diese Einstellung jederzeit in den <ph name="DECLUTTER_SETTINGS_TITLE"/> ändern.</translation>
 <translation id="2496394743292988533">Benachrichtigungen <ph name="SEPARATOR"/> Brave hat diese Berechtigungen entfernt, weil diese Website gefährlich ist</translation>
+<translation id="5895138241574237353">Neu starten</translation>
 <translation id="5896944002928653773">Ansicht mit Haftungsausschluss für Unternehmenssignale am unteren Rand ist geschlossen</translation>
 <translation id="5899667542927581604">Die Ansicht „Keine Passkeys“ wurde geschlossen</translation>
 <translation id="5907542076239273525">Lesezeichen in „<ph name="FOLDER_NAME"/>“ gespeichert</translation>
@@ -1191,6 +1195,7 @@ Eventuell findest du unter <ph name="BEGIN_LINK"/>history.google.com<ph name="EN
 <translation id="6039379616847168523">Zum nächsten Tab wechseln</translation>
 <translation id="6040143037577758943">Schließen</translation>
 <translation id="604124094241169006">Automatisch</translation>
+<translation id="6137715785312812573">Verbindung zwischen Suchdiensten und Brave Workspace-Apps wie Google Drive verwalten</translation>
 <translation id="6042308850641462728">Mehr</translation>
 <translation id="6047066316630165190">Tab-Wechsler im Raster öffnen</translation>
 <translation id="604996488070107836"><ph name="FILE_NAME"/> konnte aufgrund eines unbekannten Fehlers nicht heruntergeladen werden.</translation>
@@ -1345,6 +1350,7 @@ Einige Websites schalten möglicherweise Werbeanzeigen, deren Auswahl nicht dara
 <translation id="6565959834589222080">WLAN wird verwendet, wenn es verfügbar ist</translation>
 <translation id="657177046675873214">Um auf all deinen Geräten auf deine Lesezeichen zugreifen zu können, musst du in den Einstellungen die Option „Lesezeichen“ aktivieren</translation>
 <translation id="6573096386450695060">Immer zulassen</translation>
+<translation id="1571495184426713852">Eine neue Brave-Version ist verfügbar</translation>
 <translation id="658099107946526506">Private Browsersitzung mit einer PIN schützen, um unerwünschten Zugriff zu verhindern</translation>
 <translation id="6583199322650523874">Aktuelle Seite als Lesezeichen speichern</translation>
 <translation id="6588043302623806746">Sicheres DNS verwenden</translation>
@@ -1621,6 +1627,7 @@ Wenn du diese Einstellung ändern möchtest, <ph name="BEGIN_LINK"/>lösche die 
 <translation id="3521275212779698128">Ansicht zur Aktivierung von „Brave findet“ am unteren Rand vollständig geöffnet</translation>
 <translation id="649070405679044769">Bei Brave angemeldet als</translation>
 <translation id="7612989789287281429">Du wirst angemeldet…</translation>
+<translation id="1523322630961631757">Brave wird verwaltet</translation>
 <translation id="7619072057915878432"><ph name="FILE_NAME"/> konnte aufgrund von Netzwerkfehlern nicht heruntergeladen werden.</translation>
 <translation id="7207456302801184289">Willkommen bei Brave</translation>
 <translation id="7628417132421583481">Passwortmanager aufrufen</translation>
@@ -1699,6 +1706,7 @@ Wenn du diese Einstellung ändern möchtest, <ph name="BEGIN_LINK"/>lösche die 
 <translation id="6485598694371328620">Brave entfernt automatisch Berechtigungen von Websites, die Benachrichtigungen missbrauchen oder die du in letzter Zeit nicht besucht hast</translation>
 <translation id="7934668619883965330">Datei kann nicht heruntergeladen werden. Das Dateiformat wird nicht unterstützt.</translation>
 <translation id="7951102827450076904">Heruntergeladene PDFs immer öffnen</translation>
+<translation id="7952148074468405586"><ph name="BEGIN_LINK"/>Weitere Informationen zu Daten, die deine Organisation ansehen oder verwalten kann<ph name="END_LINK"/></translation>
 <translation id="7952479614398473176">Wenn du ein neues Fenster öffnen möchtest, reduziere die Gesamtzahl der aktiven Fenster auf maximal <ph name="MAX_WINDOW_COUNT_MINUS_ONE"/>.</translation>
 <translation id="7956713633345437162">Mobile Lesezeichen</translation>
 <translation id="7957413488482743710">Wenn du eine virtuelle Karte verwendest, werden deine tatsächlichen Kartendetails nicht preisgegeben – dadurch bist du besser vor Betrugsversuchen geschützt. <ph name="BEGIN_LINK1"/>Weitere Informationen zu virtuellen Karten<ph name="END_LINK1"/></translation>
@@ -1880,6 +1888,7 @@ Wenn du diese Einstellung ändern möchtest, <ph name="BEGIN_LINK"/>lösche die 
 <translation id="860282621117673749">Benachrichtigungen bei Preisnachlässen</translation>
 <translation id="8611922158252451755">Alle Nutzer mit dem Link können alle Tabs bearbeiten. Überlege dir also gut, wem du den Link sendest. Der Link läuft in 48 Stunden ab.</translation>
 <translation id="5784514951651328424">Unter <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> sind möglicherweise weitere Arten von Browserverlaufsdaten für dein Brave-Konto gespeichert.</translation>
+<translation id="6089523089512126744">KI-Modus der Brave Suche und verbundene Apps</translation>
 <translation id="8626572875733549102">Zielsprache: <ph name="LANGUAGE"/></translation>
 <translation id="5601608515527024348">Öffne das Brave-Menü &gt; Einstellungen</translation>
 <translation id="8634050254805484913">Auf schmalen Displays ausgeblendet</translation>
@@ -1966,13 +1975,13 @@ Wenn du diese Einstellung ändern möchtest, <ph name="BEGIN_LINK"/>lösche die 
 <translation id="9000089900434778519">Du hast <ph name="DSE_NAME"/> als Suchmaschine festgelegt. Informationen zum Löschen deines Suchverlaufs findest du in der zugehörigen Anleitung.</translation>
 <translation id="9010094279589497751">Gemini jederzeit schnell öffnen</translation>
 <translation id="9012585441087414258">Schützt vor Websites, Downloads und Erweiterungen, die als schädlich bekannt sind. Wenn sich eine Seite verdächtig verhält, werden URLs und Teile von Seiteninhalten an Google Safe Browsing gesendet.</translation>
-<translation id="9014097371980259227">Einige Tools wurden verschoben, damit du mit dem KI-Modus suchen kannst</translation>
 <translation id="9015111999662965458">Damit dieses Gerät sicher verwendet werden kann, muss deine Organisation möglicherweise Informationen zu Betriebssystem, Browser und Einstellungen sowie zu der Software abrufen, die auf dem Gerät installiert ist.</translation>
 <translation id="9019199799064251516">Ohne Autoprofilsperre fortfahren?</translation>
 <translation id="9022774213089566801">Häufig besucht</translation>
 <translation id="5687542525349822727">Brave als Standardbrowser festlegen</translation>
 <translation id="9027728231343310283">Für <ph name="SITE"/> rückgängig machen</translation>
 <translation id="9035378196785279980">Verschieben in\u2026</translation>
+<translation id="9038316201889095704">„Auf Seite suchen“ ist deaktiviert, solange es nicht gespeicherte Änderungen gibt.</translation>
 <translation id="904146253922032365">Gedrückt halten, um Tabs vertikal anzuzeigen</translation>
 <translation id="9042893549633094279">Datenschutz und Sicherheit</translation>
 <translation id="1612219807314383628">Schnell eine Suche in Brave starten</translation>

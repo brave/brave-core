@@ -117,6 +117,8 @@
 <translation id="2162109630536601963">ይህ ቅጥያ የአውታረ መረብ ጥያቄዎችን የሚያቀርብ ከሆነ Tor ን ወይም የግል ሁነታን አይጠቀሙም።</translation>
 <translation id="2725327089319971976">ይህንን ቅጥያ በግል ሁነታ እና በTor ሁነታ እንዳይሠራ ለማድረግ፣ ይህንን አማራጭ አይምረጡ።</translation>
 <translation id="438106944087726695">በBrave አቀናባሪ አውታረ መረብ</translation>
+<translation id="2265651566599167057">በSocket እንደ ተንኮል አዘል ሶፍትዌር ተለይቷል።</translation>
+<translation id="2607395470596637070">በBrave ውስጥ ያለው Socket እንዴት እንደሚጠብቅዎ የበለጠ ይወቁ</translation>
 <translation id="3371343170427636147">Brave የመዳሰሻ የምሽት መተግበሪያዎች</translation>
 <translation id="4097979995947147464">በ Brave የመዳሰሻ ቤታ መተግበሪያዎች ነው</translation>
 <translation id="8303432794159193481">የ Brave መዳሰሻ ማጎልበቻ መተግበሪያዎች</translation>
@@ -726,7 +728,7 @@
 <translation id="4432071071853308688">ይህ ኮድ ባዶ ነው</translation>
 <translation id="955848693465029904">የውስጥ ማመሳሰል ማዋቀር ስህተት</translation>
 <translation id="7456398316301207582">የውስጥ መለያ መሰረዝ ስህተት</translation>
-<translation id="859506441384380749">ይህ ኮድ የተፈጠረው ከአገልግሎት ውጭ በሆነው የ Brave ስሪት ነው፣ እባክዎ መጀመሪያ ሌላው መሳሪያዎን ያሻሽሉ።</translation>
+<translation id="4002014583969312635">ይህ ኮድ የቆየ የBrave ስሪት በሚያስኬድ መሣሪያ ላይ የተፈጠረ ይመስላል። እባክዎ በሌላኛው መሣሪያዎ ላይ ወደ የቅርብ ጊዜው የBrave ስሪት ያዘምኑ፣ ከዚያም አዲስ የማመሳሰል ኮድ ይፍጠሩ።</translation>
 <translation id="3132642509209154999">ይህ ኮድ ጊዜው አልፎበታል። እባክዎ በሌላኛው መሳሪያዎ ላይ አዲስ በማመንጨት እንደገና ሞክሩ።</translation>
 <translation id="2859229680945501779">ይህ ኮድ ልክ ያልሆነ ነው። እባክዎ ሰዓቱ እና የሰዓት ዞን በመሳሪያዎ ላይ በትክክል መዘጋጀታቸውን ያረጋግጡ።</translation>
 <translation id="2339730291919608488">ከማመሳሰል ሰንሰለት ይውጡ</translation>

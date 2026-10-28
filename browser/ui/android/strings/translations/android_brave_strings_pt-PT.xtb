@@ -220,7 +220,6 @@
 <translation id="9040069796107003510">Ícone das Recompensas Brave</translation>
 <translation id="6333347122924254968">Apresentar ícone das Recompensas Brave na barra de endereço</translation>
 <translation id="4393974575368329991">Barra de navegação inferior</translation>
-<translation id="8727059712928806451">Ativar barra inferior</translation>
 <translation id="1834226716203076292">Mostrar uma barra inferior para acesso rápido à página inicial, marcadores e pesquisa</translation>
 <translation id="1422686363939271829">Esta configuração é desativada quando a posição da barra de endereços inferior está selecionada</translation>
 <translation id="6587448235155023666">As suas modificações terão efeito da próxima vez que reiniciar o Brave</translation>
@@ -290,7 +289,7 @@
 <translation id="2569646144216067185">Contagem de palavras: <ph name="WORD_COUNT"/></translation>
 <translation id="7507533586185621084">Código de sincronização incorreto</translation>
 <translation id="8284063834901328650">Código QR de sincronização incorreto</translation>
-<translation id="859506441384380749">Este código foi gerado por uma versão descontinuada do Brave — primeiro, atualize o outro dispositivo</translation>
+<translation id="4002014583969312635">Parece que este código foi criado num dispositivo que está a executar uma versão mais antiga do Brave. Atualize para a versão mais recente do Brave no seu outro dispositivo e crie um novo código de sincronização.</translation>
 <translation id="3132642509209154999">Este código expirou. Gere um novo código no outro dispositivo e tente novamente.</translation>
 <translation id="2859229680945501779">Este código é inválido. Verifique se as horas e o fuso horário estão definidos corretamente no seu dispositivo.</translation>
 <translation id="3149880132460839085">Sincronização do Brave</translation>
@@ -336,8 +335,6 @@
 <translation id="8185825081026121627">Ganhe o Token de Atenção Básica pela visualização de privacidade preservando os anúncios do Brave Rewards.</translation>
 <translation id="5321518976657560663">Erro de Reposição</translation>
 <translation id="4114170343590425996">Ocorreu um erro ao repor as «Recompensas Brave». Por favor, reinicie o Brave e tente novamente.</translation>
-<translation id="6417420737057016607">Anúncios do Brave</translation>
-<translation id="5611966874859284786">Mostrar notificações de anúncios quando o Brave não está a ser utilizado</translation>
 <translation id="5717636703619499822"><ph name="BEGIN_LINK1"/>Repor dados das Recompensas Brave…<ph name="END_LINK1"/></translation>
 <translation id="1830919318137227284"><ph name="BEGIN_LINK1"/>Limpar dados dos Anúncios Brave…<ph name="END_LINK1"/></translation>
 <translation id="8293206222192510085">Adicionar marcador</translation>
@@ -400,8 +397,9 @@ Tem a certeza de que pretende continuar?</translation>
 <translation id="4546260624932151782">Mostrar favoritos</translation>
 <translation id="5313967007315987356">Adicionar site</translation>
 <translation id="1773147648972887693">Mostrar os visitados frequentemente</translation>
-<translation id="752098910262610337">Mostrar atalhos</translation>
 <translation id="7134741506051403308">Ocultar widget</translation>
+<translation id="1247759249260562308">Editar favorito em destaque</translation>
+<translation id="6387214885349500492">Fixar este favorito</translation>
 <translation id="7462178177755090262">Tela de abertura</translation>
 <translation id="5365434987337264071">Última aba aberta</translation>
 <translation id="6019856124237323989">{HOURS, plural,
@@ -979,6 +977,7 @@ Se não aceitar este pedido, a VPN não voltará a ligar e a sua ligação à In
 <translation id="6365389672683343144">A sua assinatura da VPN Brave pode proteger até 5 dispositivos, incluindo Android, iOS e computadores. Basta associar sua assinatura do Google Play à sua conta do Brave.</translation>
 <translation id="6610899852831463073">Não é possível ativar a Navegação segura</translation>
 <translation id="7954263306665462056">A Navegação segura foi desativada no seu dispositivo. Para a ativar, certifique-se de que os Serviços do Google Play estão instalados e atualizados.</translation>
+<translation id="6417420737057016607">Anúncios do Brave</translation>
 <translation id="7748944510530490017">Redes principais</translation>
 <translation id="2781668117338732220">Redes secundárias</translation>
 <translation id="282560918037172384">Redes de teste</translation>

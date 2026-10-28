@@ -12,7 +12,6 @@
 <translation id="6670155282615872564">Näillä ehdotuksilla saat Bravesta mahdollisimman paljon irti</translation>
 <translation id="113098737392899175">Siirry sivuilla tekstikohdistimen avulla, kun näppäimistö on yhdistetty</translation>
 <translation id="1148624853678088576">Kaikki on valmista!</translation>
-<translation id="738393714577080438">Tallenna salasanat Braveen</translation>
 <translation id="1178015372320901893">Omat pikakuvakkeet ‑alapaneeli</translation>
 <translation id="1178581264944972037">Tauko</translation>
 <translation id="1181037720776840403">Poista</translation>
@@ -54,6 +53,7 @@
 <translation id="1532175480576580256">Omat pikakuvakkeet ‑alapaneeli avattu kokonaan</translation>
 <translation id="1538031354170655462">Sivustot käyttävät yleensä Near Field Communication (NFC) -teknologiaa toimiakseen lähellä olevien tagien tai laitteiden kanssa, esimerkiksi tunnusten skannaamiseen tai lähimaksamiseen</translation>
 <translation id="1547123415014299762">Kolmannen osapuolen evästeet on sallittu</translation>
+<translation id="1565353932454306569"><ph name="ORIGIN"/> – Poistu koko näytön tilasta vetämällä näytön reunasta.</translation>
 <translation id="3665719978526894928">Nopeuta sivustoja Braven V8-moottorilla, mutta heikennä Braven suojaa hyökkäyksiä vastaan</translation>
 <translation id="1593426485665524382">Uusia toimintoja saatavilla näytön yläosassa</translation>
 <translation id="1594521731409209842">Muuta kuvan kokoa nipistämällä näyttöä</translation>
@@ -138,6 +138,7 @@
 <translation id="2315043854645842844">Käyttöjärjestelmä ei tue palvelimen varmennevalintaa.</translation>
 <translation id="2347601491101454548">Omat pikakuvakkeet ‑alapaneeli avattu puoliksi</translation>
 <translation id="2359808026110333948">Jatka</translation>
+<translation id="2364212713469273030"><ph name="ORIGIN"/> – Poistu koko näytön tilasta vetämällä näytön yläreunasta ja pyyhkäisemällä vasemmasta tai oikeasta reunasta.</translation>
 <translation id="904887679952026733">Jos mahdollista, käytä tummaa teemaa sivustoilla, kun se on Braven käytössä</translation>
 <translation id="2390272837142897736">Lisää zoomausta</translation>
 <translation id="2397689164757137845">Sallittu • Tarkka</translation>
@@ -227,7 +228,6 @@
 <translation id="3167868116600277716">Discover-fiidi</translation>
 <translation id="3198916472715691905"><ph name="STORAGE_AMOUNT"/> tallennettua tietoa</translation>
 <translation id="3199078925536734975">Sallittu tällä kertaa • Likimääräinen</translation>
-<translation id="3208584281581115441">Tarkista nyt</translation>
 <translation id="321187648315454507">Ota ilmoitukset käyttöön myös <ph name="BEGIN_LINK"/>Androidin asetuksista<ph name="END_LINK"/>, jotta <ph name="APP_NAME"/> voi lähettää sinulle ilmoituksia.</translation>
 <translation id="3223425961342298674">Pääsyä sijaintiin ei sallittu</translation>
 <translation id="3227137524299004712">Mikrofoni</translation>
@@ -284,7 +284,6 @@
 <translation id="381841723434055211">Puhelinnumerot</translation>
 <translation id="3823453485268218808">Mono-fontti</translation>
 <translation id="3826050100957962900">Kolmannen osapuolen sisäänkirjautuminen</translation>
-<translation id="3831065134033923230">Tarkista tallennetut salasanat</translation>
 <translation id="3835233591525155343">Laitteesi käyttö</translation>
 <translation id="1799795508209440035">Brave estää evästeet uudelleen tänään</translation>
 <translation id="385051799172605136">Takaisin</translation>
@@ -292,7 +291,6 @@
 <translation id="9046306654872718870">Tee Bravesta itsesi näköinen lisäämällä etusivulle omia värejä ja kuvia</translation>
 <translation id="389521680295183045">Sivustot saavat pyytää luvan tietää, milloin käytät laitetta aktiivisesti</translation>
 <translation id="3895926599014793903">Ota zoomaus käyttöön</translation>
-<translation id="3903738175795615004">Poistu koko näytön tilasta vetämällä näytön yläreunasta tai painamalla Esc-näppäintä.</translation>
 <translation id="3905475044299942653">Estä useat ilmoitukset</translation>
 <translation id="3922092564198021702">Avaa puhelimella Asetukset</translation>
 <translation id="3924858949939391676">Näytä linkit, kun lukutila on päällä</translation>
@@ -353,7 +351,6 @@
 <translation id="4479647676395637221">Pyydä lupaa, kun sivustot yrittävät käyttää kameraasi (suositus).</translation>
 <translation id="4505788138578415521">URL näkyy laajennettuna</translation>
 <translation id="4522570452068850558">Tiedot</translation>
-<translation id="4523472416386354622">Aloita kirjautumalla sisään</translation>
 <translation id="4529207923544043455">Alareunassa näkyvässä taulukossa on valmiit ja keskeneräiset käyttöönottotehtävät</translation>
 <translation id="4534723447064627427">Laita mikrofoni päälle myös <ph name="BEGIN_LINK"/>Androidin asetuksista<ph name="END_LINK"/>, jotta <ph name="APP_NAME"/> saa pääsyn mikrofoniisi.</translation>
 <translation id="4545694195887112015">Asennussivu suljettu</translation>
@@ -366,7 +363,6 @@
 <translation id="4645575059429386691">Vanhempasi hallinnoima</translation>
 <translation id="4651224148644053314">Lisää värejä ja vaihtoehtoja</translation>
 <translation id="4652266463001779298">Ei sallittu</translation>
-<translation id="4655846733459137112">Valitse Kyllä, niin voit käyttää salasanaa helposti seuraavalla kirjautumiskerralla</translation>
 <translation id="4663373278480897665">Kamera sallittu</translation>
 <translation id="4670064810192446073">Virtuaalitodellisuus</translation>
 <translation id="5652778654712411580">Valitse Selainsovellus ja sitten Brave</translation>
@@ -411,7 +407,6 @@
 <translation id="512938610812707830">Uusi välilehti ‐sivun ulkoasun teemakokoelmien alapaneeli avattu kokonaan</translation>
 <translation id="5137460097045297858">Discover-fiidin alapaneeli avattu puoliksi</translation>
 <translation id="5139253256813381453">{PRICE_DROP_COUNT,plural, =1{Hinnanalennus avoimilla välilehdillä}other{Hinnanalennukset avoimilla välilehdillä}}</translation>
-<translation id="5150048675001754041">Kirjaudu nopeasti ja helposti sivustoille ja sovelluksiin</translation>
 <translation id="5186036860380548585">Toiminto on käytettävissä näytön yläosassa</translation>
 <translation id="5197729504361054390"><ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/> saa valitsemasi yhteystiedot.</translation>
 <translation id="5198930230016462977">"Muuta Uusi välilehti ‑sivua" -alapaneeli suljettu</translation>
@@ -421,7 +416,6 @@
 <translation id="5239623327352565343">Sijainti sallittu</translation>
 <translation id="5246825184569358663">Tämä toiminto poistaa kaiken paikallisen datan, myös evästeet, ja nollaa kaikki luvat verkkotunnukselta <ph name="DOMAIN"/> ja kaikilta sen alaisilta sivustoilta</translation>
 <translation id="5264323282659631142">Poista <ph name="CHIP_LABEL"/></translation>
-<translation id="528192093759286357">Poistu koko näytön tilasta vetämällä näytön yläreunasta ja koskettamalla Takaisin-painiketta.</translation>
 <translation id="5286194356314741248">Etsitään</translation>
 <translation id="5300589172476337783">Näytä</translation>
 <translation id="5301954838959518834">Selvä</translation>
@@ -469,7 +463,6 @@
 <translation id="5804241973901381774">Luvat</translation>
 <translation id="5817042798620209981">Sivustotiedot, valintaikkuna</translation>
 <translation id="5822675474983796325">"Muuta Uusi välilehti ‑sivua" -alapaneeli avattu koko näytölle</translation>
-<translation id="4298364316773778595">Ohjealapaneeli salasanojen tallentamisesta Braveen</translation>
 <translation id="5833899990800318936">Älä salli sivustojen käyttää JavaScriptiä</translation>
 <translation id="583673505367439042">Sivustot saavat muokata laitteen tiedostoja ja kansioita</translation>
 <translation id="5844448279347999754">Kun tämä on päällä, sivustot voivat pyytää leikepöydälle tallennettujen tekstien ja kuvien näkemistä. Kun tämä on pois päältä, sivustot eivät näe leikepöydälle tallennettuja tekstejä tai kuvia.</translation>
@@ -507,7 +500,6 @@
 <translation id="6104860901391833523">Kun asetus on päällä, sivustot voivat siirtyä automaattisesti pikkuruututilaan. Kun asetus on pois päältä, sivustot eivät voi siirtyä automaattisesti pikkuruututilaan.</translation>
 <translation id="6120483543004435978">Kun tämä on päällä, sivustot voivat pyytää lupaa nähdä, milloin käytät laitetta aktiivisesti. Kun tämä on pois päältä, sivustot eivät saa tietää, milloin käytät laitetta aktiivisesti.</translation>
 <translation id="5773142757282836623">Piilota "Saa Brave-ehdotuksia muissa sovelluksissa"</translation>
-<translation id="4852158809106762963">Brave tarjoutuu tallentamaan salasanasi</translation>
 <translation id="615886654739818377">Älä salli sivustojen hallinnoida ikkunoita kaikilla näytöillä</translation>
 <translation id="6165508094623778733">Lisätietoja</translation>
 <translation id="6171020522141473435">Kun tämä on päällä, sivustot voivat pyytää lupaa käyttää Bluetooth-laitteita. Kun tämä on pois päältä, sivustot eivät voi käyttää Bluetooth-laitteita.</translation>
@@ -583,7 +575,6 @@
 <translation id="6980861169612950611">Poistetaanko sivustodata? <ph name="SITE_NAME"/></translation>
 <translation id="6981982820502123353">Saavutettavuus</translation>
 <translation id="6991142177939282156">Sallittu • Käytetään likimääräistä sijaintia</translation>
-<translation id="6992014788289743568">Paranna suojausta ja pidä datasi turvassa tarkistamalla salasanasi</translation>
 <translation id="6992289844737586249">Pyydä lupaa, kun sivustot yrittävät käyttää mikrofonia (suositus).</translation>
 <translation id="7000754031042624318">Poistettu käytöstä Android-asetuksissa</translation>
 <translation id="7036823721811529709">Kuuntele taustalla</translation>
@@ -650,7 +641,6 @@ Lisäsuojaus ohjaa näitä Braven asetuksia:</translation>
 <translation id="775043444390799886">Peru lupa</translation>
 <translation id="7758789811447313947">Violetti teema</translation>
 <translation id="7759147511335618829">Ohjaus ja uudelleenohjelmointi</translation>
-<translation id="7771089277295008211">Ohjealapaneeli salasanojen tallentamisesta on suljettu</translation>
 <translation id="7781829728241885113">Eilen</translation>
 <translation id="7791543448312431591">Lisää</translation>
 <translation id="780301667611848630">Ei kiitos</translation>
@@ -667,7 +657,6 @@ Lisäsuojaus ohjaa näitä Braven asetuksia:</translation>
 <translation id="7940722705963108451">Muistuta minua</translation>
 <translation id="7948081750384205628">Lue lisää: <ph name="SETTING_TITLE"/></translation>
 <translation id="7952708427581814389">Sivustot saavat pyytää leikepöydällä olevan tekstin ja kuvien näkemistä</translation>
-<translation id="7958779728312669715">Ohjealapaneeli salasanojen tallentamisesta on avattu kokonaan</translation>
 <translation id="798299424881500862">Oranssi teema</translation>
 <translation id="7986741934819883144">Valitse yhteystieto</translation>
 <translation id="7990211076305263060">Kun tämä on päällä, sivustot voivat pyytää lupaa mikrofonin käyttöön. Kun tämä on pois päältä, sivustot eivät voi käyttää mikrofonia.</translation>
@@ -762,7 +751,6 @@ Lisäsuojaus ohjaa näitä Braven asetuksia:</translation>
 <translation id="7532165358672313130">Kun jatkat selaamista, sivustot voivat Braven avulla tarkistaa edelliseltä avaamasi sivustolta, että olet todennäköisesti oikea ihminen.</translation>
 <translation id="8899807382908246773">Häiritsevät mainokset</translation>
 <translation id="8903921497873541725">Lähennä</translation>
-<translation id="8919911527569629802">Kirjaudu mille tahansa sivustolle</translation>
 <translation id="8921772741368021346"><ph name="POSITION"/>/<ph name="DURATION"/></translation>
 <translation id="8926389886865778422">Älä kysy uudestaan</translation>
 <translation id="8926666909099850184">NFC on pois päältä tällä laitteella. Voit laittaa sen päälle <ph name="BEGIN_LINK"/>Androidin asetuksista<ph name="END_LINK"/>.</translation>
@@ -786,6 +774,7 @@ Lisäsuojaus ohjaa näitä Braven asetuksia:</translation>
 <translation id="9138217887606523162">Zoomaus on <ph name="ZOOM_LEVEL"/> %%</translation>
 <translation id="7359422048569205930">Salli Braven näyttää viimeaikaiset välilehdet laitteen sovelluslistalla ja hakutuloksissa. Voit laittaa tämän pois päältä milloin tahansa Braven asetuksista.</translation>
 <translation id="9162462602695099906">Tämä sivu on vaarallinen</translation>
+<translation id="9172068157980844189">Voit laittaa kirjanmerkkipalkin päälle kohdasta Asetukset &gt; Ulkoasu</translation>
 <translation id="9182556968660520230">Älä salli sivustojen toistaa suojattua sisältöä</translation>
 <translation id="927148002081263046">Jaa yhteystieto</translation>
 <translation id="947156494302904893">Avaamasi sivustot voivat vahvistaa, että olet oikea ihminen etkä botti</translation>
