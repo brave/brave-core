@@ -104,14 +104,6 @@ class BraveExtensionsV2Subpage extends BraveExtensionsV2SubpageBase {
     return ext.installed && !ext.enabled
   }
 
-  itemPref_(enabled: boolean) {
-    return {
-      key: '',
-      type: chrome.settingsPrivate.PrefType.BOOLEAN,
-      value: enabled,
-    }
-  }
-
   closeToast_() {
     this.showErrorToast_ = false
   }

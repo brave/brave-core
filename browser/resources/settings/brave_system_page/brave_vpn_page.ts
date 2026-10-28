@@ -48,12 +48,7 @@ export class SettingsBraveVpnPageElement
   static get properties() {
     return {
       // <if expr="is_win">
-      showInSystemTrayPref_: {
-        type: Object,
-        value() {
-          return {}
-        }
-      }
+      showInSystemTray_: Boolean
       // </if>
     }
   }
@@ -61,7 +56,7 @@ export class SettingsBraveVpnPageElement
   private toggleWireguardSubLabel_: String;
   private braveVpnConnected_: Boolean = false;
   // <if expr="is_win">
-  declare showInSystemTrayPref_: chrome.settingsPrivate.PrefObject;
+  declare showInSystemTray_: boolean;
   // </if>
   private vpnBrowserProxy_: BraveVPNBrowserProxy =
     BraveVPNBrowserProxyImpl.getInstance();
@@ -73,9 +68,9 @@ export class SettingsBraveVpnPageElement
     // <if expr="is_win">
     this.vpnBrowserProxy_.isBraveVpnConnected()
       .then(this.onVpnStateChange.bind(this))
-    const setShowInSystemTrayPref = (enabled: boolean) =>
-        this.setShowInSystemTrayPref_(enabled)
-    this.vpnBrowserProxy_.showInSystemTray().then(setShowInSystemTrayPref)
+    this.vpnBrowserProxy_.showInSystemTray().then((enabled: boolean) => {
+      this.showInSystemTray_ = enabled
+    })
     // </if>
   }
 
@@ -85,15 +80,6 @@ export class SettingsBraveVpnPageElement
   }
 
   // <if expr="is_win">
-  setShowInSystemTrayPref_(enabled: boolean) {
-    const pref = {
-      key: '',
-      type: chrome.settingsPrivate.PrefType.BOOLEAN,
-      value: enabled,
-    }
-    this.showInSystemTrayPref_ = pref
-  }
-
   onToggleShowInSystemTrayChange_ () {
     this.vpnBrowserProxy_.
       setShowInSystemTray(this.$.toggleShowInSystemTray.checked)

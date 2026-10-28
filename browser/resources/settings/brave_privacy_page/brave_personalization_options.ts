@@ -164,12 +164,7 @@ export class SettingsBravePersonalizationOptions extends SettingsBravePersonaliz
           return loadTimeData.getBoolean('isWindowsRecallAvailable')
         },
       },
-      windowsRecallDisabledPref_: {
-        type: Object,
-        value: () => {
-          return {}
-        },
-      },
+      windowsRecallDisabled_: Boolean,
     }
   }
 
@@ -188,7 +183,7 @@ export class SettingsBravePersonalizationOptions extends SettingsBravePersonaliz
   declare private requestOTRAction_: String
   declare private pushMessagingPref_: chrome.settingsPrivate.PrefObject<boolean>
   declare private isWindowsRecallAvailable_: boolean
-  declare private windowsRecallDisabledPref_: chrome.settingsPrivate.PrefObject
+  declare private windowsRecallDisabled_: boolean
 
   browserProxy_: BravePrivacyBrowserProxy =
     BravePrivacyBrowserProxyImpl.getInstance()
@@ -221,12 +216,7 @@ export class SettingsBravePersonalizationOptions extends SettingsBravePersonaliz
   }
 
   setWindowsRecallDisabled_(disabled: boolean) {
-    const pref = {
-      key: '',
-      type: chrome.settingsPrivate.PrefType.BOOLEAN,
-      value: disabled,
-    }
-    this.windowsRecallDisabledPref_ = pref
+    this.windowsRecallDisabled_ = disabled
   }
 
   restartBrowser_(e: Event) {

@@ -45,14 +45,14 @@
 
 <settings-section page-title="$i18n{braveTor}">
   <template is="dom-if" if="[[!isTorManaged_]]">
-    <settings-toggle-button id="torEnabled" class="cr-row" pref="[[torEnabledPref_]]" label="$i18n{torEnabledLabel}"
+    <settings-toggle-button id="torEnabled" class="cr-row" checked="[[torEnabled_]]" label="$i18n{torEnabledLabel}"
       sub-label="$i18n{torEnabledDesc}"
       learn-more-url="https://support.brave.app/hc/en-us/articles/360018121491-What-is-a-Private-Window-with-Tor-Connectivity-"
       on-settings-boolean-control-change="onTorEnabledChange_">
     </settings-toggle-button>
   </template>
   <if expr="enable_extensions">
-    <settings-toggle-button id="torSnowflake" pref="[[torSnowflakeExtensionEnabledPref_]]"
+    <settings-toggle-button id="torSnowflake" checked="[[torSnowflakeExtensionEnabled_]]"
       label="$i18n{torSnowflakeExtensionLabel}" sub-label="$i18n{torSnowflakeExtensionDesc}"
       disabled="[[!torSnowflakeExtensionAllowed_]]" on-settings-boolean-control-change="onTorSnowflakeExtensionChange_"
       learn-more-url="https://support.brave.app/hc/en-us/articles/9059440641421" class="cr-row">
@@ -60,7 +60,7 @@
   </if>
   <settings-toggle-button id="useBridges" class="cr-row" label="$i18n{torUseBridgesTitle}"
     sub-label="$i18n{torUseBridgesDesc}" learn-more-url="https://support.brave.app/hc/en-us/articles/7816553516045"
-    pref="{{isUsingBridgesPref_}}" disabled="[[!torEnabledPref_.value]]"
+    checked="[[isUsingBridges_]]" disabled="[[!torEnabled_]]"
     on-settings-boolean-control-change="onUseBridgesChange_">
     <template is="dom-if" if="[[isConfigChanged_]]">
       <cr-button id="apply" on-click="setBridgesConfig_" slot="more-actions">
