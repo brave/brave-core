@@ -11,6 +11,7 @@
 #include "base/test/bind.h"
 #include "base/test/run_until.h"
 #include "brave/browser/tor/tor_profile_manager.h"
+#include "brave/browser/tor/tor_profile_service_factory.h"
 #include "brave/components/tor/tor_navigation_throttle.h"
 #include "brave/net/proxy_resolution/proxy_config_service_tor.h"
 #include "chrome/browser/profiles/profile.h"
@@ -42,6 +43,7 @@ constexpr char kFetchLaterRedirectSentinelPath[] =
 
 struct OnionAccessScenario {
   bool tor_window = false;
+  bool tor_disabled = false;
   bool expect_blocked = true;
 };
 
@@ -49,6 +51,7 @@ std::string OnionAccessScenarioName(
     const testing::TestParamInfo<OnionAccessScenario>& info) {
   const OnionAccessScenario& scenario = info.param;
   return base::StrCat({scenario.tor_window ? "TorWindow" : "NormalWindow",
+                       scenario.tor_disabled ? "_TorDisabled" : "",
                        scenario.expect_blocked ? "_Blocked" : "_Allowed"});
 }
 
@@ -108,6 +111,10 @@ class OnionDomainThrottleBrowserTest
   }
 
   BrowserWindowInterface* SetUpScenario(const OnionAccessScenario& scenario) {
+    if (scenario.tor_disabled) {
+      TorProfileServiceFactory::SetTorDisabled(true);
+    }
+
     BrowserWindowInterface* browser = GetBrowser(scenario.tor_window);
 
     [&]() {
@@ -267,10 +274,12 @@ class OnionDomainThrottleBrowserTest
 INSTANTIATE_TEST_SUITE_P(
     ,
     OnionDomainThrottleBrowserTest,
-    ::testing::Values(OnionAccessScenario{.tor_window = false,
-                                          .expect_blocked = true},
-                      OnionAccessScenario{.tor_window = true,
-                                          .expect_blocked = false}),
+    ::testing::Values(
+        OnionAccessScenario{.tor_window = false, .expect_blocked = true},
+        OnionAccessScenario{.tor_window = false,
+                            .tor_disabled = true,
+                            .expect_blocked = true},
+        OnionAccessScenario{.tor_window = true, .expect_blocked = false}),
     &OnionAccessScenarioName);
 
 IN_PROC_BROWSER_TEST_P(OnionDomainThrottleBrowserTest,

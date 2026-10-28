@@ -24,6 +24,7 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/test_navigation_observer.h"
+#include "content/public/test/test_utils.h"
 #include "net/test/embedded_test_server/http_request.h"
 #include "net/test/embedded_test_server/http_response.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -254,11 +255,83 @@ IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest,
   EXPECT_TRUE(helper->onion_location().is_empty());
 
   // Onion Domain
+  content::TestNavigationObserver nav_observer(web_contents);
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL(kTestOnionURL)));
+  nav_observer.Wait();
+  EXPECT_EQ(nav_observer.last_net_error_code(), net::ERR_BLOCKED_BY_CLIENT);
+  EXPECT_FALSE(helper->should_show_icon());
   EXPECT_EQ(1U, GlobalBrowserCollection::GetInstance()->GetSize());
 
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   EXPECT_EQ(1U, GlobalBrowserCollection::GetInstance()->GetSize());
+}
+
+IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest,
+                       TorDisabledAfterOnionLocation) {
+  const GURL url = test_server()->GetURL(kTestOnionPath);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  content::WebContents* web_contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  tor::OnionLocationTabHelper* helper =
+      tor::OnionLocationTabHelper::FromWebContents(web_contents);
+  ASSERT_TRUE(helper->should_show_icon());
+  ASSERT_TRUE(GetOnionLocationView(browser()).GetVisible());
+
+  TorProfileServiceFactory::SetTorDisabled(true);
+  EXPECT_FALSE(GetOnionLocationView(browser()).GetVisible());
+
+  // A page without Onion-Location.
+  content::RenderFrameHostWrapper onion_location_rfh(
+      web_contents->GetPrimaryMainFrame());
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(
+      browser(), test_server()->GetURL(kTestNotOnion)));
+  EXPECT_FALSE(helper->should_show_icon());
+  EXPECT_TRUE(helper->onion_location().is_empty());
+
+  // The page with Onion-Location, restored from the back/forward cache.
+  ASSERT_EQ(onion_location_rfh->GetLifecycleState(),
+            content::RenderFrameHost::LifecycleState::kInBackForwardCache);
+  ASSERT_TRUE(content::HistoryGoBack(web_contents));
+  ASSERT_EQ(onion_location_rfh.get(), web_contents->GetPrimaryMainFrame());
+  EXPECT_FALSE(GetOnionLocationView(browser()).GetVisible());
+
+  // A page with Onion-Location.
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  EXPECT_FALSE(helper->should_show_icon());
+  EXPECT_TRUE(helper->onion_location().is_empty());
+
+  // A blocked .onion page.
+  content::TestNavigationObserver nav_observer(web_contents);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL(kTestOnionURL)));
+  nav_observer.Wait();
+  EXPECT_EQ(nav_observer.last_net_error_code(), net::ERR_BLOCKED_BY_CLIENT);
+  EXPECT_FALSE(helper->should_show_icon());
+  EXPECT_TRUE(helper->onion_location().is_empty());
+  EXPECT_FALSE(GetOnionLocationView(browser()).GetVisible());
+}
+
+IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest,
+                       GuestProfile) {
+  BrowserWindowInterface* guest_browser = CreateGuestBrowser();
+  ASSERT_TRUE(guest_browser);
+  ASSERT_TRUE(guest_browser->GetProfile()->IsGuestSession());
+  ASSERT_TRUE(
+      TorProfileServiceFactory::IsTorDisabled(guest_browser->GetProfile()));
+
+  content::WebContents* web_contents =
+      guest_browser->GetTabStripModel()->GetActiveWebContents();
+  tor::OnionLocationTabHelper* helper =
+      tor::OnionLocationTabHelper::FromWebContents(web_contents);
+
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(
+      guest_browser, test_server()->GetURL(kTestOnionPath)));
+  EXPECT_FALSE(helper->should_show_icon());
+
+  content::TestNavigationObserver nav_observer(web_contents);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(guest_browser, GURL(kTestOnionURL)));
+  nav_observer.Wait();
+  EXPECT_EQ(nav_observer.last_net_error_code(), net::ERR_BLOCKED_BY_CLIENT);
+  EXPECT_FALSE(helper->should_show_icon());
 }
 
 IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest,
