@@ -16,6 +16,8 @@
 #include "brave/browser/workspaces/workspace_service.h"
 #include "brave/browser/workspaces/workspace_service_factory.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+#include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "components/constrained_window/constrained_window_views.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
@@ -34,13 +36,12 @@
 
 WorkspacesBubbleView::~WorkspacesBubbleView() = default;
 
-WorkspacesBubbleView::WorkspacesBubbleView(
-    views::View* anchor_view,
-    Profile* profile,
-    base::RepeatingClosure on_save_workspace)
+WorkspacesBubbleView::WorkspacesBubbleView(views::View* anchor_view,
+                                           BrowserWindowInterface* browser,
+                                           base::RepeatingClosure on_new_space)
     : BubbleDialogDelegate(anchor_view, views::BubbleBorder::TOP_LEFT),
-      profile_(profile),
-      on_save_workspace_(std::move(on_save_workspace)) {
+      browser_(browser),
+      on_new_space_(std::move(on_new_space)) {
   SetButtons(static_cast<int>(ui::mojom::DialogButton::kNone));
   SetShowCloseButton(false);
   set_margins(gfx::Insets());
@@ -53,15 +54,45 @@ WorkspacesBubbleView::WorkspacesBubbleView(
       /*inside_border_insets=*/gfx::Insets(),
       /*between_child_spacing=*/0));
 
-  auto* service = WorkspaceServiceFactory::GetForProfile(profile);
+  auto* service = WorkspaceServiceFactory::GetForProfile(browser->GetProfile());
   CHECK(service);
 
-  std::vector<WorkspaceMetadata> workspaces = service->ListWorkspaces();
+  const SessionID window_id = browser->GetSessionID();
+  const std::optional<base::Uuid> showing =
+      service->GetWorkspaceForWindow(window_id);
+
   auto* workspaces_container =
       contents->AddChildView(std::make_unique<views::View>());
   workspaces_container->SetLayoutManager(std::make_unique<views::BoxLayout>(
       views::BoxLayout::Orientation::kVertical));
   workspaces_container->SetProperty(views::kMarginsKey, gfx::Insets(2));
+
+  // The window a person started in leads the list, separated from the
+  // workspaces the whole profile shares. It is hidden rather than emptied when
+  // they switch away, so its tab count comes straight off its tab strip.
+  BrowserWindowInterface* unmanaged_window = browser;
+  if (std::optional<SessionID> origin =
+          service->GetUnmanagedWindowFor(window_id)) {
+    unmanaged_window = BrowserWindowInterface::FromSessionID(*origin);
+  }
+
+  if (unmanaged_window) {
+    WorkspaceMetadata unmanaged_space{
+        .name = l10n_util::GetStringUTF8(IDS_WORKSPACE_UNMANAGED_SPACE_NAME),
+        .number_of_tabs = unmanaged_window->GetTabStripModel()->count()};
+    auto* unmanaged_row =
+        workspaces_container->AddChildView(std::make_unique<WorkspaceRowView>(
+            unmanaged_space,
+            base::BindRepeating(&WorkspacesBubbleView::OnUnmanagedSelected,
+                                weak_factory_.GetWeakPtr()),
+            // The unmanaged space is implicit: no menu to delete it.
+            base::RepeatingClosure()));
+    unmanaged_row->SetSelected(!showing.has_value());
+
+    workspaces_container->AddChildView(std::make_unique<views::Separator>());
+  }
+
+  std::vector<WorkspaceMetadata> workspaces = service->ListWorkspaces();
   if (workspaces.empty()) {
     auto* empty_title =
         workspaces_container->AddChildView(std::make_unique<views::Label>(
@@ -81,18 +112,20 @@ WorkspacesBubbleView::WorkspacesBubbleView(
     empty_body->SetProperty(views::kMarginsKey, gfx::Insets::TLBR(0, 8, 8, 8));
   } else {
     for (const auto& workspace : workspaces) {
-      workspaces_container->AddChildView(std::make_unique<WorkspaceRowView>(
-          workspace,
-          base::BindRepeating(&WorkspacesBubbleView::OnWorkspaceSelected,
-                              weak_factory_.GetWeakPtr(), workspace.name),
-          base::BindRepeating(&WorkspacesBubbleView::OnDeleteClicked,
-                              weak_factory_.GetWeakPtr(), workspace.name)));
+      auto* row =
+          workspaces_container->AddChildView(std::make_unique<WorkspaceRowView>(
+              workspace,
+              base::BindRepeating(&WorkspacesBubbleView::OnWorkspaceSelected,
+                                  weak_factory_.GetWeakPtr(), workspace.id),
+              base::BindRepeating(&WorkspacesBubbleView::OnDeleteClicked,
+                                  weak_factory_.GetWeakPtr(), workspace.id)));
+      row->SetSelected(showing == workspace.id);
     }
   }
 
   contents->AddChildView(std::make_unique<views::Separator>());
 
-  // Bottom action row: Settings + Save.
+  // Bottom action row: Settings + New Space.
   auto* button_row = contents->AddChildView(std::make_unique<views::View>());
   auto* button_row_layout =
       button_row->SetLayoutManager(std::make_unique<views::BoxLayout>(
@@ -111,9 +144,9 @@ WorkspacesBubbleView::WorkspacesBubbleView(
 
   auto* new_space_button =
       button_row->AddChildView(std::make_unique<views::MdTextButton>(
-          base::BindRepeating(&WorkspacesBubbleView::OnSaveClicked,
+          base::BindRepeating(&WorkspacesBubbleView::OnNewSpaceClicked,
                               weak_factory_.GetWeakPtr()),
-          l10n_util::GetStringUTF16(IDS_WORKSPACES_BUBBLE_SAVE_BUTTON)));
+          l10n_util::GetStringUTF16(IDS_WORKSPACES_BUBBLE_NEW_SPACE_BUTTON)));
   new_space_button->SetStyle(ui::ButtonStyle::kProminent);
   new_space_button->SetProperty(views::kMarginsKey, gfx::Insets(4));
   button_row_layout->SetFlexForView(new_space_button, 1);
@@ -121,22 +154,32 @@ WorkspacesBubbleView::WorkspacesBubbleView(
   SetContentsView(std::move(contents));
 }
 
-void WorkspacesBubbleView::OnSaveClicked() {
-  if (on_save_workspace_) {
-    on_save_workspace_.Run();
+void WorkspacesBubbleView::OnNewSpaceClicked() {
+  if (on_new_space_) {
+    on_new_space_.Run();
   }
   GetWidget()->Close();
 }
 
-void WorkspacesBubbleView::OnWorkspaceSelected(const std::string& name) {
-  auto* service = WorkspaceServiceFactory::GetForProfile(profile_);
+void WorkspacesBubbleView::OnUnmanagedSelected() {
+  auto* service =
+      WorkspaceServiceFactory::GetForProfile(browser_->GetProfile());
   CHECK(service);
-  service->RestoreWorkspace(name);
+  service->SwitchWindowToUnmanaged(browser_);
   GetWidget()->Close();
 }
 
-void WorkspacesBubbleView::OnDeleteClicked(const std::string& name) {
-  auto* service = WorkspaceServiceFactory::GetForProfile(profile_);
+void WorkspacesBubbleView::OnWorkspaceSelected(const base::Uuid& id) {
+  auto* service =
+      WorkspaceServiceFactory::GetForProfile(browser_->GetProfile());
+  CHECK(service);
+  service->SwitchWindowToWorkspace(id, browser_);
+  GetWidget()->Close();
+}
+
+void WorkspacesBubbleView::OnDeleteClicked(const base::Uuid& id) {
+  auto* service =
+      WorkspaceServiceFactory::GetForProfile(browser_->GetProfile());
   CHECK(service);
 
   // The bubble closes once the modal confirmation appears; binding the
@@ -149,7 +192,7 @@ void WorkspacesBubbleView::OnDeleteClicked(const std::string& name) {
           .AddParagraph(ui::DialogModelLabel(
               l10n_util::GetStringUTF16(IDS_WORKSPACE_DELETE_CONFIRM_BODY)))
           .AddOkButton(base::BindOnce(&WorkspaceService::DeleteWorkspace,
-                                      service->GetWeakPtr(), name),
+                                      service->GetWeakPtr(), id),
                        ui::DialogModel::Button::Params()
                            .SetLabel(l10n_util::GetStringUTF16(
                                IDS_WORKSPACE_DELETE_CONFIRM_DELETE_BUTTON))

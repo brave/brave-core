@@ -374,7 +374,7 @@ void BraveHorizontalTabStripRegionView::OnWorkspacesButtonPressed() {
   auto* bwi = tab_strip_->GetBrowserWindowInterface();
   auto* controller = WorkspacesBubbleController::From(bwi);
   CHECK(controller);
-  controller->ShowBubble(workspaces_button_, bwi->GetProfile());
+  controller->ShowBubble(workspaces_button_, bwi);
 }
 
 views::View::Views BraveHorizontalTabStripRegionView::GetChildrenInZOrder() {

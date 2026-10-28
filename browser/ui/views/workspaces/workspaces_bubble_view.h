@@ -6,21 +6,21 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_WORKSPACES_WORKSPACES_BUBBLE_VIEW_H_
 #define BRAVE_BROWSER_UI_VIEWS_WORKSPACES_WORKSPACES_BUBBLE_VIEW_H_
 
-#include <string>
-
 #include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
+#include "base/uuid.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/views/bubble/bubble_dialog_delegate_view.h"
 #include "ui/views/view.h"
 
-class Profile;
+class BrowserWindowInterface;
 
 // Bubble that lists the saved workspaces ("spaces") for the active profile and
-// exposes actions to restore, delete, or save a new one. The bubble is the
-// primary entry point for the workspaces UI and is anchored to the workspaces
-// button in the tab strip.
+// exposes actions to switch to, delete, or create one. The window's own
+// default leads the list, separated from the workspaces shared across the
+// profile. The bubble is the primary entry point for the workspaces UI and is
+// anchored to the workspaces button in the tab strip.
 //
 // Rather than inherit from the deprecated views::BubbleDialogDelegateView
 // (a combined delegate and View), this inherits from
@@ -32,21 +32,23 @@ class WorkspacesBubbleView : public views::BubbleDialogDelegate {
   // Internal name set on the bubble's widget; lets tests identify it.
   static constexpr char kWidgetName[] = "WorkspacesBubbleView";
 
-  // |profile| supplies the workspace service used for lookups and must outlive
-  // this bubble. |on_save_workspace| is run when the user activates the Save
-  // action.
+  // |browser| is the window the bubble acts on: workspaces load into it, and
+  // it supplies the profile whose workspace service is used for lookups. It
+  // must outlive this bubble. |on_new_space| is run when the user activates
+  // the New Space action.
   WorkspacesBubbleView(views::View* anchor_view,
-                       Profile* profile,
-                       base::RepeatingClosure on_save_workspace);
+                       BrowserWindowInterface* browser,
+                       base::RepeatingClosure on_new_space);
   ~WorkspacesBubbleView() override;
 
  private:
-  void OnSaveClicked();
-  void OnWorkspaceSelected(const std::string& name);
-  void OnDeleteClicked(const std::string& name);
+  void OnNewSpaceClicked();
+  void OnUnmanagedSelected();
+  void OnWorkspaceSelected(const base::Uuid& id);
+  void OnDeleteClicked(const base::Uuid& id);
 
-  const raw_ptr<Profile> profile_;
-  base::RepeatingClosure on_save_workspace_;
+  const raw_ptr<BrowserWindowInterface> browser_;
+  base::RepeatingClosure on_new_space_;
   base::WeakPtrFactory<WorkspacesBubbleView> weak_factory_{this};
 };
 

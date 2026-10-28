@@ -15,15 +15,14 @@
 #include "ui/views/widget/widget.h"
 
 class BrowserWindowInterface;
-class Profile;
-class SaveWorkspaceDialog;
+class CreateWorkspaceDialog;
 class WorkspacesBubbleView;
 
 namespace views {
 class View;
 }  // namespace views
 
-// Owns the workspaces bubble and the "save workspace" dialog. Both use the
+// Owns the workspaces bubble and the "new space" dialog. Both use the
 // CLIENT_OWNS_WIDGET ownership model, and because their delegates are not also
 // Views, the Widget does not delete them. The controller therefore owns both
 // the delegate and its Widget, and tears them down (Widget first, then
@@ -46,15 +45,15 @@ class WorkspacesBubbleController {
   // Returns the instance owned by `browser`, or nullptr.
   static WorkspacesBubbleController* From(BrowserWindowInterface* browser);
 
-  // Shows the workspaces bubble anchored to |anchor_view|. |profile| is used
-  // for workspace service lookups. Does nothing if the bubble is already
-  // showing.
-  void ShowBubble(views::View* anchor_view, Profile* profile);
+  // Shows the workspaces bubble anchored to |anchor_view|. |browser| is the
+  // window the bubble acts on: workspaces load into it and save from it. Does
+  // nothing if the bubble is already showing.
+  void ShowBubble(views::View* anchor_view, BrowserWindowInterface* browser);
 
  private:
-  // Shows the modal "save workspace" dialog. Invoked by the bubble's Save
-  // action; uses the profile and parent window captured by ShowBubble().
-  void ShowSaveDialog();
+  // Shows the modal "new space" dialog. Invoked by the bubble's New Space
+  // action; uses the browser and parent window captured by ShowBubble().
+  void ShowCreateDialog();
 
   // Close handlers for the two widgets. With CLIENT_OWNS_WIDGET the close path
   // is routed here synchronously and we are responsible for destroying the
@@ -62,10 +61,10 @@ class WorkspacesBubbleController {
   // (e.g. a button handler that called Widget::Close()) may still be on the
   // stack when this runs.
   void OnBubbleClosed(views::Widget::ClosedReason reason);
-  void OnSaveDialogClosed(views::Widget::ClosedReason reason);
+  void OnCreateDialogClosed(views::Widget::ClosedReason reason);
 
   // Captured when the bubble is shown and used to launch the save dialog.
-  raw_ptr<Profile> profile_ = nullptr;
+  raw_ptr<BrowserWindowInterface> browser_ = nullptr;
   gfx::NativeWindow parent_window_ = gfx::NativeWindow();
 
   // Each delegate is declared before its Widget so that, if the controller is
@@ -73,8 +72,8 @@ class WorkspacesBubbleController {
   // are destroyed in reverse declaration order).
   std::unique_ptr<WorkspacesBubbleView> bubble_;
   std::unique_ptr<views::Widget> bubble_widget_;
-  std::unique_ptr<SaveWorkspaceDialog> save_dialog_;
-  std::unique_ptr<views::Widget> save_dialog_widget_;
+  std::unique_ptr<CreateWorkspaceDialog> create_dialog_;
+  std::unique_ptr<views::Widget> create_dialog_widget_;
 
   ui::ScopedUnownedUserData<WorkspacesBubbleController>
       scoped_unowned_user_data_;
