@@ -39,17 +39,17 @@ constexpr auto kRequiredCreativeAdPropertyNames =
          kCreativeAdLandingPagePropertyName, kCreativeAdPlacementIdPropertyName,
          kCreativeAdRewardsValuePropertyName});
 
-constexpr auto kRequiredCreativeSetConversionPropertyNames =
+constexpr auto kRequiredCampaignConversionPropertyNames =
     base::MakeFixedFlatSet<std::string_view>(
         base::sorted_unique,
-        {kCreativeSetConversionObservationWindowPropertyName,
-         kCreativeSetConversionUrlPatternPropertyName});
+        {kCampaignConversionObservationWindowPropertyName,
+         kCampaignConversionUrlPatternPropertyName});
 
-constexpr auto kCreativeSetConversionPropertyNames =
+constexpr auto kCampaignConversionPropertyNames =
     base::MakeFixedFlatSet<std::string_view>(
         base::sorted_unique,
-        {kCreativeSetConversionObservationWindowPropertyName,
-         kCreativeSetConversionUrlPatternPropertyName});
+        {kCampaignConversionObservationWindowPropertyName,
+         kCampaignConversionUrlPatternPropertyName});
 
 bool GetOptionalStringValue(
     const schema_org::mojom::PropertyPtr& mojom_property,
@@ -198,30 +198,30 @@ bool ExtractCreativeAdMojomProperty(
   return false;
 }
 
-bool ExtractCreativeSetConversionMojomProperty(
+bool ExtractCampaignConversionMojomProperty(
     const schema_org::mojom::PropertyPtr& mojom_property,
-    mojom::CreativeSetConversionInfo* mojom_creative_set_conversion) {
+    mojom::CampaignConversionInfo* mojom_campaign_conversion) {
   CHECK(mojom_property);
-  CHECK(mojom_creative_set_conversion);
+  CHECK(mojom_campaign_conversion);
 
   const std::string& property_name = mojom_property->name;
 
-  if (property_name == kCreativeSetConversionUrlPatternPropertyName) {
+  if (property_name == kCampaignConversionUrlPatternPropertyName) {
     std::string url_pattern;
     if (!GetOptionalStringValue(mojom_property, &url_pattern)) {
       return false;
     }
     if (!url_pattern.empty()) {
-      mojom_creative_set_conversion->url_pattern = std::move(url_pattern);
+      mojom_campaign_conversion->url_pattern = std::move(url_pattern);
     }
     return true;
   }
 
-  if (property_name == kCreativeSetConversionObservationWindowPropertyName) {
+  if (property_name == kCampaignConversionObservationWindowPropertyName) {
     int32_t observation_window;
     const bool success = GetIntValue(mojom_property, &observation_window);
     if (success) {
-      mojom_creative_set_conversion->observation_window =
+      mojom_campaign_conversion->observation_window =
           base::Days(observation_window);
     }
 
@@ -242,12 +242,12 @@ mojom::CreativeSearchResultAdInfoPtr ExtractMojomEntity(
   mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
       mojom::CreativeSearchResultAdInfo::New();
 
-  mojom::CreativeSetConversionInfoPtr mojom_creative_set_conversion =
-      mojom::CreativeSetConversionInfo::New();
+  mojom::CampaignConversionInfoPtr mojom_campaign_conversion =
+      mojom::CampaignConversionInfo::New();
 
   base::flat_set<std::string_view> creative_ad_property_names;
 
-  base::flat_set<std::string_view> creative_set_conversion_property_names;
+  base::flat_set<std::string_view> campaign_conversion_property_names;
 
   for (const auto& mojom_property : mojom_entity->properties) {
     if (!mojom_property) {
@@ -263,16 +263,16 @@ mojom::CreativeSearchResultAdInfoPtr ExtractMojomEntity(
       }
 
       creative_ad_property_names.insert(mojom_property->name);
-    } else if (kCreativeSetConversionPropertyNames.contains(
+    } else if (kCampaignConversionPropertyNames.contains(
                    mojom_property->name)) {
-      if (!ExtractCreativeSetConversionMojomProperty(
-              mojom_property, mojom_creative_set_conversion.get())) {
-        VLOG(6) << "Failed to extract creative set conversion property "
+      if (!ExtractCampaignConversionMojomProperty(
+              mojom_property, mojom_campaign_conversion.get())) {
+        VLOG(6) << "Failed to extract campaign conversion property "
                 << mojom_property->name;
         return {};
       }
 
-      creative_set_conversion_property_names.insert(mojom_property->name);
+      campaign_conversion_property_names.insert(mojom_property->name);
     }
   }
 
@@ -289,23 +289,22 @@ mojom::CreativeSearchResultAdInfoPtr ExtractMojomEntity(
     return {};
   }
 
-  if (!creative_set_conversion_property_names.empty()) {
-    std::vector<std::string_view>
-        missing_creative_set_conversion_property_names;
+  if (!campaign_conversion_property_names.empty()) {
+    std::vector<std::string_view> missing_campaign_conversion_property_names;
     std::ranges::set_difference(
-        kRequiredCreativeSetConversionPropertyNames.cbegin(),
-        kRequiredCreativeSetConversionPropertyNames.cend(),
-        creative_set_conversion_property_names.cbegin(),
-        creative_set_conversion_property_names.cend(),
-        std::back_inserter(missing_creative_set_conversion_property_names));
+        kRequiredCampaignConversionPropertyNames.cbegin(),
+        kRequiredCampaignConversionPropertyNames.cend(),
+        campaign_conversion_property_names.cbegin(),
+        campaign_conversion_property_names.cend(),
+        std::back_inserter(missing_campaign_conversion_property_names));
 
-    if (missing_creative_set_conversion_property_names.empty()) {
-      mojom_creative_ad->creative_set_conversion =
-          std::move(mojom_creative_set_conversion);
+    if (missing_campaign_conversion_property_names.empty()) {
+      mojom_creative_ad->campaign_conversion =
+          std::move(mojom_campaign_conversion);
     } else {
-      VLOG(6) << base::JoinString(
-                     missing_creative_set_conversion_property_names, ", ")
-              << " creative set conversion required properties are missing";
+      VLOG(6) << base::JoinString(missing_campaign_conversion_property_names,
+                                  ", ")
+              << " campaign conversion required properties are missing";
     }
   }
 
@@ -371,20 +370,20 @@ void Log(const std::vector<mojom::CreativeSearchResultAdInfoPtr>&
             << kCreativeAdRewardsValuePropertyName << ": "
             << mojom_creative_ad->value;
 
-    if (!mojom_creative_ad->creative_set_conversion) {
+    if (!mojom_creative_ad->campaign_conversion) {
       return;
     }
 
-    const mojom::CreativeSetConversionInfo& creative_set_conversion =
-        *mojom_creative_ad->creative_set_conversion;
+    const mojom::CampaignConversionInfo& campaign_conversion =
+        *mojom_creative_ad->campaign_conversion;
 
-    VLOG(6) << "Creative set conversion properties:\n"
-            << kCreativeSetConversionObservationWindowPropertyName << ": "
-            << creative_set_conversion.observation_window;
+    VLOG(6) << "Campaign conversion properties:\n"
+            << kCampaignConversionObservationWindowPropertyName << ": "
+            << campaign_conversion.observation_window;
 
-    if (creative_set_conversion.url_pattern) {
-      VLOG(6) << kCreativeSetConversionUrlPatternPropertyName << ": "
-              << *creative_set_conversion.url_pattern;
+    if (campaign_conversion.url_pattern) {
+      VLOG(6) << kCampaignConversionUrlPatternPropertyName << ": "
+              << *campaign_conversion.url_pattern;
     }
   }
 }

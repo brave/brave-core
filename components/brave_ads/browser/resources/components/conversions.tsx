@@ -20,7 +20,7 @@ import { WildcardPattern } from './wildcard_pattern'
 type ColumnKey = keyof ConversionUrlPattern
 
 const CONVERSION_URL_PATTERN_COLUMNS: ColumnKey[] = [
-  'Creative Set ID',
+  'Campaign ID',
   'Ad Type',
   'URL Pattern',
   'Observation Window',
@@ -30,18 +30,18 @@ const CONVERSION_URL_PATTERN_COLUMNS: ColumnKey[] = [
 // Explicit widths for every column so `table-layout: fixed` doesn't squeeze
 // unclassed columns into whatever sliver is left over, which visibly
 // overflowed one column's content into the next on a narrow window; sums to
-// 100%. "Creative Set ID" is already ellipsis-truncated with a copy tooltip,
+// 100%. "Campaign ID" is already ellipsis-truncated with a copy tooltip,
 // so it can afford to give up room to "URL Pattern"/"Ad Type", which are
 // shown in full.
 const COLUMN_WIDTH_CLASSES: Partial<Record<ColumnKey, string>> = {
-  'Creative Set ID': 'narrow-value-column',
+  'Campaign ID': 'narrow-value-column',
   'Ad Type': 'narrow-value-column',
   'URL Pattern': 'rule-column',
   'Observation Window': 'value-column',
   'Expires At': 'value-column',
 }
 
-const TRUNCATED_COLUMNS = new Set<ColumnKey>(['Creative Set ID'])
+const TRUNCATED_COLUMNS = new Set<ColumnKey>(['Campaign ID'])
 
 function widthClassName(header: ColumnKey) {
   return [
@@ -91,7 +91,7 @@ function ConversionUrlPatternTable({ data }: { data: ConversionUrlPattern[] }) {
                             onCopy={copy}
                           />
                         )
-                        : header === 'Creative Set ID'
+                        : header === 'Campaign ID'
                           ? renderCopyableText(row[header], `${index}`, copy)
                           : row[header]}
                 </td>

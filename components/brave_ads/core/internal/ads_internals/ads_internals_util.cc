@@ -21,8 +21,8 @@
 #include "brave/components/brave_ads/core/internal/ads_core/ads_core_util.h"
 #include "brave/components/brave_ads/core/internal/ads_internals/ads_internals_info.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
-#include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_database_table.h"
-#include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_info.h"
+#include "brave/components/brave_ads/core/internal/creatives/conversions/campaign_conversion_database_table.h"
+#include "brave/components/brave_ads/core/internal/creatives/conversions/campaign_conversion_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ads_database_table.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ads_database_table.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/diagnostic_manager.h"
@@ -38,47 +38,47 @@ namespace brave_ads {
 
 namespace {
 
-// A creative set conversion isn't itself tied to a specific ad format, unlike
+// A campaign conversion isn't itself tied to a specific ad format, unlike
 // an ad event; there's no local database table for search result ads to look
 // up, so that format is inferred by elimination: present in neither set.
 std::string_view GetAdType(
-    const std::string& creative_set_id,
-    const base::flat_set<std::string>& notification_ad_creative_set_ids,
-    const base::flat_set<std::string>& new_tab_page_ad_creative_set_ids) {
-  if (notification_ad_creative_set_ids.contains(creative_set_id)) {
+    const std::string& campaign_id,
+    const base::flat_set<std::string>& notification_ad_campaign_ids,
+    const base::flat_set<std::string>& new_tab_page_ad_campaign_ids) {
+  if (notification_ad_campaign_ids.contains(campaign_id)) {
     return ToString(mojom::AdType::kNotificationAd);
   }
-  if (new_tab_page_ad_creative_set_ids.contains(creative_set_id)) {
+  if (new_tab_page_ad_campaign_ids.contains(campaign_id)) {
     return ToString(mojom::AdType::kNewTabPageAd);
   }
   return ToString(mojom::AdType::kSearchResultAd);
 }
 
-base::ListValue BuildCreativeSetConversions(
-    const CreativeSetConversionList& creative_set_conversions,
-    const base::flat_set<std::string>& notification_ad_creative_set_ids,
-    const base::flat_set<std::string>& new_tab_page_ad_creative_set_ids) {
+base::ListValue BuildCampaignConversions(
+    const CampaignConversionList& campaign_conversions,
+    const base::flat_set<std::string>& notification_ad_campaign_ids,
+    const base::flat_set<std::string>& new_tab_page_ad_campaign_ids) {
   base::ListValue list;
-  list.reserve(creative_set_conversions.size());
+  list.reserve(campaign_conversions.size());
 
-  for (const auto& creative_set_conversion : creative_set_conversions) {
-    if (!creative_set_conversion.IsValid()) {
-      // Skip invalid creative set conversions.
+  for (const auto& campaign_conversion : campaign_conversions) {
+    if (!campaign_conversion.IsValid()) {
+      // Skip invalid campaign conversions.
       continue;
     }
 
     list.Append(
         base::DictValue()
-            .Set("Creative Set ID", creative_set_conversion.id)
-            .Set("Ad Type", GetAdType(creative_set_conversion.id,
-                                      notification_ad_creative_set_ids,
-                                      new_tab_page_ad_creative_set_ids))
-            .Set("URL Pattern", creative_set_conversion.url_pattern)
+            .Set("Campaign ID", campaign_conversion.id)
+            .Set("Ad Type",
+                 GetAdType(campaign_conversion.id, notification_ad_campaign_ids,
+                           new_tab_page_ad_campaign_ids))
+            .Set("URL Pattern", campaign_conversion.url_pattern)
             .Set("Expires At",
-                 creative_set_conversion.expire_at->InSecondsFSinceUnixEpoch())
+                 campaign_conversion.expire_at->InSecondsFSinceUnixEpoch())
             .Set("Observation Window",
                  static_cast<int>(
-                     creative_set_conversion.observation_window.InDays())));
+                     campaign_conversion.observation_window.InDays())));
   }
 
   return list;
@@ -162,11 +162,11 @@ void Successful(GetInternalsCallback callback, AdsInternalsInfo ads_internals) {
 
   base::DictValue dict =
       base::DictValue()
-          .Set("creativeSetConversions",
-               BuildCreativeSetConversions(
-                   ads_internals.creative_set_conversions,
-                   ads_internals.notification_ad_creative_set_ids,
-                   ads_internals.new_tab_page_ad_creative_set_ids))
+          .Set("campaignConversions",
+               BuildCampaignConversions(
+                   ads_internals.campaign_conversions,
+                   ads_internals.notification_ad_campaign_ids,
+                   ads_internals.new_tab_page_ad_campaign_ids))
           .Set("adEvents", BuildAdEvents(ads_internals.ad_events))
           .Set("confirmationQueue", std::move(ads_internals.confirmation_queue))
           .Set("paymentTokens", std::move(ads_internals.payment_tokens))
@@ -363,8 +363,7 @@ void GetNewTabPageAdCreativeSetIdsCallback(
   }
 
   for (const auto& creative_ad : creative_ads) {
-    ads_internals.new_tab_page_ad_creative_set_ids.insert(
-        creative_ad.creative_set_id);
+    ads_internals.new_tab_page_ad_campaign_ids.insert(creative_ad.campaign_id);
   }
 
   database::table::AdEvents database_table;
@@ -384,8 +383,7 @@ void GetNotificationAdCreativeSetIdsCallback(
   }
 
   for (const auto& creative_ad : creative_ads) {
-    ads_internals.notification_ad_creative_set_ids.insert(
-        creative_ad.creative_set_id);
+    ads_internals.notification_ad_campaign_ids.insert(creative_ad.campaign_id);
   }
 
   database::table::CreativeNewTabPageAds database_table;
@@ -394,16 +392,16 @@ void GetNotificationAdCreativeSetIdsCallback(
                                        std::move(ads_internals)));
 }
 
-void GetCreativeSetConversionsCallback(
+void GetCampaignConversionsCallback(
     GetInternalsCallback callback,
     bool success,
-    const CreativeSetConversionList& creative_set_conversions) {
+    const CampaignConversionList& campaign_conversions) {
   if (!success) {
     return Failed(std::move(callback));
   }
 
   AdsInternalsInfo ads_internals;
-  ads_internals.creative_set_conversions = creative_set_conversions;
+  ads_internals.campaign_conversions = campaign_conversions;
 
   database::table::CreativeNotificationAds database_table;
   database_table.GetAll(base::BindOnce(&GetNotificationAdCreativeSetIdsCallback,
@@ -414,9 +412,9 @@ void GetCreativeSetConversionsCallback(
 }  // namespace
 
 void BuildAdsInternals(GetInternalsCallback callback) {
-  database::table::CreativeSetConversions database_table;
+  database::table::CampaignConversions database_table;
   database_table.GetActive(
-      base::BindOnce(&GetCreativeSetConversionsCallback, std::move(callback)));
+      base::BindOnce(&GetCampaignConversionsCallback, std::move(callback)));
 }
 
 }  // namespace brave_ads

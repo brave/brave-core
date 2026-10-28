@@ -140,7 +140,7 @@ struct AdHistoryItemInfo {
   ReactionType like_segment_reaction;
 };
 
-struct CreativeSetConversionInfo {
+struct CampaignConversionInfo {
   string? url_pattern;
   mojo_base.mojom.TimeDelta observation_window;
 };
@@ -205,7 +205,7 @@ struct CreativeSearchResultAdInfo {
   string headline_text;
   string description;
   double value;
-  CreativeSetConversionInfo? creative_set_conversion;
+  CampaignConversionInfo? campaign_conversion;
 };
 
 enum SearchResultAdEventType {

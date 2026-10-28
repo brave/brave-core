@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CREATIVES_CONVERSIONS_CREATIVE_SET_CONVERSION_BUILDER_H_
-#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CREATIVES_CONVERSIONS_CREATIVE_SET_CONVERSION_BUILDER_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CREATIVES_CONVERSIONS_CAMPAIGN_CONVERSION_BUILDER_H_
+#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CREATIVES_CONVERSIONS_CAMPAIGN_CONVERSION_BUILDER_H_
 
 #include <optional>
 
@@ -12,12 +12,11 @@
 
 namespace brave_ads {
 
-struct CreativeSetConversionInfo;
+struct CampaignConversionInfo;
 
-std::optional<CreativeSetConversionInfo>
-FromMojomMaybeBuildCreativeSetConversion(
+std::optional<CampaignConversionInfo> FromMojomMaybeBuildCampaignConversion(
     const mojom::CreativeSearchResultAdInfoPtr& mojom_creative_ad);
 
 }  // namespace brave_ads
 
-#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CREATIVES_CONVERSIONS_CREATIVE_SET_CONVERSION_BUILDER_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CREATIVES_CONVERSIONS_CAMPAIGN_CONVERSION_BUILDER_H_

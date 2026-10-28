@@ -13,8 +13,8 @@
 #include "base/trace_event/trace_event.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
-#include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_info.h"
-#include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_util.h"
+#include "brave/components/brave_ads/core/internal/creatives/conversions/campaign_conversion_info.h"
+#include "brave/components/brave_ads/core/internal/creatives/conversions/campaign_conversion_util.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_info.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_builder.h"
@@ -51,89 +51,87 @@ void Conversions::RemoveObserver(ConversionsObserver* const observer) {
 void Conversions::MaybeConvert(const std::vector<GURL>& redirect_chain) {
   CHECK(!redirect_chain.empty());
 
-  BLOG(1, "Checking for creative set conversions");
+  BLOG(1, "Checking for campaign conversions");
 
-  GetCreativeSetConversions(redirect_chain);
+  GetCampaignConversions(redirect_chain);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void Conversions::GetCreativeSetConversions(
+void Conversions::GetCampaignConversions(
     const std::vector<GURL>& redirect_chain) {
-  creative_set_conversions_database_table_.GetUnexpired(
-      base::BindOnce(&Conversions::GetCreativeSetConversionsCallback,
+  campaign_conversions_database_table_.GetUnexpired(
+      base::BindOnce(&Conversions::GetCampaignConversionsCallback,
                      weak_factory_.GetWeakPtr(), redirect_chain));
 }
 
-void Conversions::GetCreativeSetConversionsCallback(
+void Conversions::GetCampaignConversionsCallback(
     const std::vector<GURL>& redirect_chain,
     bool success,
-    const CreativeSetConversionList& creative_set_conversions) {
+    const CampaignConversionList& campaign_conversions) {
   if (!success) {
-    return BLOG(0, "Failed to get creative set conversions");
+    return BLOG(0, "Failed to get campaign conversions");
   }
 
-  if (creative_set_conversions.empty()) {
-    return BLOG(1, "There are no creative set conversions");
+  if (campaign_conversions.empty()) {
+    return BLOG(1, "There are no campaign conversions");
   }
 
-  GetAdEvents(redirect_chain, creative_set_conversions);
+  GetAdEvents(redirect_chain, campaign_conversions);
 }
 
 void Conversions::GetAdEvents(
     const std::vector<GURL>& redirect_chain,
-    const CreativeSetConversionList& creative_set_conversions) {
+    const CampaignConversionList& campaign_conversions) {
   ad_events_database_table_.GetUnexpired(
       kAdEventsTimeWindow.Get(),
       base::BindOnce(&Conversions::GetAdEventsCallback,
                      weak_factory_.GetWeakPtr(), redirect_chain,
-                     creative_set_conversions));
+                     campaign_conversions));
 }
 
 void Conversions::GetAdEventsCallback(
     const std::vector<GURL>& redirect_chain,
-    const CreativeSetConversionList& creative_set_conversions,
+    const CampaignConversionList& campaign_conversions,
     bool success,
     const AdEventList& ad_events) {
   if (!success) {
     return BLOG(0, "Failed to get ad events");
   }
 
-  CheckForConversions(redirect_chain, creative_set_conversions, ad_events);
+  CheckForConversions(redirect_chain, campaign_conversions, ad_events);
 }
 
 void Conversions::CheckForConversions(
     const std::vector<GURL>& redirect_chain,
-    const CreativeSetConversionList& creative_set_conversions,
+    const CampaignConversionList& campaign_conversions,
     const AdEventList& ad_events) {
   TRACE_EVENT(kTraceEventCategory, "Conversions::CheckForConversions",
-              "redirect_chain", redirect_chain.size(),
-              "creative_set_conversions", creative_set_conversions.size(),
-              "ad_events", ad_events.size());
+              "redirect_chain", redirect_chain.size(), "campaign_conversions",
+              campaign_conversions.size(), "ad_events", ad_events.size());
 
-  const CreativeSetConversionList matching_creative_set_conversions =
-      GetMatchingCreativeSetConversions(creative_set_conversions,
-                                        redirect_chain);
-  if (matching_creative_set_conversions.empty()) {
-    return BLOG(1, "There are no matching creative set conversions");
+  const CampaignConversionList matching_campaign_conversions =
+      GetMatchingCampaignConversions(campaign_conversions, redirect_chain);
+  if (matching_campaign_conversions.empty()) {
+    return BLOG(1, "There are no matching campaign conversions");
   }
 
-  CreativeSetConversionCountMap creative_set_conversion_counts =
-      GetCreativeSetConversionCounts(ad_events);
+  CampaignConversionCountMap campaign_conversion_counts =
+      GetCampaignConversionCounts(ad_events);
 
-  const size_t creative_set_conversion_cap = kCreativeSetConversionCap.Get();
+  const size_t campaign_conversion_cap = kCampaignConversionCap.Get();
 
-  CreativeSetConversionBucketMap creative_set_conversion_buckets =
-      SortCreativeSetConversionsIntoBuckets(matching_creative_set_conversions);
+  CampaignConversionBucketMap campaign_conversion_buckets =
+      SortCampaignConversionsIntoBuckets(matching_campaign_conversions);
 
-  FilterCreativeSetConversionBucketsThatExceedTheCap(
-      creative_set_conversion_counts, creative_set_conversion_cap,
-      creative_set_conversion_buckets);
+  FilterCampaignConversionBucketsThatExceedTheCap(campaign_conversion_counts,
+                                                  campaign_conversion_cap,
+                                                  campaign_conversion_buckets);
 
-  BLOG(1, matching_creative_set_conversions.size()
-              << " out of " << creative_set_conversions.size()
-              << " matching creative set conversions are sorted into "
-              << creative_set_conversion_buckets.size() << " buckets");
+  BLOG(1, matching_campaign_conversions.size()
+              << " out of " << campaign_conversions.size()
+              << " matching campaign conversions are sorted into "
+              << campaign_conversion_buckets.size() << " buckets");
 
   // Click-through conversions should take priority over view-through
   // conversions. Ad events are ordered in chronological order by `created_at`;
@@ -142,19 +140,17 @@ void Conversions::CheckForConversions(
   bool did_convert = false;
 
   for (const auto& ad_event : std::views::reverse(ad_events)) {
-    // Do we have creative set conversions for this ad event?
-    const auto iter =
-        creative_set_conversion_buckets.find(ad_event.creative_set_id);
-    if (iter == creative_set_conversion_buckets.cend()) {
+    // Do we have campaign conversions for this ad event?
+    const auto iter = campaign_conversion_buckets.find(ad_event.campaign_id);
+    if (iter == campaign_conversion_buckets.cend()) {
       // No, so skip this ad event.
       continue;
     }
-    const auto& [creative_set_id, creative_set_conversion_bucket] = *iter;
+    const auto& [campaign_id, campaign_conversion_bucket] = *iter;
 
-    // Have we exceeded the limit for creative set conversions?
-    if (creative_set_conversion_cap > 0 &&
-        creative_set_conversion_counts[creative_set_id] ==
-            creative_set_conversion_cap) {
+    // Have we exceeded the limit for campaign conversions?
+    if (campaign_conversion_cap > 0 &&
+        campaign_conversion_counts[campaign_id] == campaign_conversion_cap) {
       continue;
     }
 
@@ -165,9 +161,9 @@ void Conversions::CheckForConversions(
     }
 
     // Yes, so convert the ad event if it occurs within the observation
-    // window of any matching creative set conversion.
-    if (!HasCreativeSetConversionWithinObservationWindow(
-            creative_set_conversion_bucket, ad_event)) {
+    // window of any matching campaign conversion.
+    if (!HasCampaignConversionWithinObservationWindow(
+            campaign_conversion_bucket, ad_event)) {
       continue;
     }
 
@@ -175,13 +171,13 @@ void Conversions::CheckForConversions(
 
     did_convert = true;
 
-    // Have we exceeded the limit for creative set conversions?
-    ++creative_set_conversion_counts[creative_set_id];
+    // Have we exceeded the limit for campaign conversions?
+    ++campaign_conversion_counts[campaign_id];
 
     if (did_convert) {
-      // Remove the bucket for this creative set so that we deduplicate
+      // Remove the bucket for this campaign so that we deduplicate
       // conversions for the remainder of the ad events.
-      creative_set_conversion_buckets.erase(creative_set_id);
+      campaign_conversion_buckets.erase(campaign_id);
     }
   }
 

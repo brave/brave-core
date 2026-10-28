@@ -15,7 +15,7 @@
 #include "brave/components/brave_ads/core/internal/catalog/catalog_info.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/operating_system/operating_system.h"
-#include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_info.h"
+#include "brave/components/brave_ads/core/internal/creatives/conversions/campaign_conversion_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_daypart_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/creatives_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_info.h"
@@ -83,21 +83,21 @@ CreativeNotificationAdList BuildNotificationAdsFromCreativeSet(
   return notification_ads;
 }
 
-CreativeSetConversionList BuildConversionsFromCreativeSet(
-    const CatalogCreativeSetInfo& creative_set) {
-  CreativeSetConversionList conversions;
+CampaignConversionList BuildConversionsFromCreativeSet(
+    const CatalogCreativeSetInfo& creative_set,
+    const CatalogCampaignInfo& campaign) {
+  CampaignConversionList conversions;
   for (const auto& conversion : creative_set.conversions) {
-    CreativeSetConversionInfo creative_set_conversion;
-    creative_set_conversion.id = conversion.creative_set_id;
-    creative_set_conversion.url_pattern = conversion.url_pattern;
-    creative_set_conversion.observation_window = conversion.observation_window;
-    creative_set_conversion.expire_at = conversion.expire_at;
-    if (!creative_set_conversion.IsValid()) {
-      BLOG(1, "Creative set id " << creative_set.id
-                                 << " has an invalid conversion");
+    CampaignConversionInfo campaign_conversion;
+    campaign_conversion.id = campaign.id;
+    campaign_conversion.url_pattern = conversion.url_pattern;
+    campaign_conversion.observation_window = conversion.observation_window;
+    campaign_conversion.expire_at = conversion.expire_at;
+    if (!campaign_conversion.IsValid()) {
+      BLOG(1, "Campaign id " << campaign.id << " has an invalid conversion");
       continue;
     }
-    conversions.push_back(creative_set_conversion);
+    conversions.push_back(campaign_conversion);
   }
   return conversions;
 }
@@ -129,8 +129,8 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
 
       base::Extend(creatives.notification_ads, std::move(notification_ads));
 
-      CreativeSetConversionList conversions =
-          BuildConversionsFromCreativeSet(creative_set);
+      CampaignConversionList conversions =
+          BuildConversionsFromCreativeSet(creative_set, campaign);
       base::Extend(creatives.conversions, std::move(conversions));
     }
   }
