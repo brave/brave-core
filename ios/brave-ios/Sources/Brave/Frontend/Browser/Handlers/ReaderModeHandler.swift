@@ -185,6 +185,16 @@ public class ReaderModeHandler: InternalSchemeResponse {
     return serialized
   }
 
+  /// Whether a navigation initiated from a reader mode document may proceed.
+  static func allowsNavigation(from mainDocumentURL: URL?, to destination: URL) -> Bool {
+    guard let mainDocumentURL, let scheme = destination.scheme?.lowercased(),
+      scheme.contains("chrome") || scheme.contains("brave") || scheme.contains("internal")
+    else { return true }
+    // Reloading the reader page itself stays allowed.
+    if destination == mainDocumentURL { return true }
+    return InternalURL(mainDocumentURL)?.isReaderModePage != true
+  }
+
   /// Adopts only `img-src` from original-page CSP meta tag values for insertion into reader HTML.
   static func adoptedImageSourcePolicyContents(from originalCSP: String) -> [String] {
     originalCSP.components(separatedBy: ",").compactMap { originalPolicy in

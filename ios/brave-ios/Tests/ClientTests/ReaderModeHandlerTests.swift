@@ -37,6 +37,21 @@ final class ReaderModeHandlerTests: XCTestCase {
     XCTAssertTrue(directives.contains(where: { $0 == ("default-src", "'none'") }))
     XCTAssertTrue(directives.contains(where: { $0 == ("frame-ancestors", "'none'") }))
     XCTAssertTrue(directives.contains(where: { $0 == ("img-src", "*") }))
+    XCTAssertTrue(directives.contains(where: { $0 == ("navigate-to", "http: https:") }))
+  }
+
+  func testReaderModeBlocksChromeNavigationFromReaderDocument() throws {
+    let readerURL = try XCTUnwrap(
+      URL(string: "https://example.com")?
+        .encodeEmbeddedInternalURL(for: .readermode)
+    )
+    let chromeURL = try XCTUnwrap(URL(string: "chrome://wallet"))
+    XCTAssertFalse(
+      ReaderModeHandler.allowsNavigation(
+        from: readerURL,
+        to: chromeURL
+      )
+    )
   }
 
   /// The original page's CSP must not be able to weaken the reader mode policy. Directives such
