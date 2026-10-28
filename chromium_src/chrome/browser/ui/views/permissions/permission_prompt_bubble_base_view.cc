@@ -34,6 +34,7 @@
 #include "components/permissions/permission_request.h"
 #include "components/permissions/request_type.h"
 #include "components/strings/grit/components_strings.h"
+#include "components/tabs/public/tab_interface.h"
 #include "third_party/widevine/cdm/buildflags.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_header_macros.h"
@@ -335,8 +336,8 @@ void AddGeolocationDescriptionIfNeeded(
   bool enable_high_accuracy = false;
   if (auto* web_contents = delegate->GetAssociatedWebContents()) {
     if (auto* geolocation_tab_helper =
-            BraveGeolocationPermissionTabHelper::FromWebContents(
-                web_contents)) {
+            BraveGeolocationPermissionTabHelper::From(
+                tabs::TabInterface::MaybeGetFromContents(web_contents))) {
       enable_high_accuracy = geolocation_tab_helper->enable_high_accuracy();
     }
   }
