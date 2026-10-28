@@ -106,6 +106,10 @@ bool IsSnapFeatureEnabled() {
 #endif
 }
 
+bool IsCardStackUiEnabled() {
+  return base::FeatureList::IsEnabled(features::kBraveWalletCardStackUiFeature);
+}
+
 bool IsEthereumKeyring(mojom::KeyringId keyring_id) {
   return keyring_id == mojom::KeyringId::kDefault;
 }

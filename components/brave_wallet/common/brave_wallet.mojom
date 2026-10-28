@@ -1050,6 +1050,7 @@ struct WalletInfo {
   bool is_cardano_dapp_support_enabled;
   bool is_polkadot_enabled;
   bool is_polkadot_dapp_support_enabled;
+  bool is_card_stack_ui_enabled;
 };
 
 // Browser-side handler for common panel / page things
