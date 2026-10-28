@@ -114,15 +114,18 @@ NewTabPageInitializer::~NewTabPageInitializer() = default;
 void NewTabPageInitializer::Initialize() {
   source_ = content::WebUIDataSource::CreateAndAdd(GetProfile(),
                                                    chrome::kChromeUINewTabHost);
+  web_ui_->OverrideTitle(l10n_util::GetStringUTF16(IDS_NEW_TAB_TITLE));
+  AddBackgroundColorToSource(source_, web_ui_->GetWebContents());
 
-  if (brave::ShouldNewTabShowBlankpage(GetProfile())) {
+  if (GetProfile()->IsOffTheRecord() ||
+      brave::ShouldNewTabShowBlankpage(GetProfile())) {
     source_->SetDefaultResource(IDR_BRAVE_BLANK_NEW_TAB_HTML);
-  } else {
-    webui::SetupWebUIDataSource(source_, kBraveNewTabPageRefreshGenerated,
-                                IDR_BRAVE_NEW_TAB_PAGE_HTML);
+    return;
   }
 
-  AddBackgroundColorToSource(source_, web_ui_->GetWebContents());
+  webui::SetupWebUIDataSource(source_, kBraveNewTabPageRefreshGenerated,
+                              IDR_BRAVE_NEW_TAB_PAGE_HTML);
+
   AddCSPOverrides();
   AddLoadTimeValues();
   AddStrings();
@@ -136,7 +139,6 @@ void NewTabPageInitializer::Initialize() {
   AddSponsoredContentDataSources();
 
   web_ui_->AddRequestableScheme(content::kChromeUIUntrustedScheme);
-  web_ui_->OverrideTitle(l10n_util::GetStringUTF16(IDS_NEW_TAB_TITLE));
 
   content::URLDataSource::Add(GetProfile(),
                               std::make_unique<ThemeSource>(GetProfile()));

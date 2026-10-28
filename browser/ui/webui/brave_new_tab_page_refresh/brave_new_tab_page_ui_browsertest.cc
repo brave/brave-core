@@ -6,6 +6,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/path_service.h"
 #include "brave/browser/extensions/brave_extension_functional_test.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/common/webui_url_constants.h"
 #include "chrome/test/base/chrome_test_utils.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -142,4 +143,23 @@ IN_PROC_BROWSER_TEST_F(BraveNewTabPageUIBrowserTest,
   content::WebContents* web_contents = GetActiveWebContents();
   SimulateOpenNewTabAndWaitForLoad(web_contents);
   VerifyDocumentBodyInnerTextExpectation(web_contents, "New tab override!");
+}
+
+IN_PROC_BROWSER_TEST_F(BraveNewTabPageUIBrowserTest,
+                       NonPrimaryOTRProfileShowsBlankPage) {
+  Profile* otr_profile = browser()->GetProfile()->GetOffTheRecordProfile(
+      Profile::OTRProfileID::CreateUniqueForDevTools(),
+      /*create_if_needed=*/true);
+  auto* otr_browser = CreateBrowser(otr_profile);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(otr_browser,
+                                           GURL(chrome::kChromeUINewTabURL)));
+  content::WebContents* web_contents =
+      otr_browser->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(content::WaitForLoadStop(web_contents));
+  EXPECT_FALSE(content::EvalJs(web_contents,
+                               "!!document.querySelector(`html[data-testid="
+                               "'brave-new-tab-page']`)")
+                   .ExtractBool());
+  VerifyDocumentBodyInnerTextExpectation(web_contents, "");
+  CloseBrowserSynchronously(otr_browser);
 }
