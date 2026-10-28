@@ -394,6 +394,9 @@ export type TransactionPanelPayload = {
 
 export enum WalletRoutes {
   // index
+  Cards = '/cards',
+
+  // crypto index
   CryptoPage = '/crypto/:category/:id?',
 
   // onboarding
