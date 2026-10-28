@@ -220,7 +220,6 @@
 <translation id="9040069796107003510">Brave'i Preemiate ikoon</translation>
 <translation id="6333347122924254968">Kuvage aadressiribal Brave'i preemiate ikoon</translation>
 <translation id="4393974575368329991">Alumine navigatsiooniriba</translation>
-<translation id="8727059712928806451">Luba alumine riba</translation>
 <translation id="1834226716203076292">Kuva alumine riba, et pääseks kiiresti juurde avalehele, järjehoidjatele ja otsingule</translation>
 <translation id="1422686363939271829">See seade on välja lülitatud, kui on valitud alumine aadressiriba asukoht</translation>
 <translation id="6587448235155023666">Muudatused jõustuvad järgmine kord, kui Brave’i taaskäivitate</translation>
@@ -290,7 +289,7 @@
 <translation id="2569646144216067185">Sõnade arv: <ph name="WORD_COUNT"/></translation>
 <translation id="7507533586185621084">Vale sünkroonimiskood</translation>
 <translation id="8284063834901328650">Vale QR-sünkroonimiskood</translation>
-<translation id="859506441384380749">See kood genereeriti Brave'i iganenud versiooniga, täiendage esmalt oma teist seadet</translation>
+<translation id="4002014583969312635">Näib, et see kood loodi seadmes, mis töötab Brave'i vanema versiooniga. Palun uuenda oma teises seadmes Brave uusimale versioonile ja loo seejärel uus sünkroonimiskood.</translation>
 <translation id="3132642509209154999">See kood on aegunud. Genereerige oma teises seadmes uus ja proovige uuesti.</translation>
 <translation id="2859229680945501779">See kood on vigane. Veenduge, et seadmes on määratud õige kellaaeg ja ajavöönd.</translation>
 <translation id="3149880132460839085">Brave Sync</translation>
@@ -337,8 +336,6 @@
 <translation id="8185825081026121627">Teeni Basic Attention Token-eid, vaadates privaatsust säilitavaid Brave Rewards reklaame.</translation>
 <translation id="5321518976657560663">Taastamise viga</translation>
 <translation id="4114170343590425996">Brave Rewardsi taastamisel ilmnes viga. Käivita Brave uuesti ja ürita taas.</translation>
-<translation id="6417420737057016607">Brave'i reklaamid</translation>
-<translation id="5611966874859284786">Näita teavitusreklaame, kui Brave'i ei kasutata</translation>
 <translation id="5717636703619499822"><ph name="BEGIN_LINK1"/>Lähtesta Brave Rewardsi andmed…<ph name="END_LINK1"/></translation>
 <translation id="1830919318137227284"><ph name="BEGIN_LINK1"/>Kustuta Brave Adsi andmed…<ph name="END_LINK1"/></translation>
 <translation id="8293206222192510085">Lisa järjehoidja</translation>
@@ -401,8 +398,9 @@ Kas soovite seda kindlasti teha?</translation>
 <translation id="4546260624932151782">Kuva lemmikud</translation>
 <translation id="5313967007315987356">Lisa sait</translation>
 <translation id="1773147648972887693">Kuva sageli külastatud</translation>
-<translation id="752098910262610337">Kuva otseteed</translation>
 <translation id="7134741506051403308">Peida vidin</translation>
+<translation id="1247759249260562308">Muuda lemmikut</translation>
+<translation id="6387214885349500492">Kinnita see lemmik</translation>
 <translation id="7462178177755090262">Avakuva seaded</translation>
 <translation id="5365434987337264071">Viimane avatud kaart</translation>
 <translation id="6019856124237323989">{HOURS, plural, =1 {Uus kaart pärast <ph name="HOURS_ONE"/> tunni jooksul tegevusetust} other {Uus kaart pärast <ph name="HOURS_MANY"/> tunni jooksul tegevusetust}}</translation>
@@ -977,6 +975,7 @@ Kui te selle taotlusega ei nõustu, siis VPN-i ühendust ei taastata ja teie int
 <translation id="6365389672683343144">Teie Brave'i VPN-i tellimus suudab kaitsta kuni viit seadet – nii Androidi ja iOS-i seadmeid kui ka lauaarvuteid. Ühendage lihtsalt oma Google Play tellimus oma Brave'i kontoga.</translation>
 <translation id="6610899852831463073">Ohutut sirvimist ei saa lubada</translation>
 <translation id="7954263306665462056">Ohutu sirvimine on teie seadmes keelatud. Selle lubamiseks veenduge, et Google Play teenused oleks installitud ja et see oleks ajakohane.</translation>
+<translation id="6417420737057016607">Brave'i reklaamid</translation>
 <translation id="7748944510530490017">Esmased võrgud</translation>
 <translation id="2781668117338732220">Teisesed võrgud</translation>
 <translation id="282560918037172384">Võrkude kontroll</translation>

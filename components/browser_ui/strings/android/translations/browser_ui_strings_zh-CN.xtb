@@ -12,7 +12,6 @@
 <translation id="6670155282615872564">完成下方操作建议，充分利用 Brave</translation>
 <translation id="113098737392899175">连接到键盘时，使用文本光标浏览网页</translation>
 <translation id="1148624853678088576">搞定了！</translation>
-<translation id="738393714577080438">在 Brave 中保存密码</translation>
 <translation id="1178015372320901893">“我的快捷方式”底部动作条</translation>
 <translation id="1178581264944972037">暂停</translation>
 <translation id="1181037720776840403">移除</translation>
@@ -54,6 +53,7 @@
 <translation id="1532175480576580256">我的快捷方式底部动作条已按最大高度显示</translation>
 <translation id="1538031354170655462">网站通常会通过近距离无线通信 (NFC) 与附近的标签或设备互动，例如扫描徽章或感应式付款</translation>
 <translation id="1547123415014299762">允许使用第三方 Cookie</translation>
+<translation id="1565353932454306569"><ph name="ORIGIN"/> – 从屏幕边缘拖动即可退出全屏模式。</translation>
 <translation id="3665719978526894928">使用 Brave 的 V8 引擎加速网站，但 Brave 的防攻击能力会略微降低</translation>
 <translation id="1593426485665524382">屏幕顶部附近有多项可查看的新操作</translation>
 <translation id="1594521731409209842">在屏幕上张合双指即可调整照片大小</translation>
@@ -138,6 +138,7 @@
 <translation id="2315043854645842844">操作系统不支持选择客户端证书。</translation>
 <translation id="2347601491101454548">我的快捷方式底部动作条已按一半高度显示</translation>
 <translation id="2359808026110333948">继续</translation>
+<translation id="2364212713469273030"><ph name="ORIGIN"/> – 从顶部拖动并从左侧或右侧边缘滑动即可退出全屏模式。</translation>
 <translation id="904887679952026733">当 Brave 使用深色主题时，尽可能对网站应用深色主题</translation>
 <translation id="2390272837142897736">放大</translation>
 <translation id="2397689164757137845">允许 • 精确位置</translation>
@@ -190,7 +191,7 @@
 <translation id="2802908157808345702">不允许网站显示弹出式窗口和使用重定向</translation>
 <translation id="5801312978029568377">Brave 现在会在设备的应用列表和搜索结果中显示您近期打开的标签页。您可以随时在 Brave 设置中关闭此功能。</translation>
 <translation id="2822354292072154809">确定要重置<ph name="CHOSEN_OBJECT_NAME"/>的所有网站权限吗？</translation>
-<translation id="7298052657381934345">现在即可在设备上充分体验 Brave 的出色功能。</translation>
+<translation id="7298052657381934345">现在，您可以尽享 Brave 的完整体验。</translation>
 <translation id="2850913818900871965">请求使用移动视图</translation>
 <translation id="2870560284913253234">网站</translation>
 <translation id="2874939134665556319">上一首</translation>
@@ -227,7 +228,6 @@
 <translation id="3167868116600277716">探索信息流</translation>
 <translation id="3198916472715691905">已存储 <ph name="STORAGE_AMOUNT"/> 数据</translation>
 <translation id="3199078925536734975">这次允许使用 • 大致位置</translation>
-<translation id="3208584281581115441">立即检查</translation>
 <translation id="321187648315454507">若要允许 <ph name="APP_NAME"/> 向您发送通知，您还需在 <ph name="BEGIN_LINK"/>Android 设置<ph name="END_LINK"/>中开启通知。</translation>
 <translation id="3223425961342298674">已拒绝授予位置信息使用权限</translation>
 <translation id="3227137524299004712">麦克风</translation>
@@ -284,7 +284,6 @@
 <translation id="381841723434055211">电话号码</translation>
 <translation id="3823453485268218808">字体：Mono</translation>
 <translation id="3826050100957962900">第三方登录</translation>
-<translation id="3831065134033923230">检查已保存的所有密码</translation>
 <translation id="3835233591525155343">您的设备使用情况</translation>
 <translation id="1799795508209440035">Brave 将于今天再次屏蔽 Cookie</translation>
 <translation id="385051799172605136">返回</translation>
@@ -292,7 +291,6 @@
 <translation id="9046306654872718870">自定义主页颜色和图片，打造专属 Brave 体验</translation>
 <translation id="389521680295183045">网站可以询问能否了解您何时在主动使用自己的设备</translation>
 <translation id="3895926599014793903">强制启用缩放功能</translation>
-<translation id="3903738175795615004">从顶部拖动或按 Esc 键可退出全屏模式。</translation>
 <translation id="3905475044299942653">停止发送大量通知</translation>
 <translation id="3922092564198021702">打开手机上的“设置”</translation>
 <translation id="3924858949939391676">在阅读模式开启后显示链接</translation>
@@ -353,7 +351,6 @@
 <translation id="4479647676395637221">在允许网站使用您的摄像头前先询问（推荐）</translation>
 <translation id="4505788138578415521">网址已展开</translation>
 <translation id="4522570452068850558">详情</translation>
-<translation id="4523472416386354622">登录即可开始定制</translation>
 <translation id="4529207923544043455">底部动作条，显示的是已完成和未完成的设置列表任务</translation>
 <translation id="4534723447064627427">若要允许 <ph name="APP_NAME"/> 使用您的麦克风，您还需在 <ph name="BEGIN_LINK"/>Android 设置<ph name="END_LINK"/>中开启麦克风。</translation>
 <translation id="4545694195887112015">已关闭设置工作表</translation>
@@ -366,7 +363,6 @@
 <translation id="4645575059429386691">由您父母管理</translation>
 <translation id="4651224148644053314">更多颜色和选项</translation>
 <translation id="4652266463001779298">不允许</translation>
-<translation id="4655846733459137112">点按“是”，即可在下次登录时轻松使用此密码</translation>
 <translation id="4663373278480897665">已允许使用摄像头</translation>
 <translation id="4670064810192446073">虚拟现实</translation>
 <translation id="5652778654712411580">点按“浏览器应用”，然后点按“Brave”</translation>
@@ -411,7 +407,6 @@
 <translation id="512938610812707830">“新标签页”页面外观主题集合底部动作条已按最大高度显示</translation>
 <translation id="5137460097045297858">探索信息流底部动作条已按一半高度显示</translation>
 <translation id="5139253256813381453">{PRICE_DROP_COUNT,plural, =1{您打开的标签页中有降价}other{您打开的标签页中有降价}}</translation>
-<translation id="5150048675001754041">快捷轻松地登录网站和应用</translation>
 <translation id="5186036860380548585">选项位于屏幕顶部附近</translation>
 <translation id="5197729504361054390">系统会将您所选联系人的详细信息分享给 <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/>。</translation>
 <translation id="5198930230016462977">自定义新标签页页面底部动作条已关闭</translation>
@@ -421,7 +416,6 @@
 <translation id="5239623327352565343">已授予位置信息使用权限</translation>
 <translation id="5246825184569358663">此操作会删除所有本地数据（包括 Cookie）并重置 <ph name="DOMAIN"/> 及其下属所有网站的所有权限</translation>
 <translation id="5264323282659631142">移除“<ph name="CHIP_LABEL"/>”</translation>
-<translation id="528192093759286357">从顶部向下拖动并触摸“返回”按钮，即可退出全屏模式。</translation>
 <translation id="5286194356314741248">正在扫描</translation>
 <translation id="5300589172476337783">显示</translation>
 <translation id="5301954838959518834">知道了</translation>
@@ -469,7 +463,6 @@
 <translation id="5804241973901381774">权限</translation>
 <translation id="5817042798620209981">网站信息，对话框</translation>
 <translation id="5822675474983796325">自定义新标签页页面底部动作条已全屏打开</translation>
-<translation id="4298364316773778595">用于说明如何在 Brave 中保存密码的底部动作条</translation>
 <translation id="5833899990800318936">不允许网站使用 JavaScript</translation>
 <translation id="583673505367439042">网站可以请求修改您设备上的文件和文件夹</translation>
 <translation id="5844448279347999754">开启此设置后，网站可以请求查看保存到剪贴板中的文字和图片。关闭此设置后，网站无法查看保存到剪贴板中的文字或图片。</translation>
@@ -507,7 +500,6 @@
 <translation id="6104860901391833523">开启此设置后，网站可以自动进入画中画模式。关闭此设置后，网站无法自动进入画中画模式。</translation>
 <translation id="6120483543004435978">开启此设置后，网站可以请求监测您是否正在使用设备。关闭此设置后，网站无法得知您是否正在使用设备。</translation>
 <translation id="5773142757282836623">隐藏“在其他应用中获取 Brave 建议”</translation>
-<translation id="4852158809106762963">Brave 会询问您是否保存密码</translation>
 <translation id="615886654739818377">不允许网站管理所有显示屏上的窗口</translation>
 <translation id="6165508094623778733">了解详情</translation>
 <translation id="6171020522141473435">开启此设置后，网站可以请求使用蓝牙设备。关闭此设置后，网站无法使用蓝牙设备。</translation>
@@ -583,7 +575,6 @@
 <translation id="6980861169612950611">要删除网站数据吗？<ph name="SITE_NAME"/></translation>
 <translation id="6981982820502123353">无障碍</translation>
 <translation id="6991142177939282156">允许 • 使用大致位置</translation>
-<translation id="6992014788289743568">检查密码，加强安全防护，让数据更安全</translation>
 <translation id="6992289844737586249">在允许网站使用您的麦克风前先询问（推荐）</translation>
 <translation id="7000754031042624318">已在 Android 设置中关闭</translation>
 <translation id="7036823721811529709">后台播放</translation>
@@ -650,7 +641,6 @@
 <translation id="775043444390799886">撤消权限</translation>
 <translation id="7758789811447313947">紫罗兰色主题</translation>
 <translation id="7759147511335618829">MIDI 设备控制和重新编程</translation>
-<translation id="7771089277295008211">用于说明如何保存密码的底部动作条已关闭</translation>
 <translation id="7781829728241885113">昨天</translation>
 <translation id="7791543448312431591">添加</translation>
 <translation id="780301667611848630">不用了</translation>
@@ -667,7 +657,6 @@
 <translation id="7940722705963108451">提醒我</translation>
 <translation id="7948081750384205628">详细了解“<ph name="SETTING_TITLE"/>”</translation>
 <translation id="7952708427581814389">网站可以请求查看您剪贴板中的文字和图片</translation>
-<translation id="7958779728312669715">用于说明如何保存密码的底部动作条已完全打开</translation>
 <translation id="798299424881500862">橙色主题</translation>
 <translation id="7986741934819883144">选择联系人</translation>
 <translation id="7990211076305263060">开启此设置后，网站可以请求使用您的麦克风。关闭此设置后，网站无法使用您的麦克风。</translation>
@@ -762,7 +751,6 @@
 <translation id="7532165358672313130">随着您继续浏览，所访问的网站可从 Brave 中获取上一个网站提供的相关信息来验证您可能是真实的用户</translation>
 <translation id="8899807382908246773">侵扰性广告</translation>
 <translation id="8903921497873541725">放大</translation>
-<translation id="8919911527569629802">登录任意网站</translation>
 <translation id="8921772741368021346"><ph name="POSITION"/> / <ph name="DURATION"/></translation>
 <translation id="8926389886865778422">不再询问</translation>
 <translation id="8926666909099850184">此设备的 NFC 功能处于关闭状态。请在 <ph name="BEGIN_LINK"/>Android 设置<ph name="END_LINK"/>中开启此功能。</translation>
@@ -786,6 +774,7 @@
 <translation id="9138217887606523162">当前缩放比例为 <ph name="ZOOM_LEVEL"/>%%</translation>
 <translation id="7359422048569205930">让 Brave 在设备的应用列表和搜索结果中显示您近期打开的标签页。您可以随时在 Brave 设置中关闭此功能。</translation>
 <translation id="9162462602695099906">这是一个危险网页</translation>
+<translation id="9172068157980844189">您可以在“设置”&gt;“外观”中开启书签栏</translation>
 <translation id="9182556968660520230">不允许网站播放受保护内容</translation>
 <translation id="927148002081263046">分享联系人</translation>
 <translation id="947156494302904893">您访问的网站可以验证您是真人而非机器人</translation>

@@ -434,7 +434,6 @@
 <translation id="412480955826088549">कम्पोनेंट डाउनलोड कर रहा है...</translation>
 <translation id="4894106830958548828">मै समझता हूँ</translation>
 <translation id="2729085694451916573"><ph name="PART_ONE"/> प्लेसहोल्डर के लिए स्ट्रिंग को टेस्ट किया जा रहा है<ph name="PART_ONE_END"/>. <ph name="PART_TWO"/><ph name="PART_TWO_END"/>और जानें.</translation>
-<translation id="6705666103672654256">आपकी सर्च और पेज की सामग्री इस डिवाइस पर प्रोसेस की जाती है। कुछ भी Brave को नहीं भेजा जाता या मानव समीक्षकों द्वारा नहीं देखा जाता। यह एक प्रायोगिक सुविधा है और हमेशा सही नहीं होगी।</translation>
 <translation id="7534079972563542000">Unstoppable डोमेन</translation>
 <translation id="4492298165410552103">क्या हम Brave में Unstoppable डोमेन का समर्थन सक्षम करें?</translation>
 <translation id="5015092481905019948">Brave, <ph name="PROVIDER_NAME"/> पर मौजूद<ph name="DOMAIN_LIST"/> डोमेन नामों को ठीक करने के लिए <ph name="DOMAIN_PROVIDER_NAME"/> का उपयोग करेगा। Brave आपके IP एड्रेस को छिपा देता है। अगर आपने इसे चालू कर दिया, तो <ph name="PROVIDER_NAME"/> को सिर्फ़ यह दिखाई देगा कि कोई इन डोमेन पर आने की कोशिश कर रहा है और इसके अलावा कुछ और नहीं दिखाई देगा। <ph name="PROVIDER_NAME"/> के <ph name="BEGIN_PROVIDER_TOU_LINK"/>उपयोग की शर्तें<ph name="END_PROVIDER_TOU_LINK"/> और <ph name="BEGIN_PROVIDER_PRIVACY_LINK"/>गोपनीयता नीति<ph name="END_PROVIDER_PRIVACY_LINK"/> को देखें।</translation>
@@ -811,8 +810,6 @@
 <translation id="223536150967420869">खरीदें</translation>
 <translation id="538450413584738399">स्वैप</translation>
 <translation id="6810855196544084176">ब्रिज</translation>
-<translation id="3488255243387417752">बेचना</translation>
-<translation id="5223034545851554347">आपके पास इस अकाउंट में पर्याप्त <ph name="TOKEN_SYMBOL"/> नहीं है।</translation>
 <translation id="6585419509320235293">भेजने के लिए एसेट चुनें</translation>
 <translation id="1018742998826182079">स्वैप करने के लिए एसेट चुनें</translation>
 <translation id="2791691551852500015">पाने वाले व्यक्ति का पता डालें</translation>
@@ -1329,7 +1326,6 @@
 <translation id="4312994183947987913">खरीदें/जमा करें</translation>
 <translation id="5133421763709317473">सर्च या फ़िल्टर से मेल खाने वाला कोई ऐसेट नहीं मिला</translation>
 <translation id="6423985584914773314">यह कोई मान्य FIL पता नहीं है</translation>
-<translation id="6153197326949684688"><ph name="OFFRAMP_PROVIDER"/> के साथ बिक्री करें</translation>
 <translation id="5795821518596541838">लेन-देन पार्टनर</translation>
 <translation id="1916136859742693273">Brave वॉलेट आपके इलाके में अलग-अलग क्रिप्टो प्रोवाइडर्स को इकट्ठा करके दिखाने के लिए Meld.io का इस्तेमाल करता है। लेन-देन पूरा करने के लिए, हम Meld.io के साथ जानकारी शेयर करें, जिसमें आपका वॉलेट पता और देश का कोड शामिल हो। ज़्यादा जानकारी के लिए, कृपया Meld के इस्तेमाल की शर्तें पढ़ें।</translation>
 <translation id="245827814248186739">मैंने <ph name="LINK_BEFORE"/>Meld के इस्तेमाल की शर्तें<ph name="LINK_AFTER"/> पढ़ ली हैं और उनसे सहमत हूँ</translation>
@@ -1645,7 +1641,7 @@
 <translation id="6646456430109279404">बाइसवाँ</translation>
 <translation id="1961743941324393172">तेइसवाँ</translation>
 <translation id="9079035825546416393">चौबीसवाँ</translation>
-<translation id="1558531209852594808">गैर-ASCII कैरेक्टर मिटाए गए!</translation>
+<translation id="6980520267116175375">अनपेक्षित कैरेक्टर का पता चला</translation>
 <translation id="442709594176931966">मूल मैसेज देखें</translation>
 <translation id="2239252396088484499">ASCII एनकोडिंग में मैसेज देखें</translation>
 <translation id="2894654529758326923">जानकारी</translation>
@@ -1895,6 +1891,14 @@
 <translation id="6700561332544287722">अगली बार अनलॉक करना आवश्यक करें</translation>
 <translation id="5605360570977617291"><ph name="CARD_NAME"/> को होम से छिपाएँ?</translation>
 <translation id="2721464457853369512">आपका <ph name="CARD_NAME"/> बैलेंस अपरिवर्तित है। इससे केवल कार्ड होम से छिपता है। आप इसे कभी भी सेटिंग्स में, वॉलेट के तहत, फिर से दिखा सकते हैं।</translation>
+<translation id="1543259266592091784">फ़ंड जोड़ें</translation>
+<translation id="6202621179510403111">नया कार्ड</translation>
+<translation id="2366365638711338487">कमाई <ph name="DATE_BEGIN"/>(<ph name="DATE"/>)<ph name="DATE_END"/></translation>
+<translation id="4938547503015386493">ब्याज + <ph name="AMOUNT"/> BAT कैशबैक</translation>
+<translation id="5124185664922725208">खर्च</translation>
+<translation id="1591562245178063882">इस महीने</translation>
+<translation id="2781977263564899470">फ़िज़िकल कार्ड पाएँ</translation>
+<translation id="3388543273143324626">स्टोर और ATM में इस्तेमाल करें</translation>
 <translation id="3155170474926428993">टॉर लॉन्चर</translation>
 <translation id="3745016858329272300">सामान्य जानकारी</translation>
 <translation id="4045404575593562245">टॉर नियंत्रण इवेंट्स</translation>
@@ -2232,12 +2236,12 @@
 <translation id="7905602379229309187">फ़िलहाल, एंडपॉइंट ओवरलोडेड है। कृपया बाद में कोशिश करें।</translation>
 <translation id="8151638057146502721">क़ॉन्फ़िगर करें</translation>
 <translation id="999273441077650169">कार्य के लिए सबसे अच्छा मॉडल इस्तेमाल करने की वजह से मॉडल डाइनैमिक रूप से बदलता है।<ph name="LINK_BEFORE"/>ज़्यादा जानें<ph name="LINK_AFTER"/></translation>
-<translation id="3852808100039989429">नमस्ते, मैं Leo हूँ। मैं Brave द्वारा पूरी तरह से होस्ट किया गया AI सहायक हूँ। मैं Qwen VL 30B द्वारा संचालित हूँ, जो Alibaba Cloud द्वारा बनाया गया एक मॉडल है जो परफ़ॉर्मेंस और कई यूज़ केसेज़ के लिए लागू होता है। Qwen हमारे अपने सुरक्षित इंफ़्रास्ट्रक्चर के ज़रिए Brave होस्ट करता है।<ph name="LINK_BEFORE"/>ज़्यादा जानें<ph name="LINK_AFTER"/></translation>
+<translation id="8218534413919828549">नमस्ते, मैं Leo हूँ। मैं Brave द्वारा एक AI सहायक हूँ। मैं Qwen 3.6 35B द्वारा संचालित हूँ, जो Alibaba Cloud द्वारा बनाया गया एक मॉडल है जो परफ़ॉर्मेंस और कई यूज़ केसेज़ के लिए लागू होता है। Qwen हमारे अपने सुरक्षित इंफ़्रास्ट्रक्चर के ज़रिए Brave होस्ट करता है।<ph name="LINK_BEFORE"/>ज़्यादा जानें<ph name="LINK_AFTER"/></translation>
 <translation id="8659225822055186905">नमस्ते, मैं Leo हूँ। मैं Brave द्वारा AI सहायक हूँ। मैं GLM-5.3 Flash द्वारा संचालित हूँ, जो Zhipu AI द्वारा बनाया गया एक मॉडल है जो परफ़ॉर्मेंस और कई यूज़ केसेज़ के लिए लागू होता है। GLM-5.3 Flash उनके अपने सत्यापन योग्य निजी सुरक्षित इंफ़्रास्ट्रक्चर के ज़रिए NEAR होस्ट करता है।<ph name="LINK_BEFORE"/>ज़्यादा जानें<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">नमस्ते, मैं Leo हूँ। मैं Brave का एक एआई सहायक हूँ। मुझे Claude Instant द्वारा शक्ति प्रदान की गई है, जिसे Anthropic ने संवाद और पाठ संसाधन कार्यों के लिए बनाया है। Claude Instant को Brave की सुरक्षा पर होस्ट किया गया है।<ph name="LINK_BEFORE"/>और जानें<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">नमस्ते, मैं Leo हूँ। मैं Brave द्वारा पॉवरड हूँ और Claude Sonnet द्वारा संचालित हूँ, जो Anthropic द्वारा बनाया गया एक मॉडल है जो संवादात्मक और टेक्स्ट प्रोसेसिंग जैसे कामों को पावर करता है। Claude Sonnet हमारे अपने सुरक्षित इंफ़्रास्ट्रक्चर के ज़रिए Brave होस्ट करता है।<ph name="LINK_BEFORE"/>ज़्यादा जानें<ph name="LINK_AFTER"/></translation>
-<translation id="6676306995311143470">नमस्ते, मैं Leo हूँ। मैं Brave द्वारा एक AI सहायक हूँ। मैं Grok 4.6 द्वारा संचालित हूँ, जो Amazon Bedrock Mantle पर xAI का फ्रंटियर रीज़निंग मॉडल है। Grok 4.6 को Brave के सुरक्षित AWS इंफ़्रास्ट्रक्चर के ज़रिए सर्व किया जाता है।<ph name="LINK_BEFORE"/>ज़्यादा जानें<ph name="LINK_AFTER"/></translation>
-<translation id="2394656730986208060">नमस्ते, मैं Leo हूँ। मैं Brave द्वारा एक AI सहायक हूँ। मैं GPT 5.6 Luna द्वारा संचालित हूँ, जो Amazon Bedrock Mantle पर OpenAI का तेज़, लो-लेटेंसी मॉडल है। GPT 5.6 Luna को Brave के सुरक्षित AWS इंफ़्रास्ट्रक्चर के ज़रिए सर्व किया जाता है।<ph name="LINK_BEFORE"/>ज़्यादा जानें<ph name="LINK_AFTER"/></translation>
+<translation id="3934503473603661122">नमस्ते, मैं Leo हूँ। मैं Brave द्वारा एक AI सहायक हूँ। मैं Grok 4.7 द्वारा संचालित हूँ, जो Amazon Bedrock पर xAI का फ्रंटियर रीज़निंग मॉडल है। Grok 4.7 को Brave के सुरक्षित AWS इंफ़्रास्ट्रक्चर के ज़रिए सर्व किया जाता है।<ph name="LINK_BEFORE"/>ज़्यादा जानें<ph name="LINK_AFTER"/></translation>
+<translation id="8983215701788462580">नमस्ते, मैं Leo हूँ। मैं Brave द्वारा एक AI सहायक हूँ। मैं GPT Luna द्वारा संचालित हूँ, जो Amazon Bedrock पर OpenAI का तेज़, लो-लेटेंसी मॉडल है। GPT Luna को Brave के सुरक्षित AWS इंफ़्रास्ट्रक्चर के ज़रिए सर्व किया जाता है।<ph name="LINK_BEFORE"/>ज़्यादा जानें<ph name="LINK_AFTER"/></translation>
 <translation id="5278969721580944810">नमस्ते, मैं Leo हूँ। मैं Brave द्वारा एक AI सहायक हूँ। मैं GPT 5.6 Terra द्वारा संचालित हूँ, जो Amazon Bedrock Mantle पर OpenAI का संतुलित प्रोडक्शन मॉडल है। GPT 5.6 Terra को Brave के सुरक्षित AWS इंफ़्रास्ट्रक्चर के ज़रिए सर्व किया जाता है।<ph name="LINK_BEFORE"/>ज़्यादा जानें<ph name="LINK_AFTER"/></translation>
 <translation id="5037359072717016032">नमस्ते, मैं Leo हूँ। मैं Brave द्वारा पूरी तरह से होस्ट किया गया AI सहायक हूँ। मैं Mistral Large द्वारा संचालित हूँ, जो Mistral द्वारा बनाया गया एक मॉडल है जो परफ़ॉर्मेंस और कई यूज़ केसेज़ के लिए लागू होता है। Mistral Large हमारे अपने सुरक्षित इंफ़्रास्ट्रक्चर के ज़रिए Brave होस्ट करता है।<ph name="LINK_BEFORE"/>ज़्यादा जानें<ph name="LINK_AFTER"/></translation>
 <translation id="5475035333915581972">नमस्ते, मैं Leo हूँ। मैं Brave द्वारा एक AI सहायक हूँ। मैं Qwen 3.8 Flash Next द्वारा संचालित हूँ, जो Alibaba Cloud द्वारा बनाया गया एक मॉडल है जो परफ़ॉर्मेंस और कई यूज़ केसेज़ के लिए लागू होता है। Qwen 3.8 Flash Next हमारे अपने सुरक्षित इंफ़्रास्ट्रक्चर के ज़रिए Brave होस्ट करता है।<ph name="LINK_BEFORE"/>ज़्यादा जानें<ph name="LINK_AFTER"/></translation>
@@ -2288,6 +2292,10 @@
 <translation id="3027575440738035995">लियो प्रीमियम में लैंग्वेज मॉडल के विस्तृत सेट का ऐक्सेस मिलता है, ताकि आपको और भी बेहतर जवाब मिल सकें. <ph name="LINK_BEFORE"/>और जानें<ph name="LINK_AFTER"/></translation>
 <translation id="8261506727792406068">हटाएं</translation>
 <translation id="6574153208133461043">क्या आप वाकई इस बातचीत को मिटाना चाहते हैं? एक बार मिटने पर ये वापस नहीं मिलेंगी।</translation>
+<translation id="1020105790073039189">ऐसे मॉडल पर स्विच करें जो इमेज पढ़ सकता है?</translation>
+<translation id="3797128260474242570"><ph name="CURRENT_MODEL"/> इमेज नहीं पढ़ सकता, और आपके अटैचमेंट को इमेज प्रोसेसिंग की ज़रूरत है। उन्हें भेजने के लिए, इस बातचीत को <ph name="VISION_MODEL"/> पर स्विच करें। इसे पूरी बातचीत मिलेगी, जिसमें पहले के मैसेज भी शामिल हैं। आप इसे रद्द भी कर सकते हैं और कोई दूसरा मॉडल चुन सकते हैं जो इमेज पढ़ सके। अगर आप इमेज के बिना भेजते हैं, तो Leo अटैचमेंट नहीं देख पाएगा।</translation>
+<translation id="830353068401992697">स्विच करें और भेजें</translation>
+<translation id="369110003363071587">इमेज के बिना भेजें</translation>
 <translation id="7488762544858401571">एडिट किया गया</translation>
 <translation id="5604254791550001355">प्रॉम्प्ट में बदलाव करें</translation>
 <translation id="8115786586976830777">प्रॉम्प्ट कॉपी करें</translation>
@@ -2442,6 +2450,7 @@
 <translation id="3024277805447899099">इमेज का प्रीव्यू देखें</translation>
 <translation id="6671495933530132209">इमेज कॉपी करें</translation>
 <translation id="6864459304226931083">इमेज डाउनलोड करें</translation>
+<translation id="6323406350879995440">टैब में खोलें</translation>
 <translation id="6332876390231524389">मौजूदा टैब की सामग्री</translation>
 <translation id="6397861830483632092">खुले टैब…</translation>
 <translation id="802080272588201037">बुकमार्क्स…</translation>
@@ -2496,11 +2505,14 @@
 <translation id="4838375634693651776">आपकी क्वेरी में मदद के लिए सैंडबॉक्स में कोड निष्पादित किया जा रहा है</translation>
 <translation id="6990975553143971265">"<ph name="QUERY"/>" के लिए आपका ब्राउज़र इतिहास सर्च किया जा रहा है</translation>
 <translation id="8302511726757276645">आपका ब्राउज़र इतिहास सर्च किया जा रहा है</translation>
+<translation id="6727762439034900202">वर्कस्पेस बनाया जा रहा है</translation>
+<translation id="261799307673205052">वर्कस्पेस</translation>
 <translation id="8410699755320690690">Brave AI आपका ब्राउज़िंग इतिहास सर्च करना चाहता है। सर्च आपके डिवाइस पर लोकल रूप से चलता है, इसलिए आपका पूरा इतिहास कहीं नहीं भेजा जाता। इस बातचीत के हिस्से के रूप में केवल मिलान करने वाले पेजों के शीर्षक, URL और इंडेक्स किए गए टेक्स्ट अंश Brave AI को भेजे जाएंगे।</translation>
 <translation id="4379566111233326721">कोड:</translation>
 <translation id="3542130965673205258">आउटपुट:</translation>
 <translation id="6911817209337314910">आपके चुनने के लिए कुछ विकल्प जनरेट किए जा रहे हैं</translation>
 <translation id="5382076391290708074">अपने टैब्स को चारों ओर ले जाना</translation>
+<translation id="8717463977094156527">इसकी अनुमति देने पर आपके सभी Tabs और Tab Groups के **URL** और **Title** Brave AI को भेजे जाएँगे, साथ ही आपके Tabs में **पेज टेक्स्ट के छोटे अंश** भी जहाँ आपके Semantic History Search इंडेक्स से उपलब्ध हों, और Brave AI को आपके Tabs को इधर-उधर ले जाने की अनुमति देगा। यह अनुमति केवल इस बातचीत पर लागू होती है।</translation>
 <translation id="3862123464576147769">यह करने की अनुमति देने से, आपके सभी टैब्स और टैब ग्रुप्स के <ph name="URL_FORMAT_START"/>URL<ph name="URL_FORMAT_END"/> और <ph name="TITLE_FORMAT_START"/>शीर्षक<ph name="TITLE_FORMAT_END"/> को Brave AI को भेजा जाएगा, और Brave AI को उन्हें चारों ओर ले जाने की अनुमति दी जाएगी। यह अनुमति केवल इस बातचीत पर लागू होती है।</translation>
 <translation id="396165714586708444">गहन अनुसंधान</translation>
 <translation id="577747221882855891">"<ph name="QUERY"/>" की खोज की जा रही है</translation>
@@ -2528,7 +2540,7 @@
 <translation id="7901376755618482277">ईमेल फ़ील्ड पर "नया एलियास" संकेत दिखाएँ</translation>
 <translation id="6002159997868894136">उपनाम कॉपी करने के लिए क्लिक करें</translation>
 <translation id="8105770564756958406"><ph name="DOMAINS"/> द्वारा इस्तेमाल किया गया</translation>
-<translation id="5006956315579221642">अपने असली ईमेल पते को सुरक्षित रखने के लिए अधिकतम 5 मुफ़्त ईमेल उपनाम बना सकते हैं।</translation>
+<translation id="6776324888261353420">अपने असली ईमेल पते को सुरक्षित रखने के लिए अधिकतम <ph name="MAX_ALIASES"/> मुफ़्त ईमेल उपनाम बना सकते हैं।</translation>
 <translation id="9046133327037621173">नया ईमेल उपनाम</translation>
 <translation id="3768606658230902536">ऐसा रैंडम ईमेल पता बनाएँ जो आपके इनबॉक्स में फ़ॉरवर्ड करता हो और आपका व्यक्तिगत ईमेल निजी रखता हो।</translation>
 <translation id="4452721050684632493">अलियास सीमा पूरी हो गई</translation>
@@ -2601,7 +2613,7 @@
 <translation id="6851426306697017546">घड़ी दिखाएँ</translation>
 <translation id="4844370919312937270">नए टैब्स में सर्च विजेट दिखाएँ</translation>
 <translation id="5088374130885640159"><ph name="REWARDS_LINK_BEGIN"/>Brave Rewards<ph name="REWARDS_LINK_END"/> के साथ, आप नए टैब पेज ऐड देखने के लिए कमा सकते हैं। <ph name="LEARN_MORE_LINK_BEGIN"/>और जानें<ph name="LEARN_MORE_LINK_END"/>।</translation>
-<translation id="4100520468072294616">नए टैब पेज ऐड दिखाएँ</translation>
+<translation id="7020410251711260841">प्रायोजित ऐड दिखाएँ</translation>
 <translation id="4983925687993168579">स्टैट्स</translation>
 <translation id="5009354496127441090">टॉप साइटें दिखाएँ</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -2624,6 +2636,7 @@
 <translation id="8814357473522731680">द्वारा संचालित</translation>
 <translation id="7143207342074048698">कनेक्‍ट हो रहा है</translation>
 <translation id="1202549130170287307">डिसकनेक्ट किया जा रहा है</translation>
+<translation id="4989542687859782284">उपलब्ध नहीं है</translation>
 <translation id="8941703009412168350">Brave VPN</translation>
 <translation id="6303294677342628402">शील्ड्स</translation>
 <translation id="8458987127502506209">Brave Shields को इनेबल करें</translation>
@@ -2812,9 +2825,11 @@
 <translation id="6021669293402055982">Brave VPN: डिसकनेक्ट हो गया है</translation>
 <translation id="3541307549916475335">Brave VPN पैनल UI</translation>
 <translation id="2325196879156848326">कनेक्शन नहीं हुआ है</translation>
+<translation id="6246488334766115273">कनेक्शन उपलब्ध नहीं है</translation>
 <translation id="745054660363064771">सर्वर से कनेक्शन नहीं हो सका</translation>
 <translation id="3936826714240735937">कोई और सर्वर चुनें</translation>
 <translation id="2606728814652041300"><ph name="PRODUCT_NAME"/><ph name="REGION_NAME"/>सर्वर से कनेक्ट नहीं हो सका. कृपया फिर से कोशिश करें या कोई अन्य देश चुनें.</translation>
+<translation id="4872940635040426686"><ph name="PRODUCT_NAME"/> उपलब्ध नहीं है। अगर समस्या बनी रहती है, तो कृपया Brave को फिर से इंस्टॉल करें या हमारी तकनीकी सहायता टीम से संपर्क करें।</translation>
 <translation id="1776533911621317363">अपना 7 दिनों का मुफ़्त ट्रायल शुरू करें</translation>
 <translation id="3357036723290257445">क्या आप पहले से ही Brave VPN खरीद चुके हैं?</translation>
 <translation id="8652175077544655965">सेटिंग बंद करें</translation>
@@ -2954,11 +2969,13 @@ Brave में एक सहयोगी सेवा है, जो आपक�
 <translation id="4405566535206792621">अपना पासवर्ड बदलने के लिए, कृपया अपने ईमेल पते की पुष्टि करें।</translation>
 <translation id="3135333563420939059">आपका ईमेल सत्यापित हो गया है। अपना पासवर्ड बदलना पूरा करने के लिए एक नया पासवर्ड सेट करें।</translation>
 <translation id="4227581348172626540">पासवर्ड बदलना रद्द करें</translation>
-<translation id="808894953321890993">पासवर्ड बदलें</translation>
 <translation id="7967687455715421528">पासवर्ड बदला नहीं जा सका</translation>
 <translation id="7413006094063730650">अकाउंट मिटाएँ</translation>
 <translation id="4869737930995549965">लॉग आउट करें</translation>
-<translation id="2902312830803030883">और क्रियाएँ</translation>
+<translation id="4424262960694990728">कार्रवाई ज़रूरी है</translation>
+<translation id="847260521336960132">खाते की जानकारी</translation>
+<translation id="5399593843842221768">आपके Brave खाते के बारे में व्यक्तिगत जानकारी।</translation>
+<translation id="5771731269320499905">Brave खाते की जानकारी</translation>
 <translation id="5538654494923870167">अपने Brave अकाउंट के साथ शुरुआत करें</translation>
 <translation id="1544145635547515689">Brave अकाउंट बनायें</translation>
 <translation id="3828644479849256404">पहले से अकाउंट है? लॉग इन करें</translation>
@@ -2974,6 +2991,7 @@ Brave में एक सहयोगी सेवा है, जो आपक�
 <translation id="7114054701490058191">पासवर्ड मेल नहीं खा रहे</translation>
 <translation id="4277028893293644418">पासवर्ड रीसेट करें</translation>
 <translation id="9033485352495162741">पुष्टि सफल रही। अब अपना इच्छित नया पासवर्ड दर्ज करें:</translation>
+<translation id="808894953321890993">पासवर्ड बदलें</translation>
 <translation id="1293857704520741614">अपने अकाउंट में लॉग इन करें</translation>
 <translation id="118617366439356381">अपना पासवर्ड भूल गए?</translation>
 <translation id="5636406393070713097">अपने Brave अकाउंट ईमेल की पुष्टि करें और फिर आपको अपना पासवर्ड रीसेट करने के लिए एक कोड मिलेगा। यह कोड केवल 15 मिनट के लिए मान्य होगा।</translation>

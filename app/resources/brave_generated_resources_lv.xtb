@@ -116,6 +116,8 @@
 <translation id="2162109630536601963">Ja šis paplašinājums veic tīkla pieprasījumus, tie neizmanto Tor vai inkognito režīmu.</translation>
 <translation id="2725327089319971976">Lai atspējotu šo paplašinājumu inkognito un Tor režīmā, noņemiet atzīmi no šīs opcijas.</translation>
 <translation id="438106944087726695">Viesots platformā Brave</translation>
+<translation id="2265651566599167057">Socket atzīmēts kā ļaunprogrammatūra.</translation>
+<translation id="2607395470596637070">Uzziniet vairāk par to, kā Socket pakalpojums Brave jūs aizsargā</translation>
 <translation id="3371343170427636147">Brave Nightly pārlūka lietotnes</translation>
 <translation id="4097979995947147464">Brave Beta pārlūka lietotnes</translation>
 <translation id="8303432794159193481">Brave Dev pārlūka lietotnes</translation>
@@ -722,7 +724,7 @@
 <translation id="4432071071853308688">Kods ir tukšs</translation>
 <translation id="955848693465029904">Iekšēja sinhronizācijas iestatīšanas kļūda</translation>
 <translation id="7456398316301207582">Konta dzēšanas iekšējā kļūda</translation>
-<translation id="859506441384380749">Šo kodu ģenerējusi novecojusi Brave versija. Vispirms jauniniet citu ierīci</translation>
+<translation id="4002014583969312635">Šķiet, ka šis kods tika izveidots ierīcē, kurā darbojas vecāka Brave versija. Lūdzu, atjauniniet Brave uz jaunāko versiju savā otrā ierīcē un pēc tam izveidojiet jaunu sinhronizācijas kodu.</translation>
 <translation id="3132642509209154999">Šis kods vairs nav derīgs. Izveidojiet jaunu citā ierīcē un mēģiniet vēlreiz.</translation>
 <translation id="2859229680945501779">Šis kods ir nederīgs. Lūdzu, pārbaudiet, vai laiks un laika zona jūsu ierīcē ir iestatīti pareizi.</translation>
 <translation id="2339730291919608488">Pamest sinhronizācijas ķēdi</translation>

@@ -22,6 +22,7 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="8541922081612557424">About Brave</translation>
 <translation id="987734326276404793">Get price tracking alerts with Brave on your phone</translation>
 <translation id="1203500561924088507">Thanks for installing. You must restart your browser before using <ph name="BUNDLE_NAME"/>.</translation>
+<translation id="1213674046343558619">An <ph name="IMPORTANT_UPDATE"/> is pending. To keep your browsing safe, Brave will update the next time you're inactive for <ph name="IDLE_DURATION"/>.</translation>
 <translation id="1232234696885483911">When you open Image Search, the page title, URL and content, including PDFs, will be sent to the server automatically. <ph name="LEARN_MORE"/></translation>
 <translation id="1934377710648094656">While you're signed in, you can use your passwords and more from your Brave sync chain in Brave. To change this, go to 'Your account in Brave'.</translation>
 <translation id="583633806828413086">Show Gemini in Brave in Mac menu bar</translation>
@@ -224,6 +225,7 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="3286538390144397061">Restart Now</translation>
 <translation id="2339258256897053758">Brave API keys are missing. Some functionality of Brave will be disabled.</translation>
 <translation id="8926637909431618259">Continue running background apps when Brave is closed</translation>
+<translation id="8245661393996028021">Brave will update when you're away</translation>
 <translation id="518125528057094977">Brave will warn you before loading any site using an insecure connection</translation>
 <translation id="8652321858775514885">You'll be signed out of most sites when you close all Brave windows, except your Brave sync chain if you're signed in to Brave. To let sites remember you, <ph name="SETTINGS_LINK"/>.</translation>
 <translation id="3352986031709923790">top-right corner of search area: right <ph name="RIGHT"/>%, top <ph name="TOP"/>%</translation>
@@ -232,6 +234,7 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="2645435784669275700">Chrome OS</translation>
 <translation id="2297290224191497273">Switch to existing Brave profile?</translation>
 <translation id="3412460710772753638">In Password Manager on this device</translation>
+<translation id="172368702860945706">Brave wants to update</translation>
 <translation id="5079573433701109938">To get your bookmarks and more from <ph name="DEVICE"/>, sign in to Brave</translation>
 <translation id="3438772217992559640">Search this tab with image search</translation>
 <translation id="2491221873705777076">Extend Enhanced Safe Browsing with Brave on your phone</translation>
@@ -369,6 +372,7 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="4877750182157975795">Access all of your Brave favourites with Brave on your <ph name="DEVICE_TYPE"/></translation>
 <translation id="1204184037023366446">Brave needs permission to track your hands</translation>
 <translation id="5406591571925937375">You haven't visited recently. Brave removed <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/>, <ph name="PERMISSION_3"/>.</translation>
+<translation id="3576895950897485019">Sign In to Brave</translation>
 <translation id="5174969993834422967">You usually block notifications. To let this site notify you, click the notification icon on the right corner of your location bar.</translation>
 <translation id="5174983315706567306">Not enough disk space.</translation>
 <translation id="8157129267754368853">Brave account requires re-authentication</translation>
@@ -377,6 +381,7 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="5234764350956374838">Dismiss</translation>
 <translation id="7690383309583926074">Get the Brave app to save passwords on the go</translation>
 <translation id="8586264863973514035">To apply your changes, relaunch Brave</translation>
+<translation id="8127050479140582768">To send this tab to another device, sign in to Brave on both devices</translation>
 <translation id="5286907366254680517">Detected</translation>
 <translation id="7264453786974905915">Get the Brave app</translation>
 <translation id="7230006500876504868">Search with Brave</translation>
@@ -740,6 +745,7 @@ Brave is unable to recover your settings.</translation>
 <translation id="5128665650717824082">Brave for testing cannot be made your default browser.</translation>
 <translation id="3053208669360972929">Search with Brave from anywhere</translation>
 <translation id="2433912322225810055">It also controls what page is shown when you start Brave or search from the Omnibox.</translation>
+<translation id="8789425457808164956">To send this tab to another device, sign in to Brave there</translation>
 <translation id="4100716194836114130">This is your Brave</translation>
 <translation id="8712637175834984815">Got it</translation>
 <translation id="1419543648228375718">Sign in to Brave?</translation>

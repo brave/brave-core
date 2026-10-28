@@ -222,7 +222,6 @@
 <translation id="9040069796107003510">Brave Rewards ხატულა</translation>
 <translation id="6333347122924254968">Brave Rewards ხატულა მისამართის ზოლში დახატვა</translation>
 <translation id="4393974575368329991">ქვედა ნავიგაციის ხელსაწყოების ზოლი</translation>
-<translation id="8727059712928806451">ქვედა ზოლის ჩართვა</translation>
 <translation id="1834226716203076292">აჩვენე ქვედა ზოლი მთავარ გვერდზე, სანიშნეებზე და ძიებაზე სწრაფი წვდომისთვის</translation>
 <translation id="1422686363939271829">ეს პარამეტრი გათიშულია, როდესაც ქვედა მისამართის ზოლის პოზიციაა შერჩეული</translation>
 <translation id="6587448235155023666">თქვენი ცვლილებები ძალაში შევა მომდევნო ჯერ Brave-ის გადატვირთვისას</translation>
@@ -292,7 +291,7 @@
 <translation id="2569646144216067185">სიტყვების რაოდენობა: <ph name="WORD_COUNT"/></translation>
 <translation id="7507533586185621084">არასწორი სინქრონიზაციის კოდი</translation>
 <translation id="8284063834901328650">არასწორი სინქრონიზაციის QR კოდი</translation>
-<translation id="859506441384380749">ეს კოდი შექმნილია Brave-ის ძველი ვერსიით — გთხოვთ, ჯერ განაახლეთ თქვენი მეორე მოწყობილობა</translation>
+<translation id="4002014583969312635">როგორც ჩანს, ეს კოდი Brave-ის უფრო ძველ ვერსიაზე მომუშავე მოწყობილობაზე შეიქმნა. გთხოვთ, განაახლოთ Brave უახლეს ვერსიამდე თქვენს სხვა მოწყობილობაზე და შემდეგ შექმნათ ახალი სინქრონიზაციის კოდი.</translation>
 <translation id="3132642509209154999">ეს კოდი ვადაგასულია. გთხოვთ შექმენით ახალი კოდი თქვენს სხვა მოწყობილობაზე და სცადეთ ხელახლა.</translation>
 <translation id="2859229680945501779">ეს კოდი არასწორია. გთხოვთ, შეამოწმოთ რომ დრო და დროის ზონა სწორად არის მითითებული თქვენს მოწყობილობაზე.</translation>
 <translation id="3149880132460839085">Brave სინქრონიზაცია</translation>
@@ -345,8 +344,6 @@
 <translation id="8185825081026121627">მიიღეთ ძირითადი ყურადღების ტოკენი კერძო Brave Rewards რეკლამების სანახავად.</translation>
 <translation id="5321518976657560663">აღდგენის შეცდომა</translation>
 <translation id="4114170343590425996">შეცდომა მოხდა Brave Rewards-ის აღდგენისას. გთხოვთ, განაახლეთ Brave და სცადეთ ხელახლა.</translation>
-<translation id="6417420737057016607">Brave Ads</translation>
-<translation id="5611966874859284786">Brave-ის არგამოყენებისას აჩვენეთ შეტყობინების რეკლამები</translation>
 <translation id="5717636703619499822"><ph name="BEGIN_LINK1"/>Brave Rewards მონაცემების აღდგენა…<ph name="END_LINK1"/></translation>
 <translation id="1830919318137227284"><ph name="BEGIN_LINK1"/>Brave რეკლამების მონაცემების გასუფთავება…<ph name="END_LINK1"/></translation>
 <translation id="8293206222192510085">სანიშნის დამატება</translation>
@@ -409,8 +406,9 @@
 <translation id="4546260624932151782">ფავორიტების ჩვენება</translation>
 <translation id="5313967007315987356">საიტის დამატება</translation>
 <translation id="1773147648972887693">ხშირად მონახულებულთა ჩვენება</translation>
-<translation id="752098910262610337">მოკლე გზების ჩვენება</translation>
 <translation id="7134741506051403308">ვიჯეტის დამალვა</translation>
+<translation id="1247759249260562308">ფავორიტის ჩასწორება</translation>
+<translation id="6387214885349500492">ამ ფავორიტის მიმაგრება</translation>
 <translation id="7462178177755090262">საწყისი ეკრანი</translation>
 <translation id="5365434987337264071">ბოლო გახსნილი ჩანართი</translation>
 <translation id="6019856124237323989">{HOURS, plural, =1 {ახალი ჩანართი იქმნება <ph name="HOURS_ONE"/>-საათიანი უმოქმედობის შემდეგ} other {ახალი ჩანართი იქმნება <ph name="HOURS_MANY"/> საათიანი უმოქმედობის შემდეგ}}</translation>
@@ -995,6 +993,7 @@
 <translation id="6365389672683343144">თქვენი Brave VPN გამოწერით შეგიძლიათ დაიცვათ 5-მდე მოწყობილობა, Android, iOS და დესკტოპზე. უბრალოდ დააკავშირეთ თქვენი Google Play გამოწერა Brave ანგარიშთან.</translation>
 <translation id="6610899852831463073">Can't enable Safe Browsing</translation>
 <translation id="7954263306665462056">Safe Browsing has been disabled on your device. To enable it, ensure that Google Play Services is installed and that it's up to date.</translation>
+<translation id="6417420737057016607">Brave Ads</translation>
 <translation id="7748944510530490017">პირველადი ქსელები</translation>
 <translation id="2781668117338732220">მეორეული ქსელები</translation>
 <translation id="282560918037172384">ტესტის ქსელები</translation>

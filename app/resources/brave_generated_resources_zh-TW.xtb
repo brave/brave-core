@@ -117,6 +117,8 @@
 <translation id="2162109630536601963">若此擴充功能提出網路要求，將不會使用 Tor 或私人模式。</translation>
 <translation id="2725327089319971976">若要在私人模式和 Tor 模式下停用此擴充功能，請取消選取此選項。</translation>
 <translation id="438106944087726695">由 Brave 託管</translation>
+<translation id="2265651566599167057">已被 Socket 標記為惡意軟體。</translation>
+<translation id="2607395470596637070">進一步了解 Brave 中的 Socket 如何保護您</translation>
 <translation id="3371343170427636147">Brave 瀏覽器 Nightly 應用程式</translation>
 <translation id="4097979995947147464">Brave 瀏覽器 Beta 應用程式</translation>
 <translation id="8303432794159193481">Brave 瀏覽器 Dev 應用程式</translation>
@@ -723,7 +725,7 @@
 <translation id="4432071071853308688">此代碼為空</translation>
 <translation id="955848693465029904">內部同步設定錯誤</translation>
 <translation id="7456398316301207582">內部帳戶刪除錯誤</translation>
-<translation id="859506441384380749">此代碼由已淘汰的 Brave 版本產生，請先升級您的其他裝置</translation>
+<translation id="4002014583969312635">此代碼似乎是使用執行舊版 Brave 的裝置所建立的。請在您的其他裝置上將 Brave 更新至最新版本，然後建立新的同步代碼。</translation>
 <translation id="3132642509209154999">此代碼已過期，請在其他裝置上產生新的代碼，然後再試一次。</translation>
 <translation id="2859229680945501779">此程式碼無效。請確認您的裝置已正確設定時間和時區。</translation>
 <translation id="2339730291919608488">離開同步鏈結</translation>
