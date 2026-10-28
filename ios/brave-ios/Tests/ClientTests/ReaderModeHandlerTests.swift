@@ -39,6 +39,20 @@ final class ReaderModeHandlerTests: XCTestCase {
     XCTAssertTrue(directives.contains(where: { $0 == ("img-src", "*") }))
   }
 
+  func testReaderModeBlocksChromeNavigationFromReaderDocument() throws {
+    let readerURL = try XCTUnwrap(
+      URL(string: "https://example.com")?
+        .encodeEmbeddedInternalURL(for: .readermode)
+    )
+    let chromeURL = try XCTUnwrap(URL(string: "chrome://wallet"))
+    XCTAssertFalse(
+      ReaderModeTabHelper.allowsNavigation(
+        from: readerURL,
+        to: chromeURL
+      )
+    )
+  }
+
   /// The original page's CSP must not be able to weaken the reader mode policy. Directives such
   /// as `script-src-attr` take precedence over the nonce-based `script-src` for inline event
   /// handlers, and `frame-src` would permit framing privileged internal pages.
