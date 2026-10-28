@@ -204,11 +204,12 @@ class BravePrivateNewTabPageBrowserTest
 
 IN_PROC_BROWSER_TEST_F(BravePrivateNewTabPageBrowserTest,
                        DismissInfoCardsInPrivateWindow) {
-  Browser* private_browser = CreateIncognitoBrowser();
+  BrowserWindowInterface* private_browser = CreateIncognitoBrowser();
   ASSERT_TRUE(OpenNewTabPage(private_browser));
 
   CheckInfoCardsDismissal(
-      GetActiveWebContents(private_browser), browser()->profile()->GetPrefs(),
+      GetActiveWebContents(private_browser),
+      browser()->GetProfile()->GetPrefs(),
       brave_private_new_tab::prefs::kBravePrivateWindowDisclaimerDismissed);
 }
 
@@ -242,10 +243,10 @@ IN_PROC_BROWSER_TEST_F(BravePrivateNewTabPageBrowserTest,
   ASSERT_TRUE(OpenNewTabPage(tor_browser));
 
   CheckInfoCardsDismissal(
-      GetActiveWebContents(tor_browser), browser()->profile()->GetPrefs(),
+      GetActiveWebContents(tor_browser), browser()->GetProfile()->GetPrefs(),
       brave_private_new_tab::prefs::kBraveTorWindowDisclaimerDismissed);
   // Dismissing in a Tor window must not affect private windows.
-  EXPECT_FALSE(browser()->profile()->GetPrefs()->GetBoolean(
+  EXPECT_FALSE(browser()->GetProfile()->GetPrefs()->GetBoolean(
       brave_private_new_tab::prefs::kBravePrivateWindowDisclaimerDismissed));
 }
 
@@ -264,7 +265,7 @@ class BravePrivateNewTabPageNoVpnBrowserTest
 
 IN_PROC_BROWSER_TEST_F(BravePrivateNewTabPageNoVpnBrowserTest,
                        ShowsTorCardWhenVpnIsUnavailable) {
-  Browser* private_browser = CreateIncognitoBrowser();
+  BrowserWindowInterface* private_browser = CreateIncognitoBrowser();
   ASSERT_TRUE(OpenNewTabPage(private_browser));
   auto* web_contents = GetActiveWebContents(private_browser);
 
@@ -287,33 +288,34 @@ class BravePrivateNewTabPageVpnBrowserTest : public InProcessBrowserTest {
 
  protected:
   Profile* private_profile() {
-    return browser()->profile()->GetPrimaryOTRProfile(
+    return browser()->GetProfile()->GetPrimaryOTRProfile(
         /*create_if_needed=*/true);
   }
 
   void SetPurchasedState(PurchasedState state) {
-    auto* service =
-        brave_vpn::BraveVpnServiceFactory::GetForProfile(browser()->profile());
+    auto* service = brave_vpn::BraveVpnServiceFactory::GetForProfile(
+        browser()->GetProfile());
     ASSERT_TRUE(service);
     service->SetPurchasedStateForTesting(skus::GetDefaultEnvironment(), state);
   }
 
   void SetCache(VpnPromoCache cache) {
-    browser()->profile()->GetPrefs()->SetInteger(
+    browser()->GetProfile()->GetPrefs()->SetInteger(
         brave_private_new_tab::prefs::kBravePrivateWindowVpnPromoCache,
         static_cast<int>(cache));
   }
 
   VpnPromoCache GetCache() {
     return static_cast<VpnPromoCache>(
-        browser()->profile()->GetPrefs()->GetInteger(
+        browser()->GetProfile()->GetPrefs()->GetInteger(
             brave_private_new_tab::prefs::kBravePrivateWindowVpnPromoCache));
   }
 
   std::unique_ptr<BravePrivateNewTabPageHandler> CreateHandler() {
     page_handler_.reset();
     return std::make_unique<BravePrivateNewTabPageHandler>(
-        private_profile(), browser()->tab_strip_model()->GetActiveWebContents(),
+        private_profile(),
+        browser()->GetTabStripModel()->GetActiveWebContents(),
         page_handler_.BindNewPipeAndPassReceiver());
   }
 
