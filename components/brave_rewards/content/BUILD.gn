@@ -113,7 +113,10 @@ source_set("testutil") {
 source_set("unit_tests") {
   testonly = true
 
-  sources = [ "rewards_protocol_navigation_throttle_unittest.cc" ]
+  sources = [
+    "rewards_p3a_unittest.cc",
+    "rewards_protocol_navigation_throttle_unittest.cc",
+  ]
 
   deps = [
     ":content",
