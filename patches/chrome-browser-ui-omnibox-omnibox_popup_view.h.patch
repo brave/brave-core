@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/omnibox/omnibox_popup_view.h b/chrome/browser/ui/omnibox/omnibox_popup_view.h
-index ed496445b5896f7c3536e7a3beb426ecb32a5a0d..6ec46cd1d05b88214bf7862094d27af897dd9666 100644
+index c3d25e6bc102af34fbf64bf0fe4ada8edf3b793d..83eae94e18f261055b8962f8f79146a273cb5b57 100644
 --- a/chrome/browser/ui/omnibox/omnibox_popup_view.h
 +++ b/chrome/browser/ui/omnibox/omnibox_popup_view.h
-@@ -132,6 +132,7 @@ class OmniboxPopupView {
+@@ -143,6 +143,7 @@ class OmniboxPopupView {
    virtual const OmniboxController* controller() const;
  
   private:
