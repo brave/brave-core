@@ -9,17 +9,26 @@
 #include <stdint.h>
 
 #include <memory>
+#include <optional>
 #include <string>
+#include <vector>
 
+#include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
 #include "base/timer/timer.h"
 #include "brave/components/brave_private_new_tab_ui/common/brave_private_new_tab.mojom.h"
+#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/tor/tor_launcher_observer.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#include "brave/components/brave_vpn/browser/brave_vpn_service_observer.h"
+#include "brave/components/brave_vpn/common/mojom/brave_vpn.mojom.h"
+#endif
 
 class Profile;
 
@@ -33,8 +42,21 @@ class TorLauncherFactory;
 
 class BravePrivateNewTabPageHandler
     : public brave_private_new_tab::mojom::PageHandler,
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+      public brave_vpn::BraveVpnServiceObserver,
+#endif
       public TorLauncherObserver {
  public:
+  // Synchronous reads of what the page needs for its first paint, passed as
+  // load time data so it can render without waiting on mojo round trips.
+  static bool IsDisclaimerDismissed(Profile* profile);
+  static bool IsTorDisabled();
+  static bool IsTorConnected();
+  // Whether to show the VPN promo, from the live purchase state when it's
+  // conclusive or else the answer cached by an earlier page. std::nullopt when
+  // neither is known, in which case the page waits on GetShouldShowVpnPromo.
+  static std::optional<bool> GetInitialShouldShowVpnPromo(Profile* profile);
+
   BravePrivateNewTabPageHandler(
       Profile* profile,
       content::WebContents* web_contents,
@@ -52,13 +74,26 @@ class BravePrivateNewTabPageHandler
       mojo::PendingRemote<brave_private_new_tab::mojom::PrivateTabPage> page)
       override;
   void SetDisclaimerDismissed(bool dismissed) override;
-  void GetDisclaimerDismissed(GetDisclaimerDismissedCallback callback) override;
   void GetIsTorConnected(GetIsTorConnectedCallback callback) override;
-  void GetIsTorDisabled(GetIsTorDisabledCallback callback) override;
   void GoToBraveSearch(const std::string& input, bool open_new_tab) override;
   void GoToBraveSupport() override;
+  void GetShouldShowVpnPromo(GetShouldShowVpnPromoCallback callback) override;
+  void OpenVpnCheckout() override;
+  void OpenTorWindow() override;
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  // brave_vpn::BraveVpnServiceObserver overrides:
+  void OnPurchasedStateChanged(
+      brave_vpn::mojom::PurchasedState state,
+      const std::optional<std::string>& description) override;
+#endif
 
  private:
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  void OnGetPurchasedState(brave_vpn::mojom::PurchasedInfoPtr info);
+#endif
+  void CacheShouldShowVpnPromo(bool show);
+
   // TorLauncherObserver overrides:
   void OnTorCircuitEstablished(bool result) override;
   void OnTorInitializing(const std::string& percentage,
@@ -81,7 +116,12 @@ class BravePrivateNewTabPageHandler
   // event and shots when the time between events exceeds kStuckPeriod seconds.
   base::OneShotTimer stuck_timer_;
 
+  // GetShouldShowVpnPromo replies waiting for the VPN purchase state to load.
+  std::vector<GetShouldShowVpnPromoCallback> vpn_promo_callbacks_;
+
   mojo::Receiver<brave_private_new_tab::mojom::PageHandler> receiver_;
+
+  base::WeakPtrFactory<BravePrivateNewTabPageHandler> weak_factory_{this};
 };
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_PRIVATE_NEW_TAB_PAGE_BRAVE_PRIVATE_NEW_TAB_PAGE_HANDLER_H_

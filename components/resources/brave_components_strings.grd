@@ -520,20 +520,34 @@
         <message name="IDS_BRAVE_PRIVATE_NEW_TAB_BOX_TOR_TEXT_1" desc="">Tor hides your IP address from the sites you visit, by routing your browsing through several Tor servers before it reaches your destination. Tor can slow down browsing and some sites might not work at all.</message>
         <message name="IDS_BRAVE_PRIVATE_NEW_TAB_BOX_TOR_TEXT_2" desc="">Using Private Windows only changes what Brave does on your device — it doesn't change anyone else's behavior. Tor hides your IP address from the sites you visit and makes it somewhat more difficult, but not impossible, for your ISP or employer to see what sites you are visiting. Open a Private Window with Tor from the menu, or with [[ key ]].</message>
         <message name="IDS_BRAVE_PRIVATE_NEW_TAB_BOX_TOR_BUTTON" desc="">Learn more about Tor in Brave</message>
-        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_TOR_STATUS" desc="">Tor Status</message>
-        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_TOR_STATUS_CONNECTED" desc="">Tor connected successfully</message>
+        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_TOR_STATUS_CONNECTED" desc="">Tor connection established</message>
         <message name="IDS_BRAVE_PRIVATE_NEW_TAB_TOR_STATUS_DISCONNECTED" desc="">Disconnected</message>
         <message name="IDS_BRAVE_PRIVATE_NEW_TAB_TOR_STATUS_CONNECTION_SLOW" desc="">Still connecting...</message>
         <message name="IDS_BRAVE_PRIVATE_NEW_TAB_TOR_STATUS_CONNECTION_SLOW_DESC" desc="">There's some slowness in the Tor network</message>
         <message name="IDS_BRAVE_PRIVATE_NEW_TAB_TOR_STATUS_CONNECTION_FAILED" desc="">Tor connection failed</message>
         <message name="IDS_BRAVE_PRIVATE_NEW_TAB_TOR_STATUS_INITIALIZING" desc="">
-          Tor is connecting... <ph name="PERCENTAGE">$1<ex>50</ex></ph>%
+          Initializing Tor service <ph name="PERCENTAGE">$1<ex>50</ex></ph>%
         </message>
-        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_TOR_HELP_CONNECTING" desc="">Having problems connecting? Try <ph name="BEGIN_LINK">$1</ph>turning off<ph name="END_LINK">$2</ph> Private Window with Tor and back on again in settings.</message>
         <message name="IDS_BRAVE_PRIVATE_NEW_TAB_TOR_HELP_DISCONNECTED_REENABLE" desc="">Open <ph name="BEGIN_LINK">$1</ph>Brave Settings<ph name="END_LINK">$2</ph>, disable Private Window with Tor, then re-enable.</message>
         <message name="IDS_BRAVE_PRIVATE_NEW_TAB_TOR_HELP_DISCONNECTED_BRIDGES" desc=""><ph name="BEGIN_BOLD">$1</ph>Still having trouble?<ph name="END_BOLD">$2</ph> Try using <ph name="BEGIN_BRIDGES_LINK">$3</ph>bridges<ph name="END_BRIDGES_LINK">$4</ph> or <ph name="BEGIN_SUPPORT_LINK">$5</ph>contact support<ph name="END_SUPPORT_LINK">$6</ph>.</message>
-        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_TOR_HELP_CONTACT_SUPPORT" desc="">Contact support.</message>
         <message name="IDS_BRAVE_PRIVATE_NEW_TAB_SEARCH_PLACEHOLDER" desc="A placeholder label to display on neutral state of the input box in private new tab page">Search the web privately</message>
+        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_SEARCH_SUBMIT" desc="Accessible label for the button that submits the search query on the private new tab page">Search</message>
+        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_HEADING_PRIVATE" desc="Heading shown on the new tab page of a private window">Private window</message>
+        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_HEADING_TOR" desc="Heading shown on the new tab page of a private window with Tor">Tor window</message>
+        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_HIDE_INFO" desc="Accessible label for the button that hides the info cards on the private new tab page">Hide info</message>
+        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_SHOW_INFO" desc="Accessible label for the button that shows the info cards on the private new tab page">Show info</message>
+        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_CARD_NO_TRACE_TITLE" desc="Title of the info card explaining that private windows leave no browsing history on the device">Leave no trace on your device</message>
+        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_CARD_NO_TRACE_DESC" desc="Body of the info card explaining that private windows leave no browsing history on the device">Sites you visit in private windows won't appear in your history. Cookies, form data, and site data vanish once all private windows are closed.</message>
+        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_CARD_VISIBILITY_TITLE" desc="Title of the info card explaining that browsing activity may still be visible to the network">Browsing visibility</message>
+        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_CARD_VISIBILITY_DESC" desc="Body of the info card explaining that browsing activity may still be visible to the network">Note that—even in private windows—your browsing activity may still be visible to your ISP, network observers, or your employer (if you're using a work machine/network).</message>
+        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_CARD_VPN_TITLE" desc="Title of the info card promoting Brave VPN">Try Brave VPN</message>
+        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_CARD_VPN_DESC" desc="Body of the info card promoting Brave VPN. The text between the link placeholders opens the VPN checkout page.">Brave VPN encrypts and protects anything you do online, even outside the Brave browser. <ph name="BEGIN_LINK">$1</ph>Start 7 day free trial<ph name="END_LINK">/$1</ph>.</message>
+        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_CARD_TOR_PROMO_TITLE" desc="Title of the info card suggesting to open a private window with Tor">Try a Tor window</message>
+        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_CARD_TOR_PROMO_DESC" desc="Body of the info card suggesting to open a private window with Tor. The text between the link placeholders opens a new private window with Tor.">For more privacy, <ph name="BEGIN_LINK">$1</ph>open a private window with Tor<ph name="END_LINK">/$1</ph>.</message>
+        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_CARD_ABOUT_TOR_TITLE" desc="Title of the info card explaining Tor windows">About Tor windows</message>
+        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_CARD_ABOUT_TOR_DESC" desc="Body of the info card explaining Tor windows">With Tor connectivity, it becomes more difficult for sites to see your true IP address and for network observers to see what sites you visit.</message>
+        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_CARD_TOR_SAFETY_TITLE" desc="Title of the info card recommending Tor Browser for personal safety">Safety and anonymity</message>
+        <message name="IDS_BRAVE_PRIVATE_NEW_TAB_CARD_TOR_SAFETY_DESC" desc="Body of the info card recommending Tor Browser for personal safety">If your personal safety depends on remaining anonymous, use the Tor Browser.</message>
       </if>
 
       <!-- WebUI adblock resources -->

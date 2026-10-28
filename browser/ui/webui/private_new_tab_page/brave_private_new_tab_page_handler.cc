@@ -5,17 +5,22 @@
 
 #include "brave/browser/ui/webui/private_new_tab_page/brave_private_new_tab_page_handler.h"
 
+#include <optional>
 #include <utility>
+#include <vector>
 
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/time/time.h"
 #include "brave/components/brave_private_new_tab_ui/common/pref_names.h"
+#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/browser_window/public/profile_browser_collection.h"
+#include "chrome/browser/ui/navigator/browser_navigator.h"
+#include "chrome/browser/ui/navigator/browser_navigator_params.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "components/prefs/pref_service.h"
 #include "components/search_engines/template_url.h"
@@ -26,13 +31,101 @@
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/tor/tor_profile_service_factory.h"
+#include "brave/browser/ui/browser_commands.h"
 #include "brave/components/tor/pref_names.h"
 #include "brave/components/tor/tor_launcher_factory.h"
 #include "chrome/browser/browser_process.h"
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
+#include "brave/browser/brave_vpn/vpn_utils.h"
+#include "brave/components/brave_vpn/browser/brave_vpn_service.h"
+#include "brave/components/brave_vpn/common/brave_vpn_utils.h"
+#endif
+
 namespace {
+
+using brave_private_new_tab::prefs::VpnPromoCache;
+
 constexpr auto kStuckPeriod = base::Seconds(45);
+
+const char* GetDisclaimerDismissedPref(Profile* profile) {
+  return profile->IsTor()
+             ? brave_private_new_tab::prefs::kBraveTorWindowDisclaimerDismissed
+             : brave_private_new_tab::prefs::
+                   kBravePrivateWindowDisclaimerDismissed;
+}
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+// The VPN service only exists for regular profiles, and is null when VPN isn't
+// available for it (feature off, policy-disabled, unsupported region, ...).
+brave_vpn::BraveVpnService* GetVpnService(Profile* profile) {
+  Profile* original_profile = profile->GetOriginalProfile();
+  if (!brave_vpn::IsBraveVPNEnabled(original_profile)) {
+    return nullptr;
+  }
+  return brave_vpn::BraveVpnServiceFactory::GetForProfile(original_profile);
+}
+#endif
+
+}  // namespace
+
+// static
+bool BravePrivateNewTabPageHandler::IsDisclaimerDismissed(Profile* profile) {
+  return profile->GetOriginalProfile()->GetPrefs()->GetBoolean(
+      GetDisclaimerDismissedPref(profile));
+}
+
+// static
+bool BravePrivateNewTabPageHandler::IsTorDisabled() {
+#if BUILDFLAG(ENABLE_TOR)
+  // For private new tab page, only check if Tor is explicitly
+  // disabled by enterprise policy (managed and set to true)
+  if (auto* prefs = g_browser_process->local_state()) {
+    auto* pref = prefs->FindPreference(tor::prefs::kTorDisabled);
+    return pref && pref->IsManaged() && pref->GetValue()->GetBool();
+  }
+  return false;
+#else
+  return true;
+#endif
+}
+
+// static
+bool BravePrivateNewTabPageHandler::IsTorConnected() {
+#if BUILDFLAG(ENABLE_TOR)
+  auto* tor_launcher_factory = TorLauncherFactory::GetInstance();
+  return tor_launcher_factory && tor_launcher_factory->IsTorConnected();
+#else
+  return false;
+#endif
+}
+
+// static
+std::optional<bool> BravePrivateNewTabPageHandler::GetInitialShouldShowVpnPromo(
+    Profile* profile) {
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  auto* vpn_service = GetVpnService(profile);
+  if (!vpn_service || vpn_service->IsPurchased()) {
+    return false;
+  }
+  // Not purchased may still mean the purchase state is loading, so fall back
+  // to what an earlier page saw.
+  switch (static_cast<VpnPromoCache>(
+      profile->GetOriginalProfile()->GetPrefs()->GetInteger(
+          brave_private_new_tab::prefs::kBravePrivateWindowVpnPromoCache))) {
+    case VpnPromoCache::kShow:
+      return true;
+    case VpnPromoCache::kHide:
+      return false;
+    case VpnPromoCache::kUnknown:
+      return std::nullopt;
+  }
+  return std::nullopt;
+#else
+  return false;
+#endif
 }
 
 BravePrivateNewTabPageHandler::BravePrivateNewTabPageHandler(
@@ -65,23 +158,7 @@ void BravePrivateNewTabPageHandler::SetDisclaimerDismissed(bool dismissed) {
   CHECK(profile_);
 
   profile_->GetOriginalProfile()->GetPrefs()->SetBoolean(
-      profile_->IsTor()
-          ? brave_private_new_tab::prefs::kBraveTorWindowDisclaimerDismissed
-          : brave_private_new_tab::prefs::
-                kBravePrivateWindowDisclaimerDismissed,
-      dismissed);
-}
-
-void BravePrivateNewTabPageHandler::GetDisclaimerDismissed(
-    GetDisclaimerDismissedCallback callback) {
-  CHECK(profile_);
-
-  bool dismissed = profile_->GetOriginalProfile()->GetPrefs()->GetBoolean(
-      profile_->IsTor()
-          ? brave_private_new_tab::prefs::kBraveTorWindowDisclaimerDismissed
-          : brave_private_new_tab::prefs::
-                kBravePrivateWindowDisclaimerDismissed);
-  std::move(callback).Run(dismissed);
+      GetDisclaimerDismissedPref(profile_), dismissed);
 }
 
 void BravePrivateNewTabPageHandler::GetIsTorConnected(
@@ -93,23 +170,6 @@ void BravePrivateNewTabPageHandler::GetIsTorConnected(
 #endif
 
   std::move(callback).Run(is_connected);
-}
-
-void BravePrivateNewTabPageHandler::GetIsTorDisabled(
-    GetIsTorDisabledCallback callback) {
-  CHECK(profile_);
-#if BUILDFLAG(ENABLE_TOR)
-  // For private new tab page, only check if Tor is explicitly
-  // disabled by enterprise policy (managed and set to true)
-  bool is_disabled = false;
-  if (auto* prefs = g_browser_process->local_state()) {
-    auto* pref = prefs->FindPreference(tor::prefs::kTorDisabled);
-    is_disabled = pref && pref->IsManaged() && pref->GetValue()->GetBool();
-  }
-#else
-  bool is_disabled = true;
-#endif
-  std::move(callback).Run(is_disabled);
 }
 
 using ConnectionStatus = brave_private_new_tab::mojom::ConnectionStatus;
@@ -164,6 +224,80 @@ void BravePrivateNewTabPageHandler::GoToBraveSupport() {
                              WindowOpenDisposition::NEW_FOREGROUND_TAB,
                              ui::PageTransition::PAGE_TRANSITION_LINK, false),
       /*navigation_handle_callback=*/{});
+}
+
+void BravePrivateNewTabPageHandler::GetShouldShowVpnPromo(
+    GetShouldShowVpnPromoCallback callback) {
+  CHECK(profile_);
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  if (auto* vpn_service = GetVpnService(profile_)) {
+    vpn_promo_callbacks_.push_back(std::move(callback));
+    // Observing first so a load that finishes after GetPurchasedState replies
+    // LOADING still resolves the pending callbacks.
+    Observe(vpn_service);
+    vpn_service->GetPurchasedState(
+        base::BindOnce(&BravePrivateNewTabPageHandler::OnGetPurchasedState,
+                       weak_factory_.GetWeakPtr()));
+    return;
+  }
+#endif
+  CacheShouldShowVpnPromo(false);
+  std::move(callback).Run(false);
+}
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+void BravePrivateNewTabPageHandler::OnGetPurchasedState(
+    brave_vpn::mojom::PurchasedInfoPtr info) {
+  OnPurchasedStateChanged(info->state, info->description);
+}
+
+void BravePrivateNewTabPageHandler::OnPurchasedStateChanged(
+    brave_vpn::mojom::PurchasedState state,
+    const std::optional<std::string>& description) {
+  if (state == brave_vpn::mojom::PurchasedState::LOADING) {
+    return;
+  }
+  const bool show = state != brave_vpn::mojom::PurchasedState::PURCHASED;
+  CacheShouldShowVpnPromo(show);
+  for (auto& callback : std::exchange(vpn_promo_callbacks_, {})) {
+    std::move(callback).Run(show);
+  }
+}
+#endif
+
+void BravePrivateNewTabPageHandler::CacheShouldShowVpnPromo(bool show) {
+  CHECK(profile_);
+  profile_->GetOriginalProfile()->GetPrefs()->SetInteger(
+      brave_private_new_tab::prefs::kBravePrivateWindowVpnPromoCache,
+      static_cast<int>(show ? VpnPromoCache::kShow : VpnPromoCache::kHide));
+}
+
+void BravePrivateNewTabPageHandler::OpenVpnCheckout() {
+  CHECK(profile_);
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  // The purchase must happen in the regular profile so the credentials are
+  // available outside of private windows.
+  Profile* original_profile = profile_->GetOriginalProfile();
+  auto* vpn_service =
+      brave_vpn::BraveVpnServiceFactory::GetForProfile(original_profile);
+  if (!vpn_service) {
+    return;
+  }
+
+  const GURL url = brave_vpn::GetManageURLForUIType(
+      brave_vpn::mojom::ManageURLType::CHECKOUT,
+      GURL(brave_vpn::GetManageUrl(vpn_service->GetCurrentEnvironment())));
+  NavigateParams params(original_profile, url, ui::PAGE_TRANSITION_LINK);
+  params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+  Navigate(&params);
+#endif
+}
+
+void BravePrivateNewTabPageHandler::OpenTorWindow() {
+  CHECK(profile_);
+#if BUILDFLAG(ENABLE_TOR)
+  brave::NewOffTheRecordWindowTor(profile_->GetOriginalProfile());
+#endif
 }
 
 void BravePrivateNewTabPageHandler::OnTorCircuitEstablished(bool result) {

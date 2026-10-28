@@ -4,83 +4,102 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
 import styled, { css } from 'styled-components'
-import { LoaderIcon } from 'brave-ui/components/icons'
+import Icon from '@brave/leo/react/icon'
+import ProgressRing from '@brave/leo/react/progressRing'
+import * as leo from '@brave/leo/tokens/css/variables'
 import { getLocale, formatLocale } from '$web-common/locale'
 import getPageHandlerInstance, { ConnectionStatus } from '../../api/brave_page_handler'
 
-interface BoxProps {
-  isConnected?: boolean
-  isLoading?: boolean
-}
-const Box = styled.div<BoxProps>`
-  --bg-color: #BD1531;
+type PillKind = 'disconnected' | 'progress' | 'connected'
 
+const Pill = styled.div<{ kind: PillKind }>`
   display: inline-flex;
+  align-items: center;
+  gap: ${leo.spacing.l};
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+  padding: ${leo.spacing.l} ${leo.spacing.xl};
+  border-radius: ${leo.radius.full};
+  box-shadow: ${leo.effect.elevation['01']};
+  color: ${leo.color.white};
+  --leo-icon-size: var(--leo-icon-l);
+  --leo-icon-color: ${leo.color.white};
+  --leo-progressring-size: var(--leo-icon-l);
+  --leo-progressring-color: ${leo.color.white};
+
+  ${p => p.kind === 'disconnected' && css`
+    background: ${leo.color.primitive.red[50]};
+  `}
+
+  ${p => p.kind === 'connected' && css`
+    background: ${leo.color.primitive.green[60]};
+  `}
+
+  ${p => p.kind === 'progress' && css`
+    background: var(--window-background);
+  `}
+
+  width: max-content;
+  max-width: calc(100vw - 2 * ${leo.spacing.xl});
+  transition: width ${leo.duration.m} ${leo.easing.inOut};
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+`
+
+const ProgressFill = styled.div`
+  position: absolute;
+  inset: 0 auto 0 0;
+  background: var(--window-surface-strong);
+  transition: width ${leo.duration.m} ${leo.easing.inOut};
+`
+
+const IconBox = styled.span`
+  display: flex;
+  flex-shrink: 0;
+  position: relative;
+`
+
+const Text = styled.div`
+  display: flex;
   flex-direction: column;
-  background: var(--bg-color);
-  box-shadow: 0px 0px 16px rgba(99, 105, 110, 0.18);
-  border-radius: 4px;
-  padding: 8px 16px;
-  max-width: 284px;
-
-  ${p => p.isLoading && css`
-    --bg-color: rgba(255, 255, 255, 0.15);
-  `}
-
-  ${p => p.isConnected && css`
-    --bg-color: #12A378;
-  `}
-
+  min-width: 0;
+  position: relative;
 `
 
-const Row = styled.div`
-  display: inline-flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 12px;
-  color: white;
-  font-weight: 600;
-  font-size: 14px;
-
-  span {
-    width: 22px;
-    height: 22px;
-    min-width: 22px;
-  }
-
+const Title = styled.span`
+  display: block;
+  overflow: hidden;
+  font: ${leo.font.default.semibold};
+  font-variant-numeric: tabular-nums;
+  letter-spacing: ${leo.typography.default.semibold.letterSpacing};
+  white-space: nowrap;
+  text-overflow: ellipsis;
 `
 
-interface HelpProps {
-  isVisible?: boolean
-}
+const Subtitle = styled.span`
+  display: block;
+  overflow: hidden;
+  font: ${leo.font.small.regular};
+  letter-spacing: ${leo.typography.small.regular.letterSpacing};
+  color: var(--window-text-primary);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+`
 
-const Help = styled.div<HelpProps>`
-  --display: none;
-
-  ${p => p.isVisible && css`
-    --display: inline-flex;
-  `}
-  
-  display: var(--display);
-  flex-direction: row;
-  align-items: center;
-  gap: 12px;
-  color: white;
-  font-weight: 400;
-  font-size: 12px;
-
-  span {
-    width: 22px;
-    height: 22px;
-    min-width: 22px;
-  }
+const Help = styled.p`
+  max-width: 300px;
+  margin: ${leo.spacing.m} 0 0;
+  font: ${leo.font.small.regular};
+  color: var(--window-text-primary);
 
   a {
-    color: white;
+    color: inherit;
     cursor: pointer;
-    text-decoration-line: underline;
+    text-decoration: underline;
   }
-
 `
 
 interface Props {
@@ -98,71 +117,125 @@ function contactBraveSupport () {
   getPageHandlerInstance().pageHandler.goToBraveSupport()
 }
 
-function BadgeTor (props: Props) {
-  let textElement = getLocale('torStatusDisconnected')
-  let helpElement
-  let iconElement = (
-    <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
-      <path fillRule="evenodd" clipRule="evenodd" d="M10.02 18.181V16.97a6.97 6.97 0 0 0 0-13.938V1.818a8.181 8.181 0 0 1 0 16.363Zm0-4.243a3.94 3.94 0 0 0 0-7.877V4.85a5.15 5.15 0 0 1 0 10.301v-1.212Zm0-6.058a2.12 2.12 0 0 1 0 4.24V7.88ZM0 10c0 5.523 4.477 10 10 10s10-4.477 10-10S15.523 0 10 0 0 4.477 0 10Z" fill="#fff" />
-    </svg>
-  )
+function StuckHelp () {
+  const [open, settings, reenable] = splitMessage('torHelpDisconnectedReenable')
+  const [
+    before,
+    havingTrouble,
+    tryUsing,
+    bridges,
+    or,
+    contactSupport,
+    rest
+  ] = splitMessage('torHelpDisconnectedBridges')
 
-  const isLoading = props.connectionStatus === ConnectionStatus.kConnecting || props.connectionStatus === ConnectionStatus.kConnectionSlow
-
-  if (props.isConnected || props.connectionStatus === ConnectionStatus.kConnected) {
-    textElement = getLocale('torStatusConnected')
-  } else if (props.connectionStatus === ConnectionStatus.kConnectionStuck) {
-    textElement = getLocale('torStatusConnectionFailed')
-
-    const [
-      open,
-      settings,
-      reenable
-    ] = splitMessage('torHelpDisconnectedReenable')
-
-    const [
-      before,
-      havingTrouble,
-      tryUsing,
-      bridges,
-      or,
-      contactSupport,
-      rest
-    ] = splitMessage('torHelpDisconnectedBridges')
-
-    helpElement = (<p>
+  return (
+    <Help>
       {open}<a href="chrome://settings/privacy">{settings}</a>{reenable}
-      <br></br> <br></br>
+      <br /><br />
       {before}<strong>{havingTrouble}</strong>
       {tryUsing}<a href="chrome://settings/privacy">{bridges}</a>
       {or}
       <a onClick={contactBraveSupport}>{contactSupport}</a>
       {rest}
-    </p>)
-  } else if (props.connectionStatus === ConnectionStatus.kConnectionSlow) {
-    textElement = getLocale('torStatusConnectionSlow')
-    helpElement = getLocale('torStatusConnectionSlowDesc')
-    iconElement = <LoaderIcon />
-  } else if (isLoading) {
-    textElement = formatLocale('torStatusInitializing', { $1: props.progress })
-    helpElement = props.message
-    iconElement = <LoaderIcon />
+    </Help>
+  )
+}
+
+function parseProgress (progress: string) {
+  const value = Number.parseFloat(progress)
+  return Number.isFinite(value) ? Math.min(Math.max(value, 0), 100) : 0
+}
+
+// `width: auto` does not transition when the label changes length, so the
+// pill is measured and its used width is animated explicitly.
+function useAnimatedPillWidth (
+  pillRef: React.RefObject<HTMLDivElement | null>,
+  signature: string
+) {
+  React.useLayoutEffect(() => {
+    const el = pillRef.current
+    if (!el) return
+
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const current = el.getBoundingClientRect().width
+    el.style.transition = 'none'
+    el.style.width = 'max-content'
+    const next = el.getBoundingClientRect().width
+
+    if (reduced || Math.abs(current - next) < 0.5) {
+      el.style.width = `${next}px`
+      el.style.transition = ''
+      return
+    }
+
+    el.style.width = `${current}px`
+    // Commit the start width before the target, or the transition is skipped.
+    el.getBoundingClientRect()
+    el.style.transition = ''
+    el.style.width = `${next}px`
+  }, [pillRef, signature])
+}
+
+function BadgeTor (props: Props) {
+  const isConnected =
+    props.isConnected || props.connectionStatus === ConnectionStatus.kConnected
+  const isStuck = props.connectionStatus === ConnectionStatus.kConnectionStuck
+  const isSlow = props.connectionStatus === ConnectionStatus.kConnectionSlow
+  const isConnecting =
+    !isConnected && !isStuck &&
+    (props.connectionStatus === ConnectionStatus.kConnecting || isSlow)
+
+  let title = getLocale('torStatusDisconnected')
+  let subtitle = ''
+  if (isConnecting) {
+    title = isSlow
+      ? getLocale('torStatusConnectionSlow')
+      : formatLocale('torStatusInitializing', { $1: props.progress })
+    subtitle = isSlow
+      ? getLocale('torStatusConnectionSlowDesc')
+      : props.message
+  } else if (isConnected) {
+    title = getLocale('torStatusConnected')
+  } else if (isStuck) {
+    title = getLocale('torStatusConnectionFailed')
   }
 
+  const kind: PillKind = isConnecting
+    ? 'progress'
+    : isConnected
+      ? 'connected'
+      : 'disconnected'
+
+  const pillRef = React.useRef<HTMLDivElement>(null)
+  // Digit count, not the raw percent: tabular figures keep 80 and 81 the same
+  // width, and remeasuring on every tick would restart the width animation.
+  const progressDigits = isConnecting && !isSlow
+    ? String(Math.round(parseProgress(props.progress))).length
+    : 0
+  useAnimatedPillWidth(
+    pillRef,
+    `${kind}|${isStuck}|${isSlow}|${progressDigits}|${props.message}`
+  )
+
   return (
-    <Box
-      isLoading={isLoading}
-      isConnected={props.isConnected}
-    >
-      <Row>
-        <span>{iconElement}</span>
-        {textElement}
-      </Row>
-      <Help isVisible={helpElement !== undefined}>
-        <span></span>
-        {helpElement}
-      </Help>
-    </Box>
+    <div>
+      <Pill ref={pillRef} kind={kind} role='status' data-testid='tor-status'>
+        {isConnecting && (
+          <ProgressFill style={{ width: `${parseProgress(props.progress)}%` }} />
+        )}
+        <IconBox>
+          {isConnecting
+            ? <ProgressRing />
+            : <Icon name='product-tor' />}
+        </IconBox>
+        <Text>
+          <Title>{title}</Title>
+          {subtitle && <Subtitle>{subtitle}</Subtitle>}
+        </Text>
+      </Pill>
+      {isStuck && <StuckHelp />}
+    </div>
   )
 }
 

@@ -4,10 +4,15 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
 import getPageHandlerInstance, { ConnectionStatus } from './api/brave_page_handler'
+import { loadTimeData } from '../../../common/loadTimeData'
+
+// Initial values come from load time data so the first paint is complete;
+// mojo is only used for updates.
 
 export function useTorObserver () {
   const [hasInit, setHasInit] = React.useState<boolean>(false)
-  const [isConnected, setIsConnected] = React.useState(false)
+  const [isConnected, setIsConnected] =
+    React.useState(() => loadTimeData.getBoolean('isTorConnected'))
   const [progress, setProgress] = React.useState<string | undefined>(undefined)
   const [message, setMessage] = React.useState<string | undefined>(undefined)
   const [connectionStatus, setConnectionStatus] = React.useState<ConnectionStatus>(ConnectionStatus.kUnknown)
@@ -34,26 +39,35 @@ export function useTorObserver () {
   }
 }
 
-export function useHasDisclaimerDismissed () {
-  // We use a tri-state here to help render disclaimer UI only if there are non-null values,
-  // which happens after promise is resolved
-  const [hasDisclaimerDismissed, setHasDisclaimerDismissed] = React.useState<boolean | null>(null)
+export function useInfoCardsDismissed () {
+  const [isDismissed, setIsDismissed] =
+    React.useState(() => loadTimeData.getBoolean('infoCardsDismissed'))
 
-  React.useEffect(() => {
-    getPageHandlerInstance().pageHandler.getDisclaimerDismissed()
-      .then(res => setHasDisclaimerDismissed(res.dismissed))
+  const setDismissed = React.useCallback((dismissed: boolean) => {
+    setIsDismissed(dismissed)
+    getPageHandlerInstance().pageHandler.setDisclaimerDismissed(dismissed)
   }, [])
 
-  return { hasDisclaimerDismissed }
+  return { isDismissed, setDismissed }
 }
 
-export function useIsTorDisabled () {
-  const [isTorDisabled, setIsTorDisabled] = React.useState(false)
+// null while the VPN purchase state is loading and no earlier page cached the
+// answer, which the page shows as a skeleton card.
+export function useShouldShowVpnPromo (enabled: boolean) {
+  const [shouldShowVpnPromo, setShouldShowVpnPromo] =
+    React.useState<boolean | null>(() => {
+      const vpnPromo = loadTimeData.getString('vpnPromo')
+      return vpnPromo === 'unknown' ? null : vpnPromo === 'show'
+    })
 
   React.useEffect(() => {
-    getPageHandlerInstance().pageHandler.getIsTorDisabled()
-      .then(res => setIsTorDisabled(res.isDisabled))
-  }, [])
+    if (!enabled) return
+    // Always asked so the browser refreshes its cached answer for the next
+    // page. The reply only fills in the skeleton; a card already on screen
+    // stays put.
+    getPageHandlerInstance().pageHandler.getShouldShowVpnPromo()
+      .then(res => setShouldShowVpnPromo(current => current ?? res.show))
+  }, [enabled])
 
-  return { isTorDisabled }
+  return { shouldShowVpnPromo }
 }

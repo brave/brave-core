@@ -14,6 +14,17 @@ inline constexpr char kBravePrivateWindowDisclaimerDismissed[] =
     "brave.brave_private_new_tab.private_window_disclaimer_dismissed";
 inline constexpr char kBraveTorWindowDisclaimerDismissed[] =
     "brave.brave_private_new_tab.tor_window_disclaimer_dismissed";
+// Last known answer to whether the Brave VPN promo card should be shown, so
+// the page can render it right away while the VPN purchase state loads.
+// Holds a VpnPromoCache value.
+inline constexpr char kBravePrivateWindowVpnPromoCache[] =
+    "brave.brave_private_new_tab.vpn_promo_cache";
+
+enum class VpnPromoCache : int {
+  kUnknown = 0,
+  kShow = 1,
+  kHide = 2,
+};
 
 void RegisterProfilePrefs(PrefRegistrySimple* registry);
 
