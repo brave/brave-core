@@ -52,6 +52,7 @@ declare_args() {
 chromium_unit_tests_deps = [
   "//base:base_unittests",
   "//net:net_unittests",
+  "//services:services_unittests",
 ]
 if (!is_ios) {
   chromium_unit_tests_deps += [ "//chrome/test:unit_tests" ]
