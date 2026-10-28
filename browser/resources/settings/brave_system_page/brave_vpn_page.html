@@ -20,7 +20,7 @@
 
       <if expr="is_win">
         <settings-toggle-button id="toggleShowInSystemTray"
-          pref="[[showInSystemTrayPref_]]"
+          checked="[[showInSystemTray_]]"
           label="$i18n{showInSystemTrayWindows}"
           on-settings-boolean-control-change="onToggleShowInSystemTrayChange_"
           sub-label="$i18n{showInSystemTrayWindowsSubLabel}">
