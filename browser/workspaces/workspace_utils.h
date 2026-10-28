@@ -48,13 +48,14 @@ std::vector<std::unique_ptr<sessions::SessionCommand>> ReadWorkspaceFromDisk(
     const base::FilePath& workspace_path,
     scoped_refptr<sessions::CommandStorageBackend> backend);
 
-// Parses a workspace metadata dict (the value stored under
-// kWorkspacesMetadataPref) and returns a list sorted by modified_at descending.
+// Parses the workspace metadata dict stored under
+// kWorkspacesMetadataPref and returns a list sorted by modified_at descending.
+// Each key is a workspace UUID; entries with a non-UUID key are skipped.
 std::vector<WorkspaceMetadata> ListWorkspacesFromDict(
     const base::DictValue& dict);
 
-// Serializes |meta| into a single dict entry suitable for storing under its key
-// in kWorkspacesMetadataPref.
+// Serializes |meta| into a single dict entry, to be stored under the string
+// form of |meta.id| in kWorkspacesMetadataPref.
 base::DictValue WorkspaceMetadataToDictEntry(const WorkspaceMetadata& meta);
 
 #endif  // BRAVE_BROWSER_WORKSPACES_WORKSPACE_UTILS_H_

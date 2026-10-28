@@ -15,7 +15,6 @@
 #include "ui/views/widget/widget.h"
 
 class BrowserWindowInterface;
-class Profile;
 class SaveWorkspaceDialog;
 class WorkspacesBubbleView;
 
@@ -46,14 +45,14 @@ class WorkspacesBubbleController {
   // Returns the instance owned by `browser`, or nullptr.
   static WorkspacesBubbleController* From(BrowserWindowInterface* browser);
 
-  // Shows the workspaces bubble anchored to |anchor_view|. |profile| is used
-  // for workspace service lookups. Does nothing if the bubble is already
-  // showing.
-  void ShowBubble(views::View* anchor_view, Profile* profile);
+  // Shows the workspaces bubble anchored to |anchor_view|. |browser| is the
+  // window the bubble acts on: workspaces load into it and save from it. Does
+  // nothing if the bubble is already showing.
+  void ShowBubble(views::View* anchor_view, BrowserWindowInterface* browser);
 
  private:
   // Shows the modal "save workspace" dialog. Invoked by the bubble's Save
-  // action; uses the profile and parent window captured by ShowBubble().
+  // action; uses the browser and parent window captured by ShowBubble().
   void ShowSaveDialog();
 
   // Close handlers for the two widgets. With CLIENT_OWNS_WIDGET the close path
@@ -65,7 +64,7 @@ class WorkspacesBubbleController {
   void OnSaveDialogClosed(views::Widget::ClosedReason reason);
 
   // Captured when the bubble is shown and used to launch the save dialog.
-  raw_ptr<Profile> profile_ = nullptr;
+  raw_ptr<BrowserWindowInterface> browser_ = nullptr;
   gfx::NativeWindow parent_window_ = gfx::NativeWindow();
 
   // Each delegate is declared before its Widget so that, if the controller is

@@ -16,6 +16,7 @@
 #include "brave/browser/workspaces/workspace_service.h"
 #include "brave/browser/workspaces/workspace_service_factory.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "components/constrained_window/constrained_window_views.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
@@ -36,10 +37,10 @@ WorkspacesBubbleView::~WorkspacesBubbleView() = default;
 
 WorkspacesBubbleView::WorkspacesBubbleView(
     views::View* anchor_view,
-    Profile* profile,
+    BrowserWindowInterface* browser,
     base::RepeatingClosure on_save_workspace)
     : BubbleDialogDelegate(anchor_view, views::BubbleBorder::TOP_LEFT),
-      profile_(profile),
+      browser_(browser),
       on_save_workspace_(std::move(on_save_workspace)) {
   SetButtons(static_cast<int>(ui::mojom::DialogButton::kNone));
   SetShowCloseButton(false);
@@ -53,7 +54,7 @@ WorkspacesBubbleView::WorkspacesBubbleView(
       /*inside_border_insets=*/gfx::Insets(),
       /*between_child_spacing=*/0));
 
-  auto* service = WorkspaceServiceFactory::GetForProfile(profile);
+  auto* service = WorkspaceServiceFactory::GetForProfile(browser->GetProfile());
   CHECK(service);
 
   std::vector<WorkspaceMetadata> workspaces = service->ListWorkspaces();
@@ -84,9 +85,9 @@ WorkspacesBubbleView::WorkspacesBubbleView(
       workspaces_container->AddChildView(std::make_unique<WorkspaceRowView>(
           workspace,
           base::BindRepeating(&WorkspacesBubbleView::OnWorkspaceSelected,
-                              weak_factory_.GetWeakPtr(), workspace.name),
+                              weak_factory_.GetWeakPtr(), workspace.id),
           base::BindRepeating(&WorkspacesBubbleView::OnDeleteClicked,
-                              weak_factory_.GetWeakPtr(), workspace.name)));
+                              weak_factory_.GetWeakPtr(), workspace.id)));
     }
   }
 
@@ -128,15 +129,17 @@ void WorkspacesBubbleView::OnSaveClicked() {
   GetWidget()->Close();
 }
 
-void WorkspacesBubbleView::OnWorkspaceSelected(const std::string& name) {
-  auto* service = WorkspaceServiceFactory::GetForProfile(profile_);
+void WorkspacesBubbleView::OnWorkspaceSelected(const base::Uuid& id) {
+  auto* service =
+      WorkspaceServiceFactory::GetForProfile(browser_->GetProfile());
   CHECK(service);
-  service->RestoreWorkspace(name);
+  service->LoadWorkspaceIntoWindow(id, browser_);
   GetWidget()->Close();
 }
 
-void WorkspacesBubbleView::OnDeleteClicked(const std::string& name) {
-  auto* service = WorkspaceServiceFactory::GetForProfile(profile_);
+void WorkspacesBubbleView::OnDeleteClicked(const base::Uuid& id) {
+  auto* service =
+      WorkspaceServiceFactory::GetForProfile(browser_->GetProfile());
   CHECK(service);
 
   // The bubble closes once the modal confirmation appears; binding the
@@ -149,7 +152,7 @@ void WorkspacesBubbleView::OnDeleteClicked(const std::string& name) {
           .AddParagraph(ui::DialogModelLabel(
               l10n_util::GetStringUTF16(IDS_WORKSPACE_DELETE_CONFIRM_BODY)))
           .AddOkButton(base::BindOnce(&WorkspaceService::DeleteWorkspace,
-                                      service->GetWeakPtr(), name),
+                                      service->GetWeakPtr(), id),
                        ui::DialogModel::Button::Params()
                            .SetLabel(l10n_util::GetStringUTF16(
                                IDS_WORKSPACE_DELETE_CONFIRM_DELETE_BUTTON))

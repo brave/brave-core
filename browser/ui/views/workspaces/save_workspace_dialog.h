@@ -14,15 +14,16 @@
 #include "ui/views/view.h"
 #include "ui/views/window/dialog_delegate.h"
 
-class Profile;
+class BrowserWindowInterface;
 
 namespace views {
 class Textfield;
 class Widget;
 }  // namespace views
 
-// A modal dialog that prompts the user to name a new workspace. On accept, the
-// current state of all open windows for the profile is saved to disk.
+// A modal dialog that prompts the user to name a new workspace. On accept, a
+// workspace with that name is created and the tabs of the browser window the
+// dialog was opened from are saved into it.
 //
 // Rather than inherit from the deprecated views::DialogDelegateView (a combined
 // delegate and View), this inherits from views::DialogDelegate and installs a
@@ -32,10 +33,11 @@ class Widget;
 class SaveWorkspaceDialog : public views::DialogDelegate,
                             public views::TextfieldController {
  public:
-  // |profile| supplies the workspace service saved to and must outlive this
-  // dialog. The dialog configures its widget as CLIENT_OWNS_WIDGET; the caller
-  // owns the resulting Widget (see WorkspacesBubbleController).
-  explicit SaveWorkspaceDialog(Profile* profile);
+  // |browser| is the window whose tabs are saved, and supplies the profile
+  // whose workspace service is written to. It must outlive this dialog. The
+  // dialog configures its widget as CLIENT_OWNS_WIDGET; the caller owns the
+  // resulting Widget (see WorkspacesBubbleController).
+  explicit SaveWorkspaceDialog(BrowserWindowInterface* browser);
   ~SaveWorkspaceDialog() override;
 
   SaveWorkspaceDialog(const SaveWorkspaceDialog&) = delete;
@@ -48,7 +50,7 @@ class SaveWorkspaceDialog : public views::DialogDelegate,
   void ContentsChanged(views::Textfield* sender,
                        const std::u16string& new_contents) override;
 
-  raw_ptr<Profile> profile_;
+  raw_ptr<BrowserWindowInterface> browser_;
   // Cached text value updated by ContentsChanged(). Storing a string rather
   // than a raw_ptr<Textfield> avoids a dangling pointer: the Textfield is
   // owned by the widget's view hierarchy, which is destroyed before the

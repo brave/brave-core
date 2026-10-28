@@ -21,8 +21,6 @@ source_set("impl") {
     ":workspaces",
     "//base",
     "//chrome/browser/ui:browser_tabrestore",
-    "//chrome/browser/ui:browser_window_header",
-    "//chrome/browser/ui/browser_window:create_browser_window",
     "//chrome/browser/ui/tabs:tab_strip",
   ]
 }
@@ -41,6 +39,7 @@ source_set("workspaces") {
   public_deps = [
     "//base",
     "//chrome/browser/profiles:profile",
+    "//chrome/browser/ui/browser_window",
     "//components/keyed_service/core",
     "//components/pref_registry",
     "//components/sessions",

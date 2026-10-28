@@ -6,6 +6,7 @@
 #include "brave/browser/workspaces/workspace_service.h"
 
 #include <memory>
+#include <string>
 #include <vector>
 
 #include "base/files/file_util.h"
@@ -19,13 +20,17 @@
 #include "base/test/scoped_feature_list.h"
 #include "base/test/test_future.h"
 #include "base/time/time.h"
+#include "base/uuid.h"
+#include "base/values.h"
 #include "brave/browser/workspaces/features.h"
+#include "brave/browser/workspaces/pref_names.h"
 #include "brave/browser/workspaces/workspace_metadata.h"
 #include "brave/browser/workspaces/workspace_service_factory.h"
 #include "brave/browser/workspaces/workspace_utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile_manager.h"
+#include "components/prefs/pref_service.h"
 #include "components/sessions/core/command_storage_backend.h"
 #include "components/sessions/core/session_id.h"
 #include "components/sessions/core/session_service_commands.h"
@@ -34,15 +39,11 @@
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace {
-WorkspaceMetadata MakeMeta(const std::string& name,
-                           int windows,
-                           int tabs,
-                           base::Time t) {
-  WorkspaceMetadata meta{.name = name,
-                         .modified_at = t,
-                         .number_of_windows = windows,
-                         .number_of_tabs = tabs};
-  return meta;
+WorkspaceMetadata MakeMeta(const std::string& name, int tabs, base::Time t) {
+  return {.id = base::Uuid::GenerateRandomV4(),
+          .name = name,
+          .modified_at = t,
+          .number_of_tabs = tabs};
 }
 }  // namespace
 
@@ -74,15 +75,15 @@ TEST_F(WorkspaceServiceTest, ListWorkspaces_InitiallyEmpty) {
 // Verify saving preference adds workspace to list
 TEST_F(WorkspaceServiceTest, SaveMetadata_AppearsInList) {
   base::Time t = base::Time::FromSecondsSinceUnixEpoch(1700000000.0);
-  service_->SaveWorkspaceMetadata(MakeMeta("My Workspace", 2, 5, t));
+  WorkspaceMetadata meta = MakeMeta("My Workspace", 5, t);
+  service_->SaveWorkspaceMetadata(meta);
 
   auto workspaces = service_->ListWorkspaces();
   ASSERT_EQ(workspaces.size(), 1u);
+  EXPECT_EQ(workspaces[0].id, meta.id);
   EXPECT_EQ(workspaces[0].name, "My Workspace");
-  EXPECT_EQ(workspaces[0].number_of_windows, 2);
   EXPECT_EQ(workspaces[0].number_of_tabs, 5);
-  EXPECT_EQ(workspaces[0].modified_at,
-            base::Time::FromSecondsSinceUnixEpoch(1700000000.0));
+  EXPECT_EQ(workspaces[0].modified_at, t);
 }
 
 // Verify listing of workspaces orders by date modified desc
@@ -90,9 +91,9 @@ TEST_F(WorkspaceServiceTest, ListWorkspaces_SortedByModifiedAtDescending) {
   base::Time t1 = base::Time::FromSecondsSinceUnixEpoch(1700000000.0);
   base::Time t2 = base::Time::FromSecondsSinceUnixEpoch(1700000100.0);
   base::Time t3 = base::Time::FromSecondsSinceUnixEpoch(1699999900.0);
-  service_->SaveWorkspaceMetadata(MakeMeta("Alpha", 1, 3, t1));
-  service_->SaveWorkspaceMetadata(MakeMeta("Beta", 1, 5, t2));
-  service_->SaveWorkspaceMetadata(MakeMeta("Gamma", 1, 2, t3));
+  service_->SaveWorkspaceMetadata(MakeMeta("Alpha", 3, t1));
+  service_->SaveWorkspaceMetadata(MakeMeta("Beta", 5, t2));
+  service_->SaveWorkspaceMetadata(MakeMeta("Gamma", 2, t3));
 
   auto workspaces = service_->ListWorkspaces();
   ASSERT_EQ(workspaces.size(), 3u);
@@ -104,41 +105,137 @@ TEST_F(WorkspaceServiceTest, ListWorkspaces_SortedByModifiedAtDescending) {
 // Removing preference removes it from the list
 TEST_F(WorkspaceServiceTest, RemoveMetadata_DisappearsFromList) {
   base::Time t = base::Time::FromSecondsSinceUnixEpoch(1700000000.0);
-  service_->SaveWorkspaceMetadata(MakeMeta("Work", 1, 3, t));
+  WorkspaceMetadata meta = MakeMeta("Work", 3, t);
+  service_->SaveWorkspaceMetadata(meta);
   ASSERT_EQ(service_->ListWorkspaces().size(), 1u);
 
-  service_->RemoveWorkspaceMetadata("Work");
+  service_->RemoveWorkspaceMetadata(meta.id);
   EXPECT_TRUE(service_->ListWorkspaces().empty());
 }
 
-// Saving a workspace over another one replaces it
-TEST_F(WorkspaceServiceTest, SaveMetadata_SameNameOverwrites) {
+// Saving over the same identity replaces that entry.
+TEST_F(WorkspaceServiceTest, SaveMetadata_SameIdOverwrites) {
   base::Time t1 = base::Time::FromSecondsSinceUnixEpoch(1700000000.0);
   base::Time t2 = base::Time::FromSecondsSinceUnixEpoch(1700000100.0);
-  service_->SaveWorkspaceMetadata(MakeMeta("Work", 1, 3, t1));
-  service_->SaveWorkspaceMetadata(MakeMeta("Work", 2, 7, t2));
+  WorkspaceMetadata meta = MakeMeta("Work", 3, t1);
+  service_->SaveWorkspaceMetadata(meta);
+
+  meta.number_of_tabs = 7;
+  meta.modified_at = t2;
+  service_->SaveWorkspaceMetadata(meta);
 
   auto workspaces = service_->ListWorkspaces();
   ASSERT_EQ(workspaces.size(), 1u);
   EXPECT_EQ(workspaces[0].name, "Work");
-  EXPECT_EQ(workspaces[0].number_of_windows, 2);
   EXPECT_EQ(workspaces[0].number_of_tabs, 7);
+}
+
+// Identity is a UUID, so two workspaces may share a display name.
+TEST_F(WorkspaceServiceTest, SaveMetadata_SameNameDistinctIdsCoexist) {
+  base::Time t = base::Time::FromSecondsSinceUnixEpoch(1700000000.0);
+  service_->SaveWorkspaceMetadata(MakeMeta("Work", 3, t));
+  service_->SaveWorkspaceMetadata(MakeMeta("Work", 7, t));
+
+  EXPECT_EQ(service_->ListWorkspaces().size(), 2u);
+}
+
+// Entries whose key is not a UUID are ignored, which is how metadata written
+// before workspaces were UUID-keyed is discarded.
+TEST_F(WorkspaceServiceTest, ListWorkspaces_SkipsNonUuidKeys) {
+  base::DictValue dict;
+  dict.Set("deadbeef",
+           base::DictValue().Set("name", "Legacy").Set("number-of-tabs", 4));
+  profile_->GetPrefs()->SetDict(kWorkspacesMetadataPref, std::move(dict));
+
+  EXPECT_TRUE(service_->ListWorkspaces().empty());
+}
+
+// ---- Create / rename / lookup ----------------------------------------------
+
+// A newly created workspace is listed and has no tabs yet.
+TEST_F(WorkspaceServiceTest, CreateWorkspace_IsEmptyAndListed) {
+  WorkspaceMetadata created = service_->CreateWorkspace("Research");
+
+  EXPECT_TRUE(created.id.is_valid());
+  EXPECT_EQ(created.number_of_tabs, 0);
+
+  auto workspaces = service_->ListWorkspaces();
+  ASSERT_EQ(workspaces.size(), 1u);
+  EXPECT_EQ(workspaces[0].id, created.id);
+  EXPECT_EQ(workspaces[0].name, "Research");
+  EXPECT_EQ(workspaces[0].number_of_tabs, 0);
+}
+
+TEST_F(WorkspaceServiceTest, CreateWorkspace_SameNameGetsDistinctIds) {
+  WorkspaceMetadata first = service_->CreateWorkspace("Work");
+  WorkspaceMetadata second = service_->CreateWorkspace("Work");
+
+  EXPECT_NE(first.id, second.id);
+  EXPECT_EQ(service_->ListWorkspaces().size(), 2u);
+}
+
+TEST_F(WorkspaceServiceTest, GetWorkspace_UnknownIdReturnsNullopt) {
+  service_->CreateWorkspace("Work");
+  EXPECT_FALSE(
+      service_->GetWorkspace(base::Uuid::GenerateRandomV4()).has_value());
+}
+
+// Renaming keeps identity, so the on-disk location does not move.
+TEST_F(WorkspaceServiceTest, RenameWorkspace_KeepsIdentityAndPath) {
+  WorkspaceMetadata created = service_->CreateWorkspace("Work");
+  base::FilePath path_before = service_->GetWorkspacePathForId(created.id);
+
+  service_->RenameWorkspace(created.id, "Research");
+
+  auto renamed = service_->GetWorkspace(created.id);
+  ASSERT_TRUE(renamed.has_value());
+  EXPECT_EQ(renamed->name, "Research");
+  EXPECT_EQ(service_->GetWorkspacePathForId(created.id), path_before);
+}
+
+TEST_F(WorkspaceServiceTest, RenameWorkspace_EmptyNameIsIgnored) {
+  WorkspaceMetadata created = service_->CreateWorkspace("Work");
+
+  service_->RenameWorkspace(created.id, "");
+
+  auto workspace = service_->GetWorkspace(created.id);
+  ASSERT_TRUE(workspace.has_value());
+  EXPECT_EQ(workspace->name, "Work");
+}
+
+TEST_F(WorkspaceServiceTest, RenameWorkspace_UnknownIdIsNoOp) {
+  service_->RenameWorkspace(base::Uuid::GenerateRandomV4(), "Research");
+  EXPECT_TRUE(service_->ListWorkspaces().empty());
+}
+
+// ---- Window binding ---------------------------------------------------------
+
+TEST_F(WorkspaceServiceTest, Binding_UnloadedWorkspaceHasNoWindow) {
+  WorkspaceMetadata created = service_->CreateWorkspace("Work");
+  EXPECT_FALSE(service_->GetWindowForWorkspace(created.id).has_value());
+}
+
+TEST_F(WorkspaceServiceTest, Binding_UnboundWindowHostsNothing) {
+  EXPECT_FALSE(
+      service_->GetWorkspaceForWindow(SessionID::NewUnique()).has_value());
+}
+
+TEST_F(WorkspaceServiceTest, Binding_UnbindUnknownWindowIsSafe) {
+  service_->UnbindWindow(SessionID::NewUnique());
+  SUCCEED();
 }
 
 // ---- Name / path computation tests -----------------------------------------
 
-// Key is a stable hex hash — different display names get different paths.
-TEST_F(WorkspaceServiceTest,
-       GetWorkspacePathForName_DifferentNamesDifferentPaths) {
-  base::FilePath path1 = service_->GetWorkspacePathForName("Work Space");
-  base::FilePath path2 = service_->GetWorkspacePathForName("Work-Space");
-  EXPECT_NE(path1, path2);
+TEST_F(WorkspaceServiceTest, GetWorkspacePathForId_DifferentIdsDifferentPaths) {
+  EXPECT_NE(service_->GetWorkspacePathForId(base::Uuid::GenerateRandomV4()),
+            service_->GetWorkspacePathForId(base::Uuid::GenerateRandomV4()));
 }
 
-// Same name always resolves to the same path (deterministic key).
-TEST_F(WorkspaceServiceTest, GetWorkspacePathForName_SameNameSamePath) {
-  EXPECT_EQ(service_->GetWorkspacePathForName("My Workspace"),
-            service_->GetWorkspacePathForName("My Workspace"));
+TEST_F(WorkspaceServiceTest, GetWorkspacePathForId_SameIdSamePath) {
+  base::Uuid id = base::Uuid::GenerateRandomV4();
+  EXPECT_EQ(service_->GetWorkspacePathForId(id),
+            service_->GetWorkspacePathForId(id));
 }
 
 // ---- Disk I/O tests (async, use RunUntil not RunUntilIdle) ------------------
@@ -156,7 +253,7 @@ TEST_F(WorkspaceServiceTest, WriteAndReadRoundTrip) {
   const size_t num_commands = commands.size();
 
   base::FilePath workspace_path =
-      service_->GetWorkspacePathForName("roundtrip");
+      service_->GetWorkspacePathForId(base::Uuid::GenerateRandomV4());
   auto task_runner = base::ThreadPool::CreateSequencedTaskRunner(
       {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
        base::TaskShutdownBehavior::BLOCK_SHUTDOWN});
@@ -184,7 +281,8 @@ TEST_F(WorkspaceServiceTest, WriteAndReadRoundTrip) {
   ASSERT_TRUE(base::test::RunUntil([&] { return write_done; }));
   ASSERT_FALSE(error_called);
 
-  // Read back using a fresh backend (mirrors RestoreWorkspace's pattern).
+  // Read back using a fresh backend (mirrors LoadWorkspaceIntoWindow's
+  // pattern).
   auto read_backend = base::MakeRefCounted<sessions::CommandStorageBackend>(
       task_runner, workspace_path, kWorkspaceSessionType,
       /*encryptor=*/nullptr);
@@ -217,7 +315,8 @@ TEST_F(WorkspaceServiceTest,
   // base::CreateDirectory fails on the background thread and on_error is
   // posted back to the UI thread.
   ASSERT_TRUE(base::CreateDirectory(service_->GetWorkspacesPath()));
-  base::FilePath workspace_path = service_->GetWorkspacePathForName("blocked");
+  base::FilePath workspace_path =
+      service_->GetWorkspacePathForId(base::Uuid::GenerateRandomV4());
   ASSERT_TRUE(base::WriteFile(workspace_path, "not-a-directory"));
 
   auto task_runner = base::ThreadPool::CreateSequencedTaskRunner(

@@ -9,7 +9,6 @@
 
 #include "base/functional/bind.h"
 #include "base/memory/raw_ptr.h"
-#include "base/strings/string_number_conversions.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/single_thread_task_runner.h"
 #include "brave/browser/workspaces/workspace_metadata.h"
@@ -37,16 +36,8 @@ namespace {
 constexpr int kDeleteWorkspaceCommandId = 1;
 
 std::u16string FormatStats(const WorkspaceMetadata& info) {
-  const int windows = info.number_of_windows;
-  const int tabs = info.number_of_tabs;
-  std::u16string tabs_format_string =
-      l10n_util::GetPluralStringFUTF16(IDS_WORKSPACE_ROW_STATS_TABS, tabs);
-  if (windows == 1) {
-    return tabs_format_string;
-  }
-  std::u16string windows_format_string = l10n_util::GetStringFUTF16(
-      IDS_WORKSPACE_ROW_STATS_WINDOWS, base::NumberToString16(windows));
-  return windows_format_string + u" - " + tabs_format_string;
+  return l10n_util::GetPluralStringFUTF16(IDS_WORKSPACE_ROW_STATS_TABS,
+                                          info.number_of_tabs);
 }
 
 }  // namespace

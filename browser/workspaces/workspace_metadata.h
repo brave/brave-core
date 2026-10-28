@@ -9,13 +9,18 @@
 #include <string>
 
 #include "base/time/time.h"
+#include "base/uuid.h"
 
 // Lightweight summary returned by ListWorkspaces(), used to populate UI.
 // The full session state is stored as Chromium session commands on disk.
+//
+// |id| is the stable identity: it keys both the metadata preference and the
+// on-disk directory, so renaming a workspace moves no storage. A workspace
+// holds the tabs of a single window, so there is no window count here.
 struct WorkspaceMetadata {
+  base::Uuid id;
   std::string name;
   base::Time modified_at;
-  int number_of_windows = 0;
   int number_of_tabs = 0;
 };
 

@@ -35,18 +35,18 @@ WorkspacesBubbleController* WorkspacesBubbleController::From(
 }
 
 void WorkspacesBubbleController::ShowBubble(views::View* anchor_view,
-                                            Profile* profile) {
+                                            BrowserWindowInterface* browser) {
   if (bubble_widget_) {
     return;
   }
 
-  // Capture what the save dialog needs: the profile and the browser window
-  // that hosts the anchor (used to parent the modal).
-  profile_ = profile;
+  // Capture what the save dialog needs: the browser window the bubble acts on
+  // and the native window that hosts the anchor (used to parent the modal).
+  browser_ = browser;
   parent_window_ = anchor_view->GetWidget()->GetNativeWindow();
 
   bubble_ = std::make_unique<WorkspacesBubbleView>(
-      anchor_view, profile,
+      anchor_view, browser,
       base::BindRepeating(&WorkspacesBubbleController::ShowSaveDialog,
                           weak_factory_.GetWeakPtr()));
 
@@ -65,7 +65,7 @@ void WorkspacesBubbleController::ShowSaveDialog() {
 
   // SaveWorkspaceDialog sets CLIENT_OWNS_WIDGET on itself; the controller keeps
   // ownership of the delegate and owns the returned Widget.
-  save_dialog_ = std::make_unique<SaveWorkspaceDialog>(profile_);
+  save_dialog_ = std::make_unique<SaveWorkspaceDialog>(browser_);
   save_dialog_widget_ =
       base::WrapUnique(constrained_window::CreateBrowserModalDialogViews(
           save_dialog_.get(), parent_window_));

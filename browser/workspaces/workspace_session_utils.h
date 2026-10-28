@@ -11,25 +11,26 @@
 
 #include "components/sessions/core/session_command.h"
 #include "components/sessions/core/session_id.h"
-#include "ui/base/mojom/window_show_state.mojom.h"
-#include "ui/gfx/geometry/rect.h"
 
-class Profile;
-class TabStripModel;
+class BrowserWindowInterface;
 struct WorkspaceMetadata;
 
-// Iterates all normal browser windows for |profile|, serializes their state
-// into session commands, and returns the result.  |window_count| and
-// |tab_count| are incremented to reflect what was captured.  Returns an empty
-// vector if there are no tabs to save.
+// Serializes the tab strip of |window| into session commands and returns the
+// result.  |workspace.number_of_tabs| is set to what was captured.  Returns an
+// empty vector if the window has no tabs.
+//
+// Window geometry is deliberately not captured: a workspace owns tabs, and the
+// window it is loaded into keeps its own bounds.
 std::vector<std::unique_ptr<sessions::SessionCommand>>
-GenerateBrowserSessionCommandsForWorkspace(Profile* profile,
-                                           WorkspaceMetadata& workspace);
+SerializeWindowForWorkspace(BrowserWindowInterface* window,
+                            WorkspaceMetadata& workspace);
 
-// Deserializes |commands| and opens the encoded windows/tabs in new browser
-// windows belonging to |profile|.  Must be called on the UI thread.
-void RestoreBrowserSessionCommandsForWorkspace(
-    Profile* profile,
+// Deserializes |commands| and appends the encoded tabs to |window|'s tab
+// strip, preserving pinned state, tab groups and navigation history.  Tabs
+// already in the window are left alone — the caller decides what becomes of
+// them.  Must be called on the UI thread.
+void RestoreWorkspaceIntoWindow(
+    BrowserWindowInterface* window,
     std::vector<std::unique_ptr<sessions::SessionCommand>> commands);
 
 #endif  // BRAVE_BROWSER_WORKSPACES_WORKSPACE_SESSION_UTILS_H_

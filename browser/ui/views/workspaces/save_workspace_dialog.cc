@@ -14,6 +14,7 @@
 #include "brave/browser/workspaces/workspace_service.h"
 #include "brave/browser/workspaces/workspace_service_factory.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/mojom/dialog_button.mojom.h"
@@ -29,7 +30,8 @@ constexpr int kPadding = 20;
 constexpr int kSpacing = 8;
 }  // namespace
 
-SaveWorkspaceDialog::SaveWorkspaceDialog(Profile* profile) : profile_(profile) {
+SaveWorkspaceDialog::SaveWorkspaceDialog(BrowserWindowInterface* browser)
+    : browser_(browser) {
   // The caller (WorkspacesBubbleController) owns the resulting Widget.
   SetOwnershipOfNewWidget(views::Widget::InitParams::CLIENT_OWNS_WIDGET);
   SetModalType(ui::mojom::ModalType::kWindow);
@@ -76,9 +78,11 @@ SaveWorkspaceDialog::~SaveWorkspaceDialog() = default;
 
 void SaveWorkspaceDialog::OnAccept() {
   // The OK button is disabled while the name is empty, so this is non-empty.
-  auto* service = WorkspaceServiceFactory::GetForProfile(profile_);
+  auto* service =
+      WorkspaceServiceFactory::GetForProfile(browser_->GetProfile());
   CHECK(service);
-  service->SaveWorkspace(workspace_name_);
+  WorkspaceMetadata workspace = service->CreateWorkspace(workspace_name_);
+  service->SaveWorkspaceFromWindow(workspace.id, browser_);
 }
 
 void SaveWorkspaceDialog::ContentsChanged(views::Textfield* sender,

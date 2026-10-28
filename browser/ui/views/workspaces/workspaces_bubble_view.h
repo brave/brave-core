@@ -11,11 +11,12 @@
 #include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
+#include "base/uuid.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/views/bubble/bubble_dialog_delegate_view.h"
 #include "ui/views/view.h"
 
-class Profile;
+class BrowserWindowInterface;
 
 // Bubble that lists the saved workspaces ("spaces") for the active profile and
 // exposes actions to restore, delete, or save a new one. The bubble is the
@@ -32,20 +33,21 @@ class WorkspacesBubbleView : public views::BubbleDialogDelegate {
   // Internal name set on the bubble's widget; lets tests identify it.
   static constexpr char kWidgetName[] = "WorkspacesBubbleView";
 
-  // |profile| supplies the workspace service used for lookups and must outlive
-  // this bubble. |on_save_workspace| is run when the user activates the Save
-  // action.
+  // |browser| is the window the bubble acts on: workspaces load into it, and
+  // it supplies the profile whose workspace service is used for lookups. It
+  // must outlive this bubble. |on_save_workspace| is run when the user
+  // activates the Save action.
   WorkspacesBubbleView(views::View* anchor_view,
-                       Profile* profile,
+                       BrowserWindowInterface* browser,
                        base::RepeatingClosure on_save_workspace);
   ~WorkspacesBubbleView() override;
 
  private:
   void OnSaveClicked();
-  void OnWorkspaceSelected(const std::string& name);
-  void OnDeleteClicked(const std::string& name);
+  void OnWorkspaceSelected(const base::Uuid& id);
+  void OnDeleteClicked(const base::Uuid& id);
 
-  const raw_ptr<Profile> profile_;
+  const raw_ptr<BrowserWindowInterface> browser_;
   base::RepeatingClosure on_save_workspace_;
   base::WeakPtrFactory<WorkspacesBubbleView> weak_factory_{this};
 };

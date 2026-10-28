@@ -14,12 +14,12 @@
 #include "base/json/values_util.h"
 #include "base/logging.h"
 #include "base/time/time.h"
+#include "base/uuid.h"
 #include "components/sessions/core/command_storage_read_status.h"
 
 namespace {
 
 constexpr const char kWorkspaceName[] = "name";
-constexpr const char kWorkspaceWindowCount[] = "number-of-windows";
 constexpr const char kWorkspaceTabCount[] = "number-of-tabs";
 constexpr const char kWorkspaceModifiedAt[] = "modified-at";
 
@@ -33,15 +33,22 @@ std::vector<WorkspaceMetadata> ListWorkspacesFromDict(
     if (!entry) {
       continue;
     }
+    // The key is the workspace's identity. Entries whose key is not a UUID
+    // are skipped, which also discards entries written before workspaces were
+    // keyed by UUID.
+    base::Uuid id = base::Uuid::ParseLowercase(key);
+    if (!id.is_valid()) {
+      continue;
+    }
     const std::string* name = entry->FindString(kWorkspaceName);
     if (!name || name->empty()) {
       continue;
     }
     WorkspaceMetadata info = {
+        .id = std::move(id),
         .name = *name,
         .modified_at = base::ValueToTime(entry->Find(kWorkspaceModifiedAt))
                            .value_or(base::Time::Now()),
-        .number_of_windows = entry->FindInt(kWorkspaceWindowCount).value_or(1),
         .number_of_tabs = entry->FindInt(kWorkspaceTabCount).value_or(0)};
     result.push_back(std::move(info));
   }
@@ -54,9 +61,9 @@ std::vector<WorkspaceMetadata> ListWorkspacesFromDict(
 }
 
 base::DictValue WorkspaceMetadataToDictEntry(const WorkspaceMetadata& meta) {
+  // |meta.id| is the dictionary key, so it is not repeated in the entry.
   return base::DictValue()
       .Set(kWorkspaceName, meta.name)
-      .Set(kWorkspaceWindowCount, meta.number_of_windows)
       .Set(kWorkspaceTabCount, meta.number_of_tabs)
       .Set(kWorkspaceModifiedAt, base::TimeToValue(meta.modified_at));
 }
