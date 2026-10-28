@@ -35,9 +35,11 @@
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "services/data_decoder/public/cpp/decode_image.h"
 #include "services/data_decoder/public/mojom/image_decoder.mojom.h"
+#include "services/network/public/cpp/ip_address_space_util.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
+#include "services/network/public/mojom/url_loader_factory.mojom.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
 #include "skia/ext/skia_utils_ios.h"
 #include "third_party/skia/include/core/SkBitmap.h"
@@ -210,6 +212,19 @@ void SanitizedImageSource::StartDataRequest(
     return;
   }
 
+  // Brave: an image URL in loopback or local address space must never cause
+  // a request to leave the browser (H1 3969942: website-triggered local
+  // network requests via suggested token icon). Hostnames that resolve to
+  // local IPs are caught per hop by kURLLoadOptionBlockLocalRequest below.
+  std::optional<network::mojom::IPAddressSpace> address_space =
+      network::GetAddressSpaceFromUrl(image_url);
+  if (address_space &&
+      (*address_space == network::mojom::IPAddressSpace::kLoopback ||
+       *address_space == network::mojom::IPAddressSpace::kLocal)) {
+    std::move(callback).Run(nullptr);
+    return;
+  }
+
   request_attributes.image_url = image_url;
 
   // Download the image body.
@@ -304,6 +319,11 @@ void SanitizedImageSource::StartImageDownload(
   auto loader =
       network::SimpleURLLoader::Create(std::move(request), traffic_annotation);
   auto* loader_ptr = loader.get();
+  // Brave: block requests to loopback/local addresses at the network layer,
+  // including every redirect hop, based on the resolved IP (H1 3969942).
+  loader_ptr->SetURLLoaderFactoryOptions(
+      network::mojom::kURLLoadOptionBlockLocalRequest |
+      network::mojom::kURLLoadOptionBlockAllCookies);
   loader_ptr->DownloadToString(
       url_loader_factory_.get(),
       base::BindOnce(&SanitizedImageSource::OnImageLoaded,
