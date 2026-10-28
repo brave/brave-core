@@ -22,6 +22,7 @@
 <translation id="8541922081612557424">Brave පිළිබඳ</translation>
 <translation id="987734326276404793">ඔබේ දුරකථනයෙන් Brave සමග මිල නිරීක්ෂණ ඇඟවීම් ලබා ගන්න</translation>
 <translation id="1203500561924088507">ස්ථාපනය කිරීම වෙනුවෙන් ස්තුතියි. ඔබ <ph name="BUNDLE_NAME"/> භාවිත කිරීමට පෙර ඔබගේ බ්‍රවුසරය යළි ඇරඹිය යුතුය.</translation>
+<translation id="1213674046343558619"><ph name="IMPORTANT_UPDATE"/> පොරොත්තුවෙන් ඇත. ඔබේ බ්‍රවුස් කිරීම සුරක්ෂිතව තබා ගැනීමට, ඔබ <ph name="IDLE_DURATION"/> සඳහා අක්‍රිය වූ විට Brave යාවත්කාලීන වනු ඇත.</translation>
 <translation id="1232234696885483911">ඔබ රූප සෙවීම විවෘත කරන විට, පිටුවේ මාතෘකාව, URL, සහ PDF ඇතුළු අන්තර්ගතය ස්වයංක්‍රීයව සේවාදායකය වෙත යවනු ලැබේ. <ph name="LEARN_MORE"/></translation>
 <translation id="1934377710648094656">ඔබ පුරනය වී සිටින අතරතුර, ඔබට Brave තුළ ඔබේ Brave ගිණුමෙන් ඔබේ මුරපද සහ තවත් ඒවා භාවිත කළ හැක මෙය වෙනස් කිරීමට, “Brave තුළ ඔබේ ගිණුම” වෙත යන්න.</translation>
 <translation id="583633806828413086">Mac මෙනු තීරුවේ Brave තුළ Gemini පෙන්වන්න</translation>
@@ -223,6 +224,7 @@
 <translation id="3286538390144397061">දැන් යළි අාරම්භ කරන්න</translation>
 <translation id="2339258256897053758">Brave API යතුරු අහිමිව ඇත. Brave හි ඇතැම් ක්‍රියාකාරීත්ව අක්‍රීය වනු ඇත.</translation>
 <translation id="8926637909431618259">Brave වසා ඇති විට පසුබිම් යෙදුම් ධාවනය අඛණ්ඩව කරන්න</translation>
+<translation id="8245661393996028021">ඔබ බැහැරව සිටින විට Brave යාවත්කාලීන වනු ඇත</translation>
 <translation id="518125528057094977">අනාරක්ෂිත සම්බන්ධතාවයක් භාවිතයෙන් ඕනෑම අඩවියක් පූරණය කිරීමට පෙර Brave ඔබට අනතුරු අඟවනු ඇත</translation>
 <translation id="8652321858775514885">ඔබ Brave වෙත පුරනය වී ඇති නම් ඔබේ Brave ගිණුම හැර, ඔබ සියලු Brave කවුළු වසා දැමූ විට ඔබ බොහෝ අඩවිවලින් වරනු ලැබේ. අඩවිවලට ඔබව මතක තබා ගැනීමට ඉඩ දීමට, <ph name="SETTINGS_LINK"/>.</translation>
 <translation id="3352986031709923790">සෙවීම් ප්‍රදේශයේ ඉහළම දකුණු කෙළවර: දකුණ <ph name="RIGHT"/>%, ඉහළ <ph name="TOP"/>%</translation>
@@ -231,6 +233,7 @@
 <translation id="2645435784669275700">ChromeOS</translation>
 <translation id="2297290224191497273">තිබෙන Brave පැතිකඩට මාරු වන්නද?</translation>
 <translation id="3412460710772753638">මෙම උපාංගයේ මුරපද කළමනාකරු තුළ</translation>
+<translation id="172368702860945706">Brave හට යාවත්කාලීන කිරීමට අවශ්‍යයි</translation>
 <translation id="5079573433701109938"><ph name="DEVICE"/> වෙතින් ඔබේ පිටුසන් සහ තවත් දේ ලබා ගැනීමට, Brave තුළට පුරන්න</translation>
 <translation id="3438772217992559640">රූප සෙවීම සමග මෙම පටිත්ත සොයන්න</translation>
 <translation id="2491221873705777076">ඔබේ දුරකථනයේ Brave සමග ඉහළ නැංවූ සුරක්ෂිත පිරික්සුම දීර්ඝ කරන්න</translation>
@@ -368,6 +371,7 @@
 <translation id="4877750182157975795">ඔබේ <ph name="DEVICE_TYPE"/> හි Brave සමග ඔබේ සියලු Brave ප්‍රියතමයන් වෙත ප්‍රවේශ වන්න</translation>
 <translation id="1204184037023366446">Brave හට ඔබේ අත් නිරීක්ෂණය කිරීමට අවසරය අවශ්‍යයි</translation>
 <translation id="5406591571925937375">ඔබ මෑත පැමිණ නැත. Brave <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/>, <ph name="PERMISSION_3"/> ඉවත් කළා.</translation>
+<translation id="3576895950897485019">Brave වෙත පුරන්න</translation>
 <translation id="5174969993834422967">ඔබ සාමාන්‍යයෙන් දැනුම් දීම් අවහිර කරයි. මෙම අඩවිය ඔබට දැනුම් දීමට ඉඩ දීමට, ඔබේ ස්ථාන තීරුවේ දකුණු කෙළවරේ ඇති දැනුම්දීම් නිරූපකය ක්ලික් කරන්න.</translation>
 <translation id="5174983315706567306">ප්‍රමාණවත් තැටි ඉඩක් නැත.</translation>
 <translation id="8157129267754368853">Brave ගිණුමට නැවත සත්‍යාපනය අවශ්‍යයි</translation>
@@ -377,6 +381,7 @@
 <translation id="1069969567644851798">සබැඳිය Brave අ&amp;ප්‍රසිද්ධ කවුළුව තුළ විවෘත කරන්න</translation>
 <translation id="7690383309583926074">යන ගමන් මුරපද සුරැකීමට Brave යෙදුම ලබා ගන්න</translation>
 <translation id="8586264863973514035">ඔබේ වෙනස්කම් යෙදීමට, Brave නැවත දියත් කරන්න</translation>
+<translation id="8127050479140582768">මෙම පටිත්ත වෙනත් උපාංගයකට යැවීමට, උපාංග දෙකෙහිම Brave වෙත පුරන්න</translation>
 <translation id="5286907366254680517">අනාවරණය විය</translation>
 <translation id="7264453786974905915">Brave යෙදුම ලබා ගන්න</translation>
 <translation id="7230006500876504868">Brave භාවිතයෙන් සොයන්න</translation>
@@ -739,6 +744,7 @@ Brave හට ඔබගේ සැකසුම් ප්‍රතිසාධන�
 <translation id="5128665650717824082">පරීක්ෂණ සඳහා Brave ඔබේ පෙරනිමි බ්‍රව්සරය බවට පත් කළ නොහැක.</translation>
 <translation id="3053208669360972929">ඕනෑම තැනක සිට Brave සමග සොයන්න</translation>
 <translation id="2433912322225810055">තවද එය ඔබ Brave විවෘත කරන විට හෝ Omnibox වෙතින් සොයන විට පෙන්වන වෙබ් පිටුව නිර්ණය කරයි.</translation>
+<translation id="8789425457808164956">මෙම පටිත්ත වෙනත් උපාංගයකට යැවීමට, එම උපාංගයෙන් Brave වෙත පුරන්න</translation>
 <translation id="4100716194836114130">මෙය ඔබේ Brave වේ</translation>
 <translation id="8712637175834984815">එය ලැබුණා</translation>
 <translation id="1419543648228375718">Brave වෙත පුරන්නද?</translation>

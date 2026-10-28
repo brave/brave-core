@@ -20,6 +20,7 @@
 <translation id="8541922081612557424">Sobre o Brave</translation>
 <translation id="987734326276404793">Receba alertas de Monitoramento de Preços no seu celular com o Brave</translation>
 <translation id="1203500561924088507">Agradecemos por fazer a instalação. É necessário reiniciar o navegador antes de utilizar o <ph name="BUNDLE_NAME"/>.</translation>
+<translation id="1213674046343558619">Uma <ph name="IMPORTANT_UPDATE"/> está pendente. Para manter sua navegação segura, o Brave será atualizado na próxima vez que o sistema ficar inativo por <ph name="IDLE_DURATION"/>.</translation>
 <translation id="1232234696885483911">Quando você abre a Pesquisa por Imagens, o título, o URL e o conteúdo da página, incluindo PDFs, são enviados automaticamente ao servidor. <ph name="LEARN_MORE"/></translation>
 <translation id="1934377710648094656">Enquanto sua Conta do Brave estiver conectada, você poderá usar as senhas e outros dados dela no Brave. Para mudar isso, acesse "Sua conta no Brave".</translation>
 <translation id="583633806828413086">Mostrar o Gemini no Brave na barra de menus do Mac</translation>
@@ -220,6 +221,7 @@
 <translation id="3286538390144397061">Reiniciar agora</translation>
 <translation id="2339258256897053758">As chaves da API do Brave não foram encontradas. Algumas funcionalidades do Brave serão desativadas.</translation>
 <translation id="8926637909431618259">Continuar executando os aplicativos em segundo plano quando o Brave for fechado</translation>
+<translation id="8245661393996028021">O Brave será atualizado quando você estiver ausente</translation>
 <translation id="518125528057094977">O Brave vai enviar um aviso antes de carregar qualquer site usando uma conexão sem segurança</translation>
 <translation id="8652321858775514885">Sua conta será desconectada da maioria dos sites quando você fechar todas as janelas do Brave, exceto sua Conta do Brave, se tiver feito login no navegador. Para permitir que os sites se lembrem de você, <ph name="SETTINGS_LINK"/>.</translation>
 <translation id="3352986031709923790">canto superior direito da área de pesquisa: <ph name="RIGHT"/>% à direita, <ph name="TOP"/>% acima</translation>
@@ -228,6 +230,7 @@
 <translation id="2645435784669275700">ChromeOS</translation>
 <translation id="2297290224191497273">Mudar para perfil existente do Brave?</translation>
 <translation id="3412460710772753638">No Gerenciador de senhas neste dispositivo</translation>
+<translation id="172368702860945706">O Brave quer fazer uma atualização</translation>
 <translation id="5079573433701109938">Para acessar seus favoritos e muito mais do <ph name="DEVICE"/>, faça login no Brave</translation>
 <translation id="3438772217992559640">Procurar Esta Guia com a Pesquisa por Imagens</translation>
 <translation id="2491221873705777076">Amplie a Navegação Segura com Maior Proteção com o Brave no seu celular</translation>
@@ -365,6 +368,7 @@
 <translation id="4877750182157975795">Acesse todos os seus favoritos do Brave com o Brave no seu <ph name="DEVICE_TYPE"/></translation>
 <translation id="1204184037023366446">O Brave precisa de permissão para rastrear suas mãos</translation>
 <translation id="5406591571925937375">Você não visitou os sites recentemente. O Brave removeu <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> e <ph name="PERMISSION_3"/>.</translation>
+<translation id="3576895950897485019">Faça login no Brave</translation>
 <translation id="5174969993834422967">Você geralmente bloqueia notificações. Para permitir que este site envie notificações, clique no ícone de notificação no canto direito da barra de local.</translation>
 <translation id="5174983315706567306">Não há espaço em disco suficiente.</translation>
 <translation id="8157129267754368853">A conta do Brave precisa ser autenticada de novo</translation>
@@ -373,6 +377,7 @@
 <translation id="5234764350956374838">Dispensar</translation>
 <translation id="7690383309583926074">Baixe o app Brave para salvar senhas em qualquer lugar</translation>
 <translation id="8586264863973514035">Para que as alterações sejam aplicadas, reinicie o Brave</translation>
+<translation id="8127050479140582768">Para enviar esta guia a outro dispositivo, faça login no Brave nos dois aparelhos</translation>
 <translation id="5286907366254680517">Detectado</translation>
 <translation id="7264453786974905915">Baixar o Brave</translation>
 <translation id="7230006500876504868">Pesquisar com o Brave</translation>
@@ -732,6 +737,7 @@ Exclua alguns dos favoritos da sua conta para poder salvar novos. Se você sair 
 <translation id="5128665650717824082">O Brave for Testing não pode ser definido como seu navegador padrão.</translation>
 <translation id="3053208669360972929">Pesquisar com o Brave de qualquer lugar</translation>
 <translation id="2433912322225810055">Controla também qual página deve ser exibida quando você inicia o Brave ou faz uma pesquisa na Omnibox.</translation>
+<translation id="8789425457808164956">Para enviar esta guia a outro dispositivo, faça login no Brave no outro aparelho</translation>
 <translation id="4100716194836114130">Este é seu Brave</translation>
 <translation id="8712637175834984815">Entendi</translation>
 <translation id="1419543648228375718">Fazer login no Brave?</translation>

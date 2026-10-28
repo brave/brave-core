@@ -20,6 +20,7 @@
 <translation id="8541922081612557424">Brave সম্পর্কে</translation>
 <translation id="987734326276404793">আপনার ফোনে Brave-এর মাধ্যমে দাম ট্র্যাক করা সংক্রান্ত সতর্কতা পান</translation>
 <translation id="1203500561924088507">ইনস্টল করার জন্য ধন্যবাদ। <ph name="BUNDLE_NAME"/> ব্যবহার করার আগে আপনাকে অবশ্যই ব্রাউজার রিস্টার্ট করতে হবে।</translation>
+<translation id="1213674046343558619">একটি <ph name="IMPORTANT_UPDATE"/> বাকি আছে। আপনার ব্রাউজিং সুরক্ষিত রাখতে, পরের বার আপনি <ph name="IDLE_DURATION"/> ইনঅ্যাক্টিভ থাকলে Brave আপডেট হবে।</translation>
 <translation id="1232234696885483911">আপনি 'ছবি সার্চ করা' ফিচার খুললে, পৃষ্ঠার টাইটেল, URL এবং পিডিএফ সহ কন্টেন্ট অটোমেটিক সার্ভারে পাঠানো হবে। <ph name="LEARN_MORE"/></translation>
 <translation id="1934377710648094656">আপনি সাইন-ইন করার সময়, Brave-এ আপনার Brave অ্যাকাউন্ট থেকে পাসওয়ার্ড এবং আরও অনেক কিছু ব্যবহার করতে পারবেন। এটি পরিবর্তন করতে, “Brave-এ আপনার অ্যাকাউন্ট” বিকল্পে যান।</translation>
 <translation id="583633806828413086">Mac মেনু বারে Brave-এ Gemini দেখুন</translation>
@@ -222,6 +223,7 @@
 <translation id="3286538390144397061">এখন পুর্নসূচনা করবেন</translation>
 <translation id="2339258256897053758">Brave এপিআই কীগুলি অনুপস্থিত৷ Brave-এর কিছু বৈশিষ্ট্য নিষ্ক্রিয় হয়ে যাবে৷</translation>
 <translation id="8926637909431618259"> Brave বন্ধ হলে পটভূমির অ্যাপ্লিকেশন চালু রাখুন</translation>
+<translation id="8245661393996028021">আপনি দূরে থাকাকালীন Brave আপডেট হবে</translation>
 <translation id="518125528057094977">Brave অসুরক্ষিত কানেকশন ব্যবহার করে যেকোনও সাইট লোড করার আগে আপনাকে সতর্ক করবে</translation>
 <translation id="8652321858775514885">আপনি সব Brave উইন্ডো বন্ধ করে দিলে আপনাকে বেশিরভাগ সাইট থেকে সাইন-আউট করে দেওয়া হবে, তবে আপনি Brave-এ সাইন-ইন করে থাকলে আপনাকে Brave অ্যাকাউন্ট থেকে সাইন-আউট করা হবে না। সাইট যাতে আপনাকে চিনতে পারে তার জন্য <ph name="SETTINGS_LINK"/>।</translation>
 <translation id="3352986031709923790">সার্চের উপরের ডানদিকের কোণা: ডানদিক থেকে <ph name="RIGHT"/>%, উপরের দিকে <ph name="TOP"/>%</translation>
@@ -230,6 +232,7 @@
 <translation id="2645435784669275700">ChromeOS</translation>
 <translation id="2297290224191497273">বর্তমান Brave প্রোফাইলে পাল্টাতে চান?</translation>
 <translation id="3412460710772753638">এই ডিভাইসের Password Manager-এ</translation>
+<translation id="172368702860945706">Brave আপডেট করতে হবে</translation>
 <translation id="5079573433701109938"><ph name="DEVICE"/> থেকে আপনার বুকমার্ক ও আরও অনেক কিছু পেতে, Brave-এ সাইন-ইন করুন</translation>
 <translation id="3438772217992559640">'ছবি সার্চ করা' ফিচার ব্যবহার করে এই ট্যাবে সার্চ করুন</translation>
 <translation id="2491221873705777076">আপনার ফোনে Brave-এর সাথে উন্নত Safe Browsing এক্সটেন্ড করুন</translation>
@@ -367,6 +370,7 @@
 <translation id="4877750182157975795">আপনার <ph name="DEVICE_TYPE"/>-এ Brave-এর সাহায্যে Brave-এ সব পছন্দের জিনিস অ্যাক্সেস করুন</translation>
 <translation id="1204184037023366446">আপনার হাত ট্র্যাক করতে Brave-এর অনুমতি প্রয়োজন</translation>
 <translation id="5406591571925937375">আপনি সম্প্রতি ভিজিট করেননি। Brave <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/>, <ph name="PERMISSION_3"/> সম্পর্কিত অনুমতি সরিয়ে দিয়েছে।</translation>
+<translation id="3576895950897485019">Brave-এ সাইন-ইন করুন</translation>
 <translation id="5174969993834422967">আপনি সাধারণত বিজ্ঞপ্তি ব্লক করেন। এই সাইট থেকে বিজ্ঞপ্তি পেতে, আপনার লোকেশন বারের ডানদিকের কোণায় বিজ্ঞপ্তির আইকনে ক্লিক করুন।</translation>
 <translation id="5174983315706567306">ডিস্ক স্টোরেজে যথেষ্ট খালি জায়গা নেই।</translation>
 <translation id="8157129267754368853">Brave অ্যাকাউন্ট আবার যাচাই করতে হবে</translation>
@@ -375,6 +379,7 @@
 <translation id="5234764350956374838">খারিজ</translation>
 <translation id="7690383309583926074">যে কোনও সময় পাসওয়ার্ড সেভ করার জন্য Brave অ্যাপ ডাউনলোড করুন</translation>
 <translation id="8586264863973514035">আপনার পরিবর্তনগুলি প্রয়োগ করতে, Brave রিলঞ্চ করুন</translation>
+<translation id="8127050479140582768">অন্য ডিভাইসে এই ট্যাব পাঠাতে, দুটি ডিভাইসেই Brave দিয়ে সাইন-ইন করুন</translation>
 <translation id="5286907366254680517">শনাক্ত করা হয়েছে</translation>
 <translation id="7264453786974905915">Brave অ্যাপ ডাউনলোড করুন</translation>
 <translation id="7230006500876504868">Brave-এর সাহায্যে সার্চ করুন</translation>
@@ -735,6 +740,7 @@ Brave আপনার সেটিংস পুনরুদ্ধার কর�
 <translation id="5128665650717824082">Brave for Testing-কে আপনার ডিফল্ট ব্রাউজার করে পারবেন না।</translation>
 <translation id="3053208669360972929">Brave ব্যবহার করে যেকোনও জায়গা থেকে সার্চ করুন</translation>
 <translation id="2433912322225810055">আপনি Brave শুরু করলে বা Omnibox থেকে সার্চ করলে কোন পৃষ্ঠাটি দেখানো হবে তাও এটি নিয়ন্ত্রণ করে।</translation>
+<translation id="8789425457808164956">অন্য ডিভাইসে এই ট্যাব পাঠাতে, সেটি Brave দিয়ে সাইন-ইন করুন</translation>
 <translation id="4100716194836114130">এটি হল আপনার Brave</translation>
 <translation id="8712637175834984815">বুঝেছি</translation>
 <translation id="1419543648228375718">Brave-এ সাইন-ইন করবেন?</translation>

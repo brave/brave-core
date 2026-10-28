@@ -21,6 +21,7 @@
 <translation id="8541922081612557424">Brave बद्दल</translation>
 <translation id="987734326276404793">तुमच्या फोनवर Brave सह किमतीचा माग ठेवण्याशी संबंधित अलर्ट मिळवा</translation>
 <translation id="1203500561924088507">इंस्टॉल केल्याबद्दल धन्यवाद. तुम्ही <ph name="BUNDLE_NAME"/> वापरण्यापूर्वी तुमचा ब्राउझर रीस्टार्ट करणे आवश्यक आहे.</translation>
+<translation id="1213674046343558619"><ph name="IMPORTANT_UPDATE"/> प्रलंबित आहे. तुमचे ब्राउझिंग सुरक्षित ठेवण्यासाठी, तुम्ही पुढील वेळी <ph name="IDLE_DURATION"/> साठी इनॅक्टिव्ह असाल, तेव्हा Brave अपडेट होईल.</translation>
 <translation id="1232234696885483911">तुम्ही इमेज शोध उघडता, तेव्हा PDFs सह पेजचे शीर्षक, URL आणि आशय आपोआप सर्व्हरला पाठवला जाईल. <ph name="LEARN_MORE"/></translation>
 <translation id="1934377710648094656">तुम्ही साइन इन केलेले असताना, Brave मध्ये तुमच्या Brave खाते मधून तुमचे पासवर्ड आणि आणखी बऱ्याच गोष्टी वापरू शकता. हे बदलण्यासाठी, “Brave मधील तुमचे खाते” वर जा.</translation>
 <translation id="583633806828413086">Mac मेनू बारमधील Brave मधील Gemini दाखवा</translation>
@@ -223,6 +224,7 @@
 <translation id="3286538390144397061">त्वरित रीस्टार्ट करा</translation>
 <translation id="2339258256897053758">Brave API की गहाळ आहेत. Brave ची काही कार्यक्षमता अक्षम केली जाईल.</translation>
 <translation id="8926637909431618259">Brave बंद असताना पार्श्वभूमी ॲप्लिकेशन चालवणे सुरू ठेवा</translation>
+<translation id="8245661393996028021">तुम्ही इनॅक्टिव्ह असताना Brave अपडेट होईल</translation>
 <translation id="518125528057094977">असुरक्षित कनेक्शन वापरून कोणतीही साइट लोड करण्यापूर्वी Brave तुम्हाला चेतावणी देईल</translation>
 <translation id="8652321858775514885">तुम्ही Brave वर साइन इन केले असल्यास, सर्व Brave विंडो बंद केल्यावर तुमचे Brave खाते वगळता तुम्हाला बहुतांश साइटवरून साइन आउट केले जाईल. साइटना तुम्हाला लक्षात ठेवू देण्यासाठी, <ph name="SETTINGS_LINK"/>.</translation>
 <translation id="3352986031709923790">शोध क्षेत्राचा सर्वात वरचा उजवा कोपरा: उजवीकडे <ph name="RIGHT"/>%, सर्वात वरती <ph name="TOP"/>%</translation>
@@ -231,6 +233,7 @@
 <translation id="2645435784669275700">ChromeOS</translation>
 <translation id="2297290224191497273">सध्याच्या Brave प्रोफाइलवर स्विच करायचे आहे का?</translation>
 <translation id="3412460710772753638">या डिव्हाइसवरील पासवर्ड मॅनेजर मध्ये</translation>
+<translation id="172368702860945706">Brave ला अपडेट करायचे आहे</translation>
 <translation id="5079573433701109938"><ph name="DEVICE"/> वरून तुमचे बुकमार्क आणि आणखी बरेच काही मिळवण्यासाठी, Brave मध्ये साइन इन करा</translation>
 <translation id="3438772217992559640">इमेज शोध वापरून हा टॅब शोधा</translation>
 <translation id="2491221873705777076">तुमच्या फोनवर Brave वापरून वर्धित सुरक्षित ब्राउझिंगचा विस्तार करा</translation>
@@ -368,6 +371,7 @@
 <translation id="4877750182157975795">तुमच्या <ph name="DEVICE_TYPE"/> वर Brave वापरून तुमच्या सर्व आवडत्या Brave गोष्टी अ‍ॅक्सेस करा</translation>
 <translation id="1204184037023366446">Brave ला तुमचे हात ट्रॅक करण्याच्या परवानगीची आवश्यकता आहे</translation>
 <translation id="5406591571925937375">तुम्ही अलीकडे भेट दिलेली नाही. Brave ने <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/>, <ph name="PERMISSION_3"/> परवानग्या काढून टाकल्या आहेत.</translation>
+<translation id="3576895950897485019">Brave वर साइन इन करा</translation>
 <translation id="5174969993834422967">तुम्ही सहसा सूचना ब्लॉक करता. या साइटला तुम्हाला सूचित करू देण्यासाठी, तुमच्या स्थान बारच्या उजव्या कोपऱ्यातील नोटिफिकेशन आयकनवर क्लिक करा.</translation>
 <translation id="5174983315706567306">डिस्कमधील जागा पुरेशी नाही.</translation>
 <translation id="8157129267754368853">Brave खात्यासाठी री-ऑथेंटिकेशन आवश्यक आहे</translation>
@@ -376,6 +380,7 @@
 <translation id="5234764350956374838">डिसमिस करा</translation>
 <translation id="7690383309583926074">फिरतीवर असताना पासवर्ड सेव्ह करण्यासाठी Brave अ‍ॅप मिळवा</translation>
 <translation id="8586264863973514035">तुम्ही केलेले बदल लागू करण्यासाठी, Brave रीलाँच करा</translation>
+<translation id="8127050479140582768">हा टॅब दुसर्‍या डिव्हाइसवर पाठवण्यासाठी, दोन्ही डिव्हाइसवर Brave मध्ये साइन इन करा</translation>
 <translation id="5286907366254680517">डिटेक्ट केली</translation>
 <translation id="7264453786974905915">Brave अ‍ॅप मिळवा</translation>
 <translation id="7230006500876504868">Brave वापरून शोधा</translation>
@@ -739,6 +744,7 @@ Brave तुमची सेटिंग्ज रिकव्हर करू �
 <translation id="5128665650717824082">Brave for Testing ला तुमचा डीफॉल्ट ब्राउझर बनवू शकत नाही.</translation>
 <translation id="3053208669360972929">Brave वापरून कुठूनही शोधा</translation>
 <translation id="2433912322225810055">तुम्ही Brave सुरू करता किंवा तुम्ही ओम्निबॉक्समधून शोध घेता तेव्हा कोणते पेज दाखवावे हेदेखील ते नियंत्रित करते.</translation>
+<translation id="8789425457808164956">हा टॅब दुसर्‍या डिव्हाइसवर पाठवण्यासाठी, तिथे Brave मध्ये साइन इन करा</translation>
 <translation id="4100716194836114130">हे तुमचे Brave आहे</translation>
 <translation id="8712637175834984815">समजले</translation>
 <translation id="1419543648228375718">Brave मध्ये साइन इन करायचे आहे का?</translation>

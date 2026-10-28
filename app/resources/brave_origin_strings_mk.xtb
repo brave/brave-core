@@ -22,6 +22,7 @@
 <translation id="8541922081612557424">За Brave</translation>
 <translation id="987734326276404793">Добивајте известувања за „Следење цена“ со Brave на телефонот</translation>
 <translation id="1203500561924088507">Фала за инсталирањето. Мора да го рестартирате прелистувачот пред да користите <ph name="BUNDLE_NAME"/>.</translation>
+<translation id="1213674046343558619"><ph name="IMPORTANT_UPDATE"/> е на чекање. За да го заштити вашето прелистување, Brave ќе се ажурира следниот пат кога ќе бидете неактивни во период од <ph name="IDLE_DURATION"/>.</translation>
 <translation id="1232234696885483911">Кога ќе ја отворите „Пребарување слики“, насловот, URL-адресата и содржините на страницата, вклучително и PDF-датотеките, автоматски ќе се испратат до серверот. <ph name="LEARN_MORE"/></translation>
 <translation id="1934377710648094656">Додека сте најавени, може да ги користите вашите лозинки и друго од вашата сметка на Brave во Brave. За да го промените ова, одете на „Вашата сметка во Brave“.</translation>
 <translation id="583633806828413086">Прикажувај го Gemini во Brave во лентата со менија на Mac</translation>
@@ -224,6 +225,7 @@
 <translation id="3286538390144397061">Рестартирај веднаш</translation>
 <translation id="2339258256897053758">Клучевите Brave API недостасуваат. Некои функции на Brave ќе бидат оневозможени.</translation>
 <translation id="8926637909431618259">Продолжи со извршување на заднинските апликации кога Brave е затворен</translation>
+<translation id="8245661393996028021">Brave ќе се ажурира при неактивност</translation>
 <translation id="518125528057094977">Brave ќе ве предупреди пред вчитувањето сајт преку небезбедна врска</translation>
 <translation id="8652321858775514885">Ќе се одјавите од повеќето сајтови кога ќе ги затворите сите прозорци во Brave, со исклучок на вашата сметка на Brave ако сте најавени на Brave. За да овозможите да ве помнат сајтовите, <ph name="SETTINGS_LINK"/>.</translation>
 <translation id="3352986031709923790">горен десен агол на областа за пребарување: десно <ph name="RIGHT"/> %, горе <ph name="TOP"/> %</translation>
@@ -232,6 +234,7 @@
 <translation id="2645435784669275700">Chrome OS</translation>
 <translation id="2297290224191497273">Сакате да се префрлите на постојниот профил на Brave?</translation>
 <translation id="3412460710772753638">Во Password Manager на уредов</translation>
+<translation id="172368702860945706">Brave сака да се ажурира</translation>
 <translation id="5079573433701109938">За да ги добиете обележувачите и друго од <ph name="DEVICE"/>, најавете се на Brave</translation>
 <translation id="3438772217992559640">Пребарај ја картичкава со „Пребарување слики“</translation>
 <translation id="2491221873705777076">Проширете ја „Подобрено безбедно прелистување“ со Brave на вашиот телефон</translation>
@@ -369,6 +372,7 @@
 <translation id="4877750182157975795">Пристапувајте до сите ваши омилени нешта на Brave со Brave на вашиот <ph name="DEVICE_TYPE"/></translation>
 <translation id="1204184037023366446">Brave бара дозвола да ги следи вашите раце</translation>
 <translation id="5406591571925937375">Не сте дошле одамна. Brave ги отстрани следниве дозволи: <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> и <ph name="PERMISSION_3"/>.</translation>
+<translation id="3576895950897485019">Најавете се на Brave</translation>
 <translation id="5174969993834422967">Обично ги блокирате известувањата. За да овозможите сајтов да ве известува, кликнете ја иконата за известувања во десниот агол на лентата за локација.</translation>
 <translation id="5174983315706567306">Нема доволно простор на дискот.</translation>
 <translation id="8157129267754368853">Сметката на Brave треба да се автентицира повторно</translation>
@@ -377,6 +381,7 @@
 <translation id="5234764350956374838">Отфрли</translation>
 <translation id="7690383309583926074">Преземете ја апликацијата Brave за да зачувувате лозинки во движење</translation>
 <translation id="8586264863973514035">За да се применат измените, рестартирајте го Brave</translation>
+<translation id="8127050479140582768">За да ја испратите картичкава на друг уред, најавете се на Brave на двата уреда</translation>
 <translation id="5286907366254680517">Откриено</translation>
 <translation id="7264453786974905915">Преземете ја апликацијата Brave</translation>
 <translation id="7230006500876504868">Пребарувајте со Brave</translation>
@@ -739,6 +744,7 @@ Brave не може да ги обнови вашите поставки.</trans
 <translation id="5128665650717824082">Brave for Testing не може да се направи да биде ваш стандарден прелистувач.</translation>
 <translation id="3053208669360972929">Пребарувајте со Brave отсекаде</translation>
 <translation id="2433912322225810055">Контролира и која страница се прикажува кога го стартувате Brave или ако пребарувате од лентата за адреси.</translation>
+<translation id="8789425457808164956">За да ја испратите картичкава на друг уред, најавете се на Brave на него</translation>
 <translation id="4100716194836114130">Ова е вашиот Brave</translation>
 <translation id="8712637175834984815">Сфатив</translation>
 <translation id="1419543648228375718">Ќе се најавите на Brave?</translation>

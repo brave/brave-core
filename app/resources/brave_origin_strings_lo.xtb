@@ -22,6 +22,7 @@
 <translation id="8541922081612557424">ກ່ຽວ​ກັບ Brave</translation>
 <translation id="987734326276404793">ຮັບການແຈ້ງເຕືອນການຕິດຕາມລາຄາດ້ວຍ Brave ຢູ່ໂທລະສັບຂອງທ່ານ</translation>
 <translation id="1203500561924088507">ຂໍຂອບໃຈສຳລັບການຕິດຕັ້ງ. ທ່ານຈະຕ້ອງຣີສະຕາດໂປຣແກຣມທ່ອງເວັບຂອງທ່ານກ່ອນການໃຊ້ <ph name="BUNDLE_NAME"/>.</translation>
+<translation id="1213674046343558619">ມີ <ph name="IMPORTANT_UPDATE"/> ລໍຖ້າດຳເນີນການຢູ່. ເພື່ອໃຫ້ການທ່ອງເວັບຂອງທ່ານປອດໄພ, Brave ຈະອັບເດດໃນເທື່ອຕໍ່ໄປທີ່ທ່ານບໍ່ໄດ້ນຳໃຊ້ເປັນເວລາ <ph name="IDLE_DURATION"/>.</translation>
 <translation id="1232234696885483911">ເມື່ອທ່ານເປີດການຊອກຫາຮູບ, ລະບົບຈະສົ່ງຊື່ໜ້າ, URL ແລະ ເນື້ອຫາ, ຮວມທັງ PDF ໄປຫາເຊີບເວີໂດຍອັດຕະໂນມັດ. <ph name="LEARN_MORE"/></translation>
 <translation id="1934377710648094656">ໃນລະຫວ່າງທີ່ທ່ານເຂົ້າສູ່ລະບົບ, ທ່ານສາມາດໃຊ້ລະຫັດຜ່ານ ແລະ ຂໍ້ມູນອື່ນໆຂອງທ່ານຈາກບັນຊີ Brave ຂອງທ່ານໃນ Brave ໄດ້. ເພື່ອປ່ຽນສິ່ງນີ້, ໃຫ້ເຂົ້າໄປ “ບັນຊີຂອງທ່ານໃນ Brave”.</translation>
 <translation id="583633806828413086">ສະແດງ Gemini ໃນ Brave ໃນແຖບເມນູຂອງ Mac</translation>
@@ -224,6 +225,7 @@
 <translation id="3286538390144397061">ປິດເປີດໃໝ່ດຽວນີ້</translation>
 <translation id="2339258256897053758">ລະຫັດ Brave API ຫາຍໄປ. ການເຮັດໜ້າທີ່ບາງອັນຂອງ Brave ຈະປິດໃຊ້ງານ.</translation>
 <translation id="8926637909431618259">ສືບຕໍ່ແລ່ນແອັບພື້ນຫຼັງ ເມື່ອ Brave ປິດ</translation>
+<translation id="8245661393996028021">Brave ຈະອັບເດດເມື່ອບໍ່ມີການນຳໃຊ້</translation>
 <translation id="518125528057094977">Brave ຈະເຕືອນທ່ານກ່ອນການໂຫຼດເວັບໄຊໃດກໍຕາມທີ່ກຳລັງໃຊ້ການເຊື່ອມຕໍ່ທີ່ບໍ່ປອດໄພ</translation>
 <translation id="8652321858775514885">ທ່ານຈະອອກຈາກລະບົບຂອງເວັບໄຊສ່ວນໃຫຍ່ເມື່ອທ່ານປິດໜ້າຈໍ Brave ທັງໝົດຍົກເວັ້ນບັນຊີ Brave ຂອງທ່ານຫາກທ່ານເຂົ້າສູ່ລະບົບ Brave. ເພື່ອໃຫ້ເວັບໄຊຈື່ທ່ານໄດ້, ກະລຸນາ <ph name="SETTINGS_LINK"/>.</translation>
 <translation id="3352986031709923790">ມຸມຂວາເທິງຂອງພື້ນທີ່ຊອກຫາ: ຂວາ <ph name="RIGHT"/>%, ເທິງ <ph name="TOP"/>%</translation>
@@ -232,6 +234,7 @@
 <translation id="2645435784669275700">ChromeOS</translation>
 <translation id="2297290224191497273">ສະຫຼັບເປັນໂປຣໄຟລ໌ Brave ທີ່ມີຢູ່ກ່ອນແລ້ວບໍ?</translation>
 <translation id="3412460710772753638">ໃນຕົວຈັດການລະຫັດຜ່ານຢູ່ອຸປະກອນນີ້</translation>
+<translation id="172368702860945706">Brave ຕ້ອງການອັບເດດ</translation>
 <translation id="5079573433701109938">ເພື່ອເຂົ້າເຖິງບຸກມາກ ແລະ ຂໍ້ມູນອື່ນໆຂອງທ່ານຈາກ <ph name="DEVICE"/>, ໃຫ້ເຂົ້າສູ່ລະບົບ Brave</translation>
 <translation id="3438772217992559640">ຊອກຫາແຖບນີ້ດ້ວຍຄຸນສົມບັດຊອກຫາຮູບ</translation>
 <translation id="2491221873705777076">ຂະຫຍາຍ Safe Browsing ທີ່ປັບປຸງດີຂຶ້ນດ້ວຍ Brave ຢູ່ໂທລະສັບຂອງທ່ານ</translation>
@@ -369,6 +372,7 @@
 <translation id="4877750182157975795">ເຂົ້າເຖິງ Brave ທີ່ທ່ານມັກທັງໝົດດ້ວຍ Brave ຢູ່ <ph name="DEVICE_TYPE"/> ຂອງທ່ານ</translation>
 <translation id="1204184037023366446">Brave ຕ້ອງໄດ້ຮັບການອະນຸຍາດເພື່ອຕິດຕາມການເຄື່ອນໄຫວຂອງມືທ່ານ</translation>
 <translation id="5406591571925937375">ທ່ານບໍ່ໄດ້ເຂົ້າເບິ່ງເມື່ອບໍ່ດົນມານີ້. Brave ໄດ້ລຶບ <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/>, <ph name="PERMISSION_3"/> ອອກແລ້ວ.</translation>
+<translation id="3576895950897485019">ເຂົ້າສູ່ລະບົບຫາ Brave</translation>
 <translation id="5174969993834422967">ໂດຍປົກກະຕິແລ້ວທ່ານບລັອກການແຈ້ງເຕືອນ. ເພື່ອໃຫ້ເວັບໄຊນີ້ແຈ້ງເຕືອນທ່ານ, ໃຫ້ຄລິກທີ່ໄອຄອນການແຈ້ງເຕືອນຢູ່ມຸມຂວາຂອງແຖບສະຖານທີ່ຂອງທ່ານ.</translation>
 <translation id="5174983315706567306">ພື້ນທີ່ດິສກ໌ບໍ່ພຽງພໍ.</translation>
 <translation id="8157129267754368853">ບັນຊີ Brave ຕ້ອງມີການພິສູດຢືນຢັນຄືນໃໝ່</translation>
@@ -378,6 +382,7 @@
 <translation id="1069969567644851798">ເປີດລິ້ງໃນໜ້າຈໍທີ່ບໍ່ເຜີຍຕົວຕົນຂອງ Brave</translation>
 <translation id="7690383309583926074">ດາວໂຫຼດແອັບ Brave ເພື່ອບັນທຶກລະຫັດຜ່ານໄດ້ທຸກບ່ອນທຸກເວລາ</translation>
 <translation id="8586264863973514035">ເພື່ອນຳໃຊ້ການປ່ຽນແປງຂອງທ່ານ, ກະລຸນາເປີດ Brave ຄືນໃໝ່</translation>
+<translation id="8127050479140582768">ເພື່ອສົ່ງແຖບນີ້ໄປຫາອຸປະກອນອື່ນ, ໃຫ້ເຂົ້າສູ່ລະບົບຫາ Brave ຢູ່ທັງສອງອຸປະກອນ</translation>
 <translation id="5286907366254680517">ກວດພົບ</translation>
 <translation id="7264453786974905915">ດາວໂຫຼດແອັບ Brave</translation>
 <translation id="7230006500876504868">ຊອກຫາດ້ວຍ Brave</translation>
@@ -741,6 +746,7 @@ Brave ບໍ່ສາມາດກູ້ການຕັ້ງຄ່າຂອງ�
 <translation id="5128665650717824082">ບໍ່ສາມາດຕັ້ງ Brave ສຳລັບການທົດສອບເປັນໂປຣແກຣມທ່ອງເວັບເລີ່ມຕົ້ນຂອງທ່ານໄດ້.</translation>
 <translation id="3053208669360972929">ຊອກຫາດ້ວຍ Brave ໄດ້ຈາກທຸກບ່ອນ</translation>
 <translation id="2433912322225810055">ມັນຍັງຄວບຄຸມວ່າຈະໃຫ້ສະແດງໜ້າໃດຂຶ້ນ ເມື່ອທ່ານເລີ່ມຕົ້ນເປີດ Brave ຫຼືຄົ້ນຫາຈາກ Omnibox.</translation>
+<translation id="8789425457808164956">ເພື່ອສົ່ງແຖບນີ້ໄປຫາອຸປະກອນອື່ນ, ໃຫ້ເຂົ້າສູ່ລະບົບຫາ Brave ຢູ່ບ່ອນນັ້ນ</translation>
 <translation id="4100716194836114130">ນີ້​ແມ່ນ Brave ຂອງ​ທ່ານ</translation>
 <translation id="8712637175834984815">ເຂົ້າໃຈແລ້ວ</translation>
 <translation id="1419543648228375718">ເຂົ້າສູ່ລະບົບ Brave ບໍ?</translation>
