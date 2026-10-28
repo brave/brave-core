@@ -232,18 +232,6 @@ CWV_EXPORT
 @end
 
 CWV_EXPORT
-@interface BraveWebView (DocumentFetch)
-/// Downloads the resource at `url` using an XHR in the page context and
-/// delivers the result to `completionHandler`. On success `data` contains the
-/// response body and `statusCode` is the HTTP status code. On failure (no main
-/// frame, network error, etc.) `statusCode` is 0 and `data` is nil.
-- (void)downloadDocumentAtURL:(NSURL*)url
-            completionHandler:
-                (void (^)(NSInteger statusCode,
-                          NSData* _Nullable data))completionHandler;
-@end
-
-CWV_EXPORT
 @interface BraveWebView (ReaderMode)
 /// Checks whether the current page is readable and returns the parsed result
 /// as a JSON string, or nil if the page is not readable or the call times out.
