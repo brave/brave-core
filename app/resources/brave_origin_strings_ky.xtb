@@ -23,6 +23,7 @@
 <translation id="8541922081612557424">Brave жөнүндө</translation>
 <translation id="987734326276404793">Телефонуңуздагы Brave менен бааларга көз салуу тууралуу билдирмелерди алыңыз</translation>
 <translation id="1203500561924088507">Орнотуп алганыңыз үчүн рахмат. <ph name="BUNDLE_NAME"/> топтомун колдонуп баштоодон мурда серепчини өчүрүп күйгүзүңүз.</translation>
+<translation id="1213674046343558619"><ph name="IMPORTANT_UPDATE"/> күтүлүүдө. Коопсуз серептөө үчүн Brave кийинки жолу <ph name="IDLE_DURATION"/> жигерсиз болгонуңузда жаңыртылат.</translation>
 <translation id="1232234696885483911">Сүрөт издөө функциясын ачканыңызда беттин аталышы, URL жана андагы нерселер, ошондой эле PDF файлдары автоматтык түрдө серверге жөнөтүлөт. <ph name="LEARN_MORE"/></translation>
 <translation id="1934377710648094656">Кирип турганыңызда Brave'да Brave аккаунтуңуздагы сырсөздөрдү жана башкаларды колдоно аласыз. Муну өзгөртүү үчүн "Brave'дагы аккаунтуңуз" бөлүмүнө өтүңүз.</translation>
 <translation id="583633806828413086">Mac'тын меню тилкесинде Brave'дагы Gemini'ды көрсөтүү</translation>
@@ -230,6 +231,7 @@ Bluetooth түзмөктөрүн изилдөө үчүн Bluetooth'ду пайд
 <translation id="3286538390144397061">Азыр өчүрүп күйгүзүү</translation>
 <translation id="2339258256897053758">Brave API ачкычтары жок болуп жатат. Brave'дун айрым функциялары өчүрүлөт.</translation>
 <translation id="8926637909431618259">Brave жабылганда фондук колдонмолор иштей берсин</translation>
+<translation id="8245661393996028021">Brave сиз жигерсиз болгондо жаңыртылат</translation>
 <translation id="518125528057094977">Brave сиз кооптуу туташуу аркылуу сайтты жүктөөдөн мурун эскертет</translation>
 <translation id="8652321858775514885">Эгер Brave'га кирип турган болсоңуз, Brave аккаунтуңуздан башка бардык Brave терезелерин жапканыңызда көпчүлүк сайттардан чыгарыласыз. Сайттар сизди эстеп калышы үчүн, <ph name="SETTINGS_LINK"/>.</translation>
 <translation id="3352986031709923790">издөө аймагынын жогорку оң бурчу: оң жагы <ph name="RIGHT"/>%, жогору жагы <ph name="TOP"/>%</translation>
@@ -238,6 +240,7 @@ Bluetooth түзмөктөрүн изилдөө үчүн Bluetooth'ду пайд
 <translation id="2645435784669275700">ChromeOS</translation>
 <translation id="2297290224191497273">Учурдагы Brave профилине өтөсүзбү?</translation>
 <translation id="3412460710772753638">Ушул түзмөктөгү Сырсөздөр бөлүмүндө</translation>
+<translation id="172368702860945706">Brave жаңыртылышы керек</translation>
 <translation id="5079573433701109938"><ph name="DEVICE"/> кыстармаларды жана башкаларды колдонуу үчүн Brave'га кириңиз</translation>
 <translation id="3438772217992559640">Бул өтмөктө Сүрөт издөө функциясы аркылуу издөө</translation>
 <translation id="2491221873705777076">Телефонуңуздагы Brave менен Өркүндөтүлгөн коопсуз серептөөнү колдонуңуз</translation>
@@ -380,6 +383,7 @@ Bluetooth түзмөктөрүн изилдөө үчүн Bluetooth'ду пайд
 <translation id="4877750182157975795"><ph name="DEVICE_TYPE"/> түзмөгүңүздөгү Brave менен Brave'дун сүйүктүү кызматтарын колдонуңуз</translation>
 <translation id="1204184037023366446">Brave'га колдорго көз салууга уруксат керек</translation>
 <translation id="5406591571925937375">Акыркы убакта кирген жоксуз. Brave <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> жана <ph name="PERMISSION_3"/> өчүрдү.</translation>
+<translation id="3576895950897485019">Brave'га кирүү</translation>
 <translation id="5174969993834422967">Адатта сиз билдирмелерге тыюу саласыз. Бул сайттан билдирмелерди алуу үчүн дарек тилкесинин оң бурчундагы билдирменин сүрөтчөсүн басыңыз.</translation>
 <translation id="5174983315706567306">Дискте орун аз.</translation>
 <translation id="8157129267754368853">Brave аккаунтунун аныктыгын кайрадан текшерүү керек</translation>
@@ -389,6 +393,7 @@ Bluetooth түзмөктөрүн изилдөө үчүн Bluetooth'ду пайд
 <translation id="1069969567644851798">Шилтемени Brave'дун жашыруун терезесинде ачуу</translation>
 <translation id="7690383309583926074">Сырсөздөрдү каалаганда сактоо үчүн Brave колдонмосун жүктөп алыңыз</translation>
 <translation id="8586264863973514035">Өзгөртүүлөрдү киргизүү үчүн Brave'ду кайра иштетиңиз</translation>
+<translation id="8127050479140582768">Бул өтмөктү башка түзмөккө жөнөтүү үчүн эки түзмөктө тең Brave'га кириңиз</translation>
 <translation id="5286907366254680517">Аныкталды</translation>
 <translation id="7264453786974905915">Brave колдонмосун жүктөп алуу</translation>
 <translation id="5994282802285556682">Жашыруун режимде серептеп жатканда, Brave сиз кооптуу туташуу аркылуу сайтты жүктөөдөн мурун эскертет</translation>
@@ -757,6 +762,7 @@ Brave параметрлериңизди калыбына келтире алб�
 <translation id="5128665650717824082">Brave for Testing версиясын демейки серепчиңиз катары тандай албайсыз.</translation>
 <translation id="3053208669360972929">Brave менен каалаган жерден издеңиз</translation>
 <translation id="2433912322225810055">Brave иштеп баштаганда же Omnibox'тон изделгенде, кайсы бет көрсөтүлө тургандыгын көзөмөлдөйт.</translation>
+<translation id="8789425457808164956">Бул өтмөктү башка түзмөккө жөнөтүү үчүн ошол түзмөктө Brave'га кириңиз</translation>
 <translation id="4100716194836114130">Бул сиздин Brave</translation>
 <translation id="8712637175834984815">Түшүндүм</translation>
 <translation id="1419543648228375718">Brave'га киресизби?</translation>

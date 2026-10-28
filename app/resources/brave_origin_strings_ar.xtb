@@ -20,6 +20,7 @@
 <translation id="8541922081612557424">‏لمحة عن Brave</translation>
 <translation id="987734326276404793">‏تلقّي تنبيهات ميزة "تتبُّع الأسعار" باستخدام Brave على هاتفك</translation>
 <translation id="1203500561924088507">شكرًا على التثبيت. عليك إعادة تشغيل المتصفِّح قبل استخدام <ph name="BUNDLE_NAME"/>.</translation>
+<translation id="1213674046343558619">‏هناك <ph name="IMPORTANT_UPDATE"/> قيد الانتظار. للحفاظ على أمان تصفّحك، سيتم تحديث Brave في المرة القادمة عند توقّف نشاطك عليه لمدة <ph name="IDLE_DURATION"/>.</translation>
 <translation id="1232234696885483911">‏عند فتح ميزة "البحث بالصور"، سيتم تلقائيًا إرسال عنوان الصفحة وعنوان URL والمحتوى (بما في ذلك ملفات PDF) إلى الخادم. <ph name="LEARN_MORE"/></translation>
 <translation id="1934377710648094656">‏بعد تسجيل الدخول إلى حسابك، يمكنك استخدام كلمات المرور وغيرها من بيانات حسابك على Brave في Brave. لتغيير ذلك، يُرجى الانتقال إلى "حسابك في Brave".</translation>
 <translation id="583633806828413086">‏عرض "Gemini في Brave" في شريط قوائم Mac</translation>
@@ -222,6 +223,7 @@
 <translation id="3286538390144397061">إعادة التشغيل الآن</translation>
 <translation id="2339258256897053758">‏مفاتيح واجهة برمجة تطبيقات Brave مفقودة. وسيترتب على ذلك توقف بعض وظائف Brave عن العمل.</translation>
 <translation id="8926637909431618259">‏استمرار تشغيل تطبيقات الخلفية عند إغلاق Brave</translation>
+<translation id="8245661393996028021">‏سيتم تحديث Brave عند توقّف نشاطك عليه</translation>
 <translation id="518125528057094977">‏سيحذرك Brave قبل تحميل أي موقع إلكتروني يستخدم اتصالاً غير آمن.</translation>
 <translation id="8652321858775514885">‏سيتم تسجيل خروجك من معظم المواقع الإلكترونية عند إغلاق جميع نوافذ Brave، باستثناء حسابك على Brave إذا كنت مسجلاً الدخول إلى Brave. للسماح للمواقع الإلكترونية بتذكُّر بياناتك، <ph name="SETTINGS_LINK"/>.</translation>
 <translation id="3352986031709923790">أعلى يسار مساحة البحث: %<ph name="RIGHT"/> من الجهة اليسرى و%<ph name="TOP"/> من الأعلى</translation>
@@ -230,6 +232,7 @@
 <translation id="2645435784669275700">‏نظام التشغيل Brave</translation>
 <translation id="2297290224191497273">‏هل تريد الانتقال إلى الملف الشخصي الحالي على Brave؟</translation>
 <translation id="3412460710772753638">في "مدير كلمات المرور" على هذا الجهاز</translation>
+<translation id="172368702860945706">‏يجب تحديث Brave</translation>
 <translation id="5079573433701109938">‏يمكنك تسجيل الدخول إلى Brave للوصول إلى الإشارات المرجعية وغيرها على "<ph name="DEVICE"/>"</translation>
 <translation id="3438772217992559640">البحث في علامة التبويب هذه باستخدام ميزة "البحث بالصور"</translation>
 <translation id="2491221873705777076">‏بتنزيل Brave، ستكون "الحماية المحّسنة للتصفح الآمن" متاحة على هاتفك أيضًا</translation>
@@ -367,6 +370,7 @@
 <translation id="4877750182157975795">‏جميع خدمات Brave المفضّلة لديك ستكون متاحة لك باستخدام Brave على "<ph name="DEVICE_TYPE"/>"</translation>
 <translation id="1204184037023366446">‏يحتاج Brave إلى إذن لتتبُّع حركات يديك</translation>
 <translation id="5406591571925937375">‏لم تتم زيارة هذا الموقع الإلكتروني مؤخرًا، لذلك أزال Brave أذونات <ph name="PERMISSION_1"/> و<ph name="PERMISSION_2"/> و<ph name="PERMISSION_3"/>.</translation>
+<translation id="3576895950897485019">‏تسجيل الدخول إلى Brave</translation>
 <translation id="5174969993834422967">أنت تحظر الإشعارات عادةً. للسماح لهذا الموقع الإلكتروني بإرسال إشعارات، انقر على رمز الإشعارات في الزاوية اليسرى من شريط الموقع الجغرافي.</translation>
 <translation id="5174983315706567306">لا تتوفّر مساحة كافية على القرص.</translation>
 <translation id="8157129267754368853">‏يتطلب حساب Brave إعادة المصادقة</translation>
@@ -375,6 +379,7 @@
 <translation id="5234764350956374838">إغلاق</translation>
 <translation id="7690383309583926074">‏تنزيل تطبيق Brave لحفظ كلمات المرور أثناء التنقل</translation>
 <translation id="8586264863973514035">‏لتطبيق التغييرات، يُرجى إعادة تشغيل Brave</translation>
+<translation id="8127050479140582768">‏لإرسال علامة التبويب هذه إلى جهاز آخر، يجب تسجيل الدخول إلى Brave على كلا الجهازين</translation>
 <translation id="5286907366254680517">تمّ رصد اللغة</translation>
 <translation id="7264453786974905915">‏تنزيل تطبيق Brave</translation>
 <translation id="7230006500876504868">‏البحث باستخدام Brave</translation>
@@ -738,6 +743,7 @@
 <translation id="5128665650717824082">‏لا يمكن اختيار الإصدار Brave for Test ليكون متصفِّحك التلقائي.</translation>
 <translation id="3053208669360972929">‏البحث باستخدام Brave من أي مكان</translation>
 <translation id="2433912322225810055">‏كما أنها تتحكم في الصفحة التي تظهر عند تشغيل Brave أو إجراء بحث من المربع متعدد الاستخدامات.</translation>
+<translation id="8789425457808164956">‏لإرسال علامة التبويب هذه إلى جهاز آخر، يجب تسجيل الدخول إلى Brave على ذلك الجهاز</translation>
 <translation id="4100716194836114130">‏هذا هو Brave الخاص بك</translation>
 <translation id="8712637175834984815">حسنًا</translation>
 <translation id="1419543648228375718">‏هل المطلوب تسجيل الدخول إلى Brave؟</translation>

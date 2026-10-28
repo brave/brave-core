@@ -20,6 +20,7 @@
 <translation id="8541922081612557424">Brave haqida</translation>
 <translation id="987734326276404793">Telefonda Brave orqali narxlar oʻzgarishi haqida bildirishnomalar oling</translation>
 <translation id="1203500561924088507">Oʻrnatganingiz uchun tashakkur! <ph name="BUNDLE_NAME"/>ni ishlatishdan oldin brauzerni qayta ishga tushirishingiz lozim.</translation>
+<translation id="1213674046343558619"><ph name="IMPORTANT_UPDATE"/> oʻrnatilishi kerak. Internetni xavfsiz kezish uchun Brave keyingi safar <ph name="IDLE_DURATION"/> ishlatilmaganda avtomatik yangilanadi.</translation>
 <translation id="1232234696885483911">Rasmli qidiruv ochilganda sahifa sarlavhasi, URL manzili, kontenti, jumladan, PDF fayllar Brave serverlariga avtomatik yuboriladi. <ph name="LEARN_MORE"/></translation>
 <translation id="1934377710648094656">Braveda hisobdan chiqmasangiz, Brave hisobingizdagi parollar va boshqa maʼlumotlardan foydalana olasiz. Buni oʻzgartirish uchun “Brave hisobingiz” rukniga kiring.</translation>
 <translation id="583633806828413086">Brave ichidagi Gemini belgisini Mac menyu panelida chiqarish</translation>
@@ -219,6 +220,7 @@
 <translation id="3286538390144397061">Hozir qaytadan ishga tushirish</translation>
 <translation id="2339258256897053758">Brave API kalitlari yetishmayapti. Brave’ning ba’zi funksiyalari ishlamasligi mumkin.</translation>
 <translation id="8926637909431618259">Brave yopilishida orqa fon rejimida ishlayotgan ilovalar to‘xtatilmasin</translation>
+<translation id="8245661393996028021">Brave ishtirokingizsiz avtomatik yangilanadi</translation>
 <translation id="518125528057094977">Xavfsiz ulanishli har qanday saytga kirganingizda Brave sizni ogohlantiradi</translation>
 <translation id="8652321858775514885">Barcha Brave oynalari yopilganda aksariyat saytlardan chiqib ketasiz, ammo Brave hisobingizga kirganingizda Brave hisobingizdan chiqmaysiz. Saytlarga sizni eslab qolishga ruxsat berish uchun <ph name="SETTINGS_LINK"/>.</translation>
 <translation id="3352986031709923790">qidiruv hududining yuqori oʻng burchagi: oʻng <ph name="RIGHT"/>%, yuqori <ph name="TOP"/>%</translation>
@@ -227,6 +229,7 @@
 <translation id="2645435784669275700">ChromeOS</translation>
 <translation id="2297290224191497273">Mavjud Brave profiliga almashilsinmi?</translation>
 <translation id="3412460710772753638">Bu qurilmada Parollar menejeriga</translation>
+<translation id="172368702860945706">Brave yangilanishi kerak</translation>
 <translation id="5079573433701109938"><ph name="DEVICE"/> qurilmasidagi bukmarklar va boshqa maʼlumotlaringizni olish uchun Brave hisobiga kiring</translation>
 <translation id="3438772217992559640">Bu varaqda rasmli qidiruv bilan qidirish</translation>
 <translation id="2491221873705777076">Telefonda Brave orqali Saytlarni kuchaytirilgan rejimda xavfsiz kezish imkoniyatini kengaytiring</translation>
@@ -364,6 +367,7 @@
 <translation id="4877750182157975795">Brave bilan <ph name="DEVICE_TYPE"/> qurilmangizda barcha sevimli Brave xizmatlaringizga kiring</translation>
 <translation id="1204184037023366446">Brave qoʻllaringiz holatini kuzatishi uchun ruxsat olmagan</translation>
 <translation id="5406591571925937375">Yaqinda ochmagansiz. Brave olib tashladi: <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/>, <ph name="PERMISSION_3"/></translation>
+<translation id="3576895950897485019">Brave hisobiga kirish</translation>
 <translation id="5174969993834422967">Odatda bildirishnomalarni bloklaysiz. Ularni olish uchun manzillar qatoridan yuqori oʻng burchakdagi bildirishnoma belgisini bosing.</translation>
 <translation id="5174983315706567306">Diskdagi joy yetarli emas.</translation>
 <translation id="8157129267754368853">Brave hisobi uchun qayta autentifikatsiya kerak</translation>
@@ -372,6 +376,7 @@
 <translation id="5234764350956374838">Yopish</translation>
 <translation id="7690383309583926074">Parollarni istalgan joyda saqlash uchun Brave ilovasini yuklab oling</translation>
 <translation id="8586264863973514035">O‘zgarishlarni tatbi qilish uchun Brave qayta ishga tushirilishi zarur</translation>
+<translation id="8127050479140582768">Bu varaqni boshqa qurilmaga yuborish uchun har ikki qurilmada Brave hisobiga kiring</translation>
 <translation id="5286907366254680517">Aniqlandi</translation>
 <translation id="7264453786974905915">Brave ilovasini yuklab olish</translation>
 <translation id="7230006500876504868">Brave orqali qidirish</translation>
@@ -735,6 +740,7 @@ Brave sozlamalaringizni qaytadan tiklay olmadi.</translation>
 <translation id="5128665650717824082">Brave for Testing asosiy brauzer boʻla olmaydi.</translation>
 <translation id="3053208669360972929">Istalgan joydan Brave orqali qidiring</translation>
 <translation id="2433912322225810055">Bundan tashqari kengaytma Brave boshlash sahifasini va omniboksdagi so‘rovlar uchun foydalaniladigan birlamchi qidiruv tizimini o‘zgartirdi.</translation>
+<translation id="8789425457808164956">Bu varaqni boshqa qurilmaga yuborish uchun bu yerdan Brave hisobiga kiring</translation>
 <translation id="4100716194836114130">Bu sizning shaxsiy Brave brauzeringiz</translation>
 <translation id="8712637175834984815">Tushunarli</translation>
 <translation id="1419543648228375718">Brave hisobiga kirasizmi?</translation>
