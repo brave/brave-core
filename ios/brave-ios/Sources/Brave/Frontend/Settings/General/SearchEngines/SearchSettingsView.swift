@@ -301,30 +301,18 @@ private struct SearchEnginePicker: View {
   @Binding var selection: SearchEngine.ID?
 
   var body: some View {
-    Menu {
-      Picker(title, selection: $selection) {
-        ForEach(searchEngines) { engine in
-          Text(engine.shortName)
-            .tag(Optional(engine.id))
-        }
+    Picker(title, selection: $selection) {
+      ForEach(searchEngines.filter(\.isPrepopulated)) { engine in
+        Text(engine.shortName)
+          .tag(Optional(engine.id))
       }
-    } label: {
-      HStack(spacing: 8) {
-        Text(title)
-          .foregroundStyle(Color(braveSystemName: .textPrimary))
-        Spacer(minLength: 8)
-        if let engine = searchEngines.first(where: { $0.id == selection }) {
-          SearchEngineIcon(engine: engine)
-          Text(engine.shortName)
-            .foregroundStyle(Color(braveSystemName: .textSecondary))
-        }
-        Image(systemName: "chevron.up.chevron.down")
-          .font(.footnote.weight(.semibold))
-          .foregroundStyle(Color(braveSystemName: .iconSecondary))
+      Divider()
+      ForEach(searchEngines.filter { !$0.isPrepopulated }) { engine in
+        Text(engine.shortName)
+          .tag(Optional(engine.id))
       }
-      .frame(maxWidth: .infinity, alignment: .leading)
-      .fixedSize(horizontal: false, vertical: true)
     }
+    .tint(Color(braveSystemName: .textInteractive))
   }
 }
 

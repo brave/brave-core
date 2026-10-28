@@ -76,7 +76,7 @@ struct CustomSearchEngineForm: View {
         Text(Strings.title)
       }
       Section {
-        TextField(Strings.URL, text: $query, axis: .vertical)
+        TextField(Strings.URL, value: $query, format: CustomEngineURLFormatStyle())
           .keyboardType(.URL)
           .textInputAutocapitalization(.never)
           .autocorrectionDisabled()
@@ -91,13 +91,27 @@ struct CustomSearchEngineForm: View {
     .navigationBarTitleDisplayMode(.inline)
     .toolbar {
       ToolbarItem(placement: .cancellationAction) {
-        Button(Strings.cancelButtonTitle) {
-          dismiss()
+        if #available(iOS 26.0, *) {
+          Button(role: .cancel) {
+            dismiss()
+          }
+        } else {
+          Button(Strings.cancelButtonTitle) {
+            dismiss()
+          }
         }
       }
       ToolbarItem(placement: .confirmationAction) {
-        Button(Strings.saveButtonTitle) {
-          save()
+        Group {
+          if #available(iOS 26.0, *) {
+            Button(role: .confirm) {
+              save()
+            }
+          } else {
+            Button(Strings.saveButtonTitle) {
+              save()
+            }
+          }
         }
         .disabled(trimmedTitle.isEmpty || trimmedQuery.isEmpty)
       }
@@ -187,5 +201,21 @@ struct CustomSearchEngineForm: View {
       viewModel.editSearchEngine(engine, shortName: title, url: template)
     }
     dismiss()
+  }
+}
+
+private struct CustomEngineURLFormatStyle: ParseableFormatStyle {
+  func format(_ value: String) -> String {
+    return value.withSecureUrlScheme
+  }
+
+  var parseStrategy: Parse {
+    Parse()
+  }
+
+  struct Parse: ParseStrategy {
+    func parse(_ value: String) throws -> String {
+      return value.withSecureUrlScheme
+    }
   }
 }
