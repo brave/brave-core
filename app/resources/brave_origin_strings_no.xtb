@@ -20,6 +20,7 @@
 <translation id="8541922081612557424">Om Brave</translation>
 <translation id="987734326276404793">Få varsler om prissporing med Brave på telefonen</translation>
 <translation id="1203500561924088507">Installasjonen er fullført. Start nettleseren på nytt før du tar i bruk <ph name="BUNDLE_NAME"/>.</translation>
+<translation id="1213674046343558619">En <ph name="IMPORTANT_UPDATE"/> venter. For å holde surfingen din trygg oppdateres Brave neste gang du er inaktiv i <ph name="IDLE_DURATION"/>.</translation>
 <translation id="1232234696885483911">Når du åpner bildesøk, sendes sidetittel, nettadresse og innhold, inkludert PDF-filer, automatisk til tjeneren. <ph name="LEARN_MORE"/></translation>
 <translation id="1934377710648094656">Når du er logget på, kan du bruke passord med mer fra Brave-kontoen din i Brave. Gå til «Kontoen din i Brave» for å endre dette.</translation>
 <translation id="583633806828413086">Vis Gemini i Brave på Mac-menylinjen</translation>
@@ -222,6 +223,7 @@
 <translation id="3286538390144397061">Start på nytt nå</translation>
 <translation id="2339258256897053758">API-nøkler for Brave mangler. Noe funksjonalitet i Brave blir deaktivert.</translation>
 <translation id="8926637909431618259">Fortsett å kjøre bakgrunnsprogrammer når Brave er lukket</translation>
+<translation id="8245661393996028021">Brave oppdateres når du er borte</translation>
 <translation id="518125528057094977">Brave advarer deg før all innlasting av nettsteder via usikre tilkoblinger</translation>
 <translation id="8652321858775514885">Du logges av de fleste nettsteder når du lukker alle Brave-vinduer, men du blir ikke logget av Brave-kontoen din hvis du er logget på Brave. For å la nettsteder huske deg, <ph name="SETTINGS_LINK"/>.</translation>
 <translation id="3352986031709923790">øverst til høyre i søkefeltet: høyre <ph name="RIGHT"/> %, øverst <ph name="TOP"/> %</translation>
@@ -230,6 +232,7 @@
 <translation id="2645435784669275700">ChromeOS</translation>
 <translation id="2297290224191497273">Vil du bytte til den eksisterende Brave-profilen?</translation>
 <translation id="3412460710772753638">I Passordlagring på denne enheten</translation>
+<translation id="172368702860945706">Brave vil oppdatere</translation>
 <translation id="5079573433701109938">Logg på Brave for å få bokmerkene med mer fra <ph name="DEVICE"/>.</translation>
 <translation id="3438772217992559640">Søk på denne fanen med Bildesøk</translation>
 <translation id="2491221873705777076">Utvid Safe Browsing med økt beskyttelse med Brave på telefonen</translation>
@@ -367,6 +370,7 @@
 <translation id="4877750182157975795">Bruk alle Brave-favorittene dine med Brave på <ph name="DEVICE_TYPE"/></translation>
 <translation id="1204184037023366446">Brave trenger tillatelse til å spore hendene dine</translation>
 <translation id="5406591571925937375">Du har ikke vært her i det siste. Brave har fjernet <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> og <ph name="PERMISSION_3"/>.</translation>
+<translation id="3576895950897485019">Logg på Brave</translation>
 <translation id="5174969993834422967">Du blokkerer vanligvis varsler. For å la dette nettstedet sende deg varsler, klikk på varselikonet i høyre hjørne av adressefeltet.</translation>
 <translation id="5174983315706567306">Det er for lite diskplass.</translation>
 <translation id="8157129267754368853">Brave-kontoen krever ny autentisering</translation>
@@ -375,6 +379,7 @@
 <translation id="5234764350956374838">Lukk</translation>
 <translation id="7690383309583926074">Skaff deg Brave-appen for å lagre passord uansett hvor du er</translation>
 <translation id="8586264863973514035">For å bruke endringene dine må du starte Brave på nytt</translation>
+<translation id="8127050479140582768">For å sende denne fanen til en annen enhet, logg på Brave på begge enhetene</translation>
 <translation id="5286907366254680517">Registrert</translation>
 <translation id="7264453786974905915">Skaff deg Brave-appen</translation>
 <translation id="7230006500876504868">Søk med Brave</translation>
@@ -738,6 +743,7 @@ Brave kan ikke gjenopprette innstillingen dine.</translation>
 <translation id="5128665650717824082">Brave for testing kan ikke brukes som standardnettleser.</translation>
 <translation id="3053208669360972929">Søk med Brave fra hvor som helst</translation>
 <translation id="2433912322225810055">Den styrer også hvilken side som vises når du starter Brave eller søker fra multifunksjonsfeltet.</translation>
+<translation id="8789425457808164956">For å sende denne fanen til en annen enhet, logg på Brave der</translation>
 <translation id="4100716194836114130">Dette er din Brave</translation>
 <translation id="8712637175834984815">Skjønner</translation>
 <translation id="1419543648228375718">Vil du logge på Brave?</translation>

@@ -20,6 +20,7 @@
 <translation id="8541922081612557424">เกี่ยวกับ Brave</translation>
 <translation id="987734326276404793">รับการแจ้งเตือนการติดตามราคาด้วย Brave ในโทรศัพท์</translation>
 <translation id="1203500561924088507">ขอขอบคุณที่ติดตั้ง คุณต้องรีสตาร์ทเบราว์เซอร์ก่อนใช้ <ph name="BUNDLE_NAME"/></translation>
+<translation id="1213674046343558619">มี<ph name="IMPORTANT_UPDATE"/>รอดำเนินการอยู่ Brave จะอัปเดตในครั้งถัดไปที่คุณไม่ได้ใช้งานเป็นเวลา <ph name="IDLE_DURATION"/> เพื่อให้การท่องเว็บของคุณปลอดภัย</translation>
 <translation id="1232234696885483911">เมื่อคุณเปิดการค้นหารูปภาพ ระบบจะส่งชื่อหน้า, URL และเนื้อหา รวมถึง PDF ไปยังเซิร์ฟเวอร์โดยอัตโนมัติ <ph name="LEARN_MORE"/></translation>
 <translation id="1934377710648094656">เมื่อลงชื่อเข้าใช้อยู่ คุณจะใช้รหัสผ่านและข้อมูลอื่นๆ จากบัญชี Brave ใน Brave ได้ หากต้องการเปลี่ยน ให้ไปที่ "บัญชีของคุณใน Brave"</translation>
 <translation id="583633806828413086">แสดง Gemini ใน Brave ในแถบเมนูของ Mac</translation>
@@ -221,6 +222,7 @@
 <translation id="3286538390144397061">รีสตาร์ทเดี๋ยวนี้</translation>
 <translation id="2339258256897053758">คีย์ API ของ Brave หายไป การทำงานบางอย่างของ Brave จะถูกปิดใช้งาน</translation>
 <translation id="8926637909431618259">เรียกใช้แอปพลิเคชันพื้นหลังต่อไปเมื่อปิด Brave</translation>
+<translation id="8245661393996028021">Brave จะอัปเดตเมื่อไม่มีการใช้งาน</translation>
 <translation id="518125528057094977">Brave จะแจ้งเตือนคุณก่อนโหลดเว็บไซต์โดยใช้การเชื่อมต่อที่ไม่ปลอดภัย</translation>
 <translation id="8652321858775514885">คุณจะออกจากระบบของเว็บไซต์ส่วนใหญ่เมื่อปิดหน้าต่าง Brave ทั้งหมด ยกเว้นบัญชี Brave ที่ลงชื่อเข้าใช้ Brave หากต้องการให้เว็บไซต์จดจำคุณ ให้<ph name="SETTINGS_LINK"/></translation>
 <translation id="3352986031709923790">มุมขวาบนของพื้นที่การค้นหา: ขวา <ph name="RIGHT"/>% บน <ph name="TOP"/>%</translation>
@@ -229,6 +231,7 @@
 <translation id="2645435784669275700">Chrome OS</translation>
 <translation id="2297290224191497273">เปลี่ยนไปใช้โปรไฟล์ Brave ที่มีอยู่ไหม</translation>
 <translation id="3412460710772753638">ในเครื่องมือจัดการรหัสผ่านบนอุปกรณ์นี้</translation>
+<translation id="172368702860945706">Brave ต้องการอัปเดต</translation>
 <translation id="5079573433701109938">ลงชื่อเข้าใช้ Brave เพื่อเข้าถึงบุ๊กมาร์กและข้อมูลอื่นๆ จาก <ph name="DEVICE"/></translation>
 <translation id="3438772217992559640">ค้นหาแท็บนี้ด้วยฟีเจอร์ค้นหารูปภาพ</translation>
 <translation id="2491221873705777076">ขยายการใช้งาน Safe Browsing พร้อมการปกป้องที่ดียิ่งขึ้นด้วย Brave ในโทรศัพท์</translation>
@@ -366,6 +369,7 @@
 <translation id="4877750182157975795">เข้าถึงแอป Brave โปรดทั้งหมดด้วย Brave ใน <ph name="DEVICE_TYPE"/></translation>
 <translation id="1204184037023366446">Brave ต้องการสิทธิ์ในการติดตามการเคลื่อนไหวของมือ</translation>
 <translation id="5406591571925937375">คุณไม่ได้เข้าชมเมื่อเร็วๆ นี้ Brave นำสิทธิ์เข้าถึง<ph name="PERMISSION_1"/> <ph name="PERMISSION_2"/> และ<ph name="PERMISSION_3"/>ออกแล้ว</translation>
+<translation id="3576895950897485019">ลงชื่อเข้าใช้ Brave</translation>
 <translation id="5174969993834422967">คุณมักจะบล็อกการแจ้งเตือน หากต้องการให้เว็บไซต์ส่งการแจ้งเตือน ให้คลิกไอคอนการแจ้งเตือนที่มุมขวาของแถบตําแหน่ง</translation>
 <translation id="5174983315706567306">มีพื้นที่ในดิสก์ไม่เพียงพอ</translation>
 <translation id="8157129267754368853">บัญชี Brave ต้องมีการตรวจสอบสิทธิ์อีกครั้ง</translation>
@@ -374,6 +378,7 @@
 <translation id="5234764350956374838">ปิด</translation>
 <translation id="7690383309583926074">ดาวน์โหลดแอป Brave เพื่อบันทึกรหัสผ่านได้ทุกที่ทุกเวลา</translation>
 <translation id="8586264863973514035">เปิด Brave ขึ้นมาใหม่เพื่อให้การเปลี่ยนแปลงมีผล</translation>
+<translation id="8127050479140582768">หากต้องการส่งแท็บนี้ไปยังอุปกรณ์อื่น ให้ลงชื่อเข้าใช้ Brave ในอุปกรณ์ทั้ง 2 เครื่อง</translation>
 <translation id="5286907366254680517">ตรวจพบ</translation>
 <translation id="7264453786974905915">ดาวน์โหลดแอป Brave</translation>
 <translation id="7230006500876504868">ค้นหาด้วย Brave</translation>
@@ -737,6 +742,7 @@ Brave ไม่สามารถกู้คืนการตั้งค่�
 <translation id="5128665650717824082">ไม่สามารถตั้ง Brave สำหรับการทดสอบเป็นเบราว์เซอร์เริ่มต้นได้</translation>
 <translation id="3053208669360972929">ค้นหาด้วย Brave ได้จากทุกที่</translation>
 <translation id="2433912322225810055">อีกทั้งยังควบคุมหน้าที่จะแสดงเมื่อคุณเปิด Brave หรือทำการค้นหาจากแถบอเนกประสงค์ด้วย</translation>
+<translation id="8789425457808164956">หากต้องการส่งแท็บนี้ไปยังอุปกรณ์อื่น ให้ลงชื่อเข้าใช้ Brave ในอุปกรณ์นั้น</translation>
 <translation id="4100716194836114130">นี่คือ Brave ของคุณ</translation>
 <translation id="8712637175834984815">รับทราบ</translation>
 <translation id="1419543648228375718">ลงชื่อเข้าใช้ Brave ไหม</translation>
