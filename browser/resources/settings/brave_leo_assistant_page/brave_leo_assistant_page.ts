@@ -36,7 +36,7 @@ class BraveLeoAssistantPageElement extends BraveLeoAssistantPageBase {
 
     static get properties() {
       return {
-        leoAssistantShowOnToolbarPref_: {
+        leoAssistantShowOnToolbar_: {
           type: Boolean,
           value: false,
           notify: true,
@@ -74,7 +74,7 @@ class BraveLeoAssistantPageElement extends BraveLeoAssistantPageBase {
     declare isHistoryFeatureEnabled_: boolean
     declare isTabOrganizationFeatureEnabled_: boolean
     declare isHistoryEmbeddingsFeatureEnabled_: boolean
-    declare leoAssistantShowOnToolbarPref_: boolean
+    declare leoAssistantShowOnToolbar_: boolean
     premiumStatus_: PremiumStatus = PremiumStatus.Unknown
     browserProxy_: BraveLeoAssistantBrowserProxy =
       BraveLeoAssistantBrowserProxyImpl.getInstance()
@@ -104,7 +104,7 @@ class BraveLeoAssistantPageElement extends BraveLeoAssistantPageBase {
 
       this.addWebUiListener('settings-brave-leo-assistant-changed',
       (isLeoVisible: boolean) => {
-        this.leoAssistantShowOnToolbarPref_ = isLeoVisible
+        this.leoAssistantShowOnToolbar_ = isLeoVisible
       })
 
       this.browserProxy_.getSettingsHelper().getManageUrl()
@@ -120,18 +120,9 @@ class BraveLeoAssistantPageElement extends BraveLeoAssistantPageBase {
       })
     }
 
-    itemPref_(enabled: boolean) {
-      return {
-        key: '',
-        type: chrome.settingsPrivate.PrefType.BOOLEAN,
-        value: enabled,
-      }
-    }
-
-
     private updateShowLeoAssistantIcon_() {
       this.browserProxy_.getLeoIconVisibility().then((result) => {
-        this.leoAssistantShowOnToolbarPref_ = result
+        this.leoAssistantShowOnToolbar_ = result
       })
     }
 

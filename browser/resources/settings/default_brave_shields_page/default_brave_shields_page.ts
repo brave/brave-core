@@ -146,49 +146,29 @@ class BraveShieldsPage extends BraveShieldsPageBase {
         type: Boolean,
         value: loadTimeData.getBoolean('isForgetFirstPartyStorageFeatureEnabled')
       },
-      noScriptControlType_: {
-        type: Object,
-        value: {
-          key: '',
-          type: chrome.settingsPrivate.PrefType.BOOLEAN,
-          value: false,
-        }
+      isNoScriptEnabled_: {
+        type: Boolean,
+        value: false,
       },
       isForgetFirstPartyStorageEnabled_: {
-        type: Object,
-        value: {
-          key: '',
-          type: chrome.settingsPrivate.PrefType.BOOLEAN,
-          value: false,
-        }
+        type: Boolean,
+        value: false,
       },
       isFingerprintingEnabled_: {
-        type: Object,
-        value: {
-          key: '',
-          type: chrome.settingsPrivate.PrefType.BOOLEAN,
-          value: true,
-        }
+        type: Boolean,
+        value: true,
       },
       isContactInfoSaveFlagEnabled_: {
-        type: Object,
-        value: {
-          key: '',
-          type: chrome.settingsPrivate.PrefType.BOOLEAN,
-          value: true,
-        }
+        type: Boolean,
+        value: true,
       },
       isBlockElementFeatureEnabled_: {
         type: Boolean,
         value: loadTimeData.getBoolean('isBlockElementFeatureEnabled')
       },
       isAllowElementBlockerInPrivateModeEnabled_: {
-        type: Object,
-        value: {
-          key: '',
-          type: chrome.settingsPrivate.PrefType.BOOLEAN,
-          value: true,
-        }
+        type: Boolean,
+        value: true,
       }
     }
   }
@@ -199,14 +179,11 @@ class BraveShieldsPage extends BraveShieldsPageBase {
   private declare cookieControlTypes_: ControlType[]
   private declare cookieControlType_: string
   private declare httpsUpgradeControlType_: string
-  private declare noScriptControlType_: chrome.settingsPrivate.PrefObject<boolean>
-  private declare isForgetFirstPartyStorageEnabled_: chrome.settingsPrivate.
-    PrefObject<boolean>
-  private declare isFingerprintingEnabled_: chrome.settingsPrivate.PrefObject<boolean>
-  private declare isContactInfoSaveFlagEnabled_: chrome.settingsPrivate.
-    PrefObject<boolean>
-  private declare isAllowElementBlockerInPrivateModeEnabled_: chrome.
-    settingsPrivate.PrefObject<boolean>
+  private declare isNoScriptEnabled_: boolean
+  private declare isForgetFirstPartyStorageEnabled_: boolean
+  private declare isFingerprintingEnabled_: boolean
+  private declare isContactInfoSaveFlagEnabled_: boolean
+  private declare isAllowElementBlockerInPrivateModeEnabled_: boolean
   private declare fingerprintingControlTypes_: ControlType[]
   private declare fingerprintingControlType_: string
   private declare httpsUpgradeControlTypes_: ControlType[]
@@ -281,11 +258,7 @@ class BraveShieldsPage extends BraveShieldsPageBase {
 
     this.browserProxy_.getFingerprintingControlType().then(value => {
       this.fingerprintingControlType_ = value
-      this.isFingerprintingEnabled_ = {
-        key: '',
-        type: chrome.settingsPrivate.PrefType.BOOLEAN,
-        value: value !== 'allow',
-      }
+      this.isFingerprintingEnabled_ = value !== 'allow'
     })
 
     this.browserProxy_.getHttpsUpgradeControlType().then(value => {
@@ -293,35 +266,19 @@ class BraveShieldsPage extends BraveShieldsPageBase {
     })
 
     this.browserProxy_.getNoScriptControlType().then(value => {
-      this.noScriptControlType_ = {
-        key: '',
-        type: chrome.settingsPrivate.PrefType.BOOLEAN,
-        value: value,
-      }
+      this.isNoScriptEnabled_ = value
     })
 
     this.browserProxy_.getForgetFirstPartyStorageEnabled().then(value => {
-      this.isForgetFirstPartyStorageEnabled_ = {
-        key: '',
-        type: chrome.settingsPrivate.PrefType.BOOLEAN,
-        value: value,
-      }
+      this.isForgetFirstPartyStorageEnabled_ = value
     })
     this.browserProxy_.getContactInfo().then(value => {
-      this.isContactInfoSaveFlagEnabled_ = {
-        key: '',
-        type: chrome.settingsPrivate.PrefType.BOOLEAN,
-        value: value.contactInfoSaveFlag,
-      }
+      this.isContactInfoSaveFlagEnabled_ = value.contactInfoSaveFlag
     })
 
     this.browserProxy_.getAllowElementBlockerInPrivateModeEnabled()
       .then(value => {
-        this.isAllowElementBlockerInPrivateModeEnabled_ = {
-          key: '',
-          type: chrome.settingsPrivate.PrefType.BOOLEAN,
-          value: value,
-        }
+        this.isAllowElementBlockerInPrivateModeEnabled_ = value
     })
   }
 

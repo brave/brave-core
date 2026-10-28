@@ -6,7 +6,7 @@
 import './privacy_page_test-chromium.js'
 
 import {ClearBrowsingDataBrowserProxyImpl} from 'chrome://settings/lazy_load.js'
-import type {SettingsPrivacyPageElement} from 'chrome://settings/settings.js'
+import type {SettingsPrivacyPageElement, SettingsToggleButtonElement} from 'chrome://settings/settings.js'
 import {
   loadTimeData,
   MetricsBrowserProxyImpl,
@@ -115,5 +115,38 @@ suite('BravePrivacyPage', () => {
     assertTrue(!!row)
     assertTrue(row.hidden)
     assertFalse(isChildVisible(page, '#privacyGuideLinkRow'))
+  })
+
+  // The pref is in local state, so the toggle isn't bound by `pref-key`.
+  test('the on-device speech model toggle reflects and saves its pref',
+       async function() {
+    const key = 'brave.local_ai.on_device_speech_model_enabled'
+    loadTimeData.overrideValues({isOnDeviceSpeechModelAvailable: true})
+
+    document.body.replaceChildren()
+    const options =
+        document.createElement('settings-brave-personalization-options')
+    document.body.appendChild(options)
+    await microtasksFinished()
+
+    const toggle = options.shadowRoot!.querySelector<
+        SettingsToggleButtonElement>('#onDeviceSpeechModelEnabled')
+    // Only built with local AI, which also allowlists the pref.
+    if (!toggle) {
+      this.skip()
+    }
+    await chrome.settingsPrivate.setPref(key, false)
+    await microtasksFinished()
+    assertFalse(toggle.checked)
+
+    toggle.click()
+    await microtasksFinished()
+    assertTrue(toggle.checked)
+    assertTrue((await chrome.settingsPrivate.getPref(key)).value as boolean)
+
+    // A change made elsewhere is reflected.
+    await chrome.settingsPrivate.setPref(key, false)
+    await microtasksFinished()
+    assertFalse(toggle.checked)
   })
 })
