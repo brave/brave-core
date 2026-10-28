@@ -1,16 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/app/ChromeActivity.java b/chrome/android/java/src/org/chromium/chrome/browser/app/ChromeActivity.java
-index 03e7a82d7c6020298838132977130d7dd655bd5d..a38ad0e6bc9975e888bd707a6032a5aa1a5cbad5 100644
+index 03e7a82d7c6020298838132977130d7dd655bd5d..d88409a2a41ee98402c17033253c7a9e47be2c7c 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/app/ChromeActivity.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/app/ChromeActivity.java
-@@ -4,6 +4,7 @@
- 
- package org.chromium.chrome.browser.app;
- 
-+import org.chromium.chrome.browser.screenshot_protection.BraveScreenshotProtectionController;
- import static org.chromium.build.NullUtil.assertNonNull;
- import static org.chromium.build.NullUtil.assumeNonNull;
- 
-@@ -745,7 +746,7 @@ public abstract class ChromeActivity extends AsyncInitializationActivity
+@@ -745,7 +745,7 @@ public abstract class ChromeActivity extends AsyncInitializationActivity
              var modalDialogManager = getModalDialogManager();
              assert modalDialogManager != null;
              SnackbarManager snackbarManager =
@@ -19,16 +11,7 @@ index 03e7a82d7c6020298838132977130d7dd655bd5d..a38ad0e6bc9975e888bd707a6032a5aa
                              this,
                              mBottomContainer,
                              windowAndroid,
-@@ -2387,7 +2388,7 @@ public abstract class ChromeActivity extends AsyncInitializationActivity
- 
-         if (ChromeFeatureList.sEnableAndroidEnterpriseScreenshotProtection.isEnabled()) {
-             mScreenshotProtectionControllerSupplier.set(
--                    new ScreenshotProtectionController(
-+                    new BraveScreenshotProtectionController(
-                             this,
-                             mActivityTabProvider.asObservable(),
-                             getTabModelSelector(),
-@@ -3691,6 +3692,7 @@ public abstract class ChromeActivity extends AsyncInitializationActivity
+@@ -3691,6 +3691,7 @@ public abstract class ChromeActivity extends AsyncInitializationActivity
       */
      public void onExitVr() {}
  
