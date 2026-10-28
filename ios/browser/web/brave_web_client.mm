@@ -137,10 +137,6 @@ std::vector<web::JavaScriptFeature*> BraveWebClient::GetJavaScriptFeatures(
   features.push_back(
       security_interstitials::IOSSecurityInterstitialJavaScriptFeature::
           GetInstance());
-  // Registered for every profile. `CallJavaScriptFunction` aborts when the
-  // instance it is called on was not added here.
-  features.push_back(
-      MediaBackgroundingJavaScriptFeature::FromBrowserState(browser_state));
   if (base::FeatureList::IsEnabled(
           brave::features::kUseChromiumWebViewsAutofill)) {
     // Order matters for these scripts, `PasswordManagerJavaScriptFeature` must
@@ -189,6 +185,8 @@ std::vector<web::JavaScriptFeature*> BraveWebClient::GetJavaScriptFeatures(
     if (!gpc_handled_by_webkit) {
       features.push_back(GPCJavaScriptFeature::FromBrowserState(browser_state));
     }
+    features.push_back(
+        MediaBackgroundingJavaScriptFeature::FromBrowserState(browser_state));
     features.push_back(NightModeJavaScriptFeature::GetInstance());
     features.push_back(PageMetadataJavaScriptFeature::GetInstance());
 #if BUILDFLAG(ENABLE_PLAYLIST)
