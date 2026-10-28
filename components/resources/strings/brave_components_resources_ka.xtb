@@ -433,7 +433,6 @@
 <translation id="412480955826088549">კომპონენტის გადმოტვირთვა...</translation>
 <translation id="4894106830958548828">გასაგებია</translation>
 <translation id="2729085694451916573">ტესტის სტრიქონი <ph name="PART_ONE"/>ადგილმდებარეობის გამართლებებისთვის<ph name="PART_ONE_END"/>. <ph name="PART_TWO"/>გაიგეთ მეტი<ph name="PART_TWO_END"/></translation>
-<translation id="6705666103672654256">თქვენი ძიებები და გვერდის შიგთავსი მუშავდება ამ მოწყობილობაზე. Brave-ისთვის არაფერი იგზავნება და ადამიანი მიმომხილველი ვერაფერს ხედავს. ეს არის ექსპერიმენტული ფუნქცია და ყოველთვის სწორად ვერ მუშაობს.</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="4492298165410552103">გააქტიუროთ Unstoppable Domains-ის მხარდაჭერა Brave-ში?</translation>
 <translation id="5015092481905019948">Brave გამოიყენებს <ph name="PROVIDER_NAME"/> ძიების პროცესისთვის <ph name="DOMAIN_LIST"/> დომენების სახელების გადმოცემისთვის, რომელიც არის <ph name="DOMAIN_PROVIDER_NAME"/>. Brave ფარავს თქვენს IP მისამართს. თუ ამის გააქტიურება, <ph name="PROVIDER_NAME"/> ნახავს, რომ ვინმეს სურს დაეტოვაა ამ დომენებს, მაგრამ მეტი არაფერს. იხილეთ <ph name="PROVIDER_NAME"/>-ის <ph name="BEGIN_PROVIDER_TOU_LINK"/>გამოყენების პირობები<ph name="END_PROVIDER_TOU_LINK"/> და <ph name="BEGIN_PROVIDER_PRIVACY_LINK"/>კონფიდენციალობის პოლიტიკა<ph name="END_PROVIDER_PRIVACY_LINK"/>.</translation>
@@ -805,8 +804,6 @@
 <translation id="223536150967420869">ყიდვა</translation>
 <translation id="538450413584738399">შეცვლა</translation>
 <translation id="6810855196544084176">ხიდი</translation>
-<translation id="3488255243387417752">გაყიდვა</translation>
-<translation id="5223034545851554347">ამ ანგარიშზე <ph name="TOKEN_SYMBOL"/> რაოდენობა საკმარისი არ არის.</translation>
 <translation id="6585419509320235293">აირჩიეთ სასურველი აქტივი გადასაზიდად</translation>
 <translation id="1018742998826182079">აირჩიეთ სასურველი აქტივი გასაცვლელად</translation>
 <translation id="2791691551852500015">მიმღების მისამართის შეყვანა</translation>
@@ -1323,7 +1320,6 @@
 <translation id="4312994183947987913">ყიდვა/დეპოზიტი</translation>
 <translation id="5133421763709317473">აქტივები არ შეესაბამება ძიებას ან ფილტრს</translation>
 <translation id="6423985584914773314">არ არის ვალიდური FIL მისამართი</translation>
-<translation id="6153197326949684688">გაყიდეთ <ph name="OFFRAMP_PROVIDER"/>-ით</translation>
 <translation id="5795821518596541838">ტრანზაქციის პარტნიორი</translation>
 <translation id="1916136859742693273">Brave Wallet იყენებს Meld.io-ს, რათა დაგეხმაროთ თქვენი რეგიონის სხვადასხვა კრიპტო პროვაიდერების მიკროველთა მართვისა და ასხივებისთვის. ჩვენ გავაზიარებთ ინფორმაციას Meld.io-სთან რომ დავასრულოთ ტრანზაქცია, ინედან თქვენი საფულის მისამართი და ქვეყნის კოდი. მეტი ინფორმაციისთვის გთხოვთ წაიკითხოთ Meld-ის გამოყენების პირობები.</translation>
 <translation id="245827814248186739">მე წავიკითხე და ვეთანხმები <ph name="LINK_BEFORE"/>Meld-ის გამოყენების პირობებს<ph name="LINK_AFTER"/></translation>
@@ -1636,7 +1632,7 @@
 <translation id="6646456430109279404">ოცდამეორე</translation>
 <translation id="1961743941324393172">ოცდამესამე</translation>
 <translation id="9079035825546416393">ოცდამეოთხე</translation>
-<translation id="1558531209852594808">შეტყობინებაში აღმოჩენილია non-ASCII სიმბოლოები!</translation>
+<translation id="6980520267116175375">აღმოჩენილია მოულოდნელი სიმბოლოები</translation>
 <translation id="442709594176931966">ორიგინალური გზავნილის ნახვა</translation>
 <translation id="2239252396088484499">დააკვირდით გზავნილს ASCII კოდირებით</translation>
 <translation id="2894654529758326923">ინფორმაცია</translation>
@@ -1886,6 +1882,14 @@
 <translation id="6700561332544287722">მოითხოვე განბლოკვა შემდეგ ჯერზე</translation>
 <translation id="5605360570977617291">დავმალოთ <ph name="CARD_NAME"/> მთავარი გვერდიდან?</translation>
 <translation id="2721464457853369512">თქვენი <ph name="CARD_NAME"/> ბალანსი უცვლელია. ეს მხოლოდ მალავს ბარათს მთავარი გვერდიდან. შეგიძლიათ კვლავ აჩვენოთ ის ნებისმიერ დროს პარამეტრებში, Wallet-ის ქვეშ.</translation>
+<translation id="1543259266592091784">სახსრების დამატება</translation>
+<translation id="6202621179510403111">ახალი ბარათი</translation>
+<translation id="2366365638711338487">შემოსავალი <ph name="DATE_BEGIN"/>(<ph name="DATE"/>)<ph name="DATE_END"/></translation>
+<translation id="4938547503015386493">პროცენტი + <ph name="AMOUNT"/> BAT ქეშბექი</translation>
+<translation id="5124185664922725208">ხარჯვა</translation>
+<translation id="1591562245178063882">ამ თვეში</translation>
+<translation id="2781977263564899470">ფიზიკური ბარათის მიღება</translation>
+<translation id="3388543273143324626">გამოყენება მაღაზიებსა და ბანკომატებში</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
 <translation id="3745016858329272300">ზოგადი ინფორმაცია</translation>
 <translation id="4045404575593562245">Tor-ის კონტროლის ღონისძიებანი</translation>
@@ -2220,12 +2224,12 @@
 <translation id="7905602379229309187">ინფრასტრუქტურას აქვს გადატვირთვა. გთხოვთ სცადოთ ისევ მოგვიანებით.</translation>
 <translation id="8151638057146502721">კონფიგურაცია</translation>
 <translation id="999273441077650169">მოდელი მყისიერად იცვლება სამუშაოს საუკეთესოდ შესასრულებლად. <ph name="LINK_BEFORE"/> გაიგეთ მეტი <ph name="LINK_AFTER"/></translation>
-<translation id="3852808100039989429">გამარჯობა, მე ვარ ლეო. მე ვარ Brave-ის AI ასისტენტი. ჩემი ძალა Qwen VL 30B-ზეა, მოდელი, რომელიც შექმნილია Alibaba Cloud-ის მიერ, რომ იყოს პერფორმანტული და მრავალი გამოყენების შემთხვევასთან შესაფერისი. Qwen Brave-ს მიერ მასპინძლობს ჩვენს საკუთარ დაცულ ინფრასტრუქტურაში.<ph name="LINK_BEFORE"/>გაიგეთ მეტი<ph name="LINK_AFTER"/></translation>
+<translation id="8218534413919828549">გამარჯობა, მე ვარ ლეო. მე ვარ Brave-ის AI ასისტენტი. ჩემი ძალა Qwen 3.6 35B-ზეა, მოდელი, რომელიც შექმნილია Alibaba Cloud-ის მიერ, რომ იყოს პერფორმანტული და მრავალი გამოყენების შემთხვევასთან შესაფერისი. Qwen Brave-ს მიერ მასპინძლობს ჩვენს საკუთარ დაცულ ინფრასტრუქტურაში.<ph name="LINK_BEFORE"/>გაიგეთ მეტი<ph name="LINK_AFTER"/></translation>
 <translation id="8659225822055186905">გამარჯობა, მე ვარ ლეო. მე ვარ Brave-ის AI ასისტენტი. ჩემი ძალა GLM-5.3 Flash-ზეა, მოდელი, რომელიც შექმნილია Zhipu AI-ს მიერ, რომ იყოს პერფორმანტული და მრავალი გამოყენების შემთხვევებთან შესაფერისი. GLM-5.3 Flash NEAR-ის მიერ მასპინძლობს მათ საკუთარ დაცულ ინფრასტრუქტურაში.<ph name="LINK_BEFORE"/>გაიგეთ მეტი<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">გამარჯობა, მე ლეო ვარ. ვარ Brave-ის ხელოვნური ინტელექტის ასისტენტი. მუშაობს Claude Instant-ზე — მოდელზე, რომელიც Anthropic-ს მიერაა შექმნილი ტექსტებისა და დიალოგების დასამუშავებლად. Claude Instant Brave-ის ინფრასტრუქტურაზე მუშაობს საიმედოდ და უსაფრთხოდ.<ph name="LINK_BEFORE"/>გაიგეთ მეტი<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">გამარჯობა, მე ვარ ლეო. მე ვარ Brave-ის AI ასისტენტი. ჩემი ძალა Claude Sonnet-ზეა, მოდელი, რომელიც შექმნილია Anthropic-ის მიერ, რომ ემსახუროს საუბრის და ტექსტის დამუშავების ამოცანებს. Claude Sonnet Brave-ს მიერ მასპინძლობს ჩვენს საკუთარ დაცულ ინფრასტრუქტურაში.<ph name="LINK_BEFORE"/>გაიგეთ მეტი<ph name="LINK_AFTER"/></translation>
-<translation id="6676306995311143470">გამარჯობა, მე ვარ ლეო. მე ვარ Brave-ის AI ასისტენტი. ჩემი ძალა Grok 4.6-ზეა, xAI-ს უახლესი მსჯელობის მოდელი Amazon Bedrock Mantle-ზე. Grok 4.6 მოემსახურება Brave-ის დაცული AWS ინფრასტრუქტურის მეშვეობით.<ph name="LINK_BEFORE"/>გაიგეთ მეტი<ph name="LINK_AFTER"/></translation>
-<translation id="2394656730986208060">გამარჯობა, მე ვარ ლეო. მე ვარ Brave-ის AI ასისტენტი. ჩემი ძალა GPT 5.6 Luna-ზეა, OpenAI-ს სწრაფი, დაბალ-შეყოვნების მოდელი Amazon Bedrock Mantle-ზე. GPT 5.6 Luna მოემსახურება Brave-ის დაცული AWS ინფრასტრუქტურის მეშვეობით.<ph name="LINK_BEFORE"/>გაიგეთ მეტი<ph name="LINK_AFTER"/></translation>
+<translation id="3934503473603661122">გამარჯობა, მე ვარ ლეო. მე ვარ Brave-ის AI ასისტენტი. ჩემი ძალა Grok 4.7-ზეა, xAI-ს უახლესი მსჯელობის მოდელი Amazon Bedrock-ზე. Grok 4.7 მოემსახურება Brave-ის დაცული AWS ინფრასტრუქტურის მეშვეობით.<ph name="LINK_BEFORE"/>გაიგეთ მეტი<ph name="LINK_AFTER"/></translation>
+<translation id="8983215701788462580">გამარჯობა, მე ვარ ლეო. მე ვარ Brave-ის AI ასისტენტი. ჩემი ძალა GPT Luna-ზეა, OpenAI-ს სწრაფი, დაბალ-შეყოვნების მოდელი Amazon Bedrock-ზე. GPT Luna მოემსახურება Brave-ის დაცული AWS ინფრასტრუქტურის მეშვეობით.<ph name="LINK_BEFORE"/>გაიგეთ მეტი<ph name="LINK_AFTER"/></translation>
 <translation id="5278969721580944810">გამარჯობა, მე ვარ ლეო. მე ვარ Brave-ის AI ასისტენტი. ჩემი ძალა GPT 5.6 Terra-ზეა, OpenAI-ს დაბალანსებული საწარმოო მოდელი Amazon Bedrock Mantle-ზე. GPT 5.6 Terra მოემსახურება Brave-ის დაცული AWS ინფრასტრუქტურის მეშვეობით.<ph name="LINK_BEFORE"/>გაიგეთ მეტი<ph name="LINK_AFTER"/></translation>
 <translation id="5037359072717016032">გამარჯობა, მე ვარ ლეო. მე ვარ Brave-ის AI ასისტენტი. ჩემი ძალა Mistral Large-ზეა, მოდელი, რომელიც შექმნილია Mistral-ის მიერ, რომ იყოს პერფორმანტული და მრავალი გამოყენების შემთხვევასთან შესაფერისი. Mistral Large Brave-ს მიერ მასპინძლობს ჩვენს საკუთარ დაცულ ინფრასტრუქტურაში.<ph name="LINK_BEFORE"/>გაიგეთ მეტი<ph name="LINK_AFTER"/></translation>
 <translation id="5475035333915581972">გამარჯობა, მე ვარ ლეო. მე ვარ Brave-ის AI ასისტენტი. ჩემი ძალა Qwen 3.8 Flash Next-ზეა, მოდელი, რომელიც შექმნილია Alibaba Cloud-ის მიერ, რომ იყოს პერფორმანტული და მრავალი გამოყენების შემთხვევასთან შესაფერისი. Qwen 3.8 Flash Next Brave-ს მიერ მასპინძლობს ჩვენს საკუთარ დაცულ ინფრასტრუქტურაში.<ph name="LINK_BEFORE"/>გაიგეთ მეტი<ph name="LINK_AFTER"/></translation>
@@ -2276,6 +2280,10 @@
 <translation id="3027575440738035995">Leo Premium გთავაზობთ წვდომას ენის მოდელების გაფართოებულ კომპლექტზე კიდევ უფრო დიდი ნიუანსური პასუხის მიღებისათვის. <ph name="LINK_BEFORE"/>გაიგეთ მეტი<ph name="LINK_AFTER"/></translation>
 <translation id="8261506727792406068">წაშლა</translation>
 <translation id="6574153208133461043">ნამდვილად გსურთ ამ მიმოწერის წაშლა? ეს ქმედება დაუბრუნებელი იქნება.</translation>
+<translation id="1020105790073039189">გადაერთოთ მოდელზე, რომელსაც გამოსახულებების წაკითხვა შეუძლია?</translation>
+<translation id="3797128260474242570"><ph name="CURRENT_MODEL"/>-ს არ შეუძლია გამოსახულებების წაკითხვა და თქვენს დანართებს გამოსახულების დამუშავება სჭირდებათ. მათი გასაგზავნად გადაიყვანეთ ეს საუბარი <ph name="VISION_MODEL"/>-ზე. იგი მიიღებს მთელ საუბარს, წინა შეტყობინებების ჩათვლით. ასევე შეგიძლიათ გააუქმოთ და აირჩიოთ სხვა მოდელი, რომელსაც გამოსახულებების წაკითხვა შეუძლია. თუ გაგზავნით გამოსახულებების გარეშე, ლეოს არ შეუძლია დანართების დანახვა.</translation>
+<translation id="830353068401992697">გადართვა და გაგზავნა</translation>
+<translation id="369110003363071587">გაგზავნა გამოსახულებების გარეშე</translation>
 <translation id="7488762544858401571">რედაქტირებულია</translation>
 <translation id="5604254791550001355">გამოასწორეთ კითხვა</translation>
 <translation id="8115786586976830777">დააკოპირეთ კითხვა</translation>
@@ -2430,6 +2438,7 @@
 <translation id="3024277805447899099">გამოსახულების გადახედვა</translation>
 <translation id="6671495933530132209">გამოსახულების კოპირება</translation>
 <translation id="6864459304226931083">გამოსახულების ჩამოტვირთვა</translation>
+<translation id="6323406350879995440">გახსნა ჩანართში</translation>
 <translation id="6332876390231524389">მიმდინარე ჩანართის შიგთავსი</translation>
 <translation id="6397861830483632092">გახსნილი ტაბები…</translation>
 <translation id="802080272588201037">სანიშნები…</translation>
@@ -2484,11 +2493,14 @@
 <translation id="4838375634693651776">კოდის შესრულება sandbox-ში თქვენი მოთხოვნის დასახმარებლად</translation>
 <translation id="6990975553143971265">თქვენი ბრაუზერის ისტორიის ძიება "<ph name="QUERY"/>"-ისთვის</translation>
 <translation id="8302511726757276645">თქვენი ბრაუზერის ისტორიის ძიება</translation>
+<translation id="6727762439034900202">სამუშაო სივრცის შექმნა</translation>
+<translation id="261799307673205052">სამუშაო სივრცე</translation>
 <translation id="8410699755320690690">Brave AI-ს სურს თქვენი დათვალიერების ისტორიის ძიება. ძიება ლოკალურად, თქვენს მოწყობილობაზე მიმდინარეობს, ამიტომ თქვენი სრული ისტორია არსად იგზავნება. Brave AI-ს ამ საუბრის ფარგლებში მხოლოდ დამთხვეული გვერდების სათაურები, URL-ები და ინდექსირებული ტექსტური მონაკვეთები გაეგზავნება.</translation>
 <translation id="4379566111233326721">კოდი:</translation>
 <translation id="3542130965673205258">გამოსვლა:</translation>
 <translation id="6911817209337314910">იქმნება ვარიანტები ასარჩევად</translation>
 <translation id="5382076391290708074">თქვენი ჩანართების გადატანა</translation>
+<translation id="8717463977094156527">ამის დაშვება გააგზავნის თქვენი ყველა ჩანართისა და ჩანართების ჯგუფის **URL**-ს და **სათაურს** Brave AI-სთან, ასევე თქვენი ჩანართების **გვერდის ტექსტის მოკლე ამონარიდებს** სადაც ეს ხელმისაწვდომია თქვენი სემანტიკური ისტორიის ძიების ინდექსიდან, და დაუშვებს Brave AI-ს თქვენი ჩანართების გადაადგილებას. ეს ნებართვა ეხება მხოლოდ ამ საუბარს.</translation>
 <translation id="3862123464576147769">ამის დაშვება გამოიწვევს <ph name="URL_FORMAT_START"/>URL<ph name="URL_FORMAT_END"/> და <ph name="TITLE_FORMAT_START"/>სათაურის<ph name="TITLE_FORMAT_END"/> გაგზავნას ყველა თქვენი ჩანართის და ჩანართის ჯგუფის Brave AI-ში, და ნებას Brave AI-ს მათი გადატანისთვის. ეს ნებართვა გამოიყენება მხოლოდ ამ საუბრისთვის.</translation>
 <translation id="396165714586708444">ღრმა კვლევა</translation>
 <translation id="577747221882855891">ძიება: "<ph name="QUERY"/>"</translation>
@@ -2516,7 +2528,7 @@
 <translation id="7901376755618482277">აჩვენე "ახალი ალიასის" მინიშნება ელფოსტის ველებზე</translation>
 <translation id="6002159997868894136">დააკოპირეთ ზედმეტსახელი</translation>
 <translation id="8105770564756958406">გამოყენებულია <ph name="DOMAINS"/>-ის მიერ;</translation>
-<translation id="5006956315579221642">შექმენით 5 უფასო ელფოსტის ზედმეტსახელი თქვენი ნამდვილი ელფოსტის დასაცავად.</translation>
+<translation id="6776324888261353420">შექმენით <ph name="MAX_ALIASES"/> უფასო ელფოსტის ზედმეტსახელი თქვენი ნამდვილი ელფოსტის დასაცავად.</translation>
 <translation id="9046133327037621173">ახალი ელფოსტის ზედმეტსახელი</translation>
 <translation id="3768606658230902536">შექმენით შემთხვევითი ელფოსტის მისამართი, რომელიც გადაგზავნის შეტყობინებებს თქვენს ინბოქსში და ამავდროულად დაიცავს თქვენს პირად ელფოსტას.</translation>
 <translation id="4452721050684632493">ფსევდონიმების ლიმიტი ამოწურულია</translation>
@@ -2589,7 +2601,7 @@
 <translation id="6851426306697017546">საათის ჩვენება</translation>
 <translation id="4844370919312937270">ძიების ვიჯეტის ჩვენება ახალ ჩანართებში</translation>
 <translation id="5088374130885640159"><ph name="REWARDS_LINK_BEGIN"/>Brave ჯილდოებ<ph name="REWARDS_LINK_END"/>-ის გამოყენებით, თქვენ შეგიძლიათ გამოიმუშავოთ ახალი ჩანართის გვერდის რეკლამების ნახვისას. <ph name="LEARN_MORE_LINK_BEGIN"/>შეიტყვეთ მეტი<ph name="LEARN_MORE_LINK_END"/>.</translation>
-<translation id="4100520468072294616">ახალი ჩანართის გვერდის სარეკლამო გამოსახულებების ჩვენება</translation>
+<translation id="7020410251711260841">დასპონსორებული რეკლამების ჩვენება</translation>
 <translation id="4983925687993168579">სტატისტიკა</translation>
 <translation id="5009354496127441090">ყველაზე ხშირად მონახულებული საიტების გაფართოება</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -2612,6 +2624,7 @@
 <translation id="8814357473522731680">მხარდაჭერილია</translation>
 <translation id="7143207342074048698">მიმდინარეობს დაკავშირება</translation>
 <translation id="1202549130170287307">გათიშვის პროცესშია</translation>
+<translation id="4989542687859782284">მიუწვდომელია</translation>
 <translation id="8941703009412168350">VPN</translation>
 <translation id="6303294677342628402">Shields</translation>
 <translation id="8458987127502506209">Brave-ის დაცვის ჩართვა</translation>
@@ -2800,9 +2813,11 @@
 <translation id="6021669293402055982">Brave VPN: გათიშულია</translation>
 <translation id="3541307549916475335">Brave VPN Panel UI</translation>
 <translation id="2325196879156848326">კავშირის წარუმატებლობა</translation>
+<translation id="6246488334766115273">კავშირი მიუწვდომელია</translation>
 <translation id="745054660363064771">ვერ ხერხდება სერვერთან დაკავშირება</translation>
 <translation id="3936826714240735937">აირჩიეთ სხვა სერვერი</translation>
 <translation id="2606728814652041300"><ph name="PRODUCT_NAME"/>-მა ვერ დააკავშირა <ph name="REGION_NAME"/> სერვერთან. სცადეთ ისევ ან აირჩიეთ სხვა ქვეყანა.</translation>
+<translation id="4872940635040426686"><ph name="PRODUCT_NAME"/> მიუწვდომელია. თუ პრობლემა გრძელდება, გთხოვთ ხელახლა დააინსტალიროთ Brave ან დაუკავშირდეთ ჩვენს ტექნიკური მხარდაჭერის გუნდს.</translation>
 <translation id="1776533911621317363">დაიწყეთ 7-დღიანი უფასო საცდელი პერიოდი</translation>
 <translation id="3357036723290257445">უკვე შეიძინეთ Brave VPN?</translation>
 <translation id="8652175077544655965">პარამეტრების დახურვა</translation>
@@ -2942,11 +2957,13 @@ Brave-ს აქვს დამხმარე სერვისი, რომ
 <translation id="4405566535206792621">თქვენი პაროლის შესაცვლელად, გთხოვთ დაადასტუროთ თქვენი ელფოსტის მისამართი.</translation>
 <translation id="3135333563420939059">თქვენი ელფოსტა დადასტურდა. დააყენეთ ახალი პაროლი თქვენი პაროლის ცვლილების დასასრულებლად.</translation>
 <translation id="4227581348172626540">პაროლის ცვლილების გაუქმება</translation>
-<translation id="808894953321890993">პაროლის შეცვლა</translation>
 <translation id="7967687455715421528">პაროლის შეცვლა ვერ მოხერხდა</translation>
 <translation id="7413006094063730650">ანგარიშის წაშლა</translation>
 <translation id="4869737930995549965">გასვლა</translation>
-<translation id="2902312830803030883">მეტი ქმედება</translation>
+<translation id="4424262960694990728">საჭიროა ქმედება</translation>
+<translation id="847260521336960132">ანგარიშის დეტალები</translation>
+<translation id="5399593843842221768">პირადი ინფორმაცია თქვენი Brave ანგარიშის შესახებ.</translation>
+<translation id="5771731269320499905">Brave ანგარიშის დეტალები</translation>
 <translation id="5538654494923870167">დაიწყეთ თქვენი Brave ანგარიშით</translation>
 <translation id="1544145635547515689">Brave ანგარიშის შექმნა</translation>
 <translation id="3828644479849256404">უკვე გაქვთ ანგარიში? შესვლა</translation>
@@ -2962,6 +2979,7 @@ Brave-ს აქვს დამხმარე სერვისი, რომ
 <translation id="7114054701490058191">პაროლები არ ემთხვევა</translation>
 <translation id="4277028893293644418">პაროლის გადაყენება</translation>
 <translation id="9033485352495162741">დადასტურება წარმატებულია. ახლა შეიყვანეთ თქვენი სასურველი ახალი პაროლი:</translation>
+<translation id="808894953321890993">პაროლის შეცვლა</translation>
 <translation id="1293857704520741614">შედით თქვენს ანგარიშზე</translation>
 <translation id="118617366439356381">დაგავიწყდათ თქვენი პაროლი?</translation>
 <translation id="5636406393070713097">დაადასტურეთ თქვენი Brave ანგარიშის ელფოსტა და თქვენ მიიღებთ კოდს პაროლის აღსადგენად. კოდი მოქმედი იქნება მხოლოდ 15 წუთის განმავლობაში.</translation>

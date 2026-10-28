@@ -12,7 +12,6 @@
 <translation id="6670155282615872564">Wykonaj te sugerowane działania, aby w pełni wykorzystać możliwości Brave</translation>
 <translation id="113098737392899175">Gdy klawiatura jest podłączona, poruszaj się po stronach przy użyciu kursora tekstowego</translation>
 <translation id="1148624853678088576">Wszystko gotowe</translation>
-<translation id="738393714577080438">Zapisuj hasła w Brave</translation>
 <translation id="1178015372320901893">Plansza dolna Moje skróty</translation>
 <translation id="1178581264944972037">Wstrzymaj</translation>
 <translation id="1181037720776840403">Usuń</translation>
@@ -54,6 +53,7 @@
 <translation id="1532175480576580256">Plansza dolna Moje skróty otwarta na całą wysokość</translation>
 <translation id="1538031354170655462">Strony zwykle używają komunikacji Near Field Communication (NFC) do obsługi tagów lub urządzeń w pobliżu, na przykład do skanowania identyfikatorów lub dokonywania płatności zbliżeniowych</translation>
 <translation id="1547123415014299762">Pliki cookie innych firm są dozwolone</translation>
+<translation id="1565353932454306569"><ph name="ORIGIN"/> – aby zamknąć pełny ekran, przeciągnij od krawędzi ekranu.</translation>
 <translation id="3665719978526894928">Witryny będą działać szybciej dzięki mechanizmowi V8 w przeglądarce Brave, ale będzie ona trochę mniej odporna na ataki</translation>
 <translation id="1593426485665524382">Nowe działania są dostępne u góry ekranu</translation>
 <translation id="1594521731409209842">Aby zmienić rozmiar zdjęcia, ściągnij ekran palcami</translation>
@@ -138,6 +138,7 @@
 <translation id="2315043854645842844">Wybieranie certyfikatu klienta nie jest obsługiwane przez ten system operacyjny.</translation>
 <translation id="2347601491101454548">Plansza dolna Moje skróty otwarta do połowy wysokości</translation>
 <translation id="2359808026110333948">Dalej</translation>
+<translation id="2364212713469273030"><ph name="ORIGIN"/> – aby zamknąć pełny ekran, przeciągnij od góry i przesuń palcem od lewej lub prawej krawędzi.</translation>
 <translation id="904887679952026733">Stosuj ciemny motyw witryn w przypadkach, w których stosuje go Brave, tam, gdzie to możliwe</translation>
 <translation id="2390272837142897736">Zwiększ powiększenie</translation>
 <translation id="2397689164757137845">Dozwolona • Dokładna</translation>
@@ -227,7 +228,6 @@
 <translation id="3167868116600277716">Karty Discover</translation>
 <translation id="3198916472715691905"><ph name="STORAGE_AMOUNT"/> zapisanych danych</translation>
 <translation id="3199078925536734975">Dozwolona jednorazowo • Przybliżona</translation>
-<translation id="3208584281581115441">Sprawdź teraz</translation>
 <translation id="321187648315454507">Aby zezwolić aplikacji <ph name="APP_NAME"/> na wysyłanie do Ciebie powiadomień, musisz je też włączyć w <ph name="BEGIN_LINK"/>ustawieniach Androida<ph name="END_LINK"/>.</translation>
 <translation id="3223425961342298674">Lokalizacja nie jest dozwolona</translation>
 <translation id="3227137524299004712">Mikrofon</translation>
@@ -284,7 +284,6 @@
 <translation id="381841723434055211">Numery telefonów</translation>
 <translation id="3823453485268218808">Czcionka o stałej szerokości znaków</translation>
 <translation id="3826050100957962900">Logowanie przez inną usługę</translation>
-<translation id="3831065134033923230">Sprawdzanie zapisanych haseł</translation>
 <translation id="3835233591525155343">Korzystanie z urządzenia</translation>
 <translation id="1799795508209440035">Brave ponownie zablokuje pliki cookie dzisiaj</translation>
 <translation id="385051799172605136">Wstecz</translation>
@@ -292,7 +291,6 @@
 <translation id="9046306654872718870">Dostosuj Brave za pomocą spersonalizowanych kolorów i obrazów na stronie głównej</translation>
 <translation id="389521680295183045">Witryny mogą prosić o pozwolenie na sprawdzanie, kiedy używasz urządzenia</translation>
 <translation id="3895926599014793903">Wymuś powiększenie</translation>
-<translation id="3903738175795615004">Aby zamknąć pełny ekran, przeciągnij od góry lub naciśnij klawisz Esc.</translation>
 <translation id="3905475044299942653">Zatrzymaj wiele powiadomień</translation>
 <translation id="3922092564198021702">Na telefonie otwórz Ustawienia.</translation>
 <translation id="3924858949939391676">Pokaż linki po włączeniu Trybu czytania</translation>
@@ -353,7 +351,6 @@
 <translation id="4479647676395637221">Pytaj, zanim zezwolisz stronom na korzystanie z aparatu (zalecane)</translation>
 <translation id="4505788138578415521">URL pokazany w całości</translation>
 <translation id="4522570452068850558">Szczegóły</translation>
-<translation id="4523472416386354622">Zaloguj się, aby rozpocząć</translation>
 <translation id="4529207923544043455">Plansza dolna wyświetlająca ukończone i nieukończone zadania z listy konfiguracji</translation>
 <translation id="4534723447064627427">Aby zezwolić aplikacji <ph name="APP_NAME"/> na dostęp do mikrofonu, musisz go też włączyć w <ph name="BEGIN_LINK"/>ustawieniach Androida<ph name="END_LINK"/>.</translation>
 <translation id="4545694195887112015">Plansza konfiguracji została zamknięta</translation>
@@ -366,7 +363,6 @@
 <translation id="4645575059429386691">Zarządzany przez Twojego rodzica</translation>
 <translation id="4651224148644053314">Więcej kolorów i opcji</translation>
 <translation id="4652266463001779298">Niedozwolone</translation>
-<translation id="4655846733459137112">Kliknij Tak, aby łatwo użyć tego hasła przy następnym logowaniu</translation>
 <translation id="4663373278480897665">Zezwolono na dostęp do kamery</translation>
 <translation id="4670064810192446073">Rzeczywistość wirtualna</translation>
 <translation id="5652778654712411580">Kliknij Przeglądarka, a potem Brave</translation>
@@ -411,7 +407,6 @@
 <translation id="512938610812707830">Plansza dolna kolekcji motywów wyglądu strony Nowa karta, otwarta na całą wysokość</translation>
 <translation id="5137460097045297858">Plansza dolna kart Discover otwarta do połowy wysokości</translation>
 <translation id="5139253256813381453">{PRICE_DROP_COUNT,plural, =1{Obniżka ceny na otwartych kartach}few{Obniżki cen na otwartych kartach}many{Obniżki cen na otwartych kartach}other{Obniżki cen na otwartych kartach}}</translation>
-<translation id="5150048675001754041">Szybko i łatwo loguj się w witrynach oraz aplikacjach</translation>
 <translation id="5186036860380548585">Opcja dostępna u góry ekranu</translation>
 <translation id="5197729504361054390">Wybrane kontakty zostaną udostępnione witrynie <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/>.</translation>
 <translation id="5198930230016462977">Plansza dolna Dostosuj stronę nowej karty zamknięta</translation>
@@ -421,7 +416,6 @@
 <translation id="5239623327352565343">Lokalizacja jest dozwolona</translation>
 <translation id="5246825184569358663">Spowoduje to usunięcie wszystkich danych lokalnych (w tym plików cookie) oraz zresetowanie wszystkich uprawnień witryny <ph name="DOMAIN"/> i jej wszystkich podstron</translation>
 <translation id="5264323282659631142">Usuń: „<ph name="CHIP_LABEL"/>”</translation>
-<translation id="528192093759286357">Przeciągnij od góry i kliknij przycisk Wstecz, by wyjść z trybu pełnoekranowego.</translation>
 <translation id="5286194356314741248">Skanowanie</translation>
 <translation id="5300589172476337783">Pokaż</translation>
 <translation id="5301954838959518834">OK</translation>
@@ -469,7 +463,6 @@
 <translation id="5804241973901381774">Uprawnienia</translation>
 <translation id="5817042798620209981">Informacje o witrynie, okno</translation>
 <translation id="5822675474983796325">Plansza dolna Dostosuj stronę nowej karty otwarta na całą wysokość</translation>
-<translation id="4298364316773778595">Plansza dolna z instrukcjami dotyczącymi zapisywania haseł w Brave</translation>
 <translation id="5833899990800318936">Nie zezwalaj witrynom na używanie JavaScriptu</translation>
 <translation id="583673505367439042">Strony mogą prosić o zgodę na edytowanie plików i folderów na urządzeniu</translation>
 <translation id="5844448279347999754">Gdy ta opcja jest włączona, strony internetowe mogą prosić o dostęp do tekstu i obrazów zapisanych w schowku. Gdy jest wyłączona, strony nie mają dostępu do tekstu ani obrazów zapisanych w schowku.</translation>
@@ -507,7 +500,6 @@
 <translation id="6104860901391833523">Gdy ta opcja jest włączona, strony internetowe mogą automatycznie włączać obraz w obrazie. Gdy jest wyłączona, strony nie mogą automatycznie włączać obrazu w obrazie.</translation>
 <translation id="6120483543004435978">Gdy ta opcja jest włączona, strony internetowe mogą prosić o pozwolenie na sprawdzanie, kiedy używasz urządzenia. Gdy jest wyłączona, strony nie mogą się dowiedzieć, kiedy używasz urządzenia.</translation>
 <translation id="5773142757282836623">Ukryj opcję „Otrzymuj sugestie Brave w innych aplikacjach”</translation>
-<translation id="4852158809106762963">Brave zaproponuje zapisanie hasła</translation>
 <translation id="615886654739818377">Nie zezwalaj stronom na zarządzanie oknami na wszystkich wyświetlaczach</translation>
 <translation id="6165508094623778733">Dowiedz się więcej</translation>
 <translation id="6171020522141473435">Gdy ta opcja jest włączona, strony internetowe mogą prosić o zgodę na używanie urządzeń Bluetooth. Gdy jest wyłączona, strony nie mogą używać urządzeń Bluetooth.</translation>
@@ -583,7 +575,6 @@
 <translation id="6980861169612950611">Usunąć dane witryny? <ph name="SITE_NAME"/></translation>
 <translation id="6981982820502123353">Ułatwienia dostępu</translation>
 <translation id="6991142177939282156">Dozwolona • Używana jest przybliżona lokalizacja</translation>
-<translation id="6992014788289743568">Zwiększ bezpieczeństwo i ochronę danych przez sprawdzanie haseł</translation>
 <translation id="6992289844737586249">Pytaj, zanim zezwolisz stronom na korzystanie z mikrofonu (zalecane)</translation>
 <translation id="7000754031042624318">Wyłączone w ustawieniach Androida</translation>
 <translation id="7036823721811529709">Słuchaj w tle</translation>
@@ -650,7 +641,6 @@ Ochrona zaawansowana kontroluje te ustawienia Brave:</translation>
 <translation id="775043444390799886">Unieważnij uprawnienia</translation>
 <translation id="7758789811447313947">Motyw fioletowy</translation>
 <translation id="7759147511335618829">Urządzenia MIDI: sterowanie/przeprogramowywanie</translation>
-<translation id="7771089277295008211">Plansza dolna z instrukcjami dotyczącymi zapisywania haseł została zamknięta</translation>
 <translation id="7781829728241885113">Wczoraj</translation>
 <translation id="7791543448312431591">Dodaj</translation>
 <translation id="780301667611848630">Nie, dziękuję</translation>
@@ -667,7 +657,6 @@ Ochrona zaawansowana kontroluje te ustawienia Brave:</translation>
 <translation id="7940722705963108451">Przypomnij mi</translation>
 <translation id="7948081750384205628">Dowiedz się więcej o ustawieniu <ph name="SETTING_TITLE"/></translation>
 <translation id="7952708427581814389">Strony mogą prosić o dostęp do tekstu i obrazów w schowku</translation>
-<translation id="7958779728312669715">Plansza dolna z instrukcjami dotyczącymi zapisywania haseł została w pełni otwarta</translation>
 <translation id="798299424881500862">Motyw pomarańczowy</translation>
 <translation id="7986741934819883144">Wybierz kontakt</translation>
 <translation id="7990211076305263060">Gdy ta opcja jest włączona, strony internetowe mogą prosić o dostęp do mikrofonu. Gdy jest wyłączona, strony nie mogą go używać.</translation>
@@ -762,7 +751,6 @@ Ochrona zaawansowana kontroluje te ustawienia Brave:</translation>
 <translation id="7532165358672313130">Witryny, które przeglądasz, mogą sprawdzać te informacje w Brave i uzyskiwać potwierdzenie z wcześniej odwiedzonej witryny, że prawdopodobnie jesteś prawdziwą osobą.</translation>
 <translation id="8899807382908246773">Uciążliwe reklamy</translation>
 <translation id="8903921497873541725">Powiększ</translation>
-<translation id="8919911527569629802">Zaloguj się na dowolnej stronie</translation>
 <translation id="8921772741368021346"><ph name="POSITION"/>/<ph name="DURATION"/></translation>
 <translation id="8926389886865778422">Nie pytaj ponownie</translation>
 <translation id="8926666909099850184">Funkcja NFC na tym urządzeniu jest wyłączona. Włącz ją w <ph name="BEGIN_LINK"/>Ustawieniach Androida<ph name="END_LINK"/>.</translation>
@@ -786,6 +774,7 @@ Ochrona zaawansowana kontroluje te ustawienia Brave:</translation>
 <translation id="9138217887606523162">Obecne powiększenie: <ph name="ZOOM_LEVEL"/>%%</translation>
 <translation id="7359422048569205930">Pozwól Brave wyświetlać ostatnie karty na liście aplikacji i w wynikach wyszukiwania na urządzeniu. Tę funkcję możesz w każdej chwili wyłączyć w ustawieniach Brave.</translation>
 <translation id="9162462602695099906">Ten pakiet jest niebezpieczny</translation>
+<translation id="9172068157980844189">Pasek zakładek możesz włączyć, klikając Ustawienia &gt; Wygląd</translation>
 <translation id="9182556968660520230">Nie zezwalaj witrynom na odtwarzanie chronionych treści</translation>
 <translation id="927148002081263046">Udostępnianie kontaktu</translation>
 <translation id="947156494302904893">Witryny, które odwiedzasz, mogą sprawdzać, czy jesteś prawdziwą osobą, a nie botem</translation>

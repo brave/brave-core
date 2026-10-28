@@ -220,7 +220,6 @@
 <translation id="9040069796107003510">Icona de Recompenses de Brave</translation>
 <translation id="6333347122924254968">Mostra la icona de Recompenses de Brave a la barra d'adreces</translation>
 <translation id="4393974575368329991">Barra d'eines de navegació inferior</translation>
-<translation id="8727059712928806451">Activa la barra inferior</translation>
 <translation id="1834226716203076292">Mostra una barra inferior per accedir ràpidament a l'inici, les adreces d'interès i el cercador</translation>
 <translation id="1422686363939271829">Quan se selecciona la posició inferior per a la barra d'adreces, aquesta configuració es deshabilita</translation>
 <translation id="6587448235155023666">Els canvis s'aplicaran la propera vegada que reiniciïs Brave</translation>
@@ -290,7 +289,7 @@
 <translation id="2569646144216067185">Nombre de paraules: <ph name="WORD_COUNT"/></translation>
 <translation id="7507533586185621084">Codi de sincronització incorrecte</translation>
 <translation id="8284063834901328650">Codi QR de sincronització incorrecte</translation>
-<translation id="859506441384380749">Aquest codi s'ha generat amb una versió obsoleta de Brave, actualitza primer l'altre dispositiu</translation>
+<translation id="4002014583969312635">Sembla que s'ha creat aquest codi en un aparell amb una versió més antiga de Brave. Actualitzeu l'altre aparell amb la versió més recent de Brave i, a continuació, creeu un codi de sincronització nou.</translation>
 <translation id="3132642509209154999">Aquest codi ha caducat. Genera'n un de nou a l'altre dispositiu i torna-ho a provar.</translation>
 <translation id="2859229680945501779">Aquest codi no és vàlid. Comprova que l'hora i la zona horària s'han establert correctament al teu dispositiu.</translation>
 <translation id="3149880132460839085">Sincronització de Brave</translation>
@@ -336,8 +335,6 @@
 <translation id="8185825081026121627">Guanya Basic Attention Tokens veient anuncis de Recompenses de Brave respectuosos amb la privacitat.</translation>
 <translation id="5321518976657560663">Restableix l'error</translation>
 <translation id="4114170343590425996">Hi ha hagut un error mentre reiniciaves Recompenses de Brave. Reinicia Brave i torna-ho a provar.</translation>
-<translation id="6417420737057016607">Anuncis de Brave</translation>
-<translation id="5611966874859284786">Mostra els anuncis de notificacions quan Brave no estigui en ús</translation>
 <translation id="5717636703619499822"><ph name="BEGIN_LINK1"/>Restableix dades de Recompenses de Brave…<ph name="END_LINK1"/></translation>
 <translation id="1830919318137227284"><ph name="BEGIN_LINK1"/>Esborra dades dels Anuncis de Brave…<ph name="END_LINK1"/></translation>
 <translation id="8293206222192510085">Afegeix una adreça d'interès</translation>
@@ -400,8 +397,9 @@ Segur que vols continuar?</translation>
 <translation id="4546260624932151782">Mostra els preferits</translation>
 <translation id="5313967007315987356">Afegeix un lloc web</translation>
 <translation id="1773147648972887693">Mostra els visitats freqüentment</translation>
-<translation id="752098910262610337">Mostra les dreceres</translation>
 <translation id="7134741506051403308">Amaga el giny</translation>
+<translation id="1247759249260562308">Edita el preferit</translation>
+<translation id="6387214885349500492">Fixa aquest preferit</translation>
 <translation id="7462178177755090262">Pantalla d'inici</translation>
 <translation id="5365434987337264071">Darrera pestanya oberta</translation>
 <translation id="6019856124237323989">{HOURS, plural, =1 {Nova pestanya després d’<ph name="HOURS_ONE"/> hora d’inactivitat} other {Nova pestanya després de <ph name="HOURS_MANY"/> hores d’inactivitat}}</translation>
@@ -976,6 +974,7 @@ Si no acceptes la sol·licitud, la VPN no es tornarà a connectar i la teva conn
 <translation id="6365389672683343144">La teva subscripció de VPN de Brave pot protegir fins a 5 dispositius, a través d'Android, iOS i escriptori. Vincula la teva subscripció de Google Play al teu compte de Brave.</translation>
 <translation id="6610899852831463073">No es pot activar la navegació segura</translation>
 <translation id="7954263306665462056">La navegació segura s'ha desactivat al teu dispositiu. Per activar-la, assegura't que els serveis de Google Play estiguin instal·lats i actualitzats.</translation>
+<translation id="6417420737057016607">Anuncis de Brave</translation>
 <translation id="7748944510530490017">Xarxes principals</translation>
 <translation id="2781668117338732220">Xarxes secundàries</translation>
 <translation id="282560918037172384">Xarxes de proves</translation>

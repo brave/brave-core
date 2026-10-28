@@ -222,7 +222,6 @@
 <translation id="9040069796107003510">Brave Урамшуулал-н дүрс</translation>
 <translation id="6333347122924254968">Хаягийн мөрөнд Brave Урамшуулал-н дүрс харуулах</translation>
 <translation id="4393974575368329991">Доод навигацийн хэрэгслийн баар</translation>
-<translation id="8727059712928806451">Доод мөрийг идэвхжүүлэх</translation>
 <translation id="1834226716203076292">Нүүр хуудас, хавчуурга, хайлт руу хурдан хандах доод баарыг харуулах</translation>
 <translation id="1422686363939271829">Доод хаягийн баарыг сонгосон үед энэ тохиргоо идэвхгүй болно</translation>
 <translation id="6587448235155023666">Өөрчлөлтүүд чинь Brave-г дахин эхлүүлэх үед мөрдөх болно</translation>
@@ -292,7 +291,7 @@
 <translation id="2569646144216067185">Үгийн тоо: <ph name="WORD_COUNT"/></translation>
 <translation id="7507533586185621084">Буруу синк код</translation>
 <translation id="8284063834901328650">Буруу синк QR код</translation>
-<translation id="859506441384380749">Энэ кодыг өмнөх Brave хувилбар аар үүсгэсэн, эхлээд бусад төхөөрөмжөө шинэчилнэ үү</translation>
+<translation id="4002014583969312635">Энэ код нь Brave-ийн хуучин хувилбар ажиллуулж буй төхөөрөмж дээр үүсгэгдсэн бололтой. Өөр төхөөрөмж дээрээ Brave-ийн хамгийн сүүлийн хувилбар руу шинэчилж, дараа нь шинэ синк код үүсгэнэ үү.</translation>
 <translation id="3132642509209154999">Энэ кодын хүчинтэй хугацаа дууссан байна. Бусад төхөөрөмжөөсөө шинэ код үүсгээд дахин оролдоорой.</translation>
 <translation id="2859229680945501779">Энэ код буруу байна. Төхөөрөмжийн цаг болон цагийн бүс зөв тохируулагдсан эсэхийг шалгана уу.</translation>
 <translation id="3149880132460839085">Brave синк</translation>
@@ -338,8 +337,6 @@
 <translation id="8185825081026121627">Нууцлалыг хадгалсан Brave Урамшууллын зар сурталчилгааг үзснээр Хандалт урамшуулах токен олж аваарай.</translation>
 <translation id="5321518976657560663">Сэргээх алдаа</translation>
 <translation id="4114170343590425996">Brave Урамшууллыг дахин сэргээхэд алдаа гарлаа. Brave-г дахин нээж оролдоно уу.</translation>
-<translation id="6417420737057016607">Brave зар суртчилгаа</translation>
-<translation id="5611966874859284786">Brave ашиглахгүй үед мэдэгдлийн зар сурталчилгаа харуулах</translation>
 <translation id="5717636703619499822"><ph name="BEGIN_LINK1"/>Brave Урамшууллын өгөгдлийг дахин тохируулах…<ph name="END_LINK1"/></translation>
 <translation id="1830919318137227284"><ph name="BEGIN_LINK1"/>Brave зар сурталчилгааны мэдээллийг цэвэрлэх…<ph name="END_LINK1"/></translation>
 <translation id="8293206222192510085">Хавчуургийг нэмэх</translation>
@@ -403,8 +400,9 @@
 <translation id="4546260624932151782">Дуртай сонголтуудыг харуулах</translation>
 <translation id="5313967007315987356">Сайт нэмэх</translation>
 <translation id="1773147648972887693">Ихэвчлэн ордгийг харуулах</translation>
-<translation id="752098910262610337">Товчлолуудыг харуулах</translation>
 <translation id="7134741506051403308">Виджетийг нуух</translation>
+<translation id="1247759249260562308">Дуртай сонголтыг засах</translation>
+<translation id="6387214885349500492">Энэ дуртай сонголтыг бэхлэх</translation>
 <translation id="7462178177755090262">Нээх дэлгэц</translation>
 <translation id="5365434987337264071">Сүүлд нээсэн таб</translation>
 <translation id="6019856124237323989">{HOURS, plural,=1 {Идэвхгүй <ph name="HOURS_ONE"/> цагийн дараа шинэ таб нээнэ}other {Идэвхгүй <ph name="HOURS_MANY"/> цагийн дараа шинэ таб нээнэ}}</translation>
@@ -987,6 +985,7 @@
 <translation id="6365389672683343144">Таны Brave VPN захиалга нэгэнт 5 хүртэлх төхөөрөмжийг хамгаалах боломжтой. Зүгээр л Google Play захиалгаа Brave дансанд холбох.</translation>
 <translation id="6610899852831463073">Аюулгүй хөтлөх боломжгүй</translation>
 <translation id="7954263306665462056">Танай төхөөрөмж дээрх аюулгүй хөтлөх боломжгүй болсон байна. Үүнийг идэвхжүүлэхийн тулд Google Play үйлчилгээг суулгаж, шинэчлэх.</translation>
+<translation id="6417420737057016607">Brave зар суртчилгаа</translation>
 <translation id="7748944510530490017">Үндсэн сүлжээ</translation>
 <translation id="2781668117338732220">Хоёрдогч сүлжээ</translation>
 <translation id="282560918037172384">Тестийн сүлжээ</translation>

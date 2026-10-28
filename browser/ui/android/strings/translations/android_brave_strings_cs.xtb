@@ -220,7 +220,6 @@
 <translation id="9040069796107003510">Ikona odměn Brave</translation>
 <translation id="6333347122924254968">Zobrazit ikonu Odměny Brave v adresním řádku</translation>
 <translation id="4393974575368329991">Spodní navigační lišta</translation>
-<translation id="8727059712928806451">Povolit spodní panel</translation>
 <translation id="1834226716203076292">Zobrazit spodní lištu pro rychlý přístup k domovské stránce, záložkám a vyhledávání</translation>
 <translation id="1422686363939271829">Toto nastavení je zakázáno, když je vybrána spodní pozice adresního řádku.</translation>
 <translation id="6587448235155023666">Vaše změny se projeví při příštím spuštění Brave</translation>
@@ -290,7 +289,7 @@
 <translation id="2569646144216067185">Počet slov: <ph name="WORD_COUNT"/></translation>
 <translation id="7507533586185621084">Nesprávný synchronizační kód</translation>
 <translation id="8284063834901328650">Nesprávný synchronizační QR kód</translation>
-<translation id="859506441384380749">Tento kód byl vygenerován zastaralou verzí prohlížeče Brave, nejprve aktualizujte své druhé zařízení</translation>
+<translation id="4002014583969312635">Zdá se, že tento kód byl vytvořen na zařízení, které má starší verzi Brave. Aktualizujte prosím na nejnovější verzi Brave na svém druhém zařízení a poté vytvořte nový synchronizační kód.</translation>
 <translation id="3132642509209154999">Platnost tohoto kódu vypršela. Vygenerujte si nový na jiném zařízení a zkuste to znovu.</translation>
 <translation id="2859229680945501779">Tento kód je neplatný. Zkontrolujte, je na vašem zařízení správně nastaven čas a časové pásmo.</translation>
 <translation id="3149880132460839085">Synchronizace prohlížeče Brave</translation>
@@ -336,8 +335,6 @@
 <translation id="8185825081026121627">Získejte základní žeton pozornosti za prohlížení reklam Brave Rewards, které zachovávají vaše soukromí.</translation>
 <translation id="5321518976657560663">Chyba obnovení</translation>
 <translation id="4114170343590425996">Během obnovování odměn Brave došlo k chybě. Spusťte Brave znovu a pokus opakujte.</translation>
-<translation id="6417420737057016607">Reklamy Brave</translation>
-<translation id="5611966874859284786">Zobrazení reklamních oznámení, když se Brave nepoužívá</translation>
 <translation id="5717636703619499822"><ph name="BEGIN_LINK1"/>Resetovat data Odměn Brave…<ph name="END_LINK1"/></translation>
 <translation id="1830919318137227284"><ph name="BEGIN_LINK1"/>Smazat data Reklam Brave…<ph name="END_LINK1"/></translation>
 <translation id="8293206222192510085">Přidat záložku</translation>
@@ -400,8 +397,9 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="4546260624932151782">Zobrazit oblíbené</translation>
 <translation id="5313967007315987356">Přidat web</translation>
 <translation id="1773147648972887693">Zobrazit často navštěvované</translation>
-<translation id="752098910262610337">Zobrazit zkratky</translation>
 <translation id="7134741506051403308">Skrýt widget</translation>
+<translation id="1247759249260562308">Upravit oblíbené</translation>
+<translation id="6387214885349500492">Připnout tuto oblíbenou položku</translation>
 <translation id="7462178177755090262">Úvodní obrazovka</translation>
 <translation id="5365434987337264071">Poslední otevřená záložka</translation>
 <translation id="6019856124237323989">{HOURS, plural, =1 {Nová karta po <ph name="HOURS_ONE"/> hodině nečinnosti} few {Nová karta po <ph name="HOURS_MANY"/> hodinách nečinnosti} many {Nová karta po <ph name="HOURS_MANY"/> hodinách nečinnosti} other {Nová karta po <ph name="HOURS_MANY"/> hodinách nečinnosti}}</translation>
@@ -976,6 +974,7 @@ Pokud tuto žádost nepřijmete, síť VPN se znovu nepřipojí a vaše připoje
 <translation id="6365389672683343144">Vaše předplatné Brave VPN může chránit až 5 zařízení se systémem Android, iOS nebo osobních počítačů. Stačí propojit předplatné Google Play s účtem Brave.</translation>
 <translation id="6610899852831463073">Bezpečné procházení nelze zapnout</translation>
 <translation id="7954263306665462056">Bezpečné procházení bylo na vašem zařízení vypnuto. Chcete-li ho zapnout, zkontrolujte, zda je nainstalovaná služba Google Play Services a zda je aktuální.</translation>
+<translation id="6417420737057016607">Reklamy Brave</translation>
 <translation id="7748944510530490017">Primární sítě</translation>
 <translation id="2781668117338732220">Sekundární sítě</translation>
 <translation id="282560918037172384">Testovací sítě</translation>

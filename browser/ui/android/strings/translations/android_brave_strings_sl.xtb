@@ -221,7 +221,6 @@
 <translation id="9040069796107003510">Ikona Nagrad Brave</translation>
 <translation id="6333347122924254968">Pokaži ikono Brave Rewards v naslovni vrstici</translation>
 <translation id="4393974575368329991">Spodnja navigacijska orodna vrstica</translation>
-<translation id="8727059712928806451">Omogoči spodnjo vrstico</translation>
 <translation id="1834226716203076292">Pokažite spodnjo vrstico za hitri dostop do domače strani, zaznamkov in iskanja</translation>
 <translation id="1422686363939271829">Ta nastavitev je onemogočena, če je izbran spodnji položaj naslovne vrstice.</translation>
 <translation id="6587448235155023666">Spremembe bodo začele veljati ob ponovnem zagonu brskalnika Brave</translation>
@@ -291,7 +290,7 @@
 <translation id="2569646144216067185">Število besed: <ph name="WORD_COUNT"/></translation>
 <translation id="7507533586185621084">Napačna sinhronizacijska koda</translation>
 <translation id="8284063834901328650">Napačna koda QR</translation>
-<translation id="859506441384380749">To kodo je ustvarila zastarela različica Brave, najprej nadgradite svojo drugo napravo</translation>
+<translation id="4002014583969312635">Izgleda, da je bila ta koda ustvarjena na napravi s starejšo različico Brave. Prosimo, posodobite na najnovejšo različico Brave na drugi napravi in nato ustvarite novo kodo sinhronizacije.</translation>
 <translation id="3132642509209154999">Ta koda je potekla. Ustvarite novo v drugi napravi in poskusite znova.</translation>
 <translation id="2859229680945501779">Ta koda ni veljavna. Preverite, ali sta ura in časovni pas na vaši napravi pravilno nastavljena.</translation>
 <translation id="3149880132460839085">Brave Sinhronizacija</translation>
@@ -337,8 +336,6 @@
 <translation id="8185825081026121627">Prislužite si osnovni žeton za ogled oglasov Brave Rewards, ki ohranjajo zasebnost.</translation>
 <translation id="5321518976657560663">Napaka ponastavitve</translation>
 <translation id="4114170343590425996">Pri ponastavitvi storitve Brave Rewards je prišlo do napake. Ponovno zaženite brskalnik Brave in poskusite znova.</translation>
-<translation id="6417420737057016607">Oglasi Brave</translation>
-<translation id="5611966874859284786">Prikaži oglase z obvestili, ko Brave ni v uporabi</translation>
 <translation id="5717636703619499822"><ph name="BEGIN_LINK1"/>Ponastavi podatke Brave Rewards …<ph name="END_LINK1"/></translation>
 <translation id="1830919318137227284"><ph name="BEGIN_LINK1"/>Izbriši podatke oglasov Brave …<ph name="END_LINK1"/></translation>
 <translation id="8293206222192510085">Dodaj zaznamek</translation>
@@ -401,8 +398,9 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="4546260624932151782">Pokaži priljubljene</translation>
 <translation id="5313967007315987356">Dodajanje mesta</translation>
 <translation id="1773147648972887693">Pokaži pogosto obiskane</translation>
-<translation id="752098910262610337">Pokaži bližnjice</translation>
 <translation id="7134741506051403308">Skrij pripomoček</translation>
+<translation id="1247759249260562308">Uredi priljubljeno</translation>
+<translation id="6387214885349500492">Pripni ta priljubljeni</translation>
 <translation id="7462178177755090262">Začetni zaslon</translation>
 <translation id="5365434987337264071">Zadnji odprt zavihek</translation>
 <translation id="6019856124237323989">{HOURS, plural, =1 {Nova kartica po <ph name="HOURS_ONE"/> uri neaktivnosti} two {Nova kartica po <ph name="HOURS_MANY"/> urah neaktivnosti} few {Nova kartica po <ph name="HOURS_MANY"/> urah neaktivnosti} other {Nova kartica po <ph name="HOURS_MANY"/> urah neaktivnosti}}</translation>
@@ -977,6 +975,7 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="6365389672683343144">Vaša naročnina na Brave VPN lahko zaščiti do 5 naprav v sistemu Android, iOS in namizju. Preprosto povežite svojo naročnino Google Play s svojim računom Brave.</translation>
 <translation id="6610899852831463073">Varnega brskanja ni mogoče omogočiti</translation>
 <translation id="7954263306665462056">Varno brskanje je bilo v vaši napravi onemogočeno. Če ga želite omogočiti, zagotovite, da so nameščene storitve Google Play in da so posodobljene.</translation>
+<translation id="6417420737057016607">Oglasi Brave</translation>
 <translation id="7748944510530490017">Primarna omrežja</translation>
 <translation id="2781668117338732220">Sekundarna omrežja</translation>
 <translation id="282560918037172384">Testna omrežja</translation>

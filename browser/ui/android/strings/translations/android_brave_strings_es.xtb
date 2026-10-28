@@ -220,7 +220,6 @@
 <translation id="9040069796107003510">Icono de Recompensas de Brave</translation>
 <translation id="6333347122924254968">Mostrar el icono de Recompensas de Brave en la barra de direcciones</translation>
 <translation id="4393974575368329991">Barra de navegación inferior</translation>
-<translation id="8727059712928806451">Activar la barra inferior</translation>
 <translation id="1834226716203076292">Muestra una barra inferior para acceder rápidamente a la página de inicio, los marcadores y el buscador</translation>
 <translation id="1422686363939271829">Esta configuración se desactiva cuando se selecciona la barra de direcciones inferior</translation>
 <translation id="6587448235155023666">Tus cambios entrarán en efecto la próxima vez que vuelvas a abrir Brave</translation>
@@ -290,7 +289,7 @@
 <translation id="2569646144216067185">Recuento de palabras: <ph name="WORD_COUNT"/></translation>
 <translation id="7507533586185621084">Código de sincronización erróneo</translation>
 <translation id="8284063834901328650">Código QR de sincronización erróneo</translation>
-<translation id="859506441384380749">Este código se ha generado a través de una versión obsoleta de Brave. Actualiza el otro dispositivo primero</translation>
+<translation id="4002014583969312635">Parece que este código se creó en un dispositivo que ejecuta una versión anterior de Brave. Actualiza a la versión más reciente de Brave en tu otro dispositivo y, a continuación, crea un nuevo código de sincronización.</translation>
 <translation id="3132642509209154999">Este código ha expirado. Genera uno nuevo en el otro dispositivo y vuelve a intentarlo.</translation>
 <translation id="2859229680945501779">Este código no es válido. Comprueba si la hora y la zona horaria de tu dispositivo son correctas.</translation>
 <translation id="3149880132460839085">Brave Sync</translation>
@@ -336,8 +335,6 @@
 <translation id="8185825081026121627">Gana Bats con Recompensas de Brave visualizando anuncios respetuosos con la privacidad.</translation>
 <translation id="5321518976657560663">Restablecer Error</translation>
 <translation id="4114170343590425996">Se produjo un error al restablecer Recompensas de Brave. Vuelve a abrir Brave e inténtalo de nuevo.</translation>
-<translation id="6417420737057016607">Anuncios de Brave</translation>
-<translation id="5611966874859284786">Mostrar anuncios de notificaciones cuando Brave no esté en uso</translation>
 <translation id="5717636703619499822"><ph name="BEGIN_LINK1"/>Restablecer datos de Recompensas de Brave…<ph name="END_LINK1"/></translation>
 <translation id="1830919318137227284"><ph name="BEGIN_LINK1"/>Borrar datos de Anuncios de Brave…<ph name="END_LINK1"/></translation>
 <translation id="8293206222192510085">Añadir Marcador</translation>
@@ -400,8 +397,9 @@ Verifica que ha sido un dispositivo tuyo el que ha generado estas palabras clave
 <translation id="4546260624932151782">Mostrar favoritos</translation>
 <translation id="5313967007315987356">Añadir sitio</translation>
 <translation id="1773147648972887693">Mostrar los visitados más frecuentemente</translation>
-<translation id="752098910262610337">Mostrar accesos directos</translation>
 <translation id="7134741506051403308">Ocultar widget</translation>
+<translation id="1247759249260562308">Editar favorito</translation>
+<translation id="6387214885349500492">Fijar este favorito</translation>
 <translation id="7462178177755090262">Pantalla de inicio</translation>
 <translation id="5365434987337264071">Última pestaña abierta</translation>
 <translation id="6019856124237323989">{HOURS, plural, =1 {Nueva pestaña después de <ph name="HOURS_ONE"/> hora de inactividad} other {Nueva pestaña después de <ph name="HOURS_MANY"/> horas de inactividad}}</translation>
@@ -976,6 +974,7 @@ Si no la aceptas, la VPN no se volverá a conectar y tu conexión a Internet no 
 <translation id="6365389672683343144">Tu suscripción a la VPN de Brave puede proteger hasta cinco dispositivos, ya sean de Android, iOS o de escritorio. Solo tienes que vincular tu suscripción de Google Play con tu cuenta de Brave.</translation>
 <translation id="6610899852831463073">No se puede habilitar la función Navegación Segura</translation>
 <translation id="7954263306665462056">Se ha deshabilitado la función Navegación Segura en tu dispositivo. Para habilitarla, asegúrate de que Servicios de Google Play está instalado y actualizado.</translation>
+<translation id="6417420737057016607">Anuncios de Brave</translation>
 <translation id="7748944510530490017">Redes primarias</translation>
 <translation id="2781668117338732220">Redes secundarias</translation>
 <translation id="282560918037172384">Redes de prueba</translation>

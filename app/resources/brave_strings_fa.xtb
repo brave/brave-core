@@ -20,6 +20,7 @@
 <translation id="8541922081612557424">‏درباره Brave</translation>
 <translation id="987734326276404793">‏با Brave در تلفنتان، هشدارهای پیگیری قیمت را دریافت کنید</translation>
 <translation id="1203500561924088507">بابت نصب از شما سپاس‌گزاریم. قبل‌از استفاده از <ph name="BUNDLE_NAME"/>، باید مرورگر را بازراه‌اندازی کنید.</translation>
+<translation id="1213674046343558619">‏‫<ph name="IMPORTANT_UPDATE"/> معلق است. برای ایمن ماندن مرور، Brave در نوبت بعدی که به‌مدت <ph name="IDLE_DURATION"/> غیرفعال باشید، به‌روز خواهد شد.</translation>
 <translation id="1232234696885483911">‏وقتی‌که «جستجوی تصویر» را باز می‌کنید، عنوان، نشانی وب، و محتوای صفحه (ازجمله فایل‌های PDF) به‌طور خودکار به سرور ارسال می‌شوند. <ph name="LEARN_MORE"/></translation>
 <translation id="1934377710648094656">‏اکنون که به سیستم وارد شده‌اید، می‌توانید از گذرواژه‌ها و سایر داده‌های «حساب Brave» خود در Brave استفاده کنید. برای تغییر دادن این تنظیم، به «حساب شما در Brave» بروید.</translation>
 <translation id="583633806828413086">‏نمایش «Gemini در Brave» در نوار منو Mac</translation>
@@ -221,6 +222,7 @@
 <translation id="3286538390144397061">راه‌اندازی مجدد اکنون</translation>
 <translation id="2339258256897053758">‏کلیدهای Brave API وجود ندارند. برخی از عملکردهای Brave از کار خواهند افتاد.</translation>
 <translation id="8926637909431618259">‏ادامه اجرای برنامه‌ها در پس‌زمینه هنگامیکه Brave بسته می‌شود</translation>
+<translation id="8245661393996028021">‏‫Brave وقتی که از دستگاه استفاده نمی‌کنید به‌روز خواهد شد</translation>
 <translation id="518125528057094977">‏Brave قبل‌از اینکه هر سایتی را ازطریق اتصال ناامن بار کند به شما هشدار می‌دهد</translation>
 <translation id="8652321858775514885">‏وقتی همه پنجره‌های Brave را ببندید از سیستم اکثر سایت‌ها خارج خواهید شد، اما اگر به سیستم Brave وارد شده باشید از «حساب Brave» خارج نخواهید شد. برای اینکه سایت‌ها شما را به‌خاطر بسپارند، <ph name="SETTINGS_LINK"/>.</translation>
 <translation id="3352986031709923790">‏گوشه بالا سمت چپ ناحیه جستجو: ‎٪<ph name="RIGHT"/> سمت چپ، ‎٪<ph name="TOP"/> بالا</translation>
@@ -229,6 +231,7 @@
 <translation id="2645435784669275700">ChromeOS</translation>
 <translation id="2297290224191497273">‏به نمایه Brave موجود می‌روید؟</translation>
 <translation id="3412460710772753638">در «مدیر گذرواژه» در این دستگاه</translation>
+<translation id="172368702860945706">‏‫Brave می‌خواهد به‌روز شود</translation>
 <translation id="5079573433701109938">‏برای دریافت نشانک‌ها و سایر موارد از <ph name="DEVICE"/>، به سیستم Brave وارد شوید</translation>
 <translation id="3438772217992559640">جستجوی این زبانه با «جستجوی تصویر»</translation>
 <translation id="2491221873705777076">‏«مرور ایمن پیشرفته» را با Brave در تلفنتان گسترش دهید</translation>
@@ -366,6 +369,7 @@
 <translation id="4877750182157975795">‏با Brave در <ph name="DEVICE_TYPE"/> خود، به همه موارد دلخواه Brave دسترسی پیدا کنید</translation>
 <translation id="1204184037023366446">‏‫Brave برای ردیابی کردن دست‌های شما به اجازه نیاز دارد</translation>
 <translation id="5406591571925937375">‏اخیراً بازدیدی نداشته‌اید. ‫Brave ‏<ph name="PERMISSION_1"/>،‏ <ph name="PERMISSION_2"/>،‏ و <ph name="PERMISSION_3"/> را برداشت.</translation>
+<translation id="3576895950897485019">‏ورود به سیستم Brave</translation>
 <translation id="5174969993834422967">معمولاً اعلان‌ها را مسدود می‌کنید. برای اینکه اجازه دهید این سایت اعلان ارسال کند، روی نماد اعلان در گوشه چپ نوار نشانی کلیک کنید.</translation>
 <translation id="5174983315706567306">فضای دیسک کافی نیست.</translation>
 <translation id="8157129267754368853">‏حساب Brave به اصالت‌سنجی مجدد نیاز دارد</translation>
@@ -374,6 +378,7 @@
 <translation id="5234764350956374838">بستن</translation>
 <translation id="7690383309583926074">‏برای ذخیره کردن گذرواژه‌ها درحرکت، برنامه Brave را دریافت کنید</translation>
 <translation id="8586264863973514035">‏برای اعمال تغییراتتان، Brave را راه‌اندازی مجدد کنید</translation>
+<translation id="8127050479140582768">‏برای ارسال کردن این زبانه به دستگاهی دیگر، در هردو دستگاه به سیستم Brave وارد شوید</translation>
 <translation id="5286907366254680517">تشخیص داده شد</translation>
 <translation id="7264453786974905915">‏دریافت برنامه Brave</translation>
 <translation id="7230006500876504868">‏جستجو کردن با Brave</translation>
@@ -736,6 +741,7 @@ Brave قادر به بازیابی تنظیمات شما نیست.</translation>
 <translation id="5128665650717824082">‏نمی‌توان Brave for Testing را به‌عنوان مرورگر پیش‌فرض تنظیم کرد.</translation>
 <translation id="3053208669360972929">‏جستجو کردن با Brave از هرجا</translation>
 <translation id="2433912322225810055">‏این برنامه همچنین صفحه‌ای را که هنگام راه‌اندازی Brave یا جستجو از Omnibox نشان داده می‌شود، کنترل می‌کند.</translation>
+<translation id="8789425457808164956">‏برای ارسال این زبانه به دستگاهی دیگر، در آن جا به سیستم Brave وارد شوید</translation>
 <translation id="4100716194836114130">‏این Brave شماست</translation>
 <translation id="8712637175834984815">متوجه شدم</translation>
 <translation id="1419543648228375718">‏به سیستم Brave وارد می‌شوید؟</translation>

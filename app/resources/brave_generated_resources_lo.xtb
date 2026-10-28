@@ -117,6 +117,8 @@
 <translation id="2162109630536601963">ຖ້າ Extension ນີ້ໃຊ້ຄຳຮ້ອງຂໍເຄື່ອງເຊດ, ເຈົ້າຈະບໍ່ໄດ້ໃຊ້ Tor ຫຼື private mode.</translation>
 <translation id="2725327089319971976">ເພື່ອປິດການໃຊ້ Extension ໃນ private mode ແລະ Tor mode, ເລືອກຕົວເລືອກນີ໘ສຳເລັດໄດ້ໃຫ້.</translation>
 <translation id="438106944087726695">Brave-hosted</translation>
+<translation id="2265651566599167057">ຖືກທຳເຄື່ອງໝາຍວ່າເປັນ malware ໂດຍ Socket.</translation>
+<translation id="2607395470596637070">ຮຽນຮູ້ເພີ່ມເຕີມກ່ຽວກັບວິທີທີ່ Socket ໃນ Brave ປົກປ້ອງທ່ານ</translation>
 <translation id="3371343170427636147">Brave Browser Nightly Apps</translation>
 <translation id="4097979995947147464">Brave Browser Beta Apps</translation>
 <translation id="8303432794159193481">Brave Browser Dev Apps</translation>
@@ -722,7 +724,7 @@
 <translation id="4432071071853308688">ລະຫັດນີ້ເປັນຄ່າວ່າງ</translation>
 <translation id="955848693465029904">ມີຄວາມຜິດພາດໂປເລດຫານຂອງການຕັ້ງຄ່າ Sync</translation>
 <translation id="7456398316301207582">ມີຄວາມຜິດພາດໂປເລດຫານການລົບບັນຊີ</translation>
-<translation id="859506441384380749">ລະຫັດນີ້ຖືກສ້າງໂດຍຮຸ່ນເກົ່າຂອງ Brave. ກະລຸນາອັບເດດເຄรื่องອື່ນຂອງທ່ານກ່ອນ.</translation>
+<translation id="4002014583969312635">ເບິ່ງຄືວ່າລະຫັດນີ້ຖືກສ້າງຂຶ້ນໃນອຸປະກອນທີ່ໃຊ້ Brave ເວີຊັນເກົ່າ. ກະລຸນາອັບເດດເປັນ Brave ເວີຊັນຫຼ້າສຸດໃນອຸປະກອນອື່ນຂອງທ່ານ, ແລ້ວສ້າງລະຫັດ sync ໃໝ່.</translation>
 <translation id="3132642509209154999">ລະຫັດນີ້ໝົດກຳນົດແລ້ວ. ກະລຸນາສ້າງໃໝ່ໃນເຄື່ອງອື່ນຂອງທ່ານແລະລອງໃໝ່.</translation>
 <translation id="2859229680945501779">ລະຫັດນີ້ເປັນບໍ່ຖືກຕ້ອງ. ກະລຸນາກວດຄືນວ່າເວລາແລະເຂດເວລາຖືກຕັ້ງຄ່າຢ່າງຖືກຕ້ອງໃນເຄື່ອງອະນຸຍາດ.</translation>
 <translation id="2339730291919608488">ອອກຈາກ Sync Chain</translation>

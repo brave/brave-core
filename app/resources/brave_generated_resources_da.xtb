@@ -118,6 +118,8 @@ vindue med Tor</translation>
 <translation id="2162109630536601963">Hvis denne udvidelse foretager netværksanmodninger, vil de ikke bruge Tor eller privat tilstand.</translation>
 <translation id="2725327089319971976">Fjern markeringen af denne indstilling for at deaktivere denne udvidelse i privat tilstand og Tor-tilstand.</translation>
 <translation id="438106944087726695">Brave-hostet</translation>
+<translation id="2265651566599167057">Markeret som malware af Socket.</translation>
+<translation id="2607395470596637070">Få mere at vide om, hvordan Socket i Brave beskytter dig</translation>
 <translation id="3371343170427636147">Brave Browser natlige apps</translation>
 <translation id="4097979995947147464">Brave Browser beta-apps</translation>
 <translation id="8303432794159193481">Brave Browser udvikler-apps</translation>
@@ -724,7 +726,7 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 <translation id="4432071071853308688">Koden er tom</translation>
 <translation id="955848693465029904">Intern setupfejl ved synkronisering</translation>
 <translation id="7456398316301207582">Intern kontosletningsfejl</translation>
-<translation id="859506441384380749">Denne kode er genereret af en forældet version af Brave. Opgradér venligst din anden enhed først</translation>
+<translation id="4002014583969312635">Denne kode ser ud til at være oprettet på en enhed med en ældre version af Brave. Opdatér til den nyeste version af Brave på din anden enhed, og opret en ny synkroniseringskode.</translation>
 <translation id="3132642509209154999">Denne kode er udløbet. Generér venligst en ny på din anden enhed, og prøv igen.</translation>
 <translation id="2859229680945501779">Hoden er ugyldig. Kontrollér at tidspunkt og tidszone er korrekt indstillet på din enhed.</translation>
 <translation id="2339730291919608488">Forlad synkroniseringskæde</translation>

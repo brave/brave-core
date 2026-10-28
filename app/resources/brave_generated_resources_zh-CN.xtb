@@ -116,6 +116,8 @@
 <translation id="2162109630536601963">如果此扩展程序发出网络请求，则它们将不会使用 Tor 或专用模式。</translation>
 <translation id="2725327089319971976">要在无痕模式下停用该扩展程序，请取消选中此选项。</translation>
 <translation id="438106944087726695">Brave 托管</translation>
+<translation id="2265651566599167057">已被 Socket 标记为恶意软件。</translation>
+<translation id="2607395470596637070">详细了解 Brave 中的 Socket 如何为您提供保护</translation>
 <translation id="3371343170427636147">Brave 浏览器夜间模式应用</translation>
 <translation id="4097979995947147464">Brave 浏览器 Beta 应用</translation>
 <translation id="8303432794159193481">Brave 浏览器开发应用</translation>
@@ -722,7 +724,7 @@
 <translation id="4432071071853308688">此代码为空</translation>
 <translation id="955848693465029904">内部同步设置错误</translation>
 <translation id="7456398316301207582">内部账户删除错误</translation>
-<translation id="859506441384380749">此代码由已弃用的 Brave 版本生成，请先升级您的其他设备</translation>
+<translation id="4002014583969312635">代码可能创建于使用较低版本 Brave 的设备。请在您的设备上将 Brave 更新至最新版本，再创建同步代码。</translation>
 <translation id="3132642509209154999">此代码已过期。请在其他设备上生成新的代码，然后重试。</translation>
 <translation id="2859229680945501779">此代码无效。请检查您设备上的时间和时区设置是否正确。</translation>
 <translation id="2339730291919608488">离开同步链</translation>

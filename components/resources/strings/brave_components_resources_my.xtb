@@ -433,7 +433,6 @@
 <translation id="412480955826088549">Components ကို Download လုပ်နေဆဲ...</translation>
 <translation id="4894106830958548828">နားလည်ပါတယ်</translation>
 <translation id="2729085694451916573">စမ်းသက်ရန် စာသားရိုက်ပါ place-holder တွင် For holders of <ph name="PART_ONE"/> and<ph name="PART_ONE_END"/> the; <ph name="PART_TWO"/>မေးစမ်းကြည့်ရန် Learn more<ph name="PART_TWO_END"/></translation>
-<translation id="6705666103672654256">သင်၏ ရှာဖွေမှုများနှင့် စာမျက်နှာအကြောင်းအရာများကို ဤ device ပေါ်တွင် လုပ်ဆောင်ပါသည်။ Brave သို့ မည်သည့်အရာမျှ ပေးပို့မထားပါ၊ လူသား စစ်ဆေးသူများလည်း မြင်တွေ့မည် မဟုတ်ပါ။ ဤအရာသည် စမ်းသပ်အင်္ဂါရပ်တစ်ခုဖြစ်ပြီး အမြဲတမ်း မှန်ကန်မည် မဟုတ်ပါ။</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="4492298165410552103">ws:confirm_shutdown_confirm_dialog_disable_opt_in_heading</translation>
 <translation id="5015092481905019948">Brave သည် <ph name="DOMAIN_PROVIDER_NAME"/> ပေါ်ရှိ <ph name="DOMAIN_LIST"/> ဒိုမိန်းအမည်များကို ဖြေရှင်းရန် <ph name="PROVIDER_NAME"/> ကို အသုံးပြုပါမည်။ Brave သည် သင့် IP လိပ်စာကို ဝှက်ထားပေးသည်။ ဤခွင့်ပြုချက်ကို ဖွင့်ထားလျှင်၊ <ph name="PROVIDER_NAME"/> တွင် ယင်းဒိုမိန်းများကို တစ်စုံတစ်ယောက်က လည်ပတ်ဖို့ ကြိုးစားနေကြောင်းသာ မြင်နိုင်ပြီး အခြားသောအချက်အလက်များ မမြင်နိုင်ပါ။ <ph name="PROVIDER_NAME"/> ၏ <ph name="BEGIN_PROVIDER_TOU_LINK"/>အသုံးပြုခြင်းစည်းမျဉ်းများ<ph name="END_PROVIDER_TOU_LINK"/> နှင့် <ph name="BEGIN_PROVIDER_PRIVACY_LINK"/>ကိုယ်ရေးကာကွယ်မှုမူဝါဒ<ph name="END_PROVIDER_PRIVACY_LINK"/> ကိုကြည့်ပါ။</translation>
@@ -799,8 +798,6 @@
 <translation id="223536150967420869">ဝယ်ယူပါ</translation>
 <translation id="538450413584738399">လဲရန်</translation>
 <translation id="6810855196544084176">တန်ဖိုး ပြောင်းပါ</translation>
-<translation id="3488255243387417752">ရောင်းပါ</translation>
-<translation id="5223034545851554347">ဤအကောင့်တွင် အလုံအလောက်သော <ph name="TOKEN_SYMBOL"/> မရှိပါ။</translation>
 <translation id="6585419509320235293">ပို့မည့်ပိုင်ဆိုင်မှုကို ရွေးချယ်ပါ</translation>
 <translation id="1018742998826182079">လဲလှယ်မည့်ပိုင်ဆိုင်မှုကို ရွေးချယ်ပါ</translation>
 <translation id="2791691551852500015">လက်ခံသူ၏လိပ်စာထည့်ပါ</translation>
@@ -1317,7 +1314,6 @@
 <translation id="4312994183947987913">ဝယ်/ငွေသွင်း</translation>
 <translation id="5133421763709317473">ရှာဖွေမှုနှင့် filter တွေကိုယ်စားပြု၍ မည်သည့် ပစ္စည်းမှမတွေ့ရှိခဲ့ပါ။</translation>
 <translation id="6423985584914773314">မှန်ကန်သော FIL လိပ်စာမဟုတ်ပါ။</translation>
-<translation id="6153197326949684688">မှာရောင်းပါ <ph name="OFFRAMP_PROVIDER"/></translation>
 <translation id="5795821518596541838">ငွေပေးငွေယူလုပ်ငန်းမိတ်ဖက်</translation>
 <translation id="1916136859742693273">Brave Wallet သည် သင့်နိုင်ငံတွင် မတူညီသော crypto ပေးသွင်းသူများစွလာခြင်းနှင့် ပြသရန်အား Meld.io ကို အသုံးပြုထားသည်။ ပြည့်စုံသော ငွေပေးငွေယူမှု အတွက် စနစ်တိုင်းကို သင့် မော်ကွန်းရင်းနှင့် နိုင်ငံကုဒ် နှင့်အတူ share ပြုလုပ်ပါသည်။ ပိုမိုသိရှိရန် Meld ၏ terms of use ကို ဖတ်ပါ။</translation>
 <translation id="245827814248186739">ကျွန်ုပ်သည် ဖတ်ပြီး ပြီးပြီးဖြင့် <ph name="LINK_BEFORE"/>Meld ၏အသုံးပြုမှုစည်းမျဉ်းများ<ph name="LINK_AFTER"/> ကိုသဘောတူပါသည်။</translation>
@@ -1634,7 +1630,7 @@
 <translation id="6646456430109279404">နှစ်ဆယ့်နှစ်နိင်</translation>
 <translation id="1961743941324393172">နှစ်ဆယ့်သုံး</translation>
 <translation id="9079035825546416393">နှစ်ဆယ့်လေး</translation>
-<translation id="1558531209852594808">ASCII မဟုတ်သော အက္ခရာများ ဖော်ထုတ်ပြီး</translation>
+<translation id="6980520267116175375">မမျှော်လင့်ထားသည့် စာလုံးများ တွေ့ရှိရသည်</translation>
 <translation id="442709594176931966">မူရင်းမက်ဆေ့ချ်ကိုကြည့်ပါ</translation>
 <translation id="2239252396088484499">ASCII encoding မှာ မက်ဆေ့ချ်ကိုကြည့်ပါ</translation>
 <translation id="2894654529758326923">သတင်း</translation>
@@ -1884,6 +1880,14 @@
 <translation id="6700561332544287722">နောက်တစ်ကြိမ် သော့ဖွင့်ရန် လိုအပ်</translation>
 <translation id="5605360570977617291"><ph name="CARD_NAME"/> ကို ပင်မမှ ဖျောက်မလား?</translation>
 <translation id="2721464457853369512">သင့် <ph name="CARD_NAME"/> လက်ကျန်ငွေသည် မပြောင်းလဲပါ။ ၎င်းသည် ကတ်ကို ပင်မမှသာ ဖျောက်ပေးသည်။ ၎င်းကို Wallet အောက်ရှိ ဆက်တင်များတွင် မည်သည့်အချိန်မဆို ပြန်လည်ပြသနိုင်သည်။</translation>
+<translation id="1543259266592091784">ငွေ ထည့်မည်</translation>
+<translation id="6202621179510403111">ကတ် အသစ်</translation>
+<translation id="2366365638711338487">ဝင်ငွေ <ph name="DATE_BEGIN"/>(<ph name="DATE"/>)<ph name="DATE_END"/></translation>
+<translation id="4938547503015386493">အတိုး + <ph name="AMOUNT"/> BAT ငွေပြန်အမ်း</translation>
+<translation id="5124185664922725208">အသုံးစရိတ်</translation>
+<translation id="1591562245178063882">ဤလ</translation>
+<translation id="2781977263564899470">ရုပ်ပိုင်းဆိုင်ရာ ကတ်ရယူပါ</translation>
+<translation id="3388543273143324626">ဆိုင်များနှင့် ATM များတွင် အသုံးပြုပါ</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
 <translation id="3745016858329272300">အထွေထွေလေ့လာချက်</translation>
 <translation id="4045404575593562245">Tor ထိန်းချုပ်မှုဆိုင်ရာဖြစ်ရပ်များ</translation>
@@ -2215,12 +2219,12 @@
 <translation id="7905602379229309187">API endpoint ပေါ်တွင်ဖွန့်ဖော်မှုများကြီးမားလုံးတွင် ထပ်မံကြိုးစားပါ။</translation>
 <translation id="8151638057146502721">ပြင်ဆင်ပါ</translation>
 <translation id="999273441077650169">မော်ဒယ်သည် အလုပ်ကိုလုပ်ဖို့အတွက် အကောင်းဆုံးနည်းဖြင့် မပေါင်းအောင်းမှုများနှင့် ပြောင်းလဲသည်။<ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
-<translation id="3852808100039989429">ဟိုင်း, ငါက လီယို က။ ငါ့မှာ Brave က အိုင်အေ အရာရှိ AI။ ငါ Qwen VL 30B သည် Alibaba Cloud မှဖန်တီးသည့် မော်ဒယ်ဖြစ်၍ စွမ်းဆောင်ရည်မြင့်ပြီး အသုံးပြုမှုအများအပြားအတွက် အလွယ်တကူအသုံးပြုနိုင်သည်။ Qwen သည် Brave ၏ကိုယ်ပိုင်လုံခြုံရေးအဆောက်အအုံတွင် ဟော့စ်ထားသည်။<ph name="LINK_BEFORE"/>ပိုမိုသိရှိရန်<ph name="LINK_AFTER"/></translation>
+<translation id="8218534413919828549">ဟိုင်း, ငါက လီယို က။ ငါ့မှာ Brave က အိုင်အေ အရာရှိ AI။ ငါ Qwen 3.6 35B သည် Alibaba Cloud မှဖန်တီးသည့် မော်ဒယ်ဖြစ်၍ စွမ်းဆောင်ရည်မြင့်ပြီး အသုံးပြုမှုအများအပြားအတွက် အလွယ်တကူအသုံးပြုနိုင်သည်။ Qwen သည် Brave ၏ကိုယ်ပိုင်လုံခြုံရေးအဆောက်အအုံတွင် ဟော့စ်ထားသည်။<ph name="LINK_BEFORE"/>ပိုမိုသိရှိရန်<ph name="LINK_AFTER"/></translation>
 <translation id="8659225822055186905">ဟိုင်း, ငါက လီယို က။ ငါ့မှာ Brave က AI အထောက်အကူပြုသူပင်ဖြစ်သည်။ ငါ GLM-5.3 Flash တွင် အားကောင်းသော စွမ်းဆောင်ရည်ဖြင့်ဖန်တီးထားသည့် မော်ဒယ်ဖြစ်ပြီး Zhipu AI မှ ဖန်တီးထားပြီး အသုံးပြုမှုအမျိုးမျိုးအတွက်သင့်လျော်သည်။ GLM-5.3 Flash သည်သူတို့၏ လုံခြုံရေးအဆောက်အုံကို မှန်ကန်စွာအတည်ပြုနိုင်သောပုံစံဖြင့် NEAR မှ ဟော့စ်ထားသည်။<ph name="LINK_BEFORE"/>ပိုမိုသိရှိရန်<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">မင်္ဂလာပါ။ ကျွန်ုပ်မှာ Leo ဖြစ်ပြီး Brave မှဖန်တီးထားသော AI အင်္ဂင်ဖြစ်ပါသည်။ ဤကိရိယာသည် Anthropic မှထုတ်လွှင့်သော Claude Instant စံနမူနာဖြစ်ပြီး စကားပြောခြင်းနှင့်စာသားအုပ်စုများကဲ့သို့သော တုံ့ပြန်မှု လုပ်ငန်းများတွင်အသုံးပြုပါသည်။ Claude Instant ကို Brave ဝန်ဆောင်မှုမှတဆင့် လုံခြုံစွာအိမ်ရှေ့မှတ်ထားထားသည်။<ph name="LINK_BEFORE"/>ပိုမိုသိရှိရန်<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">ဟိုင်း, ငါက လီယို က။ ငါ့မှာ Brave က အိုင်အေ အရာရှိ AI။ ငါ Claude Sonnet သည် Anthropic မှ ဖန်တီးသည့် မော်ဒယ်ဖြစ်ပြီး စကားပြောနှင့် စာဖတ်ခြင်း အလုပ်များကို အင်အားပေးသည်။ Claude Sonnet သည် Brave ၏ကိုယ်ပိုင်လုံခြုံရေးအဆောက်အအုံတွင် ဟော့စ်ထားသည်။<ph name="LINK_BEFORE"/>ဆက်လက်သိရှိရန်<ph name="LINK_AFTER"/></translation>
-<translation id="6676306995311143470">ဟိုင်း, ငါက လီယို က။ ငါ့မှာ Brave က အိုင်အေ အရာရှိ AI။ ငါ Grok 4.6 သည် Amazon Bedrock Mantle ပေါ်ရှိ xAI ၏ ထိပ်တန်း ကျိုးကြောင်းဆင်ခြင်မှု မော်ဒယ်ဖြင့် စွမ်းဆောင်ထားသည်။ Grok 4.6 ကို Brave ၏ လုံခြုံသော AWS အဆောက်အအုံမှတစ်ဆင့် ဆောင်ရွက်ပေးသည်။<ph name="LINK_BEFORE"/>ဆက်လက်သိရှိရန်<ph name="LINK_AFTER"/></translation>
-<translation id="2394656730986208060">ဟိုင်း, ငါက လီယို က။ ငါ့မှာ Brave က အိုင်အေ အရာရှိ AI။ ငါ GPT 5.6 Luna သည် Amazon Bedrock Mantle ပေါ်ရှိ OpenAI ၏ မြန်ဆန်ပြီး latency နိမ့်သော မော်ဒယ်ဖြင့် စွမ်းဆောင်ထားသည်။ GPT 5.6 Luna ကို Brave ၏ လုံခြုံသော AWS အဆောက်အအုံမှတစ်ဆင့် ဆောင်ရွက်ပေးသည်။<ph name="LINK_BEFORE"/>ဆက်လက်သိရှိရန်<ph name="LINK_AFTER"/></translation>
+<translation id="3934503473603661122">ဟိုင်း, ငါက လီယို က။ ငါ့မှာ Brave က အိုင်အေ အရာရှိ AI။ ငါ Grok 4.7 သည် Amazon Bedrock ပေါ်ရှိ xAI ၏ ရှေ့တန်းကျ ယူဆတွေးခေါ်မှု မော်ဒယ်ဖြစ်သည်။ Grok 4.7 ကို Brave ၏ လုံခြုံသော AWS အဆောက်အအုံမှတစ်ဆင့် ပံ့ပိုးပေးသည်။<ph name="LINK_BEFORE"/>ပိုမိုသိရှိရန်<ph name="LINK_AFTER"/></translation>
+<translation id="8983215701788462580">ဟိုင်း, ငါက လီယို က။ ငါ့မှာ Brave က အိုင်အေ အရာရှိ AI။ ငါ GPT Luna သည် Amazon Bedrock ပေါ်ရှိ OpenAI ၏ လျင်မြန်ပြီး latency နိမ့်သော မော်ဒယ်ဖြစ်သည်။ GPT Luna ကို Brave ၏ လုံခြုံသော AWS အဆောက်အအုံမှတစ်ဆင့် ပံ့ပိုးပေးသည်။<ph name="LINK_BEFORE"/>ပိုမိုသိရှိရန်<ph name="LINK_AFTER"/></translation>
 <translation id="5278969721580944810">ဟိုင်း, ငါက လီယို က။ ငါ့မှာ Brave က အိုင်အေ အရာရှိ AI။ ငါ GPT 5.6 Terra သည် Amazon Bedrock Mantle ပေါ်ရှိ OpenAI ၏ ဟန်ချက်ညီသော ထုတ်လုပ်မှု မော်ဒယ်ဖြင့် စွမ်းဆောင်ထားသည်။ GPT 5.6 Terra ကို Brave ၏ လုံခြုံသော AWS အဆောက်အအုံမှတစ်ဆင့် ဆောင်ရွက်ပေးသည်။<ph name="LINK_BEFORE"/>ဆက်လက်သိရှိရန်<ph name="LINK_AFTER"/></translation>
 <translation id="5037359072717016032">ဟိုင်း, ငါက လီယို က။ ငါ့မှာ Brave က အိုင်အေ အရာရှိ AI။ ငါ Mistral Large သည် Mistral မှဖန်တီးသည့် မော်ဒယ်ဖြစ်၍ စွမ်းဆောင်ရည်မြင့်ပြီး အမျိုးမျိုးသော အသုံးပြုမှုရပ်ကွက်များတွင် အသုံးပြုနိုင်သည်။ Mistral Large သည် Brave ၏ကိုယ်ပိုင်လုံခြုံရေးအဆောက်အအုံတွင် ဟော့စ်ထားသည်။<ph name="LINK_BEFORE"/>ဆက်လက်သိရှိရန်<ph name="LINK_AFTER"/></translation>
 <translation id="5475035333915581972">ဟိုင်း, ငါက လီယို က။ ငါ့မှာ Brave က အိုင်အေ အရာရှိ AI။ ငါ Qwen 3.8 Flash Next သည် Alibaba Cloud မှဖန်တီးသည့် မော်ဒယ်ဖြစ်၍ စွမ်းဆောင်ရည်မြင့်ပြီး အမျိုးမျိုးသော အသုံးပြုမှုရပ်ကွက်များတွင် အသုံးပြုနိုင်သည်။ Qwen 3.8 Flash Next သည် Brave ၏ကိုယ်ပိုင်လုံခြုံရေးအဆောက်အအုံတွင် ဟော့စ်ထားသည်။<ph name="LINK_BEFORE"/>ဆက်လက်သိရှိရန်<ph name="LINK_AFTER"/></translation>
@@ -2271,6 +2275,10 @@
 <translation id="3027575440738035995">Leo Premium သည် ပိုမိုကောင်းမွန်သော အဖြေအသေးစိတ်အချက်အလက်များအတွက် တိုးချဲ့ထားသော ဘာသာစကားမော်ဒယ်များကို အသုံးပြုခွင့်ပေးသည်။ <ph name="LINK_BEFORE"/>ပိုမိုလေ့လာရန်<ph name="LINK_AFTER"/></translation>
 <translation id="8261506727792406068">ဖျက်ရန်</translation>
 <translation id="6574153208133461043">ဤစကားဝိုင်းကိုဖျက်ရန်သေချာပါသလား? ဒီလုပ်ဆောင်ချက်ကိုတစ်ခါပြန်မလုပ်နိုင်ပါ။</translation>
+<translation id="1020105790073039189">ပုံများကို ဖတ်နိုင်သော မော်ဒယ်သို့ ပြောင်းမလား?</translation>
+<translation id="3797128260474242570"><ph name="CURRENT_MODEL"/> သည် ပုံများကို မဖတ်နိုင်ဘဲ သင့်ပူးတွဲဖိုင်များသည် ပုံ လုပ်ဆောင်ခြင်း လိုအပ်သည်။ ၎င်းတို့ကို ပေးပို့ရန်၊ ဤစကားဝိုင်းကို <ph name="VISION_MODEL"/> သို့ ပြောင်းပါ။ ၎င်းသည် ယခင်မက်ဆေ့ဂျ်များအပါအဝင် စကားဝိုင်းတစ်ခုလုံးကို ရရှိမည်။ သင်သည် ပယ်ဖျက်၍ ပုံများကိုဖတ်နိုင်သော အခြားမော်ဒယ်တစ်ခုကိုလည်း ရွေးချယ်နိုင်သည်။ ပုံများမပါဘဲ ပေးပို့ပါက Leo သည် ပူးတွဲဖိုင်များကို မမြင်နိုင်ပါ။</translation>
+<translation id="830353068401992697">ပြောင်း၍ ပေးပို့ပါ</translation>
+<translation id="369110003363071587">ပုံများမပါဘဲ ပေးပို့ပါ</translation>
 <translation id="7488762544858401571">ပြင်ထားသည့်ဆောင်ရွက်မှု</translation>
 <translation id="5604254791550001355">တုံ့ပြန်မှုကို တည်းဖြတ်ပါ</translation>
 <translation id="8115786586976830777">တုံ့ပြန်မှုကို ကော်ပီလုပ်ပါ</translation>
@@ -2425,6 +2433,7 @@
 <translation id="3024277805447899099">ပုံကို အစမ်းကြည့်ရန်</translation>
 <translation id="6671495933530132209">ပုံကို ကူးယူရန်</translation>
 <translation id="6864459304226931083">ပုံကို ဒေါင်းလုဒ်လုပ်ရန်</translation>
+<translation id="6323406350879995440">တက်ဘ်တွင် ဖွင့်ပါ</translation>
 <translation id="6332876390231524389">လက်ရှိ tab အကြောင်းအရာ</translation>
 <translation id="6397861830483632092">ဖွင့်ထားသော တက်ဘ်များ...</translation>
 <translation id="802080272588201037">စာမှတ်...</translation>
@@ -2479,11 +2488,14 @@
 <translation id="4838375634693651776">သင့်တောင်းဆိုမှုကို ကူညီရန်အတွက် sandbox တွင် ကုဒ်ကို လုပ်ဆောင်နေသည်</translation>
 <translation id="6990975553143971265">သင့်ဘရောက်ဇာမှတ်တမ်းတွင် "<ph name="QUERY"/>" ကို ရှာဖွေနေသည်</translation>
 <translation id="8302511726757276645">သင့်ဘရောက်ဇာမှတ်တမ်းကို ရှာဖွေနေသည်</translation>
+<translation id="6727762439034900202">Workspace တစ်ခု ဖန်တီးနေသည်</translation>
+<translation id="261799307673205052">Workspace</translation>
 <translation id="8410699755320690690">Brave AI သည် သင့်ဘရောက်ဇာမှတ်တမ်းကို ရှာဖွေလိုပါသည်။ ရှာဖွေမှုသည် သင့်ကိရိယာပေါ်တွင် ဒေသတွင်းအလုပ်လုပ်သဖြင့် သင့်မှတ်တမ်းအပြည့်ကို မည်သည့်နေရာသို့မှ ပေးပို့မည်မဟုတ်ပါ။ ကိုက်ညီသည့်စာမျက်နှာများ၏ ခေါင်းစဉ်များ၊ URL များနှင့် အညွှန်းတင်ထားသော စာသားအပိုင်းများသာ ဤစကားဝိုင်း၏ အစိတ်အပိုင်းအဖြစ် Brave AI သို့ ပေးပို့ပါမည်။</translation>
 <translation id="4379566111233326721">ကုဒ်-</translation>
 <translation id="3542130965673205258">အထွက်-</translation>
 <translation id="6911817209337314910">သင်ရွေးချယ်ရန်အတွက် ရွေးချယ်စရာအချို့ကို ဖန်တီးနေသည်</translation>
 <translation id="5382076391290708074">သင့်၏Tab များကို ပြန်လည်စီစဉ်ခြင်း</translation>
+<translation id="8717463977094156527">ဤအရာကို ခွင့်ပြုခြင်းသည် သင့် Tab များနှင့် Tab Group အားလုံး၏ **URL** နှင့် **ခေါင်းစဉ်** ကို Brave AI သို့ ပေးပို့မည်ဖြစ်ပြီး၊ သင့် Semantic History Search အညွှန်းမှ ရရှိနိုင်ပါက သင့် Tab များရှိ **စာမျက်နှာစာသား၏ အတိုချုပ်များ** ကိုပါ ပေးပို့မည်ဖြစ်ကာ Brave AI အား သင့် Tab များကို ရွှေ့ပြောင်းစေမည်။ ဤခွင့်ပြုချက်သည် ဤစကားဝိုင်းအတွက်သာ သက်ဆိုင်သည်။</translation>
 <translation id="3862123464576147769">ဤကို ခွင့်ပြုခြင်းသည် သင့်ဖွင့်ထားသည့် Tab အားလုံး၏ <ph name="URL_FORMAT_START"/>URL<ph name="URL_FORMAT_END"/> နှင့် <ph name="TITLE_FORMAT_START"/>ခေါင်းစီးခွင့်<ph name="TITLE_FORMAT_END"/> အားလုံးကို Brave AI သို့ ပေးပို့ပြီး Brave AI ကို ၎င်းတို့ကို ပြန်လည်စီစဉ်လိုက်ခွင့်ပြုလိုက်ဆိုတာဖြစ်သည်။ ဤခွင့်ပြုချက်သည် ဤစကားဝိုင်းအတွက်သာ ကျေးဇူးပြုသည်။</translation>
 <translation id="396165714586708444">နက်ရှိုင်းသောသုတေသန</translation>
 <translation id="577747221882855891">ရှာဖွေခြင်း: "<ph name="QUERY"/>"</translation>
@@ -2511,7 +2523,7 @@
 <translation id="7901376755618482277">အီးမေးလ် အကွက်များတွင် "Alias အသစ်" အရိပ်အမြွက်ကို ပြပါ</translation>
 <translation id="6002159997868894136">alias ကိုကူးဖို့နှိပ်ပါ</translation>
 <translation id="8105770564756958406"><ph name="DOMAINS"/> မှအသုံးပြုထားသည်</translation>
-<translation id="5006956315579221642">သင့် အထင်အမှတ် ထောက်ခံမဲ့ အီးမေးလ် လိပ်စာအရိပ်များကို ၅ မျိုးကြောင့် ဖန်တီးပြီး သင့် အထင်အမှတ်ကို ကာကွယ်ပါ။</translation>
+<translation id="6776324888261353420">သင့် အထင်အမှတ် ထောက်ခံမဲ့ အီးမေးလ် လိပ်စာအရိပ်များကို <ph name="MAX_ALIASES"/> မျိုးထိ အခမဲ့ ဖန်တီးပြီး သင့် အထင်အမှတ်ကို ကာကွယ်ပါ။</translation>
 <translation id="9046133327037621173">အီးမေးလ် လိပ်စာ အသစ်</translation>
 <translation id="3768606658230902536">သင့် inbox သို့ ယိုလာမည့် အသေးစိထုတ်ဖြင့် တစ်ကိုယ်ရေး အီးမေးလ် လိပ်စာကို ကာကွယ်ပြီး မှီခိုဖို့ random အီးမေးလ်လိပ်စာ ဖန်တီးပါ။</translation>
 <translation id="4452721050684632493">Alias အကန့်အသတ်သို့ ရောက်ရှိနေသည်</translation>
@@ -2584,7 +2596,7 @@
 <translation id="6851426306697017546">နာရီကိုပြသပါ</translation>
 <translation id="4844370919312937270">ရက်စွဲခွင်ခုစုသစ်တွင်ရှာဖွေမှု widget ကိုပြပါ</translation>
 <translation id="5088374130885640159"><ph name="REWARDS_LINK_BEGIN"/>Brave ဆုလက်ဆောင်<ph name="REWARDS_LINK_END"/> ဖြင့် New Tab စာမျက်နှာ ကြော်ငြာများကို ကြည့်ပြီး ပိုက်ဆံရှာနိုင်ပါသည်။ <ph name="LEARN_MORE_LINK_BEGIN"/>ပိုမိုလေ့လာရန်<ph name="LEARN_MORE_LINK_END"/>။</translation>
-<translation id="4100520468072294616">New Tab စာမျက်နှာ အကြော်အနွင်းတွေ ပြပါ။</translation>
+<translation id="7020410251711260841">ပံ့ပိုးထားသော ကြော်ငြာများ ပြရန်</translation>
 <translation id="4983925687993168579">စာရင်းအင်းများ</translation>
 <translation id="5009354496127441090">Top sites ကိုပြပါ</translation>
 <translation id="7705524343798198388">VPN</translation>
@@ -2608,6 +2620,7 @@
 <translation id="8814357473522731680">ထည့်သွင်းသုံးစွဲထားသော နည်းပညာ</translation>
 <translation id="7143207342074048698">ဆက်ဆံနေပြီ</translation>
 <translation id="1202549130170287307">ချွင်းထားသည်</translation>
+<translation id="4989542687859782284">မရရှိနိုင်ပါ</translation>
 <translation id="8941703009412168350">BRAVE VPN</translation>
 <translation id="6303294677342628402">Shields</translation>
 <translation id="8458987127502506209">Brave ဒိုင်းကာကို ဖွင့်ရန်</translation>
@@ -2796,9 +2809,11 @@
 <translation id="6021669293402055982">Brave VPN: ဖြုတ်ထားသည်</translation>
 <translation id="3541307549916475335">Brave VPN Panel UI</translation>
 <translation id="2325196879156848326">ချိတ်ဆက်၍မရပါ</translation>
+<translation id="6246488334766115273">ချိတ်ဆက်မှု မရရှိနိုင်ပါ</translation>
 <translation id="745054660363064771">ဆာဗာသို့ ချိတ်ဆက်၍မရပါ</translation>
 <translation id="3936826714240735937">ဆာဗာတစ်ခုသို့ရွေးပါ</translation>
 <translation id="2606728814652041300"><ph name="PRODUCT_NAME"/> သည် <ph name="REGION_NAME"/> ဆာဗာသို့ ချိတ်ဆက်မရဖြစ်လျက်ရှိပါသည်။ ကျေးဇူးပြု၍ ထပ်မံကြိုးစားလိုက်ပါ သို့မဟုတ်တစ်နိုင်ငံကိုရွေးချယ်ပါ။</translation>
+<translation id="4872940635040426686"><ph name="PRODUCT_NAME"/> မရရှိနိုင်ပါ။ ပြဿနာ ဆက်လက်ဖြစ်ပေါ်နေပါက Brave ကို ပြန်လည်ထည့်သွင်းပါ သို့မဟုတ် ကျွန်ုပ်တို့၏ နည်းပညာ အထောက်အပံ့ အဖွဲ့ထံ ဆက်သွယ်ပါ။</translation>
 <translation id="1776533911621317363">7 ရက် အခမဲ့ စမ်းသုံးမှုကို စတင်ပါ</translation>
 <translation id="3357036723290257445">Brave VPN ကို ဝယ်ပြီးပြီလား။</translation>
 <translation id="8652175077544655965">ဆက်တင်များကို ပိတ်ရန်</translation>
@@ -2936,11 +2951,13 @@ brave://setting/systemတွင် WireGuard ပြန်ပြောင်း�
 <translation id="4405566535206792621">သင့်စကားဝှက်ကို ပြောင်းလဲရန် သင့်အီးမေးလ်လိပ်စာကို အတည်ပြုပါ။</translation>
 <translation id="3135333563420939059">သင့်အီးမေးလ်ကို အတည်ပြုပြီးပါပြီ။ သင့်စကားဝှက်ပြောင်းလဲခြင်းကို ပြီးဆုံးရန် စကားဝှက်အသစ်တစ်ခု သတ်မှတ်ပါ။</translation>
 <translation id="4227581348172626540">စကားဝှက်ပြောင်းလဲခြင်းကို ပယ်ဖျက်ပါ</translation>
-<translation id="808894953321890993">စကားဝှက် ပြောင်းလဲပါ</translation>
 <translation id="7967687455715421528">စကားဝှက်ပြောင်းလဲ၍ မရနိုင်ပါ</translation>
 <translation id="7413006094063730650">အကောင့်ဖျက်ပါ</translation>
 <translation id="4869737930995549965">Logout လုပ်ပါ</translation>
-<translation id="2902312830803030883">နောက်ထပ်လုပ်ဆောင်မှုများ</translation>
+<translation id="4424262960694990728">လုပ်ဆောင်ချက် လိုအပ်သည်</translation>
+<translation id="847260521336960132">အကောင့် အသေးစိတ်</translation>
+<translation id="5399593843842221768">သင့် Brave အကောင့်အကြောင်း ကိုယ်ရေးကိုယ်တာ အချက်အလက်။</translation>
+<translation id="5771731269320499905">Brave အကောင့် အသေးစိတ်</translation>
 <translation id="5538654494923870167">သင်၏ Brave အကောင့်ဖြင့် စတင်လိုက်ပါ</translation>
 <translation id="1544145635547515689">Brave အကောင့်တစ်ခု ပြုလုပ်ပါ</translation>
 <translation id="3828644479849256404">အကောင့်ရှိပြီးပြီလား။ Log in လုပ်ပါ</translation>
@@ -2956,6 +2973,7 @@ brave://setting/systemတွင် WireGuard ပြန်ပြောင်း�
 <translation id="7114054701490058191">စကားဝှက်များ မကိုက်ညီပါ</translation>
 <translation id="4277028893293644418">စကားဝှက်ကို ပြန်လည်သတ်မှတ်ပါ</translation>
 <translation id="9033485352495162741">အတည်ပြုခြင်း အောင်မြင်ပါသည်။ ယခု သင်လိုချင်သော စကားဝှက်အသစ်ကို ရိုက်ထည့်ပါ-</translation>
+<translation id="808894953321890993">စကားဝှက် ပြောင်းလဲပါ</translation>
 <translation id="1293857704520741614">သင်၏အကောင့်ကို Log in လုပ်ပါ</translation>
 <translation id="118617366439356381">စကားဝှက်ကို မေ့သွားပါသလား။</translation>
 <translation id="5636406393070713097">သင်၏ Brave အကောင့်အီးမေးလ်ကို အတည်ပြုပါ၊ ထို့နောက် စကားဝှက်ပြန်လည်သတ်မှတ်ရန် ကုဒ်တစ်ခုကို လက်ခံရရှိမည်။ ကုဒ်သည် ၁၅ မိနစ်အတွင်းသာ အကျုံးဝင်ပါသည်။</translation>

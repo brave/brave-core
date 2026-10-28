@@ -220,7 +220,6 @@
 <translation id="9040069796107003510">Braveリワードアイコン</translation>
 <translation id="6333347122924254968">アドレスバーにBraveリワードのアイコンを表示</translation>
 <translation id="4393974575368329991">下部ナビゲーションツールバー</translation>
-<translation id="8727059712928806451">下部のバーを有効にします</translation>
 <translation id="1834226716203076292">ホーム、ブックマーク、検索にすばやくアクセスするための下部バーを表示</translation>
 <translation id="1422686363939271829">この設定は、アドレスバーの位置が下部に配置されている場合は無効になります。</translation>
 <translation id="6587448235155023666">変更は、次にBraveを再起動した際に有効になります</translation>
@@ -290,7 +289,7 @@
 <translation id="2569646144216067185">単語数：<ph name="WORD_COUNT"/></translation>
 <translation id="7507533586185621084">同期コードが間違っています</translation>
 <translation id="8284063834901328650">同期用QRコードが誤りです</translation>
-<translation id="859506441384380749">このコードは非推奨バージョンのBraveで生成されました。まず他のデバイスをアップグレードしてください</translation>
+<translation id="4002014583969312635">このコードは、古いバージョンのBraveを実行しているデバイスで作成されたようです。他のデバイスでBraveの最新バージョンにアップデートしてから、新しい同期コードを作成してください。</translation>
 <translation id="3132642509209154999">このコードは期限切れです。他のデバイスで新しいコードを生成してもう一度お試しください。</translation>
 <translation id="2859229680945501779">このコードは無効です。お使いの端末の時刻とタイムゾーンが正しく設定されていることをご確認ください。</translation>
 <translation id="3149880132460839085">Brave Sync</translation>
@@ -336,8 +335,6 @@
 <translation id="8185825081026121627">プライバシーを重視するBrave Rewardsの広告を表示してBATポイントを獲得しましょう！</translation>
 <translation id="5321518976657560663">リセットエラー</translation>
 <translation id="4114170343590425996">Brave Rewards のリセット中にエラーが発生しました。Braveを再起動してもう一度お試しください。</translation>
-<translation id="6417420737057016607">Brave広告</translation>
-<translation id="5611966874859284786">Braveが使用されていないときに通知広告を表示します</translation>
 <translation id="5717636703619499822"><ph name="BEGIN_LINK1"/>Braveリワードのデータをリセット…<ph name="END_LINK1"/></translation>
 <translation id="1830919318137227284"><ph name="BEGIN_LINK1"/>Brave広告のデータをクリア…<ph name="END_LINK1"/></translation>
 <translation id="8293206222192510085">ブックマークに追加</translation>
@@ -400,8 +397,9 @@
 <translation id="4546260624932151782">お気に入りを表示</translation>
 <translation id="5313967007315987356">サイトを追加</translation>
 <translation id="1773147648972887693">よく閲覧するメニュー項目を表示</translation>
-<translation id="752098910262610337">ショートカットを表示</translation>
 <translation id="7134741506051403308">ウィジェットを非表示</translation>
+<translation id="1247759249260562308">お気に入りを編集</translation>
+<translation id="6387214885349500492">このお気に入りをピン留め</translation>
 <translation id="7462178177755090262">ブラウザ起動時の画面</translation>
 <translation id="5365434987337264071">前回開いていたタブ</translation>
 <translation id="6019856124237323989">{HOURS, plural,
@@ -979,6 +977,7 @@
 <translation id="6365389672683343144">Brave VPNサブスクリプションは、Android、iOS、デスクトップで最大5台のデバイスを保護できます。Google PlayのサブスクリプションをBrave アカウントにリンクするだけで設定可能です。</translation>
 <translation id="6610899852831463073">セーフ ブラウジングを有効化できません</translation>
 <translation id="7954263306665462056">このデバイスではセーフ ブラウジングが無効になっています。有効化するには、Google Playのサービスをインストール済みで、それらが最新版であることをご確認いただく必要があります。</translation>
+<translation id="6417420737057016607">Brave広告</translation>
 <translation id="7748944510530490017">プライマリネットワーク</translation>
 <translation id="2781668117338732220">セカンダリネットワーク</translation>
 <translation id="282560918037172384">テストネットワーク</translation>

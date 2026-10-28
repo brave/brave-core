@@ -20,6 +20,7 @@
 <translation id="8541922081612557424">Acerca do Brave</translation>
 <translation id="987734326276404793">Receba alertas de acompanhamento de preço com o Brave no telemóvel</translation>
 <translation id="1203500561924088507">Agradecemos a instalação. Tem de reiniciar o navegador antes de utilizar o <ph name="BUNDLE_NAME"/>.</translation>
+<translation id="1213674046343558619">Existe uma <ph name="IMPORTANT_UPDATE"/> pendente. Para manter a sua navegação segura, o Brave vai ser atualizado da próxima vez que estiver num período de inatividade durante <ph name="IDLE_DURATION"/>.</translation>
 <translation id="1232234696885483911">Quando abre a pesquisa de imagens, o título, o URL e o conteúdo da página, incluindo PDFs, são enviados automaticamente para o servidor. <ph name="LEARN_MORE"/></translation>
 <translation id="1934377710648094656">Enquanto tiver sessão iniciada, pode usar as palavras-passe e muito mais da sua Conta Brave no Brave. Para alterar esta opção, aceda a "A sua conta no Brave".</translation>
 <translation id="583633806828413086">Mostrar o Gemini no Brave na barra de menu do Mac</translation>
@@ -222,6 +223,7 @@
 <translation id="3286538390144397061">Reiniciar agora</translation>
 <translation id="2339258256897053758">As chaves da API do Brave estão em falta. Algumas funcionalidades do Brave serão desativadas.</translation>
 <translation id="8926637909431618259">Continuar a executar aplicações em segundo plano quando o Brave está fechado</translation>
+<translation id="8245661393996028021">O Brave vai ser atualizado quando estiver ausente</translation>
 <translation id="518125528057094977">O Brave envia-lhe um aviso antes de carregar qualquer site através de uma ligação insegura</translation>
 <translation id="8652321858775514885">A sua sessão é terminada na maioria dos sites quando fecha todas as janelas do Brave, exceto na sua Conta Brave se tiver sessão iniciada no Brave. Para permitir que os sites se lembrem de si, <ph name="SETTINGS_LINK"/>.</translation>
 <translation id="3352986031709923790">canto superior direito da área de pesquisa: direita <ph name="RIGHT"/>%, parte superior <ph name="TOP"/>%</translation>
@@ -230,6 +232,7 @@
 <translation id="2645435784669275700">ChromeOS</translation>
 <translation id="2297290224191497273">Mudar para o perfil do Brave existente?</translation>
 <translation id="3412460710772753638">No Gestor de Palavras-passe neste dispositivo</translation>
+<translation id="172368702860945706">O Brave quer fazer uma atualização</translation>
 <translation id="5079573433701109938">Para aceder aos seus marcadores e muito mais do <ph name="DEVICE"/>, inicie sessão no Brave</translation>
 <translation id="3438772217992559640">Pesquisar este separador com a pesquisa de imagens</translation>
 <translation id="2491221873705777076">Expanda a Navegação segura melhorada com o Brave no seu telemóvel</translation>
@@ -367,6 +370,7 @@
 <translation id="4877750182157975795">Aceda a todos os seus favoritos da Brave com o Brave no <ph name="DEVICE_TYPE"/></translation>
 <translation id="1204184037023366446">O Brave precisa de autorização para monitorizar as suas mãos</translation>
 <translation id="5406591571925937375">Não visitou o site recentemente. O Brave removeu <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> e <ph name="PERMISSION_3"/>.</translation>
+<translation id="3576895950897485019">Inicie sessão no Brave</translation>
 <translation id="5174969993834422967">Normalmente, bloqueia as notificações. Para permitir que este site lhe apresente notificações, clique no ícone de notificação no canto direito da barra de localização.</translation>
 <translation id="5174983315706567306">Não existe espaço suficiente em disco.</translation>
 <translation id="8157129267754368853">A conta do Brave requer a reautenticação</translation>
@@ -375,6 +379,7 @@
 <translation id="5234764350956374838">Ignorar</translation>
 <translation id="7690383309583926074">Transfira a app Brave para guardar palavras-passe em qualquer lugar</translation>
 <translation id="8586264863973514035">Para aplicar as alterações, reinicie o Brave.</translation>
+<translation id="8127050479140582768">Para enviar este separador para outro dispositivo, inicie sessão no Brave em ambos os dispositivos</translation>
 <translation id="5286907366254680517">Detetado</translation>
 <translation id="7264453786974905915">Transfira a app Brave</translation>
 <translation id="7230006500876504868">Pesquise com o Brave</translation>
@@ -738,6 +743,7 @@ O Brave não consegue recuperar as suas definições.</translation>
 <translation id="5128665650717824082">Não é possível tornar o Brave for Testing o seu navegador predefinido.</translation>
 <translation id="3053208669360972929">Pesquise com o Brave em qualquer lugar</translation>
 <translation id="2433912322225810055">Também controla a página apresentada quando inicia o Brave ou pesquisa a partir da Caixa geral.</translation>
+<translation id="8789425457808164956">Para enviar este separador para outro dispositivo, inicie sessão no Brave nesse dispositivo</translation>
 <translation id="4100716194836114130">Este é o seu Brave</translation>
 <translation id="8712637175834984815">OK</translation>
 <translation id="1419543648228375718">Iniciar sessão no Brave?</translation>

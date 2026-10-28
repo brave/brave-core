@@ -23,6 +23,7 @@
 <translation id="8541922081612557424">關於 Brave</translation>
 <translation id="987734326276404793">在手機上透過 Brave 接收價格追蹤通知</translation>
 <translation id="1203500561924088507">多謝安裝。您必須先重新啟動瀏覽器，才能使用 <ph name="BUNDLE_NAME"/>。</translation>
+<translation id="1213674046343558619"><ph name="IMPORTANT_UPDATE"/>有待處理。為確保瀏覽安全，Brave 會在你下次閒置 <ph name="IDLE_DURATION"/>後更新。</translation>
 <translation id="1232234696885483911">開啟「圖片搜尋」時，網頁標題、網址和內容 (包括 PDF) 會自動傳送至伺服器。<ph name="LEARN_MORE"/></translation>
 <translation id="1934377710648094656">登入後，你可以在 Brave 使用 Brave 帳戶儲存的密碼和其他資料。如要變更此設定，請前往「你在 Brave 的帳戶」。</translation>
 <translation id="583633806828413086">在 Mac 選單列顯示 Brave 版 Gemini</translation>
@@ -229,6 +230,7 @@
 <translation id="3286538390144397061">立即重新啟動</translation>
 <translation id="2339258256897053758">缺少 Brave API 金鑰，系統將停用 Brave 的部分功能。</translation>
 <translation id="8926637909431618259">在 Brave 關閉時繼續執行背景應用程式</translation>
+<translation id="8245661393996028021">Brave 會在你閒置時更新</translation>
 <translation id="518125528057094977">Brave 會在使用不安全的連線載入任何網站前顯示警告</translation>
 <translation id="8652321858775514885">關閉所有 Brave 視窗後，系統會將你登出所有網站，但如果你已登入 Brave，Brave 帳戶就會維持登入狀態。如要允許網站記住你的資料，請<ph name="SETTINGS_LINK"/>。</translation>
 <translation id="3352986031709923790">搜尋區域嘅右上角：距右側 <ph name="RIGHT"/>%，距頂部 <ph name="TOP"/>%</translation>
@@ -237,6 +239,7 @@
 <translation id="2645435784669275700">Brave 作業系統</translation>
 <translation id="2297290224191497273">要切換至現有 Brave 設定檔嗎？</translation>
 <translation id="3412460710772753638">儲存在此裝置的「密碼管理工具」中</translation>
+<translation id="172368702860945706">Brave 需要更新</translation>
 <translation id="5079573433701109938">如要取用<ph name="DEVICE"/>上的書籤及其他設定，請登入 Brave</translation>
 <translation id="3438772217992559640">使用「圖片搜尋」搜尋此分頁</translation>
 <translation id="2491221873705777076">透過手機的 Brave 擴大「強化安全瀏覽」範圍</translation>
@@ -379,6 +382,7 @@
 <translation id="4877750182157975795">在 <ph name="DEVICE_TYPE"/> 透過 Brave 取用所有 Brave 常用項目</translation>
 <translation id="1204184037023366446">Brave 需要相關權限才能追蹤手勢</translation>
 <translation id="5406591571925937375">由於最近沒有瀏覽記錄，Brave 已移除<ph name="PERMISSION_1"/>、<ph name="PERMISSION_2"/>和<ph name="PERMISSION_3"/>權限。</translation>
+<translation id="3576895950897485019">登入 Brave</translation>
 <translation id="5174969993834422967">系統已按照你的使用習慣封鎖通知。如要允許此網站傳送通知，請按一下網址列右上角的通知圖示。</translation>
 <translation id="5174983315706567306">磁碟空間不足。</translation>
 <translation id="8157129267754368853">Brave 帳戶需要重新驗證</translation>
@@ -388,6 +392,7 @@
 <translation id="1069969567644851798">在 Brave 無痕式視窗中開啟連結</translation>
 <translation id="7690383309583926074">取得 Brave 應用程式，隨時隨地儲存密碼</translation>
 <translation id="8586264863973514035">如要套用變更，請重新啟動 Brave</translation>
+<translation id="8127050479140582768">如要將此分頁傳送至其他裝置，兩部裝置都需要登入 Brave</translation>
 <translation id="5286907366254680517">偵測到</translation>
 <translation id="7264453786974905915">取得 Brave 應用程式</translation>
 <translation id="5994282802285556682">使用無痕模式瀏覽時，Brave 會在使用不安全的連線載入網站前顯示警告</translation>
@@ -756,6 +761,7 @@ Brave 無法復原您的設定。</translation>
 <translation id="5128665650717824082">Brave for Testing 無法設為預設瀏覽器。</translation>
 <translation id="3053208669360972929">隨時隨地使用 Brave 搜尋</translation>
 <translation id="2433912322225810055">這個擴充功能也會控管 Brave 啟動時或您使用網址列搜尋時所顯示的網頁。</translation>
+<translation id="8789425457808164956">如要將此分頁傳送至其他裝置，請在該裝置上登入 Brave</translation>
 <translation id="4100716194836114130">這是您專屬的 Brave</translation>
 <translation id="8712637175834984815">我知道了</translation>
 <translation id="1419543648228375718">要登入 Brave 嗎？</translation>

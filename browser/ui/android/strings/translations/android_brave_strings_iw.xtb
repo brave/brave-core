@@ -220,7 +220,6 @@
 <translation id="9040069796107003510">סמל Brave Rewards</translation>
 <translation id="6333347122924254968">הצג את סמליל פרסי Brave בשורת הכתובת</translation>
 <translation id="4393974575368329991">סרגל ניווט תחתון</translation>
-<translation id="8727059712928806451">הפעל סרגל תחתון</translation>
 <translation id="1834226716203076292">הצגת סרגל תחתון לגישה מהירה לדף הבית, לסימניות ולחיפוש</translation>
 <translation id="1422686363939271829">ההגדרה הזו מושבתת בעת בחירה למקם את סרגל הכתובת למטה</translation>
 <translation id="6587448235155023666">השינויים שלך ייכנסו לתוקף בפעם הבאה שתפעיל/י מחדש את Brave</translation>
@@ -290,7 +289,7 @@
 <translation id="2569646144216067185">ספירת מילים: <ph name="WORD_COUNT"/></translation>
 <translation id="7507533586185621084">קוד סנכרון שגוי</translation>
 <translation id="8284063834901328650">קוד ה-QR לסנכרון שגוי</translation>
-<translation id="859506441384380749">קוד זה נוצר על ידי גרסת Brave שהוצאה משימוש, אנא שדרג תחילה את המכשיר הנוסף שלך</translation>
+<translation id="4002014583969312635">נראה שהקוד הזה נוצר במכשיר שמריץ גרסה ישנה יותר של Brave. יש לעדכן לגרסה האחרונה ביותר של Brave במכשיר האחר שלך, ואז ליצור קוד סנכרון חדש.</translation>
 <translation id="3132642509209154999">פג תוקפו של הקוד. יש לייצור קוד חדש במכשיר השני ולנסות שוב.</translation>
 <translation id="2859229680945501779">קוד זה אינו חוקי. אנא בדקו שהזמן ואזור הזמן מוגדרים כהלכה במכשיר שלכם.</translation>
 <translation id="3149880132460839085">סנכרון Brave</translation>
@@ -337,8 +336,6 @@
 <translation id="5321518976657560663">איפוס שגיאה</translation>
 <translation id="4114170343590425996">אירעה שגיאה באיפוס Brave Reward.
 נא להפעיל מחדש את Brave ולנסות שוב.</translation>
-<translation id="6417420737057016607">פרסומות Brave</translation>
-<translation id="5611966874859284786">הצג מודעות התראה כאשר Brave אינו בשימוש</translation>
 <translation id="5717636703619499822"><ph name="BEGIN_LINK1"/>איפוס נתוני Brave תגמולים…<ph name="END_LINK1"/></translation>
 <translation id="1830919318137227284"><ph name="BEGIN_LINK1"/>מחיקת נתוני Brave מודעות…<ph name="END_LINK1"/></translation>
 <translation id="8293206222192510085">הוספת סימניה</translation>
@@ -401,8 +398,9 @@
 <translation id="4546260624932151782">הצג מועדפים</translation>
 <translation id="5313967007315987356">הוסף אתר</translation>
 <translation id="1773147648972887693">הצג ביקורים תכופים</translation>
-<translation id="752098910262610337">הצג קיצורי דרך</translation>
 <translation id="7134741506051403308">הסתר ווידג'ט</translation>
+<translation id="1247759249260562308">עריכת סימניית אתר מועדף</translation>
+<translation id="6387214885349500492">הצמד אהוב זה</translation>
 <translation id="7462178177755090262">מסך פתיחה</translation>
 <translation id="5365434987337264071">הכרטיסייה האחרונה שנפתחה</translation>
 <translation id="6019856124237323989">{HOURS, plural,
@@ -980,6 +978,7 @@
 <translation id="6365389672683343144">המינוי ל-VPN של Brave יכול להגן על עד 5 מכשירים, באנדרואיד, iOS ושולחן העבודה. פשוט קשר את המינוי שלכם ב-Google Play לחשבון ה-Brave שלכם.</translation>
 <translation id="6610899852831463073">לא ניתן להפעיל גלישה בטוחה</translation>
 <translation id="7954263306665462056">גלישה בטוחה הושבתה במכשיר שלכם. כדי להפעיל את האפשרות מחדש ודאו ששירותי Google Play מותקנים ומעודכנים.</translation>
+<translation id="6417420737057016607">פרסומות Brave</translation>
 <translation id="7748944510530490017">רשתות ראשוניות</translation>
 <translation id="2781668117338732220">רשתות משניות</translation>
 <translation id="282560918037172384">בדיקת רשתות</translation>

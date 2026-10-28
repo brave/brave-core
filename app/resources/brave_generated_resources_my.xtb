@@ -117,6 +117,8 @@
 <translation id="2162109630536601963">ဒီ Extension က ကွန်ယက် ချိတ်ဆက်မှု ဆက်ဆိုစမ်းသက်မှသည့်အခါ Tor သို့မဟုတ် Private Mode မသုံးပါမွှာ</translation>
 <translation id="2725327089319971976">Private mode နှင့် Tor mode ရှိ extension ကိုပြန်လည်မသုံးဘို့ ဒီ လွဲရွှေ့မှုကို မတားပါနှင့်။</translation>
 <translation id="438106944087726695">Brave မှ ပြင်ဆင်ထားသည်</translation>
+<translation id="2265651566599167057">Socket မှ malware အဖြစ် အမှတ်အသားပြုထားသည်။</translation>
+<translation id="2607395470596637070">Brave ရှိ Socket က သင့်ကို မည်သို့ ကာကွယ်ပေးသည်ကို ပိုမိုလေ့လာပါ</translation>
 <translation id="3371343170427636147">Brave Browser Nightly Apps</translation>
 <translation id="4097979995947147464">Brave Browser Beta Apps</translation>
 <translation id="8303432794159193481">Brave Browser Dev Apps</translation>
@@ -723,7 +725,7 @@
 <translation id="4432071071853308688">ဤဖြစ်ရပ်ဖွင့်ယင်းမှာ အလွတ်ဆဲများ ဖြစ်ပါသည်</translation>
 <translation id="955848693465029904">အတွင်းပိုင်းကွန်ရက်ဖွဲ့စည်းမှု ဗူင်ဖြစ်</translation>
 <translation id="7456398316301207582">အတွင်းပိုင်း အကောင့်ဖျက်သိမ်းခြင်း</translation>
-<translation id="859506441384380749">ဤကုဒ်ကို Brave အဟောင်းဗားရှင်းအတွက် သတ်မှတ်ထားသည် ကို upgrade ပြုလုပ်သင့်တယ်၊ သို့မဟုတ် မျိုးဆက်ရှောင်လိမ့်မည်</translation>
+<translation id="4002014583969312635">ဤကုဒ်သည် Brave ဗားရှင်းအဟောင်းကို အသုံးပြုနေသော စက်ပစ္စည်းတစ်ခုတွင် ဖန်တီးထားခြင်း ဖြစ်ပုံရသည်။ သင်၏အခြားစက်ပစ္စည်းတွင် Brave ၏ နောက်ဆုံးဗားရှင်းသို့ အပ်ဒိတ်လုပ်ပြီးနောက် sync ကုဒ်အသစ်တစ်ခု ဖန်တီးပါ။</translation>
 <translation id="3132642509209154999">ဤကုဒ်သည် သက်တမ်းကုန်ဆုံးနေပြီ။ နောက်တစ်ခုကို စက်တစ်ခုပြီးနောက်စမ်းကြည့်ပါ။</translation>
 <translation id="2859229680945501779">ဤကုဒ်သည် မှားယွင်းသောအချက်အလက်များဖြင့် ထည့်သွင်းနေသည်ဖြစ်ပါသည်။ ကျေးဇူးပြု၍ သင်၏စီမံကိန်းနှင့်အချိန်ဇုန်များကို ကိုက်ညီပြီဆိုပါက စမ်းဆောင်ကြည့်ပါ။</translation>
 <translation id="2339730291919608488">ကွန်ရက်ဖွဲ့စည်းမှုမှလွဲ</translation>

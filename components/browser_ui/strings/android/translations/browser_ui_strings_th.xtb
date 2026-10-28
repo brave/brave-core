@@ -12,7 +12,6 @@
 <translation id="6670155282615872564">โปรดดำเนินการตามที่แนะนําด้านล่างเพื่อให้ใช้ Brave ได้เกิดประโยชน์สูงสุด</translation>
 <translation id="113098737392899175">ไปยังส่วนต่างๆ ของหน้าได้ด้วยเคอร์เซอร์ข้อความเมื่อต่อแป้นพิมพ์</translation>
 <translation id="1148624853678088576">คุณพร้อมแล้ว!</translation>
-<translation id="738393714577080438">บันทึกรหัสผ่านใน Brave</translation>
 <translation id="1178015372320901893">Bottom Sheet ในแป้นพิมพ์ลัดของฉัน</translation>
 <translation id="1178581264944972037">หยุดชั่วคราว</translation>
 <translation id="1181037720776840403">นำออก</translation>
@@ -54,6 +53,7 @@
 <translation id="1532175480576580256">Bottom Sheet ในแป้นพิมพ์ลัดของฉันเปิดอยู่แบบเต็มความสูง</translation>
 <translation id="1538031354170655462">โดยปกติแล้วเว็บไซต์จะใช้ Near Field Communication (NFC) เพื่อทำงานร่วมกับแท็กหรืออุปกรณ์ที่อยู่ใกล้เคียง เช่น ใช้ในการสแกนป้ายหรือการแตะเพื่อจ่าย</translation>
 <translation id="1547123415014299762">อนุญาตคุกกี้ของบุคคลที่สาม</translation>
+<translation id="1565353932454306569"><ph name="ORIGIN"/> – ลากจากด้านข้างของหน้าจอเพื่อออกจากการแสดงแบบเต็มหน้าจอ</translation>
 <translation id="3665719978526894928">เร่งความเร็วเว็บไซต์ด้วยเครื่องมือ V8 ของ Brave แต่ทำให้ Brave ต้านทานการโจมตีได้น้อยลงเล็กน้อย</translation>
 <translation id="1593426485665524382">การดำเนินการใหม่ที่พร้อมใช้งานบริเวณด้านบนของหน้าจอ</translation>
 <translation id="1594521731409209842">บีบหน้าจอเพื่อปรับขนาดรูปภาพ</translation>
@@ -138,6 +138,7 @@
 <translation id="2315043854645842844">ระบบปฏิบัติการไม่สนับสนุนการเลือกใบรับรองฝั่งลูกค้า</translation>
 <translation id="2347601491101454548">Bottom Sheet ในแป้นพิมพ์ลัดของฉันเปิดอยู่ครึ่งหน้าจอ</translation>
 <translation id="2359808026110333948">ต่อไป</translation>
+<translation id="2364212713469273030"><ph name="ORIGIN"/> – ลากจากด้านบนแล้วปัดจากขอบด้านซ้ายหรือขวาเพื่อออกจากโหมดเต็มหน้าจอ</translation>
 <translation id="904887679952026733">เมื่อทำได้ ให้ใช้ธีมมืดกับเว็บไซต์เมื่อ Brave ใช้ธีมมืด</translation>
 <translation id="2390272837142897736">เพิ่มการซูม</translation>
 <translation id="2397689164757137845">อนุญาต • แน่นอน</translation>
@@ -227,7 +228,6 @@
 <translation id="3167868116600277716">ฟีดสำรวจ</translation>
 <translation id="3198916472715691905">ข้อมูลที่จัดเก็บ <ph name="STORAGE_AMOUNT"/></translation>
 <translation id="3199078925536734975">อนุญาตในครั้งนี้ • โดยประมาณ</translation>
-<translation id="3208584281581115441">ตรวจสอบเลย</translation>
 <translation id="321187648315454507">หากต้องการอนุญาตให้ <ph name="APP_NAME"/> ส่งการแจ้งเตือนให้คุณ ให้เปิดใช้การแจ้งเตือนใน<ph name="BEGIN_LINK"/>การตั้งค่า Android<ph name="END_LINK"/> ด้วย</translation>
 <translation id="3223425961342298674">ไม่อนุญาตให้เข้าถึงตําแหน่ง</translation>
 <translation id="3227137524299004712">ไมโครโฟน</translation>
@@ -284,7 +284,6 @@
 <translation id="381841723434055211">หมายเลขโทรศัพท์</translation>
 <translation id="3823453485268218808">แบบอักษร Mono</translation>
 <translation id="3826050100957962900">การลงชื่อเข้าใช้ของบุคคลที่สาม</translation>
-<translation id="3831065134033923230">ตรวจสอบรหัสผ่านที่บันทึกไว้</translation>
 <translation id="3835233591525155343">การใช้งานอุปกรณ์ของคุณ</translation>
 <translation id="1799795508209440035">Brave จะบล็อกคุกกี้อีกครั้งในวันนี้</translation>
 <translation id="385051799172605136">กลับ</translation>
@@ -292,7 +291,6 @@
 <translation id="9046306654872718870">ปรับแต่ง Brave ในแบบของคุณด้วยสีที่กำหนดเองและรูปภาพสำหรับหน้าแรก</translation>
 <translation id="389521680295183045">เว็บไซต์สามารถขอทราบเวลาที่คุณใช้งานอุปกรณ์อยู่ได้</translation>
 <translation id="3895926599014793903">บังคับให้เปิดใช้การซูม</translation>
-<translation id="3903738175795615004">ลากจากด้านบนหรือกดปุ่ม Esc เพื่อออกจากโหมดเต็มหน้าจอ</translation>
 <translation id="3905475044299942653">หยุดการแจ้งเตือนจำนวนมาก</translation>
 <translation id="3922092564198021702">เปิดการตั้งค่าในโทรศัพท์</translation>
 <translation id="3924858949939391676">แสดงลิงก์เมื่อโหมดการอ่านเปิดอยู่</translation>
@@ -353,7 +351,6 @@
 <translation id="4479647676395637221">ถามก่อน ก่อนที่จะอนุญาตให้เว็บไซต์ใช้กล้องถ่ายรูปของคุณ (แนะนำ)</translation>
 <translation id="4505788138578415521">ขยาย URL แล้ว</translation>
 <translation id="4522570452068850558">รายละเอียด</translation>
-<translation id="4523472416386354622">ลงชื่อเข้าใช้เพื่อเริ่มต้น</translation>
 <translation id="4529207923544043455">Bottom Sheet แสดงงานที่เสร็จแล้วและยังไม่เสร็จในรายการการตั้งค่า</translation>
 <translation id="4534723447064627427">หากต้องการอนุญาตให้ <ph name="APP_NAME"/> เข้าถึงไมโครโฟน ให้เปิดใช้ไมโครโฟนใน<ph name="BEGIN_LINK"/>การตั้งค่า Android<ph name="END_LINK"/> ด้วย</translation>
 <translation id="4545694195887112015">ปิดชีตการตั้งค่าแล้ว</translation>
@@ -366,7 +363,6 @@
 <translation id="4645575059429386691">จัดการโดยผู้ปกครอง</translation>
 <translation id="4651224148644053314">สีและตัวเลือกเพิ่มเติม</translation>
 <translation id="4652266463001779298">ไม่อนุญาต</translation>
-<translation id="4655846733459137112">แตะ "ใช่" เพื่อให้ง่ายต่อการใช้รหัสผ่านนี้เมื่อลงชื่อเข้าใช้ครั้งถัดไป</translation>
 <translation id="4663373278480897665">อนุญาตให้ใช้กล้องถ่ายรูป</translation>
 <translation id="4670064810192446073">เทคโนโลยีความจริงเสมือน (VR)</translation>
 <translation id="5652778654712411580">แตะแอปเบราว์เซอร์แล้วแตะ Brave</translation>
@@ -411,7 +407,6 @@
 <translation id="512938610812707830">Bottom Sheet คอลเล็กชันธีมลักษณะที่ปรากฏของหน้าแท็บใหม่เปิดอยู่แบบเต็มความสูง</translation>
 <translation id="5137460097045297858">Bottom Sheet ของฟีดสำรวจเปิดอยู่ครึ่งหน้าจอ</translation>
 <translation id="5139253256813381453">{PRICE_DROP_COUNT,plural, =1{ราคาต่ำลงในแท็บที่เปิดอยู่}other{ราคาต่ำลงในแท็บที่เปิดอยู่}}</translation>
-<translation id="5150048675001754041">ลงชื่อเข้าใช้เว็บไซต์และแอปได้อย่างรวดเร็วและง่ายดาย</translation>
 <translation id="5186036860380548585">ตัวเลือกอยู่ตรงบริเวณด้านบนของหน้าจอ</translation>
 <translation id="5197729504361054390">ระบบจะแชร์รายชื่อติดต่อที่คุณเลือกกับ <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/></translation>
 <translation id="5198930230016462977">Bottom Sheet สำหรับปรับแต่งหน้าแท็บใหม่ปิดอยู่</translation>
@@ -421,7 +416,6 @@
 <translation id="5239623327352565343">อนุญาตให้เข้าถึงตําแหน่ง</translation>
 <translation id="5246825184569358663">การดำเนินการนี้จะลบข้อมูลในเครื่องและคุกกี้ทั้งหมด รวมถึงรีเซ็ตสิทธิ์ทั้งหมดสำหรับ <ph name="DOMAIN"/> และเว็บไซต์ทั้งหมดที่อยู่ภายใต้โดเมนนี้</translation>
 <translation id="5264323282659631142">นำ "<ph name="CHIP_LABEL"/>" ออก</translation>
-<translation id="528192093759286357">ลากจากด้านบน แล้วแตะปุ่มกลับเพื่อออกจากโหมดเต็มหน้าจอ</translation>
 <translation id="5286194356314741248">กำลังสแกน</translation>
 <translation id="5300589172476337783">แสดง</translation>
 <translation id="5301954838959518834">ตกลง เข้าใจแล้ว</translation>
@@ -469,7 +463,6 @@
 <translation id="5804241973901381774">สิทธิ์</translation>
 <translation id="5817042798620209981">ข้อมูลเว็บไซต์ กล่องโต้ตอบ</translation>
 <translation id="5822675474983796325">Bottom Sheet สำหรับปรับแต่งหน้าแท็บใหม่เปิดอยู่แบบเต็มความสูง</translation>
-<translation id="4298364316773778595">Bottom Sheet แนะนำวิธีบันทึกรหัสผ่านใน Brave</translation>
 <translation id="5833899990800318936">ไม่อนุญาตให้เว็บไซต์ใช้ JavaScript</translation>
 <translation id="583673505367439042">เว็บไซต์ขอแก้ไขไฟล์และโฟลเดอร์ในอุปกรณ์ของคุณได้</translation>
 <translation id="5844448279347999754">เมื่อเปิด เว็บไซต์จะขอดูข้อความและรูปภาพที่บันทึกไว้ในคลิปบอร์ดได้ เมื่อปิด เว็บไซต์จะดูข้อความหรือรูปภาพที่บันทึกไว้ในคลิปบอร์ดไม่ได้</translation>
@@ -507,7 +500,6 @@
 <translation id="6104860901391833523">เมื่อเปิด เว็บไซต์จะเข้าสู่การแสดงภาพซ้อนภาพโดยอัตโนมัติได้ เมื่อปิด เว็บไซต์จะเข้าสู่การแสดงภาพซ้อนภาพโดยอัตโนมัติไม่ได้</translation>
 <translation id="6120483543004435978">เมื่อเปิด เว็บไซต์จะขอทราบเวลาที่คุณใช้งานอุปกรณ์อยู่ได้ เมื่อปิด เว็บไซต์จะไม่ทราบเวลาที่คุณใช้งานอุปกรณ์อยู่</translation>
 <translation id="5773142757282836623">ซ่อนคำแนะนำจาก Brave ในแอปอื่นๆ</translation>
-<translation id="4852158809106762963">Brave จะเสนอให้บันทึกรหัสผ่าน</translation>
 <translation id="615886654739818377">ไม่อนุญาตให้เว็บไซต์จัดการหน้าต่างบนจอแสดงผลทั้งหมด</translation>
 <translation id="6165508094623778733">ดูข้อมูลเพิ่มเติม</translation>
 <translation id="6171020522141473435">เมื่อเปิด เว็บไซต์จะขอใช้อุปกรณ์บลูทูธได้ เมื่อปิด เว็บไซต์จะใช้อุปกรณ์บลูทูธไม่ได้</translation>
@@ -583,7 +575,6 @@
 <translation id="6980861169612950611">ลบข้อมูลเว็บไซต์ใช่ไหม <ph name="SITE_NAME"/></translation>
 <translation id="6981982820502123353">การช่วยเหลือพิเศษ</translation>
 <translation id="6991142177939282156">อนุญาต • ใช้ตำแหน่งโดยประมาณ</translation>
-<translation id="6992014788289743568">เสริมความปลอดภัยและรักษาข้อมูลให้ปลอดภัยยิ่งขึ้นด้วยการตรวจสอบรหัสผ่าน</translation>
 <translation id="6992289844737586249">ถามก่อน ก่อนที่จะอนุญาตให้เว็บไซต์ใช้ไมโครโฟน (แนะนำ)</translation>
 <translation id="7000754031042624318">ปิดในการตั้งค่า Android</translation>
 <translation id="7036823721811529709">เล่นเป็นแบ็กกราวน์</translation>
@@ -650,7 +641,6 @@
 <translation id="775043444390799886">เพิกถอนสิทธิ์</translation>
 <translation id="7758789811447313947">ธีมสีม่วง</translation>
 <translation id="7759147511335618829">ระบบควบคุมและตั้งโปรแกรมอุปกรณ์ MIDI ใหม่</translation>
-<translation id="7771089277295008211">ปิด Bottom Sheet แนะนำวิธีบันทึกรหัสผ่านแล้ว</translation>
 <translation id="7781829728241885113">เมื่อวานนี้</translation>
 <translation id="7791543448312431591">เพิ่ม</translation>
 <translation id="780301667611848630">ไม่เป็นไร</translation>
@@ -667,7 +657,6 @@
 <translation id="7940722705963108451">เตือนฉัน</translation>
 <translation id="7948081750384205628">ดูข้อมูลเพิ่มเติมเกี่ยวกับ<ph name="SETTING_TITLE"/></translation>
 <translation id="7952708427581814389">เว็บไซต์ขอดูข้อความและรูปภาพในคลิปบอร์ดของคุณได้</translation>
-<translation id="7958779728312669715">Bottom Sheet แนะนำวิธีบันทึกรหัสผ่านเปิดอยู่ทั้งหมด</translation>
 <translation id="798299424881500862">ธีมสีส้ม</translation>
 <translation id="7986741934819883144">เลือกรายชื่อติดต่อ</translation>
 <translation id="7990211076305263060">เมื่อเปิด เว็บไซต์จะขอใช้ไมโครโฟนของคุณได้ เมื่อปิด เว็บไซต์จะใช้ไมโครโฟนไม่ได้</translation>
@@ -762,7 +751,6 @@
 <translation id="7532165358672313130">ขณะท่องเว็บ เว็บไซต์ต่างๆ สามารถตรวจสอบกับ Brave และยืนยันด้วยเว็บไซต์ที่เข้าชมก่อนหน้าได้ว่าคุณเป็นคนจริงๆ</translation>
 <translation id="8899807382908246773">โฆษณาที่รบกวน</translation>
 <translation id="8903921497873541725">ขยาย</translation>
-<translation id="8919911527569629802">ลงชื่อเข้าใช้เว็บไซต์ใดก็ได้</translation>
 <translation id="8921772741368021346"><ph name="POSITION"/> / <ph name="DURATION"/></translation>
 <translation id="8926389886865778422">ไม่ต้องถามอีก</translation>
 <translation id="8926666909099850184">NFC ในอุปกรณ์นี้ปิดอยู่ เปิดได้ใน<ph name="BEGIN_LINK"/>การตั้งค่า Android<ph name="END_LINK"/></translation>
@@ -786,6 +774,7 @@
 <translation id="9138217887606523162">ระดับการซูมปัจจุบันคือ <ph name="ZOOM_LEVEL"/> %%</translation>
 <translation id="7359422048569205930">ให้ Brave แสดงแท็บล่าสุดในรายการแอปและผลการค้นหาของอุปกรณ์ คุณปิดฟีเจอร์นี้ได้ทุกเมื่อในการตั้งค่า Brave</translation>
 <translation id="9162462602695099906">หน้านี้อันตราย</translation>
+<translation id="9172068157980844189">คุณเปิดแถบบุ๊กมาร์กได้ในการตั้งค่า &gt; ลักษณะที่ปรากฏ</translation>
 <translation id="9182556968660520230">ไม่อนุญาตให้เว็บไซต์เล่นเนื้อหาที่มีการคุมครอง</translation>
 <translation id="927148002081263046">แชร์รายชื่อติดต่อ</translation>
 <translation id="947156494302904893">เว็บไซต์ที่เข้าชมสามารถยืนยันได้ว่าคุณเป็นคนจริงๆ ไม่ใช่บ็อต</translation>

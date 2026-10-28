@@ -220,7 +220,6 @@
 <translation id="9040069796107003510">„Brave Rewards“ piktograma</translation>
 <translation id="6333347122924254968">Rodyti „Brave“ atlygio piktogramą adreso juostoje</translation>
 <translation id="4393974575368329991">Apatinė naršymo juosta</translation>
-<translation id="8727059712928806451">Įjungti apatinę juostą</translation>
 <translation id="1834226716203076292">Rodyti apatinę juostą, kad būtų galima greitai pasiekti pradžią, žymes ir paiešką</translation>
 <translation id="1422686363939271829">Ši nuostata išjungiama, kai pasirinkta apatinė adreso juostos padėtis</translation>
 <translation id="6587448235155023666">Pakeitimai įsigalios kitą kartą iš naujo paleidus „Brave“</translation>
@@ -290,7 +289,7 @@
 <translation id="2569646144216067185">Žodžių skaičius: <ph name="WORD_COUNT"/></translation>
 <translation id="7507533586185621084">Klaidingas sinchronizavimo kodas</translation>
 <translation id="8284063834901328650">Klaidingas sinchronizavimo QR kodas</translation>
-<translation id="859506441384380749">Šį kodą sugeneravo pasenusi „Brave“ versija, pirmiausia naujovinkite kitą savo įrenginį</translation>
+<translation id="4002014583969312635">Panašu, kad šis kodas buvo sukurtas įrenginyje, kuriame veikia senesnė „Brave“ versija. Atnaujinkite „Brave“ į naujausią versiją kitame įrenginyje ir sukurkite naują sinchronizavimo kodą.</translation>
 <translation id="3132642509209154999">Kodo galiojimas baigėsi. Sugeneruokite naują kitame įrenginyje ir bandykite dar kartą.</translation>
 <translation id="2859229680945501779">Šis kodas negalioja. Patikrinkite, ar jūsų įrenginyje teisingai nustatytas laikas ir laiko juosta.</translation>
 <translation id="3149880132460839085">Brave Sync</translation>
@@ -336,8 +335,6 @@
 <translation id="8185825081026121627">Gaukite „Basic Attention Token“ už privatumo nepažeidžiančių reklamų peržiūrą per „Brave Rewards“.</translation>
 <translation id="5321518976657560663">Nustatymo iš naujo klaida</translation>
 <translation id="4114170343590425996">Iš naujo nustatant „Brave Rewards“ įvyko klaida. Iš naujo paleiskite „Brave“ ir bandykite dar kartą.</translation>
-<translation id="6417420737057016607">„Brave“ reklamos</translation>
-<translation id="5611966874859284786">Rodyti reklamos pranešimus, kai „Brave“ nenaudojama</translation>
 <translation id="5717636703619499822"><ph name="BEGIN_LINK1"/>Iš naujo nustatykite „Brave Rewards“ atlygio duomenis…<ph name="END_LINK1"/></translation>
 <translation id="1830919318137227284"><ph name="BEGIN_LINK1"/>Išvalykite „Brave Ads“ reklamų duomenis…<ph name="END_LINK1"/></translation>
 <translation id="8293206222192510085">Žymės pridėjimas</translation>
@@ -404,8 +401,9 @@ Ar tikrai norite tai padaryti?</translation>
 <translation id="4546260624932151782">Rodyti mėgstamiausius</translation>
 <translation id="5313967007315987356">Pridėti svetainę</translation>
 <translation id="1773147648972887693">Rodyti dažnai lankomas</translation>
-<translation id="752098910262610337">Rodyti sparčiuosius klavišus</translation>
 <translation id="7134741506051403308">Slėpti valdiklį</translation>
+<translation id="1247759249260562308">Redaguoti mėgstamiausią</translation>
+<translation id="6387214885349500492">Prisegti šį mėgstamiausią</translation>
 <translation id="7462178177755090262">Paleidimo ekranas</translation>
 <translation id="5365434987337264071">Paskutinė atidaryta kortelė</translation>
 <translation id="6019856124237323989">{HOURS, plural,
@@ -983,6 +981,7 @@ Užklausos nepriėmus, prie VPN pakartotinai prisijungta nebus ir interneto ryš
 <translation id="6365389672683343144">„Brave VPN“ prenumerata gali apsaugoti iki 5 įrenginių, naudojančių „Android“ ir „iOS“, taip pat kompiuterius. Tiesiog susiekite „Google Play“ ir „Brave“ paskyras.</translation>
 <translation id="6610899852831463073">Negalima įjungti saugaus naršymo</translation>
 <translation id="7954263306665462056">Saugus naršymas jūsų įrenginyje išjungtas. Norėdami jį įjungti įsitikinkite, kad įdiegtos ir atnaujintos „Google Play Services“.</translation>
+<translation id="6417420737057016607">„Brave“ reklamos</translation>
 <translation id="7748944510530490017">Pagrindiniai tinklai</translation>
 <translation id="2781668117338732220">Papildomi tinklai</translation>
 <translation id="282560918037172384">Bandomieji tinklai</translation>

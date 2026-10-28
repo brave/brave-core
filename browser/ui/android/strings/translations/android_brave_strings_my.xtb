@@ -222,7 +222,6 @@
 <translation id="9040069796107003510">Brave အားကျကာစာတမ်း</translation>
 <translation id="6333347122924254968">Address bar မှာ Brave စာတမ်းအမှတ်တွေကိုပြပါ</translation>
 <translation id="4393974575368329991">အောက်ခြေ နာဗီဂေးရှင်း တူးလ်ဘား</translation>
-<translation id="8727059712928806451">အောက်ဘားကို ဖွင့်ရန်</translation>
 <translation id="1834226716203076292">အိမ်၊ ဘွတ်ခ်မတ်များ နှင့် ရှာဖွေမှုကို လျင်မြန်စွာ ရယူနိုင်ရန် အောက်ခြေဘားကို ပြပါ</translation>
 <translation id="1422686363939271829">အောက်ကလိပ်ရာ Toolbar နေရာသည်ရွေးထားသောအနှစ်ပြည့်သည့်အခါတွင်ဤတပ်ဆင်ချက်ကို မိမိကွက်မှာ ဖျက်ဆီးမည်။</translation>
 <translation id="6587448235155023666">သင့်ရဲ့ပြင်ဆင်မှုတွေက Brave မှာသုံးတဲ့အချိန်မှာသာအကျိူးရရှိမည်</translation>
@@ -292,7 +291,7 @@
 <translation id="2569646144216067185">စာလုံးရေ: <ph name="WORD_COUNT"/></translation>
 <translation id="7507533586185621084">မှားသော ချိန်ကိုက်ကုဒ်</translation>
 <translation id="8284063834901328650">မှားသော ချိန်ကိုက် QR ကုဒ်</translation>
-<translation id="859506441384380749">ဤကုဒ်ကို Brave အဟောင်းဗားရှင်းအတွက် သတ်မှတ်ထားသည် ကို upgrade ပြုလုပ်သင့်တယ်၊ သို့မဟုတ် မျိုးဆက်ရှောင်လိမ့်မည်</translation>
+<translation id="4002014583969312635">ဤကုဒ်သည် Brave ဗားရှင်းအဟောင်းကို အသုံးပြုနေသော စက်ပစ္စည်းတစ်ခုတွင် ဖန်တီးထားခြင်း ဖြစ်ပုံရသည်။ သင်၏အခြားစက်ပစ္စည်းတွင် Brave ၏ နောက်ဆုံးဗားရှင်းသို့ အပ်ဒိတ်လုပ်ပြီးနောက် sync ကုဒ်အသစ်တစ်ခု ဖန်တီးပါ။</translation>
 <translation id="3132642509209154999">ဤကုဒ်သည် သက်တမ်းကုန်ဆုံးနေပြီ။ နောက်တစ်ခုကို စက်တစ်ခုပြီးနောက်စမ်းကြည့်ပါ။</translation>
 <translation id="2859229680945501779">ဤကုဒ်သည် မှားယွင်းသောအချက်အလက်များဖြင့် ထည့်သွင်းနေသည်ဖြစ်ပါသည်။ ကျေးဇူးပြု၍ သင်၏စီမံကိန်းနှင့်အချိန်ဇုန်များကို ကိုက်ညီပြီဆိုပါက စမ်းဆောင်ကြည့်ပါ။</translation>
 <translation id="3149880132460839085">Brave ချိန်ကိုက်</translation>
@@ -338,8 +337,6 @@
 <translation id="8185825081026121627">သီးသန့်စောင့်ရှောက်ခြင်း Brave Reward ကြော်ငြာများကိုကြည့်ရှု၍ Basic Attention Token အသစ်ရယူပါ</translation>
 <translation id="5321518976657560663">reset Error</translation>
 <translation id="4114170343590425996">There was an error resetting Brave Rewards. Please relaunch Brave and try again.</translation>
-<translation id="6417420737057016607">Brave Ads</translation>
-<translation id="5611966874859284786">Brave ကိုမသုံးဘူးဖြစ်သော်လည်း ကြော်ငြာသတိပြုချက်တွေကိုပြပါ</translation>
 <translation id="5717636703619499822"><ph name="BEGIN_LINK1"/>Brave Reward ဒေတာ…<ph name="END_LINK1"/></translation>
 <translation id="1830919318137227284"><ph name="BEGIN_LINK1"/>Brave ကြော်ငြာဒေတာရှင်းရှင်းလင်းလင်းလင့်ခ်သည်…<ph name="END_LINK1"/></translation>
 <translation id="8293206222192510085">စာအမှတ်အသား ထည့်ရန်</translation>
@@ -398,8 +395,9 @@
 <translation id="4546260624932151782">သင့်နှစ်သက်ဆုံးများကို ပြရန်</translation>
 <translation id="5313967007315987356">ဆိုက် ပေါင်းထည့်ရန်</translation>
 <translation id="1773147648972887693">အလွန် အကြိမ်ရောက်သော ဆိုက်များကို ပြရန်</translation>
-<translation id="752098910262610337">Shortcut များ ပြရန်</translation>
 <translation id="7134741506051403308">Widget ဖျောက်ရန်</translation>
+<translation id="1247759249260562308">နှစ်သက်ဆုံးကို တည်းဖြတ်ရန်</translation>
+<translation id="6387214885349500492">ဤနှစ်သက်ဆုံးကို ပင်ထိုးရန်</translation>
 <translation id="7462178177755090262">ဖွင့်သော မျက်နှာပြင်</translation>
 <translation id="5365434987337264071">နောက်ဆုံးဖွင့်ထားသော တැබလ်</translation>
 <translation id="6019856124237323989">{HOURS, plural,
@@ -972,6 +970,7 @@
 <translation id="6365389672683343144">သင့် Brave VPN subscription သည် Android၊ iOS နှင့် desktop တို့အတွက် စက် ၅ လုံးအထိကာကွယ်ပေးနိုင်ပါသည်။ သင့် Google Play subscription ကို သင့် Brave account နှင့် ချိတ်ဆက်လိုက်ယုံဖြင့်ဖြစ်ပါသည်။</translation>
 <translation id="6610899852831463073">ဘေးကင်းမှု browsing ကို ဖွင့်၍ မရ</translation>
 <translation id="7954263306665462056">သင့် ယူနစ်တွင် Security Browsing ကို ဖွင့်ရန် ငြင်းရန်</translation>
+<translation id="6417420737057016607">Brave Ads</translation>
 <translation id="7748944510530490017">မူလ नेटवर्क</translation>
 <translation id="2781668117338732220">ဒုတိယ၊ နယူအား</translation>
 <translation id="282560918037172384">စမ်းသပ် network</translation>
