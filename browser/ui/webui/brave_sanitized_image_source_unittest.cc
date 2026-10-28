@@ -14,6 +14,8 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/path_service.h"
 #include "base/test/bind.h"
+#include "base/test/mock_callback.h"
+#include "base/test/test_future.h"
 #include "base/threading/thread_restrictions.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/profiles/profile.h"
@@ -105,6 +107,16 @@ class BraveSanitizedImageSourceTest : public testing::Test {
             }));
     run_loop.Run();
     return result;
+  }
+
+  void ExpectRejected(const std::string& image_url_spec) {
+    base::test::TestFuture<scoped_refptr<base::RefCountedMemory>> future;
+    source_.StartDataRequest(
+        GURL("chrome://brave-image/?url=" + EncodeQuery(image_url_spec)),
+        content::WebContents::Getter(), future.GetCallback());
+    EXPECT_TRUE(future.Wait());
+    EXPECT_FALSE(future.Get());
+    EXPECT_EQ(0, test_url_loader_factory_.NumPending());
   }
 
  private:
@@ -199,4 +211,18 @@ TEST(BraveSanitizedImageSourceAccessControlTest, AllowsBraveNewsWhenUntrusted) {
   EXPECT_EQ(trusted_source.GetAccessControlAllowOriginForOrigin(
                 "chrome-untrusted://news"),
             "");
+}
+
+TEST_F(BraveSanitizedImageSourceTest, LocalAndLoopbackUrlsRejected) {
+  const char* kRejectedUrls[] = {
+      "https://127.0.0.1:8377/icon.png",
+      "https://[::ffff:127.0.0.1]:8377/icon.png",
+      "https://192.168.1.10/icon.png",
+      "https://localhost:8377/icon.png",
+      "https://menu.local/icon.png",
+  };
+  for (const auto* image_url : kRejectedUrls) {
+    SCOPED_TRACE(image_url);
+    ExpectRejected(image_url);
+  }
 }

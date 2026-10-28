@@ -24,3 +24,19 @@ source_set("web_image") {
     "//ui/gfx",
   ]
 }
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "web_image_unittest.mm" ]
+
+  deps = [
+    ":web_image",
+    "//base",
+    "//base/test:test_support",
+    "//services/network:test_support",
+    "//services/network/public/cpp",
+    "//testing/gtest",
+    "//url",
+  ]
+}

@@ -27,6 +27,7 @@
 #include "net/base/url_util.h"
 #include "net/http/http_request_headers.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
+#include "services/network/public/cpp/ip_address_space_util.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "third_party/blink/public/common/loader/network_utils.h"
@@ -189,6 +190,14 @@ void BraveSanitizedImageSource::StartDataRequest(
     return;
   }
 
+  auto address_space = network::GetAddressSpaceFromUrl(image_url);
+  if (address_space &&
+      (*address_space == network::mojom::IPAddressSpace::kLoopback ||
+       *address_space == network::mojom::IPAddressSpace::kLocal)) {
+    std::move(callback).Run(nullptr);
+    return;
+  }
+
   request_attributes.image_url = image_url;
 
   StartImageDownload(std::move(request_attributes), std::move(callback));
@@ -290,6 +299,9 @@ void BraveSanitizedImageSource::StartImageDownload(
   auto loader =
       network::SimpleURLLoader::Create(std::move(request), traffic_annotation);
   auto* loader_ptr = loader.get();
+  loader_ptr->SetURLLoaderFactoryOptions(
+      network::mojom::kURLLoadOptionBlockLocalRequest |
+      network::mojom::kURLLoadOptionBlockAllCookies);
   loader_ptr->DownloadToString(
       url_loader_factory_.get(),
       base::BindOnce(&BraveSanitizedImageSource::OnImageLoaded,

@@ -1,0 +1,25 @@
+diff --git a/chrome/browser/ui/webui/sanitized_image/sanitized_image_source.cc b/chrome/browser/ui/webui/sanitized_image/sanitized_image_source.cc
+index ed3bb046aea68360c3188bfa8ef319cdebd8d6b4..fd4e698f2f12a749d87f1d9f63bc1dc0b4e56563 100644
+--- a/chrome/browser/ui/webui/sanitized_image/sanitized_image_source.cc
++++ b/chrome/browser/ui/webui/sanitized_image/sanitized_image_source.cc
+@@ -226,6 +226,10 @@ SanitizedImageSource::RequestAttributes::~RequestAttributes() = default;
+ void SanitizedImageSource::StartImageDownload(
+     RequestAttributes request_attributes,
+     content::URLDataSource::GotDataCallback callback) {
++  if (brave::ShouldRejectLocalImageRequest(request_attributes.image_url)) {
++    std::move(callback).Run(nullptr);
++    return;
++  }
+   auto request = std::make_unique<network::ResourceRequest>();
+   request->url = request_attributes.image_url;
+   if (request_attributes.image_url.host() == "drive.google.com") {
+@@ -290,6 +294,9 @@ void SanitizedImageSource::StartImageDownload(
+         })"));
+   }
+   auto* loader_ptr = loader.get();
++  brave::SetSanitizedImageLoaderOptions(
++      loader_ptr, request_attributes.image_url);
++
+   loader_ptr->DownloadToString(
+       url_loader_factory_.get(),
+       base::BindOnce(&SanitizedImageSource::OnImageLoaded,
