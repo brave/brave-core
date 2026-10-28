@@ -284,7 +284,6 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/browser/tor/tor_profile_service_factory.h"
 #include "brave/components/tor/common/onion_domain_throttle.h"
 #include "brave/components/tor/onion_location_navigation_throttle.h"
-#include "brave/components/tor/pref_names.h"
 #include "brave/components/tor/tor_navigation_throttle.h"
 #include "net/base/url_util.h"
 #endif
@@ -552,9 +551,7 @@ bool IsOnionAllowed(content::BrowserContext* browser_context) {
   if (!browser_context) {
     return true;
   }
-  return browser_context->IsTor() ||
-         !user_prefs::UserPrefs::Get(browser_context)
-              ->GetBoolean(tor::prefs::kOnionOnlyInTorWindows);
+  return browser_context->IsTor();
 }
 #endif  // BUILDFLAG(ENABLE_TOR)
 
@@ -1569,9 +1566,7 @@ void BraveContentBrowserClient::CreateThrottlesForNavigation(
   tor::TorNavigationThrottle::MaybeCreateAndAdd(registry, context->IsTor());
   tor::OnionLocationNavigationThrottle::MaybeCreateAndAdd(
       registry, TorProfileServiceFactory::IsTorDisabled(context),
-      context->IsTor(),
-      user_prefs::UserPrefs::Get(context)->GetBoolean(
-          tor::prefs::kOnionOnlyInTorWindows));
+      context->IsTor());
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
