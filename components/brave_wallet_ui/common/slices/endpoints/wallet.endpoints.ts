@@ -215,6 +215,63 @@ export const walletEndpoints = ({
       },
     }),
 
+    recoverWallet: mutation<
+      {
+        success: boolean
+        invalidMnemonic: boolean
+        mnemonicMismatch: boolean
+        importedAccountsPresent: boolean
+      },
+      {
+        mnemonic: string
+        password: string
+        isLegacy: boolean
+        allowImportedAccountRemoval: boolean
+      }
+    >({
+      queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
+        try {
+          const {
+            data: { keyringService },
+          } = baseQuery(undefined)
+          const { result } = await keyringService.recoverWallet(
+            arg.mnemonic,
+            arg.password,
+            arg.isLegacy,
+            arg.allowImportedAccountRemoval,
+          )
+          if (result === BraveWallet.RecoverWalletResult.kInternalError) {
+            throw new Error('Unable to recover wallet from seed phrase')
+          }
+
+          return {
+            data: {
+              success: result === BraveWallet.RecoverWalletResult.kSuccess,
+              invalidMnemonic:
+                result === BraveWallet.RecoverWalletResult.kInvalidMnemonic,
+              mnemonicMismatch:
+                result === BraveWallet.RecoverWalletResult.kMnemonicMismatch,
+              importedAccountsPresent:
+                result
+                === BraveWallet.RecoverWalletResult.kImportedAccountsPresent,
+            },
+          }
+        } catch (error) {
+          return handleEndpointError(
+            endpoint,
+            'Unable to recover wallet from seed phrase',
+            error,
+          )
+        }
+      },
+      invalidatesTags: [
+        'AccountInfos',
+        'TokenBalances',
+        'TokenBalancesForChainId',
+        'AccountTokenCurrentBalance',
+      ],
+    }),
+
     restoreWallet: mutation<
       { success: boolean; invalidMnemonic: boolean },
       {
