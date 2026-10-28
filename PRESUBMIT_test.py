@@ -13,6 +13,7 @@ BRAVE_PATH = PurePath(__file__).parent
 CHROMIUM_SRC_PATH = BRAVE_PATH.parent
 sys.path.append(str(BRAVE_PATH / 'script'))
 sys.path.append(str(CHROMIUM_SRC_PATH))
+sys.path.append(str(BRAVE_PATH / 'vendor' / 'depot_tools'))
 
 import PRESUBMIT
 
