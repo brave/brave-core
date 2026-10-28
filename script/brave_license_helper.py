@@ -334,6 +334,48 @@ def AddBraveCredits(
                 "URL": "https://github.com/brave/Sparkle",
                 "License": "MIT",
             },
+            # Android-tools jars fetched from their per-library CIPD packages,
+            # which carry no metadata of their own. Used only by the
+            # nala_vd_rasterizer host tool, so nothing here is shipped.
+            os.path.join(
+                'brave',
+                'third_party',
+                'android_deps',
+                'libs',
+                'com_android_tools_common',
+            ): {
+                "Name": "Android Tools common",
+                "URL": "https://android.googlesource.com/platform/tools/base",
+                "License": "Apache-2.0",
+                "License File": ["/brave/common/licenses/Apache-2.0"],
+                "Shipped": "no",
+            },
+            os.path.join(
+                'brave',
+                'third_party',
+                'android_deps',
+                'libs',
+                'com_android_tools_sdk_common',
+            ): {
+                "Name": "Android Tools sdk-common",
+                "URL": "https://android.googlesource.com/platform/tools/base",
+                "License": "Apache-2.0",
+                "License File": ["/brave/common/licenses/Apache-2.0"],
+                "Shipped": "no",
+            },
+            os.path.join(
+                'brave',
+                'third_party',
+                'android_deps',
+                'libs',
+                'com_android_tools_layoutlib_layoutlib_api',
+            ): {
+                "Name": "Android Tools layoutlib-api",
+                "URL": "https://android.googlesource.com/platform/tools/base",
+                "License": "Apache-2.0",
+                "License File": ["/brave/common/licenses/Apache-2.0"],
+                "Shipped": "no",
+            },
         }
     )
 
