@@ -54,7 +54,7 @@ IN_PROC_BROWSER_TEST_F(CrashReportPermissionAskDialogTest,
   ProfileManager* profile_manager = g_browser_process->profile_manager();
   Profile& profile = profiles::testing::CreateProfileSync(
       profile_manager, profile_manager->GenerateNextProfileDirectoryPath());
-  Browser* crashed_browser = CreateBrowser(&profile);
+  BrowserWindowInterface* crashed_browser = CreateBrowser(&profile);
   ExitTypeService::GetInstanceForProfile(&profile)
       ->SetLastSessionExitTypeForTest(ExitType::kCrashed);
 
