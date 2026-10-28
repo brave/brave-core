@@ -41,13 +41,16 @@
 #include "components/search_engines/template_url.h"
 #include "components/search_engines/template_url_data_util.h"
 #include "components/search_engines/template_url_service.h"
+#include "components/vector_icons/vector_icons.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/models/image_model.h"
+#include "ui/base/ui_base_features.h"
 #include "ui/gfx/image/image.h"
 #include "ui/gfx/image/image_unittest_util.h"
+#include "ui/gfx/vector_icon_types.h"
 #include "ui/views/view_observer.h"
 
 class BraveLocationBarViewBrowserTest : public InProcessBrowserTest {
@@ -268,8 +271,15 @@ IN_PROC_BROWSER_TEST_F(BraveLocationBarViewBrowserTest,
   omnibox_view()->SetUserText(u"a");
   WaitUntil(base::BindLambdaForTesting(
       [&]() { return controller()->IsPopupOpen(); }));
-  EXPECT_TRUE(
-      location_bar()->GetLocationIcon(base::DoNothing()).IsVectorIcon());
+
+  // The empty and page/globe icons are vector icons too, so check for the
+  // search loupe specifically rather than just for any vector icon.
+  const auto icon = location_bar()->GetLocationIcon(base::DoNothing());
+  ASSERT_TRUE(icon.IsVectorIcon());
+  EXPECT_EQ(features::IsRoundedIconsEnabled()
+                ? &vector_icons::kSearchIcon
+                : &vector_icons::kSearchChromeRefreshOldIcon,
+            icon.GetVectorIcon().vector_icon());
 }
 
 // After resizing the toolbar to a narrower width, every visible child of the

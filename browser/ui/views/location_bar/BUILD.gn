@@ -82,6 +82,8 @@ source_set("browser_tests") {
     "//components/history/core/browser",
     "//components/omnibox/browser",
     "//components/prefs",
+    "//components/vector_icons",
+    "//ui/base",
     "//ui/base:test_support",
     "//ui/gfx",
     "//ui/gfx:test_support",
