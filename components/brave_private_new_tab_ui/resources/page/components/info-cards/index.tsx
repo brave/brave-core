@@ -8,7 +8,7 @@ import styled from 'styled-components'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 import * as leo from '@brave/leo/tokens/css/variables'
-import { getLocale, formatLocale } from '$web-common/locale'
+import { getLocale } from '$web-common/locale'
 
 export type ThirdPrivateCard = 'tor' | 'none'
 
@@ -24,7 +24,6 @@ type GetInfoCardsOptions =
   | {
       isTor: false
       thirdCard: ThirdPrivateCard
-      onOpenTorWindow: () => void
     }
 
 const HOVER_AREA_OUTSET = '50px'
@@ -33,24 +32,6 @@ const HOVER_AREA_OUTSET = '50px'
 // the button is clipped by the close animation instead of popping out.
 const FRAME_TOP = '30px'
 const FRAME_X = '28px'
-
-const LinkButton = styled.button`
-  all: unset;
-  color: var(--window-accent);
-  text-decoration: underline;
-  cursor: pointer;
-
-  &:focus-visible {
-    box-shadow: ${leo.effect.focusState};
-    border-radius: ${leo.radius.xs};
-  }
-`
-
-function withLink (key: string, onClick: () => void) {
-  return formatLocale(key, {
-    $1: (content) => <LinkButton onClick={onClick}>{content}</LinkButton>
-  })
-}
 
 export function getInfoCards (options: GetInfoCardsOptions): InfoCard[] {
   const noTrace: InfoCard = {
@@ -93,7 +74,7 @@ export function getInfoCards (options: GetInfoCardsOptions): InfoCard[] {
       id: 'private-safety',
       icon: 'hearts',
       title: getLocale('cardPrivateSafetyTitle'),
-      description: withLink('cardPrivateSafetyDesc', options.onOpenTorWindow)
+      description: getLocale('cardPrivateSafetyDesc')
     })
   }
 

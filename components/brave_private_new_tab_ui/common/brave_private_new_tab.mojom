@@ -13,8 +13,6 @@ interface PageHandler {
   GetIsTorConnected() => (bool is_connected);
   GoToBraveSearch(string input, bool open_new_tab);
   GoToBraveSupport();
-  // Opens a new Private window with Tor.
-  OpenTorWindow();
 };
 
 enum ConnectionStatus {

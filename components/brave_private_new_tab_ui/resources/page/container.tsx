@@ -80,9 +80,7 @@ function Container () {
     if (isWindowTor) return getInfoCards({ isTor: true })
     return getInfoCards({
       isTor: false,
-      thirdCard: thirdPrivateCard,
-      onOpenTorWindow: () =>
-        getPageHandlerInstance().pageHandler.openTorWindow()
+      thirdCard: thirdPrivateCard
     })
   }, [isWindowTor, thirdPrivateCard])
 

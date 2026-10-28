@@ -26,7 +26,6 @@
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/tor/tor_profile_service_factory.h"
-#include "brave/browser/ui/browser_commands.h"
 #include "brave/components/tor/tor_launcher_factory.h"
 #endif  // BUILDFLAG(ENABLE_TOR)
 
@@ -164,16 +163,6 @@ void BravePrivateNewTabPageHandler::GoToBraveSupport() {
                              WindowOpenDisposition::NEW_FOREGROUND_TAB,
                              ui::PageTransition::PAGE_TRANSITION_LINK, false),
       /*navigation_handle_callback=*/{});
-}
-
-void BravePrivateNewTabPageHandler::OpenTorWindow() {
-  CHECK(profile_);
-#if BUILDFLAG(ENABLE_TOR)
-  if (profile_->IsTor() || IsTorDisabled(profile_)) {
-    return;
-  }
-  brave::NewOffTheRecordWindowTor(profile_->GetOriginalProfile());
-#endif  // BUILDFLAG(ENABLE_TOR)
 }
 
 void BravePrivateNewTabPageHandler::OnTorCircuitEstablished(bool result) {

@@ -63,7 +63,6 @@ class BravePrivateNewTabPageHandler
   void GetIsTorConnected(GetIsTorConnectedCallback callback) override;
   void GoToBraveSearch(const std::string& input, bool open_new_tab) override;
   void GoToBraveSupport() override;
-  void OpenTorWindow() override;
 
  private:
   // TorLauncherObserver overrides:
