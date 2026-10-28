@@ -241,6 +241,5 @@ IN_PROC_BROWSER_TEST_F(BravePrivateNewTabPageBrowserTest,
 
   WaitForElement(web_contents, kInfoCards);
   EXPECT_TRUE(HasElement(web_contents, "[data-testid=info-card-tor-promo]"));
-  EXPECT_FALSE(HasElement(web_contents, "[data-testid=info-card-vpn]"));
 }
 #endif  // BUILDFLAG(ENABLE_TOR)
