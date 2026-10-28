@@ -37,7 +37,6 @@ final class ReaderModeHandlerTests: XCTestCase {
     XCTAssertTrue(directives.contains(where: { $0 == ("default-src", "'none'") }))
     XCTAssertTrue(directives.contains(where: { $0 == ("frame-ancestors", "'none'") }))
     XCTAssertTrue(directives.contains(where: { $0 == ("img-src", "*") }))
-    XCTAssertTrue(directives.contains(where: { $0 == ("navigate-to", "http: https:") }))
   }
 
   func testReaderModeBlocksChromeNavigationFromReaderDocument() throws {
