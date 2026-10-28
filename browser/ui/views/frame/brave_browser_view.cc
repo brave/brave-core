@@ -666,6 +666,31 @@ gfx::Rect BraveBrowserView::GetBoundingBoxInScreenForMouseOverHandling() const {
                    browser_bounds.bottom() - top);
 }
 
+std::optional<int> BraveBrowserView::GetVerticalTabStripWidthAtWindowEdge()
+    const {
+  if (!vertical_tab_strip_host_view_ || !vertical_tab_strip_container_view_ ||
+      !VerticalTabController::From(browser())->ShouldShowBraveVerticalTabs()) {
+    return std::nullopt;
+  }
+
+  // The host view's preferred size comes from the region view's minimum size,
+  // which is zero while the strip overlaps the contents.
+  if (vertical_tab_strip_host_view_->GetPreferredSize().width() == 0) {
+    return std::nullopt;
+  }
+
+  // While floating, the strip keeps the width it occupies at rest but draws
+  // over the contents next to it.
+  if (vertical_tab_strip_container_view_->vertical_tab_strip_region_view()
+          ->state() == BraveVerticalTabStripRegionView::State::kFloating) {
+    return std::nullopt;
+  }
+
+  // The rendered width rather than the occupied one: with rounded contents the
+  // strip draws a few pixels past the width the layout insets them by.
+  return vertical_tab_strip_container_view_->width();
+}
+
 bool BraveBrowserView::HasSelectedURL() const {
   if (!GetLocationBarView() || !GetLocationBarView()->HasFocus()) {
     return false;

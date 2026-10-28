@@ -156,6 +156,7 @@ source_set("browser_tests") {
     "//brave/browser/ui/tabs:tabs_public",
     "//brave/browser/ui/views/frame",
     "//brave/browser/ui/views/frame/split_view",
+    "//brave/browser/ui/views/frame/vertical_tabs",
     "//brave/browser/ui/views/side_panel",
     "//brave/browser/ui/views/sidebar",
     "//brave/components/ai_chat/core/common/buildflags",

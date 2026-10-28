@@ -60,7 +60,10 @@ class SidebarBrowserTest : public InProcessBrowserTest {
 
   // InProcessBrowserTest:
   void SetUpOnMainThread() override;
-  void PreRunTestOnMainThread() override;
+
+  // Tests that verify which show option is selected by default override this
+  // to keep the profile's own value.
+  virtual bool ShouldForceShowAlwaysOption() const;
 
   SidebarModel* model() const { return controller()->model(); }
   TabStripModel* tab_model() const { return browser()->tab_strip_model(); }

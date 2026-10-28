@@ -8,6 +8,7 @@
 
 #include <map>
 #include <memory>
+#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
@@ -114,6 +115,11 @@ class BraveBrowserView : public BrowserView,
   // specific view are used here so that sidebar show/hide behavior is
   // consistently tied to that view's on-screen region.
   gfx::Rect GetBoundingBoxInScreenForMouseOverHandling() const;
+
+  // Width the vertical tab strip renders at the window edge beside the
+  // contents. Nullopt when the strip owns the edge instead: vertical tabs are
+  // off, the strip overlays the contents, or it's floated open over them.
+  std::optional<int> GetVerticalTabStripWidthAtWindowEdge() const;
 
   void ShowBraveVPNBubble(bool show_select = false);
 
