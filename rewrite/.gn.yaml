@@ -4,12 +4,21 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
+  - description: Import the Brave circular includes allowlist.
+    add_import:
+      import: //brave/build/circular_includes_brave.gni
+
   - description: |
       Add brave/browser:core to the allow_circular_includes_from allowlist.
 
       We have to extend this list for now for our own Brave-specific circular
       cases, until we correct them all.
-    add_literal_to_variable:
-      variable: allow_circular_includes_from_allowlist
-      literal: allow_circular_includes_from_brave
-      import: //brave/build/circular_includes_brave.gni
+
+      Edited in place, ahead of the trailing `[]`, rather than appended after
+      it: Chromium's `.gn` has no trailing newline, which `--ignore-space-at-eol`
+      patches lose when applied with `--ignore-whitespace`.
+    regex:
+      re_pattern: '(project_bedrock_circular_includes \+\n)(    \[\])'
+      replace: |-
+        \1    allow_circular_includes_from_brave +
+        \2

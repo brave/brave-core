@@ -1,5 +1,5 @@
 diff --git a/.gn b/.gn
-index 3f592ba2d538eecf63afff59f6cea44c6f84ca8c..a77f30f9d4f2570c7dceb2c60232f4741d96c6e6 100644
+index 3f592ba2d538eecf63afff59f6cea44c6f84ca8c..dbe522554ca9b197836470cdf7100195e9cae83c 100644
 --- a/.gn
 +++ b/.gn
 @@ -2,6 +2,7 @@
@@ -10,9 +10,10 @@ index 3f592ba2d538eecf63afff59f6cea44c6f84ca8c..a77f30f9d4f2570c7dceb2c60232f474
  import("//build/circular_includes_bedrock.gni")
  import("//build/circular_includes_untriaged.gni")
  import("//build/strict_deps_failures.gni")
-@@ -479,3 +480,4 @@ expand_directory_allowlist =
+@@ -478,4 +479,5 @@ expand_directory_allowlist =
+ # entries in this list should be reviewed by a member of the chrome build team.
  allow_circular_includes_from_allowlist =
      allow_circular_includes_from_untriaged + project_bedrock_circular_includes +
++    allow_circular_includes_from_brave +
      []
-+allow_circular_includes_from_allowlist += allow_circular_includes_from_brave
 \ No newline at end of file
