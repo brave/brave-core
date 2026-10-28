@@ -44,7 +44,6 @@
 #include "brave/ios/browser/serp_metrics/serp_metrics_tab_helper.h"
 #include "brave/ios/browser/ui/web_view/features.h"
 #include "brave/ios/browser/ui/webui/brave_wallet/wallet_page_handler_bridge_holder.h"
-#include "brave/ios/browser/web/document_fetch/document_fetch_javascript_feature.h"
 #include "brave/ios/browser/web/force_paste/force_paste_javascript_feature.h"
 #include "brave/ios/browser/web/logins/logins_tab_helper.h"
 #include "brave/ios/browser/web/logins/logins_tab_helper_bridge.h"
@@ -845,27 +844,6 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
   if (tab_helper) {
     tab_helper->SetBridge(loginsHelper);
   }
-}
-
-@end
-
-@implementation BraveWebView (DocumentFetch)
-
-- (void)downloadDocumentAtURL:(NSURL*)url
-            completionHandler:
-                (void (^)(NSInteger statusCode,
-                          NSData* _Nullable data))completionHandler {
-  DocumentFetchJavaScriptFeature::GetInstance()->DownloadDocument(
-      self.webState, net::GURLWithNSURL(url),
-      base::BindOnce(^(int statusCode, const std::string& base64Data) {
-        NSData* data = nil;
-        if (!base64Data.empty()) {
-          data = [[NSData alloc]
-              initWithBase64EncodedString:base::SysUTF8ToNSString(base64Data)
-                                  options:0];
-        }
-        completionHandler(statusCode, data);
-      }));
 }
 
 @end
