@@ -26,3 +26,8 @@ IN_PROC_BROWSER_TEST_F(BraveSettingsToggleWebUITest, PagesRender) {
   RunTest("settings/settings_toggle_button_test.js",
           "runMochaSuite('BraveSettingsToggleButtonPagesRender')");
 }
+
+IN_PROC_BROWSER_TEST_F(BraveSettingsToggleWebUITest, MdSelectStyle) {
+  RunTest("settings/settings_toggle_button_test.js",
+          "runMochaSuite('BraveMdSelectStyle')");
+}

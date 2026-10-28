@@ -7,6 +7,7 @@ import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bu
 import {WebUiListenerMixin, WebUiListenerMixinInterface} from '/shared/settings/web_ui_listener_mixin.js';
 import {BaseMixin} from '../base_mixin.js'
 import {NewTabOption, BraveNewTabBrowserProxy, BraveNewTabBrowserProxyImpl} from './brave_new_tab_browser_proxy.js'
+import '/shared/settings/md_select.css.js'
 import {getTemplate} from './brave_new_tab_page.html.js'
 
 /**
