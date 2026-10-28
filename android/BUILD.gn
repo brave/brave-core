@@ -717,9 +717,3 @@ android_resources("java_resources") {
     "java/brave-res/xml/unstoppable_domains_preferences.xml",
   ]
 }
-
-android_resources("incognito_reauth_overlay_resources") {
-  resource_overlay = true
-  sources = [ "java/res_overlay/layout/incognito_reauth_view.xml" ]
-  deps = [ "//chrome/browser/incognito:java_resources" ]
-}

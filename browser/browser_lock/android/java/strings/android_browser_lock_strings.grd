@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright (c) 2026 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/.
+-->
+<grit latest_public_release="0" current_release="1">
+  <outputs>
+    <output filename="values/android_browser_lock_strings.xml" lang="en" type="android" />
+  </outputs>
+  <release seq="1">
+    <messages fallback_to_english="true">
+      <message name="IDS_BRAVE_BROWSER_LOCK_UNLOCK_BUTTON" desc="Button label to unlock the browser via biometrics.">
+        Unlock browser
+      </message>
+      <message name="IDS_BRAVE_BROWSER_LOCKED" desc="Status label shown on the browser-wide lock screen.">
+        Browser locked
+      </message>
+    </messages>
+  </release>
+</grit>
