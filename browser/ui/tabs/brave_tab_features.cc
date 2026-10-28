@@ -37,6 +37,10 @@
 #include "brave/browser/brave_ads/tabs/ads_tab_helper.h"
 #endif
 
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
+#include "brave/browser/ui/geolocation/brave_geolocation_permission_tab_helper.h"
+#endif
+
 #if BUILDFLAG(ENABLE_WEB_DISCOVERY)
 #include "brave/browser/web_discovery/web_discovery_tab_helper.h"
 #endif
@@ -242,6 +246,11 @@ void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
 #if BUILDFLAG(ENABLE_WEB_DISCOVERY)
   web_discovery_tab_helper_ =
       web_discovery::WebDiscoveryTabHelper::MaybeCreate(tab, *profile);
+#endif
+
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
+  geolocation_permission_tab_helper_ =
+      std::make_unique<BraveGeolocationPermissionTabHelper>(tab);
 #endif
 
 #if BUILDFLAG(ENABLE_REQUEST_OTR)
