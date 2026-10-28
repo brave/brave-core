@@ -22,6 +22,7 @@ Neke funkcije su možda nedostupne i promene podešavanja neće biti sačuvane.
 <translation id="8541922081612557424">O Brave-u</translation>
 <translation id="987734326276404793">Dobijajte obaveštenja o praćenju cena uz Brave na telefonu</translation>
 <translation id="1203500561924088507">Hvala vam na instalaciji. Potrebno je da restartujete pregledač pre nego što počnete da koristite <ph name="BUNDLE_NAME"/>.</translation>
+<translation id="1213674046343558619"><ph name="IMPORTANT_UPDATE"/> je na čekanju. Da bi pregledanje bilo bezbedno, Brave će se ažurirati sledeći put kad budete neaktivni <ph name="IDLE_DURATION"/>.</translation>
 <translation id="1232234696885483911">Kada otvorite pretragu slika, naslov, URL i sadržaj stranice, uključujući PDF-ove, automatski se šalju na server. <ph name="LEARN_MORE"/></translation>
 <translation id="1934377710648094656">Dok ste prijavljeni, možete da koristite lozinke i drugo sa Brave naloga u Brave-u. Da biste to promenili, idite na Nalog u Brave-u.</translation>
 <translation id="583633806828413086">Prikaži Gemini u Brave-u na traci menija Mac-a</translation>
@@ -224,6 +225,7 @@ Neke funkcije su možda nedostupne i promene podešavanja neće biti sačuvane.
 <translation id="3286538390144397061">Restartuj odmah</translation>
 <translation id="2339258256897053758">Nedostaju šifre za Brave API. Neke funkcije Brave-a će biti onemogućene.</translation>
 <translation id="8926637909431618259">Nastavi sa pokretanjem aplikacija u pozadini kada se Brave zatvori</translation>
+<translation id="8245661393996028021">Brave će se ažurirati dok niste aktivni</translation>
 <translation id="518125528057094977">Brave će vas upozoriti pre učitavanja bilo kog sajta pomoću nebezbedne veze</translation>
 <translation id="8652321858775514885">Bićete odjavljeni sa većine sajtova kada zatvorite sve Brave prozore, osim sa Brave naloga ako ste prijavljeni u Brave. Da biste dozvolili sajtovima da vas pamte, <ph name="SETTINGS_LINK"/>.</translation>
 <translation id="3352986031709923790">gornji desni ugao oblasti pretrage: udesno <ph name="RIGHT"/>%, nagore <ph name="TOP"/>%</translation>
@@ -232,6 +234,7 @@ Neke funkcije su možda nedostupne i promene podešavanja neće biti sačuvane.
 <translation id="2645435784669275700">Chrome OS</translation>
 <translation id="2297290224191497273">Želite da pređete na postojeći Brave profil?</translation>
 <translation id="3412460710772753638">U Menadžeru lozinki na ovom uređaju</translation>
+<translation id="172368702860945706">Brave želi da se ažurira</translation>
 <translation id="5079573433701109938">Prijavite se u Brave da biste preuzeli obeleživače i drugo sa uređaja <ph name="DEVICE"/></translation>
 <translation id="3438772217992559640">Pretraži ovu karticu pomoću pretrage slika</translation>
 <translation id="2491221873705777076">Produžite poboljšano bezbedno pregledanje uz Brave na telefonu</translation>
@@ -369,6 +372,7 @@ Neke funkcije su možda nedostupne i promene podešavanja neće biti sačuvane.
 <translation id="4877750182157975795">Pristupajte svim omiljenim Brave sadržajima uz Brave na uređaju <ph name="DEVICE_TYPE"/></translation>
 <translation id="1204184037023366446">Brave-u treba dozvola za praćenje ruku</translation>
 <translation id="5406591571925937375">Niste skoro posećivali sajt. Brave je uklonio dozvole <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/>, <ph name="PERMISSION_3"/>.</translation>
+<translation id="3576895950897485019">Prijavite se u Brave</translation>
 <translation id="5174969993834422967">Obično blokirate obaveštenja. Da biste dozvolili ovom sajtu da vas obaveštava, kliknite na ikonu obaveštenja u desnom uglu trake za lokaciju.</translation>
 <translation id="5174983315706567306">Nema dovoljno prostora na disku.</translation>
 <translation id="8157129267754368853">Brave nalog zahteva ponovnu potvrdu identiteta</translation>
@@ -377,6 +381,7 @@ Neke funkcije su možda nedostupne i promene podešavanja neće biti sačuvane.
 <translation id="5234764350956374838">Odbaci</translation>
 <translation id="7690383309583926074">Preuzmite aplikaciju Brave da biste sačuvali lozinke u pokretu</translation>
 <translation id="8586264863973514035">Da biste primenili promene, ponovo pokrenite Brave</translation>
+<translation id="8127050479140582768">Da biste poslali ovu karticu na drugi uređaj, prijavite se u Brave na oba uređaja</translation>
 <translation id="5286907366254680517">Otkriveno</translation>
 <translation id="7264453786974905915">Preuzmite aplikaciju Brave</translation>
 <translation id="7230006500876504868">Pretražujte pomoću Brave-a</translation>
@@ -740,6 +745,7 @@ Brave ne može da vrati podešavanja.</translation>
 <translation id="5128665650717824082">Brave for Testing ne može da se postavi za podrazumevani pregledač.</translation>
 <translation id="3053208669360972929">Pretražujte pomoću Brave-a sa bilo kog mesta</translation>
 <translation id="2433912322225810055">Kontroliše i stranicu koja se prikazuje kada pokrenete Brave ili pretražujete iz omniboksa.</translation>
+<translation id="8789425457808164956">Da biste poslali ovu karticu na drugi uređaj, prijavite se u Brave na tom uređaju</translation>
 <translation id="4100716194836114130">Ovo je vaš Brave</translation>
 <translation id="8712637175834984815">Važi</translation>
 <translation id="1419543648228375718">Želite li da se prijavite u Brave?</translation>
