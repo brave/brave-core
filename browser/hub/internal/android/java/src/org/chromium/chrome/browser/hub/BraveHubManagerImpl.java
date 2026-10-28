@@ -260,11 +260,9 @@ public class BraveHubManagerImpl extends HubManagerImpl {
                 mActivity
                         .getResources()
                         .getDimensionPixelSize(R.dimen.hub_toolbar_action_button_start_margin);
-        FrameLayout.LayoutParams paneSwitcherParams =
-                (FrameLayout.LayoutParams) paneSwitcherCard.getLayoutParams();
-        paneSwitcherParams.gravity = Gravity.START | Gravity.CENTER_VERTICAL;
-        paneSwitcherParams.setMarginStart(edgeMargin);
-        paneSwitcherCard.setLayoutParams(paneSwitcherParams);
+        if (hubToolbar instanceof BraveHubToolbarView braveHubToolbar) {
+            braveHubToolbar.anchorPaneSwitcherToStart(edgeMargin);
+        }
 
         updateActionButtonPosition(actionButtonGroup, paneSwitcherCard, edgeMargin);
 
