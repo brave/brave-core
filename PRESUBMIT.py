@@ -1025,7 +1025,7 @@ def _GetMessageForMatchingType(orig, input_api, f, line_num, line, ban_rule):
 
 
 @override_utils.override_function(globals())
-def _ChangeHasSecurityReviewer(*_):
+def _ChangeHasReviewerFromOwnersFile(*_):
     # We don't have Gerrit API available to check for reviewers.
     return False
 
