@@ -8,6 +8,7 @@
 #include <memory>
 
 #include "base/test/scoped_feature_list.h"
+#include "base/values.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -133,7 +134,7 @@ TEST_F(BraveShieldsTabHelperUnitTest, ReloadsForRelevantContentSettings) {
 
   host_content_settings_map()->SetWebsiteSettingDefaultScope(
       url, GURL(), ContentSettingsType::BRAVE_COSMETIC_FILTERING,
-      base::Value::Dict().Set("cosmeticFilteringV2", "block"));
+      base::Value(base::DictValue().Set("cosmeticFilteringV2", "block")));
   ASSERT_TRUE(web_contents()->GetController().GetPendingEntry());
   EXPECT_EQ(web_contents()->GetController().GetPendingEntry()->GetURL(), url);
 }
