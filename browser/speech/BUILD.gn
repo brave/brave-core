@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/local_ai/buildflags/buildflags.gni")
+import("//brave/components/tor/buildflags/buildflags.gni")
 
 if (!is_android) {
   source_set("on_device_speech_browser_tests") {
@@ -114,6 +115,7 @@ if (enable_local_ai) {
       "//brave/components/local_ai/core:features",
       "//brave/components/local_ai/core:speech_recognition_mojom",
       "//brave/components/local_ai/core:test_support",
+      "//brave/components/tor/buildflags",
       "//chrome/browser:browser_process",
       "//chrome/test:test_support",
       "//chrome/test:test_support_ui",
@@ -131,6 +133,14 @@ if (enable_local_ai) {
       "//testing/gmock",
       "//testing/gtest",
     ]
+
+    if (enable_tor) {
+      deps += [
+        "//brave/browser/tor",
+        "//brave/components/tor",
+        "//net",
+      ]
+    }
   }
 
   source_set("unit_tests") {

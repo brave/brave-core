@@ -17,7 +17,7 @@ namespace speech {
 // Implementation is provided by //brave/browser/speech:chromium_impl.
 media::mojom::SpeechRecognitionQuality ToBraveOnDeviceSpeechQuality(
     media::mojom::SpeechRecognitionQuality quality);
-bool MaybePromptForBraveOnDeviceSpeechModel(
+bool MaybePromptOrCancelBraveOnDeviceSpeechInstall(
     bool frame_can_use_on_device_speech,
     base::WeakPtr<OnDeviceSpeechRecognitionImpl> impl,
     const std::vector<std::string>& languages,
