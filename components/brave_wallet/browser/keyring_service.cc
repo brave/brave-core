@@ -19,6 +19,7 @@
 #include "base/check_is_test.h"
 #include "base/check_op.h"
 #include "base/command_line.h"
+#include "base/containers/enum_set.h"
 #include "base/containers/span.h"
 #include "base/json/json_reader.h"
 #include "base/metrics/histogram_macros.h"
@@ -1744,7 +1745,9 @@ bool KeyringService::ReEncryptWallet(const std::string& mnemonic,
   }
 
   std::vector<mojom::AccountIdPtr> removed_imported_accounts;
-  for (auto keyring_id : GetEnabledKeyrings()) {
+  for (auto keyring_id :
+       base::EnumSet<mojom::KeyringId, mojom::KeyringId::kDefault,
+                     mojom::KeyringId::kMaxValue>::All()) {
     for (const auto& imported_account :
          GetImportedAccountsForKeyring(profile_prefs_, keyring_id)) {
       removed_imported_accounts.push_back(imported_account.GetAccountId());
@@ -1769,9 +1772,7 @@ bool KeyringService::ReEncryptWallet(const std::string& mnemonic,
   profile_prefs_->SetDict(kBraveWalletMnemonic, std::move(encrypted_mnemonic));
   profile_prefs_->SetString(kBraveWalletEncryptorSalt, encoded_salt);
 
-  if (!UnlockSync(new_password)) {
-    return false;
-  }
+  const bool unlocked = UnlockSync(new_password);
 
   if (had_imported_accounts) {
     if (delegate_) {
@@ -1791,7 +1792,7 @@ bool KeyringService::ReEncryptWallet(const std::string& mnemonic,
     NotifyWalletBackupComplete();
   }
 
-  return true;
+  return unlocked;
 }
 
 mojom::RecoverWalletResult KeyringService::RecoverWalletSync(
