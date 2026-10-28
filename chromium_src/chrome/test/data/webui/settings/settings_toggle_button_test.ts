@@ -97,48 +97,49 @@ suite('BraveSettingsToggleButtonPrefKey', () => {
   })
 })
 
+// Prefs that Brave's settings pages read when they render.
+const B = chrome.settingsPrivate.PrefType.BOOLEAN
+const N = chrome.settingsPrivate.PrefType.NUMBER
+const S = chrome.settingsPrivate.PrefType.STRING
+
+const pageInitialPrefs: Array<[string, chrome.settingsPrivate.PrefType,
+                           boolean|number|string]> = [
+  ['brave.ad_block.developer_mode', B, false],
+  ['brave.ai_chat.context_menu_enabled', B, true],
+  ['brave.ai_chat.tab_organization_enabled', B, true],
+  ['brave.ai_chat.tab_organization_send_page_content', B, false],
+  ['brave.brave_ads.sponsored.enabled', B, true],
+  ['brave.brave_vpn.wireguard_enabled', B, false],
+  ['brave.de_amp.enabled', B, true],
+  ['brave.debounce.enabled', B, true],
+  ['brave.enable_media_router_on_restart', B, false],
+  ['brave.gcm.channel_status', B, false],
+  ['brave.history_embeddings_enabled', B, false],
+  ['brave.history.retention_days', N, 0],
+  ['brave.psst.settings.enable_psst', B, true],
+  ['brave.reduce_language', B, true],
+  ['brave.request_otr.request_otr_action_option', N, 0],
+  ['brave.shields.stats_badge_visible', B, true],
+  ['brave.wallet.default_base_cryptocurrency', S, 'BTC'],
+  ['brave.wallet.default_base_currency', S, 'USD'],
+  ['brave.wallet.default_cardano_wallet', N, 0],
+  ['brave.wallet.default_solana_wallet', N, 0],
+  ['brave.wallet.default_wallet2', N, 0],
+  ['brave.wallet.nft_discovery_enabled', B, false],
+  ['brave.wallet.transaction_simulation_opt_in_status', N, 0],
+  ['signin.allowed_on_next_startup', B, true],
+  ['tor.onion_only_in_tor_windows', B, true],
+  ['webrtc.ip_handling_policy', S, 'default'],
+  ['brave.local_ai.on_device_speech_model_enabled', B, false],
+  ['brave.shields.fb_embed_default', B, true],
+]
+const pagePrefObjects =
+    pageInitialPrefs.map(([key, type, value]) => ({key, type, value}))
+
 // Brave pages used to bind a computed `pref` object, which `settings-toggle-
 // button` asserts against once it became Lit. Rendering each page surfaces
 // those errors.
 suite('BraveSettingsToggleButtonPagesRender', () => {
-  const B = chrome.settingsPrivate.PrefType.BOOLEAN
-  const N = chrome.settingsPrivate.PrefType.NUMBER
-  const S = chrome.settingsPrivate.PrefType.STRING
-
-  const initialPrefs: Array<[string, chrome.settingsPrivate.PrefType,
-                             boolean|number|string]> = [
-    ['brave.ad_block.developer_mode', B, false],
-    ['brave.ai_chat.context_menu_enabled', B, true],
-    ['brave.ai_chat.tab_organization_enabled', B, true],
-    ['brave.ai_chat.tab_organization_send_page_content', B, false],
-    ['brave.brave_ads.sponsored.enabled', B, true],
-    ['brave.brave_vpn.wireguard_enabled', B, false],
-    ['brave.de_amp.enabled', B, true],
-    ['brave.debounce.enabled', B, true],
-    ['brave.enable_media_router_on_restart', B, false],
-    ['brave.gcm.channel_status', B, false],
-    ['brave.history_embeddings_enabled', B, false],
-    ['brave.history.retention_days', N, 0],
-    ['brave.psst.settings.enable_psst', B, true],
-    ['brave.reduce_language', B, true],
-    ['brave.request_otr.request_otr_action_option', N, 0],
-    ['brave.shields.stats_badge_visible', B, true],
-    ['brave.wallet.default_base_cryptocurrency', S, 'BTC'],
-    ['brave.wallet.default_base_currency', S, 'USD'],
-    ['brave.wallet.default_cardano_wallet', N, 0],
-    ['brave.wallet.default_solana_wallet', N, 0],
-    ['brave.wallet.default_wallet2', N, 0],
-    ['brave.wallet.nft_discovery_enabled', B, false],
-    ['brave.wallet.transaction_simulation_opt_in_status', N, 0],
-    ['signin.allowed_on_next_startup', B, true],
-    ['tor.onion_only_in_tor_windows', B, true],
-    ['webrtc.ip_handling_policy', S, 'default'],
-    ['brave.local_ai.on_device_speech_model_enabled', B, false],
-    ['brave.shields.fb_embed_default', B, true],
-  ]
-  const prefObjects =
-      initialPrefs.map(([key, type, value]) => ({key, type, value}))
-
   const pages = [
     'settings-brave-data-collection-subpage',
     'settings-brave-default-extensions-page',
@@ -152,7 +153,7 @@ suite('BraveSettingsToggleButtonPagesRender', () => {
   ]
 
   setup(async () => {
-    PrefsBrowserProxy.setInstance(new TestPrefsBrowserProxy(prefObjects))
+    PrefsBrowserProxy.setInstance(new TestPrefsBrowserProxy(pagePrefObjects))
     PrefService.resetInstanceForTesting()
     await PrefService.getInstance().whenInitialized()
     document.body.replaceChildren()
@@ -174,4 +175,31 @@ suite('BraveSettingsToggleButtonPagesRender', () => {
       }
     })
   }
+})
+
+// Brave's Polymer pages `include="md-select"`, whose rules Brave overrides in
+// chromium_src/chrome/browser/resources/settings_shared/md_select.css.
+suite('BraveMdSelectStyle', () => {
+  setup(async () => {
+    PrefsBrowserProxy.setInstance(new TestPrefsBrowserProxy(pagePrefObjects))
+    PrefService.resetInstanceForTesting()
+    await PrefService.getInstance().whenInitialized()
+    document.body.replaceChildren()
+  })
+
+  test('Polymer page selects use Brave\'s md-select style', async () => {
+    const page = document.createElement('settings-default-brave-shields-page')
+    document.body.appendChild(page)
+    await microtasksFinished()
+
+    const select =
+        page.shadowRoot!.querySelector<HTMLSelectElement>('#adControlType')
+    assertTrue(!!select)
+    const style = getComputedStyle(select)
+    // Brave's rules.
+    assertEquals('base-select', style.appearance)
+    assertEquals('none', style.backgroundImage)
+    // Upstream's rules still apply underneath.
+    assertEquals('pointer', style.cursor)
+  })
 })
