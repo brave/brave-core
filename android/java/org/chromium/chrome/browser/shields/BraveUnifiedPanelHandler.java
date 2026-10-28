@@ -582,8 +582,18 @@ public class BraveUnifiedPanelHandler {
         if (mAdvancedOptionsContent == null) return;
 
         View httpsUpgradeItem = mAdvancedOptionsContent.findViewById(R.id.https_upgrade_item);
-        if (httpsUpgradeItem != null) {
-            httpsUpgradeItem.setOnClickListener(v -> showHttpsUpgradePanel());
+        View httpsUpgradeDivider = mAdvancedOptionsContent.findViewById(R.id.https_upgrade_divider);
+        if (ChromeFeatureList.isEnabled(BraveFeatureList.HTTPS_BY_DEFAULT)) {
+            if (httpsUpgradeItem != null) {
+                httpsUpgradeItem.setOnClickListener(v -> showHttpsUpgradePanel());
+            }
+        } else {
+            if (httpsUpgradeItem != null) {
+                httpsUpgradeItem.setVisibility(View.GONE);
+            }
+            if (httpsUpgradeDivider != null) {
+                httpsUpgradeDivider.setVisibility(View.GONE);
+            }
         }
 
         View trackersItem = mAdvancedOptionsContent.findViewById(R.id.trackers_item);
