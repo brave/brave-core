@@ -46,7 +46,7 @@ final class ReaderModeHandlerTests: XCTestCase {
     )
     let chromeURL = try XCTUnwrap(URL(string: "chrome://wallet"))
     XCTAssertFalse(
-      ReaderModeHandler.allowsNavigation(
+      ReaderModeTabHelper.allowsNavigation(
         from: readerURL,
         to: chromeURL
       )

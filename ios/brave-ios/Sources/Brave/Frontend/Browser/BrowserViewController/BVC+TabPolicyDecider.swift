@@ -99,15 +99,6 @@ extension BrowserViewController: TabPolicyDecider {
         return .cancel
       }
 
-      // Distilled reader content must not navigate to other internal pages; the reader page
-      // itself is loaded from the original https page, so it is unaffected by this check.
-      if !ReaderModeHandler.allowsNavigation(
-        from: tab.visibleURL ?? tab.lastCommittedURL,
-        to: requestURL
-      ) {
-        return .cancel
-      }
-
       // Requests for Internal pages have a 60s timeout by default
       let isPrivilegedRequest =
         Int64(request.timeoutInterval) < Int64(Int32.max) || request.isPrivileged
@@ -321,14 +312,6 @@ extension BrowserViewController: TabPolicyDecider {
 
     if requestURL.scheme?.contains("brave") == true || requestURL.scheme?.contains("chrome") == true
     {
-      let sourceURL = tab.visibleURL ?? tab.lastCommittedURL ?? request.mainDocumentURL
-      if !ReaderModeHandler.allowsNavigation(
-        from: sourceURL,
-        to: requestURL
-      ) {
-        return .cancel
-      }
-
       // brave://account should not be treated as a regular WebUI page.
       // It is part of the Settings UI and is intended to be opened only
       // from within Settings – much like you cannot open a new tab
