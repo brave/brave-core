@@ -14,6 +14,7 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/path_service.h"
 #include "base/test/bind.h"
+#include "base/test/mock_callback.h"
 #include "base/threading/thread_restrictions.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/profiles/profile.h"
@@ -105,6 +106,18 @@ class BraveSanitizedImageSourceTest : public testing::Test {
             }));
     run_loop.Run();
     return result;
+  }
+
+  // Brave: asserts that an image URL with a loopback/local literal host (or a
+  // loopback/local hostname) is rejected before any network request is made.
+  void ExpectRejected(const std::string& image_url_spec) {
+    base::MockCallback<content::URLDataSource::GotDataCallback> callback;
+    EXPECT_CALL(callback, Run(testing::IsNull())).Times(1);
+    source_.StartDataRequest(
+        GURL("chrome://brave-image/?url=" + EncodeQuery(image_url_spec)),
+        content::WebContents::Getter(), callback.Get());
+    task_environment_.RunUntilIdle();
+    EXPECT_EQ(0, test_url_loader_factory_.NumPending());
   }
 
  private:
@@ -199,4 +212,27 @@ TEST(BraveSanitizedImageSourceAccessControlTest, AllowsBraveNewsWhenUntrusted) {
   EXPECT_EQ(trusted_source.GetAccessControlAllowOriginForOrigin(
                 "chrome-untrusted://news"),
             "");
+}
+
+// Brave: verifies that image URLs whose host is a loopback/local literal (or a
+// loopback/local-resolving hostname form) are rejected before any network
+// request is made, mirroring the desktop SanitizedImageSource protection.
+TEST_F(BraveSanitizedImageSourceTest, LoopbackUrlRejected) {
+  ExpectRejected("https://127.0.0.1:8377/icon.png");
+}
+
+TEST_F(BraveSanitizedImageSourceTest, MappedIpv6LoopbackUrlRejected) {
+  ExpectRejected("https://[::ffff:127.0.0.1]:8377/icon.png");
+}
+
+TEST_F(BraveSanitizedImageSourceTest, PrivateAddressUrlRejected) {
+  ExpectRejected("https://192.168.1.10/icon.png");
+}
+
+TEST_F(BraveSanitizedImageSourceTest, LocalhostHostnameRejected) {
+  ExpectRejected("https://localhost:8377/icon.png");
+}
+
+TEST_F(BraveSanitizedImageSourceTest, DotLocalHostnameRejected) {
+  ExpectRejected("https://menu.local/icon.png");
 }

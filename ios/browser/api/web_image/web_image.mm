@@ -12,6 +12,7 @@
 #include "brave/ios/browser/svg/svg_image.h"
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
 #include "net/base/apple/url_conversions.h"
+#include "services/network/public/cpp/ip_address_space_util.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "skia/ext/skia_utils_ios.h"
 #include "third_party/skia/include/core/SkBitmap.h"
@@ -40,9 +41,13 @@ static const float animated_image_frame_delay = 2.0;
 
 @implementation WebImageDownloader
 - (instancetype)initWithBrowserState:(ProfileIOS*)profile {
+  return [self initWithURLLoaderFactory:profile->GetSharedURLLoaderFactory()];
+}
+
+- (instancetype)initWithURLLoaderFactory:
+    (scoped_refptr<network::SharedURLLoaderFactory>)url_loader_factory {
   if ((self = [super init])) {
-    image_fetcher_ = std::make_unique<brave::ImageDownloader>(
-        profile->GetSharedURLLoaderFactory());
+    image_fetcher_ = std::make_unique<brave::ImageDownloader>(url_loader_factory);
   }
   return self;
 }
@@ -53,6 +58,22 @@ static const float animated_image_frame_delay = 2.0;
                                 NSURL* url))completion {
   GURL url_ = net::GURLWithNSURL(url);
   if (!url_.is_valid() || url_.is_empty()) {
+    completion(nullptr, -1, nullptr);
+    return;
+  }
+
+  // Brave: never let a WebUI-supplied image URL (e.g. a wallet token or NFT
+  // logo) reach loopback/local-network addresses, mirroring the
+  // kURLLoadOptionBlockLocalRequest protection applied to the desktop and iOS
+  // image data sources. Literal local hosts and localhost/*.local names are
+  // rejected here before any connection. Note: this pre-check cannot see
+  // redirect targets — a redirect from a public host to a local address is
+  // still followed by the image fetcher, which has no Brave seam for loader
+  // options (upstream //components/image_fetcher).
+  auto address_space = network::GetAddressSpaceFromUrl(url_);
+  if (address_space &&
+      (*address_space == network::mojom::IPAddressSpace::kLoopback ||
+       *address_space == network::mojom::IPAddressSpace::kLocal)) {
     completion(nullptr, -1, nullptr);
     return;
   }

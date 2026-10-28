@@ -287,6 +287,28 @@ TEST_F(SanitizedImageSourceTest, DotLocalHostnameRejected) {
   EXPECT_EQ(0, test_url_loader_factory_.NumPending());
 }
 
+// Brave: verifies that IPv4-mapped IPv6 loopback literals are rejected before
+// any network request is made (IPAddressMatchesPrefix converts between IPv4
+// and IPv4-mapped IPv6, so ::ffff:127.0.0.1 matches the 127.0.0.0/8 entry).
+TEST_F(SanitizedImageSourceTest, MappedIpv6LoopbackUrlRejected) {
+  constexpr char kImageUrl[] = "https://[::ffff:127.0.0.1]:8377/icon.png";
+  EXPECT_CALL(*mock_data_decoder_delegate_,
+              DecodeImage(testing::_, testing::_))
+      .Times(0);
+  EXPECT_CALL(*mock_data_decoder_delegate_,
+              DecodeAnimation(testing::_, testing::_))
+      .Times(0);
+  base::MockCallback<content::URLDataSource::GotDataCallback> callback;
+  EXPECT_CALL(callback, Run(testing::IsNull())).Times(1);
+
+  sanitized_image_source_->StartDataRequest(
+      GURL(base::StrCat({chrome::kChromeUIImageURL, "?", kImageUrl})),
+      content::WebContents::Getter(), callback.Get());
+  task_environment_.RunUntilIdle();
+
+  EXPECT_EQ(0, test_url_loader_factory_.NumPending());
+}
+
 class SanitizedImageSourceSigninPromoTest
     : public base::test::WithFeatureOverride,
       public SanitizedImageSourceTest {

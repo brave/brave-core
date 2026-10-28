@@ -27,6 +27,7 @@
 #include "net/base/url_util.h"
 #include "net/http/http_request_headers.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
+#include "services/network/public/cpp/ip_address_space_util.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "third_party/blink/public/common/loader/network_utils.h"
@@ -185,6 +186,20 @@ void BraveSanitizedImageSource::StartDataRequest(
 
   if (image_url.SchemeIs(url::kHttpScheme)) {
     // Disallow any HTTP requests, treat them as a failure instead.
+    std::move(callback).Run(nullptr);
+    return;
+  }
+
+  // Brave: never let a WebUI-supplied image URL (e.g. a Brave News feed image)
+  // reach loopback/local-network addresses, mirroring the desktop
+  // SanitizedImageSource protection. Literal local hosts and localhost/*.local
+  // names are rejected here before any connection; DNS-resolving hostnames and
+  // redirect hops are caught per connection attempt by
+  // kURLLoadOptionBlockLocalRequest in StartImageDownload.
+  auto address_space = network::GetAddressSpaceFromUrl(image_url);
+  if (address_space &&
+      (*address_space == network::mojom::IPAddressSpace::kLoopback ||
+       *address_space == network::mojom::IPAddressSpace::kLocal)) {
     std::move(callback).Run(nullptr);
     return;
   }
