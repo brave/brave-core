@@ -452,6 +452,11 @@ import os.log
       // We should, but this can be false during upgrades if the identifier changed for some reason.
       if await hasRuleList(for: type, mode: mode) {
         if let existingVersion = versions.value[identifier] {
+          // A group's version joins its members' versions, so any change in membership or a
+          // member's version can't be ordered against the previous one.
+          if case .engineGroup = type {
+            return version != existingVersion
+          }
           // if existing version older than newer version, consider it `missing` so we recompile
           // version are either in versioning format `1.0.234` / `1.0.2345`,
           // or as dates, `2025-03-07T10:00:00Z` / `2025-03-07T14:50:38Z`
