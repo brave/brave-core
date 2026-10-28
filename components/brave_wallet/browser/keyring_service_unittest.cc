@@ -1482,6 +1482,49 @@ TEST_F(KeyringServiceUnitTest, RecoverWalletResetsImportedAccountPermissions) {
             mojom::RecoverWalletResult::kSuccess);
 }
 
+TEST_F(KeyringServiceUnitTest,
+       RecoverWalletResetsPermissionsForImportsOnDisabledKeyrings) {
+  mojom::AccountIdPtr dot_account_id;
+  {
+    base::test::ScopedFeatureList enabled_feature;
+    enabled_feature.InitAndEnableFeature(features::kBraveWalletPolkadotFeature);
+    KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
+    ASSERT_TRUE(
+        RestoreWallet(&service, kMnemonicDivideCruise, "old password", false));
+
+    auto dot_account = AddAccount(&service, mojom::CoinType::DOT,
+                                  mojom::KeyringId::kPolkadotMainnet, "Dot");
+    ASSERT_TRUE(dot_account);
+    TestFuture<const std::optional<std::string>&> export_future;
+    service.EncodePolkadotKeyForExport(dot_account->account_id.Clone(),
+                                       "old password", "export_pwd",
+                                       export_future.GetCallback());
+    auto json_export = export_future.Get();
+    ASSERT_TRUE(json_export);
+    auto imported =
+        ImportPolkadotAccount(&service, "Dot import", *json_export,
+                              "export_pwd", mojom::kPolkadotMainnet);
+    ASSERT_TRUE(imported);
+    dot_account_id = imported->account_id.Clone();
+  }
+
+  // The keyring is disabled at recovery time, but its imported accounts are
+  // still wiped from prefs, so their permissions must be reset as well.
+  base::test::ScopedFeatureList disabled_feature;
+  disabled_feature.InitAndDisableFeature(features::kBraveWalletPolkadotFeature);
+  testing::StrictMock<MockBraveWalletServiceDelegate> delegate;
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
+  service.SetDelegate(&delegate);
+  service.Lock();
+
+  EXPECT_CALL(delegate, ResetPermissionsForAccount(
+                            mojom::CoinType::DOT,
+                            GetAccountPermissionIdentifier(dot_account_id)));
+  EXPECT_EQ(RecoverWallet(&service, kMnemonicDivideCruise, "new password",
+                          false, true),
+            mojom::RecoverWalletResult::kSuccess);
+}
+
 TEST_F(KeyringServiceUnitTest, DefaultSolanaAccountCreated) {
   KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
   ASSERT_NE(CreateWallet(&service, "brave"), std::nullopt);
