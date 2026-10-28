@@ -100,7 +100,7 @@ class BraveLocationBarViewBrowserTest : public InProcessBrowserTest {
   // Stores a favicon for `icon_url` and warms the omnibox favicon cache so that
   // subsequent lookups for it resolve synchronously.
   void PrimeFavicon(const GURL& icon_url) {
-    const GURL page_url("https://" + icon_url.host() + "/");
+    const GURL page_url = icon_url.GetWithEmptyPath();
     HistoryServiceFactory::GetForProfile(browser()->GetProfile(),
                                          ServiceAccessType::EXPLICIT_ACCESS)
         ->AddPage(page_url, base::Time::Now(), history::SOURCE_BROWSED);
