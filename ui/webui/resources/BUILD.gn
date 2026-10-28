@@ -179,6 +179,7 @@ leo_icons_base_path = "../../../node_modules/@brave/leo/icons"
 leo_icons_sources = [
   "accessibility.svg",
   "activity.svg",
+  "antenna.svg",
   "anthropic-color.svg",
   "appearance.svg",
   "arrow-diagonal-down-right.svg",

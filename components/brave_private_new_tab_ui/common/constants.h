@@ -12,14 +12,22 @@
 namespace brave_private_new_tab {
 
 inline constexpr webui::LocalizedString kLocalizedStrings[] = {
-    {"headerTitle", IDS_BRAVE_PRIVATE_NEW_TAB_PRIVATE_WINDOW},
-    {"headerText", IDS_BRAVE_PRIVATE_NEW_TAB_PRIVATE_WINDOW_DESC},
-    {"headerText1", IDS_BRAVE_PRIVATE_NEW_TAB_PRIVATE_WINDOW_DESC1},
-    {"headerText2", IDS_BRAVE_PRIVATE_NEW_TAB_PRIVATE_WINDOW_DESC2},
-    {"headerButton", IDS_BRAVE_PRIVATE_NEW_TAB_PRIVATE_WINDOW_BUTTON},
-    {"headerTorTitle", IDS_BRAVE_PRIVATE_NEW_TAB_PRIVATE_WINDOW_TOR},
-    {"headerTorText", IDS_BRAVE_PRIVATE_NEW_TAB_PRIVATE_WINDOW_TOR_DESC},
-    {"torStatus", IDS_BRAVE_PRIVATE_NEW_TAB_TOR_STATUS},
+    {"headingPrivate", IDS_BRAVE_PRIVATE_NEW_TAB_HEADING_PRIVATE},
+    {"headingTor", IDS_BRAVE_PRIVATE_NEW_TAB_HEADING_TOR},
+    {"hideInfoLabel", IDS_BRAVE_PRIVATE_NEW_TAB_HIDE_INFO},
+    {"showInfoLabel", IDS_BRAVE_PRIVATE_NEW_TAB_SHOW_INFO},
+    {"cardNoTraceTitle", IDS_BRAVE_PRIVATE_NEW_TAB_CARD_NO_TRACE_TITLE},
+    {"cardNoTraceDesc", IDS_BRAVE_PRIVATE_NEW_TAB_CARD_NO_TRACE_DESC},
+    {"cardVisibilityTitle", IDS_BRAVE_PRIVATE_NEW_TAB_CARD_VISIBILITY_TITLE},
+    {"cardVisibilityDesc", IDS_BRAVE_PRIVATE_NEW_TAB_CARD_VISIBILITY_DESC},
+    {"cardPrivateSafetyTitle",
+     IDS_BRAVE_PRIVATE_NEW_TAB_CARD_PRIVATE_SAFETY_TITLE},
+    {"cardPrivateSafetyDesc",
+     IDS_BRAVE_PRIVATE_NEW_TAB_CARD_PRIVATE_SAFETY_DESC},
+    {"cardAboutTorTitle", IDS_BRAVE_PRIVATE_NEW_TAB_CARD_ABOUT_TOR_TITLE},
+    {"cardAboutTorDesc", IDS_BRAVE_PRIVATE_NEW_TAB_CARD_ABOUT_TOR_DESC},
+    {"cardTorSafetyTitle", IDS_BRAVE_PRIVATE_NEW_TAB_CARD_TOR_SAFETY_TITLE},
+    {"cardTorSafetyDesc", IDS_BRAVE_PRIVATE_NEW_TAB_CARD_TOR_SAFETY_DESC},
     {"torStatusConnected",
      IDS_BRAVE_PRIVATE_NEW_TAB_TOR_STATUS_CONNECTED},  // NOLINT
     {"torStatusDisconnected",
@@ -32,15 +40,13 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_PRIVATE_NEW_TAB_TOR_STATUS_CONNECTION_SLOW_DESC},
     {"torStatusConnectionFailed",
      IDS_BRAVE_PRIVATE_NEW_TAB_TOR_STATUS_CONNECTION_FAILED},
-    {"torHelpConnecting", IDS_BRAVE_PRIVATE_NEW_TAB_TOR_HELP_CONNECTING},
     {"torHelpDisconnectedReenable",
      IDS_BRAVE_PRIVATE_NEW_TAB_TOR_HELP_DISCONNECTED_REENABLE},  // NOLINT
     {"torHelpDisconnectedBridges",
      IDS_BRAVE_PRIVATE_NEW_TAB_TOR_HELP_DISCONNECTED_BRIDGES},  // NOLINT
-    {"torHelpContactSupport",
-     IDS_BRAVE_PRIVATE_NEW_TAB_TOR_HELP_CONTACT_SUPPORT},  // NOLINT
     {"searchPlaceholderLabel",
      IDS_BRAVE_PRIVATE_NEW_TAB_SEARCH_PLACEHOLDER},  // NOLINT
+    {"searchSubmitLabel", IDS_BRAVE_PRIVATE_NEW_TAB_SEARCH_SUBMIT},
 };
 
 }  // namespace brave_private_new_tab

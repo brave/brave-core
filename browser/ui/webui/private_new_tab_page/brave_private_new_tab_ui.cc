@@ -43,6 +43,13 @@ BravePrivateNewTabUI::BravePrivateNewTabUI(content::WebUI* web_ui)
   }
 
   source->AddBoolean("isWindowTor", profile->IsTor());
+  source->AddBoolean(
+      "infoCardsDismissed",
+      BravePrivateNewTabPageHandler::IsDisclaimerDismissed(profile));
+  source->AddBoolean("isTorDisabled",
+                     BravePrivateNewTabPageHandler::IsTorDisabled(profile));
+  source->AddBoolean("isTorConnected",
+                     BravePrivateNewTabPageHandler::IsTorConnected());
 
   AddBackgroundColorToSource(source, web_ui->GetWebContents());
 }
