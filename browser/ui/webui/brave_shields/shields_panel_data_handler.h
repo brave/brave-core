@@ -25,11 +25,11 @@ class TopChromeWebUIController;
 
 namespace favicon {
 class FaviconService;
-}  // namespace favicon
+}
 
 namespace brave_shields {
 class BraveShieldsSettingsService;
-}  // namespace brave_shields
+}
 
 class ShieldsPanelDataHandler
     : public brave_shields::mojom::DataHandler,
