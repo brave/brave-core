@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -45,6 +46,7 @@ public class BraveHubToolbarView extends HubToolbarView
     private FrameLayout mMenuButton;
     private FrameLayout mPaneSwitcherCard;
     private boolean mIsIncognitoSelected = true;
+    private @Nullable Integer mPaneSwitcherStartMargin;
     private @Nullable FirstPartyStorageCleanerInterface mFpCleaner;
     private final @NonNull HubColorMixerRegistrationHelper mButtonColorMixerHelper =
             new HubColorMixerRegistrationHelper();
@@ -104,6 +106,29 @@ public class BraveHubToolbarView extends HubToolbarView
         // one when tab groups are disabled and there are no incognito tabs.
         mPaneSwitcherCard.setVisibility(
                 buttonDataList != null && buttonDataList.size() > 1 ? View.VISIBLE : View.GONE);
+
+        // Upstream re-centers the card whenever the pane list is rebuilt, e.g. when the private
+        // pane goes away after the last private tab is closed.
+        applyPaneSwitcherStartAnchor();
+    }
+
+    /** Keeps the pane switcher at the start edge, surviving upstream pane list rebuilds. */
+    void anchorPaneSwitcherToStart(int marginStart) {
+        mPaneSwitcherStartMargin = marginStart;
+        applyPaneSwitcherStartAnchor();
+    }
+
+    private void applyPaneSwitcherStartAnchor() {
+        if (mPaneSwitcherStartMargin == null) return;
+        FrameLayout.LayoutParams params =
+                (FrameLayout.LayoutParams) mPaneSwitcherCard.getLayoutParams();
+        int gravity = Gravity.START | Gravity.CENTER_VERTICAL;
+        if (params.gravity == gravity && params.getMarginStart() == mPaneSwitcherStartMargin) {
+            return;
+        }
+        params.gravity = gravity;
+        params.setMarginStart(mPaneSwitcherStartMargin);
+        mPaneSwitcherCard.setLayoutParams(params);
     }
 
     @Override
