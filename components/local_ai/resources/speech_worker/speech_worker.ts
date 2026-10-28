@@ -94,9 +94,8 @@ class SpeechRecognitionFactoryImpl
 {
   private readonly receiver: SpeechRecognitionFactoryReceiver
   private readonly streams = new Set<AsrStreamInputAdapter>()
+  // The browser forwards only the streams whose language this model serves.
   private model: OrtNemotronModel | null = null
-  private modelType: NemotronModelType | null = null
-  private promptId: number | null = null
 
   constructor() {
     this.receiver = new SpeechRecognitionFactoryReceiver(this)
@@ -106,10 +105,9 @@ class SpeechRecognitionFactoryImpl
     return this.receiver.$.bindNewPipeAndPassRemote()
   }
 
-  async init(files: OrtModelFiles, lang: string = 'en-US') {
+  async init(files: OrtModelFiles) {
     try {
-      const { modelType, promptId } = getNemotronModelType(lang)
-      const model = await OrtNemotronModel.buildFromBytes(
+      this.model = await OrtNemotronModel.buildFromBytes(
         readBigBuffer(files.encoder, 'Encoder'),
         readBigBuffer(files.encoderData, 'EncoderData'),
         readBigBuffer(files.decoder, 'Decoder'),
@@ -119,9 +117,6 @@ class SpeechRecognitionFactoryImpl
           readBigBuffer(files.melFilters, 'Filterbank').slice().buffer,
         ),
       )
-      this.modelType = modelType
-      this.promptId = promptId ?? null
-      this.model = model
       return { success: true }
     } catch (err) {
       console.error('[speech-worker] init failed:', err)
@@ -134,7 +129,7 @@ class SpeechRecognitionFactoryImpl
     stream: AsrStreamInputPendingReceiver,
     responder: AsrStreamResponderRemote,
   ) {
-    if (!this.model || !this.modelType) {
+    if (!this.model) {
       console.error('[speech-worker] createAsrStream before init')
       responder.$.close()
       return
@@ -142,10 +137,14 @@ class SpeechRecognitionFactoryImpl
 
     let adapter: AsrStreamInputAdapter
     try {
+      // The browser falls back to en-US when a page sets no language, so a
+      // missing one only comes from a caller that skips that.
+      const language = options.language ?? 'en-US'
+      const { modelType, promptId } = getNemotronModelType(language)
       adapter = new AsrStreamInputAdapter(
         this.model,
-        this.modelType,
-        this.promptId,
+        modelType,
+        promptId,
         options.sampleRateHz,
         stream,
         responder,
