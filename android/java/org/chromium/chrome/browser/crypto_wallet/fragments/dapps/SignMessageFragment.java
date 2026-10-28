@@ -162,21 +162,26 @@ public class SignMessageFragment extends WalletBottomSheetDialogFragment {
         mUnicodeEscapeVersion = false;
         final String message;
         final boolean isEip712;
-        if (request.signData.which() == SignDataUnion.Tag.EthStandardSignData) {
-            message = request.signData.getEthStandardSignData().message;
-            isEip712 = false;
-        } else if (request.signData.which() == SignDataUnion.Tag.EthSignTypedData) {
-            message = request.signData.getEthSignTypedData().messageJson;
-            isEip712 = true;
-        } else if (request.signData.which() == SignDataUnion.Tag.SolanaSignData) {
-            message = request.signData.getSolanaSignData().message;
-            isEip712 = false;
-        } else if (request.signData.which() == SignDataUnion.Tag.CardanoSignData) {
-            message = request.signData.getCardanoSignData().message;
-            isEip712 = false;
-        } else {
-            message = "";
-            isEip712 = false;
+        switch (request.signData.which()) {
+            case SignDataUnion.Tag.EthStandardSignData:
+                message = request.signData.getEthStandardSignData().message;
+                isEip712 = false;
+                break;
+            case SignDataUnion.Tag.EthSignTypedData:
+                message = request.signData.getEthSignTypedData().messageJson;
+                isEip712 = true;
+                break;
+            case SignDataUnion.Tag.SolanaSignData:
+                message = request.signData.getSolanaSignData().message;
+                isEip712 = false;
+                break;
+            case SignDataUnion.Tag.CardanoSignData:
+                message = request.signData.getCardanoSignData().message;
+                isEip712 = false;
+                break;
+            default:
+                message = "";
+                isEip712 = false;
         }
 
         updateTextEthSign(
