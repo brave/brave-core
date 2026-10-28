@@ -7,8 +7,9 @@
 #define BRAVE_IOS_BROWSER_API_WEB_IMAGE_WEB_IMAGE_PRIVATE_H_
 
 #import <Foundation/Foundation.h>
-#include "services/network/public/cpp/shared_url_loader_factory.h"
+
 #include "brave/ios/browser/api/web_image/web_image.h"
+#include "services/network/public/cpp/shared_url_loader_factory.h"
 
 class ProfileIOS;
 

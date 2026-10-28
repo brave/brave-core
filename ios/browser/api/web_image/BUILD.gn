@@ -34,8 +34,8 @@ source_set("unit_tests") {
     ":web_image",
     "//base",
     "//base/test:test_support",
-    "//services/network/public/cpp",
     "//services/network:test_support",
+    "//services/network/public/cpp",
     "//testing/gtest",
     "//url",
   ]

@@ -306,9 +306,8 @@ void BraveSanitizedImageSource::StartImageDownload(
       network::SimpleURLLoader::Create(std::move(request), traffic_annotation);
   auto* loader_ptr = loader.get();
   // Brave: block requests to loopback/local addresses at the network layer,
-  // including every redirect hop, based on the resolved IP (H1 4134436:
-  // Brave News image proxy SSRF; same protection as H1 3969942's fix in
-  // chromium_src/chrome/browser/ui/webui/sanitized_image/sanitized_image_source.cc).
+  // including every redirect hop, based on the resolved IP (mirrors the
+  // protection in the chromium_src sanitized_image_source.cc override).
   loader_ptr->SetURLLoaderFactoryOptions(
       network::mojom::kURLLoadOptionBlockLocalRequest |
       network::mojom::kURLLoadOptionBlockAllCookies);

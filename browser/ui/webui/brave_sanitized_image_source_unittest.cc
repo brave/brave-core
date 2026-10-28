@@ -15,6 +15,7 @@
 #include "base/path_service.h"
 #include "base/test/bind.h"
 #include "base/test/mock_callback.h"
+#include "base/test/test_future.h"
 #include "base/threading/thread_restrictions.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/profiles/profile.h"
@@ -111,12 +112,12 @@ class BraveSanitizedImageSourceTest : public testing::Test {
   // Brave: asserts that an image URL with a loopback/local literal host (or a
   // loopback/local hostname) is rejected before any network request is made.
   void ExpectRejected(const std::string& image_url_spec) {
-    base::MockCallback<content::URLDataSource::GotDataCallback> callback;
-    EXPECT_CALL(callback, Run(testing::IsNull())).Times(1);
+    base::test::TestFuture<scoped_refptr<base::RefCountedMemory>> future;
     source_.StartDataRequest(
         GURL("chrome://brave-image/?url=" + EncodeQuery(image_url_spec)),
-        content::WebContents::Getter(), callback.Get());
-    task_environment_.RunUntilIdle();
+        content::WebContents::Getter(), future.GetCallback());
+    EXPECT_TRUE(future.Wait());
+    EXPECT_FALSE(future.Get());
     EXPECT_EQ(0, test_url_loader_factory_.NumPending());
   }
 

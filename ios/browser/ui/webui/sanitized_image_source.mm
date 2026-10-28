@@ -213,9 +213,9 @@ void SanitizedImageSource::StartDataRequest(
   }
 
   // Brave: an image URL in loopback or local address space must never cause
-  // a request to leave the browser (H1 3969942: website-triggered local
-  // network requests via suggested token icon). Hostnames that resolve to
-  // local IPs are caught per hop by kURLLoadOptionBlockLocalRequest below.
+  // a request to leave the browser (website-triggered local network requests
+  // via suggested token icon). Hostnames that resolve to local IPs are caught
+  // per hop by kURLLoadOptionBlockLocalRequest below.
   std::optional<network::mojom::IPAddressSpace> address_space =
       network::GetAddressSpaceFromUrl(image_url);
   if (address_space &&
@@ -320,7 +320,7 @@ void SanitizedImageSource::StartImageDownload(
       network::SimpleURLLoader::Create(std::move(request), traffic_annotation);
   auto* loader_ptr = loader.get();
   // Brave: block requests to loopback/local addresses at the network layer,
-  // including every redirect hop, based on the resolved IP (H1 3969942).
+  // including every redirect hop, based on the resolved IP.
   loader_ptr->SetURLLoaderFactoryOptions(
       network::mojom::kURLLoadOptionBlockLocalRequest |
       network::mojom::kURLLoadOptionBlockAllCookies);

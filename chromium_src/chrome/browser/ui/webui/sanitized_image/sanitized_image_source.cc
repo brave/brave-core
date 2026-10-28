@@ -1,6 +1,7 @@
-// Copyright 2020 The Chromium Authors
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
+/* Copyright (c) 2026 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "chrome/browser/ui/webui/sanitized_image/sanitized_image_source.h"
 
@@ -81,18 +82,6 @@ bool IsGooglePhotosUrl(const GURL& url) {
     }
   }
   return false;
-}
-
-// Brave: diagnostics for redirect hops. Local requests are already blocked
-// by kURLLoadOptionBlockLocalRequest at the network layer, per hop.
-void LogImageRedirect(
-    const GURL& url_before_redirect,
-    const net::RedirectInfo& redirect_info,
-    const network::mojom::URLResponseHead& response_head,
-    std::vector<std::string>* removed_headers) {
-  DVLOG(1) << "sanitized_image_source: redirect from "
-           << url_before_redirect.possibly_invalid_spec() << " to "
-           << redirect_info.new_url.possibly_invalid_spec();
 }
 
 }  // namespace
@@ -191,9 +180,9 @@ void SanitizedImageSource::StartDataRequest(
   }
 
   // Brave: an image URL in loopback or local address space must never cause
-  // a request to leave the browser (H1 3969942: website-triggered local
-  // network requests via suggested token icon). Hostnames that resolve to
-  // local IPs are caught per hop by kURLLoadOptionBlockLocalRequest below.
+  // a request to leave the browser (website-triggered local network requests
+  // via suggested token icon). Hostnames that resolve to local IPs are caught
+  // per hop by kURLLoadOptionBlockLocalRequest below.
   std::optional<network::mojom::IPAddressSpace> address_space =
       network::GetAddressSpaceFromUrl(image_url);
   if (address_space &&
@@ -316,12 +305,17 @@ void SanitizedImageSource::StartImageDownload(
   }
   auto* loader_ptr = loader.get();
   // Brave: block requests to loopback/local addresses at the network layer,
-  // including every redirect hop, based on the resolved IP (H1 3969942).
-  loader_ptr->SetURLLoaderFactoryOptions(
-      network::mojom::kURLLoadOptionBlockLocalRequest |
-      network::mojom::kURLLoadOptionBlockAllCookies);
-  loader_ptr->SetOnRedirectCallback(
-      base::BindRepeating(&LogImageRedirect));
+  // including every redirect hop, based on the resolved IP. Cookies are only
+  // blocked on the non-Drive branch: the Drive path intentionally
+  // authenticates with cookies (see its traffic annotation above).
+  if (request_attributes.image_url.host() == "drive.google.com") {
+    loader_ptr->SetURLLoaderFactoryOptions(
+        network::mojom::kURLLoadOptionBlockLocalRequest);
+  } else {
+    loader_ptr->SetURLLoaderFactoryOptions(
+        network::mojom::kURLLoadOptionBlockLocalRequest |
+        network::mojom::kURLLoadOptionBlockAllCookies);
+  }
   loader_ptr->DownloadToString(
       url_loader_factory_.get(),
       base::BindOnce(&SanitizedImageSource::OnImageLoaded,
