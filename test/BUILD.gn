@@ -1150,6 +1150,7 @@ test("brave_browser_tests") {
     "//brave/components/brave_sync:prefs",
     "//brave/components/brave_sync/test:test_support",
     "//brave/components/brave_vpn/common/buildflags",
+    "//brave/components/brave_vpn/common/mojom",
     "//brave/components/brave_wallet/common/buildflags",
     "//brave/components/brave_wayback_machine/buildflags",
     "//brave/components/constants",
@@ -1166,6 +1167,7 @@ test("brave_browser_tests") {
     "//brave/components/query_filter/browser",
     "//brave/components/query_filter/common",
     "//brave/components/resources:strings_grit",
+    "//brave/components/skus/browser",
     "//brave/components/skus/common",
     "//brave/components/speedreader/common/buildflags",
     "//brave/components/tor/buildflags",
@@ -1412,8 +1414,6 @@ test("brave_browser_tests") {
     deps += [
       "//brave/components/brave_vpn/browser",
       "//brave/components/brave_vpn/common",
-      "//brave/components/brave_vpn/common/mojom",
-      "//brave/components/skus/browser",
     ]
   }
   if (is_android) {
