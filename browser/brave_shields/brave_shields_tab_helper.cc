@@ -425,8 +425,6 @@ void BraveShieldsTabHelper::SetCookieBlockMode(mojom::CookieBlockMode mode) {
   brave_shields::SetCookieControlType(&*host_content_settings_map_, prefs,
                                       control_type, GetCurrentSiteURL(),
                                       g_browser_process->local_state());
-
-  ReloadWebContents();
 }
 
 void BraveShieldsTabHelper::SetHttpsUpgradeMode(mojom::HttpsUpgradeMode mode) {

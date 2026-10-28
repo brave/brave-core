@@ -119,8 +119,9 @@ TEST_F(BraveShieldsTabHelperUnitTest, ReloadsForRelevantContentSettings) {
         ContentSettingsType::BRAVE_TRACKERS,
         ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES,
         ContentSettingsType::BRAVE_FINGERPRINTING_V2,
-        ContentSettingsType::BRAVE_REFERRERS, ContentSettingsType::BRAVE_COOKIES,
-        ContentSettingsType::JAVASCRIPT}) {
+        ContentSettingsType::BRAVE_REFERRERS,
+        ContentSettingsType::BRAVE_COOKIES, ContentSettingsType::JAVASCRIPT}) {
+    SCOPED_TRACE(static_cast<int>(type));
     host_content_settings_map()->SetContentSettingDefaultScope(
         url, GURL(), type, CONTENT_SETTING_BLOCK);
     ASSERT_TRUE(web_contents()->GetController().GetPendingEntry());
@@ -135,6 +136,17 @@ TEST_F(BraveShieldsTabHelperUnitTest, ReloadsForRelevantContentSettings) {
       base::Value::Dict().Set("cosmeticFilteringV2", "block"));
   ASSERT_TRUE(web_contents()->GetController().GetPendingEntry());
   EXPECT_EQ(web_contents()->GetController().GetPendingEntry()->GetURL(), url);
+}
+
+TEST_F(BraveShieldsTabHelperUnitTest,
+       DoesNotReloadForUnrelatedContentSettings) {
+  const GURL url("https://example.com");
+  NavigateTo(url);
+
+  host_content_settings_map()->SetContentSettingDefaultScope(
+      url, GURL(), ContentSettingsType::BRAVE_SPEEDREADER,
+      CONTENT_SETTING_BLOCK);
+  EXPECT_FALSE(web_contents()->GetController().GetPendingEntry());
 }
 
 TEST_F(BraveShieldsTabHelperUnitTest,
