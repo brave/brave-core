@@ -5,9 +5,12 @@
 
 import * as React from 'react'
 import { createRoot } from 'react-dom/client'
+import { setIconBasePath } from '@brave/leo/react/icon'
 import StyledComponentsProvider from '$web-common/StyledComponentsProvider'
 
 import Container from './container'
+
+setIconBasePath('chrome://resources/brave-icons')
 
 function App () {
   return <Container />

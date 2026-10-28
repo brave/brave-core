@@ -10,9 +10,7 @@ interface PageHandler {
   // Registers the webui page.
   SetClientPage(pending_remote<PrivateTabPage> page);
   SetDisclaimerDismissed(bool dismissed);
-  GetDisclaimerDismissed() => (bool dismissed);
   GetIsTorConnected() => (bool is_connected);
-  GetIsTorDisabled() => (bool is_disabled);
   GoToBraveSearch(string input, bool open_new_tab);
   GoToBraveSupport();
 };

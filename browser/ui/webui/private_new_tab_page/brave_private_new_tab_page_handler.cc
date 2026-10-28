@@ -26,13 +26,45 @@
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/tor/tor_profile_service_factory.h"
-#include "brave/components/tor/pref_names.h"
 #include "brave/components/tor/tor_launcher_factory.h"
-#include "chrome/browser/browser_process.h"
-#endif
+#endif  // BUILDFLAG(ENABLE_TOR)
 
 namespace {
+
 constexpr auto kStuckPeriod = base::Seconds(45);
+
+const char* GetDisclaimerDismissedPref(Profile* profile) {
+  return profile->IsTor()
+             ? brave_private_new_tab::prefs::kBraveTorWindowDisclaimerDismissed
+             : brave_private_new_tab::prefs::
+                   kBravePrivateWindowDisclaimerDismissed;
+}
+
+}  // namespace
+
+// static
+bool BravePrivateNewTabPageHandler::IsDisclaimerDismissed(Profile* profile) {
+  return profile->GetOriginalProfile()->GetPrefs()->GetBoolean(
+      GetDisclaimerDismissedPref(profile));
+}
+
+// static
+bool BravePrivateNewTabPageHandler::IsTorDisabled(Profile* profile) {
+#if BUILDFLAG(ENABLE_TOR)
+  return TorProfileServiceFactory::IsTorDisabled(profile->GetOriginalProfile());
+#else
+  return true;
+#endif  // BUILDFLAG(ENABLE_TOR)
+}
+
+// static
+bool BravePrivateNewTabPageHandler::IsTorConnected() {
+#if BUILDFLAG(ENABLE_TOR)
+  auto* tor_launcher_factory = TorLauncherFactory::GetInstance();
+  return tor_launcher_factory && tor_launcher_factory->IsTorConnected();
+#else
+  return false;
+#endif  // BUILDFLAG(ENABLE_TOR)
 }
 
 BravePrivateNewTabPageHandler::BravePrivateNewTabPageHandler(
@@ -65,23 +97,7 @@ void BravePrivateNewTabPageHandler::SetDisclaimerDismissed(bool dismissed) {
   CHECK(profile_);
 
   profile_->GetOriginalProfile()->GetPrefs()->SetBoolean(
-      profile_->IsTor()
-          ? brave_private_new_tab::prefs::kBraveTorWindowDisclaimerDismissed
-          : brave_private_new_tab::prefs::
-                kBravePrivateWindowDisclaimerDismissed,
-      dismissed);
-}
-
-void BravePrivateNewTabPageHandler::GetDisclaimerDismissed(
-    GetDisclaimerDismissedCallback callback) {
-  CHECK(profile_);
-
-  bool dismissed = profile_->GetOriginalProfile()->GetPrefs()->GetBoolean(
-      profile_->IsTor()
-          ? brave_private_new_tab::prefs::kBraveTorWindowDisclaimerDismissed
-          : brave_private_new_tab::prefs::
-                kBravePrivateWindowDisclaimerDismissed);
-  std::move(callback).Run(dismissed);
+      GetDisclaimerDismissedPref(profile_), dismissed);
 }
 
 void BravePrivateNewTabPageHandler::GetIsTorConnected(
@@ -93,23 +109,6 @@ void BravePrivateNewTabPageHandler::GetIsTorConnected(
 #endif
 
   std::move(callback).Run(is_connected);
-}
-
-void BravePrivateNewTabPageHandler::GetIsTorDisabled(
-    GetIsTorDisabledCallback callback) {
-  CHECK(profile_);
-#if BUILDFLAG(ENABLE_TOR)
-  // For private new tab page, only check if Tor is explicitly
-  // disabled by enterprise policy (managed and set to true)
-  bool is_disabled = false;
-  if (auto* prefs = g_browser_process->local_state()) {
-    auto* pref = prefs->FindPreference(tor::prefs::kTorDisabled);
-    is_disabled = pref && pref->IsManaged() && pref->GetValue()->GetBool();
-  }
-#else
-  bool is_disabled = true;
-#endif
-  std::move(callback).Run(is_disabled);
 }
 
 using ConnectionStatus = brave_private_new_tab::mojom::ConnectionStatus;
