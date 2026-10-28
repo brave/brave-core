@@ -1,13 +1,12 @@
 diff --git a/third_party/blink/renderer/core/html/html_capability_element_base.cc b/third_party/blink/renderer/core/html/html_capability_element_base.cc
-index e255e68bf4e5b4a2481bb68a3caadd8e96acb660..b9f1b986f1c19e7ef745835c051114fa4543ff9e 100644
+index e255e68bf4e5b4a2481bb68a3caadd8e96acb660..77da8d58131918dc1d674d143b82e25342d6bc05 100644
 --- a/third_party/blink/renderer/core/html/html_capability_element_base.cc
 +++ b/third_party/blink/renderer/core/html/html_capability_element_base.cc
-@@ -684,6 +684,12 @@ bool HTMLCapabilityElementBase::MaybeRegisterPageEmbeddedPermissionControl() {
+@@ -684,6 +684,11 @@ bool HTMLCapabilityElementBase::MaybeRegisterPageEmbeddedPermissionControl() {
    embedded_permission_control_receiver_.Bind(
        client.InitWithNewPipeAndPassReceiver(), GetTaskRunner());
    CHECK(embedded_permission_control_receiver_.is_bound());
-+  auto request_descriptor = CreateEmbeddedPermissionRequestDescriptor();
-+  if (request_descriptor->detail->which() ==
++  if (descriptor->detail->which() ==
 +      mojom::blink::EmbeddedPermissionControlDescriptorExtension::Tag::
 +          kUserMedia) {
 +    return false;
@@ -15,12 +14,3 @@ index e255e68bf4e5b4a2481bb68a3caadd8e96acb660..b9f1b986f1c19e7ef745835c051114fa
    GetPermissionService()->RegisterPageEmbeddedPermissionControl(
        mojo::Clone(permission_descriptors_), std::move(descriptor),
        std::move(client));
-@@ -1120,7 +1126,7 @@ void HTMLCapabilityElementBase::RequestPageEmbededPermissions() {
-   CHECK_LE(permission_descriptors_.size(), 2U);
-   pending_request_created_ = base::TimeTicks::Now();
- 
--  // `CreateEmbeddedPermissionRequestDescriptor()` forces a synchronous layout
-+  // `std::move(request_descriptor)` forces a synchronous layout
-   // update, which may detach the frame or make the element unrendered.
-   auto descriptor = CreateEmbeddedPermissionRequestDescriptor();
-   if (!GetDocument().GetFrame() || !IsRendered()) {
