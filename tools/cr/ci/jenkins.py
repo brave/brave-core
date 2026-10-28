@@ -2,18 +2,19 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
-"""CI (Jenkins) integration for Brockit toolchain pipelines.
+"""Jenkins: launching and watching pipelines, and reading what failed.
 
-This module owns everything specific to launching and watching CI jobs. A caller
-hands `JenkinsCi.trigger` one or more fully-qualified job URLs plus the build
-parameters, and optionally asks to watch the pipelines to completion with a
-live-updating table.
+A caller hands `JenkinsCi.trigger` one or more fully-qualified job URLs plus
+the build parameters, and optionally asks to watch the pipelines to completion
+with a live-updating table. `JenkinsCi.failed_builds` reads a finished run's
+failed stages and tests, and `JenkinsCi.rerun` queues its job again.
 """
 
 from __future__ import annotations
 
 import contextlib
 from dataclasses import dataclass
+import html
 import json
 from pathlib import Path
 import re
@@ -28,6 +29,8 @@ from rich.spinner import Spinner
 from rich.table import Table
 from rich.text import Text
 
+from ci import failures
+from ci.failures import FailedBuild, FailedTest
 from exceptions import BadOutcomeException, InvalidInputException
 from terminal import console, terminal
 
@@ -49,6 +52,12 @@ _WFAPI_STATUS_TO_STATE = {
     'ABORTED': 'ABORTED',
     'UNSTABLE': 'UNSTABLE',
 }
+
+# `testReport` statuses of tests that failed in this run.
+_FAILED_TEST_STATUSES = frozenset({'FAILED', 'REGRESSION'})
+
+# `wfapi/log` serves a step's log as HTML.
+_HTML_TAG = re.compile(r'<[^>]+>')
 
 # States meaning a pipeline has finished and no longer needs polling.
 _TERMINAL_WATCH_STATES = frozenset(
@@ -230,6 +239,11 @@ class JenkinsCi:
 
         return cls(config['username'], config['token'])
 
+    def _session(self) -> requests.Session:
+        session = requests.Session()
+        session.auth = (self._username, self._token)
+        return session
+
     @staticmethod
     def _server_root(job_urls: tuple[str, ...]) -> str:
         """Derives `scheme://host` from the job URLs (all share one host)."""
@@ -290,15 +304,14 @@ class JenkinsCi:
         base_url = self._server_root(job_urls)
         payload = None if properties is None else json.dumps(properties)
 
-        session = requests.Session()
-        session.auth = (self._username, self._token)
+        session = self._session()
         crumb = self._get_crumb(session, base_url)
 
         if title:
             terminal.log_task(f'Triggering pipelines for {title}:')
 
         watched: list[_WatchedJob] = []
-        failures: list[str] = []
+        failed_urls: list[str] = []
         for url in job_urls:
             job_params = dict(params or {})
             if payload is not None:
@@ -318,7 +331,7 @@ class JenkinsCi:
                 )
                 response.raise_for_status()
             except requests.RequestException as e:
-                failures.append(url)
+                failed_urls.append(url)
                 console.log(Padding(f'✘ {url}: {e}', (0, 4)))
                 continue
 
@@ -334,10 +347,10 @@ class JenkinsCi:
                 # queued/running build.
                 terminal.log_task(f'[bold]✔️ [/]{job.name} ➜ {url}')
 
-        if failures:
+        if failed_urls:
             raise BadOutcomeException(
                 'Failed to trigger the following pipelines:\n%s'
-                % '\n'.join(f'    * {url}' for url in failures)
+                % '\n'.join(f'    * {url}' for url in failed_urls)
             )
 
         if watch:
@@ -354,6 +367,125 @@ class JenkinsCi:
             return response.json()
         except (requests.RequestException, ValueError):
             return None
+
+    def failed_builds(self, build_url: str) -> list[FailedBuild]:
+        """What failed in the pipeline run at `build_url`: the first stage
+        that failed, and the stages left unstable by failed tests.
+
+        Once a stage fails, Jenkins marks every later stage failed too, so
+        only the first one says why.
+        """
+        url = build_url.rstrip('/') + '/'
+        session = self._session()
+        describe = self._get_json(session, f'{url}wfapi/describe')
+        if describe is None:
+            raise BadOutcomeException(f'Could not read {url}wfapi/describe')
+        stages = describe.get('stages') or []
+        builds = []
+        failed = next((s for s in stages if s.get('status') == 'FAILED'), None)
+        if failed is not None:
+            stage = (
+                self._get_json(
+                    session,
+                    f'{url}execution/node/{failed["id"]}/wfapi/describe',
+                )
+                or {}
+            )
+            error = ((stage.get('error') or {}).get('message') or '').strip()
+            log_tail = self._stage_log(session, url, stage)
+            builds.append(
+                FailedBuild(
+                    name=failed.get('name', ''),
+                    url=url,
+                    summary=error or f'Stage {failed.get("name")} failed',
+                    kind=failures.classify(log_tail, (), step_failed=True),
+                    problems=(error,) if error else (),
+                    log_tail=log_tail,
+                )
+            )
+        unstable = [s for s in stages if s.get('status') == 'UNSTABLE']
+        if unstable:
+            tests = self._failed_tests(session, url)
+            names = ', '.join(s.get('name', '') for s in unstable)
+            builds.append(
+                FailedBuild(
+                    name=names,
+                    url=f'{url}testReport/',
+                    summary=f'{len(tests)} failed test(s) in {names}',
+                    kind=failures.Kind.TESTS,
+                    tests=tests,
+                )
+            )
+        return builds
+
+    def _stage_log(
+        self, session: requests.Session, url: str, stage: dict
+    ) -> str:
+        """The end of the log of a stage's failed step, or of its last step
+        when none is marked failed."""
+        nodes = stage.get('stageFlowNodes') or []
+        failed = [node for node in nodes if node.get('status') == 'FAILED']
+        node = (failed or nodes or [None])[-1]
+        if node is None:
+            return ''
+        log = self._get_json(
+            session, f'{url}execution/node/{node["id"]}/wfapi/log'
+        )
+        if log is None:
+            return ''
+        text = html.unescape(_HTML_TAG.sub('', log.get('text') or ''))
+        return failures.tail(text)
+
+    def _failed_tests(
+        self, session: requests.Session, url: str
+    ) -> tuple[FailedTest, ...]:
+        report = self._get_json(
+            session,
+            f'{url}testReport/api/json?tree=suites[cases[className,name,'
+            'status,age,errorDetails,errorStackTrace]]',
+        )
+        tests = []
+        for suite in (report or {}).get('suites') or []:
+            for case in suite.get('cases') or []:
+                if case.get('status') not in _FAILED_TEST_STATUSES:
+                    continue
+                name = case.get('name', '')
+                class_name = case.get('className', '')
+                if class_name and class_name != name:
+                    name = f'{class_name}.{name}'
+                details = '\n'.join(
+                    part
+                    for part in (
+                        case.get('errorDetails'),
+                        case.get('errorStackTrace'),
+                    )
+                    if part
+                )
+                age = case.get('age') or 0
+                tests.append(
+                    FailedTest(
+                        name=name,
+                        status=case['status'],
+                        details=failures.tail(details, 40),
+                        known=f'failing for {age} builds' if age > 1 else '',
+                    )
+                )
+        return tuple(tests)
+
+    def rerun(self, build_url: str, *, wipe_workspace: bool = False) -> None:
+        """Queues the job of the run at `build_url` again, from scratch when
+        `wipe_workspace` is set (a PR job's `WIPE_WORKSPACE` parameter)."""
+        job_url = build_url.rstrip('/').rsplit('/', 1)[0] + '/'
+        session = self._session()
+        crumb = self._get_crumb(session, self._server_root((job_url,)))
+        params = {'WIPE_WORKSPACE': 'true'} if wipe_workspace else {}
+        response = session.post(
+            f'{job_url}buildWithParameters',
+            params=params,
+            headers=crumb,
+            timeout=30,
+        )
+        response.raise_for_status()
 
     def _resolve_display_name(
         self, session: requests.Session, job: _WatchedJob

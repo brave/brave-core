@@ -3,12 +3,12 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
-"""Tests for `ci.JenkinsCi` and the `--watch` machinery.
+"""Tests for `jenkins.JenkinsCi` and the `--watch` machinery.
 
 The file is split in two layers:
 
 * `FromConfigTest` exercises the pure `~/.jenkins.json` reader, pointing
-  `ci.JENKINS_CONFIG_FILE` at a temp file. No network involved.
+  `jenkins.JENKINS_CONFIG_FILE` at a temp file. No network involved.
 
 * `TriggerTest` drives `JenkinsCi.trigger` with a mocked `requests.Session`,
   asserting that every job URL is triggered with the right
@@ -32,7 +32,8 @@ from rich.console import Console
 from rich.spinner import Spinner
 from rich.text import Text
 
-import ci
+import _boot  # noqa: F401  -- adds parent tools/cr to sys.path
+from ci import failures, jenkins  # noqa: E402  -- after _boot
 
 # Two job URLs shaped like the frozen toolchain data (a view-scoped job path
 # with a trailing slash). Using two proves `trigger` fans out over the list.
@@ -54,7 +55,7 @@ class FromConfigTest(unittest.TestCase):
         self.addCleanup(stack.close)
         tmp = stack.enter_context(tempfile.TemporaryDirectory())
         self.config_path = Path(tmp) / '.jenkins.json'
-        patcher = patch.object(ci, 'JENKINS_CONFIG_FILE', self.config_path)
+        patcher = patch.object(jenkins, 'JENKINS_CONFIG_FILE', self.config_path)
         patcher.start()
         self.addCleanup(patcher.stop)
 
@@ -65,32 +66,32 @@ class FromConfigTest(unittest.TestCase):
 
     def test_reads_credentials(self):
         self._write({'username': 'bob', 'token': 'tok'})
-        launcher = ci.JenkinsCi.from_config()
+        launcher = jenkins.JenkinsCi.from_config()
         # pylint: disable=protected-access
         self.assertEqual(launcher._username, 'bob')
         self.assertEqual(launcher._token, 'tok')
 
     def test_missing_file_raises(self):
-        with self.assertRaises(ci.InvalidInputException):
-            ci.JenkinsCi.from_config()
+        with self.assertRaises(jenkins.InvalidInputException):
+            jenkins.JenkinsCi.from_config()
 
     def test_missing_field_raises(self):
         self._write({'username': 'bob'})
-        with self.assertRaises(ci.InvalidInputException):
-            ci.JenkinsCi.from_config()
+        with self.assertRaises(jenkins.InvalidInputException):
+            jenkins.JenkinsCi.from_config()
 
     def test_empty_field_raises(self):
         """A present-but-empty field is treated as missing."""
         self._write({'username': '', 'token': 'tok'})
-        with self.assertRaises(ci.InvalidInputException):
-            ci.JenkinsCi.from_config()
+        with self.assertRaises(jenkins.InvalidInputException):
+            jenkins.JenkinsCi.from_config()
 
     def test_invalid_json_raises(self):
         self.config_path.write_text(
             '{not valid json', encoding='utf-8', newline=''
         )
-        with self.assertRaises(ci.InvalidInputException):
-            ci.JenkinsCi.from_config()
+        with self.assertRaises(jenkins.InvalidInputException):
+            jenkins.JenkinsCi.from_config()
 
 
 class ServerRootTest(unittest.TestCase):
@@ -99,7 +100,7 @@ class ServerRootTest(unittest.TestCase):
     def test_scheme_and_host_only(self):
         # pylint: disable=protected-access
         self.assertEqual(
-            ci.JenkinsCi._server_root(JOB_URLS), 'https://ci.brave.com'
+            jenkins.JenkinsCi._server_root(JOB_URLS), 'https://ci.brave.com'
         )
 
 
@@ -128,8 +129,8 @@ class TriggerTest(unittest.TestCase):
         return session
 
     def _trigger(self, session, **kwargs):
-        with patch('ci.requests.Session', return_value=session):
-            ci.JenkinsCi('alice', 'secret-token').trigger(
+        with patch('ci.jenkins.requests.Session', return_value=session):
+            jenkins.JenkinsCi('alice', 'secret-token').trigger(
                 JOB_URLS, params={'CHROMIUM_TAG': '150.0.7850.1'}, **kwargs
             )
 
@@ -168,7 +169,7 @@ class TriggerTest(unittest.TestCase):
         """When the crumb issuer is unavailable, the builds are still triggered
         with no crumb header (API-token auth is crumb-exempt)."""
         session = self._make_session()
-        session.get.side_effect = ci.requests.RequestException('no crumb')
+        session.get.side_effect = jenkins.requests.RequestException('no crumb')
         self._trigger(session)
 
         self.assertEqual(session.post.call_count, len(JOB_URLS))
@@ -180,19 +181,19 @@ class TriggerTest(unittest.TestCase):
         `BadOutcomeException`."""
         session = self._make_session()
         failing = MagicMock()
-        failing.raise_for_status.side_effect = ci.requests.HTTPError(
+        failing.raise_for_status.side_effect = jenkins.requests.HTTPError(
             '403 Forbidden'
         )
         session.post.return_value = failing
 
-        with self.assertRaises(ci.BadOutcomeException):
+        with self.assertRaises(jenkins.BadOutcomeException):
             self._trigger(session)
 
     def test_single_job_trigger(self):
         """A single-URL toolchain (Xcode/Windows) triggers exactly one job."""
         session = self._make_session()
-        with patch('ci.requests.Session', return_value=session):
-            ci.JenkinsCi('alice', 'secret-token').trigger(
+        with patch('ci.jenkins.requests.Session', return_value=session):
+            jenkins.JenkinsCi('alice', 'secret-token').trigger(
                 (JOB_URLS[0],), params={'CHROMIUM_TAG': '150.0.7850.1'}
             )
         self.assertEqual(session.post.call_count, 1)
@@ -229,8 +230,8 @@ class TriggerTest(unittest.TestCase):
             'brave-browser-rust-toolchain-aux-build-linux-x64/'
         )
         session = self._make_session()
-        with patch('ci.requests.Session', return_value=session):
-            ci.JenkinsCi('alice', 'secret-token').trigger(
+        with patch('ci.jenkins.requests.Session', return_value=session):
+            jenkins.JenkinsCi('alice', 'secret-token').trigger(
                 (win_infix, win_leading, linux),
                 params={'CHROMIUM_TAG': '150.0.7850.1'},
                 properties={'k': 'v'},
@@ -272,7 +273,7 @@ def _dispatching_session(routes):
                 if isinstance(payload, Exception):
                     raise payload
                 return _json_response(payload)
-        raise ci.requests.RequestException(f'unexpected GET {url}')
+        raise jenkins.requests.RequestException(f'unexpected GET {url}')
 
     session.get.side_effect = _get
     return session
@@ -284,7 +285,7 @@ class WatchedJobTest(unittest.TestCase):
     def _job(self, **kwargs):
         defaults = {'url': JOB_URLS[0], 'queue_url': 'q/'}
         defaults.update(kwargs)
-        return ci._WatchedJob(**defaults)
+        return jenkins._WatchedJob(**defaults)
 
     def test_name_parsed_from_url(self):
         self.assertEqual(self._job().name, 'job-linux')
@@ -310,28 +311,28 @@ class WatchedJobTest(unittest.TestCase):
 
 
 class FormatDurationTest(unittest.TestCase):
-    """Tests for `ci._format_duration`."""
+    """Tests for `jenkins._format_duration`."""
 
     def test_empty_for_missing(self):
-        self.assertEqual(ci._format_duration(None), '')
-        self.assertEqual(ci._format_duration(0), '')
+        self.assertEqual(jenkins._format_duration(None), '')
+        self.assertEqual(jenkins._format_duration(0), '')
 
     def test_seconds_only(self):
-        self.assertEqual(ci._format_duration(5000), '5s')
+        self.assertEqual(jenkins._format_duration(5000), '5s')
 
     def test_minutes_and_seconds_zero_padded(self):
-        self.assertEqual(ci._format_duration(62000), '1m02s')
-        self.assertEqual(ci._format_duration(100000), '1m40s')
+        self.assertEqual(jenkins._format_duration(62000), '1m02s')
+        self.assertEqual(jenkins._format_duration(100000), '1m40s')
 
 
 class StateCellTest(unittest.TestCase):
     """Tests for `JenkinsCi._state_cell`."""
 
     def test_running_is_animated_spinner(self):
-        self.assertIsInstance(ci.JenkinsCi._state_cell('RUNNING'), Spinner)
+        self.assertIsInstance(jenkins.JenkinsCi._state_cell('RUNNING'), Spinner)
 
     def test_other_states_are_static_markup(self):
-        cell = ci.JenkinsCi._state_cell('SUCCESS')
+        cell = jenkins.JenkinsCi._state_cell('SUCCESS')
         self.assertIsInstance(cell, str)
         self.assertIn('SUCCESS', cell)
 
@@ -341,7 +342,7 @@ class LinkCellTest(unittest.TestCase):
 
     def test_wraps_url_in_link_style(self):
         url = 'https://ci.brave.com/job/x/5/'
-        cell = ci.JenkinsCi._link_cell(url)
+        cell = jenkins.JenkinsCi._link_cell(url)
         self.assertIsInstance(cell, Text)
         self.assertEqual(cell.plain, url)
         self.assertIn(f'link {url}', cell.style)
@@ -352,17 +353,17 @@ class DimCellTest(unittest.TestCase):
     """`_dim_cell` mutes finished, non-successful rows except the State cell."""
 
     def test_passes_through_when_not_dim(self):
-        self.assertEqual(ci.JenkinsCi._dim_cell('build', False), 'build')
+        self.assertEqual(jenkins.JenkinsCi._dim_cell('build', False), 'build')
 
     def test_wraps_string_in_dim(self):
-        cell = ci.JenkinsCi._dim_cell('build', True)
+        cell = jenkins.JenkinsCi._dim_cell('build', True)
         self.assertIsInstance(cell, Text)
         self.assertEqual(cell.plain, 'build')
         self.assertIn('dim', [span.style for span in cell.spans])
 
     def test_dims_existing_text_preserving_base_style(self):
-        link = ci.JenkinsCi._link_cell('https://ci.brave.com/x/')
-        cell = ci.JenkinsCi._dim_cell(link, True)
+        link = jenkins.JenkinsCi._link_cell('https://ci.brave.com/x/')
+        cell = jenkins.JenkinsCi._dim_cell(link, True)
         self.assertIn('link https://ci.brave.com/x/', cell.style)
         self.assertIn('dim', [span.style for span in cell.spans])
 
@@ -373,7 +374,7 @@ class RenderTableDimTest(unittest.TestCase):
     DIM = '\x1b[2m'  # SGR code Rich emits for the `dim` style.
 
     def _render(self, state):
-        job = ci._WatchedJob(
+        job = jenkins._WatchedJob(
             url=JOB_URLS[0],
             queue_url='',
             build_url='https://ci.brave.com/job/x/5/',
@@ -381,7 +382,9 @@ class RenderTableDimTest(unittest.TestCase):
             stage='(done)',
             elapsed='5m00s',
         )
-        table = ci.JenkinsCi('u', 't')._render_table('Rust toolchain', [job])
+        table = jenkins.JenkinsCi('u', 't')._render_table(
+            'Rust toolchain', [job]
+        )
         console = Console(force_terminal=True, width=200)
         with console.capture() as capture:
             console.print(table)
@@ -405,15 +408,15 @@ class RenderTableDimTest(unittest.TestCase):
 class ElapsedClockTest(unittest.TestCase):
     """`_ElapsedClock` ticks forward from its anchor on each render."""
 
-    @patch('ci.time.monotonic')
+    @patch('ci.jenkins.time.monotonic')
     def test_ticks_from_anchor(self, monotonic):
-        clock = ci._ElapsedClock(base_millis=60000, anchor=100.0)
+        clock = jenkins._ElapsedClock(base_millis=60000, anchor=100.0)
         monotonic.return_value = 130.0  # 30s past the anchor
         self.assertEqual(clock.__rich__().plain, '1m30s')
 
-    @patch('ci.time.monotonic')
+    @patch('ci.jenkins.time.monotonic')
     def test_uses_base_when_no_time_passed(self, monotonic):
-        clock = ci._ElapsedClock(base_millis=5000, anchor=100.0)
+        clock = jenkins._ElapsedClock(base_millis=5000, anchor=100.0)
         monotonic.return_value = 100.0
         self.assertEqual(clock.__rich__().plain, '5s')
 
@@ -424,7 +427,7 @@ class ElapsedCellTest(unittest.TestCase):
     def _job(self, **kwargs):
         defaults = {'url': JOB_URLS[0], 'queue_url': ''}
         defaults.update(kwargs)
-        return ci._WatchedJob(**defaults)
+        return jenkins._WatchedJob(**defaults)
 
     def test_running_with_anchor_is_clock(self):
         job = self._job(
@@ -433,13 +436,15 @@ class ElapsedCellTest(unittest.TestCase):
             elapsed_anchor=10.0,
             elapsed='1s',
         )
-        self.assertIsInstance(ci.JenkinsCi._elapsed_cell(job), ci._ElapsedClock)
+        self.assertIsInstance(
+            jenkins.JenkinsCi._elapsed_cell(job), jenkins._ElapsedClock
+        )
 
     def test_running_without_duration_is_static(self):
         """A RUNNING build whose duration hasn't resolved yet shows a dash, not
         a clock anchored to nothing."""
         self.assertEqual(
-            ci.JenkinsCi._elapsed_cell(self._job(state='RUNNING')), '—'
+            jenkins.JenkinsCi._elapsed_cell(self._job(state='RUNNING')), '—'
         )
 
     def test_terminal_shows_static_server_value(self):
@@ -449,14 +454,14 @@ class ElapsedCellTest(unittest.TestCase):
             elapsed_anchor=10.0,
             elapsed='1m40s',
         )
-        self.assertEqual(ci.JenkinsCi._elapsed_cell(job), '1m40s')
+        self.assertEqual(jenkins.JenkinsCi._elapsed_cell(job), '1m40s')
 
 
 class ResolveDisplayNameTest(unittest.TestCase):
     """Tests for `JenkinsCi._resolve_display_name`."""
 
     def _job(self):
-        return ci._WatchedJob(url=JOB_URLS[0], queue_url='')
+        return jenkins._WatchedJob(url=JOB_URLS[0], queue_url='')
 
     def test_sets_display_name_when_distinct_from_job_name(self):
         job = self._job()
@@ -472,7 +477,7 @@ class ResolveDisplayNameTest(unittest.TestCase):
             ]
         )
 
-        ci.JenkinsCi('u', 't')._resolve_display_name(session, job)
+        jenkins.JenkinsCi('u', 't')._resolve_display_name(session, job)
 
         self.assertEqual(job.display_name, 'Linux x64')
         self.assertEqual(job.bot, 'Linux x64')
@@ -493,7 +498,7 @@ class ResolveDisplayNameTest(unittest.TestCase):
             ]
         )
 
-        ci.JenkinsCi('u', 't')._resolve_display_name(session, job)
+        jenkins.JenkinsCi('u', 't')._resolve_display_name(session, job)
 
         self.assertIsNone(job.display_name)
         self.assertEqual(job.bot, 'job-linux')
@@ -501,10 +506,10 @@ class ResolveDisplayNameTest(unittest.TestCase):
     def test_leaves_none_on_request_failure(self):
         job = self._job()
         session = _dispatching_session(
-            [('api/json', ci.requests.RequestException('boom'))]
+            [('api/json', jenkins.requests.RequestException('boom'))]
         )
 
-        ci.JenkinsCi('u', 't')._resolve_display_name(session, job)
+        jenkins.JenkinsCi('u', 't')._resolve_display_name(session, job)
 
         self.assertIsNone(job.display_name)
 
@@ -518,7 +523,7 @@ class PollJobTest(unittest.TestCase):
     def _job(self, **kwargs):
         defaults = {'url': JOB_URLS[0], 'queue_url': self.QUEUE_URL}
         defaults.update(kwargs)
-        return ci._WatchedJob(**defaults)
+        return jenkins._WatchedJob(**defaults)
 
     def test_still_queued_records_reason(self):
         job = self._job()
@@ -535,7 +540,7 @@ class PollJobTest(unittest.TestCase):
             ]
         )
 
-        ci.JenkinsCi('u', 't')._poll_job(session, job)
+        jenkins.JenkinsCi('u', 't')._poll_job(session, job)
 
         self.assertEqual(job.state, 'QUEUED')
         self.assertEqual(job.stage, 'Waiting for next available executor')
@@ -545,7 +550,7 @@ class PollJobTest(unittest.TestCase):
         job = self._job()
         session = _dispatching_session([('queue/item', {'cancelled': True})])
 
-        ci.JenkinsCi('u', 't')._poll_job(session, job)
+        jenkins.JenkinsCi('u', 't')._poll_job(session, job)
 
         self.assertEqual(job.state, 'CANCELLED')
 
@@ -570,7 +575,7 @@ class PollJobTest(unittest.TestCase):
             ]
         )
 
-        ci.JenkinsCi('u', 't')._poll_job(session, job)
+        jenkins.JenkinsCi('u', 't')._poll_job(session, job)
 
         self.assertEqual(job.build_url, self.BUILD_URL)
         self.assertEqual(job.state, 'RUNNING')
@@ -594,7 +599,7 @@ class PollJobTest(unittest.TestCase):
             ]
         )
 
-        ci.JenkinsCi('u', 't')._poll_job(session, job)
+        jenkins.JenkinsCi('u', 't')._poll_job(session, job)
 
         self.assertEqual(job.state, 'SUCCESS')
         self.assertEqual(job.stage, '(done)')
@@ -606,7 +611,10 @@ class PollJobTest(unittest.TestCase):
         job = self._job(build_url=self.BUILD_URL, state='RUNNING')
         session = _dispatching_session(
             [
-                ('wfapi/describe', ci.requests.HTTPError('404 no stage view')),
+                (
+                    'wfapi/describe',
+                    jenkins.requests.HTTPError('404 no stage view'),
+                ),
                 (
                     'api/json',
                     {'building': False, 'result': 'FAILURE', 'duration': 50000},
@@ -614,7 +622,7 @@ class PollJobTest(unittest.TestCase):
             ]
         )
 
-        ci.JenkinsCi('u', 't')._poll_job(session, job)
+        jenkins.JenkinsCi('u', 't')._poll_job(session, job)
 
         self.assertEqual(job.state, 'FAILURE')
         self.assertEqual(job.stage, '(done)')
@@ -624,7 +632,7 @@ class PollJobTest(unittest.TestCase):
         job = self._job(state='SUCCESS')
         session = _dispatching_session([])
 
-        ci.JenkinsCi('u', 't')._poll_job(session, job)
+        jenkins.JenkinsCi('u', 't')._poll_job(session, job)
 
         session.get.assert_not_called()
 
@@ -632,7 +640,7 @@ class PollJobTest(unittest.TestCase):
         job = self._job(queue_url='')
         session = _dispatching_session([])
 
-        ci.JenkinsCi('u', 't')._poll_job(session, job)
+        jenkins.JenkinsCi('u', 't')._poll_job(session, job)
 
         self.assertEqual(job.state, 'UNKNOWN')
         session.get.assert_not_called()
@@ -642,9 +650,9 @@ class WatchLoopTest(unittest.TestCase):
     """Smoke test for `trigger(watch=True)`: triggers all jobs, then polls
     until every pipeline reaches a terminal state."""
 
-    @patch('ci.time.sleep')
-    @patch('ci.Live')
-    @patch('ci.requests.Session')
+    @patch('ci.jenkins.time.sleep')
+    @patch('ci.jenkins.Live')
+    @patch('ci.jenkins.requests.Session')
     def test_watch_polls_until_all_terminal(self, session_cls, live_cls, sleep):
         # Every build is already SUCCESS on the first poll, so the loop should
         # break before ever sleeping.
@@ -665,7 +673,7 @@ class WatchLoopTest(unittest.TestCase):
                         'stages': [{'name': 'build', 'status': 'SUCCESS'}],
                     }
                 )
-            raise ci.requests.RequestException(url)
+            raise jenkins.requests.RequestException(url)
 
         post_resp = MagicMock()
         post_resp.headers = {'Location': 'https://ci.brave.com/queue/item/1/'}
@@ -675,7 +683,7 @@ class WatchLoopTest(unittest.TestCase):
         session.get.side_effect = _get
         session_cls.return_value = session
 
-        succeeded = ci.JenkinsCi('alice', 'secret-token').trigger(
+        succeeded = jenkins.JenkinsCi('alice', 'secret-token').trigger(
             JOB_URLS,
             params={'CHROMIUM_TAG': '150.0.7850.1'},
             watch=True,
@@ -688,9 +696,9 @@ class WatchLoopTest(unittest.TestCase):
         # Every pipeline was SUCCESS, so the watch reports success.
         self.assertTrue(succeeded)
 
-    @patch('ci.time.sleep')
-    @patch('ci.Live')
-    @patch('ci.requests.Session')
+    @patch('ci.jenkins.time.sleep')
+    @patch('ci.jenkins.Live')
+    @patch('ci.jenkins.requests.Session')
     def test_watch_returns_false_when_a_pipeline_fails(
         self, session_cls, live_cls, sleep
     ):
@@ -713,7 +721,7 @@ class WatchLoopTest(unittest.TestCase):
                         'stages': [{'name': 'build', 'status': 'FAILED'}],
                     }
                 )
-            raise ci.requests.RequestException(url)
+            raise jenkins.requests.RequestException(url)
 
         post_resp = MagicMock()
         post_resp.headers = {'Location': 'https://ci.brave.com/queue/item/1/'}
@@ -723,18 +731,151 @@ class WatchLoopTest(unittest.TestCase):
         session.get.side_effect = _get
         session_cls.return_value = session
 
-        succeeded = ci.JenkinsCi('alice', 'secret-token').trigger(
+        succeeded = jenkins.JenkinsCi('alice', 'secret-token').trigger(
             JOB_URLS, params={'CHROMIUM_TAG': '150.0.7850.1'}, watch=True
         )
         self.assertFalse(succeeded)
 
     def test_non_watch_trigger_reports_success(self):
         session = TriggerTest._make_session()
-        with patch('ci.requests.Session', return_value=session):
-            succeeded = ci.JenkinsCi('alice', 'secret-token').trigger(
+        with patch('ci.jenkins.requests.Session', return_value=session):
+            succeeded = jenkins.JenkinsCi('alice', 'secret-token').trigger(
                 JOB_URLS, params={'CHROMIUM_TAG': '150.0.7850.1'}
             )
         self.assertTrue(succeeded)
+
+
+_RUN = 'https://ci.brave.com/job/brave-core-build-pr-windows-x64/job/PR-1/84'
+
+
+def _json_session(responses: dict[str, object]) -> MagicMock:
+    """A session whose GETs answer from `responses`, keyed by URL suffix
+    after the run's URL; anything else is a 404."""
+
+    def get(url, **_):
+        response = MagicMock()
+        for suffix, body in responses.items():
+            if url == f'{_RUN}/{suffix}':
+                response.json.return_value = body
+                return response
+        response.raise_for_status.side_effect = jenkins.requests.HTTPError(url)
+        return response
+
+    session = MagicMock()
+    session.get.side_effect = get
+    return session
+
+
+class FailedBuildsTest(unittest.TestCase):
+    def _failed_builds(self, responses):
+        session = _json_session(responses)
+        with patch('ci.jenkins.requests.Session', return_value=session):
+            return jenkins.JenkinsCi('u', 't').failed_builds(_RUN)
+
+    def test_first_failed_stage_and_unstable_tests(self):
+        builds = self._failed_builds(
+            {
+                'wfapi/describe': {
+                    'stages': [
+                        {'id': '1', 'name': 'init', 'status': 'SUCCESS'},
+                        {'id': '2', 'name': 'build', 'status': 'FAILED'},
+                        {'id': '3', 'name': 'test-unit', 'status': 'FAILED'},
+                        {
+                            'id': '4',
+                            'name': 'test-browser',
+                            'status': 'UNSTABLE',
+                        },
+                    ]
+                },
+                'execution/node/2/wfapi/describe': {
+                    'error': {'message': 'script returned exit code 1'},
+                    'stageFlowNodes': [
+                        {'id': '20', 'status': 'SUCCESS'},
+                        {'id': '21', 'status': 'FAILED'},
+                    ],
+                },
+                'execution/node/21/wfapi/log': {
+                    'text': '<span>error: a &amp; b</span>\nFAILED: x.o'
+                },
+                'testReport/api/json?tree=suites[cases[className,name,'
+                'status,age,errorDetails,errorStackTrace]]': {
+                    'suites': [
+                        {
+                            'cases': [
+                                {
+                                    'className': 'Suite',
+                                    'name': 'Old',
+                                    'status': 'FAILED',
+                                    'age': 34,
+                                    'errorDetails': 'Expected 1',
+                                },
+                                {
+                                    'className': 'Suite',
+                                    'name': 'New',
+                                    'status': 'REGRESSION',
+                                    'age': 1,
+                                },
+                                {
+                                    'className': 'Suite',
+                                    'name': 'Fine',
+                                    'status': 'PASSED',
+                                },
+                            ]
+                        }
+                    ]
+                },
+            }
+        )
+        self.assertEqual(len(builds), 2)
+        build, tests = builds[0], builds[1]
+        # Later stages fail only because `build` did.
+        self.assertEqual(build.name, 'build')
+        self.assertEqual(build.kind, failures.Kind.BUILD)
+        self.assertEqual(build.summary, 'script returned exit code 1')
+        self.assertEqual(build.log_tail, 'error: a & b\nFAILED: x.o')
+
+        self.assertEqual(tests.name, 'test-browser')
+        self.assertEqual(tests.kind, failures.Kind.TESTS)
+        self.assertEqual(
+            [(t.name, t.status, t.known) for t in tests.tests],
+            [
+                ('Suite.Old', 'FAILED', 'failing for 34 builds'),
+                ('Suite.New', 'REGRESSION', ''),
+            ],
+        )
+        self.assertEqual(tests.tests[0].details, 'Expected 1')
+
+    def test_unreadable_run_raises(self):
+        with self.assertRaises(jenkins.BadOutcomeException):
+            self._failed_builds({})
+
+
+class RerunTest(unittest.TestCase):
+    def _rerun(self, **kwargs) -> MagicMock:
+        session = MagicMock()
+        session.get.return_value.json.return_value = {
+            'crumbRequestField': 'Jenkins-Crumb',
+            'crumb': 'c',
+        }
+        with patch('ci.jenkins.requests.Session', return_value=session):
+            jenkins.JenkinsCi('u', 't').rerun(f'{_RUN}/', **kwargs)
+        return session
+
+    def test_queues_the_job_again(self):
+        session = self._rerun()
+        session.post.assert_called_once_with(
+            'https://ci.brave.com/job/brave-core-build-pr-windows-x64/job/'
+            'PR-1/buildWithParameters',
+            params={},
+            headers={'Jenkins-Crumb': 'c'},
+            timeout=30,
+        )
+
+    def test_wipes_the_workspace_when_asked(self):
+        session = self._rerun(wipe_workspace=True)
+        self.assertEqual(
+            session.post.call_args.kwargs['params'], {'WIPE_WORKSPACE': 'true'}
+        )
 
 
 if __name__ == '__main__':
