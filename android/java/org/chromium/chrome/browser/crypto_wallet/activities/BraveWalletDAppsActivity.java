@@ -5,8 +5,6 @@
 
 package org.chromium.chrome.browser.crypto_wallet.activities;
 
-import static org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletDAppsActivity.ActivityType.GET_ENCRYPTION_PUBLIC_KEY_REQUEST;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -200,72 +198,85 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
 
     private void processPendingDappsRequest() {
         mFragment = null;
-        if (mActivityType == ActivityType.SIGN_MESSAGE) {
-            mFragment = new SignMessageFragment();
-        } else if (mActivityType == ActivityType.SIWE_MESSAGE) {
-            mFragment = new SiweMessageFragment();
-        } else if (mActivityType == ActivityType.SIGN_MESSAGE_ERROR) {
-            mFragment = new SignMessageErrorFragment();
-        } else if (mActivityType == ActivityType.ADD_TOKEN) {
-            mFragment = new AddTokenFragment();
-        } else if (mActivityType == ActivityType.CONFIRM_TRANSACTION) {
-            mKeyringService.getAllAccounts(
-                    allAccounts -> {
-                        if (mPendingTxHelper != null) {
-                            mPendingTxHelper.destroy();
-                        }
-                        mPendingTxHelper =
-                                new PendingTxHelper(
-                                        getTxService(), allAccounts.accounts, false, true);
-                        mPendingTxHelper.mHasNoPendingTxAfterProcessing.observe(
-                                this,
-                                hasNoPendingTx -> {
-                                    if (hasNoPendingTx) {
-                                        onAllRequestsHandled();
-                                    }
-                                });
-                        mPendingTxHelper.mSelectedPendingRequest.observe(
-                                this,
-                                transactionInfo -> {
-                                    if (transactionInfo == null
-                                            || mPendingTxHelper
-                                                    .getPendingTransactions()
-                                                    .isEmpty()) {
-                                        return;
-                                    }
-                                    if (mApproveTxBottomSheetDialogFragment != null
-                                            && mApproveTxBottomSheetDialogFragment.isVisible()) {
-                                        // TODO: instead of dismiss, show the details of new Tx once
-                                        //  onNextTransaction implementation is done
-                                        mApproveTxBottomSheetDialogFragment.dismiss();
-                                    }
-                                    mCurrentTransaction = transactionInfo;
-                                    mPendingTransactions.clear();
-                                    mPendingTransactions.addAll(
-                                            mPendingTxHelper.getPendingTransactions());
-                                    mApproveTxBottomSheetDialogFragment =
-                                            new ApproveTxBottomSheetDialogFragment();
-                                    mApproveTxBottomSheetDialogFragment.show(
-                                            getSupportFragmentManager());
-                                    mPendingTxHelper.mTransactionInfoLd.observe(
-                                            this,
-                                            transactionInfos -> {
-                                                mApproveTxBottomSheetDialogFragment.setTxList(
-                                                        transactionInfos);
-                                            });
-                                });
-                        mPendingTxHelper.fetchTransactions();
-                    });
-        } else if (mActivityType == ActivityType.ADD_ETHEREUM_CHAIN
-                || mActivityType == ActivityType.SWITCH_ETHEREUM_CHAIN) {
-            mFragment = AddSwitchChainNetworkFragment.newInstance(mActivityType);
-        } else if (mActivityType == ActivityType.SIGN_SOL_TRANSACTIONS) {
-            mFragment = new SignSolTransactionsFragment();
-        } else if (mActivityType == ActivityType.CONNECT_ACCOUNT) {
-            mFragment = new ConnectAccountFragment();
-        } else if (mActivityType == GET_ENCRYPTION_PUBLIC_KEY_REQUEST
-                || mActivityType == ActivityType.DECRYPT_REQUEST) {
-            mFragment = EncryptionKeyFragment.newInstance(mActivityType);
+        switch (mActivityType) {
+            case ActivityType.SIGN_MESSAGE:
+                mFragment = new SignMessageFragment();
+                break;
+            case ActivityType.SIWE_MESSAGE:
+                mFragment = new SiweMessageFragment();
+                break;
+            case ActivityType.SIGN_MESSAGE_ERROR:
+                mFragment = new SignMessageErrorFragment();
+                break;
+            case ActivityType.ADD_TOKEN:
+                mFragment = new AddTokenFragment();
+                break;
+            case ActivityType.CONFIRM_TRANSACTION:
+                mKeyringService.getAllAccounts(
+                        allAccounts -> {
+                            if (mPendingTxHelper != null) {
+                                mPendingTxHelper.destroy();
+                            }
+                            mPendingTxHelper =
+                                    new PendingTxHelper(
+                                            getTxService(), allAccounts.accounts, false, true);
+                            mPendingTxHelper.mHasNoPendingTxAfterProcessing.observe(
+                                    this,
+                                    hasNoPendingTx -> {
+                                        if (hasNoPendingTx) {
+                                            onAllRequestsHandled();
+                                        }
+                                    });
+                            mPendingTxHelper.mSelectedPendingRequest.observe(
+                                    this,
+                                    transactionInfo -> {
+                                        if (transactionInfo == null
+                                                || mPendingTxHelper
+                                                        .getPendingTransactions()
+                                                        .isEmpty()) {
+                                            return;
+                                        }
+                                        if (mApproveTxBottomSheetDialogFragment != null
+                                                && mApproveTxBottomSheetDialogFragment
+                                                        .isVisible()) {
+                                            // TODO: instead of dismiss, show the details of new Tx
+                                            // once onNextTransaction implementation is done
+                                            mApproveTxBottomSheetDialogFragment.dismiss();
+                                        }
+                                        mCurrentTransaction = transactionInfo;
+                                        mPendingTransactions.clear();
+                                        mPendingTransactions.addAll(
+                                                mPendingTxHelper.getPendingTransactions());
+                                        mApproveTxBottomSheetDialogFragment =
+                                                new ApproveTxBottomSheetDialogFragment();
+                                        mApproveTxBottomSheetDialogFragment.show(
+                                                getSupportFragmentManager());
+                                        mPendingTxHelper.mTransactionInfoLd.observe(
+                                                this,
+                                                transactionInfos -> {
+                                                    mApproveTxBottomSheetDialogFragment.setTxList(
+                                                            transactionInfos);
+                                                });
+                                    });
+                            mPendingTxHelper.fetchTransactions();
+                        });
+                break;
+            case ActivityType.ADD_ETHEREUM_CHAIN:
+            case ActivityType.SWITCH_ETHEREUM_CHAIN:
+                mFragment = AddSwitchChainNetworkFragment.newInstance(mActivityType);
+                break;
+            case ActivityType.SIGN_SOL_TRANSACTIONS:
+                mFragment = new SignSolTransactionsFragment();
+                break;
+            case ActivityType.CONNECT_ACCOUNT:
+                mFragment = new ConnectAccountFragment();
+                break;
+            case ActivityType.GET_ENCRYPTION_PUBLIC_KEY_REQUEST:
+            case ActivityType.DECRYPT_REQUEST:
+                mFragment = EncryptionKeyFragment.newInstance(mActivityType);
+                break;
+            default:
+                break;
         }
         showCurrentFragment();
     }
