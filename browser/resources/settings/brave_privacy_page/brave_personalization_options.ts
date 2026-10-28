@@ -24,6 +24,7 @@ import {
 import { assert } from 'chrome://resources/js/assert.js'
 import { SettingsToggleButtonElement } from '../controls/settings_toggle_button.js'
 
+import '/shared/settings/md_select.css.js'
 import 'chrome://resources/cr_elements/cr_icon/cr_icon.js'
 import '../controls/settings_dropdown_menu.js'
 import '../privacy_page/do_not_track_toggle.js'
