@@ -155,12 +155,29 @@ function useAnimatedPillWidth (
   pillRef: React.RefObject<HTMLDivElement | null>,
   signature: string
 ) {
+  // The width from the last layout. By the time the layout effect runs, React
+  // has already swapped in the new label, so the pill itself can't report the
+  // width the transition should start from.
+  const renderedWidthRef = React.useRef<number | null>(null)
+
+  React.useEffect(() => {
+    const el = pillRef.current
+    if (!el) return
+    const observer = new ResizeObserver(([entry]) => {
+      renderedWidthRef.current =
+        entry.borderBoxSize[0]?.inlineSize ?? el.getBoundingClientRect().width
+    })
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [pillRef])
+
   React.useLayoutEffect(() => {
     const el = pillRef.current
     if (!el) return
 
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    const current = el.getBoundingClientRect().width
+    const current =
+      renderedWidthRef.current ?? el.getBoundingClientRect().width
     el.style.transition = 'none'
     el.style.width = ''
     const next = el.getBoundingClientRect().width

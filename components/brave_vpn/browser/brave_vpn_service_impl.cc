@@ -136,6 +136,10 @@ bool BraveVpnServiceImpl::IsPurchased() const {
   return is_purchased_user();
 }
 
+mojom::PurchasedState BraveVpnServiceImpl::GetPurchasedStateSync() const {
+  return GetPurchasedInfoSync().state;
+}
+
 bool BraveVpnServiceImpl::is_purchased_user() const {
   return GetPurchasedInfoSync().state == mojom::PurchasedState::PURCHASED;
 }

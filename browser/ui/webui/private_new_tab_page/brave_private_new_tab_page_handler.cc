@@ -11,8 +11,6 @@
 
 #include "base/check.h"
 #include "base/functional/bind.h"
-#include "base/memory/ref_counted.h"
-#include "base/memory/scoped_refptr.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/time/time.h"
 #include "brave/components/brave_private_new_tab_ui/common/pref_names.h"
@@ -126,24 +124,13 @@ std::optional<bool> BravePrivateNewTabPageHandler::GetInitialShouldShowVpnPromo(
     return false;
   }
 
-  // The service answers synchronously today. The ref-counted holder keeps a
-  // late reply safe, and that case simply falls back to the cache below.
-  auto state = base::MakeRefCounted<
-      base::RefCountedData<std::optional<brave_vpn::mojom::PurchasedState>>>();
-  vpn_service->GetPurchasedState(base::BindOnce(
-      [](scoped_refptr<base::RefCountedData<
-             std::optional<brave_vpn::mojom::PurchasedState>>> state,
-         brave_vpn::mojom::PurchasedInfoPtr info) {
-        state->data = info->state;
-      },
-      state));
-  if (state->data) {
-    if (auto show = ShouldShowVpnPromoForState(*state->data)) {
-      return show;
-    }
+  if (auto show =
+          ShouldShowVpnPromoForState(vpn_service->GetPurchasedStateSync())) {
+    return show;
   }
 
-  // Still loading: use what an earlier page saw.
+  // Still loading: use the kBravePrivateWindowVpnPromoCache answer an earlier
+  // page saw.
   switch (static_cast<VpnPromoCache>(
       profile->GetOriginalProfile()->GetPrefs()->GetInteger(
           brave_private_new_tab::prefs::kBravePrivateWindowVpnPromoCache))) {
@@ -275,15 +262,13 @@ void BravePrivateNewTabPageHandler::GetShouldShowVpnPromo(
           base::BindOnce(&BravePrivateNewTabPageHandler::OnVpnPromoTimeout,
                          base::Unretained(this)));
     }
-    // Observing first so a load that finishes after GetPurchasedState replies
-    // LOADING still resolves the pending callbacks.
+    // Observed even when the state has loaded, so later changes keep the
+    // cache current; while loading, OnPurchasedStateChanged replies instead.
     if (!is_observing_vpn_) {
       Observe(vpn_service);
       is_observing_vpn_ = true;
     }
-    vpn_service->GetPurchasedState(
-        base::BindOnce(&BravePrivateNewTabPageHandler::OnGetPurchasedState,
-                       weak_factory_.GetWeakPtr()));
+    OnPurchasedStateChanged(vpn_service->GetPurchasedStateSync(), std::nullopt);
     return;
   }
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
@@ -333,11 +318,6 @@ void BravePrivateNewTabPageHandler::OnPurchasedStateChanged(
   if (auto show = ShouldShowVpnPromoForState(state)) {
     ResolveVpnPromo(*show, /*cache=*/true);
   }
-}
-
-void BravePrivateNewTabPageHandler::OnGetPurchasedState(
-    brave_vpn::mojom::PurchasedInfoPtr info) {
-  OnPurchasedStateChanged(info->state, info->description);
 }
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
 

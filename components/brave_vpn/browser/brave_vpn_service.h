@@ -24,6 +24,7 @@
 class BraveAppMenuBrowserTest;
 class BraveAppMenuModelBrowserTest;
 class BraveBrowserCommandControllerTest;
+class BravePrivateNewTabPageVpnBrowserTest;
 #endif  // !BUILDFLAG(IS_ANDROID)
 
 namespace brave_vpn {
@@ -56,6 +57,8 @@ class BraveVpnService : public mojom::ServiceHandler, public KeyedService {
   // Public interface exposed to other components.
   virtual bool IsBraveVPNEnabled() const = 0;
   virtual bool IsPurchased() const = 0;
+  // Same state GetPurchasedState() replies with, for callers that can't wait.
+  virtual mojom::PurchasedState GetPurchasedStateSync() const = 0;
   virtual void ReloadPurchasedState() = 0;
   virtual std::string GetCurrentEnvironment() const = 0;
 #if !BUILDFLAG(IS_ANDROID)
@@ -135,6 +138,7 @@ class BraveVpnService : public mojom::ServiceHandler, public KeyedService {
   friend class ::BraveAppMenuBrowserTest;
   friend class ::BraveAppMenuModelBrowserTest;
   friend class ::BraveBrowserCommandControllerTest;
+  friend class ::BravePrivateNewTabPageVpnBrowserTest;
 #endif  // !BUILDFLAG(IS_ANDROID)
 
 #if !BUILDFLAG(IS_ANDROID)

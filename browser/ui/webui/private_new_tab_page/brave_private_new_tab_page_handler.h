@@ -13,7 +13,6 @@
 #include <string>
 #include <vector>
 
-#include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
 #include "base/timer/timer.h"
 #include "brave/components/brave_private_new_tab_ui/common/brave_private_new_tab.mojom.h"
@@ -30,6 +29,7 @@
 #include "brave/components/brave_vpn/common/mojom/brave_vpn.mojom.h"
 #endif
 
+class BravePrivateNewTabPageVpnBrowserTest;
 class Profile;
 
 namespace content {
@@ -91,9 +91,8 @@ class BravePrivateNewTabPageHandler
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
 
  private:
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
-  void OnGetPurchasedState(brave_vpn::mojom::PurchasedInfoPtr info);
-#endif
+  friend class ::BravePrivateNewTabPageVpnBrowserTest;
+
   // Replies to the pending GetShouldShowVpnPromo callbacks, and caches `show`
   // for later pages when `cache` is set.
   void ResolveVpnPromo(bool show, bool cache);
@@ -131,8 +130,6 @@ class BravePrivateNewTabPageHandler
 #endif
 
   mojo::Receiver<brave_private_new_tab::mojom::PageHandler> receiver_;
-
-  base::WeakPtrFactory<BravePrivateNewTabPageHandler> weak_factory_{this};
 };
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_PRIVATE_NEW_TAB_PAGE_BRAVE_PRIVATE_NEW_TAB_PAGE_HANDLER_H_

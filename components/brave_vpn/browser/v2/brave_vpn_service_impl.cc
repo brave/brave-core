@@ -68,6 +68,13 @@ bool BraveVpnServiceImpl::IsPurchased() const {
   return purchased_state_manager_->IsPurchased();
 }
 
+mojom::PurchasedState BraveVpnServiceImpl::GetPurchasedStateSync() const {
+  if (!purchased_state_manager_) {
+    return mojom::PurchasedState::NOT_PURCHASED;
+  }
+  return purchased_state_manager_->GetInfo().state;
+}
+
 void BraveVpnServiceImpl::ReloadPurchasedState() {
   if (purchased_state_manager_) {
     purchased_state_manager_->Reload();
