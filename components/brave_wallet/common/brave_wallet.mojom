@@ -463,8 +463,18 @@ enum PermissionLifetimeOption {
   kForever = 3,
 };
 
+interface PanelHandlerObserver {
+  // Fired when the origin of the tab attached to the panel changes.
+  OnActivePanelOriginChanged(OriginInfo origin_info);
+};
+
 // Browser-side handler for requests from WebUI page.
 interface PanelHandler {
+  AddObserver(pending_remote<PanelHandlerObserver> observer);
+
+  // Returns origin of the page panel is attached to.
+  GetActivePanelOrigin() => (OriginInfo origin_info);
+
   // Notify the backend that the UI is ready to be shown.
   ShowUI();
 
@@ -2786,7 +2796,7 @@ interface BtcTxManagerProxy {
 
 interface BraveWalletServiceObserver {
   // Fired when the active origin is changed along with its eTLD+1
-  OnActiveOriginChanged(OriginInfo origin_info);
+  OnActiveOriginChangedDeprecated(OriginInfo origin_info);
 
   // Fired when the default Ethereum wallet setting changes
   OnDefaultEthereumWalletChanged(DefaultWallet wallet);
@@ -3064,7 +3074,7 @@ interface BraveWalletService {
   IsPermissionDenied(CoinType coin) => (bool denied);
 
   // Obtains the active origin info.
-  GetActiveOrigin() => (OriginInfo origin_info);
+  GetActiveOriginDeprecated() => (OriginInfo origin_info);
 
   // Gets all websites with a permission of coin
   GetWebSitesWithPermission(CoinType coin) => (array<string> web_sites);

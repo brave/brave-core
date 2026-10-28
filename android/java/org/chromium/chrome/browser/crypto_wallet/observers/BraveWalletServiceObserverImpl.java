@@ -14,7 +14,7 @@ import java.lang.ref.WeakReference;
 
 public class BraveWalletServiceObserverImpl implements BraveWalletServiceObserver {
     public interface BraveWalletServiceObserverImplDelegate {
-        default void onActiveOriginChanged(OriginInfo originInfo) {}
+        default void onActiveOriginChangedDeprecated(OriginInfo originInfo) {}
 
         default void onDefaultEthereumWalletChanged(int wallet) {}
 
@@ -42,8 +42,8 @@ public class BraveWalletServiceObserverImpl implements BraveWalletServiceObserve
     }
 
     @Override
-    public void onActiveOriginChanged(OriginInfo originInfo) {
-        if (isActive()) getRef().onActiveOriginChanged(originInfo);
+    public void onActiveOriginChangedDeprecated(OriginInfo originInfo) {
+        if (isActive()) getRef().onActiveOriginChangedDeprecated(originInfo);
     }
 
     @Override

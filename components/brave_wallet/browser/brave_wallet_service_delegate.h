@@ -42,7 +42,7 @@ class BraveWalletServiceDelegate {
 
   class Observer : public base::CheckedObserver {
    public:
-    virtual void OnActiveOriginChanged(
+    virtual void OnActiveOriginChangedDeprecated(
         const mojom::OriginInfoPtr& origin_info) {}
   };
   virtual void AddObserver(Observer* observer) {}
@@ -76,7 +76,7 @@ class BraveWalletServiceDelegate {
                                       const std::string& formed_website,
                                       ResetWebSitePermissionCallback callback);
 
-  virtual std::optional<url::Origin> GetActiveOrigin();
+  virtual std::optional<url::Origin> GetActiveOriginDeprecated();
 
   virtual void ClearWalletUIStoragePartition();
 

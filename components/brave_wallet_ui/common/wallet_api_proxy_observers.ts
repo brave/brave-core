@@ -173,22 +173,9 @@ export function makeTxServiceObserver(store: Store) {
 }
 
 export function makeBraveWalletServiceObserver(store: Store) {
-  let lastKnownActiveOrigin: BraveWallet.OriginInfo
   const braveWalletServiceObserverReceiver =
     new BraveWallet.BraveWalletServiceObserverReceiver({
-      onActiveOriginChanged: function (originInfo) {
-        // check that the origin has changed from the stored values
-        // in any way before dispatching the update action
-        if (
-          lastKnownActiveOrigin
-          && lastKnownActiveOrigin.eTldPlusOne === originInfo.eTldPlusOne
-          && lastKnownActiveOrigin.originSpec === originInfo.originSpec
-        ) {
-          return
-        }
-        lastKnownActiveOrigin = originInfo
-        store.dispatch(walletApi.util.invalidateTags(['ActiveOrigin']))
-      },
+      onActiveOriginChangedDeprecated: function () {},
       onDefaultEthereumWalletChanged: function (defaultWallet) {
         store.dispatch(
           walletApi.util.invalidateTags([
@@ -230,4 +217,21 @@ export function makeBraveWalletServiceObserver(store: Store) {
       onResetWallet: function () {},
     })
   return braveWalletServiceObserverReceiver
+}
+
+export function makePanelHandlerObserver(store: Store) {
+  let lastKnownActivePanelOrigin: BraveWallet.OriginInfo
+  return new BraveWallet.PanelHandlerObserverReceiver({
+    onActivePanelOriginChanged: function (originInfo) {
+      if (
+        lastKnownActivePanelOrigin
+        && lastKnownActivePanelOrigin.eTldPlusOne === originInfo.eTldPlusOne
+        && lastKnownActivePanelOrigin.originSpec === originInfo.originSpec
+      ) {
+        return
+      }
+      lastKnownActivePanelOrigin = originInfo
+      store.dispatch(walletApi.util.invalidateTags(['ActivePanelOrigin']))
+    },
+  })
 }

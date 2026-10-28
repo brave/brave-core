@@ -65,7 +65,8 @@ class TestBraveWalletServiceObserver
  public:
   TestBraveWalletServiceObserver() = default;
 
-  void OnActiveOriginChanged(mojom::OriginInfoPtr origin_info) override {
+  void OnActiveOriginChangedDeprecated(
+      mojom::OriginInfoPtr origin_info) override {
     active_origin_info_ = origin_info->Clone();
   }
 
@@ -183,7 +184,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletServiceTest, ActiveOrigin) {
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
   bool callback_called = false;
-  wallet_service()->GetActiveOrigin(base::BindOnce(
+  wallet_service()->GetActiveOriginDeprecated(base::BindOnce(
       &OnGetActiveOrigin, &callback_called, expected_origin_info->Clone()));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
@@ -194,7 +195,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletServiceTest, ActiveOrigin) {
   callback_called = false;
   observer.Reset();
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-  wallet_service()->GetActiveOrigin(base::BindOnce(
+  wallet_service()->GetActiveOriginDeprecated(base::BindOnce(
       &OnGetActiveOrigin, &callback_called, expected_origin_info->Clone()));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
@@ -206,7 +207,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletServiceTest, ActiveOrigin) {
   ui_test_utils::NavigateToURLWithDisposition(
       browser(), url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
-  wallet_service()->GetActiveOrigin(base::BindOnce(
+  wallet_service()->GetActiveOriginDeprecated(base::BindOnce(
       &OnGetActiveOrigin, &callback_called, expected_origin_info->Clone()));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
@@ -218,7 +219,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletServiceTest, ActiveOrigin) {
   ui_test_utils::NavigateToURLWithDisposition(
       browser(), url, WindowOpenDisposition::NEW_WINDOW,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
-  wallet_service()->GetActiveOrigin(base::BindOnce(
+  wallet_service()->GetActiveOriginDeprecated(base::BindOnce(
       &OnGetActiveOrigin, &callback_called, expected_origin_info->Clone()));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);

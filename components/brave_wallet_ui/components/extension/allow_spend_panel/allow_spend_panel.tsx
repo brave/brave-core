@@ -105,6 +105,8 @@ export const AllowSpendPanel = () => {
     return <LoadingPanel />
   }
 
+  const originInfo = selectedPendingTransaction.originInfo
+
   return (
     <>
       <StyledWrapper

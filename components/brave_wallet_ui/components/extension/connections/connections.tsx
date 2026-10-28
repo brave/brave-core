@@ -10,7 +10,7 @@ import { BraveWallet } from '../../../constants/types'
 
 // Queries
 import {
-  useGetActiveOriginQuery,
+  useGetActivePanelOriginQuery,
   useGetSelectedDappAccountsQuery,
 } from '../../../common/slices/api.slice'
 
@@ -48,7 +48,7 @@ import { Column } from '../../shared/style'
 export const Connections = () => {
   // Queries
   const { data: activeOrigin = { eTldPlusOne: '', originSpec: '' } } =
-    useGetActiveOriginQuery()
+    useGetActivePanelOriginQuery()
   const { data: dappsAccounts } = useGetSelectedDappAccountsQuery()
 
   // Redux

@@ -85,7 +85,8 @@ void BraveWalletServiceDelegateImpl::ResetWebSitePermission(
           *type, context_, formed_website));
 }
 
-std::optional<url::Origin> BraveWalletServiceDelegateImpl::GetActiveOrigin() {
+std::optional<url::Origin>
+BraveWalletServiceDelegateImpl::GetActiveOriginDeprecated() {
   content::WebContents* contents = GetActiveWebContents(context_);
   auto origin = contents
                     ? contents->GetPrimaryMainFrame()->GetLastCommittedOrigin()

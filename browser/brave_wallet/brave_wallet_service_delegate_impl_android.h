@@ -41,7 +41,7 @@ class BraveWalletServiceDelegateImpl : public BraveWalletServiceDelegateBase {
   void ResetWebSitePermission(mojom::CoinType coin,
                               const std::string& formed_website,
                               ResetWebSitePermissionCallback callback) override;
-  std::optional<url::Origin> GetActiveOrigin() override;
+  std::optional<url::Origin> GetActiveOriginDeprecated() override;
 
  private:
   base::WeakPtrFactory<BraveWalletServiceDelegateImpl> weak_ptr_factory_;

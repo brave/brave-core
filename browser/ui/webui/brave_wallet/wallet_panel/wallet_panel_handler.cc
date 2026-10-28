@@ -17,6 +17,7 @@
 #include "chrome/browser/ui/side_panel/side_panel_entry_id.h"
 #include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #include "chrome/browser/ui/webui/webui_embedding_context.h"
+#include "content/public/browser/page.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui.h"
@@ -27,13 +28,31 @@ WalletPanelHandler::WalletPanelHandler(
     mojo::PendingReceiver<brave_wallet::mojom::PanelHandler> receiver,
     TopChromeWebUIController* webui_controller,
     content::WebContents* active_web_contents)
-    : receiver_(this, std::move(receiver)),
-      webui_controller_(webui_controller),
-      active_web_contents_(active_web_contents) {
-  DCHECK(active_web_contents_);
-}
+    : content::WebContentsObserver(active_web_contents),
+      receiver_(this, std::move(receiver)),
+      webui_controller_(webui_controller) {}
 
 WalletPanelHandler::~WalletPanelHandler() = default;
+
+void WalletPanelHandler::AddObserver(
+    mojo::PendingRemote<brave_wallet::mojom::PanelHandlerObserver> observer) {
+  observers_.Add(std::move(observer));
+}
+
+void WalletPanelHandler::GetActivePanelOrigin(
+    GetActivePanelOriginCallback callback) {
+  auto origin_info = brave_wallet::MakeOriginInfo(
+      web_contents()->GetPrimaryMainFrame()->GetLastCommittedOrigin());
+  std::move(callback).Run(std::move(origin_info));
+}
+
+void WalletPanelHandler::PrimaryPageChanged(content::Page& page) {
+  auto origin_info = brave_wallet::MakeOriginInfo(
+      page.GetMainDocument().GetLastCommittedOrigin());
+  for (auto& observer : observers_) {
+    observer->OnActivePanelOriginChanged(origin_info.Clone());
+  }
+}
 
 void WalletPanelHandler::ShowUI() {
   auto embedder = webui_controller_->embedder();
@@ -72,12 +91,12 @@ void WalletPanelHandler::CloseSidePanel() {
 void WalletPanelHandler::ConnectToSite(
     const std::vector<std::string>& accounts,
     brave_wallet::mojom::PermissionLifetimeOption option) {
-  permissions::BraveWalletPermissionContext::AcceptOrCancel(
-      accounts, option, active_web_contents_);
+  permissions::BraveWalletPermissionContext::AcceptOrCancel(accounts, option,
+                                                            web_contents());
 }
 
 void WalletPanelHandler::CancelConnectToSite() {
-  permissions::BraveWalletPermissionContext::Cancel(active_web_contents_);
+  permissions::BraveWalletPermissionContext::Cancel(web_contents());
 }
 
 void WalletPanelHandler::Focus() {
@@ -90,10 +109,10 @@ void WalletPanelHandler::IsSolanaAccountConnected(
   // Report the connection state of the frame the panel names, not of whichever
   // frame happens to hold focus. See WalletPanelHandler::RequestPermission for
   // the rationale.
-  content::RenderFrameHost* rfh = active_web_contents_->GetPrimaryMainFrame();
+  content::RenderFrameHost* rfh = web_contents()->GetPrimaryMainFrame();
 
   auto* tab_helper =
-      brave_wallet::BraveWalletTabHelper::FromWebContents(active_web_contents_);
+      brave_wallet::BraveWalletTabHelper::FromWebContents(web_contents());
   if (!tab_helper) {
     std::move(callback).Run(false);
     return;
@@ -106,12 +125,7 @@ void WalletPanelHandler::IsSolanaAccountConnected(
 void WalletPanelHandler::RequestPermission(
     brave_wallet::mojom::AccountIdPtr account_id,
     RequestPermissionCallback callback) {
-  // The panel names the primary main frame's origin (see
-  // BraveWalletServiceDelegateImpl::GetActiveOrigin), and so do the connected
-  // accounts list and Disconnect. Grant to that same frame: using the focused
-  // frame would let a cross-origin subframe holding focus receive a durable
-  // permission the user was never shown and cannot revoke from this panel.
-  content::RenderFrameHost* rfh = active_web_contents_->GetPrimaryMainFrame();
+  content::RenderFrameHost* rfh = web_contents()->GetPrimaryMainFrame();
 
   auto request_type =
       brave_wallet::CoinTypeToPermissionRequestType(account_id->coin);

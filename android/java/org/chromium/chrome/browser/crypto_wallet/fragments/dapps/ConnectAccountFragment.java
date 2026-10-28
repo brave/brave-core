@@ -129,7 +129,7 @@ public class ConnectAccountFragment extends BaseDAppsFragment implements Permiss
 
         assumeNonNull(mWalletModel)
                 .getBraveWalletService()
-                .getActiveOrigin(originInfo -> mWebSite.setText(Utils.geteTldSpanned(originInfo)));
+                .getActiveOriginDeprecated(originInfo -> mWebSite.setText(Utils.geteTldSpanned(originInfo)));
 
         initComponents();
 

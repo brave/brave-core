@@ -205,7 +205,8 @@ class BraveWalletService : public KeyedService,
   void ResetWebSitePermission(mojom::CoinType coin,
                               const std::string& formed_website,
                               ResetWebSitePermissionCallback callback) override;
-  void GetActiveOrigin(GetActiveOriginCallback callback) override;
+  void GetActiveOriginDeprecated(
+      GetActiveOriginDeprecatedCallback callback) override;
   mojom::OriginInfoPtr GetActiveOriginSync();
   void GetPendingSignMessageRequests(
       GetPendingSignMessageRequestsCallback callback) override;
@@ -298,7 +299,8 @@ class BraveWalletService : public KeyedService,
   void WriteToClipboard(const std::string& text, bool is_sensitive) override;
 
   // BraveWalletServiceDelegate::Observer:
-  void OnActiveOriginChanged(const mojom::OriginInfoPtr& origin_info) override;
+  void OnActiveOriginChangedDeprecated(
+      const mojom::OriginInfoPtr& origin_info) override;
 
   // content_settings::Observer:
   void OnContentSettingChanged(

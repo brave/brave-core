@@ -227,7 +227,7 @@ void BraveWalletServiceDelegateImpl::FireActiveOriginChanged() {
   mojom::OriginInfoPtr origin_info =
       MakeOriginInfo(GetActiveOriginInternal().value_or(url::Origin()));
   for (auto& observer : observer_list_) {
-    observer.OnActiveOriginChanged(origin_info);
+    observer.OnActiveOriginChangedDeprecated(origin_info);
   }
 }
 
@@ -238,7 +238,8 @@ BraveWalletServiceDelegateImpl::GetActiveOriginInternal() {
                   : std::optional<url::Origin>();
 }
 
-std::optional<url::Origin> BraveWalletServiceDelegateImpl::GetActiveOrigin() {
+std::optional<url::Origin>
+BraveWalletServiceDelegateImpl::GetActiveOriginDeprecated() {
   return GetActiveOriginInternal();
 }
 

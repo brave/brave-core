@@ -12,7 +12,7 @@ import { BraveWallet } from '../../../../../constants/types'
 // Queries
 import {
   useGetActiveOriginConnectedAccountIdsQuery,
-  useGetActiveOriginQuery,
+  useGetActivePanelOriginQuery,
   useGetNetworkForAccountOnActiveOriginQuery,
   useGetNetworksQuery,
   useRemoveSitePermissionMutation,
@@ -90,7 +90,7 @@ export const ConnectionSection = (props: Props) => {
 
   // Queries
   const { data: activeOrigin = { eTldPlusOne: '', originSpec: '' } } =
-    useGetActiveOriginQuery()
+    useGetActivePanelOriginQuery()
   const { account: selectedAccount } = useAccountQuery(
     effectiveSelectedAccountId,
   )
@@ -111,7 +111,7 @@ export const ConnectionSection = (props: Props) => {
     useGetActiveOriginConnectedAccountIdsQuery()
 
   // Computed
-  const isChromeOrigin = activeOrigin?.originSpec.startsWith('chrome')
+  const isChromeOrigin = activeOrigin.originSpec.startsWith('chrome')
 
   // Memos
   const isConnected = React.useMemo((): boolean => {

@@ -69,7 +69,8 @@ bool BraveWalletServiceDelegate::IsPermissionDenied(mojom::CoinType coin,
   return false;
 }
 
-std::optional<url::Origin> BraveWalletServiceDelegate::GetActiveOrigin() {
+std::optional<url::Origin>
+BraveWalletServiceDelegate::GetActiveOriginDeprecated() {
   NOTIMPLEMENTED();
   return std::nullopt;
 }

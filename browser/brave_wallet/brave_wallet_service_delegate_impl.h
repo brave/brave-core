@@ -52,7 +52,7 @@ class BraveWalletServiceDelegateImpl : public BraveWalletServiceDelegateBase,
                                        const std::string& password,
                                        GetImportInfoCallback callback) override;
 
-  std::optional<url::Origin> GetActiveOrigin() override;
+  std::optional<url::Origin> GetActiveOriginDeprecated() override;
 
   void ClearWalletUIStoragePartition() override;
 
