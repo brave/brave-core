@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/lifetime/browser_close_manager.cc b/chrome/browser/lifetime/browser_close_manager.cc
-index cfe99807369de9710f5ec43d87fa75cbe043fc38..803066061c1bbcf830c777c4de8e320cb1d95a41 100644
+index cfe99807369de9710f5ec43d87fa75cbe043fc38..2ba329136e8202bc1786746df9638fca84c495ae 100644
 --- a/chrome/browser/lifetime/browser_close_manager.cc
 +++ b/chrome/browser/lifetime/browser_close_manager.cc
 @@ -192,6 +192,7 @@ void BrowserCloseManager::CloseBrowsers() {
  #if BUILDFLAG(ENABLE_SESSION_SERVICE)
    // Before we close the browsers shutdown all session services. That way an
    // exit can restore all browsers open before exiting.
-+  sidebar::CloseAllWebPanels();
++  sidebar::CloseAllWebPanelsForShutdown();
    ProfileManager::ShutdownSessionServices();
  #endif
  #if BUILDFLAG(ENABLE_BACKGROUND_MODE)

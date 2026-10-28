@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/sidebar/sidebar_web_panel_controller.h"
 
+#include "base/check_op.h"
 #include "base/types/to_address.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
@@ -68,6 +69,24 @@ void SidebarWebPanelController::CloseWebPanel() {
   }
 
   chrome::CloseWebContents(browser_view_->browser(), panel_contents_, false);
+}
+
+void SidebarWebPanelController::CloseWebPanelForShutdown() {
+  if (!HasOpenPanel()) {
+    return;
+  }
+
+  // chrome::CloseWebContents() hands the tab to the renderer when the panel
+  // page has beforeunload/unload handlers (TabStripModel::CloseWebContentses()
+  // skips the detach and waits for the reply), so the tab would still be in the
+  // strip while the caller snapshots the session on its next statement.
+  // Detaching skips those handlers and removes the tab synchronously, which is
+  // safe here because the shutdown paths have already run beforeunload for
+  // every tab and the close can no longer be cancelled.
+  auto* tab_strip_model = browser_view_->browser()->GetTabStripModel();
+  const int index = tab_strip_model->GetIndexOfWebContents(panel_contents_);
+  CHECK_NE(index, TabStripModel::kNoTab);
+  tab_strip_model->DetachAndDeleteWebContentsAt(index);
 }
 
 void SidebarWebPanelController::ClearPanelState() {

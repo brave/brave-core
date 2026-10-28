@@ -25,6 +25,10 @@ class SidePanelUI;
 class TabStripModel;
 enum class SidePanelEntryId;
 
+namespace content {
+class WebContents;
+}  // namespace content
+
 namespace sidebar {
 
 class Sidebar;
@@ -97,8 +101,13 @@ class SidebarController : public SidebarService::Observer,
 
   void TearDownPreBrowserWindowDestruction();
 
-  // No-op when no web panel is open.
-  void CloseWebPanel();
+  // Synchronous and shutdown-only. No-op when no web panel is open. See
+  // SidebarWebPanelController::CloseWebPanelForShutdown().
+  void CloseWebPanelForShutdown();
+
+  // True when `contents` is this window's open web panel.
+  bool IsWebPanelTab(const content::WebContents* contents) const;
+
   void SetSidebar(Sidebar& sidebar);
 
   Sidebar* sidebar() const { return sidebar_; }

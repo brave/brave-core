@@ -406,18 +406,26 @@ views::BubbleBorder::Arrow GetBubbleArrowForSidebar(PrefService* prefs) {
                   : views::BubbleBorder::LEFT_TOP;
 }
 
-void CloseAllWebPanels() {
+void CloseAllWebPanelsForShutdown() {
   ForEachCurrentBrowserWindowInterfaceOrderedByActivation(
       [](BrowserWindowInterface* browser) {
-        MaybeCloseWebPanel(browser);
+        MaybeCloseWebPanelForShutdown(browser);
         return true;
       });
 }
 
-void MaybeCloseWebPanel(BrowserWindowInterface* browser) {
+void MaybeCloseWebPanelForShutdown(BrowserWindowInterface* browser) {
   if (auto* sidebar_controller = sidebar::SidebarController::From(browser)) {
-    sidebar_controller->CloseWebPanel();
+    sidebar_controller->CloseWebPanelForShutdown();
   }
+}
+
+bool IsWebPanelTab(BrowserWindowInterface* browser,
+                   const content::WebContents* contents) {
+  if (auto* sidebar_controller = sidebar::SidebarController::From(browser)) {
+    return sidebar_controller->IsWebPanelTab(contents);
+  }
+  return false;
 }
 
 }  // namespace sidebar
