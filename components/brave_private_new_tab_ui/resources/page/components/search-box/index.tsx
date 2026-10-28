@@ -21,6 +21,11 @@ const Form = styled.form<{ isEmpty: boolean }>`
   border-radius: ${leo.radius.xl};
   cursor: text;
 
+  /* The input drops its own outline, so the whole field carries the ring. */
+  &:has(input:focus-visible) {
+    box-shadow: ${leo.effect.focusState};
+  }
+
   input[type="text"] {
     flex: 1;
     min-width: 0;

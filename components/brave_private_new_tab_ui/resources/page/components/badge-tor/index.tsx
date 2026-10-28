@@ -148,7 +148,9 @@ function parseProgress (progress: string) {
 }
 
 // `width: auto` does not transition when the label changes length, so the
-// pill is measured and its used width is animated explicitly.
+// pill is measured and its used width is animated explicitly. The pixel width
+// is only held for the transition; afterwards the pill is back to its
+// intrinsic width so viewport resizes and late font loads still reflow it.
 function useAnimatedPillWidth (
   pillRef: React.RefObject<HTMLDivElement | null>,
   signature: string
@@ -160,20 +162,31 @@ function useAnimatedPillWidth (
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     const current = el.getBoundingClientRect().width
     el.style.transition = 'none'
-    el.style.width = 'max-content'
+    el.style.width = ''
     const next = el.getBoundingClientRect().width
 
     if (reduced || Math.abs(current - next) < 0.5) {
-      el.style.width = `${next}px`
       el.style.transition = ''
       return
     }
+
+    const release = (e: TransitionEvent) => {
+      if (e.target !== el || e.propertyName !== 'width') return
+      el.style.width = ''
+    }
+    el.addEventListener('transitionend', release)
+    el.addEventListener('transitioncancel', release)
 
     el.style.width = `${current}px`
     // Commit the start width before the target, or the transition is skipped.
     el.getBoundingClientRect()
     el.style.transition = ''
     el.style.width = `${next}px`
+
+    return () => {
+      el.removeEventListener('transitionend', release)
+      el.removeEventListener('transitioncancel', release)
+    }
   }, [pillRef, signature])
 }
 

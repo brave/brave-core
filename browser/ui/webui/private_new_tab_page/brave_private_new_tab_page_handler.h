@@ -50,10 +50,12 @@ class BravePrivateNewTabPageHandler
   // Synchronous reads of what the page needs for its first paint, passed as
   // load time data so it can render without waiting on mojo round trips.
   static bool IsDisclaimerDismissed(Profile* profile);
-  static bool IsTorDisabled();
+  // Whether a Tor window can't be opened from `profile`: Tor disabled by the
+  // user or policy, guest profiles, and incognito disabled or forced.
+  static bool IsTorDisabled(Profile* profile);
   static bool IsTorConnected();
-  // Whether to show the VPN promo, from the live purchase state when it's
-  // conclusive or else the answer cached by an earlier page. std::nullopt when
+  // Whether to show the VPN promo, from the live purchase state when it has
+  // loaded or else the answer cached by an earlier page. std::nullopt when
   // neither is known, in which case the page waits on GetShouldShowVpnPromo.
   static std::optional<bool> GetInitialShouldShowVpnPromo(Profile* profile);
 
@@ -86,13 +88,16 @@ class BravePrivateNewTabPageHandler
   void OnPurchasedStateChanged(
       brave_vpn::mojom::PurchasedState state,
       const std::optional<std::string>& description) override;
-#endif
+#endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
 
  private:
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   void OnGetPurchasedState(brave_vpn::mojom::PurchasedInfoPtr info);
 #endif
-  void CacheShouldShowVpnPromo(bool show);
+  // Replies to the pending GetShouldShowVpnPromo callbacks, and caches `show`
+  // for later pages when `cache` is set.
+  void ResolveVpnPromo(bool show, bool cache);
+  void OnVpnPromoTimeout();
 
   // TorLauncherObserver overrides:
   void OnTorCircuitEstablished(bool result) override;
@@ -118,6 +123,12 @@ class BravePrivateNewTabPageHandler
 
   // GetShouldShowVpnPromo replies waiting for the VPN purchase state to load.
   std::vector<GetShouldShowVpnPromoCallback> vpn_promo_callbacks_;
+  // Bounds that wait, so the page's skeleton card can't outlive a load that
+  // never settles.
+  base::OneShotTimer vpn_promo_timeout_;
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  bool is_observing_vpn_ = false;
+#endif
 
   mojo::Receiver<brave_private_new_tab::mojom::PageHandler> receiver_;
 

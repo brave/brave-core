@@ -204,6 +204,10 @@ const Card = styled.li<{ isAppearing?: boolean }>`
 
 const SkeletonCard = styled(Card)`
   animation: ${pulse} ${leo.duration.xl} ${leo.easing.inOut} infinite alternate;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
 `
 
 const SkeletonShape = styled.div<{ width: string, height: string }>`
@@ -367,6 +371,7 @@ function InfoCards (props: Props) {
 
     const el = collapseRef.current
     if (!el || motionTiming(el).reduced) {
+      closingRef.current = false
       props.onClose()
       return
     }
@@ -383,7 +388,10 @@ function InfoCards (props: Props) {
       fill: 'both'
     })
     animationRef.current = animation
-    animation.onfinish = () => props.onClose()
+    animation.onfinish = () => {
+      closingRef.current = false
+      props.onClose()
+    }
   }
 
   return (

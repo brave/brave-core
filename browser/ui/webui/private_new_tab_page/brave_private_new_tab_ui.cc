@@ -48,7 +48,7 @@ BravePrivateNewTabUI::BravePrivateNewTabUI(content::WebUI* web_ui)
       "infoCardsDismissed",
       BravePrivateNewTabPageHandler::IsDisclaimerDismissed(profile));
   source->AddBoolean("isTorDisabled",
-                     BravePrivateNewTabPageHandler::IsTorDisabled());
+                     BravePrivateNewTabPageHandler::IsTorDisabled(profile));
   source->AddBoolean("isTorConnected",
                      BravePrivateNewTabPageHandler::IsTorConnected());
 

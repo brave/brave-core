@@ -62,11 +62,17 @@ export function useShouldShowVpnPromo (enabled: boolean) {
 
   React.useEffect(() => {
     if (!enabled) return
+    let cancelled = false
     // Always asked so the browser refreshes its cached answer for the next
     // page. The reply only fills in the skeleton; a card already on screen
     // stays put.
     getPageHandlerInstance().pageHandler.getShouldShowVpnPromo()
-      .then(res => setShouldShowVpnPromo(current => current ?? res.show))
+      .then(res => {
+        if (!cancelled) {
+          setShouldShowVpnPromo(current => current ?? res.show)
+        }
+      })
+    return () => { cancelled = true }
   }, [enabled])
 
   return { shouldShowVpnPromo }
