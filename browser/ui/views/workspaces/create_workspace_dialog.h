@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_UI_VIEWS_WORKSPACES_SAVE_WORKSPACE_DIALOG_H_
-#define BRAVE_BROWSER_UI_VIEWS_WORKSPACES_SAVE_WORKSPACE_DIALOG_H_
+#ifndef BRAVE_BROWSER_UI_VIEWS_WORKSPACES_CREATE_WORKSPACE_DIALOG_H_
+#define BRAVE_BROWSER_UI_VIEWS_WORKSPACES_CREATE_WORKSPACE_DIALOG_H_
 
 #include <string>
 
@@ -14,7 +14,7 @@
 #include "ui/views/view.h"
 #include "ui/views/window/dialog_delegate.h"
 
-class Profile;
+class BrowserWindowInterface;
 
 namespace views {
 class Textfield;
@@ -22,24 +22,30 @@ class Widget;
 }  // namespace views
 
 // A modal dialog that prompts the user to name a new workspace. On accept, the
-// current state of all open windows for the profile is saved to disk.
+// tabs currently open in the browser window are stashed into whatever that
+// window is showing, and the window switches to the new, empty workspace.
+//
+// Nothing happens until the user accepts, so cancelling leaves the window
+// exactly as it was.
 //
 // Rather than inherit from the deprecated views::DialogDelegateView (a combined
 // delegate and View), this inherits from views::DialogDelegate and installs a
 // separate contents view via SetContentsView(). It also serves as the name
 // field's controller so the OK button is enabled only while a name has been
 // entered.
-class SaveWorkspaceDialog : public views::DialogDelegate,
-                            public views::TextfieldController {
+class CreateWorkspaceDialog : public views::DialogDelegate,
+                              public views::TextfieldController {
  public:
-  // |profile| supplies the workspace service saved to and must outlive this
-  // dialog. The dialog configures its widget as CLIENT_OWNS_WIDGET; the caller
-  // owns the resulting Widget (see WorkspacesBubbleController).
-  explicit SaveWorkspaceDialog(Profile* profile);
-  ~SaveWorkspaceDialog() override;
+  // |browser| is the window the new workspace opens in, and supplies the
+  // profile whose workspace service is written to. It must outlive this
+  // dialog. The
+  // dialog configures its widget as CLIENT_OWNS_WIDGET; the caller owns the
+  // resulting Widget (see WorkspacesBubbleController).
+  explicit CreateWorkspaceDialog(BrowserWindowInterface* browser);
+  ~CreateWorkspaceDialog() override;
 
-  SaveWorkspaceDialog(const SaveWorkspaceDialog&) = delete;
-  SaveWorkspaceDialog& operator=(const SaveWorkspaceDialog&) = delete;
+  CreateWorkspaceDialog(const CreateWorkspaceDialog&) = delete;
+  CreateWorkspaceDialog& operator=(const CreateWorkspaceDialog&) = delete;
 
  private:
   void OnAccept();
@@ -48,12 +54,12 @@ class SaveWorkspaceDialog : public views::DialogDelegate,
   void ContentsChanged(views::Textfield* sender,
                        const std::u16string& new_contents) override;
 
-  raw_ptr<Profile> profile_;
+  raw_ptr<BrowserWindowInterface> browser_;
   // Cached text value updated by ContentsChanged(). Storing a string rather
   // than a raw_ptr<Textfield> avoids a dangling pointer: the Textfield is
   // owned by the widget's view hierarchy, which is destroyed before the
-  // delegate (SaveWorkspaceDialog) is deleted.
+  // delegate (CreateWorkspaceDialog) is deleted.
   std::string workspace_name_;
 };
 
-#endif  // BRAVE_BROWSER_UI_VIEWS_WORKSPACES_SAVE_WORKSPACE_DIALOG_H_
+#endif  // BRAVE_BROWSER_UI_VIEWS_WORKSPACES_CREATE_WORKSPACE_DIALOG_H_

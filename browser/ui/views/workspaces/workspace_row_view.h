@@ -43,6 +43,9 @@ class WorkspaceInfoButton : public views::Button {
 // A workspace list row that highlights its background on hover and shows a
 // darker tint when selected.  SetNotifyEnterExitOnChild propagates mouse
 // enter/exit from child buttons up to this view so the whole row responds.
+//
+// Passing a null |on_delete_clicked| omits the overflow menu, which is how the
+// window's default row is rendered: it is implicit and cannot be deleted.
 class WorkspaceRowView : public views::View,
                          public ui::SimpleMenuModel::Delegate {
   using RowClickedCallback = base::RepeatingCallback<void()>;
@@ -75,7 +78,7 @@ class WorkspaceRowView : public views::View,
   std::unique_ptr<ui::SimpleMenuModel> menu_model_;
   std::unique_ptr<views::MenuRunner> menu_runner_;
   raw_ptr<WorkspaceInfoButton> info_button_;
-  raw_ptr<views::ImageButton> more_button_;
+  raw_ptr<views::ImageButton> more_button_ = nullptr;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_WORKSPACES_WORKSPACE_ROW_VIEW_H_

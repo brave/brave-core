@@ -11,6 +11,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/time/time.h"
+#include "base/uuid.h"
 #include "brave/browser/ui/views/frame/brave_tab_strip_region_view.h"
 #include "brave/browser/ui/views/workspaces/workspace_row_view.h"
 #include "brave/browser/workspaces/features.h"
@@ -41,10 +42,10 @@ BraveHorizontalTabStripRegionView* GetHorizontalTabStripRegion(
       browser_view->tab_strip_view());
 }
 
-WorkspaceMetadata MakeMeta(const std::string& name, int windows, int tabs) {
-  return {.name = name,
+WorkspaceMetadata MakeMeta(const std::string& name, int tabs) {
+  return {.id = base::Uuid::GenerateRandomV4(),
+          .name = name,
           .modified_at = base::Time::Now(),
-          .number_of_windows = windows,
           .number_of_tabs = tabs};
 }
 
@@ -204,8 +205,8 @@ IN_PROC_BROWSER_TEST_F(WorkspacesBubbleBrowserTest, EmptyStateLabelShown) {
 IN_PROC_BROWSER_TEST_F(WorkspacesBubbleBrowserTest, OneRowPerWorkspace) {
   auto* service = GetWorkspaceService();
   ASSERT_TRUE(service);
-  service->SaveWorkspaceMetadata(MakeMeta("Alpha", 1, 3));
-  service->SaveWorkspaceMetadata(MakeMeta("Beta", 2, 5));
+  service->SaveWorkspaceMetadata(MakeMeta("Alpha", 3));
+  service->SaveWorkspaceMetadata(MakeMeta("Beta", 5));
 
   auto* bubble = OpenBubble();
   ASSERT_TRUE(bubble);
