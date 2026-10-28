@@ -586,6 +586,23 @@ class SettingsViewController: TableViewController, BraveAccountDialogOpenerBridg
         Row(
           text: Strings.searchEngines,
           selection: { [unowned self] in
+            if FeatureList.kUseChromiumSearchEngines.enabled,
+              let templateURLService = TemplateURLServiceFactory.get(profile: braveCore.profile)
+            {
+              let viewController = UIHostingController(
+                rootView: SearchSettingsView(
+                  viewModel: .init(templateURLService: templateURLService),
+                  openQuickSearchEngines: { [unowned self] in
+                    self.navigationController?.pushViewController(
+                      SearchQuickEnginesViewController(profile: self.profile),
+                      animated: true
+                    )
+                  }
+                )
+              )
+              self.navigationController?.pushViewController(viewController, animated: true)
+              return
+            }
             let viewController = SearchSettingsViewController(profile: self.profile)
             self.navigationController?.pushViewController(viewController, animated: true)
           },
