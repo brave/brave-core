@@ -27,9 +27,9 @@ inline constexpr base::FeatureParam<std::string>
         &kConversionsFeature, "html_meta_tag_id_pattern",
         R"~(<meta.*name="ad-conversion-id".*content="([-a-zA-Z0-9]*)".*>)~"};
 
-// Set to 0 to never cap creative set conversions.
-inline constexpr base::FeatureParam<size_t> kCreativeSetConversionCap{
-    &kConversionsFeature, "creative_set_conversion_cap", 0};
+// Set to 0 to never cap campaign conversions.
+inline constexpr base::FeatureParam<size_t> kCampaignConversionCap{
+    &kConversionsFeature, "campaign_conversion_cap", 0};
 
 // The maximum time to look back when fetching ad events for potential
 // conversions.

@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_database_table.h"
+#include "brave/components/brave_ads/core/internal/creatives/conversions/campaign_conversion_database_table.h"
 
 #include "base/test/test_future.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_url_request_builder_util.h"
@@ -32,15 +32,15 @@ class BraveAdsConversionsDatabaseTableIntegrationTest : public test::TestBase {
 TEST_F(BraveAdsConversionsDatabaseTableIntegrationTest,
        GetConversionsFromCatalogResponse) {
   // Arrange
-  const database::table::CreativeSetConversions database_table;
+  const database::table::CampaignConversions database_table;
 
   // Act & Assert
-  base::test::TestFuture<bool, CreativeSetConversionList> test_future;
+  base::test::TestFuture<bool, CampaignConversionList> test_future;
   database_table.GetUnexpired(
-      test_future.GetCallback<bool, const CreativeSetConversionList&>());
-  const auto [success, creative_set_conversions] = test_future.Take();
+      test_future.GetCallback<bool, const CampaignConversionList&>());
+  const auto [success, campaign_conversions] = test_future.Take();
   EXPECT_TRUE(success);
-  EXPECT_THAT(creative_set_conversions, ::testing::SizeIs(2));
+  EXPECT_THAT(campaign_conversions, ::testing::SizeIs(2));
 }
 
 }  // namespace brave_ads

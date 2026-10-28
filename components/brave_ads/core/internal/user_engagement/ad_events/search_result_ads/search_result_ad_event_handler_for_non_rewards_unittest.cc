@@ -17,7 +17,7 @@
 #include "brave/components/brave_ads/core/internal/ad_units/search_result_ad/search_result_ad_info.h"
 #include "brave/components/brave_ads/core/internal/ad_units/test/ad_test_constants.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
-#include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_database_table.h"
+#include "brave/components/brave_ads/core/internal/creatives/conversions/campaign_conversion_database_table.h"
 #include "brave/components/brave_ads/core/internal/creatives/search_result_ads/test/creative_search_result_ad_test_util.h"
 #include "brave/components/brave_ads/core/internal/settings/test/settings_test_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/search_result_ads/search_result_ad_event_handler.h"
@@ -41,14 +41,14 @@ void VerifyDepositForCreativeInstanceIdExpectation(
   EXPECT_FALSE(deposit);
 }
 
-void VerifyCreativeSetConversionExpectation(size_t expected_count) {
-  base::test::TestFuture<bool, CreativeSetConversionList> test_future;
-  const database::table::CreativeSetConversions database_table;
+void VerifyCampaignConversionExpectation(size_t expected_count) {
+  base::test::TestFuture<bool, CampaignConversionList> test_future;
+  const database::table::CampaignConversions database_table;
   database_table.GetUnexpired(
-      test_future.GetCallback<bool, const CreativeSetConversionList&>());
-  const auto [success, creative_set_conversions] = test_future.Take();
+      test_future.GetCallback<bool, const CampaignConversionList&>());
+  const auto [success, campaign_conversions] = test_future.Take();
   EXPECT_TRUE(success);
-  EXPECT_THAT(creative_set_conversions, ::testing::SizeIs(expected_count));
+  EXPECT_THAT(campaign_conversions, ::testing::SizeIs(expected_count));
 }
 
 }  // namespace
@@ -88,13 +88,13 @@ class BraveAdsSearchResultAdEventHandlerForNonRewardsTest
       const SearchResultAdInfo ad =
           FromMojomBuildSearchResultAd(mojom_creative_ad);
       expected_count =
-          mojom_creative_ad->creative_set_conversion && ad.IsValid() ? 1 : 0;
+          mojom_creative_ad->campaign_conversion && ad.IsValid() ? 1 : 0;
     }
 
     VerifyDepositForCreativeInstanceIdExpectation(
         mojom_creative_ad->creative_instance_id);
 
-    VerifyCreativeSetConversionExpectation(expected_count);
+    VerifyCampaignConversionExpectation(expected_count);
   }
 
   SearchResultAdEventHandler event_handler_;

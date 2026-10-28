@@ -30,10 +30,9 @@ inline constexpr char kCreativeAdHeadlineText[] = "Headline text";
 inline constexpr char kCreativeAdDescription[] = "Description";
 inline constexpr double kCreativeAdRewardsValue = 0.5;
 
-// Creative set conversion.
-inline constexpr char kCreativeSetConversionUrlPattern[] =
-    "https://brave.com/*";
-inline constexpr base::TimeDelta kCreativeSetConversionObservationWindow =
+// Campaign conversion.
+inline constexpr char kCampaignConversionUrlPattern[] = "https://brave.com/*";
+inline constexpr base::TimeDelta kCampaignConversionObservationWindow =
     base::Days(1);
 
 }  // namespace brave_ads::test

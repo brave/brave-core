@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_database_table.h"
+#include "brave/components/brave_ads/core/internal/creatives/conversions/campaign_conversion_database_table.h"
 
 #include <algorithm>
 #include <cstddef>
@@ -23,20 +23,20 @@
 #include "brave/components/brave_ads/core/internal/common/database/database_transaction_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_util.h"
-#include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_database_table_util.h"
+#include "brave/components/brave_ads/core/internal/creatives/conversions/campaign_conversion_database_table_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
 namespace brave_ads::database::table {
 
 namespace {
 
-constexpr char kTableName[] = "creative_set_conversions";
+constexpr char kTableName[] = "campaign_conversions";
 
 void BindColumnTypes(const mojom::DBActionInfoPtr& mojom_db_action) {
   CHECK(mojom_db_action);
 
   mojom_db_action->bind_column_types = {
-      mojom::DBBindColumnType::kString,  // creative_set_id
+      mojom::DBBindColumnType::kString,  // campaign_id
       mojom::DBBindColumnType::kString,  // url_pattern
       mojom::DBBindColumnType::kInt,     // observation_window
       mojom::DBBindColumnType::kTime     // expire_at
@@ -44,23 +44,22 @@ void BindColumnTypes(const mojom::DBActionInfoPtr& mojom_db_action) {
 }
 
 size_t BindColumns(const mojom::DBActionInfoPtr& mojom_db_action,
-                   const CreativeSetConversionList& creative_set_conversions) {
+                   const CampaignConversionList& campaign_conversions) {
   CHECK(mojom_db_action);
-  CHECK(!creative_set_conversions.empty());
+  CHECK(!campaign_conversions.empty());
 
   size_t row_count = 0;
 
   int32_t index = 0;
-  for (const auto& creative_set_conversion : creative_set_conversions) {
-    CHECK(creative_set_conversion.IsValid());
+  for (const auto& campaign_conversion : campaign_conversions) {
+    CHECK(campaign_conversion.IsValid());
 
-    BindColumnString(mojom_db_action, index++, creative_set_conversion.id);
-    BindColumnString(mojom_db_action, index++,
-                     creative_set_conversion.url_pattern);
+    BindColumnString(mojom_db_action, index++, campaign_conversion.id);
+    BindColumnString(mojom_db_action, index++, campaign_conversion.url_pattern);
     BindColumnInt(mojom_db_action, index++,
-                  creative_set_conversion.observation_window.InDays());
+                  campaign_conversion.observation_window.InDays());
     BindColumnTime(mojom_db_action, index++,
-                   creative_set_conversion.expire_at.value_or(base::Time()));
+                   campaign_conversion.expire_at.value_or(base::Time()));
 
     ++row_count;
   }
@@ -69,46 +68,44 @@ size_t BindColumns(const mojom::DBActionInfoPtr& mojom_db_action,
 }
 
 void GetCallback(
-    GetCreativeSetConversionsCallback callback,
+    GetCampaignConversionsCallback callback,
     mojom::DBTransactionResultInfoPtr mojom_db_transaction_result) {
   if (!IsTransactionSuccessful(mojom_db_transaction_result)) {
-    BLOG(0, "Failed to get creative set conversions");
+    BLOG(0, "Failed to get campaign conversions");
     return std::move(callback).Run(/*success=*/false,
                                    /*conversion_set_conversions=*/{});
   }
 
   CHECK(mojom_db_transaction_result->rows_union);
 
-  CreativeSetConversionList creative_set_conversions;
+  CampaignConversionList campaign_conversions;
 
   for (const auto& mojom_db_row :
        mojom_db_transaction_result->rows_union->get_rows()) {
-    const CreativeSetConversionInfo creative_set_conversion =
-        CreativeSetConversionFromMojomRow(mojom_db_row);
-    if (!creative_set_conversion.IsValid()) {
-      BLOG(0, "Invalid creative set conversion");
+    const CampaignConversionInfo campaign_conversion =
+        CampaignConversionFromMojomRow(mojom_db_row);
+    if (!campaign_conversion.IsValid()) {
+      BLOG(0, "Invalid campaign conversion");
       continue;
     }
 
-    creative_set_conversions.push_back(creative_set_conversion);
+    campaign_conversions.push_back(campaign_conversion);
   }
 
-  std::move(callback).Run(/*success=*/true, creative_set_conversions);
+  std::move(callback).Run(/*success=*/true, campaign_conversions);
 }
 
-std::string BuildInsertSql(
-    const mojom::DBActionInfoPtr& mojom_db_action,
-    const CreativeSetConversionList& creative_set_conversions) {
+std::string BuildInsertSql(const mojom::DBActionInfoPtr& mojom_db_action,
+                           const CampaignConversionList& campaign_conversions) {
   CHECK(mojom_db_action);
-  CHECK(!creative_set_conversions.empty());
+  CHECK(!campaign_conversions.empty());
 
-  const size_t row_count =
-      BindColumns(mojom_db_action, creative_set_conversions);
+  const size_t row_count = BindColumns(mojom_db_action, campaign_conversions);
 
   return base::ReplaceStringPlaceholders(
       R"(
           INSERT INTO $1 (
-            creative_set_id,
+            campaign_id,
             url_pattern,
             observation_window,
             expire_at
@@ -118,14 +115,13 @@ std::string BuildInsertSql(
 }
 
 void Insert(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
-            const CreativeSetConversionList& creative_set_conversions) {
+            const CampaignConversionList& campaign_conversions) {
   CHECK(mojom_db_transaction);
-  CHECK(!creative_set_conversions.empty());
+  CHECK(!campaign_conversions.empty());
 
   mojom::DBActionInfoPtr mojom_db_action = mojom::DBActionInfo::New();
   mojom_db_action->type = mojom::DBActionInfo::Type::kExecuteWithBindings;
-  mojom_db_action->sql =
-      BuildInsertSql(mojom_db_action, creative_set_conversions);
+  mojom_db_action->sql = BuildInsertSql(mojom_db_action, campaign_conversions);
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 }
 
@@ -134,6 +130,10 @@ void MigrateToV55(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
 
   // Drop the `verifiable_advertiser_public_key` column which is no longer used
   // now that verifiable conversions have been removed.
+  //
+  // The table was still named `creative_set_conversions` at this schema
+  // version, so the literal name below is intentionally not
+  // `campaign_conversions`.
   RenameTable(mojom_db_transaction,
               /*from=*/"creative_set_conversions",
               /*to=*/"creative_set_conversions_temp");
@@ -163,37 +163,60 @@ void MigrateToV55(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
                    /*columns=*/{"creative_set_id"});
 }
 
+void MigrateToV61(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
+  CHECK(mojom_db_transaction);
+
+  // Renamed from `creative_set_conversions` and keyed by `campaign_id` rather
+  // than `creative_set_id`. Conversions are short lived and expire quickly,
+  // so existing rows are dropped rather than migrated.
+  DropTable(mojom_db_transaction, "creative_set_conversions");
+
+  Execute(mojom_db_transaction, R"(
+      CREATE TABLE campaign_conversions (
+        campaign_id TEXT NOT NULL PRIMARY KEY ON CONFLICT REPLACE,
+        url_pattern TEXT NOT NULL,
+        observation_window INTEGER NOT NULL,
+        expire_at TIMESTAMP NOT NULL
+      ))");
+
+  CreateTableIndex(mojom_db_transaction,
+                   /*table_name=*/"campaign_conversions",
+                   /*columns=*/{"expire_at"});
+
+  // No index needed on `campaign_id`; it is the primary key, so SQLite
+  // already maintains an index for it.
+}
+
 }  // namespace
 
-void CreativeSetConversions::Save(
-    const CreativeSetConversionList& creative_set_conversions,
+void CampaignConversions::Save(
+    const CampaignConversionList& campaign_conversions,
     ResultCallback callback) {
-  CreativeSetConversionList filtered_creative_set_conversions;
-  std::copy_if(creative_set_conversions.cbegin(),
-               creative_set_conversions.cend(),
-               std::back_inserter(filtered_creative_set_conversions),
-               [](const CreativeSetConversionInfo& creative_set_conversion) {
-                 if (!creative_set_conversion.IsValid()) {
-                   BLOG(0, "Invalid creative set conversion");
+  CampaignConversionList filtered_campaign_conversions;
+  std::copy_if(campaign_conversions.cbegin(), campaign_conversions.cend(),
+               std::back_inserter(filtered_campaign_conversions),
+               [](const CampaignConversionInfo& campaign_conversion) {
+                 if (!campaign_conversion.IsValid()) {
+                   BLOG(0, "Invalid campaign conversion");
                    return false;
                  }
                  return true;
                });
-  if (filtered_creative_set_conversions.empty()) {
+  if (filtered_campaign_conversions.empty()) {
     return std::move(callback).Run(/*success=*/true);
   }
 
   mojom::DBTransactionInfoPtr mojom_db_transaction =
       mojom::DBTransactionInfo::New();
 
-  Insert(mojom_db_transaction, filtered_creative_set_conversions);
+  Insert(mojom_db_transaction, filtered_campaign_conversions);
 
   RunTransaction(FROM_HERE, std::move(mojom_db_transaction),
                  std::move(callback));
 }
 
-void CreativeSetConversions::GetUnexpired(
-    GetCreativeSetConversionsCallback callback) const {
+void CampaignConversions::GetUnexpired(
+    GetCampaignConversionsCallback callback) const {
   mojom::DBTransactionInfoPtr mojom_db_transaction =
       mojom::DBTransactionInfo::New();
   mojom::DBActionInfoPtr mojom_db_action = mojom::DBActionInfo::New();
@@ -201,7 +224,7 @@ void CreativeSetConversions::GetUnexpired(
   mojom_db_action->sql = base::ReplaceStringPlaceholders(
       R"(
           SELECT
-            creative_set_id,
+            campaign_id,
             url_pattern,
             observation_window,
             expire_at
@@ -217,8 +240,8 @@ void CreativeSetConversions::GetUnexpired(
                  base::BindOnce(&GetCallback, std::move(callback)));
 }
 
-void CreativeSetConversions::GetActive(
-    GetCreativeSetConversionsCallback callback) const {
+void CampaignConversions::GetActive(
+    GetCampaignConversionsCallback callback) const {
   mojom::DBTransactionInfoPtr mojom_db_transaction =
       mojom::DBTransactionInfo::New();
   mojom::DBActionInfoPtr mojom_db_action = mojom::DBActionInfo::New();
@@ -226,13 +249,14 @@ void CreativeSetConversions::GetActive(
   mojom_db_action->sql = base::ReplaceStringPlaceholders(
       R"(
           SELECT DISTINCT
-            creative_set_conversion.creative_set_id,
-            creative_set_conversion.url_pattern,
-            creative_set_conversion.observation_window,
-            creative_set_conversion.expire_at
+            campaign_conversion.campaign_id,
+            campaign_conversion.url_pattern,
+            campaign_conversion.observation_window,
+            campaign_conversion.expire_at
           FROM
-            $1 AS creative_set_conversion
-            INNER JOIN ad_events ON ad_events.creative_set_id = creative_set_conversion.creative_set_id
+            $1 AS campaign_conversion
+            INNER JOIN ad_events
+              ON ad_events.campaign_id = campaign_conversion.campaign_id
           WHERE
             $2 < expire_at
             AND ad_events.confirmation_type IN ('$3', '$4'))",
@@ -247,7 +271,7 @@ void CreativeSetConversions::GetActive(
                  base::BindOnce(&GetCallback, std::move(callback)));
 }
 
-void CreativeSetConversions::PurgeExpired(ResultCallback callback) const {
+void CampaignConversions::PurgeExpired(ResultCallback callback) const {
   mojom::DBTransactionInfoPtr mojom_db_transaction =
       mojom::DBTransactionInfo::New();
   Execute(mojom_db_transaction, R"(
@@ -261,13 +285,13 @@ void CreativeSetConversions::PurgeExpired(ResultCallback callback) const {
                  std::move(callback));
 }
 
-void CreativeSetConversions::Create(
+void CampaignConversions::Create(
     const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
   CHECK(mojom_db_transaction);
 
   Execute(mojom_db_transaction, R"(
-      CREATE TABLE creative_set_conversions (
-        creative_set_id TEXT NOT NULL PRIMARY KEY ON CONFLICT REPLACE,
+      CREATE TABLE campaign_conversions (
+        campaign_id TEXT NOT NULL PRIMARY KEY ON CONFLICT REPLACE,
         url_pattern TEXT NOT NULL,
         observation_window INTEGER NOT NULL,
         expire_at TIMESTAMP NOT NULL
@@ -277,12 +301,11 @@ void CreativeSetConversions::Create(
   CreateTableIndex(mojom_db_transaction, kTableName,
                    /*columns=*/{"expire_at"});
 
-  // Optimize database query for `database::table::AdEvents` from schema 43.
-  CreateTableIndex(mojom_db_transaction, kTableName,
-                   /*columns=*/{"creative_set_id"});
+  // No index needed on `campaign_id`; it is the primary key, so SQLite
+  // already maintains an index for it.
 }
 
-void CreativeSetConversions::Migrate(
+void CampaignConversions::Migrate(
     const mojom::DBTransactionInfoPtr& mojom_db_transaction,
     int to_version) {
   CHECK(mojom_db_transaction);
@@ -290,6 +313,11 @@ void CreativeSetConversions::Migrate(
   switch (to_version) {
     case 55: {
       MigrateToV55(mojom_db_transaction);
+      break;
+    }
+
+    case 61: {
+      MigrateToV61(mojom_db_transaction);
       break;
     }
 

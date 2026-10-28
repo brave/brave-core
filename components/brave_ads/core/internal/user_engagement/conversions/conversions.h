@@ -12,8 +12,8 @@
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
 #include "base/scoped_observation.h"
-#include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_database_table.h"
-#include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_info.h"
+#include "brave/components/brave_ads/core/internal/creatives/conversions/campaign_conversion_database_table.h"
+#include "brave/components/brave_ads/core/internal/creatives/conversions/campaign_conversion_info.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager_observer.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_info.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events_database_table.h"
@@ -39,28 +39,26 @@ class Conversions final : public TabManagerObserver {
   void RemoveObserver(ConversionsObserver* observer);
 
   // Examine potential view-through or click-through conversions by matching
-  // URL patterns in the redirect chain against known creative set conversions.
+  // URL patterns in the redirect chain against known campaign conversions.
   void MaybeConvert(const std::vector<GURL>& redirect_chain);
 
  private:
-  void GetCreativeSetConversions(const std::vector<GURL>& redirect_chain);
-  void GetCreativeSetConversionsCallback(
+  void GetCampaignConversions(const std::vector<GURL>& redirect_chain);
+  void GetCampaignConversionsCallback(
       const std::vector<GURL>& redirect_chain,
       bool success,
-      const CreativeSetConversionList& creative_set_conversions);
+      const CampaignConversionList& campaign_conversions);
 
   void GetAdEvents(const std::vector<GURL>& redirect_chain,
-                   const CreativeSetConversionList& creative_set_conversions);
-  void GetAdEventsCallback(
-      const std::vector<GURL>& redirect_chain,
-      const CreativeSetConversionList& creative_set_conversions,
-      bool success,
-      const AdEventList& ad_events);
+                   const CampaignConversionList& campaign_conversions);
+  void GetAdEventsCallback(const std::vector<GURL>& redirect_chain,
+                           const CampaignConversionList& campaign_conversions,
+                           bool success,
+                           const AdEventList& ad_events);
 
-  void CheckForConversions(
-      const std::vector<GURL>& redirect_chain,
-      const CreativeSetConversionList& creative_set_conversions,
-      const AdEventList& ad_events);
+  void CheckForConversions(const std::vector<GURL>& redirect_chain,
+                           const CampaignConversionList& campaign_conversions,
+                           const AdEventList& ad_events);
   void Convert(const AdEventInfo& ad_event);
   void ConvertCallback(const AdEventInfo& ad_event, bool success);
 
@@ -72,8 +70,8 @@ class Conversions final : public TabManagerObserver {
 
   base::ObserverList<ConversionsObserver> observers_;
 
-  const database::table::CreativeSetConversions
-      creative_set_conversions_database_table_;
+  const database::table::CampaignConversions
+      campaign_conversions_database_table_;
 
   const database::table::AdEvents ad_events_database_table_;
 

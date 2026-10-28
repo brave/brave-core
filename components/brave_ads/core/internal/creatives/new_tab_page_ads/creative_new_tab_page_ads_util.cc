@@ -24,8 +24,8 @@
 #include "base/values.h"
 #include "brave/components/brave_ads/core/internal/ads_core/ads_core_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
-#include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_database_table.h"
-#include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_info.h"
+#include "brave/components/brave_ads/core/internal/creatives/conversions/campaign_conversion_database_table.h"
+#include "brave/components/brave_ads/core/internal/creatives/conversions/campaign_conversion_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_wallpaper_type_constants.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_wallpaper_type_util.h"
@@ -111,10 +111,9 @@ constexpr char kCreativeSetValueKey[] = "value";
 
 constexpr char kCreativeSetSegmentsKey[] = "segments";
 
-constexpr char kCreativeSetConversionsKey[] = "conversions";
-constexpr char kCreativeSetConversionUrlPatternKey[] = "urlPattern";
-constexpr char kCreativeSetConversionObservationWindowKey[] =
-    "observationWindow";
+constexpr char kCampaignConversionsKey[] = "conversions";
+constexpr char kCampaignConversionUrlPatternKey[] = "urlPattern";
+constexpr char kCampaignConversionObservationWindowKey[] = "observationWindow";
 // Creative keys.
 constexpr char kCreativesKey[] = "creatives";
 constexpr char kCreativeInstanceIdKey[] = "creativeInstanceId";
@@ -131,27 +130,25 @@ constexpr char kCreativeConditionMatchersKey[] = "conditionMatchers";
 constexpr char kCreativeConditionMatcherConditionKey[] = "condition";
 constexpr char kCreativeConditionMatcherPrefPathKey[] = "prefPath";
 
-void SaveCreativeSetConversions(
-    const CreativeSetConversionList& creative_set_conversions,
-    ResultCallback callback) {
-  database::table::CreativeSetConversions database_table;
-  database_table.Save(
-      creative_set_conversions,
-      base::BindOnce(
-          [](ResultCallback callback, bool success) {
-            if (!success) {
-              BLOG(0, "Failed to save creative set conversions");
-              return std::move(callback).Run(/*success=*/false);
-            }
-            BLOG(1, "Successfully saved creative set conversions");
+void SaveCampaignConversions(const CampaignConversionList& campaign_conversions,
+                             ResultCallback callback) {
+  database::table::CampaignConversions database_table;
+  database_table.Save(campaign_conversions,
+                      base::BindOnce(
+                          [](ResultCallback callback, bool success) {
+                            if (!success) {
+                              BLOG(0, "Failed to save campaign conversions");
+                              return std::move(callback).Run(/*success=*/false);
+                            }
+                            BLOG(1, "Successfully saved campaign conversions");
 
-            std::move(callback).Run(/*success=*/true);
-          },
-          std::move(callback)));
+                            std::move(callback).Run(/*success=*/true);
+                          },
+                          std::move(callback)));
 }
 
 void SaveCreativeNewTabPageAdsCallback(
-    const CreativeSetConversionList& creative_set_conversions,
+    const CampaignConversionList& campaign_conversions,
     ResultCallback callback,
     bool success) {
   if (!success) {
@@ -160,7 +157,7 @@ void SaveCreativeNewTabPageAdsCallback(
   }
   BLOG(1, "Successfully saved creative new tab page ads");
 
-  SaveCreativeSetConversions(creative_set_conversions, std::move(callback));
+  SaveCampaignConversions(campaign_conversions, std::move(callback));
 }
 
 }  // namespace
@@ -173,7 +170,7 @@ void ParseAndSaveNewTabPageAds(base::DictValue dict, ResultCallback callback) {
     database_table.Save(
         /*creative_ads=*/{},
         base::BindOnce(&SaveCreativeNewTabPageAdsCallback,
-                       CreativeSetConversionList(), std::move(callback)));
+                       CampaignConversionList(), std::move(callback)));
     return;
   }
 
@@ -200,7 +197,7 @@ void ParseAndSaveNewTabPageAds(base::DictValue dict, ResultCallback callback) {
   }
 
   CreativeNewTabPageAdList creative_ads;
-  CreativeSetConversionList creative_set_conversions;
+  CampaignConversionList campaign_conversions;
 
   // Campaigns.
   for (const auto& campaign_value : *campaign_list) {
@@ -391,7 +388,7 @@ void ParseAndSaveNewTabPageAds(base::DictValue dict, ResultCallback callback) {
 
       // Conversions.
       const base::ListValue* const conversion_list =
-          creative_set_dict->FindList(kCreativeSetConversionsKey);
+          creative_set_dict->FindList(kCampaignConversionsKey);
       if (conversion_list) {
         // Conversions are optional.
         for (const auto& conversion_value : *conversion_list) {
@@ -402,31 +399,29 @@ void ParseAndSaveNewTabPageAds(base::DictValue dict, ResultCallback callback) {
             continue;
           }
 
-          CreativeSetConversionInfo creative_set_conversion;
+          CampaignConversionInfo campaign_conversion;
 
-          creative_set_conversion.id = creative_ad.creative_set_id;
+          campaign_conversion.id = creative_ad.campaign_id;
 
           const std::string* const url_pattern =
-              conversion_dict->FindString(kCreativeSetConversionUrlPatternKey);
+              conversion_dict->FindString(kCampaignConversionUrlPatternKey);
           if (!url_pattern) {
             // URL pattern is required.
-            BLOG(0,
-                 "URL pattern is required, skipping creative set conversion");
+            BLOG(0, "URL pattern is required, skipping campaign conversion");
             continue;
           }
-          creative_set_conversion.url_pattern = *url_pattern;
+          campaign_conversion.url_pattern = *url_pattern;
 
           const int observation_window =
-              conversion_dict
-                  ->FindInt(kCreativeSetConversionObservationWindowKey)
+              conversion_dict->FindInt(kCampaignConversionObservationWindowKey)
                   .value_or(7);
-          creative_set_conversion.observation_window =
+          campaign_conversion.observation_window =
               base::Days(observation_window);
 
-          creative_set_conversion.expire_at =
-              creative_ad.end_at + creative_set_conversion.observation_window;
+          campaign_conversion.expire_at =
+              creative_ad.end_at + campaign_conversion.observation_window;
 
-          creative_set_conversions.push_back(creative_set_conversion);
+          campaign_conversions.push_back(campaign_conversion);
         }
       }
 
@@ -579,9 +574,8 @@ void ParseAndSaveNewTabPageAds(base::DictValue dict, ResultCallback callback) {
 
   database::table::CreativeNewTabPageAds database_table;
   database_table.Save(
-      creative_ads,
-      base::BindOnce(&SaveCreativeNewTabPageAdsCallback,
-                     creative_set_conversions, std::move(callback)));
+      creative_ads, base::BindOnce(&SaveCreativeNewTabPageAdsCallback,
+                                   campaign_conversions, std::move(callback)));
 }
 
 std::optional<mojom::NewTabPageAdMetricType> ToMojomNewTabPageAdMetricType(

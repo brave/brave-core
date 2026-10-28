@@ -190,7 +190,7 @@ TEST_F(BraveAdsCreativeSearchResultAdHandlerTest,
 }
 
 TEST_F(BraveAdsCreativeSearchResultAdHandlerTest,
-       DoNotTriggerViewedAdEventForInvalidCreativeSetConversion) {
+       DoNotTriggerViewedAdEventForInvalidCampaignConversion) {
   // Arrange
   const auto creative_search_result_ad_handler =
       CreativeSearchResultAdHandler::MaybeCreate(
@@ -207,14 +207,14 @@ TEST_F(BraveAdsCreativeSearchResultAdHandlerTest,
       .WillOnce([](mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
                    mojom::SearchResultAdEventType /*mojom_ad_event_type*/,
                    ResultCallback /*callback*/) {
-        EXPECT_FALSE(mojom_creative_ad->creative_set_conversion);
+        EXPECT_FALSE(mojom_creative_ad->campaign_conversion);
       });
 
   SimulateMaybeExtractCreativeAdPlacementIdsFromWebPageCallback(
       creative_search_result_ad_handler.get(),
       test::CreativeSearchResultAdMojomWebPage(
           /*excluded_property_names=*/{
-              kCreativeSetConversionUrlPatternPropertyName}));
+              kCampaignConversionUrlPatternPropertyName}));
 }
 
 TEST_F(BraveAdsCreativeSearchResultAdHandlerTest, TriggerAdViewedEvent) {

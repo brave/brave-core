@@ -18,7 +18,7 @@
 #include "brave/components/brave_ads/core/internal/common/database/database_table_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_transaction_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/campaigns_database_table.h"
-#include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_database_table.h"
+#include "brave/components/brave_ads/core/internal/creatives/conversions/campaign_conversion_database_table.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ads_database_table.h"
 #include "brave/components/brave_ads/core/internal/creatives/dayparts_database_table.h"
 #include "brave/components/brave_ads/core/internal/creatives/geo_targets_database_table.h"
@@ -97,9 +97,8 @@ void MigrateToVersion(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
                       int to_version) {
   CHECK(mojom_db_transaction);
 
-  table::CreativeSetConversions creative_set_conversion_database_table;
-  creative_set_conversion_database_table.Migrate(mojom_db_transaction,
-                                                 to_version);
+  table::CampaignConversions campaign_conversion_database_table;
+  campaign_conversion_database_table.Migrate(mojom_db_transaction, to_version);
 
   table::ConfirmationQueue confirmation_queue_database_table;
   confirmation_queue_database_table.Migrate(mojom_db_transaction, to_version);

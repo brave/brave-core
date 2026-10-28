@@ -69,7 +69,7 @@ export function createAppStore(): AppStore {
     try {
       const { response } = await API.getAdsInternals()
       const {
-        creativeSetConversions = [],
+        campaignConversions = [],
         adEvents = [],
         confirmationQueue = [],
         paymentTokens = [],
@@ -90,7 +90,7 @@ export function createAppStore(): AppStore {
         adHistoryRetentionPeriodDays = 30,
       } = JSON.parse(response)
       store.update({
-        conversionUrlPatterns: creativeSetConversions,
+        conversionUrlPatterns: campaignConversions,
         adEvents,
         confirmationQueue,
         paymentTokens,
