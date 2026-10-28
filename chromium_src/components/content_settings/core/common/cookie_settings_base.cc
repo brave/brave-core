@@ -164,6 +164,13 @@ bool CookieSettingsBase::IsFullCookieAccessAllowed(
       url, site_for_cookies, top_frame_origin, overrides, cookie_partition_key,
       cookie_settings);
 
+  // A nonced partition key forbids unpartitioned cookie access outright, so
+  // none of the Brave allowances below may grant it.
+  if (cookie_partition_key.has_value() &&
+      cookie_partition_key->ForbidsUnpartitionedCookieAccess()) {
+    return false;
+  }
+
   const bool is_1p_ephemeral_feature_enabled = base::FeatureList::IsEnabled(
       net::features::kBraveFirstPartyEphemeralStorage);
   // If 1PES feature is enabled, we should do additional checks below.
