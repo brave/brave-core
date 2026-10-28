@@ -1412,6 +1412,8 @@ test("brave_browser_tests") {
     deps += [
       "//brave/components/brave_vpn/browser",
       "//brave/components/brave_vpn/common",
+      "//brave/components/brave_vpn/common/mojom",
+      "//brave/components/skus/browser",
     ]
   }
   if (is_android) {
