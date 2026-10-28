@@ -7,15 +7,19 @@
 
 #include <memory>
 
+#include "base/functional/callback_helpers.h"
 #include "base/run_loop.h"
 #include "base/scoped_observation.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/time/time.h"
 #include "brave/browser/ui/views/location_bar/brave_search_conversion/promotion_button_controller.h"
 #include "brave/browser/ui/views/location_bar/brave_search_conversion/promotion_button_view.h"
 #include "brave/components/brave_search_conversion/features.h"
 #include "brave/components/brave_search_conversion/pref_names.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
+#include "chrome/browser/favicon/favicon_service_factory.h"
+#include "chrome/browser/history/history_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "chrome/browser/ui/omnibox/omnibox_controller.h"
@@ -29,6 +33,11 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/interactive_test_utils.h"
 #include "chrome/test/base/search_test_utils.h"
+#include "components/favicon/core/favicon_service.h"
+#include "components/favicon_base/favicon_types.h"
+#include "components/history/core/browser/history_service.h"
+#include "components/history/core/browser/history_types.h"
+#include "components/omnibox/browser/omnibox_client.h"
 #include "components/search_engines/template_url.h"
 #include "components/search_engines/template_url_data_util.h"
 #include "components/search_engines/template_url_service.h"
@@ -36,6 +45,9 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "ui/base/models/image_model.h"
+#include "ui/gfx/image/image.h"
+#include "ui/gfx/image/image_unittest_util.h"
 #include "ui/views/view_observer.h"
 
 class BraveLocationBarViewBrowserTest : public InProcessBrowserTest {
@@ -80,6 +92,28 @@ class BraveLocationBarViewBrowserTest : public InProcessBrowserTest {
 
   content::WebContents* web_contents() {
     return browser()->tab_strip_model()->GetActiveWebContents();
+  }
+
+  // Stores a favicon for `icon_url` and warms the omnibox favicon cache so that
+  // subsequent lookups for it resolve synchronously.
+  void PrimeFavicon(const GURL& icon_url) {
+    const GURL page_url("https://" + icon_url.host() + "/");
+    HistoryServiceFactory::GetForProfile(browser()->GetProfile(),
+                                         ServiceAccessType::EXPLICIT_ACCESS)
+        ->AddPage(page_url, base::Time::Now(), history::SOURCE_BROWSED);
+    FaviconServiceFactory::GetForProfile(browser()->GetProfile(),
+                                         ServiceAccessType::EXPLICIT_ACCESS)
+        ->SetFavicons(
+            {page_url}, icon_url, favicon_base::IconType::kFavicon,
+            gfx::Image::CreateFrom1xBitmap(gfx::test::CreateBitmap(16)));
+
+    WaitUntil(base::BindLambdaForTesting([&]() {
+      return !controller()
+                  ->client()
+                  ->GetFaviconForIconUrl(icon_url, base::DoNothing(),
+                                         /*notify_on_empty=*/false)
+                  .IsEmpty();
+    }));
   }
 
   void WaitUntil(base::RepeatingCallback<bool()> condition) {
@@ -197,6 +231,45 @@ IN_PROC_BROWSER_TEST_F(BraveLocationBarViewBrowserTest,
   // Check dismissed bit is set after user clicks button.
   EXPECT_TRUE(browser()->GetProfile()->GetPrefs()->GetBoolean(
       brave_search_conversion::prefs::kDismissed));
+}
+
+// The Brave logo already stands for Shields in the location bar, so Brave
+// Search must keep the generic search icon rather than show its own favicon.
+IN_PROC_BROWSER_TEST_F(BraveLocationBarViewBrowserTest,
+                       BraveSearchKeepsSearchVectorIconTest) {
+  search_test_utils::WaitForTemplateURLServiceToLoad(GetTemplateURLService());
+
+  TemplateURL bing_template_url(*TemplateURLDataFromPrepopulatedEngine(
+      TemplateURLPrepopulateData::brave_bing));
+  TemplateURL brave_template_url(*TemplateURLDataFromPrepopulatedEngine(
+      TemplateURLPrepopulateData::brave_search));
+
+  PrimeFavicon(bing_template_url.favicon_url());
+  PrimeFavicon(brave_template_url.favicon_url());
+
+  // Other engines keep using their favicon.
+  GetTemplateURLService()->SetUserSelectedDefaultSearchProvider(
+      &bing_template_url);
+  location_bar()->FocusLocation(/*is_user_initiated=*/true,
+                                /*clear_focus_if_failed=*/false);
+  omnibox_view()->SetUserText(u"a");
+  WaitUntil(base::BindLambdaForTesting([&]() {
+    return location_bar()->GetLocationIcon(base::DoNothing()).IsImage();
+  }));
+
+  location_bar()->Revert();
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return !controller()->IsPopupOpen(); }));
+
+  GetTemplateURLService()->SetUserSelectedDefaultSearchProvider(
+      &brave_template_url);
+  location_bar()->FocusLocation(/*is_user_initiated=*/true,
+                                /*clear_focus_if_failed=*/false);
+  omnibox_view()->SetUserText(u"a");
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return controller()->IsPopupOpen(); }));
+  EXPECT_TRUE(
+      location_bar()->GetLocationIcon(base::DoNothing()).IsVectorIcon());
 }
 
 // After resizing the toolbar to a narrower width, every visible child of the

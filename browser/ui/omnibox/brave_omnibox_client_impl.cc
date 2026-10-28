@@ -6,6 +6,7 @@
 #include "brave/browser/ui/omnibox/brave_omnibox_client_impl.h"
 
 #include <string>
+#include <utility>
 
 #include "base/check.h"
 #include "base/check_is_test.h"
@@ -21,6 +22,7 @@
 #include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
 #include "brave/components/omnibox/browser/promotion_utils.h"
 #include "brave/components/p3a_utils/bucket.h"
+#include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/omnibox/chrome_omnibox_client.h"
@@ -29,6 +31,9 @@
 #include "components/omnibox/browser/omnibox_log.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
+#include "components/search_engines/template_url.h"
+#include "components/search_engines/template_url_service.h"
+#include "ui/gfx/image/image.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
@@ -60,6 +65,16 @@ constexpr const char* kAllSearchCountHistogramNames[] = {
     kSearchCountRewardsWalletHistogramName,
 };
 constexpr int kSearchCountBuckets[] = {0, 5, 10, 20, 50, 100, 500};
+
+bool IsBraveSearchProvider(const TemplateURL* template_url) {
+  if (!template_url) {
+    return false;
+  }
+
+  const auto id = template_url->prepopulate_id();
+  return id == TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE ||
+         id == TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE_TOR;
+}
 
 bool IsSearchEvent(const AutocompleteMatch& match) {
   switch (match.type) {
@@ -140,6 +155,31 @@ void BraveOmniboxClientImpl::RegisterProfilePrefs(
 const AutocompleteSchemeClassifier&
 BraveOmniboxClientImpl::GetSchemeClassifier() const {
   return scheme_classifier_;
+}
+
+gfx::Image BraveOmniboxClientImpl::GetFaviconForDefaultSearchProvider(
+    FaviconFetchedCallback on_favicon_fetched) {
+  // The Brave logo already stands for Shields in the location bar, so showing
+  // it again for Brave Search is confusing. Returning an empty image makes the
+  // omnibox fall back to the generic search vector icon.
+  if (IsBraveSearchProvider(
+          GetTemplateURLService()->GetDefaultSearchProvider())) {
+    return gfx::Image();
+  }
+
+  return ChromeOmniboxClient::GetFaviconForDefaultSearchProvider(
+      std::move(on_favicon_fetched));
+}
+
+gfx::Image BraveOmniboxClientImpl::GetFaviconForKeywordSearchProvider(
+    const TemplateURL* template_url,
+    FaviconFetchedCallback on_favicon_fetched) {
+  if (IsBraveSearchProvider(template_url)) {
+    return gfx::Image();
+  }
+
+  return ChromeOmniboxClient::GetFaviconForKeywordSearchProvider(
+      template_url, std::move(on_favicon_fetched));
 }
 
 void BraveOmniboxClientImpl::OnURLOpenedFromOmnibox(OmniboxLog* log) {
