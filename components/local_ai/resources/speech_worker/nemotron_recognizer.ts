@@ -154,6 +154,11 @@ export class NemotronStreamSession {
   // This is different from left context at mel-frame level.
   private cacheLen = BigInt64Array.from([BigInt(0)])
 
+  // Tells the multilingual encoder which language it transcribes, as its
+  // `prompt_index` input. Null for the English model, whose encoder has no
+  // such input.
+  private readonly promptId: number | null
+
   // Decoder LSTM state cache; 2 LSTM layers.
   private st1: Float32Array
   private st2: Float32Array
@@ -185,6 +190,7 @@ export class NemotronStreamSession {
     onError: () => void,
   ) {
     this.model = model
+    this.promptId = promptId
     this.modelConfig =
       modelType === 'english'
         ? config.ENGLISH_NEMOTRON_CONFIG
@@ -340,6 +346,12 @@ export class NemotronStreamSession {
       const encoderStarted = performance.now()
       // </if>
 
+      // The batch and layer dims that lead both caches, in the order this
+      // model's export takes them.
+      const cacheLeadDims = this.modelConfig.NEMO_CACHE_LAYERS_FIRST
+        ? [this.modelConfig.NEMO_NUM_ENCODER_LAYERS, 1]
+        : [1, this.modelConfig.NEMO_NUM_ENCODER_LAYERS]
+
       // Fresh input tensors every step. Do not reuse/carry ORT tensors.
       const eo = await this.model.runEncoder(
         {
@@ -356,20 +368,28 @@ export class NemotronStreamSession {
           ),
 
           cache_last_channel: new ort.Tensor('float32', this.cacheCh, [
-            1,
-            this.modelConfig.NEMO_NUM_ENCODER_LAYERS,
+            ...cacheLeadDims,
             this.modelConfig.NEMO_LEFT_CONTEXT,
             this.modelConfig.NEMO_HIDDEN_DIM,
           ]),
 
           cache_last_time: new ort.Tensor('float32', this.cacheTime, [
-            1,
-            this.modelConfig.NEMO_NUM_ENCODER_LAYERS,
+            ...cacheLeadDims,
             this.modelConfig.NEMO_HIDDEN_DIM,
             this.modelConfig.NEMO_CONV_CONTEXT,
           ]),
 
           cache_last_channel_len: new ort.Tensor('int64', this.cacheLen, [1]),
+
+          ...(this.promptId === null
+            ? {}
+            : {
+                prompt_index: new ort.Tensor(
+                  'int64',
+                  BigInt64Array.from([BigInt(this.promptId)]),
+                  [1],
+                ),
+              }),
         },
         ENC_FETCHES,
       )

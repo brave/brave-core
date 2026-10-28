@@ -50,6 +50,7 @@ type EncoderFeeds = {
   cache_last_channel: TestTensor
   cache_last_time: TestTensor
   cache_last_channel_len: TestTensor
+  prompt_index?: TestTensor
 }
 
 // inputs to runDecoder()
@@ -149,16 +150,17 @@ function makeEncoderResult(cacheMarker = 0, cacheLen = 0, nEnc = 1) {
 }
 
 // create mock/fake decoder results
-function makeDecoderResult(token: number, stateMarker = 0) {
-  const logits = new Float32Array(config.ENGLISH_NEMOTRON_CONFIG.NEMO_VOCAB)
+function makeDecoderResult(
+  token: number,
+  stateMarker = 0,
+  vocab: number = config.ENGLISH_NEMOTRON_CONFIG.NEMO_VOCAB,
+) {
+  const logits = new Float32Array(vocab)
 
   logits[token] = 1
 
   return {
-    outputs: new TestTensor('float32', logits, [
-      1,
-      config.ENGLISH_NEMOTRON_CONFIG.NEMO_VOCAB,
-    ]),
+    outputs: new TestTensor('float32', logits, [1, vocab]),
 
     output_states_1: new TestTensor(
       'float32',
@@ -216,9 +218,9 @@ function createMockModel(): MockModel {
 }
 
 //
-function createSession(mock: MockModel) {
+function createSession(mock: MockModel, language = 'en-US') {
   const results: Result[] = []
-  const { modelType, promptId } = getNemotronModelType('en-US')
+  const { modelType, promptId } = getNemotronModelType(language)
   const onResult = jest.fn((text: string, isFinal: boolean) => {
     results.push({
       text,
@@ -513,6 +515,67 @@ describe('NemotronStreamSession', () => {
       expect(stream).toHaveLength(realEnd + flushSamples)
       expect(stream.slice(LEADING_SILENCE_SAMPLES, realEnd)).toEqual(real)
       expect(stream.slice(realEnd).every((sample) => sample === 0)).toBe(true)
+    })
+  })
+
+  describe('encoder inputs', () => {
+    // The two exports take different inputs: only the multilingual encoder has
+    // a prompt, and it takes its caches layers first rather than batch first.
+    it('feeds the English encoder batch-first caches and no prompt', async () => {
+      const mock = createMockModel()
+      const { session } = createSession(mock, 'en-US')
+
+      session.addAudio(new Float32Array(samplesForChunks(1)))
+      await waitForIdle(session)
+
+      expect(mock.runEncoder).toHaveBeenCalledTimes(1)
+      const feeds = mock.runEncoder.mock.calls[0][0] as EncoderFeeds
+      const english = config.ENGLISH_NEMOTRON_CONFIG
+      expect(feeds.prompt_index).toBeUndefined()
+      expect(feeds.cache_last_channel.dims).toEqual([
+        1,
+        english.NEMO_NUM_ENCODER_LAYERS,
+        english.NEMO_LEFT_CONTEXT,
+        english.NEMO_HIDDEN_DIM,
+      ])
+      expect(feeds.cache_last_time.dims).toEqual([
+        1,
+        english.NEMO_NUM_ENCODER_LAYERS,
+        english.NEMO_HIDDEN_DIM,
+        english.NEMO_CONV_CONTEXT,
+      ])
+    })
+
+    it('feeds the multilingual encoder its prompt and layers-first caches', async () => {
+      const mock = createMockModel()
+      const multilingual = config.MULTILINGUAL_NEMOTRON_CONFIG
+      mock.runDecoder.mockResolvedValue(
+        makeDecoderResult(multilingual.NEMO_BLANK, 0, multilingual.NEMO_VOCAB),
+      )
+      const { session } = createSession(mock, 'es-US')
+
+      session.addAudio(new Float32Array(samplesForChunks(1)))
+      await waitForIdle(session)
+
+      expect(mock.runEncoder).toHaveBeenCalledTimes(1)
+      const feeds = mock.runEncoder.mock.calls[0][0] as EncoderFeeds
+      expect(feeds.prompt_index?.type).toBe('int64')
+      expect(feeds.prompt_index?.dims).toEqual([1])
+      expect(Array.from(feeds.prompt_index?.data as BigInt64Array)).toEqual([
+        BigInt(config.MULTILINGUAL_SUPPORTED_LANGUAGES['es-US']),
+      ])
+      expect(feeds.cache_last_channel.dims).toEqual([
+        multilingual.NEMO_NUM_ENCODER_LAYERS,
+        1,
+        multilingual.NEMO_LEFT_CONTEXT,
+        multilingual.NEMO_HIDDEN_DIM,
+      ])
+      expect(feeds.cache_last_time.dims).toEqual([
+        multilingual.NEMO_NUM_ENCODER_LAYERS,
+        1,
+        multilingual.NEMO_HIDDEN_DIM,
+        multilingual.NEMO_CONV_CONTEXT,
+      ])
     })
   })
 

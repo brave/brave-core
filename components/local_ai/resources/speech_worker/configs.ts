@@ -111,6 +111,9 @@ export const ENGLISH_NEMOTRON_CONFIG = {
   // note that this is different from left context at mel level;
   // its num of frames in the left context of encoder's attention blocks'
   NEMO_LEFT_CONTEXT: 70,
+  // The English export takes its caches batch first:
+  // [batch, layers, frames, hidden] and [batch, layers, hidden, frames].
+  NEMO_CACHE_LAYERS_FIRST: false,
 } as const
 
 export const MULTILINGUAL_NEMOTRON_CONFIG = {
@@ -118,6 +121,10 @@ export const MULTILINGUAL_NEMOTRON_CONFIG = {
   NEMO_BLANK: 13087,
   NEMO_VOCAB: 13088,
   NEMO_LEFT_CONTEXT: 56,
+  // The multilingual export takes its caches layers first:
+  // [layers, batch, frames, hidden] and [layers, batch, hidden, frames]. The
+  // batch is 1, so the data is the same as batch first. Only the dims differ.
+  NEMO_CACHE_LAYERS_FIRST: true,
 } as const
 
 // supported languages
