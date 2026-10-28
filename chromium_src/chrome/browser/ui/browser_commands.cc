@@ -5,6 +5,9 @@
 
 #include "brave/browser/ui/browser_commands.h"
 
+#include <memory>
+#include <optional>
+
 #include "base/check.h"
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
 #include "brave/components/commander/common/buildflags/buildflags.h"
@@ -12,7 +15,12 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+#include "chrome/browser/ui/tabs/tab_enums.h"
+#include "chrome/browser/ui/tabs/tab_model.h"
+#include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/common/webui_url_constants.h"
+#include "components/tab_groups/tab_group_id.h"
+#include "content/public/browser/web_contents.h"
 
 class ReadingListModel;
 
@@ -31,6 +39,28 @@ bool BraveMaybeHandleReloadBypassingCache(BrowserWindowInterface* browser) {
   }
 #endif  // BUILDFLAG(ENABLE_TOR)
   return false;
+}
+
+// Inserts |contents|, the duplicate of the tab at |source_index|, at
+// |dst_index|. ADD_INHERIT_OPENER makes the active tab the opener of the new
+// tab, which is unrelated to the duplicated tab when duplicating a non-active
+// tab (e.g. via the tab context menu). In that case, set the tab being
+// duplicated as the opener instead, so that the new tab is placed in the
+// source tab's tree in tree tab mode.
+int BraveInsertDuplicatedTab(TabStripModel* tab_strip_model,
+                             int source_index,
+                             int dst_index,
+                             std::unique_ptr<content::WebContents> contents,
+                             int add_types,
+                             std::optional<tab_groups::TabGroupId> group) {
+  auto tab =
+      std::make_unique<tabs::TabModel>(std::move(contents), tab_strip_model);
+  if (source_index != tab_strip_model->active_index()) {
+    add_types &= ~AddTabTypes::ADD_INHERIT_OPENER;
+    tab->set_opener(tab_strip_model->GetTabAtIndex(source_index));
+  }
+  return tab_strip_model->InsertDetachedTabAt(dst_index, std::move(tab),
+                                              add_types, group);
 }
 
 }  // namespace

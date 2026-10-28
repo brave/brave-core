@@ -103,3 +103,17 @@ substitutions:
         \1 ||
               static_cast<BraveTabStripModel*>(browser->GetTabStripModel())
                   ->IsOnlyActiveTabAndTreeDescendantsSelected()) {
+
+  - description: |-
+      Make the tab being duplicated the opener in DuplicateTabAt().
+
+      ADD_INHERIT_OPENER makes the active tab the opener of the duplicated tab.
+      When duplicating a non-active tab (e.g. via the tab context menu), the
+      active tab is unrelated to the duplicated tab, and using it as the opener
+      can place the new tab in a wrong tree in tree tab mode.
+      BraveInsertDuplicatedTab() sets the tab being duplicated as the opener in
+      that case.
+    regex:
+      re_pattern: '(content::WebContents\*\s+DuplicateTabAt\(.*?)tab_strip_model->InsertWebContentsAt\('
+      re_flags: [DOTALL]
+      replace: '\1BraveInsertDuplicatedTab(tab_strip_model, index, '

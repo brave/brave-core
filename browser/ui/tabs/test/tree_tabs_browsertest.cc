@@ -1007,6 +1007,32 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
   ExpectAddTabWithCrossStripOpenerSucceeds(app_browser, tab_strip_model());
 }
 
+// Duplicating an inactive parent tab while its child tab is active used to
+// crash.
+// https://github.com/brave/brave-browser/issues/60165
+IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
+                       DuplicateInactiveParentTab_DoesNotCrash) {
+  SetTreeTabsEnabled(true);
+
+  // Add a child tab of the tab at index 0.
+  tabs::TabInterface* const parent = tab_strip_model().GetTabAtIndex(0);
+  auto child =
+      std::make_unique<tabs::TabModel>(CreateWebContents(), &tab_strip_model());
+  child->set_opener(parent);
+  tab_strip_model().AddTab(std::move(child), -1,
+                           ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_ACTIVE);
+  ASSERT_EQ(2, tab_strip_model().count());
+  ASSERT_EQ(tab_strip_model()
+                .GetTabAtIndex(1)
+                ->GetParentCollection()
+                ->GetParentCollection(),
+            parent->GetParentCollection());
+  ASSERT_EQ(1, tab_strip_model().active_index());
+
+  ASSERT_TRUE(chrome::DuplicateTabAt(browser(), 0));
+  EXPECT_EQ(3, tab_strip_model().count());
+}
+
 // Mock observer for testing OnTreeTabChanged callback.
 class MockTabStripModelObserver : public TabStripModelObserver {
  public:
