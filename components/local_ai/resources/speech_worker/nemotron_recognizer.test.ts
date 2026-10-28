@@ -92,13 +92,15 @@ const LEADING_SILENCE_SAMPLES =
 // chunks can be available, net of the leading silence.
 function samplesForChunks(chunkCount: number): number {
   return (
-    samplesForStableFrames(chunkCount * config.COMMON_NEMOTRON_CONFIG.NEMO_CHUNK)
-    - LEADING_SILENCE_SAMPLES
+    samplesForStableFrames(
+      chunkCount * config.COMMON_NEMOTRON_CONFIG.NEMO_CHUNK,
+    ) - LEADING_SILENCE_SAMPLES
   )
 }
 
 // Once the first chunk is available, each additional encoder chunk advances by exactly 56 * 160 samples.
-const CHUNK_ADVANCE_SAMPLES = config.COMMON_NEMOTRON_CONFIG.NEMO_CHUNK * config.HOP_LENGTH
+const CHUNK_ADVANCE_SAMPLES =
+  config.COMMON_NEMOTRON_CONFIG.NEMO_CHUNK * config.HOP_LENGTH
 
 // pause until the session is no longer busy
 async function waitForIdle(session: NemotronStreamSession): Promise<void> {
@@ -153,7 +155,10 @@ function makeDecoderResult(token: number, stateMarker = 0) {
   logits[token] = 1
 
   return {
-    outputs: new TestTensor('float32', logits, [1, config.ENGLISH_NEMOTRON_CONFIG.NEMO_VOCAB]),
+    outputs: new TestTensor('float32', logits, [
+      1,
+      config.ENGLISH_NEMOTRON_CONFIG.NEMO_VOCAB,
+    ]),
 
     output_states_1: new TestTensor(
       'float32',
@@ -180,7 +185,9 @@ function createMockModel(): MockModel {
 
   const runEncoder = jest.fn(async () => makeEncoderResult())
 
-  const runDecoder = jest.fn(async () => makeDecoderResult(config.ENGLISH_NEMOTRON_CONFIG.NEMO_BLANK))
+  const runDecoder = jest.fn(async () =>
+    makeDecoderResult(config.ENGLISH_NEMOTRON_CONFIG.NEMO_BLANK),
+  )
 
   const ort = {
     Tensor: TestTensor,
@@ -211,7 +218,7 @@ function createMockModel(): MockModel {
 //
 function createSession(mock: MockModel) {
   const results: Result[] = []
-  const { modelType, promptId } = getNemotronModelType("en-US")
+  const { modelType, promptId } = getNemotronModelType('en-US')
   const onResult = jest.fn((text: string, isFinal: boolean) => {
     results.push({
       text,
@@ -246,7 +253,7 @@ describe('NemotronStreamSession', () => {
 
     it('accepts the Nemotron sample rate', () => {
       const mock = createMockModel()
-      const { modelType, promptId } = getNemotronModelType("en-US")
+      const { modelType, promptId } = getNemotronModelType('en-US')
 
       expect(
         () =>
@@ -263,7 +270,7 @@ describe('NemotronStreamSession', () => {
 
     it('rejects unsupported sample rates', () => {
       const mock = createMockModel()
-      const { modelType, promptId } = getNemotronModelType("en-US")
+      const { modelType, promptId } = getNemotronModelType('en-US')
       const wrongSamplingRate = 8000
 
       expect(
@@ -565,7 +572,9 @@ describe('NemotronStreamSession', () => {
 
       const { session } = createSession(mock)
 
-      mock.runDecoder.mockResolvedValue(makeDecoderResult(config.ENGLISH_NEMOTRON_CONFIG.NEMO_BLANK))
+      mock.runDecoder.mockResolvedValue(
+        makeDecoderResult(config.ENGLISH_NEMOTRON_CONFIG.NEMO_BLANK),
+      )
 
       session.addAudio(new Float32Array(samplesForChunks(1)))
 
@@ -698,7 +707,9 @@ describe('NemotronStreamSession', () => {
 
       await waitForIdle(session)
 
-      expect(mock.runDecoder).toHaveBeenCalledTimes(config.COMMON_NEMOTRON_CONFIG.NEMO_MAX_SYM)
+      expect(mock.runDecoder).toHaveBeenCalledTimes(
+        config.COMMON_NEMOTRON_CONFIG.NEMO_MAX_SYM,
+      )
     })
 
     it('does not emit an empty interim result', async () => {
@@ -706,7 +717,9 @@ describe('NemotronStreamSession', () => {
 
       const { session, onResult } = createSession(mock)
 
-      mock.runDecoder.mockResolvedValue(makeDecoderResult(config.ENGLISH_NEMOTRON_CONFIG.NEMO_BLANK))
+      mock.runDecoder.mockResolvedValue(
+        makeDecoderResult(config.ENGLISH_NEMOTRON_CONFIG.NEMO_BLANK),
+      )
 
       session.addAudio(new Float32Array(samplesForChunks(1)))
 

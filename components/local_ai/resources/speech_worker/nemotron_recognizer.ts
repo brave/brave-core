@@ -264,7 +264,7 @@ export class NemotronStreamSession {
     this.state = 'finishing'
 
     const flush =
-    this.modelConfig.SILENCE_FLUSH_CHUNKS
+      this.modelConfig.SILENCE_FLUSH_CHUNKS
       * this.modelConfig.NEMO_CHUNK
       * config.HOP_LENGTH
 

@@ -69,15 +69,13 @@ export function argmax(a: Float32Array): number {
   return best
 }
 
-export function getNemotronModelType(
-  lang: string,
-): {
-  modelType: NemotronModelType,
-  promptId: number | null, 
+export function getNemotronModelType(lang: string): {
+  modelType: NemotronModelType
+  promptId: number | null
 } {
   if (
     ENGLISH_SUPPORTED_LANGUAGES.includes(
-      lang as typeof ENGLISH_SUPPORTED_LANGUAGES[number],
+      lang as (typeof ENGLISH_SUPPORTED_LANGUAGES)[number],
     )
   ) {
     return {
@@ -86,8 +84,7 @@ export function getNemotronModelType(
     }
   }
 
-  if (lang in MULTILINGUAL_SUPPORTED_LANGUAGES)
-  {
+  if (lang in MULTILINGUAL_SUPPORTED_LANGUAGES) {
     const promptId =
       MULTILINGUAL_SUPPORTED_LANGUAGES[
         lang as keyof typeof MULTILINGUAL_SUPPORTED_LANGUAGES
