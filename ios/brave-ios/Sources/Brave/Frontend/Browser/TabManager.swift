@@ -940,9 +940,16 @@ class TabManager: NSObject {
     isPrivate: Bool,
     where shouldClose: @escaping (URL) -> Bool
   ) -> [any TabState] {
-    var tabsToClose = tabs(isPrivate: isPrivate).filter {
+    let tabsToClose = tabs(isPrivate: isPrivate).filter {
       $0.visibleURL.map(shouldClose) ?? false
     }
+    return removeTabsToShred(tabsToClose)
+  }
+
+  /// Removes `tabs`, deleting their web views first, with the selected tab removed last.
+  @discardableResult
+  @MainActor private func removeTabsToShred(_ tabs: [any TabState]) -> [any TabState] {
+    var tabsToClose = tabs
     if let index = tabsToClose.firstIndex(where: { $0 === selectedTab }) {
       tabsToClose.append(tabsToClose.remove(at: index))
     }
@@ -1006,7 +1013,10 @@ class TabManager: NSObject {
     let isPrivateBrowsing = privateBrowsingManager.isPrivateBrowsing
     let urlsToShred = Set(tabs(isPrivate: isPrivateBrowsing).compactMap(\.visibleURL?.urlToShred))
     let baseDomainsToShred = Set(urlsToShred.compactMap(\.baseDomain))
-    removeAllTabsForPrivateMode(isPrivate: isPrivateBrowsing)
+    isBulkDeleting = true
+    removeTabsToShred(tabs(isPrivate: isPrivateBrowsing))
+    isBulkDeleting = false
+    delegates.forEach { $0.get()?.tabManagerDidRemoveAllTabs(self, toast: nil) }
     closeTabsToShredInOtherWindows(isPrivate: isPrivateBrowsing) {
       guard let baseDomain = $0.urlToShred?.baseDomain else { return false }
       return baseDomainsToShred.contains(baseDomain)
