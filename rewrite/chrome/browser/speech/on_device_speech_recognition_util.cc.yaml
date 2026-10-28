@@ -17,7 +17,7 @@ substitutions:
     preempt_function_impl:
       function_name: GetOnDeviceSpeechRecognitionAvailabilityStatus
       code: |-
-        return GetBraveOnDeviceSpeechRecognitionAvailabilityStatus(language, quality);
+        return GetBraveOnDeviceSpeechRecognitionAvailabilityStatus(context, language, quality);
 
   - description: |
       Answer the same way, so the two Web Speech entry points agree.
@@ -29,5 +29,5 @@ substitutions:
       function_name: GetOnDeviceSpeechRecognitionAvailabilityStatusAsync
       code: |-
         std::move(callback).Run(
-            GetBraveOnDeviceSpeechRecognitionAvailabilityStatus(language, quality));
+            GetBraveOnDeviceSpeechRecognitionAvailabilityStatus(context, language, quality));
         return;
