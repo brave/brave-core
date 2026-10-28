@@ -6,7 +6,8 @@
 #include "net/http/http_response_headers.h"
 
 // Update the country code from the X-Country header on every 304 Not
-// Modified response so that mid-session country changes, such as a VPN
+// Modified response received over HTTPS (headers over an HTTP retry are
+// untrusted) so that mid-session country changes, such as a VPN
 // change, propagate without requiring a browser restart. Routed through
 // `VariationsSeedStore::SetSessionCountry` rather than a raw pref write,
 // as clients in the `SeedFileTrial` experiment's `SeedFiles_V11` group read
@@ -14,7 +15,8 @@
 // reach.
 #define GetDateValue(...)                                                 \
   GetDateValue(__VA_ARGS__);                                              \
-  if (response_code == net::HTTP_NOT_MODIFIED) {                          \
+  if (response_code == net::HTTP_NOT_MODIFIED &&                          \
+      !last_request_was_http_retry_) {                                    \
     std::string_view country_code =                                       \
         GetHeaderValue(headers.get(), "X-Country");                       \
     if (!country_code.empty()) {                                          \
