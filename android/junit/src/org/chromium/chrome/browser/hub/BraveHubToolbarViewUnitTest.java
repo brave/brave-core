@@ -14,6 +14,7 @@ import static org.chromium.chrome.browser.hub.HubColorMixer.COLOR_MIXER;
 import static org.chromium.chrome.browser.hub.HubToolbarProperties.IS_INCOGNITO;
 import static org.chromium.chrome.browser.hub.HubToolbarProperties.PANE_SWITCHER_BUTTON_DATA;
 
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -158,5 +159,28 @@ public class BraveHubToolbarViewUnitTest {
 
         mPropertyModel.set(PANE_SWITCHER_BUTTON_DATA, null);
         assertEquals(View.GONE, paneSwitcherCard.getVisibility());
+    }
+
+    @Test
+    @DisableFeatures({BraveFeatureList.BRAVE_SHRED})
+    public void testPaneSwitcherStaysAnchoredToStartWhenPanesChange() {
+        View paneSwitcherCard = mToolbarContainer.findViewById(R.id.pane_switcher_card);
+        mHubToolbarView.anchorPaneSwitcherToStart(/* marginStart= */ 12);
+
+        mPropertyModel.set(
+                PANE_SWITCHER_BUTTON_DATA,
+                List.of(
+                        mock(FullButtonData.class),
+                        mock(FullButtonData.class),
+                        mock(FullButtonData.class)));
+        // Dropping a pane, as when the last private tab is closed, rebuilds the switcher.
+        mPropertyModel.set(
+                PANE_SWITCHER_BUTTON_DATA,
+                List.of(mock(FullButtonData.class), mock(FullButtonData.class)));
+
+        FrameLayout.LayoutParams params =
+                (FrameLayout.LayoutParams) paneSwitcherCard.getLayoutParams();
+        assertEquals(Gravity.START | Gravity.CENTER_VERTICAL, params.gravity);
+        assertEquals(12, params.getMarginStart());
     }
 }
