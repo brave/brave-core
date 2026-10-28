@@ -24,7 +24,10 @@ export function WelcomeStep(props: StepComponentProps) {
     return null
   }
 
-  const canSetAsDefault = browserState.canBeDefault && !browserState.isDefault
+  const canSetAsDefault =
+    browserState.canBeDefault
+    && !browserState.isDefault
+    && !browserState.isDisabledByPolicy
 
   function renderActions() {
     if (!canSetAsDefault) {
