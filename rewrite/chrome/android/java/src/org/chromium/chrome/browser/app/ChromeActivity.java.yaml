@@ -22,20 +22,3 @@ substitutions:
       replace: |-
         \1public void onTabStateInitializedHandler() {}
         \1\2
-  - description:
-      'Add Brave screenshot-protection controller import beneath the package
-      declaration.'
-    regex:
-      re_pattern: '^(package [^;]+;\n)'
-      re_flags: [MULTILINE]
-      replace: |-
-        \1
-        import org.chromium.chrome.browser.screenshot_protection.BraveScreenshotProtectionController;
-  - description: |-
-      Instantiate Brave's screenshot-protection controller — see {@link
-      BraveScreenshotProtectionController} for why.
-    regex:
-      re_pattern: |-
-        new (ScreenshotProtectionController\()
-      replace: |-
-        new Brave\1
