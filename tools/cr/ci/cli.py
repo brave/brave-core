@@ -1,0 +1,112 @@
+#!/usr/bin/env vpython3
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+"""Reads and reruns a pull request's CI.
+
+Subcommands:
+    checks PR
+        Lists the pull request's checks (PR is a number or a branch), with
+        their state and CI system.
+    failures PR [--output FILE]
+        Reports what failed behind each failed check: the failed builds,
+        their problems, failed tests, and the end of the failed step's log.
+    rerun URL [--wipe-workspace]
+        Queues the build at URL (a check's link) again. For TeamCity, an
+        aggregate reruns its failed dependencies; for GitHub Actions, the job
+        reruns with the jobs that depend on it. `--wipe-workspace` is for
+        Jenkins only.
+
+Jenkins reads `~/.jenkins.json`; TeamCity goes through the `teamcity` CLI and
+its login; GitHub Actions goes through `gh` and its login.
+"""
+
+from __future__ import annotations
+
+import argparse
+from pathlib import Path
+import sys
+
+import _boot  # noqa: F401  -- adds parent tools/cr to sys.path
+from ci import failures, github, report  # noqa: E402  -- after _boot
+from ci.actions import ActionsCi  # noqa: E402  -- after _boot
+from ci.jenkins import JenkinsCi  # noqa: E402  -- after _boot
+from ci.teamcity import TeamCityCi, build_id  # noqa: E402  -- after _boot
+
+
+def _cmd_checks(args: argparse.Namespace) -> int:
+    checks = github.pr_checks(args.pr)
+    print(f'PR {checks.number} ({checks.branch}) at {checks.head}')
+    for check in checks.checks:
+        print(f'{check.state:8} {check.system:10} {check.name}  {check.url}')
+    return 0
+
+
+def _cmd_failures(args: argparse.Namespace) -> int:
+    checks = github.pr_checks(args.pr)
+    found = report.collect(checks)
+    pending = len(checks.in_state(github.State.PENDING))
+    text = (
+        f'# CI failures of PR {checks.number} ({checks.branch}) at '
+        f'{checks.head}\n\n'
+        f'{len(found)} failed, {pending} pending of {len(checks.checks)} '
+        'checks.\n\n' + failures.to_markdown(found)
+    )
+    if args.output:
+        args.output.write_text(text, encoding='utf-8', newline='')
+        for check in found:
+            kinds = ', '.join(f'{b.name}: {b.kind}' for b in check.builds)
+            print(f'{check.check}: {kinds or check.error or "no builds"}')
+        print(f'Written to {args.output}')
+    else:
+        print(text)
+    return 0
+
+
+def _cmd_rerun(args: argparse.Namespace) -> int:
+    if github.TEAMCITY_HOST in args.url:
+        if args.wipe_workspace:
+            print('--wipe-workspace is for Jenkins only.')
+            return 1
+        print(TeamCityCi().rerun(build_id(args.url)))
+    elif github.JENKINS_HOST in args.url:
+        JenkinsCi.from_config().rerun(
+            args.url, wipe_workspace=args.wipe_workspace
+        )
+        print(f'Queued {args.url.rstrip("/").rsplit("/", 1)[0]} again.')
+    elif ActionsCi.is_job_url(args.url):
+        if args.wipe_workspace:
+            print('--wipe-workspace is for Jenkins only.')
+            return 1
+        print(ActionsCi().rerun(args.url))
+    else:
+        print(f'Not a Jenkins, TeamCity or GitHub Actions build: {args.url}')
+        return 1
+    return 0
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(
+        description=__doc__, formatter_class=argparse.RawTextHelpFormatter
+    )
+    subparsers = parser.add_subparsers(dest='command', required=True)
+    checks = subparsers.add_parser('checks', help="List a PR's checks.")
+    checks.add_argument('pr')
+    checks.set_defaults(func=_cmd_checks)
+    found = subparsers.add_parser(
+        'failures', help='Report what failed behind the failed checks.'
+    )
+    found.add_argument('pr')
+    found.add_argument('--output', type=Path)
+    found.set_defaults(func=_cmd_failures)
+    rerun = subparsers.add_parser('rerun', help='Queue a build again.')
+    rerun.add_argument('url')
+    rerun.add_argument('--wipe-workspace', action='store_true')
+    rerun.set_defaults(func=_cmd_rerun)
+    args = parser.parse_args()
+    return args.func(args)
+
+
+if __name__ == '__main__':
+    sys.exit(main())
