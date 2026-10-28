@@ -244,42 +244,12 @@
                 android:layout_height="1dp"
                 android:background="?attr/colorSurfaceContainer"/>
 
-            <!-- 1. Upgrade connections to HTTPS (navigation) -->
-            <LinearLayout
-                android:id="@+id/https_upgrade_item"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:paddingHorizontal="16dp"
-                android:paddingVertical="12dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:background="?android:attr/selectableItemBackground">
-
-                <TextView
-                    style="@style/LargeRegular"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/https_upgrade_title"
-                    android:textColor="?attr/colorOnSurface"/>
-
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/ic_arrow_small_right"
-                    app:tint="?attr/colorOnSurfaceVariant"
-                    android:contentDescription="@null"/>
-
-            </LinearLayout>
-
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="?attr/colorSurfaceContainer"/>
 
-            <!-- 2. Block scripts (toggle) -->
+            <!-- 1. Block scripts (toggle) -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
@@ -309,7 +279,7 @@
                 android:layout_height="1dp"
                 android:background="?attr/colorSurfaceContainer"/>
 
-            <!-- 3. Shred site's data (navigation) -->
+            <!-- 2. Shred site's data (navigation) -->
             <LinearLayout
                 android:id="@+id/shred_data_item"
                 android:layout_width="match_parent"
@@ -344,7 +314,7 @@
                 android:layout_height="1dp"
                 android:background="?attr/colorSurfaceContainer"/>
 
-            <!-- 4. Block trackers & ads (navigation) -->
+            <!-- 3. Block trackers & ads (navigation) -->
             <LinearLayout
                 android:id="@+id/trackers_item"
                 android:layout_width="match_parent"
@@ -379,7 +349,7 @@
                 android:layout_height="1dp"
                 android:background="?attr/colorSurfaceContainer"/>
 
-            <!-- 5. Block cookies (navigation) -->
+            <!-- 4. Block cookies (navigation) -->
             <LinearLayout
                 android:id="@+id/cookies_item"
                 android:layout_width="match_parent"
@@ -414,7 +384,7 @@
                 android:layout_height="1dp"
                 android:background="?attr/colorSurfaceContainer"/>
 
-            <!-- 6. Block fingerprinting (toggle) -->
+            <!-- 5. Block fingerprinting (toggle) -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
@@ -444,7 +414,7 @@
                 android:layout_height="1dp"
                 android:background="?attr/colorSurfaceContainer"/>
 
-            <!-- 7. Block element (action with launch icon) -->
+            <!-- 6. Block element (action with launch icon) -->
             <LinearLayout
                 android:id="@+id/block_element_item"
                 android:layout_width="match_parent"
@@ -480,7 +450,7 @@
                 android:layout_height="1dp"
                 android:background="?attr/colorSurfaceContainer"/>
 
-            <!-- 8. Clear all blocked elements button -->
+            <!-- 7. Clear all blocked elements button -->
             <TextView
                 android:id="@+id/clear_blocked_elements_button"
                 style="@style/LargeRegular"
@@ -500,7 +470,7 @@
                 android:layout_height="1dp"
                 android:background="?attr/colorSurfaceContainer"/>
 
-            <!-- 9. Reset to defaults button -->
+            <!-- 8. Reset to defaults button -->
             <TextView
                 android:id="@+id/reset_shields_button"
                 style="@style/LargeRegular"
