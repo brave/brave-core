@@ -90,10 +90,10 @@ export function getInfoCards (options: GetInfoCardsOptions): InfoCard[] {
 
   if (options.thirdCard === 'tor') {
     cards.push({
-      id: 'tor-promo',
+      id: 'private-safety',
       icon: 'hearts',
-      title: getLocale('cardTorPromoTitle'),
-      description: withLink('cardTorPromoDesc', options.onOpenTorWindow)
+      title: getLocale('cardPrivateSafetyTitle'),
+      description: withLink('cardPrivateSafetyDesc', options.onOpenTorWindow)
     })
   }
 
