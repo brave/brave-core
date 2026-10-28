@@ -5,6 +5,7 @@
 
 import BraveCore
 @_spi(ChromiumWebViewAccess) import Web
+import WebKit
 
 extension TabDataValues {
   private struct VideoBackgroundPlaybackTabHelperKey: TabDataKey {
@@ -28,13 +29,36 @@ class VideoBackgroundPlaybackTabHelper {
 
   /// Records which videos are still playing before WebKit pauses them.
   func markPlayingVideos() {
-    guard let tab, tab.isWebViewCreated, let webView = BraveWebView.from(tab: tab) else { return }
-    webView.markPlayingVideos()
+    callPlaybackFunction(VideoBackgroundPlaybackScript.markPlayingVideos) {
+      $0.markPlayingVideos()
+    }
   }
 
   /// Resumes videos recorded by `markPlayingVideos`.
   func resumePlayingVideos() {
-    guard let tab, tab.isWebViewCreated, let webView = BraveWebView.from(tab: tab) else { return }
-    webView.resumePlayingVideos()
+    callPlaybackFunction(VideoBackgroundPlaybackScript.resumePlayingVideos) {
+      $0.resumePlayingVideos()
+    }
+  }
+
+  /// The Chromium feature is registered only while
+  /// `kUseProfileWebViewConfiguration` is on. Otherwise the page script under
+  /// `window.__firefox__` is used.
+  private func callPlaybackFunction(
+    _ functionName: String,
+    chromiumCall: (BraveWebView) -> Void
+  ) {
+    guard let tab, tab.isWebViewCreated else { return }
+    if FeatureList.kUseProfileWebViewConfiguration.enabled {
+      if let webView = BraveWebView.from(tab: tab) {
+        chromiumCall(webView)
+      }
+      return
+    }
+    tab.evaluateJavaScript(
+      functionName: "window.__firefox__.\(functionName)",
+      contentWorld: VideoBackgroundPlaybackScript.scriptSandbox,
+      asFunction: true
+    )
   }
 }
