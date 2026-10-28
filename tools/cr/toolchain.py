@@ -13,7 +13,7 @@ import textwrap
 
 import requests
 
-from ci import JenkinsCi
+from ci.jenkins import JenkinsCi
 from exceptions import BadOutcomeException, InvalidInputException
 from git_status import GitStatus
 import install_extra_deps
@@ -428,7 +428,7 @@ class Toolchain:
         supplied here as a keyword argument.
 
         Returns whether the pipelines finished successfully (see
-        `ci.JenkinsCi.trigger`): always True when not watching.
+        `ci.jenkins.JenkinsCi.trigger`): always True when not watching.
         """
         # Toolchains with a build parameter carry the tag there; the ones that
         # take a PROPERTIES payload (see `spec.properties`) send no build param.

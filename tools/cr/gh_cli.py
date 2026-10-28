@@ -65,6 +65,13 @@ class GhCli:
             return None
         return f'origin/{base_ref}'
 
+    def view_pr(self, pr: int | str, *, repo: str, fields: str) -> dict:
+        """The `fields` (comma-separated JSON fields) of pull request `pr`, a
+        number or a branch, in `repo`."""
+        return self._run_json(
+            ['pr', 'view', str(pr), '--repo', repo, '--json', fields]
+        )
+
     def list_prs(self, *, head: str, fields: str) -> list:
         """Lists pull requests whose source branch is `head`.
 

@@ -22,8 +22,8 @@ Layers:
   network), validating the file rewrite *and* the `tags=toolchain` /
   `culprit=<hash>` commit.
 
-* CI delegation -- `Toolchain.trigger` fans out to `ci.JenkinsCi` with the
-  toolchain's frozen job URLs.
+* CI delegation -- `Toolchain.trigger` fans out to `ci.jenkins.JenkinsCi` with
+  the toolchain's frozen job URLs.
 """
 
 from __future__ import annotations
@@ -205,7 +205,7 @@ class ProvenanceCommentTest(unittest.TestCase):
 
 
 class TriggerTest(unittest.TestCase):
-    """`Toolchain.trigger` fans out to `ci.JenkinsCi` with the frozen URLs."""
+    """`Toolchain.trigger` fans out to `JenkinsCi` with the frozen URLs."""
 
     def _trigger(self, target, **properties):
         launcher = MagicMock()
