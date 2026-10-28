@@ -3,9 +3,9 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
-"""Integration tests for `ci.JenkinsCi` against a fake Jenkins.
+"""Integration tests for `jenkins.JenkinsCi` against a fake Jenkins.
 
-Where `ci_test.py` mocks `requests.Session`, these tests stand up a real
+Where `jenkins_test.py` mocks `requests.Session`, these tests stand up a real
 in-process HTTP server (`FakeJenkins`) that emulates the slice of the Jenkins
 REST API the launcher talks to:
 
@@ -38,7 +38,8 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import parse_qs, urlparse
 from unittest.mock import patch
 
-import ci
+import _boot  # noqa: F401  -- adds parent tools/cr to sys.path
+from ci import jenkins  # noqa: E402  -- after _boot
 
 # A concrete Chromium tag, passed straight through as the build parameter.
 TAG = '150.0.7850.1'
@@ -335,7 +336,7 @@ class JenkinsCiIntegrationTest(unittest.TestCase):
         `_WatchedJob` instances are mutated in place, the captured reference
         reflects their final state once `trigger` returns.
         """
-        launcher = ci.JenkinsCi(fake.username, fake.token)
+        launcher = jenkins.JenkinsCi(fake.username, fake.token)
         captured: dict[str, list] = {}
 
         def _record(_self, _title, jobs):
@@ -343,9 +344,9 @@ class JenkinsCiIntegrationTest(unittest.TestCase):
 
         if watch:
             with (
-                patch.object(ci.JenkinsCi, '_render_table', _record),
-                patch('ci.time.sleep'),
-                patch('ci.Live', _NullLive),
+                patch.object(jenkins.JenkinsCi, '_render_table', _record),
+                patch('ci.jenkins.time.sleep'),
+                patch('ci.jenkins.Live', _NullLive),
             ):
                 launcher.trigger(
                     fake.job_urls(),
@@ -382,8 +383,8 @@ class JenkinsCiIntegrationTest(unittest.TestCase):
     def test_trigger_failure_raises_bad_outcome(self):
         with FakeJenkins() as fake:
             fake.trigger_status = {JOB_NAMES[0]: 500}
-            with self.assertRaises(ci.BadOutcomeException):
-                ci.JenkinsCi(fake.username, fake.token).trigger(
+            with self.assertRaises(jenkins.BadOutcomeException):
+                jenkins.JenkinsCi(fake.username, fake.token).trigger(
                     fake.job_urls(), params={'CHROMIUM_TAG': TAG}
                 )
 

@@ -27,6 +27,16 @@ These are the user-facing scripts in this directory:
   `oldest..newest` git commit range.
 - `prune_test_filters.py` — Detects and (optionally) removes obsolete entries
   from the current platform's test-filter files.
+- `autolift/autolift.py` — Helpers for the autonomous lift in
+  [autolift/SKILL.md](autolift/SKILL.md): build log summaries, culprit lookup,
+  culprit hash verification, the autofix run's CI report and fixup push, and
+  channel bumps: a minor bump's branch and pull request for each release channel
+  on its milestone.
+- `autolift/sync_tooling.py` — Cherry-picks the newer `cr` branches' tooling
+  commits onto an older one before its lift, leaving those that need judgement
+  for an agent. Run from the newest branch's copy, by the `cr/autolift` recipe.
+- `ci/cli.py` — Lists a pull request's checks, reports what failed behind them
+  on Jenkins and TeamCity, and reruns a check's build.
 
 ## Library modules
 
@@ -110,6 +120,13 @@ Shared abstractions used by the entry points and tests:
   ...). See [`alias/README.md`](alias/README.md).
 - `bootstrap/` — An experiment to boostrap some of our python utils in the
   user's PATH.
+- `ci/` — Everything that talks to CI, for any tool to reuse: `github.py` (a
+  pull request's checks), `jenkins.py` (triggering and watching pipelines,
+  reading a run's failed stages and tests, rerunning it), `teamcity.py` (a build
+  chain's failed builds, through the `teamcity` CLI and its login, and reruns),
+  and `failures.py`, the failure model they share. Jenkins reads
+  `~/.jenkins.json`; the `teamcity` CLI reads its own login, or `TEAMCITY_URL`
+  and `TEAMCITY_TOKEN`.
 - `test/` — Shared test fixtures:
   - `fake_chromium_repo.py` — `FakeChromiumRepo`, a real git checkout shaped
     like `src/` with brave inside it, plus an emulation of the `pnpm run` build
