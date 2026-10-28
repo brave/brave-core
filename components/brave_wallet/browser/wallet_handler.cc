@@ -49,7 +49,8 @@ void WalletHandler::GetWalletInfo(GetWalletInfoCallback callback) {
       GetEnabledCoins(),                        //
       IsCardanoDAppSupportEnabled(),            //
       IsPolkadotEnabled(),                      //
-      IsPolkadotDAppSupportEnabled()            //
+      IsPolkadotDAppSupportEnabled(),           //
+      IsCardStackUiEnabled()                    //
       ));
 }
 

@@ -1333,6 +1333,7 @@ export class MockedWalletApiProxy {
           ],
           isCardanoDappSupportEnabled: false,
           isPolkadotDappSupportEnabled: false,
+          isCardStackUiEnabled: false,
         },
       }
     },

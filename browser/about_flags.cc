@@ -343,6 +343,14 @@ const char* const kBraveSyncImplLink[1] = {"https://github.com/brave/go-sync"};
           "opening a full-page tab",                                          \
           kOsDesktop,                                                         \
           FEATURE_VALUE_TYPE(brave_wallet::features::kBraveWalletSidePanel),  \
+      },                                                                      \
+      {                                                                       \
+          "brave-wallet-card-stack-ui",                                       \
+          "Brave Wallet Card Stack UI",                                       \
+          "New card stack home UI view in Brave Wallet.",                     \
+          kOsDesktop,                                                         \
+          FEATURE_VALUE_TYPE(                                                 \
+              brave_wallet::features::kBraveWalletCardStackUiFeature),        \
       })
 #else
 #define BRAVE_NATIVE_WALLET_FEATURE_ENTRIES
