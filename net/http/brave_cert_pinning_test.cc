@@ -85,14 +85,6 @@ class BraveCertPinningTest : public testing::TestWithParam<std::string_view> {
             std::move(base_verifier))));
     SetDirectProxyConfig(builder);
     context_ = builder.Build();
-
-#if BUILDFLAG(IS_IOS)
-    // Without this, iOS (and only iOS) appears to bypass pin violations for
-    // this test's CA, since CertVerifyProcIOS can't reliably determine
-    // is_issued_by_known_root the way desktop's builtin verifier can.
-    context_->transport_security_state()
-        ->SetEnablePublicKeyPinningBypassForLocalTrustAnchors(false);
-#endif  // BUILDFLAG(IS_IOS)
   }
 
   // On Linux and Android, URLRequestContextBuilder does not create a default
