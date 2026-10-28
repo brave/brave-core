@@ -176,8 +176,8 @@ void SidebarContainerView::ShowSidebarOnMouseOver(
     const auto vertical_tab_width =
         brave_browser_view->GetVerticalTabStripWidthAtWindowEdge();
     if (!vertical_tab_width) {
-      // The strip owns the window edge, and keeps it for its own hover
-      // handling.
+      // 'Hide completely when collapsed' is active, and the vertical tab width
+      // is zero.
       return;
     }
 
