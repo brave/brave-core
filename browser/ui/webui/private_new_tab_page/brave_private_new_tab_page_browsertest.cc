@@ -4,21 +4,17 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include <memory>
-#include <optional>
 #include <string>
 #include <string_view>
 
 #include "base/check.h"
 #include "base/location.h"
 #include "base/run_loop.h"
-#include "base/test/bind.h"
 #include "base/test/run_until.h"
-#include "base/test/scoped_feature_list.h"
 #include "brave/browser/extensions/brave_extension_functional_test.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/webui/private_new_tab_page/brave_private_new_tab_page_handler.h"
 #include "brave/components/brave_private_new_tab_ui/common/pref_names.h"
-#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "build/build_config.h"
@@ -35,20 +31,7 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/test_navigation_observer.h"
-#include "mojo/public/cpp/bindings/remote.h"
 #include "ui/gfx/geometry/point_conversions.h"
-
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
-#include "brave/components/brave_vpn/common/features.h"
-#endif
-
-#if BUILDFLAG(ENABLE_BRAVE_VPN) && !BUILDFLAG(IS_ANDROID)
-#include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
-#include "brave/components/brave_vpn/browser/brave_vpn_service.h"
-#include "brave/components/brave_vpn/common/mojom/brave_vpn.mojom.h"
-#include "brave/components/skus/browser/skus_utils.h"
-#include "brave/components/skus/common/features.h"
-#endif
 
 using namespace content;  // NOLINT
 
@@ -250,21 +233,8 @@ IN_PROC_BROWSER_TEST_F(BravePrivateNewTabPageBrowserTest,
       brave_private_new_tab::prefs::kBravePrivateWindowDisclaimerDismissed));
 }
 
-class BravePrivateNewTabPageNoVpnBrowserTest
-    : public BravePrivateNewTabPageBrowserTest {
- public:
-  BravePrivateNewTabPageNoVpnBrowserTest() {
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
-    feature_list_.InitAndDisableFeature(brave_vpn::features::kBraveVPN);
-#endif
-  }
-
- private:
-  base::test::ScopedFeatureList feature_list_;
-};
-
-IN_PROC_BROWSER_TEST_F(BravePrivateNewTabPageNoVpnBrowserTest,
-                       ShowsTorCardWhenVpnIsUnavailable) {
+IN_PROC_BROWSER_TEST_F(BravePrivateNewTabPageBrowserTest,
+                       ShowsTorCardInPrivateWindow) {
   BrowserWindowInterface* private_browser = CreateIncognitoBrowser();
   ASSERT_TRUE(OpenNewTabPage(private_browser));
   auto* web_contents = GetActiveWebContents(private_browser);
@@ -274,132 +244,3 @@ IN_PROC_BROWSER_TEST_F(BravePrivateNewTabPageNoVpnBrowserTest,
   EXPECT_FALSE(HasElement(web_contents, "[data-testid=info-card-vpn]"));
 }
 #endif  // BUILDFLAG(ENABLE_TOR)
-
-#if BUILDFLAG(ENABLE_BRAVE_VPN) && !BUILDFLAG(IS_ANDROID)
-using brave_private_new_tab::prefs::VpnPromoCache;
-using brave_vpn::mojom::PurchasedState;
-
-class BravePrivateNewTabPageVpnBrowserTest : public InProcessBrowserTest {
- public:
-  BravePrivateNewTabPageVpnBrowserTest() {
-    feature_list_.InitWithFeatures(
-        {skus::features::kSkusFeature, brave_vpn::features::kBraveVPN}, {});
-  }
-
- protected:
-  Profile* private_profile() {
-    return browser()->GetProfile()->GetPrimaryOTRProfile(
-        /*create_if_needed=*/true);
-  }
-
-  void SetPurchasedState(PurchasedState state) {
-    auto* service = brave_vpn::BraveVpnServiceFactory::GetForProfile(
-        browser()->GetProfile());
-    ASSERT_TRUE(service);
-    service->SetPurchasedStateForTesting(skus::GetDefaultEnvironment(), state);
-  }
-
-  void SetCache(VpnPromoCache cache) {
-    browser()->GetProfile()->GetPrefs()->SetInteger(
-        brave_private_new_tab::prefs::kBravePrivateWindowVpnPromoCache,
-        static_cast<int>(cache));
-  }
-
-  VpnPromoCache GetCache() {
-    return static_cast<VpnPromoCache>(
-        browser()->GetProfile()->GetPrefs()->GetInteger(
-            brave_private_new_tab::prefs::kBravePrivateWindowVpnPromoCache));
-  }
-
-  std::unique_ptr<BravePrivateNewTabPageHandler> CreateHandler() {
-    page_handler_.reset();
-    return std::make_unique<BravePrivateNewTabPageHandler>(
-        private_profile(),
-        browser()->GetTabStripModel()->GetActiveWebContents(),
-        page_handler_.BindNewPipeAndPassReceiver());
-  }
-
-  void FireVpnPromoTimeout(BravePrivateNewTabPageHandler& handler) {
-    handler.vpn_promo_timeout_.FireNow();
-  }
-
- private:
-  base::test::ScopedFeatureList feature_list_;
-  mojo::Remote<brave_private_new_tab::mojom::PageHandler> page_handler_;
-};
-
-IN_PROC_BROWSER_TEST_F(BravePrivateNewTabPageVpnBrowserTest,
-                       LoadedStateOverridesStaleCache) {
-  SetPurchasedState(PurchasedState::NOT_PURCHASED);
-  SetCache(VpnPromoCache::kHide);
-  EXPECT_EQ(BravePrivateNewTabPageHandler::GetInitialShouldShowVpnPromo(
-                private_profile()),
-            true);
-
-  SetPurchasedState(PurchasedState::PURCHASED);
-  SetCache(VpnPromoCache::kShow);
-  EXPECT_EQ(BravePrivateNewTabPageHandler::GetInitialShouldShowVpnPromo(
-                private_profile()),
-            false);
-
-  // Lapsed subscribers get the Tor card rather than the trial offer.
-  SetPurchasedState(PurchasedState::SESSION_EXPIRED);
-  EXPECT_EQ(BravePrivateNewTabPageHandler::GetInitialShouldShowVpnPromo(
-                private_profile()),
-            false);
-}
-
-IN_PROC_BROWSER_TEST_F(BravePrivateNewTabPageVpnBrowserTest,
-                       LoadingStateUsesCache) {
-  SetPurchasedState(PurchasedState::LOADING);
-
-  SetCache(VpnPromoCache::kShow);
-  EXPECT_EQ(BravePrivateNewTabPageHandler::GetInitialShouldShowVpnPromo(
-                private_profile()),
-            true);
-
-  SetCache(VpnPromoCache::kHide);
-  EXPECT_EQ(BravePrivateNewTabPageHandler::GetInitialShouldShowVpnPromo(
-                private_profile()),
-            false);
-
-  SetCache(VpnPromoCache::kUnknown);
-  EXPECT_EQ(BravePrivateNewTabPageHandler::GetInitialShouldShowVpnPromo(
-                private_profile()),
-            std::nullopt);
-}
-
-IN_PROC_BROWSER_TEST_F(BravePrivateNewTabPageVpnBrowserTest,
-                       PendingAnswerResolvesThroughObserver) {
-  SetPurchasedState(PurchasedState::LOADING);
-  SetCache(VpnPromoCache::kUnknown);
-  auto handler = CreateHandler();
-
-  std::optional<bool> show;
-  handler->GetShouldShowVpnPromo(
-      base::BindLambdaForTesting([&](bool result) { show = result; }));
-  EXPECT_FALSE(show.has_value());
-
-  SetPurchasedState(PurchasedState::NOT_PURCHASED);
-  ASSERT_TRUE(base::test::RunUntil([&] { return show.has_value(); }));
-  EXPECT_TRUE(*show);
-  EXPECT_EQ(GetCache(), VpnPromoCache::kShow);
-}
-
-IN_PROC_BROWSER_TEST_F(BravePrivateNewTabPageVpnBrowserTest,
-                       TimeoutFallsBackWithoutCaching) {
-  SetPurchasedState(PurchasedState::LOADING);
-  SetCache(VpnPromoCache::kUnknown);
-  auto handler = CreateHandler();
-
-  std::optional<bool> show;
-  handler->GetShouldShowVpnPromo(
-      base::BindLambdaForTesting([&](bool result) { show = result; }));
-  ASSERT_FALSE(show.has_value());
-
-  FireVpnPromoTimeout(*handler);
-  ASSERT_TRUE(show.has_value());
-  EXPECT_FALSE(*show);
-  EXPECT_EQ(GetCache(), VpnPromoCache::kUnknown);
-}
-#endif  // BUILDFLAG(ENABLE_BRAVE_VPN) && !BUILDFLAG(IS_ANDROID)

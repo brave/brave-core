@@ -20,8 +20,6 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"cardNoTraceDesc", IDS_BRAVE_PRIVATE_NEW_TAB_CARD_NO_TRACE_DESC},
     {"cardVisibilityTitle", IDS_BRAVE_PRIVATE_NEW_TAB_CARD_VISIBILITY_TITLE},
     {"cardVisibilityDesc", IDS_BRAVE_PRIVATE_NEW_TAB_CARD_VISIBILITY_DESC},
-    {"cardVpnTitle", IDS_BRAVE_PRIVATE_NEW_TAB_CARD_VPN_TITLE},
-    {"cardVpnDesc", IDS_BRAVE_PRIVATE_NEW_TAB_CARD_VPN_DESC},
     {"cardTorPromoTitle", IDS_BRAVE_PRIVATE_NEW_TAB_CARD_TOR_PROMO_TITLE},
     {"cardTorPromoDesc", IDS_BRAVE_PRIVATE_NEW_TAB_CARD_TOR_PROMO_DESC},
     {"cardAboutTorTitle", IDS_BRAVE_PRIVATE_NEW_TAB_CARD_ABOUT_TOR_TITLE},

@@ -13,12 +13,6 @@ interface PageHandler {
   GetIsTorConnected() => (bool is_connected);
   GoToBraveSearch(string input, bool open_new_tab);
   GoToBraveSupport();
-  // Whether the Brave VPN promo card should be shown, i.e. VPN is available
-  // for the original profile and hasn't been purchased yet. Replies once the
-  // purchase state has loaded, and caches the answer for later pages.
-  GetShouldShowVpnPromo() => (bool show);
-  // Opens the Brave VPN checkout page in a regular (non-private) window.
-  OpenVpnCheckout();
   // Opens a new Private window with Tor.
   OpenTorWindow();
 };

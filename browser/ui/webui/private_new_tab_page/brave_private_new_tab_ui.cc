@@ -5,7 +5,6 @@
 
 #include "brave/browser/ui/webui/private_new_tab_page/brave_private_new_tab_ui.h"
 
-#include <optional>
 #include <utility>
 
 #include "brave/browser/ui/webui/brave_webui_source.h"
@@ -51,16 +50,6 @@ BravePrivateNewTabUI::BravePrivateNewTabUI(content::WebUI* web_ui)
                      BravePrivateNewTabPageHandler::IsTorDisabled(profile));
   source->AddBoolean("isTorConnected",
                      BravePrivateNewTabPageHandler::IsTorConnected());
-
-  // Tor windows show their own cards, without the VPN promo.
-  const std::optional<bool> show_vpn_promo =
-      profile->IsTor()
-          ? std::optional<bool>(false)
-          : BravePrivateNewTabPageHandler::GetInitialShouldShowVpnPromo(
-                profile);
-  source->AddString("vpnPromo", !show_vpn_promo.has_value() ? "unknown"
-                                : *show_vpn_promo           ? "show"
-                                                            : "hide");
 
   AddBackgroundColorToSource(source, web_ui->GetWebContents());
 }

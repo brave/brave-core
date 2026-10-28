@@ -40,6 +40,8 @@ const Box = styled.div<{ isTor?: boolean }>`
   background: var(--window-background);
   color: ${leo.color.white};
   font: ${leo.font.default.regular};
+  /* Inherited, so all the text on the page avoids orphans and short last lines. */
+  text-wrap: pretty;
 `
 
 const Glow = styled.div`

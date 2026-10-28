@@ -50,30 +50,3 @@ export function useInfoCardsDismissed () {
 
   return { isDismissed, setDismissed }
 }
-
-// null while the VPN purchase state is loading and no earlier page cached the
-// answer, which the page shows as a skeleton card.
-export function useShouldShowVpnPromo (enabled: boolean) {
-  const [shouldShowVpnPromo, setShouldShowVpnPromo] =
-    React.useState<boolean | null>(() => {
-      const vpnPromo = loadTimeData.getString('vpnPromo')
-      return vpnPromo === 'unknown' ? null : vpnPromo === 'show'
-    })
-
-  React.useEffect(() => {
-    if (!enabled) return
-    let cancelled = false
-    // Always asked so the browser refreshes its cached answer for the next
-    // page. The reply only fills in the skeleton; a card already on screen
-    // stays put.
-    getPageHandlerInstance().pageHandler.getShouldShowVpnPromo()
-      .then(res => {
-        if (!cancelled) {
-          setShouldShowVpnPromo(current => current ?? res.show)
-        }
-      })
-    return () => { cancelled = true }
-  }, [enabled])
-
-  return { shouldShowVpnPromo }
-}

@@ -24,7 +24,6 @@ class FakeBraveVpnService : public BraveVpnService {
   // BraveVpnService:
   bool IsBraveVPNEnabled() const override;
   bool IsPurchased() const override;
-  mojom::PurchasedState GetPurchasedStateSync() const override;
   void ReloadPurchasedState() override {}
   std::string GetCurrentEnvironment() const override;
 

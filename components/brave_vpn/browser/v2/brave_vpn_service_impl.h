@@ -55,7 +55,6 @@ class BraveVpnServiceImpl : public BraveVpnService
   // Implementation of public interface exposed to other components.
   bool IsBraveVPNEnabled() const override;
   bool IsPurchased() const override;
-  mojom::PurchasedState GetPurchasedStateSync() const override;
   void ReloadPurchasedState() override;
   std::string GetCurrentEnvironment() const override;
 

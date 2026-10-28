@@ -17,10 +17,6 @@ bool FakeBraveVpnService::IsPurchased() const {
   return true;
 }
 
-mojom::PurchasedState FakeBraveVpnService::GetPurchasedStateSync() const {
-  return mojom::PurchasedState::PURCHASED;
-}
-
 std::string FakeBraveVpnService::GetCurrentEnvironment() const {
   return skus::kEnvProduction;
 }

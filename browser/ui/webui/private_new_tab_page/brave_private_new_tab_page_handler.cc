@@ -5,22 +5,17 @@
 
 #include "brave/browser/ui/webui/private_new_tab_page/brave_private_new_tab_page_handler.h"
 
-#include <optional>
 #include <utility>
-#include <vector>
 
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/time/time.h"
 #include "brave/components/brave_private_new_tab_ui/common/pref_names.h"
-#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/browser_window/public/profile_browser_collection.h"
-#include "chrome/browser/ui/navigator/browser_navigator.h"
-#include "chrome/browser/ui/navigator/browser_navigator_params.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "components/prefs/pref_service.h"
 #include "components/search_engines/template_url.h"
@@ -35,16 +30,7 @@
 #include "brave/components/tor/tor_launcher_factory.h"
 #endif  // BUILDFLAG(ENABLE_TOR)
 
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
-#include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
-#include "brave/browser/brave_vpn/vpn_utils.h"
-#include "brave/components/brave_vpn/browser/brave_vpn_service.h"
-#include "brave/components/brave_vpn/common/brave_vpn_utils.h"
-#endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
-
 namespace {
-
-using brave_private_new_tab::prefs::VpnPromoCache;
 
 constexpr auto kStuckPeriod = base::Seconds(45);
 
@@ -54,39 +40,6 @@ const char* GetDisclaimerDismissedPref(Profile* profile) {
              : brave_private_new_tab::prefs::
                    kBravePrivateWindowDisclaimerDismissed;
 }
-
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
-// Longest the page's VPN card stays a skeleton before falling back.
-constexpr auto kVpnPromoTimeout = base::Seconds(10);
-
-// The VPN service only exists for regular profiles, and is null when VPN isn't
-// available for it (feature off, policy-disabled, unsupported region, ...).
-brave_vpn::BraveVpnService* GetVpnService(Profile* profile) {
-  Profile* original_profile = profile->GetOriginalProfile();
-  if (!brave_vpn::IsBraveVPNEnabled(original_profile)) {
-    return nullptr;
-  }
-  return brave_vpn::BraveVpnServiceFactory::GetForProfile(original_profile);
-}
-
-// std::nullopt while loading. The trial offer only makes sense for people who
-// never subscribed, so expired or failing subscriptions don't get the promo.
-std::optional<bool> ShouldShowVpnPromoForState(
-    brave_vpn::mojom::PurchasedState state) {
-  switch (state) {
-    case brave_vpn::mojom::PurchasedState::LOADING:
-      return std::nullopt;
-    case brave_vpn::mojom::PurchasedState::NOT_PURCHASED:
-      return true;
-    case brave_vpn::mojom::PurchasedState::PURCHASED:
-    case brave_vpn::mojom::PurchasedState::SESSION_EXPIRED:
-    case brave_vpn::mojom::PurchasedState::FAILED:
-    case brave_vpn::mojom::PurchasedState::OUT_OF_CREDENTIALS:
-      return false;
-  }
-  return false;
-}
-#endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
 
 }  // namespace
 
@@ -113,38 +66,6 @@ bool BravePrivateNewTabPageHandler::IsTorConnected() {
 #else
   return false;
 #endif  // BUILDFLAG(ENABLE_TOR)
-}
-
-// static
-std::optional<bool> BravePrivateNewTabPageHandler::GetInitialShouldShowVpnPromo(
-    Profile* profile) {
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
-  auto* vpn_service = GetVpnService(profile);
-  if (!vpn_service) {
-    return false;
-  }
-
-  if (auto show =
-          ShouldShowVpnPromoForState(vpn_service->GetPurchasedStateSync())) {
-    return show;
-  }
-
-  // Still loading: use the kBravePrivateWindowVpnPromoCache answer an earlier
-  // page saw.
-  switch (static_cast<VpnPromoCache>(
-      profile->GetOriginalProfile()->GetPrefs()->GetInteger(
-          brave_private_new_tab::prefs::kBravePrivateWindowVpnPromoCache))) {
-    case VpnPromoCache::kShow:
-      return true;
-    case VpnPromoCache::kHide:
-      return false;
-    case VpnPromoCache::kUnknown:
-      return std::nullopt;
-  }
-  return std::nullopt;
-#else
-  return false;
-#endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
 }
 
 BravePrivateNewTabPageHandler::BravePrivateNewTabPageHandler(
@@ -245,62 +166,6 @@ void BravePrivateNewTabPageHandler::GoToBraveSupport() {
       /*navigation_handle_callback=*/{});
 }
 
-void BravePrivateNewTabPageHandler::GetShouldShowVpnPromo(
-    GetShouldShowVpnPromoCallback callback) {
-  CHECK(profile_);
-  // Tor windows never show the promo, and must not touch the shared cache.
-  if (profile_->IsTor()) {
-    std::move(callback).Run(false);
-    return;
-  }
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
-  if (auto* vpn_service = GetVpnService(profile_)) {
-    vpn_promo_callbacks_.push_back(std::move(callback));
-    if (!vpn_promo_timeout_.IsRunning()) {
-      vpn_promo_timeout_.Start(
-          FROM_HERE, kVpnPromoTimeout,
-          base::BindOnce(&BravePrivateNewTabPageHandler::OnVpnPromoTimeout,
-                         base::Unretained(this)));
-    }
-    // Observed even when the state has loaded, so later changes keep the
-    // cache current; while loading, OnPurchasedStateChanged replies instead.
-    if (!is_observing_vpn_) {
-      Observe(vpn_service);
-      is_observing_vpn_ = true;
-    }
-    OnPurchasedStateChanged(vpn_service->GetPurchasedStateSync(), std::nullopt);
-    return;
-  }
-#endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
-  vpn_promo_callbacks_.push_back(std::move(callback));
-  ResolveVpnPromo(/*show=*/false, /*cache=*/true);
-}
-
-void BravePrivateNewTabPageHandler::OpenVpnCheckout() {
-  CHECK(profile_);
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
-  // Tor windows never offer the promo, and opening a regular-profile tab from
-  // one would link the two sessions.
-  if (profile_->IsTor()) {
-    return;
-  }
-  auto* vpn_service = GetVpnService(profile_);
-  if (!vpn_service) {
-    return;
-  }
-
-  // The purchase must happen in the regular profile so the credentials are
-  // available outside of private windows.
-  const GURL url = brave_vpn::GetManageURLForUIType(
-      brave_vpn::mojom::ManageURLType::CHECKOUT,
-      GURL(brave_vpn::GetManageUrl(vpn_service->GetCurrentEnvironment())));
-  NavigateParams params(profile_->GetOriginalProfile(), url,
-                        ui::PAGE_TRANSITION_LINK);
-  params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
-  Navigate(&params);
-#endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
-}
-
 void BravePrivateNewTabPageHandler::OpenTorWindow() {
   CHECK(profile_);
 #if BUILDFLAG(ENABLE_TOR)
@@ -309,34 +174,6 @@ void BravePrivateNewTabPageHandler::OpenTorWindow() {
   }
   brave::NewOffTheRecordWindowTor(profile_->GetOriginalProfile());
 #endif  // BUILDFLAG(ENABLE_TOR)
-}
-
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
-void BravePrivateNewTabPageHandler::OnPurchasedStateChanged(
-    brave_vpn::mojom::PurchasedState state,
-    const std::optional<std::string>& description) {
-  if (auto show = ShouldShowVpnPromoForState(state)) {
-    ResolveVpnPromo(*show, /*cache=*/true);
-  }
-}
-#endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
-
-void BravePrivateNewTabPageHandler::ResolveVpnPromo(bool show, bool cache) {
-  CHECK(profile_);
-  vpn_promo_timeout_.Stop();
-  if (cache) {
-    profile_->GetOriginalProfile()->GetPrefs()->SetInteger(
-        brave_private_new_tab::prefs::kBravePrivateWindowVpnPromoCache,
-        static_cast<int>(show ? VpnPromoCache::kShow : VpnPromoCache::kHide));
-  }
-  for (auto& callback : std::exchange(vpn_promo_callbacks_, {})) {
-    std::move(callback).Run(show);
-  }
-}
-
-void BravePrivateNewTabPageHandler::OnVpnPromoTimeout() {
-  // Fall back to the Tor card without caching a guess.
-  ResolveVpnPromo(/*show=*/false, /*cache=*/false);
 }
 
 void BravePrivateNewTabPageHandler::OnTorCircuitEstablished(bool result) {

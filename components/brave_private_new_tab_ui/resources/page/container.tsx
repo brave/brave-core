@@ -18,8 +18,7 @@ import InfoCards, { getInfoCards, ThirdPrivateCard } from './components/info-car
 import InfoButton from './components/info-button'
 import {
   useTorObserver,
-  useInfoCardsDismissed,
-  useShouldShowVpnPromo
+  useInfoCardsDismissed
 } from './hooks'
 
 // `margin: auto` centers the column when the window is tall enough and lets it
@@ -73,24 +72,15 @@ function Container () {
   // The page opens in its saved state without motion; the cards and the info
   // button only animate once the user toggles them.
   const [hasToggledCards, setHasToggledCards] = React.useState(false)
-  const { shouldShowVpnPromo } = useShouldShowVpnPromo(!isWindowTor)
 
-  // While loading, the third slot is a skeleton rendered by InfoCards.
-  const isVpnPromoLoading = !isWindowTor && shouldShowVpnPromo === null
-  let thirdPrivateCard: ThirdPrivateCard = isTorDisabled ? 'none' : 'tor'
-  if (isVpnPromoLoading) {
-    thirdPrivateCard = 'none'
-  } else if (shouldShowVpnPromo) {
-    thirdPrivateCard = 'vpn'
-  }
+  // The third slot always promotes Tor, unless Tor is disabled by policy.
+  const thirdPrivateCard: ThirdPrivateCard = isTorDisabled ? 'none' : 'tor'
 
   const cards = React.useMemo(() => {
     if (isWindowTor) return getInfoCards({ isTor: true })
     return getInfoCards({
       isTor: false,
       thirdCard: thirdPrivateCard,
-      onOpenVpnCheckout: () =>
-        getPageHandlerInstance().pageHandler.openVpnCheckout(),
       onOpenTorWindow: () =>
         getPageHandlerInstance().pageHandler.openTorWindow()
     })
@@ -123,7 +113,6 @@ function Container () {
         {!isDismissed && (
           <InfoCards
             cards={cards}
-            showSkeleton={isVpnPromoLoading}
             animateIn={hasToggledCards}
             onClose={() => {
               setHasToggledCards(true)

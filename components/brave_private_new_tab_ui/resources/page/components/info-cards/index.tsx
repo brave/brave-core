@@ -4,13 +4,13 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import styled, { css, keyframes } from 'styled-components'
+import styled from 'styled-components'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 import * as leo from '@brave/leo/tokens/css/variables'
 import { getLocale, formatLocale } from '$web-common/locale'
 
-export type ThirdPrivateCard = 'vpn' | 'tor' | 'none'
+export type ThirdPrivateCard = 'tor' | 'none'
 
 export interface InfoCard {
   id: string
@@ -24,7 +24,6 @@ type GetInfoCardsOptions =
   | {
       isTor: false
       thirdCard: ThirdPrivateCard
-      onOpenVpnCheckout: () => void
       onOpenTorWindow: () => void
     }
 
@@ -89,17 +88,10 @@ export function getInfoCards (options: GetInfoCardsOptions): InfoCard[] {
     }
   ]
 
-  if (options.thirdCard === 'vpn') {
-    cards.push({
-      id: 'vpn',
-      icon: 'product-vpn',
-      title: getLocale('cardVpnTitle'),
-      description: withLink('cardVpnDesc', options.onOpenVpnCheckout)
-    })
-  } else if (options.thirdCard === 'tor') {
+  if (options.thirdCard === 'tor') {
     cards.push({
       id: 'tor-promo',
-      icon: 'product-tor',
+      icon: 'hearts',
       title: getLocale('cardTorPromoTitle'),
       description: withLink('cardTorPromoDesc', options.onOpenTorWindow)
     })
@@ -169,19 +161,7 @@ const CardsRow = styled.ul`
   list-style: none;
 `
 
-const fadeIn = keyframes`
-  from {
-    opacity: 0;
-  }
-`
-
-const pulse = keyframes`
-  to {
-    opacity: 0.5;
-  }
-`
-
-const Card = styled.li<{ isAppearing?: boolean }>`
+const Card = styled.li`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -192,65 +172,7 @@ const Card = styled.li<{ isAppearing?: boolean }>`
   border: 1px solid var(--window-surface);
   border-radius: ${leo.radius.xl};
   text-align: center;
-
-  ${p => p.isAppearing && css`
-    animation: ${fadeIn} ${leo.duration.l} ${leo.easing.inOut};
-  `}
-
-  @media (prefers-reduced-motion: reduce) {
-    animation: none;
-  }
 `
-
-const SkeletonCard = styled(Card)`
-  animation: ${pulse} ${leo.duration.xl} ${leo.easing.inOut} infinite alternate;
-
-  @media (prefers-reduced-motion: reduce) {
-    animation: none;
-  }
-`
-
-const SkeletonShape = styled.div<{ width: string, height: string }>`
-  width: ${p => p.width};
-  max-width: 100%;
-  height: ${p => p.height};
-  border-radius: ${leo.radius.s};
-  background: var(--window-surface);
-`
-
-const SkeletonText = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: ${leo.spacing.m};
-  width: 100%;
-`
-
-function InfoCardSkeleton () {
-  return (
-    <SkeletonCard aria-hidden data-testid='info-card-skeleton'>
-      <SkeletonShape
-        width='56px'
-        height='56px'
-        style={{ borderRadius: leo.radius.full }}
-      />
-      <SkeletonText>
-        <SkeletonShape
-          width='60%'
-          height={leo.typography.heading.h4.fontSize}
-        />
-        <SkeletonShape
-          width='100%'
-          height={leo.typography.small.regular.fontSize}
-        />
-        <SkeletonShape
-          width='80%'
-          height={leo.typography.small.regular.fontSize}
-        />
-      </SkeletonText>
-    </SkeletonCard>
-  )
-}
 
 const CardIcon = styled.div`
   display: flex;
@@ -287,8 +209,6 @@ const CardText = styled.div`
 interface Props {
   cards: InfoCard[]
   onClose: () => void
-  // Adds a placeholder card after `cards` while one is still being resolved.
-  showSkeleton?: boolean
   // Set when the info button is bringing the cards back. The first paint of a
   // new tab stays put; only that reopen runs the close animation in reverse.
   animateIn?: boolean
@@ -332,16 +252,6 @@ function InfoCards (props: Props) {
   const collapseRef = React.useRef<HTMLElement>(null)
   const animationRef = React.useRef<Animation | null>(null)
   const closingRef = React.useRef(false)
-
-  // The cards on screen next to the skeleton. Whatever replaces it fades in,
-  // while these stay put.
-  const idsBesideSkeletonRef = React.useRef<Set<string> | null>(null)
-  if (props.showSkeleton) {
-    idsBesideSkeletonRef.current = new Set(props.cards.map(card => card.id))
-  }
-  const isAppearing = (id: string) =>
-    !props.showSkeleton && !!idsBesideSkeletonRef.current &&
-    !idsBesideSkeletonRef.current.has(id)
 
   React.useLayoutEffect(() => {
     if (!props.animateIn) return
@@ -400,7 +310,6 @@ function InfoCards (props: Props) {
         {props.cards.map(card => (
           <Card
             key={card.id}
-            isAppearing={isAppearing(card.id)}
             data-testid={`info-card-${card.id}`}
           >
             <CardIcon>
@@ -412,7 +321,6 @@ function InfoCards (props: Props) {
             </CardText>
           </Card>
         ))}
-        {props.showSkeleton && <InfoCardSkeleton />}
       </CardsRow>
       <CloseButtonBox>
         <Button

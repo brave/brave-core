@@ -12,8 +12,6 @@ namespace brave_private_new_tab::prefs {
 void RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(kBravePrivateWindowDisclaimerDismissed, false);
   registry->RegisterBooleanPref(kBraveTorWindowDisclaimerDismissed, false);
-  registry->RegisterIntegerPref(kBravePrivateWindowVpnPromoCache,
-                                static_cast<int>(VpnPromoCache::kUnknown));
 }
 
 }  // namespace brave_private_new_tab::prefs
