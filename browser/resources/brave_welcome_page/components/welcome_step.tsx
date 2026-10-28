@@ -24,8 +24,6 @@ export function WelcomeStep(props: StepComponentProps) {
     return null
   }
 
-  // `canBeDefault` only reflects platform capability; the policy state is
-  // separate and the browser-side handler CHECK-fails if we ignore it.
   const canSetAsDefault =
     browserState.canBeDefault
     && !browserState.isDefault
