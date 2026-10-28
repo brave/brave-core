@@ -80,7 +80,7 @@
         </cr-button>
       </template>
     </settings-toggle-button>
-    <settings-toggle-button id="widevineEnabled" class="cr-row" pref="[[widevineEnabledPref_]]" label="Widevine"
+    <settings-toggle-button id="widevineEnabled" class="cr-row" checked="[[widevineEnabled_]]" label="Widevine"
       sub-label="$i18n{widevineEnabledDesc}" on-settings-boolean-control-change="onWidevineEnabledChange_">
     </settings-toggle-button>
     <div class="settings-row" id="manageV2ExtensionsRow" hidden="[[!isExtensionsManifestV2FeatureEnabled_]]">

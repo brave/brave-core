@@ -21,3 +21,8 @@ IN_PROC_BROWSER_TEST_F(BraveSettingsToggleWebUITest, PrefKeyToggles) {
   RunTest("settings/settings_toggle_button_test.js",
           "runMochaSuite('BraveSettingsToggleButtonPrefKey')");
 }
+
+IN_PROC_BROWSER_TEST_F(BraveSettingsToggleWebUITest, PagesRender) {
+  RunTest("settings/settings_toggle_button_test.js",
+          "runMochaSuite('BraveSettingsToggleButtonPagesRender')");
+}
