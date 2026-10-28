@@ -723,12 +723,6 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_BRAVE_BROWSER_LOCK_TITLE" desc="Title for the browser biometrics lock setting.">
         Browser lock
       </message>
-      <message name="IDS_BRAVE_BROWSER_LOCK_UNLOCK_BUTTON" desc="Button label to unlock the browser via biometrics.">
-        Unlock browser
-      </message>
-      <message name="IDS_BRAVE_BROWSER_LOCKED" desc="Status label shown on the browser-wide lock screen.">
-        Browser locked
-      </message>
       <message name="IDS_BRAVE_PRIVATE_TABS_LOCKED" desc="Status label shown on the private tabs lock screen.">
         Private tabs locked
       </message>

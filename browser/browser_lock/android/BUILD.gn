@@ -1,0 +1,62 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//build/config/android/rules.gni")
+import("//tools/grit/grit_rule.gni")
+
+android_library("java") {
+  sources = [
+    "java/src/org/chromium/chrome/browser/incognito/reauth/BraveBrowserLockCoordinator.java",
+    "java/src/org/chromium/chrome/browser/incognito/reauth/BraveIncognitoReauthManager.java",
+    "java/src/org/chromium/chrome/browser/privacy/BraveBrowserLockManager.java",
+  ]
+
+  deps = [
+    ":java_resources",
+    "//base:base_java",
+    "//build/android:build_java",
+    "//chrome/browser/device_reauth/android:java",
+    "//chrome/browser/flags:java",
+    "//chrome/browser/incognito:java",
+    "//chrome/browser/incognito:java_resources",
+    "//chrome/browser/preferences:java",
+    "//chrome/browser/profiles/android:java",
+    "//third_party/androidx:androidx_activity_activity_java",
+    "//third_party/androidx:androidx_annotation_annotation_java",
+    "//ui/android:ui_no_recycler_view_java",
+  ]
+
+  resources_package = "org.chromium.chrome.browser.privacy"
+}
+
+android_resources("java_resources") {
+  sources = [ "java/res/values/ids.xml" ]
+
+  deps = [ ":java_strings_grd" ]
+}
+
+java_strings_grd("java_strings_grd") {
+  grd_file = "java/strings/android_browser_lock_strings.grd"
+  outputs = [ "values/android_browser_lock_strings.xml" ]
+}
+
+android_resources("incognito_reauth_overlay_resources") {
+  resource_overlay = true
+  sources = [ "java/res_overlay/layout/incognito_reauth_view.xml" ]
+  deps = [ "//chrome/browser/incognito:java_resources" ]
+}
+
+robolectric_library("junit") {
+  resources_package = "org.chromium.chrome.browser.privacy"
+  sources = [
+    "javatests/src/org/chromium/chrome/browser/incognito/reauth/BraveIncognitoReauthManagerTest.java",
+    "javatests/src/org/chromium/chrome/browser/privacy/BraveBrowserLockManagerTest.java",
+  ]
+
+  deps = [
+    ":java",
+    "//chrome/android/junit:chrome_junit_tests_helper",
+  ]
+}

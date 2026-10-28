@@ -52,13 +52,15 @@ public class BraveBrowserLockCoordinator extends IncognitoReauthCoordinatorBase 
 
         // Override the two text values that differ from the private-tabs defaults.
         TextView statusText =
-                mLockView.findViewById(org.chromium.chrome.R.id.incognito_lock_status_text);
+                mLockView.findViewById(
+                        org.chromium.chrome.browser.privacy.R.id.incognito_lock_status_text);
         if (statusText != null) {
-            statusText.setText(org.chromium.chrome.R.string.brave_browser_locked);
+            statusText.setText(org.chromium.chrome.browser.privacy.R.string.brave_browser_locked);
         }
         ButtonCompat unlockButton =
                 mLockView.findViewById(R.id.incognito_reauth_unlock_incognito_button);
-        unlockButton.setText(org.chromium.chrome.R.string.brave_browser_lock_unlock_button);
+        unlockButton.setText(
+                org.chromium.chrome.browser.privacy.R.string.brave_browser_lock_unlock_button);
 
         ((ViewGroup) mActivity.getWindow().getDecorView()).addView(mLockView);
         // Steal focus away from whatever was focused in the content behind the lock, so a
