@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/common/eth_request_helper.h"
 
+#include <cmath>
 #include <memory>
 #include <optional>
 #include <tuple>
@@ -15,6 +16,7 @@
 #include "base/containers/to_vector.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
+#include "base/numerics/safe_math.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/strings/string_view_util.h"
@@ -25,6 +27,7 @@
 #include "brave/components/brave_wallet/common/eth_requests.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/json_rpc_requests.h"
+#include "brave/components/brave_wallet/common/string_utils.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "url/gurl.h"
 
@@ -33,6 +36,7 @@ namespace {
 constexpr char kId[] = "id";
 constexpr char kMethod[] = "method";
 constexpr char kParams[] = "params";
+constexpr char kChainId[] = "chainId";
 
 // This is a best effort parsing of the data
 brave_wallet::mojom::TxDataPtr ValueToTxData(
@@ -425,6 +429,38 @@ std::optional<PersonalEcRecoverParams> ParsePersonalEcRecoverParams(
   return result;
 }
 
+std::optional<uint256_t> ChainIdStringToUint256(
+    const std::string& chain_id_string) {
+  if (chain_id_string.empty()) {
+    return uint256_t(0);
+  }
+  if (auto hex_value = HexValueToUint256(chain_id_string)) {
+    return hex_value;
+  }
+  return Base10ValueToUint256(chain_id_string);
+}
+
+std::optional<uint256_t> ChainIdNumberToUint256(double chain_id_double) {
+  uint64_t chain_id_uint64 = 0;
+  if (std::trunc(chain_id_double) != chain_id_double ||
+      !base::CheckedNumeric<uint64_t>(chain_id_double)
+           .AssignIfValid(&chain_id_uint64) ||
+      chain_id_uint64 > kMaxSafeIntegerUint64) {
+    return std::nullopt;
+  }
+  return uint256_t(chain_id_uint64);
+}
+
+std::optional<uint256_t> ChainIdValueToUint256(const base::Value& value) {
+  if (const std::string* chain_id_string = value.GetIfString()) {
+    return ChainIdStringToUint256(*chain_id_string);
+  }
+  if (std::optional<double> chain_id_double = value.GetIfDouble()) {
+    return ChainIdNumberToUint256(*chain_id_double);
+  }
+  return std::nullopt;
+}
+
 mojom::EthSignTypedDataPtr ParseEthSignTypedDataParams(
     const base::ListValue& params,
     EthSignTypedDataHelper::Version version) {
@@ -522,9 +558,12 @@ mojom::EthSignTypedDataPtr ParseEthSignTypedDataParams(
 
   result->primary_type = *primary_type;
 
-  auto chain_id = domain->FindDouble("chainId");
-  if (chain_id) {
-    result->chain_id = Uint256ValueToHex(uint256_t(uint64_t(*chain_id)));
+  if (const base::Value* chain_id_value = domain->Find(kChainId)) {
+    auto chain_id_int = ChainIdValueToUint256(*chain_id_value);
+    if (!chain_id_int) {
+      return nullptr;
+    }
+    result->chain_id = Uint256ValueToHex(*chain_id_int);
   }
 
   DCHECK(!result->domain_hash.empty());
