@@ -222,7 +222,6 @@ Yalnız etibar etdiyiniz varlıqlardan olan siyahılara abunə olun. Brauzeriniz
 <translation id="9040069796107003510">Brave Mükafatlarının ikonu</translation>
 <translation id="6333347122924254968">Ünvan çubuğunda Brave Mükafatlarının ikonunu göstərin</translation>
 <translation id="4393974575368329991">Alt naviqasiya alət çubuğu</translation>
-<translation id="8727059712928806451">Aşağı paneli aktivləşdir</translation>
 <translation id="1834226716203076292">Ana səhifə, əlfəcinlər və axtarışa cəld giriş üçün alt çubuğu göstərin</translation>
 <translation id="1422686363939271829">Alt ünvan çubuğu mövqesi seçildiyində bu parametr deaktiv ediləcək</translation>
 <translation id="6587448235155023666">Dəyişiklikləriniz növbəti dəfə Brave-ni yenidən başlatdığınız zaman qüvvəyə minəcək.</translation>
@@ -292,7 +291,7 @@ Yalnız etibar etdiyiniz varlıqlardan olan siyahılara abunə olun. Brauzeriniz
 <translation id="2569646144216067185">Söz sayı: <ph name="WORD_COUNT"/></translation>
 <translation id="7507533586185621084">Səhv Sync kodu</translation>
 <translation id="8284063834901328650">Səhv Sync QR kodu</translation>
-<translation id="859506441384380749">Bu kod Brave-in köhnəlmiş versiyası tərəfindən yaradılıb, əvvəlcə digər cihazınızı yeniləyin</translation>
+<translation id="4002014583969312635">Deyəsən, bu kod Brave-in köhnə versiyasında işləyən cihazda yaradılıb. Lütfən, digər cihazınızda Brave-in ən son versiyasına yeniləyin və sonra yeni sinxronizasiya kodu yaradın.</translation>
 <translation id="3132642509209154999">Bu kodun müddəti bitib. Zəhmət olmasa, digər cihazınızda yenisini yaradın və yenidən cəhd edin.</translation>
 <translation id="2859229680945501779">Bu kod etibarsızdır. Cihazınızda vaxtın və zaman zonasının düzgün qurulduğunu yoxlayın.</translation>
 <translation id="3149880132460839085">Brave Sync</translation>
@@ -338,8 +337,6 @@ Yalnız etibar etdiyiniz varlıqlardan olan siyahılara abunə olun. Brauzeriniz
 <translation id="8185825081026121627">Gizliliyi qoruyan Brave Mükafatları reklamlarına baxaraq Əsas Diqqət Tokeni qazanın.</translation>
 <translation id="5321518976657560663">Səhv Rədd</translation>
 <translation id="4114170343590425996">Brave Mükafatlarını bərpa edərkən bir səhv baş verdi. Zəhmət olmasa Brave-i yenidən çalışdırın və yenidən cəhd edin.</translation>
-<translation id="6417420737057016607">Brave Reklamlar</translation>
-<translation id="5611966874859284786">Brave istifadədə olmadıqda bildiriş reklamlarını göstərin</translation>
 <translation id="5717636703619499822"><ph name="BEGIN_LINK1"/>Brave Mükafatları məlumatlarını sıfırla…<ph name="END_LINK1"/></translation>
 <translation id="1830919318137227284"><ph name="BEGIN_LINK1"/>Brave Reklamlar məlumatlarını təmizlə…<ph name="END_LINK1"/></translation>
 <translation id="8293206222192510085">Əlfəcin əlavə edin</translation>
@@ -398,8 +395,9 @@ Yalnız etibar etdiyiniz varlıqlardan olan siyahılara abunə olun. Brauzeriniz
 <translation id="4546260624932151782">Seçilmişləri göstər</translation>
 <translation id="5313967007315987356">Sayt əlavə et</translation>
 <translation id="1773147648972887693">Tez-tez ziyarət edilənlər</translation>
-<translation id="752098910262610337">Qısayolları göstər</translation>
 <translation id="7134741506051403308">Widget'i gizlət</translation>
+<translation id="1247759249260562308">Sevimlini redaktə et</translation>
+<translation id="6387214885349500492">Bu sevimlini sancaqla</translation>
 <translation id="7462178177755090262">Açılış ekranı</translation>
 <translation id="5365434987337264071">Son açılan vərəq</translation>
 <translation id="6019856124237323989">{HOURS, plural, =1 {İnatkarlıqdan sonra <ph name="HOURS_ONE"/> saatdan sonra yeni vərəq aç} other {İnatkarlıqdan sonra <ph name="HOURS_MANY"/> saatdan sonra yeni vərəq aç}}</translation>
@@ -978,6 +976,7 @@ Lütfən, bizimlə bölüşməyə rahat olduğunuz məlumatları seçin.
 <translation id="6365389672683343144">Sizin Brave VPN abunəliyiniz 5-dək cihazı - Android, iOS və masaüstünü qoruyur. Sadəcə Google Play abunəliyinizi Brave hesabınıza bağlayın.</translation>
 <translation id="6610899852831463073">Təhlükəsiz Baxış aktivləşdirilmədi</translation>
 <translation id="7954263306665462056">Təhlükəsiz Baxış cihazınızda söndürülüb. Onu aktivləşdirmək üçün Google Play Xidmətlərinin quraşdırıldığından və yeniləndiyindən əmin olun.</translation>
+<translation id="6417420737057016607">Brave Reklamları</translation>
 <translation id="7748944510530490017">Əsas Şəbəkələr</translation>
 <translation id="2781668117338732220">İkincil Şəbəkələr</translation>
 <translation id="282560918037172384">Test Şəbəkələri</translation>

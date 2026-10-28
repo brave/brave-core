@@ -223,7 +223,6 @@
 <translation id="9040069796107003510">Brave Rewards చిహ్నం</translation>
 <translation id="6333347122924254968">చిరునామా భాగంలో Brave Rewards చిహ్నాన్ని చూపించు</translation>
 <translation id="4393974575368329991">దిగువ నావిగేషన్ టూల్‌బార్</translation>
-<translation id="8727059712928806451">దిగువ బార్‌ను ప్రారంభించండి</translation>
 <translation id="1834226716203076292">హోమ్, బుక్‌మార్క్‌లు మరియు సెర్చ్‌ను త్వరగా యాక్సెస్ చేయడానికి దిగువ బార్‌ను చూపించండి</translation>
 <translation id="1422686363939271829">ఈ సెట్టింగ్ కింద అడ్రస్ బార్ స్థానం ఎంపిక చేసుకుంటే ఆగిపోతుంది</translation>
 <translation id="6587448235155023666">మీ మార్పులు మీరు Braveని మరుసటిసారి ప్రారంభించినప్పుడు ప్రభావాన్ని చూపుతాయి.</translation>
@@ -293,7 +292,7 @@
 <translation id="2569646144216067185">పద గణన: <ph name="WORD_COUNT"/></translation>
 <translation id="7507533586185621084">తప్పు సమకాలీకరణ కోడ్</translation>
 <translation id="8284063834901328650">తప్పు సమకాలీకరణ QR కోడ్</translation>
-<translation id="859506441384380749">ఈ కోడ్ Brave యొక్క కోరిక తప్ప విషయం నుండి ఉత్పత్తి చేయబడింది, పలు ప్రసార విధానాల తొలగింపు చిట్టాలో అయినది, దయచేసి మీ ఇతర పరికరాన్ని అప్‌గ్రేడ్ చేయండి</translation>
+<translation id="4002014583969312635">ఈ కోడ్ పాత Brave వెర్షన్‌లో నడుస్తున్న పరికరంలో రూపొందించబడినట్లు కనిపిస్తోంది. దయచేసి మీ ఇతర పరికరంలో Brave యొక్క తాజా వెర్షన్‌కు అప్‌డేట్ చేసి, ఆపై కొత్త సింక్ కోడ్‌ను రూపొందించండి.</translation>
 <translation id="3132642509209154999">ఈ కోడ్ కాలదలయం అయింది. దయచేసి మీ ఇతర పరికరంలో కొత్తదాన్ని ఉత్పత్తి చేసి మరో మారు ప్రయత్నించండి.</translation>
 <translation id="2859229680945501779">ఈ కోడ్ అవాస్తవం. దయచేసి మీ పరికరంలో సమయం మరియు కాలమానం సరిచేయబడిన లేక ఉన్నాయని నిర్ధారించండి.</translation>
 <translation id="3149880132460839085">Brave Sync</translation>
@@ -346,8 +345,6 @@
 <translation id="8185825081026121627">ప్రైవసి సమురక్షితం Brave Rewards యాడ్స్ ను వీక్షించడం ద్వారా Basic Attention Token సంపాదించండి.</translation>
 <translation id="5321518976657560663">రీసెట్ ఎర్రర్</translation>
 <translation id="4114170343590425996">Brave Rewards ని రీసెట్ చేసేమద్రంలో ఒక పొరపాటు జరిగింది. దయచేసి Brave ని మళ్ళీ నిర్వహించి మళ్ళీ ప్రయత్నించండి.</translation>
-<translation id="6417420737057016607">Brave Ads</translation>
-<translation id="5611966874859284786">Brave ఉపయోగంలో ఉండనప్పుడు నోటిఫికేషన్ యాడ్స్ చూపించు</translation>
 <translation id="5717636703619499822"><ph name="BEGIN_LINK1"/>Brave Rewards డేటాను రీసెట్ చేయండి…<ph name="END_LINK1"/></translation>
 <translation id="1830919318137227284"><ph name="BEGIN_LINK1"/>Brave Ads డేటాను క్లియర్ చేయండి…<ph name="END_LINK1"/></translation>
 <translation id="8293206222192510085">బుక్‌మార్క్ చేర్చండి</translation>
@@ -410,8 +407,9 @@
 <translation id="4546260624932151782">ఫేవరెట్‌లను చూపించు</translation>
 <translation id="5313967007315987356">సైట్‌ను జోడించు</translation>
 <translation id="1773147648972887693">తరచుగా సందర్శించిన</translation>
-<translation id="752098910262610337">సంక్షిప్తాలను చూపించు</translation>
 <translation id="7134741506051403308">విడ్జెట్‌ను దాచు</translation>
+<translation id="1247759249260562308">ఫేవరెట్‌ను సవరించు</translation>
+<translation id="6387214885349500492">ఈ ఫేవరెట్‌ను పిన్ చేయి</translation>
 <translation id="7462178177755090262">ప్రారంభ స్క్రీన్</translation>
 <translation id="5365434987337264071">చివరిగా తెరిచిన ట్యాబ్</translation>
 <translation id="6019856124237323989">{HOURS, plural, =1 {అపరిమితంగా <ph name="HOURS_ONE"/> గంట తర్వాత కొత్త ట్యాబ్} other {అపరిమితంగా <ph name="HOURS_MANY"/> గంటల తర్వాత కొత్త ట్యాబ్}}</translation>
@@ -998,6 +996,7 @@ Brave వాడుకొని, మీరు వినియోగ నియమ�
 <translation id="6365389672683343144">మీ Brave VPN సబ్స్క్రిప్షన్ ప్రతి Android, iOS మరియు డెస్క్టాప్ పరికరాల్లో 5 పరికరాలను రక్షించగలదు. కేవలం మీ Google Play సబ్‌స్క్రిప్షన్ని Brave ఖాతాకు లింక్ చేయండి.</translation>
 <translation id="6610899852831463073">సురక్షిత బ్రౌజింగ్‌ను ప్రారంభించలేము</translation>
 <translation id="7954263306665462056">మీ పరికరంలో సురక్షిత బ్రౌజింగ్ ఆపివేయబడింది. ఇది ప్రారంభించడానికి, Google Play సేవలను సంస్థాపన చెయ్యడం మరియు దాన్ని నవీకరించడం నిర్ధారించండి.</translation>
+<translation id="6417420737057016607">Brave Ads</translation>
 <translation id="7748944510530490017">ప్రథమ నెట్వర్క్‌లు</translation>
 <translation id="2781668117338732220">ద్వితీయ నెట్వర్క్‌లు</translation>
 <translation id="282560918037172384">పరీక్ష నెట్వర్క్‌లు</translation>

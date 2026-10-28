@@ -220,7 +220,6 @@
 <translation id="9040069796107003510">Brave रीवॉर्ड्स आयकॉन</translation>
 <translation id="6333347122924254968">पत्रव्यतिरिक्त Brave रीवॉर्ड्स आयकॉन दाखवा</translation>
 <translation id="4393974575368329991">खालचा नेव्हिगेशन टूलबार</translation>
-<translation id="8727059712928806451">तळ बार सक्षम करा</translation>
 <translation id="1834226716203076292">होम, बुकमार्क आणि शोध यांच्या जलद ऍक्सेससाठी खालचा बार दाखवा</translation>
 <translation id="1422686363939271829">तळाचा अ‍ॅड्रेस बार निवडला असताना हे सेटिंग अक्षम आहे</translation>
 <translation id="6587448235155023666">तुम्ही पुढल्या वेळी Brave रीलाँच कराल तोपर्यंत तुमचे बदल प्रभावी होतील</translation>
@@ -290,7 +289,7 @@
 <translation id="2569646144216067185">शब्द गणना: <ph name="WORD_COUNT"/></translation>
 <translation id="7507533586185621084">चुकीचा SYNC कोड</translation>
 <translation id="8284063834901328650">चुकीचा SYNC QR कोड</translation>
-<translation id="859506441384380749">हा कोड Brave च्या जुन्या आवृत्तीद्वारे तयार केला गेला आहे, कृपया तुमचे दुसरे डिव्हाइस अपग्रेड करा</translation>
+<translation id="4002014583969312635">असे दिसते की हा कोड जुन्या आवृत्तीच्या Brave वर चालणाऱ्या डिव्हाइसवर तयार करण्यात आला होता. कृपया तुमच्या दुसऱ्या डिव्हाइसवर Brave च्या नवीनतम आवृत्तीवर अपडेट करा आणि नंतर नवीन सिंक कोड तयार करा.</translation>
 <translation id="3132642509209154999">हा कोड कालबाह्य झाला आहे. कृपया तुमच्या दुसर्‍या डिव्हाइसवर नवीन तयार करा आणि पुन्हा प्रयत्न करा.</translation>
 <translation id="2859229680945501779">हा कोड अमान्य आहे. कृपया डिव्हाइसवरील वेळ आणि टाइमझोन योग्यरीत्या सेट केले आहेत याची खात्री करा.</translation>
 <translation id="3149880132460839085">Brave Sync</translation>
@@ -340,8 +339,6 @@
 <translation id="8185825081026121627">गोपनीयता राखणाऱ्या Brave रीवॉर्ड्स ॲड्स पाहण्यासाठी बेसिक अटेन्शन टोकन मिळवा.</translation>
 <translation id="5321518976657560663">रीसेट एरर</translation>
 <translation id="4114170343590425996">ब्रेव्ह रीवॉर्ड्स रीसेट करताना त्रुटी आली. कृपया ब्रेव्ह पुन्हा सुरू करा आणि पुन्हा प्रयत्न करा.</translation>
-<translation id="6417420737057016607">Brave Ads</translation>
-<translation id="5611966874859284786">Brave वापरत असताना ॲड्स नोटिफिकेशन दाखवा</translation>
 <translation id="5717636703619499822"><ph name="BEGIN_LINK1"/>Brave रीवॉर्ड्स डेटा रीसेट करा…<ph name="END_LINK1"/></translation>
 <translation id="1830919318137227284"><ph name="BEGIN_LINK1"/>Brave ॲड्स डेटा क्लिअर करा…<ph name="END_LINK1"/></translation>
 <translation id="8293206222192510085">बुकमार्क जोडा</translation>
@@ -400,8 +397,9 @@
 <translation id="4546260624932151782">आवडीचे दाखवा</translation>
 <translation id="5313967007315987356">साइट जोडा</translation>
 <translation id="1773147648972887693">वारंवार भेट दिलेल्या साइट्स दाखवा</translation>
-<translation id="752098910262610337">शॉर्टकट दर्शवा</translation>
 <translation id="7134741506051403308">विजेट लपवा</translation>
+<translation id="1247759249260562308">आवडीचे संपादित करा</translation>
+<translation id="6387214885349500492">हे आवडीचे पिन करा</translation>
 <translation id="7462178177755090262">प्रारंभिक स्क्रीन</translation>
 <translation id="5365434987337264071">शेवटी उघडलेली टॅब</translation>
 <translation id="6019856124237323989">{HOURS, plural, =1 {अक्रियतेनंतर <ph name="HOURS_ONE"/> तासाने नवीन टॅब} other {अक्रियतेनंतर <ph name="HOURS_MANY"/> तासांनी नवीन टॅब}}</translation>
@@ -968,6 +966,7 @@
 <translation id="6365389672683343144">तुमचे Brave VPN सबस्क्रिप्शन अँड्रॉइड, iOS आणि डेस्कटॉपवर 5 डिव्हाइसपर्यंत संरक्षित करू शकते. फक्त तुमचे Google Play सबस्क्रिप्शन तुमच्या Brave खात्याशी जोडा.</translation>
 <translation id="6610899852831463073">सेफ ब्राउझिंग सक्षम करू शकत नाही</translation>
 <translation id="7954263306665462056">सेफ ब्राउझिंग तुमच्या डिव्हाइसवर डिसेबल केले गेले आहे. हे सक्षम करण्यासाठी, Google Play सर्व्हिसेस इन्स्टॉल केले आहे आणि ते अद्ययावत असल्याची खात्री करा.</translation>
+<translation id="6417420737057016607">Brave Ads</translation>
 <translation id="7748944510530490017">प्राथमिक नेटवर्क्स</translation>
 <translation id="2781668117338732220">द्वितीयक नेटवर्क्स</translation>
 <translation id="282560918037172384">टेस्ट नेटवर्क्स</translation>

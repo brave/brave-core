@@ -20,6 +20,7 @@
 <translation id="8541922081612557424">Brave について</translation>
 <translation id="987734326276404793">スマートフォンの Brave で価格トラッキングのアラートを受け取る</translation>
 <translation id="1203500561924088507">インストールいただきありがとうございます。<ph name="BUNDLE_NAME"/> を使用するにはブラウザを再起動してください。</translation>
+<translation id="1213674046343558619"><ph name="IMPORTANT_UPDATE"/>が保留中です。ブラウジングを保護するため、Brave はあなたが <ph name="IDLE_DURATION"/>間操作しなかったときにアップデートされます。</translation>
 <translation id="1232234696885483911">画像検索を開くと、ページのタイトル、URL、コンテンツ（PDF を含む）が自動的にサーバーに送信されます。<ph name="LEARN_MORE"/></translation>
 <translation id="1934377710648094656">Brave にログイン中は、Brave アカウントのパスワードやその他の設定を使用できます。この設定を変更するには、[Brave のアカウント設定] に移動してください。</translation>
 <translation id="583633806828413086">Mac のメニューバーに Gemini in Brave を表示する</translation>
@@ -221,6 +222,7 @@
 <translation id="3286538390144397061">今すぐ再起動</translation>
 <translation id="2339258256897053758">Brave API キーが欠落しています。Brave の一部の機能は無効になります。</translation>
 <translation id="8926637909431618259">Brave を閉じた際にバックグラウンド アプリの処理を続行する</translation>
+<translation id="8245661393996028021">Brave は、あなたが操作していないときにアップデートされます</translation>
 <translation id="518125528057094977">Brave で安全でない接続を使用してサイトを読み込む前に警告を表示します</translation>
 <translation id="8652321858775514885">Brave のウィンドウをすべて閉じると、ほとんどのサイトからログアウトします。ただし Brave にログインしている場合、Brave アカウントからはログアウトしません。サイトにあなたの情報を記憶させるには、<ph name="SETTINGS_LINK"/>します。</translation>
 <translation id="3352986031709923790">検索範囲の右上隅: 右 <ph name="RIGHT"/>%、上 <ph name="TOP"/>%</translation>
@@ -229,6 +231,7 @@
 <translation id="2645435784669275700">Chrome OS</translation>
 <translation id="2297290224191497273">既存の Brave プロフィールに切り替えますか？</translation>
 <translation id="3412460710772753638">このデバイスのパスワード マネージャーで更新</translation>
+<translation id="172368702860945706">Brave のアップデートが予定されています</translation>
 <translation id="5079573433701109938"><ph name="DEVICE"/> のブックマークなどを使用するには、Brave にログインしてください</translation>
 <translation id="3438772217992559640">画像検索でこのタブを検索</translation>
 <translation id="2491221873705777076">スマートフォンの Brave でセーフ ブラウジング保護強化機能を有効にする</translation>
@@ -366,6 +369,7 @@
 <translation id="4877750182157975795"><ph name="DEVICE_TYPE"/> の Brave で、Brave のお気に入りすべてにアクセスできます</translation>
 <translation id="1204184037023366446">Brave がハンド トラッキングの許可を求めています</translation>
 <translation id="5406591571925937375">最近アクセスしていないため、Brave で <ph name="PERMISSION_1"/>、<ph name="PERMISSION_2"/>、<ph name="PERMISSION_3"/> の権限を削除しました。</translation>
+<translation id="3576895950897485019">Brave にログイン</translation>
 <translation id="5174969993834422967">通知はデフォルトでブロックされています。このサイトの通知を表示するには、ロケーション バーの右上にある通知アイコンをクリックしてください。</translation>
 <translation id="5174983315706567306">ディスクの空き容量が不足しています。</translation>
 <translation id="8157129267754368853">Brave アカウントの再認証が必要です</translation>
@@ -374,6 +378,7 @@
 <translation id="5234764350956374838">閉じる</translation>
 <translation id="7690383309583926074">Brave アプリを入手して、外出先でパスワードを保存</translation>
 <translation id="8586264863973514035">変更を適用するには Brave を再起動してください</translation>
+<translation id="8127050479140582768">このタブを別のデバイスに送信するには、両方のデバイスで Brave にログインしてください</translation>
 <translation id="5286907366254680517">検出しました</translation>
 <translation id="7264453786974905915">Brave アプリを入手</translation>
 <translation id="7230006500876504868">Brave で検索</translation>
@@ -735,6 +740,7 @@
 <translation id="5128665650717824082">Brave for Testing は、既定のブラウザには設定できません。</translation>
 <translation id="3053208669360972929">どこからでも Brave で検索</translation>
 <translation id="2433912322225810055">この拡張機能では、Brave の起動時、またはアドレスバーからの検索時に表示されるページも制御されます。</translation>
+<translation id="8789425457808164956">このタブを別のデバイスに送信するには、送信先のデバイスで Brave にログインしてください</translation>
 <translation id="4100716194836114130">自分好みに設定</translation>
 <translation id="8712637175834984815">理解しました</translation>
 <translation id="1419543648228375718">Brave にログインしますか？</translation>

@@ -117,6 +117,8 @@
 <translation id="2162109630536601963">אם תוסף זה שולח בקשות רשת, הן לא ישתמשו ב- Tor או במצב פרטי.</translation>
 <translation id="2725327089319971976">כדי להשבית תוסף זה במצב פרטי ובמצב Tor, יש לבטל הבחירה באפשרות זו.</translation>
 <translation id="438106944087726695">מנוהל על ידי Brave</translation>
+<translation id="2265651566599167057">סומן כתוכנה זדונית על ידי Socket.</translation>
+<translation id="2607395470596637070">מידע נוסף על האופן שבו Socket ב-Brave מגן עליך</translation>
 <translation id="3371343170427636147">יישומי לילה של דפדפן Brave</translation>
 <translation id="4097979995947147464">יישומי ביטא של דפדפן Brave</translation>
 <translation id="8303432794159193481">יישומי פיתוח של דפדפן Brave</translation>
@@ -722,7 +724,7 @@
 <translation id="4432071071853308688">הקוד הזה ריק</translation>
 <translation id="955848693465029904">שגיאה בהגדרת סנכרון פנימי</translation>
 <translation id="7456398316301207582">שגיאת מחיקת חשבון פנימי</translation>
-<translation id="859506441384380749">הקוד יוצר בידי גרסה של Brave שהוצאה משימוש, יש לשדרג את המכשיר האחר תחילה.</translation>
+<translation id="4002014583969312635">נראה שהקוד הזה נוצר במכשיר שמריץ גרסה ישנה יותר של Brave. יש לעדכן לגרסה האחרונה ביותר של Brave במכשיר האחר שלך, ואז ליצור קוד סנכרון חדש.</translation>
 <translation id="3132642509209154999">פג תוקפו של הקוד. יש לייצור קוד חדש במכשיר השני ולנסות שוב.</translation>
 <translation id="2859229680945501779">קוד זה אינו חוקי. אנא בדקו שהזמן ואזור הזמן מוגדרים כהלכה במכשיר שלכם.</translation>
 <translation id="2339730291919608488">השאר שרשרת סנכרון</translation>

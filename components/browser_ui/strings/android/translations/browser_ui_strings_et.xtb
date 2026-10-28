@@ -12,7 +12,6 @@
 <translation id="6670155282615872564">Viige lõpule allolevad soovitatavad toimingud, et Brave'i parimal moel kasutada.</translation>
 <translation id="113098737392899175">Lehtedel navigeerimine tekstikursoriga, kui klaviatuur on ühendatud</translation>
 <translation id="1148624853678088576">Teil on kõik seadistatud!</translation>
-<translation id="738393714577080438">Paroolide salvestamine Brave'is</translation>
 <translation id="1178015372320901893">Minu otseteede alumine leht</translation>
 <translation id="1178581264944972037">Peata</translation>
 <translation id="1181037720776840403">Eemalda</translation>
@@ -54,6 +53,7 @@
 <translation id="1532175480576580256">Minu otseteede alumine leht on avatud täiskõrgusel.</translation>
 <translation id="1538031354170655462">Tavaliselt kasutavad saidid lähedalasuvate märgendite või seadmetega töötamiseks lähiväljasidet (NFC) (nt märkide skannimiseks või viipemakseks)</translation>
 <translation id="1547123415014299762">Kolmanda osapoole küpsisefailid on lubatud</translation>
+<translation id="1565353932454306569"><ph name="ORIGIN"/> – Täisekraanilt väljumiseks lohistage ekraani küljelt.</translation>
 <translation id="3665719978526894928">Kiirenda saite Brave’i V8 mootoriga, aga vähenda pisut Brave’i vastupanuvõimet rünnetele</translation>
 <translation id="1593426485665524382">Uued toimingud on saadaval ekraanikuva ülaosas</translation>
 <translation id="1594521731409209842">Foto suuruse muutmiseks liigutage ekraanil sõrmi kokku-lahku</translation>
@@ -138,6 +138,7 @@
 <translation id="2315043854645842844">Operatsioonisüsteem ei toeta kliendipoolset sertifikaadi valimist.</translation>
 <translation id="2347601491101454548">Minu otseteede alumine leht on avatud poolel kõrgusel.</translation>
 <translation id="2359808026110333948">Jätka</translation>
+<translation id="2364212713469273030"><ph name="ORIGIN"/> – Täisekraanilt väljumiseks lohistage ülaosast ja pühkige vasakult või paremalt serva poole.</translation>
 <translation id="904887679952026733">Kui Brave kasutab tumedat teemat, rakendatakse saitidele võimaluse korral tume teema</translation>
 <translation id="2390272837142897736">Suumi suurendamine</translation>
 <translation id="2397689164757137845">Lubatud • Täpne</translation>
@@ -227,7 +228,6 @@
 <translation id="3167868116600277716">Discoveri voog</translation>
 <translation id="3198916472715691905"><ph name="STORAGE_AMOUNT"/> salvestatud andmeid</translation>
 <translation id="3199078925536734975">Lubatud sel korral • Ligikaudne</translation>
-<translation id="3208584281581115441">Kontrolli kohe</translation>
 <translation id="321187648315454507">Selleks et lubada rakendusel <ph name="APP_NAME"/> teile märguandeid saata, lülitage märguanded sisse ka <ph name="BEGIN_LINK"/>Androidi seadetes<ph name="END_LINK"/>.</translation>
 <translation id="3223425961342298674">Asukoht ei ole lubatud</translation>
 <translation id="3227137524299004712">Mikrofon</translation>
@@ -284,7 +284,6 @@
 <translation id="381841723434055211">Telefoninumbrid</translation>
 <translation id="3823453485268218808">Monofont</translation>
 <translation id="3826050100957962900">Kolmanda osapoole sisselogimisviibad</translation>
-<translation id="3831065134033923230">Salvestatud paroolide kontrollimine</translation>
 <translation id="3835233591525155343">Teie seadmekasutus</translation>
 <translation id="1799795508209440035">Brave blokeerib täna küpsisefailid uuesti</translation>
 <translation id="385051799172605136">Tagasi</translation>
@@ -292,7 +291,6 @@
 <translation id="9046306654872718870">Muutke Brave omanäoliseks, kasutades avalehel kohandatud värve ja pilte.</translation>
 <translation id="389521680295183045">Saidid võivad küsida luba selle teadmiseks, millal seadet aktiivselt kasutate</translation>
 <translation id="3895926599014793903">Sundluba suumimine</translation>
-<translation id="3903738175795615004">Täisekraanilt väljumiseks lohistage ülaservast või vajutage paoklahvi.</translation>
 <translation id="3905475044299942653">Paljude märguannete peatamine</translation>
 <translation id="3922092564198021702">Avage telefonis menüü Seaded</translation>
 <translation id="3924858949939391676">Kui lugemisrežiim on sisse lülitatud, kuvatakse lingid</translation>
@@ -353,7 +351,6 @@
 <translation id="4479647676395637221">Küsi enne saitidele minu kaamera kasutamiseks juurdepääsu lubamist (soovitatav)</translation>
 <translation id="4505788138578415521">Laiendatud URL</translation>
 <translation id="4522570452068850558">Üksikasjad</translation>
-<translation id="4523472416386354622">Alustamiseks logige sisse</translation>
 <translation id="4529207923544043455">Alumine leht, mis kuvab lõpetatud ja lõpetamata seadistusloendi ülesandeid</translation>
 <translation id="4534723447064627427">Selleks et anda rakendusele <ph name="APP_NAME"/> juurdepääs teie mikrofonile, lülitage mikrofon sisse ka <ph name="BEGIN_LINK"/>Androidi seadetes<ph name="END_LINK"/>.</translation>
 <translation id="4545694195887112015">Seadistusleht on suletud</translation>
@@ -366,7 +363,6 @@
 <translation id="4645575059429386691">Vanema hallatud</translation>
 <translation id="4651224148644053314">Rohkem värve ja valikuid</translation>
 <translation id="4652266463001779298">Pole lubatud</translation>
-<translation id="4655846733459137112">Puudutage valikut Jah, et järgmisel sisselogimisel seda parooli hõlpsasti kasutada.</translation>
 <translation id="4663373278480897665">Kaamera on lubatud</translation>
 <translation id="4670064810192446073">Virtuaalreaalsus</translation>
 <translation id="5652778654712411580">Puudutage valikut Brauseri rakendus ja seejärel valikut Brave</translation>
@@ -411,7 +407,6 @@
 <translation id="512938610812707830">Uue vahelehe välimuse teema kogude alumine leht on avatud täiskõrguses</translation>
 <translation id="5137460097045297858">Discoveri voo alumine leht on avatud poolel kõrgusel</translation>
 <translation id="5139253256813381453">{PRICE_DROP_COUNT,plural, =1{Hinnalangus avatud vahelehtedel}other{Hinnalangused avatud vahelehtedel}}</translation>
-<translation id="5150048675001754041">Logige saitidele ja rakendustesse kiiresti ja hõlpsalt sisse</translation>
 <translation id="5186036860380548585">Valik on saadaval ekraanikuva ülaosas</translation>
 <translation id="5197729504361054390">Teie valitud kontakte jagatakse saidiga <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/>.</translation>
 <translation id="5198930230016462977">Uue vahelehe kohandamise alumine leht on suletud</translation>
@@ -421,7 +416,6 @@
 <translation id="5239623327352565343">Asukoht on lubatud</translation>
 <translation id="5246825184569358663">See toiming kustutab kõik kohalikud andmed, sh küpsised, ning lähtestab kõik domeeni <ph name="DOMAIN"/> ja selle alla kuuluvate saitide õigused.</translation>
 <translation id="5264323282659631142">Eemalda „<ph name="CHIP_LABEL"/>”</translation>
-<translation id="528192093759286357">Täisekraanilt väljumiseks lohistage ülaservast alla ja puudutage tagasinuppu.</translation>
 <translation id="5286194356314741248">Skaneering</translation>
 <translation id="5300589172476337783">Kuva</translation>
 <translation id="5301954838959518834">Selge, sain aru</translation>
@@ -469,7 +463,6 @@
 <translation id="5804241973901381774">Load</translation>
 <translation id="5817042798620209981">Saiditeave, dialoog</translation>
 <translation id="5822675474983796325">Uue vahelehe kohandamise alumine leht on avatud täispikkuses</translation>
-<translation id="4298364316773778595">Alumine leht Brave’is paroolide salvestamise juhistega</translation>
 <translation id="5833899990800318936">Ärge lubage saitidel kasutada JavaScripti</translation>
 <translation id="583673505367439042">Saidid saavad küsida luba teie seadmes olevate failide ja kaustade muutmiseks</translation>
 <translation id="5844448279347999754">Kui see on sisse lülitatud, võivad saidid küsida luba teie lõikelauale salvestatud teksti ja piltide nägemiseks. Kui see on välja lülitatud, ei näe saidid teie lõikelauale salvestatud teksti ega pilte.</translation>
@@ -507,7 +500,6 @@
 <translation id="6104860901391833523">Kui see on sisse lülitatud, saavad saidid automaatselt režiimi Pilt pildis aktiveerida. Kui see on välja lülitatud, ei saa saidid automaatselt režiimi Pilt pildis aktiveerida.</translation>
 <translation id="6120483543004435978">Kui see on sisse lülitatud, võivad saidid küsida luba selle teadmiseks, millal seadet aktiivselt kasutate. Kui see on välja lülitatud, ei saa saidid teada, millal seadet aktiivselt kasutate.</translation>
 <translation id="5773142757282836623">Peida kaart „Brave'i soovituste hankimine muudes rakendustes“</translation>
-<translation id="4852158809106762963">Brave pakub võimalust parool salvestada</translation>
 <translation id="615886654739818377">Saitidel pole lubatud aknaid kõikidel teie ekraanidel hallata</translation>
 <translation id="6165508094623778733">Lisateave</translation>
 <translation id="6171020522141473435">Kui see on sisse lülitatud, võivad saidid küsida luba Bluetooth-seadmete kasutamiseks. Kui see on välja lülitatud, ei saa saidid Bluetooth-seadmeid kasutada.</translation>
@@ -583,7 +575,6 @@
 <translation id="6980861169612950611">Kas kustutada saidi andmed? <ph name="SITE_NAME"/></translation>
 <translation id="6981982820502123353">Juurdepääsetavus</translation>
 <translation id="6991142177939282156">Lubatud • Kasutab ligikaudset asukohta</translation>
-<translation id="6992014788289743568">Suurendage oma turvalisust ja hoidke oma andmed turvalisemalt, kontrollides oma paroole</translation>
 <translation id="6992289844737586249">Küsi enne saitidele minu mikrofoni kasutamiseks juurdepääsu lubamist (soovitatav)</translation>
 <translation id="7000754031042624318">Androidi seadetes välja lülitatud</translation>
 <translation id="7036823721811529709">Kuulake taustal</translation>
@@ -650,7 +641,6 @@ Täiustatud kaitse reguleerib neid Brave’i seadeid:</translation>
 <translation id="775043444390799886">Tühista luba</translation>
 <translation id="7758789811447313947">Kannikeselilla teema</translation>
 <translation id="7759147511335618829">MIDI-seadme juhtimine ja ümberprogrammeerimine</translation>
-<translation id="7771089277295008211">Alumine leht paroolide salvestamise juhistega on suletud.</translation>
 <translation id="7781829728241885113">Eile</translation>
 <translation id="7791543448312431591">Lisa</translation>
 <translation id="780301667611848630">Tänan, ei</translation>
@@ -667,7 +657,6 @@ Täiustatud kaitse reguleerib neid Brave’i seadeid:</translation>
 <translation id="7940722705963108451">Tuleta mulle meelde</translation>
 <translation id="7948081750384205628">Lisateave: <ph name="SETTING_TITLE"/></translation>
 <translation id="7952708427581814389">Saidid saavad küsida luba lõikelaual oleva teksti ja piltide nägemiseks</translation>
-<translation id="7958779728312669715">Alumine leht paroolide salvestamise juhistega on täielikult avatud.</translation>
 <translation id="798299424881500862">Oranž teema</translation>
 <translation id="7986741934819883144">Kontakti valimine</translation>
 <translation id="7990211076305263060">Kui see on sisse lülitatud, võivad saidid küsida luba teie mikrofoni kasutamiseks. Kui see on välja lülitatud, ei saa saidid teie mikrofoni kasutada.</translation>
@@ -762,7 +751,6 @@ Täiustatud kaitse reguleerib neid Brave’i seadeid:</translation>
 <translation id="7532165358672313130">Kui jätkate sirvimist, saavad saidid Brave’iga kontrollida ja teie eelmisel külastatud saidil kinnitada, et olete tõenäoliselt päris inimene</translation>
 <translation id="8899807382908246773">Sekkuvad reklaamid</translation>
 <translation id="8903921497873541725">Suurendab</translation>
-<translation id="8919911527569629802">Logige sisse mis tahes veebisaidile.</translation>
 <translation id="8921772741368021346"><ph name="POSITION"/>/<ph name="DURATION"/></translation>
 <translation id="8926389886865778422">Ära enam küsi</translation>
 <translation id="8926666909099850184">NFC on selle seadme puhul välja lülitatud. Lülitage see <ph name="BEGIN_LINK"/>Androidi seadetes<ph name="END_LINK"/> sisse.</translation>
@@ -786,6 +774,7 @@ Täiustatud kaitse reguleerib neid Brave’i seadeid:</translation>
 <translation id="9138217887606523162">Praegune suumitase on <ph name="ZOOM_LEVEL"/> %%</translation>
 <translation id="7359422048569205930">Laske Brave'il kuvada teie hiljutisi vahelehti teie seadme rakenduste loendis ja otsingutulemustes. Saate selle Brave’i seadetes igal ajal välja lülitada.</translation>
 <translation id="9162462602695099906">See leht on ohtlik</translation>
+<translation id="9172068157980844189">Järjehoidjariba saate sisse lülitada menüüs Seaded &gt; Välimus.</translation>
 <translation id="9182556968660520230">Ära luba saitidel kaitstud sisu esitada</translation>
 <translation id="927148002081263046">Kontakti jagamine</translation>
 <translation id="947156494302904893">Külastatavad saidid saavad kinnitada, et olete päris inimene, mitte robot</translation>

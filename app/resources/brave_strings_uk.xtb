@@ -20,6 +20,7 @@
 <translation id="8541922081612557424">Про Brave</translation>
 <translation id="987734326276404793">Отримуйте сповіщення про відстеження цін у Brave на телефоні</translation>
 <translation id="1203500561924088507">Дякуємо за встановлення. Щоб почати використовувати пакет <ph name="BUNDLE_NAME"/>, потрібно перезапустити веб-переглядач.</translation>
+<translation id="1213674046343558619">Потрібно встановити <ph name="IMPORTANT_UPDATE"/>. Щоб ви могли безпечно переглядати вебсторінки, Brave оновиться, коли ви не використовуватимете вебпереглядач протягом <ph name="IDLE_DURATION"/>.</translation>
 <translation id="1232234696885483911">Коли ви відкриваєте пошук за зображенням, на сервер автоматично надсилається назва сторінки, її URL-адреса й контент, зокрема файли PDF. <ph name="LEARN_MORE"/></translation>
 <translation id="1934377710648094656">Увійшовши в Brave, ви можете використовувати паролі й інші дані з облікового запису Brave. Щоб змінити це налаштування, перейдіть у розділ "Ваш обліковий запис у Brave".</translation>
 <translation id="583633806828413086">Показувати значок Gemini у Brave на панелі меню пристрою Mac</translation>
@@ -222,6 +223,7 @@ Brave потрібен доступ до Bluetooth. <ph name="IDS_SERIAL_DEVICE_
 <translation id="3286538390144397061">Перезапустити зараз</translation>
 <translation id="2339258256897053758">Ключі API Brave відсутні. Деякі функції Brave буде вимкнено.</translation>
 <translation id="8926637909431618259">Продовжувати роботу фонових програм, коли Brave закрито</translation>
+<translation id="8245661393996028021">Brave оновиться, коли ви його не використовуватимете</translation>
 <translation id="518125528057094977">Brave показуватиме попередження, перш ніж завантажити сайт через незахищене з’єднання</translation>
 <translation id="8652321858775514885">Якщо ви закриєте всі вікна Brave, то вийдете з облікових записів на більшості сайтів, але не з облікового запису Brave (за умови, що ви ввійшли в Brave). Щоб дозволити сайтам запам’ятовувати вас, <ph name="SETTINGS_LINK"/>.</translation>
 <translation id="3352986031709923790">правий верхній кут області пошуку: <ph name="RIGHT"/>% праворуч, <ph name="TOP"/>% згори</translation>
@@ -230,6 +232,7 @@ Brave потрібен доступ до Bluetooth. <ph name="IDS_SERIAL_DEVICE_
 <translation id="2645435784669275700">Chrome OS</translation>
 <translation id="2297290224191497273">Перейти в наявний профіль Brave?</translation>
 <translation id="3412460710772753638">У Менеджері паролів на цьому пристрої</translation>
+<translation id="172368702860945706">Потрібно оновити Brave</translation>
 <translation id="5079573433701109938">Щоб отримати доступ до закладок і інших даних із пристрою "<ph name="DEVICE"/>", увійдіть у Brave</translation>
 <translation id="3438772217992559640">Шукати на цій вкладці за допомогою функції "Пошук за зображенням"</translation>
 <translation id="2491221873705777076">Використовуйте Безпечний перегляд із розширеним захистом у Brave на телефоні</translation>
@@ -367,6 +370,7 @@ Brave потрібен доступ до Bluetooth. <ph name="IDS_SERIAL_DEVICE_
 <translation id="4877750182157975795">Користуйтеся всіма улюбленими сервісами Brave у Brave на вашому пристрої <ph name="DEVICE_TYPE"/></translation>
 <translation id="1204184037023366446">Вебпереглядачу Brave потрібен дозвіл на відстеження ваших рук</translation>
 <translation id="5406591571925937375">Останнім часом ви не відвідували цей сайт. Вебпереглядач Brave скасував такі дозволи: "<ph name="PERMISSION_1"/>", "<ph name="PERMISSION_2"/>" і "<ph name="PERMISSION_3"/>".</translation>
+<translation id="3576895950897485019">Увійдіть у Brave</translation>
 <translation id="5174969993834422967">Зазвичай ви блокуєте сповіщення. Щоб дозволити сайту показувати сповіщення, натисніть значок сповіщення в правому куті панелі місцезнаходження.</translation>
 <translation id="5174983315706567306">Недостатньо місця на диску.</translation>
 <translation id="8157129267754368853">Потрібно пройти повторну автентифікацію в обліковому записі Brave</translation>
@@ -375,6 +379,7 @@ Brave потрібен доступ до Bluetooth. <ph name="IDS_SERIAL_DEVICE_
 <translation id="5234764350956374838">Закрити</translation>
 <translation id="7690383309583926074">Завантажте додаток Brave, щоб зберігати паролі, де б ви не були</translation>
 <translation id="8586264863973514035">Щоб застосувати зміни, перезапустіть Brave</translation>
+<translation id="8127050479140582768">Щоб надіслати цю вкладку на інший пристрій, увійдіть в обліковий запис Brave на обох пристроях</translation>
 <translation id="5286907366254680517">Визначено</translation>
 <translation id="7264453786974905915">Завантажити додаток Brave</translation>
 <translation id="7230006500876504868">Пошук у Brave</translation>
@@ -738,6 +743,7 @@ Brave не може відновити ваші налаштування.</trans
 <translation id="5128665650717824082">Brave for Testing не можна зробити веб-переглядачем за умовчанням.</translation>
 <translation id="3053208669360972929">Виконуйте пошук у Brave будь-де</translation>
 <translation id="2433912322225810055">Розширення також змінило сторінку, яка відкривається під час запуску Brave або пошуку в універсальному вікні пошуку.</translation>
+<translation id="8789425457808164956">Щоб надіслати цю вкладку на інший пристрій, увійдіть на ньому в Brave</translation>
 <translation id="4100716194836114130">Це ваш Brave</translation>
 <translation id="8712637175834984815">OK</translation>
 <translation id="1419543648228375718">Увійти в Brave?</translation>

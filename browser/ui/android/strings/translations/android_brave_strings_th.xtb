@@ -220,7 +220,6 @@
 <translation id="9040069796107003510">ไอคอน Brave Rewards</translation>
 <translation id="6333347122924254968">แสดงไอคอน Brave Rewards ในแถบที่อยู่</translation>
 <translation id="4393974575368329991">แถบเครื่องมือนำทางด้านล่าง</translation>
-<translation id="8727059712928806451">เปิดใช้งานแถบด้านล่าง</translation>
 <translation id="1834226716203076292">แสดงแถบด้านล่างเพื่อเข้าถึงหน้าแรก บุ๊กมาร์ก และการค้นหาได้อย่างรวดเร็ว</translation>
 <translation id="1422686363939271829">การตั้งค่านี้จะไม่สามารถใช้งานได้เมื่อเลือกตำแหน่งแถบที่อยู่ไว้ด้านล่าง</translation>
 <translation id="6587448235155023666">การเปลี่ยนแปลงของคุณจะมีผลในครั้งถัดไปที่คุณเปิดใช้งาน Brave อีกครั้ง</translation>
@@ -290,7 +289,7 @@
 <translation id="2569646144216067185">จำนวนคำ: <ph name="WORD_COUNT"/></translation>
 <translation id="7507533586185621084">รหัสซิงค์ไม่ถูกต้อง</translation>
 <translation id="8284063834901328650">รหัส QR ซิงค์ไม่ถูกต้อง</translation>
-<translation id="859506441384380749">รหัสนี้สร้างโดย Brave เวอร์ชันที่เลิกใช้แล้ว กรุณาอัปเกรดอุปกรณ์อื่นของคุณก่อน</translation>
+<translation id="4002014583969312635">ดูเหมือนว่ารหัสนี้ถูกสร้างขึ้นบนอุปกรณ์ที่ใช้เวอร์ชันเก่าของ Brave กรุณาอัปเดต Brave ให้เป็นเวอร์ชันล่าสุดบนอุปกรณ์อื่นของคุณ แล้วสร้างรหัสซิงค์ใหม่</translation>
 <translation id="3132642509209154999">รหัสนี้หมดอายุแล้ว กรุณาสร้างรหัสใหม่บนอุปกรณ์อื่นของคุณแล้วลองอีกครั้ง</translation>
 <translation id="2859229680945501779">รหัสนี้ไม่ถูกต้อง กรุณาตรวจสอบให้มั่นใจว่าคุณได้ตั้งค่าเวลาและเขตเวลาบนอุปกรณ์ของคุณถูกต้อง</translation>
 <translation id="3149880132460839085">Brave Sync</translation>
@@ -336,8 +335,6 @@
 <translation id="8185825081026121627">รับ Basic Attention Token เมื่อชมโฆษณา Brave Rewards ที่รักษาความเป็นส่วนตัว</translation>
 <translation id="5321518976657560663">ข้อผิดพลาดในการรีเซ็ต</translation>
 <translation id="4114170343590425996">มีข้อผิดพลาดเกิดขึ้นขณะรีเซ็ต Brave Rewards โปรดเปิดใช้งาน Brave ใหม่แล้วลองอีกครั้ง</translation>
-<translation id="6417420737057016607">เบรฟ แอดส์ (Brave Ads)</translation>
-<translation id="5611966874859284786">แสดงการแจ้งเตือนโฆษณาเมื่อไม่ได้ใช้งาน Brave</translation>
 <translation id="5717636703619499822"><ph name="BEGIN_LINK1"/>รีเซ็ตข้อมูล Brave Rewards…<ph name="END_LINK1"/></translation>
 <translation id="1830919318137227284"><ph name="BEGIN_LINK1"/>ล้างข้อมูล Brave Ads…<ph name="END_LINK1"/></translation>
 <translation id="8293206222192510085">เพิ่มบุ๊กมาร์ก</translation>
@@ -400,8 +397,9 @@
 <translation id="4546260624932151782">แสดงรายการโปรด</translation>
 <translation id="5313967007315987356">เพิ่มเว็บไซต์</translation>
 <translation id="1773147648972887693">แสดงรายการที่เข้าชมบ่อย</translation>
-<translation id="752098910262610337">แสดงทางลัด</translation>
 <translation id="7134741506051403308">ซ่อนวิดเจ็ต</translation>
+<translation id="1247759249260562308">แก้ไขรายการโปรด</translation>
+<translation id="6387214885349500492">ปักหมุดรายการโปรดนี้</translation>
 <translation id="7462178177755090262">หน้าจอเริ่มต้น</translation>
 <translation id="5365434987337264071">แท็บที่เปิดล่าสุด</translation>
 <translation id="6019856124237323989">{HOURS, plural,
@@ -979,6 +977,7 @@
 <translation id="6365389672683343144">การสมัครสมาชิก Brave VPN สามารถปกป้องอุปกรณ์ได้สูงสุด 5 รายการทั้ง Android, iOS และเดสก์ท็อป เพียงลิงก์การสมัครสมาชิก Google Play กับบัญชี Brave ของคุณ</translation>
 <translation id="6610899852831463073">ไม่สามารถเปิดใช้งาน Safe Browsing ได้</translation>
 <translation id="7954263306665462056">Safe Browsing ถูกปิดใช้งานบนอุปกรณ์ของคุณ หากต้องการเปิดใช้งาน กรุณาตรวจสอบให้แน่ใจว่าได้ติดตั้งบริการ Google Play เป็นเวอร์ชันล่าสุดแล้ว</translation>
+<translation id="6417420737057016607">เบรฟ แอดส์ (Brave Ads)</translation>
 <translation id="7748944510530490017">เครือข่ายหลัก</translation>
 <translation id="2781668117338732220">เครือข่ายสำรอง</translation>
 <translation id="282560918037172384">เครือข่ายทดสอบ</translation>

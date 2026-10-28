@@ -220,7 +220,6 @@
 <translation id="9040069796107003510">Brave 리워드 아이콘</translation>
 <translation id="6333347122924254968">주소 표시줄에 Brave 리워드 아이콘 표시</translation>
 <translation id="4393974575368329991">하단 탐색 도구 모음</translation>
-<translation id="8727059712928806451">하단 바 사용</translation>
 <translation id="1834226716203076292">홈, 북마크, 검색에 빠르게 접근할 수 있는 하단 표시줄 표시</translation>
 <translation id="1422686363939271829">하단 주소 표시줄 위치를 선택하면 이 설정이 비활성화됩니다.</translation>
 <translation id="6587448235155023666">변경 사항은 다음번에 Brave를 재실행할 때 적용됩니다</translation>
@@ -290,7 +289,7 @@
 <translation id="2569646144216067185">글자 수: <ph name="WORD_COUNT"/></translation>
 <translation id="7507533586185621084">잘못된 동기화 코드</translation>
 <translation id="8284063834901328650">잘못된 동기화 QR 코드</translation>
-<translation id="859506441384380749">이 코드는 더 이상 지원되지 않는 Brave 구버전에서 생성되었습니다. 다른 기기를 먼저 업그레이드하세요.</translation>
+<translation id="4002014583969312635">이 코드는 구버전 Brave를 실행 중인 기기에서 만들어진 것 같습니다. 다른 기기에서 최신 버전의 Brave로 업데이트한 다음, 새 동기화 코드를 만드세요.</translation>
 <translation id="3132642509209154999">만료된 코드입니다. 다른 기기에서 새 코드를 생성하고 다시 시도하세요.</translation>
 <translation id="2859229680945501779">유효하지 않은 코드입니다. 디바이스에 시간과 시간대가 제대로 설정되어 있는지 확인하세요.</translation>
 <translation id="3149880132460839085">Brave 동기화</translation>
@@ -336,8 +335,6 @@
 <translation id="8185825081026121627">개인정보를 보호하는 Brave 상금 광고를 시청하고 기본 관심 토큰을 받으세요.</translation>
 <translation id="5321518976657560663">오류 초기화</translation>
 <translation id="4114170343590425996">Brave 리워드 초기화 중 오류가 발생했습니다. Brave를 재실행하고 다시 시도하세요.</translation>
-<translation id="6417420737057016607">Brave 광고</translation>
-<translation id="5611966874859284786">Brave를 사용하지 않을 때 알림 광고 표시</translation>
 <translation id="5717636703619499822"><ph name="BEGIN_LINK1"/>Brave 리워드 데이터 초기화…<ph name="END_LINK1"/></translation>
 <translation id="1830919318137227284"><ph name="BEGIN_LINK1"/>Brave Ads 데이터 지우기…<ph name="END_LINK1"/></translation>
 <translation id="8293206222192510085">북마크 추가</translation>
@@ -400,8 +397,9 @@
 <translation id="4546260624932151782">즐겨찾기 표시</translation>
 <translation id="5313967007315987356">사이트 추가</translation>
 <translation id="1773147648972887693">자주 방문하는 사이트 표시</translation>
-<translation id="752098910262610337">바로가기 표시</translation>
 <translation id="7134741506051403308">위젯 숨기기</translation>
+<translation id="1247759249260562308">즐겨찾기 편집</translation>
+<translation id="6387214885349500492">이 즐겨찾기 고정</translation>
 <translation id="7462178177755090262">시작 화면</translation>
 <translation id="5365434987337264071">마지막으로 열었던 탭</translation>
 <translation id="6019856124237323989">{HOURS, plural,
@@ -979,6 +977,7 @@
 <translation id="6365389672683343144">Brave VPN 구독은 최대 5대의 Android, iOS, 데스크톱 기기를 보호할 수 있습니다. Google Play 구독을 Brave 계정에 연결하기만 하면 됩니다.</translation>
 <translation id="6610899852831463073">세이프 브라우징 활성화 불가</translation>
 <translation id="7954263306665462056">세이프 브라우징이 디바이스에 비활성화되어 있습니다. 활성화하려면 Google Play Services를 설치하고 최신 상태로 업데이트하세요.</translation>
+<translation id="6417420737057016607">Brave 광고</translation>
 <translation id="7748944510530490017">주사용 네트워크</translation>
 <translation id="2781668117338732220">보조 네트워크</translation>
 <translation id="282560918037172384">테스트 네트워크</translation>

@@ -219,7 +219,6 @@
 <translation id="9040069796107003510">Brave Rewards-Symbol</translation>
 <translation id="6333347122924254968">Brave Rewards-Symbol in der Adressleiste anzeigen</translation>
 <translation id="4393974575368329991">Untere Navigationsleiste</translation>
-<translation id="8727059712928806451">Untere Leiste aktivieren</translation>
 <translation id="1834226716203076292">Untere Leiste für schnellen Zugriff auf Startseite, Lesezeichen und Suche anzeigen</translation>
 <translation id="1422686363939271829">Diese Einstellung ist deaktiviert, wenn die Adressleiste unten positioniert ist.</translation>
 <translation id="6587448235155023666">Ihre Änderungen werden beim nächsten Neustart von Brave wirksam</translation>
@@ -289,7 +288,7 @@
 <translation id="2569646144216067185">Anzahl der Wörter: <ph name="WORD_COUNT"/></translation>
 <translation id="7507533586185621084">Falscher Synchronisierungscode</translation>
 <translation id="8284063834901328650">Falscher Synchronisierungs-QR-Code</translation>
-<translation id="859506441384380749">Dieser Code wurde von einer veralteten Version von Brave generiert; bitte führen Sie zuerst ein Upgrade für Ihr anderes Gerät durch</translation>
+<translation id="4002014583969312635">Dieser Code wurde anscheinend auf einem Gerät erstellt, das eine ältere Version von Brave nutzt. Bitte aktualisiere Brave auf deinem anderen Gerät auf die neueste Version und erstelle dann einen neuen Synchronisierungscode.</translation>
 <translation id="3132642509209154999">Der Code ist abgelaufen. Bitte erstellen Sie auf Ihrem anderen Gerät einen neuen Code und versuchen Sie es erneut.</translation>
 <translation id="2859229680945501779">Dieser Code ist ungültig. Bitte überprüfen Sie, ob Uhrzeit und Zeitzone auf Ihrem Gerät richtig eingestellt sind.</translation>
 <translation id="3149880132460839085">Brave Sync</translation>
@@ -335,8 +334,6 @@
 <translation id="8185825081026121627">Verdiene Basic Attention Token, indem du dir Brave Rewards-Anzeigen ansiehst, die deine Privatsphäre respektieren.</translation>
 <translation id="5321518976657560663">Rücksetzungsfehler</translation>
 <translation id="4114170343590425996">Beim Zurücksetzen von Brave Rewards ist ein Fehler aufgetreten. Bitte starte Brave neu und versuche es erneut.</translation>
-<translation id="6417420737057016607">Brave-Werbung</translation>
-<translation id="5611966874859284786">Benachrichtigungsanzeigen anzeigen, wenn Brave gerade nicht genutzt wird</translation>
 <translation id="5717636703619499822"><ph name="BEGIN_LINK1"/>Brave Rewards Daten zurücksetzen…<ph name="END_LINK1"/></translation>
 <translation id="1830919318137227284"><ph name="BEGIN_LINK1"/>Brave-Werbedaten löschen …<ph name="END_LINK1"/></translation>
 <translation id="8293206222192510085">Lesezeichen hinzufügen</translation>
@@ -399,8 +396,9 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="4546260624932151782">Favoriten anzeigen</translation>
 <translation id="5313967007315987356">Website hinzufügen</translation>
 <translation id="1773147648972887693">Kürzlich besuchte Websites anzeigen</translation>
-<translation id="752098910262610337">Tastenkombinationen anzeigen</translation>
 <translation id="7134741506051403308">Widget ausblenden</translation>
+<translation id="1247759249260562308">Favoriten bearbeiten</translation>
+<translation id="6387214885349500492">Favorit anheften</translation>
 <translation id="7462178177755090262">Startbildschirm</translation>
 <translation id="5365434987337264071">Zuletzt geöffneter Tab</translation>
 <translation id="6019856124237323989">{HOURS, plural,
@@ -978,6 +976,7 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="6365389672683343144">Sie können mit Ihrem Brave VPN-Abonnement bis zu 5 Android-, iOS- oder Desktop-Geräte schützen. Verknüpfen Sie dazu einfach Ihr Google Play-Abonnement mit Ihrem Brave-Konto.</translation>
 <translation id="6610899852831463073">Aktivierung von Safe Browsing nicht möglich</translation>
 <translation id="7954263306665462056">Safe Browsing wurde auf Ihrem Gerät deaktiviert. Um es zu aktivieren, stellen Sie sicher, dass die Google Play-Dienste installiert und auf dem neuesten Stand sind.</translation>
+<translation id="6417420737057016607">Brave-Werbung</translation>
 <translation id="7748944510530490017">Primäre Netzwerke</translation>
 <translation id="2781668117338732220">Sekundärnetzwerke</translation>
 <translation id="282560918037172384">Testnetzwerke</translation>
