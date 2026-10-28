@@ -995,6 +995,14 @@ enum AccountKind {
   kHardware,
 };
 
+enum RecoverWalletResult {
+  kSuccess = 0,
+  kInvalidMnemonic = 1,
+  kMnemonicMismatch = 2,
+  kImportedAccountsPresent = 3,
+  kInternalError = 4,
+};
+
 struct AccountId {
   CoinType coin;
   // TODO(apaymyshev): that should be different keyrings for different kinds.
@@ -1201,6 +1209,17 @@ interface KeyringService {
   RestoreWallet(
       string mnemonic, string password, bool is_legacy_eth_seed_format)
       => (bool is_valid_mnemonic);
+
+  // Recovers access to an existing locked wallet using its mnemonic and a new
+  // password. Imported accounts cannot be recovered from the mnemonic, so if
+  // any exist this returns kImportedAccountsPresent unless
+  // `allow_imported_account_removal` is true, in which case they are removed.
+  // If `new_password` is the current password, the wallet is just unlocked.
+  RecoverWallet(string mnemonic,
+                string new_password,
+                bool is_legacy_eth_seed_format,
+                bool allow_imported_account_removal)
+      => (RecoverWalletResult result);
 
   // Locks the keyring.
   Lock();

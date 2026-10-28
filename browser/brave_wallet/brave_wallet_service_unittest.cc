@@ -2803,6 +2803,51 @@ TEST_F(BraveWalletServiceUnitTest, Reset) {
 #endif
 }
 
+TEST_F(BraveWalletServiceUnitTest,
+       RecoverWalletClearsImportedAccountPermissions) {
+  SetupWallet();
+
+  base::test::TestFuture<mojom::AccountInfoPtr> import_future;
+  keyring_service_->ImportEthereumAccount(
+      "Imported",
+      "d118a12a1e3b595d7d9e5599370df4ddc58d246a3ae4a795597e50eb6a32afb5",
+      import_future.GetCallback());
+  auto imported_account = import_future.Take();
+  ASSERT_TRUE(imported_account);
+
+  auto derived_account = GetAccountUtils().EnsureEthAccount(0);
+  const auto origin = url::Origin::Create(GURL(kBraveUrl));
+  const auto imported_account_permission =
+      GetAccountPermissionIdentifier(imported_account->account_id);
+  const auto derived_account_permission =
+      GetAccountPermissionIdentifier(derived_account->account_id);
+
+  ASSERT_TRUE(permissions::BraveWalletPermissionContext::AddPermission(
+      blink::PermissionType::BRAVE_ETHEREUM, profile_.get(), origin,
+      imported_account_permission));
+  ASSERT_TRUE(permissions::BraveWalletPermissionContext::AddPermission(
+      blink::PermissionType::BRAVE_ETHEREUM, profile_.get(), origin,
+      derived_account_permission));
+
+  auto* delegate = service_->GetDelegateForTesting();
+  ASSERT_TRUE(delegate);
+  ASSERT_TRUE(delegate->HasPermission(mojom::CoinType::ETH, origin,
+                                      imported_account_permission));
+  ASSERT_TRUE(delegate->HasPermission(mojom::CoinType::ETH, origin,
+                                      derived_account_permission));
+
+  keyring_service_->Lock();
+  base::test::TestFuture<mojom::RecoverWalletResult> recover_future;
+  keyring_service_->RecoverWallet(kMnemonicDivideCruise, "new password", false,
+                                  true, recover_future.GetCallback());
+  EXPECT_EQ(recover_future.Get(), mojom::RecoverWalletResult::kSuccess);
+
+  EXPECT_FALSE(delegate->HasPermission(mojom::CoinType::ETH, origin,
+                                       imported_account_permission));
+  EXPECT_TRUE(delegate->HasPermission(mojom::CoinType::ETH, origin,
+                                      derived_account_permission));
+}
+
 TEST_F(BraveWalletServiceUnitTest, GetNftDiscoveryEnabled) {
   // Default should be off
   GetNftDiscoveryEnabled(false);
