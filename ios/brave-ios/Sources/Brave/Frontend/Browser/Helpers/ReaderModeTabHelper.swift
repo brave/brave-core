@@ -46,6 +46,7 @@ class ReaderModeTabHelper {
 
   deinit {
     tab?.removeObserver(self)
+    tab?.removePolicyDecider(self)
   }
 
   var state: ReaderModeState {
@@ -240,6 +241,7 @@ extension ReaderModeTabHelper: TabObserver {
 
   func tabWillBeDestroyed(_ tab: some TabState) {
     tab.removeObserver(self)
+    tab.removePolicyDecider(self)
   }
 }
 
