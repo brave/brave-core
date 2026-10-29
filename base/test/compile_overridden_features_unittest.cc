@@ -50,11 +50,11 @@ TEST_F(CompileOverriddenFeaturesTest, IsFeatureOverridden) {
       base::FeatureList::GetInstance()->IsFeatureOverriddenFromCommandLine(
           kExplicitCompileOverriddenFeatureForTesting.name));
 
-  EXPECT_EQ(kNonCompileOverriddenFeatureForTesting.default_state,
+  EXPECT_EQ(kNonCompileOverriddenFeatureForTesting.GetDefaultState(),
             FEATURE_ENABLED_BY_DEFAULT);
-  EXPECT_EQ(kCompileOverriddenFeatureForTesting.default_state,
+  EXPECT_EQ(kCompileOverriddenFeatureForTesting.GetDefaultState(),
             FEATURE_ENABLED_BY_DEFAULT);
-  EXPECT_EQ(kExplicitCompileOverriddenFeatureForTesting.default_state,
+  EXPECT_EQ(kExplicitCompileOverriddenFeatureForTesting.GetDefaultState(),
             FEATURE_DISABLED_BY_DEFAULT);
 }
 
