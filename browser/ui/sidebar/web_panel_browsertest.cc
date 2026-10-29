@@ -10,6 +10,7 @@
 #include "base/check.h"
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/test/values_test_util.h"
 #include "brave/browser/ui/sidebar/sidebar_browsertest_base.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_model.h"
@@ -583,13 +584,10 @@ class WebPanelPinnedTabPrefBrowserTest : public WebPanelBrowserTest {
   }
 
   bool PinnedTabsPrefHasURL(const GURL& url) {
-    return std::ranges::any_of(
+    return testing::Value(
         browser()->GetProfile()->GetPrefs()->GetList(prefs::kPinnedTabs),
-        [&](const base::Value& v) {
-          const auto* dict = v.GetIfDict();
-          const auto* spec = dict ? dict->FindString("url") : nullptr;
-          return spec && *spec == url.spec();
-        });
+        testing::Contains(
+            base::test::DictionaryHasValue("url", base::Value(url.spec()))));
   }
 
   bool HasTabWithURL(const GURL& url) {
