@@ -442,7 +442,6 @@ const util = {
     const additionalGen = getAdditionalGenLocation()
 
     // Touch original files by updating mtime.
-    let isDirty = false
     const chromiumSrcDirLen = chromiumSrcDir.length
     sourceFiles.forEach((chromiumSrcFile) => {
       const relativeChromiumSrcFile = chromiumSrcFile.slice(chromiumSrcDirLen)
@@ -466,9 +465,7 @@ const util = {
 
       if (fs.existsSync(overriddenFile)) {
         // If overriddenFile is older than file in chromium_src, touch it to trigger rebuild.
-        isDirty =
-          updateFileUTimesIfOverrideIsNewer(overriddenFile, chromiumSrcFile)
-          || isDirty
+        updateFileUTimesIfOverrideIsNewer(overriddenFile, chromiumSrcFile)
       } else {
         // If the original file doesn't exist, assume that it's in the gen dir.
         overriddenFile = path.join(
@@ -476,9 +473,7 @@ const util = {
           'gen',
           relativeChromiumSrcFile,
         )
-        isDirty =
-          deleteFileIfOverrideIsNewer(overriddenFile, chromiumSrcFile)
-          || isDirty
+        deleteFileIfOverrideIsNewer(overriddenFile, chromiumSrcFile)
         // Also check the secondary gen dir, if exists
         if (additionalGen) {
           overriddenFile = path.join(
@@ -487,24 +482,10 @@ const util = {
             'gen',
             relativeChromiumSrcFile,
           )
-          isDirty =
-            deleteFileIfOverrideIsNewer(overriddenFile, chromiumSrcFile)
-            || isDirty
+          deleteFileIfOverrideIsNewer(overriddenFile, chromiumSrcFile)
         }
       }
     })
-    if (isDirty && config.rbeService) {
-      // Cleanup Reproxy deps cache on chromium_src override change.
-      const reproxyCacheDir = `${config.rootDir}/.reproxy_cache`
-      if (fs.existsSync(reproxyCacheDir)) {
-        const cacheFileFilter = (file: string) => {
-          return file.endsWith('.cache') || file.endsWith('.cache.sha256')
-        }
-        for (const file of util.walkSync(reproxyCacheDir, cacheFileFilter)) {
-          fs.rmSync(file)
-        }
-      }
-    }
     Log.progressFinish('touch original files overridden by chromium_src')
   },
 
