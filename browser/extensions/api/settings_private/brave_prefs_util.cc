@@ -419,6 +419,8 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[brave_tabs::kMiddleClickCloseTabEnabled] =
       settings_api::PrefType::kBoolean;
+  (*s_brave_allowlist)[brave_tabs::kDoubleClickCloseTabEnabled] =
+      settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[brave_tabs::kScrollableHorizontalTabStrip] =
       settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[brave_tabs::kAlwaysUseMiniAccentIcon] =

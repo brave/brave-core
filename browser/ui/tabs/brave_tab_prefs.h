@@ -57,6 +57,9 @@ inline constexpr char kAlwaysHideTabCloseButton[] =
 inline constexpr char kMiddleClickCloseTabEnabled[] =
     "brave.tabs.middle_click_close_tab_enabled";
 
+inline constexpr char kDoubleClickCloseTabEnabled[] =
+    "brave.tabs.double_click_close_tab_enabled";
+
 inline constexpr char kTabMinWidthMode[] = "brave.tabs.min_width_mode";
 
 // When true (and kBraveScrollableTabStrip is enabled), the horizontal tab strip

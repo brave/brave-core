@@ -13,6 +13,7 @@
 #include "base/feature_list.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/ui/containers/container_model.h"
+#include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_container_view.h"
@@ -22,6 +23,7 @@
 #include "brave/grit/brave_generated_resources.h"
 #include "cc/paint/paint_flags.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/tabs/alert/tab_alert_controller.h"
 #include "chrome/browser/ui/tabs/features.h"
@@ -29,11 +31,13 @@
 #include "chrome/browser/ui/views/tabs/tab/alert_indicator_button.h"
 #include "chrome/browser/ui/views/tabs/tab/tab_close_button.h"
 #include "chrome/browser/ui/views/tabs/tab_slot_controller.h"
+#include "components/prefs/pref_service.h"
 #include "components/vector_icons/vector_icons.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/models/image_model.h"
 #include "ui/compositor/compositor.h"
 #include "ui/compositor/layer.h"
+#include "ui/events/event.h"
 #include "ui/gfx/canvas.h"
 #include "ui/gfx/color_palette.h"
 #include "ui/gfx/favicon_size.h"
@@ -50,7 +54,6 @@
 #include "brave/components/containers/content/browser/storage_partition_utils.h"
 #include "brave/components/containers/core/browser/containers_service.h"
 #include "brave/components/containers/core/common/features.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
 #include "components/tabs/public/tab_interface.h"
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
@@ -207,6 +210,25 @@ BraveTab::BraveTab(tabs::TabHandle handle, TabSlotController* controller)
 }
 
 BraveTab::~BraveTab() = default;
+
+bool BraveTab::OnMousePressed(const ui::MouseEvent& event) {
+  // The click count doesn't track which view got the first click, so only
+  // close the tab when both clicks of the double-click landed on it.
+  const bool first_click_was_on_this_tab =
+      std::exchange(last_press_was_first_click_, event.GetClickCount() == 1);
+  if (first_click_was_on_this_tab && event.GetClickCount() == 2 &&
+      event.IsOnlyLeftMouseButton() && !event.IsShiftDown() &&
+      !event.IsControlDown() && !event.IsAltDown() && !event.IsCommandDown() &&
+      !closing()) {
+    auto* browser = controller()->GetBrowserWindowInterface();
+    if (browser && browser->GetProfile()->GetPrefs()->GetBoolean(
+                       brave_tabs::kDoubleClickCloseTabEnabled)) {
+      controller()->CloseTab(this, CloseTabSource::kFromMouse);
+      return true;
+    }
+  }
+  return Tab::OnMousePressed(event);
+}
 
 void BraveTab::AddedToWidget() {
   Tab::AddedToWidget();
