@@ -44,9 +44,10 @@ bool BraveMaybeHandleReloadBypassingCache(BrowserWindowInterface* browser) {
 // Inserts |contents|, the duplicate of the tab at |source_index|, at
 // |dst_index|. ADD_INHERIT_OPENER makes the active tab the opener of the new
 // tab, which is unrelated to the duplicated tab when duplicating a non-active
-// tab (e.g. via the tab context menu). In that case, set the tab being
+// tab (e.g. via the tab context menu). In tree tab mode, set the tab being
 // duplicated as the opener instead, so that the new tab is placed in the
-// source tab's tree in tree tab mode.
+// source tab's tree. This is limited to tree tab mode to keep the upstream
+// behavior, which tab gets activated after closing the duplicated tab, intact.
 int BraveInsertDuplicatedTab(TabStripModel* tab_strip_model,
                              int source_index,
                              int dst_index,
@@ -55,7 +56,8 @@ int BraveInsertDuplicatedTab(TabStripModel* tab_strip_model,
                              std::optional<tab_groups::TabGroupId> group) {
   auto tab =
       std::make_unique<tabs::TabModel>(std::move(contents), tab_strip_model);
-  if (source_index != tab_strip_model->active_index()) {
+  if (static_cast<BraveTabStripModel*>(tab_strip_model)->tree_model() &&
+      source_index != tab_strip_model->active_index()) {
     add_types &= ~AddTabTypes::ADD_INHERIT_OPENER;
     tab->set_opener(tab_strip_model->GetTabAtIndex(source_index));
   }
