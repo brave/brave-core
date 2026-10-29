@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java b/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
-index 2eee4b992490386e93c4f34772468102b775e927..a8beabbccc9117e0d6e95fb3c118fcc7d8bfea86 100644
+index 14a2cbd060a54310279b2beda0c6cb4f06286244..e14e7ec9cdbfc61096c8941990fcc975abc3c59f 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
 @@ -209,10 +209,10 @@ public class ManageSyncSettings extends ChromeBaseSettingsFragment
@@ -33,7 +33,7 @@ index 2eee4b992490386e93c4f34772468102b775e927..a8beabbccc9117e0d6e95fb3c118fcc7
 +        }
          centralAccountCardPreference.initialize(
                  assumeNonNull(identityManager.getPrimaryAccountInfo()),
-                 ProfileDataCache.createWithDefaultImageSizeAndNoBadge(
+                 ProfileDataCache.createWithoutBadge(
 @@ -594,7 +598,7 @@ public class ManageSyncSettings extends ChromeBaseSettingsFragment
       * this state.
       */
