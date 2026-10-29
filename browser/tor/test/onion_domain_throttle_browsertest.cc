@@ -11,14 +11,12 @@
 #include "base/test/bind.h"
 #include "base/test/run_until.h"
 #include "brave/browser/tor/tor_profile_manager.h"
-#include "brave/components/tor/pref_names.h"
 #include "brave/components/tor/tor_navigation_throttle.h"
 #include "brave/net/proxy_resolution/proxy_config_service_tor.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/network_session_configurator/common/network_switches.h"
-#include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/content_mock_cert_verifier.h"
@@ -44,17 +42,14 @@ constexpr char kFetchLaterRedirectSentinelPath[] =
 
 struct OnionAccessScenario {
   bool tor_window = false;
-  bool onion_only_in_tor_windows = true;
   bool expect_blocked = true;
 };
 
 std::string OnionAccessScenarioName(
     const testing::TestParamInfo<OnionAccessScenario>& info) {
   const OnionAccessScenario& scenario = info.param;
-  return base::StrCat(
-      {scenario.tor_window ? "TorWindow" : "NormalWindow",
-       scenario.onion_only_in_tor_windows ? "_PrefOn" : "_PrefOff",
-       scenario.expect_blocked ? "_Blocked" : "_Allowed"});
+  return base::StrCat({scenario.tor_window ? "TorWindow" : "NormalWindow",
+                       scenario.expect_blocked ? "_Blocked" : "_Allowed"});
 }
 
 }  // namespace
@@ -113,9 +108,6 @@ class OnionDomainThrottleBrowserTest
   }
 
   BrowserWindowInterface* SetUpScenario(const OnionAccessScenario& scenario) {
-    browser()->GetProfile()->GetPrefs()->SetBoolean(
-        tor::prefs::kOnionOnlyInTorWindows, scenario.onion_only_in_tor_windows);
-
     BrowserWindowInterface* browser = GetBrowser(scenario.tor_window);
 
     [&]() {
@@ -276,16 +268,8 @@ INSTANTIATE_TEST_SUITE_P(
     ,
     OnionDomainThrottleBrowserTest,
     ::testing::Values(OnionAccessScenario{.tor_window = false,
-                                          .onion_only_in_tor_windows = true,
                                           .expect_blocked = true},
-                      OnionAccessScenario{.tor_window = false,
-                                          .onion_only_in_tor_windows = false,
-                                          .expect_blocked = false},
                       OnionAccessScenario{.tor_window = true,
-                                          .onion_only_in_tor_windows = true,
-                                          .expect_blocked = false},
-                      OnionAccessScenario{.tor_window = true,
-                                          .onion_only_in_tor_windows = false,
                                           .expect_blocked = false}),
     &OnionAccessScenarioName);
 

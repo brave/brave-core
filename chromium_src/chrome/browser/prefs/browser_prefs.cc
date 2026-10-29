@@ -80,6 +80,7 @@
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/components/tor/pref_names.h"
+#include "brave/components/tor/tor_profile_service.h"
 #include "brave/components/tor/tor_utils.h"
 #endif
 
@@ -190,6 +191,8 @@ void MigrateObsoleteBraveProfilePrefsAfterChromium(
   // Added 03/2024
 #if BUILDFLAG(ENABLE_TOR)
   profile_prefs->ClearPref(tor::prefs::kAutoOnionRedirect);
+
+  tor::TorProfileService::MigrateObsoleteProfilePrefs(profile_prefs);
 #endif
 
 #if defined(TOOLKIT_VIEWS)

@@ -28,6 +28,7 @@ class PrefRegistrySyncable;
 
 class TorLauncherFactory;
 class PrefRegistrySimple;
+class PrefService;
 
 namespace tor {
 
@@ -40,6 +41,8 @@ class TorProfileService : public KeyedService {
 
   static void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
   static void RegisterProfilePrefs(PrefRegistrySimple* registry);
+  static void RegisterProfilePrefsForMigration(PrefRegistrySimple* registry);
+  static void MigrateObsoleteProfilePrefs(PrefService* prefs);
 
   virtual void RegisterTorClientUpdater() = 0;
   virtual void UnregisterTorClientUpdater() = 0;
