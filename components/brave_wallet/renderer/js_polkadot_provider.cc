@@ -210,7 +210,8 @@ std::string JSPolkadotProvider::GetVersion() {
 JSPolkadotProvider* JSPolkadotProvider::ProviderFromCallbackData(
     const v8::FunctionCallbackInfo<v8::Value>& info) {
   JSPolkadotProvider* provider = nullptr;
-  if (!gin::ConvertFromV8(info.GetIsolate(), info.Data(), &provider)) {
+  if (!gin::ConvertFromV8(info.GetIsolate(), info.DataV2().As<v8::Value>(),
+                          &provider)) {
     return nullptr;
   }
   return provider;
