@@ -268,6 +268,9 @@
         <message name="IDS_WORKSPACE_ROW_MORE_BUTTON_TOOLTIP" desc="Tooltip for the per-row button that opens the workspace's options menu">
           Space Options
         </message>
+        <message name="IDS_WORKSPACE_ROW_OPEN_IN_ANOTHER_WINDOW_TOOLTIP" desc="Tooltip on a space in the list that cannot be chosen because a different browser window currently has it open">
+          Already Open in Another Window
+        </message>
         <message name="IDS_WORKSPACE_ROW_MENU_DELETE_WORKSPACE" desc="Context menu item that deletes the workspace shown in this row">
           Delete Space
         </message>
@@ -320,6 +323,9 @@
         </message>
         <message name="IDS_WORKSPACE_ROW_MORE_BUTTON_TOOLTIP" desc="Tooltip for the per-row button that opens the workspace's options menu">
           Space options
+        </message>
+        <message name="IDS_WORKSPACE_ROW_OPEN_IN_ANOTHER_WINDOW_TOOLTIP" desc="Tooltip on a space in the list that cannot be chosen because a different browser window currently has it open">
+          Already open in another window
         </message>
         <message name="IDS_WORKSPACE_ROW_MENU_DELETE_WORKSPACE" desc="Context menu item that deletes the workspace shown in this row">
           Delete space

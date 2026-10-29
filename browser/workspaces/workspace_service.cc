@@ -180,6 +180,18 @@ void WorkspaceService::SaveWorkspaceFromWindow(const base::Uuid& id,
                                 std::move(on_error)));
 }
 
+bool WorkspaceService::IsWorkspaceOnScreenElsewhere(const base::Uuid& id,
+                                                    SessionID window_id) const {
+  std::optional<SessionID> host = GetWindowForWorkspace(id);
+  if (!host || *host == window_id) {
+    return false;
+  }
+
+  BrowserWindowInterface* host_window =
+      BrowserWindowInterface::FromSessionID(*host);
+  return host_window && host_window->GetWindow()->IsVisible();
+}
+
 std::optional<SessionID> WorkspaceService::GetUnmanagedWindowFor(
     SessionID window_id) const {
   auto it = window_to_unmanaged_window_.find(window_id);
