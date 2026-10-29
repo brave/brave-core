@@ -295,8 +295,8 @@
         <message name="IDS_WORKSPACE_ROW_STATS_TABS" desc="Stats label shown on a workspace row, giving the number of tabs in that workspace">
           {TAB_COUNT, plural, =1 {1 Tab} other {# Tabs}}
         </message>
-        <message name="IDS_WORKSPACE_DEFAULT_NAME" desc="Name of the implicit workspace holding the tabs of a window that is not in a named space. Shown as the first row of the workspaces bubble.">
-          Default
+        <message name="IDS_WORKSPACE_UNMANAGED_SPACE_NAME" desc="Name of the implicit space holding the tabs of a window that is not in a named space. Shown as the first row of the workspaces bubble.">
+          Unmanaged Space
         </message>
       </if>
       <if expr="not use_titlecase">
@@ -348,8 +348,8 @@
         <message name="IDS_WORKSPACE_ROW_STATS_TABS" desc="Stats label shown on a workspace row, giving the number of tabs in that workspace">
           {TAB_COUNT, plural, =1 {1 tab} other {# tabs}}
         </message>
-        <message name="IDS_WORKSPACE_DEFAULT_NAME" desc="Name of the implicit workspace holding the tabs of a window that is not in a named space. Shown as the first row of the workspaces bubble.">
-          Default
+        <message name="IDS_WORKSPACE_UNMANAGED_SPACE_NAME" desc="Name of the implicit space holding the tabs of a window that is not in a named space. Shown as the first row of the workspaces bubble.">
+          Unmanaged space
         </message>
       </if>
       <message name="IDS_TOOLTIP_WORKSPACES_BUTTON" desc="The tooltip for the workspaces button in the tab strip">

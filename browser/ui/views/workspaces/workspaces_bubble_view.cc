@@ -70,24 +70,24 @@ WorkspacesBubbleView::WorkspacesBubbleView(views::View* anchor_view,
   // The window a person started in leads the list, separated from the
   // workspaces the whole profile shares. It is hidden rather than emptied when
   // they switch away, so its tab count comes straight off its tab strip.
-  BrowserWindowInterface* default_window = browser;
+  BrowserWindowInterface* unmanaged_window = browser;
   if (std::optional<SessionID> origin =
-          service->GetDefaultWindowFor(window_id)) {
-    default_window = BrowserWindowInterface::FromSessionID(*origin);
+          service->GetUnmanagedWindowFor(window_id)) {
+    unmanaged_window = BrowserWindowInterface::FromSessionID(*origin);
   }
 
-  if (default_window) {
-    WorkspaceMetadata window_default{
-        .name = l10n_util::GetStringUTF8(IDS_WORKSPACE_DEFAULT_NAME),
-        .number_of_tabs = default_window->GetTabStripModel()->count()};
-    auto* default_row =
+  if (unmanaged_window) {
+    WorkspaceMetadata unmanaged_space{
+        .name = l10n_util::GetStringUTF8(IDS_WORKSPACE_UNMANAGED_SPACE_NAME),
+        .number_of_tabs = unmanaged_window->GetTabStripModel()->count()};
+    auto* unmanaged_row =
         workspaces_container->AddChildView(std::make_unique<WorkspaceRowView>(
-            window_default,
-            base::BindRepeating(&WorkspacesBubbleView::OnDefaultSelected,
+            unmanaged_space,
+            base::BindRepeating(&WorkspacesBubbleView::OnUnmanagedSelected,
                                 weak_factory_.GetWeakPtr()),
-            // The default is implicit, so it has no menu to delete it.
+            // The unmanaged space is implicit: no menu to delete it.
             base::RepeatingClosure()));
-    default_row->SetSelected(!showing.has_value());
+    unmanaged_row->SetSelected(!showing.has_value());
 
     workspaces_container->AddChildView(std::make_unique<views::Separator>());
   }
@@ -161,11 +161,11 @@ void WorkspacesBubbleView::OnNewSpaceClicked() {
   GetWidget()->Close();
 }
 
-void WorkspacesBubbleView::OnDefaultSelected() {
+void WorkspacesBubbleView::OnUnmanagedSelected() {
   auto* service =
       WorkspaceServiceFactory::GetForProfile(browser_->GetProfile());
   CHECK(service);
-  service->SwitchWindowToDefault(browser_);
+  service->SwitchWindowToUnmanaged(browser_);
   GetWidget()->Close();
 }
 

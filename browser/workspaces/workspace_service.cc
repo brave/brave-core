@@ -24,6 +24,7 @@
 #include "brave/browser/workspaces/workspace_session_utils.h"
 #include "brave/browser/workspaces/workspace_utils.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/browser_window/public/create_browser_window.h"
 #include "chrome/browser/ui/browser_window/public/profile_browser_collection.h"
@@ -33,6 +34,7 @@
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
 #include "ui/base/base_window.h"
+#include "url/gurl.h"
 
 WorkspaceService::WorkspaceService(Profile& profile)
     : profile_(profile),
@@ -178,10 +180,10 @@ void WorkspaceService::SaveWorkspaceFromWindow(const base::Uuid& id,
                                 std::move(on_error)));
 }
 
-std::optional<SessionID> WorkspaceService::GetDefaultWindowFor(
+std::optional<SessionID> WorkspaceService::GetUnmanagedWindowFor(
     SessionID window_id) const {
-  auto it = window_to_default_window_.find(window_id);
-  if (it == window_to_default_window_.end()) {
+  auto it = window_to_unmanaged_window_.find(window_id);
+  if (it == window_to_unmanaged_window_.end()) {
     return std::nullopt;
   }
   return it->second;
@@ -194,11 +196,11 @@ void WorkspaceService::SwapVisibleWindow(BrowserWindowInterface* from_window,
   }
 
   // A workspace window inherits its origin, so switching from one workspace to
-  // another still knows which default window to go home to.
+  // another still knows which unmanaged window to go home to.
   const SessionID from_id = from_window->GetSessionID();
-  std::optional<SessionID> origin = GetDefaultWindowFor(from_id);
-  window_to_default_window_.insert_or_assign(to_window->GetSessionID(),
-                                             origin.value_or(from_id));
+  std::optional<SessionID> origin = GetUnmanagedWindowFor(from_id);
+  window_to_unmanaged_window_.insert_or_assign(to_window->GetSessionID(),
+                                               origin.value_or(from_id));
 
   // Take the outgoing window's bounds so the workspace appears where the
   // person was already looking rather than wherever it last sat.
@@ -237,12 +239,11 @@ void WorkspaceService::SwitchWindowToWorkspace(
   SwapVisibleWindow(from_window, to_window);
 }
 
-void WorkspaceService::OpenWorkspaceWindow(
-    const base::Uuid& id,
+BrowserWindowInterface* WorkspaceService::CreateWindowOver(
     BrowserWindowInterface* from_window) {
   if (GetBrowserWindowCreationStatusForProfile(*profile_) !=
       BrowserWindowInterface::CreationStatus::kOk) {
-    return;
+    return nullptr;
   }
 
   BrowserWindowCreateParams params(BrowserWindowInterface::TYPE_NORMAL,
@@ -250,7 +251,21 @@ void WorkspaceService::OpenWorkspaceWindow(
                                    /*user_gesture=*/true);
   params.initial_bounds = from_window->GetWindow()->GetBounds();
   params.should_trigger_session_restore = false;
-  BrowserWindowInterface* to_window = CreateBrowserWindow(std::move(params));
+  BrowserWindowInterface* window = CreateBrowserWindow(std::move(params));
+  if (!window) {
+    return nullptr;
+  }
+
+  // CreateBrowserWindow leaves the tab strip empty. A new space has nothing to
+  // restore, and a restored one closes this tab once its own are in place.
+  chrome::AddTabAt(window, GURL(), /*index=*/-1, /*foreground=*/true);
+  return window;
+}
+
+void WorkspaceService::OpenWorkspaceWindow(
+    const base::Uuid& id,
+    BrowserWindowInterface* from_window) {
+  BrowserWindowInterface* to_window = CreateWindowOver(from_window);
   if (!to_window) {
     return;
   }
@@ -294,18 +309,18 @@ void WorkspaceService::DoFillWorkspaceWindow(
   CloseLeadingTabs(window, placeholder_tabs);
 }
 
-void WorkspaceService::SwitchWindowToDefault(
+void WorkspaceService::SwitchWindowToUnmanaged(
     BrowserWindowInterface* from_window) {
-  std::optional<SessionID> default_window_id =
-      GetDefaultWindowFor(from_window->GetSessionID());
-  if (!default_window_id) {
+  std::optional<SessionID> unmanaged_window_id =
+      GetUnmanagedWindowFor(from_window->GetSessionID());
+  if (!unmanaged_window_id) {
     return;
   }
 
   BrowserWindowInterface* to_window =
-      BrowserWindowInterface::FromSessionID(*default_window_id);
+      BrowserWindowInterface::FromSessionID(*unmanaged_window_id);
   if (!to_window) {
-    window_to_default_window_.erase(from_window->GetSessionID());
+    window_to_unmanaged_window_.erase(from_window->GetSessionID());
     return;
   }
 
@@ -317,17 +332,7 @@ WorkspaceMetadata WorkspaceService::CreateWorkspaceInWindow(
     BrowserWindowInterface* from_window) {
   WorkspaceMetadata workspace = CreateWorkspace(name);
 
-  if (GetBrowserWindowCreationStatusForProfile(*profile_) !=
-      BrowserWindowInterface::CreationStatus::kOk) {
-    return workspace;
-  }
-
-  BrowserWindowCreateParams params(BrowserWindowInterface::TYPE_NORMAL,
-                                   base::to_address(profile_),
-                                   /*user_gesture=*/true);
-  params.initial_bounds = from_window->GetWindow()->GetBounds();
-  params.should_trigger_session_restore = false;
-  BrowserWindowInterface* to_window = CreateBrowserWindow(std::move(params));
+  BrowserWindowInterface* to_window = CreateWindowOver(from_window);
   if (!to_window) {
     return workspace;
   }
@@ -434,8 +439,8 @@ void WorkspaceService::OnBrowserClosed(BrowserWindowInterface* browser) {
   // tabs.
   const SessionID window_id = browser->GetSessionID();
   UnbindWindow(window_id);
-  window_to_default_window_.erase(window_id);
-  std::erase_if(window_to_default_window_, [window_id](const auto& entry) {
+  window_to_unmanaged_window_.erase(window_id);
+  std::erase_if(window_to_unmanaged_window_, [window_id](const auto& entry) {
     return entry.second == window_id;
   });
 

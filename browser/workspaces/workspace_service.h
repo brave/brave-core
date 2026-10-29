@@ -108,22 +108,23 @@ class WorkspaceService : public KeyedService,
   // WebContents is ever destroyed and scroll position, media playback, form
   // state and running scripts all survive untouched.
   //
-  // A window with no workspace bound to it is a "default" window: the one a
-  // person starts in.  Chromium's own session restore already persists its
-  // tabs, so this service never writes them to disk.  It is hidden and shown
-  // like any other window, which is all that is needed to switch back to it.
+  // A window with no workspace bound to it is an "unmanaged" window: the
+  // one a person starts in.  Chromium's own session restore already persists
+  // its tabs, so this service never writes them to disk.  It is hidden and
+  // shown like any other window, which is all that is needed to switch back to
+  // it.
 
-  // Returns the workspace shown in |window_id|, or nullopt if it is a default
-  // window.
+  // Returns the workspace shown in |window_id|, or nullopt if it is an
+  // unmanaged window.
   std::optional<base::Uuid> GetWorkspaceForWindow(SessionID window_id) const;
 
   // Returns the window owned by |id|, or nullopt if it has not been opened in
   // this session yet.
   std::optional<SessionID> GetWindowForWorkspace(const base::Uuid& id) const;
 
-  // Returns the default window |window_id| was opened from, or nullopt if
-  // |window_id| is itself a default window.
-  std::optional<SessionID> GetDefaultWindowFor(SessionID window_id) const;
+  // Returns the unmanaged window |window_id| was opened from, or nullopt if
+  // |window_id| is itself an unmanaged window.
+  std::optional<SessionID> GetUnmanagedWindowFor(SessionID window_id) const;
 
   // Releases |window_id|'s binding, if it has one.
   void UnbindWindow(SessionID window_id);
@@ -143,9 +144,9 @@ class WorkspaceService : public KeyedService,
   void SwitchWindowToWorkspace(const base::Uuid& id,
                                BrowserWindowInterface* from_window);
 
-  // Shows the default window |from_window| was opened from, hiding
-  // |from_window|.  Does nothing if |from_window| is itself a default window.
-  void SwitchWindowToDefault(BrowserWindowInterface* from_window);
+  // Shows the unmanaged window |from_window| was opened from, hiding
+  // |from_window|.  Does nothing if |from_window| is itself unmanaged.
+  void SwitchWindowToUnmanaged(BrowserWindowInterface* from_window);
 
   // Creates a workspace named |name| in a new, empty window and shows it,
   // hiding |from_window|.
@@ -174,6 +175,11 @@ class WorkspaceService : public KeyedService,
   BrowserWindowInterface* FindWindowForTabStrip(
       TabStripModel* tab_strip_model) const;
 
+  // Opens a window for this profile sized and placed over |from_window|,
+  // carrying a single new tab.  A window with an empty tab strip is not a
+  // thing the browser supports, so every workspace window starts with one.
+  BrowserWindowInterface* CreateWindowOver(BrowserWindowInterface* from_window);
+
   // Opens a window for workspace |id| and fills it from disk.  |from_window|
   // supplies the bounds so the workspace appears where the person was looking.
   void OpenWorkspaceWindow(const base::Uuid& id,
@@ -187,7 +193,7 @@ class WorkspaceService : public KeyedService,
       SessionID window_id,
       std::vector<std::unique_ptr<sessions::SessionCommand>> commands);
 
-  // Hides |from_window| and shows |to_window|, carrying the default-window
+  // Hides |from_window| and shows |to_window|, carrying the unmanaged-window
   // lineage across so a later switch back can find its way home.
   void SwapVisibleWindow(BrowserWindowInterface* from_window,
                          BrowserWindowInterface* to_window);
@@ -208,10 +214,10 @@ class WorkspaceService : public KeyedService,
   // lookup is a linear scan rather than a second map to keep in sync.
   std::map<base::Uuid, SessionID> workspace_to_window_;
 
-  // For each workspace window, the default window it was opened from.  Carried
-  // forward when switching workspace to workspace, so the Default row always
+  // For each workspace window, the unmanaged window it was opened from.
+  // Carried forward when switching workspace to workspace, so that row always
   // points at the window the person actually started in.
-  std::map<SessionID, SessionID> window_to_default_window_;
+  std::map<SessionID, SessionID> window_to_unmanaged_window_;
 
   base::ScopedObservation<ProfileBrowserCollection, BrowserCollectionObserver>
       browser_collection_observation_{this};

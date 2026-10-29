@@ -43,7 +43,7 @@ class WorkspacesBubbleView : public views::BubbleDialogDelegate {
 
  private:
   void OnNewSpaceClicked();
-  void OnDefaultSelected();
+  void OnUnmanagedSelected();
   void OnWorkspaceSelected(const base::Uuid& id);
   void OnDeleteClicked(const base::Uuid& id);
 

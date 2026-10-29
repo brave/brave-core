@@ -225,10 +225,10 @@ TEST_F(WorkspaceServiceTest, Binding_UnbindUnknownWindowIsSafe) {
   SUCCEED();
 }
 
-// A window nobody switched away from has no default window behind it.
-TEST_F(WorkspaceServiceTest, Default_WindowHasNoOriginUntilSwitched) {
+// A window nobody switched away from has no unmanaged window behind it.
+TEST_F(WorkspaceServiceTest, Unmanaged_WindowHasNoOriginUntilSwitched) {
   EXPECT_FALSE(
-      service_->GetDefaultWindowFor(SessionID::NewUnique()).has_value());
+      service_->GetUnmanagedWindowFor(SessionID::NewUnique()).has_value());
 }
 
 // ---- Name / path computation tests -----------------------------------------
