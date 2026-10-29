@@ -19,11 +19,12 @@ struct ShortcutControlWidget: ControlWidget {
         kind: Self.kind,
         provider: ShortcutControlValueProvider()
       ) { shortcut in
-        ControlWidgetButton(action: OpenControlWidgetShortcutIntent(shortcut: shortcut)) {
+        ControlWidgetButton(
+          action: OpenControlWidgetShortcutIntent(shortcut: shortcut)
+        ) {
           Label(
-            shortcut?.widgetShortcut.displayString ?? Strings.Widgets.shortcutControlWidgetTitle,
-            braveSystemImage: shortcut?.widgetShortcut.braveSystemImageName
-              ?? "leo.brave.icon-monochrome"
+            shortcut?.displayString ?? Strings.Widgets.shortcutControlWidgetTitle,
+            braveSystemImage: shortcut?.braveSystemImageName ?? "leo.brave.icon-monochrome"
           )
         }
       }
@@ -40,8 +41,6 @@ struct ShortcutControlWidget: ControlWidget {
   }
 }
 
-/// Picker for the configurable control. Kept separate from the scene action so Control Center
-/// shows the shortcut list instead of a text field.
 @available(iOS 26.0, *)
 struct ShortcutControlConfigurationIntent: ControlConfigurationIntent {
   static let title: LocalizedStringResource = "Shortcut"
@@ -49,8 +48,6 @@ struct ShortcutControlConfigurationIntent: ControlConfigurationIntent {
 
   @Parameter(title: "Shortcut", optionsProvider: WidgetShortcutControlOptionsProvider())
   var shortcut: ShortcutControlOption?
-
-  init() {}
 }
 
 @available(iOS 26.0, *)
@@ -65,24 +62,27 @@ struct WidgetShortcutControlOptionsProvider: DynamicOptionsProvider {
 
 @available(iOS 26.0, *)
 struct ShortcutControlValueProvider: AppIntentControlValueProvider {
-  func previewValue(configuration: ShortcutControlConfigurationIntent) -> ShortcutControlOption? {
-    shortcut(for: configuration.shortcut, disabledShortcuts: [])
+  func previewValue(configuration: ShortcutControlConfigurationIntent) -> WidgetShortcut? {
+    shortcut(for: configuration.shortcut?.widgetShortcut, disabledShortcuts: [])
   }
 
   func currentValue(
     configuration: ShortcutControlConfigurationIntent
-  ) async throws -> ShortcutControlOption? {
+  ) async throws -> WidgetShortcut? {
     let disabledShortcuts = await DisabledShortcutsWidgetData.loadDisabledShortcuts()
-    return shortcut(for: configuration.shortcut, disabledShortcuts: disabledShortcuts)
+    return shortcut(
+      for: configuration.shortcut?.widgetShortcut,
+      disabledShortcuts: disabledShortcuts
+    )
   }
 
-  /// `nil` is the unconfigured control. A disabled choice opens Search.
+  /// `nil` is the unconfigured control. It shows the lion and still opens Search.
   private func shortcut(
-    for shortcut: ShortcutControlOption?,
+    for shortcut: WidgetShortcut?,
     disabledShortcuts: Set<WidgetShortcut>
-  ) -> ShortcutControlOption? {
+  ) -> WidgetShortcut? {
     guard let shortcut else { return nil }
-    if disabledShortcuts.contains(shortcut.widgetShortcut) {
+    if disabledShortcuts.contains(shortcut) {
       return .search
     }
     return shortcut

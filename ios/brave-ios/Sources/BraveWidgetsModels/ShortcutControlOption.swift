@@ -8,20 +8,20 @@ import AppIntents
 /// Picker value for the configurable shortcut control.
 /// Generated `WidgetShortcut` cannot conform to `AppEnum`.
 @available(iOS 26.0, *)
-public enum ShortcutControlOption: String, AppEnum {
-  case newTab
-  case newPrivateTab
-  case bookmarks
-  case history
-  case downloads
-  case playlist
-  case search
-  case wallet
-  case scanQRCode
-  case braveNews
-  case braveLeo
-  case askBrave
-  case braveLeoVoiceInput
+public enum ShortcutControlOption: Int, AppEnum {
+  case newTab = 1
+  case newPrivateTab = 2
+  case bookmarks = 3
+  case history = 4
+  case downloads = 5
+  case playlist = 6
+  case search = 7
+  case wallet = 8
+  case scanQRCode = 9
+  case braveNews = 10
+  case braveLeo = 11
+  case askBrave = 12
+  case braveLeoVoiceInput = 13
 
   public static let typeDisplayRepresentation: TypeDisplayRepresentation = "Shortcut"
 
@@ -43,20 +43,6 @@ public enum ShortcutControlOption: String, AppEnum {
   ]
 
   public var widgetShortcut: WidgetShortcut {
-    switch self {
-    case .newTab: .newTab
-    case .newPrivateTab: .newPrivateTab
-    case .bookmarks: .bookmarks
-    case .history: .history
-    case .downloads: .downloads
-    case .playlist: .playlist
-    case .search: .search
-    case .wallet: .wallet
-    case .scanQRCode: .scanQRCode
-    case .braveNews: .braveNews
-    case .braveLeo: .braveLeo
-    case .askBrave: .askBrave
-    case .braveLeoVoiceInput: .braveLeoVoiceInput
-    }
+    WidgetShortcut(rawValue: rawValue) ?? .unknown
   }
 }
