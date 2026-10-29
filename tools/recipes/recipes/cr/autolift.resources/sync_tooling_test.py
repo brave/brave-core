@@ -186,9 +186,10 @@ class SyncToolingTest(unittest.TestCase):
         self.assertNotIn('tools/cr/codehealth/M159.md', tree)
         self.assertNotIn('chrome/x.cc', tree)
         self.assertEqual('', self._git(self.work, 'status', '--porcelain'))
-        self.assertIn(
-            '(cherry picked from commit',
-            self._git(self.work, 'log', '-1', '--format=%B'),
+        # Hashes move with every rebase, so a pick doesn't cite one.
+        self.assertNotIn(
+            'cherry picked from commit',
+            self._git(self.work, 'log', '--format=%B', 'origin/cr158..HEAD'),
         )
 
     def test_a_second_run_finds_nothing_new_to_pick(self):
@@ -200,7 +201,7 @@ class SyncToolingTest(unittest.TestCase):
 
     def test_a_commit_whose_files_already_match_is_present(self):
         """Once its fixups are squashed away or the newer branch rebased,
-        a pick no longer matches by patch id or trailer, but its files do."""
+        a pick no longer matches by patch id, but its files do."""
         outcome = self._sync()
         sync = SyncTooling(self.work, 158)
         tool_fix = next(c for _, c, s, _ in outcome.picked if s == 'Tool fix')
@@ -215,18 +216,12 @@ class SyncToolingTest(unittest.TestCase):
         redirect = next(
             c for _, c, s, _ in outcome.pending if s == 'Bytecode redirect'
         )
-        # Picked as an agent does, with `-x`, and changed while reconciling.
+        # Picked as an agent does, keeping its subject, and changed while
+        # reconciling, so that its patch id no longer matches.
         self._git(self.work, 'cherry-pick', '-n', redirect)
         (self.work / 'build/android/x.java').write_text('x, here\n')
         self._git(self.work, 'add', 'build/android/x.java')
-        full = self._git(self.work, 'rev-parse', redirect).strip()
-        self._git(
-            self.work,
-            'commit',
-            '-q',
-            '-m',
-            f'Bytecode redirect\n\n(cherry picked from commit {full})',
-        )
+        self._git(self.work, 'commit', '-q', '-m', 'Bytecode redirect')
         pending = [subject for _, _, subject, _ in self._sync().pending]
         self.assertNotIn('Bytecode redirect', pending)
 
@@ -237,16 +232,11 @@ class SyncToolingTest(unittest.TestCase):
         self.assertEqual((), (*outcome.picked, *outcome.pending))
 
     def _main(self) -> int:
-        argv = [
-            'sync_tooling.py',
-            '--repo',
-            str(self.work),
-            '--milestone',
-            '158',
-        ]
+        argv = ['sync_tooling.py', '--milestone', '158']
         with (
             mock.patch.dict('os.environ', {**_ENV, 'HOME': str(self.root)}),
             mock.patch('sys.argv', argv),
+            contextlib.chdir(self.work),
             contextlib.redirect_stdout(io.StringIO()),
         ):
             return sync_tooling.main()
