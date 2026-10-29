@@ -12,6 +12,7 @@ static_library("browser") {
     "matched_rule.h",
     "pref_names.h",
     "psst_component_installer.h",
+    "psst_log_service.h",
     "psst_report_uploader.h",
     "psst_reporter_service.h",
     "psst_rule.h",
@@ -25,6 +26,7 @@ static_library("browser") {
     "matched_rule.cc",
     "pref_names.cc",
     "psst_component_installer.cc",
+    "psst_log_service.cc",
     "psst_report_uploader.cc",
     "psst_reporter_service.cc",
     "psst_rule.cc",
@@ -63,6 +65,7 @@ source_set("unit_tests") {
 
   sources = [
     "matched_rule_unittest.cc",
+    "psst_log_service_unittest.cc",
     "psst_reporter_service_unittest.cc",
     "psst_rule_registry_unittest.cc",
     "psst_rule_unittest.cc",
