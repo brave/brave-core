@@ -30,9 +30,6 @@ These are the user-facing scripts in this directory:
 - `autolift/autolift.py` — Helpers for the autonomous lift in
   [autolift/SKILL.md](autolift/SKILL.md): build log summaries, culprit lookup,
   culprit hash verification, and the autofix run's CI report and fixup push.
-- `autolift/sync_tooling.py` — Cherry-picks the newer `cr` branches' tooling
-  commits onto an older one before its lift, leaving those that need judgement
-  for an agent. Run from the newest branch's copy, by the `cr/autolift` recipe.
 - `ci/cli.py` — Lists a pull request's checks, reports what failed behind them
   on Jenkins and TeamCity, and reruns a check's build.
 

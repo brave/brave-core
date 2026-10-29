@@ -349,6 +349,17 @@
   },
   {
     "cmd": [
+      "git",
+      "checkout",
+      "--force",
+      "-B",
+      "master"
+    ],
+    "cwd": "[WORKSPACE]/b/src/brave",
+    "name": "brave-core checkout branch"
+  },
+  {
+    "cmd": [
       "pnpm",
       "run",
       "sync"

@@ -179,10 +179,27 @@
       "--json-output",
       "/path/to/tmp/json",
       "copy",
-      "use_remoteexec=false\n",
+      "brave_extra_gn_gen_opts=--check\nlean_sync=true\nuse_remoteexec=false\n",
       "[WORKSPACE]/b/src/brave/.env"
     ],
     "name": "write .env"
+  },
+  {
+    "cmd": [
+      "pnpm",
+      "run",
+      "sync"
+    ],
+    "cwd": "[WORKSPACE]/b/src/brave",
+    "env": {
+      "CHROME_HEADLESS": "1"
+    },
+    "env_prefixes": {
+      "PATH": [
+        "[WORKSPACE]/b/src/brave/tools/cr/bootstrap"
+      ]
+    },
+    "name": "pnpm run sync"
   },
   {
     "cmd": [
@@ -224,106 +241,6 @@
       "[WORKSPACE]/b/src/out"
     ],
     "name": "clear out dir"
-  },
-  {
-    "cmd": [
-      "git",
-      "fetch",
-      "origin",
-      "cr159"
-    ],
-    "cwd": "[WORKSPACE]/b/src/brave",
-    "env": {
-      "CHROME_HEADLESS": "1"
-    },
-    "env_prefixes": {
-      "PATH": [
-        "[WORKSPACE]/b/src/brave/tools/cr/bootstrap"
-      ]
-    },
-    "name": "fetch newest cr branch"
-  },
-  {
-    "cmd": [
-      "git",
-      "show",
-      "origin/cr159:tools/cr/autolift/sync_tooling.py"
-    ],
-    "cwd": "[WORKSPACE]/b/src/brave",
-    "env": {
-      "CHROME_HEADLESS": "1"
-    },
-    "env_prefixes": {
-      "PATH": [
-        "[WORKSPACE]/b/src/brave/tools/cr/bootstrap"
-      ]
-    },
-    "name": "read sync script"
-  },
-  {
-    "cmd": [
-      "[WORKSPACE]/b/src/third_party/depot_tools/vpython3",
-      "-u",
-      "RECIPE_MODULE[file]/resources/fileutil.py",
-      "--json-output",
-      "/path/to/tmp/json",
-      "ensure_directory",
-      "[WORKSPACE]/b/src/brave/.autolift/cr158",
-      "--mode",
-      "0o777"
-    ],
-    "cwd": "[WORKSPACE]/b/src/brave",
-    "env": {
-      "CHROME_HEADLESS": "1"
-    },
-    "env_prefixes": {
-      "PATH": [
-        "[WORKSPACE]/b/src/brave/tools/cr/bootstrap"
-      ]
-    },
-    "name": "create run dir"
-  },
-  {
-    "cmd": [
-      "[WORKSPACE]/b/src/third_party/depot_tools/vpython3",
-      "-u",
-      "RECIPE_MODULE[file]/resources/fileutil.py",
-      "--json-output",
-      "/path/to/tmp/json",
-      "copy",
-      "",
-      "[WORKSPACE]/b/src/brave/.autolift/cr158/sync_tooling.py"
-    ],
-    "cwd": "[WORKSPACE]/b/src/brave",
-    "env": {
-      "CHROME_HEADLESS": "1"
-    },
-    "env_prefixes": {
-      "PATH": [
-        "[WORKSPACE]/b/src/brave/tools/cr/bootstrap"
-      ]
-    },
-    "name": "write sync script"
-  },
-  {
-    "cmd": [
-      "python3",
-      "[WORKSPACE]/b/src/brave/.autolift/cr158/sync_tooling.py",
-      "--repo",
-      "[WORKSPACE]/b/src/brave",
-      "--milestone",
-      "158"
-    ],
-    "cwd": "[WORKSPACE]/b/src/brave",
-    "env": {
-      "CHROME_HEADLESS": "1"
-    },
-    "env_prefixes": {
-      "PATH": [
-        "[WORKSPACE]/b/src/brave/tools/cr/bootstrap"
-      ]
-    },
-    "name": "sync tooling"
   },
   {
     "cmd": [

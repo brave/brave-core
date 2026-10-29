@@ -79,13 +79,14 @@ def GenTests(api: TEST_DEPS):
         ),
         api.post_process(post_process.StatusSuccess),
     )
-    # Chromium already deployed: no sync, straight to build and test.
+    # Chromium already deployed: synced to brave-core's version, then built and
+    # tested.
     yield api.test(
         'chromium present',
         api.brave_core_checkout.with_git_cache(),
         api.brave_core_checkout.git_cache_populated(),
         api.chromium_checkout.existing_checkout(),
-        api.post_process(post_process.DoesNotRun, 'pnpm run sync'),
+        api.post_process(post_process.MustRun, 'pnpm run sync'),
         api.platform.name('mac'),
         api.post_process(post_process.MustRun, 'build'),
         api.post_process(
