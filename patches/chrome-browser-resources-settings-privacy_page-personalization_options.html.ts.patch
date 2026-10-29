@@ -1,16 +1,16 @@
-diff --git a/chrome/browser/resources/settings/privacy_page/personalization_options.html b/chrome/browser/resources/settings/privacy_page/personalization_options.html
-index c7d5390b163e3a8064dd58c643031a951e964d80..8cc7edadd9abbd23ad0fd54db9df51ed9d4f647f 100644
---- a/chrome/browser/resources/settings/privacy_page/personalization_options.html
-+++ b/chrome/browser/resources/settings/privacy_page/personalization_options.html
-@@ -5,6 +5,7 @@ import {RestartType} from '../relaunch_mixin_lit.js';
- // </if>
- #html_wrapper_imports_end -->
+diff --git a/chrome/browser/resources/settings/privacy_page/personalization_options.html.ts b/chrome/browser/resources/settings/privacy_page/personalization_options.html.ts
+index 2ee71d8abd6410b6650b1c33cc7141fff6416346..f5517f0d236bce972942a3ed61403f0670bba3ac 100644
+--- a/chrome/browser/resources/settings/privacy_page/personalization_options.html.ts
++++ b/chrome/browser/resources/settings/privacy_page/personalization_options.html.ts
+@@ -13,6 +13,7 @@ import type {SettingsPersonalizationOptionsElement} from './personalization_opti
  
+ export function getHtml(this: SettingsPersonalizationOptionsElement) {
+   return html`<!--_html_template_start_-->
 +<if expr="_google_chrome">
  <if expr="not is_chromeos">
      <div id="chromeSigninUserChoiceSetting" class="hr cr-row" role="group"
          ?hidden="${!this.chromeSigninUserChoiceInfo_?.shouldShowSettings}"
-@@ -47,6 +48,7 @@ import {RestartType} from '../relaunch_mixin_lit.js';
+@@ -55,6 +56,7 @@ export function getHtml(this: SettingsPersonalizationOptionsElement) {
          no-set-pref>
      </settings-toggle-button>
  </if><!-- not chromeos -->
@@ -18,7 +18,7 @@ index c7d5390b163e3a8064dd58c643031a951e964d80..8cc7edadd9abbd23ad0fd54db9df51ed
  <if expr="_google_chrome">
  <if expr="is_chromeos">
      <!-- Ash Browser settings show a link to the OS settings instead. -->
-@@ -58,6 +60,8 @@ import {RestartType} from '../relaunch_mixin_lit.js';
+@@ -66,6 +68,8 @@ export function getHtml(this: SettingsPersonalizationOptionsElement) {
        </cr-link-row>
      ` : ''}
  </if><!-- chromeos -->
@@ -27,7 +27,7 @@ index c7d5390b163e3a8064dd58c643031a951e964d80..8cc7edadd9abbd23ad0fd54db9df51ed
  <if expr="not is_chromeos">
      ${!this.shouldUseMetricsConsentRestructure_ ? html`
        <div class="cr-row hr toggle-button-wrapper">
-@@ -88,12 +92,14 @@ import {RestartType} from '../relaunch_mixin_lit.js';
+@@ -96,12 +100,14 @@ export function getHtml(this: SettingsPersonalizationOptionsElement) {
      ` : ''}
  </if><!-- not chromeos -->
  </if><!-- _google_chrome -->
@@ -42,7 +42,7 @@ index c7d5390b163e3a8064dd58c643031a951e964d80..8cc7edadd9abbd23ad0fd54db9df51ed
  <if expr="_google_chrome">
  <if expr="not is_chromeos">
      <settings-toggle-button id="spellCheckControl"
-@@ -118,6 +124,7 @@ import {RestartType} from '../relaunch_mixin_lit.js';
+@@ -126,6 +132,7 @@ export function getHtml(this: SettingsPersonalizationOptionsElement) {
      </cr-link-row>
  </if><!-- chromeos -->
  </if><!-- _google_chrome -->
@@ -50,7 +50,7 @@ index c7d5390b163e3a8064dd58c643031a951e964d80..8cc7edadd9abbd23ad0fd54db9df51ed
      ${this.showSearchSuggestToggle_() ? html`
        <settings-toggle-button id="searchSuggestToggle"
            class="hr"
-@@ -126,6 +133,7 @@ import {RestartType} from '../relaunch_mixin_lit.js';
+@@ -134,6 +141,7 @@ export function getHtml(this: SettingsPersonalizationOptionsElement) {
            sub-label="$i18n{searchSuggestPrefDesc}">
        </settings-toggle-button>
      ` : ''}
@@ -58,7 +58,7 @@ index c7d5390b163e3a8064dd58c643031a951e964d80..8cc7edadd9abbd23ad0fd54db9df51ed
  
      <!-- This toggle is only shown for users with the appropriate enterprise
          policy enabled. The state is not changeable by the user, so when shown,
-@@ -149,6 +157,7 @@ import {RestartType} from '../relaunch_mixin_lit.js';
+@@ -157,6 +165,7 @@ export function getHtml(this: SettingsPersonalizationOptionsElement) {
        </settings-toggle-button>
      ` : ''}
  
@@ -66,8 +66,10 @@ index c7d5390b163e3a8064dd58c643031a951e964d80..8cc7edadd9abbd23ad0fd54db9df51ed
      ${this.showSignoutDialog_ ? html`
        <settings-signout-dialog .syncStatus="${this.syncStatus}"
            @close="${this.onSignoutDialogClose_}">
-@@ -169,3 +178,4 @@ import {RestartType} from '../relaunch_mixin_lit.js';
+@@ -177,5 +186,6 @@ export function getHtml(this: SettingsPersonalizationOptionsElement) {
        <div>$i18n{chromeSigninChoiceToast}</div>
      </cr-toast>
  </if>
 +</if>
+ <!--_html_template_end_-->`;
+ }

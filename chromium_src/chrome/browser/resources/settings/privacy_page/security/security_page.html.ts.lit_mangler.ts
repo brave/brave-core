@@ -35,21 +35,6 @@ mangle((root) => {
       <a href="$i18n{braveSafeBrowsingLearnMoreURL}" target="_blank">$i18n{learnMore}</a>
     </div>`,
   )
-
-  // Make loadTimeData available to the template, via the imports
-  // html_to_wrapper carries over to the generated security_page.html.ts.
-  const imports = Array.from(root.childNodes).find(
-    (node): node is Comment =>
-      node.nodeType === node.COMMENT_NODE
-      && (node as Comment).data.startsWith(' #html_wrapper_imports_start'))
-  if (!imports) {
-    throw new Error(
-      `[Settings] Security page: couldn't find #html_wrapper_imports_start`)
-  }
-  imports.data = imports.data.replace(
-    '\n#html_wrapper_imports_end',
-    `\nimport {loadTimeData} from '../../i18n_setup.js';`
-      + '\n#html_wrapper_imports_end')
 })
 
 mangleAll(
