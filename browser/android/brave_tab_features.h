@@ -55,6 +55,8 @@ class BraveTabFeatures : public TabFeatures_Chromium {
       creative_search_result_ad_tab_helper_;
   // Offers and runs Web Discovery. Null without it or outside regular profiles.
   std::unique_ptr<ContentsObservingTabFeature> web_discovery_tab_helper_;
+  // Detects the Rewards creator of the page. Null without Brave Rewards.
+  std::unique_ptr<ContentsObservingTabFeature> rewards_tab_helper_;
 
   std::unique_ptr<ai_chat::TabDataWebContentsObserver> tab_data_observer_;
   std::unique_ptr<ai_chat::WebMcpInjector> web_mcp_injector_;

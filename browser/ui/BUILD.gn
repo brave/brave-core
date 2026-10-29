@@ -315,6 +315,7 @@ source_set("ui") {
   if (enable_brave_rewards) {
     deps += [
       "//brave/browser/brave_rewards",
+      "//brave/browser/brave_rewards:tab_helper",
       "//chrome/browser:flags",
       "//chrome/browser/lifetime",
     ]

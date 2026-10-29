@@ -5,6 +5,7 @@
 
 import("//brave/build/config.gni")
 import("//brave/components/brave_ads/buildflags/buildflags.gni")
+import("//brave/components/brave_rewards/core/buildflags/buildflags.gni")
 import("//brave/components/web_discovery/buildflags/buildflags.gni")
 
 assert(is_android)
@@ -87,6 +88,7 @@ source_set("tabs_impl") {
     "//brave/browser/misc_metrics:misc_metrics_impl",
     "//brave/browser/serp_metrics",
     "//brave/components/brave_ads/buildflags",
+    "//brave/components/brave_rewards/core/buildflags",
     "//brave/components/image_metadata_stripper/common",
     "//brave/components/misc_metrics",
     "//brave/components/web_discovery/buildflags",
@@ -103,5 +105,9 @@ source_set("tabs_impl") {
       "//brave/browser/brave_ads/creatives/search_result_ad",
       "//brave/browser/brave_ads/tabs",
     ]
+  }
+
+  if (enable_brave_rewards) {
+    deps += [ "//brave/browser/brave_rewards:tab_helper" ]
   }
 }

@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/check_deref.h"
 #include "brave/browser/brave_adaptive_captcha/brave_adaptive_captcha_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_tab_helper.h"
@@ -62,11 +63,8 @@ class RewardsPageBubbleDelegate : public RewardsPageHandler::BubbleDelegate {
     }
     if (auto* browser = ProfileBrowserCollection::GetForProfile(profile_.get())
                             ->GetLastActiveBrowser()) {
-      if (auto* contents =
-              browser->GetTabStripModel()->GetActiveWebContents()) {
-        if (auto* tab_helper = RewardsTabHelper::FromWebContents(contents)) {
-          return tab_helper->GetPublisherIdForTab();
-        }
+      if (auto* tab = browser->GetTabStripModel()->GetActiveTab()) {
+        return CHECK_DEREF(RewardsTabHelper::From(tab)).GetPublisherIdForTab();
       }
     }
     return "";

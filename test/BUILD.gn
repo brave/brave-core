@@ -1539,7 +1539,10 @@ test("brave_browser_tests") {
 
     if (enable_brave_rewards) {
       sources += [ "//brave/browser/ui/views/brave_actions/brave_actions_container_browsertest.cc" ]
-      deps += [ "//brave/browser/ui/views/brave_actions" ]
+      deps += [
+        "//brave/browser/brave_rewards:tab_helper",
+        "//brave/browser/ui/views/brave_actions",
+      ]
     }
 
     if (enable_brave_wallet) {
