@@ -226,6 +226,9 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
 #if !BUILDFLAG(IS_ANDROID)
       &features::kPwaNavigationCapturing,
 #endif
+#if !BUILDFLAG(IS_ANDROID)
+      &features::kReadAnythingOmniboxChip,
+#endif
       &features::kSCTAuditingHashdance,
       &features::kServiceWorkerAutoPreload,
       &features::kSkillsEnabled,
