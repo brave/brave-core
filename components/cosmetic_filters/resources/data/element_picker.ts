@@ -722,7 +722,13 @@ const launchElementPicker = (root: ShadowRoot) => {
       const r = (bgcolor >> 16) & 0xff
       const g = (bgcolor >> 8) & 0xff
       const b = bgcolor & 0xff
-      section.style.setProperty('--dynamic-color-rgb', `rgb(${r}, ${g}, ${b})`)
+      // Must be `important` to replace the host's `!important` default; WebKit
+      // won't override an important declaration with a normal one.
+      section.style.setProperty(
+        '--dynamic-color-rgb',
+        `rgb(${r}, ${g}, ${b})`,
+        'important',
+      )
     }
   }
   const retrieveTheme = () => {
