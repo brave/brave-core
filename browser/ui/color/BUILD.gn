@@ -9,6 +9,8 @@ source_set("unit_tests") {
   sources = [ "brave_color_mixers_unittest.cc" ]
 
   deps = [
+    "//base/test:test_support",
+    "//brave/browser/ui/darker_theme",
     "//brave/ui/color:nala_color_id",
     "//chrome/browser/ui/color:color_headers",
     "//chrome/browser/ui/color:mixers",
