@@ -144,7 +144,7 @@ class PsstTabWebContentsObserver : public tabs::ContentsObservingTabFeature {
   const raw_ptr<PsstRuleRegistry> registry_;
   const raw_ptr<PsstSettingsService> psst_settings_service_ = nullptr;
   const raw_ptr<variations::VariationsService> variations_service_ = nullptr;
-  const raw_ptr<PsstLogService> log_service_ = nullptr;
+  const raw_ptr<PsstLogService> log_service_;
   InjectScriptCallback inject_script_callback_;
   mojo::AssociatedRemote<script_injector::mojom::ScriptInjector>
       script_injector_remote_;
