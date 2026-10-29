@@ -8,11 +8,23 @@ from __future__ import annotations
 from dataclasses import dataclass
 from functools import total_ordering
 import json
+import re
 
 import repository
 
 # The path to the package.json file in brave-core
 PACKAGE_FILE = 'package.json'
+
+# The file holding the pinslist timestamp, which every version bump refreshes.
+PINSLIST_TIMESTAMP_FILE = (
+    'chromium_src/net/tools/transport_security_state_generator/'
+    'input_file_parsers.cc'
+)
+
+# The pinslist timestamp block in `PINSLIST_TIMESTAMP_FILE`.
+PINSLIST_TIMESTAMP_RE = re.compile(
+    r'# Last updated:.*\nPinsListTimestamp\n(?P<timestamp>[0-9]{10})\n'
+)
 
 # The link to the Chromium source code.
 GOOGLESOURCE_LINK = 'https://chromium.googlesource.com/chromium/src'

@@ -279,6 +279,16 @@ class Repository:
             git_dir / 'rebase-apply'
         ).exists()
 
+    def rebase_merge_dir(self) -> Path:
+        """Returns git's state directory for an interactive rebase.
+
+        The directory only exists while such a rebase is in progress. Git
+        removes it, along with anything else stored in it, once the rebase
+        finishes or is aborted.
+        """
+        git_dir = Path(self.run_git('rev-parse', '--absolute-git-dir'))
+        return git_dir / 'rebase-merge'
+
     def last_changed(self, file: str, from_commit: str | None = None) -> str:
         """Gets the last commit for a file."""
         args = ['log', '--pretty=%h', '-1']
