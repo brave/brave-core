@@ -1,5 +1,5 @@
 diff --git a/components/sync_device_info/device_info_sync_bridge.cc b/components/sync_device_info/device_info_sync_bridge.cc
-index d41bff877d78fe171753847e6b5eeed76b637ede..58d326062fc3f71ec5ee9402578952efb354733d 100644
+index b2d192247eb805c8afd59af96764fdbffbf4adb9..3715de918cd75653e3d88e611a017e382c71ee6d 100644
 --- a/components/sync_device_info/device_info_sync_bridge.cc
 +++ b/components/sync_device_info/device_info_sync_bridge.cc
 @@ -264,7 +264,8 @@ DeviceInfo SpecificsToModel(const DeviceInfoSpecifics& specifics) {

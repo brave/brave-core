@@ -1,8 +1,8 @@
 diff --git a/chromium/config/Chrome/linux/arm64/config_components.h b/chromium/config/Chrome/linux/arm64/config_components.h
-index 716832865615ef94de78d91aa49ce970314e4273..14da89dd3a00a69e76730514c7b1a487b068e211 100644
+index 88f6b26f2495f39a20855f251f1e9e3a221ac94c..071d490f0144417d394db30fb3171ab7e344f5d1 100644
 --- a/chromium/config/Chrome/linux/arm64/config_components.h
 +++ b/chromium/config/Chrome/linux/arm64/config_components.h
-@@ -144,7 +144,7 @@
+@@ -145,7 +145,7 @@
  #define CONFIG_H264_QSV_DECODER 0
  #define CONFIG_H264_RKMPP_DECODER 0
  #define CONFIG_HAP_DECODER 0
@@ -11,7 +11,7 @@ index 716832865615ef94de78d91aa49ce970314e4273..14da89dd3a00a69e76730514c7b1a487
  #define CONFIG_HEVC_QSV_DECODER 0
  #define CONFIG_HEVC_RKMPP_DECODER 0
  #define CONFIG_HEVC_V4L2M2M_DECODER 0
-@@ -1051,7 +1051,7 @@
+@@ -1056,7 +1056,7 @@
  #define CONFIG_H261_PARSER 0
  #define CONFIG_H263_PARSER 0
  #define CONFIG_H264_PARSER 1

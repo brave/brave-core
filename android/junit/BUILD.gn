@@ -185,8 +185,8 @@ if (is_android) {
     ]
 
     deps = [
-      "//brave/third_party/android_deps:com_google_android_play_app_update_java",
       "//chrome/android/junit:chrome_junit_tests_helper",
+      "//third_party/android_deps:playcore_app_update_java",
     ]
   }
 
@@ -195,7 +195,6 @@ if (is_android) {
     sources = [
       "src/org/chromium/chrome/browser/ntp/BraveNewTabTakeoverInfobarTest.java",
       "src/org/chromium/chrome/browser/ntp/BraveNtpTopSitesModeUnitTest.java",
-      "src/org/chromium/chrome/browser/ntp/BraveRecentTabsCoordinatorTest.java",
       "src/org/chromium/chrome/browser/ntp/NewTabTakeoverSafeAreaReporterTest.java",
     ]
 
@@ -270,7 +269,6 @@ if (is_android) {
     deps = [
       "//base:base_java",
       "//base:base_junit_test_support",
-      "//brave/browser/ui/android/bottombar:prefs_java",
       "//chrome/android/junit:chrome_junit_tests_helper",
       "//chrome/browser/flags:java",
       "//chrome/browser/preferences:java",
@@ -361,6 +359,12 @@ if (is_android) {
     ]
   }
 
+  robolectric_library("brave_multiwindow_junit_test_utils") {
+    sources = [ "src/org/chromium/chrome/browser/multiwindow/BraveMultiWindowTestUtils.java" ]
+
+    deps = [ "//chrome/browser/ui/android/multiwindow:java" ]
+  }
+
   robolectric_library("brave_junit_tests_org.chromium.chrome.browser.hub") {
     sources = [
       "src/org/chromium/chrome/browser/hub/BraveHubManagerImplUnitTest.java",
@@ -368,6 +372,7 @@ if (is_android) {
     ]
 
     deps = [
+      ":brave_multiwindow_junit_test_utils",
       "//base:base_java",
       "//base:base_junit_test_support",
       "//brave/browser/brave_shields/android:java",
@@ -421,6 +426,7 @@ if (is_android) {
     ]
 
     deps = [
+      ":brave_multiwindow_junit_test_utils",
       "//chrome/android:chrome_java",
       "//chrome/android/junit:chrome_junit_tests_helper",
     ]

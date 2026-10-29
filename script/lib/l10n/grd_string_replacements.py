@@ -37,6 +37,9 @@ default_replacements = [
     (r'Incognito', r'Private'),
     (r'inco&gnito', r'&private'),
     (r'Inco&gnito', r'&Private'),
+    # TODO(https://github.com/brave/brave-browser/issues/60062): Remove once
+    # Brave Password Manager supports passkeys.
+    (r'Passwords · Passkeys', r'Passwords'),
 ]
 
 

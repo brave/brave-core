@@ -60,7 +60,6 @@ export class SettingsBraveSyncPageElement extends SettingsBraveSyncPageElementBa
 
   static get properties() {
     return {
-      prefs: Object,
       /**
        * The current sync status, supplied by SyncBrowserProxy.
        * @type {?SyncStatus}
@@ -77,7 +76,6 @@ export class SettingsBraveSyncPageElement extends SettingsBraveSyncPageElementBa
     };
   }
 
-  declare prefs: Record<string, unknown>;
 
   private declare syncStatus_: BraveSyncStatus;
   private declare isEncryptionSet_: boolean;

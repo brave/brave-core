@@ -9,6 +9,8 @@
 #include "chrome/browser/download/bubble/download_bubble_update_service_factory.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
+#include "chrome/browser/ui/views/toolbar/toolbar_button.h"
 #include "components/vector_icons/vector_icons.h"
 
 namespace {
@@ -46,9 +48,6 @@ bool HasInsecureDownloads(BrowserView* browser_view) {
   });
 }
 
-// Forward-declaring this customisation point as it depends on
-// `GetDownloadsButton`, which is declared in the unamed namespace of the
-// shadowed source.
 void UpdateIcon_BraveImpl(BrowserView* browser_view,
                           const gfx::VectorIcon& icon,
                           DownloadDisplay::IconState state,
@@ -70,7 +69,10 @@ void UpdateIcon_BraveImpl(BrowserView* browser_view,
     return;
   }
 
-  auto* button = GetDownloadsButton(browser_view);
+  auto* toolbar_button_provider = browser_view->toolbar_button_provider();
+  auto* button = toolbar_button_provider
+                     ? toolbar_button_provider->GetDownloadButton()
+                     : nullptr;
   if (!button) {
     return;
   }

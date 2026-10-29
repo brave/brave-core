@@ -1,8 +1,8 @@
 diff --git a/media/base/media_switches.cc b/media/base/media_switches.cc
-index 9e219d53cad365d76ab098937d1570dd040c0365..9860fd3e787e4a5c4f953b37accb38807dbede16 100644
+index af08e2530c84200d02557aa5bdf7c98810a9209a..ee9d857fd2d99d95e5d72666f968223d26d5fee8 100644
 --- a/media/base/media_switches.cc
 +++ b/media/base/media_switches.cc
-@@ -383,7 +383,7 @@ BASE_FEATURE(kAutoPictureInPictureSurveys, base::FEATURE_DISABLED_BY_DEFAULT);
+@@ -390,7 +390,7 @@ BASE_FEATURE(kAutoPictureInPictureSurveys, base::FEATURE_DISABLED_BY_DEFAULT);
  
  // Allows media to autoplay without a user gesture if the site has been
  // granted microphone or camera permissions.
@@ -11,7 +11,7 @@ index 9e219d53cad365d76ab098937d1570dd040c0365..9860fd3e787e4a5c4f953b37accb3880
  
  // Whether we should show a setting to disable autoplay policy.
  BASE_FEATURE(kAutoplayDisableSettings, base::FEATURE_DISABLED_BY_DEFAULT);
-@@ -549,7 +549,7 @@ BASE_FEATURE(kDocumentPictureInPictureReparenting,
+@@ -550,7 +550,7 @@ BASE_FEATURE(kDocumentPictureInPictureReparenting,
  BASE_FEATURE(kEnableRtcpReporting, base::FEATURE_ENABLED_BY_DEFAULT);
  
  // Enables user control over muting tab audio from the tab strip.
@@ -40,7 +40,7 @@ index 9e219d53cad365d76ab098937d1570dd040c0365..9860fd3e787e4a5c4f953b37accb3880
  
  // Enable automatic downloading of speech recognition language packs.
  BASE_FEATURE(kLiveCaptionAutomaticLanguageDownload,
-@@ -1323,7 +1323,7 @@ BASE_FEATURE(kMediaCodecLowDelayMode, base::FEATURE_DISABLED_BY_DEFAULT);
+@@ -1310,7 +1310,7 @@ BASE_FEATURE(kMediaCodecLowDelayMode, base::FEATURE_DISABLED_BY_DEFAULT);
  
  // Enables MediaDrmBridge to call into MediaDrm API to query HDCP Status to
  // support the CDM API GetStatusForPolicy.

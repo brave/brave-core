@@ -52,8 +52,7 @@
         <p>$i18n{braveShieldsDefaultsSectionDescription1}</p>
         <p>$i18n{braveShieldsDefaultsSectionDescription2}</p>
         <settings-ad-block-only-mode-alert
-          id="adBlockOnlyModeAlert"
-          prefs="{{prefs}}">
+          id="adBlockOnlyModeAlert">
         </settings-ad-block-only-mode-alert>
       </div>
     </div>
@@ -61,7 +60,7 @@
   <settings-toggle-button
       hidden="[[isShowBraveShieldsInPageInfoEnabled_]]"
       class="cr-row"
-      pref="{{prefs.brave.shields.stats_badge_visible}}"
+      pref-key="brave.shields.stats_badge_visible"
       label="$i18n{showStatsBlockedBadgeLabel}">
   </settings-toggle-button>
   <div class="settings-box">

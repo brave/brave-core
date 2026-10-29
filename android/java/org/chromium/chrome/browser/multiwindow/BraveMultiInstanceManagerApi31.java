@@ -46,7 +46,7 @@ class BraveMultiInstanceManagerApi31 extends MultiInstanceManagerApi31 {
             ActivityLifecycleDispatcher activityLifecycleDispatcher,
             MonotonicObservableSupplier<ModalDialogManager> modalDialogManagerSupplier,
             MenuOrKeyboardActionController menuOrKeyboardActionController,
-            Supplier<DesktopWindowStateManager> desktopWindowStateManagerSupplier) {
+            Supplier<@Nullable DesktopWindowStateManager> desktopWindowStateManagerSupplier) {
         super(
                 activity,
                 tabModelOrchestratorSupplier,

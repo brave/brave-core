@@ -522,9 +522,11 @@ def CheckNalaIconOverridesExistUpstream(input_api, output_api):
         # rather than fail the build.
         return []
 
+    # Limit to Android resource dirs, which may be named e.g. res or java_res.
+    res_dir = re.compile(r'(^|/)([^/]*_)?res[^/]*/')
     found_stems = set()
     for line in tracked.splitlines():
-        if '/res' not in line:  # Limit to Android resource dirs.
+        if not res_dir.search(line):
             continue
         found_stems.add(
             input_api.os_path.splitext(input_api.os_path.basename(line))[0]

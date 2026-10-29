@@ -17,10 +17,10 @@ import {BraveSearchEnginesPageBrowserProxyImpl} from './brave_search_engines_pag
 import {getTemplate} from './brave_search_engines_page.html.js'
 import type {CrToastElement} from 'chrome://resources/cr_elements/cr_toast/cr_toast.js'
 import type {SearchEngine} from '../search_page/search_engines_browser_proxy.js'
-import {PrefsMixin} from '/shared/settings/prefs/prefs_mixin.js'
+import {PrefServiceObserverMixin} from '/shared/settings/prefs2/pref_service_observer_mixin.js'
 
 const BraveSearchEnginesPageBase =
-  WebUiListenerMixin(PrefsMixin(I18nMixin(RouteObserverMixin(PolymerElement))))
+  WebUiListenerMixin(PrefServiceObserverMixin(I18nMixin(RouteObserverMixin(PolymerElement))))
 
 class BraveSearchEnginesPage extends BraveSearchEnginesPageBase {
   static get is() {
@@ -51,6 +51,11 @@ class BraveSearchEnginesPage extends BraveSearchEnginesPageBase {
       // The label of the confirmation toast that is displayed when the user
       // chooses a default private search engine.
       confirmationToastLabel_: String,
+
+      // The default search provider pref, used to detect enforcement.
+      defaultSearchProviderPref_: Object,
+
+      webDiscoveryEnabledPref_: Object,
     }
   }
 
@@ -58,8 +63,22 @@ class BraveSearchEnginesPage extends BraveSearchEnginesPageBase {
   private declare showPrivateSearchEngineListDialog_: boolean
   private declare defaultPrivateSearchEngine_: SearchEngine|null
   private declare confirmationToastLabel_: string
+  private declare defaultSearchProviderPref_:
+    chrome.settingsPrivate.PrefObject|undefined
+  private declare webDiscoveryEnabledPref_:
+    chrome.settingsPrivate.PrefObject<boolean>|undefined
 
   browserProxy_ = BraveSearchEnginesPageBrowserProxyImpl.getInstance()
+
+  override connectedCallback() {
+    super.connectedCallback()
+
+    this.mirrorPrefs({
+      'default_search_provider_data.template_url_data':
+        'defaultSearchProviderPref_',
+      'brave.web_discovery_enabled': 'webDiscoveryEnabledPref_',
+    })
+  }
 
   override ready() {
     super.ready()
@@ -98,15 +117,15 @@ class BraveSearchEnginesPage extends BraveSearchEnginesPageBase {
   }
 
   private shouldShowPrivateSearchProvider_(
-    prefs: chrome.settingsPrivate.PrefObject)
+    pref: chrome.settingsPrivate.PrefObject|undefined)
   {
     // When default search engine is enforced, configured provider is not used.
     // If we install search provider extension, that extension will be used on normal and
     // private(tor) window. So, just hide this option.
-    return !loadTimeData.getBoolean('isGuest') && !this.isPrefManaged_(prefs)
+    return !loadTimeData.getBoolean('isGuest') && !this.isPrefManaged_(pref)
   }
 
-  private isPrefManaged_(pref: chrome.settingsPrivate.PrefObject) {
+  private isPrefManaged_(pref: chrome.settingsPrivate.PrefObject|undefined) {
     return !!pref &&
         pref.enforcement === chrome.settingsPrivate.Enforcement.ENFORCED
   }

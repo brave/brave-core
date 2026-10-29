@@ -83,7 +83,8 @@ public class BraveBottomControlsMediatorTest {
                 ObservableSuppliers.createNonNull(PanelState.UNDEFINED),
                 ObservableSuppliers.alwaysNull(),
                 ObservableSuppliers.createNullable(),
-                /* readAloudRestoringSupplier= */ () -> false);
+                /* readAloudRestoringSupplier= */ () -> false,
+                /* requestRenderRunnable= */ () -> {});
     }
 
     // Bytecode swaps this mediator in for the Android bottom bar's layer too, which the tab groups

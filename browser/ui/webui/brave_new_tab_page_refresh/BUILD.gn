@@ -173,7 +173,6 @@ source_set("browser_tests") {
     "//brave/components/brave_news/common/buildflags",
     "//brave/components/brave_rewards/core/buildflags",
     "//brave/components/brave_vpn/common/buildflags",
-    "//chrome/browser/ui",
     "//chrome/common",
     "//chrome/test:test_support",
     "//components/policy/core/browser",

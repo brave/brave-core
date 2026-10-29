@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/extensions/favicon/favicon_util.cc b/chrome/browser/extensions/favicon/favicon_util.cc
-index 4c59a428e7d6715a1d4c534526370478919afdd4..d9397681e86376398380c861f5f69ca2d589fbfd 100644
+index e15bc1bd21e72c4ddcd2bde9178f4cd12dbd9349..bd7011b685d08fdbc67a092d90919f505939c1d6 100644
 --- a/chrome/browser/extensions/favicon/favicon_util.cc
 +++ b/chrome/browser/extensions/favicon/favicon_util.cc
-@@ -37,10 +37,10 @@ int GetResourceID(int size_in_pixels) {
+@@ -38,10 +38,10 @@ int GetResourceID(int size_in_pixels) {
        ui::NativeTheme::GetInstanceForNativeUi()->preferred_color_scheme() ==
        ui::NativeTheme::PreferredColorScheme::kDark;
    if (size_in_pixels >= 64) {
