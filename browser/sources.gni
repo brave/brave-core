@@ -160,6 +160,8 @@ brave_chrome_browser_deps = [
   "//brave/browser/sync",
   "//brave/browser/themes",
   "//brave/browser/ui",
+  "//brave/browser/ui:brave_tab_prefs",
+  "//brave/browser/ui:ui_features",
   "//brave/browser/ui/webui/brave_account",
   "//brave/browser/updater:buildflags",
   "//brave/common",
@@ -791,22 +793,6 @@ if (is_win || is_android) {
     "//brave/browser/day_zero_browser_ui_expt/pref_names.h",
   ]
 }
-
-brave_chrome_browser_public_deps = [
-  "//brave/app/vector_icons",
-  "//brave/browser:browser_process",
-  "//brave/browser/resources/bookmark_icon:bookmark_icon_resources",
-  "//brave/browser/resources/tab_strip:tab_strip_resources",
-  "//brave/browser/ui:ui_public_dependencies",
-  "//brave/common/importer:interfaces",
-  "//brave/components/brave_sync:constants",
-  "//brave/components/containers/buildflags",
-  "//brave/components/psst/buildflags",
-  "//brave/components/traffic_control/buildflags",
-  "//brave/components/v8/buildflags",
-  "//brave/components/variations",
-  "//components/saved_tab_groups/public",
-]
 
 if (is_mac) {
   brave_chrome_framework_public_deps = [ "//brave:framework_bundle_data" ]

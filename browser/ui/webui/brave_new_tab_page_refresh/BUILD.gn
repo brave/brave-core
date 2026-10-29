@@ -171,6 +171,7 @@ source_set("browser_tests") {
   deps = [
     ":brave_new_tab_page_refresh",
     "//base",
+    "//brave/browser:browser_process",
     "//brave/browser/extensions:test_support",
     "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/brave_ads/buildflags",
