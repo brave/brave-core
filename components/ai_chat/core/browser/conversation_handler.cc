@@ -2319,6 +2319,26 @@ void ConversationHandler::OnTitleGenerated(
   }
 }
 
+void ConversationHandler::MaybeGenerateConversationTitle() {
+  // The title API accepts only the opening human/assistant pair, so tool
+  // follow-ups are left out. One request per conversation.
+  if (conversation_title_requested_ || !metadata_->title.empty() ||
+      !engine_->RequiresClientSideTitleGeneration() ||
+      chat_history_.size() < 2 ||
+      chat_history_[0]->character_type != mojom::CharacterType::HUMAN ||
+      chat_history_[1]->character_type != mojom::CharacterType::ASSISTANT) {
+    return;
+  }
+
+  conversation_title_requested_ = true;
+  EngineConsumer::ConversationHistoryView title_history{
+      chat_history_[0].get(), chat_history_[1].get()};
+  engine_->GenerateConversationTitle(
+      associated_content_manager_->GetCachedContentsMap(), title_history,
+      base::BindOnce(&ConversationHandler::OnTitleGenerated,
+                     weak_ptr_factory_.GetWeakPtr()));
+}
+
 void ConversationHandler::CompleteGeneration(
     const std::optional<std::string>& thread_uuid,
     bool success) {
@@ -2327,20 +2347,10 @@ void ConversationHandler::CompleteGeneration(
   OnAPIRequestInProgressChanged();
 
   if (success) {
-    // Trigger title generation in background after request completes but
-    // before pending requests or tool handling. This is independent of request
-    // progress.
-    if (engine_->RequiresClientSideTitleGeneration() &&
-        chat_history_.size() == 2) {
-      engine_->GenerateConversationTitle(
-          associated_content_manager_->GetCachedContentsMap(),
-          EngineConsumer::ToHistoryView(chat_history_),
-          base::BindOnce(&ConversationHandler::OnTitleGenerated,
-                         weak_ptr_factory_.GetWeakPtr()));
-    }
-
     MaybePopPendingRequests();
     if (!MaybeRespondToNextToolUseRequest(thread_uuid)) {
+      // Title once the tool loop is finished, not on the tool-call turn.
+      MaybeGenerateConversationTitle();
       // Inform tool providers that there are no more tool use requests to
       // handle, that the loop is complete until a new message is submitted.
       for (auto& tool_provider : tool_providers_) {
