@@ -1060,6 +1060,18 @@
 /* No comment provided by engineer. */
 "ntp.sponsoredImageDescription" = "את/ה תומכ/ת ביוצרי תוכן ומפרסמים באמצעות צפייה בתמונה המוממנת הזו.";
 
+/* The title of a picker for user to pick which type of topsites to show in NTP */
+"ntp.topsites" = "אתרים מובילים";
+
+/* Favorites type of topsites. Selection means NTP will display favorites tiles if there is any. */
+"ntp.topsitesTypeFavorites" = "מועדפים";
+
+/* MostVisited type of topsites. Selection means NTP will display most visited tiles if there is any. */
+"ntp.topsitesTypeMostVisited" = "ביקורים תכופים";
+
+/* None type of topsites. Selection means there won't be any topsites tiles in NTP */
+"ntp.topsitesTypeNone" = "ללא";
+
 /* The placeholder says 'Terms of Service'. So full sentence goes like: 'By turning Rewards, you agree to the Terms of Service'. */
 "ntp.turnRewardsTos" = "הפעלה של תגמולים מהווה את הסכמתך ל%@.";
 
@@ -1450,12 +1462,6 @@
 /* The title for the alert that shows up when an item is expired */
 "playList.expiredAlertTitle" = "סרטון פג תוקף";
 
-/* Number of items in the playlsit folder. Example: '10 items' */
-"playlist.folderItemCountPlural" = "%d פריטים";
-
-/* Title for when there's a single item inside of a folder */
-"playlist.foldersCountSingular" = "פריט %d";
-
 /* Description for load resources error alert */
 "playList.loadResourcesErrorAlertDescription" = "הייתה בעיה בטעינת המקור!";
 
@@ -1587,12 +1593,6 @@
 
 /* The title of the screen to create a new folder */
 "playlistFolders.newFolderScreenTitle" = "רשימת השמעה חדשה";
-
-/* The sub-title of the folder. Example: This folder contains 10 Items. This folder contains 3 Items. */
-"playlistFolders.subtitleItemCount" = "%lld פריטים";
-
-/* The sub-title of the folder. Example: This folder contains ONE item. This folder contains 1 Item. */
-"playlistFolders.subtitleItemSingleCount" = "פריט 1";
 
 /* The title of a folder when the user enters no name (untitled) */
 "playlistFolders.untitledFolderTitle" = "פלייליסט ללא שם";
@@ -2354,7 +2354,7 @@
 "settings.blockYouTubeDistractingElementsDesc" = "חסימת אלמנטים מסיחים ב-YouTube";
 
 /* Title beside the toggle for blocking YouTube distracting elements */
-"settings.blockYouTubeDistractingElementsTitle" = "חסימת אלמנטים מסיחים ב-YouTube";
+"settings.blockYouTubeDistractingElementsTitle" = "חסימת רכיבים מסיחים ב-YouTube";
 
 /* Description beside the toggle for blocking YouTube recommendations */
 "settings.blockYoutubeRecommendationsDesc" = "חוסם את הרכיב ׳הבא׳ ואת כרטיסיות הסיום ב-youtube.com";
@@ -2409,12 +2409,6 @@
 
 /* Title of the settings toggle that enables Sponsored Ads */
 "settings.sponsoredAdsEnabledTitle" = "הפעלת מודעות ממומנות";
-
-/* Description to explain the survey panelist toggle */
-"settings.surveyPanelistDescription" = "מאפשר ל-Brave להציג לינקים לסקרים פרטיים בדף הכרטיסייה החדשה. סקרים עוזרים לנו לבנות פיצ׳רים טובים יותר ולמדוד את היעילות של קמפיינים פרסומיים בדפדפן. [למידע נוסף](%@)";
-
-/* Title to explain the survey panelist toggle */
-"settings.surveyPanelistTitle" = "הפעלת סקרי Brave";
 
 /* Header for the YouTube settings section */
 "settings.youtube" = "YouTube";
@@ -3060,12 +3054,6 @@
 
 /* Accessibility label for a button that allows users to shred their tabs (erase them & associated data) */
 "tabGrid.shredTabsAccessibilityLabel" = "גריסת כרטיסיות";
-
-/* A label in the tab tray mode switcher shown when there are 0 or more than 1 regular tabs open e.g. '129 Tabs' */
-"tabGrid.tabsCountFormatPlural" = "כרטיסייה %lld";
-
-/* A label in the tab tray mode switcher shown when there is 1 regular tab open e.g. '1 Tab' */
-"tabGrid.tabsCountFormatSingular" = "כרטיסייה %lld";
 
 /* Accessibility label for a button that when tapped presents the users history & recently closed tabs */
 "tabGrid.viewHistoryAccessibilityLabel" = "הצגת היסטוריה";

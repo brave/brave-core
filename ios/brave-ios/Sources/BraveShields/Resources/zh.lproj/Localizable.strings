@@ -113,7 +113,7 @@
 "BraveShieldsGlobalControls" = "全域控制項";
 
 /* Shields panel toggle label that would save webcompat report contact info data when enabled. */
-"BraveShieldsSaveContactInfo" = "存储联系信息，用于日后的站点故障报告";
+"BraveShieldsSaveContactInfo" = "存储联系信息，用于日后报告站点故障";
 
 /* Description for shields panel toggle label that would save webcompat report contact info data when enabled. */
 "BraveShieldsSaveContactInfoDescription" = "如果您提供联系信息，这些信息将会被储存起来，在日后的报告中使用";

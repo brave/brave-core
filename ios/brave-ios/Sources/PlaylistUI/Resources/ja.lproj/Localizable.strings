@@ -91,12 +91,6 @@
 /* A title shown above a list of videos in your default playlist. '%@' will be replaced with the default playlist name which has already been localized, for example: 'Add from your Play Later playlist' */
 "playlist.fillNewPlaylistTitle" = "**%@** プレイリストから追加";
 
-/* A count of how many items there are in the playlist. '%lld' would be replaced with a number, for example: 10 items */
-"playlist.itemCountPlural" = "%lld件のアイテム";
-
-/* A count of how many items there are in the playlist */
-"playlist.itemCountSingular" = "1件のアイテム";
-
 /* A label shown on an item when it is being prepared for offline play */
 "playlist.itemDownloadStatusPreparing" = "準備中";
 
