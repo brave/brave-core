@@ -9,6 +9,7 @@
 
 #include "base/strings/string_util.h"
 #include "brave/browser/psst/psst_log_service_factory.h"
+#include "brave/components/psst/core/browser/psst_log_service.h"
 #include "components/sessions/content/session_tab_helper.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"

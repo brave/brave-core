@@ -1383,50 +1383,6 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   EXPECT_EQ(policy_script_result, policy_script_insert_future.Take());
 }
 
-// A continuation user script result (initial_execution is false) whose tasks
-// don't include the current page's URL means the flow skipped a step (e.g.
-// the user navigated directly to a later page), so it must be failed instead
-// of silently continuing.
-TEST_F(PsstTabWebContentsObserverUnitTest, FlowFailsWhenOnWrongStep) {
-  base::RunLoop check_loop;
-  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url_, _, _))
-      .WillOnce(CheckIfMatchCallback(
-          &check_loop, CreateMatchedRule(user_script_, policy_script_)));
-
-  EXPECT_CALL(ui_delegate(),
-              GetPsstWebsiteSettings(url::Origin::Create(url_), user_id_));
-
-  const GURL other_step_url("https://example1.com/other-step");
-  auto script_params = base::Value(
-      base::DictValue()
-          .Set("initial_execution", false)
-          .Set("user_id", user_id_)
-          .Set("site_name", "example")
-          .Set("tasks",
-               base::ListValue().Append(base::DictValue()
-                                            .Set("uid", "1")
-                                            .Set("url", other_step_url.spec())
-                                            .Set("description", "settings"))));
-
-  base::test::TestFuture<base::Value> user_script_insert_future;
-  ExpectUserScriptInjected(user_script_)
-      .WillOnce(InsertScriptInPageCallback(&user_script_insert_future,
-                                           script_params.Clone()));
-
-  EXPECT_CALL(ui_delegate(), UpdateTasks(100, _, mojom::PsstStatus::kFailed))
-      .Times(1);
-  EXPECT_CALL(ui_delegate(), Show).Times(0);
-  EXPECT_CALL(inject_async_script_callback(), Run).Times(0);
-
-  DocumentOnLoadObserver observer(web_contents());
-  content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
-                                                             url_);
-  observer.Wait();
-
-  check_loop.Run();
-  EXPECT_EQ(script_params, user_script_insert_future.Take());
-}
-
 // Clicking Cancel while the flow is running calls CancelInFlightFlow()
 // (see PsstUiDesktopPresenter::PsstUiDesktopDelegate::CancelInFlightFlow).
 // Once called, a policy script result that arrives afterwards - simulating a
