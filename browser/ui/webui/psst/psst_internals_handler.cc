@@ -39,7 +39,7 @@ void PsstInternalsHandler::BindPage(
   page_.reset();
   page_.Bind(std::move(page));
   std::move(callback).Run(log_service_ ? log_service_->GetEntries()
-                                      : std::vector<mojom::PsstLogEntryPtr>());
+                                       : std::vector<mojom::PsstLogEntryPtr>());
 }
 
 void PsstInternalsHandler::Clear() {

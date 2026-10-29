@@ -125,7 +125,8 @@ mojom::PsstLogLevel LevelFromString(std::string_view level) {
 // install logging can't break script injection.
 void RunBootstrapScript(v8::Isolate* isolate, v8::Local<v8::Context> context) {
   const std::string source = base::ReplaceStringPlaceholders(
-      kBootstrapScript, {base::StrCat({"'", kPsstNativeObjectName, "'"})}, nullptr);
+      kBootstrapScript, {base::StrCat({"'", kPsstNativeObjectName, "'"})},
+      nullptr);
 
   v8::TryCatch try_catch(isolate);
   v8::Local<v8::Script> script;
@@ -179,9 +180,8 @@ void PsstJSHandler::Install(content::RenderFrame* render_frame,
   // Without the native object the bootstrap script has nothing to wrap, so
   // skip it rather than leaving a half-installed API behind.
   if (!global
-           ->DefineProperty(context, gin::StringToV8(isolate,
-                                                     kPsstNativeObjectName),
-                            desc)
+           ->DefineProperty(
+               context, gin::StringToV8(isolate, kPsstNativeObjectName), desc)
            .IsJust()) {
     return;
   }

@@ -60,7 +60,9 @@ struct PsstLogEntry {
 // from the receiving frame, so a compromised renderer cannot attribute a log
 // entry to another tab or site.
 interface PsstLogSink {
-  Log(PsstLogLevel level, string message, mojo_base.mojom.DictionaryValue? data);
+  Log(PsstLogLevel level,
+      string message,
+      mojo_base.mojom.DictionaryValue? data);
 };
 
 // WebUI -> browser interface for brave://psst-internals.

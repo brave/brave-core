@@ -3,6 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+#include "brave/browser/psst/psst_log_receiver.h"
+
 #include <string>
 #include <vector>
 
@@ -11,7 +13,6 @@
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/values_test_util.h"
-#include "brave/browser/psst/psst_log_receiver.h"
 #include "brave/browser/psst/psst_log_service_factory.h"
 #include "brave/components/psst/core/browser/psst_log_service.h"
 #include "brave/components/psst/core/common/constants.h"
@@ -73,8 +74,7 @@ class PsstLogReceiverBrowserTest : public PlatformBrowserTest {
       base::Location location = base::Location::Current()) {
     SCOPED_TRACE(location.ToString());
     ASSERT_TRUE(content::NavigateToURL(
-        web_contents(),
-        https_server_.GetURL(host, "/iframe_cross_site.html")));
+        web_contents(), https_server_.GetURL(host, "/iframe_cross_site.html")));
   }
 
   // Runs `script` in the PSST isolated world, which also creates that world's
@@ -135,10 +135,9 @@ IN_PROC_BROWSER_TEST_F(PsstLogReceiverBrowserTest,
 
   EXPECT_EQ("function", EvalInPsstWorld(web_contents(), "typeof psstLog"));
   // Defined non-configurably, so a script sharing the world can't replace it.
-  EXPECT_EQ(false,
-            EvalInPsstWorld(web_contents(),
-                            "Object.getOwnPropertyDescriptor("
-                            "globalThis, 'psstLog').configurable"));
+  EXPECT_EQ(false, EvalInPsstWorld(web_contents(),
+                                   "Object.getOwnPropertyDescriptor("
+                                   "globalThis, 'psstLog').configurable"));
 }
 
 IN_PROC_BROWSER_TEST_F(PsstLogReceiverBrowserTest, EntryIsStampedByTheBrowser) {
@@ -168,9 +167,8 @@ IN_PROC_BROWSER_TEST_F(PsstLogReceiverBrowserTest, EntryIsStampedByTheBrowser) {
 IN_PROC_BROWSER_TEST_F(PsstLogReceiverBrowserTest, UnknownLevelBecomesInfo) {
   ASSERT_NO_FATAL_FAILURE(NavigateToPageWithIframe(kMainFrameHost));
 
-  ASSERT_TRUE(
-      EvalInPsstWorld(web_contents(), "psstLog('shout', 'hello'), true")
-          .ExtractBool());
+  ASSERT_TRUE(EvalInPsstWorld(web_contents(), "psstLog('shout', 'hello'), true")
+                  .ExtractBool());
 
   const auto entries = WaitForScriptEntries(1);
   ASSERT_EQ(1u, entries.size());
@@ -182,9 +180,9 @@ IN_PROC_BROWSER_TEST_F(PsstLogReceiverBrowserTest, UnknownLevelBecomesInfo) {
 IN_PROC_BROWSER_TEST_F(PsstLogReceiverBrowserTest, OverlongMessageIsTruncated) {
   ASSERT_NO_FATAL_FAILURE(NavigateToPageWithIframe(kMainFrameHost));
 
-  ASSERT_TRUE(EvalInPsstWorld(web_contents(),
-                              "psstLog('info', 'x'.repeat(5000)), true")
-                  .ExtractBool());
+  ASSERT_TRUE(
+      EvalInPsstWorld(web_contents(), "psstLog('info', 'x'.repeat(5000)), true")
+          .ExtractBool());
 
   const auto entries = WaitForScriptEntries(1);
   ASSERT_EQ(1u, entries.size());
@@ -212,21 +210,21 @@ IN_PROC_BROWSER_TEST_F(PsstLogReceiverBrowserTest, MissingMessageThrows) {
 
   // `psstLog` swallows the native TypeError so logging can never break the
   // flow, so observe it by calling the native object directly.
-  EXPECT_FALSE(EvalInPsstWorld(
-                   web_contents(),
-                   base::StrCat({"(() => { try { ", kPsstNativeObjectName,
-                                 ".psstLog('info'); return true; } "
-                                 "catch (e) { return false; } })()"}))
-                   .ExtractBool());
+  EXPECT_FALSE(
+      EvalInPsstWorld(web_contents(),
+                      base::StrCat({"(() => { try { ", kPsstNativeObjectName,
+                                    ".psstLog('info'); return true; } "
+                                    "catch (e) { return false; } })()"}))
+          .ExtractBool());
   EXPECT_TRUE(ScriptEntries().empty());
 }
 
 IN_PROC_BROWSER_TEST_F(PsstLogReceiverBrowserTest, ConsoleIsForwarded) {
   ASSERT_NO_FATAL_FAILURE(NavigateToPageWithIframe(kMainFrameHost));
 
-  ASSERT_TRUE(EvalInPsstWorld(web_contents(),
-                              "console.warn('from', 'console'), true")
-                  .ExtractBool());
+  ASSERT_TRUE(
+      EvalInPsstWorld(web_contents(), "console.warn('from', 'console'), true")
+          .ExtractBool());
 
   const auto entries = WaitForScriptEntries(1);
   ASSERT_EQ(1u, entries.size());
@@ -237,7 +235,8 @@ IN_PROC_BROWSER_TEST_F(PsstLogReceiverBrowserTest, ConsoleIsForwarded) {
 
 // A subframe's entries are attributed to that subframe's site and frame, and
 // still grouped under the tab the subframe lives in.
-IN_PROC_BROWSER_TEST_F(PsstLogReceiverBrowserTest, SubframeIsAttributedToItself) {
+IN_PROC_BROWSER_TEST_F(PsstLogReceiverBrowserTest,
+                       SubframeIsAttributedToItself) {
   ASSERT_NO_FATAL_FAILURE(NavigateToPageWithIframe(kMainFrameHost));
 
   content::RenderFrameHost* subframe = content::ChildFrameAt(web_contents(), 0);
@@ -247,8 +246,9 @@ IN_PROC_BROWSER_TEST_F(PsstLogReceiverBrowserTest, SubframeIsAttributedToItself)
   subframe = content::ChildFrameAt(web_contents(), 0);
   ASSERT_TRUE(subframe);
 
-  ASSERT_TRUE(EvalInPsstWorld(subframe, "psstLog('info', 'from subframe'), true")
-                  .ExtractBool());
+  ASSERT_TRUE(
+      EvalInPsstWorld(subframe, "psstLog('info', 'from subframe'), true")
+          .ExtractBool());
 
   const auto entries = WaitForScriptEntries(1);
   ASSERT_EQ(1u, entries.size());

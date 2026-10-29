@@ -156,9 +156,8 @@ IN_PROC_BROWSER_TEST_F(PsstInternalsUIDisabledBrowserTest, NotAvailable) {
   content::WebContents* const contents =
       browser()->GetActiveTabInterface()->GetContents();
   std::ignore = ui_test_utils::NavigateToURL(browser(), InternalsURL());
-  EXPECT_EQ(
-      content::PAGE_TYPE_ERROR,
-      contents->GetController().GetLastCommittedEntry()->GetPageType());
+  EXPECT_EQ(content::PAGE_TYPE_ERROR,
+            contents->GetController().GetLastCommittedEntry()->GetPageType());
 }
 
 }  // namespace psst

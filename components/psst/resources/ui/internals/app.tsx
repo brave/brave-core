@@ -43,9 +43,9 @@ export function App({ api }: { api: PsstInternalsApi }) {
         return true
       }
       return (
-        entry.message.toLowerCase().includes(needle) ||
-        entry.site.toLowerCase().includes(needle) ||
-        (entry.data ?? '').toLowerCase().includes(needle)
+        entry.message.toLowerCase().includes(needle)
+        || entry.site.toLowerCase().includes(needle)
+        || (entry.data ?? '').toLowerCase().includes(needle)
       )
     })
   }, [entries, search, minLevel, source])
