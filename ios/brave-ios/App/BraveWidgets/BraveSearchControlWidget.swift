@@ -15,7 +15,7 @@ struct BraveSearchControlWidget: ControlWidget {
     if #available(iOS 26.0, *) {
       let shortcut = WidgetShortcut.search
       return StaticControlConfiguration(kind: "BraveSearchControlWidget") {
-        ControlWidgetButton(action: OpenControlWidgetShortcutIntent(shortcut: shortcut)) {
+        ControlWidgetButton(action: OpenBraveSearchControlIntent()) {
           Label(shortcut.displayString, braveSystemImage: shortcut.braveSystemImageName ?? "")
         }
       }
