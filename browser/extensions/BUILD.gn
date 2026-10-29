@@ -302,6 +302,7 @@ source_set("test_support") {
     "//base",
     "//base/test:test_support",
     "//brave/browser",
+    "//brave/browser:browser_process",
     "//brave/components/brave_component_updater/browser",
     "//brave/components/constants",
     "//chrome/browser/extensions",

@@ -45,6 +45,7 @@ source_set("browser_tests") {
     ":containers",
     "//brave/app:brave_generated_resources_grit_grit",
     "//brave/browser/ui",
+    "//brave/browser/ui:brave_tab_prefs",
     "//brave/components/containers/content/browser",
     "//brave/components/containers/core/browser",
     "//brave/components/containers/core/browser:test_support",
