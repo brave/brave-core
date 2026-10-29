@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/tabs/tab_strip_control_button.cc b/chrome/browser/ui/views/tabs/tab_strip_control_button.cc
-index dfd8e94c702b5ab3f4cd17212fd28fc08ab74ec4..3c5a3d50085d9d773bdad1781258e3303cd3addb 100644
+index 63bf7877069eede7d09821dd22204fcc223af685..34ed21df753086e1ebe3125f41cddd419e254986 100644
 --- a/chrome/browser/ui/views/tabs/tab_strip_control_button.cc
 +++ b/chrome/browser/ui/views/tabs/tab_strip_control_button.cc
 @@ -34,7 +34,7 @@ class ControlButtonHighlightPathGenerator
@@ -74,9 +74,9 @@ index dfd8e94c702b5ab3f4cd17212fd28fc08ab74ec4..3c5a3d50085d9d773bdad1781258e330
 -      kColorNewTabButtonBackgroundFrameInactive;
 +      kColorNewTabButtonCRBackgroundFrameInactive;
  
-   inkdrop_hover_color_id_ = kColorTabStripControlButtonInkDrop;
-   inkdrop_ripple_color_id_ = kColorTabStripControlButtonInkDropRipple;
-@@ -133,31 +133,31 @@ TabStripControlButton::TabStripControlButton(
+   inkdrop_hover_frame_active_color_id_ = kColorTabStripControlButtonInkDrop;
+   inkdrop_hover_frame_inactive_color_id_ =
+@@ -138,31 +138,31 @@ TabStripControlButton::TabStripControlButton(
    }
  }
  
@@ -111,18 +111,18 @@ index dfd8e94c702b5ab3f4cd17212fd28fc08ab74ec4..3c5a3d50085d9d773bdad1781258e330
 -void TabStripControlButton::SetInkdropHoverColorId(
 +void TabStripControlButton_ChromiumImpl::SetInkdropHoverColorId(
      const ChromeColorIds new_color_id) {
-   if (inkdrop_hover_color_id_ == new_color_id) {
-     return;
-@@ -166,7 +166,7 @@ void TabStripControlButton::SetInkdropHoverColorId(
+   if (inkdrop_hover_frame_active_color_id_ == new_color_id &&
+       inkdrop_hover_frame_inactive_color_id_ == new_color_id) {
+@@ -173,7 +173,7 @@ void TabStripControlButton::SetInkdropHoverColorId(
    UpdateInkDrop();
  }
  
 -void TabStripControlButton::SetInkdropRippleColorId(
 +void TabStripControlButton_ChromiumImpl::SetInkdropRippleColorId(
      const ChromeColorIds new_color_id) {
-   if (inkdrop_ripple_color_id_ == new_color_id) {
-     return;
-@@ -175,12 +175,12 @@ void TabStripControlButton::SetInkdropRippleColorId(
+   if (inkdrop_ripple_frame_active_color_id_ == new_color_id &&
+       inkdrop_ripple_frame_inactive_color_id_ == new_color_id) {
+@@ -184,12 +184,12 @@ void TabStripControlButton::SetInkdropRippleColorId(
    UpdateInkDrop();
  }
  
@@ -137,7 +137,7 @@ index dfd8e94c702b5ab3f4cd17212fd28fc08ab74ec4..3c5a3d50085d9d773bdad1781258e330
    if (icon_->is_empty()) {
      return;
    }
-@@ -193,15 +193,15 @@ void TabStripControlButton::UpdateIcon() {
+@@ -202,15 +202,15 @@ void TabStripControlButton::UpdateIcon() {
    SetImageModel(views::Button::STATE_PRESSED, icon_image_model);
  }
  
@@ -157,7 +157,7 @@ index dfd8e94c702b5ab3f4cd17212fd28fc08ab74ec4..3c5a3d50085d9d773bdad1781258e330
                                                     Edge edge) const {
    const int flat_corner_radius = GetFlatCornerRadius();
    if (fixed_flat_edge_ == edge) {
-@@ -214,13 +214,13 @@ float TabStripControlButton::GetScaledCornerRadius(float initial_radius,
+@@ -223,13 +223,13 @@ float TabStripControlButton::GetScaledCornerRadius(float initial_radius,
    }
  }
  
@@ -173,7 +173,7 @@ index dfd8e94c702b5ab3f4cd17212fd28fc08ab74ec4..3c5a3d50085d9d773bdad1781258e330
    flat_edge_factor_ = factor;
    UpdateBackground();
    // The ink drop doesn't automatically pick up on rounded corner changes, so
-@@ -230,23 +230,23 @@ void TabStripControlButton::SetFlatEdgeFactor(float factor) {
+@@ -239,23 +239,23 @@ void TabStripControlButton::SetFlatEdgeFactor(float factor) {
    views::InkDrop::Get(this)->GetInkDrop()->HostSizeChanged(size());
  }
  
@@ -202,7 +202,7 @@ index dfd8e94c702b5ab3f4cd17212fd28fc08ab74ec4..3c5a3d50085d9d773bdad1781258e330
    // Only subscribe to glass frame eligibility changes if this button's
    // background becomes transparent for glass frames.
    auto* const glass_frame_service = GlassFrameService::GetInstance();
-@@ -255,23 +255,23 @@ void TabStripControlButton::AddedToWidget() {
+@@ -264,23 +264,23 @@ void TabStripControlButton::AddedToWidget() {
          glass_frame_service->RegisterGlassFrameEligibilityChangedCallback(
              browser_window_interface_,
              base::BindRepeating(
@@ -230,7 +230,7 @@ index dfd8e94c702b5ab3f4cd17212fd28fc08ab74ec4..3c5a3d50085d9d773bdad1781258e330
    const bool extend_to_top = IsFrameCondensed();
  
    const SkScalar bottom_left_radius = GetLeftCornerRadius();
-@@ -303,7 +303,7 @@ bool TabStripControlButton::GetHitTestMask(SkPath* mask) const {
+@@ -312,7 +312,7 @@ bool TabStripControlButton::GetHitTestMask(SkPath* mask) const {
    return true;
  }
  
@@ -239,7 +239,7 @@ index dfd8e94c702b5ab3f4cd17212fd28fc08ab74ec4..3c5a3d50085d9d773bdad1781258e330
    label()->SetText(text);
    // Required for text to be visible on hover.
    // TODO(crbug.com/431015299): Fix text on hover and remove.
-@@ -313,19 +313,19 @@ void TabStripControlButton::SetText(std::u16string_view text) {
+@@ -322,19 +322,19 @@ void TabStripControlButton::SetText(std::u16string_view text) {
    label()->SetSubpixelRenderingEnabled(false);
  }
  
@@ -262,7 +262,7 @@ index dfd8e94c702b5ab3f4cd17212fd28fc08ab74ec4..3c5a3d50085d9d773bdad1781258e330
    const auto* const color_provider = GetColorProvider();
    if (!color_provider || !IsWidgetAlive()) {
      return;
-@@ -338,18 +338,18 @@ void TabStripControlButton::UpdateColors() {
+@@ -347,18 +347,18 @@ void TabStripControlButton::UpdateColors() {
    SchedulePaint();
  }
  
@@ -284,7 +284,7 @@ index dfd8e94c702b5ab3f4cd17212fd28fc08ab74ec4..3c5a3d50085d9d773bdad1781258e330
    const auto* const color_provider = GetColorProvider();
    if (!color_provider || !IsWidgetAlive()) {
      return;
-@@ -383,7 +383,7 @@ void TabStripControlButton::UpdateBackground() {
+@@ -392,7 +392,7 @@ void TabStripControlButton::UpdateBackground() {
    }
  }
  
@@ -293,8 +293,8 @@ index dfd8e94c702b5ab3f4cd17212fd28fc08ab74ec4..3c5a3d50085d9d773bdad1781258e330
    const auto* const color_provider = GetColorProvider();
    if (!color_provider || !IsWidgetAlive()) {
      return;
-@@ -393,16 +393,16 @@ void TabStripControlButton::UpdateInkDrop() {
-                                 inkdrop_ripple_color_id_);
+@@ -410,16 +410,16 @@ void TabStripControlButton::UpdateInkDrop() {
+   }
  }
  
 -void TabStripControlButton::OnGlassFrameEligibilityChanged(bool is_eligible) {
@@ -313,7 +313,7 @@ index dfd8e94c702b5ab3f4cd17212fd28fc08ab74ec4..3c5a3d50085d9d773bdad1781258e330
    BrowserView* const browser_view =
        BrowserView::GetBrowserViewForBrowser(browser_window_interface_);
    // 'browser_view' can be null during startup before the BrowserView is added
-@@ -414,5 +414,5 @@ BrowserFrameView* TabStripControlButton::GetBrowserFrameView() const {
+@@ -431,5 +431,5 @@ BrowserFrameView* TabStripControlButton::GetBrowserFrameView() const {
    return browser_view->browser_widget()->GetFrameView();
  }
  

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/tabs/tab/alert_indicator_button.h b/chrome/browser/ui/views/tabs/tab/alert_indicator_button.h
-index 5d3daa68ec14be770e7ed36384ebd4ee5a1792e9..a0275c617c26e8c15ab12c122f37499b77dd91d9 100644
+index 52560fbc5c5dac3403c69eef75411b82b7596ad7..08cf2a9eb1f4078ea3a777606a143f4d674227ae 100644
 --- a/chrome/browser/ui/views/tabs/tab/alert_indicator_button.h
 +++ b/chrome/browser/ui/views/tabs/tab/alert_indicator_button.h
 @@ -37,9 +37,9 @@ enum class TabAlert;
@@ -48,4 +48,4 @@ index 5d3daa68ec14be770e7ed36384ebd4ee5a1792e9..a0275c617c26e8c15ab12c122f37499b
 +  friend AlertIndicatorButton_BraveImpl;
    friend class TabContentsTest;
    friend class TabTest;
-   class FadeAnimationDelegate;
+   friend class TabViewTestBase;

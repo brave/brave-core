@@ -1,5 +1,5 @@
 diff --git a/components/sync/engine/data_type_worker.cc b/components/sync/engine/data_type_worker.cc
-index 78cb21347a19944e8ea97c06b2158dc51a813bea..ec77553ae730fd465128a627f1b82aed0928cc86 100644
+index a02fa2b33ba35551f24310cbad1938a01e38795c..93da624983917ac9a4abed6c072fdcd4408b8d37 100644
 --- a/components/sync/engine/data_type_worker.cc
 +++ b/components/sync/engine/data_type_worker.cc
 @@ -28,6 +28,7 @@
@@ -10,9 +10,9 @@ index 78cb21347a19944e8ea97c06b2158dc51a813bea..ec77553ae730fd465128a627f1b82aed
  #include "components/autofill/core/browser/webdata/payments/payments_sync_util.h"
  #include "components/sync/base/client_tag_hash.h"
  #include "components/sync/base/data_type.h"
-@@ -965,6 +966,12 @@ std::unique_ptr<CommitContribution> DataTypeWorker::GetContribution(
+@@ -972,6 +973,12 @@ std::unique_ptr<CommitContribution> DataTypeWorker::GetContribution(
           (data_type_state_.encryption_key_name() ==
-           cryptographer_->GetDefaultEncryptionKeyName()));
+           cryptographer_->GetPrimaryEncryptionKeyName()));
  
 +  if (DropUnencryptedCommitRequests(type_, passphrase_type_, &response) > 0) {
 +    ReportDroppedUnencryptedCommits(type_);

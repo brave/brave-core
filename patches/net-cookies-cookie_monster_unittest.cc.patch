@@ -1,5 +1,5 @@
 diff --git a/net/cookies/cookie_monster_unittest.cc b/net/cookies/cookie_monster_unittest.cc
-index e0f6ecee8ccd7343df96f05f808c2e1ce5b4574d..bc7de9a1758d732a3c3a6b37f0b1e9d6000a9afc 100644
+index f929390689b39a308a39f883a58cee982c0216fc..281e3986a0cbc62887b6334622e98365f1d560db 100644
 --- a/net/cookies/cookie_monster_unittest.cc
 +++ b/net/cookies/cookie_monster_unittest.cc
 @@ -121,7 +121,7 @@ const char kOtherDomain[] = "http://www.mit.edu";
@@ -1632,3 +1632,39 @@ index e0f6ecee8ccd7343df96f05f808c2e1ce5b4574d..bc7de9a1758d732a3c3a6b37f0b1e9d6
    EXPECT_TRUE(GetAllCookies(cookie_monster.get()).empty());
  
    // This cookie line has an empty name (=__Host-Http-...) with a value that
+@@ -8887,7 +8887,7 @@ TEST_F(CookieMonsterTest, InvalidHostDoesNotReceiveDomainCookies) {
+   base::test::ScopedFeatureList feature_list;
+   feature_list.InitAndEnableFeature(features::kCookieRequireCompliantHost);
+ 
+-  auto cm = std::make_unique<CookieMonster>(nullptr, net::NetLog::Get());
++  auto cm = std::make_unique<CookieMonster_ChromiumImpl>(nullptr, net::NetLog::Get());
+   CookieOptions options = CookieOptions::MakeAllInclusive();
+ 
+   // Set a domain cookie on x.example.com for .example.com.
+@@ -8919,7 +8919,7 @@ TEST_F(CookieMonsterTest, InvalidHostDoesNotSetCookies) {
+   base::test::ScopedFeatureList feature_list;
+   feature_list.InitAndEnableFeature(features::kCookieRequireCompliantHost);
+ 
+-  auto cm = std::make_unique<CookieMonster>(nullptr, net::NetLog::Get());
++  auto cm = std::make_unique<CookieMonster_ChromiumImpl>(nullptr, net::NetLog::Get());
+   CookieOptions options = CookieOptions::MakeAllInclusive();
+   // Setting cookies from a non-compliant HTTP host must also be rejected.
+   EXPECT_FALSE(CreateAndSetCookie(cm.get(), GURL("http://a!b.example.com/"),
+@@ -8932,7 +8932,7 @@ TEST_F(CookieMonsterTest, InvalidHostWarnsWhenFeatureDisabled) {
+   base::test::ScopedFeatureList feature_list;
+   feature_list.InitAndDisableFeature(features::kCookieRequireCompliantHost);
+ 
+-  auto cm = std::make_unique<CookieMonster>(nullptr, net::NetLog::Get());
++  auto cm = std::make_unique<CookieMonster_ChromiumImpl>(nullptr, net::NetLog::Get());
+   CookieOptions options = CookieOptions::MakeAllInclusive();
+ 
+   EXPECT_TRUE(CreateAndSetCookie(
+@@ -8956,7 +8956,7 @@ TEST_F(CookieMonsterTest, ValidHostCheckPreservesNonWebAndIPv6Urls) {
+   base::test::ScopedFeatureList feature_list;
+   feature_list.InitAndEnableFeature(features::kCookieRequireCompliantHost);
+ 
+-  auto cm = std::make_unique<CookieMonster>(nullptr, net::NetLog::Get());
++  auto cm = std::make_unique<CookieMonster_ChromiumImpl>(nullptr, net::NetLog::Get());
+   base::test::TestFuture<bool> scheme_future;
+   cm->SetCookieableSchemes(
+       {"http", "https", "ws", "wss", "file", "chrome-extension", "custom"},

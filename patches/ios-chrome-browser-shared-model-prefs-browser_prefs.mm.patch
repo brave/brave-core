@@ -1,35 +1,35 @@
 diff --git a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-index 42be5ffcaba30961a7b716d1c8458ec99a87e734..9d7e60c0b70aae90b8509d123f650cc9e551299d 100644
+index 84bc771a5d3e35d870275ec144d78425bc07dada..6c02bdf5df69344d92134a586991ab5699d53093 100644
 --- a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
 +++ b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-@@ -512,6 +512,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
-   // Deprecated 08/2026.
-   registry->RegisterTimePref(kWaitingForMultiProfileForcedMigrationTimestamp,
-                              base::Time());
+@@ -502,6 +502,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
+ 
+   // Deprecated 10/2026.
+   registry->RegisterListPref(kWelcomeBackEligibleItems);
 +  brave::RegisterLocalStatePrefs(registry);
  }
  
  void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
-@@ -949,6 +950,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
- 
-   // Deprecated 10/2026.
-   registry->RegisterIntegerPref(kCustomLinksAiModeTileIndex, 0);
+@@ -941,6 +942,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
+   // Deprecated 11/2026.
+   registry->RegisterBooleanPref(
+       kBundledSettingsCheckedMigrateUserToEnhancedBundle, false);
 +  brave::RegisterBrowserStatePrefs(registry);
  }
  
  // This method should be periodically pruned of year+ old migrations.
-@@ -980,6 +982,7 @@ void MigrateObsoleteLocalStatePrefs(PrefService* prefs) {
+@@ -975,6 +977,7 @@ void MigrateObsoleteLocalStatePrefs(PrefService* prefs) {
  
-   // Added 08/2026.
-   prefs->ClearPref(kWaitingForMultiProfileForcedMigrationTimestamp);
+   // Added 10/2026.
+   prefs->ClearPref(kWelcomeBackEligibleItems);
 +  brave::MigrateObsoleteLocalStatePrefs(prefs);
  }
  
  // This method should be periodically pruned of year+ old migrations.
-@@ -1048,6 +1051,7 @@ void MigrateObsoleteProfilePrefs(PrefService* prefs) {
-                       prefs->GetInteger(kCustomLinksAiModeTileIndex));
-   }
-   prefs->ClearPref(kCustomLinksAiModeTileIndex);
+@@ -1041,6 +1044,7 @@ void MigrateObsoleteProfilePrefs(PrefService* prefs) {
+ 
+   // Added 11/2026.
+   prefs->ClearPref(kBundledSettingsCheckedMigrateUserToEnhancedBundle);
 +  brave::MigrateObsoleteProfilePrefs(prefs);
  }
  

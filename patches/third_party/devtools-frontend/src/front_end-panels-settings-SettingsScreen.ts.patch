@@ -1,16 +1,16 @@
 diff --git a/front_end/panels/settings/SettingsScreen.ts b/front_end/panels/settings/SettingsScreen.ts
-index e58bd4f79dba01eca3a7ce3768e6827545d289af..0b2a6a8cc2e001676e3e1f8519a764adf98be753 100644
+index f37824fd6c140d1e55790570fed21a23f3c6c24e..f7d593b8fa2cabe296c0eaeaf1f7673bae5b87fa 100644
 --- a/front_end/panels/settings/SettingsScreen.ts
 +++ b/front_end/panels/settings/SettingsScreen.ts
-@@ -3,6 +3,7 @@
+@@ -2,6 +2,7 @@
+ // Use of this source code is governed by a BSD-style license that can be
  // found in the LICENSE file.
- /* eslint-disable @devtools/no-imperative-dom-api */
  
 +import './SettingsScreen.patch.js';
  import '../../ui/kit/kit.js';
  
  import * as Common from '../../core/common/common.js';
-@@ -297,6 +298,9 @@ export class GenericSettingsTab extends UI.Widget.VBox implements SettingsTab {
+@@ -516,6 +517,9 @@ export class GenericSettingsTab extends UI.Widget.VBox implements SettingsTab {
    }
  
    static isSettingVisible(setting: SettingUIRegistration.SettingUIRegistration.RegisteredSettingUI): boolean {

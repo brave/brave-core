@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/tabs/tab_strip_control_button.h b/chrome/browser/ui/views/tabs/tab_strip_control_button.h
-index 184444f402cf945a4b22bd3cfb763baf938eada1..ec494357364f539f1634908d1545050712ca89b3 100644
+index 61c8e47355be0d8f4bdd67510089e56e97c88410..3a8890753cca5b72307fd8e602b46004202b507c 100644
 --- a/chrome/browser/ui/views/tabs/tab_strip_control_button.h
 +++ b/chrome/browser/ui/views/tabs/tab_strip_control_button.h
 @@ -27,36 +27,36 @@ enum class Edge {

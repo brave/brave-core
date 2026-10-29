@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/signin/BUILD.gn b/chrome/browser/resources/signin/BUILD.gn
-index 87dbb3fd8c513ec530e9a5d255a71a0e0c3247dd..f3775530f7ba84c44980444b41e4e80feba5b2a6 100644
+index 1c66077e51611b949d84dcbc65632062efa031ca..54eacb5fb4557bfcc13e1fdd037a3c3e71bba8a1 100644
 --- a/chrome/browser/resources/signin/BUILD.gn
 +++ b/chrome/browser/resources/signin/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -7,11 +7,11 @@ index 87dbb3fd8c513ec530e9a5d255a71a0e0c3247dd..f3775530f7ba84c44980444b41e4e80f
  # found in the LICENSE file.
  
 +import("//brave/ui/webui/custom_profile_image/buildflags/buildflags.gni")
- import("//chrome/common/features.gni")
- import("//components/signin/features.gni")
  import("//ui/webui/resources/tools/build_webui.gni")
-@@ -182,4 +183,5 @@ build_webui("build") {
-   ]
+ 
+ assert(!is_android)
+@@ -155,4 +156,5 @@ build_webui("build") {
+   }
  
    webui_context_type = "trusted"
 +  preprocessor_defines = [ "enable_brave_custom_profile_image_webui=$enable_brave_custom_profile_image_webui" ]

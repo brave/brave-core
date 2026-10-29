@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/tabbed_mode/TabbedRootUiCoordinator.java b/chrome/android/java/src/org/chromium/chrome/browser/tabbed_mode/TabbedRootUiCoordinator.java
-index 4cead4d5ed6b4370ffcb2419305789245a799c6a..a1b577ef9ed8540014260f7499d63bce5e7dc6b4 100644
+index 1918fa81b515090036777b885e13c9b9854fbeab..c67818fa8952c05f3c183e39cfe0b11ca16a2e2f 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/tabbed_mode/TabbedRootUiCoordinator.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/tabbed_mode/TabbedRootUiCoordinator.java
-@@ -206,7 +206,7 @@ import org.chromium.chrome.browser.tab_bottom_sheet.TabBottomSheetManagerImpl;
+@@ -212,7 +212,7 @@ import org.chromium.chrome.browser.tab_bottom_sheet.TabBottomSheetManagerImpl;
  import org.chromium.chrome.browser.tab_bottom_sheet.TabBottomSheetUtils;
  import org.chromium.chrome.browser.tab_group_suggestion.toolbar.GroupSuggestionsButtonController;
  import org.chromium.chrome.browser.tab_group_suggestion.toolbar.GroupSuggestionsButtonControllerFactory;
@@ -11,12 +11,12 @@ index 4cead4d5ed6b4370ffcb2419305789245a799c6a..a1b577ef9ed8540014260f7499d63bce
  import org.chromium.chrome.browser.tab_group_sync.TabGroupSyncFeatures;
  import org.chromium.chrome.browser.tab_group_sync.TabGroupSyncServiceFactory;
  import org.chromium.chrome.browser.tab_ui.TabContentManager;
-@@ -1578,7 +1578,7 @@ public class TabbedRootUiCoordinator extends RootUiCoordinator {
+@@ -1616,7 +1616,7 @@ public class TabbedRootUiCoordinator extends RootUiCoordinator {
              var tabGroupSyncService = TabGroupSyncServiceFactory.getForProfile(originalProfile);
              assert tabGroupSyncService != null;
              mTabGroupSyncController =
 -                    new TabGroupSyncControllerImpl(
 +                    new BraveTabGroupSyncControllerImpl(
-                             mTabModelSelectorSupplier.asNonNull().get(),
+                             tabModelSelector,
                              tabGroupSyncService,
                              UserPrefs.get(originalProfile),
