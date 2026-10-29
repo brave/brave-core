@@ -22,6 +22,7 @@ class BraveShieldsUIContentsCache;
 class BraveVPNController;
 class BrowserView;
 class BrowserWindowInterface;
+class PeekController;
 class PlaylistSidePanelCoordinator;
 class TreeTabSessionManager;
 class WindowClosingConfirmController;
@@ -101,6 +102,8 @@ class BraveBrowserWindowFeatures {
   std::unique_ptr<screenshot::ScreenshotController> screenshot_controller_;
 
   std::unique_ptr<WorkspacesBubbleController> workspaces_bubble_controller_;
+
+  std::unique_ptr<PeekController> peek_controller_;
 
   std::unique_ptr<WindowClosingConfirmController>
       window_closing_confirm_controller_;

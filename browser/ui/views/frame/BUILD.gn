@@ -18,6 +18,7 @@ source_set("frame") {
 
   public_deps = [
     "//base",
+    "//brave/browser/ui/views:view_shadow",
     "//brave/browser/ui/views/frame/edge_reveal",
     "//chrome/browser/ui/views/frame:browser_view_header",
     "//components/tabs:public",

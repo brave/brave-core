@@ -128,14 +128,16 @@ void BraveShieldsActionController::RemoveObserverFromWebContents(
   }
 }
 
+// static
 gfx::ImageSkia BraveShieldsActionController::GetIconImage(
-    bool is_enabled) const {
-  const int icon_size = IconDimensionForLayout();
+    content::WebContents* web_contents,
+    bool is_enabled,
+    int icon_size) {
 #if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
   // In the Brave Origin standalone build the Shields icon is replaced with the
   // Brave Origin face icon, tinted to match the other location bar icons.
   const ui::ColorProvider* color_provider =
-      GetColorProviderForWebContents(tab_strip_model_->GetActiveWebContents());
+      GetColorProviderForWebContents(web_contents);
   return gfx::CreateVectorIcon(
       is_enabled ? kLeoBraveIconOnlyFaceIcon
                  : kLeoBraveIconOnlyFaceDisabledIcon,
@@ -153,11 +155,12 @@ gfx::ImageSkia BraveShieldsActionController::GetIconImage(
 #endif  // BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
 }
 
+// static
 std::unique_ptr<IconWithBadgeImageSource>
-BraveShieldsActionController::GetImageSource(
-    const gfx::Size& preferred_size) const {
-  auto* web_contents = tab_strip_model_->GetActiveWebContents();
-
+BraveShieldsActionController::GetImageSource(content::WebContents* web_contents,
+                                             Profile& profile,
+                                             const gfx::Size& preferred_size,
+                                             int icon_size) {
   auto get_color_provider_callback = base::BindRepeating(
       [](base::WeakPtr<content::WebContents> weak_web_contents) {
         return GetColorProviderForWebContents(weak_web_contents.get());
@@ -167,16 +170,17 @@ BraveShieldsActionController::GetImageSource(
 
   std::unique_ptr<IconWithBadgeImageSource> image_source(
       new brave::BraveIconWithBadgeImageSource(
-          preferred_size, std::move(get_color_provider_callback),
-          IconDimensionForLayout(), kBraveActionLeftMarginExtra));
+          preferred_size, std::move(get_color_provider_callback), icon_size,
+          kBraveActionLeftMarginExtra));
   std::unique_ptr<IconWithBadgeImageSource::Badge> badge;
   bool is_enabled = false;
   std::string badge_text;
 
-  if (web_contents) {
-    auto* shields_data_controller =
-        brave_shields::BraveShieldsTabHelper::FromWebContents(web_contents);
-
+  auto* shields_data_controller =
+      web_contents
+          ? brave_shields::BraveShieldsTabHelper::FromWebContents(web_contents)
+          : nullptr;
+  if (shields_data_controller) {
     int count = shields_data_controller->GetTotalBlockedCount();
     if (count > 0) {
       badge_text = count > 99 ? "99+" : base::NumberToString(count);
@@ -195,20 +199,32 @@ BraveShieldsActionController::GetImageSource(
     }
   }
 
-  image_source->SetIcon(gfx::Image(GetIconImage(is_enabled)));
+  image_source->SetIcon(
+      gfx::Image(GetIconImage(web_contents, is_enabled, icon_size)));
 
-  if (is_enabled &&
-      profile_->GetPrefs()->GetBoolean(kShieldsStatsBadgeVisible)) {
+  if (is_enabled && profile.GetPrefs()->GetBoolean(kShieldsStatsBadgeVisible)) {
     image_source->SetBadge(std::move(badge));
   }
 
   return image_source;
 }
 
+// static
+ui::ImageModel BraveShieldsActionController::GetImageModelForWebContents(
+    content::WebContents* web_contents,
+    Profile& profile,
+    const gfx::Size& preferred_size,
+    int icon_size) {
+  return ui::ImageModel::FromImageSkia(gfx::ImageSkia(
+      GetImageSource(web_contents, profile, preferred_size, icon_size),
+      preferred_size));
+}
+
 ui::ImageModel BraveShieldsActionController::GetImageModel(
     const gfx::Size& preferred_size) const {
-  return ui::ImageModel::FromImageSkia(
-      gfx::ImageSkia(GetImageSource(preferred_size), preferred_size));
+  return GetImageModelForWebContents(tab_strip_model_->GetActiveWebContents(),
+                                     *profile_, preferred_size,
+                                     IconDimensionForLayout());
 }
 
 void BraveShieldsActionController::RefreshButtonImages(
@@ -234,8 +250,9 @@ void BraveShieldsActionController::OnButtonPressed() {
   ShowBubble(GURL(kShieldsPanelURL));
 }
 
+// static
 bool BraveShieldsActionController::IsPageInReaderMode(
-    content::WebContents* web_contents) const {
+    content::WebContents* web_contents) {
   if (!web_contents) {
     return false;
   }
@@ -293,8 +310,13 @@ views::Widget* BraveShieldsActionController::GetBubbleWidget() {
 }
 
 std::u16string BraveShieldsActionController::GetTooltipText() const {
-  if (content::WebContents* web_contents =
-          tab_strip_model_->GetActiveWebContents()) {
+  return GetTooltipTextForWebContents(tab_strip_model_->GetActiveWebContents());
+}
+
+// static
+std::u16string BraveShieldsActionController::GetTooltipTextForWebContents(
+    content::WebContents* web_contents) {
+  if (web_contents) {
     if (auto* shields_data_controller =
             brave_shields::BraveShieldsTabHelper::FromWebContents(
                 web_contents)) {

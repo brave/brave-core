@@ -1,0 +1,141 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/containers/buildflags/buildflags.gni")
+import("//build/config/ui.gni")
+
+assert(toolkit_views)
+
+source_set("peek") {
+  sources = [
+    "peek_contents.cc",
+    "peek_contents.h",
+    "peek_controller_impl.cc",
+    "peek_controller_impl.h",
+    "peek_shields_button.cc",
+    "peek_shields_button.h",
+    "peek_view.cc",
+    "peek_view.h",
+  ]
+
+  public = [
+    "peek_controller_impl.h",
+    "peek_shields_button.h",
+    "peek_view.h",
+  ]
+
+  public_deps = [
+    "//base",
+    "//brave/browser/brave_shields",
+    "//brave/browser/ui/peek",
+    "//chrome/browser/ui/tabs:tab_strip_model_observer",
+    "//components/download/public/common:public",
+    "//components/permissions",
+    "//components/web_modal",
+    "//content/public/browser",
+    "//ui/views",
+  ]
+
+  deps = [
+    "//brave/app:brave_generated_resources_grit",
+    "//brave/browser/ui/sidebar",
+    "//brave/browser/ui/views:view_shadow",
+    "//brave/browser/ui/views/brave_actions",
+    "//brave/components/containers/buildflags",
+    "//brave/components/resources:strings",
+    "//brave/components/vector_icons",
+    "//brave/ui/color:nala_color_id",
+    "//chrome/app:generated_resources",
+    "//chrome/browser/profiles:profile",
+    "//chrome/browser/ssl",
+    "//chrome/browser/tab_contents",
+    "//chrome/browser/ui:tab_helpers",
+    "//chrome/browser/ui/browser_web_contents_delegate",
+    "//chrome/browser/ui/browser_window",
+    "//chrome/browser/ui/color:color_headers",
+    "//chrome/browser/ui/tabs:tab_enums",
+    "//chrome/browser/ui/tabs:tab_strip",
+    "//chrome/browser/ui/views/bubble",
+    "//chrome/browser/ui/views/frame:browser_view_header",
+    "//chrome/browser/ui/views/page_info",
+    "//chrome/browser/ui/webui/top_chrome",
+    "//components/favicon/content",
+    "//components/input",
+    "//components/omnibox/browser:location_bar",
+    "//components/security_state/core",
+    "//components/tabs:public",
+    "//components/url_formatter",
+    "//third_party/blink/public/common",
+    "//ui/accessibility",
+    "//ui/base",
+    "//ui/color",
+    "//ui/events",
+    "//ui/gfx",
+    "//ui/strings",
+    "//ui/views/controls/webview",
+  ]
+
+  if (enable_containers) {
+    deps += [
+      "//brave/components/containers/content/browser",
+      "//brave/components/containers/core/common:features",
+    ]
+  }
+}
+
+source_set("browser_tests") {
+  testonly = true
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+
+  sources = [ "peek_browsertest.cc" ]
+
+  deps = [
+    ":peek",
+    "//base",
+    "//base/test:test_support",
+    "//brave/app:command_ids",
+    "//brave/browser/ui/peek",
+    "//brave/components/containers/buildflags",
+    "//chrome/browser",
+    "//chrome/browser/profiles:profile",
+    "//chrome/browser/renderer_context_menu:test_support",
+    "//chrome/browser/ssl",
+    "//chrome/browser/ui",
+    "//chrome/browser/ui/browser_window",
+    "//chrome/browser/ui/tabs:tab_strip",
+    "//chrome/browser/ui/views/frame:browser_view_header",
+    "//chrome/browser/ui/views/page_info",
+    "//chrome/common:constants",
+    "//chrome/test:test_support",
+    "//chrome/test:test_support_ui",
+    "//components/permissions",
+    "//components/prefs",
+    "//components/security_interstitials/content:security_interstitial_page",
+    "//components/security_state/core",
+    "//components/split_tabs",
+    "//components/tabs:public",
+    "//content/public/browser",
+    "//content/test:test_support",
+    "//net",
+    "//net:test_support",
+    "//testing/gtest",
+    "//third_party/blink/public/common",
+    "//ui/base",
+    "//ui/events",
+    "//ui/gfx",
+    "//ui/gfx:test_support",
+    "//ui/gfx/geometry",
+    "//ui/views",
+    "//ui/views:test_support",
+    "//url",
+  ]
+
+  if (enable_containers) {
+    deps += [
+      "//brave/components/containers/content/browser",
+      "//brave/components/containers/core/common:features",
+    ]
+  }
+}

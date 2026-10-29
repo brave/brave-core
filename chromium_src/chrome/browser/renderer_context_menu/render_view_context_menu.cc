@@ -84,6 +84,17 @@
 #include "brave/components/email_aliases/features.h"
 #endif
 
+// Implemented in //brave/browser/ui/peek:context_menu.
+namespace peek {
+bool CanOpenLinkInPeek(BrowserWindowInterface* browser,
+                       content::WebContents* source,
+                       const GURL& url,
+                       const url::Origin& frame_origin);
+void OpenLinkInPeek(BrowserWindowInterface* browser,
+                    content::WebContents* source,
+                    const content::OpenURLParams& params);
+}  // namespace peek
+
 namespace {
 
 AutocompleteMatch GetAutocompleteMatchForText(Profile* profile,
@@ -391,6 +402,9 @@ bool RenderViewContextMenu::IsCommandIdEnabled(int id) const {
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
     case IDC_ADBLOCK_CONTEXT_BLOCK_ELEMENTS:
       return true;
+    case IDC_CONTENT_CONTEXT_OPENLINKPEEK:
+      return peek::CanOpenLinkInPeek(GetBrowser(), embedder_web_contents_,
+                                     params_.link_url, params_.frame_origin);
     case IDC_OPEN_IN_CONTAINER:
       return true;
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
@@ -420,6 +434,16 @@ void RenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
     case IDC_CONTENT_CONTEXT_FORCE_PASTE: {
       brave::ForcePasteInWebContents(source_web_contents_);
     }; break;
+    case IDC_CONTENT_CONTEXT_OPENLINKPEEK:
+      peek::OpenLinkInPeek(
+          GetBrowser(), embedder_web_contents_,
+          GetOpenURLParamsWithExtraHeaders(
+              params_.link_url, params_.frame_url, params_.frame_origin,
+              WindowOpenDisposition::NEW_FOREGROUND_TAB,
+              ui::PAGE_TRANSITION_LINK,
+              /*extra_headers=*/std::string(),
+              /*started_from_context_menu=*/true));
+      break;
 #if BUILDFLAG(ENABLE_TOR)
     case IDC_CONTENT_CONTEXT_OPENLINKTOR:
       TorProfileManager::SwitchToTorProfile(GetProfile(), params_.link_url,
@@ -847,6 +871,17 @@ void RenderViewContextMenu::InitMenu() {
   if (index.has_value()) {
     menu_model_.InsertItemWithStringIdAt(
         index.value() + 1, IDC_CONTENT_CONTEXT_FORCE_PASTE, IDS_FORCE_PASTE);
+  }
+
+  if (content_type_->SupportsGroup(ContextMenuContentType::ITEM_GROUP_LINK) &&
+      peek::CanOpenLinkInPeek(GetBrowser(), embedder_web_contents_,
+                              params_.link_url, params_.frame_origin)) {
+    index = menu_model_.GetIndexOfCommandId(IDC_CONTENT_CONTEXT_OPENLINKNEWTAB);
+    if (index.has_value()) {
+      menu_model_.InsertItemWithStringIdAt(index.value() + 1,
+                                           IDC_CONTENT_CONTEXT_OPENLINKPEEK,
+                                           IDS_CONTENT_CONTEXT_OPENLINKPEEK);
+    }
   }
 #if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
   const bool media_image = content_type_->SupportsGroup(

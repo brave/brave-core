@@ -438,6 +438,8 @@ source_set("ui") {
       "webui/brave_shields/shields_panel_data_handler.h",
       "webui/brave_shields/shields_panel_handler.cc",
       "webui/brave_shields/shields_panel_handler.h",
+      "webui/brave_shields/shields_panel_peek_provider.cc",
+      "webui/brave_shields/shields_panel_peek_provider.h",
       "webui/brave_shields/shields_panel_ui.cc",
       "webui/brave_shields/shields_panel_ui.h",
       "webui/new_tab_page/brave_new_tab_message_handler.cc",
@@ -509,6 +511,9 @@ source_set("ui") {
       "//brave/browser/ntp_background",
       "//brave/browser/profiles:util",
       "//brave/browser/sessions",
+      "//brave/browser/ui/peek",
+      "//brave/browser/ui/peek:context_menu",
+      "//brave/browser/ui/peek:public",
       "//brave/browser/ui/sidebar:sidebar_impl",
       "//brave/browser/ui/tabs:tab_menu",
       "//brave/browser/ui/tabs:tab_model",
@@ -790,8 +795,6 @@ source_set("ui") {
       "views/toolbar/brave_browser_app_menu_button.h",
       "views/toolbar/side_panel_button.cc",
       "views/toolbar/side_panel_button.h",
-      "views/view_shadow.cc",
-      "views/view_shadow.h",
     ]
 
     deps += [
@@ -1221,6 +1224,7 @@ source_set("ui") {
       "//brave/browser/ui/views/page_info",
       "//ui/views/controls/webview",
     ]
+    public_deps += [ "//brave/browser/ui/views:view_shadow" ]
   }
 
   if (enable_text_recognition) {

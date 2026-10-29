@@ -101,6 +101,7 @@
 #include "brave/browser/android/youtube_script_injector/features.h"
 #include "chrome/browser/flags/android/chrome_feature_list.h"
 #else
+#include "brave/browser/ui/peek/peek_features.h"
 #include "brave/browser/ui/split_view/split_view_features.h"
 #include "brave/browser/ui/tabs/public/switches.h"
 #include "brave/browser/workspaces/features.h"
@@ -1164,6 +1165,21 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabMigrationChoices[] = {
 #define BRAVE_SPLIT_VIEW_LINK_FEATURE_ENTRY
 #endif
 
+#if defined(TOOLKIT_VIEWS)
+#define BRAVE_PEEK_FEATURE_ENTRY                                              \
+  EXPAND_FEATURE_ENTRIES({                                                    \
+      "brave-peek",                                                           \
+      "Brave Peek",                                                           \
+      "Opens links in a floating preview over the current tab. Triggered by " \
+      "cross-site links in pinned tabs, Shift+click, and the link context "   \
+      "menu.",                                                                \
+      kOsDesktop,                                                             \
+      FEATURE_VALUE_TYPE(peek::features::kBravePeek),                         \
+  })
+#else
+#define BRAVE_PEEK_FEATURE_ENTRY
+#endif
+
 // Keep the last item empty.
 #define LAST_BRAVE_FEATURE_ENTRIES_ITEM
 
@@ -1789,6 +1805,7 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabMigrationChoices[] = {
   BRAVE_SCREENSHOT_FEATURE_ENTRY                                               \
   BRAVE_SIDEBAR_WEB_PANEL_FEATURE_ENTRY                                        \
   BRAVE_SPLIT_VIEW_LINK_FEATURE_ENTRY                                          \
+  BRAVE_PEEK_FEATURE_ENTRY                                                     \
   LAST_BRAVE_FEATURE_ENTRIES_ITEM  // Keep it as the last item.
 namespace flags_ui {
 namespace {

@@ -26,6 +26,7 @@
 #include "brave/browser/ui/focus_mode/focus_mode_features.h"
 #include "brave/browser/ui/focus_mode/focus_mode_utils.h"
 #include "brave/browser/ui/page_info/features.h"
+#include "brave/browser/ui/peek/public/peek_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/sidebar/sidebar_web_panel_controller.h"
@@ -47,6 +48,7 @@
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "brave/browser/ui/views/toolbar/screenshot_button.h"
+#include "brave/browser/ui/webui/brave_shields/shields_panel_peek_provider.h"
 #include "brave/browser/ui/window_closing_confirm/window_closing_confirm_controller.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
@@ -327,6 +329,11 @@ BraveBrowserView::BraveBrowserView(BrowserWindowInterface* browser)
   // vertical tab mode. Set to false as we don't want to icon in title bar.
   if (browser_->GetType() == BrowserWindowInterface::Type::TYPE_NORMAL) {
     SetShowIcon(false);
+  }
+
+  if (auto* peek_controller = PeekController::From(browser_)) {
+    peek_controller->SetShieldsPanelProvider(
+        std::make_unique<ShieldsPanelPeekProvider>());
   }
 
   tab_strip_placement_ = std::make_unique<TabStripPlacementCoordinator>(
