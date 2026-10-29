@@ -117,6 +117,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_PSST)
+#include "brave/browser/psst/psst_log_service_factory.h"
 #include "brave/browser/psst/psst_reporter_service_factory.h"
 #include "brave/browser/psst/psst_settings_service_factory.h"
 #endif
@@ -266,6 +267,7 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
 #if BUILDFLAG(ENABLE_PSST)
   PsstSettingsServiceFactory::GetInstance();
   PsstReporterServiceFactory::GetInstance();
+  PsstLogServiceFactory::GetInstance();
 #endif  // BUILDFLAG(ENABLE_PSST)
 
   serp_metrics::SerpMetricsServiceFactory::GetInstance();
