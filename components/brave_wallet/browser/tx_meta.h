@@ -8,6 +8,7 @@
 
 #include <optional>
 #include <string>
+#include <utility>
 
 #include "base/time/time.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -33,7 +34,7 @@ class TxMeta {
   base::Time submitted_time() const { return submitted_time_; }
   base::Time confirmed_time() const { return confirmed_time_; }
   const std::string& tx_hash() const { return tx_hash_; }
-  const std::optional<url::Origin>& origin() const { return origin_; }
+  const std::optional<url::Origin>& dapp_origin() const { return dapp_origin_; }
   const std::string& chain_id() const { return chain_id_; }
   const mojom::SwapInfoPtr& swap_info() const { return swap_info_; }
 
@@ -50,15 +51,16 @@ class TxMeta {
     confirmed_time_ = confirmed_time;
   }
   void set_tx_hash(const std::string& tx_hash) { tx_hash_ = tx_hash; }
-  void set_origin(const std::optional<url::Origin>& origin) {
-    origin_ = origin;
-  }
+  void set_dapp_origin(std::optional<url::Origin> dapp_origin);
   void set_chain_id(const std::string& chain_id) { chain_id_ = chain_id; }
   void set_swap_info(mojom::SwapInfoPtr swap_info) {
     swap_info_ = std::move(swap_info);
   }
 
  protected:
+  void InitializeAsUnapproved(const std::string& chain_id,
+                              mojom::SwapInfoPtr swap_info);
+
   bool operator==(const TxMeta&) const;
 
   std::string id_;
@@ -68,7 +70,7 @@ class TxMeta {
   base::Time submitted_time_;
   base::Time confirmed_time_;
   std::string tx_hash_;
-  std::optional<url::Origin> origin_;
+  std::optional<url::Origin> dapp_origin_;
   std::string chain_id_;
   mojom::SwapInfoPtr swap_info_;
 };

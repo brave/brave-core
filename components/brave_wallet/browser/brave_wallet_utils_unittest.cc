@@ -482,11 +482,6 @@ TEST(BraveWalletUtilsUnitTest, MakeOriginInfo) {
       MakeOriginInfo(url::Origin::Create(GURL("https://blog.brave.com:443")));
   EXPECT_EQ("https://blog.brave.com", origin_info->origin_spec);
   EXPECT_EQ("brave.com", origin_info->e_tld_plus_one);
-
-  url::Origin empty_origin;
-  auto empty_origin_info = MakeOriginInfo(empty_origin);
-  EXPECT_EQ("null", empty_origin_info->origin_spec);
-  EXPECT_EQ("", empty_origin_info->e_tld_plus_one);
 }
 
 TEST(BraveWalletUtilsUnitTest, GenerateRandomHexString) {
@@ -681,8 +676,9 @@ TEST(BraveWalletUtilsUnitTest, PolkadotNativeAssets) {
 TEST(BraveWalletUtilsUnitTest, DefaultZCashShieldedAssets_FeatureEnabled) {
   base::test::ScopedFeatureList feature_list;
   feature_list.InitWithFeaturesAndParameters(
-      {{features::kBraveWalletZCashFeature,
-        {{"zcash_shielded_transactions_enabled", "true"}}},
+      {
+          {features::kBraveWalletZCashFeature,
+           {{"zcash_shielded_transactions_enabled", "true"}}},
       },
       {}  // disabled features
   );

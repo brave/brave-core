@@ -98,6 +98,16 @@ bool ZCashTxMeta::operator==(const ZCashTxMeta& other) const {
 
 ZCashTxMeta::~ZCashTxMeta() = default;
 
+std::unique_ptr<ZCashTxMeta> ZCashTxMeta::MakeUnapproved(
+    const mojom::AccountIdPtr& from,
+    std::unique_ptr<ZCashTransaction> tx,
+    const std::string& chain_id,
+    mojom::SwapInfoPtr swap_info) {
+  auto meta = std::make_unique<ZCashTxMeta>(from, std::move(tx));
+  meta->InitializeAsUnapproved(chain_id, std::move(swap_info));
+  return meta;
+}
+
 base::DictValue ZCashTxMeta::ToValue() const {
   base::DictValue dict = TxMeta::ToValue();
   if (tx_) {
@@ -112,8 +122,8 @@ mojom::TransactionInfoPtr ZCashTxMeta::ToTransactionInfo() const {
       mojom::TxDataUnion::NewZecTxData(ToZecTxData(chain_id_, *tx_)), status_,
       mojom::TransactionType::Other, std::vector<std::string>() /* tx_params */,
       std::vector<std::string>() /* tx_args */, created_time_, submitted_time_,
-      confirmed_time_, origin_.has_value() ? MakeOriginInfo(*origin_) : nullptr,
-      chain_id_, tx_->to(), false, swap_info_.Clone(), nullptr);
+      confirmed_time_, MakeOriginInfo(dapp_origin_), chain_id_, tx_->to(),
+      false, swap_info_.Clone(), nullptr);
 }
 
 mojom::CoinType ZCashTxMeta::GetCoinType() const {

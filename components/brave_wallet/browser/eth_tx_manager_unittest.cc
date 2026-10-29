@@ -510,7 +510,7 @@ TEST_F(EthTxManagerUnitTest, AddUnapprovedEvmTransaction) {
     auto tx_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
     EXPECT_TRUE(tx_meta);
 
-    EXPECT_EQ(tx_meta->origin(), url::Origin::Create(GURL("chrome://wallet")));
+    EXPECT_FALSE(tx_meta->dapp_origin());
     EXPECT_EQ(tx_meta->tx()->type(), EthTransactionType::kEip1559);
   }
 
@@ -534,7 +534,7 @@ TEST_F(EthTxManagerUnitTest, AddUnapprovedEvmTransaction) {
     auto tx_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
     EXPECT_TRUE(tx_meta);
 
-    EXPECT_EQ(tx_meta->origin(), url::Origin::Create(GURL("chrome://wallet")));
+    EXPECT_FALSE(tx_meta->dapp_origin());
     EXPECT_EQ(tx_meta->tx()->type(), EthTransactionType::kLegacy);
   }
 
@@ -557,7 +557,7 @@ TEST_F(EthTxManagerUnitTest, AddUnapprovedEvmTransaction) {
     auto tx_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
     EXPECT_TRUE(tx_meta);
 
-    EXPECT_EQ(tx_meta->origin(), url::Origin::Create(GURL("chrome://wallet")));
+    EXPECT_FALSE(tx_meta->dapp_origin());
     EXPECT_EQ(tx_meta->tx()->type(), EthTransactionType::kLegacy);
   }
 }
@@ -582,7 +582,7 @@ TEST_F(EthTxManagerUnitTest, WalletOrigin) {
   auto tx_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
   EXPECT_TRUE(tx_meta);
 
-  EXPECT_EQ(tx_meta->origin(), url::Origin::Create(GURL("chrome://wallet")));
+  EXPECT_FALSE(tx_meta->dapp_origin());
 }
 
 TEST_F(EthTxManagerUnitTest, SomeSiteOrigin) {
@@ -604,7 +604,7 @@ TEST_F(EthTxManagerUnitTest, SomeSiteOrigin) {
   auto tx_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
   EXPECT_TRUE(tx_meta);
 
-  EXPECT_EQ(tx_meta->origin(),
+  EXPECT_EQ(tx_meta->dapp_origin(),
             url::Origin::Create(GURL("https://some.site.com")));
 }
 

@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SOLANA_TX_META_H_
 
 #include <memory>
+#include <optional>
 #include <utility>
 
 #include "brave/components/brave_wallet/browser/solana_transaction.h"
@@ -26,6 +27,13 @@ class SolanaTxMeta : public TxMeta {
   SolanaTxMeta(const SolanaTxMeta&) = delete;
   ~SolanaTxMeta() override;
   bool operator==(const SolanaTxMeta&) const;
+
+  static std::unique_ptr<SolanaTxMeta> MakeUnapproved(
+      const mojom::AccountIdPtr& from,
+      std::unique_ptr<SolanaTransaction> tx,
+      const std::string& chain_id,
+      mojom::SwapInfoPtr swap_info,
+      std::optional<url::Origin> dapp_origin);
 
   // TxMeta
   base::DictValue ToValue() const override;

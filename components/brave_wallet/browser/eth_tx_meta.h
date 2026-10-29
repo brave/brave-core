@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ETH_TX_META_H_
 
 #include <memory>
+#include <optional>
 #include <utility>
 
 #include "brave/components/brave_wallet/browser/eth_transaction.h"
@@ -27,6 +28,13 @@ class EthTxMeta : public TxMeta {
   EthTxMeta(const EthTxMeta&) = delete;
   EthTxMeta operator=(const EthTxMeta&) = delete;
   bool operator==(const EthTxMeta&) const;
+
+  static std::unique_ptr<EthTxMeta> MakeUnapproved(
+      const mojom::AccountIdPtr& from,
+      std::unique_ptr<EthTransaction> tx,
+      const std::string& chain_id,
+      mojom::SwapInfoPtr swap_info,
+      std::optional<url::Origin> dapp_origin);
 
   // TxMeta
   base::DictValue ToValue() const override;

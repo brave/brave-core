@@ -24,6 +24,18 @@ SolanaTxMeta::SolanaTxMeta(const mojom::AccountIdPtr& from,
   set_from(std::move(from));
 }
 
+std::unique_ptr<SolanaTxMeta> SolanaTxMeta::MakeUnapproved(
+    const mojom::AccountIdPtr& from,
+    std::unique_ptr<SolanaTransaction> tx,
+    const std::string& chain_id,
+    mojom::SwapInfoPtr swap_info,
+    std::optional<url::Origin> dapp_origin) {
+  auto meta = std::make_unique<SolanaTxMeta>(from, std::move(tx));
+  meta->set_dapp_origin(std::move(dapp_origin));
+  meta->InitializeAsUnapproved(chain_id, std::move(swap_info));
+  return meta;
+}
+
 SolanaTxMeta::~SolanaTxMeta() = default;
 
 bool SolanaTxMeta::operator==(const SolanaTxMeta& meta) const {
@@ -44,8 +56,8 @@ mojom::TransactionInfoPtr SolanaTxMeta::ToTransactionInfo() const {
       mojom::TxDataUnion::NewSolanaTxData(tx_->ToSolanaTxData()), status_,
       tx_->tx_type(), std::vector<std::string>() /* tx_params */,
       std::vector<std::string>() /* tx_args */, created_time_, submitted_time_,
-      confirmed_time_, origin_.has_value() ? MakeOriginInfo(*origin_) : nullptr,
-      chain_id_, std::nullopt, IsRetriable(), swap_info_.Clone(), nullptr);
+      confirmed_time_, MakeOriginInfo(dapp_origin_), chain_id_, std::nullopt,
+      IsRetriable(), swap_info_.Clone(), nullptr);
 }
 
 mojom::CoinType SolanaTxMeta::GetCoinType() const {

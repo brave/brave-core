@@ -58,7 +58,7 @@ mojom::TransactionInfoPtr GetCannedScanEVMTransactionParams(
   EthTxMeta meta(eth_account, std::move(tx));
 
   if (origin) {
-    meta.set_origin(url::Origin::Create(GURL(*origin)));
+    meta.set_dapp_origin(url::Origin::Create(GURL(*origin)));
   }
 
   return meta.ToTransactionInfo();
@@ -108,7 +108,7 @@ mojom::TransactionInfoPtr GetCannedScanSolanaTransactionParams(
       "FmBV6UjKdiSZkQUW");
 
   if (origin) {
-    meta.set_origin(url::Origin::Create(GURL(*origin)));
+    meta.set_dapp_origin(url::Origin::Create(GURL(*origin)));
   }
 
   return meta.ToTransactionInfo();
@@ -117,7 +117,7 @@ mojom::TransactionInfoPtr GetCannedScanSolanaTransactionParams(
 mojom::SignSolTransactionsRequestPtr MakeSolanaSignAllTransactionsRequest(
     const mojom::TransactionInfoPtr& tx_info) {
   auto request = mojom::SignSolTransactionsRequest::New();
-  request->origin_info = std::move(tx_info->origin_info);
+  request->origin_info = std::move(tx_info->dapp_origin_info);
   request->id = 1;
   request->from_account_id = tx_info->from_account_id->Clone();
 

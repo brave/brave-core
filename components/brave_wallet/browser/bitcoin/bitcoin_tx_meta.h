@@ -17,12 +17,19 @@ namespace brave_wallet {
 class BitcoinTxMeta : public TxMeta {
  public:
   BitcoinTxMeta();
+  explicit BitcoinTxMeta(const mojom::AccountIdPtr& from);
   BitcoinTxMeta(const mojom::AccountIdPtr& from,
                 std::unique_ptr<BitcoinTransaction> tx);
   ~BitcoinTxMeta() override;
   BitcoinTxMeta(const BitcoinTxMeta&) = delete;
   BitcoinTxMeta operator=(const BitcoinTxMeta&) = delete;
   bool operator==(const BitcoinTxMeta& other) const;
+
+  static std::unique_ptr<BitcoinTxMeta> MakeUnapproved(
+      const mojom::AccountIdPtr& from,
+      std::unique_ptr<BitcoinTransaction> tx,
+      const std::string& chain_id,
+      mojom::SwapInfoPtr swap_info);
 
   // TxMeta
   base::DictValue ToValue() const override;

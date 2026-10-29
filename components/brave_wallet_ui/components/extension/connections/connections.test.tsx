@@ -44,10 +44,7 @@ describe('Connections', () => {
             textColor='tertiary'
             data-key='domain-text-origin'
           >
-            <CreateSiteOrigin
-              originSpec={activeOrigin.originSpec}
-              eTldPlusOne={activeOrigin.eTldPlusOne}
-            />
+            <CreateSiteOrigin originInfo={activeOrigin} />
           </DomainText>
         </DomainTextContainer>
       </WalletTestThemeProvider>,

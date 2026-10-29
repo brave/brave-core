@@ -114,19 +114,9 @@ void BitcoinTxManager::AddUnapprovedBitcoinTransaction(
     return;
   }
 
-  // We don't support Bitcoin dApps so far, so all transactions come from
-  // wallet origin.
-  std::optional<url::Origin> origin = std::nullopt;
-
-  auto meta = std::make_unique<BitcoinTxMeta>();
-  meta->set_id(TxMeta::GenerateMetaID());
-  meta->set_from(params->from);
-  meta->set_chain_id(chain_id);
-  meta->set_origin(
-      origin.value_or(url::Origin::Create(GURL("chrome://wallet"))));
-  meta->set_swap_info(std::move(params->swap_info));
-  meta->set_created_time(base::Time::Now());
-  meta->set_status(mojom::TransactionStatus::Unapproved);
+  auto meta = BitcoinTxMeta::MakeUnapproved(
+      params->from, std::make_unique<BitcoinTransaction>(), chain_id,
+      std::move(params->swap_info));
 
   bitcoin_wallet_service_->CreateTransaction(
       params->from.Clone(), params->to, params->amount,

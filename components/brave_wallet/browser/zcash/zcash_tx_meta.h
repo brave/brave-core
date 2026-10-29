@@ -24,6 +24,12 @@ class ZCashTxMeta : public TxMeta {
   ZCashTxMeta operator=(const ZCashTxMeta&) = delete;
   bool operator==(const ZCashTxMeta& other) const;
 
+  static std::unique_ptr<ZCashTxMeta> MakeUnapproved(
+      const mojom::AccountIdPtr& from,
+      std::unique_ptr<ZCashTransaction> tx,
+      const std::string& chain_id,
+      mojom::SwapInfoPtr swap_info);
+
   // TxMeta
   base::DictValue ToValue() const override;
   mojom::TransactionInfoPtr ToTransactionInfo() const override;
