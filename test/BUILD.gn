@@ -51,6 +51,8 @@ assert(!is_ios)
 
 static_library("test_support") {
   testonly = true
+
+  public_deps = [ "//brave/browser:browser_process" ]
   sources = [
     "//brave/test/base/testing_brave_browser_process.cc",
     "//brave/test/base/testing_brave_browser_process.h",
@@ -1055,6 +1057,7 @@ test("brave_browser_tests") {
     "//brave/base/test:test_vendor_is_brave",
     "//brave/browser",
     "//brave/browser:brave_global_features",
+    "//brave/browser:browser_process",
     "//brave/browser/autoplay:browser_tests",
     "//brave/browser/brave_shields:brave_shields_impl",
     "//brave/browser/brave_shields:test_support",
@@ -1085,7 +1088,9 @@ test("brave_browser_tests") {
     "//brave/browser/test:platform_browser_tests",
     "//brave/browser/themes",
     "//brave/browser/ui",
+    "//brave/browser/ui:brave_tab_prefs",
     "//brave/browser/ui:browser_tests",
+    "//brave/browser/ui:ui_features",
     "//brave/browser/ui/tabs:tabs_public",
     "//brave/browser/ui/tabs/test:browser_tests",
     "//brave/browser/ui/views/tabs:browser_tests",

@@ -418,6 +418,7 @@ source_set("browser_tests") {
       "//brave/components/l10n/common:test_support",
       "//brave/components/resources:strings_grit",
       "//brave/components/sidebar/browser",
+      "//brave/components/speedreader/common/buildflags",
       "//brave/components/text_recognition/common/buildflags",
       "//brave/components/tor/buildflags",
       "//chrome/browser",

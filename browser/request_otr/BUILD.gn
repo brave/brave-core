@@ -55,6 +55,7 @@ if (!is_android) {
     deps = [
       "//base",
       "//brave/browser",
+      "//brave/browser:browser_process",
       "//brave/browser/extensions:test_support",
       "//brave/common",
       "//brave/components/brave_component_updater/browser:public",

@@ -16,6 +16,7 @@ source_set("browser_tests") {
   ]
 
   deps = [
+    "//brave/browser/ui:brave_tab_prefs",
     "//brave/components/constants",
     "//brave/components/tabs",
     "//chrome/app:command_ids",
@@ -95,7 +96,7 @@ source_set("unit_tests") {
   testonly = true
 
   sources = []
-  deps = []
+  deps = [ "//brave/browser/ui:brave_tab_prefs" ]
 
   if (!is_android) {
     sources += [

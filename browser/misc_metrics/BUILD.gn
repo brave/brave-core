@@ -234,6 +234,7 @@ source_set("browser_tests") {
     "//brave/browser:browser_process",
     "//brave/browser/misc_metrics",
     "//brave/browser/misc_metrics:misc_metrics_impl",
+    "//brave/browser/ui:brave_tab_prefs",
     "//brave/components/constants",
     "//brave/components/misc_metrics",
     "//chrome/browser:browser_process",
