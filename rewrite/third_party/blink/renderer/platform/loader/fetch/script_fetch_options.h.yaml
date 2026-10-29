@@ -1,0 +1,39 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+blank_macros_for_ast_parsing: true
+
+substitutions:
+  - description: |-
+      Declare the page graph accessors for a script's initiator.
+
+      Page graph records which DOM node and parent script fetched a script, and
+      CreateFetchParameters() passes them on in the request's initiator info.
+    add_to_public:
+      class_name: ScriptFetchOptions
+      code: |-
+        #if BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
+        void SetDOMNodeId(DOMNodeId dom_node_id);
+        DOMNodeId GetDOMNodeId() const;
+        void SetParentScriptId(int parent_script_id);
+        int GetParentScriptId() const;
+        #endif  // BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
+
+  - description: |-
+      Store the page graph initiator in the private section.
+
+      The class ends in its private section, so the members are appended to the
+      class body; the match can't leave the class.
+    regex:
+      re_pattern: |-
+        (class PLATFORM_EXPORT ScriptFetchOptions final \{(?:(?!\n\};\n).)*?)(\n\};\n)
+      re_flags: [DOTALL]
+      replace: |-
+        \1
+
+        #if BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
+          DOMNodeId dom_node_id_ = kInvalidDOMNodeId;
+          int parent_script_id_ = 0;
+        #endif  // BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)\2
