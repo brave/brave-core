@@ -1,20 +1,97 @@
 diff --git a/chrome/browser/ui/views/frame/browser_view.cc b/chrome/browser/ui/views/frame/browser_view.cc
-index d1f00fb02a47e3c8b51028b2d820983eb2d306b2..4e39fe781cac562f062be3ebcfc3ef7c946b26c3 100644
+index 7b568f6de760af21d6e9d2aa44415a7cef617c51..f1ebd605fd5579a037df24252e709fe0b2e97c32 100644
 --- a/chrome/browser/ui/views/frame/browser_view.cc
 +++ b/chrome/browser/ui/views/frame/browser_view.cc
-@@ -654,6 +654,7 @@ bool ConvertedHitTest(views::View* src, views::View* dst, gfx::Point* point) {
+@@ -652,6 +652,10 @@ bool DoCutCopyPasteForWebContents(content::WebContents* contents,
+ // Converts |point| from |src| to |dst| and hit tests it against |dst|. The
+ // converted |point| can then be retrieved and used for additional tests.
+ bool ConvertedHitTest(views::View* src, views::View* dst, gfx::Point* point) {
++  if (!src->GetWidget() || !dst->GetWidget() ||
++      dst->GetWidget() != src->GetWidget()) {
++    return false;
++  }
    CHECK(src, base::NotFatalUntil::M162);
    CHECK(dst, base::NotFatalUntil::M162);
    CHECK(point, base::NotFatalUntil::M162);
-+  BRAVE_BROWSER_VIEW_LAYOUT_CONVERTED_HIT_TEST
-   views::View::ConvertPointToTarget(src, dst, point);
-   return dst->HitTestPoint(*point);
- }
-@@ -2029,6 +2030,7 @@ void BrowserView::OnActiveTabChanged(content::WebContents* old_contents,
+@@ -776,6 +780,9 @@ class BrowserView::ExclusiveAccessContextImpl
+   void UpdateExclusiveAccessBubble(
+       const ExclusiveAccessBubbleParams& params,
+       ExclusiveAccessBubbleHideCallback first_hide_callback) override {
++  if (ShouldHideFullscreenReminder(params, GetProfile())) {
++    return;
++  }
+     // Whether we should remove the bubble if it exists, or not show the bubble.
+     // TODO(jamescook): Figure out what to do with mouse-lock.
+     bool should_close_bubble = false;
+@@ -953,15 +960,15 @@ BrowserView::BrowserView(BrowserWindowInterface* browser)
+   top_container_insertion_index_ = GetIndexOf(top_container_.get());
+ 
+   toolbar_ = top_container_->AddChildView(
+-      std::make_unique<ToolbarView>(browser_.get(), this));
++      std::make_unique<BraveToolbarView>(browser_.get(), this));
+ 
+   top_container_separator_ = top_container_->AddChildView(
+       ContentsSeparator::CreateContentsSeparator());
+   top_container_separator_->SetProperty(views::kElementIdentifierKey,
+                                         kContentsSeparatorTopEdgeElementId);
+ 
+-  auto multi_contents_view = std::make_unique<MultiContentsView>(
+-      this, std::make_unique<MultiContentsViewDelegateImpl>(*browser_));
++  auto multi_contents_view = std::make_unique<BraveMultiContentsView>(
++      this, std::make_unique<BraveMultiContentsViewDelegateImpl>(*browser_));
+   multi_contents_view_ = AddChildView(std::move(multi_contents_view));
+ 
+   set_contents_view(multi_contents_view_);
+@@ -969,7 +976,7 @@ BrowserView::BrowserView(BrowserWindowInterface* browser)
+   // InfoBarContainer needs to be added as a child here for drop-shadow, but
+   // needs to come after toolbar in focus order (see EnsureFocusOrder()).
+   infobar_container_ =
+-      AddChildView(std::make_unique<InfoBarContainerView>(this));
++      AddChildView(std::make_unique<BraveInfoBarContainerView>(this));
+ 
+   // This frames some/all of the top container plus infobars, contents, and
+   // contents-height side panel when the toolbar-height side panel is visible.
+@@ -2030,6 +2037,16 @@ void BrowserView::OnActiveTabChanged(content::WebContents* old_contents,
  #else
    will_restore_focus &= GetWidget()->IsActive();
  #endif
-+  BRAVE_BROWSER_VIEW_ON_ACTIVE_TAB_CHANGED
++  if (multi_contents_view_) {
++    const bool web_panel_active =
++        sidebar::IsWebPanelTab(browser_, new_contents);
++    change_tab_contents &= !web_panel_active;
++    BraveMultiContentsView::From(multi_contents_view_)
++        ->set_web_panel_active(web_panel_active);
++    if (sidebar::IsWebPanelTab(browser_, old_contents)) {
++      active_contents_view = GetActiveContentsWebView();
++    }
++  }
    // Update various elements that are interested in knowing the current
    // WebContents.
  
+@@ -3471,7 +3488,7 @@ WebContentsModalDialogHost* BrowserView::GetWebContentsModalDialogHostFor(
+   }
+ }
+ 
+-BookmarkBarView* BrowserView::GetBookmarkBarView() const {
++BraveBookmarkBarView* BrowserView::GetBookmarkBarView() const {
+   return bookmark_bar_view_.get();
+ }
+ 
+@@ -5142,7 +5159,7 @@ void BrowserView::AddedToWidget() {
+   // LINT.ThenChange(//chrome/browser/ui/views/frame/layout/browser_view_layout.h:BrowserViewLayoutViews)
+ 
+   SetLayoutManager(BrowserViewLayout::CreateLayout(
+-      std::make_unique<BrowserViewLayoutDelegateImpl>(*this), browser(),
++      std::make_unique<BraveBrowserViewLayoutDelegateImpl>(*this), browser(),
+       std::move(layout_views)));
+ 
+   EnsureFocusOrder();
+@@ -5378,7 +5395,7 @@ bool BrowserView::MaybeShowBookmarkBar(WebContents* contents) {
+   if (!bookmark_bar_view_) {
+     auto* factory = UIControllerFactory::From(browser_.get());
+     auto controller = factory->CreateBookmarkBarController();
+-    detached_bookmark_bar_view_ = std::make_unique<BookmarkBarView>(
++    detached_bookmark_bar_view_ = std::make_unique<BraveBookmarkBarView>(
+         browser_.get(), std::move(controller), this);
+     bookmark_bar_view_ = detached_bookmark_bar_view_.get();
+     bookmark_bar_view_->SetBookmarkBarState(

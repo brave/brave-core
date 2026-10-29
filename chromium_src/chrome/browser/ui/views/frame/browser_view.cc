@@ -3,8 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-// Include the corresponding header first since it defines the same macros and
-// therefore avoid undef before use.
 #include "chrome/browser/ui/views/frame/browser_view.h"
 
 #include "base/check.h"
@@ -16,12 +14,15 @@
 #include "brave/browser/ui/views/side_panel/brave_side_panel_coordinator.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "brave/components/constants/pref_names.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_commands.h"
+#include "chrome/browser/ui/exclusive_access/exclusive_access_bubble_type.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_context.h"
 #include "chrome/browser/ui/views/frame/layout/browser_view_layout.h"
 #include "chrome/browser/ui/views/frame/multi_contents_view_delegate.h"
 #include "chrome/browser/ui/views/side_panel/side_panel.h"
 #include "chrome/browser/ui/web_applications/app_browser_controller.h"
+#include "components/prefs/pref_service.h"
 
 namespace sidebar {
 
@@ -30,70 +31,18 @@ bool IsWebPanelTab(BrowserWindowInterface* browser,
 
 }  // namespace sidebar
 
-#define InfoBarContainerView BraveInfoBarContainerView
-#define ToolbarView BraveToolbarView
-#define BookmarkBarView BraveBookmarkBarView
-#define MultiContentsView BraveMultiContentsView
-#define MultiContentsViewDelegateImpl BraveMultiContentsViewDelegateImpl
-#define BrowserViewLayoutDelegateImpl BraveBrowserViewLayoutDelegateImpl
+namespace {
 
-#define UpdateExclusiveAccessBubble(...)             \
-  UpdateExclusiveAccessBubble(__VA_ARGS__) override; \
-  virtual void UpdateExclusiveAccessBubble_ChromiumImpl(__VA_ARGS__)
+// Brave lets users turn off the reminder of how to exit fullscreen.
+bool ShouldHideFullscreenReminder(const ExclusiveAccessBubbleParams& params,
+                                  Profile* profile) {
+  return (params.type ==
+              EXCLUSIVE_ACCESS_BUBBLE_TYPE_FULLSCREEN_EXIT_INSTRUCTION ||
+          params.type ==
+              EXCLUSIVE_ACCESS_BUBBLE_TYPE_BROWSER_FULLSCREEN_EXIT_INSTRUCTION) &&
+         !profile->GetPrefs()->GetBoolean(kShowFullscreenReminder);
+}
 
-#define BRAVE_BROWSER_VIEW_LAYOUT_CONVERTED_HIT_TEST \
-  if (!src->GetWidget() || !dst->GetWidget() ||      \
-      dst->GetWidget() != src->GetWidget()) {        \
-    return false;                                    \
-  }
-
-// When web panel is activated, its tab contents is loaded in web panel
-// view(third split view) instead of contents view(first or second view in split
-// view). When web panel is deactivated, we should not set false to
-// |change_tab_contents| because it could be deactivated by creating another
-// tab. At the start of this method, |active_contents_view| points to panel's
-// contents view if previous active tab was web panel's one. It should points to
-// contents view in this situation to set other normal tab should be set into
-// contents view. So, called BraveMultiContentsView::set_web_panel_active()
-// before calling GetActiveContentsWebView(). GetActiveContentsView() gives
-// contents view for normal tab. Need to patch because related vars should
-// be updated in the middle of this method.
-#define BRAVE_BROWSER_VIEW_ON_ACTIVE_TAB_CHANGED          \
-  if (multi_contents_view_) {                             \
-    const bool web_panel_active =                         \
-        sidebar::IsWebPanelTab(browser_, new_contents);   \
-    change_tab_contents &= !web_panel_active;             \
-    BraveMultiContentsView::From(multi_contents_view_)    \
-        ->set_web_panel_active(web_panel_active);         \
-    if (sidebar::IsWebPanelTab(browser_, old_contents)) { \
-      active_contents_view = GetActiveContentsWebView();  \
-    }                                                     \
-  }
+}  // namespace
 
 #include <chrome/browser/ui/views/frame/browser_view.cc>
-
-#undef BRAVE_BROWSER_VIEW_ON_ACTIVE_TAB_CHANGED
-#undef UpdateExclusiveAccessBubble
-#undef BrowserViewLayoutDelegateImpl
-#undef MultiContentsViewDelegateImpl
-#undef MultiContentsView
-#undef BookmarkBarView
-#undef ToolbarView
-#undef InfoBarContainerView
-#undef BRAVE_BROWSER_VIEW_LAYOUT_CONVERTED_HIT_TEST
-
-void BrowserView::ExclusiveAccessContextImpl::UpdateExclusiveAccessBubble(
-    const ExclusiveAccessBubbleParams& params,
-    ExclusiveAccessBubbleHideCallback first_hide_callback) {
-  // Show/Hide full screen reminder bubble based on our settings preference for
-  // tab and browser initiated fullscreen.
-  if ((params.type ==
-           EXCLUSIVE_ACCESS_BUBBLE_TYPE_FULLSCREEN_EXIT_INSTRUCTION ||
-       params.type ==
-           EXCLUSIVE_ACCESS_BUBBLE_TYPE_BROWSER_FULLSCREEN_EXIT_INSTRUCTION) &&
-      !GetProfile()->GetPrefs()->GetBoolean(kShowFullscreenReminder)) {
-    return;
-  }
-  UpdateExclusiveAccessBubble_ChromiumImpl(params,
-                                           std::move(first_hide_callback));
-}

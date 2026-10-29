@@ -1,0 +1,103 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Fail hit tests between views in different widgets.
+
+      With vertical tabs, the source and target views can be in different
+      widgets, and converting the point between them failed a DCHECK.
+    preempt_function_impl:
+      function_name: ConvertedHitTest
+      code: |-
+        if (!src->GetWidget() || !dst->GetWidget() ||
+            dst->GetWidget() != src->GetWidget()) {
+          return false;
+        }
+
+  - description: |-
+      Keep a web panel's tab contents out of the contents view.
+
+      A web panel's tab contents load in the web panel view (the third split
+      view), not in the contents view. When the new tab is a web panel's, don't
+      swap the contents view's contents. When the old tab was a web panel's,
+      `active_contents_view` still points at the panel's view, so mark the
+      panel inactive first and look the contents view up again. This runs in
+      the middle of the method because the locals it updates are computed
+      above.
+    regex:
+      pattern:
+        '// Update various elements that are interested in knowing the current'
+      # The pattern starts after the line's indentation, so the inserted lines
+      # are indented relative to that point.
+      replace: |-
+        if (multi_contents_view_) {
+            const bool web_panel_active =
+                sidebar::IsWebPanelTab(browser_, new_contents);
+            change_tab_contents &= !web_panel_active;
+            BraveMultiContentsView::From(multi_contents_view_)
+                ->set_web_panel_active(web_panel_active);
+            if (sidebar::IsWebPanelTab(browser_, old_contents)) {
+              active_contents_view = GetActiveContentsWebView();
+            }
+          }
+          // Update various elements that are interested in knowing the current
+
+  - description: |-
+      Hide the fullscreen exit reminder when Brave's setting turns it off.
+    preempt_function_impl:
+      function_name: UpdateExclusiveAccessBubble
+      code: |-
+        if (ShouldHideFullscreenReminder(params, GetProfile())) {
+          return;
+        }
+
+  - description:
+      'Create BraveToolbarView wherever BrowserView creates a ToolbarView.'
+    count: 0 # Every creation of it in this file wants Brave's subclass.
+    regex:
+      pattern: 'make_unique<ToolbarView>'
+      replace: 'make_unique<BraveToolbarView>'
+
+  - description:
+      'Create BraveMultiContentsView wherever BrowserView creates a
+      MultiContentsView.'
+    count: 0 # Every creation of it in this file wants Brave's subclass.
+    regex:
+      pattern: 'make_unique<MultiContentsView>'
+      replace: 'make_unique<BraveMultiContentsView>'
+
+  - description:
+      'Create BraveMultiContentsViewDelegateImpl wherever BrowserView creates a
+      MultiContentsViewDelegateImpl.'
+    count: 0 # Every creation of it in this file wants Brave's subclass.
+    regex:
+      pattern: 'make_unique<MultiContentsViewDelegateImpl>'
+      replace: 'make_unique<BraveMultiContentsViewDelegateImpl>'
+
+  - description:
+      'Create BraveInfoBarContainerView wherever BrowserView creates a
+      InfoBarContainerView.'
+    count: 0 # Every creation of it in this file wants Brave's subclass.
+    regex:
+      pattern: 'make_unique<InfoBarContainerView>'
+      replace: 'make_unique<BraveInfoBarContainerView>'
+
+  - description:
+      'Create BraveBrowserViewLayoutDelegateImpl wherever BrowserView creates a
+      BrowserViewLayoutDelegateImpl.'
+    count: 0 # Every creation of it in this file wants Brave's subclass.
+    regex:
+      pattern: 'make_unique<BrowserViewLayoutDelegateImpl>'
+      replace: 'make_unique<BraveBrowserViewLayoutDelegateImpl>'
+
+  - description: |-
+      Use BraveBookmarkBarView for BrowserView's bookmark bar.
+
+      The header types the bookmark bar as BraveBookmarkBarView, so the
+      definitions here, and the bar BrowserView creates, follow.
+    rename_class:
+      class_name: BookmarkBarView
+      rename: BraveBookmarkBarView

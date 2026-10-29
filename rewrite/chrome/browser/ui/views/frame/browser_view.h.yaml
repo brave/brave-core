@@ -4,7 +4,81 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
+  - description: |-
+      Derive BrowserView from BraveBrowserWindow.
+
+      BraveBrowserWindow extends the BrowserWindow interface with the methods
+      Brave features call on the browser window.
+    rename_class:
+      class_name: BrowserWindow
+      rename: BraveBrowserWindow
+
+  - description: |-
+      Type BrowserView's bookmark bar as BraveBookmarkBarView.
+
+      BrowserView creates a BraveBookmarkBarView, and Brave code reaches it
+      through bookmark_bar() and GetBookmarkBarView().
+    rename_class:
+      class_name: BookmarkBarView
+      rename: BraveBookmarkBarView
+
+  - description: 'Let BraveBrowserView reach private members.'
+    add_friend:
+      class_name: BrowserView
+      friend_type: class BraveBrowserView
+
   - description: Make the CreateMacOverlayView virtual for subclassing.
     make_virtual:
       class_name: BrowserView
       method_name: 'CreateMacOverlayView'
+
+  - description: 'Make MaybeUpdateDevtools virtual for BraveBrowserView.'
+    make_virtual:
+      class_name: BrowserView
+      method_name: MaybeUpdateDevtools
+
+  - description: 'Make MaybeUpdateSplitView virtual for BraveBrowserView.'
+    make_virtual:
+      class_name: BrowserView
+      method_name: MaybeUpdateSplitView
+
+  - description: 'Make GetTabStripVisible virtual for BraveBrowserView.'
+    make_virtual:
+      class_name: BrowserView
+      method_name: GetTabStripVisible
+
+  - description: 'Make UpdateTabSearchBubbleHost virtual for BraveBrowserView.'
+    make_virtual:
+      class_name: BrowserView
+      method_name: UpdateTabSearchBubbleHost
+
+  - description: 'Make LoadAccelerators virtual for BraveBrowserView.'
+    make_virtual:
+      class_name: BrowserView
+      method_name: LoadAccelerators
+
+  - description: 'Make ShowSplitView virtual for BraveBrowserView.'
+    make_virtual:
+      class_name: BrowserView
+      method_name: ShowSplitView
+
+  - description: 'Make HideSplitView virtual for BraveBrowserView.'
+    make_virtual:
+      class_name: BrowserView
+      method_name: HideSplitView
+
+  - description: |-
+      Make ReparentTopContainerForEndOfImmersive virtual for BraveBrowserView.
+    make_virtual:
+      class_name: BrowserView
+      method_name: ReparentTopContainerForEndOfImmersive
+
+  - description: 'Make ShouldDrawTabStrokes virtual for BraveBrowserView.'
+    make_virtual:
+      class_name: BrowserView
+      method_name: ShouldDrawTabStrokes
+
+  - description: 'Make GetFrameElementInfo virtual for BraveBrowserView.'
+    make_virtual:
+      class_name: BrowserView
+      method_name: GetFrameElementInfo
