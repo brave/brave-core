@@ -1,14 +1,14 @@
 diff --git a/chrome/browser/ui/views/web_apps/create_shortcut_confirmation_view.cc b/chrome/browser/ui/views/web_apps/create_shortcut_confirmation_view.cc
-index 598a895c1f0ffa9cf4df301e8648038e75221a25..070adebb8269a4ae1558a01032eee11cb343f65f 100644
+index c2a50f2dcdf85ec5382b161470575f252f217ba0..142dd08aff6531d86f7975df6bd1c6e6ec91dd9d 100644
 --- a/chrome/browser/ui/views/web_apps/create_shortcut_confirmation_view.cc
 +++ b/chrome/browser/ui/views/web_apps/create_shortcut_confirmation_view.cc
 @@ -53,8 +53,9 @@ const char* g_title_to_use_for_app = nullptr;
  
  bool ShowRadioButtons() {
    // This UI is only for prototyping and is not intended for shipping.
--  CHECK_EQ(features::kDesktopPWAsTabStripSettings.default_state,
+-  CHECK_EQ(features::kDesktopPWAsTabStripSettings.GetDefaultState(),
 -           base::FEATURE_DISABLED_BY_DEFAULT, base::NotFatalUntil::M162);
-+  // CHECK_EQ(features::kDesktopPWAsTabStripSettings.default_state,
++  // CHECK_EQ(features::kDesktopPWAsTabStripSettings.GetDefaultState(),
 +  //          base::FEATURE_DISABLED_BY_DEFAULT,
 +  //          base::NotFatalUntil::M162);
    return base::FeatureList::IsEnabled(blink::features::kDesktopPWAsTabStrip) &&
