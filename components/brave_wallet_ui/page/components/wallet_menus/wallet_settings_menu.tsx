@@ -29,7 +29,10 @@ import { CreateAccountOptions } from '$wallet/options/nav-options'
 
 // Utils
 import { getLocale } from '$web-common/locale'
-import { useLockWalletMutation } from '$wallet/common/slices/api.slice'
+import {
+  useGetHiddenAccountsQuery,
+  useLockWalletMutation,
+} from '$wallet/common/slices/api.slice'
 import { openWalletSettings } from '$wallet/utils/routes-utils'
 import { useSyncedLocalStorage } from '$wallet/common/hooks/use_local_storage'
 
@@ -72,6 +75,9 @@ export const WalletSettingsMenu = (props: Props) => {
       LOCAL_STORAGE_KEYS.IS_PORTFOLIO_OVERVIEW_DISTRIBUTION_HIDDEN,
       true,
     )
+
+  // queries
+  const { data: hiddenAccounts = [] } = useGetHiddenAccountsQuery()
 
   // mutations
   const [lockWallet] = useLockWalletMutation()
@@ -170,13 +176,21 @@ export const WalletSettingsMenu = (props: Props) => {
 
   // Memos
   const accountSettingsOptions = React.useMemo(() => {
-    if (isMobile) {
-      return CreateAccountOptions.filter(
-        (option) => option.name !== S.BRAVE_WALLET_CONNECT_HARDWARE_WALLET,
-      )
-    }
-    return CreateAccountOptions
-  }, [isMobile])
+    return CreateAccountOptions.filter((option) => {
+      // Filter out hardware wallet item on Android.
+      if (isMobile && option.name === S.BRAVE_WALLET_CONNECT_HARDWARE_WALLET) {
+        return false
+      }
+      // Show unhide option only when we have hidden accounts.
+      if (
+        option.name === S.BRAVE_WALLET_UNHIDE_ACCOUNT
+        && hiddenAccounts.length === 0
+      ) {
+        return false
+      }
+      return true
+    })
+  }, [hiddenAccounts, isMobile])
 
   const showConnectedSitesItem = !isMobile
   const showOpenWalletSettingsItem = !isMobile

@@ -5,14 +5,16 @@
 
 import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css/variables'
+import Button from '@brave/leo/react/button'
 
+// Shared Styles
 import { Column, Row, Text } from '../../../shared/style'
 
 export const ContentColumn = styled(Column)`
   padding: 0px 24px 24px;
 `
 
-export const RestoreAccountsList = styled(Column)`
+export const UnhideAccountsList = styled(Column)`
   max-height: 320px;
   overflow: auto;
   border: 1px solid ${leo.color.divider.subtle};
@@ -35,4 +37,8 @@ export const FooterRow = styled(Row)`
   justify-content: flex-end;
   gap: 12px;
   margin: 16px 0px 0px 0px;
+`
+
+export const CancelButton = styled(Button)`
+  --leo-button-color: ${leo.color.text.secondary};
 `

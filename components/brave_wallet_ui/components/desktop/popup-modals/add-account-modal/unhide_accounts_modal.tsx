@@ -7,34 +7,47 @@ import * as React from 'react'
 import { useHistory } from 'react-router'
 import Button from '@brave/leo/react/button'
 
-import { getLocale } from '../../../../../common/locale'
-import { WalletRoutes } from '../../../../constants/types'
-import { reduceAddress } from '../../../../utils/reduce-address'
-import { getAccountTypeDescription } from '../../../../utils/account-utils'
+// Constants
+import { WalletRoutes } from '$wallet/constants/types'
+
+// Utils
+import { getLocale } from '$web-common/locale'
+import { reduceAddress } from '$wallet/utils/reduce-address'
+import { getAccountTypeDescription } from '$wallet/utils/account-utils'
 import {
   useGetHiddenAccountsQuery,
   useRemoveHiddenAccountsMutation,
-} from '../../../../common/slices/api.slice'
+} from '$wallet/common/slices/api.slice'
+
+// Components
 import PopupModal from '..'
-import { Checkbox } from '../../../shared/checkbox/checkbox'
-import { Column, Row } from '../../../shared/style'
-import { CreateAccountIcon } from '../../../shared/create-account-icon/create-account-icon'
+import { Checkbox } from '$wallet/components/shared/checkbox/checkbox'
+import { Column, Row } from '$wallet/components/shared/style'
+import { CreateAccountIcon } from '$wallet/components/shared/create-account-icon/create-account-icon'
+
+// Styled Components
 import {
   AccountMetaText,
   AccountNameText,
   ContentColumn,
   FooterRow,
-  RestoreAccountsList,
-} from './restore_accounts_modal.style'
+  UnhideAccountsList,
+  CancelButton,
+} from './unhide_accounts_modal.style'
 
-export const RestoreAccountsModal = () => {
+export const UnhideAccountsModal = () => {
   const history = useHistory()
+
+  // Queries
   const { data: hiddenAccounts = [] } = useGetHiddenAccountsQuery()
   const [removeHiddenAccounts] = useRemoveHiddenAccountsMutation()
+
+  // State
   const [selectedAccountKeys, setSelectedAccountKeys] = React.useState<
     Set<string>
   >(new Set())
 
+  // Methods
   const onClose = React.useCallback(() => {
     history.push(WalletRoutes.Accounts)
   }, [history])
@@ -54,11 +67,11 @@ export const RestoreAccountsModal = () => {
     [],
   )
 
-  const onRestoreSelectedAccounts = React.useCallback(async () => {
-    const accountsToRestore = hiddenAccounts.filter((account) =>
+  const onUnhideSelectedAccounts = React.useCallback(async () => {
+    const accountsToUnhide = hiddenAccounts.filter((account) =>
       selectedAccountKeys.has(account.accountId.uniqueKey),
     )
-    const accountIds = accountsToRestore.map((account) => account.accountId)
+    const accountIds = accountsToUnhide.map((account) => account.accountId)
 
     await removeHiddenAccounts(accountIds).unwrap()
 
@@ -67,7 +80,7 @@ export const RestoreAccountsModal = () => {
 
   return (
     <PopupModal
-      title={getLocale(S.BRAVE_WALLET_ACCOUNTS_RESTORE)}
+      title={getLocale(S.BRAVE_WALLET_UNHIDE_ACCOUNT)}
       onClose={onClose}
       width='480px'
     >
@@ -75,7 +88,7 @@ export const RestoreAccountsModal = () => {
         fullWidth
         alignItems='flex-start'
       >
-        <RestoreAccountsList
+        <UnhideAccountsList
           fullWidth
           alignItems='flex-start'
           justifyContent='flex-start'
@@ -113,20 +126,20 @@ export const RestoreAccountsModal = () => {
               </Row>
             </Checkbox>
           ))}
-        </RestoreAccountsList>
+        </UnhideAccountsList>
         <FooterRow>
-          <Button
+          <CancelButton
             kind='plain-faint'
             onClick={onClose}
           >
             {getLocale(S.BRAVE_WALLET_BUTTON_CANCEL)}
-          </Button>
+          </CancelButton>
           <Button
             kind='filled'
             isDisabled={selectedAccountKeys.size === 0}
-            onClick={onRestoreSelectedAccounts}
+            onClick={onUnhideSelectedAccounts}
           >
-            {getLocale(S.BRAVE_WALLET_ACCOUNTS_RESTORE)}
+            {getLocale(S.BRAVE_WALLET_UNHIDE)}
           </Button>
         </FooterRow>
       </ContentColumn>
