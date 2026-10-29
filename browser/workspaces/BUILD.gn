@@ -22,6 +22,7 @@ source_set("impl") {
     "//base",
     "//chrome/browser/lifetime",
     "//chrome/browser/ui:browser_tabrestore",
+    "//chrome/browser/ui:browser_tabstrip",
     "//chrome/browser/ui:unload_controller",
     "//chrome/browser/ui/browser_window:create_browser_window",
     "//chrome/browser/ui/tabs:tab_strip",

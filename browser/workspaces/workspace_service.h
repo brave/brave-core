@@ -122,6 +122,14 @@ class WorkspaceService : public KeyedService,
   // this session yet.
   std::optional<SessionID> GetWindowForWorkspace(const base::Uuid& id) const;
 
+  // True when |id| is on screen in some window other than |window_id|.
+  //
+  // A workspace that is open but hidden is not held by anyone: switching to it
+  // simply brings its window forward, so it stays pickable. Only a workspace
+  // somebody is actually looking at is out of reach.
+  bool IsWorkspaceOnScreenElsewhere(const base::Uuid& id,
+                                    SessionID window_id) const;
+
   // Returns the unmanaged window |window_id| was opened from, or nullopt if
   // |window_id| is itself an unmanaged window.
   std::optional<SessionID> GetUnmanagedWindowFor(SessionID window_id) const;
