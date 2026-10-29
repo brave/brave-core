@@ -1,10 +1,10 @@
 diff --git a/chrome/browser/glic/public/features.cc b/chrome/browser/glic/public/features.cc
-index 8378f0375a637ee5149d69172e45f50e55d2b785..5c6e2f67916689c6338dc1742d4d4333d75cfa0b 100644
+index 89e2b01188aa99072995aeeb0577b4bb04107d81..09ec2475be35f04dca4a334c40e0f79b8fcf5884 100644
 --- a/chrome/browser/glic/public/features.cc
 +++ b/chrome/browser/glic/public/features.cc
-@@ -109,8 +109,8 @@ BASE_FEATURE(kGlicContextMenuBelowSearch, base::FEATURE_DISABLED_BY_DEFAULT);
+@@ -85,8 +85,8 @@ const base::FeatureParam<bool> kGlicContextMenuWithOnboarding{
  
- BASE_FEATURE(kGlicDynamicChromeTools, base::FEATURE_DISABLED_BY_DEFAULT);
+ BASE_FEATURE(kGlicContextMenuBelowSearch, base::FEATURE_DISABLED_BY_DEFAULT);
  
 -BASE_FEATURE(kGlicTextSelectionContextMenu,
 -             FEATURE_ENABLED_BY_DEFAULT_NON_ANDROID);

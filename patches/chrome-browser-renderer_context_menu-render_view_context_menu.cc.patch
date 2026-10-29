@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/renderer_context_menu/render_view_context_menu.cc b/chrome/browser/renderer_context_menu/render_view_context_menu.cc
-index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc8150349e 100644
+index 18a1414a8d8015af37c22f5e42cdc2f246c55474..8d670ddad46c14cff7a5690fa0cedd96f400eeb7 100644
 --- a/chrome/browser/renderer_context_menu/render_view_context_menu.cc
 +++ b/chrome/browser/renderer_context_menu/render_view_context_menu.cc
-@@ -445,8 +445,8 @@ constexpr int IDC_SPELLCHECK_LANGUAGES_LAST =
+@@ -448,8 +448,8 @@ constexpr int IDC_SPELLCHECK_LANGUAGES_LAST =
  
  constexpr int kTabMenuIconSize = 16;
  
@@ -13,16 +13,16 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
        callback;
    return callback.get();
  }
-@@ -763,7 +763,7 @@ int GetUmaValueMax(UmaEnumIdLookupType type) {
+@@ -784,7 +784,7 @@ int GetUmaValueMax(UmaEnumIdLookupType type) {
  
  // Collapses large ranges of ids before looking for UMA enum.
  int CollapseCommandsForUMA(int id) {
--  DCHECK(!RenderViewContextMenu::IsContentCustomCommandId(id));
-+  DCHECK(!RenderViewContextMenu_Chromium::IsContentCustomCommandId(id));
-   DCHECK(!ContextMenuMatcher::IsExtensionsCustomCommandId(id));
- 
-   if (id >= IDC_CONTENT_CONTEXT_PROTOCOL_HANDLER_FIRST &&
-@@ -791,7 +791,7 @@ int CollapseCommandsForUMA(int id) {
+-  CHECK(!RenderViewContextMenu::IsContentCustomCommandId(id),
++  CHECK(!RenderViewContextMenu_Chromium::IsContentCustomCommandId(id),
+         base::NotFatalUntil::M163);
+   CHECK(!ContextMenuMatcher::IsExtensionsCustomCommandId(id),
+         base::NotFatalUntil::M163);
+@@ -814,7 +814,7 @@ int CollapseCommandsForUMA(int id) {
  
  // Returns UMA enum value for command specified by `id` or -1 if not found.
  int FindUMAEnumValueForCommand(int id, UmaEnumIdLookupType type) {
@@ -31,7 +31,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
      return 0;
    }
  
-@@ -985,7 +985,7 @@ bool IsLensOptionEnteredThroughKeyboard(int event_flags) {
+@@ -1008,7 +1008,7 @@ bool IsLensOptionEnteredThroughKeyboard(int event_flags) {
  #endif  // BUILDFLAG(GOOGLE_CHROME_BRANDING)
  }
  
@@ -40,7 +40,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    return glic::GlicEnabling::IsEnabledByGlobalCriteria() &&
           glic::IsAnyGlicWebContents(menu->GetWebContents());
  }
-@@ -1072,12 +1072,12 @@ content::RenderFrameHost* GetRenderFrameHostForFrameToken(
+@@ -1095,12 +1095,12 @@ content::RenderFrameHost* GetRenderFrameHostForFrameToken(
  }  // namespace
  
  // static
@@ -55,7 +55,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
                                                       bool is_checked) {
    if (is_checked) {
      menu->AddCheckItemWithStringId(IDC_CONTENT_CONTEXT_SPELLING_TOGGLE,
-@@ -1088,32 +1088,32 @@ void RenderViewContextMenu::AddSpellCheckServiceItem(ui::SimpleMenuModel* menu,
+@@ -1111,32 +1111,32 @@ void RenderViewContextMenu::AddSpellCheckServiceItem(ui::SimpleMenuModel* menu,
    }
  }
  
@@ -102,7 +102,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
      content::RenderFrameHost& render_frame_host,
      const content::ContextMenuParams& params,
      bool is_paste_enabled,
-@@ -1160,9 +1160,9 @@ RenderViewContextMenu::RenderViewContextMenu(
+@@ -1183,9 +1183,9 @@ RenderViewContextMenu::RenderViewContextMenu(
    observers_.AddObserver(&autofill_context_menu_manager_);
  }
  
@@ -114,7 +114,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    if (source == &menu_model_) {
      if (glic_item_shown_) {
        RecordGlicWebContentsContextMenuResult(
-@@ -1183,7 +1183,7 @@ void RenderViewContextMenu::MenuClosed(ui::SimpleMenuModel* source) {
+@@ -1207,7 +1207,7 @@ void RenderViewContextMenu::MenuClosed(ui::SimpleMenuModel* source) {
  // Menu construction functions -------------------------------------------------
  
  #if BUILDFLAG(ENABLE_EXTENSIONS)
@@ -123,16 +123,16 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    // Avoid appending extension related items when |extension| is null.
    // For Panel, this happens when the panel is navigated to a url outside of the
    // extension's package.
-@@ -1215,7 +1215,7 @@ void RenderViewContextMenu::AppendCurrentExtensionItems() {
+@@ -1239,7 +1239,7 @@ void RenderViewContextMenu::AppendCurrentExtensionItems() {
  }
  #endif  // BUILDFLAG(ENABLE_EXTENSIONS)
  
 -std::u16string RenderViewContextMenu::FormatURLForClipboard(const GURL& url) {
 +std::u16string RenderViewContextMenu_Chromium::FormatURLForClipboard(const GURL& url) {
-   DCHECK(url.is_valid());
+   CHECK(url.is_valid(), base::NotFatalUntil::M163);
  
    GURL url_to_format = url;
-@@ -1238,7 +1238,7 @@ std::u16string RenderViewContextMenu::FormatURLForClipboard(const GURL& url) {
+@@ -1262,7 +1262,7 @@ std::u16string RenderViewContextMenu::FormatURLForClipboard(const GURL& url) {
                                    nullptr, nullptr, nullptr);
  }
  
@@ -141,7 +141,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    if (!url.is_valid()) {
      return;
    }
-@@ -1260,7 +1260,7 @@ void RenderViewContextMenu::WriteURLToClipboard(const GURL& url, int id) {
+@@ -1284,7 +1284,7 @@ void RenderViewContextMenu::WriteURLToClipboard(const GURL& url, int id) {
  #endif
  }
  
@@ -150,7 +150,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
      const std::string& anonymization_key_url,
      const std::string& preconnect_url) {
    Profile* profile = Profile::FromBrowserContext(browser_context_);
-@@ -1285,7 +1285,7 @@ void RenderViewContextMenu::IssuePreconnectionToUrl(
+@@ -1309,7 +1309,7 @@ void RenderViewContextMenu::IssuePreconnectionToUrl(
        network_anonymization_key, network::GetNoOpNetworkRestrictionsId());
  }
  
@@ -159,7 +159,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
      const std::string& feature_name) const {
    Profile* profile = Profile::FromBrowserContext(browser_context_);
    UserEducationService* user_education_service =
-@@ -1305,14 +1305,14 @@ ui::IsNewFeatureAtValue RenderViewContextMenu::GetIsNewFeatureAtValue(
+@@ -1329,14 +1329,14 @@ ui::IsNewFeatureAtValue RenderViewContextMenu::GetIsNewFeatureAtValue(
    return ui::IsNewFeatureAtValue();
  }
  
@@ -176,7 +176,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    RenderViewContextMenuBase::InitMenu();
  
    MaybeAppendGlicSmartSuggestionItem();
-@@ -1635,11 +1635,11 @@ void RenderViewContextMenu::InitMenu() {
+@@ -1667,11 +1667,11 @@ void RenderViewContextMenu::InitMenu() {
    }
  }
  
@@ -190,7 +190,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    if (base::FeatureList::IsEnabled(lens::features::kLensStandalone) &&
        search::DefaultSearchProviderIsGoogle(GetProfile())) {
      return IDC_CONTENT_CONTEXT_SEARCHLENSFORIMAGE;
-@@ -1647,19 +1647,19 @@ int RenderViewContextMenu::GetSearchForImageIdc() const {
+@@ -1679,19 +1679,19 @@ int RenderViewContextMenu::GetSearchForImageIdc() const {
    return IDC_CONTENT_CONTEXT_SEARCHWEBFORIMAGE;
  }
  
@@ -213,7 +213,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    if (!GetBrowser()) {
      return nullptr;
    }
-@@ -1687,7 +1687,7 @@ const TemplateURL* RenderViewContextMenu::GetImageSearchProvider() const {
+@@ -1719,7 +1719,7 @@ const TemplateURL* RenderViewContextMenu::GetImageSearchProvider() const {
    return provider;
  }
  
@@ -222,7 +222,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
      const TemplateURL* provider) const {
    if (search::DefaultSearchProviderIsGoogle(GetProfile())) {
      // The image search branding label should always be 'Google'.
-@@ -1699,7 +1699,7 @@ std::u16string RenderViewContextMenu::GetImageSearchProviderName(
+@@ -1731,7 +1731,7 @@ std::u16string RenderViewContextMenu::GetImageSearchProviderName(
    return provider->image_search_branding_label();
  }
  
@@ -231,7 +231,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    // Log general ID.
  
    int enum_id =
-@@ -1815,7 +1815,7 @@ void RenderViewContextMenu::RecordUsedItem(int id) {
+@@ -1847,7 +1847,7 @@ void RenderViewContextMenu::RecordUsedItem(int id) {
    }
  }
  
@@ -240,7 +240,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    // The "RenderViewContextMenu.Shown" histogram is not recorded for submenus.
    if (is_submenu) {
      return;
-@@ -1835,7 +1835,7 @@ void RenderViewContextMenu::RecordShownItem(int id, bool is_submenu) {
+@@ -1867,7 +1867,7 @@ void RenderViewContextMenu::RecordShownItem(int id, bool is_submenu) {
        GetUmaValueMax(UmaEnumIdLookupType::GeneralEnumId));
  }
  
@@ -249,7 +249,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    BrowserWindowInterface* browser =
        GlobalBrowserCollection::GetInstance()->FindBrowserWithTab(
            embedder_web_contents_);
-@@ -1848,7 +1848,7 @@ bool RenderViewContextMenu::IsHTML5Fullscreen() const {
+@@ -1880,7 +1880,7 @@ bool RenderViewContextMenu::IsHTML5Fullscreen() const {
    return controller->IsTabFullscreen();
  }
  
@@ -258,7 +258,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    BrowserWindowInterface* browser =
        GlobalBrowserCollection::GetInstance()->FindBrowserWithTab(
            source_web_contents_);
-@@ -1862,13 +1862,13 @@ bool RenderViewContextMenu::IsPressAndHoldEscRequiredToExitFullscreen() const {
+@@ -1894,13 +1894,13 @@ bool RenderViewContextMenu::IsPressAndHoldEscRequiredToExitFullscreen() const {
  }
  
  #if BUILDFLAG(ENABLE_PLUGINS)
@@ -274,7 +274,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
  #if BUILDFLAG(ENABLE_PRINT_PREVIEW)
    if (!print_preview_menu_observer_) {
      print_preview_menu_observer_ =
-@@ -1879,12 +1879,12 @@ void RenderViewContextMenu::AppendPrintPreviewItems() {
+@@ -1911,12 +1911,12 @@ void RenderViewContextMenu::AppendPrintPreviewItems() {
  #endif
  }
  
@@ -289,7 +289,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
      bool is_full_page_translation) const {
    std::string source;
    std::string target;
-@@ -1896,12 +1896,12 @@ std::u16string RenderViewContextMenu::GetTargetLanguageDisplayName(
+@@ -1928,12 +1928,12 @@ std::u16string RenderViewContextMenu::GetTargetLanguageDisplayName(
  }
  
  #if BUILDFLAG(ENABLE_COMPOSE)
@@ -304,7 +304,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    // Do not Show Inspect Element for DevTools unless DevTools runs with the
    // debugFrontend query param.
    bool hide_developer_items = IsDevToolsURL(params_.page_url) &&
-@@ -1937,7 +1937,7 @@ void RenderViewContextMenu::AppendDeveloperItems() {
+@@ -1969,7 +1969,7 @@ void RenderViewContextMenu::AppendDeveloperItems() {
                                    IDS_CONTENT_CONTEXT_INSPECTELEMENT);
  }
  
@@ -313,7 +313,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    // Add a separator if there are any items already in the menu.
    menu_model_.AddSeparator(ui::NORMAL_SEPARATOR);
  
-@@ -1950,7 +1950,7 @@ void RenderViewContextMenu::AppendDevtoolsForUnpackedExtensions() {
+@@ -1982,7 +1982,7 @@ void RenderViewContextMenu::AppendDevtoolsForUnpackedExtensions() {
                                    IDS_CONTENT_CONTEXT_INSPECTBACKGROUNDPAGE);
  }
  
@@ -322,16 +322,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    if (!params_.link_url.is_empty()) {
      const bool in_app = IsInProgressiveWebApp();
  
-@@ -2060,7 +2060,7 @@ void RenderViewContextMenu::AppendLinkItems() {
-         if (tabs::kSplitViewHorizontalDirectAccess.Get() &&
-             !(tab && tab->IsSplit())) {
-           split_layout_submenu_ = std::make_unique<SplitViewLayoutMenuModel>(
--              base::BindOnce(&RenderViewContextMenu::OpenLinkInSplitView,
-+              base::BindOnce(&RenderViewContextMenu_Chromium::OpenLinkInSplitView,
-                              base::Unretained(this)));
-           menu_model_.AddSubMenuWithStringIdAndIcon(
-               IDC_CONTENT_CONTEXT_OPENLINKSPLITVIEW, string_id,
-@@ -2230,7 +2230,7 @@ void RenderViewContextMenu::AppendLinkItems() {
+@@ -2250,7 +2250,7 @@ void RenderViewContextMenu::AppendLinkItems() {
    }
  }
  
@@ -340,7 +331,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    menu_model_.AddItemWithStringId(IDC_CONTENT_CONTEXT_COPYLINKLOCATION,
                                    params_.link_url.SchemeIs(url::kMailToScheme)
                                        ? IDS_CONTENT_CONTEXT_COPYEMAILADDRESS
-@@ -2245,7 +2245,7 @@ void RenderViewContextMenu::AppendCopyLinkLocationItem() {
+@@ -2266,7 +2266,7 @@ void RenderViewContextMenu::AppendCopyLinkLocationItem() {
    }
  }
  
@@ -349,7 +340,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
  #if BUILDFLAG(IS_CHROMEOS)
    open_with_menu_observer_ =
        std::make_unique<arc::OpenWithMenu>(browser_context_, this);
-@@ -2254,7 +2254,7 @@ void RenderViewContextMenu::AppendOpenWithLinkItems() {
+@@ -2275,7 +2275,7 @@ void RenderViewContextMenu::AppendOpenWithLinkItems() {
  #endif
  }
  
@@ -358,7 +349,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
  #if BUILDFLAG(IS_CHROMEOS)
    if (!read_write_card_observer_) {
      read_write_card_observer_ =
-@@ -2266,7 +2266,7 @@ void RenderViewContextMenu::AppendReadWriteCardItems() {
+@@ -2287,7 +2287,7 @@ void RenderViewContextMenu::AppendReadWriteCardItems() {
  #endif
  }
  
@@ -367,7 +358,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
  #if BUILDFLAG(IS_CHROMEOS)
    start_smart_selection_action_menu_observer_ =
        std::make_unique<arc::StartSmartSelectionActionMenu>(
-@@ -2281,7 +2281,7 @@ void RenderViewContextMenu::AppendSmartSelectionActionItems() {
+@@ -2302,7 +2302,7 @@ void RenderViewContextMenu::AppendSmartSelectionActionItems() {
  #endif
  }
  
@@ -376,7 +367,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    Profile* const profile = Profile::FromBrowserContext(browser_context_);
    if (!apps::AppServiceProxyFactory::IsAppServiceAvailableForProfile(profile)) {
      return;
-@@ -2349,7 +2349,7 @@ void RenderViewContextMenu::AppendOpenInWebAppLinkItems() {
+@@ -2374,7 +2374,7 @@ void RenderViewContextMenu::AppendOpenInWebAppLinkItems() {
                                    ui::ImageModel::FromImage(icon));
  }
  
@@ -385,7 +376,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    if (!params_.has_image_contents) {
      menu_model_.AddItemWithStringId(IDC_CONTENT_CONTEXT_LOAD_IMAGE,
                                      IDS_CONTENT_CONTEXT_LOAD_IMAGE);
-@@ -2376,7 +2376,7 @@ void RenderViewContextMenu::AppendImageItems() {
+@@ -2401,7 +2401,7 @@ void RenderViewContextMenu::AppendImageItems() {
    }
  }
  
@@ -394,7 +385,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    if (!params_.has_image_contents) {
      return;
    }
-@@ -2418,7 +2418,7 @@ void RenderViewContextMenu::AppendSearchWebForImageItems() {
+@@ -2443,7 +2443,7 @@ void RenderViewContextMenu::AppendSearchWebForImageItems() {
    MaybePrepareForLensQuery();
  }
  
@@ -403,7 +394,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    if (!CanAppendGlicShareImageItem()) {
      return;
    }
-@@ -2441,7 +2441,7 @@ void RenderViewContextMenu::AppendGlicShareImageItem() {
+@@ -2466,7 +2466,7 @@ void RenderViewContextMenu::AppendGlicShareImageItem() {
    }
  }
  
@@ -412,7 +403,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    if (!CanAppendIndigoItem()) {
      return;
    }
-@@ -2461,7 +2461,7 @@ void RenderViewContextMenu::AppendIndigoItem() {
+@@ -2486,7 +2486,7 @@ void RenderViewContextMenu::AppendIndigoItem() {
    controller->OnContextMenuShown();
  }
  
@@ -421,7 +412,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    AppendMediaItems();
    menu_model_.AddSeparator(ui::NORMAL_SEPARATOR);
    menu_model_.AddItemWithStringId(IDC_CONTENT_CONTEXT_OPENAVNEWTAB,
-@@ -2473,14 +2473,14 @@ void RenderViewContextMenu::AppendAudioItems() {
+@@ -2498,14 +2498,14 @@ void RenderViewContextMenu::AppendAudioItems() {
    AppendMediaRouterItem();
  }
  
@@ -438,7 +429,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    const bool use_submenu =
        base::FeatureList::IsEnabled(features::kMenuSimplification);
  
-@@ -2589,14 +2589,14 @@ void RenderViewContextMenu::AppendVideoItems() {
+@@ -2614,14 +2614,14 @@ void RenderViewContextMenu::AppendVideoItems() {
    }
  }
  
@@ -455,7 +446,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    bool is_full_page_oopif_pdf_viewer = false;
  #if BUILDFLAG(ENABLE_PDF)
    is_full_page_oopif_pdf_viewer =
-@@ -2630,7 +2630,7 @@ void RenderViewContextMenu::AppendPluginItems() {
+@@ -2655,7 +2655,7 @@ void RenderViewContextMenu::AppendPluginItems() {
    }
  }
  
@@ -464,7 +455,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    AppendExitFullscreenItem();
  
    const bool glic_below_search =
-@@ -2788,7 +2788,7 @@ void RenderViewContextMenu::AppendPageItems() {
+@@ -2816,7 +2816,7 @@ void RenderViewContextMenu::AppendPageItems() {
    }
  }
  
@@ -473,7 +464,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    BrowserWindowInterface* browser = GetBrowser();
    if (!browser) {
      return;
-@@ -2810,7 +2810,7 @@ void RenderViewContextMenu::AppendExitFullscreenItem() {
+@@ -2838,7 +2838,7 @@ void RenderViewContextMenu::AppendExitFullscreenItem() {
    menu_model_.AddSeparator(ui::NORMAL_SEPARATOR);
  }
  
@@ -482,7 +473,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    if (menu_model_.GetItemCount()) {
      menu_model_.AddSeparator(ui::NORMAL_SEPARATOR);
    }
-@@ -2818,7 +2818,7 @@ void RenderViewContextMenu::AppendCopyItem() {
+@@ -2846,7 +2846,7 @@ void RenderViewContextMenu::AppendCopyItem() {
                                    IDS_CONTENT_CONTEXT_COPY);
  }
  
@@ -491,7 +482,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    if (!GetPrefs(browser_context_)
             ->GetBoolean(prefs::kScrollToTextFragmentEnabled)) {
      return;
-@@ -2848,7 +2848,7 @@ void RenderViewContextMenu::AppendLinkToTextItems() {
+@@ -2876,7 +2876,7 @@ void RenderViewContextMenu::AppendLinkToTextItems() {
    }
  }
  
@@ -500,7 +491,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    if (features::IsMenuSimplificationEnabled() && IsPasswordField() &&
        (!params_.selection_text.empty() || params_.is_editable)) {
      return;
-@@ -2870,7 +2870,7 @@ void RenderViewContextMenu::AppendPrintItem() {
+@@ -2898,7 +2898,7 @@ void RenderViewContextMenu::AppendPrintItem() {
  #endif  // BUILDFLAG(ENABLE_PRINTING)
  }
  
@@ -509,7 +500,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    const bool is_menu_simplification_enabled =
        features::IsMenuSimplificationEnabled();
    if (is_menu_simplification_enabled && IsPasswordField()) {
-@@ -2896,7 +2896,7 @@ void RenderViewContextMenu::AppendPartialTranslateItem() {
+@@ -2924,7 +2924,7 @@ void RenderViewContextMenu::AppendPartialTranslateItem() {
    }
  }
  
@@ -518,7 +509,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    if (features::IsMenuSimplificationEnabled() && IsPasswordField()) {
      return;
    }
-@@ -2910,7 +2910,7 @@ void RenderViewContextMenu::AppendTranslateItem() {
+@@ -2938,7 +2938,7 @@ void RenderViewContextMenu::AppendTranslateItem() {
                                       ui::kColorMenuIcon, kTabMenuIconSize));
  }
  
@@ -527,7 +518,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
  #if !BUILDFLAG(IS_CHROMEOS)
    if (search::DefaultSearchProviderIsGoogle(GetProfile()) &&
        CanTranslate(/*menu_logging=*/false)) {
-@@ -2923,7 +2923,7 @@ void RenderViewContextMenu::AppendTranslateOrPartialTranslateItem() {
+@@ -2951,7 +2951,7 @@ void RenderViewContextMenu::AppendTranslateOrPartialTranslateItem() {
  #endif  // !BUILDFLAG(IS_CHROMEOS)
  }
  
@@ -536,7 +527,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    if (media_router::MediaRouterEnabled(browser_context_)) {
      AddItemWithOptionalIcon(IDC_ROUTE_MEDIA, IDS_MEDIA_ROUTER_MENU_ITEM_TITLE,
                              features::IsRoundedIconsEnabled()
-@@ -2932,7 +2932,7 @@ void RenderViewContextMenu::AppendMediaRouterItem() {
+@@ -2960,7 +2960,7 @@ void RenderViewContextMenu::AppendMediaRouterItem() {
    }
  }
  
@@ -545,7 +536,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    if (menu_model_.GetIndexOfCommandId(IDC_CONTENT_CONTEXT_OPEN_IN_READING_MODE)
            .has_value()) {
      return;
-@@ -2973,7 +2973,7 @@ void RenderViewContextMenu::AppendReadAnythingItem() {
+@@ -3001,7 +3001,7 @@ void RenderViewContextMenu::AppendReadAnythingItem() {
    }
  }
  
@@ -554,7 +545,16 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    if (base::FeatureList::IsEnabled(context_hub::features::kMemoryBanks) &&
        !menu_model_.GetIndexOfCommandId(IDC_CONTENT_CONTEXT_SAVE_TO_MEMORY_BANKS)
             .has_value()) {
-@@ -2982,12 +2982,12 @@ void RenderViewContextMenu::AppendSaveToMemoryBanksItem() {
+@@ -3010,7 +3010,7 @@ void RenderViewContextMenu::AppendSaveToMemoryBanksItem() {
+   }
+ }
+ 
+-void RenderViewContextMenu::AppendBrowseMemoryBanksItem() {
++void RenderViewContextMenu_Chromium::AppendBrowseMemoryBanksItem() {
+   if (base::FeatureList::IsEnabled(context_hub::features::kMemoryBanks) &&
+       base::FeatureList::IsEnabled(
+           browser::context_hub::mojom::kMemoryBanksSearchPalette) &&
+@@ -3021,12 +3021,12 @@ void RenderViewContextMenu::AppendBrowseMemoryBanksItem() {
    }
  }
  
@@ -569,7 +569,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    if (IsAnyGlicWebContents(this)) {
      menu_model_.AddItemWithStringId(IDC_CONTENT_CONTEXT_RELOAD_GLIC,
                                      IDS_CONTENT_CONTEXT_RELOAD);
-@@ -3007,7 +3007,7 @@ void RenderViewContextMenu::AppendGlicItems() {
+@@ -3046,7 +3046,7 @@ void RenderViewContextMenu::AppendGlicItems() {
    }
  }
  
@@ -578,16 +578,16 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    if (params_.media_flags & ContextMenuData::kMediaCanRotate) {
      menu_model_.AddSeparator(ui::NORMAL_SEPARATOR);
      menu_model_.AddItemWithStringId(IDC_CONTENT_CONTEXT_ROTATECW,
-@@ -3017,7 +3017,7 @@ void RenderViewContextMenu::AppendRotationItems() {
+@@ -3056,7 +3056,7 @@ void RenderViewContextMenu::AppendRotationItems() {
    }
  }
  
 -void RenderViewContextMenu::AppendSearchProvider() {
 +void RenderViewContextMenu_Chromium::AppendSearchProvider() {
-   DCHECK(browser_context_);
+   CHECK(browser_context_, base::NotFatalUntil::M163);
  
    if (!IsSearchAllowedByPolicy()) {
-@@ -3043,7 +3043,8 @@ void RenderViewContextMenu::AppendSearchProvider() {
+@@ -3082,7 +3082,8 @@ void RenderViewContextMenu::AppendSearchProvider() {
    AutocompleteClassifierFactory::GetForProfile(GetProfile())
        ->Classify(params_.selection_text, false, false,
                   metrics::OmniboxEventProto::INVALID_SPEC, &match, nullptr);
@@ -597,7 +597,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    if (!selection_navigation_url_.is_valid()) {
      return;
    }
-@@ -3102,7 +3103,7 @@ void RenderViewContextMenu::AppendSearchProvider() {
+@@ -3141,7 +3142,7 @@ void RenderViewContextMenu::AppendSearchProvider() {
    }
  }
  
@@ -606,7 +606,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    const bool use_spelling = !IsRunningInForcedAppMode();
    if (use_spelling) {
      AppendSpellingSuggestionItems();
-@@ -3164,7 +3165,7 @@ void RenderViewContextMenu::AppendSpellingAndSearchSuggestionItems() {
+@@ -3203,7 +3204,7 @@ void RenderViewContextMenu::AppendSpellingAndSearchSuggestionItems() {
    }
  }
  
@@ -615,7 +615,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
  // 'Undo' and 'Redo' for text input with no suggestions and no text selected.
  // We make an exception for OS X as context clicking will select the closest
  // word. In this case both items are always shown.
-@@ -3210,7 +3211,7 @@ void RenderViewContextMenu::AppendOtherEditableItems() {
+@@ -3249,7 +3250,7 @@ void RenderViewContextMenu::AppendOtherEditableItems() {
    submenu_model_ = chromeos::clipboard_history::ClipboardHistorySubmenuModel::
        CreateClipboardHistorySubmenuModel(
            chromeos::clipboard_history::ShowSource::kRenderViewContextSubmenu,
@@ -624,7 +624,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
                                base::Unretained(this)));
    menu_model_.AddSubMenuWithStringId(IDC_CONTENT_PASTE_FROM_CLIPBOARD,
                                       IDS_CONTEXT_MENU_PASTE_FROM_CLIPBOARD,
-@@ -3246,7 +3247,7 @@ void RenderViewContextMenu::AppendOtherEditableItems() {
+@@ -3285,7 +3286,7 @@ void RenderViewContextMenu::AppendOtherEditableItems() {
    menu_model_.AddSeparator(ui::NORMAL_SEPARATOR);
  }
  
@@ -633,7 +633,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    if (features::IsMenuSimplificationEnabled() && IsPasswordField()) {
      return;
    }
-@@ -3263,7 +3264,7 @@ void RenderViewContextMenu::AppendLanguageSettings() {
+@@ -3302,7 +3303,7 @@ void RenderViewContextMenu::AppendLanguageSettings() {
    if (!spelling_options_submenu_observer_) {
      const int kLanguageRadioGroup = 1;
      spelling_options_submenu_observer_ =
@@ -642,7 +642,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
                                                           kLanguageRadioGroup);
    }
  
-@@ -3272,7 +3273,7 @@ void RenderViewContextMenu::AppendLanguageSettings() {
+@@ -3311,7 +3312,7 @@ void RenderViewContextMenu::AppendLanguageSettings() {
  #endif
  }
  
@@ -651,7 +651,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    if (features::IsMenuSimplificationEnabled() && IsPasswordField()) {
      return;
    }
-@@ -3285,7 +3286,7 @@ void RenderViewContextMenu::AppendSpellingSuggestionItems() {
+@@ -3324,7 +3325,7 @@ void RenderViewContextMenu::AppendSpellingSuggestionItems() {
    spelling_suggestions_menu_observer_->InitMenu(params_);
  }
  
@@ -660,7 +660,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    menu_model_.AddSeparator(ui::NORMAL_SEPARATOR);
    if (!accessibility_labels_menu_observer_) {
      accessibility_labels_menu_observer_ =
-@@ -3296,7 +3297,7 @@ bool RenderViewContextMenu::AppendAccessibilityLabelsItems() {
+@@ -3335,7 +3336,7 @@ bool RenderViewContextMenu::AppendAccessibilityLabelsItems() {
    return accessibility_labels_menu_observer_->ShouldShowLabelsItem();
  }
  
@@ -669,7 +669,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    if (!base::FeatureList::IsEnabled(dictation::kDictation)) {
      return;
    }
-@@ -3320,7 +3321,7 @@ void RenderViewContextMenu::AppendDictationItems() {
+@@ -3359,7 +3360,7 @@ void RenderViewContextMenu::AppendDictationItems() {
    }
  }
  
@@ -678,7 +678,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    const custom_handlers::ProtocolHandlerRegistry::ProtocolHandlerList handlers =
        GetHandlersForLinkUrl();
    if (handlers.empty()) {
-@@ -3349,7 +3350,7 @@ void RenderViewContextMenu::AppendProtocolHandlerSubMenu() {
+@@ -3388,7 +3389,7 @@ void RenderViewContextMenu::AppendProtocolHandlerSubMenu() {
        &protocol_handler_submenu_model_);
  }
  
@@ -687,7 +687,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    size_t items_initial = menu_model_.GetItemCount();
    menu_model_.AddSeparator(ui::NORMAL_SEPARATOR);
    // Check if the starting separator got added.
-@@ -3366,7 +3367,7 @@ void RenderViewContextMenu::AppendSharingItems() {
+@@ -3405,7 +3406,7 @@ void RenderViewContextMenu::AppendSharingItems() {
    }
  }
  
@@ -696,7 +696,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    auto* entry_point_controller =
        GetBrowser() ? lens::LensOverlayEntryPointController::From(GetBrowser())
                     : nullptr;
-@@ -3464,7 +3465,7 @@ void RenderViewContextMenu::AppendRegionSearchItem() {
+@@ -3503,7 +3504,7 @@ void RenderViewContextMenu::AppendRegionSearchItem() {
    }
  }
  
@@ -705,7 +705,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    if (captions::IsLiveCaptionFeatureSupported() &&
        base::FeatureList::IsEnabled(media::kLiveCaptionRightClick)) {
      PrefService* prefs = GetPrefs(browser_context_);
-@@ -3477,7 +3478,7 @@ void RenderViewContextMenu::AppendLiveCaptionItem() {
+@@ -3516,7 +3517,7 @@ void RenderViewContextMenu::AppendLiveCaptionItem() {
  
  // Menu delegate functions -----------------------------------------------------
  
@@ -714,7 +714,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
  #if BUILDFLAG(IS_CHROMEOS)
    // Disable context menu in locked fullscreen mode to prevent users from
    // exiting this mode (the menu is not really disabled as the user can still
-@@ -3828,7 +3829,7 @@ bool RenderViewContextMenu::IsCommandIdEnabled(int id) const {
+@@ -3869,7 +3870,7 @@ bool RenderViewContextMenu::IsCommandIdEnabled(int id) const {
    }
  }
  
@@ -723,7 +723,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    if (RenderViewContextMenuBase::IsCommandIdChecked(id)) {
      return true;
    }
-@@ -3858,7 +3859,7 @@ bool RenderViewContextMenu::IsCommandIdChecked(int id) const {
+@@ -3899,7 +3900,7 @@ bool RenderViewContextMenu::IsCommandIdChecked(int id) const {
    return false;
  }
  
@@ -732,7 +732,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    if (command_id == IDC_CONTENT_CONTEXT_PICTUREINPICTURE &&
        base::FeatureList::IsEnabled(features::kMenuSimplification)) {
      return true;
-@@ -3866,7 +3867,7 @@ bool RenderViewContextMenu::IsItemForCommandIdDynamic(int command_id) const {
+@@ -3907,7 +3908,7 @@ bool RenderViewContextMenu::IsItemForCommandIdDynamic(int command_id) const {
    return RenderViewContextMenuBase::IsItemForCommandIdDynamic(command_id);
  }
  
@@ -741,7 +741,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
      int command_id) const {
    if (command_id == IDC_CONTENT_CONTEXT_PICTUREINPICTURE &&
        base::FeatureList::IsEnabled(features::kMenuSimplification)) {
-@@ -3875,7 +3876,7 @@ std::u16string RenderViewContextMenu::GetLabelForCommandId(
+@@ -3916,7 +3917,7 @@ std::u16string RenderViewContextMenu::GetLabelForCommandId(
    return RenderViewContextMenuBase::GetLabelForCommandId(command_id);
  }
  
@@ -750,7 +750,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
      int command_id) const {
    if (command_id == IDC_CONTENT_CONTEXT_PICTUREINPICTURE &&
        base::FeatureList::IsEnabled(features::kMenuSimplification)) {
-@@ -3891,14 +3892,14 @@ ui::ImageModel RenderViewContextMenu::GetIconForCommandId(
+@@ -3932,14 +3933,14 @@ ui::ImageModel RenderViewContextMenu::GetIconForCommandId(
    return RenderViewContextMenuBase::GetIconForCommandId(command_id);
  }
  
@@ -767,7 +767,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
      const GURL& url,
      const GURL& referring_url,
      const url::Origin& initiator,
-@@ -3913,7 +3914,7 @@ void RenderViewContextMenu::OpenURLWithExtraHeaders(
+@@ -3954,7 +3955,7 @@ void RenderViewContextMenu::OpenURLWithExtraHeaders(
        started_from_context_menu, std::move(navigation_handle_callback));
  }
  
@@ -776,7 +776,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    RenderViewContextMenuBase::ExecuteCommand(id, event_flags);
    if (command_executed_) {
      return;
-@@ -4074,7 +4075,7 @@ void RenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
+@@ -4118,7 +4119,7 @@ void RenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
      case IDC_CONTENT_CONTEXT_SEARCHWEBFORVIDEOFRAME:
        enterprise_data_protection::ShouldAllowSearchWith(
            GetWebContentsForDataControls(), /*selection_size=*/0,
@@ -785,7 +785,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
                           weak_pointer_factory_.GetWeakPtr(), event_flags,
                           /*is_lens_query=*/id ==
                               IDC_CONTENT_CONTEXT_SEARCHLENSFORVIDEOFRAME));
-@@ -4439,7 +4440,7 @@ void RenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
+@@ -4490,7 +4491,7 @@ void RenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
        // fallback ui::ShowEmojiPanel() path when !browser as well.
        // TODO(avi): Do we need to attach the fullscreen block to the emoji
        // panel?
@@ -794,7 +794,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
            weak_pointer_factory_.GetWeakPtr();
        if (!source_web_contents_->ForSecurityDropFullscreen(
                /*display_id=*/display::kInvalidDisplayId)) {
-@@ -4477,16 +4478,16 @@ void RenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
+@@ -4528,16 +4529,16 @@ void RenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
    }
  }
  
@@ -814,7 +814,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    if (is_checked) {
      menu_model_.AddCheckItemWithStringId(
          IDC_CONTENT_CONTEXT_ACCESSIBILITY_LABELS_TOGGLE,
-@@ -4507,47 +4508,49 @@ void RenderViewContextMenu::AddAccessibilityLabelsServiceItem(bool is_checked) {
+@@ -4558,47 +4559,49 @@ void RenderViewContextMenu::AddAccessibilityLabelsServiceItem(bool is_checked) {
    }
  }
  
@@ -873,7 +873,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    if (features::IsMenuSimplificationEnabled()) {
      return GetElidedSelectionText(25, gfx::CHARACTER_BREAK);
    }
-@@ -4555,24 +4558,24 @@ std::u16string RenderViewContextMenu::PrintableSelectionText() {
+@@ -4606,24 +4609,24 @@ std::u16string RenderViewContextMenu::PrintableSelectionText() {
    return GetElidedSelectionText(kMaxSelectionTextLength, gfx::WORD_BREAK);
  }
  
@@ -901,8 +901,8 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
 +bool RenderViewContextMenu_Chromium::IsSaveAsItemAllowedByPolicy(
      const GURL& item_url) const {
    PrefService* local_state = g_browser_process->local_state();
-   DCHECK(local_state);
-@@ -4598,12 +4601,12 @@ bool RenderViewContextMenu::IsSaveAsItemAllowedByPolicy(
+   CHECK(local_state, base::NotFatalUntil::M163);
+@@ -4649,12 +4652,12 @@ bool RenderViewContextMenu::IsSaveAsItemAllowedByPolicy(
    return true;
  }
  
@@ -917,7 +917,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    BrowserWindowInterface* browser = GetBrowser();
    return lens::features::
               IsLensOverlayTextSelectionContextMenuEntrypointEnabled() &&
-@@ -4614,13 +4617,13 @@ bool RenderViewContextMenu::ShouldOpenTextQueryInLens() const {
+@@ -4665,13 +4668,13 @@ bool RenderViewContextMenu::ShouldOpenTextQueryInLens() const {
  
  // Controller functions --------------------------------------------------------
  
@@ -933,7 +933,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    if (extensions::MimeHandlerViewGuest::FromRenderFrameHost(
            GetRenderFrameHost())) {
      return false;
-@@ -4634,7 +4637,7 @@ bool RenderViewContextMenu::IsViewSourceEnabled() const {
+@@ -4685,7 +4688,7 @@ bool RenderViewContextMenu::IsViewSourceEnabled() const {
           embedder_web_contents_->GetController().CanViewSource();
  }
  
@@ -942,7 +942,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    if (id == IDC_CONTENT_CONTEXT_INSPECTELEMENT ||
        id == IDC_CONTENT_CONTEXT_INSPECTBACKGROUNDPAGE) {
      PrefService* prefs = GetPrefs(browser_context_);
-@@ -4646,7 +4649,7 @@ bool RenderViewContextMenu::IsDevCommandEnabled(int id) const {
+@@ -4697,7 +4700,7 @@ bool RenderViewContextMenu::IsDevCommandEnabled(int id) const {
    return true;
  }
  
@@ -951,7 +951,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    ChromeTranslateClient* chrome_translate_client =
        ChromeTranslateClient::FromWebContents(embedder_web_contents_);
    // If no |chrome_translate_client| attached with this WebContents, or
-@@ -4671,7 +4674,7 @@ bool RenderViewContextMenu::IsTranslateEnabled() const {
+@@ -4722,7 +4725,7 @@ bool RenderViewContextMenu::IsTranslateEnabled() const {
           !search::IsInstantNTP(embedder_web_contents_);
  }
  
@@ -960,7 +960,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    if (!IsSaveAsItemAllowedByPolicy(params_.link_url)) {
      return false;
    }
-@@ -4697,7 +4700,7 @@ bool RenderViewContextMenu::IsSaveLinkAsEnabled() const {
+@@ -4748,7 +4751,7 @@ bool RenderViewContextMenu::IsSaveLinkAsEnabled() const {
           ProfileIOData::IsHandledProtocol(params_.link_url.GetScheme());
  }
  
@@ -969,7 +969,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    if (!IsSaveAsItemAllowedByPolicy(params_.src_url)) {
      return false;
    }
-@@ -4705,7 +4708,7 @@ bool RenderViewContextMenu::IsSaveImageAsEnabled() const {
+@@ -4756,7 +4759,7 @@ bool RenderViewContextMenu::IsSaveImageAsEnabled() const {
    return params_.has_image_contents;
  }
  
@@ -978,7 +978,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    const GURL& url = params_.src_url;
    if (!IsSaveAsItemAllowedByPolicy(url)) {
      return false;
-@@ -4723,7 +4726,7 @@ bool RenderViewContextMenu::IsSaveAsEnabled() const {
+@@ -4774,7 +4777,7 @@ bool RenderViewContextMenu::IsSaveAsEnabled() const {
    return can_save;
  }
  
@@ -987,7 +987,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    CoreTabHelper* core_tab_helper =
        CoreTabHelper::FromWebContents(embedder_web_contents_);
    if (!core_tab_helper) {
-@@ -4750,7 +4753,7 @@ bool RenderViewContextMenu::IsSavePageEnabled() const {
+@@ -4801,7 +4804,7 @@ bool RenderViewContextMenu::IsSavePageEnabled() const {
    return content::IsSavableURL(url);
  }
  
@@ -996,7 +996,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    if (!(params_.edit_flags & ContextMenuDataEditFlags::kCanPaste)) {
      return false;
    }
-@@ -4758,7 +4761,7 @@ bool RenderViewContextMenu::IsPasteEnabled() const {
+@@ -4809,7 +4812,7 @@ bool RenderViewContextMenu::IsPasteEnabled() const {
    return is_paste_enabled_;
  }
  
@@ -1005,7 +1005,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
  #if BUILDFLAG(IS_CHROMEOS)
    const policy::DlpRulesManager* dlp_rules_manager = GetDlpRulesManager();
    if (!dlp_rules_manager) {
-@@ -4777,7 +4780,7 @@ bool RenderViewContextMenu::IsOpenLinkAllowedByDlp(const GURL& link_url) const {
+@@ -4828,7 +4831,7 @@ bool RenderViewContextMenu::IsOpenLinkAllowedByDlp(const GURL& link_url) const {
  #endif
  }
  
@@ -1014,16 +1014,16 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    if (!(params_.edit_flags & ContextMenuDataEditFlags::kCanPaste)) {
      return false;
    }
-@@ -4785,7 +4788,7 @@ bool RenderViewContextMenu::IsPasteAndMatchStyleEnabled() const {
+@@ -4836,7 +4839,7 @@ bool RenderViewContextMenu::IsPasteAndMatchStyleEnabled() const {
    return is_paste_and_match_style_enabled_;
  }
  
 -bool RenderViewContextMenu::IsPrintPreviewEnabled() const {
 +bool RenderViewContextMenu_Chromium::IsPrintPreviewEnabled() const {
-   if (IsAnyGlicWebContents(this) &&
-       base::FeatureList::IsEnabled(features::kGlicPrintMenuItem)) {
+   if (IsAnyGlicWebContents(this)) {
      return GetPrefs(browser_context_)->GetBoolean(prefs::kPrintingEnabled) &&
-@@ -4801,7 +4804,7 @@ bool RenderViewContextMenu::IsPrintPreviewEnabled() const {
+            (source_web_contents_ && !source_web_contents_->IsCrashed());
+@@ -4851,7 +4854,7 @@ bool RenderViewContextMenu::IsPrintPreviewEnabled() const {
    return browser && chrome::CanPrint(browser);
  }
  
@@ -1032,7 +1032,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    if (!GetBrowser() || !GetProfile()) {
      return false;
    }
-@@ -4826,7 +4829,7 @@ bool RenderViewContextMenu::IsQRCodeGeneratorEnabled() const {
+@@ -4876,7 +4879,7 @@ bool RenderViewContextMenu::IsQRCodeGeneratorEnabled() const {
        IsGeneratorAvailable(entry->GetURL());
  }
  
@@ -1041,7 +1041,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    if (!GetBrowser()) {
      return false;
    }
-@@ -4853,7 +4856,7 @@ bool RenderViewContextMenu::IsRegionSearchEnabled() const {
+@@ -4903,7 +4906,7 @@ bool RenderViewContextMenu::IsRegionSearchEnabled() const {
  #endif  // BUILDFLAG(ENABLE_LENS_DESKTOP_GOOGLE_BRANDED_FEATURES)
  }
  
@@ -1050,7 +1050,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    if ((params_.media_flags & ContextMenuData::kMediaEncrypted) != 0 ||
        (params_.media_flags & ContextMenuData::kMediaHasReadableVideoFrame) ==
            0) {
-@@ -4870,7 +4873,7 @@ bool RenderViewContextMenu::IsVideoFrameItemEnabled(int id) const {
+@@ -4920,7 +4923,7 @@ bool RenderViewContextMenu::IsVideoFrameItemEnabled(int id) const {
  }
  
  // Returns true if the item was appended.
@@ -1059,7 +1059,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
      bool for_image,
      bool draw_icon,
      bool add_separator,
-@@ -4912,7 +4915,7 @@ bool RenderViewContextMenu::AppendQRCodeGeneratorItem(
+@@ -4962,7 +4965,7 @@ bool RenderViewContextMenu::AppendQRCodeGeneratorItem(
    return true;
  }
  
@@ -1068,7 +1068,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    if (!embedder_web_contents_) {
      return;
    }
-@@ -4980,7 +4983,7 @@ void RenderViewContextMenu::AppendSendTabToSelfItem(bool add_separator) {
+@@ -5030,7 +5033,7 @@ void RenderViewContextMenu::AppendSendTabToSelfItem(bool add_separator) {
  }
  
  std::unique_ptr<ui::DataTransferEndpoint>
@@ -1077,7 +1077,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    RenderFrameHost* render_frame_host = GetRenderFrameHost();
    if (render_frame_host) {
      return std::make_unique<ui::DataTransferEndpoint>(
-@@ -4993,7 +4996,7 @@ RenderViewContextMenu::CreateDataEndpoint(bool notify_if_restricted) const {
+@@ -5043,7 +5046,7 @@ RenderViewContextMenu::CreateDataEndpoint(bool notify_if_restricted) const {
    return nullptr;
  }
  
@@ -1086,7 +1086,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    if (!media_router::MediaRouterEnabled(browser_context_)) {
      return false;
    }
-@@ -5018,7 +5021,7 @@ bool RenderViewContextMenu::IsRouteMediaEnabled() const {
+@@ -5068,7 +5071,7 @@ bool RenderViewContextMenu::IsRouteMediaEnabled() const {
    return !manager || !manager->IsDialogActive();
  }
  
@@ -1095,7 +1095,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    std::optional<webapps::AppId> app_id =
        web_app::FindInstalledAppWithUrlInScope(
            Profile::FromBrowserContext(browser_context_), params_.link_url);
-@@ -5043,7 +5046,7 @@ void RenderViewContextMenu::ExecOpenWebApp() {
+@@ -5108,7 +5111,7 @@ void RenderViewContextMenu::ExecOpenWebApp() {
        ->LaunchAppWithParams(std::move(launch_params));
  }
  
@@ -1104,16 +1104,16 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
                                                  int handler_index) {
    if (!is_protocol_submenu_valid_) {
      // A protocol was changed since the time that the menu was built, so the
-@@ -5067,7 +5070,7 @@ void RenderViewContextMenu::ExecProtocolHandler(int event_flags,
+@@ -5132,7 +5135,7 @@ void RenderViewContextMenu::ExecProtocolHandler(int event_flags,
            ui::PAGE_TRANSITION_LINK);
  }
  
 -void RenderViewContextMenu::ExecOpenLinkInProfile(int profile_index) {
 +void RenderViewContextMenu_Chromium::ExecOpenLinkInProfile(int profile_index) {
-   DCHECK_GE(profile_index, 0);
-   DCHECK_LE(profile_index, static_cast<int>(profile_link_paths_.size()));
- 
-@@ -5078,7 +5081,7 @@ void RenderViewContextMenu::ExecOpenLinkInProfile(int profile_index) {
+   CHECK_GE(profile_index, 0, base::NotFatalUntil::M163);
+   CHECK_LE(profile_index, static_cast<int>(profile_link_paths_.size()),
+            base::NotFatalUntil::M163);
+@@ -5144,7 +5147,7 @@ void RenderViewContextMenu::ExecOpenLinkInProfile(int profile_index) {
  }
  
  #if BUILDFLAG(ENABLE_COMPOSE)
@@ -1122,7 +1122,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    ChromeComposeClient* client = GetChromeComposeClient();
    if (!client) {
      compose::LogOpenComposeDialogResult(
-@@ -5109,19 +5112,19 @@ void RenderViewContextMenu::ExecOpenCompose() {
+@@ -5175,19 +5178,19 @@ void RenderViewContextMenu::ExecOpenCompose() {
  }
  #endif
  
@@ -1145,7 +1145,16 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
  #if !BUILDFLAG(IS_ANDROID)
    BrowserWindowInterface* browser = GetBrowser();
    if (!browser || !source_web_contents_) {
-@@ -5163,7 +5166,7 @@ void RenderViewContextMenu::ExecSaveToMemoryBanks() {
+@@ -5229,7 +5232,7 @@ void RenderViewContextMenu::ExecSaveToMemoryBanks() {
+ #endif  // !BUILDFLAG(IS_ANDROID)
+ }
+ 
+-void RenderViewContextMenu::ExecBrowseMemoryBanks() {
++void RenderViewContextMenu_Chromium::ExecBrowseMemoryBanks() {
+ #if !BUILDFLAG(IS_ANDROID)
+   if (!GetBrowser() || !source_web_contents_) {
+     return;
+@@ -5240,7 +5243,7 @@ void RenderViewContextMenu::ExecBrowseMemoryBanks() {
  #endif  // !BUILDFLAG(IS_ANDROID)
  }
  
@@ -1154,16 +1163,16 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    base::RecordAction(UserMetricsAction("DevTools_InspectElement"));
    RenderFrameHost* render_frame_host = GetRenderFrameHost();
    if (!render_frame_host) {
-@@ -5172,7 +5175,7 @@ void RenderViewContextMenu::ExecInspectElement() {
+@@ -5249,7 +5252,7 @@ void RenderViewContextMenu::ExecInspectElement() {
    DevToolsWindow::InspectElement(render_frame_host, params_.x, params_.y);
  }
  
 -void RenderViewContextMenu::ExecInspectBackgroundPage() {
 +void RenderViewContextMenu_Chromium::ExecInspectBackgroundPage() {
    const Extension* platform_app = GetExtension();
-   DCHECK(platform_app);
-   DCHECK(platform_app->is_platform_app());
-@@ -5181,7 +5184,7 @@ void RenderViewContextMenu::ExecInspectBackgroundPage() {
+   CHECK(platform_app, base::NotFatalUntil::M163);
+   CHECK(platform_app->is_platform_app(), base::NotFatalUntil::M163);
+@@ -5258,7 +5261,7 @@ void RenderViewContextMenu::ExecInspectBackgroundPage() {
        platform_app, GetProfile(), DevToolsOpenedByAction::kContextMenuInspect);
  }
  
@@ -1172,7 +1181,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    Profile* const profile = Profile::FromBrowserContext(browser_context_);
    CHECK(profile);
    if (profile->IsChild()) {
-@@ -5191,21 +5194,21 @@ void RenderViewContextMenu::CheckSupervisedUserURLFilterAndSaveLinkAs() {
+@@ -5268,21 +5271,21 @@ void RenderViewContextMenu::CheckSupervisedUserURLFilterAndSaveLinkAs() {
              params_.link_url,
              /*skip_manual_parent_filter=*/false,
              base::BindOnce(
@@ -1197,7 +1206,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    RenderFrameHost* render_frame_host = GetRenderFrameHost();
    if (!render_frame_host) {
      return;
-@@ -5249,7 +5252,7 @@ void RenderViewContextMenu::ExecSaveLinkAs() {
+@@ -5326,7 +5329,7 @@ void RenderViewContextMenu::ExecSaveLinkAs() {
    browser_context_->GetDownloadManager()->DownloadUrl(std::move(dl_params));
  }
  
@@ -1206,7 +1215,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    RenderFrameHost* frame_host = GetRenderFrameHost();
    bool is_large_data_url =
        params_.has_image_contents && params_.src_url.is_empty();
-@@ -5314,7 +5317,7 @@ void RenderViewContextMenu::ExecSaveAs() {
+@@ -5391,7 +5394,7 @@ void RenderViewContextMenu::ExecSaveAs() {
                                               target_frame_host, is_subresource);
  }
  
@@ -1215,7 +1224,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    // Context menus remain open across navigations on Views platforms. Bail out
    // if the originating document is no longer the active primary page to avoid
    // cross-navigation selection leaks, eligibility bypasses, or null-derefs.
-@@ -5334,7 +5337,7 @@ void RenderViewContextMenu::ExecGlic() {
+@@ -5411,7 +5414,7 @@ void RenderViewContextMenu::ExecGlic() {
    }
  }
  
@@ -1224,7 +1233,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    // See `ExecGlic()` for why the source document must still be active.
    content::RenderFrameHost* source_frame =
        source_document_at_menu_open_.AsRenderFrameHostIfValid();
-@@ -5347,7 +5350,7 @@ void RenderViewContextMenu::ExecGlicSmartSuggestion() {
+@@ -5426,7 +5429,7 @@ void RenderViewContextMenu::ExecGlicSmartSuggestion() {
        *source_frame, params_);
  }
  
@@ -1233,7 +1242,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    if (!glic::GlicEnabling::IsShareImageEnabledForProfile(GetProfile())) {
      // If this has changed since the context menu was summoned, bail early.
      return;
-@@ -5360,7 +5363,7 @@ void RenderViewContextMenu::ExecGlicShareImage() {
+@@ -5439,7 +5442,7 @@ void RenderViewContextMenu::ExecGlicShareImage() {
    }
  }
  
@@ -1242,7 +1251,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    // See `ExecGlic()` for why the source document must still be active.
    content::RenderFrameHost* source_frame =
        source_document_at_menu_open_.AsRenderFrameHostIfValid();
-@@ -5384,7 +5387,7 @@ void RenderViewContextMenu::ExecIndigo() {
+@@ -5468,7 +5471,7 @@ void RenderViewContextMenu::ExecIndigo() {
    }
  }
  
@@ -1251,7 +1260,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    BrowserWindowInterface* browser = GetBrowser();
    if (!browser) {
      NOTREACHED();
-@@ -5396,7 +5399,7 @@ void RenderViewContextMenu::ExecExitFullscreen() {
+@@ -5480,7 +5483,7 @@ void RenderViewContextMenu::ExecExitFullscreen() {
    }
  }
  
@@ -1260,7 +1269,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    ui::ScopedClipboardWriter scw(
        ui::ClipboardBuffer::kCopyPaste,
        CreateDataEndpoint(/*notify_if_restricted=*/true));
-@@ -5404,7 +5407,7 @@ void RenderViewContextMenu::ExecCopyLinkText() {
+@@ -5488,7 +5491,7 @@ void RenderViewContextMenu::ExecCopyLinkText() {
    scw.WriteText(params_.link_text);
  }
  
@@ -1269,7 +1278,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    RenderFrameHost* frame_host = GetRenderFrameHost();
    if (!frame_host) {
      return;
-@@ -5453,7 +5456,7 @@ void RenderViewContextMenu::ExecCopyImageAt() {
+@@ -5537,7 +5540,7 @@ void RenderViewContextMenu::ExecCopyImageAt() {
  #endif
  }
  
@@ -1278,7 +1287,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    CoreTabHelper* core_tab_helper =
        CoreTabHelper::FromWebContents(source_web_contents_);
    if (!core_tab_helper) {
-@@ -5491,7 +5494,7 @@ void RenderViewContextMenu::ExecSearchLensForImage(int event_flags) {
+@@ -5575,7 +5578,7 @@ void RenderViewContextMenu::ExecSearchLensForImage(int event_flags) {
      auto* frame = chrome_render_frame.get();
  
      frame->RequestBitmapForContextNodeWithBoundsHint(base::BindOnce(
@@ -1287,7 +1296,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
          weak_pointer_factory_.GetWeakPtr(), std::move(chrome_render_frame),
          lens::LensOverlayInvocationSource::kContentAreaContextMenuImage,
          tab_bounds, view_bounds, device_scale_factor));
-@@ -5512,7 +5515,7 @@ void RenderViewContextMenu::ExecSearchLensForImage(int event_flags) {
+@@ -5596,7 +5599,7 @@ void RenderViewContextMenu::ExecSearchLensForImage(int event_flags) {
    }
  }
  
@@ -1296,7 +1305,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
      mojo::AssociatedRemote<chrome::mojom::ChromeRenderFrame>
          chrome_render_frame,
      lens::LensOverlayInvocationSource invocation_source,
-@@ -5532,7 +5535,7 @@ void RenderViewContextMenu::OpenLensOverlayWithPreselectedRegion(
+@@ -5616,7 +5619,7 @@ void RenderViewContextMenu::OpenLensOverlayWithPreselectedRegion(
        region_bitmap);
  }
  
@@ -1305,7 +1314,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
      int event_flags,
      bool is_google_default_search_provider) {
    BrowserWindowInterface* browser = GetBrowser();
-@@ -5587,7 +5590,7 @@ void RenderViewContextMenu::ExecRegionSearch(
+@@ -5671,7 +5674,7 @@ void RenderViewContextMenu::ExecRegionSearch(
  #endif  // BUILDFLAG(GOOGLE_CHROME_BRANDING)
  }
  
@@ -1314,7 +1323,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    CoreTabHelper* core_tab_helper =
        CoreTabHelper::FromWebContents(source_web_contents_);
    if (!core_tab_helper) {
-@@ -5602,7 +5605,7 @@ void RenderViewContextMenu::ExecSearchWebForImage() {
+@@ -5686,7 +5689,7 @@ void RenderViewContextMenu::ExecSearchWebForImage() {
    core_tab_helper->SearchByImage(render_frame_host, params().src_url);
  }
  
@@ -1323,7 +1332,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    RenderFrameHost* render_frame_host = GetRenderFrameHost();
    if (!render_frame_host) {
      return;
-@@ -5613,21 +5616,21 @@ void RenderViewContextMenu::ExecLoadImage() {
+@@ -5697,21 +5700,21 @@ void RenderViewContextMenu::ExecLoadImage() {
    chrome_render_frame->RequestReloadImageForContextNode();
  }
  
@@ -1348,7 +1357,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    base::RecordAction(UserMetricsAction("MediaContextMenu_SaveVideoFrameAs"));
    RecordDownloadSource(DOWNLOAD_INITIATED_BY_CONTEXT_MENU);
    MediaPlayerAction(blink::mojom::MediaPlayerAction(
-@@ -5635,7 +5638,7 @@ void RenderViewContextMenu::ExecSaveVideoFrameAs() {
+@@ -5719,7 +5722,7 @@ void RenderViewContextMenu::ExecSaveVideoFrameAs() {
        /*enable=*/true));
  }
  
@@ -1357,7 +1366,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    base::RecordAction(UserMetricsAction("MediaContextMenu_CopyVideoFrame"));
    MediaPlayerAction(blink::mojom::MediaPlayerAction(
        blink::mojom::MediaPlayerActionType::kCopyVideoFrame,
-@@ -5652,7 +5655,7 @@ void RenderViewContextMenu::ExecCopyVideoFrame() {
+@@ -5736,7 +5739,7 @@ void RenderViewContextMenu::ExecCopyVideoFrame() {
  #endif
  }
  
@@ -1366,7 +1375,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
                                                      bool is_lens_query) {
    base::RecordAction(UserMetricsAction("MediaContextMenu_SearchForVideoFrame"));
  
-@@ -5665,12 +5668,12 @@ void RenderViewContextMenu::ExecSearchForVideoFrame(int event_flags,
+@@ -5749,12 +5752,12 @@ void RenderViewContextMenu::ExecSearchForVideoFrame(int event_flags,
        gfx::Point(params_.x, params_.y),
        gfx::Size(lens::kMaxPixelsForImageSearch, lens::kMaxPixelsForImageSearch),
        lens::kMaxAreaForImageSearch,
@@ -1381,7 +1390,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    PrefService* prefs = GetPrefs(browser_context_);
    bool is_enabled = !prefs->GetBoolean(prefs::kLiveCaptionEnabled);
    prefs->SetBoolean(prefs::kLiveCaptionEnabled, is_enabled);
-@@ -5678,20 +5681,20 @@ void RenderViewContextMenu::ExecLiveCaption() {
+@@ -5762,20 +5765,20 @@ void RenderViewContextMenu::ExecLiveCaption() {
                              is_enabled);
  }
  
@@ -1403,18 +1412,18 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
 -void RenderViewContextMenu::ExecReloadPackagedApp() {
 +void RenderViewContextMenu_Chromium::ExecReloadPackagedApp() {
    const Extension* platform_app = GetExtension();
-   DCHECK(platform_app);
-   DCHECK(platform_app->is_platform_app());
-@@ -5700,7 +5703,7 @@ void RenderViewContextMenu::ExecReloadPackagedApp() {
+   CHECK(platform_app, base::NotFatalUntil::M163);
+   CHECK(platform_app->is_platform_app(), base::NotFatalUntil::M163);
+@@ -5784,7 +5787,7 @@ void RenderViewContextMenu::ExecReloadPackagedApp() {
        ->ReloadExtension(platform_app->id());
  }
  
 -void RenderViewContextMenu::ExecRestartPackagedApp() {
 +void RenderViewContextMenu_Chromium::ExecRestartPackagedApp() {
    const Extension* platform_app = GetExtension();
-   DCHECK(platform_app);
-   DCHECK(platform_app->is_platform_app());
-@@ -5709,7 +5712,7 @@ void RenderViewContextMenu::ExecRestartPackagedApp() {
+   CHECK(platform_app, base::NotFatalUntil::M163);
+   CHECK(platform_app->is_platform_app(), base::NotFatalUntil::M163);
+@@ -5793,7 +5796,7 @@ void RenderViewContextMenu::ExecRestartPackagedApp() {
        ->RestartApplication(platform_app->id());
  }
  
@@ -1423,7 +1432,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
  #if BUILDFLAG(ENABLE_PRINTING)
    const bool print_preview_disabled =
        GetPrefs(browser_context_)->GetBoolean(prefs::kPrintPreviewDisabled);
-@@ -5729,7 +5732,7 @@ void RenderViewContextMenu::ExecPrint() {
+@@ -5813,7 +5816,7 @@ void RenderViewContextMenu::ExecPrint() {
  #endif  // BUILDFLAG(ENABLE_PRINTING)
  }
  
@@ -1432,7 +1441,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    base::RecordAction(UserMetricsAction("MediaContextMenu_RouteMedia"));
  
    media_router::MediaRouterDialogController* dialog_controller =
-@@ -5743,7 +5746,7 @@ void RenderViewContextMenu::ExecRouteMedia() {
+@@ -5827,7 +5830,7 @@ void RenderViewContextMenu::ExecRouteMedia() {
        media_router::MediaRouterDialogActivationLocation::CONTEXTUAL_MENU);
  }
  
@@ -1441,7 +1450,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    ChromeTranslateClient* chrome_translate_client =
        ChromeTranslateClient::FromWebContents(embedder_web_contents_);
    if (!chrome_translate_client) {
-@@ -5757,7 +5760,7 @@ void RenderViewContextMenu::ExecTranslate() {
+@@ -5841,7 +5844,7 @@ void RenderViewContextMenu::ExecTranslate() {
                             /*triggered_from_menu=*/true);
  }
  
@@ -1450,7 +1459,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    std::string source_language;
    std::string target_language;
  
-@@ -5778,7 +5781,7 @@ void RenderViewContextMenu::ExecPartialTranslate() {
+@@ -5862,7 +5865,7 @@ void RenderViewContextMenu::ExecPartialTranslate() {
    }
  }
  
@@ -1459,7 +1468,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
  // Open the browser language settings.
  // Exception: On Ash, the browser language settings consists solely of a link to
  // the OS language settings, so just open the OS settings directly.
-@@ -5793,7 +5796,7 @@ void RenderViewContextMenu::ExecLanguageSettings(int event_flags) {
+@@ -5877,7 +5880,7 @@ void RenderViewContextMenu::ExecLanguageSettings(int event_flags) {
  #endif
  }
  
@@ -1467,8 +1476,8 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
 +void RenderViewContextMenu_Chromium::ExecProtocolHandlerSettings(int event_flags) {
    base::RecordAction(
        UserMetricsAction("RegisterProtocolHandler.ContextMenu_Settings"));
-   WindowOpenDisposition disposition = ui::DispositionFromEventFlags(
-@@ -5802,7 +5805,7 @@ void RenderViewContextMenu::ExecProtocolHandlerSettings(int event_flags) {
+   ui::mojom::WindowOpenDisposition disposition = ui::DispositionFromEventFlags(
+@@ -5886,7 +5889,7 @@ void RenderViewContextMenu::ExecProtocolHandlerSettings(int event_flags) {
    OpenURL(url, GURL(), {}, disposition, ui::PAGE_TRANSITION_LINK);
  }
  
@@ -1477,7 +1486,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    if (glic_item_shown_) {
      return;
    }
-@@ -5864,7 +5867,7 @@ void RenderViewContextMenu::MaybeAppendOpenGlicItem(bool add_separator) {
+@@ -5948,7 +5951,7 @@ void RenderViewContextMenu::MaybeAppendOpenGlicItem(bool add_separator) {
    }
  }
  
@@ -1486,7 +1495,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    if (!base::FeatureList::IsEnabled(features::kGlicSuggestionContextMenu) ||
        !IsNormalBrowser() || IsAnyGlicWebContents(this) ||
        !glic::GlicEnabling::IsEnabledForProfile(GetProfile()) ||
-@@ -5911,7 +5914,7 @@ void RenderViewContextMenu::MaybeAppendGlicSmartSuggestionItem() {
+@@ -5999,7 +6002,7 @@ void RenderViewContextMenu::MaybeAppendGlicSmartSuggestionItem() {
    menu_model_.AddSeparator(ui::NORMAL_SEPARATOR);
  }
  
@@ -1495,7 +1504,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    bool picture_in_picture_active =
        IsCommandIdChecked(IDC_CONTENT_CONTEXT_PICTUREINPICTURE);
  
-@@ -5928,7 +5931,7 @@ void RenderViewContextMenu::ExecPictureInPicture() {
+@@ -6016,7 +6019,7 @@ void RenderViewContextMenu::ExecPictureInPicture() {
        !picture_in_picture_active));
  }
  
@@ -1504,7 +1513,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
      const blink::mojom::MediaPlayerAction& action) {
    if (auto* frame_host = GetRenderFrameHost(); frame_host) {
      frame_host->ExecuteMediaPlayerActionAtLocation(
-@@ -5936,7 +5939,7 @@ void RenderViewContextMenu::MediaPlayerAction(
+@@ -6024,7 +6027,7 @@ void RenderViewContextMenu::MediaPlayerAction(
    }
  }
  
@@ -1513,7 +1522,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
      int event_flags,
      bool is_lens_query,
      const SkBitmap& bitmap,
-@@ -6002,7 +6005,7 @@ void RenderViewContextMenu::SearchForVideoFrame(
+@@ -6090,7 +6093,7 @@ void RenderViewContextMenu::SearchForVideoFrame(
    }
  }
  
@@ -1522,7 +1531,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
      const gfx::Point& location,
      blink::mojom::PluginActionType plugin_action) {
    content::RenderFrameHost* plugin_rfh = nullptr;
-@@ -6034,7 +6037,7 @@ void RenderViewContextMenu::PluginActionAt(
+@@ -6122,7 +6125,7 @@ void RenderViewContextMenu::PluginActionAt(
    }
  }
  
@@ -1531,7 +1540,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    auto* const controller =
        LensSearchController::FromTabWebContents(source_web_contents_);
    CHECK(controller);
-@@ -6051,7 +6054,7 @@ void RenderViewContextMenu::OpenTextQueryInLens() {
+@@ -6139,7 +6142,7 @@ void RenderViewContextMenu::OpenTextQueryInLens() {
            IsLensOverlayTextSelectionContextMenuEntrypointContextualized());
  }
  
@@ -1540,7 +1549,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
      const {
    if (auto* glue =
            ReadAnythingControllerGlue::FromWebContents(source_web_contents_)) {
-@@ -6064,17 +6067,17 @@ content::WebContents* RenderViewContextMenu::GetWebContentsForDataControls()
+@@ -6152,17 +6155,17 @@ content::WebContents* RenderViewContextMenu::GetWebContentsForDataControls()
    return source_web_contents_;
  }
  
@@ -1561,7 +1570,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    // If the context menu is opened in a normal tab, get the browser directly.
    BrowserWindowInterface* browser = GetBrowser();
  
-@@ -6089,7 +6092,7 @@ ToastController* RenderViewContextMenu::GetToastController() const {
+@@ -6177,7 +6180,7 @@ ToastController* RenderViewContextMenu::GetToastController() const {
    return browser ? ToastController::From(browser) : nullptr;
  }
  
@@ -1570,7 +1579,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    ChromeTranslateClient* chrome_translate_client =
        ChromeTranslateClient::FromWebContents(embedder_web_contents_);
    return chrome_translate_client &&
-@@ -6097,7 +6100,7 @@ bool RenderViewContextMenu::CanTranslate(bool menu_logging) {
+@@ -6185,7 +6188,7 @@ bool RenderViewContextMenu::CanTranslate(bool menu_logging) {
               menu_logging);
  }
  
@@ -1579,7 +1588,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    ChromeTranslateClient* chrome_translate_client =
        ChromeTranslateClient::FromWebContents(embedder_web_contents_);
    return chrome_translate_client &&
-@@ -6105,7 +6108,7 @@ bool RenderViewContextMenu::CanPartiallyTranslateTargetLanguage() {
+@@ -6193,7 +6196,7 @@ bool RenderViewContextMenu::CanPartiallyTranslateTargetLanguage() {
               ->CanPartiallyTranslateTargetLanguage();
  }
  
@@ -1588,7 +1597,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    if (!search::DefaultSearchProviderIsGoogle(GetProfile())) {
      return;
    }
-@@ -6122,7 +6125,7 @@ void RenderViewContextMenu::MaybePrepareForLensQuery() {
+@@ -6210,7 +6213,7 @@ void RenderViewContextMenu::MaybePrepareForLensQuery() {
  }
  
  #if BUILDFLAG(IS_CHROMEOS)
@@ -1597,16 +1606,16 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    auto* const host_native_view =
        GetRenderFrameHost() ? GetRenderFrameHost()->GetNativeView() : nullptr;
    if (!host_native_view) {
-@@ -6145,7 +6148,7 @@ void RenderViewContextMenu::ShowClipboardHistoryMenu(int event_flags) {
+@@ -6233,7 +6236,7 @@ void RenderViewContextMenu::ShowClipboardHistoryMenu(int event_flags) {
  #endif  // BUILDFLAG(IS_CHROMEOS)
  
  #if !BUILDFLAG(IS_ANDROID)
--void RenderViewContextMenu::OpenLinkInSplitView(
-+void RenderViewContextMenu_Chromium::OpenLinkInSplitView(
-     split_tabs::SplitTabLayout layout) {
+-void RenderViewContextMenu::OpenLinkInSplitView() {
++void RenderViewContextMenu_Chromium::OpenLinkInSplitView() {
    BrowserWindowInterface* const browser = GetBrowser();
    CHECK(browser);
-@@ -6206,7 +6209,7 @@ void RenderViewContextMenu::OpenLinkInSplitView(
+   CHECK(browser->GetType() == BrowserWindowInterface::TYPE_NORMAL);
+@@ -6294,7 +6297,7 @@ void RenderViewContextMenu::OpenLinkInSplitView() {
  }
  #endif  // !BUILDFLAG(IS_ANDROID)
  
@@ -1615,7 +1624,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
      int command,
      int string,
      const gfx::VectorIcon& icon) {
-@@ -6220,17 +6223,17 @@ void RenderViewContextMenu::AddItemWithOptionalIcon(
+@@ -6308,17 +6311,17 @@ void RenderViewContextMenu::AddItemWithOptionalIcon(
    }
  }
  
@@ -1636,16 +1645,16 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    if (!IsRegionSearchEnabled()) {
      return false;
    }
-@@ -6246,7 +6249,7 @@ bool RenderViewContextMenu::CanAppendRegionSearchItem() const {
+@@ -6334,7 +6337,7 @@ bool RenderViewContextMenu::CanAppendRegionSearchItem() const {
    return GetImageSearchProvider() != nullptr;
  }
  
 -bool RenderViewContextMenu::CanAppendGlicShareImageItem() const {
 +bool RenderViewContextMenu_Chromium::CanAppendGlicShareImageItem() const {
-   if (!IsNormalBrowser()) {
+   if (!IsNormalBrowser() || glic_item_shown_ ||
+       !params_.selection_text.empty()) {
      return false;
-   }
-@@ -6268,7 +6271,7 @@ bool RenderViewContextMenu::CanAppendGlicShareImageItem() const {
+@@ -6357,7 +6360,7 @@ bool RenderViewContextMenu::CanAppendGlicShareImageItem() const {
               optimization_guide::PageContextEligibilityStatus::kEligible;
  }
  
@@ -1654,7 +1663,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    if (!base::FeatureList::IsEnabled(features::kIndigo) ||
        !base::FeatureList::IsEnabled(features::kIndigoContextMenu)) {
      return false;
-@@ -6284,7 +6287,7 @@ bool RenderViewContextMenu::CanAppendIndigoItem() const {
+@@ -6373,7 +6376,7 @@ bool RenderViewContextMenu::CanAppendIndigoItem() const {
    return controller && controller->IsPageEligible();
  }
  
@@ -1663,7 +1672,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    if (!features::IsMenuSimplificationEnabled()) {
      return;
    }
-@@ -6326,7 +6329,7 @@ void RenderViewContextMenu::AppendLensGeminiSection() {
+@@ -6420,7 +6423,7 @@ void RenderViewContextMenu::AppendLensGeminiSection() {
    menu_model_.AddSeparator(ui::NORMAL_SEPARATOR);
  }
  
@@ -1672,7 +1681,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    const bool glic_below_search =
        base::FeatureList::IsEnabled(features::kGlicContextMenuBelowSearch);
    if (!params_.link_url.is_empty()) {
-@@ -6368,7 +6371,7 @@ void RenderViewContextMenu::AppendRevisedTextSelectionSection() {
+@@ -6462,7 +6465,7 @@ void RenderViewContextMenu::AppendRevisedTextSelectionSection() {
  
  #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || \
      BUILDFLAG(IS_CHROMEOS)
@@ -1681,7 +1690,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    // Using `unfiltered_link_url`, because `link_url` is being replaced with
    // about:blank#blocked if the source is a normal site.
    return params_.unfiltered_link_url.has_scheme() &&
-@@ -6377,8 +6380,8 @@ bool RenderViewContextMenu::IsLinkToIsolatedWebApp() const {
+@@ -6471,8 +6474,8 @@ bool RenderViewContextMenu::IsLinkToIsolatedWebApp() const {
  #endif  // BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) ||
          // BUILDFLAG(IS_CHROMEOS)
  
@@ -1692,7 +1701,7 @@ index bd858271b91ef4be9ca63e10b79789ad1407a4d4..7c3c559559704da2029f0577afb889cc
    if (!params_.image_replacement_frame_token.has_value()) {
      return std::nullopt;
    }
-@@ -6407,7 +6410,7 @@ RenderViewContextMenu::GetIndigoReplacementInfo() const {
+@@ -6501,7 +6504,7 @@ RenderViewContextMenu::GetIndigoReplacementInfo() const {
                                 replacement->GetReplacementImageURL()};
  }
  

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/ui_features.cc b/chrome/browser/ui/ui_features.cc
-index f92a70a676a801bd62462ccd823720e5c2d68bc4..5a8a1c72434fc4f683089b2002c5b667ae7e53b3 100644
+index 32126e78db9de05f9dc6a07f35587a1ed32c6010..3e4c54d8fb27ca4d93048534eee4f396a0148a55 100644
 --- a/chrome/browser/ui/ui_features.cc
 +++ b/chrome/browser/ui/ui_features.cc
-@@ -188,7 +188,7 @@ BASE_FEATURE(kExtensionsPinnedByDefault, base::FEATURE_ENABLED_BY_DEFAULT);
+@@ -195,7 +195,7 @@ BASE_FEATURE(kExtensionsPinnedByDefault, base::FEATURE_ENABLED_BY_DEFAULT);
  #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
  // Shows an infobar on PDFs offering to become the default PDF viewer if Chrome
  // isn't the default already.
@@ -11,7 +11,7 @@ index f92a70a676a801bd62462ccd823720e5c2d68bc4..5a8a1c72434fc4f683089b2002c5b667
  
  BASE_FEATURE(kSeparateDefaultAndPinPrompt,
  #if BUILDFLAG(IS_WIN)
-@@ -300,13 +300,8 @@ BASE_FEATURE(kNewTabButtonContextMenu, base::FEATURE_ENABLED_BY_DEFAULT);
+@@ -307,13 +307,8 @@ BASE_FEATURE(kNewTabButtonContextMenu, base::FEATURE_ENABLED_BY_DEFAULT);
  
  // Enables preview images in tab-hover cards.
  // https://crbug.com/41439486
@@ -27,16 +27,7 @@ index f92a70a676a801bd62462ccd823720e5c2d68bc4..5a8a1c72434fc4f683089b2002c5b667
  
  BASE_FEATURE(kTabModalUsesDesktopWidget, base::FEATURE_DISABLED_BY_DEFAULT);
  
-@@ -332,7 +327,7 @@ BASE_FEATURE(kNTPFooterBadgingPolicies, base::FEATURE_ENABLED_BY_DEFAULT);
- BASE_FEATURE(kEnterpriseManagementDisclaimerUsesCustomLabel,
-              base::FEATURE_DISABLED_BY_DEFAULT);
- 
--BASE_FEATURE(kEnterpriseReleaseNotes, base::FEATURE_ENABLED_BY_DEFAULT);
-+BASE_OVERRIDDEN_FEATURE(kEnterpriseReleaseNotes, base::FEATURE_DISABLED_BY_DEFAULT);
- 
- BASE_FEATURE(kManagedProfileRequiredInterstitial,
-              base::FEATURE_ENABLED_BY_DEFAULT);
-@@ -389,7 +384,7 @@ BASE_FEATURE(kNonMilestoneUpdateToast, base::FEATURE_ENABLED_BY_DEFAULT);
+@@ -388,7 +383,7 @@ BASE_FEATURE(kNonMilestoneUpdateToast, base::FEATURE_ENABLED_BY_DEFAULT);
  BASE_FEATURE(kRespectShouldTriggerSessionRestoreOnDesktop,
               base::FEATURE_ENABLED_BY_DEFAULT);
  
