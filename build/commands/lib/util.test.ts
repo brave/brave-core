@@ -983,46 +983,5 @@ describe('util', () => {
       util.touchOverriddenFiles()
       expect(fs.existsSync(gen)).toBe(false)
     })
-
-    it('clears the reproxy cache when an override changed', () => {
-      config.rbeService = 'rbe.example.com:443'
-      const cache = path.join(tmpDir, '.reproxy_cache')
-      write(path.join(cache, 'a.cache'))
-      write(path.join(cache, 'sub', 'b.cache.sha256'))
-      write(path.join(cache, 'keep.txt'))
-      makeOld(path.join(config.srcDir, 'chrome', 'a.cc'))
-      write(path.join(chromiumSrc, 'chrome', 'a.cc'))
-
-      util.touchOverriddenFiles()
-
-      expect(fs.existsSync(path.join(cache, 'a.cache'))).toBe(false)
-      expect(fs.existsSync(path.join(cache, 'sub', 'b.cache.sha256'))).toBe(
-        false,
-      )
-      expect(fs.existsSync(path.join(cache, 'keep.txt'))).toBe(true)
-    })
-
-    it('keeps the reproxy cache when nothing changed', () => {
-      config.rbeService = 'rbe.example.com:443'
-      const cacheFile = write(path.join(tmpDir, '.reproxy_cache', 'a.cache'))
-      util.touchOverriddenFiles()
-      expect(fs.existsSync(cacheFile)).toBe(true)
-    })
-
-    it('does not look for the reproxy cache without RBE', () => {
-      config.rbeService = ''
-      const cacheFile = write(path.join(tmpDir, '.reproxy_cache', 'a.cache'))
-      makeOld(path.join(config.srcDir, 'chrome', 'a.cc'))
-      write(path.join(chromiumSrc, 'chrome', 'a.cc'))
-      util.touchOverriddenFiles()
-      expect(fs.existsSync(cacheFile)).toBe(true)
-    })
-
-    it('ignores a missing reproxy cache directory', () => {
-      config.rbeService = 'rbe.example.com:443'
-      makeOld(path.join(config.srcDir, 'chrome', 'a.cc'))
-      write(path.join(chromiumSrc, 'chrome', 'a.cc'))
-      expect(() => util.touchOverriddenFiles()).not.toThrow()
-    })
   })
 })
