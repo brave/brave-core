@@ -1,0 +1,19 @@
+diff --git a/components/omnibox/browser/suggestion_group_util.cc b/components/omnibox/browser/suggestion_group_util.cc
+index 9f099ea1319a768f313dc12937e88e6c953edd1a..8fbaf39b327ab36c29233b8c74366bdf8de369f5 100644
+--- a/components/omnibox/browser/suggestion_group_util.cc
++++ b/components/omnibox/browser/suggestion_group_util.cc
+@@ -69,7 +69,14 @@ const GroupConfigMap& BuildDefaultGroups() {
+         {GROUP_MOBILE_RICH_ANSWER,
+          CreateGroup(SECTION_SEARCH)},
+         {GROUP_SEARCH, CreateGroup(SECTION_SEARCH)},
++#if BUILDFLAG(ENABLE_COMMANDER)
++        {GROUP_OTHER_NAVS,
++         CreateGroup(SECTION_OTHER_NAVS,
++                     GroupConfig_RenderType_DEFAULT_VERTICAL,
++                     IDS_IDC_COMMANDER)},
++#else
+         {GROUP_OTHER_NAVS, CreateGroup(SECTION_SEARCH)},
++#endif
+         // clang-format on
+     };
+   }
