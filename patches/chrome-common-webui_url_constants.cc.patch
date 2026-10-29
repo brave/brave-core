@@ -18,6 +18,9 @@ index 6c6f8ffdf781850cb15b038d2e780147527392a9..bf65a3fe9a1b9441ab9c1bfbeed15b59
 +      kSkusInternalsHost,
 +      kAdsInternalsHost,
 +      kNewTabTakeoverHost,
++#if BUILDFLAG(ENABLE_PSST)
++      kPsstInternalsHost,
++#endif
    });
  
    return base::span(kChromeURLHosts);
