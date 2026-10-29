@@ -494,7 +494,16 @@ public class AppearancePreferences extends AppearanceSettingsFragment
                                     indexData.resolveIndex();
                                 }
                             });
+                    // The screen keeps at most one of the two bookmark bar rows.
                     if (!BookmarkBarUtils.isDeviceBookmarkBarCompatible(context)) {
+                        indexData.removeEntryForKey(
+                                frag, AppearanceSettingsFragment.PREF_BOOKMARK_BAR);
+                        indexData.removeEntryForKey(
+                                frag, AppearanceSettingsFragment.PREF_BOOKMARK_BAR_SWITCH);
+                    } else if (ChromeFeatureList.sBookmarksBarNTP.isEnabled()) {
+                        indexData.removeEntryForKey(
+                                frag, AppearanceSettingsFragment.PREF_BOOKMARK_BAR_SWITCH);
+                    } else {
                         indexData.removeEntryForKey(
                                 frag, AppearanceSettingsFragment.PREF_BOOKMARK_BAR);
                     }
