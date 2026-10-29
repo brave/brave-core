@@ -44,3 +44,17 @@ substitutions:
       code: |-
         auto pasted = SetInputIsPastedFromClipboard(
             controller_, paste_state_ != PasteState::kNone);
+
+  - description: |
+      Don't crash on a stale popup selection
+
+      `popup_selection_.line` can be past the end of the result when the
+      accessibility label is computed after pressing down in "@ask" keyword
+      mode, which made `AutocompleteResult::match_at()` abort
+      (https://github.com/brave/brave-browser/issues/60270).
+    preempt_function_impl:
+      function_name: OmniboxEditModel::GetPopupAccessibilityLabelForCurrentSelection
+      code: |-
+        if (popup_selection_.line >= autocomplete_controller()->result().size()) {
+          return std::u16string();
+        }
