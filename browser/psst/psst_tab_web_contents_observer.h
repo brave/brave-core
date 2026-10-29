@@ -110,9 +110,10 @@ class PsstTabWebContentsObserver : public tabs::ContentsObservingTabFeature {
                              PsstLogService* log_service,
                              std::unique_ptr<PsstUiDelegate> ui_delegate);
 
-  // Records a step of the flow on the brave://psst-internals timeline. No-op
-  // when there is no log service (off-the-record profiles).
-  void Log(mojom::PsstLogLevel level, std::string_view message);
+  // Records a step of the flow on the brave://psst-internals timeline.
+  void Log(mojom::PsstLogLevel level,
+           std::string_view message,
+           std::optional<base::DictValue> data = std::nullopt);
 
   void InsertUserScript(std::unique_ptr<MatchedRule> rule);
 

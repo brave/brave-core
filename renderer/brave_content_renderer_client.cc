@@ -265,8 +265,7 @@ void BraveContentRendererClient::RenderFrameCreated(
 #endif  // BUILDFLAG(ENABLE_PLAYLIST)
 
 #if BUILDFLAG(ENABLE_PSST)
-  // Installs the script logging API in PSST's isolated world. Incognito/Tor
-  // have no log service, so the browser drops anything sent from them.
+  // Installs the script logging API in PSST's isolated world.
   if (base::FeatureList::IsEnabled(psst::features::kEnablePsst) &&
       !process_state::IsIncognitoProcess()) {
     new psst::PsstRenderFrameObserver(render_frame,

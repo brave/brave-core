@@ -21,17 +21,9 @@ namespace psst {
 
 // Browser end of `mojom::PsstLogSink`: receives log messages from the injected
 // user/policy scripts and forwards them to the profile's `PsstLogService`.
-//
-// Created on demand, when a renderer in the PSST isolated world asks for the
-// interface. The renderer only supplies the level, message and payload; the
-// tab id, frame token and site are derived here from the validated sending
-// frame, so a compromised renderer cannot attribute an entry to another tab or
-// site.
 class PsstLogReceiver : public content::WebContentsUserData<PsstLogReceiver>,
                         public mojom::PsstLogSink {
  public:
-  // Scripts can log arbitrary strings; longer messages are truncated so one
-  // entry can't dominate the buffer or the internals page.
   static constexpr size_t kMaxScriptMessageLength = 4096;
 
   PsstLogReceiver(const PsstLogReceiver&) = delete;

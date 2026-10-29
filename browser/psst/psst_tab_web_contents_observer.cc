@@ -207,14 +207,16 @@ PsstTabWebContentsObserver::AsWeakPtr() {
   return weak_factory_.GetWeakPtr();
 }
 
-void PsstTabWebContentsObserver::Log(mojom::PsstLogLevel level,
-                                     std::string_view message) {
+void PsstTabWebContentsObserver::Log(
+    mojom::PsstLogLevel level,
+    std::string_view message,
+    std::optional<base::DictValue> data) {
   if (!log_service_) {
     return;
   }
   log_service_->AddNativeEntry(
       level, sessions::SessionTabHelper::IdForTab(web_contents()).id(),
-      web_contents()->GetLastCommittedURL(), message);
+      web_contents()->GetLastCommittedURL(), message, std::move(data));
 }
 
 void PsstTabWebContentsObserver::CancelInFlightFlow() {
@@ -286,8 +288,10 @@ void PsstTabWebContentsObserver::OnUserScriptResult(
              << " The policy script is unavailable or the user script returned "
                 "an unexpected format";
     Log(mojom::PsstLogLevel::kError,
-        "The policy script is unavailable or the user script returned an "
-        "unexpected format");
+        base::StrCat(
+            {"The policy script is unavailable or the user script returned an "
+             "unexpected format: ",
+             user_script_result.DebugString()}));
     return;
   }
 
@@ -296,7 +300,9 @@ void PsstTabWebContentsObserver::OnUserScriptResult(
   if (!user_script_result_parsed) {
     ui_delegate_->UpdateTasks(100, {}, mojom::PsstStatus::kFailed);
     DVLOG(1) << __func__ << " Failed to parse the user script result";
-    Log(mojom::PsstLogLevel::kError, "Failed to parse the user script result");
+    Log(mojom::PsstLogLevel::kError,
+        base::StrCat({"Failed to parse the user script result, value: ",
+                      user_script_result.DebugString()}));
     return;
   }
 
@@ -395,7 +401,8 @@ void PsstTabWebContentsObserver::OnPolicyScriptResult(
   if (!script_result_parsed) {
     ui_delegate_->UpdateTasks(100, {}, mojom::PsstStatus::kFailed);
     Log(mojom::PsstLogLevel::kError,
-        "Failed to parse the policy script result");
+        base::StrCat({"Failed to parse the policy script result, value: ",
+                      script_result.DebugString()}));
     return;
   }
 
@@ -419,7 +426,6 @@ void PsstTabWebContentsObserver::OnPolicyScriptResult(
 
   // Follow to the next URL only if it is valid URL
   if (next_url.has_value() && next_url->is_valid()) {
-    // Path only: the query and fragment can carry session-scoped tokens.
     Log(mojom::PsstLogLevel::kInfo,
         base::StrCat({"Following the policy script to the next step: ",
                       next_url->path()}));

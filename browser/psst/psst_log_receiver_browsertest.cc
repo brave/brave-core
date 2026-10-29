@@ -39,9 +39,6 @@ constexpr char kSubFrameHost[] = "b.test";
 
 }  // namespace
 
-// Covers the renderer -> browser half of PSST logging: that `psstLog` exists
-// only in the PSST isolated world, and that what it sends is attributed by the
-// browser rather than by the renderer.
 class PsstLogReceiverBrowserTest : public PlatformBrowserTest {
  public:
   PsstLogReceiverBrowserTest()
@@ -119,7 +116,6 @@ class PsstLogReceiverBrowserTest : public PlatformBrowserTest {
   base::test::ScopedFeatureList feature_list_;
 };
 
-// The page must not be able to see or spoof the logging function.
 IN_PROC_BROWSER_TEST_F(PsstLogReceiverBrowserTest, NotExposedToPageScript) {
   ASSERT_NO_FATAL_FAILURE(NavigateToPageWithIframe(kMainFrameHost));
 
@@ -175,8 +171,6 @@ IN_PROC_BROWSER_TEST_F(PsstLogReceiverBrowserTest, UnknownLevelBecomesInfo) {
   EXPECT_EQ(mojom::PsstLogLevel::kInfo, entries[0]->level);
 }
 
-// Scripts are untrusted input: an oversized message is truncated rather than
-// allowed to dominate the buffer.
 IN_PROC_BROWSER_TEST_F(PsstLogReceiverBrowserTest, OverlongMessageIsTruncated) {
   ASSERT_NO_FATAL_FAILURE(NavigateToPageWithIframe(kMainFrameHost));
 

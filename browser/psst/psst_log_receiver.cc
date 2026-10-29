@@ -24,12 +24,12 @@ void PsstLogReceiver::BindPsstLogSink(
   if (!web_contents) {
     return;
   }
-  // With no service to record into there is nothing to bind to, so drop the
-  // request instead of attaching a receiver that discards every message.
+  // Drop the request instead if service is not available.
   if (!PsstLogServiceFactory::GetForBrowserContext(
           web_contents->GetBrowserContext())) {
     return;
   }
+
   PsstLogReceiver::GetOrCreateForWebContents(web_contents)
       ->receivers_.Bind(rfh, std::move(receiver));
 }
@@ -52,15 +52,10 @@ void PsstLogReceiver::Log(mojom::PsstLogLevel level,
     return;
   }
 
-  // Everything positional is taken from the frame the message arrived on, not
-  // from the renderer.
   const auto& sender_rfh = receivers_.CurrentTargetFrame();
   const auto tab_id =
       sessions::SessionTabHelper::IdForTab(&GetWebContents()).id();
 
-  // The origin rather than the URL, so frames whose URL has no host
-  // (about:blank, about:srcdoc, blob:) are still attributed to the site they
-  // inherited their origin from.
   log_service_->AddEntry(
       mojom::PsstLogSource::kScript, level, tab_id,
       sender_rfh.GetFrameToken().ToString(),

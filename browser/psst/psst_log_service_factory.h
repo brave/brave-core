@@ -22,10 +22,7 @@ namespace psst {
 class PsstLogService;
 }  // namespace psst
 
-// Creates the PSST diagnostics log service. Returns null — and so disables the
-// whole logging feature, including brave://psst-internals — for off-the-record
-// (Incognito, Tor, Guest) profiles and when the PSST feature flag is off.
-// Callers treat a null service as "logging unavailable".
+// Creates the PSST diagnostics log service.
 class PsstLogServiceFactory : public ProfileKeyedServiceFactory {
  public:
   static PsstLogServiceFactory* GetInstance();

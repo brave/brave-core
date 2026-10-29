@@ -14,9 +14,6 @@ namespace psst {
 
 // Installs the PSST script logging API into the isolated world the PSST user
 // and policy scripts run in, and nowhere else.
-//
-// `isolated_world_id` is passed in rather than hardcoded because //brave/
-// components cannot depend on //chrome, where the id is defined.
 class PsstRenderFrameObserver : public content::RenderFrameObserver {
  public:
   PsstRenderFrameObserver(content::RenderFrame* render_frame,
