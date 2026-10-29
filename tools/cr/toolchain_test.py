@@ -14,8 +14,8 @@ Layers:
   `Toolchain.find_culprit`, `RustToolchain.is_published`, and `Toolchain.check`,
   driven against a `FakeChromiumRepo`.
 
-* Recovery -- `recover` across all three toolchains: `is_published` decides
-  whether CI has to build before the repin.
+* Recovery -- `ensure_published` across all three toolchains: `is_published`
+  decides whether CI has to build.
 
 * Repin -- `RustToolchain.repin` and `XcodeToolchain.repin` end-to-end against a
   `FakeChromiumRepo` with the commit-msg hook installed (builders faked, so no
@@ -240,7 +240,7 @@ class TriggerTest(unittest.TestCase):
     def test_rust_defaults_its_brave_subrevision(self):
         # `brave_subrevision` is not derivable from the version, but a build
         # nobody has made is always the first one -- which is what lets
-        # `recover` trigger without supplying it.
+        # `ensure_published` trigger without supplying it.
         rust = toolchain.RustToolchain()
         launcher = self._trigger(rust)
         _, kwargs = launcher.trigger.call_args
@@ -712,9 +712,8 @@ class XcodeRepinTest(_FakeRepoTest):
 
     def test_already_pinned_second_run_is_a_no_op(self):
         # Repinning is idempotent: a second run over the same values commits
-        # nothing and does not raise, so `recover` re-running the pre-run
-        # checks (e.g. under `--continue`) can't manufacture an advisory for a
-        # pin that is already correct.
+        # nothing and does not raise, so a lift repinning a recovered toolchain
+        # that is already correct can't fail.
         self._seed_mac_sdk_bump()
 
         self.xcode.repin(Version(CHROMIUM_TAG), culprit=None)
@@ -1106,13 +1105,13 @@ class IsPublishedTest(unittest.TestCase):
         self.assertFalse(published)
 
 
-class RecoverTest(unittest.TestCase):
-    """`recover` builds only when needed, then repins.
+class EnsurePublishedTest(unittest.TestCase):
+    """`ensure_published` builds only when needed, and never repins.
 
     One inherited implementation serves every toolchain, so each case runs
     across all three. `is_published` is pinned explicitly throughout: False is
-    the plain forward roll (build, then repin), True is the revert onto an
-    already-built revision (repin only, no CI).
+    the plain forward roll (build first), True is the revert onto an
+    already-built revision (no CI).
     """
 
     def setUp(self):
@@ -1123,7 +1122,7 @@ class RecoverTest(unittest.TestCase):
             toolchain.WindowsToolchain(),
         )
 
-    def test_success_triggers_watches_and_repins(self):
+    def test_success_triggers_and_watches(self):
         for tc in self.toolchains:
             with (
                 self.subTest(toolchain=tc.spec.key),
@@ -1131,24 +1130,22 @@ class RecoverTest(unittest.TestCase):
                 patch.object(tc, 'trigger', return_value=True) as trigger,
                 patch.object(tc, 'repin') as repin,
             ):
-                self.assertTrue(tc.recover(self.version, 'culprithash'))
+                self.assertTrue(tc.ensure_published(self.version))
                 # No toolchain-specific arguments: `brave_subrevision` reaches
-                # the Rust job through the PROPERTIES payload, and its pin
-                # through `repin`'s default.
+                # the Rust job through the PROPERTIES payload.
                 trigger.assert_called_once_with(self.version, watch=True)
-                repin.assert_called_once_with(self.version, 'culprithash')
+                # The repin is left to the lift, after its version commit.
+                repin.assert_not_called()
 
-    def test_published_repins_without_building(self):
+    def test_published_does_not_build(self):
         for tc in self.toolchains:
             with (
                 self.subTest(toolchain=tc.spec.key),
                 patch.object(tc, 'is_published', return_value=True),
                 patch.object(tc, 'trigger') as trigger,
-                patch.object(tc, 'repin') as repin,
             ):
-                self.assertTrue(tc.recover(self.version, 'culprithash'))
+                self.assertTrue(tc.ensure_published(self.version))
                 trigger.assert_not_called()
-                repin.assert_called_once_with(self.version, 'culprithash')
 
     def test_failed_build_keeps_advisory(self):
         for tc in self.toolchains:
@@ -1156,10 +1153,8 @@ class RecoverTest(unittest.TestCase):
                 self.subTest(toolchain=tc.spec.key),
                 patch.object(tc, 'is_published', return_value=False),
                 patch.object(tc, 'trigger', return_value=False),
-                patch.object(tc, 'repin') as repin,
             ):
-                self.assertFalse(tc.recover(self.version, 'h'))
-                repin.assert_not_called()
+                self.assertFalse(tc.ensure_published(self.version))
 
     def test_missing_credentials_keeps_advisory(self):
         for tc in self.toolchains:
@@ -1171,34 +1166,8 @@ class RecoverTest(unittest.TestCase):
                     'trigger',
                     side_effect=toolchain.InvalidInputException('creds'),
                 ),
-                patch.object(tc, 'repin') as repin,
             ):
-                self.assertFalse(tc.recover(self.version, 'h'))
-                repin.assert_not_called()
-
-    def test_repin_failure_keeps_advisory(self):
-        for tc in self.toolchains:
-            with (
-                self.subTest(toolchain=tc.spec.key),
-                patch.object(tc, 'is_published', return_value=True),
-                patch.object(
-                    tc,
-                    'repin',
-                    side_effect=toolchain.BadOutcomeException('boom'),
-                ),
-            ):
-                self.assertFalse(tc.recover(self.version, 'h'))
-
-    def test_toolchain_without_automated_repin_keeps_advisory(self):
-        # The base `repin` raises, so a spec with no automated repin still
-        # leaves the advisory for the user even once CI has published.
-        base = toolchain.Toolchain(
-            toolchain.ToolchainSpec.from_entry(
-                'rust', toolchain.TOOLCHAINS['rust']
-            )
-        )
-        with patch.object(base, 'is_published', return_value=True):
-            self.assertFalse(base.recover(self.version, 'h'))
+                self.assertFalse(tc.ensure_published(self.version))
 
 
 if __name__ == '__main__':
