@@ -148,6 +148,7 @@ PsstJSHandler::~PsstJSHandler() = default;
 void PsstJSHandler::Install(content::RenderFrame* render_frame,
                             v8::Local<v8::Context> context) {
   CHECK(render_frame);
+  // Do not run bootstrap script if no context
   if (context.IsEmpty()) {
     return;
   }
