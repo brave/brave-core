@@ -161,34 +161,34 @@ class ClientHintsBrowserTest : public InProcessBrowserTest,
 
  private:
   void PopulateDefaultClientHints() {
-    const auto& hints_map = network::GetClientHintToNameMap();
-    default_hints_.push_back(
+    const auto& hints_map = network::kClientHintToNameMap;
+    default_hints_.emplace_back(
         hints_map.at(network::mojom::WebClientHintsType::kUA));
-    default_hints_.push_back(
+    default_hints_.emplace_back(
         hints_map.at(network::mojom::WebClientHintsType::kUAMobile));
-    default_hints_.push_back(
+    default_hints_.emplace_back(
         hints_map.at(network::mojom::WebClientHintsType::kUAPlatform));
   }
 
   void PopulateAllowedClientHints() {
-    const auto& hints_map = network::GetClientHintToNameMap();
-    allowed_hints_.push_back(
+    const auto& hints_map = network::kClientHintToNameMap;
+    allowed_hints_.emplace_back(
         hints_map.at(network::mojom::WebClientHintsType::kUAArch));
-    allowed_hints_.push_back(
+    allowed_hints_.emplace_back(
         hints_map.at(network::mojom::WebClientHintsType::kUABitness));
-    allowed_hints_.push_back(
+    allowed_hints_.emplace_back(
         hints_map.at(network::mojom::WebClientHintsType::kUAFullVersionList));
-    allowed_hints_.push_back(
+    allowed_hints_.emplace_back(
         hints_map.at(network::mojom::WebClientHintsType::kUAModel));
-    allowed_hints_.push_back(
+    allowed_hints_.emplace_back(
         hints_map.at(network::mojom::WebClientHintsType::kUAPlatformVersion));
-    allowed_hints_.push_back(
+    allowed_hints_.emplace_back(
         hints_map.at(network::mojom::WebClientHintsType::kUAWoW64));
   }
 
   void MonitorResourceRequest(const net::test_server::HttpRequest& request) {
-    for (const auto& elem : network::GetClientHintToNameMap()) {
-      const auto& header = elem.second;
+    for (const auto& elem : network::kClientHintToNameMap) {
+      const std::string header(elem.second);
       if (request.headers.contains(header)) {
         if (std::ranges::contains(default_hints_, header)) {
           default_client_hints_headers_seen_.insert(header);
