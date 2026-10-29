@@ -17,8 +17,8 @@ class Arguments;
 
 namespace psst {
 
-// Installs the diagnostics logging API used by the injected PSST user and
-// policy scripts, and forwards what they log to the browser.
+// Installs the diagnostics logging API used by the injected PSST scripts, and
+// forwards what they log to the browser.
 //
 // See the "Script logging" section of components/psst/README.md for the
 // script-facing contract.
@@ -33,14 +33,13 @@ class PsstJSHandler final : public gin::Wrappable<PsstJSHandler>,
   PsstJSHandler& operator=(const PsstJSHandler&) = delete;
   ~PsstJSHandler() final;
 
-  // Installs `psstLog()` and the `console.*` forwarding shim into `context`.
+  // Installs `psstLog()` and the `console.*` forwarding.
   // Must only be called for the PSST isolated world, so that page script can
   // neither call nor spoof them.
   static void Install(content::RenderFrame* render_frame,
                       v8::Local<v8::Context> context);
 
   // content::RenderFrameObserver:
-  // Empty: this object is owned by the V8 heap, not by the render frame.
   void OnDestruct() override;
 
  private:

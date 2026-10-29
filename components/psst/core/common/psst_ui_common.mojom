@@ -20,18 +20,17 @@ enum PsstLogLevel {
   kError = 3,
 };
 
-// Where a log entry originated: the browser-side C++ flow, or one of the
-// injected scripts.
+// Where a log entry originated (the browser-side C++ flow, or one of the
+// injected scripts).
 enum PsstLogSource {
   kNative = 0,
   kScript = 1,
 };
 
-// A single entry in the PSST diagnostics timeline, shown on
-// brave://psst-internals. Entries live only in memory and are never persisted.
+// A PSST diagnostics timeline entry, shown on the brave://psst-internals.
+// Entries live only in memory and are never persisted.
 struct PsstLogEntry {
-  // Milliseconds since the UNIX epoch. A double rather than mojo_base Time so
-  // the WebUI can pass it straight to `new Date(...)`.
+  // Entry generation timestamp.
   double timestamp_ms;
 
   // Tab the entry belongs to, used to group the timeline.

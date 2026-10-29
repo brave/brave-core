@@ -37,14 +37,12 @@ namespace psst {
 
 namespace {
 
-// Wraps the native object (`$1`, i.e. `kPsstNativeObjectName`) in the API the
-// scripts actually use:
-//
+// Wraps the native object in the standard logging API the scripts actually use
+// (`$1`, i.e. `kPsstNativeObjectName`):
 //   psstLog(level, message, data)
 //
-// and forwards `console.log/info/warn/error/debug` to it, while still calling
-// through to the original so DevTools keeps working. Both are defined
-// non-configurably so a script can't accidentally clobber them.
+// It forwards `console.log/info/warn/error/debug` to native calls, and keeps
+// the original way working.
 constexpr char kBootstrapScript[] = R"JS(
 (function() {
   const native = globalThis[$1];
@@ -150,7 +148,6 @@ PsstJSHandler::~PsstJSHandler() = default;
 void PsstJSHandler::Install(content::RenderFrame* render_frame,
                             v8::Local<v8::Context> context) {
   CHECK(render_frame);
-  // No context to install into, e.g. a frame being torn down.
   if (context.IsEmpty()) {
     return;
   }
