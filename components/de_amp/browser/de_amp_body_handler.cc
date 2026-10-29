@@ -221,6 +221,13 @@ bool DeAmpBodyHandler::OpenCanonicalURL(const GURL& new_url) {
     }
   }
 
+  // Never De-AMP a view-source: navigation. Redirecting would replace the
+  // source view with a rendered canonical page, letting an untrusted page move
+  // the user out of view-source.
+  if (entry->IsViewSourceMode()) {
+    return false;
+  }
+
   // If we've already navigated to the canonical URL last time, we
   // should stop De-AMPing. This is done to prevent redirect loops.
   // https://github.com/brave/brave-browser/issues/22610
