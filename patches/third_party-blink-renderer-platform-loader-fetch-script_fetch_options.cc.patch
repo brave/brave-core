@@ -1,0 +1,16 @@
+diff --git a/third_party/blink/renderer/platform/loader/fetch/script_fetch_options.cc b/third_party/blink/renderer/platform/loader/fetch/script_fetch_options.cc
+index 4789d6aa1ef230386386388a317dfd77293f0d6b..df96367489abbd069812e9fddab20dd9496fc756 100644
+--- a/third_party/blink/renderer/platform/loader/fetch/script_fetch_options.cc
++++ b/third_party/blink/renderer/platform/loader/fetch/script_fetch_options.cc
+@@ -99,6 +99,11 @@ FetchParameters ScriptFetchOptions::CreateFetchParameters(
+ 
+   // Steps 4- are Implemented at ClassicPendingScript::Fetch().
+ 
++#if BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
++  params.MutableOptions().initiator_info.dom_node_id = dom_node_id_;
++  params.MutableOptions().initiator_info.parent_script_id = parent_script_id_;
++#endif  // BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
++
+   return params;
+ }
+ 
