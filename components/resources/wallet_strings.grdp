@@ -350,7 +350,8 @@
   <message name="IDS_BRAVE_WALLET_ACCOUNTS_EXPORT" desc="Account list item Export button" formatter_data="webui=Wallet">Export</message>
   <message name="IDS_BRAVE_WALLET_ACCOUNTS_DEPOSIT" desc="Account list item Deposit button" formatter_data="webui=Wallet">Deposit</message>
   <message name="IDS_BRAVE_WALLET_ACCOUNTS_HIDE" desc="Account list item Hide button" formatter_data="webui=Wallet">Hide account</message>
-  <message name="IDS_BRAVE_WALLET_ACCOUNTS_RESTORE" desc="Account list item Restore button" formatter_data="webui=Wallet">Restore</message>
+  <message name="IDS_BRAVE_WALLET_UNHIDE_ACCOUNT" desc="Menu item and dialog title for showing a previously hidden wallet account" formatter_data="webui=Wallet">Unhide account</message>
+  <message name="IDS_BRAVE_WALLET_UNHIDE" desc="Button in the unhide accounts dialog that shows the selected accounts" formatter_data="webui=Wallet">Unhide</message>
   <message name="IDS_BRAVE_WALLET_ACCOUNTS_REMOVE" desc="Account list item Remove button" formatter_data="webui=Wallet">Remove</message>
   <message name="IDS_BRAVE_WALLET_ACCOUNT_SETTINGS" desc="Account settings label" formatter_data="webui=Wallet">Account settings</message>
   <message name="IDS_BRAVE_WALLET_LAST_UPDATED_AGO" desc="Tooltip showing how long ago prices were last updated, e.g. Last updated 5m ago" formatter_data="webui=Wallet">Last updated <ph name="TIME_AGO"><ex>5m</ex>$1</ph> ago</message>
