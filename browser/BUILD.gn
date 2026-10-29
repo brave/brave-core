@@ -27,7 +27,9 @@ if (enable_sparkle && !build_sparkle) {
 source_set("browser_process") {
   visibility = [
     "//brave/browser/*",
+    "//brave/test/*",
     "//chrome/browser/*",
+    "//chrome/test/*",
   ]
 
   sources = [ "brave_browser_process.h" ]
@@ -90,6 +92,7 @@ source_set("core") {
   deps = brave_chrome_browser_deps + [
            "//brave/browser/ui/webui:favicon_source_chromium_impl",
            "//brave/browser/ui/window_feature_controller:chromium_impl",
+           "//brave/components/variations",
            "//brave/ui/webui/custom_profile_image/buildflags",
            "//components/ntp_tiles:popular_sites_pref_names",
          ]
@@ -103,9 +106,10 @@ source_set("core") {
     deps += [ "//brave/browser/ui/webui/custom_profile_image" ]
   }
   public_deps = [
-                  ":tab_helpers_header",
-                  "//chrome/browser:shell_integration",
-                ] + brave_chrome_browser_public_deps
+    ":tab_helpers_header",
+    "//brave/components/psst/buildflags",
+    "//chrome/browser:shell_integration",
+  ]
   allow_circular_includes_from =
       brave_chrome_browser_allow_circular_includes_from
 }

@@ -36,25 +36,6 @@ import("//components/gcm_driver/config.gni")
 import("//mojo/public/tools/bindings/mojom.gni")
 import("//third_party/widevine/cdm/widevine.gni")
 
-group("ui_public_dependencies") {
-  visibility = [
-    "//brave/browser:core",
-    "//brave/browser/ui",
-    "//chrome/browser",
-  ]
-  public_deps = [
-    ":brave_tab_prefs",
-    ":ui_features",
-    "//brave/components/brave_wallet/common/buildflags",
-    "//brave/components/brave_wayback_machine/buildflags",
-    "//brave/components/containers/buildflags",
-    "//brave/components/local_ai/buildflags",
-    "//brave/components/playlist/core/common/buildflags",
-    "//brave/components/speedreader/common/buildflags",
-    "//brave/components/traffic_control/buildflags",
-  ]
-}
-
 if (!is_android) {
   source_set("brave_browser_header") {
     public = [ "brave_browser.h" ]
@@ -133,6 +114,8 @@ source_set("ui") {
   ]
 
   deps = [
+    ":brave_tab_prefs",
+    ":ui_features",
     "//brave/brave_domains",
     "//brave/browser/brave_adaptive_captcha",
     "//brave/browser/brave_origin",
@@ -141,6 +124,7 @@ source_set("ui") {
     "//brave/browser/ui/page_info",
     "//brave/browser/ui/webui/brave_account",
     "//brave/components/ai_chat/core/common/buildflags",
+    "//brave/components/local_ai/buildflags",
 
     # Unconditional for gn check as the NTP WebUI always needs the mojom
     # types since typescript cannnot yet conditionally import during typecheck.
@@ -215,7 +199,7 @@ source_set("ui") {
   allow_circular_includes_from = brave_ui_allow_circular_includes_from
   deps += brave_ui_allow_circular_includes_from
 
-  public_deps = [ ":ui_public_dependencies" ]
+  public_deps = []
 
   if (toolkit_views) {
     public_deps += [
