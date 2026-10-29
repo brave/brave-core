@@ -201,7 +201,9 @@ export const ConnectionSection = (props: Props) => {
     [connectedAccounts, setSelectedAccount],
   )
 
-  const canChangeNetwork = props.coin !== BraveWallet.CoinType.ADA
+  const canChangeNetwork =
+    props.coin !== BraveWallet.CoinType.ADA
+    && props.coin !== BraveWallet.CoinType.DOT
   const onClickNetwork = React.useCallback(() => {
     if (canChangeNetwork) {
       setShowNetworks(true)

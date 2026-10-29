@@ -177,6 +177,7 @@ export interface WalletState {
   isCardanoEnabled: boolean
   isCardanoDappSupportEnabled: boolean
   isPolkadotEnabled: boolean
+  isPolkadotDappSupportEnabled: boolean
   isCardStackUiEnabled: boolean
 }
 
@@ -648,6 +649,7 @@ export const DAppSupportedCoinTypes = [
   BraveWallet.CoinType.SOL,
   BraveWallet.CoinType.ETH,
   BraveWallet.CoinType.ADA,
+  BraveWallet.CoinType.DOT,
 ]
 
 export const CustomAssetSupportedCoinTypes = [

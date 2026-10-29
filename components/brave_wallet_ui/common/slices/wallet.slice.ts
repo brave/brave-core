@@ -40,6 +40,7 @@ const defaultState: WalletState = {
   isCardanoEnabled: false,
   isCardanoDappSupportEnabled: false,
   isPolkadotEnabled: false,
+  isPolkadotDappSupportEnabled: false,
   isCardStackUiEnabled: false,
 }
 
@@ -97,6 +98,8 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         state.isCardanoDappSupportEnabled =
           payload.walletInfo.isCardanoDappSupportEnabled
         state.isPolkadotEnabled = payload.walletInfo.isPolkadotEnabled
+        state.isPolkadotDappSupportEnabled =
+          payload.walletInfo.isPolkadotDappSupportEnabled
         state.isCardStackUiEnabled = payload.walletInfo.isCardStackUiEnabled
       },
 
