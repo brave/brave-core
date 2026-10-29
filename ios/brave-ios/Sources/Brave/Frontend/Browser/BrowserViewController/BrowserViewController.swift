@@ -2323,6 +2323,12 @@ public class BrowserViewController: UIViewController {
     return super.preferredStatusBarStyle
   }
 
+  /// Align with Safari. Swipe in middle of horizontal edges will use stage
+  /// manager, otherwise edge swipes will use Brave back/forward actions
+  public override var preferredScreenEdgesDeferringSystemGestures: UIRectEdge {
+    [.left, .right]
+  }
+
   func updateStatusBarOverlayColor() {
     if #available(iOS 26.0, *) {
       statusBarOverlay.backgroundColor = privateBrowsingManager.browserColors.chromeBackground
