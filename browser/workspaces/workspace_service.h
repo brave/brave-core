@@ -12,6 +12,7 @@
 #include <string>
 #include <vector>
 
+#include "base/callback_list.h"
 #include "base/files/file_path.h"
 #include "base/memory/raw_ref.h"
 #include "base/memory/scoped_refptr.h"
@@ -121,6 +122,15 @@ class WorkspaceService : public KeyedService,
   // Returns the window owned by |id|, or nullopt if it has not been opened in
   // this session yet.
   std::optional<SessionID> GetWindowForWorkspace(const base::Uuid& id) const;
+
+  // Returns the display name of the workspace shown in |window_id|, or an
+  // empty string when that window is unmanaged.
+  std::string GetWorkspaceNameForWindow(SessionID window_id) const;
+
+  // Notifies when the workspace shown in some window changes, or is renamed.
+  // Subscribers re-read whichever window they belong to.
+  base::CallbackListSubscription RegisterWorkspacesChanged(
+      base::RepeatingClosure callback);
 
   // True when |id| is on screen in some window other than |window_id|.
   //
@@ -243,6 +253,8 @@ class WorkspaceService : public KeyedService,
   // Set once the service is driving shutdown, so the closes it issues are not
   // mistaken for fresh close requests.
   bool closing_all_windows_ = false;
+
+  base::RepeatingClosureList workspaces_changed_callbacks_;
 
   base::ScopedObservation<ProfileBrowserCollection, BrowserCollectionObserver>
       browser_collection_observation_{this};

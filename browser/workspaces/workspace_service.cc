@@ -88,6 +88,7 @@ void WorkspaceService::RenameWorkspace(const base::Uuid& id,
   // modified_at tracks tab changes, so renaming does not reorder the list.
   workspace->name = name;
   SaveWorkspaceMetadata(*workspace);
+  workspaces_changed_callbacks_.Notify();
 }
 
 void WorkspaceService::SaveWorkspaceMetadata(const WorkspaceMetadata& meta) {
@@ -141,6 +142,7 @@ void WorkspaceService::UnbindWindow(SessionID window_id) {
   std::erase_if(workspace_to_window_, [window_id](const auto& entry) {
     return entry.second == window_id;
   });
+  workspaces_changed_callbacks_.Notify();
 }
 
 void WorkspaceService::SaveWorkspaceFromWindow(const base::Uuid& id,
@@ -178,6 +180,21 @@ void WorkspaceService::SaveWorkspaceFromWindow(const base::Uuid& id,
       FROM_HERE, base::BindOnce(&WriteWorkspaceToDisk, std::move(commands),
                                 std::move(workspace_path), std::move(backend),
                                 std::move(on_error)));
+}
+
+std::string WorkspaceService::GetWorkspaceNameForWindow(
+    SessionID window_id) const {
+  std::optional<base::Uuid> id = GetWorkspaceForWindow(window_id);
+  if (!id) {
+    return std::string();
+  }
+  std::optional<WorkspaceMetadata> workspace = GetWorkspace(*id);
+  return workspace ? workspace->name : std::string();
+}
+
+base::CallbackListSubscription WorkspaceService::RegisterWorkspacesChanged(
+    base::RepeatingClosure callback) {
+  return workspaces_changed_callbacks_.Add(std::move(callback));
 }
 
 bool WorkspaceService::IsWorkspaceOnScreenElsewhere(const base::Uuid& id,
@@ -467,6 +484,7 @@ void WorkspaceService::BindWorkspaceToWindow(const base::Uuid& id,
                                              BrowserWindowInterface* window) {
   workspace_to_window_.insert_or_assign(id, window->GetSessionID());
   window->GetTabStripModel()->AddObserver(this);
+  workspaces_changed_callbacks_.Notify();
 }
 
 BrowserWindowInterface* WorkspaceService::FindWindowForTabStrip(
