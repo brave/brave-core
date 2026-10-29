@@ -12,12 +12,13 @@
 
 #include "base/memory/weak_ptr.h"
 #include "base/values.h"
-#include "brave/components/psst/core/browser/psst_log_service.h"
 #include "brave/components/psst/core/common/psst_ui_common.mojom.h"
 #include "content/public/browser/render_frame_host_receiver_set.h"
 #include "content/public/browser/web_contents_user_data.h"
 
 namespace psst {
+
+class PsstLogService;
 
 // Browser end of `mojom::PsstLogSink`: receives log messages from the injected
 // user/policy scripts and forwards them to the profile's `PsstLogService`.
@@ -30,6 +31,9 @@ class PsstLogReceiver : public content::WebContentsUserData<PsstLogReceiver>,
   PsstLogReceiver& operator=(const PsstLogReceiver&) = delete;
   ~PsstLogReceiver() override;
 
+  // Binds |receiver| for |rfh| on the WebContents' PsstLogReceiver, creating it
+  // on first use. Drops |receiver| without error if |rfh| has no WebContents or
+  // the profile has no PsstLogService (off-the-record or PSST disabled).
   static void BindPsstLogSink(
       content::RenderFrameHost* rfh,
       mojo::PendingAssociatedReceiver<mojom::PsstLogSink> receiver);
