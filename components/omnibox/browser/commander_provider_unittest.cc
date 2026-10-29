@@ -21,10 +21,14 @@
 #include "brave/components/commander/common/features.h"
 #include "brave/components/omnibox/browser/brave_fake_autocomplete_provider_client.h"
 #include "brave/components/vector_icons/vector_icons.h"
+#include "components/grit/brave_components_strings.h"
 #include "components/omnibox/browser/autocomplete_input.h"
 #include "components/omnibox/browser/autocomplete_match.h"
+#include "components/omnibox/browser/suggestion_group_util.h"
 #include "components/omnibox/browser/test_scheme_classifier.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/omnibox_proto/groups.pb.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "ui/gfx/range/range.h"
 
 namespace {
@@ -365,6 +369,21 @@ TEST_F(CommanderProviderTest, MatchesInAmbientModeHaveGroup) {
   for (const auto& match : provider()->matches()) {
     EXPECT_EQ(omnibox::GroupId::GROUP_OTHER_NAVS, match.suggestion_group_id);
   }
+}
+
+// The group the ambient matches above use lists them under a quick commands
+// header.
+TEST_F(CommanderProviderTest, AmbientModeGroupHasQuickCommandsHeader) {
+  omnibox::ResetDefaultGroupsForTest();
+  const omnibox::GroupConfigMap& groups = omnibox::BuildDefaultGroupsForInput(
+      CreateInput(u"FoBa"), /*is_incognito=*/false);
+
+  const auto it = groups.find(omnibox::GROUP_OTHER_NAVS);
+  ASSERT_NE(groups.end(), it);
+  EXPECT_EQ(omnibox::SECTION_OTHER_NAVS, it->second.section());
+  EXPECT_FALSE(it->second.header_text().empty());
+  EXPECT_EQ(l10n_util::GetStringUTF8(IDS_IDC_COMMANDER),
+            it->second.header_text());
 }
 
 TEST_F(CommanderProviderTest, UnprefixedModeCullsBadMatches) {
