@@ -268,7 +268,7 @@ std::optional<std::vector<uint8_t>> FilTransaction::GetMessageToSignCBOR(
   }
   data_vec.emplace_back(base::span<const uint8_t>());  // Params.
 
-  auto encoded_sig_data = cbor::Writer::Write(cbor::Value(std::move(data_vec)));
+  auto encoded_sig_data = cbor::Writer::Write(data_vec);
   CHECK(encoded_sig_data.has_value());
 
   return encoded_sig_data.value();
