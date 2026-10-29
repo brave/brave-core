@@ -51,9 +51,6 @@
       on-settings-boolean-control-change="onTorEnabledChange_">
     </settings-toggle-button>
   </template>
-  <settings-toggle-button id="onionOnlyInTorWindows" pref="{{prefs.tor.onion_only_in_tor_windows}}" class="cr-row" label="$i18n{onionOnlyInTorWindowsLabel}"
-    sub-label="$i18n{onionOnlyInTorWindowsDesc}">
-  </settings-toggle-button>
   <if expr="enable_extensions">
     <settings-toggle-button id="torSnowflake" pref="[[torSnowflakeExtensionEnabledPref_]]"
       label="$i18n{torSnowflakeExtensionLabel}" sub-label="$i18n{torSnowflakeExtensionDesc}"

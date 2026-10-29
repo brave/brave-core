@@ -40,22 +40,18 @@ bool GetOnionLocation(const net::HttpResponseHeaders* headers,
 void OnionLocationNavigationThrottle::MaybeCreateAndAdd(
     content::NavigationThrottleRegistry& registry,
     bool is_tor_disabled,
-    bool is_tor_profile,
-    bool onion_only_in_tor_windows) {
+    bool is_tor_profile) {
   if (is_tor_disabled) {
     return;
   }
   registry.AddThrottle(std::make_unique<OnionLocationNavigationThrottle>(
-      registry, is_tor_profile, onion_only_in_tor_windows));
+      registry, is_tor_profile));
 }
 
 OnionLocationNavigationThrottle::OnionLocationNavigationThrottle(
     content::NavigationThrottleRegistry& registry,
-    bool is_tor_profile,
-    bool onion_only_in_tor_windows)
-    : content::NavigationThrottle(registry),
-      is_tor_profile_(is_tor_profile),
-      onion_only_in_tor_windows_(onion_only_in_tor_windows) {}
+    bool is_tor_profile)
+    : content::NavigationThrottle(registry), is_tor_profile_(is_tor_profile) {}
 
 OnionLocationNavigationThrottle::~OnionLocationNavigationThrottle() = default;
 
@@ -116,12 +112,10 @@ OnionLocationNavigationThrottle::WillStartRequest() {
             navigation_handle()->GetInitiatorOrigin());
         return content::NavigationThrottle::BLOCK_REQUEST;
       }
-      if (onion_only_in_tor_windows_) {
-        // Subframes should use CANCEL_AND_IGNORE. BLOCK_REQUEST commits an
-        // error page that still reports the .onion URL as the last committed
-        // URL.
-        return content::NavigationThrottle::CANCEL_AND_IGNORE;
-      }
+      // Subframes should use CANCEL_AND_IGNORE. BLOCK_REQUEST commits an
+      // error page that still reports the .onion URL as the last committed
+      // URL.
+      return content::NavigationThrottle::CANCEL_AND_IGNORE;
     }
   }
   return content::NavigationThrottle::PROCEED;

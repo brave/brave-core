@@ -30,10 +30,6 @@
 #include "brave/components/brave_wallet/common/common_utils.h"
 #endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 
-#if BUILDFLAG(ENABLE_TOR)
-#include "brave/components/tor/pref_names.h"
-#endif
-
 #if BUILDFLAG(ENABLE_EXTENSIONS_CORE)
 #include "extensions/browser/extension_registry.h"
 #endif
@@ -65,10 +61,6 @@ BraveRendererUpdater::BraveRendererUpdater(
 #endif
 
   de_amp_enabled_.Init(de_amp::kDeAmpPrefEnabled, pref_service);
-#if BUILDFLAG(ENABLE_TOR)
-  onion_only_in_tor_windows_.Init(tor::prefs::kOnionOnlyInTorWindows,
-                                  pref_service);
-#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
   CheckActiveWallet();
@@ -106,12 +98,6 @@ BraveRendererUpdater::BraveRendererUpdater(
       base::BindRepeating(
           &BraveRendererUpdater::CheckActiveWalletAndMaybeUpdateRenderers,
           base::Unretained(this)));
-#endif
-#if BUILDFLAG(ENABLE_TOR)
-  pref_change_registrar_.Add(
-      tor::prefs::kOnionOnlyInTorWindows,
-      base::BindRepeating(&BraveRendererUpdater::UpdateAllRenderers,
-                          base::Unretained(this)));
 #endif
 
 #if BUILDFLAG(ENABLE_WIDEVINE)
@@ -288,11 +274,6 @@ void BraveRendererUpdater::UpdateRenderer(
 
   PrefService* pref_service = profile_->GetPrefs();
   bool de_amp_enabled = de_amp::IsDeAmpEnabled(pref_service);
-  bool onion_only_in_tor_windows = true;
-#if BUILDFLAG(ENABLE_TOR)
-  onion_only_in_tor_windows =
-      pref_service->GetBoolean(tor::prefs::kOnionOnlyInTorWindows);
-#endif
   bool widevine_enabled = false;
 #if BUILDFLAG(ENABLE_WIDEVINE)
   widevine_enabled = local_state_->GetBoolean(kWidevineEnabled);
@@ -322,7 +303,6 @@ void BraveRendererUpdater::UpdateRenderer(
       allow_overwrite_window_solana_provider;
 #endif
   params->de_amp_enabled = de_amp_enabled;
-  params->onion_only_in_tor_windows = onion_only_in_tor_windows;
   params->widevine_enabled = widevine_enabled;
   params->playlist_enabled = playlist_enabled;
 
