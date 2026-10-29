@@ -16,6 +16,10 @@
 class PrefRegistrySimple;
 class PrefService;
 
+namespace image_metadata_stripper::metrics {
+class ImageMetadataStripperMetrics;
+}  // namespace image_metadata_stripper::metrics
+
 namespace serp_metrics {
 class SerpMetricsP3A;
 }  // namespace serp_metrics
@@ -65,6 +69,8 @@ class ProcessMiscMetrics {
   UptimeMonitorImpl* uptime_monitor();
   MediaSessionMetricsImpl* media_session_metrics();
   CaptchaMetrics* captcha_metrics();
+  image_metadata_stripper::metrics::ImageMetadataStripperMetrics*
+  image_metadata_stripper_metrics();
 
   serp_metrics::SerpMetricsP3A* serp_metrics_p3a();
 
@@ -91,6 +97,9 @@ class ProcessMiscMetrics {
   std::unique_ptr<UptimeMonitorImpl> uptime_monitor_;
   std::unique_ptr<MediaSessionMetricsImpl> media_session_metrics_;
   std::unique_ptr<serp_metrics::SerpMetricsP3A> serp_metrics_p3a_;
+  std::unique_ptr<
+      image_metadata_stripper::metrics::ImageMetadataStripperMetrics>
+      image_metadata_stripper_metrics_;
 };
 
 }  // namespace misc_metrics

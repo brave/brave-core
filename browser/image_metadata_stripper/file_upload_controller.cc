@@ -7,13 +7,17 @@
 #include "base/feature.h"
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
+#include "base/functional/bind.h"
 #include "base/logging.h"
 #include "base/memory/ptr_util.h"
 #include "base/path_service.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"
+#include "brave/browser/brave_browser_process.h"
+#include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/components/image_metadata_stripper/common/features.h"
+#include "brave/components/misc_metrics/image_metadata_stripper_metrics.h"
 #include "chrome/common/chrome_paths.h"
 #include "components/tabs/public/tab_interface.h"
 
@@ -175,7 +179,34 @@ void FileUploadController::Strip(std::vector<base::FilePath> srcs,
   }
   delegate_.AsyncCall(&Delegate::StripAll)
       .WithArgs(std::move(srcs), client)
-      .Then(std::move(callback));
+      .Then(base::BindOnce(&FileUploadController::OnStripped,
+                           weak_ptr_factory_.GetWeakPtr(), client,
+                           std::move(callback)));
+}
+
+void FileUploadController::OnStripped(
+    StrippingClient client,
+    StripCallback callback,
+    std::vector<std::optional<base::FilePath>> copies) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  // Record the metrics. A non-null copy means the image carried FBMD metadata
+  // that was stripped;
+  if (g_brave_browser_process &&
+      g_brave_browser_process->process_misc_metrics() &&
+      g_brave_browser_process->process_misc_metrics()
+          ->image_metadata_stripper_metrics()) {
+    auto* stripper_metrics_reporter =
+        g_brave_browser_process->process_misc_metrics()
+            ->image_metadata_stripper_metrics();
+    for (const auto& copy : copies) {
+      if (copy.has_value()) {
+        stripper_metrics_reporter->RecordFbmd(client);
+      }
+    }
+  }
+
+  std::move(callback).Run(std::move(copies));
 }
 
 // static

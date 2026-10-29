@@ -27,6 +27,9 @@
 #include "base/threading/thread_restrictions.h"
 #include "brave/browser/image_metadata_stripper/file_upload_controller.h"
 #include "brave/components/image_metadata_stripper/common/features.h"
+#include "brave/components/misc_metrics/image_metadata_stripper_metrics.h"
+#include "brave/components/misc_metrics/image_metadata_stripper_metrics_test_util.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/ui/tabs/tab_enums.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/common/chrome_paths.h"
@@ -235,6 +238,13 @@ class FileSelectImageMetadataStripperBase : public InProcessBrowserTest {
         .ExtractString();
   }
 
+  // Reads an FBMD stripped count recorded in local state for |count_key|
+  // (kDownloadStrippedPrefKey or kUploadStrippedPrefKey).
+  int GetFbmdStrippedCountInLocalState(std::string_view count_key) {
+    return image_metadata_stripper::metrics::GetFbmdStrippedCountInLocalState(
+        g_browser_process->local_state(), count_key);
+  }
+
   base::FilePath fbmd_test_image_path_;
 
  private:
@@ -421,6 +431,23 @@ IN_PROC_BROWSER_TEST_F(FileSelectImageMetadataStripperBrowserTest,
             content::EvalJs(web_contents,
                             "document.getElementById('fileinput').files.length")
                 .ExtractInt());
+}
+
+// Selecting a JPEG that carries an FBMD record for upload bumps the stripped
+// count in local state under the upload flow (and leaves the download flow
+// untouched).
+IN_PROC_BROWSER_TEST_F(FileSelectImageMetadataStripperBrowserTest,
+                       RecordsStrippedCountInLocalState) {
+  // Nothing recorded before any file is selected.
+  EXPECT_EQ(0, GetFbmdStrippedCountInLocalState(
+                   image_metadata_stripper::metrics::kUploadStrippedPrefKey));
+
+  OpenTabAndSelectFiles({fbmd_test_image_path_});
+
+  EXPECT_EQ(1, GetFbmdStrippedCountInLocalState(
+                   image_metadata_stripper::metrics::kUploadStrippedPrefKey));
+  EXPECT_EQ(0, GetFbmdStrippedCountInLocalState(
+                   image_metadata_stripper::metrics::kDownloadStrippedPrefKey));
 }
 
 // Stripping disabled fixture.

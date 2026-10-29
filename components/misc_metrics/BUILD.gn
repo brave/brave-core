@@ -21,6 +21,8 @@ static_library("misc_metrics") {
     "features.h",
     "general_browser_usage.cc",
     "general_browser_usage.h",
+    "image_metadata_stripper_metrics.cc",
+    "image_metadata_stripper_metrics.h",
     "language_metrics.cc",
     "language_metrics.h",
     "media_session_metrics.h",
@@ -76,7 +78,24 @@ static_library("misc_metrics") {
 
   public_deps = [
     ":default_browser_monitor",
+    "//brave/components/image_metadata_stripper",
     "//brave/components/misc_metrics/common:mojom",
+  ]
+}
+
+source_set("test_support") {
+  testonly = true
+
+  sources = [
+    "image_metadata_stripper_metrics_test_util.cc",
+    "image_metadata_stripper_metrics_test_util.h",
+  ]
+
+  public_deps = [ "//components/prefs" ]
+
+  deps = [
+    ":misc_metrics",
+    "//base",
   ]
 }
 
@@ -87,6 +106,7 @@ source_set("unit_tests") {
     "brave_search_metrics_unittest.cc",
     "default_browser_monitor_unittest.cc",
     "general_browser_usage_unittest.cc",
+    "image_metadata_stripper_metrics_unittest.cc",
     "language_metrics_unittest.cc",
     "menu_metrics_unittest.cc",
     "navigation_source_metrics_unittest.cc",
@@ -103,6 +123,7 @@ source_set("unit_tests") {
   deps = [
     "//base",
     "//base/test:test_support",
+    "//brave/components/image_metadata_stripper",
     "//brave/components/misc_metrics",
     "//brave/components/p3a_utils",
     "//brave/components/p3a_utils:test_support",

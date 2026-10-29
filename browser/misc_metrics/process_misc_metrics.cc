@@ -15,6 +15,7 @@
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/misc_metrics/default_browser_monitor.h"
 #include "brave/components/misc_metrics/features.h"
+#include "brave/components/misc_metrics/image_metadata_stripper_metrics.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
@@ -55,6 +56,9 @@ ProcessMiscMetrics::ProcessMiscMetrics(PrefService* local_state)
   if (base::FeatureList::IsEnabled(features::kCaptchaMetricsCollection)) {
     captcha_metrics_ = std::make_unique<CaptchaMetrics>(local_state);
   }
+  image_metadata_stripper_metrics_ = std::make_unique<
+      image_metadata_stripper::metrics::ImageMetadataStripperMetrics>(
+      local_state);
   doh_metrics_ = std::make_unique<DohMetrics>(local_state);
   uptime_monitor_ = std::make_unique<UptimeMonitorImpl>(local_state);
   media_session_metrics_ = std::make_unique<MediaSessionMetricsImpl>(
@@ -109,6 +113,11 @@ CaptchaMetrics* ProcessMiscMetrics::captcha_metrics() {
   return captcha_metrics_.get();
 }
 
+image_metadata_stripper::metrics::ImageMetadataStripperMetrics*
+ProcessMiscMetrics::image_metadata_stripper_metrics() {
+  return image_metadata_stripper_metrics_.get();
+}
+
 serp_metrics::SerpMetricsP3A* ProcessMiscMetrics::serp_metrics_p3a() {
   return serp_metrics_p3a_.get();
 }
@@ -133,6 +142,8 @@ void ProcessMiscMetrics::RegisterPrefs(PrefRegistrySimple* registry) {
   TabMetrics::RegisterPrefs(registry);
 #endif
   CaptchaMetrics::RegisterPrefs(registry);
+  image_metadata_stripper::metrics::ImageMetadataStripperMetrics::RegisterPrefs(
+      registry);
   DohMetrics::RegisterPrefs(registry);
   MediaSessionMetricsImpl::RegisterPrefs(registry);
   UptimeMonitorImpl::RegisterPrefs(registry);
