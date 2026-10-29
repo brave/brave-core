@@ -47,7 +47,6 @@ gn_args.config(
     args={
         'use_remoteexec': True,
         'use_siso': True,
-        'use_reclient': False,
     },
 )
 
