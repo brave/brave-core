@@ -1,0 +1,249 @@
+[
+  {
+    "cmd": [
+      "git",
+      "ls-remote",
+      "--heads",
+      "https://github.com/brave/brave-core.git",
+      "refs/heads/cr*"
+    ],
+    "name": "find latest cr branch"
+  },
+  {
+    "cmd": [
+      "git",
+      "clone",
+      "--depth",
+      "1",
+      "https://chromium.googlesource.com/chromium/tools/depot_tools",
+      "[WORKSPACE]/b/src/third_party/depot_tools"
+    ],
+    "name": "clone depot_tools"
+  },
+  {
+    "cmd": [
+      "gclient"
+    ],
+    "name": "verify gclient"
+  },
+  {
+    "cmd": [
+      "git",
+      "cache",
+      "exists",
+      "--quiet",
+      "--cache-dir",
+      "/b/cache",
+      "https://github.com/brave/brave-core.git"
+    ],
+    "name": "git cache populate exists (before)"
+  },
+  {
+    "cmd": [
+      "git",
+      "cache",
+      "populate",
+      "--cache-dir",
+      "/b/cache",
+      "https://github.com/brave/brave-core.git",
+      "--reset-fetch-config",
+      "--no-fetch-tags"
+    ],
+    "name": "git cache populate"
+  },
+  {
+    "cmd": [
+      "git",
+      "cache",
+      "exists",
+      "--quiet",
+      "--cache-dir",
+      "/b/cache",
+      "https://github.com/brave/brave-core.git"
+    ],
+    "name": "git cache populate exists (after)"
+  },
+  {
+    "cmd": [
+      "git",
+      "cache",
+      "exists",
+      "--quiet",
+      "--cache-dir",
+      "/b/cache",
+      "https://github.com/brave/brave-core.git"
+    ],
+    "name": "git cache exists"
+  },
+  {
+    "cmd": [
+      "git",
+      "clone",
+      "--no-checkout",
+      "--local",
+      "--shared",
+      "/b/cache/github.com-brave-brave-core",
+      "[WORKSPACE]/b/src/brave"
+    ],
+    "name": "brave-core clone from git cache"
+  },
+  {
+    "cmd": [
+      "git",
+      "config",
+      "gc.auto",
+      "0"
+    ],
+    "cwd": "[WORKSPACE]/b/src/brave",
+    "name": "brave-core disable auto-gc: gc.auto=0"
+  },
+  {
+    "cmd": [
+      "git",
+      "config",
+      "gc.autodetach",
+      "0"
+    ],
+    "cwd": "[WORKSPACE]/b/src/brave",
+    "name": "brave-core disable auto-gc: gc.autodetach=0"
+  },
+  {
+    "cmd": [
+      "git",
+      "config",
+      "gc.autopacklimit",
+      "0"
+    ],
+    "cwd": "[WORKSPACE]/b/src/brave",
+    "name": "brave-core disable auto-gc: gc.autopacklimit=0"
+  },
+  {
+    "cmd": [
+      "git",
+      "config",
+      "maintenance.gc.enabled",
+      "false"
+    ],
+    "cwd": "[WORKSPACE]/b/src/brave",
+    "name": "brave-core disable auto-gc: maintenance.gc.enabled=false"
+  },
+  {
+    "cmd": [
+      "git",
+      "config",
+      "maintenance.auto",
+      "false"
+    ],
+    "cwd": "[WORKSPACE]/b/src/brave",
+    "name": "brave-core disable auto-gc: maintenance.auto=false"
+  },
+  {
+    "cmd": [
+      "git",
+      "checkout",
+      "--force",
+      "origin/cr159",
+      "--"
+    ],
+    "cwd": "[WORKSPACE]/b/src/brave",
+    "name": "brave-core checkout ref"
+  },
+  {
+    "cmd": [
+      "git",
+      "remote",
+      "set-url",
+      "--push",
+      "origin",
+      "https://github.com/brave/brave-core.git"
+    ],
+    "cwd": "[WORKSPACE]/b/src/brave",
+    "name": "brave-core restore origin push url"
+  },
+  {
+    "cmd": [
+      "git",
+      "checkout",
+      "--force",
+      "-B",
+      "cr159"
+    ],
+    "cwd": "[WORKSPACE]/b/src/brave",
+    "name": "brave-core checkout branch"
+  },
+  {
+    "cmd": [
+      "[WORKSPACE]/b/src/third_party/depot_tools/vpython3",
+      "-u",
+      "RECIPE_MODULE[file]/resources/fileutil.py",
+      "--json-output",
+      "/path/to/tmp/json",
+      "copy",
+      "use_remoteexec=false\n",
+      "[WORKSPACE]/b/src/brave/.env"
+    ],
+    "name": "write .env"
+  },
+  {
+    "cmd": [
+      "[WORKSPACE]/b/src/third_party/depot_tools/vpython3",
+      "-u",
+      "RECIPE_MODULE[file]/resources/fileutil.py",
+      "--json-output",
+      "/path/to/tmp/json",
+      "rmtree",
+      "[WORKSPACE]/b/src/brave/.autolift/cr159"
+    ],
+    "name": "clear earlier run"
+  },
+  {
+    "cmd": [
+      "[WORKSPACE]/b/src/third_party/depot_tools/vpython3",
+      "-u",
+      "RECIPE_MODULE[file]/resources/fileutil.py",
+      "--json-output",
+      "/path/to/tmp/json",
+      "rmtree",
+      "[WORKSPACE]/b/src/out"
+    ],
+    "name": "clear out dir"
+  },
+  {
+    "cmd": [
+      "[WORKSPACE]/b/src/third_party/depot_tools/vpython3",
+      "RECIPE[cr/autolift].resources/run_claude.py",
+      "--log",
+      "[WORKSPACE]/b/src/brave/.autolift/cr159/claude.jsonl",
+      "--logs",
+      "[WORKSPACE]/b/src/brave/.autolift/cr159",
+      "--",
+      "claude",
+      "--print",
+      "Lift cr159 by following tools/cr/autolift/SKILL.md from step 1 to the end. Read the whole file before starting. The milestone N is 159.\n\nThis is an unattended CI run: there is no human to ask, so make the calls the document describes and record them in the report.",
+      "--permission-mode",
+      "auto",
+      "--output-format",
+      "stream-json",
+      "--verbose",
+      "--add-dir",
+      "[WORKSPACE]/b",
+      "--allowedTools",
+      "Edit(/[WORKSPACE]/b/**)",
+      "Write(/[WORKSPACE]/b/**)"
+    ],
+    "cwd": "[WORKSPACE]/b/src/brave",
+    "env": {
+      "CHROME_HEADLESS": "1",
+      "CLAUDE_CODE_PRINT_BG_WAIT_CEILING_MS": "0"
+    },
+    "env_prefixes": {
+      "PATH": [
+        "[WORKSPACE]/b/src/brave/tools/cr/bootstrap"
+      ]
+    },
+    "name": "autolift"
+  },
+  {
+    "name": "$result"
+  }
+]
