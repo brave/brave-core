@@ -1,20 +1,98 @@
 diff --git a/chrome/browser/ui/views/frame/vertical_tab_strip_region_view.h b/chrome/browser/ui/views/frame/vertical_tab_strip_region_view.h
-index 52ee4b9479a2a1ca3a59dd83fec819d80fa63868..2ef522ac46913fb0404e496584518924bee47a9d 100644
+index 52ee4b9479a2a1ca3a59dd83fec819d80fa63868..d4f06ac41b615236b64973ee0cab9fad2a8ccf0d 100644
 --- a/chrome/browser/ui/views/frame/vertical_tab_strip_region_view.h
 +++ b/chrome/browser/ui/views/frame/vertical_tab_strip_region_view.h
-@@ -164,6 +164,15 @@ class VerticalTabStripRegionView final
+@@ -52,14 +52,14 @@ class View;
+ 
+ // Container for the vertical tabstrip and the other views sharing space with
+ // it, excluding the caption buttons.
+-class VerticalTabStripRegionView final
++class VerticalTabStripRegionView_ChromiumImpl
+     : public BaseTabStripRegionView,
+       public views::ResizeAreaDelegate,
+       public OmniboxTabHelper::Observer,
+       public tabs::VerticalTabStripStateController::Delegate,
+       public OrganizerPanelHost,
+       public views::LayoutDelegate {
+-  METADATA_HEADER(VerticalTabStripRegionView, BaseTabStripRegionView)
++  METADATA_HEADER(VerticalTabStripRegionView_ChromiumImpl, BaseTabStripRegionView)
+ 
+  public:
+   DECLARE_CLASS_CUSTOM_ELEMENT_EVENT_TYPE(kAnimationCompletedEvent);
+@@ -75,14 +75,14 @@ class VerticalTabStripRegionView final
+   static constexpr int kCollapseSnapWidth =
+       (kUncollapsedMinWidth + kCollapsedWidth) / 2;
+ 
+-  explicit VerticalTabStripRegionView(
++  explicit VerticalTabStripRegionView_ChromiumImpl(
+       tabs::VerticalTabStripStateController* state_controller,
+       actions::ActionItem* root_action_item,
+       BrowserView* browser_view);
+-  VerticalTabStripRegionView(const VerticalTabStripRegionView&) = delete;
+-  VerticalTabStripRegionView& operator=(const VerticalTabStripRegionView&) =
++  VerticalTabStripRegionView_ChromiumImpl(const VerticalTabStripRegionView_ChromiumImpl&) = delete;
++  VerticalTabStripRegionView_ChromiumImpl& operator=(const VerticalTabStripRegionView_ChromiumImpl&) =
+       delete;
+-  ~VerticalTabStripRegionView() override;
++  ~VerticalTabStripRegionView_ChromiumImpl() override;
+ 
+   VerticalTabStripTopContainer* GetTopContainer() {
+     return top_button_container_;
+@@ -164,14 +164,20 @@ class VerticalTabStripRegionView final
      return focus_swipe_controller_.get();
    }
  
 +  int GetCollapsedWidth() const;
-+  void HandleMouseMoveEvent(const gfx::PointF& point_int_screen);
 +
 + protected:
-+  void ObserveHideCompletelyPref();
-+  void OnHideCompletelyPrefChanged();
 +  bool IsMouseInHotCorner() const;
-+  PrefChangeRegistrar hide_completely_pref_registrar_;
 +
   private:
++  friend class VerticalTabStripRegionView;
    // Since VerticalTabStripRegionView inherits from AccessiblePaneView, which is
    // a FocusChangeListener, we need to have a separate focus listener to avoid
+   // conflicts with the base class implementation which conditionally listens
+   // for focus changes.
+   class RegionViewFocusListener : public views::FocusChangeListener {
+    public:
+-    explicit RegionViewFocusListener(VerticalTabStripRegionView* region_view);
++    explicit RegionViewFocusListener(VerticalTabStripRegionView_ChromiumImpl* region_view);
+     RegionViewFocusListener(const RegionViewFocusListener&) = delete;
+     RegionViewFocusListener& operator=(const RegionViewFocusListener&) = delete;
+     ~RegionViewFocusListener() override = default;
+@@ -181,7 +187,7 @@ class VerticalTabStripRegionView final
+                           views::View* focused_now) override;
+ 
+    private:
+-    raw_ptr<VerticalTabStripRegionView> region_view_;
++    raw_ptr<VerticalTabStripRegionView_ChromiumImpl> region_view_;
+   };
+ 
+   // To avoid extra motion during expand on hover when the user doesn't need the
+@@ -191,7 +197,7 @@ class VerticalTabStripRegionView final
+   // timer.
+   class ClickEventHandler : public ui::EventHandler {
+    public:
+-    explicit ClickEventHandler(VerticalTabStripRegionView* region_view);
++    explicit ClickEventHandler(VerticalTabStripRegionView_ChromiumImpl* region_view);
+     ClickEventHandler(const ClickEventHandler&) = delete;
+     ClickEventHandler& operator=(const ClickEventHandler&) = delete;
+     ~ClickEventHandler() override = default;
+@@ -200,7 +206,7 @@ class VerticalTabStripRegionView final
+     void OnMouseEvent(ui::MouseEvent* event) override;
+ 
+    private:
+-    raw_ptr<VerticalTabStripRegionView> region_view_;
++    raw_ptr<VerticalTabStripRegionView_ChromiumImpl> region_view_;
+   };
+ 
+   // Used to create and destroy locks for the expand on hover state.
+@@ -219,7 +225,7 @@ class VerticalTabStripRegionView final
+   void OnCollapseStateChanged(
+       tabs::VerticalTabStripCollapseState collapse_state);
+ 
+-  void OnAnimationProgressed(const BrowserAnimationController* controller,
++  virtual void OnAnimationProgressed(const BrowserAnimationController* controller,
+                              BrowserAnimationUpdate status);
+ 
+   // Get whether the collapse/expand animation is running.

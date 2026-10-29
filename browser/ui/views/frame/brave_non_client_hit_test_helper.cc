@@ -46,6 +46,16 @@ int BraveNonClientHitTestHelper::NonClientHitTest(
     // Callers must guard against this before calling NonClientHitTest().
     CHECK_EQ(view->GetWidget(), browser_view->GetWidget());
 
+    // GetHitTestComponent() only looks at |view|'s subtree, so ignore points
+    // where another view is drawn above it (e.g. the vertical tab strip that's
+    // expanded on hover over the toolbar).
+    const views::View* target =
+        view->GetWidget()->GetRootView()->GetEventHandlerForPoint(
+            point_in_widget);
+    if (!view->Contains(target)) {
+      return HTNOWHERE;
+    }
+
 #if BUILDFLAG(IS_WIN)
     auto hit_test_result = views::GetHitTestComponent(view, point_in_widget);
 #else

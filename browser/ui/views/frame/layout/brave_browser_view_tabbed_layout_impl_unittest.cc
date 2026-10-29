@@ -112,6 +112,11 @@ class MockBrowserViewLayoutDelegate : public FakeBrowserViewLayoutDelegate {
               (),
               (const, override));
   MOCK_METHOD(bool, IsFullscreenForTab, (), (const, override));
+  MOCK_METHOD(BrowserViewLayoutDelegate::TabStripType,
+              GetTabStripType,
+              (),
+              (const, override));
+  MOCK_METHOD(bool, ShouldShowVerticalTabs, (), (const, override));
   MOCK_METHOD(WindowState, GetBrowserWindowState, (), (const, override));
 };
 
@@ -339,6 +344,65 @@ TEST(BraveBrowserViewTabbedLayoutImplTest,
   EXPECT_FALSE(layout->GetTopContainerSeparatorForTesting());
   EXPECT_FALSE(layout->GetMultiContentsSeparatorForTesting());
   EXPECT_FALSE(layout->GetShadowBoxForTesting());
+}
+
+// ---------------------------------------------------------------------------
+// GetUpstreamVerticalTabStripWidth
+//
+// Upstream's vertical tab strip reserves no width when Brave's own vertical
+// tabs are in use, when the tab strip isn't vertical, or when the region view
+// isn't parented to the browser view.
+// ---------------------------------------------------------------------------
+
+TEST(BraveBrowserViewTabbedLayoutImplTest,
+     UpstreamVerticalTabStripWidthZeroWithBraveVerticalTabs) {
+  auto mock =
+      std::make_unique<testing::NiceMock<MockBrowserViewLayoutDelegate>>();
+  EXPECT_CALL(*mock, ShouldShowVerticalTabs())
+      .WillRepeatedly(::testing::Return(true));
+  EXPECT_CALL(*mock, GetTabStripType())
+      .WillRepeatedly(::testing::Return(
+          BrowserViewLayoutDelegate::TabStripType::kVertical));
+
+  BrowserViewLayoutViews views;
+  auto layout = std::make_unique<BraveBrowserViewTabbedLayoutImpl>(
+      std::move(mock), std::move(views));
+
+  EXPECT_EQ(0, layout->GetUpstreamVerticalTabStripWidthForTesting());
+}
+
+TEST(BraveBrowserViewTabbedLayoutImplTest,
+     UpstreamVerticalTabStripWidthZeroWhenTabStripNotVertical) {
+  auto mock =
+      std::make_unique<testing::NiceMock<MockBrowserViewLayoutDelegate>>();
+  EXPECT_CALL(*mock, ShouldShowVerticalTabs())
+      .WillRepeatedly(::testing::Return(false));
+  EXPECT_CALL(*mock, GetTabStripType())
+      .WillRepeatedly(::testing::Return(
+          BrowserViewLayoutDelegate::TabStripType::kHorizontal));
+
+  BrowserViewLayoutViews views;
+  auto layout = std::make_unique<BraveBrowserViewTabbedLayoutImpl>(
+      std::move(mock), std::move(views));
+
+  EXPECT_EQ(0, layout->GetUpstreamVerticalTabStripWidthForTesting());
+}
+
+TEST(BraveBrowserViewTabbedLayoutImplTest,
+     UpstreamVerticalTabStripWidthZeroWithoutRegionView) {
+  auto mock =
+      std::make_unique<testing::NiceMock<MockBrowserViewLayoutDelegate>>();
+  EXPECT_CALL(*mock, ShouldShowVerticalTabs())
+      .WillRepeatedly(::testing::Return(false));
+  EXPECT_CALL(*mock, GetTabStripType())
+      .WillRepeatedly(::testing::Return(
+          BrowserViewLayoutDelegate::TabStripType::kVertical));
+
+  BrowserViewLayoutViews views;
+  auto layout = std::make_unique<BraveBrowserViewTabbedLayoutImpl>(
+      std::move(mock), std::move(views));
+
+  EXPECT_EQ(0, layout->GetUpstreamVerticalTabStripWidthForTesting());
 }
 
 // ---------------------------------------------------------------------------
