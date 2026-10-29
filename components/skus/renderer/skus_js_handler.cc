@@ -312,12 +312,12 @@ void SkusJSHandler::OnCredentialSummary(
 gin::ObjectTemplateBuilder SkusJSHandler::GetObjectTemplateBuilder(
     v8::Isolate* isolate) {
   return gin::Wrappable<SkusJSHandler>::GetObjectTemplateBuilder(isolate)
-      .SetMethod("refresh_order", &SkusJSHandler::RefreshOrder)
-      .SetMethod("fetch_order_credentials",
-                 &SkusJSHandler::FetchOrderCredentials)
-      .SetMethod("prepare_credentials_presentation",
-                 &SkusJSHandler::PrepareCredentialsPresentation)
-      .SetMethod("credential_summary", &SkusJSHandler::CredentialSummary);
+      .SetMethod<&SkusJSHandler::RefreshOrder>("refresh_order")
+      .SetMethod<&SkusJSHandler::FetchOrderCredentials>(
+          "fetch_order_credentials")
+      .SetMethod<&SkusJSHandler::PrepareCredentialsPresentation>(
+          "prepare_credentials_presentation")
+      .SetMethod<&SkusJSHandler::CredentialSummary>("credential_summary");
 }
 
 const gin::WrapperInfo* SkusJSHandler::wrapper_info() const {
