@@ -7,6 +7,8 @@ import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 
 source_set("split_view") {
   sources = [
+    "brave_contents_container_outline.cc",
+    "brave_contents_container_outline.h",
     "brave_contents_container_view.cc",
     "brave_contents_container_view.h",
     "brave_multi_contents_view.cc",

@@ -13,6 +13,7 @@
 #include "brave/browser/ui/bookmark/bookmark_helper.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/split_view/split_view_features.h"
+#include "brave/browser/ui/views/brave_layout_provider.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/split_view/brave_contents_container_view.h"
 #include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view.h"
@@ -71,6 +72,7 @@
 #include "ui/views/border.h"
 #include "ui/views/controls/button/image_button.h"
 #include "ui/views/controls/label.h"
+#include "ui/views/layout/layout_provider.h"
 #include "ui/views/view_utils.h"
 #include "ui/views/widget/widget.h"
 
@@ -382,8 +384,6 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest, BraveMultiContentsViewTest) {
       multi_contents_view->contents_container_views_for_testing()[1]);
   ASSERT_TRUE(start_contents_container_view);
   ASSERT_TRUE(end_contents_container_view);
-  EXPECT_FALSE(
-      multi_contents_view->background_view_for_testing()->GetVisible());
 
   // Brave zeroes kSplitViewContentInset via chromium_src so that
   // MultiContentsView doesn't add insets — padding is handled by Brave's
@@ -394,27 +394,39 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest, BraveMultiContentsViewTest) {
   EXPECT_EQ(multi_contents_view->height(),
             end_contents_container_view->height());
 
-  FullscreenController* fullscreen_controller =
-      ExclusiveAccessManager::From(browser())->fullscreen_controller();
-  fullscreen_controller->set_is_tab_fullscreen_for_testing(true);
-  brave_browser_view()->InvalidateLayout();
-  RunScheduledLayouts();
-  EXPECT_EQ(gfx::RoundedCornersF(),
-            start_contents_container_view->GetCornerRadius(true));
-  fullscreen_controller->set_is_tab_fullscreen_for_testing(false);
-  brave_browser_view()->InvalidateLayout();
-  RunScheduledLayouts();
-
   auto* start_contents_web_view =
       multi_contents_view->start_contents_view_for_testing();
   auto* end_contents_web_view =
       multi_contents_view->end_contents_view_for_testing();
   ASSERT_TRUE(start_contents_web_view);
   ASSERT_TRUE(end_contents_web_view);
-  EXPECT_EQ(start_contents_web_view->layer()->rounded_corner_radii(),
-            start_contents_container_view->GetCornerRadius(false));
-  EXPECT_EQ(end_contents_web_view->layer()->rounded_corner_radii(),
-            end_contents_container_view->GetCornerRadius(false));
+
+  // In tab fullscreen the contents fill the window, so they aren't rounded.
+  FullscreenController* fullscreen_controller =
+      ExclusiveAccessManager::From(browser())->fullscreen_controller();
+  fullscreen_controller->set_is_tab_fullscreen_for_testing(true);
+  brave_browser_view()->InvalidateLayout();
+  RunScheduledLayouts();
+  EXPECT_EQ(gfx::RoundedCornersF(),
+            start_contents_web_view->layer()->rounded_corner_radii());
+  fullscreen_controller->set_is_tab_fullscreen_for_testing(false);
+  brave_browser_view()->InvalidateLayout();
+  RunScheduledLayouts();
+
+  // Otherwise each pane is rounded, and the corners meeting the split divider
+  // use the smaller adjacent-edge radius rather than the window radius.
+  const float adjacent_edge_radius =
+      views::LayoutProvider::Get()->GetCornerRadiusMetric(
+          ExtendedShapeContextTokens::kRoundedCornersBorderRadius);
+  const auto start_radii =
+      start_contents_web_view->layer()->rounded_corner_radii();
+  const auto end_radii = end_contents_web_view->layer()->rounded_corner_radii();
+  EXPECT_FALSE(start_radii.IsEmpty());
+  EXPECT_FALSE(end_radii.IsEmpty());
+  EXPECT_EQ(adjacent_edge_radius, start_radii.upper_right());
+  EXPECT_EQ(adjacent_edge_radius, start_radii.lower_right());
+  EXPECT_EQ(adjacent_edge_radius, end_radii.upper_left());
+  EXPECT_EQ(adjacent_edge_radius, end_radii.lower_left());
 
   // Check borders.
   EXPECT_EQ(gfx::Insets(BraveContentsContainerView::kBorderThickness),

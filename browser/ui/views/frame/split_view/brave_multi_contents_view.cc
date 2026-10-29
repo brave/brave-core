@@ -171,7 +171,8 @@ void BraveMultiContentsView::UpdateContentsCornerRadii(
 
 views::ProposedLayout BraveMultiContentsView::CalculateProposedLayout(
     const views::SizeBounds& size_bounds) const {
-  if (!size_bounds.is_fully_bounded()) {
+  if (!size_bounds.is_fully_bounded() ||
+      !contents_container_view_for_web_panel_) {
     return MultiContentsView::CalculateProposedLayout(size_bounds);
   }
 
@@ -182,21 +183,6 @@ views::ProposedLayout BraveMultiContentsView::CalculateProposedLayout(
   new_size_bounds.Enlarge(-web_panel_width, 0);
   views::ProposedLayout layouts =
       MultiContentsView::CalculateProposedLayout(new_size_bounds);
-
-  // Always hide |background_view_|. Due to layered |background_view_|,
-  // our custom border drawn by BraveContentsContainerView is not visible
-  // because BraveContentsContainerView doesn't have layer and its parent
-  // layer is behind the |background_view_|.
-  // We can handle this by having BraveContentsContainerView's own layer but
-  // it's resource waste because we don't need |background_view_|. We alreay
-  // have CustomBackground that fills contents area with toolbar color.
-  auto* background_view_layout = layouts.GetLayoutFor(background_view_.get());
-  CHECK(background_view_layout);
-  background_view_layout->visible = false;
-
-  if (!contents_container_view_for_web_panel_) {
-    return layouts;
-  }
 
   if (web_panel_on_left_) {
     for (auto& layout : layouts.child_layouts) {

@@ -8,7 +8,6 @@
 
 #include "chrome/browser/ui/views/frame/multi_contents_view_mini_toolbar.h"
 #include "ui/base/metadata/metadata_header_macros.h"
-#include "ui/color/color_id.h"
 
 class BraveMultiContentsViewMiniToolbar : public MultiContentsViewMiniToolbar {
   METADATA_HEADER(BraveMultiContentsViewMiniToolbar,
@@ -40,21 +39,13 @@ class BraveMultiContentsViewMiniToolbar : public MultiContentsViewMiniToolbar {
   // to `Style::kSplit`. Takes effect on the next `UpdateState()` call.
   void SetStyle(Style style);
 
-  // View:
-  void OnBoundsChanged(const gfx::Rect& previous_bounds) override;
-
   // MultiContentsViewMiniToolbar:
   void UpdateContents() override;
   void UpdateState(bool is_active, bool is_highlighted) override;
-  void OnPaint(gfx::Canvas* canvas) override;
 
  private:
   bool UsesSplitBorder() const;
-  ui::ColorId GetStrokeColor() const;
   int GetOutlineThickness() const;
-  int GetContainerBorderThickness() const;
-  SkPath GetPath(bool border_stroke_only) const;
-  void UpdateClipPath();
 
   bool is_active_ = false;
   bool always_show_domain_ = false;
