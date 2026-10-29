@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+#include <optional>
 #include <unordered_set>
 #include <variant>
 
@@ -12,7 +13,9 @@
 #include "base/test/test_future.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
+#include "brave/browser/ui/tabs/tree_tab_drag_hint.h"
 #include "brave/browser/ui/tabs/tree_tab_model.h"
+#include "brave/components/tabs/public/tree_tab_node.h"
 #include "brave/components/tabs/public/tree_tab_node_id.h"
 #include "brave/components/tabs/public/tree_tab_node_tab_collection.h"
 #include "chrome/app/chrome_command_ids.h"
@@ -947,6 +950,67 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest, AddTabRecursive) {
             tabs::TabCollection::Type::TREE_NODE);
   EXPECT_EQ(added_tab->GetParentCollection()->GetParentCollection(),
             &unpinned_collection());
+}
+
+IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest, DuplicateParentTabWithDescendants) {
+  SetTreeTabsEnabled(true);
+  auto* unrelated_tab = tab_strip_model().GetTabAtIndex(0);
+
+  // Duplicate with the parent, a descendant, or an unrelated tab active.
+  // ADD_INHERIT_OPENER uses the active tab even for context-menu duplication.
+  for (int active_tab = 0; active_tab < 3; ++active_tab) {
+    SCOPED_TRACE(active_tab);
+    const int parent_index = tab_strip_model().count();
+    auto parent = std::make_unique<tabs::TabModel>(CreateWebContents(),
+                                                   &tab_strip_model());
+    auto* parent_tab = parent.get();
+    tab_strip_model().AddTab(std::move(parent), -1,
+                             ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+
+    auto child = std::make_unique<tabs::TabModel>(CreateWebContents(),
+                                                  &tab_strip_model());
+    child->set_opener(parent_tab);
+    auto* child_tab = child.get();
+    tab_strip_model().AddTab(std::move(child), -1,
+                             ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+
+    auto grandchild = std::make_unique<tabs::TabModel>(CreateWebContents(),
+                                                       &tab_strip_model());
+    grandchild->set_opener(child_tab);
+    auto* grandchild_tab = grandchild.get();
+    tab_strip_model().AddTab(std::move(grandchild), -1,
+                             ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+
+    auto* parent_node = parent_tab->GetParentCollection();
+    auto* child_node = child_tab->GetParentCollection();
+    ASSERT_EQ(child_node->GetParentCollection(), parent_node);
+    ASSERT_EQ(grandchild_tab->GetParentCollection()->GetParentCollection(),
+              child_node);
+    auto* selected_tab = unrelated_tab;
+    if (active_tab == 0) {
+      selected_tab = parent_tab;
+    } else if (active_tab == 1) {
+      selected_tab = child_tab;
+    }
+    tab_strip_model().ActivateTabAt(
+        tab_strip_model().GetIndexOfTab(selected_tab));
+    const int old_count = tab_strip_model().count();
+
+    auto* duplicate = chrome::DuplicateTabAt(browser(), parent_index);
+
+    ASSERT_EQ(tab_strip_model().count(), old_count + 1);
+    EXPECT_EQ(tab_strip_model().GetWebContentsAt(parent_index + 1), duplicate);
+    auto* duplicate_node = tab_strip_model()
+                               .GetTabAtIndex(parent_index + 1)
+                               ->GetParentCollection();
+    EXPECT_EQ(duplicate_node->type(), tabs::TabCollection::Type::TREE_NODE);
+    EXPECT_EQ(duplicate_node->GetParentCollection(), parent_node);
+    EXPECT_EQ(duplicate_node->TabCountRecursive(), 1u);
+    EXPECT_EQ(child_tab->GetParentCollection(), child_node);
+    EXPECT_EQ(child_node->GetParentCollection(), parent_node);
+    EXPECT_EQ(grandchild_tab->GetParentCollection()->GetParentCollection(),
+              child_node);
+  }
 }
 
 // When a saved tab group is restored, Navigate() sets each
@@ -4395,4 +4459,182 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
   EXPECT_EQ(1, reload_observers[1].load_count());
   EXPECT_EQ(1, reload_observers[2].load_count());
   EXPECT_EQ(0, reload_observers[3].load_count());
+}
+
+class TreeTabsDragHintBrowserTest : public TreeTabsBrowserTest {
+ protected:
+  // Returns the parent tree node id of |tab|'s tree node, or nullopt if the
+  // node is a root.
+  std::optional<tree_tab::TreeTabNodeId> GetParentNodeIdOfTab(
+      tabs::TabInterface* tab) {
+    const tabs::TreeTabNode* node =
+        tab_strip_model().tree_model()->GetNode(GetTreeTabNodeIdForTab(tab));
+    CHECK(node);
+    return node->GetParentTreeNodeId();
+  }
+
+  // Selects only the tab at |index| and moves it to |to_index| with |target|.
+  void MoveTabWithDragTarget(int index,
+                             int to_index,
+                             std::optional<TreeTabDragTarget> target) {
+    tab_strip_model().ActivateTabAt(index);
+    tab_strip_model().SetTreeTabDragTarget(target);
+    tab_strip_model().MoveSelectedTabsTo(to_index, std::nullopt);
+    tab_strip_model().SetTreeTabDragTarget(std::nullopt);
+  }
+
+  // Appends a root tab, which doesn't inherit the active tab as opener.
+  void AppendRootTab() {
+    tab_strip_model().AppendWebContents(CreateWebContents(),
+                                        /*foreground=*/false);
+  }
+};
+
+// Nesting level can be changed without changing the index.
+IN_PROC_BROWSER_TEST_F(TreeTabsDragHintBrowserTest,
+                       ChildAndSiblingHintAtSamePosition) {
+  SetTreeTabsEnabled(true);
+  ASSERT_TRUE(tab_strip_model().tree_model());
+
+  // A, B, C are all roots.
+  AppendRootTab();
+  AppendRootTab();
+  ASSERT_EQ(3, tab_strip_model().count());
+  auto* tab_b = tab_strip_model().GetTabAtIndex(1);
+  auto* tab_c = tab_strip_model().GetTabAtIndex(2);
+  ASSERT_FALSE(GetParentNodeIdOfTab(tab_c));
+
+  // C becomes a child of B.
+  MoveTabWithDragTarget(
+      2, 2, TreeTabDragTarget{TreeTabDragHint::kChild, tab_b->GetHandle()});
+  EXPECT_EQ(tab_c, tab_strip_model().GetTabAtIndex(2));
+  EXPECT_EQ(GetParentNodeIdOfTab(tab_c), GetTreeTabNodeIdForTab(tab_b));
+
+  // C becomes a sibling of B again.
+  MoveTabWithDragTarget(
+      2, 2, TreeTabDragTarget{TreeTabDragHint::kSibling, tab_b->GetHandle()});
+  EXPECT_EQ(tab_c, tab_strip_model().GetTabAtIndex(2));
+  EXPECT_FALSE(GetParentNodeIdOfTab(tab_c));
+}
+
+// The child hint is applied when moving to a different index.
+IN_PROC_BROWSER_TEST_F(TreeTabsDragHintBrowserTest, ChildHintToOtherIndex) {
+  SetTreeTabsEnabled(true);
+  ASSERT_TRUE(tab_strip_model().tree_model());
+
+  AppendRootTab();
+  AppendRootTab();
+  ASSERT_EQ(3, tab_strip_model().count());
+  auto* tab_a = tab_strip_model().GetTabAtIndex(0);
+  auto* tab_c = tab_strip_model().GetTabAtIndex(2);
+
+  // Move C between A and B as a child of A.
+  MoveTabWithDragTarget(
+      2, 1, TreeTabDragTarget{TreeTabDragHint::kChild, tab_a->GetHandle()});
+  EXPECT_EQ(tab_c, tab_strip_model().GetTabAtIndex(1));
+  EXPECT_EQ(GetParentNodeIdOfTab(tab_c), GetTreeTabNodeIdForTab(tab_a));
+}
+
+// The sibling hint makes the moved tab a sibling of the tab above, while the
+// default makes it a sibling of the tab below.
+IN_PROC_BROWSER_TEST_F(TreeTabsDragHintBrowserTest, SiblingHintOfTabAbove) {
+  SetTreeTabsEnabled(true);
+  ASSERT_TRUE(tab_strip_model().tree_model());
+
+  // A (root) -> B (child of A), C (root).
+  auto* tab_a = tab_strip_model().GetTabAtIndex(0);
+  auto tab_b_model =
+      std::make_unique<tabs::TabModel>(CreateWebContents(), &tab_strip_model());
+  tab_b_model->set_opener(tab_a);
+  tab_strip_model().AddTab(std::move(tab_b_model), -1,
+                           ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+  AppendRootTab();
+  ASSERT_EQ(3, tab_strip_model().count());
+  auto* tab_b = tab_strip_model().GetTabAtIndex(1);
+  auto* tab_c = tab_strip_model().GetTabAtIndex(2);
+  ASSERT_EQ(GetParentNodeIdOfTab(tab_b), GetTreeTabNodeIdForTab(tab_a));
+  ASSERT_FALSE(GetParentNodeIdOfTab(tab_c));
+
+  MoveTabWithDragTarget(
+      2, 2, TreeTabDragTarget{TreeTabDragHint::kSibling, tab_b->GetHandle()});
+  EXPECT_EQ(tab_c, tab_strip_model().GetTabAtIndex(2));
+  EXPECT_EQ(GetParentNodeIdOfTab(tab_c), GetTreeTabNodeIdForTab(tab_a));
+
+  // Without a hint, C at the same position keeps its nesting level.
+  MoveTabWithDragTarget(2, 2, std::nullopt);
+  EXPECT_EQ(GetParentNodeIdOfTab(tab_c), GetTreeTabNodeIdForTab(tab_a));
+}
+
+// The hint is ignored when the target isn't right above the destination or is
+// the moving tab itself.
+IN_PROC_BROWSER_TEST_F(TreeTabsDragHintBrowserTest, InvalidTargetIsIgnored) {
+  SetTreeTabsEnabled(true);
+  ASSERT_TRUE(tab_strip_model().tree_model());
+
+  AppendRootTab();
+  AppendRootTab();
+  ASSERT_EQ(3, tab_strip_model().count());
+  auto* tab_a = tab_strip_model().GetTabAtIndex(0);
+  auto* tab_c = tab_strip_model().GetTabAtIndex(2);
+
+  // A is not right above C's destination.
+  MoveTabWithDragTarget(
+      2, 2, TreeTabDragTarget{TreeTabDragHint::kChild, tab_a->GetHandle()});
+  EXPECT_EQ(tab_c, tab_strip_model().GetTabAtIndex(2));
+  EXPECT_FALSE(GetParentNodeIdOfTab(tab_c));
+
+  // C can't be a child of itself.
+  MoveTabWithDragTarget(
+      2, 2, TreeTabDragTarget{TreeTabDragHint::kChild, tab_c->GetHandle()});
+  EXPECT_EQ(tab_c, tab_strip_model().GetTabAtIndex(2));
+  EXPECT_FALSE(GetParentNodeIdOfTab(tab_c));
+}
+
+// The sibling hint with the tab below makes the moved tab a sibling of it, even
+// when the index doesn't change.
+IN_PROC_BROWSER_TEST_F(TreeTabsDragHintBrowserTest, SiblingHintOfTabBelow) {
+  SetTreeTabsEnabled(true);
+  ASSERT_TRUE(tab_strip_model().tree_model());
+
+  // A, B, C, D are all roots.
+  AppendRootTab();
+  AppendRootTab();
+  AppendRootTab();
+  ASSERT_EQ(4, tab_strip_model().count());
+  auto* tab_b = tab_strip_model().GetTabAtIndex(1);
+  auto* tab_c = tab_strip_model().GetTabAtIndex(2);
+  auto* tab_d = tab_strip_model().GetTabAtIndex(3);
+
+  // B -> C, D.
+  MoveTabWithDragTarget(
+      2, 2, TreeTabDragTarget{TreeTabDragHint::kChild, tab_b->GetHandle()});
+  ASSERT_EQ(GetParentNodeIdOfTab(tab_c), GetTreeTabNodeIdForTab(tab_b));
+
+  // C becomes a sibling of D.
+  MoveTabWithDragTarget(
+      2, 2, TreeTabDragTarget{TreeTabDragHint::kSibling, tab_d->GetHandle()});
+  EXPECT_EQ(tab_c, tab_strip_model().GetTabAtIndex(2));
+  EXPECT_FALSE(GetParentNodeIdOfTab(tab_c));
+}
+
+// The sibling hint with an empty target at the end of the strip makes the
+// moved tab a top-level node.
+IN_PROC_BROWSER_TEST_F(TreeTabsDragHintBrowserTest, SiblingHintAtEnd) {
+  SetTreeTabsEnabled(true);
+  ASSERT_TRUE(tab_strip_model().tree_model());
+
+  AppendRootTab();
+  AppendRootTab();
+  ASSERT_EQ(3, tab_strip_model().count());
+  auto* tab_b = tab_strip_model().GetTabAtIndex(1);
+  auto* tab_c = tab_strip_model().GetTabAtIndex(2);
+
+  // B -> C.
+  MoveTabWithDragTarget(
+      2, 2, TreeTabDragTarget{TreeTabDragHint::kChild, tab_b->GetHandle()});
+  ASSERT_EQ(GetParentNodeIdOfTab(tab_c), GetTreeTabNodeIdForTab(tab_b));
+
+  MoveTabWithDragTarget(2, 2, TreeTabDragTarget{TreeTabDragHint::kSibling, {}});
+  EXPECT_EQ(tab_c, tab_strip_model().GetTabAtIndex(2));
+  EXPECT_FALSE(GetParentNodeIdOfTab(tab_c));
 }

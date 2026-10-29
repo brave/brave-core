@@ -431,8 +431,11 @@ BraveTreeTabStripCollectionDelegate::CalculateTargetIndexInOpenerCollection(
       break;
     }
 
-    CHECK(opener_index + tab_count < recursive_index)
-        << "We don't assume target index exceed the specified index.";
+    // The requested position may be inside a descendant's subtree rather
+    // than between direct children of the opener.
+    if (opener_index + tab_count > recursive_index) {
+      return std::nullopt;
+    }
 
     target_index++;
     std::visit(absl::Overload{
@@ -484,9 +487,25 @@ void BraveTreeTabStripCollectionDelegate::AddTabToUnpinnedCollectionAsTreeNode(
     size_t index,
     std::optional<tab_groups::TabGroupId> new_group_id,
     tabs::ScopedTab tab) const {
-  // Insert the new tab into the unpinned collection first.
   CHECK(tab);
   CHECK(!new_group_id.has_value());
+
+  // A position inside an existing tree cannot be converted to a direct
+  // index in the unpinned collection. Insert before the target tree node.
+  if (index < collection_->TabCountRecursive()) {
+    auto* target_node = GetParentTreeNodeCollectionOfTab(
+        collection_->GetTabAtIndexRecursive(index));
+    if (collection_->GetIndexOfTabRecursive(
+            target_node->GetTabAtIndexRecursive(0)) == index) {
+      auto* parent = target_node->GetParentCollection();
+      AddTabAsTreeNodeToCollection(
+          std::move(tab), parent,
+          parent->GetIndexOfCollection(target_node).value(), index);
+      return;
+    }
+  }
+
+  // Insert the new tab into the unpinned collection first.
   auto* added_tab = tab.get();
   collection_->AddTabRecursive(std::move(tab), index, new_group_id,
                                /*new_pinned_state=*/false, GetPassKey());
@@ -700,6 +719,15 @@ void BraveTreeTabStripCollectionDelegate::MoveTabsRecursive(
         moving_tab_parent_node->MaybeRemoveCollection(moving_tab_tree_node));
   }
 
+  // Nest the moving tabs as requested by the drag hint, if any. This takes
+  // precedence over restoring the original position so that the nesting
+  // level can be adjusted without changing the index.
+  if (moving_groups.empty() &&
+      MaybeInsertWithDragTarget(unique_moving_tab_collections_reversed,
+                                destination_index)) {
+    return;
+  }
+
   // Insert to the target position and collection.
   if (original_parent_collection) {
     // Moving to the same position in the same collection.
@@ -761,6 +789,101 @@ void BraveTreeTabStripCollectionDelegate::MoveTabsRecursive(
     new_parent_node_for_moving_tab->AddCollection(
         std::move(unique_moving_tab_collection), *index);
   }
+}
+
+bool BraveTreeTabStripCollectionDelegate::MaybeInsertWithDragTarget(
+    std::vector<std::unique_ptr<tabs::TabCollection>>& moving_collections,
+    size_t destination_index) {
+  if (!pending_drag_target_) {
+    return false;
+  }
+
+  const auto insert = [&moving_collections](tabs::TabCollection* new_parent,
+                                            size_t index_in_new_parent) {
+    CHECK(new_parent);
+    for (auto& moving_collection : moving_collections) {
+      new_parent->AddCollection(std::move(moving_collection),
+                                index_in_new_parent);
+    }
+  };
+
+  auto* target = pending_drag_target_->target.Get();
+  if (!target) {
+    // No tab below the end of the strip: become a top-level node.
+    if (pending_drag_target_->hint != TreeTabDragHint::kSibling ||
+        destination_index != collection_->TabCountRecursive()) {
+      return false;
+    }
+    auto* unpinned = collection_->unpinned_collection();
+    insert(unpinned, unpinned->ChildCount());
+    return true;
+  }
+
+  // The target must still be in the strip (i.e. it's not one of the moving
+  // tabs) and be right above or below the destination.
+  const auto target_index = collection_->GetIndexOfTabRecursive(target);
+  if (!target_index || IsTabInPinnedCollection(target)) {
+    return false;
+  }
+
+  if (*target_index == destination_index) {
+    // The target is right below the destination: become a sibling placed
+    // before it.
+    if (pending_drag_target_->hint != TreeTabDragHint::kSibling) {
+      return false;
+    }
+    // The target node must start with the target, e.g. not the second tab of
+    // a split or group.
+    auto* target_node = GetParentTreeNodeCollectionOfTab(target);
+    if (target_node->GetTabAtIndexRecursive(0) != target) {
+      return false;
+    }
+    auto* new_parent = target_node->GetParentCollection();
+    insert(new_parent, new_parent->GetIndexOfCollection(target_node).value());
+    return true;
+  }
+
+  if (destination_index == 0 || *target_index != destination_index - 1) {
+    return false;
+  }
+
+  // The target is right above the destination. Tabs in groups or splits can't
+  // be a parent or sibling of other tree nodes as is.
+  auto* target_parent = collection_->GetParentCollection(target, GetPassKey());
+  if (!target_parent ||
+      target_parent->type() != tabs::TabCollection::Type::TREE_NODE) {
+    return false;
+  }
+  auto* target_node =
+      static_cast<tabs::TreeTabNodeTabCollection*>(target_parent);
+
+  tabs::TabCollection* new_parent = nullptr;
+  size_t index_in_new_parent = 0;
+  switch (pending_drag_target_->hint) {
+    case TreeTabDragHint::kChild:
+      // Don't hide the moving tabs under a collapsed node.
+      if (target_node->node().collapsed()) {
+        return false;
+      }
+      // The first child comes right after the node's current value.
+      new_parent = target_node;
+      index_in_new_parent = 1;
+      break;
+    case TreeTabDragHint::kSibling:
+      // Placing after the target node keeps the destination index only when
+      // the target node has no children in between.
+      if (target_node->ChildCount() > 1) {
+        return false;
+      }
+      new_parent = target_node->GetParentCollection();
+      CHECK(new_parent);
+      index_in_new_parent =
+          new_parent->GetIndexOfCollection(target_node).value() + 1;
+      break;
+  }
+
+  insert(new_parent, index_in_new_parent);
+  return true;
 }
 
 void BraveTreeTabStripCollectionDelegate::AttachDetachedGroupCollection(

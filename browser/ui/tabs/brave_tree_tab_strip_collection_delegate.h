@@ -6,10 +6,14 @@
 #ifndef BRAVE_BROWSER_UI_TABS_BRAVE_TREE_TAB_STRIP_COLLECTION_DELEGATE_H_
 #define BRAVE_BROWSER_UI_TABS_BRAVE_TREE_TAB_STRIP_COLLECTION_DELEGATE_H_
 
+#include <memory>
+#include <optional>
 #include <set>
+#include <vector>
 
 #include "base/containers/flat_set.h"
 #include "base/types/expected.h"
+#include "brave/browser/ui/tabs/tree_tab_drag_hint.h"
 #include "brave/components/tabs/public/brave_tab_strip_collection_delegate.h"
 
 class TreeTabModel;
@@ -70,7 +74,21 @@ class BraveTreeTabStripCollectionDelegate
   void DidAttachTreeTabNodeSubtree(
       tabs::TreeTabNodeTabCollection& subtree_root) override;
 
+  // Sets the nesting hint consumed by the next MoveTabsRecursive() call. The
+  // caller is responsible for resetting it after the move.
+  void set_pending_drag_target(std::optional<TreeTabDragTarget> target) {
+    pending_drag_target_ = target;
+  }
+
  private:
+  // Tries to insert |moving_collections| according to |pending_drag_target_|.
+  // Returns false without touching |moving_collections| if the hint can't be
+  // honored at |destination_index|, which is an index after the moving tabs
+  // were removed.
+  bool MaybeInsertWithDragTarget(
+      std::vector<std::unique_ptr<tabs::TabCollection>>& moving_collections,
+      size_t destination_index);
+
   // Tries to add the tab to the same tree as the opener. Returns base::ok(void)
   // if successful, base::unexpected(tabs::ScopedTab) so that the tab can be
   // reused from the caller
@@ -97,7 +115,8 @@ class BraveTreeTabStripCollectionDelegate
                                     size_t target_index,
                                     size_t expected_recursive_index) const;
 
-  // Adds a tab to the unpinned collection and wraps it with a tree node.
+  // Wraps a tab with a tree node, inserting before the target node when the
+  // position is inside a tree, or into the unpinned collection otherwise.
   void AddTabToUnpinnedCollectionAsTreeNode(
       size_t index,
       std::optional<tab_groups::TabGroupId> new_group_id,
@@ -262,6 +281,8 @@ class BraveTreeTabStripCollectionDelegate
 
   bool in_destruction_ = false;
   bool handling_pinned_state_inconsistency_ = false;
+
+  std::optional<TreeTabDragTarget> pending_drag_target_;
 
   base::WeakPtr<TreeTabModel> tree_tab_model_;
 };

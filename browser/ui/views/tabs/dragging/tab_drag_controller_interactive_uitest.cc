@@ -38,6 +38,7 @@
 #include "components/tabs/public/tab_collection.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
+#include "third_party/abseil-cpp/absl/cleanup/cleanup.h"
 #include "ui/base/test/ui_controls.h"
 #include "ui/display/display.h"
 #include "ui/display/screen.h"
@@ -480,4 +481,97 @@ IN_PROC_BROWSER_TEST_F(
 
   EXPECT_TRUE(dest_model.tree_model()->GetNode(parent_node_id));
   EXPECT_TRUE(dest_model.tree_model()->GetNode(child_node_id));
+}
+
+// Dragging a tab vertically over the tab above it adjusts the nesting level
+// without changing the index: the middle zone nests the dragged tab as a child
+// of the tab above, the upper zone makes it a sibling of the tab above, and the
+// lower zone makes it a sibling of the tab below.
+IN_PROC_BROWSER_TEST_F(TreeTabDragControllerTest,
+                       DragTab_AdjustsNestingLevelByVerticalPosition) {
+  BraveTabStripModel& model =
+      *static_cast<BraveTabStripModel*>(browser()->tab_strip_model());
+  ASSERT_TRUE(model.tree_model());
+
+  // A, B, C are all roots.
+  for (int i = 0; i < 2; ++i) {
+    model.AppendWebContents(
+        content::WebContents::Create(
+            content::WebContents::CreateParams(browser()->GetProfile())),
+        /*foreground=*/false);
+  }
+  ASSERT_EQ(3, model.count());
+  tabs::TabInterface* const tab_b = model.GetTabAtIndex(1);
+  tabs::TabInterface* const tab_c = model.GetTabAtIndex(2);
+  auto* const tab_b_node = tab_b->GetParentCollection();
+  ASSERT_EQ(tab_b_node->type(), tabs::TabCollection::Type::TREE_NODE);
+  ASSERT_EQ(tab_c->GetParentCollection()->GetParentCollection()->type(),
+            tabs::TabCollection::Type::UNPINNED);
+
+  ASSERT_TRUE(ui_test_utils::BringBrowserWindowToFront(browser()));
+  TabStrip* const tab_strip = GetTabStripForBrowser(browser());
+  CHECK(tab_strip);
+  tab_strip->GetWidget()->LayoutRootViewIfNecessary();
+  tab_strip->StopAnimating();
+
+  // Starts dragging C, moves it by |offset_y| from its original position and
+  // drops it.
+  auto drag_tab_c = [&](int offset_y) {
+    Tab* const tab_c_view = tab_strip->tab_at(2);
+    const gfx::NativeWindow window_hint = GetWindowHint(tab_c_view);
+    const gfx::Point start =
+        ui_test_utils::GetCenterInScreenCoordinates(tab_c_view);
+    ASSERT_TRUE(PressInputAtCenter(tab_c_view));
+    // Make sure the input is released even when an assertion fails, so that
+    // it doesn't affect following drags.
+    bool released = false;
+    absl::Cleanup release_input = [this, &released] {
+      if (!released) {
+        ReleaseInput();
+      }
+    };
+    ASSERT_EQ(2, model.active_index()) << start.ToString();
+
+    // Move down step by step so that dragging starts. As C is the last tab,
+    // this doesn't change its index.
+    gfx::Point pos = start;
+    for (int i = 0; i < 20; ++i) {
+      pos.Offset(0, 1);
+      ASSERT_TRUE(DragInputTo(pos, window_hint));
+    }
+    ASSERT_TRUE(TabDragController::IsActive());
+
+    // Move to the destination step by step as well. The dragged view follows
+    // the mouse.
+    const int step = pos.y() < start.y() + offset_y ? 1 : -1;
+    while (pos.y() != start.y() + offset_y) {
+      pos.Offset(0, step);
+      ASSERT_TRUE(DragInputTo(pos, window_hint));
+    }
+    released = true;
+    ASSERT_TRUE(ReleaseInput());
+    ASSERT_FALSE(TabDragController::IsActive());
+    tab_strip->StopAnimating();
+  };
+
+  // Middle zone: C becomes a child of B.
+  drag_tab_c(0);
+  EXPECT_EQ(tab_c, model.GetTabAtIndex(2));
+  EXPECT_EQ(tab_c->GetParentCollection()->GetParentCollection(), tab_b_node);
+
+  // Upper zone: C becomes a sibling of B again.
+  drag_tab_c(-tab_strip->tab_at(2)->height() / 3);
+  EXPECT_EQ(tab_c, model.GetTabAtIndex(2));
+  EXPECT_EQ(tab_c->GetParentCollection()->GetParentCollection()->type(),
+            tabs::TabCollection::Type::UNPINNED);
+
+  // Middle zone again: C becomes a child of B.
+  drag_tab_c(0);
+  EXPECT_EQ(tab_c->GetParentCollection()->GetParentCollection(), tab_b_node);
+
+  // Lower zone: there's no tab below C, so C becomes a top-level node.
+  drag_tab_c(tab_strip->tab_at(2)->height() / 3);
+  EXPECT_EQ(tab_c, model.GetTabAtIndex(2));
+  EXPECT_EQ(tab_c->GetParentCollection()->GetParentCollection()->type(),
+            tabs::TabCollection::Type::UNPINNED);
 }

@@ -7,17 +7,21 @@
 #define BRAVE_BROWSER_UI_TABS_BRAVE_TAB_STRIP_MODEL_H_
 
 #include <cstdint>
+#include <optional>
 #include <vector>
 
 #include "base/callback_list.h"
 #include "base/containers/span.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
+#include "brave/browser/ui/tabs/tree_tab_drag_hint.h"
 #include "brave/components/tabs/public/brave_tab_strip_collection.h"
 #include "chrome/browser/ui/tabs/tab_enums.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #include "components/prefs/pref_member.h"
 
+class BraveTreeTabStripCollectionDelegate;
 class TreeTabModel;
 
 class BraveTabStripModel : public TabStripModel {
@@ -87,6 +91,11 @@ class BraveTabStripModel : public TabStripModel {
   // split tabs.
   bool IsOnlyActiveTabAndTreeDescendantsSelected();
 
+  // Sets the hint used to decide the nesting level of tabs moved by the
+  // following MoveSelectedTabsTo() calls in tree tab mode. No-op when tree tabs
+  // are disabled. Callers must reset it with std::nullopt after the move.
+  void SetTreeTabDragTarget(std::optional<TreeTabDragTarget> target);
+
   // TabStripModel:
   std::vector<std::variant<std::unique_ptr<DetachedTab>,
                            std::unique_ptr<DetachedTabCollection>>>
@@ -126,6 +135,9 @@ class BraveTabStripModel : public TabStripModel {
   // flag is disabled or the feature is turned off via related preferences,
   // this will be null.
   std::unique_ptr<TreeTabModel> tree_tab_model_;
+
+  // Owned by |contents_data_|. Non-null only while tree tabs are built.
+  raw_ptr<BraveTreeTabStripCollectionDelegate> tree_tab_delegate_ = nullptr;
 
   // Note that we wrapped the subscriptions in a unique_ptr so that we can reset
   // them when the tree tabs are flattened.
