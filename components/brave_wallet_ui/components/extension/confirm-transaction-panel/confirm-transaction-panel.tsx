@@ -18,7 +18,6 @@ import {
 import { usePendingTransactions } from '../../../common/hooks/use-pending-transaction'
 import { useExplorer } from '../../../common/hooks/explorer'
 import {
-  useGetActiveOriginQuery,
   useGetAddressByteCodeQuery,
   useGetDefaultFiatCurrencyQuery,
 } from '../../../common/slices/api.slice'
@@ -85,8 +84,6 @@ const NftAssetIconWithPlaceholder = withPlaceholderIcon(NftIcon, ICON_CONFIG)
 
 export const ConfirmTransactionPanel = () => {
   // queries
-  const { data: activeOrigin = { eTldPlusOne: '', originSpec: '' } } =
-    useGetActiveOriginQuery()
   const { data: defaultFiatCurrency = 'usd' } = useGetDefaultFiatCurrencyQuery()
 
   // custom hooks
@@ -143,7 +140,6 @@ export const ConfirmTransactionPanel = () => {
   // computed
   const isContract =
     !isLoading && isEthereumTransaction && byteCode && byteCode !== '0x'
-  const originInfo = selectedPendingTransaction?.originInfo ?? activeOrigin
 
   // hooks
   const onClickViewOnBlockExplorer = useExplorer(transactionsNetwork)
@@ -230,8 +226,7 @@ export const ConfirmTransactionPanel = () => {
             variant='xSmall.regular'
           >
             <CreateSiteOrigin
-              originSpec={originInfo.originSpec}
-              eTldPlusOne={originInfo.eTldPlusOne}
+              originInfo={selectedPendingTransaction.dappOriginInfo}
             />
           </URLText>
 

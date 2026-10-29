@@ -82,7 +82,6 @@ TEST_F(BitcoinTxStateManagerUnitTest, BitcoinTxMetaAndValue) {
   meta.set_confirmed_time(base::Time::Now());
   meta.set_tx_hash(
       "aa388f50b725767653e150ad8990ec11a2146d75acafbe492af08213849fe2c5");
-  meta.set_origin(url::Origin::Create(GURL("https://test.brave.com/")));
   meta.set_chain_id(mojom::kBitcoinTestnet);
 
   base::DictValue meta_value = meta.ToValue();

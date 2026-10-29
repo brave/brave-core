@@ -39,9 +39,7 @@ PolkadotTransaction MakePolkadotTx(bool transfer_all,
 std::unique_ptr<PolkadotTxMeta> MakePolkadotTxMeta(
     mojom::AccountIdPtr account_id,
     PolkadotTransaction tx) {
-  auto meta = std::make_unique<PolkadotTxMeta>();
-  meta->set_from(std::move(account_id));
-  meta->set_tx(std::move(tx));
+  auto meta = std::make_unique<PolkadotTxMeta>(account_id, std::move(tx));
   meta->set_chain_id(mojom::kPolkadotTestnet);
   base::Time::Exploded x{1981, 3, 0, 1, 2};
   base::Time confirmed_time = meta->confirmed_time();
@@ -68,6 +66,7 @@ TEST(PolkadotTxMeta, ToValue) {
       "created_time": "11996733540000000",
       "from_account_id": "354_15_0_0",
       "id": "",
+      "origin": "https://brave.com",
       "status": 0,
       "submitted_time": "11996733597000000",
       "tx_hash": "",
@@ -95,6 +94,7 @@ TEST(PolkadotTxMeta, ToValue) {
       "created_time": "11996733540000000",
       "from_account_id": "354_15_0_0",
       "id": "",
+      "origin": "https://brave.com",
       "status": 0,
       "submitted_time": "11996733597000000",
       "tx_hash": "",

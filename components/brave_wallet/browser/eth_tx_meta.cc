@@ -27,6 +27,18 @@ EthTxMeta::EthTxMeta(const mojom::AccountIdPtr& from,
   set_chain_id(Uint256ValueToHex(tx_->chain_id()));
 }
 
+std::unique_ptr<EthTxMeta> EthTxMeta::MakeUnapproved(
+    const mojom::AccountIdPtr& from,
+    std::unique_ptr<EthTransaction> tx,
+    const std::string& chain_id,
+    mojom::SwapInfoPtr swap_info,
+    std::optional<url::Origin> dapp_origin) {
+  auto meta = std::make_unique<EthTxMeta>(from, std::move(tx));
+  meta->set_dapp_origin(std::move(dapp_origin));
+  meta->InitializeAsUnapproved(chain_id, std::move(swap_info));
+  return meta;
+}
+
 EthTxMeta::~EthTxMeta() = default;
 
 bool EthTxMeta::operator==(const EthTxMeta& meta) const {
@@ -111,8 +123,8 @@ mojom::TransactionInfoPtr EthTxMeta::ToTransactionInfo() const {
               Uint256ValueToHex(tx_->value()), tx_->data()),
           max_priority_fee_per_gas, max_fee_per_gas)),
       status_, tx_type, tx_params, tx_args, created_time_, submitted_time_,
-      confirmed_time_, origin_.has_value() ? MakeOriginInfo(*origin_) : nullptr,
-      chain_id_, final_recipient, IsRetriable(), std::move(swap_info), nullptr);
+      confirmed_time_, MakeOriginInfo(dapp_origin_), chain_id_, final_recipient,
+      IsRetriable(), std::move(swap_info), nullptr);
 }
 
 mojom::CoinType EthTxMeta::GetCoinType() const {

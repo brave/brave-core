@@ -80,6 +80,16 @@ bool CardanoTxMeta::operator==(const CardanoTxMeta& other) const {
 
 CardanoTxMeta::~CardanoTxMeta() = default;
 
+std::unique_ptr<CardanoTxMeta> CardanoTxMeta::MakeUnapproved(
+    const mojom::AccountIdPtr& from,
+    std::unique_ptr<CardanoTransaction> tx,
+    const std::string& chain_id,
+    mojom::SwapInfoPtr swap_info) {
+  auto meta = std::make_unique<CardanoTxMeta>(from, std::move(tx));
+  meta->InitializeAsUnapproved(chain_id, std::move(swap_info));
+  return meta;
+}
+
 base::DictValue CardanoTxMeta::ToValue() const {
   base::DictValue dict = TxMeta::ToValue();
   dict.Set("tx", tx_->ToValue());
@@ -95,9 +105,9 @@ mojom::TransactionInfoPtr CardanoTxMeta::ToTransactionInfo() const {
           : mojom::TransactionType::CardanoSendLovelace,
       std::vector<std::string>() /* tx_params */,
       std::vector<std::string>() /* tx_args */, created_time_, submitted_time_,
-      confirmed_time_, origin_.has_value() ? MakeOriginInfo(*origin_) : nullptr,
-      chain_id_, std::nullopt /* effective_recipient */,
-      false /* is_retriable */, swap_info_.Clone(), nullptr);
+      confirmed_time_, MakeOriginInfo(dapp_origin_), chain_id_,
+      std::nullopt /* effective_recipient */, false /* is_retriable */,
+      swap_info_.Clone(), nullptr);
 }
 
 mojom::CoinType CardanoTxMeta::GetCoinType() const {

@@ -220,7 +220,7 @@ class TransactionParserTests: XCTestCase {
       createdTime: Date(),
       submittedTime: Date(),
       confirmedTime: Date(),
-      originInfo: nil,
+      dappOriginInfo: nil,
       chainId: chainId,
       effectiveRecipient: effectiveRecipient,
       isRetriable: false,

@@ -218,14 +218,8 @@ void SolanaTxManager::AddUnapprovedSolanaTransaction(
     return;
   }
 
-  auto meta = std::make_unique<SolanaTxMeta>(from, std::move(tx));
-  meta->set_id(TxMeta::GenerateMetaID());
-  meta->set_origin(
-      origin.value_or(url::Origin::Create(GURL("chrome://wallet"))));
-  meta->set_created_time(base::Time::Now());
-  meta->set_status(mojom::TransactionStatus::Unapproved);
-  meta->set_chain_id(chain_id);
-  meta->set_swap_info(std::move(swap_info));
+  auto meta = SolanaTxMeta::MakeUnapproved(from, std::move(tx), chain_id,
+                                           std::move(swap_info), origin);
 
   // Skip preflight checks for compressed NFT transfers to avoid a potential
   // Solana RPC bug that incorrectly shows compute budget exceeded, causing

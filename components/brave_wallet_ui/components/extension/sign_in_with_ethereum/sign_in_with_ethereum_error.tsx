@@ -109,10 +109,7 @@ export const SignInWithEthereumError = () => {
             {errorData?.originInfo.eTldPlusOne ?? ''}
           </OriginErrorTitle>
           <OriginErrorText textColor='error'>
-            <CreateSiteOrigin
-              originSpec={errorData?.originInfo.originSpec ?? ''}
-              eTldPlusOne={errorData?.originInfo.eTldPlusOne ?? ''}
-            />
+            <CreateSiteOrigin originInfo={errorData?.originInfo} />
           </OriginErrorText>
         </Column>
 

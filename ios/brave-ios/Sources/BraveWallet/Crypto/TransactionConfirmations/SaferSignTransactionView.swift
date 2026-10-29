@@ -256,10 +256,7 @@ private struct TokenRow: View {
 struct SaferSignTransactionView_Previews: PreviewProvider {
   static var transaction: BraveWallet.TransactionInfo {
     let transaction: BraveWallet.TransactionInfo = .init()
-    transaction.originInfo = .init(
-      originSpec: WalletConstants.braveWalletOriginSpec,
-      eTldPlusOne: ""
-    )
+    transaction.dappOriginInfo = nil
     return transaction
   }
 

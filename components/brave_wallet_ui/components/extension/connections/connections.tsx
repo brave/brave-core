@@ -95,10 +95,7 @@ export const Connections = () => {
             isBold={false}
             textColor='tertiary'
           >
-            <CreateSiteOrigin
-              originSpec={activeOrigin.originSpec}
-              eTldPlusOne={activeOrigin.eTldPlusOne}
-            />
+            <CreateSiteOrigin originInfo={activeOrigin} />
           </DomainText>
         </DomainTextContainer>
         <Column

@@ -6,9 +6,9 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_POLKADOT_POLKADOT_TX_META_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_POLKADOT_POLKADOT_TX_META_H_
 
+#include <memory>
 #include <optional>
 
-#include "base/types/optional_ref.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_transaction.h"
 #include "brave/components/brave_wallet/browser/tx_meta.h"
@@ -20,10 +20,17 @@ namespace brave_wallet {
 class PolkadotTxMeta : public TxMeta {
  public:
   PolkadotTxMeta();
+  PolkadotTxMeta(const mojom::AccountIdPtr& from, PolkadotTransaction tx);
   ~PolkadotTxMeta() override;
-
   PolkadotTxMeta(const PolkadotTxMeta&) = delete;
   PolkadotTxMeta& operator=(const PolkadotTxMeta&) = delete;
+
+  static std::unique_ptr<PolkadotTxMeta> MakeUnapproved(
+      const mojom::AccountIdPtr& from,
+      PolkadotTransaction tx,
+      const std::string& chain_id,
+      mojom::SwapInfoPtr swap_info,
+      std::optional<url::Origin> dapp_origin);
 
   // TxMeta
   base::DictValue ToValue() const override;

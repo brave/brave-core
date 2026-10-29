@@ -24,6 +24,12 @@ class CardanoTxMeta : public TxMeta {
   CardanoTxMeta operator=(const CardanoTxMeta&) = delete;
   bool operator==(const CardanoTxMeta& other) const;
 
+  static std::unique_ptr<CardanoTxMeta> MakeUnapproved(
+      const mojom::AccountIdPtr& from,
+      std::unique_ptr<CardanoTransaction> tx,
+      const std::string& chain_id,
+      mojom::SwapInfoPtr swap_info);
+
   // TxMeta
   base::DictValue ToValue() const override;
   mojom::TransactionInfoPtr ToTransactionInfo() const override;

@@ -38,10 +38,7 @@ describe('Connect with site header', () => {
             {activeOrigin.eTldPlusOne}
           </SiteName>
           <SiteURL data-key='domain-text-origin'>
-            <CreateSiteOrigin
-              originSpec={activeOrigin.originSpec}
-              eTldPlusOne={activeOrigin.eTldPlusOne}
-            />
+            <CreateSiteOrigin originInfo={activeOrigin} />
           </SiteURL>
         </DomainTextContainer>
       </WalletTestThemeProvider>,

@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_tx_meta.h"
 
-#include <optional>
 #include <string>
 #include <vector>
 
@@ -35,11 +34,27 @@ mojom::BtcTxDataPtr ToBtcTxData(BitcoinTransaction& tx) {
 }  // namespace
 
 BitcoinTxMeta::BitcoinTxMeta() : tx_(std::make_unique<BitcoinTransaction>()) {}
+BitcoinTxMeta::BitcoinTxMeta(const mojom::AccountIdPtr& from)
+    : tx_(std::make_unique<BitcoinTransaction>()) {
+  DCHECK_EQ(from->coin, mojom::CoinType::BTC);
+  set_from(from.Clone());
+}
+
 BitcoinTxMeta::BitcoinTxMeta(const mojom::AccountIdPtr& from,
                              std::unique_ptr<BitcoinTransaction> tx)
     : tx_(std::move(tx)) {
   DCHECK_EQ(from->coin, mojom::CoinType::BTC);
   set_from(from.Clone());
+}
+
+std::unique_ptr<BitcoinTxMeta> BitcoinTxMeta::MakeUnapproved(
+    const mojom::AccountIdPtr& from,
+    std::unique_ptr<BitcoinTransaction> tx,
+    const std::string& chain_id,
+    mojom::SwapInfoPtr swap_info) {
+  auto meta = std::make_unique<BitcoinTxMeta>(from, std::move(tx));
+  meta->InitializeAsUnapproved(chain_id, std::move(swap_info));
+  return meta;
 }
 
 bool BitcoinTxMeta::operator==(const BitcoinTxMeta& other) const {
@@ -60,8 +75,8 @@ mojom::TransactionInfoPtr BitcoinTxMeta::ToTransactionInfo() const {
       mojom::TxDataUnion::NewBtcTxData(ToBtcTxData(*tx_)), status_,
       mojom::TransactionType::Other, std::vector<std::string>() /* tx_params */,
       std::vector<std::string>() /* tx_args */, created_time_, submitted_time_,
-      confirmed_time_, origin_.has_value() ? MakeOriginInfo(*origin_) : nullptr,
-      chain_id_, tx_->to(), false, swap_info_.Clone(), nullptr);
+      confirmed_time_, MakeOriginInfo(dapp_origin_), chain_id_, tx_->to(),
+      false, swap_info_.Clone(), nullptr);
 }
 
 mojom::CoinType BitcoinTxMeta::GetCoinType() const {

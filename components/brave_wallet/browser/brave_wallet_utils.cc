@@ -964,7 +964,16 @@ std::string eTLDPlusOne(const url::Origin& origin) {
 }
 
 mojom::OriginInfoPtr MakeOriginInfo(const url::Origin& origin) {
+  DCHECK(!origin.opaque());
   return mojom::OriginInfo::New(origin.Serialize(), eTLDPlusOne(origin));
+}
+
+mojom::OriginInfoPtr MakeOriginInfo(
+    const std::optional<url::Origin>& dapp_origin) {
+  if (!dapp_origin) {
+    return nullptr;
+  }
+  return MakeOriginInfo(*dapp_origin);
 }
 
 std::string GenerateRandomHexString() {

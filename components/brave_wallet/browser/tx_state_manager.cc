@@ -16,6 +16,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/tx_meta.h"
 #include "brave/components/brave_wallet/browser/tx_storage.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "url/origin.h"
 
 namespace brave_wallet {
@@ -89,10 +90,14 @@ bool TxStateManager::ValueToBaseTxMeta(const base::DictValue& value,
   meta->set_tx_hash(*tx_hash);
 
   const std::string* origin_spec = value.FindString("origin");
-  // That's ok not to have origin.
   if (origin_spec) {
-    meta->set_origin(url::Origin::Create(GURL(*origin_spec)));
-    DCHECK(!meta->origin()->opaque());
+    if (*origin_spec != "chrome://wallet") {
+      url::Origin dapp_origin = url::Origin::Create(GURL(*origin_spec));
+      if (!IsValidDappOrigin(dapp_origin)) {
+        return false;
+      }
+      meta->set_dapp_origin(dapp_origin);
+    }
   }
 
   const auto coin_int = value.FindInt("coin");

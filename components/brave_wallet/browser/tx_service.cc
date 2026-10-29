@@ -326,8 +326,8 @@ void TxService::AddUnapprovedFilecoinTransaction(
   }
 
   GetFilTxManager()->AddUnapprovedFilecoinTransaction(
-      chain_id, std::move(fil_tx_data), from, std::nullopt,
-      std::move(swap_info), std::move(callback));
+      chain_id, std::move(fil_tx_data), from, std::move(swap_info),
+      std::move(callback));
 }
 
 void TxService::AddUnapprovedBitcoinTransaction(
@@ -758,10 +758,11 @@ void TxService::RejectUnapprovedTransactionsWithoutPermission() {
       if (tx->tx_status != mojom::TransactionStatus::Unapproved) {
         continue;
       }
-      if (!tx->origin_info) {
+      if (!tx->dapp_origin_info) {
         continue;
       }
-      auto origin = url::Origin::Create(GURL(tx->origin_info->origin_spec));
+      auto origin =
+          url::Origin::Create(GURL(tx->dapp_origin_info->origin_spec));
       if (HasOriginPermission(origin, tx->from_account_id)) {
         continue;
       }
