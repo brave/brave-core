@@ -1,13 +1,13 @@
 diff --git a/ui/base/clipboard/clipboard_ozone.cc b/ui/base/clipboard/clipboard_ozone.cc
-index 3255402bbdd1adc21633c27685b6cf3c965b6b16..14b1d72741c2b3c03057f98821e2bcfc2ec30fac 100644
+index 7d954b7f001808310d3ffe75f9f6ec5af2c9ac2d..81efe88b551e50632dea49f9ddb4ed68d7dd2e9d 100644
 --- a/ui/base/clipboard/clipboard_ozone.cc
 +++ b/ui/base/clipboard/clipboard_ozone.cc
 @@ -177,7 +177,7 @@ class ClipboardOzone::AsyncClipboardOzone {
      auto wrapped_data =
          base::MakeRefCounted<base::RefCountedBytes>(std::move(data));
      for (const auto& mime_type : mime_types) {
--      DCHECK_EQ(data_to_offer_.count(mime_type), 0U);
-+      // DCHECK_EQ(data_to_offer_.count(mime_type), 0U);
+-      CHECK_EQ(data_to_offer_.count(mime_type), 0U, base::NotFatalUntil::M163);
++      // CHECK_EQ(data_to_offer_.count(mime_type), 0U, base::NotFatalUntil::M163);
        data_to_offer_[mime_type] = wrapped_data;
      }
    }

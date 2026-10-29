@@ -1,10 +1,10 @@
 diff --git a/third_party/blink/renderer/core/html/canvas/html_canvas_element.idl b/third_party/blink/renderer/core/html/canvas/html_canvas_element.idl
-index b6fe418926284e523478afacff93a402f058e4c8..f04833c3989e350edbf83635a9bf2248cd89e92a 100644
+index 30b9f85a385751889b64de8d777435c387623401..b4cc549beb7816ce83b19441d2f7164479652d89 100644
 --- a/third_party/blink/renderer/core/html/canvas/html_canvas_element.idl
 +++ b/third_party/blink/renderer/core/html/canvas/html_canvas_element.idl
 @@ -50,7 +50,7 @@
      [RuntimeEnabled=CanvasDrawElement, RaisesException] void updateElementGeometry((Element or ElementImage) element, optional UpdateElementGeometryOptions options = {});
-     [RuntimeEnabled=CanvasDrawElement] void clearElementGeometry((Element or ElementImage) element);
+     [RuntimeEnabled=CanvasDrawElement, RaisesException] void clearElementGeometry((Element or ElementImage) element);
  
 -    [MeasureAs=CanvasToDataURL, RaisesException] DOMString toDataURL(optional DOMString type = "image/png", optional any quality);
 +    [CallWith=ScriptState, MeasureAs=CanvasToDataURL, RaisesException] DOMString toDataURL(optional DOMString type = "image/png", optional any quality);
