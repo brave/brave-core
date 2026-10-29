@@ -87,6 +87,7 @@
 #include "components/security_interstitials/core/features.h"
 #else
 #include "chrome/browser/child_module/features.h"
+#include "chrome/browser/default_browser/default_browser_features.h"
 #include "chrome/browser/enterprise/data_protection/data_protection_features.h"
 #include "chrome/browser/sharing_hub/sharing_hub_features.h"
 #include "chrome/browser/ui/toasts/toast_features.h"
@@ -174,6 +175,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &contextual_tasks::kContextualTasksCookiePrefetch,
       &critical_actions::features::kCriticalActionHistory,
 #if !BUILDFLAG(IS_ANDROID)
+      &default_browser::kDefaultBrowserPromptSurfaces,
       &enterprise_data_protection::kEnableForceDownloadToCloud,
       &extensions_features::kApiGlicPrivate,
 #endif
