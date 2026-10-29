@@ -1,0 +1,17 @@
+diff --git a/chrome/browser/resources/settings_shared/prefs2/pref_service.ts b/chrome/browser/resources/settings_shared/prefs2/pref_service.ts
+index c6426284b07a88d2a7180977e39f8061a60af109..0da4498bdd001ddf3fb8544865b4b7776961d2d5 100644
+--- a/chrome/browser/resources/settings_shared/prefs2/pref_service.ts
++++ b/chrome/browser/resources/settings_shared/prefs2/pref_service.ts
+@@ -52,6 +52,12 @@ const CATEGORY_DEFAULT_SYNTHETIC_PREFS: string[] = [
+   'web-app-installation',
+   'web-printing',
+   'window-management',
++  'autoplay',
++  'braveOpenAIChat',
++  'cardano',
++  'ethereum',
++  'googleSignIn',
++  'solana',
+ ];
+ 
+ function getSyntheticPrefs(): chrome.settingsPrivate.PrefObject[] {
