@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_OMNIBOX_BRAVE_ROUNDED_OMNIBOX_RESULTS_FRAME_H_
 #define BRAVE_BROWSER_UI_VIEWS_OMNIBOX_BRAVE_ROUNDED_OMNIBOX_RESULTS_FRAME_H_
 
+#include "base/callback_list.h"
 #include "base/memory/raw_ptr.h"
 #include "chrome/browser/ui/views/omnibox/rounded_omnibox_results_frame.h"
 #include "components/prefs/pref_member.h"
@@ -24,7 +25,7 @@ class BraveRoundedOmniboxResultsFrame : public RoundedOmniboxResultsFrame {
  private:
   void UpdateShadowBorder();
 
-  BooleanPrefMember show_vertical_tabs_;
+  base::CallbackListSubscription vertical_tabs_enabled_changed_subscription_;
   BooleanPrefMember show_window_title_for_vertical_tabs_;
 
   raw_ptr<BrowserWindowInterface> browser_ = nullptr;

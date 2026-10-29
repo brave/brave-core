@@ -301,17 +301,12 @@ void BraveToolbarView::Init() {
                           base::Unretained(this)));
 
   if (SupportsBraveVerticalTabs(browser_)) {
-    show_vertical_tabs_.Init(brave_tabs::kVerticalTabsEnabled,
-                             profile->GetPrefs(),
-                             base::BindRepeating(
-                                 [](BraveToolbarView* self) {
-                                   self->UpdateHorizontalPadding();
-                                   self->UpdateVerticalTabToggleVisibility();
-                                   self->UpdateVerticalTabTogglePlacement();
-                                   self->UpdateComboButtonState();
-                                   self->UpdateWorkspaceButtonVisibility();
-                                 },
-                                 base::Unretained(this)));
+    if (auto* controller = VerticalTabController::From(browser_)) {
+      vertical_tabs_enabled_changed_subscription_ =
+          controller->AddEnabledChangedCallback(base::BindRepeating(
+              &BraveToolbarView::OnVerticalTabsEnabledChanged,
+              base::Unretained(this)));
+    }
     show_title_bar_on_vertical_tabs_.Init(
         brave_tabs::kVerticalTabsShowTitleOnWindow,
         profile->GetOriginalProfile()->GetPrefs(),
@@ -494,6 +489,14 @@ void BraveToolbarView::OnLocationBarIsWideChanged() {
 
   DeprecatedLayoutImmediately();
   SchedulePaint();
+}
+
+void BraveToolbarView::OnVerticalTabsEnabledChanged() {
+  UpdateHorizontalPadding();
+  UpdateVerticalTabToggleVisibility();
+  UpdateVerticalTabTogglePlacement();
+  UpdateComboButtonState();
+  UpdateWorkspaceButtonVisibility();
 }
 
 void BraveToolbarView::OnCompactModePrefChanged() {

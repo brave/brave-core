@@ -342,11 +342,12 @@ BraveVerticalTabStripRegionView::BraveVerticalTabStripRegionView(
           base::Unretained(this)));
   OnExpandedWidthPrefChanged();
 
-  show_vertical_tabs_.Init(
-      brave_tabs::kVerticalTabsEnabled, prefs,
-      base::BindRepeating(
-          &BraveVerticalTabStripRegionView::OnShowVerticalTabsPrefChanged,
-          base::Unretained(this)));
+  if (auto* controller = VerticalTabController::From(browser_)) {
+    vertical_tabs_enabled_changed_subscription_ =
+        controller->AddEnabledChangedCallback(base::BindRepeating(
+            &BraveVerticalTabStripRegionView::OnVerticalTabsEnabledChanged,
+            base::Unretained(this)));
+  }
   UpdateLayout();
 
   collapsed_pref_.Init(
@@ -737,7 +738,7 @@ void BraveVerticalTabStripRegionView::Layout(PassKey) {
       contents_bounds.y(), kResizeAreaWidth, contents_bounds.height());
 }
 
-void BraveVerticalTabStripRegionView::OnShowVerticalTabsPrefChanged() {
+void BraveVerticalTabStripRegionView::OnVerticalTabsEnabledChanged() {
   UpdateFloatingStateForBrowserMode();
   UpdateLayout();
 

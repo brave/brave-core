@@ -144,7 +144,7 @@ void BraveBrowserTabStripController::ExecuteContextMenuCommand(
   }
 
   if (command_id == TabStripModel::CommandShowVerticalTabs) {
-    brave::ToggleVerticalTabStrip(GetBrowserWindowInterface());
+    brave::ToggleVerticalTabStripForWindow(GetBrowserWindowInterface());
     BrowserView::GetBrowserViewForBrowser(GetBrowserWindowInterface())
         ->InvalidateLayout();
     return;

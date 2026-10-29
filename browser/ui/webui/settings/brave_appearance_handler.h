@@ -10,10 +10,12 @@
 
 #include "base/callback_list.h"
 #include "base/memory/raw_ptr.h"
+#include "base/values.h"
 #include "chrome/browser/command_observer.h"
 #include "chrome/browser/ui/webui/settings/settings_page_ui_handler.h"
 #include "components/prefs/pref_change_registrar.h"
 
+class BrowserWindowInterface;
 class CommandUpdater;
 class Profile;
 
@@ -39,6 +41,17 @@ class BraveAppearanceHandler : public settings::SettingsPageUIHandler,
   void GetNewTabShowsOptionsList(const base::ListValue& args);
   void ShouldShowNewTabDashboardSettings(const base::ListValue& args);
   void GetIsVerticalTabsToggleEnabled(const base::ListValue& args);
+  void GetVerticalTabsWindowState(const base::ListValue& args);
+  void ClearVerticalTabsWindowOverride(const base::ListValue& args);
+  void OnVerticalTabsEnabledForWindowChanged();
+
+  BrowserWindowInterface* GetBrowser();
+  bool IsVerticalTabsEnabledForWindow();
+  bool HasVerticalTabsWindowOverride();
+  // `enabled` is this window's layout. `hasOverride` is true while that layout
+  // is a saved disagreement with the shared switch. tabs.ts reads this as
+  // VerticalTabsWindowState.
+  base::DictValue VerticalTabsWindowState();
 
   // Compact mode is incompatible with immersive fullscreen (see
   // WindowFeatureController::UsesImmersiveFullscreenMode()), so the compact
@@ -50,6 +63,7 @@ class BraveAppearanceHandler : public settings::SettingsPageUIHandler,
   raw_ptr<Profile> profile_ = nullptr;
   raw_ptr<CommandUpdater> command_updater_ = nullptr;
   PrefChangeRegistrar profile_state_change_registrar_;
+  base::CallbackListSubscription vertical_tabs_enabled_subscription_;
 
   base::CallbackListSubscription fullscreen_subscription_;
 };

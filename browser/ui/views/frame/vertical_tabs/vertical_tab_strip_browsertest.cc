@@ -4,6 +4,10 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include <algorithm>
+#include <map>
+#include <memory>
+#include <optional>
+#include <string>
 #include <vector>
 
 #include "base/command_line.h"
@@ -11,11 +15,13 @@
 #include "base/i18n/test/scoped_rtl_for_testing.h"
 #include "base/location.h"
 #include "base/memory/scoped_refptr.h"
+#include "base/run_loop.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/test/bind.h"
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/brave_browser_features.h"
+#include "brave/browser/sessions/brave_session_keys.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/focus_mode/focus_mode_controller.h"
 #include "brave/browser/ui/focus_mode/focus_mode_features.h"
@@ -40,7 +46,14 @@
 #include "brave/components/sidebar/browser/sidebar_service.h"
 #include "build/build_config.h"
 #include "cc/paint/display_item_list.h"
+#include "chrome/app/chrome_command_ids.h"
+#include "chrome/browser/profiles/keep_alive/profile_keep_alive_types.h"
+#include "chrome/browser/profiles/keep_alive/scoped_profile_keep_alive.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/sessions/session_restore.h"
+#include "chrome/browser/sessions/session_restore_test_helper.h"
+#include "chrome/browser/sessions/session_service.h"
+#include "chrome/browser/sessions/session_service_factory.h"
 #include "chrome/browser/tab_group_sync/tab_group_sync_service_factory.h"
 #include "chrome/browser/ui/animation/browser_animation_controller.h"
 #include "chrome/browser/ui/browser.h"
@@ -71,7 +84,10 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/interactive_test_utils.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "components/keep_alive_registry/keep_alive_types.h"
+#include "components/keep_alive_registry/scoped_keep_alive.h"
 #include "components/saved_tab_groups/public/tab_group_sync_service.h"
+#include "components/sessions/core/session_types.h"
 #include "components/tab_groups/tab_group_id.h"
 #include "content/public/test/browser_test.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -142,6 +158,45 @@ class VerticalTabStripBrowserTest : public InProcessBrowserTest {
 
   void AppendTab(BrowserWindowInterface* browser) {
     chrome::AddTabAt(browser, GURL(), -1, true);
+  }
+
+  BrowserWindowInterface* RestoreClosedWindow(Profile* profile) {
+    const ScopedKeepAlive keep_alive(KeepAliveOrigin::SESSION_RESTORE,
+                                     KeepAliveRestartOption::DISABLED);
+    const ScopedProfileKeepAlive profile_keep_alive(
+        profile, ProfileKeepAliveOrigin::kSessionRestore);
+    CloseBrowserSynchronously(browser());
+    ui_test_utils::BrowserCreatedObserver created;
+    SessionRestoreTestHelper restore_helper;
+    chrome::OpenWindowWithRestoredTabs(profile);
+    if (SessionRestore::IsRestoring(profile)) {
+      restore_helper.Wait();
+    }
+    return created.Wait();
+  }
+
+  std::vector<BrowserWindowInterface*> OpenBrowsers() {
+    std::vector<BrowserWindowInterface*> browsers;
+    GlobalBrowserCollection::GetInstance()->ForEach(
+        [&browsers](BrowserWindowInterface* browser) {
+          browsers.push_back(browser);
+          return true;
+        });
+    return browsers;
+  }
+
+  BrowserWindowInterface* FindBrowserCreatedSince(
+      const std::vector<BrowserWindowInterface*>& before) {
+    BrowserWindowInterface* created = nullptr;
+    GlobalBrowserCollection::GetInstance()->ForEach(
+        [&](BrowserWindowInterface* browser) {
+          if (std::find(before.begin(), before.end(), browser) ==
+              before.end()) {
+            created = browser;
+          }
+          return true;
+        });
+    return created;
   }
 
   tab_groups::TabGroupId AddTabToNewGroup(BrowserWindowInterface* browser,
@@ -264,6 +319,217 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ToggleVerticalTabStrip) {
       VerticalTabController::From(browser())->ShouldShowBraveVerticalTabs());
   EXPECT_EQ(browser_view()->GetWidget(),
             browser_view()->horizontal_tab_strip_for_testing()->GetWidget());
+}
+
+IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
+                       ToggleVerticalTabStripForWindowAffectsOnlyThatWindow) {
+  auto* prefs = browser()->GetProfile()->GetPrefs();
+  BrowserWindowInterface* other = CreateBrowser(browser()->GetProfile());
+  ASSERT_FALSE(
+      VerticalTabController::From(browser())->ShouldShowBraveVerticalTabs());
+  ASSERT_FALSE(
+      VerticalTabController::From(other)->ShouldShowBraveVerticalTabs());
+
+  brave::ToggleVerticalTabStripForWindow(browser());
+  EXPECT_TRUE(
+      VerticalTabController::From(browser())->ShouldShowBraveVerticalTabs());
+  EXPECT_FALSE(
+      VerticalTabController::From(other)->ShouldShowBraveVerticalTabs());
+  EXPECT_FALSE(prefs->GetBoolean(brave_tabs::kVerticalTabsEnabled));
+
+  prefs->SetBoolean(brave_tabs::kVerticalTabsEnabled, true);
+  EXPECT_EQ(
+      std::nullopt,
+      VerticalTabController::From(browser())->vertical_tabs_enabled_override());
+  EXPECT_TRUE(
+      VerticalTabController::From(browser())->ShouldShowBraveVerticalTabs());
+  EXPECT_TRUE(
+      VerticalTabController::From(other)->ShouldShowBraveVerticalTabs());
+
+  brave::ToggleVerticalTabStripForWindow(browser());
+  EXPECT_FALSE(
+      VerticalTabController::From(browser())->ShouldShowBraveVerticalTabs());
+  EXPECT_TRUE(
+      VerticalTabController::From(other)->ShouldShowBraveVerticalTabs());
+  EXPECT_TRUE(prefs->GetBoolean(brave_tabs::kVerticalTabsEnabled));
+}
+
+IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
+                       ShowVerticalTabsMenuAffectsOnlyThatWindow) {
+  auto* prefs = browser()->GetProfile()->GetPrefs();
+  ASSERT_FALSE(prefs->GetBoolean(brave_tabs::kVerticalTabsEnabled));
+  BrowserWindowInterface* other = CreateBrowser(browser()->GetProfile());
+
+  ASSERT_TRUE(chrome::ExecuteCommand(browser(), IDC_TOGGLE_VERTICAL_TABS));
+  EXPECT_FALSE(prefs->GetBoolean(brave_tabs::kVerticalTabsEnabled));
+  EXPECT_EQ(
+      std::optional<bool>(true),
+      VerticalTabController::From(browser())->vertical_tabs_enabled_override());
+  EXPECT_TRUE(
+      VerticalTabController::From(browser())->ShouldShowBraveVerticalTabs());
+  EXPECT_EQ(
+      std::nullopt,
+      VerticalTabController::From(other)->vertical_tabs_enabled_override());
+  EXPECT_FALSE(
+      VerticalTabController::From(other)->ShouldShowBraveVerticalTabs());
+
+  // Toggling back to the shared layout drops the override. This window
+  // follows later changes to the setting.
+  ASSERT_TRUE(chrome::ExecuteCommand(browser(), IDC_TOGGLE_VERTICAL_TABS));
+  EXPECT_EQ(
+      std::nullopt,
+      VerticalTabController::From(browser())->vertical_tabs_enabled_override());
+  EXPECT_FALSE(
+      VerticalTabController::From(browser())->ShouldShowBraveVerticalTabs());
+  EXPECT_FALSE(
+      VerticalTabController::From(other)->ShouldShowBraveVerticalTabs());
+
+  prefs->SetBoolean(brave_tabs::kVerticalTabsEnabled, true);
+  EXPECT_TRUE(
+      VerticalTabController::From(browser())->ShouldShowBraveVerticalTabs());
+  EXPECT_TRUE(
+      VerticalTabController::From(other)->ShouldShowBraveVerticalTabs());
+}
+
+IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
+                       ToggleVerticalTabStripUpdatesEveryWindow) {
+  BrowserWindowInterface* other = CreateBrowser(browser()->GetProfile());
+  brave::ToggleVerticalTabStrip(browser());
+  EXPECT_TRUE(
+      VerticalTabController::From(browser())->ShouldShowBraveVerticalTabs());
+  EXPECT_TRUE(
+      VerticalTabController::From(other)->ShouldShowBraveVerticalTabs());
+  EXPECT_TRUE(browser()->GetProfile()->GetPrefs()->GetBoolean(
+      brave_tabs::kVerticalTabsEnabled));
+
+  brave::ToggleVerticalTabStrip(other);
+  EXPECT_FALSE(
+      VerticalTabController::From(browser())->ShouldShowBraveVerticalTabs());
+  EXPECT_FALSE(
+      VerticalTabController::From(other)->ShouldShowBraveVerticalTabs());
+}
+
+IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
+                       NewWindowFollowsSharedVerticalTabsSetting) {
+  auto* prefs = browser()->GetProfile()->GetPrefs();
+  VerticalTabController::From(browser())->SetVerticalTabsEnabledForWindow(true);
+  ASSERT_FALSE(prefs->GetBoolean(brave_tabs::kVerticalTabsEnabled));
+
+  const auto before = OpenBrowsers();
+  ASSERT_TRUE(chrome::ExecuteCommand(browser(), IDC_NEW_WINDOW));
+  BrowserWindowInterface* created = FindBrowserCreatedSince(before);
+  ASSERT_TRUE(created);
+  EXPECT_EQ(
+      std::nullopt,
+      VerticalTabController::From(created)->vertical_tabs_enabled_override());
+  EXPECT_FALSE(
+      VerticalTabController::From(created)->ShouldShowBraveVerticalTabs());
+  EXPECT_EQ(
+      std::optional<bool>(true),
+      VerticalTabController::From(browser())->vertical_tabs_enabled_override());
+  EXPECT_FALSE(prefs->GetBoolean(brave_tabs::kVerticalTabsEnabled));
+}
+
+IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
+                       MovedTabsFollowSharedVerticalTabsSetting) {
+  auto* prefs = browser()->GetProfile()->GetPrefs();
+  VerticalTabController::From(browser())->SetVerticalTabsEnabledForWindow(true);
+  AppendTab(browser());
+
+  const auto before = OpenBrowsers();
+  chrome::MoveTabsToNewWindow(browser(), {1});
+  BrowserWindowInterface* created = FindBrowserCreatedSince(before);
+  ASSERT_TRUE(created);
+  EXPECT_EQ(
+      std::nullopt,
+      VerticalTabController::From(created)->vertical_tabs_enabled_override());
+  EXPECT_FALSE(
+      VerticalTabController::From(created)->ShouldShowBraveVerticalTabs());
+  EXPECT_EQ(
+      std::optional<bool>(true),
+      VerticalTabController::From(browser())->vertical_tabs_enabled_override());
+}
+
+IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
+                       SessionRecordsVerticalTabsOverride) {
+  auto* prefs = browser()->GetProfile()->GetPrefs();
+  prefs->SetBoolean(brave_tabs::kVerticalTabsEnabled, true);
+  VerticalTabController::From(browser())->SetVerticalTabsEnabledForWindow(
+      false);
+  BrowserWindowInterface* other = CreateBrowser(browser()->GetProfile());
+  ASSERT_EQ(
+      std::nullopt,
+      VerticalTabController::From(other)->vertical_tabs_enabled_override());
+  base::RunLoop().RunUntilIdle();
+
+  auto* service = SessionServiceFactory::GetForProfile(browser()->GetProfile());
+  service->MoveCurrentSessionToLastSession();
+  std::map<std::string, std::string> recorded;
+  base::RunLoop loop;
+  service->GetLastSession(base::BindLambdaForTesting(
+      [&](std::vector<std::unique_ptr<sessions::SessionWindow>> windows,
+          SessionID, bool error_reading) {
+        EXPECT_FALSE(error_reading);
+        EXPECT_EQ(windows.size(), 2u);
+        for (const auto& window : windows) {
+          const auto it = window->extra_data.find(kBraveVerticalTabsEnabledKey);
+          EXPECT_NE(it, window->extra_data.end());
+          if (it != window->extra_data.end()) {
+            recorded.insert(
+                {std::to_string(window->window_id.id()), it->second});
+          }
+        }
+        loop.Quit();
+      }));
+  loop.Run();
+  std::vector<std::string> values;
+  for (const auto& entry : recorded) {
+    values.push_back(entry.second);
+  }
+  std::sort(values.begin(), values.end());
+  EXPECT_EQ(values, (std::vector<std::string>{"", "false"}));
+}
+
+IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
+                       RestoredWindowKeepsVerticalTabsOverride) {
+  auto* prefs = browser()->GetProfile()->GetPrefs();
+  prefs->SetBoolean(brave_tabs::kVerticalTabsEnabled, true);
+  VerticalTabController::From(browser())->SetVerticalTabsEnabledForWindow(
+      false);
+  base::RunLoop().RunUntilIdle();
+
+  Profile* profile = browser()->GetProfile();
+  BrowserWindowInterface* restored = RestoreClosedWindow(profile);
+  SetBrowser(restored);
+  EXPECT_EQ(
+      std::optional<bool>(false),
+      VerticalTabController::From(restored)->vertical_tabs_enabled_override());
+  EXPECT_FALSE(
+      VerticalTabController::From(restored)->ShouldShowBraveVerticalTabs());
+  EXPECT_TRUE(
+      profile->GetPrefs()->GetBoolean(brave_tabs::kVerticalTabsEnabled));
+}
+
+IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
+                       RestoredWindowFollowsPrefAfterOverrideIsCleared) {
+  auto* prefs = browser()->GetProfile()->GetPrefs();
+  prefs->SetBoolean(brave_tabs::kVerticalTabsEnabled, true);
+  VerticalTabController::From(browser())->SetVerticalTabsEnabledForWindow(
+      false);
+  VerticalTabController::From(browser())->SetVerticalTabsEnabledForWindow(true);
+  ASSERT_EQ(
+      std::nullopt,
+      VerticalTabController::From(browser())->vertical_tabs_enabled_override());
+  base::RunLoop().RunUntilIdle();
+
+  Profile* profile = browser()->GetProfile();
+  BrowserWindowInterface* restored = RestoreClosedWindow(profile);
+  SetBrowser(restored);
+  EXPECT_EQ(
+      std::nullopt,
+      VerticalTabController::From(restored)->vertical_tabs_enabled_override());
+  EXPECT_TRUE(
+      VerticalTabController::From(restored)->ShouldShowBraveVerticalTabs());
 }
 
 IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,

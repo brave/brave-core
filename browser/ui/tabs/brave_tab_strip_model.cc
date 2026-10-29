@@ -15,6 +15,7 @@
 #include "brave/browser/ui/brave_browser_window.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/brave_tree_tab_strip_collection_delegate.h"
+#include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
 #include "brave/browser/ui/tabs/tree_tab_model.h"
 #include "brave/components/tabs/public/brave_tab_strip_collection.h"
 #include "brave/components/tabs/public/tree_tab_node.h"
@@ -202,9 +203,27 @@ void BraveTabStripModel::CloseTabs(base::span<int> indices,
 }
 
 void BraveTabStripModel::OnTreeTabRelatedPrefChanged() {
-  if (*tree_tabs_enabled_ && *vertical_tabs_enabled_) {
+  SyncTreeTabsWithWindowVerticalTabs();
+}
+
+bool BraveTabStripModel::IsVerticalTabsEnabledForWindow() const {
+  if (auto* browser = delegate()->GetBrowserWindowInterface()) {
+    if (auto* controller = VerticalTabController::From(browser)) {
+      return controller->ShouldShowBraveVerticalTabs();
+    }
+  }
+  return *vertical_tabs_enabled_;
+}
+
+void BraveTabStripModel::SyncTreeTabsWithWindowVerticalTabs() {
+  // Pref members are initialized only for normal windows with tree tabs on.
+  if (tree_tabs_enabled_.GetPrefName().empty()) {
+    return;
+  }
+  const bool enable = *tree_tabs_enabled_ && IsVerticalTabsEnabledForWindow();
+  if (enable && !tree_tab_model_) {
     BuildTreeTabs();
-  } else {
+  } else if (!enable && tree_tab_model_) {
     FlattenTreeTabs();
   }
 }

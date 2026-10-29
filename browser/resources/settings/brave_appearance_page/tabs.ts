@@ -5,6 +5,7 @@
 
 import '../settings_shared.css.js'
 import '../settings_vars.css.js'
+import 'chrome://resources/cr_elements/cr_button/cr_button.js'
 
 import {PrefServiceObserverMixin, PrefServiceObserverMixinInterface} from '/shared/settings/prefs2/pref_service_observer_mixin.js';
 import {I18nMixin, I18nMixinInterface} from 'chrome://resources/cr_elements/i18n_mixin.js'
@@ -24,6 +25,12 @@ const SettingsBraveAppearanceTabsElementBase =
 }
 
 type PrefObject<T> = chrome.settingsPrivate.PrefObject<T>
+
+// Mirrors BraveAppearanceHandler::VerticalTabsWindowState().
+type VerticalTabsWindowState = {
+  enabled: boolean,
+  hasOverride: boolean,
+}
 
 export class SettingsBraveAppearanceTabsElement extends SettingsBraveAppearanceTabsElementBase {
   static get is() {
@@ -90,10 +97,18 @@ export class SettingsBraveAppearanceTabsElement extends SettingsBraveAppearanceT
         value: true,
       },
 
-      // Mirrored from the global PrefService, purely to evaluate dom-if
-      // conditions and computed bindings in this element's own template. The
-      // controls themselves read/write via `pref-key` directly.
+      // Mirrored from the global PrefService for dom-if conditions.
       verticalTabsEnabledPref_: Object,
+      verticalTabsEnabledForWindow_: {
+        type: Boolean,
+        value: false,
+      },
+      // True while this window's layout disagrees with the shared switch.
+      // A choice that matches the switch is cleared and is not an override.
+      hasVerticalTabsWindowOverride_: {
+        type: Boolean,
+        value: false,
+      },
       verticalTabsHideCompletelyWhenCollapsedPref_: Object,
       verticalTabsShowToggleButtonPref_: Object,
       scrollableHorizontalTabStripPref_: Object,
@@ -136,6 +151,8 @@ export class SettingsBraveAppearanceTabsElement extends SettingsBraveAppearanceT
       Array<{value: number, name: string}>
   declare private verticalTabsToggleEnabled_: boolean
   declare private verticalTabsEnabledPref_: PrefObject<boolean>|undefined
+  declare private verticalTabsEnabledForWindow_: boolean
+  declare private hasVerticalTabsWindowOverride_: boolean
   declare private verticalTabsHideCompletelyWhenCollapsedPref_:
       PrefObject<boolean>|undefined
   declare private verticalTabsShowToggleButtonPref_: PrefObject<boolean>|undefined
@@ -150,6 +167,15 @@ export class SettingsBraveAppearanceTabsElement extends SettingsBraveAppearanceT
     this.addWebUiListener(
         'vertical-tabs-toggle-enabled-changed',
         (enabled: boolean) => { this.verticalTabsToggleEnabled_ = enabled })
+    this.addWebUiListener(
+        'vertical-tabs-window-state-changed',
+        (state: VerticalTabsWindowState) => {
+          this.setVerticalTabsWindowState_(state)
+        })
+    sendWithPromise<VerticalTabsWindowState>('getVerticalTabsWindowState')
+        .then((state: VerticalTabsWindowState) => {
+          this.setVerticalTabsWindowState_(state)
+        })
 
     this.mirrorPrefs({
       // Mirror based on which backend is active
@@ -182,6 +208,76 @@ export class SettingsBraveAppearanceTabsElement extends SettingsBraveAppearanceT
 
   private isUpstreamVerticalTabsFeatureEnabled_() {
     return loadTimeData.getBoolean('isUpstreamVerticalTabsFeatureEnabled')
+  }
+
+  // The note, the switch sub-label, and the options heading share this.
+  // Require the layouts to differ as well as the override, so a pref update
+  // that has already caught up hides them before the window-state event
+  // arrives.
+  private showVerticalTabsWindowStatus_(
+      hasOverride: boolean, windowEnabled: boolean,
+      prefEnabled: boolean|undefined) {
+    return !this.isUpstreamVerticalTabsFeatureEnabled_() && hasOverride &&
+        prefEnabled !== undefined &&
+        this.verticalTabsLayoutsDiffer_(windowEnabled, prefEnabled)
+  }
+
+  // This window's layout does not match the shared switch.
+  private verticalTabsLayoutsDiffer_(
+      windowEnabled: boolean, prefEnabled: boolean) {
+    return windowEnabled !== prefEnabled
+  }
+
+  // Shown on the shared switch only while this window uses the other layout.
+  private verticalTabsSwitchSublabel_(
+      hasOverride: boolean, windowEnabled: boolean,
+      prefEnabled: boolean|undefined) {
+    if (!this.showVerticalTabsWindowStatus_(
+            hasOverride, windowEnabled, prefEnabled)) {
+      return ''
+    }
+    return loadTimeData.getString(
+        'appearanceSettingsTabsVerticalTabsSwitchSublabel')
+  }
+
+  // The option list still applies to vertical windows when this window's
+  // layout does not. Same condition as the note under the switch.
+  private showVerticalTabsOptionsHeading_(
+      hasOverride: boolean, windowEnabled: boolean,
+      prefEnabled: boolean|undefined) {
+    return this.showVerticalTabsWindowStatus_(
+        hasOverride, windowEnabled, prefEnabled)
+  }
+
+  private verticalTabsWindowTitle_(windowEnabled: boolean) {
+    return loadTimeData.getString(
+        windowEnabled ?
+            'appearanceSettingsTabsVerticalTabsThisWindowVerticalTitle' :
+            'appearanceSettingsTabsVerticalTabsThisWindowHorizontalTitle')
+  }
+
+  private verticalTabsWindowAction_(windowEnabled: boolean) {
+    return loadTimeData.getString(
+        windowEnabled ?
+            'appearanceSettingsTabsVerticalTabsUseHorizontalForWindow' :
+            'appearanceSettingsTabsVerticalTabsUseVerticalForWindow')
+  }
+
+  private showVerticalTabsOptions_(
+      prefEnabled: boolean, windowEnabled: boolean) {
+    if (this.isUpstreamVerticalTabsFeatureEnabled_()) {
+      return prefEnabled
+    }
+    return prefEnabled || windowEnabled
+  }
+
+  private setVerticalTabsWindowState_(state: VerticalTabsWindowState) {
+    this.verticalTabsEnabledForWindow_ = state.enabled
+    this.hasVerticalTabsWindowOverride_ = state.hasOverride
+  }
+
+  private onFollowVerticalTabsSetting_() {
+    chrome.send('clearVerticalTabsWindowOverride')
   }
 
   // Mirrors upstream's SettingsAppearancePageElement.showEverythingMenuToggle_()

@@ -345,10 +345,12 @@ BraveBrowserView::BraveBrowserView(BrowserWindowInterface* browser)
       base::BindRepeating(&BraveBrowserView::OnPreferenceChanged,
                           base::Unretained(this)));
 
-  pref_change_registrar_.Add(
-      brave_tabs::kVerticalTabsEnabled,
-      base::BindRepeating(&BraveBrowserView::OnPreferenceChanged,
-                          base::Unretained(this)));
+  if (auto* controller = VerticalTabController::From(browser_)) {
+    vertical_tabs_enabled_changed_subscription_ =
+        controller->AddEnabledChangedCallback(
+            base::BindRepeating(&BraveBrowserView::UpdateTabSearchBubbleHost,
+                                base::Unretained(this)));
+  }
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   pref_change_registrar_.Add(
@@ -444,11 +446,6 @@ void BraveBrowserView::OnCompactModePrefChanged() {
 }
 
 void BraveBrowserView::OnPreferenceChanged(const std::string& pref_name) {
-  if (pref_name == brave_tabs::kVerticalTabsEnabled) {
-    UpdateTabSearchBubbleHost();
-    return;
-  }
-
   if (pref_name == kWebViewRoundedCorners) {
     UpdateRoundedCornersUI();
     return;

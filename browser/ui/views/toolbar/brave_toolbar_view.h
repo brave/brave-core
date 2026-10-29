@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_TOOLBAR_BRAVE_TOOLBAR_VIEW_H_
 #define BRAVE_BROWSER_UI_VIEWS_TOOLBAR_BRAVE_TOOLBAR_VIEW_H_
 
+#include "base/callback_list.h"
 #include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/scoped_observation.h"
@@ -91,6 +92,7 @@ class BraveToolbarView : public ToolbarView,
   void UpdateWorkspaceButtonVisibility();
   void UpdateWorkspaceButtonPlacement();
   void OnCompactModePrefChanged();
+  void OnVerticalTabsEnabledChanged();
   void UpdateComboButtonState();
   bool IsFocusModeOverlayActive() const;
 
@@ -141,7 +143,7 @@ class BraveToolbarView : public ToolbarView,
   BooleanPrefMember location_bar_is_wide_;
   BooleanPrefMember compact_horizontal_tabs_;
 
-  BooleanPrefMember show_vertical_tabs_;
+  base::CallbackListSubscription vertical_tabs_enabled_changed_subscription_;
   BooleanPrefMember show_title_bar_on_vertical_tabs_;
   BooleanPrefMember vertical_tabs_collapsed_;
   BooleanPrefMember vertical_tabs_on_right_;

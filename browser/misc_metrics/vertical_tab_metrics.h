@@ -8,13 +8,13 @@
 
 #include <memory>
 
+#include "base/callback_list.h"
 #include "base/containers/flat_map.h"
 #include "base/memory/raw_ptr.h"
 #include "base/scoped_observation.h"
 #include "brave/components/time_period_storage/weekly_storage.h"
 #include "chrome/browser/ui/browser_window/public/browser_collection_observer.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
-#include "components/prefs/pref_change_registrar.h"
 #include "components/sessions/core/session_id.h"
 
 class BrowserWindowInterface;
@@ -43,7 +43,7 @@ inline constexpr TabCountType kAllTabCountTypes[] = {
 
 class VerticalTabBrowserMetrics : public TabStripModelObserver {
  public:
-  explicit VerticalTabBrowserMetrics(PrefService* profile_prefs,
+  explicit VerticalTabBrowserMetrics(BrowserWindowInterface* browser,
                                      base::RepeatingClosure change_callback);
   ~VerticalTabBrowserMetrics() override;
 
@@ -62,9 +62,9 @@ class VerticalTabBrowserMetrics : public TabStripModelObserver {
  private:
   void UpdateEnabledStatus();
 
-  bool vertical_tabs_enabled_;
-  raw_ptr<PrefService> profile_prefs_;
-  PrefChangeRegistrar pref_change_registrar_;
+  bool vertical_tabs_enabled_ = false;
+  raw_ptr<BrowserWindowInterface> browser_;
+  base::CallbackListSubscription enabled_changed_subscription_;
   base::flat_map<TabCountType, size_t> counts_;
   base::RepeatingClosure change_callback_;
 };

@@ -36,16 +36,10 @@ bool SystemMenuModelDelegate::IsCommandIdChecked(int command_id) const {
 std::u16string SystemMenuModelDelegate::GetLabelForCommandId(
     int command_id) const {
   if (command_id == IDC_TOGGLE_VERTICAL_TABS) {
-    // We're reusing upstream's |IDC_TOGGLE_VERTICAL_TABS| command id and it's
-    // added to system menu from
-    // BraveSystemMenuModelBuilder::InsertBraveSystemMenuForBrowserWindow(). As
-    // upstream made this command as dynamic, its label is fetched from this
-    // method. Upstream's GetLabelForCommandId() refers
-    // tabs::VerticalTabStripStateController::From(browser_) to get label for
-    // current vertical tab state. However,
-    // tabs::VerticalTabStripStateController::From(browser_) is null now as
-    // we're not using upstream's vertical tab implementation.
-    if (!tabs::VerticalTabStripStateController::From(browser_)) {
+    // Upstream treats this command as dynamic and labels it "Show tabs
+    // vertically". Brave's item is a check item for this window.
+    auto* vtc = VerticalTabController::From(browser_);
+    if (vtc && vtc->SupportsBraveVerticalTabs()) {
       return l10n_util::GetStringUTF16(IDS_TAB_CXMENU_SHOW_VERTICAL_TABS);
     }
   }

@@ -10,6 +10,8 @@
 #include "base/notreached.h"
 #include "brave/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/brave_action.h"
 #include "brave/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/list_action_modifiers.h"
+#include "chrome/browser/ui/browser_window.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/toolbar/pinned_toolbar/pinned_toolbar_actions_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/grit/branded_strings.h"
@@ -58,6 +60,16 @@ bool PinBraveAction(side_panel::customize_chrome::mojom::ActionId action_id,
   return false;
 }
 
+BrowserWindowInterface* BrowserForCustomizeToolbar(
+    content::WebContents* web_contents) {
+  if (!web_contents) {
+    return nullptr;
+  }
+  auto* window = BrowserWindow::FindBrowserWindowWithWebContents(web_contents);
+  auto* browser_view = static_cast<BrowserView*>(window);
+  return browser_view ? browser_view->browser() : nullptr;
+}
+
 void OnBraveActionPinnedChanged(
     mojo::Remote<side_panel::customize_chrome::mojom::CustomizeToolbarClient>*
         client,
@@ -85,7 +97,8 @@ void ObserveBraveActions(
 }
 
 bool IsBraveActionCustomized(content::WebContents* web_contents) {
-  auto brave_actions = customize_chrome::ListBraveSpecificActions(web_contents);
+  auto brave_actions = customize_chrome::ListBraveSpecificActions(
+      web_contents, BrowserForCustomizeToolbar(web_contents));
   auto* prefs = user_prefs::UserPrefs::Get(web_contents->GetBrowserContext());
   CHECK(prefs) << "Browser context does not have prefs";
   return std::ranges::any_of(brave_actions, [prefs](const auto& action) {
@@ -95,7 +108,8 @@ bool IsBraveActionCustomized(content::WebContents* web_contents) {
 }
 
 void ResetBraveActionsToDefault(content::WebContents* web_contents) {
-  auto brave_actions = customize_chrome::ListBraveSpecificActions(web_contents);
+  auto brave_actions = customize_chrome::ListBraveSpecificActions(
+      web_contents, BrowserForCustomizeToolbar(web_contents));
   auto* prefs = user_prefs::UserPrefs::Get(web_contents->GetBrowserContext());
   CHECK(prefs) << "Browser context does not have prefs";
 

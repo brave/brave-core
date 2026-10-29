@@ -62,11 +62,11 @@ BraveBrowserFrameViewMac::BraveBrowserFrameViewMac(
   frame_graphic_ =
       std::make_unique<BraveWindowFrameGraphic>(browser->GetProfile());
 
-  if (VerticalTabController::From(browser)->SupportsBraveVerticalTabs()) {
+  if (auto* controller = VerticalTabController::From(browser);
+      controller && controller->SupportsBraveVerticalTabs()) {
     auto* prefs = browser->GetProfile()->GetOriginalProfile()->GetPrefs();
-    show_vertical_tabs_.Init(
-        brave_tabs::kVerticalTabsEnabled, prefs,
-        base::BindRepeating(
+    vertical_tabs_enabled_changed_subscription_ =
+        controller->AddEnabledChangedCallback(base::BindRepeating(
             &BraveBrowserFrameViewMac::UpdateWindowTitleAndControls,
             base::Unretained(this)));
     show_title_bar_on_vertical_tabs_.Init(

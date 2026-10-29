@@ -13,6 +13,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/ui/screenshot/features.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
 #include "brave/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/brave_action.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
@@ -21,6 +22,7 @@
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/sharing_hub/sharing_hub_features.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/webui/util/image_util.h"
 #include "chrome/common/pref_names.h"
 #include "components/prefs/pref_service.h"
@@ -126,6 +128,7 @@ std::vector<ActionPtr> FilterUnsupportedChromiumActions(
 
 std::vector<ActionPtr> ApplyBraveSpecificModifications(
     content::WebContents* web_contents,
+    BrowserWindowInterface* browser,
     std::vector<ActionPtr> actions) {
   using side_panel::customize_chrome::mojom::Action;
   using side_panel::customize_chrome::mojom::CategoryId;
@@ -208,7 +211,7 @@ std::vector<ActionPtr> ApplyBraveSpecificModifications(
   auto* prefs = user_prefs::UserPrefs::Get(web_contents->GetBrowserContext());
   CHECK(prefs) << "Browser context does not have prefs";
 
-  auto brave_actions = ListBraveSpecificActions(web_contents);
+  auto brave_actions = ListBraveSpecificActions(web_contents, browser);
 
   for (const auto& brave_action : brave_actions) {
     // Find the anchor action. If anchor action is not found, just append to the
@@ -234,13 +237,19 @@ std::vector<ActionPtr> ApplyBraveSpecificModifications(
 }
 
 std::vector<BraveAction> ListBraveSpecificActions(
-    content::WebContents* web_contents) {
+    content::WebContents* web_contents,
+    BrowserWindowInterface* browser) {
   auto* prefs = user_prefs::UserPrefs::Get(web_contents->GetBrowserContext());
   CHECK(prefs) << "Browser context does not have prefs";
 
   std::vector<BraveAction> brave_actions;
   brave_actions.push_back(kShowAddBookmarkButton);
-  if (prefs->GetBoolean(brave_tabs::kVerticalTabsEnabled)) {
+  bool show_vertical_tab_toggle =
+      prefs->GetBoolean(brave_tabs::kVerticalTabsEnabled);
+  if (auto* controller = VerticalTabController::From(browser)) {
+    show_vertical_tab_toggle = controller->ShouldShowBraveVerticalTabs();
+  }
+  if (show_vertical_tab_toggle) {
     brave_actions.push_back(kShowVerticalTabToggleButtonAction);
   }
 

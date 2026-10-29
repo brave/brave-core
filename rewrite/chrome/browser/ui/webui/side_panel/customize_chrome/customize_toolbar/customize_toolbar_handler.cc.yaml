@@ -46,7 +46,8 @@ substitutions:
       replace: |-
         \1base::BindOnce(&customize_chrome::FilterUnsupportedChromiumActions)
               .Then(base::BindOnce(&customize_chrome::ApplyBraveSpecificModifications,
-                                   web_contents_.get()))
+                                   web_contents_.get(),
+                                   BrowserForCustomizeToolbar(web_contents_.get())))
               .Then(std::move(callback))
               .Run(std::move(actions));\3
 

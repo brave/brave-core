@@ -34,6 +34,7 @@
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
+#include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_container_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
@@ -434,12 +435,21 @@ void ToggleVerticalTabStrip(BrowserWindowInterface* browser) {
     return;
   }
 
-  auto* profile = browser->GetProfile()->GetOriginalProfile();
-  auto* prefs = profile->GetPrefs();
-  const bool was_using_vertical_tab_strip =
-      prefs->GetBoolean(brave_tabs::kVerticalTabsEnabled);
+  auto* prefs = browser->GetProfile()->GetOriginalProfile()->GetPrefs();
   prefs->SetBoolean(brave_tabs::kVerticalTabsEnabled,
-                    !was_using_vertical_tab_strip);
+                    !prefs->GetBoolean(brave_tabs::kVerticalTabsEnabled));
+}
+
+void ToggleVerticalTabStripForWindow(BrowserWindowInterface* browser) {
+  if (!tabs::utils::IsVerticalTabToggleEnabled(browser)) {
+    return;
+  }
+  auto* controller = VerticalTabController::From(browser);
+  if (!controller || !controller->SupportsBraveVerticalTabs()) {
+    return;
+  }
+  controller->SetVerticalTabsEnabledForWindow(
+      !controller->ShouldShowBraveVerticalTabs());
 }
 
 void ToggleVerticalTabStripFloatingMode(BrowserWindowInterface* browser) {
