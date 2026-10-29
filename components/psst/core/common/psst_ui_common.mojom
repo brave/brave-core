@@ -34,12 +34,10 @@ struct PsstLogEntry {
   double timestamp_ms;
 
   // Tab the entry belongs to, used to group the timeline.
-  // `kInvalidTabId` (-1) when the entry has no associated tab.
-  int32 tab_id;
+  int32? tab_id;
 
-  // Distinguishes subframes within a tab. Empty for native entries that aren't
-  // tied to a specific frame.
-  string frame_token;
+  // Distinguishes subframes within a tab.
+  string? frame_token;
 
   PsstLogLevel level;
   PsstLogSource source;
