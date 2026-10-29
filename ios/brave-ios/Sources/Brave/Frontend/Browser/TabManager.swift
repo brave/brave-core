@@ -1114,12 +1114,24 @@ class TabManager: NSObject {
     guard let url = url.urlToShred,
       let baseDomain = url.baseDomain
     else { return }
-    forgetTasks[tab.isPrivate] = forgetTasks[tab.isPrivate] ?? [:]
+    let isPrivate = tab.isPrivate
+    let dataStore = tab.configuration?.websiteDataStore
+    forgetTasks[isPrivate] = forgetTasks[isPrivate] ?? [:]
     // Start a task to delete all data for this etldP1
     // The task may be delayed in case we want to cancel it
-    forgetTasks[tab.isPrivate]?[baseDomain] = Task {
+    forgetTasks[isPrivate]?[baseDomain] = Task { [weak tab] in
       try await Task.sleep(seconds: delay)
-      await self.forgetData(for: url, in: tab)
+      // A closed tab's live WebView keeps writing Local Storage after it is deleted. The tab may
+      // instead still be open, having navigated away from the site, so only delete closed ones.
+      if let tab,
+        !Self.tabManagersInConnectedWindows.contains(where: { tabManager in
+          tabManager.allTabs.contains { $0 === tab }
+        })
+      {
+        tab.deleteWebView()
+      }
+      await self.forgetData(for: [url], dataStore: dataStore)
+      self.forgetTasks[isPrivate]?.removeValue(forKey: baseDomain)
     }
   }
 
