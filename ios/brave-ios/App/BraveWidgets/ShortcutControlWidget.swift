@@ -19,12 +19,11 @@ struct ShortcutControlWidget: ControlWidget {
         kind: Self.kind,
         provider: ShortcutControlValueProvider()
       ) { shortcut in
-        ControlWidgetButton(
-          action: OpenControlWidgetShortcutIntent(shortcut: shortcut ?? .search)
-        ) {
+        ControlWidgetButton(action: OpenControlWidgetShortcutIntent(shortcut: shortcut)) {
           Label(
-            shortcut?.displayString ?? Strings.Widgets.shortcutControlWidgetTitle,
-            braveSystemImage: shortcut?.braveSystemImageName ?? "leo.brave.icon-monochrome"
+            shortcut?.widgetShortcut.displayString ?? Strings.Widgets.shortcutControlWidgetTitle,
+            braveSystemImage: shortcut?.widgetShortcut.braveSystemImageName
+              ?? "leo.brave.icon-monochrome"
           )
         }
       }
@@ -41,61 +40,8 @@ struct ShortcutControlWidget: ControlWidget {
   }
 }
 
-/// Picker value for the control. Generated `WidgetShortcut` cannot conform to `AppEnum`.
-@available(iOS 26.0, *)
-enum ShortcutControlOption: String, AppEnum {
-  case newTab
-  case newPrivateTab
-  case bookmarks
-  case history
-  case downloads
-  case playlist
-  case search
-  case wallet
-  case scanQRCode
-  case braveNews
-  case braveLeo
-  case askBrave
-  case braveLeoVoiceInput
-
-  static let typeDisplayRepresentation: TypeDisplayRepresentation = "Shortcut"
-
-  // AppEnum requires a dictionary literal. The control button still uses `displayString`.
-  static let caseDisplayRepresentations: [ShortcutControlOption: DisplayRepresentation] = [
-    .newTab: "New Tab",
-    .newPrivateTab: "Private Tab",
-    .bookmarks: "Bookmarks",
-    .history: "History",
-    .downloads: "Downloads",
-    .playlist: "Playlist",
-    .search: "Search",
-    .wallet: "Brave Wallet",
-    .scanQRCode: "QR Code",
-    .braveNews: "Brave News",
-    .braveLeo: "Leo AI",
-    .askBrave: "Ask Brave",
-    .braveLeoVoiceInput: "Leo Voice Input",
-  ]
-
-  var widgetShortcut: WidgetShortcut {
-    switch self {
-    case .newTab: .newTab
-    case .newPrivateTab: .newPrivateTab
-    case .bookmarks: .bookmarks
-    case .history: .history
-    case .downloads: .downloads
-    case .playlist: .playlist
-    case .search: .search
-    case .wallet: .wallet
-    case .scanQRCode: .scanQRCode
-    case .braveNews: .braveNews
-    case .braveLeo: .braveLeo
-    case .askBrave: .askBrave
-    case .braveLeoVoiceInput: .braveLeoVoiceInput
-    }
-  }
-}
-
+/// Picker for the configurable control. Kept separate from the scene action so Control Center
+/// shows the shortcut list instead of a text field.
 @available(iOS 26.0, *)
 struct ShortcutControlConfigurationIntent: ControlConfigurationIntent {
   static let title: LocalizedStringResource = "Shortcut"
@@ -103,6 +49,8 @@ struct ShortcutControlConfigurationIntent: ControlConfigurationIntent {
 
   @Parameter(title: "Shortcut", optionsProvider: WidgetShortcutControlOptionsProvider())
   var shortcut: ShortcutControlOption?
+
+  init() {}
 }
 
 @available(iOS 26.0, *)
@@ -117,27 +65,24 @@ struct WidgetShortcutControlOptionsProvider: DynamicOptionsProvider {
 
 @available(iOS 26.0, *)
 struct ShortcutControlValueProvider: AppIntentControlValueProvider {
-  func previewValue(configuration: ShortcutControlConfigurationIntent) -> WidgetShortcut? {
-    shortcut(for: configuration.shortcut?.widgetShortcut, disabledShortcuts: [])
+  func previewValue(configuration: ShortcutControlConfigurationIntent) -> ShortcutControlOption? {
+    shortcut(for: configuration.shortcut, disabledShortcuts: [])
   }
 
   func currentValue(
     configuration: ShortcutControlConfigurationIntent
-  ) async throws -> WidgetShortcut? {
+  ) async throws -> ShortcutControlOption? {
     let disabledShortcuts = await DisabledShortcutsWidgetData.loadDisabledShortcuts()
-    return shortcut(
-      for: configuration.shortcut?.widgetShortcut,
-      disabledShortcuts: disabledShortcuts
-    )
+    return shortcut(for: configuration.shortcut, disabledShortcuts: disabledShortcuts)
   }
 
-  /// `nil` is the unconfigured control. It shows the lion and still opens Search.
+  /// `nil` is the unconfigured control. A disabled choice opens Search.
   private func shortcut(
-    for shortcut: WidgetShortcut?,
+    for shortcut: ShortcutControlOption?,
     disabledShortcuts: Set<WidgetShortcut>
-  ) -> WidgetShortcut? {
+  ) -> ShortcutControlOption? {
     guard let shortcut else { return nil }
-    if disabledShortcuts.contains(shortcut) {
+    if disabledShortcuts.contains(shortcut.widgetShortcut) {
       return .search
     }
     return shortcut

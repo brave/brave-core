@@ -23,7 +23,7 @@ public class DisabledShortcutsWidgetData {
 
   /// The set of shortcuts that are currently unavailable. An empty set (the
   /// common case, including a missing file) means every feature is available.
-  @concurrent public static func loadDisabledShortcuts() async -> Set<WidgetShortcut> {
+  public static func currentDisabledShortcuts() -> Set<WidgetShortcut> {
     guard let dataPath = widgetDataPath,
       FileManager.default.fileExists(atPath: dataPath.path)
     else {
@@ -39,6 +39,10 @@ public class DisabledShortcutsWidgetData {
       Logger.module.error("loadDisabledShortcuts error: \(error.localizedDescription)")
       return []
     }
+  }
+
+  @concurrent public static func loadDisabledShortcuts() async -> Set<WidgetShortcut> {
+    currentDisabledShortcuts()
   }
 
   /// Writes the set of unavailable shortcuts and reloads the affected widgets.
