@@ -115,6 +115,11 @@ export function isPersistableSessionRoute(
      */
     || (isPanel && !isSidePanel && routePath === WalletRoutes.Connections)
     /**
+     * Card hub is the panel home. Persist it so closing the panel on the
+     * hub restores the hub, and a later crypto page replaces it.
+     */
+    || (isPanel && routePath === WalletRoutes.Cards)
+    /**
      * NFT Collections route uses a query param to determine the
      * collectionName and can not be exact matched.
      */

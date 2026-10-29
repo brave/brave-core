@@ -5,9 +5,10 @@
 
 import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
+import { useHistory } from 'react-router-dom'
 
 // Types
-import { WalletCardIds } from '$wallet/constants/types'
+import { WalletCardIds, WalletRoutes } from '$wallet/constants/types'
 
 // Constants
 import { LOCAL_STORAGE_KEYS } from '$wallet/common/constants/local-storage-keys'
@@ -92,6 +93,8 @@ export const CardHub = () => {
     onEnterHub,
   } = useCardHubTransition(visibleCardIds)
 
+  const history = useHistory()
+
   const selectedCardTitle = selectedCardId
     ? getLocale(
         WalletCardOptions.find((option) => option.id === selectedCardId)?.label
@@ -100,6 +103,14 @@ export const CardHub = () => {
     : ''
 
   // Methods
+  const onClickCard = (cardId: WalletCardIds) => {
+    if (cardId === 'crypto') {
+      history.push(WalletRoutes.Portfolio)
+      return
+    }
+    onOpenCardDetails(cardId)
+  }
+
   const onOpenNotifications = () => {
     // Will nav to notifications in the future
     alert('Open notifications')
@@ -166,7 +177,7 @@ export const CardHub = () => {
                   onClick={
                     selectedCardId || isEnteringHub
                       ? undefined
-                      : () => onOpenCardDetails(option.id)
+                      : () => onClickCard(option.id)
                   }
                 />
               </StackItem>

@@ -95,6 +95,19 @@ describe('isPersistableSessionRoute', () => {
       isPersistableSessionRoute(WalletRoutes.Connections, false, false),
     ).toBe(false)
   })
+
+  it('persists the card hub for the panel and side panel only', () => {
+    expect(isPersistableSessionRoute(WalletRoutes.Cards, true, false)).toBe(
+      true,
+    )
+    expect(isPersistableSessionRoute(WalletRoutes.Cards, true, true)).toBe(true)
+    expect(isPersistableSessionRoute(WalletRoutes.Cards, false, false)).toBe(
+      false,
+    )
+    expect(isPersistableSessionRoute(WalletRoutes.Accounts, true, false)).toBe(
+      true,
+    )
+  })
 })
 
 describe('makeSendRoute', () => {
