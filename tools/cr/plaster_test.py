@@ -4671,8 +4671,8 @@ class RewriterFormsTest(unittest.TestCase):
             '[\n'
             '  {\n'
             '    name: "MyFeature",\n'
-            '    base_feature_status: "disabled",  '
-            '// feature state is enforced via plaster rewrite.\n'
+            '    brave_base_feature_overridden: true,\n'
+            '    base_feature_status: "disabled",\n'
             '    status: "stable",\n'
             '  },\n'
             '];\n',
@@ -4701,8 +4701,8 @@ class RewriterFormsTest(unittest.TestCase):
             '  {\n'
             '    name: "MyFeature",\n'
             '    origin_trial_feature_name: "MyFeature",\n'
-            '    base_feature_status: "disabled",  '
-            '// feature state is enforced via plaster rewrite.\n'
+            '    brave_base_feature_overridden: true,\n'
+            '    base_feature_status: "disabled",\n'
             '    copied_from_base_feature_if: "overridden",\n'
             '  },\n'
             '];\n',
@@ -4726,8 +4726,8 @@ class RewriterFormsTest(unittest.TestCase):
         )
         self.assertIn(
             '    name: "MyFeature",\n'
-            '    base_feature_status: "disabled",  '
-            '// feature state is enforced via plaster rewrite.\n',
+            '    brave_base_feature_overridden: true,\n'
+            '    base_feature_status: "disabled",\n',
             result,
         )
 
@@ -4752,8 +4752,8 @@ class RewriterFormsTest(unittest.TestCase):
             '[\n'
             '  {\n'
             '    name: "MyFeature",\n'
-            '    base_feature_status: "disabled",  '
-            '// feature state is enforced via plaster rewrite.\n'
+            '    brave_base_feature_overridden: true,\n'
+            '    base_feature_status: "disabled",\n'
             '    origin_trial_feature_name: "MyFeature",\n'
             '  },\n'
             '];\n',
@@ -4785,8 +4785,8 @@ class RewriterFormsTest(unittest.TestCase):
             '  },\n'
             '  {\n'
             '    name: "MyFeature",\n'
-            '    base_feature_status: "disabled",  '
-            '// feature state is enforced via plaster rewrite.\n'
+            '    brave_base_feature_overridden: true,\n'
+            '    base_feature_status: "disabled",\n'
             '    status: "stable",\n'
             '  },\n'
             '];\n',
@@ -4794,7 +4794,7 @@ class RewriterFormsTest(unittest.TestCase):
 
     def test_blink_runtime_enabled_feature_state_reapplies_unchanged(self):
         # Rerunning over already-migrated text takes the override branch and
-        # must not stack up a second comment.
+        # must not stack up a second mark.
         once = self._apply(
             'runtime_enabled_features.json5',
             '[\n  {\n    name: "MyFeature",\n    status: "stable",\n  },\n];\n',
@@ -4804,8 +4804,27 @@ class RewriterFormsTest(unittest.TestCase):
             'runtime_enabled_features.json5', once, self._FEATURE_YAML
         )
         self.assertEqual(once, twice)
-        self.assertEqual(
-            twice.count('// feature state is enforced via plaster rewrite.'), 1
+        self.assertEqual(twice.count('brave_base_feature_overridden'), 1)
+
+    def test_blink_runtime_enabled_feature_state_keeps_a_trailing_comment(
+        self,
+    ):
+        # The mark goes before the field, so a comment upstream left on the
+        # field stays with it.
+        result = self._apply(
+            'runtime_enabled_features.json5',
+            '[\n'
+            '  {\n'
+            '    name: "MyFeature",\n'
+            '    base_feature_status: "enabled",  // Kill switch.\n'
+            '  },\n'
+            '];\n',
+            self._FEATURE_YAML,
+        )
+        self.assertIn(
+            '    brave_base_feature_overridden: true,\n'
+            '    base_feature_status: "disabled",  // Kill switch.\n',
+            result,
         )
 
     def test_blink_runtime_enabled_feature_state_unknown_feature_fails(self):

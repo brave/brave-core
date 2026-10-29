@@ -5,6 +5,34 @@
 
 substitutions:
   - description: |-
+      Declare the brave_base_feature_overridden parameter.
+
+      `set_blink_runtime_enabled_feature_state` marks the entries it
+      overrides with it, and features_generated.cc.tmpl generates them with
+      BASE_OVERRIDDEN_FEATURE.
+    regex:
+      pattern: |2-
+            copied_from_base_feature_if: {
+              valid_type: "str",
+              valid_values: ["enabled_or_overridden", "overridden"],
+              default: "enabled_or_overridden",
+            },
+      replace: |2-
+            copied_from_base_feature_if: {
+              valid_type: "str",
+              valid_values: ["enabled_or_overridden", "overridden"],
+              default: "enabled_or_overridden",
+            },
+
+            // Brave: the base::Feature has a default state Brave overrides at
+            // compile time, so it is reported as overridden and its state is
+            // always copied into the flag.
+            brave_base_feature_overridden: {
+              default: false,
+              value_type: "bool",
+            },
+
+  - description: |-
       Declare the Brave-only IsInTorContext runtime flag.
     regex:
       re_pattern: '(  data: \[.*)\n  \],\n\}'
@@ -78,7 +106,8 @@ substitutions:
       replace: '\1base_feature: "FencedFramesRuntime",'
 
   # These plaster override the `base::Feature` value for the blink runtime
-  # features. Keep them in alphabetical order.
+  # features, and with it the runtime flag. Each must be listed in
+  # brave/base/compile_overridden_features.inc. Keep them in alphabetical order.
   - description: 'Ship the interest-group ad-targeting API disabled.'
     set_blink_runtime_enabled_feature_state:
       feature_name: AdInterestGroupAPI

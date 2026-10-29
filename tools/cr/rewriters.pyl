@@ -1019,13 +1019,19 @@ nthChild:
 
         # Both ops below set a feature entry's `base_feature_status`, which is
         # what forces the default state of the `base::Feature` the entry
-        # generates. Which one applies depends on whether the entry already
-        # declares the field, so the two are paired and chosen between by
-        # `js.set_blink_runtime_enabled_feature_state`'s frontend rewriter.
+        # generates, and mark the entry `brave_base_feature_overridden`, which
+        # generates that `base::Feature` with `BASE_OVERRIDDEN_FEATURE`. Blink
+        # copies a `base::Feature` into its runtime flag only when it is
+        # enabled or overridden, so without the mark a disabled default leaves
+        # the flag at what `status` says. Which op applies depends on whether
+        # the entry already declares the field, so the two are paired and
+        # chosen between by `js.set_blink_runtime_enabled_feature_state`'s
+        # frontend rewriter.
         #
-        # We leave a trailing comment on the field, so the substitution always
-        # produces a diff even when upstream's own value already agrees with
-        # ours, as feature flags are preemtively overridden most of the time.
+        # The mark goes right before the field, so it always produces a diff
+        # even when upstream's own value already agrees with ours, as feature
+        # flags are preemptively overridden most of the time, and it leaves a
+        # trailing comment upstream has on the field in place.
 
         # The field is absent, so it is inserted directly after `name`. The
         # negative lookahead is what establishes absence; with the field
@@ -1038,8 +1044,9 @@ nthChild:
                     "([ \\t]*)((?<![A-Za-z0-9_])name:\\s*\"[^\"]*\",)"
                     "(?![\\s\\S]*?(?<![A-Za-z0-9_])base_feature_status:)",
                 "replace":
-                    "\\1\\2\\n\\1base_feature_status: \"{value}\",  "
-                    "// feature state is enforced via plaster rewrite.",
+                    "\\1\\2\\n"
+                    "\\1brave_base_feature_overridden: true,\\n"
+                    "\\1base_feature_status: \"{value}\",",
             },
             "result": {
                 "node": "object",
@@ -1049,19 +1056,19 @@ nthChild:
         # The field is already declared, so only its value changes, wherever
         # in the entry it sits. Upstream tends to put it last, next to
         # `copied_from_base_feature_if`, rather than beside `name`. The
-        # optional trailing group swallows a comment an earlier run left, so
-        # reapplying does not stack up copies of it.
+        # optional group swallows a mark an earlier run left, so reapplying
+        # does not stack up copies of it.
         "js.set_blink_runtime_enabled_feature_state": {
             "matcher": "js.find_runtime_feature_entry",
             "inputs": ["feature_name", "value"],
             "replace": {
                 "re_pattern":
-                    "((?<![A-Za-z0-9_])base_feature_status:\\s*\")[^\"]*(\",)"
-                    "(?:[ \\t]*// feature state is enforced via plaster "
-                    "rewrite\\.)?",
+                    "([ \\t]*)"
+                    "(?:brave_base_feature_overridden: true,\\n[ \\t]*)?"
+                    "((?<![A-Za-z0-9_])base_feature_status:\\s*\")[^\"]*(\",)",
                 "replace":
-                    "\\1{value}\\2  "
-                    "// feature state is enforced via plaster rewrite.",
+                    "\\1brave_base_feature_overridden: true,\\n"
+                    "\\1\\2{value}\\3",
             },
             "result": {
                 "node": "object",

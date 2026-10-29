@@ -8,7 +8,8 @@
 
 import("//brave/third_party/blink/renderer/core/brave_page_graph/sources.gni")
 
-brave_blink_renderer_platform_visibility = []
+brave_blink_renderer_platform_visibility =
+    [ "//brave/third_party/blink/renderer/platform:unit_tests" ]
 
 brave_blink_renderer_platform_public_deps = []
 

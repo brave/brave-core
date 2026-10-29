@@ -1,0 +1,22 @@
+diff --git a/third_party/blink/renderer/build/scripts/templates/features_generated.cc.tmpl b/third_party/blink/renderer/build/scripts/templates/features_generated.cc.tmpl
+index b5c288333d85a9e0ffd31de223a6748fc5d9a5eb..db0ac70d6a9f1ec3acf8d6bc1f95a11628ab9f05 100644
+--- a/third_party/blink/renderer/build/scripts/templates/features_generated.cc.tmpl
++++ b/third_party/blink/renderer/build/scripts/templates/features_generated.cc.tmpl
+@@ -10,7 +10,7 @@ namespace features {
+ 
+ {% for feature in features %}
+ {% if feature.base_feature %}
+-BASE_FEATURE(k{{feature.base_feature}},
++{{'BASE_OVERRIDDEN_FEATURE' if feature.brave_base_feature_overridden else 'BASE_FEATURE'}}(k{{feature.base_feature}},
+ {% if feature.base_feature_status %}
+     base::FEATURE_{{'ENABLED' if feature.base_feature_status == 'enabled' else 'DISABLED'}}_BY_DEFAULT
+ {% else %}
+@@ -34,6 +34,8 @@ BASE_FEATURE(k{{feature.base_feature}},
+ {% endif %}
+ );
+ 
++{% elif feature.brave_base_feature_overridden %}
++#error "{{feature.name}} is marked brave_base_feature_overridden but has no base::Feature"
+ {% endif %}
+ {% endfor %}
+ 

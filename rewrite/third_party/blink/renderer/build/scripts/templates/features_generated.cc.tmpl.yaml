@@ -1,0 +1,39 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Generate Brave-overridden features with BASE_OVERRIDDEN_FEATURE.
+
+      Entries `set_blink_runtime_enabled_feature_state` marks as
+      `brave_base_feature_overridden` are reported as overridden, so
+      `UpdateStatusFromBaseFeatures()` copies their state into the runtime
+      flag instead of leaving it at what `status` says.
+    regex:
+      pattern: |2-
+        {% if feature.base_feature %}
+        BASE_FEATURE(k{{feature.base_feature}},
+      replace: |2-
+        {% if feature.base_feature %}
+        {{'BASE_OVERRIDDEN_FEATURE' if feature.brave_base_feature_overridden else 'BASE_FEATURE'}}(k{{feature.base_feature}},
+
+  - description: |-
+      Reject a Brave override on an entry without a base::Feature.
+
+      With `base_feature: "none"` there is nothing to generate, and the
+      override would silently do nothing.
+    regex:
+      pattern: |2-
+        );
+
+        {% endif %}
+        {% endfor %}
+      replace: |2-
+        );
+
+        {% elif feature.brave_base_feature_overridden %}
+        #error "{{feature.name}} is marked brave_base_feature_overridden but has no base::Feature"
+        {% endif %}
+        {% endfor %}

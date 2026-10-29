@@ -127,17 +127,6 @@ void ExpectCompileOverriddenFeatureDefault(const base::Feature& feature,
   EXPECT_EQ(base::FeatureList::GetStateIfOverridden(feature), enabled);
 }
 
-// Blink generates these from runtime_enabled_features.json5, where Brave's
-// value is the entry's own `base_feature_status`. Nothing overrides an
-// upstream default, so the feature is not, and must not be, reported as
-// overridden.
-void ExpectBlinkRuntimeEnabledFeatureDefault(const base::Feature& feature,
-                                             bool enabled) {
-  SCOPED_TRACE(feature.name);
-  EXPECT_FALSE(base::internal::IsCompileOverriddenFeature(feature.name));
-  EXPECT_EQ(base::FeatureList::IsEnabled(feature), enabled);
-}
-
 }  // namespace
 
 TEST(FeatureDefaultsTest, DisabledFeatures) {
@@ -380,6 +369,7 @@ TEST(FeatureDefaultsTest, DisabledBlinkRuntimeEnabledFeatures) {
       &blink::features::kAIWriterAPI,
       &blink::features::kControlledFrame,
       &blink::features::kExtensionScriptTagging,
+      &blink::features::kFencedFramesRuntime,
       &blink::features::kFledge,
       &blink::features::kLanguageDetectionAPI,
       &blink::features::kParakeet,
@@ -389,7 +379,7 @@ TEST(FeatureDefaultsTest, DisabledBlinkRuntimeEnabledFeatures) {
   };
 
   for (const auto* feature : disabled_features) {
-    ExpectBlinkRuntimeEnabledFeatureDefault(*feature, false);
+    ExpectCompileOverriddenFeatureDefault(*feature, false);
   }
 }
 
@@ -400,7 +390,7 @@ TEST(FeatureDefaultsTest, EnabledBlinkRuntimeEnabledFeatures) {
   };
 
   for (const auto* feature : enabled_features) {
-    ExpectBlinkRuntimeEnabledFeatureDefault(*feature, true);
+    ExpectCompileOverriddenFeatureDefault(*feature, true);
   }
 }
 
