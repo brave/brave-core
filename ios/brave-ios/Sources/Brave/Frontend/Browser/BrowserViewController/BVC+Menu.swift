@@ -383,8 +383,9 @@ extension BrowserViewController {
           },
           installVPNProfile: { [weak self] in
             guard let self else { return }
-            self.popToBVC()
-            self.present(UIHostingController(rootView: InstallVPNProfileView()), animated: true)
+            self.popToBVC { [weak self] in
+              self?.present(UIHostingController(rootView: InstallVPNProfileView()), animated: true)
+            }
           }
         )
 

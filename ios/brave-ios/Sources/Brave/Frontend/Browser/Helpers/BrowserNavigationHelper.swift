@@ -152,8 +152,9 @@ class BrowserNavigationHelper {
       },
       installVPNProfile: { [weak bvc] in
         guard let bvc = bvc else { return }
-        bvc.popToBVC()
-        bvc.present(UIHostingController(rootView: InstallVPNProfileView()), animated: true)
+        bvc.popToBVC { [weak bvc] in
+          bvc?.present(UIHostingController(rootView: InstallVPNProfileView()), animated: true)
+        }
       }
     )
 
