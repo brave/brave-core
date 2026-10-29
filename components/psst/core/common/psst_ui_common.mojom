@@ -5,10 +5,80 @@
 
 module psst.mojom;
 
+import "mojo/public/mojom/base/values.mojom";
+
 enum PsstStatus {
   kInProgress = 0,
   kCompleted = 1,
   kFailed = 2,
+};
+
+enum PsstLogLevel {
+  kDebug = 0,
+  kInfo = 1,
+  kWarn = 2,
+  kError = 3,
+};
+
+// Where a log entry originated (the browser-side C++ flow, or one of the
+// injected scripts).
+enum PsstLogSource {
+  kNative = 0,
+  kScript = 1,
+};
+
+// A PSST diagnostics timeline entry, shown on the brave://psst-internals.
+// Entries live only in memory and are never persisted.
+struct PsstLogEntry {
+  // Entry generation timestamp.
+  double timestamp_ms;
+
+  // Tab the entry belongs to, used to group the timeline.
+  // `kInvalidTabId` (-1) when the entry has no associated tab.
+  int32 tab_id;
+
+  // Distinguishes subframes within a tab. Empty for native entries that aren't
+  // tied to a specific frame.
+  string frame_token;
+
+  PsstLogLevel level;
+  PsstLogSource source;
+
+  // eTLD+1 the entry relates to, derived by the browser.
+  string site;
+
+  string message;
+
+  // Optional structured payload, JSON-serialized for display.
+  string? data;
+};
+
+// Renderer -> browser sink for logs from the injected user/policy scripts.
+// Bound per-frame and only in the PSST isolated world, so page script can
+// neither see nor call it. The browser derives tab id, frame token and site
+// from the receiving frame, so a compromised renderer cannot attribute a log
+// entry to another tab or site.
+interface PsstLogSink {
+  Log(PsstLogLevel level,
+      string message,
+      mojo_base.mojom.DictionaryValue? data);
+};
+
+// WebUI -> browser interface for brave://psst-internals.
+interface PsstInternalsHandler {
+  // Returns the entries currently buffered and subscribes `page` to later
+  // additions.
+  BindPage(pending_remote<PsstInternalsPage> page) =>
+      (array<PsstLogEntry> entries);
+
+  // Discards all buffered entries.
+  Clear();
+};
+
+// Browser -> WebUI interface for brave://psst-internals.
+interface PsstInternalsPage {
+  OnEntriesAdded(array<PsstLogEntry> entries);
+  OnCleared();
 };
 
 // Used by the WebUI page to bootstrap bidirectional communication.
