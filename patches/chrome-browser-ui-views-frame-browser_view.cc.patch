@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/frame/browser_view.cc b/chrome/browser/ui/views/frame/browser_view.cc
-index 7b568f6de760af21d6e9d2aa44415a7cef617c51..81e1886a29030407d1e1e2a15466fb5d281bf2a0 100644
+index 72293b2721601595dcde74875d34306c2fd111e3..87739ee3b60c704da2f71343695e7b7a21d0b8ee 100644
 --- a/chrome/browser/ui/views/frame/browser_view.cc
 +++ b/chrome/browser/ui/views/frame/browser_view.cc
-@@ -652,6 +652,10 @@ bool DoCutCopyPasteForWebContents(content::WebContents* contents,
+@@ -653,6 +653,10 @@ bool DoCutCopyPasteForWebContents(content::WebContents* contents,
  // Converts |point| from |src| to |dst| and hit tests it against |dst|. The
  // converted |point| can then be retrieved and used for additional tests.
  bool ConvertedHitTest(views::View* src, views::View* dst, gfx::Point* point) {
@@ -13,7 +13,7 @@ index 7b568f6de760af21d6e9d2aa44415a7cef617c51..81e1886a29030407d1e1e2a15466fb5d
    CHECK(src, base::NotFatalUntil::M162);
    CHECK(dst, base::NotFatalUntil::M162);
    CHECK(point, base::NotFatalUntil::M162);
-@@ -776,6 +780,9 @@ class BrowserView::ExclusiveAccessContextImpl
+@@ -777,6 +781,9 @@ class BrowserView::ExclusiveAccessContextImpl
    void UpdateExclusiveAccessBubble(
        const ExclusiveAccessBubbleParams& params,
        ExclusiveAccessBubbleHideCallback first_hide_callback) override {
@@ -23,7 +23,7 @@ index 7b568f6de760af21d6e9d2aa44415a7cef617c51..81e1886a29030407d1e1e2a15466fb5d
      // Whether we should remove the bubble if it exists, or not show the bubble.
      // TODO(jamescook): Figure out what to do with mouse-lock.
      bool should_close_bubble = false;
-@@ -953,15 +960,15 @@ BrowserView::BrowserView(BrowserWindowInterface* browser)
+@@ -954,15 +961,15 @@ BrowserView::BrowserView(BrowserWindowInterface* browser)
    top_container_insertion_index_ = GetIndexOf(top_container_.get());
  
    toolbar_ = top_container_->AddChildView(
@@ -42,7 +42,7 @@ index 7b568f6de760af21d6e9d2aa44415a7cef617c51..81e1886a29030407d1e1e2a15466fb5d
    multi_contents_view_ = AddChildView(std::move(multi_contents_view));
  
    set_contents_view(multi_contents_view_);
-@@ -969,7 +976,7 @@ BrowserView::BrowserView(BrowserWindowInterface* browser)
+@@ -970,7 +977,7 @@ BrowserView::BrowserView(BrowserWindowInterface* browser)
    // InfoBarContainer needs to be added as a child here for drop-shadow, but
    // needs to come after toolbar in focus order (see EnsureFocusOrder()).
    infobar_container_ =
@@ -51,7 +51,7 @@ index 7b568f6de760af21d6e9d2aa44415a7cef617c51..81e1886a29030407d1e1e2a15466fb5d
  
    // This frames some/all of the top container plus infobars, contents, and
    // contents-height side panel when the toolbar-height side panel is visible.
-@@ -2030,6 +2037,14 @@ void BrowserView::OnActiveTabChanged(content::WebContents* old_contents,
+@@ -2036,6 +2043,14 @@ void BrowserView::OnActiveTabChanged(content::WebContents* old_contents,
  #else
    will_restore_focus &= GetWidget()->IsActive();
  #endif
@@ -66,7 +66,7 @@ index 7b568f6de760af21d6e9d2aa44415a7cef617c51..81e1886a29030407d1e1e2a15466fb5d
    // Update various elements that are interested in knowing the current
    // WebContents.
  
-@@ -3471,7 +3486,7 @@ WebContentsModalDialogHost* BrowserView::GetWebContentsModalDialogHostFor(
+@@ -3476,7 +3491,7 @@ WebContentsModalDialogHost* BrowserView::GetWebContentsModalDialogHostFor(
    }
  }
  
@@ -75,7 +75,7 @@ index 7b568f6de760af21d6e9d2aa44415a7cef617c51..81e1886a29030407d1e1e2a15466fb5d
    return bookmark_bar_view_.get();
  }
  
-@@ -5142,7 +5157,7 @@ void BrowserView::AddedToWidget() {
+@@ -5147,7 +5162,7 @@ void BrowserView::AddedToWidget() {
    // LINT.ThenChange(//chrome/browser/ui/views/frame/layout/browser_view_layout.h:BrowserViewLayoutViews)
  
    SetLayoutManager(BrowserViewLayout::CreateLayout(
@@ -84,12 +84,12 @@ index 7b568f6de760af21d6e9d2aa44415a7cef617c51..81e1886a29030407d1e1e2a15466fb5d
        std::move(layout_views)));
  
    EnsureFocusOrder();
-@@ -5378,7 +5393,7 @@ bool BrowserView::MaybeShowBookmarkBar(WebContents* contents) {
+@@ -5381,7 +5396,7 @@ bool BrowserView::MaybeShowBookmarkBar(WebContents* contents) {
+   }
+ 
    if (!bookmark_bar_view_) {
-     auto* factory = UIControllerFactory::From(browser_.get());
-     auto controller = factory->CreateBookmarkBarController();
 -    detached_bookmark_bar_view_ = std::make_unique<BookmarkBarView>(
 +    detached_bookmark_bar_view_ = std::make_unique<BraveBookmarkBarView>(
-         browser_.get(), std::move(controller), this);
-     bookmark_bar_view_ = detached_bookmark_bar_view_.get();
-     bookmark_bar_view_->SetBookmarkBarState(
+         browser_.get(),
+         DesktopBookmarkBarInjector::CreateBookmarkBarUIController(
+             browser_.get()),

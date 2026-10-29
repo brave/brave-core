@@ -1,8 +1,8 @@
 diff --git a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-index 39055f1b9e4f342cfab2614d565784c1d04e48af..5a3039bedf548e47087321050f467c7a4ca70f0f 100644
+index 407e66bbb11066bdaa79832a4f1d7b19b37e40b6..6dfc546b94fc3776bc78c1b2a268d57630c8c00f 100644
 --- a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
 +++ b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-@@ -510,6 +510,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
+@@ -513,6 +513,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
    // Deprecated 08/2026.
    registry->RegisterTimePref(kWaitingForMultiProfileForcedMigrationTimestamp,
                               base::Time());
@@ -10,15 +10,15 @@ index 39055f1b9e4f342cfab2614d565784c1d04e48af..5a3039bedf548e47087321050f467c7a
  }
  
  void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
-@@ -942,6 +943,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
-       kTailoredSecuritySyncFlowLastUserInteractionState, 0);
-   registry->RegisterTimePref(
-       kTailoredSecuritySyncFlowObservedOutcomeUnsetTimestamp, base::Time());
+@@ -952,6 +953,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
+ 
+   // Deprecated 10/2026.
+   registry->RegisterIntegerPref(kCustomLinksAiModeTileIndex, 0);
 +  brave::RegisterBrowserStatePrefs(registry);
  }
  
  // This method should be periodically pruned of year+ old migrations.
-@@ -973,6 +975,7 @@ void MigrateObsoleteLocalStatePrefs(PrefService* prefs) {
+@@ -983,6 +985,7 @@ void MigrateObsoleteLocalStatePrefs(PrefService* prefs) {
  
    // Added 08/2026.
    prefs->ClearPref(kWaitingForMultiProfileForcedMigrationTimestamp);
@@ -26,10 +26,10 @@ index 39055f1b9e4f342cfab2614d565784c1d04e48af..5a3039bedf548e47087321050f467c7a
  }
  
  // This method should be periodically pruned of year+ old migrations.
-@@ -1033,6 +1036,7 @@ void MigrateObsoleteProfilePrefs(PrefService* prefs) {
-   prefs->ClearPref(kTailoredSecuritySyncFlowLastRunTime);
-   prefs->ClearPref(kTailoredSecuritySyncFlowLastUserInteractionState);
-   prefs->ClearPref(kTailoredSecuritySyncFlowObservedOutcomeUnsetTimestamp);
+@@ -1051,6 +1054,7 @@ void MigrateObsoleteProfilePrefs(PrefService* prefs) {
+                       prefs->GetInteger(kCustomLinksAiModeTileIndex));
+   }
+   prefs->ClearPref(kCustomLinksAiModeTileIndex);
 +  brave::MigrateObsoleteProfilePrefs(prefs);
  }
  
