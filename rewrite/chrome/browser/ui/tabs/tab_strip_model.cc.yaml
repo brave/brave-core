@@ -45,6 +45,28 @@ substitutions:
               NOTREACHED();\n
 
   - description: |
+      Add Brave's ContextMenuCommand entries to ShouldActivateWindowForContextMenuCommand().
+
+      Avoids enumeration values not handled in switch error. Brave's tab menu
+      model executes these commands itself, so they never reach
+      TabStripModel::ExecuteContextMenuCommand().
+    regex:
+      pattern: 'case TabStripModel::CommandCloseTab:'
+      # The pattern starts after the line's indentation, so the inserted lines
+      # are indented relative to that point.
+      replace: |-
+        case TabStripModel::CommandRestoreTab:
+            case TabStripModel::CommandBookmarkAllTabs:
+            case TabStripModel::CommandShowVerticalTabs:
+            case TabStripModel::CommandToggleTabMuted:
+            case TabStripModel::CommandBringAllTabsToThisWindow:
+            case TabStripModel::CommandCloseDuplicateTabs:
+            case TabStripModel::CommandOpenInContainer:
+            case TabStripModel::CommandRenameTab:
+              NOTREACHED();
+            case TabStripModel::CommandCloseTab:
+
+  - description: |
       Rename `DraggingTabsSession` to `DraggingTabsSessionChromium`.
 
       This avoids a name collision with Brave's `DraggingTabsSession` class.
