@@ -8,14 +8,4 @@
 #include "ios/chrome/browser/history/model/history_service_factory.h"
 #include "ios/chrome/browser/sync/model/device_info_sync_service_factory.h"
 
-#define BRAVE_BUILD_SERVICE_INSTANCE_FOR                        \
-  std::make_unique<syncer::BraveSyncServiceImpl>(               \
-      std::move(init_params),                                   \
-      std::make_unique<syncer::BraveSyncServiceImplDelegate>(   \
-          DeviceInfoSyncServiceFactory::GetForProfile(profile), \
-          ios::HistoryServiceFactory::GetForProfile(profile)),  \
-      GetApplicationContext()->GetOSCryptAsync());
-
 #include <ios/chrome/browser/sync/model/sync_service_factory.mm>
-
-#undef BRAVE_BUILD_SERVICE_INSTANCE_FOR
