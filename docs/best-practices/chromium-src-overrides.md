@@ -34,6 +34,8 @@ When Chromium changes are unavoidable, follow this preference order:
 
 ## ❌ Don't Use chromium_src Overrides to Disable Tests
 
+**File Patterns:** `chromium_src/**`
+
 **Never use `#define TestName DISABLED_TestName` in chromium_src overrides to
 disable upstream tests.** Use filter files in `test/filters/` instead, and move
 any Brave-specific replacement tests into the appropriate Brave test target
@@ -44,6 +46,8 @@ any Brave-specific replacement tests into the appropriate Brave test target
 <a id="CSRC-003"></a>
 
 ## ✅ Minimize Code Duplication in Overrides
+
+**File Patterns:** `chromium_src/**`
 
 **When overriding Chromium code via `chromium_src/`, prefer wrapping only the
 changed section and falling back to `ChromiumImpl` for everything else.**
@@ -78,6 +82,8 @@ SkColor ChromeTypographyProvider::GetColor(...) {
 
 ## ✅ Prefer chromium_src Overrides Over Patches
 
+**File Patterns:** `chromium_src/**`
+
 **Always prefer a chromium_src override over adding a patch.** Patches are
 harder to maintain, more likely to conflict, and harder to review. Required
 header files should be added through chromium_src overrides, not patches.
@@ -100,6 +106,8 @@ behavior, always use chromium_src overrides instead of patches.
 <a id="CSRC-005"></a>
 
 ## ❌ Never Copy Entire Files or Methods
+
+**File Patterns:** `chromium_src/**`
 
 **Never copy entire Chromium files or methods into chromium_src.** Only override
 the specific part that needs to change, and call the superclass for everything
@@ -126,6 +134,8 @@ void SomeClass::LargeMethod() {
 <a id="CSRC-007"></a>
 
 ## ✅ Prefer Subclassing Over Patching
+
+**File Patterns:** `chromium_src/**`
 
 **When possible, subclass Chromium classes using chromium_src overrides instead
 of patching.** This applies to both C++ and Java.
@@ -160,6 +170,8 @@ modify individual methods.
 
 ## ✅ Always Use Original Header Paths
 
+**File Patterns:** `chromium_src/**`
+
 **In chromium_src overrides, always `#include` the original header path, not the
 chromium_src version.**
 
@@ -176,6 +188,8 @@ chromium_src version.**
 <a id="CSRC-014"></a>
 
 ## ✅ Replace Entire Classes with Dummy chromium_src Files
+
+**File Patterns:** `chromium_src/**`
 
 **When you need to disable or replace a Chromium class entirely, create a
 minimal no-op dummy replacement in chromium_src for the `.h` and `.cc` files.**
@@ -200,6 +214,8 @@ class TranslateURLFetcher {
 <a id="CSRC-015"></a>
 
 ## ❌ Don't Use `#define` to Add `virtual` — Use `make_virtual`
+
+**File Patterns:** `chromium_src/**`
 
 **When a Chromium method needs to be made virtual for override, use the
 `make_virtual` plaster rewriter, not a `#define` in a chromium_src header
@@ -231,6 +247,8 @@ return type (`T* Method()`), and a destructor (quote it — `'~SomeClass'`). See
 
 ## ❌ Never Use `#define final` to Remove the `final` Keyword
 
+**File Patterns:** `chromium_src/**`
+
 **Redefining `final` via `#define` is undefined behavior per the C++ standard
 and is highly viral.** It can cause build failures in unrelated code that uses
 `final` in different contexts. Use a patch to remove `final` when subclassing is
@@ -251,6 +269,8 @@ required, or find alternative approaches.
 <a id="CSRC-017"></a>
 
 ## ✅ Add Explanation Comments in chromium_src Override Files
+
+**File Patterns:** `chromium_src/**`
 
 **When creating a chromium_src override, include comments explaining why the
 override is needed.** The override's purpose is not always self-evident from the
@@ -280,6 +300,8 @@ void TabView::BuildContextMenu() {
 
 ## ✅ Verify chromium_src Header GN Dependencies
 
+**File Patterns:** `chromium_src/**`
+
 **When adding new `#include` directives in chromium_src override files, verify
 they have required GN dependencies.** The override file is compiled as part of
 the upstream target, which may not have deps on your Brave headers.
@@ -299,6 +321,8 @@ gn check out/Default
 <a id="CSRC-019"></a>
 
 ## ❌ chromium_src Should Avoid Depending on Brave Targets
+
+**File Patterns:** `chromium_src/**`
 
 **A chromium_src override should avoid adding a GN dependency on, or a direct
 `#include` of, any downstream `//brave/...` target** (`//brave/components/...`,
@@ -410,6 +434,8 @@ source_set("core") {
 
 ## ✅ Add Comments for Non-Obvious nullptr Assignments in chromium_src
 
+**File Patterns:** `chromium_src/**`
+
 **Add comments explaining non-obvious nullptr assignments in chromium_src
 overrides,** especially for dangling pointer prevention. Since chromium_src code
 is out of context from the original file, the intent is not always clear.
@@ -429,6 +455,8 @@ provider_ = nullptr;
 
 ## ✅ Use `static_assert` to Protect Against Upstream Enum Changes
 
+**File Patterns:** `chromium_src/**`
+
 **When adding custom values after an upstream enum's last value, add a
 `static_assert`** to detect if upstream changes their enum count. This prevents
 value clashes when upstream adds new values.
@@ -445,6 +473,11 @@ static_assert(static_cast<int>(policy::POLICY_SOURCE_COUNT) <= kBravePolicySourc
 <a id="CSRC-022"></a>
 
 ## ✅ Use `runtime_enabled_features.override.json5` for Blink Features
+
+**File Patterns:** `**/runtime_enabled_features.override.json5`,
+`**/runtime_enabled_features.json5`,
+`patches/*runtime_enabled_features*.json5.patch`,
+`rewrite/**/runtime_enabled_features*.json5.yaml`
 
 **When adding Brave-specific Blink runtime-enabled features, add them to
 `runtime_enabled_features.override.json5` instead of patching
@@ -469,6 +502,8 @@ additions and never changes upstream, preventing patch conflicts.
 
 ## ❌ `chromium_src` Overrides Cannot Handle Private Methods in `.cc` Files
 
+**File Patterns:** `chromium_src/**/*.cc`, `patches/**/*.cc.patch`
+
 **The `chromium_src` override mechanism only works for symbols with external
 linkage.** Private (static or anonymous-namespace) methods in upstream `.cc`
 files cannot be overridden via `chromium_src` because they are not visible
@@ -490,6 +525,8 @@ void PrivateHelper() { ... }  // Cannot override via chromium_src
 
 ## ⚠️ Override Replacement Strings Must Have Compatible Placeholders
 
+**File Patterns:** `chromium_src/**`
+
 **When creating a Brave replacement string that is substituted for an upstream
 string via `#undef`/`#define`, the replacement string must have compatible
 placeholders.** The upstream code calling the string supplies specific
@@ -503,6 +540,8 @@ upstream caller provides and match them.
 <a id="CSRC-025"></a>
 
 ## ✅ Guard Overridden String IDs with `#ifndef`/`#error`
+
+**File Patterns:** `chromium_src/**`
 
 **When overriding an upstream string ID via `#undef`/`#define`, add a
 compile-time guard to detect if the upstream ID is removed or renamed during a
@@ -525,6 +564,8 @@ safety net.
 <a id="CSRC-026"></a>
 
 ## ✅ Fallback Methods Must Call the Correct Base Class
+
+**File Patterns:** `chromium_src/**`
 
 **When overriding a chromium_src fallback method, ensure the fallback calls the
 correct base class method.** A common bug is calling the wrong superclass method

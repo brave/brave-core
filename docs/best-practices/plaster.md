@@ -6,6 +6,8 @@
 
 ## ✅ Plaster Patch Patterns Should Match Specific Context
 
+**File Patterns:** `rewrite/**/*.yaml`
+
 **Plaster patch config `re_pattern` should generally match method names or other
 relevant context to ensure a single, targeted match.** Simple patterns can be
 used when the intention is to match all instances of a particular pattern in a
@@ -32,6 +34,8 @@ patterns only when you explicitly intend to replace all occurrences.
 <a id="PLSTR-002"></a>
 
 ## ✅ Use `pattern` When the Literal Is Exactly the Replaced Text, `re_pattern` for Context-Aware Matches
+
+**File Patterns:** `rewrite/**/*.yaml`
 
 **Use `pattern` when the literal is exactly the text being replaced — no leading
 indentation, and no adjacent tokens that are not themselves changing.** That
@@ -82,6 +86,9 @@ whitespace, character classes, or structural anchors.
 <a id="PLSTR-003"></a>
 
 ## ❌ Never Use a Macro to Edit Upstream Code in New Code — Use a Plaster
+
+**File Patterns:** `chromium_src/**/*.{cc,h,mm}`, `rewrite/**/*.yaml`. New
+upstream-editing macros can also be introduced in patches or other files.
 
 **All new uses of a macro to edit upstream code are banned. Use a plaster
 rewrite instead.** A `#define` rewrites _every_ occurrence of the identifier in
@@ -142,6 +149,8 @@ full docs. See also [plaster.md](../plaster.md) and
 
 ## ✅ Anchor Rewrites on Stable Context and Wildcard the Rest
 
+**File Patterns:** `rewrite/**/*.yaml`
+
 **A rewrite should match the anchor that carries its intent, and use wildcards
 for surrounding content that may change upstream without affecting the
 rewrite.** Spelling out incidental detail makes the match fail for reasons
@@ -168,6 +177,8 @@ for a real example of this shape.
 <a id="PLSTR-005"></a>
 
 ## ✅ Prefer a Plain `pattern` Over a Regex When the Anchor Is a Literal
+
+**File Patterns:** `rewrite/**/*.yaml`
 
 **If the anchor is a single literal statement, use `pattern` — do not reach for
 `re_pattern` with escaped punctuation and capture groups to reproduce
