@@ -1,16 +1,8 @@
 diff --git a/chrome/browser/BUILD.gn b/chrome/browser/BUILD.gn
-index 448022dc6d6300f1631090fcb5c7ca264f53ddb5..c820b3a814f7aab24d73909adc45e10cd820a5d0 100644
+index f0f529901a3fcde87402a508a627cdfc2419be42..18d28c041cf4f08eef35d03ea069f4a086996310 100644
 --- a/chrome/browser/BUILD.gn
 +++ b/chrome/browser/BUILD.gn
-@@ -2,6 +2,7 @@
- # Use of this source code is governed by a BSD-style license that can be
- # found in the LICENSE file.
- 
-+import("//brave/browser/sources.gni")
- import("//base/allocator/allocator.gni")
- import("//build/buildflag_header.gni")
- import("//build/config/buildflags_paint_preview.gni")
-@@ -2217,6 +2218,7 @@ source_set("browser") {
+@@ -2212,6 +2212,7 @@ source_set("browser") {
    public_deps = [
      ":browser_features",
      ":buildflags",
@@ -18,15 +10,7 @@ index 448022dc6d6300f1631090fcb5c7ca264f53ddb5..c820b3a814f7aab24d73909adc45e10c
      "//chrome/browser/accessibility/accessibility_prefs",
      "//chrome/browser/browsing_data",
      "//chrome/browser/download",
-@@ -2267,6 +2269,7 @@ source_set("browser") {
-     "//components/webapps/browser",
-     "//components/webui/chrome_urls/mojom:mojo_bindings",
-   ]
-+  public_deps += brave_chrome_browser_public_deps
- 
-   # :core must appear after //chrome/common in public_deps so that on Windows,
-   # //chrome/common/win:delay_load_hooks is linked before
-@@ -4132,7 +4135,7 @@ source_set("browser") {
+@@ -4119,7 +4120,7 @@ source_set("browser") {
  
    # TODO(https://crbug.com/356905053): Add more dependencies here and merge this
    # block with the `enable_extensions` block above.
