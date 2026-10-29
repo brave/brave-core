@@ -1,5 +1,5 @@
 diff --git a/chrome/test/BUILD.gn b/chrome/test/BUILD.gn
-index ac3cea5d5e36e47e958a249bdd44ce3355dd1846..0985b833b4fa46b258992f76546fec16dc7de53c 100644
+index b0ef6f56ecd6a27bbdb508455b79b783c389853e..202d6a34e0bafdc4b5103b0d078f2ce979c98adf 100644
 --- a/chrome/test/BUILD.gn
 +++ b/chrome/test/BUILD.gn
 @@ -14,6 +14,7 @@
@@ -10,7 +10,7 @@ index ac3cea5d5e36e47e958a249bdd44ce3355dd1846..0985b833b4fa46b258992f76546fec16
  import("//build/cipd/cipd.gni")
  import("//build/config/buildflags_paint_preview.gni")
  import("//build/config/chrome_build.gni")
-@@ -153,6 +154,7 @@ if (is_android) {
+@@ -154,6 +155,7 @@ if (is_android) {
  source_set("test_support") {
    testonly = true
    deps = []
@@ -18,7 +18,7 @@ index ac3cea5d5e36e47e958a249bdd44ce3355dd1846..0985b833b4fa46b258992f76546fec16
  
    public_deps = [
      "//chrome/browser/notifications:test_support",
-@@ -521,6 +523,7 @@ source_set("test_support") {
+@@ -522,6 +524,7 @@ source_set("test_support") {
    # All test_support sources have been migrated into per-feature
    # targets. Do not add new sources to //chrome/test:test_support.
    sources = []
@@ -26,7 +26,7 @@ index ac3cea5d5e36e47e958a249bdd44ce3355dd1846..0985b833b4fa46b258992f76546fec16
  }
  
  if (is_android) {
-@@ -2736,6 +2739,7 @@ test("unit_tests") {
+@@ -2789,6 +2792,7 @@ test("unit_tests") {
      "//ui/strings:app_locale_settings_grit",
      "//ui/strings:ui_strings_grit",
    ]
@@ -34,7 +34,7 @@ index ac3cea5d5e36e47e958a249bdd44ce3355dd1846..0985b833b4fa46b258992f76546fec16
  
    if (enable_devtools_frontend) {
      deps += [ "//chrome/browser/ui/webui/devtools:unit_tests" ]
-@@ -3863,6 +3867,7 @@ if (!is_android && !is_chromeos_device) {
+@@ -3919,6 +3923,7 @@ if (!is_android && !is_chromeos_device) {
      deps = [
        ":test_support",
        ":test_support_ui",

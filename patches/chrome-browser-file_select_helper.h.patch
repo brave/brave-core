@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/file_select_helper.h b/chrome/browser/file_select_helper.h
-index d61db71bcfcff81600555523cc4906bb3dd5b14b..5d9382d090be47db441d56fe9146c6a4c1425bc3 100644
+index 4da35a9d0d5d49fd3d45f3446df514bee50f77e7..30773b9fd6ce9c999f452490d048c7b1a22588b9 100644
 --- a/chrome/browser/file_select_helper.h
 +++ b/chrome/browser/file_select_helper.h
 @@ -79,6 +79,9 @@ class FileSelectHelper : public base::RefCountedThreadSafe<

@@ -1,5 +1,5 @@
 diff --git a/components/sync/protocol/protocol_sources.gni b/components/sync/protocol/protocol_sources.gni
-index f446a9b9b896bcbe5cf4cc3772fbb8d9df47bcb9..3a8c4dea032af379f09c26b5b9a20ebe2f2160c7 100644
+index 332e85397dcebcc8145627501c32dc7acbd9d076..bb57b2de97f2df382d0d2da46fccdc1e1329ace3 100644
 --- a/components/sync/protocol/protocol_sources.gni
 +++ b/components/sync/protocol/protocol_sources.gni
 @@ -2,6 +2,8 @@
@@ -11,7 +11,7 @@ index f446a9b9b896bcbe5cf4cc3772fbb8d9df47bcb9..3a8c4dea032af379f09c26b5b9a20ebe
  sync_protocol_sources = [
    "account_setting_specifics.proto",
    "agile_encryption_keys.proto",
-@@ -99,3 +101,4 @@ sync_protocol_sources = [
+@@ -100,3 +102,4 @@ sync_protocol_sources = [
    "wifi_configuration_specifics.proto",
    "workspace_desk_specifics.proto",
  ]

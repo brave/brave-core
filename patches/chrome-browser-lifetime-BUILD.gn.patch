@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/lifetime/BUILD.gn b/chrome/browser/lifetime/BUILD.gn
-index 6297884e91ca2cc9a0f98446ad2bb1cc5b9f30fb..25851be0853a122701341a7f427a4fb5235ec390 100644
+index 3416c277cc47e7fb34695dec788db4380997dcb2..3047966f6c685e2d6494bdf9eff250f144a61338 100644
 --- a/chrome/browser/lifetime/BUILD.gn
 +++ b/chrome/browser/lifetime/BUILD.gn
-@@ -150,6 +150,7 @@ source_set("impl") {
+@@ -152,6 +152,7 @@ source_set("impl") {
    }
  
    if (!is_android) {

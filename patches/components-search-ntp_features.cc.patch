@@ -1,5 +1,5 @@
 diff --git a/components/search/ntp_features.cc b/components/search/ntp_features.cc
-index 7d37136b44be6816ecf496f6fdc8a445d1df0dc0..fd27728593f442ed940074c5a2f783e28859c57e 100644
+index c5d47c565bf300de89b7c8cbb1853cac251ea6d8..4866cc2f098a655910b56c111c8bee09a2458cfc 100644
 --- a/components/search/ntp_features.cc
 +++ b/components/search/ntp_features.cc
 @@ -18,17 +18,13 @@ namespace ntp_features {

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/tabs/common/tab_group_style.cc b/chrome/browser/ui/views/tabs/common/tab_group_style.cc
-index 6df2101c4258aaa903b5cc3e5c492a1d88f3ba8f..37f46a5f76c43b1d18a3071cf15b8393ec5a5626 100644
+index 9edd4733056efa86f83583f2b47a99d40e4dbd59..9529683b9ebe385a8daec8d5f9fbee5c80dffffd 100644
 --- a/chrome/browser/ui/views/tabs/common/tab_group_style.cc
 +++ b/chrome/browser/ui/views/tabs/common/tab_group_style.cc
-@@ -35,6 +35,10 @@ int TabGroupStyle::GetTabGroupOverlapAdjustment() {
+@@ -36,6 +36,10 @@ int TabGroupStyle::GetTabGroupOverlapAdjustment() {
  
  // static
  int TabGroupStyle::GetChipCornerRadius(TabStripOrientation orientation) {
@@ -13,7 +13,7 @@ index 6df2101c4258aaa903b5cc3e5c492a1d88f3ba8f..37f46a5f76c43b1d18a3071cf15b8393
    return orientation == TabStripOrientation::kHorizontal
               ? kCornerRadius
               : kVerticalCornerRadius;
-@@ -42,6 +46,9 @@ int TabGroupStyle::GetChipCornerRadius(TabStripOrientation orientation) {
+@@ -50,6 +54,9 @@ int TabGroupStyle::GetFocusedChipCornerRadius(TabStripOrientation orientation) {
  
  // static
  int TabGroupStyle::GetEmptyChipSize() {
@@ -23,7 +23,7 @@ index 6df2101c4258aaa903b5cc3e5c492a1d88f3ba8f..37f46a5f76c43b1d18a3071cf15b8393
    return kEmptyChipSize;
  }
  
-@@ -52,6 +59,10 @@ int TabGroupStyle::GetFocusedChipHeight() {
+@@ -60,6 +67,10 @@ int TabGroupStyle::GetFocusedChipHeight() {
  
  // static
  gfx::Point TabGroupStyle::GetTitleChipOffset(std::optional<int> chip_height) {
@@ -34,7 +34,7 @@ index 6df2101c4258aaa903b5cc3e5c492a1d88f3ba8f..37f46a5f76c43b1d18a3071cf15b8393
    const int total_space =
        GetLayoutConstant(LayoutConstant::kTabStripHeight) -
        chip_height.value_or(GetEmptyChipSize()) -
-@@ -62,6 +73,11 @@ gfx::Point TabGroupStyle::GetTitleChipOffset(std::optional<int> chip_height) {
+@@ -70,6 +81,11 @@ gfx::Point TabGroupStyle::GetTitleChipOffset(std::optional<int> chip_height) {
  // static
  gfx::Insets TabGroupStyle::GetInsetsForHeaderChip(
      TabStripOrientation orientation) {

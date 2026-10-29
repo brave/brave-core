@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/toolbar/toolbar_view.h b/chrome/browser/ui/views/toolbar/toolbar_view.h
-index e10dc91a6710c792dfb29e669bf65262bb5bbe62..2dc62097e58290bee7dbb84063a4d041194dd9df 100644
+index 7f1f5b7df703579934d7503ab4b9816de37d649f..4f5f3105a012298df8eac85aa24aa099e616c6e7 100644
 --- a/chrome/browser/ui/views/toolbar/toolbar_view.h
 +++ b/chrome/browser/ui/views/toolbar/toolbar_view.h
 @@ -119,13 +119,13 @@ class ToolbarView : public views::AccessiblePaneView,
@@ -27,7 +27,7 @@ index e10dc91a6710c792dfb29e669bf65262bb5bbe62..2dc62097e58290bee7dbb84063a4d041
  
    // Returns true if the view is a descendant of the ToolbarView and should be
    // treated as caption area for window dragging purposes.
-@@ -273,6 +273,10 @@ class ToolbarView : public views::AccessiblePaneView,
+@@ -276,6 +276,10 @@ class ToolbarView : public views::AccessiblePaneView,
    // Updates glic button parenting after hiding glic actor task icon.
    void FinalizeHideGlicActorTaskIcon();
  
@@ -38,7 +38,7 @@ index e10dc91a6710c792dfb29e669bf65262bb5bbe62..2dc62097e58290bee7dbb84063a4d041
   protected:
    // This controls Toolbar, LocationBar and CustomTabBar visibility.
    // If we don't set all three, tab navigation from the app menu breaks
-@@ -280,6 +284,9 @@ class ToolbarView : public views::AccessiblePaneView,
+@@ -283,6 +287,9 @@ class ToolbarView : public views::AccessiblePaneView,
    void SetToolbarVisibility(bool visible);
  
   private:
@@ -48,7 +48,7 @@ index e10dc91a6710c792dfb29e669bf65262bb5bbe62..2dc62097e58290bee7dbb84063a4d041
    FRIEND_TEST_ALL_PREFIXES(ToolbarViewCircularContextualTasksBrowserTest,
                             CircularButtonRetainsInteriorMarginsAndPosition);
    FRIEND_TEST_ALL_PREFIXES(ToolbarViewCircularContextualTasksBrowserTest,
-@@ -358,7 +365,7 @@ class ToolbarView : public views::AccessiblePaneView,
+@@ -361,7 +368,7 @@ class ToolbarView : public views::AccessiblePaneView,
    void OnChromeLabsPrefChanged();
  
    // Loads the images for all the child views.

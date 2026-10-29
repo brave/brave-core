@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/color/material_chrome_color_mixer.cc b/chrome/browser/ui/color/material_chrome_color_mixer.cc
-index 6499a97f2d3a9b315517042200301fab2e8d99cd..d621bec537b5688e7bcb6d1c1a65dfaf6e98a366 100644
+index 17b8d4051285976963fc243766609913d1f9aa90..79ac009497dca582c6aece67c9301d7c3269cf1e 100644
 --- a/chrome/browser/ui/color/material_chrome_color_mixer.cc
 +++ b/chrome/browser/ui/color/material_chrome_color_mixer.cc
-@@ -75,6 +75,7 @@ void ApplyChromeSettingsRefresh2026ColorOverrides(ui::ColorMixer& mixer) {
+@@ -80,6 +80,7 @@ void ApplyChromeSettingsRefresh2026ColorOverrides(ui::ColorMixer& mixer) {
  
  void AddMaterialChromeColorMixer(ui::ColorProvider* provider,
                                   const ui::ColorProviderKey& key) {
@@ -10,7 +10,7 @@ index 6499a97f2d3a9b315517042200301fab2e8d99cd..d621bec537b5688e7bcb6d1c1a65dfaf
    // Adds the color recipes for browser UI colors (toolbar, bookmarks bar,
    // downloads bar etc). While both design systems continue to exist, the
    // material recipes are intended to leverage the existing chrome color mixers,
-@@ -565,4 +566,8 @@ void AddMaterialChromeColorMixer(ui::ColorProvider* provider,
+@@ -598,4 +599,8 @@ void AddMaterialChromeColorMixer(ui::ColorProvider* provider,
  
    ApplyChromeRefresh2026ColorOverrides(mixer);
    ApplyChromeSettingsRefresh2026ColorOverrides(mixer);

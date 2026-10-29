@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/ui_features.cc b/chrome/browser/ui/ui_features.cc
-index 68c3b3d8746b274e3bbfdf68ea14ff79dc154840..8f593dc83cec836cdecbd6403a12e9c58209f1b9 100644
+index f92a70a676a801bd62462ccd823720e5c2d68bc4..a20e408e7614c7438180d6b8c9724a91f9477c8d 100644
 --- a/chrome/browser/ui/ui_features.cc
 +++ b/chrome/browser/ui/ui_features.cc
-@@ -161,7 +161,7 @@ BASE_FEATURE(kExtensionsPinnedByDefault, base::FEATURE_ENABLED_BY_DEFAULT);
+@@ -188,7 +188,7 @@ BASE_FEATURE(kExtensionsPinnedByDefault, base::FEATURE_ENABLED_BY_DEFAULT);
  #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
  // Shows an infobar on PDFs offering to become the default PDF viewer if Chrome
  // isn't the default already.
@@ -11,7 +11,7 @@ index 68c3b3d8746b274e3bbfdf68ea14ff79dc154840..8f593dc83cec836cdecbd6403a12e9c5
  
  BASE_FEATURE(kSeparateDefaultAndPinPrompt,
  #if BUILDFLAG(IS_WIN)
-@@ -274,13 +274,8 @@ BASE_FEATURE(kNewTabButtonContextMenu, base::FEATURE_ENABLED_BY_DEFAULT);
+@@ -300,13 +300,8 @@ BASE_FEATURE(kNewTabButtonContextMenu, base::FEATURE_ENABLED_BY_DEFAULT);
  
  // Enables preview images in tab-hover cards.
  // https://crbug.com/41439486
@@ -27,7 +27,7 @@ index 68c3b3d8746b274e3bbfdf68ea14ff79dc154840..8f593dc83cec836cdecbd6403a12e9c5
  
  BASE_FEATURE(kTabModalUsesDesktopWidget, base::FEATURE_DISABLED_BY_DEFAULT);
  
-@@ -380,7 +375,7 @@ BASE_FEATURE(kNonMilestoneUpdateToast, base::FEATURE_ENABLED_BY_DEFAULT);
+@@ -389,7 +384,7 @@ BASE_FEATURE(kNonMilestoneUpdateToast, base::FEATURE_ENABLED_BY_DEFAULT);
  BASE_FEATURE(kRespectShouldTriggerSessionRestoreOnDesktop,
               base::FEATURE_ENABLED_BY_DEFAULT);
  

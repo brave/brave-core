@@ -1,5 +1,5 @@
 diff --git a/components/browsing_data/core/BUILD.gn b/components/browsing_data/core/BUILD.gn
-index adb48084b7514cc3323cdc8d05bba22b02726daa..cf534bb91ec08274efa58f75e777dc26750ae1dc 100644
+index b47729f093237d55e189751f60a4230298e31ecf..b5cfbca5aba70e963b7658cdb50de1b9b20c4b39 100644
 --- a/components/browsing_data/core/BUILD.gn
 +++ b/components/browsing_data/core/BUILD.gn
 @@ -2,11 +2,14 @@

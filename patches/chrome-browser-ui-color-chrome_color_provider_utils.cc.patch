@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/color/chrome_color_provider_utils.cc b/chrome/browser/ui/color/chrome_color_provider_utils.cc
-index 97e8c9f2663176910217d6de2678bc8dbb347c7a..eea6671da337fdaf22f52a6626661f074b2fa1c0 100644
+index e9cebbea216a51872a7a830f555580619a36d053..a7919be71567ae3293879b4513a8f4fe8863c4fc 100644
 --- a/chrome/browser/ui/color/chrome_color_provider_utils.cc
 +++ b/chrome/browser/ui/color/chrome_color_provider_utils.cc
 @@ -145,6 +145,7 @@ bool ShouldApplyHighContrastColors(const ui::ColorProviderKey& key) {

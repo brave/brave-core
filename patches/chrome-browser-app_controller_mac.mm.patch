@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/app_controller_mac.mm b/chrome/browser/app_controller_mac.mm
-index ead883ef957da19dd88cfb75e85be72a5c31918c..a6f206da1ef1035e39f481ed9a2b2d348d7c25ae 100644
+index f251259f8293dfda0bae845202d0f4776020a618..7c1901a39423ea12c3280f91a56a4bae019f7b43 100644
 --- a/chrome/browser/app_controller_mac.mm
 +++ b/chrome/browser/app_controller_mac.mm
 @@ -794,7 +794,7 @@ class AppControllerProfileObserver : public ProfileAttributesStorage::Observer,
