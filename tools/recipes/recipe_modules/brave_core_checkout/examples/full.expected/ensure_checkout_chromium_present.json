@@ -151,6 +151,34 @@
     "name": "brave-core restore origin push url"
   },
   {
+    "cmd": [
+      "git",
+      "checkout",
+      "--force",
+      "-B",
+      "master"
+    ],
+    "cwd": "[WORKSPACE]/b/src/brave",
+    "name": "brave-core checkout branch"
+  },
+  {
+    "cmd": [
+      "pnpm",
+      "run",
+      "sync"
+    ],
+    "cwd": "[WORKSPACE]/b/src/brave",
+    "env": {
+      "CHROME_HEADLESS": "1"
+    },
+    "env_prefixes": {
+      "PATH": [
+        "[WORKSPACE]/b/src/brave/tools/cr/bootstrap"
+      ]
+    },
+    "name": "pnpm run sync"
+  },
+  {
     "name": "$result"
   }
 ]

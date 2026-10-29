@@ -25,14 +25,16 @@ A commit whose culprits this branch's Chromium (its `package.json` tag, in the
 Chromium checkout above the repository) has none of is declined, as it follows
 a Chromium change cr<N> doesn't get. It writes what it did, and the pending
 commits with what to do about them, to `.autolift/cr<N>/sync-tooling.md`, and
-records the synced HEAD for `prepare` to keep. It exits 2 when commits are pending. Recipe
-changes are picked like the rest, but CI runs the recipes from master, so they
-take effect only once merged there.
+records the synced HEAD for `prepare` to keep. With `--json-output`, it also
+writes how many commits are pending, the report's path, and, when any are, what
+the agent reconciling them is told. Recipe changes are picked like the rest, but
+CI runs the recipes from master, so they take effect only once merged there.
 
-It uses only the standard library and git, and works on the repository it is
-given, so that the newest branch's copy can be run against an older checkout:
+It ships with the `cr/autolift` recipe, rather than being read from a cr
+branch, so that CI only runs code from master. It uses only the standard
+library and git, and works on the brave-core checkout it runs in:
 
-    python3 sync_tooling.py --repo src/brave --milestone 158
+    python3 sync_tooling.py --milestone 158
 """
 
 from __future__ import annotations
@@ -61,21 +63,26 @@ _REPEATED_SUBJECT = re.compile(
     r'^(?:\[[^\]]*\])*\s*(?:Version lift updates|Version CodeHealth tracker|'
     r'IWYU fixes|Update Lit mangler snapshot)\.?$'
 )
-# The trailer each pick carries, as `git cherry-pick -x` writes it.
-_PICKED_FROM = re.compile(
-    r'^\(cherry picked from commit ([0-9a-f]{40})\)$', re.M
-)
 _BRANCH = re.compile(r'refs/heads/cr(\d+)$')
 
-PENDING_EXIT = 2
+# What the agent reconciling the pending commits is told, as a prompt.
+_PROMPT = """\
+Bring cr{milestone}'s lift tooling up to date with the newer cr branches. \
+{report} lists the commits `sync_tooling.py` cherry-picked, and those it left \
+for judgement: follow its "What to do" section until the script lists nothing \
+pending.
 
-# What the agent reconciling the pending commits is told.
+This is an unattended CI run: there is no human to ask, so make the calls the \
+section describes, and list each pending commit you dropped, and why, at the \
+end of {report}."""
+
+# And, in the report, what to do.
 _INSTRUCTIONS = """\
 Each commit below is from a newer cr branch, and was left for judgement. In
 order, for each one:
 
-1. `git cherry-pick -x <commit>`: the trailer `-x` adds tells later syncs the
-   commit is here, whatever reconciling it changed. Leave out
+1. `git cherry-pick <commit>`, keeping its subject: that is how later syncs
+   tell the commit is here, whatever reconciling it changed. Leave out
    `tools/cr/codehealth/M<NNN>.md` trackers: they belong to their own branch
    (`git rm --cached` a new one, or `git checkout HEAD -- <file>` a changed
    one, before continuing).
@@ -87,8 +94,9 @@ order, for each one:
    Chromium has, or that the script couldn't check, follows a Chromium change:
    it applies only if this branch needs it too (a bytecode redirect, a GN arg,
    a Brockit change for that upstream change). Those whose culprits this
-   branch's Chromium lacks are declined already. Changes outside `tools/cr/`, `build/` and
-   `tools/recipes/` are the newer branch's own code, and don't belong here.
+   branch's Chromium lacks are declined already. Changes outside `tools/cr/`,
+   `build/` and `tools/recipes/` are the newer branch's own code, and don't
+   belong here.
    Keep what applies, and drop the rest; a commit with nothing left is skipped
    (`git cherry-pick --skip`). A Brockit `drop!` or `reassign!` marker on a
    commit picked here gets the same treatment as on its own branch: picked,
@@ -97,7 +105,7 @@ order, for each one:
 
 Commit nothing else, and don't push. When done, `git status` must be clean,
 and no cherry-pick may be in progress. Then run `{rerun}` again, which picks
-whatever these unblocked, and repeat until it exits 0, or lists as pending only
+whatever these unblocked, and repeat until it lists nothing as pending, or only
 commits you decided not to take; say which, and why, in the run's report.
 """
 
@@ -223,26 +231,20 @@ class SyncTooling:
         ).strip()
         out = _git(self.repo, 'cherry', 'HEAD', self._ref(major), base)
         # A commit picked before with changes (a resolved conflict, a tracker
-        # left out) has another patch id, but its pick cites it; once the newer
-        # branch is rebased, the pick cites its old hash, but keeps its
-        # subject.
+        # left out) has another patch id, but keeps its subject, which a
+        # newer branch's rebase doesn't change, unlike its hash.
         fork = _git(self.repo, 'merge-base', 'HEAD', self._ref(major)).strip()
-        cited, cited_subjects = set(), set()
-        log = _git(self.repo, 'log', '--format=%s%x00%B%x01', f'{fork}..HEAD')
-        for entry in log.split('\x01'):
-            subject, _, body = entry.strip('\n').partition('\x00')
-            if picked := _PICKED_FROM.findall(body):
-                cited.update(picked)
-                cited_subjects.add(subject)
+        own_subjects = set(
+            _git(self.repo, 'log', '--format=%s', f'{fork}..HEAD').splitlines()
+        )
         commits = []
         for line in out.splitlines():
             commit = line[2:]
             subject = self._subject(commit)
             present = (
                 line[0] == '-'
-                or commit in cited
                 or (
-                    subject in cited_subjects
+                    subject in own_subjects
                     and not _REPEATED_SUBJECT.match(subject)
                     and not _AUTOSQUASH.match(subject)
                 )
@@ -350,8 +352,8 @@ class SyncTooling:
         ).split()
 
     def _pick(self, commit: str, trackers: list[str]) -> str | None:
-        """Cherry-picks `commit` without `trackers`, committed with its
-        message. Returns why it couldn't, or None."""
+        """Cherry-picks `commit` without `trackers`, committed with its message
+        and author. Returns why it couldn't, or None."""
         result = subprocess.run(
             ['git', '-C', str(self.repo), 'cherry-pick', '--no-commit', commit],
             capture_output=True,
@@ -375,15 +377,7 @@ class SyncTooling:
             _git(self.repo, 'cherry-pick', '--abort', check=False)
             _git(self.repo, 'reset', '--hard', 'HEAD')
             return 'empty'
-        message = _git(self.repo, 'log', '-1', '--format=%B', commit).rstrip()
-        _git(
-            self.repo,
-            'commit',
-            '--no-verify',
-            '-q',
-            '-m',
-            f'{message}\n\n(cherry picked from commit {commit})',
-        )
+        _git(self.repo, 'commit', '--no-verify', '-q', '-C', commit)
         return None
 
     def run(self) -> Outcome:
@@ -515,11 +509,15 @@ def format_outcome(outcome: Outcome, milestone: int, rerun: str) -> str:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    parser.add_argument('--repo', type=Path, required=True)
     parser.add_argument('--milestone', type=int, required=True)
     parser.add_argument('--remote', default='origin')
+    parser.add_argument(
+        '--json-output',
+        type=Path,
+        help='Where to write the pending count, report path and prompt.',
+    )
     args = parser.parse_args()
-    repo = args.repo.resolve()
+    repo = Path.cwd()
     sync = SyncTooling(repo, args.milestone, args.remote)
     try:
         outcome = sync.run()
@@ -532,20 +530,33 @@ def main() -> int:
         [
             'python3',
             str(Path(__file__).resolve()),
-            '--repo',
-            str(repo),
             '--milestone',
             str(args.milestone),
         ]
     )
     text = format_outcome(outcome, args.milestone, rerun)
-    (run_dir / 'sync-tooling.md').write_text(text, encoding='utf-8')
+    report = run_dir / 'sync-tooling.md'
+    report.write_text(text, encoding='utf-8')
     # `prepare` keeps the commits made here, rather than resetting them away.
     (run_dir / 'synced-head').write_text(
         _git(repo, 'rev-parse', 'HEAD'), encoding='utf-8'
     )
     print(text)
-    return PENDING_EXIT if outcome.pending else 0
+    if args.json_output:
+        prompt = (
+            _PROMPT.format(milestone=args.milestone, report=report)
+            if outcome.pending
+            else None
+        )
+        result = {
+            'pending': len(outcome.pending),
+            'prompt': prompt,
+            'report': str(report),
+        }
+        args.json_output.write_text(
+            json.dumps(result, indent=2) + '\n', encoding='utf-8'
+        )
+    return 0
 
 
 if __name__ == '__main__':

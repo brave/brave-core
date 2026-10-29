@@ -32,9 +32,6 @@ These are the user-facing scripts in this directory:
   culprit hash verification, the autofix run's CI report and fixup push, and
   channel bumps: a minor bump's branch and pull request for each release channel
   on its milestone.
-- `autolift/sync_tooling.py` — Cherry-picks the newer `cr` branches' tooling
-  commits onto an older one before its lift, leaving those that need judgement
-  for an agent. Run from the newest branch's copy, by the `cr/autolift` recipe.
 - `ci/cli.py` — Lists a pull request's checks, reports what failed behind them
   on Jenkins and TeamCity, and reruns a check's build.
 
