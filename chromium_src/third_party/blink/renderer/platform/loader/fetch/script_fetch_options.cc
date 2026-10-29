@@ -24,11 +24,9 @@ FetchParameters ScriptFetchOptions::CreateFetchParameters(
     const DOMWrapperWorld* world_for_csp,
     CrossOriginAttributeValue cross_origin,
     const TextEncoding& encoding,
-    FetchParameters::DeferOption defer,
-    const FeatureContext* feature_context) const {
+    FetchParameters::DeferOption defer) const {
   auto params = CreateFetchParameters_ChromiumImpl(
-      url, security_origin, world_for_csp, cross_origin, encoding, defer,
-      feature_context);
+      url, security_origin, world_for_csp, cross_origin, encoding, defer);
   params.MutableOptions().initiator_info.dom_node_id = dom_node_id_;
   params.MutableOptions().initiator_info.parent_script_id = parent_script_id_;
   return params;
