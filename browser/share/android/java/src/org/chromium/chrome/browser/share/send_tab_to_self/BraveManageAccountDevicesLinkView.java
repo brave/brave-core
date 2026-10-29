@@ -22,6 +22,6 @@ public class BraveManageAccountDevicesLinkView extends LinearLayout {
     }
 
     public static AccountInfo getSharingAccountInfo(Profile profile) {
-        return new AccountInfo.Builder("", new GaiaId("")).build();
+        return new AccountInfo.Builder("", new GaiaId("none")).build();
     }
 }
