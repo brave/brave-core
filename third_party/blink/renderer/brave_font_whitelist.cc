@@ -24,6 +24,7 @@ bool g_simulate_empty_font_whitelist_for_testing = false;
 
 #if BUILDFLAG(IS_LINUX)
 
+constexpr char kUbuntu2404Prefix[] = "Ubuntu 24.04";
 constexpr char kUbuntu2204Prefix[] = "Ubuntu 22.04";
 constexpr char kUbuntu2004Prefix[] = "Ubuntu 20.04";
 constexpr char kFedora32Prefix[] = "Fedora";
@@ -38,7 +39,9 @@ enum class LinuxDistro {
 LinuxDistro GetLinuxDistro() {
   static const LinuxDistro kLinuxDistro = []() {
     const auto distro = base::GetLinuxDistro();
-    if (distro.starts_with(kUbuntu2204Prefix)) {
+    // 24.04 ships the same default font set as 22.04.
+    if (distro.starts_with(kUbuntu2404Prefix) ||
+        distro.starts_with(kUbuntu2204Prefix)) {
       return LinuxDistro::kUbuntu2204;
     } else if (distro.starts_with(kUbuntu2004Prefix)) {
       return LinuxDistro::kUbuntu2004;
