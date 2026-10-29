@@ -250,6 +250,21 @@ class ShadowFileTest(_Base):
         content = new_path.read_text(encoding='utf-8')
         self.assertNotIn('#ifndef', content)
 
+    def test_lit_mangler_moved(self) -> None:
+        """A .lit_mangler.ts for the renamed file follows it."""
+        before = self._chromium_head()
+        self._chromium_commit('A/foo.html', '<div></div>\n')
+        self._brave_commit(
+            'chromium_src/A/foo.html.lit_mangler.ts', '// mangler\n'
+        )
+        self._chromium_rename('A/foo.html', 'A/foo.html.ts')
+
+        cmd_follow_renames([f'{before}..HEAD'])
+
+        chromium_src = self._brave / 'chromium_src' / 'A'
+        self.assertTrue((chromium_src / 'foo.html.ts.lit_mangler.ts').exists())
+        self.assertFalse((chromium_src / 'foo.html.lit_mangler.ts').exists())
+
     def test_no_shadow_file_is_noop(self) -> None:
         """Chromium rename with no matching shadow file does not raise."""
         before = self._chromium_head()
