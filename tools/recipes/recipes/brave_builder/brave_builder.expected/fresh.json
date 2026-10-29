@@ -349,13 +349,24 @@
   },
   {
     "cmd": [
+      "git",
+      "checkout",
+      "--force",
+      "-B",
+      "1.80.x"
+    ],
+    "cwd": "[WORKSPACE]/b/src/brave",
+    "name": "brave-core checkout branch"
+  },
+  {
+    "cmd": [
       "[WORKSPACE]/b/src/third_party/depot_tools/vpython3",
       "-u",
       "RECIPE_MODULE[file]/resources/fileutil.py",
       "--json-output",
       "/path/to/tmp/json",
       "copy",
-      "rbe_service=rbe.ba.brave.com:443\nsiso_cache_dir=/b/siso\nuse_remoteexec=true\n",
+      "brave_extra_gn_gen_opts=--check\nlean_sync=true\nrbe_service=rbe.ba.brave.com:443\nsiso_cache_dir=/b/siso\nuse_remoteexec=true\n",
       "[WORKSPACE]/b/src/brave/.env"
     ],
     "name": "write .env"
