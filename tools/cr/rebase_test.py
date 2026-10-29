@@ -20,17 +20,24 @@ This file is organised in three layers:
   dispatch via subprocess, exactly as in production -- nothing is mocked out.
 """
 
+from contextlib import redirect_stderr
 import contextlib
+import io
+import json
 import os
 import subprocess
+import sys
 import tempfile
 import unittest
 from pathlib import Path
 from unittest.mock import patch
 
 import brockit
+import conflict_resolution
 import rebase
-from test.fake_chromium_repo import FakeChromiumRepo
+import repository
+from test.fake_chromium_repo import DEFAULT_BRANCH, FakeChromiumRepo
+from test.fake_terminal import ConsoleCapture
 
 
 class EntryLineParseTest(unittest.TestCase):
@@ -1054,12 +1061,21 @@ class MessageWriterTest(unittest.TestCase):
             rebase.MessageWriter.parse(path)
         self.assertIn('[cr148] Some regular feature commit', str(ctx.exception))
 
-    def test_parse_failure_wrapped_in_cannot_classify(self):
-        """An empty file (no blocks parse out) also raises
-        `EditorRecoverableFailure`."""
-        path = self._file('')
-        with self.assertRaises(rebase.EditorRecoverableFailure):
-            rebase.MessageWriter.parse(path)
+    def test_message_that_is_not_a_squash_is_left_alone(self):
+        """The message of a commit `git rebase --continue` makes after a
+        conflict has no blocks to choose from, so there is nothing to
+        rewrite."""
+        path = self._file(
+            '[cr148] Some regular feature commit\n'
+            '\n'
+            '# Conflicts:\n'
+            '#\tdata.txt\n'
+            '\n'
+            '# Please enter the commit message for your changes. Lines '
+            'starting\n'
+        )
+
+        self.assertIsNone(rebase.MessageWriter.parse(path))
 
     def test_squash_marker_merges_into_previous_block(self):
         """A block whose autosquash note is `# squash! ...` is merged
@@ -1910,33 +1926,429 @@ class RebaseExecuteTest(unittest.TestCase):
         self.assertEqual(branch, 'feature-major')
 
     def test_rebase_failure_raises_invalid_input(self):
-        """A genuine git rebase failure (merge conflict on a tracked file) is
+        """A rebase git refuses to start (here, over unstaged changes) is
         translated into `InvalidInputException`."""
-        brave = self.repo.brave
-        # Common ancestor: data.txt with content "A\n"
-        self.repo.write_and_stage_file('data.txt', 'A\n', brave)
-        base = self.repo.commit('Add data.txt', brave)
-
-        # Branch B: modifies data.txt to "B\n"
-        self.repo._run_git_command(['checkout', '-b', 'branch-b'], brave)
-        (brave / 'data.txt').write_text('B\n')
-        self.repo._run_git_command(['add', 'data.txt'], brave)
-        target = self.repo.commit('Set data.txt to B', brave)
-
-        # Branch A (current): modifies data.txt to "C\n"
-        self.repo._run_git_command(['checkout', '-b', 'branch-a', base], brave)
-        (brave / 'data.txt').write_text('C\n')
-        self.repo._run_git_command(['add', 'data.txt'], brave)
-        self.repo.commit('Set data.txt to C', brave)
+        scenario = self._seed_bump_branch()
+        (self.repo.brave / 'feature.txt').write_text('unstaged\n')
 
         with self.assertRaises(brockit.InvalidInputException):
             brockit.Rebase().execute(
-                from_ref=base,
-                to_ref=target,
+                from_ref=scenario['v101'],
+                to_ref=scenario['v102'],
                 recommit=False,
                 discard_regen_changes=False,
                 squash_minor_bumps=False,
             )
+        self.assertFalse(repository.brave.is_rebase_in_progress())
+
+
+# A raw patch, which a rule takes from the commit when the base only moved
+# its context, and a file no rule knows about.
+RAW_PATCH = 'patches/chrome-browser-bar.cc.patch'
+DATA = 'data.txt'
+
+
+def _raw_patch(context: str) -> str:
+    """A raw patch whose only context line is `context`."""
+    return (
+        'diff --git a/chrome/browser/bar.cc b/chrome/browser/bar.cc\n'
+        '--- a/chrome/browser/bar.cc\n'
+        '+++ b/chrome/browser/bar.cc\n'
+        '@@ -1,2 +1,2 @@\n'
+        '-  ChromeThing thing;\n'
+        '+  BraveThing thing;\n'
+        f' {context}\n'
+    )
+
+
+class RebaseStopTest(unittest.TestCase):
+    """End-to-end tests for the stops of `Rebase.execute()`.
+
+    A rebase resolves the conflicts that have a fixed answer as it goes, stops
+    on any other, and `--continue` carries on from the stop with the handling
+    the rebase started with. Each scenario rebases a `feature` branch onto the
+    default branch, which changed the same files after `feature` forked.
+    """
+
+    def setUp(self):
+        self.repo = FakeChromiumRepo()
+        self.repo.setup()
+        self.addCleanup(self.repo.cleanup)
+        self.console = ConsoleCapture().install()
+        self.addCleanup(self.console.uninstall)
+        # Files left for the user are opened in VS Code, when running in it.
+        patcher = patch.object(brockit, 'VsCodeIpcConnection')
+        self.vscode = patcher.start()
+        self.addCleanup(patcher.stop)
+        # Git opens the user's editor for the commit it makes after a stop,
+        # unless brockit composes the message. `true` saves it as proposed.
+        self.use_editor('true')
+
+    def use_editor(self, editor: str) -> None:
+        """Makes `editor` the user's editor."""
+        patcher = patch.dict(os.environ, {'GIT_EDITOR': editor})
+        patcher.start()
+        self.addCleanup(patcher.stop)
+
+    def git(self, *args: str) -> str:
+        return self.repo._run_git_command(list(args), self.repo.brave)
+
+    def commit(self, subject: str, files: dict[str, str]) -> str:
+        for path, contents in files.items():
+            self.repo.write_and_stage_file(path, contents, self.repo.brave)
+        return self.repo.commit(subject, self.repo.brave)
+
+    def build(
+        self,
+        *,
+        ancestor: dict[str, str],
+        base: dict[str, str],
+        commits: list[tuple[str, dict[str, str]]],
+    ) -> str:
+        """Builds `feature` with `commits`, and moves the default branch on.
+
+        Both start from `ancestor`, and the default branch then changes `base`.
+        Returns the commit they fork from.
+        """
+        fork = self.commit('Add the files', ancestor)
+        self.git('checkout', '--quiet', '-b', 'feature')
+        for subject, files in commits:
+            self.commit(subject, files)
+        self.git('checkout', '--quiet', DEFAULT_BRANCH)
+        self.commit('Change the files upstream', base)
+        self.git('checkout', '--quiet', 'feature')
+        return fork
+
+    def rebase(self, fork: str, *, squash_minor_bumps: bool = False) -> None:
+        brockit.Rebase().execute(
+            from_ref=fork,
+            to_ref=DEFAULT_BRANCH,
+            squash_minor_bumps=squash_minor_bumps,
+        )
+
+    def stop_on_data(self, *, squash_minor_bumps: bool = False) -> str:
+        """Stops a rebase on a commit conflicting on `DATA` and `RAW_PATCH`.
+
+        Only the patch has a fixed answer. Returns the commit's subject.
+        """
+        subject = 'Change the data'
+        fork = self.build(
+            ancestor={DATA: 'ancestor\n', RAW_PATCH: _raw_patch('// ancestor')},
+            base={DATA: 'base\n', RAW_PATCH: _raw_patch('// base')},
+            commits=[
+                (
+                    subject,
+                    {DATA: 'commit\n', RAW_PATCH: _raw_patch('// commit')},
+                )
+            ],
+        )
+        with self.assertRaises(brockit.ActionNeededException):
+            self.rebase(fork, squash_minor_bumps=squash_minor_bumps)
+        return subject
+
+    def resolve_data(self) -> None:
+        """Resolves the `DATA` conflict, as the user would."""
+        self.repo.write_and_stage_file(DATA, 'resolved\n', self.repo.brave)
+
+    def conflicted(self) -> list[str]:
+        return self.git('diff', '--name-only', '--diff-filter=U').splitlines()
+
+    def committed(self, path: str) -> str:
+        return self.repo._run_git_command(
+            ['show', f'HEAD:{path}'], self.repo.brave, strip=False
+        )
+
+    def subjects(self) -> list[str]:
+        return self.git(
+            'log', '--reverse', '--format=%s', f'{DEFAULT_BRANCH}..HEAD'
+        ).splitlines()
+
+    def test_resolves_the_conflicts_with_a_fixed_answer(self):
+        fork = self.build(
+            ancestor={RAW_PATCH: _raw_patch('// ancestor')},
+            base={RAW_PATCH: _raw_patch('// base')},
+            commits=[
+                ('Regenerate the patch', {RAW_PATCH: _raw_patch('// commit')})
+            ],
+        )
+
+        self.rebase(fork)
+
+        self.assertFalse(repository.brave.is_rebase_in_progress())
+        self.assertEqual(self.subjects(), ['Regenerate the patch'])
+        self.assertEqual(self.committed(RAW_PATCH), _raw_patch('// commit'))
+        self.assertIn(
+            f'{conflict_resolution.Rule.CONTEXT_ONLY_PATCH.value}:\n'
+            f'    ✔ {RAW_PATCH}',
+            self.console.text,
+        )
+
+    def test_stops_on_a_conflict_without_a_fixed_answer(self):
+        subject = self.stop_on_data()
+
+        self.assertTrue(repository.brave.is_rebase_in_progress())
+        # The patch is resolved and staged, and the data is left.
+        self.assertEqual(self.conflicted(), [DATA])
+        self.assertIn(f'    ✔ {RAW_PATCH}', self.console.text)
+        self.assertRegex(
+            self.console.text,
+            rf'Resolve the conflicts left in [0-9a-f]{{12}} \({subject}\) '
+            rf'\(action needed\):\n    ✘ {DATA}',
+        )
+        self.vscode.return_value.open_file.assert_called_once_with(
+            [repository.brave.root / DATA]
+        )
+
+    def test_continue_finishes_once_the_user_resolved_the_rest(self):
+        subject = self.stop_on_data()
+        self.resolve_data()
+        mark = self.console.mark()
+
+        brockit.Rebase().execute(is_continuation=True)
+
+        self.assertFalse(repository.brave.is_rebase_in_progress())
+        self.assertEqual(self.subjects(), [subject])
+        self.assertEqual(self.committed(DATA), 'resolved\n')
+        # The patch resolved before the stop is reported with the rest.
+        self.assertIn(
+            f'{conflict_resolution.Rule.CONTEXT_ONLY_PATCH.value}:\n'
+            f'    ✔ {RAW_PATCH}',
+            self.console.since(mark),
+        )
+
+    def test_continue_keeps_the_message_of_a_resolved_commit(self):
+        """With `--squash-minor-bumps`, brockit handles the commit messages of
+        the rebase: a commit that is not a squash keeps its own, without the
+        user's editor opening (an editor that fails would stop the rebase)."""
+        self.use_editor('false')
+        subject = self.stop_on_data(squash_minor_bumps=True)
+        self.resolve_data()
+
+        brockit.Rebase().execute(is_continuation=True)
+
+        self.assertEqual(self.git('log', '-1', '--format=%B'), subject)
+
+    def test_continue_composes_the_message_of_a_squash(self):
+        """A pinned group that stopped on its squash still gets the message
+        brockit composes for it, once continued."""
+        self.use_editor('false')
+        first = (
+            'Conflict-resolved patches from Chromium 1.0.0.0 to '
+            'Chromium 1.0.0.1.'
+        )
+        last = (
+            'Conflict-resolved patches from Chromium 1.0.0.1 to '
+            'Chromium 1.0.0.2.'
+        )
+        fork = self.build(
+            ancestor={DATA: 'ancestor\n'},
+            base={DATA: 'base\n'},
+            commits=[
+                (first, {'pinned.txt': 'pinned\n'}),
+                (last, {DATA: 'commit\n'}),
+            ],
+        )
+        with self.assertRaises(brockit.ActionNeededException):
+            self.rebase(fork, squash_minor_bumps=True)
+        self.resolve_data()
+
+        brockit.Rebase().execute(is_continuation=True)
+
+        self.assertEqual(self.git('log', '-1', '--format=%B'), last)
+        self.assertEqual(self.committed('pinned.txt'), 'pinned\n')
+
+    def test_skip_drops_the_commit_and_carries_on(self):
+        """Skipping goes on with brockit's own handling of the rebase: the
+        squash after the skipped commit gets the message brockit composes for
+        it, without the user's editor opening."""
+        self.use_editor('false')
+        version = 'Update from Chromium 1.0.0.0 to Chromium 1.0.0.1.'
+        first = (
+            'Conflict-resolved patches from Chromium 1.0.0.0 to '
+            'Chromium 1.0.0.1.'
+        )
+        last = (
+            'Conflict-resolved patches from Chromium 1.0.0.1 to '
+            'Chromium 1.0.0.2.'
+        )
+        fork = self.build(
+            ancestor={DATA: 'ancestor\n'},
+            base={DATA: 'base\n'},
+            commits=[
+                (version, {DATA: 'commit\n'}),
+                (first, {'first.txt': 'first\n'}),
+                (last, {'last.txt': 'last\n'}),
+            ],
+        )
+        with self.assertRaises(brockit.ActionNeededException):
+            self.rebase(fork, squash_minor_bumps=True)
+
+        brockit.Rebase().execute(skip=True)
+
+        self.assertFalse(repository.brave.is_rebase_in_progress())
+        self.assertEqual(self.subjects(), [last])
+        self.assertEqual(self.committed(DATA), 'base\n')
+        self.assertEqual(self.committed('first.txt'), 'first\n')
+
+    def test_continue_stops_again_without_conflicts(self):
+        """Git refuses to continue over unstaged changes, which is a stop no
+        rule resolves, so it is reported rather than retried."""
+        self.stop_on_data()
+        self.resolve_data()
+        (self.repo.brave / 'README.md').write_text('unstaged\n')
+
+        with self.assertRaises(brockit.InvalidInputException):
+            brockit.Rebase().execute(is_continuation=True)
+
+        self.assertTrue(repository.brave.is_rebase_in_progress())
+
+    def test_continue_without_a_rebase_raises(self):
+        for resumption in ({'is_continuation': True}, {'skip': True}):
+            with (
+                self.subTest(**resumption),
+                self.assertRaises(brockit.InvalidInputException),
+            ):
+                brockit.Rebase().execute(**resumption)
+
+    def test_continue_a_rebase_brockit_did_not_start_raises(self):
+        self.build(
+            ancestor={DATA: 'ancestor\n'},
+            base={DATA: 'base\n'},
+            commits=[('Change the data', {DATA: 'commit\n'})],
+        )
+        with self.assertRaises(subprocess.CalledProcessError):
+            self.git('rebase', DEFAULT_BRANCH)
+
+        with self.assertRaises(brockit.InvalidInputException):
+            brockit.Rebase().execute(is_continuation=True)
+
+    def test_reports_paths_as_they_are_written(self):
+        """A path that reads as console markup is still printed verbatim."""
+        path = 'data[bold].txt'
+        fork = self.build(
+            ancestor={path: 'ancestor\n'},
+            base={path: 'base\n'},
+            commits=[('Change the data', {path: 'commit\n'})],
+        )
+
+        with self.assertRaises(brockit.ActionNeededException):
+            self.rebase(fork)
+
+        self.assertIn(f'    ✘ {path}', self.console.text)
+
+    def test_a_stop_a_rule_failed_on_can_still_be_continued(self):
+        """The state is saved even when resolving a stop fails, which on the
+        first stop is before anything else saved it."""
+        fork = self.build(
+            ancestor={DATA: 'ancestor\n'},
+            base={DATA: 'base\n'},
+            commits=[('Change the data', {DATA: 'commit\n'})],
+        )
+        with (
+            patch.object(
+                conflict_resolution.ConflictedStep,
+                'resolve',
+                side_effect=RuntimeError('a rule failed'),
+            ),
+            self.assertRaises(RuntimeError),
+        ):
+            self.rebase(fork)
+        self.resolve_data()
+
+        brockit.Rebase().execute(is_continuation=True)
+
+        self.assertFalse(repository.brave.is_rebase_in_progress())
+        self.assertEqual(self.committed(DATA), 'resolved\n')
+
+    def test_state_lasts_as_long_as_the_rebase(self):
+        self.stop_on_data(squash_minor_bumps=True)
+
+        state = brockit.RebaseState.load()
+
+        self.assertTrue(state.squash_minor_bumps)
+        self.assertEqual(
+            state.resolutions,
+            [
+                conflict_resolution.Resolution(
+                    path=RAW_PATCH,
+                    rule=conflict_resolution.Rule.CONTEXT_ONLY_PATCH,
+                )
+            ],
+        )
+        self.git('rebase', '--abort')
+        with self.assertRaises(brockit.InvalidInputException):
+            brockit.RebaseState.load()
+
+    def test_state_drops_the_rules_it_does_not_know(self):
+        """Each stop is continued by the brockit it has checked out, which may
+        not know every rule of the one that saved the state."""
+        self.stop_on_data()
+        file = brockit.RebaseState._path()
+        data = json.loads(file.read_bytes().decode('utf-8'))
+        data['resolutions'].append({'path': 'other.patch', 'rule': 'RETIRED'})
+        file.write_text(json.dumps(data), encoding='utf-8', newline='')
+
+        self.assertEqual(
+            brockit.RebaseState.load().resolutions,
+            [
+                conflict_resolution.Resolution(
+                    path=RAW_PATCH,
+                    rule=conflict_resolution.Rule.CONTEXT_ONLY_PATCH,
+                )
+            ],
+        )
+
+    def test_unreadable_state_raises(self):
+        self.stop_on_data()
+        for contents in ('{not json', '{}', '{"squash_minor_bumps": true}'):
+            with self.subTest(contents=contents):
+                brockit.RebaseState._path().write_text(
+                    contents, encoding='utf-8', newline=''
+                )
+
+                with self.assertRaises(brockit.InvalidInputException):
+                    brockit.RebaseState.load()
+
+
+class RebaseCommandLineTest(unittest.TestCase):
+    """`brockit rebase --continue` and `--skip` from the command line."""
+
+    @staticmethod
+    def _usage_error(*args: str) -> str:
+        """Runs `brockit rebase` with `args`, returning its usage error."""
+        stderr = io.StringIO()
+        with (
+            patch.object(sys, 'argv', ['brockit.py', 'rebase', *args]),
+            redirect_stderr(stderr),
+        ):
+            try:
+                brockit.main()
+            except SystemExit as e:
+                if e.code == 2:
+                    return stderr.getvalue()
+        raise AssertionError(f'No usage error for {args}.')
+
+    def test_resumptions_reject_the_switches_of_a_new_rebase(self):
+        for resumption in ('--continue', '--skip'):
+            for switch in (
+                '--from-ref=HEAD',
+                '--to-ref=HEAD',
+                '--recommit',
+                '--discard-regen-changes',
+                '--squash-minor-bumps',
+            ):
+                with self.subTest(resumption=resumption, switch=switch):
+                    name = switch.partition('=')[0]
+                    self.assertIn(
+                        f'Switch {name} not supported with {resumption}.',
+                        self._usage_error(resumption, switch),
+                    )
+
+    def test_continue_and_skip_are_exclusive(self):
+        self.assertIn(
+            'not allowed with argument',
+            self._usage_error('--continue', '--skip'),
+        )
 
 
 if __name__ == '__main__':
