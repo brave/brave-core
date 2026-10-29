@@ -10,6 +10,7 @@
 
 #include "base/check_is_test.h"
 #include "brave/app/brave_command_ids.h"
+#include "brave/browser/ui/bookmark/bookmark_helper.h"
 #include "brave/browser/ui/bookmark/brave_bookmark_prefs.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "chrome/app/chrome_command_ids.h"
@@ -51,6 +52,7 @@ BraveBookmarkContextMenuController::BraveBookmarkContextMenuController(
     CHECK_IS_TEST();
   }
   AddShowAllBookmarksButtonMenu();
+  brave::AddFloatingBookmarkBarMenuItem(*menu_model());
 #if BUILDFLAG(ENABLE_CONTAINERS)
   if (base::FeatureList::IsEnabled(containers::features::kContainers)) {
     // Get URL of the selected bookmark.
@@ -115,6 +117,12 @@ void BraveBookmarkContextMenuController::MaybeAddContainersBookmarkSubmenu(
 
 bool BraveBookmarkContextMenuController::IsCommandIdChecked(
     int command_id) const {
+  if (prefs_) {
+    if (auto checked =
+            brave::IsFloatingBookmarkBarCommandChecked(command_id, *prefs_)) {
+      return *checked;
+    }
+  }
   if (command_id == IDC_TOGGLE_ALL_BOOKMARKS_BUTTON_VISIBILITY) {
     // Even test sets prefs for testing, there could be timing when prefs_ is
     // nullptr on creation.
@@ -141,6 +149,9 @@ bool BraveBookmarkContextMenuController::IsCommandIdChecked(
 
 bool BraveBookmarkContextMenuController::IsCommandIdEnabled(
     int command_id) const {
+  if (command_id == IDC_BOOKMARK_BAR_SUBMENU_AUTO_HIDE_FLOATING) {
+    return prefs_ && brave::CanSetFloatingBookmarkBar(*prefs_);
+  }
   if (command_id == IDC_TOGGLE_ALL_BOOKMARKS_BUTTON_VISIBILITY) {
     return true;
   }
@@ -185,6 +196,9 @@ bool BraveBookmarkContextMenuController::IsCommandIdVisible(
 
 void BraveBookmarkContextMenuController::ExecuteCommand(int command_id,
                                                         int event_flags) {
+  if (prefs_ && brave::HandleFloatingBookmarkBarCommand(command_id, *prefs_)) {
+    return;
+  }
   if (command_id == IDC_TOGGLE_ALL_BOOKMARKS_BUTTON_VISIBILITY) {
     if (!browser_) {
       CHECK_IS_TEST();

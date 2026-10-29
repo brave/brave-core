@@ -14,6 +14,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/notreached.h"
 #include "brave/app/brave_command_ids.h"
+#include "brave/browser/ui/bookmark/bookmark_helper.h"
 #include "brave/browser/ui/toolbar/app_menu_icons.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/commander/common/buildflags/buildflags.h"
@@ -21,6 +22,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/toolbar/app_menu_model.h"
+#include "chrome/browser/ui/toolbar/bookmark_sub_menu_model.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/grit/branded_strings.h"
 #include "chrome/grit/generated_resources.h"
@@ -98,6 +100,9 @@ void BraveAppMenuModel::Build() {
   // If we you want to add/remove from app menu, adjust commands enable status
   // at BraveBrowserCommandController.
   AppMenuModel::Build();
+  if (bookmark_sub_menu_model()) {
+    brave::AddFloatingBookmarkBarMenuItem(*bookmark_sub_menu_model());
+  }
 
   RemoveUpstreamMenus();
   BuildTabsAndWindowsSection();
@@ -468,6 +473,10 @@ void BraveAppMenuModel::RemoveUpstreamMenus() {
 }
 
 void BraveAppMenuModel::ExecuteCommand(int id, int event_flags) {
+  if (brave::HandleFloatingBookmarkBarCommand(
+          id, *browser()->GetProfile()->GetPrefs())) {
+    return;
+  }
 #if defined(TOOLKIT_VIEWS)
   if (id == IDC_SIDEBAR_SHOW_OPTION_ALWAYS ||
       id == IDC_SIDEBAR_SHOW_OPTION_MOUSEOVER ||
@@ -483,6 +492,10 @@ void BraveAppMenuModel::ExecuteCommand(int id, int event_flags) {
 }
 
 bool BraveAppMenuModel::IsCommandIdEnabled(int id) const {
+  if (id == IDC_BOOKMARK_BAR_SUBMENU_AUTO_HIDE_FLOATING) {
+    return brave::CanSetFloatingBookmarkBar(
+        *browser()->GetProfile()->GetPrefs());
+  }
 #if defined(TOOLKIT_VIEWS)
   if (id == IDC_SIDEBAR_SHOW_OPTION_ALWAYS ||
       id == IDC_SIDEBAR_SHOW_OPTION_MOUSEOVER ||
@@ -492,6 +505,14 @@ bool BraveAppMenuModel::IsCommandIdEnabled(int id) const {
 #endif  // defined(TOOLKIT_VIEWS)
 
   return AppMenuModel::IsCommandIdEnabled(id);
+}
+
+bool BraveAppMenuModel::IsCommandIdChecked(int id) const {
+  if (auto checked = brave::IsFloatingBookmarkBarCommandChecked(
+          id, *browser()->GetProfile()->GetPrefs())) {
+    return *checked;
+  }
+  return AppMenuModel::IsCommandIdChecked(id);
 }
 
 size_t BraveAppMenuModel::GetNextIndexOfBraveProductsSection() const {

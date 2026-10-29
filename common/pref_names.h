@@ -17,4 +17,8 @@ inline constexpr char kWebViewRoundedCorners[] =
 // (outline-only) Brave logo instead of the full color logo.
 inline constexpr char kBraveSubtleAppMenuLogo[] = "brave.subtle_app_menu_logo";
 
+// Boolean pref indicating whether the bookmarks bar floats over the page and is
+// revealed on toolbar hover. Only used when kBraveFloatingBookmarkBar is on.
+inline constexpr char kFloatingBookmarkBar[] = "brave.floating_bookmark_bar";
+
 #endif  // BRAVE_COMMON_PREF_NAMES_H_

@@ -13,6 +13,7 @@ namespace features {
 
 BASE_DECLARE_FEATURE(kBraveNtpSearchWidget);
 BASE_DECLARE_FEATURE(kBraveFilledBookmarkFolderIcon);
+BASE_DECLARE_FEATURE(kBraveFloatingBookmarkBar);
 #if BUILDFLAG(IS_WIN)
 BASE_DECLARE_FEATURE(kBraveWorkaroundNewWindowFlash);
 #endif  // BUILDFLAG(IS_WIN)

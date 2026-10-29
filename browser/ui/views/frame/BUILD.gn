@@ -110,6 +110,7 @@ source_set("browser_tests") {
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
   sources = [
+    "//brave/browser/ui/views/bookmarks/floating_bookmark_bar_browsertest.cc",
     "//brave/browser/ui/views/frame/brave_browser_view_browsertest.cc",
     "//brave/browser/ui/views/frame/brave_horizontal_tab_strip_region_view_browsertest.cc",
     "//brave/browser/ui/views/frame/focus_mode_mini_toolbar_browsertest.cc",

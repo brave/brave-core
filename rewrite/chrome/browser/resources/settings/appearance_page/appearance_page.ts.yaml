@@ -1,0 +1,71 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: Keep the floating choice separate from Chromium's synced enum.
+    regex:
+      pattern: 'type PrefObject<T> = chrome.settingsPrivate.PrefObject<T>;'
+      replace: |-
+        const FLOATING_BOOKMARK_BAR_OPTION = 'floating';
+        type PrefObject<T> = chrome.settingsPrivate.PrefObject<T>;
+  - description: Observe both preferences to reflect changes from native menus.
+    regex:
+      pattern: 'pageVisibility_: {type: Object},'
+      replace: |-
+        pageVisibility_: {type: Object},
+              floatingBookmarkBarPref_: {type: Object},
+              bookmarkBarVisibilityPref_: {type: Object},
+  - description: Add the feature-gated display option and derived selection.
+    regex:
+      re_pattern:
+        '(protected accessor bookmarksBarOptions_: DropdownMenuOptionList =
+        \[[\s\S]+?)(\n  \];)'
+      replace: |-
+        \1
+            ...(loadTimeData.getBoolean('isFloatingBookmarkBarEnabled') ? [{
+              value: FLOATING_BOOKMARK_BAR_OPTION,
+              name: loadTimeData.getString('appearanceSettingsFloatingBookmarksBar'),
+              searchHint: loadTimeData.getString('appearanceSettingsFloatingBookmarksBarDesc'),
+            }] : []),\2
+
+          protected accessor floatingBookmarkBarPref_: PrefObject<boolean>|undefined;
+          protected accessor bookmarkBarVisibilityPref_: PrefObject<number>|undefined;
+
+          protected get floatingBookmarkBarEnabled_(): boolean {
+            return loadTimeData.getBoolean('isFloatingBookmarkBarEnabled');
+          }
+
+          protected get bookmarksBarSelectedValue_(): string|undefined {
+            if (!this.floatingBookmarkBarEnabled_) {
+              return undefined;
+            }
+            return this.floatingBookmarkBarPref_?.value ? FLOATING_BOOKMARK_BAR_OPTION :
+                this.bookmarkBarVisibilityPref_?.value.toString();
+          }
+  - description: Mirror the local override and the native visibility preference.
+    regex:
+      pattern: 'this.mirrorPrefs({'
+      replace: |-
+        this.mirrorPrefs({
+              'brave.floating_bookmark_bar': 'floatingBookmarkBarPref_',
+              'bookmark_bar.visibility_state': 'bookmarkBarVisibilityPref_',
+  - description: Save the floating choice only to Brave's local preference.
+    regex:
+      re_pattern:
+        '(protected onBookmarksBarVisibilitySettingsControlChange_\(event:
+        Event\) \{\s+const dropdown = event.target as
+        SettingsDropdownMenuElement;)'
+      replace: |-
+        \1
+            if (this.floatingBookmarkBarEnabled_) {
+              const floating = dropdown.getSelectedValue() === FLOATING_BOOKMARK_BAR_OPTION;
+              const prefs = PrefService.getInstance();
+              prefs.setPrefValue('brave.floating_bookmark_bar', floating);
+              if (floating) {
+                return;
+              }
+              prefs.setPrefValue('bookmark_bar.visibility_state',
+                  Number.parseInt(dropdown.getSelectedValue(), 10));
+            }

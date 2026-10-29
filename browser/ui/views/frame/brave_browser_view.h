@@ -76,6 +76,7 @@ class BraveMultiContentsView;
 class BrowserWindowInterface;
 class FocusModeTitleBarView;
 class FocusModeTopOverlay;
+class FloatingBookmarkBarController;
 class SidebarContainerView;
 class SidePanelEntry;
 class TabStripPlacementCoordinator;
@@ -188,6 +189,12 @@ class BraveBrowserView : public BrowserView,
   void UpdateContentsCornerRadii(const gfx::RoundedCornersF& corner_radii);
 
   void UpdateRoundedCornersUI();
+  void UpdateFloatingBookmarkBarLayout();
+  FloatingBookmarkBarController* floating_bookmark_bar() const {
+    return floating_bookmark_bar_.get();
+  }
+  bool IsBookmarkBarVisible() const override;
+  void OnFocusBookmarksToolbar() override;
   void UpdateVerticalTabStripBorder();
   void UpdateSidebarBorder();
 
@@ -295,12 +302,17 @@ class BraveBrowserView : public BrowserView,
   void ShowSplitView(bool focus_active_view) override;
   void HideSplitView() override;
   void ReparentTopContainerForEndOfImmersive() override;
+  bool MaybeShowBookmarkBar(content::WebContents* contents) override;
   bool ShouldDrawTabStrokes() const override;
   void UpdateTabSearchBubbleHost() override;
 
   void HandleBrowserWindowMouseEvent(const ui::MouseEvent& event);
   void StopTabCycling();
   void OnCompactModePrefChanged();
+  void OnFloatingBookmarkBarPrefChanged();
+  bool UsesFloatingBookmarkBar() const;
+  void UpdateFloatingBookmarkBar();
+  void RestoreBookmarkBarParent();
   void OnPreferenceChanged(const std::string& pref_name);
   void UpdateFocusModeState();
   bool ShouldDisableFocusModeForActiveTab() const;
@@ -371,6 +383,7 @@ class BraveBrowserView : public BrowserView,
 #endif
 
   std::unique_ptr<TabCyclingEventHandler> tab_cycling_event_handler_;
+  std::unique_ptr<FloatingBookmarkBarController> floating_bookmark_bar_;
   std::unique_ptr<BrowserWindowMouseEventHandler>
       browser_window_mouse_event_handler_;
 

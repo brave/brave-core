@@ -12,6 +12,9 @@ BASE_FEATURE(kBraveNtpSearchWidget,
 
 BASE_FEATURE(kBraveFilledBookmarkFolderIcon, base::FEATURE_DISABLED_BY_DEFAULT);
 
+// Allows the bookmarks bar to float over the page and reveal on toolbar hover.
+BASE_FEATURE(kBraveFloatingBookmarkBar, base::FEATURE_DISABLED_BY_DEFAULT);
+
 #if BUILDFLAG(IS_WIN)
 // Enables window cloaking on window creation to prevent a white flash.
 BASE_FEATURE(kBraveWorkaroundNewWindowFlash,

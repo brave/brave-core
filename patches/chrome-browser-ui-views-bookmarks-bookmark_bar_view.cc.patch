@@ -1,8 +1,18 @@
 diff --git a/chrome/browser/ui/views/bookmarks/bookmark_bar_view.cc b/chrome/browser/ui/views/bookmarks/bookmark_bar_view.cc
-index b5442449aec5cc9fd07c73afe23a496d24b0a3ad..395703450f31e11d267ffb9c5f5d06bfb3440b39 100644
+index b5442449aec5cc9fd07c73afe23a496d24b0a3ad..1951f89d502113e8d1d5dfc73b20cfbc270e5668 100644
 --- a/chrome/browser/ui/views/bookmarks/bookmark_bar_view.cc
 +++ b/chrome/browser/ui/views/bookmarks/bookmark_bar_view.cc
-@@ -862,6 +862,8 @@ void BookmarkBarView::Layout(PassKey) {
+@@ -699,7 +699,8 @@ void BookmarkBarView::Layout(PassKey) {
+   // bottom margin of the toolbar into the button position.
+   int toolbar_bottom_margin = 0;
+   // Note: |browser_view_| may be null during tests.
+-  if (browser_view_ && !browser_view_->IsFullscreen()) {
++  if (browser_view_ && parent() != browser_view_ &&
++      !browser_view_->IsFullscreen()) {
+     toolbar_bottom_margin = browser_view_->toolbar()->height() -
+                             browser_view_->GetLocationBar()->Bounds().bottom();
+   }
+@@ -862,6 +863,8 @@ void BookmarkBarView::Layout(PassKey) {
      }
    }
  

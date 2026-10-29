@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/resources/settings/appearance_page/appearance_page.html.ts b/chrome/browser/resources/settings/appearance_page/appearance_page.html.ts
+index b6cf0bffe2c5e05270dff10c6586a765c0a73134..5ea9c3c9a538656fb2d9b0f9c794206d4e85423b 100644
+--- a/chrome/browser/resources/settings/appearance_page/appearance_page.html.ts
++++ b/chrome/browser/resources/settings/appearance_page/appearance_page.html.ts
+@@ -139,6 +139,8 @@ export function getHtml(this: SettingsAppearancePageElement) {
+             label="$i18n{bookmarksBar}"
+             pref-key="bookmark_bar.visibility_state"
+             .menuOptions="${this.bookmarksBarOptions_}"
++            .noSetPref="${this.floatingBookmarkBarEnabled_}"
++            .value="${this.bookmarksBarSelectedValue_}"
+             @settings-control-change="${this.onBookmarksBarVisibilitySettingsControlChange_}">
+         </settings-dropdown-menu>
+       </div>

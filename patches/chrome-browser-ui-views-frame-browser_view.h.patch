@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/frame/browser_view.h b/chrome/browser/ui/views/frame/browser_view.h
-index 6c4807bbaaf0a8e12e1a2df8545b4b55f491c297..77689a13b2b50f3cc5005e2b9199e287d730ce83 100644
+index 6c4807bbaaf0a8e12e1a2df8545b4b55f491c297..5b23be93b20a5ae6be1c54225eeb4244cc3ea54b 100644
 --- a/chrome/browser/ui/views/frame/browser_view.h
 +++ b/chrome/browser/ui/views/frame/browser_view.h
 @@ -681,7 +681,7 @@ class BrowserView : public BrowserWindow,
@@ -11,3 +11,21 @@ index 6c4807bbaaf0a8e12e1a2df8545b4b55f491c297..77689a13b2b50f3cc5005e2b9199e287
  #endif
    void OnWindowBeginUserBoundsChange() override;
    void OnWindowEndUserBoundsChange() override;
+@@ -772,7 +772,7 @@ class BrowserView : public BrowserWindow,
+   void CreateTabSearchBubble() override;
+   void CloseTabSearchBubble() override;
+ 
+-  bool IsBookmarkBarVisible() const;
++  virtual bool IsBookmarkBarVisible() const;
+   bool IsBookmarkBarAnimating() const;
+ 
+ #if !BUILDFLAG(IS_CHROMEOS)
+@@ -915,7 +915,7 @@ class BrowserView : public BrowserWindow,
+   // Returns true if the Bookmark Bar can be shown (i.e. it's supported for this
+   // Browser type) and there should be a subsequent re-layout to show it.
+   // |contents| can be null.
+-  bool MaybeShowBookmarkBar(content::WebContents* contents);
++  virtual bool MaybeShowBookmarkBar(content::WebContents* contents);
+ 
+   // Prepare to show an Info Bar for the specified WebContents. Returns
+   // true if there is an Info Bar to show and one is supported for this Browser

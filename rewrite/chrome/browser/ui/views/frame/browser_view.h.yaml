@@ -8,3 +8,12 @@ substitutions:
     make_virtual:
       class_name: BrowserView
       method_name: 'CreateMacOverlayView'
+  - description:
+      Let Brave preserve bookmark ownership when using floating placement.
+    make_virtual:
+      class_name: BrowserView
+      method_name: MaybeShowBookmarkBar
+  - description: Let Brave report visibility for the floating bookmarks bar.
+    make_virtual:
+      class_name: BrowserView
+      method_name: IsBookmarkBarVisible

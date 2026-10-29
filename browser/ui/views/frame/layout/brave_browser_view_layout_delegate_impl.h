@@ -15,6 +15,7 @@ class BraveBrowserViewLayoutDelegateImpl
   ~BraveBrowserViewLayoutDelegateImpl() override = default;
 
   // BrowserViewLayoutDelegateImpl:
+  bool IsBookmarkBarVisible() const override;
   BrowserLayoutParams GetBrowserLayoutParams(
       bool use_browser_bounds) const override;
 };

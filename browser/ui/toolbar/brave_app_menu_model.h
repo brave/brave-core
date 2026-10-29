@@ -34,6 +34,7 @@ class BraveAppMenuModel : public AppMenuModel {
                     AppMenuIconController* app_menu_icon_controller = nullptr,
                     AlertMenuItem alert_item = AlertMenuItem::kNone);
   ~BraveAppMenuModel() override;
+  bool IsCommandIdChecked(int id) const override;
 
   BraveAppMenuModel(const BraveAppMenuModel&) = delete;
   BraveAppMenuModel& operator=(const BraveAppMenuModel&) = delete;

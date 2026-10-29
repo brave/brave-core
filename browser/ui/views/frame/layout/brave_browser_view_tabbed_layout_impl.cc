@@ -31,6 +31,7 @@
 #include "ui/views/border.h"
 #include "ui/views/layout/layout_provider.h"
 #include "ui/views/view_class_properties.h"
+#include "ui/views/view_utils.h"
 
 BraveBrowserViewTabbedLayoutImpl::BraveBrowserViewTabbedLayoutImpl(
     std::unique_ptr<BrowserViewLayoutDelegate> delegate,
@@ -279,6 +280,10 @@ void BraveBrowserViewTabbedLayoutImpl::DoPostLayoutVisualAdjustments(
   BrowserViewTabbedLayoutImpl::DoPostLayoutVisualAdjustments(params);
   UpdateInsetsForVerticalTabStrip();
   delegate().UpdateContentsCornerRadii(CalculateContentsCornerRadii());
+  if (auto* browser_view =
+          views::AsViewClass<BraveBrowserView>(views().browser_view)) {
+    browser_view->UpdateFloatingBookmarkBarLayout();
+  }
 
   if (delegate().GetTabStripType() == TabStripType::kVertical) {
     return;

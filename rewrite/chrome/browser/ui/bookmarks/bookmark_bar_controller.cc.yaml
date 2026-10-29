@@ -4,6 +4,20 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
+  - description: Add bookmark_helper.h for IsFloatingBookmarkBarEnabled().
+    regex:
+      pattern: '#include "base/feature_list.h"'
+      replace: |-
+        #include "base/feature_list.h"
+        #include "brave/browser/ui/bookmark/bookmark_helper.h"
+  - description:
+      Keep the native bar populated in floating mode while preserving upstream
+      visibility constraints.
+    regex:
+      re_pattern: '(bool should_show_bar\s*=[\s\S]+?;)'
+      replace: |-
+        \1
+          should_show_bar |= brave::IsFloatingBookmarkBarEnabled(*prefs);
   - description: |
       Replaces bookmark_model->HasBookmarks() with `true` to prevent early 
       return due to empty items in bookmark bar.

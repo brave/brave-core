@@ -4,6 +4,11 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
+  - description:
+      Keep floating bookmark visibility from changing the minimum window size.
+    regex:
+      re_pattern: '(\bbookmark_bar_size\s*=\s*\()views\(\).bookmark_bar &&'
+      replace: '\1IsParentedTo(views().bookmark_bar, views().top_container) &&'
   - description: |-
       Skip the leading-exclusion reservation when Brave vertical tabs are on.
 
