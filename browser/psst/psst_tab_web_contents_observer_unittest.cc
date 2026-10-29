@@ -28,6 +28,7 @@
 #include "base/values.h"
 #include "brave/browser/psst/psst_settings_service_factory.h"
 #include "brave/components/psst/core/browser/pref_names.h"
+#include "brave/components/psst/core/browser/psst_log_service.h"
 #include "brave/components/psst/core/browser/psst_rule_registry.h"
 #include "brave/components/psst/core/common/features.h"
 #include "brave/components/psst/core/common/psst_script_responses.h"
@@ -297,10 +298,13 @@ class PsstTabWebContentsObserverUnitTestBase
     variations_service_ = std::make_unique<variations::TestVariationsService>(
         &variations_local_state_, metrics_state_manager_.get());
 
+    log_service_ = std::make_unique<PsstLogService>();
+
     psst_web_contents_observer_ = base::WrapUnique<PsstTabWebContentsObserver>(
         new PsstTabWebContentsObserver(
             mock_tab, rule_registry_.get(), psst_settings_service_,
-            variations_service_.get(), std::move(ui_delegate)));
+            variations_service_.get(), log_service_.get(),
+            std::move(ui_delegate)));
     psst_web_contents_observer_->SetInjectScriptCallback(
         inject_script_callback_.Get());
     psst_web_contents_observer_->SetInjectAsyncScriptCallback(
@@ -310,6 +314,7 @@ class PsstTabWebContentsObserverUnitTestBase
   void TearDown() override {
     ui_delegate_ = nullptr;
     psst_web_contents_observer_.reset();
+    log_service_.reset();
     psst_settings_service_ = nullptr;
     ChromeRenderViewHostTestHarness::TearDown();
   }
@@ -354,6 +359,8 @@ class PsstTabWebContentsObserverUnitTestBase
     return variations_service_.get();
   }
 
+  PsstLogService* log_service() { return log_service_.get(); }
+
   PsstTabWebContentsObserver* observer() {
     return psst_web_contents_observer_.get();
   }
@@ -368,6 +375,8 @@ class PsstTabWebContentsObserverUnitTestBase
   base::MockCallback<PsstTabWebContentsObserver::InjectScriptAsyncCallback>
       inject_async_script_callback_;
   std::unique_ptr<MockPsstRuleRegistry> rule_registry_;
+  // Declared before the observer, which holds a raw pointer to it.
+  std::unique_ptr<PsstLogService> log_service_;
   std::unique_ptr<PsstTabWebContentsObserver> psst_web_contents_observer_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
   raw_ptr<PsstSettingsService> psst_settings_service_;
@@ -450,7 +459,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest, CreateForRegularBrowserContext) {
   EXPECT_NE(PsstTabWebContentsObserver::MaybeCreate(
                 mock_tab_interface(), browser_context(),
                 std::make_unique<MockUiDelegate>(), psst_settings_service(),
-                variations_service(), 2),
+                variations_service(), log_service(), 2),
             nullptr);
 }
 
@@ -462,11 +471,11 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   auto web_contents = content::WebContentsTester::CreateTestWebContents(
       otr_profile, site_instance);
 
-  EXPECT_EQ(
-      PsstTabWebContentsObserver::MaybeCreate(
-          mock_tab_interface(), otr_profile, std::make_unique<MockUiDelegate>(),
-          psst_settings_service(), variations_service(), 2),
-      nullptr);
+  EXPECT_EQ(PsstTabWebContentsObserver::MaybeCreate(
+                mock_tab_interface(), otr_profile,
+                std::make_unique<MockUiDelegate>(), psst_settings_service(),
+                variations_service(), /*log_service=*/nullptr, 2),
+            nullptr);
 }
 
 TEST_F(PsstTabWebContentsObserverUnitTest,
@@ -1374,6 +1383,50 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   EXPECT_EQ(policy_script_result, policy_script_insert_future.Take());
 }
 
+// A continuation user script result (initial_execution is false) whose tasks
+// don't include the current page's URL means the flow skipped a step (e.g.
+// the user navigated directly to a later page), so it must be failed instead
+// of silently continuing.
+TEST_F(PsstTabWebContentsObserverUnitTest, FlowFailsWhenOnWrongStep) {
+  base::RunLoop check_loop;
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url_, _, _))
+      .WillOnce(CheckIfMatchCallback(
+          &check_loop, CreateMatchedRule(user_script_, policy_script_)));
+
+  EXPECT_CALL(ui_delegate(),
+              GetPsstWebsiteSettings(url::Origin::Create(url_), user_id_));
+
+  const GURL other_step_url("https://example1.com/other-step");
+  auto script_params = base::Value(
+      base::DictValue()
+          .Set("initial_execution", false)
+          .Set("user_id", user_id_)
+          .Set("site_name", "example")
+          .Set("tasks",
+               base::ListValue().Append(base::DictValue()
+                                            .Set("uid", "1")
+                                            .Set("url", other_step_url.spec())
+                                            .Set("description", "settings"))));
+
+  base::test::TestFuture<base::Value> user_script_insert_future;
+  ExpectUserScriptInjected(user_script_)
+      .WillOnce(InsertScriptInPageCallback(&user_script_insert_future,
+                                           script_params.Clone()));
+
+  EXPECT_CALL(ui_delegate(), UpdateTasks(100, _, mojom::PsstStatus::kFailed))
+      .Times(1);
+  EXPECT_CALL(ui_delegate(), Show).Times(0);
+  EXPECT_CALL(inject_async_script_callback(), Run).Times(0);
+
+  DocumentOnLoadObserver observer(web_contents());
+  content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
+                                                             url_);
+  observer.Wait();
+
+  check_loop.Run();
+  EXPECT_EQ(script_params, user_script_insert_future.Take());
+}
+
 // Clicking Cancel while the flow is running calls CancelInFlightFlow()
 // (see PsstUiDesktopPresenter::PsstUiDesktopDelegate::CancelInFlightFlow).
 // Once called, a policy script result that arrives afterwards - simulating a
@@ -1642,7 +1695,7 @@ TEST_F(PsstTabWebContentsObserverFeatureDisabledUnitTest, DontCreate) {
   EXPECT_EQ(PsstTabWebContentsObserver::MaybeCreate(
                 mock_tab_interface(), browser_context(),
                 std::make_unique<MockUiDelegate>(), psst_settings_service(),
-                variations_service(), 2),
+                variations_service(), /*log_service=*/nullptr, 2),
             nullptr);
 }
 
