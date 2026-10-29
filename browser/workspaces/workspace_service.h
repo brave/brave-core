@@ -154,6 +154,14 @@ class WorkspaceService : public KeyedService,
       const std::string& name,
       BrowserWindowInterface* from_window);
 
+  // Takes over shutdown when |window| is the last window on screen.  Returns
+  // true when the caller should refuse this close request: the service then
+  // closes every window itself, workspaces first.  SessionService keeps only
+  // the window that closes last, so this ordering is what decides whether
+  // "continue where you left off" restores the unmanaged tabs or a
+  // workspace's.
+  bool InterceptWindowClose(BrowserWindowInterface* window);
+
   base::WeakPtr<WorkspaceService> GetWeakPtr();
 
   // KeyedService:
@@ -198,8 +206,13 @@ class WorkspaceService : public KeyedService,
   void SwapVisibleWindow(BrowserWindowInterface* from_window,
                          BrowserWindowInterface* to_window);
 
-  // True when no normal window of this profile is visible to the person.
-  bool HasNoVisibleWindows() const;
+  // True when no normal window of this profile other than |ignored| is on
+  // screen.  Pass nullptr to consider every window.
+  bool HasNoVisibleWindowsExcept(BrowserWindowInterface* ignored) const;
+
+  // Closes workspace windows and then unmanaged ones, skipping the close
+  // confirmation for both since the person already asked to quit.
+  void CloseAllWindowsInOrder();
 
   // Saves every hidden workspace window and closes it, so that hidden windows
   // never keep the browser running once the last visible one is gone.
@@ -218,6 +231,10 @@ class WorkspaceService : public KeyedService,
   // Carried forward when switching workspace to workspace, so that row always
   // points at the window the person actually started in.
   std::map<SessionID, SessionID> window_to_unmanaged_window_;
+
+  // Set once the service is driving shutdown, so the closes it issues are not
+  // mistaken for fresh close requests.
+  bool closing_all_windows_ = false;
 
   base::ScopedObservation<ProfileBrowserCollection, BrowserCollectionObserver>
       browser_collection_observation_{this};

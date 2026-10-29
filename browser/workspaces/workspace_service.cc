@@ -251,6 +251,10 @@ BrowserWindowInterface* WorkspaceService::CreateWindowOver(
                                    /*user_gesture=*/true);
   params.initial_bounds = from_window->GetWindow()->GetBounds();
   params.should_trigger_session_restore = false;
+  // Keep workspace windows out of Chromium's session entirely. The service
+  // persists them itself, and leaving them tracked means "continue where you
+  // left off" restores a workspace as though it were ordinary tabs.
+  params.omit_from_session_restore = true;
   BrowserWindowInterface* window = CreateBrowserWindow(std::move(params));
   if (!window) {
     return nullptr;
@@ -342,7 +346,8 @@ WorkspaceMetadata WorkspaceService::CreateWorkspaceInWindow(
   return workspace;
 }
 
-bool WorkspaceService::HasNoVisibleWindows() const {
+bool WorkspaceService::HasNoVisibleWindowsExcept(
+    BrowserWindowInterface* ignored) const {
   auto* collection =
       ProfileBrowserCollection::GetForProfile(base::to_address(profile_));
   if (!collection) {
@@ -351,7 +356,8 @@ bool WorkspaceService::HasNoVisibleWindows() const {
 
   bool any_visible = false;
   collection->ForEach([&](BrowserWindowInterface* browser) {
-    if (browser->GetType() == BrowserWindowInterface::Type::TYPE_NORMAL &&
+    if (browser != ignored &&
+        browser->GetType() == BrowserWindowInterface::Type::TYPE_NORMAL &&
         browser->GetWindow()->IsVisible()) {
       any_visible = true;
       return false;
@@ -359,6 +365,64 @@ bool WorkspaceService::HasNoVisibleWindows() const {
     return true;
   });
   return !any_visible;
+}
+
+bool WorkspaceService::InterceptWindowClose(BrowserWindowInterface* window) {
+  // The closes issued by CloseAllWindowsInOrder must run normally.
+  if (closing_all_windows_) {
+    return false;
+  }
+
+  // Closing this window only ends the session if nothing else is on screen.
+  if (!HasNoVisibleWindowsExcept(window)) {
+    return false;
+  }
+
+  // With no workspace windows open there is no ordering to arrange.
+  if (workspace_to_window_.empty()) {
+    return false;
+  }
+
+  closing_all_windows_ = true;
+  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+      FROM_HERE,
+      base::BindOnce(&WorkspaceService::CloseAllWindowsInOrder, GetWeakPtr()));
+  return true;
+}
+
+void WorkspaceService::CloseAllWindowsInOrder() {
+  auto* collection =
+      ProfileBrowserCollection::GetForProfile(base::to_address(profile_));
+  if (!collection) {
+    return;
+  }
+
+  std::vector<raw_ptr<BrowserWindowInterface>> workspace_windows;
+  std::vector<raw_ptr<BrowserWindowInterface>> unmanaged_windows;
+  collection->ForEach([&](BrowserWindowInterface* browser) {
+    if (browser->GetType() != BrowserWindowInterface::Type::TYPE_NORMAL) {
+      return true;
+    }
+    if (GetWorkspaceForWindow(browser->GetSessionID())) {
+      workspace_windows.push_back(browser);
+    } else {
+      unmanaged_windows.push_back(browser);
+    }
+    return true;
+  });
+
+  // Workspaces close first, while an unmanaged window is still open, so
+  // SessionService records a close command for each and forgets them. The
+  // unmanaged windows then close last and are the ones it keeps. Each window
+  // saves itself on the way out through WillCloseAllTabs.
+  for (BrowserWindowInterface* browser : workspace_windows) {
+    UnloadController::From(browser)->set_confirmed_to_close(true);
+    browser->GetWindow()->Close();
+  }
+  for (BrowserWindowInterface* browser : unmanaged_windows) {
+    UnloadController::From(browser)->set_confirmed_to_close(true);
+    browser->GetWindow()->Close();
+  }
 }
 
 void WorkspaceService::CloseHiddenWindows() {
@@ -447,7 +511,7 @@ void WorkspaceService::OnBrowserClosed(BrowserWindowInterface* browser) {
   // Hidden windows must not keep the browser running. Once the last visible
   // window is gone, retire them so normal shutdown can proceed. Deferred
   // because this runs while |browser| is still being torn down.
-  if (HasNoVisibleWindows()) {
+  if (HasNoVisibleWindowsExcept(nullptr)) {
     base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
         FROM_HERE,
         base::BindOnce(&WorkspaceService::CloseHiddenWindows, GetWeakPtr()));

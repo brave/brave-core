@@ -48,6 +48,8 @@
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "brave/browser/ui/views/toolbar/screenshot_button.h"
 #include "brave/browser/ui/window_closing_confirm/window_closing_confirm_controller.h"
+#include "brave/browser/workspaces/workspace_service.h"
+#include "brave/browser/workspaces/workspace_service_factory.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
@@ -909,6 +911,15 @@ void BraveBrowserView::OnTabStripModelChanged(
 views::CloseRequestResult BraveBrowserView::OnWindowCloseRequested() {
   if (auto* controller = WindowClosingConfirmController::From(browser());
       controller && controller->MaybeAskBeforeClosing()) {
+    return views::CloseRequestResult::kCannotClose;
+  }
+
+  // Workspaces close every window themselves when this is the last one, so
+  // that the session recorded for "continue where you left off" holds the
+  // unmanaged tabs rather than whichever workspace happened to close last.
+  if (auto* service =
+          WorkspaceServiceFactory::GetForProfile(browser()->GetProfile());
+      service && service->InterceptWindowClose(browser())) {
     return views::CloseRequestResult::kCannotClose;
   }
 
