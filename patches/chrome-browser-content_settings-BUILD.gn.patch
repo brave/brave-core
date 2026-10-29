@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/content_settings/BUILD.gn b/chrome/browser/content_settings/BUILD.gn
-index 884ad2f2f6acbfe02da2a56d316b10a749436c6c..bebf6316709195529b1902ceaacdbe8331bcdbc7 100644
+index 762da129a499c748b120860b598afa62459d05d2..fddbca57d7f520b8edb837abca34976d68b1f8a1 100644
 --- a/chrome/browser/content_settings/BUILD.gn
 +++ b/chrome/browser/content_settings/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -18,10 +18,10 @@ index 884ad2f2f6acbfe02da2a56d316b10a749436c6c..bebf6316709195529b1902ceaacdbe83
  
    if (is_android) {
      sources += [
-@@ -356,6 +358,7 @@ source_set("unit_tests") {
-   if (is_android) {
-     sources += [ "javascript_optimizer_provider_android_unittest.cc" ]
-     deps += [ "//chrome/browser/android:tabs_public" ]
+@@ -362,6 +364,7 @@ source_set("unit_tests") {
+       "//chrome/browser/flags:flags_android",
+       "//services/metrics/public/cpp:ukm_builders",
+     ]
 +    deps += brave_browser_content_settings_unit_tests_deps
    } else {
      sources += [

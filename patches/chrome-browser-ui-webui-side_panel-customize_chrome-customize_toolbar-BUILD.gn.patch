@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/BUILD.gn b/chrome/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/BUILD.gn
-index 406e02ba648cb77009277d70ffd370216f32ccca..e595b61d17e4759bd9aa854a9aa960602547a50f 100644
+index a26a2ca263cd2b9a5246ef363a1bc3fcb1cf741e..bc79dc63eef43dcbf792fc1a08e40ed678de410e 100644
 --- a/chrome/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/BUILD.gn
 +++ b/chrome/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/BUILD.gn
 @@ -15,6 +15,7 @@ source_set("customize_toolbar") {
@@ -7,6 +7,6 @@ index 406e02ba648cb77009277d70ffd370216f32ccca..e595b61d17e4759bd9aa854a9aa96060
    ]
    deps = [
 +    "//brave/browser/ui/webui/side_panel/customize_chrome",
-     "//build:branding_buildflags",
      "//chrome/app/vector_icons",
      "//chrome/browser/profiles:profile",
+     "//chrome/browser/ui:browser_actions",

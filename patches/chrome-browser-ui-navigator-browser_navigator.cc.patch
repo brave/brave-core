@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/navigator/browser_navigator.cc b/chrome/browser/ui/navigator/browser_navigator.cc
-index d5d5691f0b7dfdb1a8cc5671537826262c96addd..3179b96b31d79e11c3e90513d14557af33e8e2e2 100644
+index bd3ccbca53eaf6fe49c055653c6b78461a654015..971ead1866307e40f7bc8068e77f3ce45608d75b 100644
 --- a/chrome/browser/ui/navigator/browser_navigator.cc
 +++ b/chrome/browser/ui/navigator/browser_navigator.cc
-@@ -206,6 +206,7 @@ bool ShouldForceCaptivePortalSigninIntoCurrentTab(
+@@ -225,6 +225,7 @@ bool ShouldForceCaptivePortalSigninIntoCurrentTab(
  // Returns true on success. Otherwise, if changing params leads the browser
  // into an erroneous state, returns false.
  bool AdjustNavigateParamsForURL(NavigateParams* params) {
@@ -10,7 +10,7 @@ index d5d5691f0b7dfdb1a8cc5671537826262c96addd..3179b96b31d79e11c3e90513d14557af
    // Check for some chrome:// pages which we always want to open in a
    // non-incognito window. Note that even though a ChromeOS guest session is
    // technically an incognito window, these URLs are allowed.
-@@ -578,7 +579,11 @@ std::unique_ptr<content::WebContents> CreateTargetContents(
+@@ -594,7 +595,11 @@ std::unique_ptr<content::WebContents> CreateTargetContents(
    scoped_refptr<content::SiteInstance> initial_site_instance_for_new_contents =
        params.opener ? params.opener->GetSiteInstance()
                      : tab_util::GetSiteInstanceForNewTab(
@@ -23,7 +23,7 @@ index d5d5691f0b7dfdb1a8cc5671537826262c96addd..3179b96b31d79e11c3e90513d14557af
  
    WebContents::CreateParams create_params(
        params.browser->GetProfile(), initial_site_instance_for_new_contents);
-@@ -987,6 +992,9 @@ base::WeakPtr<content::NavigationHandle> NavigateImpl(
+@@ -1003,6 +1008,9 @@ base::WeakPtr<content::NavigationHandle> NavigateImpl(
           params->user_gesture)) {
        tab_to_insert->set_opener(
            tabs::TabInterface::MaybeGetFromContents(params->source_contents));
@@ -33,13 +33,13 @@ index d5d5691f0b7dfdb1a8cc5671537826262c96addd..3179b96b31d79e11c3e90513d14557af
      }
    }
  
-@@ -1004,6 +1012,9 @@ base::WeakPtr<content::NavigationHandle> NavigateImpl(
-            params->user_gesture)) {
-         tab_to_insert->set_opener(
-             tabs::TabInterface::MaybeGetFromContents(params->source_contents));
+@@ -1040,6 +1048,9 @@ base::WeakPtr<content::NavigationHandle> NavigateImpl(
+              params->user_gesture)) {
+           tab_to_insert->set_opener(tabs::TabInterface::MaybeGetFromContents(
+               params->source_contents));
 +      if (params->navigation_initiated_from_sync) {            
 +        tab_to_insert->set_opener_was_set_for_empty_new_tab(); 
 +      }
-       }
-       contents_to_navigate_or_insert = tab_to_insert->GetContents();
+         }
+         contents_to_navigate_or_insert = tab_to_insert->GetContents();
  
