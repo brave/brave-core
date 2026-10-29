@@ -512,11 +512,8 @@ extension SceneDelegate {
       shortcut = .askBrave
     } else if appIntent is OpenBraveSearchControlIntent {
       shortcut = .search
-    } else if let intent = appIntent as? OpenControlWidgetShortcutIntent,
-      let selection = intent.shortcut?.widgetShortcut
-    {
-      shortcut =
-        DisabledShortcutsWidgetData.currentDisabledShortcuts().contains(selection) ? nil : selection
+    } else if let intent = appIntent as? OpenControlWidgetShortcutIntent {
+      shortcut = intent.shortcut
     } else {
       shortcut = nil
     }
@@ -994,12 +991,6 @@ extension UIView {
     }
 
     return nil
-  }
-}
-
-struct ClientAppIntentsPackage: AppIntentsPackage {
-  static var includedPackages: [any AppIntentsPackage.Type] {
-    [BraveWidgetsModelsPackage.self]
   }
 }
 
