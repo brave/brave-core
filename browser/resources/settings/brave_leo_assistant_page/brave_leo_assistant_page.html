@@ -38,21 +38,21 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
     on-settings-boolean-control-change="onLeoAssistantShowOnToolbarChange_">
   </settings-toggle-button>
   <settings-toggle-button class="cr-row hr"
-    pref="{{prefs.brave.ai_chat.context_menu_enabled}}"
+    pref-key="brave.ai_chat.context_menu_enabled"
     label="$i18n{braveLeoAssistantShowInContextMenuLabel}"
     sub-label="$i18n{braveLeoAssistantShowInContextMenuDesc}">
   </settings-toggle-button>
   <template is="dom-if"
     if="[[isTabOrganizationFeatureEnabled_]]">
     <settings-toggle-button class="cr-row hr"
-      pref="{{prefs.brave.ai_chat.tab_organization_enabled}}"
+      pref-key="brave.ai_chat.tab_organization_enabled"
       label="$i18n{braveLeoAssistantTabOrganizationLabel}"
       sub-label-with-link="$i18n{braveLeoAssistantTabOrganizationDesc}"
       on-sub-label-link-clicked="openTabOrganizationLearnMore_">
     </settings-toggle-button>
     <if expr="enable_local_ai">
       <template is="dom-if"
-        if="[[prefs.brave.ai_chat.tab_organization_enabled.value]]">
+        if="[[tabOrganizationEnabledPref_.value]]">
         <!-- Requires Semantic history search
              (brave://settings/privacy), which is what builds the passage
              index, so there is nothing to send without it. Hidden outright
@@ -60,12 +60,12 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
              switch is the only thing that can turn it on. -->
         <template is="dom-if" if="[[isHistoryEmbeddingsFeatureEnabled_]]">
           <settings-toggle-button class="cr-row continuation list-frame"
-            pref="{{prefs.brave.ai_chat.tab_organization_send_page_content}}"
+            pref-key="brave.ai_chat.tab_organization_send_page_content"
             label="$i18n{braveLeoAssistantTabOrganizationSendPageContentLabel}"
             sub-label-with-link=
                 "$i18n{braveLeoAssistantTabOrganizationSendPageContentDesc}"
             on-sub-label-link-clicked="openHistorySettings_"
-            disabled="[[!prefs.brave.history_embeddings_enabled.value]]">
+            disabled="[[!historyEmbeddingsEnabledPref_.value]]">
           </settings-toggle-button>
         </template>
       </template>

@@ -1,5 +1,5 @@
 diff --git a/chrome/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/TabListEditorManager.java b/chrome/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/TabListEditorManager.java
-index 5a0d216ade8854fa7ca3faa59853ebe35270b473..4133fb6c3b0106f28c896a59f9524cc7c94a3504 100644
+index 0bd4fddacbb81c84de4071ac8e8ee528ae111aeb..33b6b90e3d010f979dca80e158266b7da4bcf8d4 100644
 --- a/chrome/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/TabListEditorManager.java
 +++ b/chrome/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/TabListEditorManager.java
 @@ -59,7 +59,7 @@ public class TabListEditorManager {

@@ -51,24 +51,6 @@ using EdgeList = blink::Vector<const GraphEdge*>;
 using NodeList = blink::Vector<GraphNode*>;
 using HTMLNodeList = blink::Vector<NodeHTML*>;
 
-struct CORE_EXPORT FingerprintingRule {
-  FingerprintingRule(const std::string& primary_pattern,
-                     const std::string& secondary_pattern,
-                     const std::string& source,
-                     const bool incognito);
-
-  bool operator==(const FingerprintingRule& other) const;
-  bool operator<(const FingerprintingRule& other) const;
-  bool operator>(const FingerprintingRule& other) const;
-
-  std::string ToString() const;
-
-  const std::string& primary_pattern;
-  const std::string& secondary_pattern;
-  const std::string& source;
-  const bool incognito;
-};
-
 struct ScriptSource {
   blink::DOMNodeId dom_node_id = blink::kInvalidDOMNodeId;
   ScriptId parent_script_id = 0;

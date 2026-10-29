@@ -236,6 +236,7 @@ import org.chromium.components.browser_ui.util.motion.MotionEventInfo;
 import org.chromium.components.embedder_support.util.UrlConstants;
 import org.chromium.components.embedder_support.util.UrlUtilities;
 import org.chromium.components.omnibox.AutocompleteRequestType;
+import org.chromium.components.omnibox.OmniboxFocusReason;
 import org.chromium.components.prefs.PrefChangeRegistrar;
 import org.chromium.components.prefs.PrefChangeRegistrar.PrefObserver;
 import org.chromium.components.safe_browsing.BraveSafeBrowsingApiHandler;
@@ -347,7 +348,6 @@ public abstract class BraveActivity extends ChromeActivity
     private MiscAndroidMetricsConnectionErrorHandler mMiscAndroidMetricsConnectionErrorHandler;
     private AppUpdateManager mAppUpdateManager;
     private boolean mWalletBadgeVisible;
-    private boolean mSpoofCustomTab;
 
     // Owns YouTube Picture-in-Picture session state and lifecycle.
     // Lazily created the first time a hook needs it; never null after first access.
@@ -1856,7 +1856,8 @@ public abstract class BraveActivity extends ChromeActivity
 
     public void focusSearchBox() {
         if (mNewTabPageManager != null) {
-            mNewTabPageManager.focusSearchBox(false, AutocompleteRequestType.SEARCH, false, null);
+            mNewTabPageManager.focusSearchBox(
+                    false, AutocompleteRequestType.SEARCH, OmniboxFocusReason.FAKE_BOX_TAP, null);
         }
     }
 
@@ -3073,23 +3074,6 @@ public abstract class BraveActivity extends ChromeActivity
                         .create();
         alertDialog.getDelegate().setHandleNativeActionModesEnabled(false);
         alertDialog.show();
-    }
-
-    /*
-     * Whether we want to pretend to be a custom tab. May be usefull to avoid certain patches,
-     * when we want to have the same behaviour as in custom tabs.
-     */
-    public void spoofCustomTab(boolean spoof) {
-        mSpoofCustomTab = spoof;
-    }
-
-    @Override
-    public boolean isCustomTab() {
-        if (mSpoofCustomTab) {
-            return true;
-        }
-
-        return super.isCustomTab();
     }
 
     public void showQuickActionSearchEnginesView(int keypadHeight) {

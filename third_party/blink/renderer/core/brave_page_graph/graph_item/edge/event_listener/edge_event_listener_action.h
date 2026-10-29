@@ -6,6 +6,7 @@
 #ifndef BRAVE_THIRD_PARTY_BLINK_RENDERER_CORE_BRAVE_PAGE_GRAPH_GRAPH_ITEM_EDGE_EVENT_LISTENER_EDGE_EVENT_LISTENER_ACTION_H_
 #define BRAVE_THIRD_PARTY_BLINK_RENDERER_CORE_BRAVE_PAGE_GRAPH_GRAPH_ITEM_EDGE_EVENT_LISTENER_EDGE_EVENT_LISTENER_ACTION_H_
 
+#include "base/memory/raw_ptr.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/edge/graph_edge.h"
 #include "third_party/blink/renderer/platform/wtf/casting.h"
 #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
@@ -46,7 +47,7 @@ class EdgeEventListenerAction : public GraphEdge {
   const FrameId frame_id_;
   const blink::String event_type_;
   const EventListenerId listener_id_;
-  NodeActor* listener_script_;
+  raw_ptr<NodeActor, UnprotectedInRelease> listener_script_;
 };
 
 }  // namespace brave_page_graph

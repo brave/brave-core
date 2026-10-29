@@ -13,6 +13,7 @@ source_set("unit_tests") {
   deps = [
     "//base",
     "//brave/browser",
+    "//brave/browser/ui",
     "//chrome/browser:browser_process",
     "//chrome/browser/prefs",
     "//chrome/browser/profiles:profile_util",

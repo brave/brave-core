@@ -82,13 +82,6 @@ extra_deps = {
                 'condition': 'host_os == "mac" and host_cpu == "arm64"',
             },
             {
-                'object_name': 'old-mac-1.tar.xz',
-                'sha256sum': 'oldmacsha',
-                'size_bytes': 1,
-                'overlayed_on': 'Mac/old-upstream.tar.xz',
-                'condition': 'host_os == "mac" and host_cpu == "x64"',
-            },
-            {
                 'object_name': 'old-win-1.tar.xz',
                 'sha256sum': 'oldwinsha',
                 'size_bytes': 1,
@@ -225,13 +218,13 @@ class TriggerTest(unittest.TestCase):
         self.assertIsNone(spec.build_param)
         self.assertEqual(spec.properties, ('brave_subrevision', 'chromium_ref'))
 
-    def test_rust_triggers_four_jobs_with_properties_payload(self):
+    def test_rust_triggers_three_jobs_with_properties_payload(self):
         rust = toolchain.RustToolchain()
         launcher = self._trigger(rust, brave_subrevision=7)
         launcher.trigger.assert_called_once()
         args, kwargs = launcher.trigger.call_args
         self.assertEqual(args[0], rust.spec.job_urls)
-        self.assertEqual(len(args[0]), 4)
+        self.assertEqual(len(args[0]), 3)
         # Rust has no build parameter; the tag rides in the PROPERTIES payload,
         # with `chromium_ref` filled from the triggered version as a
         # fully-qualified tag ref.

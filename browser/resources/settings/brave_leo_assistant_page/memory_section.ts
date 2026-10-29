@@ -13,8 +13,8 @@ import { I18nMixin, I18nMixinInterface } from
 import { PolymerElement } from
   'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 
-import { PrefsMixin, PrefsMixinInterface } from
-  '/shared/settings/prefs/prefs_mixin.js'
+import {PrefServiceObserverMixin, PrefServiceObserverMixinInterface} from
+  '/shared/settings/prefs2/pref_service_observer_mixin.js'
 import { BaseMixin, BaseMixinInterface } from '../base_mixin.js'
 import {
   CustomizationOperationError
@@ -28,8 +28,8 @@ import {
 } from './brave_leo_assistant_browser_proxy.js'
 import { getTemplate } from './memory_section.html.js'
 
-const MemorySectionBase = PrefsMixin(I18nMixin(BaseMixin(PolymerElement))) as {
-  new (): PolymerElement & PrefsMixinInterface & I18nMixinInterface &
+const MemorySectionBase = PrefServiceObserverMixin(I18nMixin(BaseMixin(PolymerElement))) as {
+  new (): PolymerElement & PrefServiceObserverMixinInterface & I18nMixinInterface &
     BaseMixinInterface
 }
 
@@ -79,7 +79,8 @@ class MemorySection extends MemorySectionBase {
       searchQuery_: {
         type: String,
         value: ''
-      }
+      },
+      userMemoryEnabledPref_: Object,
     }
   }
 
@@ -94,6 +95,14 @@ class MemorySection extends MemorySectionBase {
   declare deleteMemoryItem_: string | null
   declare showDeleteAllDialog_: boolean
   declare searchQuery_: string
+  private declare userMemoryEnabledPref_:
+    chrome.settingsPrivate.PrefObject<boolean> | undefined
+
+  override connectedCallback() {
+    super.connectedCallback()
+    this.mirrorPref('brave.ai_chat.user_memory_enabled',
+                    'userMemoryEnabledPref_')
+  }
 
   override ready() {
     super.ready()

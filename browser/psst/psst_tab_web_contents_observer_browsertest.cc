@@ -34,13 +34,15 @@
 #include "chrome/browser/themes/theme_service.h"
 #include "chrome/browser/themes/theme_service_factory.h"
 #include "chrome/browser/ui/actions/chrome_action_id.h"
+#include "chrome/browser/ui/browser_actions.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
 #include "chrome/browser/ui/views/infobars/confirm_infobar.h"
 #include "chrome/browser/ui/views/infobars/infobar_view.h"
 #include "chrome/browser/ui/views/location_bar/icon_label_bubble_view.h"
 #include "chrome/browser/ui/views/page_action/page_action_view.h"
-#include "chrome/browser/ui/views/page_action/test_support/page_action_test_accessor.h"
 #include "chrome/test/base/chrome_test_utils.h"
 #include "chrome/test/base/platform_browser_test.h"
 #include "components/infobars/content/content_infobar_manager.h"
@@ -728,9 +730,14 @@ class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
   // or nullptr if it can't be resolved.
   IconLabelBubbleView* GetPsstPageActionViewForBrowser(
       BrowserWindowInterface* target_browser) {
-    return page_actions::PageActionTestAccessor(target_browser,
-                                                kActionShowPsstIcon)
-        .view();
+    auto* const browser_view =
+        BrowserView::GetBrowserViewForBrowser(target_browser);
+    if (!browser_view) {
+      return nullptr;
+    }
+    return static_cast<page_actions::PageActionView*>(
+        browser_view->toolbar_button_provider()->GetPageActionViewInterface(
+            kActionShowPsstIcon));
   }
 
   // Navigates `otr_browser`'s active tab to a PSST-matching URL and verifies
@@ -798,7 +805,9 @@ class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
                 event_flags == ui::EF_LEFT_MOUSE_BUTTON);
 
     actions::ActionItem* const action =
-        actions::ActionManager::Get().FindAction(kActionShowPsstIcon);
+        actions::ActionManager::Get().FindAction(
+            kActionShowPsstIcon,
+            BrowserActions::From(browser())->root_action_item());
     ASSERT_TRUE(action);
 
     ASSERT_NO_FATAL_FAILURE(NavigateAndWaitForPsstIconVisible(url));
@@ -844,7 +853,9 @@ class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
   // failure.
   views::MenuItemView* RightClickPsstLocationBarIconAndWaitForMenu() {
     actions::ActionItem* const action =
-        actions::ActionManager::Get().FindAction(kActionShowPsstIcon);
+        actions::ActionManager::Get().FindAction(
+            kActionShowPsstIcon,
+            BrowserActions::From(browser())->root_action_item());
     if (!action) {
       return nullptr;
     }
@@ -871,7 +882,9 @@ class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
   // Waits for the PSST context menu to close.
   void WaitForPsstContextMenuClosed() {
     actions::ActionItem* const action =
-        actions::ActionManager::Get().FindAction(kActionShowPsstIcon);
+        actions::ActionManager::Get().FindAction(
+            kActionShowPsstIcon,
+            BrowserActions::From(browser())->root_action_item());
     ASSERT_TRUE(action);
     ASSERT_TRUE(
         base::test::RunUntil([&]() { return !action->GetIsShowingBubble(); }));

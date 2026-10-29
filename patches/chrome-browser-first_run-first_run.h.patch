@@ -1,13 +1,13 @@
 diff --git a/chrome/browser/first_run/first_run.h b/chrome/browser/first_run/first_run.h
-index 4992cc0b93e034594915170d854e4e1e1a197a3e..843f8659c1fa741ae22b472a6d463d71c651b4ab 100644
+index f9e756e95dfe27ea9d9a24931fed55a331f2a299..b7dde70919cd8f6b18e5ddb118b57f7298ecc0f3 100644
 --- a/chrome/browser/first_run/first_run.h
 +++ b/chrome/browser/first_run/first_run.h
-@@ -74,7 +74,7 @@ struct MasterPrefs {
-   bool confirm_to_quit;
+@@ -76,7 +76,7 @@ struct MasterPrefs {
  #endif
  #if BUILDFLAG(IS_LINUX)
+ #if BUILDFLAG(GOOGLE_CHROME_BRANDING)
 -  bool eula_required = true;
 +  bool eula_required = false;
- #endif
- };
- 
+ #else
+   bool eula_required = false;
+ #endif  // BUILDFLAG(GOOGLE_CHROME_BRANDING)

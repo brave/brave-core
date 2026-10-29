@@ -28,7 +28,7 @@
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
 #include "components/update_client/update_client.h"
-#include "crypto/sha2.h"
+#include "crypto/hash.h"
 
 namespace local_ai {
 
@@ -41,7 +41,7 @@ constexpr uint8_t kPublicKeySHA256[32] = {
     0x49, 0x74, 0x99, 0xc0, 0xe0, 0xe7, 0xf6, 0x7d, 0x1b, 0x23, 0x29,
     0x8b, 0xd3, 0xa0, 0xd6, 0x54, 0xb6, 0xc3, 0x23, 0x87, 0x75, 0xec,
     0x54, 0x78, 0x1d, 0x83, 0xf4, 0xc3, 0xeb, 0x6d, 0x70, 0xb6};
-static_assert(std::size(kPublicKeySHA256) == crypto::kSHA256Length,
+static_assert(std::size(kPublicKeySHA256) == crypto::hash::kSha256Size,
               "Wrong hash length");
 
 // Keeps the component registration in sync with the `kBraveLocalAIEnabled`

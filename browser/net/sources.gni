@@ -85,6 +85,7 @@ brave_browser_net_deps = [
   "//brave/components/static_redirect_helper",
   "//brave/components/update_client:buildflags",
   "//chrome/browser:browser_process",
+  "//chrome/browser/net",
   "//chrome/browser/profiles",
   "//components/content_settings/core/browser",
   "//components/language/core/browser",

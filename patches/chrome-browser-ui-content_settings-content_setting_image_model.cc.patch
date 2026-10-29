@@ -1,0 +1,36 @@
+diff --git a/chrome/browser/ui/content_settings/content_setting_image_model.cc b/chrome/browser/ui/content_settings/content_setting_image_model.cc
+index d48d0c006c6a33ba46289a9027112608bb16d36c..5d41a8b85104c6da88d512d92acd7d19c1889aa0 100644
+--- a/chrome/browser/ui/content_settings/content_setting_image_model.cc
++++ b/chrome/browser/ui/content_settings/content_setting_image_model.cc
+@@ -644,6 +644,7 @@ void GetIconFromType(ContentSettingsType type,
+                      bool blocked,
+                      raw_ptr<const gfx::VectorIcon>* icon,
+                      raw_ptr<const gfx::VectorIcon>* badge) {
++  if (BraveGetIconFromType(type, blocked, icon, badge)) return;
+   *badge = &gfx::VectorIcon::EmptyIcon();
+   GetIconChromeRefresh(type, blocked, icon);
+ }
+@@ -1582,6 +1583,7 @@ ContentSettingImageModel::CreateBubbleModel(
+ // static
+ std::vector<std::unique_ptr<ContentSettingImageModel>>
+ ContentSettingImageModel::GenerateContentSettingImageModels() {
++  std::vector<std::unique_ptr<ContentSettingImageModel>> models = [&]() -> std::vector<std::unique_ptr<ContentSettingImageModel>> {
+   std::vector<std::unique_ptr<ContentSettingImageModel>> result;
+   for (auto type : kContentSettingImageOrder) {
+ #if BUILDFLAG(IS_WIN)
+@@ -1595,11 +1597,15 @@ ContentSettingImageModel::GenerateContentSettingImageModels() {
+   }
+ 
+   return result;
++  }();
++  BraveGenerateContentSettingImageModels(&models);
++  return models;
+ }
+ 
+ // static
+ base::span<const ui::ElementIdentifier>
+ ContentSettingImageModel::GetAllElementIdentifiers() {
++  if ((true)) return BraveGetAllElementIdentifiers<kContentSettingImageOrder, GetElementIdentifierForType>();
+   static constexpr auto kAllElementIdentifiers = []() consteval {
+     std::array<ui::ElementIdentifier, kContentSettingImageOrder.size()> result;
+     std::ranges::transform(kContentSettingImageOrder, result.begin(),

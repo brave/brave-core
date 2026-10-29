@@ -19,7 +19,7 @@
 #include "brave/components/brave_component_updater/browser/brave_component.h"
 #include "components/component_updater/component_installer.h"
 #include "components/update_client/update_client.h"
-#include "crypto/sha2.h"
+#include "crypto/hash.h"
 
 namespace brave_component_updater {
 
@@ -28,7 +28,7 @@ class COMPONENT_EXPORT(BRAVE_COMPONENT_UPDATER) BraveComponentInstallerPolicy
  public:
   BraveComponentInstallerPolicy(
       const std::string& name,
-      base::span<const uint8_t, crypto::kSHA256Length> public_key_sha256,
+      base::span<const uint8_t, crypto::hash::kSha256Size> public_key_sha256,
       BraveComponent::ReadyCallback ready_callback);
 
   BraveComponentInstallerPolicy(const BraveComponentInstallerPolicy&) = delete;
@@ -57,7 +57,7 @@ class COMPONENT_EXPORT(BRAVE_COMPONENT_UPDATER) BraveComponentInstallerPolicy
   bool IsBraveComponent() const override;
 
   std::string name_;
-  std::array<uint8_t, crypto::kSHA256Length> public_key_sha256_ = {};
+  std::array<uint8_t, crypto::hash::kSha256Size> public_key_sha256_ = {};
   BraveComponent::ReadyCallback ready_callback_;
 };
 

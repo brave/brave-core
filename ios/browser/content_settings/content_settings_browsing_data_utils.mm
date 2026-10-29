@@ -19,7 +19,7 @@ void BraveRemoveSiteSettingsData(NSDate* delete_begin,
   ProfileBridgeImpl* holder =
       base::apple::ObjCCastStrict<ProfileBridgeImpl>(profile);
   auto* host_content_settings_map =
-      ios::HostContentSettingsMapFactory::GetForProfile(holder.profile);
+      ios::HostContentSettingsMapFactory::GetForProfile(holder.profile).get();
   CHECK(host_content_settings_map);
 
   browsing_data::BraveRemoveSiteSettingsData(

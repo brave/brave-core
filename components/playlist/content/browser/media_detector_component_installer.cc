@@ -17,7 +17,7 @@
 #include "components/component_updater/component_installer.h"
 #include "components/component_updater/component_updater_service.h"
 #include "components/crx_file/id_util.h"
-#include "crypto/sha2.h"
+#include "crypto/hash.h"
 
 using brave_component_updater::BraveOnDemandUpdater;
 
@@ -29,7 +29,8 @@ constexpr uint8_t kComponentPublicKeySHA256[32] = {
     0x92, 0x2f, 0xc9, 0x75, 0xb1, 0xbf, 0xf7, 0xd7, 0x64, 0xc7, 0xbb,
     0xb2, 0xa5, 0xbd, 0x8f, 0x9d, 0xf7, 0xa0, 0x02, 0x2d, 0x65, 0x2d,
     0x1e, 0x00, 0xa2, 0x43, 0xf3, 0x0a, 0x06, 0x2b, 0x40, 0x15};
-static_assert(std::size(kComponentPublicKeySHA256) == crypto::kSHA256Length);
+static_assert(std::size(kComponentPublicKeySHA256) ==
+              crypto::hash::kSha256Size);
 
 class MediaDetectorComponentInstallerPolicy
     : public component_updater::ComponentInstallerPolicy {

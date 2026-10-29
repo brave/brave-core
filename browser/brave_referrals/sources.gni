@@ -11,5 +11,6 @@ brave_browser_brave_referrals_sources = [
 ]
 brave_browser_brave_referrals_deps = [
   "//base",
+  "//chrome/browser/net",
   "//chrome/common",
 ]

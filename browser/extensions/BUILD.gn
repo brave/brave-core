@@ -175,7 +175,7 @@ source_set("extensions") {
       "//chrome/browser:browser_public_dependencies",
       "//chrome/browser:global_features",
       "//chrome/browser/extensions:chrome_extensions_browser_client",
-      "//chrome/browser/ui",
+      "//chrome/browser/themes",
       "//chrome/browser/ui/browser_window",
       "//chrome/common",
       "//components/browsing_data/core",

@@ -1,10 +1,10 @@
 diff --git a/extensions/browser/extensions_browser_client.h b/extensions/browser/extensions_browser_client.h
-index 104ed9480c0f399053b4d492291174d7e0187f57..e289efbda849a6c0b5127781cfbe9df650811edd 100644
+index 95ec450960fb886319f024bc24d990c419081b82..e82be735d0a20b124a1645af133aac72b28be686 100644
 --- a/extensions/browser/extensions_browser_client.h
 +++ b/extensions/browser/extensions_browser_client.h
-@@ -728,6 +728,10 @@ class ExtensionsBrowserClient {
-   // services.
-   virtual bool IsLazyKeyedServiceInstantiationEnabled() const;
+@@ -738,6 +738,10 @@ class ExtensionsBrowserClient {
+   // extension API resource manager and dispatcher services.
+   virtual bool IsLazyChromeOSResourceKeyedServiceInstantiationEnabled() const;
  
 +  // Returns true if the embedder's own blocklist considers
 +  // `extension_id` to be malware. Consulted alongside Safe Browsing.

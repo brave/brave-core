@@ -36,6 +36,7 @@ transpile_web_ui("resources") {
     "//brave/components/resources:strings",
     "//components/omnibox/browser:fusebox_action_mojo_bindings_js",
     "//components/omnibox/browser:mojo_bindings_js",
+    "//components/omnibox/browser:suggest_template_info_mojo_bindings_js",
   ]
 }
 

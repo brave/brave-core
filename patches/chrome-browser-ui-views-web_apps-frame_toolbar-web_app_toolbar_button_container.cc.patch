@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/views/web_apps/frame_toolbar/web_app_toolbar_button_container.cc b/chrome/browser/ui/views/web_apps/frame_toolbar/web_app_toolbar_button_container.cc
+index 658c7d16c2f506abf1fc7552f580f2d10ec349a1..226aad235e0313568e0f33a946c8b38620dfec13 100644
+--- a/chrome/browser/ui/views/web_apps/frame_toolbar/web_app_toolbar_button_container.cc
++++ b/chrome/browser/ui/views/web_apps/frame_toolbar/web_app_toolbar_button_container.cc
+@@ -470,6 +470,7 @@ void WebAppToolbarButtonContainer::OnImmersiveRevealStarted() {
+ }
+ 
+ void WebAppToolbarButtonContainer::AddedToWidget() {
++  MaybeAddPwaShieldsToolbarButton(this);
+   if (GetAnimate()) {
+     if (content_settings_container_) {
+       content_settings_container_->SetUpForFadeIn();

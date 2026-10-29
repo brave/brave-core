@@ -1,0 +1,20 @@
+diff --git a/chrome/browser/lifetime/browser_close_manager.cc b/chrome/browser/lifetime/browser_close_manager.cc
+index cfe99807369de9710f5ec43d87fa75cbe043fc38..6173700d54a0e7ad5650ff8d4428b9e3a0001724 100644
+--- a/chrome/browser/lifetime/browser_close_manager.cc
++++ b/chrome/browser/lifetime/browser_close_manager.cc
+@@ -57,6 +57,7 @@ BrowserCloseManager::BrowserCloseManager() : current_browser_(nullptr) {}
+ BrowserCloseManager::~BrowserCloseManager() = default;
+ 
+ void BrowserCloseManager::StartClosingBrowsers() {
++  g_browser_closing_started = true;
+   close_timer_.emplace();
+ 
+   // If the session is ending or a silent exit was requested, skip straight to
+@@ -71,6 +72,7 @@ void BrowserCloseManager::StartClosingBrowsers() {
+ }
+ 
+ void BrowserCloseManager::CancelBrowserClose() {
++  g_browser_closing_started = false;
+   // This is the abort endpoint. Record the metric if we haven't already.
+   if (close_timer_) {
+     base::UmaHistogramMediumTimes("Shutdown.Time.BrowserCloseManager.Canceled",

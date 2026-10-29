@@ -54,6 +54,9 @@ def GetRequiredLibsPaths(args, extension):
         'libandroidx.xr.runtime.openxr.so',  # AndroidX XR ARCore prebuilt (arcore-openxr.aar)
         'libandroidx.xr.arcore.openxr.so',  # AndroidX XR ARCore prebuilt (arcore-openxr.aar)
         'libimpress_api_jni.so',  # Google AR Impress prebuilt (com_google_ar_impress_java)
+        # Empty stub added to 32-bit-only APKs to mark them multiArch,
+        # see _is_32_bit_multiarch_browser in chrome_public_apk_tmpl.gni
+        'libplaceholder.so',
         'libwg-go.so',  # Wireguard lib for Brave VPN
     }
 

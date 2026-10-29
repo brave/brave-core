@@ -634,6 +634,13 @@ public class BytecodeTest {
                         void.class));
         Assert.assertTrue(
                 methodExists(
+                        "org/chromium/chrome/browser/dom_distiller/ReaderModeManager",
+                        "shouldUseReaderModeMessages",
+                        MethodModifier.STATIC,
+                        boolean.class,
+                        Tab.class));
+        Assert.assertTrue(
+                methodExists(
                         "org/chromium/chrome/browser/ui/default_browser_promo/DefaultBrowserPromoUtils", // presubmit: ignore-long-line
                         "prepareLaunchPromoIfNeeded",
                         MethodModifier.REGULAR,
@@ -1383,12 +1390,6 @@ public class BytecodeTest {
                         Tab.class));
         Assert.assertTrue(
                 methodExists(
-                        "org/chromium/chrome/browser/tabmodel/TabCollectionTabModelImpl",
-                        "isTabModelRestored",
-                        MethodModifier.REGULAR,
-                        boolean.class));
-        Assert.assertTrue(
-                methodExists(
                         "org/chromium/chrome/browser/omnibox/suggestions/editurl/EditUrlSuggestionProcessor", // presubmit: ignore-long-line
                         "onCopyLink",
                         MethodModifier.REGULAR,
@@ -1577,7 +1578,6 @@ public class BytecodeTest {
                         OmniboxChipManager.class,
                         BottomBarHostManager.class,
                         ActionRegistry.class,
-                        OneshotSupplier.class,
                         GlicButtonDelegate.class,
                         boolean.class,
                         OneshotSupplier.class));
@@ -1598,7 +1598,8 @@ public class BytecodeTest {
                         NonNullObservableSupplier.class,
                         MonotonicObservableSupplier.class,
                         NullableObservableSupplier.class,
-                        Supplier.class));
+                        Supplier.class,
+                        Runnable.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/settings/SettingsNavigationImpl",
@@ -1749,6 +1750,8 @@ public class BytecodeTest {
                         BottomSheetController.class,
                         ModalDialogManager.class,
                         SnackbarManager.class,
+                        Runnable.class,
+                        NonNullObservableSupplier.class,
                         Runnable.class,
                         boolean.class));
         Assert.assertTrue(

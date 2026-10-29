@@ -30,7 +30,6 @@ import org.chromium.base.test.util.CriteriaHelper;
 import org.chromium.base.test.util.Features.EnableFeatures;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.flags.ChromeSwitches;
-import org.chromium.chrome.browser.media.PictureInPicture;
 import org.chromium.chrome.browser.youtube_script_injector.BraveYouTubeScriptInjectorNativeHelper;
 import org.chromium.chrome.browser.youtube_script_injector.BraveYouTubeScriptInjectorNativeHelperJni;
 import org.chromium.chrome.test.ChromeJUnit4ClassRunner;
@@ -61,7 +60,9 @@ public class BraveYouTubePipIconTest {
         mActivityTestRule.startMainActivityOnBlankPage();
         // The icon stays hidden when the OS does not allow Picture-in-Picture, which would make
         // every assertion below vacuous.
-        Assume.assumeTrue(PictureInPicture.isEnabled(mActivityTestRule.getActivity()));
+        Assume.assumeTrue(
+                BraveYouTubeScriptInjectorNativeHelper.isPictureInPictureEnabled(
+                        mActivityTestRule.getActivity()));
     }
 
     @Test

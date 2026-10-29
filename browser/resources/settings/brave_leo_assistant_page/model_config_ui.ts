@@ -7,7 +7,6 @@ import 'chrome://resources/cr_elements/cr_button/cr_button.js'
 import 'chrome://resources/cr_elements/icons.html.js'
 
 import { sendWithPromise } from 'chrome://resources/js/cr.js'
-import { PrefsMixin } from '/shared/settings/prefs/prefs_mixin.js'
 import { I18nMixin } from 'chrome://resources/cr_elements/i18n_mixin.js'
 import { PolymerElement } from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 import * as mojom from './brave_leo_assistant_browser_proxy.js'
@@ -18,7 +17,7 @@ import { getTemplate } from './model_config_ui.html.js'
 type LeoInputEvent = { value: string; valueAsNumber?: number }
 type LeoToggleEvent = { checked: boolean }
 
-const ModelConfigUIBase = PrefsMixin(I18nMixin(BaseMixin(PolymerElement)))
+const ModelConfigUIBase = I18nMixin(BaseMixin(PolymerElement))
 
 export class ModelConfigUI extends ModelConfigUIBase {
   static get is() {

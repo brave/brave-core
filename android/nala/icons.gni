@@ -265,6 +265,33 @@ nala_chrome_app_icon_overrides = [
     dest = "devices_black_24dp.xml"
     tint = "@macro/default_icon_color"
   },
+
+  # The following carry upstream's tint (or fill colour) since their call sites
+  # rely on the drawable for it.
+  {
+    # Override Chromium's password manager key (settings, keyboard accessory).
+    source = "ic_key.xml"
+    dest = "ic_password_manager_key.xml"
+    tint = "@macro/default_icon_color"
+  },
+  {
+    # Override Chromium's credit card (settings, payment dialogs).
+    source = "ic_credit_card.xml"
+    dest = "credit_card.xml"
+    tint = "@macro/default_icon_color"
+  },
+  {
+    # Override Chromium's email icon.
+    source = "ic_email.xml"
+    dest = "ic_outline_email_24dp.xml"
+    tint = "@macro/default_icon_color_secondary"
+  },
+  {
+    # Override Chromium's settings gear.
+    source = "ic_settings.xml"
+    dest = "ic_settings_24dp.xml"
+    tint = "@macro/default_icon_color"
+  },
 ]
 
 # Raster overrides: for upstream icons that ship ONLY as density-qualified PNGs
