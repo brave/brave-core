@@ -695,6 +695,7 @@ if (is_android) {
     "//components/password_manager/core/browser/import:importer",
     "//components/password_manager/core/browser/leak_detection",
     "//components/sync_device_info",
+    "//components/user_data_importer/common",
   ]
 
   if (enable_brave_ads) {
