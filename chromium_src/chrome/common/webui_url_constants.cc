@@ -6,6 +6,7 @@
 #include "brave/components/constants/webui_url_constants.h"
 
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+#include "brave/components/psst/buildflags/buildflags.h"
 #include "chrome/common/webui_url_constants.h"
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/components/brave_wallet/common/web_ui_constants.h"
