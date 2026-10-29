@@ -1,7 +1,7 @@
-diff --git a/chrome/browser/resources/settings/privacy_page/privacy_page.html b/chrome/browser/resources/settings/privacy_page/privacy_page.html
+diff --git a/chrome/browser/resources/settings/privacy_page/privacy_page.html.ts b/chrome/browser/resources/settings/privacy_page/privacy_page.html.ts
 index 71101c571215bd60b0bdf252faf2f6b6d5e230ce..01007769222a81e3ad3dfaac4c4fd2c12d2a11f2 100644
---- a/chrome/browser/resources/settings/privacy_page/privacy_page.html
-+++ b/chrome/browser/resources/settings/privacy_page/privacy_page.html
+--- a/chrome/browser/resources/settings/privacy_page/privacy_page.html.ts
++++ b/chrome/browser/resources/settings/privacy_page/privacy_page.html.ts
 @@ -10,6 +10,7 @@
            @close="${this.onPrivacyGuideDialogClose_}">
        </settings-privacy-guide-dialog>
