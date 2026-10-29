@@ -1,0 +1,17 @@
+diff --git a/components/omnibox/browser/suggestion_group_util.cc b/components/omnibox/browser/suggestion_group_util.cc
+index 9f099ea1319a768f313dc12937e88e6c953edd1a..a57cdd298e3b0ccbe35fd022c19225e097587f36 100644
+--- a/components/omnibox/browser/suggestion_group_util.cc
++++ b/components/omnibox/browser/suggestion_group_util.cc
+@@ -53,6 +53,12 @@ base::LazyInstance<GroupConfigMap>::DestructorAtExit
+ const GroupConfigMap& BuildDefaultGroups() {
+   if (g_default_groups.Get().empty()) {
+     g_default_groups.Get() = {
++#if BUILDFLAG(ENABLE_COMMANDER)
++        {GROUP_OTHER_NAVS,
++         CreateGroup(SECTION_OTHER_NAVS,
++                     GroupConfig_RenderType_DEFAULT_VERTICAL,
++                     IDS_IDC_COMMANDER)},
++#endif
+         // clang-format off
+         {GROUP_MOBILE_SEARCH_READY_OMNIBOX, CreateGroup(SECTION_MOBILE_VERBATIM)},
+         {GROUP_MOBILE_CLIPBOARD,            CreateGroup(SECTION_MOBILE_CLIPBOARD)},
