@@ -1060,6 +1060,18 @@
 /* No comment provided by engineer. */
 "ntp.sponsoredImageDescription" = "Υποστηρίζετε δημιουργούς περιεχομένου και εκδότες προβάλλοντας αυτήν τη χορηγούμενη εικόνα.";
 
+/* The title of a picker for user to pick which type of topsites to show in NTP */
+"ntp.topsites" = "Κορυφαίοι ιστότοποι";
+
+/* Favorites type of topsites. Selection means NTP will display favorites tiles if there is any. */
+"ntp.topsitesTypeFavorites" = "Αγαπημένα";
+
+/* MostVisited type of topsites. Selection means NTP will display most visited tiles if there is any. */
+"ntp.topsitesTypeMostVisited" = "Ιστότοποι με συχνές επισκέψεις";
+
+/* None type of topsites. Selection means there won't be any topsites tiles in NTP */
+"ntp.topsitesTypeNone" = "Καμία";
+
 /* The placeholder says 'Terms of Service'. So full sentence goes like: 'By turning Rewards, you agree to the Terms of Service'. */
 "ntp.turnRewardsTos" = "Με την ενεργοποίηση των Ανταμοιβών, συμφωνείτε με τους %@.";
 
@@ -1450,12 +1462,6 @@
 /* The title for the alert that shows up when an item is expired */
 "playList.expiredAlertTitle" = "Ληγμένο βίντεο";
 
-/* Number of items in the playlsit folder. Example: '10 items' */
-"playlist.folderItemCountPlural" = "%d στοιχεία";
-
-/* Title for when there's a single item inside of a folder */
-"playlist.foldersCountSingular" = "%d στοιχείο";
-
 /* Description for load resources error alert */
 "playList.loadResourcesErrorAlertDescription" = "Παρουσιάστηκε πρόβλημα κατά τη φόρτωση του πόρου!";
 
@@ -1587,12 +1593,6 @@
 
 /* The title of the screen to create a new folder */
 "playlistFolders.newFolderScreenTitle" = "Νέα λίστα αναπαραγωγής";
-
-/* The sub-title of the folder. Example: This folder contains 10 Items. This folder contains 3 Items. */
-"playlistFolders.subtitleItemCount" = "%lld στοιχεία";
-
-/* The sub-title of the folder. Example: This folder contains ONE item. This folder contains 1 Item. */
-"playlistFolders.subtitleItemSingleCount" = "1 στοιχείο";
 
 /* The title of a folder when the user enters no name (untitled) */
 "playlistFolders.untitledFolderTitle" = "Λίστα αναπαραγωγής χωρίς τίτλο";
@@ -2410,12 +2410,6 @@
 /* Title of the settings toggle that enables Sponsored Ads */
 "settings.sponsoredAdsEnabledTitle" = "Ενεργοποίηση χορηγούμενων Ads";
 
-/* Description to explain the survey panelist toggle */
-"settings.surveyPanelistDescription" = "Επιτρέπει στο Brave να εμφανίζει συνδέσμους για ιδιωτικές έρευνες στη νέα σελίδα καρτέλας. Οι έρευνες μας βοηθούν να δημιουργήσουμε καλύτερες λειτουργίες και να μετρήσουμε την αποτελεσματικότητα των διαφημιστικών εκστρατειών που βασίζονται στο πρόγραμμα περιήγησης. [Μάθετε περισσότερα](%@)";
-
-/* Title to explain the survey panelist toggle */
-"settings.surveyPanelistTitle" = "Να επιτρέπονται οι έρευνες Brave";
-
 /* Header for the YouTube settings section */
 "settings.youtube" = "YouTube";
 
@@ -3060,12 +3054,6 @@
 
 /* Accessibility label for a button that allows users to shred their tabs (erase them & associated data) */
 "tabGrid.shredTabsAccessibilityLabel" = "Κατάργηση καρτελών";
-
-/* A label in the tab tray mode switcher shown when there are 0 or more than 1 regular tabs open e.g. '129 Tabs' */
-"tabGrid.tabsCountFormatPlural" = "%lld Καρτέλα";
-
-/* A label in the tab tray mode switcher shown when there is 1 regular tab open e.g. '1 Tab' */
-"tabGrid.tabsCountFormatSingular" = "%lld Καρτέλα";
 
 /* Accessibility label for a button that when tapped presents the users history & recently closed tabs */
 "tabGrid.viewHistoryAccessibilityLabel" = "Προβολή ιστορικού";
