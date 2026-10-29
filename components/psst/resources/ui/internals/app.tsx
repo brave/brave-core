@@ -44,6 +44,7 @@ export function App({ api }: { api: PsstInternalsApi }) {
       }
       return (
         entry.message.toLowerCase().includes(needle)
+        || entry.tabId.toString().includes(needle)
         || entry.site.toLowerCase().includes(needle)
         || (entry.data ?? '').toLowerCase().includes(needle)
       )
