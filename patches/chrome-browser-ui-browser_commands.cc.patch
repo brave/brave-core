@@ -1,7 +1,16 @@
 diff --git a/chrome/browser/ui/browser_commands.cc b/chrome/browser/ui/browser_commands.cc
-index 14f5a7598dd8bf5b9df578f56c3365a7dd6f96ce..45b05425d8105059577810d25c30257a9146c7ef 100644
+index 14f5a7598dd8bf5b9df578f56c3365a7dd6f96ce..5fc08a722f58ffe65bcbffe2c130756c2cabd263 100644
 --- a/chrome/browser/ui/browser_commands.cc
 +++ b/chrome/browser/ui/browser_commands.cc
+@@ -395,7 +395,7 @@ content::WebContents* DuplicateTabAt(BrowserWindowInterface* browser,
+     int add_types = AddTabTypes::ADD_ACTIVE | AddTabTypes::ADD_INHERIT_OPENER |
+                     (pinned ? AddTabTypes::ADD_PINNED : 0);
+     const auto old_group = tab_strip_model->GetTabGroupForTab(index);
+-    tab_strip_model->InsertWebContentsAt(dst_index, std::move(contents_dupe),
++    BraveInsertDuplicatedTab(tab_strip_model, index, dst_index, std::move(contents_dupe),
+                                          add_types, old_group);
+   } else {
+     CreateAndShowNewWindowWithContents(std::move(contents_dupe), browser);
 @@ -506,7 +506,12 @@ void MoveTabsToWindowImpl(BrowserWindowInterface* source,
      } else if (auto collection =
                     std::get_if<std::unique_ptr<DetachedTabCollection>>(
