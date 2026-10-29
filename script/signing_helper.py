@@ -95,13 +95,21 @@ def BraveModifyPartsForSigning(parts, config):
     # Overwrite to avoid TeamID mismatch with widevine dylib. Library
     # validation has to be off in every variant of the main helper, including
     # the aperitif one, because that is where the CDM gets loaded.
-    for helper in ('helper-app', 'helper-aperitif-app'):
-        parts[helper].entitlements = 'helper-entitlements.plist'
-        parts[helper].options = (
-            CodeSignOptions.RESTRICT
-            | CodeSignOptions.KILL
-            | CodeSignOptions.HARDENED_RUNTIME
-        )
+    parts['helper-app'].entitlements = 'helper-entitlements.plist'
+    parts['helper-app'].options = (
+        CodeSignOptions.RESTRICT
+        | CodeSignOptions.KILL
+        | CodeSignOptions.HARDENED_RUNTIME
+    )
+
+    # The aperitif helper links libaperitif.dylib via @executable_path. dyld
+    # refuses @ path expansion in a restricted process unless library
+    # validation is on, so without library validation it must not be signed
+    # with `restrict` (the hardened runtime already ignores DYLD_* variables).
+    parts['helper-aperitif-app'].entitlements = 'helper-entitlements.plist'
+    parts['helper-aperitif-app'].options = (
+        CodeSignOptions.KILL | CodeSignOptions.HARDENED_RUNTIME
+    )
 
     if config.enable_updater:
         # The privileged helper is com.brave.Browser.UpdaterPrivilegedHelper.

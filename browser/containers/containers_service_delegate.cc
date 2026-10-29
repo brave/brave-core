@@ -244,12 +244,16 @@ void ContainersServiceDelegate::OnDestroying(SessionServiceBase* service) {
 
 void ContainersServiceDelegate::RequestLastSessionContainerReferences() {
   if (!session_service_) {
-    OnGotLastSession({}, SessionID::InvalidValue(), false);
+    OnGotLastSession({}, SessionID::InvalidValue(),
+                     sessions::CommandStorageReadStatus::kNoFile,
+                     sessions::SessionReplayResult::kNoCommands);
     return;
   }
 
   if (profile_->IsOffTheRecord()) {
-    OnGotLastSession({}, SessionID::InvalidValue(), false);
+    OnGotLastSession({}, SessionID::InvalidValue(),
+                     sessions::CommandStorageReadStatus::kNoFile,
+                     sessions::SessionReplayResult::kNoCommands);
     return;
   }
 
@@ -261,7 +265,8 @@ void ContainersServiceDelegate::RequestLastSessionContainerReferences() {
 void ContainersServiceDelegate::OnGotLastSession(
     std::vector<std::unique_ptr<sessions::SessionWindow>> windows,
     SessionID active_window_id,
-    bool read_error) {
+    sessions::CommandStorageReadStatus read_status,
+    sessions::SessionReplayResult replay_result) {
   for (const auto& window : windows) {
     if (!window) {
       continue;

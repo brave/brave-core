@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/clear_browsing_data_dialog/clear_browsing_data_dialog.ts b/chrome/browser/resources/settings/clear_browsing_data_dialog/clear_browsing_data_dialog.ts
-index 8035c3ed9ec5a508de37594ebeb09bf21f37dffa..b938ae17f0f4e47a0939e8d96c5ce89203fcb05a 100644
+index 4d7fa1f1fe21d34003837c112b5ebadbda0fc06f..0830c6ed2ad28c0a452c199b02e6204bf671450a 100644
 --- a/chrome/browser/resources/settings/clear_browsing_data_dialog/clear_browsing_data_dialog.ts
 +++ b/chrome/browser/resources/settings/clear_browsing_data_dialog/clear_browsing_data_dialog.ts
 @@ -80,10 +80,14 @@ export interface SettingsClearBrowsingDataDialogElement {
@@ -17,7 +17,7 @@ index 8035c3ed9ec5a508de37594ebeb09bf21f37dffa..b938ae17f0f4e47a0939e8d96c5ce892
    BrowsingDataType.DOWNLOADS,
    BrowsingDataType.FORM_DATA,
    BrowsingDataType.SITE_SETTINGS,
-@@ -97,12 +101,14 @@ const DEFAULT_BROWSING_DATATYPES_LIST: BrowsingDataType[] = [
+@@ -98,12 +102,14 @@ const DEFAULT_BROWSING_DATATYPES_LIST: BrowsingDataType[] = [
    BrowsingDataType.CACHE,
  ];
  
@@ -32,27 +32,27 @@ index 8035c3ed9ec5a508de37594ebeb09bf21f37dffa..b938ae17f0f4e47a0939e8d96c5ce892
  function getDataTypeLabel(datatypes: BrowsingDataType) {
    switch (datatypes) {
      case BrowsingDataType.HISTORY:
-@@ -119,6 +125,9 @@ function getDataTypeLabel(datatypes: BrowsingDataType) {
-       return loadTimeData.getString('clearDownloadHistory');
-     case BrowsingDataType.HOSTED_APPS_DATA:
+@@ -122,6 +128,9 @@ function getDataTypeLabel(datatypes: BrowsingDataType) {
        return loadTimeData.getString('clearHostedAppData');
+     case BrowsingDataType.SKILLS:
+       return loadTimeData.getString('clearSkills');
 +// <if expr="enable_ai_chat">
 +    case BrowsingDataType.BRAVE_AI_CHAT: return loadTimeData.getString('aiChatClearHistoryData');
 +// </if>
      default:
        assertNotReachedCase(datatypes);
    }
-@@ -140,6 +149,9 @@ export function getDataTypePrefName(datatypes: BrowsingDataType) {
-       return 'browser.clear_data.download_history';
-     case BrowsingDataType.HOSTED_APPS_DATA:
+@@ -145,6 +154,9 @@ export function getDataTypePrefName(datatypes: BrowsingDataType) {
        return 'browser.clear_data.hosted_apps_data';
+     case BrowsingDataType.SKILLS:
+       return 'browser.clear_data.skills';
 +// <if expr="enable_ai_chat">
 +    case BrowsingDataType.BRAVE_AI_CHAT: return 'browser.clear_data.brave_leo';
 +// </if>
      default:
        assertNotReachedCase(datatypes);
    }
-@@ -512,6 +524,3 @@ declare global {
+@@ -531,6 +543,3 @@ declare global {
    }
  }
  

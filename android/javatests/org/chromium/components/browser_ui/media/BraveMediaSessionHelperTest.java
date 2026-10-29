@@ -44,6 +44,10 @@ import java.lang.ref.WeakReference;
 /** Tests for media pause suppression and notification lifetime. */
 @Batch(Batch.PER_CLASS)
 @RunWith(ChromeJUnit4ClassRunner.class)
+// TODO(https://github.com/brave/brave-browser/issues/59632): Remove mocking of Views/Activities.
+// Tests fake isInPictureInPictureMode(); a real Activity can't be forced into picture-in-picture
+// mode on demand.
+@SuppressWarnings("DoNotMock")
 public class BraveMediaSessionHelperTest {
     // Java-side mirror of switches::kDisableBackgroundMediaSuspend, set at startup when the
     // background video playback feature and preference are both enabled.

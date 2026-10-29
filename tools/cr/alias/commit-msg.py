@@ -91,6 +91,8 @@ GOOGLESOURCE_URLS = {
     'third_party/boringssl/src': 'https://boringssl.googlesource.com/boringssl',
     'third_party/devtools-frontend/src': 'https://chromium.googlesource.com'
     '/devtools/devtools-frontend',
+    'third_party/ffmpeg': 'https://chromium.googlesource.com'
+    '/chromium/third_party/ffmpeg',
 }
 
 

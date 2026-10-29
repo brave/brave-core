@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/unload_controller.cc b/chrome/browser/ui/unload_controller.cc
-index fb499c2360cea197cd5c43052725f4b56d28629c..db392886bb509d0f8e979307e1c67bfc2731a114 100644
+index 02ae74168cb077798c27404b6e7fda0fe5bfb6f7..12bcf373f47368136117db04f1ef261491e4a0c7 100644
 --- a/chrome/browser/ui/unload_controller.cc
 +++ b/chrome/browser/ui/unload_controller.cc
 @@ -206,6 +206,9 @@ void UnloadController::OnWindowClosing() {
@@ -12,7 +12,7 @@ index fb499c2360cea197cd5c43052725f4b56d28629c..db392886bb509d0f8e979307e1c67bfc
  
    if (!browser_->GetTabStripModel()->empty()) {
      // Closing all the tabs results in eventually calling back to
-@@ -499,6 +502,7 @@ UnloadController::GetBrowserClosingStatus() const {
+@@ -506,6 +510,7 @@ UnloadController::GetBrowserClosingStatus() const {
  bool UnloadController::RunBeforeUnloadForShutdown(
      bool skip_beforeunload,
      const base::RepeatingCallback<void(bool)>& on_close_confirmed) {
@@ -20,7 +20,7 @@ index fb499c2360cea197cd5c43052725f4b56d28629c..db392886bb509d0f8e979307e1c67bfc
    cancel_download_confirmation_state_ =
        CancelDownloadConfirmationState::kResponseReceived;
    // The devtools browser gets its beforeunload events as the results of
-@@ -522,6 +526,7 @@ bool UnloadController::RunBeforeUnloadForShutdown(
+@@ -529,6 +534,7 @@ bool UnloadController::RunBeforeUnloadForShutdown(
  }
  
  void UnloadController::ResetBeforeUnloadForShutdown() {
@@ -28,7 +28,7 @@ index fb499c2360cea197cd5c43052725f4b56d28629c..db392886bb509d0f8e979307e1c67bfc
    cancel_download_confirmation_state_ =
        CancelDownloadConfirmationState::kNotPrompted;
    if (state_ != State::kRunningBeforeUnloadForShutdown &&
-@@ -628,6 +633,9 @@ void UnloadController::OnTabStripModelChanged(
+@@ -635,6 +641,9 @@ void UnloadController::OnTabStripModelChanged(
  }
  
  void UnloadController::TabStripEmpty() {
@@ -38,7 +38,7 @@ index fb499c2360cea197cd5c43052725f4b56d28629c..db392886bb509d0f8e979307e1c67bfc
    // Set state_ here, so that extensions, etc, do not attempt to add tabs to the
    // browser before it closes.
    if (state_ == State::kIdle) {
-@@ -1096,6 +1104,9 @@ void UnloadController::InProgressDownloadResponse(bool cancel_downloads) {
+@@ -1103,6 +1112,9 @@ void UnloadController::InProgressDownloadResponse(bool cancel_downloads) {
  }
  
  void UnloadController::FinishWarnBeforeClosing(WarnBeforeClosingResult result) {

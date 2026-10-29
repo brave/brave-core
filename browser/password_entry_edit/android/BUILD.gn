@@ -20,7 +20,6 @@ source_set("android") {
     "//base",
     "//brave/browser/password_entry_edit/android/internal:jni",
     "//chrome/app:generated_resources",
-    "//chrome/browser/ui",
     "//components/password_manager/core/browser",
     "//components/password_manager/core/browser/affiliation:affiliation_fetching",
     "//components/url_formatter",

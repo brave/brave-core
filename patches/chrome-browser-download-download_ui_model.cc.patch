@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/download/download_ui_model.cc b/chrome/browser/download/download_ui_model.cc
-index fe9306f5618abf7508cc71dc8e072e582fef6a83..787809965809e1d819c4ded54c452f186c48ab69 100644
+index c1f21ea28e40d16a497778a78b3bcea443b5a45a..cb9730be0a0c5bb177b0e36a77ad66600407541d 100644
 --- a/chrome/browser/download/download_ui_model.cc
 +++ b/chrome/browser/download/download_ui_model.cc
 @@ -648,6 +648,9 @@ bool DownloadUIModel::IsCommandEnabled(
@@ -32,7 +32,7 @@ index fe9306f5618abf7508cc71dc8e072e582fef6a83..787809965809e1d819c4ded54c452f18
  #if BUILDFLAG(IS_CHROMEOS)
        OpenUsingMediaApp();
        break;
-@@ -1132,7 +1141,7 @@ std::u16string
+@@ -1134,7 +1143,7 @@ std::u16string
  DownloadUIModel::StatusTextBuilderBase::GetCompletedRemovedOrSavedStatusText()
      const {
    if (model_->GetFileExternallyRemoved()) {

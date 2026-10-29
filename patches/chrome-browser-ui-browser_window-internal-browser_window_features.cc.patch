@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/browser_window/internal/browser_window_features.cc b/chrome/browser/ui/browser_window/internal/browser_window_features.cc
-index f51b0713750fb9775d39c252edc3f3caf4be7c52..4123c22e7ab2d382fa55e3bb10cb9b360de6a044 100644
+index 6c1c78d4341e72f815fed35a8a808e60333876ac..d646745a177124060821db659f34bfa035071058 100644
 --- a/chrome/browser/ui/browser_window/internal/browser_window_features.cc
 +++ b/chrome/browser/ui/browser_window/internal/browser_window_features.cc
 @@ -243,10 +243,10 @@
@@ -16,7 +16,7 @@ index f51b0713750fb9775d39c252edc3f3caf4be7c52..4123c22e7ab2d382fa55e3bb10cb9b36
    // This is used only for the controllers which will be created on demand
    // later.
    browser_ = browser;
-@@ -333,11 +333,11 @@ void BrowserWindowFeatures::Init(BrowserWindowInterface* browser) {
+@@ -334,11 +338,11 @@ void BrowserWindowFeatures::Init(BrowserWindowInterface* browser) {
    // initializes the default enabled states for UI commands
    // (InitCommandState). If BrowserActions is not built first, those initial
    // enabled updates will be completely dropped.
@@ -30,7 +30,7 @@ index f51b0713750fb9775d39c252edc3f3caf4be7c52..4123c22e7ab2d382fa55e3bb10cb9b36
  
    browser_animation_controller_ =
        GetUserDataFactory().CreateInstance<BrowserAnimationController>(*browser,
-@@ -383,7 +383,7 @@ void BrowserWindowFeatures::Init(BrowserWindowInterface* browser) {
+@@ -384,7 +388,7 @@ void BrowserWindowFeatures::Init(BrowserWindowInterface* browser) {
  
    content_setting_bubble_model_delegate_ =
        GetUserDataFactory()
@@ -57,7 +57,7 @@ index f51b0713750fb9775d39c252edc3f3caf4be7c52..4123c22e7ab2d382fa55e3bb10cb9b36
        browser, *exclusive_access_manager_, *browser_command_controller_,
        *unload_controller_, app_browser_controller_.get(),
        *BrowserWindow::FromBrowser(browser),
-@@ -908,7 +908,7 @@ void BrowserWindowFeatures::InitPostWindowConstruction(
+@@ -907,7 +911,7 @@ void BrowserWindowFeatures::InitPostWindowConstruction(
    // this for most browser.h types, we should also stop making the side_panel_.
    if (browser_view) {
      side_panel_coordinator_ =

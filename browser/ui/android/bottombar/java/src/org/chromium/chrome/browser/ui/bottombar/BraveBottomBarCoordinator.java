@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import org.chromium.base.Callback;
 import org.chromium.base.supplier.NonNullObservableSupplier;
 import org.chromium.base.supplier.NullableObservableSupplier;
-import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.browser.layouts.LayoutStateProvider;
 import org.chromium.chrome.browser.profiles.Profile;
@@ -56,7 +55,6 @@ public class BraveBottomBarCoordinator extends BottomBarCoordinator {
             NonNullObservableSupplier<Boolean> homepageEnabledSupplier,
             BottomBarMediator.VisibilityDelegate visibilityDelegate,
             NullableObservableSupplier<Profile> profileSupplier,
-            OneshotSupplier<String> countrySupplier,
             NonNullObservableSupplier<Boolean> omniboxFocusStateSupplier,
             NonNullObservableSupplier<ModalDialogManager> modalDialogManagerSupplier,
             LayoutStateProvider layoutStateProvider) {
@@ -68,18 +66,12 @@ public class BraveBottomBarCoordinator extends BottomBarCoordinator {
                 homepageEnabledSupplier,
                 visibilityDelegate,
                 profileSupplier,
-                countrySupplier,
                 omniboxFocusStateSupplier,
                 modalDialogManagerSupplier,
                 layoutStateProvider);
 
         mHomepageEnabledSupplier = homepageEnabledSupplier;
-        // Only registered when the home slot is in the bottom bar at all - the 1C variations keep
-        // the home button in the top toolbar, and then there is no new tab button to stand in for
-        // it either.
-        if (BottomBarConfigUtils.shouldIncludeHomeButtonIfEnabled()) {
-            mHomepageEnabledSupplier.addSyncObserverAndCallIfNonNull(mHomepageEnabledObserver);
-        }
+        mHomepageEnabledSupplier.addSyncObserverAndCallIfNonNull(mHomepageEnabledObserver);
     }
 
     /**
@@ -92,10 +84,8 @@ public class BraveBottomBarCoordinator extends BottomBarCoordinator {
      * this class.
      */
     @Override
-    protected List<ActionConfig> createActionConfigs(
-            BottomBarView view, boolean shouldIncludeHomeButton) {
-        List<ActionConfig> configs =
-                new ArrayList<>(super.createActionConfigs(view, shouldIncludeHomeButton));
+    protected List<ActionConfig> createActionConfigs(BottomBarView view) {
+        List<ActionConfig> configs = new ArrayList<>(super.createActionConfigs(view));
 
         // The search accelerator replaces the new tab button in the centre slot, keeping the
         // visibility key upstream's view binder maps to that container.
@@ -127,17 +117,15 @@ public class BraveBottomBarCoordinator extends BottomBarCoordinator {
         // The new tab button joins the home button in the home slot, sharing its visibility key so
         // that the slot is shown whenever either of the two is. onHomepageEnabledChanged() picks
         // which one; it starts hidden because upstream's mediator starts the home button visible.
-        if (shouldIncludeHomeButton) {
-            int homeIndex = indexOfAction(configs, ActionId.HOME_BUTTON);
-            configs.add(
-                    homeIndex + 1,
-                    new ActionConfig(
-                            ActionId.NEW_TAB,
-                            configs.get(homeIndex).container,
-                            ActionButtonBinder::bind,
-                            BottomBarProperties.IS_HOME_BUTTON_VISIBLE,
-                            /* initiallyVisible= */ false));
-        }
+        int homeIndex = indexOfAction(configs, ActionId.HOME_BUTTON);
+        configs.add(
+                homeIndex + 1,
+                new ActionConfig(
+                        ActionId.NEW_TAB,
+                        configs.get(homeIndex).container,
+                        ActionButtonBinder::bind,
+                        BottomBarProperties.IS_HOME_BUTTON_VISIBLE,
+                        /* initiallyVisible= */ false));
 
         return configs;
     }

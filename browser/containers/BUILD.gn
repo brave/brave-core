@@ -44,6 +44,7 @@ source_set("browser_tests") {
   deps = [
     ":containers",
     "//brave/app:brave_generated_resources_grit_grit",
+    "//brave/browser/ui",
     "//brave/components/containers/content/browser",
     "//brave/components/containers/core/browser",
     "//brave/components/containers/core/browser:test_support",
@@ -54,7 +55,9 @@ source_set("browser_tests") {
     "//chrome/browser/browsing_data:constants",
     "//chrome/browser/prefs:util",
     "//chrome/browser/renderer_context_menu:test_support",
+    "//chrome/browser/ui:browser_actions",
     "//chrome/browser/ui/views/frame:browser_view_header",
+    "//chrome/browser/ui/views/frame:horizontal_tab_strip_region_view",
     "//chrome/browser/ui/views/page_action:page_action_test_support",
     "//chrome/browser/ui/views/tabs/hovercard",
     "//chrome/browser/ui/views/tabs/hovercard:test_support",
@@ -67,6 +70,7 @@ source_set("browser_tests") {
     "//components/services/app_service/public/cpp:app_types",
     "//components/webapps/common",
     "//content/public/browser",
+    "//content/public/common",
     "//content/test:test_support",
     "//third_party/blink/public:blink_headers",
   ]

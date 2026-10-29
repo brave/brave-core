@@ -131,10 +131,12 @@ import java.util.List;
     ChromeFeatureList.LENS_OVERLAY_ANDROID,
     ChromeFeatureList.SUBMENUS_IN_APP_MENU,
     ChromeFeatureList.SUBMENUS_IN_APP_MENU_LFF,
+    ChromeFeatureList.TTC,
     BraveFeatureList.BRAVE_SHRED,
 })
 @EnableFeatures({
     BraveFeatureList.AI_CHAT,
+    ChromeFeatureList.IN_APP_WINDOW_MANAGER_DEPRECATION,
 })
 public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
     @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
@@ -148,7 +150,6 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
     @Mock private TabModel mTabModel;
     @Mock private TabModel mIncognitoTabModel;
     @Mock private ToolbarManager mToolbarManager;
-    @Mock private View mDecorView;
     @Mock private LayoutStateProvider mLayoutStateProvider;
     @Mock private ManagedBrowserUtils.Natives mManagedBrowserUtilsJniMock;
     @Mock private Profile mProfile;
@@ -280,7 +281,7 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
                         mMultiWindowModeStateDispatcher,
                         mTabModelSelector,
                         mToolbarManager,
-                        mDecorView,
+                        new View(context),
                         mAppMenuDelegate,
                         mLayoutStateProviderSupplier,
                         mBookmarkModelSupplier,

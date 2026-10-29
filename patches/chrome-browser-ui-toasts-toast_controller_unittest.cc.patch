@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/toasts/toast_controller_unittest.cc b/chrome/browser/ui/toasts/toast_controller_unittest.cc
-index 48db84b541b3347716d769e8acda84e074841243..31d6844aa1572517ad52df8fdba2619aaa8567ff 100644
+index d47562bc840632daa36c0ad13e5be790f1e295c2..9301fc83f5f88d7a6893be51523e03d4ebdbeffb 100644
 --- a/chrome/browser/ui/toasts/toast_controller_unittest.cc
 +++ b/chrome/browser/ui/toasts/toast_controller_unittest.cc
 @@ -72,7 +72,7 @@ class ToastControllerUnitTest : public testing::Test {
@@ -250,7 +250,7 @@ index 48db84b541b3347716d769e8acda84e074841243..31d6844aa1572517ad52df8fdba2619a
        ToastSpecification::Builder(features::IsRoundedIconsEnabled()
                                        ? vector_icons::kMailFilledIcon
                                        : vector_icons::kEmailOldIcon,
-@@ -367,7 +367,7 @@ TEST_F(ToastControllerUnitTest, ShowToastWithActionButtonCallbackData) {
+@@ -368,7 +368,7 @@ TEST_F(ToastControllerUnitTest, ShowToastWithActionButtonCallbackData) {
          action_callback.Run();
        });
  

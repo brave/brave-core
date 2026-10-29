@@ -1,0 +1,68 @@
+/* Copyright (c) 2026 The Brave Authors. All rights reserved.
+   This Source Code Form is subject to the terms of the Mozilla Public
+   License, v. 2.0. If a copy of the MPL was not distributed with this file,
+   You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+/* #css_wrapper_metadata_start
+ * #type=style-lit
+ * #import=//resources/cr_elements/cr_shared_style_lit.css.js
+ * #import=../settings_shared_lit.css.js
+ * #include=cr-shared-style-lit settings-shared-lit
+ * #css_wrapper_metadata_end */
+
+/* Extra space when fixed #needsRestart bar is shown */
+.origin-restart-padding-spacer {
+  padding-bottom: 80px;
+}
+
+.title {
+  font: var(--leo-font-default-semibold);
+  height: 68px;
+}
+
+.label.primary-title
+{
+  font: var(--leo-font-large-regular);
+  padding-top: var(--leo-spacing-xl);
+}
+
+.label.secondary-title {
+  padding-bottom: var(--leo-spacing-xl);
+}
+
+#needsRestart {
+  background-color: var(--leo-color-container-background);
+  bottom: 0;
+  box-shadow: 0 -2px 2px 0 var(--shadow-color);
+  box-sizing: border-box;
+  left: 0;
+  opacity: 1;
+  padding: var(--leo-spacing-xl) var(--leo-spacing-2xl);
+  position: fixed;
+  transform: translate(0);
+  transition: all 225ms var(--ease-in-out);
+  width: 100%;
+  z-index: 10;
+  border-top: 1px solid var(--leo-color-divider-subtle);
+}
+
+#needsRestart .flex:last-child {
+  text-align: right;
+}
+
+.flex {
+  align-self: center;
+  flex: 1 1 auto;
+}
+
+.flex-container {
+  display: flex;
+}
+
+.restart-notice {
+  font: var(--leo-font-default-regular);
+}
+
+#resetToDefaults::part(icon) {
+  display: none;
+}

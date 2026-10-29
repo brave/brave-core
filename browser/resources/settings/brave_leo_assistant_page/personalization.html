@@ -32,7 +32,7 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
 <template is="dom-if"
   if="[[isTabOrganizationDropdownVisible_(
     isTabOrganizationFeatureEnabled_,
-    prefs.brave.ai_chat.tab_organization_enabled.value)]]">
+    tabOrganizationEnabledPref_.value)]]">
   <div class="settings-box">
     <div class="flex cr-padded-text">
       <div>$i18n{braveLeoAssistantTabOrganizationModelLabel}</div>
@@ -40,7 +40,7 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
     </div>
     <leo-model-selector
       class="cr-padded-text"
-      selected-key="[[prefs.brave.ai_chat.tab_organization_model_key.value]]"
+      selected-key="[[tabOrganizationModelKeyPref_.value]]"
       models="[[models_]]"
       is-premium-user="[[isPremiumUser_]]"
       on-model-changed="onTabOrganizationModelChange_">
@@ -49,7 +49,7 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
 </template>
 <template is="dom-if" if="[[isHistoryFeatureEnabled_]]">
   <settings-toggle-button class="cr-row hr"
-    pref="{{prefs.brave.ai_chat.storage_enabled}}"
+    pref-key="brave.ai_chat.storage_enabled"
     label="$i18n{braveLeoAssistantHistoryPreferenceLabel}"
     on-settings-boolean-control-change="onStorageEnabledChange_">
   </settings-toggle-button>

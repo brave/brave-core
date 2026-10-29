@@ -1,0 +1,27 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Disable WebRTC event log uploads.
+
+      Brave never uploads WebRTC event logs to Google. The log file is not read,
+      so the constructor reports the upload as failed and deletes the file,
+      which lets the log manager release the uploader and move on.
+    preempt_function_impl:
+      function_name: WebRtcEventLogUploaderImpl::PrepareUploadData
+      code: return false;
+
+  - description: |-
+      Disable WebRTC event log uploads.
+
+      Nothing reaches this function once the upload data is never prepared.
+      Should anything do so, the upload is reported as failed instead of
+      leaving the log manager waiting for a result.
+    preempt_function_impl:
+      function_name: WebRtcEventLogUploaderImpl::StartUpload
+      code: |-
+        ReportResult(/*upload_successful=*/false);
+        return;

@@ -50,6 +50,10 @@ import org.chromium.ui.edge_to_edge.EdgeToEdgeSystemBarColorHelper;
 /** Unit tests for {@link BraveStatusBarColorController}. */
 @RunWith(BaseRobolectricTestRunner.class)
 @DisableFeatures(ChromeFeatureList.ANDROID_BOTTOM_BAR)
+// TODO(https://github.com/brave/brave-browser/issues/59632): Remove mocking of Views/Activities.
+// Tests spy the Activity to fake the upstream NTP color, which the controller reads via
+// activity.getColor(); the real color may be white and couldn't be told apart from Brave's.
+@SuppressWarnings("DoNotMock")
 public class BraveStatusBarColorControllerUnitTest {
     private static final @ColorInt int TEST_UPSTREAM_NTP_BACKGROUND_COLOR =
             Color.rgb(0x12, 0x34, 0x56);
