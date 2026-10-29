@@ -2259,6 +2259,16 @@ enum PolkadotValidationStatus {
   kFailedToFetchMetadata = 3,
 };
 
+struct OptionalUint16 {
+  uint16 val;
+};
+
+struct PolkadotChainProperties {
+  OptionalUint16? ss58_format;
+  array<uint32> token_decimals;
+  array<string> token_symbol;
+};
+
 interface PolkadotWalletService {
   GetCompatibleNetworks(AccountId account) => (array<NetworkInfo>? networks);
 
