@@ -33,4 +33,12 @@ void RestoreWorkspaceIntoWindow(
     BrowserWindowInterface* window,
     std::vector<std::unique_ptr<sessions::SessionCommand>> commands);
 
+// Closes the first |count| tabs of |window|.  Switching workspaces adds the
+// incoming tabs before retiring the outgoing ones, because emptying a tab
+// strip closes the window.
+//
+// A tab whose page runs a beforeunload handler can outlive this call, since
+// TabStripModel closes those asynchronously.
+void CloseLeadingTabs(BrowserWindowInterface* window, int count);
+
 #endif  // BRAVE_BROWSER_WORKSPACES_WORKSPACE_SESSION_UTILS_H_

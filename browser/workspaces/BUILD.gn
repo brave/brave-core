@@ -21,6 +21,8 @@ source_set("impl") {
     ":workspaces",
     "//base",
     "//chrome/browser/ui:browser_tabrestore",
+    "//chrome/browser/ui:unload_controller",
+    "//chrome/browser/ui/browser_window:create_browser_window",
     "//chrome/browser/ui/tabs:tab_strip",
   ]
 }
@@ -40,6 +42,7 @@ source_set("workspaces") {
     "//base",
     "//chrome/browser/profiles:profile",
     "//chrome/browser/ui/browser_window",
+    "//chrome/browser/ui/tabs:tab_strip_model_observer",
     "//components/keyed_service/core",
     "//components/pref_registry",
     "//components/sessions",

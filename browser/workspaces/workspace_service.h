@@ -23,6 +23,7 @@
 #include "brave/browser/workspaces/workspace_metadata.h"
 #include "chrome/browser/ui/browser_window/public/browser_collection_observer.h"
 #include "chrome/browser/ui/browser_window/public/profile_browser_collection.h"
+#include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/sessions/core/session_command.h"
 #include "components/sessions/core/session_id.h"
@@ -53,7 +54,9 @@ class Profile;
 // MayBlock SequencedTaskRunner created at construction time.  Backends are
 // constructed on the UI thread with |io_task_runner_| as their owning
 // sequence, then all blocking I/O tasks are posted to that same runner.
-class WorkspaceService : public KeyedService, public BrowserCollectionObserver {
+class WorkspaceService : public KeyedService,
+                         public BrowserCollectionObserver,
+                         public TabStripModelObserver {
  public:
   explicit WorkspaceService(Profile& profile);
   ~WorkspaceService() override;
@@ -98,17 +101,29 @@ class WorkspaceService : public KeyedService, public BrowserCollectionObserver {
   // Returns the per-workspace subdirectory for |id|.
   base::FilePath GetWorkspacePathForId(const base::Uuid& id) const;
 
-  // ---- Window binding -----------------------------------------------------
+  // ---- Windows ------------------------------------------------------------
   //
-  // A workspace may be loaded in at most one window at a time.  Bindings are
-  // dropped when the hosting window closes.
+  // A workspace owns a browser window outright.  Switching does not move tabs:
+  // the outgoing window is hidden and the incoming one is shown, so no
+  // WebContents is ever destroyed and scroll position, media playback, form
+  // state and running scripts all survive untouched.
+  //
+  // A window with no workspace bound to it is a "default" window: the one a
+  // person starts in.  Chromium's own session restore already persists its
+  // tabs, so this service never writes them to disk.  It is hidden and shown
+  // like any other window, which is all that is needed to switch back to it.
 
-  // Returns the workspace currently loaded in |window_id|, or nullopt if that
-  // window is not hosting one.
+  // Returns the workspace shown in |window_id|, or nullopt if it is a default
+  // window.
   std::optional<base::Uuid> GetWorkspaceForWindow(SessionID window_id) const;
 
-  // Returns the window currently hosting |id|, or nullopt if it is not loaded.
+  // Returns the window owned by |id|, or nullopt if it has not been opened in
+  // this session yet.
   std::optional<SessionID> GetWindowForWorkspace(const base::Uuid& id) const;
+
+  // Returns the default window |window_id| was opened from, or nullopt if
+  // |window_id| is itself a default window.
+  std::optional<SessionID> GetDefaultWindowFor(SessionID window_id) const;
 
   // Releases |window_id|'s binding, if it has one.
   void UnbindWindow(SessionID window_id);
@@ -121,12 +136,22 @@ class WorkspaceService : public KeyedService, public BrowserCollectionObserver {
   void SaveWorkspaceFromWindow(const base::Uuid& id,
                                BrowserWindowInterface* window);
 
-  // Reads workspace |id| from disk, adds its tabs to |window|, and binds the
-  // two together.  Tabs already open in |window| are left alone — callers
-  // decide what becomes of them.  Does nothing if |id| is already loaded in a
-  // different window.
-  void LoadWorkspaceIntoWindow(const base::Uuid& id,
-                               BrowserWindowInterface* window);
+  // Shows workspace |id|, hiding |from_window|.  If |id| already has a window
+  // this just swaps visibility; otherwise a window is created and the
+  // workspace is read off disk into it.  Does nothing if |id| is unknown or
+  // already shown in |from_window|.
+  void SwitchWindowToWorkspace(const base::Uuid& id,
+                               BrowserWindowInterface* from_window);
+
+  // Shows the default window |from_window| was opened from, hiding
+  // |from_window|.  Does nothing if |from_window| is itself a default window.
+  void SwitchWindowToDefault(BrowserWindowInterface* from_window);
+
+  // Creates a workspace named |name| in a new, empty window and shows it,
+  // hiding |from_window|.
+  WorkspaceMetadata CreateWorkspaceInWindow(
+      const std::string& name,
+      BrowserWindowInterface* from_window);
 
   base::WeakPtr<WorkspaceService> GetWeakPtr();
 
@@ -136,23 +161,57 @@ class WorkspaceService : public KeyedService, public BrowserCollectionObserver {
   // BrowserCollectionObserver:
   void OnBrowserClosed(BrowserWindowInterface* browser) override;
 
+  // TabStripModelObserver:
+  void WillCloseAllTabs(TabStripModel* tab_strip_model) override;
+
  private:
+  // Records that |window| now shows |id| and starts watching its tab strip,
+  // so the workspace can be saved before those tabs are torn down.
+  void BindWorkspaceToWindow(const base::Uuid& id,
+                             BrowserWindowInterface* window);
+
+  // Returns the window of this profile whose tab strip is |tab_strip_model|.
+  BrowserWindowInterface* FindWindowForTabStrip(
+      TabStripModel* tab_strip_model) const;
+
+  // Opens a window for workspace |id| and fills it from disk.  |from_window|
+  // supplies the bounds so the workspace appears where the person was looking.
+  void OpenWorkspaceWindow(const base::Uuid& id,
+                           BrowserWindowInterface* from_window);
+
   // Called on the UI thread with the commands read from disk by
-  // LoadWorkspaceIntoWindow.  |window_id| identifies the destination window,
+  // OpenWorkspaceWindow.  |window_id| identifies the window just created,
   // which may have closed while the read was in flight.
-  void DoLoadWorkspaceIntoWindow(
+  void DoFillWorkspaceWindow(
       base::Uuid id,
       SessionID window_id,
       std::vector<std::unique_ptr<sessions::SessionCommand>> commands);
+
+  // Hides |from_window| and shows |to_window|, carrying the default-window
+  // lineage across so a later switch back can find its way home.
+  void SwapVisibleWindow(BrowserWindowInterface* from_window,
+                         BrowserWindowInterface* to_window);
+
+  // True when no normal window of this profile is visible to the person.
+  bool HasNoVisibleWindows() const;
+
+  // Saves every hidden workspace window and closes it, so that hidden windows
+  // never keep the browser running once the last visible one is gone.
+  void CloseHiddenWindows();
 
   raw_ref<Profile> profile_;
   const base::FilePath workspaces_path_;
   raw_ref<PrefService> pref_service_;
   scoped_refptr<base::SequencedTaskRunner> io_task_runner_;
 
-  // Which window hosts each loaded workspace.  Small enough that the reverse
+  // The window each opened workspace owns.  Small enough that the reverse
   // lookup is a linear scan rather than a second map to keep in sync.
   std::map<base::Uuid, SessionID> workspace_to_window_;
+
+  // For each workspace window, the default window it was opened from.  Carried
+  // forward when switching workspace to workspace, so the Default row always
+  // points at the window the person actually started in.
+  std::map<SessionID, SessionID> window_to_default_window_;
 
   base::ScopedObservation<ProfileBrowserCollection, BrowserCollectionObserver>
       browser_collection_observation_{this};

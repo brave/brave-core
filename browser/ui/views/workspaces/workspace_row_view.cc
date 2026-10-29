@@ -96,6 +96,10 @@ WorkspaceRowView::WorkspaceRowView(const WorkspaceMetadata& info,
       std::move(on_workspace_selected), info));
   row_layout->SetFlexForView(info_button_, 1);
 
+  if (!on_delete_) {
+    return;
+  }
+
   auto more_btn = views::CreateVectorImageButtonWithNativeTheme(
       base::BindRepeating(&WorkspaceRowView::ShowMoreMenu,
                           base::Unretained(this)),
@@ -142,6 +146,10 @@ void WorkspaceRowView::UpdateBackground() {
 
 void WorkspaceRowView::UpdateChildSelectionStyling() {
   info_button_->SetSelected(selected_);
+
+  if (!more_button_) {
+    return;
+  }
 
   views::SetImageFromVectorIconWithColor(
       more_button_, kLeoMoreVerticalIcon,

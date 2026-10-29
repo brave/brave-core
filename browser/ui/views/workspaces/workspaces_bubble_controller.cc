@@ -12,7 +12,7 @@
 #include "base/location.h"
 #include "base/memory/ptr_util.h"
 #include "base/task/single_thread_task_runner.h"
-#include "brave/browser/ui/views/workspaces/save_workspace_dialog.h"
+#include "brave/browser/ui/views/workspaces/create_workspace_dialog.h"
 #include "brave/browser/ui/views/workspaces/workspaces_bubble_view.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "components/constrained_window/constrained_window_views.h"
@@ -47,7 +47,7 @@ void WorkspacesBubbleController::ShowBubble(views::View* anchor_view,
 
   bubble_ = std::make_unique<WorkspacesBubbleView>(
       anchor_view, browser,
-      base::BindRepeating(&WorkspacesBubbleController::ShowSaveDialog,
+      base::BindRepeating(&WorkspacesBubbleController::ShowCreateDialog,
                           weak_factory_.GetWeakPtr()));
 
   // The controller keeps ownership of the delegate; CreateBubble uses
@@ -58,21 +58,21 @@ void WorkspacesBubbleController::ShowBubble(views::View* anchor_view,
   bubble_widget_->Show();
 }
 
-void WorkspacesBubbleController::ShowSaveDialog() {
-  if (save_dialog_widget_) {
+void WorkspacesBubbleController::ShowCreateDialog() {
+  if (create_dialog_widget_) {
     return;
   }
 
-  // SaveWorkspaceDialog sets CLIENT_OWNS_WIDGET on itself; the controller keeps
-  // ownership of the delegate and owns the returned Widget.
-  save_dialog_ = std::make_unique<SaveWorkspaceDialog>(browser_);
-  save_dialog_widget_ =
+  // CreateWorkspaceDialog sets CLIENT_OWNS_WIDGET on itself; the controller
+  // keeps ownership of the delegate and owns the returned Widget.
+  create_dialog_ = std::make_unique<CreateWorkspaceDialog>(browser_);
+  create_dialog_widget_ =
       base::WrapUnique(constrained_window::CreateBrowserModalDialogViews(
-          save_dialog_.get(), parent_window_));
-  save_dialog_widget_->MakeCloseSynchronous(
-      base::BindOnce(&WorkspacesBubbleController::OnSaveDialogClosed,
+          create_dialog_.get(), parent_window_));
+  create_dialog_widget_->MakeCloseSynchronous(
+      base::BindOnce(&WorkspacesBubbleController::OnCreateDialogClosed,
                      weak_factory_.GetWeakPtr()));
-  save_dialog_widget_->Show();
+  create_dialog_widget_->Show();
 }
 
 void WorkspacesBubbleController::OnBubbleClosed(views::Widget::ClosedReason) {
@@ -84,9 +84,9 @@ void WorkspacesBubbleController::OnBubbleClosed(views::Widget::ClosedReason) {
   runner->DeleteSoon(FROM_HERE, bubble_.release());
 }
 
-void WorkspacesBubbleController::OnSaveDialogClosed(
+void WorkspacesBubbleController::OnCreateDialogClosed(
     views::Widget::ClosedReason) {
   auto runner = base::SingleThreadTaskRunner::GetCurrentDefault();
-  runner->DeleteSoon(FROM_HERE, save_dialog_widget_.release());
-  runner->DeleteSoon(FROM_HERE, save_dialog_.release());
+  runner->DeleteSoon(FROM_HERE, create_dialog_widget_.release());
+  runner->DeleteSoon(FROM_HERE, create_dialog_.release());
 }

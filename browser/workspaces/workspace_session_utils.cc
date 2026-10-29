@@ -15,6 +15,7 @@
 #include "brave/browser/workspaces/workspace_metadata.h"
 #include "chrome/browser/ui/browser_tabrestore.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+#include "chrome/browser/ui/tabs/tab_enums.h"
 #include "chrome/browser/ui/tabs/tab_group_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "components/sessions/content/content_serialized_navigation_builder.h"
@@ -163,5 +164,13 @@ void RestoreWorkspaceIntoWindow(
   const int active = base_index + session_window.selected_tab_index;
   if (active >= base_index && active < tsm->count()) {
     tsm->ActivateTabAt(active);
+  }
+}
+
+void CloseLeadingTabs(BrowserWindowInterface* window, int count) {
+  TabStripModel* tsm = window->GetTabStripModel();
+  // Close back-to-front so earlier indices stay valid as tabs are removed.
+  for (int i = std::min(count, tsm->count()) - 1; i >= 0; --i) {
+    tsm->CloseWebContentsAt(i, TabCloseTypes::CLOSE_NONE);
   }
 }

@@ -225,6 +225,12 @@ TEST_F(WorkspaceServiceTest, Binding_UnbindUnknownWindowIsSafe) {
   SUCCEED();
 }
 
+// A window nobody switched away from has no default window behind it.
+TEST_F(WorkspaceServiceTest, Default_WindowHasNoOriginUntilSwitched) {
+  EXPECT_FALSE(
+      service_->GetDefaultWindowFor(SessionID::NewUnique()).has_value());
+}
+
 // ---- Name / path computation tests -----------------------------------------
 
 TEST_F(WorkspaceServiceTest, GetWorkspacePathForId_DifferentIdsDifferentPaths) {
@@ -281,7 +287,7 @@ TEST_F(WorkspaceServiceTest, WriteAndReadRoundTrip) {
   ASSERT_TRUE(base::test::RunUntil([&] { return write_done; }));
   ASSERT_FALSE(error_called);
 
-  // Read back using a fresh backend (mirrors LoadWorkspaceIntoWindow's
+  // Read back using a fresh backend (mirrors SwitchWindowToWorkspace's
   // pattern).
   auto read_backend = base::MakeRefCounted<sessions::CommandStorageBackend>(
       task_runner, workspace_path, kWorkspaceSessionType,

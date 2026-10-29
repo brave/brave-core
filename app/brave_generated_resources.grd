@@ -247,20 +247,20 @@
 
       <!-- Workspaces -->
       <if expr="use_titlecase">
-        <message name="IDS_WORKSPACE_SAVE_DIALOG_TITLE" desc="Title of the dialog asking the user to name a workspace">
-          Save Current Windows and Tabs as Space
+        <message name="IDS_WORKSPACE_CREATE_DIALOG_TITLE" desc="Title of the dialog asking the user to name a new workspace">
+          Create a New Space
         </message>
-        <message name="IDS_WORKSPACE_SAVE_DIALOG_NAME_LABEL" desc="Label for the workspace name text input in the save dialog">
+        <message name="IDS_WORKSPACE_CREATE_DIALOG_NAME_LABEL" desc="Label for the workspace name text input in the new space dialog">
           Name
         </message>
-        <message name="IDS_WORKSPACE_SAVE_DIALOG_NAME_PLACEHOLDER" desc="Placeholder text for the workspace name input field">
+        <message name="IDS_WORKSPACE_CREATE_DIALOG_NAME_PLACEHOLDER" desc="Placeholder text for the workspace name input field">
           Enter Your Space Name
         </message>
-        <message name="IDS_WORKSPACE_SAVE_DIALOG_DEFAULT_NAME" desc="Default workspace name pre-filled in the save dialog">
+        <message name="IDS_WORKSPACE_CREATE_DIALOG_DEFAULT_NAME" desc="Default workspace name pre-filled in the new space dialog">
           My Space
         </message>
-        <message name="IDS_WORKSPACE_SAVE_DIALOG_SAVE_BUTTON" desc="Accept button label in the save workspace dialog">
-          Save
+        <message name="IDS_WORKSPACE_CREATE_DIALOG_CREATE_BUTTON" desc="Accept button label in the new space dialog">
+          Create
         </message>
         <message name="IDS_WORKSPACE_DIALOG_CANCEL_BUTTON" desc="Cancel button label shared by workspace dialogs">
           Cancel
@@ -283,34 +283,37 @@
         <message name="IDS_WORKSPACES_BUBBLE_SETTINGS_BUTTON" desc="Button in the workspaces bubble that opens workspaces settings">
           Settings
         </message>
-        <message name="IDS_WORKSPACES_BUBBLE_SAVE_BUTTON" desc="Button in the workspaces bubble that saves the current windows and tabs as a new workspace">
-          Save
+        <message name="IDS_WORKSPACES_BUBBLE_NEW_SPACE_BUTTON" desc="Button in the workspaces bubble that creates a new, empty workspace">
+          New Space
         </message>
         <message name="IDS_WORKSPACES_BUBBLE_EMPTY_TITLE" desc="Title shown in the workspaces bubble when the user has not yet created any workspaces">
           No Spaces Created
         </message>
         <message name="IDS_WORKSPACES_BUBBLE_EMPTY_BODY" desc="Explanatory text shown in the workspaces bubble when the user has not yet created any workspaces, telling them how to create one">
-          Create Your First Space by Clicking the Save Button Below.
+          Create Your First Space by Clicking the New Space Button Below.
         </message>
         <message name="IDS_WORKSPACE_ROW_STATS_TABS" desc="Stats label shown on a workspace row, giving the number of tabs in that workspace">
           {TAB_COUNT, plural, =1 {1 Tab} other {# Tabs}}
         </message>
+        <message name="IDS_WORKSPACE_DEFAULT_NAME" desc="Name of the implicit workspace holding the tabs of a window that is not in a named space. Shown as the first row of the workspaces bubble.">
+          Default
+        </message>
       </if>
       <if expr="not use_titlecase">
-        <message name="IDS_WORKSPACE_SAVE_DIALOG_TITLE" desc="Title of the dialog asking the user to name a workspace">
-          Save current windows and tabs as space
+        <message name="IDS_WORKSPACE_CREATE_DIALOG_TITLE" desc="Title of the dialog asking the user to name a new workspace">
+          Create a new space
         </message>
-        <message name="IDS_WORKSPACE_SAVE_DIALOG_NAME_LABEL" desc="Label for the workspace name text input in the save dialog">
+        <message name="IDS_WORKSPACE_CREATE_DIALOG_NAME_LABEL" desc="Label for the workspace name text input in the new space dialog">
           Name
         </message>
-        <message name="IDS_WORKSPACE_SAVE_DIALOG_NAME_PLACEHOLDER" desc="Placeholder text for the workspace name input field">
+        <message name="IDS_WORKSPACE_CREATE_DIALOG_NAME_PLACEHOLDER" desc="Placeholder text for the workspace name input field">
           Enter your space name
         </message>
-        <message name="IDS_WORKSPACE_SAVE_DIALOG_DEFAULT_NAME" desc="Default workspace name pre-filled in the save dialog">
+        <message name="IDS_WORKSPACE_CREATE_DIALOG_DEFAULT_NAME" desc="Default workspace name pre-filled in the new space dialog">
           My Space
         </message>
-        <message name="IDS_WORKSPACE_SAVE_DIALOG_SAVE_BUTTON" desc="Accept button label in the save workspace dialog">
-          Save
+        <message name="IDS_WORKSPACE_CREATE_DIALOG_CREATE_BUTTON" desc="Accept button label in the new space dialog">
+          Create
         </message>
         <message name="IDS_WORKSPACE_DIALOG_CANCEL_BUTTON" desc="Cancel button label shared by workspace dialogs">
           Cancel
@@ -333,17 +336,20 @@
         <message name="IDS_WORKSPACES_BUBBLE_SETTINGS_BUTTON" desc="Button in the workspaces bubble that opens workspaces settings">
           Settings
         </message>
-        <message name="IDS_WORKSPACES_BUBBLE_SAVE_BUTTON" desc="Button in the workspaces bubble that saves the current windows and tabs as a new workspace">
-          Save
+        <message name="IDS_WORKSPACES_BUBBLE_NEW_SPACE_BUTTON" desc="Button in the workspaces bubble that creates a new, empty workspace">
+          New Space
         </message>
         <message name="IDS_WORKSPACES_BUBBLE_EMPTY_TITLE" desc="Title shown in the workspaces bubble when the user has not yet created any workspaces">
           No spaces created
         </message>
         <message name="IDS_WORKSPACES_BUBBLE_EMPTY_BODY" desc="Explanatory text shown in the workspaces bubble when the user has not yet created any workspaces, telling them how to create one">
-          Create your first space by clicking the Save button below.
+          Create your first space by clicking the New Space button below.
         </message>
         <message name="IDS_WORKSPACE_ROW_STATS_TABS" desc="Stats label shown on a workspace row, giving the number of tabs in that workspace">
           {TAB_COUNT, plural, =1 {1 tab} other {# tabs}}
+        </message>
+        <message name="IDS_WORKSPACE_DEFAULT_NAME" desc="Name of the implicit workspace holding the tabs of a window that is not in a named space. Shown as the first row of the workspaces bubble.">
+          Default
         </message>
       </if>
       <message name="IDS_TOOLTIP_WORKSPACES_BUTTON" desc="The tooltip for the workspaces button in the tab strip">
