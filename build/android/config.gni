@@ -36,6 +36,8 @@ brave_chrome_java_deps = [
   "//brave/browser/brave_account/android:java",
   "//brave/browser/brave_origin/android:java",
   "//brave/browser/brave_shields/android:java",
+  "//brave/browser/browser_lock/android:incognito_reauth_overlay_resources",
+  "//brave/browser/browser_lock/android:java",
   "//brave/browser/custom_search_engines/android:java",
   "//brave/browser/customize_menu/android:java",
   "//brave/browser/download/android:java",

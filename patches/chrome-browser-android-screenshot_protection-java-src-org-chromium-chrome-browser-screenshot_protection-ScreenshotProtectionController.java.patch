@@ -1,0 +1,20 @@
+diff --git a/chrome/browser/android/screenshot_protection/java/src/org/chromium/chrome/browser/screenshot_protection/ScreenshotProtectionController.java b/chrome/browser/android/screenshot_protection/java/src/org/chromium/chrome/browser/screenshot_protection/ScreenshotProtectionController.java
+index c466ebd8b03f93063c8a1282d535c4d71dc42e8e..ce9b78945d75fcdc259c5ca6969fc1ecbf4bbb7f 100644
+--- a/chrome/browser/android/screenshot_protection/java/src/org/chromium/chrome/browser/screenshot_protection/ScreenshotProtectionController.java
++++ b/chrome/browser/android/screenshot_protection/java/src/org/chromium/chrome/browser/screenshot_protection/ScreenshotProtectionController.java
+@@ -4,6 +4,7 @@
+ 
+ package org.chromium.chrome.browser.screenshot_protection;
+ 
++import org.chromium.chrome.browser.privacy.BraveBrowserLockManager;
+ import static org.chromium.build.NullUtil.assertNonNull;
+ 
+ import android.app.Activity;
+@@ -276,6 +277,7 @@ public class ScreenshotProtectionController
+ 
+     /** Sets the attributes flags to secure if screenshots should be blocked */
+     private void updateScreenshotProtectionState() {
++        if (BraveBrowserLockManager.shouldForceSecureWindow()) return;
+         WindowManager.LayoutParams attributes = mWindow.getAttributes();
+         boolean currentSecureState =
+                 (attributes.flags & WindowManager.LayoutParams.FLAG_SECURE)
