@@ -68,6 +68,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_PSST)
+#include "brave/browser/psst/psst_log_service_factory.h"
 #include "brave/browser/psst/psst_reporter_service_factory.h"
 #include "brave/browser/psst/psst_settings_service_factory.h"
 #include "brave/browser/psst/psst_tab_web_contents_observer.h"
@@ -149,7 +150,8 @@ void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
             std::make_unique<psst::PsstUiDesktopPresenter>(
                 tab, psst_action_controller_->AsWeakPtr())),
         psst_settings_service, variations_service,
-        ISOLATED_WORLD_ID_BRAVE_INTERNAL);
+        PsstLogServiceFactory::GetForProfile(profile),
+        ISOLATED_WORLD_ID_BRAVE_PSST);
   }
 #endif
 

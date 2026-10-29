@@ -172,6 +172,43 @@ For backward compatibility, the policy script still supports the old way of
 receiving parameters via a `const params` variable, in addition to
 `window.__bravePsstParams`.
 
+#### Script logging
+
+Both scripts can write to the PSST diagnostics timeline, viewable at
+`brave://psst-internals`. The timeline interleaves these entries with the
+browser-side ones, so the whole flow can be followed in one place.
+
+Two ways to log, both available as soon as the script starts running:
+
+```js
+// Explicit, with an optional structured payload.
+psstLog('info', 'found 3 tasks', { taskCount: 3, selector: '#settings-list' })
+psstLog('warn', 'settings page layout changed')
+psstLog('error', 'toggle not found')
+
+// Or just use console - log/info/warn/error/debug are forwarded automatically
+// and still show up in DevTools as usual.
+console.warn('retrying')
+```
+
+Levels are `debug`, `info`, `warn` and `error`; anything else is recorded as
+`info`. The third argument must be a plain object (it is serialized as JSON for
+display) and is ignored otherwise.
+
+Don't log user identifiers, session tokens, cookies, or page content. The
+timeline is a debugging aid that users can read and copy out of
+`brave://psst-internals`, so it should only carry what is needed to follow the
+flow's decisions.
+
+`psstLog` is installed only in the isolated world the PSST scripts run in, so
+the website can neither see nor call it, and cannot spoof entries. The browser
+stamps each entry with the tab, frame and eTLD+1 it came from rather than
+trusting the script.
+
+Entries live in memory only — nothing is written to disk or sent off-device, and
+they are discarded when the browser exits. Logging is a no-op in private and Tor
+windows, and when the PSST feature flag is off.
+
 #### user.js
 
 Script which helps to find the user identifier for the currently-logged-in user
@@ -249,3 +286,9 @@ resources are located in:
 This dialog is responsible for displaying a list of tasks the PSST feature
 intends to apply, along with the progress and status for each task and the
 overall global progress.
+
+That directory holds two separate apps: the consent dialog above
+(`brave_psst_dialog.tsx` + `components/`) and the `brave://psst-internals`
+diagnostics page (`psst_internals.tsx` + `internals/`), which renders the log
+timeline described under [Script logging](#script-logging). The script side of
+that API is installed by `components/psst/renderer/`.

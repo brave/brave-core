@@ -19,6 +19,7 @@
 #include "brave/components/cosmetic_filters/renderer/cosmetic_filters_js_render_frame_observer.h"
 #include "brave/components/misc_metrics/renderer/web3_metrics_render_frame_observer.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
+#include "brave/components/psst/buildflags/buildflags.h"
 #include "brave/components/script_injector/renderer/script_injector_render_frame_observer.h"
 #include "brave/components/skus/common/features.h"
 #include "brave/components/skus/renderer/skus_render_frame_observer.h"
@@ -51,6 +52,11 @@
 #if BUILDFLAG(ENABLE_PLAYLIST)
 #include "brave/components/playlist/content/renderer/playlist_render_frame_observer.h"
 #include "brave/components/playlist/core/common/features.h"
+#endif
+
+#if BUILDFLAG(ENABLE_PSST)
+#include "brave/components/psst/core/common/features.h"
+#include "brave/components/psst/renderer/psst_render_frame_observer.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
@@ -257,6 +263,16 @@ void BraveContentRendererClient::RenderFrameCreated(
         ISOLATED_WORLD_ID_BRAVE_INTERNAL);
   }
 #endif  // BUILDFLAG(ENABLE_PLAYLIST)
+
+#if BUILDFLAG(ENABLE_PSST)
+  // Installs the script logging API in PSST's isolated world. Incognito/Tor
+  // have no log service, so the browser drops anything sent from them.
+  if (base::FeatureList::IsEnabled(psst::features::kEnablePsst) &&
+      !process_state::IsIncognitoProcess()) {
+    new psst::PsstRenderFrameObserver(render_frame,
+                                      ISOLATED_WORLD_ID_BRAVE_PSST);
+  }
+#endif  // BUILDFLAG(ENABLE_PSST)
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
   if (ai_chat::features::IsAIChatEnabled() &&

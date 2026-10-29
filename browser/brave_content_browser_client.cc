@@ -347,7 +347,10 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #endif
 
 #if BUILDFLAG(ENABLE_PSST)
+#include "brave/browser/psst/psst_log_receiver.h"
 #include "brave/browser/ui/webui/psst/brave_psst_dialog_ui.h"
+#include "brave/browser/ui/webui/psst/psst_internals_ui.h"
+#include "brave/components/psst/core/common/features.h"
 #include "brave/components/psst/core/common/psst_ui_common.mojom-shared.h"
 #endif
 
@@ -672,6 +675,16 @@ void BraveContentBrowserClient::
       &cosmetic_filters::CosmeticFiltersTabHelper::BindCosmeticFiltersHandler,
       &render_frame_host));
 
+#if BUILDFLAG(ENABLE_PSST)
+  // Only the PSST isolated world ever asks for this, and entries are dropped
+  // when the profile has no log service (off-the-record).
+  if (base::FeatureList::IsEnabled(psst::features::kEnablePsst)) {
+    associated_registry.AddInterface<psst::mojom::PsstLogSink>(
+        base::BindRepeating(&psst::PsstLogReceiver::BindPsstLogSink,
+                            &render_frame_host));
+  }
+#endif  // BUILDFLAG(ENABLE_PSST)
+
   ChromeContentBrowserClient::
       RegisterAssociatedInterfaceBindersForRenderFrameHost(render_frame_host,
                                                            associated_registry);
@@ -881,6 +894,8 @@ void BraveContentBrowserClient::RegisterTrustedWebUIInterfaceBrokers(
 #if BUILDFLAG(ENABLE_PSST)
   registry.ForWebUI<psst::BravePsstDialogUI>()
       .Add<psst::mojom::PsstConsentFactory>();
+  registry.ForWebUI<psst::PsstInternalsUI>()
+      .Add<psst::mojom::PsstInternalsHandler>();
 #endif
 }
 
