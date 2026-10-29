@@ -81,6 +81,7 @@
 
 #if BUILDFLAG(ENABLE_PSST)
 #include "brave/browser/ui/webui/psst/brave_psst_dialog_ui.h"
+#include "brave/browser/ui/webui/psst/psst_internals_ui.h"
 #endif
 
 namespace {
@@ -184,5 +185,6 @@ void RegisterChromeWebUIConfigs() {
 
 #if BUILDFLAG(ENABLE_PSST)
   map.AddWebUIConfig(std::make_unique<psst::BravePsstDialogUIConfig>());
+  map.AddWebUIConfig(std::make_unique<psst::PsstInternalsUIConfig>());
 #endif
 }
