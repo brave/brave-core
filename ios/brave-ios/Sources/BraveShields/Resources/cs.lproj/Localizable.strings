@@ -113,7 +113,7 @@
 "BraveShieldsGlobalControls" = "Globální ovládací prvky";
 
 /* Shields panel toggle label that would save webcompat report contact info data when enabled. */
-"BraveShieldsSaveContactInfo" = "Ukládat kontaktní údaje pro budoucí hlášení o poškozených stránkách";
+"BraveShieldsSaveContactInfo" = "Ukládat kontaktní údaje pro budoucí hlášení o nefunkčních stránkách";
 
 /* Description for shields panel toggle label that would save webcompat report contact info data when enabled. */
 "BraveShieldsSaveContactInfoDescription" = "Pokud poskytnete kontaktní údaje, budou uloženy pro budoucí hlášení.";

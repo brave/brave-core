@@ -1,5 +1,5 @@
 /* The title of the screen explaining Brave Shields */
-"AboutBraveShields" = "Seputar Brave Shields";
+"AboutBraveShields" = "Tentang Perisai Brave";
 
 /* The body of the screen explaining Brave Shields */
 "AboutBraveShieldsBody" = "Sering kali saat membuka situs terdapat cookies dan skrip yang berusaha mengidentifikasi pengguna dan perangkatnya.  Mereka ingin mengetahui siapa Anda dan mengikuti Anda di seluruh situs - melacak apa yang Anda lakukan di setiap situs.\n\nBrave memblokir hal-hal tersebut sehingga Anda dapat menjelajah tanpa merasa diikuti.";
@@ -41,13 +41,13 @@
 "AutoRedirectAMPPages" = "Halaman AMP yang Diarahkan Ulang Otomatis";
 
 /* This is a description for a setting toggle that enables/disables auto-redirect of Google's AMP (Accelerated Mobile Page) pages to the original (non-AMP) pages. The text 'AMP' and 'Accelerated Mobile Page' is not to be translated. */
-"AutoRedirectAMPPagesDescription" = "Selalu kunjungi hanya URL laman orisinal (non-AMP), dan bukan versi Laman Seluler Terakselerasi Google";
+"AutoRedirectAMPPagesDescription" = "Selalu kunjungi URL halaman aslinya (non-AMP), dan bukan versi Halaman Seluler Terakselerasi Google";
 
 /* This is a title for a setting toggle that enables/disables auto-redirection of tracking pages (Debouncing). Debouncing skips certain intermediate tracker pages and goes directly to the target without the intermediate tracker page. */
 "AutoRedirectTrackingURLs" = "URL Pelacakan Alih Otomatis";
 
 /* This is a description for a setting toggle that enables/disables auto-redirect of tracking URLs (i.e. Debouncing). */
-"AutoRedirectTrackingURLsDescription" = "Mengaktifkan dukungan untuk melewati pengarahan ulang tingkat atas URL pelacakan";
+"AutoRedirectTrackingURLsDescription" = "Aktifkan dukungan karena melintasi pengalih ulang URL pelacakan utama";
 
 /* A picker title for selecting a automatic shred setting option */
 "AutoShred" = "Musnahkan Otomatis";
@@ -77,7 +77,7 @@
 "BlockScripts" = "Blokir Skrip";
 
 /* No comment provided by engineer. */
-"BlockScriptsDescription" = "Memblokir JavaScript (dapat merusak situs).";
+"BlockScriptsDescription" = "Memblokir Javascript (mungkin merusak situs).";
 
 /* Title for the brave player feature */
 "BravePlayer" = "Pemutar Brave";
@@ -101,10 +101,10 @@
 "BraveShieldsAdvancedControls" = "Kontrol Tingkat Lanjut";
 
 /* The number of ads and trackers blocked will be next to this */
-"BraveShieldsBlockedCountLabel" = "Iklan dan hal mencurigakan lainnya diblokir";
+"BraveShieldsBlockedCountLabel" = "Iklan dan hal mengerikan lainnya diblokir";
 
 /* What the screen reader will read out when the user has VoiceOver on and taps on the question-mark info button on the shields panel */
-"BraveShieldsBlockedInfoButtonAccessibilityLabel" = "Pelajari lebih lanjut";
+"BraveShieldsBlockedInfoButtonAccessibilityLabel" = "Ketahui selengkapnya";
 
 /* No comment provided by engineer. */
 "BraveShieldsGlobalChangeButton" = "Ubah Bawaan Global Perisai Brave";
@@ -119,10 +119,10 @@
 "BraveShieldsSaveContactInfoDescription" = "Jika Anda memberikan info kontak, maka info akan disimpan untuk laporan di masa mendatang";
 
 /* No comment provided by engineer. */
-"BraveShieldsSiteBroken" = "Jika situs ini tampak rusak, coba turunkan Shield";
+"BraveShieldsSiteBroken" = "Jika situs ini tampak rusak, coba turunkan Perisai";
 
 /* Context: 'Brave Shields Up' or 'Brave Shields Down' */
-"BraveShieldsStatusTitle" = "Brave Shields";
+"BraveShieldsStatusTitle" = "Perisai Brave";
 
 /* Context: The 'Down' in 'Brave Shields Down' */
 "BraveShieldsStatusValueDown" = "Turun";

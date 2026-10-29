@@ -1517,5 +1517,5 @@
 "wallet.web3SettingsEnableNFTDiscoveryFooter" = "Samodejno dodajte NFT-je, ki jih imate, v denarnico z uporabo API-jev tretjih oseb. [Preberite več](%@)";
 
 /* A description of an ZCash account, displayed in Accounts tab. */
-"wallet.zecAccountDescription" = "Zcash";
+"wallet.zecAccountDescription" = "ZCash";
 
