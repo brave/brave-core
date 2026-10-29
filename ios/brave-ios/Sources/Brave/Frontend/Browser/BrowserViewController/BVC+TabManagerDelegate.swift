@@ -89,6 +89,14 @@ extension BrowserViewController: TabManagerDelegate {
       },
       scanAddressQRCodeHandler: { [weak self] completion in
         self?.scanAddressQRCode(completion: completion)
+      },
+      openTabHandler: { [weak self] url in
+        guard let self else { return }
+        self.tabManager.addTabAndSelect(
+          URLRequest(url: url),
+          afterTab: self.tabManager.selectedTab,
+          isPrivate: false  // wallet webui only in regular tab
+        )
       }
     )
     let braveShieldsHelper: BraveShieldsTabHelper = .init(

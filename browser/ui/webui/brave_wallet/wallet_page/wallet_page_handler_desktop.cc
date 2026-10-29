@@ -52,4 +52,9 @@ void WalletPageHandler::ScanQRCode(ScanQRCodeCallback callback) {
   NOTREACHED();
 }
 
+void WalletPageHandler::OpenTab(const GURL& url) {
+  // iOS/Mobile only, desktop uses chrome.tabs.
+  NOTREACHED();
+}
+
 }  // namespace brave_wallet

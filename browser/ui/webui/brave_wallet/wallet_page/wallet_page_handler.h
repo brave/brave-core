@@ -10,6 +10,7 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/receiver.h"
+#include "url/gurl.h"
 
 namespace content {
 class WebUIController;
@@ -34,6 +35,7 @@ class WalletPageHandler : public mojom::PageHandler {
   void ShowOnboarding(bool is_new_wallet) override;
   void OpenWalletHome() override;
   void ScanQRCode(ScanQRCodeCallback callback) override;
+  void OpenTab(const GURL& url) override;
 
  private:
   raw_ptr<Profile> profile_ = nullptr;  // NOT OWNED
