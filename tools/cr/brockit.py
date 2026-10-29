@@ -384,6 +384,16 @@ _UPGRADE_COMMIT_WITH_PATCHES_PREFIXES = (
     'Update patches from Chromium ',
 )
 
+# The toolchains checked during an upgrade, keyed by their spec key.
+_TOOLCHAINS = {
+    tc.spec.key: tc
+    for tc in (
+        toolchain.WindowsToolchain(),
+        toolchain.XcodeToolchain(),
+        toolchain.RustToolchain(),
+    )
+}
+
 # The link to a specific commit in the Chromium source code.
 GOOGLESOURCE_COMMIT_LINK = f'{versioning.GOOGLESOURCE_LINK}/+/{{commit}}'
 
@@ -621,6 +631,10 @@ class ContinuationFile:
     # This flag indicates that the prerun adivisories have been shown to the
     # user.
     has_shown_advisory: bool = False
+
+    # The `(toolchain key, culprit)` pairs the prerun checks found published,
+    # which are repinned once the version commit is in.
+    recovered_toolchains: tuple[tuple[str, str], ...] = ()
 
     # The continuation data for the patches.
     apply_record: ApplyPatchesRecord | None = field(default=None)
@@ -1541,21 +1555,24 @@ class Upgrade(Versioned):
         # for certain things that may have changed that require attention
         _ensure_chromium_tags(self.working_version, self.target_version)
 
-        toolchains = (
-            toolchain.WindowsToolchain(),
-            toolchain.XcodeToolchain(),
-            toolchain.RustToolchain(),
-        )
         advisories = []
-        for tc in toolchains:
+        recovered = []
+        for tc in _TOOLCHAINS.values():
             advisory = tc.check(self.working_version, self.target_version)
             if advisory is None:
                 continue
-            # Some toolchain can be recovered before showing the advisory, but
-            # kicking out the CI job and committing the latest toolchain update.
-            if tc.recover(self.target_version, advisory.commit_hash):
+            # Some toolchain can be recovered before showing the advisory, by
+            # kicking out the CI job. The repin is committed later on by
+            # `_repin_recovered_toolchains`.
+            if tc.ensure_published(self.target_version):
+                recovered.append((tc.spec.key, advisory.commit_hash))
                 continue
             advisories.append(advisory)
+
+        replace(
+            ContinuationFile.load(target_version=self.target_version),
+            recovered_toolchains=tuple(recovered),
+        ).save()
 
         if not advisories:
             return True
@@ -1584,6 +1601,27 @@ class Upgrade(Versioned):
         ).save()
 
         return False
+
+    def _repin_recovered_toolchains(self):
+        """Repins the toolchains recovered by `_prerun_checks`.
+
+        This runs after `_update_package_version`, so that the version commit
+        is always the first commit of the upgrade. A repin failing at this
+        point does not stop the upgrade, but the user is warned to repin the
+        toolchain manually.
+        """
+        continuation = ContinuationFile.load(target_version=self.target_version)
+        for key, culprit in continuation.recovered_toolchains:
+            tc = _TOOLCHAINS[key]
+            try:
+                tc.repin(self.target_version, culprit)
+            except (InvalidInputException, BadOutcomeException) as e:
+                logging.warning(
+                    'Failed to repin the %s toolchain: %s\n%s',
+                    tc.spec.label,
+                    e,
+                    tc.spec.advice,
+                )
 
     def _continue(self, apply_record: ApplyPatchesRecord | None = None):
         """Continues the upgrade process.
@@ -1708,6 +1746,7 @@ class Upgrade(Versioned):
             )
 
         self._update_package_version()
+        self._repin_recovered_toolchains()
 
         try:
             terminal.run_pnpm_command('init')
@@ -1781,6 +1820,7 @@ class Upgrade(Versioned):
             )
 
         if not self.is_continuation:
+            recovered_toolchains = ()
             if ack_advisory:
                 # This check for the use of `--ack-advisory` for the actual
                 # case where advisory has been shown is to avoid accidental
@@ -1799,6 +1839,11 @@ class Upgrade(Versioned):
                         'Use [bold cyna]--ack-advisory[/] just after being '
                         'shown advisories.'
                     )
+                if continuation is not None:
+                    # The prerun checks are skipped when acknowledging, so the
+                    # toolchains they recovered are carried over to be
+                    # repinned.
+                    recovered_toolchains = continuation.recovered_toolchains
             # We initialise the continuation file here rather than in the
             # constructor to avoid overwritting the file if the user made the
             # mistake of calling brockit again without `--continue`.
@@ -1806,6 +1851,7 @@ class Upgrade(Versioned):
                 target_version=self.target_version,
                 working_version=self.working_version,
                 base_version=self.base_version,
+                recovered_toolchains=recovered_toolchains,
             ).save()
 
         if with_github and not GhCli().is_logged_in():
