@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java b/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
-index c3ed0793ee4ecbc5aa65e547152b627ca6b3f873..c1b13d5824750809fd097c773975bf8efaf623f4 100644
+index 2eee4b992490386e93c4f34772468102b775e927..a8beabbccc9117e0d6e95fb3c118fcc7d8bfea86 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
 @@ -209,10 +209,10 @@ public class ManageSyncSettings extends ChromeBaseSettingsFragment
@@ -24,7 +24,7 @@ index c3ed0793ee4ecbc5aa65e547152b627ca6b3f873..c1b13d5824750809fd097c773975bf8e
          if (mSyncService.isUsingExplicitPassphrase()
                  && preference
                          .getKey()
-@@ -394,6 +395,9 @@ public class ManageSyncSettings extends ChromeBaseSettingsFragment
+@@ -402,6 +403,9 @@ public class ManageSyncSettings extends ChromeBaseSettingsFragment
          CentralAccountCardPreference centralAccountCardPreference =
                  findPreference(PREF_CENTRAL_ACCOUNT_CARD_PREFERENCE);
          IdentityManager identityManager = getIdentityManager(profile);
@@ -34,16 +34,16 @@ index c3ed0793ee4ecbc5aa65e547152b627ca6b3f873..c1b13d5824750809fd097c773975bf8e
          centralAccountCardPreference.initialize(
                  assumeNonNull(identityManager.getPrimaryAccountInfo()),
                  ProfileDataCache.createWithDefaultImageSizeAndNoBadge(
-@@ -586,7 +590,7 @@ public class ManageSyncSettings extends ChromeBaseSettingsFragment
+@@ -594,7 +598,7 @@ public class ManageSyncSettings extends ChromeBaseSettingsFragment
       * this state.
       */
      private void updateSyncPreferences() {
 -        @Nullable AccountInfo primaryAccount = getIdentityManager().getPrimaryAccountInfo();
-+        @Nullable AccountInfo primaryAccount = new AccountInfo.Builder("", new org.chromium.google_apis.gaia.GaiaId("")).build();
++        @Nullable AccountInfo primaryAccount = new AccountInfo.Builder("", new org.chromium.google_apis.gaia.GaiaId("none")).build();
          // May happen if account is removed from the device while this screen is shown.
          if (primaryAccount == null) {
              finishCurrentSettings();
-@@ -1022,6 +1026,7 @@ public class ManageSyncSettings extends ChromeBaseSettingsFragment
+@@ -1030,6 +1034,7 @@ public class ManageSyncSettings extends ChromeBaseSettingsFragment
  
      /** Whether there is no primary account, leaving this page with nothing to describe. */
      private boolean isSignedOut() {
