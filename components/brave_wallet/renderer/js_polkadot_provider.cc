@@ -96,9 +96,9 @@ JSPolkadotProvider::~JSPolkadotProvider() = default;
 gin::ObjectTemplateBuilder JSPolkadotProvider::GetObjectTemplateBuilder(
     v8::Isolate* isolate) {
   return gin::Wrappable<JSPolkadotProvider>::GetObjectTemplateBuilder(isolate)
-      .SetProperty("version", &JSPolkadotProvider::GetVersion)
-      .SetLazyDataProperty("enable", &JSPolkadotProvider::GetEnableObject)
-      .SetLazyDataProperty("connect", &JSPolkadotProvider::GetConnectObject);
+      .SetProperty<&JSPolkadotProvider::GetVersion>("version")
+      .SetLazyDataProperty<&JSPolkadotProvider::GetEnableObject>("enable")
+      .SetLazyDataProperty<&JSPolkadotProvider::GetConnectObject>("connect");
 }
 
 const gin::WrapperInfo* JSPolkadotProvider::wrapper_info() const {
