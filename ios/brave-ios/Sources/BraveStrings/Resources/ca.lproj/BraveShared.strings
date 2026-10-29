@@ -1060,6 +1060,18 @@
 /* No comment provided by engineer. */
 "ntp.sponsoredImageDescription" = "Estàs donant suport als creadors i editors de contingut en veure aquesta imatge patrocinada.";
 
+/* The title of a picker for user to pick which type of topsites to show in NTP */
+"ntp.topsites" = "Principals llocs";
+
+/* Favorites type of topsites. Selection means NTP will display favorites tiles if there is any. */
+"ntp.topsitesTypeFavorites" = "Preferits";
+
+/* MostVisited type of topsites. Selection means NTP will display most visited tiles if there is any. */
+"ntp.topsitesTypeMostVisited" = "Visitats amb freqüència";
+
+/* None type of topsites. Selection means there won't be any topsites tiles in NTP */
+"ntp.topsitesTypeNone" = "Cap";
+
 /* The placeholder says 'Terms of Service'. So full sentence goes like: 'By turning Rewards, you agree to the Terms of Service'. */
 "ntp.turnRewardsTos" = "Activant Recompenses, estàs d'acord en %@.";
 
@@ -1450,12 +1462,6 @@
 /* The title for the alert that shows up when an item is expired */
 "playList.expiredAlertTitle" = "Vídeo caducat";
 
-/* Number of items in the playlsit folder. Example: '10 items' */
-"playlist.folderItemCountPlural" = "%d elements";
-
-/* Title for when there's a single item inside of a folder */
-"playlist.foldersCountSingular" = "%d element";
-
 /* Description for load resources error alert */
 "playList.loadResourcesErrorAlertDescription" = "Hi ha hagut un problema en carregar el recurs!";
 
@@ -1587,12 +1593,6 @@
 
 /* The title of the screen to create a new folder */
 "playlistFolders.newFolderScreenTitle" = "Nova llista de reproducció";
-
-/* The sub-title of the folder. Example: This folder contains 10 Items. This folder contains 3 Items. */
-"playlistFolders.subtitleItemCount" = "%lld elements";
-
-/* The sub-title of the folder. Example: This folder contains ONE item. This folder contains 1 Item. */
-"playlistFolders.subtitleItemSingleCount" = "1 element";
 
 /* The title of a folder when the user enters no name (untitled) */
 "playlistFolders.untitledFolderTitle" = "Llista de reproducció sense títol";
@@ -2410,12 +2410,6 @@
 /* Title of the settings toggle that enables Sponsored Ads */
 "settings.sponsoredAdsEnabledTitle" = "Activa els anuncis patrocinats";
 
-/* Description to explain the survey panelist toggle */
-"settings.surveyPanelistDescription" = "Permet que Brave et mostri enllaços a enquestes privades a la pàgina de nova pestanya. Les enquestes ens ajuden a desenvolupar millors característiques i mesurar l'efectivitat de les campanyes publicitàries basades en el navegador. [Més informació](%@)";
-
-/* Title to explain the survey panelist toggle */
-"settings.surveyPanelistTitle" = "Permetre les enquestes de Brave";
-
 /* Header for the YouTube settings section */
 "settings.youtube" = "YouTube";
 
@@ -3060,12 +3054,6 @@
 
 /* Accessibility label for a button that allows users to shred their tabs (erase them & associated data) */
 "tabGrid.shredTabsAccessibilityLabel" = "Pestanyes eliminades";
-
-/* A label in the tab tray mode switcher shown when there are 0 or more than 1 regular tabs open e.g. '129 Tabs' */
-"tabGrid.tabsCountFormatPlural" = "{0, plural, one {%lld pestanya} other {%lld pestanyes}}";
-
-/* A label in the tab tray mode switcher shown when there is 1 regular tab open e.g. '1 Tab' */
-"tabGrid.tabsCountFormatSingular" = "%lld pestanya";
 
 /* Accessibility label for a button that when tapped presents the users history & recently closed tabs */
 "tabGrid.viewHistoryAccessibilityLabel" = "Veure historial";

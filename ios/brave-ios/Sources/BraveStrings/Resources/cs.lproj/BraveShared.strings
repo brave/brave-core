@@ -1060,6 +1060,18 @@
 /* No comment provided by engineer. */
 "ntp.sponsoredImageDescription" = "Prohlížením tohoto sponzorovaného obrázku podporujete tvůrce a vydavatele obsahu.";
 
+/* The title of a picker for user to pick which type of topsites to show in NTP */
+"ntp.topsites" = "Top weby";
+
+/* Favorites type of topsites. Selection means NTP will display favorites tiles if there is any. */
+"ntp.topsitesTypeFavorites" = "Oblíbené";
+
+/* MostVisited type of topsites. Selection means NTP will display most visited tiles if there is any. */
+"ntp.topsitesTypeMostVisited" = "Často navštěvované";
+
+/* None type of topsites. Selection means there won't be any topsites tiles in NTP */
+"ntp.topsitesTypeNone" = "Žádné";
+
 /* The placeholder says 'Terms of Service'. So full sentence goes like: 'By turning Rewards, you agree to the Terms of Service'. */
 "ntp.turnRewardsTos" = "Zapnutím Odměny souhlasíte s %@.";
 
@@ -1450,12 +1462,6 @@
 /* The title for the alert that shows up when an item is expired */
 "playList.expiredAlertTitle" = "Platnost videa vypršela";
 
-/* Number of items in the playlsit folder. Example: '10 items' */
-"playlist.folderItemCountPlural" = "%d položky/položek";
-
-/* Title for when there's a single item inside of a folder */
-"playlist.foldersCountSingular" = "%d položka";
-
 /* Description for load resources error alert */
 "playList.loadResourcesErrorAlertDescription" = "Došlo k problému při načítání zdroje!";
 
@@ -1587,12 +1593,6 @@
 
 /* The title of the screen to create a new folder */
 "playlistFolders.newFolderScreenTitle" = "Nový seznam stop";
-
-/* The sub-title of the folder. Example: This folder contains 10 Items. This folder contains 3 Items. */
-"playlistFolders.subtitleItemCount" = "%lld položky/položek";
-
-/* The sub-title of the folder. Example: This folder contains ONE item. This folder contains 1 Item. */
-"playlistFolders.subtitleItemSingleCount" = "1 položku";
 
 /* The title of a folder when the user enters no name (untitled) */
 "playlistFolders.untitledFolderTitle" = "Seznam skladeb bez názvu";
@@ -2410,12 +2410,6 @@
 /* Title of the settings toggle that enables Sponsored Ads */
 "settings.sponsoredAdsEnabledTitle" = "Povolit sponzorované reklamy";
 
-/* Description to explain the survey panelist toggle */
-"settings.surveyPanelistDescription" = "Umožňuje službě Brave zobrazovat na nově kartě odkazy na soukromé průzkumy. Průzkumy nám pomáhají vytvářet lepší funkce a měřit účinnost reklamních kampaní v prohlížeči. [Další informace](%@)";
-
-/* Title to explain the survey panelist toggle */
-"settings.surveyPanelistTitle" = "Povolit průzkumy Brave";
-
 /* Header for the YouTube settings section */
 "settings.youtube" = "YouTube";
 
@@ -3060,12 +3054,6 @@
 
 /* Accessibility label for a button that allows users to shred their tabs (erase them & associated data) */
 "tabGrid.shredTabsAccessibilityLabel" = "Smazat karty";
-
-/* A label in the tab tray mode switcher shown when there are 0 or more than 1 regular tabs open e.g. '129 Tabs' */
-"tabGrid.tabsCountFormatPlural" = "%lld karta";
-
-/* A label in the tab tray mode switcher shown when there is 1 regular tab open e.g. '1 Tab' */
-"tabGrid.tabsCountFormatSingular" = "%lld karta";
 
 /* Accessibility label for a button that when tapped presents the users history & recently closed tabs */
 "tabGrid.viewHistoryAccessibilityLabel" = "Zobrazit historii";
