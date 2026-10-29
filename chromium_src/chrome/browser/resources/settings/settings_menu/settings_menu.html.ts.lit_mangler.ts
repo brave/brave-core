@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { mangle } from 'lit_mangler'
+import { mangle, mangleAll } from 'lit_mangler'
 
 const getById = (root: DocumentFragment, id: string) => {
   const element = root.getElementById(id)
@@ -62,11 +62,16 @@ mangle((root) => {
     + menuItem('leoAssistant', '/leo-ai', 'product-brave-leo', 'leoAssistant')
     + menuItem('braveSync', '/braveSync', 'product-sync', 'braveSync'))
 
-  // Search and Extensions follow Sync.
-  getById(root, 'braveSync').after(getById(root, 'search'))
-  insertAfter(getById(root, 'search'),
-    menuItem('extensions', '/extensions', 'browser-extensions',
-             'braveDefaultExtensions'))
+  // Search and Extensions follow Sync. Upstream's Search items are removed
+  // below.
+  insertAfter(getById(root, 'braveSync'),
+    `<a role="menuitem" id="search" href="/search" class="cr-nav-menu-item">
+      <cr-icon icon="settings:search"></cr-icon>
+      <span class="menu-label">$i18n{searchPageTitle}</span>
+      <cr-ripple></cr-ripple>
+    </a>`
+    + menuItem('extensions', '/extensions', 'browser-extensions',
+               'braveDefaultExtensions'))
 
   // Autofill is an advanced setting.
   getById(root, 'languages').before(getById(root, 'autofill'))
@@ -91,3 +96,10 @@ mangle((root) => {
     </a>`)
   about.remove()
 })
+
+// Upstream places Search in one of two nested templates, depending on
+// `settingsRefresh2026Enabled_`; Brave shows it after Sync either way.
+mangleAll(
+  (root) => getById(root, 'search').remove(),
+  (t) => t.text.trimStart().startsWith('<a role="menuitem" id="search"'),
+)
