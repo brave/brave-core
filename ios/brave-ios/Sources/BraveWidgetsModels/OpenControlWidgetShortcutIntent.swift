@@ -10,23 +10,24 @@ import UIKit
 // cannot be added outside that file. The cases are a trivial `Int`.
 extension WidgetShortcut: @unchecked Sendable {}
 
-/// Marks the intents in this module so the app and widget extension can resolve them.
-public struct BraveWidgetsModelsPackage: AppIntentsPackage {}
-
-/// Scene action for the configurable shortcut control.
 @available(iOS 26.0, *)
 public struct OpenControlWidgetShortcutIntent: UISceneAppIntent {
   public static let title: LocalizedStringResource = "Open Brave"
   public static let openAppWhenRun: Bool = true
-  public static let isDiscoverable: Bool = false
 
+  /// Control Center restores this after `init()`. The stored `WidgetShortcut` does not come back.
   @Parameter(title: "Shortcut")
-  public var shortcut: ShortcutControlOption?
+  public var shortcutValue: Int?
 
   public init() {}
 
-  public init(shortcut: ShortcutControlOption?) {
-    self.shortcut = shortcut
+  public init(shortcut: WidgetShortcut?) {
+    self.shortcutValue = shortcut?.rawValue
+  }
+
+  public var shortcut: WidgetShortcut? {
+    guard let shortcutValue else { return nil }
+    return WidgetShortcut(rawValue: shortcutValue)
   }
 }
 
