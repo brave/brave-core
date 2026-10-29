@@ -141,7 +141,8 @@ v8::Local<v8::Value> JSPolkadotInjected::BuildApiObject(
 JSPolkadotInjected* JSPolkadotInjected::InjectedFromCallbackData(
     const v8::FunctionCallbackInfo<v8::Value>& info) {
   JSPolkadotInjected* injected = nullptr;
-  if (!gin::ConvertFromV8(info.GetIsolate(), info.Data(), &injected)) {
+  if (!gin::ConvertFromV8(info.GetIsolate(), info.DataV2().As<v8::Value>(),
+                          &injected)) {
     return nullptr;
   }
   return injected;
