@@ -27,23 +27,21 @@ struct QuickSearchView: View {
         Button {
           onAiChat()
         } label: {
-          Image(braveSystemName: "leo.product.brave-leo")
-            .resizable()
-            .scaledToFit()
-            .foregroundStyle(.white)
-            .padding(4)
-            .background(LinearGradient(braveSystemName: .iconsActive))
-            .frame(width: 28.0, height: 28.0)
-            .clipShape(.rect(cornerRadius: 8))
-            .padding(8)
-            .contentShape(.rect)
-        }
-        .accessibilityLabel(
-          String(
-            format: Strings.searchEngineFormatText,
-            Strings.quickSearchAskLeoAccessibility
+          Label(
+            String(
+              format: Strings.searchEngineFormatText,
+              Strings.quickSearchAskLeoAccessibility
+            ),
+            braveSystemImage: "leo.product.brave-leo"
           )
-        )
+          .labelStyle(.iconOnly)
+          .font(.system(size: 20))
+          .foregroundStyle(.white)
+          .frame(width: 28.0, height: 28.0)
+          .background(LinearGradient(braveSystemName: .iconsActive), in: .rect(cornerRadius: 8))
+          .padding(8)
+          .contentShape(.rect)
+        }
         .padding(.trailing, 8)
       }
       ScrollView(.horizontal, showsIndicators: false) {
@@ -85,15 +83,13 @@ struct QuickSearchView: View {
       Button {
         onOpenMore()
       } label: {
-        Image(braveSystemName: "leo.more.horizontal")
-          .resizable()
-          .scaledToFit()
+        Label(Strings.quickSearchEditAccessibility, braveSystemImage: "leo.more.horizontal")
+          .labelStyle(.iconOnly)
+          .font(.title3)
           .foregroundStyle(Color(braveSystemName: .iconDefault))
-          .frame(width: 20.0, height: 20.0)
           .padding(12)
           .contentShape(.rect)
       }
-      .accessibilityLabel(Strings.quickSearchEditAccessibility)
       .padding(.horizontal, 4)
     }
     .padding(.horizontal, 8)
