@@ -360,20 +360,35 @@ BraveBrowserView::BraveBrowserView(BrowserWindowInterface* browser)
   // Only normal window (tabbed) should have sidebar.
   const bool can_have_sidebar = sidebar::CanUseSidebar(browser_);
   if (can_have_sidebar) {
+    std::optional<size_t> sidebar_index;
+    if (tabs::IsUpstreamVerticalTabsForceEnabled() &&
+        vertical_tab_strip_region_view_) {
+      // As vertical tab strip could be drawn over atop the sidebar, we need to
+      // make sidebar the prior to the vertical tab strip for z-ordering.
+
+      auto vertical_tab_strip_region_view_index =
+          GetIndexOf(vertical_tab_strip_region_view_);
+      CHECK(vertical_tab_strip_region_view_index);
+      sidebar_index = *vertical_tab_strip_region_view_index;
+    }
+
     // Unretained() is safe: `this` owns `sidebar_container_view_` (added via
     // AddChildView), so the container cannot outlive the callback target.
-    sidebar_container_view_ =
-        AddChildView(std::make_unique<SidebarContainerView>(
+    sidebar_container_view_ = AddChildViewAt(
+        std::make_unique<SidebarContainerView>(
             browser_,
             base::BindRepeating(
                 &BraveBrowserView::OnSidebarControlViewVisibilityChanged,
-                base::Unretained(this))));
+                base::Unretained(this))),
+        sidebar_index.value_or(children().size()));
 
     side_panel_->SetResizeArea(
         std::make_unique<views::BraveSidePanelResizeArea>(side_panel_));
 
 #if defined(USE_AURA)
-    sidebar_host_view_ = AddChildView(std::make_unique<views::View>());
+    sidebar_host_view_ =
+        AddChildViewAt(std::make_unique<views::View>(),
+                       sidebar_index.value_or(children().size()));
 #endif
 
     pref_change_registrar_.Add(
