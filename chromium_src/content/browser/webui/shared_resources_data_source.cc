@@ -8,6 +8,7 @@
 
 #include "base/check.h"
 #include "base/functional/bind.h"
+#include "base/i18n/language_tag.h"
 #include "base/memory/ref_counted_memory.h"
 #include "base/no_destructor.h"
 #include "base/strings/string_split.h"
@@ -39,11 +40,12 @@ bool ShouldHandleWebUIRequestCallback(const std::string& path) {
   static base::NoDestructor<std::string> language_code("");
 
   if (language_code->empty()) {
-    const auto app_locale =
+    const base::i18n::LanguageTag app_locale =
         content::GetContentClient()->browser()->GetApplicationLocale();
 
-    const std::vector<std::string> locale_components = base::SplitString(
-        app_locale, ".", base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
+    const std::vector<std::string> locale_components =
+        base::SplitString(app_locale.tag_string(), ".", base::KEEP_WHITESPACE,
+                          base::SPLIT_WANT_NONEMPTY);
     if (locale_components.empty()) {
       return false;
     }
