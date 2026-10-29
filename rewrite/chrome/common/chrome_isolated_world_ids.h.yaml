@@ -14,3 +14,7 @@ substitutions:
       max_value: ISOLATED_WORLD_ID_EXTENSIONS
       entries:
         - ISOLATED_WORLD_ID_BRAVE_INTERNAL
+        # PSST gets its own world so that the logging API and the console shim
+        # installed for its scripts don't leak into, or capture output from,
+        # the other Brave features sharing ISOLATED_WORLD_ID_BRAVE_INTERNAL.
+        - ISOLATED_WORLD_ID_BRAVE_PSST
