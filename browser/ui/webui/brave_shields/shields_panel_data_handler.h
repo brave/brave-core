@@ -11,6 +11,7 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/memory/raw_ref.h"
+#include "base/memory/weak_ptr.h"
 #include "base/task/cancelable_task_tracker.h"
 #include "brave/browser/brave_shields/brave_shields_tab_helper.h"
 #include "brave/components/brave_shields/core/common/brave_shields_panel.mojom.h"
@@ -95,8 +96,10 @@ class ShieldsPanelDataHandler
   brave_shields::mojom::SiteBlockInfo site_block_info_;
   base::CancelableTaskTracker cancelable_task_tracker_;
   raw_ptr<TopChromeWebUIController> const webui_controller_;  // not owned
-  raw_ptr<brave_shields::BraveShieldsTabHelper>
-      active_shields_data_controller_ = nullptr;      // not owned
+  // Invalidated when the tab closes, before the tab strip notifies this.
+  base::WeakPtr<brave_shields::BraveShieldsTabHelper>
+      active_shields_data_controller_;
+
   raw_ptr<favicon::FaviconService> favicon_service_;  // not owned
   const raw_ref<brave_shields::BraveShieldsSettingsService>
       brave_shields_settings_;  // not owned

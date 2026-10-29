@@ -27,6 +27,7 @@
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/common/url_constants.h"
 #include "extensions/common/constants.h"
@@ -107,8 +108,8 @@ void BraveShieldsActionController::AddObserverToWebContentsIfPresent(
   if (!contents) {
     return;
   }
-  if (auto* tab_helper =
-          brave_shields::BraveShieldsTabHelper::FromWebContents(contents)) {
+  if (auto* tab_helper = brave_shields::BraveShieldsTabHelper::From(
+          tabs::TabInterface::MaybeGetFromContents(contents))) {
     if (!tab_helper->HasObserver(this)) {
       tab_helper->AddObserver(this);
     }
@@ -120,8 +121,8 @@ void BraveShieldsActionController::RemoveObserverFromWebContents(
   if (!contents) {
     return;
   }
-  if (auto* tab_helper =
-          brave_shields::BraveShieldsTabHelper::FromWebContents(contents)) {
+  if (auto* tab_helper = brave_shields::BraveShieldsTabHelper::From(
+          tabs::TabInterface::MaybeGetFromContents(contents))) {
     if (tab_helper->HasObserver(this)) {
       tab_helper->RemoveObserver(this);
     }
@@ -174,8 +175,8 @@ BraveShieldsActionController::GetImageSource(
   std::string badge_text;
 
   if (web_contents) {
-    auto* shields_data_controller =
-        brave_shields::BraveShieldsTabHelper::FromWebContents(web_contents);
+    auto* shields_data_controller = brave_shields::BraveShieldsTabHelper::From(
+        tabs::TabInterface::MaybeGetFromContents(web_contents));
 
     int count = shields_data_controller->GetTotalBlockedCount();
     if (count > 0) {
@@ -296,8 +297,8 @@ std::u16string BraveShieldsActionController::GetTooltipText() const {
   if (content::WebContents* web_contents =
           tab_strip_model_->GetActiveWebContents()) {
     if (auto* shields_data_controller =
-            brave_shields::BraveShieldsTabHelper::FromWebContents(
-                web_contents)) {
+            brave_shields::BraveShieldsTabHelper::From(
+                tabs::TabInterface::MaybeGetFromContents(web_contents))) {
       int count = shields_data_controller->GetTotalBlockedCount();
       if (count > 0) {
         return l10n_util::GetStringFUTF16Int(IDS_BRAVE_SHIELDS_ICON_TOOLTIP,

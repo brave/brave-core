@@ -9,6 +9,7 @@
 
 #include "base/check.h"
 #include "base/feature_list.h"
+#include "brave/browser/brave_shields/brave_shields_tab_helper.h"
 #include "brave/browser/image_metadata_stripper/file_upload_controller.h"
 #include "brave/browser/misc_metrics/captcha_metrics.h"
 #include "brave/browser/misc_metrics/page_metrics_tab_helper.h"
@@ -247,6 +248,9 @@ void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
   web_discovery_tab_helper_ =
       web_discovery::WebDiscoveryTabHelper::MaybeCreate(tab, *profile);
 #endif
+
+  brave_shields_tab_helper_ =
+      std::make_unique<brave_shields::BraveShieldsTabHelper>(tab);
 
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
   geolocation_permission_tab_helper_ =
