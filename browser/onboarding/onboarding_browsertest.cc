@@ -26,6 +26,7 @@
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
@@ -93,7 +94,8 @@ class OnboardingBrowserTest : public InProcessBrowserTest {
 
     // Only the load that follows the blocked item counts.
     did_stop_loading_contents_.erase(contents);
-    brave_shields::BraveShieldsTabHelper::FromWebContents(contents)
+    brave_shields::BraveShieldsTabHelper::From(
+        tabs::TabInterface::MaybeGetFromContents(contents))
         ->HandleItemBlocked(brave_shields::kAds,
                             embedded_test_server()->GetURL("/ad.js").spec());
     ASSERT_TRUE(

@@ -15,7 +15,6 @@
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
-#include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_locale_utils.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
@@ -30,11 +29,11 @@
 #include "components/content_settings/core/common/content_settings_pattern.h"
 #include "components/favicon/content/content_favicon_driver.h"
 #include "components/prefs/pref_service.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/reload_type.h"
 #include "content/public/browser/render_frame_host.h"
-#include "content/public/browser/security_principal.h"
 #include "content/public/browser/web_contents.h"
 #include "net/base/features.h"
 #include "net/base/url_util.h"
@@ -57,20 +56,24 @@ bool IsAdBlockOnlyModeSupportedAndFeatureEnabled() {
 
 namespace brave_shields {
 
-BraveShieldsTabHelper::~BraveShieldsTabHelper() = default;
+DEFINE_USER_DATA(BraveShieldsTabHelper);
 
-BraveShieldsTabHelper::BraveShieldsTabHelper(content::WebContents* web_contents)
-    : content::WebContentsObserver(web_contents),
-      content::WebContentsUserData<BraveShieldsTabHelper>(*web_contents),
+// static
+BraveShieldsTabHelper* BraveShieldsTabHelper::From(tabs::TabInterface* tab) {
+  return tab ? Get(tab->GetUnownedUserDataHost()) : nullptr;
+}
+
+BraveShieldsTabHelper::BraveShieldsTabHelper(tabs::TabInterface& tab)
+    : tabs::ContentsObservingTabFeature(tab),
       host_content_settings_map_(
           CHECK_DEREF(HostContentSettingsMapFactory::GetForProfile(
-              web_contents->GetBrowserContext()))),
+              tab.GetContents()->GetBrowserContext()))),
       brave_shields_settings_(
           CHECK_DEREF(BraveShieldsSettingsServiceFactory::GetForProfile(
-              Profile::FromBrowserContext(web_contents->GetBrowserContext())))),
-      ephemeral_storage_service_(EphemeralStorageServiceFactory::GetForContext(
-          web_contents->GetBrowserContext())) {
-  favicon::ContentFaviconDriver::FromWebContents(web_contents)
+              Profile::FromBrowserContext(
+                  tab.GetContents()->GetBrowserContext())))),
+      scoped_unowned_user_data_(tab.GetUnownedUserDataHost(), *this) {
+  favicon::ContentFaviconDriver::FromWebContents(tab.GetContents())
       ->AddObserver(this);
   observation_.Observe(&*host_content_settings_map_);
   local_state_change_registrar_.Init(g_browser_process->local_state());
@@ -79,6 +82,13 @@ BraveShieldsTabHelper::BraveShieldsTabHelper(content::WebContents* web_contents)
       base::BindRepeating(
           &BraveShieldsTabHelper::OnShieldsAdBlockOnlyModeEnabledChanged,
           base::Unretained(this)));
+}
+
+BraveShieldsTabHelper::~BraveShieldsTabHelper() {
+  if (auto* favicon_driver =
+          favicon::ContentFaviconDriver::FromWebContents(web_contents())) {
+    favicon_driver->RemoveObserver(this);
+  }
 }
 
 void BraveShieldsTabHelper::DidFinishNavigation(
@@ -160,10 +170,27 @@ void BraveShieldsTabHelper::OnShieldsAdBlockOnlyModeEnabledChanged() {
   }
 }
 
-void BraveShieldsTabHelper::WebContentsDestroyed() {
-  favicon::ContentFaviconDriver::FromWebContents(web_contents())
-      ->RemoveObserver(this);
-  observation_.Reset();
+void BraveShieldsTabHelper::OnDiscardContents(
+    tabs::TabInterface* tab,
+    content::WebContents* old_contents,
+    content::WebContents* new_contents) {
+  if (auto* favicon_driver =
+          favicon::ContentFaviconDriver::FromWebContents(old_contents)) {
+    favicon_driver->RemoveObserver(this);
+  }
+  if (auto* favicon_driver =
+          favicon::ContentFaviconDriver::FromWebContents(new_contents)) {
+    favicon_driver->AddObserver(this);
+  }
+
+  // The blocked resources and invoked features belong to the old contents'
+  // page.
+  navigation_triggered_by_shields_changes_ = false;
+  repeated_reloads_counter_.reset();
+  webcompat_features_invoked_.clear();
+  tabs::ContentsObservingTabFeature::OnDiscardContents(tab, old_contents,
+                                                       new_contents);
+  ClearAllResourcesList();
 }
 
 void BraveShieldsTabHelper::OnContentSettingChanged(
@@ -214,6 +241,10 @@ void BraveShieldsTabHelper::AddObserver(Observer* obs) {
 
 void BraveShieldsTabHelper::RemoveObserver(Observer* obs) {
   observer_list_.RemoveObserver(obs);
+}
+
+base::WeakPtr<BraveShieldsTabHelper> BraveShieldsTabHelper::GetWeakPtr() {
+  return weak_factory_.GetWeakPtr();
 }
 
 bool BraveShieldsTabHelper::HasObserver(Observer* observer) {
@@ -457,20 +488,6 @@ void BraveShieldsTabHelper::BlockAllowedScripts(
   ReloadWebContents();
 }
 
-void BraveShieldsTabHelper::EnforceSiteDataCleanup() {
-  auto* site_instance = web_contents()->GetSiteInstance();
-  CHECK(site_instance);
-
-  if (!ephemeral_storage_service_) {
-    return;
-  }
-
-  // Start manual cleanup.
-  ephemeral_storage_service_->CleanupTLDFirstPartyStorage(
-      web_contents()->GetLastCommittedURL(),
-      site_instance->GetSecurityPrincipal().GetStoragePartitionConfig(), true);
-}
-
 void BraveShieldsTabHelper::AllowScriptsOnce(
     const std::vector<std::string>& origins) {
   BraveShieldsWebContentsObserver* observer =
@@ -555,7 +572,5 @@ BraveShieldsTabHelper::GetWebcompatSettings() {
   }
   return result;
 }
-
-WEB_CONTENTS_USER_DATA_KEY_IMPL(BraveShieldsTabHelper);
 
 }  // namespace brave_shields

@@ -246,7 +246,8 @@ BravePageInfoBubbleView::GetShieldsTabHelper() {
   if (!web_contents()) {
     return nullptr;
   }
-  return brave_shields::BraveShieldsTabHelper::FromWebContents(web_contents());
+  return brave_shields::BraveShieldsTabHelper::From(
+      tabs::TabInterface::MaybeGetFromContents(web_contents()));
 }
 
 bool BravePageInfoBubbleView::IsShieldsEnabledForWebContents() {
