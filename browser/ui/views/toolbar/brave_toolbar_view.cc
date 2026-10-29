@@ -16,6 +16,7 @@
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/i18n/rtl.h"
+#include "base/strings/utf_string_conversions.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
@@ -32,6 +33,8 @@
 #include "brave/browser/ui/views/toolbar/side_panel_button.h"
 #include "brave/browser/ui/views/workspaces/workspaces_bubble_controller.h"
 #include "brave/browser/workspaces/features.h"
+#include "brave/browser/workspaces/workspace_service.h"
+#include "brave/browser/workspaces/workspace_service_factory.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
@@ -819,6 +822,29 @@ void BraveToolbarView::CreateWorkspaceButtonIfNeeded() {
       l10n_util::GetStringUTF16(IDS_ACCNAME_WORKSPACES_BUTTON));
   workspaces_button_->SetVisible(
       VerticalTabController::From(browser_)->ShouldShowBraveVerticalTabs());
+
+  if (auto* service =
+          WorkspaceServiceFactory::GetForProfile(browser_->GetProfile())) {
+    workspaces_changed_subscription_ = service->RegisterWorkspacesChanged(
+        base::BindRepeating(&BraveToolbarView::UpdateWorkspaceButtonLabel,
+                            base::Unretained(this)));
+  }
+  UpdateWorkspaceButtonLabel();
+}
+
+void BraveToolbarView::UpdateWorkspaceButtonLabel() {
+  if (!workspaces_button_) {
+    return;
+  }
+  auto* service =
+      WorkspaceServiceFactory::GetForProfile(browser_->GetProfile());
+  CHECK(service);
+  // ToolbarButton keeps SetText() to itself; SetHighlight() is how callers
+  // give it a label. Passing an empty string clears it back to the icon.
+  workspaces_button_->SetHighlight(
+      base::UTF8ToUTF16(
+          service->GetWorkspaceNameForWindow(browser_->GetSessionID())),
+      /*highlight_color=*/std::nullopt);
 }
 
 void BraveToolbarView::OnWorkspacesButtonPressed() {
