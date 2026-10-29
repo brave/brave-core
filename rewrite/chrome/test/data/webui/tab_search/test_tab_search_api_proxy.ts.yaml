@@ -1,0 +1,45 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Stub Brave's tab search PageHandler methods in the test proxy.
+
+      TestTabSearchApiProxy implements the generated PageHandlerInterface,
+      which includes the methods Brave adds to the PageHandler mojom.
+    regex:
+      # Appends to the end of the class body: the match runs from the class
+      # declaration to its closing brace, and can't leave the class.
+      re_pattern: |-
+        (export class TestTabSearchApiProxy\b(?:(?!\n\}\n).)*?)(\n\}\n)
+      re_flags: [DOTALL]
+      replace: |-
+        \1
+
+          getSuggestedTopics() {
+            return Promise.resolve({topics: [], error: null});
+          }
+
+          getFocusTabs() {
+            return Promise.resolve({windowCreated: false, error: null});
+          }
+
+          undoFocusTabs() {
+            return Promise.resolve();
+          }
+
+          openLeoGoPremiumPage() {}
+
+          openLearnMorePage() {}
+
+          setTabFocusEnabled() {}
+
+          getTabFocusShowFRE() {
+            return Promise.resolve({showFRE: false});
+          }
+
+          searchTabsByContent() {
+            return Promise.resolve({tabIds: []});
+          }\2

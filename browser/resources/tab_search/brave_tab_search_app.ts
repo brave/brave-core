@@ -9,7 +9,7 @@ import '//resources/cr_elements/cr_tabs/cr_tabs.js'
 import { loadTimeData } from '//resources/js/load_time_data.js'
 import { CrLitElement } from '//resources/lit/v3_0/lit.rollup.js'
 
-import { TabSearchApiProxyImpl } from './tab_search_api_proxy.js'
+import { browserProxyFactory } from './tab_search.mojom-webui.js'
 
 import { getHtml } from './brave_tab_search_app.html.js'
 import { getCss } from './brave_tab_search_app.css.js'
@@ -47,7 +47,7 @@ export class BraveTabSearchAppElement extends CrLitElement {
   private visibilityChangedListener_ = () => {
     if (document.visibilityState === 'visible') {
       // Signal readiness so the bubble becomes visible when re-opened.
-      TabSearchApiProxyImpl.getInstance().maybeShowUi()
+      browserProxyFactory.getInstance().handler.maybeShowUI()
     }
   }
 
@@ -65,9 +65,7 @@ export class BraveTabSearchAppElement extends CrLitElement {
   override connectedCallback() {
     super.connectedCallback()
 
-    const apiProxy = TabSearchApiProxyImpl.getInstance()
-
-    const callbackRouter = apiProxy.getCallbackRouter()
+    const callbackRouter = browserProxyFactory.getInstance().callbackRouter
     this.listenerIds_.push(
       callbackRouter.tabFocusEnabledChanged.addListener((enabled: boolean) => {
         this.tabOrganizationEnabled_ = enabled
@@ -82,8 +80,7 @@ export class BraveTabSearchAppElement extends CrLitElement {
 
   override disconnectedCallback() {
     super.disconnectedCallback()
-    const callbackRouter =
-      TabSearchApiProxyImpl.getInstance().getCallbackRouter()
+    const callbackRouter = browserProxyFactory.getInstance().callbackRouter
     this.listenerIds_.forEach((id) => callbackRouter.removeListener(id))
     document.removeEventListener(
       'visibilitychange',
