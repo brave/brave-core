@@ -29,9 +29,14 @@
 
 static_assert(BUILDFLAG(ENABLE_BRAVE_REWARDS));
 
+class BraveActionsContainerTest;
 class Profile;
 class TabStripModel;
 class WebUIBubbleManager;
+
+namespace tabs {
+class TabInterface;
+}  // namespace tabs
 
 // A button that lives in the actions container and opens the Rewards panel. The
 // button has an associated context menu and can be hidden by user settings.
@@ -97,6 +102,8 @@ class BraveRewardsActionView
           notification) override;
 
  private:
+  friend class ::BraveActionsContainerTest;
+
   void OnButtonPressed();
   void OnPreferencesChanged(const std::string& key);
   content::WebContents* GetActiveWebContents();
@@ -110,7 +117,8 @@ class BraveRewardsActionView
   bool UpdatePublisherStatus();
   void IsPublisherRegisteredCallback(const std::string& publisher_id,
                                      bool is_registered);
-  void UpdateTabHelper(content::WebContents* web_contents);
+  void UpdateTabHelper(tabs::TabInterface* old_tab,
+                       tabs::TabInterface* new_tab);
 
   using WidgetObservation =
       base::ScopedObservation<views::Widget, views::WidgetObserver>;
@@ -125,11 +133,9 @@ class BraveRewardsActionView
 
   raw_ptr<BrowserWindowInterface> browser_window_interface_ = nullptr;
   raw_ptr<brave_rewards::RewardsPanelCoordinator> panel_coordinator_ = nullptr;
-  raw_ptr<brave_rewards::RewardsTabHelper> tab_helper_ = nullptr;
   std::unique_ptr<WebUIBubbleManager> bubble_manager_;
   PrefChangeRegistrar pref_change_registrar_;
   std::pair<std::string, bool> publisher_registered_;
-  brave_rewards::RewardsTabHelper::Observation tab_helper_observation_{this};
   brave_rewards::RewardsPanelCoordinator::Observation panel_observation_{this};
   WidgetObservation bubble_observation_{this};
   RewardsObservation rewards_service_observation_{this};

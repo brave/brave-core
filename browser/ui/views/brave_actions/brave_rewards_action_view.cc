@@ -10,6 +10,7 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/check_deref.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
@@ -233,7 +234,8 @@ BraveRewardsActionView::BraveRewardsActionView(
     panel_observation_.Observe(panel_coordinator_);
   }
 
-  UpdateTabHelper(GetActiveWebContents());
+  UpdateTabHelper(
+      nullptr, browser_window_interface_->GetTabStripModel()->GetActiveTab());
 }
 
 BraveRewardsActionView::~BraveRewardsActionView() = default;
@@ -314,7 +316,7 @@ void BraveRewardsActionView::OnTabStripModelChanged(
     const TabStripModelChange& change,
     const TabStripSelectionChange& selection) {
   if (selection.active_tab_changed()) {
-    UpdateTabHelper(selection.new_contents);
+    UpdateTabHelper(selection.old_tab, selection.new_tab);
   }
 }
 
@@ -510,22 +512,20 @@ void BraveRewardsActionView::IsPublisherRegisteredCallback(
   }
 }
 
-void BraveRewardsActionView::UpdateTabHelper(
-    content::WebContents* web_contents) {
-  tab_helper_ = nullptr;
-  if (tab_helper_observation_.IsObserving()) {
-    tab_helper_observation_.Reset();
+void BraveRewardsActionView::UpdateTabHelper(tabs::TabInterface* old_tab,
+                                             tabs::TabInterface* new_tab) {
+  // A closed tab's helper is destroyed before the tab strip reports it.
+  if (auto* old_helper = old_tab ? RewardsTabHelper::From(old_tab) : nullptr) {
+    old_helper->RemoveObserver(this);
   }
 
-  if (web_contents) {
-    if (auto* helper = RewardsTabHelper::FromWebContents(web_contents)) {
-      tab_helper_ = helper;
-      tab_helper_observation_.Observe(helper);
-    }
+  std::string publisher_id;
+  if (new_tab) {
+    auto& new_helper = CHECK_DEREF(RewardsTabHelper::From(new_tab));
+    new_helper.AddObserver(this);
+    publisher_id = new_helper.GetPublisherIdForTab();
   }
-
-  OnPublisherForTabUpdated(tab_helper_ ? tab_helper_->GetPublisherIdForTab()
-                                       : "");
+  OnPublisherForTabUpdated(publisher_id);
 }
 
 BEGIN_METADATA(BraveRewardsActionView)

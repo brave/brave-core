@@ -19,6 +19,7 @@
 #include "brave/browser/ui/sidebar/sidebar_tab_helper.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"
+#include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/image_metadata_stripper/common/features.h"
 #include "brave/components/misc_metrics/features.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
@@ -40,6 +41,10 @@
 
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
 #include "brave/browser/ui/geolocation/brave_geolocation_permission_tab_helper.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+#include "brave/browser/brave_rewards/rewards_tab_helper.h"
 #endif
 
 #if BUILDFLAG(ENABLE_WEB_DISCOVERY)
@@ -251,6 +256,10 @@ void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
 
   brave_shields_tab_helper_ =
       std::make_unique<brave_shields::BraveShieldsTabHelper>(tab);
+
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+  rewards_tab_helper_ = std::make_unique<brave_rewards::RewardsTabHelper>(tab);
+#endif
 
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
   geolocation_permission_tab_helper_ =
