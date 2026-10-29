@@ -7,19 +7,14 @@
 #define BRAVE_BROWSER_BRAVE_WALLET_BRAVE_WALLET_SERVICE_DELEGATE_IMPL_H_
 
 #include <memory>
-#include <optional>
 #include <string>
 
 #include "base/containers/flat_map.h"
 #include "base/memory/weak_ptr.h"
-#include "base/observer_list.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_delegate_base.h"
 #include "brave/browser/brave_wallet/external_wallets_importer.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service_delegate.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "chrome/browser/ui/browser_tab_strip_tracker.h"
-#include "chrome/browser/ui/browser_tab_strip_tracker_delegate.h"
-#include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 
 namespace content {
 class BrowserContext;
@@ -28,9 +23,7 @@ class WebContents;
 
 namespace brave_wallet {
 
-class BraveWalletServiceDelegateImpl : public BraveWalletServiceDelegateBase,
-                                       public TabStripModelObserver,
-                                       public BrowserTabStripTrackerDelegate {
+class BraveWalletServiceDelegateImpl : public BraveWalletServiceDelegateBase {
  public:
   explicit BraveWalletServiceDelegateImpl(content::BrowserContext* context);
   BraveWalletServiceDelegateImpl(const BraveWalletServiceDelegateImpl&) =
@@ -38,9 +31,6 @@ class BraveWalletServiceDelegateImpl : public BraveWalletServiceDelegateBase,
   BraveWalletServiceDelegateImpl& operator=(
       const BraveWalletServiceDelegateImpl&) = delete;
   ~BraveWalletServiceDelegateImpl() override;
-
-  static void SetActiveWebContentsForTesting(
-      content::WebContents* web_contents);
 
   // BraveWalletServiceDelegateBase:
   void IsExternalWalletInstalled(mojom::ExternalWalletType,
@@ -52,28 +42,12 @@ class BraveWalletServiceDelegateImpl : public BraveWalletServiceDelegateBase,
                                        const std::string& password,
                                        GetImportInfoCallback callback) override;
 
-  std::optional<url::Origin> GetActiveOriginDeprecated() override;
-
   void ClearWalletUIStoragePartition() override;
 
   void DisplayTxNotification(brave_wallet::mojom::TransactionStatus status,
                              const std::string& account_name,
                              const std::string& tx_id,
                              const GURL& tx_url) override;
-
-  void AddObserver(BraveWalletServiceDelegate::Observer* observer) override;
-  void RemoveObserver(BraveWalletServiceDelegate::Observer* observer) override;
-
-  // TabStripModelObserver:
-  void OnTabStripModelChanged(
-      TabStripModel* tab_strip_model,
-      const TabStripModelChange& change,
-      const TabStripSelectionChange& selection) override;
-  void OnTabChangedAt(tabs::TabInterface* tab,
-                      TabChangeType change_type) override;
-
-  // BrowserTabStripTrackerDelegate:
-  bool ShouldTrackBrowser(BrowserWindowInterface* browser) override;
 
  private:
   friend class BraveWalletServiceDelegateImplUnitTest;
@@ -86,17 +60,11 @@ class BraveWalletServiceDelegateImpl : public BraveWalletServiceDelegateBase,
                                                GetImportInfoCallback callback,
                                                bool init_success);
 
-  std::optional<url::Origin> GetActiveOriginInternal();
-  void FireActiveOriginChanged();
-
   base::flat_map<mojom::ExternalWalletType,
                  std::unique_ptr<ExternalWalletsImporter>>
       importers_;
 
-  BrowserTabStripTracker browser_tab_strip_tracker_;
-  base::ObserverList<BraveWalletServiceDelegate::Observer> observer_list_;
-
-  base::WeakPtrFactory<BraveWalletServiceDelegateImpl> weak_ptr_factory_;
+  base::WeakPtrFactory<BraveWalletServiceDelegateImpl> weak_ptr_factory_{this};
 };
 
 }  // namespace brave_wallet

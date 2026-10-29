@@ -77,6 +77,20 @@ namespace {
 
 inline constexpr char kZCashDataFolderName[] = "zcash_data";
 
+std::optional<url::Origin> ParseNonOpaqueOrigin(
+    const std::string& origin_spec) {
+  GURL url(origin_spec);
+  if (!url.is_valid()) {
+    return std::nullopt;
+  }
+
+  auto origin = url::Origin::Create(url);
+  if (origin.opaque()) {
+    return std::nullopt;
+  }
+  return origin;
+}
+
 bool ShouldDisplayTxNotification(mojom::TransactionStatus status) {
   return (status == mojom::TransactionStatus::Confirmed ||
           status == mojom::TransactionStatus::Error ||
@@ -328,7 +342,6 @@ BraveWalletService::BraveWalletService(
       url_loader_factory, *this, *json_rpc_service(), *keyring_service(),
       *simple_hash_client_, profile_prefs);
 
-  delegate_->AddObserver(this);
   if (host_content_settings_map_) {
     host_content_settings_map_->AddObserver(this);
   }
@@ -843,12 +856,20 @@ mojom::AccountIdPtr BraveWalletService::EnsureSelectedAccountForChainSync(
 }
 
 void BraveWalletService::GetNetworkForSelectedAccountOnActiveOrigin(
+    const std::string& active_origin_spec,
     GetNetworkForSelectedAccountOnActiveOriginCallback callback) {
-  std::move(callback).Run(GetNetworkForSelectedAccountOnActiveOriginSync());
+  auto origin = ParseNonOpaqueOrigin(active_origin_spec);
+  if (!origin) {
+    std::move(callback).Run(nullptr);
+    return;
+  }
+  std::move(callback).Run(
+      GetNetworkForSelectedAccountOnActiveOriginSync(*origin));
 }
 
 mojom::NetworkInfoPtr
-BraveWalletService::GetNetworkForSelectedAccountOnActiveOriginSync() {
+BraveWalletService::GetNetworkForSelectedAccountOnActiveOriginSync(
+    const url::Origin& origin) {
   auto selected_account = keyring_service_->GetSelectedWalletAccount();
   // This may happen in tests.
   if (!selected_account) {
@@ -860,12 +881,12 @@ BraveWalletService::GetNetworkForSelectedAccountOnActiveOriginSync() {
                                              selected_account->account_id);
   }
 
-  return json_rpc_service_->GetNetworkSync(
-      selected_account->account_id->coin,
-      delegate_->GetActiveOriginDeprecated());
+  return json_rpc_service_->GetNetworkSync(selected_account->account_id->coin,
+                                           origin);
 }
 
-mojom::NetworkInfoPtr BraveWalletService::GetNetworkForAccountOnOriginSync(
+mojom::NetworkInfoPtr
+BraveWalletService::GetNetworkForAccountOnActiveOriginSync(
     const url::Origin& origin,
     const mojom::AccountIdPtr& account) {
   if (!CoinSupportsDapps(account->coin)) {
@@ -879,8 +900,8 @@ mojom::NetworkInfoPtr BraveWalletService::GetNetworkForAccountOnOriginSync(
   return json_rpc_service_->GetNetworkSync(account->coin, origin);
 }
 
-bool BraveWalletService::SetNetworkForAccountOnOriginSync(
-    url::Origin& origin,
+bool BraveWalletService::SetNetworkForAccountOnActiveOriginSync(
+    const url::Origin& origin,
     const mojom::AccountIdPtr& account,
     const std::string& chain_id) {
   if (!CoinSupportsDapps(account->coin)) {
@@ -900,35 +921,44 @@ bool BraveWalletService::SetNetworkForAccountOnOriginSync(
 }
 
 void BraveWalletService::GetNetworkForAccountOnActiveOrigin(
+    const std::string& active_origin_spec,
     mojom::AccountIdPtr account,
     GetNetworkForAccountOnActiveOriginCallback callback) {
-  auto origin = delegate_->GetActiveOriginDeprecated();
+  auto origin = ParseNonOpaqueOrigin(active_origin_spec);
   if (!origin) {
     std::move(callback).Run(nullptr);
     return;
   }
 
   std::move(callback).Run(
-      GetNetworkForAccountOnOriginSync(origin.value(), account));
+      GetNetworkForAccountOnActiveOriginSync(origin.value(), account));
 }
 
 void BraveWalletService::SetNetworkForAccountOnActiveOrigin(
+    const std::string& active_origin_spec,
     mojom::AccountIdPtr account,
     const std::string& chain_id,
     SetNetworkForAccountOnActiveOriginCallback callback) {
-  auto origin = delegate_->GetActiveOriginDeprecated();
+  auto origin = ParseNonOpaqueOrigin(active_origin_spec);
   if (!origin) {
     std::move(callback).Run(false);
     return;
   }
 
-  std::move(callback).Run(
-      SetNetworkForAccountOnOriginSync(origin.value(), account, chain_id));
+  std::move(callback).Run(SetNetworkForAccountOnActiveOriginSync(
+      origin.value(), account, chain_id));
 }
 
 void BraveWalletService::SetNetworkForSelectedAccountOnActiveOrigin(
+    const std::string& active_origin_spec,
     const std::string& chain_id,
     SetNetworkForSelectedAccountOnActiveOriginCallback callback) {
+  auto origin = ParseNonOpaqueOrigin(active_origin_spec);
+  if (!origin) {
+    std::move(callback).Run(false);
+    return;
+  }
+
   auto selected_account = keyring_service_->GetSelectedWalletAccount();
   CHECK(selected_account);
   if (!AccountMatchesCoinAndChain(*network_manager_, chain_id,
@@ -939,8 +969,7 @@ void BraveWalletService::SetNetworkForSelectedAccountOnActiveOrigin(
   }
 
   std::move(callback).Run(json_rpc_service_->SetNetwork(
-      chain_id, selected_account->account_id->coin,
-      delegate_->GetActiveOriginDeprecated()));
+      chain_id, selected_account->account_id->coin, *origin));
 }
 
 bool BraveWalletService::HasPendingDecryptRequestForOrigin(
@@ -1071,9 +1100,10 @@ bool BraveWalletService::HasPermissionForPendingRequest(
 }
 
 void BraveWalletService::HasPermission(
+    const std::string& active_origin_spec,
     std::vector<mojom::AccountIdPtr> accounts,
     HasPermissionCallback callback) {
-  auto origin = delegate_->GetActiveOriginDeprecated();
+  auto origin = ParseNonOpaqueOrigin(active_origin_spec);
   if (!origin) {
     std::move(callback).Run(false, {});
     return;
@@ -1083,9 +1113,10 @@ void BraveWalletService::HasPermission(
                           std::move(has_permission_result.second));
 }
 
-void BraveWalletService::ResetPermission(mojom::AccountIdPtr account_id,
+void BraveWalletService::ResetPermission(const std::string& active_origin_spec,
+                                         mojom::AccountIdPtr account_id,
                                          ResetPermissionCallback callback) {
-  auto origin = delegate_->GetActiveOriginDeprecated();
+  auto origin = ParseNonOpaqueOrigin(active_origin_spec);
   if (!origin) {
     std::move(callback).Run(false);
     return;
@@ -1096,14 +1127,14 @@ void BraveWalletService::ResetPermission(mojom::AccountIdPtr account_id,
 }
 
 void BraveWalletService::IsPermissionDenied(
+    const std::string& active_origin_spec,
     mojom::CoinType coin,
     IsPermissionDeniedCallback callback) {
-  auto origin = delegate_->GetActiveOriginDeprecated();
+  auto origin = ParseNonOpaqueOrigin(active_origin_spec);
   if (!origin) {
-    std::move(callback).Run(false);
+    std::move(callback).Run(true);
     return;
   }
-
   std::move(callback).Run(delegate_->IsPermissionDenied(coin, *origin));
 }
 
@@ -1211,16 +1242,6 @@ ZCashWalletService* BraveWalletService::GetZcashWalletService() {
 
 CardanoWalletService* BraveWalletService::GetCardanoWalletService() {
   return cardano_wallet_service_.get();
-}
-
-void BraveWalletService::GetActiveOriginDeprecated(
-    GetActiveOriginDeprecatedCallback callback) {
-  std::move(callback).Run(GetActiveOriginSync());
-}
-
-mojom::OriginInfoPtr BraveWalletService::GetActiveOriginSync() {
-  return MakeOriginInfo(
-      delegate_->GetActiveOriginDeprecated().value_or(url::Origin()));
 }
 
 std::vector<mojom::SignMessageRequestPtr>
@@ -1351,13 +1372,6 @@ void BraveWalletService::AddObserver(
 void BraveWalletService::AddTokenObserver(
     ::mojo::PendingRemote<mojom::BraveWalletServiceTokenObserver> observer) {
   token_observers_.Add(std::move(observer));
-}
-
-void BraveWalletService::OnActiveOriginChangedDeprecated(
-    const mojom::OriginInfoPtr& origin_info) {
-  for (const auto& observer : observers_) {
-    observer->OnActiveOriginChangedDeprecated(origin_info.Clone());
-  }
 }
 
 void BraveWalletService::OnContentSettingChanged(

@@ -15,14 +15,19 @@ import java.util.stream.Collectors;
 
 public class AccountsPermissionsHelper {
     private final BraveWalletService mBraveWalletService;
+    private final String mOriginSpec;
     private final AccountInfo[] mAccounts;
     private HashSet<AccountInfo> mAccountsWithPermissions;
 
     public AccountsPermissionsHelper(
-            BraveWalletService braveWalletService, AccountInfo[] accounts) {
+            BraveWalletService braveWalletService,
+            String originSpec,
+            AccountInfo[] accounts) {
         assert braveWalletService != null;
+        assert originSpec != null;
         assert accounts != null;
         mBraveWalletService = braveWalletService;
+        mOriginSpec = originSpec;
         mAccounts = accounts;
         mAccountsWithPermissions = new HashSet<AccountInfo>();
     }
@@ -45,6 +50,7 @@ public class AccountsPermissionsHelper {
         AccountId[] allAccountIds =
                 Arrays.stream(mAccounts).map(acc -> acc.accountId).toArray(AccountId[]::new);
         mBraveWalletService.hasPermission(
+                mOriginSpec,
                 allAccountIds,
                 (success, filteredAccounts) -> {
                     mAccountsWithPermissions =

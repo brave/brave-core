@@ -71,7 +71,6 @@ class BraveWalletService : public KeyedService,
                            public mojom::BraveWalletService,
                            public KeyringServiceObserverBase,
                            public TxServiceObserverBase,
-                           public BraveWalletServiceDelegate::Observer,
                            public content_settings::Observer {
  public:
   using APIRequestHelper = api_request_helper::APIRequestHelper;
@@ -170,34 +169,43 @@ class BraveWalletService : public KeyedService,
       mojom::CoinType coin,
       const std::string& chain_id);
   void GetNetworkForSelectedAccountOnActiveOrigin(
+      const std::string& active_origin_spec,
       GetNetworkForSelectedAccountOnActiveOriginCallback callback) override;
-  mojom::NetworkInfoPtr GetNetworkForSelectedAccountOnActiveOriginSync();
+  mojom::NetworkInfoPtr GetNetworkForSelectedAccountOnActiveOriginSync(
+      const url::Origin& origin);
   void SetNetworkForSelectedAccountOnActiveOrigin(
+      const std::string& active_origin_spec,
       const std::string& chain_id,
       SetNetworkForSelectedAccountOnActiveOriginCallback callback) override;
   void GetNetworkForAccountOnActiveOrigin(
+      const std::string& active_origin_spec,
       mojom::AccountIdPtr account,
       GetNetworkForAccountOnActiveOriginCallback callback) override;
   void SetNetworkForAccountOnActiveOrigin(
+      const std::string& active_origin_spec,
       mojom::AccountIdPtr account,
       const std::string& chain_id,
       SetNetworkForAccountOnActiveOriginCallback callback) override;
-  mojom::NetworkInfoPtr GetNetworkForAccountOnOriginSync(
+  mojom::NetworkInfoPtr GetNetworkForAccountOnActiveOriginSync(
       const url::Origin& origin,
       const mojom::AccountIdPtr& account);
-  bool SetNetworkForAccountOnOriginSync(url::Origin& origin,
-                                        const mojom::AccountIdPtr& account,
-                                        const std::string& chain_id);
+  bool SetNetworkForAccountOnActiveOriginSync(
+      const url::Origin& origin,
+      const mojom::AccountIdPtr& account,
+      const std::string& chain_id);
   std::pair<bool, std::vector<mojom::AccountIdPtr>> HasPermissionSync(
       const url::Origin& origin,
       const std::vector<mojom::AccountIdPtr>& accounts);
   bool HasPermissionSync(const url::Origin& origin,
                          const mojom::AccountIdPtr& account);
-  void HasPermission(std::vector<mojom::AccountIdPtr> accounts,
+  void HasPermission(const std::string& active_origin_spec,
+                     std::vector<mojom::AccountIdPtr> accounts,
                      HasPermissionCallback callback) override;
-  void ResetPermission(mojom::AccountIdPtr account_id,
+  void ResetPermission(const std::string& active_origin_spec,
+                       mojom::AccountIdPtr account_id,
                        ResetPermissionCallback callback) override;
-  void IsPermissionDenied(mojom::CoinType coin,
+  void IsPermissionDenied(const std::string& active_origin_spec,
+                          mojom::CoinType coin,
                           IsPermissionDeniedCallback callback) override;
   void GetWebSitesWithPermission(
       mojom::CoinType coin,
@@ -205,9 +213,6 @@ class BraveWalletService : public KeyedService,
   void ResetWebSitePermission(mojom::CoinType coin,
                               const std::string& formed_website,
                               ResetWebSitePermissionCallback callback) override;
-  void GetActiveOriginDeprecated(
-      GetActiveOriginDeprecatedCallback callback) override;
-  mojom::OriginInfoPtr GetActiveOriginSync();
   void GetPendingSignMessageRequests(
       GetPendingSignMessageRequestsCallback callback) override;
   std::vector<mojom::SignMessageRequestPtr> GetPendingSignMessageRequestsSync();
@@ -297,10 +302,6 @@ class BraveWalletService : public KeyedService,
       mojom::BlowfishOptInStatus status) override;
 
   void WriteToClipboard(const std::string& text, bool is_sensitive) override;
-
-  // BraveWalletServiceDelegate::Observer:
-  void OnActiveOriginChangedDeprecated(
-      const mojom::OriginInfoPtr& origin_info) override;
 
   // content_settings::Observer:
   void OnContentSettingChanged(

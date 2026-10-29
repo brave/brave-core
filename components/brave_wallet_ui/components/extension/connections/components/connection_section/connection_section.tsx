@@ -98,6 +98,7 @@ export const ConnectionSection = (props: Props) => {
   const { data: networkForAccount } =
     useGetNetworkForAccountOnActiveOriginQuery({
       accountId: effectiveSelectedAccountId,
+      activeOriginSpec: activeOrigin.originSpec,
     })
   const { data: networks = [] } = useGetNetworksQuery()
   const firstNetworkByCoin = networks.filter(
@@ -108,7 +109,7 @@ export const ConnectionSection = (props: Props) => {
     selectedNetworkForAccount || selectedNetworkState || firstNetworkByCoin
 
   const { data: connectedAccounts = [] } =
-    useGetActiveOriginConnectedAccountIdsQuery()
+    useGetActiveOriginConnectedAccountIdsQuery(activeOrigin.originSpec)
 
   // Computed
   const isChromeOrigin = activeOrigin.originSpec.startsWith('chrome')
@@ -151,9 +152,12 @@ export const ConnectionSection = (props: Props) => {
 
   const onClickDisconnect = React.useCallback(async () => {
     if (effectiveSelectedAccountId) {
-      await removeSitePermission(effectiveSelectedAccountId)
+      await removeSitePermission({
+        accountId: effectiveSelectedAccountId,
+        originSpec: activeOrigin.originSpec,
+      })
     }
-  }, [effectiveSelectedAccountId, removeSitePermission])
+  }, [activeOrigin, effectiveSelectedAccountId, removeSitePermission])
 
   const onClickUnblock = React.useCallback(() => {
     chrome.tabs.create(
@@ -174,6 +178,7 @@ export const ConnectionSection = (props: Props) => {
     async (network: BraveWallet.NetworkInfo) => {
       if (effectiveSelectedAccountId) {
         await setNetworkForAccountOnActiveOrigin({
+          activeOriginSpec: activeOrigin.originSpec,
           accountId: effectiveSelectedAccountId,
           chainId: network.chainId,
         })
@@ -181,7 +186,11 @@ export const ConnectionSection = (props: Props) => {
         setShowNetworks(false)
       }
     },
-    [effectiveSelectedAccountId, setNetworkForAccountOnActiveOrigin],
+    [
+      activeOrigin,
+      effectiveSelectedAccountId,
+      setNetworkForAccountOnActiveOrigin,
+    ],
   )
 
   const onChangeAccount = React.useCallback(
@@ -244,7 +253,7 @@ export const ConnectionSection = (props: Props) => {
     if (coin) {
       ;(async () => {
         await getWalletPanelApiProxy()
-          .braveWalletService.isPermissionDenied(coin)
+          .braveWalletService.isPermissionDenied(activeOrigin.originSpec, coin)
           .then((result) => {
             if (subscribed) {
               setIsPermissionDenied(result.denied)
@@ -377,6 +386,7 @@ export const ConnectionSection = (props: Props) => {
       >
         <DAppConnectionAccounts
           coin={coin}
+          originSpec={activeOrigin.originSpec}
           onChangeAccount={onChangeAccount}
         />
       </BottomSheet>

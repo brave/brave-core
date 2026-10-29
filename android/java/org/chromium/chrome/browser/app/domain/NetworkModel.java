@@ -48,6 +48,7 @@ public class NetworkModel implements JsonRpcServiceObserver {
     private JsonRpcService mJsonRpcService;
     private final Object mLock = new Object();
     private Mode mMode = Mode.WALLET_MODE;
+    private @Nullable String mOriginSpec;
 
     private final MediatorLiveData<String> mMediatorChainId;
     private final MediatorLiveData<List<NetworkInfo>> mMediatorDefaultCoinCryptoNetworks;
@@ -158,10 +159,11 @@ public class NetworkModel implements JsonRpcServiceObserver {
                         }
                     });
         } else if (mMode == Mode.PANEL_MODE) {
-            if (mBraveWalletService == null) {
+                if (mBraveWalletService == null || mOriginSpec == null) {
                 return;
             }
             mBraveWalletService.getNetworkForSelectedAccountOnActiveOrigin(
+                    mOriginSpec,
                     networkInfo -> {
                         if (networkInfo != null) {
                             mMediatorChainId.postValue(networkInfo.chainId);
@@ -292,7 +294,12 @@ public class NetworkModel implements JsonRpcServiceObserver {
 
     public void setNetworkForSelectedAccountOnActiveOrigin(
             NetworkInfo networkToBeSetAsSelected, Callback1<Boolean> callback) {
+        if (mOriginSpec == null) {
+            callback.call(false);
+            return;
+        }
         mBraveWalletService.setNetworkForSelectedAccountOnActiveOrigin(
+                mOriginSpec,
                 networkToBeSetAsSelected.chainId,
                 success -> {
                     callback.call(success);
@@ -353,7 +360,12 @@ public class NetworkModel implements JsonRpcServiceObserver {
     public void close() {}
 
     public void updateMode(Mode mode) {
+        updateMode(mode, null);
+    }
+
+    public void updateMode(Mode mode, @Nullable String originSpec) {
         mMode = mode;
+        mOriginSpec = originSpec;
         updateChainId();
     }
 

@@ -30,16 +30,17 @@ import { Text, Row, Column, ScrollableColumn } from '../../../../shared/style'
 
 interface Props {
   coin: BraveWallet.CoinType
+  originSpec: string
   onChangeAccount: (account: BraveWallet.AccountInfo) => void
 }
 
 export const DAppConnectionAccounts = (props: Props) => {
-  const { coin, onChangeAccount } = props
+  const { coin, originSpec, onChangeAccount } = props
 
   // Queries
   const { accounts } = useAccountsQuery()
   const { data: connectedAccountsIds = [] } =
-    useGetActiveOriginConnectedAccountIdsQuery()
+    useGetActiveOriginConnectedAccountIdsQuery(originSpec)
 
   // Memos
   const accountByCoinType = React.useMemo(() => {

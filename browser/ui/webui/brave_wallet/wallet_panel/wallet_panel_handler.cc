@@ -21,6 +21,7 @@
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui.h"
+#include "url/origin.h"
 
 // It's safe to bind the active webcontents when panel is created because
 // the panel will not be shared across tabs.
@@ -41,6 +42,10 @@ void WalletPanelHandler::AddObserver(
 
 void WalletPanelHandler::GetActivePanelOrigin(
     GetActivePanelOriginCallback callback) {
+  if (!web_contents()) {
+    std::move(callback).Run(brave_wallet::MakeOriginInfo(url::Origin()));
+    return;
+  }
   auto origin_info = brave_wallet::MakeOriginInfo(
       web_contents()->GetPrimaryMainFrame()->GetLastCommittedOrigin());
   std::move(callback).Run(std::move(origin_info));
@@ -91,11 +96,19 @@ void WalletPanelHandler::CloseSidePanel() {
 void WalletPanelHandler::ConnectToSite(
     const std::vector<std::string>& accounts,
     brave_wallet::mojom::PermissionLifetimeOption option) {
+  if (!web_contents()) {
+    return;
+  }
+
   permissions::BraveWalletPermissionContext::AcceptOrCancel(accounts, option,
                                                             web_contents());
 }
 
 void WalletPanelHandler::CancelConnectToSite() {
+  if (!web_contents()) {
+    return;
+  }
+
   permissions::BraveWalletPermissionContext::Cancel(web_contents());
 }
 
@@ -106,9 +119,11 @@ void WalletPanelHandler::Focus() {
 void WalletPanelHandler::IsSolanaAccountConnected(
     const std::string& account,
     IsSolanaAccountConnectedCallback callback) {
-  // Report the connection state of the frame the panel names, not of whichever
-  // frame happens to hold focus. See WalletPanelHandler::RequestPermission for
-  // the rationale.
+  if (!web_contents()) {
+    std::move(callback).Run(false);
+    return;
+  }
+
   content::RenderFrameHost* rfh = web_contents()->GetPrimaryMainFrame();
 
   auto* tab_helper =
@@ -125,6 +140,11 @@ void WalletPanelHandler::IsSolanaAccountConnected(
 void WalletPanelHandler::RequestPermission(
     brave_wallet::mojom::AccountIdPtr account_id,
     RequestPermissionCallback callback) {
+  if (!web_contents()) {
+    std::move(callback).Run(false);
+    return;
+  }
+
   content::RenderFrameHost* rfh = web_contents()->GetPrimaryMainFrame();
 
   auto request_type =

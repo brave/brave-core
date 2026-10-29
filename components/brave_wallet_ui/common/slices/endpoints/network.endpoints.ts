@@ -63,18 +63,19 @@ export const networkEndpoints = ({
     getNetworkForAccountOnActiveOrigin: query<
       BraveWallet.NetworkInfo | null,
       {
+        activeOriginSpec: string
         accountId: BraveWallet.AccountId | undefined
       }
     >({
       queryFn: async (args, { endpoint }, _extraOptions, baseQuery) => {
-        const { accountId } = args
+        const { accountId, activeOriginSpec } = args
         if (!accountId) {
           return { data: null }
         }
         try {
           const { data: api } = baseQuery(undefined)
           const { network } = await api.braveWalletService //
-            .getNetworkForAccountOnActiveOrigin(accountId)
+            .getNetworkForAccountOnActiveOrigin(activeOriginSpec, accountId)
           return {
             data: network,
           }
@@ -95,6 +96,7 @@ export const networkEndpoints = ({
       /** success */
       true,
       {
+        activeOriginSpec: string
         accountId: BraveWallet.AccountId
         chainId: string
       }
@@ -104,6 +106,7 @@ export const networkEndpoints = ({
           const { data: api } = baseQuery(undefined)
 
           api.braveWalletService.setNetworkForAccountOnActiveOrigin(
+            arg.activeOriginSpec,
             arg.accountId,
             arg.chainId,
           )
@@ -291,10 +294,14 @@ export const networkEndpoints = ({
         needsAccountForNetwork?: boolean
         selectedAccountId?: BraveWallet.AccountId
       },
-      Pick<BraveWallet.NetworkInfo, 'chainId' | 'coin'>
+      {
+        chainId: string
+        coin: BraveWallet.CoinType
+        activeOriginSpec: string
+      }
     >({
       queryFn: async (
-        { chainId, coin },
+        { chainId, coin, activeOriginSpec },
         { endpoint },
         extraOptions,
         baseQuery,
@@ -320,7 +327,10 @@ export const networkEndpoints = ({
           const {
             success, //
           } = await braveWalletService //
-            .setNetworkForSelectedAccountOnActiveOrigin(chainId)
+            .setNetworkForSelectedAccountOnActiveOrigin(
+              activeOriginSpec,
+              chainId,
+            )
           if (!success) {
             throw new Error(
               'braveWalletService.'

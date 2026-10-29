@@ -44,8 +44,10 @@ import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
+import org.chromium.brave_wallet.mojom.OriginInfo;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.app.domain.NetworkModel;
 import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.crypto_wallet.BraveWalletProviderDelegateImplHelper;
@@ -110,8 +112,15 @@ public class BraveWalletPanel implements DialogInterface {
             final boolean showExpandButton) {
         try {
             mWalletModel = BraveActivity.getBraveActivity().getWalletModel();
-            // Update network model to use network per origin
-            getNetworkModel().updateMode(NetworkModel.Mode.PANEL_MODE);
+            ChromeTabbedActivity activity = BraveActivity.getChromeTabbedActivity();
+            GURL pageUrl =
+                activity == null || activity.getActivityTab() == null
+                    ? GURL.emptyGURL()
+                    : activity.getActivityTab().getUrl();
+            getNetworkModel()
+                .updateMode(
+                        NetworkModel.Mode.PANEL_MODE,
+                        Utils.getOriginInfo(pageUrl).originSpec);
         } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "BraveWalletPanel Constructor", e);
         }
@@ -193,6 +202,7 @@ public class BraveWalletPanel implements DialogInterface {
                     AccountsPermissionsHelper accountsPermissionsHelper =
                             new AccountsPermissionsHelper(
                                     braveWalletService,
+                                    getActiveOriginInfo().originSpec,
                                     Utils.filterAccountsByCoin(
                                                     mAllAccountsInfo.accounts,
                                                     mSelectedAccount.accountId.coin)
@@ -220,6 +230,14 @@ public class BraveWalletPanel implements DialogInterface {
                 });
         mPopupWindow.setOnDismissListener(this::dismiss);
         setUpViews();
+    }
+
+    private OriginInfo getActiveOriginInfo() {
+        ChromeTabbedActivity activity = BraveActivity.getChromeTabbedActivity();
+        if (activity == null || activity.getActivityTab() == null) {
+            return Utils.getOriginInfo(GURL.emptyGURL());
+        }
+        return Utils.getOriginInfo(activity.getActivityTab().getUrl());
     }
 
     private void showPopupMenu() {

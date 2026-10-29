@@ -56,8 +56,7 @@ static void JNI_ConnectAccountFragment_ConnectAccount(
   std::string account_address =
       base::android::ConvertJavaStringToUTF8(java_account_address);
 
-  // ConnectAccountFragment names the primary main frame's origin (see
-  // BraveWalletServiceDelegateImpl::GetActiveOriginDeprecated), and so do its
+  // ConnectAccountFragment names the primary main frame's origin, and so do its
   // connected accounts list and Disconnect. Grant to that same frame: using the
   // focused frame would let a cross-origin subframe holding focus receive a
   // durable permission the user was never shown and cannot revoke from that

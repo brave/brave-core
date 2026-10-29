@@ -3210,27 +3210,31 @@ TEST_F(BraveWalletServiceUnitTest, GetNetworkForAccountOnActiveOrigin) {
 
   // Non-dapp coin
   EXPECT_FALSE(
-      service_->GetNetworkForAccountOnOriginSync(origin, btc_account_id));
+      service_->GetNetworkForAccountOnActiveOriginSync(origin, btc_account_id));
 
   json_rpc_service_->SetNetwork(mojom::kSepoliaChainId, eth_account_id->coin,
                                 origin);
-  EXPECT_EQ(service_->GetNetworkForAccountOnOriginSync(origin, eth_account_id)
-                ->chain_id,
-            mojom::kSepoliaChainId);
-
-  service_->SetNetworkForAccountOnOriginSync(origin, eth_account_id,
-                                             mojom::kPolygonMainnetChainId);
-  EXPECT_EQ(service_->GetNetworkForAccountOnOriginSync(origin, eth_account_id)
-                ->chain_id,
-            mojom::kPolygonMainnetChainId);
-
-  EXPECT_EQ(service_->GetNetworkForAccountOnOriginSync(origin, ada_account_id)
-                ->chain_id,
-            mojom::kCardanoMainnet);
   EXPECT_EQ(
-      service_->GetNetworkForAccountOnOriginSync(origin, ada_testnet_account_id)
+      service_->GetNetworkForAccountOnActiveOriginSync(origin, eth_account_id)
           ->chain_id,
-      mojom::kCardanoTestnet);
+      mojom::kSepoliaChainId);
+
+  service_->SetNetworkForAccountOnActiveOriginSync(
+      origin, eth_account_id, mojom::kPolygonMainnetChainId);
+  EXPECT_EQ(
+      service_->GetNetworkForAccountOnActiveOriginSync(origin, eth_account_id)
+          ->chain_id,
+      mojom::kPolygonMainnetChainId);
+
+  EXPECT_EQ(
+      service_->GetNetworkForAccountOnActiveOriginSync(origin, ada_account_id)
+          ->chain_id,
+      mojom::kCardanoMainnet);
+  EXPECT_EQ(service_
+                ->GetNetworkForAccountOnActiveOriginSync(origin,
+                                                         ada_testnet_account_id)
+                ->chain_id,
+            mojom::kCardanoTestnet);
 }
 
 TEST_F(BraveWalletServiceUnitTest, DisplayTxNotification) {

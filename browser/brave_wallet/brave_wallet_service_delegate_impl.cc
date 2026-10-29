@@ -5,7 +5,6 @@
 
 #include "brave/browser/brave_wallet/brave_wallet_service_delegate_impl.h"
 
-#include <optional>
 #include <utility>
 
 #include "base/check.h"
@@ -19,36 +18,18 @@
 #include "chrome/browser/notifications/notification_display_service.h"
 #include "chrome/browser/notifications/notification_display_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
-#include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "components/grit/brave_components_strings.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/storage_partition.h"
-#include "content/public/browser/web_contents.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/message_center/public/cpp/notification.h"
 #include "url/gurl.h"
-#include "url/origin.h"
 
 using content::StoragePartition;
 
 namespace brave_wallet {
 
 namespace {
-
-content::WebContents* g_web_contents_for_testing = nullptr;
-
-content::WebContents* GetActiveWebContents() {
-  if (g_web_contents_for_testing) {
-    return g_web_contents_for_testing;
-  }
-
-  BrowserWindowInterface* browser =
-      GetLastActiveBrowserWindowInterfaceWithAnyProfile();
-  return browser ? browser->GetTabStripModel()->GetActiveWebContents()
-                 : nullptr;
-}
 
 void ClearWalletStoragePartition(content::BrowserContext* context,
                                  const GURL& url) {
@@ -108,34 +89,9 @@ void DisplayTxNotificationImpl(content::BrowserContext* context,
 
 BraveWalletServiceDelegateImpl::BraveWalletServiceDelegateImpl(
     content::BrowserContext* context)
-    : BraveWalletServiceDelegateBase(context),
-      browser_tab_strip_tracker_(this, this),
-      weak_ptr_factory_(this) {
-  browser_tab_strip_tracker_.Init();
-}
+    : BraveWalletServiceDelegateBase(context) {}
 
 BraveWalletServiceDelegateImpl::~BraveWalletServiceDelegateImpl() = default;
-
-// static
-void BraveWalletServiceDelegateImpl::SetActiveWebContentsForTesting(
-    content::WebContents* web_contents) {
-  g_web_contents_for_testing = web_contents;
-}
-
-void BraveWalletServiceDelegateImpl::AddObserver(
-    BraveWalletServiceDelegate::Observer* observer) {
-  observer_list_.AddObserver(observer);
-}
-
-void BraveWalletServiceDelegateImpl::RemoveObserver(
-    BraveWalletServiceDelegate::Observer* observer) {
-  observer_list_.RemoveObserver(observer);
-}
-
-bool BraveWalletServiceDelegateImpl::ShouldTrackBrowser(
-    BrowserWindowInterface* browser) {
-  return browser->GetProfile() == Profile::FromBrowserContext(context_);
-}
 
 void BraveWalletServiceDelegateImpl::IsExternalWalletInstalled(
     mojom::ExternalWalletType type,
@@ -205,42 +161,6 @@ void BraveWalletServiceDelegateImpl::ContinueGetImportInfoFromExternalWallet(
   } else {
     std::move(callback).Run(base::unexpected(ImportError::kInternalError));
   }
-}
-
-void BraveWalletServiceDelegateImpl::OnTabStripModelChanged(
-    TabStripModel* tab_strip_model,
-    const TabStripModelChange& change,
-    const TabStripSelectionChange& selection) {
-  FireActiveOriginChanged();
-}
-
-void BraveWalletServiceDelegateImpl::OnTabChangedAt(tabs::TabInterface* tab,
-                                                    TabChangeType change_type) {
-  if (!tab || tab->GetContents() != GetActiveWebContents()) {
-    return;
-  }
-
-  FireActiveOriginChanged();
-}
-
-void BraveWalletServiceDelegateImpl::FireActiveOriginChanged() {
-  mojom::OriginInfoPtr origin_info =
-      MakeOriginInfo(GetActiveOriginInternal().value_or(url::Origin()));
-  for (auto& observer : observer_list_) {
-    observer.OnActiveOriginChangedDeprecated(origin_info);
-  }
-}
-
-std::optional<url::Origin>
-BraveWalletServiceDelegateImpl::GetActiveOriginInternal() {
-  content::WebContents* contents = GetActiveWebContents();
-  return contents ? contents->GetPrimaryMainFrame()->GetLastCommittedOrigin()
-                  : std::optional<url::Origin>();
-}
-
-std::optional<url::Origin>
-BraveWalletServiceDelegateImpl::GetActiveOriginDeprecated() {
-  return GetActiveOriginInternal();
 }
 
 void BraveWalletServiceDelegateImpl::ClearWalletUIStoragePartition() {

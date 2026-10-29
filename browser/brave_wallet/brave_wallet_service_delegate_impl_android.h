@@ -6,14 +6,10 @@
 #ifndef BRAVE_BROWSER_BRAVE_WALLET_BRAVE_WALLET_SERVICE_DELEGATE_IMPL_ANDROID_H_
 #define BRAVE_BROWSER_BRAVE_WALLET_BRAVE_WALLET_SERVICE_DELEGATE_IMPL_ANDROID_H_
 
-#include <memory>
-#include <optional>
 #include <string>
 
-#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_delegate_base.h"
-#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 
 namespace content {
 class BrowserContext;
@@ -41,10 +37,9 @@ class BraveWalletServiceDelegateImpl : public BraveWalletServiceDelegateBase {
   void ResetWebSitePermission(mojom::CoinType coin,
                               const std::string& formed_website,
                               ResetWebSitePermissionCallback callback) override;
-  std::optional<url::Origin> GetActiveOriginDeprecated() override;
 
  private:
-  base::WeakPtrFactory<BraveWalletServiceDelegateImpl> weak_ptr_factory_;
+  base::WeakPtrFactory<BraveWalletServiceDelegateImpl> weak_ptr_factory_{this};
 };
 
 }  // namespace brave_wallet

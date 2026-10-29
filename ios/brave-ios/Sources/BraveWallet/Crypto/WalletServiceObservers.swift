@@ -123,8 +123,6 @@ class WalletServiceObserver: BraveWalletBraveWalletServiceObserver {
     walletService.addObserver(self)
   }
 
-  func onActiveOriginChangedDeprecated(originInfo: BraveWallet.OriginInfo) {}
-
   func onDefaultEthereumWalletChanged(wallet: BraveWallet.DefaultWallet) {
     _onDefaultEthereumWalletChanged?(wallet)
   }

@@ -175,7 +175,6 @@ export function makeTxServiceObserver(store: Store) {
 export function makeBraveWalletServiceObserver(store: Store) {
   const braveWalletServiceObserverReceiver =
     new BraveWallet.BraveWalletServiceObserverReceiver({
-      onActiveOriginChangedDeprecated: function () {},
       onDefaultEthereumWalletChanged: function (defaultWallet) {
         store.dispatch(
           walletApi.util.invalidateTags([
