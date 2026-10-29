@@ -9,6 +9,8 @@
 
 #include "base/functional/bind.h"
 #include "base/memory/raw_ptr.h"
+#include "base/strings/strcat.h"
+#include "base/test/bind.h"
 #include "brave/components/de_amp/common/features.h"
 #include "brave/components/de_amp/common/pref_names.h"
 #include "build/build_config.h"
@@ -26,6 +28,7 @@
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/reload_type.h"
+#include "content/public/common/url_constants.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/content_mock_cert_verifier.h"
@@ -330,6 +333,36 @@ IN_PROC_BROWSER_TEST_F(DeAmpBrowserTest, ContentDispositionAttachment) {
   // De-AMP must NOT have redirected to the canonical URL.
   EXPECT_NE(web_contents()->GetLastCommittedURL(), canonical_url);
   EXPECT_EQ(web_contents()->GetLastCommittedURL(), simple);
+}
+
+// De-AMP must not turn a view-source: navigation into a rendered canonical
+// page, otherwise an untrusted AMP page could move the user out of view-source.
+IN_PROC_BROWSER_TEST_F(DeAmpBrowserTest, ViewSourceNotDeAmped) {
+  TogglePref(true);
+  SetRequestHandler(kTestAmpPage, Amp(kTestCanonicalPage));
+  SetRequestHandler(kTestCanonicalPage, Canonical());
+
+  int canonical_requests = 0;
+  https_server_->RegisterRequestMonitor(base::BindLambdaForTesting(
+      [&](const net::test_server::HttpRequest& request) {
+        if (request.relative_url == kTestCanonicalPage) {
+          ++canonical_requests;
+        }
+      }));
+  StartServer();
+
+  const GURL amp_url = https_server_->GetURL(kTestHost, kTestAmpPage);
+  const GURL view_source_url(
+      base::StrCat({content::kViewSourceScheme, ":", amp_url.spec()}));
+
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), view_source_url));
+  EXPECT_TRUE(content::WaitForLoadStop(web_contents()));
+
+  auto* entry = web_contents()->GetController().GetLastCommittedEntry();
+  ASSERT_TRUE(entry);
+  EXPECT_TRUE(entry->IsViewSourceMode());
+  EXPECT_EQ(entry->GetVirtualURL(), view_source_url);
+  EXPECT_EQ(0, canonical_requests);
 }
 
 IN_PROC_BROWSER_TEST_F(DeAmpBrowserTest, CanonicalLinkOutsideChunkWithinMax) {
