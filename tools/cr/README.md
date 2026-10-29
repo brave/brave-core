@@ -38,6 +38,8 @@ Shared abstractions used by the entry points and tests:
   utilities.
 - `vpython_utils.py` — Provides `vpython3` path.
 - `patchfile.py` — Patch file abstraction handling patches that failed to apply.
+- `conflict_resolution.py` — The fixed answers `brockit rebase` gives to the
+  conflicts it stops on.
 - `git_status.py` — Parser for `git status --porcelain` output.
 - `versioning.py` — Chromium version number parsing.
 - `vscode.py` — IPC for opening files in VS Code in the integrated terminal.
