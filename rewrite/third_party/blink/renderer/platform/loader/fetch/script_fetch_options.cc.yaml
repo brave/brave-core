@@ -1,0 +1,21 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Pass the page graph initiator on with a script's fetch.
+
+      Scoped to CreateFetchParameters(); the match can't leave the function.
+    regex:
+      re_pattern: |-
+        (FetchParameters ScriptFetchOptions::CreateFetchParameters\((?:(?!\n\}\n).)*?\n)(  return params;\n\})
+      re_flags: [DOTALL]
+      replace: |-
+        \1#if BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
+          params.MutableOptions().initiator_info.dom_node_id = dom_node_id_;
+          params.MutableOptions().initiator_info.parent_script_id = parent_script_id_;
+        #endif  // BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
+
+        \2
