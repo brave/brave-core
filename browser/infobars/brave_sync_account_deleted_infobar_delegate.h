@@ -9,6 +9,7 @@
 #include "base/compiler_specific.h"
 #include "base/memory/raw_ptr.h"
 #include "brave/components/infobars/core/brave_confirm_infobar_delegate.h"
+#include "ui/base/window_open_disposition.h"
 
 class Profile;
 
