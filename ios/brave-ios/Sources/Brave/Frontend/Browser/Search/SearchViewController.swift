@@ -9,6 +9,7 @@ import Favicon
 import Growth
 import Preferences
 import Shared
+import SwiftUI
 import Then
 import UIKit
 
@@ -129,19 +130,6 @@ class SearchCompositionalLayout: UICollectionViewCompositionalLayout {
 
 public class SearchViewController: UIViewController, LoaderListener {
 
-  // MARK: SearchViewControllerUX
-
-  private struct SearchViewControllerUX {
-    static let engineButtonHeight: Float = 44
-    static let engineButtonWidth = engineButtonHeight * 1.4
-
-    static let searchImageWidth: Float = 24
-    static let searchButtonMargin: CGFloat = 8
-
-    static let faviconSize: CGFloat = 29
-    static let separatorSize = CGSize(width: 1.0, height: 20.0)
-  }
-
   // MARK: ReuseIdentifier
 
   private struct SupplementaryViewReuseIdentifier {
@@ -190,22 +178,13 @@ public class SearchViewController: UIViewController, LoaderListener {
     frame: .zero,
     collectionViewLayout: compositionalLayout
   )
-  // Views for displaying the bottom scrollable search engine list. searchEngineScrollView is the
-  // scrollable container; searchEngineScrollViewContent contains the actual set of search engine buttons.
-  private let searchEngineScrollView = ButtonScrollView().then { scrollView in
-    scrollView.decelerationRate = .fast
-    scrollView.showsVerticalScrollIndicator = false
-    scrollView.showsHorizontalScrollIndicator = false
-    scrollView.clipsToBounds = false
-    let border = UIView.separatorLine
-    scrollView.addSubview(border)
-    border.snp.makeConstraints {
-      $0.bottom.equalTo(scrollView.snp.top)
-      $0.leading.trailing.equalTo(scrollView.frameLayoutGuide)
-    }
-  }
   private let backgroundView = UIView()
-  private let searchEngineScrollViewContent = UIView()
+  // The quick search row sits at the bottom of the screen, pinned above the keyboard. The hairline
+  // is owned by `view` rather than the row so it can draw outside the row's bounds.
+  private let quickSearchSeparator = UIView.separatorLine
+  private lazy var quickSearchHostingController = UIHostingController(
+    rootView: makeQuickSearchView()
+  )
 
   private lazy var suggestionLongPressGesture = UILongPressGestureRecognizer(
     target: self,
@@ -219,7 +198,7 @@ public class SearchViewController: UIViewController, LoaderListener {
       if !dataSource.isAIChatAvailable && !dataSource.hasQuickSearchEngines {
         layoutCollectionView()
       } else {
-        layoutSearchEngineScrollView()
+        layoutQuickSearchView()
       }
     }
   }
@@ -358,7 +337,7 @@ public class SearchViewController: UIViewController, LoaderListener {
     if !dataSource.isAIChatAvailable && !dataSource.hasQuickSearchEngines {
       layoutCollectionView()
     } else {
-      layoutSearchEngineScrollView()
+      layoutQuickSearchView()
     }
   }
 
@@ -373,9 +352,8 @@ public class SearchViewController: UIViewController, LoaderListener {
     }
 
     backgroundView.backgroundColor = browserColors.favoritesAndSearchScreenBackground
-    searchEngineScrollView.backgroundColor = browserColors.chromeBackground
 
-    setupSearchEngineScrollViewIfNeeded()
+    setupQuickSearchViewIfNeeded()
 
     KeyboardHelper.defaultHelper.addDelegate(self)
 
@@ -410,7 +388,7 @@ public class SearchViewController: UIViewController, LoaderListener {
   }
 
   private func animateSearchEnginesWithKeyboard(_ keyboardState: KeyboardState) {
-    layoutSearchEngineScrollView()
+    layoutQuickSearchView()
 
     UIViewPropertyAnimator(
       duration: keyboardState.animationDuration,
@@ -429,38 +407,37 @@ public class SearchViewController: UIViewController, LoaderListener {
 
   // MARK: Internal
 
-  private func setupSearchEngineScrollViewIfNeeded() {
+  private func setupQuickSearchViewIfNeeded() {
     guard dataSource.isAIChatAvailable || dataSource.hasQuickSearchEngines
     else {
       layoutCollectionView()
       return
     }
 
-    view.addSubview(searchEngineScrollView)
-    searchEngineScrollView.addSubview(searchEngineScrollViewContent)
+    addChild(quickSearchHostingController)
+    view.addSubview(quickSearchHostingController.view)
+    view.addSubview(quickSearchSeparator)
+    quickSearchHostingController.didMove(toParent: self)
 
-    layoutSearchEngineScrollView()
+    quickSearchHostingController.view.translatesAutoresizingMaskIntoConstraints = false
+    quickSearchHostingController.view.backgroundColor = browserColors.chromeBackground
+
+    layoutQuickSearchView()
     layoutCollectionView()
 
-    searchEngineScrollViewContent.snp.makeConstraints { make in
-      make.center.equalTo(searchEngineScrollView).priority(.low)
-      // Left-align the engines on iphones, center on ipad
-      if UIScreen.main.traitCollection.horizontalSizeClass == .compact {
-        make.leading.equalTo(searchEngineScrollView).priority(.required)
-      } else {
-        make.leading.greaterThanOrEqualTo(searchEngineScrollView).priority(.required)
-      }
-      make.bottom.trailing.top.equalTo(searchEngineScrollView)
+    quickSearchSeparator.snp.makeConstraints {
+      $0.bottom.equalTo(quickSearchHostingController.view.snp.top)
+      $0.leading.trailing.equalTo(view)
     }
   }
 
-  func layoutSearchEngineScrollView() {
+  func layoutQuickSearchView() {
     guard dataSource.isAIChatAvailable || dataSource.hasQuickSearchEngines else { return }
 
     let keyboardHeight =
       KeyboardHelper.defaultHelper.currentState?.intersectionHeightForView(view) ?? 0
 
-    searchEngineScrollView.snp.remakeConstraints { make in
+    quickSearchHostingController.view.snp.remakeConstraints { make in
       make.leading.trailing.equalTo(view)
       if isUsingBottomBar {
         let offset: CGFloat
@@ -485,7 +462,7 @@ public class SearchViewController: UIViewController, LoaderListener {
     collectionView.snp.remakeConstraints { make in
       make.top.equalTo(view.snp.top)
       make.leading.trailing.equalTo(view)
-      if searchEngineScrollView.superview == nil {
+      if quickSearchHostingController.view.superview == nil {
         let keyboardHeight =
           KeyboardHelper.defaultHelper.currentState?.intersectionHeightForView(view) ?? 0
         if isUsingBottomBar {
@@ -501,7 +478,7 @@ public class SearchViewController: UIViewController, LoaderListener {
           make.bottom.equalTo(view).offset(-keyboardHeight)
         }
       } else {
-        make.bottom.equalTo(searchEngineScrollView.snp.top)
+        make.bottom.equalTo(quickSearchHostingController.view.snp.top)
       }
     }
   }
@@ -535,137 +512,24 @@ public class SearchViewController: UIViewController, LoaderListener {
     updateAvailableOnYourDeviceItems()
   }
 
-  private func reloadSearchEngines() {
-    searchEngineScrollViewContent.subviews.forEach { $0.removeFromSuperview() }
-    var leftEdge = searchEngineScrollViewContent.snp.left
-
-    if dataSource.isAIChatAvailable {
-      let leoButtonContainer = UIView().then {
-        $0.layer.cornerRadius = 8.0
-        $0.clipsToBounds = true
+  private func makeQuickSearchView() -> QuickSearchView {
+    QuickSearchView(
+      isAiChatAvailable: dataSource.isAIChatAvailable,
+      items: dataSource.quickSearchEngines,
+      onAiChat: { [weak self] in
+        self?.didClickLeoButton()
+      },
+      onSelection: { [weak self] engine in
+        self?.didSelectEngine(engine)
+      },
+      onOpenMore: { [weak self] in
+        self?.searchDelegate?.presentQuickSearchEnginesViewController()
       }
-
-      let leoButtonBackgroundView = GradientView(braveSystemName: .iconsActive)
-
-      let leoButton = UIButton()
-      leoButton.setImage(
-        UIImage(braveSystemNamed: "leo.product.brave-leo")!.template,
-        for: []
-      )
-      leoButton.imageView?.contentMode = .center
-      leoButton.addTarget(self, action: #selector(didClickLeoButton), for: .touchUpInside)
-      leoButton.accessibilityLabel = Strings.searchSettingsButtonTitle
-      leoButton.tintColor = .white
-      leoButton.imageView?.snp.makeConstraints { make in
-        make.width.height.equalTo(SearchViewControllerUX.searchImageWidth)
-        return
-      }
-
-      leoButtonContainer.addSubview(leoButtonBackgroundView)
-      leoButtonContainer.addSubview(leoButton)
-
-      leoButtonBackgroundView.snp.makeConstraints {
-        $0.edges.equalToSuperview()
-      }
-      leoButton.snp.makeConstraints {
-        $0.edges.equalToSuperview()
-      }
-
-      searchEngineScrollViewContent.addSubview(leoButtonContainer)
-      leoButtonContainer.snp.makeConstraints { make in
-        make.size.equalTo(SearchViewControllerUX.faviconSize)
-        // offset the left edge to align with search results
-        make.left.equalTo(leftEdge).offset(
-          SearchViewControllerUX.searchButtonMargin * 2
-        )
-        make.top.equalTo(searchEngineScrollViewContent).offset(
-          SearchViewControllerUX.searchButtonMargin
-        )
-        make.bottom.equalTo(searchEngineScrollViewContent).offset(
-          -SearchViewControllerUX.searchButtonMargin
-        )
-      }
-
-      leftEdge = leoButtonContainer.snp.right
-
-      let separator = UIView().then {
-        $0.backgroundColor = UIColor(braveSystemName: .materialSeparator)
-      }
-
-      searchEngineScrollView.addSubview(separator)
-      separator.snp.makeConstraints { make in
-        make.size.equalTo(SearchViewControllerUX.separatorSize)
-        make.left.equalTo(leftEdge).offset(SearchViewControllerUX.searchButtonMargin * 2)
-        make.centerY.equalTo(leoButtonBackgroundView)
-      }
-
-      leftEdge = separator.snp.right
-    }
-
-    // search engines
-    for engine in dataSource.quickSearchEngines {
-      let engineButton = UIButton()
-      engineButton.setImage(engine.image, for: [])
-      engineButton.imageView?.do {
-        $0.layer.cornerRadius = 8.0
-        $0.clipsToBounds = true
-        $0.contentMode = .scaleAspectFit
-      }
-      engineButton.backgroundColor = .clear
-      engineButton.addTarget(self, action: #selector(didSelectEngine), for: .touchUpInside)
-      engineButton.accessibilityLabel = String(
-        format: Strings.searchEngineFormatText,
-        engine.shortName
-      )
-
-      engineButton.imageView?.snp.makeConstraints { make in
-        make.width.height.equalTo(SearchViewControllerUX.faviconSize)
-        return
-      }
-
-      searchEngineScrollViewContent.addSubview(engineButton)
-      engineButton.snp.makeConstraints { make in
-        make.width.equalTo(SearchViewControllerUX.engineButtonWidth)
-        make.left.equalTo(leftEdge)
-        make.top.equalTo(searchEngineScrollViewContent)
-        make.bottom.equalTo(searchEngineScrollViewContent)
-      }
-      leftEdge = engineButton.snp.right
-    }
-
-    let settingsButton = UIButton()
-    settingsButton.setImage(
-      UIImage(braveSystemNamed: "leo.settings")!.template,
-      for: []
     )
-    settingsButton.imageView?.contentMode = .center
-    settingsButton.backgroundColor = .clear
-    settingsButton.addTarget(self, action: #selector(didClickSettingsButton), for: .touchUpInside)
-    settingsButton.accessibilityLabel = Strings.searchSettingsButtonTitle
-    settingsButton.tintColor = UIColor(braveSystemName: .iconDefault)
+  }
 
-    settingsButton.imageView?.snp.makeConstraints { make in
-      make.width.height.equalTo(SearchViewControllerUX.searchImageWidth)
-      return
-    }
-
-    searchEngineScrollViewContent.addSubview(settingsButton)
-    settingsButton.snp.makeConstraints { make in
-      make.size.equalTo(SearchViewControllerUX.faviconSize)
-      // offset the left edge to align with search results
-      make.left.equalTo(leftEdge).offset(
-        SearchViewControllerUX.searchButtonMargin
-      )
-      make.top.equalTo(searchEngineScrollViewContent).offset(
-        SearchViewControllerUX.searchButtonMargin
-      )
-      make.bottom.equalTo(searchEngineScrollViewContent).inset(
-        SearchViewControllerUX.searchButtonMargin
-      )
-      make.right.equalTo(searchEngineScrollViewContent).inset(
-        SearchViewControllerUX.searchButtonMargin * 2
-      )
-    }
+  private func reloadSearchEngines() {
+    quickSearchHostingController.rootView = makeQuickSearchView()
   }
 
   private func searchSuggestionOptin(enable: Bool) {
@@ -842,16 +706,7 @@ public class SearchViewController: UIViewController, LoaderListener {
 
   // MARK: Actions
 
-  @objc func didSelectEngine(_ sender: UIButton) {
-    // The UIButtons are the same cardinality and order as the array of quick search engines.
-    // Subtract 1 from index to account for magnifying glass accessory.
-    guard let index = searchEngineScrollViewContent.subviews.firstIndex(of: sender) else {
-      assertionFailure()
-      return
-    }
-
-    let offset = dataSource.isAIChatAvailable ? 1 : 0  // offset for the Leo button
-    let engine = dataSource.quickSearchEngines[index - offset]
+  func didSelectEngine(_ engine: OpenSearchEngine) {
     let localSearchQuery = dataSource.searchQuery.lowercased()
     let widgetAttr =
       searchDelegate?.searchViewControllerHasPendingWidgetSearchAttribution(self) ?? false
@@ -867,10 +722,6 @@ public class SearchViewController: UIViewController, LoaderListener {
     }
     searchDelegate?.searchViewController(self, didSelectURL: url)
     recordQuickSearchActionP3A(option: .searchEngine(engine))
-  }
-
-  @objc func didClickSettingsButton() {
-    self.searchDelegate?.presentQuickSearchEnginesViewController()
   }
 
   @objc func didClickLeoButton() {
@@ -1343,14 +1194,5 @@ extension SearchViewController {
 extension P3ATimedStorage where Value == Int {
   fileprivate static func quickSearchMostUsedStorage(for answer: QuickSearchP3AAnswer) -> Self {
     .init(name: "quick-search-most-used-\(answer.rawValue)", lifetimeInDays: 7)
-  }
-}
-
-// MARK: - ButtonScrollView
-
-/// UIScrollView that prevents buttons from interfering with scroll.
-private class ButtonScrollView: UIScrollView {
-  fileprivate override func touchesShouldCancel(in view: UIView) -> Bool {
-    return true
   }
 }

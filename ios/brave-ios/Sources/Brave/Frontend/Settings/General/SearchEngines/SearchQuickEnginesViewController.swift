@@ -152,6 +152,7 @@ class SearchQuickEnginesViewController: UITableViewController {
 
     searchEngines.orderedEngines.insert(engine, at: newIndex)
     tableView.reloadData()
+    delegate?.searchQuickEnginesUpdated()
   }
 
   override func tableView(
