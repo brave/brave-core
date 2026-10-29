@@ -13,6 +13,9 @@ import { getLocale, formatLocale } from '$web-common/locale'
 // Assets
 import PageTermsGraphic from './assets/page_terms_graphic.svg'
 
+// Proxy
+import getWalletPageApiProxy from '../../../../page/wallet_page_api_proxy'
+
 // Styled Components
 import {
   TermsText,
@@ -42,8 +45,10 @@ const onClickTermsOfUse = () => {
     )
     return
   }
-  // Tabs.create is desktop specific. Using window.open for android.
-  window.open(MELD_TERMS_OF_USE_URL, '_blank', 'noopener noreferrer')
+  // Tabs.create is desktop specific.
+  getWalletPageApiProxy().pageHandler.openTab({
+    url: MELD_TERMS_OF_USE_URL,
+  })
 }
 
 const meldTermsOfUse = formatLocale(S.BRAVE_WALLET_MELD_TERMS_OF_USE, {

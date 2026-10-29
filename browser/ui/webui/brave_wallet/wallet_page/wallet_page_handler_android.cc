@@ -9,9 +9,13 @@
 
 #include "base/notreached.h"
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl_helper.h"
+#include "content/public/browser/page_navigator.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_controller.h"
+#include "ui/base/page_transition_types.h"
+#include "ui/base/window_open_disposition.h"
+#include "url/gurl.h"
 
 namespace brave_wallet {
 
@@ -55,6 +59,23 @@ void WalletPageHandler::OpenWalletHome() {
 void WalletPageHandler::ScanQRCode(ScanQRCodeCallback callback) {
   // iOS/Mobile only
   NOTREACHED();
+}
+
+void WalletPageHandler::OpenTab(const GURL& url) {
+  if (!url.is_valid() || !url.SchemeIsHTTPOrHTTPS()) {
+    return;
+  }
+
+  auto* wc = webui_controller_->web_ui()->GetWebContents();
+  if (!wc) {
+    return;
+  }
+
+  wc->OpenURL(
+      content::OpenURLParams(url, content::Referrer(),
+                             WindowOpenDisposition::NEW_FOREGROUND_TAB,
+                             ui::PageTransition::PAGE_TRANSITION_LINK, false),
+      /*navigation_handle_callback=*/{});
 }
 
 }  // namespace brave_wallet
