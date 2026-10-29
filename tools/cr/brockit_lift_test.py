@@ -45,6 +45,7 @@ import brockit
 import plaster
 import terminal
 import toolchain
+import versioning
 
 from test.fake_chromium_repo import (
     DEFAULT_BRANCH,
@@ -377,7 +378,7 @@ class LiftEnvironment:
 
         # The real pinslist file is used so the block brockit rewrites is the
         # one that ships.
-        pinslist = Path(brockit.PINSLIST_TIMESTAMP_FILE)
+        pinslist = Path(versioning.PINSLIST_TIMESTAMP_FILE)
         (brave / pinslist).parent.mkdir(parents=True, exist_ok=True)
         shutil.copy(
             Path(__file__).resolve().parents[2] / pinslist, brave / pinslist
@@ -707,7 +708,7 @@ class LiftCleanRunTest(LiftTestCase):
         self.assertTrue(version_commit)
         self.assertEqual(
             sorted(self.env.files_in(version_commit)),
-            sorted(['package.json', brockit.PINSLIST_TIMESTAMP_FILE]),
+            sorted(['package.json', versioning.PINSLIST_TIMESTAMP_FILE]),
         )
         # The tag brave is pinned to is the one that was lifted to, both in the
         # commit and in the working tree.
@@ -717,7 +718,7 @@ class LiftCleanRunTest(LiftTestCase):
         self.assertIn(
             '# Last updated:',
             self.env.git(
-                'show', f'{version_commit}:{brockit.PINSLIST_TIMESTAMP_FILE}'
+                'show', f'{version_commit}:{versioning.PINSLIST_TIMESTAMP_FILE}'
             ),
         )
 
@@ -2084,7 +2085,7 @@ class LiftRestartTest(LiftTestCase):
         # Anything committed on top of the pinslist file hides the version
         # commit `--restart` keys off.
         self.env.stage_file(
-            brockit.PINSLIST_TIMESTAMP_FILE, 'unrelated rewrite\n'
+            versioning.PINSLIST_TIMESTAMP_FILE, 'unrelated rewrite\n'
         )
         self.env.repo.commit('Rewrite the pinslist file', self.env.repo.brave)
 
