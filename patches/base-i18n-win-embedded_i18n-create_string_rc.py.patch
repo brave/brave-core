@@ -1,8 +1,8 @@
 diff --git a/base/i18n/win/embedded_i18n/create_string_rc.py b/base/i18n/win/embedded_i18n/create_string_rc.py
-index 6fca01533d8355ab212dac776c27b01e6ba9bf49..eed5e0d61e2e277a3223aa7cbd6bdbcea0f84402 100755
+index 5dec2d2876573f031863cc765776563b1917b869..636caabcba70dea2ecfd82149f57ec4f060277d7 100755
 --- a/base/i18n/win/embedded_i18n/create_string_rc.py
 +++ b/base/i18n/win/embedded_i18n/create_string_rc.py
-@@ -388,7 +388,13 @@ Extra input files:
+@@ -418,7 +418,13 @@ Extra input files:
      # Read the source (en-US) string from the .grd file.
      grd_handler = GrdHandler(self.string_id_set)
      sax_parser.setContentHandler(grd_handler)
@@ -17,12 +17,12 @@ index 6fca01533d8355ab212dac776c27b01e6ba9bf49..eed5e0d61e2e277a3223aa7cbd6bdbce
      source_strings = grd_handler.messages
  
      grd_file_path = os.path.dirname(grd_file)
-@@ -617,7 +623,7 @@ def main():
-         'specific strings were given.')
-     valid_brands = [b for b in
-       next(iter(mode_specific_strings.values())).keys()]
--    if not brand in valid_brands:
-+    if not brand in valid_brands and False:
-       parser.error('A brand was specified (' + brand + ') but it is not '
-         'a valid brand [' + ', '.join(valid_brands) + '].')
-   elif mode_specific_strings:
+@@ -689,7 +695,7 @@ def main():
+     valid_brands = [
+       b for b in next(iter(mode_specific_strings.values())).keys()
+     ]
+-    if brand not in valid_brands:
++    if brand not in valid_brands and False:
+       parser.error(
+         'A brand was specified (' + brand + ') but it is not '
+         'a valid brand [' + ', '.join(valid_brands) + '].'

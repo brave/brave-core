@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/public/mojom/BUILD.gn b/third_party/blink/public/mojom/BUILD.gn
-index 043558bb9846a4b3eedb7f9769327c8882961870..6e824b31f205b4b3bc91d7327fe00129eaad4892 100644
+index 485c9cbaae9885672942dc26fd4d5a7bffb7b230..52a2476853eaf934c6a5f2bf1f59ac1a198b184a 100644
 --- a/third_party/blink/public/mojom/BUILD.gn
 +++ b/third_party/blink/public/mojom/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -10,11 +10,11 @@ index 043558bb9846a4b3eedb7f9769327c8882961870..6e824b31f205b4b3bc91d7327fe00129
  import("//build/config/features.gni")
  import("//build/config/ui.gni")
  import("//mojo/public/tools/bindings/mojom.gni")
-@@ -386,6 +387,7 @@ mojom("mojom_platform") {
+@@ -368,6 +369,7 @@ mojom("mojom_platform") {
      "//url/mojom:url_mojom_origin",
      "//url/mojom:url_mojom_scheme_host_port",
    ]
 +  public_deps += brave_third_party_blink_public_mojom_platform_public_deps
  
-   if (is_android) {
-     # Direct deps (instead of transitive deps) are necessary for java targets.
+   if (!is_android) {
+     sources += [

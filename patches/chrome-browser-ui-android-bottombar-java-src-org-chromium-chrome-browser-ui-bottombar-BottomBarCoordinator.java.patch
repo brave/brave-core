@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/android/bottombar/java/src/org/chromium/chrome/browser/ui/bottombar/BottomBarCoordinator.java b/chrome/browser/ui/android/bottombar/java/src/org/chromium/chrome/browser/ui/bottombar/BottomBarCoordinator.java
-index 0736c02bf44a5a7889fbb68c48ae8cb83529cdd4..08c6684a287fff7ed8862fa984be4bce9d7cfabf 100644
+index 34ffaa47447d87613b049967d18683ca4d262c2d..389a01ede0a4a6372ed808f6715833645e8a0f8f 100644
 --- a/chrome/browser/ui/android/bottombar/java/src/org/chromium/chrome/browser/ui/bottombar/BottomBarCoordinator.java
 +++ b/chrome/browser/ui/android/bottombar/java/src/org/chromium/chrome/browser/ui/bottombar/BottomBarCoordinator.java
 @@ -45,7 +45,7 @@ public class BottomBarCoordinator implements BottomBar, Destroyable {
@@ -9,9 +9,9 @@ index 0736c02bf44a5a7889fbb68c48ae8cb83529cdd4..08c6684a287fff7ed8862fa984be4bce
 -    private final BottomBarButtonManager mButtonManager;
 +    protected final BottomBarButtonManager mButtonManager;
      private final @Nullable BottomBarEducationCoordinator mEducationCoordinator;
+     private final BottomBarLongPressMenuHandler mLongPressMenuHandler;
      private final NullableObservableSupplier<Tab> mTabSupplier;
- 
-@@ -102,7 +102,7 @@ public class BottomBarCoordinator implements BottomBar, Destroyable {
+@@ -103,7 +103,7 @@ public class BottomBarCoordinator implements BottomBar, Destroyable {
          mModel = new PropertyModel.Builder(BottomBarProperties.ALL_KEYS).build();
  
          mButtonManager =
@@ -20,7 +20,7 @@ index 0736c02bf44a5a7889fbb68c48ae8cb83529cdd4..08c6684a287fff7ed8862fa984be4bce
  
          if (BottomBarConfigUtils.isEducationEnabled()) {
              mEducationCoordinator =
-@@ -135,7 +135,7 @@ public class BottomBarCoordinator implements BottomBar, Destroyable {
+@@ -139,7 +139,7 @@ public class BottomBarCoordinator implements BottomBar, Destroyable {
          mMcp = PropertyModelChangeProcessor.create(mModel, mView, BottomBarViewBinder::bind);
      }
  
