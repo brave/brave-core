@@ -12,6 +12,7 @@
 #include "brave/browser/ui/focus_mode/focus_mode_features.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/focus_mode_title_bar_view.h"
+#include "brave/browser/ui/views/frame/split_view/brave_contents_container_outline.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/contents_container_view.h"
 #include "chrome/browser/ui/views/frame/multi_contents_view.h"
@@ -22,8 +23,10 @@
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "ui/gfx/geometry/insets.h"
 #include "ui/gfx/scoped_animation_duration_scale_mode.h"
 #include "ui/views/controls/label.h"
+#include "ui/views/view_utils.h"
 
 // Tests the BraveBrowserView wiring that displays the active tab's domain in
 // the mini toolbar while Focus Mode is enabled. The mini toolbar's own display
@@ -57,11 +60,19 @@ class FocusModeMiniToolbarBrowserTestBase : public InProcessBrowserTest {
         BrowserView::GetBrowserViewForBrowser(browser()));
   }
 
-  MultiContentsViewMiniToolbar* active_mini_toolbar() {
+  ContentsContainerView* active_contents_container() {
     return browser_view()
         ->multi_contents_view()
-        ->GetActiveContentsContainerView()
-        ->mini_toolbar();
+        ->GetActiveContentsContainerView();
+  }
+
+  MultiContentsViewMiniToolbar* active_mini_toolbar() {
+    return active_contents_container()->mini_toolbar();
+  }
+
+  const BraveContentsContainerOutline* active_contents_outline() {
+    return views::AsViewClass<BraveContentsContainerOutline>(
+        active_contents_container()->contents_outline_view());
   }
 
   void SetFocusModeEnabled(bool enabled) {
@@ -117,8 +128,19 @@ IN_PROC_BROWSER_TEST_F(FocusModeMiniToolbarBrowserTest, MiniToolbarWiring) {
   ASSERT_TRUE(WaitForMiniToolbarVisible(true));
   EXPECT_TRUE(DomainContains(u"a.test"));
 
+  // The contents aren't outlined with rounded corners off, but the toolbar is,
+  // and outlining it costs the contents no room.
+  using OutlineStyle = BraveContentsContainerOutline::Style;
+  EXPECT_EQ(OutlineStyle::kMiniToolbarOnly,
+            active_contents_outline()->style_for_testing());
+  EXPECT_TRUE(active_contents_outline()->GetVisible());
+  EXPECT_EQ(gfx::Insets(), active_contents_container()->GetInsets());
+
   SetFocusModeEnabled(false);
   EXPECT_TRUE(WaitForMiniToolbarVisible(false));
+  EXPECT_EQ(OutlineStyle::kHidden,
+            active_contents_outline()->style_for_testing());
+  EXPECT_FALSE(active_contents_outline()->GetVisible());
 }
 
 IN_PROC_BROWSER_TEST_F(FocusModeMiniToolbarBrowserTest,
