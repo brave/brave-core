@@ -221,6 +221,12 @@ void AddBraveTabThemeColorMixer(ui::ColorProvider* provider,
       ui::ColorTransform(apply_opacity_for_inactive_tab_foreground);
   postprocessing_mixer[kColorTabForegroundInactiveFrameInactive] =
       ui::ColorTransform(apply_opacity_for_inactive_tab_foreground);
+  // Upstream's hover IDs reference the ones above, but references skip
+  // postprocessing mixers, so repeat the adjustment.
+  postprocessing_mixer[kColorTabForegroundInactiveHoverFrameActive] =
+      ui::ColorTransform(apply_opacity_for_inactive_tab_foreground);
+  postprocessing_mixer[kColorTabForegroundInactiveHoverFrameInactive] =
+      ui::ColorTransform(apply_opacity_for_inactive_tab_foreground);
 
 #if defined(TOOLKIT_VIEWS)
   if (!base::FeatureList::IsEnabled(
@@ -250,6 +256,10 @@ void AddBraveTabThemeColorMixer(ui::ColorProvider* provider,
   postprocessing_mixer[kColorTabForegroundInactiveFrameActive] =
       darker_theme::ApplyDarknessFromColor(nala::kColorPrimitiveNeutral60);
   postprocessing_mixer[kColorTabForegroundInactiveFrameInactive] =
+      darker_theme::ApplyDarknessFromColor(nala::kColorPrimitiveNeutral60);
+  postprocessing_mixer[kColorTabForegroundInactiveHoverFrameActive] =
+      darker_theme::ApplyDarknessFromColor(nala::kColorPrimitiveNeutral60);
+  postprocessing_mixer[kColorTabForegroundInactiveHoverFrameInactive] =
       darker_theme::ApplyDarknessFromColor(nala::kColorPrimitiveNeutral60);
 
   // Tab hovered background
