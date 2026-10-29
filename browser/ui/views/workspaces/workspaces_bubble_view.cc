@@ -120,6 +120,12 @@ WorkspacesBubbleView::WorkspacesBubbleView(views::View* anchor_view,
               base::BindRepeating(&WorkspacesBubbleView::OnDeleteClicked,
                                   weak_factory_.GetWeakPtr(), workspace.id)));
       row->SetSelected(showing == workspace.id);
+
+      // Only a workspace someone is currently looking at is out of reach.
+      // One that is open but hidden is picked up by bringing its window
+      // forward, so switching away from a workspace releases it.
+      row->SetAvailable(
+          !service->IsWorkspaceOnScreenElsewhere(workspace.id, window_id));
     }
   }
 

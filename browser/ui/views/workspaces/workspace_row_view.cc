@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/views/workspaces/workspace_row_view.h"
 
+#include <string>
 #include <utility>
 
 #include "base/functional/bind.h"
@@ -71,12 +72,22 @@ void WorkspaceInfoButton::SetSelected(bool selected) {
     return;
   }
   selected_ = selected;
+  UpdateLabelColors();
+}
+
+void WorkspaceInfoButton::OnEnabledChanged() {
+  Button::OnEnabledChanged();
+  UpdateLabelColors();
+}
+
+void WorkspaceInfoButton::UpdateLabelColors() {
   // The selected background is a tint of the primary ramp rather than a solid
   // fill, so text on it has to be the matching interactive color -- white
   // would vanish against it in light mode.
-  ui::ColorVariant color = selected
-                               ? ui::ColorVariant(nala::kColorTextInteractive)
-                               : ui::ColorVariant(ui::kColorLabelForeground);
+  ui::ColorVariant color =
+      !GetEnabled() ? ui::ColorVariant(nala::kColorTextDisabled)
+      : selected_   ? ui::ColorVariant(nala::kColorTextInteractive)
+                    : ui::ColorVariant(ui::kColorLabelForeground);
   name_label_->SetEnabledColor(color);
   stats_label_->SetEnabledColor(color);
 }
@@ -126,6 +137,23 @@ void WorkspaceRowView::SetSelected(bool selected) {
   UpdateChildSelectionStyling();
 }
 
+void WorkspaceRowView::SetAvailable(bool available) {
+  if (available_ == available) {
+    return;
+  }
+  available_ = available;
+  info_button_->SetEnabled(available);
+  if (more_button_) {
+    // The menu acts on the row, so it goes quiet along with the row itself.
+    more_button_->SetEnabled(available);
+  }
+  info_button_->SetTooltipText(
+      available ? std::u16string()
+                : l10n_util::GetStringUTF16(
+                      IDS_WORKSPACE_ROW_OPEN_IN_ANOTHER_WINDOW_TOOLTIP));
+  UpdateBackground();
+}
+
 void WorkspaceRowView::OnMouseEntered(const ui::MouseEvent& event) {
   views::View::OnMouseEntered(event);
   UpdateBackground();
@@ -137,7 +165,8 @@ void WorkspaceRowView::OnMouseExited(const ui::MouseEvent& event) {
 }
 
 void WorkspaceRowView::UpdateBackground() {
-  const bool hovered = View::IsMouseHovered();
+  // An unavailable row cannot be picked, so it should not look like it can.
+  const bool hovered = available_ && View::IsMouseHovered();
   if (selected_) {
     // Step along the primary ramp on hover so the active row still responds to
     // the pointer: lighter in dark mode, deeper in light mode.
@@ -161,7 +190,7 @@ void WorkspaceRowView::UpdateChildSelectionStyling() {
   views::SetImageFromVectorIconWithColor(
       more_button_, kLeoMoreVerticalIcon,
       selected_ ? views::IconColors(nala::kColorIconInteractive,
-                                    nala::kColorIconInteractive)
+                                    ui::kColorIconDisabled)
                 : views::IconColors(ui::kColorIcon, ui::kColorIconDisabled));
 }
 
