@@ -6578,6 +6578,20 @@ extension Strings {
     value: "Search \"%@\"",
     comment: "The prefix of a user input search query displayed in the quick bar which is on the top of the search suggestion list."
   )
+  public static let quickSearchAskLeoAccessibility = NSLocalizedString(
+    "quickSearchAskLeoAccessibility",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Ask Leo",
+    comment: "Accessibility title for a quick search button that performs Ask Leo with the input value"
+  )
+  public static let quickSearchEditAccessibility = NSLocalizedString(
+    "quickSearchEditAccessibility",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Edit Quick Search",
+    comment: "Accessibility title for button that opens edit screens for quick search engines."
+  )
 }
 
 // MARK: - Widgets
