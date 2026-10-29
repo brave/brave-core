@@ -962,24 +962,27 @@ class MessageWriter:
         )
 
     @staticmethod
-    def parse(todo_file: Path) -> 'MessageWriter':
+    def parse(todo_file: Path) -> 'MessageWriter | None':
         """Reads `todo_file` and returns a `MessageWriter` provided the
         first commit-message block's subject classifies as one of
         `MessageWriter._HANDLED_ENTRY_TYPES` (currently `PINNED` and
         `REASSIGNMENT`).
 
+        Returns `None` when the file is not a squash at all, e.g. the
+        message of a commit that `git rebase --continue` makes once a
+        conflict is resolved. That message is kept as it is.
+
         Any other first-block classification (RECYCLABLE, DEFAULT) and
-        any file that fails to parse / yields no blocks raises
-        `EditorRecoverableFailure`. The exception message names the
-        rejected `EntryType` so the user sees, in the editor, why the
-        rewrite was punted.
+        any file that fails to parse raises `EditorRecoverableFailure`.
+        The exception message names the rejected `EntryType` so the user
+        sees, in the editor, why the rewrite was punted.
         """
         blocks = MsgBlock.parse(todo_file.read_bytes().decode('utf-8'))
 
         if not blocks:
-            raise EditorRecoverableFailure(
-                'No commit-message blocks were parsed from the editor file.'
-            )
+            # Only a squash has git's `# This is …` headers to split it into
+            # blocks.
+            return None
 
         first_msg_line = blocks[0].full_message.splitlines()[0]
         entry_type = get_entry_type_for_subject(first_msg_line)
