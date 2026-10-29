@@ -1,0 +1,18 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+syntax = "proto3";
+
+package recipes.brave.cr.autolift;
+
+message InputProperties {
+  // The milestone of the `cr<N>` branch to lift; the latest `cr<N>` branch on
+  // brave-core when unset.
+  int32 milestone = 1;
+
+  // Carries on with a run that stopped before finishing, in the checkout,
+  // out dir and `.autolift/cr<N>/` as it left them, rather than starting over.
+  bool resume = 2;
+}

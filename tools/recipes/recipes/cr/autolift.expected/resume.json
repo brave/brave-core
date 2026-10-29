@@ -1,0 +1,91 @@
+[
+  {
+    "cmd": [
+      "git",
+      "clone",
+      "--depth",
+      "1",
+      "https://chromium.googlesource.com/chromium/tools/depot_tools",
+      "[WORKSPACE]/b/src/third_party/depot_tools"
+    ],
+    "cwd": "[WORKSPACE]/b/src/brave",
+    "env": {
+      "CHROME_HEADLESS": "1"
+    },
+    "env_prefixes": {
+      "PATH": [
+        "[WORKSPACE]/b/src/brave/tools/cr/bootstrap"
+      ]
+    },
+    "name": "clone depot_tools"
+  },
+  {
+    "cmd": [
+      "gclient"
+    ],
+    "cwd": "[WORKSPACE]/b/src/brave",
+    "env": {
+      "CHROME_HEADLESS": "1"
+    },
+    "env_prefixes": {
+      "PATH": [
+        "[WORKSPACE]/b/src/brave/tools/cr/bootstrap"
+      ]
+    },
+    "name": "verify gclient"
+  },
+  {
+    "cmd": [
+      "[WORKSPACE]/b/src/third_party/depot_tools/vpython3",
+      "RECIPE_MODULE[claude_cli]/resources/run_claude.py",
+      "--log",
+      "[WORKSPACE]/b/src/brave/.autolift/cr159/claude.jsonl",
+      "--logs",
+      "[WORKSPACE]/b/src/brave/.autolift/cr159",
+      "--",
+      "claude",
+      "--print",
+      "Resume the lift of cr159, which an earlier run of tools/cr/autolift/SKILL.md stopped before it finished. Read the whole file, then follow its \"Resuming a run\" section to carry on where that run stopped. The milestone N is 159.\n\nThis is an unattended CI run: there is no human to ask, so make the calls the document describes and record them in the report.",
+      "--permission-mode",
+      "auto",
+      "--output-format",
+      "stream-json",
+      "--verbose",
+      "--add-dir",
+      "[WORKSPACE]/b",
+      "--allowedTools",
+      "Edit(/[WORKSPACE]/b/**)",
+      "Write(/[WORKSPACE]/b/**)"
+    ],
+    "cwd": "[WORKSPACE]/b/src/brave",
+    "env": {
+      "CHROME_HEADLESS": "1",
+      "CLAUDE_CODE_PRINT_BG_WAIT_CEILING_MS": "0"
+    },
+    "env_prefixes": {
+      "PATH": [
+        "[WORKSPACE]/b/src/brave/tools/cr/bootstrap"
+      ]
+    },
+    "name": "autolift"
+  },
+  {
+    "cmd": [
+      "cat",
+      "[WORKSPACE]/b/src/brave/.autolift/cr159/report.md"
+    ],
+    "cwd": "[WORKSPACE]/b/src/brave",
+    "env": {
+      "CHROME_HEADLESS": "1"
+    },
+    "env_prefixes": {
+      "PATH": [
+        "[WORKSPACE]/b/src/brave/tools/cr/bootstrap"
+      ]
+    },
+    "name": "report"
+  },
+  {
+    "name": "$result"
+  }
+]
