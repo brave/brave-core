@@ -18,10 +18,8 @@ import { Router } from '../router.js'
 import { SettingsViewMixin } from '../settings_page/settings_view_mixin.js'
 
 import { getTemplate } from './model_list_section.html.js'
-import {
-  BraveLeoAssistantBrowserProxyImpl,
-  OLLAMA_ENDPOINT
-} from './brave_leo_assistant_browser_proxy.js'
+import { OLLAMA_ENDPOINT } from '../ollama.mojom-webui.js'
+import { BraveLeoAssistantBrowserProxyImpl } from './brave_leo_assistant_browser_proxy.js'
 import type {
   BraveLeoAssistantBrowserProxy,
   Model
