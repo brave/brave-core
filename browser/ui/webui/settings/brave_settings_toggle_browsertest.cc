@@ -27,6 +27,12 @@ IN_PROC_BROWSER_TEST_F(BraveSettingsToggleWebUITest, PagesRender) {
           "runMochaSuite('BraveSettingsToggleButtonPagesRender')");
 }
 
+IN_PROC_BROWSER_TEST_F(BraveSettingsToggleWebUITest,
+                       CategoryDefaultRadioGroups) {
+  RunTest("settings/settings_category_default_radio_group_test.js",
+          "runMochaSuite('BraveSettingsCategoryDefaultRadioGroup')");
+}
+
 IN_PROC_BROWSER_TEST_F(BraveSettingsToggleWebUITest, MdSelectStyle) {
   RunTest("settings/settings_toggle_button_test.js",
           "runMochaSuite('BraveMdSelectStyle')");
