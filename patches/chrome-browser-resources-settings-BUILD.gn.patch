@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/BUILD.gn b/chrome/browser/resources/settings/BUILD.gn
-index 480df5a9f26699402414793653bc3b211f72ebc2..a80868ee6695e1b8ede7a4b8d8df86bcb9110bca 100644
+index 64cfda6452b810249d54d84f53299de440f98362..f3bbf8e01bd85bf07407b6c5aef7e1ffda85dc58 100644
 --- a/chrome/browser/resources/settings/BUILD.gn
 +++ b/chrome/browser/resources/settings/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -21,23 +21,23 @@ index 480df5a9f26699402414793653bc3b211f72ebc2..a80868ee6695e1b8ede7a4b8d8df86bc
    grd_prefix = "settings"
  
    static_files = [
-@@ -145,6 +150,7 @@ build_webui("build") {
+@@ -116,6 +121,7 @@ build_webui("build") {
+     "site_settings/web_printing_page.ts",
      "site_settings/window_management_page.ts",
-     "site_settings/zoom_levels.ts",
    ]
 +  web_component_files += brave_settings_web_component_files
  
    if (is_chromeos) {
      web_component_files += [ "site_settings/smart_card_readers_page.ts" ]
-@@ -467,6 +473,7 @@ build_webui("build") {
-     "tooltip_mixin.ts",
+@@ -495,6 +501,7 @@ build_webui("build") {
      "tooltip_mixin_lit.ts",
+     "window_proxy.ts",
    ]
 +  ts_files += brave_settings_ts_files
  
    if (is_chromeos) {
      ts_files += [
-@@ -724,9 +731,12 @@ build_webui("build") {
+@@ -755,9 +762,12 @@ build_webui("build") {
      "site_settings/zoom_levels.css",
      "system_page/system_page.css",
    ]
@@ -50,7 +50,7 @@ index 480df5a9f26699402414793653bc3b211f72ebc2..a80868ee6695e1b8ede7a4b8d8df86bc
    if (!is_chromeos) {
      mojo_files_deps +=
          [ "//chrome/browser/accessibility:mojo_bindings_ts__generator" ]
-@@ -746,6 +756,7 @@ build_webui("build") {
+@@ -777,6 +787,7 @@ build_webui("build") {
      "//tools/typescript/definitions/pending.d.ts",
      "//tools/typescript/definitions/settings_private.d.ts",
    ]
@@ -58,7 +58,7 @@ index 480df5a9f26699402414793653bc3b211f72ebc2..a80868ee6695e1b8ede7a4b8d8df86bc
    if (is_chromeos) {
      ts_definitions +=
          [ "//tools/typescript/definitions/quick_unlock_private.d.ts" ]
-@@ -767,6 +778,7 @@ build_webui("build") {
+@@ -798,6 +809,7 @@ build_webui("build") {
      "//ui/webui/resources/js:build_ts",
      "//ui/webui/resources/mojo:build_ts",
    ]
@@ -66,7 +66,7 @@ index 480df5a9f26699402414793653bc3b211f72ebc2..a80868ee6695e1b8ede7a4b8d8df86bc
  
    if (!is_chromeos) {
      ts_deps +=
-@@ -803,4 +815,9 @@ build_webui("build") {
+@@ -834,4 +846,9 @@ build_webui("build") {
                "$root_gen_dir/chrome/browser/resources/settings_shared/tsc",
                root_build_dir) ]
    }

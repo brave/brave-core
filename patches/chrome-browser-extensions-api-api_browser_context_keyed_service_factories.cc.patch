@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/extensions/api/api_browser_context_keyed_service_factories.cc b/chrome/browser/extensions/api/api_browser_context_keyed_service_factories.cc
-index 9758702292fb390cdf57b57ce13fd5979af8249d..29ef6d3fa172323a72834dd7d863cbb22f0e2d5f 100644
+index b23167f7423f2f2e10e6abc9511fd4283cbb0c83..097b3e44a884fd1457223f36e4f3f5cf3d56e8da 100644
 --- a/chrome/browser/extensions/api/api_browser_context_keyed_service_factories.cc
 +++ b/chrome/browser/extensions/api/api_browser_context_keyed_service_factories.cc
 @@ -69,7 +69,8 @@
@@ -12,9 +12,9 @@ index 9758702292fb390cdf57b57ce13fd5979af8249d..29ef6d3fa172323a72834dd7d863cbb2
  #include "chrome/browser/extensions/api/mdns/mdns_api.h"
  #endif
  
-@@ -93,7 +94,8 @@ void EnsureApiBrowserContextKeyedServiceFactoriesBuilt() {
-   extensions::HistoryAPI::GetFactoryInstance();
+@@ -94,7 +95,8 @@ void EnsureApiBrowserContextKeyedServiceFactoriesBuilt() {
    extensions::IdentityAPI::GetFactoryInstance();
+   extensions::image_writer::OperationManager::GetFactoryInstance();
    extensions::IncognitoConnectability::EnsureFactoryBuilt();
 -#if BUILDFLAG(ENABLE_SERVICE_DISCOVERY)
 +#if BUILDFLAG(ENABLE_SERVICE_DISCOVERY) && \

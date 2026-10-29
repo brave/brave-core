@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/unload_controller.h b/chrome/browser/ui/unload_controller.h
-index 05bde7e64ff3894255dab7aac2e496ee3e860ef6..682a04ba89c6cca9f0a271c4b91212a113c57cc8 100644
+index ce7d56c1db28bd6434c706f6ce7db6ab7f396f87..b82349d413c8e723428dd2ff82cb70c5d89fbd36 100644
 --- a/chrome/browser/ui/unload_controller.h
 +++ b/chrome/browser/ui/unload_controller.h
-@@ -86,6 +86,9 @@ class UnloadController : public WebContentsCollection::Observer,
+@@ -87,6 +87,9 @@ class UnloadController : public WebContentsCollection::Observer,
  
    ~UnloadController() override;
  
@@ -12,7 +12,7 @@ index 05bde7e64ff3894255dab7aac2e496ee3e860ef6..682a04ba89c6cca9f0a271c4b91212a1
    // Handles a `WebContentsDelegate::CloseContents()` request for `contents`
    // after its unload handler (`ClosePage()`) has completed. When `browser_` is
    // attempting to close, this clears `contents`'s unload state and advances
-@@ -455,6 +458,10 @@ class UnloadController : public WebContentsCollection::Observer,
+@@ -456,6 +459,10 @@ class UnloadController : public WebContentsCollection::Observer,
    // shortly (after a PostTask).
    bool is_delete_scheduled_ = false;
  
@@ -21,5 +21,5 @@ index 05bde7e64ff3894255dab7aac2e496ee3e860ef6..682a04ba89c6cca9f0a271c4b91212a1
 +  bool confirmed_to_close_ = false;
 +
    base::WeakPtrFactory<UnloadController> weak_factory_{this};
- };
  
+   // For custom confirmation callbacks, which must stay valid when

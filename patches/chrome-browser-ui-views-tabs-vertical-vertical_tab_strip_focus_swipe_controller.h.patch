@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/tabs/vertical/vertical_tab_strip_focus_swipe_controller.h b/chrome/browser/ui/views/tabs/vertical/vertical_tab_strip_focus_swipe_controller.h
-index 4a91fb53f8f72a6fb67123d684efef812e87469d..ffc8a96c9da0266fe464d8e196da15c12635e677 100644
+index 6ecc22fa97abc5dbcc08c2aa0dfaf356be396a8d..07397fed46f69ee91cf7e939842cc261eec0c06a 100644
 --- a/chrome/browser/ui/views/tabs/vertical/vertical_tab_strip_focus_swipe_controller.h
 +++ b/chrome/browser/ui/views/tabs/vertical/vertical_tab_strip_focus_swipe_controller.h
 @@ -10,7 +10,7 @@
@@ -10,7 +10,7 @@ index 4a91fb53f8f72a6fb67123d684efef812e87469d..ffc8a96c9da0266fe464d8e196da15c1
 +class VerticalTabStripRegionView_ChromiumImpl;
  
  // Handles two-finger swipe gestures across the vertical tab strip to cycle
- // between the normal (unfocused) tab strip and focused tab groups.
+ // between open tab groups while in focus mode.
 @@ -23,7 +23,7 @@ class VerticalTabStripFocusSwipeController : public ui::EventHandler {
        base::Milliseconds(300);
  
