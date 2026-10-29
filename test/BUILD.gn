@@ -230,6 +230,7 @@ test("brave_unit_tests") {
     "//brave/components/brave_shields/core/test:unit_tests",
     "//brave/components/brave_sync:network_time_helper",
     "//brave/components/brave_user_agent/browser:unit_tests",
+    "//brave/components/brave_wallet/common/buildflags",
     "//brave/components/challenge_bypass_ristretto:unit_tests",
     "//brave/components/child_process_monitor:unittests",
     "//brave/components/constants",
