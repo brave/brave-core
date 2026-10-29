@@ -1,0 +1,26 @@
+diff --git a/components/sync/service/sync_auth_manager.h b/components/sync/service/sync_auth_manager.h
+index 5cef411ee2b3327f5e61b075561a0f5e29fed4d3..1a0dd03c737acce1a29793473db35a3634ad002d 100644
+--- a/components/sync/service/sync_auth_manager.h
++++ b/components/sync/service/sync_auth_manager.h
+@@ -148,7 +148,12 @@ class SyncAuthManager : public signin::IdentityManager::Observer {
+   bool IsRetryingAccessTokenFetchForTest() const;
+   void ResetRequestAccessTokenBackoffForTest();
+ 
++ protected:
++  virtual SyncAccountInfo DetermineAccountToUse(
++      const signin::IdentityManager* identity_manager) const;
++
+  private:
++  friend class BraveSyncAuthManager;
+   // Helper class that ensures the account's managed-status gets queried
+   // whenever the account itself changes.
+   class ActiveAccount {
+@@ -213,7 +218,7 @@ class SyncAuthManager : public signin::IdentityManager::Observer {
+   // Immediately starts an access token request, unless one is already ongoing.
+   // If another request is scheduled for later, it is canceled. Any access token
+   // we currently have is invalidated.
+-  void RequestAccessTokenNow();
++  virtual void RequestAccessTokenNow();
+ 
+   // Callback for `ongoing_access_token_fetch_`.
+   void AccessTokenFetched(GoogleServiceAuthError error,

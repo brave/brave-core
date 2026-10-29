@@ -1,0 +1,27 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: 'Make RequestAccessTokenNow virtual for BraveSyncAuthManager.'
+    make_virtual:
+      class_name: SyncAuthManager
+      method_name: RequestAccessTokenNow
+
+  - description: |-
+      Declare DetermineAccountToUse() for BraveSyncAuthManager to override.
+
+      The base implementation, in the chromium_src .cc, falls back on the
+      function of the same name in the .cc's anonymous namespace, which this
+      member hides.
+    add_to_protected:
+      class_name: SyncAuthManager
+      code: |-
+        virtual SyncAccountInfo DetermineAccountToUse(
+            const signin::IdentityManager* identity_manager) const;
+
+  - description: 'Let BraveSyncAuthManager reach private members.'
+    add_friend:
+      class_name: SyncAuthManager
+      friend_type: class BraveSyncAuthManager
