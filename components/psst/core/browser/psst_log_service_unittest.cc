@@ -5,6 +5,7 @@
 
 #include "brave/components/psst/core/browser/psst_log_service.h"
 
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -41,7 +42,7 @@ TEST_F(PsstLogServiceTest, EntriesAreReturnedInOrder) {
   service_.AddNativeEntry(mojom::PsstLogLevel::kInfo, /*tab_id=*/1,
                           GURL("https://a.example.com/page"), "first");
   service_.AddEntry(mojom::PsstLogSource::kScript, mojom::PsstLogLevel::kWarn,
-                    PsstLogService::kInvalidTabId, "frame-token",
+                    std::nullopt, "frame-token",
                     GURL("https://a.example.com/page"), "second");
 
   const auto entries = service_.GetEntries();
@@ -50,14 +51,14 @@ TEST_F(PsstLogServiceTest, EntriesAreReturnedInOrder) {
   EXPECT_EQ("first", entries[0]->message);
   EXPECT_EQ(mojom::PsstLogSource::kNative, entries[0]->source);
   EXPECT_EQ(mojom::PsstLogLevel::kInfo, entries[0]->level);
-  EXPECT_EQ("", entries[0]->frame_token);
+  EXPECT_EQ(std::nullopt, entries[0]->frame_token);
   EXPECT_EQ(1, entries[0]->tab_id);
 
   EXPECT_EQ("second", entries[1]->message);
   EXPECT_EQ(mojom::PsstLogSource::kScript, entries[1]->source);
   EXPECT_EQ(mojom::PsstLogLevel::kWarn, entries[1]->level);
   EXPECT_EQ("frame-token", entries[1]->frame_token);
-  EXPECT_EQ(PsstLogService::kInvalidTabId, entries[1]->tab_id);
+  EXPECT_EQ(std::nullopt, entries[1]->tab_id);
 
   EXPECT_LE(entries[0]->timestamp_ms, entries[1]->timestamp_ms);
   EXPECT_GT(entries[0]->timestamp_ms, 0);

@@ -36,9 +36,6 @@ class PsstLogService : public KeyedService {
   // Oldest entries are dropped past this count.
   static constexpr size_t kMaxLogEntries = 1000;
 
-  // `tab_id` for entries with no associated tab.
-  static constexpr int32_t kInvalidTabId = -1;
-
   class Observer : public base::CheckedObserver {
    public:
     virtual void OnPsstLogEntryAdded(const mojom::PsstLogEntry& entry) {}
@@ -63,8 +60,8 @@ class PsstLogService : public KeyedService {
   // `kMaxLogEntries` is reached.
   void AddEntry(mojom::PsstLogSource source,
                 mojom::PsstLogLevel level,
-                int32_t tab_id,
-                std::string_view frame_token,
+                std::optional<int32_t> tab_id,
+                std::optional<std::string> frame_token,
                 const GURL& url,
                 std::string_view message,
                 std::optional<base::DictValue> data = std::nullopt);
@@ -72,7 +69,7 @@ class PsstLogService : public KeyedService {
   // Appends an entry from the browser-side flow, which is tab- rather than
   // frame-scoped.
   void AddNativeEntry(mojom::PsstLogLevel level,
-                      int32_t tab_id,
+                      std::optional<int32_t> tab_id,
                       const GURL& url,
                       std::string_view message,
                       std::optional<base::DictValue> data = std::nullopt);

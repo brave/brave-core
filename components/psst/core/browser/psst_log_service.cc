@@ -5,6 +5,7 @@
 
 #include "brave/components/psst/core/browser/psst_log_service.h"
 
+#include <optional>
 #include <string>
 #include <utility>
 
@@ -43,8 +44,8 @@ void PsstLogService::RemoveObserver(Observer* observer) {
 
 void PsstLogService::AddEntry(mojom::PsstLogSource source,
                               mojom::PsstLogLevel level,
-                              int32_t tab_id,
-                              std::string_view frame_token,
+                              std::optional<int32_t> tab_id,
+                              std::optional<std::string> frame_token,
                               const GURL& url,
                               std::string_view message,
                               std::optional<base::DictValue> data) {
@@ -52,7 +53,7 @@ void PsstLogService::AddEntry(mojom::PsstLogSource source,
   entry->timestamp_ms =
       base::Time::Now().InMillisecondsFSinceUnixEpochIgnoringNull();
   entry->tab_id = tab_id;
-  entry->frame_token = std::string(frame_token);
+  entry->frame_token = std::move(frame_token);
   entry->level = level;
   entry->source = source;
   entry->site = GetSite(url);
@@ -70,11 +71,11 @@ void PsstLogService::AddEntry(mojom::PsstLogSource source,
 }
 
 void PsstLogService::AddNativeEntry(mojom::PsstLogLevel level,
-                                    int32_t tab_id,
+                                    std::optional<int32_t> tab_id,
                                     const GURL& url,
                                     std::string_view message,
                                     std::optional<base::DictValue> data) {
-  AddEntry(mojom::PsstLogSource::kNative, level, tab_id, /*frame_token=*/"",
+  AddEntry(mojom::PsstLogSource::kNative, level, tab_id, /*frame_token=*/std::nullopt,
            url, message, std::move(data));
 }
 
