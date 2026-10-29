@@ -1,5 +1,5 @@
 diff --git a/components/ttc/features.cc b/components/ttc/features.cc
-index 9309bc07d8a6a36ca8520554868a8f8d3d1e508f..be3be7ec1f212a816c195b7e7cc13521cbc41f05 100644
+index dc6af8e4a937b1d659c9d98667c018e04b816daa..736c223e113916c39cbf795e691a55dfe4c3b8ec 100644
 --- a/components/ttc/features.cc
 +++ b/components/ttc/features.cc
 @@ -6,7 +6,7 @@
@@ -9,5 +9,5 @@ index 9309bc07d8a6a36ca8520554868a8f8d3d1e508f..be3be7ec1f212a816c195b7e7cc13521
 -BASE_FEATURE(kTtc, base::FEATURE_DISABLED_BY_DEFAULT);
 +BASE_OVERRIDDEN_FEATURE(kTtc, base::FEATURE_DISABLED_BY_DEFAULT);
  
- BASE_FEATURE_PARAM(base::TimeDelta, kTtcSetupTimeout, &kTtc, base::Seconds(20));
+ BASE_FEATURE(kTtcLiveRecipe, base::FEATURE_DISABLED_BY_DEFAULT);
  
