@@ -68,7 +68,7 @@ void BraveSyncAuthManager::ResetKeys() {
   }
 }
 
-void BraveSyncAuthManager::RequestAccessToken() {
+void BraveSyncAuthManager::RequestAccessTokenNow() {
   VLOG(1) << __func__;
   brave_sync::NetworkTimeHelper::GetInstance()->GetNetworkTime(
       base::BindOnce(&BraveSyncAuthManager::OnNetworkTimeFetched,
