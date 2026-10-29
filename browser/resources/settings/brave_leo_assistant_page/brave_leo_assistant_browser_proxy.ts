@@ -7,12 +7,11 @@
  import * as mojom from '../settings_helper.mojom-webui.js'
  import * as mojomCustomizationSettings from
    '../customization_settings.mojom-webui.js'
- import {OllamaService, OLLAMA_ENDPOINT} from '../ollama.mojom-webui.js'
+ import {OllamaService} from '../ollama.mojom-webui.js'
  export * from '../ai_chat.mojom-webui.js'
  export * from '../common.mojom-webui.js'
  export * from '../settings_helper.mojom-webui.js'
  export * from '../customization_settings.mojom-webui.js'
- export {OLLAMA_ENDPOINT} from '../ollama.mojom-webui.js'
 
  export interface BraveLeoAssistantBrowserProxy {
   resetLeoData(): void
