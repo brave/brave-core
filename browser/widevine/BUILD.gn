@@ -24,6 +24,7 @@ source_set("widevine") {
     "//chrome/browser/component_updater",
     "//chrome/browser/lifetime",
     "//chrome/browser/profiles:profile",
+    "//chrome/browser/ui/browser_window",
     "//chrome/common",
     "//components/component_updater",
     "//components/content_settings/core/common",
@@ -40,10 +41,7 @@ source_set("widevine") {
   ]
 
   if (!is_android) {
-    deps += [
-      "//chrome/browser/ui/browser_window",
-      "//chrome/browser/ui/tabs:tab_strip",
-    ]
+    deps += [ "//chrome/browser/ui/tabs:tab_strip" ]
   }
 
   public_deps = [
