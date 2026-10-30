@@ -10,18 +10,26 @@ Chromium, without a human to ask. The run:
    [Lift target](#lift-target));
 4. builds Linux and fixes what breaks;
 5. builds Android and fixes what breaks;
-6. pushes the branch, if the run finished with no issues and changed it (for a
+6. fixes what still fails in the CI of the branch's pull request, if it has one;
+7. pushes the branch, if the run finished with no issues and changed it (for a
    new milestone, also opening its pull request).
 
 A maintenance run that has nothing to lift to stops after the rebase, a sync,
 the Linux build and the push (see
 [Maintenance run without a lift](#maintenance-run-without-a-lift)). A run with
 nothing worth rebasing or lifting becomes an autofix run, which only fixes the
-branch's failing CI (see [Autofix run](#autofix-run)). A run given a Chromium
-tag instead of a milestone bumps Brave's release channels to it (see
-[Channel bump run](#channel-bump-run)).
+branch's failing CI (see [autofix.md](autofix.md)). A run given a Chromium tag
+instead of a milestone bumps Brave's release channels to it (see
+[channel_bump.md](channel_bump.md)).
 
-Push only with `autolift.py publish` (see [step 11](#11-publish)), with
+Every run reads this file; a run of `cr<N>` also reads `autofix.md`, and a
+channel bump `channel_bump.md` (and `autofix.md` for its autofix run). The
+prompt names the files the run needs. Read each one yourself, in full, with the
+Read tool: not a subagent's summary or a skim, and every line of it, paging with
+`offset` when a read says it stopped short. The run's report lists any you
+didn't.
+
+Push only with `autolift.py publish` (see [step 12](#12-publish)), with
 `--no-rebase` in an autofix run, and don't open PRs or comment on GitHub
 otherwise (beyond what `brockit lift --with-github` and `publish` update). Keep
 a running report (see [Report](#report)) and finish by printing it.
@@ -66,8 +74,8 @@ and `tools/cr/plaster.py`.
   use it to verify culprit hashes and to look for earlier fixes. A maintenance
   run without a lift takes it from `prepare`'s "Branch range" line instead.
 - **Tracker:** `tools/cr/codehealth/M<N>.md`, if it exists. Read it before
-  starting: issues it already tracks are left alone (see
-  [Ground rules](#ground-rules)).
+  starting: issues it already tracks are left alone until they fail a build or
+  CI (see [Scope](#scope)).
 - **Chromium tag**, for a channel bump run only (e.g. `157.0.8103.38`): `N` is
   its major, and each channel is its branch's base.
 
@@ -80,9 +88,13 @@ These apply to every step. The reason is given so that edge cases can be judged.
 - Act only on Brockit sections marked **(action needed)**. Ignore its other
   warnings (e.g. "Patch being flagged as broken, but with unexpected reason",
   "pnpm run init is failing to reset some paths").
-- Before fixing a non-trivial runtime or test failure, check
-  `tools/cr/codehealth/M<N>.md`. If the issue is already tracked there, leave it
-  and say so in the report.
+- Before fixing a failure, check `tools/cr/codehealth/M<N>.md`. An item there
+  that fails a build, a test or a CI check is fixed like any other failure, with
+  the item as the lead: cover its other tasks the same failure needs, and tick
+  what the fix closes, committed as `Version CodeHealth tracker`. A fix that
+  needs a judgement call follows
+  [Decisions without a human](#decisions-without-a-human). Tracked items that
+  fail nothing are left alone.
 - Only run tests relevant to the code a fix touches. Full suites are other CI
   jobs' business.
 - Don't build while Brockit has open "action needed" items. The tree is
@@ -123,8 +135,13 @@ commit body and in the report. Then carry on.
 - Pass the culprit as a full 40-character hash obtained from
   `git -C .. rev-parse <short>` or copied verbatim from tool output. Never type
   or complete a hash from memory. The commit hook refuses a culprit that doesn't
-  resolve, or isn't between the Chromium tags the branch's upstream and HEAD
-  pin.
+  resolve. Pass `--culprit-in-range` with it too: the hook then also refuses one
+  that isn't between the Chromium tags the branch's upstream and HEAD pin. When
+  it does, check whether the base has the cause (see [Scope](#scope)), and leave
+  it if so. A culprit from before the range that is still this branch's to fix
+  (one of its tracker's items, or an issue a base change unmasked) stands:
+  commit without `--culprit-in-range`, saying in the body why it predates the
+  range.
 - One commit per culprit. If a commit for that culprit already exists on the
   branch, add to it with `git cr commit --fixup=<sha>`, or `--fixup=amend:<sha>`
   when its message must change too (for an `amend!` message, keep the original
@@ -172,14 +189,16 @@ commit body and in the report. Then carry on.
   fixup, so the two land and revert together.
 - A plastered patch regenerated from its unchanged yaml (`plaster apply <yaml>`
   putting a stale `.patch` back as the yaml makes it), at any step of a lift or
-  an autofix run, is a `--fixup` to the latest "Apply-fixed 🩹 patches from ..."
-  commit on the branch, even when another commit wrote the stale patch, unless
-  the patch first appears after that commit (a fix picked from a newer branch
-  that adds the yaml): fix up the commit that adds it, or autosquash replays the
-  fixup before the file exists (modify/delete). Never fix up an "Update patches"
-  or "Updated strings" commit: those are regenerated, and
-  `--discard-regen-changes` drops them, fixups included. A fix that changes the
-  yaml is an ordinary culprit fix.
+  an autofix run, is committed with the subject of the latest "Apply-fixed 🩹
+  patches from ..." commit on the branch (`git commit -m '<its subject>'`),
+  which the rebase squashes into it, even when another commit wrote the stale
+  patch. The hook refuses a `fixup!`, `amend!` or `squash!` of that commit, or
+  of any pinned commit. The exception is a patch that first appears after it (a
+  fix picked from a newer branch that adds the yaml): fix up the commit that
+  adds it, or the squash moves the change before the file exists
+  (modify/delete). Never fix up an "Update patches" or "Updated strings" commit:
+  those are regenerated, and `--discard-regen-changes` drops them, fixups
+  included. A fix that changes the yaml is an ordinary culprit fix.
 - Messages follow `../agents/shared/skills/cl-description/cl-description.md`: a
   `[Component]`-style subject under 72 columns, counting the `[cr<N>]` and tag
   prefixes the hook adds, and a body wrapped at 72 that explains why. To fix a
@@ -205,9 +224,10 @@ commit body and in the report. Then carry on.
 - Anything under `tools/cr/codehealth/` (the trackers, Tooling TODOs included,
   their `SKILL.md` and the tools there) is committed with the message
   `Version CodeHealth tracker`.
-- Changes to this file, the other `tools/cr/autolift/` files and the CI package
-  in `tools/cr/ci/` are committed with `Version lift updates` (see
-  [Committing it](#committing-it)).
+- Changes to this file and the other `tools/cr/autolift/` files are committed
+  with `Version lift updates` (see [Committing it](#committing-it)). Changes to
+  the CI package in `tools/cr/ci/` are commits of their own, with
+  `git cr commit --tagged=ci`.
 
 ### Editing upstream code
 
@@ -344,7 +364,8 @@ commit body and in the report. Then carry on.
   print, and never pipe it through `tee`, `tail`, `head` or `grep`. A CI run
   streams every `*.log` there to its console as it is written.
   `autolift.py lift` writes Brockit's output to its own log there, and prints
-  only its summary.
+  only its summary. So does `autolift.py publish`, which runs without a redirect
+  (see [step 12](#12-publish)).
 - Once it finishes, read only what you need from the log:
   `autolift.py build-summary`, `grep`, `tail -n`. Never the whole log.
 
@@ -385,6 +406,11 @@ implement missing features or improvements during a lift, and don't let one
 block the run. Commit them with `git commit -m 'Version CodeHealth tracker'`,
 like other tracker changes.
 
+Working around a tool is always such a request. Reaching a service by hand
+because `autolift.py` or `tools/cr/ci/cli.py` doesn't give what a step needs
+(reading a credential file, calling a CI or GitHub API with `curl`) is a gap in
+them: file it before going on, and name it in the report.
+
 The code health scripts and rules (`tools/cr/codehealth/scripts/`,
 `tools/cr/codehealth/rules/`) are the exception: improve them right away, as
 `tools/cr/codehealth/SKILL.md` asks, with tests, and commit them as
@@ -413,7 +439,7 @@ vpython3 tools/cr/autolift/autolift.py lift --continue
 # brockit rebase (step 1).
 vpython3 tools/cr/autolift/autolift.py prepare 158
 
-# At the very end: pick what landed on GitHub meanwhile, and push (step 11).
+# At the very end: pick what landed on GitHub meanwhile, and push (step 12).
 vpython3 tools/cr/autolift/autolift.py publish 158
 
 # Outcome, failed steps and distinct errors of a build log.
@@ -429,7 +455,7 @@ vpython3 tools/cr/autolift/autolift.py next-fixes 158.0.8127.2..158.0.8127.4 net
 vpython3 tools/cr/autolift/autolift.py pick-fix <fix commit> <cherry-pick hash>
 
 # Maintenance branch: newer trackers' items concerning the bump's cherry-picks,
-# with their state and fixes, and picking a ticked item's fix (step 8).
+# with their state and fixes, and picking a ticked item's fix (step 9).
 vpython3 tools/cr/autolift/autolift.py next-tracker 158.0.8127.2..158.0.8127.4
 vpython3 tools/cr/autolift/autolift.py pick-fix <fix commit>
 
@@ -452,10 +478,13 @@ vpython3 .autolift/tooling/cr/autolift/autolift.py channel-picks
 
 The run keeps its logs and its report in `.autolift/cr<N>/` in `src/brave`
 (git-ignored): inside the workspace, and outside `out/`, so that a clean rebuild
-(`rm -fr ../out`) doesn't wipe them. Don't keep them in `/tmp`. `prepare` and
-`lift` write there themselves; send build logs there too. `grep` may be aliased
-to `ugrep`, which skips binary files and handles `--include` differently; use
-Python for binary inspection.
+(`rm -fr ../out`) doesn't wipe them. `prepare` and `lift` write there
+themselves; send build logs there too. Other scratch files (message drafts,
+dumps, downloads) go in `$TMPDIR`, which the job points at its own temp dir on
+every platform, cleared with its workspace. Never write to a fixed temp path
+(`/tmp`, `/var/tmp`, `C:\Windows\Temp`): it outlives the job. `grep` may be
+aliased to `ugrep`, which skips binary files and handles `--include`
+differently; use Python for binary inspection.
 
 ## Procedure
 
@@ -510,7 +539,7 @@ starting over.
   rewritten outside the run between sessions (teammates' fixes cherry-picked on
   top, the run's fixups dropped). Don't undo it; list it in the report, and say
   which steps it came after and so wasn't verified by.
-- Subagents don't survive an interruption. If step 8 stopped with sweeps
+- Subagents don't survive an interruption. If step 9 stopped with sweeps
   running, rerun them all on the existing dump directory (complete if `subjects`
   has the range's commit count), ignoring the stopped sweeps' scratch files.
 - Append `## Resumed (<date>)` to the report, saying which step you picked up at
@@ -538,7 +567,7 @@ For a new milestone, with no `origin/cr<N>` yet, it creates `cr<N>` from the
 base (for 159: from `origin/cr158`), sets the same upstream, and skips the
 rebase, since the branch has nothing of its own yet. Go straight to
 [step 2](#2-lift): `--to=@latest-for-branch` takes the major from the branch
-name. The new branch stays local until [step 11](#11-publish).
+name. The new branch stays local until [step 12](#12-publish).
 
 The base is `origin/master` once master's Chromium version is on milestone
 `N-1`, which is when the previous milestone has landed, and `origin/cr<N-1>`
@@ -550,19 +579,22 @@ before that. Brockit takes the branch's upstream as the base for both
 `prepare` picks it. `cr<N>` is the head branch, lifting to `@latest-for-branch`,
 until `cr<N+1>` appears on origin. From then on it is a maintenance branch that
 lifts only to a newer beta or stable release of its own milestone. A head branch
-skips minor bumps of its tag (only the last number moves). With nothing to lift
-to, `prepare` says "No lift needed", and the run takes
-[Maintenance run without a lift](#maintenance-run-without-a-lift) after the
-rebase. Don't override the target, or lift by hand to `@latest-for-branch` on a
-maintenance branch.
+skips minor bumps of its tag (only the last number moves), except once Chromium
+has branched its milestone at its tag's build (ChromiumDash's
+`chromium_branch`): its tags then only move the last number, so `prepare` lifts
+those too, and says so, until `cr<N+1>` appears (even with the next milestone's
+tags out already). With nothing to lift to, `prepare` says "No lift needed", and
+the run takes [Maintenance run without a lift](#maintenance-run-without-a-lift)
+after the rebase. Don't override the target, or lift by hand to
+`@latest-for-branch` on a maintenance branch.
 
 A run with no lift is worth it only for a rebase over more than 20 base commits,
 over any once the branch was last rebased more than 12 hours ago, or over any
 when the branch conflicts with its base (what GitHub shows as conflicts on its
 pull request; `prepare` lists the files). Otherwise `prepare` says "Not worth a
-lift run" and exits 3 without rebasing, and the run carries on as an
-[Autofix run](#autofix-run), from its step 1: the branch's CI is still worth
-checking and acting on.
+lift run" and exits 3 without rebasing, and the run carries on as an autofix
+run: read [autofix.md](autofix.md) in full, then follow it from its step 1. The
+branch's CI is still worth checking and acting on.
 
 When `prepare` says "the base moved from … to …", the base had a bump of its
 own, so the rebase dropped the regen commits ("Update patches", "Updated
@@ -594,7 +626,9 @@ conflicts that have a fixed answer as it goes:
   version;
 - the "Update from Chromium" commit takes its own `projects.chrome.tag` and the
   newer `PinsListTimestamp`, when that is the file's single conflicting hunk;
-- a raw patch the base changed only in its context takes the commit's version.
+- a raw patch the base changed only in its context takes the commit's version;
+- a commit the base picked with its `squash`/`fixup` lines (every file they
+  touch is the same on the base as at the branch's tip) is skipped with them.
 
 It stops on any other conflict, listing the commit and the files left. Resolve
 them with the recipes below, `git add` them, and carry on with:
@@ -628,7 +662,11 @@ finishes, Brockit lists what it resolved, by rule. Recipes for what it leaves:
   cr<N> and then extended (check with `git diff origin/<base> -- <paths>`): take
   the base's version. A commit left empty is dropped with
   `brockit rebase --skip`; one left partly applied gets an `amend!` that rewords
-  it to what remains.
+  it to what remains. Before a `--skip`, check the todo
+  (`$(git rev-parse --git-path rebase-merge)/git-rebase-todo`) for the skipped
+  commit's `fixup` lines, and a pinned group's `squash` lines, next: they would
+  fold into the commit before it. Delete those whose change the base has too.
+  Brockit does all of this itself for a group the base picked whole.
 - **The "Update from Chromium" commit**, when Brockit leaves it because more
   than the version bump conflicts: in `package.json`, keep the commit's
   `projects.chrome.tag`. In
@@ -641,20 +679,23 @@ finishes, Brockit lists what it resolved, by rule. Recipes for what it leaves:
   look raw only at that point in history, because a later commit on the branch
   adds its yaml: after the rebase, check whether the branch tip has a yaml for
   each one. Convert each one that is still raw in a follow-up commit, as below.
-- **A `fixup!` of a pinned group that touches files the group moves later**
-  (modify/delete conflict): Brockit places such fixups right after the group's
-  first commit. Keep HEAD's state for that step (and undo anything git's rename
-  detection applied to the old path), then requeue the same `fixup <sha>` line
-  after the group's last `squash` line in
+- **A `fixup!` of a pinned group that conflicts with the group's own later
+  commits** (modify/delete on a file the group moves later, or content a later
+  `squash` of the group writes; cr159: `Version lift updates`): Brockit places
+  such fixups right after the group's first commit. Keep HEAD's state for that
+  step (and undo anything git's rename detection applied to the old path), then
+  requeue the same `fixup <sha>` line after the group's last `squash` line in
   `$(git rev-parse --git-path rebase-merge)/git-rebase-todo`, before running
   `--continue`. Check afterwards that the squashed commit has the fixup's
   change.
-- **A `fixup!` of a pinned group that conflicts in a file a later branch commit
-  also changes**: autosquash moves the fixup ahead of the commit it was written
-  on top of, so neither side is the intended result. Resolve to the fixup's
-  intent on `origin/cr<N>`'s version (`git show origin/cr<N>:<path>`), not the
-  base's, then check with `git diff origin/cr<N> -- <path>` once that later
-  commit has replayed.
+- **A `fixup!` or later commit of a pinned group that conflicts in a file a
+  later branch commit outside the group also changes** (cr159:
+  `Disable failing upstream tests.` ahead of
+  `Remove dead upstream tests from filters.`): the squash moves it ahead of the
+  commit it was written on top of, so neither side is the intended result.
+  Resolve to the fixup's intent on `origin/cr<N>`'s version
+  (`git show origin/cr<N>:<path>`), not the base's, then check with
+  `git diff origin/cr<N> -- <path>` once that later commit has replayed.
 - **Lit mangler snapshot** (`tools/chromium_src/lit_mangler/__snapshots__/`):
   resolve and add. It is regenerated at the end.
 - **Tooling under `tools/cr/`:** keep both sides, then run the tool's tests
@@ -709,16 +750,17 @@ the newer branches' fix next (see
 Then fix:
 
 - **Files that cannot be patched anymore: renamed or moved.** Run
-  `git cr follow-renames <full culprit hash>`. It moves patches and yamls and
-  updates C++ includes, GN labels and Java class names (ProGuard flags
-  included), and moves Brave's Java subclasses of a class that changed package
-  along with it, but not namespaces or GN target labels that changed with the
-  move. Grep for the old package, path and symbol names in Java, C++, GN, DEPS,
-  `test/filters` and `app/feature_defaults_unittest.cc`, and fix what remains.
-  Check that the patch applied to the moved upstream file. When upstream checks
-  in Lit templates (`foo.html` becomes `foo.html.ts`), the `.lit_mangler.ts`
-  files move with them, and a patch's `<if expr>` wrappers must stay inside
-  `getHtml()`'s template literal.
+  `git cr follow-renames <full culprit hash>`. It moves patches, yamls and
+  `chromium_src` files (per-branding copies in Brave-only subdirectories
+  included), and updates C++ includes, GN labels and Java class names (ProGuard
+  flags included), and moves Brave's Java subclasses of a class that changed
+  package along with it, but not namespaces or GN target labels that changed
+  with the move. Grep for the old package, path and symbol names in Java, C++,
+  GN, DEPS, `test/filters` and `app/feature_defaults_unittest.cc`, and fix what
+  remains. Check that the patch applied to the moved upstream file. When
+  upstream checks in Lit templates (`foo.html` becomes `foo.html.ts`), the
+  `.lit_mangler.ts` files move with them, and a patch's `<if expr>` wrappers
+  must stay inside `getHtml()`'s template literal.
 - **Files that cannot be patched anymore: deleted.** Find where the code went.
   When a class is folded into its base (cr158: `TabContainerImpl` into
   `TabContainer`), the Brave subclass rebases onto the new class. Every method
@@ -749,16 +791,20 @@ Then fix:
 
 After `--continue` (or the first `lift`, when nothing needed action):
 
+- "🔥 ... modified patches have changes in the number of hunks": the refresh
+  changed a raw patch beyond its context. Commit each listed patch on its own
+  with its culprit (`git cr commit --culprit`), leaving the other refreshed
+  patches unstaged, and run `lift --continue` again.
 - "❌ GitHub issue update." The lift is done; run
   `brockit update-version-issue --infra-mode` into a log once `gh` works again.
 - "❌ Plaster check. Please investigate it." Run `plaster apply --all` (the one
   sanctioned unscoped use) and inspect the diff. Nothing changed: carry on
   (stale `.patchinfo` metadata is a likely cause). Unremarkable, sensible
-  changes: a `--fixup` to the "Apply-fixed 🩹 patches from ..." commit, as in
-  [Commits](#commits). Significant changes: their own commit with a culprit,
-  `--tagged=WIP` if unsure. A yaml that fails ("Unexpected number of matches")
-  is handled like "Plaster failed to fix patches" above, even when the old patch
-  still applied with fuzz.
+  changes: a commit with the "Apply-fixed 🩹 patches from ..." commit's subject,
+  as in [Commits](#commits). Significant changes: their own commit with a
+  culprit, `--tagged=WIP` if unsure. A yaml that fails ("Unexpected number of
+  matches") is handled like "Plaster failed to fix patches" above, even when the
+  old patch still applied with fuzz.
 - "❌ GNRT rerun. Please investigate it." Brockit prints no error: rerun
   `vpython3 ./tools/crates/run_gnrt.py vendor` (then `gen`) from `src/` into a
   log in `.autolift/cr<N>/`. A `[patch.crates-io]` entry in
@@ -857,14 +903,17 @@ overlapped. Make sure only one runs.
 To check one fix quickly, build just the targets it touches with the same
 command and flags, e.g. `--target=brave_unit_tests`,
 `--target=chrome/browser/resources/settings:lint_ts` or
-`--target=chrome/test/data/webui/tab_search:build_ts`. A full `brave:all` build
-is still what closes the step.
+`--target=chrome/test/data/webui/tab_search:build_ts`. Several targets go in one
+comma-separated `--target=unit_tests,browser_tests`: a repeated `--target` keeps
+only the last. A full `brave:all` build is still what closes the step.
 
 A green build doesn't show a `chromium_src` `#define` whose target upstream
 removed: it just matches nothing. Once the build is green, run
 `vpython3 tools/cr/codehealth/scripts/define_reach.py <bump range>` (the branch
 range, in a run without a lift) and treat a token whose reach fell to 0 as a
-failure.
+failure. When it says a tag isn't in the checkout (the git cache can lack a
+base's newest tag), start from the newest older tag it has, and say so in the
+report.
 
 ### 4. Linux tests
 
@@ -872,9 +921,20 @@ Once the build is green, run the tests that cover each fix, and add coverage
 where a runtime fix has none.
 
 ```sh
-vpython3 tools/recipes/runtest.py --build-dir ../out/Component --xvfb \
+vpython3 tools/recipes/runtest.py --build-dir ../out/Component \
     <binary> --no-sandbox --gtest_filter='<Suite>.*'
 ```
+
+It runs the suite as upstream's bots and Brave's CI do: `testing/xvfb.py` (Xorg,
+no window manager) or `testing/test_env.py`, from the build dir, with a fresh
+temp dir. So a test that fails on CI fails here too. `--no-sandbox` is for hosts
+that restrict unprivileged user namespaces (Ubuntu 23.10+), which upstream's
+bots don't; the harness warns when it is missing there. It applies the filters
+`pnpm run test` does (`test/filters/` and `generated/`, by suite, OS, CPU and
+sanitizer) along with upstream's for the suite: a filtered test doesn't run.
+Pass `--no-test-filters` before the binary to run it anyway, e.g. to check a
+filter entry is still needed; after the binary, it goes to the test binary and
+the filters still apply.
 
 The binary is a name relative to `--build-dir` (`brave_unit_tests`,
 `brave_browser_tests`, `brave_cert_pinning_tests`, upstream `unit_tests`; tests
@@ -885,8 +945,10 @@ filter matched something: "Tests took 0 seconds" or `[0/0]` means it didn't
 
 Finding coverage:
 
-- Search Brave test files for the class or function a fix touches. Feature
-  default pins are covered by `FeatureDefaultsTest.*` in `brave_unit_tests`.
+- Search Brave test files for the class or function a fix touches, a fix that
+  deletes a plaster or shadow included: a Brave test may assert the behaviour it
+  dropped (cr160: `BraveThemeSourceTest`). Feature default pins are covered by
+  `FeatureDefaultsTest.*` in `brave_unit_tests`.
 - Brave tests of overridden upstream code live at the matching
   `chromium_src/.../*_unittest.cc` path and are listed in `test/BUILD.gn`'s
   `brave_unit_tests` sources. A `chromium_src` shadow of an upstream unittest
@@ -911,9 +973,6 @@ Known environment-only failures, not lift regressions:
 - `BraveFontWhitelistTest.*` fails on Linux distros that `GetLinuxDistro()`
   doesn't recognise (e.g. Ubuntu 26.04).
 - Tests that pass on retry are flaky; report them, don't fix.
-- "Missing X server or $DISPLAY" at start-up, every test failing in `SetUp()`:
-  Xvfb wasn't up for that run, as for a test run chained after another in one
-  command. Rerun it in a command of its own.
 - An upstream test that checks behaviour Brave disables may already be in
   `test/filters/*.filter`. Check before investigating.
 
@@ -960,22 +1019,22 @@ green without it, so treat it as a failure. Like the Linux build, it stops at
 the first failure. After changing `brave/DEPS`, run `pnpm run sync`, which also
 checks that the new deps sync. All Android fixes get `--tagged=Android`.
 
-For tests, run only the Android tests for code touched by Android fixes.
-Robolectric tests run on the host, with `brave/script` on `PYTHONPATH`:
+For tests, run only the Android tests for code touched by Android fixes, with
+the harness, as upstream's emulator bots run them:
 
 ```sh
-PYTHONPATH=$PWD/script ../out/android_Static/bin/run_brave_junit_tests \
-    -f '*<Suite>*' > .autolift/cr<N>/test-junit.log 2>&1
+vpython3 tools/recipes/runtest.py --build-dir ../out/android_Static \
+    --test-platform android --parse-gtest-output <suite> -f '*<Class>*' \
+    > .autolift/cr<N>/test-android.log 2>&1
 ```
 
-The whole suite takes under a minute. Instrumentation tests, such as
-`BytecodeTest`, need an emulator: `tools/android/avd/avd.py install` and `start`
-with an x64 config such as
-`tools/android/avd/proto/android_34_google_apis_x64.textpb`, run from `src/`
-with `PYTHONPATH=$PWD/brave/script` (catapult imports `brave_chromium_utils`).
-That downloads several GB and needs read/write access to `/dev/kvm`: check
-`id -nG` for `kvm` before installing. Don't change group membership. If no
-device can be had, list the Android tests as unverified in the report.
+The suite is named as its `bin/run_<suite>`: `brave_junit_tests` (Robolectric,
+on the host, under a minute) or `brave_java_unit_tests` (instrumentation tests,
+such as `BytecodeTest`). Instrumentation tests run on an x64 emulator that the
+test runner installs and starts itself; the first run downloads several GB.
+Check that the filter matched something, as for Linux tests. If the harness
+can't run the tests (e.g. no `/dev/kvm` access), don't work around it: flag it
+in the report and list the tests as unverified.
 
 ### 7. Presubmit
 
@@ -992,6 +1051,10 @@ run it after the last commit, this document's update included. Commits the run
 didn't write count too: the tooling `sync_tooling.py` picked, teammates' picks
 and the rebase. `publish` runs it again before any push, and pushes nothing
 while it has errors.
+
+Lint Python only through the presubmit: never run `pylint` yourself. Run
+directly, it doesn't take the presubmit's configuration and file list, so it
+reports findings the presubmit doesn't, and misses some it does.
 
 Address what it reports, errors above all, rebuild the targets a fix touches,
 and run the presubmit again until no errors are left. Address warnings too when
@@ -1034,7 +1097,34 @@ own only when no branch commit introduced the problem: the line is unchanged
 from the base, or upstream changed what makes it wrong, in which case it gets
 that culprit.
 
-### 8. Code health review
+### 8. Pull request CI
+
+Only for a run that lifted, before the review: what fails in the CI of the
+branch's pull request is fixed now, rather than waiting for an autofix run,
+which only comes once there is nothing to lift.
+
+```sh
+vpython3 tools/cr/autolift/autolift.py ci-failures <N>
+```
+
+- **Exit 4:** the branch has no pull request yet (a new milestone's first lift
+  opens it at step 12). Skip the step:
+  `autolift.py step 8 --skipped 'no pull request'`.
+- **Exit 0 or 3:** nothing failed; checks still running are left to the next
+  run. The step is done.
+- **Exit 2:** some failed. Triage and fix them as [autofix.md](autofix.md)'s
+  steps 3 to 5 say, with these differences:
+  - The checks ran on the branch as GitHub has it, before this run's rebase and
+    lift (the summary names the commit). Check that each failure still happens
+    on this run's branch first: the rebase or the lift may have fixed it, or
+    changed the code it names.
+  - Commit as in a lift (see [Commits](#commits)), not only as fixups.
+  - Rerun no check: step 12's push starts CI again for the whole branch. Report
+    an infra failure or a flake rather than rerunning it.
+  - Once the fixes are committed, run the presubmit again as in
+    [step 7](#7-presubmit).
+
+### 9. Code health review
 
 Only a run that lifted reviews anything; a pure rebase (see
 [Maintenance run without a lift](#maintenance-run-without-a-lift)) skips this
@@ -1045,16 +1135,14 @@ step. What the review is depends on the lift:
   review. Check the newer branches' trackers instead (see
   [Minor bump review](#minor-bump-review)).
 
-Once the presubmit is addressed, run `tools/cr/codehealth/SKILL.md` over the
-range the tracker doesn't cover yet: from the end of the range in its intro (or
-the base's tag, for a new tracker) to the new tag (`158.0.8127.2..159.0.8131.1`
-for a first lift, `159.0.8135.1..159.0.8136.1` for a later bump). Write its dump
-to `.autolift/cr<N>/codehealth_<new tag>`, not `/tmp`, so a resumed run can
+Once step 8 is done, run `tools/cr/codehealth/SKILL.md` over the range the
+tracker doesn't cover yet: from the end of the range in its intro (or the base's
+tag, for a new tracker) to the new tag (`158.0.8127.2..159.0.8131.1` for a first
+lift, `159.0.8135.1..159.0.8136.1` for a later bump). Write its dump to
+`.autolift/cr<N>/codehealth_<new tag>`, not the temp dir, so a resumed run can
 reuse it. It writes or updates `tools/cr/codehealth/M<N>.md` with what fails
 silently: overrides that stopped applying, re-enabled features, Brave copies
-that missed upstream fixes. For a branch that isn't on origin yet, "what the
-rebase already fixed" is `<base>..cr<N>` locally, not
-`origin/master..origin/cr<N>`. Follow its own instructions (subagents, static
+that missed upstream fixes. Follow its own instructions (subagents, static
 verification only), and commit what changed under `tools/cr/codehealth/` as
 `Version CodeHealth tracker`.
 
@@ -1117,34 +1205,38 @@ that changed a file the item names, when it doesn't. For each item of notice:
   `Version CodeHealth tracker`. Don't fix it.
 - List it in the report, with what was done.
 
-### 9. Update this document
+### 10. Update this document
 
 Before finishing, if the run showed an instruction here to be wrong, missing or
 no longer needed, change it, following
 [Maintaining this document](#maintaining-this-document), and commit it.
 Otherwise leave the file alone.
 
-### 10. Wrap up
+### 11. Wrap up
 
 - `git status` is clean. Untracked files are scratch you created, or deps
   fetched into git-ignored paths.
 - No build is left running.
 
-### 11. Publish
+### 12. Publish
 
 A run that finished with no issues ends by pushing `cr<N>`. No issues means
 every step the run takes is done: the lift, the Linux build, and for a run that
 lifted, the Android build, a presubmit with no errors, passing
-`pnpm run test:scripts` and a complete, committed code health review (every
-review subagent back), and a clean wrap-up. `--tagged=WIP` commits don't hold
-the push back: they're for review. If anything else is left, don't publish:
-report why, and leave the branch local.
+`pnpm run test:scripts`, the pull request's CI addressed (step 8) and a
+complete, committed code health review (every review subagent back), and a clean
+wrap-up. `--tagged=WIP` commits don't hold the push back: they're for review. If
+anything else is left, don't publish: report why, and leave the branch local.
 
 ```sh
 vpython3 tools/cr/autolift/autolift.py publish <N>
 ```
 
-Run it in the background, with its output in `.autolift/cr<N>/publish.log`. It
+Run it in the background, exactly as above, with its options and nothing else:
+no redirect, no `;` or `&&`, no `echo` of the exit status. The job allows only
+that command to push, and anything added to it sends it to the permission
+review, which denies a push. `publish` keeps its own output in
+`.autolift/cr<N>/publish.log`, and prints its exit status and the log's end. It
 picks what teammates pushed to `cr<N>` during the run, catches up with the base
 once, runs a last `brockit rebase` and `brockit regen` when they would change
 anything, runs the presubmit against the base over the branch it is about to
@@ -1206,247 +1298,16 @@ alone. After step 1:
    `--culprit`; when not, the base is broken on its own: leave it, as
    [Scope](#scope) says.
 4. If the build needed fixes, run [step 4](#4-linux-tests) for them.
-5. Run [step 10](#10-wrap-up).
-6. Run [step 11](#11-publish): the rebase alone changes the branch, so it is
+5. Run [step 11](#11-wrap-up).
+6. Run [step 12](#12-publish): the rebase alone changes the branch, so it is
    pushed.
 
-Then stop. Android, the Lit mangler snapshot and the code health review are for
-runs that lift. Run the presubmit (see [step 7](#7-presubmit)) before step 11
-whenever the branch differs from GitHub's: the rebase and the picked tooling
-make it so even with no fix of the run's own. Step 9 applies as in a lift; do it
-before step 11, so it is pushed too.
-
-### Autofix run
-
-A run turns into an autofix run when `prepare` finds nothing worth a lift run
-(exit 3, see [Lift target](#lift-target)), and a job can ask for one. It only
-fixes what fails in the CI of `cr<N>`'s pull request, on the branch as GitHub
-has it: no lift and no rebase, so the commits on GitHub stay as they are, and
-fixes go on top as fixups, which the next lift's `brockit rebase` squashes. The
-ground rules apply as in a lift. Steps 1 to 11 don't; record what you do in the
-report, not with `autolift.py step`.
-
-1. Start, in the background:
-   `vpython3 tools/cr/autolift/autolift.py autofix <N> > .autolift/cr<N>/autofix.log 2>&1`.
-   It resets `cr<N>` to `origin/cr<N>`, keeping the tooling `sync_tooling.py`
-   picked, sets the base as its upstream, and syncs a checkout on another
-   Chromium version. If it refuses, stop and report it. A resumed autofix run
-   doesn't run it again (it would refuse the run's unpushed fixups); carry on
-   from the report.
-2. Read the CI: `vpython3 tools/cr/autolift/autolift.py ci-failures <N>`. Exit
-   0: every check passed. Exit 3: nothing failed, but some checks are still
-   running, left to a later run. Either way there is nothing to do: end the run
-   there, printing the report. Don't publish, rerun or wait for the pending
-   checks; the tooling the run picked is picked again by the next run. Exit 2:
-   some failed. It prints a line per failed check and writes the detail to
-   `.autolift/cr<N>/ci-failures.md`: the builds behind each check (a TeamCity
-   aggregate's failed dependencies, a Jenkins run's first failed stage and its
-   unstable test stages, or its first aborted stage and why it was aborted, a
-   GitHub Actions job's failed steps), with their problems, failed tests and the
-   end of the failed step's log. Read that file, not the CI logs, and the logs
-   only for what it cuts. `vpython3 tools/cr/ci/cli.py checks <N>` lists every
-   check.
-3. Triage each failed build. Its `infra`, `tests` or `build` label is a hint
-   from the log; check it against the log tail.
-   - **Infra** (the CI machine or its workspace: disk, agent, a workspace built
-     another way): no commit. Rerun the check once with
-     `vpython3 tools/cr/ci/cli.py rerun <check URL>`, adding `--wipe-workspace`
-     on Jenkins when the workspace is the problem. TeamCity has no wipe through
-     the CLI yet: when a plain rerun can't clear the workspace, report it for
-     the CI owners (cr159: Android's "Run gn clean before switching from ninja
-     to siso").
-   - **Tests**: a test failing on several platforms, on every retry (TeamCity's
-     "2 of 2 runs"), or since earlier builds ("failing since build", "failing
-     for N builds") is broken, not flaky: fix it, unless its "History" lines
-     show it passing in most of the branch's runs, which makes it flaky. A new
-     failure on one platform that a rerun might pass is flaky: rerun the check
-     once, and list the test in the report; don't fix or filter it. Muted
-     TeamCity tests are already left out. A Brave test (in a `brave_*` binary)
-     is fixed, never filtered to get CI green.
-   - **Flaky upstream tests**: an upstream test that fails as a flake does (a
-     timeout, a simulated input that never lands) has already failed the test
-     launcher's retries, so it is filtered rather than rerun. Read its full
-     output first (the Jenkins `testReport`, with its `age`), then check it
-     upstream, on the platform that failed:
-     `vpython3 tools/chromium_tests_analysis/is_upstream_flake.py <Suite.Test> <filter>`,
-     with `--os Ubuntu`, `--os Windows`, `--os Mac`, `--builder android` or
-     `--builder ios` as the filter. It answers by Chromium's own flake and
-     failure criteria, for each variant, and exits 0 when one is confirmed
-     upstream. The newest `cr<N>`, whose Chromium is still main's, passes
-     `--ref main`. Any other branch checks with no `--ref`, which answers for
-     the Chromium branch its checkout is on, and the closest picture of what it
-     runs; then with `--ref main` too, which runs far ahead of that branch but
-     can still show the test flaking, or fixed since. A branch without it has
-     `check-upstream-flake.py <Suite.Test>` instead: a variant over the
-     generated lists' threshold (1% over 30 days) counts as confirmed. One
-     confirmed upstream goes in
-     `test/filters/generated/<binary>-<platform>.filter`, edited by hand in that
-     file's format, as the lists lag behind. One stable upstream has a Brave
-     cause to name in `test/filters/<binary>-<platform>.filter` (cr157:
-     `AutofillCounterTest.TimeRanges` hangs as it does on Linux). A Glic test
-     goes in `<binary>.filter`, for every platform: Brave doesn't ship Glic.
-   - **Upstream tests** (a Chromium binary: `unit_tests`, `browser_tests`,
-     `components_unittests`, ...): either Brave broke what the test checks,
-     which is a fix, or the test checks something Brave changes or disables,
-     which is an entry in `test/filters/<binary>[-<platform>].filter`. Start
-     from the test's entry under "Leads" in `ci-failures.md`: for each failed
-     test, `ci-failures` lists the `tools/cr/codehealth/M<N>.md` items and
-     filter entries that name its suite (wildcards included), its fixture's base
-     classes, or a fixture the range renamed into it, and the commits that last
-     changed those filters. The tracker records the filters that stopped
-     matching: upstream renamed the suite or test, turned a `TEST_F` into a
-     `TEST_P`, or added a subclass suite, and the test Brave disabled on purpose
-     runs again (cr159: `ProfileReportGeneratorTest.SignedInProfile` became
-     `SyncingProfile`). A parameter suffix can be an enum-set bitstring, which
-     shrinks when upstream drops an enum value, with no tracker lead
-     (`SetCookieFromStringCrossOrigin/SCRIPT_000100` became `_00010`); check the
-     suite's `INSTANTIATE_TEST_SUITE_P` name generator. Then retarget the entry
-     at the new name, as the tracker's task says, rather than adding one beside
-     it, and tick that task. A test whose suite was filtered before is filtered
-     again under its new name. With no lead, find why it fails before filtering
-     it, and say why in the commit body. Act only on the tests CI reported: the
-     tracker's other filter tasks wait for the lift, or for CI to fail on them.
-     Unlike the other tracked issues, which the run leaves alone (see
-     [Scope](#scope)), these are fixed: the tracker's task is the fix.
-   - **Build** (a compile, `gn`, lint or storybook step): reproduce it with the
-     narrowest local target, with the flags of [step 3](#3-linux-build)
-     (`pnpm run build-storybook` for storybook), and fix it. Build Android, with
-     the flags of [step 6](#6-android), only when the failure is in an Android
-     check (cr159: `PR browser (android)`); every other failure is reproduced
-     and verified on Linux, or fixed from the log for a platform that can't be
-     built here.
-   - **Broken on the base branch**, whatever the label: leave it, as
-     [Scope](#scope) says, and carry on with the other failures.
-4. Fix as in a lift, culprit first. Commit each fix as a fixup of the branch
-   commit it corrects (`git cr commit --fixup=<sha>`; find it with
-   `git log --format='%h %s' <base>..HEAD -- <path>`), or with a pinned subject
-   (`IWYU fixes.`, the test exclusions' subjects as in [Commits](#commits), and
-   `Version CodeHealth tracker` for the ticked task). For a stale plastered
-   patch, that `git log` finds an "Update patches" commit: fix up the
-   "Apply-fixed 🩹 patches" commit instead (see [Commits](#commits)). Only a fix
-   with no commit to fix up (a culprit no branch commit cites) is a new
-   `git cr commit --culprit`. Platforms that can't be built here (macOS,
-   Windows, iOS) are fixed from the log, and listed as unverified.
-5. Verify each fix locally: build the targets it touches and run the tests that
-   failed, as in [step 4](#4-linux-tests), and with step 6's build and tests
-   only for an Android failure. On a fresh out dir, build `brave:all` first: a
-   narrow target misses Brave's paks, and browser tests then crash in
-   `brave_component_loader.cc` ("invalid Brave Extension manifest") rather than
-   where CI failed. Check filter entries by running the reported tests with
-   `--test-launcher-filter-file` set to every filter that applies
-   (`test/filters/` and `generated/`, `;`-separated) and checking that none of
-   them runs: `--gtest_list_tests` ignores the filter file, so comparing lists
-   shows nothing. Once fixes are committed, run the presubmit as in
-   [step 7](#7-presubmit), and address its errors as fixups.
-6. Publish without a rebase, in the background:
-   `vpython3 tools/cr/autolift/autolift.py publish <N> --no-rebase > .autolift/cr<N>/publish.log 2>&1`.
-   As in [step 11](#11-publish), it picks what teammates pushed to `cr<N>`
-   during the run and pushes with a lease, but it doesn't catch up with the
-   base, rebase or regenerate. Exit 2: the picks changed the branch, so sync
-   (`pnpm run sync`), rebuild with [step 3](#3-linux-build)'s command, fix what
-   broke as fixups, and run it again with `--built`. Presubmit errors stop it as
-   in step 11. It refuses merges, and commits that aren't fixups, pinned
-   subjects or the picked tooling: pass `--allow-new` when step 4 made a new
-   commit. Conflicts and a rewritten branch are handled as in step 11. The push
-   starts CI again; a later run reads the new results.
-7. Report each failed check: its builds and label, and what was done (the fix
-   commit, the rerun, or why it was left).
-
-### Channel bump run
-
-Given a Chromium tag (`157.0.8103.38`), the run bumps Brave's release channels
-to it: master (nightly), and the beta and release `1.<minor>.x` branches below
-master's Brave version, each one that is on the tag's milestone M<N> and behind
-it. Each gets a branch off the channel, with the channel as upstream (`cr157.x`
-off `origin/master`, `cr157.x-on-1.100.x` off `origin/1.100.x`), and a pull
-request against it. The run keeps its report and logs in `.autolift/cr<N>.x/`.
-The Procedure's steps apply, with these differences:
-
-- **Tooling.** The channels don't carry this tooling. `prepare <tag>` copies
-  `tools/cr` to `.autolift/tooling/cr/`, which checking out a channel leaves
-  alone: from then on run `vpython3 .autolift/tooling/cr/autolift/autolift.py`,
-  and read this file there. `brockit`, `plaster`, `git cr` and `pnpm` are the
-  checked-out channel's own. There is no tooling sync. Step 9's changes are made
-  in `.autolift/tooling/cr/` and committed as `Version lift updates` on the
-  master channel's branch only (into its `tools/cr/`, written whole where master
-  lacks the file); `channel-picks` leaves them out. No branch takes a
-  `Version CodeHealth tracker` commit: what step 8 would add to a tracker goes
-  in the report.
-- **Step 1** is `prepare <tag>`. It creates the branches, with no rebase, and
-  checks out the highest channel's. The names repeat from one bump of M<N> to
-  the next: a branch an earlier bump left on GitHub is pushed over at step 11. A
-  bump already on GitHub at the tag is rebased onto its channel when a `cr<N>`
-  rerun would rebase (it conflicts with the channel, or is more than 20 commits
-  behind it, or over 12 hours since its last rebase), and left as it is
-  otherwise; `prepare` resets the one it rebases to GitHub's copy, and records
-  each channel's action (`lift`, `rebase` or `none`), which `status` shows. Exit
-  3: every channel's bump to the tag is on GitHub already, and none needs a
-  rebase, so carry on as an autofix run of the tag (below). Exit 1 with "No
-  channel is on M<N>": stop and report.
-- **Step 2 on a branch to rebase** is `brockit rebase --squash-minor-bumps` with
-  the checkout synced to it (`pnpm run sync`), resolved with the recipes in
-  [step 1](#1-reset-and-rebase), then `channel-picks`: a channel left as it is
-  still gives its fixes to those below it. A backport the channel took after the
-  bump (cr157: the WebUSB backport, uplifted to beta and release) now needs the
-  higher channel's revert of it. `publish` rebases again only if the channel
-  moves once more.
-- **Steps 2 to 5 and 7** run on the highest channel's branch, and `step` records
-  them on the checked-out branch: `status` names the step and the branch to
-  carry on with. Name logs after the channel
-  (`.autolift/cr<N>.x/build-linux-master.log`). The lower channels take step 2
-  alone, one at a time once the highest one's step 8 is done: the lift and
-  `channel-picks`, with no build, tests or presubmit of their own, as the pull
-  requests' CI and an autofix run cover them, unless there is a good reason to
-  (say why in the report). There is no Android build (step 6) either. The
-  checkout is synced to one branch at a time: after checking out another for
-  anything but its lift (which syncs itself), run `pnpm run sync` before
-  building, testing or checking it, or the checks read the other channel's
-  patches (cr157: a false plaster error). `publish` and `autofix` sync each
-  branch they check out to build or check. The lift is a minor bump: look for
-  the newer branches' fixes as in
-  [Minor bumps on a maintenance branch](#minor-bumps-on-a-maintenance-branch)
-  first, on every channel.
-- **On a lower channel**, run `channel-picks` once `lift` is done: it
-  cherry-picks the higher channels' bump fixes this branch lacks, leaving out
-  what each lift makes itself. Test exclusions
-  (`Disable failing upstream tests.`) are picked all the same, though every
-  channel has its own: only their changes tell them apart. It tries each first,
-  and lists rather than picks those that would conflict or change nothing here,
-  which usually concern what only the higher channel had: pick one by hand only
-  when this channel's lift needs it. For a lift's action item, compare with the
-  higher channel's branch first (`git show <higher branch>:<path>`), and resolve
-  as it did where the code is the same. `next-fixes` there also looks at the
-  higher channels' bump branches and the channels themselves. A fix the bump
-  needs that is on master but not uplifted to the channel
-  (`git log origin/<channel>..origin/master -- <path>`) is picked with
-  `pick-fix` and listed in the report as an uplift.
-- **Commits** on these branches get no `[cr<N>]` prefix and no culprit range
-  check; `--culprit` still writes the "Chromium changes:" block. A fix only a
-  lower channel needs goes on its branch alone, and on the channels below it
-  through `channel-picks`.
-- **Step 8** is the [Minor bump review](#minor-bump-review), once, after the
-  highest channel's step 7, so that its picks reach the lower channels too.
-- **Step 11** is `publish <tag>`. It brings every branch up to date with its
-  channel, runs the presubmit of the branches the run builds (the highest
-  channel's, and in an autofix run a lower one's with a fix of its own), and
-  pushes none until all are ready. Then it pushes them all, highest first, and
-  opens each pull request with `brockit update-version-issue` (unless one is
-  open already), which sets the channel's labels and milestone. A channel
-  `prepare` left as it is is pushed too, without a rebase, once the run commits
-  on it. It leaves the branch it stopped on checked out: handle that as in step
-  11 (for exit 2, which only the highest channel asks for: sync, rebuild it,
-  then `publish <tag> --built`). With a git cache, `origin` fetches from the
-  mirror: check what GitHub has with
-  `git ls-remote "$(git remote get-url --push origin)"`, not `origin`.
-- **Autofix run of a tag:** `autofix <tag>` resets each bump branch that is on
-  GitHub at the tag, and `ci-failures <tag>` writes
-  `.autolift/cr<N>.x/ci-failures-<channel>.md` for each pull request. Fix each
-  channel's failures on its branch, highest first, building and testing the
-  highest channel as usual. A lower channel that needs a fix the higher one made
-  takes it with `channel-picks`, unbuilt: its pull request's CI checks it. Build
-  and test a lower channel only for a fix of its own, for a failure the higher
-  channel doesn't have; `publish <tag> --no-rebase` syncs, presubmits and asks
-  for a rebuild of such a branch only.
+Then stop. Android, the Lit mangler snapshot, the pull request's CI and the code
+health review are for runs that lift. Run the presubmit (see
+[step 7](#7-presubmit)) before step 12 whenever the branch differs from
+GitHub's: the rebase and the picked tooling make it so even with no fix of the
+run's own. Step 10 applies as in a lift; do it before step 12, so it is pushed
+too.
 
 ## Fix patterns
 
@@ -1497,6 +1358,11 @@ patch whose hunks upstream already has.
 
 ### Signature and API changes
 
+- **A notification split out of a catch-all observer callback** (cr160: tab
+  audio moved from `TabStripModelObserver::OnTabChangedAt()` to
+  `OnTabAudioChanged()`): no build error, but Brave observers that reacted to it
+  in the old callback go stale. Grep every Brave override of the old callback
+  for what reads the moved state, and override the new one in each.
 - **Brave overrides of a changed signature.** When a Brave `#define` declares an
   `_Unused` duplicate of an upstream method (`UpdateKeyPinsList`), update both
   declarations. If the new signature has a reply callback, run it, or callers
@@ -1513,6 +1379,12 @@ patch whose hunks upstream already has.
   the interface so the other delegates need nothing, implemented by the one
   class Brave reaches, and run the feature's browser tests. It is a
   `--tagged=WIP` decision.
+- **Windows-only undefined symbols from a type rename** (cr160:
+  `#define TestingProfile BraveTestingProfile` in a test shadow, then upstream
+  calling `TestingProfileManager::CreateGuestProfile()`): the `#define` rewrites
+  return types in headers the upstream file includes, and only MSVC mangling
+  includes them, so Linux links. Replace the `#define` with a plaster on the one
+  site that needs the Brave type.
 - **Brave appends to an upstream enum after `kMaxValue`** (`DownloadCommands`):
   when upstream adds a value, renumber Brave's values past it and update the
   `static_assert`. Check first that Brave's values aren't persisted or recorded
@@ -1534,6 +1406,13 @@ headers that lost the include
 
 ### Build system and environment
 
+- **Every `gn check` error at once**: the build's `gn gen --check` prints ten
+  per run, and a failed one leaves `out/Component` unusable for `gn check`.
+  Generate a scratch dir in `$TMPDIR` whose `args.gn` is
+  `import("//out/Component/args_generated.gni")` plus `use_remoteexec = false`
+  (remote builds assert on a dir outside `src/`), and run
+  `buildtools/linux64/gn gen $TMPDIR/<dir> --check --error-limit=5000` from
+  `src/` (cr160: the consumers of the deleted `//chrome/test:test_support_ui`).
 - **Lost public include paths** (`gn check`: "Can't include this header from
   here" in a Brave target whose deps didn't change): a public chain to the
   header's target was cut. Find the commit that dropped it with
@@ -1541,6 +1420,12 @@ headers that lost the include
   then confirm the target reached the edited target publicly with a read-only
   query of the out dir, from `src/`:
   `buildtools/linux64/gn path out/Component <direct dep> <edited target> --public`.
+- **Strict include checks** ("Public headers cannot include private
+  dependencies", or "Can't include this header from here" through a
+  `check_includes_strict` target's `public_deps`; cr159:
+  `build/strict_deps_failures.gni` lost its `//*` exception). Exempt the
+  includer directory in `build/strict_deps_failures_brave.gni` rather than
+  fixing Brave's targets during the lift.
 - **Target turned into a `group`** ("Assignment had no effect" on `sources` at
   `gn gen`; cr159: `//chrome/test:test_support`): move the injected sources to a
   Brave target, or reuse one that already builds them, and add it to the group's
@@ -1564,6 +1449,9 @@ headers that lost the include
   whole-file diffs. Reproduce on Linux with a scratch script that defaults
   `write_text`'s `newline` to `'\r\n'`, run with
   `vpython3 -vpython-spec tools/cr/vpython.toml`, and pass `newline='\n'`.
+  `os.path.relpath` gives `\` there, against upstream's `/` (`.as_posix()` it),
+  and a shebang stand-in script fails with WinError 193 (run it through a
+  `.bat`) (cr159: `runtest_test.py`, `autolift_test.py`).
 - **Stale Brave workarounds**: when an upstream change fixes what a Brave
   workaround worked around, the workaround can become the bug (a `dex.py`
   plaster keeping a prebuilt out of intermediate dexing). Look for a Brave
@@ -1646,12 +1534,12 @@ you couldn't verify), and print it at the end. Include:
 - Each commit made, as `<sha> <subject> (culprit <short hash> | no culprit)`,
   with fixups listed under their target. For a fix picked from a newer branch,
   add `(picked from origin/cr<M> <sha>)`. `publish` adds the links to review
-  once pushed (see [step 11](#11-publish)).
+  once pushed (see [step 12](#12-publish)).
 - For a channel bump, the commits under each branch, the uplifts picked from
-  master, and what step 8 would have added to a tracker.
+  master, and what step 9 would have added to a tracker.
 - Each `--tagged=WIP` commit: the concern and the alternatives.
-- Issues found but left alone because the codehealth tracker covers them, and
-  any test failures attributed to the environment or to flakiness.
+- Tracker items fixed because they failed a build or CI, and any test failures
+  attributed to the environment or to flakiness.
 - Presubmit warnings left alone, and why.
 - Tooling TODOs filed or extended in `tools/cr/codehealth/M<N>.md`.
 - Tool bugs fixed during the run, with their commits.
@@ -1698,6 +1586,12 @@ or it is lost to the next run.
 - Put a rule under the ground rule or procedure step it belongs to, and a fix
   under the [Fix patterns](#fix-patterns) heading for its mechanism. Write one
   bullet per mechanism: the signal and how to check it.
+- What only an autofix run or a channel bump needs goes in `autofix.md` or
+  `channel_bump.md`, which only those runs read (`autolift.py`'s `Advice.reads`
+  names them). What any run can need mid-step, the fix patterns above all, stays
+  here: no tool can tell in advance which a run will look up.
+- Keep each file within one Read call: `autolift_test.py` fails once one
+  outgrows it. Trim, or move a run type's part out, rather than raise the limit.
 - State what to do, not how a run came to need it: no account of what went wrong
   in a run, which belongs in the report. Give an example only when it shows how
   to recognise the mechanism (a name, a message, an identifier), tagged with its
@@ -1716,11 +1610,13 @@ or it is lost to the next run.
 
 ### Committing it
 
-- Commit changes to this file, to the `tools/cr/autolift/` helpers, to the CI
-  package in `tools/cr/ci/` and to their `tools/cr/README.md` entries with
-  `git commit -m 'Version lift updates'`, separately from the lift's fixes and
-  from the tracker, so they can be audited. Plain `git commit`: no culprit, no
-  tags, no trailers. The subject is pinned in `tools/cr/rebase.py`, so
-  `brockit rebase` squashes repeated updates into one commit.
+- Commit changes to this file, to the `tools/cr/autolift/` helpers and to their
+  `tools/cr/README.md` entries with `git commit -m 'Version lift updates'`,
+  separately from the lift's fixes and from the tracker, so they can be audited.
+  Plain `git commit`: no culprit, no tags, no trailers. The subject is pinned in
+  `tools/cr/rebase.py`, so `brockit rebase` squashes repeated updates into one
+  commit.
+- Commit each change to the CI package in `tools/cr/ci/` on its own, with
+  `git cr commit --tagged=ci`.
 - Tooling TODOs are tracker content: commit them with
   `git commit -m 'Version CodeHealth tracker'`.

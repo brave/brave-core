@@ -120,7 +120,8 @@ Subcommands:
 from __future__ import annotations
 
 import argparse
-from collections.abc import Mapping, Sequence
+from collections.abc import Iterator, Mapping, Sequence
+import contextlib
 import os
 import dataclasses
 from dataclasses import dataclass
@@ -133,22 +134,25 @@ import shutil
 import subprocess
 import sys
 
+import requests
+
 import _boot  # noqa: F401  -- adds parent tools/cr to sys.path
 from ci import failures as ci_failures  # noqa: E402  -- after _boot
 from ci import github as ci_github  # noqa: E402  -- after _boot
 from ci import report as ci_report  # noqa: E402  -- after _boot
 from exceptions import RebaseNeededException  # noqa: E402  -- after _boot
-import rebase as brockit_rebase  # noqa: E402  -- after _boot
+import pinned_commits  # noqa: E402  -- after _boot
 import repository  # noqa: E402  -- after _boot
 from versioning import (  # noqa: E402  -- after _boot
     Version,
     load_package_file,
+    previous_version_commit,
     read_chromium_version_file,
 )
 
 # The checkout's own Brockit, which may not be this tooling's: a channel
 # bump's branch regenerates its patches as its channel does.
-_BROCKIT = (repository.brave.root / 'tools' / 'cr' / 'brockit.py').resolve()
+_BROCKIT = 'brockit'
 
 # `brockit rebase --dry-run`'s exit status when the rebase would change the
 # branch.
@@ -631,7 +635,7 @@ def _remote_branch_exists(branch: str) -> bool:
 def _brockit_show(option: str, prefix: str) -> Version | None:
     """The version `brockit show <option>` prints after `prefix`, if any."""
     output = subprocess.run(
-        [sys.executable, str(_BROCKIT), 'show', option],
+        [_BROCKIT, 'show', option],
         cwd=repository.brave.root,
         check=False,
         capture_output=True,
@@ -716,6 +720,10 @@ def merge_conflicts(base: str, head: str = 'HEAD') -> list[str]:
             '--write-tree',
             '--name-only',
             '--no-messages',
+            # GitHub doesn't follow a file the base renamed, which a lift's
+            # whole milestone of changes makes likely, and shows the branch's
+            # change to the old path as a conflict.
+            '-Xno-renames',
             head,
             base,
         )
@@ -744,6 +752,42 @@ def maintenance_target(
             and release > current
         ),
         default=None,
+    )
+
+
+_CHROMIUMDASH_MILESTONE = (
+    'https://chromiumdash.appspot.com/fetch_milestones?mstone={milestone}'
+)
+
+
+class UnknownBranch(Exception):
+    """ChromiumDash couldn't say whether a milestone has branched."""
+
+
+def milestone_branch(milestone: int) -> int | None:
+    """The build number Chromium branched `milestone` at, per ChromiumDash,
+    or None while it hasn't branched."""
+    url = _CHROMIUMDASH_MILESTONE.format(milestone=milestone)
+    try:
+        response = requests.get(url, timeout=10)
+        response.raise_for_status()
+        branch = response.json()[0]['chromium_branch']
+    except (requests.RequestException, ValueError, LookupError) as e:
+        raise UnknownBranch(f'{url}: {e}') from e
+    return int(branch) if branch else None
+
+
+def lifts_branched_minor_bump(
+    current: Version, tag: Version, branch: int | None
+) -> bool:
+    """Whether a head branch on `current` lifts to `tag`, a minor bump of it
+    (only PATCH moves), which it otherwise skips: once its milestone has
+    branched at `current`'s build, its milestone's tags only move PATCH. It
+    stays the head branch, and so lifts them, until cr<N+1> is created."""
+    return (
+        tag.parts[:3] == current.parts[:3]
+        and tag > current
+        and branch == current.parts[2]
     )
 
 
@@ -998,11 +1042,13 @@ class RunPlan:
             # A head branch already on its milestone's latest tag lifts
             # nothing, nor does it lift to a minor bump of its tag (only
             # PATCH moves): not worth a run's hassle until the build number
-            # moves too.
+            # moves too, except once its milestone has branched, when only
+            # PATCH moves.
             if (
                 self.exists
                 and tag is not None
                 and tag.parts[:3] == current.parts[:3]
+                and not self._lifts_branched_minor_bump(current, tag)
             ):
                 self.lift_to = None
                 if tag != current:
@@ -1016,6 +1062,29 @@ class RunPlan:
                 return False
             self.regen, plan_summary = plan
             self.summary += plan_summary
+        return True
+
+    def _lifts_branched_minor_bump(
+        self, current: Version, tag: Version
+    ) -> bool:
+        """`lifts_branched_minor_bump`, saying why in the summary."""
+        if tag == current:
+            return False
+        try:
+            branch = milestone_branch(self.milestone)
+        except UnknownBranch as e:
+            self.summary += (
+                f'- Could not tell whether M{self.milestone} has branched '
+                f'({e}), so its minor bumps are skipped.\n'
+            )
+            return False
+        if not lifts_branched_minor_bump(current, tag, branch):
+            return False
+        self.summary += (
+            f'- M{self.milestone} branched at {branch} and '
+            f'origin/cr{self.milestone + 1} doesn\'t exist yet, so {branch}.x '
+            f'minor bumps are lifted: to {tag}.\n'
+        )
         return True
 
     def not_worth(self) -> str | None:
@@ -1167,7 +1236,7 @@ def _cmd_prepare(args: argparse.Namespace) -> int:
         return 0
     if mismatch and (returncode := sync_chromium(run)):
         return returncode
-    cmd = [sys.executable, str(_BROCKIT), 'rebase', '--squash-minor-bumps']
+    cmd = [_BROCKIT, 'rebase', '--squash-minor-bumps']
     # Without a lift or `brockit regen` to remake them, they must stay.
     if lift_to or regen:
         cmd.append('--discard-regen-changes')
@@ -1486,7 +1555,7 @@ class Publish:
 
     def _brockit(self, *args: str) -> int:
         return subprocess.run(
-            [sys.executable, str(_BROCKIT), *args],
+            [_BROCKIT, *args],
             cwd=self._brave.root,
             check=False,
         ).returncode
@@ -1501,7 +1570,7 @@ class Publish:
         channel's single bump leaves nothing else to squash.
         """
         result = subprocess.run(
-            [sys.executable, str(_BROCKIT), *rebase_args, '--dry-run'],
+            [_BROCKIT, *rebase_args, '--dry-run'],
             cwd=self._brave.root,
             check=False,
             capture_output=True,
@@ -1739,7 +1808,8 @@ class Publish:
             return 0
         return self._brockit('update-version-issue')
 
-    # Groups of `rebase.PINNED_GROUPS` whose commits Brockit writes itself.
+    # Groups of `pinned_commits.PINNED_GROUPS` whose commits Brockit writes
+    # itself.
     # Conflict-resolved patches aren't among them: they hold the agent's
     # resolutions.
     _BROCKIT_GROUPS = frozenset({'version', 'plaster_reruns', 'gnrt'})
@@ -1777,9 +1847,9 @@ class Publish:
 
     @classmethod
     def _written_by_brockit(cls, subject: str) -> bool:
-        return brockit_rebase.get_pinned_group_for_subject(
+        return pinned_commits.get_pinned_group_for_subject(
             subject
-        ) in cls._BROCKIT_GROUPS or brockit_rebase.is_recyclable(subject)
+        ) in cls._BROCKIT_GROUPS or pinned_commits.is_recyclable(subject)
 
     def _commits(self, revision_range: str) -> list[tuple[str, str]]:
         output = self._brave.run_git(
@@ -2408,8 +2478,9 @@ class ChannelBump:
             numbers = _CHANNEL_STEPS if index == 0 else _LOWER_CHANNEL_STEPS
             steps += [(number, channel.run) for number in numbers]
             if index == 0:
-                steps.append((8, None))
-        return steps + [(9, None), (10, None), (11, None)]
+                # The review. Step 8 is an autofix run's, for a channel bump.
+                steps.append((9, None))
+        return steps + [(10, None), (11, None), (12, None)]
 
     @classmethod
     def next_step(
@@ -2454,7 +2525,7 @@ class ChannelBump:
             return '\n'.join(lines)
         if reason := run_not_worth_it(report):
             lines.append(
-                'Next: the "Autofix run" section, carrying on from where the '
+                'Next: autofix.md, read in full, carrying on from where the '
                 'report leaves it; `prepare` found nothing worth a lift run '
                 f'({reason}).'
             )
@@ -2542,9 +2613,9 @@ class ChannelBump:
         """Whether a lower channel picks a commit with `subject` from a
         higher one's bump."""
         return not (
-            brockit_rebase.get_pinned_group_for_subject(subject)
+            pinned_commits.get_pinned_group_for_subject(subject)
             in cls._NOT_PICKED
-            or brockit_rebase.is_recyclable(subject)
+            or pinned_commits.is_recyclable(subject)
         )
 
     def picks(self, higher: list[Channel]) -> list[tuple[str, str]]:
@@ -2577,7 +2648,7 @@ class ChannelBump:
                 # Every channel disables its own failing tests under the same
                 # subject, so only the change tells a higher one's apart.
                 by_change = (
-                    brockit_rebase.get_pinned_group_for_subject(subject)
+                    pinned_commits.get_pinned_group_for_subject(subject)
                     == 'disable_tests'
                 )
                 if by_change or subject not in have:
@@ -2697,6 +2768,51 @@ def _cmd_publish(args: argparse.Namespace) -> int:
     return Publish(run).run(**options)
 
 
+# How many of a logged command's last lines it prints.
+_LOGGED_TAIL_LINES = 15
+
+
+@contextlib.contextmanager
+def _output_to(log: Path) -> Iterator[None]:
+    """Sends this process's output, and its subprocesses', to `log`."""
+    log.parent.mkdir(parents=True, exist_ok=True)
+    sys.stdout.flush()
+    sys.stderr.flush()
+    saved = os.dup(1), os.dup(2)
+    try:
+        with log.open('wb') as file:
+            os.dup2(file.fileno(), 1)
+            os.dup2(file.fileno(), 2)
+            try:
+                yield
+            finally:
+                sys.stdout.flush()
+                sys.stderr.flush()
+                os.dup2(saved[0], 1)
+                os.dup2(saved[1], 2)
+    finally:
+        os.close(saved[0])
+        os.close(saved[1])
+
+
+def _cmd_publish_logged(args: argparse.Namespace) -> int:
+    """`publish`, with its output in the run's `publish.log`: the agent runs
+    it as a bare command, which the job's permission rule for it matches,
+    without a redirect or a chained command."""
+    run = (
+        Run.bump(args.target.major, 'master')
+        if isinstance(args.target, Version)
+        else Run.cr(args.target)
+    )
+    log = run.log('publish')
+    with _output_to(log):
+        returncode = _cmd_publish(args)
+    tail = log.read_bytes().decode('utf-8', errors='replace').splitlines()
+    print(f'`publish` exited {returncode}; its output is in {log}. It ends:')
+    print('\n'.join(tail[-_LOGGED_TAIL_LINES:]))
+    return returncode
+
+
 _AUTOSQUASH = re.compile(r'(?:fixup|amend|squash)! ')
 
 
@@ -2706,13 +2822,14 @@ def squashes_into_branch(subject: str) -> bool:
     `IWYU fixes.`."""
     return bool(
         _AUTOSQUASH.match(subject)
-        or brockit_rebase.get_pinned_group_for_subject(subject)
+        or pinned_commits.get_pinned_group_for_subject(subject)
     )
 
 
 # `ci-failures`' exit statuses, besides 0 when every check passed.
 CI_FAILED = 2
 CI_PENDING = 3
+CI_NO_PULL_REQUEST = 4
 
 # A failed test's name as CI reports it: TeamCity prefixes the binary
 # (`unit_tests: Suite.Test`), and parameterised tests carry an instantiation
@@ -2720,6 +2837,16 @@ CI_PENDING = 3
 _FAILED_TEST_NAME = re.compile(
     r'(?:(?P<binary>\w+): )?(?:\w+/)?(?P<suite>\w+)\.(?P<test>\w+)(?:/\w+)?'
 )
+# A Java test as CI reports it: `<package>.<Class>: <method>`.
+_FAILED_JAVA_TEST_NAME = re.compile(
+    r'(?:(?P<binary>\w+): )?(?:\w+\.)+(?P<suite>\w+): (?P<test>\w+)'
+)
+
+
+def _parse_failed_test(name: str) -> re.Match | None:
+    name = name.strip()
+    match = _FAILED_TEST_NAME.fullmatch(name)
+    return match or _FAILED_JAVA_TEST_NAME.fullmatch(name)
 
 
 @dataclass(frozen=True)
@@ -2755,34 +2882,49 @@ class TestLeads:
         )
 
 
-# A gtest pattern quoted in the tracker, e.g. `ActorTaskListBubble*` or
-# `-Suite.Test`: its suite part.
-_QUOTED_SUITE_PATTERN = re.compile(r'`-?([\w*]*\*[\w*]*)(?:\.[\w*]+)?`')
+# A gtest pattern or test name quoted in the tracker, e.g.
+# `ActorTaskListBubble*`, `-Suite*.*` or `-All/Suite.Test/*`.
+_QUOTED_TEST_PATTERN = re.compile(
+    r'`-?(?:[\w*]+/)?(?P<suite>[\w*]+)(?:\.(?P<test>[\w*]+)(?:/[\w*]+)?)?`'
+)
 
 
 class _SuiteNamed:
-    """Whether a tracker line names a suite: by its name, or by a quoted
-    gtest pattern matching it (`ActorTaskListBubble*`)."""
+    """Whether tracker text names a failed test: by its suite's name, or by a
+    quoted gtest pattern matching it (`ActorTaskListBubble*`, `-Suite*.Test`).
+    """
 
-    def __init__(self, suite: str) -> None:
+    def __init__(self, suite: str, test: str) -> None:
         self._suite = suite
+        self._test = test
         self._word = re.compile(rf'\b{re.escape(suite)}\b')
 
-    def search(self, line: str) -> bool:
-        return bool(self._word.search(line)) or any(
-            fnmatch.fnmatchcase(self._suite, pattern)
-            for pattern in _QUOTED_SUITE_PATTERN.findall(line)
+    def _matches(self, quoted: re.Match) -> bool:
+        if quoted['test']:
+            return fnmatch.fnmatchcase(
+                self._suite, quoted['suite']
+            ) and fnmatch.fnmatchcase(self._test, quoted['test'])
+        return '*' in quoted['suite'] and fnmatch.fnmatchcase(
+            self._suite, quoted['suite']
+        )
+
+    def search(self, text: str) -> bool:
+        return bool(self._word.search(text)) or any(
+            self._matches(quoted)
+            for quoted in _QUOTED_TEST_PATTERN.finditer(text)
         )
 
 
-def _tracker_mentions(tracker: str, suite: str) -> tuple[str, ...]:
+def _tracker_mentions(tracker: str, suite: str, test: str) -> tuple[str, ...]:
     """The tracker's `###` headings, with the tasks under them, that name
-    `suite`, as `<line>: <text>`."""
-    word = _SuiteNamed(suite)
+    the failed `suite.test`, as `<line>: <text>`. A task's wrapped lines count
+    as part of it."""
+    word = _SuiteNamed(suite, test)
+    lines = tracker.splitlines()
     mentions = []
     heading: tuple[int, str] | None = None
     heading_named = False
-    for number, line in enumerate(tracker.splitlines(), 1):
+    for number, line in enumerate(lines, 1):
         if line.startswith('#'):
             heading = (number, line) if line.startswith('### ') else None
             heading_named = bool(heading and word.search(line))
@@ -2791,7 +2933,16 @@ def _tracker_mentions(tracker: str, suite: str) -> tuple[str, ...]:
             continue
         if not line.lstrip().startswith('- ['):
             continue
-        if heading_named or word.search(line):
+        task = [line]
+        for wrapped in lines[number:]:
+            if (
+                not wrapped[:1].isspace()
+                or not wrapped.strip()
+                or wrapped.lstrip().startswith('- ')
+            ):
+                break
+            task.append(wrapped)
+        if heading_named or word.search(' '.join(task)):
             if (
                 heading
                 and not heading_named
@@ -2852,7 +3003,7 @@ def test_leads(
     renames = renames or {}
     leads = []
     for name in dict.fromkeys(names):
-        match = _FAILED_TEST_NAME.fullmatch(name.strip())
+        match = _parse_failed_test(name)
         if not match:
             continue
         suite = match['suite']
@@ -2874,7 +3025,7 @@ def test_leads(
                 name=name,
                 binary=match['binary'],
                 suite=suite,
-                tracker=_tracker_mentions(tracker, suite),
+                tracker=_tracker_mentions(tracker, suite, match['test']),
                 filters=direct,
                 inherited=tuple(dict.fromkeys(inherited)),
                 renamed=tuple(dict.fromkeys(renamed)),
@@ -3110,7 +3261,7 @@ def _collect_leads(milestone: int, found: list) -> list[TestLeads]:
         dict.fromkeys(
             match['suite']
             for name in names
-            if (match := _FAILED_TEST_NAME.fullmatch(name.strip()))
+            if (match := _parse_failed_test(name))
         )
     )
     if not suites:
@@ -3154,6 +3305,12 @@ class PullRequestFailures:
         written to `output`. The leads are read from the checkout, which must
         be on the run's branch."""
         run = self.run
+        if not ci_github.has_pull_request(run.branch):
+            return (
+                CI_NO_PULL_REQUEST,
+                f'- {run.branch} has no pull request yet: there is no CI to '
+                'read.',
+            )
         checks = ci_github.pr_checks(run.branch)
         found = ci_report.collect(checks)
         pending = checks.in_state(ci_github.State.PENDING)
@@ -3203,6 +3360,11 @@ def _cmd_advise(args: argparse.Namespace) -> int:
     return 0
 
 
+def _and_list(items: list[str]) -> str:
+    """`a`, `a and b`, `a, b and c`."""
+    return ' and '.join(filter(None, [', '.join(items[:-1]), items[-1]]))
+
+
 @dataclass(frozen=True)
 class Advice:
     """What a CI run does, decided mechanically before any agent starts, and
@@ -3218,63 +3380,59 @@ class Advice:
     action: str
     reasons: tuple[str, ...]
     prompt: str | None = None
+    # The skill's files the run must read in full, which the prompt names.
+    reads: tuple[str, ...] = ()
 
-    _SKILL = 'tools/cr/autolift/SKILL.md'
+    _SKILL_DIR = 'tools/cr/autolift'
     # The channels don't carry the tooling: a resumed channel bump reads the
     # copy its `prepare` or `autofix` made.
-    _STAGED_SKILL = '.autolift/tooling/cr/autolift/SKILL.md'
+    _STAGED_SKILL_DIR = '.autolift/tooling/cr/autolift'
 
     _UNATTENDED = (
         '\n\nThis is an unattended CI run: there is no human to ask, so make '
         'the calls the document describes and record them in the report.'
     )
 
-    # By (channel bump, kind of run).
+    # By (channel bump, kind of run), with the skill's files as `skill`,
+    # `autofix` and `bump`.
     _PROMPTS = {
         (False, 'lift'): (
             'Lift cr{target} by following {skill} from step 1 to the end. '
-            'Read the whole file before starting. The milestone N is {target}.'
+            'The milestone N is {target}.'
         ),
         (False, 'resume'): (
             'Resume the lift of cr{target}, which an earlier run of {skill} '
-            'stopped before it finished. Read the whole file, then follow its '
-            '"Resuming a run" section to carry on where that run stopped. The '
-            'milestone N is {target}.'
+            'stopped before it finished: follow its "Resuming a run" section '
+            'to carry on where that run stopped. The milestone N is {target}.'
         ),
         (False, 'autofix'): (
             "Fix what fails in the CI of cr{target}'s pull request by "
-            'following the "Autofix run" section of {skill}. Read the whole '
-            'file before starting. The milestone N is {target}.'
+            'following {autofix}. The milestone N is {target}.'
         ),
         (False, 'resume autofix'): (
-            'Resume the autofix run of cr{target}, which an earlier run of the '
-            '"Autofix run" section of {skill} stopped before it finished. Read '
-            'the whole file, then carry on where the report says that run '
-            'stopped. The milestone N is {target}.'
+            'Resume the autofix run of cr{target}, which an earlier run of '
+            '{autofix} stopped before it finished: carry on where the report '
+            'says that run stopped. The milestone N is {target}.'
         ),
         (True, 'lift'): (
             "Bump Brave's release channels to Chromium {target} by following "
-            'the "Channel bump run" section of {skill}. Read the whole file '
-            'before starting. The tag is {target}.'
+            '{bump}. The tag is {target}.'
         ),
         (True, 'resume'): (
             'Resume the channel bump to Chromium {target}, which an earlier '
-            'run of the "Channel bump run" section of {skill} stopped before '
-            'it finished. Read the whole file, then follow its "Resuming a '
-            'run" section to carry on where that run stopped. The tag is '
-            '{target}.'
+            'run of {bump} stopped before it finished: follow the "Resuming a '
+            'run" section of {skill} to carry on where that run stopped. The '
+            'tag is {target}.'
         ),
         (True, 'autofix'): (
             'Fix what fails in the CI of the pull requests of the channel bump '
-            'to Chromium {target} by following the "Autofix run" section of '
-            '{skill}, for each channel. Read the whole file before starting. '
-            'The tag is {target}.'
+            'to Chromium {target} by following the "Autofix run of a tag" part '
+            'of {bump}, for each channel. The tag is {target}.'
         ),
         (True, 'resume autofix'): (
             'Resume the autofix run of the channel bump to Chromium {target}, '
-            'which an earlier run of the "Autofix run" section of {skill} '
-            'stopped before it finished. Read the whole file, then carry on '
-            'where the report says that run stopped. The tag is {target}.'
+            'which an earlier run of {bump} stopped before it finished: carry '
+            'on where the report says that run stopped. The tag is {target}.'
         ),
     }
 
@@ -3298,13 +3456,29 @@ class Advice:
         cls, action: str, reasons: list[str], target: int | Version, kind: str
     ) -> Advice:
         bump = isinstance(target, Version)
-        skill = (
-            cls._STAGED_SKILL
+        root = (
+            cls._STAGED_SKILL_DIR
             if bump and kind.startswith('resume')
-            else cls._SKILL
+            else cls._SKILL_DIR
         )
-        prompt = cls._PROMPTS[(bump, kind)].format(target=target, skill=skill)
-        return cls(action, tuple(reasons), prompt + cls._UNATTENDED)
+        files = {
+            'skill': f'{root}/SKILL.md',
+            'autofix': f'{root}/autofix.md',
+            'bump': f'{root}/channel_bump.md',
+        }
+        reads = [files['skill']]
+        if bump:
+            reads.append(files['bump'])
+        # A lift of cr<N> fixes its pull request's CI as autofix.md says, at
+        # step 8.
+        if kind.endswith('autofix') or not bump:
+            reads.append(files['autofix'])
+        prompt = (
+            cls._PROMPTS[(bump, kind)].format(target=target, **files)
+            + f' Before starting, read {_and_list(reads)} yourself, each in '
+            'full with the Read tool.' + cls._UNATTENDED
+        )
+        return cls(action, tuple(reasons), prompt, tuple(reads))
 
     @classmethod
     def _of_cr(cls, milestone: int, autofix: bool) -> Advice | None:
@@ -3375,6 +3549,7 @@ class Advice:
         advice = {
             'action': self.action,
             'prompt': self.prompt,
+            'reads': list(self.reads),
             'reasons': list(self.reasons),
         }
         path.write_text(json.dumps(advice, indent=2) + '\n', encoding='utf-8')
@@ -3537,15 +3712,16 @@ STEPS = {
     5: 'Lit mangler snapshot',
     6: 'Android',
     7: 'Presubmit',
-    8: 'Code health review',
-    9: 'Update this document',
-    10: 'Wrap up',
-    11: 'Publish',
+    8: 'Pull request CI',
+    9: 'Code health review',
+    10: 'Update this document',
+    11: 'Wrap up',
+    12: 'Publish',
 }
 # A maintenance run without a lift (SKILL.md's "Maintenance run without a
 # lift"): step 2 is skipped, and so is everything only a lift needs.
-_NO_LIFT_STEPS = (1, 2, 3, 4, 10, 11)
-# A channel bump (SKILL.md's "Channel bump run"): the steps each channel's
+_NO_LIFT_STEPS = (1, 2, 3, 4, 11, 12)
+# A channel bump (channel_bump.md): the steps each channel's
 # branch takes, recorded on it. Only the highest channel is built, tested
 # and checked; the lower ones are lifted, and take its fixes. No Android
 # build: the pull requests' CI builds it, and autofix fixes what fails there.
@@ -3667,7 +3843,7 @@ def format_status(status: RunStatus) -> str:
         return '\n'.join(lines)
     if status.not_worth_it:
         lines.append(
-            'Next: the "Autofix run" section, carrying on from where the '
+            'Next: autofix.md, read in full, carrying on from where the '
             'report leaves it; `prepare` found nothing worth a lift run '
             f'({status.not_worth_it}).'
         )
@@ -3856,6 +4032,11 @@ def summarize_lift(log: str) -> LiftSummary:
     )
 
 
+def _brockit_kept_continuation() -> bool:
+    """Whether Brockit's `lift --continue` has a continuation to resume."""
+    return (repository.brave.root / '.version_upgrade').exists()
+
+
 def _package_range() -> str | None:
     """`<upstream tag>..<HEAD tag>` from `package.json`, if they differ."""
     old = Version.from_git('@{upstream}')
@@ -3942,7 +4123,7 @@ def _cmd_lift(args: argparse.Namespace) -> int:
     name = 'lift-continue' if args.continue_ else 'lift'
     stamp = datetime.now().strftime('%Y%m%d-%H%M%S')
     log = run.log(f'{name}-{stamp}')
-    cmd = [sys.executable, str(_BROCKIT), 'lift', '--infra-mode']
+    cmd = [_BROCKIT, 'lift', '--infra-mode']
     # Brockit continues to the tag the lift started with.
     if args.continue_:
         cmd.append('--continue')
@@ -3958,6 +4139,14 @@ def _cmd_lift(args: argparse.Namespace) -> int:
             check=False,
         ).returncode
     summary = summarize_lift(log.read_bytes().decode('utf-8', errors='replace'))
+    # Brockit can stop on an error in `--continue` (a patch whose hunk count
+    # changed) without saying so, keeping its continuation for the rerun.
+    if (
+        not summary.resumable
+        and not summary.done
+        and _brockit_kept_continuation()
+    ):
+        summary = dataclasses.replace(summary, resumable=True)
     if summary.resumable:
         stopped.touch()
     else:
@@ -4158,6 +4347,15 @@ class FixSources:
         """What the run has: a fix on a source past it is the source's own."""
         return 'HEAD' if self.run.channel else f'origin/{self.run.branch}'
 
+    def since_on(self, ref: str) -> str:
+        """Where `ref`'s own fixes start: `since`, or for a newer `cr<M>`
+        branch, its milestone's first bump, found as `brockit rebase` finds
+        it. Past `since`, that branch also holds copies of the run's commits
+        from before their last rewrite."""
+        if re.fullmatch(r'origin/cr\d+', ref):
+            return previous_version_commit(ref, major=True)
+        return self.since
+
     def refs(self) -> list[str]:
         refs = []
         if self.run.channel and (bump := ChannelBump.of_run(self.run)):
@@ -4240,7 +4438,9 @@ def _find_next_fixes(
 ) -> list[NextFix]:
     cherry_picks = _cherry_picks(revision_range, paths)
     sources = FixSources(run)
-    branches = {ref: _fixes_on(ref, sources.since) for ref in sources.refs()}
+    branches = {
+        ref: _fixes_on(ref, sources.since_on(ref)) for ref in sources.refs()
+    }
     return match_next_fixes(cherry_picks, branches)
 
 
@@ -4249,7 +4449,7 @@ def _cmd_next_tracker(args: argparse.Namespace) -> int:
     if run is None:
         print('Check out a cr<N> or channel bump branch first.')
         return 1
-    since = FixSources(run).since
+    sources = FixSources(run)
     cherry_picks = _cherry_picks(args.range, [], with_files=True)
     for branch in _newer_branches(run.milestone):
         major = branch.removeprefix('cr')
@@ -4281,7 +4481,8 @@ def _cmd_next_tracker(args: argparse.Namespace) -> int:
             for file, pick in match.named:
                 print(f'    names {file}: changed by {pick.sha} {pick.subject}')
             if match.ticked:
-                fixes = match.fixes(since, f'origin/{branch}')
+                ref = f'origin/{branch}'
+                fixes = match.fixes(sources.since_on(ref), ref)
                 if match.fixed_in:
                     for fix in fixes:
                         print(f'    fix on origin/{branch}: {fix}')
@@ -4469,7 +4670,7 @@ def main() -> int:
         help='End the dry run `prepare` or `autofix` started, and publish for '
         'real.',
     )
-    publish.set_defaults(func=_cmd_publish)
+    publish.set_defaults(func=_cmd_publish_logged)
 
     autofix = subparsers.add_parser(
         'autofix',
@@ -4568,7 +4769,7 @@ def main() -> int:
     step = subparsers.add_parser(
         'step', help='Record a finished or skipped step in the report.'
     )
-    step.add_argument('number', type=int, help='The step, 1 to 11.')
+    step.add_argument('number', type=int, help=f'The step, 1 to {len(STEPS)}.')
     outcome = step.add_mutually_exclusive_group(required=True)
     outcome.add_argument('--done', metavar='OUTCOME', help='What it found.')
     outcome.add_argument('--skipped', metavar='WHY', help='Why it was skipped.')
